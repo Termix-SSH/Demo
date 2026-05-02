@@ -61,15 +61,21 @@ import {
   Tag,
   Terminal,
   Trash2,
+  Upload,
   User,
   UserCheck,
   UserX,
+  Users,
   Wifi,
   WifiOff,
   X,
   Zap,
+  Check,
+  Pin,
+  ListChecks,
 } from "lucide-react";
 import {Input} from "@/components/ui/input";
+import CytoscapeComponent from "react-cytoscapejs";
 import {useState, useRef, useCallback, useEffect} from "react";
 import type React from "react";
 import {Card} from "@/components/ui/card";
@@ -82,6 +88,7 @@ import {
 } from "@/components/ui/dialog";
 import {Toaster} from "@/components/ui/sonner";
 import {toast} from "sonner";
+import { Auth, getStoredAuth, clearStoredAuth } from "@/Auth";
 import { useXTerm } from 'react-xtermjs'
 import "@xterm/xterm/css/xterm.css";
 import { FitAddon } from '@xterm/addon-fit';
@@ -450,9 +457,268 @@ const hostStatuses = hosts;
 
 const DASHBOARD_TAB: Tab = {id: "dashboard", type: "dashboard", label: "Dashboard"};
 
-function DashboardTab({ onOpenSingletonTab }: { onOpenSingletonTab: (type: TabType) => void }) {
+type DashboardCardId = "stats_bar" | "counters_bar" | "quick_actions" | "host_status" | "recent_activity" | "network_graph";
+
+type DashboardCardConfig = {
+  id: DashboardCardId;
+  label: string;
+  description: string;
+  defaultEnabled: boolean;
+};
+
+const DASHBOARD_CARDS: DashboardCardConfig[] = [
+  { id: "stats_bar",       label: "Status Bar",      description: "Version, uptime, database health, hosts online",  defaultEnabled: true  },
+  { id: "counters_bar",    label: "Counters Bar",     description: "Total hosts, credentials, and tunnels count",     defaultEnabled: true  },
+  { id: "quick_actions",   label: "Quick Actions",    description: "Shortcuts to add hosts, credentials, settings",   defaultEnabled: true  },
+  { id: "host_status",     label: "Host Status",      description: "Live status list with CPU/RAM per host",          defaultEnabled: true  },
+  { id: "recent_activity", label: "Recent Activity",  description: "Feed of recent connection events",                defaultEnabled: true  },
+  { id: "network_graph",   label: "Network Graph",    description: "Visual map of host network topology",             defaultEnabled: false },
+];
+
+function DashboardSettingsDialog({
+  open,
+  onOpenChange,
+  enabled,
+  onToggle,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  enabled: Record<DashboardCardId, boolean>;
+  onToggle: (id: DashboardCardId) => void;
+}) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-md p-0 gap-0 overflow-hidden">
+        <DialogHeader className="px-5 pt-5 pb-4 border-b border-border">
+          <div className="flex items-center gap-2.5">
+            <div className="size-8 border border-border bg-muted flex items-center justify-center shrink-0">
+              <LayoutDashboard className="size-3.5 text-accent-brand" />
+            </div>
+            <div>
+              <DialogTitle className="text-base font-bold leading-none">Dashboard Settings</DialogTitle>
+              <DialogDescription className="text-xs text-muted-foreground mt-0.5">Toggle which cards are visible on your dashboard.</DialogDescription>
+            </div>
+          </div>
+        </DialogHeader>
+        <div className="flex flex-col divide-y divide-border">
+          {DASHBOARD_CARDS.map((card) => {
+            const isOn = enabled[card.id];
+            return (
+              <button
+                key={card.id}
+                onClick={() => onToggle(card.id)}
+                className="flex items-center justify-between px-5 py-3.5 hover:bg-muted/50 transition-colors text-left w-full"
+              >
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-sm font-semibold">{card.label}</span>
+                  <span className="text-xs text-muted-foreground">{card.description}</span>
+                </div>
+                <div className={`ml-4 shrink-0 size-5 border flex items-center justify-center transition-colors ${isOn ? "bg-accent-brand border-accent-brand" : "bg-muted border-border"}`}>
+                  {isOn && <Check className="size-3 text-white" strokeWidth={3} />}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+        <div className="px-5 py-3 border-t border-border flex items-center justify-between">
+          <span className="text-xs text-muted-foreground">{Object.values(enabled).filter(Boolean).length} of {DASHBOARD_CARDS.length} cards enabled</span>
+          <Button variant="ghost" size="sm" className="text-xs h-7 text-muted-foreground" onClick={() => onOpenChange(false)}>Done</Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+const DEMO_GRAPH_ELEMENTS = [
+  { data: { id: "gw",  label: "gateway",    ip: "10.0.0.1:22",  status: "online"  }, position: { x: 300, y: 200 } },
+  { data: { id: "s1",  label: "web-01",     ip: "10.0.1.10:22", status: "online"  }, position: { x: 120, y: 80  } },
+  { data: { id: "s2",  label: "db-primary", ip: "10.0.1.20:22", status: "online"  }, position: { x: 480, y: 80  } },
+  { data: { id: "s3",  label: "cache-01",   ip: "10.0.1.30:22", status: "online"  }, position: { x: 500, y: 320 } },
+  { data: { id: "s4",  label: "worker-01",  ip: "10.0.1.40:22", status: "online"  }, position: { x: 100, y: 320 } },
+  { data: { id: "s5",  label: "db-replica", ip: "10.0.1.50:22", status: "offline" }, position: { x: 300, y: 360 } },
+  { data: { id: "e1",  source: "gw", target: "s1" } },
+  { data: { id: "e2",  source: "gw", target: "s2" } },
+  { data: { id: "e3",  source: "gw", target: "s3" } },
+  { data: { id: "e4",  source: "gw", target: "s4" } },
+  { data: { id: "e5",  source: "gw", target: "s5" } },
+  { data: { id: "e6",  source: "s2", target: "s5" } },
+];
+
+function NetworkGraphCard() {
+  const cyRef = useRef<any>(null);
+  const [contextMenu, setContextMenu] = useState<{ visible: boolean; x: number; y: number; node: any } | null>(null);
+  const contextMenuRef = useRef<HTMLDivElement>(null);
+
+  const buildNodeStyle = useCallback((ele: any) => {
+    const isGateway = ele.data("id") === "gw";
+    const isOnline = ele.data("status") === "online";
+    const name = ele.data("label") || "";
+    const ip = ele.data("ip") || "";
+
+    const statusColor = isOnline ? "rgb(251,146,60)" : "rgb(100,116,139)";
+    const bgColor = "#09090b";
+    const textColor = "#f1f5f9";
+    const dimColor = "#64748b";
+
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="72" viewBox="0 0 160 72">
+      <defs>
+        <filter id="sh" x="-15%" y="-15%" width="130%" height="130%">
+          <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.4"/>
+        </filter>
+      </defs>
+      <rect x="2" y="2" width="156" height="68" rx="4"
+        fill="${bgColor}"
+        stroke="${isGateway ? "rgba(251,146,60,0.8)" : statusColor}"
+        stroke-width="${isGateway ? "2" : "1.5"}"
+        filter="url(#sh)"
+      />
+      ${isGateway ? `<rect x="2" y="2" width="156" height="68" rx="4" fill="rgba(251,146,60,0.04)"/>` : ""}
+      <circle cx="18" cy="36" r="4" fill="${statusColor}" opacity="0.9"/>
+      <text x="32" y="30" font-family="monospace" font-size="12" font-weight="700" fill="${textColor}">${name}</text>
+      <text x="32" y="48" font-family="monospace" font-size="10" fill="${dimColor}">${ip}</text>
+    </svg>`;
+    return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+  }, []);
+
+  const handleCyInit = useCallback((cy: any) => {
+    cyRef.current = cy;
+
+    cy.style()
+      .selector("node")
+      .style({
+        label: "",
+        width: "160px",
+        height: "72px",
+        shape: "round-rectangle",
+        "border-width": "0px",
+        "background-opacity": 0,
+        "background-image": buildNodeStyle,
+        "background-fit": "contain",
+      })
+      .selector("edge")
+      .style({
+        width: "1.5px",
+        "line-color": "#2a2a2c",
+        "curve-style": "bezier",
+        "target-arrow-shape": "none",
+      })
+      .selector("node:selected")
+      .style({
+        "overlay-color": "#fb923c",
+        "overlay-opacity": 0.08,
+        "overlay-padding": "4px",
+      })
+      .update();
+
+    cy.nodes().ungrabify();
+
+    cy.on("tap", (evt: any) => {
+      if (evt.target === cy) setContextMenu(null);
+    });
+
+    cy.on("cxttap tap", "node", (evt: any) => {
+      evt.stopPropagation();
+      const node = evt.target;
+      setContextMenu({
+        visible: true,
+        x: evt.originalEvent.clientX,
+        y: evt.originalEvent.clientY,
+        node: node.data(),
+      });
+    });
+
+    cy.on("zoom pan", () => setContextMenu(null));
+  }, [buildNodeStyle]);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (contextMenuRef.current && !contextMenuRef.current.contains(e.target as Node)) {
+        setContextMenu(null);
+      }
+    };
+    document.addEventListener("mousedown", handler, true);
+    return () => document.removeEventListener("mousedown", handler, true);
+  }, []);
+
+  return (
+    <Card className="flex flex-col overflow-hidden py-0 gap-0 flex-1 min-h-0">
+      <div className="flex items-center justify-between px-4 py-2 border-b border-border shrink-0">
+        <div className="flex items-center gap-2">
+          <Network className="size-3.5 text-muted-foreground" />
+          <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Network Graph</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">{DEMO_GRAPH_ELEMENTS.filter(e => !e.data.source).length} nodes</span>
+          <Button variant="ghost" size="sm" className="text-xs h-auto py-0.5 px-2" onClick={() => cyRef.current?.fit()}>
+            <RefreshCw className="size-3" />
+          </Button>
+        </div>
+      </div>
+      <div className="relative flex-1 min-h-0 overflow-hidden">
+        {contextMenu?.visible && (
+          <div
+            ref={contextMenuRef}
+            className="fixed z-[200] min-w-[160px] shadow-2xl p-1 flex flex-col gap-0.5 bg-card border border-border"
+            style={{ top: contextMenu.y, left: contextMenu.x }}
+          >
+            <div className="px-3 py-1.5 border-b border-border mb-0.5">
+              <span className="text-xs font-bold font-mono">{contextMenu.node.label}</span>
+              <span className="text-[10px] text-muted-foreground block">{contextMenu.node.ip}</span>
+            </div>
+            <button className="flex items-center gap-2 px-3 py-1.5 text-xs hover:bg-muted transition-colors text-left w-full">
+              <Terminal className="size-3" />Terminal
+            </button>
+            <button className="flex items-center gap-2 px-3 py-1.5 text-xs hover:bg-muted transition-colors text-left w-full">
+              <Server className="size-3" />Server Stats
+            </button>
+          </div>
+        )}
+        <CytoscapeComponent
+          elements={DEMO_GRAPH_ELEMENTS}
+          style={{ width: "100%", height: "100%" }}
+          layout={{ name: "preset" }}
+          cy={handleCyInit}
+          wheelSensitivity={1.5}
+          minZoom={0.3}
+          maxZoom={2.5}
+        />
+        <div className="absolute bottom-2 left-3 flex items-center gap-3 pointer-events-none">
+          <div className="flex items-center gap-1.5">
+            <span className="size-1.5 rounded-full bg-accent-brand inline-block" />
+            <span className="text-[10px] text-muted-foreground font-mono">Online</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="size-1.5 rounded-full bg-muted-foreground/50 inline-block" />
+            <span className="text-[10px] text-muted-foreground font-mono">Offline</span>
+          </div>
+        </div>
+        <div className="absolute top-2 right-3 pointer-events-none">
+          <span className="text-[10px] font-mono text-muted-foreground/40 uppercase tracking-widest">Demo</span>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+function DashboardTab({ onOpenSingletonTab, onOpenTab }: {
+  onOpenSingletonTab: (type: TabType, pendingEvent?: string) => void;
+  onOpenTab: (host: Host, type: TabType) => void;
+}) {
+  const defaultEnabled = Object.fromEntries(
+    DASHBOARD_CARDS.map((c) => [c.id, c.defaultEnabled])
+  ) as Record<DashboardCardId, boolean>;
+
+  const [enabled, setEnabled] = useState<Record<DashboardCardId, boolean>>(defaultEnabled);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  const toggle = (id: DashboardCardId) => setEnabled((prev) => ({ ...prev, [id]: !prev[id] }));
+
+  const hasRight = enabled.recent_activity || enabled.network_graph;
+  const mainColClass = hasRight ? "flex w-3/4 flex-col gap-3 min-h-0" : "flex w-full flex-col gap-3 min-h-0";
+
   return (
     <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+      <DashboardSettingsDialog open={settingsOpen} onOpenChange={setSettingsOpen} enabled={enabled} onToggle={toggle} />
       <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 mx-3 mt-3 gap-0">
         <div>
           <h1 className="text-2xl font-bold">Dashboard</h1>
@@ -475,212 +741,221 @@ function DashboardTab({ onOpenSingletonTab }: { onOpenSingletonTab: (type: TabTy
           </Button>
           <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">Support</Button>
           <Separator orientation="vertical" className="mx-1"/>
-          <Button variant="ghost" size="icon" onClick={() => onOpenSingletonTab("admin-settings")}><Settings className="size-4 text-orange-400"/></Button>
+          <Button variant="ghost" size="icon" onClick={() => setSettingsOpen(true)} title="Dashboard Settings">
+            <LayoutDashboard className="size-4 text-accent-brand"/>
+          </Button>
         </div>
       </Card>
       <div className="flex flex-row flex-1 min-h-0 px-3 py-3 gap-3">
-        <div className="flex w-3/4 flex-col gap-3 min-h-0">
+        <div className={mainColClass}>
 
-          {/* Row 1: Version / Uptime / Database / Hosts Online */}
-          <Card className="grid grid-cols-4 divide-x divide-border overflow-hidden shrink-0 py-0 gap-0">
-            <div className="flex flex-col justify-center px-4 py-3 gap-0.5">
-              <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Version</span>
-              <span className="text-3xl font-bold text-orange-400">v1.0.0</span>
-              <span className="text-xs bg-orange-400/20 text-orange-400 px-1.5 py-0.5 w-fit font-semibold">STABLE</span>
-            </div>
-            <div className="flex flex-col justify-center px-4 py-3 gap-0.5">
-              <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Uptime</span>
-              <span className="text-3xl font-bold">6d 3h</span>
-            </div>
-            <div className="flex flex-col justify-center px-4 py-3 gap-0.5">
-              <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Database</span>
-              <span className="text-3xl font-bold text-orange-400">Healthy</span>
-            </div>
-            <div className="flex flex-col justify-center px-4 py-3 gap-0.5">
-              <span
-                className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Hosts Online</span>
-              <div className="flex items-baseline gap-1">
-                <span className="text-3xl font-bold">{hostStatuses.filter(h => h.online).length}</span>
-                <span className="text-xl text-muted-foreground">/{hostStatuses.length}</span>
+          {/* Row 1: Status Bar */}
+          {enabled.stats_bar && (
+            <Card className="grid grid-cols-4 divide-x divide-border overflow-hidden shrink-0 py-0 gap-0">
+              <div className="flex flex-col justify-center px-4 py-3 gap-0.5">
+                <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Version</span>
+                <span className="text-3xl font-bold text-accent-brand">v1.0.0</span>
+                <span className="text-xs bg-accent-brand/20 text-accent-brand px-1.5 py-0.5 w-fit font-semibold">STABLE</span>
               </div>
-            </div>
-          </Card>
+              <div className="flex flex-col justify-center px-4 py-3 gap-0.5">
+                <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Uptime</span>
+                <span className="text-3xl font-bold">6d 3h</span>
+              </div>
+              <div className="flex flex-col justify-center px-4 py-3 gap-0.5">
+                <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Database</span>
+                <span className="text-3xl font-bold text-accent-brand">Healthy</span>
+              </div>
+              <div className="flex flex-col justify-center px-4 py-3 gap-0.5">
+                <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Hosts Online</span>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl font-bold">{hostStatuses.filter(h => h.online).length}</span>
+                  <span className="text-xl text-muted-foreground">/{hostStatuses.length}</span>
+                </div>
+              </div>
+            </Card>
+          )}
 
-          {/* Row 2: Total Hosts / Credentials / Tunnels */}
-          <Card className="grid grid-cols-3 divide-x divide-border overflow-hidden shrink-0 py-0 gap-0">
-            <div className="flex items-center gap-3 px-4 py-2.5">
-              <Server className="size-4 text-muted-foreground shrink-0"/>
-              <span className="text-xl font-bold">{hostStatuses.length}</span>
-              <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Total Hosts</span>
-            </div>
-            <div className="flex items-center gap-3 px-4 py-2.5">
-              <KeyRound className="size-4 text-muted-foreground shrink-0"/>
-              <span className="text-xl font-bold">2</span>
-              <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Credentials</span>
-            </div>
-            <div className="flex items-center gap-3 px-4 py-2.5">
-              <Network className="size-4 text-muted-foreground shrink-0"/>
-              <span className="text-xl font-bold">5</span>
-              <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Tunnels</span>
-            </div>
-          </Card>
+          {/* Row 2: Counters */}
+          {enabled.counters_bar && (
+            <Card className={`grid divide-x divide-border overflow-hidden shrink-0 py-0 gap-0 ${enabled.stats_bar ? "grid-cols-3" : "grid-cols-4"}`}>
+              <div className="flex items-center gap-3 px-4 py-2.5">
+                <Server className="size-4 text-muted-foreground shrink-0"/>
+                <span className="text-xl font-bold">{hostStatuses.length}</span>
+                <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Total Hosts</span>
+              </div>
+              <div className="flex items-center gap-3 px-4 py-2.5">
+                <KeyRound className="size-4 text-muted-foreground shrink-0"/>
+                <span className="text-xl font-bold">2</span>
+                <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Credentials</span>
+              </div>
+              <div className="flex items-center gap-3 px-4 py-2.5">
+                <Network className="size-4 text-muted-foreground shrink-0"/>
+                <span className="text-xl font-bold">5</span>
+                <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Tunnels</span>
+              </div>
+              {!enabled.stats_bar && (
+                <div className="flex items-center gap-3 px-4 py-2.5">
+                  <Activity className="size-4 text-muted-foreground shrink-0"/>
+                  <span className="text-xl font-bold text-accent-brand">Healthy</span>
+                  <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Database</span>
+                </div>
+              )}
+            </Card>
+          )}
 
           {/* Row 3: Quick Actions */}
-          <Card className="flex flex-col overflow-hidden shrink-0 py-0 gap-0">
-            <div className="flex items-center gap-2 px-4 py-2 border-b border-border">
-              <Zap className="size-3.5 text-muted-foreground"/>
-              <span
-                className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Quick Actions</span>
-            </div>
-            <div className="flex flex-1">
-              <div className="flex flex-col flex-1 border-r border-border">
-                <button
-                  className="group/btn flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors cursor-pointer border-b border-border flex-1">
-                  <div
-                    className="size-8 border border-border bg-muted flex items-center justify-center shrink-0 group-hover/btn:bg-orange-400/20 group-hover/btn:border-orange-400/40 transition-colors">
-                    <Plus className="size-3.5 text-orange-400"/>
-                  </div>
-                  <div className="flex flex-col items-start text-left">
-                    <span className="text-sm font-semibold text-foreground">Add Host</span>
-                    <span className="text-xs text-muted-foreground">Register a new server</span>
-                  </div>
-                </button>
-                <button
-                  onClick={() => onOpenSingletonTab("admin-settings")}
-                  className="group/btn flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors cursor-pointer flex-1">
-                  <div
-                    className="size-8 border border-border bg-muted flex items-center justify-center shrink-0 group-hover/btn:bg-orange-400/20 group-hover/btn:border-orange-400/40 transition-colors">
-                    <Settings className="size-3.5 text-orange-400"/>
-                  </div>
-                  <div className="flex flex-col items-start text-left">
-                    <span className="text-sm font-semibold text-foreground">Admin Settings</span>
-                    <span className="text-xs text-muted-foreground">Configure the application</span>
-                  </div>
-                </button>
+          {enabled.quick_actions && (
+            <Card className="flex flex-col overflow-hidden shrink-0 py-0 gap-0">
+              <div className="flex items-center gap-2 px-4 py-2 border-b border-border">
+                <Zap className="size-3.5 text-muted-foreground"/>
+                <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Quick Actions</span>
               </div>
-              <div className="flex flex-col flex-1">
-                <button
-                  className="group/btn flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors cursor-pointer border-b border-border flex-1">
-                  <div
-                    className="size-8 border border-border bg-muted flex items-center justify-center shrink-0 group-hover/btn:bg-orange-400/20 group-hover/btn:border-orange-400/40 transition-colors">
-                    <KeyRound className="size-3.5 text-orange-400"/>
-                  </div>
-                  <div className="flex flex-col items-start text-left">
-                    <span className="text-sm font-semibold text-foreground">Add Credential</span>
-                    <span className="text-xs text-muted-foreground">Store SSH key or password</span>
-                  </div>
-                </button>
-                <button
-                  onClick={() => onOpenSingletonTab("user-profile")}
-                  className="group/btn flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors cursor-pointer flex-1">
-                  <div
-                    className="size-8 border border-border bg-muted flex items-center justify-center shrink-0 group-hover/btn:bg-orange-400/20 group-hover/btn:border-orange-400/40 transition-colors">
-                    <User className="size-3.5 text-orange-400"/>
-                  </div>
-                  <div className="flex flex-col items-start text-left">
-                    <span className="text-sm font-semibold text-foreground">User Profile</span>
-                    <span className="text-xs text-muted-foreground">Manage your account</span>
-                  </div>
-                </button>
+              <div className="flex flex-1">
+                <div className="flex flex-col flex-1 border-r border-border">
+                  <button
+                    onClick={() => onOpenSingletonTab("host-manager", "host-manager:add-host")}
+                    className="group/btn flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors cursor-pointer border-b border-border flex-1">
+                    <div className="size-8 border border-border bg-muted flex items-center justify-center shrink-0 group-hover/btn:bg-accent-brand/20 group-hover/btn:border-accent-brand/40 transition-colors">
+                      <Plus className="size-3.5 text-accent-brand"/>
+                    </div>
+                    <div className="flex flex-col items-start text-left">
+                      <span className="text-sm font-semibold text-foreground">Add Host</span>
+                      <span className="text-xs text-muted-foreground">Register a new server</span>
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => onOpenSingletonTab("admin-settings")}
+                    className="group/btn flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors cursor-pointer flex-1">
+                    <div className="size-8 border border-border bg-muted flex items-center justify-center shrink-0 group-hover/btn:bg-accent-brand/20 group-hover/btn:border-accent-brand/40 transition-colors">
+                      <Settings className="size-3.5 text-accent-brand"/>
+                    </div>
+                    <div className="flex flex-col items-start text-left">
+                      <span className="text-sm font-semibold text-foreground">Admin Settings</span>
+                      <span className="text-xs text-muted-foreground">Configure the application</span>
+                    </div>
+                  </button>
+                </div>
+                <div className="flex flex-col flex-1">
+                  <button
+                    onClick={() => onOpenSingletonTab("host-manager", "host-manager:add-credential")}
+                    className="group/btn flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors cursor-pointer border-b border-border flex-1">
+                    <div className="size-8 border border-border bg-muted flex items-center justify-center shrink-0 group-hover/btn:bg-accent-brand/20 group-hover/btn:border-accent-brand/40 transition-colors">
+                      <KeyRound className="size-3.5 text-accent-brand"/>
+                    </div>
+                    <div className="flex flex-col items-start text-left">
+                      <span className="text-sm font-semibold text-foreground">Add Credential</span>
+                      <span className="text-xs text-muted-foreground">Store SSH key or password</span>
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => onOpenSingletonTab("user-profile")}
+                    className="group/btn flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors cursor-pointer flex-1">
+                    <div className="size-8 border border-border bg-muted flex items-center justify-center shrink-0 group-hover/btn:bg-accent-brand/20 group-hover/btn:border-accent-brand/40 transition-colors">
+                      <User className="size-3.5 text-accent-brand"/>
+                    </div>
+                    <div className="flex flex-col items-start text-left">
+                      <span className="text-sm font-semibold text-foreground">User Profile</span>
+                      <span className="text-xs text-muted-foreground">Manage your account</span>
+                    </div>
+                  </button>
+                </div>
               </div>
-            </div>
-          </Card>
+            </Card>
+          )}
 
           {/* Row 4: Host Status */}
-          <Card className="flex flex-col overflow-hidden flex-1 min-h-0 py-0 gap-0">
-            <div className="flex items-center justify-between px-4 py-2 border-b border-border shrink-0">
-              <div className="flex items-center gap-2">
-                <Database className="size-3.5 text-muted-foreground"/>
-                <span
-                  className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Host Status</span>
+          {enabled.host_status && (
+            <Card className="flex flex-col overflow-hidden flex-1 min-h-0 py-0 gap-0">
+              <div className="flex items-center justify-between px-4 py-2 border-b border-border shrink-0">
+                <div className="flex items-center gap-2">
+                  <Database className="size-3.5 text-muted-foreground"/>
+                  <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Host Status</span>
+                </div>
+                <span className="text-xs text-muted-foreground">{hostStatuses.filter(h => h.online).length}/{hostStatuses.length} online</span>
               </div>
-              <span
-                className="text-xs text-muted-foreground">{hostStatuses.filter(h => h.online).length}/{hostStatuses.length} online</span>
-            </div>
-            <div className="flex flex-col overflow-auto flex-1">
-              {hostStatuses.map((host, i) => (
-                <div key={i}
-                     className="flex items-center justify-between px-4 py-2.5 border-b border-border last:border-0 hover:bg-muted/50">
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`size-2 rounded-full shrink-0 ${host.online ? "bg-orange-400" : "bg-muted-foreground/40"}`}/>
-                    <div className="flex flex-col">
-                      <span className="text-sm font-semibold">{host.name}</span>
-                      <span className="text-xs text-muted-foreground">{host.address}</span>
+              <div className="flex flex-col overflow-auto flex-1">
+                {hostStatuses.map((host, i) => (
+                  <div key={i} onClick={() => onOpenTab(host, "stats")} className="flex items-center justify-between px-4 py-2.5 border-b border-border last:border-0 hover:bg-muted/50 cursor-pointer">
+                    <div className="flex items-center gap-3">
+                      <span className={`size-2 rounded-full shrink-0 ${host.online ? "bg-accent-brand" : "bg-muted-foreground/40"}`}/>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-semibold">{host.name}</span>
+                        <span className="text-xs text-muted-foreground">{host.address}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      {host.online ? (
+                        <div className="flex items-center gap-4">
+                          <div className="flex flex-col gap-1 w-20">
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs text-muted-foreground">CPU</span>
+                              <span className="text-xs font-bold text-accent-brand">{host.cpu}%</span>
+                            </div>
+                            <div className="h-1 bg-muted w-full">
+                              <div className="h-full bg-accent-brand" style={{width: `${host.cpu}%`}}/>
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-1 w-20">
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs text-muted-foreground">RAM</span>
+                              <span className="text-xs font-bold text-accent-brand">{host.ram}%</span>
+                            </div>
+                            <div className="h-1 bg-muted w-full">
+                              <div className="h-full bg-accent-brand" style={{width: `${host.ram}%`}}/>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-4">
+                          <span className="text-xs text-muted-foreground w-20 text-center">—</span>
+                          <span className="text-xs text-muted-foreground w-20 text-center">—</span>
+                        </div>
+                      )}
+                      <span className={`text-xs px-2.5 py-1 font-semibold border ${host.online ? "border-accent-brand/40 text-accent-brand bg-accent-brand/10" : "border-border text-muted-foreground"}`}>
+                        {host.online ? "ONLINE" : "OFFLINE"}
+                      </span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                    {host.online ? (
-                      <div className="flex items-center gap-4">
-                        <div className="flex flex-col gap-1 w-20">
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs text-muted-foreground">CPU</span>
-                            <span className="text-xs font-bold text-orange-400">{host.cpu}%</span>
-                          </div>
-                          <div className="h-1 bg-muted w-full">
-                            <div className="h-full bg-orange-400" style={{width: `${host.cpu}%`}}/>
-                          </div>
-                        </div>
-                        <div className="flex flex-col gap-1 w-20">
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs text-muted-foreground">RAM</span>
-                            <span className="text-xs font-bold text-orange-400">{host.ram}%</span>
-                          </div>
-                          <div className="h-1 bg-muted w-full">
-                            <div className="h-full bg-orange-400" style={{width: `${host.ram}%`}}/>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-4">
-                        <span className="text-xs text-muted-foreground w-20 text-center">—</span>
-                        <span className="text-xs text-muted-foreground w-20 text-center">—</span>
-                      </div>
-                    )}
-                    <span
-                      className={`text-xs px-2.5 py-1 font-semibold border ${host.online ? "border-orange-400/40 text-orange-400 bg-orange-400/10" : "border-border text-muted-foreground"}`}>
-                                        {host.online ? "ONLINE" : "OFFLINE"}
-                                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
+                ))}
+              </div>
+            </Card>
+          )}
         </div>
 
-        {/* Right: Recent Activity */}
-        <div className="w-1/4 min-h-0">
-          <Card className="h-full flex flex-col overflow-hidden py-0 gap-0">
-            <div className="flex items-center justify-between px-4 py-2 border-b border-border shrink-0">
-              <div className="flex items-center gap-2">
-                <Activity className="size-3.5 text-muted-foreground"/>
-                <span
-                  className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Recent Activity</span>
-              </div>
-              <Button variant="ghost" size="sm"
-                      className="text-xs text-muted-foreground h-auto py-0.5 px-2 text-orange-400">Clear</Button>
-            </div>
-            <div className="flex flex-col overflow-auto flex-1">
-              {recentActivity.map((item, i) => (
-                <div key={i}
-                     className="flex items-center justify-between px-4 py-2.5 border-b border-border last:border-0 hover:bg-muted/50">
-                  <div className="flex items-center gap-2.5">
-                    <span
-                      className={`size-1.5 rounded-full shrink-0 ${item.online ? "bg-orange-400" : "bg-muted-foreground/40"}`}/>
-                    <div className="flex flex-col">
-                      <span className="text-xs font-semibold truncate max-w-24">{item.host}</span>
-                      <div className="flex items-center gap-1 text-muted-foreground">
-                        <Terminal className="size-3"/>
-                        <span className="text-xs">{item.action}</span>
-                      </div>
-                    </div>
+        {/* Right column: Recent Activity + Network Graph */}
+        {hasRight && (
+          <div className={`w-1/4 min-h-0 flex flex-col gap-3 ${enabled.recent_activity && enabled.network_graph ? "h-full" : ""}`}>
+            {enabled.recent_activity && (
+              <Card className={`flex flex-col overflow-hidden py-0 gap-0 ${enabled.network_graph ? "flex-1 min-h-0" : "h-full"}`}>
+                <div className="flex items-center justify-between px-4 py-2 border-b border-border shrink-0">
+                  <div className="flex items-center gap-2">
+                    <Activity className="size-3.5 text-muted-foreground"/>
+                    <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Recent Activity</span>
                   </div>
-                  <span className="text-xs text-muted-foreground shrink-0">{item.time}</span>
+                  <Button variant="ghost" size="sm" className="text-xs text-muted-foreground h-auto py-0.5 px-2 text-accent-brand">Clear</Button>
                 </div>
-              ))}
-            </div>
-          </Card>
-        </div>
+                <div className="flex flex-col overflow-auto flex-1">
+                  {recentActivity.map((item, i) => (
+                    <div key={i} onClick={() => { const h = hosts.find(x => x.name === item.host); if (h) onOpenTab(h, "terminal"); }} className="flex items-center justify-between px-4 py-2.5 border-b border-border last:border-0 hover:bg-muted/50 cursor-pointer">
+                      <div className="flex items-center gap-2.5">
+                        <span className={`size-1.5 rounded-full shrink-0 ${item.online ? "bg-accent-brand" : "bg-muted-foreground/40"}`}/>
+                        <div className="flex flex-col">
+                          <span className="text-xs font-semibold truncate max-w-24">{item.host}</span>
+                          <div className="flex items-center gap-1 text-muted-foreground">
+                            <Terminal className="size-3"/>
+                            <span className="text-xs">{item.action}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <span className="text-xs text-muted-foreground shrink-0">{item.time}</span>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            )}
+            {enabled.network_graph && <NetworkGraphCard />}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -849,12 +1124,12 @@ function StatsTab({label}: { label: string }) {
       <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 mx-3 mt-3 gap-0">
         <div className="flex items-center gap-3">
           <div className="size-10 border border-border bg-muted flex items-center justify-center shrink-0">
-            <Server className="size-5 text-orange-400"/>
+            <Server className="size-5 text-accent-brand"/>
           </div>
           <div>
             <h1 className="text-2xl font-bold">{label}</h1>
             <div className="flex items-center gap-2">
-              <span className="size-2 rounded-full bg-orange-400"/>
+              <span className="size-2 rounded-full bg-accent-brand"/>
               <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Metrics</span>
             </div>
           </div>
@@ -865,7 +1140,7 @@ function StatsTab({label}: { label: string }) {
             Refresh
           </Button>
           <Separator orientation="vertical" className="h-8 mx-3"/>
-          <Button variant="ghost" size="icon"><Settings className="size-4 text-orange-400"/></Button>
+          <Button variant="ghost" size="icon"><Settings className="size-4 text-accent-brand"/></Button>
         </div>
       </Card>
 
@@ -887,7 +1162,7 @@ function StatsTab({label}: { label: string }) {
               </div>
               <div className="flex flex-col">
                 <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">Uptime</span>
-                <span className="text-sm font-bold text-orange-400">{metrics.uptime}</span>
+                <span className="text-sm font-bold text-accent-brand">{metrics.uptime}</span>
               </div>
            </div>
         </SectionCard>
@@ -897,7 +1172,7 @@ function StatsTab({label}: { label: string }) {
           <div className="flex flex-col gap-4 py-2">
             <div className="flex items-end justify-between">
               <div className="flex flex-col">
-                <span className="text-3xl font-bold text-orange-400">{metrics.cpu.percent.toFixed(1)}%</span>
+                <span className="text-3xl font-bold text-accent-brand">{metrics.cpu.percent.toFixed(1)}%</span>
                 <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">{metrics.cpu.cores} Cores</span>
               </div>
               <div className="text-right">
@@ -906,7 +1181,7 @@ function StatsTab({label}: { label: string }) {
               </div>
             </div>
             <div className="h-2 bg-muted w-full overflow-hidden">
-              <div className="h-full bg-orange-400 transition-all duration-500" style={{width: `${metrics.cpu.percent}%`}}/>
+              <div className="h-full bg-accent-brand transition-all duration-500" style={{width: `${metrics.cpu.percent}%`}}/>
             </div>
             <div className="h-20 w-full mt-2 bg-muted/20 border border-border/50 relative overflow-hidden">
                <svg className="absolute inset-0 h-full w-full" preserveAspectRatio="none">
@@ -915,7 +1190,7 @@ function StatsTab({label}: { label: string }) {
                    fill="none"
                    stroke="currentColor"
                    strokeWidth="1.5"
-                   className="text-orange-400/50"
+                   className="text-accent-brand/50"
                  />
                </svg>
             </div>
@@ -927,12 +1202,12 @@ function StatsTab({label}: { label: string }) {
            <div className="flex flex-col gap-4 py-2">
             <div className="flex items-end justify-between">
               <div className="flex flex-col">
-                <span className="text-3xl font-bold text-orange-400">{metrics.memory.percent.toFixed(1)}%</span>
+                <span className="text-3xl font-bold text-accent-brand">{metrics.memory.percent.toFixed(1)}%</span>
                 <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">{metrics.memory.usedGiB} / {metrics.memory.totalGiB} GiB</span>
               </div>
             </div>
             <div className="h-2 bg-muted w-full overflow-hidden">
-              <div className="h-full bg-orange-400 transition-all duration-500" style={{width: `${metrics.memory.percent}%`}}/>
+              <div className="h-full bg-accent-brand transition-all duration-500" style={{width: `${metrics.memory.percent}%`}}/>
             </div>
             <div className="grid grid-cols-2 gap-2 mt-1">
                <div className="flex flex-col p-2 bg-muted/30 border border-border">
@@ -952,12 +1227,12 @@ function StatsTab({label}: { label: string }) {
            <div className="flex flex-col gap-4 py-2">
             <div className="flex items-end justify-between">
               <div className="flex flex-col">
-                <span className="text-3xl font-bold text-orange-400">{metrics.disk.percent}%</span>
+                <span className="text-3xl font-bold text-accent-brand">{metrics.disk.percent}%</span>
                 <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">{metrics.disk.used} / {metrics.disk.total}</span>
               </div>
             </div>
             <div className="h-2 bg-muted w-full overflow-hidden">
-              <div className="h-full bg-orange-400 transition-all duration-500" style={{width: `${metrics.disk.percent}%`}}/>
+              <div className="h-full bg-accent-brand transition-all duration-500" style={{width: `${metrics.disk.percent}%`}}/>
             </div>
             <div className="flex flex-col gap-1 mt-1">
                <div className="flex items-center justify-between text-xs">
@@ -978,7 +1253,7 @@ function StatsTab({label}: { label: string }) {
              {metrics.network.map((iface: any) => (
                <div key={iface.name} className="flex items-center justify-between p-2 border border-border bg-muted/30">
                  <div className="flex items-center gap-2">
-                    <div className={`size-1.5 rounded-full ${iface.state === "UP" ? "bg-orange-400" : "bg-muted-foreground"}`}/>
+                    <div className={`size-1.5 rounded-full ${iface.state === "UP" ? "bg-accent-brand" : "bg-muted-foreground"}`}/>
                     <span className="text-sm font-bold font-mono">{iface.name}</span>
                  </div>
                  <span className="text-xs font-mono text-muted-foreground">{iface.ip}</span>
@@ -1009,7 +1284,7 @@ function StatsTab({label}: { label: string }) {
              {metrics.processes.map((proc: any) => (
                <div key={proc.pid} className="grid grid-cols-4 text-xs font-mono py-1 border-b border-border/50 last:border-0">
                   <span className="text-muted-foreground">{proc.pid}</span>
-                  <span className="text-orange-400 font-bold">{proc.cpu}%</span>
+                  <span className="text-accent-brand font-bold">{proc.cpu}%</span>
                   <span>{proc.mem}%</span>
                   <span className="truncate font-semibold" title={proc.command}>{proc.command.split("/").pop()}</span>
                </div>
@@ -1024,7 +1299,7 @@ function StatsTab({label}: { label: string }) {
                 <div key={i} className={`flex items-center justify-between p-2 border ${login.status === "success" ? "border-border bg-muted/30" : "border-destructive/30 bg-destructive/5"}`}>
                   <div className="flex flex-col">
                     <div className="flex items-center gap-1.5">
-                       {login.status === "failed" ? <UserX className="size-3 text-destructive"/> : <UserCheck className="size-3 text-orange-400"/>}
+                       {login.status === "failed" ? <UserX className="size-3 text-destructive"/> : <UserCheck className="size-3 text-accent-brand"/>}
                        <span className={`text-xs font-bold ${login.status === "failed" ? "text-destructive" : ""}`}>{login.user}</span>
                     </div>
                     <span className="text-[10px] text-muted-foreground font-mono">{login.ip}</span>
@@ -1040,7 +1315,7 @@ function StatsTab({label}: { label: string }) {
            <div className="flex flex-col gap-3 py-1">
               <div className="flex items-center justify-between">
                  <span className="text-sm font-semibold">Firewall Status</span>
-                 <div className="flex items-center gap-1.5 px-2 py-0.5 border border-orange-400/40 bg-orange-400/10 text-orange-400 text-[10px] font-bold">
+                 <div className="flex items-center gap-1.5 px-2 py-0.5 border border-accent-brand/40 bg-accent-brand/10 text-accent-brand text-[10px] font-bold">
                     <ShieldCheck className="size-3"/> ACTIVE
                  </div>
               </div>
@@ -1052,12 +1327,12 @@ function StatsTab({label}: { label: string }) {
                  </div>
                  <div className="flex justify-between text-xs">
                     <span className="font-semibold">Outbound</span>
-                    <span className="text-orange-400 font-bold">ACCEPT</span>
+                    <span className="text-accent-brand font-bold">ACCEPT</span>
                  </div>
               </div>
               <div className="flex items-center justify-between">
                  <span className="text-xs text-muted-foreground font-semibold">Fail2Ban</span>
-                 <span className="text-xs font-bold text-orange-400">Running</span>
+                 <span className="text-xs font-bold text-accent-brand">Running</span>
               </div>
            </div>
         </SectionCard>
@@ -1077,7 +1352,7 @@ function StatsTab({label}: { label: string }) {
                  { port: 5432, proto: "tcp", service: "postgres" },
                ].map((p, i) => (
                  <div key={i} className="grid grid-cols-3 text-xs font-mono py-1 border-b border-border/50 last:border-0">
-                    <span className="text-orange-400 font-bold">{p.port}</span>
+                    <span className="text-accent-brand font-bold">{p.port}</span>
                     <span className="text-muted-foreground">{p.proto}</span>
                     <span className="font-semibold">{p.service}</span>
                  </div>
@@ -1095,15 +1370,55 @@ function FilesTab({label}: { label: string }) {
   );
 }
 
+const HOST_TABS = [
+  { id: "general", label: "General", icon: <Settings className="size-3.5" /> },
+  { id: "terminal", label: "Terminal", icon: <Terminal className="size-3.5" /> },
+  { id: "tunnels", label: "Tunnels", icon: <Network className="size-3.5" /> },
+  { id: "docker", label: "Docker", icon: <Box className="size-3.5" /> },
+  { id: "files", label: "Files", icon: <FolderSearch className="size-3.5" /> },
+  { id: "stats", label: "Stats & Actions", icon: <Activity className="size-3.5" /> },
+  { id: "remote", label: "Remote Desktop", icon: <Monitor className="size-3.5" /> },
+  { id: "sharing", label: "Sharing", icon: <Share2 className="size-3.5" /> },
+];
+
+const CREDENTIAL_TABS = [
+  { id: "general", label: "General", icon: <Info className="size-3.5" /> },
+  { id: "auth", label: "Authentication", icon: <Lock className="size-3.5" /> },
+];
+
 function HostManagerTab() {
   const [section, setSection] = useState<"hosts" | "credentials">("hosts");
   const [editingHost, setEditingHost] = useState<Host | "new" | null>(null);
   const [editingCredential, setEditingCredential] = useState<Credential | "new" | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredHosts = hosts.filter(h =>
+  useEffect(() => {
+    const handleAddHost = () => { setSection("hosts"); setEditingHost("new"); setEditingCredential(null); };
+    const handleAddCredential = () => { setSection("credentials"); setEditingCredential("new"); setEditingHost(null); };
+    window.addEventListener("host-manager:add-host", handleAddHost);
+    window.addEventListener("host-manager:add-credential", handleAddCredential);
+    return () => {
+      window.removeEventListener("host-manager:add-host", handleAddHost);
+      window.removeEventListener("host-manager:add-credential", handleAddCredential);
+    };
+  }, []);
+  const [activeHostTab, setActiveHostTab] = useState("general");
+  const [activeCredentialTab, setActiveCredentialTab] = useState("general");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set(["Production", "Production / Web Servers", "Staging"]));
+  const [selectionMode, setSelectionMode] = useState(false);
+  const [selectedHostIds, setSelectedHostIds] = useState<Set<string>>(new Set());
+  const [editingFolderName, setEditingFolderName] = useState<string | null>(null);
+  const [editingFolderValue, setEditingFolderValue] = useState("");
+  const [draggedHost, setDraggedHost] = useState<Host | null>(null);
+  const [dragOverFolder, setDragOverFolder] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const allHosts = hosts;
+
+  const filteredHosts = allHosts.filter(h =>
     h.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    h.address.toLowerCase().includes(searchQuery.toLowerCase())
+    h.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    h.tags?.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const filteredCredentials = MOCK_CREDENTIALS.filter(c =>
@@ -1111,34 +1426,193 @@ function HostManagerTab() {
     c.username.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const folders = Array.from(new Set(hosts.map(h => h.folder)));
+  const folders = Array.from(new Set(allHosts.map(h => h.folder))).sort();
+
+  const pinnedHosts = filteredHosts.filter(h => h.pin);
+  const hostsByFolder = folders.reduce<Record<string, Host[]>>((acc, folder) => {
+    acc[folder] = filteredHosts.filter(h => h.folder === folder && !h.pin);
+    return acc;
+  }, {});
+
+  const toggleFolder = (folder: string) => {
+    setExpandedFolders(prev => {
+      const next = new Set(prev);
+      if (next.has(folder)) next.delete(folder);
+      else next.add(folder);
+      return next;
+    });
+  };
+
+  const toggleHostSelection = (id: string) => {
+    setSelectedHostIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const handleExportHosts = () => {
+    const data = JSON.stringify({ hosts: allHosts }, null, 2);
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "termix-hosts.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast.success("Hosts exported successfully");
+  };
+
+  const credentialFolders = Array.from(new Set(MOCK_CREDENTIALS.map(c => c.folder || "Uncategorized"))).sort();
+
+  const navContent = () => {
+    if (editingHost) {
+      const connectionType = editingHost === "new" ? "ssh" : editingHost.connectionType;
+      return (
+        <>
+          <button
+            onClick={() => { setEditingHost(null); setActiveHostTab("general"); }}
+            className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors border-l-2 border-transparent"
+          >
+            <ArrowLeft className="size-3.5" />
+            Back to Hosts
+          </button>
+          <Separator className="my-1 opacity-50" />
+          {HOST_TABS.map(tab => {
+            const isDisabled =
+              (connectionType !== "ssh" && ["terminal", "tunnels", "docker", "files"].includes(tab.id)) ||
+              (connectionType === "ssh" && tab.id === "remote");
+            return (
+              <button
+                key={tab.id}
+                disabled={isDisabled}
+                onClick={() => setActiveHostTab(tab.id)}
+                className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors text-left ${
+                  activeHostTab === tab.id && !isDisabled
+                    ? "bg-accent-brand/10 text-accent-brand border-l-2 border-accent-brand"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted border-l-2 border-transparent"
+                } disabled:opacity-30 disabled:cursor-not-allowed`}
+              >
+                {tab.icon}
+                {tab.label}
+              </button>
+            );
+          })}
+        </>
+      );
+    }
+
+    if (editingCredential) {
+      return (
+        <>
+          <button
+            onClick={() => { setEditingCredential(null); setActiveCredentialTab("general"); }}
+            className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors border-l-2 border-transparent"
+          >
+            <ArrowLeft className="size-3.5" />
+            Back to Credentials
+          </button>
+          <Separator className="my-1 opacity-50" />
+          {CREDENTIAL_TABS.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveCredentialTab(tab.id)}
+              className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors text-left ${
+                activeCredentialTab === tab.id
+                  ? "bg-accent-brand/10 text-accent-brand border-l-2 border-accent-brand"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted border-l-2 border-transparent"
+              }`}
+            >
+              {tab.icon}
+              {tab.label}
+            </button>
+          ))}
+        </>
+      );
+    }
+
+    return (
+      <>
+        <button
+          onClick={() => { setSection("hosts"); setEditingCredential(null); setSearchQuery(""); }}
+          className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors text-left ${
+            section === "hosts"
+              ? "bg-accent-brand/10 text-accent-brand border-l-2 border-accent-brand"
+              : "text-muted-foreground hover:text-foreground hover:bg-muted border-l-2 border-transparent"
+          }`}
+        >
+          <Server className="size-3.5"/>
+          Hosts
+          <span className="ml-auto text-[10px] font-bold text-muted-foreground/60">{allHosts.length}</span>
+        </button>
+        <button
+          onClick={() => { setSection("credentials"); setEditingHost(null); setSearchQuery(""); }}
+          className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors text-left ${
+            section === "credentials"
+              ? "bg-accent-brand/10 text-accent-brand border-l-2 border-accent-brand"
+              : "text-muted-foreground hover:text-foreground hover:bg-muted border-l-2 border-transparent"
+          }`}
+        >
+          <KeyRound className="size-3.5"/>
+          Credentials
+          <span className="ml-auto text-[10px] font-bold text-muted-foreground/60">{MOCK_CREDENTIALS.length}</span>
+        </button>
+      </>
+    );
+  };
 
   return (
     <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
       <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 mx-3 mt-3 gap-0">
         <div>
           <h1 className="text-2xl font-bold">Host Manager</h1>
-          <p className="text-xs text-muted-foreground">Manage your server infrastructure and credentials</p>
+          <p className="text-xs text-muted-foreground">
+            {allHosts.filter(h => h.online).length}/{allHosts.length} online · {MOCK_CREDENTIALS.length} credentials
+          </p>
         </div>
         {!editingHost && !editingCredential && (
           <div className="flex items-center gap-2">
             {section === "hosts" && (
-              <Button
-                variant="outline"
-                size="sm"
-                className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
-                onClick={() => setEditingHost("new")}
-              >
-                <Plus className="size-3.5 mr-1.5"/>Add Host
-              </Button>
+              <>
+                {selectionMode ? (
+                  <>
+                    <span className="text-xs text-muted-foreground">{selectedHostIds.size} selected</span>
+                    <Button variant="outline" size="sm" className="h-7 text-xs border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      onClick={() => { setSelectionMode(false); setSelectedHostIds(new Set()); }}>
+                      <X className="size-3.5 mr-1" />Cancel
+                    </Button>
+                    <Button variant="outline" size="sm" className="h-7 text-xs border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
+                      onClick={() => toast.success(`Deleted ${selectedHostIds.size} hosts`)}>
+                      <Trash2 className="size-3.5 mr-1" />Delete Selected
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button variant="ghost" size="sm" className="h-7 text-xs text-muted-foreground" onClick={() => setSelectionMode(true)}>
+                      <ListChecks className="size-3.5 mr-1" />Select
+                    </Button>
+                    <input ref={fileInputRef} type="file" accept=".json" className="hidden"
+                      onChange={e => { if (e.target.files?.[0]) toast.success("Hosts imported successfully"); }} />
+                    <Button variant="ghost" size="sm" className="h-7 text-xs text-muted-foreground" onClick={() => fileInputRef.current?.click()}>
+                      <Upload className="size-3.5 mr-1" />Import
+                    </Button>
+                    <Button variant="ghost" size="sm" className="h-7 text-xs text-muted-foreground" onClick={handleExportHosts}>
+                      <Download className="size-3.5 mr-1" />Export
+                    </Button>
+                    <Button variant="outline" size="sm" className="h-7 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
+                      onClick={() => { setEditingHost("new"); setActiveHostTab("general"); }}>
+                      <Plus className="size-3.5 mr-1.5"/>Add Host
+                    </Button>
+                  </>
+                )}
+              </>
             )}
             {section === "credentials" && (
-              <Button
-                variant="outline"
-                size="sm"
-                className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
-                onClick={() => setEditingCredential("new")}
-              >
+              <Button variant="outline" size="sm" className="h-7 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
+                onClick={() => { setEditingCredential("new"); setActiveCredentialTab("general"); }}>
                 <Plus className="size-3.5 mr-1.5"/>Add Credential
               </Button>
             )}
@@ -1147,149 +1621,223 @@ function HostManagerTab() {
       </Card>
 
       <div className="flex flex-row flex-1 min-h-0 overflow-hidden px-3 py-3 gap-3">
-        {/* Left Nav (Only shown when not editing a host) */}
-        {!editingHost && (
-          <div className="flex flex-col gap-1 w-44 shrink-0">
-            <Card className="flex flex-col overflow-hidden py-1 gap-0">
-              <button
-                onClick={() => {
-                  setSection("hosts");
-                  setEditingCredential(null);
-                }}
-                className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors text-left ${
-                  section === "hosts"
-                    ? "bg-orange-400/10 text-orange-400 border-l-2 border-orange-400"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted border-l-2 border-transparent"
-                }`}
-              >
-                <Server className="size-3.5"/>
-                Hosts
-              </button>
-              <button
-                onClick={() => {
-                  setSection("credentials");
-                  setEditingCredential(null);
-                }}
-                className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors text-left ${
-                  section === "credentials"
-                    ? "bg-orange-400/10 text-orange-400 border-l-2 border-orange-400"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted border-l-2 border-transparent"
-                }`}
-              >
-                <KeyRound className="size-3.5"/>
-                Credentials
-              </button>
-            </Card>
-          </div>
-        )}
+        {/* Left Nav */}
+        <div className="flex flex-col gap-1 w-44 shrink-0">
+          <Card className="flex flex-col overflow-hidden py-1 gap-0">
+            {navContent()}
+          </Card>
+        </div>
 
         {/* Content */}
         <div className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-3">
           {section === "hosts" && (
             editingHost ? (
-              <HostEditor host={editingHost === "new" ? null : editingHost} onBack={() => setEditingHost(null)} />
+              <HostEditor
+                host={editingHost === "new" ? null : editingHost}
+                activeTab={activeHostTab}
+                onBack={() => { setEditingHost(null); setActiveHostTab("general"); }}
+              />
             ) : (
-              <SectionCard title="Server Hosts" icon={<Server className="size-3.5"/>}>
-                <div className="flex flex-col py-2">
-                  <div className="relative mb-4">
+              <div className="flex flex-col gap-3">
+                {/* Search & filter bar */}
+                <div className="flex items-center gap-2">
+                  <div className="relative flex-1">
                     <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground"/>
-                    <Input
-                      placeholder="Search hosts..."
-                      className="pl-8 h-9 text-xs"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
+                    <Input placeholder="Search hosts, addresses, tags..." className="pl-8 h-9 text-xs"
+                      value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
                   </div>
-
-                  <div className="flex flex-col gap-4">
-                    {folders.map(folder => {
-                      const folderHosts = filteredHosts.filter(h => h.folder === folder);
-                      if (folderHosts.length === 0) return null;
-                      return (
-                        <div key={folder} className="flex flex-col gap-1.5">
-                          <div className="flex items-center gap-2 px-1">
-                            <Folder className="size-3 text-orange-400/60"/>
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{folder}</span>
-                            <div className="h-px bg-border flex-1 ml-2 opacity-50"/>
-                          </div>
-                          <div className="flex flex-col border border-border overflow-hidden bg-muted/20">
-                            {folderHosts.map(host => (
-                              <div key={host.id} className="flex items-center justify-between px-3 py-2.5 border-b border-border last:border-0 hover:bg-muted/50 group">
-                                <div className="flex items-center gap-3">
-                                  <div className={`size-2 rounded-full ${host.online ? "bg-orange-400" : "bg-muted-foreground/40"}`}/>
-                                  <div className="flex flex-col">
-                                    <span className="text-sm font-semibold">{host.name}</span>
-                                    <span className="text-xs text-muted-foreground">{host.user}@{host.address}:{host.port}</span>
-                                  </div>
-                                </div>
-                                <div className="flex items-center gap-4">
-                                  <div className="hidden md:flex gap-1.5">
-                                    {host.tags?.map(tag => (
-                                      <span key={tag} className="text-[10px] px-1.5 py-0.5 border border-border bg-background text-muted-foreground lowercase">{tag}</span>
-                                    ))}
-                                  </div>
-                                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <Button variant="ghost" size="icon" className="size-7" onClick={() => setEditingHost(host)}>
-                                      <Pencil className="size-3.5"/>
-                                    </Button>
-                                    <Button variant="ghost" size="icon" className="size-7 text-destructive hover:text-destructive hover:bg-destructive/10">
-                                      <Trash2 className="size-3.5"/>
-                                    </Button>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
+                  <Button variant="outline" size="sm" className="h-9 text-xs shrink-0" onClick={() => {
+                    const allOpen = folders.every(f => expandedFolders.has(f));
+                    setExpandedFolders(allOpen ? new Set() : new Set(folders));
+                  }}>
+                    {folders.every(f => expandedFolders.has(f)) ? <ChevronUp className="size-3.5 mr-1.5"/> : <ChevronDown className="size-3.5 mr-1.5"/>}
+                    {folders.every(f => expandedFolders.has(f)) ? "Collapse All" : "Expand All"}
+                  </Button>
                 </div>
-              </SectionCard>
+
+                {/* Pinned hosts */}
+                {pinnedHosts.length > 0 && (
+                  <div className="flex flex-col border border-border overflow-hidden">
+                    <div className="flex items-center gap-2 px-3 py-1.5 bg-muted/30 border-b border-border">
+                      <Pin className="size-3 text-accent-brand"/>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-accent-brand">Pinned</span>
+                    </div>
+                    {pinnedHosts.map(host => (
+                      <HostRow key={host.id} host={host} selectionMode={selectionMode}
+                        selected={selectedHostIds.has(host.id)}
+                        onToggleSelect={() => toggleHostSelection(host.id)}
+                        onEdit={() => { setEditingHost(host); setActiveHostTab("general"); }}
+                        onDelete={() => toast.success(`Deleted ${host.name}`)} />
+                    ))}
+                  </div>
+                )}
+
+                {/* Folder groups */}
+                {folders.map(folder => {
+                  const folderHosts = hostsByFolder[folder] || [];
+                  if (folderHosts.length === 0 && !searchQuery) return null;
+                  if (folderHosts.length === 0 && searchQuery) return null;
+                  const isExpanded = expandedFolders.has(folder);
+                  const isOver = dragOverFolder === folder;
+                  const onlineCount = folderHosts.filter(h => h.online).length;
+
+                  return (
+                    <div key={folder} className={`flex flex-col border overflow-hidden transition-colors ${isOver ? "border-accent-brand/60 bg-accent-brand/5" : "border-border"}`}
+                      onDragOver={e => { e.preventDefault(); setDragOverFolder(folder); }}
+                      onDragLeave={() => setDragOverFolder(null)}
+                      onDrop={e => {
+                        e.preventDefault();
+                        setDragOverFolder(null);
+                        if (draggedHost) {
+                          toast.success(`Moved ${draggedHost.name} to ${folder}`);
+                          setDraggedHost(null);
+                        }
+                      }}
+                    >
+                      {/* Folder header */}
+                      <div className="flex items-center gap-2 px-3 py-2 bg-muted/20 border-b border-border group/folder">
+                        <button className="flex items-center gap-2 flex-1 text-left" onClick={() => toggleFolder(folder)}>
+                          <ChevronRight className={`size-3 text-muted-foreground transition-transform ${isExpanded ? "rotate-90" : ""}`}/>
+                          {isExpanded ? <FolderOpen className="size-3.5 text-accent-brand/70"/> : <Folder className="size-3.5 text-accent-brand/70"/>}
+                          {editingFolderName === folder ? (
+                            <input
+                              autoFocus
+                              value={editingFolderValue}
+                              onChange={e => setEditingFolderValue(e.target.value)}
+                              onBlur={() => { setEditingFolderName(null); toast.success(`Folder renamed to ${editingFolderValue}`); }}
+                              onKeyDown={e => { if (e.key === "Enter") { setEditingFolderName(null); toast.success(`Folder renamed to ${editingFolderValue}`); } if (e.key === "Escape") setEditingFolderName(null); }}
+                              onClick={e => e.stopPropagation()}
+                              className="text-[10px] font-bold uppercase tracking-widest bg-background border border-accent-brand/60 px-1 outline-none text-foreground"
+                            />
+                          ) : (
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{folder}</span>
+                          )}
+                          <span className="text-[10px] text-muted-foreground/60 ml-0.5">{onlineCount}/{folderHosts.length}</span>
+                        </button>
+                        <div className="flex items-center gap-0.5 opacity-0 group-hover/folder:opacity-100 transition-opacity">
+                          <Button variant="ghost" size="icon" className="size-6 text-muted-foreground hover:text-foreground"
+                            onClick={e => { e.stopPropagation(); setEditingFolderName(folder); setEditingFolderValue(folder); }}>
+                            <Pencil className="size-3"/>
+                          </Button>
+                          <Button variant="ghost" size="icon" className="size-6 text-muted-foreground hover:text-destructive"
+                            onClick={e => { e.stopPropagation(); toast.success(`Deleted folder ${folder}`); }}>
+                            <Trash2 className="size-3"/>
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Hosts */}
+                      {isExpanded && folderHosts.map(host => (
+                        <HostRow key={host.id} host={host} selectionMode={selectionMode}
+                          selected={selectedHostIds.has(host.id)}
+                          onToggleSelect={() => toggleHostSelection(host.id)}
+                          onEdit={() => { setEditingHost(host); setActiveHostTab("general"); }}
+                          onDelete={() => toast.success(`Deleted ${host.name}`)}
+                          onDragStart={() => setDraggedHost(host)}
+                          onDragEnd={() => setDraggedHost(null)} />
+                      ))}
+                    </div>
+                  );
+                })}
+
+                {filteredHosts.length === 0 && (
+                  <div className="flex flex-col items-center justify-center py-16 text-center border border-dashed border-border">
+                    <Server className="size-10 text-muted-foreground/30 mb-3"/>
+                    <span className="text-sm font-semibold text-muted-foreground">No hosts found</span>
+                    <span className="text-xs text-muted-foreground/60 mt-1">
+                      {searchQuery ? "Try a different search term" : "Add your first host to get started"}
+                    </span>
+                    {!searchQuery && (
+                      <Button variant="outline" size="sm" className="mt-4 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10"
+                        onClick={() => { setEditingHost("new"); setActiveHostTab("general"); }}>
+                        <Plus className="size-3.5 mr-1.5"/>Add Host
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </div>
             )
           )}
 
           {section === "credentials" && (
             editingCredential ? (
-              <CredentialEditorView credential={editingCredential === "new" ? null : editingCredential} onBack={() => setEditingCredential(null)} />
+              <CredentialEditorView
+                credential={editingCredential === "new" ? null : editingCredential}
+                activeTab={activeCredentialTab}
+                onBack={() => { setEditingCredential(null); setActiveCredentialTab("general"); }}
+              />
             ) : (
-              <SectionCard title="Stored Credentials" icon={<KeyRound className="size-3.5"/>}>
-                <div className="flex flex-col py-2">
-                  <div className="relative mb-4">
-                    <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground"/>
-                    <Input
-                      placeholder="Search credentials..."
-                      className="pl-8 h-9 text-xs"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="flex flex-col border border-border overflow-hidden bg-muted/20">
-                    {filteredCredentials.map(cred => (
-                      <div key={cred.id} className="flex items-center justify-between px-3 py-3 border-b border-border last:border-0 hover:bg-muted/50 group">
-                        <div className="flex items-center gap-3">
-                          <div className="size-8 border border-border bg-muted flex items-center justify-center">
-                            {cred.type === "key" ? <Shield className="size-3.5 text-orange-400"/> : <Lock className="size-3.5 text-orange-400"/>}
-                          </div>
-                          <div className="flex flex-col">
-                            <span className="text-sm font-semibold">{cred.name}</span>
-                            <span className="text-xs text-muted-foreground">{cred.username} • {cred.type.toUpperCase()}</span>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Button variant="ghost" size="icon" className="size-7" onClick={() => setEditingCredential(cred)}>
-                            <Pencil className="size-3.5"/>
-                          </Button>
-                          <Button variant="ghost" size="icon" className="size-7 text-destructive hover:text-destructive hover:bg-destructive/10">
-                            <Trash2 className="size-3.5"/>
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+              <div className="flex flex-col gap-3">
+                <div className="relative">
+                  <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground"/>
+                  <Input placeholder="Search credentials..." className="pl-8 h-9 text-xs"
+                    value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
                 </div>
-              </SectionCard>
+
+                {credentialFolders.map(folder => {
+                  const creds = filteredCredentials.filter(c => (c.folder || "Uncategorized") === folder);
+                  if (creds.length === 0) return null;
+                  return (
+                    <div key={folder} className="flex flex-col border border-border overflow-hidden">
+                      <div className="flex items-center gap-2 px-3 py-1.5 bg-muted/20 border-b border-border">
+                        <Folder className="size-3.5 text-accent-brand/70"/>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{folder}</span>
+                        <span className="text-[10px] text-muted-foreground/60">{creds.length}</span>
+                      </div>
+                      {creds.map(cred => {
+                        const usedByHosts = allHosts.filter(h => h.credentialId === cred.id);
+                        return (
+                          <div key={cred.id} className="flex items-center justify-between px-3 py-3 border-b border-border last:border-0 hover:bg-muted/30 group">
+                            <div className="flex items-center gap-3">
+                              <div className="size-8 border border-border bg-muted flex items-center justify-center shrink-0">
+                                {cred.type === "key" ? <Shield className="size-3.5 text-accent-brand"/> : <Lock className="size-3.5 text-accent-brand"/>}
+                              </div>
+                              <div className="flex flex-col">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-sm font-semibold">{cred.name}</span>
+                                  <span className={`text-[10px] px-1.5 py-0.5 font-bold border ${cred.type === "key" ? "border-accent-brand/30 text-accent-brand bg-accent-brand/10" : "border-border text-muted-foreground"}`}>
+                                    {cred.type === "key" ? "SSH KEY" : "PASSWORD"}
+                                  </span>
+                                </div>
+                                <span className="text-xs text-muted-foreground">{cred.username}
+                                  {usedByHosts.length > 0 && <span className="ml-2 text-[10px] text-muted-foreground/60">· used by {usedByHosts.length} host{usedByHosts.length !== 1 ? "s" : ""}</span>}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                              {cred.type === "key" && (
+                                <Button variant="ghost" size="sm" className="h-7 text-xs text-muted-foreground hover:text-foreground"
+                                  onClick={() => { navigator.clipboard.writeText(`ssh-copy-id -i ~/.ssh/id_rsa.pub ${cred.username}@<host>`); toast.success("Deploy command copied"); }}>
+                                  <Copy className="size-3 mr-1"/>Deploy
+                                </Button>
+                              )}
+                              <Button variant="ghost" size="icon" className="size-7"
+                                onClick={() => { setEditingCredential(cred); setActiveCredentialTab("general"); }}>
+                                <Pencil className="size-3.5"/>
+                              </Button>
+                              <Button variant="ghost" size="icon" className="size-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+                                onClick={() => toast.success(`Deleted ${cred.name}`)}>
+                                <Trash2 className="size-3.5"/>
+                              </Button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+
+                {filteredCredentials.length === 0 && (
+                  <div className="flex flex-col items-center justify-center py-16 border border-dashed border-border text-center">
+                    <KeyRound className="size-10 text-muted-foreground/30 mb-3"/>
+                    <span className="text-sm font-semibold text-muted-foreground">No credentials found</span>
+                    <Button variant="outline" size="sm" className="mt-4 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10"
+                      onClick={() => { setEditingCredential("new"); setActiveCredentialTab("general"); }}>
+                      <Plus className="size-3.5 mr-1.5"/>Add Credential
+                    </Button>
+                  </div>
+                )}
+              </div>
             )
           )}
         </div>
@@ -1298,49 +1846,131 @@ function HostManagerTab() {
   );
 }
 
-function HostEditor({ host, onBack }: { host: Host | null, onBack: () => void }) {
-  const [activeTab, setActiveTab] = useState("general");
-  const [authMethod, setAuthMethod] = useState(host?.authType || "password");
-  const [connectionType, setConnectionType] = useState(host?.connectionType || "ssh");
-
-  const TABS = [
-    { id: "general", label: "General", icon: <Settings className="size-3.5" /> },
-    { id: "terminal", label: "Terminal", icon: <Terminal className="size-3.5" />, disabled: connectionType !== "ssh" },
-    { id: "tunnels", label: "Tunnels", icon: <Network className="size-3.5" />, disabled: connectionType !== "ssh" },
-    { id: "docker", label: "Docker", icon: <Box className="size-3.5" />, disabled: connectionType !== "ssh" },
-    { id: "files", label: "Files", icon: <FolderSearch className="size-3.5" />, disabled: connectionType !== "ssh" },
-    { id: "stats", label: "Stats & Actions", icon: <Activity className="size-3.5" /> },
-    { id: "remote", label: "Remote Desktop", icon: <Monitor className="size-3.5" />, disabled: connectionType === "ssh" },
-    { id: "sharing", label: "Sharing", icon: <Share2 className="size-3.5" /> },
-  ];
-
+function HostRow({ host, selectionMode, selected, onToggleSelect, onEdit, onDelete, onDragStart, onDragEnd }: {
+  host: Host;
+  selectionMode: boolean;
+  selected: boolean;
+  onToggleSelect: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
+  onDragStart?: () => void;
+  onDragEnd?: () => void;
+}) {
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center justify-between gap-2">
-        <Button variant="ghost" size="sm" onClick={onBack} className="h-8 px-2 gap-1.5 text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="size-3.5"/>
-          Back to list
-        </Button>
-
-        <div className="flex gap-1 bg-muted/50 p-1 rounded-md border border-border">
-          {TABS.map(tab => (
-            <button
-              key={tab.id}
-              disabled={tab.disabled}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded transition-all ${
-                activeTab === tab.id
-                  ? "bg-background text-orange-400 shadow-sm border border-border"
-                  : "text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed"
-              }`}
-            >
-              {tab.icon}
-              {tab.label}
-            </button>
+    <div
+      draggable={!!onDragStart && !selectionMode}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+      className={`flex items-center justify-between px-3 py-2.5 border-b border-border last:border-0 group transition-colors ${
+        selected ? "bg-accent-brand/5" : "hover:bg-muted/40"
+      } ${onDragStart && !selectionMode ? "cursor-grab active:cursor-grabbing" : ""}`}
+    >
+      <div className="flex items-center gap-3 min-w-0">
+        {selectionMode && (
+          <button onClick={onToggleSelect} className="shrink-0">
+            <div className={`size-4 border-2 flex items-center justify-center transition-colors ${selected ? "border-accent-brand bg-accent-brand" : "border-border bg-background"}`}>
+              {selected && <Check className="size-2.5 text-background"/>}
+            </div>
+          </button>
+        )}
+        <div className={`size-2 rounded-full shrink-0 ${host.online ? "bg-accent-brand shadow-[0_0_4px_rgba(251,146,60,0.6)]" : "bg-muted-foreground/30"}`}/>
+        <div className="flex flex-col min-w-0">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-semibold truncate">{host.name}</span>
+            {host.pin && <Pin className="size-3 text-accent-brand/60 shrink-0"/>}
+            <span className={`text-[9px] px-1.5 py-0.5 font-bold border shrink-0 ${
+              host.connectionType === "ssh" ? "border-border text-muted-foreground" :
+              host.connectionType === "rdp" ? "border-blue-400/30 text-blue-400" :
+              "border-border text-muted-foreground"
+            }`}>{host.connectionType.toUpperCase()}</span>
+          </div>
+          <span className="text-xs text-muted-foreground truncate">{host.user}@{host.address}:{host.port}</span>
+        </div>
+        <div className="hidden md:flex items-center gap-1.5 ml-2">
+          {host.tags?.slice(0, 3).map(tag => (
+            <span key={tag} className="text-[10px] px-1.5 py-0.5 border border-border bg-muted/30 text-muted-foreground lowercase">{tag}</span>
           ))}
+          {(host.tags?.length || 0) > 3 && <span className="text-[10px] text-muted-foreground">+{(host.tags?.length || 0) - 3}</span>}
         </div>
       </div>
 
+      <div className="flex items-center gap-1 shrink-0">
+        {/* Connection metrics shown when online */}
+        {host.online && (
+          <div className="hidden lg:flex items-center gap-3 mr-2">
+            <div className="flex flex-col gap-0.5 w-16">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] text-muted-foreground">CPU</span>
+                <span className="text-[10px] font-bold text-accent-brand">{host.cpu}%</span>
+              </div>
+              <div className="h-0.5 bg-muted w-full"><div className="h-full bg-accent-brand" style={{width: `${host.cpu}%`}}/></div>
+            </div>
+            <div className="flex flex-col gap-0.5 w-16">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] text-muted-foreground">RAM</span>
+                <span className="text-[10px] font-bold text-accent-brand">{host.ram}%</span>
+              </div>
+              <div className="h-0.5 bg-muted w-full"><div className="h-full bg-accent-brand" style={{width: `${host.ram}%`}}/></div>
+            </div>
+          </div>
+        )}
+
+        {/* Quick actions (hover) */}
+        {!selectionMode && (
+          <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+            {host.enableTerminal && (
+              <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground" title="Open Terminal">
+                <Terminal className="size-3.5"/>
+              </Button>
+            )}
+            {host.enableFileManager && (
+              <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground" title="Open File Manager">
+                <FolderSearch className="size-3.5"/>
+              </Button>
+            )}
+            {host.enableDocker && (
+              <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground" title="Open Docker">
+                <Box className="size-3.5"/>
+              </Button>
+            )}
+            <Separator orientation="vertical" className="h-4 mx-0.5"/>
+            <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground" title="Edit Host" onClick={onEdit}>
+              <Pencil className="size-3.5"/>
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground">
+                  <MoreHorizontal className="size-3.5"/>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="text-xs">
+                <DropdownMenuItem onClick={() => toast.success("Host cloned")}>
+                  <Copy className="size-3.5 mr-2"/>Clone Host
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => { navigator.clipboard.writeText(`${host.user}@${host.address}`); toast.success("Copied to clipboard"); }}>
+                  <Copy className="size-3.5 mr-2"/>Copy Address
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={onDelete}>
+                  <Trash2 className="size-3.5 mr-2"/>Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )}
+
+        {/* Last access */}
+        <span className="text-[10px] text-muted-foreground/60 w-14 text-right shrink-0">{host.lastAccess}</span>
+      </div>
+    </div>
+  );
+}
+
+function HostEditor({ host, activeTab, onBack }: { host: Host | null, activeTab: string, onBack: () => void }) {
+  const [authMethod, setAuthMethod] = useState(host?.authType || "password");
+  const [connectionType, setConnectionType] = useState(host?.connectionType || "ssh");
+
+  return (
+    <div className="flex flex-col gap-3">
       <div className="flex flex-col gap-3">
         {activeTab === "general" && (
           <>
@@ -1355,7 +1985,7 @@ function HostEditor({ host, onBack }: { host: Host | null, onBack: () => void })
                           onClick={() => setConnectionType(t as any)}
                           className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-colors ${
                             connectionType === t
-                              ? "border-orange-400/40 bg-orange-400/10 text-orange-400"
+                              ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand"
                               : "border-border text-muted-foreground hover:text-foreground"
                           }`}
                         >
@@ -1400,7 +2030,7 @@ function HostEditor({ host, onBack }: { host: Host | null, onBack: () => void })
                           onClick={() => setAuthMethod(m as any)}
                           className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-colors ${
                             authMethod === m
-                              ? "border-orange-400/40 bg-orange-400/10 text-orange-400"
+                              ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand"
                               : "border-border text-muted-foreground hover:text-foreground"
                           }`}
                         >
@@ -1450,7 +2080,7 @@ function HostEditor({ host, onBack }: { host: Host | null, onBack: () => void })
                       </div>
                     )}
                  </div>
-                 
+
                  <SettingRow label="Force Keyboard Interactive" description="Force manual password entry even if keys are present">
                    <FakeSwitch />
                  </SettingRow>
@@ -1462,11 +2092,11 @@ function HostEditor({ host, onBack }: { host: Host | null, onBack: () => void })
                  <SettingRow label="Use SOCKS5 Proxy" description="Route connection through a proxy server">
                    <FakeSwitch defaultChecked={host?.useSocks5} />
                  </SettingRow>
-                 
+
                  <div className="flex flex-col gap-3 p-3 bg-muted/20 border border-border">
                     <div className="flex items-center justify-between">
                        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Proxy Chain</span>
-                       <Button variant="outline" size="sm" className="h-6 text-[10px] px-2 border-orange-400/40 text-orange-400"><Plus className="size-3 mr-1" /> Add Node</Button>
+                       <Button variant="outline" size="sm" className="h-6 text-[10px] px-2 border-accent-brand/40 text-accent-brand"><Plus className="size-3 mr-1" /> Add Node</Button>
                     </div>
                     <div className="flex flex-col gap-2">
                        <div className="flex items-center gap-2 p-2 bg-background border border-border">
@@ -1481,7 +2111,7 @@ function HostEditor({ host, onBack }: { host: Host | null, onBack: () => void })
                  <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between">
                        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Jump Host Chain</span>
-                       <Button variant="outline" size="sm" className="h-6 text-[10px] px-2 border-orange-400/40 text-orange-400"><Plus className="size-3 mr-1" /> Add Jump</Button>
+                       <Button variant="outline" size="sm" className="h-6 text-[10px] px-2 border-accent-brand/40 text-accent-brand"><Plus className="size-3 mr-1" /> Add Jump</Button>
                     </div>
                     <div className="flex flex-col gap-2">
                        <div className="flex items-center gap-2 p-2 bg-background border border-border">
@@ -1519,7 +2149,7 @@ function HostEditor({ host, onBack }: { host: Host | null, onBack: () => void })
                <div className="flex flex-col gap-3 border-t border-border pt-4 pb-2">
                   <div className="flex items-center justify-between">
                      <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Port Knocking Sequence</span>
-                     <Button variant="outline" size="sm" className="h-6 text-[10px] px-2 border-orange-400/40 text-orange-400"><Plus className="size-3 mr-1" /> Add Knock</Button>
+                     <Button variant="outline" size="sm" className="h-6 text-[10px] px-2 border-accent-brand/40 text-accent-brand"><Plus className="size-3 mr-1" /> Add Knock</Button>
                   </div>
                   <div className="grid grid-cols-3 gap-2">
                      <div className="flex items-center gap-1.5 p-1.5 bg-muted/30 border border-border">
@@ -1622,7 +2252,7 @@ function HostEditor({ host, onBack }: { host: Host | null, onBack: () => void })
                    <div className="flex flex-col gap-3">
                       <div className="flex items-center justify-between">
                          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Environment Variables</span>
-                         <Button variant="outline" size="sm" className="h-6 text-[10px] px-2 border-orange-400/40 text-orange-400"><Plus className="size-3 mr-1" /> Add Variable</Button>
+                         <Button variant="outline" size="sm" className="h-6 text-[10px] px-2 border-accent-brand/40 text-accent-brand"><Plus className="size-3 mr-1" /> Add Variable</Button>
                       </div>
                       <div className="flex flex-col gap-2">
                          <div className="flex items-center gap-2">
@@ -1658,9 +2288,9 @@ function HostEditor({ host, onBack }: { host: Host | null, onBack: () => void })
                <div className="flex flex-col gap-3 mt-2">
                   <div className="flex items-center justify-between">
                      <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Active Tunnels (S2S)</span>
-                     <Button variant="outline" size="sm" className="h-7 text-xs border-orange-400/40 text-orange-400"><Plus className="size-3.5 mr-1.5" /> Add Tunnel</Button>
+                     <Button variant="outline" size="sm" className="h-7 text-xs border-accent-brand/40 text-accent-brand"><Plus className="size-3.5 mr-1.5" /> Add Tunnel</Button>
                   </div>
-                  
+
                   <div className="flex flex-col gap-3">
                      {[1].map(i => (
                         <div key={i} className="flex flex-col gap-3 p-3 border border-border bg-muted/20 relative">
@@ -1686,8 +2316,8 @@ function HostEditor({ host, onBack }: { host: Host | null, onBack: () => void })
                                     <FakeSwitch />
                                  </div>
                                  <div className="flex items-center gap-1">
-                                    <div className="size-1.5 rounded-full bg-orange-400" />
-                                    <span className="text-[10px] font-bold text-orange-400 uppercase tracking-widest">Connected</span>
+                                    <div className="size-1.5 rounded-full bg-accent-brand" />
+                                    <span className="text-[10px] font-bold text-accent-brand uppercase tracking-widest">Connected</span>
                                  </div>
                               </div>
                               <Button variant="outline" size="sm" className="h-7 text-xs">Disconnect</Button>
@@ -1742,7 +2372,7 @@ function HostEditor({ host, onBack }: { host: Host | null, onBack: () => void })
                   <SettingRow label="Metrics Collection" description="Collect CPU, RAM, and Disk usage data">
                     <FakeSwitch defaultChecked={true} />
                   </SettingRow>
-                  
+
                   <div className="grid grid-cols-2 gap-4 border-t border-border pt-4">
                       <div className="flex flex-col gap-1.5">
                         <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Check Interval</label>
@@ -1778,7 +2408,7 @@ function HostEditor({ host, onBack }: { host: Host | null, onBack: () => void })
                <div className="flex flex-col gap-4 py-3">
                   <div className="flex items-center justify-between">
                      <span className="text-xs text-muted-foreground font-medium uppercase tracking-widest">Snippet Assignments</span>
-                     <Button variant="outline" size="sm" className="h-7 text-xs border-orange-400/40 text-orange-400"><Plus className="size-3.5 mr-1.5" /> Add Action</Button>
+                     <Button variant="outline" size="sm" className="h-7 text-xs border-accent-brand/40 text-accent-brand"><Plus className="size-3.5 mr-1.5" /> Add Action</Button>
                   </div>
                   <div className="flex flex-col gap-2">
                      <div className="flex items-center gap-2 p-2 bg-muted/20 border border-border">
@@ -1859,7 +2489,7 @@ function HostEditor({ host, onBack }: { host: Host | null, onBack: () => void })
         {activeTab === "sharing" && (
            <SectionCard title="Resource Sharing" icon={<Share2 className="size-3.5" />}>
               <div className="flex flex-col items-center justify-center py-12 opacity-50">
-                 <Users className="size-12 mb-4 text-orange-400" />
+                 <Users className="size-12 mb-4 text-accent-brand" />
                  <span className="text-sm font-semibold uppercase tracking-widest">Collaborative Access</span>
                  <span className="text-xs">Sharing requires an active Team subscription</span>
               </div>
@@ -1869,7 +2499,7 @@ function HostEditor({ host, onBack }: { host: Host | null, onBack: () => void })
 
       <div className="flex justify-end gap-3 mt-3 mb-6">
         <Button variant="ghost" onClick={onBack}>Cancel</Button>
-        <Button variant="outline" className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400 px-8" onClick={() => {
+        <Button variant="outline" className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand px-8" onClick={() => {
           toast.success("Host configuration saved");
           onBack();
         }}>
@@ -1880,104 +2510,101 @@ function HostEditor({ host, onBack }: { host: Host | null, onBack: () => void })
   );
 }
 
-function CredentialEditorView({ credential, onBack }: { credential: Credential | null, onBack: () => void }) {
+function CredentialEditorView({ credential, activeTab, onBack }: { credential: Credential | null, activeTab: string, onBack: () => void }) {
   const [type, setType] = useState(credential?.type || "password");
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-2">
-        <Button variant="ghost" size="sm" onClick={onBack} className="h-8 px-2 gap-1.5 text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="size-3.5"/>
-          Back to list
-        </Button>
-      </div>
-
-      <SectionCard title="Basic Information" icon={<Info className="size-3.5"/>}>
-        <div className="grid grid-cols-2 gap-4 py-3">
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Friendly Name</label>
-            <Input placeholder="e.g. Production SSH Key" defaultValue={credential?.name || ""} />
+      {activeTab === "general" && (
+        <SectionCard title="Basic Information" icon={<Info className="size-3.5"/>}>
+          <div className="grid grid-cols-2 gap-4 py-3">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Friendly Name</label>
+              <Input placeholder="e.g. Production SSH Key" defaultValue={credential?.name || ""} />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Folder</label>
+              <Input placeholder="e.g. Server Keys" defaultValue={credential?.folder || ""} />
+            </div>
+            <div className="flex flex-col gap-1.5 col-span-2">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Description</label>
+              <Input placeholder="Optional details..." defaultValue={credential?.description || ""} />
+            </div>
+            <div className="flex flex-col gap-1.5 col-span-2">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Tags</label>
+              <Input placeholder="space separated" defaultValue={credential?.tags?.join(" ") || ""} />
+            </div>
           </div>
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Folder</label>
-            <Input placeholder="e.g. Server Keys" defaultValue={credential?.folder || ""} />
-          </div>
-          <div className="flex flex-col gap-1.5 col-span-2">
-            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Description</label>
-            <Input placeholder="Optional details..." defaultValue={credential?.description || ""} />
-          </div>
-          <div className="flex flex-col gap-1.5 col-span-2">
-            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Tags</label>
-            <Input placeholder="space separated" defaultValue={credential?.tags?.join(" ") || ""} />
-          </div>
-        </div>
-      </SectionCard>
+        </SectionCard>
+      )}
 
-      <SectionCard title="Authentication Details" icon={<Lock className="size-3.5"/>}>
-        <div className="flex flex-col gap-4 py-3">
-           <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Type</label>
-              <div className="flex gap-2">
-                {["password", "key"].map(m => (
-                  <button
-                    key={m}
-                    onClick={() => setType(m as any)}
-                    className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-colors ${
-                      type === m
-                        ? "border-orange-400/40 bg-orange-400/10 text-orange-400"
-                        : "border-border text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {m === "key" ? "SSH Private Key" : "Password"}
-                  </button>
-                ))}
-              </div>
-           </div>
-
-           <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Username</label>
-              <Input placeholder="e.g. root or deploy" defaultValue={credential?.username || ""} />
-           </div>
-
-           {type === "password" && (
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Password</label>
-                <Input type="password" placeholder="••••••••" defaultValue={credential?.value || ""} />
-              </div>
-           )}
-
-           {type === "key" && (
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">SSH Private Key</label>
-                  <textarea
-                    placeholder="-----BEGIN OPENSSH PRIVATE KEY-----"
-                    rows={8}
-                    defaultValue={credential?.value || ""}
-                    className="w-full px-3 py-2 text-[10px] bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"
-                  />
+      {activeTab === "auth" && (
+        <SectionCard title="Authentication Details" icon={<Lock className="size-3.5"/>}>
+          <div className="flex flex-col gap-4 py-3">
+             <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Type</label>
+                <div className="flex gap-2">
+                  {["password", "key"].map(m => (
+                    <button
+                      key={m}
+                      onClick={() => setType(m as any)}
+                      className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-colors ${
+                        type === m
+                          ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand"
+                          : "border-border text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {m === "key" ? "SSH Private Key" : "Password"}
+                    </button>
+                  ))}
                 </div>
+             </div>
+
+             <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Username</label>
+                <Input placeholder="e.g. root or deploy" defaultValue={credential?.username || ""} />
+             </div>
+
+             {type === "password" && (
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">SSH Public Key (Optional)</label>
-                  <textarea
-                    placeholder="ssh-rsa AAAAB3Nza..."
-                    rows={3}
-                    defaultValue={credential?.publicKey || ""}
-                    className="w-full px-3 py-2 text-[10px] bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"
-                  />
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Password</label>
+                  <Input type="password" placeholder="••••••••" defaultValue={credential?.value || ""} />
                 </div>
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Key Passphrase (Optional)</label>
-                  <Input type="password" placeholder="••••••••" defaultValue={credential?.passphrase || ""} />
+             )}
+
+             {type === "key" && (
+                <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">SSH Private Key</label>
+                    <textarea
+                      placeholder="-----BEGIN OPENSSH PRIVATE KEY-----"
+                      rows={8}
+                      defaultValue={credential?.value || ""}
+                      className="w-full px-3 py-2 text-[10px] bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">SSH Public Key (Optional)</label>
+                    <textarea
+                      placeholder="ssh-rsa AAAAB3Nza..."
+                      rows={3}
+                      defaultValue={credential?.publicKey || ""}
+                      className="w-full px-3 py-2 text-[10px] bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Key Passphrase (Optional)</label>
+                    <Input type="password" placeholder="••••••••" defaultValue={credential?.passphrase || ""} />
+                  </div>
                 </div>
-              </div>
-           )}
-        </div>
-      </SectionCard>
+             )}
+          </div>
+        </SectionCard>
+      )}
 
       <div className="flex justify-end gap-3 mt-3">
         <Button variant="ghost" onClick={onBack}>Cancel</Button>
-        <Button variant="outline" className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400 px-8" onClick={() => {
+        <Button variant="outline" className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand px-8" onClick={() => {
           toast.success("Credential saved");
           onBack();
         }}>
@@ -2016,7 +2643,7 @@ function FakeSwitch({defaultChecked = false}: { defaultChecked?: boolean }) {
   return (
     <button
       onClick={() => setOn(o => !o)}
-      className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center border-2 transition-colors ${on ? "bg-orange-400 border-orange-400" : "bg-muted border-border"}`}
+      className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center border-2 transition-colors ${on ? "bg-accent-brand border-accent-brand" : "bg-muted border-border"}`}
     >
       <span
         className={`pointer-events-none inline-block h-3 w-3 bg-background shadow-sm transition-transform ${on ? "translate-x-4" : "translate-x-0.5"}`}
@@ -2043,6 +2670,21 @@ function SectionCard({title, icon, children}: {
   );
 }
 
+const ACCENT_COLORS = [
+  { id: "orange",  label: "Orange",  value: "oklch(0.75 0.15 55)" },
+  { id: "blue",    label: "Blue",    value: "oklch(0.60 0.18 240)" },
+  { id: "green",   label: "Green",   value: "oklch(0.65 0.18 145)" },
+  { id: "purple",  label: "Purple",  value: "oklch(0.60 0.18 290)" },
+  { id: "pink",    label: "Pink",    value: "oklch(0.65 0.18 340)" },
+  { id: "cyan",    label: "Cyan",    value: "oklch(0.65 0.14 195)" },
+] as const;
+type AccentColorId = (typeof ACCENT_COLORS)[number]["id"];
+
+function applyAccentColor(id: AccentColorId) {
+  const color = ACCENT_COLORS.find(c => c.id === id);
+  if (color) document.documentElement.style.setProperty("--accent-brand", color.value);
+}
+
 function UserProfileTab() {
   const [section, setSection] = useState<UserProfileSection>("account");
   const [showTotpSetup, setShowTotpSetup] = useState(false);
@@ -2050,6 +2692,15 @@ function UserProfileTab() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [themeChoice, setThemeChoice] = useState("dark");
+  const [accentColor, setAccentColor] = useState<AccentColorId>(
+    () => (localStorage.getItem("termix-accent") as AccentColorId) ?? "orange"
+  );
+
+  function handleAccentChange(id: AccentColorId) {
+    setAccentColor(id);
+    localStorage.setItem("termix-accent", id);
+    applyAccentColor(id);
+  }
 
   const SECTIONS: { id: UserProfileSection; label: string; icon: React.ReactNode }[] = [
     {id: "account", label: "Account", icon: <User className="size-3.5"/>},
@@ -2084,7 +2735,7 @@ function UserProfileTab() {
                 onClick={() => setSection(s.id)}
                 className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors text-left ${
                   section === s.id
-                    ? "bg-orange-400/10 text-orange-400 border-l-2 border-orange-400"
+                    ? "bg-accent-brand/10 text-accent-brand border-l-2 border-accent-brand"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted border-l-2 border-transparent"
                 }`}
               >
@@ -2096,8 +2747,7 @@ function UserProfileTab() {
 
           <Card className="flex flex-col overflow-hidden py-0 gap-0 mt-auto">
             <button
-              onClick={() => {
-              }}
+              onClick={() => window.dispatchEvent(new CustomEvent("termix:logout"))}
               className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors text-left"
             >
               <X className="size-3.5"/>
@@ -2123,7 +2773,7 @@ function UserProfileTab() {
                     <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Role</span>
                     <div className="flex gap-1.5 mt-0.5 flex-wrap">
                       <span
-                        className="inline-flex items-center px-2 py-0.5 text-xs font-semibold border border-orange-400/40 bg-orange-400/10 text-orange-400">Administrator</span>
+                        className="inline-flex items-center px-2 py-0.5 text-xs font-semibold border border-accent-brand/40 bg-accent-brand/10 text-accent-brand">Administrator</span>
                     </div>
                   </div>
                   <div className="flex flex-col py-2">
@@ -2135,8 +2785,8 @@ function UserProfileTab() {
                     <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Two-Factor Auth</span>
                     <span className="flex items-center gap-1.5 mt-0.5">
                       {totpEnabled
-                        ? <><ShieldCheck className="size-4 text-orange-400"/><span
-                          className="text-base font-semibold text-orange-400">Enabled</span></>
+                        ? <><ShieldCheck className="size-4 text-accent-brand"/><span
+                          className="text-base font-semibold text-accent-brand">Enabled</span></>
                         : <span className="text-base font-semibold text-muted-foreground">Disabled</span>
                       }
                     </span>
@@ -2144,7 +2794,7 @@ function UserProfileTab() {
                   <div className="flex flex-col py-2">
                     <span
                       className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Version</span>
-                    <span className="text-base font-semibold mt-0.5 text-orange-400">v1.0.0</span>
+                    <span className="text-base font-semibold mt-0.5 text-accent-brand">v1.0.0</span>
                   </div>
                 </div>
               </SectionCard>
@@ -2193,12 +2843,37 @@ function UserProfileTab() {
                         onClick={() => setThemeChoice(t.id)}
                         className={`flex flex-col items-center gap-1.5 px-2 py-2.5 border text-xs font-semibold transition-colors ${
                           themeChoice === t.id
-                            ? "border-orange-400/40 bg-orange-400/10 text-orange-400"
+                            ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand"
                             : "border-border text-muted-foreground hover:text-foreground"
                         }`}
                       >
                         {t.icon}
                         {t.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </SectionCard>
+
+              <SectionCard title="Accent Color" icon={<Palette className="size-3.5"/>}>
+                <div className="flex flex-col gap-2 py-3">
+                  <span className="text-xs text-muted-foreground">Choose the accent color used throughout the app</span>
+                  <div className="grid grid-cols-6 gap-2 mt-1">
+                    {ACCENT_COLORS.map(ac => (
+                      <button
+                        key={ac.id}
+                        onClick={() => handleAccentChange(ac.id)}
+                        className={`flex flex-col items-center gap-1.5 px-2 py-2 border text-xs font-semibold transition-colors ${
+                          accentColor === ac.id
+                            ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand"
+                            : "border-border text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        <span
+                          className="size-4 rounded-full border border-border/50"
+                          style={{ background: ac.value }}
+                        />
+                        {ac.label}
                       </button>
                     ))}
                   </div>
@@ -2270,7 +2945,7 @@ function UserProfileTab() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className={`shrink-0 ml-8 ${totpEnabled ? "border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive" : "border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"}`}
+                    className={`shrink-0 ml-8 ${totpEnabled ? "border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive" : "border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"}`}
                     onClick={() => {
                       if (totpEnabled) setTotpEnabled(false);
                       else setShowTotpSetup(true);
@@ -2301,7 +2976,7 @@ function UserProfileTab() {
                       <Button variant="ghost" size="sm" className="flex-1"
                               onClick={() => setShowTotpSetup(false)}>Cancel</Button>
                       <Button variant="outline" size="sm"
-                              className="flex-1 border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
+                              className="flex-1 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
                               onClick={() => {
                                 setTotpEnabled(true);
                                 setShowTotpSetup(false);
@@ -2338,7 +3013,7 @@ function UserProfileTab() {
                   </div>
                   <div className="flex justify-end">
                     <Button variant="outline" size="sm"
-                            className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">
+                            className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand">
                       <KeyRound className="size-3.5"/>Update Password
                     </Button>
                   </div>
@@ -2470,7 +3145,7 @@ function AdminToggle({on, onToggle}: { on: boolean; onToggle: () => void }) {
   return (
     <button
       onClick={onToggle}
-      className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center border-2 transition-colors ${on ? "bg-orange-400 border-orange-400" : "bg-muted border-border"}`}
+      className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center border-2 transition-colors ${on ? "bg-accent-brand border-accent-brand" : "bg-muted border-border"}`}
     >
       <span
         className={`pointer-events-none inline-block h-3 w-3 bg-background shadow-sm transition-transform ${on ? "translate-x-4" : "translate-x-0.5"}`}/>
@@ -2517,7 +3192,7 @@ function AdminSettingsTab() {
                 onClick={() => setSection(s.id)}
                 className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors text-left ${
                   section === s.id
-                    ? "bg-orange-400/10 text-orange-400 border-l-2 border-orange-400"
+                    ? "bg-accent-brand/10 text-accent-brand border-l-2 border-accent-brand"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted border-l-2 border-transparent"
                 }`}
               >
@@ -2611,7 +3286,7 @@ function AdminSettingsTab() {
                       <button
                         key={l}
                         onClick={() => setLogLevel(l)}
-                        className={`px-3 py-1.5 text-xs font-semibold border capitalize transition-colors ${logLevel === l ? "border-orange-400/40 bg-orange-400/10 text-orange-400" : "border-border text-muted-foreground hover:text-foreground"}`}
+                        className={`px-3 py-1.5 text-xs font-semibold border capitalize transition-colors ${logLevel === l ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand" : "border-border text-muted-foreground hover:text-foreground"}`}
                       >
                         {l}
                       </button>
@@ -2640,7 +3315,7 @@ function AdminSettingsTab() {
                 ] as { label: string; placeholder: string; type?: string; required?: boolean }[]).map(f => (
                   <div key={f.label} className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
-                      {f.label}{f.required && <span className="text-orange-400 ml-0.5">*</span>}
+                      {f.label}{f.required && <span className="text-accent-brand ml-0.5">*</span>}
                     </label>
                     <Input type={f.type ?? "text"} placeholder={f.placeholder}/>
                   </div>
@@ -2661,7 +3336,7 @@ function AdminSettingsTab() {
                     <Trash2 className="size-3.5"/>Remove OIDC
                   </Button>
                   <Button variant="outline"
-                          className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">
+                          className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand">
                     <RefreshCw className="size-3.5"/>Save Configuration
                   </Button>
                 </div>
@@ -2679,7 +3354,7 @@ function AdminSettingsTab() {
                     <RefreshCw className="size-3.5"/>
                   </Button>
                   <Button variant="outline" size="sm"
-                          className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
+                          className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
                           onClick={() => setCreateUserOpen(true)}>
                     <Plus className="size-3.5"/>Create User
                   </Button>
@@ -2699,7 +3374,7 @@ function AdminSettingsTab() {
                         <span className="text-sm font-semibold">{user.username}</span>
                         <div className="flex items-center gap-1.5">
                           {user.isAdmin && <span
-                            className="text-[10px] font-semibold px-1.5 py-px border border-orange-400/40 bg-orange-400/10 text-orange-400">ADMIN</span>}
+                            className="text-[10px] font-semibold px-1.5 py-px border border-accent-brand/40 bg-accent-brand/10 text-accent-brand">ADMIN</span>}
                           <span
                             className="text-[10px] font-semibold px-1.5 py-px border border-border text-muted-foreground">{authLabel.toUpperCase()}</span>
                         </div>
@@ -2725,7 +3400,7 @@ function AdminSettingsTab() {
                       )}
                       {user.isOidc && user.passwordHash && (
                         <Button variant="ghost" size="icon"
-                                className="size-7 text-muted-foreground hover:text-orange-400" title="Unlink OIDC">
+                                className="size-7 text-muted-foreground hover:text-accent-brand" title="Unlink OIDC">
                           <X className="size-3.5"/>
                         </Button>
                       )}
@@ -2759,7 +3434,7 @@ function AdminSettingsTab() {
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-semibold">{session.username}</span>
                       {session.isCurrentSession && <span
-                        className="text-[10px] font-semibold px-1.5 py-px border border-orange-400/40 bg-orange-400/10 text-orange-400">CURRENT</span>}
+                        className="text-[10px] font-semibold px-1.5 py-px border border-accent-brand/40 bg-accent-brand/10 text-accent-brand">CURRENT</span>}
                     </div>
                     <span className="text-xs text-muted-foreground">{session.deviceInfo}</span>
                     <span className="text-xs text-muted-foreground">
@@ -2787,7 +3462,7 @@ function AdminSettingsTab() {
                 <div className="flex items-center justify-between py-2.5 border-b border-border">
                   <span className="text-xs text-muted-foreground">{MOCK_ROLES.length} roles</span>
                   <Button variant="outline" size="sm"
-                          className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
+                          className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
                           onClick={() => setShowCreateRole(o => !o)}>
                     <Plus className="size-3.5"/>Create Role
                   </Button>
@@ -2798,13 +3473,13 @@ function AdminSettingsTab() {
                       className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">New Role</span>
                     <div className="flex flex-col gap-1.5">
                       <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Role
-                        Name <span className="text-orange-400">*</span></label>
+                        Name <span className="text-accent-brand">*</span></label>
                       <Input placeholder="e.g., developer"/>
                       <span className="text-xs text-muted-foreground">Lowercase, no spaces. Used internally.</span>
                     </div>
                     <div className="flex flex-col gap-1.5">
                       <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Display
-                        Name <span className="text-orange-400">*</span></label>
+                        Name <span className="text-accent-brand">*</span></label>
                       <Input placeholder="e.g., Developer"/>
                     </div>
                     <div className="flex flex-col gap-1.5">
@@ -2816,7 +3491,7 @@ function AdminSettingsTab() {
                     <div className="flex justify-end gap-2">
                       <Button variant="ghost" size="sm" onClick={() => setShowCreateRole(false)}>Cancel</Button>
                       <Button variant="outline" size="sm"
-                              className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">Create</Button>
+                              className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand">Create</Button>
                     </div>
                   </div>
                 )}
@@ -2830,7 +3505,7 @@ function AdminSettingsTab() {
                           ? <span
                             className="text-[10px] font-semibold px-1.5 py-px border border-border text-muted-foreground">SYSTEM</span>
                           : <span
-                            className="text-[10px] font-semibold px-1.5 py-px border border-orange-400/40 bg-orange-400/10 text-orange-400">CUSTOM</span>
+                            className="text-[10px] font-semibold px-1.5 py-px border border-accent-brand/40 bg-accent-brand/10 text-accent-brand">CUSTOM</span>
                         }
                       </div>
                       <span className="text-xs font-mono text-muted-foreground">{role.name}</span>
@@ -2863,7 +3538,7 @@ function AdminSettingsTab() {
                   <span className="text-xs text-muted-foreground">Download a backup of all hosts, credentials, and settings</span>
                 </div>
                 <Button variant="outline" size="sm"
-                        className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400 shrink-0 ml-8">
+                        className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand shrink-0 ml-8">
                   Export
                 </Button>
               </div>
@@ -2887,7 +3562,7 @@ function AdminSettingsTab() {
                   </div>
                   {importFile && (
                     <Button variant="outline" size="sm"
-                            className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">
+                            className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand">
                       Import
                     </Button>
                   )}
@@ -2906,7 +3581,7 @@ function AdminSettingsTab() {
                     <RefreshCw className="size-3.5"/>
                   </Button>
                   <Button variant="outline" size="sm"
-                          className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
+                          className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
                           onClick={() => setShowCreateKey(o => !o)}>
                     <Plus className="size-3.5"/>Create Key
                   </Button>
@@ -2918,12 +3593,12 @@ function AdminSettingsTab() {
                     className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">New API Key</span>
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Key
-                      Name <span className="text-orange-400">*</span></label>
+                      Name <span className="text-accent-brand">*</span></label>
                     <Input placeholder="e.g., CI Pipeline"/>
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Scoped
-                      User <span className="text-orange-400">*</span></label>
+                      User <span className="text-accent-brand">*</span></label>
                     <Input placeholder="Select a user"/>
                   </div>
                   <div className="flex flex-col gap-1.5">
@@ -2934,7 +3609,7 @@ function AdminSettingsTab() {
                   <div className="flex justify-end gap-2">
                     <Button variant="ghost" size="sm" onClick={() => setShowCreateKey(false)}>Cancel</Button>
                     <Button variant="outline" size="sm"
-                            className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">Create
+                            className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand">Create
                       Key</Button>
                   </div>
                 </div>
@@ -2979,12 +3654,12 @@ function AdminSettingsTab() {
           <div className="flex flex-col gap-4 mt-1">
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Username <span
-                className="text-orange-400">*</span></label>
+                className="text-accent-brand">*</span></label>
               <Input placeholder="Enter username"/>
             </div>
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Password <span
-                className="text-orange-400">*</span></label>
+                className="text-accent-brand">*</span></label>
               <div className="relative">
                 <Input type="password" placeholder="Enter password" className="pr-9"/>
                 <button
@@ -2998,7 +3673,7 @@ function AdminSettingsTab() {
           <div className="flex justify-end gap-2 mt-2">
             <Button variant="ghost" onClick={() => setCreateUserOpen(false)}>Cancel</Button>
             <Button variant="outline"
-                    className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">
+                    className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand">
               Create User
             </Button>
           </div>
@@ -3062,7 +3737,7 @@ function AdminSettingsTab() {
                     </div>
                   ))}
                   <Button variant="outline" size="sm"
-                          className="h-7 text-xs border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">
+                          className="h-7 text-xs border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand">
                     <Plus className="size-3"/>Add Role
                   </Button>
                 </div>
@@ -3120,7 +3795,7 @@ function AdminSettingsTab() {
             </div>
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Target
-                Username <span className="text-orange-400">*</span></label>
+                Username <span className="text-accent-brand">*</span></label>
               <Input placeholder="Enter the local account username to link to"/>
             </div>
           </div>
@@ -3163,7 +3838,7 @@ const MOCK_CONTAINERS: DockerContainer[] = [
 
 function DockerBadge({ status }: { status: DockerContainerStatus }) {
   let colorClass = "border-border text-muted-foreground";
-  if (status === "running") colorClass = "border-orange-400/40 text-orange-400 bg-orange-400/10";
+  if (status === "running") colorClass = "border-accent-brand/40 text-accent-brand bg-accent-brand/10";
   if (status === "paused") colorClass = "border-yellow-500/40 text-yellow-500 bg-yellow-500/10";
   if (status === "exited") colorClass = "border-destructive/40 text-destructive bg-destructive/5";
 
@@ -3180,10 +3855,10 @@ function DockerContainerCard({ container, onSelect, onAction }: {
   onAction: (id: string, action: string, e: React.MouseEvent) => void
 }) {
   return (
-    <Card className="flex flex-col overflow-hidden p-0 gap-0 group hover:border-orange-400/40 transition-colors cursor-pointer" onClick={() => onSelect(container.id)}>
+    <Card className="flex flex-col overflow-hidden p-0 gap-0 group hover:border-accent-brand/40 transition-colors cursor-pointer" onClick={() => onSelect(container.id)}>
       <div className="flex items-center justify-between px-4 py-2.5 border-b border-border bg-muted/10">
         <div className="flex items-center gap-2 min-w-0">
-          <Box className={`size-3.5 ${container.status === "running" ? "text-orange-400" : "text-muted-foreground"}`}/>
+          <Box className={`size-3.5 ${container.status === "running" ? "text-accent-brand" : "text-muted-foreground"}`}/>
           <span className="text-sm font-bold truncate">{container.name}</span>
         </div>
         <DockerBadge status={container.status}/>
@@ -3216,7 +3891,7 @@ function DockerContainerCard({ container, onSelect, onAction }: {
         <span className="text-[10px] text-muted-foreground italic">Created {container.created}</span>
         <div className="flex items-center gap-1">
           {container.status !== "running" ? (
-            <Button variant="ghost" size="icon-xs" className="text-orange-400" onClick={(e) => onAction(container.id, "start", e)}><Play className="size-3"/></Button>
+            <Button variant="ghost" size="icon-xs" className="text-accent-brand" onClick={(e) => onAction(container.id, "start", e)}><Play className="size-3"/></Button>
           ) : (
             <Button variant="ghost" size="icon-xs" className="text-destructive" onClick={(e) => onAction(container.id, "stop", e)}><Square className="size-3"/></Button>
           )}
@@ -3275,7 +3950,7 @@ function DockerLogViewer({ containerName }: { containerName: string }) {
       <div className="flex-1 bg-[#111210] border border-border p-3 overflow-auto font-mono text-xs leading-relaxed scrollbar-thin">
         {logs.map((log, i) => (
           <div key={i} className="whitespace-pre-wrap break-all">
-            <span className="text-orange-400/60">{log.substring(0, 26)}</span>
+            <span className="text-accent-brand/60">{log.substring(0, 26)}</span>
             <span className="text-foreground/90">{log.substring(26)}</span>
           </div>
         ))}
@@ -3314,11 +3989,11 @@ function DockerContainerStats({ container }: { container: DockerContainer }) {
        <SectionCard title="CPU Usage" icon={<Cpu className="size-3.5"/>}>
           <div className="flex flex-col gap-3 py-2">
             <div className="flex items-end justify-between">
-              <span className="text-3xl font-bold text-orange-400">{metrics.cpu.toFixed(1)}%</span>
+              <span className="text-3xl font-bold text-accent-brand">{metrics.cpu.toFixed(1)}%</span>
               <span className="text-[10px] text-muted-foreground uppercase font-bold">1 Core Assigned</span>
             </div>
             <div className="h-1.5 bg-muted w-full overflow-hidden">
-              <div className="h-full bg-orange-400 transition-all duration-500" style={{width: `${metrics.cpu}%`}}/>
+              <div className="h-full bg-accent-brand transition-all duration-500" style={{width: `${metrics.cpu}%`}}/>
             </div>
           </div>
        </SectionCard>
@@ -3326,11 +4001,11 @@ function DockerContainerStats({ container }: { container: DockerContainer }) {
        <SectionCard title="Memory Usage" icon={<MemoryStick className="size-3.5"/>}>
           <div className="flex flex-col gap-3 py-2">
             <div className="flex items-end justify-between">
-              <span className="text-3xl font-bold text-orange-400">{metrics.mem.toFixed(1)} MB</span>
+              <span className="text-3xl font-bold text-accent-brand">{metrics.mem.toFixed(1)} MB</span>
               <span className="text-[10px] text-muted-foreground uppercase font-bold">Limit: 1.0 GB</span>
             </div>
             <div className="h-1.5 bg-muted w-full overflow-hidden">
-              <div className="h-full bg-orange-400 transition-all duration-500" style={{width: `${(metrics.mem / 1024) * 100}%`}}/>
+              <div className="h-full bg-accent-brand transition-all duration-500" style={{width: `${(metrics.mem / 1024) * 100}%`}}/>
             </div>
           </div>
        </SectionCard>
@@ -3343,7 +4018,7 @@ function DockerContainerStats({ container }: { container: DockerContainer }) {
              </div>
              <div className="flex justify-between items-center py-1">
                 <span className="text-xs text-muted-foreground font-semibold">Outbound</span>
-                <span className="text-sm font-mono font-bold text-orange-400">{metrics.netOut.toFixed(2)} GB</span>
+                <span className="text-sm font-mono font-bold text-accent-brand">{metrics.netOut.toFixed(2)} GB</span>
              </div>
           </div>
        </SectionCard>
@@ -3356,7 +4031,7 @@ function DockerContainerStats({ container }: { container: DockerContainer }) {
              </div>
              <div className="flex justify-between items-center py-1">
                 <span className="text-xs text-muted-foreground font-semibold">Write</span>
-                <span className="text-sm font-mono font-bold text-orange-400">{metrics.ioWrite} MB</span>
+                <span className="text-sm font-mono font-bold text-accent-brand">{metrics.ioWrite} MB</span>
              </div>
           </div>
        </SectionCard>
@@ -3520,7 +4195,7 @@ function DockerTab({ label }: { label: string }) {
                <ArrowLeft className="size-4"/>
             </Button>
             <div className="size-10 border border-border bg-muted flex items-center justify-center shrink-0">
-              <Box className="size-5 text-orange-400"/>
+              <Box className="size-5 text-accent-brand"/>
             </div>
             <div>
               <h1 className="text-2xl font-bold">{selectedContainer.name}</h1>
@@ -3532,7 +4207,7 @@ function DockerTab({ label }: { label: string }) {
           <div className="flex items-center gap-2">
             <DockerBadge status={selectedContainer.status}/>
             <Separator orientation="vertical" className="h-8 mx-2"/>
-            <Button variant="ghost" size="icon"><Settings className="size-4 text-orange-400"/></Button>
+            <Button variant="ghost" size="icon"><Settings className="size-4 text-accent-brand"/></Button>
           </div>
         </Card>
 
@@ -3548,7 +4223,7 @@ function DockerTab({ label }: { label: string }) {
                 onClick={() => setDetailTab(t.id as any)}
                 className={`flex items-center gap-2 px-4 py-2 text-sm font-semibold border-b-2 transition-colors ${
                   detailTab === t.id
-                    ? "border-b-orange-400 text-foreground bg-orange-400/5"
+                    ? "border-b-accent-brand text-foreground bg-accent-brand/5"
                     : "border-b-transparent text-muted-foreground hover:text-foreground hover:bg-muted"
                 }`}
               >
@@ -3572,12 +4247,12 @@ function DockerTab({ label }: { label: string }) {
       <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 mx-3 mt-3 gap-0">
         <div className="flex items-center gap-3">
           <div className="size-10 border border-border bg-muted flex items-center justify-center shrink-0">
-            <Box className="size-5 text-orange-400"/>
+            <Box className="size-5 text-accent-brand"/>
           </div>
           <div>
             <h1 className="text-2xl font-bold">{label}</h1>
             <div className="flex items-center gap-2">
-              <span className="size-2 rounded-full bg-orange-400"/>
+              <span className="size-2 rounded-full bg-accent-brand"/>
               <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Docker Manager</span>
             </div>
           </div>
@@ -3598,10 +4273,10 @@ function DockerTab({ label }: { label: string }) {
             <option value="exited">Exited</option>
           </select>
           <Separator orientation="vertical" className="h-8 mx-1"/>
-          <Button variant="outline" size="sm" className="h-8 border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400 gap-1.5" onClick={(e) => handleAction("", "create", e)}>
+          <Button variant="outline" size="sm" className="h-8 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand gap-1.5" onClick={(e) => handleAction("", "create", e)}>
             <Plus className="size-3.5"/> New Container
           </Button>
-          <Button variant="ghost" size="icon"><Settings className="size-4 text-orange-400"/></Button>
+          <Button variant="ghost" size="icon"><Settings className="size-4 text-accent-brand"/></Button>
         </div>
       </Card>
 
@@ -3638,7 +4313,7 @@ function TunnelCard({ tunnel, onAction }: { tunnel: Tunnel, onAction: (id: strin
   const isError = tunnel.status === "ERROR";
 
   let statusColor = "text-muted-foreground border-border bg-muted/30";
-  if (isConnected) statusColor = "text-orange-400 border-orange-400/40 bg-orange-400/10";
+  if (isConnected) statusColor = "text-accent-brand border-accent-brand/40 bg-accent-brand/10";
   if (isConnecting) statusColor = "text-blue-400 border-blue-400/40 bg-blue-400/10";
   if (isError) statusColor = "text-destructive border-destructive/40 bg-destructive/10";
 
@@ -3678,7 +4353,7 @@ function TunnelCard({ tunnel, onAction }: { tunnel: Tunnel, onAction: (id: strin
               <Square className="size-3"/> Stop
             </Button>
           ) : (
-            <Button variant="outline" size="sm" className="flex-1 h-8 text-orange-400 border-orange-400/40 hover:bg-orange-400/10 hover:text-orange-400 gap-1.5" disabled={isConnecting} onClick={() => onAction(tunnel.id, "start")}>
+            <Button variant="outline" size="sm" className="flex-1 h-8 text-accent-brand border-accent-brand/40 hover:bg-accent-brand/10 hover:text-accent-brand gap-1.5" disabled={isConnecting} onClick={() => onAction(tunnel.id, "start")}>
               {isConnecting ? <RefreshCw className="size-3 animate-spin"/> : <Play className="size-3"/>}
               Start
             </Button>
@@ -3763,12 +4438,12 @@ function TunnelTab({label}: { label: string }) {
       <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 mx-3 mt-3 gap-0">
         <div className="flex items-center gap-3">
           <div className="size-10 border border-border bg-muted flex items-center justify-center shrink-0">
-            <Network className="size-5 text-orange-400"/>
+            <Network className="size-5 text-accent-brand"/>
           </div>
           <div>
             <h1 className="text-2xl font-bold">{label}</h1>
             <div className="flex items-center gap-2">
-              <span className="size-2 rounded-full bg-orange-400"/>
+              <span className="size-2 rounded-full bg-accent-brand"/>
               <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">SSH Tunnels</span>
             </div>
           </div>
@@ -3779,7 +4454,7 @@ function TunnelTab({label}: { label: string }) {
             Add Tunnel
           </Button>
           <Separator orientation="vertical" className="h-8 mx-3"/>
-          <Button variant="ghost" size="icon"><Settings className="size-4 text-orange-400"/></Button>
+          <Button variant="ghost" size="icon"><Settings className="size-4 text-accent-brand"/></Button>
         </div>
       </Card>
 
@@ -3819,7 +4494,7 @@ function HostItem({host, onOpenTab}: { host: Host; onOpenTab: (type: TabType) =>
         <div className="flex flex-col min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
             <span
-              className={`size-1.5 rounded-full shrink-0 ${isOnline ? "bg-orange-400" : "bg-muted-foreground/40"}`}/>
+              className={`size-1.5 rounded-full shrink-0 ${isOnline ? "bg-accent-brand" : "bg-muted-foreground/40"}`}/>
             <span className="text-xs font-medium truncate">{host.name}</span>
           </div>
           <span className="text-xs text-muted-foreground truncate">{host.user}@{host.address}</span>
@@ -3837,7 +4512,7 @@ function HostItem({host, onOpenTab}: { host: Host; onOpenTab: (type: TabType) =>
         </div>
         <div
           className={`flex items-center gap-0.5 shrink-0 transition-opacity ${dropdownOpen ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}>
-          <Button variant="ghost" size="icon-xs" className="text-orange-400" onClick={e => {
+          <Button variant="ghost" size="icon-xs" className="text-accent-brand" onClick={e => {
             e.stopPropagation();
             onOpenTab("terminal");
           }}>
@@ -3895,9 +4570,9 @@ function FolderItem({folder, depth = 0, onOpenTab}: {
         className="flex items-center gap-1 w-full px-2 py-1 hover:bg-muted text-left"
       >
         <ChevronRight
-          className={`size-3 shrink-0 transition-transform ${open ? "rotate-90 text-orange-400" : "text-muted-foreground"}`}/>
+          className={`size-3 shrink-0 transition-transform ${open ? "rotate-90 text-accent-brand" : "text-muted-foreground"}`}/>
         {open
-          ? <FolderOpen className="size-3.5 shrink-0 text-orange-400"/>
+          ? <FolderOpen className="size-3.5 shrink-0 text-accent-brand"/>
           : <Folder className="size-3.5 shrink-0 text-muted-foreground"/>
         }
         <span className="text-xs font-medium">{folder.name}</span>
@@ -3916,19 +4591,50 @@ function FolderItem({folder, depth = 0, onOpenTab}: {
 }
 
 
+function App() {
+  const stored = getStoredAuth();
+  const [authed, setAuthed] = useState(!!stored?.loggedIn);
+  const [authUsername, setAuthUsername] = useState(stored?.username ?? "");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("termix-accent") as AccentColorId | null;
+    if (saved) applyAccentColor(saved);
+  }, []);
+
+  if (!authed) {
+    return (
+      <>
+        <Auth onLogin={(u) => { setAuthUsername(u); setAuthed(true); }} />
+        <Toaster position="bottom-right" />
+      </>
+    );
+  }
+
+  return <AppShell username={authUsername} onLogout={() => { clearStoredAuth(); setAuthed(false); setAuthUsername(""); }} />;
+}
+
 const SINGLETON_TAB_LABELS: Partial<Record<TabType, string>> = {
   "host-manager": "Host Manager",
   "user-profile": "User Profile",
   "admin-settings": "Admin Settings",
   "docker": "Docker",
-  "tunnel": "Tunnel",
+  "tunnel": "Tunnels",
 };
 
-function App() {
+function AppShell({ username, onLogout }: { username: string; onLogout: () => void }) {
   const [tabs, setTabs] = useState<Tab[]>([DASHBOARD_TAB]);
   const [activeTabId, setActiveTabId] = useState("dashboard");
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const lastShiftTime = useRef(0);
+  const pendingHostManagerEvent = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (activeTabId === "host-manager" && pendingHostManagerEvent.current) {
+      const eventName = pendingHostManagerEvent.current;
+      pendingHostManagerEvent.current = null;
+      window.dispatchEvent(new Event(eventName));
+    }
+  }, [activeTabId]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -3943,6 +4649,12 @@ function App() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  useEffect(() => {
+    const handle = () => onLogout();
+    window.addEventListener("termix:logout", handle);
+    return () => window.removeEventListener("termix:logout", handle);
+  }, [onLogout]);
 
   useEffect(() => {
     const el = tabBarRef.current;
@@ -4108,8 +4820,9 @@ function App() {
     });
   }
 
-  function openSingletonTab(type: TabType) {
+  function openSingletonTab(type: TabType, pendingEvent?: string) {
     const id = type;
+    if (pendingEvent) pendingHostManagerEvent.current = pendingEvent;
     setTabs(prev => {
       if (prev.find(t => t.id === id)) return prev;
       return [...prev, {id, type, label: SINGLETON_TAB_LABELS[type] ?? type}];
@@ -4121,7 +4834,7 @@ function App() {
     <>
       <div className="flex w-screen h-screen bg-background">
         <div
-          className={`relative flex flex-col bg-sidebar shrink-0 overflow-hidden ${sidebarOpen ? `border-r transition-colors ${sidebarDragging ? "border-orange-400/60" : "border-border"}` : ""}`}
+          className={`relative flex flex-col bg-sidebar shrink-0 overflow-hidden ${sidebarOpen ? `border-r transition-colors ${sidebarDragging ? "border-accent-brand/60" : "border-border"}` : ""}`}
           style={{width: sidebarOpen ? sidebarWidth : 0, transition: sidebarOpen ? undefined : "width 0.2s"}}
         >
           <div className="flex flex-row items-center gap-2 border-b border-border h-12.5 px-3 shrink-0">
@@ -4141,7 +4854,7 @@ function App() {
           <div className="flex flex-col flex-1 min-h-0 overflow-y-auto">
             <div className="p-2">
               <Button variant="outline"
-                      className="w-full border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
+                      className="w-full border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
                       onClick={() => openSingletonTab("host-manager")}>
                 <Server/>
                 Host Manager
@@ -4167,14 +4880,14 @@ function App() {
                   <div className="flex items-center gap-2">
                     <div
                       className="w-7 h-7 rounded-full bg-muted flex items-center justify-center text-xs font-bold shrink-0">
-                      U
+                      {username.charAt(0).toUpperCase() || "U"}
                     </div>
                     <div className="flex flex-col items-start text-left">
-                      <span className="text-sm font-semibold leading-tight">Username</span>
-                      <span className="text-xs text-muted-foreground leading-tight">Role</span>
+                      <span className="text-sm font-semibold leading-tight">{username || "User"}</span>
+                      <span className="text-xs text-muted-foreground leading-tight">Administrator</span>
                     </div>
                   </div>
-                  <ChevronUp className="text-orange-400"/>
+                  <ChevronUp className="text-accent-brand"/>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent side="top" align="center" sideOffset={5} avoidCollisions={false}
@@ -4187,7 +4900,7 @@ function App() {
                   <Settings className="size-3.5"/>
                   Admin Settings
                 </DropdownMenuItem>
-                <DropdownMenuItem variant="destructive">
+                <DropdownMenuItem variant="destructive" onClick={onLogout}>
                   <KeyRound className="size-3.5"/>
                   Logout
                 </DropdownMenuItem>
@@ -4197,7 +4910,7 @@ function App() {
           {sidebarOpen && (
             <div
               onMouseDown={onSidebarMouseDown}
-              className={`absolute right-0 top-0 bottom-0 w-1 cursor-col-resize z-30 transition-colors ${sidebarDragging ? "bg-orange-400/60" : "hover:bg-orange-400/40"}`}
+              className={`absolute right-0 top-0 bottom-0 w-1 cursor-col-resize z-30 transition-colors ${sidebarDragging ? "bg-accent-brand/60" : "hover:bg-accent-brand/40"}`}
             />
           )}
         </div>
@@ -4276,10 +4989,11 @@ function App() {
                         cursor: tab.type === "dashboard" ? "pointer" : isDragging ? "grabbing" : "grab",
                         userSelect: "none",
                       }}
-                      className={`group/tab flex items-center gap-2 shrink-0 transition-colors border-x border-border -ml-px text-sm
+                      className={`group/tab flex items-center gap-2 shrink-0 transition-colors border-r border-border text-sm
+                                        ${index === 0 && tab.type !== "dashboard" ? "border-l border-border" : ""}
                                         ${tab.type === "dashboard"
-                        ? `px-3.5 ${active ? "border-b-2 border-b-orange-400 bg-surface text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-surface"}`
-                        : `px-4 font-medium ${active ? "border-b-2 border-b-orange-400 bg-surface text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-surface"}`
+                        ? `px-3.5 ${active ? "border-b-2 border-b-accent-brand bg-surface text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-surface"}`
+                        : `px-4 font-medium ${active ? "border-b-2 border-b-accent-brand bg-surface text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-surface"}`
                       }`}
                     >
                       {tabIcon(tab.type)}
@@ -4320,8 +5034,8 @@ function App() {
                       }}
                       className={`flex items-center gap-2 shrink-0 border border-border text-sm shadow-lg
                         ${tab.type === "dashboard"
-                        ? `px-3.5 ${active ? "border-b-2 border-b-orange-400 bg-surface text-foreground" : "bg-sidebar text-muted-foreground"}`
-                        : `px-4 font-medium ${active ? "border-b-2 border-b-orange-400 bg-surface text-foreground" : "bg-sidebar text-muted-foreground"}`
+                        ? `px-3.5 ${active ? "border-b-2 border-b-accent-brand bg-surface text-foreground" : "bg-sidebar text-muted-foreground"}`
+                        : `px-4 font-medium ${active ? "border-b-2 border-b-accent-brand bg-surface text-foreground" : "bg-sidebar text-muted-foreground"}`
                       }`}
                     >
                       {tabIcon(tab.type)}
@@ -4372,7 +5086,7 @@ function App() {
                 </DropdownMenu>
                 <Separator orientation="vertical"/>
                 <Button variant="ghost" size="icon"
-                        className={`h-full w-12.5 rounded-none hover:text-foreground ${toolsOpen ? "text-orange-400 bg-orange-400/10" : "text-muted-foreground"}`}
+                        className={`h-full w-12.5 rounded-none hover:text-foreground ${toolsOpen ? "text-accent-brand bg-accent-brand/10" : "text-muted-foreground"}`}
                         onClick={() => setToolsOpen(o => !o)}>
                   <Hammer className="size-4"/>
                 </Button>
@@ -4403,7 +5117,7 @@ function App() {
                 const activeTab = tabs.find(t => t.id === activeTabId)!;
                 switch (activeTab.type) {
                   case "dashboard":
-                    return <DashboardTab onOpenSingletonTab={openSingletonTab}/>;
+                    return <DashboardTab onOpenSingletonTab={openSingletonTab} onOpenTab={openTab}/>;
                   case "terminal":
                     return <TerminalTab label={activeTab.label}/>;
                   case "stats":
@@ -4425,13 +5139,13 @@ function App() {
             </div>
           </div>
           <div
-            className={`relative flex flex-col bg-sidebar shrink-0 overflow-hidden ${toolsOpen ? `border-l transition-colors ${toolsDragging ? "border-orange-400/60" : "border-border"}` : ""}`}
+            className={`relative flex flex-col bg-sidebar shrink-0 overflow-hidden ${toolsOpen ? `border-l transition-colors ${toolsDragging ? "border-accent-brand/60" : "border-border"}` : ""}`}
             style={{width: toolsOpen ? toolsWidth : 0, transition: toolsOpen ? undefined : "width 0.2s"}}
           >
             {toolsOpen && (
               <div
                 onMouseDown={onToolsMouseDown}
-                className={`absolute left-0 top-0 bottom-0 w-1 cursor-col-resize z-30 transition-colors ${toolsDragging ? "bg-orange-400/60" : "hover:bg-orange-400/40"}`}
+                className={`absolute left-0 top-0 bottom-0 w-1 cursor-col-resize z-30 transition-colors ${toolsDragging ? "bg-accent-brand/60" : "hover:bg-accent-brand/40"}`}
               />
             )}
             <ToolsSidebar onClose={() => setToolsOpen(false)} tabs={tabs} width={toolsWidth}
@@ -4440,9 +5154,9 @@ function App() {
         </div>
       </div>
 
-      <CommandPalette 
-        isOpen={commandPaletteOpen} 
-        setIsOpen={setCommandPaletteOpen} 
+      <CommandPalette
+        isOpen={commandPaletteOpen}
+        setIsOpen={setCommandPaletteOpen}
         hosts={hosts}
         onOpenTab={(type, label) => {
           if (["dashboard", "host-manager", "user-profile", "admin-settings", "docker", "tunnel"].includes(type)) {
@@ -4574,7 +5288,7 @@ function CreateSnippetDialog({open, onOpenChange, folders, onCreate}: {
         </DialogHeader>
         <div className="flex flex-col gap-4 mt-1">
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold">Name <span className="text-orange-400">*</span></label>
+            <label className="text-xs font-semibold">Name <span className="text-accent-brand">*</span></label>
             <Input placeholder="e.g., Restart Nginx" value={name} onChange={e => setName(e.target.value)}/>
           </div>
           <div className="flex flex-col gap-1.5">
@@ -4600,7 +5314,7 @@ function CreateSnippetDialog({open, onOpenChange, folders, onCreate}: {
             </select>
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold">Command <span className="text-orange-400">*</span></label>
+            <label className="text-xs font-semibold">Command <span className="text-accent-brand">*</span></label>
             <textarea
               placeholder="e.g., sudo systemctl restart nginx"
               value={command}
@@ -4612,7 +5326,7 @@ function CreateSnippetDialog({open, onOpenChange, folders, onCreate}: {
         <div className="flex items-center justify-end gap-2 mt-2">
           <Button variant="ghost" onClick={() => onOpenChange(false)}>Cancel</Button>
           <Button variant="outline"
-                  className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
+                  className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
                   onClick={handleCreate}>
             Create Snippet
           </Button>
@@ -4651,7 +5365,7 @@ function CreateFolderDialog({open, onOpenChange, onCreate}: {
         </DialogHeader>
         <div className="flex flex-col gap-4 mt-1">
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold">Folder Name <span className="text-orange-400">*</span></label>
+            <label className="text-xs font-semibold">Folder Name <span className="text-accent-brand">*</span></label>
             <Input placeholder="e.g., System Commands, Docker Scripts" value={name}
                    onChange={e => setName(e.target.value)}/>
           </div>
@@ -4677,7 +5391,7 @@ function CreateFolderDialog({open, onOpenChange, onCreate}: {
                   onClick={() => setIcon(ic)}
                   className={`flex items-center justify-center h-11 border transition-colors ${
                     icon === ic
-                      ? "border-orange-400/40 bg-orange-400/10 text-orange-400"
+                      ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand"
                       : "border-border text-muted-foreground hover:text-foreground hover:border-muted-foreground"
                   }`}
                 >
@@ -4697,7 +5411,7 @@ function CreateFolderDialog({open, onOpenChange, onCreate}: {
         <div className="flex items-center justify-end gap-2 mt-2">
           <Button variant="ghost" onClick={() => onOpenChange(false)}>Cancel</Button>
           <Button variant="outline"
-                  className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
+                  className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
                   onClick={handleCreate}>
             Create Folder
           </Button>
@@ -4752,7 +5466,7 @@ function HistoryTab() {
           className="text-xs text-muted-foreground">{filtered.length} command{filtered.length !== 1 ? "s" : ""}</span>
         <button
           onClick={() => setEntries([])}
-          className="text-xs text-orange-400 hover:text-orange-300"
+          className="text-xs text-accent-brand hover:text-accent-brand/70"
         >
           Clear All
         </button>
@@ -4850,7 +5564,7 @@ function SplitScreenTab({tabs, splitMode, setSplitMode}: {
             onClick={() => setSplitMode(mode.id)}
             className={`px-2 py-2 text-xs font-semibold border transition-colors ${
               splitMode === mode.id
-                ? "border-orange-400/40 bg-orange-400/10 text-orange-400"
+                ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand"
                 : "border-border text-muted-foreground hover:text-foreground"
             }`}
           >
@@ -4889,7 +5603,7 @@ function SplitScreenTab({tabs, splitMode, setSplitMode}: {
                   onDrop={() => handleDrop(i)}
                   className={`relative flex flex-col items-center justify-center border-2 border-dashed text-center transition-colors min-h-0
                                         ${isOver
-                    ? "border-orange-400 bg-orange-400/10"
+                    ? "border-accent-brand bg-accent-brand/10"
                     : assigned
                       ? "border-border bg-muted/30"
                       : "border-border/50 bg-muted/10 hover:border-border hover:bg-muted/20"
@@ -4939,7 +5653,7 @@ function SplitScreenTab({tabs, splitMode, setSplitMode}: {
                   }}
                   className={`flex items-center gap-2 px-2.5 py-2 border cursor-grab active:cursor-grabbing select-none transition-colors ${
                     draggingTabId === tab.id
-                      ? "border-orange-400/40 bg-orange-400/10 text-orange-400"
+                      ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand"
                       : "border-border hover:border-muted-foreground/40 hover:bg-muted/30"
                   }`}
                 >
@@ -4960,7 +5674,7 @@ function SplitScreenTab({tabs, splitMode, setSplitMode}: {
 
           <Button
             variant="outline"
-            className="w-full border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
+            className="w-full border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
             onClick={() => setPanes(Array(6).fill(null))}
           >
             Reset Layout
@@ -5042,7 +5756,7 @@ function ToolsSidebar({onClose, tabs, width, onResetWidth}: {
               onClick={() => setActiveTab(tab.id)}
               className={`flex-1 py-2 text-xs font-semibold border-b-2 transition-colors ${
                 activeTab === tab.id
-                  ? "border-b-orange-400 text-foreground"
+                  ? "border-b-accent-brand text-foreground"
                   : "border-b-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -5058,7 +5772,7 @@ function ToolsSidebar({onClose, tabs, width, onResetWidth}: {
                 <span className="text-xs font-bold uppercase tracking-widest">Key Recording</span>
                 <Button
                   variant="outline"
-                  className={`w-full ${keyRecording ? "border-orange-400/40 text-orange-400 bg-orange-400/10 hover:bg-orange-400/20 hover:text-orange-400" : ""}`}
+                  className={`w-full ${keyRecording ? "border-accent-brand/40 text-accent-brand bg-accent-brand/10 hover:bg-accent-brand/20 hover:text-accent-brand" : ""}`}
                   onClick={() => setKeyRecording(o => !o)}
                 >
                   {keyRecording ? "Stop Key Recording" : "Start Key Recording"}
@@ -5071,7 +5785,7 @@ function ToolsSidebar({onClose, tabs, width, onResetWidth}: {
                   <span className="text-sm text-muted-foreground">Enable right-click copy/paste</span>
                   <button
                     onClick={() => setRightClickPaste(o => !o)}
-                    className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center border-2 transition-colors ${rightClickPaste ? "bg-orange-400 border-orange-400" : "bg-muted border-border"}`}
+                    className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center border-2 transition-colors ${rightClickPaste ? "bg-accent-brand border-accent-brand" : "bg-muted border-border"}`}
                   >
                     <span
                       className={`pointer-events-none inline-block h-3 w-3 bg-background shadow-sm transition-transform ${rightClickPaste ? "translate-x-4" : "translate-x-0.5"}`}/>
@@ -5089,8 +5803,8 @@ function ToolsSidebar({onClose, tabs, width, onResetWidth}: {
                 <span
                   className="text-xs text-muted-foreground">Execute on current terminal (click to select multiple)</span>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <button className="text-xs text-orange-400 hover:text-orange-300">Select All</button>
-                  <button className="text-xs text-orange-400 hover:text-orange-300">Deselect All</button>
+                  <button className="text-xs text-accent-brand hover:text-accent-brand/70">Select All</button>
+                  <button className="text-xs text-accent-brand hover:text-accent-brand/70">Deselect All</button>
                 </div>
               </div>
               <Separator/>
@@ -5253,7 +5967,7 @@ function QuickConnectDialog({open, onOpenChange}: { open: boolean; onOpenChange:
                 <button
                   key={type}
                   onClick={() => setAuthType(type)}
-                  className={`px-3 py-1 text-xs font-semibold border transition-colors capitalize ${authType === type ? "border-orange-400/40 bg-orange-400/10 text-orange-400" : "border-border text-muted-foreground hover:text-foreground"}`}
+                  className={`px-3 py-1 text-xs font-semibold border transition-colors capitalize ${authType === type ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand" : "border-border text-muted-foreground hover:text-foreground"}`}
                 >
                   {type}
                 </button>
@@ -5301,12 +6015,12 @@ function QuickConnectDialog({open, onOpenChange}: { open: boolean; onOpenChange:
         <div className="flex items-center justify-end gap-2 mt-2">
           <Button variant="ghost" onClick={() => onOpenChange(false)}>Cancel</Button>
           <Button variant="outline"
-                  className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">
+                  className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand">
             <Terminal className="size-3.5"/>
             Connect to Terminal
           </Button>
           <Button variant="outline"
-                  className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">
+                  className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand">
             <FolderSearch className="size-3.5"/>
             Connect to File Manager
           </Button>

@@ -18,11 +18,11 @@ const Toaster = ({ ...props }: ToasterProps) => {
             "group toast group-[.toaster]:bg-card group-[.toaster]:text-card-foreground group-[.toaster]:border-border group-[.toaster]:rounded-none! group-[.toaster]:shadow-lg group-[.toaster]:font-mono",
           description: "group-[.toast]:text-muted-foreground",
           actionButton:
-            "group-[.toast]:bg-orange-400 group-[.toast]:text-white group-[.toast]:font-semibold",
+            "group-[.toast]:bg-accent-brand group-[.toast]:text-white group-[.toast]:font-semibold",
           cancelButton:
             "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
-          success: "group-[.toast]:!text-orange-400 group-[.toast]:!border-orange-400/30",
-          info: "group-[.toast]:!text-orange-400 group-[.toast]:!border-orange-400/30",
+          success: "group-[.toast]:!text-accent-brand group-[.toast]:!border-accent-brand/30",
+          info: "group-[.toast]:!text-accent-brand group-[.toast]:!border-accent-brand/30",
           error: "group-[.toast]:!text-destructive group-[.toast]:!border-destructive/30",
         },
       }}
@@ -33,10 +33,10 @@ const Toaster = ({ ...props }: ToasterProps) => {
         "--normal-text": "var(--card-foreground)",
         "--success-bg": "var(--card)",
         "--success-border": "var(--border)",
-        "--success-text": "var(--color-orange-400)",
+        "--success-text": "var(--color-accent-brand)",
         "--info-bg": "var(--card)",
         "--info-border": "var(--border)",
-        "--info-text": "var(--color-orange-400)",
+        "--info-text": "var(--color-accent-brand)",
         "--error-bg": "var(--card)",
         "--error-border": "var(--border)",
         "--error-text": "var(--destructive)",

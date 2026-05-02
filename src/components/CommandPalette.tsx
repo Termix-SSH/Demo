@@ -117,10 +117,10 @@ export function CommandPalette({
             <CommandGroup heading="Quick Actions" className="px-2">
               <CommandItem 
                 onSelect={() => handleAction(() => onOpenTab("host-manager"))}
-                className="group flex items-center gap-3 px-3 py-2.5 rounded-none hover:bg-orange-400/10 cursor-pointer"
+                className="group flex items-center gap-3 px-3 py-2.5 rounded-none hover:bg-accent-brand/10 cursor-pointer"
               >
-                <div className="size-8 rounded-none bg-muted flex items-center justify-center group-hover:bg-orange-400/20 transition-colors">
-                  <Plus className="size-4 text-orange-400" />
+                <div className="size-8 rounded-none bg-muted flex items-center justify-center group-hover:bg-accent-brand/20 transition-colors">
+                  <Plus className="size-4 text-accent-brand" />
                 </div>
                 <div className="flex flex-col flex-1">
                   <span className="text-sm font-semibold">Add New Host</span>
@@ -131,10 +131,10 @@ export function CommandPalette({
               
               <CommandItem 
                 onSelect={() => handleAction(() => onOpenTab("admin-settings"))}
-                className="group flex items-center gap-3 px-3 py-2.5 rounded-none hover:bg-orange-400/10 cursor-pointer"
+                className="group flex items-center gap-3 px-3 py-2.5 rounded-none hover:bg-accent-brand/10 cursor-pointer"
               >
-                <div className="size-8 rounded-none bg-muted flex items-center justify-center group-hover:bg-orange-400/20 transition-colors">
-                  <Settings className="size-4 text-orange-400" />
+                <div className="size-8 rounded-none bg-muted flex items-center justify-center group-hover:bg-accent-brand/20 transition-colors">
+                  <Settings className="size-4 text-accent-brand" />
                 </div>
                 <div className="flex flex-col flex-1">
                   <span className="text-sm font-semibold">Admin Settings</span>
@@ -151,20 +151,20 @@ export function CommandPalette({
                   <CommandItem
                     key={i}
                     onSelect={() => handleAction(() => onOpenTab("terminal", host.name))}
-                    className="group flex items-center gap-3 px-3 py-2.5 rounded-none hover:bg-orange-400/10 cursor-pointer"
+                    className="group flex items-center gap-3 px-3 py-2.5 rounded-none hover:bg-accent-brand/10 cursor-pointer"
                   >
-                    <div className="size-8 rounded-none bg-muted flex items-center justify-center group-hover:bg-orange-400/20 transition-colors">
-                      <Server className={cn("size-4", host.online ? "text-orange-400" : "text-muted-foreground")} />
+                    <div className="size-8 rounded-none bg-muted flex items-center justify-center group-hover:bg-accent-brand/20 transition-colors">
+                      <Server className={cn("size-4", host.online ? "text-accent-brand" : "text-muted-foreground")} />
                     </div>
                     <div className="flex flex-col flex-1">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-semibold">{host.name}</span>
-                        {host.online && <span className="size-1.5 rounded-full bg-orange-400 animate-pulse" />}
+                        {host.online && <span className="size-1.5 rounded-full bg-accent-brand animate-pulse" />}
                       </div>
                       <span className="text-xs text-muted-foreground">{host.address}</span>
                     </div>
                     <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Button variant="ghost" size="icon" className="size-7 rounded-none hover:bg-orange-400/20 hover:text-orange-400" onClick={(e) => { e.stopPropagation(); handleAction(() => onOpenTab("terminal", host.name)) }}>
+                      <Button variant="ghost" size="icon" className="size-7 rounded-none hover:bg-accent-brand/20 hover:text-accent-brand" onClick={(e) => { e.stopPropagation(); handleAction(() => onOpenTab("terminal", host.name)) }}>
                         <Terminal className="size-3.5" />
                       </Button>
                     </div>
@@ -181,19 +181,19 @@ export function CommandPalette({
 
             <CommandGroup heading="Links" className="px-2">
               <div className="grid grid-cols-2 gap-1">
-                <CommandItem onSelect={() => window.open("https://github.com", "_blank")} className="flex items-center gap-3 px-3 py-2 rounded-none hover:bg-orange-400/10 cursor-pointer">
+                <CommandItem onSelect={() => window.open("https://github.com", "_blank")} className="flex items-center gap-3 px-3 py-2 rounded-none hover:bg-accent-brand/10 cursor-pointer">
                   <Globe className="size-4 text-muted-foreground" />
                   <span className="text-sm font-medium">GitHub</span>
                 </CommandItem>
-                <CommandItem onSelect={() => window.open("https://discord.com", "_blank")} className="flex items-center gap-3 px-3 py-2 rounded-none hover:bg-orange-400/10 cursor-pointer">
+                <CommandItem onSelect={() => window.open("https://discord.com", "_blank")} className="flex items-center gap-3 px-3 py-2 rounded-none hover:bg-accent-brand/10 cursor-pointer">
                   <MessagesSquare className="size-4 text-muted-foreground" />
                   <span className="text-sm font-medium">Discord</span>
                 </CommandItem>
-                <CommandItem className="flex items-center gap-3 px-3 py-2 rounded-none hover:bg-orange-400/10 cursor-pointer">
+                <CommandItem className="flex items-center gap-3 px-3 py-2 rounded-none hover:bg-accent-brand/10 cursor-pointer">
                   <LifeBuoy className="size-4 text-muted-foreground" />
                   <span className="text-sm font-medium">Support</span>
                 </CommandItem>
-                <CommandItem className="flex items-center gap-3 px-3 py-2 rounded-none hover:bg-orange-400/10 cursor-pointer">
+                <CommandItem className="flex items-center gap-3 px-3 py-2 rounded-none hover:bg-accent-brand/10 cursor-pointer">
                   <DollarSign className="size-4 text-muted-foreground" />
                   <span className="text-sm font-medium">Donate</span>
                 </CommandItem>
