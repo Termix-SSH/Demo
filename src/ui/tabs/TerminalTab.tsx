@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useXTerm } from "react-xtermjs";
 import { FitAddon } from "@xterm/addon-fit";
 import "@xterm/xterm/css/xterm.css";
+import { splitDragState, registerFitCallback } from "@/ui/splitDragging";
 
 export function TerminalTab({ label }: { label: string }) {
   const { instance, ref } = useXTerm();
@@ -47,7 +48,7 @@ export function TerminalTab({ label }: { label: string }) {
 
         commandBuffer.current = "";
         instance.write(prompt);
-      } else if (char === "") {
+      } else if (char === "") {
         if (commandBuffer.current.length > 0) {
           commandBuffer.current = commandBuffer.current.slice(0, -1);
           instance.write("\b \b");
@@ -58,18 +59,32 @@ export function TerminalTab({ label }: { label: string }) {
       }
     });
 
-    const resizeObserver = new ResizeObserver(() => {
-      try { fitAddon.fit(); } catch (e) { console.error("Fit error:", e); }
-    });
+    function doFit() {
+      try { fitAddon.fit(); } catch (e) {}
+    }
+
+    let fitTimer: ReturnType<typeof setTimeout> | null = null;
+    function scheduleFit() {
+      // Skip entirely while a split divider is being dragged
+      if (splitDragState.active) return;
+      if (fitTimer) clearTimeout(fitTimer);
+      fitTimer = setTimeout(doFit, 50);
+    }
+
+    const resizeObserver = new ResizeObserver(scheduleFit);
     resizeObserver.observe(ref.current);
 
-    setTimeout(() => {
-      try { fitAddon.fit(); } catch (e) {}
-    }, 100);
+    // Fit once on mount
+    setTimeout(doFit, 100);
+
+    // Fit once after any split drag ends
+    const unregister = registerFitCallback(doFit);
 
     return () => {
       disposable.dispose();
       resizeObserver.disconnect();
+      if (fitTimer) clearTimeout(fitTimer);
+      unregister();
     };
   }, [instance]);
 

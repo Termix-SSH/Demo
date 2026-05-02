@@ -41,10 +41,11 @@ import { TunnelTab } from "@/ui/tabs/TunnelTab";
 import { ToolsSidebar } from "@/ui/ToolsSidebar";
 import { QuickConnectDialog } from "@/ui/QuickConnectDialog";
 import { HostItem, FolderItem, isFolder } from "@/ui/sidebar/SidebarTree";
-import { hosts, hostTree, DASHBOARD_TAB, SINGLETON_TAB_LABELS } from "@/ui/data";
-import type { Tab, TabType, Host } from "@/ui/types";
+import { hosts, hostTree, DASHBOARD_TAB, SINGLETON_TAB_LABELS, PANE_COUNTS } from "@/ui/data";
+import { splitDragState, notifyDragEnd } from "@/ui/splitDragging";
+import type { Tab, TabType, Host, SplitMode } from "@/ui/types";
 
-function tabIcon(type: TabType) {
+export function tabIcon(type: TabType) {
   switch (type) {
     case "dashboard":      return <LayoutDashboard className="size-3.5"/>;
     case "terminal":       return <Terminal className="size-3.5"/>;
@@ -58,14 +59,298 @@ function tabIcon(type: TabType) {
   }
 }
 
-function FilesTab({ label }: { label: string }) {
-  return <FileManager label={label}/>;
+export function renderTabContent(tab: Tab, onOpenSingletonTab?: (type: TabType) => void, onOpenTab?: (host: Host, type: TabType) => void) {
+  switch (tab.type) {
+    case "dashboard":      return <DashboardTab onOpenSingletonTab={onOpenSingletonTab!} onOpenTab={onOpenTab!}/>;
+    case "terminal":       return <TerminalTab label={tab.label}/>;
+    case "stats":          return <StatsTab label={tab.label}/>;
+    case "files":          return <FileManager label={tab.label}/>;
+    case "host-manager":   return <HostManagerTab/>;
+    case "user-profile":   return <UserProfileTab/>;
+    case "admin-settings": return <AdminSettingsTab/>;
+    case "docker":         return <DockerTab label={tab.label}/>;
+    case "tunnel":         return <TunnelTab label={tab.label}/>;
+  }
+}
+
+// Per-row column sizes: rowColSizes[rowIdx] = array of col percentages for that row
+// This lets each row resize its columns independently.
+type RowColSizes = number[][];
+
+function useSplitSizes(splitMode: SplitMode) {
+  function defaultSizes(mode: SplitMode): { rowSizes: number[]; rowColSizes: RowColSizes } {
+    switch (mode) {
+      case "2-way":  return { rowSizes: [100],      rowColSizes: [[50, 50]] };
+      case "3-way":  return { rowSizes: [50, 50],   rowColSizes: [[50, 50], [100]] };
+      case "4-way":  return { rowSizes: [50, 50],   rowColSizes: [[50, 50], [50, 50]] };
+      case "5-way":  return { rowSizes: [50, 50],   rowColSizes: [[33.3, 33.3, 33.4], [33.3, 66.7]] };
+      case "6-way":  return { rowSizes: [50, 50],   rowColSizes: [[33.3, 33.3, 33.4], [33.3, 33.3, 33.4]] };
+      default:       return { rowSizes: [100],      rowColSizes: [[100]] };
+    }
+  }
+
+  const init = defaultSizes(splitMode);
+  const [rowSizes, setRowSizes] = useState(init.rowSizes);
+  const [rowColSizes, setRowColSizes] = useState<RowColSizes>(init.rowColSizes);
+  const [isDragging, setIsDragging] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const d = defaultSizes(splitMode);
+    setRowSizes(d.rowSizes);
+    setRowColSizes(d.rowColSizes);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [splitMode]);
+
+  function reset() {
+    const d = defaultSizes(splitMode);
+    setRowSizes(d.rowSizes);
+    setRowColSizes(d.rowColSizes);
+  }
+
+  function startDrag() {
+    splitDragState.active = true;
+    setIsDragging(true);
+  }
+
+  function endDrag() {
+    splitDragState.active = false;
+    setIsDragging(false);
+    notifyDragEnd();
+  }
+
+  function onRowDivider(e: React.MouseEvent, rowIdx: number) {
+    e.preventDefault();
+    const container = containerRef.current;
+    if (!container) return;
+    startDrag();
+    const totalH = container.getBoundingClientRect().height;
+    const startY = e.clientY;
+    const a = rowSizes[rowIdx];
+    const b = rowSizes[rowIdx + 1];
+    function onMove(ev: MouseEvent) {
+      const delta = ((ev.clientY - startY) / totalH) * 100;
+      const na = Math.max(10, Math.min(a + b - 10, a + delta));
+      setRowSizes(prev => { const n = [...prev]; n[rowIdx] = na; n[rowIdx + 1] = a + b - na; return n; });
+    }
+    function onUp() {
+      endDrag();
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    }
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+  }
+
+  function onColDivider(e: React.MouseEvent, rowIdx: number, colIdx: number) {
+    e.preventDefault();
+    const container = containerRef.current;
+    if (!container) return;
+    startDrag();
+    const totalW = container.getBoundingClientRect().width;
+    const startX = e.clientX;
+    const cols = rowColSizes[rowIdx];
+    const a = cols[colIdx];
+    const b = cols[colIdx + 1];
+    function onMove(ev: MouseEvent) {
+      const delta = ((ev.clientX - startX) / totalW) * 100;
+      const na = Math.max(10, Math.min(a + b - 10, a + delta));
+      setRowColSizes(prev => {
+        const next = prev.map(r => [...r]);
+        next[rowIdx][colIdx] = na;
+        next[rowIdx][colIdx + 1] = a + b - na;
+        return next;
+      });
+    }
+    function onUp() {
+      endDrag();
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    }
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+  }
+
+  return { rowSizes, rowColSizes, isDragging, containerRef, reset, onRowDivider, onColDivider };
+}
+
+function Pane({ tab, paneIndex, isDragging, onOpenSingletonTab, onOpenTab }: {
+  tab: Tab | null;
+  paneIndex: number;
+  isDragging: boolean;
+  onOpenSingletonTab: (type: TabType) => void;
+  onOpenTab: (host: Host, type: TabType) => void;
+}) {
+  return (
+    <div className="relative flex flex-col w-full h-full min-w-0 min-h-0 overflow-hidden">
+      <PaneHeader tab={tab} paneIndex={paneIndex}/>
+      <div className="flex-1 min-h-0 overflow-hidden">
+        {tab ? renderTabContent(tab, onOpenSingletonTab, onOpenTab) : <EmptyPane/>}
+      </div>
+      {/* Transparent overlay during drag — prevents xterm canvas repaints/flicker */}
+      {isDragging && (
+        <div className="absolute inset-0 z-10" style={{ cursor: "inherit" }}/>
+      )}
+    </div>
+  );
+}
+
+function ColDivider({ onMouseDown }: { onMouseDown: (e: React.MouseEvent) => void }) {
+  return (
+    <div
+      onMouseDown={onMouseDown}
+      className="w-1 shrink-0 cursor-col-resize bg-border hover:bg-accent-brand/60 transition-colors z-10"
+    />
+  );
+}
+
+function RowDivider({ onMouseDown }: { onMouseDown: (e: React.MouseEvent) => void }) {
+  return (
+    <div
+      onMouseDown={onMouseDown}
+      className="h-1 w-full shrink-0 cursor-row-resize bg-border hover:bg-accent-brand/60 transition-colors z-10"
+    />
+  );
+}
+
+function SplitView({
+  tabs,
+  paneTabIds,
+  splitMode,
+  onOpenSingletonTab,
+  onOpenTab,
+}: {
+  tabs: Tab[];
+  paneTabIds: (string | null)[];
+  splitMode: SplitMode;
+  onOpenSingletonTab: (type: TabType) => void;
+  onOpenTab: (host: Host, type: TabType) => void;
+}) {
+  const { rowSizes, rowColSizes, isDragging, containerRef, reset, onRowDivider, onColDivider } = useSplitSizes(splitMode);
+
+  function pane(idx: number) {
+    const tab = paneTabIds[idx] != null ? tabs.find(t => t.id === paneTabIds[idx]) ?? null : null;
+    return <Pane tab={tab} paneIndex={idx} isDragging={isDragging} onOpenSingletonTab={onOpenSingletonTab} onOpenTab={onOpenTab}/>;
+  }
+
+  // Row: flex row with per-row col sizes and col dividers
+  function Row({ rowIdx, paneIndices }: { rowIdx: number; paneIndices: number[] }) {
+    const cols = rowColSizes[rowIdx] ?? [];
+    return (
+      <div className="flex min-h-0 w-full" style={{ height: `${rowSizes[rowIdx]}%` }}>
+        {paneIndices.map((pIdx, ci) => (
+          <>
+            <div key={pIdx} className="min-w-0 min-h-0 overflow-hidden" style={{ width: `${cols[ci]}%` }}>
+              {pane(pIdx)}
+            </div>
+            {ci < paneIndices.length - 1 && (
+              <ColDivider key={`cd-${rowIdx}-${ci}`} onMouseDown={e => onColDivider(e, rowIdx, ci)}/>
+            )}
+          </>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div ref={containerRef} className="flex flex-col w-full h-full min-h-0 overflow-hidden relative">
+      <button
+        onClick={reset}
+        className="absolute top-1 right-1 z-20 text-xs text-muted-foreground hover:text-foreground bg-background/80 border border-border px-1.5 py-0.5 leading-tight"
+        title="Reset to equal split"
+      >
+        Reset
+      </button>
+
+      {splitMode === "2-way" && (
+        <Row rowIdx={0} paneIndices={[0, 1]}/>
+      )}
+
+      {splitMode === "3-way" && (
+        // Left pane spans full height, right side has 2 rows
+        <div className="flex w-full h-full min-h-0">
+          {/* Left: full height, uses rowColSizes[0][0] for width */}
+          <div className="min-w-0 min-h-0 overflow-hidden" style={{ width: `${rowColSizes[0][0]}%` }}>
+            {pane(0)}
+          </div>
+          <ColDivider onMouseDown={e => onColDivider(e, 0, 0)}/>
+          {/* Right: two stacked rows, each uses full remaining width */}
+          <div className="flex flex-col flex-1 min-h-0">
+            <div className="min-h-0 overflow-hidden" style={{ height: `${rowSizes[0]}%` }}>
+              {pane(1)}
+            </div>
+            <RowDivider onMouseDown={e => onRowDivider(e, 0)}/>
+            <div className="min-h-0 overflow-hidden" style={{ height: `${rowSizes[1]}%` }}>
+              {pane(2)}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {splitMode === "4-way" && (
+        <div className="flex flex-col w-full h-full min-h-0">
+          <Row rowIdx={0} paneIndices={[0, 1]}/>
+          <RowDivider onMouseDown={e => onRowDivider(e, 0)}/>
+          <Row rowIdx={1} paneIndices={[2, 3]}/>
+        </div>
+      )}
+
+      {splitMode === "5-way" && (
+        // Top row: 3 equal panes (0,1,2)
+        // Bottom row: pane 3 on left, pane 4 spanning rest
+        <div className="flex flex-col w-full h-full min-h-0">
+          <Row rowIdx={0} paneIndices={[0, 1, 2]}/>
+          <RowDivider onMouseDown={e => onRowDivider(e, 0)}/>
+          <Row rowIdx={1} paneIndices={[3, 4]}/>
+        </div>
+      )}
+
+      {splitMode === "6-way" && (
+        <div className="flex flex-col w-full h-full min-h-0">
+          <Row rowIdx={0} paneIndices={[0, 1, 2]}/>
+          <RowDivider onMouseDown={e => onRowDivider(e, 0)}/>
+          <Row rowIdx={1} paneIndices={[3, 4, 5]}/>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PaneHeader({ tab, paneIndex }: { tab: Tab | null; paneIndex: number }) {
+  return (
+    <div className="flex items-center gap-1.5 px-2.5 h-7 shrink-0 bg-sidebar border-b border-border text-xs font-medium text-muted-foreground select-none">
+      {tab ? (
+        <>
+          <span className="opacity-60">{tabIcon(tab.type)}</span>
+          <span className="truncate text-foreground">{tab.type === "dashboard" ? "Dashboard" : tab.label}</span>
+        </>
+      ) : (
+        <span className="opacity-40">Pane {paneIndex + 1} — empty</span>
+      )}
+    </div>
+  );
+}
+
+function EmptyPane() {
+  return (
+    <div className="flex flex-col items-center justify-center w-full h-full gap-2 text-muted-foreground/30 bg-background">
+      <div className="grid grid-cols-2 gap-1">
+        <div className="size-5 border-2 border-current rounded-sm"/>
+        <div className="size-5 border-2 border-current rounded-sm"/>
+        <div className="size-5 border-2 border-current rounded-sm"/>
+        <div className="size-5 border-2 border-current rounded-sm"/>
+      </div>
+      <span className="text-xs">No tab assigned</span>
+    </div>
+  );
 }
 
 export function AppShell({ username, onLogout }: { username: string; onLogout: () => void }) {
   const [tabs, setTabs] = useState<Tab[]>([DASHBOARD_TAB]);
   const [activeTabId, setActiveTabId] = useState("dashboard");
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [splitMode, setSplitMode] = useState<SplitMode>("none");
+  const [paneTabIds, setPaneTabIds] = useState<(string | null)[]>(Array(6).fill(null));
   const lastShiftTime = useRef(0);
   const pendingHostManagerEvent = useRef<string | null>(null);
 
@@ -231,12 +516,15 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
     setActiveTabId(id);
   }
 
+  const activeTab = tabs.find(t => t.id === activeTabId)!;
+  const isSplit = splitMode !== "none";
+
   return (
     <>
       <div className="flex w-screen h-screen bg-background">
         <div
           className={`relative flex flex-col bg-sidebar shrink-0 overflow-hidden ${sidebarOpen ? `border-r transition-colors ${sidebarDragging ? "border-accent-brand/60" : "border-border"}` : ""}`}
-          style={{ width: sidebarOpen ? sidebarWidth : 0, transition: sidebarOpen ? undefined : "width 0.2s" }}
+          style={{ width: sidebarOpen ? sidebarWidth : 0, transition: sidebarDragging ? "none" : "width 0.2s" }}
         >
           <div className="flex flex-row items-center gap-2 border-b border-border h-12.5 px-3 shrink-0">
             <Logo className="w-6 h-6 shrink-0 text-muted-foreground"/>
@@ -482,25 +770,22 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
               </button>
             )}
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
-              {(() => {
-                const activeTab = tabs.find(t => t.id === activeTabId)!;
-                switch (activeTab.type) {
-                  case "dashboard":      return <DashboardTab onOpenSingletonTab={openSingletonTab} onOpenTab={openTab}/>;
-                  case "terminal":       return <TerminalTab label={activeTab.label}/>;
-                  case "stats":          return <StatsTab label={activeTab.label}/>;
-                  case "files":          return <FilesTab label={activeTab.label}/>;
-                  case "host-manager":   return <HostManagerTab/>;
-                  case "user-profile":   return <UserProfileTab/>;
-                  case "admin-settings": return <AdminSettingsTab/>;
-                  case "docker":         return <DockerTab label={activeTab.label}/>;
-                  case "tunnel":         return <TunnelTab label={activeTab.label}/>;
-                }
-              })()}
+              {isSplit ? (
+                <SplitView
+                  tabs={tabs}
+                  paneTabIds={paneTabIds}
+                  splitMode={splitMode}
+                  onOpenSingletonTab={openSingletonTab}
+                  onOpenTab={openTab}
+                />
+              ) : (
+                activeTab ? renderTabContent(activeTab, openSingletonTab, openTab) : null
+              )}
             </div>
           </div>
           <div
             className={`relative flex flex-col bg-sidebar shrink-0 overflow-hidden ${toolsOpen ? `border-l transition-colors ${toolsDragging ? "border-accent-brand/60" : "border-border"}` : ""}`}
-            style={{ width: toolsOpen ? toolsWidth : 0, transition: toolsOpen ? undefined : "width 0.2s" }}
+            style={{ width: toolsOpen ? toolsWidth : 0, transition: toolsDragging ? "none" : "width 0.2s" }}
           >
             {toolsOpen && (
               <div
@@ -508,7 +793,16 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
                 className={`absolute left-0 top-0 bottom-0 w-1 cursor-col-resize z-30 transition-colors ${toolsDragging ? "bg-accent-brand/60" : "hover:bg-accent-brand/40"}`}
               />
             )}
-            <ToolsSidebar onClose={() => setToolsOpen(false)} tabs={tabs} width={toolsWidth} onResetWidth={() => setToolsWidth(304)}/>
+            <ToolsSidebar
+              onClose={() => setToolsOpen(false)}
+              tabs={tabs}
+              width={toolsWidth}
+              onResetWidth={() => setToolsWidth(304)}
+              splitMode={splitMode}
+              setSplitMode={setSplitMode}
+              paneTabIds={paneTabIds}
+              setPaneTabIds={setPaneTabIds}
+            />
           </div>
         </div>
       </div>

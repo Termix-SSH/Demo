@@ -20,6 +20,7 @@ import {
   FolderSearch,
   Globe,
   LayoutDashboard,
+  LayoutPanelLeft,
   Network,
   Pencil,
   Play,
@@ -43,24 +44,10 @@ import {
   INITIAL_SNIPPETS,
   HISTORY_ENTRIES,
   PANE_COUNTS,
-  PANE_LAYOUTS,
 } from "@/ui/data";
 import { FOLDER_ICONS } from "@/ui/types";
+import { tabIcon } from "@/ui/AppShell";
 import type { Tab, ToolsTab, SplitMode, Snippet, SnippetFolder, FolderIconId } from "@/ui/types";
-
-function tabIcon(type: Tab["type"]) {
-  switch (type) {
-    case "dashboard":      return <LayoutDashboard className="size-3.5"/>;
-    case "terminal":       return <Terminal className="size-3.5"/>;
-    case "stats":          return <Server className="size-3.5"/>;
-    case "files":          return <FolderSearch className="size-3.5"/>;
-    case "host-manager":   return <Server className="size-3.5"/>;
-    case "user-profile":   return <User className="size-3.5"/>;
-    case "admin-settings": return <Settings className="size-3.5"/>;
-    case "docker":         return <Box className="size-3.5"/>;
-    case "tunnel":         return <Network className="size-3.5"/>;
-  }
-}
 
 function FolderIconEl({ icon, className, style }: { icon: FolderIconId; className?: string; style?: React.CSSProperties }) {
   const props = { className, style };
@@ -283,98 +270,192 @@ function HistoryTab() {
   );
 }
 
-function SplitScreenTab({ tabs, splitMode, setSplitMode }: {
+// Layout previews for each split mode
+const LAYOUT_PREVIEWS: Record<SplitMode, React.ReactNode> = {
+  "none": (
+    <div className="size-full border-2 border-current"/>
+  ),
+  "2-way": (
+    <div className="flex gap-0.5 size-full">
+      <div className="flex-1 border-2 border-current"/>
+      <div className="flex-1 border-2 border-current"/>
+    </div>
+  ),
+  "3-way": (
+    <div className="flex gap-0.5 size-full">
+      <div className="flex-1 border-2 border-current"/>
+      <div className="flex flex-col flex-1 gap-0.5">
+        <div className="flex-1 border-2 border-current"/>
+        <div className="flex-1 border-2 border-current"/>
+      </div>
+    </div>
+  ),
+  "4-way": (
+    <div className="grid grid-cols-2 grid-rows-2 gap-0.5 size-full">
+      <div className="border-2 border-current"/>
+      <div className="border-2 border-current"/>
+      <div className="border-2 border-current"/>
+      <div className="border-2 border-current"/>
+    </div>
+  ),
+  "5-way": (
+    <div className="flex flex-col gap-0.5 size-full">
+      <div className="flex gap-0.5 flex-1">
+        <div className="flex-1 border-2 border-current"/>
+        <div className="flex-1 border-2 border-current"/>
+        <div className="flex-1 border-2 border-current"/>
+      </div>
+      <div className="flex gap-0.5 flex-1">
+        <div className="flex-1 border-2 border-current"/>
+        <div className="flex-[2] border-2 border-current"/>
+      </div>
+    </div>
+  ),
+  "6-way": (
+    <div className="grid grid-cols-3 grid-rows-2 gap-0.5 size-full">
+      <div className="border-2 border-current"/>
+      <div className="border-2 border-current"/>
+      <div className="border-2 border-current"/>
+      <div className="border-2 border-current"/>
+      <div className="border-2 border-current"/>
+      <div className="border-2 border-current"/>
+    </div>
+  ),
+};
+
+function SplitScreenTab({ tabs, splitMode, setSplitMode, paneTabIds, setPaneTabIds }: {
   tabs: Tab[];
   splitMode: SplitMode;
   setSplitMode: (m: SplitMode) => void;
+  paneTabIds: (string | null)[];
+  setPaneTabIds: (ids: (string | null)[]) => void;
 }) {
   const paneCount = PANE_COUNTS[splitMode];
-  const [panes, setPanes] = useState<(Tab | null)[]>(() => Array(6).fill(null));
   const [draggingTabId, setDraggingTabId] = useState<string | null>(null);
   const [dragOverPane, setDragOverPane] = useState<number | null>(null);
 
   function handleDrop(paneIndex: number) {
     if (draggingTabId === null) return;
-    const tab = tabs.find(t => t.id === draggingTabId) ?? null;
-    setPanes(prev => { const next = [...prev]; next[paneIndex] = tab; return next; });
+    const next = [...paneTabIds];
+    next[paneIndex] = draggingTabId;
+    setPaneTabIds(next);
     setDraggingTabId(null);
     setDragOverPane(null);
   }
 
   function clearPane(paneIndex: number) {
-    setPanes(prev => { const next = [...prev]; next[paneIndex] = null; return next; });
+    const next = [...paneTabIds];
+    next[paneIndex] = null;
+    setPaneTabIds(next);
   }
+
+  function resetAll() {
+    setSplitMode("none");
+    setPaneTabIds(Array(6).fill(null));
+  }
+
+  const activeCount = paneTabIds.slice(0, Math.max(paneCount, 0)).filter(Boolean).length;
 
   return (
     <>
-      <div className="grid grid-cols-3 gap-2 shrink-0">
-        {SPLIT_MODES.map(mode => (
-          <button
-            key={mode.id}
-            onClick={() => setSplitMode(mode.id)}
-            className={`px-2 py-2 text-xs font-semibold border transition-colors ${
-              splitMode === mode.id
-                ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand"
-                : "border-border text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {mode.label}
-          </button>
-        ))}
+      {/* Mode selector */}
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Layout</span>
+          {splitMode !== "none" && (
+            <span className="text-xs border border-accent-brand/40 text-accent-brand px-1.5 py-0.5 leading-tight">
+              {splitMode}
+            </span>
+          )}
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          {SPLIT_MODES.map(mode => (
+            <button
+              key={mode.id}
+              onClick={() => setSplitMode(mode.id)}
+              className={`flex flex-col items-center gap-1.5 p-2 border transition-colors ${
+                splitMode === mode.id
+                  ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand"
+                  : "border-border text-muted-foreground hover:text-foreground hover:border-muted-foreground/50"
+              }`}
+            >
+              <div className={`w-10 h-7 ${splitMode === mode.id ? "text-accent-brand" : "text-muted-foreground/40"}`}>
+                {LAYOUT_PREVIEWS[mode.id]}
+              </div>
+              <span className="text-xs font-semibold">{mode.label}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {splitMode === "none" ? (
-        <div className="flex flex-col items-center justify-center gap-2 py-8 text-center">
-          <div className="grid grid-cols-2 gap-1 opacity-30">
-            <div className="size-6 border-2 border-muted-foreground"/>
-            <div className="size-6 border-2 border-muted-foreground"/>
-            <div className="size-6 border-2 border-muted-foreground"/>
-            <div className="size-6 border-2 border-muted-foreground"/>
-          </div>
-          <span className="text-sm text-muted-foreground mt-1">Select a split screen mode</span>
-          <span className="text-xs text-muted-foreground/60">Choose how many tabs you want to view at once</span>
+        <div className="flex flex-col items-center justify-center gap-2 py-6 text-center border border-dashed border-border">
+          <LayoutPanelLeft className="size-8 text-muted-foreground/30"/>
+          <span className="text-sm text-muted-foreground">Select a layout above</span>
+          <span className="text-xs text-muted-foreground/60">Choose how many panes to display</span>
         </div>
       ) : (
         <>
-          <div className={`grid gap-1.5 ${PANE_LAYOUTS[splitMode]}`} style={{ aspectRatio: paneCount <= 3 ? "16/9" : "16/10" }}>
-            {Array.from({ length: paneCount }).map((_, i) => {
-              const assigned = panes[i];
-              const isOver = dragOverPane === i;
-              return (
-                <div
-                  key={i}
-                  onDragOver={e => { e.preventDefault(); setDragOverPane(i); }}
-                  onDragLeave={() => setDragOverPane(null)}
-                  onDrop={() => handleDrop(i)}
-                  className={`relative flex flex-col items-center justify-center border-2 border-dashed text-center transition-colors min-h-0
-                    ${isOver ? "border-accent-brand bg-accent-brand/10" : assigned ? "border-border bg-muted/30" : "border-border/50 bg-muted/10 hover:border-border hover:bg-muted/20"}
-                    ${splitMode === "3-way" && i === 0 ? "row-span-2" : ""}
-                    ${splitMode === "5-way" && i === 4 ? "col-span-2" : ""}
-                  `}
-                >
-                  {assigned ? (
-                    <>
-                      <div className="flex items-center gap-1 px-1">
-                        {tabIcon(assigned.type)}
-                        <span className="text-xs font-semibold truncate max-w-[80px]">
-                          {assigned.type === "dashboard" ? "Dashboard" : assigned.label}
-                        </span>
-                      </div>
-                      <button onClick={() => clearPane(i)} className="absolute top-0.5 right-0.5 size-4 flex items-center justify-center text-muted-foreground hover:text-foreground">
-                        <X className="size-2.5"/>
-                      </button>
-                    </>
-                  ) : (
-                    <span className="text-xs text-muted-foreground/50">{isOver ? "Drop here" : `Pane ${i + 1}`}</span>
-                  )}
-                </div>
-              );
-            })}
+          <Separator/>
+
+          {/* Pane assignment */}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Panes</span>
+              <span className="text-xs text-muted-foreground">{activeCount}/{paneCount} assigned</span>
+            </div>
+            <div className="grid grid-cols-2 gap-1.5">
+              {Array.from({ length: paneCount }).map((_, i) => {
+                const assignedId = paneTabIds[i];
+                const assignedTab = assignedId ? tabs.find(t => t.id === assignedId) : null;
+                const isOver = dragOverPane === i;
+                return (
+                  <div
+                    key={i}
+                    onDragOver={e => { e.preventDefault(); setDragOverPane(i); }}
+                    onDragLeave={() => setDragOverPane(null)}
+                    onDrop={() => handleDrop(i)}
+                    className={`relative flex flex-col items-center justify-center gap-1 p-2 min-h-[52px] border transition-colors ${
+                      isOver
+                        ? "border-accent-brand bg-accent-brand/10"
+                        : assignedTab
+                          ? "border-border bg-muted/20"
+                          : "border-dashed border-border/60 bg-muted/5 hover:border-border hover:bg-muted/10"
+                    }`}
+                  >
+                    <span className="absolute top-1 left-1.5 text-[10px] text-muted-foreground/40 font-mono leading-none">{i + 1}</span>
+                    {assignedTab ? (
+                      <>
+                        <div className="flex items-center gap-1 px-1 w-full justify-center">
+                          <span className="text-muted-foreground shrink-0">{tabIcon(assignedTab.type)}</span>
+                          <span className="text-xs font-semibold truncate max-w-[70px]">
+                            {assignedTab.type === "dashboard" ? "Dashboard" : assignedTab.label}
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => clearPane(i)}
+                          className="absolute top-0.5 right-0.5 size-4 flex items-center justify-center text-muted-foreground hover:text-foreground"
+                        >
+                          <X className="size-2.5"/>
+                        </button>
+                      </>
+                    ) : (
+                      <span className="text-xs text-muted-foreground/40">
+                        {isOver ? "Drop here" : "Empty"}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Open Tabs</span>
-            <span className="text-xs text-muted-foreground/60">Drag tabs into the panes above</span>
+          <Separator/>
+
+          {/* Tab list to drag from */}
+          <div className="flex flex-col gap-2">
+            <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Open Tabs</span>
+            <span className="text-xs text-muted-foreground/60">Drag tabs into panes above</span>
             <div className="flex flex-col gap-1 mt-0.5">
               {tabs.map(tab => (
                 <div
@@ -388,7 +469,7 @@ function SplitScreenTab({ tabs, splitMode, setSplitMode }: {
                       : "border-border hover:border-muted-foreground/40 hover:bg-muted/30"
                   }`}
                 >
-                  <div className="text-muted-foreground shrink-0">{tabIcon(tab.type)}</div>
+                  <span className="text-muted-foreground shrink-0">{tabIcon(tab.type)}</span>
                   <span className="text-xs font-medium flex-1 truncate">
                     {tab.type === "dashboard" ? "Dashboard" : tab.label}
                   </span>
@@ -405,10 +486,12 @@ function SplitScreenTab({ tabs, splitMode, setSplitMode }: {
 
           <Button
             variant="outline"
-            className="w-full border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
-            onClick={() => setPanes(Array(6).fill(null))}
+            size="sm"
+            className="w-full text-xs text-muted-foreground"
+            onClick={resetAll}
           >
-            Reset Layout
+            <X className="size-3"/>
+            Clear Split Screen
           </Button>
         </>
       )}
@@ -416,14 +499,17 @@ function SplitScreenTab({ tabs, splitMode, setSplitMode }: {
   );
 }
 
-export function ToolsSidebar({ onClose, tabs, width, onResetWidth }: {
+export function ToolsSidebar({ onClose, tabs, width, onResetWidth, splitMode, setSplitMode, paneTabIds, setPaneTabIds }: {
   onClose: () => void;
   tabs: Tab[];
   width: number;
   onResetWidth: () => void;
+  splitMode: SplitMode;
+  setSplitMode: (m: SplitMode) => void;
+  paneTabIds: (string | null)[];
+  setPaneTabIds: (ids: (string | null)[]) => void;
 }) {
   const [activeTab, setActiveTab] = useState<ToolsTab>("ssh-tools");
-  const [splitMode, setSplitMode] = useState<SplitMode>("none");
   const [snippetSearch, setSnippetSearch] = useState("");
   const [keyRecording, setKeyRecording] = useState(false);
   const [rightClickPaste, setRightClickPaste] = useState(false);
@@ -483,13 +569,16 @@ export function ToolsSidebar({ onClose, tabs, width, onResetWidth }: {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 py-2 text-xs font-semibold border-b-2 transition-colors ${
+              className={`flex-1 py-2 text-xs font-semibold border-b-2 transition-colors relative ${
                 activeTab === tab.id
                   ? "border-b-accent-brand text-foreground"
                   : "border-b-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
               {tab.label}
+              {tab.id === "split-screen" && splitMode !== "none" && (
+                <span className="absolute top-1 right-1 size-1.5 rounded-full bg-accent-brand"/>
+              )}
             </button>
           ))}
         </div>
@@ -578,7 +667,6 @@ export function ToolsSidebar({ onClose, tabs, width, onResetWidth }: {
                                 <div className="flex flex-col min-w-0">
                                   <span className="text-xs font-semibold">{snippet.name}</span>
                                   {snippet.description && <span className="text-xs text-muted-foreground">{snippet.description}</span>}
-                                  <span className="text-xs text-muted-foreground">ID: {snippet.id}</span>
                                 </div>
                               </div>
                               <span className="text-xs text-muted-foreground font-mono px-1">{snippet.command}</span>
@@ -616,7 +704,13 @@ export function ToolsSidebar({ onClose, tabs, width, onResetWidth }: {
           {activeTab === "history" && <HistoryTab/>}
 
           {activeTab === "split-screen" && (
-            <SplitScreenTab tabs={tabs} splitMode={splitMode} setSplitMode={setSplitMode}/>
+            <SplitScreenTab
+              tabs={tabs}
+              splitMode={splitMode}
+              setSplitMode={setSplitMode}
+              paneTabIds={paneTabIds}
+              setPaneTabIds={setPaneTabIds}
+            />
           )}
         </div>
       </div>
