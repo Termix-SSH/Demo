@@ -1346,7 +1346,7 @@ export function HostManagerTab() {
   };
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+    <div className="relative flex flex-col flex-1 min-h-0 overflow-hidden">
       <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 mx-3 mt-3 gap-0">
         <div>
           <h1 className="text-2xl font-bold">Host Manager</h1>
@@ -1589,82 +1589,84 @@ export function HostManagerTab() {
 
       {/* Floating selection bar */}
       {selectionMode && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-popover border border-border shadow-xl px-3 py-2 flex items-center gap-2">
-          <span className="text-sm font-semibold tabular-nums whitespace-nowrap pr-1">
-            {selectedHostIds.size} selected
-          </span>
-          <div className="w-px h-5 bg-border"/>
-          <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => {
-            if (selectedHostIds.size === allHosts.length) setSelectedHostIds(new Set());
-            else setSelectedHostIds(new Set(allHosts.map(h => h.id)));
-          }}>
-            {selectedHostIds.size === allHosts.length ? "Deselect All" : "Select All"}
-          </Button>
-          <div className="w-px h-5 bg-border"/>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-7 text-xs" disabled={selectedHostIds.size === 0}>
-                <FolderSearch className="size-3.5 mr-1.5"/>Features<ChevronDown className="size-3 ml-1.5 text-muted-foreground"/>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="center">
-              <DropdownMenuItem onClick={() => toast.success(`Enabled all features on ${selectedHostIds.size} hosts`)}>
-                <Check className="size-3.5 mr-2 text-green-500"/>Enable All Features
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => toast.success(`Disabled all features on ${selectedHostIds.size} hosts`)}>
-                <X className="size-3.5 mr-2 text-red-500"/>Disable All Features
-              </DropdownMenuItem>
-              <div className="h-px bg-border my-1"/>
-              <DropdownMenuItem onClick={() => toast.success("Done")}><Terminal className="size-3.5 mr-2"/>Enable Terminal</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => toast.success("Done")}><Terminal className="size-3.5 mr-2 opacity-30"/>Disable Terminal</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => toast.success("Done")}><FolderSearch className="size-3.5 mr-2"/>Enable File Manager</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => toast.success("Done")}><FolderSearch className="size-3.5 mr-2 opacity-30"/>Disable File Manager</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => toast.success("Done")}><Network className="size-3.5 mr-2"/>Enable Tunnels</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => toast.success("Done")}><Network className="size-3.5 mr-2 opacity-30"/>Disable Tunnels</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => toast.success("Done")}><Box className="size-3.5 mr-2"/>Enable Docker</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => toast.success("Done")}><Box className="size-3.5 mr-2 opacity-30"/>Disable Docker</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-7 text-xs" disabled={selectedHostIds.size === 0}>
-                <Folder className="size-3.5 mr-1.5"/>Move to Folder<ChevronDown className="size-3 ml-1.5 text-muted-foreground"/>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="center">
-              {folders.map(f => (
-                <DropdownMenuItem key={f} onClick={() => toast.success(`Moved ${selectedHostIds.size} hosts to ${f}`)}>
-                  <FolderOpen className="size-3.5 mr-2"/>{f}
+        <div className="absolute bottom-6 inset-x-0 flex justify-center z-50 pointer-events-none">
+          <div className="bg-popover border border-border shadow-xl px-3 py-2 flex items-center gap-2 pointer-events-auto">
+            <span className="text-sm font-semibold tabular-nums whitespace-nowrap pr-1">
+              {selectedHostIds.size} selected
+            </span>
+            <div className="w-px h-5 bg-border"/>
+            <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => {
+              if (selectedHostIds.size === allHosts.length) setSelectedHostIds(new Set());
+              else setSelectedHostIds(new Set(allHosts.map(h => h.id)));
+            }}>
+              {selectedHostIds.size === allHosts.length ? "Deselect All" : "Select All"}
+            </Button>
+            <div className="w-px h-5 bg-border"/>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="h-7 text-xs" disabled={selectedHostIds.size === 0}>
+                  <FolderSearch className="size-3.5 mr-1.5"/>Features<ChevronDown className="size-3 ml-1.5 text-muted-foreground"/>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="center">
+                <DropdownMenuItem onClick={() => toast.success(`Enabled all features on ${selectedHostIds.size} hosts`)}>
+                  <Check className="size-3.5 mr-2 text-green-500"/>Enable All Features
                 </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-7 text-xs" disabled={selectedHostIds.size === 0}>
-                <Pin className="size-3.5 mr-1.5"/>Pin<ChevronDown className="size-3 ml-1.5 text-muted-foreground"/>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="center">
-              <DropdownMenuItem onClick={() => toast.success(`Pinned ${selectedHostIds.size} hosts`)}>
-                <Pin className="size-3.5 mr-2 text-yellow-500"/>Pin Selected
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => toast.success(`Unpinned ${selectedHostIds.size} hosts`)}>
-                <Pin className="size-3.5 mr-2 opacity-30"/>Unpin Selected
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <div className="w-px h-5 bg-border"/>
-          <Button variant="outline" size="sm" className="h-7 text-xs" disabled={selectedHostIds.size === 0} onClick={() => { handleExportHosts(); }}>
-            <Download className="size-3.5 mr-1.5"/>Export
-          </Button>
-          <Button variant="outline" size="sm" className="h-7 text-xs border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive" disabled={selectedHostIds.size === 0} onClick={() => { toast.success(`Deleted ${selectedHostIds.size} hosts`); setSelectedHostIds(new Set()); }}>
-            <Trash2 className="size-3.5 mr-1.5"/>Delete
-          </Button>
-          <div className="w-px h-5 bg-border"/>
-          <Button variant="ghost" size="sm" className="h-7 text-xs" onClick={() => { setSelectionMode(false); setSelectedHostIds(new Set()); }}>
-            <X className="size-3.5 mr-1.5"/>Cancel
-          </Button>
+                <DropdownMenuItem onClick={() => toast.success(`Disabled all features on ${selectedHostIds.size} hosts`)}>
+                  <X className="size-3.5 mr-2 text-red-500"/>Disable All Features
+                </DropdownMenuItem>
+                <div className="h-px bg-border my-1"/>
+                <DropdownMenuItem onClick={() => toast.success("Done")}><Terminal className="size-3.5 mr-2"/>Enable Terminal</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => toast.success("Done")}><Terminal className="size-3.5 mr-2 opacity-30"/>Disable Terminal</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => toast.success("Done")}><FolderSearch className="size-3.5 mr-2"/>Enable File Manager</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => toast.success("Done")}><FolderSearch className="size-3.5 mr-2 opacity-30"/>Disable File Manager</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => toast.success("Done")}><Network className="size-3.5 mr-2"/>Enable Tunnels</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => toast.success("Done")}><Network className="size-3.5 mr-2 opacity-30"/>Disable Tunnels</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => toast.success("Done")}><Box className="size-3.5 mr-2"/>Enable Docker</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => toast.success("Done")}><Box className="size-3.5 mr-2 opacity-30"/>Disable Docker</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="h-7 text-xs" disabled={selectedHostIds.size === 0}>
+                  <Folder className="size-3.5 mr-1.5"/>Move to Folder<ChevronDown className="size-3 ml-1.5 text-muted-foreground"/>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="center">
+                {folders.map(f => (
+                  <DropdownMenuItem key={f} onClick={() => toast.success(`Moved ${selectedHostIds.size} hosts to ${f}`)}>
+                    <FolderOpen className="size-3.5 mr-2"/>{f}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="h-7 text-xs" disabled={selectedHostIds.size === 0}>
+                  <Pin className="size-3.5 mr-1.5"/>Pin<ChevronDown className="size-3 ml-1.5 text-muted-foreground"/>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="center">
+                <DropdownMenuItem onClick={() => toast.success(`Pinned ${selectedHostIds.size} hosts`)}>
+                  <Pin className="size-3.5 mr-2 text-yellow-500"/>Pin Selected
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => toast.success(`Unpinned ${selectedHostIds.size} hosts`)}>
+                  <Pin className="size-3.5 mr-2 opacity-30"/>Unpin Selected
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <div className="w-px h-5 bg-border"/>
+            <Button variant="outline" size="sm" className="h-7 text-xs" disabled={selectedHostIds.size === 0} onClick={() => { handleExportHosts(); }}>
+              <Download className="size-3.5 mr-1.5"/>Export
+            </Button>
+            <Button variant="outline" size="sm" className="h-7 text-xs border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive" disabled={selectedHostIds.size === 0} onClick={() => { toast.success(`Deleted ${selectedHostIds.size} hosts`); setSelectedHostIds(new Set()); }}>
+              <Trash2 className="size-3.5 mr-1.5"/>Delete
+            </Button>
+            <div className="w-px h-5 bg-border"/>
+            <Button variant="ghost" size="sm" className="h-7 text-xs" onClick={() => { setSelectionMode(false); setSelectedHostIds(new Set()); }}>
+              <X className="size-3.5 mr-1.5"/>Cancel
+            </Button>
+          </div>
         </div>
       )}
     </div>
