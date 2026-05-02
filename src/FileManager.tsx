@@ -344,11 +344,11 @@ function FolderTreeItem({
   );
 }
 
-interface FileManagerDemoProps {
+interface FileManagerProps {
   label: string;
 }
 
-export function FileManagerDemo({ label }: FileManagerDemoProps) {
+export function FileManager({ label }: FileManagerProps) {
   const {
     files,
     currentPath,

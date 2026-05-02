@@ -92,8 +92,8 @@ import { Auth, getStoredAuth, clearStoredAuth } from "@/Auth";
 import { useXTerm } from 'react-xtermjs'
 import "@xterm/xterm/css/xterm.css";
 import { FitAddon } from '@xterm/addon-fit';
-import { FileManagerDemo } from "@/components/FileManagerDemo";
-import { CommandPalette } from "@/components/CommandPalette";
+import { FileManager } from "@/FileManager";
+import { CommandPalette } from "@/CommandPalette";
 import { Kbd, KbdKey, KbdSeparator } from "@/components/ui/kbd";
 
 type Host = {
@@ -1366,7 +1366,7 @@ function StatsTab({label}: { label: string }) {
 
 function FilesTab({label}: { label: string }) {
   return (
-    <FileManagerDemo label={label} />
+    <FileManager label={label} />
   );
 }
 
