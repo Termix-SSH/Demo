@@ -491,7 +491,8 @@ function SettingRow({label, badge, description, children}: {
       <div className="flex flex-col gap-0.5">
         <div className="flex items-center gap-1.5">
           <span className="text-sm font-medium">{label}</span>
-          {badge && <span className="text-[10px] font-bold text-yellow-500 border border-yellow-500/40 px-1">{badge}</span>}
+          {badge &&
+            <span className="text-[10px] font-bold text-yellow-500 border border-yellow-500/40 px-1">{badge}</span>}
         </div>
         {description && <span className="text-xs text-muted-foreground">{description}</span>}
       </div>
@@ -585,7 +586,8 @@ function UserProfileTab() {
 
           <Card className="flex flex-col overflow-hidden py-0 gap-0 mt-auto">
             <button
-              onClick={() => {}}
+              onClick={() => {
+              }}
               className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors text-left"
             >
               <X className="size-3.5"/>
@@ -603,30 +605,35 @@ function UserProfileTab() {
               <SectionCard title="Account Info" icon={<User className="size-3.5"/>}>
                 <div className="grid grid-cols-2 gap-x-8 py-2">
                   <div className="flex flex-col py-2">
-                    <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Username</span>
+                    <span
+                      className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Username</span>
                     <span className="text-base font-semibold mt-0.5">Username</span>
                   </div>
                   <div className="flex flex-col py-2">
                     <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Role</span>
                     <div className="flex gap-1.5 mt-0.5 flex-wrap">
-                      <span className="inline-flex items-center px-2 py-0.5 text-xs font-semibold border border-orange-400/40 bg-orange-400/10 text-orange-400">Administrator</span>
+                      <span
+                        className="inline-flex items-center px-2 py-0.5 text-xs font-semibold border border-orange-400/40 bg-orange-400/10 text-orange-400">Administrator</span>
                     </div>
                   </div>
                   <div className="flex flex-col py-2">
-                    <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Auth Method</span>
+                    <span
+                      className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Auth Method</span>
                     <span className="text-base font-semibold mt-0.5">Local</span>
                   </div>
                   <div className="flex flex-col py-2">
                     <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Two-Factor Auth</span>
                     <span className="flex items-center gap-1.5 mt-0.5">
                       {totpEnabled
-                        ? <><ShieldCheck className="size-4 text-orange-400"/><span className="text-base font-semibold text-orange-400">Enabled</span></>
+                        ? <><ShieldCheck className="size-4 text-orange-400"/><span
+                          className="text-base font-semibold text-orange-400">Enabled</span></>
                         : <span className="text-base font-semibold text-muted-foreground">Disabled</span>
                       }
                     </span>
                   </div>
                   <div className="flex flex-col py-2">
-                    <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Version</span>
+                    <span
+                      className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Version</span>
                     <span className="text-base font-semibold mt-0.5 text-orange-400">v1.0.0</span>
                   </div>
                 </div>
@@ -656,7 +663,8 @@ function UserProfileTab() {
             <>
               <SectionCard title="Language & Localization" icon={<Languages className="size-3.5"/>}>
                 <SettingRow label="Language" description="Select your preferred display language">
-                  <select className="px-2.5 py-1.5 text-xs bg-background border border-border text-foreground outline-none focus:ring-1 focus:ring-ring">
+                  <select
+                    className="px-2.5 py-1.5 text-xs bg-background border border-border text-foreground outline-none focus:ring-1 focus:ring-ring">
                     <option>English</option>
                     <option>French</option>
                     <option>German</option>
@@ -700,13 +708,15 @@ function UserProfileTab() {
                 <SettingRow label="Command History Tracking" description="Track commands run in terminal sessions">
                   <FakeSwitch/>
                 </SettingRow>
-                <SettingRow label="Terminal Syntax Highlighting" badge="BETA" description="Highlight syntax in terminal output">
+                <SettingRow label="Terminal Syntax Highlighting" badge="BETA"
+                            description="Highlight syntax in terminal output">
                   <FakeSwitch/>
                 </SettingRow>
                 <SettingRow label="Command Palette Shortcut" description="Enable the command palette keyboard shortcut">
                   <FakeSwitch defaultChecked={true}/>
                 </SettingRow>
-                <SettingRow label="Terminal Session Persistence" badge="BETA" description="Keep terminal sessions alive between reconnects">
+                <SettingRow label="Terminal Session Persistence" badge="BETA"
+                            description="Keep terminal sessions alive between reconnects">
                   <FakeSwitch/>
                 </SettingRow>
               </SectionCard>
@@ -721,13 +731,15 @@ function UserProfileTab() {
                 <SettingRow label="Default Folders Collapsed" description="Collapse snippet folders by default">
                   <FakeSwitch defaultChecked={true}/>
                 </SettingRow>
-                <SettingRow label="Confirm Before Execution" description="Show a confirmation dialog before running a snippet">
+                <SettingRow label="Confirm Before Execution"
+                            description="Show a confirmation dialog before running a snippet">
                   <FakeSwitch/>
                 </SettingRow>
               </SectionCard>
 
               <SectionCard title="Updates" icon={<RefreshCw className="size-3.5"/>}>
-                <SettingRow label="Disable Update Checks" description="Stop Termix from checking for new versions on startup">
+                <SettingRow label="Disable Update Checks"
+                            description="Stop Termix from checking for new versions on startup">
                   <FakeSwitch/>
                 </SettingRow>
               </SectionCard>
@@ -760,19 +772,30 @@ function UserProfileTab() {
                 {showTotpSetup && !totpEnabled && (
                   <div className="border border-border bg-muted/20 p-4 mb-3 flex flex-col gap-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Setup TOTP</span>
-                      <button onClick={() => setShowTotpSetup(false)} className="text-muted-foreground hover:text-foreground">
+                      <span
+                        className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Setup TOTP</span>
+                      <button onClick={() => setShowTotpSetup(false)}
+                              className="text-muted-foreground hover:text-foreground">
                         <X className="size-3.5"/>
                       </button>
                     </div>
                     <div className="flex items-center justify-center p-4 bg-background border border-border">
-                      <div className="size-32 bg-muted flex items-center justify-center text-xs text-muted-foreground">QR Code</div>
+                      <div
+                        className="size-32 bg-muted flex items-center justify-center text-xs text-muted-foreground">QR
+                        Code
+                      </div>
                     </div>
                     <span className="text-xs text-muted-foreground text-center">Scan the QR code with your authenticator app, then enter the 6-digit code below</span>
                     <Input placeholder="000000" className="text-center font-mono tracking-widest text-lg h-10"/>
                     <div className="flex gap-2">
-                      <Button variant="ghost" size="sm" className="flex-1" onClick={() => setShowTotpSetup(false)}>Cancel</Button>
-                      <Button variant="outline" size="sm" className="flex-1 border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400" onClick={() => { setTotpEnabled(true); setShowTotpSetup(false); }}>
+                      <Button variant="ghost" size="sm" className="flex-1"
+                              onClick={() => setShowTotpSetup(false)}>Cancel</Button>
+                      <Button variant="outline" size="sm"
+                              className="flex-1 border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
+                              onClick={() => {
+                                setTotpEnabled(true);
+                                setShowTotpSetup(false);
+                              }}>
                         <CheckCircle2 className="size-3.5"/>Verify & Enable
                       </Button>
                     </div>
@@ -783,24 +806,29 @@ function UserProfileTab() {
               <SectionCard title="Change Password" icon={<Lock className="size-3.5"/>}>
                 <div className="flex flex-col gap-3 py-3">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Current Password</label>
+                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Current
+                      Password</label>
                     <div className="relative">
                       <Input type={showPassword ? "text" : "password"} placeholder="Current password" className="pr-9"/>
-                      <button onClick={() => setShowPassword(o => !o)} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                      <button onClick={() => setShowPassword(o => !o)}
+                              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
                         {showPassword ? <EyeOff className="size-4"/> : <Eye className="size-4"/>}
                       </button>
                     </div>
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">New Password</label>
+                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">New
+                      Password</label>
                     <Input type="password" placeholder="New password"/>
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Confirm New Password</label>
+                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Confirm New
+                      Password</label>
                     <Input type="password" placeholder="Confirm new password"/>
                   </div>
                   <div className="flex justify-end">
-                    <Button variant="outline" size="sm" className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">
+                    <Button variant="outline" size="sm"
+                            className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">
                       <KeyRound className="size-3.5"/>Update Password
                     </Button>
                   </div>
@@ -826,13 +854,15 @@ function UserProfileTab() {
               <span className="text-xs text-destructive">All sessions, hosts, credentials, and settings associated with your account will be permanently deleted.</span>
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Confirm Password</label>
+              <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Confirm
+                Password</label>
               <Input type="password" placeholder="Enter your password to confirm"/>
             </div>
           </div>
           <div className="flex items-center justify-end gap-2 mt-2">
             <Button variant="ghost" onClick={() => setShowDeleteConfirm(false)}>Cancel</Button>
-            <Button variant="outline" className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive">
+            <Button variant="outline"
+                    className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive">
               <Trash2 className="size-3.5"/>Delete Account
             </Button>
           </div>
@@ -862,20 +892,68 @@ const MOCK_USERS = [
 ];
 
 const MOCK_SESSIONS = [
-  {id: "s1", username: "admin", deviceInfo: "Chrome 124 / Windows", createdAt: "2026-05-01 08:00", lastActiveAt: "2m ago", expiresAt: "2026-05-08 08:00", isCurrentSession: true},
-  {id: "s2", username: "deploy", deviceInfo: "Firefox 125 / Linux", createdAt: "2026-04-30 14:22", lastActiveAt: "1h ago", expiresAt: "2026-05-07 14:22", isCurrentSession: false},
-  {id: "s3", username: "oidcuser", deviceInfo: "Safari / iOS", createdAt: "2026-04-29 09:11", lastActiveAt: "2d ago", expiresAt: "2026-05-06 09:11", isCurrentSession: false},
+  {
+    id: "s1",
+    username: "admin",
+    deviceInfo: "Chrome 124 / Windows",
+    createdAt: "2026-05-01 08:00",
+    lastActiveAt: "2m ago",
+    expiresAt: "2026-05-08 08:00",
+    isCurrentSession: true
+  },
+  {
+    id: "s2",
+    username: "deploy",
+    deviceInfo: "Firefox 125 / Linux",
+    createdAt: "2026-04-30 14:22",
+    lastActiveAt: "1h ago",
+    expiresAt: "2026-05-07 14:22",
+    isCurrentSession: false
+  },
+  {
+    id: "s3",
+    username: "oidcuser",
+    deviceInfo: "Safari / iOS",
+    createdAt: "2026-04-29 09:11",
+    lastActiveAt: "2d ago",
+    expiresAt: "2026-05-06 09:11",
+    isCurrentSession: false
+  },
 ];
 
 const MOCK_ROLES = [
-  {id: "r1", name: "administrator", displayName: "Administrator", description: "Full access to all resources", isSystem: true},
+  {
+    id: "r1",
+    name: "administrator",
+    displayName: "Administrator",
+    description: "Full access to all resources",
+    isSystem: true
+  },
   {id: "r2", name: "operator", displayName: "Operator", description: "Can manage hosts and terminals", isSystem: false},
   {id: "r3", name: "viewer", displayName: "Viewer", description: "Read-only access to stats", isSystem: false},
 ];
 
 const MOCK_API_KEYS = [
-  {id: "k1", name: "CI Pipeline", username: "deploy", tokenPrefix: "tmx_ci_abc1", createdAt: "2026-04-01T00:00:00Z", expiresAt: null, lastUsedAt: "2026-05-01T10:00:00Z", isActive: true},
-  {id: "k2", name: "Monitoring", username: "admin", tokenPrefix: "tmx_mon_xyz9", createdAt: "2026-03-15T00:00:00Z", expiresAt: "2026-06-15T00:00:00Z", lastUsedAt: "2026-05-01T09:55:00Z", isActive: true},
+  {
+    id: "k1",
+    name: "CI Pipeline",
+    username: "deploy",
+    tokenPrefix: "tmx_ci_abc1",
+    createdAt: "2026-04-01T00:00:00Z",
+    expiresAt: null,
+    lastUsedAt: "2026-05-01T10:00:00Z",
+    isActive: true
+  },
+  {
+    id: "k2",
+    name: "Monitoring",
+    username: "admin",
+    tokenPrefix: "tmx_mon_xyz9",
+    createdAt: "2026-03-15T00:00:00Z",
+    expiresAt: "2026-06-15T00:00:00Z",
+    lastUsedAt: "2026-05-01T09:55:00Z",
+    isActive: true
+  },
 ];
 
 function AdminToggle({on, onToggle}: { on: boolean; onToggle: () => void }) {
@@ -884,7 +962,8 @@ function AdminToggle({on, onToggle}: { on: boolean; onToggle: () => void }) {
       onClick={onToggle}
       className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center border-2 transition-colors ${on ? "bg-orange-400 border-orange-400" : "bg-muted border-border"}`}
     >
-      <span className={`pointer-events-none inline-block h-3 w-3 bg-background shadow-sm transition-transform ${on ? "translate-x-4" : "translate-x-0.5"}`}/>
+      <span
+        className={`pointer-events-none inline-block h-3 w-3 bg-background shadow-sm transition-transform ${on ? "translate-x-4" : "translate-x-0.5"}`}/>
     </button>
   );
 }
@@ -907,7 +986,7 @@ function AdminSettingsTab() {
   const [editUserOpen, setEditUserOpen] = useState(false);
   const [editUserTarget, setEditUserTarget] = useState<typeof MOCK_USERS[0] | null>(null);
   const [linkAccountOpen, setLinkAccountOpen] = useState(false);
-  const [linkAccountTarget, setLinkAccountTarget] = useState<{id: string; username: string} | null>(null);
+  const [linkAccountTarget, setLinkAccountTarget] = useState<{ id: string; username: string } | null>(null);
 
   return (
     <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
@@ -977,16 +1056,20 @@ function AdminSettingsTab() {
                 <div className="flex flex-col gap-3 py-3">
                   <span className="text-xs text-muted-foreground">Default polling intervals applied to all hosts unless overridden per-host</span>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Status Check Interval</label>
+                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Status
+                      Check Interval</label>
                     <div className="flex items-center gap-2">
-                      <Input type="number" value={statusInterval} onChange={e => setStatusInterval(e.target.value)} className="w-24"/>
+                      <Input type="number" value={statusInterval} onChange={e => setStatusInterval(e.target.value)}
+                             className="w-24"/>
                       <span className="text-sm text-muted-foreground">seconds</span>
                     </div>
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Metrics Interval</label>
+                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Metrics
+                      Interval</label>
                     <div className="flex items-center gap-2">
-                      <Input type="number" value={metricsInterval} onChange={e => setMetricsInterval(e.target.value)} className="w-24"/>
+                      <Input type="number" value={metricsInterval} onChange={e => setMetricsInterval(e.target.value)}
+                             className="w-24"/>
                       <span className="text-sm text-muted-foreground">seconds</span>
                     </div>
                   </div>
@@ -1001,7 +1084,8 @@ function AdminSettingsTab() {
                   </SettingRow>
                   {guacEnabled && (
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">guacd URL</label>
+                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">guacd
+                        URL</label>
                       <Input value={guacUrl} onChange={e => setGuacUrl(e.target.value)} placeholder="guacd:4822"/>
                       <span className="text-xs text-muted-foreground">The host:port of your guacd daemon</span>
                     </div>
@@ -1043,7 +1127,7 @@ function AdminSettingsTab() {
                   {label: "Display Name Path", placeholder: "name", required: true},
                   {label: "Scopes", placeholder: "openid email profile", required: true},
                   {label: "Override Userinfo URL", placeholder: "https://your-provider.com/oauth2/userinfo"},
-                ] as {label: string; placeholder: string; type?: string; required?: boolean}[]).map(f => (
+                ] as { label: string; placeholder: string; type?: string; required?: boolean }[]).map(f => (
                   <div key={f.label} className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
                       {f.label}{f.required && <span className="text-orange-400 ml-0.5">*</span>}
@@ -1052,7 +1136,8 @@ function AdminSettingsTab() {
                   </div>
                 ))}
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Allowed Users</label>
+                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Allowed
+                    Users</label>
                   <span className="text-xs text-muted-foreground">One email per line. Leave empty to allow all authenticated users.</span>
                   <textarea
                     placeholder={"user@example.com\nanother@example.com"}
@@ -1061,10 +1146,12 @@ function AdminSettingsTab() {
                   />
                 </div>
                 <div className="flex justify-end gap-2 mt-1">
-                  <Button variant="outline" className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive">
+                  <Button variant="outline"
+                          className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive">
                     <Trash2 className="size-3.5"/>Remove OIDC
                   </Button>
-                  <Button variant="outline" className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">
+                  <Button variant="outline"
+                          className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">
                     <RefreshCw className="size-3.5"/>Save Configuration
                   </Button>
                 </div>
@@ -1081,7 +1168,9 @@ function AdminSettingsTab() {
                   <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground">
                     <RefreshCw className="size-3.5"/>
                   </Button>
-                  <Button variant="outline" size="sm" className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400" onClick={() => setCreateUserOpen(true)}>
+                  <Button variant="outline" size="sm"
+                          className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
+                          onClick={() => setCreateUserOpen(true)}>
                     <Plus className="size-3.5"/>Create User
                   </Button>
                 </div>
@@ -1089,34 +1178,50 @@ function AdminSettingsTab() {
               {MOCK_USERS.map(user => {
                 const authLabel = user.isOidc && user.passwordHash ? "Dual Auth" : user.isOidc ? "OIDC" : "Local";
                 return (
-                  <div key={user.id} className="flex items-center justify-between py-3 border-b border-border last:border-0">
+                  <div key={user.id}
+                       className="flex items-center justify-between py-3 border-b border-border last:border-0">
                     <div className="flex items-center gap-3">
-                      <div className="size-8 bg-muted border border-border flex items-center justify-center text-xs font-bold shrink-0">
+                      <div
+                        className="size-8 bg-muted border border-border flex items-center justify-center text-xs font-bold shrink-0">
                         {user.username[0].toUpperCase()}
                       </div>
                       <div className="flex flex-col gap-0.5">
                         <span className="text-sm font-semibold">{user.username}</span>
                         <div className="flex items-center gap-1.5">
-                          {user.isAdmin && <span className="text-[10px] font-semibold px-1.5 py-px border border-orange-400/40 bg-orange-400/10 text-orange-400">ADMIN</span>}
-                          <span className="text-[10px] font-semibold px-1.5 py-px border border-border text-muted-foreground">{authLabel.toUpperCase()}</span>
+                          {user.isAdmin && <span
+                            className="text-[10px] font-semibold px-1.5 py-px border border-orange-400/40 bg-orange-400/10 text-orange-400">ADMIN</span>}
+                          <span
+                            className="text-[10px] font-semibold px-1.5 py-px border border-border text-muted-foreground">{authLabel.toUpperCase()}</span>
                         </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground" title="Edit user" onClick={() => { setEditUserTarget(user); setEditUserOpen(true); }}>
+                      <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground"
+                              title="Edit user" onClick={() => {
+                        setEditUserTarget(user);
+                        setEditUserOpen(true);
+                      }}>
                         <Pencil className="size-3.5"/>
                       </Button>
                       {user.isOidc && !user.passwordHash && (
-                        <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground" title="Link to password account" onClick={() => { setLinkAccountTarget({id: user.id, username: user.username}); setLinkAccountOpen(true); }}>
+                        <Button variant="ghost" size="icon"
+                                className="size-7 text-muted-foreground hover:text-foreground"
+                                title="Link to password account" onClick={() => {
+                          setLinkAccountTarget({id: user.id, username: user.username});
+                          setLinkAccountOpen(true);
+                        }}>
                           <Share2 className="size-3.5"/>
                         </Button>
                       )}
                       {user.isOidc && user.passwordHash && (
-                        <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-orange-400" title="Unlink OIDC">
+                        <Button variant="ghost" size="icon"
+                                className="size-7 text-muted-foreground hover:text-orange-400" title="Unlink OIDC">
                           <X className="size-3.5"/>
                         </Button>
                       )}
-                      <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-destructive" disabled={user.isAdmin} title="Delete user">
+                      <Button variant="ghost" size="icon"
+                              className="size-7 text-muted-foreground hover:text-destructive" disabled={user.isAdmin}
+                              title="Delete user">
                         <Trash2 className="size-3.5"/>
                       </Button>
                     </div>
@@ -1138,11 +1243,13 @@ function AdminSettingsTab() {
                 </div>
               </div>
               {MOCK_SESSIONS.map(session => (
-                <div key={session.id} className="flex items-center justify-between py-3 border-b border-border last:border-0">
+                <div key={session.id}
+                     className="flex items-center justify-between py-3 border-b border-border last:border-0">
                   <div className="flex flex-col gap-0.5">
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-semibold">{session.username}</span>
-                      {session.isCurrentSession && <span className="text-[10px] font-semibold px-1.5 py-px border border-orange-400/40 bg-orange-400/10 text-orange-400">CURRENT</span>}
+                      {session.isCurrentSession && <span
+                        className="text-[10px] font-semibold px-1.5 py-px border border-orange-400/40 bg-orange-400/10 text-orange-400">CURRENT</span>}
                     </div>
                     <span className="text-xs text-muted-foreground">{session.deviceInfo}</span>
                     <span className="text-xs text-muted-foreground">
@@ -1150,7 +1257,8 @@ function AdminSettingsTab() {
                     </span>
                   </div>
                   <div className="flex items-center gap-1 shrink-0 ml-4">
-                    <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-destructive h-7 px-2">
+                    <Button variant="ghost" size="sm"
+                            className="text-xs text-muted-foreground hover:text-destructive h-7 px-2">
                       Revoke All
                     </Button>
                     <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-destructive">
@@ -1168,40 +1276,51 @@ function AdminSettingsTab() {
               <SectionCard title="Role Management" icon={<KeyRound className="size-3.5"/>}>
                 <div className="flex items-center justify-between py-2.5 border-b border-border">
                   <span className="text-xs text-muted-foreground">{MOCK_ROLES.length} roles</span>
-                  <Button variant="outline" size="sm" className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400" onClick={() => setShowCreateRole(o => !o)}>
+                  <Button variant="outline" size="sm"
+                          className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
+                          onClick={() => setShowCreateRole(o => !o)}>
                     <Plus className="size-3.5"/>Create Role
                   </Button>
                 </div>
                 {showCreateRole && (
                   <div className="flex flex-col gap-3 py-3 border-b border-border">
-                    <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">New Role</span>
+                    <span
+                      className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">New Role</span>
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Role Name <span className="text-orange-400">*</span></label>
+                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Role
+                        Name <span className="text-orange-400">*</span></label>
                       <Input placeholder="e.g., developer"/>
                       <span className="text-xs text-muted-foreground">Lowercase, no spaces. Used internally.</span>
                     </div>
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Display Name <span className="text-orange-400">*</span></label>
+                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Display
+                        Name <span className="text-orange-400">*</span></label>
                       <Input placeholder="e.g., Developer"/>
                     </div>
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Description</label>
-                      <textarea rows={2} placeholder="Optional description" className="w-full px-3 py-2 text-xs bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring"/>
+                      <label
+                        className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Description</label>
+                      <textarea rows={2} placeholder="Optional description"
+                                className="w-full px-3 py-2 text-xs bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring"/>
                     </div>
                     <div className="flex justify-end gap-2">
                       <Button variant="ghost" size="sm" onClick={() => setShowCreateRole(false)}>Cancel</Button>
-                      <Button variant="outline" size="sm" className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">Create</Button>
+                      <Button variant="outline" size="sm"
+                              className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">Create</Button>
                     </div>
                   </div>
                 )}
                 {MOCK_ROLES.map(role => (
-                  <div key={role.id} className="flex items-center justify-between py-3 border-b border-border last:border-0">
+                  <div key={role.id}
+                       className="flex items-center justify-between py-3 border-b border-border last:border-0">
                     <div className="flex flex-col gap-0.5">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-semibold">{role.displayName}</span>
                         {role.isSystem
-                          ? <span className="text-[10px] font-semibold px-1.5 py-px border border-border text-muted-foreground">SYSTEM</span>
-                          : <span className="text-[10px] font-semibold px-1.5 py-px border border-orange-400/40 bg-orange-400/10 text-orange-400">CUSTOM</span>
+                          ? <span
+                            className="text-[10px] font-semibold px-1.5 py-px border border-border text-muted-foreground">SYSTEM</span>
+                          : <span
+                            className="text-[10px] font-semibold px-1.5 py-px border border-orange-400/40 bg-orange-400/10 text-orange-400">CUSTOM</span>
                         }
                       </div>
                       <span className="text-xs font-mono text-muted-foreground">{role.name}</span>
@@ -1209,10 +1328,12 @@ function AdminSettingsTab() {
                     </div>
                     {!role.isSystem && (
                       <div className="flex items-center gap-1 shrink-0 ml-4">
-                        <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground">
+                        <Button variant="ghost" size="icon"
+                                className="size-7 text-muted-foreground hover:text-foreground">
                           <Pencil className="size-3.5"/>
                         </Button>
-                        <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-destructive">
+                        <Button variant="ghost" size="icon"
+                                className="size-7 text-muted-foreground hover:text-destructive">
                           <Trash2 className="size-3.5"/>
                         </Button>
                       </div>
@@ -1231,7 +1352,8 @@ function AdminSettingsTab() {
                   <span className="text-sm font-medium">Export Database</span>
                   <span className="text-xs text-muted-foreground">Download a backup of all hosts, credentials, and settings</span>
                 </div>
-                <Button variant="outline" size="sm" className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400 shrink-0 ml-8">
+                <Button variant="outline" size="sm"
+                        className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400 shrink-0 ml-8">
                   Export
                 </Button>
               </div>
@@ -1254,7 +1376,8 @@ function AdminSettingsTab() {
                     </Button>
                   </div>
                   {importFile && (
-                    <Button variant="outline" size="sm" className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">
+                    <Button variant="outline" size="sm"
+                            className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">
                       Import
                     </Button>
                   )}
@@ -1272,38 +1395,48 @@ function AdminSettingsTab() {
                   <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground">
                     <RefreshCw className="size-3.5"/>
                   </Button>
-                  <Button variant="outline" size="sm" className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400" onClick={() => setShowCreateKey(o => !o)}>
+                  <Button variant="outline" size="sm"
+                          className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
+                          onClick={() => setShowCreateKey(o => !o)}>
                     <Plus className="size-3.5"/>Create Key
                   </Button>
                 </div>
               </div>
               {showCreateKey && (
                 <div className="flex flex-col gap-3 py-3 border-b border-border">
-                  <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">New API Key</span>
+                  <span
+                    className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">New API Key</span>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Key Name <span className="text-orange-400">*</span></label>
+                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Key
+                      Name <span className="text-orange-400">*</span></label>
                     <Input placeholder="e.g., CI Pipeline"/>
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Scoped User <span className="text-orange-400">*</span></label>
+                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Scoped
+                      User <span className="text-orange-400">*</span></label>
                     <Input placeholder="Select a user"/>
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Expires At <span className="text-muted-foreground font-normal">(optional)</span></label>
+                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Expires
+                      At <span className="text-muted-foreground font-normal">(optional)</span></label>
                     <Input type="date"/>
                   </div>
                   <div className="flex justify-end gap-2">
                     <Button variant="ghost" size="sm" onClick={() => setShowCreateKey(false)}>Cancel</Button>
-                    <Button variant="outline" size="sm" className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">Create Key</Button>
+                    <Button variant="outline" size="sm"
+                            className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">Create
+                      Key</Button>
                   </div>
                 </div>
               )}
               {MOCK_API_KEYS.map(key => (
-                <div key={key.id} className="flex items-center justify-between py-3 border-b border-border last:border-0">
+                <div key={key.id}
+                     className="flex items-center justify-between py-3 border-b border-border last:border-0">
                   <div className="flex flex-col gap-0.5">
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-semibold">{key.name}</span>
-                      {!key.isActive && <span className="text-[10px] font-semibold px-1.5 py-px border border-destructive/40 bg-destructive/10 text-destructive">REVOKED</span>}
+                      {!key.isActive && <span
+                        className="text-[10px] font-semibold px-1.5 py-px border border-destructive/40 bg-destructive/10 text-destructive">REVOKED</span>}
                     </div>
                     <span className="text-xs text-muted-foreground">User: {key.username}</span>
                     <span className="text-xs font-mono text-muted-foreground">{key.tokenPrefix}…</span>
@@ -1311,7 +1444,9 @@ function AdminSettingsTab() {
                       Created: {key.createdAt.split("T")[0]} · Last used: {key.lastUsedAt.split("T")[0]} · Expires: {key.expiresAt ? key.expiresAt.split("T")[0] : "Never"}
                     </span>
                   </div>
-                  <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-destructive shrink-0 ml-4" title="Revoke key">
+                  <Button variant="ghost" size="icon"
+                          className="size-7 text-muted-foreground hover:text-destructive shrink-0 ml-4"
+                          title="Revoke key">
                     <Trash2 className="size-3.5"/>
                   </Button>
                 </div>
@@ -1333,14 +1468,17 @@ function AdminSettingsTab() {
           </DialogHeader>
           <div className="flex flex-col gap-4 mt-1">
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Username <span className="text-orange-400">*</span></label>
+              <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Username <span
+                className="text-orange-400">*</span></label>
               <Input placeholder="Enter username"/>
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Password <span className="text-orange-400">*</span></label>
+              <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Password <span
+                className="text-orange-400">*</span></label>
               <div className="relative">
                 <Input type="password" placeholder="Enter password" className="pr-9"/>
-                <button className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                <button
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
                   <Eye className="size-4"/>
                 </button>
               </div>
@@ -1349,7 +1487,8 @@ function AdminSettingsTab() {
           </div>
           <div className="flex justify-end gap-2 mt-2">
             <Button variant="ghost" onClick={() => setCreateUserOpen(false)}>Cancel</Button>
-            <Button variant="outline" className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">
+            <Button variant="outline"
+                    className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">
               Create User
             </Button>
           </div>
@@ -1370,18 +1509,22 @@ function AdminSettingsTab() {
               {/* Info */}
               <div className="grid grid-cols-2 gap-x-6 gap-y-2 py-3">
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Username</span>
+                  <span
+                    className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Username</span>
                   <span className="text-sm font-semibold">{editUserTarget.username}</span>
                 </div>
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Auth Type</span>
+                  <span
+                    className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Auth Type</span>
                   <span className="text-sm font-semibold">
                     {editUserTarget.isOidc && editUserTarget.passwordHash ? "Dual Auth" : editUserTarget.isOidc ? "OIDC" : "Local"}
                   </span>
                 </div>
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Admin Status</span>
-                  <span className="text-sm font-semibold">{editUserTarget.isAdmin ? "Administrator" : "Regular User"}</span>
+                  <span
+                    className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Admin Status</span>
+                  <span
+                    className="text-sm font-semibold">{editUserTarget.isAdmin ? "Administrator" : "Regular User"}</span>
                 </div>
                 <div className="flex flex-col gap-0.5">
                   <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">User ID</span>
@@ -1394,7 +1537,8 @@ function AdminSettingsTab() {
                   <span className="text-sm font-medium">Administrator</span>
                   <span className="text-xs text-muted-foreground">Full access to all admin settings</span>
                 </div>
-                <AdminToggle on={editUserTarget.isAdmin} onToggle={() => {}}/>
+                <AdminToggle on={editUserTarget.isAdmin} onToggle={() => {
+                }}/>
               </div>
               {/* Roles */}
               <div className="flex flex-col gap-2 py-3">
@@ -1403,10 +1547,12 @@ function AdminSettingsTab() {
                   {MOCK_ROLES.filter(r => !r.isSystem).map(role => (
                     <div key={role.id} className="flex items-center gap-1 px-2 py-1 border border-border text-xs">
                       <span>{role.displayName}</span>
-                      <button className="text-muted-foreground hover:text-destructive ml-1"><X className="size-3"/></button>
+                      <button className="text-muted-foreground hover:text-destructive ml-1"><X className="size-3"/>
+                      </button>
                     </div>
                   ))}
-                  <Button variant="outline" size="sm" className="h-7 text-xs border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">
+                  <Button variant="outline" size="sm"
+                          className="h-7 text-xs border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400">
                     <Plus className="size-3"/>Add Role
                   </Button>
                 </div>
@@ -1417,7 +1563,8 @@ function AdminSettingsTab() {
                   <span className="text-sm font-medium">Revoke All Sessions</span>
                   <span className="text-xs text-muted-foreground">Force this user to log in again on all devices</span>
                 </div>
-                <Button variant="outline" size="sm" className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive shrink-0 ml-8">
+                <Button variant="outline" size="sm"
+                        className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive shrink-0 ml-8">
                   Revoke
                 </Button>
               </div>
@@ -1427,7 +1574,9 @@ function AdminSettingsTab() {
                   <AlertCircle className="size-4 text-destructive shrink-0 mt-0.5"/>
                   <span className="text-xs text-destructive">Deleting this user is permanent. All their data will be removed.</span>
                 </div>
-                <Button variant="outline" className="w-full border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive" disabled={editUserTarget.isAdmin}>
+                <Button variant="outline"
+                        className="w-full border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                        disabled={editUserTarget.isAdmin}>
                   <Trash2 className="size-3.5"/>Delete {editUserTarget.username}
                 </Button>
               </div>
@@ -1442,7 +1591,9 @@ function AdminSettingsTab() {
           <DialogHeader>
             <DialogTitle className="text-lg font-bold">Link OIDC to Password Account</DialogTitle>
             <DialogDescription className="text-xs text-muted-foreground">
-              Merge the OIDC account <span className="font-semibold text-foreground">{linkAccountTarget?.username}</span> with an existing local account.
+              Merge the OIDC account <span
+              className="font-semibold text-foreground">{linkAccountTarget?.username}</span> with an existing local
+              account.
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-4 mt-1">
@@ -1458,13 +1609,15 @@ function AdminSettingsTab() {
               </div>
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Target Username <span className="text-orange-400">*</span></label>
+              <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Target
+                Username <span className="text-orange-400">*</span></label>
               <Input placeholder="Enter the local account username to link to"/>
             </div>
           </div>
           <div className="flex justify-end gap-2 mt-2">
             <Button variant="ghost" onClick={() => setLinkAccountOpen(false)}>Cancel</Button>
-            <Button variant="outline" className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive">
+            <Button variant="outline"
+                    className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive">
               Link Accounts
             </Button>
           </div>
@@ -1638,7 +1791,7 @@ function App() {
     x: number;
     y: number;
   } | null>(null);
-  const [dragPos, setDragPos] = useState<{x: number; y: number} | null>(null);
+  const [dragPos, setDragPos] = useState<{ x: number; y: number } | null>(null);
   const dragTargetRef = useRef<number | null>(null);
   const didDrag = useRef(false);
 
@@ -1691,7 +1844,9 @@ function App() {
       setDragTabId(null);
       setDragTargetIndex(null);
       setDragPos(null);
-      setTimeout(() => { didDrag.current = false; }, 0);
+      setTimeout(() => {
+        didDrag.current = false;
+      }, 0);
     }
 
     window.addEventListener("pointermove", onPointerMove);
@@ -1886,7 +2041,9 @@ function App() {
                   return (
                     <div
                       key={tab.id}
-                      ref={el => { if (el) tabEls.current.set(tab.id, el); else tabEls.current.delete(tab.id); }}
+                      ref={el => {
+                        if (el) tabEls.current.set(tab.id, el); else tabEls.current.delete(tab.id);
+                      }}
                       onClick={() => !dragTabId && !didDrag.current && setActiveTabId(tab.id)}
                       onMouseDown={e => {
                         if (e.button === 1 && tab.type !== "dashboard") {
@@ -1973,9 +2130,9 @@ function App() {
                       }}
                       className={`flex items-center gap-2 shrink-0 border-r border-border text-sm shadow-lg
                         ${tab.type === "dashboard"
-                          ? `px-3.5 ${active ? "border-b-2 border-b-orange-400 bg-surface text-foreground" : "bg-sidebar text-muted-foreground"}`
-                          : `px-4 font-medium ${active ? "border-b-2 border-b-orange-400 bg-surface text-foreground" : "bg-sidebar text-muted-foreground"}`
-                        }`}
+                        ? `px-3.5 ${active ? "border-b-2 border-b-orange-400 bg-surface text-foreground" : "bg-sidebar text-muted-foreground"}`
+                        : `px-4 font-medium ${active ? "border-b-2 border-b-orange-400 bg-surface text-foreground" : "bg-sidebar text-muted-foreground"}`
+                      }`}
                     >
                       {tabIcon(tab.type)}
                       {tab.type !== "dashboard" && tab.label}
@@ -2713,7 +2870,8 @@ function ToolsSidebar({onClose, tabs, width, onResetWidth}: {
                     onClick={() => setRightClickPaste(o => !o)}
                     className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center border-2 transition-colors ${rightClickPaste ? "bg-orange-400 border-orange-400" : "bg-muted border-border"}`}
                   >
-                    <span className={`pointer-events-none inline-block h-3 w-3 bg-background shadow-sm transition-transform ${rightClickPaste ? "translate-x-4" : "translate-x-0.5"}`}/>
+                    <span
+                      className={`pointer-events-none inline-block h-3 w-3 bg-background shadow-sm transition-transform ${rightClickPaste ? "translate-x-4" : "translate-x-0.5"}`}/>
                   </button>
                 </div>
               </div>
