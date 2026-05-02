@@ -27,7 +27,6 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import { Toaster } from "@/components/ui/sonner";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { CommandPalette } from "@/ui/CommandPalette";
 import { FileManager } from "@/ui/tabs/FileManagerTab";
@@ -528,7 +527,6 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
         }}
       />
       <QuickConnectDialog open={quickConnectOpen} onOpenChange={setQuickConnectOpen}/>
-      <Toaster position="bottom-right"/>
     </>
   );
 }
