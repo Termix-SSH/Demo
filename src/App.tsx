@@ -45,6 +45,7 @@ import {
 } from "lucide-react";
 import {Input} from "@/components/ui/input";
 import {useState} from "react";
+import type React from "react";
 import { Card } from "@/components/ui/card";
 import {
     Dialog,
@@ -53,11 +54,18 @@ import {
     DialogTitle,
     DialogDescription,
 } from "@/components/ui/dialog";
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 type Host = {
     name: string;
     user: string;
     address: string;
+    folder: string;
+    online: boolean;
+    cpu: number;
+    ram: number;
+    lastAccess: string;
 };
 
 type HostFolder = {
@@ -91,6 +99,15 @@ function tabIcon(type: TabType) {
     }
 }
 
+const hosts: Host[] = [
+    {name: "web-01",     user: "deploy",   address: "10.0.1.10", folder: "Production / Web Servers", online: true,  cpu: 12, ram: 34, lastAccess: "2m ago"},
+    {name: "web-02",     user: "deploy",   address: "10.0.1.11", folder: "Production / Web Servers", online: true,  cpu: 8,  ram: 27, lastAccess: "12m ago"},
+    {name: "db-primary", user: "postgres", address: "10.0.2.10", folder: "Production",               online: true,  cpu: 45, ram: 71, lastAccess: "5m ago"},
+    {name: "db-replica", user: "postgres", address: "10.0.2.11", folder: "Production",               online: false, cpu: 0,  ram: 0,  lastAccess: "31m ago"},
+    {name: "stage-web",  user: "deploy",   address: "10.1.1.10", folder: "Staging",                  online: true,  cpu: 3,  ram: 18, lastAccess: "25m ago"},
+    {name: "stage-db",   user: "postgres", address: "10.1.2.10", folder: "Staging",                  online: false, cpu: 0,  ram: 0,  lastAccess: "45m ago"},
+];
+
 const hostTree: HostFolder = {
     name: "root",
     children: [
@@ -99,44 +116,23 @@ const hostTree: HostFolder = {
             children: [
                 {
                     name: "Web Servers",
-                    children: [
-                        {name: "web-01", user: "deploy", address: "10.0.1.10"},
-                        {name: "web-02", user: "deploy", address: "10.0.1.11"},
-                    ],
+                    children: hosts.filter(h => h.folder === "Production / Web Servers"),
                 },
-                {name: "db-primary", user: "postgres", address: "10.0.2.10"},
-                {name: "db-replica", user: "postgres", address: "10.0.2.11"},
+                ...hosts.filter(h => h.folder === "Production"),
             ],
         },
         {
             name: "Staging",
-            children: [
-                {name: "stage-web", user: "deploy", address: "10.1.1.10"},
-                {name: "stage-db", user: "postgres", address: "10.1.2.10"},
-            ],
+            children: hosts.filter(h => h.folder === "Staging"),
         },
     ],
 };
 
-const recentActivity = [
-    {host: "web-01", action: "Terminal", time: "2m ago", online: true},
-    {host: "db-primary", action: "Terminal", time: "5m ago", online: true},
-    {host: "web-02", action: "Terminal", time: "12m ago", online: true},
-    {host: "db-primary", action: "Terminal", time: "18m ago", online: true},
-    {host: "stage-web", action: "Terminal", time: "25m ago", online: true},
-    {host: "db-replica", action: "Terminal", time: "31m ago", online: false},
-    {host: "stage-db", action: "Terminal", time: "45m ago", online: false},
-    {host: "web-01", action: "Terminal", time: "1h ago", online: true},
-];
+const recentActivity = [...hosts]
+    .sort((a, b) => a.lastAccess.localeCompare(b.lastAccess))
+    .map(h => ({host: h.name, action: "Terminal", time: h.lastAccess, online: h.online}));
 
-const hostStatuses = [
-    {name: "web-01", address: "10.0.1.10", online: true, cpu: 12, ram: 34},
-    {name: "web-02", address: "10.0.1.11", online: true, cpu: 8, ram: 27},
-    {name: "db-primary", address: "10.0.2.10", online: true, cpu: 45, ram: 71},
-    {name: "db-replica", address: "10.0.2.11", online: false, cpu: 0, ram: 0},
-    {name: "stage-web", address: "10.1.1.10", online: true, cpu: 3, ram: 18},
-    {name: "stage-db", address: "10.1.2.10", online: false, cpu: 0, ram: 0},
-];
+const hostStatuses = hosts;
 
 const DASHBOARD_TAB: Tab = {id: "dashboard", type: "dashboard", label: "Dashboard"};
 
@@ -405,7 +401,7 @@ function TunnelTab() {
 
 function HostItem({host, onOpenTab}: { host: Host; onOpenTab: (type: TabType) => void }) {
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const isOnline = hostStatuses.find(h => h.name === host.name)?.online;
+    const isOnline = host.online;
 
     return (
         <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
@@ -734,13 +730,29 @@ function App() {
         </div>
 
         <QuickConnectDialog open={quickConnectOpen} onOpenChange={setQuickConnectOpen}/>
+        <Toaster position="bottom-right" richColors/>
         </>
     )
 }
 
 type ToolsTab = "ssh-tools" | "snippets" | "history" | "split-screen";
-
 type SplitMode = "none" | "2-way" | "3-way" | "4-way" | "5-way" | "6-way";
+
+type Snippet = {
+    id: number;
+    name: string;
+    description?: string;
+    command: string;
+    folderId: number | null;
+};
+
+type SnippetFolder = {
+    id: number;
+    name: string;
+    color: string;
+    icon: FolderIconId;
+    open: boolean;
+};
 
 const TOOLS_TABS: {id: ToolsTab; label: string}[] = [
     {id: "ssh-tools",     label: "SSH Tools"},
@@ -758,15 +770,326 @@ const SPLIT_MODES: {id: SplitMode; label: string}[] = [
     {id: "6-way", label: "6-Way"},
 ];
 
+const FOLDER_COLORS = [
+    "#ef4444", "#f97316", "#eab308", "#22c55e",
+    "#3b82f6", "#a855f7", "#ec4899", "#6b7280",
+];
+
+const FOLDER_ICONS = ["folder", "server", "cloud", "database", "box", "network", "copy", "settings", "cpu", "globe"] as const;
+type FolderIconId = typeof FOLDER_ICONS[number];
+
+function FolderIconEl({icon, className, style}: {icon: FolderIconId; className?: string; style?: React.CSSProperties}) {
+    const props = {className, style};
+    switch (icon) {
+        case "folder":   return <Folder {...props}/>;
+        case "server":   return <Server {...props}/>;
+        case "cloud":    return <Cloud {...props}/>;
+        case "database": return <Database {...props}/>;
+        case "box":      return <Box {...props}/>;
+        case "network":  return <Network {...props}/>;
+        case "copy":     return <Copy {...props}/>;
+        case "settings": return <Settings {...props}/>;
+        case "cpu":      return <Cpu {...props}/>;
+        case "globe":    return <Globe {...props}/>;
+    }
+}
+
+const INITIAL_FOLDERS: SnippetFolder[] = [
+    {id: 1, name: "test",          color: "#f97316", icon: "server", open: true},
+    {id: 2, name: "Uncategorized", color: "#6b7280", icon: "folder", open: true},
+];
+
+const INITIAL_SNIPPETS: Snippet[] = [
+    {id: 2, name: "test",                       command: "test", folderId: 1},
+    {id: 1, name: "test", description: "test",  command: "test", folderId: 2},
+];
+
+function CreateSnippetDialog({open, onOpenChange, folders, onCreate}: {
+    open: boolean;
+    onOpenChange: (v: boolean) => void;
+    folders: SnippetFolder[];
+    onCreate: (s: Omit<Snippet, "id">) => void;
+}) {
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
+    const [folderId, setFolderId] = useState<number | null>(null);
+    const [command, setCommand] = useState("");
+
+    function handleCreate() {
+        if (!name.trim() || !command.trim()) return;
+        onCreate({name: name.trim(), description: description.trim() || undefined, command: command.trim(), folderId});
+        setName(""); setDescription(""); setFolderId(null); setCommand("");
+        onOpenChange(false);
+    }
+
+    return (
+        <Dialog open={open} onOpenChange={onOpenChange}>
+            <DialogContent className="sm:max-w-lg">
+                <DialogHeader>
+                    <DialogTitle className="text-lg font-bold">Create Snippet</DialogTitle>
+                    <DialogDescription className="text-xs text-muted-foreground">
+                        Create a new command snippet for quick execution
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="flex flex-col gap-4 mt-1">
+                    <div className="flex flex-col gap-1.5">
+                        <label className="text-xs font-semibold">Name <span className="text-orange-400">*</span></label>
+                        <Input placeholder="e.g., Restart Nginx" value={name} onChange={e => setName(e.target.value)}/>
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                        <label className="text-xs font-semibold text-muted-foreground">Description <span className="font-normal">(Optional)</span></label>
+                        <Input placeholder="Optional description" value={description} onChange={e => setDescription(e.target.value)}/>
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                        <label className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
+                            <Folder className="size-3.5"/>
+                            Folder <span className="font-normal">(Optional)</span>
+                        </label>
+                        <select
+                            value={folderId ?? ""}
+                            onChange={e => setFolderId(e.target.value === "" ? null : Number(e.target.value))}
+                            className="px-3 py-2 text-sm bg-background border border-border text-foreground outline-none focus:ring-1 focus:ring-ring"
+                        >
+                            <option value="">No folder (Uncategorized)</option>
+                            {folders.filter(f => f.name !== "Uncategorized").map(f => (
+                                <option key={f.id} value={f.id}>{f.name}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                        <label className="text-xs font-semibold">Command <span className="text-orange-400">*</span></label>
+                        <textarea
+                            placeholder="e.g., sudo systemctl restart nginx"
+                            value={command}
+                            onChange={e => setCommand(e.target.value)}
+                            className="w-full h-36 px-3 py-2 text-xs bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"
+                        />
+                    </div>
+                </div>
+                <div className="flex items-center justify-end gap-2 mt-2">
+                    <Button variant="ghost" onClick={() => onOpenChange(false)}>Cancel</Button>
+                    <Button variant="outline" className="border-orange-500/40 text-orange-400 hover:bg-orange-500/10 hover:text-orange-400" onClick={handleCreate}>
+                        Create Snippet
+                    </Button>
+                </div>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
+function CreateFolderDialog({open, onOpenChange, onCreate}: {
+    open: boolean;
+    onOpenChange: (v: boolean) => void;
+    onCreate: (f: Omit<SnippetFolder, "id" | "open">) => void;
+}) {
+    const [name, setName] = useState("");
+    const [color, setColor] = useState(FOLDER_COLORS[0]);
+    const [icon, setIcon] = useState<FolderIconId>("folder");
+
+    function handleCreate() {
+        if (!name.trim()) return;
+        onCreate({name: name.trim(), color, icon});
+        setName(""); setColor(FOLDER_COLORS[0]); setIcon("folder");
+        onOpenChange(false);
+    }
+
+    return (
+        <Dialog open={open} onOpenChange={onOpenChange}>
+            <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                    <DialogTitle className="text-lg font-bold">Create Folder</DialogTitle>
+                    <DialogDescription className="text-xs text-muted-foreground">
+                        Organize your snippets into folders
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="flex flex-col gap-4 mt-1">
+                    <div className="flex flex-col gap-1.5">
+                        <label className="text-xs font-semibold">Folder Name <span className="text-orange-400">*</span></label>
+                        <Input placeholder="e.g., System Commands, Docker Scripts" value={name} onChange={e => setName(e.target.value)}/>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <label className="text-xs font-semibold">Folder Color</label>
+                        <div className="grid grid-cols-4 gap-2">
+                            {FOLDER_COLORS.map(c => (
+                                <button
+                                    key={c}
+                                    onClick={() => setColor(c)}
+                                    className={`h-10 transition-all ${color === c ? "ring-2 ring-offset-2 ring-offset-background ring-white/50" : "opacity-75 hover:opacity-100"}`}
+                                    style={{backgroundColor: c}}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <label className="text-xs font-semibold">Folder Icon</label>
+                        <div className="grid grid-cols-5 gap-2">
+                            {FOLDER_ICONS.map(ic => (
+                                <button
+                                    key={ic}
+                                    onClick={() => setIcon(ic)}
+                                    className={`flex items-center justify-center h-11 border transition-colors ${
+                                        icon === ic
+                                            ? "border-orange-500/40 bg-orange-500/10 text-orange-400"
+                                            : "border-border text-muted-foreground hover:text-foreground hover:border-muted-foreground"
+                                    }`}
+                                >
+                                    <FolderIconEl icon={ic} className="size-5"/>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                        <label className="text-xs font-semibold">Preview</label>
+                        <div className="flex items-center gap-2 px-3 py-3 border border-border bg-muted/20">
+                            <FolderIconEl icon={icon} className="size-4 shrink-0" style={{color}}/>
+                            <span className="text-sm font-semibold">{name || "Folder Name"}</span>
+                        </div>
+                    </div>
+                </div>
+                <div className="flex items-center justify-end gap-2 mt-2">
+                    <Button variant="ghost" onClick={() => onOpenChange(false)}>Cancel</Button>
+                    <Button variant="outline" className="border-orange-500/40 text-orange-400 hover:bg-orange-500/10 hover:text-orange-400" onClick={handleCreate}>
+                        Create Folder
+                    </Button>
+                </div>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
+type HistoryEntry = {
+    id: number;
+    command: string;
+    host: string;
+    time: string;
+};
+
+const HISTORY_ENTRIES: HistoryEntry[] = [
+    {id: 1,  command: "sudo systemctl restart nginx",           host: "web-01",     time: "2m ago"},
+    {id: 2,  command: "tail -f /var/log/nginx/error.log",      host: "web-01",     time: "4m ago"},
+    {id: 3,  command: "docker ps -a",                          host: "web-02",     time: "9m ago"},
+    {id: 4,  command: "df -h",                                 host: "db-primary", time: "12m ago"},
+    {id: 5,  command: "pg_dump mydb > backup.sql",             host: "db-primary", time: "15m ago"},
+    {id: 6,  command: "top",                                   host: "db-replica", time: "21m ago"},
+    {id: 7,  command: "ls -la /var/www",                       host: "web-02",     time: "28m ago"},
+    {id: 8,  command: "cat /etc/hosts",                        host: "stage-web",  time: "34m ago"},
+    {id: 9,  command: "sudo apt update && sudo apt upgrade -y", host: "stage-db",  time: "41m ago"},
+    {id: 10, command: "systemctl status postgresql",           host: "db-primary", time: "55m ago"},
+    {id: 11, command: "free -m",                               host: "web-01",     time: "1h ago"},
+    {id: 12, command: "netstat -tlnp",                         host: "stage-web",  time: "1h ago"},
+];
+
+function HistoryTab() {
+    const [search, setSearch] = useState("");
+    const [entries, setEntries] = useState<HistoryEntry[]>(HISTORY_ENTRIES);
+
+    const filtered = search
+        ? entries.filter(e =>
+            e.command.toLowerCase().includes(search.toLowerCase()) ||
+            e.host.toLowerCase().includes(search.toLowerCase())
+          )
+        : entries;
+
+    return (
+        <>
+            <div className="relative">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground"/>
+                <Input placeholder="Search history..." value={search} onChange={e => setSearch(e.target.value)} className="pl-8"/>
+            </div>
+            <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">{filtered.length} command{filtered.length !== 1 ? "s" : ""}</span>
+                <button
+                    onClick={() => setEntries([])}
+                    className="text-xs text-orange-400 hover:text-orange-300"
+                >
+                    Clear All
+                </button>
+            </div>
+            <div className="flex flex-col gap-1">
+                {filtered.length === 0 && (
+                    <span className="text-xs text-muted-foreground/60 text-center py-8">No history entries</span>
+                )}
+                {filtered.map(entry => (
+                    <div
+                        key={entry.id}
+                        className="group flex flex-col gap-1 px-2.5 py-2 border border-border bg-background hover:border-muted-foreground/30 transition-colors"
+                    >
+                        <div className="flex items-start justify-between gap-2">
+                            <span className="text-xs font-mono text-foreground break-all leading-relaxed">{entry.command}</span>
+                            <div className="flex items-center gap-0.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <Button
+                                    variant="ghost" size="icon"
+                                    className="size-6 text-muted-foreground hover:text-foreground"
+                                    onClick={() => navigator.clipboard.writeText(entry.command)}
+                                >
+                                    <Copy className="size-3"/>
+                                </Button>
+                                <Button
+                                    variant="ghost" size="icon"
+                                    className="size-6 text-muted-foreground hover:text-destructive"
+                                    onClick={() => setEntries(prev => prev.filter(e => e.id !== entry.id))}
+                                >
+                                    <Trash2 className="size-3"/>
+                                </Button>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs text-muted-foreground/60">{entry.host}</span>
+                            <span className="text-xs text-muted-foreground/40">·</span>
+                            <span className="text-xs text-muted-foreground/60">{entry.time}</span>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </>
+    );
+}
+
 function ToolsSidebar({onClose}: {onClose: () => void}) {
     const [activeTab, setActiveTab] = useState<ToolsTab>("ssh-tools");
     const [splitMode, setSplitMode] = useState<SplitMode>("none");
     const [snippetSearch, setSnippetSearch] = useState("");
     const [keyRecording, setKeyRecording] = useState(false);
     const [rightClickPaste, setRightClickPaste] = useState(false);
+    const [folders, setFolders] = useState<SnippetFolder[]>(INITIAL_FOLDERS);
+    const [snippets, setSnippets] = useState<Snippet[]>(INITIAL_SNIPPETS);
+    const [createSnippetOpen, setCreateSnippetOpen] = useState(false);
+    const [createFolderOpen, setCreateFolderOpen] = useState(false);
+
+    function handleCreateSnippet(s: Omit<Snippet, "id">) {
+        const id = Math.max(0, ...snippets.map(x => x.id)) + 1;
+        setSnippets(prev => [...prev, {...s, id}]);
+        toast.success("Snippet created successfully");
+    }
+
+    function handleCreateFolder(f: Omit<SnippetFolder, "id" | "open">) {
+        const id = Math.max(0, ...folders.map(x => x.id)) + 1;
+        setFolders(prev => [...prev, {...f, id, open: true}]);
+        toast.success("Folder created successfully");
+    }
+
+    function toggleFolder(id: number) {
+        setFolders(prev => prev.map(f => f.id === id ? {...f, open: !f.open} : f));
+    }
+
+    function deleteSnippet(id: number) {
+        setSnippets(prev => prev.filter(s => s.id !== id));
+    }
+
+    const filtered = snippetSearch
+        ? snippets.filter(s =>
+            s.name.toLowerCase().includes(snippetSearch.toLowerCase()) ||
+            s.command.toLowerCase().includes(snippetSearch.toLowerCase())
+          )
+        : snippets;
+
+    const namedFolders = folders.filter(f => f.name !== "Uncategorized");
+    const uncategorized = folders.find(f => f.name === "Uncategorized");
+    const allFolders = [...namedFolders, ...(uncategorized ? [uncategorized] : [])];
 
     return (
-        <div className="flex flex-col w-76 shrink-0 h-full">
+        <>
+        <div className="flex flex-col w-76 bg-sidebar border-l border-border shrink-0 h-full relative">
             <div className="flex items-center justify-between px-4 h-12.5 border-b border-border shrink-0">
                 <span className="text-base font-bold">Tools</span>
                 <div className="flex items-center gap-1">
@@ -779,7 +1102,6 @@ function ToolsSidebar({onClose}: {onClose: () => void}) {
                 </div>
             </div>
 
-            {/* Tab bar */}
             <div className="flex shrink-0 border-b border-border">
                 {TOOLS_TABS.map(tab => (
                     <button
@@ -796,14 +1118,14 @@ function ToolsSidebar({onClose}: {onClose: () => void}) {
                 ))}
             </div>
 
-            <div className="flex flex-col flex-1 min-h-0 overflow-y-auto p-3 gap-4">
+            <div className="flex flex-col flex-1 min-h-0 overflow-y-auto p-3 gap-3">
                 {activeTab === "ssh-tools" && (
                     <>
                         <div className="flex flex-col gap-2">
-                            <span className="text-xs font-bold uppercase tracking-widest text-foreground">Key Recording</span>
+                            <span className="text-xs font-bold uppercase tracking-widest">Key Recording</span>
                             <Button
                                 variant="outline"
-                                className={`w-full ${keyRecording ? "border-orange-400/40 text-orange-400 bg-orange-400/10 hover:bg-orange-400/20 hover:text-orange-400" : ""}`}
+                                className={`w-full ${keyRecording ? "border-orange-500/40 text-orange-400 bg-orange-500/10 hover:bg-orange-500/20 hover:text-orange-400" : ""}`}
                                 onClick={() => setKeyRecording(o => !o)}
                             >
                                 {keyRecording ? "Stop Key Recording" : "Start Key Recording"}
@@ -811,7 +1133,7 @@ function ToolsSidebar({onClose}: {onClose: () => void}) {
                         </div>
                         <Separator/>
                         <div className="flex flex-col gap-2">
-                            <span className="text-xs font-bold uppercase tracking-widest text-foreground">Settings</span>
+                            <span className="text-xs font-bold uppercase tracking-widest">Settings</span>
                             <label className="flex items-center gap-2.5 cursor-pointer">
                                 <input
                                     type="checkbox"
@@ -827,10 +1149,10 @@ function ToolsSidebar({onClose}: {onClose: () => void}) {
 
                 {activeTab === "snippets" && (
                     <>
-                        <div className="flex flex-col gap-1.5">
-                            <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Select Terminals (optional)</span>
+                        <div className="flex flex-col gap-1">
+                            <span className="text-xs font-semibold">Select Terminals <span className="text-muted-foreground font-normal">(optional)</span></span>
                             <span className="text-xs text-muted-foreground">Execute on current terminal (click to select multiple)</span>
-                            <div className="flex items-center gap-2 mt-1 flex-wrap">
+                            <div className="flex items-center gap-2 mt-0.5">
                                 <button className="text-xs text-orange-400 hover:text-orange-300">Select All</button>
                                 <button className="text-xs text-orange-400 hover:text-orange-300">Deselect All</button>
                             </div>
@@ -838,37 +1160,88 @@ function ToolsSidebar({onClose}: {onClose: () => void}) {
                         <Separator/>
                         <div className="relative">
                             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground"/>
-                            <Input
-                                placeholder="Search snippets..."
-                                value={snippetSearch}
-                                onChange={e => setSnippetSearch(e.target.value)}
-                                className="pl-8"
-                            />
+                            <Input placeholder="Search snippets..." value={snippetSearch} onChange={e => setSnippetSearch(e.target.value)} className="pl-8"/>
                         </div>
                         <div className="flex gap-2">
-                            <Button variant="outline" className="flex-1 text-xs gap-1.5">
-                                <Plus className="size-3.5"/>
-                                New Snippet
+                            <Button variant="outline" className="flex-1 text-xs" onClick={() => setCreateSnippetOpen(true)}>
+                                <Plus className="size-3.5"/>New Snippet
                             </Button>
-                            <Button variant="outline" className="flex-1 text-xs gap-1.5">
-                                <Folder className="size-3.5"/>
-                                New Folder
+                            <Button variant="outline" className="flex-1 text-xs" onClick={() => setCreateFolderOpen(true)}>
+                                <Folder className="size-3.5"/>New Folder
                             </Button>
                         </div>
-                        <div className="flex flex-col items-center justify-center gap-1 py-8 text-center">
-                            <span className="text-sm text-muted-foreground">No snippets yet</span>
-                            <span className="text-xs text-muted-foreground/60">Create a snippet to save commonly used commands</span>
+                        <div className="flex flex-col gap-4">
+                            {allFolders.map(folder => {
+                                const folderSnippets = filtered.filter(s =>
+                                    folder.name === "Uncategorized"
+                                        ? s.folderId === null || s.folderId === folder.id
+                                        : s.folderId === folder.id
+                                );
+                                if (folderSnippets.length === 0 && snippetSearch) return null;
+                                return (
+                                    <div key={folder.id} className="flex flex-col gap-2">
+                                        <button
+                                            onClick={() => toggleFolder(folder.id)}
+                                            className="flex items-center gap-1.5 w-full text-left"
+                                        >
+                                            <ChevronDown className={`size-3 text-muted-foreground shrink-0 transition-transform ${folder.open ? "" : "-rotate-90"}`}/>
+                                            <FolderIconEl icon={folder.icon} className="size-3.5 shrink-0" style={{color: folder.color}}/>
+                                            <span className="text-xs font-semibold flex-1 truncate" style={{color: folder.name === "Uncategorized" ? undefined : folder.color}}>
+                                                {folder.name}
+                                            </span>
+                                            <span className="text-xs text-muted-foreground shrink-0">{folderSnippets.length}</span>
+                                        </button>
+                                        {folder.open && (
+                                            <div className="flex flex-col gap-2 ml-1">
+                                                {folderSnippets.map(snippet => (
+                                                    <div key={snippet.id} className="border border-border bg-background p-2.5 flex flex-col gap-2">
+                                                        <div className="flex items-start gap-2">
+                                                            <div className="grid grid-cols-2 gap-px mt-0.5 shrink-0 opacity-30">
+                                                                <div className="size-1 bg-muted-foreground rounded-full"/>
+                                                                <div className="size-1 bg-muted-foreground rounded-full"/>
+                                                                <div className="size-1 bg-muted-foreground rounded-full"/>
+                                                                <div className="size-1 bg-muted-foreground rounded-full"/>
+                                                            </div>
+                                                            <div className="flex flex-col min-w-0">
+                                                                <span className="text-xs font-semibold">{snippet.name}</span>
+                                                                {snippet.description && <span className="text-xs text-muted-foreground">{snippet.description}</span>}
+                                                                <span className="text-xs text-muted-foreground">ID: {snippet.id}</span>
+                                                            </div>
+                                                        </div>
+                                                        <span className="text-xs text-muted-foreground font-mono px-1">{snippet.command}</span>
+                                                        <div className="flex items-center gap-1">
+                                                            <Button variant="outline" size="sm" className="flex-1 text-xs h-7 gap-1.5">
+                                                                <Play className="size-3"/>Run
+                                                            </Button>
+                                                            <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground shrink-0">
+                                                                <Copy className="size-3.5"/>
+                                                            </Button>
+                                                            <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground shrink-0">
+                                                                <Pencil className="size-3.5"/>
+                                                            </Button>
+                                                            <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-destructive shrink-0" onClick={() => deleteSnippet(snippet.id)}>
+                                                                <Trash2 className="size-3.5"/>
+                                                            </Button>
+                                                            <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground shrink-0">
+                                                                <Share2 className="size-3.5"/>
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                                {folderSnippets.length === 0 && (
+                                                    <span className="text-xs text-muted-foreground/60 pl-1">No snippets in this folder</span>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
                         </div>
                     </>
                 )}
 
                 {activeTab === "history" && (
-                    <div className="flex flex-col items-center justify-center gap-2 py-8 text-center flex-1">
-                        <Card className="px-4 py-5 flex flex-col gap-1 w-full">
-                            <span className="text-sm font-semibold">Command History is Disabled</span>
-                            <span className="text-xs text-orange-400/80">Enable Command History Tracking in your profile under Appearance settings.</span>
-                        </Card>
-                    </div>
+                    <HistoryTab/>
                 )}
 
                 {activeTab === "split-screen" && (
@@ -880,8 +1253,8 @@ function ToolsSidebar({onClose}: {onClose: () => void}) {
                                     onClick={() => setSplitMode(mode.id)}
                                     className={`px-2 py-2 text-xs font-semibold border transition-colors ${
                                         splitMode === mode.id
-                                            ? "border-orange-400/40 bg-orange-400/10 text-orange-400"
-                                            : "border-border text-muted-foreground hover:text-foreground hover:border-muted-foreground"
+                                            ? "border-orange-500/40 bg-orange-500/10 text-orange-400"
+                                            : "border-border text-muted-foreground hover:text-foreground"
                                     }`}
                                 >
                                     {mode.label}
@@ -903,7 +1276,21 @@ function ToolsSidebar({onClose}: {onClose: () => void}) {
                     </>
                 )}
             </div>
+
         </div>
+
+        <CreateSnippetDialog
+            open={createSnippetOpen}
+            onOpenChange={setCreateSnippetOpen}
+            folders={folders}
+            onCreate={handleCreateSnippet}
+        />
+        <CreateFolderDialog
+            open={createFolderOpen}
+            onOpenChange={setCreateFolderOpen}
+            onCreate={handleCreateFolder}
+        />
+        </>
     );
 }
 
