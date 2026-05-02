@@ -85,6 +85,9 @@ import {toast} from "sonner";
 import { useXTerm } from 'react-xtermjs'
 import "@xterm/xterm/css/xterm.css";
 import { FitAddon } from '@xterm/addon-fit';
+import { FileManagerDemo } from "@/components/FileManagerDemo";
+import { CommandPalette } from "@/components/CommandPalette";
+import { Kbd, KbdKey, KbdSeparator } from "@/components/ui/kbd";
 
 type Host = {
   name: string;
@@ -258,7 +261,7 @@ const hostStatuses = hosts;
 
 const DASHBOARD_TAB: Tab = {id: "dashboard", type: "dashboard", label: "Dashboard"};
 
-function DashboardTab() {
+function DashboardTab({ onOpenSingletonTab }: { onOpenSingletonTab: (type: TabType) => void }) {
   return (
     <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
       <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 mx-3 mt-3 gap-0">
@@ -267,6 +270,14 @@ function DashboardTab() {
           <p className="text-xs text-muted-foreground">Thursday, May 1, 2026</p>
         </div>
         <div className="flex items-center gap-1">
+          <div className="hidden sm:flex items-center gap-2 mr-2 bg-muted/50 px-3 py-1.5 rounded-md border border-border">
+            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Quick Actions</span>
+            <div className="flex items-center gap-1">
+              <Kbd className="h-5 px-1.5 bg-background text-[10px]">Shift</Kbd>
+              <span className="text-[10px] text-muted-foreground">+</span>
+              <Kbd className="h-5 px-1.5 bg-background text-[10px]">Shift</Kbd>
+            </div>
+          </div>
           <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground" asChild>
             <a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a>
           </Button>
@@ -275,7 +286,7 @@ function DashboardTab() {
           </Button>
           <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">Support</Button>
           <Separator orientation="vertical" className="mx-1"/>
-          <Button variant="ghost" size="icon"><Settings className="size-4 text-orange-400"/></Button>
+          <Button variant="ghost" size="icon" onClick={() => onOpenSingletonTab("admin-settings")}><Settings className="size-4 text-orange-400"/></Button>
         </div>
       </Card>
       <div className="flex flex-row flex-1 min-h-0 px-3 py-3 gap-3">
@@ -346,6 +357,7 @@ function DashboardTab() {
                   </div>
                 </button>
                 <button
+                  onClick={() => onOpenSingletonTab("admin-settings")}
                   className="group/btn flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors cursor-pointer flex-1">
                   <div
                     className="size-8 border border-border bg-muted flex items-center justify-center shrink-0 group-hover/btn:bg-orange-400/20 group-hover/btn:border-orange-400/40 transition-colors">
@@ -370,6 +382,7 @@ function DashboardTab() {
                   </div>
                 </button>
                 <button
+                  onClick={() => onOpenSingletonTab("user-profile")}
                   className="group/btn flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors cursor-pointer flex-1">
                   <div
                     className="size-8 border border-border bg-muted flex items-center justify-center shrink-0 group-hover/btn:bg-orange-400/20 group-hover/btn:border-orange-400/40 transition-colors">
@@ -889,11 +902,7 @@ function StatsTab({label}: { label: string }) {
 
 function FilesTab({label}: { label: string }) {
   return (
-    <div className="flex flex-col flex-1 min-h-0 overflow-hidden items-center justify-center opacity-20 py-20">
-      <FolderSearch className="size-16 mb-4"/>
-      <span className="text-xl font-bold uppercase tracking-widest">File Manager</span>
-      <span className="text-xs font-semibold">Remote file system access for {label}</span>
-    </div>
+    <FileManagerDemo label={label} />
   );
 }
 
@@ -2846,6 +2855,23 @@ const SINGLETON_TAB_LABELS: Partial<Record<TabType, string>> = {
 function App() {
   const [tabs, setTabs] = useState<Tab[]>([DASHBOARD_TAB]);
   const [activeTabId, setActiveTabId] = useState("dashboard");
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const lastShiftTime = useRef(0);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code === "ShiftLeft") {
+        const now = Date.now();
+        if (now - lastShiftTime.current < 300) {
+          setCommandPaletteOpen(prev => !prev);
+        }
+        lastShiftTime.current = now;
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [tabBarOpen, setTabBarOpen] = useState(true);
   const [quickConnectOpen, setQuickConnectOpen] = useState(false);
@@ -3292,7 +3318,7 @@ function App() {
                 const activeTab = tabs.find(t => t.id === activeTabId)!;
                 switch (activeTab.type) {
                   case "dashboard":
-                    return <DashboardTab/>;
+                    return <DashboardTab onOpenSingletonTab={openSingletonTab}/>;
                   case "terminal":
                     return <TerminalTab label={activeTab.label}/>;
                   case "stats":
@@ -3329,6 +3355,19 @@ function App() {
         </div>
       </div>
 
+      <CommandPalette 
+        isOpen={commandPaletteOpen} 
+        setIsOpen={setCommandPaletteOpen} 
+        hosts={hosts}
+        onOpenTab={(type, label) => {
+          if (["dashboard", "host-manager", "user-profile", "admin-settings", "docker", "tunnel"].includes(type)) {
+            openSingletonTab(type);
+          } else if (label) {
+            const host = hosts.find(h => h.name === label);
+            if (host) openTab(host, type);
+          }
+        }}
+      />
       <QuickConnectDialog open={quickConnectOpen} onOpenChange={setQuickConnectOpen}/>
       <Toaster position="bottom-right" />
     </>
