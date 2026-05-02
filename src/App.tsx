@@ -90,14 +90,116 @@ import { CommandPalette } from "@/components/CommandPalette";
 import { Kbd, KbdKey, KbdSeparator } from "@/components/ui/kbd";
 
 type Host = {
+  id: string;
   name: string;
   user: string;
   address: string;
+  port: number;
   folder: string;
   online: boolean;
   cpu: number;
   ram: number;
   lastAccess: string;
+  tags?: string[];
+  authType: "password" | "key" | "credential" | "none" | "opkssh";
+  credentialId?: string;
+  password?: string;
+  key?: string;
+  keyPassword?: string;
+  keyType?: string;
+  notes?: string;
+  macAddress?: string;
+  pin?: boolean;
+
+  // Terminal
+  enableTerminal: boolean;
+  terminalConfig?: {
+    cursorBlink: boolean;
+    cursorStyle: "block" | "underline" | "bar";
+    fontSize: number;
+    fontFamily: string;
+    letterSpacing: number;
+    lineHeight: number;
+    theme: string;
+    scrollback: number;
+    bellStyle: "none" | "sound" | "visual" | "both";
+    rightClickSelectsWord: boolean;
+    fastScrollModifier: "alt" | "ctrl" | "shift";
+    fastScrollSensitivity: number;
+    minimumContrastRatio: number;
+    backspaceMode: "normal" | "control-h";
+    agentForwarding: boolean;
+    autoMosh: boolean;
+    moshCommand: string;
+    autoTmux: boolean;
+    sudoPasswordAutoFill: boolean;
+    sudoPassword?: string;
+    keepaliveInterval?: number;
+    keepaliveCountMax?: number;
+    environmentVariables: { key: string; value: string }[];
+  };
+
+  // Advanced / Proxy
+  useSocks5?: boolean;
+  socks5Host?: string;
+  socks5Port?: number;
+  socks5Username?: string;
+  socks5Password?: string;
+  socks5ProxyChain?: { host: string; port: number; type: 4 | 5 | "http"; username?: string; password?: string }[];
+  jumpHosts?: { hostId: string }[];
+  portKnockSequence?: { port: number; protocol: "tcp" | "udp"; delay: number }[];
+
+  // Tunnels
+  enableTunnel: boolean;
+  serverTunnels: {
+    mode: "local" | "remote" | "dynamic";
+    bindHost?: string;
+    targetHost?: string;
+    sourcePort: number;
+    endpointHost: string;
+    endpointPort: number;
+    maxRetries: number;
+    retryInterval: number;
+    autoStart: boolean;
+  }[];
+
+  // File Manager
+  enableFileManager: boolean;
+  defaultPath?: string;
+
+  // Docker
+  enableDocker: boolean;
+
+  // Stats
+  statsConfig?: {
+    statusCheckEnabled: boolean;
+    statusCheckInterval: number;
+    useGlobalStatusInterval: boolean;
+    metricsEnabled: boolean;
+    metricsInterval: number;
+    useGlobalMetricsInterval: boolean;
+    enabledWidgets: string[];
+  };
+  quickActions: { name: string; snippetId: string }[];
+
+  // Remote Desktop (RDP/VNC/Telnet)
+  connectionType: "ssh" | "rdp" | "vnc" | "telnet";
+  domain?: string;
+  security?: string;
+  ignoreCert?: boolean;
+  guacamoleConfig?: Record<string, any>;
+};
+
+type Credential = {
+  id: string;
+  name: string;
+  username: string;
+  type: "password" | "key";
+  value?: string;
+  publicKey?: string;
+  passphrase?: string;
+  description?: string;
+  folder?: string;
   tags?: string[];
 };
 
@@ -168,68 +270,155 @@ function tabIcon(type: TabType) {
 
 const hosts: Host[] = [
   {
+    id: "1",
     name: "web-01",
     user: "deploy",
     address: "10.0.1.10",
+    port: 22,
     folder: "Production / Web Servers",
     online: true,
     cpu: 12,
     ram: 34,
     lastAccess: "2m ago",
-    tags: ["nginx", "frontend"]
+    tags: ["nginx", "frontend"],
+    authType: "password",
+    connectionType: "ssh",
+    enableTerminal: true,
+    enableTunnel: true,
+    enableFileManager: true,
+    enableDocker: false,
+    quickActions: []
   },
   {
+    id: "2",
     name: "web-02",
     user: "deploy",
     address: "10.0.1.11",
+    port: 22,
     folder: "Production / Web Servers",
     online: true,
     cpu: 8,
     ram: 27,
     lastAccess: "12m ago",
-    tags: ["nginx"]
+    tags: ["nginx"],
+    authType: "key",
+    connectionType: "ssh",
+    enableTerminal: true,
+    enableTunnel: false,
+    enableFileManager: true,
+    enableDocker: false,
+    quickActions: []
   },
   {
+    id: "3",
     name: "db-primary",
     user: "postgres",
     address: "10.0.2.10",
+    port: 5432,
     folder: "Production",
     online: true,
     cpu: 45,
     ram: 71,
     lastAccess: "5m ago",
-    tags: ["postgres", "critical"]
+    tags: ["postgres", "critical"],
+    authType: "credential",
+    credentialId: "c1",
+    connectionType: "ssh",
+    enableTerminal: true,
+    enableTunnel: true,
+    enableFileManager: false,
+    enableDocker: true,
+    quickActions: []
   },
   {
+    id: "4",
     name: "db-replica",
     user: "postgres",
     address: "10.0.2.11",
+    port: 5432,
     folder: "Production",
     online: false,
     cpu: 0,
     ram: 0,
-    lastAccess: "31m ago"
+    lastAccess: "31m ago",
+    authType: "credential",
+    credentialId: "c1",
+    connectionType: "ssh",
+    enableTerminal: true,
+    enableTunnel: false,
+    enableFileManager: false,
+    enableDocker: false,
+    quickActions: []
   },
   {
+    id: "5",
     name: "stage-web",
     user: "deploy",
     address: "10.1.1.10",
+    port: 22,
     folder: "Staging",
     online: true,
     cpu: 3,
     ram: 18,
     lastAccess: "25m ago",
-    tags: ["staging"]
+    tags: ["staging"],
+    authType: "password",
+    connectionType: "ssh",
+    enableTerminal: true,
+    enableTunnel: true,
+    enableFileManager: true,
+    enableDocker: true,
+    quickActions: []
   },
   {
+    id: "6",
     name: "stage-db",
     user: "postgres",
     address: "10.1.2.10",
+    port: 5432,
     folder: "Staging",
     online: false,
     cpu: 0,
     ram: 0,
-    lastAccess: "45m ago"
+    lastAccess: "45m ago",
+    authType: "password",
+    connectionType: "ssh",
+    enableTerminal: true,
+    enableTunnel: false,
+    enableFileManager: false,
+    enableDocker: false,
+    quickActions: []
+  },
+];
+
+const MOCK_CREDENTIALS: Credential[] = [
+  {
+    id: "c1",
+    name: "Prod Database Admin",
+    username: "postgres",
+    type: "password",
+    description: "Main production DB credentials"
+  },
+  {
+    id: "c2",
+    name: "Deployment Key",
+    username: "deploy",
+    type: "key",
+    description: "SSH key for automated deployments"
+  },
+  {
+    id: "c3",
+    name: "Backup Service",
+    username: "backup_user",
+    type: "password",
+    description: "Used by nightly backup cron jobs"
+  },
+  {
+    id: "c4",
+    name: "Staging Root",
+    username: "root",
+    type: "key",
+    description: "Root access for staging cluster"
   },
 ];
 
@@ -907,11 +1096,894 @@ function FilesTab({label}: { label: string }) {
 }
 
 function HostManagerTab() {
+  const [section, setSection] = useState<"hosts" | "credentials">("hosts");
+  const [editingHost, setEditingHost] = useState<Host | "new" | null>(null);
+  const [editingCredential, setEditingCredential] = useState<Credential | "new" | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredHosts = hosts.filter(h =>
+    h.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    h.address.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredCredentials = MOCK_CREDENTIALS.filter(c =>
+    c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    c.username.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const folders = Array.from(new Set(hosts.map(h => h.folder)));
+
   return (
-    <div className="flex flex-col flex-1 min-h-0 overflow-hidden items-center justify-center opacity-20 py-20">
-      <Server className="size-16 mb-4"/>
-      <span className="text-xl font-bold uppercase tracking-widest">Host Manager</span>
-      <span className="text-xs font-semibold">Manage your server infrastructure</span>
+    <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+      <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 mx-3 mt-3 gap-0">
+        <div>
+          <h1 className="text-2xl font-bold">Host Manager</h1>
+          <p className="text-xs text-muted-foreground">Manage your server infrastructure and credentials</p>
+        </div>
+        {!editingHost && !editingCredential && (
+          <div className="flex items-center gap-2">
+            {section === "hosts" && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
+                onClick={() => setEditingHost("new")}
+              >
+                <Plus className="size-3.5 mr-1.5"/>Add Host
+              </Button>
+            )}
+            {section === "credentials" && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
+                onClick={() => setEditingCredential("new")}
+              >
+                <Plus className="size-3.5 mr-1.5"/>Add Credential
+              </Button>
+            )}
+          </div>
+        )}
+      </Card>
+
+      <div className="flex flex-row flex-1 min-h-0 overflow-hidden px-3 py-3 gap-3">
+        {/* Left Nav (Only shown when not editing a host) */}
+        {!editingHost && (
+          <div className="flex flex-col gap-1 w-44 shrink-0">
+            <Card className="flex flex-col overflow-hidden py-1 gap-0">
+              <button
+                onClick={() => {
+                  setSection("hosts");
+                  setEditingCredential(null);
+                }}
+                className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors text-left ${
+                  section === "hosts"
+                    ? "bg-orange-400/10 text-orange-400 border-l-2 border-orange-400"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted border-l-2 border-transparent"
+                }`}
+              >
+                <Server className="size-3.5"/>
+                Hosts
+              </button>
+              <button
+                onClick={() => {
+                  setSection("credentials");
+                  setEditingCredential(null);
+                }}
+                className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors text-left ${
+                  section === "credentials"
+                    ? "bg-orange-400/10 text-orange-400 border-l-2 border-orange-400"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted border-l-2 border-transparent"
+                }`}
+              >
+                <KeyRound className="size-3.5"/>
+                Credentials
+              </button>
+            </Card>
+          </div>
+        )}
+
+        {/* Content */}
+        <div className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-3">
+          {section === "hosts" && (
+            editingHost ? (
+              <HostEditor host={editingHost === "new" ? null : editingHost} onBack={() => setEditingHost(null)} />
+            ) : (
+              <SectionCard title="Server Hosts" icon={<Server className="size-3.5"/>}>
+                <div className="flex flex-col py-2">
+                  <div className="relative mb-4">
+                    <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground"/>
+                    <Input
+                      placeholder="Search hosts..."
+                      className="pl-8 h-9 text-xs"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-4">
+                    {folders.map(folder => {
+                      const folderHosts = filteredHosts.filter(h => h.folder === folder);
+                      if (folderHosts.length === 0) return null;
+                      return (
+                        <div key={folder} className="flex flex-col gap-1.5">
+                          <div className="flex items-center gap-2 px-1">
+                            <Folder className="size-3 text-orange-400/60"/>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{folder}</span>
+                            <div className="h-px bg-border flex-1 ml-2 opacity-50"/>
+                          </div>
+                          <div className="flex flex-col border border-border overflow-hidden bg-muted/20">
+                            {folderHosts.map(host => (
+                              <div key={host.id} className="flex items-center justify-between px-3 py-2.5 border-b border-border last:border-0 hover:bg-muted/50 group">
+                                <div className="flex items-center gap-3">
+                                  <div className={`size-2 rounded-full ${host.online ? "bg-orange-400" : "bg-muted-foreground/40"}`}/>
+                                  <div className="flex flex-col">
+                                    <span className="text-sm font-semibold">{host.name}</span>
+                                    <span className="text-xs text-muted-foreground">{host.user}@{host.address}:{host.port}</span>
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                  <div className="hidden md:flex gap-1.5">
+                                    {host.tags?.map(tag => (
+                                      <span key={tag} className="text-[10px] px-1.5 py-0.5 border border-border bg-background text-muted-foreground lowercase">{tag}</span>
+                                    ))}
+                                  </div>
+                                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <Button variant="ghost" size="icon" className="size-7" onClick={() => setEditingHost(host)}>
+                                      <Pencil className="size-3.5"/>
+                                    </Button>
+                                    <Button variant="ghost" size="icon" className="size-7 text-destructive hover:text-destructive hover:bg-destructive/10">
+                                      <Trash2 className="size-3.5"/>
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </SectionCard>
+            )
+          )}
+
+          {section === "credentials" && (
+            editingCredential ? (
+              <CredentialEditorView credential={editingCredential === "new" ? null : editingCredential} onBack={() => setEditingCredential(null)} />
+            ) : (
+              <SectionCard title="Stored Credentials" icon={<KeyRound className="size-3.5"/>}>
+                <div className="flex flex-col py-2">
+                  <div className="relative mb-4">
+                    <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground"/>
+                    <Input
+                      placeholder="Search credentials..."
+                      className="pl-8 h-9 text-xs"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="flex flex-col border border-border overflow-hidden bg-muted/20">
+                    {filteredCredentials.map(cred => (
+                      <div key={cred.id} className="flex items-center justify-between px-3 py-3 border-b border-border last:border-0 hover:bg-muted/50 group">
+                        <div className="flex items-center gap-3">
+                          <div className="size-8 border border-border bg-muted flex items-center justify-center">
+                            {cred.type === "key" ? <Shield className="size-3.5 text-orange-400"/> : <Lock className="size-3.5 text-orange-400"/>}
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-sm font-semibold">{cred.name}</span>
+                            <span className="text-xs text-muted-foreground">{cred.username} • {cred.type.toUpperCase()}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Button variant="ghost" size="icon" className="size-7" onClick={() => setEditingCredential(cred)}>
+                            <Pencil className="size-3.5"/>
+                          </Button>
+                          <Button variant="ghost" size="icon" className="size-7 text-destructive hover:text-destructive hover:bg-destructive/10">
+                            <Trash2 className="size-3.5"/>
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </SectionCard>
+            )
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HostEditor({ host, onBack }: { host: Host | null, onBack: () => void }) {
+  const [activeTab, setActiveTab] = useState("general");
+  const [authMethod, setAuthMethod] = useState(host?.authType || "password");
+  const [connectionType, setConnectionType] = useState(host?.connectionType || "ssh");
+
+  const TABS = [
+    { id: "general", label: "General", icon: <Settings className="size-3.5" /> },
+    { id: "terminal", label: "Terminal", icon: <Terminal className="size-3.5" />, disabled: connectionType !== "ssh" },
+    { id: "tunnels", label: "Tunnels", icon: <Network className="size-3.5" />, disabled: connectionType !== "ssh" },
+    { id: "docker", label: "Docker", icon: <Box className="size-3.5" />, disabled: connectionType !== "ssh" },
+    { id: "files", label: "Files", icon: <FolderSearch className="size-3.5" />, disabled: connectionType !== "ssh" },
+    { id: "stats", label: "Stats & Actions", icon: <Activity className="size-3.5" /> },
+    { id: "remote", label: "Remote Desktop", icon: <Monitor className="size-3.5" />, disabled: connectionType === "ssh" },
+    { id: "sharing", label: "Sharing", icon: <Share2 className="size-3.5" /> },
+  ];
+
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center justify-between gap-2">
+        <Button variant="ghost" size="sm" onClick={onBack} className="h-8 px-2 gap-1.5 text-muted-foreground hover:text-foreground">
+          <ArrowLeft className="size-3.5"/>
+          Back to list
+        </Button>
+
+        <div className="flex gap-1 bg-muted/50 p-1 rounded-md border border-border">
+          {TABS.map(tab => (
+            <button
+              key={tab.id}
+              disabled={tab.disabled}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded transition-all ${
+                activeTab === tab.id
+                  ? "bg-background text-orange-400 shadow-sm border border-border"
+                  : "text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed"
+              }`}
+            >
+              {tab.icon}
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        {activeTab === "general" && (
+          <>
+            <SectionCard title="Connection Details" icon={<Globe className="size-3.5" />}>
+               <div className="flex flex-col gap-4 py-3">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Connection Type</label>
+                    <div className="flex gap-2">
+                      {["ssh", "rdp", "vnc", "telnet"].map(t => (
+                        <button
+                          key={t}
+                          onClick={() => setConnectionType(t as any)}
+                          className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-colors ${
+                            connectionType === t
+                              ? "border-orange-400/40 bg-orange-400/10 text-orange-400"
+                              : "border-border text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          {t}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-12 gap-4">
+                    <div className="flex flex-col gap-1.5 col-span-8">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Address / IP</label>
+                      <Input placeholder="10.0.0.1 or example.com" defaultValue={host?.address || ""} />
+                    </div>
+                    <div className="flex flex-col gap-1.5 col-span-4">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Port</label>
+                      <Input type="number" placeholder="22" defaultValue={host?.port || 22} />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">MAC Address</label>
+                      <Input placeholder="AA:BB:CC:DD:EE:FF" defaultValue={host?.macAddress || ""} />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Organization Name</label>
+                      <Input placeholder="e.g. Web Server Production" defaultValue={host?.name || ""} />
+                    </div>
+                  </div>
+               </div>
+            </SectionCard>
+
+            <SectionCard title="Authentication" icon={<Shield className="size-3.5"/>}>
+              <div className="flex flex-col gap-4 py-3">
+                 <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Auth Method</label>
+                    <div className="flex gap-2">
+                      {["password", "key", "credential", "none", "opkssh"].map(m => (
+                        <button
+                          key={m}
+                          onClick={() => setAuthMethod(m as any)}
+                          className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-colors ${
+                            authMethod === m
+                              ? "border-orange-400/40 bg-orange-400/10 text-orange-400"
+                              : "border-border text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          {m}
+                        </button>
+                      ))}
+                    </div>
+                 </div>
+
+                 <div className="grid grid-cols-2 gap-4 border-t border-border pt-4 mt-1">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Username</label>
+                      <Input placeholder="root" defaultValue={host?.user || ""} />
+                    </div>
+                    {authMethod === "password" && (
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Password</label>
+                        <Input type="password" placeholder="••••••••" defaultValue={host?.password || ""} />
+                      </div>
+                    )}
+                    {authMethod === "key" && (
+                      <>
+                        <div className="flex flex-col gap-1.5 col-span-2">
+                          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">SSH Private Key</label>
+                          <textarea
+                            placeholder="-----BEGIN OPENSSH PRIVATE KEY-----"
+                            rows={5}
+                            defaultValue={host?.key || ""}
+                            className="w-full px-3 py-2 text-[10px] bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Key Passphrase</label>
+                          <Input type="password" placeholder="Optional" defaultValue={host?.keyPassword || ""} />
+                        </div>
+                      </>
+                    )}
+                    {authMethod === "credential" && (
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Stored Credential</label>
+                        <select className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring">
+                          <option>Select a credential...</option>
+                          {MOCK_CREDENTIALS.map(c => (
+                            <option key={c.id} value={c.id} selected={host?.credentialId === c.id}>{c.name} ({c.username})</option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+                 </div>
+                 
+                 <SettingRow label="Force Keyboard Interactive" description="Force manual password entry even if keys are present">
+                   <FakeSwitch />
+                 </SettingRow>
+              </div>
+            </SectionCard>
+
+            <SectionCard title="Proxy & Bastion" icon={<Network className="size-3.5" />}>
+              <div className="flex flex-col gap-4 py-3">
+                 <SettingRow label="Use SOCKS5 Proxy" description="Route connection through a proxy server">
+                   <FakeSwitch defaultChecked={host?.useSocks5} />
+                 </SettingRow>
+                 
+                 <div className="flex flex-col gap-3 p-3 bg-muted/20 border border-border">
+                    <div className="flex items-center justify-between">
+                       <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Proxy Chain</span>
+                       <Button variant="outline" size="sm" className="h-6 text-[10px] px-2 border-orange-400/40 text-orange-400"><Plus className="size-3 mr-1" /> Add Node</Button>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                       <div className="flex items-center gap-2 p-2 bg-background border border-border">
+                          <span className="text-[10px] font-bold text-muted-foreground">1.</span>
+                          <Input className="h-7 text-xs flex-1" placeholder="Host" defaultValue="proxy.internal" />
+                          <Input className="h-7 text-xs w-20" placeholder="Port" defaultValue="1080" />
+                          <Button variant="ghost" size="icon" className="size-7 text-destructive"><Trash2 className="size-3.5" /></Button>
+                       </div>
+                    </div>
+                 </div>
+
+                 <div className="flex flex-col gap-3">
+                    <div className="flex items-center justify-between">
+                       <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Jump Host Chain</span>
+                       <Button variant="outline" size="sm" className="h-6 text-[10px] px-2 border-orange-400/40 text-orange-400"><Plus className="size-3 mr-1" /> Add Jump</Button>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                       <div className="flex items-center gap-2 p-2 bg-background border border-border">
+                          <span className="text-[10px] font-bold text-muted-foreground">1.</span>
+                          <select className="flex h-7 flex-1 border border-border bg-background px-2 py-0 text-xs outline-none focus:ring-1 focus:ring-ring">
+                             <option>Select a server...</option>
+                             {hosts.map(h => <option key={h.id}>{h.name}</option>)}
+                          </select>
+                          <Button variant="ghost" size="icon" className="size-7 text-destructive"><Trash2 className="size-3.5" /></Button>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+            </SectionCard>
+
+            <SectionCard title="Organization & Advanced" icon={<Tag className="size-3.5" />}>
+               <div className="grid grid-cols-2 gap-4 py-3">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Folder</label>
+                    <Input placeholder="e.g. Production" defaultValue={host?.folder || ""} />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Tags</label>
+                    <Input placeholder="space separated" defaultValue={host?.tags?.join(" ") || ""} />
+                  </div>
+                  <div className="flex flex-col gap-1.5 col-span-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Private Notes</label>
+                    <textarea rows={3} placeholder="Details about this server..." className="w-full px-3 py-2 text-xs bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring" defaultValue={host?.notes || ""} />
+                  </div>
+                  <SettingRow label="Pin to Top" description="Always show this host at the top of the list">
+                    <FakeSwitch defaultChecked={host?.pin} />
+                  </SettingRow>
+               </div>
+
+               <div className="flex flex-col gap-3 border-t border-border pt-4 pb-2">
+                  <div className="flex items-center justify-between">
+                     <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Port Knocking Sequence</span>
+                     <Button variant="outline" size="sm" className="h-6 text-[10px] px-2 border-orange-400/40 text-orange-400"><Plus className="size-3 mr-1" /> Add Knock</Button>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                     <div className="flex items-center gap-1.5 p-1.5 bg-muted/30 border border-border">
+                        <Input className="h-7 text-xs w-16" placeholder="Port" />
+                        <select className="h-7 text-[10px] bg-background border border-border"><option>TCP</option><option>UDP</option></select>
+                        <Input className="h-7 text-xs w-14" placeholder="Delay" />
+                        <button className="text-destructive p-1"><X className="size-3"/></button>
+                     </div>
+                  </div>
+               </div>
+            </SectionCard>
+          </>
+        )}
+
+        {activeTab === "terminal" && (
+           <>
+             <SectionCard title="Terminal Appearance" icon={<Palette className="size-3.5"/>}>
+                <div className="flex flex-col gap-4 py-3">
+                   <div className="space-y-2">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Theme Preview</label>
+                      <div className="h-32 w-full bg-[#111210] border border-border rounded flex items-center justify-center font-mono text-xs text-green-400">
+                         user@host:~$ ls -la<br/>
+                         total 0<br/>
+                         drwxr-xr-x  2 user user  64 May  1 2026 .<br/>
+                         drwxr-xr-x 10 user user 320 May  1 2026 ..
+                      </div>
+                   </div>
+
+                   <div className="grid grid-cols-2 gap-4">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Color Theme</label>
+                        <select className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring">
+                          <option>Termix Dark</option>
+                          <option>One Dark</option>
+                          <option>Monokai</option>
+                          <option>Dracula</option>
+                        </select>
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Font Family</label>
+                        <select className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring font-mono">
+                          <option>JetBrains Mono</option>
+                          <option>Fira Code</option>
+                          <option>Source Code Pro</option>
+                          <option>Courier New</option>
+                        </select>
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Font Size</label>
+                        <Input type="number" defaultValue={14} />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Cursor Style</label>
+                        <select className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring">
+                          <option>Block</option>
+                          <option>Underline</option>
+                          <option>Bar</option>
+                        </select>
+                      </div>
+                   </div>
+
+                   <SettingRow label="Cursor Blinking" description="Enable blinking animation for the terminal cursor">
+                     <FakeSwitch defaultChecked={true} />
+                   </SettingRow>
+
+                   <div className="grid grid-cols-2 gap-4">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Letter Spacing</label>
+                        <Input type="number" step="0.1" defaultValue={0} />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Line Height</label>
+                        <Input type="number" step="0.1" defaultValue={1.2} />
+                      </div>
+                   </div>
+                </div>
+             </SectionCard>
+
+             <SectionCard title="Behavior & Advanced" icon={<Zap className="size-3.5"/>}>
+                <div className="flex flex-col gap-4 py-3">
+                   <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Scrollback Buffer</label>
+                      <Input type="number" defaultValue={10000} />
+                      <span className="text-[10px] text-muted-foreground">Maximum number of lines kept in history</span>
+                   </div>
+
+                   <SettingRow label="SSH Agent Forwarding" description="Pass your local SSH keys to this host">
+                      <FakeSwitch />
+                   </SettingRow>
+                   <SettingRow label="Enable Auto-Mosh" description="Prefer Mosh over SSH if available">
+                      <FakeSwitch />
+                   </SettingRow>
+                   <SettingRow label="Enable Auto-Tmux" description="Automatically launch or attach to tmux session">
+                      <FakeSwitch />
+                   </SettingRow>
+                   <SettingRow label="Sudo Password Auto-fill" description="Automatically provide sudo password when prompted">
+                      <FakeSwitch />
+                   </SettingRow>
+
+                   <div className="flex flex-col gap-3">
+                      <div className="flex items-center justify-between">
+                         <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Environment Variables</span>
+                         <Button variant="outline" size="sm" className="h-6 text-[10px] px-2 border-orange-400/40 text-orange-400"><Plus className="size-3 mr-1" /> Add Variable</Button>
+                      </div>
+                      <div className="flex flex-col gap-2">
+                         <div className="flex items-center gap-2">
+                            <Input className="h-7 text-xs flex-1" placeholder="KEY" defaultValue="NODE_ENV" />
+                            <Input className="h-7 text-xs flex-1" placeholder="VALUE" defaultValue="production" />
+                            <button className="text-destructive"><X className="size-4"/></button>
+                         </div>
+                      </div>
+                   </div>
+
+                   <div className="grid grid-cols-2 gap-4 border-t border-border pt-4">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Keepalive Interval</label>
+                        <Input type="number" defaultValue={30} />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Max Keepalive Misses</label>
+                        <Input type="number" defaultValue={3} />
+                      </div>
+                   </div>
+                </div>
+             </SectionCard>
+           </>
+        )}
+
+        {activeTab === "tunnels" && (
+          <SectionCard title="Port Forwarding (SSH Tunnels)" icon={<Network className="size-3.5"/>}>
+            <div className="flex flex-col gap-4 py-3">
+               <SettingRow label="Enable Tunneling" description="Global toggle for SSH tunnel functionality">
+                 <FakeSwitch defaultChecked={true} />
+               </SettingRow>
+
+               <div className="flex flex-col gap-3 mt-2">
+                  <div className="flex items-center justify-between">
+                     <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Active Tunnels (S2S)</span>
+                     <Button variant="outline" size="sm" className="h-7 text-xs border-orange-400/40 text-orange-400"><Plus className="size-3.5 mr-1.5" /> Add Tunnel</Button>
+                  </div>
+                  
+                  <div className="flex flex-col gap-3">
+                     {[1].map(i => (
+                        <div key={i} className="flex flex-col gap-3 p-3 border border-border bg-muted/20 relative">
+                           <button className="absolute top-2 right-2 text-destructive"><Trash2 className="size-3.5"/></button>
+                           <div className="grid grid-cols-3 gap-3">
+                              <div className="flex flex-col gap-1">
+                                 <label className="text-[10px] font-bold text-muted-foreground">Mode</label>
+                                 <select className="h-7 text-xs bg-background border border-border"><option>Remote (R2L)</option><option>Local (L2R)</option><option>Dynamic (SOCKS)</option></select>
+                              </div>
+                              <div className="flex flex-col gap-1">
+                                 <label className="text-[10px] font-bold text-muted-foreground">Source Port</label>
+                                 <Input className="h-7 text-xs" defaultValue="8080" />
+                              </div>
+                              <div className="flex flex-col gap-1">
+                                 <label className="text-[10px] font-bold text-muted-foreground">Endpoint Host</label>
+                                 <Input className="h-7 text-xs" defaultValue="localhost" />
+                              </div>
+                           </div>
+                           <div className="flex items-center justify-between mt-1">
+                              <div className="flex items-center gap-4">
+                                 <div className="flex items-center gap-2">
+                                    <span className="text-[10px] font-bold text-muted-foreground">Auto-start</span>
+                                    <FakeSwitch />
+                                 </div>
+                                 <div className="flex items-center gap-1">
+                                    <div className="size-1.5 rounded-full bg-orange-400" />
+                                    <span className="text-[10px] font-bold text-orange-400 uppercase tracking-widest">Connected</span>
+                                 </div>
+                              </div>
+                              <Button variant="outline" size="sm" className="h-7 text-xs">Disconnect</Button>
+                           </div>
+                        </div>
+                     ))}
+                  </div>
+               </div>
+            </div>
+          </SectionCard>
+        )}
+
+        {activeTab === "docker" && (
+          <SectionCard title="Docker Integration" icon={<Box className="size-3.5"/>}>
+             <div className="flex flex-col gap-4 py-3">
+                <SettingRow label="Enable Docker Support" description="Monitor containers and images on this host via Docker socket">
+                  <FakeSwitch />
+                </SettingRow>
+                <div className="flex flex-col gap-1.5">
+                   <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Docker Endpoint</label>
+                   <Input defaultValue="/var/run/docker.sock" />
+                   <span className="text-[10px] text-muted-foreground">Unix socket or TCP endpoint (e.g. tcp://127.0.0.1:2375)</span>
+                </div>
+             </div>
+          </SectionCard>
+        )}
+
+        {activeTab === "files" && (
+          <SectionCard title="File Manager Settings" icon={<FolderSearch className="size-3.5"/>}>
+            <div className="flex flex-col gap-4 py-3">
+               <SettingRow label="Enable File Manager" description="Browse and manage files over SFTP">
+                 <FakeSwitch defaultChecked={true} />
+               </SettingRow>
+               <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Default Starting Path</label>
+                  <Input placeholder="/home/user" defaultValue={host?.defaultPath || "~"} />
+               </div>
+               <SettingRow label="Show Hidden Files" description="Always show files starting with a dot">
+                 <FakeSwitch defaultChecked={true} />
+               </SettingRow>
+            </div>
+          </SectionCard>
+        )}
+
+        {activeTab === "stats" && (
+          <>
+            <SectionCard title="Monitoring Config" icon={<Activity className="size-3.5"/>}>
+               <div className="flex flex-col gap-4 py-3">
+                  <SettingRow label="Status Checks" description="Periodically ping the host to check availability">
+                    <FakeSwitch defaultChecked={true} />
+                  </SettingRow>
+                  <SettingRow label="Metrics Collection" description="Collect CPU, RAM, and Disk usage data">
+                    <FakeSwitch defaultChecked={true} />
+                  </SettingRow>
+                  
+                  <div className="grid grid-cols-2 gap-4 border-t border-border pt-4">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Check Interval</label>
+                        <div className="flex gap-2">
+                           <Input type="number" defaultValue={60} className="flex-1" />
+                           <select className="h-9 bg-background border border-border text-xs"><option>Seconds</option><option>Minutes</option></select>
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Metrics Interval</label>
+                        <div className="flex gap-2">
+                           <Input type="number" defaultValue={30} className="flex-1" />
+                           <select className="h-9 bg-background border border-border text-xs"><option>Seconds</option><option>Minutes</option></select>
+                        </div>
+                      </div>
+                   </div>
+
+                   <div className="flex flex-col gap-2">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Enabled Widgets</label>
+                      <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+                         {["CPU Usage", "Memory Usage", "Disk Usage", "Network Traffic", "System Info", "Process List", "Login History", "Firewall Status"].map(w => (
+                            <div key={w} className="flex items-center gap-2">
+                               <FakeSwitch defaultChecked={true} />
+                               <span className="text-xs">{w}</span>
+                            </div>
+                         ))}
+                      </div>
+                   </div>
+               </div>
+            </SectionCard>
+
+            <SectionCard title="Quick Actions" icon={<Zap className="size-3.5" />}>
+               <div className="flex flex-col gap-4 py-3">
+                  <div className="flex items-center justify-between">
+                     <span className="text-xs text-muted-foreground font-medium uppercase tracking-widest">Snippet Assignments</span>
+                     <Button variant="outline" size="sm" className="h-7 text-xs border-orange-400/40 text-orange-400"><Plus className="size-3.5 mr-1.5" /> Add Action</Button>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                     <div className="flex items-center gap-2 p-2 bg-muted/20 border border-border">
+                        <Input className="h-8 text-xs flex-1" placeholder="Action Name" defaultValue="Restart Nginx" />
+                        <select className="flex h-8 flex-1 border border-border bg-background px-2 text-xs outline-none">
+                           <option>System Update</option>
+                           <option>Clear Logs</option>
+                           <option>Check SSL</option>
+                        </select>
+                        <button className="text-destructive"><Trash2 className="size-3.5"/></button>
+                     </div>
+                  </div>
+               </div>
+            </SectionCard>
+          </>
+        )}
+
+        {activeTab === "remote" && (
+           <SectionCard title="Remote Desktop Config" icon={<Monitor className="size-3.5" />}>
+              <div className="flex flex-col gap-4 py-3">
+                 {connectionType === "rdp" && (
+                    <div className="flex flex-col gap-4">
+                       <div className="grid grid-cols-2 gap-4">
+                          <div className="flex flex-col gap-1.5">
+                             <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Domain</label>
+                             <Input placeholder="WORKGROUP" />
+                          </div>
+                          <div className="flex flex-col gap-1.5">
+                             <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Security Mode</label>
+                             <select className="h-9 bg-background border border-border text-xs"><option>Any</option><option>NLA</option><option>TLS</option><option>RDP</option></select>
+                          </div>
+                       </div>
+                       <SettingRow label="Ignore Certificate" description="Allow connections to servers with self-signed certificates">
+                          <FakeSwitch defaultChecked={true} />
+                       </SettingRow>
+                    </div>
+                 )}
+
+                 <div className="flex flex-col gap-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Display Settings</label>
+                    <div className="grid grid-cols-3 gap-3">
+                       <div className="flex flex-col gap-1">
+                          <span className="text-[10px] text-muted-foreground font-bold">Width</span>
+                          <Input className="h-8 text-xs" placeholder="Auto" />
+                       </div>
+                       <div className="flex flex-col gap-1">
+                          <span className="text-[10px] text-muted-foreground font-bold">Height</span>
+                          <Input className="h-8 text-xs" placeholder="Auto" />
+                       </div>
+                       <div className="flex flex-col gap-1">
+                          <span className="text-[10px] text-muted-foreground font-bold">DPI</span>
+                          <Input className="h-8 text-xs" defaultValue="96" />
+                       </div>
+                    </div>
+                 </div>
+
+                 <div className="flex flex-col gap-2 pt-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Performance & Audio</label>
+                    <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+                       <SettingRow label="Enable Audio">
+                          <FakeSwitch defaultChecked={true} />
+                       </SettingRow>
+                       <SettingRow label="Wallpaper">
+                          <FakeSwitch />
+                       </SettingRow>
+                       <SettingRow label="Theming">
+                          <FakeSwitch />
+                       </SettingRow>
+                       <SettingRow label="Font Smoothing">
+                          <FakeSwitch defaultChecked={true} />
+                       </SettingRow>
+                    </div>
+                 </div>
+              </div>
+           </SectionCard>
+        )}
+
+        {activeTab === "sharing" && (
+           <SectionCard title="Resource Sharing" icon={<Share2 className="size-3.5" />}>
+              <div className="flex flex-col items-center justify-center py-12 opacity-50">
+                 <Users className="size-12 mb-4 text-orange-400" />
+                 <span className="text-sm font-semibold uppercase tracking-widest">Collaborative Access</span>
+                 <span className="text-xs">Sharing requires an active Team subscription</span>
+              </div>
+           </SectionCard>
+        )}
+      </div>
+
+      <div className="flex justify-end gap-3 mt-3 mb-6">
+        <Button variant="ghost" onClick={onBack}>Cancel</Button>
+        <Button variant="outline" className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400 px-8" onClick={() => {
+          toast.success("Host configuration saved");
+          onBack();
+        }}>
+          Save Host
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function CredentialEditorView({ credential, onBack }: { credential: Credential | null, onBack: () => void }) {
+  const [type, setType] = useState(credential?.type || "password");
+
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center gap-2">
+        <Button variant="ghost" size="sm" onClick={onBack} className="h-8 px-2 gap-1.5 text-muted-foreground hover:text-foreground">
+          <ArrowLeft className="size-3.5"/>
+          Back to list
+        </Button>
+      </div>
+
+      <SectionCard title="Basic Information" icon={<Info className="size-3.5"/>}>
+        <div className="grid grid-cols-2 gap-4 py-3">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Friendly Name</label>
+            <Input placeholder="e.g. Production SSH Key" defaultValue={credential?.name || ""} />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Folder</label>
+            <Input placeholder="e.g. Server Keys" defaultValue={credential?.folder || ""} />
+          </div>
+          <div className="flex flex-col gap-1.5 col-span-2">
+            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Description</label>
+            <Input placeholder="Optional details..." defaultValue={credential?.description || ""} />
+          </div>
+          <div className="flex flex-col gap-1.5 col-span-2">
+            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Tags</label>
+            <Input placeholder="space separated" defaultValue={credential?.tags?.join(" ") || ""} />
+          </div>
+        </div>
+      </SectionCard>
+
+      <SectionCard title="Authentication Details" icon={<Lock className="size-3.5"/>}>
+        <div className="flex flex-col gap-4 py-3">
+           <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Type</label>
+              <div className="flex gap-2">
+                {["password", "key"].map(m => (
+                  <button
+                    key={m}
+                    onClick={() => setType(m as any)}
+                    className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-colors ${
+                      type === m
+                        ? "border-orange-400/40 bg-orange-400/10 text-orange-400"
+                        : "border-border text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {m === "key" ? "SSH Private Key" : "Password"}
+                  </button>
+                ))}
+              </div>
+           </div>
+
+           <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Username</label>
+              <Input placeholder="e.g. root or deploy" defaultValue={credential?.username || ""} />
+           </div>
+
+           {type === "password" && (
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Password</label>
+                <Input type="password" placeholder="••••••••" defaultValue={credential?.value || ""} />
+              </div>
+           )}
+
+           {type === "key" && (
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">SSH Private Key</label>
+                  <textarea
+                    placeholder="-----BEGIN OPENSSH PRIVATE KEY-----"
+                    rows={8}
+                    defaultValue={credential?.value || ""}
+                    className="w-full px-3 py-2 text-[10px] bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">SSH Public Key (Optional)</label>
+                  <textarea
+                    placeholder="ssh-rsa AAAAB3Nza..."
+                    rows={3}
+                    defaultValue={credential?.publicKey || ""}
+                    className="w-full px-3 py-2 text-[10px] bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Key Passphrase (Optional)</label>
+                  <Input type="password" placeholder="••••••••" defaultValue={credential?.passphrase || ""} />
+                </div>
+              </div>
+           )}
+        </div>
+      </SectionCard>
+
+      <div className="flex justify-end gap-3 mt-3">
+        <Button variant="ghost" onClick={onBack}>Cancel</Button>
+        <Button variant="outline" className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400 px-8" onClick={() => {
+          toast.success("Credential saved");
+          onBack();
+        }}>
+          Save Credential
+        </Button>
+      </div>
     </div>
   );
 }
@@ -2872,6 +3944,19 @@ function App() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  useEffect(() => {
+    const el = tabBarRef.current;
+    if (!el) return;
+    const handleWheel = (e: WheelEvent) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        el.scrollLeft += e.deltaY;
+      }
+    };
+    el.addEventListener("wheel", handleWheel, { passive: false });
+    return () => el.removeEventListener("wheel", handleWheel);
+  }, []);
+
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [tabBarOpen, setTabBarOpen] = useState(true);
   const [quickConnectOpen, setQuickConnectOpen] = useState(false);
@@ -3129,9 +4214,9 @@ function App() {
           )}
           <div className="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
             <div
-              className={`flex items-end bg-sidebar shrink-0 min-w-0 transition-all duration-200 overflow-hidden ${tabBarOpen ? "h-12.5 border-b border-border" : "h-0"}`}>
+              className={`flex items-end bg-sidebar shrink-0 min-w-0 transition-all duration-200 ${tabBarOpen ? "h-12.5 border-b border-border" : "h-0"}`}>
               {/* Scrollable tab list */}
-              <div ref={tabBarRef} className="flex h-full flex-1 min-w-0 overflow-x-auto scrollbar-none">
+              <div ref={tabBarRef} className="flex h-full flex-1 min-w-0 overflow-x-auto scrollbar-none pl-px">
                 {tabs.map((tab, index) => {
                   const active = tab.id === activeTabId;
                   const isDragging = dragTabId === tab.id;
@@ -3191,9 +4276,9 @@ function App() {
                         cursor: tab.type === "dashboard" ? "pointer" : isDragging ? "grabbing" : "grab",
                         userSelect: "none",
                       }}
-                      className={`group/tab flex items-center gap-2 shrink-0 transition-colors border-r border-border text-sm
+                      className={`group/tab flex items-center gap-2 shrink-0 transition-colors border-x border-border -ml-px text-sm
                                         ${tab.type === "dashboard"
-                        ? `px-3.5 ${active ? "border-r border-b-2 border-b-orange-400 bg-surface text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-surface"}`
+                        ? `px-3.5 ${active ? "border-b-2 border-b-orange-400 bg-surface text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-surface"}`
                         : `px-4 font-medium ${active ? "border-b-2 border-b-orange-400 bg-surface text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-surface"}`
                       }`}
                     >
@@ -3233,7 +4318,7 @@ function App() {
                         zIndex: 9999,
                         opacity: 0.85,
                       }}
-                      className={`flex items-center gap-2 shrink-0 border-r border-border text-sm shadow-lg
+                      className={`flex items-center gap-2 shrink-0 border border-border text-sm shadow-lg
                         ${tab.type === "dashboard"
                         ? `px-3.5 ${active ? "border-b-2 border-b-orange-400 bg-surface text-foreground" : "bg-sidebar text-muted-foreground"}`
                         : `px-4 font-medium ${active ? "border-b-2 border-b-orange-400 bg-surface text-foreground" : "bg-sidebar text-muted-foreground"}`

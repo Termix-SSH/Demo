@@ -90,7 +90,7 @@ const INITIAL_FILES: MockFile[] = [
   { id: "10", name: "resume.pdf", type: "file", path: "/home/user/Documents/resume.pdf", size: 1024 * 450, modified: "2026-04-15 14:20", permissions: "-rw-r--r--", owner: "user", group: "user" },
   { id: "11", name: "budget.xlsx", type: "file", path: "/home/user/Documents/budget.xlsx", size: 1024 * 120, modified: "2026-04-20 11:05", permissions: "-rw-r--r--", owner: "user", group: "user" },
   { id: "12", name: "profile.jpg", type: "file", path: "/home/user/Downloads/profile.jpg", size: 1024 * 850, modified: "2026-04-30 22:05", permissions: "-rw-r--r--", owner: "user", group: "user" },
-  { id: "13", name: "index.ts", type: "file", path: "/home/user/Documents/Projects/index.ts", size: 1024 * 5, modified: "2026-05-01 10:20", permissions: "-rw-r--r--", owner: "user", group: "user", content: "console.log('Hello World');\n\nconst main = () => {\n  console.log('Termix Redesign Demo');\n};\n\nmain();" },
+  { id: "13", name: "index.ts", type: "file", path: "/home/user/Documents/Projects/index.ts", size: 1024 * 5, modified: "2026-05-01 10:20", permissions: "-rw-r--r--", owner: "user", group: "user", content: "console.log('Hello World');\n\nconst main = () => {\n  console.log('Termix Demo');\n};\n\nmain();" },
   { id: "14", name: "README.md", type: "file", path: "/home/user/Documents/Projects/README.md", size: 1024 * 2, modified: "2026-05-01 10:25", permissions: "-rw-r--r--", owner: "user", group: "user", content: "# Project Title\n\nThis is a demo project for the new Termix UI.\n\n## Features\n- Professional Terminal Aesthetic\n- File Manager Demo\n- Dark Mode by Default" },
   { id: "15", name: "docker-compose.yml", type: "file", path: "/home/user/Documents/Projects/docker-compose.yml", size: 1024 * 1, modified: "2026-05-01 10:30", permissions: "-rw-r--r--", owner: "user", group: "user", content: "version: '3.8'\nservices:\n  web:\n    image: nginx\n    ports:\n      - \"80:80\"\n  db:\n    image: postgres:15" },
   { id: "16", name: "archive.zip", type: "file", path: "/home/user/Downloads/archive.zip", size: 1024 * 1024 * 15, modified: "2026-04-29 16:40", permissions: "-rw-r--r--", owner: "user", group: "user" },
@@ -287,14 +287,14 @@ function useMockFileSystem() {
 
 // --- Components ---
 
-function FolderTreeItem({ 
-  item, 
-  currentPath, 
-  onNavigate, 
-  depth = 0 
-}: { 
-  item: any; 
-  currentPath: string; 
+function FolderTreeItem({
+  item,
+  currentPath,
+  onNavigate,
+  depth = 0
+}: {
+  item: any;
+  currentPath: string;
   onNavigate: (path: string) => void;
   depth?: number;
 }) {
@@ -330,11 +330,11 @@ function FolderTreeItem({
       {hasChildren && isOpen && (
         <div className="flex flex-col">
           {item.children.map((child: any) => (
-            <FolderTreeItem 
-              key={child.id} 
-              item={child} 
-              currentPath={currentPath} 
-              onNavigate={onNavigate} 
+            <FolderTreeItem
+              key={child.id}
+              item={child}
+              currentPath={currentPath}
+              onNavigate={onNavigate}
               depth={depth + 1}
             />
           ))}
@@ -440,7 +440,7 @@ export function FileManagerDemo({ label }: FileManagerDemoProps) {
     setIsSelecting(true);
     setSelectionStart({ x, y });
     setSelectionRect({ x, y, width: 0, height: 0 });
-    
+
     if (!e.ctrlKey && !e.metaKey) {
       setSelectedIds([]);
     }
@@ -501,7 +501,7 @@ export function FileManagerDemo({ label }: FileManagerDemoProps) {
     const ids = selectedIds.includes(file.id) ? selectedIds : [file.id];
     setDragState((prev) => ({ ...prev, isDragging: true, draggedIds: ids }));
     setSelectedIds(ids);
-    
+
     e.dataTransfer.setData("text/plain", JSON.stringify(ids));
     e.dataTransfer.effectAllowed = "move";
   };
@@ -520,12 +520,12 @@ export function FileManagerDemo({ label }: FileManagerDemoProps) {
   const handleDrop = (e: React.DragEvent, targetFile?: MockFile) => {
     e.preventDefault();
     const ids = dragState.draggedIds;
-    
+
     if (targetFile && targetFile.type === "directory" && !ids.includes(targetFile.id)) {
       moveFiles(ids, targetFile.path);
       setSelectedIds([]);
     }
-    
+
     setDragState({ isDragging: false, draggedIds: [], targetId: null });
   };
 
@@ -539,7 +539,7 @@ export function FileManagerDemo({ label }: FileManagerDemoProps) {
       const lastId = selectedIds[selectedIds.length - 1];
       const lastIndex = filteredFiles.findIndex(f => f.id === lastId);
       const currentIndex = filteredFiles.findIndex(f => f.id === file.id);
-      
+
       if (lastIndex !== -1 && currentIndex !== -1) {
         const start = Math.min(lastIndex, currentIndex);
         const end = Math.max(lastIndex, currentIndex);
@@ -680,17 +680,17 @@ export function FileManagerDemo({ label }: FileManagerDemoProps) {
         <div className="flex items-center gap-2">
           {selectedIds.length > 0 && (
             <div className="flex items-center gap-1 mr-2 px-2 py-1 bg-orange-400/10 border border-orange-400/20 text-orange-400 text-[10px] font-black uppercase tracking-tighter">
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 className="size-6 text-orange-400 hover:bg-orange-400/20 rounded-none"
                 onClick={() => deleteFiles(selectedIds)}
               >
                 <Trash2 className="size-3.5" />
               </Button>
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 className="size-6 text-orange-400 hover:bg-orange-400/20 rounded-none"
                 onClick={() => {
                   const items = currentFiles.filter(f => selectedIds.includes(f.id));
@@ -783,11 +783,11 @@ export function FileManagerDemo({ label }: FileManagerDemoProps) {
               </div>
               <div className="px-1">
                 {folderTree.map((item: any) => (
-                  <FolderTreeItem 
-                    key={item.id} 
-                    item={item} 
-                    currentPath={currentPath} 
-                    onNavigate={navigateTo} 
+                  <FolderTreeItem
+                    key={item.id}
+                    item={item}
+                    currentPath={currentPath}
+                    onNavigate={navigateTo}
                   />
                 ))}
               </div>
@@ -828,7 +828,7 @@ export function FileManagerDemo({ label }: FileManagerDemoProps) {
         </div>
 
         {/* Main Content Area */}
-        <Card 
+        <Card
           ref={containerRef}
           className="flex-1 min-h-0 flex flex-col bg-card border-border relative overflow-hidden rounded-none shadow-none"
           onMouseDown={handleMouseDown}
@@ -985,7 +985,7 @@ export function FileManagerDemo({ label }: FileManagerDemoProps) {
                   </Button>
                </div>
             </div>
-            
+
             <div className="flex-1 flex min-h-0">
                {/* Line numbers mock */}
                <div className="w-10 bg-[#151613] border-r border-border/30 flex flex-col items-center py-4 gap-1 select-none">
@@ -1095,7 +1095,7 @@ export function FileManagerDemo({ label }: FileManagerDemoProps) {
                   </span>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 gap-2 border border-border bg-muted/10 p-3">
                  <PropertyRow label="Location" value={propertiesFile.path} mono />
                  <PropertyRow label="Size" value={propertiesFile.type === "directory" ? "—" : formatSize(propertiesFile.size)} />
@@ -1155,12 +1155,12 @@ function FileContextMenuContent({
         <MoreHorizontal className="size-3.5 mr-2.5" /> Copy Path
       </ContextMenuItem>
       <ContextMenuItem onClick={onTogglePin} className="rounded-none text-[10px] font-bold uppercase tracking-widest h-9 focus:bg-orange-400/10 focus:text-orange-400 transition-colors cursor-pointer px-3">
-        <Star className={cn("size-3.5 mr-2.5", isPinned && "fill-orange-400 text-orange-400")} /> 
+        <Star className={cn("size-3.5 mr-2.5", isPinned && "fill-orange-400 text-orange-400")} />
         {isPinned ? "Unpin Quick Access" : "Pin Quick Access"}
       </ContextMenuItem>
-      
+
       <Separator className="bg-border/50" />
-      
+
       <ContextMenuItem onClick={onRename} className="rounded-none text-[10px] font-bold uppercase tracking-widest h-9 focus:bg-orange-400/10 focus:text-orange-400 transition-colors cursor-pointer px-3">
         <Edit3 className="size-3.5 mr-2.5" /> Rename
       </ContextMenuItem>
@@ -1170,9 +1170,9 @@ function FileContextMenuContent({
       <ContextMenuItem onClick={onProperties} className="rounded-none text-[10px] font-bold uppercase tracking-widest h-9 focus:bg-orange-400/10 focus:text-orange-400 transition-colors cursor-pointer px-3">
         <Info className="size-3.5 mr-2.5" /> Properties
       </ContextMenuItem>
-      
+
       <Separator className="bg-border/50" />
-      
+
       <ContextMenuItem onClick={onDelete} className="text-destructive focus:text-destructive focus:bg-destructive/10 rounded-none text-[10px] font-bold uppercase tracking-widest h-9 cursor-pointer px-3">
         <Trash2 className="size-3.5 mr-2.5" /> Delete
       </ContextMenuItem>
