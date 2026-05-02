@@ -42,6 +42,11 @@ import {
   Network,
   Palette,
   Pencil,
+  ArrowLeft,
+  ArrowRight,
+  Download,
+  Filter,
+  PlayCircle,
   Play,
   Plus,
   RefreshCw,
@@ -51,7 +56,7 @@ import {
   Share2,
   Shield,
   ShieldCheck,
-  ShieldOff,
+  Square,
   Sun,
   Tag,
   Terminal,
@@ -59,6 +64,8 @@ import {
   User,
   UserCheck,
   UserX,
+  Wifi,
+  WifiOff,
   X,
   Zap,
 } from "lucide-react";
@@ -106,6 +113,22 @@ type TabType =
   | "admin-settings"
   | "docker"
   | "tunnel";
+
+type TunnelStatusValue = "CONNECTED" | "CONNECTING" | "DISCONNECTING" | "DISCONNECTED" | "ERROR" | "WAITING";
+type TunnelMode = "local" | "remote" | "dynamic";
+
+type Tunnel = {
+  id: string;
+  hostId: string;
+  sourcePort: number;
+  endpointHost: string;
+  endpointPort: number;
+  status: TunnelStatusValue;
+  mode: TunnelMode;
+  reason?: string;
+  retryCount?: number;
+  maxRetries?: number;
+};
 
 type Tab = {
   id: string;
@@ -297,7 +320,7 @@ function DashboardTab() {
             </div>
             <div className="flex items-center gap-3 px-4 py-2.5">
               <Network className="size-4 text-muted-foreground shrink-0"/>
-              <span className="text-xl font-bold">0</span>
+              <span className="text-xl font-bold">5</span>
               <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Tunnels</span>
             </div>
           </Card>
@@ -479,9 +502,9 @@ function TerminalTab({label}: { label: string }) {
     const fitAddon = new FitAddon();
     instance.loadAddon(fitAddon);
 
-    const prompt = "\r\n\x1b[38;2;251;146;60muser@termix\x1b[0m:\x1b[38;2;96;165;250m~\x1b[0m$ ";
+    const prompt = `\r\n\x1b[38;2;251;146;60muser@${label.toLowerCase().replace(/\s+/g, "-")}\x1b[0m:\x1b[38;2;96;165;250m~\x1b[0m$ `;
 
-    instance.writeln('\x1b[1m\x1b[38;2;251;146;60mTermix\x1b[0m v1.0.0 (SSH Simulation Mode)');
+    instance.writeln(`\x1b[1m\x1b[38;2;251;146;60mTermix\x1b[0m v1.0.0 (SSH: ${label})`);
     instance.writeln('Type "help" for a list of commands.');
     instance.write(prompt);
 
@@ -634,12 +657,12 @@ function StatsTab({label}: { label: string }) {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={refresh} disabled={isRefreshing} className="gap-2 font-semibold">
+        <div className="flex items-center gap-0">
+          <Button variant="outline" size="default" onClick={refresh} disabled={isRefreshing} className="gap-2 font-semibold">
             <RefreshCw className={`size-3.5 ${isRefreshing ? "animate-spin" : ""}`}/>
             Refresh
           </Button>
-          <Separator orientation="vertical" className="h-8 mx-1"/>
+          <Separator orientation="vertical" className="h-8 mx-3"/>
           <Button variant="ghost" size="icon"><Settings className="size-4 text-orange-400"/></Button>
         </div>
       </Card>
@@ -866,14 +889,20 @@ function StatsTab({label}: { label: string }) {
 
 function FilesTab({label}: { label: string }) {
   return (
-    <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+    <div className="flex flex-col flex-1 min-h-0 overflow-hidden items-center justify-center opacity-20 py-20">
+      <FolderSearch className="size-16 mb-4"/>
+      <span className="text-xl font-bold uppercase tracking-widest">File Manager</span>
+      <span className="text-xs font-semibold">Remote file system access for {label}</span>
     </div>
   );
 }
 
 function HostManagerTab() {
   return (
-    <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+    <div className="flex flex-col flex-1 min-h-0 overflow-hidden items-center justify-center opacity-20 py-20">
+      <Server className="size-16 mb-4"/>
+      <span className="text-xl font-bold uppercase tracking-widest">Host Manager</span>
+      <span className="text-xs font-semibold">Manage your server infrastructure</span>
     </div>
   );
 }
@@ -2028,16 +2057,666 @@ function AdminSettingsTab() {
   );
 }
 
-function DockerTab() {
+type DockerContainerStatus = "running" | "exited" | "paused" | "created" | "restarting";
+
+type DockerContainer = {
+  id: string;
+  name: string;
+  image: string;
+  status: DockerContainerStatus;
+  cpu: number;
+  memory: string;
+  ports: string[];
+  created: string;
+};
+
+const MOCK_CONTAINERS: DockerContainer[] = [
+  { id: "d1a2b3c4e5f6", name: "nginx-proxy", image: "nginx:latest", status: "running", cpu: 0.8, memory: "12.4 MB", ports: ["80:80", "443:443"], created: "2 days ago" },
+  { id: "f6e5d4c3b2a1", name: "postgres-db", image: "postgres:15-alpine", status: "running", cpu: 2.5, memory: "256.2 MB", ports: ["5432:5432"], created: "5 days ago" },
+  { id: "a1b2c3d4e5f6", name: "redis-cache", image: "redis:7.0-alpine", status: "paused", cpu: 0, memory: "42.1 MB", ports: ["6379:6379"], created: "1 week ago" },
+  { id: "f1e2d3c4b5a6", name: "webapp-api", image: "node:18-slim", status: "running", cpu: 8.4, memory: "312.8 MB", ports: ["3000:3000"], created: "3 hours ago" },
+  { id: "b1c2d3e4f5a6", name: "worker-node-01", image: "python:3.11-slim", status: "exited", cpu: 0, memory: "0 B", ports: [], created: "1 day ago" },
+  { id: "c1d2e3f4a5b6", name: "monitoring-grafana", image: "grafana/grafana:latest", status: "running", cpu: 1.2, memory: "128.5 MB", ports: ["3001:3000"], created: "4 days ago" },
+  { id: "d1e2f3a4b5c6", name: "prometheus", image: "prom/prometheus:latest", status: "running", cpu: 3.7, memory: "512.2 MB", ports: ["9090:9090"], created: "4 days ago" },
+];
+
+function DockerBadge({ status }: { status: DockerContainerStatus }) {
+  let colorClass = "border-border text-muted-foreground";
+  if (status === "running") colorClass = "border-orange-400/40 text-orange-400 bg-orange-400/10";
+  if (status === "paused") colorClass = "border-yellow-500/40 text-yellow-500 bg-yellow-500/10";
+  if (status === "exited") colorClass = "border-destructive/40 text-destructive bg-destructive/5";
+
   return (
-    <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+    <span className={`text-[10px] font-bold px-1.5 py-0.5 border uppercase tracking-wider ${colorClass}`}>
+      {status}
+    </span>
+  );
+}
+
+function DockerContainerCard({ container, onSelect, onAction }: {
+  container: DockerContainer,
+  onSelect: (id: string) => void,
+  onAction: (id: string, action: string, e: React.MouseEvent) => void
+}) {
+  return (
+    <Card className="flex flex-col overflow-hidden p-0 gap-0 group hover:border-orange-400/40 transition-colors cursor-pointer" onClick={() => onSelect(container.id)}>
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-border bg-muted/10">
+        <div className="flex items-center gap-2 min-w-0">
+          <Box className={`size-3.5 ${container.status === "running" ? "text-orange-400" : "text-muted-foreground"}`}/>
+          <span className="text-sm font-bold truncate">{container.name}</span>
+        </div>
+        <DockerBadge status={container.status}/>
+      </div>
+      <div className="px-4 py-3 flex flex-col gap-2">
+        <div className="flex flex-col gap-0.5">
+          <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">Image</span>
+          <span className="text-xs font-mono truncate text-foreground/80">{container.image}</span>
+        </div>
+        <div className="grid grid-cols-2 gap-2 mt-1">
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">CPU Usage</span>
+            <span className="text-xs font-semibold">{container.status === "running" ? `${container.cpu}%` : "—"}</span>
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">Memory</span>
+            <span className="text-xs font-semibold">{container.status === "running" ? container.memory : "—"}</span>
+          </div>
+        </div>
+        <div className="flex flex-col gap-0.5 mt-1">
+          <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">Ports</span>
+          <div className="flex flex-wrap gap-1 mt-0.5">
+            {container.ports.length > 0 ? container.ports.map(p => (
+              <span key={p} className="text-[10px] font-mono px-1 border border-border bg-muted/30">{p}</span>
+            )) : <span className="text-[10px] text-muted-foreground italic">None</span>}
+          </div>
+        </div>
+      </div>
+      <div className="px-4 py-2 border-t border-border bg-muted/5 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
+        <span className="text-[10px] text-muted-foreground italic">Created {container.created}</span>
+        <div className="flex items-center gap-1">
+          {container.status !== "running" ? (
+            <Button variant="ghost" size="icon-xs" className="text-orange-400" onClick={(e) => onAction(container.id, "start", e)}><Play className="size-3"/></Button>
+          ) : (
+            <Button variant="ghost" size="icon-xs" className="text-destructive" onClick={(e) => onAction(container.id, "stop", e)}><Square className="size-3"/></Button>
+          )}
+          <Button variant="ghost" size="icon-xs" onClick={(e) => onAction(container.id, "restart", e)}><RefreshCw className="size-3"/></Button>
+          <Button variant="ghost" size="icon-xs" className="text-destructive" onClick={(e) => onAction(container.id, "delete", e)}><Trash2 className="size-3"/></Button>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+function DockerLogViewer({ containerName }: { containerName: string }) {
+  const [logs, setLogs] = useState<string[]>([]);
+  const [autoRefresh, setAutoRefresh] = useState(true);
+
+  useEffect(() => {
+    const initialLogs = [
+      `[${new Date().toISOString()}] INFO: Starting ${containerName}...`,
+      `[${new Date().toISOString()}] INFO: Loading configuration from /etc/${containerName}/config.yml`,
+      `[${new Date().toISOString()}] DEBUG: Establishing connection to internal mesh...`,
+      `[${new Date().toISOString()}] INFO: Service initialized on port 8080`,
+      `[${new Date().toISOString()}] WARN: High memory pressure detected in sub-process 42`,
+      `[${new Date().toISOString()}] INFO: Incoming request from 10.0.5.12: GET /health`,
+      `[${new Date().toISOString()}] INFO: 200 OK - 1.2ms`,
+    ];
+    setLogs(initialLogs);
+
+    if (!autoRefresh) return;
+
+    const interval = setInterval(() => {
+      setLogs(prev => [
+        ...prev.slice(-49),
+        `[${new Date().toISOString()}] INFO: Worker processed batch ${Math.floor(Math.random() * 1000)} - Success`
+      ]);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [containerName, autoRefresh]);
+
+  return (
+    <div className="flex flex-col flex-1 min-h-0 gap-3">
+      <div className="flex items-center justify-between bg-card border border-border px-3 py-2">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+             <span className="text-[10px] text-muted-foreground uppercase font-bold">Auto Refresh</span>
+             <AdminToggle on={autoRefresh} onToggle={() => setAutoRefresh(!autoRefresh)}/>
+          </div>
+          <Separator orientation="vertical" className="h-4"/>
+          <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{logs.length} Lines</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <Button variant="ghost" size="sm" className="h-7 text-xs gap-1.5"><Download className="size-3"/> Download</Button>
+          <Button variant="ghost" size="sm" className="h-7 text-xs gap-1.5" onClick={() => setLogs([])}><Trash2 className="size-3"/> Clear</Button>
+        </div>
+      </div>
+      <div className="flex-1 bg-[#111210] border border-border p-3 overflow-auto font-mono text-xs leading-relaxed scrollbar-thin">
+        {logs.map((log, i) => (
+          <div key={i} className="whitespace-pre-wrap break-all">
+            <span className="text-orange-400/60">{log.substring(0, 26)}</span>
+            <span className="text-foreground/90">{log.substring(26)}</span>
+          </div>
+        ))}
+        {logs.length === 0 && <span className="text-muted-foreground italic">No logs available</span>}
+      </div>
     </div>
   );
 }
 
-function TunnelTab() {
+function DockerContainerStats({ container }: { container: DockerContainer }) {
+  const [metrics, setMetrics] = useState({
+    cpu: container.cpu,
+    mem: parseFloat(container.memory) || 0,
+    netIn: 1.2,
+    netOut: 0.8,
+    ioRead: 450,
+    ioWrite: 120
+  });
+
+  useEffect(() => {
+    if (container.status !== "running") return;
+    const interval = setInterval(() => {
+      setMetrics(prev => ({
+        ...prev,
+        cpu: Math.max(0.1, Math.min(99, prev.cpu + (Math.random() * 2 - 1))),
+        mem: Math.max(1, prev.mem + (Math.random() * 5 - 2.5)),
+        netIn: prev.netIn + Math.random() * 0.1,
+        netOut: prev.netOut + Math.random() * 0.05
+      }));
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [container]);
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+       <SectionCard title="CPU Usage" icon={<Cpu className="size-3.5"/>}>
+          <div className="flex flex-col gap-3 py-2">
+            <div className="flex items-end justify-between">
+              <span className="text-3xl font-bold text-orange-400">{metrics.cpu.toFixed(1)}%</span>
+              <span className="text-[10px] text-muted-foreground uppercase font-bold">1 Core Assigned</span>
+            </div>
+            <div className="h-1.5 bg-muted w-full overflow-hidden">
+              <div className="h-full bg-orange-400 transition-all duration-500" style={{width: `${metrics.cpu}%`}}/>
+            </div>
+          </div>
+       </SectionCard>
+
+       <SectionCard title="Memory Usage" icon={<MemoryStick className="size-3.5"/>}>
+          <div className="flex flex-col gap-3 py-2">
+            <div className="flex items-end justify-between">
+              <span className="text-3xl font-bold text-orange-400">{metrics.mem.toFixed(1)} MB</span>
+              <span className="text-[10px] text-muted-foreground uppercase font-bold">Limit: 1.0 GB</span>
+            </div>
+            <div className="h-1.5 bg-muted w-full overflow-hidden">
+              <div className="h-full bg-orange-400 transition-all duration-500" style={{width: `${(metrics.mem / 1024) * 100}%`}}/>
+            </div>
+          </div>
+       </SectionCard>
+
+       <SectionCard title="Network I/O" icon={<Network className="size-3.5"/>}>
+          <div className="flex flex-col gap-1 py-1">
+             <div className="flex justify-between items-center py-1">
+                <span className="text-xs text-muted-foreground font-semibold">Inbound</span>
+                <span className="text-sm font-mono font-bold">{metrics.netIn.toFixed(2)} GB</span>
+             </div>
+             <div className="flex justify-between items-center py-1">
+                <span className="text-xs text-muted-foreground font-semibold">Outbound</span>
+                <span className="text-sm font-mono font-bold text-orange-400">{metrics.netOut.toFixed(2)} GB</span>
+             </div>
+          </div>
+       </SectionCard>
+
+       <SectionCard title="Block I/O" icon={<HardDrive className="size-3.5"/>}>
+          <div className="flex flex-col gap-1 py-1">
+             <div className="flex justify-between items-center py-1">
+                <span className="text-xs text-muted-foreground font-semibold">Read</span>
+                <span className="text-sm font-mono font-bold">{metrics.ioRead} MB</span>
+             </div>
+             <div className="flex justify-between items-center py-1">
+                <span className="text-xs text-muted-foreground font-semibold">Write</span>
+                <span className="text-sm font-mono font-bold text-orange-400">{metrics.ioWrite} MB</span>
+             </div>
+          </div>
+       </SectionCard>
+
+       <SectionCard title="Container Info" icon={<Info className="size-3.5"/>}>
+          <div className="flex flex-col gap-1.5 py-1">
+             <div className="flex justify-between items-center text-xs">
+                <span className="text-muted-foreground font-semibold">Short ID</span>
+                <span className="font-mono">{container.id.substring(0, 12)}</span>
+             </div>
+             <div className="flex justify-between items-center text-xs">
+                <span className="text-muted-foreground font-semibold">State</span>
+                <DockerBadge status={container.status}/>
+             </div>
+          </div>
+       </SectionCard>
+    </div>
+  );
+}
+
+function DockerConsole({ containerName }: { containerName: string }) {
+  const { instance, ref } = useXTerm()
+  const commandBuffer = useRef("");
+
+  useEffect(() => {
+    if (!instance || !ref.current) return;
+
+    instance.options.theme = {
+      background: '#111210',
+      foreground: '#ffffff',
+      cursor: '#fb923c',
+    };
+
+    const fitAddon = new FitAddon();
+    instance.loadAddon(fitAddon);
+
+    const prompt = `\r\n\x1b[38;2;251;146;60mroot@${containerName}\x1b[0m:\x1b[38;2;96;165;250m/app\x1b[0m# `;
+
+    instance.writeln(`\x1b[1m\x1b[38;2;251;146;60mDocker Exec\x1b[0m - Attached to ${containerName}`);
+    instance.write(prompt);
+
+    const disposable = instance.onData((data) => {
+      const char = data;
+      if (char === "\r") {
+        const command = commandBuffer.current.trim();
+        instance.write("\r\n");
+
+        if (command === "ls") {
+          instance.writeln("app.js  config.json  node_modules  package.json  public  src");
+        } else if (command === "ps") {
+          instance.writeln("PID   USER     TIME  COMMAND");
+          instance.writeln("    1 root      0:00 node app.js");
+          instance.writeln("   42 root      0:00 sh");
+          instance.writeln("   43 root      0:00 ps");
+        } else if (command === "whoami") {
+          instance.writeln("root");
+        } else if (command === "") {
+          // empty
+        } else {
+          instance.writeln(`sh: ${command}: not found`);
+        }
+
+        commandBuffer.current = "";
+        instance.write(prompt);
+      } else if (char === "\u007f") {
+        if (commandBuffer.current.length > 0) {
+          commandBuffer.current = commandBuffer.current.slice(0, -1);
+          instance.write("\b \b");
+        }
+      } else if (char.charCodeAt(0) >= 32 && char.charCodeAt(0) <= 126) {
+        commandBuffer.current += char;
+        instance.write(char);
+      }
+    })
+
+    const resizeObserver = new ResizeObserver(() => {
+      try { fitAddon.fit(); } catch (e) {}
+    });
+    resizeObserver.observe(ref.current);
+
+    setTimeout(() => {
+      try { fitAddon.fit(); } catch (e) {}
+    }, 100);
+
+    return () => {
+      disposable.dispose();
+      resizeObserver.disconnect();
+    }
+  }, [instance, containerName]);
+
+  return (
+    <div className="flex flex-col flex-1 min-h-0 overflow-hidden bg-[#111210] p-1 border border-border">
+      <div ref={ref} style={{ width: '100%', height: '100%' }} />
+    </div>
+  );
+}
+
+function DockerTab({ label }: { label: string }) {
+  const [containers, setContainers] = useState<DockerContainer[]>(MOCK_CONTAINERS);
+  const [view, setView] = useState<"list" | "detail">("list");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [detailTab, setDetailTab] = useState<"logs" | "stats" | "console">("logs");
+
+  const selectedContainer = containers.find(c => c.id === selectedId);
+
+  const filtered = containers.filter(c => {
+    const matchesSearch = c.name.toLowerCase().includes(search.toLowerCase()) || c.image.toLowerCase().includes(search.toLowerCase());
+    const matchesStatus = statusFilter === "all" || c.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  const handleAction = (id: string, action: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const container = containers.find(c => c.id === id);
+    if (!container) return;
+
+    if (action === "start") {
+      setContainers(prev => prev.map(c => c.id === id ? { ...c, status: "running", cpu: 0.5, memory: "12.4 MB" } : c));
+      toast.success(`Started container ${container.name}`);
+    } else if (action === "stop") {
+      setContainers(prev => prev.map(c => c.id === id ? { ...c, status: "exited", cpu: 0, memory: "0 B" } : c));
+      toast.info(`Stopped container ${container.name}`);
+    } else if (action === "restart") {
+      setContainers(prev => prev.map(c => c.id === id ? { ...c, status: "restarting" } : c));
+      toast.promise(new Promise(resolve => setTimeout(resolve, 1500)), {
+        loading: `Restarting ${container.name}...`,
+        success: () => {
+          setContainers(prev => prev.map(c => c.id === id ? { ...c, status: "running" } : c));
+          return `Container ${container.name} restarted successfully`;
+        },
+        error: "Failed to restart container",
+      });
+    } else if (action === "delete") {
+      setContainers(prev => prev.filter(c => c.id !== id));
+      toast.error(`Deleted container ${container.name}`);
+    } else if (action === "create") {
+      const newId = Math.random().toString(36).substring(2, 12);
+      const newContainer: DockerContainer = {
+        id: newId,
+        name: `new-container-${newId.substring(0, 4)}`,
+        image: "alpine:latest",
+        status: "created",
+        cpu: 0,
+        memory: "0 B",
+        ports: [],
+        created: "just now"
+      };
+      setContainers(prev => [newContainer, ...prev]);
+      toast.success("New container created");
+    }
+  };
+
+  if (view === "detail" && selectedContainer) {
+    return (
+      <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+        <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 mx-3 mt-3 gap-0">
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" size="icon" onClick={() => setView("list")} className="size-8 text-muted-foreground hover:text-foreground">
+               <ArrowLeft className="size-4"/>
+            </Button>
+            <div className="size-10 border border-border bg-muted flex items-center justify-center shrink-0">
+              <Box className="size-5 text-orange-400"/>
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold">{selectedContainer.name}</h1>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground font-mono">{selectedContainer.image}</span>
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <DockerBadge status={selectedContainer.status}/>
+            <Separator orientation="vertical" className="h-8 mx-2"/>
+            <Button variant="ghost" size="icon"><Settings className="size-4 text-orange-400"/></Button>
+          </div>
+        </Card>
+
+        <div className="flex flex-col flex-1 min-h-0 px-3 py-3 gap-3">
+          <div className="flex gap-1 border-b border-border shrink-0">
+            {[
+              { id: "logs", label: "Logs", icon: <List className="size-3.5"/> },
+              { id: "stats", label: "Stats", icon: <Activity className="size-3.5"/> },
+              { id: "console", label: "Console", icon: <Terminal className="size-3.5"/> },
+            ].map(t => (
+              <button
+                key={t.id}
+                onClick={() => setDetailTab(t.id as any)}
+                className={`flex items-center gap-2 px-4 py-2 text-sm font-semibold border-b-2 transition-colors ${
+                  detailTab === t.id
+                    ? "border-b-orange-400 text-foreground bg-orange-400/5"
+                    : "border-b-transparent text-muted-foreground hover:text-foreground hover:bg-muted"
+                }`}
+              >
+                {t.icon}
+                {t.label}
+              </button>
+            ))}
+          </div>
+          <div className="flex-1 min-h-0 flex flex-col">
+            {detailTab === "logs" && <DockerLogViewer containerName={selectedContainer.name}/>}
+            {detailTab === "stats" && <DockerContainerStats container={selectedContainer}/>}
+            {detailTab === "console" && <DockerConsole containerName={selectedContainer.name}/>}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+      <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 mx-3 mt-3 gap-0">
+        <div className="flex items-center gap-3">
+          <div className="size-10 border border-border bg-muted flex items-center justify-center shrink-0">
+            <Box className="size-5 text-orange-400"/>
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold">{label}</h1>
+            <div className="flex items-center gap-2">
+              <span className="size-2 rounded-full bg-orange-400"/>
+              <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Docker Manager</span>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="relative w-64">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground"/>
+            <Input placeholder="Search containers..." value={search} onChange={e => setSearch(e.target.value)} className="pl-8 h-8"/>
+          </div>
+          <select
+            value={statusFilter}
+            onChange={e => setStatusFilter(e.target.value)}
+            className="h-8 px-2 text-xs bg-background border border-border text-foreground outline-none focus:ring-1 focus:ring-ring"
+          >
+            <option value="all">All Statuses</option>
+            <option value="running">Running</option>
+            <option value="paused">Paused</option>
+            <option value="exited">Exited</option>
+          </select>
+          <Separator orientation="vertical" className="h-8 mx-1"/>
+          <Button variant="outline" size="sm" className="h-8 border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400 gap-1.5" onClick={(e) => handleAction("", "create", e)}>
+            <Plus className="size-3.5"/> New Container
+          </Button>
+          <Button variant="ghost" size="icon"><Settings className="size-4 text-orange-400"/></Button>
+        </div>
+      </Card>
+
+      <div className="flex-1 overflow-y-auto px-3 py-3">
+        {filtered.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+            {filtered.map(container => (
+              <DockerContainerCard
+                key={container.id}
+                container={container}
+                onSelect={(id) => {
+                  setSelectedId(id);
+                  setView("detail");
+                }}
+                onAction={handleAction}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-full opacity-20 py-20">
+            <Box className="size-16 mb-4"/>
+            <span className="text-xl font-bold uppercase tracking-widest">No Containers</span>
+            <span className="text-xs font-semibold">No docker containers found matching your filters</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function TunnelCard({ tunnel, onAction }: { tunnel: Tunnel, onAction: (id: string, action: string) => void }) {
+  const isConnected = tunnel.status === "CONNECTED";
+  const isConnecting = tunnel.status === "CONNECTING";
+  const isError = tunnel.status === "ERROR";
+
+  let statusColor = "text-muted-foreground border-border bg-muted/30";
+  if (isConnected) statusColor = "text-orange-400 border-orange-400/40 bg-orange-400/10";
+  if (isConnecting) statusColor = "text-blue-400 border-blue-400/40 bg-blue-400/10";
+  if (isError) statusColor = "text-destructive border-destructive/40 bg-destructive/10";
+
+  return (
+    <Card className="flex flex-col overflow-hidden p-0 gap-0">
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-border bg-muted/10">
+        <div className="flex items-center gap-2">
+          <Network className="size-3.5 text-muted-foreground"/>
+          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Port {tunnel.sourcePort}</span>
+        </div>
+        <div className={`flex items-center gap-1.5 px-2 py-0.5 border text-[10px] font-bold ${statusColor}`}>
+          {isConnecting ? <RefreshCw className="size-3 animate-spin"/> : isConnected ? <Wifi className="size-3"/> : isError ? <AlertCircle className="size-3"/> : tunnel.status === "WAITING" ? <Clock className="size-3"/> : <WifiOff className="size-3"/>}
+          {tunnel.status}
+        </div>
+      </div>
+      <div className="px-4 py-4 flex flex-col gap-3">
+        <div className="flex flex-col gap-1">
+          <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Destination</span>
+          <span className="text-sm font-mono font-semibold truncate" title={`${tunnel.endpointHost}:${tunnel.endpointPort}`}>
+            {tunnel.endpointHost}:{tunnel.endpointPort}
+          </span>
+          <div className="flex items-center gap-1.5 mt-1">
+            <span className="text-[10px] font-semibold px-1.5 py-px border border-border text-muted-foreground uppercase">{tunnel.mode}</span>
+          </div>
+        </div>
+
+        {isError && tunnel.reason && (
+          <div className="flex items-start gap-2 p-2 bg-destructive/5 border border-destructive/20 text-destructive text-[10px]">
+            <AlertCircle className="size-3 mt-0.5 shrink-0"/>
+            <span>{tunnel.reason}</span>
+          </div>
+        )}
+
+        <div className="flex gap-2 mt-2">
+          {isConnected ? (
+            <Button variant="outline" size="sm" className="flex-1 h-8 text-destructive border-destructive/40 hover:bg-destructive/10 hover:text-destructive gap-1.5" onClick={() => onAction(tunnel.id, "stop")}>
+              <Square className="size-3"/> Stop
+            </Button>
+          ) : (
+            <Button variant="outline" size="sm" className="flex-1 h-8 text-orange-400 border-orange-400/40 hover:bg-orange-400/10 hover:text-orange-400 gap-1.5" disabled={isConnecting} onClick={() => onAction(tunnel.id, "start")}>
+              {isConnecting ? <RefreshCw className="size-3 animate-spin"/> : <Play className="size-3"/>}
+              Start
+            </Button>
+          )}
+          <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground">
+            <Settings className="size-3.5"/>
+          </Button>
+          <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive">
+            <Trash2 className="size-3.5"/>
+          </Button>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+function TunnelTab({label}: { label: string }) {
+  const [tunnels, setTunnels] = useState<Tunnel[]>([
+    {
+      id: "T-101",
+      hostId: "web-01",
+      sourcePort: 8080,
+      endpointHost: "localhost",
+      endpointPort: 80,
+      status: "CONNECTED",
+      mode: "local"
+    },
+    {
+      id: "T-102",
+      hostId: "web-01",
+      sourcePort: 3000,
+      endpointHost: "localhost",
+      endpointPort: 3000,
+      status: "DISCONNECTED",
+      mode: "remote"
+    },
+    {
+      id: "T-103",
+      hostId: "web-01",
+      sourcePort: 5432,
+      endpointHost: "db-primary-internal",
+      endpointPort: 5432,
+      status: "WAITING",
+      mode: "local"
+    },
+    {
+      id: "T-104",
+      hostId: "web-01",
+      sourcePort: 6379,
+      endpointHost: "redis-cache-01.internal",
+      endpointPort: 6379,
+      status: "ERROR",
+      mode: "local",
+      reason: "Connection timed out (10.0.5.12)"
+    },
+    {
+      id: "T-105",
+      hostId: "web-01",
+      sourcePort: 9000,
+      endpointHost: "dynamic-socks5",
+      endpointPort: 0,
+      status: "CONNECTED",
+      mode: "dynamic"
+    }
+  ]);
+
+  const handleAction = (id: string, action: string) => {
+    if (action === "start") {
+      setTunnels(prev => prev.map(t => t.id === id ? { ...t, status: "CONNECTING" } : t));
+      setTimeout(() => {
+        setTunnels(prev => prev.map(t => t.id === id ? { ...t, status: "CONNECTED" } : t));
+        toast.success(`Tunnel ${id} established successfully`);
+      }, 1500);
+    } else if (action === "stop") {
+      setTunnels(prev => prev.map(t => t.id === id ? { ...t, status: "DISCONNECTED" } : t));
+      toast.info(`Tunnel ${id} disconnected`);
+    }
+  };
+
+  return (
+    <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+      <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 mx-3 mt-3 gap-0">
+        <div className="flex items-center gap-3">
+          <div className="size-10 border border-border bg-muted flex items-center justify-center shrink-0">
+            <Network className="size-5 text-orange-400"/>
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold">{label}</h1>
+            <div className="flex items-center gap-2">
+              <span className="size-2 rounded-full bg-orange-400"/>
+              <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">SSH Tunnels</span>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-0">
+          <Button variant="outline" size="default" className="gap-2 font-semibold">
+            <Plus className="size-3.5"/>
+            Add Tunnel
+          </Button>
+          <Separator orientation="vertical" className="h-8 mx-3"/>
+          <Button variant="ghost" size="icon"><Settings className="size-4 text-orange-400"/></Button>
+        </div>
+      </Card>
+
+      <div className="flex-1 overflow-y-auto px-3 py-3">
+        {tunnels.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {tunnels.map(tunnel => (
+              <TunnelCard key={tunnel.id} tunnel={tunnel} onAction={handleAction} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-full opacity-20 py-20">
+            <Network className="size-16 mb-4"/>
+            <span className="text-xl font-bold uppercase tracking-widest">No Tunnels</span>
+            <span className="text-xs font-semibold">Configure SSH tunnels for this host</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -2090,7 +2769,7 @@ function HostItem({host, onOpenTab}: { host: Host; onOpenTab: (type: TabType) =>
           </DropdownMenuTrigger>
         </div>
       </div>
-      <DropdownMenuContent side="right" align="start" sideOffset={9} alignOffset={0}
+      <DropdownMenuContent side="right" align="start" sideOffset={17} alignOffset={0}
                            className="w-44 [clip-path:inset(-4px_-4px_-4px_0px)]">
         <DropdownMenuItem onClick={() => onOpenTab("terminal")}>
           <Terminal className="size-3.5"/>
@@ -2651,7 +3330,7 @@ function App() {
       </div>
 
       <QuickConnectDialog open={quickConnectOpen} onOpenChange={setQuickConnectOpen}/>
-      <Toaster position="bottom-right" richColors/>
+      <Toaster position="bottom-right" />
     </>
   )
 }
