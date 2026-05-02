@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import {
   Activity, ArrowLeft, Box, Check, ChevronDown, ChevronRight, ChevronUp,
   Copy, Download, Filter, Folder, FolderOpen, FolderSearch, Globe, Info,
-  KeyRound, ListChecks, Lock, MoreHorizontal, Monitor, Network, Palette,
+  KeyRound, LayoutDashboard, ListChecks, Lock, MoreHorizontal, Monitor, Network, Palette,
   Pencil, Pin, Plus, RefreshCw, Search, Server, Settings, Share2, Shield,
   Tag, Terminal, Trash2, Upload, User, Users, X, Zap,
 } from "lucide-react";
@@ -49,15 +49,16 @@ function HostRow({ host, selectionMode, selected, onToggleSelect, onEdit, onDele
       draggable={!!onDragStart && !selectionMode}
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
-      className={`flex items-center justify-between px-3 py-2.5 border-b border-border last:border-0 group transition-colors ${selected ? "bg-accent-brand/5" : "hover:bg-muted/40"} ${onDragStart && !selectionMode ? "cursor-grab active:cursor-grabbing" : ""}`}
+      onClick={selectionMode ? onToggleSelect : undefined}
+      className={`flex items-center justify-between px-3 py-2.5 border-b border-border last:border-0 group transition-colors ${selectionMode ? "cursor-pointer" : ""} ${selected ? "bg-accent-brand/5" : "hover:bg-muted/40"} ${onDragStart && !selectionMode ? "cursor-grab active:cursor-grabbing" : ""}`}
     >
       <div className="flex items-center gap-3 min-w-0">
         {selectionMode && (
-          <button onClick={onToggleSelect} className="shrink-0">
+          <div className="shrink-0">
             <div className={`size-4 border-2 flex items-center justify-center transition-colors ${selected ? "border-accent-brand bg-accent-brand" : "border-border bg-background"}`}>
               {selected && <Check className="size-2.5 text-background"/>}
             </div>
-          </button>
+          </div>
         )}
         <div className={`size-2 rounded-full shrink-0 ${host.online ? "bg-accent-brand shadow-[0_0_4px_rgba(251,146,60,0.6)]" : "bg-muted-foreground/30"}`}/>
         <div className="flex flex-col min-w-0">
@@ -147,28 +148,46 @@ function HostRow({ host, selectionMode, selected, onToggleSelect, onEdit, onDele
   );
 }
 
-function HostEditor({ host, activeTab, onBack }: { host: Host | null; activeTab: string; onBack: () => void }) {
+function HostEditor({ host, activeTab, onBack, connectionType, onConnectionTypeChange }: {
+  host: Host | null;
+  activeTab: string;
+  onBack: () => void;
+  connectionType: string;
+  onConnectionTypeChange: (t: string) => void;
+}) {
   const [authMethod, setAuthMethod] = useState(host?.authType || "password");
-  const [connectionType, setConnectionType] = useState(host?.connectionType || "ssh");
+  const setConnectionType = onConnectionTypeChange;
 
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-col gap-3">
         {activeTab === "general" && (
           <>
+            {/* Connection type — most important, shown prominently at top */}
+            <div className="flex flex-col border border-border bg-card">
+              <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border">
+                <span className="text-muted-foreground"><Globe className="size-3.5"/></span>
+                <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground flex-1">Connection Type</span>
+              </div>
+              <div className="grid grid-cols-4 divide-x divide-border border-b border-border">
+                {([
+                  { id: "ssh",    label: "SSH",     desc: "Secure Shell",         icon: <Terminal className="size-4"/> },
+                  { id: "rdp",    label: "RDP",     desc: "Remote Desktop",       icon: <Monitor className="size-4"/> },
+                  { id: "vnc",    label: "VNC",     desc: "Virtual Network",      icon: <Monitor className="size-4"/> },
+                  { id: "telnet", label: "Telnet",  desc: "Unencrypted shell",    icon: <Terminal className="size-4"/> },
+                ] as const).map(t => (
+                  <button key={t.id} onClick={() => setConnectionType(t.id)}
+                    className={`flex flex-col items-center gap-1.5 py-4 px-3 transition-colors ${connectionType === t.id ? "bg-accent-brand/10 text-accent-brand" : "text-muted-foreground hover:text-foreground hover:bg-muted"}`}>
+                    {t.icon}
+                    <span className="text-xs font-bold">{t.label}</span>
+                    <span className={`text-[10px] ${connectionType === t.id ? "text-accent-brand/70" : "text-muted-foreground/60"}`}>{t.desc}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <SectionCard title="Connection Details" icon={<Globe className="size-3.5" />}>
               <div className="flex flex-col gap-4 py-3">
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Connection Type</label>
-                  <div className="flex gap-2">
-                    {["ssh", "rdp", "vnc", "telnet"].map(t => (
-                      <button key={t} onClick={() => setConnectionType(t as any)}
-                        className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-colors ${connectionType === t ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand" : "border-border text-muted-foreground hover:text-foreground"}`}
-                      >{t}</button>
-                    ))}
-                  </div>
-                </div>
-
                 <div className="grid grid-cols-12 gap-4">
                   <div className="flex flex-col gap-1.5 col-span-8">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Address / IP</label>
@@ -176,75 +195,137 @@ function HostEditor({ host, activeTab, onBack }: { host: Host | null; activeTab:
                   </div>
                   <div className="flex flex-col gap-1.5 col-span-4">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Port</label>
-                    <Input type="number" placeholder="22" defaultValue={host?.port || 22} />
+                    <Input type="number" placeholder={connectionType === "rdp" ? "3389" : connectionType === "vnc" ? "5900" : connectionType === "telnet" ? "23" : "22"} defaultValue={host?.port || (connectionType === "rdp" ? 3389 : connectionType === "vnc" ? 5900 : connectionType === "telnet" ? 23 : 22)} />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">MAC Address</label>
-                    <Input placeholder="AA:BB:CC:DD:EE:FF" defaultValue={host?.macAddress || ""} />
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Organization Name</label>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Friendly Name</label>
                     <Input placeholder="e.g. Web Server Production" defaultValue={host?.name || ""} />
                   </div>
+                  {connectionType === "ssh" && (
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">MAC Address</label>
+                      <Input placeholder="AA:BB:CC:DD:EE:FF" defaultValue={host?.macAddress || ""} />
+                    </div>
+                  )}
                 </div>
               </div>
             </SectionCard>
 
             <SectionCard title="Authentication" icon={<Shield className="size-3.5"/>}>
               <div className="flex flex-col gap-4 py-3">
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Auth Method</label>
-                  <div className="flex gap-2">
-                    {["password", "key", "credential", "none", "opkssh"].map(m => (
-                      <button key={m} onClick={() => setAuthMethod(m as any)}
-                        className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-colors ${authMethod === m ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand" : "border-border text-muted-foreground hover:text-foreground"}`}
-                      >{m}</button>
-                    ))}
-                  </div>
-                </div>
+                {connectionType === "ssh" && (
+                  <>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Auth Method</label>
+                      <div className="flex flex-wrap gap-2">
+                        {["password", "key", "credential", "none", "opkssh"].map(m => (
+                          <button key={m} onClick={() => setAuthMethod(m as any)}
+                            className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-colors ${authMethod === m ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand" : "border-border text-muted-foreground hover:text-foreground"}`}
+                          >{m}</button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 border-t border-border pt-4 mt-1">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Username</label>
+                        <Input placeholder="root" defaultValue={host?.user || ""} />
+                      </div>
+                      {authMethod === "password" && (
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Password</label>
+                          <Input type="password" placeholder="••••••••" defaultValue={host?.password || ""} />
+                        </div>
+                      )}
+                      {authMethod === "key" && (
+                        <>
+                          <div className="flex flex-col gap-1.5 col-span-2">
+                            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">SSH Private Key</label>
+                            <textarea placeholder="-----BEGIN OPENSSH PRIVATE KEY-----" rows={5} defaultValue={host?.key || ""}
+                              className="w-full px-3 py-2 text-[10px] bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"/>
+                          </div>
+                          <div className="flex flex-col gap-1.5">
+                            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Key Passphrase</label>
+                            <Input type="password" placeholder="Optional" defaultValue={host?.keyPassword || ""} />
+                          </div>
+                        </>
+                      )}
+                      {authMethod === "credential" && (
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Stored Credential</label>
+                          <select defaultValue={host?.credentialId || ""} className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring">
+                            <option value="">Select a credential...</option>
+                            {MOCK_CREDENTIALS.map(c => (
+                              <option key={c.id} value={c.id}>{c.name} ({c.username})</option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
+                    </div>
+                    <SettingRow label="Force Keyboard Interactive" description="Force manual password entry even if keys are present">
+                      <FakeSwitch />
+                    </SettingRow>
+                  </>
+                )}
 
-                <div className="grid grid-cols-2 gap-4 border-t border-border pt-4 mt-1">
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Username</label>
-                    <Input placeholder="root" defaultValue={host?.user || ""} />
-                  </div>
-                  {authMethod === "password" && (
+                {connectionType === "rdp" && (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Username</label>
+                      <Input placeholder="Administrator" defaultValue={host?.user || ""} />
+                    </div>
                     <div className="flex flex-col gap-1.5">
                       <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Password</label>
                       <Input type="password" placeholder="••••••••" defaultValue={host?.password || ""} />
                     </div>
-                  )}
-                  {authMethod === "key" && (
-                    <>
-                      <div className="flex flex-col gap-1.5 col-span-2">
-                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">SSH Private Key</label>
-                        <textarea placeholder="-----BEGIN OPENSSH PRIVATE KEY-----" rows={5} defaultValue={host?.key || ""}
-                          className="w-full px-3 py-2 text-[10px] bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"/>
-                      </div>
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Key Passphrase</label>
-                        <Input type="password" placeholder="Optional" defaultValue={host?.keyPassword || ""} />
-                      </div>
-                    </>
-                  )}
-                  {authMethod === "credential" && (
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Stored Credential</label>
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Domain</label>
+                      <Input placeholder="WORKGROUP" defaultValue={host?.domain || ""} />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Security</label>
                       <select className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring">
-                        <option>Select a credential...</option>
-                        {MOCK_CREDENTIALS.map(c => (
-                          <option key={c.id} value={c.id} selected={host?.credentialId === c.id}>{c.name} ({c.username})</option>
-                        ))}
+                        <option value="any">Any (auto-negotiate)</option>
+                        <option value="nla">NLA (Network Level Auth)</option>
+                        <option value="tls">TLS</option>
+                        <option value="rdp">RDP classic</option>
                       </select>
                     </div>
-                  )}
-                </div>
-                <SettingRow label="Force Keyboard Interactive" description="Force manual password entry even if keys are present">
-                  <FakeSwitch />
-                </SettingRow>
+                    <div className="col-span-2">
+                      <SettingRow label="Ignore Certificate Errors" description="Skip TLS certificate validation (not recommended for production)">
+                        <FakeSwitch defaultChecked={host?.ignoreCert} />
+                      </SettingRow>
+                    </div>
+                  </div>
+                )}
+
+                {connectionType === "vnc" && (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">VNC Password</label>
+                      <Input type="password" placeholder="••••••••" defaultValue={host?.password || ""} />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Username (optional)</label>
+                      <Input placeholder="Leave blank if not required" defaultValue={host?.user || ""} />
+                    </div>
+                  </div>
+                )}
+
+                {connectionType === "telnet" && (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Username</label>
+                      <Input placeholder="admin" defaultValue={host?.user || ""} />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Password</label>
+                      <Input type="password" placeholder="••••••••" defaultValue={host?.password || ""} />
+                    </div>
+                  </div>
+                )}
               </div>
             </SectionCard>
 
@@ -286,7 +367,7 @@ function HostEditor({ host, activeTab, onBack }: { host: Host | null; activeTab:
               </div>
             </SectionCard>
 
-            <SectionCard title="Organization & Advanced" icon={<Tag className="size-3.5" />}>
+            <SectionCard title="Folder & Advanced" icon={<Tag className="size-3.5" />}>
               <div className="grid grid-cols-2 gap-4 py-3">
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Folder</label>
@@ -328,8 +409,16 @@ function HostEditor({ host, activeTab, onBack }: { host: Host | null; activeTab:
               <div className="flex flex-col gap-4 py-3">
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Theme Preview</label>
-                  <div className="h-32 w-full bg-[#111210] border border-border rounded flex items-center justify-center font-mono text-xs text-green-400">
-                    user@host:~$ ls -la<br/>total 0<br/>drwxr-xr-x  2 user user  64 May  1 2026 .
+                  <div className="w-full bg-[#111210] border border-border font-mono text-xs leading-relaxed overflow-hidden">
+                    <div className="px-3 py-2.5 flex flex-col gap-0.5">
+                      <div><span className="text-[#5af78e]">deploy@web-01</span><span className="text-[#555]">:</span><span className="text-[#57c7ff]">~</span><span className="text-[#555]">$</span><span className="text-[#f1f1f0]"> ls -la</span></div>
+                      <div className="text-[#555]">total 48</div>
+                      <div><span className="text-[#9aedfe]">drwxr-xr-x</span><span className="text-[#555]"> 5 deploy deploy 4096 May  1 09:12 </span><span className="text-[#57c7ff]">.</span></div>
+                      <div><span className="text-[#9aedfe]">drwxr-xr-x</span><span className="text-[#555]"> 3 root   root   4096 Apr 15 18:44 </span><span className="text-[#57c7ff]">..</span></div>
+                      <div><span className="text-[#9aedfe]">-rw-r--r--</span><span className="text-[#555]"> 1 deploy deploy  220 Apr 15 18:44 </span><span className="text-[#f1f1f0]">.bash_logout</span></div>
+                      <div><span className="text-[#9aedfe]">-rwxr-xr-x</span><span className="text-[#555]"> 1 deploy deploy 8192 May  1 08:55 </span><span className="text-[#5af78e]">deploy.sh</span></div>
+                      <div className="flex items-center gap-0.5 mt-0.5"><span className="text-[#5af78e]">deploy@web-01</span><span className="text-[#555]">:</span><span className="text-[#57c7ff]">~</span><span className="text-[#555]">$</span><span className="text-[#f1f1f0]"> </span><span className="inline-block w-1.5 h-3.5 bg-[#f1f1f0] animate-pulse"/></div>
+                    </div>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -412,140 +501,526 @@ function HostEditor({ host, activeTab, onBack }: { host: Host | null; activeTab:
         )}
 
         {activeTab === "tunnels" && (
-          <SectionCard title="Port Forwarding (SSH Tunnels)" icon={<Network className="size-3.5"/>}>
-            <div className="flex flex-col gap-4 py-3">
-              <SettingRow label="Enable Tunneling" description="Global toggle for SSH tunnel functionality">
-                <FakeSwitch defaultChecked={true} />
-              </SettingRow>
-              <div className="flex flex-col gap-3 mt-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Active Tunnels (S2S)</span>
-                  <Button variant="outline" size="sm" className="h-7 text-xs border-accent-brand/40 text-accent-brand"><Plus className="size-3.5 mr-1.5" /> Add Tunnel</Button>
-                </div>
-                <div className="flex flex-col gap-3">
-                  {[1].map(i => (
-                    <div key={i} className="flex flex-col gap-3 p-3 border border-border bg-muted/20 relative">
-                      <button className="absolute top-2 right-2 text-destructive"><Trash2 className="size-3.5"/></button>
-                      <div className="grid grid-cols-3 gap-3">
-                        <div className="flex flex-col gap-1">
-                          <label className="text-[10px] font-bold text-muted-foreground">Mode</label>
-                          <select className="h-7 text-xs bg-background border border-border"><option>Remote (R2L)</option><option>Local (L2R)</option><option>Dynamic (SOCKS)</option></select>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <label className="text-[10px] font-bold text-muted-foreground">Source Port</label>
-                          <Input className="h-7 text-xs" defaultValue="8080" />
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <label className="text-[10px] font-bold text-muted-foreground">Endpoint Host</label>
-                          <Input className="h-7 text-xs" defaultValue="localhost" />
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between mt-1">
-                        <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-2">
-                            <span className="text-[10px] font-bold text-muted-foreground">Auto-start</span>
-                            <FakeSwitch />
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <div className="size-1.5 rounded-full bg-accent-brand" />
-                            <span className="text-[10px] font-bold text-accent-brand uppercase tracking-widest">Connected</span>
-                          </div>
-                        </div>
-                        <Button variant="outline" size="sm" className="h-7 text-xs">Disconnect</Button>
-                      </div>
-                    </div>
-                  ))}
+          <>
+            <SectionCard title="Tunnel Settings" icon={<Network className="size-3.5"/>}>
+              <div className="flex flex-col gap-4 py-3">
+                <SettingRow label="Enable Tunneling" description="Enable SSH tunnel functionality for this host">
+                  <FakeSwitch defaultChecked={host?.enableTunnel ?? true} />
+                </SettingRow>
+                <div className="text-xs text-muted-foreground p-3 bg-muted/30 border border-border space-y-1">
+                  <p><strong>Requirements:</strong> The SSH server must have <code className="bg-muted px-1">GatewayPorts yes</code>, <code className="bg-muted px-1">AllowTcpForwarding yes</code>, and <code className="bg-muted px-1">PermitRootLogin yes</code> set in <code className="bg-muted px-1">/etc/ssh/sshd_config</code>.</p>
                 </div>
               </div>
-            </div>
-          </SectionCard>
+            </SectionCard>
+            <SectionCard
+              title="Server Tunnels"
+              icon={<Network className="size-3.5"/>}
+              action={<Button variant="outline" size="sm" className="h-6 text-[10px] px-2 border-accent-brand/40 text-accent-brand"><Plus className="size-3 mr-1" /> Add Tunnel</Button>}
+            >
+              <div className="flex flex-col gap-3 py-3">
+                {[
+                  { mode: "remote",  endpointHost: "prod-db",    endpointPort: 5432, currentHostIp: "0.0.0.0", src: 5432, maxRetries: 3, retryInterval: 10, autoStart: true  },
+                  { mode: "local",   endpointHost: "web-server",  endpointPort: 80,   currentHostIp: "127.0.0.1", src: 8080, maxRetries: 3, retryInterval: 10, autoStart: false },
+                  { mode: "dynamic", endpointHost: "",            endpointPort: 0,    currentHostIp: "127.0.0.1", src: 1080, maxRetries: 3, retryInterval: 10, autoStart: true  },
+                ].map((tun, i) => (
+                  <div key={i} className="flex flex-col gap-3 p-3 border border-border bg-muted/20 relative group">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-bold text-muted-foreground">Server Tunnel {i + 1}</span>
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1">
+                          <div className={`size-1.5 rounded-full ${tun.autoStart ? "bg-accent-brand" : "bg-muted-foreground/40"}`}/>
+                          <span className={`text-[10px] font-bold uppercase tracking-widest ${tun.autoStart ? "text-accent-brand" : "text-muted-foreground"}`}>{tun.autoStart ? "Connected" : "Idle"}</span>
+                        </div>
+                        <Button variant="outline" size="sm" className="h-6 text-[10px] px-2">Connect</Button>
+                        <Button variant="ghost" size="sm" className="h-6 text-[10px] px-2 text-destructive" onClick={() => toast.success("Tunnel removed")}>Delete</Button>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold text-muted-foreground">Tunnel Type</label>
+                      <div className="flex gap-2">
+                        {["remote", "local", "dynamic"].map(m => (
+                          <button key={m} className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-colors ${tun.mode === m ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand" : "border-border text-muted-foreground hover:text-foreground"}`}>{m}</button>
+                        ))}
+                      </div>
+                      <p className="text-[10px] text-muted-foreground mt-1">
+                        {tun.mode === "remote" ? "Remote (R→L): Opens a port on the remote server and forwards traffic to a local service." :
+                         tun.mode === "local"  ? "Local (L→R): Opens a port locally and forwards traffic through the SSH server to a remote service." :
+                                                  "Dynamic (SOCKS): Creates a local SOCKS proxy that routes traffic through the SSH server."}
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      {tun.mode !== "dynamic" && (
+                        <div className="flex flex-col gap-1">
+                          <label className="text-[10px] font-bold text-muted-foreground">Endpoint SSH Config</label>
+                          <select defaultValue={tun.endpointHost || ""} className="h-7 text-xs bg-background border border-border px-2 outline-none focus:ring-1 focus:ring-ring">
+                            <option value="">Select a host...</option>
+                            {hosts.map(h => <option key={h.id} value={h.name}>{h.name}</option>)}
+                          </select>
+                        </div>
+                      )}
+                      {tun.mode !== "dynamic" && (
+                        <div className="flex flex-col gap-1">
+                          <label className="text-[10px] font-bold text-muted-foreground">{tun.mode === "remote" ? "Remote Port" : "Endpoint Port"}</label>
+                          <Input className="h-7 text-xs" defaultValue={tun.endpointPort} />
+                        </div>
+                      )}
+                      {tun.mode !== "dynamic" && (
+                        <div className="flex flex-col gap-1">
+                          <label className="text-[10px] font-bold text-muted-foreground">Current Host IP</label>
+                          <Input className="h-7 text-xs" placeholder="0.0.0.0 or 127.0.0.1" defaultValue={tun.currentHostIp} />
+                        </div>
+                      )}
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[10px] font-bold text-muted-foreground">{tun.mode === "remote" ? "Local Port" : "Source Port"}</label>
+                        <Input className="h-7 text-xs" defaultValue={tun.src} />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[10px] font-bold text-muted-foreground">Max Retries</label>
+                        <Input className="h-7 text-xs" type="number" defaultValue={tun.maxRetries} />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[10px] font-bold text-muted-foreground">Retry Interval (s)</label>
+                        <Input className="h-7 text-xs" type="number" defaultValue={tun.retryInterval} />
+                      </div>
+                    </div>
+                    <SettingRow label="Auto-start" description="Automatically connect this tunnel when the host is loaded">
+                      <FakeSwitch defaultChecked={tun.autoStart} />
+                    </SettingRow>
+                  </div>
+                ))}
+              </div>
+            </SectionCard>
+          </>
         )}
 
         {activeTab === "docker" && (
           <SectionCard title="Docker Integration" icon={<Box className="size-3.5"/>}>
             <div className="flex flex-col gap-4 py-3">
-              <SettingRow label="Enable Docker Support" description="Monitor containers and images on this host via Docker socket">
-                <FakeSwitch />
+              <SettingRow label="Enable Docker" description="Monitor and manage containers on this host via the Docker socket">
+                <FakeSwitch defaultChecked={host?.enableDocker} />
               </SettingRow>
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Docker Endpoint</label>
-                <Input defaultValue="/var/run/docker.sock" />
-                <span className="text-[10px] text-muted-foreground">Unix socket or TCP endpoint (e.g. tcp://127.0.0.1:2375)</span>
-              </div>
             </div>
           </SectionCard>
         )}
 
         {activeTab === "files" && (
-          <SectionCard title="File Manager Settings" icon={<FolderSearch className="size-3.5"/>}>
+          <SectionCard title="File Manager" icon={<FolderSearch className="size-3.5"/>}>
             <div className="flex flex-col gap-4 py-3">
-              <SettingRow label="Enable File Manager" description="Browse and manage files over SFTP">
-                <FakeSwitch defaultChecked={true} />
+              <SettingRow label="Enable File Manager" description="Browse and manage files on this host over SFTP">
+                <FakeSwitch defaultChecked={host?.enableFileManager ?? true} />
               </SettingRow>
               <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Default Starting Path</label>
-                <Input placeholder="/home/user" defaultValue={host?.defaultPath || "~"} />
+                <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Default Path</label>
+                <Input placeholder="~" defaultValue={host?.defaultPath || "~"} />
+                <span className="text-[10px] text-muted-foreground">The directory to open when the file manager launches for this host.</span>
               </div>
-              <SettingRow label="Show Hidden Files" description="Always show files starting with a dot">
-                <FakeSwitch defaultChecked={true} />
-              </SettingRow>
             </div>
           </SectionCard>
         )}
 
         {activeTab === "stats" && (
           <>
-            <SectionCard title="Monitoring Config" icon={<Activity className="size-3.5"/>}>
+            <SectionCard title="Status Checks" icon={<Activity className="size-3.5"/>}>
+              <div className="flex flex-col gap-0 py-1">
+                <SettingRow label="Enable Status Checks" description="Periodically ping this host to verify availability">
+                  <FakeSwitch defaultChecked={host?.statsConfig?.statusCheckEnabled ?? true} />
+                </SettingRow>
+                <SettingRow label="Use Global Interval" description="Override with the server-wide status check interval">
+                  <FakeSwitch defaultChecked={host?.statsConfig?.useGlobalStatusInterval ?? true} />
+                </SettingRow>
+                <SettingRow label="Check Interval (s)" description="Seconds between each connectivity ping">
+                  <Input type="number" defaultValue={host?.statsConfig?.statusCheckInterval ?? 60} className="w-20 h-7 text-xs text-right" />
+                </SettingRow>
+              </div>
+            </SectionCard>
+            <SectionCard title="Metrics Collection" icon={<Server className="size-3.5"/>}>
+              <div className="flex flex-col gap-0 py-1">
+                <SettingRow label="Enable Metrics" description="Collect CPU, RAM, disk, and network usage from this host">
+                  <FakeSwitch defaultChecked={host?.statsConfig?.metricsEnabled ?? true} />
+                </SettingRow>
+                <SettingRow label="Use Global Interval" description="Override with the server-wide metrics interval">
+                  <FakeSwitch defaultChecked={host?.statsConfig?.useGlobalMetricsInterval ?? true} />
+                </SettingRow>
+                <SettingRow label="Metrics Interval (s)" description="Seconds between metric snapshots">
+                  <Input type="number" defaultValue={host?.statsConfig?.metricsInterval ?? 30} className="w-20 h-7 text-xs text-right" />
+                </SettingRow>
+              </div>
+            </SectionCard>
+            <SectionCard title="Visible Widgets" icon={<LayoutDashboard className="size-3.5"/>}>
+              <div className="flex flex-col gap-0 py-1">
+                {[
+                  { id: "cpu",       label: "CPU Usage",       desc: "CPU percent, load averages, sparkline graph" },
+                  { id: "memory",    label: "Memory",          desc: "RAM usage, swap, cached" },
+                  { id: "disk",      label: "Storage",         desc: "Disk usage per mount point" },
+                  { id: "disk_io",   label: "Disk I/O",        desc: "Read/write MB/s per device" },
+                  { id: "network",   label: "Network",         desc: "Interface list and bandwidth" },
+                  { id: "processes", label: "Top Processes",   desc: "PID, CPU%, MEM%, command" },
+                  { id: "logins",    label: "Recent Logins",   desc: "Successful and failed login events" },
+                  { id: "ports",     label: "Listening Ports", desc: "Open ports with process and state" },
+                  { id: "security",  label: "Security",        desc: "Firewall, AppArmor, SELinux status" },
+                ].map(w => (
+                  <SettingRow key={w.id} label={w.label} description={w.desc}>
+                    <FakeSwitch defaultChecked={(host?.statsConfig?.enabledWidgets ?? []).includes(w.id) || !host?.statsConfig} />
+                  </SettingRow>
+                ))}
+              </div>
+            </SectionCard>
+            <SectionCard title="Quick Actions" icon={<Zap className="size-3.5"/>}
+              action={<Button variant="outline" size="sm" className="h-6 text-[10px] px-2 border-accent-brand/40 text-accent-brand"><Plus className="size-3 mr-1" /> Add Action</Button>}
+            >
+              <div className="flex flex-col gap-3 py-3">
+                <p className="text-xs text-muted-foreground">Quick actions appear as buttons in the Server Stats toolbar for one-click command execution.</p>
+                {[
+                  { name: "Restart Nginx",  snippet: "System Update" },
+                  { name: "Clear Logs",     snippet: "Clear Logs"    },
+                ].map((a, i) => (
+                  <div key={i} className="flex items-center gap-2 p-2 bg-muted/20 border border-border group">
+                    <Input className="h-7 text-xs flex-1" placeholder="Button label" defaultValue={a.name} />
+                    <select className="flex h-7 flex-1 border border-border bg-background px-2 text-xs outline-none focus:ring-1 focus:ring-ring">
+                      <option>System Update</option><option>Clear Logs</option><option>Check SSL</option><option>Disk Usage Report</option>
+                    </select>
+                    <button className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 className="size-3.5"/></button>
+                  </div>
+                ))}
+                {host?.quickActions?.length === 0 && (
+                  <div className="flex flex-col items-center justify-center py-4 text-muted-foreground/40 gap-1.5">
+                    <Zap className="size-6"/>
+                    <span className="text-xs">No quick actions yet.</span>
+                  </div>
+                )}
+              </div>
+            </SectionCard>
+          </>
+        )}
+
+        {activeTab === "remote" && (
+          <>
+            {/* RDP Connection Settings */}
+            {connectionType === "rdp" && (
+              <SectionCard title="Connection Settings" icon={<Shield className="size-3.5"/>}>
+                <div className="flex flex-col gap-4 py-3">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Security Mode</label>
+                    <select className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring">
+                      <option value="any">Any</option>
+                      <option value="nla">NLA</option>
+                      <option value="nla-ext">NLA Extended</option>
+                      <option value="tls">TLS</option>
+                      <option value="vmconnect">VMConnect</option>
+                      <option value="rdp">RDP</option>
+                    </select>
+                  </div>
+                  <SettingRow label="Ignore Certificate" description="Allow connections to hosts with self-signed certificates">
+                    <FakeSwitch defaultChecked={host?.ignoreCert} />
+                  </SettingRow>
+                </div>
+              </SectionCard>
+            )}
+
+            {/* Display Settings */}
+            <SectionCard title="Display Settings" icon={<Monitor className="size-3.5"/>}>
               <div className="flex flex-col gap-4 py-3">
-                <SettingRow label="Status Checks" description="Periodically ping the host to check availability">
-                  <FakeSwitch defaultChecked={true} />
-                </SettingRow>
-                <SettingRow label="Metrics Collection" description="Collect CPU, RAM, and Disk usage data">
-                  <FakeSwitch defaultChecked={true} />
-                </SettingRow>
-                <div className="grid grid-cols-2 gap-4 border-t border-border pt-4">
+                {connectionType !== "telnet" && (
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Check Interval</label>
-                    <div className="flex gap-2">
-                      <Input type="number" defaultValue={60} className="flex-1" />
-                      <select className="h-9 bg-background border border-border text-xs"><option>Seconds</option><option>Minutes</option></select>
-                    </div>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Color Depth</label>
+                    <select className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring">
+                      <option value="auto">Auto</option>
+                      <option value="8">8-bit</option>
+                      <option value="16">16-bit</option>
+                      <option value="24">24-bit</option>
+                      <option value="32">32-bit</option>
+                    </select>
+                  </div>
+                )}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Width</label>
+                    <Input type="number" placeholder="Auto" />
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Metrics Interval</label>
-                    <div className="flex gap-2">
-                      <Input type="number" defaultValue={30} className="flex-1" />
-                      <select className="h-9 bg-background border border-border text-xs"><option>Seconds</option><option>Minutes</option></select>
-                    </div>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Height</label>
+                    <Input type="number" placeholder="Auto" />
                   </div>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Enabled Widgets</label>
-                  <div className="grid grid-cols-2 gap-y-2 gap-x-4">
-                    {["CPU Usage", "Memory Usage", "Disk Usage", "Network Traffic", "System Info", "Process List", "Login History", "Firewall Status"].map(w => (
-                      <div key={w} className="flex items-center gap-2">
-                        <FakeSwitch defaultChecked={true} />
-                        <span className="text-xs">{w}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                {connectionType !== "telnet" && (
+                  <>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">DPI</label>
+                      <Input type="number" placeholder="96" />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Resize Method</label>
+                      <select className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring">
+                        <option value="auto">Auto</option>
+                        <option value="display-update">Display Update</option>
+                        <option value="reconnect">Reconnect</option>
+                      </select>
+                    </div>
+                    <SettingRow label="Force Lossless" description="Force lossless image encoding (higher quality, more bandwidth)">
+                      <FakeSwitch />
+                    </SettingRow>
+                  </>
+                )}
               </div>
             </SectionCard>
 
-            <SectionCard title="Quick Actions" icon={<Zap className="size-3.5" />}>
-              <div className="flex flex-col gap-4 py-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground font-medium uppercase tracking-widest">Snippet Assignments</span>
-                  <Button variant="outline" size="sm" className="h-7 text-xs border-accent-brand/40 text-accent-brand"><Plus className="size-3.5 mr-1.5" /> Add Action</Button>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2 p-2 bg-muted/20 border border-border">
-                    <Input className="h-8 text-xs flex-1" placeholder="Action Name" defaultValue="Restart Nginx" />
-                    <select className="flex h-8 flex-1 border border-border bg-background px-2 text-xs outline-none">
-                      <option>System Update</option><option>Clear Logs</option><option>Check SSL</option>
+            {/* Telnet Terminal Settings */}
+            {connectionType === "telnet" && (
+              <SectionCard title="Terminal Settings" icon={<Terminal className="size-3.5"/>}>
+                <div className="flex flex-col gap-4 py-3">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Terminal Type</label>
+                    <select className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring">
+                      <option value="auto">Auto</option>
+                      <option value="xterm">xterm</option>
+                      <option value="xterm-256color">xterm-256color</option>
+                      <option value="vt100">VT100</option>
+                      <option value="vt220">VT220</option>
                     </select>
-                    <button className="text-destructive"><Trash2 className="size-3.5"/></button>
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Font Name</label>
+                    <Input placeholder="monospace" />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Font Size</label>
+                    <Input type="number" defaultValue={12} />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Color Scheme</label>
+                    <select className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring">
+                      <option value="auto">Auto</option>
+                      <option value="black-white">Black on White</option>
+                      <option value="white-black">White on Black</option>
+                      <option value="gray-black">Gray on Black</option>
+                      <option value="green-black">Green on Black</option>
+                    </select>
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Backspace Key</label>
+                    <select className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring">
+                      <option value="auto">Auto</option>
+                      <option value="127">DEL (127)</option>
+                      <option value="8">BS (8)</option>
+                    </select>
+                  </div>
+                </div>
+              </SectionCard>
+            )}
+
+            {/* Audio */}
+            {(connectionType === "rdp" || connectionType === "vnc") && (
+              <SectionCard title="Audio Settings" icon={<Activity className="size-3.5"/>}>
+                <div className="flex flex-col gap-0 py-1">
+                  <SettingRow label="Disable Audio" description="Mute all audio from the remote session">
+                    <FakeSwitch />
+                  </SettingRow>
+                  {connectionType === "rdp" && (
+                    <SettingRow label="Enable Audio Input (Microphone)" description="Forward local microphone to the remote session">
+                      <FakeSwitch />
+                    </SettingRow>
+                  )}
+                </div>
+              </SectionCard>
+            )}
+
+            {/* RDP Performance */}
+            {connectionType === "rdp" && (
+              <SectionCard title="RDP Performance" icon={<Zap className="size-3.5"/>}>
+                <div className="flex flex-col gap-0 py-1">
+                  <SettingRow label="Wallpaper" description="Show desktop wallpaper (disabling improves performance)"><FakeSwitch /></SettingRow>
+                  <SettingRow label="Theming" description="Enable visual themes and styles"><FakeSwitch /></SettingRow>
+                  <SettingRow label="Font Smoothing" description="Enable ClearType font rendering"><FakeSwitch defaultChecked={true} /></SettingRow>
+                  <SettingRow label="Full Window Drag" description="Show window contents while dragging"><FakeSwitch /></SettingRow>
+                  <SettingRow label="Desktop Composition" description="Enable Aero glass effects"><FakeSwitch /></SettingRow>
+                  <SettingRow label="Menu Animations" description="Enable menu fade and slide animations"><FakeSwitch /></SettingRow>
+                  <SettingRow label="Disable Bitmap Caching" description="Turn off bitmap cache (may help with glitches)"><FakeSwitch /></SettingRow>
+                  <SettingRow label="Disable Offscreen Caching" description="Turn off offscreen cache"><FakeSwitch /></SettingRow>
+                  <SettingRow label="Disable Glyph Caching" description="Turn off glyph cache"><FakeSwitch /></SettingRow>
+                  <SettingRow label="Enable GFX" description="Use RemoteFX graphics pipeline"><FakeSwitch defaultChecked={true} /></SettingRow>
+                </div>
+              </SectionCard>
+            )}
+
+            {/* RDP Device Redirection */}
+            {connectionType === "rdp" && (
+              <SectionCard title="Device Redirection" icon={<Settings className="size-3.5"/>}>
+                <div className="flex flex-col gap-4 py-3">
+                  <SettingRow label="Enable Printing" description="Redirect local printers to the remote session"><FakeSwitch /></SettingRow>
+                  <SettingRow label="Enable Drive Redirection" description="Map a local folder as a drive in the remote session"><FakeSwitch /></SettingRow>
+                  <div className="grid grid-cols-2 gap-3 border-t border-border pt-3">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Drive Name</label>
+                      <Input placeholder="Termix Drive" />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Drive Path</label>
+                      <Input placeholder="/home/user/shared" />
+                    </div>
+                  </div>
+                  <SettingRow label="Create Drive Path" description="Automatically create the folder if it does not exist"><FakeSwitch /></SettingRow>
+                  <SettingRow label="Disable Download" description="Prevent downloading files from the remote session"><FakeSwitch /></SettingRow>
+                  <SettingRow label="Disable Upload" description="Prevent uploading files to the remote session"><FakeSwitch /></SettingRow>
+                  <SettingRow label="Enable Touch" description="Enable touch input forwarding"><FakeSwitch /></SettingRow>
+                </div>
+              </SectionCard>
+            )}
+
+            {/* RDP Session */}
+            {connectionType === "rdp" && (
+              <SectionCard title="Session" icon={<Server className="size-3.5"/>}>
+                <div className="flex flex-col gap-4 py-3">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Client Name</label>
+                    <Input placeholder="Termix" />
+                  </div>
+                  <SettingRow label="Console Session" description="Connect to the console (session 0) instead of a new session"><FakeSwitch /></SettingRow>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Initial Program</label>
+                    <Input placeholder="e.g. cmd.exe" />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Server Layout</label>
+                    <select className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring">
+                      <option value="auto">Auto</option>
+                      <option>en-us-qwerty</option><option>en-gb-qwerty</option>
+                      <option>de-de-qwertz</option><option>fr-fr-azerty</option>
+                      <option>it-it-qwerty</option><option>sv-se-qwerty</option>
+                      <option>ja-jp-qwerty</option><option>pt-br-qwerty</option>
+                      <option>es-es-qwerty</option><option>failsafe</option>
+                    </select>
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Timezone</label>
+                    <Input placeholder="e.g. America/New_York" />
+                  </div>
+                </div>
+              </SectionCard>
+            )}
+
+            {/* RDP Gateway */}
+            {connectionType === "rdp" && (
+              <SectionCard title="Gateway" icon={<Network className="size-3.5"/>}>
+                <div className="flex flex-col gap-4 py-3">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Gateway Hostname</label>
+                      <Input placeholder="gateway.example.com" />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Gateway Port</label>
+                      <Input type="number" placeholder="443" />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Gateway Username</label>
+                      <Input placeholder="user" />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Gateway Password</label>
+                      <Input type="password" placeholder="••••••••" />
+                    </div>
+                    <div className="flex flex-col gap-1.5 col-span-2">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Gateway Domain</label>
+                      <Input placeholder="DOMAIN" />
+                    </div>
+                  </div>
+                </div>
+              </SectionCard>
+            )}
+
+            {/* RDP RemoteApp */}
+            {connectionType === "rdp" && (
+              <SectionCard title="RemoteApp" icon={<Monitor className="size-3.5"/>}>
+                <div className="flex flex-col gap-4 py-3">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">RemoteApp Program</label>
+                    <Input placeholder="||MyApp" />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Working Directory</label>
+                    <Input placeholder="C:\Apps\MyApp" />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Arguments</label>
+                    <Input placeholder="--flag value" />
+                  </div>
+                </div>
+              </SectionCard>
+            )}
+
+            {/* Clipboard */}
+            <SectionCard title="Clipboard" icon={<Copy className="size-3.5"/>}>
+              <div className="flex flex-col gap-4 py-3">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Normalize Line Endings</label>
+                  <select className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring">
+                    <option value="auto">Auto</option>
+                    <option value="preserve">Preserve</option>
+                    <option value="unix">Unix (LF)</option>
+                    <option value="windows">Windows (CRLF)</option>
+                  </select>
+                </div>
+                <SettingRow label="Disable Copy" description="Prevent copying text from the remote session"><FakeSwitch /></SettingRow>
+                <SettingRow label="Disable Paste" description="Prevent pasting text into the remote session"><FakeSwitch /></SettingRow>
+              </div>
+            </SectionCard>
+
+            {/* VNC Specific */}
+            {connectionType === "vnc" && (
+              <SectionCard title="VNC Settings" icon={<Settings className="size-3.5"/>}>
+                <div className="flex flex-col gap-4 py-3">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Cursor Mode</label>
+                    <select className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring">
+                      <option value="auto">Auto</option>
+                      <option value="local">Local</option>
+                      <option value="remote">Remote</option>
+                    </select>
+                  </div>
+                  <SettingRow label="Swap Red/Blue" description="Swap the red and blue color channels (fixes some colour issues)"><FakeSwitch /></SettingRow>
+                  <SettingRow label="Read-only" description="View the remote screen without sending any input"><FakeSwitch /></SettingRow>
+                </div>
+              </SectionCard>
+            )}
+
+            {/* Recording */}
+            <SectionCard title="Session Recording" icon={<Activity className="size-3.5"/>}>
+              <div className="flex flex-col gap-4 py-3">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Recording Path</label>
+                  <Input placeholder="/var/lib/termix/recordings" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Recording Name</label>
+                  <Input placeholder="${GUAC_USERNAME}-${GUAC_DATE}-${GUAC_TIME}" />
+                </div>
+                <SettingRow label="Create Path if Missing" description="Automatically create the recording directory"><FakeSwitch /></SettingRow>
+                <SettingRow label="Exclude Output" description="Do not record screen output (metadata only)"><FakeSwitch /></SettingRow>
+                <SettingRow label="Exclude Mouse" description="Do not record mouse movements"><FakeSwitch /></SettingRow>
+                <SettingRow label="Include Keystrokes" description="Record raw keystrokes in addition to screen output"><FakeSwitch /></SettingRow>
+              </div>
+            </SectionCard>
+
+            {/* Wake-on-LAN */}
+            <SectionCard title="Wake-on-LAN" icon={<Zap className="size-3.5"/>}>
+              <div className="flex flex-col gap-4 py-3">
+                <SettingRow label="Send WOL Packet" description="Send a magic packet to wake this host before connecting"><FakeSwitch /></SettingRow>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">MAC Address</label>
+                    <Input placeholder="AA:BB:CC:DD:EE:FF" defaultValue={host?.macAddress || ""} />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Broadcast Address</label>
+                    <Input placeholder="255.255.255.255" />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">UDP Port</label>
+                    <Input type="number" placeholder="9" />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Wait Time (s)</label>
+                    <Input type="number" placeholder="0" />
                   </div>
                 </div>
               </div>
@@ -553,55 +1028,85 @@ function HostEditor({ host, activeTab, onBack }: { host: Host | null; activeTab:
           </>
         )}
 
-        {activeTab === "remote" && (
-          <SectionCard title="Remote Desktop Config" icon={<Monitor className="size-3.5" />}>
-            <div className="flex flex-col gap-4 py-3">
-              {connectionType === "rdp" && (
-                <div className="flex flex-col gap-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Domain</label>
-                      <Input placeholder="WORKGROUP" />
+        {activeTab === "sharing" && (
+          <>
+            {host === null && (
+              <div className="flex items-start gap-3 p-3 border border-yellow-500/30 bg-yellow-500/5 text-xs text-yellow-500">
+                <Shield className="size-3.5 shrink-0 mt-0.5"/>
+                <div><strong>Save the host first.</strong> Sharing options are available after the host has been saved.</div>
+              </div>
+            )}
+
+            <SectionCard title="Share Host" icon={<Users className="size-3.5"/>}>
+              <div className="flex flex-col gap-4 py-3">
+                <div className="flex gap-2">
+                  {["user", "role"].map(t => (
+                    <button key={t} className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-colors ${t === "user" ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand" : "border-border text-muted-foreground hover:text-foreground"}`}>
+                      {t === "user" ? <><User className="size-3 inline mr-1"/>Share with User</> : <><Shield className="size-3 inline mr-1"/>Share with Role</>}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Select User</label>
+                  <select className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring">
+                    <option value="">Select a user...</option>
+                    <option>alice</option>
+                    <option>bob</option>
+                    <option>charlie</option>
+                  </select>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Permission Level</label>
+                  <div className="px-3 py-2 border border-border bg-muted/30 text-xs text-muted-foreground">View only</div>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Expires in (hours)</label>
+                  <Input type="number" placeholder="Leave empty for no expiry" />
+                </div>
+                <div className="flex justify-end">
+                  <Button variant="outline" className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand" onClick={() => toast.success("Host shared successfully")}>
+                    <Plus className="size-3.5 mr-1.5"/>Share
+                  </Button>
+                </div>
+              </div>
+            </SectionCard>
+
+            <SectionCard title="Current Access" icon={<ListChecks className="size-3.5"/>}>
+              <div className="py-2">
+                <div className="grid grid-cols-6 gap-2 px-2 py-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground border-b border-border">
+                  <span>Type</span>
+                  <span>Target</span>
+                  <span>Permission</span>
+                  <span>Granted By</span>
+                  <span>Expires</span>
+                  <span></span>
+                </div>
+                {[
+                  { type: "User", target: "alice",     permission: "View",  grantedBy: "admin", expires: "Never",      expired: false },
+                  { type: "Role", target: "Developers", permission: "View", grantedBy: "admin", expires: "2026-06-01", expired: false },
+                  { type: "User", target: "bob",       permission: "View",  grantedBy: "alice", expires: "2026-04-01", expired: true  },
+                ].map((r, i) => (
+                  <div key={i} className="grid grid-cols-6 gap-2 px-2 py-2.5 border-b border-border last:border-0 items-center text-xs">
+                    <div className="flex items-center gap-1">
+                      {r.type === "User" ? <User className="size-3 text-muted-foreground"/> : <Shield className="size-3 text-muted-foreground"/>}
+                      <span className="text-muted-foreground">{r.type}</span>
                     </div>
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Security Mode</label>
-                      <select className="h-9 bg-background border border-border text-xs"><option>Any</option><option>NLA</option><option>TLS</option><option>RDP</option></select>
+                    <span className="font-semibold">{r.target}</span>
+                    <span>{r.permission}</span>
+                    <span className="text-muted-foreground">{r.grantedBy}</span>
+                    <span className={r.expired ? "text-destructive" : "text-muted-foreground"}>
+                      {r.expired ? <span className="flex items-center gap-1"><X className="size-3"/>Expired</span> : r.expires}
+                    </span>
+                    <div className="flex justify-end">
+                      <Button variant="ghost" size="sm" className="h-6 text-[10px] px-2 text-destructive hover:bg-destructive/10" onClick={() => toast.success("Access revoked")}>
+                        Revoke
+                      </Button>
                     </div>
                   </div>
-                  <SettingRow label="Ignore Certificate" description="Allow connections to servers with self-signed certificates">
-                    <FakeSwitch defaultChecked={true} />
-                  </SettingRow>
-                </div>
-              )}
-              <div className="flex flex-col gap-2">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Display Settings</label>
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="flex flex-col gap-1"><span className="text-[10px] text-muted-foreground font-bold">Width</span><Input className="h-8 text-xs" placeholder="Auto" /></div>
-                  <div className="flex flex-col gap-1"><span className="text-[10px] text-muted-foreground font-bold">Height</span><Input className="h-8 text-xs" placeholder="Auto" /></div>
-                  <div className="flex flex-col gap-1"><span className="text-[10px] text-muted-foreground font-bold">DPI</span><Input className="h-8 text-xs" defaultValue="96" /></div>
-                </div>
+                ))}
               </div>
-              <div className="flex flex-col gap-2 pt-2">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Performance & Audio</label>
-                <div className="grid grid-cols-2 gap-y-2 gap-x-4">
-                  <SettingRow label="Enable Audio"><FakeSwitch defaultChecked={true} /></SettingRow>
-                  <SettingRow label="Wallpaper"><FakeSwitch /></SettingRow>
-                  <SettingRow label="Theming"><FakeSwitch /></SettingRow>
-                  <SettingRow label="Font Smoothing"><FakeSwitch defaultChecked={true} /></SettingRow>
-                </div>
-              </div>
-            </div>
-          </SectionCard>
-        )}
-
-        {activeTab === "sharing" && (
-          <SectionCard title="Resource Sharing" icon={<Share2 className="size-3.5" />}>
-            <div className="flex flex-col items-center justify-center py-12 opacity-50">
-              <Users className="size-12 mb-4 text-accent-brand" />
-              <span className="text-sm font-semibold uppercase tracking-widest">Collaborative Access</span>
-              <span className="text-xs">Sharing requires an active Team subscription</span>
-            </div>
-          </SectionCard>
+            </SectionCard>
+          </>
         )}
       </div>
 
@@ -712,16 +1217,26 @@ export function HostManagerTab() {
   const [editingFolderValue, setEditingFolderValue] = useState("");
   const [draggedHost, setDraggedHost]               = useState<Host | null>(null);
   const [dragOverFolder, setDragOverFolder]         = useState<string | null>(null);
+  const [editingHostConnectionType, setEditingHostConnectionType] = useState("ssh");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const importOverwriteRef = useRef(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    const handleAddHost = () => { setSection("hosts"); setEditingHost("new"); setEditingCredential(null); };
+    const handleAddHost = () => { setSection("hosts"); setEditingHost("new"); setEditingCredential(null); setEditingHostConnectionType("ssh"); setActiveHostTab("general"); };
     const handleAddCredential = () => { setSection("credentials"); setEditingCredential("new"); setEditingHost(null); };
+    const handleEditHost = (e: Event) => {
+      const id = (e as CustomEvent<string>).detail;
+      const host = hosts.find(h => h.id === id);
+      if (host) { setSection("hosts"); setEditingHost(host); setEditingCredential(null); setActiveHostTab("general"); setEditingHostConnectionType(host.connectionType || "ssh"); }
+    };
     window.addEventListener("host-manager:add-host", handleAddHost);
     window.addEventListener("host-manager:add-credential", handleAddCredential);
+    window.addEventListener("host-manager:edit-host", handleEditHost);
     return () => {
       window.removeEventListener("host-manager:add-host", handleAddHost);
       window.removeEventListener("host-manager:add-credential", handleAddCredential);
+      window.removeEventListener("host-manager:edit-host", handleEditHost);
     };
   }, []);
 
@@ -759,9 +1274,23 @@ export function HostManagerTab() {
     toast.success("Hosts exported successfully");
   };
 
+  const handleDownloadSample = () => {
+    const sample = JSON.stringify({ hosts: [{ name: "My Server", address: "192.168.1.1", user: "root", port: 22, folder: "Production", connectionType: "ssh" }] }, null, 2);
+    const blob = new Blob([sample], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href = url; a.download = "termix-hosts-sample.json";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+    toast.success("Sample file downloaded");
+  };
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => { setRefreshing(false); toast.success("Host statuses refreshed"); }, 1200);
+  };
+
   const navContent = () => {
     if (editingHost) {
-      const connectionType = editingHost === "new" ? "ssh" : editingHost.connectionType;
+      const connectionType = editingHostConnectionType;
       return (
         <>
           <button onClick={() => { setEditingHost(null); setActiveHostTab("general"); }}
@@ -769,15 +1298,15 @@ export function HostManagerTab() {
             <ArrowLeft className="size-3.5" />Back to Hosts
           </button>
           <Separator className="my-1 opacity-50" />
-          {HOST_TABS.map(tab => {
-            const isDisabled = (connectionType !== "ssh" && ["terminal", "tunnels", "docker", "files"].includes(tab.id)) || (connectionType === "ssh" && tab.id === "remote");
-            return (
-              <button key={tab.id} disabled={isDisabled} onClick={() => setActiveHostTab(tab.id)}
-                className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors text-left ${activeHostTab === tab.id && !isDisabled ? "bg-accent-brand/10 text-accent-brand border-l-2 border-accent-brand" : "text-muted-foreground hover:text-foreground hover:bg-muted border-l-2 border-transparent"} disabled:opacity-30 disabled:cursor-not-allowed`}>
-                {tab.icon}{tab.label}
-              </button>
-            );
-          })}
+          {HOST_TABS.filter(tab => {
+            if (connectionType === "ssh") return tab.id !== "remote";
+            return tab.id === "general" || tab.id === "remote";
+          }).map(tab => (
+            <button key={tab.id} onClick={() => setActiveHostTab(tab.id)}
+              className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors text-left ${activeHostTab === tab.id ? "bg-accent-brand/10 text-accent-brand border-l-2 border-accent-brand" : "text-muted-foreground hover:text-foreground hover:bg-muted border-l-2 border-transparent"}`}>
+              {tab.icon}{tab.label}
+            </button>
+          ))}
         </>
       );
     }
@@ -821,39 +1350,40 @@ export function HostManagerTab() {
       <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 mx-3 mt-3 gap-0">
         <div>
           <h1 className="text-2xl font-bold">Host Manager</h1>
-          <p className="text-xs text-muted-foreground">{allHosts.filter(h => h.online).length}/{allHosts.length} online · {MOCK_CREDENTIALS.length} credentials</p>
+          <p className="text-xs text-muted-foreground">{allHosts.length} hosts · {allHosts.filter(h => h.online).length} online · {MOCK_CREDENTIALS.length} credentials</p>
         </div>
         {!editingHost && !editingCredential && (
           <div className="flex items-center gap-2">
             {section === "hosts" && (
               <>
-                {selectionMode ? (
-                  <>
-                    <span className="text-xs text-muted-foreground">{selectedHostIds.size} selected</span>
-                    <Button variant="outline" size="sm" className="h-7 text-xs border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive" onClick={() => { setSelectionMode(false); setSelectedHostIds(new Set()); }}>
-                      <X className="size-3.5 mr-1" />Cancel
+                <input ref={fileInputRef} type="file" accept=".json" className="hidden"
+                  onChange={e => { if (e.target.files?.[0]) toast.success(importOverwriteRef.current ? "Hosts imported (overwrite mode)" : "Hosts imported (skipped existing)"); }} />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="h-7 text-xs">
+                      <Upload className="size-3.5 mr-1" />Import JSON
+                      <ChevronDown className="size-3 ml-1 text-muted-foreground"/>
                     </Button>
-                    <Button variant="outline" size="sm" className="h-7 text-xs border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand" onClick={() => toast.success(`Deleted ${selectedHostIds.size} hosts`)}>
-                      <Trash2 className="size-3.5 mr-1" />Delete Selected
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button variant="ghost" size="sm" className="h-7 text-xs text-muted-foreground" onClick={() => setSelectionMode(true)}>
-                      <ListChecks className="size-3.5 mr-1" />Select
-                    </Button>
-                    <input ref={fileInputRef} type="file" accept=".json" className="hidden" onChange={e => { if (e.target.files?.[0]) toast.success("Hosts imported successfully"); }} />
-                    <Button variant="ghost" size="sm" className="h-7 text-xs text-muted-foreground" onClick={() => fileInputRef.current?.click()}>
-                      <Upload className="size-3.5 mr-1" />Import
-                    </Button>
-                    <Button variant="ghost" size="sm" className="h-7 text-xs text-muted-foreground" onClick={handleExportHosts}>
-                      <Download className="size-3.5 mr-1" />Export
-                    </Button>
-                    <Button variant="outline" size="sm" className="h-7 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand" onClick={() => { setEditingHost("new"); setActiveHostTab("general"); }}>
-                      <Plus className="size-3.5 mr-1.5"/>Add Host
-                    </Button>
-                  </>
-                )}
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => { importOverwriteRef.current = false; fileInputRef.current?.click(); }}>
+                      Skip existing hosts
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => { importOverwriteRef.current = true; fileInputRef.current?.click(); }}>
+                      Overwrite existing hosts
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Button variant="outline" size="sm" className="h-7 text-xs" onClick={handleExportHosts} disabled={allHosts.length === 0}>
+                  <Download className="size-3.5 mr-1" />Export All
+                </Button>
+                <Button variant="outline" size="sm" className="h-7 text-xs" onClick={handleDownloadSample}>
+                  <Download className="size-3.5 mr-1" />Sample
+                </Button>
+                <div className="w-px h-5 bg-border"/>
+                <Button variant="outline" size="sm" className="h-7 text-xs" onClick={handleRefresh} disabled={refreshing}>
+                  <RefreshCw className={`size-3.5 mr-1 ${refreshing ? "animate-spin" : ""}`}/>Refresh
+                </Button>
               </>
             )}
             {section === "credentials" && (
@@ -873,7 +1403,13 @@ export function HostManagerTab() {
         <div className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-3">
           {section === "hosts" && (
             editingHost ? (
-              <HostEditor host={editingHost === "new" ? null : editingHost} activeTab={activeHostTab} onBack={() => { setEditingHost(null); setActiveHostTab("general"); }} />
+              <HostEditor
+                host={editingHost === "new" ? null : editingHost}
+                activeTab={activeHostTab}
+                onBack={() => { setEditingHost(null); setActiveHostTab("general"); }}
+                connectionType={editingHostConnectionType}
+                onConnectionTypeChange={t => { setEditingHostConnectionType(t); setActiveHostTab("general"); }}
+              />
             ) : (
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
@@ -881,12 +1417,18 @@ export function HostManagerTab() {
                     <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground"/>
                     <Input placeholder="Search hosts, addresses, tags..." className="pl-8 h-9 text-xs" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
                   </div>
+                  <Button variant="outline" size="sm" className="h-9 text-xs shrink-0 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand" onClick={() => { setEditingHost("new"); setActiveHostTab("general"); setEditingHostConnectionType("ssh"); }}>
+                    <Plus className="size-3.5 mr-1.5"/>Add Host
+                  </Button>
+                  <Button variant={selectionMode ? "default" : "outline"} size="sm" className="h-9 text-xs shrink-0" onClick={() => { setSelectionMode(s => !s); setSelectedHostIds(new Set()); }}>
+                    <ListChecks className="size-3.5 mr-1.5"/>{selectionMode ? "Cancel" : "Select"}
+                  </Button>
                   <Button variant="outline" size="sm" className="h-9 text-xs shrink-0" onClick={() => {
                     const allOpen = folders.every(f => expandedFolders.has(f));
                     setExpandedFolders(allOpen ? new Set() : new Set(folders));
                   }}>
                     {folders.every(f => expandedFolders.has(f)) ? <ChevronUp className="size-3.5 mr-1.5"/> : <ChevronDown className="size-3.5 mr-1.5"/>}
-                    {folders.every(f => expandedFolders.has(f)) ? "Collapse All" : "Expand All"}
+                    {folders.every(f => expandedFolders.has(f)) ? "Collapse" : "Expand All"}
                   </Button>
                 </div>
 
@@ -899,7 +1441,7 @@ export function HostManagerTab() {
                     {pinnedHosts.map(host => (
                       <HostRow key={host.id} host={host} selectionMode={selectionMode} selected={selectedHostIds.has(host.id)}
                         onToggleSelect={() => toggleHostSelection(host.id)}
-                        onEdit={() => { setEditingHost(host); setActiveHostTab("general"); }}
+                        onEdit={() => { setEditingHost(host); setActiveHostTab("general"); setEditingHostConnectionType(host.connectionType || "ssh"); }}
                         onDelete={() => toast.success(`Deleted ${host.name}`)} />
                     ))}
                   </div>
@@ -945,7 +1487,7 @@ export function HostManagerTab() {
                       {isExpanded && folderHosts.map(host => (
                         <HostRow key={host.id} host={host} selectionMode={selectionMode} selected={selectedHostIds.has(host.id)}
                           onToggleSelect={() => toggleHostSelection(host.id)}
-                          onEdit={() => { setEditingHost(host); setActiveHostTab("general"); }}
+                          onEdit={() => { setEditingHost(host); setActiveHostTab("general"); setEditingHostConnectionType(host.connectionType || "ssh"); }}
                           onDelete={() => toast.success(`Deleted ${host.name}`)}
                           onDragStart={() => setDraggedHost(host)}
                           onDragEnd={() => setDraggedHost(null)} />
@@ -960,7 +1502,7 @@ export function HostManagerTab() {
                     <span className="text-sm font-semibold text-muted-foreground">No hosts found</span>
                     <span className="text-xs text-muted-foreground/60 mt-1">{searchQuery ? "Try a different search term" : "Add your first host to get started"}</span>
                     {!searchQuery && (
-                      <Button variant="outline" size="sm" className="mt-4 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10" onClick={() => { setEditingHost("new"); setActiveHostTab("general"); }}>
+                      <Button variant="outline" size="sm" className="mt-4 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10" onClick={() => { setEditingHost("new"); setActiveHostTab("general"); setEditingHostConnectionType("ssh"); }}>
                         <Plus className="size-3.5 mr-1.5"/>Add Host
                       </Button>
                     )}
@@ -1044,6 +1586,87 @@ export function HostManagerTab() {
           )}
         </div>
       </div>
+
+      {/* Floating selection bar */}
+      {selectionMode && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-popover border border-border shadow-xl px-3 py-2 flex items-center gap-2">
+          <span className="text-sm font-semibold tabular-nums whitespace-nowrap pr-1">
+            {selectedHostIds.size} selected
+          </span>
+          <div className="w-px h-5 bg-border"/>
+          <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => {
+            if (selectedHostIds.size === allHosts.length) setSelectedHostIds(new Set());
+            else setSelectedHostIds(new Set(allHosts.map(h => h.id)));
+          }}>
+            {selectedHostIds.size === allHosts.length ? "Deselect All" : "Select All"}
+          </Button>
+          <div className="w-px h-5 bg-border"/>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="h-7 text-xs" disabled={selectedHostIds.size === 0}>
+                <FolderSearch className="size-3.5 mr-1.5"/>Features<ChevronDown className="size-3 ml-1.5 text-muted-foreground"/>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="center">
+              <DropdownMenuItem onClick={() => toast.success(`Enabled all features on ${selectedHostIds.size} hosts`)}>
+                <Check className="size-3.5 mr-2 text-green-500"/>Enable All Features
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => toast.success(`Disabled all features on ${selectedHostIds.size} hosts`)}>
+                <X className="size-3.5 mr-2 text-red-500"/>Disable All Features
+              </DropdownMenuItem>
+              <div className="h-px bg-border my-1"/>
+              <DropdownMenuItem onClick={() => toast.success("Done")}><Terminal className="size-3.5 mr-2"/>Enable Terminal</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => toast.success("Done")}><Terminal className="size-3.5 mr-2 opacity-30"/>Disable Terminal</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => toast.success("Done")}><FolderSearch className="size-3.5 mr-2"/>Enable File Manager</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => toast.success("Done")}><FolderSearch className="size-3.5 mr-2 opacity-30"/>Disable File Manager</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => toast.success("Done")}><Network className="size-3.5 mr-2"/>Enable Tunnels</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => toast.success("Done")}><Network className="size-3.5 mr-2 opacity-30"/>Disable Tunnels</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => toast.success("Done")}><Box className="size-3.5 mr-2"/>Enable Docker</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => toast.success("Done")}><Box className="size-3.5 mr-2 opacity-30"/>Disable Docker</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="h-7 text-xs" disabled={selectedHostIds.size === 0}>
+                <Folder className="size-3.5 mr-1.5"/>Move to Folder<ChevronDown className="size-3 ml-1.5 text-muted-foreground"/>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="center">
+              {folders.map(f => (
+                <DropdownMenuItem key={f} onClick={() => toast.success(`Moved ${selectedHostIds.size} hosts to ${f}`)}>
+                  <FolderOpen className="size-3.5 mr-2"/>{f}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="h-7 text-xs" disabled={selectedHostIds.size === 0}>
+                <Pin className="size-3.5 mr-1.5"/>Pin<ChevronDown className="size-3 ml-1.5 text-muted-foreground"/>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="center">
+              <DropdownMenuItem onClick={() => toast.success(`Pinned ${selectedHostIds.size} hosts`)}>
+                <Pin className="size-3.5 mr-2 text-yellow-500"/>Pin Selected
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => toast.success(`Unpinned ${selectedHostIds.size} hosts`)}>
+                <Pin className="size-3.5 mr-2 opacity-30"/>Unpin Selected
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <div className="w-px h-5 bg-border"/>
+          <Button variant="outline" size="sm" className="h-7 text-xs" disabled={selectedHostIds.size === 0} onClick={() => { handleExportHosts(); }}>
+            <Download className="size-3.5 mr-1.5"/>Export
+          </Button>
+          <Button variant="outline" size="sm" className="h-7 text-xs border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive" disabled={selectedHostIds.size === 0} onClick={() => { toast.success(`Deleted ${selectedHostIds.size} hosts`); setSelectedHostIds(new Set()); }}>
+            <Trash2 className="size-3.5 mr-1.5"/>Delete
+          </Button>
+          <div className="w-px h-5 bg-border"/>
+          <Button variant="ghost" size="sm" className="h-7 text-xs" onClick={() => { setSelectionMode(false); setSelectedHostIds(new Set()); }}>
+            <X className="size-3.5 mr-1.5"/>Cancel
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

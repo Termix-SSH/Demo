@@ -37,6 +37,18 @@ export const hosts: Host[] = [
     authType: "password", connectionType: "ssh",
     enableTerminal: true, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: []
   },
+  {
+    id: "7", name: "win-dc-01", user: "Administrator", address: "10.0.3.10", port: 3389,
+    folder: "Windows", online: true, cpu: 22, ram: 48, lastAccess: "1h ago",
+    tags: ["windows", "rdp"], authType: "password", connectionType: "rdp",
+    enableTerminal: false, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: []
+  },
+  {
+    id: "8", name: "dev-workstation", user: "dev", address: "10.0.4.20", port: 5900,
+    folder: "Windows", online: false, cpu: 0, ram: 0, lastAccess: "3d ago",
+    tags: ["vnc", "dev"], authType: "password", connectionType: "vnc",
+    enableTerminal: false, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: []
+  },
 ];
 
 export const MOCK_CREDENTIALS: Credential[] = [

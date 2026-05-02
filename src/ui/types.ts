@@ -165,7 +165,7 @@ export type DashboardCardConfig = {
   defaultEnabled: boolean;
 };
 
-export type UserProfileSection = "account" | "appearance" | "security";
+export type UserProfileSection = "account" | "appearance" | "security" | "api-keys";
 export type AdminSection = "general" | "oidc" | "users" | "sessions" | "roles" | "database" | "api-keys";
 export type AccentColorId = "orange" | "blue" | "green" | "purple" | "pink" | "cyan";
 

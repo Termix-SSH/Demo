@@ -25,7 +25,7 @@ export function isFolder(item: Host | HostFolder): item is HostFolder {
   return "children" in item;
 }
 
-export function HostItem({ host, onOpenTab }: { host: Host; onOpenTab: (type: TabType) => void }) {
+export function HostItem({ host, onOpenTab, onEditHost }: { host: Host; onOpenTab: (type: TabType) => void; onEditHost?: () => void }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const isOnline = host.online;
 
@@ -80,7 +80,7 @@ export function HostItem({ host, onOpenTab }: { host: Host; onOpenTab: (type: Ta
         <DropdownMenuItem onClick={() => onOpenTab("tunnel")}>
           <Network className="size-3.5"/>Open Tunnel
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => onEditHost?.()}>
           <Pencil className="size-3.5"/>Edit
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -88,10 +88,11 @@ export function HostItem({ host, onOpenTab }: { host: Host; onOpenTab: (type: Ta
   );
 }
 
-export function FolderItem({ folder, depth = 0, onOpenTab }: {
+export function FolderItem({ folder, depth = 0, onOpenTab, onEditHost }: {
   folder: HostFolder;
   depth?: number;
   onOpenTab: (host: Host, type: TabType) => void;
+  onEditHost?: (host: Host) => void;
 }) {
   const [open, setOpen] = useState(depth === 0);
 
@@ -109,8 +110,8 @@ export function FolderItem({ folder, depth = 0, onOpenTab }: {
         <div className="ml-3 border-l border-border pl-1">
           {folder.children.map((child, i) =>
             isFolder(child)
-              ? <FolderItem key={i} folder={child} depth={depth + 1} onOpenTab={onOpenTab}/>
-              : <HostItem key={i} host={child} onOpenTab={(type) => onOpenTab(child, type)}/>
+              ? <FolderItem key={i} folder={child} depth={depth + 1} onOpenTab={onOpenTab} onEditHost={onEditHost}/>
+              : <HostItem key={i} host={child} onOpenTab={(type) => onOpenTab(child, type)} onEditHost={onEditHost ? () => onEditHost(child) : undefined}/>
           )}
         </div>
       )}

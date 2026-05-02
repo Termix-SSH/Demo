@@ -29,6 +29,11 @@ import {
   ExternalLink,
   X,
   ChevronDown,
+  Scissors,
+  Clipboard,
+  Upload,
+  Lock,
+  Package,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -372,6 +377,7 @@ export function FileManager({ label }: FileManagerProps) {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [clipboard, setClipboard] = useState<{ ids: string[]; mode: "copy" | "cut" } | null>(null);
 
   const filteredFiles = useMemo(() => {
     return currentFiles.filter((f) =>
@@ -389,6 +395,12 @@ export function FileManager({ label }: FileManagerProps) {
 
   const [isPreviewDialogOpen, setIsPreviewDialogOpen] = useState(false);
   const [previewFile, setPreviewFile] = useState<MockFile | null>(null);
+  const [isCompressDialogOpen, setIsCompressDialogOpen] = useState(false);
+  const [compressFormat, setCompressFormat] = useState<"tar.gz" | "zip" | "tar">("tar.gz");
+  const [compressName, setCompressName] = useState("");
+  const [isPermissionsDialogOpen, setIsPermissionsDialogOpen] = useState(false);
+  const [permissionsFile, setPermissionsFile] = useState<MockFile | null>(null);
+  const [permOctal, setPermOctal] = useState("644");
 
   // Selection Box State
   const [isSelecting, setIsSelecting] = useState(false);
@@ -417,6 +429,28 @@ export function FileManager({ label }: FileManagerProps) {
         setSelectedIds(filteredFiles.map(f => f.id));
       }
 
+      if ((e.ctrlKey || e.metaKey) && e.key === "c" && selectedIds.length > 0) {
+        e.preventDefault();
+        setClipboard({ ids: selectedIds, mode: "copy" });
+        toast.info(`Copied ${selectedIds.length} item(s)`);
+      }
+
+      if ((e.ctrlKey || e.metaKey) && e.key === "x" && selectedIds.length > 0) {
+        e.preventDefault();
+        setClipboard({ ids: selectedIds, mode: "cut" });
+        toast.info(`Cut ${selectedIds.length} item(s)`);
+      }
+
+      if ((e.ctrlKey || e.metaKey) && e.key === "v" && clipboard) {
+        e.preventDefault();
+        if (clipboard.mode === "cut") {
+          moveFiles(clipboard.ids, currentPath);
+          setClipboard(null);
+        } else {
+          toast.success(`Pasted ${clipboard.ids.length} item(s) — copy complete`);
+        }
+      }
+
       if (e.key === "Delete" && selectedIds.length > 0) {
         deleteFiles(selectedIds);
         setSelectedIds([]);
@@ -425,7 +459,7 @@ export function FileManager({ label }: FileManagerProps) {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [filteredFiles, selectedIds, deleteFiles]);
+  }, [filteredFiles, selectedIds, deleteFiles, clipboard, currentPath, moveFiles]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.button !== 0) return; // Only left click
@@ -731,6 +765,12 @@ export function FileManager({ label }: FileManagerProps) {
                <List className="size-4" />
              </Button>
           </div>
+          <label title="Upload files" className="cursor-pointer">
+            <input type="file" multiple className="hidden" onChange={() => toast.success("Upload started (demo)")} />
+            <div className="h-8 px-3 flex items-center gap-1.5 border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-colors text-[10px] font-bold uppercase tracking-widest">
+              <Upload className="size-3.5" /> Upload
+            </div>
+          </label>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="h-8 gap-1.5 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 rounded-none font-bold uppercase tracking-widest text-[10px]">
@@ -864,6 +904,10 @@ export function FileManager({ label }: FileManagerProps) {
                       onDelete={() => deleteFiles([file.id])}
                       onTogglePin={() => togglePin(file.id)}
                       onProperties={() => openPropertiesDialog(file)}
+                      onCopy={() => { const ids = selectedIds.includes(file.id) ? selectedIds : [file.id]; setClipboard({ ids, mode: "copy" }); toast.info(`Copied ${ids.length} item(s)`); }}
+                      onCut={() => { const ids = selectedIds.includes(file.id) ? selectedIds : [file.id]; setClipboard({ ids, mode: "cut" }); toast.info(`Cut ${ids.length} item(s)`); }}
+                      onCompress={() => { setSelectedIds(selectedIds.includes(file.id) ? selectedIds : [file.id]); setIsCompressDialogOpen(true); }}
+                      onPermissions={() => { setPermissionsFile(file); setPermOctal(file.permissions.replace(/[^0-7]/g, "").substring(0, 3) || "644"); setIsPermissionsDialogOpen(true); }}
                     />
                   </ContextMenu>
                 ))}
@@ -915,6 +959,10 @@ export function FileManager({ label }: FileManagerProps) {
                       onDelete={() => deleteFiles([file.id])}
                       onTogglePin={() => togglePin(file.id)}
                       onProperties={() => openPropertiesDialog(file)}
+                      onCopy={() => { const ids = selectedIds.includes(file.id) ? selectedIds : [file.id]; setClipboard({ ids, mode: "copy" }); toast.info(`Copied ${ids.length} item(s)`); }}
+                      onCut={() => { const ids = selectedIds.includes(file.id) ? selectedIds : [file.id]; setClipboard({ ids, mode: "cut" }); toast.info(`Cut ${ids.length} item(s)`); }}
+                      onCompress={() => { setSelectedIds(selectedIds.includes(file.id) ? selectedIds : [file.id]); setIsCompressDialogOpen(true); }}
+                      onPermissions={() => { setPermissionsFile(file); setPermOctal(file.permissions.replace(/[^0-7]/g, "").substring(0, 3) || "644"); setIsPermissionsDialogOpen(true); }}
                     />
                   </ContextMenu>
                 ))}
@@ -1055,6 +1103,121 @@ export function FileManager({ label }: FileManagerProps) {
         </DialogContent>
       </Dialog>
 
+      <Dialog open={isCompressDialogOpen} onOpenChange={setIsCompressDialogOpen}>
+        <DialogContent className="sm:max-w-md rounded-none border-border bg-card">
+          <DialogHeader>
+            <DialogTitle className="text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+              <Package className="size-4 text-accent-brand" /> Compress Files
+            </DialogTitle>
+            <DialogDescription className="text-[10px] font-bold uppercase tracking-tight text-muted-foreground">
+              {selectedIds.length} item(s) selected
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4 flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Archive Name</label>
+              <Input
+                autoFocus
+                placeholder="archive"
+                value={compressName}
+                onChange={e => setCompressName(e.target.value)}
+                className="rounded-none bg-muted/50 border-border text-xs"
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Format</label>
+              <div className="grid grid-cols-3 gap-1">
+                {(["tar.gz", "zip", "tar"] as const).map(f => (
+                  <button
+                    key={f}
+                    onClick={() => setCompressFormat(f)}
+                    className={`py-2 text-xs font-bold uppercase tracking-widest border transition-colors ${
+                      compressFormat === f
+                        ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand"
+                        : "border-border text-muted-foreground hover:text-foreground hover:bg-muted"
+                    }`}
+                  >
+                    .{f}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setIsCompressDialogOpen(false)} className="rounded-none text-[10px] font-bold uppercase tracking-widest">Cancel</Button>
+            <Button
+              variant="outline"
+              className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 rounded-none text-[10px] font-bold uppercase tracking-widest"
+              onClick={() => {
+                const name = compressName.trim() || "archive";
+                toast.success(`Compressed as ${name}.${compressFormat}`);
+                setIsCompressDialogOpen(false);
+                setCompressName("");
+              }}
+            >
+              <Package className="size-3.5 mr-1" /> Compress
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isPermissionsDialogOpen} onOpenChange={setIsPermissionsDialogOpen}>
+        <DialogContent className="sm:max-w-md rounded-none border-border bg-card">
+          <DialogHeader>
+            <DialogTitle className="text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+              <Lock className="size-4 text-accent-brand" /> Permissions
+            </DialogTitle>
+            {permissionsFile && (
+              <DialogDescription className="text-[10px] font-bold uppercase tracking-tight text-muted-foreground font-mono">
+                {permissionsFile.path}
+              </DialogDescription>
+            )}
+          </DialogHeader>
+          {permissionsFile && (
+            <div className="py-3 flex flex-col gap-4">
+              <div className="grid grid-cols-4 gap-0 border border-border overflow-hidden">
+                <div className="px-3 py-2 bg-muted/50 border-b border-r border-border text-[10px] font-bold uppercase tracking-widest text-muted-foreground"></div>
+                {["Read", "Write", "Execute"].map(h => (
+                  <div key={h} className="px-3 py-2 bg-muted/50 border-b border-r border-border last:border-r-0 text-[10px] font-bold uppercase tracking-widest text-muted-foreground text-center">{h}</div>
+                ))}
+                {["Owner", "Group", "Others"].map(row => (
+                  <React.Fragment key={row}>
+                    <div className="px-3 py-2.5 border-b border-r border-border last:border-b-0 text-xs font-semibold">{row}</div>
+                    {["r", "w", "x"].map(perm => (
+                      <div key={perm} className="flex items-center justify-center border-b border-r border-border last:border-r-0 py-2.5">
+                        <input type="checkbox" defaultChecked={permissionsFile.permissions.includes(perm)} className="accent-[var(--accent-brand)] size-3.5" readOnly />
+                      </div>
+                    ))}
+                  </React.Fragment>
+                ))}
+              </div>
+              <div className="flex items-center gap-3">
+                <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Octal</label>
+                <Input
+                  value={permOctal}
+                  onChange={e => setPermOctal(e.target.value)}
+                  className="w-20 rounded-none bg-muted/50 border-border text-xs font-mono text-center h-8"
+                  maxLength={3}
+                />
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setIsPermissionsDialogOpen(false)} className="rounded-none text-[10px] font-bold uppercase tracking-widest">Cancel</Button>
+            <Button
+              variant="outline"
+              className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 rounded-none text-[10px] font-bold uppercase tracking-widest"
+              onClick={() => {
+                toast.success(`Permissions updated to ${permOctal}`);
+                setIsPermissionsDialogOpen(false);
+              }}
+            >
+              Apply
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <Dialog open={isPropertiesDialogOpen} onOpenChange={setIsPropertiesDialogOpen}>
         <DialogContent className="sm:max-w-md rounded-none border-border bg-card shadow-2xl">
           <DialogHeader className="border-b border-border pb-4">
@@ -1114,6 +1277,10 @@ function FileContextMenuContent({
   onDelete,
   onTogglePin,
   onProperties,
+  onCopy,
+  onCut,
+  onCompress,
+  onPermissions,
 }: {
   file: MockFile;
   isPinned: boolean;
@@ -1122,11 +1289,21 @@ function FileContextMenuContent({
   onDelete: () => void;
   onTogglePin: () => void;
   onProperties: () => void;
+  onCopy: () => void;
+  onCut: () => void;
+  onCompress: () => void;
+  onPermissions: () => void;
 }) {
   return (
-    <ContextMenuContent className="w-48 rounded-none border-border bg-card shadow-xl p-0 overflow-hidden">
+    <ContextMenuContent className="w-52 rounded-none border-border bg-card shadow-xl p-0 overflow-hidden">
       <ContextMenuItem onClick={onOpen} className="rounded-none text-[10px] font-bold uppercase tracking-widest h-9 focus:bg-accent-brand/10 focus:text-accent-brand transition-colors cursor-pointer px-3">
         <Layout className="size-3.5 mr-2.5" /> Open
+      </ContextMenuItem>
+      <ContextMenuItem onClick={onCopy} className="rounded-none text-[10px] font-bold uppercase tracking-widest h-9 focus:bg-accent-brand/10 focus:text-accent-brand transition-colors cursor-pointer px-3">
+        <Copy className="size-3.5 mr-2.5" /> Copy <span className="ml-auto text-muted-foreground text-[9px]">Ctrl+C</span>
+      </ContextMenuItem>
+      <ContextMenuItem onClick={onCut} className="rounded-none text-[10px] font-bold uppercase tracking-widest h-9 focus:bg-accent-brand/10 focus:text-accent-brand transition-colors cursor-pointer px-3">
+        <Scissors className="size-3.5 mr-2.5" /> Cut <span className="ml-auto text-muted-foreground text-[9px]">Ctrl+X</span>
       </ContextMenuItem>
       <ContextMenuItem onClick={() => {
         navigator.clipboard.writeText(file.path);
@@ -1136,7 +1313,7 @@ function FileContextMenuContent({
       </ContextMenuItem>
       <ContextMenuItem onClick={onTogglePin} className="rounded-none text-[10px] font-bold uppercase tracking-widest h-9 focus:bg-accent-brand/10 focus:text-accent-brand transition-colors cursor-pointer px-3">
         <Star className={cn("size-3.5 mr-2.5", isPinned && "fill-accent-brand text-accent-brand")} />
-        {isPinned ? "Unpin Quick Access" : "Pin Quick Access"}
+        {isPinned ? "Unpin" : "Pin to Quick Access"}
       </ContextMenuItem>
 
       <Separator className="bg-border/50" />
@@ -1146,6 +1323,12 @@ function FileContextMenuContent({
       </ContextMenuItem>
       <ContextMenuItem onClick={() => toast.info(`Downloading ${file.name}`)} className="rounded-none text-[10px] font-bold uppercase tracking-widest h-9 focus:bg-accent-brand/10 focus:text-accent-brand transition-colors cursor-pointer px-3">
         <Download className="size-3.5 mr-2.5" /> Download
+      </ContextMenuItem>
+      <ContextMenuItem onClick={onCompress} className="rounded-none text-[10px] font-bold uppercase tracking-widest h-9 focus:bg-accent-brand/10 focus:text-accent-brand transition-colors cursor-pointer px-3">
+        <Package className="size-3.5 mr-2.5" /> Compress
+      </ContextMenuItem>
+      <ContextMenuItem onClick={onPermissions} className="rounded-none text-[10px] font-bold uppercase tracking-widest h-9 focus:bg-accent-brand/10 focus:text-accent-brand transition-colors cursor-pointer px-3">
+        <Lock className="size-3.5 mr-2.5" /> Permissions
       </ContextMenuItem>
       <ContextMenuItem onClick={onProperties} className="rounded-none text-[10px] font-bold uppercase tracking-widest h-9 focus:bg-accent-brand/10 focus:text-accent-brand transition-colors cursor-pointer px-3">
         <Info className="size-3.5 mr-2.5" /> Properties

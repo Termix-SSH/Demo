@@ -354,13 +354,31 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
   const lastShiftTime = useRef(0);
   const pendingHostManagerEvent = useRef<string | null>(null);
 
+  const pendingHostManagerEditId = useRef<string | null>(null);
+
   useEffect(() => {
-    if (activeTabId === "host-manager" && pendingHostManagerEvent.current) {
-      const eventName = pendingHostManagerEvent.current;
-      pendingHostManagerEvent.current = null;
-      window.dispatchEvent(new Event(eventName));
+    if (activeTabId === "host-manager") {
+      if (pendingHostManagerEvent.current) {
+        const eventName = pendingHostManagerEvent.current;
+        pendingHostManagerEvent.current = null;
+        window.dispatchEvent(new Event(eventName));
+      }
+      if (pendingHostManagerEditId.current) {
+        const hostId = pendingHostManagerEditId.current;
+        pendingHostManagerEditId.current = null;
+        window.dispatchEvent(new CustomEvent("host-manager:edit-host", { detail: hostId }));
+      }
     }
   }, [activeTabId]);
+
+  function editHostInManager(host: Host) {
+    if (activeTabId === "host-manager") {
+      window.dispatchEvent(new CustomEvent("host-manager:edit-host", { detail: host.id }));
+    } else {
+      pendingHostManagerEditId.current = host.id;
+      openSingletonTab("host-manager");
+    }
+  }
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -550,8 +568,8 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
             <div className="px-2 py-1">
               {hostTree.children.map((child, i) =>
                 isFolder(child)
-                  ? <FolderItem key={i} folder={child} onOpenTab={openTab}/>
-                  : <HostItem key={i} host={child} onOpenTab={(type) => openTab(child, type)}/>
+                  ? <FolderItem key={i} folder={child} onOpenTab={openTab} onEditHost={editHostInManager}/>
+                  : <HostItem key={i} host={child} onOpenTab={(type) => openTab(child, type)} onEditHost={() => editHostInManager(child)}/>
               )}
             </div>
           </div>

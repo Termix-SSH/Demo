@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import {
   Activity, ArrowLeft, Box, Cpu, Download, HardDrive, Info,
   List, MemoryStick, Network, Play, Plus, RefreshCw, Search,
-  Settings, Square, Terminal, Trash2,
+  Settings, Square, Terminal, Trash2, ChevronDown, ChevronRight,
+  Globe, Tag, Volume2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useXTerm } from "react-xtermjs";
@@ -96,6 +97,7 @@ function DockerContainerCard({ container, onSelect, onAction }: {
 function DockerLogViewer({ containerName }: { containerName: string }) {
   const [logs, setLogs] = useState<string[]>([]);
   const [autoRefresh, setAutoRefresh] = useState(true);
+  const [logSearch, setLogSearch] = useState("");
 
   useEffect(() => {
     const initialLogs = [
@@ -106,6 +108,11 @@ function DockerLogViewer({ containerName }: { containerName: string }) {
       `[${new Date().toISOString()}] WARN: High memory pressure detected in sub-process 42`,
       `[${new Date().toISOString()}] INFO: Incoming request from 10.0.5.12: GET /health`,
       `[${new Date().toISOString()}] INFO: 200 OK - 1.2ms`,
+      `[${new Date().toISOString()}] INFO: Incoming request from 10.0.5.13: GET /api/v1/status`,
+      `[${new Date().toISOString()}] INFO: 200 OK - 0.8ms`,
+      `[${new Date().toISOString()}] WARN: Memory usage at 78% of limit`,
+      `[${new Date().toISOString()}] INFO: Scheduled task started: cleanup-old-sessions`,
+      `[${new Date().toISOString()}] INFO: Cleaned 142 sessions, freed 24MB`,
     ];
     setLogs(initialLogs);
 
@@ -113,7 +120,7 @@ function DockerLogViewer({ containerName }: { containerName: string }) {
 
     const interval = setInterval(() => {
       setLogs(prev => [
-        ...prev.slice(-49),
+        ...prev.slice(-99),
         `[${new Date().toISOString()}] INFO: Worker processed batch ${Math.floor(Math.random() * 1000)} - Success`,
       ]);
     }, 3000);
@@ -121,30 +128,54 @@ function DockerLogViewer({ containerName }: { containerName: string }) {
     return () => clearInterval(interval);
   }, [containerName, autoRefresh]);
 
+  const filteredLogs = logSearch
+    ? logs.filter(l => l.toLowerCase().includes(logSearch.toLowerCase()))
+    : logs;
+
+  const getLogColor = (log: string) => {
+    if (log.includes(" WARN:"))  return "text-yellow-400/90";
+    if (log.includes(" ERROR:")) return "text-destructive";
+    if (log.includes(" DEBUG:")) return "text-muted-foreground/60";
+    return "text-foreground/90";
+  };
+
   return (
     <div className="flex flex-col flex-1 min-h-0 gap-3">
-      <div className="flex items-center justify-between bg-card border border-border px-3 py-2">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between bg-card border border-border px-3 py-2 gap-3">
+        <div className="flex items-center gap-3 shrink-0">
           <div className="flex items-center gap-2">
             <span className="text-[10px] text-muted-foreground uppercase font-bold">Auto Refresh</span>
             <AdminToggle on={autoRefresh} onToggle={() => setAutoRefresh(!autoRefresh)}/>
           </div>
           <Separator orientation="vertical" className="h-4"/>
-          <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{logs.length} Lines</span>
+          <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{filteredLogs.length}/{logs.length} Lines</span>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="relative flex-1 max-w-64">
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3 text-muted-foreground"/>
+          <Input
+            placeholder="Filter logs..."
+            value={logSearch}
+            onChange={e => setLogSearch(e.target.value)}
+            className="pl-7 h-7 text-xs bg-background border-border rounded-none"
+          />
+        </div>
+        <div className="flex items-center gap-1 shrink-0">
           <Button variant="ghost" size="sm" className="h-7 text-xs gap-1.5"><Download className="size-3"/> Download</Button>
           <Button variant="ghost" size="sm" className="h-7 text-xs gap-1.5" onClick={() => setLogs([])}><Trash2 className="size-3"/> Clear</Button>
         </div>
       </div>
       <div className="flex-1 bg-[#111210] border border-border p-3 overflow-auto font-mono text-xs leading-relaxed scrollbar-thin">
-        {logs.map((log, i) => (
+        {filteredLogs.map((log, i) => (
           <div key={i} className="whitespace-pre-wrap break-all">
-            <span className="text-accent-brand/60">{log.substring(0, 26)}</span>
-            <span className="text-foreground/90">{log.substring(26)}</span>
+            <span className="text-accent-brand/50">{log.substring(0, 26)}</span>
+            <span className={getLogColor(log)}>{log.substring(26)}</span>
           </div>
         ))}
-        {logs.length === 0 && <span className="text-muted-foreground italic">No logs available</span>}
+        {filteredLogs.length === 0 && (
+          <span className="text-muted-foreground italic">
+            {logSearch ? `No logs matching "${logSearch}"` : "No logs available"}
+          </span>
+        )}
       </div>
     </div>
   );
@@ -289,6 +320,93 @@ function DockerConsole({ containerName }: { containerName: string }) {
   );
 }
 
+function DockerInspect({ container }: { container: DockerContainer }) {
+  const MOCK_ENV = [
+    "NODE_ENV=production",
+    "PORT=8080",
+    "DB_HOST=postgres-db",
+    "DB_PORT=5432",
+    "LOG_LEVEL=info",
+    "REDIS_URL=redis://redis-cache:6379",
+  ];
+  const MOCK_VOLUMES = [
+    { host: "/data/app", container: "/app/data", mode: "rw" },
+    { host: "/etc/app/config.yml", container: "/app/config.yml", mode: "ro" },
+  ];
+  const MOCK_NETWORKS = [
+    { name: "bridge", ip: "172.17.0.2" },
+    { name: "app-network", ip: "10.10.0.5" },
+  ];
+
+  return (
+    <div className="flex flex-col gap-3 overflow-y-auto flex-1">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <SectionCard title="Environment Variables" icon={<Tag className="size-3.5"/>}>
+          <div className="flex flex-col gap-0 divide-y divide-border py-1">
+            {MOCK_ENV.map((env, i) => {
+              const [key, ...rest] = env.split("=");
+              return (
+                <div key={i} className="grid grid-cols-2 py-1.5 text-xs font-mono gap-2 overflow-hidden">
+                  <span className="text-accent-brand font-semibold truncate" title={key}>{key}</span>
+                  <span className="text-muted-foreground truncate" title={rest.join("=")}>{rest.join("=")}</span>
+                </div>
+              );
+            })}
+          </div>
+        </SectionCard>
+
+        <SectionCard title="Volumes" icon={<Volume2 className="size-3.5"/>}>
+          <div className="flex flex-col gap-2 py-2">
+            {MOCK_VOLUMES.map((v, i) => (
+              <div key={i} className="flex flex-col gap-0.5 p-2 border border-border bg-muted/20">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase">Host</span>
+                  <span className={`text-[10px] font-bold px-1 border ${v.mode === "ro" ? "border-yellow-500/40 text-yellow-500" : "border-accent-brand/40 text-accent-brand"}`}>{v.mode.toUpperCase()}</span>
+                </div>
+                <span className="text-xs font-mono truncate" title={v.host}>{v.host}</span>
+                <span className="text-[10px] font-bold text-muted-foreground uppercase mt-1">Container</span>
+                <span className="text-xs font-mono truncate" title={v.container}>{v.container}</span>
+              </div>
+            ))}
+          </div>
+        </SectionCard>
+
+        <SectionCard title="Networks" icon={<Globe className="size-3.5"/>}>
+          <div className="flex flex-col gap-2 py-2">
+            {MOCK_NETWORKS.map((n, i) => (
+              <div key={i} className="flex items-center justify-between p-2 border border-border bg-muted/20">
+                <div className="flex items-center gap-2">
+                  <div className="size-1.5 rounded-full bg-accent-brand"/>
+                  <span className="text-sm font-bold">{n.name}</span>
+                </div>
+                <span className="text-xs font-mono text-muted-foreground">{n.ip}</span>
+              </div>
+            ))}
+          </div>
+        </SectionCard>
+
+        <SectionCard title="Container Details" icon={<Info className="size-3.5"/>}>
+          <div className="flex flex-col gap-1.5 py-2">
+            {[
+              { label: "Full ID", value: container.id },
+              { label: "Image", value: container.image },
+              { label: "Status", value: container.status },
+              { label: "Created", value: container.created },
+              { label: "Restart Policy", value: "unless-stopped" },
+              { label: "Platform", value: "linux/amd64" },
+            ].map(({ label, value }) => (
+              <div key={label} className="flex items-start justify-between gap-4 text-xs py-1 border-b border-border/50 last:border-0">
+                <span className="text-muted-foreground font-semibold shrink-0">{label}</span>
+                <span className="font-mono truncate text-right" title={value}>{value}</span>
+              </div>
+            ))}
+          </div>
+        </SectionCard>
+      </div>
+    </div>
+  );
+}
+
 export function DockerTab({ label }: { label: string }) {
   const [containers, setContainers] = useState<DockerContainer[]>(MOCK_CONTAINERS);
   const [view, setView] = useState<"list" | "detail">("list");
@@ -371,6 +489,7 @@ export function DockerTab({ label }: { label: string }) {
               { id: "logs",    label: "Logs",    icon: <List className="size-3.5"/>     },
               { id: "stats",   label: "Stats",   icon: <Activity className="size-3.5"/> },
               { id: "console", label: "Console", icon: <Terminal className="size-3.5"/> },
+              { id: "inspect", label: "Inspect", icon: <Info className="size-3.5"/>     },
             ].map(t => (
               <button
                 key={t.id}
@@ -389,6 +508,7 @@ export function DockerTab({ label }: { label: string }) {
             {detailTab === "logs"    && <DockerLogViewer containerName={selectedContainer.name}/>}
             {detailTab === "stats"   && <DockerContainerStats container={selectedContainer}/>}
             {detailTab === "console" && <DockerConsole containerName={selectedContainer.name}/>}
+            {detailTab === "inspect" && <DockerInspect container={selectedContainer}/>}
           </div>
         </div>
       </div>

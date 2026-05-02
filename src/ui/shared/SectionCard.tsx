@@ -1,16 +1,18 @@
 import { useState } from "react";
 import type React from "react";
 
-export function SectionCard({ title, icon, children }: {
+export function SectionCard({ title, icon, action, children }: {
   title: string;
   icon: React.ReactNode;
+  action?: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col overflow-hidden border border-border bg-card">
+    <div className="flex flex-col border border-border bg-card">
       <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border shrink-0">
         <span className="text-muted-foreground">{icon}</span>
-        <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{title}</span>
+        <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground flex-1">{title}</span>
+        {action && <div className="ml-auto">{action}</div>}
       </div>
       <div className="px-4 py-1">
         {children}

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { Kbd, KbdKey, KbdSeparator } from "@/components/ui/kbd";
+import { Kbd } from "@/components/ui/kbd";
 import {
   Command,
   CommandInput,
@@ -10,24 +10,33 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import {
-  Key,
   Server,
   Settings,
-  User,
   Terminal,
   FolderOpen,
-  Pencil,
-  ArrowDownUp,
   Box,
   Globe,
   Plus,
-  Zap,
   MessagesSquare,
   LifeBuoy,
   DollarSign,
-  Search
+  Search,
+  Activity,
+  Network,
+  MoreHorizontal,
+  Edit3,
+  Clock,
+  User,
+  KeyRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { recentActivity } from "@/ui/data";
 
 type Host = {
   name: string;
@@ -38,6 +47,10 @@ type Host = {
   ram: number;
   lastAccess: string;
   tags?: string[];
+  enableTerminal?: boolean;
+  enableFileManager?: boolean;
+  enableDocker?: boolean;
+  enableTunnel?: boolean;
 };
 
 interface CommandPaletteProps {
@@ -46,6 +59,22 @@ interface CommandPaletteProps {
   hosts: Host[];
   onOpenTab: (type: any, label?: string) => void;
 }
+
+const ACTION_ICONS: Record<string, React.ReactNode> = {
+  Terminal:     <Terminal className="size-3" />,
+  Files:        <FolderOpen className="size-3" />,
+  Docker:       <Box className="size-3" />,
+  Stats:        <Activity className="size-3" />,
+  Tunnels:      <Network className="size-3" />,
+};
+
+const ACTION_TAB_TYPE: Record<string, string> = {
+  Terminal: "terminal",
+  Files:    "files",
+  Docker:   "docker",
+  Stats:    "stats",
+  Tunnels:  "tunnel",
+};
 
 export function CommandPalette({
   isOpen,
@@ -73,8 +102,8 @@ export function CommandPalette({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [setIsOpen]);
 
-  const filteredHosts = hosts.filter(h => 
-    h.name.toLowerCase().includes(search.toLowerCase()) || 
+  const filteredHosts = hosts.filter(h =>
+    h.name.toLowerCase().includes(search.toLowerCase()) ||
     h.address.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -82,6 +111,8 @@ export function CommandPalette({
     action();
     setIsOpen(false);
   };
+
+  const recentItems = recentActivity.slice(0, 5);
 
   if (!isOpen) return null;
 
@@ -112,10 +143,41 @@ export function CommandPalette({
               <Kbd className="bg-muted/50 border-none h-6 px-2 text-[11px] rounded-none">ESC</Kbd>
             </div>
           </div>
-          
+
           <CommandList className="max-h-[60vh] thin-scrollbar">
+
+            {!search && recentItems.length > 0 && (
+              <>
+                <CommandGroup heading="Recent Activity" className="px-2">
+                  {recentItems.map((item, i) => {
+                    const host = hosts.find(h => h.name === item.host);
+                    return (
+                      <CommandItem
+                        key={i}
+                        onSelect={() => handleAction(() => host && onOpenTab("terminal", host.name))}
+                        className="group flex items-center gap-3 px-3 py-2 rounded-none hover:bg-accent-brand/10 cursor-pointer"
+                      >
+                        <div className="size-6 rounded-none bg-muted flex items-center justify-center shrink-0">
+                          <Clock className="size-3 text-muted-foreground" />
+                        </div>
+                        <div className="flex flex-col flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-semibold truncate">{item.host}</span>
+                            <span className="text-[10px] text-muted-foreground">{item.action}</span>
+                            <span className={cn("size-1.5 rounded-full shrink-0", item.online ? "bg-accent-brand" : "bg-muted-foreground/40")} />
+                          </div>
+                        </div>
+                        <span className="text-[10px] text-muted-foreground shrink-0">{item.time}</span>
+                      </CommandItem>
+                    );
+                  })}
+                </CommandGroup>
+                <CommandSeparator className="my-2" />
+              </>
+            )}
+
             <CommandGroup heading="Quick Actions" className="px-2">
-              <CommandItem 
+              <CommandItem
                 onSelect={() => handleAction(() => onOpenTab("host-manager"))}
                 className="group flex items-center gap-3 px-3 py-2.5 rounded-none hover:bg-accent-brand/10 cursor-pointer"
               >
@@ -126,10 +188,9 @@ export function CommandPalette({
                   <span className="text-sm font-semibold">Add New Host</span>
                   <span className="text-xs text-muted-foreground">Register a new server to your dashboard</span>
                 </div>
-                <Kbd className="opacity-0 group-hover:opacity-100 transition-opacity rounded-none">Enter</Kbd>
               </CommandItem>
-              
-              <CommandItem 
+
+              <CommandItem
                 onSelect={() => handleAction(() => onOpenTab("admin-settings"))}
                 className="group flex items-center gap-3 px-3 py-2.5 rounded-none hover:bg-accent-brand/10 cursor-pointer"
               >
@@ -141,35 +202,103 @@ export function CommandPalette({
                   <span className="text-xs text-muted-foreground">Configure system preferences and users</span>
                 </div>
               </CommandItem>
+
+              <CommandItem
+                onSelect={() => handleAction(() => onOpenTab("user-profile"))}
+                className="group flex items-center gap-3 px-3 py-2.5 rounded-none hover:bg-accent-brand/10 cursor-pointer"
+              >
+                <div className="size-8 rounded-none bg-muted flex items-center justify-center group-hover:bg-accent-brand/20 transition-colors">
+                  <User className="size-4 text-accent-brand" />
+                </div>
+                <div className="flex flex-col flex-1">
+                  <span className="text-sm font-semibold">User Profile</span>
+                  <span className="text-xs text-muted-foreground">Manage your account and preferences</span>
+                </div>
+              </CommandItem>
+
+              <CommandItem
+                onSelect={() => handleAction(() => onOpenTab("host-manager"))}
+                className="group flex items-center gap-3 px-3 py-2.5 rounded-none hover:bg-accent-brand/10 cursor-pointer"
+              >
+                <div className="size-8 rounded-none bg-muted flex items-center justify-center group-hover:bg-accent-brand/20 transition-colors">
+                  <KeyRound className="size-4 text-accent-brand" />
+                </div>
+                <div className="flex flex-col flex-1">
+                  <span className="text-sm font-semibold">Add Credential</span>
+                  <span className="text-xs text-muted-foreground">Store SSH keys or passwords</span>
+                </div>
+              </CommandItem>
             </CommandGroup>
 
             <CommandSeparator className="my-2" />
 
             <CommandGroup heading="Servers & Hosts" className="px-2">
               {filteredHosts.length > 0 ? (
-                filteredHosts.map((host, i) => (
-                  <CommandItem
-                    key={i}
-                    onSelect={() => handleAction(() => onOpenTab("terminal", host.name))}
-                    className="group flex items-center gap-3 px-3 py-2.5 rounded-none hover:bg-accent-brand/10 cursor-pointer"
-                  >
-                    <div className="size-8 rounded-none bg-muted flex items-center justify-center group-hover:bg-accent-brand/20 transition-colors">
-                      <Server className={cn("size-4", host.online ? "text-accent-brand" : "text-muted-foreground")} />
-                    </div>
-                    <div className="flex flex-col flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold">{host.name}</span>
-                        {host.online && <span className="size-1.5 rounded-full bg-accent-brand animate-pulse" />}
+                filteredHosts.map((host, i) => {
+                  const actions = [
+                    host.enableTerminal   !== false && "Terminal",
+                    host.enableFileManager !== false && "Files",
+                    host.enableDocker     && "Docker",
+                    host.enableTunnel     && "Tunnels",
+                    "Stats",
+                  ].filter(Boolean) as string[];
+
+                  return (
+                    <CommandItem
+                      key={i}
+                      onSelect={() => handleAction(() => onOpenTab("terminal", host.name))}
+                      className="group flex items-center gap-3 px-3 py-2.5 rounded-none hover:bg-accent-brand/10 cursor-pointer"
+                    >
+                      <div className="size-8 rounded-none bg-muted flex items-center justify-center group-hover:bg-accent-brand/20 transition-colors shrink-0">
+                        <Server className={cn("size-4", host.online ? "text-accent-brand" : "text-muted-foreground")} />
                       </div>
-                      <span className="text-xs text-muted-foreground">{host.address}</span>
-                    </div>
-                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Button variant="ghost" size="icon" className="size-7 rounded-none hover:bg-accent-brand/20 hover:text-accent-brand" onClick={(e) => { e.stopPropagation(); handleAction(() => onOpenTab("terminal", host.name)) }}>
-                        <Terminal className="size-3.5" />
-                      </Button>
-                    </div>
-                  </CommandItem>
-                ))
+                      <div className="flex flex-col flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-semibold truncate">{host.name}</span>
+                          {host.online && <span className="size-1.5 rounded-full bg-accent-brand animate-pulse shrink-0" />}
+                        </div>
+                        <span className="text-xs text-muted-foreground font-mono">{host.address}</span>
+                      </div>
+                      <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {actions.map(action => (
+                          <Button
+                            key={action}
+                            variant="ghost"
+                            size="icon"
+                            title={action}
+                            className="size-7 rounded-none hover:bg-accent-brand/20 hover:text-accent-brand"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAction(() => onOpenTab(ACTION_TAB_TYPE[action] as any, host.name));
+                            }}
+                          >
+                            {ACTION_ICONS[action]}
+                          </Button>
+                        ))}
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="size-7 rounded-none hover:bg-muted"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <MoreHorizontal className="size-3" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="rounded-none border-border bg-card w-40">
+                            <DropdownMenuItem
+                              className="rounded-none text-xs font-semibold hover:bg-accent-brand/10 hover:text-accent-brand cursor-pointer"
+                              onClick={(e) => { e.stopPropagation(); handleAction(() => onOpenTab("host-manager")); }}
+                            >
+                              <Edit3 className="size-3.5 mr-2" /> Edit Host
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    </CommandItem>
+                  );
+                })
               ) : (
                 <div className="py-6 text-center text-sm text-muted-foreground">
                   No hosts found matching "{search}"
