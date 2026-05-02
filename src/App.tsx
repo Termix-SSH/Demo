@@ -67,6 +67,9 @@ import {
 } from "@/components/ui/dialog";
 import {Toaster} from "@/components/ui/sonner";
 import {toast} from "sonner";
+import { useXTerm } from 'react-xtermjs'
+import "@xterm/xterm/css/xterm.css";
+import { FitAddon } from '@xterm/addon-fit';
 
 type Host = {
   name: string;
@@ -451,8 +454,88 @@ function DashboardTab() {
 }
 
 function TerminalTab({label}: { label: string }) {
+  const { instance, ref } = useXTerm()
+  const commandBuffer = useRef("");
+
+  useEffect(() => {
+    if (!instance || !ref.current) return;
+
+    // Set theme
+    instance.options.theme = {
+      background: '#111210',
+      foreground: '#ffffff',
+      cursor: '#fb923c',
+    };
+
+    // Initialize and load fit addon
+    const fitAddon = new FitAddon();
+    instance.loadAddon(fitAddon);
+
+    const prompt = "\r\n\x1b[38;2;251;146;60muser@termix\x1b[0m:\x1b[38;2;96;165;250m~\x1b[0m$ ";
+
+    instance.writeln('\x1b[1m\x1b[38;2;251;146;60mTermix\x1b[0m v1.0.0 (SSH Simulation Mode)');
+    instance.writeln('Type "help" for a list of commands.');
+    instance.write(prompt);
+
+    const disposable = instance.onData((data) => {
+      const char = data;
+      if (char === "\r") { // Enter
+        const command = commandBuffer.current.trim();
+        instance.write("\r\n");
+
+        if (command === "help") {
+          instance.writeln("Available commands: help, ls, clear, whoami, exit");
+        } else if (command === "ls") {
+          instance.writeln("apps  configs  documents  logs  scripts");
+        } else if (command === "clear") {
+          instance.clear();
+        } else if (command === "whoami") {
+          instance.writeln("user");
+        } else if (command === "exit") {
+          instance.writeln("Connection closed.");
+        } else if (command !== "") {
+          instance.writeln(`-bash: ${command}: command not found`);
+        }
+
+        commandBuffer.current = "";
+        instance.write(prompt);
+      } else if (char === "\u007f") { // Backspace (DEL)
+        if (commandBuffer.current.length > 0) {
+          commandBuffer.current = commandBuffer.current.slice(0, -1);
+          instance.write("\b \b");
+        }
+      } else if (char.charCodeAt(0) >= 32 && char.charCodeAt(0) <= 126) { // Printable chars
+        commandBuffer.current += char;
+        instance.write(char);
+      }
+    })
+
+    // Observe size changes
+    const resizeObserver = new ResizeObserver(() => {
+      try {
+        fitAddon.fit();
+      } catch (e) {
+        console.error('Fit error:', e);
+      }
+    });
+    resizeObserver.observe(ref.current);
+
+    // Initial fit
+    setTimeout(() => {
+      try {
+        fitAddon.fit();
+      } catch (e) {}
+    }, 100);
+
+    return () => {
+      disposable.dispose();
+      resizeObserver.disconnect();
+    }
+  }, [instance]);
+
   return (
-    <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+    <div className="flex flex-col flex-1 min-h-0 overflow-hidden bg-[#111210] p-1">
+      <div ref={ref} style={{ width: '100%', height: '100%' }} />
     </div>
   );
 }
@@ -2409,7 +2492,7 @@ function CreateSnippetDialog({open, onOpenChange, folders, onCreate}: {
         <div className="flex items-center justify-end gap-2 mt-2">
           <Button variant="ghost" onClick={() => onOpenChange(false)}>Cancel</Button>
           <Button variant="outline"
-                  className="border-orange-500/40 text-orange-400 hover:bg-orange-500/10 hover:text-orange-400"
+                  className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
                   onClick={handleCreate}>
             Create Snippet
           </Button>
@@ -2474,7 +2557,7 @@ function CreateFolderDialog({open, onOpenChange, onCreate}: {
                   onClick={() => setIcon(ic)}
                   className={`flex items-center justify-center h-11 border transition-colors ${
                     icon === ic
-                      ? "border-orange-500/40 bg-orange-500/10 text-orange-400"
+                      ? "border-orange-400/40 bg-orange-400/10 text-orange-400"
                       : "border-border text-muted-foreground hover:text-foreground hover:border-muted-foreground"
                   }`}
                 >
@@ -2494,7 +2577,7 @@ function CreateFolderDialog({open, onOpenChange, onCreate}: {
         <div className="flex items-center justify-end gap-2 mt-2">
           <Button variant="ghost" onClick={() => onOpenChange(false)}>Cancel</Button>
           <Button variant="outline"
-                  className="border-orange-500/40 text-orange-400 hover:bg-orange-500/10 hover:text-orange-400"
+                  className="border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
                   onClick={handleCreate}>
             Create Folder
           </Button>
@@ -2647,7 +2730,7 @@ function SplitScreenTab({tabs, splitMode, setSplitMode}: {
             onClick={() => setSplitMode(mode.id)}
             className={`px-2 py-2 text-xs font-semibold border transition-colors ${
               splitMode === mode.id
-                ? "border-orange-500/40 bg-orange-500/10 text-orange-400"
+                ? "border-orange-400/40 bg-orange-400/10 text-orange-400"
                 : "border-border text-muted-foreground hover:text-foreground"
             }`}
           >
@@ -2686,7 +2769,7 @@ function SplitScreenTab({tabs, splitMode, setSplitMode}: {
                   onDrop={() => handleDrop(i)}
                   className={`relative flex flex-col items-center justify-center border-2 border-dashed text-center transition-colors min-h-0
                                         ${isOver
-                    ? "border-orange-400 bg-orange-500/10"
+                    ? "border-orange-400 bg-orange-400/10"
                     : assigned
                       ? "border-border bg-muted/30"
                       : "border-border/50 bg-muted/10 hover:border-border hover:bg-muted/20"
@@ -2736,7 +2819,7 @@ function SplitScreenTab({tabs, splitMode, setSplitMode}: {
                   }}
                   className={`flex items-center gap-2 px-2.5 py-2 border cursor-grab active:cursor-grabbing select-none transition-colors ${
                     draggingTabId === tab.id
-                      ? "border-orange-500/40 bg-orange-500/10 text-orange-400"
+                      ? "border-orange-400/40 bg-orange-400/10 text-orange-400"
                       : "border-border hover:border-muted-foreground/40 hover:bg-muted/30"
                   }`}
                 >
@@ -2757,7 +2840,7 @@ function SplitScreenTab({tabs, splitMode, setSplitMode}: {
 
           <Button
             variant="outline"
-            className="w-full border-orange-500/40 text-orange-400 hover:bg-orange-500/10 hover:text-orange-400"
+            className="w-full border-orange-400/40 text-orange-400 hover:bg-orange-400/10 hover:text-orange-400"
             onClick={() => setPanes(Array(6).fill(null))}
           >
             Reset Layout
@@ -2855,7 +2938,7 @@ function ToolsSidebar({onClose, tabs, width, onResetWidth}: {
                 <span className="text-xs font-bold uppercase tracking-widest">Key Recording</span>
                 <Button
                   variant="outline"
-                  className={`w-full ${keyRecording ? "border-orange-500/40 text-orange-400 bg-orange-500/10 hover:bg-orange-500/20 hover:text-orange-400" : ""}`}
+                  className={`w-full ${keyRecording ? "border-orange-400/40 text-orange-400 bg-orange-400/10 hover:bg-orange-400/20 hover:text-orange-400" : ""}`}
                   onClick={() => setKeyRecording(o => !o)}
                 >
                   {keyRecording ? "Stop Key Recording" : "Start Key Recording"}
