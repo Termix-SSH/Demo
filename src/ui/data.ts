@@ -1,4 +1,4 @@
-import type { Host, Credential, HostFolder, Tab, DashboardCardConfig, AccentColorId, HistoryEntry, Snippet, SnippetFolder } from "./types";
+import type { Host, Credential, HostFolder, Tab, DashboardCardConfig, AccentColorId, HistoryEntry, Snippet, SnippetFolder, LayoutPreset } from "./types";
 
 export const hosts: Host[] = [
   {
@@ -14,6 +14,18 @@ export const hosts: Host[] = [
     enableTerminal: true, enableTunnel: false, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: []
   },
   {
+    id: "9", name: "web-03", user: "deploy", address: "10.0.1.12", port: 22,
+    folder: "Production / Web Servers", online: true, cpu: 19, ram: 41, lastAccess: "7m ago",
+    tags: ["nginx", "frontend"], authType: "key", connectionType: "ssh",
+    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: []
+  },
+  {
+    id: "10", name: "lb-01", user: "deploy", address: "10.0.1.5", port: 22,
+    folder: "Production / Web Servers", online: true, cpu: 4, ram: 15, lastAccess: "1m ago",
+    tags: ["haproxy", "loadbalancer"], authType: "key", connectionType: "ssh",
+    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: []
+  },
+  {
     id: "3", name: "db-primary", user: "postgres", address: "10.0.2.10", port: 5432,
     folder: "Production", online: true, cpu: 45, ram: 71, lastAccess: "5m ago",
     tags: ["postgres", "critical"], authType: "credential", credentialId: "c1", connectionType: "ssh",
@@ -24,6 +36,18 @@ export const hosts: Host[] = [
     folder: "Production", online: false, cpu: 0, ram: 0, lastAccess: "31m ago",
     authType: "credential", credentialId: "c1", connectionType: "ssh",
     enableTerminal: true, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: []
+  },
+  {
+    id: "11", name: "cache-01", user: "redis", address: "10.0.2.20", port: 6379,
+    folder: "Production", online: true, cpu: 6, ram: 22, lastAccess: "3m ago",
+    tags: ["redis", "cache"], authType: "key", connectionType: "ssh",
+    enableTerminal: true, enableTunnel: false, enableFileManager: false, enableDocker: true, quickActions: [], serverTunnels: []
+  },
+  {
+    id: "12", name: "queue-01", user: "rabbit", address: "10.0.2.30", port: 22,
+    folder: "Production", online: true, cpu: 11, ram: 38, lastAccess: "8m ago",
+    tags: ["rabbitmq", "queue"], authType: "credential", credentialId: "c2", connectionType: "ssh",
+    enableTerminal: true, enableTunnel: true, enableFileManager: false, enableDocker: true, quickActions: [], serverTunnels: []
   },
   {
     id: "5", name: "stage-web", user: "deploy", address: "10.1.1.10", port: 22,
@@ -38,15 +62,69 @@ export const hosts: Host[] = [
     enableTerminal: true, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: []
   },
   {
+    id: "13", name: "stage-cache", user: "redis", address: "10.1.2.20", port: 6379,
+    folder: "Staging", online: true, cpu: 2, ram: 9, lastAccess: "18m ago",
+    tags: ["redis", "staging"], authType: "password", connectionType: "ssh",
+    enableTerminal: true, enableTunnel: false, enableFileManager: false, enableDocker: true, quickActions: [], serverTunnels: []
+  },
+  {
     id: "7", name: "win-dc-01", user: "Administrator", address: "10.0.3.10", port: 3389,
     folder: "Windows", online: true, cpu: 22, ram: 48, lastAccess: "1h ago",
-    tags: ["windows", "rdp"], authType: "password", connectionType: "rdp",
+    tags: ["windows", "rdp", "domain-controller"], authType: "password", connectionType: "rdp",
     enableTerminal: false, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: []
   },
   {
     id: "8", name: "dev-workstation", user: "dev", address: "10.0.4.20", port: 5900,
     folder: "Windows", online: false, cpu: 0, ram: 0, lastAccess: "3d ago",
     tags: ["vnc", "dev"], authType: "password", connectionType: "vnc",
+    enableTerminal: false, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: []
+  },
+  {
+    id: "14", name: "win-build-01", user: "Administrator", address: "10.0.3.20", port: 3389,
+    folder: "Windows", online: true, cpu: 67, ram: 82, lastAccess: "15m ago",
+    tags: ["windows", "rdp", "ci"], authType: "password", connectionType: "rdp",
+    enableTerminal: false, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: []
+  },
+  {
+    id: "15", name: "monitor-01", user: "ops", address: "10.0.5.10", port: 22,
+    folder: "Monitoring", online: true, cpu: 9, ram: 44, lastAccess: "6m ago",
+    tags: ["grafana", "prometheus"], authType: "key", connectionType: "ssh",
+    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: true, quickActions: [], serverTunnels: []
+  },
+  {
+    id: "16", name: "log-01", user: "ops", address: "10.0.5.11", port: 22,
+    folder: "Monitoring", online: true, cpu: 31, ram: 60, lastAccess: "11m ago",
+    tags: ["loki", "logging"], authType: "key", connectionType: "ssh",
+    enableTerminal: true, enableTunnel: false, enableFileManager: true, enableDocker: true, quickActions: [], serverTunnels: []
+  },
+  {
+    id: "17", name: "backup-01", user: "backup", address: "10.0.6.10", port: 22,
+    folder: "Monitoring", online: false, cpu: 0, ram: 0, lastAccess: "2h ago",
+    tags: ["backup", "cron"], authType: "credential", credentialId: "c3", connectionType: "ssh",
+    enableTerminal: true, enableTunnel: false, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: []
+  },
+  {
+    id: "18", name: "dev-api", user: "dev", address: "192.168.1.50", port: 22,
+    folder: "Dev", online: true, cpu: 5, ram: 29, lastAccess: "33m ago",
+    tags: ["dev", "api"], authType: "password", connectionType: "ssh",
+    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: true, quickActions: [], serverTunnels: []
+  },
+  {
+    id: "19", name: "dev-frontend", user: "dev", address: "192.168.1.51", port: 22,
+    folder: "Dev", online: true, cpu: 14, ram: 52, lastAccess: "20m ago",
+    tags: ["dev", "vite", "node"], authType: "password", connectionType: "ssh",
+    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: []
+  },
+  {
+    id: "20", name: "dev-db", user: "postgres", address: "192.168.1.52", port: 5432,
+    folder: "Dev", online: false, cpu: 0, ram: 0, lastAccess: "1d ago",
+    tags: ["dev", "postgres"], authType: "password", connectionType: "ssh",
+    enableTerminal: true, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: []
+  },
+  {
+    id: "21", name: "legacy-router", user: "admin", address: "10.0.0.1", port: 23,
+    folder: "Dev", online: true, cpu: 2, ram: 8, lastAccess: "4h ago",
+    tags: ["telnet", "legacy", "router"], authType: "password", connectionType: "telnet",
     enableTerminal: false, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: []
   },
 ];
@@ -68,7 +146,10 @@ export const hostTree: HostFolder = {
         ...hosts.filter(h => h.folder === "Production"),
       ],
     },
-    { name: "Staging", children: hosts.filter(h => h.folder === "Staging") },
+    { name: "Staging",    children: hosts.filter(h => h.folder === "Staging")    },
+    { name: "Monitoring", children: hosts.filter(h => h.folder === "Monitoring") },
+    { name: "Windows",    children: hosts.filter(h => h.folder === "Windows")    },
+    { name: "Dev",        children: hosts.filter(h => h.folder === "Dev")        },
   ],
 };
 
@@ -87,6 +168,53 @@ export const DASHBOARD_CARDS: DashboardCardConfig[] = [
   { id: "host_status",     label: "Host Status",      description: "Live status list with CPU/RAM per host",          defaultEnabled: true  },
   { id: "recent_activity", label: "Recent Activity",  description: "Feed of recent connection events",                defaultEnabled: true  },
   { id: "network_graph",   label: "Network Graph",    description: "Visual map of host network topology",             defaultEnabled: false },
+];
+
+export const LAYOUT_PRESETS: LayoutPreset[] = [
+  {
+    id: "default", label: "Default", description: "Balanced view with side panel",
+    cards: [
+      { id: "stats_bar",       colSpan: "full",   rowSize: "short",  order: 0 },
+      { id: "counters_bar",    colSpan: "full",   rowSize: "short",  order: 1 },
+      { id: "quick_actions",   colSpan: "wide",   rowSize: "medium", order: 2 },
+      { id: "recent_activity", colSpan: "narrow", rowSize: "medium", order: 3 },
+      { id: "host_status",     colSpan: "wide",   rowSize: "flex",   order: 4 },
+      { id: "network_graph",   colSpan: "narrow", rowSize: "flex",   order: 5 },
+    ],
+  },
+  {
+    id: "compact", label: "Compact", description: "Dense layout, all cards side by side",
+    cards: [
+      { id: "stats_bar",       colSpan: "half",   rowSize: "short",  order: 0 },
+      { id: "counters_bar",    colSpan: "half",   rowSize: "short",  order: 1 },
+      { id: "quick_actions",   colSpan: "half",   rowSize: "medium", order: 2 },
+      { id: "host_status",     colSpan: "half",   rowSize: "flex",   order: 3 },
+      { id: "recent_activity", colSpan: "half",   rowSize: "flex",   order: 4 },
+      { id: "network_graph",   colSpan: "half",   rowSize: "flex",   order: 5 },
+    ],
+  },
+  {
+    id: "focus", label: "Focus", description: "Host status front and center",
+    cards: [
+      { id: "stats_bar",       colSpan: "full",   rowSize: "short",  order: 0 },
+      { id: "host_status",     colSpan: "wide",   rowSize: "flex",   order: 1 },
+      { id: "recent_activity", colSpan: "narrow", rowSize: "flex",   order: 2 },
+      { id: "counters_bar",    colSpan: "full",   rowSize: "short",  order: 3 },
+      { id: "quick_actions",   colSpan: "full",   rowSize: "medium", order: 4 },
+      { id: "network_graph",   colSpan: "full",   rowSize: "medium", order: 5 },
+    ],
+  },
+  {
+    id: "wide", label: "Wide", description: "Single column, full-width cards",
+    cards: [
+      { id: "stats_bar",       colSpan: "full",   rowSize: "short",  order: 0 },
+      { id: "counters_bar",    colSpan: "full",   rowSize: "short",  order: 1 },
+      { id: "quick_actions",   colSpan: "full",   rowSize: "medium", order: 2 },
+      { id: "host_status",     colSpan: "full",   rowSize: "flex",   order: 3 },
+      { id: "recent_activity", colSpan: "full",   rowSize: "medium", order: 4 },
+      { id: "network_graph",   colSpan: "full",   rowSize: "medium", order: 5 },
+    ],
+  },
 ];
 
 export const ACCENT_COLORS = [

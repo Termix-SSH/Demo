@@ -113,6 +113,9 @@ export type HostFolder = {
 export type TabType =
   | "dashboard"
   | "terminal"
+  | "rdp"
+  | "vnc"
+  | "telnet"
   | "stats"
   | "files"
   | "host-manager"
@@ -163,6 +166,25 @@ export type DashboardCardConfig = {
   label: string;
   description: string;
   defaultEnabled: boolean;
+};
+
+export type CardColSpan = "full" | "wide" | "half" | "narrow";
+export type CardRowSize = "short" | "medium" | "tall" | "flex";
+
+export type CardLayoutConfig = {
+  id: DashboardCardId;
+  colSpan: CardColSpan;
+  rowSize: CardRowSize;
+  order: number;
+};
+
+export type LayoutPresetId = "default" | "compact" | "focus" | "wide";
+
+export type LayoutPreset = {
+  id: LayoutPresetId;
+  label: string;
+  description: string;
+  cards: CardLayoutConfig[];
 };
 
 export type UserProfileSection = "account" | "appearance" | "security" | "api-keys";

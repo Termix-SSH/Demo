@@ -12,7 +12,7 @@ export function TerminalTab({ label }: { label: string }) {
     if (!instance || !ref.current) return;
 
     instance.options.theme = {
-      background: "#111210",
+      background: "#0c0d0b",
       foreground: "#ffffff",
       cursor: "#fb923c",
     };
@@ -89,7 +89,7 @@ export function TerminalTab({ label }: { label: string }) {
   }, [instance]);
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 overflow-hidden bg-[#111210] p-1">
+    <div className="flex flex-col flex-1 min-h-0 overflow-hidden bg-[#0c0d0b] p-1">
       <div ref={ref} style={{ width: "100%", height: "100%" }} />
     </div>
   );

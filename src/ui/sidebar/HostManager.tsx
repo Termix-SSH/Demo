@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, type MutableRefObject } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import {
-  Activity, ArrowLeft, Box, Check, ChevronDown, ChevronRight, ChevronUp,
+  Activity, ArrowLeft, Box, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp,
   Copy, Download, Filter, Folder, FolderOpen, FolderSearch, Globe, Info,
   KeyRound, LayoutDashboard, ListChecks, Lock, MoreHorizontal, Monitor, Network, Palette,
   Pencil, Pin, Plus, RefreshCw, Search, Server, Settings, Share2, Shield,
@@ -34,7 +34,7 @@ const CREDENTIAL_TABS = [
   { id: "auth",    label: "Authentication", icon: <Lock className="size-3.5" /> },
 ];
 
-function HostRow({ host, selectionMode, selected, onToggleSelect, onEdit, onDelete, onDragStart, onDragEnd }: {
+function HostRow({ host, selectionMode, selected, onToggleSelect, onEdit, onDelete, onDragStart, onDragEnd, depth = 0, stripeIndex = 0 }: {
   host: Host;
   selectionMode: boolean;
   selected: boolean;
@@ -43,107 +43,159 @@ function HostRow({ host, selectionMode, selected, onToggleSelect, onEdit, onDele
   onDelete: () => void;
   onDragStart?: () => void;
   onDragEnd?: () => void;
+  depth?: number;
+  stripeIndex?: number;
 }) {
+  const [hovered, setHovered] = useState(false);
+
+  const connTypeColor = "border-border/60 text-muted-foreground/60";
+
+  const isSsh = host.connectionType === "ssh";
+
+  const sshActions: { type: string; icon: typeof Terminal; label: string }[] = [
+    { type: "terminal", icon: Terminal,    label: "Terminal" },
+    { type: "files",    icon: FolderSearch, label: "Files"   },
+    { type: "docker",   icon: Box,          label: "Docker"  },
+    { type: "tunnel",   icon: Network,      label: "Tunnels" },
+    { type: "stats",    icon: Server,       label: "Stats"   },
+  ];
+
+  const fireOpen = (type: string) => {
+    window.dispatchEvent(new CustomEvent("termix:open-tab", { detail: { hostId: host.id, type } }));
+  };
+
   return (
     <div
       draggable={!!onDragStart && !selectionMode}
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       onClick={selectionMode ? onToggleSelect : undefined}
-      className={`flex items-center justify-between px-3 py-2.5 border-b border-border last:border-0 group transition-colors ${selectionMode ? "cursor-pointer" : ""} ${selected ? "bg-accent-brand/5" : "hover:bg-muted/40"} ${onDragStart && !selectionMode ? "cursor-grab active:cursor-grabbing" : ""}`}
+      style={{ paddingLeft: depth > 0 ? `${depth * 12 + 8}px` : undefined }}
+      className={`relative flex flex-col border-b border-border/50 last:border-0 transition-colors select-none
+        ${selectionMode ? "cursor-pointer" : ""}
+        ${selected ? "bg-accent-brand/5" : hovered ? "bg-muted/40" : stripeIndex % 2 === 1 ? "bg-muted/20" : ""}
+        ${onDragStart && !selectionMode ? "cursor-grab active:cursor-grabbing" : ""}`}
     >
-      <div className="flex items-center gap-3 min-w-0">
+
+      {/* Main row */}
+      <div className="flex items-center gap-2 px-3 py-2">
         {selectionMode && (
-          <div className="shrink-0">
-            <div className={`size-4 border-2 flex items-center justify-center transition-colors ${selected ? "border-accent-brand bg-accent-brand" : "border-border bg-background"}`}>
-              {selected && <Check className="size-2.5 text-background"/>}
-            </div>
+          <div className={`size-3.5 border-2 flex items-center justify-center shrink-0 transition-colors ${selected ? "border-accent-brand bg-accent-brand" : "border-border bg-background"}`}>
+            {selected && <Check className="size-2 text-background"/>}
           </div>
         )}
-        <div className={`size-2 rounded-full shrink-0 ${host.online ? "bg-accent-brand shadow-[0_0_4px_rgba(251,146,60,0.6)]" : "bg-muted-foreground/30"}`}/>
-        <div className="flex flex-col min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold truncate">{host.name}</span>
-            {host.pin && <Pin className="size-3 text-accent-brand/60 shrink-0"/>}
-            <span className={`text-[9px] px-1.5 py-0.5 font-bold border shrink-0 ${
-              host.connectionType === "ssh" ? "border-border text-muted-foreground" :
-              host.connectionType === "rdp" ? "border-blue-400/30 text-blue-400" : "border-border text-muted-foreground"
-            }`}>{host.connectionType.toUpperCase()}</span>
-          </div>
-          <span className="text-xs text-muted-foreground truncate">{host.user}@{host.address}:{host.port}</span>
+
+        {/* Status dot */}
+        <div className={`size-1.5 rounded-full shrink-0 ${host.online ? "bg-accent-brand shadow-[0_0_4px_rgba(251,146,60,0.5)]" : "bg-muted-foreground/25"}`}/>
+
+        {/* Name + badges */}
+        <div className="flex items-center gap-1.5 min-w-0 flex-1">
+          <span className="text-[13px] font-semibold truncate leading-none">{host.name}</span>
+          {host.pin && <Pin className="size-2.5 text-accent-brand/50 shrink-0"/>}
+          <span className={`text-[9px] px-1 py-0.5 font-bold border shrink-0 leading-none ${connTypeColor}`}>
+            {host.connectionType.toUpperCase()}
+          </span>
         </div>
-        <div className="hidden md:flex items-center gap-1.5 ml-2">
-          {host.tags?.slice(0, 3).map(tag => (
-            <span key={tag} className="text-[10px] px-1.5 py-0.5 border border-border bg-muted/30 text-muted-foreground lowercase">{tag}</span>
-          ))}
-          {(host.tags?.length || 0) > 3 && <span className="text-[10px] text-muted-foreground">+{(host.tags?.length || 0) - 3}</span>}
+
+        {/* Right: last access always visible, CPU/RAM on hover */}
+        <div className="flex items-center gap-2 shrink-0">
+          {host.online && hovered && (
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
+                <span className="text-[9px] text-muted-foreground/50">CPU</span>
+                <div className="w-10 h-[3px] bg-muted-foreground/15 rounded-full overflow-hidden">
+                  <div className={`h-full rounded-full ${host.cpu! > 80 ? "bg-red-400" : host.cpu! > 50 ? "bg-yellow-400" : "bg-accent-brand"}`} style={{ width: `${host.cpu}%` }}/>
+                </div>
+                <span className="text-[9px] tabular-nums text-accent-brand font-bold">{host.cpu}%</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="text-[9px] text-muted-foreground/50">RAM</span>
+                <div className="w-10 h-[3px] bg-muted-foreground/15 rounded-full overflow-hidden">
+                  <div className={`h-full rounded-full ${host.ram! > 80 ? "bg-red-400" : host.ram! > 60 ? "bg-yellow-400" : "bg-accent-brand/60"}`} style={{ width: `${host.ram}%` }}/>
+                </div>
+                <span className="text-[9px] tabular-nums text-accent-brand font-bold">{host.ram}%</span>
+              </div>
+            </div>
+          )}
+          <span className="text-[10px] text-muted-foreground/40 tabular-nums shrink-0">{host.lastAccess}</span>
         </div>
       </div>
 
-      <div className="flex items-center gap-1 shrink-0">
-        {host.online && (
-          <div className="hidden lg:flex items-center gap-3 mr-2">
-            <div className="flex flex-col gap-0.5 w-16">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] text-muted-foreground">CPU</span>
-                <span className="text-[10px] font-bold text-accent-brand">{host.cpu}%</span>
-              </div>
-              <div className="h-0.5 bg-muted w-full"><div className="h-full bg-accent-brand" style={{ width: `${host.cpu}%` }}/></div>
-            </div>
-            <div className="flex flex-col gap-0.5 w-16">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] text-muted-foreground">RAM</span>
-                <span className="text-[10px] font-bold text-accent-brand">{host.ram}%</span>
-              </div>
-              <div className="h-0.5 bg-muted w-full"><div className="h-full bg-accent-brand" style={{ width: `${host.ram}%` }}/></div>
-            </div>
+      {/* Sub-row: address + tags */}
+      <div className="flex items-center gap-2 px-3 pb-1.5 -mt-0.5" style={{ paddingLeft: depth > 0 ? `${depth * 12 + 8 + 12 + 8 + 6}px` : undefined }}>
+        <span className="text-[11px] text-muted-foreground/50 font-mono truncate shrink-0 max-w-[160px]">{host.user}@{host.address}</span>
+        {host.tags && host.tags.length > 0 && (
+          <div className="flex items-center gap-1 min-w-0 overflow-hidden">
+            {host.tags.slice(0, 4).map(tag => (
+              <span key={tag} className="text-[9px] px-1 py-px border border-border/50 bg-muted/30 text-muted-foreground/60 lowercase shrink-0 leading-none">{tag}</span>
+            ))}
+            {host.tags.length > 4 && (
+              <span className="text-[9px] text-muted-foreground/40 shrink-0">+{host.tags.length - 4}</span>
+            )}
           </div>
         )}
-
-        {!selectionMode && (
-          <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-            {host.enableTerminal && (
-              <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground" title="Open Terminal">
-                <Terminal className="size-3.5"/>
-              </Button>
-            )}
-            {host.enableFileManager && (
-              <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground" title="Open File Manager">
-                <FolderSearch className="size-3.5"/>
-              </Button>
-            )}
-            {host.enableDocker && (
-              <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground" title="Open Docker">
-                <Box className="size-3.5"/>
-              </Button>
-            )}
-            <Separator orientation="vertical" className="h-4 mx-0.5"/>
-            <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground" title="Edit Host" onClick={onEdit}>
-              <Pencil className="size-3.5"/>
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="size-7 text-muted-foreground hover:text-foreground">
-                  <MoreHorizontal className="size-3.5"/>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="text-xs">
-                <DropdownMenuItem onClick={() => toast.success("Host cloned")}>
-                  <Copy className="size-3.5 mr-2"/>Clone Host
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => { navigator.clipboard.writeText(`${host.user}@${host.address}`); toast.success("Copied to clipboard"); }}>
-                  <Copy className="size-3.5 mr-2"/>Copy Address
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={onDelete}>
-                  <Trash2 className="size-3.5 mr-2"/>Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        )}
-
-        <span className="text-[10px] text-muted-foreground/60 w-14 text-right shrink-0">{host.lastAccess}</span>
       </div>
+
+      {/* Hover action tray */}
+      {hovered && !selectionMode && (
+        <div className="border-t border-border/40" style={{ marginLeft: depth > 0 ? `-${depth * 12 + 8}px` : undefined }}>
+        <div className="flex items-center pt-0.5 pb-1" style={{ paddingLeft: depth > 0 ? `${depth * 12 + 8}px` : "8px", paddingRight: "8px" }}>
+          {isSsh ? (
+            sshActions.map(({ type, icon: Icon, label }) => (
+              <button
+                key={type}
+                title={label}
+                onClick={e => { e.stopPropagation(); fireOpen(type); }}
+                className="flex items-center gap-1 px-2 py-1 text-[10px] font-medium text-muted-foreground/60 hover:text-foreground hover:bg-muted rounded transition-colors"
+              >
+                <Icon className="size-3 shrink-0"/>
+                <span>{label}</span>
+              </button>
+            ))
+          ) : (
+            <button
+              onClick={e => { e.stopPropagation(); fireOpen(host.connectionType); }}
+              className="flex items-center gap-1 px-2 py-1 text-[10px] font-medium text-muted-foreground/60 hover:text-foreground hover:bg-muted rounded transition-colors"
+            >
+              {host.connectionType === "telnet" ? <Terminal className="size-3 shrink-0"/> : <Monitor className="size-3 shrink-0"/>}
+              <span>Connect</span>
+            </button>
+          )}
+          <div className="flex-1"/>
+          <button
+            title="Edit Host"
+            onClick={e => { e.stopPropagation(); onEdit(); }}
+            className="flex items-center gap-1 px-2 py-1 text-[10px] font-medium text-muted-foreground/60 hover:text-foreground hover:bg-muted rounded transition-colors"
+          >
+            <Pencil className="size-3 shrink-0"/>
+            <span>Edit</span>
+          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                onClick={e => e.stopPropagation()}
+                className="flex items-center justify-center size-6 text-muted-foreground/50 hover:text-foreground hover:bg-muted rounded transition-colors"
+              >
+                <MoreHorizontal className="size-3"/>
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="text-xs">
+              <DropdownMenuItem onClick={() => toast.success("Host cloned")}>
+                <Copy className="size-3.5 mr-2"/>Clone Host
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => { navigator.clipboard.writeText(`${host.user}@${host.address}`); toast.success("Copied to clipboard"); }}>
+                <Copy className="size-3.5 mr-2"/>Copy Address
+              </DropdownMenuItem>
+              <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={onDelete}>
+                <Trash2 className="size-3.5 mr-2"/>Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1203,14 +1255,20 @@ function CredentialEditorView({ credential, activeTab, onBack }: { credential: C
   );
 }
 
-export function HostManagerTab() {
+export function HostManager({ onCollapse, pendingEditId }: {
+  onCollapse?: () => void;
+  pendingEditId?: MutableRefObject<string | null>;
+} = {}) {
   const [section, setSection]                       = useState<"hosts" | "credentials">("hosts");
   const [editingHost, setEditingHost]               = useState<Host | "new" | null>(null);
   const [editingCredential, setEditingCredential]   = useState<Credential | "new" | null>(null);
   const [activeHostTab, setActiveHostTab]           = useState("general");
   const [activeCredentialTab, setActiveCredentialTab] = useState("general");
   const [searchQuery, setSearchQuery]               = useState("");
-  const [expandedFolders, setExpandedFolders]       = useState<Set<string>>(new Set(["Production", "Production / Web Servers", "Staging"]));
+  const [expandedFolders, setExpandedFolders]       = useState<Set<string>>(() => {
+    const topLevel = new Set(hosts.map(h => h.folder.split(" / ")[0]));
+    return topLevel;
+  });
   const [selectionMode, setSelectionMode]           = useState(false);
   const [selectedHostIds, setSelectedHostIds]       = useState<Set<string>>(new Set());
   const [editingFolderName, setEditingFolderName]   = useState<string | null>(null);
@@ -1221,6 +1279,15 @@ export function HostManagerTab() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const importOverwriteRef = useRef(false);
   const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    if (pendingEditId?.current) {
+      const id = pendingEditId.current;
+      pendingEditId.current = null;
+      const host = hosts.find(h => h.id === id);
+      if (host) { setSection("hosts"); setEditingHost(host); setEditingCredential(null); setActiveHostTab("general"); setEditingHostConnectionType(host.connectionType || "ssh"); }
+    }
+  }, [pendingEditId]);
 
   useEffect(() => {
     const handleAddHost = () => { setSection("hosts"); setEditingHost("new"); setEditingCredential(null); setEditingHostConnectionType("ssh"); setActiveHostTab("general"); };
@@ -1288,158 +1355,298 @@ export function HostManagerTab() {
     setTimeout(() => { setRefreshing(false); toast.success("Host statuses refreshed"); }, 1200);
   };
 
-  const navContent = () => {
-    if (editingHost) {
-      const connectionType = editingHostConnectionType;
-      return (
-        <>
-          <button onClick={() => { setEditingHost(null); setActiveHostTab("general"); }}
-            className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors border-l-2 border-transparent">
-            <ArrowLeft className="size-3.5" />Back to Hosts
-          </button>
-          <Separator className="my-1 opacity-50" />
-          {HOST_TABS.filter(tab => {
-            if (connectionType === "ssh") return tab.id !== "remote";
-            return tab.id === "general" || tab.id === "remote";
-          }).map(tab => (
-            <button key={tab.id} onClick={() => setActiveHostTab(tab.id)}
-              className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors text-left ${activeHostTab === tab.id ? "bg-accent-brand/10 text-accent-brand border-l-2 border-accent-brand" : "text-muted-foreground hover:text-foreground hover:bg-muted border-l-2 border-transparent"}`}>
-              {tab.icon}{tab.label}
-            </button>
-          ))}
-        </>
-      );
-    }
+  // Build a nested folder tree from flat hosts using "/" as path separator
+  type FolderNode = { name: string; fullPath: string; children: FolderNode[]; hosts: Host[] };
 
-    if (editingCredential) {
-      return (
-        <>
-          <button onClick={() => { setEditingCredential(null); setActiveCredentialTab("general"); }}
-            className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors border-l-2 border-transparent">
-            <ArrowLeft className="size-3.5" />Back to Credentials
-          </button>
-          <Separator className="my-1 opacity-50" />
-          {CREDENTIAL_TABS.map(tab => (
-            <button key={tab.id} onClick={() => setActiveCredentialTab(tab.id)}
-              className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors text-left ${activeCredentialTab === tab.id ? "bg-accent-brand/10 text-accent-brand border-l-2 border-accent-brand" : "text-muted-foreground hover:text-foreground hover:bg-muted border-l-2 border-transparent"}`}>
-              {tab.icon}{tab.label}
-            </button>
-          ))}
-        </>
-      );
+  const buildFolderTree = (hostList: Host[]): FolderNode => {
+    const root: FolderNode = { name: "", fullPath: "", children: [], hosts: [] };
+    const nodeMap = new Map<string, FolderNode>();
+    nodeMap.set("", root);
+
+    const ensureNode = (path: string): FolderNode => {
+      if (nodeMap.has(path)) return nodeMap.get(path)!;
+      const parts = path.split(" / ");
+      const parentPath = parts.slice(0, -1).join(" / ");
+      const parent = ensureNode(parentPath);
+      const node: FolderNode = { name: parts[parts.length - 1], fullPath: path, children: [], hosts: [] };
+      parent.children.push(node);
+      nodeMap.set(path, node);
+      return node;
+    };
+
+    for (const host of hostList) {
+      const node = ensureNode(host.folder || "");
+      if (!host.pin) node.hosts.push(host);
     }
+    return root;
+  };
+
+  const folderTree = buildFolderTree(filteredHosts);
+
+  // Global stripe counter — mutable object so renderFolderNode can increment across recursion
+  const stripeCounter = { value: 0 };
+
+  const renderFolderNode = (node: FolderNode, depth: number = 0): React.ReactNode => {
+    const isExpanded = expandedFolders.has(node.fullPath);
+    const isOver = dragOverFolder === node.fullPath;
+    const totalHosts = (() => {
+      const count = (n: FolderNode): number => n.hosts.length + n.children.reduce((s, c) => s + count(c), 0);
+      return count(node);
+    })();
+    const onlineHosts = (() => {
+      const count = (n: FolderNode): number => n.hosts.filter(h => h.online).length + n.children.reduce((s, c) => s + count(c), 0);
+      return count(node);
+    })();
+
+    if (totalHosts === 0 && node.children.length === 0) return null;
+
+    const folderStripe = stripeCounter.value++ % 2 === 1;
 
     return (
-      <>
-        <button onClick={() => { setSection("hosts"); setEditingCredential(null); setSearchQuery(""); }}
-          className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors text-left ${section === "hosts" ? "bg-accent-brand/10 text-accent-brand border-l-2 border-accent-brand" : "text-muted-foreground hover:text-foreground hover:bg-muted border-l-2 border-transparent"}`}>
-          <Server className="size-3.5"/>Hosts
-          <span className="ml-auto text-[10px] font-bold text-muted-foreground/60">{allHosts.length}</span>
-        </button>
-        <button onClick={() => { setSection("credentials"); setEditingHost(null); setSearchQuery(""); }}
-          className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors text-left ${section === "credentials" ? "bg-accent-brand/10 text-accent-brand border-l-2 border-accent-brand" : "text-muted-foreground hover:text-foreground hover:bg-muted border-l-2 border-transparent"}`}>
-          <KeyRound className="size-3.5"/>Credentials
-          <span className="ml-auto text-[10px] font-bold text-muted-foreground/60">{MOCK_CREDENTIALS.length}</span>
-        </button>
-      </>
+      <div key={node.fullPath}>
+        <div
+          className={`flex items-center gap-1.5 py-1.5 border-b border-border/40 group/folder transition-colors ${isOver ? "bg-accent-brand/5" : folderStripe ? "bg-muted/20 hover:bg-muted/40" : "hover:bg-muted/30"}`}
+          style={{ paddingLeft: `${depth * 12 + 8}px` }}
+          onDragOver={e => { e.preventDefault(); setDragOverFolder(node.fullPath); }}
+          onDragLeave={() => setDragOverFolder(null)}
+          onDrop={e => { e.preventDefault(); setDragOverFolder(null); if (draggedHost) { toast.success(`Moved ${draggedHost.name} to ${node.fullPath}`); setDraggedHost(null); } }}
+        >
+          <button className="flex items-center gap-1.5 flex-1 text-left min-w-0" onClick={() => toggleFolder(node.fullPath)}>
+            <ChevronRight className={`size-3 text-muted-foreground/40 shrink-0 transition-transform ${isExpanded ? "rotate-90" : ""}`}/>
+            {isExpanded
+              ? <FolderOpen className="size-3 text-accent-brand/60 shrink-0"/>
+              : <Folder className="size-3 text-muted-foreground/50 shrink-0"/>
+            }
+            {editingFolderName === node.fullPath ? (
+              <input autoFocus value={editingFolderValue} onChange={e => setEditingFolderValue(e.target.value)}
+                onBlur={() => { setEditingFolderName(null); toast.success(`Folder renamed`); }}
+                onKeyDown={e => { if (e.key === "Enter") { setEditingFolderName(null); toast.success(`Folder renamed`); } if (e.key === "Escape") setEditingFolderName(null); }}
+                onClick={e => e.stopPropagation()}
+                className="text-[11px] font-semibold bg-background border border-accent-brand/60 px-1 outline-none text-foreground min-w-0 flex-1"/>
+            ) : (
+              <span className="text-[11px] font-semibold text-foreground/70 truncate">{node.name}</span>
+            )}
+            <span className="text-[10px] text-muted-foreground/40 shrink-0 ml-0.5 tabular-nums">
+              {onlineHosts > 0 && <span className="text-accent-brand">{onlineHosts}</span>}
+              <span>/{totalHosts}</span>
+            </span>
+          </button>
+          <div className="flex items-center gap-0.5 opacity-0 group-hover/folder:opacity-100 transition-opacity pr-2">
+            <button className="size-5 flex items-center justify-center text-muted-foreground/40 hover:text-foreground rounded transition-colors"
+              onClick={e => { e.stopPropagation(); setEditingFolderName(node.fullPath); setEditingFolderValue(node.name); }}>
+              <Pencil className="size-2.5"/>
+            </button>
+            <button className="size-5 flex items-center justify-center text-muted-foreground/40 hover:text-destructive rounded transition-colors"
+              onClick={e => { e.stopPropagation(); toast.success(`Deleted folder`); }}>
+              <Trash2 className="size-2.5"/>
+            </button>
+          </div>
+        </div>
+
+        {isExpanded && (
+          <>
+            {node.children.map(child => renderFolderNode(child, depth + 1))}
+            {node.hosts.map(host => {
+              const stripe = stripeCounter.value++ % 2 === 1;
+              return (
+                <HostRow key={host.id} host={host} depth={depth + 1} stripeIndex={stripe ? 1 : 0}
+                  selectionMode={selectionMode} selected={selectedHostIds.has(host.id)}
+                  onToggleSelect={() => toggleHostSelection(host.id)}
+                  onEdit={() => { setEditingHost(host); setActiveHostTab("general"); setEditingHostConnectionType(host.connectionType || "ssh"); }}
+                  onDelete={() => toast.success(`Deleted ${host.name}`)}
+                  onDragStart={() => setDraggedHost(host)}
+                  onDragEnd={() => setDraggedHost(null)} />
+              );
+            })}
+          </>
+        )}
+      </div>
     );
   };
 
+  // Editor view: full-width with top tab bar instead of side nav
+  const renderEditorView = () => {
+    const isHost = !!editingHost;
+    const tabs = isHost
+      ? HOST_TABS.filter(t => editingHostConnectionType === "ssh" ? t.id !== "remote" : t.id === "general" || t.id === "remote")
+      : CREDENTIAL_TABS;
+    const activeTab = isHost ? activeHostTab : activeCredentialTab;
+    const setActiveTab = isHost ? setActiveHostTab : setActiveCredentialTab;
+
+    return (
+      <div className="flex flex-col flex-1 min-h-0">
+        {/* Back bar + tab strip */}
+        <div className="flex flex-col shrink-0 border-b border-border">
+          <button
+            onClick={() => { if (isHost) { setEditingHost(null); setActiveHostTab("general"); } else { setEditingCredential(null); setActiveCredentialTab("general"); } }}
+            className="flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors border-b border-border/50"
+          >
+            <ArrowLeft className="size-3.5 shrink-0"/>
+            <span>Back to {isHost ? "Hosts" : "Credentials"}</span>
+            {isHost && editingHost !== "new" && (
+              <span className="ml-auto font-semibold text-foreground truncate max-w-[200px]">
+                {(editingHost as Host).name}
+              </span>
+            )}
+          </button>
+          <div className="flex overflow-x-auto scrollbar-none">
+            {tabs.map(tab => (
+              <button key={tab.id} onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium whitespace-nowrap border-b-2 transition-colors shrink-0 ${activeTab === tab.id ? "border-accent-brand text-accent-brand" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
+                {tab.icon}{tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="flex-1 min-h-0 overflow-y-auto px-3 py-3 flex flex-col gap-3">
+          {isHost ? (
+            <HostEditor
+              host={editingHost === "new" ? null : editingHost as Host}
+              activeTab={activeHostTab}
+              onBack={() => { setEditingHost(null); setActiveHostTab("general"); }}
+              connectionType={editingHostConnectionType}
+              onConnectionTypeChange={t => { setEditingHostConnectionType(t); setActiveHostTab("general"); }}
+            />
+          ) : (
+            <CredentialEditorView
+              credential={editingCredential === "new" ? null : editingCredential as Credential}
+              activeTab={activeCredentialTab}
+              onBack={() => { setEditingCredential(null); setActiveCredentialTab("general"); }}
+            />
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const isEditing = !!editingHost || !!editingCredential;
+
   return (
     <div className="relative flex flex-col flex-1 min-h-0 overflow-hidden">
-      <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 mx-3 mt-3 gap-0">
-        <div>
-          <h1 className="text-2xl font-bold">Host Manager</h1>
-          <p className="text-xs text-muted-foreground">{allHosts.length} hosts · {allHosts.filter(h => h.online).length} online · {MOCK_CREDENTIALS.length} credentials</p>
-        </div>
-        {!editingHost && !editingCredential && (
-          <div className="flex items-center gap-2">
-            {section === "hosts" && (
-              <>
-                <input ref={fileInputRef} type="file" accept=".json" className="hidden"
-                  onChange={e => { if (e.target.files?.[0]) toast.success(importOverwriteRef.current ? "Hosts imported (overwrite mode)" : "Hosts imported (skipped existing)"); }} />
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" className="h-7 text-xs">
-                      <Upload className="size-3.5 mr-1" />Import JSON
-                      <ChevronDown className="size-3 ml-1 text-muted-foreground"/>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => { importOverwriteRef.current = false; fileInputRef.current?.click(); }}>
-                      Skip existing hosts
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => { importOverwriteRef.current = true; fileInputRef.current?.click(); }}>
-                      Overwrite existing hosts
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <Button variant="outline" size="sm" className="h-7 text-xs" onClick={handleExportHosts} disabled={allHosts.length === 0}>
-                  <Download className="size-3.5 mr-1" />Export All
-                </Button>
-                <Button variant="outline" size="sm" className="h-7 text-xs" onClick={handleDownloadSample}>
-                  <Download className="size-3.5 mr-1" />Sample
-                </Button>
-                <div className="w-px h-5 bg-border"/>
-                <Button variant="outline" size="sm" className="h-7 text-xs" onClick={handleRefresh} disabled={refreshing}>
-                  <RefreshCw className={`size-3.5 mr-1 ${refreshing ? "animate-spin" : ""}`}/>Refresh
-                </Button>
-              </>
-            )}
-            {section === "credentials" && (
-              <Button variant="outline" size="sm" className="h-7 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand" onClick={() => { setEditingCredential("new"); setActiveCredentialTab("general"); }}>
-                <Plus className="size-3.5 mr-1.5"/>Add Credential
-              </Button>
-            )}
-          </div>
-        )}
-      </Card>
+      {/* Top bar: section switcher + actions */}
+      {!isEditing && (
+        <div className="flex items-center gap-0 shrink-0 border-b border-border/60">
+          {/* Section tabs */}
+          <button
+            onClick={() => { setSection("hosts"); setEditingCredential(null); setSearchQuery(""); }}
+            className={`flex items-center gap-1.5 px-3 py-2.5 text-xs font-semibold border-b-2 transition-colors ${section === "hosts" ? "border-accent-brand text-accent-brand" : "border-transparent text-muted-foreground hover:text-foreground"}`}
+          >
+            <Server className="size-3.5"/>Hosts
+            <span className="text-[10px] font-bold text-muted-foreground/50 ml-0.5">{allHosts.length}</span>
+          </button>
+          <button
+            onClick={() => { setSection("credentials"); setEditingHost(null); setSearchQuery(""); }}
+            className={`flex items-center gap-1.5 px-3 py-2.5 text-xs font-semibold border-b-2 transition-colors ${section === "credentials" ? "border-accent-brand text-accent-brand" : "border-transparent text-muted-foreground hover:text-foreground"}`}
+          >
+            <KeyRound className="size-3.5"/>Credentials
+            <span className="text-[10px] font-bold text-muted-foreground/50 ml-0.5">{MOCK_CREDENTIALS.length}</span>
+          </button>
 
-      <div className="flex flex-row flex-1 min-h-0 overflow-hidden px-3 py-3 gap-3">
-        <div className="flex flex-col gap-1 w-44 shrink-0">
-          <Card className="flex flex-col overflow-hidden py-1 gap-0">{navContent()}</Card>
-        </div>
+          <div className="flex-1"/>
 
-        <div className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-3">
+          {onCollapse && (
+            <Button variant="ghost" size="icon" className="size-8 text-muted-foreground hover:text-foreground shrink-0" title="Collapse" onClick={onCollapse}>
+              <ChevronLeft className="size-3.5"/>
+            </Button>
+          )}
+
+          {/* Action buttons — icon-only to save space */}
           {section === "hosts" && (
-            editingHost ? (
-              <HostEditor
-                host={editingHost === "new" ? null : editingHost}
-                activeTab={activeHostTab}
-                onBack={() => { setEditingHost(null); setActiveHostTab("general"); }}
-                connectionType={editingHostConnectionType}
-                onConnectionTypeChange={t => { setEditingHostConnectionType(t); setActiveHostTab("general"); }}
-              />
-            ) : (
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-2">
-                  <div className="relative flex-1">
-                    <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground"/>
-                    <Input placeholder="Search hosts, addresses, tags..." className="pl-8 h-9 text-xs" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
-                  </div>
-                  <Button variant="outline" size="sm" className="h-9 text-xs shrink-0 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand" onClick={() => { setEditingHost("new"); setActiveHostTab("general"); setEditingHostConnectionType("ssh"); }}>
-                    <Plus className="size-3.5 mr-1.5"/>Add Host
+            <div className="flex items-center gap-0.5 pr-2">
+              <input ref={fileInputRef} type="file" accept=".json" className="hidden"
+                onChange={e => { if (e.target.files?.[0]) toast.success(importOverwriteRef.current ? "Hosts imported (overwrite)" : "Hosts imported"); }} />
+              <Button variant="ghost" size="icon" className="size-8 text-muted-foreground hover:text-foreground" title="Refresh" onClick={handleRefresh} disabled={refreshing}>
+                <RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`}/>
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="size-8 text-muted-foreground hover:text-foreground" title="Import / Export">
+                    <Upload className="size-3.5"/>
                   </Button>
-                  <Button variant={selectionMode ? "default" : "outline"} size="sm" className="h-9 text-xs shrink-0" onClick={() => { setSelectionMode(s => !s); setSelectedHostIds(new Set()); }}>
-                    <ListChecks className="size-3.5 mr-1.5"/>{selectionMode ? "Cancel" : "Select"}
-                  </Button>
-                  <Button variant="outline" size="sm" className="h-9 text-xs shrink-0" onClick={() => {
-                    const allOpen = folders.every(f => expandedFolders.has(f));
-                    setExpandedFolders(allOpen ? new Set() : new Set(folders));
-                  }}>
-                    {folders.every(f => expandedFolders.has(f)) ? <ChevronUp className="size-3.5 mr-1.5"/> : <ChevronDown className="size-3.5 mr-1.5"/>}
-                    {folders.every(f => expandedFolders.has(f)) ? "Collapse" : "Expand All"}
-                  </Button>
-                </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="text-xs">
+                  <DropdownMenuItem onClick={() => { importOverwriteRef.current = false; fileInputRef.current?.click(); }}>
+                    <Upload className="size-3.5 mr-2"/>Import (skip existing)
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => { importOverwriteRef.current = true; fileInputRef.current?.click(); }}>
+                    <Upload className="size-3.5 mr-2"/>Import (overwrite)
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleExportHosts} disabled={allHosts.length === 0}>
+                    <Download className="size-3.5 mr-2"/>Export All
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleDownloadSample}>
+                    <Download className="size-3.5 mr-2"/>Download Sample
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Button
+                variant="ghost" size="icon"
+                className={`size-8 transition-colors ${selectionMode ? "text-accent-brand bg-accent-brand/10" : "text-muted-foreground hover:text-foreground"}`}
+                title={selectionMode ? "Exit selection" : "Select multiple"}
+                onClick={() => { setSelectionMode(s => !s); setSelectedHostIds(new Set()); }}
+              >
+                <ListChecks className="size-3.5"/>
+              </Button>
+              <div className="w-px h-4 bg-border mx-1"/>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-7 text-xs px-2.5"
+                onClick={() => { setEditingHost("new"); setActiveHostTab("general"); setEditingHostConnectionType("ssh"); }}
+              >
+                <Plus className="size-3.5 mr-1"/>Add Host
+              </Button>
+            </div>
+          )}
+          {section === "credentials" && (
+            <div className="flex items-center gap-0.5 pr-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-7 text-xs px-2.5"
+                onClick={() => { setEditingCredential("new"); setActiveCredentialTab("general"); }}
+              >
+                <Plus className="size-3.5 mr-1"/>Add Credential
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
 
+      {isEditing ? renderEditorView() : (
+        <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+          {/* Search bar */}
+          <div className="px-2 py-1.5 shrink-0 border-b border-border/40">
+            <div className="flex items-center gap-2 px-2.5 h-7 bg-muted/60 border border-border/60">
+              <Search className="size-3 text-muted-foreground/60 shrink-0"/>
+              <input
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder={section === "hosts" ? "Search hosts, addresses, tags…" : "Search credentials…"}
+                className="flex-1 text-xs bg-transparent outline-none placeholder:text-muted-foreground/50 text-foreground min-w-0"
+              />
+              {searchQuery && (
+                <button onClick={() => setSearchQuery("")} className="text-muted-foreground/60 hover:text-muted-foreground transition-colors">
+                  <X className="size-3"/>
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="flex-1 min-h-0 overflow-y-auto">
+            {section === "hosts" && (
+              <div className="flex flex-col">
+                {/* Pinned hosts */}
                 {pinnedHosts.length > 0 && (
-                  <div className="flex flex-col border border-border overflow-hidden">
-                    <div className="flex items-center gap-2 px-3 py-1.5 bg-muted/30 border-b border-border">
-                      <Pin className="size-3 text-accent-brand"/>
+                  <div className="flex flex-col">
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 border-b border-border/40 bg-accent-brand/5">
+                      <Pin className="size-2.5 text-accent-brand"/>
                       <span className="text-[10px] font-bold uppercase tracking-widest text-accent-brand">Pinned</span>
+                      <span className="text-[10px] text-accent-brand/50 ml-0.5">{pinnedHosts.length}</span>
                     </div>
                     {pinnedHosts.map(host => (
-                      <HostRow key={host.id} host={host} selectionMode={selectionMode} selected={selectedHostIds.has(host.id)}
+                      <HostRow key={host.id} host={host}
+                        selectionMode={selectionMode} selected={selectedHostIds.has(host.id)}
                         onToggleSelect={() => toggleHostSelection(host.id)}
                         onEdit={() => { setEditingHost(host); setActiveHostTab("general"); setEditingHostConnectionType(host.connectionType || "ssh"); }}
                         onDelete={() => toast.success(`Deleted ${host.name}`)} />
@@ -1447,123 +1654,83 @@ export function HostManagerTab() {
                   </div>
                 )}
 
-                {folders.map(folder => {
-                  const folderHosts = hostsByFolder[folder] || [];
-                  if (folderHosts.length === 0) return null;
-                  const isExpanded = expandedFolders.has(folder);
-                  const isOver = dragOverFolder === folder;
-                  const onlineCount = folderHosts.filter(h => h.online).length;
-
-                  return (
-                    <div key={folder} className={`flex flex-col border overflow-hidden transition-colors ${isOver ? "border-accent-brand/60 bg-accent-brand/5" : "border-border"}`}
-                      onDragOver={e => { e.preventDefault(); setDragOverFolder(folder); }}
-                      onDragLeave={() => setDragOverFolder(null)}
-                      onDrop={e => { e.preventDefault(); setDragOverFolder(null); if (draggedHost) { toast.success(`Moved ${draggedHost.name} to ${folder}`); setDraggedHost(null); } }}>
-                      <div className="flex items-center gap-2 px-3 py-2 bg-muted/20 border-b border-border group/folder">
-                        <button className="flex items-center gap-2 flex-1 text-left" onClick={() => toggleFolder(folder)}>
-                          <ChevronRight className={`size-3 text-muted-foreground transition-transform ${isExpanded ? "rotate-90" : ""}`}/>
-                          {isExpanded ? <FolderOpen className="size-3.5 text-accent-brand/70"/> : <Folder className="size-3.5 text-accent-brand/70"/>}
-                          {editingFolderName === folder ? (
-                            <input autoFocus value={editingFolderValue} onChange={e => setEditingFolderValue(e.target.value)}
-                              onBlur={() => { setEditingFolderName(null); toast.success(`Folder renamed to ${editingFolderValue}`); }}
-                              onKeyDown={e => { if (e.key === "Enter") { setEditingFolderName(null); toast.success(`Folder renamed to ${editingFolderValue}`); } if (e.key === "Escape") setEditingFolderName(null); }}
-                              onClick={e => e.stopPropagation()}
-                              className="text-[10px] font-bold uppercase tracking-widest bg-background border border-accent-brand/60 px-1 outline-none text-foreground"/>
-                          ) : (
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{folder}</span>
-                          )}
-                          <span className="text-[10px] text-muted-foreground/60 ml-0.5">{onlineCount}/{folderHosts.length}</span>
-                        </button>
-                        <div className="flex items-center gap-0.5 opacity-0 group-hover/folder:opacity-100 transition-opacity">
-                          <Button variant="ghost" size="icon" className="size-6 text-muted-foreground hover:text-foreground" onClick={e => { e.stopPropagation(); setEditingFolderName(folder); setEditingFolderValue(folder); }}>
-                            <Pencil className="size-3"/>
-                          </Button>
-                          <Button variant="ghost" size="icon" className="size-6 text-muted-foreground hover:text-destructive" onClick={e => { e.stopPropagation(); toast.success(`Deleted folder ${folder}`); }}>
-                            <Trash2 className="size-3"/>
-                          </Button>
-                        </div>
-                      </div>
-
-                      {isExpanded && folderHosts.map(host => (
-                        <HostRow key={host.id} host={host} selectionMode={selectionMode} selected={selectedHostIds.has(host.id)}
-                          onToggleSelect={() => toggleHostSelection(host.id)}
-                          onEdit={() => { setEditingHost(host); setActiveHostTab("general"); setEditingHostConnectionType(host.connectionType || "ssh"); }}
-                          onDelete={() => toast.success(`Deleted ${host.name}`)}
-                          onDragStart={() => setDraggedHost(host)}
-                          onDragEnd={() => setDraggedHost(null)} />
-                      ))}
-                    </div>
-                  );
-                })}
+                {/* Nested folder tree */}
+                {folderTree.children.map(node => renderFolderNode(node, 0))}
+                {/* Root-level (no folder) hosts */}
+                {folderTree.hosts.map(host => (
+                  <HostRow key={host.id} host={host}
+                    selectionMode={selectionMode} selected={selectedHostIds.has(host.id)}
+                    onToggleSelect={() => toggleHostSelection(host.id)}
+                    onEdit={() => { setEditingHost(host); setActiveHostTab("general"); setEditingHostConnectionType(host.connectionType || "ssh"); }}
+                    onDelete={() => toast.success(`Deleted ${host.name}`)}
+                    onDragStart={() => setDraggedHost(host)}
+                    onDragEnd={() => setDraggedHost(null)} />
+                ))}
 
                 {filteredHosts.length === 0 && (
-                  <div className="flex flex-col items-center justify-center py-16 text-center border border-dashed border-border">
-                    <Server className="size-10 text-muted-foreground/30 mb-3"/>
-                    <span className="text-sm font-semibold text-muted-foreground">No hosts found</span>
-                    <span className="text-xs text-muted-foreground/60 mt-1">{searchQuery ? "Try a different search term" : "Add your first host to get started"}</span>
+                  <div className="flex flex-col items-center justify-center py-12 text-center px-4">
+                    <Server className="size-8 text-muted-foreground/20 mb-2"/>
+                    <span className="text-sm font-semibold text-muted-foreground/60">No hosts found</span>
+                    <span className="text-xs text-muted-foreground/40 mt-1">{searchQuery ? "Try a different term" : "Add your first host to get started"}</span>
                     {!searchQuery && (
-                      <Button variant="outline" size="sm" className="mt-4 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10" onClick={() => { setEditingHost("new"); setActiveHostTab("general"); setEditingHostConnectionType("ssh"); }}>
-                        <Plus className="size-3.5 mr-1.5"/>Add Host
+                      <Button variant="outline" size="sm" className="mt-3 h-7 text-xs border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10"
+                        onClick={() => { setEditingHost("new"); setActiveHostTab("general"); setEditingHostConnectionType("ssh"); }}>
+                        <Plus className="size-3 mr-1"/>Add Host
                       </Button>
                     )}
                   </div>
                 )}
               </div>
-            )
-          )}
+            )}
 
-          {section === "credentials" && (
-            editingCredential ? (
-              <CredentialEditorView credential={editingCredential === "new" ? null : editingCredential} activeTab={activeCredentialTab} onBack={() => { setEditingCredential(null); setActiveCredentialTab("general"); }} />
-            ) : (
-              <div className="flex flex-col gap-3">
-                <div className="relative">
-                  <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground"/>
-                  <Input placeholder="Search credentials..." className="pl-8 h-9 text-xs" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
-                </div>
-
+            {section === "credentials" && (
+              <div className="flex flex-col">
                 {credentialFolders.map(folder => {
                   const creds = filteredCredentials.filter(c => (c.folder || "Uncategorized") === folder);
                   if (creds.length === 0) return null;
                   return (
-                    <div key={folder} className="flex flex-col border border-border overflow-hidden">
-                      <div className="flex items-center gap-2 px-3 py-1.5 bg-muted/20 border-b border-border">
-                        <Folder className="size-3.5 text-accent-brand/70"/>
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{folder}</span>
-                        <span className="text-[10px] text-muted-foreground/60">{creds.length}</span>
+                    <div key={folder}>
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 border-b border-border/40 bg-muted/20">
+                        <Folder className="size-3 text-muted-foreground/50"/>
+                        <span className="text-[10px] font-semibold text-muted-foreground/70">{folder}</span>
+                        <span className="text-[10px] text-muted-foreground/40">{creds.length}</span>
                       </div>
                       {creds.map(cred => {
                         const usedByHosts = allHosts.filter(h => h.credentialId === cred.id);
                         return (
-                          <div key={cred.id} className="flex items-center justify-between px-3 py-3 border-b border-border last:border-0 hover:bg-muted/30 group">
-                            <div className="flex items-center gap-3">
-                              <div className="size-8 border border-border bg-muted flex items-center justify-center shrink-0">
-                                {cred.type === "key" ? <Shield className="size-3.5 text-accent-brand"/> : <Lock className="size-3.5 text-accent-brand"/>}
+                          <div key={cred.id} className="flex items-center justify-between px-3 py-2 border-b border-border/40 last:border-0 hover:bg-muted/30 group">
+                            <div className="flex items-center gap-2.5 min-w-0">
+                              <div className="size-7 border border-border/60 bg-muted/30 flex items-center justify-center shrink-0">
+                                {cred.type === "key" ? <Shield className="size-3 text-accent-brand"/> : <Lock className="size-3 text-accent-brand"/>}
                               </div>
-                              <div className="flex flex-col">
-                                <div className="flex items-center gap-2">
-                                  <span className="text-sm font-semibold">{cred.name}</span>
-                                  <span className={`text-[10px] px-1.5 py-0.5 font-bold border ${cred.type === "key" ? "border-accent-brand/30 text-accent-brand bg-accent-brand/10" : "border-border text-muted-foreground"}`}>
-                                    {cred.type === "key" ? "SSH KEY" : "PASSWORD"}
+                              <div className="flex flex-col min-w-0">
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-xs font-semibold truncate">{cred.name}</span>
+                                  <span className={`text-[9px] px-1 py-px font-bold border leading-none shrink-0 ${cred.type === "key" ? "border-accent-brand/30 text-accent-brand" : "border-border/60 text-muted-foreground/60"}`}>
+                                    {cred.type === "key" ? "KEY" : "PWD"}
                                   </span>
                                 </div>
-                                <span className="text-xs text-muted-foreground">{cred.username}
-                                  {usedByHosts.length > 0 && <span className="ml-2 text-[10px] text-muted-foreground/60">· used by {usedByHosts.length} host{usedByHosts.length !== 1 ? "s" : ""}</span>}
+                                <span className="text-[11px] text-muted-foreground/50 truncate">
+                                  {cred.username}
+                                  {usedByHosts.length > 0 && <span className="text-muted-foreground/30"> · {usedByHosts.length}h</span>}
                                 </span>
                               </div>
                             </div>
-                            <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
                               {cred.type === "key" && (
-                                <Button variant="ghost" size="sm" className="h-7 text-xs text-muted-foreground hover:text-foreground" onClick={() => { navigator.clipboard.writeText(`ssh-copy-id -i ~/.ssh/id_rsa.pub ${cred.username}@<host>`); toast.success("Deploy command copied"); }}>
-                                  <Copy className="size-3 mr-1"/>Deploy
-                                </Button>
+                                <button className="flex items-center gap-1 px-1.5 py-1 text-[10px] text-muted-foreground/60 hover:text-foreground hover:bg-muted rounded transition-colors"
+                                  onClick={() => { navigator.clipboard.writeText(`ssh-copy-id -i ~/.ssh/id_rsa.pub ${cred.username}@<host>`); toast.success("Copied"); }}>
+                                  <Copy className="size-3"/>
+                                </button>
                               )}
-                              <Button variant="ghost" size="icon" className="size-7" onClick={() => { setEditingCredential(cred); setActiveCredentialTab("general"); }}>
-                                <Pencil className="size-3.5"/>
-                              </Button>
-                              <Button variant="ghost" size="icon" className="size-7 text-destructive hover:text-destructive hover:bg-destructive/10" onClick={() => toast.success(`Deleted ${cred.name}`)}>
-                                <Trash2 className="size-3.5"/>
-                              </Button>
+                              <button className="size-6 flex items-center justify-center text-muted-foreground/50 hover:text-foreground hover:bg-muted rounded transition-colors"
+                                onClick={() => { setEditingCredential(cred); setActiveCredentialTab("general"); }}>
+                                <Pencil className="size-3"/>
+                              </button>
+                              <button className="size-6 flex items-center justify-center text-muted-foreground/40 hover:text-destructive hover:bg-destructive/10 rounded transition-colors"
+                                onClick={() => toast.success(`Deleted ${cred.name}`)}>
+                                <Trash2 className="size-3"/>
+                              </button>
                             </div>
                           </div>
                         );
@@ -1571,101 +1738,69 @@ export function HostManagerTab() {
                     </div>
                   );
                 })}
-
                 {filteredCredentials.length === 0 && (
-                  <div className="flex flex-col items-center justify-center py-16 border border-dashed border-border text-center">
-                    <KeyRound className="size-10 text-muted-foreground/30 mb-3"/>
-                    <span className="text-sm font-semibold text-muted-foreground">No credentials found</span>
-                    <Button variant="outline" size="sm" className="mt-4 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10" onClick={() => { setEditingCredential("new"); setActiveCredentialTab("general"); }}>
-                      <Plus className="size-3.5 mr-1.5"/>Add Credential
+                  <div className="flex flex-col items-center justify-center py-12 text-center px-4">
+                    <KeyRound className="size-8 text-muted-foreground/20 mb-2"/>
+                    <span className="text-sm font-semibold text-muted-foreground/60">No credentials found</span>
+                    <Button variant="outline" size="sm" className="mt-3 h-7 text-xs border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10"
+                      onClick={() => { setEditingCredential("new"); setActiveCredentialTab("general"); }}>
+                      <Plus className="size-3 mr-1"/>Add Credential
                     </Button>
                   </div>
                 )}
               </div>
-            )
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Floating selection bar */}
-      {selectionMode && (
-        <div className="absolute bottom-6 inset-x-0 flex justify-center z-50 pointer-events-none">
-          <div className="bg-popover border border-border shadow-xl px-3 py-2 flex items-center gap-2 pointer-events-auto">
-            <span className="text-sm font-semibold tabular-nums whitespace-nowrap pr-1">
-              {selectedHostIds.size} selected
-            </span>
-            <div className="w-px h-5 bg-border"/>
-            <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => {
-              if (selectedHostIds.size === allHosts.length) setSelectedHostIds(new Set());
-              else setSelectedHostIds(new Set(allHosts.map(h => h.id)));
-            }}>
-              {selectedHostIds.size === allHosts.length ? "Deselect All" : "Select All"}
-            </Button>
-            <div className="w-px h-5 bg-border"/>
+      {selectionMode && !isEditing && (
+        <div className="absolute bottom-4 inset-x-3 z-50">
+          <div className="bg-popover border border-border shadow-xl px-2.5 py-2 flex items-center gap-1.5 flex-wrap">
+            <span className="text-xs font-semibold tabular-nums shrink-0">{selectedHostIds.size} selected</span>
+            <div className="w-px h-4 bg-border mx-0.5"/>
+            <button className="text-[10px] text-muted-foreground hover:text-foreground px-1.5 py-1 hover:bg-muted rounded transition-colors"
+              onClick={() => { if (selectedHostIds.size === allHosts.length) setSelectedHostIds(new Set()); else setSelectedHostIds(new Set(allHosts.map(h => h.id))); }}>
+              {selectedHostIds.size === allHosts.length ? "Deselect All" : "All"}
+            </button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="h-7 text-xs" disabled={selectedHostIds.size === 0}>
-                  <FolderSearch className="size-3.5 mr-1.5"/>Features<ChevronDown className="size-3 ml-1.5 text-muted-foreground"/>
-                </Button>
+                <button className="text-[10px] text-muted-foreground hover:text-foreground px-1.5 py-1 hover:bg-muted rounded transition-colors flex items-center gap-1" disabled={selectedHostIds.size === 0}>
+                  Features <ChevronDown className="size-2.5"/>
+                </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
-                <DropdownMenuItem onClick={() => toast.success(`Enabled all features on ${selectedHostIds.size} hosts`)}>
-                  <Check className="size-3.5 mr-2 text-green-500"/>Enable All Features
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => toast.success(`Disabled all features on ${selectedHostIds.size} hosts`)}>
-                  <X className="size-3.5 mr-2 text-red-500"/>Disable All Features
-                </DropdownMenuItem>
-                <div className="h-px bg-border my-1"/>
+              <DropdownMenuContent align="start" className="text-xs">
                 <DropdownMenuItem onClick={() => toast.success("Done")}><Terminal className="size-3.5 mr-2"/>Enable Terminal</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => toast.success("Done")}><Terminal className="size-3.5 mr-2 opacity-30"/>Disable Terminal</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => toast.success("Done")}><FolderSearch className="size-3.5 mr-2"/>Enable File Manager</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => toast.success("Done")}><FolderSearch className="size-3.5 mr-2 opacity-30"/>Disable File Manager</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => toast.success("Done")}><FolderSearch className="size-3.5 mr-2"/>Enable Files</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => toast.success("Done")}><Network className="size-3.5 mr-2"/>Enable Tunnels</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => toast.success("Done")}><Network className="size-3.5 mr-2 opacity-30"/>Disable Tunnels</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => toast.success("Done")}><Box className="size-3.5 mr-2"/>Enable Docker</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => toast.success("Done")}><Box className="size-3.5 mr-2 opacity-30"/>Disable Docker</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="h-7 text-xs" disabled={selectedHostIds.size === 0}>
-                  <Folder className="size-3.5 mr-1.5"/>Move to Folder<ChevronDown className="size-3 ml-1.5 text-muted-foreground"/>
-                </Button>
+                <button className="text-[10px] text-muted-foreground hover:text-foreground px-1.5 py-1 hover:bg-muted rounded transition-colors flex items-center gap-1" disabled={selectedHostIds.size === 0}>
+                  Move <ChevronDown className="size-2.5"/>
+                </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
+              <DropdownMenuContent align="start" className="text-xs">
                 {folders.map(f => (
-                  <DropdownMenuItem key={f} onClick={() => toast.success(`Moved ${selectedHostIds.size} hosts to ${f}`)}>
+                  <DropdownMenuItem key={f} onClick={() => toast.success(`Moved to ${f}`)}>
                     <FolderOpen className="size-3.5 mr-2"/>{f}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="h-7 text-xs" disabled={selectedHostIds.size === 0}>
-                  <Pin className="size-3.5 mr-1.5"/>Pin<ChevronDown className="size-3 ml-1.5 text-muted-foreground"/>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
-                <DropdownMenuItem onClick={() => toast.success(`Pinned ${selectedHostIds.size} hosts`)}>
-                  <Pin className="size-3.5 mr-2 text-yellow-500"/>Pin Selected
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => toast.success(`Unpinned ${selectedHostIds.size} hosts`)}>
-                  <Pin className="size-3.5 mr-2 opacity-30"/>Unpin Selected
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <div className="w-px h-5 bg-border"/>
-            <Button variant="outline" size="sm" className="h-7 text-xs" disabled={selectedHostIds.size === 0} onClick={() => { handleExportHosts(); }}>
-              <Download className="size-3.5 mr-1.5"/>Export
-            </Button>
-            <Button variant="outline" size="sm" className="h-7 text-xs border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive" disabled={selectedHostIds.size === 0} onClick={() => { toast.success(`Deleted ${selectedHostIds.size} hosts`); setSelectedHostIds(new Set()); }}>
-              <Trash2 className="size-3.5 mr-1.5"/>Delete
-            </Button>
-            <div className="w-px h-5 bg-border"/>
-            <Button variant="ghost" size="sm" className="h-7 text-xs" onClick={() => { setSelectionMode(false); setSelectedHostIds(new Set()); }}>
-              <X className="size-3.5 mr-1.5"/>Cancel
-            </Button>
+            <button className="text-[10px] text-destructive hover:text-destructive px-1.5 py-1 hover:bg-destructive/10 rounded transition-colors"
+              disabled={selectedHostIds.size === 0}
+              onClick={() => { toast.success(`Deleted ${selectedHostIds.size} hosts`); setSelectedHostIds(new Set()); }}>
+              Delete
+            </button>
+            <div className="flex-1"/>
+            <button className="text-[10px] text-muted-foreground hover:text-foreground px-1.5 py-1 hover:bg-muted rounded transition-colors"
+              onClick={() => { setSelectionMode(false); setSelectedHostIds(new Set()); }}>
+              Cancel
+            </button>
           </div>
         </div>
       )}

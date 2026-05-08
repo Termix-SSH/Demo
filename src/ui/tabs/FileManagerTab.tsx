@@ -650,7 +650,7 @@ export function FileManager({ label }: FileManagerProps) {
   return (
     <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
       {/* Header / Toolbar */}
-      <Card className="flex flex-row items-center justify-between px-3 py-2 shrink-0 mx-3 mt-3 gap-2 border-border bg-card rounded-none shadow-none">
+      <Card className="flex flex-row items-center justify-between px-3 py-2 shrink-0 mx-3 mt-3 gap-2 bg-card rounded-none shadow-none">
         <div className="flex items-center gap-1">
           <Button
             variant="ghost"
@@ -795,7 +795,7 @@ export function FileManager({ label }: FileManagerProps) {
       <div className="flex flex-row flex-1 min-h-0 px-3 pt-3 pb-[10px] gap-3 relative">
         {/* Sidebar */}
         <div className="w-64 flex flex-col gap-3 shrink-0">
-          <Card className="flex flex-col py-2 gap-1 bg-card border-border rounded-none shadow-none flex-1 overflow-hidden p-0">
+          <Card className="flex flex-col py-2 gap-1 bg-card rounded-none shadow-none flex-1 overflow-hidden p-0">
             <div className="flex-1 overflow-y-auto thin-scrollbar">
               <div className="px-3 py-1.5">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Quick Access</span>
@@ -835,7 +835,7 @@ export function FileManager({ label }: FileManagerProps) {
             </div>
           </Card>
 
-          <Card className="flex flex-col p-3 gap-2 bg-card border-border rounded-none shadow-none mt-auto">
+          <Card className="flex flex-col p-3 gap-2 bg-card rounded-none shadow-none mt-auto">
              <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                 <span>Storage</span>
                 <span className="text-accent-brand">45% Used</span>
@@ -850,7 +850,7 @@ export function FileManager({ label }: FileManagerProps) {
         {/* Main Content Area */}
         <Card
           ref={containerRef}
-          className="flex-1 min-w-0 min-h-0 flex flex-col bg-card border-border relative overflow-hidden rounded-none shadow-none p-0 gap-0"
+          className="flex-1 min-w-0 min-h-0 flex flex-col bg-card relative overflow-hidden rounded-none shadow-none p-0 gap-0"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}

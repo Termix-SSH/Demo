@@ -28,6 +28,7 @@ import {
   Clock,
   User,
   KeyRound,
+  LayoutDashboard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -182,11 +183,24 @@ export function CommandPalette({
                 className="group flex items-center gap-3 px-3 py-2.5 rounded-none hover:bg-accent-brand/10 cursor-pointer"
               >
                 <div className="size-8 rounded-none bg-muted flex items-center justify-center group-hover:bg-accent-brand/20 transition-colors">
+                  <LayoutDashboard className="size-4 text-accent-brand" />
+                </div>
+                <div className="flex flex-col flex-1">
+                  <span className="text-sm font-semibold">Host Manager</span>
+                  <span className="text-xs text-muted-foreground">Manage, add, or edit hosts</span>
+                </div>
+              </CommandItem>
+
+              <CommandItem
+                onSelect={() => handleAction(() => onOpenTab("host-manager"))}
+                className="group flex items-center gap-3 px-3 py-2.5 rounded-none hover:bg-accent-brand/10 cursor-pointer"
+              >
+                <div className="size-8 rounded-none bg-muted flex items-center justify-center group-hover:bg-accent-brand/20 transition-colors">
                   <Plus className="size-4 text-accent-brand" />
                 </div>
                 <div className="flex flex-col flex-1">
                   <span className="text-sm font-semibold">Add New Host</span>
-                  <span className="text-xs text-muted-foreground">Register a new server to your dashboard</span>
+                  <span className="text-xs text-muted-foreground">Register a new host</span>
                 </div>
               </CommandItem>
 
