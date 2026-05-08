@@ -12,7 +12,7 @@ import {
   Server,
   Terminal,
 } from "lucide-react";
-import type { Host, HostFolder, TabType } from "@/ui/types";
+import type { Host, HostFolder, TabType } from "@/ui/utils/types";
 
 export function isFolder(item: Host | HostFolder): item is HostFolder {
   return "children" in item;

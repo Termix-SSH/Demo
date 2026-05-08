@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Search, Settings, X } from "lucide-react";
 import { SidebarTree } from "@/ui/sidebar/SidebarTree";
 import { HostManager } from "@/ui/sidebar/HostManager";
-import { hostTree } from "@/ui/data";
-import type { Host, TabType } from "@/ui/types";
+import { hostTree } from "@/ui/utils/data";
+import type { Host, TabType } from "@/ui/utils/types";
 import type { MutableRefObject } from "react";
 
 export function HostsPanel({

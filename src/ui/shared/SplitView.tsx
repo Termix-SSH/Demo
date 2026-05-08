@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import { splitDragState, notifyDragEnd } from "@/ui/splitDragging";
-import { renderTabContent, tabIcon } from "@/ui/tabUtils";
-import type { Tab, TabType, Host, SplitMode } from "@/ui/types";
+import { splitDragState, notifyDragEnd } from "@/ui/utils/splitDragging";
+import { renderTabContent, tabIcon } from "@/ui/utils/tabUtils";
+import type { Tab, TabType, Host, SplitMode } from "@/ui/utils/types";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

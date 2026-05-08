@@ -13,8 +13,8 @@ import { toast } from "sonner";
 import { useXTerm } from "react-xtermjs";
 import { FitAddon } from "@xterm/addon-fit";
 import { SectionCard } from "@/ui/shared/SectionCard";
-import { MOCK_CONTAINERS } from "@/ui/data";
-import type { DockerContainer, DockerContainerStatus } from "@/ui/types";
+import { MOCK_CONTAINERS } from "@/ui/utils/data";
+import type { DockerContainer, DockerContainerStatus } from "@/ui/utils/types";
 
 function AdminToggle({ on, onToggle }: { on: boolean; onToggle: () => void }) {
   return (

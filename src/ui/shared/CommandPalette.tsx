@@ -37,7 +37,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { recentActivity } from "@/ui/data";
+import { recentActivity } from "@/ui/utils/data";
 
 type Host = {
   name: string;

@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useXTerm } from "react-xtermjs";
 import { FitAddon } from "@xterm/addon-fit";
 import "@xterm/xterm/css/xterm.css";
-import { splitDragState, registerFitCallback } from "@/ui/splitDragging";
+import { splitDragState, registerFitCallback } from "@/ui/utils/splitDragging";
 
 export function TerminalTab({ label }: { label: string }) {
   const { instance, ref } = useXTerm();

@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Toaster } from "@/components/ui/sonner";
-import { Auth, getStoredAuth, clearStoredAuth } from "@/ui/Auth";
+import { Auth, getStoredAuth, clearStoredAuth } from "@/ui/auth/Auth";
 import { AppShell } from "@/ui/AppShell";
-import { applyAccentColor } from "@/ui/data";
-import type { AccentColorId } from "@/ui/types";
+import { applyAccentColor } from "@/ui/utils/data";
+import type { AccentColorId } from "@/ui/utils/types";
 
 // idle-auth: only auth visible
 // fading-in: auth fades out, app fades in

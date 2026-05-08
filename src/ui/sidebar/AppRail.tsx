@@ -16,9 +16,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { SplitMode, ToolsTab, TabType } from "@/ui/types";
+import type { SplitMode, ToolsTab } from "@/ui/utils/types";
 
-export type RailView = "hosts" | "quick-connect" | ToolsTab;
+export type RailView = "hosts" | "quick-connect" | ToolsTab | "user-profile" | "admin-settings";
 
 type RailItem =
   | { kind?: undefined; view: RailView; icon: React.ReactNode; title: string; dot?: boolean }
@@ -49,7 +49,6 @@ export function AppRail({
   profileDropdownOpen,
   onProfileDropdownChange,
   onRailClick,
-  onOpenSingletonTab,
   onLogout,
 }: {
   railView: RailView;
@@ -59,7 +58,6 @@ export function AppRail({
   profileDropdownOpen: boolean;
   onProfileDropdownChange: (open: boolean) => void;
   onRailClick: (view: RailView) => void;
-  onOpenSingletonTab: (type: TabType) => void;
   onLogout: () => void;
 }) {
   const [hovered, setHovered] = useState(false);
@@ -107,6 +105,28 @@ export function AppRail({
         )}
       </div>
 
+      <div className="shrink-0 flex flex-col gap-1 border-t border-border pt-1 pb-1">
+        {([
+          { view: "user-profile"   as RailView, icon: <User className="size-4"/>,     title: "Profile" },
+          { view: "admin-settings" as RailView, icon: <Settings className="size-4"/>, title: "Admin"   },
+        ] as const).map(item => (
+          <button
+            key={item.view}
+            onClick={() => onRailClick(item.view)}
+            className={`relative flex items-center gap-2.5 px-1.5 h-7 rounded mx-1 shrink-0 transition-colors ${
+              sidebarOpen && railView === item.view
+                ? "text-accent-brand bg-accent-brand/10"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+            }`}
+          >
+            <span className="shrink-0 flex items-center justify-center size-4">{item.icon}</span>
+            <span className={`text-xs font-medium whitespace-nowrap overflow-hidden transition-opacity duration-150 ${railExpanded ? "opacity-100 delay-75" : "opacity-0"}`}>
+              {item.title}
+            </span>
+          </button>
+        ))}
+      </div>
+
       <div className="shrink-0 border-t border-border">
         <DropdownMenu open={profileDropdownOpen} onOpenChange={onProfileDropdownChange}>
           <DropdownMenuTrigger asChild>
@@ -125,12 +145,6 @@ export function AppRail({
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent side="right" align="end" sideOffset={1} className="!w-auto min-w-max [clip-path:inset(-4px_-4px_-4px_0px)]">
-            <DropdownMenuItem onClick={() => onOpenSingletonTab("user-profile")}>
-              <User className="size-3.5"/>User Profile
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onOpenSingletonTab("admin-settings")}>
-              <Settings className="size-3.5"/>Admin Settings
-            </DropdownMenuItem>
             <DropdownMenuItem variant="destructive" onClick={onLogout}>
               <KeyRound className="size-3.5"/>Logout
             </DropdownMenuItem>

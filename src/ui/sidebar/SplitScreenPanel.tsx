@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { LayoutPanelLeft, X } from "lucide-react";
-import { PANE_COUNTS, SPLIT_MODES } from "@/ui/data";
-import { tabIcon } from "@/ui/tabUtils";
-import type { Tab, SplitMode } from "@/ui/types";
+import { PANE_COUNTS, SPLIT_MODES } from "@/ui/utils/data";
+import { tabIcon } from "@/ui/utils/tabUtils";
+import type { Tab, SplitMode } from "@/ui/utils/types";
 
 const LAYOUT_PREVIEWS: Record<SplitMode, React.ReactNode> = {
   "none": (

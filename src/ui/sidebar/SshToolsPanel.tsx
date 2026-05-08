@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Terminal } from "lucide-react";
-import type { Tab } from "@/ui/types";
+import type { Tab } from "@/ui/utils/types";
 
 export function SshToolsPanel({ terminalTabs, activeTabId }: {
   terminalTabs: Tab[];

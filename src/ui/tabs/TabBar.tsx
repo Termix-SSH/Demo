@@ -8,8 +8,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ChevronUp, X } from "lucide-react";
-import { tabIcon } from "@/ui/tabUtils";
-import type { Tab } from "@/ui/types";
+import { tabIcon } from "@/ui/utils/tabUtils";
+import type { Tab } from "@/ui/utils/types";
 
 export function TabBar({
   tabs,

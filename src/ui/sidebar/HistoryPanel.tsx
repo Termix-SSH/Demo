@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Copy, Search, Terminal, Trash2 } from "lucide-react";
-import { HISTORY_ENTRIES } from "@/ui/data";
-import type { Tab } from "@/ui/types";
+import { HISTORY_ENTRIES } from "@/ui/utils/data";
+import type { Tab } from "@/ui/utils/types";
 
 export function HistoryPanel({ activeTabId, terminalTabs }: {
   activeTabId: string;

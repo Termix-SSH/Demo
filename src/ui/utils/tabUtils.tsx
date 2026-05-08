@@ -15,11 +15,9 @@ import { RdpTab } from "@/ui/tabs/RdpTab";
 import { VncTab } from "@/ui/tabs/VncTab";
 import { TelnetTab } from "@/ui/tabs/TelnetTab";
 import { StatsTab } from "@/ui/tabs/StatsTab";
-import { UserProfileTab } from "@/ui/tabs/UserProfileTab";
-import { AdminSettingsTab } from "@/ui/tabs/AdminSettingsTab";
 import { DockerTab } from "@/ui/tabs/DockerTab";
 import { TunnelTab } from "@/ui/tabs/TunnelTab";
-import type { Tab, TabType, Host } from "@/ui/types";
+import type { Tab, TabType, Host } from "@/ui/utils/types";
 
 export function tabIcon(type: TabType) {
   switch (type) {
@@ -52,8 +50,8 @@ export function renderTabContent(
     case "stats":          return <StatsTab label={tab.label}/>;
     case "files":          return <FileManager label={tab.label}/>;
     case "host-manager":   return null;
-    case "user-profile":   return <UserProfileTab/>;
-    case "admin-settings": return <AdminSettingsTab/>;
+    case "user-profile":   return null;
+    case "admin-settings": return null;
     case "docker":         return <DockerTab label={tab.label}/>;
     case "tunnel":         return <TunnelTab label={tab.label}/>;
   }

@@ -15,8 +15,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import { SectionCard, SettingRow, FakeSwitch } from "@/ui/shared/SectionCard";
-import { hosts, MOCK_CREDENTIALS } from "@/ui/data";
-import type { Host, Credential } from "@/ui/types";
+import { hosts, MOCK_CREDENTIALS } from "@/ui/utils/data";
+import type { Host, Credential } from "@/ui/utils/types";
 
 const HOST_TABS = [
   { id: "general",  label: "General",         icon: <Settings className="size-3.5"    /> },

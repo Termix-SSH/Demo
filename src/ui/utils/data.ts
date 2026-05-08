@@ -233,10 +233,8 @@ export function applyAccentColor(id: AccentColorId) {
 
 export const SINGLETON_TAB_LABELS: Partial<Record<import("./types").TabType, string>> = {
   "host-manager": "Host Manager",
-  "user-profile": "User Profile",
-  "admin-settings": "Admin Settings",
-  "docker": "Docker",
-  "tunnel": "Tunnels",
+  "docker":       "Docker",
+  "tunnel":       "Tunnels",
 };
 
 export const MOCK_USERS = [

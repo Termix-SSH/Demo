@@ -2,7 +2,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 import { useState, useRef, useCallback, useEffect } from "react";
-import { CommandPalette } from "@/ui/CommandPalette";
+import { CommandPalette } from "@/ui/shared/CommandPalette";
 import { AppRail } from "@/ui/sidebar/AppRail";
 import type { RailView } from "@/ui/sidebar/AppRail";
 import { HostsPanel } from "@/ui/sidebar/HostsPanel";
@@ -11,12 +11,14 @@ import { SshToolsPanel } from "@/ui/sidebar/SshToolsPanel";
 import { SnippetsPanel } from "@/ui/sidebar/SnippetsPanel";
 import { HistoryPanel } from "@/ui/sidebar/HistoryPanel";
 import { SplitScreenPanel } from "@/ui/sidebar/SplitScreenPanel";
-import { SplitView } from "@/ui/split/SplitView";
+import { UserProfilePanel } from "@/ui/sidebar/UserProfilePanel";
+import { AdminSettingsPanel } from "@/ui/sidebar/AdminSettingsPanel";
+import { SplitView } from "@/ui/shared/SplitView";
 import { TabBar } from "@/ui/tabs/TabBar";
-import { hosts, DASHBOARD_TAB, SINGLETON_TAB_LABELS } from "@/ui/data";
-import type { Tab, TabType, Host, SplitMode } from "@/ui/types";
-export { tabIcon, renderTabContent } from "@/ui/tabUtils";
-import { renderTabContent } from "@/ui/tabUtils";
+import { hosts, DASHBOARD_TAB, SINGLETON_TAB_LABELS } from "@/ui/utils/data";
+import type { Tab, TabType, Host, SplitMode } from "@/ui/utils/types";
+export { tabIcon, renderTabContent } from "@/ui/utils/tabUtils";
+import { renderTabContent } from "@/ui/utils/tabUtils";
 
 // ─── AppShell ────────────────────────────────────────────────────────────────
 
@@ -38,12 +40,14 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
   const lastShiftTime = useRef(0);
 
   const sidebarTitle: Record<RailView, string> = {
-    "hosts":         "Hosts",
-    "quick-connect": "Quick Connect",
-    "ssh-tools":     "SSH Tools",
-    "snippets":      "Snippets",
-    "history":       "History",
-    "split-screen":  "Split Screen",
+    "hosts":          "Hosts",
+    "quick-connect":  "Quick Connect",
+    "ssh-tools":      "SSH Tools",
+    "snippets":       "Snippets",
+    "history":        "History",
+    "split-screen":   "Split Screen",
+    "user-profile":   "User Profile",
+    "admin-settings": "Admin Settings",
   };
 
   // Double-shift opens command palette
@@ -113,6 +117,10 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
       if (pendingEvent) window.dispatchEvent(new Event(pendingEvent));
       return;
     }
+    if (type === "user-profile" || type === "admin-settings") {
+      handleRailClick(type as RailView);
+      return;
+    }
     const id = type;
     setTabs(prev => {
       if (prev.find(t => t.id === id)) return prev;
@@ -174,7 +182,6 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
           profileDropdownOpen={profileDropdownOpen}
           onProfileDropdownChange={setProfileDropdownOpen}
           onRailClick={handleRailClick}
-          onOpenSingletonTab={openSingletonTab}
           onLogout={onLogout}
         />
 
@@ -258,6 +265,18 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
                   paneTabIds={paneTabIds}
                   setPaneTabIds={setPaneTabIds}
                 />
+              </div>
+            )}
+
+            {railView === "user-profile" && (
+              <div className="flex-1 min-h-0 overflow-y-auto">
+                <UserProfilePanel />
+              </div>
+            )}
+
+            {railView === "admin-settings" && (
+              <div className="flex-1 min-h-0 overflow-y-auto">
+                <AdminSettingsPanel />
               </div>
             )}
           </div>

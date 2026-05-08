@@ -8,8 +8,8 @@ import {
 } from "@/components/ui/dialog";
 import { AlertCircle, Clock, Network, Play, Plus, RefreshCw, Settings, Square, Trash2, Wifi, WifiOff } from "lucide-react";
 import { toast } from "sonner";
-import type { Tunnel, TunnelStatusValue } from "@/ui/types";
-import { hosts } from "@/ui/data";
+import type { Tunnel, TunnelStatusValue } from "@/ui/utils/types";
+import { hosts } from "@/ui/utils/data";
 
 function TunnelCard({ tunnel, onAction, onDelete }: {
   tunnel: Tunnel;

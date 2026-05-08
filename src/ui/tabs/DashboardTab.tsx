@@ -8,8 +8,8 @@ import {
 } from "lucide-react";
 import CytoscapeComponent from "react-cytoscapejs";
 import { Kbd } from "@/components/ui/kbd";
-import { DASHBOARD_CARDS, DEMO_GRAPH_ELEMENTS, hostStatuses, recentActivity, hosts } from "@/ui/data";
-import type { DashboardCardId, TabType, Host } from "@/ui/types";
+import { DASHBOARD_CARDS, DEMO_GRAPH_ELEMENTS, hostStatuses, recentActivity, hosts } from "@/ui/utils/data";
+import type { DashboardCardId, TabType, Host } from "@/ui/utils/types";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

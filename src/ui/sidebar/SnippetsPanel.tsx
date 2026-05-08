@@ -15,9 +15,9 @@ import {
   Settings, Share2, Terminal, Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
-import { FOLDER_COLORS, INITIAL_FOLDERS, INITIAL_SNIPPETS } from "@/ui/data";
-import { FOLDER_ICONS } from "@/ui/types";
-import type { Snippet, SnippetFolder, FolderIconId, Tab } from "@/ui/types";
+import { FOLDER_COLORS, INITIAL_FOLDERS, INITIAL_SNIPPETS } from "@/ui/utils/data";
+import { FOLDER_ICONS } from "@/ui/utils/types";
+import type { Snippet, SnippetFolder, FolderIconId, Tab } from "@/ui/utils/types";
 
 function FolderIconEl({ icon, className, style }: { icon: FolderIconId; className?: string; style?: React.CSSProperties }) {
   const props = { className, style };
