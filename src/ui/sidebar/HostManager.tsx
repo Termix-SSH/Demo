@@ -1255,9 +1255,10 @@ function CredentialEditorView({ credential, activeTab, onBack }: { credential: C
   );
 }
 
-export function HostManager({ onCollapse, pendingEditId }: {
+export function HostManager({ onCollapse, pendingEditId, pendingAction }: {
   onCollapse?: () => void;
   pendingEditId?: MutableRefObject<string | null>;
+  pendingAction?: MutableRefObject<"add-host" | "add-credential" | null>;
 } = {}) {
   const [section, setSection]                       = useState<"hosts" | "credentials">("hosts");
   const [editingHost, setEditingHost]               = useState<Host | "new" | null>(null);
@@ -1287,7 +1288,13 @@ export function HostManager({ onCollapse, pendingEditId }: {
       const host = hosts.find(h => h.id === id);
       if (host) { setSection("hosts"); setEditingHost(host); setEditingCredential(null); setActiveHostTab("general"); setEditingHostConnectionType(host.connectionType || "ssh"); }
     }
-  }, [pendingEditId]);
+    if (pendingAction?.current) {
+      const action = pendingAction.current;
+      pendingAction.current = null;
+      if (action === "add-host") { setSection("hosts"); setEditingHost("new"); setEditingCredential(null); setEditingHostConnectionType("ssh"); setActiveHostTab("general"); }
+      else if (action === "add-credential") { setSection("credentials"); setEditingCredential("new"); setEditingHost(null); }
+    }
+  }, [pendingEditId, pendingAction]);
 
   useEffect(() => {
     const handleAddHost = () => { setSection("hosts"); setEditingHost("new"); setEditingCredential(null); setEditingHostConnectionType("ssh"); setActiveHostTab("general"); };
@@ -1501,6 +1508,7 @@ export function HostManager({ onCollapse, pendingEditId }: {
         <div className="flex-1 min-h-0 overflow-y-auto px-3 py-3 flex flex-col gap-3">
           {isHost ? (
             <HostEditor
+              key={editingHost === "new" ? "new-host" : (editingHost as Host).id}
               host={editingHost === "new" ? null : editingHost as Host}
               activeTab={activeHostTab}
               onBack={() => { setEditingHost(null); setActiveHostTab("general"); }}
@@ -1509,6 +1517,7 @@ export function HostManager({ onCollapse, pendingEditId }: {
             />
           ) : (
             <CredentialEditorView
+              key={editingCredential === "new" ? "new-cred" : (editingCredential as Credential).id}
               credential={editingCredential === "new" ? null : editingCredential as Credential}
               activeTab={activeCredentialTab}
               onBack={() => { setEditingCredential(null); setActiveCredentialTab("general"); }}

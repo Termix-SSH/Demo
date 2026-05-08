@@ -37,6 +37,7 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
   const [sidebarDragging, setSidebarDragging] = useState(false);
 
   const pendingHostManagerEditId = useRef<string | null>(null);
+  const pendingHostManagerAction = useRef<"add-host" | "add-credential" | null>(null);
   const lastShiftTime = useRef(0);
 
   const sidebarTitle: Record<RailView, string> = {
@@ -111,10 +112,20 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
 
   function openSingletonTab(type: TabType, pendingEvent?: string) {
     if (type === "host-manager") {
+      if (pendingEvent === "host-manager:add-host") pendingHostManagerAction.current = "add-host";
+      else if (pendingEvent === "host-manager:add-credential") pendingHostManagerAction.current = "add-credential";
+      
       setHostManagerExpanded(true);
       setSidebarOpen(true);
       setRailView("hosts");
-      if (pendingEvent) window.dispatchEvent(new Event(pendingEvent));
+
+      if (pendingEvent) {
+        // Use a small delay to ensure HostManager is mounted if it wasn't already,
+        // and to allow the current render cycle to complete.
+        setTimeout(() => {
+          window.dispatchEvent(new CustomEvent(pendingEvent));
+        }, 0);
+      }
       return;
     }
     if (type === "user-profile" || type === "admin-settings") {
@@ -231,6 +242,7 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
                 onExpand={() => setHostManagerExpanded(true)}
                 onCollapse={() => setHostManagerExpanded(false)}
                 pendingEditId={pendingHostManagerEditId}
+                pendingAction={pendingHostManagerAction}
                 onOpenTab={(host, type) => connectHost(host, type)}
                 onEditHost={editHostInManager}
               />
@@ -329,9 +341,9 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
         isOpen={commandPaletteOpen}
         setIsOpen={setCommandPaletteOpen}
         hosts={hosts}
-        onOpenTab={(type, label) => {
+        onOpenTab={(type, label, pendingEvent) => {
           if (["dashboard", "host-manager", "user-profile", "admin-settings", "docker", "tunnel"].includes(type)) {
-            openSingletonTab(type);
+            openSingletonTab(type, pendingEvent);
           } else if (label) {
             const host = hosts.find(h => h.name === label);
             if (host) openTab(host, type);

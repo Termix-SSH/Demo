@@ -11,6 +11,7 @@ export function HostsPanel({
   onExpand,
   onCollapse,
   pendingEditId,
+  pendingAction,
   onOpenTab,
   onEditHost,
 }: {
@@ -18,6 +19,7 @@ export function HostsPanel({
   onExpand: () => void;
   onCollapse: () => void;
   pendingEditId: MutableRefObject<string | null>;
+  pendingAction: MutableRefObject<"add-host" | "add-credential" | null>;
   onOpenTab: (host: Host, type: TabType) => void;
   onEditHost: (host: Host) => void;
 }) {
@@ -28,6 +30,7 @@ export function HostsPanel({
       <HostManager
         onCollapse={onCollapse}
         pendingEditId={pendingEditId}
+        pendingAction={pendingAction}
       />
     );
   }

@@ -58,7 +58,7 @@ interface CommandPaletteProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   hosts: Host[];
-  onOpenTab: (type: any, label?: string) => void;
+  onOpenTab: (type: any, label?: string, pendingEvent?: string) => void;
 }
 
 const ACTION_ICONS: Record<string, React.ReactNode> = {
@@ -192,7 +192,7 @@ export function CommandPalette({
               </CommandItem>
 
               <CommandItem
-                onSelect={() => handleAction(() => onOpenTab("host-manager"))}
+                onSelect={() => handleAction(() => onOpenTab("host-manager", undefined, "host-manager:add-host"))}
                 className="group flex items-center gap-3 px-3 py-2.5 rounded-none hover:bg-accent-brand/10 cursor-pointer"
               >
                 <div className="size-8 rounded-none bg-muted flex items-center justify-center group-hover:bg-accent-brand/20 transition-colors">
@@ -231,7 +231,7 @@ export function CommandPalette({
               </CommandItem>
 
               <CommandItem
-                onSelect={() => handleAction(() => onOpenTab("host-manager"))}
+                onSelect={() => handleAction(() => onOpenTab("host-manager", undefined, "host-manager:add-credential"))}
                 className="group flex items-center gap-3 px-3 py-2.5 rounded-none hover:bg-accent-brand/10 cursor-pointer"
               >
                 <div className="size-8 rounded-none bg-muted flex items-center justify-center group-hover:bg-accent-brand/20 transition-colors">
