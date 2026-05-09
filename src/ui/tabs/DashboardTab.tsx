@@ -766,7 +766,10 @@ export function DashboardTab({ onOpenSingletonTab, onOpenTab }: {
               <a href="https://github.com/Termix-SSH/Termix" target="_blank" rel="noreferrer">GitHub</a>
             </Button>
             <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-foreground" asChild>
-              <a href="https://discord.gg/EGFBNBNbgF" target="_blank" rel="noreferrer">Discord</a>
+              <a href="https://github.com/Termix-SSH/Support" target="_blank" rel="noreferrer">Support</a>
+            </Button>
+            <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-foreground" asChild>
+              <a href="https://discord.com/invite/jVQGdvHDrf" target="_blank" rel="noreferrer">Discord</a>
             </Button>
           </div>
         </Card>
@@ -809,7 +812,10 @@ export function DashboardTab({ onOpenSingletonTab, onOpenTab }: {
             <a href="https://github.com/Termix-SSH/Termix" target="_blank" rel="noreferrer">GitHub</a>
           </Button>
           <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-foreground" asChild>
-            <a href="https://discord.gg/EGFBNBNbgF" target="_blank" rel="noreferrer">Discord</a>
+            <a href="https://github.com/Termix-SSH/Support" target="_blank" rel="noreferrer">Support</a>
+          </Button>
+          <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-foreground" asChild>
+            <a href="https://discord.com/invite/jVQGdvHDrf" target="_blank" rel="noreferrer">Discord</a>
           </Button>
           <Separator orientation="vertical" className="mx-1 h-5" />
           {editMode ? (
