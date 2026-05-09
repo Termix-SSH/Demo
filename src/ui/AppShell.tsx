@@ -1,7 +1,10 @@
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { MobileBottomBar } from "@/ui/shared/MobileBottomBar";
 import { CommandPalette } from "@/ui/shared/CommandPalette";
 import { AppRail } from "@/ui/sidebar/AppRail";
 import type { RailView } from "@/ui/sidebar/AppRail";
@@ -35,6 +38,13 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
   const [hostManagerExpanded, setHostManagerExpanded] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(256);
   const [sidebarDragging, setSidebarDragging] = useState(false);
+
+  const isMobile = useIsMobile();
+
+  // Close the sidebar when switching to mobile (it becomes a sheet overlay)
+  useEffect(() => {
+    if (isMobile) setSidebarOpen(false);
+  }, [isMobile]);
 
   const pendingHostManagerEditId = useRef<string | null>(null);
   const pendingHostManagerAction = useRef<"add-host" | "add-credential" | null>(null);
@@ -181,10 +191,103 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
   const isSplit = splitMode !== "none";
   const terminalTabs = tabs.filter(t => t.type === "terminal");
 
+  // Sidebar panel content — shared between desktop inline sidebar and mobile sheet
+  const sidebarPanelContent = (
+    <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+      {railView === "hosts" && (
+        <HostsPanel
+          expanded={hostManagerExpanded}
+          onExpand={() => setHostManagerExpanded(true)}
+          onCollapse={() => setHostManagerExpanded(false)}
+          pendingEditId={pendingHostManagerEditId}
+          pendingAction={pendingHostManagerAction}
+          onOpenTab={(host, type) => { connectHost(host, type); if (isMobile) setSidebarOpen(false); }}
+          onEditHost={editHostInManager}
+        />
+      )}
+
+      {railView === "quick-connect" && <QuickConnectPanel/>}
+
+      {railView === "ssh-tools" && (
+        <div className="flex-1 min-h-0 overflow-y-auto">
+          <SshToolsPanel terminalTabs={terminalTabs} activeTabId={activeTabId}/>
+        </div>
+      )}
+
+      {railView === "snippets" && (
+        <div className="flex-1 min-h-0 overflow-y-auto">
+          <SnippetsPanel terminalTabs={terminalTabs} activeTabId={activeTabId}/>
+        </div>
+      )}
+
+      {railView === "history" && (
+        <div className="flex flex-col flex-1 min-h-0 overflow-y-auto">
+          <HistoryPanel terminalTabs={terminalTabs} activeTabId={activeTabId}/>
+        </div>
+      )}
+
+      {railView === "split-screen" && (
+        <div className="flex-1 min-h-0 overflow-y-auto">
+          <SplitScreenPanel
+            tabs={tabs}
+            splitMode={splitMode}
+            setSplitMode={setSplitMode}
+            paneTabIds={paneTabIds}
+            setPaneTabIds={setPaneTabIds}
+          />
+        </div>
+      )}
+
+      {railView === "user-profile" && (
+        <div className="flex-1 min-h-0 overflow-y-auto">
+          <UserProfilePanel />
+        </div>
+      )}
+
+      {railView === "admin-settings" && (
+        <div className="flex-1 min-h-0 overflow-y-auto">
+          <AdminSettingsPanel />
+        </div>
+      )}
+    </div>
+  );
+
+  // Sidebar header — shared
+  const sidebarHeader = (
+    <div className="flex flex-row items-center border-b border-border h-12.5 shrink-0">
+      <span className="flex-1 text-base font-bold tracking-tight text-foreground px-3">
+        {sidebarTitle[railView]}
+      </span>
+      {!hostManagerExpanded && !isMobile && (
+        <>
+          <Separator orientation="vertical"/>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-full w-12.5 rounded-none text-muted-foreground hover:text-foreground"
+            title="Reset width"
+            onClick={() => setSidebarWidth(256)}
+          >
+            <Maximize2 className="size-3.5"/>
+          </Button>
+        </>
+      )}
+      <Separator orientation="vertical"/>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="h-full w-12.5 rounded-none text-muted-foreground hover:text-foreground"
+        onClick={() => { setSidebarOpen(false); setHostManagerExpanded(false); }}
+      >
+        <ChevronLeft className="size-4"/>
+      </Button>
+    </div>
+  );
+
   return (
     <>
-      <div className="flex w-screen h-screen bg-background">
-        {/* Skinny icon rail */}
+      <div className="flex w-screen bg-background" style={{ height: "100dvh" }}>
+        {/* Skinny icon rail — desktop only, hidden on mobile */}
         <AppRail
           railView={railView}
           sidebarOpen={sidebarOpen}
@@ -196,114 +299,45 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
           onLogout={onLogout}
         />
 
-        {/* Expandable sidebar panel */}
-        <div
-          className={`relative flex flex-col bg-sidebar shrink-0 overflow-hidden ${sidebarOpen ? `border-r transition-colors ${sidebarDragging ? "border-accent-brand/60" : "border-border"}` : ""}`}
-          style={{
-            width: sidebarOpen ? (hostManagerExpanded && railView === "hosts" ? 720 : sidebarWidth) : 0,
-            transition: sidebarDragging ? "none" : "width 0.2s",
-          }}
-        >
-          {/* Sidebar header */}
-          <div className="flex flex-row items-center border-b border-border h-12.5 shrink-0">
-            <span className="flex-1 text-base font-bold tracking-tight text-foreground px-3">
-              {sidebarTitle[railView]}
-            </span>
-            {!hostManagerExpanded && (
-              <>
-                <Separator orientation="vertical"/>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-full w-12.5 rounded-none text-muted-foreground hover:text-foreground"
-                  title="Reset width"
-                  onClick={() => setSidebarWidth(256)}
-                >
-                  <Maximize2 className="size-3.5"/>
-                </Button>
-              </>
-            )}
-            <Separator orientation="vertical"/>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-full w-12.5 rounded-none text-muted-foreground hover:text-foreground"
-              onClick={() => { setSidebarOpen(false); setHostManagerExpanded(false); }}
-            >
-              <ChevronLeft className="size-4"/>
-            </Button>
-          </div>
+        {/* Desktop: inline resizable sidebar */}
+        {!isMobile && (
+          <div
+            className={`relative flex flex-col bg-sidebar shrink-0 overflow-hidden ${sidebarOpen ? `border-r transition-colors ${sidebarDragging ? "border-accent-brand/60" : "border-border"}` : ""}`}
+            style={{
+              width: sidebarOpen ? (hostManagerExpanded && railView === "hosts" ? 720 : sidebarWidth) : 0,
+              transition: sidebarDragging ? "none" : "width 0.2s",
+            }}
+          >
+            {sidebarHeader}
+            {sidebarPanelContent}
 
-          {/* Sidebar panel content */}
-          <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
-            {railView === "hosts" && (
-              <HostsPanel
-                expanded={hostManagerExpanded}
-                onExpand={() => setHostManagerExpanded(true)}
-                onCollapse={() => setHostManagerExpanded(false)}
-                pendingEditId={pendingHostManagerEditId}
-                pendingAction={pendingHostManagerAction}
-                onOpenTab={(host, type) => connectHost(host, type)}
-                onEditHost={editHostInManager}
+            {sidebarOpen && !(hostManagerExpanded && railView === "hosts") && (
+              <div
+                onMouseDown={onSidebarMouseDown}
+                className={`absolute right-0 top-0 bottom-0 w-1 cursor-col-resize z-30 transition-colors ${sidebarDragging ? "bg-accent-brand/60" : "hover:bg-accent-brand/40"}`}
               />
             )}
-
-            {railView === "quick-connect" && <QuickConnectPanel/>}
-
-            {railView === "ssh-tools" && (
-              <div className="flex-1 min-h-0 overflow-y-auto">
-                <SshToolsPanel terminalTabs={terminalTabs} activeTabId={activeTabId}/>
-              </div>
-            )}
-
-            {railView === "snippets" && (
-              <div className="flex-1 min-h-0 overflow-y-auto">
-                <SnippetsPanel terminalTabs={terminalTabs} activeTabId={activeTabId}/>
-              </div>
-            )}
-
-            {railView === "history" && (
-              <div className="flex flex-col flex-1 min-h-0 overflow-y-auto">
-                <HistoryPanel terminalTabs={terminalTabs} activeTabId={activeTabId}/>
-              </div>
-            )}
-
-            {railView === "split-screen" && (
-              <div className="flex-1 min-h-0 overflow-y-auto">
-                <SplitScreenPanel
-                  tabs={tabs}
-                  splitMode={splitMode}
-                  setSplitMode={setSplitMode}
-                  paneTabIds={paneTabIds}
-                  setPaneTabIds={setPaneTabIds}
-                />
-              </div>
-            )}
-
-            {railView === "user-profile" && (
-              <div className="flex-1 min-h-0 overflow-y-auto">
-                <UserProfilePanel />
-              </div>
-            )}
-
-            {railView === "admin-settings" && (
-              <div className="flex-1 min-h-0 overflow-y-auto">
-                <AdminSettingsPanel />
-              </div>
-            )}
           </div>
+        )}
 
-          {sidebarOpen && !(hostManagerExpanded && railView === "hosts") && (
-            <div
-              onMouseDown={onSidebarMouseDown}
-              className={`absolute right-0 top-0 bottom-0 w-1 cursor-col-resize z-30 transition-colors ${sidebarDragging ? "bg-accent-brand/60" : "hover:bg-accent-brand/40"}`}
-            />
-          )}
-        </div>
+        {/* Mobile: sidebar as overlay sheet */}
+        {isMobile && (
+          <Sheet open={sidebarOpen} onOpenChange={open => { setSidebarOpen(open); if (!open) setHostManagerExpanded(false); }}>
+            <SheetContent
+              side="left"
+              showCloseButton={false}
+              className="p-0 flex flex-col w-[min(85vw,360px)] max-w-full bg-sidebar border-r border-border gap-0"
+              style={{ height: "100dvh" }}
+            >
+              {sidebarHeader}
+              {sidebarPanelContent}
+            </SheetContent>
+          </Sheet>
+        )}
 
         {/* Main content area */}
-        <div className={`relative flex flex-row flex-1 min-w-0 overflow-hidden transition-all duration-200 ${!sidebarOpen ? "pl-6" : ""}`}>
-          {!sidebarOpen && (
+        <div className={`relative flex flex-col flex-1 min-w-0 overflow-hidden transition-all duration-200 ${!isMobile && !sidebarOpen ? "pl-6" : ""}`}>
+          {!isMobile && !sidebarOpen && (
             <button
               onClick={() => setSidebarOpen(true)}
               title="Open Sidebar"
@@ -321,7 +355,7 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
               onReorderTabs={setTabs}
             />
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
-              {isSplit ? (
+              {isSplit && !isMobile ? (
                 <SplitView
                   tabs={tabs}
                   paneTabIds={paneTabIds}
@@ -334,6 +368,14 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
               )}
             </div>
           </div>
+
+          {/* Bottom nav bar — mobile only */}
+          <MobileBottomBar
+            railView={railView}
+            sidebarOpen={sidebarOpen}
+            splitMode={splitMode}
+            onRailClick={handleRailClick}
+          />
         </div>
       </div>
 

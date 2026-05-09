@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useCallback, useRef, useEffect } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   Folder,
   File,
@@ -374,6 +375,9 @@ export function FileManager({ label }: FileManagerProps) {
     togglePin,
   } = useMockFileSystem();
 
+  const isMobile = useIsMobile();
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -650,57 +654,68 @@ export function FileManager({ label }: FileManagerProps) {
   return (
     <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
       {/* Header / Toolbar */}
-      <Card className="flex flex-row items-center justify-between px-3 py-2 shrink-0 mx-3 mt-3 gap-2 bg-card rounded-none shadow-none">
-        <div className="flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={goBack}
-            disabled={!canGoBack}
-            className="size-8 rounded-none"
-          >
-            <ChevronLeft className="size-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={goForward}
-            disabled={!canGoForward}
-            className="size-8 rounded-none"
-          >
-            <ChevronRight className="size-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={goUp}
-            disabled={!canGoUp}
-            className="size-8 rounded-none"
-          >
-            <ArrowUp className="size-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => toast.success("Refreshed")}
-            className="size-8 rounded-none"
-          >
-            <RefreshCw className="size-4" />
-          </Button>
-        </div>
+      <Card className="flex flex-col shrink-0 mx-3 mt-3 bg-card rounded-none shadow-none">
+        {/* Row 1: nav buttons + actions */}
+        <div className="flex flex-row items-center justify-between px-3 py-2 gap-2">
+          <div className="flex items-center gap-1">
+            {isMobile && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setMobileSidebarOpen(o => !o)}
+                className="size-8 rounded-none"
+                title="Toggle sidebar"
+              >
+                <Layout className="size-4" />
+              </Button>
+            )}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={goBack}
+              disabled={!canGoBack}
+              className="size-8 rounded-none"
+            >
+              <ChevronLeft className="size-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={goForward}
+              disabled={!canGoForward}
+              className="size-8 rounded-none"
+            >
+              <ChevronRight className="size-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={goUp}
+              disabled={!canGoUp}
+              className="size-8 rounded-none"
+            >
+              <ArrowUp className="size-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => toast.success("Refreshed")}
+              className="size-8 rounded-none"
+            >
+              <RefreshCw className="size-4" />
+            </Button>
+          </div>
 
-        <div className="flex-1 flex items-center px-3 h-8 bg-muted/50 border border-border rounded-none gap-2 overflow-hidden">
-           <Folder className="size-3.5 text-accent-brand shrink-0" />
-           <div className="flex items-center gap-1 overflow-x-auto scrollbar-none text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">
+          {/* Path breadcrumb — desktop: inline, mobile: hidden here (shown in row 2) */}
+          <div className="hidden md:flex flex-1 items-center px-3 h-8 bg-muted/50 border border-border rounded-none gap-2 overflow-hidden">
+            <Folder className="size-3.5 text-accent-brand shrink-0" />
+            <div className="flex items-center gap-1 overflow-x-auto scrollbar-none text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">
               {currentPath.split("/").map((part, i, arr) => (
                 <React.Fragment key={i}>
                   {part === "" && i === 0 ? (
                     <button onClick={() => navigateTo("/")} className="hover:text-accent-brand transition-colors">root</button>
                   ) : part !== "" ? (
-                    <button
-                      onClick={() => navigateTo(arr.slice(0, i + 1).join("/"))}
-                      className="hover:text-accent-brand transition-colors"
-                    >
+                    <button onClick={() => navigateTo(arr.slice(0, i + 1).join("/"))} className="hover:text-accent-brand transition-colors">
                       {part}
                     </button>
                   ) : null}
@@ -708,93 +723,120 @@ export function FileManager({ label }: FileManagerProps) {
                   {i === 0 && arr.length > 1 && part === "" && <ChevronRight className="size-3 text-muted-foreground shrink-0" />}
                 </React.Fragment>
               ))}
-           </div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {selectedIds.length > 0 && (
+              <div className="flex items-center gap-1 px-2 py-1 bg-accent-brand/10 border border-accent-brand/20 text-accent-brand text-[10px] font-black uppercase tracking-tighter">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-6 text-accent-brand hover:bg-accent-brand/20 rounded-none"
+                  onClick={() => deleteFiles(selectedIds)}
+                >
+                  <Trash2 className="size-3.5" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-6 text-accent-brand hover:bg-accent-brand/20 rounded-none"
+                  onClick={() => {
+                    const items = currentFiles.filter(f => selectedIds.includes(f.id));
+                    const paths = items.map(f => f.path).join("\n");
+                    navigator.clipboard.writeText(paths);
+                    toast.info(`Copied ${items.length} path(s)`);
+                  }}
+                >
+                  <Copy className="size-3.5" />
+                </Button>
+              </div>
+            )}
+
+            <div className="relative w-28 md:w-48">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
+              <Input
+                placeholder="Search..."
+                className="h-8 pl-8 text-xs bg-muted/50 border-border rounded-none focus:ring-1 focus:ring-accent-brand/50"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <div className="flex items-center border border-border rounded-none overflow-hidden">
+              <Button
+                variant={viewMode === "grid" ? "secondary" : "ghost"}
+                size="icon"
+                onClick={() => setViewMode("grid")}
+                className={cn("size-8 rounded-none border-y-0 border-l-0 border-r border-border", viewMode === "grid" && "bg-accent-brand/10 text-accent-brand")}
+              >
+                <Grid3X3 className="size-4" />
+              </Button>
+              <Button
+                variant={viewMode === "list" ? "secondary" : "ghost"}
+                size="icon"
+                onClick={() => setViewMode("list")}
+                className={cn("size-8 rounded-none border-y-0 border-r-0 border-border", viewMode === "list" && "bg-accent-brand/10 text-accent-brand")}
+              >
+                <List className="size-4" />
+              </Button>
+            </div>
+            <label title="Upload files" className="hidden md:block cursor-pointer">
+              <input type="file" multiple className="hidden" onChange={() => toast.success("Upload started (demo)")} />
+              <div className="h-8 px-3 flex items-center gap-1.5 border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-colors text-[10px] font-bold uppercase tracking-widest">
+                <Upload className="size-3.5" /> Upload
+              </div>
+            </label>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="h-8 gap-1.5 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 rounded-none font-bold uppercase tracking-widest text-[10px]">
+                  <Plus className="size-3.5" /><span className="hidden md:inline">New</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-40 rounded-none border-border bg-card">
+                <DropdownMenuItem onClick={() => setIsNewFolderDialogOpen(true)} className="rounded-none text-xs font-semibold hover:bg-accent-brand/10 hover:text-accent-brand">
+                  <Folder className="size-4 mr-2 text-accent-brand" /> Folder
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => createFile("untitled.txt", "file")} className="rounded-none text-xs font-semibold hover:bg-accent-brand/10 hover:text-accent-brand">
+                  <FileText className="size-4 mr-2 text-muted-foreground" /> Text File
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          {selectedIds.length > 0 && (
-            <div className="flex items-center gap-1 mr-2 px-2 py-1 bg-accent-brand/10 border border-accent-brand/20 text-accent-brand text-[10px] font-black uppercase tracking-tighter">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="size-6 text-accent-brand hover:bg-accent-brand/20 rounded-none"
-                onClick={() => deleteFiles(selectedIds)}
-              >
-                <Trash2 className="size-3.5" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="size-6 text-accent-brand hover:bg-accent-brand/20 rounded-none"
-                onClick={() => {
-                  const items = currentFiles.filter(f => selectedIds.includes(f.id));
-                  const paths = items.map(f => f.path).join("\n");
-                  navigator.clipboard.writeText(paths);
-                  toast.info(`Copied ${items.length} path(s)`);
-                }}
-              >
-                <Copy className="size-3.5" />
-              </Button>
+        {/* Row 2: path breadcrumb — mobile only */}
+        <div className="md:hidden flex items-center px-3 pb-2 gap-2">
+          <div className="flex-1 flex items-center px-3 h-8 bg-muted/50 border border-border gap-2 overflow-hidden">
+            <Folder className="size-3.5 text-accent-brand shrink-0" />
+            <div className="flex items-center gap-1 overflow-x-auto scrollbar-none text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">
+              {currentPath.split("/").map((part, i, arr) => (
+                <React.Fragment key={i}>
+                  {part === "" && i === 0 ? (
+                    <button onClick={() => navigateTo("/")} className="hover:text-accent-brand transition-colors">root</button>
+                  ) : part !== "" ? (
+                    <button onClick={() => navigateTo(arr.slice(0, i + 1).join("/"))} className="hover:text-accent-brand transition-colors">
+                      {part}
+                    </button>
+                  ) : null}
+                  {i < arr.length - 1 && part !== "" && <ChevronRight className="size-3 text-muted-foreground shrink-0" />}
+                  {i === 0 && arr.length > 1 && part === "" && <ChevronRight className="size-3 text-muted-foreground shrink-0" />}
+                </React.Fragment>
+              ))}
             </div>
-          )}
-
-          <div className="relative w-48 hidden md:block">
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
-            <Input
-              placeholder="Search..."
-              className="h-8 pl-8 text-xs bg-muted/50 border-border rounded-none focus:ring-1 focus:ring-accent-brand/50"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
           </div>
-          <div className="flex items-center border border-border rounded-none overflow-hidden">
-             <Button
-               variant={viewMode === "grid" ? "secondary" : "ghost"}
-               size="icon"
-               onClick={() => setViewMode("grid")}
-               className={cn("size-8 rounded-none border-y-0 border-l-0 border-r border-border", viewMode === "grid" && "bg-accent-brand/10 text-accent-brand")}
-             >
-               <Grid3X3 className="size-4" />
-             </Button>
-             <Button
-               variant={viewMode === "list" ? "secondary" : "ghost"}
-               size="icon"
-               onClick={() => setViewMode("list")}
-               className={cn("size-8 rounded-none border-y-0 border-r-0 border-border", viewMode === "list" && "bg-accent-brand/10 text-accent-brand")}
-             >
-               <List className="size-4" />
-             </Button>
-          </div>
-          <label title="Upload files" className="cursor-pointer">
-            <input type="file" multiple className="hidden" onChange={() => toast.success("Upload started (demo)")} />
-            <div className="h-8 px-3 flex items-center gap-1.5 border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-colors text-[10px] font-bold uppercase tracking-widest">
-              <Upload className="size-3.5" /> Upload
-            </div>
-          </label>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-8 gap-1.5 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 rounded-none font-bold uppercase tracking-widest text-[10px]">
-                <Plus className="size-3.5" /> New
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-40 rounded-none border-border bg-card">
-              <DropdownMenuItem onClick={() => setIsNewFolderDialogOpen(true)} className="rounded-none text-xs font-semibold hover:bg-accent-brand/10 hover:text-accent-brand">
-                <Folder className="size-4 mr-2 text-accent-brand" /> Folder
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => createFile("untitled.txt", "file")} className="rounded-none text-xs font-semibold hover:bg-accent-brand/10 hover:text-accent-brand">
-                <FileText className="size-4 mr-2 text-muted-foreground" /> Text File
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => createFile("script.sh", "file")} className="rounded-none text-xs font-semibold hover:bg-accent-brand/10 hover:text-accent-brand">
-                <Code className="size-4 mr-2 text-accent-brand" /> Shell Script
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       </Card>
 
       <div className="flex flex-row flex-1 min-h-0 px-3 pt-3 pb-[10px] gap-3 relative">
+        {/* Mobile sidebar overlay backdrop */}
+        {isMobile && mobileSidebarOpen && (
+          <div
+            className="fixed inset-0 z-20 bg-black/40"
+            onClick={() => setMobileSidebarOpen(false)}
+          />
+        )}
         {/* Sidebar */}
-        <div className="w-64 flex flex-col gap-3 shrink-0">
+        <div className={`${isMobile ? `fixed left-0 top-0 bottom-0 z-30 bg-background transition-transform duration-200 overflow-y-auto ${mobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}` : ""} w-64 flex flex-col gap-3 shrink-0`}>
           <Card className="flex flex-col py-2 gap-1 bg-card rounded-none shadow-none flex-1 overflow-hidden p-0">
             <div className="flex-1 overflow-y-auto thin-scrollbar">
               <div className="px-3 py-1.5">
@@ -832,10 +874,28 @@ export function FileManager({ label }: FileManagerProps) {
                 ))}
               </div>
 
+              {/* Storage — inside scroll on mobile, separator-joined; separate card on desktop */}
+              <div className="md:hidden">
+                <Separator className="my-2 bg-border/50" />
+                <div className="px-3 py-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Storage</span>
+                </div>
+                <div className="px-3 pb-3 flex flex-col gap-2">
+                  <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                    <span>Disk</span>
+                    <span className="text-accent-brand">45% Used</span>
+                  </div>
+                  <div className="h-1.5 bg-muted rounded-none overflow-hidden border border-border/50">
+                    <div className="h-full bg-accent-brand" style={{ width: "45%" }} />
+                  </div>
+                  <span className="text-[10px] font-bold text-muted-foreground/60 tracking-tight">23.4 GB of 50.0 GB used</span>
+                </div>
+              </div>
             </div>
           </Card>
 
-          <Card className="flex flex-col p-3 gap-2 bg-card rounded-none shadow-none mt-auto">
+          {/* Storage card — desktop only (bottom of sidebar) */}
+          <Card className="hidden md:flex flex-col p-3 gap-2 bg-card rounded-none shadow-none mt-auto">
              <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                 <span>Storage</span>
                 <span className="text-accent-brand">45% Used</span>
@@ -1050,7 +1110,7 @@ export function FileManager({ label }: FileManagerProps) {
 
       {/* Dialogs */}
       <Dialog open={isNewFolderDialogOpen} onOpenChange={setIsNewFolderDialogOpen}>
-        <DialogContent className="sm:max-w-md rounded-none border-border bg-card">
+        <DialogContent className="w-[calc(100vw-2rem)] sm:max-w-md rounded-none border-border bg-card">
           <DialogHeader>
             <DialogTitle className="text-xs font-bold uppercase tracking-widest">New Folder</DialogTitle>
             <DialogDescription className="text-[10px] font-bold uppercase tracking-tight text-muted-foreground">
@@ -1077,7 +1137,7 @@ export function FileManager({ label }: FileManagerProps) {
       </Dialog>
 
       <Dialog open={isRenameDialogOpen} onOpenChange={setIsRenameDialogOpen}>
-        <DialogContent className="sm:max-w-md rounded-none border-border bg-card">
+        <DialogContent className="w-[calc(100vw-2rem)] sm:max-w-md rounded-none border-border bg-card">
           <DialogHeader>
             <DialogTitle className="text-xs font-bold uppercase tracking-widest">Rename Item</DialogTitle>
             <DialogDescription className="text-[10px] font-bold uppercase tracking-tight text-muted-foreground">
@@ -1104,7 +1164,7 @@ export function FileManager({ label }: FileManagerProps) {
       </Dialog>
 
       <Dialog open={isCompressDialogOpen} onOpenChange={setIsCompressDialogOpen}>
-        <DialogContent className="sm:max-w-md rounded-none border-border bg-card">
+        <DialogContent className="w-[calc(100vw-2rem)] sm:max-w-md rounded-none border-border bg-card">
           <DialogHeader>
             <DialogTitle className="text-xs font-bold uppercase tracking-widest flex items-center gap-2">
               <Package className="size-4 text-accent-brand" /> Compress Files
@@ -1162,7 +1222,7 @@ export function FileManager({ label }: FileManagerProps) {
       </Dialog>
 
       <Dialog open={isPermissionsDialogOpen} onOpenChange={setIsPermissionsDialogOpen}>
-        <DialogContent className="sm:max-w-md rounded-none border-border bg-card">
+        <DialogContent className="w-[calc(100vw-2rem)] sm:max-w-md rounded-none border-border bg-card">
           <DialogHeader>
             <DialogTitle className="text-xs font-bold uppercase tracking-widest flex items-center gap-2">
               <Lock className="size-4 text-accent-brand" /> Permissions
@@ -1219,7 +1279,7 @@ export function FileManager({ label }: FileManagerProps) {
       </Dialog>
 
       <Dialog open={isPropertiesDialogOpen} onOpenChange={setIsPropertiesDialogOpen}>
-        <DialogContent className="sm:max-w-md rounded-none border-border bg-card shadow-2xl">
+        <DialogContent className="w-[calc(100vw-2rem)] sm:max-w-md rounded-none border-border bg-card shadow-2xl">
           <DialogHeader className="border-b border-border pb-4">
             <DialogTitle className="text-xs font-bold uppercase tracking-widest flex items-center gap-2">
               <Info className="size-4 text-accent-brand" /> Item Properties

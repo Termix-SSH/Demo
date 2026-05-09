@@ -14,7 +14,7 @@ export function SectionCard({ title, icon, action, children }: {
         <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground flex-1">{title}</span>
         {action && <div className="ml-auto">{action}</div>}
       </div>
-      <div className="px-4 py-1">
+      <div className="px-3 md:px-4 py-1">
         {children}
       </div>
     </div>
@@ -36,7 +36,7 @@ export function SettingRow({ label, badge, description, children }: {
         </div>
         {description && <span className="text-xs text-muted-foreground">{description}</span>}
       </div>
-      <div className="shrink-0 ml-8">{children}</div>
+      <div className="shrink-0 ml-4 md:ml-8">{children}</div>
     </div>
   );
 }

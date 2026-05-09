@@ -221,7 +221,7 @@ function HostEditor({ host, activeTab, onBack, connectionType, onConnectionTypeC
                 <span className="text-muted-foreground"><Globe className="size-3.5"/></span>
                 <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground flex-1">Connection Type</span>
               </div>
-              <div className="grid grid-cols-4 divide-x divide-border border-b border-border">
+              <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-border border-b border-border">
                 {([
                   { id: "ssh",    label: "SSH",     desc: "Secure Shell",         icon: <Terminal className="size-4"/> },
                   { id: "rdp",    label: "RDP",     desc: "Remote Desktop",       icon: <Monitor className="size-4"/> },
@@ -240,18 +240,18 @@ function HostEditor({ host, activeTab, onBack, connectionType, onConnectionTypeC
 
             <SectionCard title="Connection Details" icon={<Globe className="size-3.5" />}>
               <div className="flex flex-col gap-4 py-3">
-                <div className="grid grid-cols-12 gap-4">
-                  <div className="flex flex-col gap-1.5 col-span-8">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                  <div className="flex flex-col gap-1.5 md:col-span-8">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Address / IP</label>
                     <Input placeholder="10.0.0.1 or example.com" defaultValue={host?.address || ""} />
                   </div>
-                  <div className="flex flex-col gap-1.5 col-span-4">
+                  <div className="flex flex-col gap-1.5 md:col-span-4">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Port</label>
                     <Input type="number" placeholder={connectionType === "rdp" ? "3389" : connectionType === "vnc" ? "5900" : connectionType === "telnet" ? "23" : "22"} defaultValue={host?.port || (connectionType === "rdp" ? 3389 : connectionType === "vnc" ? 5900 : connectionType === "telnet" ? 23 : 22)} />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Friendly Name</label>
                     <Input placeholder="e.g. Web Server Production" defaultValue={host?.name || ""} />
@@ -280,7 +280,7 @@ function HostEditor({ host, activeTab, onBack, connectionType, onConnectionTypeC
                         ))}
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-4 border-t border-border pt-4 mt-1">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-border pt-4 mt-1">
                       <div className="flex flex-col gap-1.5">
                         <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Username</label>
                         <Input placeholder="root" defaultValue={host?.user || ""} />
@@ -323,7 +323,7 @@ function HostEditor({ host, activeTab, onBack, connectionType, onConnectionTypeC
                 )}
 
                 {connectionType === "rdp" && (
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
                       <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Username</label>
                       <Input placeholder="Administrator" defaultValue={host?.user || ""} />
@@ -354,7 +354,7 @@ function HostEditor({ host, activeTab, onBack, connectionType, onConnectionTypeC
                 )}
 
                 {connectionType === "vnc" && (
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
                       <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">VNC Password</label>
                       <Input type="password" placeholder="••••••••" defaultValue={host?.password || ""} />
@@ -367,7 +367,7 @@ function HostEditor({ host, activeTab, onBack, connectionType, onConnectionTypeC
                 )}
 
                 {connectionType === "telnet" && (
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
                       <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Username</label>
                       <Input placeholder="admin" defaultValue={host?.user || ""} />
@@ -420,7 +420,7 @@ function HostEditor({ host, activeTab, onBack, connectionType, onConnectionTypeC
             </SectionCard>
 
             <SectionCard title="Folder & Advanced" icon={<Tag className="size-3.5" />}>
-              <div className="grid grid-cols-2 gap-4 py-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-3">
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Folder</label>
                   <Input placeholder="e.g. Production" defaultValue={host?.folder || ""} />
@@ -473,7 +473,7 @@ function HostEditor({ host, activeTab, onBack, connectionType, onConnectionTypeC
                     </div>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Color Theme</label>
                     <select className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring">
@@ -500,7 +500,7 @@ function HostEditor({ host, activeTab, onBack, connectionType, onConnectionTypeC
                 <SettingRow label="Cursor Blinking" description="Enable blinking animation for the terminal cursor">
                   <FakeSwitch defaultChecked={true} />
                 </SettingRow>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Letter Spacing</label>
                     <Input type="number" step="0.1" defaultValue={0} />
@@ -537,7 +537,7 @@ function HostEditor({ host, activeTab, onBack, connectionType, onConnectionTypeC
                     </div>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4 border-t border-border pt-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-border pt-4">
                   <div className="flex flex-col gap-1.5">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Keepalive Interval</label>
                     <Input type="number" defaultValue={30} />
@@ -600,7 +600,7 @@ function HostEditor({ host, activeTab, onBack, connectionType, onConnectionTypeC
                                                   "Dynamic (SOCKS): Creates a local SOCKS proxy that routes traffic through the SSH server."}
                       </p>
                     </div>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {tun.mode !== "dynamic" && (
                         <div className="flex flex-col gap-1">
                           <label className="text-[10px] font-bold text-muted-foreground">Endpoint SSH Config</label>
@@ -784,7 +784,7 @@ function HostEditor({ host, activeTab, onBack, connectionType, onConnectionTypeC
                     </select>
                   </div>
                 )}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Width</label>
                     <Input type="number" placeholder="Auto" />
@@ -900,7 +900,7 @@ function HostEditor({ host, activeTab, onBack, connectionType, onConnectionTypeC
                 <div className="flex flex-col gap-4 py-3">
                   <SettingRow label="Enable Printing" description="Redirect local printers to the remote session"><FakeSwitch /></SettingRow>
                   <SettingRow label="Enable Drive Redirection" description="Map a local folder as a drive in the remote session"><FakeSwitch /></SettingRow>
-                  <div className="grid grid-cols-2 gap-3 border-t border-border pt-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 border-t border-border pt-3">
                     <div className="flex flex-col gap-1.5">
                       <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Drive Name</label>
                       <Input placeholder="Termix Drive" />
@@ -954,7 +954,7 @@ function HostEditor({ host, activeTab, onBack, connectionType, onConnectionTypeC
             {connectionType === "rdp" && (
               <SectionCard title="Gateway" icon={<Network className="size-3.5"/>}>
                 <div className="flex flex-col gap-4 py-3">
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div className="flex flex-col gap-1.5">
                       <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Gateway Hostname</label>
                       <Input placeholder="gateway.example.com" />
@@ -1057,7 +1057,7 @@ function HostEditor({ host, activeTab, onBack, connectionType, onConnectionTypeC
             <SectionCard title="Wake-on-LAN" icon={<Zap className="size-3.5"/>}>
               <div className="flex flex-col gap-4 py-3">
                 <SettingRow label="Send WOL Packet" description="Send a magic packet to wake this host before connecting"><FakeSwitch /></SettingRow>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div className="flex flex-col gap-1.5">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">MAC Address</label>
                     <Input placeholder="AA:BB:CC:DD:EE:FF" defaultValue={host?.macAddress || ""} />
@@ -1179,7 +1179,7 @@ function CredentialEditorView({ credential, activeTab, onBack }: { credential: C
     <div className="flex flex-col gap-3">
       {activeTab === "general" && (
         <SectionCard title="Basic Information" icon={<Info className="size-3.5"/>}>
-          <div className="grid grid-cols-2 gap-4 py-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-3">
             <div className="flex flex-col gap-1.5">
               <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Friendly Name</label>
               <Input placeholder="e.g. Production SSH Key" defaultValue={credential?.name || ""} />

@@ -159,8 +159,8 @@ export function TabBar({
               className={`group/tab flex items-center gap-2 shrink-0 transition-colors border-r border-border text-sm
                 ${index === 0 && tab.type !== "dashboard" ? "border-l border-border" : ""}
                 ${tab.type === "dashboard"
-                  ? `px-3.5 ${active ? "border-b-2 border-b-accent-brand bg-surface text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-surface"}`
-                  : `px-4 font-medium ${active ? "border-b-2 border-b-accent-brand bg-surface text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-surface"}`
+                  ? `px-2.5 md:px-3.5 ${active ? "border-b-2 border-b-accent-brand bg-surface text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-surface"}`
+                  : `px-2.5 md:px-4 font-medium ${active ? "border-b-2 border-b-accent-brand bg-surface text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-surface"}`
                 }`}
             >
               {tabIcon(tab.type)}
@@ -169,7 +169,7 @@ export function TabBar({
                 <button
                   onPointerDown={e => e.stopPropagation()}
                   onClick={e => { e.stopPropagation(); onCloseTab(tab.id); }}
-                  className={`flex items-center justify-center size-4 rounded-sm transition-opacity text-muted-foreground hover:text-foreground hover:bg-muted ml-1 ${active ? "opacity-100" : "opacity-0 group-hover/tab:opacity-100"}`}
+                  className={`flex items-center justify-center size-5 md:size-4 rounded-sm transition-opacity text-muted-foreground hover:text-foreground hover:bg-muted ml-1 ${active ? "opacity-100" : "opacity-0 group-hover/tab:opacity-100"}`}
                 >
                   <X className="size-3"/>
                 </button>

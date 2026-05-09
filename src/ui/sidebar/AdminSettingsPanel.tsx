@@ -234,7 +234,7 @@ export function AdminSettingsPanel() {
                     {user.username[0].toUpperCase()}
                   </div>
                   <div className="flex flex-col gap-0.5 min-w-0">
-                    <span className="text-xs font-semibold truncate max-w-[80px]">{user.username}</span>
+                    <span className="text-xs font-semibold truncate max-w-[120px]">{user.username}</span>
                     <div className="flex items-center gap-1">
                       {user.isAdmin && <span className="text-[9px] font-semibold px-1 py-px border border-accent-brand/40 bg-accent-brand/10 text-accent-brand">ADMIN</span>}
                       <span className="text-[9px] font-semibold px-1 py-px border border-border text-muted-foreground">{authLabel}</span>
@@ -451,7 +451,7 @@ export function AdminSettingsPanel() {
 
       {/* Dialogs */}
       <Dialog open={createUserOpen} onOpenChange={setCreateUserOpen}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="w-[calc(100vw-2rem)] sm:max-w-lg">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold">Create User</DialogTitle>
             <DialogDescription className="text-xs text-muted-foreground">Create a new local account.</DialogDescription>
@@ -480,14 +480,14 @@ export function AdminSettingsPanel() {
       </Dialog>
 
       <Dialog open={editUserOpen} onOpenChange={setEditUserOpen}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="w-[calc(100vw-2rem)] sm:max-w-lg">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold">Manage User: {editUserTarget?.username}</DialogTitle>
             <DialogDescription className="text-xs text-muted-foreground">Edit roles, admin status, sessions, and account settings.</DialogDescription>
           </DialogHeader>
           {editUserTarget && (
             <div className="flex flex-col gap-0 mt-1 divide-y divide-border">
-              <div className="grid grid-cols-2 gap-x-6 gap-y-2 py-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 py-3">
                 <div className="flex flex-col gap-0.5">
                   <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Username</span>
                   <span className="text-sm font-semibold">{editUserTarget.username}</span>
@@ -550,7 +550,7 @@ export function AdminSettingsPanel() {
       </Dialog>
 
       <Dialog open={linkAccountOpen} onOpenChange={setLinkAccountOpen}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="w-[calc(100vw-2rem)] sm:max-w-lg">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold">Link OIDC to Password Account</DialogTitle>
             <DialogDescription className="text-xs text-muted-foreground">

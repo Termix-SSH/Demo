@@ -160,7 +160,7 @@ export function StatsTab({ label }: { label: string }) {
             <Server className="size-5 text-accent-brand"/>
           </div>
           <div>
-            <h1 className="text-2xl font-bold">{label}</h1>
+            <h1 className="text-lg md:text-2xl font-bold">{label}</h1>
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-accent-brand"/>
               <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Live Metrics</span>
@@ -179,7 +179,7 @@ export function StatsTab({ label }: { label: string }) {
         </div>
       </Card>
 
-      <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-3 w-full columns-1 md:columns-2 lg:columns-3 gap-3 [&>*]:break-inside-avoid [&>*]:mb-3">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-3 w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 content-start">
 
         {enabled.system && (
           <SectionCard title="System Info" icon={<Info className="size-3.5"/>}>
@@ -215,7 +215,7 @@ export function StatsTab({ label }: { label: string }) {
             <div className="flex flex-col gap-4 py-2">
               <div className="flex items-end justify-between">
                 <div className="flex flex-col">
-                  <span className="text-3xl font-bold text-accent-brand">{metrics.cpu.percent.toFixed(1)}%</span>
+                  <span className="text-xl md:text-3xl font-bold text-accent-brand">{metrics.cpu.percent.toFixed(1)}%</span>
                   <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">{metrics.cpu.cores} Cores</span>
                 </div>
                 <div className="text-right">
@@ -226,7 +226,7 @@ export function StatsTab({ label }: { label: string }) {
               <div className="h-2 bg-muted w-full overflow-hidden">
                 <div className="h-full bg-accent-brand transition-all duration-500" style={{ width: `${metrics.cpu.percent}%` }}/>
               </div>
-              <div className="h-20 w-full mt-2 bg-muted/20 border border-border/50 relative overflow-hidden">
+              <div className="h-16 md:h-20 w-full mt-2 bg-muted/20 border border-border/50 relative overflow-hidden">
                 <svg className="absolute inset-0 h-full w-full" preserveAspectRatio="none">
                   <path
                     d={`M 0 80 Q 20 ${80 - metrics.cpu.percent} 40 70 T 80 60 T 120 ${80 - metrics.cpu.percent * 0.8} T 160 50 T 200 70 T 240 40 T 280 60 T 320 80`}
@@ -243,7 +243,7 @@ export function StatsTab({ label }: { label: string }) {
             <div className="flex flex-col gap-4 py-2">
               <div className="flex items-end justify-between">
                 <div className="flex flex-col">
-                  <span className="text-3xl font-bold text-accent-brand">{metrics.memory.percent.toFixed(1)}%</span>
+                  <span className="text-xl md:text-3xl font-bold text-accent-brand">{metrics.memory.percent.toFixed(1)}%</span>
                   <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">{metrics.memory.usedGiB} / {metrics.memory.totalGiB} GiB</span>
                 </div>
               </div>
@@ -269,7 +269,7 @@ export function StatsTab({ label }: { label: string }) {
             <div className="flex flex-col gap-4 py-2">
               <div className="flex items-end justify-between">
                 <div className="flex flex-col">
-                  <span className="text-3xl font-bold text-accent-brand">{metrics.disk.percent}%</span>
+                  <span className="text-xl md:text-3xl font-bold text-accent-brand">{metrics.disk.percent}%</span>
                   <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">{metrics.disk.used} / {metrics.disk.total}</span>
                 </div>
               </div>
@@ -297,7 +297,7 @@ export function StatsTab({ label }: { label: string }) {
         {enabled.disk_io && (
           <SectionCard title="Disk I/O" icon={<Activity className="size-3.5"/>}>
             <div className="flex flex-col gap-2 py-1">
-              <div className="grid grid-cols-3 text-[10px] text-muted-foreground font-bold uppercase tracking-wider pb-1.5 border-b border-border">
+              <div className="grid grid-cols-3 text-[10px] text-muted-foreground font-bold uppercase tracking-wider pb-1.5 border-b border-border overflow-x-auto">
                 <span>Device</span><span className="text-right">Read MB/s</span><span className="text-right">Write MB/s</span>
               </div>
               {metrics.diskIO.map((d: any) => (
@@ -346,11 +346,11 @@ export function StatsTab({ label }: { label: string }) {
         {enabled.processes && (
           <SectionCard title="Top Processes" icon={<List className="size-3.5"/>}>
             <div className="flex flex-col gap-1.5 py-1">
-              <div className="grid grid-cols-4 text-[10px] text-muted-foreground font-bold uppercase tracking-wider pb-1 border-b border-border">
+              <div className="grid grid-cols-4 text-[10px] text-muted-foreground font-bold uppercase tracking-wider pb-1 border-b border-border min-w-0">
                 <span>PID</span><span>CPU</span><span>MEM</span><span>CMD</span>
               </div>
               {metrics.processes.map((proc: any) => (
-                <div key={proc.pid} className="grid grid-cols-4 text-xs font-mono py-1 border-b border-border/50 last:border-0">
+                <div key={proc.pid} className="grid grid-cols-4 text-xs font-mono py-1 border-b border-border/50 last:border-0 min-w-0">
                   <span className="text-muted-foreground">{proc.pid}</span>
                   <span className="text-accent-brand font-bold">{proc.cpu}%</span>
                   <span>{proc.mem}%</span>
@@ -391,11 +391,11 @@ export function StatsTab({ label }: { label: string }) {
         {enabled.ports && (
           <SectionCard title="Listening Ports" icon={<Unplug className="size-3.5"/>}>
             <div className="flex flex-col gap-1.5 py-1">
-              <div className="grid grid-cols-4 text-[10px] text-muted-foreground font-bold uppercase pb-1 border-b border-border">
+              <div className="grid grid-cols-4 text-[10px] text-muted-foreground font-bold uppercase pb-1 border-b border-border min-w-0">
                 <span>Port</span><span>Proto</span><span>Service</span><span className="text-right">PID</span>
               </div>
               {metrics.ports.map((p: any, i: number) => (
-                <div key={i} className="grid grid-cols-4 text-xs font-mono py-1 border-b border-border/50 last:border-0">
+                <div key={i} className="grid grid-cols-4 text-xs font-mono py-1 border-b border-border/50 last:border-0 min-w-0">
                   <span className="text-accent-brand font-bold">{p.port}</span>
                   <span className="text-muted-foreground">{p.proto}</span>
                   <span className="font-semibold truncate">{p.service}</span>

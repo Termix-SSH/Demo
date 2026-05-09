@@ -61,7 +61,7 @@ export function HistoryPanel({ activeTabId, terminalTabs }: {
           <div key={entry.id} className="group flex flex-col gap-1 px-2.5 py-2 border border-border bg-background hover:border-muted-foreground/30 transition-colors">
             <div className="flex items-start justify-between gap-2">
               <span className="text-xs font-mono text-foreground break-all leading-relaxed">{entry.command}</span>
-              <div className="flex items-center gap-0.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="flex items-center gap-0.5 shrink-0 md:opacity-0 group-hover:opacity-100 transition-opacity">
                 <Button variant="ghost" size="icon" className="size-6 text-muted-foreground hover:text-foreground" onClick={() => navigator.clipboard.writeText(entry.command)}>
                   <Copy className="size-3"/>
                 </Button>

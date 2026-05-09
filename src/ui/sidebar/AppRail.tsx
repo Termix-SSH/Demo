@@ -66,7 +66,7 @@ export function AppRail({
 
   return (
     <div
-      className="flex flex-col items-stretch bg-sidebar border-r border-border shrink-0 overflow-hidden pt-2 gap-1 transition-[width] duration-200"
+      className="hidden md:flex flex-col items-stretch bg-sidebar border-r border-border shrink-0 overflow-hidden pt-2 gap-1 transition-[width] duration-200"
       style={{ width: railExpanded ? 160 : 40 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}

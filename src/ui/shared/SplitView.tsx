@@ -74,6 +74,24 @@ function useSplitSizes(splitMode: SplitMode) {
     window.addEventListener("mouseup", onUp);
   }
 
+  function onRowDividerTouch(e: React.TouchEvent, rowIdx: number) {
+    const container = containerRef.current;
+    if (!container) return;
+    startDrag();
+    const totalH = container.getBoundingClientRect().height;
+    const startY = e.touches[0].clientY;
+    const a = rowSizes[rowIdx];
+    const b = rowSizes[rowIdx + 1];
+    function onMove(ev: TouchEvent) {
+      const delta = ((ev.touches[0].clientY - startY) / totalH) * 100;
+      const na = Math.max(10, Math.min(a + b - 10, a + delta));
+      setRowSizes(prev => { const n = [...prev]; n[rowIdx] = na; n[rowIdx + 1] = a + b - na; return n; });
+    }
+    function onUp() { endDrag(); window.removeEventListener("touchmove", onMove); window.removeEventListener("touchend", onUp); }
+    window.addEventListener("touchmove", onMove, { passive: false });
+    window.addEventListener("touchend", onUp);
+  }
+
   function onColDivider(e: React.MouseEvent, rowIdx: number, colIdx: number) {
     e.preventDefault();
     const container = containerRef.current;
@@ -103,26 +121,56 @@ function useSplitSizes(splitMode: SplitMode) {
     window.addEventListener("mouseup", onUp);
   }
 
-  return { rowSizes, rowColSizes, isDragging, containerRef, reset, onRowDivider, onColDivider };
+  function onColDividerTouch(e: React.TouchEvent, rowIdx: number, colIdx: number) {
+    const container = containerRef.current;
+    if (!container) return;
+    startDrag();
+    const totalW = container.getBoundingClientRect().width;
+    const startX = e.touches[0].clientX;
+    const cols = rowColSizes[rowIdx];
+    const a = cols[colIdx];
+    const b = cols[colIdx + 1];
+    function onMove(ev: TouchEvent) {
+      const delta = ((ev.touches[0].clientX - startX) / totalW) * 100;
+      const na = Math.max(10, Math.min(a + b - 10, a + delta));
+      setRowColSizes(prev => {
+        const next = prev.map(r => [...r]);
+        next[rowIdx][colIdx] = na;
+        next[rowIdx][colIdx + 1] = a + b - na;
+        return next;
+      });
+    }
+    function onUp() { endDrag(); window.removeEventListener("touchmove", onMove); window.removeEventListener("touchend", onUp); }
+    window.addEventListener("touchmove", onMove, { passive: false });
+    window.addEventListener("touchend", onUp);
+  }
+
+  return { rowSizes, rowColSizes, isDragging, containerRef, reset, onRowDivider, onRowDividerTouch, onColDivider, onColDividerTouch };
 }
 
 // ─── Dividers ─────────────────────────────────────────────────────────────────
 
-function ColDivider({ onMouseDown }: { onMouseDown: (e: React.MouseEvent) => void }) {
+function ColDivider({ onMouseDown, onTouchStart }: { onMouseDown: (e: React.MouseEvent) => void; onTouchStart: (e: React.TouchEvent) => void }) {
   return (
     <div
       onMouseDown={onMouseDown}
-      className="w-1 shrink-0 cursor-col-resize bg-border hover:bg-accent-brand/60 transition-colors z-10"
-    />
+      onTouchStart={onTouchStart}
+      className="relative w-3 shrink-0 cursor-col-resize z-10 flex items-center justify-center group"
+    >
+      <div className="w-px h-full bg-border group-hover:bg-accent-brand/60 transition-colors"/>
+    </div>
   );
 }
 
-function RowDivider({ onMouseDown }: { onMouseDown: (e: React.MouseEvent) => void }) {
+function RowDivider({ onMouseDown, onTouchStart }: { onMouseDown: (e: React.MouseEvent) => void; onTouchStart: (e: React.TouchEvent) => void }) {
   return (
     <div
       onMouseDown={onMouseDown}
-      className="h-1 w-full shrink-0 cursor-row-resize bg-border hover:bg-accent-brand/60 transition-colors z-10"
-    />
+      onTouchStart={onTouchStart}
+      className="relative h-3 w-full shrink-0 cursor-row-resize z-10 flex flex-col items-center justify-center group"
+    >
+      <div className="h-px w-full bg-border group-hover:bg-accent-brand/60 transition-colors"/>
+    </div>
   );
 }
 
@@ -192,7 +240,7 @@ export function SplitView({
   onOpenSingletonTab: (type: TabType) => void;
   onOpenTab: (host: Host, type: TabType) => void;
 }) {
-  const { rowSizes, rowColSizes, isDragging, containerRef, reset, onRowDivider, onColDivider } = useSplitSizes(splitMode);
+  const { rowSizes, rowColSizes, isDragging, containerRef, reset, onRowDivider, onRowDividerTouch, onColDivider, onColDividerTouch } = useSplitSizes(splitMode);
 
   function pane(idx: number) {
     const tab = paneTabIds[idx] != null ? tabs.find(t => t.id === paneTabIds[idx]) ?? null : null;
@@ -209,7 +257,7 @@ export function SplitView({
               {pane(pIdx)}
             </div>
             {ci < paneIndices.length - 1 && (
-              <ColDivider key={`cd-${rowIdx}-${ci}`} onMouseDown={e => onColDivider(e, rowIdx, ci)}/>
+              <ColDivider key={`cd-${rowIdx}-${ci}`} onMouseDown={e => onColDivider(e, rowIdx, ci)} onTouchStart={e => onColDividerTouch(e, rowIdx, ci)}/>
             )}
           </>
         ))}
@@ -236,12 +284,12 @@ export function SplitView({
           <div className="min-w-0 min-h-0 overflow-hidden" style={{ width: `${rowColSizes[0][0]}%` }}>
             {pane(0)}
           </div>
-          <ColDivider onMouseDown={e => onColDivider(e, 0, 0)}/>
+          <ColDivider onMouseDown={e => onColDivider(e, 0, 0)} onTouchStart={e => onColDividerTouch(e, 0, 0)}/>
           <div className="flex flex-col flex-1 min-h-0">
             <div className="min-h-0 overflow-hidden" style={{ height: `${rowSizes[0]}%` }}>
               {pane(1)}
             </div>
-            <RowDivider onMouseDown={e => onRowDivider(e, 0)}/>
+            <RowDivider onMouseDown={e => onRowDivider(e, 0)} onTouchStart={e => onRowDividerTouch(e, 0)}/>
             <div className="min-h-0 overflow-hidden" style={{ height: `${rowSizes[1]}%` }}>
               {pane(2)}
             </div>
@@ -252,7 +300,7 @@ export function SplitView({
       {splitMode === "4-way" && (
         <div className="flex flex-col w-full h-full min-h-0">
           <Row rowIdx={0} paneIndices={[0, 1]}/>
-          <RowDivider onMouseDown={e => onRowDivider(e, 0)}/>
+          <RowDivider onMouseDown={e => onRowDivider(e, 0)} onTouchStart={e => onRowDividerTouch(e, 0)}/>
           <Row rowIdx={1} paneIndices={[2, 3]}/>
         </div>
       )}
@@ -260,7 +308,7 @@ export function SplitView({
       {splitMode === "5-way" && (
         <div className="flex flex-col w-full h-full min-h-0">
           <Row rowIdx={0} paneIndices={[0, 1, 2]}/>
-          <RowDivider onMouseDown={e => onRowDivider(e, 0)}/>
+          <RowDivider onMouseDown={e => onRowDivider(e, 0)} onTouchStart={e => onRowDividerTouch(e, 0)}/>
           <Row rowIdx={1} paneIndices={[3, 4]}/>
         </div>
       )}
@@ -268,7 +316,7 @@ export function SplitView({
       {splitMode === "6-way" && (
         <div className="flex flex-col w-full h-full min-h-0">
           <Row rowIdx={0} paneIndices={[0, 1, 2]}/>
-          <RowDivider onMouseDown={e => onRowDivider(e, 0)}/>
+          <RowDivider onMouseDown={e => onRowDivider(e, 0)} onTouchStart={e => onRowDividerTouch(e, 0)}/>
           <Row rowIdx={1} paneIndices={[3, 4, 5]}/>
         </div>
       )}
