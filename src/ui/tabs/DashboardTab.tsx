@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -746,6 +747,46 @@ export function DashboardTab({ onOpenSingletonTab, onOpenTab }: {
     setMainWidthPct(72);
     setEditMode(false);
   };
+
+  const isMobile = useIsMobile();
+
+  // On mobile render all cards in a single scrollable column, in default order
+  if (isMobile) {
+    const allSlots = [...mainSlots, ...sideSlots];
+    return (
+      <div className="flex flex-col w-full h-full min-h-0 overflow-hidden">
+        {/* Mobile header */}
+        <Card className="flex-row items-center justify-between px-4 py-3 shrink-0 mx-3 mt-3 gap-0">
+          <div>
+            <h1 className="text-base font-bold leading-tight">Dashboard</h1>
+            <p className="text-xs text-muted-foreground">{todayLabel}</p>
+          </div>
+          <div className="flex items-center gap-1">
+            <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-foreground" asChild>
+              <a href="https://github.com/Termix-SSH/Termix" target="_blank" rel="noreferrer">GitHub</a>
+            </Button>
+            <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-foreground" asChild>
+              <a href="https://discord.gg/EGFBNBNbgF" target="_blank" rel="noreferrer">Discord</a>
+            </Button>
+          </div>
+        </Card>
+
+        {/* Mobile body — single scrollable column */}
+        <div className="flex-1 min-h-0 overflow-y-auto px-3 pb-3 pt-3 flex flex-col gap-3">
+          {allSlots.map(slot => (
+            <div key={slot.id} className={`shrink-0 ${(slot.id === "host_status" || slot.id === "recent_activity") ? "max-h-72 flex flex-col overflow-hidden" : ""}`}>
+              {slot.id === "stats_bar"       && <StatsBarCard />}
+              {slot.id === "counters_bar"    && <CountersBarCard />}
+              {slot.id === "quick_actions"   && <QuickActionsCard onOpenSingletonTab={onOpenSingletonTab} />}
+              {slot.id === "host_status"     && <HostStatusCard onOpenTab={onOpenTab} />}
+              {slot.id === "recent_activity" && <RecentActivityCard onOpenTab={onOpenTab} />}
+              {slot.id === "network_graph"   && <NetworkGraphCard />}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col w-full h-full min-h-0 overflow-hidden">
