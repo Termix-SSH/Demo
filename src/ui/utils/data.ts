@@ -217,18 +217,45 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
   },
 ];
 
-export const ACCENT_COLORS = [
-  { id: "orange" as AccentColorId,  label: "Orange",  value: "oklch(0.75 0.15 55)" },
-  { id: "blue"   as AccentColorId,  label: "Blue",    value: "oklch(0.60 0.18 240)" },
-  { id: "green"  as AccentColorId,  label: "Green",   value: "oklch(0.65 0.18 145)" },
-  { id: "purple" as AccentColorId,  label: "Purple",  value: "oklch(0.60 0.18 290)" },
-  { id: "pink"   as AccentColorId,  label: "Pink",    value: "oklch(0.65 0.18 340)" },
-  { id: "cyan"   as AccentColorId,  label: "Cyan",    value: "oklch(0.65 0.14 195)" },
+export const ACCENT_PRESET_COLORS = [
+  { label: "Orange",  value: "#f59145" },
+  { label: "Blue",    value: "#3b82f6" },
+  { label: "Green",   value: "#22c55e" },
+  { label: "Purple",  value: "#a855f7" },
+  { label: "Pink",    value: "#ec4899" },
+  { label: "Cyan",    value: "#06b6d4" },
+  { label: "Red",     value: "#ef4444" },
+  { label: "Yellow",  value: "#eab308" },
+  { label: "Teal",    value: "#14b8a6" },
+  { label: "Indigo",  value: "#6366f1" },
+  { label: "Rose",    value: "#f43f5e" },
+  { label: "Lime",    value: "#84cc16" },
 ];
 
-export function applyAccentColor(id: AccentColorId) {
-  const color = ACCENT_COLORS.find(c => c.id === id);
-  if (color) document.documentElement.style.setProperty("--accent-brand", color.value);
+// Legacy alias
+export const ACCENT_COLORS = ACCENT_PRESET_COLORS.map(c => ({
+  id: c.label.toLowerCase() as AccentColorId,
+  label: c.label,
+  value: c.value,
+}));
+
+export function applyAccentColor(colorValue: string) {
+  document.documentElement.style.setProperty("--accent-brand", colorValue);
+}
+
+export const FONT_SIZES: { id: import("./types").FontSizeId; label: string }[] = [
+  { id: "xs", label: "XS"     },
+  { id: "sm", label: "Small"  },
+  { id: "md", label: "Normal" },
+  { id: "lg", label: "Large"  },
+  { id: "xl", label: "XL"     },
+];
+
+export function applyFontSize(id: import("./types").FontSizeId) {
+  const root = document.documentElement;
+  root.classList.remove("fs-xs", "fs-sm", "fs-md", "fs-lg", "fs-xl");
+  root.classList.add(`fs-${id}`);
+  localStorage.setItem("termix-font-size", id);
 }
 
 export const SINGLETON_TAB_LABELS: Partial<Record<import("./types").TabType, string>> = {

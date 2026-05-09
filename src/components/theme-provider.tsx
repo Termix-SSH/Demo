@@ -1,46 +1,42 @@
 import { createContext, useContext, useEffect, useState } from "react"
-
-type Theme = "dark" | "light" | "system"
+import type { ThemeId } from "@/ui/utils/types"
 
 type ThemeProviderProps = {
     children: React.ReactNode
-    defaultTheme?: Theme
+    defaultTheme?: ThemeId
     storageKey?: string
 }
 
 type ThemeProviderState = {
-    theme: Theme
-    setTheme: (theme: Theme) => void
+    theme: ThemeId
+    setTheme: (theme: ThemeId) => void
 }
 
+const ALL_THEME_CLASSES = ["light", "dark", "dracula", "catppuccin", "nord", "solarized", "tokyo-night", "one-dark", "gruvbox"]
+
 const initialState: ThemeProviderState = {
-    theme: "system",
+    theme: "dark",
     setTheme: () => null,
 }
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 
 export function ThemeProvider({
-                                  children,
-                                  defaultTheme = "system",
-                                  storageKey = "vite-ui-theme",
-                                  ...props
-                              }: ThemeProviderProps) {
-    const [theme, setTheme] = useState<Theme>(
-        () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
+    children,
+    defaultTheme = "dark",
+    storageKey = "vite-ui-theme",
+    ...props
+}: ThemeProviderProps) {
+    const [theme, setTheme] = useState<ThemeId>(
+        () => (localStorage.getItem(storageKey) as ThemeId) || defaultTheme
     )
 
     useEffect(() => {
         const root = window.document.documentElement
-
-        root.classList.remove("light", "dark")
+        root.classList.remove(...ALL_THEME_CLASSES)
 
         if (theme === "system") {
-            const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-                .matches
-                ? "dark"
-                : "light"
-
+            const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
             root.classList.add(systemTheme)
             return
         }
@@ -50,7 +46,7 @@ export function ThemeProvider({
 
     const value = {
         theme,
-        setTheme: (theme: Theme) => {
+        setTheme: (theme: ThemeId) => {
             localStorage.setItem(storageKey, theme)
             setTheme(theme)
         },
@@ -65,9 +61,7 @@ export function ThemeProvider({
 
 export const useTheme = () => {
     const context = useContext(ThemeProviderContext)
-
     if (context === undefined)
         throw new Error("useTheme must be used within a ThemeProvider")
-
     return context
 }

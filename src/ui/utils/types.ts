@@ -189,7 +189,9 @@ export type LayoutPreset = {
 
 export type UserProfileSection = "account" | "appearance" | "security" | "api-keys";
 export type AdminSection = "general" | "oidc" | "users" | "sessions" | "roles" | "database" | "api-keys";
-export type AccentColorId = "orange" | "blue" | "green" | "purple" | "pink" | "cyan";
+export type AccentColorId = string;
+export type ThemeId = "dark" | "light" | "system" | "dracula" | "catppuccin" | "nord" | "solarized" | "tokyo-night" | "one-dark" | "gruvbox";
+export type FontSizeId = "xs" | "sm" | "md" | "lg" | "xl";
 
 export type ToolsTab = "ssh-tools" | "snippets" | "history" | "split-screen";
 export type SplitMode = "none" | "2-way" | "3-way" | "4-way" | "5-way" | "6-way";

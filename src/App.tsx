@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { Auth, getStoredAuth, clearStoredAuth } from "@/ui/auth/Auth";
 import { AppShell } from "@/ui/AppShell";
-import { applyAccentColor } from "@/ui/utils/data";
-import type { AccentColorId } from "@/ui/utils/types";
+import { applyAccentColor, applyFontSize } from "@/ui/utils/data";
+import type { FontSizeId } from "@/ui/utils/types";
 
 // idle-auth: only auth visible
 // fading-in: auth fades out, app fades in
@@ -18,8 +18,11 @@ function App() {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem("termix-accent") as AccentColorId | null;
-    if (saved) applyAccentColor(saved);
+    const savedAccent = localStorage.getItem("termix-accent");
+    if (savedAccent) applyAccentColor(savedAccent);
+    const savedSize = localStorage.getItem("termix-font-size") as FontSizeId | null;
+    if (savedSize) applyFontSize(savedSize);
+    else applyFontSize("md");
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
   }, []);
 

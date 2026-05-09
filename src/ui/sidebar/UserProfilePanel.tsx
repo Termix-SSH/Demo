@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,29 +17,21 @@ import {
   Copy,
   Eye,
   EyeOff,
-  FolderSearch,
   KeyRound,
-  Languages,
-  Lock,
-  Monitor,
-  Moon,
   Network,
   Palette,
-  Play,
   Plus,
-  RefreshCw,
-  Server,
   Shield,
   ShieldCheck,
-  Sun,
-  Terminal,
   Trash2,
+  Type,
   User,
   X,
 } from "lucide-react";
 import { SettingRow, FakeSwitch } from "@/ui/shared/SectionCard";
-import { ACCENT_COLORS, applyAccentColor, MOCK_API_KEYS } from "@/ui/utils/data";
-import type { AccentColorId } from "@/ui/utils/types";
+import { ACCENT_PRESET_COLORS, applyAccentColor, applyFontSize, FONT_SIZES, MOCK_API_KEYS } from "@/ui/utils/data";
+import { useTheme } from "@/components/theme-provider";
+import type { FontSizeId, ThemeId } from "@/ui/utils/types";
 import { toast } from "sonner";
 
 type UserProfileSection = "account" | "appearance" | "security" | "api-keys";
@@ -51,12 +43,17 @@ const SECTIONS: { id: UserProfileSection; label: string; icon: React.ReactNode }
   { id: "api-keys",   label: "API Keys",   icon: <Network className="size-3.5"/> },
 ];
 
-const THEMES = [
-  { id: "light",      label: "Light",      icon: <Sun className="size-3.5"/>     },
-  { id: "dark",       label: "Dark",       icon: <Moon className="size-3.5"/>    },
-  { id: "system",     label: "System",     icon: <Monitor className="size-3.5"/> },
-  { id: "dracula",    label: "Dracula",    icon: <Palette className="size-3.5"/> },
-  { id: "catppuccin", label: "Catppuccin", icon: <Palette className="size-3.5"/> },
+const THEMES: { id: ThemeId; label: string; preview: string }[] = [
+  { id: "system",      label: "System",       preview: "auto" },
+  { id: "light",       label: "Light",        preview: "#ffffff" },
+  { id: "dark",        label: "Dark",         preview: "#1a1c22" },
+  { id: "dracula",     label: "Dracula",      preview: "#282a36" },
+  { id: "catppuccin",  label: "Catppuccin",   preview: "#1e1e2e" },
+  { id: "nord",        label: "Nord",         preview: "#2e3440" },
+  { id: "solarized",   label: "Solarized",    preview: "#002b36" },
+  { id: "tokyo-night", label: "Tokyo Night",  preview: "#1a1b26" },
+  { id: "one-dark",    label: "One Dark",     preview: "#282c34" },
+  { id: "gruvbox",     label: "Gruvbox",      preview: "#282828" },
 ];
 
 function AccordionSection({ id, label, icon, open, onToggle, children }: {
@@ -185,17 +182,30 @@ export function UserProfilePanel() {
   const [totpEnabled, setTotpEnabled] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [themeChoice, setThemeChoice] = useState("dark");
-  const [accentColor, setAccentColor] = useState<AccentColorId>(
-    () => (localStorage.getItem("termix-accent") as AccentColorId) ?? "orange"
+  const [accentColor, setAccentColor] = useState<string>(
+    () => localStorage.getItem("termix-accent") ?? "#f59145"
+  );
+  const [customColorInput, setCustomColorInput] = useState<string>(
+    () => localStorage.getItem("termix-accent") ?? "#f59145"
+  );
+  const [fontSize, setFontSize] = useState<FontSizeId>(
+    () => (localStorage.getItem("termix-font-size") as FontSizeId) ?? "md"
   );
   const [apiKeys, setApiKeys] = useState(MOCK_API_KEYS);
   const [newKeyOpen, setNewKeyOpen] = useState(false);
+  const colorInputRef = useRef<HTMLInputElement>(null);
+  const { theme, setTheme } = useTheme();
 
-  function handleAccentChange(id: AccentColorId) {
-    setAccentColor(id);
-    localStorage.setItem("termix-accent", id);
-    applyAccentColor(id);
+  function handleAccentChange(value: string) {
+    setAccentColor(value);
+    setCustomColorInput(value);
+    localStorage.setItem("termix-accent", value);
+    applyAccentColor(value);
+  }
+
+  function handleFontSizeChange(id: FontSizeId) {
+    setFontSize(id);
+    applyFontSize(id);
   }
 
   function toggle(id: UserProfileSection) {
@@ -279,43 +289,116 @@ export function UserProfilePanel() {
             </select>
           </div>
 
+          {/* Theme — dropdown */}
           <div className="flex flex-col gap-1.5">
             <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Theme</span>
-            <div className="grid grid-cols-3 gap-1.5">
-              {THEMES.map(t => (
+            <div className="relative">
+              <select
+                value={theme}
+                onChange={e => setTheme(e.target.value as ThemeId)}
+                className="w-full px-2.5 py-1.5 text-xs bg-background border border-border text-foreground outline-none focus:ring-1 focus:ring-ring appearance-none pr-7"
+              >
+                {THEMES.map(t => (
+                  <option key={t.id} value={t.id}>{t.label}</option>
+                ))}
+              </select>
+              <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 size-3 text-muted-foreground pointer-events-none"/>
+            </div>
+            {/* Live preview strip */}
+            <div className="flex gap-1 mt-0.5">
+              {THEMES.filter(t => t.id !== "system").map(t => (
                 <button
                   key={t.id}
-                  onClick={() => setThemeChoice(t.id)}
-                  className={`flex flex-col items-center gap-1 px-1.5 py-2 border text-[10px] font-semibold transition-colors ${
-                    themeChoice === t.id
+                  title={t.label}
+                  onClick={() => setTheme(t.id)}
+                  className={`h-4 flex-1 border transition-all ${theme === t.id ? "border-accent-brand ring-1 ring-accent-brand" : "border-border/50"}`}
+                  style={{ background: t.preview }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Font Size */}
+          <div className="flex flex-col gap-1.5">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-1.5">
+              <Type className="size-3"/>Font Size
+            </span>
+            <div className="flex gap-1">
+              {FONT_SIZES.map(fs => (
+                <button
+                  key={fs.id}
+                  onClick={() => handleFontSizeChange(fs.id)}
+                  className={`flex-1 py-1.5 border text-[10px] font-bold transition-colors ${
+                    fontSize === fs.id
                       ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand"
                       : "border-border text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  {t.icon}
-                  {t.label}
+                  {fs.label}
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="flex flex-col gap-1.5">
+          {/* Accent Color */}
+          <div className="flex flex-col gap-2">
             <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Accent Color</span>
-            <div className="grid grid-cols-4 gap-1.5">
-              {ACCENT_COLORS.map(ac => (
+
+            {/* Preset swatches */}
+            <div className="grid grid-cols-6 gap-1">
+              {ACCENT_PRESET_COLORS.map(ac => (
                 <button
-                  key={ac.id}
-                  onClick={() => handleAccentChange(ac.id)}
-                  className={`flex flex-col items-center gap-1 px-1 py-2 border text-[10px] font-semibold transition-colors ${
-                    accentColor === ac.id
-                      ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand"
-                      : "border-border text-muted-foreground hover:text-foreground"
+                  key={ac.value}
+                  title={ac.label}
+                  onClick={() => handleAccentChange(ac.value)}
+                  className={`h-6 border-2 transition-all ${
+                    accentColor === ac.value
+                      ? "border-foreground scale-110"
+                      : "border-transparent hover:border-foreground/40"
                   }`}
-                >
-                  <span className="size-3.5 rounded-full border border-border/50" style={{ background: ac.value }}/>
-                  {ac.label}
-                </button>
+                  style={{ background: ac.value }}
+                />
               ))}
+            </div>
+
+            {/* Custom color input */}
+            <div className="flex items-center gap-2 border border-border bg-muted/30 px-2 py-1.5">
+              <button
+                onClick={() => colorInputRef.current?.click()}
+                className="size-5 shrink-0 border border-border/60 cursor-pointer"
+                style={{ background: accentColor }}
+                title="Open color picker"
+              />
+              <input
+                ref={colorInputRef}
+                type="color"
+                value={accentColor.startsWith("#") ? accentColor : "#f97316"}
+                onChange={e => handleAccentChange(e.target.value)}
+                className="sr-only"
+              />
+              <Input
+                value={customColorInput}
+                onChange={e => setCustomColorInput(e.target.value)}
+                onBlur={() => {
+                  const v = customColorInput.trim();
+                  if (/^#[0-9a-fA-F]{6}$/.test(v) || /^#[0-9a-fA-F]{3}$/.test(v)) {
+                    handleAccentChange(v);
+                  } else {
+                    setCustomColorInput(accentColor);
+                  }
+                }}
+                onKeyDown={e => {
+                  if (e.key === "Enter") {
+                    const v = customColorInput.trim();
+                    if (/^#[0-9a-fA-F]{6}$/.test(v) || /^#[0-9a-fA-F]{3}$/.test(v)) {
+                      handleAccentChange(v);
+                    }
+                  }
+                }}
+                placeholder="#f97316"
+                className="h-6 text-[11px] font-mono border-0 bg-transparent p-0 focus-visible:ring-0 flex-1 min-w-0"
+              />
+              <span className="text-[10px] text-muted-foreground shrink-0">hex</span>
             </div>
           </div>
 
