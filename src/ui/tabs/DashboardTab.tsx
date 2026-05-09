@@ -755,27 +755,25 @@ export function DashboardTab({ onOpenSingletonTab, onOpenTab }: {
     const allSlots = [...mainSlots, ...sideSlots];
     return (
       <div className="flex flex-col w-full h-full min-h-0 overflow-hidden">
-        {/* Mobile header */}
-        <Card className="flex-row items-center justify-between px-4 py-3 shrink-0 mx-3 mt-3 gap-0">
-          <div>
-            <h1 className="text-base font-bold leading-tight">Dashboard</h1>
-            <p className="text-xs text-muted-foreground">{todayLabel}</p>
-          </div>
-          <div className="flex items-center gap-1">
-            <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-foreground" asChild>
-              <a href="https://github.com/Termix-SSH/Termix" target="_blank" rel="noreferrer">GitHub</a>
-            </Button>
-            <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-foreground" asChild>
-              <a href="https://github.com/Termix-SSH/Support" target="_blank" rel="noreferrer">Support</a>
-            </Button>
-            <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-foreground" asChild>
-              <a href="https://discord.com/invite/jVQGdvHDrf" target="_blank" rel="noreferrer">Discord</a>
-            </Button>
-          </div>
-        </Card>
-
-        {/* Mobile body — single scrollable column */}
+        {/* Mobile body — single scrollable column including header */}
         <div className="flex-1 min-h-0 overflow-y-auto px-3 pb-3 pt-3 flex flex-col gap-3">
+          <Card className="flex-row items-center justify-between px-4 py-3 shrink-0 gap-0">
+            <div>
+              <h1 className="text-base font-bold leading-tight">Dashboard</h1>
+              <p className="text-xs text-muted-foreground">{todayLabel}</p>
+            </div>
+            <div className="flex items-center gap-1">
+              <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-foreground" asChild>
+                <a href="https://github.com/Termix-SSH/Termix" target="_blank" rel="noreferrer">GitHub</a>
+              </Button>
+              <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-foreground" asChild>
+                <a href="https://github.com/Termix-SSH/Support" target="_blank" rel="noreferrer">Support</a>
+              </Button>
+              <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-foreground" asChild>
+                <a href="https://discord.com/invite/jVQGdvHDrf" target="_blank" rel="noreferrer">Discord</a>
+              </Button>
+            </div>
+          </Card>
           {allSlots.map(slot => (
             <div key={slot.id} className={`shrink-0 ${(slot.id === "host_status" || slot.id === "recent_activity") ? "max-h-72 flex flex-col overflow-hidden" : ""}`}>
               {slot.id === "stats_bar"       && <StatsBarCard />}

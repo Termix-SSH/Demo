@@ -461,29 +461,30 @@ export function DockerTab({ label }: { label: string }) {
   if (view === "detail" && selectedContainer) {
     return (
       <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
-        <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 mx-3 mt-3 gap-0">
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={() => setView("list")} className="size-8 text-muted-foreground hover:text-foreground">
-              <ArrowLeft className="size-4"/>
-            </Button>
-            <div className="size-10 border border-border bg-muted flex items-center justify-center shrink-0">
-              <Box className="size-5 text-accent-brand"/>
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold">{selectedContainer.name}</h1>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground font-mono">{selectedContainer.image}</span>
+        <div className="flex flex-col flex-1 min-h-0 overflow-y-auto px-3 py-3 gap-3">
+          <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 gap-0">
+            <div className="flex items-center gap-3">
+              <Button variant="ghost" size="icon" onClick={() => setView("list")} className="size-8 text-muted-foreground hover:text-foreground">
+                <ArrowLeft className="size-4"/>
+              </Button>
+              <div className="size-10 border border-border bg-muted flex items-center justify-center shrink-0">
+                <Box className="size-5 text-accent-brand"/>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold">{selectedContainer.name}</h1>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-muted-foreground font-mono">{selectedContainer.image}</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <DockerBadge status={selectedContainer.status}/>
-            <Separator orientation="vertical" className="h-8 mx-2"/>
-            <Button variant="ghost" size="icon"><Settings className="size-4 text-accent-brand"/></Button>
-          </div>
-        </Card>
+            <div className="flex items-center gap-2">
+              <DockerBadge status={selectedContainer.status}/>
+              <Separator orientation="vertical" className="h-8 mx-2"/>
+              <Button variant="ghost" size="icon"><Settings className="size-4 text-accent-brand"/></Button>
+            </div>
+          </Card>
 
-        <div className="flex flex-col flex-1 min-h-0 px-3 py-3 gap-3">
+          <div className="flex flex-col flex-1 min-h-0 gap-3">
           <div className="flex gap-1 border-b border-border shrink-0">
             {[
               { id: "logs",    label: "Logs",    icon: <List className="size-3.5"/>     },
@@ -511,49 +512,49 @@ export function DockerTab({ label }: { label: string }) {
             {detailTab === "inspect" && <DockerInspect container={selectedContainer}/>}
           </div>
         </div>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
-      <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 mx-3 mt-3 gap-0">
-        <div className="flex items-center gap-3">
-          <div className="size-10 border border-border bg-muted flex items-center justify-center shrink-0">
-            <Box className="size-5 text-accent-brand"/>
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold">{label}</h1>
-            <div className="flex items-center gap-2">
-              <span className="size-2 rounded-full bg-accent-brand"/>
-              <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Docker Manager</span>
+      <div className="flex-1 overflow-y-auto px-3 py-3 flex flex-col gap-3">
+        <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 gap-0">
+          <div className="flex items-center gap-3">
+            <div className="size-10 border border-border bg-muted flex items-center justify-center shrink-0">
+              <Box className="size-5 text-accent-brand"/>
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold">{label}</h1>
+              <div className="flex items-center gap-2">
+                <span className="size-2 rounded-full bg-accent-brand"/>
+                <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Docker Manager</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="relative w-64">
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground"/>
-            <Input placeholder="Search containers..." value={search} onChange={e => setSearch(e.target.value)} className="pl-8 h-8"/>
+          <div className="flex items-center gap-2">
+            <div className="relative w-64">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground"/>
+              <Input placeholder="Search containers..." value={search} onChange={e => setSearch(e.target.value)} className="pl-8 h-8"/>
+            </div>
+            <select
+              value={statusFilter}
+              onChange={e => setStatusFilter(e.target.value)}
+              className="h-8 px-2 text-xs bg-background border border-border text-foreground outline-none focus:ring-1 focus:ring-ring"
+            >
+              <option value="all">All Statuses</option>
+              <option value="running">Running</option>
+              <option value="paused">Paused</option>
+              <option value="exited">Exited</option>
+            </select>
+            <Separator orientation="vertical" className="h-8 mx-1"/>
+            <Button variant="outline" size="sm" className="h-8 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand gap-1.5" onClick={(e) => handleAction("", "create", e)}>
+              <Plus className="size-3.5"/> New Container
+            </Button>
+            <Button variant="ghost" size="icon"><Settings className="size-4 text-accent-brand"/></Button>
           </div>
-          <select
-            value={statusFilter}
-            onChange={e => setStatusFilter(e.target.value)}
-            className="h-8 px-2 text-xs bg-background border border-border text-foreground outline-none focus:ring-1 focus:ring-ring"
-          >
-            <option value="all">All Statuses</option>
-            <option value="running">Running</option>
-            <option value="paused">Paused</option>
-            <option value="exited">Exited</option>
-          </select>
-          <Separator orientation="vertical" className="h-8 mx-1"/>
-          <Button variant="outline" size="sm" className="h-8 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand gap-1.5" onClick={(e) => handleAction("", "create", e)}>
-            <Plus className="size-3.5"/> New Container
-          </Button>
-          <Button variant="ghost" size="icon"><Settings className="size-4 text-accent-brand"/></Button>
-        </div>
-      </Card>
-
-      <div className="flex-1 overflow-y-auto px-3 py-3">
+        </Card>
         {filtered.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
             {filtered.map(container => (

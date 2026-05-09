@@ -287,31 +287,30 @@ export function TunnelTab({ label }: { label: string }) {
     <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
       <NewTunnelDialog open={newTunnelOpen} onOpenChange={setNewTunnelOpen} onAdd={t => setTunnels(prev => [t, ...prev])} />
 
-      <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 mx-3 mt-3 gap-0">
-        <div className="flex items-center gap-3">
-          <div className="size-10 border border-border bg-muted flex items-center justify-center shrink-0">
-            <Network className="size-5 text-accent-brand"/>
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold">{label}</h1>
-            <div className="flex items-center gap-2">
-              <span className="size-2 rounded-full bg-accent-brand"/>
-              <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">
-                {connectedCount}/{tunnels.length} Active
-              </span>
+      <div className="flex-1 overflow-y-auto px-3 py-3 flex flex-col gap-3">
+        <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 gap-0">
+          <div className="flex items-center gap-3">
+            <div className="size-10 border border-border bg-muted flex items-center justify-center shrink-0">
+              <Network className="size-5 text-accent-brand"/>
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold">{label}</h1>
+              <div className="flex items-center gap-2">
+                <span className="size-2 rounded-full bg-accent-brand"/>
+                <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">
+                  {connectedCount}/{tunnels.length} Active
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="flex items-center gap-0">
-          <Button variant="outline" size="default" className="gap-2 font-semibold" onClick={() => setNewTunnelOpen(true)}>
-            <Plus className="size-3.5"/>New Tunnel
-          </Button>
-          <Separator orientation="vertical" className="h-8 mx-3"/>
-          <Button variant="ghost" size="icon"><Settings className="size-4 text-accent-brand"/></Button>
-        </div>
-      </Card>
-
-      <div className="flex-1 overflow-y-auto px-3 py-3">
+          <div className="flex items-center gap-0">
+            <Button variant="outline" size="default" className="gap-2 font-semibold" onClick={() => setNewTunnelOpen(true)}>
+              <Plus className="size-3.5"/>New Tunnel
+            </Button>
+            <Separator orientation="vertical" className="h-8 mx-3"/>
+            <Button variant="ghost" size="icon"><Settings className="size-4 text-accent-brand"/></Button>
+          </div>
+        </Card>
         {tunnels.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {tunnels.map(tunnel => (

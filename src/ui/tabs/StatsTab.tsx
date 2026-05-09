@@ -154,32 +154,31 @@ export function StatsTab({ label }: { label: string }) {
     <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
       <WidgetSettingsDialog open={settingsOpen} onOpenChange={setSettingsOpen} enabled={enabled} onToggle={toggleWidget} />
 
-      <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 mx-3 mt-3 gap-0">
-        <div className="flex items-center gap-3">
-          <div className="size-10 border border-border bg-muted flex items-center justify-center shrink-0">
-            <Server className="size-5 text-accent-brand"/>
-          </div>
-          <div>
-            <h1 className="text-lg md:text-2xl font-bold">{label}</h1>
-            <div className="flex items-center gap-2">
-              <span className="size-2 rounded-full bg-accent-brand"/>
-              <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Live Metrics</span>
+      <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-3 w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 content-start">
+        <Card className="flex-row items-center justify-between px-3 py-3 col-span-full gap-0">
+          <div className="flex items-center gap-3">
+            <div className="size-10 border border-border bg-muted flex items-center justify-center shrink-0">
+              <Server className="size-5 text-accent-brand"/>
+            </div>
+            <div>
+              <h1 className="text-lg md:text-2xl font-bold">{label}</h1>
+              <div className="flex items-center gap-2">
+                <span className="size-2 rounded-full bg-accent-brand"/>
+                <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Live Metrics</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="flex items-center gap-0">
-          <Button variant="outline" size="default" onClick={refresh} disabled={isRefreshing} className="gap-2 font-semibold">
-            <RefreshCw className={`size-3.5 ${isRefreshing ? "animate-spin" : ""}`}/>
-            Refresh
-          </Button>
-          <Separator orientation="vertical" className="h-8 mx-3"/>
-          <Button variant="ghost" size="icon" onClick={() => setSettingsOpen(true)} title="Widget Settings">
-            <Settings className="size-4 text-accent-brand"/>
-          </Button>
-        </div>
-      </Card>
-
-      <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-3 w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 content-start">
+          <div className="flex items-center gap-0">
+            <Button variant="outline" size="default" onClick={refresh} disabled={isRefreshing} className="gap-2 font-semibold">
+              <RefreshCw className={`size-3.5 ${isRefreshing ? "animate-spin" : ""}`}/>
+              Refresh
+            </Button>
+            <Separator orientation="vertical" className="h-8 mx-3"/>
+            <Button variant="ghost" size="icon" onClick={() => setSettingsOpen(true)} title="Widget Settings">
+              <Settings className="size-4 text-accent-brand"/>
+            </Button>
+          </div>
+        </Card>
 
         {enabled.system && (
           <SectionCard title="System Info" icon={<Info className="size-3.5"/>}>
