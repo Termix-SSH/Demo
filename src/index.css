@@ -127,6 +127,25 @@
 @layer base {
   * {
     @apply outline-none;
+    scrollbar-width: thin;
+    scrollbar-color: oklch(1 0 0 / 20%) transparent;
+    }
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+    }
+  *::-webkit-scrollbar-thumb {
+    background: oklch(1 0 0 / 20%);
+    border-radius: 3px;
+    }
+  *::-webkit-scrollbar-thumb:hover {
+    background: oklch(1 0 0 / 35%);
+    }
+  *::-webkit-scrollbar-corner {
+    background: transparent;
     }
   html, body, #root {
     @apply h-full overflow-hidden;
