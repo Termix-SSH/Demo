@@ -113,9 +113,10 @@ export function AppShell({ username, onLogout }: { username: string; onLogout: (
   function connectHost(host: Host, preferredType?: TabType) {
     const type: TabType =
       preferredType ??
-      (host.connectionType === "rdp"    ? "rdp"    :
-       host.connectionType === "vnc"    ? "vnc"    :
-       host.connectionType === "telnet" ? "telnet" :
+      (host.enableSsh    ? "terminal" :
+       host.enableRdp    ? "rdp"      :
+       host.enableVnc    ? "vnc"      :
+       host.enableTelnet ? "telnet"   :
        "terminal");
     openTab(host, type);
   }

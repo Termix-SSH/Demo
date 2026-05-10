@@ -115,7 +115,7 @@ export function HostItem({ host, onOpenTab, onEditHost, query = "", stripeIndex 
         {/* Action tray — slides open on hover */}
         <div
           className="overflow-hidden transition-all duration-150 ease-out"
-          style={{ maxHeight: hovered ? "80px" : "0px", opacity: hovered ? 1 : 0 }}
+          style={{ maxHeight: hovered ? "200px" : "0px", opacity: hovered ? 1 : 0 }}
         >
           {host.online && (host.cpu !== undefined || host.ram !== undefined) && (
             <div className="flex items-center gap-3 pl-3">
@@ -140,26 +140,36 @@ export function HostItem({ host, onOpenTab, onEditHost, query = "", stripeIndex 
             </div>
           )}
 
-          <div className="flex items-center gap-1 pt-1.5 pl-2 pb-0.5">
-            {host.connectionType === "ssh" ? (
-              SSH_ACTIONS.map(({ type, icon: Icon, label }) => (
-                <button
-                  key={type}
-                  title={label}
-                  onClick={e => { e.stopPropagation(); onOpenTab(type); }}
-                  className="flex items-center justify-center size-7 rounded text-muted-foreground/50 hover:text-foreground hover:bg-muted-foreground/10 transition-colors"
-                >
-                  <Icon className="size-3.5"/>
-                </button>
-              ))
-            ) : (
+          <div className="flex items-center flex-wrap gap-1 pt-1.5 pl-2 pb-1">
+            {host.enableSsh && SSH_ACTIONS.map(({ type, icon: Icon, label }) => (
               <button
-                title="Connect"
-                onClick={e => { e.stopPropagation(); onOpenTab(host.connectionType as TabType); }}
-                className="flex items-center gap-1.5 px-2.5 h-6 rounded text-xs font-medium text-muted-foreground/70 hover:text-foreground hover:bg-muted-foreground/10 transition-colors border border-border/40"
+                key={type}
+                title={label}
+                onClick={e => { e.stopPropagation(); onOpenTab(type); }}
+                className="flex items-center justify-center size-7 rounded text-muted-foreground/50 hover:text-foreground hover:bg-muted-foreground/10 transition-colors"
               >
-                {host.connectionType === "telnet" ? <Terminal className="size-3"/> : <Monitor className="size-3"/>}
-                Connect
+                <Icon className="size-3.5"/>
+              </button>
+            ))}
+            {host.enableSsh && (host.enableRdp || host.enableVnc || host.enableTelnet) && (
+              <div className="w-px h-3.5 bg-border/60 mx-0.5 shrink-0"/>
+            )}
+            {host.enableRdp && (
+              <button title="RDP" onClick={e => { e.stopPropagation(); onOpenTab("rdp"); }}
+                className="flex items-center gap-1.5 px-2.5 h-6 rounded text-xs font-medium text-muted-foreground/70 hover:text-foreground hover:bg-muted-foreground/10 transition-colors border border-border/40">
+                <Monitor className="size-3"/>RDP
+              </button>
+            )}
+            {host.enableVnc && (
+              <button title="VNC" onClick={e => { e.stopPropagation(); onOpenTab("vnc"); }}
+                className="flex items-center gap-1.5 px-2.5 h-6 rounded text-xs font-medium text-muted-foreground/70 hover:text-foreground hover:bg-muted-foreground/10 transition-colors border border-border/40">
+                <Monitor className="size-3"/>VNC
+              </button>
+            )}
+            {host.enableTelnet && (
+              <button title="Telnet" onClick={e => { e.stopPropagation(); onOpenTab("telnet"); }}
+                className="flex items-center gap-1.5 px-2.5 h-6 rounded text-xs font-medium text-muted-foreground/70 hover:text-foreground hover:bg-muted-foreground/10 transition-colors border border-border/40">
+                <Terminal className="size-3"/>Telnet
               </button>
             )}
             {onEditHost && (

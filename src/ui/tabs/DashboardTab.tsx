@@ -300,7 +300,7 @@ function RecentActivityCard({ onOpenTab }: { onOpenTab: (host: Host, type: TabTy
       </div>
       <div className="flex flex-col overflow-auto flex-1">
         {recentActivity.map((item, i) => (
-          <div key={i} onClick={() => { const h = hosts.find(x => x.name === item.host); if (h) onOpenTab(h, "terminal"); }}
+          <div key={i} onClick={() => { const h = hosts.find(x => x.name === item.host); if (h) { const t = h.enableSsh ? "terminal" : h.enableRdp ? "rdp" : h.enableVnc ? "vnc" : "telnet"; onOpenTab(h, t); } }}
             className="flex items-center justify-between px-4 py-2 border-b border-border last:border-0 hover:bg-muted/50 cursor-pointer">
             <div className="flex items-center gap-2">
               <span className={`size-1.5 rounded-full shrink-0 ${item.online ? "bg-accent-brand" : "bg-muted-foreground/40"}`} />

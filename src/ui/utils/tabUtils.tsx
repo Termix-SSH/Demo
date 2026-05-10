@@ -2,6 +2,7 @@ import {
   Box,
   FolderSearch,
   LayoutDashboard,
+  Monitor,
   Network,
   Server,
   Settings,
@@ -23,8 +24,8 @@ export function tabIcon(type: TabType) {
   switch (type) {
     case "dashboard":      return <LayoutDashboard className="size-3.5"/>;
     case "terminal":       return <Terminal className="size-3.5"/>;
-    case "rdp":            return <Terminal className="size-3.5"/>;
-    case "vnc":            return <Terminal className="size-3.5"/>;
+    case "rdp":            return <Monitor className="size-3.5"/>;
+    case "vnc":            return <Monitor className="size-3.5"/>;
     case "telnet":         return <Terminal className="size-3.5"/>;
     case "stats":          return <Server className="size-3.5"/>;
     case "files":          return <FolderSearch className="size-3.5"/>;

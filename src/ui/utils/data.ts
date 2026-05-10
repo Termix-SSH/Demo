@@ -4,128 +4,203 @@ export const hosts: Host[] = [
   {
     id: "1", name: "web-01", user: "deploy", address: "10.0.1.10", port: 22,
     folder: "Production / Web Servers", online: true, cpu: 12, ram: 34, lastAccess: "2m ago",
-    tags: ["nginx", "frontend"], authType: "password", connectionType: "ssh",
-    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: []
+    tags: ["nginx", "frontend"], authType: "password",
+    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
     id: "2", name: "web-02", user: "deploy", address: "10.0.1.11", port: 22,
     folder: "Production / Web Servers", online: true, cpu: 8, ram: 27, lastAccess: "12m ago",
-    tags: ["nginx"], authType: "key", connectionType: "ssh",
-    enableTerminal: true, enableTunnel: false, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: []
+    tags: ["nginx"], authType: "key",
+    enableTerminal: true, enableTunnel: false, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
     id: "9", name: "web-03", user: "deploy", address: "10.0.1.12", port: 22,
     folder: "Production / Web Servers", online: true, cpu: 19, ram: 41, lastAccess: "7m ago",
-    tags: ["nginx", "frontend"], authType: "key", connectionType: "ssh",
-    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: []
+    tags: ["nginx", "frontend"], authType: "key",
+    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
     id: "10", name: "lb-01", user: "deploy", address: "10.0.1.5", port: 22,
     folder: "Production / Web Servers", online: true, cpu: 4, ram: 15, lastAccess: "1m ago",
-    tags: ["haproxy", "loadbalancer"], authType: "key", connectionType: "ssh",
-    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: []
+    tags: ["haproxy", "loadbalancer"], authType: "key",
+    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
-    id: "3", name: "db-primary", user: "postgres", address: "10.0.2.10", port: 5432,
+    id: "3", name: "db-primary", user: "postgres", address: "10.0.2.10", port: 22,
     folder: "Production", online: true, cpu: 45, ram: 71, lastAccess: "5m ago",
-    tags: ["postgres", "critical"], authType: "credential", credentialId: "c1", connectionType: "ssh",
-    enableTerminal: true, enableTunnel: true, enableFileManager: false, enableDocker: true, quickActions: [], serverTunnels: []
+    tags: ["postgres", "critical"], authType: "credential", credentialId: "c1",
+    enableTerminal: true, enableTunnel: true, enableFileManager: false, enableDocker: true, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
-    id: "4", name: "db-replica", user: "postgres", address: "10.0.2.11", port: 5432,
+    id: "4", name: "db-replica", user: "postgres", address: "10.0.2.11", port: 22,
     folder: "Production", online: false, cpu: 0, ram: 0, lastAccess: "31m ago",
-    authType: "credential", credentialId: "c1", connectionType: "ssh",
-    enableTerminal: true, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: []
+    authType: "credential", credentialId: "c1",
+    enableTerminal: true, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
-    id: "11", name: "cache-01", user: "redis", address: "10.0.2.20", port: 6379,
+    id: "11", name: "cache-01", user: "redis", address: "10.0.2.20", port: 22,
     folder: "Production", online: true, cpu: 6, ram: 22, lastAccess: "3m ago",
-    tags: ["redis", "cache"], authType: "key", connectionType: "ssh",
-    enableTerminal: true, enableTunnel: false, enableFileManager: false, enableDocker: true, quickActions: [], serverTunnels: []
+    tags: ["redis", "cache"], authType: "key",
+    enableTerminal: true, enableTunnel: false, enableFileManager: false, enableDocker: true, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
     id: "12", name: "queue-01", user: "rabbit", address: "10.0.2.30", port: 22,
     folder: "Production", online: true, cpu: 11, ram: 38, lastAccess: "8m ago",
-    tags: ["rabbitmq", "queue"], authType: "credential", credentialId: "c2", connectionType: "ssh",
-    enableTerminal: true, enableTunnel: true, enableFileManager: false, enableDocker: true, quickActions: [], serverTunnels: []
+    tags: ["rabbitmq", "queue"], authType: "credential", credentialId: "c2",
+    enableTerminal: true, enableTunnel: true, enableFileManager: false, enableDocker: true, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
     id: "5", name: "stage-web", user: "deploy", address: "10.1.1.10", port: 22,
     folder: "Staging", online: true, cpu: 3, ram: 18, lastAccess: "25m ago",
-    tags: ["staging"], authType: "password", connectionType: "ssh",
-    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: true, quickActions: [], serverTunnels: []
+    tags: ["staging"], authType: "password",
+    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: true, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
-    id: "6", name: "stage-db", user: "postgres", address: "10.1.2.10", port: 5432,
+    id: "6", name: "stage-db", user: "postgres", address: "10.1.2.10", port: 22,
     folder: "Staging", online: false, cpu: 0, ram: 0, lastAccess: "45m ago",
-    authType: "password", connectionType: "ssh",
-    enableTerminal: true, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: []
+    authType: "password",
+    enableTerminal: true, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
-    id: "13", name: "stage-cache", user: "redis", address: "10.1.2.20", port: 6379,
+    id: "13", name: "stage-cache", user: "redis", address: "10.1.2.20", port: 22,
     folder: "Staging", online: true, cpu: 2, ram: 9, lastAccess: "18m ago",
-    tags: ["redis", "staging"], authType: "password", connectionType: "ssh",
-    enableTerminal: true, enableTunnel: false, enableFileManager: false, enableDocker: true, quickActions: [], serverTunnels: []
+    tags: ["redis", "staging"], authType: "password",
+    enableTerminal: true, enableTunnel: false, enableFileManager: false, enableDocker: true, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
     id: "7", name: "win-dc-01", user: "Administrator", address: "10.0.3.10", port: 3389,
     folder: "Windows", online: true, cpu: 22, ram: 48, lastAccess: "1h ago",
-    tags: ["windows", "rdp", "domain-controller"], authType: "password", connectionType: "rdp",
-    enableTerminal: false, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: []
+    tags: ["windows", "rdp", "domain-controller", "ssh"], authType: "password",
+    enableTerminal: false, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: true, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
+    rdpUser: "Administrator",
   },
   {
     id: "8", name: "dev-workstation", user: "dev", address: "10.0.4.20", port: 5900,
     folder: "Windows", online: false, cpu: 0, ram: 0, lastAccess: "3d ago",
-    tags: ["vnc", "dev"], authType: "password", connectionType: "vnc",
-    enableTerminal: false, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: []
+    tags: ["vnc", "dev"], authType: "password",
+    enableTerminal: false, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: [],
+    enableSsh: false, enableRdp: false, enableVnc: true, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
     id: "14", name: "win-build-01", user: "Administrator", address: "10.0.3.20", port: 3389,
     folder: "Windows", online: true, cpu: 67, ram: 82, lastAccess: "15m ago",
-    tags: ["windows", "rdp", "ci"], authType: "password", connectionType: "rdp",
-    enableTerminal: false, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: []
+    tags: ["windows", "rdp", "ci"], authType: "password",
+    enableTerminal: false, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: [],
+    enableSsh: false, enableRdp: true, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
+    rdpUser: "Administrator",
   },
   {
     id: "15", name: "monitor-01", user: "ops", address: "10.0.5.10", port: 22,
     folder: "Monitoring", online: true, cpu: 9, ram: 44, lastAccess: "6m ago",
-    tags: ["grafana", "prometheus"], authType: "key", connectionType: "ssh",
-    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: true, quickActions: [], serverTunnels: []
+    tags: ["grafana", "prometheus"], authType: "key",
+    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: true, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
     id: "16", name: "log-01", user: "ops", address: "10.0.5.11", port: 22,
     folder: "Monitoring", online: true, cpu: 31, ram: 60, lastAccess: "11m ago",
-    tags: ["loki", "logging"], authType: "key", connectionType: "ssh",
-    enableTerminal: true, enableTunnel: false, enableFileManager: true, enableDocker: true, quickActions: [], serverTunnels: []
+    tags: ["loki", "logging"], authType: "key",
+    enableTerminal: true, enableTunnel: false, enableFileManager: true, enableDocker: true, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
     id: "17", name: "backup-01", user: "backup", address: "10.0.6.10", port: 22,
     folder: "Monitoring", online: false, cpu: 0, ram: 0, lastAccess: "2h ago",
-    tags: ["backup", "cron"], authType: "credential", credentialId: "c3", connectionType: "ssh",
-    enableTerminal: true, enableTunnel: false, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: []
+    tags: ["backup", "cron"], authType: "credential", credentialId: "c3",
+    enableTerminal: true, enableTunnel: false, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
     id: "18", name: "dev-api", user: "dev", address: "192.168.1.50", port: 22,
     folder: "Dev", online: true, cpu: 5, ram: 29, lastAccess: "33m ago",
-    tags: ["dev", "api"], authType: "password", connectionType: "ssh",
-    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: true, quickActions: [], serverTunnels: []
+    tags: ["dev", "api"], authType: "password",
+    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: true, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
     id: "19", name: "dev-frontend", user: "dev", address: "192.168.1.51", port: 22,
     folder: "Dev", online: true, cpu: 14, ram: 52, lastAccess: "20m ago",
-    tags: ["dev", "vite", "node"], authType: "password", connectionType: "ssh",
-    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: []
+    tags: ["dev", "vite", "node"], authType: "password",
+    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
-    id: "20", name: "dev-db", user: "postgres", address: "192.168.1.52", port: 5432,
+    id: "20", name: "dev-db", user: "postgres", address: "192.168.1.52", port: 22,
     folder: "Dev", online: false, cpu: 0, ram: 0, lastAccess: "1d ago",
-    tags: ["dev", "postgres"], authType: "password", connectionType: "ssh",
-    enableTerminal: true, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: []
+    tags: ["dev", "postgres"], authType: "password",
+    enableTerminal: true, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
   },
   {
     id: "21", name: "legacy-router", user: "admin", address: "10.0.0.1", port: 23,
     folder: "Dev", online: true, cpu: 2, ram: 8, lastAccess: "4h ago",
-    tags: ["telnet", "legacy", "router"], authType: "password", connectionType: "telnet",
-    enableTerminal: false, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: []
+    tags: ["telnet", "legacy", "router"], authType: "password",
+    enableTerminal: false, enableTunnel: false, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: [],
+    enableSsh: false, enableRdp: false, enableVnc: false, enableTelnet: true,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
+    telnetUser: "admin",
+  },
+  // Multi-protocol demo hosts
+  {
+    id: "22", name: "hypervisor-01", user: "root", address: "10.0.7.10", port: 22,
+    folder: "Infrastructure", online: true, cpu: 38, ram: 61, lastAccess: "3m ago",
+    tags: ["proxmox", "hypervisor", "kvm"], authType: "key",
+    enableTerminal: true, enableTunnel: true, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: true, enableVnc: true, enableTelnet: false,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
+    rdpUser: "root",
+  },
+  {
+    id: "23", name: "jumpbox-01", user: "ops", address: "10.0.7.20", port: 22,
+    folder: "Infrastructure", online: true, cpu: 4, ram: 12, lastAccess: "9m ago",
+    tags: ["bastion", "jump", "ssh", "telnet"], authType: "password",
+    enableTerminal: true, enableTunnel: true, enableFileManager: false, enableDocker: false, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: false, enableVnc: false, enableTelnet: true,
+    sshPort: 22, rdpPort: 3389, vncPort: 5900, telnetPort: 23,
+    telnetUser: "ops",
+  },
+  {
+    id: "24", name: "workstation-lab", user: "labuser", address: "10.0.7.30", port: 22,
+    folder: "Infrastructure", online: false, cpu: 0, ram: 0, lastAccess: "2h ago",
+    tags: ["lab", "windows", "linux"], authType: "password",
+    enableTerminal: true, enableTunnel: false, enableFileManager: true, enableDocker: false, quickActions: [], serverTunnels: [],
+    enableSsh: true, enableRdp: true, enableVnc: true, enableTelnet: true,
+    sshPort: 22, rdpPort: 3389, vncPort: 5901, telnetPort: 23,
+    rdpUser: "labuser",
+    vncPassword: "",
+    telnetUser: "labuser",
   },
 ];
 
@@ -146,10 +221,11 @@ export const hostTree: HostFolder = {
         ...hosts.filter(h => h.folder === "Production"),
       ],
     },
-    { name: "Staging",    children: hosts.filter(h => h.folder === "Staging")    },
-    { name: "Monitoring", children: hosts.filter(h => h.folder === "Monitoring") },
-    { name: "Windows",    children: hosts.filter(h => h.folder === "Windows")    },
-    { name: "Dev",        children: hosts.filter(h => h.folder === "Dev")        },
+    { name: "Staging",        children: hosts.filter(h => h.folder === "Staging")        },
+    { name: "Monitoring",     children: hosts.filter(h => h.folder === "Monitoring")     },
+    { name: "Windows",        children: hosts.filter(h => h.folder === "Windows")        },
+    { name: "Dev",            children: hosts.filter(h => h.folder === "Dev")            },
+    { name: "Infrastructure", children: hosts.filter(h => h.folder === "Infrastructure") },
   ],
 };
 
@@ -373,14 +449,16 @@ export const PANE_LAYOUTS: Record<import("./types").SplitMode, string> = {
 };
 
 export const HOST_TABS = [
-  { id: "general",  label: "General",          icon: "Settings"    },
-  { id: "terminal", label: "Terminal",          icon: "Terminal"    },
-  { id: "tunnels",  label: "Tunnels",           icon: "Network"     },
-  { id: "docker",   label: "Docker",            icon: "Box"         },
-  { id: "files",    label: "Files",             icon: "FolderSearch"},
-  { id: "stats",    label: "Stats & Actions",   icon: "Activity"    },
-  { id: "remote",   label: "Remote Desktop",    icon: "Monitor"     },
-  { id: "sharing",  label: "Sharing",           icon: "Share2"      },
+  { id: "general",  label: "General",         icon: "Settings"     },
+  { id: "ssh",      label: "SSH",             icon: "Terminal"     },
+  { id: "tunnels",  label: "Tunnels",         icon: "Network"      },
+  { id: "docker",   label: "Docker",          icon: "Box"          },
+  { id: "files",    label: "Files",           icon: "FolderSearch" },
+  { id: "stats",    label: "Stats & Actions", icon: "Activity"     },
+  { id: "rdp",      label: "RDP",             icon: "Monitor"      },
+  { id: "vnc",      label: "VNC",             icon: "Monitor"      },
+  { id: "telnet",   label: "Telnet",          icon: "Terminal"     },
+  { id: "sharing",  label: "Sharing",         icon: "Share2"       },
 ];
 
 export const CREDENTIAL_TABS = [

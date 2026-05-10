@@ -85,10 +85,28 @@ export type Host = {
   };
   quickActions: { name: string; snippetId: string }[];
 
-  connectionType: "ssh" | "rdp" | "vnc" | "telnet";
+  enableSsh: boolean;
+  enableRdp: boolean;
+  enableVnc: boolean;
+  enableTelnet: boolean;
+
+  sshPort: number;
+  rdpPort: number;
+  vncPort: number;
+  telnetPort: number;
+
+  rdpUser?: string;
+  rdpPassword?: string;
   domain?: string;
   security?: string;
   ignoreCert?: boolean;
+
+  vncPassword?: string;
+  vncUser?: string;
+
+  telnetUser?: string;
+  telnetPassword?: string;
+
   guacamoleConfig?: Record<string, any>;
 };
 
