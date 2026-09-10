@@ -1,75 +1,86 @@
-# React + TypeScript + Vite
+<div align="center">
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<img src="https://raw.githubusercontent.com/Termix-SSH/Termix/main/public/icon.svg" width="120" height="120" alt="Termix Logo" />
 
-Currently, two official plugins are available:
+<h1>Termix Demo</h1>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+<p>Public Demo website for Termix</p>
 
-## React Compiler
+<p>
+  <img src="https://img.shields.io/github/stars/Termix-SSH/Demo?style=flat&label=Stars&color=F39044&labelColor=1a1a1a" />
+  <img src="https://img.shields.io/github/forks/Termix-SSH/Demo?style=flat&label=Forks&color=F39044&labelColor=1a1a1a" />
+  <a href="https://discord.gg/jVQGdvHDrf"><img alt="Discord" src="https://img.shields.io/discord/1347374268253470720?color=F39044&labelColor=1a1a1a" /></a>
+  <a href="https://donate.termix.site/"><img alt="Donate" src="https://img.shields.io/badge/Donate-Support%20Termix-F39044?style=flat&labelColor=1a1a1a" /></a>
+</p>
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+</div>
 
-## Expanding the ESLint configuration
+<br />
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Overview
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+This is the public demo website for the project, [Termix](https://github.com/Termix-SSH/Termix). The demo is available [here](https://demo.termix.site).
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+<br />
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Sponsors
 
-```
+Interested in a paid placement to support development? Email [mail@termix.site](mailto:mail@termix.site).
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+<!-- SPONSORS:START -->
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+<div align="center">
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+<br />
 
-```
+<a href="https://www.digitalocean.com/">
+  <img src="https://termix.site/img/sponsors/digitalocean.svg" height="40" alt="DigitalOcean" />
+</a>
+&nbsp;&nbsp;&nbsp;
+<a href="https://crowdin.com/">
+  <img src="https://termix.site/img/sponsors/crowdin.svg" height="40" alt="Crowdin" />
+</a>
+&nbsp;&nbsp;&nbsp;
+<a href="https://www.blacksmith.sh/">
+  <img src="https://termix.site/img/sponsors/blacksmith.svg" height="40" alt="Blacksmith" />
+</a>
+&nbsp;&nbsp;&nbsp;
+<a href="https://www.cloudflare.com/">
+  <img src="https://termix.site/img/sponsors/cloudflare.png" height="40" alt="Cloudflare" />
+</a>
+&nbsp;&nbsp;&nbsp;
+<a href="https://akamai.com/">
+  <img src="https://termix.site/img/sponsors/akamai.svg" height="40" alt="Akamai" />
+</a>
+&nbsp;&nbsp;&nbsp;
+<a href="https://aws.amazon.com/">
+  <img src="https://termix.site/img/sponsors/aws.png" height="40" alt="AWS" />
+</a>
+&nbsp;&nbsp;&nbsp;
+<a href="https://rackgenius.com/">
+  <img src="https://termix.site/img/sponsors/rackgenius.png" height="40" alt="Rack Genius" />
+</a>
+&nbsp;&nbsp;&nbsp;
+<a href="https://ginernet.com/">
+  <img src="https://termix.site/img/sponsors/ginernet.png" height="40" alt="Ginernet" />
+</a>
+&nbsp;&nbsp;&nbsp;
+<a href="https://www.hetzner.com/?mtm_campaign=termix&mtm_medium=referral&mtm_content=sponsoring_link">
+  <img src="https://termix.site/img/sponsors/hetzner.png" height="40" alt="Hetzner" />
+</a>
+
+</div>
+
+<!-- SPONSORS:END -->
+
+<br />
+
+## Support
+
+If you need help or want to report an issue with the Termix documentation, visit the [Support](https://github.com/Termix-SSH/Support/issues) page, log in, and press `New Issue`. Please be as detailed as possible in your report, preferably written in English. You can also join the [Discord](https://discord.gg/jVQGdvHDrf) server and visit the support channel, however, response times may be longer.
+
+<br />
+
+## License
+
+Distributed under the Apache License Version 2.0. See `LICENSE` for more information.
