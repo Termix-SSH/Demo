@@ -1,17 +1,26 @@
-import path from "path"
-import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import path from "path";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 
-// https://vite.dev/config/
+const root = import.meta.dirname;
+
+// Mirrors Termix's alias layout so UI files copy over without rewriting imports.
+// "@/types" must be listed before "@/" so the more specific prefix wins.
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(),
-  ],
+  base: "./",
+  plugins: [react(), tailwindcss()],
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
+    alias: [
+      {
+        find: /^@\/types$/,
+        replacement: path.resolve(root, "src/types/index.ts"),
+      },
+      {
+        find: /^@\/types\//,
+        replacement: path.resolve(root, "src/types") + "/",
+      },
+      { find: /^@\//, replacement: path.resolve(root, "src/ui") + "/" },
+    ],
   },
-})
+});
