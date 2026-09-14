@@ -54,29 +54,6 @@ const ICONS: Record<string, LucideIcon> = {
   Workflow,
 };
 
-/**
- * A row of small metadata fields divided by hairline rules.
- *
- * The rule is drawn as a left border on every child after the first, so it
- * cannot drift out of step with the fields the way an interleaved separator
- * element does.
- */
-export function MetaRow({
-  className,
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <span
-      className={`flex flex-wrap items-center gap-x-2 [&>*+*]:border-l [&>*+*]:border-border [&>*+*]:pl-2 ${className ?? ""}`}
-    >
-      {children}
-    </span>
-  );
-}
-
 export function PluginIcon({
   name,
   size = "md",
@@ -111,7 +88,7 @@ export function SourceBadge({ source }: { source: PluginSource }) {
   // Termix cannot tell a corporate registry from any other one someone added,
   // so both say the only thing that is actually known: it is not official.
   return (
-    <span className="shrink-0 border border-yellow-500/40 bg-yellow-500/10 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-yellow-500">
+    <span className="shrink-0 border border-warning/40 bg-warning/10 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-warning">
       Unofficial
     </span>
   );

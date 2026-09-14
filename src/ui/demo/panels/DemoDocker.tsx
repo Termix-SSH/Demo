@@ -29,6 +29,18 @@ import { Input } from "@/components/input";
 import { Separator } from "@/components/separator";
 import { SectionCard } from "@/components/section-card";
 import { FakeSwitch } from "@/components/section-card";
+import { EmptyState } from "@/components/empty-state";
+import { TabStrip } from "@/sidebar/HostManagerTabs";
+import {
+  Facts,
+  PANEL,
+  PanelSearch,
+  PanelShell,
+  Segmented,
+  ViewToggle,
+} from "@/components/panel-layout";
+import { DataView, type DataColumn } from "@/components/data-view";
+import { usePanelView } from "@/hooks/use-panel-view";
 import {
   getContainerLogs,
   getContainerStats,
@@ -37,15 +49,24 @@ import {
 } from "@/demo/demo-api";
 import type { DemoContainer, DemoContainerStats } from "@/demo/demo-data";
 
-// Mirrors the real DockerManager: a header card over a responsive card grid.
-// Clicking a container swaps the whole view for a detail page, exactly as the
-// real one does, rather than opening a side panel.
+// Mirrors the real DockerManager, on the shared panel chrome: one header row,
+// then the containers as either a card grid or a dense list. Clicking a
+// container swaps the whole view for a detail page, exactly as the real one
+// does, rather than opening a side panel.
 
 type StateFilter = "all" | "running" | "paused" | "exited" | "restarting";
 
+const STATE_FILTERS = [
+  { value: "all", label: "All" },
+  { value: "running", label: "Running" },
+  { value: "paused", label: "Paused" },
+  { value: "exited", label: "Exited" },
+  { value: "restarting", label: "Restarting" },
+] as const satisfies readonly { value: StateFilter; label: string }[];
+
 const BADGE_CLASS: Record<string, string> = {
   running: "border-accent-brand/40 text-accent-brand bg-accent-brand/10",
-  paused: "border-yellow-500/40 text-yellow-500 bg-yellow-500/10",
+  paused: "border-warning/40 text-warning bg-warning/10",
   exited: "border-destructive/40 text-destructive bg-destructive/5",
   restarting: "border-blue-400/40 text-blue-400 bg-blue-400/10",
 };
@@ -71,6 +92,7 @@ export function DemoDocker() {
   const [query, setQuery] = useState("");
   const [stateFilter, setStateFilter] = useState<StateFilter>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const { view, density, setView, setDensity } = usePanelView("docker");
 
   useEffect(() => {
     let cancelled = false;
@@ -128,103 +150,107 @@ export function DemoDocker() {
     );
   }
 
+  const running = containers.filter((c) => c.state === "running").length;
+
   return (
-    <div className="flex flex-col flex-1 min-h-0 overflow-hidden bg-background h-full">
-      <div className="flex-1 overflow-y-auto px-3 py-3 flex flex-col gap-3">
-        <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 gap-0">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="size-10 border border-border bg-muted flex items-center justify-center shrink-0">
-              <Box className="size-5 text-accent-brand" />
-            </div>
-            <div className="flex flex-col gap-0.5 min-w-0">
-              <h1 className="text-2xl font-bold leading-none">Docker</h1>
-              <div className="flex items-center gap-1.5">
-                <span className="size-2 rounded-full bg-accent-brand" />
-                <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold truncate">
-                  {info ? `${info.runtime} v${info.version}` : "Docker Manager"}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 shrink-0">
-            <div className="relative w-40 md:w-56 hidden sm:block">
-              <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search containers"
-                className="pl-8 h-8"
-              />
-            </div>
-            <select
-              value={stateFilter}
-              onChange={(e) => setStateFilter(e.target.value as StateFilter)}
-              className="h-8 px-2 text-xs bg-background border border-border text-foreground outline-none focus:ring-1 focus:ring-ring"
-            >
-              <option value="all">All</option>
-              <option value="running">Running</option>
-              <option value="paused">Paused</option>
-              <option value="exited">Exited</option>
-              <option value="restarting">Restarting</option>
-            </select>
-            <Separator orientation="vertical" className="h-6" />
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={refresh}
-              title="Refresh"
-              className="text-accent-brand"
-            >
-              <RefreshCw
-                className={`size-4 ${isRefreshing ? "animate-spin" : ""}`}
-              />
-            </Button>
-            <a
-              href="https://docs.termix.site"
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center justify-center size-9 text-muted-foreground hover:text-foreground transition-colors"
-              title="Documentation"
-            >
-              <ExternalLink className="size-4" />
-            </a>
-          </div>
-        </Card>
-
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center h-full opacity-40 py-20 gap-3">
-            <RefreshCw className="size-8 animate-spin" />
-            <span className="text-xs font-semibold">Loading containers…</span>
-          </div>
-        ) : filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full opacity-20 py-20">
-            <Box className="size-16 mb-4" />
-            <span className="text-xl font-bold uppercase tracking-widest">
-              {containers.length === 0
-                ? "No containers found"
-                : "No containers match filters"}
+    <PanelShell
+      icon={<Box className="size-4" />}
+      title="Docker"
+      status={
+        info
+          ? `${info.runtime} v${info.version}`
+          : `${running} of ${containers.length} running`
+      }
+      actions={
+        <>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={refresh}
+            title="Refresh"
+            className="text-accent-brand"
+          >
+            <RefreshCw
+              className={`size-4 ${isRefreshing ? "animate-spin" : ""}`}
+            />
+          </Button>
+          <a
+            href="https://docs.termix.site"
+            target="_blank"
+            rel="noreferrer"
+            className="flex size-8 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+            title="Documentation"
+          >
+            <ExternalLink className="size-4" />
+          </a>
+        </>
+      }
+      toolbar={
+        <>
+          <PanelSearch
+            value={query}
+            onChange={setQuery}
+            placeholder="Search containers"
+          />
+          <Segmented<StateFilter>
+            value={stateFilter}
+            onChange={setStateFilter}
+            options={STATE_FILTERS}
+          />
+          <div className="ml-auto flex items-center gap-2">
+            <span className="hidden text-[10px] uppercase tracking-widest text-muted-foreground tabular-nums sm:inline">
+              {filtered.length} of {containers.length}
             </span>
-            <span className="text-xs font-semibold mt-1">
-              {containers.length === 0
-                ? "Start a container on this host to see it here."
-                : "Try a different search or status filter."}
-            </span>
+            <ViewToggle
+              view={view}
+              onView={setView}
+              density={density}
+              onDensity={setDensity}
+            />
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-            {filtered.map((container) => (
-              <ContainerCard
-                key={container.id}
-                container={container}
-                onOpen={() => setSelectedId(container.id)}
-                onSetState={setState}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
+        </>
+      }
+      className={`${PANEL.body} ${PANEL.gap}`}
+    >
+      {isLoading ? (
+        <div className="flex flex-1 items-center justify-center gap-2 text-muted-foreground opacity-40">
+          <RefreshCw className="size-5 animate-spin" />
+          <span className="text-xs font-semibold">Loading containers</span>
+        </div>
+      ) : (
+        <DataView
+          items={filtered}
+          view={view}
+          density={density}
+          getKey={(c) => c.id}
+          columns={{ base: 1, md: 2, lg: 3, xl: 4 }}
+          listColumns={containerColumns(setState)}
+          onRowClick={(c) => setSelectedId(c.id)}
+          renderCard={(container) => (
+            <ContainerCard
+              container={container}
+              onOpen={() => setSelectedId(container.id)}
+              onSetState={setState}
+            />
+          )}
+          empty={
+            <EmptyState
+              icon={Box}
+              title={
+                containers.length === 0
+                  ? "No containers"
+                  : "Nothing matches those filters"
+              }
+              hint={
+                containers.length === 0
+                  ? "Start a container on this host to see it here."
+                  : "Try a different search or status filter."
+              }
+            />
+          }
+        />
+      )}
+    </PanelShell>
   );
 }
 
@@ -385,11 +411,150 @@ function ContainerCard({
   );
 }
 
+/**
+ * List mode. The same actions as the card footer, but always visible: a row is
+ * too short to hide them behind hover the way a card can.
+ */
+function containerColumns(
+  onSetState: (id: string, state: DemoContainer["state"], status: string) => void,
+): DataColumn<DemoContainer>[] {
+  return [
+    {
+      key: "name",
+      header: "Name",
+      width: "minmax(0,1.4fr)",
+      cell: (c) => (
+        <span className="flex items-center gap-2">
+          <Box
+            className={`size-3.5 shrink-0 ${c.state === "running" ? "text-accent-brand" : "text-muted-foreground"}`}
+          />
+          <span className="truncate font-medium">{c.name}</span>
+        </span>
+      ),
+    },
+    {
+      key: "state",
+      header: "State",
+      width: "100px",
+      cell: (c) => <DockerBadge state={c.state} />,
+    },
+    {
+      key: "image",
+      header: "Image",
+      width: "minmax(0,1.6fr)",
+      hideBelow: "md",
+      cell: (c) => (
+        <span className="truncate font-mono text-[11px] text-muted-foreground">
+          {c.image}
+        </span>
+      ),
+    },
+    {
+      key: "ports",
+      header: "Ports",
+      width: "minmax(0,1fr)",
+      hideBelow: "lg",
+      cell: (c) => (
+        <Facts className="text-[10px] text-muted-foreground">
+          {c.ports ? (
+            c.ports.split(", ").slice(0, 2).map((port) => (
+              <span key={port} className="font-mono">
+                {port}
+              </span>
+            ))
+          ) : (
+            <span className="italic">None</span>
+          )}
+        </Facts>
+      ),
+    },
+    {
+      key: "actions",
+      header: "",
+      width: "76px",
+      align: "end",
+      cell: (c) => <RowActions container={c} onSetState={onSetState} />,
+    },
+  ];
+}
+
+function RowActions({
+  container,
+  onSetState,
+}: {
+  container: DemoContainer;
+  onSetState: (
+    id: string,
+    state: DemoContainer["state"],
+    status: string,
+  ) => void;
+}) {
+  const running = container.state === "running";
+  const paused = container.state === "paused";
+  const stop = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onSetState(container.id, "exited", "Exited (0) just now");
+  };
+  const start = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onSetState(container.id, "running", "Up just now");
+  };
+
+  return (
+    <span className="flex items-center justify-end gap-0.5">
+      {running ? (
+        <Button
+          variant="ghost"
+          size="icon-xs"
+          title="Stop"
+          className="text-destructive"
+          onClick={stop}
+        >
+          <Square className="size-3" />
+        </Button>
+      ) : (
+        <Button variant="ghost" size="icon-xs" title="Start" onClick={start}>
+          <Play className="size-3" />
+        </Button>
+      )}
+      {paused && (
+        <Button
+          variant="ghost"
+          size="icon-xs"
+          title="Unpause"
+          onClick={start}
+        >
+          <PlayCircle className="size-3" />
+        </Button>
+      )}
+      <Button
+        variant="ghost"
+        size="icon-xs"
+        title="Restart"
+        disabled={container.state === "exited"}
+        onClick={start}
+      >
+        <RotateCw className="size-3" />
+      </Button>
+    </span>
+  );
+}
+
 function Spinner() {
   return <RefreshCw className="size-3 animate-spin" />;
 }
 
 type DetailTab = "logs" | "stats" | "console";
+
+const DETAIL_TABS = [
+  { id: "logs", label: "Logs", icon: <List className="size-3" /> },
+  { id: "stats", label: "Stats", icon: <Activity className="size-3" /> },
+  {
+    id: "console",
+    label: "Console",
+    icon: <TerminalIcon className="size-3" />,
+  },
+];
 
 function ContainerDetail({
   container,
@@ -407,101 +572,58 @@ function ContainerDetail({
   const [tab, setTab] = useState<DetailTab>("logs");
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 overflow-hidden bg-background h-full">
-      <div className="flex flex-col flex-1 min-h-0 px-3 py-3 gap-3">
-        <Card className="flex-row items-center justify-between px-3 py-3 shrink-0 gap-0">
-          <div className="flex items-center gap-3 min-w-0">
-            <Button variant="ghost" size="icon" onClick={onBack} title="Back">
-              <ArrowLeft className="size-4" />
-            </Button>
-            <div className="size-10 border border-border bg-muted flex items-center justify-center shrink-0">
-              <Box className="size-5 text-accent-brand" />
-            </div>
-            <div className="flex flex-col gap-0.5 min-w-0">
-              <h1 className="text-2xl font-bold leading-none truncate">
-                {container.name}
-              </h1>
-              <span className="text-xs font-mono text-muted-foreground truncate">
-                {container.image}
-              </span>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <DockerBadge state={container.state} />
-            <Separator orientation="vertical" className="h-6" />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-accent-brand"
-              title="Settings"
-            >
-              <Settings className="size-4" />
-            </Button>
-          </div>
-        </Card>
-
-        <div className="flex gap-1 border-b border-border shrink-0">
-          <TabButton
-            active={tab === "logs"}
-            onClick={() => setTab("logs")}
-            icon={<List className="size-4" />}
-            label="Logs"
-          />
-          <TabButton
-            active={tab === "stats"}
-            onClick={() => setTab("stats")}
-            icon={<Activity className="size-4" />}
-            label="Stats"
-          />
-          <TabButton
-            active={tab === "console"}
-            onClick={() => setTab("console")}
-            icon={<TerminalIcon className="size-4" />}
-            label="Console"
-          />
-        </div>
-
-        <div className="flex flex-col flex-1 min-h-0">
-          {tab === "logs" && <LogViewer container={container} />}
-          {tab === "stats" && <ContainerStats container={container} />}
-          {tab === "console" && (
-            <ConsolePlaceholder container={container} onSetState={onSetState} />
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function TabButton({
-  active,
-  onClick,
-  icon,
-  label,
-}: {
-  active: boolean;
-  onClick: () => void;
-  icon: React.ReactNode;
-  label: string;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex items-center gap-2 px-4 py-2 text-sm font-semibold border-b-2 transition-colors ${
-        active
-          ? "border-b-accent-brand text-foreground bg-accent-brand/5"
-          : "border-b-transparent text-muted-foreground hover:text-foreground hover:bg-muted"
-      }`}
+    <PanelShell
+      leading={
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-full w-12.5 rounded-none text-muted-foreground hover:text-foreground"
+          onClick={onBack}
+          title="Back"
+        >
+          <ArrowLeft className="size-3.5" />
+        </Button>
+      }
+      icon={<Box className="size-4" />}
+      title={container.name}
+      status={container.image}
+      actions={
+        <>
+          <DockerBadge state={container.state} />
+          <Separator orientation="vertical" className="h-6" />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-accent-brand"
+            title="Settings"
+          >
+            <Settings className="size-4" />
+          </Button>
+        </>
+      }
+      toolbar={
+        <TabStrip
+          tabs={DETAIL_TABS}
+          activeTab={tab}
+          onTabChange={(id) => setTab(id as DetailTab)}
+        />
+      }
+      scroll={false}
+      className={`${PANEL.body} ${PANEL.gap}`}
     >
-      {icon}
-      {label}
-    </button>
+      {tab === "logs" && <LogViewer container={container} />}
+      {tab === "stats" && <ContainerStats container={container} />}
+      {tab === "console" && (
+        <ConsolePlaceholder container={container} onSetState={onSetState} />
+      )}
+    </PanelShell>
   );
 }
+
 
 function logColor(line: string): string {
   if (line.includes("ERROR")) return "text-destructive";
-  if (line.includes("WARN")) return "text-yellow-400/90";
+  if (line.includes("WARN")) return "text-warning/90";
   if (line.includes("DEBUG")) return "text-muted-foreground/60";
   return "text-foreground/90";
 }

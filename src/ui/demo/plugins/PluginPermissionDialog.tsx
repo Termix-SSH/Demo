@@ -9,7 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/dialog";
-import { MetaRow, PluginIcon, SourceBadge } from "./plugin-bits";
+import { PluginIcon, SourceBadge } from "./plugin-bits";
+import { Facts } from "@/components/panel-layout";
 import {
   CAPABILITY_INFO,
   type DemoPlugin,
@@ -62,7 +63,7 @@ export function PluginPermissionDialog({
                   : `Install ${plugin.name}`}
               </DialogTitle>
               <DialogDescription asChild>
-                <MetaRow>
+                <Facts>
                   <span className="truncate">{plugin.author}</span>
                   <span className="shrink-0">
                     {mode === "update"
@@ -70,7 +71,7 @@ export function PluginPermissionDialog({
                       : plugin.version}
                   </span>
                   <SourceBadge source={plugin.source} />
-                </MetaRow>
+                </Facts>
               </DialogDescription>
             </div>
           </div>
@@ -128,8 +129,8 @@ export function PluginPermissionDialog({
         </div>
 
         {plugin.source === "community" && (
-          <div className="flex items-start gap-2 border border-yellow-500/30 bg-yellow-500/5 px-3 py-2">
-            <TriangleAlert className="mt-px size-3.5 shrink-0 text-yellow-500" />
+          <div className="flex items-start gap-2 border border-warning/30 bg-warning/5 px-3 py-2">
+            <TriangleAlert className="mt-px size-3.5 shrink-0 text-warning" />
             <span className="text-[11px] leading-snug text-muted-foreground">
               Written outside the Termix team. Reviewed before listing, but not
               maintained by Termix.

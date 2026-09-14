@@ -7,18 +7,16 @@ import {
   FilePlus,
   Folder,
   FolderPlus,
-  Grid3X3,
   Layout,
-  List,
   Plus,
   RefreshCw,
-  Rows3,
   Search,
   Trash2,
   Upload,
 } from "lucide-react";
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
+import { ViewToggle } from "@/components/panel-layout";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -212,8 +210,8 @@ export function FileManagerToolbar({
   onCreateFile,
 }: FileManagerToolbarProps) {
   return (
-    <div className="flex flex-col shrink-0 mx-3 mt-3 border border-border bg-card">
-      <div className="flex flex-row items-center justify-between px-3 py-2 gap-2">
+    <div className="flex w-full flex-col gap-2">
+      <div className="flex w-full flex-row items-center justify-between gap-2">
         <div className="flex items-center gap-1">
           <Button
             variant="ghost"
@@ -302,39 +300,12 @@ export function FileManagerToolbar({
             />
           </div>
 
-          <div className="flex items-center border border-border rounded-none overflow-hidden">
-            <Button
-              variant={viewMode === "grid" ? "secondary" : "ghost"}
-              size="icon"
-              onClick={() => setViewMode("grid")}
-              className={`size-8 rounded-none border-y-0 border-l-0 border-r border-border ${viewMode === "grid" ? "bg-accent-brand/10 text-accent-brand" : ""}`}
-            >
-              <Grid3X3 className="size-4" />
-            </Button>
-            <Button
-              variant={viewMode === "list" ? "secondary" : "ghost"}
-              size="icon"
-              onClick={() => setViewMode("list")}
-              className={`size-8 rounded-none border-y-0 border-r-0 border-border ${viewMode === "list" ? "bg-accent-brand/10 text-accent-brand" : ""}`}
-            >
-              <List className="size-4" />
-            </Button>
-            <Button
-              variant={density === "compact" ? "secondary" : "ghost"}
-              size="icon"
-              onClick={() =>
-                setDensity(density === "compact" ? "comfortable" : "compact")
-              }
-              className={`size-8 rounded-none border-y-0 border-r-0 border-l border-border ${density === "compact" ? "bg-accent-brand/10 text-accent-brand" : ""}`}
-              title={t(
-                density === "compact"
-                  ? "fileManager.comfortableLayout"
-                  : "fileManager.compactLayout",
-              )}
-            >
-              <Rows3 className="size-4" />
-            </Button>
-          </div>
+          <ViewToggle
+            view={viewMode}
+            onView={setViewMode}
+            density={density}
+            onDensity={setDensity}
+          />
 
           <button
             onClick={onUpload}
@@ -424,12 +395,12 @@ export function FileManagerToolbar({
         </div>
       </div>
 
-      <div className="md:hidden flex items-center px-3 pb-2 gap-2">
+      <div className="flex items-center gap-2 md:hidden">
         <PathBar
           currentPath={currentPath}
           navigateTo={navigateTo}
           t={t}
-          className="flex-1 flex items-center px-3 h-8 bg-muted/50 border border-border gap-2 overflow-hidden"
+          className="flex h-8 flex-1 items-center gap-2 overflow-hidden border border-border bg-muted/50 px-3"
         />
       </div>
     </div>

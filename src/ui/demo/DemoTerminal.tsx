@@ -526,7 +526,7 @@ function StatBar({ label, value }: { label: string; value: number }) {
     value >= 90
       ? "bg-red-500"
       : value >= 75
-        ? "bg-yellow-500"
+        ? "bg-warning"
         : "bg-accent-brand";
   return (
     <span className="inline-flex items-center gap-1 px-1 text-[10px] font-semibold text-muted-foreground">

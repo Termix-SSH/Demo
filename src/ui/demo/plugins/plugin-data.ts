@@ -119,6 +119,19 @@ export interface DemoPlugin {
   capabilities: PluginCapability[];
   /** Destinations it adds, listed so removal is predictable. */
   contributes: string[];
+  /**
+   * Machine-readable form of `contributes`, for the destinations the UI can
+   * render. Only present where the demo actually wires the contribution up.
+   */
+  contributions?: {
+    dashboardCards?: {
+      id: string;
+      label: string;
+      /** Lucide icon name, resolved by the UI so fixtures stay plain data. */
+      icon: string;
+      kind: "containers" | "guests" | "metrics";
+    }[];
+  };
   /** Install count, formatted for display. */
   downloads: string;
   /** Live resource use of the plugin worker, display strings. */
@@ -231,6 +244,16 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
       "ui:surface",
     ],
     contributes: ["Metrics tab", "2 dashboard cards", "Host setting"],
+    contributions: {
+      dashboardCards: [
+        {
+          id: "host-metrics.load",
+          label: "Host load",
+          icon: "Activity",
+          kind: "metrics",
+        },
+      ],
+    },
     downloads: "119k",
     cpu: "1.4%",
     ram: "72 MB",
@@ -367,6 +390,16 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
       "ui:surface",
     ],
     contributes: ["Docker tab", "Dashboard card", "Host setting"],
+    contributions: {
+      dashboardCards: [
+        {
+          id: "docker.containers",
+          label: "Containers",
+          icon: "Container",
+          kind: "containers",
+        },
+      ],
+    },
     downloads: "112k",
     cpu: "1.1%",
     ram: "64 MB",
@@ -560,6 +593,16 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
       "ui:surface",
     ],
     contributes: ["Proxmox tab", "Dashboard card", "Host setting"],
+    contributions: {
+      dashboardCards: [
+        {
+          id: "proxmox.guests",
+          label: "Proxmox guests",
+          icon: "Server",
+          kind: "guests",
+        },
+      ],
+    },
     downloads: "61k",
     cpu: "0.9%",
     ram: "47 MB",

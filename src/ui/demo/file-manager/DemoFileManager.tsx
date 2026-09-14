@@ -6,15 +6,16 @@ import type { FileItem } from "@/types";
 import { listFiles, readFile } from "@/demo/demo-api";
 import { copyToClipboard } from "@/lib/clipboard";
 import { FileManagerToolbar } from "./FileManagerToolbar";
+import { usePanelView } from "@/hooks/use-panel-view";
+import { PanelShell } from "@/components/panel-layout";
+import { Folder as FolderIcon } from "lucide-react";
 import { FileManagerGrid } from "./FileManagerGrid";
 import { FileManagerSidebar } from "./FileManagerSidebar";
 import { FileManagerContextMenu } from "./FileManagerContextMenu";
 import type {
   CreateIntent,
-  Density,
   SortBy,
   SortOrder,
-  ViewMode,
 } from "./types";
 
 interface ContextMenuState {
@@ -46,8 +47,14 @@ export function DemoFileManager({
 
   const [selectedFiles, setSelectedFiles] = useState<FileItem[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [viewMode, setViewMode] = useState<ViewMode>("list");
-  const [density, setDensity] = useState<Density>("comfortable");
+  // Grid/list and row height are a saved preference, not tab state, so they
+  // survive closing the tab and follow the Simple/Advanced presets.
+  const {
+    view: viewMode,
+    density,
+    setView: setViewMode,
+    setDensity,
+  } = usePanelView("fileManager");
   const [sortBy, setSortBy] = useState<SortBy>("name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
@@ -241,49 +248,55 @@ export function DemoFileManager({
   }
 
   return (
-    <div className="flex flex-col h-full min-h-0 bg-background">
-      <FileManagerToolbar
-        t={t}
-        currentPath={currentPath}
-        navIndex={navIndex}
-        navHistoryLength={navHistory.length}
-        isLoading={isLoading}
-        selectedFiles={selectedFiles}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        viewMode={viewMode}
-        setViewMode={setViewMode}
-        density={density}
-        setDensity={setDensity}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-        sortOrder={sortOrder}
-        setSortOrder={setSortOrder}
-        setMobileSidebarOpen={(updater) =>
-          setMobileSidebarOpen((open) => updater(open))
-        }
-        goBack={goBack}
-        goForward={goForward}
-        goUp={goUp}
-        navigateTo={navigateTo}
-        onRefresh={() => {
-          overrides.current.delete(currentPath);
-          setRefreshToken((n) => n + 1);
-        }}
-        onDeleteFiles={handleDelete}
-        onCopyFiles={(files) => setClipboard(files)}
-        onUpload={() => toast.info(t("fileManager.uploadFile"))}
-        onCreateFolder={() =>
-          setCreateIntent({ type: "directory", currentName: "new-folder" })
-        }
-        onCreateFile={() =>
-          setCreateIntent({ type: "file", currentName: "new-file" })
-        }
-      />
-
-      <div className="flex flex-1 px-3 pb-3 pt-2 gap-3 min-h-0 relative">
+    <PanelShell
+      icon={<FolderIcon className="size-4" />}
+      title="Files"
+      status={host.name}
+      scroll={false}
+      toolbar={
+        <FileManagerToolbar
+          t={t}
+          currentPath={currentPath}
+          navIndex={navIndex}
+          navHistoryLength={navHistory.length}
+          isLoading={isLoading}
+          selectedFiles={selectedFiles}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          viewMode={viewMode}
+          setViewMode={setViewMode}
+          density={density}
+          setDensity={setDensity}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+          sortOrder={sortOrder}
+          setSortOrder={setSortOrder}
+          setMobileSidebarOpen={(updater) =>
+            setMobileSidebarOpen((open) => updater(open))
+          }
+          goBack={goBack}
+          goForward={goForward}
+          goUp={goUp}
+          navigateTo={navigateTo}
+          onRefresh={() => {
+            overrides.current.delete(currentPath);
+            setRefreshToken((n) => n + 1);
+          }}
+          onDeleteFiles={handleDelete}
+          onCopyFiles={(files) => setClipboard(files)}
+          onUpload={() => toast.info(t("fileManager.uploadFile"))}
+          onCreateFolder={() =>
+            setCreateIntent({ type: "directory", currentName: "new-folder" })
+          }
+          onCreateFile={() =>
+            setCreateIntent({ type: "file", currentName: "new-file" })
+          }
+        />
+      }
+    >
+      <div className="relative flex min-h-0 flex-1">
         <div
-          className={`${mobileSidebarOpen ? "flex" : "hidden"} md:flex w-56 shrink-0 flex-col overflow-hidden min-h-0 border border-border bg-card`}
+          className={`${mobileSidebarOpen ? "flex" : "hidden"} md:flex w-56 shrink-0 flex-col overflow-hidden min-h-0 border-r border-border`}
         >
           <FileManagerSidebar
             currentPath={currentPath}
@@ -296,7 +309,7 @@ export function DemoFileManager({
           />
         </div>
 
-        <div className="flex flex-col flex-1 min-w-0 relative overflow-hidden min-h-0 border border-border bg-card">
+        <div className="relative flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
           <FileManagerGrid
             files={visibleFiles}
             selectedFiles={selectedFiles}
@@ -371,6 +384,6 @@ export function DemoFileManager({
           setRefreshToken((n) => n + 1);
         }}
       />
-    </div>
+    </PanelShell>
   );
 }

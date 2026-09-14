@@ -32,6 +32,10 @@ export type UiAreaKey =
   | "terminal"
   | "fileManager"
   | "docker"
+  | "tunnels"
+  | "proxmox"
+  | "tmux"
+  | "plugins"
   | "hostMetrics"
   | "hostEditor"
   | "homepage";
@@ -42,7 +46,17 @@ export type UiRowActions = "essential" | "full";
 export type UiEmptyStateVerbosity = "minimal" | "guided";
 export type UiToolbarDensity = "icon" | "labeled" | "expanded";
 export type UiFileViewMode = "grid" | "list";
-export type UiDockerViewMode = "list" | "detail";
+export type UiPanelViewMode = "grid" | "list";
+
+/**
+ * Grid or list, plus row height, for every panel that lists things. One shape
+ * rather than a per-panel interface, since the knobs are identical and a panel
+ * gaining a third view would be a new field here, not a new type.
+ */
+export interface UiPanelPreferences {
+  viewMode: UiPanelViewMode;
+  density: UiDensity;
+}
 export type UiHostEditorMode = "simple" | "full";
 
 export interface UiChromePreferences {
@@ -79,11 +93,8 @@ export interface UiTerminalPreferences {
 
 export interface UiFileManagerPreferences {
   viewMode: UiFileViewMode;
+  density: UiDensity;
   showHiddenFiles: boolean;
-}
-
-export interface UiDockerPreferences {
-  viewMode: UiDockerViewMode;
 }
 
 export interface UiHostMetricsPreferences {
@@ -108,7 +119,11 @@ export interface UiAreaPreferences {
   dashboard: UiDashboardPreferences;
   terminal: UiTerminalPreferences;
   fileManager: UiFileManagerPreferences;
-  docker: UiDockerPreferences;
+  docker: UiPanelPreferences;
+  tunnels: UiPanelPreferences;
+  proxmox: UiPanelPreferences;
+  tmux: UiPanelPreferences;
+  plugins: UiPanelPreferences;
   hostMetrics: UiHostMetricsPreferences;
   hostEditor: UiHostEditorPreferences;
   homepage: UiHomepagePreferences;
@@ -227,8 +242,16 @@ export const PRESETS: Record<Exclude<UiPreset, "custom">, UiAreaPreferences> = {
       ],
     },
     terminal: { toolbarDensity: "icon" },
-    fileManager: { viewMode: "grid", showHiddenFiles: false },
-    docker: { viewMode: "list" },
+    fileManager: {
+      viewMode: "grid",
+      density: "comfortable",
+      showHiddenFiles: false,
+    },
+    docker: { viewMode: "grid", density: "comfortable" },
+    tunnels: { viewMode: "grid", density: "comfortable" },
+    proxmox: { viewMode: "grid", density: "comfortable" },
+    tmux: { viewMode: "grid", density: "comfortable" },
+    plugins: { viewMode: "grid", density: "comfortable" },
     hostMetrics: { enabledCards: SIMPLE_HOST_METRICS_CARDS, columns: 1 },
     hostEditor: { mode: "simple" },
     homepage: { enabledWidgets: null },
@@ -252,8 +275,16 @@ export const PRESETS: Record<Exclude<UiPreset, "custom">, UiAreaPreferences> = {
     dashboard: { enabledCards: BALANCED_DASHBOARD_CARDS },
     terminal: { toolbarDensity: "labeled" },
     // FileManager.tsx has always defaulted to grid when nothing is stored.
-    fileManager: { viewMode: "grid", showHiddenFiles: false },
-    docker: { viewMode: "list" },
+    fileManager: {
+      viewMode: "grid",
+      density: "comfortable",
+      showHiddenFiles: false,
+    },
+    docker: { viewMode: "grid", density: "comfortable" },
+    tunnels: { viewMode: "grid", density: "comfortable" },
+    proxmox: { viewMode: "grid", density: "comfortable" },
+    tmux: { viewMode: "grid", density: "comfortable" },
+    plugins: { viewMode: "grid", density: "comfortable" },
     // 3 is defaultLayoutFromWidgets's own default, i.e. today's behavior.
     hostMetrics: { enabledCards: BALANCED_HOST_METRICS_CARDS, columns: 3 },
     hostEditor: { mode: "full" },
@@ -277,9 +308,17 @@ export const PRESETS: Record<Exclude<UiPreset, "custom">, UiAreaPreferences> = {
     rail: { hiddenTabs: [] },
     dashboard: { enabledCards: ADVANCED_DASHBOARD_CARDS },
     terminal: { toolbarDensity: "expanded" },
-    // List packs more files and metadata per screen than the grid.
-    fileManager: { viewMode: "list", showHiddenFiles: true },
-    docker: { viewMode: "detail" },
+    // List packs more rows and metadata per screen than the grid.
+    fileManager: {
+      viewMode: "list",
+      density: "compact",
+      showHiddenFiles: true,
+    },
+    docker: { viewMode: "list", density: "compact" },
+    tunnels: { viewMode: "list", density: "compact" },
+    proxmox: { viewMode: "list", density: "compact" },
+    tmux: { viewMode: "list", density: "compact" },
+    plugins: { viewMode: "list", density: "compact" },
     hostMetrics: { enabledCards: ADVANCED_HOST_METRICS_CARDS, columns: 4 },
     hostEditor: { mode: "full" },
     homepage: { enabledWidgets: null },
@@ -335,10 +374,28 @@ const AREA_SPECS: {
   },
   fileManager: {
     viewMode: { kind: "enum", values: ["grid", "list"] },
+    density: { kind: "enum", values: ["comfortable", "compact"] },
     showHiddenFiles: { kind: "bool" },
   },
   docker: {
-    viewMode: { kind: "enum", values: ["list", "detail"] },
+    viewMode: { kind: "enum", values: ["grid", "list"] },
+    density: { kind: "enum", values: ["comfortable", "compact"] },
+  },
+  tunnels: {
+    viewMode: { kind: "enum", values: ["grid", "list"] },
+    density: { kind: "enum", values: ["comfortable", "compact"] },
+  },
+  proxmox: {
+    viewMode: { kind: "enum", values: ["grid", "list"] },
+    density: { kind: "enum", values: ["comfortable", "compact"] },
+  },
+  tmux: {
+    viewMode: { kind: "enum", values: ["grid", "list"] },
+    density: { kind: "enum", values: ["comfortable", "compact"] },
+  },
+  plugins: {
+    viewMode: { kind: "enum", values: ["grid", "list"] },
+    density: { kind: "enum", values: ["comfortable", "compact"] },
   },
   hostMetrics: {
     enabledCards: { kind: "stringArray" },

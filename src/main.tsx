@@ -8,6 +8,7 @@ import { TooltipProvider } from "@/components/tooltip";
 import { UiPreferencesProvider } from "@/contexts/UiPreferencesContext";
 import { DemoAuth } from "@/auth/DemoAuth";
 import { AppShell } from "@/AppShell";
+import { startDashboardPluginCards } from "@/demo/dashboard-plugin-cards";
 
 /**
  * Mirrors the real entry point's cross-fade between the auth screen and the
@@ -23,6 +24,9 @@ type Phase = "idle-auth" | "fading-in" | "idle-app" | "fading-out";
 applyFontSize("md");
 applyUiFont("jetbrains-mono");
 applyAccentColor("#f59145");
+
+// Plugin-contributed dashboard sections follow the plugin store from here on.
+startDashboardPluginCards();
 
 const FADE_MS = 450;
 

@@ -192,11 +192,11 @@ export function FileManagerGrid({
   }
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-card overflow-hidden">
+    <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
       {viewMode === "list" && (
         <div
           className={cn(
-            "grid gap-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground border-b border-border bg-card",
+            "grid gap-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground border-b border-border bg-background",
             ROW_COLS,
             compact ? "px-2 py-1" : "px-4 py-2",
           )}

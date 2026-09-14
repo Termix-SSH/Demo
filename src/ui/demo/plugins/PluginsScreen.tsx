@@ -31,7 +31,14 @@ import { Separator } from "@/components/separator";
 import { FakeSwitch } from "@/components/section-card";
 import { EmptyState } from "@/components/empty-state";
 import { TabStrip } from "@/sidebar/HostManagerTabs";
-import { MetaRow, PluginIcon, SourceBadge } from "./plugin-bits";
+import { PluginIcon, SourceBadge } from "./plugin-bits";
+import {
+  GroupHeading,
+  Facts,
+  PANEL,
+  Segmented,
+} from "@/components/panel-layout";
+import { SectionCard } from "@/components/section-card";
 import { PluginPermissionDialog } from "./PluginPermissionDialog";
 import { CAPABILITY_INFO, type DemoPlugin } from "./plugin-data";
 import {
@@ -207,11 +214,11 @@ export function PluginsScreen() {
 
 type SourceFilter = "all" | "official" | "community";
 
-const SOURCE_FILTERS: { id: SourceFilter; label: string }[] = [
-  { id: "all", label: "All" },
-  { id: "official", label: "Official" },
-  { id: "community", label: "Community" },
-];
+const SOURCE_FILTERS = [
+  { value: "all", label: "All" },
+  { value: "official", label: "Official" },
+  { value: "community", label: "Community" },
+] as const satisfies readonly { value: SourceFilter; label: string }[];
 
 /** Anything not from the official registry counts as community here. */
 function matchesSource(plugin: DemoPlugin, filter: SourceFilter): boolean {
@@ -220,34 +227,6 @@ function matchesSource(plugin: DemoPlugin, filter: SourceFilter): boolean {
   return plugin.source !== "official";
 }
 
-function SourceFilterTabs({
-  value,
-  onChange,
-  counts,
-}: {
-  value: SourceFilter;
-  onChange: (next: SourceFilter) => void;
-  counts: Record<SourceFilter, number>;
-}) {
-  return (
-    <div className="flex items-center gap-1">
-      {SOURCE_FILTERS.map((f) => (
-        <button
-          key={f.id}
-          onClick={() => onChange(f.id)}
-          className={`flex h-8 items-center gap-1.5 border px-2.5 text-[11px] font-medium transition-colors ${
-            value === f.id
-              ? "border-accent-brand bg-accent-brand/10 text-accent-brand"
-              : "border-border text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          {f.label}
-          <span className="text-[10px] opacity-60">{counts[f.id]}</span>
-        </button>
-      ))}
-    </div>
-  );
-}
 
 function sourceCounts(plugins: DemoPlugin[]): Record<SourceFilter, number> {
   return {
@@ -358,6 +337,7 @@ function InstalledSection({
   const searched = plugins.filter(
     (p) => !q || p.name.toLowerCase().includes(q),
   );
+  const counts = sourceCounts(searched);
   const rows = sortPlugins(
     searched.filter((p) => matchesSource(p, source)),
     sort,
@@ -367,12 +347,15 @@ function InstalledSection({
   const stopped = rows.filter((p) => p.state !== "enabled");
 
   return (
-    <div className="flex flex-col gap-5 p-5">
+    <div className={`flex flex-col ${PANEL.gap} ${PANEL.body}`}>
       <Toolbar query={query} onQuery={onQuery} placeholder="Search installed">
-        <SourceFilterTabs
+        <Segmented<SourceFilter>
           value={source}
           onChange={setSource}
-          counts={sourceCounts(searched)}
+          options={SOURCE_FILTERS.map((f) => ({
+            ...f,
+            count: counts[f.value],
+          }))}
         />
         <div className="ml-auto flex items-center gap-2">
           <SortSelect value={sort} onChange={setSort} />
@@ -426,13 +409,7 @@ function Group({
 }) {
   return (
     <section className="flex flex-col gap-2.5">
-      <div className="flex items-center gap-2">
-        <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-          {title}
-        </span>
-        <span className="text-[10px] text-muted-foreground/60">{count}</span>
-        <div className="h-px flex-1 bg-border" />
-      </div>
+      <GroupHeading title={title} count={count} />
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
         {children}
       </div>
@@ -471,11 +448,11 @@ function InstalledCard({
           <span className="line-clamp-2 text-[11px] leading-snug text-muted-foreground">
             {plugin.description}
           </span>
-          <MetaRow className="text-[10px] text-muted-foreground/70">
+          <Facts className="text-[10px] text-muted-foreground/70">
             <span>{plugin.author}</span>
             <span>v{plugin.version}</span>
             <span>{plugin.contributes.join(", ")}</span>
-          </MetaRow>
+          </Facts>
         </div>
       </button>
 
@@ -600,6 +577,7 @@ function BrowseSection({
       p.name.toLowerCase().includes(q) ||
       p.description.toLowerCase().includes(q),
   );
+  const counts = sourceCounts(searched);
   const rows = sortPlugins(
     searched.filter((p) => {
       if (category !== "All" && p.category !== category) return false;
@@ -609,12 +587,15 @@ function BrowseSection({
   );
 
   return (
-    <div className="flex flex-col gap-5 p-5">
+    <div className={`flex flex-col ${PANEL.gap} ${PANEL.body}`}>
       <Toolbar query={query} onQuery={onQuery} placeholder="Search plugins">
-        <SourceFilterTabs
+        <Segmented<SourceFilter>
           value={source}
           onChange={setSource}
-          counts={sourceCounts(searched)}
+          options={SOURCE_FILTERS.map((f) => ({
+            ...f,
+            count: counts[f.value],
+          }))}
         />
         <div className="ml-auto flex items-center gap-2">
           <SortSelect value={sort} onChange={setSort} />
@@ -657,11 +638,11 @@ function BrowseSection({
                 <div className="flex items-center gap-1.5">
                   <span className="truncate text-xs font-medium">{r.name}</span>
                 </div>
-                <MetaRow className="text-[10px] text-muted-foreground">
+                <Facts className="text-[10px] text-muted-foreground">
                   <span className="truncate">{r.url}</span>
                   <span className="shrink-0">{r.pluginCount} plugins</span>
                   <span className="shrink-0">checked {r.lastChecked}</span>
-                </MetaRow>
+                </Facts>
               </div>
               <FakeSwitch
                 checked={r.enabled}
@@ -741,11 +722,11 @@ function BrowseCard({
           <span className="line-clamp-2 text-[11px] leading-snug text-muted-foreground">
             {plugin.description}
           </span>
-          <MetaRow className="text-[10px] text-muted-foreground/70">
+          <Facts className="text-[10px] text-muted-foreground/70">
             <span>{plugin.author}</span>
             <span>v{plugin.version}</span>
             <span>{plugin.downloads} installs</span>
-          </MetaRow>
+          </Facts>
         </div>
       </button>
 
@@ -784,14 +765,14 @@ function UpdatesSection({
 
   if (plugins.length === 0) {
     return (
-      <div className="p-5">
+      <div className={PANEL.body}>
         <EmptyState icon={Check} title="Everything is up to date." />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-5 p-5">
+    <div className={`flex flex-col ${PANEL.gap} ${PANEL.body}`}>
       {plain.length > 0 && (
         <Card className="flex-row items-center gap-3 px-3 py-2.5">
           <span className="flex-1 text-xs text-muted-foreground">
@@ -893,7 +874,7 @@ function DetailView({
   );
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-5 p-5">
+    <div className={`mx-auto flex w-full max-w-5xl flex-col ${PANEL.gap} ${PANEL.body}`}>
       <Card className="flex-row items-start gap-4 px-4 py-4">
         <PluginIcon name={plugin.icon} size="lg" muted={!enabled} />
         <div className="flex min-w-0 flex-1 flex-col gap-1.5">
@@ -904,11 +885,11 @@ function DetailView({
           <span className="text-xs leading-relaxed text-muted-foreground">
             {plugin.about ?? plugin.description}
           </span>
-          <MetaRow className="text-[11px] text-muted-foreground/70">
+          <Facts className="text-[11px] text-muted-foreground/70">
             <span>{plugin.author}</span>
             <span>v{plugin.version}</span>
             <span>{plugin.downloads} installs</span>
-          </MetaRow>
+          </Facts>
         </div>
         <div className="flex shrink-0 flex-col gap-1.5">
           {plugin.latestVersion && (
@@ -945,9 +926,9 @@ function DetailView({
         </div>
       </Card>
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-        <div className="flex flex-col gap-5 lg:col-span-2">
-          <Panel title="What it can do">
+      <div className="grid grid-cols-1 gap-2 lg:grid-cols-3">
+        <div className="flex flex-col gap-2 lg:col-span-2">
+          <SectionCard title="What it can do" icon={null}>
             <div className="divide-y divide-border">
               {ordered.map((cap) => {
                 const info = CAPABILITY_INFO[cap];
@@ -978,9 +959,9 @@ function DetailView({
                 );
               })}
             </div>
-          </Panel>
+          </SectionCard>
 
-          <Panel title="Version history">
+          <SectionCard title="Version history" icon={null}>
             <div className="divide-y divide-border">
               {plugin.history.map((h) => (
                 <div key={h.version} className="flex flex-col gap-0.5 px-4 py-2.5">
@@ -1001,11 +982,11 @@ function DetailView({
                 </div>
               ))}
             </div>
-          </Panel>
+          </SectionCard>
         </div>
 
-        <div className="flex flex-col gap-5">
-          <Panel title="Adds to Termix">
+        <div className="flex flex-col gap-2">
+          <SectionCard title="Adds to Termix" icon={null}>
             <div className="flex flex-col gap-2 px-4 py-3">
               <div className="flex flex-wrap gap-1">
                 {plugin.contributes.map((c) => (
@@ -1022,19 +1003,19 @@ function DetailView({
                 greyed out.
               </span>
             </div>
-          </Panel>
+          </SectionCard>
 
           {plugin.installed && enabled && (
-            <Panel title="Resource use">
+            <SectionCard title="Resource use" icon={null}>
               <div className="flex items-center gap-6 px-4 py-3">
                 <Usage icon={Cpu} value={plugin.cpu} />
                 <Usage icon={MemoryStick} value={plugin.ram} />
               </div>
-            </Panel>
+            </SectionCard>
           )}
 
           {plugin.installed && (
-            <Panel title="Updates">
+            <SectionCard title="Updates" icon={null}>
               <div className="flex items-center justify-between gap-3 px-4 py-3">
                 <div className="flex min-w-0 flex-col gap-0.5">
                   <span className="text-xs font-medium">Update on its own</span>
@@ -1047,7 +1028,7 @@ function DetailView({
                   onChange={(v) => setAutoUpdate(plugin.id, v)}
                 />
               </div>
-            </Panel>
+            </SectionCard>
           )}
 
           <a
@@ -1061,8 +1042,8 @@ function DetailView({
           </a>
 
           {plugin.source === "community" && (
-            <div className="flex items-start gap-2 border border-yellow-500/30 bg-yellow-500/5 px-3 py-2.5">
-              <TriangleAlert className="mt-px size-3.5 shrink-0 text-yellow-500" />
+            <div className="flex items-start gap-2 border border-warning/30 bg-warning/5 px-3 py-2.5">
+              <TriangleAlert className="mt-px size-3.5 shrink-0 text-warning" />
               <span className="text-[11px] leading-snug text-muted-foreground">
                 Community plugins are reviewed before listing, not audited. One
                 that can run commands on your servers is trusted with your
@@ -1076,21 +1057,3 @@ function DetailView({
   );
 }
 
-function Panel({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <Card className="overflow-hidden py-0 gap-0">
-      <div className="border-b border-border px-4 py-2.5">
-        <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-          {title}
-        </span>
-      </div>
-      {children}
-    </Card>
-  );
-}

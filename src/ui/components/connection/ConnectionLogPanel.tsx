@@ -99,7 +99,7 @@ export function ConnectionLogPanel({
       case "success":
         return <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" />;
       case "warning":
-        return <AlertTriangle className="h-4 w-4 text-yellow-500 shrink-0" />;
+        return <AlertTriangle className="h-4 w-4 text-warning shrink-0" />;
       case "error":
         return <XCircle className="h-4 w-4 text-red-500 shrink-0" />;
       default:
@@ -114,7 +114,7 @@ export function ConnectionLogPanel({
       case "success":
         return "text-green-400";
       case "warning":
-        return "text-yellow-400";
+        return "text-warning";
       case "error":
         return "text-red-400";
       default:

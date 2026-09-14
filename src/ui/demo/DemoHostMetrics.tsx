@@ -19,14 +19,17 @@ import type { Host } from "@/types/ui-types";
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { SectionCard } from "@/components/section-card";
+import { Facts, PANEL, PanelShell } from "@/components/panel-layout";
+import { useAreaPreferences } from "@/contexts/UiPreferencesContext";
 import { MiniStat, RadialGauge, Sparkline, StatRow } from "@/components/charts";
 import { LineChart } from "@/components/charts/LineChart";
 import { getHostMetrics, getMetricsHistory } from "@/demo/demo-api";
 import type { DemoHostMetrics as Metrics } from "@/demo/demo-data";
 
-// Mirrors the real HostMetricsTab: a header bar over a multi-column card grid
-// built from the shared chart primitives. The real view lets you drag, resize
-// and add cards; the demo keeps a static grid at the real default spans.
+// Mirrors the real HostMetricsTab on the shared panel chrome: a masonry of
+// cards built from the shared chart primitives. Column count comes from the
+// hostMetrics preference, so Simple gets one column and Advanced four. The real
+// view also lets you drag, resize and add cards.
 
 const HISTORY_LEN = 30;
 const TICK_MS = 1000;
@@ -43,7 +46,16 @@ function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
 
+/** CSS multi-column, since these cards are genuinely ragged in height. */
+const COLUMN_CLASS: Record<number, string> = {
+  1: "columns-1",
+  2: "columns-1 md:columns-2",
+  3: "columns-1 md:columns-2 lg:columns-3",
+  4: "columns-1 md:columns-2 lg:columns-3 xl:columns-4",
+};
+
 export function DemoHostMetrics({ host }: { host: Host }) {
+  const { columns } = useAreaPreferences("hostMetrics");
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -114,22 +126,15 @@ export function DemoHostMetrics({ host }: { host: Host }) {
 
   if (host.status === "offline") {
     return (
-      <div className="flex h-full flex-col bg-background">
-        <Header
-          host={host}
-          onRefresh={refresh}
-          isRefreshing={isRefreshing}
-        />
-        <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center opacity-40">
-          <Server className="size-16" />
-          <p className="text-xl font-bold uppercase tracking-widest">
-            Server offline
-          </p>
-          <p className="text-sm font-semibold text-muted-foreground">
+      <MetricsShell host={host} onRefresh={refresh} isRefreshing={isRefreshing}>
+        <div className="flex flex-1 flex-col items-center justify-center gap-2 text-center">
+          <Server className="size-10 opacity-30" />
+          <p className="text-sm font-semibold">Server offline</p>
+          <p className="text-xs text-muted-foreground">
             The host did not respond to the last check.
           </p>
         </div>
-      </div>
+      </MetricsShell>
     );
   }
 
@@ -147,13 +152,13 @@ export function DemoHostMetrics({ host }: { host: Host }) {
   const memUsed = (metrics.memory.totalGiB * memNow) / 100;
 
   return (
-    <div className="flex h-full flex-col overflow-hidden bg-background">
-      <Header host={host} onRefresh={refresh} isRefreshing={isRefreshing} />
-
-      <div className="min-h-0 flex-1 overflow-y-auto px-3 pt-3 pb-3">
+    <MetricsShell host={host} onRefresh={refresh} isRefreshing={isRefreshing}>
+      <div className={PANEL.body}>
         {/* Masonry via CSS columns so cards pack against each other instead of
             leaving a stranded column beside the wider ones. */}
-        <div className="columns-1 gap-3 md:columns-2 lg:columns-3 [&>*]:mb-3 [&>*]:break-inside-avoid">
+        <div
+          className={`${COLUMN_CLASS[columns] ?? COLUMN_CLASS[3]} gap-2 [&>*]:mb-2 [&>*]:break-inside-avoid`}
+        >
           <GaugeCard
             hostId={host.id}
             title="CPU"
@@ -304,7 +309,12 @@ export function DemoHostMetrics({ host }: { host: Host }) {
                         {proc.pid} {proc.command}
                       </span>
                     }
-                    value={`${proc.cpu}% cpu · ${proc.mem}% mem`}
+                    value={
+                      <Facts className="justify-end">
+                        <span>{proc.cpu}% cpu</span>
+                        <span>{proc.mem}% mem</span>
+                      </Facts>
+                    }
                   />
                 ))}
               </div>
@@ -318,11 +328,12 @@ export function DemoHostMetrics({ host }: { host: Host }) {
             icon={<ShieldCheck className="size-3.5" />}
           >
             <div className="flex flex-col gap-1 py-3">
-              <span
+              <Facts
                 className={`text-xs font-semibold uppercase tracking-wide ${metrics.firewall.status === "active" ? "text-accent-brand" : "text-muted-foreground"}`}
               >
-                {metrics.firewall.status} · {metrics.firewall.type}
-              </span>
+                <span>{metrics.firewall.status}</span>
+                <span>{metrics.firewall.type}</span>
+              </Facts>
               <span className="text-[11px] text-muted-foreground">
                 {metrics.firewall.chains} chains, {metrics.firewall.rules} rules
               </span>
@@ -350,46 +361,42 @@ export function DemoHostMetrics({ host }: { host: Host }) {
           </SectionCard>
         </div>
       </div>
-    </div>
+    </MetricsShell>
   );
 }
 
-function Header({
+function MetricsShell({
   host,
   onRefresh,
   isRefreshing,
+  children,
 }: {
   host: Host;
   onRefresh: () => void;
   isRefreshing: boolean;
+  children: React.ReactNode;
 }) {
   return (
-    <div className="mx-3 mt-3 flex shrink-0 items-center justify-between border border-border bg-card px-3 py-3">
-      <div className="flex items-center gap-3 min-w-0">
-        <div className="flex size-10 shrink-0 items-center justify-center border border-border bg-muted">
-          <Server className="size-5 text-accent-brand" />
-        </div>
-        <div className="flex flex-col gap-0.5 min-w-0">
-          <h1 className="text-lg font-bold md:text-2xl truncate">
-            {host.name}
-          </h1>
-          <span className="text-xs text-muted-foreground truncate">
-            {host.username}@{host.ip}:{host.port}
-          </span>
-        </div>
-      </div>
-      <Button
-        variant="outline"
-        size="default"
-        onClick={onRefresh}
-        className="ml-1 gap-2 font-semibold"
-      >
-        <RefreshCw
-          className={`size-3.5 ${isRefreshing ? "animate-spin" : ""}`}
-        />
-        Refresh
-      </Button>
-    </div>
+    <PanelShell
+      icon={<Server className="size-4" />}
+      title={host.name}
+      status={`${host.username}@${host.ip}:${host.port}`}
+      actions={
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onRefresh}
+          title="Refresh"
+          className="text-accent-brand"
+        >
+          <RefreshCw
+            className={`size-4 ${isRefreshing ? "animate-spin" : ""}`}
+          />
+        </Button>
+      }
+    >
+      {children}
+    </PanelShell>
   );
 }
 

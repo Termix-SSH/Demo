@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import {
   Activity,
   Boxes,
@@ -5,7 +6,6 @@ import {
   Clock,
   Fingerprint,
   Hammer,
-  LayoutGrid,
   LayoutPanelLeft,
   LayoutTemplate,
   MessagesSquare,
@@ -34,6 +34,7 @@ import { DemoDocker } from "@/demo/panels/DemoDocker";
 import { DemoProxmox } from "@/demo/panels/DemoProxmox";
 import { DemoTmuxMonitor } from "@/demo/panels/DemoTmuxMonitor";
 import { PluginsScreen } from "@/demo/plugins/PluginsScreen";
+import { PanelShell } from "@/components/panel-layout";
 
 export function renderDemoTabContent(
   tab: Tab,
@@ -99,7 +100,7 @@ export function renderDemoTabContent(
           chrome={chrome}
           icon={Monitor}
           title="Remote desktop"
-          hint="Control a Windows desktop over RDP in a browser tab."
+          hint="A Windows desktop in a browser tab, with clipboard sharing and drive redirection. Credentials come from the host, so there is nothing extra to type."
         />
       );
     case "vnc":
@@ -108,7 +109,7 @@ export function renderDemoTabContent(
           chrome={chrome}
           icon={MousePointerClick}
           title="VNC"
-          hint="Control any VNC desktop in a browser tab."
+          hint="Any VNC desktop in a browser tab, including the console of a machine that has not finished booting."
         />
       );
     case "telnet":
@@ -117,7 +118,7 @@ export function renderDemoTabContent(
           chrome={chrome}
           icon={MessagesSquare}
           title="Telnet"
-          hint="Reach switches and other gear that only speak Telnet."
+          hint="For switches, PDUs and older gear that never learned SSH. Sessions are logged the same way, so the audit trail does not have a hole in it."
         />
       );
     case "serial":
@@ -126,7 +127,7 @@ export function renderDemoTabContent(
           chrome={chrome}
           icon={Usb}
           title="Serial console"
-          hint="Talk to a device over a USB or serial adapter."
+          hint="A console over a USB or serial adapter, for a machine with no network yet. Pick the port and baud rate and it behaves like any other terminal."
         />
       );
     case "network_graph":
@@ -135,16 +136,15 @@ export function renderDemoTabContent(
           chrome={chrome}
           icon={Network}
           title="Network graph"
-          hint="See how your hosts and jump chains connect."
+          hint="A map of every host and the jump chains between them, so you can see what a bastion is fronting and what breaks if it goes down."
         />
       );
+    // A blank canvas, which is what a start page looks like before you put
+    // anything on it. No empty-state copy: the toolbar is the affordance.
     case "homepage":
       return (
-        <Placeholder
-          chrome={chrome}
-          icon={LayoutGrid}
-          title="Homepage"
-          hint="Build a start page from widgets: clocks, host grids, links and charts."
+        <div
+          className={`h-full w-full ${chrome ? "bg-background" : ""}`}
         />
       );
     case "fleet-inventory":
@@ -153,7 +153,7 @@ export function renderDemoTabContent(
           chrome={chrome}
           icon={Boxes}
           title="Fleet inventory"
-          hint="Collected facts for every host in a fleet, side by side."
+          hint="Kernel, package versions, disk layout and uptime for every host in a fleet, in one table you can sort and compare."
         />
       );
 
@@ -273,7 +273,7 @@ export function renderDemoTabContent(
           chrome={chrome}
           icon={LayoutPanelLeft}
           title="Split screen"
-          hint="Assign a tab to each pane from the tab bar."
+          hint="Up to four panes in one tab, each running its own session. Drag the dividers to resize, and assign a tab to a pane from the tab bar."
         />
       );
 
@@ -356,16 +356,10 @@ function PanelFrame({
   chrome: boolean;
   children: React.ReactNode;
 }) {
-  if (!chrome) {
-    return <div className="flex flex-col flex-1 min-h-0">{children}</div>;
-  }
   return (
-    <div className="flex flex-col h-full min-h-0 bg-background">
-      <div className="flex items-center border-b border-border h-12.5 shrink-0 px-3">
-        <span className="text-base font-bold tracking-tight">{title}</span>
-      </div>
-      <div className="flex flex-col flex-1 min-h-0">{children}</div>
-    </div>
+    <PanelShell chrome={chrome} title={title} scroll={false}>
+      {children}
+    </PanelShell>
   );
 }
 

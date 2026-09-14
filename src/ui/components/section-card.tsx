@@ -20,7 +20,7 @@ export function SectionCard({
     >
       <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border shrink-0">
         <span className="text-muted-foreground">{icon}</span>
-        <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground flex-1">
+        <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground flex-1">
           {title}
         </span>
         {action && <div className="ml-auto">{action}</div>}
@@ -47,7 +47,7 @@ export function SettingRow({
         <div className="flex items-center gap-1.5 flex-wrap">
           <span className="text-sm font-medium leading-snug">{label}</span>
           {badge && (
-            <span className="text-[10px] font-bold text-yellow-500 border border-yellow-500/40 px-1 shrink-0">
+            <span className="text-[10px] font-bold text-warning border border-warning/40 px-1 shrink-0">
               {badge}
             </span>
           )}
