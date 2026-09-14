@@ -33,6 +33,7 @@ import { DemoPanel } from "@/demo/DemoPanel";
 import { DemoDocker } from "@/demo/panels/DemoDocker";
 import { DemoProxmox } from "@/demo/panels/DemoProxmox";
 import { DemoTmuxMonitor } from "@/demo/panels/DemoTmuxMonitor";
+import { PluginsScreen } from "@/demo/plugins/PluginsScreen";
 
 export function renderDemoTabContent(
   tab: Tab,
@@ -88,6 +89,9 @@ export function renderDemoTabContent(
 
     case "tmux_monitor":
       return <DemoTmuxMonitor />;
+
+    case "plugins":
+      return <PluginsScreen />;
 
     case "rdp":
       return (

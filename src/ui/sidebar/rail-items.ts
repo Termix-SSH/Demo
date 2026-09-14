@@ -10,6 +10,7 @@ import {
   Network,
   Play,
   Plug,
+  Puzzle,
   ScrollText,
   Server,
   Settings,
@@ -200,6 +201,7 @@ export const RAIL_UTILITY_ITEMS: RailItemDef[] = [
     promotable: true,
     rightDockable: true,
   },
+  { id: "plugins", icon: Puzzle, labelKey: "nav.plugins", promotable: true },
   { id: "user-profile", icon: User, labelKey: "nav.userProfile" },
   { id: "admin-settings", icon: Settings, labelKey: "nav.admin" },
 ];

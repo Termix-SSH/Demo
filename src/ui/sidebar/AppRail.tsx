@@ -5,6 +5,7 @@ import {
   Check,
   LogOut,
   PanelRight,
+  Puzzle,
   Settings,
   SlidersHorizontal,
   SquareArrowOutUpRight,
@@ -115,6 +116,7 @@ export function AppRail({
   onRailClick,
   onOpenTab,
   onOpenInRightDock,
+  onOpenPlugins,
   onLogout,
 }: {
   railView: RailView;
@@ -125,6 +127,7 @@ export function AppRail({
   onRailClick: (view: RailView) => void;
   onOpenTab?: (type: TabType) => void;
   onOpenInRightDock?: (view: RailView) => void;
+  onOpenPlugins: () => void;
   onLogout: () => void;
 }) {
   const { t } = useTranslation();
@@ -377,6 +380,27 @@ export function AppRail({
       </div>
 
       <div className="shrink-0 flex flex-col gap-1 border-t border-border pt-1 pb-1">
+        {/* Plugins opens a full-screen surface rather than a sidebar panel:
+            installing one changes the shape of the app, so it is a place you
+            go and come back from. */}
+        <button
+          onClick={onOpenPlugins}
+          title={t("nav.plugins")}
+          style={btnStyle}
+          className={`${btnBase} text-muted-foreground hover:text-foreground hover:bg-muted/60`}
+        >
+          <span
+            className="shrink-0 flex items-center justify-center"
+            style={{ width: 16, height: 16 }}
+          >
+            <Puzzle size={16} />
+          </span>
+          <span
+            className={`text-xs font-medium whitespace-nowrap overflow-hidden transition-[opacity,width] duration-150 ${railExpanded ? "opacity-100 delay-75" : "opacity-0 w-0"}`}
+          >
+            {t("nav.plugins")}
+          </span>
+        </button>
         {[
           {
             view: "alerts" as RailView,

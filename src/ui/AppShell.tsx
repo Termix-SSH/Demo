@@ -510,6 +510,7 @@ export function AppShell({
             onRailClick={handleRailClick}
             onOpenTab={openSingletonTab}
             onOpenInRightDock={openInRightDock}
+            onOpenPlugins={() => openSingletonTab("plugins")}
             onLogout={onLogout}
           />
 
