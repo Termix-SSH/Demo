@@ -104,16 +104,16 @@ const useLevel = () => {
 
 const getPaddingClass = (level: number): string => {
   const paddingMap: Record<number, string> = {
-    0: "pl-3",
-    1: "pl-8",
-    2: "pl-12",
-    3: "pl-16",
-    4: "pl-20",
-    5: "pl-24",
-    6: "pl-28",
-    7: "pl-32",
+    0: "pl-2",
+    1: "pl-5",
+    2: "pl-8",
+    3: "pl-11",
+    4: "pl-14",
+    5: "pl-17",
+    6: "pl-20",
+    7: "pl-23",
   };
-  return paddingMap[level] || `pl-[${Math.min(level * 4 + 12, 48)}px]`;
+  return paddingMap[level] ?? "pl-24";
 };
 
 interface CustomBadge {
@@ -402,7 +402,7 @@ const Root: React.FC<RootProps> = ({
               animate="rootAnimate"
               transition={transitions.root}
               className={cn(
-                "bg-canvas border border-edge rounded-lg overflow-hidden",
+                "bg-transparent overflow-hidden",
                 className,
               )}
               role="tree"
@@ -412,7 +412,7 @@ const Root: React.FC<RootProps> = ({
               onFocus={handleTreeFocus}
               onBlur={handleTreeBlur}
             >
-              <div className="w-full overflow-y-auto bg-canvas text-sm">
+              <div className="w-full overflow-y-auto text-xs">
                 {children}
               </div>
             </motion.div>
@@ -531,13 +531,12 @@ const Item: React.FC<ItemProps> = ({
             data-selected={isSelected ? "true" : "false"}
             data-id={id}
             className={cn(
-              "flex items-center gap-2 py-1.5 text-sm transition-colors cursor-pointer select-none",
+              "flex items-center gap-1.5 py-1 pr-2 text-xs transition-colors cursor-pointer select-none border-l-2",
               getPaddingClass(level),
               className,
               isSelected
-                ? "bg-accent text-accent-foreground border-r-2 border-ring"
-                : "",
-              !isSelected && "hover:bg-hover",
+                ? "border-accent-brand bg-accent-brand/10 text-accent-brand"
+                : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground",
               keyboardMode && isFocused
                 ? "focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-inset"
                 : "focus:outline-hidden",
@@ -566,19 +565,21 @@ const Item: React.FC<ItemProps> = ({
                 <ChevronRight size={14} className="text-muted-foreground" />
               </motion.span>
             )}
-            {!hasChildren && <span className="w-3 mr-2" aria-hidden="true" />}
+            {!hasChildren && (
+              <span className="w-3.5 shrink-0" aria-hidden="true" />
+            )}
             {IconComponent && (
               <IconComponent
-                size={16}
+                size={14}
                 data-selected={isSelected ? "true" : "false"}
                 data-child={hasChildren ? "true" : "false"}
                 className={cn(
-                  "mr-1 shrink-0 text-muted-foreground data-[child=true]:text-primary data-[selected=true]:text-accent-foreground",
+                  "mr-0.5 shrink-0 data-[selected=true]:text-accent-brand",
                 )}
                 aria-hidden="true"
               />
             )}
-            <span className="flex-1">{label}</span>
+            <span className="flex-1 truncate">{label}</span>
             {badge && (
               <span
                 className="ml-auto text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full"

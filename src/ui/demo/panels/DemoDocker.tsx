@@ -715,7 +715,7 @@ function LogViewer({ container }: { container: DemoContainer }) {
         </div>
       </div>
 
-      <div className="flex-1 bg-muted border border-border p-3 overflow-auto font-mono text-xs leading-relaxed min-h-0">
+      <div className="flex-1 bg-surface-dim border border-border p-3 overflow-auto font-mono text-xs leading-relaxed min-h-0">
         {isLoading ? (
           <span className="text-muted-foreground italic">Loading logs…</span>
         ) : visible.length === 0 ? (
@@ -939,7 +939,7 @@ function ConsolePlaceholder({
           Connect
         </Button>
       </div>
-      <div className="flex flex-col items-center justify-center flex-1 gap-2 bg-muted/30 text-center">
+      <div className="flex flex-col items-center justify-center flex-1 gap-2 bg-surface-dim text-center">
         <TerminalIcon className="size-10 opacity-20" />
         <span className="text-sm font-semibold">Not connected</span>
         <span className="text-xs text-muted-foreground max-w-xs">

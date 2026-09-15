@@ -59,8 +59,14 @@ export const DEMO_HOSTS: Host[] = [
     ram: 61,
     tags: ["nginx", "edge"],
     pin: true,
+    // The showcase host: every SSH-backed feature is on, so one host in the
+    // tree can open every kind of tab the demo has. The other protocols (RDP,
+    // VNC, Telnet) stay off; other hosts cover those.
     enableTunnel: true,
     enableDocker: true,
+    enableProxmox: true,
+    enableProxmoxStats: true,
+    enableTmuxMonitor: true,
     credentialId: "c-deploy",
     serverTunnels: [
       {

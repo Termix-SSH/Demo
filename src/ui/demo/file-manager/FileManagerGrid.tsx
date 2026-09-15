@@ -28,15 +28,18 @@ import {
 
 const ROW_COLS = "grid-cols-[1fr_120px_150px_80px_90px]";
 
-// Real app constants, so rows line up with the ones in Termix.
-const LIST_ROW_H = 41;
+// Rows lost their bottom border to the left-edge selection marker, so the
+// measured height is one pixel under the real app's 41.
+const LIST_ROW_H = 40;
 const GRID_ROW_H = 112;
 const GRID_CELL_W = 112;
 
+// Folders lead with the brand accent, links read as a pointer, and plain files
+// stay neutral so a long listing is not a wall of competing colors.
 function fileTypeColor(file: FileItem): string {
-  if (file.type === "directory") return "text-red-400";
-  if (file.type === "link") return "text-green-400";
-  return "text-blue-400";
+  if (file.type === "directory") return "text-accent-brand";
+  if (file.type === "link") return "text-blue-400";
+  return "text-muted-foreground";
 }
 
 function fileIcon(file: FileItem, viewMode: ViewMode, compact: boolean) {
@@ -196,9 +199,9 @@ export function FileManagerGrid({
       {viewMode === "list" && (
         <div
           className={cn(
-            "grid gap-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground border-b border-border bg-background",
+            "grid gap-2 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70 border-b border-border bg-background",
             ROW_COLS,
-            compact ? "px-2 py-1" : "px-4 py-2",
+            compact ? "px-3 py-1" : "px-3 py-2",
           )}
         >
           <button
@@ -251,9 +254,12 @@ export function FileManagerGrid({
         }}
       >
         {files.length === 0 && !createIntent ? (
-          <div className="h-full flex flex-col items-center justify-center text-muted-foreground opacity-10 gap-4 select-none pointer-events-none">
-            <Folder className="size-32" strokeWidth={1} />
-            <span className="text-2xl font-black uppercase tracking-[0.2em]">
+          <div className="flex h-full select-none flex-col items-center justify-center gap-2 text-center">
+            <Folder
+              className="size-8 text-muted-foreground/30"
+              strokeWidth={1.5}
+            />
+            <span className="text-xs text-muted-foreground">
               {t("fileManager.emptyFolder")}
             </span>
           </div>
@@ -284,10 +290,12 @@ export function FileManagerGrid({
                   >
                     <div
                       className={cn(
-                        "grid gap-2 items-center cursor-pointer border-b border-border hover:bg-muted/50 select-none transition-colors",
+                        "grid gap-2 items-center cursor-pointer select-none border-l-2 transition-colors",
                         ROW_COLS,
-                        compact ? "px-2 py-1 text-[11px]" : "px-4 py-2 text-xs",
-                        isSelected && "bg-accent-brand/10",
+                        compact ? "px-3 py-1 text-[11px]" : "px-3 py-2 text-xs",
+                        isSelected
+                          ? "border-accent-brand bg-accent-brand/10"
+                          : "border-transparent hover:bg-muted/50",
                       )}
                       onClick={(e) => handleFileClick(file, e)}
                       onDoubleClick={() => onFileOpen(file)}
@@ -314,12 +322,12 @@ export function FileManagerGrid({
                           />
                         ) : (
                           <span
-                            className="font-bold truncate tracking-tight"
+                            className="truncate font-medium tracking-tight"
                             title={file.name}
                           >
                             {file.name}
                             {file.type === "link" && file.linkTarget && (
-                              <span className="text-accent-brand ml-1 normal-case font-normal">
+                              <span className="ml-1 font-normal text-muted-foreground">
                                 {"-> "}
                                 {file.linkTarget}
                               </span>
@@ -383,9 +391,10 @@ export function FileManagerGrid({
                         <div
                           key={file.path}
                           className={cn(
-                            "flex flex-col items-center gap-1.5 p-2 cursor-pointer border border-transparent hover:bg-muted/50 select-none transition-colors",
-                            isSelected &&
-                              "bg-accent-brand/10 border-accent-brand/30",
+                            "flex cursor-pointer select-none flex-col items-center gap-1.5 border p-2 transition-colors",
+                            isSelected
+                              ? "border-accent-brand/40 bg-accent-brand/10"
+                              : "border-transparent hover:bg-muted/50",
                           )}
                           onClick={(e) => handleFileClick(file, e)}
                           onDoubleClick={() => onFileOpen(file)}
@@ -404,7 +413,7 @@ export function FileManagerGrid({
                             />
                           ) : (
                             <span
-                              className="text-[10px] text-center truncate w-full font-semibold"
+                              className="w-full truncate text-center text-[11px]"
                               title={file.name}
                             >
                               {file.name}
@@ -421,13 +430,13 @@ export function FileManagerGrid({
         )}
       </div>
 
-      <div className="px-4 py-1.5 bg-muted/30 border-t border-border flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground shrink-0">
-        <span>
-          {files.length} {t("fileManager.items")}
+      <div className="flex shrink-0 items-center justify-between border-t border-border px-3 py-1 text-[10px] text-muted-foreground">
+        <span className="tabular-nums">
+          {files.length} {t("fileManager.items").toLowerCase()}
         </span>
         {selectedFiles.length > 0 && (
-          <span className="text-accent-brand">
-            {selectedFiles.length} {t("fileManager.selected")}
+          <span className="tabular-nums text-accent-brand">
+            {selectedFiles.length} {t("fileManager.selected").toLowerCase()}
           </span>
         )}
       </div>
@@ -512,14 +521,14 @@ function CreateRow({
   return (
     <div
       className={cn(
-        "flex items-center gap-3 border-b border-accent-brand/30 bg-accent-brand/5",
-        compact ? "px-2 py-1" : "px-4 py-2",
+        "flex items-center gap-3 border-l-2 border-accent-brand bg-accent-brand/5",
+        compact ? "px-3 py-1" : "px-3 py-2",
       )}
     >
       {intent.type === "directory" ? (
-        <Folder className="size-5 text-red-400 shrink-0" />
+        <Folder className="size-5 shrink-0 text-accent-brand" />
       ) : (
-        <File className="size-5 text-blue-400 shrink-0" />
+        <File className="size-5 shrink-0 text-muted-foreground" />
       )}
       <RenameInput
         initial={intent.currentName}

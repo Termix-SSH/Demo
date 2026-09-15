@@ -102,35 +102,35 @@ export function FileManagerSidebar({
     return fs ? { ...storage, ...fs } : storage;
   }, [storage, selectedMount]);
 
-  const hasQuickAccess =
-    recent.length > 0 || pinned.length > 0 || shortcuts.length > 0;
-
   const quickItem = (
     item: DemoQuickAccessItem,
     icon: React.ReactNode,
     target: string,
     onClick: () => void,
-  ) => (
-    <button
-      key={`${item.id}-${item.path}`}
-      className={cn(
-        "w-full flex items-center gap-2.5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-colors text-left border-l-2",
-        currentPath === target
-          ? "bg-accent-brand/10 text-accent-brand border-accent-brand"
-          : "text-muted-foreground hover:text-foreground hover:bg-muted border-transparent",
-      )}
-      onClick={onClick}
-      title={item.path}
-    >
-      <div className="shrink-0">{icon}</div>
-      <span className="flex-1 truncate">{item.name}</span>
-    </button>
-  );
+  ) => {
+    const active = currentPath === target;
+    return (
+      <button
+        key={`${item.id}-${item.path}`}
+        className={cn(
+          "w-full flex items-center gap-1.5 py-1 pl-2 pr-2 text-xs transition-colors text-left border-l-2",
+          active
+            ? "border-accent-brand bg-accent-brand/10 text-accent-brand"
+            : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground",
+        )}
+        onClick={onClick}
+        title={item.path}
+      >
+        <span className="shrink-0">{icon}</span>
+        <span className="flex-1 truncate">{item.name}</span>
+      </button>
+    );
+  };
 
   const section = (title: string, children: React.ReactNode) => (
-    <div>
-      <div className="px-3 py-1.5">
-        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+    <div className="pb-1">
+      <div className="px-2 pt-2 pb-1">
+        <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">
           {title}
         </span>
       </div>
@@ -149,28 +149,13 @@ export function FileManagerSidebar({
   return (
     <div className="h-full flex flex-col overflow-hidden">
       <div className="flex-1 overflow-y-auto">
-        <button
-          className="w-full flex items-center gap-2.5 px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground hover:bg-muted border-l-2 border-transparent"
-          onClick={onOpenTrash}
-        >
-          <Trash2 className="size-3.5 shrink-0" />
-          <span>{t("fileManager.trash")}</span>
-        </button>
-
         {recent.length > 0 &&
           section(
             t("fileManager.recent"),
             recent.map((item) =>
               quickItem(
                 item,
-                <File
-                  className={cn(
-                    "size-3.5 shrink-0",
-                    currentPath === parentDir(item.path)
-                      ? "text-accent-brand"
-                      : "text-muted-foreground/60",
-                  )}
-                />,
+                <File className="size-3.5" />,
                 parentDir(item.path),
                 () => onFileOpen(item.path),
               ),
@@ -185,10 +170,9 @@ export function FileManagerSidebar({
                 item,
                 <Star
                   className={cn(
-                    "size-3.5 shrink-0",
-                    currentPath === parentDir(item.path)
-                      ? "text-accent-brand fill-accent-brand"
-                      : "text-muted-foreground/60",
+                    "size-3.5",
+                    currentPath === parentDir(item.path) &&
+                      "fill-accent-brand",
                   )}
                 />,
                 parentDir(item.path),
@@ -203,79 +187,74 @@ export function FileManagerSidebar({
             shortcuts.map((item) =>
               quickItem(
                 item,
-                <Bookmark
-                  className={cn(
-                    "size-3.5 shrink-0",
-                    currentPath === item.path
-                      ? "text-accent-brand"
-                      : "text-muted-foreground/60",
-                  )}
-                />,
+                <Bookmark className="size-3.5" />,
                 item.path,
                 () => onPathChange(item.path),
               ),
             ),
           )}
 
-        <div className={cn(hasQuickAccess && "border-t border-border mt-1 pt-1")}>
-          <div className="px-3 py-1.5">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-              {t("fileManager.directories")}
-            </span>
-          </div>
-          <div className="px-1">
-            <FolderTree.Root
-              id="demo-directory-tree"
-              selectedId={currentPath}
-              expandedIds={ancestorIds}
-              onSelect={(id) => onPathChange(id)}
-              className="bg-transparent border-0 rounded-none shadow-none"
-            >
-              {tree.map((node) => renderNode(node))}
-            </FolderTree.Root>
-          </div>
-        </div>
+        {section(
+          t("fileManager.directories"),
+          <FolderTree.Root
+            id="demo-directory-tree"
+            selectedId={currentPath}
+            expandedIds={ancestorIds}
+            onSelect={(id) => onPathChange(id)}
+          >
+            {tree.map((node) => renderNode(node))}
+          </FolderTree.Root>,
+        )}
       </div>
 
-      {activeStorage && (
-        <div className="flex flex-col p-3 gap-2 border-t border-border shrink-0">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-            {t("fileManager.storage")}
-          </span>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-foreground hover:text-accent-brand transition-colors">
-                {selectedMount ?? activeStorage.mount}
-                <ChevronDown className="size-3" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="start"
-              className="rounded-none border-border bg-card"
-            >
-              {storage?.filesystems.map((fs) => (
-                <DropdownMenuItem
-                  key={fs.mount}
-                  className="rounded-none text-xs"
-                  onSelect={() => setSelectedMount(fs.mount)}
-                >
-                  {fs.mount}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <div className="h-1.5 w-full bg-muted overflow-hidden">
-            <div
-              className="h-full bg-accent-brand"
-              style={{ width: `${activeStorage.percent}%` }}
-            />
+      <div className="shrink-0 border-t border-border">
+        <button
+          className="w-full flex items-center gap-1.5 py-1.5 pl-2 pr-2 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground border-l-2 border-transparent"
+          onClick={onOpenTrash}
+        >
+          <Trash2 className="size-3.5 shrink-0" />
+          <span className="flex-1 text-left">{t("fileManager.trash")}</span>
+        </button>
+
+        {activeStorage && (
+          <div className="flex flex-col gap-1.5 border-t border-border px-2 py-2">
+            <div className="flex items-center justify-between gap-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex items-center gap-1 text-xs font-medium text-foreground transition-colors hover:text-accent-brand">
+                    {selectedMount ?? activeStorage.mount}
+                    <ChevronDown className="size-3" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="bg-card">
+                  {storage?.filesystems.map((fs) => (
+                    <DropdownMenuItem
+                      key={fs.mount}
+                      className="text-xs"
+                      onSelect={() => setSelectedMount(fs.mount)}
+                    >
+                      {fs.mount}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <span className="text-[10px] tabular-nums text-muted-foreground">
+                {activeStorage.percent}%
+              </span>
+            </div>
+            <div className="h-1 w-full bg-muted overflow-hidden">
+              <div
+                className="motion-meter h-full bg-accent-brand"
+                style={{ width: `${activeStorage.percent}%` }}
+              />
+            </div>
+            <span className="text-[10px] text-muted-foreground">
+              {activeStorage.usedHuman} {t("fileManager.of")}{" "}
+              {activeStorage.totalHuman}
+            </span>
           </div>
-          <span className="text-[10px] text-muted-foreground">
-            {activeStorage.usedHuman} {t("fileManager.of")}{" "}
-            {activeStorage.totalHuman} {t("fileManager.used").toLowerCase()}
-          </span>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

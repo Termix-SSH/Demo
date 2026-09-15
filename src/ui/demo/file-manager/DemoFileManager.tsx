@@ -296,7 +296,7 @@ export function DemoFileManager({
     >
       <div className="relative flex min-h-0 flex-1">
         <div
-          className={`${mobileSidebarOpen ? "flex" : "hidden"} md:flex w-56 shrink-0 flex-col overflow-hidden min-h-0 border-r border-border`}
+          className={`${mobileSidebarOpen ? "flex" : "hidden"} md:flex w-44 lg:w-56 shrink-0 flex-col overflow-hidden min-h-0 border-r border-border`}
         >
           <FileManagerSidebar
             currentPath={currentPath}

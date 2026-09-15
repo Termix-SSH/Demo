@@ -68,7 +68,7 @@ function Breadcrumb({
   return (
     <>
       <Folder className="size-3.5 text-accent-brand shrink-0" />
-      <div className="flex items-center gap-1 overflow-x-auto scrollbar-none text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">
+      <div className="flex items-center gap-1 overflow-x-auto scrollbar-none text-xs whitespace-nowrap">
         {currentPath.split("/").map((part, i, arr) => (
           <React.Fragment key={i}>
             {part === "" && i === 0 ? (
@@ -211,8 +211,8 @@ export function FileManagerToolbar({
 }: FileManagerToolbarProps) {
   return (
     <div className="flex w-full flex-col gap-2">
-      <div className="flex w-full flex-row items-center justify-between gap-2">
-        <div className="flex items-center gap-1">
+      <div className="flex w-full flex-row items-center gap-2">
+        <div className="flex shrink-0 items-center">
           <Button
             variant="ghost"
             size="icon"
@@ -265,24 +265,29 @@ export function FileManagerToolbar({
           currentPath={currentPath}
           navigateTo={navigateTo}
           t={t}
-          className="hidden md:flex flex-1 items-center px-3 h-8 bg-muted/50 border border-border rounded-none gap-2 overflow-hidden"
+          className="hidden md:flex flex-1 items-center gap-2 h-8 min-w-0 overflow-hidden border border-border px-2.5"
         />
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           {selectedFiles.length > 0 && (
-            <div className="flex items-center gap-1 px-2 py-1 bg-accent-brand/10 border border-accent-brand/20 text-accent-brand text-[10px] font-black uppercase tracking-tighter">
+            <div className="flex items-center gap-1 border border-accent-brand/30 bg-accent-brand/10 pl-2 pr-1">
+              <span className="text-[10px] tabular-nums text-accent-brand">
+                {selectedFiles.length}
+              </span>
               <Button
                 variant="ghost"
-                size="icon"
-                className="size-6 text-accent-brand hover:bg-accent-brand/20 rounded-none"
+                size="icon-xs"
+                title={t("fileManager.delete")}
+                className="text-accent-brand hover:bg-accent-brand/20"
                 onClick={() => onDeleteFiles(selectedFiles)}
               >
                 <Trash2 className="size-3.5" />
               </Button>
               <Button
                 variant="ghost"
-                size="icon"
-                className="size-6 text-accent-brand hover:bg-accent-brand/20 rounded-none"
+                size="icon-xs"
+                title={t("fileManager.copy")}
+                className="text-accent-brand hover:bg-accent-brand/20"
                 onClick={() => onCopyFiles(selectedFiles)}
               >
                 <Copy className="size-3.5" />
@@ -290,13 +295,13 @@ export function FileManagerToolbar({
             </div>
           )}
 
-          <div className="relative w-28 md:w-48">
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
+          <div className="relative w-28 md:w-44">
+            <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder={t("fileManager.searchFiles")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-8 pl-8 text-xs bg-muted/50 border-border rounded-none focus:ring-1 focus:ring-accent-brand/50"
+              className="h-8 pl-8"
             />
           </div>
 
@@ -307,20 +312,21 @@ export function FileManagerToolbar({
             onDensity={setDensity}
           />
 
-          <button
+          <Button
+            variant="outline"
             onClick={onUpload}
-            className="hidden md:flex h-8 px-3 items-center gap-1.5 border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-colors text-[10px] font-bold uppercase tracking-widest"
+            className="hidden md:flex"
             title={t("fileManager.upload")}
           >
-            <Upload className="size-3.5" /> {t("fileManager.upload")}
-          </button>
+            <Upload className="size-3.5" />
+            {t("fileManager.upload")}
+          </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                size="sm"
-                className="h-8 gap-1.5 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 rounded-none font-bold uppercase tracking-widest text-[10px]"
+                className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
               >
                 <Plus className="size-3.5" />
                 {t("fileManager.new")}
@@ -328,47 +334,38 @@ export function FileManagerToolbar({
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="w-44 rounded-none border-border bg-card"
+              className="w-44 bg-card"
               onCloseAutoFocus={(e) => e.preventDefault()}
             >
               <DropdownMenuItem
                 onSelect={() => setTimeout(() => onCreateFolder(), 0)}
-                className="rounded-none text-xs font-semibold gap-2 focus:bg-accent-brand/10 focus:text-accent-brand"
+                className="gap-2 focus:bg-accent-brand/10 focus:text-accent-brand"
               >
                 <FolderPlus className="size-4 text-accent-brand" />
                 {t("fileManager.newFolder")}
               </DropdownMenuItem>
               <DropdownMenuItem
                 onSelect={() => setTimeout(() => onCreateFile(), 0)}
-                className="rounded-none text-xs font-semibold gap-2 focus:bg-accent-brand/10 focus:text-accent-brand"
+                className="gap-2 focus:bg-accent-brand/10 focus:text-accent-brand"
               >
                 <FilePlus className="size-4 text-muted-foreground" />
                 {t("fileManager.newFile")}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuLabel className="text-[10px] uppercase tracking-widest text-muted-foreground py-1">
+              <DropdownMenuLabel className="text-[10px] uppercase tracking-widest text-muted-foreground/70 py-1">
                 {t("fileManager.sortBy")}
               </DropdownMenuLabel>
               <DropdownMenuRadioGroup
                 value={sortBy}
                 onValueChange={(value) => setSortBy(value as SortBy)}
               >
-                <DropdownMenuRadioItem
-                  value="name"
-                  className="rounded-none text-xs"
-                >
+                <DropdownMenuRadioItem value="name">
                   {t("fileManager.sortByName")}
                 </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem
-                  value="modified"
-                  className="rounded-none text-xs"
-                >
+                <DropdownMenuRadioItem value="modified">
                   {t("fileManager.sortByDate")}
                 </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem
-                  value="size"
-                  className="rounded-none text-xs"
-                >
+                <DropdownMenuRadioItem value="size">
                   {t("fileManager.sortBySize")}
                 </DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
@@ -377,16 +374,10 @@ export function FileManagerToolbar({
                 value={sortOrder}
                 onValueChange={(value) => setSortOrder(value as SortOrder)}
               >
-                <DropdownMenuRadioItem
-                  value="asc"
-                  className="rounded-none text-xs"
-                >
+                <DropdownMenuRadioItem value="asc">
                   {t("fileManager.ascending")}
                 </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem
-                  value="desc"
-                  className="rounded-none text-xs"
-                >
+                <DropdownMenuRadioItem value="desc">
                   {t("fileManager.descending")}
                 </DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
@@ -400,7 +391,7 @@ export function FileManagerToolbar({
           currentPath={currentPath}
           navigateTo={navigateTo}
           t={t}
-          className="flex h-8 flex-1 items-center gap-2 overflow-hidden border border-border bg-muted/50 px-3"
+          className="flex h-8 min-w-0 flex-1 items-center gap-2 overflow-hidden border border-border px-2.5"
         />
       </div>
     </div>

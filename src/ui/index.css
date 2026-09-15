@@ -55,6 +55,7 @@
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-surface-dim: var(--surface-dim);
+  --color-terminal-bg: var(--terminal-bg);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -72,6 +73,7 @@
   --motion-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
   --motion-ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --background: oklch(1 0 0);
+  --terminal-bg: #ffffff;
   --foreground: oklch(0.1802 0.0043 128.73);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.1802 0.0043 128.73);
@@ -97,6 +99,9 @@
   --radius: 0.625rem;
   --warning: oklch(0.795 0.162 86.05);
   --surface: oklch(0.97 0 0);
+  /* Sits just under the background, so a log or terminal well reads as recessed
+     in light mode the way it does in the dark themes. */
+  --surface-dim: oklch(0.945 0 0);
   /* The real app references these but never defines them, so its spinner ring
      and log panel fall back to currentColor/transparent. Defined here so both
      are actually visible. */
@@ -115,6 +120,7 @@
 
 .dark {
   --background: oklch(0.155 0.004 128.73);
+  --terminal-bg: #0c0d0b;
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.004 128.68);
   --card-foreground: oklch(0.985 0 0);
@@ -153,6 +159,7 @@
 /* ── Dracula ────────────────────────────────────────────────── */
 .dracula {
   --background: #282a36;
+  --terminal-bg: #282a36;
   --foreground: #f8f8f2;
   --card: #2d303d;
   --card-foreground: #f8f8f2;
@@ -192,6 +199,7 @@
 /* ── Catppuccin Mocha ───────────────────────────────────────── */
 .catppuccin {
   --background: #1e1e2e;
+  --terminal-bg: #1e1e2e;
   --foreground: #cdd6f4;
   --card: #202235;
   --card-foreground: #cdd6f4;
@@ -231,6 +239,7 @@
 /* ── Nord ───────────────────────────────────────────────────── */
 .nord {
   --background: #2e3440;
+  --terminal-bg: #2e3440;
   --foreground: #eceff4;
   --card: #353c4a;
   --card-foreground: #eceff4;
@@ -270,6 +279,7 @@
 /* ── Solarized Dark ─────────────────────────────────────────── */
 .solarized {
   --background: #002b36;
+  --terminal-bg: #002b36;
   --foreground: #b7c4c4;
   --card: #073642;
   --card-foreground: #b7c4c4;
@@ -310,6 +320,7 @@
 
 .tokyo-night {
   --background: #1a1b26;
+  --terminal-bg: #1a1b26;
   --foreground: #c0caf5;
   --card: #1f2335;
   --card-foreground: #c0caf5;
@@ -349,6 +360,7 @@
 /* ── One Dark ───────────────────────────────────────────────── */
 .one-dark {
   --background: #282c34;
+  --terminal-bg: #282c34;
   --foreground: #abb2bf;
   --card: #2f343d;
   --card-foreground: #abb2bf;
@@ -389,6 +401,7 @@
 
 .gruvbox {
   --background: #282828;
+  --terminal-bg: #282828;
   --foreground: #ebdbb2;
   --card: #32302f;
   --card-foreground: #ebdbb2;

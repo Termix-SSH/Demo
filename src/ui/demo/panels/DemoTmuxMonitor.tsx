@@ -89,7 +89,7 @@ export function DemoTmuxMonitor() {
     <PanelShell
       icon={<SquareTerminal className="size-4" />}
       title="tmux"
-      status={`${sessions.length} sessions on proxmox`}
+      status={`${sessions.length} ${sessions.length === 1 ? "session" : "sessions"}`}
       actions={
         <Button
           variant="ghost"
@@ -320,7 +320,7 @@ function PanePreview({
           </button>
         </div>
       </div>
-      <div className="min-h-0 flex-1 overflow-auto bg-card p-3 font-mono text-[11px] leading-relaxed">
+      <div className="min-h-0 flex-1 overflow-auto bg-terminal-bg p-3 font-mono text-[11px] leading-relaxed">
         {isLoading ? (
           <span className="text-muted-foreground italic">Loading pane…</span>
         ) : lines.length === 0 ? (

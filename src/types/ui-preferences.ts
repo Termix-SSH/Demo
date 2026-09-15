@@ -100,6 +100,9 @@ export interface UiFileManagerPreferences {
 export interface UiHostMetricsPreferences {
   enabledCards: string[];
   columns: number;
+  /** Cards or a dense table, matching the other panels that list things. */
+  viewMode: UiPanelViewMode;
+  density: UiDensity;
 }
 
 export interface UiHostEditorPreferences {
@@ -252,7 +255,12 @@ export const PRESETS: Record<Exclude<UiPreset, "custom">, UiAreaPreferences> = {
     proxmox: { viewMode: "grid", density: "comfortable" },
     tmux: { viewMode: "grid", density: "comfortable" },
     plugins: { viewMode: "grid", density: "comfortable" },
-    hostMetrics: { enabledCards: SIMPLE_HOST_METRICS_CARDS, columns: 1 },
+    hostMetrics: {
+      enabledCards: SIMPLE_HOST_METRICS_CARDS,
+      columns: 1,
+      viewMode: "grid",
+      density: "comfortable",
+    },
     hostEditor: { mode: "simple" },
     homepage: { enabledWidgets: null },
   },
@@ -286,7 +294,12 @@ export const PRESETS: Record<Exclude<UiPreset, "custom">, UiAreaPreferences> = {
     tmux: { viewMode: "grid", density: "comfortable" },
     plugins: { viewMode: "grid", density: "comfortable" },
     // 3 is defaultLayoutFromWidgets's own default, i.e. today's behavior.
-    hostMetrics: { enabledCards: BALANCED_HOST_METRICS_CARDS, columns: 3 },
+    hostMetrics: {
+      enabledCards: BALANCED_HOST_METRICS_CARDS,
+      columns: 3,
+      viewMode: "grid",
+      density: "comfortable",
+    },
     hostEditor: { mode: "full" },
     homepage: { enabledWidgets: null },
   },
@@ -319,7 +332,12 @@ export const PRESETS: Record<Exclude<UiPreset, "custom">, UiAreaPreferences> = {
     proxmox: { viewMode: "list", density: "compact" },
     tmux: { viewMode: "list", density: "compact" },
     plugins: { viewMode: "list", density: "compact" },
-    hostMetrics: { enabledCards: ADVANCED_HOST_METRICS_CARDS, columns: 4 },
+    hostMetrics: {
+      enabledCards: ADVANCED_HOST_METRICS_CARDS,
+      columns: 4,
+      viewMode: "list",
+      density: "compact",
+    },
     hostEditor: { mode: "full" },
     homepage: { enabledWidgets: null },
   },
@@ -400,6 +418,8 @@ const AREA_SPECS: {
   hostMetrics: {
     enabledCards: { kind: "stringArray" },
     columns: { kind: "int", min: 1, max: 4 },
+    viewMode: { kind: "enum", values: ["grid", "list"] },
+    density: { kind: "enum", values: ["comfortable", "compact"] },
   },
   hostEditor: {
     mode: { kind: "enum", values: ["simple", "full"] },
