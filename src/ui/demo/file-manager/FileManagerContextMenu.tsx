@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   Clipboard,
   Copy,
@@ -298,7 +299,12 @@ export function FileManagerContextMenu(props: ContextMenuProps) {
     );
   };
 
-  return (
+  // Portalled to the body because the workspace keeps a filled
+  // motion-workspace-enter animation on the active tab's node, and an animation
+  // with a transform in its keyframes is a containing block for fixed children.
+  // Left in place, the menu measured from that node instead of the viewport and
+  // opened a sidebar-plus-tabbar away from the pointer.
+  return createPortal(
     <div
       ref={menuRef}
       className={cn(
@@ -343,6 +349,7 @@ export function FileManagerContextMenu(props: ContextMenuProps) {
           </button>
         ),
       )}
-    </div>
+    </div>,
+    document.body,
   );
 }
