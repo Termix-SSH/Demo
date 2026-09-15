@@ -1,3 +1,6 @@
+> [!WARNING]
+> Under development for the new plugin system. This demo is not representative of the current state of Termix.
+
 <div align="center">
 
 <img src="https://raw.githubusercontent.com/Termix-SSH/Termix/main/public/icon.svg" width="120" height="120" alt="Termix Logo" />
@@ -84,3 +87,4 @@ If you need help or want to report an issue with the Termix documentation, visit
 ## License
 
 Distributed under the Apache License Version 2.0. See `LICENSE` for more information.
+a
