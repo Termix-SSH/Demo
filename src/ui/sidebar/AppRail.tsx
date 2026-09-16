@@ -3,9 +3,10 @@ import { useTranslation } from "react-i18next";
 import {
   Bell,
   Check,
+  Eye,
+  EyeOff,
   LogOut,
   PanelRight,
-  Plus,
   Puzzle,
   Search,
   SlidersHorizontal,
@@ -17,9 +18,9 @@ import { isElectron } from "@/lib/electron";
 import { readRailPreference, setRailPreference } from "./rail-preferences";
 import {
   RAIL_GROUP_ORDER,
-  pinnedRailItems,
-  readPinnedIds,
-  togglePinned,
+  readHiddenIds,
+  toggleHidden,
+  visibleRailDestinations,
   visibleRailItems,
   type RailGroup,
   type RailItemDef,
@@ -96,8 +97,8 @@ export function AppRail({
     rightDockable?: boolean;
   } | null>(null);
   const [unreadAlerts, setUnreadAlerts] = useState(0);
-  const [pinnedIds, setPinnedIds] = useState<string[]>(readPinnedIds);
-  const [picking, setPicking] = useState(false);
+  const [hiddenIds, setHiddenIds] = useState<string[]>(readHiddenIds);
+  const [managing, setManaging] = useState(false);
 
   // The preset still speaks in terms of what it hides, so a preset change is
   // applied by subtracting its hidden list from the pinned one. A user who has
@@ -155,14 +156,14 @@ export function AppRail({
     const pinHandler = () => setPinned(readRailPreference("pinAppRail"));
     const hoverHandler = () =>
       setExpandOnHover(readRailPreference("expandAppRailOnHover"));
-    const pinnedHandler = () => setPinnedIds(readPinnedIds());
+    const hiddenHandler = () => setHiddenIds(readHiddenIds());
     window.addEventListener("pinAppRailChanged", pinHandler);
     window.addEventListener("expandAppRailOnHoverChanged", hoverHandler);
-    window.addEventListener("pinnedRailChanged", pinnedHandler);
+    window.addEventListener("hiddenRailChanged", hiddenHandler);
     return () => {
       window.removeEventListener("pinAppRailChanged", pinHandler);
       window.removeEventListener("expandAppRailOnHoverChanged", hoverHandler);
-      window.removeEventListener("pinnedRailChanged", pinnedHandler);
+      window.removeEventListener("hiddenRailChanged", hiddenHandler);
     };
   }, []);
 
@@ -215,26 +216,31 @@ export function AppRail({
     return out;
   }, [isRemoteSyncConnected, aiEnabled, pluginBacked, pluginOwned]);
 
-  const railExpanded = pinned || (expandOnHover && hovered) || picking;
+  const railExpanded = pinned || (expandOnHover && hovered) || managing;
 
   // Grouped, and only what the user has pinned. A rule sits between groups
   // rather than between every pair of icons.
   const groups = useMemo(() => {
-    const items = pinnedRailItems(pinnedIds).filter(
+    const items = visibleRailDestinations(hiddenIds).filter(
       (item) => !unavailable.has(item.id) && !presetHidden.has(item.id),
     );
     return RAIL_GROUP_ORDER.map((group) => ({
       group,
       items: items.filter((item) => (item.group ?? "tools") === group),
     })).filter((band) => band.items.length > 0);
-  }, [pinnedIds, unavailable, presetHidden]);
+  }, [hiddenIds, unavailable, presetHidden]);
 
-  const pickable = useMemo(
+  // Only things the user chose to hide. A destination the preset hides, or one
+  // whose plugin is gone, is not theirs to bring back here.
+  const hiddenItems = useMemo(
     () =>
       visibleRailItems().filter(
-        (item) => !unavailable.has(item.id) && !pinnedIds.includes(item.id),
+        (item) =>
+          hiddenIds.includes(item.id) &&
+          !unavailable.has(item.id) &&
+          !presetHidden.has(item.id),
       ),
-    [pinnedIds, unavailable],
+    [hiddenIds, unavailable, presetHidden],
   );
 
   const togglePinned2 = () => {
@@ -270,18 +276,15 @@ export function AppRail({
           e.preventDefault();
           onOpenTab?.(item.id as TabType);
         }}
-        onContextMenu={() => {
-          if (item.promotable || item.rightDockable)
-            setMenuTarget({
-              view: item.id as RailView,
-              title: t(item.labelKey),
-              promotable: item.promotable,
-              rightDockable: item.rightDockable,
-            });
-        }}
-        data-rail-promotable={
-          item.promotable || item.rightDockable ? "" : undefined
+        onContextMenu={() =>
+          setMenuTarget({
+            view: item.id as RailView,
+            title: t(item.labelKey),
+            promotable: item.promotable,
+            rightDockable: item.rightDockable,
+          })
         }
+        data-rail-promotable=""
         title={
           pluginOwned.get(item.id)?.running === false
             ? `${t(item.labelKey)} - ${t("nav.pluginStopped")}`
@@ -369,20 +372,21 @@ export function AppRail({
           </div>
         ))}
 
-        {/* Pinning replaces hiding: the rail starts short and you add to it,
-            rather than starting with everything and subtracting. */}
-        {pickable.length > 0 && (
+        {/* Hidden destinations are listed here so they can be brought back.
+            There is no "add": the rail shows what is installed, and a plugin's
+            entry appears when the plugin does. */}
+        {hiddenItems.length > 0 && (
           <>
             <div
               className="mx-auto h-px bg-border my-0.5 shrink-0 transition-[width] duration-200"
               style={{ width: railExpanded ? "calc(100% - 16px)" : 20 }}
             />
             <button
-              onClick={() => setPicking((v) => !v)}
-              title={t("settings.pinnedTitle")}
+              onClick={() => setManaging((v) => !v)}
+              title={t("nav.hiddenCount", { count: hiddenItems.length })}
               style={btnStyle}
               className={`${btnBase} ${
-                picking
+                managing
                   ? "text-accent-brand bg-accent-brand/10"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
               }`}
@@ -391,24 +395,25 @@ export function AppRail({
                 className="shrink-0 flex items-center justify-center"
                 style={{ width: 16, height: 16 }}
               >
-                <Plus size={16} />
+                <EyeOff size={16} />
               </span>
               <span
                 className={`text-xs font-medium whitespace-nowrap overflow-hidden transition-[opacity,width] duration-150 ${
                   railExpanded ? "opacity-100 delay-75" : "opacity-0 w-0"
                 }`}
               >
-                {t("common.more")}
+                {t("nav.hiddenCount", { count: hiddenItems.length })}
               </span>
             </button>
-            {picking &&
+            {managing &&
               railExpanded &&
-              pickable.map((item) => {
+              hiddenItems.map((item) => {
                 const Icon = item.icon;
                 return (
                   <button
-                    key={`pick-${item.id}`}
-                    onClick={() => setPinnedIds(togglePinned(item.id))}
+                    key={`hidden-${item.id}`}
+                    onClick={() => setHiddenIds(toggleHidden(item.id))}
+                    title={t("nav.showInRail")}
                     style={btnStyle}
                     className={`${btnBase} text-muted-foreground/70 hover:text-foreground hover:bg-muted/60`}
                   >
@@ -421,7 +426,7 @@ export function AppRail({
                     <span className="text-xs font-medium whitespace-nowrap overflow-hidden">
                       {t(item.labelKey)}
                     </span>
-                    <Plus size={12} className="ml-auto shrink-0 opacity-60" />
+                    <Eye size={12} className="ml-auto shrink-0 opacity-60" />
                   </button>
                 );
               })}
@@ -586,15 +591,15 @@ export function AppRail({
               )}
               <button
                 onClick={() => {
-                  setPinnedIds(togglePinned(menuTarget.view));
+                  setHiddenIds(toggleHidden(menuTarget.view));
                   setMenuPos(null);
                 }}
                 className="flex items-center gap-2 w-full px-3 py-1.5 text-xs text-left hover:bg-accent hover:text-accent-foreground"
               >
                 <span className="shrink-0 w-3 flex items-center justify-center">
-                  <Plus className="size-3" />
+                  <EyeOff className="size-3" />
                 </span>
-                {t("nav.unpinFromRail")}
+                {t("nav.hideFromRail")}
               </button>
               <div className="h-px bg-border my-1" />
             </>

@@ -60,8 +60,6 @@ export interface RailItemDef {
    * rather than sitting between every pair of icons.
    */
   group?: RailGroup;
-  /** In the rail out of the box. Everything else is pinned by the user. */
-  defaultPinned?: boolean;
   /** Shown on the mobile bottom bar's primary row rather than its More menu. */
   mobilePrimary?: boolean;
   /**
@@ -82,7 +80,6 @@ export const RAIL_ITEMS: RailItemDef[] = [
   {
     id: "hosts",
     group: "objects",
-    defaultPinned: true,
     icon: Server,
     labelKey: "nav.hosts",
     mobilePrimary: true,
@@ -90,7 +87,6 @@ export const RAIL_ITEMS: RailItemDef[] = [
   {
     id: "credentials",
     group: "objects",
-    defaultPinned: true,
     icon: KeyRound,
     labelKey: "nav.credentials",
   },
@@ -104,7 +100,6 @@ export const RAIL_ITEMS: RailItemDef[] = [
   {
     id: "connections",
     group: "objects",
-    defaultPinned: true,
     icon: Plug,
     labelKey: "nav.connections",
     rightDockable: true,
@@ -112,7 +107,6 @@ export const RAIL_ITEMS: RailItemDef[] = [
   {
     id: "quick-connect",
     group: "tools",
-    defaultPinned: true,
     icon: Zap,
     labelKey: "nav.quickConnect",
     mobilePrimary: true,
@@ -126,7 +120,6 @@ export const RAIL_ITEMS: RailItemDef[] = [
   {
     id: "ssh-tools",
     group: "tools",
-    defaultPinned: true,
     icon: Hammer,
     labelKey: "nav.sshTools",
     mobilePrimary: true,
@@ -136,7 +129,6 @@ export const RAIL_ITEMS: RailItemDef[] = [
   {
     id: "snippets",
     group: "tools",
-    defaultPinned: true,
     icon: Play,
     labelKey: "nav.snippets",
     mobilePrimary: true,
@@ -197,7 +189,6 @@ export const RAIL_ITEMS: RailItemDef[] = [
   {
     id: "workspaces",
     group: "objects",
-    defaultPinned: true,
     icon: LayoutTemplate,
     labelKey: "nav.workspaces",
   },
@@ -279,70 +270,62 @@ export function railItemLabel(id: string, t: (key: string) => string): string {
   return key ? t(key) : id;
 }
 
-const PINNED_KEY = "termix-demo-pinned-rail";
+const HIDDEN_KEY = "termix-demo-hidden-rail";
 const LEGACY_HIDDEN_KEY = "hiddenRailTabs";
 
-/** The six the rail ships with, before the user changes anything. */
-export function defaultPinnedIds(): string[] {
-  return visibleRailItems()
-    .filter((item) => item.defaultPinned)
-    .map((item) => item.id);
-}
-
 /**
- * What sits in the rail.
+ * What the user has hidden from the rail.
  *
- * The old model was subtractive: every destination was present and you hid what
- * you did not want, which made the default wrong for everyone. This is
- * additive. A user upgrading from the old model keeps whatever they had
- * visible, so nobody loses a destination they were using.
+ * The rail shows what is installed -- built-in destinations and whatever the
+ * enabled plugins contribute -- so there is nothing to "add". The only choice
+ * is to hide something you do not use, and to bring it back later. Storing the
+ * hidden set rather than the visible one means a newly installed plugin shows
+ * up on its own instead of waiting to be pinned.
  */
-export function readPinnedIds(): string[] {
+export function readHiddenIds(): string[] {
   try {
-    const raw = localStorage.getItem(PINNED_KEY);
+    const raw = localStorage.getItem(HIDDEN_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed))
         return parsed.filter((x) => typeof x === "string");
     }
+    // The old app stored the same idea under a different key.
     const legacy = localStorage.getItem(LEGACY_HIDDEN_KEY);
     if (legacy) {
-      const hidden = new Set<string>(JSON.parse(legacy));
-      const migrated = visibleRailItems()
-        .map((item) => item.id)
-        .filter((id) => !hidden.has(id));
-      writePinnedIds(migrated);
-      return migrated;
+      const parsed = JSON.parse(legacy);
+      if (Array.isArray(parsed))
+        return parsed.filter((x) => typeof x === "string");
     }
   } catch {
-    // Unreadable storage just means the defaults.
+    // Unreadable storage just means nothing is hidden.
   }
-  return defaultPinnedIds();
+  return [];
 }
 
-export function writePinnedIds(ids: string[]): void {
+export function writeHiddenIds(ids: string[]): void {
   try {
-    localStorage.setItem(PINNED_KEY, JSON.stringify(ids));
-    window.dispatchEvent(new Event("pinnedRailChanged"));
+    localStorage.setItem(HIDDEN_KEY, JSON.stringify(ids));
+    window.dispatchEvent(new Event("hiddenRailChanged"));
   } catch {
-    // Private windows refuse writes; the rail just will not persist.
+    // Private windows refuse writes; the choice just will not persist.
   }
 }
 
-export function togglePinned(id: string): string[] {
-  const current = readPinnedIds();
+export function toggleHidden(id: string): string[] {
+  const current = readHiddenIds();
   const next = current.includes(id)
     ? current.filter((x) => x !== id)
     : [...current, id];
-  writePinnedIds(next);
+  writeHiddenIds(next);
   return next;
 }
 
-/** Rail items in group order, filtered to what the user has pinned. */
-export function pinnedRailItems(pinned: string[]): RailItemDef[] {
+/** Rail items in group order, minus anything the user has hidden. */
+export function visibleRailDestinations(hidden: string[]): RailItemDef[] {
   const order = new Map(RAIL_GROUP_ORDER.map((g, i) => [g, i]));
   return visibleRailItems()
-    .filter((item) => pinned.includes(item.id))
+    .filter((item) => !hidden.includes(item.id))
     .sort(
       (a, b) =>
         (order.get(a.group ?? "tools") ?? 9) -
