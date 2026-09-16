@@ -571,7 +571,6 @@ export const DEMO_TUNNELS: DemoTunnelRow[] = [
   },
 ];
 
-
 function dir(name: string, path: string): FileItem {
   return {
     name,
@@ -673,8 +672,8 @@ export const DEMO_ACTIVITY: DemoActivityItem[] = [
   {
     id: 5,
     type: "docker",
-    hostId: "h-docker-host",
-    hostName: "docker-host",
+    hostId: "h-media",
+    hostName: "media-server",
     timestamp: minutesAgo(320),
   },
   {

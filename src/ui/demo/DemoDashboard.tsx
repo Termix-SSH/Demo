@@ -23,6 +23,7 @@ import {
 import { Button } from "@/components/button";
 import { VersionBadge } from "@/components/version-badge";
 import { Facts, GroupHeading, PanelShell } from "@/components/panel-layout";
+import { timeAgo } from "@/lib/relative-time";
 import {
   getStatusClasses,
   useStatusColorScheme,
@@ -809,14 +810,7 @@ function RecentActivity({ ctx }: { ctx: DashboardCardContext }) {
   const { t } = useTranslation();
   const scheme = useStatusColorScheme();
 
-  function ago(ts: string) {
-    const ms = Date.now() - new Date(ts).getTime();
-    if (ms < 60_000) return t("dashboard.justNow");
-    const s = Math.floor(ms / 1000);
-    if (s < 3600) return `${Math.floor(s / 60)}m`;
-    if (s < 86_400) return `${Math.floor(s / 3600)}h`;
-    return `${Math.floor(s / 86_400)}d`;
-  }
+  const ago = (ts: string) => timeAgo(ts, t("dashboard.justNow"));
 
   if (DEMO_ACTIVITY.length === 0) {
     return (
