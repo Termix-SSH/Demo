@@ -1,21 +1,18 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  CornerDownRight,
   KeyRound,
   LibraryBig,
   Plus,
   Puzzle,
-  Search,
   Server,
   SlidersHorizontal,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Button } from "@/components/button";
-import { Input } from "@/components/input";
 import { Separator } from "@/components/separator";
 import { EmptyState } from "@/components/empty-state";
-import { GroupHeading, PANEL, Segmented } from "@/components/panel-layout";
+import { PANEL } from "@/components/panel-layout";
 import { FakeSwitch } from "@/components/section-card";
 import {
   addDemoHost,
@@ -50,6 +47,7 @@ import {
   type SectionBand,
 } from "@/demo/hosts/host-sections";
 import { HostEditorBody } from "@/demo/hosts/HostEditorBody";
+import { ManageList } from "@/demo/hosts/ManageList";
 import {
   CREDENTIAL_SECTIONS,
   CredentialEditorBody,
@@ -228,7 +226,7 @@ export function HostWorkbench({
       </header>
 
       <div className="flex min-h-0 flex-1">
-        <ObjectList
+        <ManageList
           editing={!!editing}
           mode={mode}
           onMode={(next) => {
@@ -298,204 +296,6 @@ export function HostWorkbench({
               }
             />
           </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-/** The list column: what to edit, grouped by folder and nested by parent. */
-function ObjectList({
-  editing,
-  mode,
-  onMode,
-  query,
-  onQuery,
-  hosts,
-  credentials,
-  selectedId,
-  onPickHost,
-  onPickCredential,
-}: {
-  editing: boolean;
-  mode: Mode;
-  onMode: (mode: Mode) => void;
-  query: string;
-  onQuery: (value: string) => void;
-  hosts: Host[];
-  credentials: Credential[];
-  selectedId: string | null;
-  onPickHost: (host: Host | null) => void;
-  onPickCredential: (credential: Credential | null) => void;
-}) {
-  const needle = query.trim().toLowerCase();
-
-  const groups = useMemo(() => {
-    type Row = { id: string; label: string; note?: string; depth: number };
-    const byFolder = new Map<string, Row[]>();
-    const push = (folder: string, row: Row) => {
-      const key = folder || "Ungrouped";
-      const list = byFolder.get(key);
-      if (list) list.push(row);
-      else byFolder.set(key, [row]);
-    };
-
-    if (mode === "hosts") {
-      const matches = (host: Host) =>
-        !needle ||
-        `${host.name || host.ip} ${host.ip}`.toLowerCase().includes(needle);
-
-      // Sub-hosts sit under their parent rather than beside it, the same
-      // nesting the sidebar tree draws from parentHostId. Grouping by folder
-      // alone flattened them into siblings.
-      const childrenOf = new Map<string, Host[]>();
-      for (const host of hosts) {
-        if (!host.parentHostId) continue;
-        const list = childrenOf.get(host.parentHostId);
-        if (list) list.push(host);
-        else childrenOf.set(host.parentHostId, [host]);
-      }
-
-      const addRow = (host: Host, folder: string, depth: number) => {
-        push(folder, {
-          id: host.id,
-          label: host.name || host.ip,
-          note: host.ip,
-          depth,
-        });
-        for (const child of childrenOf.get(host.id) ?? [])
-          addRow(child, folder, depth + 1);
-      };
-
-      const byId = new Map(hosts.map((h) => [h.id, h]));
-      for (const host of hosts) {
-        // A child whose parent is missing falls back to a root row, so a
-        // stale parentHostId never hides a host entirely.
-        if (host.parentHostId && byId.has(host.parentHostId)) continue;
-
-        // Keep a parent visible when a child matches, or the match would have
-        // nowhere to hang.
-        const kept = [host, ...(childrenOf.get(host.id) ?? [])].some(matches);
-        if (!kept) continue;
-        addRow(host, host.folder, 0);
-      }
-    } else {
-      for (const cred of credentials) {
-        if (
-          needle &&
-          !`${cred.name} ${cred.username}`.toLowerCase().includes(needle)
-        )
-          continue;
-        push(cred.folder ?? "", {
-          id: cred.id,
-          label: cred.name,
-          note: cred.username,
-          depth: 0,
-        });
-      }
-    }
-    return [...byFolder.entries()].sort(([a], [b]) => a.localeCompare(b));
-  }, [mode, hosts, credentials, needle]);
-
-  const empty = groups.length === 0;
-
-  // Three columns do not fit on a phone. While you are editing something
-  // the list steps aside and the editor takes the screen; the editor's
-  // Cancel brings the list back.
-  return (
-    <div
-      className={`${editing ? "hidden md:flex" : "flex"} w-full shrink-0 flex-col border-r border-border md:w-72`}
-    >
-      <div className="flex flex-col gap-2 border-b border-border px-2.5 py-2">
-        <Segmented
-          value={mode}
-          onChange={onMode}
-          options={[
-            { value: "hosts", label: "Hosts", count: hosts.length },
-            {
-              value: "credentials",
-              label: "Credentials",
-              count: credentials.length,
-            },
-          ]}
-          className="w-full [&>button]:flex-1"
-        />
-        <div className="flex items-center gap-2">
-          <div className="relative min-w-0 flex-1">
-            <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={query}
-              onChange={(e) => onQuery(e.target.value)}
-              placeholder="Search"
-              className="h-8 pl-8 text-xs"
-            />
-          </div>
-          <Button
-            variant="outline"
-            size="icon"
-            title={mode === "hosts" ? "Add host" : "Add credential"}
-            onClick={() =>
-              mode === "hosts" ? onPickHost(null) : onPickCredential(null)
-            }
-            className="shrink-0 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
-          >
-            <Plus className="size-3.5" />
-          </Button>
-        </div>
-      </div>
-
-      <div className="min-h-0 flex-1 overflow-y-auto py-2">
-        {empty ? (
-          <EmptyState
-            icon={mode === "hosts" ? Server : KeyRound}
-            title={needle ? "Nothing matches" : "Nothing here yet"}
-          />
-        ) : (
-          groups.map(([folder, rows]) => (
-            <div key={folder} className="mb-2 flex flex-col">
-              <GroupHeading
-                title={folder}
-                count={rows.length}
-                className="px-2.5 pb-1.5"
-              />
-              {rows.map((row) => {
-                const on = row.id === selectedId;
-                return (
-                  <button
-                    key={row.id}
-                    onClick={() =>
-                      mode === "hosts"
-                        ? onPickHost(hosts.find((h) => h.id === row.id) ?? null)
-                        : onPickCredential(
-                            credentials.find((c) => c.id === row.id) ?? null,
-                          )
-                    }
-                    style={{ paddingLeft: 8 + row.depth * 14 }}
-                    className={`flex w-full items-center gap-2 border-l-2 py-1.5 pr-2 text-left transition-colors focus-visible:relative focus-visible:z-10 focus-visible:ring-1 focus-visible:ring-ring ${
-                      on
-                        ? "border-accent-brand bg-accent-brand/10 text-accent-brand"
-                        : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground"
-                    }`}
-                  >
-                    {row.depth > 0 && (
-                      <CornerDownRight
-                        aria-hidden
-                        className="size-3 shrink-0 opacity-40"
-                      />
-                    )}
-                    <span className="min-w-0 flex-1 truncate text-xs font-medium">
-                      {row.label}
-                    </span>
-                    {row.note && (
-                      <span className="shrink-0 truncate font-mono text-[10px] opacity-60">
-                        {row.note}
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          ))
         )}
       </div>
     </div>
