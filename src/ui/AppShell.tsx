@@ -1,26 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
-import {
-  ChevronLeft,
-  ChevronRight,
-  PanelRight,
-  RotateCcw,
-  SquareArrowOutUpRight,
-} from "lucide-react";
 import { AppRail, type RailView } from "@/sidebar/AppRail";
-import {
-  PROMOTABLE_IDS,
-  RIGHT_DOCKABLE_IDS,
-  railItemLabel,
-} from "@/sidebar/rail-items";
-import { MultiPanelHint } from "@/sidebar/MultiPanelHint";
+import { RIGHT_DOCKABLE_IDS, railItemLabel } from "@/sidebar/rail-items";
 import { HostsPanel } from "@/sidebar/HostsPanel";
 import { CredentialsPanel } from "@/sidebar/CredentialsPanel";
 import { TabBar } from "@/shell/TabBar";
+import { CommandPalette } from "@/shell/CommandPalette";
+import { DockPanel, DockReopenStrip } from "@/shell/DockPanel";
 import { SplitView, defaultSizes, type RowColSizes } from "@/shell/SplitView";
-import { Button } from "@/components/button";
-import { Separator } from "@/components/separator";
 import { Sheet, SheetContent } from "@/components/sheet";
 import { ServerStatusProvider } from "@/lib/ServerStatusContext";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -45,9 +33,6 @@ import type {
 // target remounts the subtree, which would tear down a terminal on every split
 // or tab switch, so the node has to outlive the layout change.
 
-const SIDEBAR_DEFAULT_WIDTH = 291;
-const SIDEBAR_MIN_WIDTH = 220;
-const SIDEBAR_MAX_WIDTH = 560;
 const PANE_SLOTS = 6;
 
 function newInstanceId(): string {
@@ -69,10 +54,9 @@ export function AppShell({
 
   const [railView, setRailView] = useState<RailView>("hosts");
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [sidebarWidth, setSidebarWidth] = useState(SIDEBAR_DEFAULT_WIDTH);
-  const [sidebarDragging, setSidebarDragging] = useState(false);
   const [sidebarEditing, setSidebarEditing] = useState(false);
   const [rightRailView, setRightRailView] = useState<RailView | null>(null);
+  const [paletteOpen, setPaletteOpen] = useState(false);
 
   const [tabs, setTabs] = useState<Tab[]>(() => [
     {
@@ -119,6 +103,32 @@ export function AppShell({
       clearTimeout(timer);
       unsubscribe();
     };
+  }, []);
+
+  // Ctrl/Cmd+K opens the palette, and double-tapping left Shift does too --
+  // the real app kept both because the double-shift gesture alone was hard to
+  // discover.
+  const lastShiftRef = useRef(0);
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (
+        (e.ctrlKey || e.metaKey) &&
+        !e.shiftKey &&
+        !e.altKey &&
+        e.code === "KeyK"
+      ) {
+        e.preventDefault();
+        setPaletteOpen((prev) => !prev);
+        return;
+      }
+      if (e.code === "ShiftLeft" && !e.repeat) {
+        const now = Date.now();
+        if (now - lastShiftRef.current < 300) setPaletteOpen((prev) => !prev);
+        lastShiftRef.current = now;
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
   // Stable per-tab DOM nodes, see the note at the top of this file.
@@ -195,8 +205,7 @@ export function AppShell({
         }
       }
     }
-  });
-
+  }, [tabs, isSplit, paneTabIds, paneContentEls, activeTabId, getTabNode]);
 
   const topLevelTabs = useMemo(
     () => tabs.filter((tb) => !tb.parentSplitTabId),
@@ -337,28 +346,6 @@ export function AppShell({
     });
   }
 
-
-  function onSidebarMouseDown(e: React.MouseEvent) {
-    e.preventDefault();
-    setSidebarDragging(true);
-    const startX = e.clientX;
-    const startWidth = sidebarWidth;
-
-    const onMove = (ev: MouseEvent) => {
-      const next = startWidth + (ev.clientX - startX);
-      setSidebarWidth(
-        Math.min(SIDEBAR_MAX_WIDTH, Math.max(SIDEBAR_MIN_WIDTH, next)),
-      );
-    };
-    const onUp = () => {
-      setSidebarDragging(false);
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mouseup", onUp);
-    };
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseup", onUp);
-  }
-
   function handleRailClick(view: RailView) {
     if (railView === view && sidebarOpen) {
       setSidebarOpen(false);
@@ -378,7 +365,6 @@ export function AppShell({
       prev ? null : ((RIGHT_DOCKABLE_IDS[0] as RailView) ?? null),
     );
   }
-
 
   const renderSidebarPanels = (view: RailView, owned = true) => (
     <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
@@ -418,81 +404,6 @@ export function AppShell({
 
   const sidebarTitle = (view: RailView): string => railItemLabel(view, t);
 
-  const sidebarHeader = (view: RailView) => (
-    <div className="flex flex-row items-center border-b border-border h-12.5 shrink-0">
-      <span className="flex-1 min-w-0 whitespace-nowrap text-base font-bold tracking-tight text-foreground px-3">
-        {sidebarTitle(view)}
-      </span>
-      {!isMobile && PROMOTABLE_IDS.includes(view) && (
-        <>
-          <Separator orientation="vertical" />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-full w-12.5 border-y-0 border-r-0 border-border rounded-none text-muted-foreground hover:text-foreground"
-            title={t("nav.openAsTab")}
-            aria-label={t("nav.openAsTab")}
-            onClick={() => openSingletonTab(view as TabType)}
-          >
-            <SquareArrowOutUpRight className="size-3.5" />
-          </Button>
-        </>
-      )}
-      {!isMobile && RIGHT_DOCKABLE_IDS.includes(view) && (
-        <>
-          <Separator orientation="vertical" />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-full w-12.5 border-y-0 border-r-0 border-border rounded-none text-muted-foreground hover:text-foreground"
-            title={t("nav.openInRightDock")}
-            aria-label={t("nav.openInRightDock")}
-            onClick={() => openInRightDock(view)}
-          >
-            <PanelRight className="size-3.5" />
-          </Button>
-        </>
-      )}
-      {!isMobile && (
-        <>
-          <Separator orientation="vertical" />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-full w-12.5 border-y-0 border-border rounded-none text-muted-foreground hover:text-foreground"
-            title="Reset width"
-            onClick={() => setSidebarWidth(SIDEBAR_DEFAULT_WIDTH)}
-          >
-            <RotateCcw className="size-3.5" />
-          </Button>
-        </>
-      )}
-      {!isMobile && (
-        <>
-          <Separator orientation="vertical" />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-full w-12.5 border-y-0 border-r-0 border-border rounded-none text-muted-foreground hover:text-foreground"
-            title="Collapse sidebar"
-            onClick={() => setSidebarOpen(false)}
-          >
-            <ChevronLeft className="size-3.5" />
-          </Button>
-        </>
-      )}
-    </div>
-  );
-
-  const sidebarHint = !isMobile && (
-    <MultiPanelHint
-      canPromote={PROMOTABLE_IDS.includes(railView)}
-      canRightDock={RIGHT_DOCKABLE_IDS.includes(railView)}
-      onOpenAsTab={() => openSingletonTab(railView as TabType)}
-      onOpenInRightDock={() => openInRightDock(railView)}
-    />
-  );
-
   return (
     <ServerStatusProvider isAuthenticated={!!username}>
       <div
@@ -511,37 +422,24 @@ export function AppShell({
             onOpenTab={openSingletonTab}
             onOpenInRightDock={openInRightDock}
             onOpenPlugins={() => openSingletonTab("plugins")}
+            onOpenSettings={() => openSingletonTab("settings")}
+            onOpenPalette={() => setPaletteOpen(true)}
             onLogout={onLogout}
           />
 
           {/* Desktop: inline resizable sidebar */}
           {!isMobile && (
-            <div
-              className={`relative flex flex-col min-h-0 bg-sidebar shrink-0 overflow-hidden ${
-                sidebarOpen
-                  ? `border-r transition-colors ${sidebarDragging ? "border-accent-brand/60" : "border-border"}`
-                  : ""
-              }`}
-              style={{
-                width: sidebarOpen ? (sidebarEditing ? 560 : sidebarWidth) : 0,
-                transition: sidebarDragging ? "none" : "width 0.2s",
-              }}
+            <DockPanel
+              side="left"
+              view={railView}
+              open={sidebarOpen}
+              editing={sidebarEditing}
+              onClose={() => setSidebarOpen(false)}
+              onOpenAsTab={(view) => openSingletonTab(view as TabType)}
+              onMoveToRightDock={(view) => openInRightDock(view as RailView)}
             >
-              {sidebarHeader(railView)}
-              {sidebarHint}
               {renderSidebarPanels(railView)}
-
-              {sidebarOpen && !sidebarEditing && (
-                <div
-                  onMouseDown={onSidebarMouseDown}
-                  className={`absolute right-0 top-0 bottom-0 w-1 cursor-col-resize z-30 transition-colors ${
-                    sidebarDragging
-                      ? "bg-accent-brand/60"
-                      : "hover:bg-accent-brand/40"
-                  }`}
-                />
-              )}
-            </div>
+            </DockPanel>
           )}
 
           {/* Mobile: sidebar as an overlay sheet */}
@@ -553,7 +451,11 @@ export function AppShell({
                 className="p-0 flex flex-col min-h-0 max-w-full bg-sidebar border-r border-border gap-0 w-[min(85vw,360px)]"
                 style={{ height: "100dvh" }}
               >
-                {sidebarHeader(railView)}
+                <div className="flex flex-row items-center border-b border-border h-12.5 shrink-0">
+                  <span className="flex-1 min-w-0 whitespace-nowrap text-base font-bold tracking-tight text-foreground px-3">
+                    {sidebarTitle(railView)}
+                  </span>
+                </div>
                 {renderSidebarPanels(railView)}
               </SheetContent>
             </Sheet>
@@ -566,13 +468,7 @@ export function AppShell({
             }`}
           >
             {!isMobile && !sidebarOpen && (
-              <button
-                onClick={() => setSidebarOpen(true)}
-                title="Open Sidebar"
-                className="absolute left-0 top-0 bottom-0 z-20 flex items-center justify-center w-6 bg-sidebar border-r border-border text-muted-foreground hover:text-accent-brand hover:bg-accent-brand/5 transition-colors"
-              >
-                <ChevronRight className="size-3.5" />
-              </button>
+              <DockReopenStrip onClick={() => setSidebarOpen(true)} />
             )}
 
             <div className="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
@@ -653,28 +549,33 @@ export function AppShell({
             </div>
           </div>
 
-          {/* Right dock */}
+          {/* Right dock. Reference panels only, so it never owns the host or
+              credential trees the left dock keeps mounted. */}
           {!isMobile && rightRailView && (
-            <div className="relative flex flex-col min-h-0 bg-sidebar shrink-0 overflow-hidden border-l border-border w-[291px]">
-              <div className="flex flex-row items-center border-b border-border h-12.5 shrink-0">
-                <span className="flex-1 min-w-0 whitespace-nowrap text-base font-bold tracking-tight text-foreground px-3">
-                  {sidebarTitle(rightRailView)}
-                </span>
-                <Separator orientation="vertical" />
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-full w-12.5 border-y-0 border-r-0 border-border rounded-none text-muted-foreground hover:text-foreground"
-                  title="Close dock"
-                  onClick={() => setRightRailView(null)}
-                >
-                  <PanelRight className="size-3.5" />
-                </Button>
-              </div>
-              <div className="flex flex-col flex-1 min-h-0" />
-            </div>
+            <DockPanel
+              side="right"
+              view={rightRailView}
+              open
+              onClose={() => setRightRailView(null)}
+              onOpenAsTab={(view) => {
+                openSingletonTab(view as TabType);
+                setRightRailView(null);
+              }}
+            >
+              <SecondaryPanel view={rightRailView} />
+            </DockPanel>
           )}
         </div>
+
+        <CommandPalette
+          isOpen={paletteOpen}
+          setIsOpen={setPaletteOpen}
+          hosts={hosts}
+          onOpenHostTab={(host, type) => openTab(host, type)}
+          onOpenTab={openSingletonTab}
+          onOpenPanel={(view) => handleRailClick(view as RailView)}
+          onOpenSettings={() => openSingletonTab("settings")}
+        />
       </div>
     </ServerStatusProvider>
   );

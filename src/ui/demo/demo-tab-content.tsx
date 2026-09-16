@@ -34,6 +34,7 @@ import { DemoDocker } from "@/demo/panels/DemoDocker";
 import { DemoProxmox } from "@/demo/panels/DemoProxmox";
 import { DemoTmuxMonitor } from "@/demo/panels/DemoTmuxMonitor";
 import { PluginsScreen } from "@/demo/plugins/PluginsScreen";
+import { SettingsScreen } from "@/demo/settings/SettingsScreen";
 import { PanelShell } from "@/components/panel-layout";
 import { DemoConnectionGate } from "@/demo/DemoConnectionGate";
 
@@ -72,7 +73,11 @@ export function renderDemoTabContent(
           <DemoTerminal host={tab.host} />
         </DemoConnectionGate>
       ) : (
-        <Placeholder chrome={chrome} icon={Server} title="Pick a host to open a terminal" />
+        <Placeholder
+          chrome={chrome}
+          icon={Server}
+          title="Pick a host to open a terminal"
+        />
       );
 
     case "files":
@@ -81,7 +86,11 @@ export function renderDemoTabContent(
           <DemoFileManager host={tab.host} initialPath={tab.initialPath} />
         </DemoConnectionGate>
       ) : (
-        <Placeholder chrome={chrome} icon={Server} title="Pick a host to browse its files" />
+        <Placeholder
+          chrome={chrome}
+          icon={Server}
+          title="Pick a host to browse its files"
+        />
       );
 
     case "host-metrics":
@@ -94,7 +103,11 @@ export function renderDemoTabContent(
           <DemoHostMetrics host={tab.host} />
         </DemoConnectionGate>
       ) : (
-        <Placeholder chrome={chrome} icon={Activity} title="Pick a host to see its metrics" />
+        <Placeholder
+          chrome={chrome}
+          icon={Activity}
+          title="Pick a host to see its metrics"
+        />
       );
 
     case "tunnel":
@@ -127,6 +140,9 @@ export function renderDemoTabContent(
 
     case "plugins":
       return <PluginsScreen />;
+
+    case "settings":
+      return <SettingsScreen />;
 
     case "rdp":
       return (
@@ -177,9 +193,7 @@ export function renderDemoTabContent(
     // anything on it. No empty-state copy: the toolbar is the affordance.
     case "homepage":
       return (
-        <div
-          className={`h-full w-full ${chrome ? "bg-background" : ""}`}
-        />
+        <div className={`h-full w-full ${chrome ? "bg-background" : ""}`} />
       );
     case "fleet-inventory":
       return (

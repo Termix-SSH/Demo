@@ -55,6 +55,7 @@ export function tabIcon(type: TabType) {
     case "user-profile":
       return <User className="size-3.5" />;
     case "admin-settings":
+    case "settings":
       return <Settings className="size-3.5" />;
     case "docker":
       return <Box className="size-3.5" />;

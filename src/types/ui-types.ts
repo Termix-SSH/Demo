@@ -274,6 +274,7 @@ export type TabType =
   | "ai"
   | "collab"
   | "plugins"
+  | "settings"
   | "split-screen";
 
 export type SerialConfig = {
