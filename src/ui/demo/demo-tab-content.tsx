@@ -35,6 +35,7 @@ import { DemoProxmox } from "@/demo/panels/DemoProxmox";
 import { DemoTmuxMonitor } from "@/demo/panels/DemoTmuxMonitor";
 import { PluginsScreen } from "@/demo/plugins/PluginsScreen";
 import { PanelShell } from "@/components/panel-layout";
+import { DemoConnectionGate } from "@/demo/DemoConnectionGate";
 
 export function renderDemoTabContent(
   tab: Tab,
@@ -47,6 +48,13 @@ export function renderDemoTabContent(
   },
 ) {
   const chrome = ctx?.chrome !== false;
+
+  // user@host:port for the connection screen and its log lines.
+  const target = tab.host
+    ? `${tab.host.username}@${tab.host.ip}:${tab.host.port}`
+    : "demo@termix";
+  const offline = tab.host?.status === "offline";
+
   switch (tab.type) {
     case "dashboard":
       return (
@@ -60,36 +68,62 @@ export function renderDemoTabContent(
     case "terminal":
     case "local-terminal":
       return tab.host ? (
-        <DemoTerminal host={tab.host} />
+        <DemoConnectionGate kind="terminal" target={target} offline={offline}>
+          <DemoTerminal host={tab.host} />
+        </DemoConnectionGate>
       ) : (
         <Placeholder chrome={chrome} icon={Server} title="Pick a host to open a terminal" />
       );
 
     case "files":
       return tab.host ? (
-        <DemoFileManager host={tab.host} initialPath={tab.initialPath} />
+        <DemoConnectionGate kind="files" target={target} offline={offline}>
+          <DemoFileManager host={tab.host} initialPath={tab.initialPath} />
+        </DemoConnectionGate>
       ) : (
         <Placeholder chrome={chrome} icon={Server} title="Pick a host to browse its files" />
       );
 
     case "host-metrics":
       return tab.host ? (
-        <DemoHostMetrics host={tab.host} />
+        <DemoConnectionGate
+          kind="host-metrics"
+          target={target}
+          offline={offline}
+        >
+          <DemoHostMetrics host={tab.host} />
+        </DemoConnectionGate>
       ) : (
         <Placeholder chrome={chrome} icon={Activity} title="Pick a host to see its metrics" />
       );
 
     case "tunnel":
-      return <DemoTunnels />;
+      return (
+        <DemoConnectionGate kind="tunnel" target={target}>
+          <DemoTunnels />
+        </DemoConnectionGate>
+      );
 
     case "docker":
-      return <DemoDocker />;
+      return (
+        <DemoConnectionGate kind="docker" target={target}>
+          <DemoDocker />
+        </DemoConnectionGate>
+      );
 
     case "proxmox-stats":
-      return <DemoProxmox />;
+      return (
+        <DemoConnectionGate kind="proxmox" target={target}>
+          <DemoProxmox />
+        </DemoConnectionGate>
+      );
 
     case "tmux_monitor":
-      return <DemoTmuxMonitor />;
+      return (
+        <DemoConnectionGate kind="tmux" target={target}>
+          <DemoTmuxMonitor />
+        </DemoConnectionGate>
+      );
 
     case "plugins":
       return <PluginsScreen />;

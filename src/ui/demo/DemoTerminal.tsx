@@ -17,13 +17,11 @@ import type { Host } from "@/types/ui-types";
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { resolveTermixThemeColors } from "@/demo/terminal-theme";
-import { ConnectionScreen } from "@/components/connection/ConnectionScreen";
 import { DEMO_FS } from "@/demo/demo-data";
 
 // A real xterm against a scripted shell. Commands are answered from the same
-// filesystem the file manager walks.
-
-const CONNECT_STEPS_MS = [260, 420, 300];
+// filesystem the file manager walks. The connect sequence and its log live in
+// DemoConnectionGate, which every tab type shares.
 
 function motd(host: Host): string[] {
   return [
@@ -88,37 +86,10 @@ function resolvePath(cwd: string, arg: string): string {
 export function DemoTerminal({ host }: { host: Host }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<SearchAddon | null>(null);
-  const [connected, setConnected] = useState(false);
-  const [attempt, setAttempt] = useState(0);
   const [searchOpen, setSearchOpen] = useState(false);
 
-  // Walk a short fake connect sequence before handing over to the shell, so the
-  // real ConnectionScreen gets to do its job.
   useEffect(() => {
-    let cancelled = false;
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    let elapsed = 0;
-    CONNECT_STEPS_MS.forEach((ms, i) => {
-      elapsed += ms;
-      timers.push(
-        setTimeout(() => {
-          if (!cancelled) setAttempt(i + 1);
-        }, elapsed),
-      );
-    });
-    timers.push(
-      setTimeout(() => {
-        if (!cancelled) setConnected(true);
-      }, elapsed + 120),
-    );
-    return () => {
-      cancelled = true;
-      timers.forEach(clearTimeout);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!connected || !containerRef.current) return;
+    if (!containerRef.current) return;
 
     const colors = resolveTermixThemeColors("termix", "dark");
     const term = new Terminal({
@@ -390,19 +361,7 @@ export function DemoTerminal({ host }: { host: Host }) {
       disposable.dispose();
       term.dispose();
     };
-  }, [connected, host]);
-
-  if (!connected) {
-    return (
-      <ConnectionScreen
-        status="connecting"
-        message={`${host.username}@${host.ip}:${host.port}`}
-        attempt={attempt}
-        maxAttempts={CONNECT_STEPS_MS.length}
-        backgroundColor={resolveTermixThemeColors("termix", "dark").background}
-      />
-    );
-  }
+  }, [host]);
 
   return (
     <div className="h-full w-full relative bg-background">

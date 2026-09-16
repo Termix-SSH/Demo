@@ -165,12 +165,10 @@ export function DemoHostMetrics({ host }: { host: Host }) {
     );
   }
 
+  // The tab's ConnectionScreen covers the connect, so this only guards the
+  // first render before the demo API resolves.
   if (isLoading || !metrics) {
-    return (
-      <div className="flex h-full items-center justify-center bg-background">
-        <RefreshCw className="size-5 animate-spin text-muted-foreground opacity-40" />
-      </div>
-    );
+    return <div className="h-full bg-background" />;
   }
 
   const cpuNow = cpuSeries[cpuSeries.length - 1] ?? metrics.cpu.percent;

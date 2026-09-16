@@ -6,9 +6,19 @@ import { RefreshCw } from "lucide-react";
 import { ConnectionLogPanel } from "@/components/connection/ConnectionLogPanel.tsx";
 import type { ConnectionStatus } from "@/components/connection/connection-status.ts";
 
+/**
+ * The single loading screen every tab shows while it connects.
+ *
+ * Redrawn for this demo's chrome: a thin arc instead of the old 4px ring, the
+ * host line in mono under the headline, and the connection log docked below on
+ * the same hairline rhythm the panels use.
+ */
+
 interface ConnectionScreenProps {
   status: ConnectionStatus;
   message?: string;
+  /** Second line under the headline, usually user@host:port. */
+  detail?: string;
   backgroundColor?: string;
   attempt?: number;
   maxAttempts?: number;
@@ -25,6 +35,7 @@ interface ConnectionScreenProps {
 export function ConnectionScreen({
   status,
   message,
+  detail,
   backgroundColor,
   attempt = 0,
   maxAttempts = 0,
@@ -43,8 +54,9 @@ export function ConnectionScreen({
     return null;
   }
 
-  const showSpinner = status === "connecting";
-  const showRetryButton = status === "disconnected" && !!onManualRetry;
+  const connecting = status === "connecting";
+  const failed = status === "error" || status === "disconnected";
+  const showRetryButton = failed && !!onManualRetry;
   const showLog = status !== "connected";
 
   return (
@@ -52,45 +64,53 @@ export function ConnectionScreen({
       className={cn("absolute inset-0 z-[100] flex flex-col", className)}
       style={{ backgroundColor: backgroundColor || "var(--bg-base)" }}
     >
-      <div className="flex-1 min-h-0 flex items-center justify-center">
+      <div className="flex min-h-0 flex-1 items-center justify-center p-6">
         {emptyState ? (
           emptyState
         ) : (
-          <div className="flex flex-col items-center gap-4 px-6 text-center">
-            {showSpinner && <div className="simple-spinner" />}
-            {message && (
-              <p className="text-sm text-foreground-secondary font-medium">
-                {message}
-              </p>
-            )}
-            {attempt > 0 && status !== "disconnected" && (
-              <p className="text-xs text-muted-foreground">
-                {nextRetryInMs && nextRetryInMs > 0
-                  ? t("connection.retryingIn", {
-                      seconds: Math.ceil(nextRetryInMs / 1000),
-                      attempt,
-                      max: maxAttempts,
-                    })
-                  : t("connection.retryingNow", { attempt, max: maxAttempts })}
-              </p>
-            )}
-            {showRetryButton && (
-              <div className="flex flex-col items-center gap-2">
-                <p className="text-sm text-foreground-secondary font-medium">
-                  {disconnectedMessage || t("connection.disconnected")}
+          <div className="flex flex-col items-center gap-3.5 text-center">
+            <ConnectionMark failed={failed} />
+
+            <div className="space-y-1.5">
+              {message && (
+                <p className="text-sm font-semibold tracking-tight text-foreground">
+                  {failed
+                    ? disconnectedMessage || t("connection.disconnected")
+                    : message}
                 </p>
-                <div className="flex gap-2">
+              )}
+              {detail && (
+                <p className="font-mono text-xs text-muted-foreground">
+                  {detail}
+                </p>
+              )}
+              {attempt > 0 && !failed && (
+                <p className="text-xs tabular-nums text-muted-foreground">
+                  {nextRetryInMs && nextRetryInMs > 0
+                    ? t("connection.retryingIn", {
+                        seconds: Math.ceil(nextRetryInMs / 1000),
+                        attempt,
+                        max: maxAttempts,
+                      })
+                    : t("connection.retryingNow", { attempt, max: maxAttempts })}
+                </p>
+              )}
+            </div>
+
+            {(showRetryButton || (failed && extraActions)) && (
+              <div className="flex gap-2 pt-0.5">
+                {showRetryButton && (
                   <Button
                     variant="outline"
-                    size="default"
+                    size="sm"
                     onClick={onManualRetry}
                     className="gap-2 font-semibold"
                   >
                     <RefreshCw className="size-3.5" />
                     {retryLabel || t("connection.reconnect")}
                   </Button>
-                  {extraActions}
-                </div>
+                )}
+                {extraActions}
               </div>
             )}
           </div>
@@ -99,29 +119,45 @@ export function ConnectionScreen({
 
       {showLog && !emptyState && (
         <ConnectionLogPanel
-          isConnecting={status === "connecting"}
+          isConnecting={connecting}
           isConnected={false}
-          hasConnectionError={status === "error" || status === "disconnected"}
+          hasConnectionError={failed}
           position={logPosition}
         />
       )}
+    </div>
+  );
+}
 
-      <style>
-        {`
-          @keyframes connection-screen-spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-          .simple-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--border-base);
-            border-top-color: var(--foreground);
-            border-radius: 50%;
-            animation: connection-screen-spin 0.8s linear infinite;
-          }
-        `}
-      </style>
+/** A thin arc while connecting, a still ring once it has given up. */
+function ConnectionMark({ failed }: { failed: boolean }) {
+  return (
+    <div className="relative size-9">
+      <svg viewBox="0 0 36 36" className="size-full" aria-hidden="true">
+        <circle
+          cx="18"
+          cy="18"
+          r="15"
+          fill="none"
+          strokeWidth="2"
+          className="stroke-border"
+        />
+        {!failed && (
+          <circle
+            cx="18"
+            cy="18"
+            r="15"
+            fill="none"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeDasharray="26 68"
+            className="origin-center animate-spin stroke-accent-brand [animation-duration:900ms]"
+          />
+        )}
+      </svg>
+      {failed && (
+        <span className="absolute inset-0 m-auto size-1.5 rounded-full bg-destructive" />
+      )}
     </div>
   );
 }

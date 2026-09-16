@@ -162,11 +162,7 @@ export function DemoTunnels() {
   });
 
   if (isLoading) {
-    return (
-      <div className="flex h-full items-center justify-center bg-background">
-        <RefreshCw className="size-5 animate-spin text-muted-foreground opacity-40" />
-      </div>
-    );
+    return <div className="h-full bg-background" />;
   }
 
   return (
