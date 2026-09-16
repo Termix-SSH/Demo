@@ -15,12 +15,18 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { PANE_COUNTS } from "@/lib/theme";
 import { buildHostTree } from "@/sidebar/build-host-tree";
 import { getDemoHosts, subscribeDemoHosts } from "@/demo/demo-store";
+import {
+  requestBrowse,
+  requestCredentialEditor,
+  requestHostEditor,
+} from "@/demo/hosts/host-editor-events";
 import { DemoPanel } from "@/demo/DemoPanel";
 import {
   renderDemoPanelBody,
   renderDemoTabContent,
 } from "@/demo/demo-tab-content";
 import type {
+  Credential,
   Host,
   HostFolder,
   SplitMode,
@@ -54,7 +60,6 @@ export function AppShell({
 
   const [railView, setRailView] = useState<RailView>("hosts");
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [sidebarEditing, setSidebarEditing] = useState(false);
   const [rightRailView, setRightRailView] = useState<RailView | null>(null);
   const [paletteOpen, setPaletteOpen] = useState(false);
 
@@ -249,6 +254,68 @@ export function AppShell({
     setActiveTabId(tab.id);
   }
 
+  // Add and edit requests come from the sidebar, the tree empty state, the
+  // dashboard and the command palette as events. The editor lives in its own
+  // tab now, so opening that tab is all this has to do: the workbench is
+  // already listening for the same events and loads the right record.
+  useEffect(() => {
+    const onAddHost = () => {
+      requestHostEditor(null);
+      openSingletonTab("host-manager");
+    };
+    const onEditHost = (event: Event) => {
+      const host = (event as CustomEvent<{ host?: Host }>).detail?.host ?? null;
+      requestHostEditor(host);
+      openSingletonTab("host-manager");
+    };
+    const onAddCredential = () => {
+      requestCredentialEditor(null);
+      openSingletonTab("host-manager");
+    };
+    const onEditCredential = (event: Event) => {
+      const credential =
+        (event as CustomEvent<{ credential?: Credential }>).detail
+          ?.credential ?? null;
+      requestCredentialEditor(credential);
+      openSingletonTab("host-manager");
+    };
+
+    window.addEventListener("host-manager:add-host", onAddHost);
+    window.addEventListener("host-manager:edit-host", onEditHost);
+    window.addEventListener("host-manager:add-credential", onAddCredential);
+    window.addEventListener("host-manager:edit-credential", onEditCredential);
+    return () => {
+      window.removeEventListener("host-manager:add-host", onAddHost);
+      window.removeEventListener("host-manager:edit-host", onEditHost);
+      window.removeEventListener(
+        "host-manager:add-credential",
+        onAddCredential,
+      );
+      window.removeEventListener(
+        "host-manager:edit-credential",
+        onEditCredential,
+      );
+    };
+  });
+
+  // Hosts and credentials are both edited in the host-manager tab, so
+  // promoting either rail panel lands on the same surface.
+  function railViewToTabType(view: string): TabType {
+    return view === "hosts" || view === "credentials"
+      ? "host-manager"
+      : (view as TabType);
+  }
+
+  /**
+   * Promoting a rail panel to a tab. Hosts and Credentials share the Manage
+   * tab, so which of the two you promoted has to be carried across or it
+   * always lands on hosts.
+   */
+  function promoteRailView(view: string) {
+    if (view === "hosts" || view === "credentials") requestBrowse(view);
+    openSingletonTab(railViewToTabType(view));
+  }
+
   function closeTab(id: string) {
     setTabs((prev) => {
       const next = prev.filter((tb) => tb.id !== id);
@@ -377,21 +444,19 @@ export function AppShell({
           >
             <HostsPanel
               onOpenTab={(host, type) => openTab(host, type)}
-              onEditHost={() => {}}
+              onEditHost={(host) => {
+                requestHostEditor(host);
+                openSingletonTab("host-manager");
+              }}
               hostTree={hostTree ?? undefined}
               loading={hostsLoading}
-              onEditingChange={setSidebarEditing}
-              active={view === "hosts"}
             />
           </div>
 
           <div
             className={`flex flex-col flex-1 min-h-0 ${view === "credentials" ? "" : "hidden"}`}
           >
-            <CredentialsPanel
-              onEditingChange={setSidebarEditing}
-              active={view === "credentials"}
-            />
+            <CredentialsPanel active={view === "credentials"} />
           </div>
         </>
       )}
@@ -419,7 +484,7 @@ export function AppShell({
             username={username}
             isAdmin
             onRailClick={handleRailClick}
-            onOpenTab={openSingletonTab}
+            onOpenTab={promoteRailView}
             onOpenInRightDock={openInRightDock}
             onOpenPlugins={() => openSingletonTab("plugins")}
             onOpenSettings={() => openSingletonTab("settings")}
@@ -433,9 +498,8 @@ export function AppShell({
               side="left"
               view={railView}
               open={sidebarOpen}
-              editing={sidebarEditing}
               onClose={() => setSidebarOpen(false)}
-              onOpenAsTab={(view) => openSingletonTab(view as TabType)}
+              onOpenAsTab={promoteRailView}
               onMoveToRightDock={(view) => openInRightDock(view as RailView)}
             >
               {renderSidebarPanels(railView)}
@@ -558,7 +622,7 @@ export function AppShell({
               open
               onClose={() => setRightRailView(null)}
               onOpenAsTab={(view) => {
-                openSingletonTab(view as TabType);
+                promoteRailView(view);
                 setRightRailView(null);
               }}
             >

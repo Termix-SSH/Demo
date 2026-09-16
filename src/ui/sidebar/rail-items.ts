@@ -68,8 +68,8 @@ export interface RailItemDef {
    */
   promotable?: boolean;
   /**
-   * Can be opened in the right dock. Reference panels only -- editors stay in
-   * the left sidebar, which is the only dock that widens for them.
+   * Can be opened in the right dock. Reference panels only -- a list is useful
+   * beside your work, an editor is not.
    */
   rightDockable?: boolean;
   /** Desktop app only. Hidden in the browser build, including its toggle. */
@@ -83,12 +83,14 @@ export const RAIL_ITEMS: RailItemDef[] = [
     icon: Server,
     labelKey: "nav.hosts",
     mobilePrimary: true,
+    promotable: true,
   },
   {
     id: "credentials",
     group: "objects",
     icon: KeyRound,
     labelKey: "nav.credentials",
+    promotable: true,
   },
   {
     id: "termix-id",
@@ -264,9 +266,19 @@ const LABEL_KEYS: Record<string, string> = Object.fromEntries(
   ]),
 );
 
-/** Translated label for any rail destination. */
+/**
+ * Tab types that are not rail destinations but still need a label.
+ *
+ * Without an entry here the fallback prints the raw type, which is how the
+ * editor tab ended up titled "host-manager".
+ */
+const EXTRA_LABEL_KEYS: Record<string, string> = {
+  "host-manager": "nav.manage",
+};
+
+/** Translated label for any rail destination or tab type. */
 export function railItemLabel(id: string, t: (key: string) => string): string {
-  const key = LABEL_KEYS[id];
+  const key = LABEL_KEYS[id] ?? EXTRA_LABEL_KEYS[id];
   return key ? t(key) : id;
 }
 

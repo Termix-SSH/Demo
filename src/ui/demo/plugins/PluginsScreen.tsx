@@ -30,7 +30,7 @@ import {
 import { Separator } from "@/components/separator";
 import { FakeSwitch } from "@/components/section-card";
 import { EmptyState } from "@/components/empty-state";
-import { TabStrip } from "@/sidebar/HostManagerTabs";
+import { TabStrip } from "@/components/tab-strip";
 import { PluginIcon, SourceBadge } from "./plugin-bits";
 import {
   GroupHeading,

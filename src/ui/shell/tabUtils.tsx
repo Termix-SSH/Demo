@@ -4,6 +4,7 @@ import {
   Braces,
   FolderSearch,
   HardDrive,
+  LibraryBig,
   LayoutDashboard,
   LayoutGrid,
   LayoutPanelLeft,
@@ -51,7 +52,7 @@ export function tabIcon(type: TabType) {
     case "files":
       return <FolderSearch className="size-3.5" />;
     case "host-manager":
-      return <Server className="size-3.5" />;
+      return <LibraryBig className="size-3.5" />;
     case "user-profile":
       return <User className="size-3.5" />;
     case "admin-settings":

@@ -30,7 +30,7 @@ import { Separator } from "@/components/separator";
 import { SectionCard } from "@/components/section-card";
 import { FakeSwitch } from "@/components/section-card";
 import { EmptyState } from "@/components/empty-state";
-import { TabStrip } from "@/sidebar/HostManagerTabs";
+import { TabStrip } from "@/components/tab-strip";
 import {
   Facts,
   PANEL,

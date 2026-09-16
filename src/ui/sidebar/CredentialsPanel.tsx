@@ -29,17 +29,14 @@ import {
 import type { CredentialSortKey } from "@/types/credential-sidebar-preferences";
 
 export function CredentialsPanel({
-  onEditingChange,
   active = true,
 }: {
-  onEditingChange?: (editing: boolean) => void;
   active?: boolean;
 }) {
   const { t } = useTranslation();
   const { preferences: sidebarPrefs, update: updateSidebarPrefs } =
     useCredentialSidebarPreferences();
   const [search, setSearch] = useState("");
-  const [managerEditing, setManagerEditing] = useState(false);
   const [allTags, setAllTags] = useState<string[]>([]);
   const [customizePanelOpen, setCustomizePanelOpen] = useState(false);
 
@@ -92,15 +89,9 @@ export function CredentialsPanel({
     }));
   }
 
-  function handleEditingChange(editing: boolean) {
-    setManagerEditing(editing);
-    onEditingChange?.(editing);
-  }
-
   return (
     <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
-      {!managerEditing && (
-        <div className="flex flex-col px-2 py-1.5 shrink-0 border-b border-border/60 gap-1.5">
+      <div className="flex flex-col px-2 py-1.5 shrink-0 border-b border-border/60 gap-1.5">
           <div className="flex items-center gap-2 px-2.5 h-7 bg-muted/60 border border-border/60 rounded-sm">
             <Search className="size-3 text-muted-foreground/60 shrink-0" />
             <input
@@ -305,12 +296,11 @@ export function CredentialsPanel({
             </div>
           </div>
         </div>
-      )}
 
       <div className="flex flex-col flex-1 min-h-0">
         <HostManager
           hideListHeader
-          externalSearch={managerEditing ? undefined : search}
+          externalSearch={search}
           externalSort={sortKey}
           externalArrangeLocked={arrangeLocked}
           externalFilter={filterState}
@@ -318,7 +308,6 @@ export function CredentialsPanel({
           trayTrigger={sidebarPrefs.display.trayTrigger}
           showTags={sidebarPrefs.display.showTags}
           onTagsChange={setAllTags}
-          onEditingChange={handleEditingChange}
           active={active}
         />
       </div>

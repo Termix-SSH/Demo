@@ -35,6 +35,7 @@ import { DemoProxmox } from "@/demo/panels/DemoProxmox";
 import { DemoTmuxMonitor } from "@/demo/panels/DemoTmuxMonitor";
 import { PluginsScreen } from "@/demo/plugins/PluginsScreen";
 import { SettingsScreen } from "@/demo/settings/SettingsScreen";
+import { HostWorkbench } from "@/demo/hosts/HostWorkbench";
 import { PanelShell } from "@/components/panel-layout";
 import { DemoConnectionGate } from "@/demo/DemoConnectionGate";
 
@@ -143,6 +144,13 @@ export function renderDemoTabContent(
 
     case "settings":
       return <SettingsScreen />;
+
+    case "host-manager":
+      return (
+        <HostWorkbench
+          onOpenPlugins={() => ctx?.onOpenSingletonTab?.("plugins")}
+        />
+      );
 
     case "rdp":
       return (

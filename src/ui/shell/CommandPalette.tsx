@@ -215,7 +215,10 @@ export function CommandPalette({
         id: "action-add-host",
         label: t("commandPalette.addNewHost"),
         icon: Plus as React.ElementType,
-        run: () => onOpenPanel("hosts"),
+        // Opening the hosts panel was as far as this went, so the one command
+        // named "add" did not add anything.
+        run: () =>
+          window.dispatchEvent(new CustomEvent("host-manager:add-host")),
       },
       {
         id: "action-plugins",
@@ -238,7 +241,7 @@ export function CommandPalette({
     ];
     if (!searching) return all;
     return all.filter((a) => a.label.toLowerCase().includes(query));
-  }, [query, searching, t, onOpenPanel, onOpenTab, onOpenSettings]);
+  }, [query, searching, t, onOpenTab, onOpenSettings]);
 
   if (!isOpen) return null;
 

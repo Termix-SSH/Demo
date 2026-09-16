@@ -22,14 +22,12 @@ import {
  * The left sidebar and the right dock used to be two hand-copied headers, and
  * the right one rendered an empty div under its title. They share this now, so
  * both resize, reset and persist the same way and a fix lands in one place.
- *
- * Editors stay left-only: only that side widens to the editor width.
+
  */
 
 export const DOCK_DEFAULT_WIDTH = 291;
 export const DOCK_MIN_WIDTH = 220;
 export const DOCK_MAX_WIDTH = 560;
-export const DOCK_EDITOR_WIDTH = 560;
 
 function storageKey(side: "left" | "right") {
   return `termix-demo-dock-${side}`;
@@ -59,7 +57,6 @@ export function DockPanel({
   side,
   view,
   open,
-  editing = false,
   onClose,
   onOpenAsTab,
   onMoveToRightDock,
@@ -69,7 +66,6 @@ export function DockPanel({
   view: string;
   open: boolean;
   /** Left only: an open editor forces the wider fixed width. */
-  editing?: boolean;
   onClose: () => void;
   onOpenAsTab?: (view: string) => void;
   onMoveToRightDock?: (view: string) => void;
@@ -112,7 +108,6 @@ export function DockPanel({
     [side, width],
   );
 
-  const effectiveWidth = editing ? DOCK_EDITOR_WIDTH : width;
   const CollapseIcon = side === "left" ? ChevronLeft : PanelRight;
 
   return (
@@ -125,7 +120,7 @@ export function DockPanel({
           : ""
       }`}
       style={{
-        width: open ? effectiveWidth : 0,
+        width: open ? width : 0,
         transition: dragging ? "none" : "width 0.2s",
       }}
     >
@@ -199,7 +194,7 @@ export function DockPanel({
         {children}
       </div>
 
-      {open && !editing && (
+      {open && (
         <div
           onMouseDown={onDragStart}
           className={`absolute ${side === "left" ? "right-0" : "left-0"} top-0 bottom-0 w-1 cursor-col-resize z-30 transition-colors ${

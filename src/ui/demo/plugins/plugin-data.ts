@@ -164,6 +164,40 @@ export interface DemoPlugin {
         }[];
       }[];
     };
+    /**
+     * Fields this plugin adds to the host editor, drawn by Termix the same way
+     * its settings page is.
+     *
+     * Before this existed the editor hardcoded a tab per feature, so an
+     * uninstalled plugin still showed its tab and a new plugin could not add
+     * one. The section now arrives and leaves with the plugin.
+     */
+    hostFields?: {
+      /** Lucide icon name for the section heading. */
+      icon?: string;
+      /** Heading shown above the fields. */
+      label: string;
+      /**
+       * The host flag this section switches on, e.g. "enableDocker". Rendered
+       * as the first row, and the rest of the fields follow it.
+       */
+      enableKey: string;
+      /** Copy for the enable row. */
+      enableLabel: string;
+      enableDescription?: string;
+      fields?: {
+        key: string;
+        label: string;
+        description?: string;
+        type: "switch" | "text" | "number" | "select";
+        /** Starting value: boolean for switch, number for number, else string. */
+        value?: string | number | boolean;
+        options?: string[];
+        placeholder?: string;
+        /** Hidden until the enable flag is on. Defaults to true. */
+        requiresEnable?: boolean;
+      }[];
+    };
   };
   /** Install count, formatted for display. */
   downloads: string;
@@ -241,6 +275,29 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
     ],
     contributes: ["Files tab", "Host setting", "Settings panel"],
     contributions: {
+      hostFields: {
+        icon: "FolderTree",
+        label: "File manager",
+        enableKey: "enableFileManager",
+        enableLabel: "Browse files on this host",
+        enableDescription: "Opens a file tab over SFTP.",
+        fields: [
+          {
+            key: "defaultPath",
+            label: "Start folder",
+            description: "Where the file tab opens. Defaults to the home folder.",
+            type: "text",
+            placeholder: "/",
+          },
+          {
+            key: "scpLegacy",
+            label: "Use legacy SCP",
+            description: "For older servers without an SFTP subsystem.",
+            type: "switch",
+            value: false,
+          },
+        ],
+      },
       settings: {
         icon: "FolderTree",
         groups: [
@@ -331,6 +388,29 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
     ],
     contributes: ["Metrics tab", "2 dashboard cards", "Host setting"],
     contributions: {
+      hostFields: {
+        icon: "Activity",
+        label: "Host metrics",
+        enableKey: "enableHostMetrics",
+        enableLabel: "Collect metrics from this host",
+        enableDescription: "CPU, memory, disk and network, polled over SSH.",
+        fields: [
+          {
+            key: "statusCheckInterval",
+            label: "Status check every",
+            description: "Seconds between reachability checks.",
+            type: "number",
+            value: 60,
+          },
+          {
+            key: "metricsInterval",
+            label: "Metrics every",
+            description: "Seconds between metric samples.",
+            type: "number",
+            value: 30,
+          },
+        ],
+      },
       dashboardCards: [
         {
           id: "host-metrics.load",
@@ -419,6 +499,16 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
       "ui:surface",
     ],
     contributes: ["Tunnels tab", "Host setting"],
+    contributions: {
+      hostFields: {
+        icon: "Network",
+        label: "Tunnels",
+        enableKey: "enableTunnel",
+        enableLabel: "Forward ports through this host",
+        enableDescription:
+          "Local, remote and dynamic forwards. Set the rules up in the tunnels tab.",
+      },
+    },
     downloads: "88k",
     cpu: "0.3%",
     ram: "26 MB",
@@ -503,6 +593,22 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
       "Settings panel",
     ],
     contributions: {
+      hostFields: {
+        icon: "Box",
+        label: "Docker",
+        enableKey: "enableDocker",
+        enableLabel: "Manage containers on this host",
+        enableDescription: "Lists containers, streams logs, shows per-container stats.",
+        fields: [
+          {
+            key: "dockerRuntime",
+            label: "Runtime",
+            type: "select",
+            value: "docker",
+            options: ["docker", "podman"],
+          },
+        ],
+      },
       settings: {
         icon: "Box",
         groups: [
@@ -585,6 +691,15 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
     version: "1.0.0",
     capabilities: ["hosts:read", "credentials:use", "ssh:exec", "ui:surface"],
     contributes: ["Tmux tab", "Host setting"],
+    contributions: {
+      hostFields: {
+        icon: "LayoutGrid",
+        label: "Tmux monitor",
+        enableKey: "enableTmuxMonitor",
+        enableLabel: "Watch tmux sessions on this host",
+        enableDescription: "Lists sessions and windows, and reattaches to them.",
+      },
+    },
     downloads: "31k",
     cpu: "0.4%",
     ram: "29 MB",
@@ -750,6 +865,42 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
     ],
     contributes: ["Proxmox tab", "Dashboard card", "Host setting"],
     contributions: {
+      hostFields: {
+        icon: "Server",
+        label: "Proxmox",
+        enableKey: "enableProxmox",
+        enableLabel: "Treat this host as a Proxmox node",
+        enableDescription: "Finds its guests and can add them as hosts.",
+        fields: [
+          {
+            key: "proxmoxWindowsPatterns",
+            label: "Windows guests match",
+            description: "Names containing these are set up as RDP hosts.",
+            type: "text",
+            value: "win, windows",
+          },
+          {
+            key: "proxmoxPreferredPrefixes",
+            label: "Preferred address prefixes",
+            description: "Which address to pick when a guest has several.",
+            type: "text",
+            value: "10., 192.168.",
+          },
+          {
+            key: "proxmoxAutoSync",
+            label: "Sync guests automatically",
+            type: "switch",
+            value: false,
+          },
+          {
+            key: "proxmoxSyncInterval",
+            label: "Sync every",
+            description: "Minutes between syncs. Minimum 5.",
+            type: "number",
+            value: 15,
+          },
+        ],
+      },
       dashboardCards: [
         {
           id: "proxmox.guests",
@@ -1114,6 +1265,23 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
       "ui:surface",
     ],
     contributes: ["Shares tab", "Host setting"],
+    contributions: {
+      hostFields: {
+        icon: "FolderTree",
+        label: "Samba shares",
+        enableKey: "enableSamba",
+        enableLabel: "List SMB shares on this host",
+        enableDescription: "Reads the share list and mounts them for browsing.",
+        fields: [
+          {
+            key: "sambaWorkgroup",
+            label: "Workgroup",
+            type: "text",
+            value: "WORKGROUP",
+          },
+        ],
+      },
+    },
     downloads: "4.2k",
     cpu: "0.3%",
     ram: "27 MB",

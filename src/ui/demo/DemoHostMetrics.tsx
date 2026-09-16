@@ -20,7 +20,7 @@ import type { Host } from "@/types/ui-types";
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { SectionCard } from "@/components/section-card";
-import { TabStrip } from "@/sidebar/HostManagerTabs";
+import { TabStrip } from "@/components/tab-strip";
 import {
   Facts,
   PANEL,

@@ -11,7 +11,7 @@ import { Button } from "@/components/button";
 import { SectionCard } from "@/components/section-card";
 import { MiniStat, Sparkline, StatRow } from "@/components/charts";
 import { EmptyState } from "@/components/empty-state";
-import { TabStrip } from "@/sidebar/HostManagerTabs";
+import { TabStrip } from "@/components/tab-strip";
 import {
   Facts,
   PANEL,
