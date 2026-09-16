@@ -60,7 +60,9 @@ function Rows({
 function NotRunning({ name }: { name: string }) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-1 py-6 text-center">
-      <span className="text-xs text-muted-foreground">{name} is not running</span>
+      <span className="text-xs text-muted-foreground">
+        {name} is not running
+      </span>
       <span className="text-[11px] text-muted-foreground/70">
         Enable the plugin to see this again.
       </span>
@@ -106,11 +108,12 @@ function body(kind: string, ctx: DashboardCardContext) {
 function sync() {
   for (const plugin of getPlugins()) {
     const cards = plugin.contributions?.dashboardCards;
-    if (!cards?.length) continue;
 
-    // A plugin that never asked to add UI does not get to.
+    // A plugin that never asked to add UI does not get to. Withdrawing runs
+    // before the empty check so a plugin that drops its cards on update, or
+    // loses ui:surface, does not leave stale ones registered.
     const allowed = plugin.capabilities.includes("ui:surface");
-    if (!plugin.installed || !allowed) {
+    if (!cards?.length || !plugin.installed || !allowed) {
       unregisterDashboardCardsByPlugin(plugin.id);
       continue;
     }

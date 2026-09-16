@@ -21,14 +21,8 @@ import {
   Zap,
 } from "lucide-react";
 import { Button } from "@/components/button";
-import { Kbd } from "@/components/kbd";
 import { VersionBadge } from "@/components/version-badge";
-import {
-  Facts,
-  GroupHeading,
-  PanelShell,
-  Segmented,
-} from "@/components/panel-layout";
+import { Facts, GroupHeading, PanelShell } from "@/components/panel-layout";
 import {
   getStatusClasses,
   useStatusColorScheme,
@@ -56,13 +50,7 @@ import {
  * hide or extend anything. Sections are registered now and laid out from a
  * saved slot list: two columns with a draggable divider, hairline rules instead
  * of gaps, and an edit mode for arranging them.
- *
- * Homepage is a view of this same tab rather than a tab of its own, which is
- * how the real app does it -- DashboardTab keeps a "dashboard" | "homepage"
- * state and swaps the body.
  */
-
-type DashboardView = "dashboard" | "homepage";
 
 interface CardSlot {
   key: string;
@@ -75,12 +63,6 @@ interface CardSlot {
 
 const SLOTS_KEY = "termix-demo-dashboard-slots";
 const WIDTH_KEY = "termix-demo-dashboard-width";
-const VIEW_KEY = "termix-demo-dashboard-view";
-
-const VIEW_OPTIONS = [
-  { value: "dashboard", label: "Dashboard" },
-  { value: "homepage", label: "Homepage" },
-] as const satisfies readonly { value: DashboardView; label: string }[];
 
 function readJson<T>(key: string, fallback: T): T {
   try {
@@ -125,13 +107,13 @@ export function DemoDashboard({
   const cards = useDashboardCards();
   const bodyRef = useRef<HTMLDivElement | null>(null);
 
-  const [view, setView] = useState<DashboardView>(() =>
-    readJson<DashboardView>(VIEW_KEY, "dashboard"),
-  );
   const [editing, setEditing] = useState(false);
-  const [slots, setSlots] = useState<CardSlot[]>(
-    () => readJson<CardSlot[] | null>(SLOTS_KEY, null) ?? [],
-  );
+  const saved = useRef(readJson<CardSlot[] | null>(SLOTS_KEY, null));
+  const [slots, setSlots] = useState<CardSlot[]>(() => saved.current ?? []);
+  // An empty dashboard is a choice, so seeding only happens when nothing was
+  // ever saved. Without this, hiding every section and then installing a
+  // plugin brings the default layout back.
+  const [seeded, setSeeded] = useState(() => saved.current !== null);
   const [mainPct, setMainPct] = useState<number>(() =>
     readJson<number>(WIDTH_KEY, 62),
   );
@@ -140,15 +122,15 @@ export function DemoDashboard({
   // Seed the layout once cards have registered, so a plugin installed later
   // does not wipe what is already arranged.
   useEffect(() => {
-    if (cards.length === 0) return;
-    setSlots((prev) => (prev.length > 0 ? prev : defaultSlots(cards)));
-  }, [cards]);
+    if (seeded || cards.length === 0) return;
+    setSlots(defaultSlots(cards));
+    setSeeded(true);
+  }, [cards, seeded]);
 
   useEffect(() => {
-    if (slots.length > 0) write(SLOTS_KEY, slots);
-  }, [slots]);
+    if (seeded) write(SLOTS_KEY, slots);
+  }, [slots, seeded]);
   useEffect(() => write(WIDTH_KEY, mainPct), [mainPct]);
-  useEffect(() => write(VIEW_KEY, view), [view]);
 
   const ctx: DashboardCardContext = useMemo(
     () => ({
@@ -171,6 +153,10 @@ export function DemoDashboard({
   const sideSlots = slots
     .filter((s) => s.panel === "side")
     .sort((a, b) => a.order - b.order);
+
+  // Empty side column stays mounted while arranging, otherwise dragging the
+  // last section out of it leaves nowhere to drop one back.
+  const showSide = sideSlots.length > 0 || editing;
 
   const startDividerDrag = useCallback(
     (e: React.MouseEvent) => {
@@ -268,45 +254,29 @@ export function DemoDashboard({
   return (
     <PanelShell
       icon={<LayoutGrid className="size-4" />}
-      title={view === "homepage" ? "Homepage" : t("dashboard.title")}
+      title={t("dashboard.title")}
       status={todayLabel}
       scroll={false}
       actions={
-        <>
-          <div className="mr-1 hidden items-center gap-1.5 border border-border bg-muted/40 px-2 py-1 lg:flex">
-            <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-              {t("dashboardTab.commandPalette")}
-            </span>
-            <Kbd className="h-4 bg-background px-1 text-[10px]">Shift</Kbd>
-            <Kbd className="h-4 bg-background px-1 text-[10px]">Shift</Kbd>
-          </div>
-          {view === "dashboard" && (
-            <Button
-              variant="ghost"
-              size="icon"
-              title={editing ? "Done" : "Arrange"}
-              className={editing ? "text-accent-brand" : ""}
-              onClick={() => setEditing((v) => !v)}
-            >
-              {editing ? (
-                <Check className="size-4" />
-              ) : (
-                <Pencil className="size-4" />
-              )}
-            </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          title={editing ? "Done" : "Arrange"}
+          className={editing ? "text-accent-brand" : ""}
+          onClick={() => setEditing((v) => !v)}
+        >
+          {editing ? (
+            <Check className="size-4" />
+          ) : (
+            <Pencil className="size-4" />
           )}
-        </>
+        </Button>
       }
       toolbar={
         <>
-          <Segmented<DashboardView>
-            value={view}
-            onChange={setView}
-            options={VIEW_OPTIONS}
-          />
-          {view === "dashboard" && editing && (
+          {editing && (
             <>
-              <span className="hidden text-[10px] uppercase tracking-widest text-muted-foreground sm:inline">
+              <span className="hidden text-[11px] text-muted-foreground sm:inline">
                 Drag to reorder
               </span>
               <Button
@@ -320,7 +290,7 @@ export function DemoDashboard({
               </Button>
             </>
           )}
-          <Facts className="ml-auto text-[10px] uppercase tracking-widest text-muted-foreground">
+          <Facts className="ml-auto text-[11px] text-muted-foreground">
             <span>
               {hosts.filter((h) => h.status === "online").length} online
             </span>
@@ -329,51 +299,47 @@ export function DemoDashboard({
         </>
       }
     >
-      {view === "homepage" ? (
-        <HomepageView />
-      ) : (
-        <div className="flex min-h-0 flex-1 flex-col">
-          <div ref={bodyRef} className="flex min-h-0 flex-1">
-            <Column
-              panel="main"
-              slots={mainSlots}
-              cards={cards}
-              ctx={ctx}
-              editing={editing}
-              width={sideSlots.length > 0 ? `${mainPct}%` : "100%"}
-              dragKey={dragKey}
-              onDragStart={setDragKey}
-              onDrop={drop}
-              onHide={hide}
-              onStartResize={startSectionResize}
-            />
+      <div className="flex min-h-0 flex-1 flex-col">
+        <div ref={bodyRef} className="flex min-h-0 flex-1">
+          <Column
+            panel="main"
+            slots={mainSlots}
+            cards={cards}
+            ctx={ctx}
+            editing={editing}
+            width={showSide ? `${mainPct}%` : "100%"}
+            dragKey={dragKey}
+            onDragStart={setDragKey}
+            onDrop={drop}
+            onHide={hide}
+            onStartResize={startSectionResize}
+          />
 
-            {sideSlots.length > 0 && (
-              <>
-                <div
-                  onMouseDown={startDividerDrag}
-                  className="w-px shrink-0 cursor-col-resize bg-border transition-colors hover:bg-accent-brand"
-                />
-                <Column
-                  panel="side"
-                  slots={sideSlots}
-                  cards={cards}
-                  ctx={ctx}
-                  editing={editing}
-                  width={`${100 - mainPct}%`}
-                  dragKey={dragKey}
-                  onDragStart={setDragKey}
-                  onDrop={drop}
-                  onHide={hide}
-                  onStartResize={startSectionResize}
-                />
-              </>
-            )}
-          </div>
-
-          {editing && <AddTray cards={available} onAdd={add} />}
+          {showSide && (
+            <>
+              <div
+                onMouseDown={startDividerDrag}
+                className="w-px shrink-0 cursor-col-resize bg-border transition-colors hover:bg-accent-brand"
+              />
+              <Column
+                panel="side"
+                slots={sideSlots}
+                cards={cards}
+                ctx={ctx}
+                editing={editing}
+                width={`${100 - mainPct}%`}
+                dragKey={dragKey}
+                onDragStart={setDragKey}
+                onDrop={drop}
+                onHide={hide}
+                onStartResize={startSectionResize}
+              />
+            </>
+          )}
         </div>
-      )}
+
+        {editing && <AddTray cards={available} onAdd={add} />}
+      </div>
     </PanelShell>
   );
 }
@@ -407,7 +373,9 @@ function Column({
   return (
     <div
       style={{ width }}
-      className="flex min-h-0 min-w-0 flex-col overflow-y-auto"
+      className={`flex min-h-0 min-w-0 flex-col overflow-y-auto ${
+        panel === "side" ? "bg-surface-dim/40" : ""
+      }`}
       onDragOver={(e) => editing && e.preventDefault()}
       onDrop={() => editing && onDrop(panel, slots.length)}
     >
@@ -416,7 +384,7 @@ function Column({
           Drop a section here
         </div>
       )}
-      {slots.map((slot) => {
+      {slots.map((slot, i) => {
         const card = cards.find((c) => c.id === slot.id);
         if (!card) return null;
         return (
@@ -426,6 +394,7 @@ function Column({
             card={card}
             ctx={ctx}
             editing={editing}
+            last={i === slots.length - 1}
             dragging={dragKey === slot.key}
             onDragStart={() => onDragStart(slot.key)}
             onDrop={() => onDrop(panel, slot.order - 0.5)}
@@ -443,6 +412,7 @@ function Section({
   card,
   ctx,
   editing,
+  last,
   dragging,
   onDragStart,
   onDrop,
@@ -453,6 +423,7 @@ function Section({
   card: DashboardCardDef;
   ctx: DashboardCardContext;
   editing: boolean;
+  last: boolean;
   dragging: boolean;
   onDragStart: () => void;
   onDrop: () => void;
@@ -460,7 +431,9 @@ function Section({
   onStartResize: (e: React.MouseEvent) => void;
 }) {
   const Icon = card.icon;
-  const flex = slot.height === null;
+  // The bottom section always fills the column, whatever height it was given.
+  // Otherwise resizing the one flexing section leaves dead space underneath.
+  const flex = last || slot.height === null;
 
   return (
     <div
@@ -472,7 +445,7 @@ function Section({
         e.stopPropagation();
         onDrop();
       }}
-      style={{ height: slot.height ?? undefined }}
+      style={{ height: flex ? undefined : (slot.height ?? undefined) }}
       className={`relative flex shrink-0 flex-col border-b border-border last:border-b-0 ${
         flex ? "min-h-48 flex-1" : ""
       } ${dragging ? "opacity-40" : ""} ${editing ? "cursor-grab" : ""}`}
@@ -502,17 +475,20 @@ function Section({
       </div>
 
       {/* Drag the bottom edge to set this section's height. draggable={false}
-          and the stopper keep this from starting a reorder drag instead. */}
-      <div
-        draggable={false}
-        onDragStart={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-        onMouseDown={onStartResize}
-        title="Drag to resize"
-        className="absolute inset-x-0 bottom-0 z-10 h-1.5 cursor-ns-resize transition-colors hover:bg-accent-brand/40"
-      />
+          and the stopper keep this from starting a reorder drag instead. The
+          last section flexes, so there is nothing to drag there. */}
+      {!last && (
+        <div
+          draggable={false}
+          onDragStart={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+          onMouseDown={onStartResize}
+          title="Drag to resize"
+          className="absolute inset-x-0 bottom-0 z-10 h-1.5 cursor-ns-resize transition-colors hover:bg-accent-brand/40"
+        />
+      )}
     </div>
   );
 }
@@ -540,7 +516,7 @@ function AddTray({
           {builtin.length > 0 && <TrayRow cards={builtin} onAdd={onAdd} />}
           {fromPlugins.length > 0 && (
             <>
-              <span className="text-[10px] uppercase tracking-widest text-muted-foreground/70">
+              <span className="text-[11px] text-muted-foreground/70">
                 From plugins
               </span>
               <TrayRow cards={fromPlugins} onAdd={onAdd} />
@@ -579,26 +555,6 @@ function TrayRow({
   );
 }
 
-/**
- * The homepage half of this tab. Deliberately blank: a start page has nothing
- * on it until you put something there, and the canvas is not part of the demo.
- */
-function HomepageView() {
-  return (
-    <div className="flex min-h-0 flex-1 items-center justify-center p-6">
-      <div className="flex max-w-sm flex-col items-center gap-2 text-center">
-        <LayoutGrid className="size-5 text-muted-foreground/40" />
-        <span className="text-xs font-medium">Homepage</span>
-        <span className="text-[11px] leading-snug text-muted-foreground">
-          A start page you arrange yourself. Drop clocks, host grids, service
-          links, notes and charts onto a canvas, then drag and resize them.
-          Plugins can add their own widgets.
-        </span>
-      </div>
-    </div>
-  );
-}
-
 // ─── Built-in sections ────────────────────────────────────────────────────────
 
 function Stat({
@@ -609,11 +565,11 @@ function Stat({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-w-0 flex-col justify-center gap-0.5 px-3 py-2">
-      <span className="truncate text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+    <div className="flex min-w-0 flex-col justify-center gap-1 px-3 py-2">
+      {children}
+      <span className="truncate text-[10px] text-muted-foreground">
         {label}
       </span>
-      {children}
     </div>
   );
 }
@@ -625,24 +581,28 @@ function StatsStrip({ hosts }: { hosts: Host[] }) {
     <div className="grid h-full grid-cols-2 divide-x divide-border md:grid-cols-4">
       <Stat label={t("dashboard.version")}>
         <div className="flex items-baseline gap-1.5">
-          <span className="text-lg font-bold leading-none text-accent-brand">
+          <span className="text-2xl font-bold leading-none tracking-tight">
             2.7.1
           </span>
           <VersionBadge status="up_to_date" className="w-fit" />
         </div>
       </Stat>
       <Stat label={t("dashboard.uptime")}>
-        <span className="text-lg font-bold leading-none">9d 3h</span>
+        <span className="text-2xl font-bold leading-none tracking-tight">
+          9d 3h
+        </span>
       </Stat>
       <Stat label={t("dashboard.database")}>
-        <span className="text-lg font-bold leading-none text-accent-brand">
+        <span className="text-2xl font-bold leading-none tracking-tight text-accent-brand">
           {t("dashboard.healthy")}
         </span>
       </Stat>
       <Stat label="Hosts available">
         <div className="flex items-baseline gap-1">
-          <span className="text-lg font-bold leading-none">{online}</span>
-          <span className="text-xs leading-none text-muted-foreground">
+          <span className="text-2xl font-bold leading-none tracking-tight">
+            {online}
+          </span>
+          <span className="text-sm leading-none text-muted-foreground">
             /{hosts.length}
           </span>
         </div>
@@ -682,8 +642,10 @@ function CountersStrip({ ctx }: { ctx: DashboardCardContext }) {
           className="flex items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-muted/50"
         >
           <item.icon className="size-3.5 shrink-0 text-muted-foreground" />
-          <span className="text-base font-bold">{item.value}</span>
-          <span className="truncate text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+          <span className="text-xl font-bold leading-none tracking-tight">
+            {item.value}
+          </span>
+          <span className="truncate text-[11px] text-muted-foreground">
             {item.label}
           </span>
         </button>
@@ -722,12 +684,12 @@ function QuickActions({ ctx }: { ctx: DashboardCardContext }) {
     },
   ];
   return (
-    <div className="grid h-full grid-cols-2 divide-x divide-y divide-border">
+    <div className="grid h-full grid-cols-2 gap-1 p-2">
       {actions.map((action) => (
         <button
           key={action.label}
           onClick={action.go}
-          className="group/btn flex items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-muted/50"
+          className="group/btn flex items-center gap-2 px-2 py-1.5 text-left transition-colors hover:bg-muted/50"
         >
           <span className="flex size-6 shrink-0 items-center justify-center border border-border bg-muted transition-colors group-hover/btn:border-accent-brand/40 group-hover/btn:bg-accent-brand/20">
             <action.icon className="size-3 text-accent-brand" />
@@ -872,7 +834,7 @@ function RecentActivity({ ctx }: { ctx: DashboardCardContext }) {
           <div
             key={item.id}
             onClick={() => host && ctx.openTab(host, TYPE_TO_TAB[item.type])}
-            className="flex cursor-pointer items-center gap-2 border-b border-border/60 px-3 py-1.5 last:border-0 hover:bg-muted/50"
+            className="flex cursor-pointer items-center gap-2 px-3 py-1.5 hover:bg-muted/50"
           >
             <span
               className={`size-1.5 shrink-0 rounded-full ${getStatusClasses(host?.online ?? false, scheme, "dot")}`}
@@ -901,7 +863,7 @@ registerDashboardCard({
   icon: Activity,
   frame: "bare",
   defaultPanel: "main",
-  defaultHeight: 60,
+  defaultHeight: 76,
   render: (ctx) => <StatsStrip hosts={ctx.hosts} />,
 });
 
@@ -911,7 +873,7 @@ registerDashboardCard({
   icon: Database,
   frame: "bare",
   defaultPanel: "main",
-  defaultHeight: 44,
+  defaultHeight: 52,
   render: (ctx) => <CountersStrip ctx={ctx} />,
 });
 
@@ -931,7 +893,7 @@ registerDashboardCard({
   icon: Zap,
   frame: "framed",
   defaultPanel: "side",
-  defaultHeight: 140,
+  defaultHeight: 150,
   render: (ctx) => <QuickActions ctx={ctx} />,
 });
 
@@ -960,10 +922,7 @@ registerDashboardCard({
         { name: "Portainer", url: "portainer.internal" },
         { name: "Proxmox", url: "proxmox.internal:8006" },
       ].map((link) => (
-        <span
-          key={link.name}
-          className="flex items-center gap-2 border-b border-border/60 px-3 py-1.5 last:border-0"
-        >
+        <span key={link.name} className="flex items-center gap-2 px-3 py-1.5">
           <Eye className="size-3 shrink-0 text-muted-foreground" />
           <span className="truncate text-xs font-medium">{link.name}</span>
           <span className="ml-auto truncate font-mono text-[10px] text-muted-foreground">
