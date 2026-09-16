@@ -24,6 +24,7 @@ import { Button } from "@/components/button";
 import { VersionBadge } from "@/components/version-badge";
 import { Facts, GroupHeading, PanelShell } from "@/components/panel-layout";
 import { timeAgo } from "@/lib/relative-time";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   getStatusClasses,
   useStatusColorScheme,
@@ -158,6 +159,9 @@ export function DemoDashboard({
   // Empty side column stays mounted while arranging, otherwise dragging the
   // last section out of it leaves nowhere to drop one back.
   const showSide = sideSlots.length > 0 || editing;
+  // Two percentage columns and a 1px mouse-only divider do not work on a
+  // phone, so there the side column stacks under the main one.
+  const stacked = useIsMobile();
 
   const startDividerDrag = useCallback(
     (e: React.MouseEvent) => {
@@ -301,14 +305,18 @@ export function DemoDashboard({
       }
     >
       <div className="flex min-h-0 flex-1 flex-col">
-        <div ref={bodyRef} className="flex min-h-0 flex-1">
+        <div
+          ref={bodyRef}
+          className={`flex min-h-0 flex-1 ${stacked ? "flex-col overflow-y-auto" : ""}`}
+        >
           <Column
             panel="main"
             slots={mainSlots}
             cards={cards}
             ctx={ctx}
             editing={editing}
-            width={showSide ? `${mainPct}%` : "100%"}
+            width={stacked || !showSide ? "100%" : `${mainPct}%`}
+            stacked={stacked}
             dragKey={dragKey}
             onDragStart={setDragKey}
             onDrop={drop}
@@ -320,7 +328,7 @@ export function DemoDashboard({
             <>
               <div
                 onMouseDown={startDividerDrag}
-                className="w-px shrink-0 cursor-col-resize bg-border transition-colors hover:bg-accent-brand"
+                className={`shrink-0 bg-border transition-colors ${stacked ? "h-px w-full" : "w-px cursor-col-resize hover:bg-accent-brand"}`}
               />
               <Column
                 panel="side"
@@ -328,7 +336,8 @@ export function DemoDashboard({
                 cards={cards}
                 ctx={ctx}
                 editing={editing}
-                width={`${100 - mainPct}%`}
+                width={stacked ? "100%" : `${100 - mainPct}%`}
+                stacked={stacked}
                 dragKey={dragKey}
                 onDragStart={setDragKey}
                 onDrop={drop}
@@ -353,6 +362,7 @@ function Column({
   ctx,
   editing,
   width,
+  stacked,
   dragKey,
   onDragStart,
   onDrop,
@@ -365,6 +375,7 @@ function Column({
   ctx: DashboardCardContext;
   editing: boolean;
   width: string;
+  stacked: boolean;
   dragKey: string | null;
   onDragStart: (key: string) => void;
   onDrop: (panel: DashboardPanelId, order: number) => void;
@@ -374,9 +385,11 @@ function Column({
   return (
     <div
       style={{ width }}
-      className={`flex min-h-0 min-w-0 flex-col overflow-y-auto ${
-        panel === "side" ? "bg-surface-dim/40" : ""
-      }`}
+      // Stacked, the page scrolls rather than each column, so the column must
+      // not cap its own height.
+      className={`flex min-w-0 flex-col ${
+        stacked ? "shrink-0" : "min-h-0 overflow-y-auto"
+      } ${panel === "side" ? "bg-surface-dim/40" : ""}`}
       onDragOver={(e) => editing && e.preventDefault()}
       onDrop={() => editing && onDrop(panel, slots.length)}
     >
@@ -685,7 +698,7 @@ function QuickActions({ ctx }: { ctx: DashboardCardContext }) {
     },
   ];
   return (
-    <div className="grid h-full grid-cols-2 gap-1 p-2">
+    <div className="grid h-full grid-cols-1 gap-1 p-2 sm:grid-cols-2">
       {actions.map((action) => (
         <button
           key={action.label}

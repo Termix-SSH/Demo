@@ -275,6 +275,10 @@ export function TabBar({
                 }}
                 onPointerDown={(e) => {
                   if (e.button !== 0 || tab.type === "dashboard") return;
+                  // Reordering is a mouse gesture. On touch the same
+                  // preventDefault would stop the strip scrolling sideways,
+                  // which matters more on a phone than dragging tabs does.
+                  if (e.pointerType !== "mouse") return;
                   e.preventDefault();
                   const el = tabEls.current.get(tab.id);
                   if (!el || !tabBarRef.current) return;
@@ -351,7 +355,7 @@ export function TabBar({
                 )}
                 {tab.type !== "dashboard" && renamingTabId !== tab.id && (
                   <div
-                    className={`flex items-center gap-0.5 ml-1 ${active ? "opacity-100" : "opacity-0 group-hover/tab:opacity-100"}`}
+                    className={`flex items-center gap-0.5 ml-1 ${active ? "opacity-100" : "opacity-100 md:opacity-0 md:group-hover/tab:opacity-100"}`}
                   >
                     {CONNECTION_TAB_TYPES.includes(tab.type) && (
                       <button
@@ -435,7 +439,7 @@ export function TabBar({
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-full w-12.5 border-y-0 border-r-0 border-border rounded-none text-muted-foreground hover:text-foreground"
+                className="h-full w-10 md:w-12.5 border-y-0 border-r-0 border-border rounded-none text-muted-foreground hover:text-foreground"
               >
                 <ChevronDown className="size-4" />
               </Button>
@@ -480,7 +484,7 @@ export function TabBar({
               <Button
                 variant="ghost"
                 size="icon"
-                className={`h-full w-12.5 rounded-none border-y-0 border-border ${rightDockOpen ? "text-accent-brand bg-accent-brand/10" : "text-muted-foreground hover:text-foreground"}`}
+                className={`h-full w-10 md:w-12.5 rounded-none border-y-0 border-border ${rightDockOpen ? "text-accent-brand bg-accent-brand/10" : "text-muted-foreground hover:text-foreground"}`}
                 title={t("nav.toggleRightDock")}
                 aria-label={t("nav.toggleRightDock")}
                 aria-pressed={!!rightDockOpen}
@@ -490,13 +494,15 @@ export function TabBar({
               </Button>
             </>
           )}
+          {/* Fullscreen is meaningless on a phone, where the browser chrome is
+              not ours to hide, and the bar needs the width for tabs. */}
           {!isElectron() && (
             <>
-              <Separator orientation="vertical" />
+              <Separator orientation="vertical" className="hidden md:block" />
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-full w-12.5 rounded-none border-y-0 border-border text-muted-foreground hover:text-foreground"
+                className="hidden h-full w-10 rounded-none border-y-0 border-border text-muted-foreground hover:text-foreground md:flex md:w-12.5"
                 title={
                   isAppFullscreen
                     ? "Exit fullscreen (Ctrl+Shift+F)"
@@ -519,7 +525,7 @@ export function TabBar({
           <Button
             variant="ghost"
             size="icon"
-            className="h-full w-12.5 rounded-none border-y-0 border-border text-muted-foreground hover:text-foreground"
+            className="h-full w-10 md:w-12.5 rounded-none border-y-0 border-border text-muted-foreground hover:text-foreground"
             onClick={() => setOpen((o) => !o)}
           >
             <ChevronUp

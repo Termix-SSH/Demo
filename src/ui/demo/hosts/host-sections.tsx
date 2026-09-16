@@ -214,7 +214,7 @@ export function SectionNav({
   onSelect: (id: string) => void;
 }) {
   return (
-    <nav className="flex w-52 shrink-0 flex-col gap-3 overflow-y-auto border-r border-border py-2.5">
+    <nav className="hidden w-52 shrink-0 flex-col gap-3 overflow-y-auto border-r border-border py-2.5 lg:flex">
       {bands.map(({ band, items }) => (
         <div key={band} className="flex flex-col">
           <GroupHeading title={BAND_LABELS[band]} className="px-2.5 pb-1.5" />

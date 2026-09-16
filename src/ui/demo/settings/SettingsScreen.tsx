@@ -73,6 +73,7 @@ export function SettingsScreen({
 }) {
   const { t } = useTranslation();
   const [section, setSection] = useState<SectionId>("account");
+  const [navOpen, setNavOpen] = useState(false);
   const [plugins, setPlugins] = useState(getPlugins);
 
   useEffect(() => subscribePlugins(() => setPlugins([...getPlugins()])), []);
@@ -182,9 +183,21 @@ export function SettingsScreen({
             {t("settings.title")}
           </span>
           <Separator orientation="vertical" className="h-4" />
-          <span className="truncate text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+          <span className="hidden truncate text-[10px] font-semibold uppercase tracking-widest text-muted-foreground md:inline">
             {active.label}
           </span>
+          {/* The nav column does not fit beside the content on a phone, so
+              there it collapses behind the section name. */}
+          <button
+            onClick={() => setNavOpen((v) => !v)}
+            aria-expanded={navOpen}
+            className="flex min-w-0 items-center gap-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground md:hidden"
+          >
+            <span className="truncate">{active.label}</span>
+            <ChevronDown
+              className={`size-3 shrink-0 transition-transform ${navOpen ? "rotate-180" : ""}`}
+            />
+          </button>
         </div>
       </header>
 
@@ -192,7 +205,9 @@ export function SettingsScreen({
         {/* Same shape as the file manager's sidebar, which is the app's
             existing nav list: a left marker rather than a filled row, hairline
             group headings. */}
-        <nav className="flex w-60 shrink-0 flex-col gap-3 overflow-y-auto border-r border-border py-2.5">
+        <nav
+          className={`${navOpen ? "flex" : "hidden"} w-full shrink-0 flex-col gap-3 overflow-y-auto border-r border-border py-2.5 md:flex md:w-60`}
+        >
           {bands.map((band) => (
             <div key={band.heading} className="flex flex-col">
               <GroupHeading title={band.heading} className="px-2.5 pb-1.5" />
@@ -202,8 +217,11 @@ export function SettingsScreen({
                 return (
                   <button
                     key={item.id}
-                    onClick={() => setSection(item.id)}
-                    className={`flex w-full items-center gap-2 border-l-2 py-1.5 pl-2 pr-2 text-left transition-colors ${
+                    onClick={() => {
+                      setSection(item.id);
+                      setNavOpen(false);
+                    }}
+                    className={`flex w-full items-center gap-2 border-l-2 py-2.5 pl-2 pr-2 text-left transition-colors md:py-1.5 ${
                       on
                         ? "border-accent-brand bg-accent-brand/10 text-accent-brand"
                         : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -220,7 +238,9 @@ export function SettingsScreen({
           ))}
         </nav>
 
-        <div className="min-h-0 flex-1 overflow-y-auto">
+        <div
+          className={`${navOpen ? "hidden" : ""} min-h-0 flex-1 overflow-y-auto md:block`}
+        >
           {section === "account" ? (
             <AccountSection username={username} />
           ) : section === "plugins" ? (

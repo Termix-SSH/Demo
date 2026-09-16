@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Terminal } from "@xterm/xterm";
 import { FitAddon } from "@xterm/addon-fit";
 import { SearchAddon } from "@xterm/addon-search";
@@ -86,6 +87,7 @@ function resolvePath(cwd: string, arg: string): string {
 export function DemoTerminal({ host }: { host: Host }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<SearchAddon | null>(null);
+  const termRef = useRef<Terminal | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
@@ -106,6 +108,7 @@ export function DemoTerminal({ host }: { host: Host }) {
     const search = new SearchAddon();
     term.loadAddon(search);
     searchRef.current = search;
+    termRef.current = term;
     // Ctrl+F opens the overlay instead of reaching the scripted shell.
     term.attachCustomKeyEventHandler((event) => {
       if (event.type === "keydown" && event.ctrlKey && event.key === "f") {
@@ -359,25 +362,112 @@ export function DemoTerminal({ host }: { host: Host }) {
       window.removeEventListener("resize", onResize);
       observer.disconnect();
       disposable.dispose();
+      termRef.current = null;
       term.dispose();
     };
   }, [host]);
 
   return (
-    <div className="h-full w-full relative bg-background">
-      <div ref={containerRef} className="h-full w-full relative p-1" />
+    <div className="flex h-full w-full flex-col bg-background">
+      <div className="relative min-h-0 flex-1">
+        <div ref={containerRef} className="h-full w-full relative p-1" />
 
-      {searchOpen && (
-        <TerminalSearchBar
-          searchAddon={searchRef.current}
-          onClose={() => setSearchOpen(false)}
-        />
-      )}
+        {searchOpen && (
+          <TerminalSearchBar
+            searchAddon={searchRef.current}
+            onClose={() => setSearchOpen(false)}
+          />
+        )}
 
-      <TerminalToolbar
-        host={host}
-        onOpenSearch={() => setSearchOpen(true)}
-      />
+        <TerminalToolbar host={host} onOpenSearch={() => setSearchOpen(true)} />
+      </div>
+
+      <MobileKeyBar term={termRef} />
+    </div>
+  );
+}
+
+/**
+ * Keys a phone keyboard does not have.
+ *
+ * Without this a terminal on a touch device can type letters and nothing else:
+ * no Esc to leave vim, no Ctrl+C to stop something, no Tab to complete, no
+ * arrows for history. Tapping the bar first also focuses the terminal, which
+ * is how the on-screen keyboard comes up at all.
+ */
+function MobileKeyBar({ term }: { term: React.RefObject<Terminal | null> }) {
+  const { t } = useTranslation();
+  const [ctrl, setCtrl] = useState(false);
+
+  const send = (data: string) => {
+    const instance = term.current;
+    if (!instance) return;
+    instance.focus();
+
+    // With Ctrl armed, a letter becomes its control character: that is the
+    // letter's position in the alphabet, so "c" sends byte 3 for Ctrl+C.
+    const letter = data.toLowerCase();
+    if (ctrl && letter.length === 1 && letter >= "a" && letter <= "z") {
+      instance.input(String.fromCharCode(letter.charCodeAt(0) - 96), true);
+      setCtrl(false);
+      return;
+    }
+    if (ctrl) setCtrl(false);
+    instance.input(data, true);
+  };
+
+  // xterm takes the raw bytes, so the escape sequences are built rather
+  // than typed as literals.
+  const ESC = String.fromCharCode(27);
+  const keys: { label: string; data: string }[] = [
+    { label: t("mobileKeyboard.esc"), data: ESC },
+    { label: t("mobileKeyboard.tab"), data: String.fromCharCode(9) },
+    // These letters earn a key only because Ctrl can be armed from the bar:
+    // Ctrl+C to interrupt, Ctrl+D to end input, Ctrl+L to clear.
+    { label: "C", data: "c" },
+    { label: "D", data: "d" },
+    { label: "L", data: "l" },
+    { label: "/", data: "/" },
+    { label: "-", data: "-" },
+    { label: "|", data: "|" },
+    { label: "~", data: "~" },
+    { label: "↑", data: ESC + "[A" },
+    { label: "↓", data: ESC + "[B" },
+    { label: "←", data: ESC + "[D" },
+    { label: "→", data: ESC + "[C" },
+  ];
+
+  const key =
+    "flex h-9 min-w-9 shrink-0 items-center justify-center px-2.5 text-xs font-medium transition-colors active:bg-muted";
+
+  return (
+    <div
+      className="flex shrink-0 items-stretch gap-px overflow-x-auto border-t border-border bg-sidebar scrollbar-none md:hidden"
+      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+    >
+      <button
+        onClick={() => {
+          term.current?.focus();
+          setCtrl((v) => !v);
+        }}
+        aria-pressed={ctrl}
+        className={`${key} ${
+          ctrl
+            ? "bg-accent-brand/15 text-accent-brand"
+            : "text-muted-foreground"
+        }`}
+      >
+        {t("mobileKeyboard.ctrl")}
+      </button>
+      {keys.map((k) => (
+        <button
+          key={k.label}
+          onClick={() => send(k.data)}
+          className={`${key} text-muted-foreground`}
+        >
+          {k.label}
+        </button>
+      ))}
     </div>
   );
 }
@@ -482,11 +572,7 @@ function TerminalToolbar({
 
 function StatBar({ label, value }: { label: string; value: number }) {
   const color =
-    value >= 90
-      ? "bg-red-500"
-      : value >= 75
-        ? "bg-warning"
-        : "bg-accent-brand";
+    value >= 90 ? "bg-red-500" : value >= 75 ? "bg-warning" : "bg-accent-brand";
   return (
     <span className="inline-flex items-center gap-1 px-1 text-[10px] font-semibold text-muted-foreground">
       {label}

@@ -229,6 +229,7 @@ export function HostWorkbench({
 
       <div className="flex min-h-0 flex-1">
         <ObjectList
+          editing={!!editing}
           mode={mode}
           onMode={(next) => {
             setMode(next);
@@ -274,7 +275,7 @@ export function HostWorkbench({
             onSave={isHost ? saveHost : saveCredential}
           />
         ) : (
-          <div className="flex min-h-0 flex-1 items-center justify-center">
+          <div className="hidden min-h-0 flex-1 items-center justify-center md:flex">
             <EmptyState
               icon={mode === "hosts" ? Server : KeyRound}
               title={
@@ -305,6 +306,7 @@ export function HostWorkbench({
 
 /** The list column: what to edit, grouped by folder and nested by parent. */
 function ObjectList({
+  editing,
   mode,
   onMode,
   query,
@@ -315,6 +317,7 @@ function ObjectList({
   onPickHost,
   onPickCredential,
 }: {
+  editing: boolean;
   mode: Mode;
   onMode: (mode: Mode) => void;
   query: string;
@@ -396,8 +399,13 @@ function ObjectList({
 
   const empty = groups.length === 0;
 
+  // Three columns do not fit on a phone. While you are editing something
+  // the list steps aside and the editor takes the screen; the editor's
+  // Cancel brings the list back.
   return (
-    <div className="flex w-72 shrink-0 flex-col border-r border-border">
+    <div
+      className={`${editing ? "hidden md:flex" : "flex"} w-full shrink-0 flex-col border-r border-border md:w-72`}
+    >
       <div className="flex flex-col gap-2 border-b border-border px-2.5 py-2">
         <Segmented
           value={mode}

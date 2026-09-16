@@ -112,8 +112,10 @@ export function DemoTmuxMonitor() {
       }
       scroll={false}
     >
-      <div className="flex min-h-0 flex-1">
-        <div className="flex w-72 shrink-0 flex-col border-r border-border">
+      {/* Side by side on a desktop, stacked on a phone where 288px of session
+          list would leave nothing for the pane detail. */}
+      <div className="flex min-h-0 flex-1 flex-col md:flex-row">
+        <div className="flex max-h-48 shrink-0 flex-col border-b border-border md:max-h-none md:w-72 md:border-b-0 md:border-r">
           <div
             className={`flex items-center gap-2 border-b border-border ${PANEL.band}`}
           >

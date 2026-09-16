@@ -13,7 +13,6 @@ import {
   SquareArrowOutUpRight,
 } from "lucide-react";
 import type { SplitMode, TabType, ToolsTab } from "@/types/ui-types";
-import { getAlertFirings } from "@/api/alerts-api";
 import { isElectron } from "@/lib/electron";
 import { readRailPreference, setRailPreference } from "./rail-preferences";
 import {
@@ -62,6 +61,7 @@ export function AppRail({
   splitMode,
   username,
   isAdmin,
+  unreadAlerts,
   onRailClick,
   onOpenTab,
   onOpenInRightDock,
@@ -75,6 +75,7 @@ export function AppRail({
   splitMode: SplitMode;
   username: string;
   isAdmin: boolean;
+  unreadAlerts: number;
   onRailClick: (view: RailView) => void;
   onOpenTab?: (type: TabType) => void;
   onOpenInRightDock?: (view: RailView) => void;
@@ -96,7 +97,6 @@ export function AppRail({
     promotable?: boolean;
     rightDockable?: boolean;
   } | null>(null);
-  const [unreadAlerts, setUnreadAlerts] = useState(0);
   const [hiddenIds, setHiddenIds] = useState<string[]>(readHiddenIds);
   const [managing, setManaging] = useState(false);
 
@@ -109,48 +109,6 @@ export function AppRail({
     () => new Set(railPrefs.hiddenTabs ?? []),
     [railPrefs.hiddenTabs],
   );
-
-  useEffect(() => {
-    let cancelled = false;
-    let intervalId: ReturnType<typeof setInterval> | null = null;
-
-    const poll = () => {
-      if (document.visibilityState === "hidden") return;
-      getAlertFirings({ acknowledged: false, limit: 50 })
-        .then((firings) => {
-          if (!cancelled) setUnreadAlerts(firings.length);
-        })
-        .catch(() => {});
-    };
-
-    const start = () => {
-      if (intervalId !== null) return;
-      intervalId = setInterval(poll, 30000);
-    };
-    const stop = () => {
-      if (intervalId === null) return;
-      clearInterval(intervalId);
-      intervalId = null;
-    };
-    const onVisibility = () => {
-      if (document.visibilityState === "hidden") {
-        stop();
-        return;
-      }
-      poll();
-      start();
-    };
-
-    poll();
-    if (document.visibilityState !== "hidden") start();
-    document.addEventListener("visibilitychange", onVisibility);
-
-    return () => {
-      cancelled = true;
-      stop();
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
-  }, []);
 
   useEffect(() => {
     const pinHandler = () => setPinned(readRailPreference("pinAppRail"));

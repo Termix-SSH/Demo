@@ -1,8 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { SquareArrowOutUpRight, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { AppRail, type RailView } from "@/sidebar/AppRail";
-import { RIGHT_DOCKABLE_IDS, railItemLabel } from "@/sidebar/rail-items";
+import { MobileBar } from "@/sidebar/MobileBar";
+import { useUnreadAlerts } from "@/hooks/use-unread-alerts";
+import {
+  PROMOTABLE_IDS,
+  RIGHT_DOCKABLE_IDS,
+  railItemLabel,
+} from "@/sidebar/rail-items";
 import { HostsPanel } from "@/sidebar/HostsPanel";
 import { CredentialsPanel } from "@/sidebar/CredentialsPanel";
 import { TabBar } from "@/shell/TabBar";
@@ -11,7 +18,10 @@ import { DockPanel, DockReopenStrip } from "@/shell/DockPanel";
 import { SplitView, defaultSizes, type RowColSizes } from "@/shell/SplitView";
 import { Sheet, SheetContent } from "@/components/sheet";
 import { ServerStatusProvider } from "@/lib/ServerStatusContext";
-import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  useIsMobile,
+  MOBILE_BREAKPOINT as MOBILE_BREAKPOINT_PX,
+} from "@/hooks/use-mobile";
 import { PANE_COUNTS } from "@/lib/theme";
 import { buildHostTree } from "@/sidebar/build-host-tree";
 import { getDemoHosts, subscribeDemoHosts } from "@/demo/demo-store";
@@ -59,9 +69,18 @@ export function AppShell({
   const isMobile = useIsMobile();
 
   const [railView, setRailView] = useState<RailView>("hosts");
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  // On a phone the sidebar is an overlay, so opening it on load would cover
+  // the app before you have touched anything. useIsMobile only reports after
+  // its first effect, which is too late to avoid that flash, so the initial
+  // value comes straight off the viewport.
+  const [sidebarOpen, setSidebarOpen] = useState(
+    () =>
+      typeof window === "undefined" ||
+      window.innerWidth >= MOBILE_BREAKPOINT_PX,
+  );
   const [rightRailView, setRightRailView] = useState<RailView | null>(null);
   const [paletteOpen, setPaletteOpen] = useState(false);
+  const unreadAlerts = useUnreadAlerts();
 
   const [tabs, setTabs] = useState<Tab[]>(() => [
     {
@@ -483,6 +502,7 @@ export function AppShell({
             splitMode={splitMode}
             username={username}
             isAdmin
+            unreadAlerts={unreadAlerts}
             onRailClick={handleRailClick}
             onOpenTab={promoteRailView}
             onOpenInRightDock={openInRightDock}
@@ -513,12 +533,38 @@ export function AppShell({
                 side="left"
                 showCloseButton={false}
                 className="p-0 flex flex-col min-h-0 max-w-full bg-sidebar border-r border-border gap-0 w-[min(85vw,360px)]"
-                style={{ height: "100dvh" }}
+                // Stops above the mobile bar so the bar stays tappable while
+                // the sidebar is open, rather than the sheet covering it.
+                style={{
+                  top: 0,
+                  bottom: "calc(3.5rem + env(safe-area-inset-bottom))",
+                  height: "auto",
+                }}
               >
                 <div className="flex flex-row items-center border-b border-border h-12.5 shrink-0">
-                  <span className="flex-1 min-w-0 whitespace-nowrap text-base font-bold tracking-tight text-foreground px-3">
+                  <span className="flex-1 min-w-0 truncate text-base font-bold tracking-tight text-foreground px-3">
                     {sidebarTitle(railView)}
                   </span>
+                  {PROMOTABLE_IDS.includes(railView) && (
+                    <button
+                      onClick={() => {
+                        promoteRailView(railView);
+                        setSidebarOpen(false);
+                      }}
+                      aria-label={t("nav.openAsTab")}
+                      title={t("nav.openAsTab")}
+                      className="flex size-11 shrink-0 items-center justify-center text-muted-foreground active:bg-muted"
+                    >
+                      <SquareArrowOutUpRight className="size-4" />
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setSidebarOpen(false)}
+                    aria-label={t("nav.close")}
+                    className="flex size-11 shrink-0 items-center justify-center text-muted-foreground active:bg-muted"
+                  >
+                    <X className="size-4" />
+                  </button>
                 </div>
                 {renderSidebarPanels(railView)}
               </SheetContent>
@@ -630,6 +676,21 @@ export function AppShell({
             </DockPanel>
           )}
         </div>
+
+        {/* The rail is pointer-only and hidden below md, so phones get this
+            instead. Same destinations, reachable by thumb. */}
+        <MobileBar
+          railView={railView}
+          sidebarOpen={sidebarOpen}
+          unreadAlerts={unreadAlerts}
+          username={username}
+          onRailClick={handleRailClick}
+          onOpenTab={(type) => promoteRailView(type)}
+          onOpenPlugins={() => openSingletonTab("plugins")}
+          onOpenSettings={() => openSingletonTab("settings")}
+          onOpenPalette={() => setPaletteOpen(true)}
+          onLogout={onLogout}
+        />
 
         <CommandPalette
           isOpen={paletteOpen}
