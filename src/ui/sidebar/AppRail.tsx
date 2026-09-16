@@ -1,22 +1,32 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Bell,
   Check,
   LogOut,
   PanelRight,
+  Plus,
   Puzzle,
-  Settings,
+  Search,
   SlidersHorizontal,
   SquareArrowOutUpRight,
-  User,
 } from "lucide-react";
 import type { SplitMode, TabType, ToolsTab } from "@/types/ui-types";
 import { getAlertFirings } from "@/api/alerts-api";
 import { isElectron } from "@/lib/electron";
 import { readRailPreference, setRailPreference } from "./rail-preferences";
-import { visibleRailItems } from "./rail-items";
+import {
+  RAIL_GROUP_ORDER,
+  pinnedRailItems,
+  readPinnedIds,
+  togglePinned,
+  visibleRailItems,
+  type RailGroup,
+  type RailItemDef,
+} from "./rail-items";
 import { useAiAvailability } from "@/hooks/use-ai-availability";
+import { useAreaPreferences } from "@/contexts/UiPreferencesContext";
+import { useNavItems } from "@/demo/nav-registry";
 
 export type RailView =
   | "hosts"
@@ -41,68 +51,6 @@ export type HideableRailView =
   | "network_graph"
   | "homepage";
 
-type RailItem =
-  | {
-      kind?: undefined;
-      view: RailView;
-      icon: React.ReactNode;
-      title: string;
-      dot?: boolean;
-      promotable?: boolean;
-      rightDockable?: boolean;
-    }
-  | { kind: "tab"; tabType: TabType; icon: React.ReactNode; title: string }
-  | { kind: "separator" };
-
-function buildRailButtons(
-  splitMode: SplitMode,
-  t: (key: string) => string,
-  hidden: Set<string>,
-): RailItem[] {
-  const all: RailItem[] = [];
-  for (const item of visibleRailItems()) {
-    const Icon = item.icon;
-    if (item.kind === "tab") {
-      all.push({
-        kind: "tab",
-        tabType: item.id as TabType,
-        icon: <Icon size={16} />,
-        title: t(item.labelKey),
-      });
-    } else {
-      all.push({
-        view: item.id as RailView,
-        icon: <Icon size={16} />,
-        title: t(item.labelKey),
-        dot: item.id === "split-screen" ? splitMode !== "none" : undefined,
-        promotable: item.promotable,
-        rightDockable: item.rightDockable,
-      });
-    }
-    if (item.separatorAfter) all.push({ kind: "separator" });
-  }
-
-  // Filter out hidden items, then collapse consecutive/leading/trailing separators
-  const filtered = all.filter((item) => {
-    if (item.kind === "separator") return true;
-    if ("tabType" in item) return !hidden.has(item.tabType);
-    return !hidden.has(item.view);
-  });
-
-  const result: RailItem[] = [];
-  for (const item of filtered) {
-    if (item.kind === "separator") {
-      if (result.length === 0 || result[result.length - 1].kind === "separator")
-        continue;
-      result.push(item);
-    } else {
-      result.push(item);
-    }
-  }
-  if (result[result.length - 1]?.kind === "separator") result.pop();
-  return result;
-}
-
 const btnBase =
   "relative flex items-center h-7 rounded shrink-0 transition-colors gap-2.5";
 const btnStyle = { margin: "0 4px", padding: "0 8px" };
@@ -117,6 +65,8 @@ export function AppRail({
   onOpenTab,
   onOpenInRightDock,
   onOpenPlugins,
+  onOpenSettings,
+  onOpenPalette,
   onLogout,
 }: {
   railView: RailView;
@@ -128,6 +78,8 @@ export function AppRail({
   onOpenTab?: (type: TabType) => void;
   onOpenInRightDock?: (view: RailView) => void;
   onOpenPlugins: () => void;
+  onOpenSettings: () => void;
+  onOpenPalette?: () => void;
   onLogout: () => void;
 }) {
   const { t } = useTranslation();
@@ -137,8 +89,6 @@ export function AppRail({
     readRailPreference("expandAppRailOnHover"),
   );
   const [menuPos, setMenuPos] = useState<{ x: number; y: number } | null>(null);
-  // Which promotable item was right-clicked, so the menu can offer to open it
-  // as a tab. Null when the right-click landed on empty rail space.
   const [menuTarget, setMenuTarget] = useState<{
     view: RailView;
     title: string;
@@ -146,6 +96,18 @@ export function AppRail({
     rightDockable?: boolean;
   } | null>(null);
   const [unreadAlerts, setUnreadAlerts] = useState(0);
+  const [pinnedIds, setPinnedIds] = useState<string[]>(readPinnedIds);
+  const [picking, setPicking] = useState(false);
+
+  // The preset still speaks in terms of what it hides, so a preset change is
+  // applied by subtracting its hidden list from the pinned one. A user who has
+  // pinned something the preset hides keeps it: presets seed, they do not
+  // overrule.
+  const railPrefs = useAreaPreferences("rail");
+  const presetHidden = useMemo(
+    () => new Set(railPrefs.hiddenTabs ?? []),
+    [railPrefs.hiddenTabs],
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -188,24 +150,19 @@ export function AppRail({
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
-  const [hiddenTabs, setHiddenTabs] = useState<Set<string>>(() => {
-    try {
-      const stored = localStorage.getItem("hiddenRailTabs");
-      return stored ? new Set(JSON.parse(stored)) : new Set();
-    } catch {
-      return new Set();
-    }
-  });
 
   useEffect(() => {
     const pinHandler = () => setPinned(readRailPreference("pinAppRail"));
     const hoverHandler = () =>
       setExpandOnHover(readRailPreference("expandAppRailOnHover"));
+    const pinnedHandler = () => setPinnedIds(readPinnedIds());
     window.addEventListener("pinAppRailChanged", pinHandler);
     window.addEventListener("expandAppRailOnHoverChanged", hoverHandler);
+    window.addEventListener("pinnedRailChanged", pinnedHandler);
     return () => {
       window.removeEventListener("pinAppRailChanged", pinHandler);
       window.removeEventListener("expandAppRailOnHoverChanged", hoverHandler);
+      window.removeEventListener("pinnedRailChanged", pinnedHandler);
     };
   }, []);
 
@@ -229,38 +186,58 @@ export function AppRail({
 
   const { userEnabled: aiEnabled } = useAiAvailability();
 
-  useEffect(() => {
-    const handler = () => {
-      try {
-        const stored = localStorage.getItem("hiddenRailTabs");
-        setHiddenTabs(stored ? new Set(JSON.parse(stored)) : new Set());
-      } catch {
-        setHiddenTabs(new Set());
-      }
-    };
-    window.addEventListener("hiddenRailTabsChanged", handler);
-    return () => window.removeEventListener("hiddenRailTabsChanged", handler);
-  }, []);
-
   // Termix ID publishes SSH public keys under a claimed public handle for
   // other servers to fetch -- meaningless for a standalone desktop install
   // with no synced multi-device account, so it stays hidden until a remote
   // server is actually connected.
-  const [isRemoteSyncConnected, setIsRemoteSyncConnected] = useState(
-    () => !isElectron(),
+  const [isRemoteSyncConnected] = useState(() => !isElectron());
+
+  const navItems = useNavItems();
+
+  // A destination owned by an uninstalled plugin is gone; one owned by a
+  // stopped plugin stays and says so.
+  const pluginOwned = useMemo(
+    () => new Map(navItems.filter((n) => n.pluginId).map((n) => [n.id, n])),
+    [navItems],
+  );
+  const pluginBacked = useMemo(
+    () => new Set(["snippets", "session-logs", "history", "serial"]),
+    [],
   );
 
-  const railExpanded = pinned || (expandOnHover && hovered);
-  const effectiveHiddenTabs = new Set([
-    ...hiddenTabs,
-    ...(isRemoteSyncConnected ? [] : ["termix-id"]),
-    // The assistant is hidden until an admin has enabled it instance-wide and
-    // the user has said yes, so someone who declined never sees the entry.
-    ...(aiEnabled ? [] : ["ai"]),
-  ]);
-  const railButtons = buildRailButtons(splitMode, t, effectiveHiddenTabs);
+  const unavailable = useMemo(() => {
+    const out = new Set<string>();
+    if (!isRemoteSyncConnected) out.add("termix-id");
+    if (!aiEnabled) out.add("ai");
+    for (const id of pluginBacked) {
+      if (!pluginOwned.has(id)) out.add(id);
+    }
+    return out;
+  }, [isRemoteSyncConnected, aiEnabled, pluginBacked, pluginOwned]);
 
-  const togglePinned = () => {
+  const railExpanded = pinned || (expandOnHover && hovered) || picking;
+
+  // Grouped, and only what the user has pinned. A rule sits between groups
+  // rather than between every pair of icons.
+  const groups = useMemo(() => {
+    const items = pinnedRailItems(pinnedIds).filter(
+      (item) => !unavailable.has(item.id) && !presetHidden.has(item.id),
+    );
+    return RAIL_GROUP_ORDER.map((group) => ({
+      group,
+      items: items.filter((item) => (item.group ?? "tools") === group),
+    })).filter((band) => band.items.length > 0);
+  }, [pinnedIds, unavailable, presetHidden]);
+
+  const pickable = useMemo(
+    () =>
+      visibleRailItems().filter(
+        (item) => !unavailable.has(item.id) && !pinnedIds.includes(item.id),
+      ),
+    [pinnedIds, unavailable],
+  );
+
+  const togglePinned2 = () => {
     setRailPreference("pinAppRail", !pinned);
     setMenuPos(null);
   };
@@ -270,15 +247,81 @@ export function AppRail({
     setMenuPos(null);
   };
 
+  const renderItem = (item: RailItemDef) => {
+    const Icon = item.icon;
+    const isTab = item.kind === "tab";
+    const active = !isTab && sidebarOpen && railView === item.id;
+    return (
+      <button
+        key={item.id}
+        onClick={(e) => {
+          if (isTab) {
+            onOpenTab?.(item.id as TabType);
+            return;
+          }
+          if (item.promotable && (e.ctrlKey || e.metaKey)) {
+            onOpenTab?.(item.id as TabType);
+            return;
+          }
+          onRailClick(item.id as RailView);
+        }}
+        onAuxClick={(e) => {
+          if (e.button !== 1 || !item.promotable) return;
+          e.preventDefault();
+          onOpenTab?.(item.id as TabType);
+        }}
+        onContextMenu={() => {
+          if (item.promotable || item.rightDockable)
+            setMenuTarget({
+              view: item.id as RailView,
+              title: t(item.labelKey),
+              promotable: item.promotable,
+              rightDockable: item.rightDockable,
+            });
+        }}
+        data-rail-promotable={
+          item.promotable || item.rightDockable ? "" : undefined
+        }
+        title={
+          pluginOwned.get(item.id)?.running === false
+            ? `${t(item.labelKey)} - ${t("nav.pluginStopped")}`
+            : t(item.labelKey)
+        }
+        style={btnStyle}
+        className={`${btnBase} ${
+          active
+            ? "text-accent-brand bg-accent-brand/10"
+            : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+        } ${pluginOwned.get(item.id)?.running === false ? "opacity-50" : ""}`}
+      >
+        <span
+          className="shrink-0 flex items-center justify-center"
+          style={{ width: 16, height: 16 }}
+        >
+          <Icon size={16} />
+        </span>
+        <span
+          className={`text-xs font-medium whitespace-nowrap overflow-hidden transition-[opacity,width] duration-150 ${
+            railExpanded ? "opacity-100 delay-75" : "opacity-0 w-0"
+          }`}
+        >
+          {t(item.labelKey)}
+        </span>
+        {item.id === "split-screen" && splitMode !== "none" && (
+          <span className="absolute top-0.5 right-0.5 size-1.5 rounded-full bg-accent-brand" />
+        )}
+      </button>
+    );
+  };
+
   return (
     <div
       className="hidden md:flex flex-col items-stretch bg-sidebar border-r border-border shrink-0 overflow-hidden pt-2 gap-1 transition-[width] duration-200 min-h-0"
-      style={{ width: railExpanded ? 160 : 40 }}
+      style={{ width: railExpanded ? 172 : 40 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onContextMenu={(e) => {
         e.preventDefault();
-        // Keep the menu on screen when right-clicking near the viewport edges
         const MENU_W = 190;
         const MENU_H = 96;
         setMenuPos({
@@ -290,70 +333,56 @@ export function AppRail({
         }
       }}
     >
+      {onOpenPalette && (
+        <>
+          <button
+            onClick={onOpenPalette}
+            title={`${t("commandPalette.searchPlaceholder")} (Ctrl+K)`}
+            style={btnStyle}
+            className={`${btnBase} text-muted-foreground hover:text-foreground hover:bg-muted/60`}
+          >
+            <span
+              className="shrink-0 flex items-center justify-center"
+              style={{ width: 16, height: 16 }}
+            >
+              <Search size={16} />
+            </span>
+            <span
+              className={`text-xs font-medium whitespace-nowrap overflow-hidden transition-[opacity,width] duration-150 ${
+                railExpanded ? "opacity-100 delay-75" : "opacity-0 w-0"
+              }`}
+            >
+              {t("commandPalette.search")}
+            </span>
+          </button>
+          <div className="mx-auto h-px bg-border my-0.5 shrink-0 w-[calc(100%-16px)]" />
+        </>
+      )}
+
       <div className="flex flex-col flex-1 gap-1 overflow-y-auto scrollbar-none min-h-0">
-        {railButtons.map((item, i) =>
-          item.kind === "separator" ? (
+        {groups.map((band, i) => (
+          <div key={band.group} className="flex flex-col gap-1">
+            {i > 0 && (
+              <GroupDivider group={band.group} expanded={railExpanded} />
+            )}
+            {band.items.map(renderItem)}
+          </div>
+        ))}
+
+        {/* Pinning replaces hiding: the rail starts short and you add to it,
+            rather than starting with everything and subtracting. */}
+        {pickable.length > 0 && (
+          <>
             <div
-              key={`sep-${i}`}
               className="mx-auto h-px bg-border my-0.5 shrink-0 transition-[width] duration-200"
               style={{ width: railExpanded ? "calc(100% - 16px)" : 20 }}
             />
-          ) : "tabType" in item ? (
             <button
-              key={item.tabType}
-              onClick={() => onOpenTab?.(item.tabType)}
-              style={btnStyle}
-              className={`${btnBase} text-muted-foreground hover:text-foreground hover:bg-muted/60`}
-            >
-              <span
-                className="shrink-0 flex items-center justify-center"
-                style={{ width: 16, height: 16 }}
-              >
-                {item.icon}
-              </span>
-              <span
-                className={`text-xs font-medium whitespace-nowrap overflow-hidden transition-[opacity,width] duration-150 ${
-                  railExpanded ? "opacity-100 delay-75" : "opacity-0 w-0"
-                }`}
-              >
-                {item.title}
-              </span>
-            </button>
-          ) : (
-            <button
-              key={item.view}
-              onClick={(e) => {
-                if (item.promotable && (e.ctrlKey || e.metaKey)) {
-                  onOpenTab?.(item.view as TabType);
-                  return;
-                }
-                onRailClick(item.view);
-              }}
-              onAuxClick={(e) => {
-                if (e.button !== 1 || !item.promotable) return;
-                e.preventDefault();
-                onOpenTab?.(item.view as TabType);
-              }}
-              onContextMenu={() => {
-                if (item.promotable || item.rightDockable)
-                  setMenuTarget({
-                    view: item.view,
-                    title: item.title,
-                    promotable: item.promotable,
-                    rightDockable: item.rightDockable,
-                  });
-              }}
-              data-rail-promotable={
-                item.promotable || item.rightDockable ? "" : undefined
-              }
-              title={
-                item.promotable
-                  ? `${item.title}\n${t("nav.openAsTabHint")}`
-                  : item.title
-              }
+              onClick={() => setPicking((v) => !v)}
+              title={t("settings.pinnedTitle")}
               style={btnStyle}
               className={`${btnBase} ${
-                sidebarOpen && railView === item.view
+                picking
                   ? "text-accent-brand bg-accent-brand/10"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
               }`}
@@ -362,27 +391,45 @@ export function AppRail({
                 className="shrink-0 flex items-center justify-center"
                 style={{ width: 16, height: 16 }}
               >
-                {item.icon}
+                <Plus size={16} />
               </span>
               <span
                 className={`text-xs font-medium whitespace-nowrap overflow-hidden transition-[opacity,width] duration-150 ${
                   railExpanded ? "opacity-100 delay-75" : "opacity-0 w-0"
                 }`}
               >
-                {item.title}
+                {t("common.more")}
               </span>
-              {item.dot && (
-                <span className="absolute top-0.5 right-0.5 size-1.5 rounded-full bg-accent-brand" />
-              )}
             </button>
-          ),
+            {picking &&
+              railExpanded &&
+              pickable.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={`pick-${item.id}`}
+                    onClick={() => setPinnedIds(togglePinned(item.id))}
+                    style={btnStyle}
+                    className={`${btnBase} text-muted-foreground/70 hover:text-foreground hover:bg-muted/60`}
+                  >
+                    <span
+                      className="shrink-0 flex items-center justify-center"
+                      style={{ width: 16, height: 16 }}
+                    >
+                      <Icon size={16} />
+                    </span>
+                    <span className="text-xs font-medium whitespace-nowrap overflow-hidden">
+                      {t(item.labelKey)}
+                    </span>
+                    <Plus size={12} className="ml-auto shrink-0 opacity-60" />
+                  </button>
+                );
+              })}
+          </>
         )}
       </div>
 
       <div className="shrink-0 flex flex-col gap-1 border-t border-border pt-1 pb-1">
-        {/* Plugins opens a full-screen surface rather than a sidebar panel:
-            installing one changes the shape of the app, so it is a place you
-            go and come back from. */}
         <button
           onClick={onOpenPlugins}
           title={t("nav.plugins")}
@@ -401,85 +448,59 @@ export function AppRail({
             {t("nav.plugins")}
           </span>
         </button>
-        {[
-          {
-            view: "alerts" as RailView,
-            icon: <Bell size={16} />,
-            title: t("nav.alerts"),
-            promotable: true,
-          },
-          {
-            view: "user-profile" as RailView,
-            icon: <User size={16} />,
-            title: t("nav.userProfile"),
-          },
-          ...(isAdmin
-            ? [
-                {
-                  view: "admin-settings" as RailView,
-                  icon: <Settings size={16} />,
-                  title: t("nav.admin"),
-                },
-              ]
-            : []),
-        ].map((item) => (
-          <button
-            key={item.view}
-            onClick={(e) => {
-              if (item.promotable && (e.ctrlKey || e.metaKey)) {
-                onOpenTab?.(item.view as TabType);
-                return;
-              }
-              onRailClick(item.view);
-            }}
-            onAuxClick={(e) => {
-              if (e.button !== 1 || !item.promotable) return;
-              e.preventDefault();
-              onOpenTab?.(item.view as TabType);
-            }}
-            onContextMenu={() => {
-              if (item.promotable)
-                setMenuTarget({
-                  view: item.view,
-                  title: item.title,
-                  promotable: item.promotable,
-                  rightDockable: true,
-                });
-            }}
-            data-rail-promotable={item.promotable ? "" : undefined}
-            title={
-              item.promotable
-                ? `${item.title}\n${t("nav.openAsTabHint")}`
-                : item.title
+
+        <button
+          onClick={(e) => {
+            if (e.ctrlKey || e.metaKey) {
+              onOpenTab?.("alerts" as TabType);
+              return;
             }
-            style={btnStyle}
-            className={`${btnBase} ${
-              sidebarOpen && railView === item.view
-                ? "text-accent-brand bg-accent-brand/10"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
-            }`}
+            onRailClick("alerts");
+          }}
+          onAuxClick={(e) => {
+            if (e.button !== 1) return;
+            e.preventDefault();
+            onOpenTab?.("alerts" as TabType);
+          }}
+          onContextMenu={() =>
+            setMenuTarget({
+              view: "alerts",
+              title: t("nav.alerts"),
+              promotable: true,
+              rightDockable: true,
+            })
+          }
+          data-rail-promotable=""
+          title={t("nav.alerts")}
+          style={btnStyle}
+          className={`${btnBase} ${
+            sidebarOpen && railView === "alerts"
+              ? "text-accent-brand bg-accent-brand/10"
+              : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+          }`}
+        >
+          <span
+            className="relative shrink-0 flex items-center justify-center"
+            style={{ width: 16, height: 16 }}
           >
-            <span
-              className="relative shrink-0 flex items-center justify-center"
-              style={{ width: 16, height: 16 }}
-            >
-              {item.icon}
-              {item.view === "alerts" && unreadAlerts > 0 && (
-                <span className="absolute -top-1 -right-1 flex size-3 items-center justify-center rounded-full bg-destructive text-[8px] font-bold text-white leading-none">
-                  {unreadAlerts > 9 ? "9+" : unreadAlerts}
-                </span>
-              )}
-            </span>
-            <span
-              className={`text-xs font-medium whitespace-nowrap overflow-hidden transition-[opacity,width] duration-150 ${railExpanded ? "opacity-100 delay-75" : "opacity-0 w-0"}`}
-            >
-              {item.title}
-            </span>
-          </button>
-        ))}
+            <Bell size={16} />
+            {unreadAlerts > 0 && (
+              <span className="absolute -top-1 -right-1 flex size-3 items-center justify-center rounded-full bg-destructive text-[8px] font-bold text-white leading-none">
+                {unreadAlerts > 9 ? "9+" : unreadAlerts}
+              </span>
+            )}
+          </span>
+          <span
+            className={`text-xs font-medium whitespace-nowrap overflow-hidden transition-[opacity,width] duration-150 ${railExpanded ? "opacity-100 delay-75" : "opacity-0 w-0"}`}
+          >
+            {t("nav.alerts")}
+          </span>
+        </button>
+
         <div className="mx-2 my-1 border-t border-border" />
         <button
           onClick={onLogout}
+          title={t("common.logout")}
           style={btnStyle}
           className={`${btnBase} text-muted-foreground hover:text-foreground hover:bg-muted/60`}
         >
@@ -497,8 +518,12 @@ export function AppRail({
         </button>
       </div>
 
+      {/* The account button is the way into settings. Profile and admin are
+          sections in there now, not rail destinations. */}
       <div className="shrink-0 border-t border-border">
         <button
+          onClick={onOpenSettings}
+          title={t("settings.openSettings")}
           className={`${btnBase} w-full h-10 text-muted-foreground hover:text-foreground hover:bg-muted/60`}
           style={{ padding: "0 8px" }}
         >
@@ -559,11 +584,23 @@ export function AppRail({
                   {t("nav.openInRightDock")}
                 </button>
               )}
+              <button
+                onClick={() => {
+                  setPinnedIds(togglePinned(menuTarget.view));
+                  setMenuPos(null);
+                }}
+                className="flex items-center gap-2 w-full px-3 py-1.5 text-xs text-left hover:bg-accent hover:text-accent-foreground"
+              >
+                <span className="shrink-0 w-3 flex items-center justify-center">
+                  <Plus className="size-3" />
+                </span>
+                {t("nav.unpinFromRail")}
+              </button>
               <div className="h-px bg-border my-1" />
             </>
           )}
           <button
-            onClick={togglePinned}
+            onClick={togglePinned2}
             className="flex items-center gap-2 w-full px-3 py-1.5 text-xs text-left hover:bg-accent hover:text-accent-foreground"
             role="menuitemcheckbox"
             aria-checked={pinned}
@@ -587,7 +624,7 @@ export function AppRail({
           <div className="h-px bg-border my-1" />
           <button
             onClick={() => {
-              onRailClick("user-profile");
+              onOpenSettings();
               setMenuPos(null);
             }}
             className="flex items-center gap-2 w-full px-3 py-1.5 text-xs text-left hover:bg-accent hover:text-accent-foreground"
@@ -595,10 +632,43 @@ export function AppRail({
             <span className="shrink-0 w-3 flex items-center justify-center">
               <SlidersHorizontal className="size-3" />
             </span>
-            {t("nav.sidebarSettings")}
+            {t("settings.openSettings")}
           </button>
         </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * The group name rides on the divider that separates the bands.
+ *
+ * It used to be its own row, rendered only when expanded, which pushed every
+ * item below it down on hover so whatever you were reaching for moved out from
+ * under the pointer. Reserving that row instead fixed the jump but left an
+ * empty gap in the collapsed rail. The divider exists in both states, so
+ * putting the label on it costs no height either way: collapsed it is a short
+ * rule, expanded the rule shortens and the name fades in beside it.
+ */
+function GroupDivider({
+  group,
+  expanded,
+}: {
+  group: RailGroup;
+  expanded: boolean;
+}) {
+  const { t } = useTranslation();
+  return (
+    <div className="my-0.5 flex h-3 shrink-0 items-center gap-1.5 px-2.5">
+      <span
+        aria-hidden={!expanded}
+        className={`shrink-0 overflow-hidden text-[10px] font-semibold uppercase leading-none tracking-widest whitespace-nowrap text-muted-foreground/60 transition-[opacity,max-width] duration-200 ${
+          expanded ? "max-w-32 opacity-100 delay-75" : "max-w-0 opacity-0"
+        }`}
+      >
+        {t(`nav.group.${group}`)}
+      </span>
+      <div className="h-px min-w-3 flex-1 bg-border" />
     </div>
   );
 }
