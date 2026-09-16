@@ -124,6 +124,14 @@ export interface DemoPlugin {
    * render. Only present where the demo actually wires the contribution up.
    */
   contributions?: {
+    /** Rail and palette destinations, withdrawn with the plugin. */
+    navItems?: {
+      id: string;
+      label: string;
+      /** Lucide icon name, resolved by the UI so fixtures stay plain data. */
+      icon: string;
+      group: "objects" | "tools" | "system";
+    }[];
     dashboardCards?: {
       id: string;
       label: string;
@@ -131,6 +139,31 @@ export interface DemoPlugin {
       icon: string;
       kind: "containers" | "guests" | "metrics";
     }[];
+    /**
+     * A settings page of its own, listed under Plugins in the settings screen.
+     *
+     * The plugin declares its fields and Termix draws them, so every plugin's
+     * settings look like the rest of the app and none of them ship their own
+     * form styling. The page disappears when the plugin is uninstalled.
+     */
+    settings?: {
+      /** Lucide icon name for the settings nav entry. */
+      icon?: string;
+      groups: {
+        title: string;
+        fields: {
+          key: string;
+          label: string;
+          description?: string;
+          type: "switch" | "text" | "select" | "action";
+          /** Starting value: boolean for switch, string otherwise. */
+          value?: string | boolean;
+          /** Options for a select, or the button label for an action. */
+          options?: string[];
+          placeholder?: string;
+        }[];
+      }[];
+    };
   };
   /** Install count, formatted for display. */
   downloads: string;
@@ -206,7 +239,60 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
       "storage:own",
       "ui:surface",
     ],
-    contributes: ["Files tab", "Host setting"],
+    contributes: ["Files tab", "Host setting", "Settings panel"],
+    contributions: {
+      settings: {
+        icon: "FolderTree",
+        groups: [
+          {
+            title: "Browsing",
+            fields: [
+              {
+                key: "showHidden",
+                label: "Show hidden files",
+                description: "Files and folders whose name starts with a dot.",
+                type: "switch",
+                value: false,
+              },
+              {
+                key: "defaultView",
+                label: "Default view",
+                type: "select",
+                value: "Grid",
+                options: ["Grid", "List"],
+              },
+              {
+                key: "defaultPath",
+                label: "Open at",
+                description:
+                  "Where a new Files tab starts, unless the host says otherwise.",
+                type: "text",
+                value: "~",
+                placeholder: "~",
+              },
+            ],
+          },
+          {
+            title: "Transfers",
+            fields: [
+              {
+                key: "confirmOverwrite",
+                label: "Ask before overwriting",
+                type: "switch",
+                value: true,
+              },
+              {
+                key: "preserveTimes",
+                label: "Keep modified times",
+                description: "Copy timestamps along with the file.",
+                type: "switch",
+                value: true,
+              },
+            ],
+          },
+        ],
+      },
+    },
     downloads: "128k",
     cpu: "0.2%",
     ram: "34 MB",
@@ -289,6 +375,11 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
       "ui:surface",
     ],
     contributes: ["Snippets panel", "Palette entries"],
+    contributions: {
+      navItems: [
+        { id: "snippets", label: "Snippets", icon: "Play", group: "tools" },
+      ],
+    },
     downloads: "96k",
     cpu: "0.1%",
     ram: "18 MB",
@@ -297,7 +388,8 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
       {
         version: "1.1.0",
         publishedAt: "2026-09-11",
-        notes: "Folders can be nested. Run a snippet on a fleet from the palette.",
+        notes:
+          "Folders can be nested. Run a snippet on a fleet from the palette.",
       },
       {
         version: "1.0.0",
@@ -320,7 +412,12 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
     source: "official",
     registry: "termix-official",
     version: "1.0.0",
-    capabilities: ["hosts:read", "credentials:use", "storage:own", "ui:surface"],
+    capabilities: [
+      "hosts:read",
+      "credentials:use",
+      "storage:own",
+      "ui:surface",
+    ],
     contributes: ["Tunnels tab", "Host setting"],
     downloads: "88k",
     cpu: "0.3%",
@@ -350,6 +447,16 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
     version: "1.0.0",
     capabilities: ["hosts:read", "events:read", "storage:own", "ui:surface"],
     contributes: ["Session logs panel"],
+    contributions: {
+      navItems: [
+        {
+          id: "session-logs",
+          label: "Session Logs",
+          icon: "ScrollText",
+          group: "tools",
+        },
+      ],
+    },
     downloads: "54k",
     cpu: "0.1%",
     ram: "21 MB",
@@ -389,8 +496,59 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
       "storage:own",
       "ui:surface",
     ],
-    contributes: ["Docker tab", "Dashboard card", "Host setting"],
+    contributes: [
+      "Docker tab",
+      "Dashboard card",
+      "Host setting",
+      "Settings panel",
+    ],
     contributions: {
+      settings: {
+        icon: "Box",
+        groups: [
+          {
+            title: "Connection",
+            fields: [
+              {
+                key: "runtime",
+                label: "Runtime",
+                type: "select",
+                value: "Docker",
+                options: ["Docker", "Podman"],
+              },
+              {
+                key: "socket",
+                label: "Socket path",
+                type: "text",
+                value: "/var/run/docker.sock",
+                placeholder: "/var/run/docker.sock",
+              },
+            ],
+          },
+          {
+            title: "Display",
+            fields: [
+              {
+                key: "showStopped",
+                label: "Show stopped containers",
+                type: "switch",
+                value: true,
+              },
+              {
+                key: "refresh",
+                label: "Refresh stats",
+                type: "select",
+                value: "Every 5 seconds",
+                options: [
+                  "Every 2 seconds",
+                  "Every 5 seconds",
+                  "Every 30 seconds",
+                ],
+              },
+            ],
+          },
+        ],
+      },
       dashboardCards: [
         {
           id: "docker.containers",
@@ -526,6 +684,11 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
     version: "1.0.0",
     capabilities: ["hosts:read", "events:read", "storage:own", "ui:surface"],
     contributes: ["History panel"],
+    contributions: {
+      navItems: [
+        { id: "history", label: "History", icon: "Clock", group: "tools" },
+      ],
+    },
     downloads: "44k",
     cpu: "0.1%",
     ram: "16 MB",
@@ -631,7 +794,12 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
     source: "official",
     registry: "termix-official",
     version: "1.0.0",
-    capabilities: ["hosts:read", "credentials:use", "storage:own", "ui:surface"],
+    capabilities: [
+      "hosts:read",
+      "credentials:use",
+      "storage:own",
+      "ui:surface",
+    ],
     contributes: ["RDP tab", "VNC tab", "Telnet tab", "3 host settings"],
     downloads: "73k",
     cpu: "2.3%",
@@ -670,6 +838,67 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
       "ui:surface",
     ],
     contributes: ["Assistant panel", "Settings panel"],
+    contributions: {
+      settings: {
+        icon: "Sparkles",
+        groups: [
+          {
+            title: "Provider",
+            fields: [
+              {
+                key: "provider",
+                label: "Model provider",
+                description: "Where prompts are sent.",
+                type: "select",
+                value: "Ollama (self-hosted)",
+                options: [
+                  "Ollama (self-hosted)",
+                  "Anthropic",
+                  "OpenAI",
+                  "Google Gemini",
+                ],
+              },
+              {
+                key: "endpoint",
+                label: "Endpoint",
+                description: "Only hosts your admin has allowed.",
+                type: "text",
+                value: "http://localhost:11434",
+                placeholder: "http://localhost:11434",
+              },
+              {
+                key: "apiKey",
+                label: "API key",
+                description:
+                  "Stored encrypted. The plugin never holds the key.",
+                type: "action",
+                options: ["Set key"],
+              },
+            ],
+          },
+          {
+            title: "Behaviour",
+            fields: [
+              {
+                key: "readOnly",
+                label: "Allow read-only diagnostic commands",
+                description:
+                  "Safe commands like df and uptime run without asking. Anything that changes a server is always proposed first.",
+                type: "switch",
+                value: false,
+              },
+              {
+                key: "autoContext",
+                label: "Send host details with each question",
+                description: "Name, address and tags. Never credentials.",
+                type: "switch",
+                value: true,
+              },
+            ],
+          },
+        ],
+      },
+    },
     downloads: "29k",
     cpu: "0.6%",
     ram: "55 MB",
@@ -698,6 +927,11 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
     version: "1.0.0",
     capabilities: ["storage:own", "ui:surface"],
     contributes: ["Serial panel", "Serial tab"],
+    contributions: {
+      navItems: [
+        { id: "serial", label: "Serial", icon: "Usb", group: "tools" },
+      ],
+    },
     downloads: "12k",
     cpu: "0.2%",
     ram: "19 MB",
@@ -762,12 +996,69 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
       "ui:surface",
     ],
     contributes: ["Vault profiles", "Settings panel"],
+    contributions: {
+      settings: {
+        icon: "KeyRound",
+        groups: [
+          {
+            title: "Connection",
+            fields: [
+              {
+                key: "address",
+                label: "Vault address",
+                type: "text",
+                value: "https://vault.internal:8200",
+                placeholder: "https://vault.example.com:8200",
+              },
+              {
+                key: "mount",
+                label: "SSH mount path",
+                type: "text",
+                value: "ssh-client-signer",
+              },
+              {
+                key: "authMethod",
+                label: "Auth method",
+                type: "select",
+                value: "OIDC",
+                options: ["OIDC", "AppRole", "Token"],
+              },
+            ],
+          },
+          {
+            title: "Certificates",
+            fields: [
+              {
+                key: "ttl",
+                label: "Certificate lifetime",
+                description: "How long a signed certificate stays valid.",
+                type: "select",
+                value: "8h",
+                options: ["1h", "8h", "24h"],
+              },
+              {
+                key: "renew",
+                label: "Renew before expiry",
+                description:
+                  "Sign a fresh certificate when one is close to expiring.",
+                type: "switch",
+                value: true,
+              },
+            ],
+          },
+        ],
+      },
+    },
     downloads: "17k",
     cpu: "0.2%",
     ram: "23 MB",
     repository: "github.com/Termix-SSH/Vault",
     history: [
-      { version: "1.0.0", publishedAt: "2026-09-03", notes: "Namespace support." },
+      {
+        version: "1.0.0",
+        publishedAt: "2026-09-03",
+        notes: "Namespace support.",
+      },
     ],
     installed: false,
     state: "disabled",
@@ -797,7 +1088,11 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
     ram: "42 MB",
     repository: "github.com/Termix-SSH/Collab",
     history: [
-      { version: "1.0.0", publishedAt: "2026-08-25", notes: "Read-only guests." },
+      {
+        version: "1.0.0",
+        publishedAt: "2026-08-25",
+        notes: "Read-only guests.",
+      },
     ],
     installed: false,
     state: "disabled",
@@ -923,6 +1218,63 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
       "ui:surface",
     ],
     contributes: ["Settings panel"],
+    contributions: {
+      settings: {
+        icon: "Network",
+        groups: [
+          {
+            title: "Source",
+            fields: [
+              {
+                key: "url",
+                label: "NetBox URL",
+                type: "text",
+                value: "https://netbox.internal",
+                placeholder: "https://netbox.example.com",
+              },
+              {
+                key: "token",
+                label: "API token",
+                description: "Read-only is enough.",
+                type: "action",
+                options: ["Set token"],
+              },
+            ],
+          },
+          {
+            title: "Sync",
+            fields: [
+              {
+                key: "interval",
+                label: "Check for changes",
+                type: "select",
+                value: "Every hour",
+                options: [
+                  "Every 15 minutes",
+                  "Every hour",
+                  "Daily",
+                  "Manually",
+                ],
+              },
+              {
+                key: "createHosts",
+                label: "Create hosts for new devices",
+                description: "New devices in NetBox appear as hosts here.",
+                type: "switch",
+                value: true,
+              },
+              {
+                key: "markMissing",
+                label: "Mark removed devices offline",
+                description: "Hosts are never deleted automatically.",
+                type: "switch",
+                value: true,
+              },
+            ],
+          },
+        ],
+      },
+    },
     downloads: "1.9k",
     cpu: "0.4%",
     ram: "33 MB",

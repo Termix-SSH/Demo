@@ -60,7 +60,9 @@ import {
 
 type Section = "installed" | "browse" | "updates";
 
-export function PluginsScreen() {
+/** `chrome={false}` nests this inside the settings surface, which draws its
+ * own header, so the screen does not repeat the title row. */
+export function PluginsScreen({ chrome = true }: { chrome?: boolean } = {}) {
   const [plugins, setPlugins] = useState(getPlugins);
   const [registries, setRegistries] = useState(getRegistries);
   const [section, setSection] = useState<Section>("installed");
@@ -126,28 +128,30 @@ export function PluginsScreen() {
       {/* The app's header idiom: h-12.5, vertical separators, w-12.5 icon
           buttons that fill the row. The section nav sits on its own row below
           so TabStrip's underline lands on a real border. */}
-      <header className="flex h-12.5 shrink-0 flex-row items-center border-b border-border">
-        {detail && (
-          <>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-full w-12.5 rounded-none text-muted-foreground hover:text-foreground"
-              onClick={() => setDetailId(null)}
-              title="Back"
-            >
-              <ArrowLeft className="size-3.5" />
-            </Button>
-            <Separator orientation="vertical" />
-          </>
-        )}
-        <div className="flex flex-1 items-center gap-2 px-3">
-          <Puzzle className="size-4 shrink-0 text-accent-brand" />
-          <span className="truncate text-base font-bold tracking-tight">
-            {detail ? detail.name : "Plugins"}
-          </span>
-        </div>
-      </header>
+      {chrome && (
+        <header className="flex h-12.5 shrink-0 flex-row items-center border-b border-border">
+          {detail && (
+            <>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-full w-12.5 rounded-none text-muted-foreground hover:text-foreground"
+                onClick={() => setDetailId(null)}
+                title="Back"
+              >
+                <ArrowLeft className="size-3.5" />
+              </Button>
+              <Separator orientation="vertical" />
+            </>
+          )}
+          <div className="flex flex-1 items-center gap-2 px-3">
+            <Puzzle className="size-4 shrink-0 text-accent-brand" />
+            <span className="truncate text-base font-bold tracking-tight">
+              {detail ? detail.name : "Plugins"}
+            </span>
+          </div>
+        </header>
+      )}
 
       {!detail && (
         <div className="shrink-0 border-b border-border">
@@ -156,6 +160,22 @@ export function PluginsScreen() {
             activeTab={section}
             onTabChange={(id) => setSection(id as Section)}
           />
+        </div>
+      )}
+
+      {/* Without the header there is no back button, so the nested copy grows
+          its own row rather than trapping you in the detail view. */}
+      {detail && !chrome && (
+        <div className="flex h-9 shrink-0 items-center gap-2 border-b border-border px-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-7 gap-1.5 px-2 text-muted-foreground hover:text-foreground"
+            onClick={() => setDetailId(null)}
+          >
+            <ArrowLeft className="size-3.5" />
+            {detail.name}
+          </Button>
         </div>
       )}
 
@@ -227,7 +247,6 @@ function matchesSource(plugin: DemoPlugin, filter: SourceFilter): boolean {
   return plugin.source !== "official";
 }
 
-
 function sourceCounts(plugins: DemoPlugin[]): Record<SourceFilter, number> {
   return {
     all: plugins.length,
@@ -251,7 +270,12 @@ function downloadCount(value: string): number {
 }
 
 function latestPublished(plugin: DemoPlugin): string {
-  return plugin.history.map((h) => h.publishedAt).sort().at(-1) ?? "";
+  return (
+    plugin.history
+      .map((h) => h.publishedAt)
+      .sort()
+      .at(-1) ?? ""
+  );
 }
 
 function sortPlugins(plugins: DemoPlugin[], key: SortKey): DemoPlugin[] {
@@ -259,7 +283,9 @@ function sortPlugins(plugins: DemoPlugin[], key: SortKey): DemoPlugin[] {
   if (key === "name") {
     sorted.sort((a, b) => a.name.localeCompare(b.name));
   } else if (key === "downloads") {
-    sorted.sort((a, b) => downloadCount(b.downloads) - downloadCount(a.downloads));
+    sorted.sort(
+      (a, b) => downloadCount(b.downloads) - downloadCount(a.downloads),
+    );
   } else {
     sorted.sort((a, b) => latestPublished(b).localeCompare(latestPublished(a)));
   }
@@ -521,13 +547,7 @@ function InstalledCard({
   );
 }
 
-function Usage({
-  icon: Icon,
-  value,
-}: {
-  icon: LucideIcon;
-  value: string;
-}) {
+function Usage({ icon: Icon, value }: { icon: LucideIcon; value: string }) {
   return (
     <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
       <Icon className="size-3 shrink-0 opacity-60" />
@@ -616,42 +636,44 @@ function BrowseSection({
       </Toolbar>
 
       {sourcesOpen && (
-      <Card className="overflow-hidden py-0 gap-0">
-        <div className="flex items-center gap-2 border-b border-border px-3 py-2">
-          <Globe className="size-3.5 text-muted-foreground" />
-          <span className="flex-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-            Sources
-          </span>
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            title="Hide sources"
-            onClick={() => setSourcesOpen(false)}
-          >
-            <X className="size-3" />
-          </Button>
-        </div>
-        <div className="divide-y divide-border">
-          {registries.map((r) => (
-            <div key={r.id} className="flex items-center gap-3 px-3 py-2">
-              <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-                <div className="flex items-center gap-1.5">
-                  <span className="truncate text-xs font-medium">{r.name}</span>
+        <Card className="overflow-hidden py-0 gap-0">
+          <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+            <Globe className="size-3.5 text-muted-foreground" />
+            <span className="flex-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+              Sources
+            </span>
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              title="Hide sources"
+              onClick={() => setSourcesOpen(false)}
+            >
+              <X className="size-3" />
+            </Button>
+          </div>
+          <div className="divide-y divide-border">
+            {registries.map((r) => (
+              <div key={r.id} className="flex items-center gap-3 px-3 py-2">
+                <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                  <div className="flex items-center gap-1.5">
+                    <span className="truncate text-xs font-medium">
+                      {r.name}
+                    </span>
+                  </div>
+                  <Facts className="text-[10px] text-muted-foreground">
+                    <span className="truncate">{r.url}</span>
+                    <span className="shrink-0">{r.pluginCount} plugins</span>
+                    <span className="shrink-0">checked {r.lastChecked}</span>
+                  </Facts>
                 </div>
-                <Facts className="text-[10px] text-muted-foreground">
-                  <span className="truncate">{r.url}</span>
-                  <span className="shrink-0">{r.pluginCount} plugins</span>
-                  <span className="shrink-0">checked {r.lastChecked}</span>
-                </Facts>
+                <FakeSwitch
+                  checked={r.enabled}
+                  onChange={(v) => onToggleRegistry(r.id, v)}
+                />
               </div>
-              <FakeSwitch
-                checked={r.enabled}
-                onChange={(v) => onToggleRegistry(r.id, v)}
-              />
-            </div>
-          ))}
-        </div>
-      </Card>
+            ))}
+          </div>
+        </Card>
       )}
 
       <div className="flex flex-wrap items-center gap-1">
@@ -874,7 +896,9 @@ function DetailView({
   );
 
   return (
-    <div className={`mx-auto flex w-full max-w-5xl flex-col ${PANEL.gap} ${PANEL.body}`}>
+    <div
+      className={`mx-auto flex w-full max-w-5xl flex-col ${PANEL.gap} ${PANEL.body}`}
+    >
       <Card className="flex-row items-start gap-4 px-4 py-4">
         <PluginIcon name={plugin.icon} size="lg" muted={!enabled} />
         <div className="flex min-w-0 flex-1 flex-col gap-1.5">
@@ -934,7 +958,10 @@ function DetailView({
                 const info = CAPABILITY_INFO[cap];
                 const severe = info.risk === "high";
                 return (
-                  <div key={cap} className="flex items-start gap-2.5 px-4 py-2.5">
+                  <div
+                    key={cap}
+                    className="flex items-start gap-2.5 px-4 py-2.5"
+                  >
                     {/* Only the severe rows are badged; a filler glyph on the
                         rest would read as a list marker. */}
                     <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center">
@@ -964,7 +991,10 @@ function DetailView({
           <SectionCard title="Version history" icon={null}>
             <div className="divide-y divide-border">
               {plugin.history.map((h) => (
-                <div key={h.version} className="flex flex-col gap-0.5 px-4 py-2.5">
+                <div
+                  key={h.version}
+                  className="flex flex-col gap-0.5 px-4 py-2.5"
+                >
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-semibold">{h.version}</span>
                     {h.version === plugin.version && plugin.installed && (
@@ -1056,4 +1086,3 @@ function DetailView({
     </div>
   );
 }
-
