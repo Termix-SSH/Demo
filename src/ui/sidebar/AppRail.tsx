@@ -159,20 +159,16 @@ export function AppRail({
     () => new Map(navItems.filter((n) => n.pluginId).map((n) => [n.id, n])),
     [navItems],
   );
-  const pluginBacked = useMemo(
-    () => new Set(["snippets", "session-logs", "history", "serial"]),
-    [],
-  );
-
+  // Every destination past hosts and credentials now comes from a plugin, so
+  // an uninstalled one is simply absent from visibleRailDestinations rather
+  // than needing to be named here. What is left is the pair of destinations a
+  // plugin can contribute while the surrounding app still cannot use them.
   const unavailable = useMemo(() => {
     const out = new Set<string>();
     if (!isRemoteSyncConnected) out.add("termix-id");
     if (!aiEnabled) out.add("ai");
-    for (const id of pluginBacked) {
-      if (!pluginOwned.has(id)) out.add(id);
-    }
     return out;
-  }, [isRemoteSyncConnected, aiEnabled, pluginBacked, pluginOwned]);
+  }, [isRemoteSyncConnected, aiEnabled]);
 
   const railExpanded = pinned || (expandOnHover && hovered) || managing;
 
@@ -186,7 +182,8 @@ export function AppRail({
       group,
       items: items.filter((item) => (item.group ?? "tools") === group),
     })).filter((band) => band.items.length > 0);
-  }, [hiddenIds, unavailable, presetHidden]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- visibleRailDestinations/visibleRailItems read the nav registry, which navItems tracks
+  }, [hiddenIds, unavailable, presetHidden, navItems]);
 
   // Only things the user chose to hide. A destination the preset hides, or one
   // whose plugin is gone, is not theirs to bring back here.
@@ -198,7 +195,8 @@ export function AppRail({
           !unavailable.has(item.id) &&
           !presetHidden.has(item.id),
       ),
-    [hiddenIds, unavailable, presetHidden],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- visibleRailDestinations/visibleRailItems read the nav registry, which navItems tracks
+    [hiddenIds, unavailable, presetHidden, navItems],
   );
 
   const togglePinned2 = () => {

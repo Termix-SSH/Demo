@@ -1,55 +1,88 @@
 /* eslint-disable react-refresh/only-export-components */
 import {
   Activity,
-  Boxes,
-  Braces,
-  Clock,
-  Fingerprint,
-  Hammer,
-  LayoutPanelLeft,
-  LayoutTemplate,
-  MessagesSquare,
-  Monitor,
-  MousePointerClick,
-  Network,
-  Play,
-  Plug,
-  ScrollText,
+  Puzzle,
   Server,
-  Settings,
-  Sparkles,
-  Usb,
-  User,
-  Workflow,
-  Zap,
+  type LucideIcon,
 } from "lucide-react";
-import type { Host, Tab, TabType } from "@/types/ui-types";
+import type { Host, SplitMode, Tab, TabType } from "@/types/ui-types";
+import { Button } from "@/components/button";
+import { EmptyState } from "@/components/empty-state";
 import { DemoTerminal } from "@/demo/DemoTerminal";
 import { DemoFileManager } from "@/demo/file-manager/DemoFileManager";
 import { DemoDashboard } from "@/demo/DemoDashboard";
 import { DemoHostMetrics } from "@/demo/DemoHostMetrics";
 import { DemoTunnels } from "@/demo/DemoTunnels";
-import { DemoPanel } from "@/demo/DemoPanel";
 import { DemoDocker } from "@/demo/panels/DemoDocker";
 import { DemoProxmox } from "@/demo/panels/DemoProxmox";
 import { DemoTmuxMonitor } from "@/demo/panels/DemoTmuxMonitor";
+import { DemoSnippets } from "@/demo/panels/DemoSnippets";
+import { DemoHistory } from "@/demo/panels/DemoHistory";
+import { DemoSessionLogs } from "@/demo/panels/DemoSessionLogs";
+import { DemoAlerts } from "@/demo/panels/DemoAlerts";
+import { DemoSshTools } from "@/demo/panels/DemoSshTools";
+import { DemoConnections } from "@/demo/panels/DemoConnections";
+import { DemoQuickConnect } from "@/demo/panels/DemoQuickConnect";
+import { DemoMacros } from "@/demo/panels/DemoMacros";
+import { DemoFleets } from "@/demo/panels/DemoFleets";
+import { DemoWorkspaces } from "@/demo/panels/DemoWorkspaces";
+import { DemoTermixId } from "@/demo/panels/DemoTermixId";
+import { DemoAutomations } from "@/demo/panels/DemoAutomations";
+import { DemoSplitScreen } from "@/demo/panels/DemoSplitScreen";
 import { PluginsScreen } from "@/demo/plugins/PluginsScreen";
 import { SettingsScreen } from "@/demo/settings/SettingsScreen";
 import { HostWorkbench } from "@/demo/hosts/HostWorkbench";
-import { PanelShell } from "@/components/panel-layout";
 import { DemoConnectionGate } from "@/demo/DemoConnectionGate";
+import { viewOwnership } from "@/demo/plugins/plugin-views";
+
+/**
+ * The tab router.
+ *
+ * Every view is asked who owns it before it is drawn. A view whose plugin has
+ * been uninstalled does not fall back to a placeholder that looks like the
+ * feature is merely empty -- it says the plugin is gone and offers the store,
+ * because "uninstalling withdraws the UI" is the thing this demo exists to
+ * show. A view whose plugin is installed but stopped says that instead, which
+ * is a different problem with a different fix.
+ */
+
+/** Live split state, passed through rather than read from a fixture. */
+export interface SplitContext {
+  splitMode?: SplitMode;
+  onSplitMode?: (mode: SplitMode) => void;
+  paneTabIds?: (string | null)[];
+  onAssignPane?: (pane: number, tabId: string) => void;
+  onClearPane?: (tabId: string) => void;
+  tabs?: Tab[];
+}
 
 export function renderDemoTabContent(
   tab: Tab,
   ctx?: {
     hosts?: Host[];
+    tabs?: Tab[];
     onOpenTab?: (host: Host, type: TabType) => void;
     onOpenSingletonTab?: (type: TabType) => void;
+    onFocusTab?: (id: string) => void;
+    onCloseTab?: (id: string) => void;
+    split?: SplitContext;
     /** False inside the sidebar, which draws its own header and background. */
     chrome?: boolean;
   },
 ) {
   const chrome = ctx?.chrome !== false;
+  const openPlugins = () => ctx?.onOpenSingletonTab?.("plugins");
+
+  // Ownership first: a withdrawn view never reaches its component.
+  const owner = viewOwnership(tab.type);
+  if (owner.kind === "missing") {
+    return (
+      <PluginGone chrome={chrome} name={owner.name} onBrowse={openPlugins} />
+    );
+  }
+  if (owner.kind === "stopped") {
+    return <PluginStopped chrome={chrome} name={owner.name} />;
+  }
 
   // user@host:port for the connection screen and its log lines.
   const target = tab.host
@@ -145,241 +178,153 @@ export function renderDemoTabContent(
     case "settings":
       return <SettingsScreen />;
 
+    // Profile and admin were folded into the settings screen, so they open it
+    // on their own page rather than being destinations of their own.
+    case "user-profile":
+      return <SettingsScreen initialSection="account" />;
+    case "admin-settings":
+      return <SettingsScreen initialSection="admin" />;
+
     case "host-manager":
+      return <HostWorkbench onOpenPlugins={openPlugins} />;
+
+    // Panels, which render the same in a tab and in the sidebar.
+    case "snippets":
+      return <DemoSnippets chrome={chrome} />;
+    case "history":
+      return <DemoHistory chrome={chrome} />;
+    case "session-logs":
+      return <DemoSessionLogs chrome={chrome} />;
+    case "alerts":
+      return <DemoAlerts chrome={chrome} />;
+    case "macros":
+      return <DemoMacros chrome={chrome} />;
+    case "automations":
+      return <DemoAutomations chrome={chrome} />;
+    case "termix-id":
+      return <DemoTermixId chrome={chrome} />;
+    case "split-screen":
+      return <DemoSplitScreen chrome={chrome} {...ctx?.split} />;
+    case "ssh-tools":
       return (
-        <HostWorkbench
-          onOpenPlugins={() => ctx?.onOpenSingletonTab?.("plugins")}
+        <DemoSshTools
+          chrome={chrome}
+          terminalTabs={(ctx?.tabs ?? []).filter((t) => t.type === "terminal")}
         />
       );
 
-    case "rdp":
-      return (
-        <Placeholder
-          chrome={chrome}
-          icon={Monitor}
-          title="Remote desktop"
-          hint="A Windows desktop in a browser tab, with clipboard sharing and drive redirection. Credentials come from the host, so there is nothing extra to type."
-        />
-      );
-    case "vnc":
-      return (
-        <Placeholder
-          chrome={chrome}
-          icon={MousePointerClick}
-          title="VNC"
-          hint="Any VNC desktop in a browser tab, including the console of a machine that has not finished booting."
-        />
-      );
-    case "telnet":
-      return (
-        <Placeholder
-          chrome={chrome}
-          icon={MessagesSquare}
-          title="Telnet"
-          hint="For switches, PDUs and older gear that never learned SSH. Sessions are logged the same way, so the audit trail does not have a hole in it."
-        />
-      );
-    case "serial":
-      return (
-        <Placeholder
-          chrome={chrome}
-          icon={Usb}
-          title="Serial console"
-          hint="A console over a USB or serial adapter, for a machine with no network yet. Pick the port and baud rate and it behaves like any other terminal."
-        />
-      );
-    case "network_graph":
-      return (
-        <Placeholder
-          chrome={chrome}
-          icon={Network}
-          title="Network graph"
-          hint="A map of every host and the jump chains between them, so you can see what a bastion is fronting and what breaks if it goes down."
-        />
-      );
-    // A blank canvas, which is what a start page looks like before you put
-    // anything on it. No empty-state copy: the toolbar is the affordance.
+    // A start page is a blank canvas until you put something on it, so the
+    // empty state here is the absence of one.
     case "homepage":
       return (
         <div className={`h-full w-full ${chrome ? "bg-background" : ""}`} />
       );
-    case "fleet-inventory":
-      return (
-        <Placeholder
-          chrome={chrome}
-          icon={Boxes}
-          title="Fleet inventory"
-          hint="Kernel, package versions, disk layout and uptime for every host in a fleet, in one table you can sort and compare."
-        />
-      );
 
-    case "snippets":
-      return (
-        <PanelFrame chrome={chrome} title="Snippets">
-          <DemoPanel
-            icon={Play}
-            emptyTitle="No snippets"
-            emptyHint="Save a command once and run it on any host from here."
-          />
-        </PanelFrame>
-      );
-    case "history":
-      return (
-        <PanelFrame chrome={chrome} title="History">
-          <DemoPanel
-            icon={Clock}
-            emptyTitle="No command history"
-            emptyHint="Commands you run in a terminal are listed here so you can find and rerun them."
-          />
-        </PanelFrame>
-      );
-    case "session-logs":
-      return (
-        <PanelFrame chrome={chrome} title="Session logs">
-          <DemoPanel
-            icon={ScrollText}
-            emptyTitle="No session logs"
-            emptyHint="Recorded terminal sessions are listed here to replay or download."
-          />
-        </PanelFrame>
-      );
-    case "macros":
-      return (
-        <PanelFrame chrome={chrome} title="Macros">
-          <DemoPanel
-            icon={Braces}
-            emptyTitle="No macros"
-            emptyHint="Record a run of keystrokes and replay it in any terminal."
-          />
-        </PanelFrame>
-      );
-    case "ssh-tools":
-      return (
-        <PanelFrame chrome={chrome} title="SSH tools">
-          <DemoPanel
-            icon={Hammer}
-            emptyTitle="SSH tools"
-            emptyHint="Type into several terminals at once, and set paste and copy behaviour."
-          />
-        </PanelFrame>
-      );
-    case "automations":
-      return (
-        <PanelFrame chrome={chrome} title="Automations">
-          <DemoPanel
-            icon={Workflow}
-            emptyTitle="No automations"
-            emptyHint="Run snippets on a schedule and get told how they went."
-          />
-        </PanelFrame>
-      );
+    // Installable from the store, but the demo does not build the screen. Say
+    // so rather than rendering an empty tab, which reads as broken.
+    case "rdp":
+      return <NotInDemo chrome={chrome} title="Remote desktop" />;
+    case "vnc":
+      return <NotInDemo chrome={chrome} title="VNC" />;
+    case "telnet":
+      return <NotInDemo chrome={chrome} title="Telnet" />;
+    case "serial":
+      return <NotInDemo chrome={chrome} title="Serial console" />;
+    case "network_graph":
+      return <NotInDemo chrome={chrome} title="Network graph" />;
+    case "fleet-inventory":
+      return <NotInDemo chrome={chrome} title="Fleet inventory" />;
     case "ai":
-      return (
-        <PanelFrame chrome={chrome} title="Assistant">
-          <DemoPanel
-            icon={Sparkles}
-            emptyTitle="Assistant"
-            emptyHint="Ask about a host, and review any command before it runs."
-          />
-        </PanelFrame>
-      );
-    case "alerts":
-      return (
-        <PanelFrame chrome={chrome} title="Alerts">
-          <DemoPanel
-            icon={Plug}
-            emptyTitle="No unacknowledged alerts"
-            emptyHint="Set rules on host metrics and pick where the notice goes."
-          />
-        </PanelFrame>
-      );
-    case "termix-id":
-      return (
-        <PanelFrame chrome={chrome} title="Termix ID">
-          <DemoPanel
-            icon={Fingerprint}
-            emptyTitle="Termix ID"
-            emptyHint="Publish your SSH public keys under a handle others can pull from."
-          />
-        </PanelFrame>
-      );
-    case "user-profile":
-      return (
-        <PanelFrame chrome={chrome} title="User profile">
-          <DemoPanel
-            icon={User}
-            emptyTitle="Profile settings"
-            emptyHint="Your account, two-factor, passkeys, theme and keyboard shortcuts."
-          />
-        </PanelFrame>
-      );
-    case "admin-settings":
-      return (
-        <PanelFrame chrome={chrome} title="Admin">
-          <DemoPanel
-            icon={Settings}
-            emptyTitle="Admin settings"
-            emptyHint="Users, roles, single sign-on, API keys, branding and the audit log."
-          />
-        </PanelFrame>
-      );
-    case "split-screen":
-      return (
-        <Placeholder
-          chrome={chrome}
-          icon={LayoutPanelLeft}
-          title="Split screen"
-          hint="Up to four panes in one tab, each running its own session. Drag the dividers to resize, and assign a tab to a pane from the tab bar."
-        />
-      );
+      return <NotInDemo chrome={chrome} title="Assistant" />;
 
     default:
       return null;
   }
 }
 
-// Rail destinations that only open in the sidebar, so they are not part of
-// TabType and never reach the switch above.
-function renderSidebarOnlyView(view: string) {
+/**
+ * Installed, running, and genuinely not built here.
+ *
+ * The demo ships screens for what is installed by default. A plugin you add
+ * from the store contributes its destination for real -- the rail entry and the
+ * tab both appear -- but the screen behind it is out of scope, and saying that
+ * plainly beats an empty panel.
+ */
+function NotInDemo({ chrome, title }: { chrome: boolean; title: string }) {
+  return (
+    <div
+      className={`flex h-full w-full flex-1 items-center justify-center ${chrome ? "bg-background" : ""}`}
+    >
+      <EmptyState
+        icon={Puzzle}
+        title={title}
+        hint="The plugin is installed and its destination is real. This screen is not part of the demo."
+      />
+    </div>
+  );
+}
+
+/**
+ * Rail destinations that only open in the sidebar, so they are not part of
+ * TabType and never reach the switch above.
+ */
+function renderSidebarOnlyView(
+  view: string,
+  ctx?: {
+    tabs?: Tab[];
+    onFocusTab?: (id: string) => void;
+    onCloseTab?: (id: string) => void;
+    onOpenSingletonTab?: (type: TabType) => void;
+  },
+) {
+  const owner = viewOwnership(view);
+  if (owner.kind === "missing") {
+    return (
+      <SidebarBody>
+        <PluginGone
+          chrome={false}
+          name={owner.name}
+          onBrowse={() => ctx?.onOpenSingletonTab?.("plugins")}
+        />
+      </SidebarBody>
+    );
+  }
+  if (owner.kind === "stopped") {
+    return (
+      <SidebarBody>
+        <PluginStopped chrome={false} name={owner.name} />
+      </SidebarBody>
+    );
+  }
+
   switch (view) {
     case "connections":
       return (
         <SidebarBody>
-          <DemoPanel
-            icon={Plug}
-            emptyTitle="No active connections"
-            emptyHint="Sessions you open stay listed here while they run."
+          <DemoConnections
+            chrome={false}
+            tabs={ctx?.tabs}
+            onFocusTab={ctx?.onFocusTab}
+            onCloseTab={ctx?.onCloseTab}
           />
         </SidebarBody>
       );
     case "quick-connect":
       return (
         <SidebarBody>
-          <DemoPanel
-            icon={Zap}
-            emptyTitle="Quick Connect"
-            emptyHint="Open a one-off session without saving the host first."
-          />
+          <DemoQuickConnect chrome={false} />
         </SidebarBody>
       );
     case "fleets":
       return (
         <SidebarBody>
-          <DemoPanel
-            icon={Boxes}
-            emptyTitle="No fleets"
-            emptyHint="Group hosts so a command or a file goes to all of them at once."
-          />
+          <DemoFleets chrome={false} />
         </SidebarBody>
       );
     case "workspaces":
       return (
         <SidebarBody>
-          <DemoPanel
-            icon={LayoutTemplate}
-            emptyTitle="No workspaces"
-            emptyHint="Save a set of tabs and panes, then bring it back later."
-          />
+          <DemoWorkspaces chrome={false} />
         </SidebarBody>
       );
     default:
@@ -391,11 +336,22 @@ function renderSidebarOnlyView(view: string) {
  * Renders a rail panel's body only. The sidebar draws the header and owns the
  * background, so panels must add neither.
  */
-export function renderDemoPanelBody(tab: Tab) {
-  const sidebarOnly = renderSidebarOnlyView(tab.type);
+export function renderDemoPanelBody(
+  tab: Tab,
+  ctx?: {
+    tabs?: Tab[];
+    onFocusTab?: (id: string) => void;
+    onCloseTab?: (id: string) => void;
+    onOpenSingletonTab?: (type: TabType) => void;
+    split?: SplitContext;
+  },
+) {
+  const sidebarOnly = renderSidebarOnlyView(tab.type, ctx);
   if (sidebarOnly) return sidebarOnly;
   return (
-    <SidebarBody>{renderDemoTabContent(tab, { chrome: false })}</SidebarBody>
+    <SidebarBody>
+      {renderDemoTabContent(tab, { ...ctx, chrome: false })}
+    </SidebarBody>
   );
 }
 
@@ -403,19 +359,54 @@ function SidebarBody({ children }: { children: React.ReactNode }) {
   return <div className="flex flex-col flex-1 min-h-0">{children}</div>;
 }
 
-function PanelFrame({
-  title,
+/**
+ * What is left when a plugin is removed.
+ *
+ * Deliberately not an empty state: "no snippets" and "Snippets is not
+ * installed" are different facts, and showing the first for the second is what
+ * made the old placeholders misleading.
+ */
+function PluginGone({
+  name,
   chrome,
-  children,
+  onBrowse,
 }: {
-  title: string;
+  name: string;
   chrome: boolean;
-  children: React.ReactNode;
+  onBrowse?: () => void;
 }) {
   return (
-    <PanelShell chrome={chrome} title={title} scroll={false}>
-      {children}
-    </PanelShell>
+    <div
+      className={`flex h-full w-full flex-1 items-center justify-center ${chrome ? "bg-background" : ""}`}
+    >
+      <EmptyState
+        icon={Puzzle}
+        title={`${name} is not installed`}
+        hint="This came from a plugin that has been removed. Install it again to bring the screen back."
+        action={
+          onBrowse && (
+            <Button variant="outline" size="sm" onClick={onBrowse}>
+              Browse plugins
+            </Button>
+          )
+        }
+      />
+    </div>
+  );
+}
+
+/** Installed, but its worker is not running. */
+function PluginStopped({ name, chrome }: { name: string; chrome: boolean }) {
+  return (
+    <div
+      className={`flex h-full w-full flex-1 items-center justify-center ${chrome ? "bg-background" : ""}`}
+    >
+      <EmptyState
+        icon={Puzzle}
+        title={`${name} is not running`}
+        hint="Enable the plugin to see this again."
+      />
+    </div>
   );
 }
 
@@ -425,7 +416,7 @@ function Placeholder({
   hint,
   chrome,
 }: {
-  icon?: React.ComponentProps<typeof DemoPanel>["icon"];
+  icon?: LucideIcon;
   title: string;
   hint?: string;
   chrome: boolean;
@@ -434,7 +425,7 @@ function Placeholder({
     <div
       className={`flex h-full w-full items-center justify-center ${chrome ? "bg-background" : ""}`}
     >
-      <DemoPanel icon={icon} emptyTitle={title} emptyHint={hint} />
+      <EmptyState icon={icon} title={title} hint={hint} />
     </div>
   );
 }

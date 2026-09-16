@@ -11,8 +11,8 @@ import { Button } from "@/components/button";
 import { Separator } from "@/components/separator";
 import { PANEL } from "@/components/panel-layout";
 import {
-  PROMOTABLE_IDS,
-  RIGHT_DOCKABLE_IDS,
+  promotableIds,
+  rightDockableIds,
   railItemLabel,
 } from "@/sidebar/rail-items";
 
@@ -131,7 +131,7 @@ export function DockPanel({
           {railItemLabel(view, t)}
         </span>
 
-        {onOpenAsTab && PROMOTABLE_IDS.includes(view) && (
+        {onOpenAsTab && promotableIds().includes(view) && (
           <>
             <Separator orientation="vertical" />
             <Button
@@ -149,7 +149,7 @@ export function DockPanel({
 
         {side === "left" &&
           onMoveToRightDock &&
-          RIGHT_DOCKABLE_IDS.includes(view) && (
+          rightDockableIds().includes(view) && (
             <>
               <Separator orientation="vertical" />
               <Button

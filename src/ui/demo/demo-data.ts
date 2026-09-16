@@ -1492,3 +1492,260 @@ export const DEMO_TMUX_PANE_OUTPUT: Record<string, string[]> = {
     "  Mem[||||||||     3.4G/8.0G]   Uptime: 41 days, 06:12",
   ],
 };
+
+// ─── Macros ──────────────────────────────────────────────────────────────────
+
+export interface DemoMacroStep {
+  kind: "send" | "wait" | "delay" | "if" | "repeat";
+  /** The text sent, the pattern waited for, or the count repeated. */
+  detail: string;
+}
+
+export interface DemoMacro {
+  id: number;
+  name: string;
+  description?: string;
+  steps: DemoMacroStep[];
+}
+
+export const DEMO_MACROS: DemoMacro[] = [
+  {
+    id: 1,
+    name: "Switch login",
+    description: "Gets past the console prompt on the core switches",
+    steps: [
+      { kind: "wait", detail: "Username:" },
+      { kind: "send", detail: "admin" },
+      { kind: "wait", detail: "Password:" },
+      { kind: "send", detail: "$PASSWORD" },
+      { kind: "wait", detail: "#" },
+      { kind: "send", detail: "terminal length 0" },
+    ],
+  },
+  {
+    id: 2,
+    name: "Drain and reboot",
+    description: "Waits for the queue to empty first",
+    steps: [
+      { kind: "send", detail: "systemctl stop worker" },
+      { kind: "repeat", detail: "12 times" },
+      { kind: "wait", detail: "queue empty" },
+      { kind: "if", detail: "still draining, wait again" },
+      { kind: "send", detail: "reboot" },
+    ],
+  },
+  {
+    id: 3,
+    name: "Collect logs",
+    steps: [
+      { kind: "send", detail: "journalctl -n 500 > /tmp/logs.txt" },
+      { kind: "delay", detail: "2 seconds" },
+      { kind: "send", detail: "gzip /tmp/logs.txt" },
+    ],
+  },
+];
+
+// ─── Fleets ──────────────────────────────────────────────────────────────────
+
+export interface DemoFleet {
+  id: number;
+  name: string;
+  description?: string;
+  memberCount: number;
+  tagRule?: string;
+  onlineCount: number;
+}
+
+export const DEMO_FLEETS: DemoFleet[] = [
+  {
+    id: 1,
+    name: "Web tier",
+    description: "Everything behind the load balancer",
+    memberCount: 6,
+    tagRule: "tag:web",
+    onlineCount: 6,
+  },
+  {
+    id: 2,
+    name: "Databases",
+    memberCount: 3,
+    tagRule: "tag:postgres",
+    onlineCount: 2,
+  },
+  {
+    id: 3,
+    name: "Edge",
+    description: "Picked by hand, four regions",
+    memberCount: 4,
+    onlineCount: 3,
+  },
+];
+
+// ─── Workspaces ──────────────────────────────────────────────────────────────
+
+export interface DemoWorkspace {
+  id: number;
+  name: string;
+  tabCount: number;
+  splitMode: string;
+  isDefault: boolean;
+  savedAt: string;
+}
+
+export const DEMO_WORKSPACES: DemoWorkspace[] = [
+  {
+    id: 1,
+    name: "Morning check",
+    tabCount: 4,
+    splitMode: "2-way",
+    isDefault: true,
+    savedAt: "2026-09-09T07:40:00Z",
+  },
+  {
+    id: 2,
+    name: "Database work",
+    tabCount: 3,
+    splitMode: "None",
+    isDefault: false,
+    savedAt: "2026-09-08T15:12:00Z",
+  },
+  {
+    id: 3,
+    name: "Release night",
+    tabCount: 6,
+    splitMode: "4-way",
+    isDefault: false,
+    savedAt: "2026-09-05T20:02:00Z",
+  },
+];
+
+// ─── Termix ID ───────────────────────────────────────────────────────────────
+
+export interface DemoPublishedKey {
+  id: number;
+  label: string;
+  fingerprint: string;
+  published: boolean;
+}
+
+export const DEMO_TERMIX_ID = {
+  handle: "demo",
+  resolverUrl: "https://id.termix.site/demo",
+  caEnabled: true,
+  caFingerprint: "SHA256:2Yq8mA1xLpR7dKv3Nf0uJ9bWcE5sTgH4iZoX6rQnPmU",
+  certValidityDays: 30,
+};
+
+export const DEMO_PUBLISHED_KEYS: DemoPublishedKey[] = [
+  {
+    id: 1,
+    label: "Laptop",
+    fingerprint: "SHA256:8Lk2pQ7vNx4mR1tZ9cWfJ3hY6bD0sGaE5uOiX2nKlPr",
+    published: true,
+  },
+  {
+    id: 2,
+    label: "Desktop",
+    fingerprint: "SHA256:4Wc9nT2xKp8mB6vR0qL5jH3yZ7dF1sGaN4uEiO9rXtM",
+    published: true,
+  },
+  {
+    id: 3,
+    label: "Old laptop",
+    fingerprint: "SHA256:1Fz6kP9wRt3nM8bV5xQ2jC7yL0dH4sGaB6uAiE3rNpK",
+    published: false,
+  },
+];
+
+// ─── Automations ─────────────────────────────────────────────────────────────
+
+export interface DemoAutomation {
+  id: number;
+  name: string;
+  trigger: string;
+  stepCount: number;
+  enabled: boolean;
+  lastRun?: string;
+  lastStatus?: "success" | "failed" | "skipped";
+}
+
+export const DEMO_AUTOMATIONS: DemoAutomation[] = [
+  {
+    id: 1,
+    name: "Restart nginx when it dies",
+    trigger: "Health check fails",
+    stepCount: 3,
+    enabled: true,
+    lastRun: "2026-09-09T12:05:00Z",
+    lastStatus: "success",
+  },
+  {
+    id: 2,
+    name: "Nightly database dump",
+    trigger: "Every day at 02:00",
+    stepCount: 4,
+    enabled: true,
+    lastRun: "2026-09-09T02:00:00Z",
+    lastStatus: "success",
+  },
+  {
+    id: 3,
+    name: "Page someone when disk fills",
+    trigger: "Disk above 90%",
+    stepCount: 2,
+    enabled: true,
+    lastRun: "2026-09-07T18:44:00Z",
+    lastStatus: "failed",
+  },
+  {
+    id: 4,
+    name: "Rebuild the cache",
+    trigger: "Incoming webhook",
+    stepCount: 5,
+    enabled: false,
+  },
+];
+
+export interface DemoAutomationRun {
+  id: number;
+  automationName: string;
+  at: string;
+  status: "success" | "failed" | "skipped";
+  durationSeconds: number;
+  hostName: string;
+}
+
+export const DEMO_AUTOMATION_RUNS: DemoAutomationRun[] = [
+  {
+    id: 1,
+    automationName: "Nightly database dump",
+    at: "2026-09-09T02:00:00Z",
+    status: "success",
+    durationSeconds: 214,
+    hostName: "db-primary",
+  },
+  {
+    id: 2,
+    automationName: "Restart nginx when it dies",
+    at: "2026-09-09T12:05:00Z",
+    status: "success",
+    durationSeconds: 6,
+    hostName: "web-01",
+  },
+  {
+    id: 3,
+    automationName: "Page someone when disk fills",
+    at: "2026-09-07T18:44:00Z",
+    status: "failed",
+    durationSeconds: 2,
+    hostName: "web-02",
+  },
+  {
+    id: 4,
+    automationName: "Nightly database dump",
+    at: "2026-09-08T02:00:00Z",
+    status: "success",
+    durationSeconds: 198,
+    hostName: "db-primary",
+  },
+];

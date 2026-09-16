@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { Activity, Container, Server, type LucideIcon } from "lucide-react";
+import { pluginIcon } from "@/demo/plugins/plugin-icons";
 import {
   registerDashboardCard,
   unregisterDashboardCardsByPlugin,
@@ -22,8 +22,6 @@ import { DEMO_CONTAINERS, DEMO_PROXMOX_GUESTS } from "@/demo/demo-data";
  *   - no ui:surface capability: nothing is registered at all, which is what
  *     makes that capability mean something
  */
-
-const ICONS: Record<string, LucideIcon> = { Activity, Container, Server };
 
 function Rows({
   rows,
@@ -123,7 +121,7 @@ function sync() {
       registerDashboardCard({
         id: card.id,
         label: card.label,
-        icon: ICONS[card.icon] ?? Activity,
+        icon: pluginIcon(card.icon),
         frame: "framed",
         defaultPanel: "side",
         defaultHeight: 220,

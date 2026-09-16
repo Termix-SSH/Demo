@@ -37,6 +37,7 @@ export function PanelShell({
   leading,
   actions,
   toolbar,
+  tabs,
   scroll = true,
   className,
   children,
@@ -51,6 +52,11 @@ export function PanelShell({
   leading?: React.ReactNode;
   actions?: React.ReactNode;
   toolbar?: React.ReactNode;
+  /**
+   * A full-bleed tab strip in place of a toolbar. Unlike `toolbar` this adds no
+   * padding, so the strip's underline sits on the band's own border.
+   */
+  tabs?: React.ReactNode;
   /** False when the body scrolls itself, as the tmux and file panes do. */
   scroll?: boolean;
   className?: string;
@@ -77,6 +83,9 @@ export function PanelShell({
           >
             {toolbar}
           </div>
+        )}
+        {tabs && (
+          <div className="shrink-0 border-b border-border px-1">{tabs}</div>
         )}
         {body}
       </div>
@@ -121,6 +130,10 @@ export function PanelShell({
         </div>
       )}
 
+      {tabs && (
+        <div className="shrink-0 border-b border-border px-1">{tabs}</div>
+      )}
+
       {body}
     </div>
   );
@@ -131,15 +144,20 @@ export function PanelSearch({
   value,
   onChange,
   placeholder,
+  fill,
   className,
 }: {
   value: string;
   onChange: (next: string) => void;
   placeholder: string;
+  /** Takes the whole toolbar, for panels whose search is the only control. */
+  fill?: boolean;
   className?: string;
 }) {
   return (
-    <div className={cn("relative w-40 md:w-56", className)}>
+    <div
+      className={cn("relative", fill ? "w-full" : "w-40 md:w-56", className)}
+    >
       <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
       <Input
         value={value}

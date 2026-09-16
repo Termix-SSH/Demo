@@ -1,20 +1,9 @@
-import {
-  Activity,
-  Box,
-  Clock,
-  FolderTree,
-  Network,
-  Play,
-  ScrollText,
-  Server,
-  Usb,
-  type LucideIcon,
-} from "lucide-react";
 import { getPlugins, subscribePlugins } from "@/demo/plugins/plugin-store";
 import {
   registerNavItem,
   unregisterNavItemsByPlugin,
 } from "@/demo/nav-registry";
+import { pluginIcon } from "@/demo/plugins/plugin-icons";
 import type { RailGroup } from "@/sidebar/rail-items";
 
 /**
@@ -28,18 +17,6 @@ import type { RailGroup } from "@/sidebar/rail-items";
  *  - no `ui:surface` capability: nothing is registered at all, which is what
  *    makes that capability mean something
  */
-
-const ICONS: Record<string, LucideIcon> = {
-  Play,
-  Clock,
-  ScrollText,
-  Usb,
-  Box,
-  Network,
-  Server,
-  Activity,
-  FolderTree,
-};
 
 function sync() {
   for (const plugin of getPlugins()) {
@@ -58,7 +35,7 @@ function sync() {
       registerNavItem({
         id: item.id,
         label: item.label,
-        icon: ICONS[item.icon] ?? Server,
+        icon: pluginIcon(item.icon),
         group: item.group as RailGroup,
         pluginId: plugin.id,
         running,

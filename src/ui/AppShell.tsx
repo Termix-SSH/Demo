@@ -3,11 +3,14 @@ import { createPortal } from "react-dom";
 import { SquareArrowOutUpRight, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { AppRail, type RailView } from "@/sidebar/AppRail";
+import type { SplitContext } from "@/demo/demo-tab-content";
+import { isViewWithdrawn } from "@/demo/plugins/plugin-views";
+import { subscribePlugins } from "@/demo/plugins/plugin-store";
 import { MobileBar } from "@/sidebar/MobileBar";
 import { useUnreadAlerts } from "@/hooks/use-unread-alerts";
 import {
-  PROMOTABLE_IDS,
-  RIGHT_DOCKABLE_IDS,
+  promotableIds,
+  rightDockableIds,
   railItemLabel,
 } from "@/sidebar/rail-items";
 import { HostsPanel } from "@/sidebar/HostsPanel";
@@ -339,11 +342,14 @@ export function AppShell({
     setTabs((prev) => {
       const next = prev.filter((tb) => tb.id !== id);
       if (next.length === 0) {
+        // Dashboard is a plugin. With it uninstalled the fallback has to be
+        // something core, and hosts are the one thing always present.
+        const toDashboard = !isViewWithdrawn("dashboard");
         const fallback: Tab = {
-          id: "dashboard",
+          id: toDashboard ? "dashboard" : "host-manager",
           instanceId: newInstanceId(),
-          type: "dashboard",
-          label: t("nav.dashboard"),
+          type: toDashboard ? "dashboard" : "host-manager",
+          label: t(toDashboard ? "nav.dashboard" : "nav.manage"),
           openedAt: Date.now(),
         };
         setActiveTabId(fallback.id);
@@ -354,6 +360,40 @@ export function AppShell({
     });
     setPaneTabIds((prev) => prev.map((p) => (p === id ? null : p)));
   }
+
+  /**
+   * Withdraws what an uninstalled plugin was showing.
+   *
+   * The router already refuses to draw a withdrawn view, but leaving the tab
+   * open means a tab strip full of screens that only say the plugin is gone.
+   * Closing them is what "uninstalling removes the UI" has to mean. Split
+   * panes go back to a single view for the same reason: the layout itself
+   * belongs to a plugin.
+   */
+  useEffect(() => {
+    const prune = () => {
+      setTabs((prev) => {
+        const next = prev.filter((tab) => !isViewWithdrawn(tab.type));
+        if (next.length === prev.length) return prev;
+        const gone = new Set(
+          prev.filter((tab) => isViewWithdrawn(tab.type)).map((tab) => tab.id),
+        );
+        setPaneTabIds((panes) =>
+          panes.map((id) => (id && gone.has(id) ? null : id)),
+        );
+        if (next.length > 0) {
+          setActiveTabId((current) =>
+            gone.has(current) ? next[next.length - 1].id : current,
+          );
+        }
+        return next;
+      });
+      if (isViewWithdrawn("split-screen")) setSplitMode("none");
+    };
+
+    prune();
+    return subscribePlugins(prune);
+  }, []);
 
   function refreshTab(id: string) {
     // Remounting the content is enough here: swapping instanceId gives
@@ -432,6 +472,17 @@ export function AppShell({
     });
   }
 
+  // Split screen is a plugin with a panel that drives real state rather than
+  // a fixture, so the state it needs travels with it.
+  const splitContext = {
+    splitMode,
+    onSplitMode: changeSplitMode,
+    paneTabIds,
+    onAssignPane: assignPane,
+    onClearPane: removeTabFromSplit,
+    tabs,
+  };
+
   function handleRailClick(view: RailView) {
     if (railView === view && sidebarOpen) {
       setSidebarOpen(false);
@@ -448,7 +499,7 @@ export function AppShell({
 
   function toggleRightDock() {
     setRightRailView((prev) =>
-      prev ? null : ((RIGHT_DOCKABLE_IDS[0] as RailView) ?? null),
+      prev ? null : ((rightDockableIds()[0] as RailView) ?? null),
     );
   }
 
@@ -481,7 +532,14 @@ export function AppShell({
       )}
 
       {view !== "hosts" && view !== "credentials" && (
-        <SecondaryPanel view={view} />
+        <SecondaryPanel
+          view={view}
+          tabs={tabs}
+          onFocusTab={setActiveTabId}
+          onCloseTab={closeTab}
+          onOpenSingletonTab={openSingletonTab}
+          split={splitContext}
+        />
       )}
     </div>
   );
@@ -545,7 +603,7 @@ export function AppShell({
                   <span className="flex-1 min-w-0 truncate text-base font-bold tracking-tight text-foreground px-3">
                     {sidebarTitle(railView)}
                   </span>
-                  {PROMOTABLE_IDS.includes(railView) && (
+                  {promotableIds().includes(railView) && (
                     <button
                       onClick={() => {
                         promoteRailView(railView);
@@ -647,8 +705,12 @@ export function AppShell({
                     return createPortal(
                       renderDemoTabContent(tab, {
                         hosts,
+                        tabs,
                         onOpenTab: openTab,
                         onOpenSingletonTab: openSingletonTab,
+                        onFocusTab: setActiveTabId,
+                        onCloseTab: closeTab,
+                        split: splitContext,
                       }),
                       node,
                       `${tab.id}-${tab.instanceId}`,
@@ -672,7 +734,14 @@ export function AppShell({
                 setRightRailView(null);
               }}
             >
-              <SecondaryPanel view={rightRailView} />
+              <SecondaryPanel
+                view={rightRailView}
+                tabs={tabs}
+                onFocusTab={setActiveTabId}
+                onCloseTab={closeTab}
+                onOpenSingletonTab={openSingletonTab}
+                split={splitContext}
+              />
             </DockPanel>
           )}
         </div>
@@ -706,14 +775,31 @@ export function AppShell({
   );
 }
 
-function SecondaryPanel({ view }: { view: RailView }) {
-  const content = renderDemoPanelBody({
-    id: `panel-${view}`,
-    instanceId: view,
-    type: view as TabType,
-    label: view,
-    openedAt: 0,
-  });
+function SecondaryPanel({
+  view,
+  tabs,
+  onFocusTab,
+  onCloseTab,
+  onOpenSingletonTab,
+  split,
+}: {
+  view: RailView;
+  tabs?: Tab[];
+  onFocusTab?: (id: string) => void;
+  onCloseTab?: (id: string) => void;
+  onOpenSingletonTab?: (type: TabType) => void;
+  split?: SplitContext;
+}) {
+  const content = renderDemoPanelBody(
+    {
+      id: `panel-${view}`,
+      instanceId: view,
+      type: view as TabType,
+      label: view,
+      openedAt: 0,
+    },
+    { tabs, onFocusTab, onCloseTab, onOpenSingletonTab, split },
+  );
 
   if (content) {
     // The tab renderer wraps panels in their own header; inside the sidebar the

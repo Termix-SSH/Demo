@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAlertFirings } from "@/api/alerts-api";
+import { getPlugins, subscribePlugins } from "@/demo/plugins/plugin-store";
 
 /**
  * Unacknowledged alert count, polled while the tab is visible.
@@ -7,10 +8,25 @@ import { getAlertFirings } from "@/api/alerts-api";
  * The rail owned this, then the mobile bar needed the same badge. Two copies
  * would mean two pollers, so it lives here and both read it.
  */
+/** Alerting is a plugin, so its badge has to come and go with it. */
+function alertingRunning(): boolean {
+  const plugin = getPlugins().find((p) => p.id === "alerting");
+  return plugin?.installed === true && plugin.state === "enabled";
+}
+
 export function useUnreadAlerts(): number {
   const [unread, setUnread] = useState(0);
+  const [running, setRunning] = useState(alertingRunning);
+
+  useEffect(() => subscribePlugins(() => setRunning(alertingRunning())), []);
 
   useEffect(() => {
+    // No plugin, no poller and no badge. Without this the mobile bar kept a
+    // count for a feature that had been removed.
+    if (!running) {
+      setUnread(0);
+      return;
+    }
     let cancelled = false;
     let intervalId: ReturnType<typeof setInterval> | null = null;
 
@@ -50,7 +66,7 @@ export function useUnreadAlerts(): number {
       stop();
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, []);
+  }, [running]);
 
   return unread;
 }

@@ -38,11 +38,24 @@ export function installPlugin(id: string): void {
   patch(id, { installed: true, state: "enabled" });
 }
 
+/**
+ * A plugin Termix cannot run without stays put.
+ *
+ * The store disables the controls rather than hiding them, so the rule is
+ * visible, but the guard lives here too: nothing else should be able to leave
+ * the app with no way to open a session.
+ */
+function isRequired(id: string): boolean {
+  return plugins.find((p) => p.id === id)?.required === true;
+}
+
 export function uninstallPlugin(id: string): void {
+  if (isRequired(id)) return;
   patch(id, { installed: false, state: "disabled" });
 }
 
 export function setPluginEnabled(id: string, enabled: boolean): void {
+  if (!enabled && isRequired(id)) return;
   patch(id, { state: enabled ? "enabled" : "disabled" });
 }
 

@@ -62,6 +62,9 @@ type Section = "installed" | "browse" | "updates";
 
 /** `chrome={false}` nests this inside the settings surface, which draws its
  * own header, so the screen does not repeat the title row. */
+/** Shown wherever a required plugin's controls are greyed out. */
+const REQUIRED_REASON = "Termix needs this to connect to anything.";
+
 export function PluginsScreen({ chrome = true }: { chrome?: boolean } = {}) {
   const [plugins, setPlugins] = useState(getPlugins);
   const [registries, setRegistries] = useState(getRegistries);
@@ -454,6 +457,7 @@ function InstalledCard({
 }) {
   const enabled = plugin.state === "enabled";
   const failed = plugin.state === "failed";
+  const required = plugin.required === true;
 
   return (
     <Card className="overflow-hidden py-0 gap-0">
@@ -528,6 +532,8 @@ function InstalledCard({
           <Button
             variant="outline"
             size="xs"
+            disabled={required}
+            title={required ? REQUIRED_REASON : undefined}
             onClick={() => setPluginEnabled(plugin.id, !enabled)}
           >
             {enabled ? "Disable" : "Enable"}
@@ -536,7 +542,8 @@ function InstalledCard({
         <Button
           variant="ghost"
           size="icon-xs"
-          title="Uninstall"
+          disabled={required}
+          title={required ? REQUIRED_REASON : "Uninstall"}
           className="ml-auto text-muted-foreground hover:text-destructive"
           onClick={() => uninstallPlugin(plugin.id)}
         >
@@ -891,6 +898,7 @@ function DetailView({
   onUninstall: () => void;
 }) {
   const enabled = plugin.state === "enabled";
+  const required = plugin.required === true;
   const ordered = (["high", "medium", "low"] as const).flatMap((risk) =>
     plugin.capabilities.filter((c) => CAPABILITY_INFO[c].risk === risk),
   );
@@ -927,6 +935,8 @@ function DetailView({
               <Button
                 variant="outline"
                 size="sm"
+                disabled={required}
+                title={required ? REQUIRED_REASON : undefined}
                 onClick={() => setPluginEnabled(plugin.id, !enabled)}
               >
                 {enabled ? "Disable" : "Enable"}
@@ -935,6 +945,8 @@ function DetailView({
                 variant="destructive"
                 size="sm"
                 className="gap-1.5"
+                disabled={required}
+                title={required ? REQUIRED_REASON : undefined}
                 onClick={onUninstall}
               >
                 <Trash2 className="size-3.5" />

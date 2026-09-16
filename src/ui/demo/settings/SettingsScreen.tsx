@@ -3,16 +3,12 @@ import { useTranslation } from "react-i18next";
 import type { LucideIcon } from "lucide-react";
 import {
   Bell,
-  Box,
   ChevronDown,
-  FolderTree,
   Database,
   KeyRound,
   Monitor,
-  Network,
   Palette,
   PanelLeft,
-  Sparkles,
   Puzzle,
   Server,
   Terminal as TerminalIcon,
@@ -28,6 +24,7 @@ import { GroupHeading, PANEL } from "@/components/panel-layout";
 import { DemoPanel } from "@/demo/DemoPanel";
 import { PluginsScreen } from "@/demo/plugins/PluginsScreen";
 import { getPlugins, subscribePlugins } from "@/demo/plugins/plugin-store";
+import { pluginIcon } from "@/demo/plugins/plugin-icons";
 import type { DemoPlugin } from "@/demo/plugins/plugin-data";
 import { useUiPreferencesContext } from "@/contexts/UiPreferencesContext";
 import {
@@ -67,12 +64,15 @@ const PRESET_IDS: Exclude<UiPreset, "custom">[] = [
 export function SettingsScreen({
   isAdmin = true,
   username = "demo",
+  initialSection = "account",
 }: {
   isAdmin?: boolean;
   username?: string;
+  /** Which page to land on. Profile and admin are entries into this screen. */
+  initialSection?: SectionId;
 }) {
   const { t } = useTranslation();
-  const [section, setSection] = useState<SectionId>("account");
+  const [section, setSection] = useState<SectionId>(initialSection);
   const [navOpen, setNavOpen] = useState(false);
   const [plugins, setPlugins] = useState(getPlugins);
 
@@ -147,8 +147,9 @@ export function SettingsScreen({
             items: pluginPages.map((plugin) => ({
               id: `plugin:${plugin.id}` as SectionId,
               label: plugin.name,
-              icon: (PLUGIN_ICONS[plugin.contributions?.settings?.icon ?? ""] ??
-                Puzzle) as React.ElementType,
+              icon: pluginIcon(
+                plugin.contributions?.settings?.icon,
+              ) as React.ElementType,
             })),
           },
         ]
@@ -519,14 +520,6 @@ function InterfaceSection() {
 }
 
 /** Lucide names a plugin may ask for on its settings entry. */
-const PLUGIN_ICONS: Record<string, LucideIcon> = {
-  Sparkles,
-  KeyRound,
-  Network,
-  FolderTree,
-  Box,
-  Puzzle,
-};
 
 /**
  * A plugin's own settings page, drawn from its manifest.
@@ -542,7 +535,7 @@ function PluginSettingsPage({ plugin }: { plugin: DemoPlugin | null }) {
   if (!plugin || !settings) return null;
 
   const running = plugin.state === "enabled";
-  const Icon = PLUGIN_ICONS[settings.icon ?? ""] ?? Puzzle;
+  const Icon = pluginIcon(settings.icon);
 
   return (
     <div className={`flex flex-col ${PANEL.gap} ${PANEL.body}`}>

@@ -1,58 +1,5 @@
-import {
-  Activity,
-  BellRing,
-  Boxes,
-  Clock,
-  Container,
-  FolderTree,
-  HardDrive,
-  KeyRound,
-  LayoutGrid,
-  LayoutTemplate,
-  ListChecks,
-  Monitor,
-  Network,
-  Play,
-  Power,
-  Puzzle,
-  RefreshCw,
-  Rocket,
-  ScrollText,
-  Server,
-  Sparkles,
-  Usb,
-  Users,
-  Workflow,
-  type LucideIcon,
-} from "lucide-react";
 import type { PluginSource } from "./plugin-data";
-
-// Fixtures name their icon as a string, so the data file stays plain data.
-const ICONS: Record<string, LucideIcon> = {
-  Activity,
-  BellRing,
-  Boxes,
-  Clock,
-  Container,
-  FolderTree,
-  HardDrive,
-  KeyRound,
-  LayoutGrid,
-  LayoutTemplate,
-  ListChecks,
-  Monitor,
-  Network,
-  Play,
-  Power,
-  RefreshCw,
-  Rocket,
-  ScrollText,
-  Server,
-  Sparkles,
-  Usb,
-  Users,
-  Workflow,
-};
+import { pluginIcon } from "./plugin-icons";
 
 export function PluginIcon({
   name,
@@ -63,7 +10,7 @@ export function PluginIcon({
   size?: "sm" | "md" | "lg";
   muted?: boolean;
 }) {
-  const Icon = ICONS[name] ?? Puzzle;
+  const Icon = pluginIcon(name);
   const box =
     size === "lg" ? "size-10" : size === "sm" ? "size-7" : "size-9";
   const glyph =

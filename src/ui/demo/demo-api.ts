@@ -17,18 +17,23 @@ import {
 } from "@/types/host-sidebar-preferences";
 import {
   DEMO_ALERTS,
+  DEMO_AUTOMATION_RUNS,
+  DEMO_AUTOMATIONS,
   DEMO_CONTAINER_LOGS,
   DEMO_CONTAINER_STATS,
   DEMO_CONTAINERS,
   DEMO_CREDENTIALS,
   DEMO_DOCKER_INFO,
   DEMO_FILE_CONTENTS,
+  DEMO_FLEETS,
   DEMO_FS,
   DEMO_HISTORY,
+  DEMO_MACROS,
   DEMO_HOST_METRICS,
   DEMO_HOST_METRICS_DEFAULT,
   DEMO_HOSTS,
   DEMO_PINNED_FILES,
+  DEMO_PUBLISHED_KEYS,
   DEMO_PROXMOX_CLUSTER,
   DEMO_PROXMOX_GUESTS,
   DEMO_PROXMOX_INTERFACES,
@@ -38,6 +43,8 @@ import {
   DEMO_SESSION_LOGS,
   DEMO_SHORTCUTS,
   DEMO_SNIPPETS,
+  DEMO_TERMIX_ID,
+  DEMO_WORKSPACES,
   DEMO_STORAGE,
   DEMO_TMUX_PANE_OUTPUT,
   DEMO_TMUX_SESSIONS,
@@ -45,8 +52,13 @@ import {
   type DemoAlert,
   type DemoContainer,
   type DemoContainerStats,
+  type DemoAutomation,
+  type DemoAutomationRun,
+  type DemoFleet,
   type DemoHistoryEntry,
   type DemoHostMetrics,
+  type DemoMacro,
+  type DemoPublishedKey,
   type DemoProxmoxCluster,
   type DemoProxmoxGuest,
   type DemoProxmoxInterface,
@@ -56,6 +68,7 @@ import {
   type DemoSessionLog,
   type DemoTmuxSession,
   type DemoTunnelRow,
+  type DemoWorkspace,
 } from "@/demo/demo-data";
 
 // Stands in for main-axios. Everything resolves from memory after a short
@@ -139,6 +152,34 @@ export function getCommandHistory(): Promise<DemoHistoryEntry[]> {
 
 export function getSessionLogs(): Promise<DemoSessionLog[]> {
   return resolve(clone(DEMO_SESSION_LOGS));
+}
+
+export function getMacros(): Promise<DemoMacro[]> {
+  return resolve(clone(DEMO_MACROS));
+}
+
+export function getFleets(): Promise<DemoFleet[]> {
+  return resolve(clone(DEMO_FLEETS));
+}
+
+export function getWorkspaces(): Promise<DemoWorkspace[]> {
+  return resolve(clone(DEMO_WORKSPACES));
+}
+
+export function getPublishedKeys(): Promise<DemoPublishedKey[]> {
+  return resolve(clone(DEMO_PUBLISHED_KEYS));
+}
+
+export function getTermixId(): Promise<typeof DEMO_TERMIX_ID> {
+  return resolve(clone(DEMO_TERMIX_ID));
+}
+
+export function getAutomations(): Promise<DemoAutomation[]> {
+  return resolve(clone(DEMO_AUTOMATIONS));
+}
+
+export function getAutomationRuns(): Promise<DemoAutomationRun[]> {
+  return resolve(clone(DEMO_AUTOMATION_RUNS));
 }
 
 export function getTunnels(): Promise<DemoTunnelRow[]> {

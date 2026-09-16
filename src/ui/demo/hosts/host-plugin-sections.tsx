@@ -1,16 +1,9 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useEffect, useState } from "react";
-import {
-  Activity,
-  Box,
-  FolderTree,
-  LayoutGrid,
-  Network,
-  Puzzle,
-  Server,
-  type LucideIcon,
-} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+
 import { SectionCard } from "@/components/section-card";
+import { pluginIcon } from "@/demo/plugins/plugin-icons";
 import { getPlugins, subscribePlugins } from "@/demo/plugins/plugin-store";
 import type { DemoPlugin } from "@/demo/plugins/plugin-data";
 import {
@@ -36,16 +29,6 @@ import type { HostEditorForm } from "@/demo/hosts/host-form";
  * They used to be hardcoded tabs, which is why uninstalling Docker still left
  * a Docker tab in the editor.
  */
-
-const ICONS: Record<string, LucideIcon> = {
-  FolderTree,
-  Box,
-  Network,
-  Server,
-  Activity,
-  LayoutGrid,
-  Puzzle,
-};
 
 export interface PluginHostSection {
   pluginId: string;
@@ -78,7 +61,7 @@ export function usePluginHostSections(): {
     return {
       pluginId: plugin.id,
       label: fields.label,
-      icon: ICONS[fields.icon ?? ""] ?? Puzzle,
+      icon: pluginIcon(fields.icon),
       running: plugin.state === "enabled",
       fields,
     };

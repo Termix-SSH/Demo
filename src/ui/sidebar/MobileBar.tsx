@@ -17,6 +17,7 @@ import {
   visibleRailDestinations,
 } from "./rail-items";
 import type { RailView } from "./AppRail";
+import { useNavItems } from "@/demo/nav-registry";
 
 /**
  * The rail replacement for phones.
@@ -56,9 +57,14 @@ export function MobileBar({
   const { t } = useTranslation();
   const [moreOpen, setMoreOpen] = useState(false);
 
+  // Destinations come from the installed plugins now, so this has to follow
+  // the registry. With an empty dependency list the bar kept offering a
+  // destination its plugin had already taken away.
+  const navItems = useNavItems();
   const destinations = useMemo(
     () => visibleRailDestinations(readHiddenIds()),
-    [],
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- visibleRailDestinations reads the nav registry, which navItems tracks
+    [navItems],
   );
 
   const primary = useMemo(

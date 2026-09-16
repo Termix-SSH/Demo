@@ -1,0 +1,96 @@
+import {
+  Activity,
+  BellRing,
+  Boxes,
+  Box,
+  Braces,
+  Clock,
+  Container,
+  Fingerprint,
+  FolderTree,
+  Hammer,
+  HardDrive,
+  KeyRound,
+  LayoutGrid,
+  LayoutPanelLeft,
+  LayoutTemplate,
+  ListChecks,
+  Monitor,
+  MousePointerClick,
+  MessagesSquare,
+  Network,
+  Play,
+  Plug,
+  Power,
+  Puzzle,
+  RefreshCw,
+  Rocket,
+  ScrollText,
+  Server,
+  Share2,
+  Shield,
+  Sparkles,
+  Terminal,
+  TerminalSquare,
+  Usb,
+  Users,
+  Video,
+  Workflow,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
+
+/**
+ * One string -> icon map for the whole plugin system.
+ *
+ * Fixtures name their icon as a string so the data file stays plain data. That
+ * lookup used to be copied into five files -- plugin-bits, nav-plugin-items,
+ * dashboard-plugin-cards, host-plugin-sections and SettingsScreen -- and each
+ * copy held a different subset, so an icon that worked in the store rendered as
+ * a fallback in the rail. Adding an icon is one edit here now.
+ */
+export const PLUGIN_ICONS: Record<string, LucideIcon> = {
+  Activity,
+  BellRing,
+  Box,
+  Boxes,
+  Braces,
+  Clock,
+  Container,
+  Fingerprint,
+  FolderTree,
+  Hammer,
+  HardDrive,
+  KeyRound,
+  LayoutGrid,
+  LayoutPanelLeft,
+  LayoutTemplate,
+  ListChecks,
+  MessagesSquare,
+  Monitor,
+  MousePointerClick,
+  Network,
+  Play,
+  Plug,
+  Power,
+  Puzzle,
+  RefreshCw,
+  Rocket,
+  ScrollText,
+  Server,
+  Share2,
+  Shield,
+  Sparkles,
+  Terminal,
+  TerminalSquare,
+  Usb,
+  Users,
+  Video,
+  Workflow,
+  Zap,
+};
+
+/** Falls back to a neutral glyph so an unknown name never crashes a surface. */
+export function pluginIcon(name: string | undefined): LucideIcon {
+  return PLUGIN_ICONS[name ?? ""] ?? Puzzle;
+}

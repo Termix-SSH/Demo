@@ -1,38 +1,23 @@
 import {
-  Boxes,
-  Braces,
-  Clock,
-  Fingerprint,
-  Hammer,
   KeyRound,
-  LayoutPanelLeft,
-  LayoutTemplate,
-  Network,
-  Play,
-  Plug,
   Puzzle,
-  ScrollText,
   Server,
   Settings,
-  Sparkles,
-  TerminalSquare,
-  Usb,
   User,
-  Workflow,
-  Zap,
   type LucideIcon,
 } from "lucide-react";
+import { getNavItems, type NavItemDef } from "@/demo/nav-registry";
 import { isElectron } from "@/lib/electron";
 
 /**
- * The one list of navigation destinations.
+ * The core navigation destinations, and the merge that brings in the rest.
  *
- * This used to be duplicated in four places -- AppRail's button array, the
- * visibility toggles in UserProfilePanel, AppShell's sidebar title map, and
- * MobileBottomBar's own primary/more lists -- which drifted: half the sidebar
- * titles were hardcoded English, the alerts entry had no visibility toggle,
- * and the mobile bar ignored hidden tabs entirely. Everything now derives from
- * here, so adding a destination is a single edit.
+ * This used to hold all eighteen destinations as built-ins, which quietly
+ * contradicted the thing the demo is here to show: the plugin list claimed
+ * Snippets and Docker were plugins while the rail carried them regardless of
+ * whether those plugins were installed. Only hosts and credentials are built in
+ * now. Everything else arrives through a plugin's `contributions.navItems` and
+ * leaves with it.
  */
 /**
  * Objects you own, tools you invoke, and the system surfaces. Settings are not
@@ -52,8 +37,6 @@ export interface RailItemDef {
   kind?: "tab";
   /** Always-available destinations that users cannot hide. */
   alwaysVisible?: boolean;
-  /** Renders a separator after this item in the rail. */
-  separatorAfter?: boolean;
   /**
    * Which band of the rail this belongs to. Replaces the old per-item
    * separatorAfter, so a rule marks a real boundary between kinds of thing
@@ -74,8 +57,14 @@ export interface RailItemDef {
   rightDockable?: boolean;
   /** Desktop app only. Hidden in the browser build, including its toggle. */
   electronOnly?: boolean;
+  /** Part of Termix itself, so no plugin can take it away. */
+  core?: true;
 }
 
+/**
+ * Built-in destinations. Hosts and credentials are the two things Termix is
+ * always able to show you, with or without any plugins installed.
+ */
 export const RAIL_ITEMS: RailItemDef[] = [
   {
     id: "hosts",
@@ -84,6 +73,7 @@ export const RAIL_ITEMS: RailItemDef[] = [
     labelKey: "nav.hosts",
     mobilePrimary: true,
     promotable: true,
+    core: true,
   },
   {
     id: "credentials",
@@ -91,125 +81,67 @@ export const RAIL_ITEMS: RailItemDef[] = [
     icon: KeyRound,
     labelKey: "nav.credentials",
     promotable: true,
-  },
-  {
-    id: "termix-id",
-    group: "objects",
-    icon: Fingerprint,
-    labelKey: "nav.termixId",
-    promotable: true,
-  },
-  {
-    id: "connections",
-    group: "objects",
-    icon: Plug,
-    labelKey: "nav.connections",
-    rightDockable: true,
-  },
-  {
-    id: "quick-connect",
-    group: "tools",
-    icon: Zap,
-    labelKey: "nav.quickConnect",
-    mobilePrimary: true,
-  },
-  {
-    id: "serial",
-    group: "tools",
-    icon: Usb,
-    labelKey: "nav.serial",
-  },
-  {
-    id: "ssh-tools",
-    group: "tools",
-    icon: Hammer,
-    labelKey: "nav.sshTools",
-    mobilePrimary: true,
-    promotable: true,
-    rightDockable: true,
-  },
-  {
-    id: "snippets",
-    group: "tools",
-    icon: Play,
-    labelKey: "nav.snippets",
-    mobilePrimary: true,
-    promotable: true,
-    rightDockable: true,
-  },
-  {
-    id: "macros",
-    group: "tools",
-    icon: Braces,
-    labelKey: "nav.macros",
-    promotable: true,
-    rightDockable: true,
-  },
-  {
-    id: "fleets",
-    group: "objects",
-    icon: Boxes,
-    labelKey: "nav.fleets",
-  },
-  {
-    id: "automations",
-    group: "tools",
-    icon: Workflow,
-    labelKey: "nav.automations",
-    promotable: true,
-  },
-  {
-    id: "ai",
-    group: "tools",
-    icon: Sparkles,
-    labelKey: "nav.ai",
-    promotable: true,
-    rightDockable: true,
-  },
-  {
-    id: "history",
-    group: "tools",
-    icon: Clock,
-    labelKey: "nav.history",
-    promotable: true,
-    rightDockable: true,
-  },
-  {
-    id: "session-logs",
-    group: "tools",
-    icon: ScrollText,
-    labelKey: "nav.sessionLogs",
-    promotable: true,
-    rightDockable: true,
-  },
-  {
-    id: "split-screen",
-    group: "tools",
-    icon: LayoutPanelLeft,
-    labelKey: "nav.splitScreen",
-  },
-  {
-    id: "workspaces",
-    group: "objects",
-    icon: LayoutTemplate,
-    labelKey: "nav.workspaces",
-  },
-  {
-    id: "local-terminal",
-    group: "tools",
-    icon: TerminalSquare,
-    labelKey: "nav.localTerminal",
-    kind: "tab",
-    electronOnly: true,
-  },
-  {
-    id: "network_graph",
-    group: "tools",
-    icon: Network,
-    labelKey: "nav.networkGraph",
-    kind: "tab",
+    core: true,
   },
 ];
+
+/**
+ * How a plugin-contributed destination behaves once it reaches the rail.
+ *
+ * The plugin manifest says where an entry goes and what it is called; these
+ * flags are Termix's call, because promoting to a tab and docking on the right
+ * are the shell's affordances rather than the plugin's. Anything not listed
+ * gets the sensible default of a plain sidebar panel.
+ */
+const PLUGIN_ITEM_BEHAVIOUR: Record<
+  string,
+  Pick<
+    RailItemDef,
+    "kind" | "promotable" | "rightDockable" | "mobilePrimary" | "electronOnly"
+  >
+> = {
+  "termix-id": { promotable: true },
+  connections: { rightDockable: true },
+  "quick-connect": { mobilePrimary: true },
+  serial: {},
+  "ssh-tools": { promotable: true, rightDockable: true, mobilePrimary: true },
+  snippets: { promotable: true, rightDockable: true, mobilePrimary: true },
+  macros: { promotable: true, rightDockable: true },
+  fleets: {},
+  automations: { promotable: true },
+  ai: { promotable: true, rightDockable: true },
+  history: { promotable: true, rightDockable: true },
+  "session-logs": { promotable: true, rightDockable: true },
+  "split-screen": {},
+  workspaces: {},
+  alerts: { promotable: true, rightDockable: true },
+  "local-terminal": { kind: "tab", electronOnly: true },
+  network_graph: { kind: "tab" },
+};
+
+/** A plugin's registered destination, in the shape the rail already draws. */
+function fromNavItem(item: NavItemDef): RailItemDef {
+  return {
+    id: item.id,
+    icon: item.icon,
+    // Plugins ship their own label rather than an i18n key, so it is passed
+    // through as a literal and railItemLabel returns it unchanged.
+    labelKey: item.label,
+    group: item.group,
+    ...PLUGIN_ITEM_BEHAVIOUR[item.id],
+  };
+}
+
+/**
+ * Every destination available right now: the core two, plus whatever the
+ * installed plugins contribute.
+ */
+export function allRailItems(): RailItemDef[] {
+  const electron = isElectron();
+  return [...RAIL_ITEMS, ...getNavItems().map(fromNavItem)].filter(
+    (item) => !item.electronOnly || electron,
+  );
+}
 
 /**
  * Rail items available in the current build. Electron-only destinations are
@@ -217,22 +149,15 @@ export const RAIL_ITEMS: RailItemDef[] = [
  * or the visibility toggles.
  */
 export function visibleRailItems(): RailItemDef[] {
-  const electron = isElectron();
-  return RAIL_ITEMS.filter((item) => !item.electronOnly || electron);
+  return allRailItems();
 }
 
 /**
  * Destinations that live outside the rail's hideable list but still need a
- * title and a mobile entry.
+ * title and a mobile entry. Alerts is not here: it belongs to the Alerting
+ * plugin and comes and goes with it.
  */
 export const RAIL_UTILITY_ITEMS: RailItemDef[] = [
-  {
-    id: "alerts",
-    icon: Plug,
-    labelKey: "nav.alerts",
-    promotable: true,
-    rightDockable: true,
-  },
   { id: "plugins", icon: Puzzle, labelKey: "nav.plugins", promotable: true },
   {
     id: "settings",
@@ -245,26 +170,25 @@ export const RAIL_UTILITY_ITEMS: RailItemDef[] = [
 ];
 
 /** Ids that may be opened in the right dock. */
-export const RIGHT_DOCKABLE_IDS = [...RAIL_ITEMS, ...RAIL_UTILITY_ITEMS]
-  .filter((item) => item.rightDockable)
-  .map((item) => item.id);
+export function rightDockableIds(): string[] {
+  return [...allRailItems(), ...RAIL_UTILITY_ITEMS]
+    .filter((item) => item.rightDockable)
+    .map((item) => item.id);
+}
 
 /** Ids that may be opened as a full-width tab. */
-export const PROMOTABLE_IDS = [...RAIL_ITEMS, ...RAIL_UTILITY_ITEMS]
-  .filter((item) => item.promotable)
-  .map((item) => item.id);
+export function promotableIds(): string[] {
+  return [...allRailItems(), ...RAIL_UTILITY_ITEMS]
+    .filter((item) => item.promotable)
+    .map((item) => item.id);
+}
 
 /** Ids a user is allowed to hide, mirroring HideableRailView. */
-export const HIDEABLE_RAIL_IDS = RAIL_ITEMS.filter(
-  (item) => !item.alwaysVisible,
-).map((item) => item.id);
-
-const LABEL_KEYS: Record<string, string> = Object.fromEntries(
-  [...RAIL_ITEMS, ...RAIL_UTILITY_ITEMS].map((item) => [
-    item.id,
-    item.labelKey,
-  ]),
-);
+export function hideableRailIds(): string[] {
+  return allRailItems()
+    .filter((item) => !item.alwaysVisible)
+    .map((item) => item.id);
+}
 
 /**
  * Tab types that are not rail destinations but still need a label.
@@ -276,10 +200,23 @@ const EXTRA_LABEL_KEYS: Record<string, string> = {
   "host-manager": "nav.manage",
 };
 
-/** Translated label for any rail destination or tab type. */
+/**
+ * Translated label for any rail destination or tab type.
+ *
+ * Core items carry an i18n key. A plugin carries its own label, which has no
+ * key to look up, so t() returns it unchanged and the literal is used.
+ */
 export function railItemLabel(id: string, t: (key: string) => string): string {
-  const key = LABEL_KEYS[id] ?? EXTRA_LABEL_KEYS[id];
-  return key ? t(key) : id;
+  const core = [...RAIL_ITEMS, ...RAIL_UTILITY_ITEMS].find(
+    (item) => item.id === id,
+  );
+  if (core) return t(core.labelKey);
+
+  const extra = EXTRA_LABEL_KEYS[id];
+  if (extra) return t(extra);
+
+  const contributed = getNavItems().find((item) => item.id === id);
+  return contributed?.label ?? id;
 }
 
 const HIDDEN_KEY = "termix-demo-hidden-rail";
@@ -336,7 +273,7 @@ export function toggleHidden(id: string): string[] {
 /** Rail items in group order, minus anything the user has hidden. */
 export function visibleRailDestinations(hidden: string[]): RailItemDef[] {
   const order = new Map(RAIL_GROUP_ORDER.map((g, i) => [g, i]));
-  return visibleRailItems()
+  return allRailItems()
     .filter((item) => !hidden.includes(item.id))
     .sort(
       (a, b) =>
