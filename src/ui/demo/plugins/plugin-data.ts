@@ -516,13 +516,6 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
                 value: "Docker",
                 options: ["Docker", "Podman"],
               },
-              {
-                key: "socket",
-                label: "Socket path",
-                type: "text",
-                value: "/var/run/docker.sock",
-                placeholder: "/var/run/docker.sock",
-              },
             ],
           },
           {
