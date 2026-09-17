@@ -1,5 +1,5 @@
 > [!WARNING]
-> Under development for the new plugin system. This demo is not representative of the current state of Termix.
+> Currently being used for the new plugin system UI changes. This demo is not representative of the current state of Termix.
 
 <div align="center">
 
