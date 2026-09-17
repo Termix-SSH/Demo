@@ -1,12 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  Box,
-  Database,
-  Gauge,
-  Network,
-  RefreshCw,
-  Server,
-} from "lucide-react";
+import { Box, Database, Gauge, Network, RefreshCw, Server } from "lucide-react";
 import { Button } from "@/components/button";
 import { SectionCard } from "@/components/section-card";
 import { MiniStat, Sparkline, StatRow } from "@/components/charts";
@@ -298,8 +291,16 @@ function NodeCard({ node }: { node: DemoProxmoxNode }) {
         <Sparkline data={node.cpuHistory} domain={[0, 100]} height={40} />
 
         <div className="flex flex-col gap-1.5">
-          <UsagePair label="Memory" percent={node.memoryPercent} detail={node.memoryDetail} />
-          <UsagePair label="Disk" percent={node.diskPercent} detail={node.diskDetail} />
+          <UsagePair
+            label="Memory"
+            percent={node.memoryPercent}
+            detail={node.memoryDetail}
+          />
+          <UsagePair
+            label="Disk"
+            percent={node.diskPercent}
+            detail={node.diskDetail}
+          />
         </div>
       </div>
     </SectionCard>

@@ -26,7 +26,8 @@ import type { HostEditorForm } from "@/demo/hosts/host-form";
  * find settings.
  */
 
-export type SectionBand = "basics" | "session" | "network" | "protocols" | "plugins";
+export type SectionBand =
+  "basics" | "session" | "network" | "protocols" | "plugins";
 
 export interface SectionDef {
   id: string;
@@ -100,8 +101,7 @@ export const HOST_SECTIONS: SectionDef[] = [
     icon: Activity,
     band: "network",
     advanced: true,
-    dirty: (f) =>
-      !!f.macAddress || f.portKnockSequence.length > 0,
+    dirty: (f) => !!f.macAddress || f.portKnockSequence.length > 0,
   },
 
   {
@@ -166,7 +166,9 @@ export function useScrollSpy(
       const top = container.getBoundingClientRect().top;
       let current = ids[0] ?? "";
       for (const id of ids) {
-        const el = container.querySelector<HTMLElement>(`[data-section="${id}"]`);
+        const el = container.querySelector<HTMLElement>(
+          `[data-section="${id}"]`,
+        );
         if (!el) continue;
         if (el.getBoundingClientRect().top - top <= 24) current = id;
       }
@@ -189,7 +191,9 @@ export function useScrollSpy(
     active,
     scrollTo: (id: string) => {
       const container = containerRef.current;
-      const el = container?.querySelector<HTMLElement>(`[data-section="${id}"]`);
+      const el = container?.querySelector<HTMLElement>(
+        `[data-section="${id}"]`,
+      );
       if (!container || !el) return;
       lockUntil.current = Date.now() + 600;
       setActive(id);
@@ -208,7 +212,10 @@ export function SectionNav({
   errorSections,
   onSelect,
 }: {
-  bands: { band: SectionBand; items: { id: string; label: string; icon: LucideIcon }[] }[];
+  bands: {
+    band: SectionBand;
+    items: { id: string; label: string; icon: LucideIcon }[];
+  }[];
   active: string;
   errorSections: Set<string>;
   onSelect: (id: string) => void;

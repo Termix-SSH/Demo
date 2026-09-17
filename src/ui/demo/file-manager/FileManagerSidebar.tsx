@@ -171,8 +171,7 @@ export function FileManagerSidebar({
                 <Star
                   className={cn(
                     "size-3.5",
-                    currentPath === parentDir(item.path) &&
-                      "fill-accent-brand",
+                    currentPath === parentDir(item.path) && "fill-accent-brand",
                   )}
                 />,
                 parentDir(item.path),

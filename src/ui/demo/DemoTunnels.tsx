@@ -33,11 +33,7 @@ import type { DemoTunnelRow } from "@/demo/demo-data";
 // reachable in the demo.
 
 type TunnelState =
-  | "connected"
-  | "connecting"
-  | "disconnected"
-  | "waiting"
-  | "error";
+  "connected" | "connecting" | "disconnected" | "waiting" | "error";
 
 interface TunnelRow extends DemoTunnelRow {
   state: TunnelState;
@@ -116,9 +112,7 @@ export function DemoTunnels() {
   useEffect(() => () => captured.forEach(clearTimeout), [captured]);
 
   function patch(id: string, next: Partial<TunnelRow>) {
-    setRows((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, ...next } : r)),
-    );
+    setRows((prev) => prev.map((r) => (r.id === id ? { ...r, ...next } : r)));
   }
 
   function start(row: TunnelRow) {
@@ -397,7 +391,11 @@ function TunnelCard({
               value={row.mode === "dynamic" ? "-" : String(row.endpointPort)}
               mono
             />
-            <Detail label="Auto Start" value={row.autoStart ? "Yes" : "No"} upper />
+            <Detail
+              label="Auto Start"
+              value={row.autoStart ? "Yes" : "No"}
+              upper
+            />
           </div>
         )}
 

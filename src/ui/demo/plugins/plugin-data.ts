@@ -784,12 +784,7 @@ export const DEMO_PLUGINS: DemoPlugin[] = [
     source: "official",
     registry: "termix-official",
     version: "1.0.0",
-    capabilities: [
-      "hosts:write",
-      "credentials:use",
-      "ssh:exec",
-      "ui:surface",
-    ],
+    capabilities: ["hosts:write", "credentials:use", "ssh:exec", "ui:surface"],
     contributes: ["Quick Connect panel"],
     contributions: {
       navItems: [

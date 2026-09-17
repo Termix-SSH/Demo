@@ -81,10 +81,16 @@ export function FileManagerContextMenu(props: ContextMenuProps) {
     let nextX = x;
     let nextY = y;
     if (x + rect.width > window.innerWidth - VIEWPORT_PADDING) {
-      nextX = Math.max(VIEWPORT_PADDING, window.innerWidth - rect.width - VIEWPORT_PADDING);
+      nextX = Math.max(
+        VIEWPORT_PADDING,
+        window.innerWidth - rect.width - VIEWPORT_PADDING,
+      );
     }
     if (y + rect.height > window.innerHeight - VIEWPORT_PADDING) {
-      nextY = Math.max(VIEWPORT_PADDING, window.innerHeight - rect.height - VIEWPORT_PADDING);
+      nextY = Math.max(
+        VIEWPORT_PADDING,
+        window.innerHeight - rect.height - VIEWPORT_PADDING,
+      );
     }
     setPosition({ x: nextX, y: nextY });
     setIsMounted(true);
@@ -319,10 +325,7 @@ export function FileManagerContextMenu(props: ContextMenuProps) {
     >
       {finalItems.map((item, index) =>
         item.separator ? (
-          <div
-            key={`sep-${index}`}
-            className="my-1 border-t border-border"
-          />
+          <div key={`sep-${index}`} className="my-1 border-t border-border" />
         ) : (
           <button
             key={item.label}

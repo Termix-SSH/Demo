@@ -16,10 +16,7 @@ import {
   useFileText,
 } from "@/demo/hosts/host-fields";
 import { Section } from "@/demo/hosts/host-sections";
-import type {
-  CredentialEditorForm,
-  FieldErrors,
-} from "@/demo/hosts/host-form";
+import type { CredentialEditorForm, FieldErrors } from "@/demo/hosts/host-form";
 
 type SetField = <K extends keyof CredentialEditorForm>(
   key: K,
@@ -121,7 +118,9 @@ export function CredentialEditorBody({
                           variant="outline"
                           size="xs"
                           onClick={() =>
-                            toast.info("Key generation is not part of the demo.")
+                            toast.info(
+                              "Key generation is not part of the demo.",
+                            )
                           }
                         >
                           {label}

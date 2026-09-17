@@ -186,10 +186,7 @@ export function HostEditorBody({
 
       {sectionIds.has("access") && (
         <Section id="access">
-          <SectionCard
-            title="Access"
-            icon={<KeyRound className="size-3.5" />}
-          >
+          <SectionCard title="Access" icon={<KeyRound className="size-3.5" />}>
             <div className="flex flex-col gap-4 py-3">
               <FieldPair>
                 <TextField
@@ -323,8 +320,8 @@ export function HostEditorBody({
 
               {form.authType === "none" && (
                 <p className="text-[10px] text-muted-foreground">
-                  Termix will not send any credentials. The server has to let you
-                  in another way.
+                  Termix will not send any credentials. The server has to let
+                  you in another way.
                 </p>
               )}
 
@@ -367,10 +364,7 @@ export function HostEditorBody({
 
       {sectionIds.has("organization") && (
         <Section id="organization">
-          <SectionCard
-            title="Organization"
-            icon={<Tag className="size-3.5" />}
-          >
+          <SectionCard title="Organization" icon={<Tag className="size-3.5" />}>
             <div className="flex flex-col gap-4 py-3">
               <Field
                 label={form.organizeBy === "parent" ? "Parent host" : "Folder"}
@@ -1057,11 +1051,7 @@ function ProtocolCard({
           : "border-border bg-muted/10 hover:border-border"
       }`}
     >
-      <span
-        className={
-          on ? "text-accent-brand" : "text-muted-foreground/40"
-        }
-      >
+      <span className={on ? "text-accent-brand" : "text-muted-foreground/40"}>
         {icon}
       </span>
       <span className="flex min-w-0 flex-1 flex-col gap-0.5">
@@ -1134,7 +1124,12 @@ function ProtocolSection({
             { value: "direct", label: "Username and password" },
             { value: "credential", label: "Saved credential" },
             ...(allowNone
-              ? [{ value: "none" as ProtocolAuthType, label: "Ask me each time" }]
+              ? [
+                  {
+                    value: "none" as ProtocolAuthType,
+                    label: "Ask me each time",
+                  },
+                ]
               : []),
           ]}
         />

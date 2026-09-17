@@ -351,9 +351,7 @@ function ContainerCard({
               size="icon-xs"
               title="Stop"
               className="text-destructive"
-              onClick={(e) =>
-                act("stop", "exited", "Exited (0) just now", e)
-              }
+              onClick={(e) => act("stop", "exited", "Exited (0) just now", e)}
             >
               {acting === "stop" ? <Spinner /> : <Square className="size-3" />}
             </Button>
@@ -394,7 +392,11 @@ function ContainerCard({
             disabled={container.state === "exited"}
             onClick={(e) => act("restart", "running", "Up just now", e)}
           >
-            {acting === "restart" ? <Spinner /> : <RotateCw className="size-3" />}
+            {acting === "restart" ? (
+              <Spinner />
+            ) : (
+              <RotateCw className="size-3" />
+            )}
           </Button>
           <Button
             variant="ghost"
@@ -416,7 +418,11 @@ function ContainerCard({
  * too short to hide them behind hover the way a card can.
  */
 function containerColumns(
-  onSetState: (id: string, state: DemoContainer["state"], status: string) => void,
+  onSetState: (
+    id: string,
+    state: DemoContainer["state"],
+    status: string,
+  ) => void,
 ): DataColumn<DemoContainer>[] {
   return [
     {
@@ -457,11 +463,14 @@ function containerColumns(
       cell: (c) => (
         <Facts className="text-[10px] text-muted-foreground">
           {c.ports ? (
-            c.ports.split(", ").slice(0, 2).map((port) => (
-              <span key={port} className="font-mono">
-                {port}
-              </span>
-            ))
+            c.ports
+              .split(", ")
+              .slice(0, 2)
+              .map((port) => (
+                <span key={port} className="font-mono">
+                  {port}
+                </span>
+              ))
           ) : (
             <span className="italic">None</span>
           )}
@@ -518,12 +527,7 @@ function RowActions({
         </Button>
       )}
       {paused && (
-        <Button
-          variant="ghost"
-          size="icon-xs"
-          title="Unpause"
-          onClick={start}
-        >
+        <Button variant="ghost" size="icon-xs" title="Unpause" onClick={start}>
           <PlayCircle className="size-3" />
         </Button>
       )}
@@ -620,7 +624,6 @@ function ContainerDetail({
   );
 }
 
-
 function logColor(line: string): string {
   if (line.includes("ERROR")) return "text-destructive";
   if (line.includes("WARN")) return "text-warning/90";
@@ -651,9 +654,7 @@ function LogViewer({ container }: { container: DemoContainer }) {
 
   const visible = useMemo(() => {
     const q = filter.trim().toLowerCase();
-    const rows = q
-      ? lines.filter((l) => l.toLowerCase().includes(q))
-      : lines;
+    const rows = q ? lines.filter((l) => l.toLowerCase().includes(q)) : lines;
     const limit = tail === "all" ? rows.length : Number(tail);
     return rows.slice(-limit);
   }, [lines, filter, tail]);
@@ -906,9 +907,7 @@ function ConsolePlaceholder({
           variant="outline"
           size="sm"
           className="gap-1.5"
-          onClick={() =>
-            onSetState(container.id, "running", "Up just now")
-          }
+          onClick={() => onSetState(container.id, "running", "Up just now")}
         >
           <Play className="size-3" />
           Start container

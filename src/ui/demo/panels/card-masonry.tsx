@@ -76,7 +76,9 @@ function useColumnCount(columns: number): number {
 function flattenChildren(children: React.ReactNode): React.ReactNode[] {
   return Children.toArray(children).flatMap((child) =>
     isValidElement(child) && child.type === Fragment
-      ? flattenChildren((child.props as { children?: React.ReactNode }).children)
+      ? flattenChildren(
+          (child.props as { children?: React.ReactNode }).children,
+        )
       : [child],
   );
 }

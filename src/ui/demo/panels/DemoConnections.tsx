@@ -2,7 +2,12 @@ import { useMemo } from "react";
 import { Plug, RotateCcw, Share2, X } from "lucide-react";
 import { Button } from "@/components/button";
 import { EmptyState } from "@/components/empty-state";
-import { Facts, GroupHeading, PANEL, PanelShell } from "@/components/panel-layout";
+import {
+  Facts,
+  GroupHeading,
+  PANEL,
+  PanelShell,
+} from "@/components/panel-layout";
 import type { Tab } from "@/types/ui-types";
 import { DEMO_HOSTS } from "@/demo/demo-data";
 

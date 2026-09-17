@@ -401,10 +401,7 @@ const Root: React.FC<RootProps> = ({
               initial="rootInitial"
               animate="rootAnimate"
               transition={transitions.root}
-              className={cn(
-                "bg-transparent overflow-hidden",
-                className,
-              )}
+              className={cn("bg-transparent overflow-hidden", className)}
               role="tree"
               aria-labelledby={`${id}-label`}
               tabIndex={0}
@@ -412,9 +409,7 @@ const Root: React.FC<RootProps> = ({
               onFocus={handleTreeFocus}
               onBlur={handleTreeBlur}
             >
-              <div className="w-full overflow-y-auto text-xs">
-                {children}
-              </div>
+              <div className="w-full overflow-y-auto text-xs">{children}</div>
             </motion.div>
           </LevelContext.Provider>
         </TreeContext.Provider>

@@ -30,7 +30,13 @@ export type ManageFolder = {
 };
 
 export type ManageRow =
-  | { kind: "folder"; depth: number; folder: ManageFolder; count: number; online: number }
+  | {
+      kind: "folder";
+      depth: number;
+      folder: ManageFolder;
+      count: number;
+      online: number;
+    }
   | { kind: "item"; depth: number; item: ManageItem; folderPath: string };
 
 function emptyFolder(path: string, name: string): ManageFolder {
@@ -38,7 +44,11 @@ function emptyFolder(path: string, name: string): ManageFolder {
 }
 
 /** Walks to the folder at `path`, creating each missing segment on the way. */
-function folderAt(root: ManageFolder, index: Map<string, ManageFolder>, path: string) {
+function folderAt(
+  root: ManageFolder,
+  index: Map<string, ManageFolder>,
+  path: string,
+) {
   if (!path) return root;
   const existing = index.get(path);
   if (existing) return existing;
@@ -107,7 +117,9 @@ export function buildHostManageTree(hosts: Host[]): ManageFolder {
   return sortFolder(root);
 }
 
-export function buildCredentialManageTree(credentials: Credential[]): ManageFolder {
+export function buildCredentialManageTree(
+  credentials: Credential[],
+): ManageFolder {
   const root = emptyFolder("", "");
   const index = new Map<string, ManageFolder>();
 
@@ -210,7 +222,10 @@ function pushItem(
 }
 
 /** Drops folders with nothing matching, so search never leaves empty headers. */
-function filterFolder(folder: ManageFolder, needle: string): ManageFolder | null {
+function filterFolder(
+  folder: ManageFolder,
+  needle: string,
+): ManageFolder | null {
   if (!needle) return folder;
   const folders = folder.folders
     .map((child) => filterFolder(child, needle))
@@ -233,7 +248,10 @@ export function allFolderPaths(
 }
 
 /** Every parent host id, so sub-hosts can start expanded too. */
-export function allParentIds(folder: ManageFolder, out: string[] = []): string[] {
+export function allParentIds(
+  folder: ManageFolder,
+  out: string[] = [],
+): string[] {
   const walk = (item: ManageItem) => {
     if (item.children.length > 0) out.push(item.id);
     item.children.forEach(walk);

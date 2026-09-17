@@ -35,9 +35,7 @@ export interface PluginHostSection {
   label: string;
   icon: LucideIcon;
   running: boolean;
-  fields: NonNullable<
-    NonNullable<DemoPlugin["contributions"]>["hostFields"]
-  >;
+  fields: NonNullable<NonNullable<DemoPlugin["contributions"]>["hostFields"]>;
 }
 
 function contributes(plugin: DemoPlugin): boolean {

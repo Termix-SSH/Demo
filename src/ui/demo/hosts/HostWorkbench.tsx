@@ -96,7 +96,8 @@ export function HostWorkbench({
     useState<Credential[]>(getDemoCredentials);
   useEffect(() => subscribeDemoHosts(() => setHosts([...getDemoHosts()])), []);
   useEffect(
-    () => subscribeDemoCredentials(() => setCredentials([...getDemoCredentials()])),
+    () =>
+      subscribeDemoCredentials(() => setCredentials([...getDemoCredentials()])),
     [],
   );
 
@@ -131,7 +132,8 @@ export function HostWorkbench({
     const apply = (request: EditorRequest | null) => {
       if (!request) return;
       if (request.kind === "host") openHost(request.host);
-      else if (request.kind === "credential") openCredential(request.credential);
+      else if (request.kind === "credential")
+        openCredential(request.credential);
       else {
         // Browsing: show the list for that side and clear any open editor.
         setMode(request.mode);
@@ -143,8 +145,7 @@ export function HostWorkbench({
 
     const onOpen = () => apply(takePendingEditorRequest());
     window.addEventListener("host-manager:open-editor", onOpen);
-    return () =>
-      window.removeEventListener("host-manager:open-editor", onOpen);
+    return () => window.removeEventListener("host-manager:open-editor", onOpen);
   }, []);
 
   const isHost = editing?.kind === "host";
@@ -157,7 +158,8 @@ export function HostWorkbench({
     [isHost, hostForm],
   );
   const credErrors = useMemo(
-    () => (editing?.kind === "credential" ? validateCredentialForm(credForm) : {}),
+    () =>
+      editing?.kind === "credential" ? validateCredentialForm(credForm) : {},
     [editing, credForm],
   );
 
@@ -178,7 +180,10 @@ export function HostWorkbench({
   function saveCredential() {
     if (Object.keys(credErrors).length > 0) return;
     if (editingCredential) {
-      updateDemoCredential(editingCredential.id, buildCredentialPatch(credForm));
+      updateDemoCredential(
+        editingCredential.id,
+        buildCredentialPatch(credForm),
+      );
       toast.success(`Saved ${credForm.name}`);
     } else {
       addDemoCredential(newCredentialFromForm(credForm));
@@ -237,9 +242,7 @@ export function HostWorkbench({
           onQuery={setQuery}
           hosts={hosts}
           credentials={credentials}
-          selectedId={
-            editingHost?.id ?? editingCredential?.id ?? null
-          }
+          selectedId={editingHost?.id ?? editingCredential?.id ?? null}
           onPickHost={openHost}
           onPickCredential={openCredential}
         />

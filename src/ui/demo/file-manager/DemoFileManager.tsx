@@ -12,11 +12,7 @@ import { Folder as FolderIcon } from "lucide-react";
 import { FileManagerGrid } from "./FileManagerGrid";
 import { FileManagerSidebar } from "./FileManagerSidebar";
 import { FileManagerContextMenu } from "./FileManagerContextMenu";
-import type {
-  CreateIntent,
-  SortBy,
-  SortOrder,
-} from "./types";
+import type { CreateIntent, SortBy, SortOrder } from "./types";
 
 interface ContextMenuState {
   visible: boolean;
@@ -358,9 +354,7 @@ export function DemoFileManager({
           })
         }
         onCopyPath={(files) => void copyPaths(files)}
-        onPin={(file) =>
-          setPinnedPaths((prev) => new Set(prev).add(file.path))
-        }
+        onPin={(file) => setPinnedPaths((prev) => new Set(prev).add(file.path))}
         onUnpin={(file) =>
           setPinnedPaths((prev) => {
             const next = new Set(prev);

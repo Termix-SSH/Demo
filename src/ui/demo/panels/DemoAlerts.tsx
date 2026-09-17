@@ -33,7 +33,12 @@ const SEVERITY_CLASS: Record<DemoAlert["severity"], string> = {
 const DEMO_RULES = [
   { id: 1, name: "Memory above 80%", holdFor: "10m", channels: "ntfy" },
   { id: 2, name: "Disk above 70%", holdFor: "30m", channels: "ntfy, webhook" },
-  { id: 3, name: "Host stops answering", holdFor: "Immediate", channels: "ntfy" },
+  {
+    id: 3,
+    name: "Host stops answering",
+    holdFor: "Immediate",
+    channels: "ntfy",
+  },
 ];
 
 const DEMO_CHANNELS = [

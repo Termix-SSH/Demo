@@ -92,7 +92,10 @@ export function ConnectionScreen({
                         attempt,
                         max: maxAttempts,
                       })
-                    : t("connection.retryingNow", { attempt, max: maxAttempts })}
+                    : t("connection.retryingNow", {
+                        attempt,
+                        max: maxAttempts,
+                      })}
                 </p>
               )}
             </div>

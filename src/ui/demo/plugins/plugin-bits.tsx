@@ -11,8 +11,7 @@ export function PluginIcon({
   muted?: boolean;
 }) {
   const Icon = pluginIcon(name);
-  const box =
-    size === "lg" ? "size-10" : size === "sm" ? "size-7" : "size-9";
+  const box = size === "lg" ? "size-10" : size === "sm" ? "size-7" : "size-9";
   const glyph =
     size === "lg" ? "size-5" : size === "sm" ? "size-3.5" : "size-4";
   return (

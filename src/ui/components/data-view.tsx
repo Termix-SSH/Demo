@@ -1,6 +1,10 @@
 import type React from "react";
 import { cn } from "@/lib/utils";
-import { PANEL, type PanelDensity, type PanelViewMode } from "@/components/panel-layout";
+import {
+  PANEL,
+  type PanelDensity,
+  type PanelViewMode,
+} from "@/components/panel-layout";
 
 /**
  * One collection, two shapes: a card grid or a dense row table.
@@ -91,7 +95,9 @@ export function DataView<T>({
   className?: string;
 }) {
   if (items.length === 0) {
-    return <div className="flex flex-1 items-center justify-center">{empty}</div>;
+    return (
+      <div className="flex flex-1 items-center justify-center">{empty}</div>
+    );
   }
 
   if (view === "grid") {

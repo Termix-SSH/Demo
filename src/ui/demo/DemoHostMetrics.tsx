@@ -192,10 +192,7 @@ export function DemoHostMetrics({ host }: { host: Host }) {
                   <UsagePair label="Memory" percent={memNow} />
                   <UsagePair label="Disk" percent={diskNow} />
                   <div className="divide-y divide-border pt-1">
-                    <StatRow
-                      label="Cores"
-                      value={String(metrics.cpu.cores)}
-                    />
+                    <StatRow label="Cores" value={String(metrics.cpu.cores)} />
                     <StatRow
                       label="Load"
                       value={metrics.cpu.load
@@ -242,7 +239,10 @@ export function DemoHostMetrics({ host }: { host: Host }) {
                       "Used",
                       `${memUsed.toFixed(1)}/${metrics.memory.totalGiB.toFixed(1)}G`,
                     ],
-                    ["Free", `${(metrics.memory.totalGiB - memUsed).toFixed(1)}G`],
+                    [
+                      "Free",
+                      `${(metrics.memory.totalGiB - memUsed).toFixed(1)}G`,
+                    ],
                   ]}
                 />
                 <GaugeCard
@@ -292,7 +292,10 @@ export function DemoHostMetrics({ host }: { host: Host }) {
 
         {tab === "network" && (
           <CardMasonry stack={list} columns={columns}>
-            <SectionCard title="Interfaces" icon={<Network className="size-3.5" />}>
+            <SectionCard
+              title="Interfaces"
+              icon={<Network className="size-3.5" />}
+            >
               <InterfaceBody metrics={metrics} list={list} density={density} />
             </SectionCard>
 
@@ -322,7 +325,11 @@ export function DemoHostMetrics({ host }: { host: Host }) {
           <CardMasonry stack={list} columns={columns}>
             <SectionCard title="System" icon={<Server className="size-3.5" />}>
               <div className="divide-y divide-border">
-                <StatRow label="Hostname" value={metrics.system.hostname} mono />
+                <StatRow
+                  label="Hostname"
+                  value={metrics.system.hostname}
+                  mono
+                />
                 <StatRow label="OS" value={metrics.system.os} />
                 <StatRow label="Kernel" value={metrics.system.kernel} mono />
                 <StatRow label="Arch" value={metrics.system.arch} mono />
@@ -353,7 +360,6 @@ export function DemoHostMetrics({ host }: { host: Host }) {
     </MetricsShell>
   );
 }
-
 
 type Iface = Metrics["interfaces"][number];
 type Proc = Metrics["processes"]["top"][number];
