@@ -12,6 +12,7 @@ import {
   Play,
   Plus,
   Puzzle,
+  RotateCcw,
   Search,
   Server,
   Settings,
@@ -28,6 +29,7 @@ import {
 import { Kbd } from "@/components/kbd";
 import { railItemLabel, visibleRailItems } from "@/sidebar/rail-items";
 import { DEMO_ACTIVITY, DEMO_SNIPPETS } from "@/demo/demo-data";
+import { resetDemo } from "@/demo/reset-demo";
 import { resolveHostTabType } from "@/lib/host-connection-tabs";
 import { timeAgo } from "@/lib/relative-time";
 import { useNavItems } from "@/demo/nav-registry";
@@ -237,6 +239,12 @@ export function CommandPalette({
         label: t("nav.userProfile"),
         icon: User as React.ElementType,
         run: onOpenSettings,
+      },
+      {
+        id: "action-reset-demo",
+        label: "Reset the demo",
+        icon: RotateCcw as React.ElementType,
+        run: resetDemo,
       },
     ];
     if (!searching) return all;
