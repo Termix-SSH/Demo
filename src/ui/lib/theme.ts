@@ -71,8 +71,44 @@ export const ACCENT_PRESET_COLORS = [
   { label: "Lime", value: "#84cc16" },
 ];
 
+export const DEFAULT_ACCENT_COLOR = "#f59145";
+
 export function applyAccentColor(colorValue: string) {
   document.documentElement.style.setProperty("--accent-brand", colorValue);
+  try {
+    localStorage.setItem("termix-accent-color", colorValue);
+  } catch {
+    // Private windows refuse writes; the accent just will not persist.
+  }
+}
+
+/** Reads back the stored accent, font size and font so a reload keeps them. */
+export function readStoredAccentColor(): string {
+  try {
+    return localStorage.getItem("termix-accent-color") ?? DEFAULT_ACCENT_COLOR;
+  } catch {
+    return DEFAULT_ACCENT_COLOR;
+  }
+}
+
+export function readStoredFontSize(): FontSizeId {
+  try {
+    const stored = localStorage.getItem("termix-font-size");
+    if (FONT_SIZES.some((f) => f.id === stored)) return stored as FontSizeId;
+  } catch {
+    // fall through to the default
+  }
+  return "md";
+}
+
+export function readStoredUiFont(): UiFontId {
+  try {
+    const stored = localStorage.getItem("termix-ui-font");
+    if (UI_FONTS.some((f) => f.id === stored)) return stored as UiFontId;
+  } catch {
+    // fall through to the default
+  }
+  return "jetbrains-mono";
 }
 
 export const FONT_SIZES: { id: FontSizeId; label: string }[] = [

@@ -3,11 +3,19 @@ import { createRoot } from "react-dom/client";
 import "./ui/index.css";
 import "./ui/i18n/i18n";
 import { Toaster } from "@/components/sonner";
-import { applyAccentColor, applyFontSize, applyUiFont } from "@/lib/theme";
+import {
+  applyAccentColor,
+  applyFontSize,
+  applyUiFont,
+  readStoredAccentColor,
+  readStoredFontSize,
+  readStoredUiFont,
+} from "@/lib/theme";
 import { TooltipProvider } from "@/components/tooltip";
 import { UiPreferencesProvider } from "@/contexts/UiPreferencesContext";
 import { DemoAuth } from "@/auth/DemoAuth";
 import { AppShell } from "@/AppShell";
+import { OnboardingDialog } from "@/demo/OnboardingDialog";
 import { startDashboardPluginCards } from "@/demo/dashboard-plugin-cards";
 import { startNavPluginItems } from "@/demo/nav-plugin-items";
 
@@ -22,9 +30,9 @@ type Phase = "idle-auth" | "fading-in" | "idle-app" | "fading-out";
 // index.css scales the whole UI off html.fs-*; with no class the browser
 // default of 16px applies and every surface renders oversized. The real app
 // sets these on boot, so the demo has to as well.
-applyFontSize("md");
-applyUiFont("jetbrains-mono");
-applyAccentColor("#f59145");
+applyFontSize(readStoredFontSize());
+applyUiFont(readStoredUiFont());
+applyAccentColor(readStoredAccentColor());
 
 // Plugin-contributed dashboard sections follow the plugin store from here on.
 startDashboardPluginCards();
@@ -111,6 +119,9 @@ function App() {
         >
           <UiPreferencesProvider>
             <AppShell username={username} onLogout={handleLogout} />
+            {/* Sits inside the provider so it can read and write the same
+                onboarding state the real app persists. */}
+            <OnboardingDialog />
           </UiPreferencesProvider>
         </div>
       )}

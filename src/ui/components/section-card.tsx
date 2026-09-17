@@ -76,6 +76,9 @@ export function FakeSwitch({
   const on = checked !== undefined ? checked : internalOn;
   return (
     <button
+      type="button"
+      role="switch"
+      aria-checked={on}
       onClick={() => {
         const next = !on;
         if (checked === undefined) setInternalOn(next);
