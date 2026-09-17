@@ -596,7 +596,7 @@ function StatsStrip({ hosts }: { hosts: Host[] }) {
       <Stat label={t("dashboard.version")}>
         <div className="flex items-baseline gap-1.5">
           <span className="text-2xl font-bold leading-none tracking-tight">
-            2.7.1
+            3.0.0
           </span>
           <VersionBadge status="up_to_date" className="w-fit" />
         </div>

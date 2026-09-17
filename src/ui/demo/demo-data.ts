@@ -700,7 +700,7 @@ export const DEMO_CONTAINERS: DemoContainer[] = [
   {
     id: "3f2a91c4b7e1",
     name: "termix-app",
-    image: "ghcr.io/termix-ssh/termix:2.7.1",
+    image: "ghcr.io/termix-ssh/termix:3.0.0",
     state: "running",
     status: "Up 6 days",
     ports: "8080:8080",
@@ -1151,7 +1151,7 @@ export const DEMO_CONTAINER_STATS: Record<string, DemoContainerStats> = {
 /** Keyed by container id. Lines carry a timestamp and a level prefix. */
 export const DEMO_CONTAINER_LOGS: Record<string, string[]> = {
   "3f2a91c4b7e1": [
-    "2026-09-09T14:02:11.204Z INFO  starting termix 2.7.1",
+    "2026-09-09T14:02:11.204Z INFO  starting termix 3.0.0",
     "2026-09-09T14:02:11.881Z INFO  database ready (sqlite)",
     "2026-09-09T14:02:12.010Z INFO  listening on 0.0.0.0:8080",
     "2026-09-09T14:02:19.442Z INFO  GET /api/hosts 200 12ms",
