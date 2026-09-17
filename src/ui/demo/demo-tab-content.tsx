@@ -1,4 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
+import { lazy, Suspense } from "react";
 import {
   Activity,
   Puzzle,
@@ -8,7 +9,10 @@ import {
 import type { Host, SplitMode, Tab, TabType } from "@/types/ui-types";
 import { Button } from "@/components/button";
 import { EmptyState } from "@/components/empty-state";
-import { DemoTerminal } from "@/demo/DemoTerminal";
+// xterm is the single heaviest dependency here and only the terminal needs it,
+// so it loads on demand. The connect screen in DemoConnectionGate already
+// covers the wait, which makes the split invisible.
+const DemoTerminal = lazy(() => import("@/demo/DemoTerminal"));
 import { DemoFileManager } from "@/demo/file-manager/DemoFileManager";
 import { DemoDashboard } from "@/demo/DemoDashboard";
 import { DemoHostMetrics } from "@/demo/DemoHostMetrics";
@@ -104,7 +108,9 @@ export function renderDemoTabContent(
     case "local-terminal":
       return tab.host ? (
         <DemoConnectionGate kind="terminal" target={target} offline={offline}>
-          <DemoTerminal host={tab.host} />
+          <Suspense fallback={<div className="h-full w-full bg-background" />}>
+            <DemoTerminal host={tab.host} />
+          </Suspense>
         </DemoConnectionGate>
       ) : (
         <Placeholder
@@ -213,12 +219,11 @@ export function renderDemoTabContent(
         />
       );
 
-    // A start page is a blank canvas until you put something on it, so the
-    // empty state here is the absence of one.
+    // A start page is a blank canvas until you put something on it. The
+    // canvas itself is not built here, so say that rather than showing an
+    // empty tab, which reads as broken.
     case "homepage":
-      return (
-        <div className={`h-full w-full ${chrome ? "bg-background" : ""}`} />
-      );
+      return <NotInDemo chrome={chrome} title="Homepage" />;
 
     // Installable from the store, but the demo does not build the screen. Say
     // so rather than rendering an empty tab, which reads as broken.

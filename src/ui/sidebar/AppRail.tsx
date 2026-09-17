@@ -43,8 +43,7 @@ export type RailView =
   | "automations"
   | "ai"
   | "fleets"
-  | "workspaces"
-  | "collab";
+  | "workspaces";
 
 export type HideableRailView =
   | Exclude<RailView, "user-profile" | "admin-settings">
@@ -182,7 +181,7 @@ export function AppRail({
       group,
       items: items.filter((item) => (item.group ?? "tools") === group),
     })).filter((band) => band.items.length > 0);
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- visibleRailDestinations/visibleRailItems read the nav registry, which navItems tracks
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- visibleRailDestinations/visibleRailItems read the nav registry, which navItems tracks
   }, [hiddenIds, unavailable, presetHidden, navItems]);
 
   // Only things the user chose to hide. A destination the preset hides, or one

@@ -26,7 +26,6 @@ import {
   Plug,
   ScrollText,
   Sparkles,
-  Presentation,
   Workflow,
 } from "lucide-react";
 import type { TabType } from "@/types/ui-types";
@@ -72,8 +71,6 @@ export function tabIcon(type: TabType) {
       return <LayoutGrid className="size-3.5" />;
     case "fleet-inventory":
       return <Boxes className="size-3.5" />;
-    case "collab":
-      return <Presentation className="size-3.5" />;
     case "termix-id":
       return <Fingerprint className="size-3.5" />;
     case "alerts":

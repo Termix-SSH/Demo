@@ -778,7 +778,6 @@ export function SidebarTree({
       actionsOnly,
       showTags,
       HOST_ROW_HEIGHT,
-      CLICK_CHEVRON_EXTRA,
       OPEN_TRAY_EXTRA,
       ALWAYS_ROW_HEIGHT,
       ACTIONS_ONLY_ROW_HEIGHT,

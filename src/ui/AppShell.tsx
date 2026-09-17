@@ -318,7 +318,7 @@ export function AppShell({
         onEditCredential,
       );
     };
-  });
+  }, []);
 
   // Hosts and credentials are both edited in the host-manager tab, so
   // promoting either rail panel lands on the same surface.

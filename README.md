@@ -87,4 +87,3 @@ If you need help or want to report an issue with the Termix documentation, visit
 ## License
 
 Distributed under the Apache License Version 2.0. See `LICENSE` for more information.
-a

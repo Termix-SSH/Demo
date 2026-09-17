@@ -50,10 +50,8 @@ export function CredentialItem({
   cred,
   usedByCount = 0,
   termixIdLinked = false,
-  query = "",
   stripeIndex = 0,
   isMenuOpen = false,
-  onMenuOpenChange,
   isTrayOpen = false,
   onTrayOpenChange,
   onDragStart,
@@ -77,9 +75,11 @@ export function CredentialItem({
   cred: Credential;
   usedByCount?: number;
   termixIdLinked?: boolean;
+  /** Accepted so the tree can pass it uniformly; this row does not highlight matches. */
   query?: string;
   stripeIndex?: number;
   isMenuOpen?: boolean;
+  /** Accepted for parity with the host row; menu state is owned by the tree. */
   onMenuOpenChange?: (open: boolean) => void;
   isTrayOpen?: boolean;
   onTrayOpenChange?: (open: boolean) => void;
