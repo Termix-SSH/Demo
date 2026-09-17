@@ -5,11 +5,11 @@ import {
   Bell,
   ChevronDown,
   Database,
-  KeyRound,
   Monitor,
   Palette,
   PanelLeft,
   Puzzle,
+  RotateCcw,
   Server,
   Terminal as TerminalIcon,
   Settings as SettingsIcon,
@@ -17,11 +17,16 @@ import {
   SlidersHorizontal,
   User,
 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/button";
 import { Separator } from "@/components/separator";
 import { SectionCard, SettingRow, FakeSwitch } from "@/components/section-card";
 import { GroupHeading, PANEL } from "@/components/panel-layout";
 import { DemoPanel } from "@/demo/DemoPanel";
+import { DemoAlerts } from "@/demo/panels/DemoAlerts";
+import { DEMO_CREDENTIALS } from "@/demo/demo-data";
+import { getDemoHosts } from "@/demo/demo-store";
+import { resetDemo } from "@/demo/reset-demo";
 import { PluginsScreen } from "@/demo/plugins/PluginsScreen";
 import { getPlugins, subscribePlugins } from "@/demo/plugins/plugin-store";
 import { pluginIcon } from "@/demo/plugins/plugin-icons";
@@ -31,6 +36,18 @@ import {
   readRailPreference,
   setRailPreference,
 } from "@/sidebar/rail-preferences";
+import {
+  ACCENT_PRESET_COLORS,
+  applyAccentColor,
+  applyFontSize,
+  applyUiFont,
+  FONT_SIZES,
+  readStoredAccentColor,
+  readStoredFontSize,
+  readStoredUiFont,
+  UI_FONTS,
+} from "@/lib/theme";
+import type { FontSizeId, UiFontId } from "@/types/ui-types";
 import { effectivePresetLabel } from "@/types/ui-preferences";
 import type { UiPreset } from "@/types/ui-preferences";
 
@@ -250,6 +267,12 @@ export function SettingsScreen({
             <InterfaceSection />
           ) : section === "appearance" ? (
             <AppearanceSection />
+          ) : section === "security" ? (
+            <SecuritySection />
+          ) : section === "data" ? (
+            <DataSection />
+          ) : section === "alerts" ? (
+            <DemoAlerts chrome={false} />
           ) : section === "admin" ? (
             <AdminSection />
           ) : section.startsWith("plugin:") ? (
@@ -295,7 +318,7 @@ function AccountSection({ username }: { username: string }) {
           </span>
         </SettingRow>
         <SettingRow label={p("versionLabel")}>
-          <span className="font-mono text-xs text-muted-foreground">2.7.1</span>
+          <span className="font-mono text-xs text-muted-foreground">3.0.0</span>
         </SettingRow>
       </SectionCard>
 
@@ -579,10 +602,21 @@ function PluginSettingsPage({ plugin }: { plugin: DemoPlugin | null }) {
   );
 }
 
-/** Theme, font and language, as the real profile lays them out. */
+/**
+ * Theme, font and language, as the real profile lays them out.
+ *
+ * Accent, font size and interface font are real: the apply helpers in
+ * lib/theme.ts already drive CSS variables and persist, so the demo wires the
+ * controls straight to them. Theme and language are genuinely fixed here, and
+ * are shown as disabled rather than as a chevron that does nothing.
+ */
 function AppearanceSection() {
   const { t } = useTranslation();
   const p = (key: string) => t(`newUi.sidebar.userProfile.${key}`);
+
+  const [accent, setAccent] = useState(readStoredAccentColor);
+  const [fontSize, setFontSize] = useState<FontSizeId>(readStoredFontSize);
+  const [uiFont, setUiFont] = useState<UiFontId>(readStoredUiFont);
 
   return (
     <div className={`flex flex-col ${PANEL.gap} ${PANEL.body}`}>
@@ -591,27 +625,256 @@ function AppearanceSection() {
         icon={<Palette className="size-3.5" />}
       >
         <SettingRow label={p("themeLabel")}>
-          <ReadonlySelect value="Dark" />
+          <FixedValue value="Dark" hint="Dark only in the demo" />
         </SettingRow>
+
         <SettingRow label={p("accentColorLabel")}>
-          <span className="flex items-center gap-1.5">
-            <span className="size-4 border border-border bg-accent-brand" />
-            <span className="font-mono text-[11px] text-muted-foreground">
-              #f59145
-            </span>
-          </span>
+          <div className="flex flex-wrap items-center justify-end gap-1.5">
+            {ACCENT_PRESET_COLORS.map((preset) => {
+              const on = preset.value.toLowerCase() === accent.toLowerCase();
+              return (
+                <button
+                  key={preset.value}
+                  type="button"
+                  title={preset.label}
+                  aria-label={preset.label}
+                  aria-pressed={on}
+                  onClick={() => {
+                    applyAccentColor(preset.value);
+                    setAccent(preset.value);
+                  }}
+                  className={`size-5 border transition-transform ${
+                    on
+                      ? "border-foreground scale-110"
+                      : "border-border hover:scale-110"
+                  }`}
+                  style={{ backgroundColor: preset.value }}
+                />
+              );
+            })}
+          </div>
         </SettingRow>
+
         <SettingRow label={p("fontSizeLabel")}>
-          <ReadonlySelect value="Medium" />
+          <Choices
+            options={FONT_SIZES.map((f) => ({ id: f.id, label: f.label }))}
+            value={fontSize}
+            onChange={(id) => {
+              applyFontSize(id as FontSizeId);
+              setFontSize(id as FontSizeId);
+            }}
+          />
         </SettingRow>
+
         <SettingRow
           label={p("interfaceFontLabel")}
           description={p("interfaceFontDescription")}
         >
-          <ReadonlySelect value="JetBrains Mono" />
+          <Choices
+            options={UI_FONTS.map((f) => ({ id: f.id, label: f.label }))}
+            value={uiFont}
+            onChange={(id) => {
+              applyUiFont(id as UiFontId);
+              setUiFont(id as UiFontId);
+            }}
+          />
         </SettingRow>
+
         <SettingRow label={p("languageLabel")}>
-          <ReadonlySelect value="English" />
+          <FixedValue value="English" hint="English only in the demo" />
+        </SettingRow>
+      </SectionCard>
+    </div>
+  );
+}
+
+/** A small segmented picker for the appearance rows. */
+function Choices({
+  options,
+  value,
+  onChange,
+}: {
+  options: { id: string; label: string }[];
+  value: string;
+  onChange: (id: string) => void;
+}) {
+  return (
+    <div className="flex flex-wrap items-center justify-end gap-1">
+      {options.map((option) => {
+        const on = option.id === value;
+        return (
+          <button
+            key={option.id}
+            type="button"
+            aria-pressed={on}
+            onClick={() => onChange(option.id)}
+            className={`border px-2 py-1 text-[11px] transition-colors ${
+              on
+                ? "border-accent-brand bg-accent-brand/10 text-accent-brand"
+                : "border-border text-muted-foreground hover:border-accent-brand/40 hover:text-foreground"
+            }`}
+          >
+            {option.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/** A setting the demo genuinely cannot change, shown as fixed rather than fake. */
+function FixedValue({ value, hint }: { value: string; hint: string }) {
+  return (
+    <span
+      title={hint}
+      className="flex h-7 cursor-not-allowed items-center border border-dashed border-border px-2 text-xs text-muted-foreground"
+    >
+      {value}
+    </span>
+  );
+}
+
+/**
+ * Two-factor, passkeys and sessions.
+ *
+ * The login screen already walks through a TOTP step, so this page shows 2FA
+ * as on: what the visitor just did and what the settings say should agree.
+ */
+function SecuritySection() {
+  const { t } = useTranslation();
+  const p = (key: string) => t(`newUi.sidebar.userProfile.${key}`);
+
+  return (
+    <div className={`flex flex-col ${PANEL.gap} ${PANEL.body}`}>
+      <SectionCard
+        title={p("sectionSecurity")}
+        icon={<Shield className="size-3.5" />}
+      >
+        <SettingRow
+          label={p("totpAuthenticator")}
+          description={p("totpEnabled")}
+        >
+          <FakeSwitch defaultChecked />
+        </SettingRow>
+        <SettingRow label={p("passkeys")} description={p("passkeysDesc")}>
+          <FakeSwitch />
+        </SettingRow>
+        <SettingRow
+          label={t("settings.paletteShortcut")}
+          description={t("settings.paletteShortcutHint")}
+        >
+          <FakeSwitch defaultChecked />
+        </SettingRow>
+      </SectionCard>
+
+      <SectionCard
+        title="Active sessions"
+        icon={<Monitor className="size-3.5" />}
+      >
+        {DEMO_SESSIONS.map((session) => (
+          <SettingRow
+            key={session.id}
+            label={session.device}
+            description={`${session.location} · ${session.lastSeen}`}
+          >
+            {session.current ? (
+              <span className="border border-accent-brand px-2 py-1 text-[10px] uppercase tracking-widest text-accent-brand">
+                This device
+              </span>
+            ) : (
+              <Button variant="outline" size="sm" className="h-7 text-[11px]">
+                Sign out
+              </Button>
+            )}
+          </SettingRow>
+        ))}
+      </SectionCard>
+    </div>
+  );
+}
+
+/** Sessions shown on the Security page. Fixed, like every other demo fixture. */
+const DEMO_SESSIONS = [
+  {
+    id: "current",
+    device: "This browser",
+    location: "Local",
+    lastSeen: "Active now",
+    current: true,
+  },
+  {
+    id: "laptop",
+    device: "Firefox on Linux",
+    location: "Berlin, DE",
+    lastSeen: "2 days ago",
+    current: false,
+  },
+  {
+    id: "phone",
+    device: "Safari on iOS",
+    location: "Berlin, DE",
+    lastSeen: "Last week",
+    current: false,
+  },
+];
+
+/**
+ * Export and import, plus the demo's only way back to a clean slate.
+ *
+ * Hosts and plugins live in memory and reset on reload, but rail layout,
+ * preferences and the adaptive engine persist, so without this a visitor who
+ * rearranges things has no way back.
+ */
+function DataSection() {
+  const { t } = useTranslation();
+  const p = (key: string) => t(`newUi.sidebar.userProfile.${key}`);
+  const hosts = getDemoHosts();
+
+  return (
+    <div className={`flex flex-col ${PANEL.gap} ${PANEL.body}`}>
+      <SectionCard
+        title={p("sectionData")}
+        icon={<Database className="size-3.5" />}
+      >
+        <SettingRow label={p("exportData")} description={p("exportDataDesc")}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-7 text-[11px]"
+            onClick={() =>
+              toast.success(
+                `Exported ${hosts.length} hosts and ${DEMO_CREDENTIALS.length} credentials`,
+              )
+            }
+          >
+            {p("export")}
+          </Button>
+        </SettingRow>
+        <SettingRow label={p("importData")} description={p("importDataDesc")}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-7 text-[11px]"
+            onClick={() => toast.info("Importing is disabled in the demo")}
+          >
+            {p("import")}
+          </Button>
+        </SettingRow>
+      </SectionCard>
+
+      <SectionCard title="Demo" icon={<RotateCcw className="size-3.5" />}>
+        <SettingRow
+          label="Reset the demo"
+          description="Clears the layout, appearance and plugin changes you have made, then reloads."
+        >
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-7 text-[11px]"
+            onClick={resetDemo}
+          >
+            Reset
+          </Button>
         </SettingRow>
       </SectionCard>
     </div>
@@ -710,21 +973,6 @@ const PLACEHOLDER: Record<
     icon: Palette,
     title: "Appearance",
     hint: "Theme, accent color, interface font and language.",
-  },
-  security: {
-    icon: KeyRound,
-    title: "Security",
-    hint: "Two-factor, passkeys, active sessions and API keys.",
-  },
-  data: {
-    icon: Database,
-    title: "Data",
-    hint: "Export and import your hosts, credentials and layouts.",
-  },
-  alerts: {
-    icon: Bell,
-    title: "Alerts",
-    hint: "Rules, notification channels and what has fired recently.",
   },
   admin: {
     icon: SettingsIcon,
