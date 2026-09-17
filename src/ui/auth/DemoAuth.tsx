@@ -57,7 +57,7 @@ export function DemoAuth({ onLogin }: { onLogin: (username: string) => void }) {
       <div className="flex flex-1 items-center justify-center overflow-y-auto p-6">
         <div className="w-full max-w-[360px]">
           <div className="mb-6 flex items-center gap-2.5 lg:hidden">
-            <img src="/icon.svg" alt="" className="size-7 object-contain" />
+            <img src="./icon.svg" alt="" className="size-7 object-contain" />
             <span className="font-mono text-sm font-bold uppercase tracking-[0.3em]">
               Termix
             </span>
@@ -234,7 +234,7 @@ function BrandPanel({ tagline }: { tagline: string }) {
       <div className="absolute inset-x-0 top-0 h-px bg-accent-brand/60" />
 
       <div className="relative flex items-center gap-3">
-        <img src="/icon.svg" alt="" className="size-8 object-contain" />
+        <img src="./icon.svg" alt="" className="size-8 object-contain" />
         <span className="font-mono text-lg font-bold uppercase tracking-[0.35em]">
           Termix
         </span>
