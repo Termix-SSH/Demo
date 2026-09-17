@@ -19,7 +19,6 @@ import {
   PRESETS,
   resolveArea,
   sanitizeUiPreferences,
-  UI_ONBOARDING_VERSION,
   type UiAreaKey,
   type UiAreaPreferences,
   type UiOverrides,
@@ -61,7 +60,6 @@ interface UiPreferencesContextValue {
   ) => void;
   clearArea: (area: UiAreaKey) => void;
   clearAllOverrides: () => void;
-  completeOnboarding: (skipped: boolean) => void;
 }
 
 const UiPreferencesContext = createContext<UiPreferencesContextValue | null>(
@@ -224,18 +222,6 @@ export function UiPreferencesProvider({ children }: { children: ReactNode }) {
     applyLocal((prev) => ({ ...prev, overrides: {} }), { overrides: null });
   }, [applyLocal]);
 
-  const completeOnboarding = useCallback(
-    (skipped: boolean) => {
-      const onboarding = {
-        completedVersion: UI_ONBOARDING_VERSION,
-        completedAt: new Date().toISOString(),
-        skipped,
-      };
-      applyLocal((prev) => ({ ...prev, onboarding }), { onboarding });
-    },
-    [applyLocal],
-  );
-
   const value = useMemo<UiPreferencesContextValue>(
     () => ({
       preferences,
@@ -245,17 +231,8 @@ export function UiPreferencesProvider({ children }: { children: ReactNode }) {
       setOverride,
       clearArea,
       clearAllOverrides,
-      completeOnboarding,
     }),
-    [
-      preferences,
-      loaded,
-      setPreset,
-      setOverride,
-      clearArea,
-      clearAllOverrides,
-      completeOnboarding,
-    ],
+    [preferences, loaded, setPreset, setOverride, clearArea, clearAllOverrides],
   );
 
   return (

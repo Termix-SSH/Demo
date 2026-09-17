@@ -15,7 +15,6 @@ import { TooltipProvider } from "@/components/tooltip";
 import { UiPreferencesProvider } from "@/contexts/UiPreferencesContext";
 import { DemoAuth } from "@/auth/DemoAuth";
 import { AppShell } from "@/AppShell";
-import { OnboardingDialog } from "@/demo/OnboardingDialog";
 import { startDashboardPluginCards } from "@/demo/dashboard-plugin-cards";
 import { startNavPluginItems } from "@/demo/nav-plugin-items";
 
@@ -119,9 +118,6 @@ function App() {
         >
           <UiPreferencesProvider>
             <AppShell username={username} onLogout={handleLogout} />
-            {/* Sits inside the provider so it can read and write the same
-                onboarding state. */}
-            <OnboardingDialog />
           </UiPreferencesProvider>
         </div>
       )}

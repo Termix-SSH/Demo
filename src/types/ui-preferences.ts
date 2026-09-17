@@ -13,9 +13,6 @@
 
 export const UI_PREFERENCES_VERSION = 1;
 
-/** Bump when onboarding gains steps existing users should be shown again. */
-export const UI_ONBOARDING_VERSION = 2;
-
 export type UiPreset = "simple" | "balanced" | "advanced" | "custom";
 
 export type UiAreaKey =
@@ -131,18 +128,10 @@ export type UiOverrides = {
   [A in UiAreaKey]?: Partial<UiAreaPreferences[A]>;
 };
 
-export interface UiOnboardingState {
-  /** 0 means "never completed". Compared against UI_ONBOARDING_VERSION. */
-  completedVersion: number;
-  completedAt: string | null;
-  skipped: boolean;
-}
-
 export interface UiPreferences {
   version: number;
   preset: UiPreset;
   overrides: UiOverrides;
-  onboarding: UiOnboardingState;
 }
 
 const PRESET_VALUES: UiPreset[] = ["simple", "balanced", "advanced", "custom"];
@@ -491,36 +480,11 @@ export function sanitizeUiOverrides(input: unknown): UiOverrides {
   return out as UiOverrides;
 }
 
-function sanitizeOnboarding(input: unknown): UiOnboardingState {
-  const defaults: UiOnboardingState = {
-    completedVersion: 0,
-    completedAt: null,
-    skipped: false,
-  };
-  if (!input || typeof input !== "object") return defaults;
-  const obj = input as Record<string, unknown>;
-
-  return {
-    completedVersion:
-      typeof obj.completedVersion === "number" &&
-      Number.isFinite(obj.completedVersion) &&
-      obj.completedVersion >= 0
-        ? Math.round(obj.completedVersion)
-        : defaults.completedVersion,
-    completedAt:
-      typeof obj.completedAt === "string"
-        ? obj.completedAt
-        : defaults.completedAt,
-    skipped: typeof obj.skipped === "boolean" ? obj.skipped : defaults.skipped,
-  };
-}
-
 export function defaultUiPreferences(): UiPreferences {
   return {
     version: UI_PREFERENCES_VERSION,
     preset: "balanced",
     overrides: {},
-    onboarding: { completedVersion: 0, completedAt: null, skipped: false },
   };
 }
 
@@ -535,7 +499,6 @@ export function sanitizeUiPreferences(input: unknown): UiPreferences {
       ? (obj.preset as UiPreset)
       : defaults.preset,
     overrides: sanitizeUiOverrides(obj.overrides),
-    onboarding: sanitizeOnboarding(obj.onboarding),
   };
 }
 
