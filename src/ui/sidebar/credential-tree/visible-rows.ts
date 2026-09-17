@@ -32,7 +32,7 @@ export type VirtualRow = {
 
 /**
  * Builds the flattened, currently-visible row list for the virtualizer.
- * Folders are always depth 0, credentials always depth 1 -- there is no
+ * Folders are always depth 0 and credentials always depth 1, so there is no
  * deeper nesting to walk, unlike hosts' recursive collectVisibleRows.
  */
 export function collectVisibleRows(

@@ -311,11 +311,11 @@ function ToggleButton({
  * justify-between row put a rule between a label and its value at opposite
  * ends, a single child still got the treatment, and a nested flex span pushed
  * the rule into the middle of a group. Separators are real elements now, placed
- * only between children, and the row never wraps -- a fact that does not fit is
+ * only between children, and the row never wraps. A fact that does not fit is
  * truncated rather than sent to a second line where its rule would dangle.
  *
  * Use this only for peers: "12 online", "40 hosts". A label and its value are
- * not peers -- separate those with space, since a rule between a name and its
+ * not peers. Separate those with space, since a rule between a name and its
  * number reads as a boundary between two facts.
  */
 export function Facts({
@@ -333,10 +333,7 @@ export function Facts({
       {items.map((child, i) => (
         <Fragment key={i}>
           {i > 0 && (
-            <span
-              aria-hidden
-              className="h-3 w-px shrink-0 bg-border"
-            />
+            <span aria-hidden className="h-3 w-px shrink-0 bg-border" />
           )}
           <span className="min-w-0 truncate">{child}</span>
         </Fragment>

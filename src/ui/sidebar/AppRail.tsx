@@ -145,7 +145,7 @@ export function AppRail({
   const { userEnabled: aiEnabled } = useAiAvailability();
 
   // Termix ID publishes SSH public keys under a claimed public handle for
-  // other servers to fetch -- meaningless for a standalone desktop install
+  // other servers to fetch. That is meaningless for a standalone install
   // with no synced multi-device account, so it stays hidden until a remote
   // server is actually connected.
   const [isRemoteSyncConnected] = useState(() => !isElectron());

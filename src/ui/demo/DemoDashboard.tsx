@@ -863,7 +863,7 @@ function RecentActivity({ ctx }: { ctx: DashboardCardContext }) {
   );
 }
 
-// Registered at module load, the same way the real app's widgets are.
+// Registered at module load, the same way the other widgets are.
 registerDashboardCard({
   id: "stats_bar",
   label: "Server overview",

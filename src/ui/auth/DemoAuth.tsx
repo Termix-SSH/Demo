@@ -20,8 +20,8 @@ import { PasswordInput } from "@/components/password-input";
  *
  * The left half is the same hairline/mono chrome the panels use: brand mark,
  * tagline, version in the corner. The right half is the form: password by
- * default, with the passkey and external provider paths the real app offers
- * shown but inert, plus the TOTP step so the flow reads as complete.
+ * default, with the passkey and external provider paths shown but inert, plus
+ * the TOTP step so the flow reads as complete.
  */
 
 type Step = "credentials" | "totp";

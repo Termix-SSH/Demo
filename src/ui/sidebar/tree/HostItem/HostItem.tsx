@@ -282,7 +282,7 @@ export function HostItem({
   /** True while this row is the one being dragged, for the ghost styling. */
   isDragging?: boolean;
   onReorderDrop?: (position: "before" | "after") => void;
-  /** Whether THIS row is the current reorder drop target -- lifted to a
+  /** Whether THIS row is the current reorder drop target. Lifted to a
    * single piece of state in the parent tree so only one row can ever show
    * the drop-indicator bar at a time, instead of each row tracking its own
    * hover state (which could get stuck showing a stale bar when dragleave
@@ -295,7 +295,7 @@ export function HostItem({
   isExpanded?: boolean;
   /** Present only when this host has sub-hosts nested under it. */
   onToggleExpand?: () => void;
-  /** ids of the host(s) currently being dragged, if any -- mirrors FolderItem's drop-target wiring. */
+  /** ids of the host(s) currently being dragged, if any. Mirrors FolderItem's drop-target wiring. */
   draggedHostIds?: string[] | null;
   /** Present when this row can accept a dragged host/selection to become its parent. */
   onDropChildHosts?: (hostIds: string[]) => void;
@@ -311,7 +311,7 @@ export function HostItem({
   const { initialLoadComplete } = useServerStatusMeta();
   const statusCheckOn = statusCheckEnabled(host);
   const statusLoading = !initialLoadComplete && statusCheckOn;
-  // Per-host subscription — status polls only re-render rows that flipped.
+  // Per-host subscription. Status polls only re-render rows that flipped.
   const liveStatus = useHostStatus(Number(host.id), statusCheckOn);
   const availability =
     liveStatus === "online" ||
@@ -1244,7 +1244,7 @@ export function HostItem({
           )}
         </div>
 
-        {/* Address — always visible in comfortable density */}
+        {/* Address, always visible in comfortable density */}
         {tokens.showAddressRow && (
           <span className="text-[11px] text-muted-foreground/60 truncate leading-none font-mono">
             {host.username}@{host.ip}
@@ -1282,7 +1282,7 @@ export function HostItem({
             </div>
           )}
 
-        {/* Action tray — slides open on hover (default) or via chevron in click-tray mode */}
+        {/* Action tray. Slides open on hover, or via chevron in click-tray mode */}
         <div className={trayVisibilityClass}>
           {tokens.showResourceRow &&
             isOnline &&
@@ -1323,7 +1323,7 @@ export function HostItem({
           <div
             className={`flex flex-col gap-0.5 ${alwaysShowTray || actionsOnly || shouldUseClickTray ? "" : "pt-1.5"}`}
           >
-            {/* Connection buttons — only shown here when not already shown above */}
+            {/* Connection buttons, only shown here when not already shown above */}
             {!alwaysShowTray && !actionsOnly && !shouldUseClickTray && (
               <div className="flex items-center flex-wrap gap-[1.75px]">
                 {connectionButtons}

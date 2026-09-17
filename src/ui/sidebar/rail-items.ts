@@ -51,7 +51,7 @@ export interface RailItemDef {
    */
   promotable?: boolean;
   /**
-   * Can be opened in the right dock. Reference panels only -- a list is useful
+   * Can be opened in the right dock. Reference panels only: a list is useful
    * beside your work, an editor is not.
    */
   rightDockable?: boolean;
@@ -225,8 +225,8 @@ const LEGACY_HIDDEN_KEY = "hiddenRailTabs";
 /**
  * What the user has hidden from the rail.
  *
- * The rail shows what is installed -- built-in destinations and whatever the
- * enabled plugins contribute -- so there is nothing to "add". The only choice
+ * The rail shows what is installed: built-in destinations plus whatever the
+ * enabled plugins contribute. There is nothing to "add". The only choice
  * is to hide something you do not use, and to bring it back later. Storing the
  * hidden set rather than the visible one means a newly installed plugin shows
  * up on its own instead of waiting to be pinned.

@@ -147,11 +147,11 @@ export function NumberField({
 }
 
 /**
- * A secret the server never sends back.
+ * A secret that is never sent back to the client.
  *
- * The real app ships sentinels like "existing_password" so the form can tell
- * "unchanged" from "cleared". Showing that string to the user would be absurd,
- * so a sentinel renders as a saved note and clears the moment you type.
+ * Sentinels like "existing_password" let the form tell "unchanged" from
+ * "cleared". Showing that string to the user would be absurd, so a sentinel
+ * renders as a saved note and clears the moment you type.
  */
 export const SECRET_SENTINELS = [
   "existing_password",
@@ -242,14 +242,9 @@ export function SelectField<T extends string>({
       <Select
         value={value === ("" as T) ? EMPTY : value}
         disabled={disabled}
-        onValueChange={(next) =>
-          onChange((next === EMPTY ? "" : next) as T)
-        }
+        onValueChange={(next) => onChange((next === EMPTY ? "" : next) as T)}
       >
-        <SelectTrigger
-          aria-invalid={!!error}
-          className="h-8 w-full text-xs"
-        >
+        <SelectTrigger aria-invalid={!!error} className="h-8 w-full text-xs">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
@@ -345,9 +340,9 @@ export function SwitchRow({
  * A list of rows you add to and remove from: jump hosts, port knocks, tunnels,
  * proxy chains, environment variables.
  *
- * Every one of these was its own copy in the real app, differing only in what a
- * row contains, so the add button, the empty line and the remove control live
- * here and the caller supplies the row.
+ * Each of these was once its own copy, differing only in what a row contains,
+ * so the add button, the empty line and the remove control live here and the
+ * caller supplies the row.
  */
 export function Repeater<T>({
   label,
@@ -386,7 +381,9 @@ export function Repeater<T>({
         </Button>
       </div>
 
-      {hint && <span className="text-[10px] text-muted-foreground">{hint}</span>}
+      {hint && (
+        <span className="text-[10px] text-muted-foreground">{hint}</span>
+      )}
 
       {items.length === 0 ? (
         <span className="border border-dashed border-border px-3 py-2 text-[10px] text-muted-foreground">
@@ -476,7 +473,9 @@ export function TagInput({
 
 /** Two fields side by side above md, stacked below. */
 export function FieldPair({ children }: { children: ReactNode }) {
-  return <div className="grid grid-cols-1 gap-4 md:grid-cols-2">{children}</div>;
+  return (
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">{children}</div>
+  );
 }
 
 /** Reads a picked file's text, for keys and certificates. */

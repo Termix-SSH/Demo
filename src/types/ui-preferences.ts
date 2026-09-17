@@ -1,19 +1,14 @@
 /**
- * App-wide UI complexity preferences. Shared by the frontend UI preferences
- * context and the backend preferences endpoint (no framework imports, mirrors
- * ./host-sidebar-preferences.ts's dependency-free convention -- the backend's
- * NodeNext build cannot resolve the "@/" frontend path alias).
+ * App-wide UI complexity preferences.
  *
- * The model stores the user's *intent* -- a preset plus the individual knobs
- * they have deliberately changed -- not a second copy of values other stores
- * already own. Areas whose knobs already live somewhere else (host sidebar
- * blob, user_preferences.hiddenRailTabs, a handful of localStorage keys) are
- * seeded from the preset when it changes; reads keep going to the existing
- * store. See applyPresetSideEffects on the frontend.
+ * The model stores intent: a preset, plus the individual knobs deliberately
+ * changed. It is not a second copy of values other stores already own. Areas
+ * whose knobs live elsewhere (the host sidebar blob, hiddenRailTabs, a few
+ * localStorage keys) are seeded from the preset when it changes, and reads
+ * keep going to the existing store. See applyPresetSideEffects.
  *
- * "balanced" is exactly today's behavior. Every value in PRESETS.balanced is
- * transcribed from the defaults that were already in the code, so existing
- * users who land on it see no change at all.
+ * "balanced" matches the defaults that were already in the code, so landing
+ * on it changes nothing.
  */
 
 export const UI_PREFERENCES_VERSION = 1;
@@ -110,7 +105,7 @@ export interface UiHostEditorPreferences {
 }
 
 export interface UiHomepagePreferences {
-  /** null means "never preset-driven" -- a preset must not touch the canvas. */
+  /** null means "never preset-driven": a preset must not touch the canvas. */
   enabledWidgets: string[] | null;
 }
 

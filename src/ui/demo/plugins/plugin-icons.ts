@@ -44,8 +44,8 @@ import {
  * One string -> icon map for the whole plugin system.
  *
  * Fixtures name their icon as a string so the data file stays plain data. That
- * lookup used to be copied into five files -- plugin-bits, nav-plugin-items,
- * dashboard-plugin-cards, host-plugin-sections and SettingsScreen -- and each
+ * lookup used to be copied into five files (plugin-bits, nav-plugin-items,
+ * dashboard-plugin-cards, host-plugin-sections and SettingsScreen) and each
  * copy held a different subset, so an icon that worked in the store rendered as
  * a fallback in the rail. Adding an icon is one edit here now.
  */

@@ -33,13 +33,10 @@ function writeCache(preferences: HostSidebarPreferences) {
 }
 
 /**
- * Unified host sidebar preferences (sort, group, filters, open folders,
- * density, tag visibility, tray trigger, status color scheme), cached in
- * localStorage for instant paint and synced to the backend so they follow
- * the user across devices when storageMode is "cloud" -- same
- * cache-then-fetch-then-debounced-save shape as useHostMetricsPreferences,
- * but per-user rather than per-host, and gated on storageMode the way the
- * older per-preference localStorage toggles were.
+ * Unified host sidebar preferences: sort, group, filters, open folders,
+ * density, tag visibility, tray trigger and status color scheme. Cached in
+ * localStorage so the tree paints straight away, then saved back on a
+ * debounce. Per-user rather than per-host.
  *
  * Multiple components (HostsPanel, CustomizeSidebarPanel, UserProfilePanel's
  * resetToDefaults) can call this hook at the same time. Each holds its own

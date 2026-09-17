@@ -1,14 +1,22 @@
 import { useEffect, useState } from "react";
-import { Check, Copy, Eye, EyeOff, Fingerprint, Plus, ShieldCheck } from "lucide-react";
+import {
+  Check,
+  Copy,
+  Eye,
+  EyeOff,
+  Fingerprint,
+  Plus,
+  ShieldCheck,
+} from "lucide-react";
 import { Button } from "@/components/button";
 import { GroupHeading, PANEL, PanelShell } from "@/components/panel-layout";
 import { getPublishedKeys, getTermixId } from "@/demo/demo-api";
 import type { DemoPublishedKey } from "@/demo/demo-data";
 
 /**
- * Mirrors the real TermixIdPanel: the handle others resolve your keys from,
- * the keys themselves, and the small certificate authority that lets a server
- * trust one key instead of a list.
+ * The handle others resolve your keys from, the keys themselves, and the
+ * small certificate authority that lets a server trust one key instead of a
+ * list.
  */
 export function DemoTermixId({ chrome = true }: { chrome?: boolean }) {
   const [id, setId] = useState<Awaited<ReturnType<typeof getTermixId>> | null>(

@@ -13,7 +13,7 @@ import { getSessionLogs } from "@/demo/demo-api";
 import type { DemoSessionLog } from "@/demo/demo-data";
 import { timeAgo } from "@/lib/relative-time";
 
-/** "48 KB", "1.2 MB" -- the same shape the real panel prints. */
+/** "48 KB", "1.2 MB". */
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;

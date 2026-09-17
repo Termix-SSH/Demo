@@ -29,7 +29,7 @@ import {
 const ROW_COLS = "grid-cols-[1fr_120px_150px_80px_90px]";
 
 // Rows lost their bottom border to the left-edge selection marker, so the
-// measured height is one pixel under the real app's 41.
+// measured height is one pixel under the usual 41.
 const LIST_ROW_H = 40;
 const GRID_ROW_H = 112;
 const GRID_CELL_W = 112;

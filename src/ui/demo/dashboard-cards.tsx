@@ -83,9 +83,9 @@ function subscribe(listener: () => void): () => void {
 }
 
 /**
- * Re-renders when a plugin adds or removes a card. The real app reads its
- * registry during render with no subscription, which is fine when everything
- * registers at import time but not when plugins install while running.
+ * Re-renders when a plugin adds or removes a card. Reading the registry
+ * during render with no subscription is fine when everything registers at
+ * import time, but not when plugins install while running.
  */
 export function useDashboardCards(): DashboardCardDef[] {
   return useSyncExternalStore(subscribe, getDashboardCards, getDashboardCards);

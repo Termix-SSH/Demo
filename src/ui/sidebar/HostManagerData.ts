@@ -2,9 +2,8 @@ import type { Host } from "@/types/ui-types";
 import type { SSHHostWithStatus } from "@/main-axios";
 
 /**
- * In the real app this converts the API host row (numeric ids, flattened
- * columns) into the UI Host shape. The demo fixtures are already written in the
- * UI shape, so this only needs to fill the derived fields the tree reads.
+ * Converts a host row into the UI Host shape. The fixtures are already written
+ * in that shape, so this only fills the derived fields the tree reads.
  */
 export function sshHostToHost(h: SSHHostWithStatus): Host {
   return {

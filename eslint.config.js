@@ -6,9 +6,6 @@ import unusedImports from "eslint-plugin-unused-imports";
 import tseslint from "typescript-eslint";
 import { globalIgnores } from "eslint/config";
 
-// Mirrors Termix's rule set. Most of src/ui is copied from that repo, so the
-// lint rules have to match or the same code reports dozens of errors here that
-// it does not there.
 export default tseslint.config([
   globalIgnores(["dist"]),
   {

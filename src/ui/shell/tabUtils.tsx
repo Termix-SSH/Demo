@@ -95,9 +95,8 @@ export function tabIcon(type: TabType) {
 }
 
 /**
- * The real app prefetches a tab's lazy chunk and tracks which surfaces get used
- * to prioritise that prefetching. The demo loads everything eagerly, so these
- * are kept as no-ops to preserve the call sites.
+ * Tab surfaces load eagerly here, so the prefetch and usage-tracking hooks are
+ * no-ops kept only to preserve the call sites.
  */
 export function preloadTabSurface(_type: TabType): void {}
 

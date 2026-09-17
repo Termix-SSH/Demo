@@ -11,7 +11,7 @@ export function notifyAiStatusChanged(): void {
   window.dispatchEvent(new Event(AI_STATUS_CHANGED_EVENT));
 }
 
-/** The demo shows the assistant entry so the rail matches the real app. */
+/** Always available, so the assistant entry shows in the rail. */
 export function useAiAvailability(): AiAvailability {
   return { globallyEnabled: true, userEnabled: true, loaded: true };
 }

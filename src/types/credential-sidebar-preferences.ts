@@ -1,14 +1,12 @@
 /**
- * Credential sidebar preferences model. Shared by the frontend sidebar and
- * the backend preferences endpoint (no framework imports, mirrors
- * ./host-sidebar-preferences.ts's dependency-free convention). Independent
- * from HostSidebarPreferences by design — a separate parallel system, not a
- * shared blob, matching how credentialSortKey/credentialFilterState were
- * already independently namespaced from hostSortKey/etc. before this port.
+ * Credential sidebar preferences model. Kept separate from
+ * HostSidebarPreferences on purpose: two parallel systems rather than one
+ * shared blob, matching how the credential sort and filter keys were already
+ * namespaced apart from the host ones.
  *
- * Deliberately smaller than HostSidebarPreferences: no groupKey selector
- * (folder is the only grouping credentials have, so there's nothing to
- * pick), no statusColorScheme (credentials have no online/offline concept).
+ * Smaller than HostSidebarPreferences: no groupKey selector, since folder is
+ * the only grouping credentials have, and no statusColorScheme, since
+ * credentials have no online or offline state.
  */
 
 export const CREDENTIAL_SIDEBAR_PREFS_VERSION = 1;

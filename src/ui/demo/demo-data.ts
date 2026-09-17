@@ -225,7 +225,7 @@ export const DEMO_HOSTS: Host[] = [
   host({
     id: "h-win-desk",
     name: "workshop-pc",
-    username: "luke",
+    username: "deploy",
     ip: "192.168.1.55",
     folder: "Homelab",
     status: "unknown",
@@ -239,7 +239,7 @@ export const DEMO_HOSTS: Host[] = [
     enableTerminal: false,
     enableFileManager: false,
     rdpAuthType: "credential",
-    rdpUser: "luke",
+    rdpUser: "deploy",
     lastAccess: "2026-09-01T09:41:00Z",
   }),
 
@@ -1086,7 +1086,7 @@ export const DEMO_FILE_CONTENTS: Record<string, string> = {
   ].join("\n"),
 };
 
-// ── Docker ──────────────────────────────────────────────────
+// ── Docker ─────────────────────────────────────────────────
 
 export interface DemoContainerStats {
   cpuPercent: number;
@@ -1187,7 +1187,7 @@ export const DEMO_CONTAINER_LOGS: Record<string, string[]> = {
 
 export const DEMO_DOCKER_INFO = { runtime: "Docker", version: "24.0.7" };
 
-// ── Proxmox ─────────────────────────────────────────────────
+// ── Proxmox ────────────────────────────────────────────────
 
 export interface DemoProxmoxNode {
   name: string;
@@ -1307,7 +1307,7 @@ export const DEMO_PROXMOX_CLUSTER: DemoProxmoxCluster = {
   ],
 };
 
-// ── Host metrics ────────────────────────────────────────────
+// ── Host metrics ───────────────────────────────────────────
 
 export interface DemoMetricInterface {
   name: string;
@@ -1464,7 +1464,7 @@ export const DEMO_HOST_METRICS: Record<string, DemoHostMetrics> = {
 export const DEMO_HOST_METRICS_DEFAULT: DemoHostMetrics =
   DEMO_HOST_METRICS["h-web-01"];
 
-// ── tmux ────────────────────────────────────────────────────
+// ── tmux ───────────────────────────────────────────────────
 
 /** Canned pane output, keyed by tmux pane id. */
 export const DEMO_TMUX_PANE_OUTPUT: Record<string, string[]> = {
@@ -1493,7 +1493,7 @@ export const DEMO_TMUX_PANE_OUTPUT: Record<string, string[]> = {
   ],
 };
 
-// ─── Macros ──────────────────────────────────────────────────────────────────
+// ── Macros ─────────────────────────────────────────────────
 
 export interface DemoMacroStep {
   kind: "send" | "wait" | "delay" | "if" | "repeat";
@@ -1545,7 +1545,7 @@ export const DEMO_MACROS: DemoMacro[] = [
   },
 ];
 
-// ─── Fleets ──────────────────────────────────────────────────────────────────
+// ── Fleets ─────────────────────────────────────────────────
 
 export interface DemoFleet {
   id: number;
@@ -1581,7 +1581,7 @@ export const DEMO_FLEETS: DemoFleet[] = [
   },
 ];
 
-// ─── Workspaces ──────────────────────────────────────────────────────────────
+// ── Workspaces ─────────────────────────────────────────────
 
 export interface DemoWorkspace {
   id: number;
@@ -1619,7 +1619,7 @@ export const DEMO_WORKSPACES: DemoWorkspace[] = [
   },
 ];
 
-// ─── Termix ID ───────────────────────────────────────────────────────────────
+// ── Termix ID ──────────────────────────────────────────────
 
 export interface DemoPublishedKey {
   id: number;
@@ -1657,7 +1657,7 @@ export const DEMO_PUBLISHED_KEYS: DemoPublishedKey[] = [
   },
 ];
 
-// ─── Automations ─────────────────────────────────────────────────────────────
+// ── Automations ────────────────────────────────────────────
 
 export interface DemoAutomation {
   id: number;

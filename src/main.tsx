@@ -27,9 +27,9 @@ import { startNavPluginItems } from "@/demo/nav-plugin-items";
 
 type Phase = "idle-auth" | "fading-in" | "idle-app" | "fading-out";
 
-// index.css scales the whole UI off html.fs-*; with no class the browser
-// default of 16px applies and every surface renders oversized. The real app
-// sets these on boot, so the demo has to as well.
+// index.css scales the whole UI off html.fs-*. With no class the browser
+// default of 16px applies and every surface renders oversized, so these have
+// to be set on boot.
 applyFontSize(readStoredFontSize());
 applyUiFont(readStoredUiFont());
 applyAccentColor(readStoredAccentColor());
@@ -43,9 +43,9 @@ const FADE_MS = 450;
 /**
  * The signed-in user, kept across reloads.
  *
- * The demo has no real session, but dropping back to the login screen on every
- * refresh makes it feel like the app forgot you. Logging out is the only thing
- * that clears this, which is how the real app behaves.
+ * There is no real session here, but dropping back to the login screen on
+ * every refresh makes it feel like the app forgot you. Logging out is the only
+ * thing that clears this.
  */
 const SESSION_KEY = "termix-demo-session";
 
@@ -120,7 +120,7 @@ function App() {
           <UiPreferencesProvider>
             <AppShell username={username} onLogout={handleLogout} />
             {/* Sits inside the provider so it can read and write the same
-                onboarding state the real app persists. */}
+                onboarding state. */}
             <OnboardingDialog />
           </UiPreferencesProvider>
         </div>

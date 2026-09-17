@@ -63,7 +63,7 @@ export function MobileBar({
   const navItems = useNavItems();
   const destinations = useMemo(
     () => visibleRailDestinations(readHiddenIds()),
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- visibleRailDestinations reads the nav registry, which navItems tracks
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- visibleRailDestinations reads the nav registry, which navItems tracks
     [navItems],
   );
 

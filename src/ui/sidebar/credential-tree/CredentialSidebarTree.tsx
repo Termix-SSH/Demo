@@ -138,14 +138,14 @@ export function CredentialSidebarTree({
   const visibleRows = collectVisibleRows(folders, query, openFolders);
 
   // Fixed, exactly-computed row heights rather than estimate-then-measure,
-  // matching SidebarTree.tsx's approach -- estimate-then-measure caused
+  // matching SidebarTree.tsx's approach. Estimate-then-measure caused
   // visible gaps between rows there. All constants below were measured live
   // against the running app (Playwright getBoundingClientRect) for every
   // density x trayTrigger x open/closed-tray x credential-type combination.
   //
   // Unlike hosts, credential row height genuinely depends on TYPE, not just
   // density/trayTrigger: only "key" credentials render a connection-buttons
-  // row (deploy/copy-command) -- "password" credentials have no connection
+  // row (deploy/copy-command). "password" credentials have no connection
   // buttons at all, so a password row is shorter than a key row whenever
   // that row is showing (actionsOnly closed, or always mode).
   const FOLDER_ROW_HEIGHT = 31.5;
@@ -195,7 +195,7 @@ export function CredentialSidebarTree({
     },
   });
 
-  // Single tree-level indicator off the virtualizer's slot geometry -- see
+  // Single tree-level indicator off the virtualizer's slot geometry. See
   // SidebarTree for why rows can't place this themselves.
   const reorderIndicatorTop = (() => {
     if (!arrangeMode || !reorderHoverKey || !reorderHoverEdge) return null;
@@ -239,12 +239,12 @@ export function CredentialSidebarTree({
   /**
    * Resolves a credential drop into its new position, scoped to the target
    * credential's own folder, and moves it there when the drop crossed
-   * folders. Credential folders themselves are always alphabetical -- they
-   * have no stored order, so only credentials are draggable.
+   * folders. Credential folders themselves are always alphabetical and have
+   * no stored order, so only credentials are draggable.
    */
   /**
    * Credential dropped on a folder header: lands at the end of that folder.
-   * It needs an explicit sortOrder for the same reason hosts do -- a null
+   * It needs an explicit sortOrder for the same reason hosts do: a null
    * one sorts last under manual sort and then falls back to alphabetical,
    * throwing the placement away.
    */

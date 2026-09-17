@@ -473,9 +473,8 @@ function MobileKeyBar({ term }: { term: React.RefObject<Terminal | null> }) {
 }
 
 /**
- * The real toolbar is a draggable pill anchored bottom-centre that sits at 30%
- * opacity until you hover it. The demo keeps the look and the collapse and
- * density behaviour, minus the dragging.
+ * A pill anchored bottom-centre that sits at 30% opacity until you hover it.
+ * Keeps the collapse and density behaviour, minus the dragging.
  */
 function TerminalToolbar({
   host,

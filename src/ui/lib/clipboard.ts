@@ -1,5 +1,5 @@
-// Browser-only clipboard helpers. The real app also routes through Electron and
-// an xterm provider; the demo never needs either.
+// Browser-only clipboard helpers. Nothing here routes through Electron or an
+// xterm provider.
 export async function copyToClipboard(text: string): Promise<boolean> {
   try {
     if (navigator.clipboard?.writeText) {

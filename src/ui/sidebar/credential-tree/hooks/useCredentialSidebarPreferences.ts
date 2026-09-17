@@ -33,13 +33,11 @@ function writeCache(preferences: CredentialSidebarPreferences) {
 }
 
 /**
- * Unified credential sidebar preferences (sort, filters, open folders,
- * density, tag visibility, tray trigger), cached in localStorage for instant
- * paint and synced to the backend so they follow the user across devices
- * when storageMode is "cloud" -- same cache-then-fetch-then-debounced-save
- * shape as useHostSidebarPreferences, but a fully independent parallel
- * system (separate table, separate localStorage key, separate sync event),
- * not a shared blob with hosts.
+ * Unified credential sidebar preferences: sort, filters, open folders,
+ * density, tag visibility and tray trigger. Same cache-then-debounced-save
+ * shape as useHostSidebarPreferences, but a fully independent parallel system
+ * with its own localStorage key and change event, not a shared blob with
+ * hosts.
  *
  * Multiple components (CredentialsPanel, CustomizeCredentialsSidebarPanel)
  * can call this hook at the same time. Each holds its own React state, so a

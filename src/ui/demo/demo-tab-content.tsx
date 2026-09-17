@@ -1,11 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { lazy, Suspense } from "react";
-import {
-  Activity,
-  Puzzle,
-  Server,
-  type LucideIcon,
-} from "lucide-react";
+import { Activity, Puzzle, Server, type LucideIcon } from "lucide-react";
 import type { Host, SplitMode, Tab, TabType } from "@/types/ui-types";
 import { Button } from "@/components/button";
 import { EmptyState } from "@/components/empty-state";
@@ -44,7 +39,7 @@ import { viewOwnership } from "@/demo/plugins/plugin-views";
  *
  * Every view is asked who owns it before it is drawn. A view whose plugin has
  * been uninstalled does not fall back to a placeholder that looks like the
- * feature is merely empty -- it says the plugin is gone and offers the store,
+ * feature is merely empty. It says the plugin is gone and offers the store,
  * because "uninstalling withdraws the UI" is the thing this demo exists to
  * show. A view whose plugin is installed but stopped says that instead, which
  * is a different problem with a different fix.
@@ -251,8 +246,8 @@ export function renderDemoTabContent(
  * Installed, running, and genuinely not built here.
  *
  * The demo ships screens for what is installed by default. A plugin you add
- * from the store contributes its destination for real -- the rail entry and the
- * tab both appear -- but the screen behind it is out of scope, and saying that
+ * from the store contributes its destination for real (the rail entry and the
+ * tab both appear) but the screen behind it is out of scope, and saying that
  * plainly beats an empty panel.
  */
 function NotInDemo({ chrome, title }: { chrome: boolean; title: string }) {

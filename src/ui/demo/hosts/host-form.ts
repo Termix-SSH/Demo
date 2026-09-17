@@ -3,14 +3,13 @@ import type { Credential, Host } from "@/types/ui-types";
 /**
  * The host editor's form state.
  *
- * Mirrors createHostEditorForm in the real app (src/ui/sidebar/HostEditorData.ts),
- * minus the ~90 Guacamole display knobs. The old demo form carried 31 fields,
- * which is why whole areas of the real editor had nowhere to appear: no sudo
- * password, no proxy, no jump hosts, no per-protocol auth.
+ * Covers the full editor minus the ~90 Guacamole display knobs. An earlier
+ * version carried only 31 fields, which is why whole areas had nowhere to
+ * appear: no sudo password, no proxy, no jump hosts, no per-protocol auth.
  *
- * Two defaults deliberately disagree with the database. enableTunnel and
- * enableFileManager are `true` in the schema but `false` in the real form, and
- * the form is what a user actually sees, so that is what gets copied.
+ * Two defaults deliberately disagree with the stored schema. enableTunnel and
+ * enableFileManager are `true` there but `false` in the form, and the form is
+ * what a user actually sees, so that is what gets copied.
  */
 
 export type HostAuthType = Host["authType"];
@@ -33,7 +32,7 @@ export interface HostEditorForm {
   // Organization
   folder: string;
   parentHostId: string;
-  /** Folder and parent host are mutually exclusive, as in the real app. */
+  /** Folder and parent host are mutually exclusive. */
   organizeBy: "folder" | "parent";
   tags: string[];
   tagInput: string;
@@ -223,9 +222,8 @@ export function createHostEditorForm(host: Host | null): HostEditorForm {
     environmentVariables: terminal.environmentVariables ?? [],
 
     useSocks5: host?.useSocks5 ?? false,
-    socks5ProxyMode: (host?.socks5ProxyChain ?? []).length > 0
-      ? "chain"
-      : "single",
+    socks5ProxyMode:
+      (host?.socks5ProxyChain ?? []).length > 0 ? "chain" : "single",
     socks5Host: host?.socks5Host ?? "",
     socks5Port: host?.socks5Port ?? 1080,
     socks5Username: host?.socks5Username ?? "",
@@ -296,7 +294,8 @@ function readPluginValues(
       values[key] = value;
     }
   }
-  if (host.dockerConfig?.runtime) values.dockerRuntime = host.dockerConfig.runtime;
+  if (host.dockerConfig?.runtime)
+    values.dockerRuntime = host.dockerConfig.runtime;
   return values;
 }
 
@@ -546,9 +545,7 @@ export function buildCredentialPatch(
   };
 }
 
-export function newCredentialFromForm(
-  form: CredentialEditorForm,
-): Credential {
+export function newCredentialFromForm(form: CredentialEditorForm): Credential {
   return {
     id: `c-${Date.now().toString(36)}`,
     name: form.name.trim(),
@@ -564,17 +561,18 @@ export interface FieldErrors {
   [key: string]: string | undefined;
 }
 
-/**
- * Enough to stop a host that cannot connect, and no more. The real app has no
- * client-side host validation at all, so a typo in the port was only caught by
- * the server.
- */
+/** Enough to stop a host that cannot connect, and no more. */
 export function validateHostForm(form: HostEditorForm): FieldErrors {
   const errors: FieldErrors = {};
   if (!form.ip.trim()) errors.ip = "An address is required.";
   if (form.enableSsh && !form.username.trim())
     errors.username = "A username is required.";
-  if (!form.enableSsh && !form.enableRdp && !form.enableVnc && !form.enableTelnet)
+  if (
+    !form.enableSsh &&
+    !form.enableRdp &&
+    !form.enableVnc &&
+    !form.enableTelnet
+  )
     errors.protocols = "Turn on at least one protocol.";
 
   const ports: [keyof HostEditorForm, boolean][] = [

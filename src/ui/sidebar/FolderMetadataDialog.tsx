@@ -48,7 +48,7 @@ export function FolderMetadataDialog({
   };
   /** Every folder path that already exists, for duplicate-name validation. */
   existingPaths?: string[];
-  /** The folder's own current full path, in edit mode -- excluded from the duplicate check. */
+  /** The folder's own current full path in edit mode. Excluded from the duplicate check. */
   currentPath?: string;
   onOpenChange: (v: boolean) => void;
   onSubmit: (value: FolderMetadataValue) => void;

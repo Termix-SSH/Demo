@@ -5,7 +5,6 @@ import tailwindcss from "@tailwindcss/vite";
 
 const root = import.meta.dirname;
 
-// Mirrors Termix's alias layout so UI files copy over without rewriting imports.
 // "@/types" must be listed before "@/" so the more specific prefix wins.
 export default defineConfig({
   base: "./",

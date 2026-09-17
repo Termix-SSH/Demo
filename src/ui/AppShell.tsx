@@ -132,9 +132,8 @@ export function AppShell({
     };
   }, []);
 
-  // Ctrl/Cmd+K opens the palette, and double-tapping left Shift does too --
-  // the real app kept both because the double-shift gesture alone was hard to
-  // discover.
+  // Ctrl/Cmd+K opens the palette, and double-tapping left Shift does too.
+  // Both exist because the double-shift gesture alone was hard to discover.
   const lastShiftRef = useRef(0);
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -508,7 +507,7 @@ export function AppShell({
       {owned && (
         <>
           {/* Hosts and credentials stay mounted so switching rail views keeps
-              scroll position and expanded folders, as in the real app. */}
+              scroll position and expanded folders. */}
           <div
             className={`flex flex-col flex-1 min-h-0 ${view === "hosts" ? "" : "hidden"}`}
           >

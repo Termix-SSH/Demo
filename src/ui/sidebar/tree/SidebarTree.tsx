@@ -119,7 +119,7 @@ export function SidebarTree({
     }
   });
   // Sub-host parents default to expanded (unlike folders, which default
-  // collapsed) -- a host reparented under another shouldn't seem to vanish
+  // collapsed). A host reparented under another shouldn't seem to vanish
   // just because its new parent row starts closed. This tracks the opposite:
   // parents the user has explicitly collapsed.
   const [closedHostParents, setClosedHostParents] = useState<Set<string>>(
@@ -155,7 +155,7 @@ export function SidebarTree({
   } = useSidebarSelection();
   // Selection mode can be toggled off from outside this component (e.g. the
   // topbar button in HostsPanel), which has no way to reach into this
-  // component's own selectedHostIds state -- clear it here instead so stale
+  // component's own selectedHostIds state. Clear it here instead so stale
   // selections don't stay visually highlighted after leaving selection mode.
   useEffect(() => {
     if (!selectionMode) setSelectedHostIds(new Set());
@@ -180,7 +180,7 @@ export function SidebarTree({
   );
   // Tracks which single row is currently the drop target during a manual
   // reorder drag, lifted here (rather than local state per row) so only one
-  // row can ever show the drop-indicator bar at a time -- per-row local
+  // row can ever show the drop-indicator bar at a time. Per-row local
   // state could get stuck showing a stale bar when the pointer jumped
   // directly from one virtualized row to another without a clean
   // dragleave firing on the row being left.
@@ -189,7 +189,7 @@ export function SidebarTree({
     "before" | "after" | null
   >(null);
   // Gated on the lock alone. Unlocking also switches the panel to manual
-  // sort, but that write lands separately -- requiring it here meant the
+  // sort, but that write lands separately. Requiring it here meant the
   // unlock did nothing until the sort state caught up.
   const arrangeMode = !arrangeLocked;
 
@@ -224,7 +224,7 @@ export function SidebarTree({
     // Folders only exist visibly via an sshFolders metadata row or by having
     // hosts in them (see buildHostTree in AppShell.tsx). A folder that was
     // never explicitly created and loses its last host here would otherwise
-    // vanish with no trace the moment this move lands -- persist it first so
+    // vanish with no trace the moment this move lands. Persist it first so
     // it stays visible-but-empty until the user explicitly deletes it.
     const sourceFolders = new Set(
       movableIds
@@ -279,9 +279,8 @@ export function SidebarTree({
     });
     if (movableIds.length === 0) return;
     if (movableIds.includes(parentId)) return;
-    // A host can't become its own descendant's child -- guard client-side so
-    // the drop just silently no-ops rather than round-tripping to the
-    // backend's own cycle rejection.
+    // A host cannot become its own descendant's child. Guarding here means
+    // the drop quietly no-ops instead of being rejected later.
     if (isDescendantOfDragged(parentId, movableIds)) {
       toast.error(t("hosts.cannotNestUnderDescendant"));
       return;
@@ -307,7 +306,7 @@ export function SidebarTree({
   /**
    * Resolves a drop into position and (when the drop crossed into another
    * folder) a folder move, then writes both. Siblings are scoped to the drop
-   * target's own folder rather than every row of the same type -- comparing
+   * target's own folder rather than every row of the same type. Comparing
    * against unrelated neighbours in other folders produced sort orders that
    * put the row nowhere near where it was dropped.
    */
@@ -389,7 +388,7 @@ export function SidebarTree({
             return;
           }
           // movedTo is a parent KEY ("folder:Homelab" / "host:11" / the root
-          // sentinel), not a folder path -- writing it raw created folders
+          // sentinel), not a folder path. Writing it raw created folders
           // literally named "folder:Homelab".
           if (plan.movedTo === ROOT_PARENT) {
             await bulkUpdateSSHHosts([Number(draggedId)], {
@@ -587,7 +586,7 @@ export function SidebarTree({
         notes: host.notes,
         macAddress: host.macAddress,
         // Key material is never sent to the frontend, so a cloned key-auth
-        // host would have authType "key" with no key — unusable. Reset to
+        // host would have authType "key" with no key, which is unusable. Reset
         // password so the clone is in a connectable (editable) state.
         authType: host.authType === "key" ? "password" : host.authType,
         password: host.authType === "key" ? null : (host.password ?? null),
@@ -690,7 +689,7 @@ export function SidebarTree({
   // pt-1 mt-0.5 compounded into a much larger gap there than between any
   // other pair of rows in the card).
   // Click mode adds a size-5 expand-actions chevron to the name row, which is
-  // taller than anything hover mode puts there -- the base heights were
+  // taller than anything hover mode puts there. The base heights were
   // measured in hover mode, so a click-mode row renders past its slot and its
   // status stripe runs into the row below. Most visible down an indented
   // sub-host group, where rows stack with no folder header between them.
@@ -701,7 +700,7 @@ export function SidebarTree({
   const HOST_ROW_HEIGHT = (isCompactDensity ? 27.5 : 45) + CLICK_CHEVRON_EXTRA;
   const FOLDER_ROW_HEIGHT = 31.5;
   // "always" mode permanently renders the connection-buttons row plus the
-  // management row -- measured directly rather than derived, since it has its
+  // management row. Measured directly rather than derived, since it has its
   // own fixed shape. The resource bars are NOT included: they only render for
   // an online host with CPU/RAM, so rowHeight adds RESOURCE_ROW_EXTRA per row.
   // Carries the click-mode chevron so the open row lands at its measured
@@ -715,7 +714,7 @@ export function SidebarTree({
   const ACTIONS_ONLY_ROW_HEIGHT = isCompactDensity ? 50.25 : 75.75;
   // Opening the management row from actionsOnly's closed state (which
   // already includes the connection row). Excludes the resource bars for the
-  // same reason as ALWAYS_ROW_HEIGHT -- rowHeight adds them per row.
+  // same reason as ALWAYS_ROW_HEIGHT: rowHeight adds them per row.
   const ACTIONS_ONLY_OPEN_ROW_HEIGHT = isCompactDensity ? 79.25 : 87.5;
   // Tag pills are a separate flex row. Comfortable density adds the row plus
   // its gap; compact density pulls it upward by 2px but still needs a slot.
@@ -795,7 +794,7 @@ export function SidebarTree({
     overscan: 12,
     // The library's default rounds every measurement to a whole pixel. Rows
     // here land on fractions (a 63.84px row rounds to 64), and the rounded-up
-    // size becomes the slot pitch -- leaving a visible sliver under every
+    // size becomes the slot pitch, which leaves a visible sliver under every
     // single row, which stacks into the gaps the list is judged by. Keep the
     // sub-pixel size so slots sit flush against the row above.
     measureElement: (element, entry) => {
@@ -835,7 +834,7 @@ export function SidebarTree({
   // size is never reused for whatever shifts into its slot.
   //
   // measure() wipes the ENTIRE measurement cache, so it may only run when
-  // every row's shape changes at once -- a density/trigger/tag switch. Hover
+  // every row's shape changes at once: a density/trigger/tag switch. Hover
   // and tray state are deliberately absent: they change one row, which
   // re-renders and re-measures itself through the observer anyway, whereas
   // calling measure() for them threw all 5000 rows back to their estimates
@@ -877,7 +876,7 @@ export function SidebarTree({
         // Only the container's own empty space is a root drop target. Without
         // the target check this fired for every child row the pointer crossed
         // (dragover bubbles), and dragleave never cleared it because leaving a
-        // child never satisfies currentTarget === target -- so the ring stuck
+        // child never satisfies currentTarget === target, and so the ring stuck
         // around for the rest of the session.
         onDragOver={(e) => {
           if (arrangeMode && draggedHostIds && e.currentTarget === e.target) {

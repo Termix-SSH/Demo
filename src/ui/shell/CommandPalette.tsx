@@ -36,7 +36,7 @@ import { useNavItems } from "@/demo/nav-registry";
 import type { Host, TabType } from "@/types/ui-types";
 
 /**
- * Type-to-reach-anything, ported from the real app.
+ * Type to reach anything.
  *
  * The rail cannot hold every destination, so this is the surface that does.
  * Everything reachable by clicking is reachable by typing here, which is what

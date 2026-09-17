@@ -120,7 +120,7 @@ export function FolderItem({
   onReorderDrop?: (targetKey: string, position: "before" | "after") => void;
   onFolderDragStart?: (folderPath: string) => void;
   onFolderDragEnd?: () => void;
-  /** Whether THIS folder header is the current reorder drop target -- see
+  /** Whether THIS folder header is the current reorder drop target. See
    * HostItem's identical prop for why this is lifted rather than local. */
   isReorderHovered?: boolean;
   reorderHoverEdge?: "before" | "after" | null;
@@ -180,7 +180,7 @@ export function FolderItem({
             onFolderDragEnd?.();
           }}
           // The drop zones live on the header, not on the wrapper around the
-          // folder's whole subtree -- measuring the edges against the full
+          // folder's whole subtree. Measuring the edges against the full
           // expanded subtree made the before/after split land hundreds of
           // pixels away from the header the user was actually pointing at.
           onDragOver={(e) => {

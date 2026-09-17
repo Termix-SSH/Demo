@@ -26,10 +26,9 @@ import {
 /**
  * A short tour on first load.
  *
- * The demo drops you straight into a rail, docks, tabs and a six way split with
- * nothing explaining any of it. The real app answers that with an onboarding
- * dialog, and its copy is already translated here, so this reuses the same keys
- * rather than inventing new ones.
+ * The demo drops you straight into a rail, docks, tabs and a six way split
+ * with nothing explaining any of it. The onboarding copy is already translated
+ * here, so this reuses those keys rather than inventing new ones.
  *
  * Two of the steps do real work: the preset writes through to
  * UiPreferencesContext, and the accent swatches drive the same helper the

@@ -28,7 +28,7 @@ export function credentialMatchesQuery(cred: Credential, query: string) {
 
 /**
  * Per-density layout knobs, mirroring HOST_ITEM_DENSITY_TOKENS in
- * HostItem.tsx -- one implementation with a token lookup instead of two
+ * HostItem.tsx. One implementation with a token lookup instead of two
  * parallel JSX trees, so a future tweak only has to be made once.
  */
 const CREDENTIAL_ITEM_DENSITY_TOKENS = {
@@ -96,7 +96,7 @@ export function CredentialItem({
   /** True while this row is the one being dragged. */
   isDragging?: boolean;
   onReorderDrop?: (position: "before" | "after") => void;
-  /** Whether THIS row is the current reorder drop target -- lifted to the
+  /** Whether THIS row is the current reorder drop target. Lifted to the
    * parent tree so only one row can ever show the drop-indicator bar at a
    * time. See HostItem's identical prop for the full rationale. */
   isReorderHovered?: boolean;

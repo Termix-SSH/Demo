@@ -11,7 +11,7 @@ import type { Tab } from "@/types/ui-types";
  *
  * Broadcast is live rather than a compose box with a send button. The real
  * panel puts the keyboard into the selected terminals directly, so a box you
- * fill in and submit would be a different feature wearing the same name -- you
+ * fill in and submit would be a different feature wearing the same name. You
  * could not send a Ctrl-C, an arrow key or a tab completion with it. Focusing
  * the field here arms it, and every key is reported as it is pressed.
  */

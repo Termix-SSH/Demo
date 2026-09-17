@@ -52,8 +52,8 @@ function collectVisibleHostRows(
   if (childHosts.length === 0) return;
   // Sub-host parents default to expanded (opposite of folders): a host that
   // just got reparented shouldn't seem to disappear because its new parent
-  // row starts closed. closedHostParents tracks the opposite of openFolders
-  // -- parents the user has explicitly collapsed.
+  // row starts closed. closedHostParents tracks the opposite of openFolders:
+  // parents the user has explicitly collapsed.
   const isOpen = query ? true : !closedHostParents.has(hostExpandKey(host));
   if (!isOpen) return;
   for (const child of childHosts) {

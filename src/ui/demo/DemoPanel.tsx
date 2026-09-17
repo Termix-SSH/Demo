@@ -5,8 +5,8 @@ import { Input } from "@/components/input";
 /**
  * Shared chrome for the rail panels the demo does not implement in full.
  *
- * Each one keeps the real panel's shape -- an optional search row, then either a
- * list of rows or an empty state -- so the sidebar looks right at a glance
+ * Each one keeps the same shape: an optional search row, then either a list
+ * of rows or an empty state, so the sidebar looks right at a glance
  * without pretending the feature works.
  */
 export function DemoPanel({

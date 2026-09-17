@@ -15,8 +15,8 @@ export type Host = {
   /**
    * Sub-hosts nested under this host, populated client-side by buildHostTree.
    * A host with children still renders and behaves as a normal, connectable
-   * HostItem row -- this only adds an expand/collapse chevron for its nested
-   * children, it never wraps the host in a synthetic folder node.
+   * HostItem row. This only adds an expand/collapse chevron for its nested
+   * children; it never wraps the host in a synthetic folder node.
    */
   childHosts?: Host[];
   online: boolean;
@@ -212,7 +212,7 @@ export type Credential = {
   permissionLevel?: "use" | "manage";
 };
 
-// HashiCorp Vault SSH signer profile — shareable connection settings only
+// HashiCorp Vault SSH signer profile. Shareable connection settings only
 // (no secrets). Users authenticate to Vault via OIDC at connect time.
 export type VaultProfile = {
   id: string;

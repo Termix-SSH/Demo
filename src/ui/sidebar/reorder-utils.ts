@@ -1,7 +1,7 @@
 /**
  * Manual drag-to-reorder position math, shared by host and folder reordering.
  * Sparse integers (gaps of 1000) mean most drops only rewrite the moved
- * item's own sortOrder -- inserting between two neighbors is just the
+ * item's own sortOrder. Inserting between two neighbors is just the
  * midpoint between their values. Renumbering the whole sibling group only
  * happens when a gap runs out (two adjacent siblings differ by 1).
  */
@@ -69,7 +69,7 @@ export interface ReorderPlan {
  * Resolves a drop into the exact writes it implies.
  *
  * Siblings are scoped to the drop target's parent, not to every row of the
- * same type -- dropping onto a row in another folder has to compare against
+ * same type. Dropping onto a row in another folder has to compare against
  * that folder's own neighbors, and reports the parent change so the caller
  * can persist the move alongside the new position.
  *
@@ -105,7 +105,7 @@ export function planReorder(
 
   // Hosts start life with sortOrder null, and null sorts last in manual
   // mode. Writing a single value for the moved row against null neighbours
-  // therefore says nothing about where it landed -- the group has to be
+  // therefore says nothing about where it landed. The group has to be
   // numbered as a whole before any position is meaningful. A cross-folder
   // drop renumbers for the same reason: the dragged row arrives carrying a
   // sortOrder from its old folder, which means nothing in this one.

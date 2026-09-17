@@ -221,7 +221,7 @@ export function getUiPreferences(): Promise<UiPreferences> {
     const stored = localStorage.getItem(PREFS_KEY);
     if (stored) return resolve(sanitizeUiPreferences(JSON.parse(stored)), 0);
   } catch {
-    // Fall through to defaults.
+    // Ignore unreadable or malformed storage.
   }
   return resolve(defaultUiPreferences(), 0);
 }
@@ -279,7 +279,7 @@ export function getCredentialSidebarPreferences(): Promise<CredentialSidebarPref
       );
     }
   } catch {
-    // Fall through to defaults.
+    // Ignore unreadable or malformed storage.
   }
   return resolve(defaultCredentialSidebarPreferences(), 0);
 }
@@ -311,7 +311,7 @@ export function getHostSidebarPreferences(): Promise<HostSidebarPreferences> {
       return resolve(sanitizeHostSidebarPreferences(JSON.parse(stored)), 0);
     }
   } catch {
-    // Fall through to defaults.
+    // Ignore unreadable or malformed storage.
   }
   return resolve(defaultHostSidebarPreferences(), 0);
 }
@@ -430,9 +430,7 @@ export function getProxmoxStats(): Promise<DemoProxmoxSnapshot> {
 // ── Host metrics ────────────────────────────────────────────
 
 export function getHostMetrics(hostId: string): Promise<DemoHostMetrics> {
-  return resolve(
-    clone(DEMO_HOST_METRICS[hostId] ?? DEMO_HOST_METRICS_DEFAULT),
-  );
+  return resolve(clone(DEMO_HOST_METRICS[hostId] ?? DEMO_HOST_METRICS_DEFAULT));
 }
 
 /**
@@ -445,11 +443,15 @@ export function getMetricsHistory(
 ): Promise<number[]> {
   const points = range === "1h" ? 60 : range === "6h" ? 72 : 96;
   let seed = 0;
-  for (const ch of `${hostId}:${range}`) seed = (seed * 31 + ch.charCodeAt(0)) | 0;
+  for (const ch of `${hostId}:${range}`)
+    seed = (seed * 31 + ch.charCodeAt(0)) | 0;
   const series = Array.from({ length: points }, (_, i) => {
     seed = (seed * 1103515245 + 12345) & 0x7fffffff;
     const wave = Math.sin(i / (points / 6)) * 14;
-    return Math.min(96, Math.max(3, 42 + wave + ((seed % 1000) / 1000) * 18 - 9));
+    return Math.min(
+      96,
+      Math.max(3, 42 + wave + ((seed % 1000) / 1000) * 18 - 9),
+    );
   });
   return resolve(series);
 }

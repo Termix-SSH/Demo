@@ -25,9 +25,8 @@ import { usePanelView } from "@/hooks/use-panel-view";
 import { getTmuxPaneOutput, getTmuxSessions } from "@/demo/demo-api";
 import type { DemoTmuxSession } from "@/demo/demo-data";
 
-// Mirrors the real TmuxMonitor on the shared panel chrome: a session tree on
-// the left and a pane preview on the right. The real preview embeds a live
-// terminal; the demo shows canned output.
+// Shared panel chrome: a session tree on the left, a pane preview on the
+// right. The preview shows canned output rather than a live terminal.
 
 interface SelectedPane {
   sessionName: string;

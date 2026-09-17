@@ -7,16 +7,16 @@ import { sshHostToHost } from "./HostManagerData";
  * API, nesting via two independent mechanisms:
  *
  * - folder: a " / "-separated string path, split into synthetic HostFolder
- *   nodes (folders are virtual -- they only exist as this derived tree).
+ *   nodes (folders are virtual and only exist as this derived tree).
  * - parentHostId: sub-host nesting, where a real host acts as an
  *   organizational parent for other real hosts. A host with children stays
- *   a normal, connectable Host -- it is never wrapped in a synthetic node,
- *   just given a childHosts array the tree/virtualizer walk into.
+ *   a normal, connectable Host. It is never wrapped in a synthetic node,
+ *   just given a childHosts array the tree and virtualizer walk into.
  *
- * The backend already enforces that folder and parentHostId are mutually
- * exclusive on write and rejects cycles, but this still defends against
- * stale/imported/synced data: a missing, inaccessible, or cyclic parent
- * falls back to folder/root placement rather than being dropped or looping.
+ * folder and parentHostId are mutually exclusive, and cycles are rejected on
+ * write, but this still defends against stale or imported data: a missing,
+ * inaccessible or cyclic parent falls back to folder or root placement rather
+ * than being dropped or looping.
  */
 export function buildHostTree(
   hosts: SSHHostWithStatus[],
@@ -65,9 +65,9 @@ export function buildHostTree(
   const mappedHosts = hosts.map((h) => sshHostToHost(h));
   const hostsById = new Map(mappedHosts.map((h) => [h.id, h]));
 
-  // The backend rejects cycles on write, but stale/imported/synced data could
-  // still contain one -- walking a candidate parent's own ancestor chain
-  // before attaching guards the tree build against an infinite loop.
+  // Cycles are rejected on write, but stale or imported data could still hold
+  // one. Walking a candidate parent's ancestor chain before attaching keeps
+  // the tree build from looping forever.
   function isDescendantOf(candidateId: string, ancestorId: string): boolean {
     let current: string | null | undefined = candidateId;
     const visited = new Set<string>();
@@ -80,9 +80,9 @@ export function buildHostTree(
     return false;
   }
 
-  // Sub-host nesting (parentHostId) takes priority over folder placement --
-  // the backend already clears folder when parentHostId is set and vice
-  // versa, but a host is placed by whichever it currently has.
+  // Sub-host nesting (parentHostId) takes priority over folder placement.
+  // Setting one clears the other, but a host is placed by whichever it
+  // currently has.
   const nested = new Set<string>();
   for (const host of mappedHosts) {
     if (!host.parentHostId) continue;

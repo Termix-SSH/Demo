@@ -16,9 +16,8 @@ export function readRailPreference(key: RailPreference): boolean {
 
 /**
  * Single write path for the app rail display preferences. Persists to
- * localStorage, notifies every mounted listener so the rail and the settings
- * panel stay in step, then mirrors to the server when the user is on cloud
- * storage.
+ * localStorage, then notifies every mounted listener so the rail and the
+ * settings panel stay in step.
  */
 export function setRailPreference(key: RailPreference, value: boolean): void {
   localStorage.setItem(key, String(value));

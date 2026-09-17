@@ -30,7 +30,7 @@ export function VersionBadge({
 
   // Only the update case leads anywhere. Wherever this badge is rendered it is
   // the one place a pending release is announced, so it also has to be the way
-  // to reach it -- otherwise "UPDATE AVAILABLE" is a dead end. The label alone
+  // to reach it. Otherwise "UPDATE AVAILABLE" is a dead end. The label alone
   // does not say where the link goes, hence the spelled-out accessible name.
   if (status === "requires_update" && releaseUrl) {
     const linkLabel = t("versionCheck.updateLinkLabel");

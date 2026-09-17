@@ -2,9 +2,8 @@ import React, { createContext, useContext } from "react";
 import { DEMO_HOSTS } from "@/demo/demo-data";
 
 /**
- * The real provider polls every host over the backend and pushes updates into a
- * subscribable store. The demo has fixed statuses baked into the fixtures, so
- * this serves them directly and reports the initial load as already finished.
+ * Host statuses are fixed in the fixtures rather than polled, so this serves
+ * them directly and reports the initial load as already finished.
  */
 
 export type StatusValue = "online" | "reachable" | "offline" | "unknown";

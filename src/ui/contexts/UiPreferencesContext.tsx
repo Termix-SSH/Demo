@@ -69,14 +69,13 @@ const UiPreferencesContext = createContext<UiPreferencesContextValue | null>(
 );
 
 /**
- * App-wide interface preset and per-area overrides. Cached in localStorage for
- * instant paint and synced to the backend when storageMode is "cloud", the
- * same shape as useHostSidebarPreferences -- but provided once at the app root
- * rather than mounted per consumer, since almost every panel reads it.
+ * App-wide interface preset and per-area overrides. Same shape as
+ * useHostSidebarPreferences, but provided once at the app root rather than
+ * mounted per consumer, since almost every panel reads it.
  *
- * Writes send only the changed slice: the backend merges overrides two levels
- * deep and treats null as "clear this", so handing a knob back to the preset is
- * a single PUT rather than a read-modify-write of the whole document.
+ * Writes send only the changed slice. Overrides merge two levels deep and null
+ * means "clear this", so handing a knob back to the preset is one write rather
+ * than a read-modify-write of the whole document.
  */
 export function UiPreferencesProvider({ children }: { children: ReactNode }) {
   const [preferences, setPreferences] = useState<UiPreferences>(
@@ -272,8 +271,8 @@ export function useUiPreferencesContext(): UiPreferencesContextValue | null {
 
 /**
  * Effective settings for one area. Falls back to the balanced preset (today's
- * behavior) outside a provider, so components rendered in isolation -- tests,
- * Electron sub-windows -- behave exactly as they did before presets existed
+ * behavior) outside a provider, so components rendered in isolation (tests,
+ * Electron sub-windows) behave exactly as they did before presets existed
  * rather than crashing or silently going Simple.
  */
 export function useAreaPreferences<A extends UiAreaKey>(

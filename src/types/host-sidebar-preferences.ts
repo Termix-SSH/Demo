@@ -1,15 +1,11 @@
 /**
- * Host sidebar preferences model. Shared by the frontend sidebar and the
- * backend preferences endpoint (no framework imports, mirrors
- * ./host-metrics.ts's dependency-free convention). Replaces the ~10
- * independent localStorage keys/custom events the sidebar used to manage
- * individually.
+ * Host sidebar preferences model. Replaces the ~10 separate localStorage keys
+ * and custom events the sidebar used to manage one by one.
  *
- * SortKey and StatusColorScheme are duplicated here (rather than imported
- * from src/ui/sidebar/host-sort.ts / src/ui/hooks/use-status-color-scheme.ts)
- * because those files use the "@/" frontend path alias, which the backend's
- * NodeNext build cannot resolve. Keep the values below in sync with those
- * two files.
+ * SortKey and StatusColorScheme are spelled out here rather than imported
+ * from src/ui/sidebar/host-sort.ts and src/ui/hooks/use-status-color-scheme.ts
+ * so this file stays free of the "@/" alias. Keep the values in sync with
+ * those two files.
  */
 
 export const HOST_SIDEBAR_PREFS_VERSION = 1;

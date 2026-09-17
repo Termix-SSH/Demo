@@ -8,7 +8,7 @@ export const RESOURCE_ROW_EXTRA = 17.25;
  *
  * Mirrors HostItem's own condition. The virtualizer used to reserve their
  * height for every row in "always" mode, which left a gap under each offline
- * host -- most obvious down a long list where nothing breaks up the rows.
+ * host. Most obvious down a long list where nothing breaks up the rows.
  */
 export function rendersResourceRow(
   host: Pick<Host, "online" | "cpu" | "ram">,
