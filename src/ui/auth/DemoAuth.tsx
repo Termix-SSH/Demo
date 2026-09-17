@@ -42,7 +42,7 @@ export function DemoAuth({ onLogin }: { onLogin: (username: string) => void }) {
 
   function submitCredentials(e: React.FormEvent) {
     e.preventDefault();
-    setStep("totp");
+    finish();
   }
 
   function submitCode(e: React.FormEvent) {
@@ -138,10 +138,15 @@ export function DemoAuth({ onLogin }: { onLogin: (username: string) => void }) {
                 <Button
                   type="submit"
                   size="lg"
+                  disabled={pending}
                   className="mt-4 w-full justify-between bg-accent-brand font-bold uppercase tracking-widest text-background hover:bg-accent-brand/90"
                 >
-                  {t("common.login")}
-                  <ArrowRight className="size-3.5" />
+                  {pending ? t("auth.redirectingToApp") : t("common.login")}
+                  {pending ? (
+                    <Loader2 className="size-3.5 animate-spin" />
+                  ) : (
+                    <ArrowRight className="size-3.5" />
+                  )}
                 </Button>
 
                 <Divider label={t("auth.orContinueWith")} />
