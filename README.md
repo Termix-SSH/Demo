@@ -1,13 +1,10 @@
-> [!WARNING]
-> Currently being used for the new plugin system UI changes. This demo is not representative of the current state of Termix.
-
 <div align="center">
 
 <img src="https://raw.githubusercontent.com/Termix-SSH/Termix/main/public/icon.svg" width="120" height="120" alt="Termix Logo" />
 
 <h1>Termix Demo</h1>
 
-<p>Public demo website for Termix</p>
+<p>Try Termix in your browser before you install it</p>
 
 <p>
   <img src="https://img.shields.io/github/stars/Termix-SSH/Demo?style=flat&label=Stars&color=F39044&labelColor=1a1a1a" />
@@ -22,7 +19,7 @@
 
 ## Overview
 
-This is the public demo website for the project, [Termix](https://github.com/Termix-SSH/Termix). The demo is available [here](https://demo.termix.site).
+This is the source for the public demo of [Termix](https://github.com/Termix-SSH/Termix), self-hosted, plugin-based server management. Try it at [demo.termix.site](https://demo.termix.site/). Any username and password works.
 
 <br />
 
