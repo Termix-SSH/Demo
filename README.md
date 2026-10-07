@@ -77,7 +77,7 @@ Interested in a paid placement to support development? Email [mail@termix.site](
 
 ## Support
 
-To report a bug or request a feature, open a [support ticket](https://github.com/Termix-SSH/Support/issues/new/choose). You need to be logged in to GitHub. Please be as detailed as possible, preferably in English.
+The demo runs Termix, so bugs and ideas go in the [Termix repo](https://github.com/Termix-SSH/Termix/issues/new/choose), or the plugin's own repo for a plugin problem. Please be as detailed as possible, preferably in English.
 
 For discussions and questions, join the [Discord](https://discord.gg/jVQGdvHDrf) server.
 
