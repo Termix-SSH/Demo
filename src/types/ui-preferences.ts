@@ -1,17 +1,25 @@
+import { LEGACY_SEEN, sanitizeSeen } from "./onboarding.js";
+
 /**
- * App-wide UI complexity preferences.
+ * App-wide UI complexity preferences. Shared by the frontend UI preferences
+ * context and the backend preferences endpoint (no framework imports, mirrors
+ * ./host-sidebar-preferences.ts's dependency-free convention -- the backend's
+ * NodeNext build cannot resolve the "@/" frontend path alias).
  *
- * The model stores intent: a preset, plus the individual knobs deliberately
- * changed. It is not a second copy of values other stores already own. Areas
- * whose knobs live elsewhere (the host sidebar blob, hiddenRailTabs, a few
- * localStorage keys) are seeded from the preset when it changes, and reads
- * keep going to the existing store. See applyPresetSideEffects.
+ * The model stores the user's *intent* -- a preset plus the individual knobs
+ * they have deliberately changed -- not a second copy of values other stores
+ * already own. Areas whose knobs already live somewhere else (host sidebar
+ * blob, user_preferences.hiddenRailTabs, a handful of localStorage keys) are
+ * seeded from the preset when it changes; reads keep going to the existing
+ * store. See applyPresetSideEffects on the frontend.
  *
- * "balanced" matches the defaults that were already in the code, so landing
- * on it changes nothing.
+ * "balanced" is exactly today's behavior. Every value in PRESETS.balanced is
+ * transcribed from the defaults that were already in the code, so existing
+ * users who land on it see no change at all.
  */
 
-export const UI_PREFERENCES_VERSION = 1;
+/** 2: the docker and host metrics areas moved to their plugins. */
+export const UI_PREFERENCES_VERSION = 3;
 
 export type UiPreset = "simple" | "balanced" | "advanced" | "custom";
 
@@ -21,34 +29,12 @@ export type UiAreaKey =
   | "credentialList"
   | "rail"
   | "dashboard"
-  | "terminal"
-  | "fileManager"
-  | "docker"
-  | "tunnels"
-  | "proxmox"
-  | "tmux"
-  | "plugins"
-  | "hostMetrics"
-  | "hostEditor"
-  | "homepage";
+  | "hostEditor";
 
 export type UiDensity = "comfortable" | "compact";
 export type UiTrayTrigger = "always" | "hover" | "click" | "actionsOnly";
 export type UiRowActions = "essential" | "full";
 export type UiEmptyStateVerbosity = "minimal" | "guided";
-export type UiToolbarDensity = "icon" | "labeled" | "expanded";
-export type UiFileViewMode = "grid" | "list";
-export type UiPanelViewMode = "grid" | "list";
-
-/**
- * Grid or list, plus row height, for every panel that lists things. One shape
- * rather than a per-panel interface, since the knobs are identical and a panel
- * gaining a third view would be a new field here, not a new type.
- */
-export interface UiPanelPreferences {
-  viewMode: UiPanelViewMode;
-  density: UiDensity;
-}
 export type UiHostEditorMode = "simple" | "full";
 
 export interface UiChromePreferences {
@@ -73,37 +59,21 @@ export interface UiCredentialListPreferences {
 
 export interface UiRailPreferences {
   hiddenTabs: string[];
+  /**
+   * Also hide every plugin rail item that does not set simplePreset. Plugin
+   * items are only known at runtime, so the preset cannot list them.
+   */
+  hidePluginItems?: boolean;
+  /** Rail item ids in the user's order. Items not listed keep their place. */
+  order?: string[];
 }
 
 export interface UiDashboardPreferences {
   enabledCards: string[];
 }
 
-export interface UiTerminalPreferences {
-  toolbarDensity: UiToolbarDensity;
-}
-
-export interface UiFileManagerPreferences {
-  viewMode: UiFileViewMode;
-  density: UiDensity;
-  showHiddenFiles: boolean;
-}
-
-export interface UiHostMetricsPreferences {
-  enabledCards: string[];
-  columns: number;
-  /** Cards or a dense table, matching the other panels that list things. */
-  viewMode: UiPanelViewMode;
-  density: UiDensity;
-}
-
 export interface UiHostEditorPreferences {
   mode: UiHostEditorMode;
-}
-
-export interface UiHomepagePreferences {
-  /** null means "never preset-driven": a preset must not touch the canvas. */
-  enabledWidgets: string[] | null;
 }
 
 export interface UiAreaPreferences {
@@ -112,60 +82,55 @@ export interface UiAreaPreferences {
   credentialList: UiCredentialListPreferences;
   rail: UiRailPreferences;
   dashboard: UiDashboardPreferences;
-  terminal: UiTerminalPreferences;
-  fileManager: UiFileManagerPreferences;
-  docker: UiPanelPreferences;
-  tunnels: UiPanelPreferences;
-  proxmox: UiPanelPreferences;
-  tmux: UiPanelPreferences;
-  plugins: UiPanelPreferences;
-  hostMetrics: UiHostMetricsPreferences;
   hostEditor: UiHostEditorPreferences;
-  homepage: UiHomepagePreferences;
 }
+
+/** A plugin's own area, keyed "plugin:<id>", holding what it declared in contributes.uiPresets. */
+export type UiPluginAreaKey = `plugin:${string}`;
 
 export type UiOverrides = {
   [A in UiAreaKey]?: Partial<UiAreaPreferences[A]>;
-};
+} & { [key: UiPluginAreaKey]: Record<string, unknown> };
+
+export interface UiOnboardingState {
+  /** Step key to the highest version of that step the user was shown. */
+  seen: Record<string, number>;
+  /** When the first full run finished. Null means it never has. */
+  completedAt: string | null;
+  skipped: boolean;
+  /**
+   * Set for users carried over from the old single-version onboarding. The
+   * client marks every plugin step that exists right now as seen without
+   * showing it, then clears this.
+   */
+  baselinePending: boolean;
+}
 
 export interface UiPreferences {
   version: number;
   preset: UiPreset;
   overrides: UiOverrides;
+  onboarding: UiOnboardingState;
 }
 
 const PRESET_VALUES: UiPreset[] = ["simple", "balanced", "advanced", "custom"];
 
 /**
- * Rail views Simple keeps. Cutting all the way down to hosts+credentials makes
- * the app feel broken, so connections and snippets stay: snippets is the most
- * approachable power feature and connections is where troubleshooting starts.
+ * Core rail views Simple keeps. Cutting all the way down to hosts+credentials
+ * makes the app feel broken, so connections stays: it is where
+ * troubleshooting starts. Plugin items opt in with simplePreset.
  */
-const SIMPLE_RAIL_VISIBLE = ["hosts", "credentials", "connections", "snippets"];
+const SIMPLE_RAIL_VISIBLE = ["hosts", "credentials", "connections"];
 
-/** Every hideable rail view, mirroring HideableRailView in sidebar/AppRail.tsx. */
-const ALL_HIDEABLE_RAIL_VIEWS = [
+/** Core's hideable rail views, mirroring RAIL_ITEMS in sidebar/rail-items.ts. */
+const CORE_HIDEABLE_RAIL_VIEWS = [
   "hosts",
   "credentials",
-  "termix-id",
-  "quick-connect",
-  "serial",
-  "ssh-tools",
-  "snippets",
-  "macros",
-  "history",
-  "split-screen",
   "connections",
-  "session-logs",
-  "alerts",
-  "fleets",
-  "workspaces",
-  "network_graph",
-  "homepage",
-  "ai",
+  "quick-connect",
 ];
 
-const SIMPLE_HIDDEN_RAIL_TABS = ALL_HIDEABLE_RAIL_VIEWS.filter(
+const SIMPLE_HIDDEN_RAIL_TABS = CORE_HIDEABLE_RAIL_VIEWS.filter(
   (view) => !SIMPLE_RAIL_VISIBLE.includes(view),
 );
 
@@ -177,29 +142,8 @@ const BALANCED_DASHBOARD_CARDS = [
   "host_status",
   "recent_activity",
 ];
-// Advanced adds service links but leaves network_graph and homepage_preview
-// off: both are wide, and enabling them by default pushes the dashboard past
-// the edge of the screen. They stay available in the Add card tray.
-const ADVANCED_DASHBOARD_CARDS = [...BALANCED_DASHBOARD_CARDS, "service_links"];
-
-/** Host metrics card ids, mirroring CARD_DEFINITIONS in features/host-metrics/cards. */
-const SIMPLE_HOST_METRICS_CARDS = ["cpu", "memory", "disk"];
-const BALANCED_HOST_METRICS_CARDS = [
-  "cpu",
-  "memory",
-  "disk",
-  "network",
-  "uptime",
-  "system",
-];
-const ADVANCED_HOST_METRICS_CARDS = [
-  ...BALANCED_HOST_METRICS_CARDS,
-  "login_stats",
-  "ports",
-  "processes",
-  "firewall",
-  "temperature",
-];
+// Only core's own cards: a plugin's cards are added from the Add card tray.
+const ADVANCED_DASHBOARD_CARDS = [...BALANCED_DASHBOARD_CARDS];
 
 export const PRESETS: Record<Exclude<UiPreset, "custom">, UiAreaPreferences> = {
   simple: {
@@ -219,7 +163,7 @@ export const PRESETS: Record<Exclude<UiPreset, "custom">, UiAreaPreferences> = {
       rowActions: "essential",
     },
     credentialList: { density: "comfortable", showTags: false },
-    rail: { hiddenTabs: SIMPLE_HIDDEN_RAIL_TABS },
+    rail: { hiddenTabs: SIMPLE_HIDDEN_RAIL_TABS, hidePluginItems: true },
     dashboard: {
       enabledCards: [
         "stats_bar",
@@ -228,25 +172,7 @@ export const PRESETS: Record<Exclude<UiPreset, "custom">, UiAreaPreferences> = {
         "host_status",
       ],
     },
-    terminal: { toolbarDensity: "icon" },
-    fileManager: {
-      viewMode: "grid",
-      density: "comfortable",
-      showHiddenFiles: false,
-    },
-    docker: { viewMode: "grid", density: "comfortable" },
-    tunnels: { viewMode: "grid", density: "comfortable" },
-    proxmox: { viewMode: "grid", density: "comfortable" },
-    tmux: { viewMode: "grid", density: "comfortable" },
-    plugins: { viewMode: "grid", density: "comfortable" },
-    hostMetrics: {
-      enabledCards: SIMPLE_HOST_METRICS_CARDS,
-      columns: 1,
-      viewMode: "grid",
-      density: "comfortable",
-    },
     hostEditor: { mode: "simple" },
-    homepage: { enabledWidgets: null },
   },
   balanced: {
     chrome: {
@@ -265,27 +191,8 @@ export const PRESETS: Record<Exclude<UiPreset, "custom">, UiAreaPreferences> = {
     credentialList: { density: "comfortable", showTags: true },
     rail: { hiddenTabs: [] },
     dashboard: { enabledCards: BALANCED_DASHBOARD_CARDS },
-    terminal: { toolbarDensity: "labeled" },
-    // FileManager.tsx has always defaulted to grid when nothing is stored.
-    fileManager: {
-      viewMode: "grid",
-      density: "comfortable",
-      showHiddenFiles: false,
-    },
-    docker: { viewMode: "grid", density: "comfortable" },
-    tunnels: { viewMode: "grid", density: "comfortable" },
-    proxmox: { viewMode: "grid", density: "comfortable" },
-    tmux: { viewMode: "grid", density: "comfortable" },
-    plugins: { viewMode: "grid", density: "comfortable" },
     // 3 is defaultLayoutFromWidgets's own default, i.e. today's behavior.
-    hostMetrics: {
-      enabledCards: BALANCED_HOST_METRICS_CARDS,
-      columns: 3,
-      viewMode: "grid",
-      density: "comfortable",
-    },
     hostEditor: { mode: "full" },
-    homepage: { enabledWidgets: null },
   },
   advanced: {
     chrome: {
@@ -304,26 +211,7 @@ export const PRESETS: Record<Exclude<UiPreset, "custom">, UiAreaPreferences> = {
     credentialList: { density: "compact", showTags: true },
     rail: { hiddenTabs: [] },
     dashboard: { enabledCards: ADVANCED_DASHBOARD_CARDS },
-    terminal: { toolbarDensity: "expanded" },
-    // List packs more rows and metadata per screen than the grid.
-    fileManager: {
-      viewMode: "list",
-      density: "compact",
-      showHiddenFiles: true,
-    },
-    docker: { viewMode: "list", density: "compact" },
-    tunnels: { viewMode: "list", density: "compact" },
-    proxmox: { viewMode: "list", density: "compact" },
-    tmux: { viewMode: "list", density: "compact" },
-    plugins: { viewMode: "list", density: "compact" },
-    hostMetrics: {
-      enabledCards: ADVANCED_HOST_METRICS_CARDS,
-      columns: 4,
-      viewMode: "list",
-      density: "compact",
-    },
     hostEditor: { mode: "full" },
-    homepage: { enabledWidgets: null },
   },
 };
 
@@ -331,8 +219,7 @@ type FieldSpec =
   | { kind: "enum"; values: readonly string[] }
   | { kind: "bool" }
   | { kind: "int"; min: number; max: number }
-  | { kind: "stringArray" }
-  | { kind: "nullableStringArray" };
+  | { kind: "stringArray" };
 
 /**
  * Field descriptors for every area knob. Unlike the flat sanitizers on the
@@ -364,52 +251,14 @@ const AREA_SPECS: {
   },
   rail: {
     hiddenTabs: { kind: "stringArray" },
+    order: { kind: "stringArray" },
+    hidePluginItems: { kind: "bool" },
   },
   dashboard: {
     enabledCards: { kind: "stringArray" },
   },
-  terminal: {
-    toolbarDensity: {
-      kind: "enum",
-      values: ["icon", "labeled", "expanded"],
-    },
-  },
-  fileManager: {
-    viewMode: { kind: "enum", values: ["grid", "list"] },
-    density: { kind: "enum", values: ["comfortable", "compact"] },
-    showHiddenFiles: { kind: "bool" },
-  },
-  docker: {
-    viewMode: { kind: "enum", values: ["grid", "list"] },
-    density: { kind: "enum", values: ["comfortable", "compact"] },
-  },
-  tunnels: {
-    viewMode: { kind: "enum", values: ["grid", "list"] },
-    density: { kind: "enum", values: ["comfortable", "compact"] },
-  },
-  proxmox: {
-    viewMode: { kind: "enum", values: ["grid", "list"] },
-    density: { kind: "enum", values: ["comfortable", "compact"] },
-  },
-  tmux: {
-    viewMode: { kind: "enum", values: ["grid", "list"] },
-    density: { kind: "enum", values: ["comfortable", "compact"] },
-  },
-  plugins: {
-    viewMode: { kind: "enum", values: ["grid", "list"] },
-    density: { kind: "enum", values: ["comfortable", "compact"] },
-  },
-  hostMetrics: {
-    enabledCards: { kind: "stringArray" },
-    columns: { kind: "int", min: 1, max: 4 },
-    viewMode: { kind: "enum", values: ["grid", "list"] },
-    density: { kind: "enum", values: ["comfortable", "compact"] },
-  },
   hostEditor: {
     mode: { kind: "enum", values: ["simple", "full"] },
-  },
-  homepage: {
-    enabledWidgets: { kind: "nullableStringArray" },
   },
 };
 
@@ -435,11 +284,6 @@ function coerce(spec: FieldSpec, value: unknown): unknown | undefined {
       return Array.isArray(value)
         ? value.filter((v): v is string => typeof v === "string")
         : undefined;
-    case "nullableStringArray":
-      if (value === null) return null;
-      return Array.isArray(value)
-        ? value.filter((v): v is string => typeof v === "string")
-        : undefined;
   }
 }
 
@@ -449,6 +293,36 @@ function coerce(spec: FieldSpec, value: unknown): unknown | undefined {
  * Object.keys(overrides).length > 0 an honest "has customizations" check for
  * the settings UI rather than something that accumulates {hostList:{}} noise.
  */
+const PLUGIN_AREA_PATTERN = /^plugin:[a-z][a-z0-9-]{0,63}$/;
+const PLUGIN_AREA_MAX_KEYS = 32;
+
+/**
+ * A plugin area's values are only checked for shape: core does not know the
+ * plugin's fields, and the plugin reads them against its own presets.
+ */
+function sanitizePluginArea(input: unknown): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  if (!input || typeof input !== "object") return out;
+  for (const [key, value] of Object.entries(input as Record<string, unknown>)) {
+    if (Object.keys(out).length >= PLUGIN_AREA_MAX_KEYS) break;
+    if (!/^[a-zA-Z][a-zA-Z0-9_]{0,63}$/.test(key)) continue;
+    if (
+      typeof value === "boolean" ||
+      (typeof value === "number" && Number.isFinite(value)) ||
+      (typeof value === "string" && value.length <= 200)
+    ) {
+      out[key] = value;
+    } else if (
+      Array.isArray(value) &&
+      value.length <= 100 &&
+      value.every((item) => typeof item === "string" && item.length <= 200)
+    ) {
+      out[key] = [...value];
+    }
+  }
+  return out;
+}
+
 export function sanitizeUiOverrides(input: unknown): UiOverrides {
   const out: Record<string, Record<string, unknown>> = {};
   if (!input || typeof input !== "object") return out as UiOverrides;
@@ -461,6 +335,11 @@ export function sanitizeUiOverrides(input: unknown): UiOverrides {
   for (const [area, areaValue] of Object.entries(
     input as Record<string, unknown>,
   )) {
+    if (PLUGIN_AREA_PATTERN.test(area)) {
+      const bucket = sanitizePluginArea(areaValue);
+      if (Object.keys(bucket).length > 0) out[area] = bucket;
+      continue;
+    }
     const specs = specsByArea[area];
     if (!specs || !areaValue || typeof areaValue !== "object") continue;
 
@@ -480,11 +359,51 @@ export function sanitizeUiOverrides(input: unknown): UiOverrides {
   return out as UiOverrides;
 }
 
+export function defaultOnboardingState(): UiOnboardingState {
+  return {
+    seen: {},
+    completedAt: null,
+    skipped: false,
+    baselinePending: false,
+  };
+}
+
+export function sanitizeOnboarding(input: unknown): UiOnboardingState {
+  const defaults = defaultOnboardingState();
+  if (!input || typeof input !== "object") return defaults;
+  const obj = input as Record<string, unknown>;
+  const completedAt =
+    typeof obj.completedAt === "string" ? obj.completedAt : null;
+  const skipped = typeof obj.skipped === "boolean" ? obj.skipped : false;
+
+  // The old shape had a single completedVersion and no seen map.
+  if (
+    !("seen" in obj) &&
+    typeof obj.completedVersion === "number" &&
+    obj.completedVersion >= 1
+  ) {
+    return {
+      seen: { ...LEGACY_SEEN },
+      completedAt,
+      skipped,
+      baselinePending: true,
+    };
+  }
+
+  return {
+    seen: sanitizeSeen(obj.seen),
+    completedAt,
+    skipped,
+    baselinePending: obj.baselinePending === true,
+  };
+}
+
 export function defaultUiPreferences(): UiPreferences {
   return {
     version: UI_PREFERENCES_VERSION,
     preset: "balanced",
     overrides: {},
+    onboarding: defaultOnboardingState(),
   };
 }
 
@@ -499,6 +418,7 @@ export function sanitizeUiPreferences(input: unknown): UiPreferences {
       ? (obj.preset as UiPreset)
       : defaults.preset,
     overrides: sanitizeUiOverrides(obj.overrides),
+    onboarding: sanitizeOnboarding(obj.onboarding),
   };
 }
 
@@ -519,16 +439,27 @@ export function resolveArea<A extends UiAreaKey>(
   return override ? { ...base, ...override } : base;
 }
 
-export function hasUiOverrides(preferences: UiPreferences): boolean {
-  return Object.keys(preferences.overrides).length > 0;
+/** The presets a plugin declares in contributes.uiPresets. */
+export type UiPluginPresets = Record<
+  Exclude<UiPreset, "custom">,
+  Record<string, unknown>
+>;
+
+/** A plugin area's values: its preset for the user's level, then overrides. */
+export function resolvePluginArea(
+  preferences: UiPreferences,
+  pluginId: string,
+  presets: UiPluginPresets | undefined,
+): Record<string, unknown> {
+  const level =
+    preferences.preset === "custom" ? "balanced" : preferences.preset;
+  const base = presets?.[level] ?? {};
+  const override = (
+    preferences.overrides as Record<string, Record<string, unknown>>
+  )[`plugin:${pluginId}`];
+  return override ? { ...base, ...override } : { ...base };
 }
 
-/**
- * What the settings UI should show as the active preset. "custom" is derived
- * rather than stored, so clearing every override automatically restores the
- * user's chosen preset instead of stranding them on a label.
- */
-export function effectivePresetLabel(preferences: UiPreferences): UiPreset {
-  if (preferences.preset === "custom") return "custom";
-  return hasUiOverrides(preferences) ? "custom" : preferences.preset;
+export function hasUiOverrides(preferences: UiPreferences): boolean {
+  return Object.keys(preferences.overrides).length > 0;
 }

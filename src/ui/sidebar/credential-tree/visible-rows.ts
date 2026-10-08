@@ -17,7 +17,7 @@ export function isFolder(
   return "children" in item;
 }
 
-export function credentialMatchesQuery(cred: Credential, query: string) {
+function credentialMatchesQuery(cred: Credential, query: string) {
   return (
     cred.name.toLowerCase().includes(query) ||
     cred.username.toLowerCase().includes(query) ||
@@ -32,7 +32,7 @@ export type VirtualRow = {
 
 /**
  * Builds the flattened, currently-visible row list for the virtualizer.
- * Folders are always depth 0 and credentials always depth 1, so there is no
+ * Folders are always depth 0, credentials always depth 1 -- there is no
  * deeper nesting to walk, unlike hosts' recursive collectVisibleRows.
  */
 export function collectVisibleRows(

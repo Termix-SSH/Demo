@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { FolderOpen, Pencil, Share2, Trash2 } from "lucide-react";
+import { FolderOpen, Pencil, Settings2, Share2, Trash2 } from "lucide-react";
 import type { HostFolder } from "@/types/ui-types";
 
 export function FolderActions({
@@ -19,7 +19,7 @@ export function FolderActions({
   const actionButtonClass =
     "flex items-center justify-center size-6 text-muted-foreground/60 hover:text-foreground hover:bg-background/80 transition-colors";
   return (
-    <span className="flex items-center gap-0.5 ml-0.5 opacity-0 group-hover/folder:opacity-100 transition-opacity">
+    <span className="hidden items-center gap-0.5 ml-0.5 group-hover/folder:flex group-focus-within/folder:flex [@media(hover:none)]:flex">
       <button
         type="button"
         title={t("hosts.openAllSessions")}
@@ -44,6 +44,24 @@ export function FolderActions({
           <Share2 className="size-3" />
         </button>
       )}
+      <button
+        type="button"
+        title={t("hostDefaults.folderDefaultsAction")}
+        className={actionButtonClass}
+        onClick={(e) => {
+          e.stopPropagation();
+          window.dispatchEvent(
+            new CustomEvent("host-manager:edit-defaults", {
+              detail: {
+                level: "folder",
+                folderName: folder.path ?? folder.name,
+              },
+            }),
+          );
+        }}
+      >
+        <Settings2 className="size-3" />
+      </button>
       <button
         type="button"
         title={t("hosts.editFolder")}

@@ -1,0 +1,92 @@
+{
+  "id": "homepage",
+  "name": "Homepage",
+  "version": "1.0.0",
+  "description": "A drag and drop widget page for your servers and services, plus service links for the dashboard.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Homepage",
+  "docs": "https://docs.termix.site/plugins/homepage",
+  "category": "Productivity",
+  "icon": "LayoutGrid",
+  "features": [
+    "Drag, resize and arrange widgets on a canvas",
+    "Widgets for host status, pings, service links, bookmarks, search, clocks, calendars, weather, RSS, notes, images, iframes, custom APIs and a live terminal",
+    "Other features add their own widgets, like Docker, Tunnels and Host Metrics",
+    "Service links and a homepage preview on the dashboard",
+    "Syncs between the desktop app and a Termix server"
+  ],
+  "engine": {
+    "termix": ">=26.10.0",
+    "api": "^1.2"
+  },
+  "capabilities": ["db:own", "network:serve", "network:outbound", "ui:surface"],
+  "provides": [
+    {
+      "service": "homepage.items",
+      "version": "1.0.0",
+      "permission": "homepage.use"
+    }
+  ],
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "homepage",
+        "titleKey": "nav.homepage",
+        "icon": "LayoutGrid",
+        "openFrom": ["palette"]
+      }
+    ],
+    "dashboardCards": [
+      {
+        "id": "service_links",
+        "titleKey": "dashboard.serviceLinks"
+      },
+      {
+        "id": "homepage_preview",
+        "titleKey": "dashboard.homepagePreview"
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ],
+    "actionSlots": [
+      {
+        "id": "dashboard.secondaryView",
+        "accepts": ["component"]
+      }
+    ],
+    "syncEntities": [
+      "dashboardServiceLinks",
+      "homepageItems",
+      "homepageLayouts"
+    ],
+    "settings": {
+      "admin": [
+        {
+          "key": "privateEndpoints",
+          "type": "textarea",
+          "labelKey": "settings.privateEndpoints.label",
+          "descriptionKey": "settings.privateEndpoints.description",
+          "default": ""
+        },
+        {
+          "key": "privateCertificateAuthority",
+          "type": "textarea",
+          "labelKey": "settings.privateCertificateAuthority.label",
+          "descriptionKey": "settings.privateCertificateAuthority.description",
+          "default": ""
+        }
+      ]
+    }
+  }
+}

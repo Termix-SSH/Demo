@@ -1,23 +1,13 @@
 /* eslint-disable react-refresh/only-export-components */
-import { Children, Fragment } from "react";
+import { Children, Fragment, useRef } from "react";
 import type React from "react";
-import { Grid3X3, List, Rows3, Search } from "lucide-react";
+import { ArrowLeft, Grid3X3, List, Rows3, Search, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
-import { Input } from "@/components/input";
 import { Separator } from "@/components/separator";
+import { DocsLink } from "@/components/docs-link";
 
-/**
- * The chrome every feature tab draws.
- *
- * Each tab used to build its own header: Docker and Tunnels had a hero card
- * with a 2xl title, Proxmox a bare bordered div, Tmux nothing at all. They
- * disagreed on height, padding and type scale, and the hero cards cost about
- * 70px before any content. Everything now goes through PanelShell, which uses
- * the h-12.5 header row the rest of the app already uses (AppShell, TabBar,
- * PanelFrame, PluginsScreen).
- */
-
-/** One rhythm for every panel, so tightening the app is an edit here. */
+/** One spacing rhythm for every panel and tab. */
 export const PANEL = {
   body: "p-2.5",
   gap: "gap-2",
@@ -29,6 +19,7 @@ export const PANEL = {
 export type PanelViewMode = "grid" | "list";
 export type PanelDensity = "comfortable" | "compact";
 
+/** The header, toolbar band and body every tab and panel draws. */
 export function PanelShell({
   chrome = true,
   icon,
@@ -38,27 +29,30 @@ export function PanelShell({
   actions,
   toolbar,
   tabs,
+  footer,
   scroll = true,
+  docs,
   className,
   children,
 }: {
-  /** False inside the sidebar, which draws its own header and background. */
+  /** False inside a sidebar, which draws its own header. */
   chrome?: boolean;
   icon?: React.ReactNode;
-  title?: string;
-  /** Short caption beside the title, e.g. "12 of 18 running". */
+  title?: React.ReactNode;
+  /** Short caption beside the title, like "12 of 18 running". */
   status?: React.ReactNode;
-  /** Sits before the title, for a back button. */
+  /** Sits before the title, usually a BackButton. */
   leading?: React.ReactNode;
   actions?: React.ReactNode;
   toolbar?: React.ReactNode;
-  /**
-   * A full-bleed tab strip in place of a toolbar. Unlike `toolbar` this adds no
-   * padding, so the strip's underline sits on the band's own border.
-   */
+  /** A full-bleed tab strip in place of a toolbar. */
   tabs?: React.ReactNode;
-  /** False when the body scrolls itself, as the tmux and file panes do. */
+  /** A bar pinned under the body, like Cancel and Save. */
+  footer?: React.ReactNode;
+  /** False when the body scrolls itself. */
   scroll?: boolean;
+  /** Docs URL for this screen, shown as a book icon in the header. */
+  docs?: string | null;
   className?: string;
   children: React.ReactNode;
 }) {
@@ -66,7 +60,7 @@ export function PanelShell({
     <div
       className={cn(
         "flex min-h-0 flex-1 flex-col",
-        scroll && "overflow-y-auto",
+        scroll && "overflow-y-auto thin-scrollbar",
         className,
       )}
     >
@@ -74,34 +68,46 @@ export function PanelShell({
     </div>
   );
 
+  const bands = (
+    <>
+      {toolbar && (
+        <div
+          className={`flex shrink-0 items-center gap-2 border-b border-border ${PANEL.band}`}
+        >
+          {toolbar}
+        </div>
+      )}
+      {tabs && (
+        <div className="shrink-0 border-b border-border px-1">{tabs}</div>
+      )}
+    </>
+  );
+
+  const foot = footer && (
+    <div className="flex shrink-0 items-center gap-2 border-t border-border px-3 py-2">
+      {footer}
+    </div>
+  );
+
   if (!chrome) {
     return (
       <div className="flex min-h-0 flex-1 flex-col">
-        {toolbar && (
-          <div
-            className={`flex shrink-0 items-center gap-2 border-b border-border ${PANEL.band}`}
-          >
-            {toolbar}
-          </div>
-        )}
-        {tabs && (
-          <div className="shrink-0 border-b border-border px-1">{tabs}</div>
-        )}
+        {bands}
         {body}
+        {foot}
       </div>
     );
   }
 
   return (
-    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-background">
+    <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-background">
       <header
         className={`flex ${PANEL.header} shrink-0 flex-row items-center border-b border-border`}
       >
         {leading && (
-          <>
+          <div className="flex h-full shrink-0 border-r border-border">
             {leading}
-            <Separator orientation="vertical" />
-          </>
+          </div>
         )}
         <div className="flex min-w-0 flex-1 items-center gap-2 px-3">
           {icon && <span className="shrink-0 text-accent-brand">{icon}</span>}
@@ -110,73 +116,144 @@ export function PanelShell({
           </span>
           {status && (
             <>
-              <Separator orientation="vertical" className="h-4" />
+              <Separator
+                orientation="vertical"
+                className="h-4 data-[orientation=vertical]:self-center"
+              />
               <span className="truncate text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
                 {status}
               </span>
             </>
           )}
         </div>
-        {actions && (
-          <div className="flex shrink-0 items-center gap-1 px-2">{actions}</div>
+        {(actions || docs) && (
+          <div className="flex shrink-0 items-center gap-1 px-2">
+            {actions}
+            {docs && <DocsLink href={docs} variant="icon" />}
+          </div>
         )}
       </header>
-
-      {toolbar && (
-        <div
-          className={`flex shrink-0 items-center gap-2 border-b border-border ${PANEL.band}`}
-        >
-          {toolbar}
-        </div>
-      )}
-
-      {tabs && (
-        <div className="shrink-0 border-b border-border px-1">{tabs}</div>
-      )}
-
+      {bands}
       {body}
+      {foot}
     </div>
   );
 }
 
-/** Search box sized to match the toolbar buttons and chips. */
+/** Square back button sized for the PanelShell header. */
+export function BackButton({
+  onClick,
+  label,
+  className,
+}: {
+  onClick: () => void;
+  label?: string;
+  className?: string;
+}) {
+  const { t } = useTranslation();
+  const text = label ?? t("common.back");
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      title={text}
+      aria-label={text}
+      className={cn(
+        "flex h-full w-12.5 shrink-0 items-center justify-center text-muted-foreground transition-colors hover:bg-muted/40 hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring",
+        className,
+      )}
+    >
+      <ArrowLeft className="size-4" />
+    </button>
+  );
+}
+
+/** Search box sized to match toolbar buttons. Esc clears it. */
 export function PanelSearch({
   value,
   onChange,
   placeholder,
   fill,
+  autoFocus,
+  disabled,
+  title,
+  onEnter,
+  inputRef,
   className,
 }: {
   value: string;
   onChange: (next: string) => void;
-  placeholder: string;
-  /** Takes the whole toolbar, for panels whose search is the only control. */
+  placeholder?: string;
+  /** Takes the whole toolbar, for panels where search is the only control. */
   fill?: boolean;
+  autoFocus?: boolean;
+  disabled?: boolean;
+  title?: string;
+  /** Runs on Enter, for searches that query a server. */
+  onEnter?: () => void;
+  inputRef?: React.Ref<HTMLInputElement>;
   className?: string;
 }) {
+  const { t } = useTranslation();
+  const localRef = useRef<HTMLInputElement>(null);
+  const text = placeholder ?? t("common.search");
   return (
     <div
-      className={cn("relative", fill ? "w-full" : "w-40 md:w-56", className)}
+      className={cn(
+        "relative",
+        fill ? "w-full min-w-0 flex-1" : "w-40 md:w-56",
+        className,
+      )}
     >
       <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-      <Input
+      <input
+        ref={(el) => {
+          localRef.current = el;
+          if (typeof inputRef === "function") inputRef(el);
+          else if (inputRef)
+            (
+              inputRef as React.MutableRefObject<HTMLInputElement | null>
+            ).current = el;
+        }}
+        type="text"
         value={value}
+        autoFocus={autoFocus}
+        disabled={disabled}
+        title={title}
+        aria-label={text}
+        placeholder={text}
         onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        className="h-8 pl-8 text-xs"
+        onKeyDown={(e) => {
+          if (e.key === "Escape" && value) {
+            e.stopPropagation();
+            onChange("");
+          }
+          if (e.key === "Enter" && onEnter) {
+            e.preventDefault();
+            onEnter();
+          }
+        }}
+        className="h-8 w-full min-w-0 border border-input bg-transparent pl-8 pr-7 text-xs outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30"
       />
+      {value && (
+        <button
+          type="button"
+          aria-label={t("panel.clearSearch")}
+          title={t("panel.clearSearch")}
+          onClick={() => {
+            onChange("");
+            localRef.current?.focus();
+          }}
+          className="absolute right-1.5 top-1/2 flex size-5 -translate-y-1/2 items-center justify-center text-muted-foreground hover:text-foreground"
+        >
+          <X className="size-3" />
+        </button>
+      )}
     </div>
   );
 }
 
-/**
- * Square segmented control. Replaces the three near-identical copies that grew
- * in DemoProxmox, PluginsScreen and FileManagerToolbar.
- *
- * The focus ring is not optional: index.css sets outline-none on everything, so
- * a raw button here is invisible to the keyboard. Setting it once covers every
- * call site.
- */
+/** Square segmented control. */
 export function Segmented<T extends string>({
   value,
   onChange,
@@ -195,17 +272,22 @@ export function Segmented<T extends string>({
   className?: string;
 }) {
   return (
-    <div className={cn("flex items-center border border-border", className)}>
+    <div
+      role="radiogroup"
+      className={cn("flex items-center border border-border", className)}
+    >
       {options.map((option, i) => {
         const active = option.value === value;
         return (
           <button
             key={option.value}
             type="button"
+            role="radio"
+            aria-checked={active}
             title={option.title ?? option.label}
             onClick={() => onChange(option.value)}
             className={cn(
-              "flex h-8 items-center gap-1.5 px-2.5 text-[11px] font-medium transition-colors focus-visible:relative focus-visible:z-10 focus-visible:ring-1 focus-visible:ring-ring",
+              "flex h-8 items-center justify-center gap-1.5 px-2.5 text-[11px] font-medium transition-colors focus-visible:relative focus-visible:z-10 focus-visible:ring-1 focus-visible:ring-ring",
               i > 0 && "border-l border-border",
               active
                 ? "bg-accent-brand/10 text-accent-brand"
@@ -226,10 +308,7 @@ export function Segmented<T extends string>({
   );
 }
 
-/**
- * Grid/list and density, lifted out of the file manager toolbar so every panel
- * gets the same control in the same place.
- */
+/** Grid or list, plus the compact rows toggle. */
 export function ViewToggle({
   view,
   onView,
@@ -238,36 +317,43 @@ export function ViewToggle({
 }: {
   view: PanelViewMode;
   onView: (next: PanelViewMode) => void;
-  density: PanelDensity;
-  onDensity: (next: PanelDensity) => void;
+  density?: PanelDensity;
+  onDensity?: (next: PanelDensity) => void;
 }) {
+  const { t } = useTranslation();
   return (
     <div className="flex items-center border border-border">
       <ToggleButton
         active={view === "grid"}
         onClick={() => onView("grid")}
-        title="Grid"
+        title={t("panel.gridView")}
       >
         <Grid3X3 className="size-4" />
       </ToggleButton>
       <ToggleButton
         active={view === "list"}
         onClick={() => onView("list")}
-        title="List"
+        title={t("panel.listView")}
         bordered
       >
         <List className="size-4" />
       </ToggleButton>
-      <ToggleButton
-        active={density === "compact"}
-        onClick={() =>
-          onDensity(density === "compact" ? "comfortable" : "compact")
-        }
-        title={density === "compact" ? "Comfortable rows" : "Compact rows"}
-        bordered
-      >
-        <Rows3 className="size-4" />
-      </ToggleButton>
+      {density && onDensity && (
+        <ToggleButton
+          active={density === "compact"}
+          onClick={() =>
+            onDensity(density === "compact" ? "comfortable" : "compact")
+          }
+          title={
+            density === "compact"
+              ? t("panel.comfortableRows")
+              : t("panel.compactRows")
+          }
+          bordered
+        >
+          <Rows3 className="size-4" />
+        </ToggleButton>
+      )}
     </div>
   );
 }
@@ -290,6 +376,8 @@ function ToggleButton({
       type="button"
       onClick={onClick}
       title={title}
+      aria-label={title}
+      aria-pressed={active}
       className={cn(
         "flex size-8 items-center justify-center transition-colors focus-visible:relative focus-visible:z-10 focus-visible:ring-1 focus-visible:ring-ring",
         bordered && "border-l border-border",
@@ -304,19 +392,8 @@ function ToggleButton({
 }
 
 /**
- * A run of peer facts, separated by a real rule between each pair.
- *
- * The first version of this drew the rule as a left border on every sibling,
- * which broke in four ways: a wrapped line started with a rule, a
- * justify-between row put a rule between a label and its value at opposite
- * ends, a single child still got the treatment, and a nested flex span pushed
- * the rule into the middle of a group. Separators are real elements now, placed
- * only between children, and the row never wraps. A fact that does not fit is
- * truncated rather than sent to a second line where its rule would dangle.
- *
- * Use this only for peers: "12 online", "40 hosts". A label and its value are
- * not peers. Separate those with space, since a rule between a name and its
- * number reads as a boundary between two facts.
+ * A run of peer facts with a rule between each pair, like "12 online | 40
+ * hosts". Never wraps; a fact that does not fit is truncated.
  */
 export function Facts({
   className,
@@ -346,10 +423,12 @@ export function Facts({
 export function GroupHeading({
   title,
   count,
+  action,
   className,
 }: {
   title: string;
   count?: number;
+  action?: React.ReactNode;
   className?: string;
 }) {
   return (
@@ -363,6 +442,7 @@ export function GroupHeading({
         </span>
       )}
       <div className="h-px flex-1 bg-border" />
+      {action}
     </div>
   );
 }

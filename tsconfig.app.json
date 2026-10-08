@@ -1,33 +1,35 @@
 {
   "compilerOptions": {
-    "paths": {
-      "@/types": ["./src/types/index.ts"],
-      "@/types/*": ["./src/types/*"],
-      "@/*": ["./src/ui/*"]
-    },
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2022",
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "types": ["vite/client"],
-    "allowArbitraryExtensions": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-    /* The UI files are written against these settings. */
     "strict": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "erasableSyntaxOnly": false,
     "noImplicitAny": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "noUncheckedSideEffectImports": false,
+    "allowUnreachableCode": true,
+    "paths": {
+      "@termix-ssh/plugin-sdk/frontend": ["./src/sdk/frontend.ts"],
+      "@termix-ssh/plugin-sdk/ui": ["./src/ui/plugin-host/sdk-ui.ts"],
+      "@termix-ssh/plugin-sdk/*": ["./src/sdk/*.ts"],
+      "@/types": ["./src/types/index.ts"],
+      "@/types/*": ["./src/types/*"],
+      "@/*": ["./src/ui/*"]
+    }
   },
-  "include": ["src"]
+  "include": ["src/demo", "src/main.tsx", "src/ui", "src/types"],
+  "exclude": ["src/ui/plugin-host/testing-host.tsx"]
 }

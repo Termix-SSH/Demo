@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import type React from "react";
 import { useTranslation } from "react-i18next";
 import {
   ChevronLeft,
@@ -7,199 +8,150 @@ import {
   RotateCcw,
   SquareArrowOutUpRight,
 } from "lucide-react";
-import { Button } from "@/components/button";
-import { Separator } from "@/components/separator";
 import { PANEL } from "@/components/panel-layout";
-import {
-  promotableIds,
-  rightDockableIds,
-  railItemLabel,
-} from "@/sidebar/rail-items";
-
-/**
- * One dock, either side.
- *
- * The left sidebar and the right dock used to be two hand-copied headers, and
- * the right one rendered an empty div under its title. They share this now, so
- * both resize, reset and persist the same way and a fix lands in one place.
-
- */
+import type { EditingWidth } from "@/components/surface/surface-scope";
+import { cn } from "@/lib/utils";
+import { rem } from "@/lib/rem";
 
 export const DOCK_DEFAULT_WIDTH = 291;
-export const DOCK_MIN_WIDTH = 220;
-export const DOCK_MAX_WIDTH = 560;
+export const DOCK_MIN_WIDTH = 160;
+export const DOCK_MAX_WIDTH = 480;
+const EDITING_WIDTH = 560;
+const WIDE_EDITING_WIDTH = 760;
 
-function storageKey(side: "left" | "right") {
-  return `termix-demo-dock-${side}`;
+/** The width a dock renders at, in Normal-size pixels. */
+export function dockWidth(width: number, editing: EditingWidth): number {
+  if (editing === "wide") return WIDE_EDITING_WIDTH;
+  if (editing) return Math.max(width, EDITING_WIDTH);
+  return width;
 }
 
-export function readDockWidth(side: "left" | "right"): number {
-  try {
-    const raw = localStorage.getItem(storageKey(side));
-    const value = raw ? Number(raw) : NaN;
-    if (Number.isFinite(value))
-      return Math.min(DOCK_MAX_WIDTH, Math.max(DOCK_MIN_WIDTH, value));
-  } catch {
-    // Unreadable storage just means the default width.
-  }
-  return DOCK_DEFAULT_WIDTH;
+function HeaderButton({
+  title,
+  onClick,
+  children,
+}: {
+  title: string;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      title={title}
+      aria-label={title}
+      onClick={onClick}
+      className="flex h-full w-12.5 shrink-0 items-center justify-center border-l border-border text-muted-foreground transition-colors hover:bg-muted/40 hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring"
+    >
+      {children}
+    </button>
+  );
 }
 
-function writeDockWidth(side: "left" | "right", width: number) {
-  try {
-    localStorage.setItem(storageKey(side), String(width));
-  } catch {
-    // Private windows refuse writes; the width just will not persist.
-  }
-}
-
+/** The shared header and frame of the left sidebar and the right dock. */
 export function DockPanel({
   side,
-  view,
+  title,
   open,
+  width,
+  editing = false,
+  dragging = false,
+  fill = false,
+  onResizeStart,
   onClose,
   onOpenAsTab,
   onMoveToRightDock,
+  onResetWidth,
   children,
 }: {
   side: "left" | "right";
-  view: string;
+  title: string;
   open: boolean;
-  /** Left only: an open editor forces the wider fixed width. */
+  width: number;
+  editing?: EditingWidth;
+  dragging?: boolean;
+  /** Fill the parent instead of sizing itself, as in the mobile sheet. */
+  fill?: boolean;
+  onResizeStart?: (e: React.MouseEvent) => void;
   onClose: () => void;
-  onOpenAsTab?: (view: string) => void;
-  onMoveToRightDock?: (view: string) => void;
+  onOpenAsTab?: () => void;
+  onMoveToRightDock?: () => void;
+  onResetWidth?: () => void;
   children: React.ReactNode;
 }) {
   const { t } = useTranslation();
-  const [width, setWidth] = useState(() => readDockWidth(side));
-  const [dragging, setDragging] = useState(false);
-
-  useEffect(() => {
-    if (!dragging) writeDockWidth(side, width);
-  }, [side, width, dragging]);
-
-  const onDragStart = useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      setDragging(true);
-      const startX = e.clientX;
-      const startWidth = width;
-
-      const onMove = (ev: MouseEvent) => {
-        // The right dock grows as the pointer moves left, so the delta flips.
-        const delta =
-          side === "left" ? ev.clientX - startX : startX - ev.clientX;
-        setWidth(
-          Math.min(
-            DOCK_MAX_WIDTH,
-            Math.max(DOCK_MIN_WIDTH, startWidth + delta),
-          ),
-        );
-      };
-      const onUp = () => {
-        setDragging(false);
-        window.removeEventListener("mousemove", onMove);
-        window.removeEventListener("mouseup", onUp);
-      };
-      window.addEventListener("mousemove", onMove);
-      window.addEventListener("mouseup", onUp);
-    },
-    [side, width],
-  );
-
-  const CollapseIcon = side === "left" ? ChevronLeft : PanelRight;
+  const CollapseIcon = side === "left" ? ChevronLeft : ChevronRight;
 
   return (
     <div
-      className={`relative flex flex-col min-h-0 bg-sidebar shrink-0 overflow-hidden ${
-        open
-          ? `${side === "left" ? "border-r" : "border-l"} transition-colors ${
-              dragging ? "border-accent-brand/60" : "border-border"
-            }`
-          : ""
-      }`}
-      style={{
-        width: open ? width : 0,
-        transition: dragging ? "none" : "width 0.2s",
-      }}
+      className={cn(
+        "relative flex min-h-0 flex-col overflow-hidden bg-sidebar",
+        fill ? "flex-1" : "shrink-0",
+        open &&
+          !fill && [
+            side === "left" ? "border-r" : "border-l",
+            "transition-colors",
+            dragging ? "border-accent-brand/60" : "border-border",
+          ],
+      )}
+      style={
+        fill
+          ? undefined
+          : {
+              width: open ? rem(dockWidth(width, editing)) : 0,
+              transition: dragging ? "none" : "width 0.2s",
+            }
+      }
     >
       <div
-        className={`flex flex-row items-center border-b border-border ${PANEL.header} shrink-0`}
+        className={`flex ${PANEL.header} shrink-0 flex-row items-center border-b border-border`}
       >
-        <span className="flex-1 min-w-0 whitespace-nowrap text-base font-bold tracking-tight text-foreground px-3">
-          {railItemLabel(view, t)}
+        <span className="min-w-0 flex-1 truncate whitespace-nowrap px-3 text-base font-bold tracking-tight text-foreground">
+          {title}
         </span>
-
-        {onOpenAsTab && promotableIds().includes(view) && (
-          <>
-            <Separator orientation="vertical" />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-full w-12.5 border-y-0 border-r-0 border-border rounded-none text-muted-foreground hover:text-foreground"
-              title={t("nav.openAsTab")}
-              aria-label={t("nav.openAsTab")}
-              onClick={() => onOpenAsTab(view)}
-            >
-              <SquareArrowOutUpRight className="size-3.5" />
-            </Button>
-          </>
+        {onOpenAsTab && (
+          <HeaderButton title={t("nav.openAsTab")} onClick={onOpenAsTab}>
+            <SquareArrowOutUpRight className="size-3.5" />
+          </HeaderButton>
         )}
-
-        {side === "left" &&
-          onMoveToRightDock &&
-          rightDockableIds().includes(view) && (
-            <>
-              <Separator orientation="vertical" />
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-full w-12.5 border-y-0 border-r-0 border-border rounded-none text-muted-foreground hover:text-foreground"
-                title={t("nav.openInRightDock")}
-                aria-label={t("nav.openInRightDock")}
-                onClick={() => onMoveToRightDock(view)}
-              >
-                <PanelRight className="size-3.5" />
-              </Button>
-            </>
-          )}
-
-        <Separator orientation="vertical" />
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-full w-12.5 border-y-0 border-border rounded-none text-muted-foreground hover:text-foreground"
-          title={t("nav.resetWidth")}
-          aria-label={t("nav.resetWidth")}
-          onClick={() => setWidth(DOCK_DEFAULT_WIDTH)}
-        >
-          <RotateCcw className="size-3.5" />
-        </Button>
-
-        <Separator orientation="vertical" />
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-full w-12.5 border-y-0 border-r-0 border-border rounded-none text-muted-foreground hover:text-foreground"
-          title={t("nav.collapse")}
-          aria-label={t("nav.collapse")}
+        {onMoveToRightDock && (
+          <HeaderButton
+            title={t("nav.openInRightDock")}
+            onClick={onMoveToRightDock}
+          >
+            <PanelRight className="size-3.5" />
+          </HeaderButton>
+        )}
+        {onResetWidth && (
+          <HeaderButton
+            title={t("nav.resetSidebarWidth")}
+            onClick={onResetWidth}
+          >
+            <RotateCcw className="size-3.5" />
+          </HeaderButton>
+        )}
+        <HeaderButton
+          title={
+            side === "left" ? t("nav.collapseSidebar") : t("nav.closeRightDock")
+          }
           onClick={onClose}
         >
-          <CollapseIcon className="size-3.5" />
-        </Button>
+          <CollapseIcon className="size-4" />
+        </HeaderButton>
       </div>
 
-      <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
         {children}
       </div>
 
-      {open && (
+      {open && onResizeStart && !editing && (
         <div
-          onMouseDown={onDragStart}
-          className={`absolute ${side === "left" ? "right-0" : "left-0"} top-0 bottom-0 w-1 cursor-col-resize z-30 transition-colors ${
-            dragging ? "bg-accent-brand/60" : "hover:bg-accent-brand/40"
-          }`}
+          onMouseDown={onResizeStart}
+          className={cn(
+            "absolute bottom-0 top-0 z-30 w-1 cursor-col-resize transition-colors",
+            side === "left" ? "right-0" : "left-0",
+            dragging ? "bg-accent-brand/60" : "hover:bg-accent-brand/40",
+          )}
         />
       )}
     </div>
@@ -211,10 +163,11 @@ export function DockReopenStrip({ onClick }: { onClick: () => void }) {
   const { t } = useTranslation();
   return (
     <button
+      type="button"
       onClick={onClick}
-      title={t("nav.expand")}
-      aria-label={t("nav.expand")}
-      className="absolute left-0 top-0 bottom-0 z-20 flex items-center justify-center w-6 bg-sidebar border-r border-border text-muted-foreground hover:text-accent-brand hover:bg-accent-brand/5 transition-colors"
+      title={t("nav.openSidebar")}
+      aria-label={t("nav.openSidebar")}
+      className="absolute bottom-0 left-0 top-0 z-20 flex w-6 items-center justify-center border-r border-border bg-sidebar text-muted-foreground transition-colors hover:bg-accent-brand/5 hover:text-accent-brand"
     >
       <ChevronRight className="size-3.5" />
     </button>

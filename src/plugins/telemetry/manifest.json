@@ -1,0 +1,118 @@
+{
+  "id": "telemetry",
+  "name": "Usage Statistics",
+  "version": "1.0.0",
+  "description": "Sends a small anonymous daily report so we can see how Termix is used.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Telemetry",
+  "docs": "https://docs.termix.site/plugins/telemetry",
+  "category": "Monitoring",
+  "icon": "ChartNoAxesColumn",
+  "features": [
+    "Never sends usernames, hostnames, IP addresses or credentials",
+    "Choose what the report includes, or turn it off",
+    "Preview the exact report before it is sent"
+  ],
+  "env": [
+    {
+      "name": "ENABLE_TELEMETRY",
+      "description": "true or false. Turns usage statistics on or off and locks the setting."
+    },
+    {
+      "name": "POSTHOG_API_KEY",
+      "description": "Send reports to your own PostHog project instead of the Termix one."
+    },
+    {
+      "name": "POSTHOG_HOST",
+      "description": "PostHog server to send to.",
+      "default": "https://us.i.posthog.com"
+    }
+  ],
+  "engine": {
+    "termix": ">=26.10.0",
+    "api": "^1.2"
+  },
+  "capabilities": [
+    "db:core-refs",
+    "network:outbound",
+    "network:serve",
+    "events:core",
+    "db:own",
+    "kv:own",
+    "plugins:read",
+    "ui:surface"
+  ],
+  "contributes": {
+    "permissions": [
+      {
+        "name": "manage",
+        "titleKey": "permissions.manage.title",
+        "descriptionKey": "permissions.manage.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
+    "settings": {
+      "admin": [
+        {
+          "key": "status",
+          "type": "custom",
+          "component": "status",
+          "permission": "manage"
+        },
+        {
+          "key": "enabled",
+          "type": "boolean",
+          "labelKey": "settings.enabled.label",
+          "descriptionKey": "settings.enabled.description",
+          "default": true
+        },
+        {
+          "key": "includePlatform",
+          "type": "boolean",
+          "labelKey": "settings.includePlatform.label",
+          "descriptionKey": "settings.includePlatform.description",
+          "requires": "enabled",
+          "default": true
+        },
+        {
+          "key": "includeFeatureUsage",
+          "type": "boolean",
+          "labelKey": "settings.includeFeatureUsage.label",
+          "descriptionKey": "settings.includeFeatureUsage.description",
+          "requires": "enabled",
+          "default": true
+        },
+        {
+          "key": "includePlugins",
+          "type": "boolean",
+          "labelKey": "settings.includePlugins.label",
+          "descriptionKey": "settings.includePlugins.description",
+          "requires": "enabled",
+          "default": true
+        },
+        {
+          "key": "instanceId",
+          "type": "string",
+          "labelKey": "settings.instanceId.label",
+          "hidden": true,
+          "default": ""
+        }
+      ],
+      "user": [
+        {
+          "key": "shareFeatureUsage",
+          "type": "boolean",
+          "labelKey": "settings.shareFeatureUsage.label",
+          "descriptionKey": "settings.shareFeatureUsage.description",
+          "default": true
+        }
+      ]
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"],
+  "desktop": "server"
+}

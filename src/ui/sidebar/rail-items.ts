@@ -1,47 +1,46 @@
 import {
+  Cloud,
   KeyRound,
-  Puzzle,
+  Plug,
   Server,
+  LibraryBig,
+  Puzzle,
   Settings,
-  User,
+  Zap,
   type LucideIcon,
 } from "lucide-react";
-import { getNavItems, type NavItemDef } from "@/demo/nav-registry";
+import { useMemo, useSyncExternalStore } from "react";
+import { usePermissions } from "@/hooks/use-permissions";
+import { useAreaPreferences } from "@/contexts/UiPreferencesContext";
+import { useSyncAttentionCount } from "@/hooks/use-sync-status";
 import { isElectron } from "@/lib/electron";
+import { createRegistry } from "@/lib/registry";
+import { getPanel } from "@/shell/panel-registry";
+import { getTabType } from "@/shell/tab-registry";
 
 /**
- * The core navigation destinations, and the merge that brings in the rest.
+ * The one list of navigation destinations.
  *
- * This used to hold all eighteen destinations as built-ins, which quietly
- * contradicted the thing the demo is here to show: the plugin list claimed
- * Snippets and Docker were plugins while the rail carried them regardless of
- * whether those plugins were installed. Only hosts and credentials are built in
- * now. Everything else arrives through a plugin's `contributions.navItems` and
- * leaves with it.
+ * This used to be duplicated in four places -- AppRail's button array, the
+ * visibility toggles in UserProfilePanel, AppShell's sidebar title map, and
+ * the mobile bar's own primary/more lists -- which drifted: half the sidebar
+ * titles were hardcoded English, the alerts entry had no visibility toggle,
+ * and the mobile bar ignored hidden tabs entirely. Everything now derives from
+ * here, so adding a destination is a single edit.
  */
-/**
- * Objects you own, tools you invoke, and the system surfaces. Settings are not
- * a group: they live in their own screen, reached from the account button.
- */
-export type RailGroup = "objects" | "tools" | "system";
-
-export const RAIL_GROUP_ORDER: RailGroup[] = ["objects", "tools", "system"];
-
 export interface RailItemDef {
   /** Matches RailView, or a TabType for entries that open a tab instead. */
   id: string;
   icon: LucideIcon;
   /** i18n key; every label goes through t() so nothing is hardcoded English. */
   labelKey: string;
-  /** Tab-opening entries (network_graph) rather than sidebar panels. */
+  /** Tab-opening entries rather than sidebar panels. */
   kind?: "tab";
   /** Always-available destinations that users cannot hide. */
   alwaysVisible?: boolean;
-  /**
-   * Which band of the rail this belongs to. Replaces the old per-item
-   * separatorAfter, so a rule marks a real boundary between kinds of thing
-   * rather than sitting between every pair of icons.
-   */
+  /** Renders a separator after this item in the rail. */
+  separatorAfter?: boolean;
+  /** The rail band it sits in. Defaults to "tools". */
   group?: RailGroup;
   /** Shown on the mobile bottom bar's primary row rather than its More menu. */
   mobilePrimary?: boolean;
@@ -51,96 +50,141 @@ export interface RailItemDef {
    */
   promotable?: boolean;
   /**
-   * Can be opened in the right dock. Reference panels only: a list is useful
-   * beside your work, an editor is not.
+   * Can be opened in the right dock. Reference panels only -- editors stay in
+   * the left sidebar, which is the only dock that widens for them.
    */
   rightDockable?: boolean;
   /** Desktop app only. Hidden in the browser build, including its toggle. */
   electronOnly?: boolean;
-  /** Part of Termix itself, so no plugin can take it away. */
-  core?: true;
+  /** False keeps it out of the Navigation visibility toggles. */
+  hideable?: boolean;
+  /** A plugin item that stays visible in the Simple preset. */
+  simplePreset?: boolean;
+  /** Registered but not shown, e.g. while its feature is switched off. */
+  hidden?: boolean;
+  /** Places a registered item after this id instead of at the end. */
+  after?: string;
+  /** Tie-break among registered items. */
+  order?: number;
+  /** Set for items a plugin registered. */
+  pluginId?: string;
+  /** Role permission the user needs to see it at all, as a full id. */
+  permission?: string;
+  /** "footer" renders it at the bottom of the rail, above the profile. */
+  placement?: "main" | "footer";
+  /** Called as a hook by the rail; a positive number shows as a badge. */
+  useBadge?: () => number | null | undefined;
 }
 
-/**
- * Built-in destinations. Hosts and credentials are the two things Termix is
- * always able to show you, with or without any plugins installed.
- */
+/** Things you keep, things you do, and the instance itself. */
+export type RailGroup = "objects" | "tools" | "system";
+export const RAIL_GROUP_ORDER: RailGroup[] = ["objects", "tools", "system"];
+
 export const RAIL_ITEMS: RailItemDef[] = [
   {
     id: "hosts",
-    group: "objects",
     icon: Server,
     labelKey: "nav.hosts",
     mobilePrimary: true,
-    promotable: true,
-    core: true,
+    group: "objects",
   },
   {
     id: "credentials",
-    group: "objects",
     icon: KeyRound,
     labelKey: "nav.credentials",
-    promotable: true,
-    core: true,
+    separatorAfter: true,
+    group: "objects",
+  },
+  {
+    id: "connections",
+    icon: Plug,
+    labelKey: "nav.connections",
+    separatorAfter: true,
+    rightDockable: true,
+    group: "tools",
+  },
+  {
+    id: "quick-connect",
+    icon: Zap,
+    labelKey: "nav.quickConnect",
+    separatorAfter: true,
+    mobilePrimary: true,
+    group: "tools",
+  },
+  {
+    id: "sync",
+    icon: Cloud,
+    labelKey: "nav.sync",
+    electronOnly: true,
+    placement: "footer",
+    group: "system",
+    useBadge: useSyncAttentionCount,
+  },
+  {
+    id: "plugins",
+    icon: Puzzle,
+    labelKey: "nav.plugins",
+    kind: "tab",
+    placement: "footer",
+    group: "system",
+    permission: "admin.plugins.manage",
   },
 ];
 
-/**
- * How a plugin-contributed destination behaves once it reaches the rail.
- *
- * The plugin manifest says where an entry goes and what it is called; these
- * flags are Termix's call, because promoting to a tab and docking on the right
- * are the shell's affordances rather than the plugin's. Anything not listed
- * gets the sensible default of a plain sidebar panel.
- */
-const PLUGIN_ITEM_BEHAVIOUR: Record<
-  string,
-  Pick<
-    RailItemDef,
-    "kind" | "promotable" | "rightDockable" | "mobilePrimary" | "electronOnly"
-  >
-> = {
-  "termix-id": { promotable: true },
-  connections: { rightDockable: true },
-  "quick-connect": { mobilePrimary: true },
-  serial: {},
-  "ssh-tools": { promotable: true, rightDockable: true, mobilePrimary: true },
-  snippets: { promotable: true, rightDockable: true, mobilePrimary: true },
-  macros: { promotable: true, rightDockable: true },
-  fleets: {},
-  automations: { promotable: true },
-  ai: { promotable: true, rightDockable: true },
-  history: { promotable: true, rightDockable: true },
-  "session-logs": { promotable: true, rightDockable: true },
-  "split-screen": {},
-  workspaces: {},
-  alerts: { promotable: true, rightDockable: true },
-  "local-terminal": { kind: "tab", electronOnly: true },
-  network_graph: { kind: "tab" },
-};
-
-/** A plugin's registered destination, in the shape the rail already draws. */
-function fromNavItem(item: NavItemDef): RailItemDef {
-  return {
-    id: item.id,
-    icon: item.icon,
-    // Plugins ship their own label rather than an i18n key, so it is passed
-    // through as a literal and railItemLabel returns it unchanged.
-    labelKey: item.label,
-    group: item.group,
-    ...PLUGIN_ITEM_BEHAVIOUR[item.id],
-  };
+/** Main rail items split into their bands, in band order, empty bands left out. */
+export function groupRailItems(
+  items: RailItemDef[],
+): { group: RailGroup; items: RailItemDef[] }[] {
+  return RAIL_GROUP_ORDER.map((group) => ({
+    group,
+    items: items.filter((item) => (item.group ?? "tools") === group),
+  })).filter((band) => band.items.length > 0);
 }
 
 /**
- * Every destination available right now: the core two, plus whatever the
- * installed plugins contribute.
+ * Rail items registered by plugins at runtime. Reactive, because a plugin can
+ * be enabled or disabled while the app is open and the rail, the mobile bar
+ * and the Navigation toggles all have to follow.
  */
-export function allRailItems(): RailItemDef[] {
-  const electron = isElectron();
-  return [...RAIL_ITEMS, ...getNavItems().map(fromNavItem)].filter(
-    (item) => !item.electronOnly || electron,
-  );
+const registeredRailItems = createRegistry<RailItemDef>();
+
+export function registerRailItem(def: RailItemDef): () => void {
+  return registeredRailItems.register(def);
+}
+
+/** Registered items, hidden ones included. */
+export const listRegisteredRailItems = registeredRailItems.list;
+
+/**
+ * Core items in their fixed order, with each registered item placed after
+ * the item its `after` names, or at the end. Hidden items are left out.
+ */
+function mergedRailItems(): RailItemDef[] {
+  const merged = [...RAIL_ITEMS];
+  const plugins = [...registeredRailItems.list()]
+    .filter((item) => !item.hidden)
+    .sort(
+      (a, b) => (a.order ?? 0) - (b.order ?? 0) || a.id.localeCompare(b.id),
+    );
+  for (const item of plugins) {
+    let at = item.after
+      ? merged.findIndex((existing) => existing.id === item.after)
+      : -1;
+    if (at < 0) {
+      merged.push(item);
+      continue;
+    }
+    // Items sharing an anchor keep their own order after it.
+    while (
+      at + 1 < merged.length &&
+      merged[at + 1].pluginId &&
+      merged[at + 1].after === item.after
+    ) {
+      at++;
+    }
+    merged.splice(at + 1, 0, item);
+  }
+  return merged;
 }
 
 /**
@@ -149,135 +193,139 @@ export function allRailItems(): RailItemDef[] {
  * or the visibility toggles.
  */
 export function visibleRailItems(): RailItemDef[] {
-  return allRailItems();
+  const electron = isElectron();
+  return mergedRailItems().filter((item) => !item.electronOnly || electron);
+}
+
+let railSnapshot: RailItemDef[] | null = null;
+registeredRailItems.subscribe(() => {
+  railSnapshot = null;
+});
+
+function railItemsSnapshot(): RailItemDef[] {
+  if (!railSnapshot) railSnapshot = visibleRailItems();
+  return railSnapshot;
 }
 
 /**
- * Destinations that live outside the rail's hideable list but still need a
- * title and a mobile entry. Alerts is not here: it belongs to the Alerting
- * plugin and comes and goes with it.
+ * Drops items gated on a permission the user lacks. Until permissions load,
+ * gated items stay hidden rather than flashing in and out.
  */
+export function permittedRailItems(
+  items: RailItemDef[],
+  permissions: { has: (permission: string) => boolean; loaded: boolean },
+): RailItemDef[] {
+  if (!items.some((item) => item.permission)) return items;
+  return items.filter(
+    (item) =>
+      !item.permission ||
+      (permissions.loaded && permissions.has(item.permission)),
+  );
+}
+
+/**
+ * visibleRailItems() as a hook, re-rendering when plugins change it, without
+ * the items the user's permissions hide.
+ */
+export function useRailItems(): RailItemDef[] {
+  const items = useSyncExternalStore(
+    registeredRailItems.subscribe,
+    railItemsSnapshot,
+    railItemsSnapshot,
+  );
+  const { has, loaded } = usePermissions();
+  const { order } = useAreaPreferences("rail");
+  return useMemo(
+    () => applyRailOrder(permittedRailItems(items, { has, loaded }), order),
+    [items, has, loaded, order],
+  );
+}
+
+/**
+ * Items in the user's order. Listed ids come first in that order within the
+ * default sequence; unlisted ones keep their default place relative to it.
+ */
+export function applyRailOrder(
+  items: RailItemDef[],
+  order: string[] | undefined,
+): RailItemDef[] {
+  if (!order || order.length === 0) return items;
+  const rank = new Map(order.map((id, index) => [id, index]));
+  const listed = items
+    .filter((item) => rank.has(item.id))
+    .sort((a, b) => rank.get(a.id)! - rank.get(b.id)!);
+  let next = 0;
+  return items.map((item) => (rank.has(item.id) ? listed[next++] : item));
+}
+
+/**
+ * The order after moving `id` to sit before `beforeId` (or to the end of its
+ * band when null), as a full list of the given items' ids.
+ */
+export function moveRailItem(
+  items: RailItemDef[],
+  id: string,
+  beforeId: string | null,
+): string[] {
+  const ids = items.map((item) => item.id).filter((other) => other !== id);
+  const at = beforeId ? ids.indexOf(beforeId) : -1;
+  if (at < 0) {
+    const group = items.find((item) => item.id === id)?.group ?? "tools";
+    const lastInBand = items
+      .map((item, index) => ({ item, index }))
+      .filter(({ item }) => item.id !== id && (item.group ?? "tools") === group)
+      .map(({ item }) => ids.indexOf(item.id))
+      .pop();
+    ids.splice(lastInBand === undefined ? ids.length : lastInBand + 1, 0, id);
+  } else {
+    ids.splice(at, 0, id);
+  }
+  return ids;
+}
+
+/** Places outside the rail that still need a title, like the Settings tab. */
 export const RAIL_UTILITY_ITEMS: RailItemDef[] = [
-  { id: "plugins", icon: Puzzle, labelKey: "nav.plugins", promotable: true },
-  {
-    id: "settings",
-    icon: Settings,
-    labelKey: "nav.settings",
-    promotable: true,
-  },
-  { id: "user-profile", icon: User, labelKey: "nav.userProfile" },
-  { id: "admin-settings", icon: Settings, labelKey: "nav.admin" },
+  { id: "settings", icon: Settings, labelKey: "nav.settings" },
+  { id: "host-manager", icon: LibraryBig, labelKey: "nav.manage" },
 ];
 
 /** Ids that may be opened in the right dock. */
 export function rightDockableIds(): string[] {
-  return [...allRailItems(), ...RAIL_UTILITY_ITEMS]
+  return [...mergedRailItems(), ...RAIL_UTILITY_ITEMS]
     .filter((item) => item.rightDockable)
     .map((item) => item.id);
 }
 
-/** Ids that may be opened as a full-width tab. */
+/** Ids that may be opened as a full-width tab: a tab type or a panel to show. */
 export function promotableIds(): string[] {
-  return [...allRailItems(), ...RAIL_UTILITY_ITEMS]
-    .filter((item) => item.promotable)
+  return [...mergedRailItems(), ...RAIL_UTILITY_ITEMS]
+    .filter(
+      (item) => item.promotable && (getTabType(item.id) || getPanel(item.id)),
+    )
     .map((item) => item.id);
 }
 
-/** Ids a user is allowed to hide, mirroring HideableRailView. */
+/** Ids a user is allowed to hide from Appearance > Sidebar > Navigation. */
 export function hideableRailIds(): string[] {
-  return allRailItems()
-    .filter((item) => !item.alwaysVisible)
+  return visibleRailItems()
+    .filter((item) => !item.alwaysVisible && item.hideable !== false)
     .map((item) => item.id);
 }
 
-/**
- * Tab types that are not rail destinations but still need a label.
- *
- * Without an entry here the fallback prints the raw type, which is how the
- * editor tab ended up titled "host-manager".
- */
-const EXTRA_LABEL_KEYS: Record<string, string> = {
-  "host-manager": "nav.manage",
-};
+/** Whether a rail view is one of core's own, rather than a plugin's. */
+export function isCoreRailView(id: string): boolean {
+  return [...RAIL_ITEMS, ...RAIL_UTILITY_ITEMS].some((item) => item.id === id);
+}
 
-/**
- * Translated label for any rail destination or tab type.
- *
- * Core items carry an i18n key. A plugin carries its own label, which has no
- * key to look up, so t() returns it unchanged and the literal is used.
- */
+/** Translated label for any rail destination, including registered ones. */
 export function railItemLabel(id: string, t: (key: string) => string): string {
-  const core = [...RAIL_ITEMS, ...RAIL_UTILITY_ITEMS].find(
-    (item) => item.id === id,
-  );
-  if (core) return t(core.labelKey);
-
-  const extra = EXTRA_LABEL_KEYS[id];
-  if (extra) return t(extra);
-
-  const contributed = getNavItems().find((item) => item.id === id);
-  return contributed?.label ?? id;
+  const key =
+    [...RAIL_ITEMS, ...RAIL_UTILITY_ITEMS].find((item) => item.id === id)
+      ?.labelKey ?? registeredRailItems.get(id)?.labelKey;
+  return key ? t(key) : id;
 }
 
-const HIDDEN_KEY = "termix-demo-hidden-rail";
-const LEGACY_HIDDEN_KEY = "hiddenRailTabs";
-
-/**
- * What the user has hidden from the rail.
- *
- * The rail shows what is installed: built-in destinations plus whatever the
- * enabled plugins contribute. There is nothing to "add". The only choice
- * is to hide something you do not use, and to bring it back later. Storing the
- * hidden set rather than the visible one means a newly installed plugin shows
- * up on its own instead of waiting to be pinned.
- */
-export function readHiddenIds(): string[] {
-  try {
-    const raw = localStorage.getItem(HIDDEN_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed))
-        return parsed.filter((x) => typeof x === "string");
-    }
-    // The old app stored the same idea under a different key.
-    const legacy = localStorage.getItem(LEGACY_HIDDEN_KEY);
-    if (legacy) {
-      const parsed = JSON.parse(legacy);
-      if (Array.isArray(parsed))
-        return parsed.filter((x) => typeof x === "string");
-    }
-  } catch {
-    // Unreadable storage just means nothing is hidden.
-  }
-  return [];
-}
-
-export function writeHiddenIds(ids: string[]): void {
-  try {
-    localStorage.setItem(HIDDEN_KEY, JSON.stringify(ids));
-    window.dispatchEvent(new Event("hiddenRailChanged"));
-  } catch {
-    // Private windows refuse writes; the choice just will not persist.
-  }
-}
-
-export function toggleHidden(id: string): string[] {
-  const current = readHiddenIds();
-  const next = current.includes(id)
-    ? current.filter((x) => x !== id)
-    : [...current, id];
-  writeHiddenIds(next);
-  return next;
-}
-
-/** Rail items in group order, minus anything the user has hidden. */
-export function visibleRailDestinations(hidden: string[]): RailItemDef[] {
-  const order = new Map(RAIL_GROUP_ORDER.map((g, i) => [g, i]));
-  return allRailItems()
-    .filter((item) => !hidden.includes(item.id))
-    .sort(
-      (a, b) =>
-        (order.get(a.group ?? "tools") ?? 9) -
-        (order.get(b.group ?? "tools") ?? 9),
-    );
+/** Test seam. */
+export function resetRegisteredRailItems(): void {
+  registeredRailItems.reset();
 }

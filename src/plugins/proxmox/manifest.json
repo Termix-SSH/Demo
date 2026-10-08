@@ -1,0 +1,77 @@
+{
+  "id": "proxmox",
+  "name": "Proxmox",
+  "version": "1.0.0",
+  "description": "Import Proxmox VE guests as hosts, keep them in sync and watch node stats.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Proxmox",
+  "docs": "https://docs.termix.site/plugins/proxmox",
+  "category": "Infrastructure",
+  "icon": "Server",
+  "features": [
+    "Find and import VMs and LXC containers from a node",
+    "Keep imported hosts in sync on a schedule",
+    "Set up Windows guests for RDP and turn on Docker for guests by name",
+    "Node, guest, storage and cluster stats in their own tab"
+  ],
+  "engine": {
+    "termix": ">=26.10.0",
+    "api": "^1.2"
+  },
+  "capabilities": [
+    "hosts:read",
+    "hosts:write",
+    "credentials:use",
+    "credentials:read",
+    "ssh:connect",
+    "db:own",
+    "network:serve",
+    "ui:surface",
+    "users:impersonate"
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "proxmox-stats",
+        "titleKey": "nav.proxmoxStats",
+        "icon": "HardDrive",
+        "openFrom": ["host-context-menu", "palette"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "fields": [
+          {
+            "key": "enableProxmox",
+            "type": "custom",
+            "component": "proxmoxHostSettings",
+            "defaultable": false
+          },
+          {
+            "key": "proxmoxConfig",
+            "type": "custom",
+            "component": "proxmoxHostSettings",
+            "defaultable": false
+          },
+          {
+            "key": "enableProxmoxStats",
+            "type": "custom",
+            "component": "proxmoxHostSettings",
+            "defaultable": false
+          },
+          {
+            "key": "proxmoxStatsConfig",
+            "type": "custom",
+            "component": "proxmoxHostSettings",
+            "defaultable": false
+          }
+        ]
+      }
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

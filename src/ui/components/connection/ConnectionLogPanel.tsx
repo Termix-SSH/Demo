@@ -11,6 +11,7 @@ interface ConnectionLogPanelProps {
   isConnecting: boolean;
   isConnected: boolean;
   hasConnectionError: boolean;
+  /** Kept for older callers. The log always sits at the bottom. */
   position?: "top" | "bottom";
   className?: string;
 }
@@ -18,7 +19,7 @@ interface ConnectionLogPanelProps {
 const COLLAPSED_HEIGHT = "h-[136px]";
 const EXPANDED_HEIGHT = "h-[46%] min-h-[220px]";
 
-/** A dot per line instead of an icon, so the log reads as one column of text. */
+/** A dot per line, so the log reads as one column of text. */
 const DOT: Record<string, string> = {
   info: "bg-muted-foreground/50",
   success: "bg-accent-brand",
@@ -37,7 +38,6 @@ export function ConnectionLogPanel({
   isConnecting,
   isConnected,
   hasConnectionError,
-  position = "bottom",
   className,
 }: ConnectionLogPanelProps) {
   const { t } = useTranslation();
@@ -64,7 +64,7 @@ export function ConnectionLogPanel({
 
   useEffect(() => {
     if (lastLogRef.current) {
-      lastLogRef.current.scrollIntoView({ block: "end" });
+      lastLogRef.current.scrollIntoView?.({ block: "end" });
     }
   }, [logs]);
 
@@ -99,9 +99,9 @@ export function ConnectionLogPanel({
     if (ok) {
       setCopied(true);
       setTimeout(() => setCopied(false), 1400);
-      toast.success(t("terminal.connectionLogCopied"));
+      toast.success(t("sshAuth.connectionLogCopied"));
     } else {
-      toast.error(t("terminal.connectionLogCopyFailed"));
+      toast.error(t("sshAuth.connectionLogCopyFailed"));
     }
   };
 
@@ -109,19 +109,18 @@ export function ConnectionLogPanel({
     <div
       className={cn(
         "relative z-10 flex shrink-0 flex-col bg-surface-dim/60",
-        position === "bottom"
-          ? "border-t border-border"
-          : "border-b border-border",
+        "border-t border-border",
         expanded ? EXPANDED_HEIGHT : COLLAPSED_HEIGHT,
         "transition-[height] duration-200",
         className,
       )}
     >
-      <div className="flex h-9 shrink-0 items-center gap-2 border-b border-border/60 px-2 pr-1.5">
+      <div className="flex h-9 shrink-0 items-center gap-2 border-b border-border px-2 pr-1.5">
         <button
           type="button"
           onClick={handleToggle}
-          className="flex min-w-0 items-center gap-1.5 rounded-md px-1.5 py-1 text-foreground-secondary transition-colors hover:text-foreground"
+          aria-expanded={expanded}
+          className="flex min-w-0 items-center gap-1.5 px-1.5 py-1 text-foreground-secondary transition-colors hover:text-foreground"
         >
           {expanded ? (
             <ChevronDown className="size-3.5 shrink-0" />
@@ -129,7 +128,7 @@ export function ConnectionLogPanel({
             <ChevronUp className="size-3.5 shrink-0" />
           )}
           <span className="text-[10px] font-semibold uppercase tracking-widest">
-            {t("terminal.connectionLogTitle")}
+            {t("sshAuth.connectionLogTitle")}
           </span>
         </button>
 
@@ -142,7 +141,7 @@ export function ConnectionLogPanel({
             variant="ghost"
             size="icon-sm"
             onClick={copyLogsToClipboard}
-            title={t("terminal.connectionLogCopy")}
+            title={t("sshAuth.connectionLogCopy")}
             className="ml-auto text-muted-foreground"
           >
             {copied ? (
@@ -158,8 +157,8 @@ export function ConnectionLogPanel({
         {logs.length === 0 ? (
           <p className="px-3 py-4 text-xs text-muted-foreground">
             {isConnecting
-              ? t("terminal.connectionLogWaiting")
-              : t("terminal.connectionLogEmpty")}
+              ? t("sshAuth.connectionLogWaiting")
+              : t("sshAuth.connectionLogEmpty")}
           </p>
         ) : (
           <div className="px-2 py-1.5 font-mono text-[11px] leading-[1.7]">
@@ -167,7 +166,7 @@ export function ConnectionLogPanel({
               <div
                 key={log.id}
                 ref={index === logs.length - 1 ? lastLogRef : null}
-                className="flex items-baseline gap-2 rounded-sm px-1 hover:bg-foreground/[0.03]"
+                className="flex items-baseline gap-2 px-1 hover:bg-foreground/[0.03]"
               >
                 <span className="shrink-0 tabular-nums text-muted-foreground/70">
                   {log.timestamp.toLocaleTimeString([], { hour12: false })}

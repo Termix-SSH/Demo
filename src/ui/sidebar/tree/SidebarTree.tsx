@@ -1,3 +1,5 @@
+import { useConfirm } from "@/components/surface/surface-scope";
+import { useHostSpeedSearch } from "./hooks/useHostSpeedSearch";
 import {
   useCallback,
   useEffect,
@@ -6,19 +8,20 @@ import {
   useLayoutEffect,
   useState,
 } from "react";
+import { updatePluginHostSettings } from "@/api/plugins-api";
+import { resetHostToDefaults } from "@/api/host-defaults-api";
+import { PluginIcon } from "@/lib/plugin-icon";
+import { usePluginHostSections } from "@/settings/HostPluginSections";
 import { useTranslation } from "react-i18next";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useAreaPreferences } from "@/contexts/UiPreferencesContext";
 import {
-  Box,
-  Boxes,
   ChevronDown,
   Download,
   FolderOpen,
-  FolderSearch,
   Loader2,
-  Network,
   Plus,
+  RotateCcw,
   Server,
   Terminal,
 } from "lucide-react";
@@ -46,6 +49,8 @@ import type { Host, HostFolder, TabType } from "@/types/ui-types";
 import type { SSHHostData } from "@/types/index";
 import type {
   HostDensity,
+  HostClickBehavior,
+  HostRowFields,
   HostTrayTrigger,
 } from "@/types/host-sidebar-preferences";
 import { resolveHostTabType } from "@/lib/host-connection-tabs";
@@ -60,6 +65,7 @@ import {
   collectAllHosts,
   collectAllFolderPaths,
   hostExpandKey,
+  hostMatchesQuery,
   buildReorderRows,
   collectOrderableRows,
   rowKey,
@@ -76,8 +82,7 @@ export function SidebarTree({
   onOpenTab,
   onEditHost,
   onShareHost,
-  onProxmoxDiscover,
-  query = "",
+  query: externalQuery = "",
   selectionMode,
   onToggleSelectionMode,
   loading = false,
@@ -87,12 +92,22 @@ export function SidebarTree({
   trayTrigger = "hover",
   showTags = true,
   openOnDoubleClick = false,
+  showFolderPaths = true,
+  hostClickBehavior = "newTab",
+  rowFields,
 }: {
   children: (Host | HostFolder)[];
-  onOpenTab: (host: Host, type: TabType) => void;
+  onOpenTab: (
+    host: Host,
+    type: TabType,
+    options?: {
+      data?: Record<string, unknown>;
+      label?: string;
+      forceNewTab?: boolean;
+    },
+  ) => void;
   onEditHost: (host: Host) => void;
   onShareHost?: (host: Host) => void;
-  onProxmoxDiscover?: (host: Host) => void;
   query?: string;
   selectionMode: boolean;
   onToggleSelectionMode: () => void;
@@ -104,8 +119,16 @@ export function SidebarTree({
   trayTrigger?: HostTrayTrigger;
   showTags?: boolean;
   openOnDoubleClick?: boolean;
+  /** When false, nested folders hide the parent-path breadcrumb before their name. */
+  showFolderPaths?: boolean;
+  hostClickBehavior?: HostClickBehavior;
+  rowFields?: HostRowFields;
 }) {
   const { t } = useTranslation();
+  const hostSettingPlugins = usePluginHostSections();
+  const hostSwitchPlugins = hostSettingPlugins.filter(
+    (plugin) => !!plugin.contributes?.settings?.host?.enableKey,
+  );
   // Knobs with no other owner come straight from the interface preset; the
   // ones above still come from the host sidebar preferences blob.
   const { showResourceBars, showStatusStripes, rowActions } =
@@ -119,7 +142,7 @@ export function SidebarTree({
     }
   });
   // Sub-host parents default to expanded (unlike folders, which default
-  // collapsed). A host reparented under another shouldn't seem to vanish
+  // collapsed) -- a host reparented under another shouldn't seem to vanish
   // just because its new parent row starts closed. This tracks the opposite:
   // parents the user has explicitly collapsed.
   const [closedHostParents, setClosedHostParents] = useState<Set<string>>(
@@ -155,15 +178,20 @@ export function SidebarTree({
   } = useSidebarSelection();
   // Selection mode can be toggled off from outside this component (e.g. the
   // topbar button in HostsPanel), which has no way to reach into this
-  // component's own selectedHostIds state. Clear it here instead so stale
+  // component's own selectedHostIds state -- clear it here instead so stale
   // selections don't stay visually highlighted after leaving selection mode.
   useEffect(() => {
     if (!selectionMode) setSelectedHostIds(new Set());
   }, [selectionMode, setSelectedHostIds]);
-  const [confirmDialog, setConfirmDialog] = useState<{
-    message: string;
-    onConfirm: () => Promise<void> | void;
-  } | null>(null);
+  const confirm = useConfirm();
+  const setConfirmDialog = (
+    request: { message: string; onConfirm: () => Promise<void> | void } | null,
+  ) => {
+    if (!request) return;
+    void confirm({ title: request.message }).then((ok) => {
+      if (ok) void request.onConfirm();
+    });
+  };
   const { draggedHostIds, setDraggedHostIds, rootDragOver, setRootDragOver } =
     useSidebarDragState();
   const [folderDialog, setFolderDialog] = useState<{
@@ -180,7 +208,7 @@ export function SidebarTree({
   );
   // Tracks which single row is currently the drop target during a manual
   // reorder drag, lifted here (rather than local state per row) so only one
-  // row can ever show the drop-indicator bar at a time. Per-row local
+  // row can ever show the drop-indicator bar at a time -- per-row local
   // state could get stuck showing a stale bar when the pointer jumped
   // directly from one virtualized row to another without a clean
   // dragleave firing on the row being left.
@@ -189,7 +217,7 @@ export function SidebarTree({
     "before" | "after" | null
   >(null);
   // Gated on the lock alone. Unlocking also switches the panel to manual
-  // sort, but that write lands separately. Requiring it here meant the
+  // sort, but that write lands separately -- requiring it here meant the
   // unlock did nothing until the sort state caught up.
   const arrangeMode = !arrangeLocked;
 
@@ -224,7 +252,7 @@ export function SidebarTree({
     // Folders only exist visibly via an sshFolders metadata row or by having
     // hosts in them (see buildHostTree in AppShell.tsx). A folder that was
     // never explicitly created and loses its last host here would otherwise
-    // vanish with no trace the moment this move lands. Persist it first so
+    // vanish with no trace the moment this move lands -- persist it first so
     // it stays visible-but-empty until the user explicitly deletes it.
     const sourceFolders = new Set(
       movableIds
@@ -279,8 +307,9 @@ export function SidebarTree({
     });
     if (movableIds.length === 0) return;
     if (movableIds.includes(parentId)) return;
-    // A host cannot become its own descendant's child. Guarding here means
-    // the drop quietly no-ops instead of being rejected later.
+    // A host can't become its own descendant's child -- guard client-side so
+    // the drop just silently no-ops rather than round-tripping to the
+    // backend's own cycle rejection.
     if (isDescendantOfDragged(parentId, movableIds)) {
       toast.error(t("hosts.cannotNestUnderDescendant"));
       return;
@@ -306,7 +335,7 @@ export function SidebarTree({
   /**
    * Resolves a drop into position and (when the drop crossed into another
    * folder) a folder move, then writes both. Siblings are scoped to the drop
-   * target's own folder rather than every row of the same type. Comparing
+   * target's own folder rather than every row of the same type -- comparing
    * against unrelated neighbours in other folders produced sort orders that
    * put the row nowhere near where it was dropped.
    */
@@ -388,7 +417,7 @@ export function SidebarTree({
             return;
           }
           // movedTo is a parent KEY ("folder:Homelab" / "host:11" / the root
-          // sentinel), not a folder path. Writing it raw created folders
+          // sentinel), not a folder path -- writing it raw created folders
           // literally named "folder:Homelab".
           if (plan.movedTo === ROOT_PARENT) {
             await bulkUpdateSSHHosts([Number(draggedId)], {
@@ -435,7 +464,7 @@ export function SidebarTree({
     const hosts = collectAllHosts(folder.children);
     for (const host of hosts) {
       const type = resolveHostTabType(host);
-      onOpenTab(host, type);
+      if (type) onOpenTab(host, type);
     }
   }
 
@@ -444,6 +473,7 @@ export function SidebarTree({
     color: string;
     icon: string;
     credentialId: number | null;
+    localOnly: boolean;
   }) {
     const existing = folderDialog?.folder;
     try {
@@ -461,6 +491,7 @@ export function SidebarTree({
           value.color,
           value.icon,
           value.credentialId,
+          value.localOnly,
         );
       } else {
         await updateFolderMetadata(
@@ -468,6 +499,7 @@ export function SidebarTree({
           value.color,
           value.icon,
           value.credentialId,
+          value.localOnly,
         );
       }
       window.dispatchEvent(new CustomEvent("termix:hosts-changed"));
@@ -479,7 +511,7 @@ export function SidebarTree({
 
   function handleDeleteFolder(folder: HostFolder) {
     const folderPath = folder.path ?? folder.name;
-    const { total } = folderHostCount(folder);
+    const total = folderHostCount(folder);
     setConfirmDialog({
       message: t("hosts.deleteFolderConfirm", {
         name: folder.name,
@@ -584,9 +616,8 @@ export function SidebarTree({
         tags: host.tags ?? [],
         pin: host.pin ?? false,
         notes: host.notes,
-        macAddress: host.macAddress,
         // Key material is never sent to the frontend, so a cloned key-auth
-        // host would have authType "key" with no key, which is unusable. Reset
+        // host would have authType "key" with no key — unusable. Reset to
         // password so the clone is in a connectable (editable) state.
         authType: host.authType === "key" ? "password" : host.authType,
         password: host.authType === "key" ? null : (host.password ?? null),
@@ -596,31 +627,19 @@ export function SidebarTree({
         credentialId: host.credentialId ? Number(host.credentialId) : null,
         overrideCredentialUsername: host.overrideCredentialUsername ?? false,
         enableSsh: host.enableSsh,
-        enableRdp: host.enableRdp,
-        enableVnc: host.enableVnc,
-        enableTelnet: host.enableTelnet,
-        enableTerminal: host.enableTerminal,
-        enableTunnel: host.enableTunnel,
-        enableFileManager: host.enableFileManager,
-        enableDocker: host.enableDocker,
         sshPort: host.sshPort,
-        rdpPort: host.rdpPort,
-        vncPort: host.vncPort,
-        telnetPort: host.telnetPort,
-        rdpUser: host.rdpUser ?? null,
-        rdpPassword: host.rdpPassword ?? null,
-        rdpDomain: host.domain ?? null,
-        rdpSecurity: host.security ?? null,
-        rdpIgnoreCert: host.ignoreCert ?? false,
-        vncAuthType: host.vncAuthType ?? null,
-        vncCredentialId: host.vncCredentialId
-          ? Number(host.vncCredentialId)
-          : null,
-        vncPassword: host.vncPassword ?? null,
-        vncUser: host.vncUser ?? null,
-        telnetUser: host.telnetUser ?? null,
-        telnetPassword: host.telnetPassword ?? null,
-        defaultPath: host.defaultPath ?? "/",
+        // Saved passwords never reach the browser, so a copy starts without them.
+        protocolAuth: Object.fromEntries(
+          Object.entries(host.protocolAuth ?? {}).map(([protocol, login]) => [
+            protocol,
+            {
+              authType: login.authType,
+              credentialId: login.credentialId ?? null,
+              username: login.username ?? null,
+              fields: login.fields ?? {},
+            },
+          ]),
+        ),
         forceKeyboardInteractive: host.forceKeyboardInteractive ?? false,
         useSocks5: host.useSocks5,
         socks5Host: host.socks5Host ?? null,
@@ -632,16 +651,23 @@ export function SidebarTree({
           hostId: Number(j.hostId),
         })),
         portKnockSequence: host.portKnockSequence ?? [],
-        tunnelConnections: host.serverTunnels ?? [],
-        quickActions: (host.quickActions ?? []).map((a) => ({
-          name: a.name,
-          snippetId: Number(a.snippetId),
-        })),
-        statsConfig: host.statsConfig,
-        guacamoleConfig: host.guacamoleConfig ?? null,
-        terminalConfig: host.terminalConfig ?? null,
+        statusCheckEnabled: host.statusCheckEnabled,
+        statusCheckInterval: host.statusCheckInterval,
+        sshOptions: host.sshOptions ?? null,
       };
-      await createSSHHost(duplicateHost);
+      const created = await createSSHHost(duplicateHost);
+      // Plugin host settings live outside the host row. Secrets come back
+      // redacted, and sending the marker back is a no-op, so they stay unset.
+      for (const [pluginId, fields] of Object.entries(
+        host.pluginSettings ?? {},
+      )) {
+        if (!fields || Object.keys(fields).length === 0) continue;
+        await updatePluginHostSettings(
+          pluginId,
+          Number(created.id),
+          fields,
+        ).catch(() => {});
+      }
       window.dispatchEvent(new CustomEvent("termix:hosts-changed"));
       toast.success(t("hosts.duplicatedHost", { name: host.name }));
     } catch {
@@ -649,6 +675,10 @@ export function SidebarTree({
     }
   }
 
+  const speedSearch = useHostSpeedSearch();
+  const query = speedSearch.open
+    ? speedSearch.text.trim().toLowerCase()
+    : externalQuery;
   const allHosts = collectAllHosts(children);
   const allFolderPaths = collectAllFolderPaths(children);
 
@@ -661,6 +691,13 @@ export function SidebarTree({
     closedHostParents,
   );
   const parentRef = useRef<HTMLDivElement>(null);
+  const matchingRows = visibleRows
+    .map((row, index) => ({ row, index }))
+    .filter(
+      ({ row }) => !isFolder(row.item) && hostMatchesQuery(row.item, query),
+    );
+  const activeMatch =
+    matchingRows[Math.min(speedSearch.index, matchingRows.length - 1)];
 
   const isTouchOnly =
     typeof window !== "undefined" && window.matchMedia("(hover: none)").matches;
@@ -689,7 +726,7 @@ export function SidebarTree({
   // pt-1 mt-0.5 compounded into a much larger gap there than between any
   // other pair of rows in the card).
   // Click mode adds a size-5 expand-actions chevron to the name row, which is
-  // taller than anything hover mode puts there. The base heights were
+  // taller than anything hover mode puts there -- the base heights were
   // measured in hover mode, so a click-mode row renders past its slot and its
   // status stripe runs into the row below. Most visible down an indented
   // sub-host group, where rows stack with no folder header between them.
@@ -700,7 +737,7 @@ export function SidebarTree({
   const HOST_ROW_HEIGHT = (isCompactDensity ? 27.5 : 45) + CLICK_CHEVRON_EXTRA;
   const FOLDER_ROW_HEIGHT = 31.5;
   // "always" mode permanently renders the connection-buttons row plus the
-  // management row. Measured directly rather than derived, since it has its
+  // management row -- measured directly rather than derived, since it has its
   // own fixed shape. The resource bars are NOT included: they only render for
   // an online host with CPU/RAM, so rowHeight adds RESOURCE_ROW_EXTRA per row.
   // Carries the click-mode chevron so the open row lands at its measured
@@ -714,11 +751,13 @@ export function SidebarTree({
   const ACTIONS_ONLY_ROW_HEIGHT = isCompactDensity ? 50.25 : 75.75;
   // Opening the management row from actionsOnly's closed state (which
   // already includes the connection row). Excludes the resource bars for the
-  // same reason as ALWAYS_ROW_HEIGHT: rowHeight adds them per row.
+  // same reason as ALWAYS_ROW_HEIGHT -- rowHeight adds them per row.
   const ACTIONS_ONLY_OPEN_ROW_HEIGHT = isCompactDensity ? 79.25 : 87.5;
   // Tag pills are a separate flex row. Comfortable density adds the row plus
   // its gap; compact density pulls it upward by 2px but still needs a slot.
   const TAG_ROW_EXTRA = isCompactDensity ? 12.5 : 18.5;
+  // The username@ip line plus its gap.
+  const ADDRESS_ROW_SAVED = rowFields && !rowFields.showAddress ? 14.5 : 0;
   // showResourceBars:false simply drops RESOURCE_ROW_EXTRA from every row.
 
   const rowHeight = useCallback(
@@ -726,7 +765,8 @@ export function SidebarTree({
       const row = visibleRows[index];
       if (!row) return FOLDER_ROW_HEIGHT;
       if (isFolder(row.item)) return FOLDER_ROW_HEIGHT;
-      const tagExtra = showTags && row.item.tags?.length ? TAG_ROW_EXTRA : 0;
+      if (isCompactDensity) return 29;
+      const tagRowExtra = showTags && row.item.tags?.length ? TAG_ROW_EXTRA : 0;
       // The resource bars only render for an online host that reported CPU/RAM.
       // Reserving their height unconditionally left a gap under every offline
       // row. measureElement corrects any drift from live status this estimate
@@ -738,6 +778,7 @@ export function SidebarTree({
       )
         ? RESOURCE_ROW_EXTRA
         : 0;
+      const tagExtra = tagRowExtra - ADDRESS_ROW_SAVED;
       if (alwaysShowActions)
         return ALWAYS_ROW_HEIGHT + tagExtra + resourceExtra;
       const toggledOpen =
@@ -777,11 +818,13 @@ export function SidebarTree({
       actionsOnly,
       showTags,
       HOST_ROW_HEIGHT,
+      CLICK_CHEVRON_EXTRA,
       OPEN_TRAY_EXTRA,
       ALWAYS_ROW_HEIGHT,
       ACTIONS_ONLY_ROW_HEIGHT,
       ACTIONS_ONLY_OPEN_ROW_HEIGHT,
       TAG_ROW_EXTRA,
+      ADDRESS_ROW_SAVED,
       showResourceBars,
       isCompactDensity,
     ],
@@ -794,7 +837,7 @@ export function SidebarTree({
     overscan: 12,
     // The library's default rounds every measurement to a whole pixel. Rows
     // here land on fractions (a 63.84px row rounds to 64), and the rounded-up
-    // size becomes the slot pitch, which leaves a visible sliver under every
+    // size becomes the slot pitch -- leaving a visible sliver under every
     // single row, which stacks into the gaps the list is judged by. Keep the
     // sub-pixel size so slots sit flush against the row above.
     measureElement: (element, entry) => {
@@ -804,9 +847,13 @@ export function SidebarTree({
     getItemKey: (index) => {
       const row = visibleRows[index];
       if (!row) return index;
+      // Group-by views (e.g. by tags) can list the same host under several
+      // group folders, so parentPath is folded in to keep each occurrence's
+      // key unique -- a shared key across rows made the virtualizer collide
+      // their measured positions and render them stacked on top of each other.
       return isFolder(row.item)
         ? `folder:${row.item.path ?? row.item.name}`
-        : `host:${row.item.id}`;
+        : `${row.parentPath}>host:${row.item.id}`;
     },
   });
 
@@ -834,14 +881,36 @@ export function SidebarTree({
   // size is never reused for whatever shifts into its slot.
   //
   // measure() wipes the ENTIRE measurement cache, so it may only run when
-  // every row's shape changes at once: a density/trigger/tag switch. Hover
+  // every row's shape changes at once -- a density/trigger/tag switch. Hover
   // and tray state are deliberately absent: they change one row, which
   // re-renders and re-measures itself through the observer anyway, whereas
   // calling measure() for them threw all 5000 rows back to their estimates
   // and made the list visibly jump apart on every pointer move.
   useLayoutEffect(() => {
     virtualizer.measure();
-  }, [virtualizer, density, trayTrigger, showTags, showResourceBars]);
+    // Rebuild the cleared size cache before measuring the mounted rows again.
+    virtualizer.getTotalSize();
+    // Unchanged rows will not trigger ResizeObserver after their cache is cleared.
+    parentRef.current
+      ?.querySelectorAll<HTMLElement>("[data-index]")
+      .forEach((element) => virtualizer.measureElement(element));
+  }, [
+    virtualizer,
+    density,
+    trayTrigger,
+    showTags,
+    showResourceBars,
+    ADDRESS_ROW_SAVED,
+  ]);
+
+  useEffect(() => {
+    if (speedSearch.open) speedSearch.inputRef.current?.focus();
+  }, [speedSearch.open, speedSearch.inputRef]);
+  const activeMatchIndex = activeMatch?.index;
+  useEffect(() => {
+    if (speedSearch.open && activeMatchIndex !== undefined)
+      virtualizer.scrollToIndex(activeMatchIndex, { align: "auto" });
+  }, [speedSearch.open, activeMatchIndex, query, virtualizer]);
 
   if (loading) {
     return (
@@ -869,14 +938,58 @@ export function SidebarTree({
   }
 
   return (
-    <div className="relative flex flex-col flex-1 min-h-0">
+    <div
+      className="relative flex flex-col flex-1 min-h-0"
+      onKeyDown={(event) => {
+        if (selectionMode || arrangeMode) return;
+        speedSearch.onKeyDown(
+          event,
+          matchingRows.length,
+          (index) => {
+            const host = matchingRows[index]?.row.item;
+            if (!host || isFolder(host)) return;
+            const type = resolveHostTabType(host);
+            if (type)
+              onOpenTab(host, type, {
+                forceNewTab: hostClickBehavior === "newTab",
+              });
+          },
+          () => parentRef.current?.focus(),
+        );
+      }}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null))
+          speedSearch.close();
+      }}
+    >
+      {speedSearch.open && (
+        <div className="flex items-center gap-2 border-b border-border bg-popover px-3 py-2">
+          <input
+            ref={speedSearch.inputRef}
+            type="search"
+            aria-label={t("hosts.speedSearch")}
+            placeholder={t("hosts.speedSearch")}
+            value={speedSearch.text}
+            onChange={(event) => speedSearch.change(event.target.value)}
+            className="min-w-0 flex-1 bg-transparent text-sm outline-none"
+          />
+          <span role="status" className="text-xs text-muted-foreground">
+            {matchingRows.length
+              ? Math.min(speedSearch.index + 1, matchingRows.length)
+              : 0}{" "}
+            / {matchingRows.length}
+          </span>
+        </div>
+      )}
       <div
         ref={parentRef}
+        tabIndex={0}
+        aria-label={t("hosts.speedSearchList")}
         className={`flex-1 min-h-0 overflow-y-auto ${rootDragOver ? "ring-1 ring-inset ring-accent-brand/50" : ""}`}
         // Only the container's own empty space is a root drop target. Without
         // the target check this fired for every child row the pointer crossed
         // (dragover bubbles), and dragleave never cleared it because leaving a
-        // child never satisfies currentTarget === target, and so the ring stuck
+        // child never satisfies currentTarget === target -- so the ring stuck
         // around for the rest of the session.
         onDragOver={(e) => {
           if (arrangeMode && draggedHostIds && e.currentTarget === e.target) {
@@ -939,7 +1052,11 @@ export function SidebarTree({
                   key={vItem.key}
                   data-index={vItem.index}
                   ref={virtualizer.measureElement}
-                  className="absolute top-0 left-0 w-full"
+                  data-speed-search-active={
+                    (speedSearch.open && activeMatch?.index === vItem.index) ||
+                    undefined
+                  }
+                  className={`absolute top-0 left-0 w-full ${speedSearch.open && activeMatch?.index === vItem.index ? "ring-1 ring-inset ring-accent-brand bg-accent/30" : ""}`}
                   style={{
                     transform: `translateY(${vItem.start}px)`,
                   }}
@@ -954,7 +1071,6 @@ export function SidebarTree({
                       onShareHost={onShareHost}
                       onDeleteHost={handleDeleteHost}
                       onDuplicateHost={handleDuplicateHost}
-                      onProxmoxDiscover={onProxmoxDiscover}
                       query={query}
                       openFolders={openFolders}
                       onToggleFolder={toggleFolder}
@@ -990,6 +1106,8 @@ export function SidebarTree({
                       trayTrigger={trayTrigger}
                       showTags={showTags}
                       openOnDoubleClick={openOnDoubleClick}
+                      showFolderPaths={showFolderPaths}
+                      hostClickBehavior={hostClickBehavior}
                       arrangeMode={arrangeMode}
                       isDragging={
                         draggedReorderKey === `folder:${item.path ?? item.name}`
@@ -1017,15 +1135,12 @@ export function SidebarTree({
                     <HostItem
                       host={item}
                       depth={depth}
-                      onOpenTab={(type) => onOpenTab(item, type)}
+                      onOpenTab={(type, options) =>
+                        onOpenTab(item, type, options)
+                      }
                       onEditHost={() => onEditHost(item)}
                       onShareHost={
                         onShareHost ? () => onShareHost(item) : undefined
-                      }
-                      onProxmoxDiscover={
-                        onProxmoxDiscover
-                          ? () => onProxmoxDiscover(item)
-                          : undefined
                       }
                       onDelete={() => handleDeleteHost(item)}
                       onDuplicate={() => handleDuplicateHost(item)}
@@ -1064,8 +1179,10 @@ export function SidebarTree({
                       trayTrigger={trayTrigger}
                       showTags={showTags}
                       openOnDoubleClick={openOnDoubleClick}
+                      hostClickBehavior={hostClickBehavior}
                       showResourceBars={showResourceBars}
                       showStatusStripes={showStatusStripes}
+                      rowFields={rowFields}
                       rowActions={rowActions}
                       arrangeMode={arrangeMode}
                       isDragging={draggedReorderKey === `host:${item.id}`}
@@ -1127,87 +1244,85 @@ export function SidebarTree({
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="text-xs">
+                {hostSwitchPlugins.flatMap((plugin) =>
+                  [true, false].map((value) => (
+                    <DropdownMenuItem
+                      key={`${plugin.id}:${value}`}
+                      onClick={async () => {
+                        const ids = Array.from(selectedHostIds).map(Number);
+                        try {
+                          await bulkUpdateSSHHosts(ids, {
+                            pluginEnable: { [plugin.id]: value },
+                          });
+                          window.dispatchEvent(
+                            new CustomEvent("termix:hosts-changed"),
+                          );
+                          toast.success(
+                            t("hosts.updatedCount", { count: ids.length }),
+                          );
+                        } catch {
+                          toast.error(t("hosts.bulkUpdateFailed"));
+                        }
+                      }}
+                    >
+                      <PluginIcon
+                        name={plugin.icon}
+                        className="size-3.5 mr-2"
+                      />
+                      {t(
+                        value
+                          ? "hosts.enablePluginFeature"
+                          : "hosts.disablePluginFeature",
+                        { name: plugin.name },
+                      )}
+                    </DropdownMenuItem>
+                  )),
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="text-[10px] text-muted-foreground hover:text-foreground px-1.5 py-1 hover:bg-muted rounded transition-colors flex items-center gap-1 disabled:opacity-40"
+                  disabled={selectedHostIds.size === 0}
+                >
+                  {t("hostDefaults.resetMenu")}{" "}
+                  <ChevronDown className="size-2.5" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="text-xs">
                 {[
-                  {
-                    labelKey: "hosts.enableTerminalFeature",
-                    field: "enableTerminal",
-                    value: true,
-                    icon: Terminal,
-                  },
-                  {
-                    labelKey: "hosts.disableTerminalFeature",
-                    field: "enableTerminal",
-                    value: false,
-                    icon: Terminal,
-                  },
-                  {
-                    labelKey: "hosts.enableFilesFeature",
-                    field: "enableFileManager",
-                    value: true,
-                    icon: FolderSearch,
-                  },
-                  {
-                    labelKey: "hosts.disableFilesFeature",
-                    field: "enableFileManager",
-                    value: false,
-                    icon: FolderSearch,
-                  },
-                  {
-                    labelKey: "hosts.enableTunnelsFeature",
-                    field: "enableTunnel",
-                    value: true,
-                    icon: Network,
-                  },
-                  {
-                    labelKey: "hosts.disableTunnelsFeature",
-                    field: "enableTunnel",
-                    value: false,
-                    icon: Network,
-                  },
-                  {
-                    labelKey: "hosts.enableDockerFeature",
-                    field: "enableDocker",
-                    value: true,
-                    icon: Box,
-                  },
-                  {
-                    labelKey: "hosts.disableDockerFeature",
-                    field: "enableDocker",
-                    value: false,
-                    icon: Box,
-                  },
-                  {
-                    labelKey: "hosts.enableProxmoxFeature",
-                    field: "enableProxmox",
-                    value: true,
-                    icon: Boxes,
-                  },
-                  {
-                    labelKey: "hosts.disableProxmoxFeature",
-                    field: "enableProxmox",
-                    value: false,
-                    icon: Boxes,
-                  },
-                ].map(({ labelKey, field, value, icon: Icon }) => (
+                  { id: "all", label: t("hostDefaults.resetAll") },
+                  { id: "core", label: t("hostDefaults.resetCore") },
+                  ...hostSettingPlugins.map((plugin) => ({
+                    id: plugin.id,
+                    label: plugin.name,
+                  })),
+                ].map((option) => (
                   <DropdownMenuItem
-                    key={labelKey}
+                    key={option.id}
                     onClick={async () => {
                       const ids = Array.from(selectedHostIds).map(Number);
                       try {
-                        await bulkUpdateSSHHosts(ids, { [field]: value });
+                        await resetHostToDefaults(
+                          ids,
+                          option.id === "all"
+                            ? { all: true }
+                            : { namespaces: [option.id] },
+                        );
                         window.dispatchEvent(
                           new CustomEvent("termix:hosts-changed"),
                         );
                         toast.success(
-                          t("hosts.updatedCount", { count: ids.length }),
+                          t("hostDefaults.resetDone", { count: ids.length }),
                         );
                       } catch {
                         toast.error(t("hosts.bulkUpdateFailed"));
                       }
                     }}
                   >
-                    <Icon className="size-3.5 mr-2" />
-                    {t(labelKey)}
+                    <RotateCcw className="size-3.5 mr-2" />
+                    {option.label}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
@@ -1281,10 +1396,8 @@ export function SidebarTree({
                   selectedHostIds.has(String(h.id)),
                 );
                 for (const host of selectedHosts) {
-                  if (host.enableSsh) onOpenTab(host, "terminal");
-                  else if (host.enableRdp) onOpenTab(host, "rdp");
-                  else if (host.enableVnc) onOpenTab(host, "vnc");
-                  else if (host.enableTelnet) onOpenTab(host, "telnet");
+                  const type = resolveHostTabType(host);
+                  if (type) onOpenTab(host, type);
                 }
                 setSelectedHostIds(new Set());
                 onToggleSelectionMode();
@@ -1345,32 +1458,6 @@ export function SidebarTree({
         </div>
       )}
 
-      {/* Confirm dialog */}
-      {confirmDialog && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4">
-          <div className="bg-popover border border-border shadow-xl w-full max-w-xs flex flex-col gap-4 p-4">
-            <p className="text-sm text-foreground">{confirmDialog.message}</p>
-            <div className="flex justify-end gap-2">
-              <button
-                onClick={() => setConfirmDialog(null)}
-                className="px-3 py-1.5 text-xs border border-border text-muted-foreground hover:text-foreground hover:bg-muted rounded transition-colors"
-              >
-                {t("hosts.cancelBtn")}
-              </button>
-              <button
-                onClick={() => {
-                  confirmDialog.onConfirm();
-                  setConfirmDialog(null);
-                }}
-                className="px-3 py-1.5 text-xs bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded transition-colors"
-              >
-                {t("hosts.deleteConfirmBtn")}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       <FolderMetadataDialog
         open={folderDialog !== null}
         mode={folderDialog?.mode ?? "create"}
@@ -1381,6 +1468,7 @@ export function SidebarTree({
                 color: folderDialog.folder.color,
                 icon: folderDialog.folder.icon,
                 credentialId: folderDialog.folder.credentialId,
+                localOnly: folderDialog.folder.localOnly,
               }
             : undefined
         }

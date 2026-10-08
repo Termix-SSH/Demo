@@ -6,15 +6,6 @@ import {
   type PanelViewMode,
 } from "@/components/panel-layout";
 
-/**
- * One collection, two shapes: a card grid or a dense row table.
- *
- * Only the file manager could switch between the two, and every other panel
- * hardcoded a grid that left wide gutters and stranded rows on a big screen.
- * A panel now describes its cards once and its columns once, and the user
- * picks which they get.
- */
-
 export interface DataColumn<T> {
   key: string;
   header: string;
@@ -33,8 +24,7 @@ export interface GridColumns {
   xl?: number;
 }
 
-// Tailwind only ships classes it can see in the source, so the breakpoint
-// classes are spelled out rather than built from a template string.
+// Spelled out so Tailwind can see every class.
 const COLS: Record<number, string> = {
   1: "grid-cols-1",
   2: "grid-cols-2",
@@ -69,6 +59,7 @@ function gridClass(columns: GridColumns): string {
   );
 }
 
+/** One collection as a card grid or a dense row table. */
 export function DataView<T>({
   items,
   view,
@@ -84,7 +75,7 @@ export function DataView<T>({
 }: {
   items: T[];
   view: PanelViewMode;
-  density: PanelDensity;
+  density?: PanelDensity;
   getKey: (item: T) => string;
   renderCard: (item: T) => React.ReactNode;
   columns: GridColumns;
@@ -114,7 +105,7 @@ export function DataView<T>({
   const rowHeight = density === "compact" ? "h-7" : "h-9";
 
   return (
-    <div className={cn("border border-border bg-card", className)}>
+    <div className={cn("border border-border bg-card", className)} role="table">
       <div
         className="sticky top-0 z-10 grid items-center border-b border-border bg-card px-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground"
         style={{ gridTemplateColumns: template }}

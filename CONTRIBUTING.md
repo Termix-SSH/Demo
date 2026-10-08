@@ -30,6 +30,35 @@ npm run dev
 This starts the Vite dev server. The demo runs entirely in the browser, so there is no
 backend to start. Open `http://localhost:5173/` and sign in with any username and password.
 
+## How it works
+
+The demo runs the real Termix interface and the real plugin frontends. Only
+the server is fake: a small backend inside the page answers every request,
+WebSocket and event stream with made-up data.
+
+- `src/ui`, `src/types`, `src/main.tsx`, `src/sdk` and `src/plugins` are copied
+  from Termix and its plugins. Never edit them here; change them upstream and
+  sync.
+- `src/demo` is the demo's own code: the fake backend (`backend/`), its data
+  (`fixtures/`) and a tiny `Demo` plugin with the login hint and the reset
+  button.
+
+## Updating to a new Termix
+
+With [Termix](https://github.com/Termix-SSH/Termix), the plugin repos and
+[Termix-Registry](https://github.com/Termix-SSH/Termix-Registry) checked out
+next to this repo (`../Termix`, `../Termix-Plugins/Plugin-*`,
+`../Termix-Registry`):
+
+```sh
+npm run sync
+```
+
+It copies everything over and lists any npm packages the new code imports
+that are not installed yet. Then run `npm run dev` and open the browser
+console: a request the fake backend does not answer yet is logged as
+`[demo] unhandled ...`. Add a route for it under `src/demo/backend/routes`.
+
 ## Other commands
 
 ```sh
@@ -40,6 +69,7 @@ npm run lint:fix     # eslint with --fix
 npm run format       # prettier --write
 npm run format:check # prettier --check
 npm run preview      # serve the built dist/
+npm run sync         # copy Termix and its plugins in again
 ```
 
 Commits are checked by commitlint and must follow

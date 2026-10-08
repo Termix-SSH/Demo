@@ -1,19 +1,146 @@
-import type { Host } from "@/types/ui-types";
 import type { SSHHostWithStatus } from "@/main-axios";
+import type { Host, Credential } from "@/types/ui-types";
 
-/**
- * Converts a host row into the UI Host shape. The fixtures are already written
- * in that shape, so this only fills the derived fields the tree reads.
- */
+type RawSSHHost = SSHHostWithStatus & {
+  hasPassword?: boolean;
+  hasKey?: boolean;
+  hasKeyPassword?: boolean;
+  hasSudoPassword?: boolean;
+};
+type HostJumpHost = NonNullable<Host["jumpHosts"]>[number];
+type RawCredential = {
+  isShared?: boolean;
+  ownerUsername?: string | null;
+  permissionLevel?: "use" | "manage";
+  id: number | string;
+  name: string;
+  username: string;
+  authType?: string;
+  description?: string | null;
+  folder?: string | null;
+  tags?: string[];
+  publicKey?: string | null;
+  pin?: boolean | null;
+  sortOrder?: number | null;
+  certPublicKey?: string | null;
+};
+
+function parseJson<T>(v: unknown): T | undefined {
+  if (!v) return undefined;
+  if (typeof v === "string") {
+    try {
+      return JSON.parse(v) as T;
+    } catch {
+      return undefined;
+    }
+  }
+  return v as T;
+}
+
 export function sshHostToHost(h: SSHHostWithStatus): Host {
+  const host = h as RawSSHHost;
+  const isSshHost = h.connectionType === "ssh" || !h.connectionType;
   return {
-    ...h,
     id: String(h.id),
+    name: h.name,
+    username: h.username,
+    ip: h.ip,
+    port: h.port,
     folder: h.folder ?? "",
-    parentHostId: h.parentHostId != null ? String(h.parentHostId) : null,
+    parentHostId:
+      (h as { parentHostId?: number | string | null }).parentHostId != null
+        ? String((h as { parentHostId?: number | string }).parentHostId)
+        : null,
     online: h.status === "online",
+    status: h.status,
+    cpu: null,
+    ram: null,
+    lastAccess: "",
     tags: h.tags ?? [],
+    syncId: h.syncId ?? null,
+    authType: h.authType,
+    shareSshAuth: h.shareSshAuth ?? false,
+    password: h.password,
+    hasPassword: !!host.hasPassword || !!h.password,
+    hasKey: !!host.hasKey || !!(typeof h.key === "string" && h.key),
+    hasKeyPassword: !!host.hasKeyPassword || !!h.keyPassword,
+    key: typeof h.key === "string" ? h.key : undefined,
+    keyPassword: h.keyPassword,
+    keyType: h.keyType,
+    credentialId: h.credentialId != null ? String(h.credentialId) : undefined,
+    notes: h.notes,
     pin: h.pin ?? false,
     sortOrder: h.sortOrder ?? null,
+    connectionOrigin: h.connectionOrigin ?? null,
+    localOnly: !!h.localOnly,
+    sharedCopy: !!h.sharedCopy,
+    enableSsh: h.enableSsh != null ? h.enableSsh : isSshHost,
+    sshPort:
+      h.sshPort ??
+      (h.connectionType === "ssh" || !h.connectionType ? h.port : 22),
+    protocolAuth: h.protocolAuth ?? {},
+    pluginSettings: h.pluginSettings ?? {},
+    defaultOverrides: h.defaultOverrides ?? null,
+    jumpHosts: (parseJson<HostJumpHost[]>(h.jumpHosts) ?? []).map((j) => ({
+      hostId: String(j.hostId ?? j.hostid ?? j),
+    })),
+    portKnockSequence: parseJson(h.portKnockSequence) ?? [],
+    terminalConfig: parseJson(h.terminalConfig) as Host["terminalConfig"],
+    sshOptions: parseJson(h.sshOptions) as Host["sshOptions"],
+    hasSudoPassword: !!host.hasSudoPassword,
+    statusCheckEnabled: h.statusCheckEnabled !== false,
+    statusCheckInterval: h.statusCheckInterval ?? null,
+    forceKeyboardInteractive: h.forceKeyboardInteractive ?? false,
+    useSocks5: h.useSocks5,
+    socks5Host: h.socks5Host,
+    socks5Port: h.socks5Port,
+    socks5Username: h.socks5Username,
+    socks5Password: h.socks5Password,
+    socks5ProxyChain: parseJson(h.socks5ProxyChain) ?? [],
+    overrideCredentialUsername: h.overrideCredentialUsername ?? false,
+    isShared: h.isShared ?? false,
+    authOverrides: h.authOverrides
+      ? Object.fromEntries(
+          Object.entries(h.authOverrides).flatMap(([protocol, state]) =>
+            state
+              ? [
+                  [
+                    protocol,
+                    {
+                      ...state,
+                      credentialId:
+                        state.credentialId != null
+                          ? String(state.credentialId)
+                          : undefined,
+                    },
+                  ],
+                ]
+              : [],
+          ),
+        )
+      : undefined,
+    permissionLevel: h.permissionLevel,
+    sharedExpiresAt: h.sharedExpiresAt,
+    ownerUsername: h.ownerUsername,
   };
+}
+
+export function mapCredentials(res: unknown): Credential[] {
+  const arr = Array.isArray(res) ? res : [];
+  return (arr as RawCredential[]).map((c) => ({
+    id: String(c.id),
+    name: c.name,
+    username: c.username,
+    type: c.authType === "key" ? "key" : "password",
+    description: c.description ?? "",
+    folder: c.folder ?? "",
+    tags: c.tags ?? [],
+    publicKey: c.publicKey ?? undefined,
+    pin: c.pin ?? false,
+    sortOrder: c.sortOrder ?? null,
+    certPublicKey: c.certPublicKey ?? undefined,
+    isShared: c.isShared ?? false,
+    ownerUsername: c.ownerUsername ?? null,
+    permissionLevel: c.permissionLevel,
+  }));
 }

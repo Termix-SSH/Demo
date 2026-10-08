@@ -1,0 +1,83 @@
+{
+  "id": "vault",
+  "name": "HashiCorp Vault",
+  "version": "1.0.0",
+  "description": "Connect to hosts with short-lived SSH certificates signed by HashiCorp Vault.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Vault",
+  "docs": "https://docs.termix.site/plugins/vault",
+  "category": "Access & Security",
+  "icon": "KeyRound",
+  "features": [
+    "Adds the Vault auth type to hosts",
+    "Sign in to Vault with OIDC when you connect",
+    "Never stores a Vault token or long-lived key",
+    "Reusable signer profiles you can share with everyone"
+  ],
+  "engine": {
+    "termix": ">=26.10.0",
+    "api": "^1.2"
+  },
+  "capabilities": [
+    "db:own",
+    "secrets:own",
+    "network:outbound",
+    "network:serve",
+    "auth:provide",
+    "ui:surface"
+  ],
+  "contributes": {
+    "auth": {
+      "sshAuthTypes": ["vault"]
+    },
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "share",
+        "titleKey": "permissions.share.title",
+        "descriptionKey": "permissions.share.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
+    "settings": {
+      "admin": [
+        {
+          "key": "redirectUri",
+          "type": "custom",
+          "component": "redirectUri"
+        },
+        {
+          "key": "privateHosts",
+          "type": "textarea",
+          "labelKey": "settings.privateHosts.label",
+          "descriptionKey": "settings.privateHosts.description",
+          "default": ""
+        }
+      ],
+      "host": {
+        "fields": [
+          {
+            "key": "profileId",
+            "type": "number",
+            "labelKey": "settings.host.profileId.label",
+            "hidden": true,
+            "ownerOnly": true,
+            "defaultLevels": ["user", "folder"]
+          }
+        ]
+      }
+    },
+    "syncEntities": ["vaultProfiles"],
+    "uses": ["terminal.overlay"]
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

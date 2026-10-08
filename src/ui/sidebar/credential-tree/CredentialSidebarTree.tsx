@@ -15,6 +15,7 @@ import { ReorderIndicator } from "@/sidebar/ReorderIndicator";
 import type { Credential } from "@/types/ui-types";
 import type {
   CredentialDensity,
+  CredentialRowFields,
   CredentialTrayTrigger,
 } from "@/types/credential-sidebar-preferences";
 import { CredentialItem } from "./CredentialItem/CredentialItem";
@@ -35,13 +36,13 @@ export function CredentialSidebarTree({
   onDeleteCredential,
   onShareCredential,
   usedByCounts,
-  termixIdLinkedIds,
   query = "",
   loading = false,
   arrangeLocked = true,
   density = "comfortable",
   trayTrigger = "hover",
   showTags = true,
+  rowFields,
   editingFolderName,
   editingFolderValue,
   onEditingFolderNameChange,
@@ -57,7 +58,6 @@ export function CredentialSidebarTree({
   onDeleteCredential: (cred: Credential) => void;
   onShareCredential?: (cred: Credential) => void;
   usedByCounts?: Map<string, number>;
-  termixIdLinkedIds?: Set<number>;
   query?: string;
   loading?: boolean;
   /** When true, drag-to-rearrange is off entirely. Toggled from the panel header. */
@@ -65,6 +65,7 @@ export function CredentialSidebarTree({
   density?: CredentialDensity;
   trayTrigger?: CredentialTrayTrigger;
   showTags?: boolean;
+  rowFields?: CredentialRowFields;
   editingFolderName: string | null;
   editingFolderValue: string;
   onEditingFolderNameChange: (name: string | null) => void;
@@ -138,14 +139,14 @@ export function CredentialSidebarTree({
   const visibleRows = collectVisibleRows(folders, query, openFolders);
 
   // Fixed, exactly-computed row heights rather than estimate-then-measure,
-  // matching SidebarTree.tsx's approach. Estimate-then-measure caused
+  // matching SidebarTree.tsx's approach -- estimate-then-measure caused
   // visible gaps between rows there. All constants below were measured live
   // against the running app (Playwright getBoundingClientRect) for every
   // density x trayTrigger x open/closed-tray x credential-type combination.
   //
   // Unlike hosts, credential row height genuinely depends on TYPE, not just
   // density/trayTrigger: only "key" credentials render a connection-buttons
-  // row (deploy/copy-command). "password" credentials have no connection
+  // row (deploy/copy-command) -- "password" credentials have no connection
   // buttons at all, so a password row is shorter than a key row whenever
   // that row is showing (actionsOnly closed, or always mode).
   const FOLDER_ROW_HEIGHT = 31.5;
@@ -167,6 +168,11 @@ export function CredentialSidebarTree({
         isOpen,
         showTags,
         tagCount: row.item.tags?.length ?? 0,
+        hasDetailRow:
+          !rowFields ||
+          (rowFields.showUsername && !!row.item.username) ||
+          (rowFields.showUsageCount &&
+            (usedByCounts?.get(row.item.id) ?? 0) > 0),
       });
     },
     [
@@ -178,6 +184,8 @@ export function CredentialSidebarTree({
       actionsOnly,
       density,
       showTags,
+      rowFields,
+      usedByCounts,
     ],
   );
 
@@ -195,7 +203,7 @@ export function CredentialSidebarTree({
     },
   });
 
-  // Single tree-level indicator off the virtualizer's slot geometry. See
+  // Single tree-level indicator off the virtualizer's slot geometry -- see
   // SidebarTree for why rows can't place this themselves.
   const reorderIndicatorTop = (() => {
     if (!arrangeMode || !reorderHoverKey || !reorderHoverEdge) return null;
@@ -225,6 +233,7 @@ export function CredentialSidebarTree({
     density,
     trayTrigger,
     showTags,
+    rowFields,
   ]);
 
   function toggleFolder(name: string) {
@@ -239,12 +248,12 @@ export function CredentialSidebarTree({
   /**
    * Resolves a credential drop into its new position, scoped to the target
    * credential's own folder, and moves it there when the drop crossed
-   * folders. Credential folders themselves are always alphabetical and have
-   * no stored order, so only credentials are draggable.
+   * folders. Credential folders themselves are always alphabetical -- they
+   * have no stored order, so only credentials are draggable.
    */
   /**
    * Credential dropped on a folder header: lands at the end of that folder.
-   * It needs an explicit sortOrder for the same reason hosts do: a null
+   * It needs an explicit sortOrder for the same reason hosts do -- a null
    * one sorts last under manual sort and then falls back to alphabetical,
    * throwing the placement away.
    */
@@ -398,7 +407,6 @@ export function CredentialSidebarTree({
                     <CredentialItem
                       cred={item}
                       usedByCount={usedByCounts?.get(item.id) ?? 0}
-                      termixIdLinked={termixIdLinkedIds?.has(Number(item.id))}
                       query={query}
                       stripeIndex={vItem.index}
                       isMenuOpen={openMenuCredentialId === item.id}
@@ -425,6 +433,7 @@ export function CredentialSidebarTree({
                       density={density}
                       trayTrigger={trayTrigger}
                       showTags={showTags}
+                      rowFields={rowFields}
                       arrangeMode={arrangeMode}
                       isDragging={draggedReorderKey === `cred:${item.id}`}
                       onReorderDrop={(position) =>

@@ -1,3 +1,4 @@
+import { rem } from "@/lib/rem";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -46,7 +47,7 @@ export function CredentialFolderItem({
    * they are never draggable. */
   arrangeMode?: boolean;
   /** Id of the credential currently being dragged (outside manual sort
-   * mode), if any. Drives the drop-target highlight below. */
+   * mode), if any -- drives the drop-target highlight below. */
   draggedCredentialId?: string | null;
   /** Fires when a dragged credential is dropped on this folder header to
    * reassign it, outside manual sort mode. */
@@ -64,7 +65,7 @@ export function CredentialFolderItem({
   return (
     <div
       className="relative"
-      style={depth > 0 ? { paddingLeft: depth * 12 } : undefined}
+      style={depth > 0 ? { paddingLeft: rem(depth * 12) } : undefined}
     >
       <div
         onDragOver={(e) => {

@@ -7,7 +7,17 @@ import tseslint from "typescript-eslint";
 import { globalIgnores } from "eslint/config";
 
 export default tseslint.config([
-  globalIgnores(["dist"]),
+  // src/ui, src/types, src/sdk, src/plugins and src/main.tsx are copied from
+  // Termix by npm run sync and linted there.
+  globalIgnores([
+    "dist",
+    "src/ui",
+    "src/types",
+    "src/sdk",
+    "src/plugins",
+    "src/synced",
+    "src/main.tsx",
+  ]),
   {
     files: ["**/*.{ts,tsx}"],
     extends: [
