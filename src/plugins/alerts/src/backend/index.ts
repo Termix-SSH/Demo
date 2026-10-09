@@ -40,7 +40,14 @@ export async function activate(ctx: PluginContext) {
     smtp: () => readSmtp(ctx),
     sendMail,
   };
-  const announcements = createAnnouncements(ctx, repository);
+  const announcements = createAnnouncements(ctx, repository, {
+    onAdded: async (userId, added) => {
+      for (const item of added) stream.publish(userId, "item", item);
+      stream.publish(userId, "unread", {
+        count: await repository.unreadCount(userId),
+      });
+    },
+  });
 
   ctx.notify.serve(createHub({ repository, stream, senders }));
 
@@ -69,15 +76,9 @@ export async function activate(ctx: PluginContext) {
 
   // Users with the app open get a new announcement without reloading.
   ctx.schedule.every(REFRESH_MS, async () => {
+    if ((await ctx.settings.get<boolean>("announcements")) === false) return;
     await announcements.refresh();
-    for (const userId of stream.users()) {
-      const added = await announcements.sync(userId);
-      if (added.length === 0) continue;
-      for (const item of added) stream.publish(userId, "item", item);
-      stream.publish(userId, "unread", {
-        count: await repository.unreadCount(userId),
-      });
-    }
+    for (const userId of stream.users()) await announcements.sync(userId);
   });
 }
 

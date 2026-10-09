@@ -21,11 +21,11 @@ interface SystemGroup {
   members: string[];
 }
 
-// Human users only (uid >= 1000, excluding nobody at 65534).
 const READ_USERS_CMD = "getent passwd 2>/dev/null";
 const READ_GROUPS_CMD = "getent group 2>/dev/null";
 const READ_SUDOERS_CMD = "getent group sudo wheel 2>/dev/null";
 
+/** Human users only (uid >= 1000, excluding nobody at 65534). */
 export function parsePasswd(output: string): SystemUser[] {
   const users: SystemUser[] = [];
   for (const line of output.split("\n")) {
@@ -78,7 +78,7 @@ export function registerUserRoutes(app: Router, deps: ManagerRoutesDeps): void {
   const { validateHostId } = deps;
   /**
    * @openapi
-   * /plugin-api/host-metrics/managers/users/{id}:
+   * /plugin-api/host-metrics/host-metrics/managers/users/{id}:
    *   get:
    *     summary: List local users and groups
    *     tags: [Host Metrics]
@@ -112,7 +112,7 @@ export function registerUserRoutes(app: Router, deps: ManagerRoutesDeps): void {
 
   /**
    * @openapi
-   * /plugin-api/host-metrics/managers/users/{id}/action:
+   * /plugin-api/host-metrics/host-metrics/managers/users/{id}/action:
    *   post:
    *     summary: Create or delete a user, or change a user's groups
    *     tags: [Host Metrics]

@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { and, eq, ne } from "drizzle-orm";
+import { and, asc, eq, gt, ne } from "drizzle-orm";
 import type { PluginDatabase } from "@termix-ssh/plugin-sdk/backend";
 
 type WorkspaceKind = "manual" | "last_session";
@@ -81,8 +81,24 @@ export function createWorkspaceRepository(db: PluginDatabase, table: Table) {
       .select()
       .from(table)
       .where(and(eq(table.userId, userId), eq(table.kind, "last_session")))
+      .orderBy(asc(table.id))
       .limit(1);
     return (rows[0] as WorkspaceRecord) ?? null;
+  }
+
+  // Autosaves for one user run one at a time, so two can't both insert.
+  const lastSessionQueue = new Map<string, Promise<unknown>>();
+  function serialized<T>(userId: string, fn: () => Promise<T>): Promise<T> {
+    const previous = lastSessionQueue.get(userId) ?? Promise.resolve();
+    const next = previous.then(fn, fn);
+    const settled = next.catch(() => {});
+    lastSessionQueue.set(userId, settled);
+    void settled.then(() => {
+      if (lastSessionQueue.get(userId) === settled) {
+        lastSessionQueue.delete(userId);
+      }
+    });
+    return next;
   }
 
   async function insert(
@@ -134,14 +150,17 @@ export function createWorkspaceRepository(db: PluginDatabase, table: Table) {
       return drizzle.select().from(table).where(eq(table.userId, userId));
     },
 
-    async upsertLastSession(
+    upsertLastSession(
       userId: string,
       payload: string,
       now = new Date().toISOString(),
     ): Promise<WorkspaceRecord> {
-      const existing = await findLastSession(userId);
-      if (!existing) {
-        return insert(
+      return serialized(userId, async () => {
+        const existing = await findLastSession(userId);
+        if (existing) {
+          return write(userId, existing.id, { payload, updatedAt: now });
+        }
+        const created = await insert(
           userId,
           {
             name: "Last Session",
@@ -153,8 +172,25 @@ export function createWorkspaceRepository(db: PluginDatabase, table: Table) {
           },
           now,
         );
-      }
-      return write(userId, existing.id, { payload, updatedAt: now });
+        // Another server sharing the database may have inserted one too.
+        // Keep the oldest row and drop the rest.
+        const first = await findLastSession(userId);
+        if (first && first.id !== created.id) {
+          const drizzle = await client();
+          await drizzle
+            .delete(table)
+            .where(
+              and(
+                eq(table.userId, userId),
+                eq(table.kind, "last_session"),
+                gt(table.id, first.id),
+              ),
+            );
+          await db.persist();
+          return write(userId, first.id, { payload, updatedAt: now });
+        }
+        return created;
+      });
     },
 
     async create(

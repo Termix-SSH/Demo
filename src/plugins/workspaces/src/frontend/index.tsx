@@ -11,9 +11,15 @@ export function activate(app: TermixApp): void {
   const api = createWorkspacesApi(app.api);
 
   const applyWorkspace = async (workspace: Workspace) => {
-    const { skipped } = await app.tabs.applyLayout(workspace.payload, {
-      name: workspace.name,
-    });
+    let skipped: string[];
+    try {
+      ({ skipped } = await app.tabs.applyLayout(workspace.payload, {
+        name: workspace.name,
+      }));
+    } catch {
+      toast.error(app.t("newUi.sidebar.workspaces.applyFailed"));
+      return;
+    }
     if (skipped.length > 0) {
       toast.warning(
         app.t("newUi.sidebar.workspaces.tabsSkipped", {

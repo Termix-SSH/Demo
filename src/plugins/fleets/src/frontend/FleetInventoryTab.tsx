@@ -1,4 +1,4 @@
-import { getErrorMessage, cn } from "./helpers.js";
+import { getErrorMessage } from "./helpers.js";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
@@ -8,6 +8,7 @@ import {
   PanelSearch,
   PanelShell,
   Select2,
+  cn,
 } from "@termix-ssh/plugin-sdk/ui";
 import { toast } from "sonner";
 import {

@@ -15,8 +15,8 @@ import { registerLogRoutes } from "./logs.js";
 import { registerWireGuardRoutes } from "./wireguard.js";
 
 /**
- * Registers every Host Metrics manager route under the `/host-metrics/managers`
- * prefix on the stats app. All routes are on-demand (not polled).
+ * Registers the platform probe and every manager route under
+ * /host-metrics/managers. All of them run on demand, never on a poll.
  */
 export function registerManagerRoutes(
   app: Router,
@@ -26,7 +26,7 @@ export function registerManagerRoutes(
 
   /**
    * @openapi
-   * /host-metrics/platform/{id}:
+   * /plugin-api/host-metrics/host-metrics/platform/{id}:
    *   get:
    *     summary: Detect available management tooling on a host
    *     tags:

@@ -323,7 +323,11 @@ export function registerOutboundRoutes(
    */
   router.get("/ping", async (req: Request, res: Response) => {
     let targetUrl = req.query.url as string;
-    const ttl = Math.max(10, Number(req.query.ttl) || 30) * 1000;
+    const ttl =
+      Math.min(
+        MAX_CACHE_TTL_SECONDS,
+        Math.max(10, Number(req.query.ttl) || 30),
+      ) * 1000;
 
     if (!targetUrl) return res.status(400).json({ error: "url is required" });
     if (!/^https?:\/\//i.test(targetUrl)) targetUrl = `https://${targetUrl}`;

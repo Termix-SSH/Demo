@@ -135,10 +135,11 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
    */
   router.get("/stream", async (req: Request, res: Response) => {
     const userId = actor(ctx);
-    await announcements.sync(userId);
     stream.open(req, res, userId, {
       count: await repository.unreadCount(userId),
     });
+    // After opening, so what it adds reaches this app as new alerts.
+    await announcements.sync(userId);
   });
 
   /**

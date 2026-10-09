@@ -140,14 +140,62 @@ function sftpWriteFile(
   });
 }
 
-function sftpReadFile(sftp: SFTPWrapper, remotePath: string): Promise<Buffer> {
+function sftpReadFile(
+  sftp: SFTPWrapper,
+  remotePath: string,
+  maxBytes = FLEET_TRANSFER_MAX_BYTES,
+): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
+    let total = 0;
+    let failed = false;
     const stream = sftp.createReadStream(remotePath);
-    stream.on("data", (chunk: Buffer) => chunks.push(chunk));
-    stream.on("error", reject);
-    stream.on("close", () => resolve(Buffer.concat(chunks)));
+    stream.on("data", (chunk: Buffer) => {
+      total += chunk.length;
+      if (total > maxBytes) {
+        failed = true;
+        stream.destroy();
+        reject(new Error(`File is larger than ${maxBytes} bytes`));
+        return;
+      }
+      chunks.push(chunk);
+    });
+    stream.on("error", (err: Error) => {
+      if (!failed) reject(err);
+    });
+    stream.on("close", () => {
+      if (!failed) resolve(Buffer.concat(chunks));
+    });
   });
+}
+
+/** A zip folder name for a host that can't escape the archive or collide. */
+export function zipFolderName(host: { id: number; name: string }): string {
+  const safe = host.name.replace(/[^\w.-]+/g, "_").replace(/^\.+/, "_");
+  return `${safe || "host"}-${host.id}`;
+}
+
+// How many hosts a fleet action talks to at once.
+const FLEET_CONCURRENCY = 10;
+
+/** Maps items with at most `limit` running at once, keeping their order. */
+export async function mapWithLimit<T, R>(
+  items: T[],
+  limit: number,
+  fn: (item: T) => Promise<R>,
+): Promise<R[]> {
+  const out: R[] = new Array(items.length);
+  let next = 0;
+  const worker = async () => {
+    while (next < items.length) {
+      const index = next++;
+      out[index] = await fn(items[index]);
+    }
+  };
+  await Promise.all(
+    Array.from({ length: Math.min(limit, items.length) }, worker),
+  );
+  return out;
 }
 
 interface FleetHostResult {
@@ -198,7 +246,7 @@ export function parseInventoryProbe(output: string): {
  * access at `level` through ctx.hosts (fleet membership alone is not treated
  * as authorization - a fleet-sharee can only act on member hosts they
  * individually have access to), and runs `fn` against each authorized host
- * concurrently. One host's rejection never aborts the others.
+ * a few at a time. One host failing never aborts the others.
  */
 async function runAcrossFleet(
   ctx: PluginContext,
@@ -218,48 +266,32 @@ async function runAcrossFleet(
 
   const members = await repo.listEffectiveMembers(userId, fleetId);
 
-  const settled = await Promise.allSettled(
-    members.map(async (host) => {
-      const access = await ctx.hosts.checkAccess(host.id, level);
-      if (!access.hasAccess) {
-        return {
-          hostId: host.id,
-          hostName: host.name ?? String(host.id),
-          success: false,
-          error: `Access denied (requires '${level}' level)`,
-        } satisfies FleetHostResult;
-      }
-
+  const results = await mapWithLimit(
+    members,
+    FLEET_CONCURRENCY,
+    async (host): Promise<FleetHostResult> => {
+      const hostName = host.name ?? String(host.id);
       try {
-        const outcome = await fn({
-          id: host.id,
-          name: host.name ?? String(host.id),
-        });
-        return {
-          hostId: host.id,
-          hostName: host.name ?? String(host.id),
-          ...outcome,
-        } satisfies FleetHostResult;
+        const access = await ctx.hosts.checkAccess(host.id, level);
+        if (!access.hasAccess) {
+          return {
+            hostId: host.id,
+            hostName,
+            success: false,
+            error: `Access denied (requires '${level}' level)`,
+          };
+        }
+        const outcome = await fn({ id: host.id, name: hostName });
+        return { hostId: host.id, hostName, ...outcome };
       } catch (err) {
         return {
           hostId: host.id,
-          hostName: host.name ?? String(host.id),
+          hostName,
           success: false,
           error: err instanceof Error ? err.message : "Unknown error",
-        } satisfies FleetHostResult;
+        };
       }
-    }),
-  );
-
-  const results = settled.map((r) =>
-    r.status === "fulfilled"
-      ? r.value
-      : ({
-          hostId: -1,
-          hostName: "unknown",
-          success: false,
-          error: r.reason instanceof Error ? r.reason.message : "Unknown error",
-        } satisfies FleetHostResult),
+    },
   );
 
   return { results, fleetFound: true };
@@ -857,7 +889,7 @@ export function registerFleetRoutes(
    * /plugin-api/fleets/{id}/execute:
    *   post:
    *     summary: Run a command across every host in a fleet
-   *     description: Fans out concurrently to every effective member host the caller has edit-level access to. $HOST/$USER/$PORT/$NAME/$INPUT_n substitution is applied per host, same grammar as snippet execution. One host failing does not stop the others.
+   *     description: Runs on up to 10 hosts at a time, across every effective member host the caller has edit-level access to. $HOST/$USER/$PORT/$NAME/$INPUT_n substitution is applied per host, same grammar as snippet execution. One host failing does not stop the others.
    *     tags:
    *       - Fleets
    *     parameters:
@@ -960,7 +992,7 @@ export function registerFleetRoutes(
    * /plugin-api/fleets/{id}/transfer/push:
    *   post:
    *     summary: Push an uploaded file to the same remote path on every host in a fleet
-   *     description: Fans out concurrently to every effective member host the caller has edit-level access to. Single file only (v1) - the file is buffered once server-side and written to each host via SFTP.
+   *     description: Runs on up to 10 hosts at a time, across every effective member host the caller has edit-level access to. Single file only (v1) - the file is buffered once server-side and written to each host via SFTP.
    *     tags:
    *       - Fleets
    *     parameters:
@@ -1050,7 +1082,7 @@ export function registerFleetRoutes(
    * /plugin-api/fleets/{id}/transfer/pull:
    *   post:
    *     summary: Pull the same remote path from every host in a fleet
-   *     description: Fans out concurrently to every effective member host the caller has edit-level access to, reads remotePath via SFTP from each, and returns a single zip archive with one entry per successful host (<hostName>/<filename>). Single file only (v1).
+   *     description: Runs on up to 10 hosts at a time, across every effective member host the caller has edit-level access to, reads remotePath via SFTP from each, and returns a single zip archive with one entry per successful host (<hostName>-<hostId>/<filename>). Single file only, up to 200 MB per host.
    *     tags:
    *       - Fleets
    *     parameters:
@@ -1091,7 +1123,11 @@ export function registerFleetRoutes(
 
       try {
         const zip = new JSZip();
-        const fileName = remotePath.split("/").filter(Boolean).pop() || "file";
+        const fileName =
+          (remotePath.split("/").filter(Boolean).pop() || "file").replace(
+            /[^\w.-]+/g,
+            "_",
+          ) || "file";
 
         const { results, fleetFound } = await runAcrossFleet(
           ctx,
@@ -1109,7 +1145,7 @@ export function registerFleetRoutes(
               },
             );
 
-            zip.file(`${host.name}/${fileName}`, data);
+            zip.file(`${zipFolderName(host)}/${fileName}`, data);
             return { success: true, output: `Pulled ${data.length} bytes` };
           },
         );

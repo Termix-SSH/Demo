@@ -4,6 +4,7 @@
 
 ### Added
 
+- First release
 - Group hosts by hand or with tag rules, so new hosts join on their own
 - Run one command on every host and see each result
 - Install, remove or upgrade packages across the fleet

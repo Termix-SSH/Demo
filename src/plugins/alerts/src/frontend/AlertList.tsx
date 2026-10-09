@@ -8,7 +8,7 @@ import {
   OctagonAlert,
   Trash2,
 } from "lucide-react";
-import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
+import { useTabs, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
   ListBadge,
   ListRow,
@@ -16,8 +16,10 @@ import {
   cn,
   type ListRowTone,
 } from "@termix-ssh/plugin-sdk/ui";
-import type { AlertItem, Severity } from "../types";
+import { ANNOUNCEMENT_SOURCE, type AlertItem, type Severity } from "../types";
+import { ActionButtons, itemActions } from "./actions";
 import { sourceLabel, timeAgo } from "./format";
+import { Markdown } from "./markdown";
 
 const SEVERITY_ICON: Record<Severity, typeof Info> = {
   info: Info,
@@ -65,12 +67,15 @@ export function AlertList({
   onDelete: (item: AlertItem) => void;
 }) {
   const { t, language } = useTranslation();
+  const tabs = useTabs();
 
   return (
     <div className="flex flex-col">
       {items.map((item, index) => {
         const unread = !item.readAt;
         const failed = (item.deliveries ?? []).filter((entry) => !entry.ok);
+        const actions = itemActions(item);
+        const announcement = item.source === ANNOUNCEMENT_SOURCE;
         const actionText =
           typeof item.context?.actionText === "string"
             ? item.context.actionText
@@ -109,7 +114,7 @@ export function AlertList({
                     {t("inbox.deliveryFailed", { count: failed.length })}
                   </span>
                 )}
-                {item.link?.url && (
+                {item.link?.url && !actions && (
                   <a
                     href={item.link.url}
                     target="_blank"
@@ -141,15 +146,32 @@ export function AlertList({
               </>
             }
           >
-            {item.body && (
-              <span
-                className={cn(
-                  "whitespace-pre-wrap break-words text-xs leading-snug text-muted-foreground",
-                  compact && "line-clamp-2",
-                )}
-              >
-                {item.body}
-              </span>
+            {item.body &&
+              (announcement ? (
+                <Markdown
+                  text={item.body}
+                  className={cn(
+                    "text-xs leading-snug text-muted-foreground",
+                    compact && "line-clamp-3",
+                  )}
+                />
+              ) : (
+                <span
+                  className={cn(
+                    "whitespace-pre-wrap break-words text-xs leading-snug text-muted-foreground",
+                    compact && "line-clamp-2",
+                  )}
+                >
+                  {item.body}
+                </span>
+              ))}
+            {actions && actions.length > 0 && (
+              <ActionButtons
+                actions={actions}
+                openTab={tabs.openSingletonTab}
+                className="mt-1.5"
+                onAction={() => onOpen(item)}
+              />
             )}
           </ListRow>
         );

@@ -128,7 +128,7 @@ export function WidgetShell({
             </button>
           </div>
 
-          {/* Resize handle — bottom right */}
+          {/* Resize handle, bottom right */}
           <div
             className="absolute bottom-0 right-0 w-5 h-5 cursor-se-resize z-10 flex items-end justify-end pb-0.5 pr-0.5"
             onMouseDown={(e) => {

@@ -2,6 +2,25 @@ import type { Request, Response, Router } from "express";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import type { GraphRepository } from "./repository.js";
 
+/** The saved graph as JSON, or null when it is not a { nodes, edges } object. */
+export function normalizeTopology(topology: unknown): string | null {
+  let parsed: unknown = topology;
+  if (typeof topology === "string") {
+    try {
+      parsed = JSON.parse(topology);
+    } catch {
+      return null;
+    }
+  }
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    return null;
+  }
+  const { nodes, edges } = parsed as { nodes?: unknown; edges?: unknown };
+  if (nodes !== undefined && !Array.isArray(nodes)) return null;
+  if (edges !== undefined && !Array.isArray(edges)) return null;
+  return JSON.stringify(parsed);
+}
+
 function actor(ctx: PluginContext): string {
   // Core's plugin router authenticates every request and runs it as that user.
   return ctx.currentActor() as string;
@@ -89,10 +108,12 @@ export function registerGraphRoutes(
     if (!topology) {
       return res.status(400).json({ error: "Topology data is required" });
     }
+    const topologyStr = normalizeTopology(topology);
+    if (topologyStr === null) {
+      return res.status(400).json({ error: "Invalid topology data" });
+    }
 
     try {
-      const topologyStr =
-        typeof topology === "string" ? topology : JSON.stringify(topology);
       await repo.upsertForUser(userId, topologyStr);
       res.json({ success: true });
     } catch (err) {

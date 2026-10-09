@@ -38,12 +38,14 @@ export function buildNftRuleCommand(
   spec: FirewallRuleSpec,
 ): string {
   // nftables uses the inet filter table's input chain by convention.
-  const verb = op === "add" ? "add" : "delete";
-  const action =
-    spec.target.toLowerCase() === "reject"
-      ? "reject"
-      : spec.target.toLowerCase();
-  return `nft ${verb} rule inet filter input ${spec.protocol} dport ${spec.port} ${action}`;
+  const rule = `${spec.protocol} dport ${spec.port} ${spec.target.toLowerCase()}`;
+  if (op === "add") return `nft add rule inet filter input ${rule}`;
+  // nft only deletes by handle, so look up the first matching rule's handle.
+  return (
+    `handle=$(nft -a list chain inet filter input | ` +
+    `awk '$0 ~ /^[[:space:]]*${rule} # handle [0-9]+$/ {print $NF; exit}'); ` +
+    `[ -n "$handle" ] && nft delete rule inet filter input handle "$handle"`
+  );
 }
 
 const UFW_ACTIONS: Record<string, string> = {
@@ -68,7 +70,7 @@ export function registerFirewallRoutes(
   const { validateHostId } = deps;
   /**
    * @openapi
-   * /plugin-api/host-metrics/managers/firewall/{id}:
+   * /plugin-api/host-metrics/host-metrics/managers/firewall/{id}:
    *   get:
    *     summary: Read the host firewall (iptables, nftables or ufw)
    *     tags: [Host Metrics]
@@ -93,7 +95,7 @@ export function registerFirewallRoutes(
 
   /**
    * @openapi
-   * /plugin-api/host-metrics/managers/firewall/{id}/rule:
+   * /plugin-api/host-metrics/host-metrics/managers/firewall/{id}/rule:
    *   post:
    *     summary: Add or delete an input rule
    *     tags: [Host Metrics]
@@ -169,7 +171,7 @@ export function registerFirewallRoutes(
 
   /**
    * @openapi
-   * /plugin-api/host-metrics/managers/firewall/{id}/persist:
+   * /plugin-api/host-metrics/host-metrics/managers/firewall/{id}/persist:
    *   post:
    *     summary: Save the current firewall rules so they survive a reboot
    *     tags: [Host Metrics]

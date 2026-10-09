@@ -4,7 +4,7 @@ export type ChannelType = (typeof CHANNEL_TYPES)[number];
 export const SEVERITIES = ["info", "success", "warning", "critical"] as const;
 export type Severity = (typeof SEVERITIES)[number];
 
-/** Where an announcement from the Termix docs comes from in the inbox. */
+/** Where a Termix announcement comes from in the inbox. */
 export const ANNOUNCEMENT_SOURCE = "termix";
 
 export interface AlertLink {

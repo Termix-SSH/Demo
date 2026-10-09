@@ -373,11 +373,16 @@ export function WorkspacesPanel({
     }
   }, [api, t]);
 
+  // Reload each time the panel opens so Last Session and last used times are
+  // current; the spinner only shows on the first load.
   useEffect(() => {
-    if (!active || hasLoadedRef.current) return;
+    if (!active) return;
+    const first = !hasLoadedRef.current;
     hasLoadedRef.current = true;
-    setLoading(true);
-    loadWorkspaces().finally(() => setLoading(false));
+    if (first) setLoading(true);
+    void loadWorkspaces().finally(() => {
+      if (first) setLoading(false);
+    });
   }, [active, loadWorkspaces]);
 
   async function handleSaveNew(name: string, color: string) {

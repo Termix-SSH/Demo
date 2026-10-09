@@ -91,7 +91,7 @@ function drawWindows(ctx: CanvasRenderingContext2D, w: number, h: number) {
   ctx.font = "13px Segoe UI, Arial, sans-serif";
   ctx.fillText("File Explorer", wx + 16, wy + 25);
   ctx.fillStyle = "#cfcfcf";
-  ctx.fillText("—", wx + ww - 120, wy + 25);
+  ctx.fillText("-", wx + ww - 120, wy + 25);
   ctx.fillText("□", wx + ww - 76, wy + 25);
   ctx.fillText("✕", wx + ww - 32, wy + 25);
   ctx.fillStyle = "#1b1b1b";
@@ -226,7 +226,7 @@ function drawMac(ctx: CanvasRenderingContext2D, w: number, h: number) {
   });
   ctx.fillStyle = "#bdbdbd";
   ctx.textAlign = "center";
-  ctx.fillText("studio — -zsh — 100×30", wx + ww / 2, wy + 20);
+  ctx.fillText("studio - -zsh - 100×30", wx + ww / 2, wy + 20);
   ctx.textAlign = "left";
   ctx.font = "13px Menlo, Consolas, monospace";
   const lines: Array<[string, string]> = [

@@ -101,7 +101,7 @@ function CustomApiWidget({
   if (displayMode === "value") {
     const val = displayField ? resolvePath(data, displayField) : data;
     const display =
-      typeof val === "object" ? JSON.stringify(val) : String(val ?? "—");
+      typeof val === "object" ? JSON.stringify(val) : String(val ?? "-");
     return (
       <div className="flex flex-col w-full h-full overflow-hidden">
         {titleBar}

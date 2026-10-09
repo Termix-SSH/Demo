@@ -45,6 +45,7 @@ import {
   FolderInput,
   FolderMinus,
   ArrowUp,
+  Info,
   Network,
   Loader2,
   X,
@@ -380,7 +381,7 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
             return {
               data: {
                 id: node.data.id,
-                label: h?.name || node.data.label || "Unknown",
+                label: h?.name || node.data.label || t("networkGraph.unknown"),
                 ip: h ? `${h.ip}:${h.port}` : node.data.ip || "",
                 status: h?.status || "unknown",
                 tags: h?.tags || [],
@@ -406,7 +407,7 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
     } finally {
       setLoading(false);
     }
-  }, [api, liveHosts]);
+  }, [api, liveHosts, t]);
 
   useEffect(() => {
     if (!isVisible) return;
@@ -449,6 +450,26 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
     if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
     saveTimeoutRef.current = setTimeout(() => void saveCurrentLayout(), 1000);
   }, [saveCurrentLayout]);
+
+  useEffect(
+    () => () => {
+      if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+    },
+    [],
+  );
+
+  // Removing a parent in cytoscape takes its children with it, so lift them
+  // into the parent's own parent first.
+  const removeElement = useCallback((id: string) => {
+    const cy = cyRef.current;
+    if (!cy) return;
+    const el = cy.$id(id);
+    if (el.isNode() && el.isParent()) {
+      const grandParent = el.parent().length ? el.parent()[0].id() : null;
+      el.children().move({ parent: grandParent });
+    }
+    el.remove();
+  }, []);
 
   useEffect(() => {
     if (!cyRef.current || loading || elements.length === 0) return;
@@ -662,7 +683,7 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
         confirmLabel: t("networkGraph.delete"),
       }).then((ok) => {
         if (!ok || !cyRef.current) return;
-        cyRef.current.$id(targetId).remove();
+        removeElement(targetId);
         debouncedSave();
       });
     }
@@ -766,10 +787,10 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
     });
     if (!ok || !cyRef.current) return;
     if (selectedNodeId) {
-      cyRef.current.$id(selectedNodeId).remove();
+      removeElement(selectedNodeId);
       setSelectedNodeId(null);
     } else if (selectedEdgeId) {
-      cyRef.current.$id(selectedEdgeId).remove();
+      removeElement(selectedEdgeId);
       setSelectedEdgeId(null);
     }
     debouncedSave();
@@ -778,12 +799,14 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
   const handleExport = () => {
     if (!cyRef.current) return;
     const json = JSON.stringify(cyRef.current.json().elements, null, 2);
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(
+    const url = URL.createObjectURL(
       new Blob([json], { type: "application/json" }),
     );
+    const a = document.createElement("a");
+    a.href = url;
     a.download = "network.json";
     a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 0);
   };
 
   const handleOpenInNewTab = () => {
@@ -866,6 +889,15 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
                 </button>
               );
             })}
+          {hostMap[contextMenu.targetId] && (
+            <button
+              onClick={() => handleContextAction("details")}
+              className="flex items-center gap-2 px-3 py-2 text-xs w-full text-left hover:bg-muted transition-colors"
+            >
+              <Info className="size-3 shrink-0" />
+              {t("networkGraph.hostDetails")}
+            </button>
+          )}
           {!embedded && (
             <>
               <div className="h-px bg-border mx-2 my-0.5" />
@@ -1240,14 +1272,16 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
           reader.onload = async (evt) => {
             try {
               const json = JSON.parse(evt.target?.result as string);
+              if (!Array.isArray(json?.nodes)) throw new Error("no nodes");
               await api.save({
                 nodes: json.nodes,
-                edges: json.edges,
+                edges: Array.isArray(json.edges) ? json.edges : [],
               });
               await loadData();
-              if (fileInputRef.current) fileInputRef.current.value = "";
             } catch {
               setError(t("networkGraph.invalidFile"));
+            } finally {
+              if (fileInputRef.current) fileInputRef.current.value = "";
             }
           };
           reader.readAsText(file);

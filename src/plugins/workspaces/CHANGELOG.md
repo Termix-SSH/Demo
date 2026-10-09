@@ -4,6 +4,7 @@
 
 ### Added
 
+- First release
 - Save your tabs and split layout as a named workspace
 - Reopen it in one click
 - Recover your last session
