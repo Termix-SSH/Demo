@@ -24,7 +24,6 @@ export const instanceSettings = value("instance-settings", () => ({
   sessionTimeoutHours: 24,
   logLevel: "info",
   notificationPrivateEndpoints: [] as string[],
-  donationDismissed: false,
 }));
 
 export function requireSession(): { username: string } {
@@ -85,14 +84,10 @@ get("/users/me", () => {
     is_dual_auth: false,
     totp_enabled: false,
     data_unlocked: true,
-    show_donation_modal: false,
     linked: null,
   };
 });
 get("/users/me/token", () => ({ token: "demo-token" }));
-post("/users/me/dismiss-donation-modal", () => {
-  instanceSettings.update((s) => ({ ...s, donationDismissed: true }));
-});
 post("/users/unlock-data", () => ({ success: true, message: "Unlocked" }));
 
 get("/users/setup-required", () => ({ setup_required: false }));
