@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
 
 concurrency:
   group: sync
@@ -18,6 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.TERMIX_PAT }}
 
       - uses: actions/setup-node@v4
         with:
@@ -38,9 +39,7 @@ jobs:
 
       - run: npm run sync
 
-      - name: Open PR
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Commit changes
         run: |
           git add -A
           if git diff --cached --quiet; then
@@ -49,9 +48,5 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898729+github-actions[bot]@users.noreply.github.com"
-          git checkout -b auto-sync
           git commit -m "chore: sync"
-          git push -f origin auto-sync
-          if [ -z "$(gh pr list --head auto-sync --state open --json number -q '.[].number')" ]; then
-            gh pr create --head auto-sync --base main --title "chore: sync" --body "Daily sync from Termix, the plugins and the registry."
-          fi
+          git push
