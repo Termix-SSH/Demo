@@ -1,0 +1,50 @@
+name: Sync
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Clone sources
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd ..
+          git clone --depth 1 https://github.com/Termix-SSH/Termix.git
+          git clone --depth 1 https://github.com/Termix-SSH/Termix-Registry.git
+          mkdir Termix-Plugins
+          cd Termix-Plugins
+          for repo in $(gh repo list Termix-SSH --limit 200 --no-archived --json name -q '.[].name | select(startswith("Plugin-"))'); do
+            git clone --depth 1 "https://github.com/Termix-SSH/$repo.git"
+          done
+
+      - run: npm run sync
+
+      - name: Commit changes
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898729+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: sync"
+          git push
