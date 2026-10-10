@@ -27,6 +27,7 @@ import {
   type Severity,
 } from "../types";
 import type { AlertsApi, RuleInput } from "./api";
+import { rowActionProps, useAlwaysShowActions } from "./AlertSettings";
 
 const EMPTY: RuleInput = {
   name: "",
@@ -38,6 +39,7 @@ const EMPTY: RuleInput = {
 
 export function RulesView({ api }: { api: AlertsApi }) {
   const { t } = useTranslation();
+  const alwaysShowActions = useAlwaysShowActions();
   const confirm = useConfirm();
   const [rules, setRules] = useState<AlertRule[]>([]);
   const [channels, setChannels] = useState<ChannelSummary[]>([]);
@@ -213,7 +215,8 @@ export function RulesView({ api }: { api: AlertsApi }) {
                   />
                 </span>
               }
-              actions={
+              {...rowActionProps(
+                alwaysShowActions,
                 <>
                   <ListRowAction
                     label={t("rules.edit")}
@@ -228,8 +231,8 @@ export function RulesView({ api }: { api: AlertsApi }) {
                   >
                     <Trash2 />
                   </ListRowAction>
-                </>
-              }
+                </>,
+              )}
             />
           ))}
       </PanelList>

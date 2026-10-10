@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import {
   usePluginApi,
+  useSettings,
   useTranslation,
   type ShellLayout,
 } from "@termix-ssh/plugin-sdk/frontend";
@@ -12,6 +13,7 @@ import {
   Loader2,
   Save,
   Settings2,
+  SlidersHorizontal,
   Star,
   Trash2,
 } from "lucide-react";
@@ -33,6 +35,11 @@ import {
 import { createWorkspacesApi, type WorkspacesApi } from "./workspaces-api";
 import { errorMessage, type Workspace } from "./types";
 import { docsUrl } from "./docs";
+import {
+  WorkspaceSettings,
+  readWorkspaceSettings,
+  rowActionProps,
+} from "./WorkspaceSettings";
 
 type Translate = (key: string, options?: Record<string, unknown>) => string;
 
@@ -241,6 +248,7 @@ function WorkspaceRow({
   workspace,
   stripe,
   isLastSession,
+  alwaysShowActions,
   onApply,
   onUpdateWithCurrent,
   onRename,
@@ -251,6 +259,7 @@ function WorkspaceRow({
   workspace: Workspace;
   stripe: number;
   isLastSession: boolean;
+  alwaysShowActions: boolean;
   onApply: () => void;
   onUpdateWithCurrent: () => void;
   onRename: () => void;
@@ -297,7 +306,8 @@ function WorkspaceRow({
               })
             : t("newUi.sidebar.workspaces.neverUsed")
       }
-      actions={
+      {...rowActionProps(
+        alwaysShowActions && !isLastSession,
         isLastSession ? undefined : (
           <>
             <ListRowAction
@@ -337,8 +347,8 @@ function WorkspaceRow({
               <Trash2 />
             </ListRowAction>
           </>
-        )
-      }
+        ),
+      )}
     />
   );
 }
@@ -361,6 +371,9 @@ export function WorkspacesPanel({
   const [renameTarget, setRenameTarget] = useState<Workspace | null>(null);
   const confirm = useConfirm();
   const [query, setQuery] = useState("");
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const settings = useSettings("user");
+  const { alwaysShowActions } = readWorkspaceSettings(settings.values);
   const hasLoadedRef = useRef(false);
 
   const loadWorkspaces = useCallback(async () => {
@@ -480,30 +493,51 @@ export function WorkspacesPanel({
     : allManual;
   const lastSession = workspaces.find((w) => w.kind === "last_session");
 
+  if (settingsOpen) {
+    return (
+      <WorkspaceSettings
+        settings={settings}
+        onBack={() => setSettingsOpen(false)}
+      />
+    );
+  }
+
   return (
     <div className="flex flex-col flex-1 min-h-0">
-      <div className="flex shrink-0 items-center gap-2 border-b border-border px-3 py-2">
+      <div className="flex shrink-0 flex-col gap-2 border-b border-border px-3 py-2">
         <PanelSearch
           value={query}
           onChange={setQuery}
           placeholder={t("newUi.sidebar.workspaces.search")}
           fill
         />
-        <Button variant="outline" size="icon" asChild>
-          <a
-            href={docsUrl()}
-            target="_blank"
-            rel="noreferrer"
-            title={t("hosts.docsLink")}
-            aria-label={t("hosts.docsLink")}
+        <div className="flex items-center gap-2">
+          <AddButton
+            label={t("newUi.sidebar.workspaces.saveCurrent")}
+            onClick={() => setSaveDialogOpen(true)}
+            className="flex-1"
+          />
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setSettingsOpen(true)}
+            title={t("newUi.sidebar.workspaces.settingsTitle")}
+            aria-label={t("newUi.sidebar.workspaces.settingsTitle")}
           >
-            <ExternalLink className="size-3.5" />
-          </a>
-        </Button>
-        <AddButton
-          label={t("newUi.sidebar.workspaces.saveCurrent")}
-          onClick={() => setSaveDialogOpen(true)}
-        />
+            <SlidersHorizontal className="size-3.5" />
+          </Button>
+          <Button variant="outline" size="icon" asChild>
+            <a
+              href={docsUrl()}
+              target="_blank"
+              rel="noreferrer"
+              title={t("hosts.docsLink")}
+              aria-label={t("hosts.docsLink")}
+            >
+              <ExternalLink className="size-3.5" />
+            </a>
+          </Button>
+        </div>
       </div>
 
       <PanelList
@@ -530,6 +564,7 @@ export function WorkspacesPanel({
             stripe={0}
             workspace={lastSession}
             isLastSession
+            alwaysShowActions={alwaysShowActions}
             onApply={() => void handleApplyClick(lastSession)}
             onUpdateWithCurrent={() => {}}
             onRename={() => {}}
@@ -545,6 +580,7 @@ export function WorkspacesPanel({
               stripe={index + (lastSession && !q ? 1 : 0)}
               workspace={workspace}
               isLastSession={false}
+              alwaysShowActions={alwaysShowActions}
               onApply={() => void handleApplyClick(workspace)}
               onUpdateWithCurrent={() => {
                 void confirm({

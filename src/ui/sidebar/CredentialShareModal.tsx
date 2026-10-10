@@ -29,10 +29,11 @@ import {
   type CredentialPermissionLevel,
   type ShareTarget,
 } from "@/api/rbac-api";
-import { getUserList, type AccessRecord } from "@/main-axios";
+import { getUserInfo, getUserList, type AccessRecord } from "@/main-axios";
 import type { Credential } from "@/types/ui-types";
 import { getErrorMessage } from "@/lib/error-message";
 import { DocsLink } from "@/components/docs-link";
+import { roleLabel } from "@/lib/role-label";
 
 const PERMISSION_LEVELS: CredentialPermissionLevel[] = ["use", "manage"];
 
@@ -119,14 +120,15 @@ export function CredentialShareModal({
       getCredentialAccess(credentialId).catch(() => ({ access: [] })),
       getUserList().catch(() => ({ users: [] })),
       getRoles().catch(() => ({ roles: [] })),
+      getUserInfo().catch(() => null),
     ])
-      .then(([accessRes, usersRes, rolesRes]) => {
+      .then(([accessRes, usersRes, rolesRes, me]) => {
         setAccessList(accessRes.access ?? []);
+        // Nobody shares a credential with themselves.
         setShareUsers(
-          (usersRes.users ?? []).map((u) => ({
-            id: String(u.userId),
-            username: u.username,
-          })),
+          (usersRes.users ?? [])
+            .map((u) => ({ id: String(u.userId), username: u.username }))
+            .filter((u) => u.id !== me?.userId),
         );
         setShareRoles(
           (rolesRes.roles ?? [])
@@ -231,7 +233,10 @@ export function CredentialShareModal({
   async function handleRevoke(record: AccessRecord) {
     if (!credentialId) return;
     const who =
-      record.username ?? record.roleDisplayName ?? record.roleName ?? "";
+      record.username ??
+      roleLabel(t, record.roleDisplayName) ??
+      record.roleName ??
+      "";
     const ok = await confirm({
       title: t("sharing.revokeConfirm", { name: who }),
       confirmLabel: t("sharing.revoke"),
@@ -376,7 +381,7 @@ export function CredentialShareModal({
                     </div>
                     <Shield className="size-3 text-muted-foreground shrink-0" />
                     <span className="truncate">
-                      {role.displayName || role.name}
+                      {roleLabel(t, role.displayName || role.name)}
                     </span>
                   </button>
                 );
@@ -499,7 +504,7 @@ export function CredentialShareModal({
                     )}
                     <span className="font-semibold truncate">
                       {record.username ??
-                        record.roleDisplayName ??
+                        roleLabel(t, record.roleDisplayName) ??
                         record.roleName ??
                         record.userId ??
                         record.roleId}

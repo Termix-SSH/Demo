@@ -1,6 +1,10 @@
 import type { Request, RequestHandler, Response, Router } from "express";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
-import { AcmeNotConfiguredError, type AcmeRunner } from "./runner.js";
+import {
+  AcmeNotConfiguredError,
+  describeError,
+  type AcmeRunner,
+} from "./runner.js";
 import { missingSetting, readSettings } from "./settings.js";
 
 export function registerRoutes(
@@ -65,7 +69,7 @@ export function registerRoutes(
           .status(400)
           .json({ error: error.message, missing: error.field });
       }
-      const message = error instanceof Error ? error.message : String(error);
+      const message = describeError(error);
       ctx.log.warn(`Certificate request failed: ${message}`);
       res.status(500).json({ error: `Certificate request failed: ${message}` });
     }

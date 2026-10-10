@@ -223,7 +223,7 @@ export function InboxView({
           onChange={setQuery}
           placeholder={t("inbox.search")}
           fill={compact}
-          className={compact ? undefined : "ml-auto"}
+          className={compact ? "order-first basis-full" : "ml-auto"}
         />
         <Button
           variant="outline"
