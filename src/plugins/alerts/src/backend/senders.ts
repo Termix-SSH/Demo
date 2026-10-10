@@ -222,3 +222,19 @@ export async function sendToChannel(
     }
   }
 }
+
+/**
+ * A send failure in words a user can act on. undici hides the real reason
+ * behind "fetch failed", with the cause holding what went wrong.
+ */
+export function describeSendError(error: unknown): string {
+  if (!(error instanceof Error)) return String(error);
+  const cause = (error as { cause?: unknown }).cause;
+  const reason = cause instanceof Error ? cause.message : "";
+  if (/private destinations/i.test(reason || error.message)) {
+    return "This address is on a private network. Turn on Allow a private network address for the channel, and ask an admin to add the host to Allowed private notification hosts.";
+  }
+  return reason && /^fetch failed$/i.test(error.message)
+    ? `Could not reach the address: ${reason}`
+    : error.message;
+}

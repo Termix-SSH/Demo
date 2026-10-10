@@ -20,6 +20,7 @@ import { ANNOUNCEMENT_SOURCE, type AlertItem, type Severity } from "../types";
 import { ActionButtons, itemActions } from "./actions";
 import { sourceLabel, timeAgo } from "./format";
 import { Markdown } from "./markdown";
+import { useAlwaysShowActions } from "./AlertSettings";
 
 const SEVERITY_ICON: Record<Severity, typeof Info> = {
   info: Info,
@@ -68,6 +69,28 @@ export function AlertList({
 }) {
   const { t, language } = useTranslation();
   const tabs = useTabs();
+  const alwaysShowActions = useAlwaysShowActions();
+
+  const rowActions = (item: AlertItem) => {
+    const unread = !item.readAt;
+    return (
+      <>
+        <ListRowAction
+          label={unread ? t("inbox.markRead") : t("inbox.markUnread")}
+          onClick={() => onToggleRead(item)}
+        >
+          {unread ? <MailOpen /> : <Mail />}
+        </ListRowAction>
+        <ListRowAction
+          label={t("inbox.delete")}
+          tone="destructive"
+          onClick={() => onDelete(item)}
+        >
+          <Trash2 />
+        </ListRowAction>
+      </>
+    );
+  };
 
   return (
     <div className="flex flex-col">
@@ -128,23 +151,7 @@ export function AlertList({
                 )}
               </span>
             }
-            actions={
-              <>
-                <ListRowAction
-                  label={unread ? t("inbox.markRead") : t("inbox.markUnread")}
-                  onClick={() => onToggleRead(item)}
-                >
-                  {unread ? <MailOpen /> : <Mail />}
-                </ListRowAction>
-                <ListRowAction
-                  label={t("inbox.delete")}
-                  tone="destructive"
-                  onClick={() => onDelete(item)}
-                >
-                  <Trash2 />
-                </ListRowAction>
-              </>
-            }
+            actions={alwaysShowActions ? undefined : rowActions(item)}
           >
             {item.body &&
               (announcement ? (
@@ -172,6 +179,14 @@ export function AlertList({
                 className="mt-1.5"
                 onAction={() => onOpen(item)}
               />
+            )}
+            {alwaysShowActions && (
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="mt-1 flex flex-wrap items-center gap-[1.75px] border-t border-border/30 pt-[3.5px]"
+              >
+                {rowActions(item)}
+              </div>
             )}
           </ListRow>
         );

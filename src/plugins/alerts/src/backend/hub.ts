@@ -12,6 +12,7 @@ import {
 } from "../types.js";
 import type { AlertsRepository, DeliverableChannel } from "./repository.js";
 import {
+  describeSendError,
   sendToChannel,
   type OutgoingAlert,
   type SenderDeps,
@@ -87,7 +88,7 @@ export async function deliverToChannels(
         channelId: channel.id,
         name: channel.name,
         ok: false,
-        error: error instanceof Error ? error.message : String(error),
+        error: describeSendError(error),
       });
     }
   }

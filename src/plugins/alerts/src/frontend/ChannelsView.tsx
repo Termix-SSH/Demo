@@ -22,6 +22,7 @@ import {
 import type { ChannelSummary } from "../types";
 import type { AlertsApi } from "./api";
 import { ChannelDialog } from "./ChannelDialog";
+import { rowActionProps, useAlwaysShowActions } from "./AlertSettings";
 
 export function ChannelsView({
   api,
@@ -31,6 +32,7 @@ export function ChannelsView({
   onChanged?: () => void;
 }) {
   const { t } = useTranslation();
+  const alwaysShowActions = useAlwaysShowActions();
   const confirm = useConfirm();
   const [channels, setChannels] = useState<ChannelSummary[]>([]);
   const [loading, setLoading] = useState(true);
@@ -171,7 +173,8 @@ export function ChannelsView({
                   />
                 </span>
               }
-              actions={
+              {...rowActionProps(
+                alwaysShowActions,
                 <>
                   <ListRowAction
                     label={t("channels.test")}
@@ -201,8 +204,8 @@ export function ChannelsView({
                   >
                     <Trash2 />
                   </ListRowAction>
-                </>
-              }
+                </>,
+              )}
             />
           ))}
       </PanelList>

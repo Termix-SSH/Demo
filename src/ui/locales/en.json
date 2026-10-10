@@ -1079,7 +1079,7 @@
     "sessionExpiredLogin": "Session expired. Please log in again."
   },
   "messages": {
-    "registrationDisabled": "New account registration is currently disabled by an admin. Please log in or contact an administrator.",
+    "registrationDisabled": "You have no Termix account yet. Ask an admin to turn on Auto-create external accounts.",
     "userNotAllowed": "Your account is not authorized to register. Please contact an administrator.",
     "databaseConnectionFailed": "Failed to connect to the database server",
     "embeddedServerPortInUse": "Port {{port}} is already in use by another program. This is usually a Termix Docker container or a leftover Termix process from a previous session. Close it, then restart Termix.",
@@ -1218,7 +1218,7 @@
     "allowPasswordLogin": "Allow Password Login",
     "allowPasswordLoginDesc": "Username/password login",
     "externalAutoProvision": "Auto-create external accounts",
-    "externalAutoProvisionDesc": "Create an account the first time someone signs in through an external login such as SSO or LDAP, even when registration is off",
+    "externalAutoProvisionDesc": "Create an account the first time someone signs in through an external login such as SSO or LDAP. When off, only people who already have an account can sign in that way",
     "secondFactorAfterExternalLogin": "Ask for a second factor after external logins (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Off, an enrolled second factor is only asked for after password and other local logins, same as before. On, it is asked for after every login method, including SSO and LDAP.",
     "allowPasswordReset": "Allow Password Reset",
@@ -1867,6 +1867,19 @@
         "updated": "Recently updated",
         "category": "Category"
       },
+      "columns": {
+        "title": "Columns",
+        "auto": "Auto",
+        "count": "{{count}} wide"
+      },
+      "table": {
+        "name": "Name",
+        "description": "Description",
+        "version": "Version",
+        "status": "Status",
+        "category": "Category",
+        "installs": "Installs"
+      },
       "risk": {
         "critical": "Critical",
         "high": "High risk",
@@ -2017,6 +2030,8 @@
       "noneInstalled": "No plugins installed yet. Browse to add some.",
       "nothingHere": "Nothing here.",
       "nothingHereHint": "Try another category or search.",
+      "communitySoon": "Community plugins are coming in a later update. Plugin authors can already submit theirs to the community registry.",
+      "communitySubmit": "How to submit",
       "upToDate": "Everything is up to date.",
       "lastChecked": "Last checked {{time}}",
       "updatesReady_one": "{{count}} update ready.",
@@ -2218,7 +2233,12 @@
       "dashboardServiceLinks": "Service links",
       "homepageItems": "Homepage items",
       "networkTopology": "Network map",
-      "workspaces": "Workspaces"
+      "workspaces": "Workspaces",
+      "hostDefaults": "Host defaults",
+      "hostDefaultsAdmin": "Server host defaults",
+      "aiProviders": "AI providers",
+      "homepageLayouts": "Homepage layouts",
+      "accountProfile": "Account profile"
     },
     "proxy": {
       "title": "Reverse proxy",
@@ -2265,9 +2285,11 @@
       "continue": "Continue",
       "back": "Back",
       "mergeTitle": "Add it to my account",
-      "mergeBody": "The {{count}} items on this device are added to your account. Items your account already has stay as they are on the server.",
+      "mergeBody_one": "The item on this device is added to your account. Items your account already has stay as they are on the server.",
+      "mergeBody_other": "The {{count}} items on this device are added to your account. Items your account already has stay as they are on the server.",
       "replaceTitle": "Replace it with my account",
-      "replaceBody": "The {{count}} items on this device are removed, and this device takes everything from your account. Hosts kept on this device only stay.",
+      "replaceBody_one": "The item on this device is removed, and this device takes everything from your account. Hosts kept on this device only stay.",
+      "replaceBody_other": "The {{count}} items on this device are removed, and this device takes everything from your account. Hosts kept on this device only stay.",
       "link": "Link",
       "linking": "Linking and running the first sync...",
       "linked": "Linked. Your data is syncing now.",
@@ -2367,5 +2389,11 @@
     "pickCredential": "Pick a credential to edit",
     "pickDefaults": "Pick a level of defaults to edit",
     "pickHint": "Everything about a connection lives here, grouped so you can find it."
+  },
+  "rbac": {
+    "roles": {
+      "admin": "Admin",
+      "user": "User"
+    }
   }
 }

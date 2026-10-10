@@ -1,4 +1,4 @@
-import { fileManagerHostSetting } from "../host-settings";
+import { canBrowseFiles } from "../host-settings";
 import React, {
   useCallback,
   useEffect,
@@ -230,11 +230,7 @@ export function TransferToHostDialog({
     try {
       const hosts = await getSSHHosts();
       const candidates = hosts.filter(
-        (h) =>
-          h.id !== sourceHost.id &&
-          fileManagerHostSetting(h, "enableFileManager", true) &&
-          h.connectionType !== "rdp" &&
-          h.connectionType !== "vnc",
+        (h) => h.id !== sourceHost.id && canBrowseFiles(h),
       );
       setAvailableHosts(candidates);
 
@@ -676,17 +672,15 @@ export function TransferToHostDialog({
     <InlineView
       open={open}
       onOpenChange={onOpenChange}
+      icon={<ArrowRightLeft className="size-4" />}
       title={
-        <>
-          <ArrowRightLeft className="size-4 text-accent-brand" />
-          {move
-            ? files.length > 1
-              ? t("transfer.moveItemsToHost", { count: files.length })
-              : t("transfer.moveToHost")
-            : files.length > 1
-              ? t("transfer.copyItemsToHost", { count: files.length })
-              : t("transfer.copyToHost")}
-        </>
+        move
+          ? files.length > 1
+            ? t("transfer.moveItemsToHost", { count: files.length })
+            : t("transfer.moveToHost")
+          : files.length > 1
+            ? t("transfer.copyItemsToHost", { count: files.length })
+            : t("transfer.copyToHost")
       }
       footer={
         <FormFooter
@@ -742,7 +736,6 @@ export function TransferToHostDialog({
                     </option>
                   ))}
                 </Select2>
-                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 size-3 text-muted-foreground pointer-events-none" />
               </div>
               {selectedHost && (
                 <p
@@ -973,7 +966,6 @@ export function TransferToHostDialog({
                         {t("transfer.methodItemSftp")}
                       </option>
                     </Select2>
-                    <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 size-3 text-muted-foreground pointer-events-none" />
                   </div>
                   <p className="text-[10px] text-muted-foreground">
                     {methodPreference === "auto"
@@ -1001,7 +993,6 @@ export function TransferToHostDialog({
                         </option>
                       ))}
                     </Select2>
-                    <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 size-3 text-muted-foreground pointer-events-none" />
                   </div>
                   <p className="text-[10px] text-muted-foreground">
                     {t("transfer.parallelSegmentsHint")}
