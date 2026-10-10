@@ -39,6 +39,12 @@ jobs:
 
       - run: npm run sync
 
+      - run: npm ci
+        env:
+          HUSKY: 0
+
+      - run: npm run build
+
       - name: Commit changes
         run: |
           git add -A
