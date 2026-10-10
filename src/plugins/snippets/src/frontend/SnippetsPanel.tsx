@@ -79,7 +79,7 @@ function matchesQuery(snippet: Snippet, query: string): boolean {
   );
 }
 
-export function SnippetsPanel(_props: PanelProps) {
+export function SnippetsPanel({ targetTab }: PanelProps) {
   const { t } = useTranslation();
   const api = usePluginApi();
   const client = useMemo(() => createSnippetsApi(api), [api]);
@@ -277,7 +277,19 @@ export function SnippetsPanel(_props: PanelProps) {
     const terminalTargets = toRunTargets(openTerminals, selectedTerminals);
     if (targets.length > 0 && !snippet.isNote) runOnHosts(snippet, targets);
     else if (terminalTargets.length > 0) runSnippet(snippet, terminalTargets);
-    else runOnActive(snippet, null);
+    else
+      runOnActive(
+        snippet,
+        targetTab?.host
+          ? {
+              name: targetTab.host.name,
+              ip: targetTab.host.ip,
+              username: targetTab.host.username,
+              port: targetTab.host.port,
+            }
+          : null,
+        targetTab?.id,
+      );
   }
 
   function endDrag() {
@@ -530,6 +542,7 @@ export function SnippetsPanel(_props: PanelProps) {
         snippet={snippet}
         stripe={index}
         showCommand={display.showCommands}
+        alwaysShowActions={display.alwaysShowActions}
         folderNames={folderNames}
         targetHostNames={targetHostsOf(snippet).map(
           (host) => host.name || host.ip || String(host.id),
@@ -571,13 +584,20 @@ export function SnippetsPanel(_props: PanelProps) {
     return (
       <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
         <div className="flex shrink-0 flex-col gap-2 border-b border-border px-3 py-2">
-          <div className="flex items-center gap-2">
-            <PanelSearch
-              value={search}
-              onChange={setSearch}
-              placeholder={t("searchPlaceholder")}
-              fill
-            />
+          <PanelSearch
+            value={search}
+            onChange={setSearch}
+            placeholder={t("searchPlaceholder")}
+            fill
+          />
+          <div className="flex items-center justify-end gap-2">
+            {canCreate && (
+              <AddButton
+                label={t("newSnippet")}
+                onClick={() => setView({ kind: "edit", snippet: null })}
+                className="flex-1"
+              />
+            )}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -641,12 +661,6 @@ export function SnippetsPanel(_props: PanelProps) {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            {canCreate && (
-              <AddButton
-                label={t("newSnippet")}
-                onClick={() => setView({ kind: "edit", snippet: null })}
-              />
-            )}
           </div>
 
           <TargetTerminals

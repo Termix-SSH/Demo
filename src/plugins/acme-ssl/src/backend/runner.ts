@@ -91,8 +91,10 @@ export function createAcmeRunner(
       ctx.log.info(`Certificate issued for ${settings.domain}`);
       return { tls: await ctx.system.tlsStatus(), reload };
     } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      await record({ lastAttemptAt: attemptAt, lastError: message });
+      await record({
+        lastAttemptAt: attemptAt,
+        lastError: describeError(error),
+      });
       throw error;
     }
   };
@@ -170,4 +172,20 @@ export function createAcmeRunner(
 
 export function watchSettings(ctx: PluginContext, onChange: () => void): void {
   for (const key of SETTING_KEYS) ctx.settings.onChange(key, onChange);
+}
+
+/**
+ * A failure in words an admin can act on. undici hides the real reason
+ * behind "fetch failed", with the cause holding what went wrong.
+ */
+export function describeError(error: unknown): string {
+  if (!(error instanceof Error)) return String(error);
+  const cause = (error as { cause?: unknown }).cause;
+  const reason = cause instanceof Error ? cause.message : "";
+  if (/private destinations/i.test(reason || error.message)) {
+    return "The ACME directory is on a private network address, which Termix does not contact.";
+  }
+  return reason && /^fetch failed$/i.test(error.message)
+    ? `Could not reach the ACME directory: ${reason}`
+    : error.message;
 }

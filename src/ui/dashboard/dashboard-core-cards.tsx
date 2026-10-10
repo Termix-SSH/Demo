@@ -1,3 +1,4 @@
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useTranslation } from "react-i18next";
 import {
   ExternalLink,
@@ -25,6 +26,7 @@ import { getDefaultConnectionTab } from "@/lib/host-connection-tabs";
 import type { RecentActivityItem } from "@/main-axios";
 import type { Host, TabType } from "@/types/ui-types";
 import { quarterBorders } from "./quarter-borders";
+import { parseServerTime } from "@/lib/server-time";
 
 export type VersionStatus =
   "up_to_date" | "requires_update" | "beta" | "unknown";
@@ -296,6 +298,8 @@ export function HostStatusList({
 }) {
   const { t } = useTranslation();
   const scheme = useStatusColorScheme();
+  // A phone has no room for the metric bars next to the host name.
+  const isMobile = useIsMobile();
   if (hosts.length === 0) {
     return (
       <div className="flex flex-1 items-center justify-center py-8 text-xs text-muted-foreground/60">
@@ -342,13 +346,16 @@ export function HostStatusList({
               </Facts>
             </span>
             {/* Plugins add live details to a host row here. */}
-            <ComponentSlot
-              slotId="dashboard.hostRow"
-              props={{
-                hostId: Number(host.id),
-                online: availability === "online",
-              }}
-            />
+            {!isMobile && (
+              <ComponentSlot
+                slotId="dashboard.hostRow"
+                props={{
+                  hostId: Number(host.id),
+                  host,
+                  online: availability === "online",
+                }}
+              />
+            )}
             <span
               className={`shrink-0 border px-1.5 py-0.5 text-[10px] font-semibold ${getStatusClasses(availability, scheme, "badge", statusLoading)}`}
             >
@@ -380,7 +387,9 @@ export function RecentActivityList({
   const { t } = useTranslation();
   const scheme = useStatusColorScheme();
   const ago = (ts: string) => {
-    const diff = Math.floor((Date.now() - new Date(ts).getTime()) / 1000);
+    const diff = Math.floor(
+      (Date.now() - parseServerTime(ts).getTime()) / 1000,
+    );
     if (diff < 60) return t("dashboard.justNow");
     if (diff < 3600) return `${Math.floor(diff / 60)}m`;
     if (diff < 86400) return `${Math.floor(diff / 3600)}h`;

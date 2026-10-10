@@ -4,6 +4,7 @@ import {
   invokeAction,
   useTranslation,
   useHosts,
+  useSettings,
   type PluginHostRecord,
 } from "@termix-ssh/plugin-sdk/frontend";
 import {
@@ -45,6 +46,7 @@ import {
   Settings2,
   Share2,
   Shield,
+  SlidersHorizontal,
   Trash2,
   Upload,
   User,
@@ -63,6 +65,7 @@ import type {
   ShareTarget,
 } from "./fleets-api.js";
 import { docsUrl } from "./docs";
+import { FleetSettings, readFleetSettings } from "./FleetSettings";
 
 const SHARE_PERMISSION_LEVELS: SharePermissionLevel[] = [
   "connect",
@@ -344,31 +347,40 @@ function MemberPickerDialog({
         onChange={setSearch}
         placeholder={t("newUi.sidebar.fleets.searchHosts")}
         fill
+        className="flex-none"
       />
 
-      <div className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-1">
+      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto border border-border">
         {visibleHosts.map((host) => {
           const hostId = Number(host.id);
           const isMember = memberIds.has(hostId);
           return (
-            <label
+            <button
               key={host.id}
-              className="flex items-center gap-2 text-xs cursor-pointer py-1"
+              type="button"
+              disabled={busyId === hostId}
+              onClick={() => void toggleHost(host, isMember)}
+              className={`flex shrink-0 items-center gap-2 border-b border-border/50 px-2.5 py-1.5 text-left text-xs transition-colors last:border-0 disabled:opacity-60 ${isMember ? "bg-accent-brand/10 text-accent-brand" : "hover:bg-muted/40"}`}
             >
-              <Checkbox
-                checked={isMember}
-                disabled={busyId === hostId}
-                onCheckedChange={() => toggleHost(host, isMember)}
-              />
-              <span className="truncate flex-1">{host.name}</span>
-              <span className="text-muted-foreground text-[11px]">
+              {busyId === hostId ? (
+                <Loader2 className="size-4 shrink-0 animate-spin" />
+              ) : (
+                <Checkbox
+                  checked={isMember}
+                  tabIndex={-1}
+                  className="pointer-events-none"
+                />
+              )}
+              <Server className="size-3 shrink-0 text-muted-foreground" />
+              <span className="flex-1 truncate">{host.name}</span>
+              <span className="shrink-0 text-[11px] text-muted-foreground">
                 {host.ip}
               </span>
-            </label>
+            </button>
           );
         })}
         {visibleHosts.length === 0 && (
-          <div className="text-xs text-muted-foreground text-center py-4">
+          <div className="px-3 py-4 text-center text-xs text-muted-foreground/50">
             {t("newUi.sidebar.fleets.noHostsFound")}
           </div>
         )}
@@ -574,6 +586,7 @@ function FleetShareDialog({
               onChange={setSearch}
               placeholder={t("hosts.sharing.searchPlaceholder")}
               fill
+              className="flex-none"
             />
 
             <div className="flex flex-col border border-border h-28 overflow-y-auto shrink-0">
@@ -898,24 +911,23 @@ function TransferTab({ api, fleetId }: { api: FleetsApi; fleetId: number }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex gap-1.5">
-        <Button
-          size="sm"
-          variant={direction === "push" ? "default" : "outline"}
-          onClick={() => setDirection("push")}
-        >
-          <Upload className="size-3.5 mr-1.5" />
-          {t("newUi.sidebar.fleets.push")}
-        </Button>
-        <Button
-          size="sm"
-          variant={direction === "pull" ? "default" : "outline"}
-          onClick={() => setDirection("pull")}
-        >
-          <Download className="size-3.5 mr-1.5" />
-          {t("newUi.sidebar.fleets.pull")}
-        </Button>
-      </div>
+      <Segmented<"push" | "pull">
+        value={direction}
+        onChange={setDirection}
+        className="w-full [&>button]:flex-1"
+        options={[
+          {
+            value: "push",
+            label: t("newUi.sidebar.fleets.push"),
+            icon: <Upload className="size-3.5" />,
+          },
+          {
+            value: "pull",
+            label: t("newUi.sidebar.fleets.pull"),
+            icon: <Download className="size-3.5" />,
+          },
+        ]}
+      />
 
       <div className="flex flex-col gap-1.5">
         <label className="text-xs text-muted-foreground">
@@ -1129,22 +1141,21 @@ function PackagesTab({ api, fleetId }: { api: FleetsApi; fleetId: number }) {
         <label className="text-xs text-muted-foreground">
           {t("newUi.sidebar.fleets.packageActionLabel")}
         </label>
-        <Segmented<FleetPackageAction>
+        <Select2
           value={action}
-          onChange={setAction}
-          className="w-full [&>button]:flex-1"
-          options={[
-            {
-              value: "install",
-              label: t("newUi.sidebar.fleets.packageInstall"),
-            },
-            { value: "remove", label: t("newUi.sidebar.fleets.packageRemove") },
-            {
-              value: "upgrade-all",
-              label: t("newUi.sidebar.fleets.packageUpgradeAll"),
-            },
-          ]}
-        />
+          onChange={(e) => setAction(e.target.value as FleetPackageAction)}
+          className="h-8 w-full px-2.5 text-xs border border-border bg-background hover:bg-muted/40 transition-colors"
+        >
+          <option value="install">
+            {t("newUi.sidebar.fleets.packageInstall")}
+          </option>
+          <option value="remove">
+            {t("newUi.sidebar.fleets.packageRemove")}
+          </option>
+          <option value="upgrade-all">
+            {t("newUi.sidebar.fleets.packageUpgradeAll")}
+          </option>
+        </Select2>
       </div>
 
       {action !== "upgrade-all" && (
@@ -1368,6 +1379,9 @@ export function FleetsPanel({
   const [editingFleet, setEditingFleet] = useState<FleetRow | null>(null);
   const confirm = useConfirm();
   const [shareTarget, setShareTarget] = useState<FleetRow | null>(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const settings = useSettings("user");
+  const { alwaysShowActions } = readFleetSettings(settings.values);
   const hasLoadedRef = useRef(false);
 
   const loadFleets = useCallback(async () => {
@@ -1419,6 +1433,15 @@ export function FleetsPanel({
     f.name.toLowerCase().includes(search.trim().toLowerCase()),
   );
 
+  if (settingsOpen) {
+    return (
+      <FleetSettings
+        settings={settings}
+        onBack={() => setSettingsOpen(false)}
+      />
+    );
+  }
+
   if (selectedFleet) {
     return (
       <FleetDetail
@@ -1434,31 +1457,43 @@ export function FleetsPanel({
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
-      <div className="flex shrink-0 items-center gap-2 border-b border-border px-3 py-2">
+      <div className="flex shrink-0 flex-col gap-2 border-b border-border px-3 py-2">
         <PanelSearch
           value={search}
           onChange={setSearch}
           placeholder={t("newUi.sidebar.fleets.searchFleets")}
           fill
         />
-        <Button variant="outline" size="icon" asChild>
-          <a
-            href={docsUrl()}
-            target="_blank"
-            rel="noreferrer"
-            title={t("hosts.docsLink")}
-            aria-label={t("hosts.docsLink")}
+        <div className="flex items-center gap-2">
+          <AddButton
+            label={t("newUi.sidebar.fleets.createFleet")}
+            onClick={() => {
+              setEditingFleet(null);
+              setFormOpen(true);
+            }}
+            className="flex-1"
+          />
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setSettingsOpen(true)}
+            title={t("newUi.sidebar.fleets.settingsTitle")}
+            aria-label={t("newUi.sidebar.fleets.settingsTitle")}
           >
-            <ExternalLink className="size-3.5" />
-          </a>
-        </Button>
-        <AddButton
-          label={t("newUi.sidebar.fleets.createFleet")}
-          onClick={() => {
-            setEditingFleet(null);
-            setFormOpen(true);
-          }}
-        />
+            <SlidersHorizontal className="size-3.5" />
+          </Button>
+          <Button variant="outline" size="icon" asChild>
+            <a
+              href={docsUrl()}
+              target="_blank"
+              rel="noreferrer"
+              title={t("hosts.docsLink")}
+              aria-label={t("hosts.docsLink")}
+            >
+              <ExternalLink className="size-3.5" />
+            </a>
+          </Button>
+        </div>
       </div>
 
       <PanelList
@@ -1476,51 +1511,63 @@ export function FleetsPanel({
         }
       >
         {!loading &&
-          visibleFleets.map((fleet, index) => (
-            <ListRow
-              key={fleet.id}
-              stripe={index}
-              color={fleet.color ?? undefined}
-              tone="muted"
-              icon={<Boxes />}
-              title={fleet.name}
-              onClick={() => setSelectedFleet(fleet)}
-              badges={
-                <ListBadge className="ml-auto">
-                  {t("newUi.sidebar.fleets.memberCount", {
-                    count: fleet.memberCount,
-                  })}
-                </ListBadge>
-              }
-              meta={fleet.description || undefined}
-              actions={
-                <>
-                  <ListRowAction
-                    label={t("newUi.sidebar.fleets.shareFleet")}
-                    onClick={() => setShareTarget(fleet)}
+          visibleFleets.map((fleet, index) => {
+            const actions = (
+              <>
+                <ListRowAction
+                  label={t("newUi.sidebar.fleets.shareFleet")}
+                  onClick={() => setShareTarget(fleet)}
+                >
+                  <Share2 />
+                </ListRowAction>
+                <ListRowAction
+                  label={t("newUi.sidebar.fleets.editFleetTitle")}
+                  onClick={() => {
+                    setEditingFleet(fleet);
+                    setFormOpen(true);
+                  }}
+                >
+                  <Settings2 />
+                </ListRowAction>
+                <ListRowAction
+                  label={t("common.delete")}
+                  tone="destructive"
+                  onClick={() => void handleDelete(fleet)}
+                >
+                  <Trash2 />
+                </ListRowAction>
+              </>
+            );
+            return (
+              <ListRow
+                key={fleet.id}
+                stripe={index}
+                color={fleet.color ?? undefined}
+                tone="muted"
+                icon={<Boxes />}
+                title={fleet.name}
+                onClick={() => setSelectedFleet(fleet)}
+                badges={
+                  <ListBadge className="ml-auto">
+                    {t("newUi.sidebar.fleets.memberCount", {
+                      count: fleet.memberCount,
+                    })}
+                  </ListBadge>
+                }
+                meta={fleet.description || undefined}
+                actions={alwaysShowActions ? undefined : actions}
+              >
+                {alwaysShowActions && (
+                  <div
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex flex-wrap items-center gap-[1.75px] border-t border-border/30 pt-[3.5px]"
                   >
-                    <Share2 />
-                  </ListRowAction>
-                  <ListRowAction
-                    label={t("newUi.sidebar.fleets.editFleetTitle")}
-                    onClick={() => {
-                      setEditingFleet(fleet);
-                      setFormOpen(true);
-                    }}
-                  >
-                    <Settings2 />
-                  </ListRowAction>
-                  <ListRowAction
-                    label={t("common.delete")}
-                    tone="destructive"
-                    onClick={() => void handleDelete(fleet)}
-                  >
-                    <Trash2 />
-                  </ListRowAction>
-                </>
-              }
-            />
-          ))}
+                    {actions}
+                  </div>
+                )}
+              </ListRow>
+            );
+          })}
       </PanelList>
 
       <FleetFormDialog

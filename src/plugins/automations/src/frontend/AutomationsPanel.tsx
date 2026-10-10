@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { invokeAction, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
+import {
+  invokeAction,
+  useSettings,
+  useTranslation,
+} from "@termix-ssh/plugin-sdk/frontend";
 import { toast } from "sonner";
 import {
   Bell,
@@ -8,6 +12,7 @@ import {
   FlaskConical,
   Loader2,
   Play,
+  SlidersHorizontal,
   Trash2,
   Workflow,
 } from "lucide-react";
@@ -45,6 +50,11 @@ import {
   type AutomationEditorOptions,
 } from "./automations/editor-types";
 import { docsUrl } from "./docs";
+import {
+  AutomationSettings,
+  readAutomationSettings,
+  rowActionProps,
+} from "./AutomationSettings";
 
 function getErrorMessage(error: unknown, fallback: string): string {
   return error instanceof Error ? error.message : fallback;
@@ -102,6 +112,9 @@ export function AutomationsPanel({ active = true }: { active?: boolean }) {
   const base = "newUi.sidebar.automations";
 
   const [tab, setTab] = useState<PanelTab>("automations");
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const settings = useSettings("user");
+  const { alwaysShowActions } = readAutomationSettings(settings.values);
   const [automations, setAutomations] = useState<AutomationRow[]>([]);
   const [runs, setRuns] = useState<AutomationRunRow[]>([]);
   const [loading, setLoading] = useState(false);
@@ -328,6 +341,12 @@ export function AutomationsPanel({ active = true }: { active?: boolean }) {
   return (
     <div className="flex flex-col h-full min-h-0">
       {editorView}
+      {settingsOpen && (
+        <AutomationSettings
+          settings={settings}
+          onBack={() => setSettingsOpen(false)}
+        />
+      )}
       <div className="shrink-0 border-b border-border px-1">
         <TabStrip
           tabs={[
@@ -351,6 +370,15 @@ export function AutomationsPanel({ active = true }: { active?: boolean }) {
               >
                 <Bell />
               </Button>
+              <Button
+                variant="ghost"
+                size="icon-xs"
+                title={t(`${base}.settingsTitle`)}
+                aria-label={t(`${base}.settingsTitle`)}
+                onClick={() => setSettingsOpen(true)}
+              >
+                <SlidersHorizontal />
+              </Button>
               <Button variant="ghost" size="icon-xs" asChild>
                 <a
                   href={docsUrl()}
@@ -369,7 +397,7 @@ export function AutomationsPanel({ active = true }: { active?: boolean }) {
 
       {tab === "automations" && (
         <>
-          <div className="flex shrink-0 items-center gap-2 border-b border-border px-3 py-2">
+          <div className="flex shrink-0 flex-col gap-2 border-b border-border px-3 py-2">
             <PanelSearch
               value={query}
               onChange={setQuery}
@@ -379,6 +407,7 @@ export function AutomationsPanel({ active = true }: { active?: boolean }) {
             <AddButton
               label={t(`${base}.createAutomation`)}
               onClick={openCreate}
+              className="w-full"
             />
           </div>
           <PanelList
@@ -442,7 +471,8 @@ export function AutomationsPanel({ active = true }: { active?: boolean }) {
                     )}
                   </Facts>
                 }
-                actions={
+                {...rowActionProps(
+                  alwaysShowActions,
                   <>
                     <ListRowAction
                       label={t(`${base}.testRun`)}
@@ -464,8 +494,8 @@ export function AutomationsPanel({ active = true }: { active?: boolean }) {
                     >
                       <Trash2 />
                     </ListRowAction>
-                  </>
-                }
+                  </>,
+                )}
               />
             ))}
           </PanelList>

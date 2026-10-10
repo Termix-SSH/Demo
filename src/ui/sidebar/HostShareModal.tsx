@@ -32,6 +32,7 @@ import {
   updateHostAccess,
   revokeHostAccess,
   getUserList,
+  getUserInfo,
   getRoles,
   type AccessRecord,
   type SharePermissionLevel,
@@ -40,6 +41,7 @@ import {
 import type { Host } from "@/types/ui-types";
 import { Select2 } from "@/components/select2";
 import { DocsLink } from "@/components/docs-link";
+import { roleLabel } from "@/lib/role-label";
 
 const PERMISSION_LEVELS: SharePermissionLevel[] = [
   "connect",
@@ -112,14 +114,18 @@ export function HostShareModal({
         : Promise.resolve({ accessList: [] }),
       getUserList().catch(() => ({ users: [] })),
       getRoles().catch(() => ({ roles: [] })),
+      getUserInfo().catch(() => null),
     ])
-      .then(([accessRes, usersRes, rolesRes]) => {
+      .then(([accessRes, usersRes, rolesRes, me]) => {
         setAccessList(accessRes.accessList ?? []);
+        // Nobody shares with themselves.
         setShareUsers(
-          (usersRes.users ?? []).map((u) => ({
-            id: String(u.id ?? u.userId),
-            username: u.username,
-          })),
+          (usersRes.users ?? [])
+            .map((u) => ({
+              id: String(u.id ?? u.userId),
+              username: u.username,
+            }))
+            .filter((u) => u.id !== me?.userId),
         );
         setShareRoles(
           (rolesRes.roles ?? [])
@@ -411,7 +417,7 @@ export function HostShareModal({
                     </div>
                     <Shield className="size-3 text-muted-foreground shrink-0" />
                     <span className="truncate">
-                      {role.displayName || role.name}
+                      {roleLabel(t, role.displayName || role.name)}
                     </span>
                   </button>
                 );
@@ -526,7 +532,7 @@ export function HostShareModal({
             >
               <span className="flex-1 truncate">
                 {rule.targetType === "role"
-                  ? rule.roleDisplayName || rule.roleName
+                  ? roleLabel(t, rule.roleDisplayName) || rule.roleName
                   : rule.username}
               </span>
               <span className="text-[10px] uppercase text-muted-foreground">
@@ -541,7 +547,7 @@ export function HostShareModal({
                     title: t("sharing.revokeConfirm", {
                       name:
                         rule.username ??
-                        rule.roleDisplayName ??
+                        roleLabel(t, rule.roleDisplayName) ??
                         rule.roleName ??
                         "",
                     }),
@@ -593,7 +599,7 @@ export function HostShareModal({
                       )}
                       <span className="font-semibold truncate">
                         {record.username ??
-                          record.roleDisplayName ??
+                          roleLabel(t, record.roleDisplayName) ??
                           record.roleName ??
                           record.userId ??
                           record.roleId}
@@ -633,7 +639,7 @@ export function HostShareModal({
                             title: t("sharing.revokeConfirm", {
                               name:
                                 record.username ??
-                                record.roleDisplayName ??
+                                roleLabel(t, record.roleDisplayName) ??
                                 record.roleName ??
                                 "",
                             }),
