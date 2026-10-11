@@ -4,40 +4,36 @@
   },
   "permissions": {
     "use": {
-      "title": "Käytä hälytyksiä",
-      "description": "Saat hälytyksiä sähköpostiisi ja voit lähettää niitä omiin kanaviisi."
+      "title": "Hälytysten käyttö",
+      "description": "Vastaanota hälytyksiä postilaatikkoon ja lähetä ne omiin kanaviin."
     }
-  },
-  "onboarding": {
-    "feature": "Hälytykset",
-    "featureDesc": "Jokainen ilmoitus yhdessä postilaatikossa, lähetettynä Discordiin, ntfyyn, sähköpostiin tai webhookiin, jos haluat."
   },
   "settings": {
     "group": {
-      "general": "Yleistä",
+      "general": "Yleiset",
       "email": "Sähköposti"
     },
     "admin": {
       "announcements": {
         "label": "Termix-ilmoitukset",
-        "description": "Näytä Termix-tiimin uutiset, kuten tietoturvailmoitukset ja julkaisut, kaikkien postilaatikossa."
+        "description": "Näytä Termix-tiimin uutisia, kuten tietoturva-ilmoituksia ja julkaisuja, kaikkien postilaatikoissa."
       },
       "retentionDays": {
-        "label": "Säilytä hälytykset (päivää)",
-        "description": "Vanhemmat ilmoitukset poistetaan kaikista postilaatikoista."
+        "label": "Hälytysten säilytysaika (päivää)",
+        "description": "Vanhat hälytykset poistetaan kaikilta postilaatikoilta."
       },
       "smtpHost": {
         "label": "SMTP-palvelin",
-        "description": "Tarvitaan sähköpostikanaville. Jätä tyhjäksi poistaaksesi sähköpostin käytöstä.",
-        "placeholder": "smtp.esimerkki.com"
+        "description": "Tarvitaan sähköpostikanaville. Jätä tyhjäksi, jos sähköposti ei ole käytössä.",
+        "placeholder": "smtp.example.com"
       },
       "smtpPort": {
         "label": "SMTP-portti",
-        "description": "Yleensä 587 STARTTLS:n kanssa tai 465 TLS:n kanssa."
+        "description": "Yleensä 587 (STARTTLS) tai 465 (TLS)."
       },
       "smtpSecure": {
-        "label": "Käytä TLS:ää alusta alkaen",
-        "description": "Ota käyttöön portissa 465. Jätä pois käytöstä portissa 587, joka päivittää TLS:ään automaattisesti."
+        "label": "Käytä TLS-yhteyttä alusta alkaen",
+        "description": "Ota käyttöön portille 465. Jätä pois päältä portille 587, joka päivittää yhteyden TLS:ksi automaattisesti."
       },
       "smtpUser": {
         "label": "SMTP-käyttäjätunnus",
@@ -45,131 +41,144 @@
       },
       "smtpPassword": {
         "label": "SMTP-salasana",
-        "description": "Tallennettu salattuna."
+        "description": "Tallennetaan salattuna."
       },
       "smtpFrom": {
         "label": "Lähettäjän osoite",
-        "description": "Lähettäjän hälytykset tulevat.",
+        "description": "Osoite, josta hälytykset lähetetään.",
         "placeholder": "Termix <alerts@example.com>"
       }
     },
     "user": {
       "popups": {
-        "label": "Hälytysikkunat",
-        "description": "Mitkä uudet hälytykset ilmestyvät Termixin käytön aikana? Ne päätyvät aina postilaatikkoon.",
+        "label": "Hälytysilmoitukset",
+        "description": "Mitkä uudet hälytykset näytetään ponnahduksena Termixin käytön aikana. Ne tallennuvat aina postilaatikkoon.",
         "all": "Kaikki hälytykset",
         "warning": "Varoitukset ja kriittiset",
         "critical": "Vain kriittiset",
         "off": "Ei mitään"
+      },
+      "alwaysShowActions": {
+        "label": "Näytä painikkeet aina",
+        "description": "Pidä hälytysten, kanavien ja sääntöjen alla olevat painikkeet näkyvissä. Poista käytöstä näkyäkseen vain hiiren vierityksellä."
       }
     }
   },
   "sections": {
-    "inbox": "Saapuneet",
+    "inbox": "Postilaatikko",
     "channels": "Kanavat",
     "rules": "Toimitussäännöt"
   },
   "severity": {
-    "info": "Tiedot",
-    "success": "Menestys",
+    "info": "Tieto",
+    "success": "Onnistui",
     "warning": "Varoitus",
     "critical": "Kriittinen"
   },
   "inbox": {
     "sourceTermix": "Termix",
-    "openLink": "Avata",
+    "openLink": "Avaa",
     "view": "Näytä",
+    "viewInInbox": "Näytä postilaatikossa",
+    "close": "Sulje",
     "unread": "Lukematon",
     "deliveryFailed_one": "{{count}} kanava epäonnistui",
-    "deliveryFailed_other": "{{count}} kanavat epäonnistuivat",
+    "deliveryFailed_other": "{{count}} kanavaa epäonnistui",
     "markRead": "Merkitse luetuksi",
     "markUnread": "Merkitse lukemattomaksi",
     "markAllRead": "Merkitse kaikki luetuiksi",
-    "delete": "Poistaa",
-    "clearRead": "Poista lukuilmoitukset",
-    "cleared_one": "Poistettu {{count}} -hälytys",
-    "cleared_other": "Poistetut {{count}} hälytykset",
+    "delete": "Poista",
+    "clearRead": "Poista luetut hälytykset",
+    "cleared_one": "Poistettu {{count}} hälytys",
+    "cleared_other": "Poistettu {{count}} hälytystä",
     "filterAll": "Kaikki",
-    "filterUnread": "Lukematon",
-    "anySeverity": "Mikä tahansa vakavuusaste",
+    "filterUnread": "Lukemattomat",
+    "anySeverity": "Mikä tahansa vakavuus",
     "anySource": "Mikä tahansa lähde",
-    "openAll": "Avaa välilehdessä",
-    "empty": "Ei vielä hälytyksiä.",
-    "emptyUnread": "Olette kaikki kärryillä.",
-    "loadMore": "Lataa lisää"
+    "openAll": "Avaa välilehdellä",
+    "empty": "Hälytyksiä ei vielä ole.",
+    "emptyUnread": "Kaikki on luettu.",
+    "loadMore": "Lataa lisää",
+    "deleteConfirm": "Haluatko poistaa hälytyksen {{title}}?",
+    "clearReadConfirm": "Haluatko poistaa kaikki luetut hälytykset?",
+    "search": "Hae hälytyksiä",
+    "noMatches": "Hakuun ei löytynyt hälytyksiä."
   },
   "channels": {
-    "intro": "Kanavat ovat kanavia, joihin hälytykset voivat mennä Termixin ulkopuolelle. Toimitussäännöt valitsevat, mitkä hälytykset niitä käyttävät.",
+    "intro": "Kanavat ovat paikkoja, joihin hälytykset voidaan lähettää Termixin ulkopuolelle. Toimitussäännöt valitsevat, mitkä hälytykset käyttävät niitä.",
     "add": "Lisää kanava",
     "edit": "Muokkaa kanavaa",
     "test": "Lähetä testi",
     "testSent": "Testihälytys lähetetty",
     "testFailed": "Testi epäonnistui: {{error}}",
-    "deleteConfirm": "Poistetaanko kanava \"{{name}}\"?",
+    "deleteConfirm": "Haluatko poistaa kanavan \"{{name}}\"?",
     "deleted": "Kanava poistettu",
-    "empty": "Ei vielä kanavia.",
+    "empty": "Kanavia ei vielä ole.",
     "enabled": "Käytössä",
-    "needsSave": "Tämä kanava on avattava ja tallennettava uudelleen ennen kuin se voi lähettää.",
+    "needsSave": "Tämä kanava on avattava ja tallennettava uudelleen, ennen kuin se voi lähettää viestejä.",
     "name": "Nimi",
     "nameRequired": "Nimi on pakollinen",
     "type": "Tyyppi",
     "types": {
       "webhook": "Webhook",
       "ntfy": "ntfy",
-      "discord": "Eripura",
+      "discord": "Discord",
       "email": "Sähköposti"
     },
-    "emailUnavailable": "Sähköposti tarvitsee SMTP-palvelimen, jonka järjestelmänvalvoja määrittää hälytysasetuksissa.",
-    "webhookUrl": "URL-osoite",
-    "webhookHint": "Hakee JSON-rungon jokaiselle hälytykselle.",
+    "emailUnavailable": "Sähköposti vaatii SMTP-palvelimen, jonka ylläpitäjän on määritettävä hälytysasetuksissa.",
+    "webhookUrl": "URL",
+    "webhookHint": "Vastaanottaa JSON-runkon jokaisesta hälytyksestä.",
     "method": "Menetelmä",
-    "headers": "Ylätunnisteet",
-    "headersHint": "Yksi riviä kohden, kuten Nimi: arvo.",
-    "ntfyServer": "Palvelimen URL-osoite",
+    "headers": "Otsikot",
+    "headersHint": "Yksi per rivi, kuten Nimi: arvo.",
+    "ntfyServer": "Palvelimen URL",
     "ntfyTopic": "Aihe",
-    "ntfyToken": "Käyttöoikeustunnus (valinnainen)",
-    "discordUrl": "Discord-webhookin URL-osoite",
-    "discordHint": "Kanavan asetuksista Discordissa, Integraatiot-kohdasta.",
+    "ntfyToken": "Pääsytunniste (valinnainen)",
+    "discordUrl": "Discordin webhook-URL",
+    "discordHint": "Löytyy Discordin kanavan asetuksista Integroinnit-osiossa.",
     "discordUsername": "Näyttönimi (valinnainen)",
-    "discordAvatar": "Avatarin URL-osoite (valinnainen)",
+    "discordAvatar": "Avatarin URL (valinnainen)",
     "emailTo": "Lähetä osoitteeseen",
-    "emailHint": "Erota useampi kuin yksi osoite pilkulla.",
-    "privateNetwork": "Salli yksityinen verkko-osoite",
-    "privateNetworkHint": "Toimii vain isännille, jotka ylläpitäjä sallii yksityisten päätepisteiden luettelossa."
+    "emailHint": "Erota useampi osoite pilkuilla.",
+    "privateNetwork": "Salli yksityisen verkon osoite",
+    "privateNetworkHint": "Toimii vain isäntien kohdalla, jotka ylläpitäjä on sallinut yksityisen päätepisteen listalla."
   },
   "rules": {
-    "intro": "Toimitussääntö lähettää vastaavat hälytykset kanavillesi. Hälytykset pysyvät aina myös postilaatikossasi.",
+    "intro": "Toimitussääntö lähettää vastaavat hälytykset kanavillesi. Hälytykset pysyvät myös saapuneissa.",
     "add": "Lisää sääntö",
     "edit": "Muokkaa sääntöä",
-    "empty": "Ei vielä sääntöjä, joten hälytykset näkyvät vain postilaatikossa.",
+    "empty": "Sääntöjä ei vielä ole, joten hälytykset näkyvät vain saapuneissa.",
     "needChannel": "Lisää ensin kanava.",
     "enabled": "Käytössä",
     "name": "Nimi",
     "nameRequired": "Nimi on pakollinen",
-    "match": "Lähetettävät hälytykset",
-    "matchHint": "* kaikkeen, automaatiot.* kaikkeen automaatioista alkaen tai tietynlaiseen.",
+    "match": "Lähettävät hälytykset",
+    "matchHint": "* kaikelle, automations.* kaikille automaatioille tai yksi tarkka tyyppi.",
     "minSeverity": "Vähintään",
     "channels": "Lähetä osoitteeseen",
-    "channelRequired": "Valitse ainakin yksi kanava",
-    "deleteConfirm": "Poistetaanko sääntö \"{{name}}\"?",
+    "channelRequired": "Valitse vähintään yksi kanava",
+    "deleteConfirm": "Haluatko poistaa säännön \"{{name}}\"?",
     "everything": "Kaikki",
-    "summary": "{{match}}, {{severity}} tai korkeampi, arvoon {{channels}}"
+    "summary": "{{match}}, {{severity}} tai korkeampi, kohteeseen {{channels}}"
   },
   "actions": {
-    "cancel": "Peruuttaa",
-    "save": "Tallentaa",
-    "saving": "Tallennetaan...",
-    "delete": "Poistaa"
+    "cancel": "Peruuta",
+    "save": "Tallenna",
+    "delete": "Poista"
   },
   "widget": {
-    "name": "Hälytyssyöte",
-    "description": "Uusimmat ilmoituksesi ja nopea tapa merkitä ne luetuiksi",
-    "maxItems": "Enimmäismäärä esineitä",
-    "showRead": "Näytä lukuilmoitukset",
-    "allClear": "Kaikki selvää",
+    "name": "Hälytysvirta",
+    "description": "Viimeisimmät hälytyksesi, joissa on nopea tapa merkitä ne luetuiksi",
+    "maxItems": "Enimmäismäärä",
+    "showRead": "Näytä luettu hälytykset",
+    "allClear": "Kaikki kunnossa",
     "loading": "Ladataan..."
   },
   "plugin": {
-    "name": "Alerts"
+    "name": "Hälytykset"
+  },
+  "alertSettings": {
+    "title": "Hälytysasetukset",
+    "display": "Näyttö"
   }
 }

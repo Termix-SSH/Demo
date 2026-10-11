@@ -5,12 +5,8 @@
   "permissions": {
     "use": {
       "title": "Bruk varsler",
-      "description": "Få varsler i innboksen og send dem til dine egne kanaler."
+      "description": "Motta varsler i innboksen og send dem til dine egne kanaler."
     }
-  },
-  "onboarding": {
-    "feature": "Varsler",
-    "featureDesc": "Alle varsler i én innboks, sendt videre til Discord, ntfy, e-post eller en webhook om du vil."
   },
   "settings": {
     "group": {
@@ -19,8 +15,8 @@
     },
     "admin": {
       "announcements": {
-        "label": "Termix-kunngjøringer",
-        "description": "Vis nyheter fra Termix-teamet, som sikkerhetsvarsler og utgivelser, i alles innboks."
+        "label": "Termix-annonser",
+        "description": "Vis nyheter fra Termix-teamet, som sikkerhetsvarsler og nye versjoner, i alle innbokser."
       },
       "retentionDays": {
         "label": "Behold varsler i (dager)",
@@ -28,39 +24,43 @@
       },
       "smtpHost": {
         "label": "SMTP-server",
-        "description": "Nødvendig for e-postkanaler. La stå tomt for å slå av e-post.",
-        "placeholder": "smtp.example.com"
+        "description": "Påkrevd for e-postkanaler. La stå tomt for å skru av e-post.",
+        "placeholder": "smtp.eksempel.no"
       },
       "smtpPort": {
         "label": "SMTP-port",
         "description": "Vanligvis 587 med STARTTLS eller 465 med TLS."
       },
       "smtpSecure": {
-        "label": "Bruk TLS fra starten av",
-        "description": "Slå på port 465. Slå av for port 587, som oppgraderer til TLS på egenhånd."
+        "label": "Bruk TLS fra start",
+        "description": "Skru på for port 465. Skru av for 587, som oppgraderer til TLS automatisk."
       },
       "smtpUser": {
         "label": "SMTP-brukernavn",
-        "description": "La feltet stå tomt hvis serveren ikke trenger pålogging."
+        "description": "La stå tomt hvis serveren ikke krever innlogging."
       },
       "smtpPassword": {
         "label": "SMTP-passord",
         "description": "Lagret kryptert."
       },
       "smtpFrom": {
-        "label": "Fra adresse",
-        "description": "Avsendervarslene kommer fra.",
-        "placeholder": "Termix <alerts@example.com>"
+        "label": "Avsenderadresse",
+        "description": "Avsenderen varsler kommer fra.",
+        "placeholder": "Termix <varsler@eksempel.no>"
       }
     },
     "user": {
       "popups": {
-        "label": "Varselspopup-vinduer",
-        "description": "Hvilke nye varsler dukker opp mens du bruker Termix? De havner alltid i innboksen.",
+        "label": "Varsel-vinduer",
+        "description": "Hvilke nye varsler som dukker opp mens du bruker Termix. De lander alltid i innboksen.",
         "all": "Alle varsler",
         "warning": "Advarsler og kritiske",
-        "critical": "Kun kritisk",
+        "critical": "Kun kritiske",
         "off": "Ingen"
+      },
+      "alwaysShowActions": {
+        "label": "Vis alltid knapper",
+        "description": "Hold knappene under hvert varsel, kanal og regel synlige. Skru av for å vise dem kun ved sveiping."
       }
     }
   },
@@ -78,7 +78,9 @@
   "inbox": {
     "sourceTermix": "Termix",
     "openLink": "Åpne",
-    "view": "Utsikt",
+    "view": "Vis",
+    "viewInInbox": "Vis i innboksen",
+    "close": "Lukk",
     "unread": "Ulest",
     "deliveryFailed_one": "{{count}} kanal mislyktes",
     "deliveryFailed_other": "{{count}} kanaler mislyktes",
@@ -86,17 +88,21 @@
     "markUnread": "Merk som ulest",
     "markAllRead": "Merk alle som lest",
     "delete": "Slett",
-    "clearRead": "Slett lesevarsler",
-    "cleared_one": "Slettet {{count}} -varsel",
-    "cleared_other": "Slettede {{count}} varsler",
+    "clearRead": "Slett leste varsler",
+    "cleared_one": "Slettet {{count}} varsel",
+    "cleared_other": "Slettet {{count}} varsler",
     "filterAll": "Alle",
-    "filterUnread": "Ulest",
-    "anySeverity": "Enhver alvorlighetsgrad",
-    "anySource": "Enhver kilde",
+    "filterUnread": "Uleste",
+    "anySeverity": "Alle alvorlighetsgrader",
+    "anySource": "Alle kilder",
     "openAll": "Åpne i en fane",
     "empty": "Ingen varsler ennå.",
-    "emptyUnread": "Dere er helt oppdatert.",
-    "loadMore": "Last inn mer"
+    "emptyUnread": "Du er helt oppdatert.",
+    "loadMore": "Last inn flere",
+    "deleteConfirm": "Slette varslet {{title}}?",
+    "clearReadConfirm": "Slett alle leste varsler?",
+    "search": "Søk i varsler",
+    "noMatches": "Ingen varsler matcher søket ditt."
   },
   "channels": {
     "intro": "Kanaler er der varsler kan sendes utenfor Termix. Leveringsregler velger hvilke varsler som bruker dem.",
@@ -105,8 +111,8 @@
     "test": "Send en test",
     "testSent": "Testvarsel sendt",
     "testFailed": "Testen mislyktes: {{error}}",
-    "deleteConfirm": "Slette kanalen «{{name}}»?",
-    "deleted": "Kanalen slettet",
+    "deleteConfirm": "Slett kanalen «{{name}}»?",
+    "deleted": "Kanalen er slettet",
     "empty": "Ingen kanaler ennå.",
     "enabled": "Aktivert",
     "needsSave": "Denne kanalen må åpnes og lagres på nytt før den kan sende.",
@@ -116,16 +122,16 @@
     "types": {
       "webhook": "Webhook",
       "ntfy": "ntfy",
-      "discord": "Disharmoni",
+      "discord": "Discord",
       "email": "E-post"
     },
-    "emailUnavailable": "E-post trenger en SMTP-server, som en administrator konfigurerer i varslingsinnstillingene.",
-    "webhookUrl": "URL-adresse",
-    "webhookHint": "Henter en JSON-tekst for hvert varsel.",
+    "emailUnavailable": "E-post krever en SMTP-tjener, som en administrator setter opp i innstillingene for varsler.",
+    "webhookUrl": "URL",
+    "webhookHint": "Mottar en JSON-kropp for hvert varsel.",
     "method": "Metode",
     "headers": "Overskrifter",
     "headersHint": "Én per linje, som Navn: verdi.",
-    "ntfyServer": "Server-URL",
+    "ntfyServer": "Tjener-URL",
     "ntfyTopic": "Emne",
     "ntfyToken": "Tilgangstoken (valgfritt)",
     "discordUrl": "Discord webhook-URL",
@@ -133,12 +139,12 @@
     "discordUsername": "Visningsnavn (valgfritt)",
     "discordAvatar": "Avatar-URL (valgfritt)",
     "emailTo": "Send til",
-    "emailHint": "Skill mer enn én adresse med komma.",
+    "emailHint": "Skill flere adresser med komma.",
     "privateNetwork": "Tillat en privat nettverksadresse",
-    "privateNetworkHint": "Fungerer bare for verter som en administrator tillater i listen over private endepunkter."
+    "privateNetworkHint": "Fungerer bare for vertstjenere en administrator tillater i listen over private endepunkter."
   },
   "rules": {
-    "intro": "En leveringsregel sender samsvarende varsler til kanalene dine. Varsler forblir også alltid i innboksen.",
+    "intro": "En leveringsregel sender matchende varsler til kanalene dine. Varsler blir alltid også liggende i innboksen.",
     "add": "Legg til regel",
     "edit": "Rediger regel",
     "empty": "Ingen regler ennå, så varsler vises bare i innboksen.",
@@ -147,29 +153,32 @@
     "name": "Navn",
     "nameRequired": "Navn er påkrevd",
     "match": "Varsler som skal sendes",
-    "matchHint": "* for alt, automatiseringer.* for alt fra automatiseringer, eller én eksakt type.",
+    "matchHint": "* for alt, automasjoner.* for alt fra automasjoner, eller én spesifikk type.",
     "minSeverity": "Minst",
     "channels": "Send til",
     "channelRequired": "Velg minst én kanal",
-    "deleteConfirm": "Slette regelen «{{name}}»?",
+    "deleteConfirm": "Slett regelen «{{name}}»?",
     "everything": "Alt",
     "summary": "{{match}}, {{severity}} eller høyere, til {{channels}}"
   },
   "actions": {
     "cancel": "Avbryt",
     "save": "Lagre",
-    "saving": "Lagrer...",
     "delete": "Slett"
   },
   "widget": {
     "name": "Varselstrøm",
-    "description": "Dine siste varsler, med en rask måte å merke dem som lest",
-    "maxItems": "Maks antall varer",
-    "showRead": "Vis lesevarsler",
-    "allClear": "Alt klart",
+    "description": "De nyeste varslene dine, med en rask måte å markere dem som lest på",
+    "maxItems": "Maks antall elementer",
+    "showRead": "Vis leste varsler",
+    "allClear": "Alt er klart",
     "loading": "Laster..."
   },
   "plugin": {
-    "name": "Alerts"
+    "name": "Varsler"
+  },
+  "alertSettings": {
+    "title": "Varselinnstillinger",
+    "display": "Visning"
   }
 }

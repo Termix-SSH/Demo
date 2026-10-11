@@ -6,48 +6,51 @@
     },
     "manage": {
       "title": "Administrer flåder",
-      "description": "Opret, rediger og slet flåder, skift medlemskab og del flåder med andre brugere eller roller."
+      "description": "Opret, rediger og slet flåder, ændr medlemskab og del flåder med andre brugere eller roller."
     },
     "execute": {
       "title": "Kør flådehandlinger",
-      "description": "Kør kommandoer og pakkehandlinger på tværs af en flåde, og overfør filer til og fra dens medlemsværter."
+      "description": "Kør kommandoer og pakkehandlinger på tværs af en flåde, og overfør filer til og fra dens medlemsservere."
     }
   },
   "newUi": {
     "sidebar": {
       "fleets": {
-        "title": "Flåder",
         "createFleet": "Opret flåde",
         "createFleetTitle": "Opret flåde",
         "editFleetTitle": "Rediger flåde",
-        "createFleetDescription": "En flåde er en navngiven gruppe af værter, som du kan udføre handlinger mod som en enhed.",
+        "createFleetDescription": "En flåde er en navngivet gruppe af servere, du kan køre handlinger mod som en enhed.",
         "nameLabel": "Navn",
-        "namePlaceholder": "f.eks. webservere",
-        "nameRequired": "Flådenavn er påkrævet",
+        "namePlaceholder": "f.eks. Webservere",
+        "nameRequired": "Fladenavn er påkrævet",
         "descriptionLabel": "Beskrivelse",
         "descriptionPlaceholder": "Valgfri beskrivelse",
         "colorLabel": "Farve",
         "tagRulesLabel": "Tagregler",
-        "tagRulesPlaceholder": "prod-web, kant",
-        "tagRulesHint": "Værter med et af disse tags inkluderes automatisk, udover værter, der tilføjes manuelt.",
+        "tagRulesPlaceholder": "prod-web, edge",
+        "tagRulesHint": "Servere med nogen af disse tags inkluderes automatisk, ud over servere, der er tilføjet manuelt.",
         "fleetCreated": "Flåde oprettet",
-        "fleetUpdated": "Flåden er opdateret",
-        "fleetDeleted": "Flåden slettet",
-        "saveFailed": "Kunne ikke redde flåden",
-        "deleteFailed": "Kunne ikke slette flåden",
+        "fleetUpdated": "Flåde opdateret",
+        "fleetDeleted": "Flåde slettet",
+        "saveFailed": "Kunne ikke gemme flåde",
+        "deleteFailed": "Kunne ikke slette flåde",
         "loadFailed": "Kunne ikke indlæse flåder",
         "deleteFleetTitle": "Slet flåde",
-        "deleteFleetDescription": "Er du sikker på, at du vil slette \"{{name}}\"? Dette sletter ikke selve medlemsværterne.",
-        "searchFleets": "Søg efter flåder...",
+        "deleteFleetDescription": "Er du sikker på, at du vil slette \"{{name}}\"? Dette sletter ikke selve medlemsserverne.",
+        "searchFleets": "Søg i flåder...",
         "noFleets": "Ingen flåder endnu. Opret en for at komme i gang.",
-        "memberCount": "{{count}} vært",
-        "memberCount_other": "{{count}} værter",
+        "memberCount": {
+          "one": "{{count}} server",
+          "other": "{{count}} servere"
+        },
+        "memberCount_one": "{{count}} server",
+        "memberCount_other": "{{count}} servere",
         "manageMembers": "Administrer medlemmer",
         "manageMembersTitle": "Administrer flådemedlemmer",
-        "manageMembersDescription": "Slå værter til eller fra af denne flådes statiske medlemskab. Værter, der matches af tagregler, er altid inkluderet.",
-        "searchHosts": "Søg efter værter...",
-        "noHostsFound": "Ingen værter fundet",
-        "noMembers": "Denne flåde har endnu ingen medlemmer. Tilføj værter eller angiv en tagregel.",
+        "manageMembersDescription": "Slå servere til eller fra i denne flådes statiske medlemskab. Servere, der matcher tagregler, er altid inkluderet.",
+        "searchHosts": "Søg i servere...",
+        "noHostsFound": "Ingen servere fundet",
+        "noMembers": "Denne flåde har ingen medlemmer endnu. Tilføj servere eller indstil en tagregel.",
         "membersLoadFailed": "Kunne ikke indlæse flådemedlemmer",
         "memberUpdateFailed": "Kunne ikke opdatere flådemedlemskab",
         "tabRun": "Kør kommando",
@@ -55,52 +58,53 @@
         "tabInventory": "Inventar",
         "openInventoryTab": "Åbn i fuld fane",
         "tabPackages": "Pakker",
-        "runOnFleet": "Kør på flåden",
-        "commandPlaceholder": "oppetid && df -h",
+        "runOnFleet": "Kør på flåde",
+        "commandPlaceholder": "uptime && df -h",
         "commandRequired": "En kommando er påkrævet",
-        "commandInputsLabel": "Kommandoindgange",
-        "commandSucceeded": "Kommandoen lykkedes på alle værter",
-        "commandPartialFailure": "{{failed}} af {{total}} værter mislykkedes",
-        "commandFailed": "Kunne ikke køre kommandoen",
-        "resultSuccess": "Succes",
-        "resultFailed": "Mislykkedes",
-        "push": "Skubbe",
-        "pull": "Træk",
+        "commandInputsLabel": "Kommandoinput",
+        "commandSucceeded": "Kommandoen lykkedes på alle servere",
+        "commandPartialFailure": "{{failed}} af {{total}} servere fejlede",
+        "commandFailed": "Kunne ikke køre kommando",
+        "resultSuccess": "Lykkedes",
+        "resultFailed": "Fejlede",
+        "push": "Push",
+        "pull": "Pull",
         "remotePathLabel": "Fjernsti",
         "remotePathRequired": "En fjernsti er påkrævet",
         "fileLabel": "Fil",
         "fileRequired": "En fil er påkrævet",
-        "pushHint": "Den valgte fil skrives til præcis denne sti på alle værter i flåden.",
-        "pullHint": "Filen på denne sti læses fra hver vært og downloades som en enkelt zip-fil, én mappe pr. vært.",
+        "pushHint": "Den valgte fil skrives til denne præcise sti på hver server i flåden.",
+        "pullHint": "Filen på denne sti læses fra hver host og downloades som én enkelt zip-fil, med én mappe pr. host.",
         "transferComplete": "Overførsel fuldført",
-        "transferFailed": "Overførslen mislykkedes",
-        "refreshInventory": "Opdater lagerbeholdning",
-        "inventoryLoadFailed": "Kunne ikke indlæse lagerbeholdningen",
-        "inventoryRefreshed": "Opdateret lagerbeholdning",
-        "inventoryRefreshFailed": "Kunne ikke opdatere lagerbeholdningen",
-        "inventoryNoData": "Ingen lagerdata endnu - opdater for at indsamle dem.",
-        "inventoryHost": "Vært",
+        "transferFailed": "Overførsel mislykkedes",
+        "refreshInventory": "Opdater inventar",
+        "inventoryLoadFailed": "Kunne ikke indlæse inventar",
+        "inventoryRefreshed": "Inventar opdateret",
+        "inventoryRefreshFailed": "Kunne ikke opdatere inventar",
+        "inventoryNoData": "Ingen inventardata endnu – opdater for at indsamle dem.",
+        "inventoryHost": "Host",
         "inventoryCollectedCount": "{{count}}/{{total}} indsamlet",
         "inventoryOs": "OS",
-        "inventoryKernel": "Kernen",
-        "inventoryArch": "Buen",
+        "inventoryKernel": "Kernel",
+        "inventoryArch": "Arkitektur",
         "inventoryUptime": "Oppetid",
         "inventoryPackageManager": "Pakkehåndtering",
         "inventoryCollectedAt": "Indsamlet",
         "packageActionLabel": "Handling",
-        "packageInstall": "Installere",
-        "packageRemove": "Fjerne",
+        "packageInstall": "Installer",
+        "packageRemove": "Fjern",
         "packageUpgradeAll": "Opgrader alle pakker",
         "packageNameLabel": "Pakkenavn",
         "packageNameRequired": "Et pakkenavn er påkrævet",
-        "packageHint": "Kræver adgang på administratorniveau pr. vært og hæver ved hjælp af værtens gemte sudo-adgangskode.",
+        "packageHint": "Kræver administratortilgang pr. host og bruger den gemte sudo-adgangskode på hosten til forrettelse.",
         "shareFleet": "Del flåde",
         "shareFleetTitle": "Del \"{{name}}\"",
-        "shareFleetDescription": "Deler denne flådes nuværende medlemsværter med de valgte brugere eller roller. Værter, der tilføjes til flåden senere, deles ikke automatisk - del igen for at inkludere dem.",
-        "shareSelectionRequired": "Vælg mindst én bruger eller rolle",
-        "fleetSharedSuccessfully": "Delt {{shared}} af {{total}} vært(er) i denne flåde",
-        "failedToShareFleet": "Kunne ikke dele flåden",
-        "noMembersToShare": "Denne flåde har endnu ingen medlemsværter at dele."
+        "shareFleetDescription": "Deler denne flådes nuværende medlemshosts med de valgte brugere eller roller. Hosts, der tilføjes til flåden senere, deles ikke automatisk – del igen for at inkludere dem.",
+        "fleetSharedSuccessfully": "Delte {{shared}} af {{total}} host(s) i denne flåde",
+        "failedToShareFleet": "Kunne ikke dele flåde",
+        "noMembersToShare": "Denne flåde har endnu ingen medlemshosts at dele.",
+        "settingsTitle": "Flådeindstillinger",
+        "settingsDisplayTitle": "Visning"
       }
     }
   },
@@ -108,43 +112,49 @@
     "fleets": "Flåder"
   },
   "hosts": {
-    "docsLink": "Se dokumenter",
+    "docsLink": "Se dokumentation",
     "sharing": {
-      "customHoursPlaceholder": "Timer indtil adgangen udløber",
+      "customHoursPlaceholder": "Timer indtil adgang udløber",
       "expiry": {
         "never": "Aldrig",
         "oneHour": "1 time",
         "oneDay": "24 timer",
         "sevenDays": "7 dage",
         "thirtyDays": "30 dage",
-        "custom": "Skik"
+        "custom": "Brugerdefineret"
       },
-      "expiryLabel": "Udløb af adgang",
+      "expiryLabel": "Adgang udløb",
       "levels": {
         "connect": {
-          "label": "Forbinde",
-          "description": "Kun åbne sessioner: terminal, fjernskrivebord, filhåndtering, tunneler og Docker. Ingen adgang til værtkonfigurationen."
+          "label": "Forbind",
+          "description": "Kun åbne sessioner: terminal, fjernskrivebord, filhåndtering, tunneler og Docker. Ingen adgang til hostens konfiguration."
         },
         "view": {
-          "label": "Udsigt",
-          "description": "Opret forbindelse, plus se værtkonfigurationen. Hemmeligheder vises aldrig."
+          "label": "Se",
+          "description": "Forbind, plus se hostens konfiguration. Hemmeligheder vises aldrig."
         },
         "edit": {
-          "label": "Redigere",
-          "description": "Se og rediger ikke-godkendelseshostindstillinger. Ejerens SSH-godkendelse forbliver privat og kun for ejeren."
+          "label": "Rediger",
+          "description": "Se, plus ændre ikke-autentificeringsrelaterede hostindstillinger. Ejers SSH-autentificering forbliver privat og kun tilgængelig for ejeren."
         },
         "manage": {
-          "label": "Styre",
-          "description": "Rediger, plus del værten med andre, skift tilladelsesniveauer og tilbagekald adgang."
+          "label": "Administrer",
+          "description": "Rediger, plus del hosten med andre, ændre tilladelsesniveauer og tilbagekalde adgang."
         }
       },
-      "noMatches": "Ingen matches fundet",
+      "noMatches": "Ingen resultater fundet",
       "permissionLevelLabel": "Tilladelsesniveau",
       "rolesTab": "Roller",
       "searchPlaceholder": "Søg efter brugere eller roller...",
-      "shareButton": "Dele",
+      "shareButton": "Del",
       "shareWithCount": "Del ({{count}})",
       "usersTab": "Brugere"
+    }
+  },
+  "settings": {
+    "alwaysShowActions": {
+      "label": "Vis altid knapper",
+      "description": "Hold knapperne Del, Rediger og Slet under hver flåde synlige. Slå fra for kun at vise dem ved musens påhæng."
     }
   }
 }

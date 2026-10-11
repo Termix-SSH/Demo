@@ -1,0 +1,61 @@
+{
+  "permissions": {
+    "manage": {
+      "title": "Upravljanje ACME certifikatov",
+      "description": "Pregled stanja certifikata in zahteva novega certifikata."
+    }
+  },
+  "settings": {
+    "autoRenew": {
+      "label": "Samodejno podaljševanje",
+      "description": "Preverjanje dvakrat na dan in pridobitev novega certifikata, če ga ni, ne pokriva domene ali poteče v 30 dneh."
+    },
+    "domain": {
+      "label": "Domena",
+      "description": "Javno ime domene za certifikat.",
+      "placeholder": "termix.example.com"
+    },
+    "email": {
+      "label": "E-pošta",
+      "description": "E-poštni naslov za ACME račun in obvestila o poteku.",
+      "placeholder": "admin@example.com"
+    },
+    "provider": {
+      "label": "Izdajatelj certifikatov",
+      "description": "Kje pridobiti certifikat. Za testiranje brez omejitev Let's Encrypt uporabite testno okolje.",
+      "letsencrypt": "Let's Encrypt",
+      "letsencryptStaging": "Let's Encrypt (testno)",
+      "custom": "Lastni ACME imenik"
+    },
+    "directoryUrl": {
+      "label": "URL ACME imenika",
+      "description": "Samo za lastnega izdajatelja certifikatov. Mora biti https URL."
+    },
+    "challengeType": {
+      "label": "Vrsta preverjanja",
+      "description": "Kako dokazati lastništvo domene.",
+      "http": "HTTP - potrebuje dostop do vrat 80 iz interneta",
+      "cloudflare": "DNS (Cloudflare) - potrebuje Cloudflare API žeton"
+    },
+    "cloudflareToken": {
+      "label": "Cloudflare API žeton",
+      "description": "Žeton z dodeljenimi pooblastili Zone:DNS:Edit za vašo domeno."
+    }
+  },
+  "status": {
+    "title": "Stanje certifikata",
+    "none": "Ni certifikata",
+    "names": "Pokriva {{names}}",
+    "issuer": "Izdal {{issuer}}",
+    "expires": "Poteče {{date}}",
+    "lastIssued": "Zadnjič izdan {{date}}",
+    "lastError": "Zadnji poskus ni uspel: {{error}}",
+    "missing": "Nastavite domeno, e-pošto in polja, ki jih zahteva izbrana vrsta preverjanja, nato shranite, preden zahtevate certifikat.",
+    "request": "Zahtevaj certifikat zdaj",
+    "requesting": "Zahteva certifikata...",
+    "issued": "Certifikat izdan in nameščen"
+  },
+  "plugin": {
+    "name": "ACME certifikati"
+  }
+}

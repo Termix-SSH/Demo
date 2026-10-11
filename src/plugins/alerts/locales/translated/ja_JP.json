@@ -4,172 +4,179 @@
   },
   "permissions": {
     "use": {
-      "title": "アラートを使用する",
-      "description": "受信トレイでアラートを受け取り、自分のチャンネルに送信できます。"
+      "title": "アラートの使用",
+      "description": "受信トレイでアラートを受け取り、独自のチャンネルに送信します。"
     }
-  },
-  "onboarding": {
-    "feature": "アラート",
-    "featureDesc": "すべてのアラートを1つの受信トレイに集約し、必要に応じてDiscord、ntfy、メール、またはWebhookに送信します。"
   },
   "settings": {
     "group": {
-      "general": "全般",
-      "email": "メールアドレス"
+      "general": "一般",
+      "email": "メール"
     },
     "admin": {
       "announcements": {
-        "label": "Termixのお知らせ",
-        "description": "セキュリティに関する通知やリリースなど、Termixチームからのニュースを全員の受信トレイに表示します。"
+        "label": "Termix のお知らせ",
+        "description": "セキュリティ通知やリリース情報など、Termix チームからのニュースをすべてのユーザーの受信トレイに表示します。"
       },
       "retentionDays": {
-        "label": "（日間）アラートを保持する",
+        "label": "アラートの保持期間（日数）",
         "description": "古いアラートはすべての受信トレイから削除されます。"
       },
       "smtpHost": {
-        "label": "SMTPサーバー",
-        "description": "メール配信には必須です。メール配信をオフにする場合は空欄のままにしてください。",
+        "label": "SMTP サーバー",
+        "description": "メールチャンネルに必要です。メールを無効にするには空のままにしてください。",
         "placeholder": "smtp.example.com"
       },
       "smtpPort": {
-        "label": "SMTPポート",
-        "description": "通常、STARTTLSの場合は587番ポート、TLSの場合は465番ポートが使用されます。"
+        "label": "SMTP ポート",
+        "description": "通常は STARTTLS の場合 587、TLS の場合 465 です。"
       },
       "smtpSecure": {
-        "label": "最初からTLSを使用する",
-        "description": "ポート465は有効にしてください。ポート587は無効のままにしておいてください。587は自動的にTLSにアップグレードされます。"
+        "label": "接続開始時に TLS を使用する",
+        "description": "ポート 465 の場合はオンにします。587 の場合はオフのままにしてください（自動的に TLS にアップグレードされます）。"
       },
       "smtpUser": {
-        "label": "SMTPユーザー名",
-        "description": "サーバーへのログインが不要な場合は、空欄のままにしてください。"
+        "label": "SMTP ユーザー名",
+        "description": "サーバーがログインを必要としない場合は空のままにしてください。"
       },
       "smtpPassword": {
-        "label": "SMTPパスワード",
+        "label": "SMTP パスワード",
         "description": "暗号化して保存されます。"
       },
       "smtpFrom": {
-        "label": "送信元住所",
-        "description": "送信者アラートは以下から送信されます。",
-        "placeholder": "ターミックス <alerts@example.com>"
+        "label": "送信元アドレス",
+        "description": "アラートが送信されるアドレスです。",
+        "placeholder": "Termix <alerts@example.com>"
       }
     },
     "user": {
       "popups": {
         "label": "アラートポップアップ",
-        "description": "Termixの使用中に新しいアラートが表示されますか？それらはすべて受信トレイに届きます。",
+        "description": "Termix を使用中にポップアップ表示する新しいアラートを選択します。すべてのアラートは受信トレイにも保存されます。",
         "all": "すべてのアラート",
-        "warning": "警告と重大な",
-        "critical": "クリティカルのみ",
-        "off": "すべて解除"
+        "warning": "警告と重大",
+        "critical": "重大のみ",
+        "off": "なし"
+      },
+      "alwaysShowActions": {
+        "label": "ボタンを常に表示",
+        "description": "各アラート、チャンネル、ルール下のボタンを常に表示します。オフにすると、ホバー時のみ表示されます。"
       }
     }
   },
   "sections": {
-    "inbox": "受信箱",
+    "inbox": "受信トレイ",
     "channels": "チャンネル",
-    "rules": "配送ルール"
+    "rules": "配信ルール"
   },
   "severity": {
     "info": "情報",
     "success": "成功",
     "warning": "警告",
-    "critical": "致命的"
+    "critical": "重大"
   },
   "inbox": {
     "sourceTermix": "Termix",
     "openLink": "開く",
     "view": "表示",
+    "viewInInbox": "受信トレイで表示",
+    "close": "閉じる",
     "unread": "未読",
-    "deliveryFailed_one": "{{count}} チャネルが失敗しました",
-    "deliveryFailed_other": "{{count}} チャネルが失敗しました",
+    "deliveryFailed_other": "{{count}} チャンネルで失敗",
     "markRead": "既読にする",
-    "markUnread": "未読としてマークする",
-    "markAllRead": "すべて既読にする",
+    "markUnread": "未読にする",
+    "markAllRead": "すべてを既読にする",
     "delete": "削除",
-    "clearRead": "既読アラートを削除する",
-    "cleared_one": "削除済み {{count}} アラート",
-    "cleared_other": "削除された {{count}} アラート",
-    "filterAll": "すべて選択",
+    "clearRead": "既読のアラートを削除",
+    "cleared_other": "{{count}} 件のアラートを削除しました",
+    "filterAll": "すべて",
     "filterUnread": "未読",
-    "anySeverity": "重症度は問わない",
-    "anySource": "あらゆる情報源",
+    "anySeverity": "すべての重要度",
+    "anySource": "すべてのソース",
     "openAll": "タブで開く",
     "empty": "まだアラートはありません。",
-    "emptyUnread": "皆さんは最新情報に追いつきました。",
-    "loadMore": "もっと読み込む"
+    "emptyUnread": "すべて確認済みです。",
+    "loadMore": "もっと表示",
+    "deleteConfirm": "アラート「{{title}}」を削除しますか？",
+    "clearReadConfirm": "既読のすべてのアラートを削除しますか？",
+    "search": "アラートを検索",
+    "noMatches": "検索条件に一致するアラートがありません。"
   },
   "channels": {
-    "intro": "チャネルとは、アラートをTermix外部に送信する場所です。配信ルールによって、どのアラートがチャネルを使用するかが決定されます。",
+    "intro": "チャンネルは、Termix 外へアラートを送信する宛先です。配信ルールで、どのアラートをどのチャンネルに送るかを指定します。",
     "add": "チャンネルを追加",
     "edit": "チャンネルを編集",
-    "test": "テストを送信",
-    "testSent": "テストアラートが送信されました",
-    "testFailed": "テスト失敗: {{error}}",
+    "test": "テスト送信",
+    "testSent": "テストアラートを送信しました",
+    "testFailed": "テストに失敗しました: {{error}}",
     "deleteConfirm": "チャンネル「{{name}}」を削除しますか？",
-    "deleted": "チャンネルが削除されました",
-    "empty": "まだチャンネルはありません。",
+    "deleted": "チャンネルを削除しました",
+    "empty": "チャンネルがまだありません。",
     "enabled": "有効",
-    "needsSave": "このチャンネルは、送信する前に再度開いて保存する必要があります。",
+    "needsSave": "送信するには、このチャンネルを再度開いて保存する必要があります。",
     "name": "名前",
     "nameRequired": "名前は必須です",
-    "type": "タイプ",
+    "type": "種類",
     "types": {
       "webhook": "Webhook",
       "ntfy": "ntfy",
       "discord": "Discord",
-      "email": "メールアドレス"
+      "email": "メール"
     },
-    "emailUnavailable": "メール送信にはSMTPサーバーが必要で、管理者がアラート設定で設定します。",
+    "emailUnavailable": "メールには SMTP サーバーが必要です。管理者がアラート設定で設定します。",
     "webhookUrl": "URL",
-    "webhookHint": "アラートごとにJSON形式の本文を取得します。",
-    "method": "方法",
+    "webhookHint": "各アラートに対して JSON 本文を受信します。",
+    "method": "メソッド",
     "headers": "ヘッダー",
-    "headersHint": "1行に1つずつ、例：名前：値。",
-    "ntfyServer": "サーバーURL",
+    "headersHint": "1行に1つずつ、Name: value の形式で記述します。",
+    "ntfyServer": "サーバー URL",
     "ntfyTopic": "トピック",
-    "ntfyToken": "アクセストークン（任意）",
-    "discordUrl": "DiscordウェブフックURL",
-    "discordHint": "Discordのチャンネル設定の「統合」セクションから設定できます。",
-    "discordUsername": "表示名（任意）",
-    "discordAvatar": "アバターのURL（任意）",
+    "ntfyToken": "アクセストークン（オプション）",
+    "discordUrl": "Discord Webhook URL",
+    "discordHint": "Discord のチャンネル設定から、統合（Integrations）の下にあるものです。",
+    "discordUsername": "表示名（オプション）",
+    "discordAvatar": "アバター URL（オプション）",
     "emailTo": "送信先",
-    "emailHint": "複数の住所を入力する場合は、カンマで区切ってください。",
+    "emailHint": "複数のアドレスはカンマで区切ります。",
     "privateNetwork": "プライベートネットワークアドレスを許可する",
     "privateNetworkHint": "管理者がプライベートエンドポイントリストで許可したホストでのみ機能します。"
   },
   "rules": {
-    "intro": "配信ルールを設定すると、該当するアラートが指定したチャネルに送信されます。アラートは常に受信トレイにも残ります。",
-    "add": "ルールを追加する",
-    "edit": "ルールを編集する",
-    "empty": "まだルールが設定されていないため、アラートは受信トレイにのみ表示されます。",
+    "intro": "配信ルールは、一致するアラートをチャンネルに送信します。アラートは受信トレイにも常に残ります。",
+    "add": "ルールを追加",
+    "edit": "ルールを編集",
+    "empty": "ルールがまだないため、アラートは受信トレイにのみ表示されます。",
     "needChannel": "まずチャンネルを追加してください。",
     "enabled": "有効",
     "name": "名前",
     "nameRequired": "名前は必須です",
     "match": "送信するアラート",
-    "matchHint": "* すべてに対して、自動化。* 自動化からのすべて、または特定の種類のもの。",
+    "matchHint": "すべては *、オートメーションからのすべては automations.*、または特定の1種類を指定します。",
     "minSeverity": "少なくとも",
     "channels": "送信先",
     "channelRequired": "少なくとも1つのチャンネルを選択してください",
     "deleteConfirm": "ルール「{{name}}」を削除しますか？",
     "everything": "すべて",
-    "summary": "{{match}}、 {{severity}} 以上、 {{channels}}まで"
+    "summary": "{{match}}、{{severity}} 以上、{{channels}} へ"
   },
   "actions": {
     "cancel": "キャンセル",
     "save": "保存",
-    "saving": "保存中...",
     "delete": "削除"
   },
   "widget": {
     "name": "アラートフィード",
-    "description": "最新のアラートを既読にする簡単な方法",
+    "description": "最新のアラートを表示し、すばやく既読にマークできます",
     "maxItems": "最大アイテム数",
-    "showRead": "既読通知を表示する",
+    "showRead": "既読のアラートを表示",
     "allClear": "すべて正常",
     "loading": "読み込み中..."
   },
   "plugin": {
-    "name": "Alerts"
+    "name": "アラート"
+  },
+  "alertSettings": {
+    "title": "アラート設定",
+    "display": "表示"
   }
 }

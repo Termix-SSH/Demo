@@ -2,60 +2,60 @@
   "permissions": {
     "manage": {
       "title": "Quản lý chứng chỉ ACME",
-      "description": "Xem trạng thái chứng chỉ và yêu cầu chứng chỉ mới ngay bây giờ."
+      "description": "Xem trạng thái chứng chỉ và yêu cầu chứng chỉ mới ngay."
     }
   },
   "settings": {
     "autoRenew": {
-      "label": "Tự động gia hạn",
-      "description": "Hãy kiểm tra hai lần một ngày và lấy chứng chỉ mới nếu chứng chỉ hiện không có, không bao phủ tên miền hoặc hết hạn trong vòng 30 ngày."
+      "label": "Gia hạn tự động",
+      "description": "Kiểm tra hai lần mỗi ngày và lấy chứng chỉ mới khi chưa có chứng chỉ, chứng chỉ không bao gồm tên miền, hoặc chứng chỉ sẽ hết hạn trong vòng 30 ngày tới."
     },
     "domain": {
       "label": "Tên miền",
-      "description": "Tên miền công khai để cấp chứng chỉ.",
+      "description": "Tên miền công khai cho chứng chỉ.",
       "placeholder": "termix.example.com"
     },
     "email": {
       "label": "Email",
-      "description": "Địa chỉ email liên hệ cho tài khoản ACME và thông báo hết hạn.",
+      "description": "Email liên hệ cho tài khoản ACME và thông báo hết hạn.",
       "placeholder": "admin@example.com"
     },
     "provider": {
-      "label": "Cơ quan chứng thực",
-      "description": "Lấy chứng chỉ ở đâu? Sử dụng môi trường thử nghiệm để kiểm tra mà không vượt quá giới hạn số lượng yêu cầu của Let's Encrypt.",
-      "letsencrypt": "Hãy mã hóa",
-      "letsencryptStaging": "Let's Encrypt (phiên bản thử nghiệm)",
+      "label": "Cơ quan cấp chứng chỉ",
+      "description": "Nơi lấy chứng chỉ. Sử dụng staging để kiểm tra mà không bị giới hạn tốc độ của Let's Encrypt.",
+      "letsencrypt": "Let's Encrypt",
+      "letsencryptStaging": "Let's Encrypt (staging)",
       "custom": "Danh mục ACME tùy chỉnh"
     },
     "directoryUrl": {
-      "label": "URL thư mục ACME",
-      "description": "Chỉ dành cho cơ quan cấp chứng chỉ tùy chỉnh. Phải là URL HTTPS."
+      "label": "URL danh mục ACME",
+      "description": "Chỉ dành cho cơ quan cấp chứng chỉ tùy chỉnh. Phải là URL https."
     },
     "challengeType": {
-      "label": "Loại thử thách",
+      "label": "Loại xác minh",
       "description": "Cách chứng minh bạn sở hữu tên miền.",
-      "http": "HTTP - cần cổng 80 có thể truy cập được từ internet",
-      "cloudflare": "DNS (Cloudflare) - cần mã thông báo API của Cloudflare."
+      "http": "HTTP - cần cổng 80 có thể truy cập từ internet",
+      "cloudflare": "DNS (Cloudflare) - cần token API Cloudflare"
     },
     "cloudflareToken": {
-      "label": "Mã thông báo API Cloudflare",
+      "label": "Token API Cloudflare",
       "description": "Token có phạm vi với quyền Zone:DNS:Edit cho tên miền của bạn."
     }
   },
   "status": {
     "title": "Trạng thái chứng chỉ",
     "none": "Không có chứng chỉ",
-    "names": "Ảnh bìa {{names}}",
-    "issuer": "Được phát hành bởi {{issuer}}",
+    "names": "Bao gồm {{names}}",
+    "issuer": "Được cấp bởi {{issuer}}",
     "expires": "Hết hạn {{date}}",
-    "lastIssued": "Cấp lần cuối {{date}}",
-    "lastError": "Lần thử cuối cùng thất bại: {{error}}",
-    "missing": "Hãy thiết lập tên miền, email và các trường thông tin mà loại thử thách của bạn yêu cầu, sau đó lưu lại trước khi yêu cầu chứng chỉ.",
-    "request": "Yêu cầu chứng chỉ ngay bây giờ",
+    "lastIssued": "Lần cấp cuối {{date}}",
+    "lastError": "Lần thử gần nhất thất bại: {{error}}",
+    "missing": "Đặt tên miền, email và các trường cần thiết cho loại xác minh của bạn, sau đó lưu lại trước khi yêu cầu chứng chỉ.",
+    "request": "Yêu cầu chứng chỉ ngay",
     "requesting": "Đang yêu cầu chứng chỉ...",
-    "issued": "Giấy chứng nhận đã được cấp và cài đặt"
+    "issued": "Chứng chỉ đã được cấp và cài đặt"
   },
   "plugin": {
-    "name": "ACME Certificates"
+    "name": "Chứng chỉ ACME"
   }
 }

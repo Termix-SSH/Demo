@@ -1,115 +1,119 @@
 {
   "nav": {
-    "alerts": "告警"
+    "alerts": "警报"
   },
   "permissions": {
     "use": {
-      "title": "使用提醒",
-      "description": "在收件箱中接收提醒，并将其发送到您自己的频道。"
+      "title": "使用警报",
+      "description": "在收件箱中接收警报，并将其发送到您自己的频道。"
     }
-  },
-  "onboarding": {
-    "feature": "告警",
-    "featureDesc": "所有提醒都集中在一个收件箱中，您可以选择将其发送到 Discord、ntfy、电子邮件或 webhook。"
   },
   "settings": {
     "group": {
       "general": "常规",
-      "email": "邮箱"
+      "email": "电子邮件"
     },
     "admin": {
       "announcements": {
-        "label": "Termix公告",
-        "description": "将 Termix 团队的新闻，例如安全通知和版本发布，发送到每个人的收件箱。"
+        "label": "Termix 公告",
+        "description": "在所有人的收件箱中显示来自 Termix 团队的新闻，例如安全通知和版本发布。"
       },
       "retentionDays": {
-        "label": "保持警报（天）",
-        "description": "所有收件箱中都会删除较旧的提醒邮件。"
+        "label": "保留警报（天数）",
+        "description": "较旧的警报将从所有收件箱中移除。"
       },
       "smtpHost": {
-        "label": "SMTP服务器",
-        "description": "需要用于电子邮件渠道。留空则关闭电子邮件功能。",
+        "label": "SMTP 服务器",
+        "description": "电子邮件频道所需。留空以关闭电子邮件功能。",
         "placeholder": "smtp.example.com"
       },
       "smtpPort": {
-        "label": "SMTP端口",
-        "description": "通常使用 STARTTLS 的 587 端口或使用 TLS 的 465 端口。"
+        "label": "SMTP 端口",
+        "description": "通常为 587（配合 STARTTLS）或 465（配合 TLS）。"
       },
       "smtpSecure": {
-        "label": "从一开始就使用TLS",
-        "description": "启用 465 端口。保持 587 端口关闭，该端口会自动升级到 TLS。"
+        "label": "立即使用 TLS",
+        "description": "端口 465 请开启。端口 587 请关闭，它会自动升级为 TLS。"
       },
       "smtpUser": {
         "label": "SMTP 用户名",
         "description": "如果服务器不需要登录，请留空。"
       },
       "smtpPassword": {
-        "label": "SMTP密码",
+        "label": "SMTP 密码",
         "description": "已加密存储。"
       },
       "smtpFrom": {
-        "label": "来自地址",
-        "description": "发件人警报来自。",
-        "placeholder": "终端 <alerts@example.com>"
+        "label": "发件人地址",
+        "description": "警报的发件人地址。",
+        "placeholder": "Termix <alerts@example.com>"
       }
     },
     "user": {
       "popups": {
-        "label": "弹出式警报",
-        "description": "使用Termix时会弹出哪些新提醒？它们都会发送到您的收件箱。",
+        "label": "警报弹窗",
+        "description": "在使用 Termix 时，哪些新警报会弹出。它们始终会进入收件箱。",
         "all": "所有警报",
-        "warning": "警告和关键信息",
-        "critical": "仅限关键",
-        "off": "全不选"
+        "warning": "警告和严重",
+        "critical": "仅严重",
+        "off": "无"
+      },
+      "alwaysShowActions": {
+        "label": "始终显示按钮",
+        "description": "保持每个警报、频道和规则下方的按钮可见。关闭后，仅在悬停时显示。"
       }
     }
   },
   "sections": {
     "inbox": "收件箱",
-    "channels": "通道",
-    "rules": "配送规则"
+    "channels": "频道",
+    "rules": "投递规则"
   },
   "severity": {
     "info": "信息",
     "success": "成功",
     "warning": "警告",
-    "critical": "批判的"
+    "critical": "严重"
   },
   "inbox": {
     "sourceTermix": "Termix",
     "openLink": "打开",
     "view": "查看",
+    "viewInInbox": "在收件箱中查看",
+    "close": "关闭",
     "unread": "未读",
-    "deliveryFailed_one": "{{count}} 通道失败",
-    "deliveryFailed_other": "{{count}} 通道失败",
+    "deliveryFailed_other": "{{count}} 个频道失败",
     "markRead": "标记为已读",
     "markUnread": "标记为未读",
     "markAllRead": "全部标记为已读",
     "delete": "删除",
-    "clearRead": "删除已读提醒",
-    "cleared_one": "已删除 {{count}} 警报",
-    "cleared_other": "已删除 {{count}} 警报",
+    "clearRead": "删除已读警报",
+    "cleared_other": "已删除 {{count}} 条警报",
     "filterAll": "全部",
     "filterUnread": "未读",
-    "anySeverity": "任何严重程度",
-    "anySource": "任何来源",
-    "openAll": "在标签页中打开",
-    "empty": "目前尚未收到任何警报。",
-    "emptyUnread": "你们都跟上了。",
-    "loadMore": "加载更多"
+    "anySeverity": "任意严重级别",
+    "anySource": "任意来源",
+    "openAll": "在新标签页中打开",
+    "empty": "暂无警报。",
+    "emptyUnread": "您已全部赶上。",
+    "loadMore": "加载更多",
+    "deleteConfirm": "删除警报 {{title}}？",
+    "clearReadConfirm": "删除所有已读警报？",
+    "search": "搜索警报",
+    "noMatches": "没有警报符合您的搜索条件。"
   },
   "channels": {
-    "intro": "通道是警报可以发送到 Termix 外部的途径。发送规则决定哪些警报使用哪个通道。",
-    "add": "添加频道",
-    "edit": "编辑频道",
+    "intro": "通道是将警报发送到 Termix 之外的地方。投递规则决定哪些警报使用这些通道。",
+    "add": "添加通道",
+    "edit": "编辑通道",
     "test": "发送测试",
-    "testSent": "已发送测试警报",
-    "testFailed": "测试失败： {{error}}",
-    "deleteConfirm": "删除频道“{{name}}”？",
-    "deleted": "频道已删除",
-    "empty": "暂无频道。",
+    "testSent": "测试警报已发送",
+    "testFailed": "测试失败：{{error}}",
+    "deleteConfirm": "删除通道“{{name}}”？",
+    "deleted": "通道已删除",
+    "empty": "暂无通道。",
     "enabled": "已启用",
-    "needsSave": "该通道需要重新打开并保存才能发送消息。",
+    "needsSave": "此通道需要重新打开并保存后才能发送。",
     "name": "名称",
     "nameRequired": "名称为必填项",
     "type": "类型",
@@ -117,59 +121,62 @@
       "webhook": "Webhook",
       "ntfy": "ntfy",
       "discord": "Discord",
-      "email": "邮箱"
+      "email": "电子邮件"
     },
-    "emailUnavailable": "电子邮件需要 SMTP 服务器，管理员可以在“警报”设置中进行设置。",
+    "emailUnavailable": "电子邮件需要 SMTP 服务器，由管理员在警报设置中配置。",
     "webhookUrl": "URL",
-    "webhookHint": "获取每个警报的 JSON 正文。",
+    "webhookHint": "每次警报都会收到一个 JSON 请求体。",
     "method": "方法",
-    "headers": "标题",
-    "headersHint": "每行一个，格式为：名称:值。",
+    "headers": "请求头",
+    "headersHint": "每行一个，格式如 Name: value。",
     "ntfyServer": "服务器 URL",
     "ntfyTopic": "主题",
     "ntfyToken": "访问令牌（可选）",
-    "discordUrl": "Discord webhook URL",
-    "discordHint": "在 Discord 的频道设置中，位于“集成”下。",
+    "discordUrl": "Discord Webhook URL",
+    "discordHint": "来自 Discord 中该通道的设置，位于“集成”下。",
     "discordUsername": "显示名称（可选）",
-    "discordAvatar": "头像网址（可选）",
+    "discordAvatar": "头像 URL（可选）",
     "emailTo": "发送至",
-    "emailHint": "多个地址之间用逗号分隔。",
-    "privateNetwork": "允许使用专用网络地址",
-    "privateNetworkHint": "仅适用于管理员允许添加到私有端点列表中的主机。"
+    "emailHint": "多个地址请用逗号分隔。",
+    "privateNetwork": "允许使用私有网络地址",
+    "privateNetworkHint": "仅对管理员在私有端点列表中允许的宿主机有效。"
   },
   "rules": {
-    "intro": "发送规则会将匹配的提醒发送到您的渠道。提醒也会始终保留在收件箱中。",
+    "intro": "投递规则会将匹配的警报发送到您的通道。警报也会始终保留在收件箱中。",
     "add": "添加规则",
     "edit": "编辑规则",
-    "empty": "目前还没有规则，所以提醒只会显示在收件箱中。",
-    "needChannel": "请先添加频道。",
+    "empty": "暂无规则，因此警报仅显示在收件箱中。",
+    "needChannel": "请先添加一个通道。",
     "enabled": "已启用",
     "name": "名称",
     "nameRequired": "名称为必填项",
-    "match": "发送提醒",
-    "matchHint": "*适用于所有自动化操作。*适用于所有自动化操作，或某一特定类型。",
+    "match": "要发送的警报",
+    "matchHint": "* 表示所有，automations.* 表示所有自动化警报，或指定一种确切类型。",
     "minSeverity": "至少",
     "channels": "发送至",
-    "channelRequired": "至少选择一个频道",
+    "channelRequired": "请至少选择一个通道",
     "deleteConfirm": "删除规则“{{name}}”？",
-    "everything": "一切",
-    "summary": "{{match}}、 {{severity}} 或更高，至 {{channels}}"
+    "everything": "所有",
+    "summary": "{{match}}，{{severity}} 及以上，发送至 {{channels}}"
   },
   "actions": {
     "cancel": "取消",
     "save": "保存",
-    "saving": "保存中...",
     "delete": "删除"
   },
   "widget": {
-    "name": "告警信息流",
-    "description": "您最新的提醒，以及快速标记为已读的功能。",
-    "maxItems": "最大物品数",
-    "showRead": "显示已读提醒",
-    "allClear": "一切正常",
+    "name": "警报动态",
+    "description": "您最新的警报，并提供快速标记为已读的方式",
+    "maxItems": "最大条目数",
+    "showRead": "显示已读警报",
+    "allClear": "全部清除",
     "loading": "加载中..."
   },
   "plugin": {
-    "name": "Alerts"
+    "name": "警报"
+  },
+  "alertSettings": {
+    "title": "警报设置",
+    "display": "显示"
   }
 }

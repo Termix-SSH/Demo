@@ -2,13 +2,13 @@
   "permissions": {
     "manage": {
       "title": "Hantera ACME-certifikat",
-      "description": "Se certifikatets status och begär ett nytt certifikat nu."
+      "description": "Visa certifikatstatus och begär ett nytt certifikat nu."
     }
   },
   "settings": {
     "autoRenew": {
       "label": "Förnya automatiskt",
-      "description": "Kontrollera två gånger om dagen och skaffa ett nytt certifikat om det inte finns något, om det inte täcker domänen eller om det löper ut inom 30 dagar."
+      "description": "Kontrollera två gånger om dagen och hämta ett nytt certifikat om det inte finns något, om det inte täcker domänen, eller om det löper ut inom 30 dagar."
     },
     "domain": {
       "label": "Domän",
@@ -17,14 +17,14 @@
     },
     "email": {
       "label": "E-post",
-      "description": "Kontakta e-postadressen för ACME-kontot och meddelanden om utgångsdatum.",
+      "description": "Kontaktpostadress för ACME-kontot och aviseringar om utgång.",
       "placeholder": "admin@example.com"
     },
     "provider": {
       "label": "Certifikatutfärdare",
-      "description": "Var man kan hämta certifikatet. Använd staging för att testa utan att nå hastighetsgränserna för Let's Encrypt.",
-      "letsencrypt": "Låt oss kryptera",
-      "letsencryptStaging": "Låt oss kryptera (staging)",
+      "description": "Var certifikatet ska hämtas. Använd staging för att testa utan att påverkas av Let's Encrypts hastighetsbegränsningar.",
+      "letsencrypt": "Let's Encrypt",
+      "letsencryptStaging": "Let's Encrypt (staging)",
       "custom": "Anpassad ACME-katalog"
     },
     "directoryUrl": {
@@ -33,29 +33,29 @@
     },
     "challengeType": {
       "label": "Utmaningstyp",
-      "description": "Hur man bevisar att man äger domänen.",
-      "http": "HTTP - behöver port 80 som kan nås från internet",
-      "cloudflare": "DNS (Cloudflare) - behöver en Cloudflare API-token"
+      "description": "Hur du bevisar att du äger domänen.",
+      "http": "HTTP – kräver att port 80 är nåbar från internet",
+      "cloudflare": "DNS (Cloudflare) – kräver en Cloudflare API-token"
     },
     "cloudflareToken": {
       "label": "Cloudflare API-token",
-      "description": "Scoped-token med Zone:DNS:Edit-behörighet för din domän."
+      "description": "En begränsad token med behörigheten Zone:DNS:Edit för din domän."
     }
   },
   "status": {
     "title": "Certifikatstatus",
     "none": "Inget certifikat",
-    "names": "Omslag {{names}}",
-    "issuer": "Utfärdad av {{issuer}}",
-    "expires": "Utgångsdatum {{date}}",
-    "lastIssued": "Senast utfärdad {{date}}",
+    "names": "Täcker {{names}}",
+    "issuer": "Utfärdat av {{issuer}}",
+    "expires": "Löper ut {{date}}",
+    "lastIssued": "Senast utfärdat {{date}}",
     "lastError": "Senaste försöket misslyckades: {{error}}",
-    "missing": "Ange domän, e-postadress och de fält som din utmaningstyp behöver, spara sedan innan du begär ett certifikat.",
+    "missing": "Ställ in domän, e-postadress och de fält som din utmaningstyp kräver, och spara innan du begär ett certifikat.",
     "request": "Begär certifikat nu",
     "requesting": "Begär certifikat...",
     "issued": "Certifikat utfärdat och installerat"
   },
   "plugin": {
-    "name": "ACME Certificates"
+    "name": "ACME-certifikat"
   }
 }

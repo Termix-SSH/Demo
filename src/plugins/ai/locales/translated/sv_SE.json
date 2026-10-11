@@ -2,55 +2,63 @@
   "permissions": {
     "use": {
       "title": "Använd assistenten",
-      "description": "Öppna assistenten och fråga den saker."
+      "description": "Öppna assistenten och ställ frågor."
     },
     "manage_providers": {
       "title": "Hantera leverantörer",
-      "description": "Lägg till, redigera och ta bort AI-leverantörerna och deras API-nycklar."
+      "description": "Lägg till, redigera och ta bort AI-leverantörer och deras API-nycklar."
     },
     "apply_proposals": {
       "title": "Tillämpa förslag",
       "description": "Låt assistenten utföra de ändringar den föreslår."
     },
-    "services.use": {
-      "title": "Använd AI från andra funktioner",
-      "description": "Andra funktioner kan ringa assistenten åt dig."
+    "services": {
+      "use": {
+        "title": "Använd AI från andra funktioner",
+        "description": "Andra funktioner kan anropa assistenten åt dig."
+      }
     },
-    "secrets.share": {
-      "title": "Dela API-nyckeln",
-      "description": "Andra funktioner kan använda den lagrade AI API-nyckeln utan att se den."
+    "secrets": {
+      "share": {
+        "title": "Dela API-nyckeln",
+        "description": "Andra funktioner kan använda den sparade AI-API-nyckeln utan att se den."
+      }
     }
   },
   "settings": {
-    "assistantUnavailable": "AI-assistenten är avstängd på den här servern.",
+    "assistantUnavailable": "AI-assistenten är inaktiverad på denna server.",
     "providersNeedOptIn": "Aktivera AI-assistenten ovan för att lägga till leverantörer.",
+    "providers": {
+      "label": "Leverantörer",
+      "description": "De AI-tjänster som assistenten och agenter kan använda."
+    },
     "admin": {
       "globallyEnabled": {
         "label": "AI-assistent",
-        "description": "Låt användare aktivera AI-assistenten. Medan detta är avstängt är assistenten dold och blockerad för alla."
+        "description": "Låt användare aktivera AI-assistenten. När detta är inaktiverat är assistenten dold och blockerad för alla."
       },
       "privateEndpoints": {
         "label": "Tillåtna privata AI-värdar",
-        "description": "Värdar på ditt privata nätverk som användare kan hänvisa en leverantör till, till exempel en självhostad Ollama. Lägg en värd på varje rad."
+        "description": "Värdar på ditt privata nätverk som användare kan peka en leverantör mot, till exempel en självhostad Ollama. Ange en värd per rad."
       }
     },
     "host": {
       "enableAiAssistant": {
-        "label": "Aktivera AI-assistenten",
-        "description": "Tillåt AI-assistenten att hjälpa till i den här värdens terminal. Av som standard och kräver fortfarande att AI är aktiverat för ditt konto."
+        "label": "Aktivera AI-assistent",
+        "description": "Tillåt AI-assistenten att hjälpa till i denna värdens terminal. Inaktiverad som standard, och kräver fortfarande att AI är aktiverat för ditt konto."
       }
     }
   },
   "ai": {
     "title": "Assistent",
     "send": "Skicka",
-    "stop": "Stopp",
+    "stop": "Stoppa",
     "save": "Spara",
-    "cancel": "Avboka",
-    "running": "spring",
-    "approve": "Godkänna",
+    "cancel": "Avbryt",
+    "running": "kör",
+    "approve": "Godkänn",
     "reject": "Avvisa",
-    "inputPlaceholder": "Fråga om era servrar, eller beskriv en förändring att föreslå",
+    "inputPlaceholder": "Fråga om dina servrar eller beskriv en ändring att föreslå",
     "selectProvider": "Välj en leverantör",
     "providerSettings": "Leverantörsinställningar",
     "addProvider": "Lägg till leverantör",
@@ -63,136 +71,150 @@
     "apiKey": "API-nyckel",
     "defaultModel": "Standardmodell",
     "defaultModelPlaceholder": "Till exempel: llama3.1 eller claude-opus-5",
-    "labelRequired": "Ge den här leverantören ett namn",
+    "labelRequired": "Ge denna leverantör ett namn",
     "providerSaveFailed": "Kunde inte spara leverantören",
-    "providerUpdated": "Leverantören uppdaterad",
+    "providerUpdated": "Leverantören har uppdaterats",
     "providerDeleteFailed": "Kunde inte ta bort leverantören",
-    "privateEndpointHint": "Adresser i ditt privata nätverk behöver en administratör som först tillåter värden.",
+    "privateEndpointHint": "Adresser på ditt privata nätverk kräver att en administratör tillåter värdens först.",
     "providerOllama": "Ollama",
-    "providerAnthropic": "Antropisk",
-    "providerOpenai": "Öppen AI",
+    "providerAnthropic": "Anthropic",
+    "providerOpenai": "OpenAI",
     "providerGemini": "Google Gemini",
     "providerOpenaiCompatible": "OpenAI-kompatibel",
-    "toolArguments": "Input",
+    "toolArguments": "Inmatning",
     "toolResult": "Resultat",
     "statusApplied": "Tillämpad",
     "statusRejected": "Avvisad",
-    "proposalApplied": "Ändring tillämpad",
     "proposalApplyFailed": "Kunde inte tillämpa ändringen",
     "proposalRejectFailed": "Kunde inte avvisa ändringen",
     "enableTitle": "Aktivera AI-assistenten",
-    "enableDescription": "Låt assistenten läsa dina inställningar och föreslå ändringar som du kan godkänna.",
+    "enableDescription": "Låt assistenten läsa din konfiguration och föreslå ändringar som du kan godkänna.",
     "readOnlyCommands": "Tillåt skrivskyddade diagnostikkommandon",
     "readOnlyCommandsDescription": "Assistenten kan köra en kort lista med säkra kommandon som df och uptime utan att fråga varje gång. Allt som ändrar en server föreslås alltid först.",
-    "modelDetectFailed": "Kunde inte nå leverantören, så detta är en allmän lista. Du kan skriva in vilket modellnamn som helst.",
+    "modelDetectFailed": "Kunde inte nå leverantören, så detta är en generell lista. Du kan skriva in vilket modellnamn som helst.",
     "modelCustom": "Ange ett modellnamn",
-    "modelRefresh": "Uppdatera listan",
+    "modelRefresh": "Uppdatera lista",
     "modelPlaceholder": "Välj eller skriv en modell",
-    "attachHint": "Skriv @ för att referera till en värd, ett kodavsnitt eller en automatisering. Ändringar föreslås för dig att godkänna.",
+    "attachHint": "Skriv @ för att referera till en värd, ett fragment eller en automatisering. Ändringar föreslås för att du ska godkänna dem.",
     "runCommandTitle": "Kör kommando",
     "assistant": "AI-assistent",
-    "terminalPanelEmpty": "Fråga assistenten om den här värden. Allt som ändras kräver ditt godkännande först.",
-    "terminalPanelPlaceholder": "Fråga om den här värden...",
-    "noProvidersConfigured": "Ingen AI-leverantör är konfigurerad ännu. Lägg till en på fliken AI-assistent.",
+    "terminalPanelEmpty": "Fråga assistenten om denna värd. Allt som ändrar tillståndet kräver ditt godkännande först.",
+    "terminalPanelPlaceholder": "Fråga om denna värd...",
+    "noProvidersConfigured": "Ingen AI-leverantör är konfigurerad ännu. Lägg till en i fliken AI-assistent.",
     "runsInOpenTerminal": "Körs i din öppna terminalsession.",
-    "runInTerminal": "Sikt",
-    "terminalContextPrefill": "Här är min terminalutgång:\n\n{{output}}\n\n",
+    "runInTerminal": "Kör",
+    "terminalContextPrefill": "Här är min terminalutdata:\n\n{{output}}\n\n",
     "secrets": {
-      "shareApiKey": "Låt andra funktioner använda din AI-leverantörs API-nyckel för sina egna förfrågningar. Nyckeln kopieras aldrig och du kan återkalla den när som helst."
-    }
+      "shareApiKey": "Låt andra funktioner använda din AI-leverantörs API-nyckel för deras egna förfrågningar. Nyckeln kopieras aldrig, och du kan återkalla detta när som helst."
+    },
+    "removeProviderConfirm": "Ta bort leverantören {{name}}?"
   },
   "nav": {
     "ai": "AI"
   },
   "onboarding": {
     "aiTitle": "AI-assistent",
-    "aiIntro": "Termix kan inkludera en valfri AI-assistent. Du kan ändra detta senare i dina inställningar.",
-    "aiSkipTitle": "Lämna den av",
+    "aiIntro": "Termix kan inkludera en AI-assistent. Du kan ändra detta senare i dina inställningar.",
+    "aiSkipTitle": "Lämna det avstängt",
     "aiSkipDesc": "Termix fungerar som den gör nu. Assistenten förblir dold.",
-    "aiEnableTitle": "Slå på den",
-    "aiEnableDesc": "Lägger till en assistent som läser din installation och föreslår ändringar som du godkänner. Kräver en leverantör som du tillhandahåller, till exempel en lokal Ollama.",
-    "aiNote": "Ingenting skickas någonstans förrän du lägger till en leverantör och skickar ett meddelande."
+    "aiEnableTitle": "Aktivera den",
+    "aiEnableDesc": "Lägger till en assistent som läser din konfiguration och föreslår ändringar som du godkänner. Kräver en leverantör som du tillhandahåller, till exempel en lokal Ollama.",
+    "aiNote": "Inget skickas någonstans förrän du lägger till en leverantör och skickar ett meddelande."
   },
   "hosts": {
-    "docsLink": "Visa dokument"
+    "docsLink": "Visa dokumentation"
   },
   "agents": {
-    "title": "AI Agent",
-    "permissionTitle": "Run remote AI agents",
-    "permissionDescription": "Start coding agents on SSH hosts using configured AI providers. Agents can execute commands and change files as the SSH user.",
-    "new": "New session",
-    "description": "Run an agent in a directory on this host using a Termix AI provider.",
+    "working": "Arbetar...",
+    "startingIndicator": "Startar agenten...",
+    "noCompatibleProvider": "Ingen av dina AI-leverantörer fungerar med {{agent}}. Claude Code kräver Anthropic och Codex kräver OpenAI.",
+    "noProviders": "Lägg till en AI-leverantör i Inställningar först.",
+    "title": "AI-agent",
+    "permissionTitle": "Kör fjärr-AI-agenter",
+    "permissionDescription": "Starta kodningsagenter på SSH-värdar med konfigurerade AI-leverantörer. Agenter kan köra kommandon och ändra filer som SSH-användaren.",
+    "new": "Ny session",
+    "description": "Kör en agent i en katalog på denna värd med en Termix AI-leverantör.",
     "runtime": "Agent",
-    "provider": "Termix provider",
-    "chooseProvider": "Choose a compatible provider",
-    "model": "Model",
-    "directory": "Working directory",
-    "executable": "Executable (optional absolute path)",
-    "requirements": "The host needs Node.js 22.19+ and the selected agent installed. SSH remote loopback forwarding must be allowed. Existing agent configurations are not overwritten.",
-    "responsesRequired": "Codex requires a Responses API endpoint. A Chat Completions-only endpoint cannot run Codex.",
-    "piPermissions": "Pi tools run with this SSH account’s permissions. Only launch in a directory you authorize the agent to modify.",
-    "start": "Start agent",
-    "resume": "Resume",
-    "stop": "Stop session",
-    "interrupt": "Interrupt turn",
-    "send": "Send",
-    "prompt": "Ask the agent to work in this directory…",
-    "noSessions": "No agent sessions for this host.",
-    "approval": "Agent needs your decision",
-    "answer": "Answer (JSON for structured questions)",
-    "allow": "Allow once",
-    "deny": "Deny",
-    "tool": "Tool activity",
-    "streamFailed": "Agent stream disconnected. Reopen the session to reconnect.",
+    "provider": "Termix-leverantör",
+    "chooseProvider": "Välj en kompatibel leverantör",
+    "model": "Modell",
+    "directory": "Arbetskatalog",
+    "executable": "Exekverbar fil (valfri absolut sökväg)",
+    "requirements": "Värden behöver Node.js 22.19+ och den valda agenten installerad. SSH-fjärrloopback-omdirigering måste tillåtas. Befintliga agentkonfigurationer skrivs inte över.",
+    "responsesRequired": "Codex kräver en Responses API-slutpunkt. En slutpunkt som bara stöder Chat Completions kan inte köra Codex.",
+    "piPermissions": "Pi-verktyg körs med behörigheterna för detta SSH-konto. Starta bara i en katalog som du auktoriserar agenten att ändra.",
+    "start": "Starta agent",
+    "resume": "Återuppta",
+    "stop": "Stoppa session",
+    "interrupt": "Avbryt tur",
+    "send": "Skicka",
+    "prompt": "Be agenten arbeta i denna katalog...",
+    "noSessions": "Inga agentsessioner för denna värd.",
+    "approval": "Agenten behöver ditt beslut",
+    "answer": "Svar (JSON för strukturerade frågor)",
+    "allow": "Tillåt en gång",
+    "deny": "Neka",
+    "tool": "Verktögsaktivitet",
+    "streamFailed": "Agentströmmen kopplades bort. Öppna om sessionen för att ansluta igen.",
     "status": {
-      "starting": "Starting",
-      "ready": "Ready",
-      "running": "Working",
-      "stopped": "Stopped",
-      "error": "Error"
+      "starting": "Startar",
+      "ready": "Redo",
+      "running": "Arbetar",
+      "stopped": "Stoppad",
+      "error": "Fel"
     },
-    "installRuntime": "Install selected agent and Node.js",
-    "installSource": "Official sources only: nodejs.org (SHA-256 verified) and registry.npmjs.org (locked package integrity). Installs for the SSH user in ~/.local/share/termix-agent-runtime; requires curl, tar, and Linux/macOS x64 or arm64. Does not change SSH forwarding policy.",
-    "installSucceeded": "Installation verified. You can now start the agent; SSH loopback remote forwarding must also be allowed.",
-    "installFailed": "Installation failed. Review the log and retry.",
-    "installLog": "Installation log",
-    "enableForwarding": "Enable Agent forwarding",
-    "forwardingScope": "Linux with systemd/OpenSSH; requires root or passwordless sudo. Backs up and validates SSH configuration, then reloads it. Only the current SSH account and observed connection source receive loopback remote forwarding; existing local forwarding is preserved. Failed changes are rolled back.",
-    "forwardingSucceeded": "SSH loopback remote forwarding is ready. Start or resume the agent to open a new SSH connection.",
-    "forwardingFailed": "SSH forwarding configuration failed. Review the log; no unvalidated configuration is kept.",
-    "search": "Search sessions",
-    "showArchived": "Show archived",
-    "sessionName": "Session name",
-    "rename": "Rename",
-    "archive": "Archive and stop",
-    "restore": "Restore session",
-    "queue": "Queued messages",
-    "enqueue": "Queue message",
-    "continueQueue": "Continue queue",
-    "pauseQueue": "Pause queue",
-    "editQueued": "Edit queued message",
-    "save": "Save",
-    "remove": "Remove",
-    "upload": "Upload attachment",
-    "remoteFile": "File path inside working directory",
-    "attach": "Attach file",
-    "attachments": "Reuse a session attachment",
-    "pasteImage": "Paste an image in the composer. Up to 4 attachments, 1 MiB each.",
-    "attachmentLimit": "Up to 4 attachments, 1 MiB each",
-    "review": "Git changes and worktrees",
-    "gitStatus": "Refresh Git status",
-    "diffFile": "File path to review",
-    "diff": "View diff",
-    "branch": "New branch name",
-    "createWorktree": "Create worktree",
-    "useWorktree": "New session in this worktree",
-    "worktreeHint": "Creates a new branch from HEAD. Uncommitted changes stay in the current directory. Existing worktrees are never deleted automatically.",
-    "clean": "No changes",
-    "reconnecting": "Reconnecting and restoring messages…",
-    "unavailable": "Session is no longer accessible. Check your permissions or sign in again.",
-    "shortcuts": "Enter sends or queues · Shift+Enter adds a line · Esc interrupts and pauses the queue"
+    "installRuntime": "Installera vald agent och Node.js",
+    "installSource": "Endast officiella källor: nodejs.org (SHA-256 verifierad) och registry.npmjs.org (låst paketintegritet). Installeras för SSH-användaren i ~/.local/share/termix-agent-runtime; kräver curl, tar och Linux/macOS x64 eller arm64. Ändrar inte SSH-videopolitiken.",
+    "installSucceeded": "Installationen verifierad. Du kan nu starta agenten; SSH-loopback remote forwarding måste också tillåtas.",
+    "installFailed": "Installationen misslyckades. Granska loggen och försök igen.",
+    "installLog": "Installationslogg",
+    "enableForwarding": "Aktivera agentforwarding",
+    "forwardingScope": "Linux med systemd/OpenSSH; kräver root eller lösenordsfritt sudo. Säkerhetskopierar och validerar SSH-konfigurationen, och laddar om den. Endast det aktuella SSH-kontot och den observerade anslutningskällan får loopback remote forwarding; befintlig lokal forwarding bevaras. Misslyckade ändringar återskapas.",
+    "forwardingSucceeded": "SSH-loopback remote forwarding är redo. Starta eller återuppta agenten för att öppna en ny SSH-anslutning.",
+    "forwardingFailed": "SSH-forwarding-konfigurationen misslyckades. Granska loggen; ingen ovalidierad konfiguration behålls.",
+    "search": "Sök i sessioner",
+    "sessionName": "Sessionsnamn",
+    "rename": "Byt namn",
+    "archive": "Arkivera och stoppa",
+    "restore": "Återställ session",
+    "queue": "Köade meddelanden",
+    "enqueue": "Köa meddelande",
+    "continueQueue": "Fortsätt kö",
+    "pauseQueue": "Pausa kö",
+    "editQueued": "Redigera köat meddelande",
+    "save": "Spara",
+    "remove": "Ta bort",
+    "upload": "Ladda upp bilaga",
+    "remoteFile": "Filsökväg inuti arbetsmappen",
+    "attach": "Bifoga en fil från värdmaskinen",
+    "attachments": "Återanvänd en tidigare bilaga",
+    "attachmentLimit": "Upp till 4 bilagor, 1 MiB vardera",
+    "review": "Git-ändringar",
+    "gitStatus": "Uppdatera Git-status",
+    "diffFile": "Filsökväg att granska",
+    "diff": "Visa diff",
+    "branch": "Nytt grennamn",
+    "createWorktree": "Skapa worktree",
+    "useWorktree": "Ny session i denna worktree",
+    "worktreeHint": "Skapar en ny gren från HEAD. Ocommitade ändringar stannar i den aktuella mappen. Befintliga worktrees raderas aldrig automatiskt.",
+    "clean": "Inga ändringar",
+    "reconnecting": "Återansluter och återställer meddelanden…",
+    "unavailable": "Sessionen är inte längre tillgänglig. Kontrollera dina behörigheter eller logga in igen.",
+    "shortcuts": "Enter skickar eller köar · Shift+Enter lägger till en rad · Esc avbryter och pausar kön",
+    "activeSessions": "Aktiva",
+    "archivedSessions": "Arkiverade",
+    "dismiss": "Avfärda",
+    "changes": "Ändringar",
+    "close": "Stäng",
+    "cancel": "Avbryt",
+    "sessionSetup": "Session",
+    "hostSetup": "Värdinställning",
+    "changedFiles": "Ändrade filer",
+    "worktree": "Worktree",
+    "attachShort": "Bifoga",
+    "emptyTranscript": "Skicka ett meddelande för att starta agenten."
   },
   "plugin": {
-    "name": "AI Assistant"
+    "name": "AI-assistent"
   }
 }

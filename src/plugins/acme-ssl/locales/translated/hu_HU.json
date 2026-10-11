@@ -2,60 +2,60 @@
   "permissions": {
     "manage": {
       "title": "ACME tanúsítványok kezelése",
-      "description": "Tekintse meg a tanúsítvány állapotát, és igényeljen új tanúsítványt most."
+      "description": "A tanúsítvány állapotának megtekintése és új tanúsítvány azonnali kérése."
     }
   },
   "settings": {
     "autoRenew": {
       "label": "Automatikus megújítás",
-      "description": "Naponta kétszer ellenőrizd, és szerezz be új tanúsítványt, ha nincs még tanúsítvány, ha nem fedi le a domaint, vagy ha 30 napon belül lejár."
+      "description": "Naponta kétszer ellenőrzi, és új tanúsítványt kér, ha nincs ilyen, nem fedi le a domain nevet, vagy 30 napon belül lejár."
     },
     "domain": {
-      "label": "Domain",
-      "description": "A tanúsítvány nyilvános domainneve.",
-      "placeholder": "termix.example.com"
+      "label": "Domain név",
+      "description": "A tanúsítvány nyilvános domain neve.",
+      "placeholder": "termix.pelda.hu"
     },
     "email": {
-      "label": "Email",
-      "description": "Az ACME fiókkal és a lejárati értesítésekkel kapcsolatos elérhetőségi e-mail cím.",
-      "placeholder": "admin@example.com"
+      "label": "E-mail cím",
+      "description": "Kapcsolattartó e-mail cím az ACME-fiókhoz és a lejáratértesítésekhez.",
+      "placeholder": "admin@pelda.hu"
     },
     "provider": {
-      "label": "Tanúsítványkibocsátó",
-      "description": "Hol lehet beszerezni a tanúsítványt? Használjon előzetes tesztelést a Let's Encrypt sebességkorlátainak elérése nélkül.",
-      "letsencrypt": "Titkosítsunk",
-      "letsencryptStaging": "Titkosítsuk (előkészítés)",
-      "custom": "Egyéni ACME címtár"
+      "label": "Tanúsítványkiadó hatóság",
+      "description": "Honnan szerezze be a tanúsítványt. A teszteléshez használja a staging környezetet, hogy ne érje el a Let's Encrypt korlátait.",
+      "letsencrypt": "Let's Encrypt",
+      "letsencryptStaging": "Let's Encrypt (staging)",
+      "custom": "Egyedi ACME könyvtár"
     },
     "directoryUrl": {
-      "label": "ACME könyvtár URL-címe",
-      "description": "Csak egyéni hitelesítésszolgáltató esetén. Https URL-címnek kell lennie."
+      "label": "ACME könyvtár URL-je",
+      "description": "Csak egyedi tanúsítványkiadó hatóság esetén. HTTPS URL-nek kell lennie."
     },
     "challengeType": {
-      "label": "Kihívás típusa",
-      "description": "Hogyan bizonyíthatod, hogy te vagy a domain tulajdonosa?",
-      "http": "HTTP – internetről elérhető 80-as port szükséges",
-      "cloudflare": "DNS (Cloudflare) – Cloudflare API token szükséges"
+      "label": "Hitelesítési típus",
+      "description": "Hogyan bizonyítja, hogy a domain a tulajdona.",
+      "http": "HTTP – a 80-as portnak elérhetőnek kell lennie az internetről",
+      "cloudflare": "DNS (Cloudflare) – Cloudflare API-token szükséges"
     },
     "cloudflareToken": {
-      "label": "Cloudflare API token",
-      "description": "Hatókörbe tartozó token Zóna:DNS:Szerkesztés engedéllyel a domainhez."
+      "label": "Cloudflare API-token",
+      "description": "Korlátozott hatókörű token, amely rendelkezik a Zone:DNS:Edit jogosultsággal a domainjéhez."
     }
   },
   "status": {
     "title": "Tanúsítvány állapota",
     "none": "Nincs tanúsítvány",
-    "names": "Borítók {{names}}",
-    "issuer": "Kibocsátó: {{issuer}}",
-    "expires": "Lejár {{date}}",
-    "lastIssued": "Utolsó kiadás {{date}}",
-    "lastError": "Utolsó kísérlet sikertelen: {{error}}",
-    "missing": "Állítsa be a domaint, az e-mail címet és a kihívástípushoz szükséges mezőket, majd mentse el a beállításokat a tanúsítvány igénylése előtt.",
-    "request": "Igényeljen tanúsítványt most",
-    "requesting": "Tanúsítvány kérése...",
-    "issued": "Tanúsítvány kiállítva és telepítve"
+    "names": "Lezárja: {{names}}",
+    "issuer": "Kiállította: {{issuer}}",
+    "expires": "Lejár: {{date}}",
+    "lastIssued": "Utolsó kiállítás: {{date}}",
+    "lastError": "Az utolsó kísérlet sikertelen: {{error}}",
+    "missing": "Adja meg a domain nevet, az e-mail címet és a hitelesítési típusához szükséges mezőket, majd mentse el, mielőtt tanúsítványt kérne.",
+    "request": "Tanúsítvány kérése most",
+    "requesting": "Tanúsítvány kérése folyamatban...",
+    "issued": "A tanúsítvány kiállítva és telepítve"
   },
   "plugin": {
-    "name": "ACME Certificates"
+    "name": "ACME tanúsítványok"
   }
 }

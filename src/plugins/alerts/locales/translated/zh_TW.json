@@ -4,13 +4,9 @@
   },
   "permissions": {
     "use": {
-      "title": "使用提醒",
-      "description": "在收件匣中接收提醒，並將其發送到您自己的頻道。"
+      "title": "使用警示",
+      "description": "在收件匣中接收警示，並將其發送到您自己的頻道。"
     }
-  },
-  "onboarding": {
-    "feature": "警示",
-    "featureDesc": "所有提醒都集中在一個收件匣中，您可以選擇將其發送到 Discord、ntfy、電子郵件或 webhook。"
   },
   "settings": {
     "group": {
@@ -19,97 +15,105 @@
     },
     "admin": {
       "announcements": {
-        "label": "Termix公告",
-        "description": "將 Termix 團隊的新聞，例如安全通知和版本發布，發送到每個人的收件匣。"
+        "label": "Termix 公告",
+        "description": "在所有人的收件匣中顯示來自 Termix 團隊的新聞，例如安全通知和版本發布。"
       },
       "retentionDays": {
-        "label": "保持警報（天）",
-        "description": "所有收件匣中都會刪除較舊的提醒郵件。"
+        "label": "保留警示天數",
+        "description": "較舊的警示將從所有收件匣中移除。"
       },
       "smtpHost": {
-        "label": "SMTP伺服器",
-        "description": "需要用於電子郵件管道。留空則關閉電子郵件功能。",
+        "label": "SMTP 伺服器",
+        "description": "電子郵件頻道所需。留空以關閉電子郵件功能。",
         "placeholder": "smtp.example.com"
       },
       "smtpPort": {
-        "label": "SMTP連接埠",
-        "description": "通常使用 STARTTLS 的 587 連接埠或使用 TLS 的 465 連接埠。"
+        "label": "SMTP 連接埠",
+        "description": "通常為搭配 STARTTLS 的 587 或搭配 TLS 的 465。"
       },
       "smtpSecure": {
-        "label": "從一開始就使用TLS",
-        "description": "啟用 465 連接埠。保持 587 連接埠關閉，該連接埠會自動升級至 TLS。"
+        "label": "一開始就使用 TLS",
+        "description": "連接埠 465 請開啟。連接埠 587 請關閉，它會自動升級為 TLS。"
       },
       "smtpUser": {
         "label": "SMTP 使用者名稱",
-        "description": "如果伺服器不需要登錄，請留空。"
+        "description": "如果伺服器不需要登入，請留空。"
       },
       "smtpPassword": {
-        "label": "SMTP密碼",
+        "label": "SMTP 密碼",
         "description": "已加密儲存。"
       },
       "smtpFrom": {
-        "label": "來自地址",
-        "description": "寄件者警報來自。",
-        "placeholder": "終端 <alerts@example.com>"
+        "label": "寄件者地址",
+        "description": "警示發送的來源地址。",
+        "placeholder": "Termix <alerts@example.com>"
       }
     },
     "user": {
       "popups": {
-        "label": "彈出式警報",
-        "description": "使用Termix時會彈出哪些新提醒？它們都會發送到您的收件匣。",
-        "all": "所有警報",
-        "warning": "警告和關鍵訊息",
-        "critical": "僅限關鍵",
-        "off": "取消全選"
+        "label": "警示彈出視窗",
+        "description": "在使用 Termix 時，哪些新警示會彈出。它們一律會進入收件匣。",
+        "all": "所有警示",
+        "warning": "警告與嚴重",
+        "critical": "僅嚴重",
+        "off": "無"
+      },
+      "alwaysShowActions": {
+        "label": "始終顯示按鈕",
+        "description": "保持每個警示、頻道和規則下方的按鈕可見。關閉後僅在滑鼠懸停時顯示。"
       }
     }
   },
   "sections": {
     "inbox": "收件匣",
-    "channels": "通道",
-    "rules": "配送規則"
+    "channels": "頻道",
+    "rules": "傳遞規則"
   },
   "severity": {
     "info": "資訊",
     "success": "成功",
     "warning": "警告",
-    "critical": "批判的"
+    "critical": "嚴重"
   },
   "inbox": {
     "sourceTermix": "Termix",
     "openLink": "開啟",
     "view": "檢視",
+    "viewInInbox": "在收件匣中檢視",
+    "close": "關閉",
     "unread": "未讀",
-    "deliveryFailed_one": "{{count}} 頻道失敗",
-    "deliveryFailed_other": "{{count}} 頻道失敗",
+    "deliveryFailed_other": "{{count}} 個頻道失敗",
     "markRead": "標記為已讀",
     "markUnread": "標記為未讀",
     "markAllRead": "全部標記為已讀",
     "delete": "刪除",
-    "clearRead": "刪除已讀提醒",
-    "cleared_one": "已刪除 {{count}} 警報",
-    "cleared_other": "已刪除 {{count}} 警報",
-    "filterAll": "全選",
+    "clearRead": "刪除已讀警示",
+    "cleared_other": "已刪除 {{count}} 則警示",
+    "filterAll": "全部",
     "filterUnread": "未讀",
     "anySeverity": "任何嚴重程度",
     "anySource": "任何來源",
-    "openAll": "在標籤頁中開啟",
-    "empty": "目前尚未收到任何警報。",
-    "emptyUnread": "你們都跟上了。",
-    "loadMore": "加載更多"
+    "openAll": "在新分頁中開啟",
+    "empty": "尚無警示。",
+    "emptyUnread": "您已讀完所有內容。",
+    "loadMore": "載入更多",
+    "deleteConfirm": "要刪除警示「{{title}}」嗎？",
+    "clearReadConfirm": "刪除所有已讀通知？",
+    "search": "搜尋通知",
+    "noMatches": "沒有符合搜尋條件的通知。"
   },
   "channels": {
-    "intro": "通道是警報可以發送到 Termix 外部的途徑。發送規則決定哪些警報使用哪個通道。",
+    "intro": "頻道是用來將通知送出 Termix 的管道。傳送規則會決定哪些通知使用這些頻道。",
     "add": "新增頻道",
     "edit": "編輯頻道",
-    "test": "發送測試",
-    "testSent": "已發送測試警報",
-    "testFailed": "測試失敗： {{error}}",
+    "test": "傳送測試",
+    "testSent": "測試通知已傳送",
+    "testFailed": "測試失敗：{{error}}",
     "deleteConfirm": "刪除頻道「{{name}}」？",
     "deleted": "頻道已刪除",
-    "empty": "暫無頻道。",
+    "empty": "尚無頻道。",
     "enabled": "已啟用",
-    "needsSave": "該通道需要重新打開並保存才能發送訊息。",
+    "needsSave": "此頻道需要重新開啟並儲存後才能傳送。",
     "name": "名稱",
     "nameRequired": "名稱為必填",
     "type": "類型",
@@ -117,59 +121,62 @@
       "webhook": "Webhook",
       "ntfy": "ntfy",
       "discord": "Discord",
-      "email": "電子郵件"
+      "email": "Email"
     },
-    "emailUnavailable": "電子郵件需要 SMTP 伺服器，管理員可以在「警報」設定中進行設定。",
+    "emailUnavailable": "Email 需要 SMTP 伺服器，這需要管理員在通知設定中設定。",
     "webhookUrl": "URL",
-    "webhookHint": "取得每個警報的 JSON 正文。",
+    "webhookHint": "每次通知都會收到 JSON 格式的內容。",
     "method": "方法",
-    "headers": "標題",
-    "headersHint": "每行一個，格式為：名稱:值。",
+    "headers": "標頭",
+    "headersHint": "每行一個，例如 Name: value。",
     "ntfyServer": "伺服器 URL",
     "ntfyTopic": "主題",
-    "ntfyToken": "訪問令牌（可選）",
+    "ntfyToken": "存取權杖（選填）",
     "discordUrl": "Discord webhook URL",
-    "discordHint": "在 Discord 的頻道設定中，位於「整合」下方。",
-    "discordUsername": "顯示名稱（可選）",
-    "discordAvatar": "頭像網址（可選）",
-    "emailTo": "發送至",
-    "emailHint": "多個地址之間以逗號分隔。",
-    "privateNetwork": "允許使用專用網路位址",
-    "privateNetworkHint": "僅適用於管理員允許新增至私有端點清單中的主機。"
+    "discordHint": "來自 Discord 頻道設定中的整合功能。",
+    "discordUsername": "顯示名稱（選填）",
+    "discordAvatar": "頭像 URL（選填）",
+    "emailTo": "傳送至",
+    "emailHint": "多個地址請以逗號分隔。",
+    "privateNetwork": "允許私人網路位址",
+    "privateNetworkHint": "僅適用於管理員在私人端點清單中允許的主機。"
   },
   "rules": {
-    "intro": "發送規則會將符合的提醒傳送到您的頻道。提醒也會始終保留在收件匣中。",
+    "intro": "傳送規則會將符合條件的通知傳送至您的頻道。通知也會保留在收件匣中。",
     "add": "新增規則",
     "edit": "編輯規則",
-    "empty": "目前還沒有規則，所以提醒只會顯示在收件匣中。",
+    "empty": "尚無規則，因此通知只會顯示在收件匣中。",
     "needChannel": "請先新增頻道。",
     "enabled": "已啟用",
     "name": "名稱",
     "nameRequired": "名稱為必填",
-    "match": "發送提醒",
-    "matchHint": "*適用於所有自動化操作。 *適用於所有自動化操作，或某一特定類型。",
+    "match": "要傳送的通知",
+    "matchHint": "* 代表所有，automations.* 代表所有來自自動化的通知，或指定一種類型。",
     "minSeverity": "至少",
-    "channels": "發送至",
-    "channelRequired": "至少選擇一個頻道",
-    "deleteConfirm": "刪除規則“{{name}}”？",
-    "everything": "一切",
-    "summary": "{{match}}、 {{severity}} 或更高，至 {{channels}}"
+    "channels": "傳送至",
+    "channelRequired": "請至少選擇一個頻道",
+    "deleteConfirm": "刪除規則「{{name}}」？",
+    "everything": "所有",
+    "summary": "{{match}}，{{severity}} 或更高，傳送至 {{channels}}"
   },
   "actions": {
     "cancel": "取消",
     "save": "儲存",
-    "saving": "儲存中…",
     "delete": "刪除"
   },
   "widget": {
-    "name": "警報動態",
-    "description": "您最新的提醒，以及快速標記為已讀的功能。",
-    "maxItems": "最大物品數",
-    "showRead": "顯示已讀提醒",
-    "allClear": "一切正常",
+    "name": "通知動態",
+    "description": "您最新的通知，並提供快速標記為已讀的方式",
+    "maxItems": "最大項目數",
+    "showRead": "顯示已讀警示",
+    "allClear": "全部清除",
     "loading": "載入中..."
   },
   "plugin": {
-    "name": "Alerts"
+    "name": "警示"
+  },
+  "alertSettings": {
+    "title": "警示設定",
+    "display": "顯示"
   }
 }

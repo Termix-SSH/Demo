@@ -1,34 +1,30 @@
 {
   "nav": {
-    "alerts": "Aviseringar"
+    "alerts": "Varningar"
   },
   "permissions": {
     "use": {
       "title": "Använd varningar",
-      "description": "Få aviseringar i inkorgen och skicka dem till dina egna kanaler."
+      "description": "Få varningar i inkorgen och skicka dem till dina egna kanaler."
     }
-  },
-  "onboarding": {
-    "feature": "Aviseringar",
-    "featureDesc": "Varje avisering i en inkorg, skickad vidare till Discord, ntfy, e-post eller en webhook om du vill."
   },
   "settings": {
     "group": {
-      "general": "Allmän",
+      "general": "Allmänt",
       "email": "E-post"
     },
     "admin": {
       "announcements": {
-        "label": "Termix-meddelanden",
-        "description": "Visa nyheter från Termix-teamet, som säkerhetsmeddelanden och pressmeddelanden, i allas inkorg."
+        "label": "Termix-nyheter",
+        "description": "Visa nyheter från Termix-teamet, som säkerhetsmeddelanden och nya versioner, i allas inkorg."
       },
       "retentionDays": {
         "label": "Behåll varningar i (dagar)",
-        "description": "Äldre aviseringar tas bort från alla inkorgar."
+        "description": "Äldre varningar tas bort från alla inkorgar."
       },
       "smtpHost": {
         "label": "SMTP-server",
-        "description": "Behövs för e-postkanaler. Lämna tomt för att stänga av e-post.",
+        "description": "Krävs för e-postkanaler. Lämna tomt för att stänga av e-post.",
         "placeholder": "smtp.example.com"
       },
       "smtpPort": {
@@ -36,31 +32,35 @@
         "description": "Vanligtvis 587 med STARTTLS eller 465 med TLS."
       },
       "smtpSecure": {
-        "label": "Använd TLS från början",
-        "description": "Aktivera port 465. Avaktivera port 587, som uppgraderar till TLS på egen hand."
+        "label": "Använd TLS från start",
+        "description": "Aktivera för port 465. Lämna inaktiverat för 587, som uppgraderar till TLS automatiskt."
       },
       "smtpUser": {
         "label": "SMTP-användarnamn",
-        "description": "Lämna tomt om servern inte behöver inloggning."
+        "description": "Lämna tomt om servern inte kräver inloggning."
       },
       "smtpPassword": {
         "label": "SMTP-lösenord",
         "description": "Lagras krypterat."
       },
       "smtpFrom": {
-        "label": "Från adress",
-        "description": "Avsändaraviseringarna kommer från.",
+        "label": "Avsändaradress",
+        "description": "Den adress varningar skickas från.",
         "placeholder": "Termix <alerts@example.com>"
       }
     },
     "user": {
       "popups": {
-        "label": "Aviseringspopup-fönster",
-        "description": "Vilka nya aviseringar dyker upp när du använder Termix? De hamnar alltid i inkorgen.",
+        "label": "Varningspopupar",
+        "description": "Vilka nya varningar som visas som popup när du använder Termix. De hamnar alltid i inkorgen.",
         "all": "Alla varningar",
         "warning": "Varningar och kritiska",
-        "critical": "Endast kritisk",
-        "off": "Ingen"
+        "critical": "Endast kritiska",
+        "off": "Inga"
+      },
+      "alwaysShowActions": {
+        "label": "Visa alltid knappar",
+        "description": "Håll knapparna under varje varning, kanal och regel synliga. Stäng av för att bara visa dem vid hovring."
       }
     }
   },
@@ -71,57 +71,63 @@
   },
   "severity": {
     "info": "Info",
-    "success": "Framgång",
+    "success": "Lyckades",
     "warning": "Varning",
     "critical": "Kritisk"
   },
   "inbox": {
     "sourceTermix": "Termix",
     "openLink": "Öppna",
-    "view": "Se",
+    "view": "Visa",
+    "viewInInbox": "Visa i inkorgen",
+    "close": "Stäng",
     "unread": "Oläst",
     "deliveryFailed_one": "{{count}} kanal misslyckades",
     "deliveryFailed_other": "{{count}} kanaler misslyckades",
     "markRead": "Markera som läst",
     "markUnread": "Markera som oläst",
     "markAllRead": "Markera alla som lästa",
-    "delete": "Radera",
-    "clearRead": "Ta bort läsaviseringar",
-    "cleared_one": "Borttagen {{count}} -avisering",
-    "cleared_other": "Borttagna {{count}} varningar",
+    "delete": "Ta bort",
+    "clearRead": "Ta bort lästa varningar",
+    "cleared_one": "Tog bort {{count}} varning",
+    "cleared_other": "Tog bort {{count}} varningar",
     "filterAll": "Alla",
-    "filterUnread": "Oläst",
-    "anySeverity": "Vilken allvarlighetsgrad som helst",
-    "anySource": "Vilken källa som helst",
+    "filterUnread": "Olästa",
+    "anySeverity": "Alla allvarlighetsgrader",
+    "anySource": "Alla källor",
     "openAll": "Öppna i en flik",
-    "empty": "Inga varningar ännu.",
-    "emptyUnread": "Ni är helt uppdaterade.",
-    "loadMore": "Ladda mer"
+    "empty": "Inga varningar än.",
+    "emptyUnread": "Du har läst allt.",
+    "loadMore": "Ladda mer",
+    "deleteConfirm": "Ta bort varningen {{title}}?",
+    "clearReadConfirm": "Ta bort alla lästa aviseringar?",
+    "search": "Sök aviseringar",
+    "noMatches": "Inga aviseringar matchar din sökning."
   },
   "channels": {
-    "intro": "Kanaler är där aviseringar kan skickas utanför Termix. Leveransregler väljer vilka aviseringar som använder dem.",
+    "intro": "Kanaler är var aviseringar kan skickas utanför Termix. Leveransregler väljer vilka aviseringar som använder dem.",
     "add": "Lägg till kanal",
     "edit": "Redigera kanal",
     "test": "Skicka ett test",
     "testSent": "Testavisering skickad",
     "testFailed": "Testet misslyckades: {{error}}",
     "deleteConfirm": "Ta bort kanalen \"{{name}}\"?",
-    "deleted": "Kanal borttagen",
-    "empty": "Inga kanaler än.",
+    "deleted": "Kanalen har tagits bort",
+    "empty": "Inga kanaler ännu.",
     "enabled": "Aktiverad",
-    "needsSave": "Den här kanalen måste öppnas och sparas igen innan den kan skicka.",
+    "needsSave": "Denna kanal måste öppnas och sparas igen innan den kan skicka.",
     "name": "Namn",
     "nameRequired": "Namn krävs",
     "type": "Typ",
     "types": {
-      "webhook": "Webbhook",
+      "webhook": "Webhook",
       "ntfy": "ntfy",
-      "discord": "Disharmoni",
+      "discord": "Discord",
       "email": "E-post"
     },
-    "emailUnavailable": "E-post behöver en SMTP-server, vilket en administratör konfigurerar i aviseringsinställningarna.",
+    "emailUnavailable": "E-post kräver en SMTP-server, som en administratör konfigurerar i inställningarna för aviseringar.",
     "webhookUrl": "URL",
-    "webhookHint": "Hämtar en JSON-text för varje avisering.",
+    "webhookHint": "Får en JSON-kropp för varje avisering.",
     "method": "Metod",
     "headers": "Rubriker",
     "headersHint": "En per rad, som Namn: värde.",
@@ -133,9 +139,9 @@
     "discordUsername": "Visningsnamn (valfritt)",
     "discordAvatar": "Avatar-URL (valfritt)",
     "emailTo": "Skicka till",
-    "emailHint": "Separera mer än en adress med kommatecken.",
+    "emailHint": "Separera flera adresser med kommatecken.",
     "privateNetwork": "Tillåt en privat nätverksadress",
-    "privateNetworkHint": "Fungerar bara för värdar som en administratör tillåter i listan över privata slutpunkter."
+    "privateNetworkHint": "Fungerar bara för värdar som en administratör tillåter i listan över privata ändpunkter."
   },
   "rules": {
     "intro": "En leveransregel skickar matchande aviseringar till dina kanaler. Aviseringar finns alltid kvar i inkorgen också.",
@@ -147,8 +153,8 @@
     "name": "Namn",
     "nameRequired": "Namn krävs",
     "match": "Aviseringar att skicka",
-    "matchHint": "* för allt, automatiseringar.* för allt från automatiseringar, eller en exakt sort.",
-    "minSeverity": "Åtminstone",
+    "matchHint": "* för allt, automations.* för allt från automationer, eller en exakt typ.",
+    "minSeverity": "Minst",
     "channels": "Skicka till",
     "channelRequired": "Välj minst en kanal",
     "deleteConfirm": "Ta bort regeln \"{{name}}\"?",
@@ -156,20 +162,23 @@
     "summary": "{{match}}, {{severity}} eller högre, till {{channels}}"
   },
   "actions": {
-    "cancel": "Avboka",
+    "cancel": "Avbryt",
     "save": "Spara",
-    "saving": "Sparande...",
-    "delete": "Radera"
+    "delete": "Ta bort"
   },
   "widget": {
     "name": "Aviseringsflöde",
     "description": "Dina senaste aviseringar, med ett snabbt sätt att markera dem som lästa",
-    "maxItems": "Max antal artiklar",
-    "showRead": "Visa läsaviseringar",
-    "allClear": "Faran över",
-    "loading": "Belastning..."
+    "maxItems": "Max antal objekt",
+    "showRead": "Visa lästa aviseringar",
+    "allClear": "Allt klart",
+    "loading": "Laddar..."
   },
   "plugin": {
-    "name": "Alerts"
+    "name": "Aviseringar"
+  },
+  "alertSettings": {
+    "title": "Aviseringsinställningar",
+    "display": "Visning"
   }
 }

@@ -5,12 +5,8 @@
   "permissions": {
     "use": {
       "title": "Sử dụng cảnh báo",
-      "description": "Nhận thông báo trong hộp thư đến và chia sẻ chúng lên các kênh của riêng bạn."
+      "description": "Nhận cảnh báo trong hộp thư đến và gửi chúng đến các kênh của riêng bạn."
     }
-  },
-  "onboarding": {
-    "feature": "Cảnh báo",
-    "featureDesc": "Tất cả thông báo đều được tập trung trong một hộp thư đến, sau đó được gửi đến Discord, NTFS, email hoặc webhook nếu bạn muốn."
   },
   "settings": {
     "group": {
@@ -19,97 +15,105 @@
     },
     "admin": {
       "announcements": {
-        "label": "Thông báo của Termix",
-        "description": "Hiển thị tin tức từ đội ngũ Termix, chẳng hạn như thông báo bảo mật và bản phát hành, trong hộp thư đến của mọi người."
+        "label": "Thông báo từ Termix",
+        "description": "Hiển thị tin tức từ đội ngũ Termix, như các thông báo bảo mật và bản phát hành, trong hộp thư đến của mọi người."
       },
       "retentionDays": {
         "label": "Giữ cảnh báo trong (ngày)",
-        "description": "Các thông báo cũ hơn sẽ bị xóa khỏi mọi hộp thư đến."
+        "description": "Các cảnh báo cũ sẽ bị xóa khỏi mọi hộp thư đến."
       },
       "smtpHost": {
         "label": "Máy chủ SMTP",
-        "description": "Cần thiết cho các kênh email. Để trống nếu muốn tắt email.",
+        "description": "Cần thiết cho các kênh email. Để trống để tắt email.",
         "placeholder": "smtp.example.com"
       },
       "smtpPort": {
         "label": "Cổng SMTP",
-        "description": "Thông thường là cổng 587 với STARTTLS hoặc 465 với TLS."
+        "description": "Thường là 587 với STARTTLS hoặc 465 với TLS."
       },
       "smtpSecure": {
-        "label": "Hãy sử dụng TLS ngay từ đầu.",
-        "description": "Bật tính năng này cho cổng 465. Tắt tính năng cho cổng 587, vì cổng này sẽ tự động nâng cấp lên TLS."
+        "label": "Sử dụng TLS ngay từ đầu",
+        "description": "Bật cho cổng 465. Tắt cho 587, cổng này sẽ tự nâng cấp lên TLS."
       },
       "smtpUser": {
         "label": "Tên người dùng SMTP",
-        "description": "Để trống nếu máy chủ không cần đăng nhập."
+        "description": "Để trống nếu máy chủ không yêu cầu đăng nhập."
       },
       "smtpPassword": {
         "label": "Mật khẩu SMTP",
         "description": "Được lưu trữ dưới dạng mã hóa."
       },
       "smtpFrom": {
-        "label": "Từ địa chỉ",
-        "description": "Thông báo đến từ nguồn nào?",
+        "label": "Địa chỉ gửi",
+        "description": "Người gửi mà các cảnh báo xuất phát từ đó.",
         "placeholder": "Termix <alerts@example.com>"
       }
     },
     "user": {
       "popups": {
-        "label": "Cửa sổ bật lên cảnh báo",
-        "description": "Những thông báo mới nào xuất hiện khi bạn sử dụng Termix? Chúng luôn được gửi đến hộp thư đến.",
+        "label": "Cảnh báo dạng popup",
+        "description": "Những cảnh báo mới nào sẽ hiện lên dạng popup khi bạn sử dụng Termix. Chúng luôn được đưa vào hộp thư đến.",
         "all": "Tất cả cảnh báo",
-        "warning": "Cảnh báo và thông tin quan trọng",
-        "critical": "Chỉ quan trọng",
-        "off": "Không"
+        "warning": "Cảnh báo và nghiêm trọng",
+        "critical": "Chỉ nghiêm trọng",
+        "off": "Không có"
+      },
+      "alwaysShowActions": {
+        "label": "Luôn hiển thị nút",
+        "description": "Giữ các nút dưới mỗi cảnh báo, kênh và quy tắc luôn hiển thị. Tắt để chỉ hiển thị chúng khi di chuột qua."
       }
     }
   },
   "sections": {
     "inbox": "Hộp thư đến",
     "channels": "Kênh",
-    "rules": "Quy tắc giao hàng"
+    "rules": "Quy tắc phân phối"
   },
   "severity": {
     "info": "Thông tin",
     "success": "Thành công",
     "warning": "Cảnh báo",
-    "critical": "Phê bình"
+    "critical": "Nghiêm trọng"
   },
   "inbox": {
     "sourceTermix": "Termix",
     "openLink": "Mở",
     "view": "Xem",
+    "viewInInbox": "Xem trong hộp thư đến",
+    "close": "Đóng",
     "unread": "Chưa đọc",
-    "deliveryFailed_one": "{{count}} kênh bị lỗi",
-    "deliveryFailed_other": "{{count}} kênh bị lỗi",
+    "deliveryFailed_other": "{{count}} kênh thất bại",
     "markRead": "Đánh dấu là đã đọc",
     "markUnread": "Đánh dấu là chưa đọc",
     "markAllRead": "Đánh dấu tất cả là đã đọc",
     "delete": "Xóa",
-    "clearRead": "Xóa thông báo đã đọc",
-    "cleared_one": "Đã xóa cảnh báo {{count}}",
+    "clearRead": "Xóa cảnh báo đã đọc",
     "cleared_other": "Đã xóa {{count}} cảnh báo",
     "filterAll": "Tất cả",
     "filterUnread": "Chưa đọc",
-    "anySeverity": "Bất kỳ mức độ nghiêm trọng nào",
-    "anySource": "Bất kỳ nguồn nào",
-    "openAll": "Mở trong một tab",
-    "empty": "Chưa có thông báo nào.",
-    "emptyUnread": "Bạn đã nắm bắt được hết mọi thứ rồi.",
-    "loadMore": "Tải thêm"
+    "anySeverity": "Mọi mức độ nghiêm trọng",
+    "anySource": "Mọi nguồn",
+    "openAll": "Mở trong tab",
+    "empty": "Chưa có cảnh báo nào.",
+    "emptyUnread": "Bạn đã cập nhật hết rồi.",
+    "loadMore": "Tải thêm",
+    "deleteConfirm": "Xóa cảnh báo {{title}}?",
+    "clearReadConfirm": "Xóa tất cả cảnh báo đã đọc?",
+    "search": "Tìm kiếm cảnh báo",
+    "noMatches": "Không có cảnh báo nào khớp với tìm kiếm của bạn."
   },
   "channels": {
-    "intro": "Các kênh là nơi các cảnh báo có thể được gửi ra ngoài Termix. Các quy tắc phân phối sẽ chọn những cảnh báo nào sử dụng các kênh đó.",
+    "intro": "Kênh là nơi gửi cảnh báo ra ngoài Termix. Quy tắc phân phối sẽ quyết định kênh nào được sử dụng cho từng cảnh báo.",
     "add": "Thêm kênh",
     "edit": "Chỉnh sửa kênh",
-    "test": "Gửi một bài kiểm tra",
+    "test": "Gửi thử nghiệm",
     "testSent": "Đã gửi cảnh báo thử nghiệm",
-    "testFailed": "Kiểm tra thất bại: {{error}}",
+    "testFailed": "Thử nghiệm thất bại: {{error}}",
     "deleteConfirm": "Xóa kênh \"{{name}}\"?",
-    "deleted": "Kênh đã bị xóa",
+    "deleted": "Đã xóa kênh",
     "empty": "Chưa có kênh nào.",
     "enabled": "Đã bật",
-    "needsSave": "Kênh này cần được mở và lưu lại một lần nữa trước khi có thể gửi.",
+    "needsSave": "Kênh này cần được mở và lưu lại trước khi có thể gửi cảnh báo.",
     "name": "Tên",
     "nameRequired": "Tên là bắt buộc",
     "type": "Loại",
@@ -119,57 +123,60 @@
       "discord": "Discord",
       "email": "Email"
     },
-    "emailUnavailable": "Email cần có máy chủ SMTP, mà quản trị viên sẽ thiết lập trong phần cài đặt Thông báo.",
+    "emailUnavailable": "Email cần máy chủ SMTP, do quản trị viên thiết lập trong cài đặt Cảnh báo.",
     "webhookUrl": "URL",
-    "webhookHint": "Lấy nội dung JSON cho mỗi thông báo.",
-    "method": "Phương pháp",
-    "headers": "Tiêu đề",
-    "headersHint": "Mỗi mục một dòng, ví dụ: Tên: giá trị.",
+    "webhookHint": "Nhận nội dung JSON cho mỗi cảnh báo.",
+    "method": "Phương thức",
+    "headers": "Headers",
+    "headersHint": "Mỗi dòng một, ví dụ: Tên: giá trị.",
     "ntfyServer": "URL máy chủ",
     "ntfyTopic": "Chủ đề",
-    "ntfyToken": "Mã truy cập (tùy chọn)",
+    "ntfyToken": "Access token (tùy chọn)",
     "discordUrl": "URL webhook Discord",
-    "discordHint": "Bạn có thể chọn \"Integrations\" trong phần cài đặt kênh trên Discord.",
+    "discordHint": "Từ cài đặt của kênh trong Discord, mục Integrations.",
     "discordUsername": "Tên hiển thị (tùy chọn)",
-    "discordAvatar": "URL ảnh đại diện (tùy chọn)",
+    "discordAvatar": "URL avatar (tùy chọn)",
     "emailTo": "Gửi đến",
-    "emailHint": "Hãy sử dụng dấu phẩy để phân tách nhiều địa chỉ.",
+    "emailHint": "Tách nhiều địa chỉ bằng dấu phẩy.",
     "privateNetwork": "Cho phép địa chỉ mạng riêng",
-    "privateNetworkHint": "Chỉ hoạt động với các máy chủ mà quản trị viên cho phép trong danh sách điểm cuối riêng tư."
+    "privateNetworkHint": "Chỉ hoạt động với các host được quản trị viên cho phép trong danh sách endpoint riêng."
   },
   "rules": {
-    "intro": "Quy tắc phân phối sẽ gửi các thông báo phù hợp đến các kênh của bạn. Các thông báo này cũng luôn được lưu trữ trong hộp thư đến.",
+    "intro": "Quy tắc phân phối sẽ gửi các cảnh báo khớp đến kênh của bạn. Cảnh báo vẫn luôn hiển thị trong hộp thư đến.",
     "add": "Thêm quy tắc",
     "edit": "Chỉnh sửa quy tắc",
-    "empty": "Hiện chưa có quy tắc nào, vì vậy thông báo chỉ hiển thị trong hộp thư đến.",
-    "needChannel": "Trước tiên hãy thêm kênh.",
+    "empty": "Chưa có quy tắc nào, nên cảnh báo chỉ hiển thị trong hộp thư đến.",
+    "needChannel": "Hãy thêm kênh trước.",
     "enabled": "Đã bật",
     "name": "Tên",
     "nameRequired": "Tên là bắt buộc",
-    "match": "Thông báo cần gửi",
-    "matchHint": "* Cho mọi thứ, tự động hóa.* Cho mọi thứ từ tự động hóa, hoặc một loại cụ thể nào đó.",
+    "match": "Cảnh báo cần gửi",
+    "matchHint": "* cho tất cả, automations.* cho tất cả từ tự động hóa, hoặc một loại cụ thể.",
     "minSeverity": "Ít nhất",
     "channels": "Gửi đến",
     "channelRequired": "Chọn ít nhất một kênh",
     "deleteConfirm": "Xóa quy tắc \"{{name}}\"?",
-    "everything": "Mọi thứ",
-    "summary": "{{match}}, {{severity}} hoặc cao hơn, đến {{channels}}"
+    "everything": "Tất cả",
+    "summary": "{{match}}, {{severity}} trở lên, gửi đến {{channels}}"
   },
   "actions": {
     "cancel": "Hủy",
     "save": "Lưu",
-    "saving": "Đang lưu...",
     "delete": "Xóa"
   },
   "widget": {
-    "name": "Luồng cảnh báo",
-    "description": "Thông báo mới nhất của bạn, kèm theo cách nhanh để đánh dấu đã đọc.",
-    "maxItems": "Số lượng vật phẩm tối đa",
-    "showRead": "Hiển thị thông báo đã đọc",
-    "allClear": "Tất cả ổn",
+    "name": "Dòng cảnh báo",
+    "description": "Các cảnh báo mới nhất của bạn, với cách nhanh để đánh dấu đã đọc",
+    "maxItems": "Số mục tối đa",
+    "showRead": "Hiển thị cảnh báo đã đọc",
+    "allClear": "Tất cả đã ổn",
     "loading": "Đang tải..."
   },
   "plugin": {
-    "name": "Alerts"
+    "name": "Cảnh báo"
+  },
+  "alertSettings": {
+    "title": "Cài đặt cảnh báo",
+    "display": "Hiển thị"
   }
 }

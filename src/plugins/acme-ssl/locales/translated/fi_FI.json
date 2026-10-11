@@ -2,60 +2,60 @@
   "permissions": {
     "manage": {
       "title": "Hallinnoi ACME-sertifikaatteja",
-      "description": "Tarkista varmenteen tila ja pyydä uusi varmenne nyt."
+      "description": "Näe sertifikaatin tila ja pyydä uusi sertifikaatti nyt."
     }
   },
   "settings": {
     "autoRenew": {
-      "label": "Uudista automaattisesti",
-      "description": "Tarkista kahdesti päivässä ja hanki uusi varmenne, jos sitä ei ole, se ei kata verkkotunnusta tai se vanhenee 30 päivän kuluessa."
+      "label": "Uusi automaattisesti",
+      "description": "Tarkista kahdesti päivässä ja hanki uusi sertifikaatti, jos sitä ei ole, se ei kata verkkotunnusta tai se vanhenee 30 päivän kuluessa."
     },
     "domain": {
       "label": "Verkkotunnus",
-      "description": "Varmenteen julkinen verkkotunnus.",
-      "placeholder": "termix.esimerkki.com"
+      "description": "Sertifikaatin julkinen verkkotunnus.",
+      "placeholder": "termix.example.com"
     },
     "email": {
       "label": "Sähköposti",
-      "description": "ACME-tilin yhteystiedot ja vanhenemisilmoitukset.",
-      "placeholder": "admin@esimerkki.com"
+      "description": "Yhteystiedot ACME-tilille ja vanhenemismuistutuksiin.",
+      "placeholder": "admin@example.com"
     },
     "provider": {
-      "label": "Varmentaja",
-      "description": "Mistä varmenteen saa? Käytä testausympäristöä Let's Encrypt -nopeusrajoitusten ylittämättä.",
-      "letsencrypt": "Salataanpa",
-      "letsencryptStaging": "Let's Encrypt (vaiheistus)",
+      "label": "Sertifikaatin myöntäjä",
+      "description": "Mistä sertifikaatti haetaan. Käytä testiympäristöä (staging) välttääksesi Let's Encryptin nopeusrajoitukset.",
+      "letsencrypt": "Let's Encrypt",
+      "letsencryptStaging": "Let's Encrypt (testiympäristö)",
       "custom": "Mukautettu ACME-hakemisto"
     },
     "directoryUrl": {
       "label": "ACME-hakemiston URL-osoite",
-      "description": "Vain mukautetulle varmentajalle. URL-osoitteen on oltava https."
+      "description": "Vain mukautetulle sertifikaatin myöntäjälle. Tämän on oltava https-osoite."
     },
     "challengeType": {
-      "label": "Haasteen tyyppi",
-      "description": "Kuinka todistaa omistavasi verkkotunnuksen.",
-      "http": "HTTP - vaatii portin 80, johon internetistä voi päästä käsiksi",
-      "cloudflare": "DNS (Cloudflare) – vaatii Cloudflare API -tunnuksen"
+      "label": "Varmennustyyppi",
+      "description": "Miten todistat omistavasi verkkotunnuksen.",
+      "http": "HTTP - vaatii portin 80 saavutettavaksi internetistä",
+      "cloudflare": "DNS (Cloudflare) - vaatii Cloudflare API -avaimen"
     },
     "cloudflareToken": {
-      "label": "Cloudflare API -tunnus",
-      "description": "Laajuusaluetunnus, jolla on Zone:DNS:Edit-käyttöoikeus verkkotunnuksellesi."
+      "label": "Cloudflare API -avain",
+      "description": "Alueellinen avain, jossa on Zone:DNS:Edit-oikeus verkkotunnustasi varten."
     }
   },
   "status": {
     "title": "Sertifikaatin tila",
-    "none": "Ei todistusta",
-    "names": "Kannet {{names}}",
-    "issuer": "Myöntäjä {{issuer}}",
+    "none": "Ei sertifikaattia",
+    "names": "Kattaa {{names}}",
+    "issuer": "Myöntäjä: {{issuer}}",
     "expires": "Vanhenee {{date}}",
     "lastIssued": "Viimeksi myönnetty {{date}}",
     "lastError": "Viimeisin yritys epäonnistui: {{error}}",
-    "missing": "Aseta verkkotunnus, sähköpostiosoite ja haastetyyppisi tarvitsemat kentät ja tallenna ne ennen varmenteen pyytämistä.",
-    "request": "Pyydä todistus nyt",
-    "requesting": "Pyydetään varmennetta...",
+    "missing": "Aseta verkkotunnus, sähköposti ja varmennustyyppisi vaativat kentät, ja tallenna ennen sertifikaatin pyytämistä.",
+    "request": "Pyydä sertifikaatti nyt",
+    "requesting": "Pyydetään sertifikaattia...",
     "issued": "Sertifikaatti myönnetty ja asennettu"
   },
   "plugin": {
-    "name": "ACME Certificates"
+    "name": "ACME-sertifikaatit"
   }
 }

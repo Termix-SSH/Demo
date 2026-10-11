@@ -4,13 +4,9 @@
   },
   "permissions": {
     "use": {
-      "title": "Usar alertas",
-      "description": "Receba alertas na caixa de entrada e envie-os para os seus próprios canais."
+      "title": "Utilizar alertas",
+      "description": "Receber alertas na caixa de entrada e enviá-los para os seus próprios canais."
     }
-  },
-  "onboarding": {
-    "feature": "Alertas",
-    "featureDesc": "Todas as notificações numa única caixa de entrada, enviadas para o Discord, NTfy, e-mail ou webhook, se desejar."
   },
   "settings": {
     "group": {
@@ -19,48 +15,52 @@
     },
     "admin": {
       "announcements": {
-        "label": "Anúncios da Termix",
-        "description": "Exibir notícias da equipa Termix, como avisos de segurança e comunicados, na caixa de entrada de todos."
+        "label": "Anúncios do Termix",
+        "description": "Mostrar notícias da equipa do Termix, como avisos de segurança e lançamentos, na caixa de entrada de todos."
       },
       "retentionDays": {
-        "label": "Manter alertas durante (dias)",
-        "description": "Os alertas antigos são removidos de todas as caixas de entrada."
+        "label": "Manter alertas por (dias)",
+        "description": "Os alertas mais antigos são removidos de todas as caixas de entrada."
       },
       "smtpHost": {
         "label": "Servidor SMTP",
-        "description": "Necessário para canais de e-mail. Deixe em branco para desativar o e-mail.",
+        "description": "Necessário para canais de e-mail. Deixe vazio para desativar o e-mail.",
         "placeholder": "smtp.exemplo.com"
       },
       "smtpPort": {
-        "label": "porta SMTP",
-        "description": "Normalmente, utiliza-se a porta 587 com STARTTLS ou a porta 465 com TLS."
+        "label": "Porta SMTP",
+        "description": "Normalmente 587 com STARTTLS ou 465 com TLS."
       },
       "smtpSecure": {
-        "label": "Utilize TLS desde o início.",
-        "description": "Ative para a porta 465. Deixe desativado para a porta 587, que atualiza para TLS automaticamente."
+        "label": "Usar TLS desde o início",
+        "description": "Ative para a porta 465. Deixe desativado para a 587, que faz a atualização para TLS automaticamente."
       },
       "smtpUser": {
-        "label": "nome de utilizador SMTP",
-        "description": "Deixe em branco se o servidor não necessitar de login."
+        "label": "Nome de utilizador SMTP",
+        "description": "Deixe vazio se o servidor não exigir login."
       },
       "smtpPassword": {
         "label": "Palavra-passe SMTP",
-        "description": "Armazenado encriptado."
+        "description": "Armazenada encriptada."
       },
       "smtpFrom": {
-        "label": "Do endereço",
-        "description": "Os alertas do remetente provêm de:",
-        "placeholder": "Termix <alerts@example.com>"
+        "label": "Endereço de remetente",
+        "description": "O remetente dos alertas.",
+        "placeholder": "Termix <alertas@exemplo.com>"
       }
     },
     "user": {
       "popups": {
-        "label": "Janelas de alerta",
-        "description": "Que novos alertas aparecem enquanto utiliza o Termix? Chegam sempre na caixa de entrada.",
+        "label": "Pop-ups de alertas",
+        "description": "Quais os novos alertas que aparecem em pop-up enquanto utiliza o Termix. Todos vão sempre para a caixa de entrada.",
         "all": "Todos os alertas",
-        "warning": "Avisos e alertas",
-        "critical": "Somente crítico",
-        "off": "Nenhuma"
+        "warning": "Avisos e críticos",
+        "critical": "Apenas críticos",
+        "off": "Nenhum"
+      },
+      "alwaysShowActions": {
+        "label": "Mostrar sempre os botões",
+        "description": "Manter os botões sob cada alerta, canal e regra visíveis. Desative para os mostrar apenas ao passar o rato."
       }
     }
   },
@@ -79,37 +79,45 @@
     "sourceTermix": "Termix",
     "openLink": "Abrir",
     "view": "Ver",
+    "viewInInbox": "Ver na caixa de entrada",
+    "close": "Fechar",
     "unread": "Não lido",
     "deliveryFailed_one": "{{count}} canal falhou",
+    "deliveryFailed_many": "{{count}} canais falharam",
     "deliveryFailed_other": "{{count}} canais falharam",
     "markRead": "Marcar como lido",
-    "markUnread": "Marcar como não lida",
-    "markAllRead": "Marcar tudo como lido",
+    "markUnread": "Marcar como não lido",
+    "markAllRead": "Marcar todos como lidos",
     "delete": "Eliminar",
-    "clearRead": "Apagar alertas de leitura",
-    "cleared_one": "Alerta eliminado {{count}}",
-    "cleared_other": "Alertas excluídos {{count}}",
-    "filterAll": "Todas",
-    "filterUnread": "Não lido",
+    "clearRead": "Eliminar alertas lidos",
+    "cleared_one": "Eliminado {{count}} alerta",
+    "cleared_many": "Eliminados {{count}} alertas",
+    "cleared_other": "Eliminados {{count}} alertas",
+    "filterAll": "Todos",
+    "filterUnread": "Não lidos",
     "anySeverity": "Qualquer gravidade",
-    "anySource": "Qualquer fonte",
-    "openAll": "Abrir numa aba",
+    "anySource": "Qualquer origem",
+    "openAll": "Abrir num separador",
     "empty": "Ainda não há alertas.",
-    "emptyUnread": "Estão todos a par da situação.",
-    "loadMore": "Carregar mais"
+    "emptyUnread": "Está tudo atualizado.",
+    "loadMore": "Carregar mais",
+    "deleteConfirm": "Eliminar o alerta {{title}}?",
+    "clearReadConfirm": "Apagar todas as notificações lidas?",
+    "search": "Pesquisar notificações",
+    "noMatches": "Nenhuma notificação corresponde à sua pesquisa."
   },
   "channels": {
-    "intro": "Os canais são locais para onde os alertas podem ser enviados fora do Termix. As regras de entrega definem quais os alertas que os irão utilizar.",
+    "intro": "Os canais são o destino das notificações fora do Termix. As regras de entrega determinam quais notificações os utilizam.",
     "add": "Adicionar canal",
     "edit": "Editar canal",
-    "test": "Enviar um teste",
-    "testSent": "Alerta de teste enviado",
+    "test": "Enviar teste",
+    "testSent": "Notificação de teste enviada",
     "testFailed": "Teste falhou: {{error}}",
     "deleteConfirm": "Apagar o canal \"{{name}}\"?",
-    "deleted": "Canal excluído",
+    "deleted": "Canal apagado",
     "empty": "Ainda não há canais.",
     "enabled": "Ativado",
-    "needsSave": "Este canal precisa de ser aberto e guardado novamente antes de poder enviar mensagens.",
+    "needsSave": "Este canal precisa de ser aberto e guardado novamente antes de poder enviar.",
     "name": "Nome",
     "nameRequired": "O nome é obrigatório",
     "type": "Tipo",
@@ -117,40 +125,40 @@
       "webhook": "Webhook",
       "ntfy": "ntfy",
       "discord": "Discord",
-      "email": "E-mail"
+      "email": "Email"
     },
-    "emailUnavailable": "O envio de e-mails requer um servidor SMTP, que um administrador configura nas definições de Alertas.",
+    "emailUnavailable": "O email necessita de um servidor SMTP, que um administrador configura nas definições de Notificações.",
     "webhookUrl": "URL",
-    "webhookHint": "Obtém um corpo JSON para cada alerta.",
+    "webhookHint": "Recebe um corpo JSON para cada notificação.",
     "method": "Método",
     "headers": "Cabeçalhos",
-    "headersHint": "Um por linha, como por exemplo Nome: valor.",
+    "headersHint": "Um por linha, como Nome: valor.",
     "ntfyServer": "URL do servidor",
     "ntfyTopic": "Tópico",
     "ntfyToken": "Token de acesso (opcional)",
     "discordUrl": "URL do webhook do Discord",
-    "discordHint": "Nas definições do canal no Discord, em Integrações.",
-    "discordUsername": "Nome de visualização (opcional)",
+    "discordHint": "Das definições do canal no Discord, em Integrações.",
+    "discordUsername": "Nome de exibição (opcional)",
     "discordAvatar": "URL do avatar (opcional)",
     "emailTo": "Enviar para",
-    "emailHint": "Separe mais do que um endereço com vírgulas.",
-    "privateNetwork": "Permitir um endereço de rede privada",
-    "privateNetworkHint": "Funciona apenas para hosts que um administrador permite na lista de endpoints privados."
+    "emailHint": "Separe vários endereços com vírgulas.",
+    "privateNetwork": "Permitir endereço de rede privada",
+    "privateNetworkHint": "Funciona apenas para hosts permitidos por um administrador na lista de endpoints privados."
   },
   "rules": {
-    "intro": "Uma regra de entrega envia alertas correspondentes aos seus canais. Os alertas também permanecem sempre na caixa de entrada.",
+    "intro": "Uma regra de entrega envia notificações correspondentes para os seus canais. As notificações permanecem também na caixa de entrada.",
     "add": "Adicionar regra",
     "edit": "Editar regra",
-    "empty": "Ainda não existem regras, pelo que os alertas apenas aparecem na caixa de entrada.",
-    "needChannel": "Primeiro, adicione um canal.",
+    "empty": "Ainda não há regras, pelo que as notificações só aparecem na caixa de entrada.",
+    "needChannel": "Adicione primeiro um canal.",
     "enabled": "Ativado",
     "name": "Nome",
     "nameRequired": "O nome é obrigatório",
-    "match": "Alertas a enviar",
-    "matchHint": "* para tudo, automações.* para tudo, desde automações, a um tipo específico.",
+    "match": "Notificações a enviar",
+    "matchHint": "* para tudo, automations.* para tudo proveniente de automações, ou um tipo exato.",
     "minSeverity": "Pelo menos",
     "channels": "Enviar para",
-    "channelRequired": "Escolha pelo menos um canal.",
+    "channelRequired": "Selecione pelo menos um canal",
     "deleteConfirm": "Apagar a regra \"{{name}}\"?",
     "everything": "Tudo",
     "summary": "{{match}}, {{severity}} ou superior, para {{channels}}"
@@ -158,18 +166,21 @@
   "actions": {
     "cancel": "Cancelar",
     "save": "Guardar",
-    "saving": "A guardar...",
-    "delete": "Eliminar"
+    "delete": "Apagar"
   },
   "widget": {
-    "name": "Feed de alertas",
-    "description": "Os seus alertas mais recentes, com uma forma rápida de os marcar como lidos.",
+    "name": "Feed de Notificações",
+    "description": "As suas notificações mais recentes, com uma forma rápida de as marcar como lidas",
     "maxItems": "Itens máximos",
-    "showRead": "Mostrar alertas de leitura",
-    "allClear": "Tudo em ordem",
+    "showRead": "Mostrar alertas lidos",
+    "allClear": "Tudo limpo",
     "loading": "A carregar..."
   },
   "plugin": {
-    "name": "Alerts"
+    "name": "Alertas"
+  },
+  "alertSettings": {
+    "title": "Definições de alertas",
+    "display": "Exibição"
   }
 }

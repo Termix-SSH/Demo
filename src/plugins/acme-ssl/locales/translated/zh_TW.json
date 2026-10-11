@@ -1,61 +1,61 @@
 {
   "permissions": {
     "manage": {
-      "title": "管理 ACME 證書",
-      "description": "查看證書狀態並立即申請新證書。"
+      "title": "管理 ACME 憑證",
+      "description": "查看憑證狀態並立即申請新憑證。"
     }
   },
   "settings": {
     "autoRenew": {
-      "label": "自動續訂",
-      "description": "每天檢查兩次，如果沒有證書、證書不涵蓋該網域或證書將在 30 天內過期，則取得新證書。"
+      "label": "自動更新",
+      "description": "每天檢查兩次，在沒有憑證、憑證未涵蓋該網域，或憑證將在 30 天內過期時，自動取得新憑證。"
     },
     "domain": {
       "label": "網域",
-      "description": "憑證使用的公開網域名稱。",
+      "description": "憑證的公開網域名稱。",
       "placeholder": "termix.example.com"
     },
     "email": {
       "label": "電子郵件",
-      "description": "ACME帳戶及到期通知的聯絡信箱。",
+      "description": "用於 ACME 帳戶聯絡與過期通知的電子郵件地址。",
       "placeholder": "admin@example.com"
     },
     "provider": {
-      "label": "憑證授權中心",
-      "description": "證書取得途徑。使用測試環境進行測試，避免超出 Let's Encrypt 的速率限制。",
+      "label": "憑證授權單位",
+      "description": "取得憑證的來源。使用測試環境可避免觸發 Let's Encrypt 的速率限制。",
       "letsencrypt": "Let's Encrypt",
-      "letsencryptStaging": "Let's Encrypt（測試版）",
+      "letsencryptStaging": "Let's Encrypt（測試環境）",
       "custom": "自訂 ACME 目錄"
     },
     "directoryUrl": {
-      "label": "ACME目錄URL",
+      "label": "ACME 目錄 URL",
       "description": "僅適用於自訂憑證授權單位。必須是 https URL。"
     },
     "challengeType": {
-      "label": "挑戰類型",
-      "description": "如何證明您擁有該網域。",
-      "http": "HTTP協定需要80個可透過網際網路存取的連接埠。",
-      "cloudflare": "DNS（Cloudflare）－需要 Cloudflare API 令牌"
+      "label": "驗證類型",
+      "description": "用於證明您擁有該網域的方式。",
+      "http": "HTTP - 需要從網際網路可存取 80 埠",
+      "cloudflare": "DNS（Cloudflare）- 需要 Cloudflare API 權杖"
     },
     "cloudflareToken": {
-      "label": "Cloudflare API 令牌",
-      "description": "具有您網域 Zone:DNS:Edit 權限的限定範圍權杖。"
+      "label": "Cloudflare API 權杖",
+      "description": "具有您網域 Zone:DNS:Edit 權限的範圍權杖。"
     }
   },
   "status": {
-    "title": "證書狀態",
+    "title": "憑證狀態",
     "none": "無憑證",
-    "names": "封面 {{names}}",
-    "issuer": "由 {{issuer}} 發行",
-    "expires": "到期日 {{date}}",
-    "lastIssued": "上次簽發日期 {{date}}",
-    "lastError": "最後嘗試失敗： {{error}}",
-    "missing": "設定網域名稱、電子郵件和您的質詢類型所需的字段，然後儲存，再申請憑證。",
-    "request": "立即申請證書",
-    "requesting": "請求憑證中...",
-    "issued": "證書已頒發並安裝"
+    "names": "涵蓋 {{names}}",
+    "issuer": "由 {{issuer}} 頒發",
+    "expires": "過期日期：{{date}}",
+    "lastIssued": "上次頒發日期：{{date}}",
+    "lastError": "上次嘗試失敗：{{error}}",
+    "missing": "請先設定網域、電子郵件以及驗證類型所需的欄位，然後儲存，再申請憑證。",
+    "request": "立即申請憑證",
+    "requesting": "正在申請憑證...",
+    "issued": "憑證已頒發並安裝"
   },
   "plugin": {
-    "name": "ACME Certificates"
+    "name": "ACME 憑證"
   }
 }

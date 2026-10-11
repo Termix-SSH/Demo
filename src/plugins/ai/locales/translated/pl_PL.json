@@ -2,42 +2,50 @@
   "permissions": {
     "use": {
       "title": "Użyj asystenta",
-      "description": "Otwórz asystenta i zadaj mu pytania."
+      "description": "Otwórz asystenta i zadawaj mu pytania."
     },
     "manage_providers": {
       "title": "Zarządzaj dostawcami",
-      "description": "Dodawaj, edytuj i usuwaj dostawców sztucznej inteligencji oraz ich klucze API."
+      "description": "Dodawaj, edytuj i usuwaj dostawców AI oraz ich klucze API."
     },
     "apply_proposals": {
       "title": "Zastosuj propozycje",
-      "description": "Pozwól asystentowi wprowadzić sugerowane zmiany."
+      "description": "Pozwól asystentowi wprowadzać sugerowane przez niego zmiany."
     },
-    "services.use": {
-      "title": "Użyj sztucznej inteligencji z innych funkcji",
-      "description": "Inne funkcje mogą umożliwiać wywoływanie asystenta w Twoim imieniu."
+    "services": {
+      "use": {
+        "title": "Używaj AI w innych funkcjach",
+        "description": "Inne funkcje mogą wywoływać asystenta w Twoim imieniu."
+      }
     },
-    "secrets.share": {
-      "title": "Udostępnij klucz API",
-      "description": "Inne funkcje mogą wykorzystywać zapisany klucz API AI, nawet go nie widząc."
+    "secrets": {
+      "share": {
+        "title": "Udostępnij klucz API",
+        "description": "Inne funkcje mogą korzystać z zapisanego klucza API AI, nie widząc go."
+      }
     }
   },
   "settings": {
     "assistantUnavailable": "Asystent AI jest wyłączony na tym serwerze.",
     "providersNeedOptIn": "Włącz asystenta AI powyżej, aby dodać dostawców.",
+    "providers": {
+      "label": "Dostawcy",
+      "description": "Usługi AI, z których mogą korzystać asystent i agenci."
+    },
     "admin": {
       "globallyEnabled": {
         "label": "Asystent AI",
-        "description": "Pozwól użytkownikom włączyć asystenta AI. Gdy ta opcja jest wyłączona, asystent jest ukryty i zablokowany dla wszystkich."
+        "description": "Pozwól użytkownikom włączać asystenta AI. Gdy ta opcja jest wyłączona, asystent jest ukryty i zablokowany dla wszystkich."
       },
       "privateEndpoints": {
         "label": "Dozwolone prywatne hosty AI",
-        "description": "Hosty w Twojej sieci prywatnej, na które użytkownicy mogą wskazać dostawcę, na przykład samodzielnie hostowany Ollama. Umieść jednego hosta na każdej linii."
+        "description": "Hosty w Twojej prywatnej sieci, na które użytkownicy mogą wskazywać dostawcę, np. własny Ollama. Wpisz jeden host w każdym wierszu."
       }
     },
     "host": {
       "enableAiAssistant": {
         "label": "Włącz asystenta AI",
-        "description": "Zezwól asystentowi AI na pomoc w terminalu tego hosta. Domyślnie wyłączone, ale nadal wymaga włączenia AI na Twoim koncie."
+        "description": "Pozwól asystentowi AI pomagać w terminalu tego hosta. Domyślnie wyłączone; wymaga również włączenia AI dla Twojego konta."
       }
     }
   },
@@ -47,10 +55,10 @@
     "stop": "Zatrzymaj",
     "save": "Zapisz",
     "cancel": "Anuluj",
-    "running": "działa",
+    "running": "wykonywanie",
     "approve": "Zatwierdź",
     "reject": "Odrzuć",
-    "inputPlaceholder": "Zapytaj o swoje serwery lub opisz proponowaną zmianę",
+    "inputPlaceholder": "Zapytaj o swoje serwery lub opisz zmianę do zaproponowania",
     "selectProvider": "Wybierz dostawcę",
     "providerSettings": "Ustawienia dostawcy",
     "addProvider": "Dodaj dostawcę",
@@ -58,141 +66,155 @@
     "removeProvider": "Usuń dostawcę",
     "providerType": "Dostawca",
     "providerLabel": "Nazwa",
-    "providerLabelPlaceholder": "Na przykład: Ollama lokalnie",
+    "providerLabelPlaceholder": "Na przykład: Lokalny Ollama",
     "baseUrl": "Adres serwera",
     "apiKey": "Klucz API",
-    "defaultModel": "Model domyślny",
+    "defaultModel": "Domyślny model",
     "defaultModelPlaceholder": "Na przykład: llama3.1 lub claude-opus-5",
     "labelRequired": "Podaj nazwę tego dostawcy",
     "providerSaveFailed": "Nie udało się zapisać dostawcy",
-    "providerUpdated": "Zaktualizowano dostawcę",
-    "providerDeleteFailed": "Nie można usunąć dostawcy",
-    "privateEndpointHint": "Adresy w sieci prywatnej wymagają, aby administrator najpierw dopuścił dany host.",
+    "providerUpdated": "Dostawca zaktualizowany",
+    "providerDeleteFailed": "Nie udało się usunąć dostawcy",
+    "privateEndpointHint": "Adresy w Twojej prywatnej sieci wymagają najpierw zezwolenia administratora na host.",
     "providerOllama": "Ollama",
     "providerAnthropic": "Anthropic",
     "providerOpenai": "OpenAI",
     "providerGemini": "Google Gemini",
     "providerOpenaiCompatible": "Kompatybilny z OpenAI",
-    "toolArguments": "Dane wejściowe",
+    "toolArguments": "Wejście",
     "toolResult": "Wynik",
     "statusApplied": "Zastosowano",
     "statusRejected": "Odrzucono",
-    "proposalApplied": "Zastosowano zmianę",
-    "proposalApplyFailed": "Nie można zastosować zmiany",
-    "proposalRejectFailed": "Nie można odrzucić zmiany",
+    "proposalApplyFailed": "Nie udało się zastosować zmiany",
+    "proposalRejectFailed": "Nie udało się odrzucić zmiany",
     "enableTitle": "Włącz asystenta AI",
-    "enableDescription": "Pozwól asystentowi odczytać konfigurację i proponować zmiany do Twojego zatwierdzenia.",
-    "readOnlyCommands": "Zezwalaj na polecenia diagnostyczne tylko do odczytu",
-    "readOnlyCommandsDescription": "Asystent może uruchamiać krótką listę bezpiecznych poleceń, takich jak df czy uptime, bez pytania za każdym razem. Wszystko, co zmienia serwer, jest zawsze najpierw proponowane do zatwierdzenia.",
-    "modelDetectFailed": "Nie udało się skontaktować z dostawcą, więc jest to lista ogólna. Możesz wpisać dowolną nazwę modelu.",
-    "modelCustom": "Wprowadź nazwę modelu",
+    "enableDescription": "Pozwól asystentowi odczytywać Twoją konfigurację i sugerować zmiany do zatwierdzenia.",
+    "readOnlyCommands": "Zezwól na polecenia diagnostyczne tylko do odczytu",
+    "readOnlyCommandsDescription": "Asystent może uruchamiać krótką listę bezpiecznych poleceń, takich jak df i uptime, bez pytania za każdym razem. Każda zmiana na serwerze jest najpierw proponowana do akceptacji.",
+    "modelDetectFailed": "Nie udało się połączyć z dostawcą, więc to jest ogólna lista. Możesz wpisać dowolną nazwę modelu.",
+    "modelCustom": "Wpisz nazwę modelu",
     "modelRefresh": "Odśwież listę",
     "modelPlaceholder": "Wybierz lub wpisz model",
-    "attachHint": "Wpisz @, aby odwołać się do hosta, snippetu lub automatyzacji. Zmiany są proponowane do Twojego zatwierdzenia.",
+    "attachHint": "Wpisz @ aby odnieść się do hosta, fragmentu kodu lub automatyzacji. Zmiany są proponowane do Twojej akceptacji.",
     "runCommandTitle": "Uruchom polecenie",
     "assistant": "Asystent AI",
-    "terminalPanelEmpty": "Zapytaj asystenta o tego hosta. Każda zmiana stanu wymaga Twojej zgody.",
-    "terminalPanelPlaceholder": "Zapytaj o tego gospodarza...",
+    "terminalPanelEmpty": "Zapytaj asystenta o tego hosta. Każda zmiana stanu wymaga najpierw Twojej akceptacji.",
+    "terminalPanelPlaceholder": "Zapytaj o tego hosta...",
     "noProvidersConfigured": "Nie skonfigurowano jeszcze żadnego dostawcy AI. Dodaj go w zakładce Asystent AI.",
-    "runsInOpenTerminal": "Działa w otwartej sesji terminalowej.",
+    "runsInOpenTerminal": "Uruchamia się w otwartej sesji terminala.",
     "runInTerminal": "Uruchom",
-    "terminalContextPrefill": "Oto wynik mojego terminala:\n\n{{output}}\n\n",
+    "terminalContextPrefill": "Oto wynik z terminala:\n\n{{output}}\n\n",
     "secrets": {
-      "shareApiKey": "Pozwól innym funkcjom używać klucza API dostawcy sztucznej inteligencji do własnych żądań. Klucz nigdy nie jest kopiowany i możesz go w dowolnym momencie cofnąć."
-    }
+      "shareApiKey": "Pozwól innym funkcjom używać klucza API dostawcy AI do własnych żądań. Klucz nigdy nie jest kopiowany, a możesz cofnąć tę zgodę w dowolnym momencie."
+    },
+    "removeProviderConfirm": "Usunąć dostawcę {{name}}?"
   },
   "nav": {
     "ai": "AI"
   },
   "onboarding": {
     "aiTitle": "Asystent AI",
-    "aiIntro": "Termix może zawierać opcjonalnego asystenta AI. Możesz to później zmienić w ustawieniach.",
-    "aiSkipTitle": "Zostaw wyłączone",
+    "aiIntro": "Termix może zawierać asystenta AI. Możesz to zmienić później w ustawieniach.",
+    "aiSkipTitle": "Pozostaw wyłączone",
     "aiSkipDesc": "Termix działa tak jak teraz. Asystent pozostaje ukryty.",
     "aiEnableTitle": "Włącz",
-    "aiEnableDesc": "Dodaje asystenta, który odczytuje Twoją konfigurację i sugeruje zmiany, które zatwierdzasz. Wymaga wskazanego przez Ciebie dostawcy, np. lokalnej Ollamy.",
-    "aiNote": "Dopóki nie dodasz dostawcy i nie wyślesz wiadomości, nic nie zostanie wysłane."
+    "aiEnableDesc": "Dodaje asystenta, który analizuje konfigurację i sugeruje zmiany do akceptacji. Wymaga dostawcy dostarczonego przez Ciebie, np. lokalnego Ollama.",
+    "aiNote": "Nic nie jest wysyłane nigdzie, dopóki nie dodasz dostawcy i nie wyślesz wiadomości."
   },
   "hosts": {
     "docsLink": "Zobacz dokumentację"
   },
   "agents": {
-    "title": "AI Agent",
-    "permissionTitle": "Run remote AI agents",
-    "permissionDescription": "Start coding agents on SSH hosts using configured AI providers. Agents can execute commands and change files as the SSH user.",
-    "new": "New session",
-    "description": "Run an agent in a directory on this host using a Termix AI provider.",
+    "working": "Praca...",
+    "startingIndicator": "Uruchamianie agenta...",
+    "noCompatibleProvider": "Żaden z Twoich dostawców AI nie działa z {{agent}}. Claude Code wymaga Anthropic, a Codex wymaga OpenAI.",
+    "noProviders": "Najpierw dodaj dostawcę AI w Ustawieniach.",
+    "title": "Agent AI",
+    "permissionTitle": "Uruchamiaj zdalne agenty AI",
+    "permissionDescription": "Uruchamiaj agenty kodujące na hostach SSH przy użyciu skonfigurowanych dostawców AI. Agenty mogą wykonywać polecenia i zmieniać pliki jako użytkownik SSH.",
+    "new": "Nowa sesja",
+    "description": "Uruchom agenta w katalogu na tym hoście przy użyciu dostawcy AI Termix.",
     "runtime": "Agent",
-    "provider": "Termix provider",
-    "chooseProvider": "Choose a compatible provider",
+    "provider": "Dostawca Termix",
+    "chooseProvider": "Wybierz kompatybilnego dostawcę",
     "model": "Model",
-    "directory": "Working directory",
-    "executable": "Executable (optional absolute path)",
-    "requirements": "The host needs Node.js 22.19+ and the selected agent installed. SSH remote loopback forwarding must be allowed. Existing agent configurations are not overwritten.",
-    "responsesRequired": "Codex requires a Responses API endpoint. A Chat Completions-only endpoint cannot run Codex.",
-    "piPermissions": "Pi tools run with this SSH account’s permissions. Only launch in a directory you authorize the agent to modify.",
-    "start": "Start agent",
-    "resume": "Resume",
-    "stop": "Stop session",
-    "interrupt": "Interrupt turn",
-    "send": "Send",
-    "prompt": "Ask the agent to work in this directory…",
-    "noSessions": "No agent sessions for this host.",
-    "approval": "Agent needs your decision",
-    "answer": "Answer (JSON for structured questions)",
-    "allow": "Allow once",
-    "deny": "Deny",
-    "tool": "Tool activity",
-    "streamFailed": "Agent stream disconnected. Reopen the session to reconnect.",
+    "directory": "Katalog roboczy",
+    "executable": "Plik wykonywalny (opcjonalna ścieżka bezwzględna)",
+    "requirements": "Host wymaga Node.js 22.19+ i zainstalowanego wybranego agenta. Musi być dozwolone przesyłanie pętli zwrotnej SSH. Istniejące konfiguracje agentów nie są nadpisywane.",
+    "responsesRequired": "Codex wymaga punktu końcowego API Responses. Punkt końcowy tylko Chat Completions nie może uruchomić Codex.",
+    "piPermissions": "Narzędzia Pi działają z uprawnieniami tego konta SSH. Uruchamiaj tylko w katalogu, w którym autoryzujesz agenta do modyfikacji.",
+    "start": "Uruchom agenta",
+    "resume": "Wznów",
+    "stop": "Zatrzymaj sesję",
+    "interrupt": "Przerwij turę",
+    "send": "Wyślij",
+    "prompt": "Poproś agenta o pracę w tym katalogu...",
+    "noSessions": "Brak sesji agenta dla tego hosta.",
+    "approval": "Agent potrzebuje Twojej decyzji",
+    "answer": "Odpowiedź (JSON dla pytań strukturalnych)",
+    "allow": "Zezwól raz",
+    "deny": "Odmów",
+    "tool": "Aktywność narzędzi",
+    "streamFailed": "Strumień agenta rozłączony. Otwórz ponownie sesję, aby ponownie połączyć.",
     "status": {
-      "starting": "Starting",
-      "ready": "Ready",
-      "running": "Working",
-      "stopped": "Stopped",
-      "error": "Error"
+      "starting": "Uruchamianie",
+      "ready": "Gotowy",
+      "running": "Praca",
+      "stopped": "Zatrzymany",
+      "error": "Błąd"
     },
-    "installRuntime": "Install selected agent and Node.js",
-    "installSource": "Official sources only: nodejs.org (SHA-256 verified) and registry.npmjs.org (locked package integrity). Installs for the SSH user in ~/.local/share/termix-agent-runtime; requires curl, tar, and Linux/macOS x64 or arm64. Does not change SSH forwarding policy.",
-    "installSucceeded": "Installation verified. You can now start the agent; SSH loopback remote forwarding must also be allowed.",
-    "installFailed": "Installation failed. Review the log and retry.",
-    "installLog": "Installation log",
-    "enableForwarding": "Enable Agent forwarding",
-    "forwardingScope": "Linux with systemd/OpenSSH; requires root or passwordless sudo. Backs up and validates SSH configuration, then reloads it. Only the current SSH account and observed connection source receive loopback remote forwarding; existing local forwarding is preserved. Failed changes are rolled back.",
-    "forwardingSucceeded": "SSH loopback remote forwarding is ready. Start or resume the agent to open a new SSH connection.",
-    "forwardingFailed": "SSH forwarding configuration failed. Review the log; no unvalidated configuration is kept.",
-    "search": "Search sessions",
-    "showArchived": "Show archived",
-    "sessionName": "Session name",
-    "rename": "Rename",
-    "archive": "Archive and stop",
-    "restore": "Restore session",
-    "queue": "Queued messages",
-    "enqueue": "Queue message",
-    "continueQueue": "Continue queue",
-    "pauseQueue": "Pause queue",
-    "editQueued": "Edit queued message",
-    "save": "Save",
-    "remove": "Remove",
-    "upload": "Upload attachment",
-    "remoteFile": "File path inside working directory",
-    "attach": "Attach file",
-    "attachments": "Reuse a session attachment",
-    "pasteImage": "Paste an image in the composer. Up to 4 attachments, 1 MiB each.",
-    "attachmentLimit": "Up to 4 attachments, 1 MiB each",
-    "review": "Git changes and worktrees",
-    "gitStatus": "Refresh Git status",
-    "diffFile": "File path to review",
-    "diff": "View diff",
-    "branch": "New branch name",
-    "createWorktree": "Create worktree",
-    "useWorktree": "New session in this worktree",
-    "worktreeHint": "Creates a new branch from HEAD. Uncommitted changes stay in the current directory. Existing worktrees are never deleted automatically.",
-    "clean": "No changes",
-    "reconnecting": "Reconnecting and restoring messages…",
-    "unavailable": "Session is no longer accessible. Check your permissions or sign in again.",
-    "shortcuts": "Enter sends or queues · Shift+Enter adds a line · Esc interrupts and pauses the queue"
+    "installRuntime": "Zainstaluj wybranego agenta i Node.js",
+    "installSource": "Tylko oficjalne źródła: nodejs.org (zweryfikowane SHA-256) i registry.npmjs.org (zablokowana integralność pakietu). Instalacja dla użytkownika SSH w ~/.local/share/termix-agent-runtime; wymaga curl, tar oraz systemu Linux/macOS x64 lub arm64. Nie zmienia polityki przekazywania SSH.",
+    "installSucceeded": "Instalacja zweryfikowana. Możesz teraz uruchomić agenta; należy również zezwolić na zdalne przekazywanie pętli SSH.",
+    "installFailed": "Instalacja nie powiodła się. Sprawdź dziennik i spróbuj ponownie.",
+    "installLog": "Dziennik instalacji",
+    "enableForwarding": "Włącz przekazywanie agenta",
+    "forwardingScope": "Linux z systemd/OpenSSH; wymaga uprawnień root lub sudo bez hasła. Tworzy kopię zapasową i sprawdza konfigurację SSH, a następnie ją przeładowuje. Tylko bieżące konto SSH i obserwowane źródło połączenia otrzymują zdalne przekazywanie pętli; istniejące lokalne przekazywanie jest zachowane. Nieudane zmiany są cofane.",
+    "forwardingSucceeded": "Zdalne przekazywanie pętli SSH jest gotowe. Uruchom lub wznowij agenta, aby otworzyć nowe połączenie SSH.",
+    "forwardingFailed": "Konfiguracja przekazywania SSH nie powiodła się. Sprawdź dziennik; nie zachowano niezweryfikowanej konfiguracji.",
+    "search": "Szukaj sesji",
+    "sessionName": "Nazwa sesji",
+    "rename": "Zmień nazwę",
+    "archive": "Archiwizuj i zatrzymaj",
+    "restore": "Przywróć sesję",
+    "queue": "Wiadomości w kolejce",
+    "enqueue": "Dodaj wiadomość do kolejki",
+    "continueQueue": "Wznów kolejkę",
+    "pauseQueue": "Wstrzymaj kolejkę",
+    "editQueued": "Edytuj wiadomość w kolejce",
+    "save": "Zapisz",
+    "remove": "Usuń",
+    "upload": "Prześlij załącznik",
+    "remoteFile": "Ścieżka pliku wewnątrz katalogu roboczego",
+    "attach": "Dołącz plik z hosta",
+    "attachments": "Ponownie użyj wcześniejszego załącznika",
+    "attachmentLimit": "Do 4 załączników, każdy do 1 MiB",
+    "review": "Zmiany Git",
+    "gitStatus": "Odśwież status Git",
+    "diffFile": "Ścieżka pliku do sprawdzenia",
+    "diff": "Wyświetl różnice",
+    "branch": "Nazwa nowej gałęzi",
+    "createWorktree": "Utwórz worktree",
+    "useWorktree": "Nowa sesja w tym worktree",
+    "worktreeHint": "Tworzy nową gałąź z HEAD. Niezatwierdzone zmiany pozostają w bieżącym katalogu. Istniejące worktree nie są nigdy automatycznie usuwane.",
+    "clean": "Brak zmian",
+    "reconnecting": "Ponowne łączenie i przywracanie wiadomości…",
+    "unavailable": "Sesja nie jest już dostępna. Sprawdź swoje uprawnienia lub zaloguj się ponownie.",
+    "shortcuts": "Enter wysyła lub dodaje do kolejki · Shift+Enter dodaje linię · Esc przerywa i wstrzymuje kolejkę",
+    "activeSessions": "Aktywne",
+    "archivedSessions": "Zarchiwizowane",
+    "dismiss": "Odrzuć",
+    "changes": "Zmiany",
+    "close": "Zamknij",
+    "cancel": "Anuluj",
+    "sessionSetup": "Sesja",
+    "hostSetup": "Konfiguracja hosta",
+    "changedFiles": "Zmienione pliki",
+    "worktree": "Worktree",
+    "attachShort": "Dołącz",
+    "emptyTranscript": "Wyślij wiadomość, aby uruchomić agenta."
   },
   "plugin": {
-    "name": "AI Assistant"
+    "name": "Asystent AI"
   }
 }
