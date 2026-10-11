@@ -343,8 +343,7 @@ get("/plugins/registry", () => {
         pinnedVersion: s.pinned ? m.version : null,
         autoUpdate: s.autoUpdate,
         bundled: true,
-        installCount: STATS[id]?.downloads ?? null,
-        installCountSource: STATS[id] ? "downloads" : null,
+        downloads: STATS[id]?.downloads ?? null,
       };
     }),
   };

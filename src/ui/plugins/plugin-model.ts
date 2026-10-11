@@ -61,8 +61,7 @@ export interface PluginEntry {
   inRegistry: boolean;
   contributes: Record<string, unknown> | null;
   publishedAt: string | null;
-  installCount: number | null;
-  installCountSource: string | null;
+  downloads: number | null;
   source: PluginSource;
   /** Installed from a file or folder with no registry signature behind it. */
   unverified: boolean;
@@ -149,8 +148,7 @@ export function mergePlugins(
       inRegistry: Boolean(entry),
       contributes: (summary.contributes as Record<string, unknown>) ?? null,
       publishedAt: latestPublished(entry?.versions ?? []),
-      installCount: entry?.installCount ?? null,
-      installCountSource: entry?.installCountSource ?? null,
+      downloads: entry?.downloads ?? null,
       source: pluginSource(summary),
       unverified: pluginSource(summary) === "unverified",
     });
@@ -191,8 +189,7 @@ export function mergePlugins(
       inRegistry: true,
       contributes: null,
       publishedAt: latestPublished(entry.versions),
-      installCount: entry.installCount ?? null,
-      installCountSource: entry.installCountSource ?? null,
+      downloads: entry.downloads ?? null,
       source: "official",
       unverified: false,
     });
@@ -230,8 +227,7 @@ export function uploadEntry(preview: PluginUploadPreview): PluginEntry {
     inRegistry: false,
     contributes: null,
     publishedAt: null,
-    installCount: null,
-    installCountSource: null,
+    downloads: null,
     source: "unverified",
     unverified: true,
   };
@@ -252,7 +248,7 @@ export function sortPlugins(rows: PluginEntry[], key: SortKey): PluginEntry[] {
   if (key === "popular") {
     sorted.sort(
       (a, b) =>
-        (b.installCount ?? -1) - (a.installCount ?? -1) ||
+        (b.downloads ?? -1) - (a.downloads ?? -1) ||
         a.name.localeCompare(b.name),
     );
   } else if (key === "updated") {

@@ -30,7 +30,7 @@ import { getPluginData, type PluginDataSummary } from "@/api/plugins-api";
 import {
   BetaBadge,
   CapabilityRow,
-  InstallCountFact,
+  DownloadCount,
   PluginIconBox,
   UnverifiedBadge,
 } from "./plugin-bits";
@@ -122,10 +122,7 @@ export function PluginDetail({
                 })}
               </span>
             )}
-            <InstallCountFact
-              count={plugin.installCount}
-              source={plugin.installCountSource}
-            />
+            <DownloadCount count={plugin.downloads} />
           </Facts>
         </div>
         <div className="flex shrink-0 flex-col gap-1.5">
