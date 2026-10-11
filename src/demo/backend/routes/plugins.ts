@@ -145,6 +145,12 @@ const pluginState = value<Record<string, InstallState>>("plugin-state", () =>
 );
 const developerMode = value("plugin-developer-mode", () => false);
 const onboardingDone = value("plugin-onboarding-done", () => false);
+const communityEnabled = value("plugin-community-registry", () => false);
+
+const OFFICIAL_URL =
+  "https://raw.githubusercontent.com/Termix-SSH/Termix-Registry/main/official/index.json";
+const COMMUNITY_URL =
+  "https://raw.githubusercontent.com/Termix-SSH/Termix-Registry/main/community/index.json";
 
 function stateOf(id: string): InstallState {
   return (
@@ -278,46 +284,112 @@ function changelogFor(id: string) {
 
 get("/plugins/registry", () => {
   const ids = new Set([...REGISTRY.keys(), ...Object.keys(MANIFESTS)]);
+  const lastCheckedAt = new Date(Date.now() - 1000 * 60 * 12).toISOString();
+  const listed = [...ids].filter(
+    (id) => MANIFESTS[id] && id !== DEMO_PLUGIN_ID,
+  );
   return {
-    registry: {
-      id: "official",
-      url: "https://raw.githubusercontent.com/Termix-SSH/Termix-Registry/main/official/index.json",
-      lastCheckedAt: new Date(Date.now() - 1000 * 60 * 12).toISOString(),
-      error: null,
-    },
+    registry: { id: "official", url: OFFICIAL_URL, lastCheckedAt, error: null },
+    registries: [
+      {
+        id: "official",
+        name: "Termix Official Plugins",
+        tier: "official",
+        url: OFFICIAL_URL,
+        lastCheckedAt,
+        error: null,
+        plugins: listed.length,
+      },
+      ...(communityEnabled.get()
+        ? [
+            {
+              id: "community",
+              name: "Termix Community Plugins",
+              tier: "community",
+              url: COMMUNITY_URL,
+              lastCheckedAt,
+              error: null,
+              plugins: 0,
+            },
+          ]
+        : []),
+    ],
     managedByServer: false,
-    plugins: [...ids]
-      .filter((id) => MANIFESTS[id] && id !== DEMO_PLUGIN_ID)
-      .map((id) => {
-        const m = MANIFESTS[id];
-        const reg = REGISTRY.get(id);
-        const s = stateOf(id);
-        return {
-          id,
-          name: reg?.name ?? m.name,
-          description: reg?.description ?? m.description ?? "",
-          author: reg?.author ?? m.author?.name ?? "Termix",
-          category: reg?.category ?? m.category ?? "Productivity",
-          repository: reg?.repository ?? m.repository,
-          icon: reg?.icon ?? m.icon,
-          features: m.features ?? reg?.features ?? [],
-          docs: m.docs ?? reg?.docs,
-          versions: registryVersions(id),
-          latestVersion: m.version,
-          latestBeta: null,
-          channel: s.channel,
-          installed: s.installed,
-          installedVersion: s.installed ? m.version : null,
-          updateAvailable: false,
-          addedCapabilities: [],
-          pinnedVersion: s.pinned ? m.version : null,
-          autoUpdate: s.autoUpdate,
-          bundled: true,
-          installCount: STATS[id]?.downloads ?? null,
-          installCountSource: STATS[id] ? "downloads" : null,
-        };
-      }),
+    plugins: listed.map((id) => {
+      const m = MANIFESTS[id];
+      const reg = REGISTRY.get(id);
+      const s = stateOf(id);
+      return {
+        id,
+        registryId: "official",
+        registryName: "Termix Official Plugins",
+        tier: "official",
+        name: reg?.name ?? m.name,
+        description: reg?.description ?? m.description ?? "",
+        author: reg?.author ?? m.author?.name ?? "Termix",
+        category: reg?.category ?? m.category ?? "Productivity",
+        repository: reg?.repository ?? m.repository,
+        icon: reg?.icon ?? m.icon,
+        features: m.features ?? reg?.features ?? [],
+        docs: m.docs ?? reg?.docs,
+        versions: registryVersions(id),
+        latestVersion: m.version,
+        latestBeta: null,
+        channel: s.channel,
+        installed: s.installed,
+        installedVersion: s.installed ? m.version : null,
+        updateAvailable: false,
+        addedCapabilities: [],
+        pinnedVersion: s.pinned ? m.version : null,
+        autoUpdate: s.autoUpdate,
+        bundled: true,
+        installCount: STATS[id]?.downloads ?? null,
+        installCountSource: STATS[id] ? "downloads" : null,
+      };
+    }),
   };
+});
+
+get("/plugins/registries", () => ({
+  managedByServer: false,
+  official: { id: "official", url: OFFICIAL_URL },
+  community: {
+    id: "community",
+    url: COMMUNITY_URL,
+    enabled: communityEnabled.get(),
+  },
+  custom: [],
+}));
+function noCustomRegistries(): never {
+  throw new HttpError(400, {
+    error: "Adding your own registry is not available in the demo.",
+    code: "DEMO",
+  });
+}
+post("/plugins/registries/preview", noCustomRegistries);
+post("/plugins/registries", noCustomRegistries);
+patch("/plugins/registries/:id", (req) => {
+  const { enabled } = req.body as { enabled: boolean };
+  if (req.params.id === "official") {
+    throw new HttpError(400, {
+      error: "The official registry is always on",
+      code: "OFFICIAL",
+    });
+  }
+  if (req.params.id !== "community") {
+    throw new HttpError(404, {
+      error: "Registry not found",
+      code: "NOT_FOUND",
+    });
+  }
+  communityEnabled.set(!!enabled);
+  return { id: req.params.id, enabled: !!enabled };
+});
+del("/plugins/registries/:id", () => {
+  throw new HttpError(400, {
+    error: "Built in registries can only be turned off",
+    code: "BUILT_IN",
+  });
 });
 
 post("/plugins/:id/install", (req) => {
