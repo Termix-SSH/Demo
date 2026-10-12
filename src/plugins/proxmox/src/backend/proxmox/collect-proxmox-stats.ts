@@ -1,5 +1,6 @@
 import type { Client } from "ssh2";
 import { execCommand } from "./common-utils.js";
+import { createPveshRunner } from "./pvesh-runner.js";
 import { ProxmoxError, isSafeNodeName } from "../proxmox-shared.js";
 import {
   collectProxmoxNodeStatus,
@@ -55,6 +56,7 @@ async function resolveNodeName(
 export async function collectProxmoxStats(
   client: Client,
   configuredNodeName: string | null | undefined,
+  sudoPassword?: string,
 ): Promise<ProxmoxStatsSnapshot> {
   const pveshCheck = await execCommand(
     client,
@@ -76,12 +78,13 @@ export async function collectProxmoxStats(
     );
   }
 
+  const run = createPveshRunner(client, sudoPassword);
   const [node, network, guests, storage, cluster] = await Promise.all([
-    collectProxmoxNodeStatus(client, nodeName),
+    collectProxmoxNodeStatus(client, nodeName, run),
     collectProxmoxNodeNetwork(client, nodeName),
-    collectProxmoxGuestsSummary(client, nodeName),
-    collectProxmoxStorage(client, nodeName),
-    collectProxmoxClusterHealth(client),
+    collectProxmoxGuestsSummary(client, nodeName, run),
+    collectProxmoxStorage(client, nodeName, run),
+    collectProxmoxClusterHealth(client, run),
   ]);
 
   return {

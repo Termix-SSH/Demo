@@ -1,5 +1,5 @@
 import type { Client } from "ssh2";
-import { execCommand } from "./common-utils.js";
+import { directRunner, type PveshRunner } from "./pvesh-runner.js";
 
 interface ProxmoxClusterNodeEntry {
   name: string;
@@ -21,10 +21,10 @@ const EMPTY_RESULT: ProxmoxClusterHealthResult = { clustered: false };
 
 export async function collectProxmoxClusterHealth(
   client: Client,
+  run: PveshRunner = directRunner(client),
 ): Promise<ProxmoxClusterHealthResult> {
   try {
-    const { stdout, code } = await execCommand(
-      client,
+    const { stdout, code } = await run(
       "pvesh get /cluster/status --output-format json",
       15000,
     );

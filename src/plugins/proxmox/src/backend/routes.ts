@@ -78,7 +78,16 @@ export async function execPveshCommand(
   timeoutMs = 25000,
 ): Promise<string> {
   if (!sudoPassword) {
-    return execCommand(client, command, timeoutMs);
+    try {
+      return await execCommand(client, command, timeoutMs);
+    } catch (err) {
+      // Non-root users with passwordless sudo.
+      try {
+        return await execCommand(client, `sudo -n ${command}`, timeoutMs);
+      } catch {
+        throw err;
+      }
+    }
   }
 
   const result = await execElevated(client, command, sudoPassword, {

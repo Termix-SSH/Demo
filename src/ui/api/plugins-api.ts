@@ -313,8 +313,9 @@ export interface RegistryPluginEntry {
   pinnedVersion: string | null;
   autoUpdate: boolean;
   bundled: boolean;
-  /** How often the release files were downloaded, from the registry. */
-  downloads: number | null;
+  /** Active installs when known, release downloads otherwise. */
+  installCount: number | null;
+  installCountSource: string | null;
 }
 
 export interface RegistryListing {

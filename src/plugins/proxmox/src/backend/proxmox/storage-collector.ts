@@ -1,5 +1,6 @@
 import type { Client } from "ssh2";
-import { execCommand, toFixedNum } from "./common-utils.js";
+import { directRunner, type PveshRunner } from "./pvesh-runner.js";
+import { toFixedNum } from "./common-utils.js";
 import { isSafeNodeName } from "../proxmox-shared.js";
 
 interface ProxmoxStoragePoolEntry {
@@ -26,14 +27,14 @@ function bytesToGiB(bytes: number): number {
 export async function collectProxmoxStorage(
   client: Client,
   nodeName: string,
+  run: PveshRunner = directRunner(client),
 ): Promise<ProxmoxStorageResult> {
   if (!isSafeNodeName(nodeName)) {
     return EMPTY_RESULT;
   }
 
   try {
-    const { stdout, code } = await execCommand(
-      client,
+    const { stdout, code } = await run(
       `pvesh get /nodes/${nodeName}/storage --output-format json`,
       25000,
     );

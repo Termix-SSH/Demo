@@ -37,6 +37,8 @@ export interface ProxmoxStatsPollableHost {
   id: number;
   userId: string;
   proxmoxStatsConfig?: string | ProxmoxStatsPollConfig | null;
+  /** Used to run pvesh through sudo when the SSH user is not root. */
+  sudoPassword?: string;
 }
 
 export interface ProxmoxStatsPollConfig {
@@ -153,7 +155,12 @@ export class ProxmoxPollingManager<
         try {
           const snapshot = await this.deps.withSshConnection(
             refreshed,
-            (client) => collectProxmoxStats(client, config.nodeName),
+            (client) =>
+              collectProxmoxStats(
+                client,
+                config.nodeName,
+                refreshed.sudoPassword,
+              ),
           );
 
           this.snapshotStore.set(host.id, {

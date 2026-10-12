@@ -1,5 +1,8 @@
 import type { PluginApiClient } from "@termix-ssh/plugin-sdk/frontend";
 
+// Fleet runs wait for every host, so they must not hit the default 30s limit.
+const NO_TIMEOUT = { timeout: 0 };
+
 export type SharePermissionLevel = "connect" | "view" | "edit" | "manage";
 
 export interface ShareTarget {
@@ -133,10 +136,11 @@ export function createFleetsApi(api: PluginApiClient) {
       inputValues?: Record<string, string>,
     ) =>
       data(
-        api.post<{ results: FleetHostResult[] }>(`/${fleetId}/execute`, {
-          command,
-          ...(inputValues ? { inputValues } : {}),
-        }),
+        api.post<{ results: FleetHostResult[] }>(
+          `/${fleetId}/execute`,
+          { command, ...(inputValues ? { inputValues } : {}) },
+          NO_TIMEOUT,
+        ),
       ),
 
     pushFile: async (fleetId: number, file: File, remotePath: string) => {
@@ -147,7 +151,10 @@ export function createFleetsApi(api: PluginApiClient) {
         api.post<{ results: FleetHostResult[] }>(
           `/${fleetId}/transfer/push`,
           form,
-          { headers: { "Content-Type": "multipart/form-data" } },
+          {
+            ...NO_TIMEOUT,
+            headers: { "Content-Type": "multipart/form-data" },
+          },
         ),
       );
     },
@@ -163,7 +170,7 @@ export function createFleetsApi(api: PluginApiClient) {
       const response = await api.post<Blob>(
         `/${fleetId}/transfer/pull`,
         { remotePath },
-        { responseType: "blob" },
+        { ...NO_TIMEOUT, responseType: "blob" },
       );
       const headers = (response as { headers?: Record<string, string> })
         .headers;
@@ -189,10 +196,11 @@ export function createFleetsApi(api: PluginApiClient) {
       packageName?: string,
     ) =>
       data(
-        api.post<{ results: FleetHostResult[] }>(`/${fleetId}/packages`, {
-          action,
-          ...(packageName ? { package: packageName } : {}),
-        }),
+        api.post<{ results: FleetHostResult[] }>(
+          `/${fleetId}/packages`,
+          { action, ...(packageName ? { package: packageName } : {}) },
+          NO_TIMEOUT,
+        ),
       ),
 
     share: (

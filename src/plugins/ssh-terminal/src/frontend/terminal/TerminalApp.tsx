@@ -1,5 +1,6 @@
 import React from "react";
 import { Terminal } from "./Terminal";
+import { CommandHistoryProvider } from "./command-history/CommandHistoryContext";
 import {
   FullScreenAppWrapper,
   ConnectionScreen,
@@ -46,17 +47,21 @@ const TerminalApp: React.FC<TerminalAppProps> = ({ hostId, tmuxSession }) => {
         }
 
         return (
-          <Terminal
-            hostConfig={hostConfig}
-            isVisible={true}
-            title={hostConfig.name || `${hostConfig.username}@${hostConfig.ip}`}
-            showTitle={false}
-            splitScreen={false}
-            onClose={() => {}}
-            executeCommand={
-              tmuxSession ? tmuxAttachCommand(tmuxSession) : undefined
-            }
-          />
+          <CommandHistoryProvider>
+            <Terminal
+              hostConfig={hostConfig}
+              isVisible={true}
+              title={
+                hostConfig.name || `${hostConfig.username}@${hostConfig.ip}`
+              }
+              showTitle={false}
+              splitScreen={false}
+              onClose={() => {}}
+              executeCommand={
+                tmuxSession ? tmuxAttachCommand(tmuxSession) : undefined
+              }
+            />
+          </CommandHistoryProvider>
         );
       }}
     </FullScreenAppWrapper>

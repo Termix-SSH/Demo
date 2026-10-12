@@ -177,6 +177,8 @@ export function zipFolderName(host: { id: number; name: string }): string {
 
 // How many hosts a fleet action talks to at once.
 const FLEET_CONCURRENCY = 10;
+// Long jobs like apt upgrade must finish, so give each host up to an hour.
+const FLEET_COMMAND_TIMEOUT_MS = 60 * 60 * 1000;
 
 /** Maps items with at most `limit` running at once, keeping their order. */
 export async function mapWithLimit<T, R>(
@@ -958,7 +960,12 @@ export function registerFleetRoutes(
             const { stdout, stderr, code } = await ctx.ssh.withConnection(
               host.id,
               { pool: "fleet", purpose: "fleet" },
-              (client) => execCommand(client as Client, resolvedCommand, 60000),
+              (client) =>
+                execCommand(
+                  client as Client,
+                  resolvedCommand,
+                  FLEET_COMMAND_TIMEOUT_MS,
+                ),
             );
 
             return {

@@ -1,5 +1,6 @@
 import type { Client } from "ssh2";
-import { execCommand, toFixedNum } from "./common-utils.js";
+import { directRunner, type PveshRunner } from "./pvesh-runner.js";
+import { toFixedNum } from "./common-utils.js";
 import { isSafeNodeName } from "../proxmox-shared.js";
 
 interface ProxmoxGuestSummaryEntry {
@@ -34,14 +35,14 @@ function bytesToGiB(bytes: number): number {
 export async function collectProxmoxGuestsSummary(
   client: Client,
   nodeName: string,
+  run: PveshRunner = directRunner(client),
 ): Promise<ProxmoxGuestsSummaryResult> {
   if (!isSafeNodeName(nodeName)) {
     return EMPTY_RESULT;
   }
 
   try {
-    const { stdout, code } = await execCommand(
-      client,
+    const { stdout, code } = await run(
       "pvesh get /cluster/resources --output-format json",
       25000,
     );

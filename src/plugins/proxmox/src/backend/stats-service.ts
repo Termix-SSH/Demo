@@ -51,10 +51,14 @@ async function fetchHostForPolling(
   const proxmoxStatsConfig = await ctx.asUser(userId, () =>
     ctx.settings.getHost(hostId, "proxmoxStatsConfig"),
   );
+  const resolved = await ctx
+    .asUser(userId, () => ctx.ssh.resolveHost(hostId))
+    .catch(() => null);
   return {
     id: host.id,
     userId: host.userId,
     proxmoxStatsConfig: proxmoxStatsConfig as string | undefined,
+    sudoPassword: (resolved?.sudoPassword as string | undefined) || undefined,
     enableProxmoxStats: true,
   };
 }

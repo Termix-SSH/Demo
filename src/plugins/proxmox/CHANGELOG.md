@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1
+
+### Fixed
+
+- Stats, guests and discovery work when the SSH user is not root, using sudo with the saved sudo password or passwordless sudo
+
 ## 1.0.0
 
 ### Added

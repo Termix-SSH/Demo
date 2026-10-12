@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.1
+
+### Fixed
+
+- Fleet commands, package actions and file transfers no longer time out after 30 seconds
+- Fleet commands can run for up to an hour per host
+
 ## 1.0.0
 
 ### Added

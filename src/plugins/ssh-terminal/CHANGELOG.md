@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1
+
+### Fixed
+
+- Terminal links opened straight from a URL no longer crash with a command history error
+
 ## 1.0.0
 
 ### Added

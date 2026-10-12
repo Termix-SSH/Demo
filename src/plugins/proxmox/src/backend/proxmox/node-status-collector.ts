@@ -1,5 +1,6 @@
 import type { Client } from "ssh2";
-import { execCommand, toFixedNum } from "./common-utils.js";
+import { directRunner, type PveshRunner } from "./pvesh-runner.js";
+import { toFixedNum } from "./common-utils.js";
 import { isSafeNodeName } from "../proxmox-shared.js";
 
 export interface ProxmoxNodeStatusResult {
@@ -51,14 +52,14 @@ function formatUptime(seconds: number): string {
 export async function collectProxmoxNodeStatus(
   client: Client,
   nodeName: string,
+  run: PveshRunner = directRunner(client),
 ): Promise<ProxmoxNodeStatusResult> {
   if (!isSafeNodeName(nodeName)) {
     return EMPTY_RESULT;
   }
 
   try {
-    const { stdout, code } = await execCommand(
-      client,
+    const { stdout, code } = await run(
       `pvesh get /nodes/${nodeName}/status --output-format json`,
       25000,
     );

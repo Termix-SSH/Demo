@@ -40,7 +40,7 @@ import { InlineView, SurfaceScope } from "@/components/surface/surface-scope";
 import { cn } from "@/lib/utils";
 import {
   BetaBadge,
-  DownloadCount,
+  InstallCountFact,
   PluginIconBox,
   UnverifiedBadge,
 } from "./plugin-bits";
@@ -956,13 +956,16 @@ function BrowseSection({
       ),
     },
     {
-      key: "downloads",
-      header: t("plugins.manager.table.downloads"),
+      key: "installs",
+      header: t("plugins.manager.table.installs"),
       width: "110px",
       hideBelow: "lg",
       cell: (p) => (
         <span className="text-muted-foreground">
-          <DownloadCount count={p.downloads} />
+          <InstallCountFact
+            count={p.installCount}
+            source={p.installCountSource}
+          />
         </span>
       ),
     },
@@ -1076,7 +1079,10 @@ function BrowseCard({
             {plugin.author && <span>{plugin.author}</span>}
             {plugin.latestVersion && <span>v{plugin.latestVersion}</span>}
             {plugin.category && <span>{plugin.category}</span>}
-            <DownloadCount count={plugin.downloads} />
+            <InstallCountFact
+              count={plugin.installCount}
+              source={plugin.installCountSource}
+            />
           </>
         }
       />
