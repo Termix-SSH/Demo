@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.2
+
+### Fixed
+
+- The mouse wheel walked shell history instead of doing nothing when there was nothing to scroll back
+- Fast scroll with a modifier key no longer scrolls the page behind the terminal
+- Password autofill now knows a macOS or BSD sudo `Password:` prompt is from sudo, so it follows the sudo autofill setting and fills the sudo password
+- Passwords typed at a password prompt are no longer saved to command history
+
 ## 1.0.1
 
 ### Fixed

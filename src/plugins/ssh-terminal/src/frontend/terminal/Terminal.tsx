@@ -47,6 +47,10 @@ import { getTerminalBufferText } from "./terminal-buffer-text.ts";
 import { getMacLineNavigationSequence } from "../lib/mac-line-navigation";
 import { useCommandTracker } from "./command-history/useCommandTracker";
 import {
+  isPasswordPrompt as endsInPasswordPrompt,
+  isSudoPrompt as isSudoPromptOutput,
+} from "./password-prompt";
+import {
   highlightTerminalOutput,
   updateControlStringMode,
 } from "../lib/terminal-syntax-highlighter";
@@ -76,7 +80,10 @@ import type { TerminalHandle, TerminalHostConfig } from "./terminal-types.ts";
 import type { Host, TabType } from "../types";
 import { isTabKeyEvent } from "./terminal-key-event.ts";
 import { installTouchWheelCoordinator } from "./touch-wheel-coordinator.ts";
-import { terminalWheelAction } from "./terminal-wheel.ts";
+import {
+  terminalWheelAction,
+  wheelHasNothingToScroll,
+} from "./terminal-wheel.ts";
 import { loadTouchInputSettings } from "./touch-input-settings-store.ts";
 import {
   handleTerminalClipboardKeyEvent,
@@ -426,10 +433,18 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       true,
     );
 
+    const lastCommandRef = useRef("");
+    const outputTailRef = useRef("");
+    const passwordInputRef = useRef(false);
+
     const { trackInput, getCurrentCommand, updateCurrentCommand } =
       useCommandTracker({
         hostId: hostConfig.id,
         enabled: commandHistoryTrackingEnabled,
+        onLineSubmitted: (line) => {
+          lastCommandRef.current = line;
+        },
+        isPasswordInput: () => passwordInputRef.current,
         onCommandExecuted: (command) => {
           if (!autocompleteHistory.current.includes(command)) {
             autocompleteHistory.current = [
@@ -1319,11 +1334,9 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       );
       passwordPromptBufferRef.current = buffered;
 
-      const passwordPromptPattern =
-        /(?:\[sudo\][^\n\r]*:\s*$|sudo:[^\n\r]*password[^\n\r]*required|password for [^\n\r]*:\s*$|Password:\s*$|password:\s*$)/im;
-      if (!passwordPromptPattern.test(buffered)) return;
+      if (!endsInPasswordPrompt(buffered)) return;
 
-      const isSudoPrompt = /(?:\[sudo\]|sudo:)/i.test(buffered);
+      const isSudoPrompt = isSudoPromptOutput(buffered, lastCommandRef.current);
 
       // Sudo autofill is opt-in: the saved sudo password must not be sent
       // to a privilege-escalation prompt unless the host explicitly enables it.
@@ -1882,6 +1895,12 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
               const strippedData = msg.data.replace(
                 /\x1b(?:[@-Z\\-_]|\[[0-9:;<=>?!]*[@-~])/g,
                 "",
+              );
+              outputTailRef.current = (
+                outputTailRef.current + strippedData
+              ).slice(-200);
+              passwordInputRef.current = endsInPasswordPrompt(
+                outputTailRef.current,
               );
               maybeOfferPasswordFill(strippedData);
             } else {
@@ -2744,6 +2763,11 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
             (Math.abs(ev.deltaY) / 100) * (cfg.fastScrollSensitivity ?? 5),
           );
           terminal.scrollLines(ev.deltaY > 0 ? lines : -lines);
+          ev.preventDefault();
+          return false;
+        }
+        if (wheelHasNothingToScroll(terminal.buffer.active)) {
+          ev.preventDefault();
           return false;
         }
         return true;

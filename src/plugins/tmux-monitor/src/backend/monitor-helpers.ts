@@ -248,3 +248,20 @@ export function attachPanesToWindows(
 export function shellEscape(s: string): string {
   return "'" + s.replace(/'/g, "'\\''") + "'";
 }
+
+/** What `grep -n -i -F -- query | head -max` prints, for hosts without grep. */
+export function filterPaneLines(
+  output: string,
+  query: string,
+  max: number,
+): string[] {
+  const needle = query.toLowerCase();
+  const matches: string[] = [];
+  const lines = output.split("\n");
+  for (let i = 0; i < lines.length && matches.length < max; i++) {
+    if (lines[i].toLowerCase().includes(needle)) {
+      matches.push(`${i + 1}:${lines[i]}`);
+    }
+  }
+  return matches;
+}

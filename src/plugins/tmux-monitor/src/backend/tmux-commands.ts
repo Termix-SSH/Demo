@@ -19,6 +19,40 @@ export function tmuxCommand(args: string): string {
 }
 
 /**
+ * "windows" is a host without /bin/sh, like Windows OpenSSH running psmux
+ * under cmd.exe or PowerShell. Commands there skip the sh wrapper and use
+ * double quotes, which both shells read.
+ */
+export type TmuxShell = "posix" | "windows";
+
+const shells = new WeakMap<Client, TmuxShell>();
+
+// Read the same way by sh, cmd.exe and PowerShell, so left unquoted.
+const PLAIN_ARG = /^[\w@+=:,./-]+$/;
+
+export function windowsQuote(arg: string): string {
+  if (PLAIN_ARG.test(arg)) return arg;
+  return `"${arg.replace(/"/g, '\\"')}"`;
+}
+
+function posixQuote(arg: string): string {
+  return PLAIN_ARG.test(arg) ? arg : shellEscape(arg);
+}
+
+/** One tmux call running each argument list in turn, quoted for the shell. */
+export function buildTmuxCommand(
+  shell: TmuxShell,
+  ...commands: string[][]
+): string {
+  if (shell === "windows") {
+    const parts = commands.map((args) => args.map(windowsQuote).join(" "));
+    return `tmux -u ${parts.join(' ";" ')}`;
+  }
+  const parts = commands.map((args) => args.map(posixQuote).join(" "));
+  return tmuxCommand(parts.join(" \\; "));
+}
+
+/**
  * Run a command on the remote host via a separate exec channel.
  * Returns stdout as a string. Does not pollute the interactive shell.
  */
@@ -46,11 +80,43 @@ export function execCommand(conn: Client, command: string): Promise<string> {
             new Error(stderr.trim() || `Command exited with code ${code}`),
           );
         } else {
-          resolve(stdout.trim());
+          // Windows hosts end lines with CRLF.
+          resolve(stdout.replace(/\r\n/g, "\n").trim());
         }
       });
     });
   });
+}
+
+/** Which shell runs tmux on this connection, or null without tmux. */
+export async function detectTmuxShell(conn: Client): Promise<TmuxShell | null> {
+  const known = shells.get(conn);
+  if (known) return known;
+  for (const shell of ["posix", "windows"] as const) {
+    try {
+      await execCommand(conn, buildTmuxCommand(shell, ["-V"]));
+      shells.set(conn, shell);
+      return shell;
+    } catch {
+      // try the next shell
+    }
+  }
+  return null;
+}
+
+export async function tmuxShellFor(conn: Client): Promise<TmuxShell> {
+  return (await detectTmuxShell(conn)) ?? "posix";
+}
+
+/** Runs one tmux call on the connection, in whatever shell it has. */
+export async function execTmux(
+  conn: Client,
+  ...commands: string[][]
+): Promise<string> {
+  return execCommand(
+    conn,
+    buildTmuxCommand(await tmuxShellFor(conn), ...commands),
+  );
 }
 
 interface TmuxSessionInfo {
@@ -70,20 +136,17 @@ export interface TmuxDetectionResult {
  * Detect whether tmux is installed and list all existing sessions with details.
  */
 export async function detectTmux(conn: Client): Promise<TmuxDetectionResult> {
-  try {
-    await execCommand(conn, tmuxCommand("-V"));
-  } catch {
+  if (!(await detectTmuxShell(conn))) {
     return { available: false, sessions: [] };
   }
 
   let sessions: TmuxSessionInfo[] = [];
   try {
-    const output = await execCommand(
-      conn,
-      tmuxCommand(
-        `list-sessions -F "#{session_name}${SEP}#{session_created}${SEP}#{session_activity}${SEP}#{session_windows}${SEP}#{session_attached}" 2>/dev/null`,
-      ),
-    );
+    const output = await execTmux(conn, [
+      "list-sessions",
+      "-F",
+      `#{session_name}${SEP}#{session_created}${SEP}#{session_activity}${SEP}#{session_windows}${SEP}#{session_attached}`,
+    ]);
     if (output) {
       sessions = output
         .split("\n")
@@ -119,12 +182,7 @@ export async function waitForTmuxSession(
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
     try {
-      await execCommand(
-        conn,
-        tmuxCommand(
-          `has-session -t ${shellEscape(`=${sessionName}`)} 2>/dev/null`,
-        ),
-      );
+      await execTmux(conn, ["has-session", "-t", `=${sessionName}`]);
       return sessionName;
     } catch {
       // session not ready yet
@@ -132,6 +190,13 @@ export async function waitForTmuxSession(
     await new Promise((resolve) => setTimeout(resolve, intervalMs));
   }
   return null;
+}
+
+/** The shell an interactive stream's connection was detected with. */
+export function tmuxShellForStream(stream: ClientChannel): TmuxShell {
+  // ssh2 keeps the owning client on every channel.
+  const client = (stream as unknown as { _client?: Client })._client;
+  return (client && shells.get(client)) || "posix";
 }
 
 /**
@@ -147,17 +212,20 @@ export function attachOrCreateTmuxSession(
   existingSessionName?: string,
   newSessionName?: string,
   mouseEnabled = true,
+  shell: TmuxShell = tmuxShellForStream(stream),
 ): void {
   const name =
     existingSessionName || newSessionName || `termix-${randomUUID()}`;
-  const target = shellEscape(`=${name}`);
+  const target = `=${name}`;
   const commands = existingSessionName
     ? []
-    : [`new-session -d -s ${shellEscape(name)}`];
+    : [["new-session", "-d", "-s", name]];
   commands.push(
-    `set-option -q -t ${target} mouse ${mouseEnabled ? "on" : "off"}`,
-    `set-option -q -t ${target} history-limit 50000`,
-    `attach-session -t ${target}`,
+    ["set-option", "-q", "-t", target, "mouse", mouseEnabled ? "on" : "off"],
+    ["set-option", "-q", "-t", target, "history-limit", "50000"],
+    ["attach-session", "-t", target],
   );
-  stream.write(`${tmuxCommand(commands.join(" \\; "))} && exit\r`);
+  const command = buildTmuxCommand(shell, ...commands);
+  // PowerShell 5 has no &&, so a Windows shell stays open after a detach.
+  stream.write(shell === "windows" ? `${command}\r` : `${command} && exit\r`);
 }

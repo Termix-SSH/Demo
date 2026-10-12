@@ -18,3 +18,14 @@ export function terminalWheelAction(
     (mod === "shift" && ev.shiftKey);
   return modHeld ? "fast" : "default";
 }
+
+type WheelBuffer = { type: "normal" | "alternate"; baseY: number };
+
+/**
+ * A plain wheel on a normal buffer with nothing scrolled off yet. xterm turns
+ * that into an arrow key, which walks shell history, so it is dropped. The
+ * alternate screen keeps the arrow keys: that is how less and vim scroll.
+ */
+export function wheelHasNothingToScroll(buffer: WheelBuffer): boolean {
+  return buffer.type === "normal" && buffer.baseY === 0;
+}

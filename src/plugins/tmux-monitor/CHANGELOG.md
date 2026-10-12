@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.2
+
+### Fixed
+
+- Windows hosts running psmux showed "tmux is not installed". Hosts without /bin/sh now run tmux straight from cmd.exe or PowerShell
+
 ## 1.0.1
 
 ### Changed
