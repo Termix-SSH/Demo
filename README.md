@@ -25,7 +25,7 @@ This is the source for the public demo of [Termix](https://github.com/Termix-SSH
 
 ## Sponsors
 
-Interested in a paid placement to support development? Email [mail@termix.site](mailto:mail@termix.site).
+For a paid sponsor spot, email [mail@termix.site](mailto:mail@termix.site).
 
 <!-- SPONSORS:START -->
 
@@ -69,7 +69,7 @@ Interested in a paid placement to support development? Email [mail@termix.site](
 
 ## Support
 
-The demo runs Termix, so bugs and ideas go in the [Termix repo](https://github.com/Termix-SSH/Termix/issues/new/choose), or the plugin's own repo for a plugin problem. Please be as detailed as possible, preferably in English.
+The demo runs Termix, so bugs and ideas go in the [Termix repo](https://github.com/Termix-SSH/Termix/issues/new/choose), or the plugin's own repo for a plugin problem. Add as much detail as you can, in English if possible.
 
 For discussions and questions, join the [Discord](https://discord.gg/jVQGdvHDrf) server.
 
@@ -77,4 +77,4 @@ For discussions and questions, join the [Discord](https://discord.gg/jVQGdvHDrf)
 
 ## License
 
-Distributed under the Apache License Version 2.0. See [LICENSE](LICENSE) for more information.
+Apache License 2.0. See [LICENSE](LICENSE).
