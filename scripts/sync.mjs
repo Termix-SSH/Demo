@@ -6,7 +6,7 @@
  * lives in src/demo.
  *
  *   npm run sync
- *   npm run sync -- --termix ../Termix --plugins ../Plugins --registry ../Termix-Registry
+ *   npm run sync -- --termix ../Termix --plugins ../Plugins --registry ../Registry
  */
 
 import fs from "node:fs";
@@ -21,7 +21,7 @@ function arg(name, fallback) {
 
 const termixDir = path.resolve(root, arg("termix", "../Termix"));
 const pluginsDir = path.resolve(root, arg("plugins", "../Plugins"));
-const registryDir = path.resolve(root, arg("registry", "../Termix-Registry"));
+const registryDir = path.resolve(root, arg("registry", "../Registry"));
 
 for (const dir of [termixDir, pluginsDir, registryDir]) {
   if (!fs.existsSync(dir)) {

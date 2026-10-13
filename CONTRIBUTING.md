@@ -46,7 +46,7 @@ WebSocket and event stream with made-up data.
 With [Termix](https://github.com/Termix-SSH/Termix), the plugin repos and
 [Termix-Registry](https://github.com/Termix-SSH/Termix-Registry) checked out
 next to this repo (`../Termix`, `../Plugins/Plugin-*`,
-`../Termix-Registry`):
+`../Registry`):
 
 ```sh
 npm run sync

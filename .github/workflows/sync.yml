@@ -30,7 +30,7 @@ jobs:
         run: |
           cd ..
           git clone --depth 1 https://github.com/Termix-SSH/Termix.git
-          git clone --depth 1 https://github.com/Termix-SSH/Termix-Registry.git
+          git clone --depth 1 https://github.com/Termix-SSH/Termix-Registry.git Registry
           mkdir Plugins
           cd Plugins
           for repo in $(gh repo list Termix-SSH --limit 200 --no-archived --json name -q '.[].name | select(startswith("Plugin-"))'); do
