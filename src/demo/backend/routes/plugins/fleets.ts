@@ -3,6 +3,8 @@ import { collection } from "../../store";
 import { hosts } from "../hosts";
 import { users } from "../auth";
 import { DEMO_OFFLINE_HOSTS } from "../../../fixtures/hosts";
+import { isRecording } from "../../recording";
+import { runCommand } from "../../shell";
 
 const P = "/plugin-api/fleets";
 const stamp = new Date(Date.now() - 21 * 864e5).toISOString();
@@ -200,7 +202,18 @@ post(`${P}/:id/execute`, (req) => {
           ? name
           : cmd === "df"
             ? "Filesystem      Size  Used Avail Use% Mounted on\n/dev/sda1       118G   57G   61G  48% /"
-            : `(demo) ran "${command}" on ${name}`,
+            : isRecording()
+              ? runCommand(
+                  {
+                    name,
+                    ip:
+                      hosts.all().find((h) => h.name === name)?.ip ??
+                      "10.0.0.2",
+                    username: "deploy",
+                  },
+                  command,
+                ) || "Done"
+              : `(demo) ran "${command}" on ${name}`,
     ),
   };
 });

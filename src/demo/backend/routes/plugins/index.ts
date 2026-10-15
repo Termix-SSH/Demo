@@ -16,3 +16,6 @@ import "./network-topology";
 import "./termix-identity";
 import "./remote-desktop";
 import "./misc";
+import "./access";
+import "./session-sharing";
+import "./ai";

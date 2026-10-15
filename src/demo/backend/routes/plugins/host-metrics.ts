@@ -2,6 +2,7 @@ import { get, HttpError, post } from "../../router";
 import { value } from "../../store";
 import { hosts } from "../hosts";
 import { DEMO_OFFLINE_HOSTS } from "../../../fixtures/hosts";
+import { isRecording } from "../../recording";
 import {
   defaultColSpanFor,
   defaultHeightFor,
@@ -804,9 +805,13 @@ get(`${P}/host-metrics/managers/:resource/:id`, (req) => {
 });
 post(`${P}/host-metrics/managers/:resource/:id`, () => ({
   success: true,
-  output: "Done. This is a demo, so nothing changed on a real host.",
+  output: isRecording()
+    ? ""
+    : "Done. This is a demo, so nothing changed on a real host.",
 }));
 post(`${P}/host-metrics/managers/:resource/:id/:action`, () => ({
   success: true,
-  output: "Done. This is a demo, so nothing changed on a real host.",
+  output: isRecording()
+    ? ""
+    : "Done. This is a demo, so nothing changed on a real host.",
 }));

@@ -230,7 +230,22 @@ export const DEMO_HOSTS = [
           },
         ],
       },
-      "web-endpoint": { enableWebUi: true },
+      "web-endpoint": {
+        enableWebUi: true,
+        webUiConfig: {
+          endpoints: [
+            {
+              id: "pihole-admin",
+              label: "Pi-hole admin",
+              scheme: "http",
+              port: 80,
+              path: "/admin/",
+              access: "direct",
+              render: "embedded",
+            },
+          ],
+        },
+      },
     },
   }),
   host({

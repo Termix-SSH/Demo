@@ -74,8 +74,14 @@ type HostConfig = {
 
 let sessionCounter = 0;
 
+/** Host auth types whose plugins ask for a browser sign-in on connect. */
+const SIGN_IN_TYPES = new Set(["opkssh", "stepca", "vault"]);
+
 socket("/plugin-ws/ssh-terminal/terminal", (ws) => {
   let shell: FakeShell | null = null;
+  // A browser sign-in the connect is waiting on, and its fake progress.
+  let pendingSignIn: (() => void) | null = null;
+  let signInTimers: ReturnType<typeof setTimeout>[] = [];
 
   const log = (stage: string, level: string, message: string) =>
     ws.send({ type: "connection_log", data: { stage, level, message } });
@@ -124,50 +130,75 @@ socket("/plugin-ws/ssh-terminal/terminal", (ws) => {
             },
           ]);
         } else {
-          steps.push(
-            [
+          const open = () => {
+            sessionCounter += 1;
+            const sessionId = `demo-session-${sessionCounter}`;
+            ws.send({ type: "sessionCreated", sessionId });
+            ws.send({ type: "connected", message: "SSH connected" });
+            shell = new FakeShell(host, (out) =>
+              ws.send({ type: "data", data: out }),
+            );
+            const tmux = data.tmuxAttachSession
+              ? tmuxScreen(
+                  String(data.tmuxAttachSession),
+                  Number(data.cols) || 120,
+                )
+              : null;
+            if (tmux) {
+              ws.send({
+                type: "tmux_session_attached",
+                sessionName: data.tmuxAttachSession,
+              });
+              ws.send({ type: "data", data: tmux });
+              return;
+            }
+            shell.start();
+            if (typeof data.initialPath === "string" && data.initialPath) {
+              shell.input(`cd ${data.initialPath}
+`);
+            }
+            if (
+              typeof data.executeCommand === "string" &&
+              data.executeCommand
+            ) {
+              shell.input(`${data.executeCommand}
+`);
+            }
+          };
+          const finish = (after: number) => {
+            setTimeout(() => {
+              if (ws.closed) return;
+              log("auth", "success", `Authenticated as ${host.username}`);
+              setTimeout(() => !ws.closed && open(), 140);
+            }, after);
+          };
+          if (stored?.pluginSettings?.warpgate?.useWarpgate === true) {
+            // Warpgate asks for a browser approval before the shell opens.
+            steps.push([
               560,
-              () => log("auth", "success", `Authenticated as ${host.username}`),
-            ],
-            [
-              700,
               () => {
-                sessionCounter += 1;
-                const sessionId = `demo-session-${sessionCounter}`;
-                ws.send({ type: "sessionCreated", sessionId });
-                ws.send({ type: "connected", message: "SSH connected" });
-                shell = new FakeShell(host, (out) =>
-                  ws.send({ type: "data", data: out }),
-                );
-                const tmux = data.tmuxAttachSession
-                  ? tmuxScreen(
-                      String(data.tmuxAttachSession),
-                      Number(data.cols) || 120,
-                    )
-                  : null;
-                if (tmux) {
-                  ws.send({
-                    type: "tmux_session_attached",
-                    sessionName: data.tmuxAttachSession,
-                  });
-                  ws.send({ type: "data", data: tmux });
-                  return;
-                }
-                shell.start();
-                if (typeof data.initialPath === "string" && data.initialPath) {
-                  shell.input(`cd ${data.initialPath}
-`);
-                }
-                if (
-                  typeof data.executeCommand === "string" &&
-                  data.executeCommand
-                ) {
-                  shell.input(`${data.executeCommand}
-`);
-                }
+                pendingSignIn = () => finish(200);
+                ws.send({
+                  type: "warpgate_auth_required",
+                  kind: "browser",
+                  label: "Warpgate",
+                  url: "https://warpgate.example.com/@warpgate#/login",
+                  securityKey: "7 K 2 Q",
+                });
               },
-            ],
-          );
+            ]);
+          } else if (stored?.authType && SIGN_IN_TYPES.has(stored.authType)) {
+            const type = stored.authType;
+            steps.push([
+              560,
+              () => {
+                pendingSignIn = () => finish(200);
+                ws.send({ type: `${type}_auth_required`, hostId: config.id });
+              },
+            ]);
+          } else {
+            finish(560);
+          }
         }
         for (const [delay, run] of steps) {
           setTimeout(() => {
@@ -176,11 +207,90 @@ socket("/plugin-ws/ssh-terminal/terminal", (ws) => {
         }
         break;
       }
+      case "joinSharedSession": {
+        // A teammate presenting web-01 in a meeting room.
+        const stored = hosts.find(1);
+        ws.send({ type: "sessionAttached", sessionId: "demo-shared-session" });
+        shell = new FakeShell(
+          {
+            name: stored?.name ?? "web-01",
+            ip: stored?.ip ?? "10.0.12.21",
+            username: stored?.username ?? "deploy",
+          },
+          (out) => ws.send({ type: "data", data: out }),
+        );
+        shell.start();
+        const typed = shell;
+        let at = 1600;
+        for (const command of ["uptime", "docker ps", "df -h"]) {
+          for (const ch of `${command}\r`) {
+            at += ch === "\r" ? 500 : 70 + Math.round(Math.random() * 60);
+            signInTimers.push(
+              setTimeout(() => !ws.closed && typed.input(ch), at),
+            );
+          }
+          at += 1400;
+        }
+        break;
+      }
+      case "warpgate_auth_continue":
+      case "opkssh_auth_completed":
+      case "stepca_auth_completed":
+      case "vault_auth_completed":
+        pendingSignIn?.();
+        pendingSignIn = null;
+        break;
+      case "opkssh_start_auth":
+      case "stepca_start_auth":
+      case "vault_start_auth": {
+        const type = msg.type.replace(/_start_auth$/, "");
+        // The sign-in happens in another tab, so play it out on a timer.
+        const later = (ms: number, message: Record<string, unknown>) =>
+          signInTimers.push(
+            setTimeout(() => !ws.closed && ws.send(message), ms),
+          );
+        if (type === "vault") {
+          ws.send({
+            type: "vault_auth_url",
+            url: "about:blank",
+            requestId: "demo-vault",
+            hostId: data.hostId,
+          });
+          later(4500, { type: "vault_completed" });
+          break;
+        }
+        ws.send({
+          type: `${type}_status`,
+          stage: "chooser",
+          requestId: `demo-${type}`,
+          url: `https://termix.example.com/plugin-api/${type}/login`,
+          ...(type === "opkssh"
+            ? {
+                providers: [
+                  { alias: "google", issuer: "https://accounts.google.com" },
+                  { alias: "authentik", issuer: "https://auth.example.com" },
+                ],
+              }
+            : {}),
+        });
+        later(6000, { type: `${type}_status`, stage: "waiting" });
+        later(7600, { type: `${type}_status`, stage: "authenticating" });
+        later(8800, { type: `${type}_completed` });
+        break;
+      }
+      case "opkssh_cancel":
+      case "stepca_cancel":
+      case "vault_cancel":
+        signInTimers.forEach(clearTimeout);
+        signInTimers = [];
+        pendingSignIn = null;
+        break;
       case "input":
         shell?.input(String(data ?? (msg as { data?: unknown }).data ?? ""));
         break;
       case "resize":
         ws.send({ type: "resized", cols: data.cols, rows: data.rows });
+        shell?.resize(Number(data.cols) || 80);
         break;
       case "ping":
         ws.send({ type: "pong" });

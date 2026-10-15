@@ -408,6 +408,9 @@ socket("/plugin-ws/docker/console", (ws) => {
       case "input":
         shell?.input(String(msg.data ?? ""));
         break;
+      case "resize":
+        shell?.resize(Number(data.cols) || 80);
+        break;
       case "ping":
         ws.send({ type: "pong" });
         break;

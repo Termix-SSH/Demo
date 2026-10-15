@@ -1,6 +1,9 @@
 import { del, get, HttpError, post, put } from "../../router";
 import { collection } from "../../store";
 import { users } from "../auth";
+import { hosts } from "../hosts";
+import { isRecording } from "../../recording";
+import { runCommand } from "../../shell";
 
 const P = "/plugin-api/snippets";
 const stamp = new Date(Date.now() - 30 * 864e5).toISOString();
@@ -216,8 +219,20 @@ post(`${P}/folders`, (req) => {
   return record;
 });
 post(`${P}/execute`, (req) => {
-  const { snippetId } = req.body as { snippetId: number };
+  const { snippetId, hostId } = req.body as {
+    snippetId: number;
+    hostId: number;
+  };
   const snippet = snippets.find(snippetId);
+  const host = hosts.find(hostId);
+  if (isRecording() && host) {
+    const output = (snippet?.content ?? "")
+      .split("\n")
+      .map((line) => runCommand(host, line))
+      .filter(Boolean)
+      .join("\n");
+    return { success: true, output: output || "Done" };
+  }
   return {
     success: true,
     output: `$ ${snippet?.content ?? ""}\n(demo) The command ran. Open a terminal and send the snippet there to see real output.`,

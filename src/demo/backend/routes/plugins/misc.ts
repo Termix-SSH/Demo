@@ -1,6 +1,8 @@
 import QRCode from "qrcode";
 import { del, get, HttpError, post } from "../../router";
 import { collection, value } from "../../store";
+import { socket } from "../../sockets";
+import { isRecording } from "../../recording";
 
 // Small plugins whose screens only need a few answers to look alive.
 
@@ -69,8 +71,59 @@ del("/plugin-api/webauthn/credentials/:id", (req) => {
   passkeys.remove(req.params.id);
   return { success: true };
 });
-post("/plugin-api/webauthn/register/options", () => {
-  throw new HttpError(400, { error: "Passkeys cannot be added in the demo." });
+const b64url = (bytes: Uint8Array) =>
+  btoa(String.fromCharCode(...bytes))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+
+// Recordings use a virtual authenticator, so adding a key works there. The
+// public demo would save a real passkey on the visitor's device, so not there.
+post("/plugin-api/webauthn/register/options", (req) => {
+  if (!isRecording()) {
+    throw new HttpError(400, {
+      error: "Passkeys cannot be added in the demo.",
+    });
+  }
+  const { userVerification } = (req.body ?? {}) as {
+    userVerification?: string;
+  };
+  return {
+    challengeId: `challenge-${Date.now()}`,
+    options: {
+      challenge: b64url(crypto.getRandomValues(new Uint8Array(32))),
+      rp: { name: "Termix", id: location.hostname },
+      user: {
+        id: b64url(new TextEncoder().encode("demo-user")),
+        name: "demo",
+        displayName: "demo",
+      },
+      pubKeyCredParams: [
+        { type: "public-key", alg: -7 },
+        { type: "public-key", alg: -257 },
+      ],
+      timeout: 60000,
+      attestation: "none",
+      excludeCredentials: [],
+      authenticatorSelection: {
+        residentKey: "preferred",
+        userVerification: userVerification ?? "preferred",
+      },
+    },
+  };
+});
+post("/plugin-api/webauthn/register/verify", (req) => {
+  const { name } = (req.body ?? {}) as { name?: string };
+  passkeys.insert({
+    id: passkeys.nextId(),
+    name: name || "Passkey",
+    deviceType: "singleDevice",
+    backedUp: false,
+    transports: ["usb"],
+    createdAt: new Date().toISOString(),
+    lastUsedAt: new Date().toISOString(),
+  });
+  return { success: true };
 });
 
 // Telemetry is off in the demo.
@@ -120,6 +173,16 @@ post("/plugin-api/session-sharing/rooms", (req) => {
   rooms.insert(room);
   return { room };
 });
+// alex is presenting a web-01 terminal, which the terminal route plays out.
+const DEMO_STAGE = {
+  presenterUserId: "user-alex",
+  protocol: "ssh",
+  hostId: 1,
+  shareId: "demo-share-1",
+  sessionId: "demo-shared-session",
+  controllerUserId: "user-alex",
+};
+
 del("/plugin-api/session-sharing/rooms/:id", (req) => {
   rooms.remove(req.params.id);
   return { success: true };
@@ -127,8 +190,12 @@ del("/plugin-api/session-sharing/rooms/:id", (req) => {
 get("/plugin-api/session-sharing/rooms/:id", (req) => {
   const room = rooms.find(req.params.id);
   if (!room) throw new HttpError(404, { error: "Room not found" });
+  const since = (days: number) =>
+    new Date(Date.now() - days * 864e5).toISOString();
   return {
     room,
+    me: "demo-user",
+    isHost: true,
     members: [
       {
         userId: "demo-user",
@@ -136,8 +203,44 @@ get("/plugin-api/session-sharing/rooms/:id", (req) => {
         roomRole: "owner",
         createdAt: room.createdAt,
       },
+      {
+        userId: "user-alex",
+        username: "alex",
+        roomRole: "member",
+        createdAt: since(5),
+      },
+      {
+        userId: "user-sam",
+        username: "sam",
+        roomRole: "member",
+        createdAt: since(4),
+      },
+      {
+        userId: "user-jordan",
+        username: "jordan",
+        roomRole: "member",
+        createdAt: since(2),
+      },
     ],
+    online: [
+      { userId: "demo-user", username: "demo" },
+      { userId: "user-alex", username: "alex" },
+      { userId: "user-sam", username: "sam" },
+    ],
+    stage: DEMO_STAGE,
+    guests: [],
+    controllerUserId: null,
+    controlRequests: [],
+    eventsWsPath: `/plugin-ws/session-sharing/rooms/${room.id}/events`,
   };
 });
+get("/plugin-api/session-sharing/rooms/:id/stage", () => ({
+  stage: DEMO_STAGE,
+}));
+get("/plugin-api/session-sharing/rooms/:id/control/requests", () => ({
+  requests: [],
+}));
+// Room events: nothing happens in the demo, so the socket just stays open.
+socket("/plugin-ws/session-sharing/rooms/:id/events", () => {});
 
 get("/plugin-api/session-sharing/shared-with-me", () => []);
