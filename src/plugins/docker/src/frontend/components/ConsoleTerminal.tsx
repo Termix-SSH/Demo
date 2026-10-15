@@ -612,10 +612,7 @@ function ConsoleTerminalInner({
         <div
           ref={xtermRef}
           className="h-full w-full"
-          style={{
-            // Hidden but still laid out, so fit() measures the real size.
-            visibility: isConnected ? "visible" : "hidden",
-          }}
+          style={{ display: isConnected ? "block" : "none" }}
         />
 
         {!isConnected &&
