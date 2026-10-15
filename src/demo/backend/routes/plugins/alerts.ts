@@ -1,6 +1,7 @@
 import { del, get, HttpError, post, put } from "../../router";
 import { collection } from "../../store";
 import { rawFetch } from "../../fetch";
+import { isRecording } from "../../recording";
 
 const P = "/plugin-api/alerts";
 
@@ -363,7 +364,7 @@ rawFetch(
             `event: unread\ndata: ${JSON.stringify({ count: unreadCount() })}\n\n`,
           ),
         );
-        if (!liveTimer) {
+        if (!liveTimer && !isRecording()) {
           setTimeout(pushLive, 45_000);
           liveTimer = setInterval(pushLive, 150_000);
         }

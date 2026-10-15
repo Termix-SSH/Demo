@@ -1,5 +1,6 @@
 import * as fs from "./fs";
 import { homeFor, normalize } from "../fixtures/filesystem";
+import { isRecording } from "./recording";
 
 /**
  * A small bash look-alike for terminal sockets. It answers a handful of
@@ -71,8 +72,12 @@ export class FakeShell {
       `  Memory usage: 41%                IPv4 address for eth0: ${this.host.ip}`,
       "  Swap usage:   0%",
       "",
-      `${DIM}This is the Termix demo. Type ${RESET}help${DIM} to see what works.${RESET}`,
-      "",
+      ...(isRecording()
+        ? []
+        : [
+            `${DIM}This is the Termix demo. Type ${RESET}help${DIM} to see what works.${RESET}`,
+            "",
+          ]),
       `Last login: ${new Date(Date.now() - 3.6e6).toUTCString()} from 10.0.0.24`,
     ]);
     this.prompt();
