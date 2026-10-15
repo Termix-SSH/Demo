@@ -398,16 +398,24 @@ export class FakeShell {
           `${DIM}(a snapshot; the Host Metrics tab has the live view)${RESET}`,
         );
         break;
-      case "systemctl":
+      case "systemctl": {
+        const unit = (
+          args.find((a) => !a.startsWith("-") && a !== "status") ?? "nginx"
+        ).replace(/\.service$/, "");
+        const description =
+          unit === "nginx"
+            ? "A high performance web server and a reverse proxy server"
+            : `${unit} service`;
         out.push(
-          `${GREEN}●${RESET} ${arg || "nginx"}.service - A high performance web server and a reverse proxy server`,
-          `     Loaded: loaded (/usr/lib/systemd/system/${arg || "nginx"}.service; enabled; preset: enabled)`,
+          `${GREEN}●${RESET} ${unit}.service - ${description}`,
+          `     Loaded: loaded (/usr/lib/systemd/system/${unit}.service; enabled; preset: enabled)`,
           `     Active: ${GREEN}active (running)${RESET} since Mon 2026-09-15 06:02:11 UTC; 3 weeks 2 days ago`,
-          "   Main PID: 1420 (nginx)",
+          `   Main PID: 1420 (${unit})`,
           "      Tasks: 5 (limit: 9374)",
           "     Memory: 9.8M (peak: 14.2M)",
         );
         break;
+      }
       case "docker":
         if (args[0] === "ps") {
           out.push(

@@ -179,7 +179,7 @@ function summary(id: string) {
     name: m.name,
     version: m.version,
     enabled: s.enabled,
-    state: s.enabled ? "enabled" : "disabled",
+    state: s.enabled ? "active" : "disabled",
     contributes: m.contributes ?? null,
     icon: m.icon,
     dependencies: m.dependencies ?? {},
