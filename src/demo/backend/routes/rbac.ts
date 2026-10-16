@@ -207,26 +207,33 @@ get("/rbac/credential/:id/access", (req) => ({
 get("/rbac/folder/access", () => ({ accessList: [] }));
 function share(kind: string) {
   return (req: { params: Record<string, string>; body: unknown }) => {
-    const body = (req.body ?? {}) as Record<string, unknown>;
-    const id = access.nextId();
-    const user = users.find(String(body.targetUserId ?? ""));
-    access.insert({
-      id,
-      kind,
-      targetId: req.params.id,
-      targetType: body.targetType ?? "user",
-      userId: body.targetUserId ?? null,
-      roleId: body.targetRoleId ?? null,
-      username: user?.username ?? null,
-      roleName: null,
-      roleDisplayName: null,
-      grantedBy: DEMO_USER_ID,
-      grantedByUsername: "demo",
-      permissionLevel: body.permissionLevel ?? "connect",
-      expiresAt: null,
-      createdAt: new Date().toISOString(),
+    const body = (req.body ?? {}) as {
+      targets?: { type: "user" | "role"; id: string | number }[];
+      permissionLevel?: string;
+    };
+    const results = (body.targets ?? []).map((target) => {
+      const id = access.nextId();
+      const user = target.type === "user" ? users.find(target.id) : undefined;
+      const role = target.type === "role" ? roles.find(target.id) : undefined;
+      access.insert({
+        id,
+        kind,
+        targetId: req.params.id,
+        targetType: target.type,
+        userId: user ? target.id : null,
+        roleId: role ? Number(target.id) : null,
+        username: user?.username ?? null,
+        roleName: role?.name ?? null,
+        roleDisplayName: role?.displayName ?? null,
+        grantedBy: DEMO_USER_ID,
+        grantedByUsername: "demo",
+        permissionLevel: body.permissionLevel ?? "connect",
+        expiresAt: null,
+        createdAt: new Date().toISOString(),
+      });
+      return { type: target.type, id: target.id, accessId: id, created: true };
     });
-    return { success: true, accessId: id };
+    return { success: true, expiresAt: null, results };
   };
 }
 post("/rbac/host/:id/share", share("host"));
