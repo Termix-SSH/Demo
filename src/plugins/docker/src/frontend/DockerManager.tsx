@@ -258,11 +258,11 @@ function DockerManagerInner({
     if (initializingRef.current || sessionId) return;
     initializingRef.current = true;
     clearLogs();
-    // Cleared only when the connect settles, so a second run of this effect
-    // cannot start another session and leave polling on the dropped one.
-    void connect().finally(() => {
+    void connect();
+
+    return () => {
       initializingRef.current = false;
-    });
+    };
   }, [currentHost?.id, enabled, retryCount]);
 
   React.useEffect(() => {
