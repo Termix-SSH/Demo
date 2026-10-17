@@ -7,6 +7,7 @@ const P = "/plugin-api/remote-desktop";
 
 get(`${P}/status`, () => ({
   enabled: true,
+  engine: "builtin",
   guacd: { status: "connected", host: "guacd", port: 4822 },
 }));
 
