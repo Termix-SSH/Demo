@@ -19,3 +19,4 @@ import "./misc";
 import "./access";
 import "./session-sharing";
 import "./ai";
+import "./ai-ops";

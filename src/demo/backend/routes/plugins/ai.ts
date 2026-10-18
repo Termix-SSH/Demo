@@ -16,6 +16,7 @@ const providers = collection("ai-providers", () => [
     baseUrl: null,
     apiKeyPrefix: "sk-ant-",
     defaultModel: "claude-sonnet-5-5",
+    modelOverrides: {},
     enabled: true,
     createdAt: now(),
   },
@@ -26,6 +27,7 @@ const providers = collection("ai-providers", () => [
     baseUrl: "http://gpu-box:11434",
     apiKeyPrefix: null,
     defaultModel: "qwen3:32b",
+    modelOverrides: { "qwen3:32b": { contextWindow: 65536 } },
     enabled: true,
     createdAt: now(),
   },
@@ -77,6 +79,7 @@ post(`${P}/providers`, (req) => {
     baseUrl: body.baseUrl ?? null,
     apiKeyPrefix: body.apiKey ? body.apiKey.slice(0, 7) : null,
     defaultModel: body.defaultModel ?? null,
+    modelOverrides: {},
     enabled: true,
     createdAt: now(),
   });
@@ -91,6 +94,41 @@ del(`${P}/providers/:id`, (req) => {
 get(`${P}/providers/:id/models`, (req) => ({
   models: MODELS[providers.find(req.params.id)?.providerType ?? ""] ?? [],
 }));
+// What each model's context window is and where it came from.
+const WINDOWS: Record<string, number> = {
+  "claude-sonnet-5-5": 1_000_000,
+  "claude-opus-5-5": 1_000_000,
+  "claude-haiku-5-5": 200_000,
+  "gpt-5": 400_000,
+  "gpt-5-mini": 400_000,
+  "gemini-3-pro": 1_048_576,
+  "gemini-3-flash": 1_048_576,
+  "qwen3:32b": 40_960,
+  "llama4:16x17b": 131_072,
+  "gpt-oss:20b": 131_072,
+};
+get(`${P}/providers/:id/context`, (req) => {
+  const provider = providers.find(req.params.id) as
+    | {
+        providerType: string;
+        modelOverrides?: Record<string, { contextWindow?: number }>;
+      }
+    | undefined;
+  return {
+    models: (MODELS[provider?.providerType ?? ""] ?? []).map((model) => {
+      const override = provider?.modelOverrides?.[model]?.contextWindow ?? null;
+      const reported = WINDOWS[model] ?? null;
+      return {
+        model,
+        contextWindow: override ?? reported ?? 32_768,
+        source: override ? "override" : reported ? "provider" : "default",
+        reservedOutput: 16_000,
+        reportedWindow: reported,
+        override,
+      };
+    }),
+  };
+});
 post(`${P}/probe-models`, (req) => ({
   models: MODELS[(req.body as { providerType: string }).providerType] ?? [],
   source: "live",

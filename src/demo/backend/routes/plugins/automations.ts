@@ -108,7 +108,7 @@ const automations = collection<Row>("automations", () => [
   row(
     3,
     "Disk filling up",
-    "Prunes Docker images when a disk passes 85%",
+    "Has the AI find what fills a disk past 85% and propose a cleanup",
     {
       kind: "metric_threshold",
       hostSelector: { kind: "all" },
@@ -122,15 +122,18 @@ const automations = collection<Row>("automations", () => [
     [
       {
         id: "s1",
-        type: "run_snippet",
-        snippetId: 1,
+        type: "ai_task",
+        title: "Disk space cleanup",
+        runbook:
+          "Find what fills the disk. Propose removing only old logs, caches and unused images. Never touch backups or app data.",
+        autonomy: "propose",
         hostSelector: { kind: "trigger" },
       },
       {
         id: "s2",
         type: "notify",
         channelIds: [1, 2],
-        title: "Disk pruned on {{host.name}}",
+        title: "Disk filling up on {{host.name}}",
         severity: "warning",
       },
     ],
@@ -201,7 +204,7 @@ const runs = collection<Run>("automation-runs", () => [
     started_at: ago(60 * 49),
     finished_at: ago(60 * 49 - 1),
     duration_ms: 4_100,
-    error: "Snippet exited with code 1",
+    error: "nas did not answer over SSH",
     dry_run: 0,
     parent_run_id: null,
   },
@@ -278,6 +281,7 @@ get(`${P}/editor-options`, () => ({
     "docker-events": true,
     "host-metrics": true,
     "wake-on-lan": true,
+    ai: true,
   },
 }));
 get(`${P}/runs/history`, (req) => {

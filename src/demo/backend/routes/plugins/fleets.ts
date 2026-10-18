@@ -107,6 +107,15 @@ function memberRows(fleet: Fleet) {
   return [...out.values()];
 }
 
+/** Every fleet with its member host ids, for other plugins' routes. */
+export function fleetMembers() {
+  return fleets.all().map((fleet) => ({
+    id: fleet.id,
+    name: fleet.name,
+    hostIds: memberRows(fleet).map((member) => member.id),
+  }));
+}
+
 function row(fleet: Fleet) {
   const { members: _m, ...rest } = fleet;
   return { ...rest, memberCount: memberRows(fleet).length };
