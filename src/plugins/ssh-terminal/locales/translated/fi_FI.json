@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Yhdistä Cloudflare-tunnelin takana oleviin isäntiin käyttämällä natiivia WebSocket-kuljetusta ilman, että porttia 22 tarvitsee avata julkiseen internetiin.",
+    "enableCloudflareTunnel": "Ota Cloudflare-tunneli käyttöön",
+    "enableCloudflareTunnelDesc": "Reititä SSH-liikenne Cloudflare Zero Trustin (WSS) kautta käyttäen isäntälaitteen pääosoitetta suorien TCP-yhteyksien sijaan.",
+    "cloudflareTunnelHostname": "Tunnelin isäntänimi",
+    "cloudflareTunnelHostnameDesc": "Julkinen verkkotunnus, joka ohjataan SSH-alkuperäispalveluusi Cloudflare-tunnelin kautta (jätä tyhjäksi käyttääksesi isäntälaitteen pääosoitetta).",
+    "cloudflareTunnelPort": "Tunnelin portti",
+    "cloudflareTunnelPortDesc": "Cloudflaren HTTPS/WSS-portti (oletus on 443).",
+    "cloudflareTunnelClientId": "Palvelun asiakas-ID",
+    "cloudflareTunnelClientIdDesc": "Valinnainen CF-Access-Client-Id-otsake. Vaaditaan vain, jos Cloudflare Access Zero Trust -käytäntö vaatii palveluntunnisteita.",
+    "cloudflareTunnelClientSecret": "Palvelun avaimen asiakassalaisuus",
+    "cloudflareTunnelClientSecretDesc": "Valinnainen CF-Access-Client-Secret-otsake Cloudflare Access -todennusta varten.",
     "clipboardHttpWarning": "Leikepöydän lukeminen epäonnistui. Jotkin selaimet rajoittavat leikepöydän käyttöä HTTPS:n ulkopuolella – kokeile Ctrl+V tai käytä Termixiä HTTPS:n kautta.",
     "connecting": "Yhdistetään...",
     "connectionLost": "Yhteys katkesi",
@@ -85,7 +97,16 @@
     "localShell": "Paikallinen komentotulkki",
     "autocompleteHintComplete": "Tab tai Enter täydentää",
     "autocompleteHintNavigate": "↑↓ siirtyäksesi",
-    "autocompleteHintClose": "Esc sulkeaksesi"
+    "autocompleteHintClose": "Esc sulkeaksesi",
+    "cloudflareTunnelClientSecretPlaceholder": "Valinnainen palvelun avaimen salaisuus",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Uusi palvelun avaimen salaisuus",
+    "secretSaved": "Tallennettu",
+    "secretReplace": "Korvaa",
+    "secretClear": "Tyhjennä",
+    "secretCancel": "Peruuta",
+    "hideSecret": "Piilota salaisuus",
+    "showSecret": "Näytä salaisuus",
+    "sessionEndedKeepOpen": "Istunto päättyi. Paina Enter-painiketta muodostaaksesi yhteyden uudelleen."
   },
   "terminalToolbar": {
     "detachTmux": "Irrota tmux",
@@ -210,6 +231,26 @@
         "label": "Komentohistoria",
         "description": "Tallenna tämän terminaalissa suoritettujen komentojen historia ja automaattinen täydennys"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare-tunneli",
+        "description": "Reititä SSH-liikenne Cloudflare Zero Trustin kautta WebSocketin välityksellä"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Tunnelin isäntänimi",
+        "description": "Cloudflare-tunnelin julkinen isäntänimi"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Tunnelin portti",
+        "description": "Cloudflare-reunan HTTPS/WSS-portti"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Cloudflare Access -palvelun asiakastunnus"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Cloudflare Access -palvelun asiakassalaisuus"
+      },
       "enableTerminal": {
         "label": "Ota terminaali käyttöön",
         "description": "Tarjoa SSH-terminaali tälle isäntäpalvelimelle."
@@ -317,6 +358,9 @@
         "moveUp": "Siirrä ylös",
         "moveDown": "Siirrä alas",
         "tmuxHint": "Näytetään vain, kun tmux on liitetty"
+      },
+      "keepOpenOnExit": {
+        "label": "Pidä välilehti auki poistumisen jälkeen"
       }
     },
     "user": {
@@ -487,7 +531,9 @@
     "guac": {
       "permissionLevel": "Oikeustaso"
     },
-    "deleteGlobalThemeConfirm": "Haluatko poistaa teeman {{name}}?"
+    "deleteGlobalThemeConfirm": "Haluatko poistaa teeman {{name}}?",
+    "keepOpenOnExitLabel": "Pidä välilehti auki poistumisen jälkeen",
+    "keepOpenOnExitDesc": "Kun shell-pääte sulkeutuu tai yhteys katkeaa, pidä välilehti ja sen ulostulo auki. Paina Enter-yhtymää muodostaaksesi yhteyden uudelleen."
   },
   "nav": {
     "history": "Historia",
@@ -517,6 +563,7 @@
     "stopRecording": "Pysäytä merkintä"
   },
   "keybindings": {
+    "openLocalTerminal": "Avaa uusi paikallinen pääte",
     "copy": "Kopioi valinta",
     "paste": "Liitä",
     "sendControlCode": "Lähetä Ctrl+kirjain-signaali",
@@ -635,6 +682,7 @@
     "remoteServerRequired": "Etäpalvelin vaaditaan. Yhdistä etäpalvelin Asetukset-valikosta käyttääksesi tätä yhteydentyyppiä."
   },
   "plugin": {
-    "name": "SSH-terminaali"
+    "name": "SSH-terminaali",
+    "description": "SSH-päätesessiot, joissa on välilehtiä, jaettu näkymä, historia, makrot ja paikallinen pääte työpöytäsovelluksessa."
   }
 }

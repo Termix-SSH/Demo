@@ -23,6 +23,18 @@
         "title": "Partilhar a chave API",
         "description": "Outras funcionalidades podem usar a chave API de IA guardada sem a visualizar."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Executar comandos em hosts com o assistente de IA",
+        "description": "Permitir que o assistente execute qualquer comando de shell nos hosts que selecionar. Apenas para administradores por predefinição."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Ver o uso de IA de todos",
+        "description": "Ver os tokens consumidos pelas chamadas de IA de cada utilizador, não apenas os seus. Apenas para administradores por predefinição."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Hospedeiros privados de IA permitidos",
         "description": "Hospedeiros na sua rede privada para onde os utilizadores podem apontar um provedor, como um Ollama auto-hospedado. Coloque um hospedeuro por linha."
+      },
+      "opsConcurrency": {
+        "label": "Hosts paralelos do assistente de IA",
+        "description": "Quantos hosts um comando do assistente executa em simultâneo."
+      },
+      "opsCommandTimeout": {
+        "label": "Tempo limite do comando do assistente de IA (segundos)",
+        "description": "Quanto tempo um comando pode executar num host antes de ser interrompido. O assistente pode solicitar até 600."
+      },
+      "opsOutputLimit": {
+        "label": "Saída do assistente de IA por host (carateres)",
+        "description": "Quanto da saída de cada host é mantida. Saídas mais longas mantêm o início e o fim."
+      },
+      "autoOpsPaused": {
+        "label": "Pausar operações automáticas de IA",
+        "description": "Interrompe todas as tarefas de IA e planos aprovados em execução e recusa novos, até ser desativado novamente."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "Tarefas de IA por automação por hora",
+        "description": "Mais gatilhos na mesma hora são ignorados."
+      },
+      "autoOpsRunTokens": {
+        "label": "Orçamento de tokens por tarefa de IA",
+        "description": "Uma tarefa que utilize este número de tokens é interrompida e reporta o que encontrou."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Orçamento diário de tokens de IA por utilizador",
+        "description": "Quando um utilizador utiliza este número de tokens hoje (UTC), as suas tarefas de IA são ignoradas ou interrompidas."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "Ativar Assistente de IA",
         "description": "Permitir que o assistente de IA ajude no terminal deste hospedeiro. Desativado por predefinição e ainda requer a IA ativada na sua conta."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Preferências de operações automáticas"
+      }
     }
   },
   "ai": {
-    "title": "Assistente",
     "send": "Enviar",
     "stop": "Parar",
     "save": "Guardar",
@@ -58,10 +102,9 @@
     "running": "a executar",
     "approve": "Aprovar",
     "reject": "Rejeitar",
-    "inputPlaceholder": "Pergunte sobre os seus servidores ou descreva uma alteração para propor",
     "selectProvider": "Selecionar um provedor",
-    "providerSettings": "Definições do provedor",
     "addProvider": "Adicionar provedor",
+    "manageModels": "Gerir modelos",
     "editProvider": "Editar provedor",
     "removeProvider": "Remover provedor",
     "providerType": "Provedor",
@@ -95,22 +138,32 @@
     "modelCustom": "Introduza um nome de modelo",
     "modelRefresh": "Atualizar lista",
     "modelPlaceholder": "Escolha ou escreva um modelo",
-    "attachHint": "Escreva @ para referenciar um host, snippet ou automação. As alterações são propostas para sua aprovação.",
     "runCommandTitle": "Executar comando",
     "assistant": "Assistente de IA",
     "terminalPanelEmpty": "Pergunte ao assistente sobre este host. Qualquer alteração de estado precisa da sua aprovação primeiro.",
     "terminalPanelPlaceholder": "Pergunte sobre este host...",
-    "noProvidersConfigured": "Nenhum fornecedor de IA está configurado. Adicione um na aba do assistente de IA.",
+    "noProvidersConfigured": "Nenhum fornecedor de IA está configurado. Adicione um nas Definições.",
     "runsInOpenTerminal": "Executa na sua sessão de terminal aberta.",
     "runInTerminal": "Executar",
     "terminalContextPrefill": "Aqui está a saída do meu terminal:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Permitir que outras funcionalidades usem a sua chave de API do fornecedor de IA para as suas próprias solicitações. A chave nunca é copiada e pode revogar esta permissão a qualquer momento."
     },
-    "removeProviderConfirm": "Remover o fornecedor {{name}}?"
+    "removeProviderConfirm": "Remover o fornecedor {{name}}?",
+    "contextWindows": "Janela de contexto por modelo",
+    "contextWindowsHint": "Ler do fornecedor onde reporta um. Introduza um número de tokens para substituir o valor para um modelo, ou deixe vazio para usar o que o fornecedor reporta. Atualizar pergunta novamente ao fornecedor.",
+    "contextWindowValue": "Janela de contexto: {{tokens}} ({{source}})",
+    "contextOverride": "Substituição da janela de contexto para {{model}}",
+    "contextSourceOverride": "definido por si",
+    "contextSourceProvider": "reportado pelo fornecedor",
+    "contextSourceGuess": "estimado a partir do nome do modelo",
+    "contextSourceDefault": "predefinição para modelos desconhecidos",
+    "contextLoadFailed": "Não foi possível ler as janelas de contexto",
+    "contextRefresh": "Atualizar",
+    "contextWindowInvalid": "Introduza a janela de contexto como um número inteiro de tokens, pelo menos 1024."
   },
   "nav": {
-    "ai": "IA"
+    "ai": "Assistente de IA"
   },
   "onboarding": {
     "aiTitle": "Assistente de IA",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Ativar",
     "aiEnableDesc": "Adiciona um assistente que lê a sua configuração e sugere alterações que você aprova. Precisa de um fornecedor que você forneça, como um Ollama local.",
     "aiNote": "Nada é enviado a qualquer lugar até adicionar um fornecedor e enviar uma mensagem."
-  },
-  "hosts": {
-    "docsLink": "Ver documentação"
   },
   "agents": {
     "working": "A trabalhar...",
@@ -215,6 +265,282 @@
     "emptyTranscript": "Envie uma mensagem para começar com o agente."
   },
   "plugin": {
-    "name": "Assistente de IA"
+    "name": "Assistente de IA",
+    "description": "Um assistente de IA que lê a sua configuração e propõe alterações para aprovação."
+  },
+  "ops": {
+    "searchHosts": "Pesquisar hosts",
+    "selectedCount": "{{count}} selecionado(s)",
+    "clear": "Limpar",
+    "fleets": "Frotas",
+    "folders": "Pastas",
+    "tags": "Etiquetas",
+    "allHosts": "Todos os hosts",
+    "noHosts": "Sem hosts",
+    "newConversation": "Nova conversa",
+    "sendHint_one": "Executa em {{count}} host. Os comandos executam-se sem pedir confirmação.",
+    "sendHint_many": "Executa em {{count}} hosts. Os comandos executam-se sem pedir confirmação.",
+    "sendHint_other": "Executa em {{count}} hosts. Os comandos executam-se sem pedir confirmação.",
+    "runCommand": "Executar comando",
+    "hostFacts": "Fatos do host",
+    "hostCount_one": "{{count}} host",
+    "hostCount_many": "{{count}} hosts",
+    "hostCount_other": "{{count}} hosts",
+    "succeeded": "{{count}} ok",
+    "failed": "{{count}} falhados",
+    "exitCode": "saída {{code}}",
+    "timedOut": "tempo esgotado",
+    "stopped": "interrompido",
+    "notRun": "não executado",
+    "cached": "em cache",
+    "duration": "{{seconds}}s",
+    "noOutput": "(sem saída)"
+  },
+  "assistant": {
+    "title": "Assistente de IA",
+    "moveHint": "Arraste para mover. Clique duas vezes para ancorar ao lado.",
+    "toggle": "Alternar o assistente de IA",
+    "close": "Fechar",
+    "dock": "Fixar à direita",
+    "float": "Flutuante",
+    "openTab": "Abrir vista completa",
+    "history": "Conversas",
+    "noConversations": "Ainda não há conversas",
+    "untitled": "Sem título",
+    "deleteConversation": "Eliminar conversa",
+    "deleteConfirm": "Eliminar esta conversa?",
+    "emptyTitle": "Pergunte ou altere qualquer coisa no Termix",
+    "emptyHint": "O assistente atua como você através da CLI do Termix e executa comandos nos seus hosts de destino. Escreva @ para adicionar hosts, frotas, pastas ou etiquetas como destinos.",
+    "inputPlaceholder": "Pergunte ao assistente. Escreva @ para adicionar destinos.",
+    "noTargets": "Sem hosts de destino. Escreva @ para adicionar alguns.",
+    "sendHint": "As alterações e comandos são executados sem pedir confirmação prévia.",
+    "removeTarget": "Remover {{name}}",
+    "kind": {
+      "host": "Host",
+      "fleet": "Frota",
+      "folder": "Pasta",
+      "tag": "Etiqueta"
+    },
+    "emptyHintBasic": "O assistente atua como você através da CLI do Termix, com as suas permissões.",
+    "inputPlaceholderBasic": "Pergunte ao assistente.",
+    "sendHintBasic": "As alterações são executadas sem pedir confirmação prévia.",
+    "thinking": "A pensar",
+    "thinkingActive": "A pensar...",
+    "compacted": "Contexto compactado: as mensagens anteriores foram resumidas",
+    "compact": "Compactar a conversa",
+    "nothingToCompact": "A conversa é demasiado curta para ser compactada.",
+    "contextMeter": "Contexto: {{used}} de {{window}} tokens usados na última chamada",
+    "contextMeterSource": "A janela é {{source}}.",
+    "contextMeterReserved": "{{tokens}} tokens são mantidos livres para a resposta.",
+    "todayTokens": "Hoje {{tokens}}",
+    "todayTitle": "Tokens que usou hoje. Clique para ver detalhes.",
+    "usage": "Utilização de tokens",
+    "conversationTokens": "{{tokens}} tokens",
+    "openFloating": "Painel flutuante",
+    "openFloatingHint": "Abra o assistente num painel sobre qualquer página. Prima {{shortcut}} em qualquer lugar para abrir ou fechar.",
+    "shortcutHint": "Prima {{shortcut}} em qualquer página para abrir o assistente num painel flutuante."
+  },
+  "usage": {
+    "title": "Utilização de tokens",
+    "settingDescription": "Tokens usados pelas suas chamadas de IA nos últimos 30 dias.",
+    "cardTitle": "Utilização de tokens de IA",
+    "today": "Hoje",
+    "week": "7 dias",
+    "month": "30 dias",
+    "mine": "Meus",
+    "everyone": "Todos os utilizadores",
+    "mineCaption": "Os seus tokens em todas as funcionalidades de IA.",
+    "everyoneCaption": "Tokens em todos os utilizadores e funcionalidades de IA.",
+    "byDay": "Por dia",
+    "byModel": "Por modelo",
+    "bySource": "Por funcionalidade",
+    "byUser": "Por utilizador",
+    "model": "Modelo",
+    "feature": "Funcionalidade",
+    "user": "Utilizador",
+    "calls": "Chamadas",
+    "prompt": "Entrada",
+    "completion": "Saída",
+    "total": "Total",
+    "empty": "Sem utilização de IA nos últimos 30 dias.",
+    "loadFailed": "Não foi possível carregar a utilização",
+    "estimatedNote": "Algumas figuras são estimativas, com cerca de quatro caracteres por token, porque o fornecedor não reportou a sua utilização.",
+    "source": {
+      "assistant": "Assistente",
+      "terminal": "Painel do terminal",
+      "compaction": "Compactação"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Assistente",
+    "viewAutoOps": "Operações automáticas",
+    "intro": "As operações automáticas permitem que o assistente verifique os seus hosts autonomamente. Uma automação inicia-o conforme um calendário ou quando algo corre mal, e escreve um relatório ou propõe uma correção para aprovação. Comece com um predefinição.",
+    "sections": {
+      "tasks": "Tarefas",
+      "approvals": "Aprovações",
+      "presets": "Predefinições"
+    },
+    "provider": "Fornecedor para tarefas",
+    "providerDefault": "Primeiro fornecedor com um modelo predefinido",
+    "model": "Modelo para tarefas",
+    "modelDefault": "O modelo predefinido do fornecedor",
+    "saveModel": "Guardar modelo",
+    "preferencesHint": "O fornecedor e o modelo que as tarefas em segundo plano utilizam. Deixe-os como estão para utilizar o seu fornecedor e modelo predefinidos.",
+    "task": "Tarefa",
+    "tokens": "{{tokens}} tokens",
+    "tokenUsage": "{{total}} tokens ({{prompt}} de entrada, {{completion}} de saída)",
+    "dryRun": "Execução de teste",
+    "trigger": "Gatilho",
+    "noTasks": "Ainda não há tarefas",
+    "tasksHint": "As tarefas são execuções de automações com um passo de Perguntar à IA. Ative uma predefinição ou crie a sua própria em Automações: adicione um passo de Perguntar à IA a qualquer automação. As execuções aparecem aqui.",
+    "openAutomations": "Abrir Automações",
+    "browsePresets": "Explorar predefinições",
+    "noApprovals": "Nenhum plano está à espera de aprovação",
+    "loadFailed": "Falha ao carregar operações automáticas",
+    "decideFailed": "A decisão não pôde ser guardada",
+    "openConversation": "Abrir no assistente",
+    "approve": "Aprovar e executar",
+    "reject": "Rejeitar",
+    "expires": "Expira {{time}}",
+    "enabled": "Ativado",
+    "updateAvailable": "Atualização disponível",
+    "shared": "Partilhado",
+    "needsAutomations": "Requer Automações",
+    "enableAgain": "Ativar novamente",
+    "deletePreset": "Eliminar predefinição",
+    "autonomy": {
+      "report": "Apenas relatório",
+      "propose": "Propor um plano"
+    },
+    "status": {
+      "running": "A executar",
+      "reported": "Relatado",
+      "proposed": "À espera de aprovação",
+      "approved": "Aprovado",
+      "rejected": "Rejeitado",
+      "expired": "Expirado",
+      "executing": "A executar plano",
+      "done": "Concluído",
+      "failed": "Falhou",
+      "skipped": "Ignorado"
+    },
+    "severity": {
+      "info": "Informação",
+      "warning": "Aviso",
+      "critical": "Crítico"
+    },
+    "plan": {
+      "title": "Plano proposto",
+      "commands": "Comandos",
+      "rationale": "Motivo",
+      "risk": "Risco",
+      "rollback": "Reverter",
+      "verify": "Verificar",
+      "progress": "Progresso"
+    },
+    "enable": {
+      "title": "Ativar {{name}}",
+      "submit": "Ativar",
+      "name": "Nome",
+      "targets": "Hosts",
+      "targetAll": "Todos os hosts",
+      "targetTrigger": "O host que o acionou",
+      "targetHosts": "Hosts selecionados",
+      "noHosts": "Selecione pelo menos um host.",
+      "threshold": "Limite (%)",
+      "forSeconds": "Durante pelo menos (segundos)",
+      "time": "Hora do dia",
+      "cron": "Agendamento (cron)",
+      "dockerEvent": "Evento do contentor",
+      "dockerEvents": {
+        "exited": "Terminado",
+        "unhealthy": "Instável",
+        "restarting": "A reiniciar"
+      },
+      "badTime": "Introduza a hora no formato HH:MM.",
+      "autonomy": "O que o assistente pode fazer",
+      "maxRunSeconds": "Limite de tempo (segundos)",
+      "runbook": "Runbook",
+      "runbookHint": "O que o assistente deve fazer, em palavras simples. O inglês funciona melhor.",
+      "shared": "Partilhar ao guardar como predefinição",
+      "sharedHint": "Todos os que podem usar operações automáticas poderão então ativá-la.",
+      "saveAsPreset": "Guardar como predefinição",
+      "savedPreset": "Guardado",
+      "failed": "A automação não pôde ser criada",
+      "saveFailed": "A predefinição não pôde ser guardada"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Patrulha diária",
+        "description": "Todas as manhãs às 09:00, verifica os discos, memória, carga, serviços com falha, contentores, certificados, atualizações, reinícios pendentes e sincronização de hora de cada host, e reporta por gravidade."
+      },
+      "disk-cleanup": {
+        "title": "Limpeza de espaço em disco",
+        "description": "Quando um disco permanece a 85% ou mais durante 5 minutos, identifica o que o está a encher e propõe uma limpeza segura para aprovação. Dados empresariais nunca são tocados."
+      },
+      "host-down-triage": {
+        "title": "Triagem de host indisponível",
+        "description": "Quando um host fica offline, testa-o a partir de outros hosts e do Proxmox, e reporta se é problema de rede, máquina parada ou SSH."
+      },
+      "service-failure": {
+        "title": "Falha de serviço",
+        "description": "Quando uma verificação de saúde começa a falhar, identifica a unidade systemd por trás, lê o seu estado e registo, e propõe uma reinicialização única para aprovação quando isso pode ajudar. A configuração nunca é alterada."
+      },
+      "container-anomaly": {
+        "title": "Anomalia de contentor",
+        "description": "Quando um contentor termina, fica instável ou continua a reiniciar, lê o seu estado, código de saída, registos e memória, e propõe iniciar ou reiniciar uma vez para aprovação. Nada é removido."
+      },
+      "resource-overload-cpu": {
+        "title": "Sobrecarga de CPU",
+        "description": "Quando a CPU permanece a 95% ou mais durante 15 minutos, identifica os processos, serviços e contentores por trás e reporta o que fazer. Nada é alterado."
+      },
+      "resource-overload-memory": {
+        "title": "Sobrecarga de memória",
+        "description": "Quando a memória permanece a 95% ou mais durante 10 minutos, identifica o que a está a usar, swapping e terminações por falta de memória, e reporta o que fazer. Nada é alterado."
+      },
+      "security-updates-weekly": {
+        "title": "Atualizações de segurança semanais",
+        "description": "Toda a segunda-feira às 09:30, lista as atualizações de segurança pendentes por gravidade, reinícios pendentes e os pacotes por trás, kernels em execução e instalados e dias desde a última atualização, numa tabela única para todos os hosts."
+      },
+      "cert-expiry-weekly": {
+        "title": "Expiração de certificados semanal",
+        "description": "Toda a segunda-feira às 09:45, lê a expiração dos certificados Let's Encrypt, do servidor web e do Kubernetes em cada host e sinaliza os que estão abaixo de 30 dias, críticos abaixo de 7."
+      }
+    },
+    "report": {
+      "verdict": "Veredicto",
+      "evidence": "Provas",
+      "actionsTaken": "Ações tomadas",
+      "recommendations": "Recomendações",
+      "nothingFound": "Nada foi encontrado antes do fim da execução.",
+      "noChanges": "Nenhuma alteração foi feita.",
+      "openConversation": "Abra a conversa no assistente para ver cada passo e fazer perguntas de acompanhamento.",
+      "noFurtherAction": "Nenhuma ação adicional é necessária.",
+      "stoppedBudgetRun": "Parado: esta execução usou o seu orçamento de {{tokens}} tokens.",
+      "stoppedBudgetDaily": "Parado: o orçamento diário do proprietário de {{tokens}} tokens está esgotado.",
+      "stoppedDeadline": "Parado: o limite de tempo da automação foi atingido.",
+      "stoppedPaused": "Parado: um administrador pausou as operações automáticas de IA.",
+      "stoppedAborted": "Parado: a execução da automação foi cancelada.",
+      "providerFailed": "O fornecedor de IA falhou: {{error}}",
+      "noHosts": "Nenhum dos hosts alvo pode ser alcançado pelo proprietário da automação.",
+      "noProvider": "O proprietário da automação não tem fornecedor de IA com um modelo para executar tarefas.",
+      "needsOpsUse": "O proprietário da automação não tem a permissão ai.ops.use.",
+      "assistantOff": "O assistente de IA está desativado para o proprietário da automação.",
+      "skippedPaused": "As operações automáticas de IA estão em pausa por um administrador.",
+      "skippedDuplicate": "Uma tarefa para a mesma automação e host ainda está em execução ou à espera de aprovação.",
+      "skippedRate": "Esta automação já iniciou {{count}} tarefas de IA na última hora.",
+      "hostNotRun": "Não executado: o plano foi interrompido.",
+      "hostNoAccess": "Não executado: o proprietário já não consegue ligar-se a este host.",
+      "hostUnreachable": "Não executado: não foi possível aceder ao host.",
+      "hostStopped": "Interrompido no primeiro comando com falha.",
+      "executionDone": "O plano aprovado foi executado em {{count}} host(s) e todos os comandos e verificações foram bem-sucedidos.",
+      "executionFailed": "O plano aprovado não foi concluído em todos os hosts.",
+      "executionStopped": "O plano aprovado foi interrompido antes de terminar.",
+      "approvedBy": "O plano aprovado foi executado conforme escrito. Aprovado por {{user}}.",
+      "noticeReported": "Relatório de IA: {{title}}",
+      "noticeProposed": "Plano de IA à espera de aprovação: {{title}}",
+      "noticeExecuted": "Plano de IA executado: {{title}}",
+      "noticeFailed": "Tarefa de IA com falha: {{title}}"
+    }
   }
 }

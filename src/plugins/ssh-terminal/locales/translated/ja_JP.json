@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "生のポート 22 をインターネットに公開することなく、ネイティブな WebSocket トランスポートを使用して、Cloudflare Tunnel の背後にあるホストに接続します。",
+    "enableCloudflareTunnel": "Cloudflare Tunnel を有効にする",
+    "enableCloudflareTunnelDesc": "直接の TCP ソケットではなく、ホストのメインアドレスを使用して、SSH トラフィックを Cloudflare Zero Trust (WSS) 経由でルーティングします。",
+    "cloudflareTunnelHostname": "Tunnel のホスト名",
+    "cloudflareTunnelHostnameDesc": "Cloudflare Tunnel で SSH 元サービスにルーティングされる公開ドメイン（ホストのメインアドレスを使用する場合は空のままにしてください）。",
+    "cloudflareTunnelPort": "Tunnel ポート",
+    "cloudflareTunnelPortDesc": "Cloudflare 上のエッジ HTTPS/WSS ポート（デフォルトは 443）。",
+    "cloudflareTunnelClientId": "サービストークン クライアント ID",
+    "cloudflareTunnelClientIdDesc": "オプションの CF-Access-Client-Id ヘッダー。Cloudflare Access Zero Trust ポリシーでサービストークンが強制されている場合にのみ必要です。",
+    "cloudflareTunnelClientSecret": "サービストークンクライアントシークレット",
+    "cloudflareTunnelClientSecretDesc": "Cloudflare Access 認証用のオプションの CF-Access-Client-Secret ヘッダー。",
     "clipboardHttpWarning": "クリップボードを読み取れませんでした。一部のブラウザでは HTTPS 以外でのクリップボードアクセスが制限されています。Ctrl+V を試すか、Termix を HTTPS で提供してください。",
     "connecting": "接続中...",
     "connectionLost": "接続が切断されました",
@@ -83,7 +95,16 @@
     "localShell": "ローカルターミナルシェル",
     "autocompleteHintComplete": "TabまたはEnterで補完",
     "autocompleteHintNavigate": "↑↓で移動",
-    "autocompleteHintClose": "Escで閉じる"
+    "autocompleteHintClose": "Escで閉じる",
+    "cloudflareTunnelClientSecretPlaceholder": "オプションのサービストークンシークレット",
+    "cloudflareTunnelClientSecretPlaceholderNew": "新しいサービストークンシークレット",
+    "secretSaved": "保存済み",
+    "secretReplace": "置換",
+    "secretClear": "クリア",
+    "secretCancel": "キャンセル",
+    "hideSecret": "シークレットを隠す",
+    "showSecret": "シークレットを表示",
+    "sessionEndedKeepOpen": "セッションが終了しました。Enter キーを押して再接続します。"
   },
   "terminalToolbar": {
     "detachTmux": "tmuxをデタッチ",
@@ -207,6 +228,26 @@
         "label": "コマンド履歴",
         "description": "このターミナルで実行されたコマンドを記録し、履歴と自動補完に使用します"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare Tunnel",
+        "description": "WebSocket を介して Cloudflare Zero Trust 経由で SSH トラフィックをルーティングします"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "トンネルホスト名",
+        "description": "Cloudflare Tunnel の公開ホスト名"
+      },
+      "cloudflareTunnelPort": {
+        "label": "トンネルポート",
+        "description": "Cloudflare エッジの HTTPS/WSS ポート"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Cloudflare Access サービストークンのクライアント ID"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Cloudflare Access サービス トークンのクライアントシークレット"
+      },
       "enableTerminal": {
         "label": "ターミナルを有効化",
         "description": "このホストにSSHターミナルを提供します。"
@@ -314,6 +355,9 @@
         "moveUp": "上に移動",
         "moveDown": "下に移動",
         "tmuxHint": "tmux に接続している間のみ表示されます"
+      },
+      "keepOpenOnExit": {
+        "label": "終了時にタブを開いたままにする"
       }
     },
     "user": {
@@ -484,7 +528,9 @@
     "guac": {
       "permissionLevel": "権限レベル"
     },
-    "deleteGlobalThemeConfirm": "テーマ「{{name}}」を削除しますか？"
+    "deleteGlobalThemeConfirm": "テーマ「{{name}}」を削除しますか？",
+    "keepOpenOnExitLabel": "終了時にタブを開いたままにする",
+    "keepOpenOnExitDesc": "シェルが終了したり接続が閉じたりしても、タブとその出力を保持します。Enter キーを押して再接続します。"
   },
   "nav": {
     "history": "履歴",
@@ -512,6 +558,7 @@
     "stopRecording": "記録を停止"
   },
   "keybindings": {
+    "openLocalTerminal": "新しいローカルターミナルを開く",
     "copy": "選択範囲をコピー",
     "paste": "貼り付け",
     "sendControlCode": "Ctrl+文字 シグナルを送信",
@@ -629,6 +676,7 @@
     "remoteServerRequired": "リモートサーバーが必要です。この接続タイプを使用するには、設定でリモートサーバーを接続してください。"
   },
   "plugin": {
-    "name": "SSH ターミナル"
+    "name": "SSH ターミナル",
+    "description": "タブ、分割画面、履歴、マクロ、およびデスクトップアプリのローカルターミナルを備えた SSH ターミナルセッション。"
   }
 }

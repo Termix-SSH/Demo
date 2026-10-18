@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Forbind til værter bag en Cloudflare Tunnel ved hjælp af indbygget WebSocket-transport uden at åbne rå port 22 mod det offentlige internet.",
+    "enableCloudflareTunnel": "Aktivér Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "Diriger SSH-trafik gennem Cloudflare Zero Trust (WSS) ved hjælp af værtens primære adresse i stedet for direkte TCP-sockets.",
+    "cloudflareTunnelHostname": "Tunnel-værtsnavn",
+    "cloudflareTunnelHostnameDesc": "Offentligt domæne, der dirigeres til din SSH-oprindelsesservice i Cloudflare Tunnel (lad være tomt for at bruge værtens primære adresse).",
+    "cloudflareTunnelPort": "Tunnel-port",
+    "cloudflareTunnelPortDesc": "Edge HTTPS/WSS-port på Cloudflare (standard er 443).",
+    "cloudflareTunnelClientId": "Service Token Client ID",
+    "cloudflareTunnelClientIdDesc": "Valgfri CF-Access-Client-Id-header. Påkrævet kun, hvis Cloudflare Access Zero Trust-politik kræver Service Tokens.",
+    "cloudflareTunnelClientSecret": "Service Token Client Secret",
+    "cloudflareTunnelClientSecretDesc": "Valgfri CF-Access-Client-Secret-header til Cloudflare Access-autentificering.",
     "clipboardHttpWarning": "Kunne ikke læse udklipsholderen. Nogle browsere begrænser adgang til udklipsholderen uden for HTTPS – prøv Ctrl+V i stedet, eller kør Termix over HTTPS.",
     "connecting": "Forbinder...",
     "connectionLost": "Forbindelse tabt",
@@ -85,7 +97,16 @@
     "localShell": "Lokal terminal shell",
     "autocompleteHintComplete": "Tryk på Tab eller Enter for at fuldføre",
     "autocompleteHintNavigate": "↑↓ til navigation",
-    "autocompleteHintClose": "Esc for at lukke"
+    "autocompleteHintClose": "Esc for at lukke",
+    "cloudflareTunnelClientSecretPlaceholder": "Valgfri service token hemmelighed",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Ny service token hemmelighed",
+    "secretSaved": "Gemt",
+    "secretReplace": "Erstat",
+    "secretClear": "Ryd",
+    "secretCancel": "Annuller",
+    "hideSecret": "Skjul hemmelighed",
+    "showSecret": "Vis hemmelighed",
+    "sessionEndedKeepOpen": "Sessionen er afsluttet. Tryk på Enter for at genoprette forbindelsen."
   },
   "terminalToolbar": {
     "detachTmux": "Afbryd tmux",
@@ -210,6 +231,26 @@
         "label": "Kommandohistorik",
         "description": "Optag kommandoer, der kører i denne terminal, til historik og autofuldførelse"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare Tunnel",
+        "description": "Diriger SSH-trafik over Cloudflare Zero Trust via WebSocket"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Tunnel-værtsnavn",
+        "description": "Cloudflare Tunnel offentligt værtsnavn"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Tunnel-port",
+        "description": "Cloudflare edge HTTPS/WSS-port"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Cloudflare Access Service Token Client ID"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Cloudflare Access Service Token-klienthemmelighed"
+      },
       "enableTerminal": {
         "label": "Aktivér terminal",
         "description": "Tilbyd en SSH-terminal for denne vært."
@@ -317,6 +358,9 @@
         "moveUp": "Flyt op",
         "moveDown": "Flyt ned",
         "tmuxHint": "Vises kun, mens tmux er tilsluttet"
+      },
+      "keepOpenOnExit": {
+        "label": "Behold fanen åben ved afslutning"
       }
     },
     "user": {
@@ -487,7 +531,9 @@
     "guac": {
       "permissionLevel": "Tilladelsesniveau"
     },
-    "deleteGlobalThemeConfirm": "Slet temaet {{name}}?"
+    "deleteGlobalThemeConfirm": "Slet temaet {{name}}?",
+    "keepOpenOnExitLabel": "Behold fanen åben ved afslutning",
+    "keepOpenOnExitDesc": "Når shellen afsluttes eller forbindelsen lukkes, beholdes fanen og dens output. Tryk på Enter for at genoprette forbindelsen."
   },
   "nav": {
     "history": "Historik",
@@ -517,6 +563,7 @@
     "stopRecording": "Stop optagelse"
   },
   "keybindings": {
+    "openLocalTerminal": "Åbn ny lokal terminal",
     "copy": "Kopier markering",
     "paste": "Indsæt",
     "sendControlCode": "Send Ctrl+bogstav-signal",
@@ -635,6 +682,7 @@
     "remoteServerRequired": "Fjernserver kræves. Tilslut en fjernserver i Indstillinger for at bruge denne type forbindelse."
   },
   "plugin": {
-    "name": "SSH-terminal"
+    "name": "SSH-terminal",
+    "description": "SSH-terminalsessioner med faner, delt skærm, historik, makroer og en lokal terminal i desktop-appen."
   }
 }

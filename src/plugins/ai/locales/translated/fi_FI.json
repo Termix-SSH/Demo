@@ -23,6 +23,18 @@
         "title": "Jaa API-avain",
         "description": "Muut ominaisuudet voivat käyttää tallennettua tekoälyn API-avainta näkemättä sitä."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Suorita komentoja isäntäkonioissa tekoälyavustajan avulla",
+        "description": "Salli avustajan suorittaa mitä tahansa shell-komentoa valitsemillasi isäntäkonioilla. Oletuksena vain ylläpitäjille."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Näytä kaikkien tekoälyn käyttö",
+        "description": "Näe, kuinka monta tokenia jokaisen käyttäjän tekoälykutsut käyttivät, ei vain omiasi. Oletuksena vain ylläpitäjille."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Sallitut yksityiset tekoälypalvelimet",
         "description": "Palvelimet yksityisessä verkossasi, joihin käyttäjät voivat osoittaa palveluntarjoajan, kuten itse isännöityn Ollaman. Kirjoita yksi palvelin per rivi."
+      },
+      "opsConcurrency": {
+        "label": "Tekoälyavustajan rinnakkaiset isäntäkoneet",
+        "description": "Kuinka monta isäntäkoneita avustajan komento suorittaa samanaikaisesti."
+      },
+      "opsCommandTimeout": {
+        "label": "Tekoälyavustajan komennon aikakatkaisu (sekuntia)",
+        "description": "Kuinka kauan komento saa suorittua isäntäkoneella ennen sen keskeyttämistä. Avustaja voi pyytää enintään 600 sekuntia."
+      },
+      "opsOutputLimit": {
+        "label": "Tekoälyavustajan tuotos isäntäkoneetta kohti (merkkiä)",
+        "description": "Kuinka paljon jokaisen isäntäkoneen tuotosta tallennetaan. Pitkät tuotokset säilyttävät alku- ja lopputiedot."
+      },
+      "autoOpsPaused": {
+        "label": "Keskeytä tekoälyn automaattitoiminnot",
+        "description": "Keskeyttää kaikki käynnissä olevat tekoälytehtävät ja hyväksytyt suunnitelmat sekä hylkää uudet, kunnes toiminto otetaan uudelleen käyttöön."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "Tehtäviä tekoälyautomaatiota kohti tunnissa",
+        "description": "Samana tuntina tapahtuvat lisäaktivointitapahtumat ohitetaan."
+      },
+      "autoOpsRunTokens": {
+        "label": "Tokenbudjetti per tekoälytehtävä",
+        "description": "Tehtävä, joka käyttää tämän määrän tokeneja, keskeytetään ja se raportoi löydöksensä."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Päivittäinen tekoälytokenbudjetti käyttäjää kohti",
+        "description": "Kun käyttäjä on käyttänyt tämän määrän tokeneja tänään (UTC), hänen tekoälytehtävänsä ohitetaan tai keskeytetään."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "Ota tekoälyavustaja käyttöön",
         "description": "Salli tekoälyavustajan auttaa tämän palvelimen pääteikkunassa. Oletuksena pois päältä, ja edellyttää myös tekoälyn olevan käytössä tililläsi."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Automaattitoimintojen asetukset"
+      }
     }
   },
   "ai": {
-    "title": "Avustaja",
     "send": "Lähetä",
     "stop": "Pysäytä",
     "save": "Tallenna",
@@ -58,10 +102,9 @@
     "running": "käsittelyssä",
     "approve": "Hyväksy",
     "reject": "Hylkää",
-    "inputPlaceholder": "Kysy palvelimistasi tai kuvaile ehdotettavaa muutosta",
     "selectProvider": "Valitse palveluntarjoaja",
-    "providerSettings": "Palveluntarjoajan asetukset",
     "addProvider": "Lisää palveluntarjoaja",
+    "manageModels": "Hallitse malleja",
     "editProvider": "Muokkaa palveluntarjoajaa",
     "removeProvider": "Poista palveluntarjoaja",
     "providerType": "Palveluntarjoaja",
@@ -95,22 +138,32 @@
     "modelCustom": "Syötä mallin nimi",
     "modelRefresh": "Päivitä lista",
     "modelPlaceholder": "Valitse tai kirjoita malli",
-    "attachHint": "Kirjoita @ viitataksesi isäntään, koodinpätkään tai automaatioon. Muutokset ehdotetaan hyväksyttäväksesi.",
     "runCommandTitle": "Suorita komento",
     "assistant": "Teekohtainen avustaja",
     "terminalPanelEmpty": "Kysy avustajalta tästä isännästä. Kaikki tilaa muuttavat toimet vaativat ensin hyväksyntäsi.",
     "terminalPanelPlaceholder": "Kysy tästä isännästä...",
-    "noProvidersConfigured": "Teekohtaisen palveluntarjoajan asetukset puuttuvat. Lisää yksi teekohtaisen avustajan välilehdellä.",
+    "noProvidersConfigured": "Yhtään tekoälypalveluntarjoajaa ei ole vielä määritetty. Lisää yksi Asetuksista.",
     "runsInOpenTerminal": "Suoritetaan avoimessa terminaalisessiossasi.",
     "runInTerminal": "Suorita",
     "terminalContextPrefill": "Tässä on terminaalin tuotanto:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Salli muiden ominaisuuksien käyttää teekohtaisen palveluntarjoajasi API-avainta omiin pyyntöihinsä. Avainta ei koskaan kopioida, ja voit peruuttaa tämän milloin tahansa."
     },
-    "removeProviderConfirm": "Poista palveluntarjoaja {{name}}?"
+    "removeProviderConfirm": "Poista palveluntarjoaja {{name}}?",
+    "contextWindows": "Kontekstikkoko per malli",
+    "contextWindowsHint": "Lue palveluntarjoajalta, jos se ilmoittaa arvon. Syötä tokenien määrä, jos haluat ohittaa arvon tietylle mallille, tai jätä tyhjäksi käyttääksesi palveluntarjoajan ilmoittamaa arvoa. Päivityspainike kysyy palveluntarjoajalta uudestaan.",
+    "contextWindowValue": "Kontekstikkoko: {{tokens}} ({{source}})",
+    "contextOverride": "Kontekstikokoa ohittava arvo mallille {{model}}",
+    "contextSourceOverride": "asettanut sinä",
+    "contextSourceProvider": "ilmoittanut palveluntarjoaja",
+    "contextSourceGuess": "arvioitu mallin nimen perusteella",
+    "contextSourceDefault": "oletus tuntemattomille malleille",
+    "contextLoadFailed": "Kontekstikokojen lukeminen epäonnistui",
+    "contextRefresh": "Päivitä",
+    "contextWindowInvalid": "Syötä kontekstikkokoona kokonaisluku tokenina, vähintään 1024."
   },
   "nav": {
-    "ai": "Teekohtainen"
+    "ai": "Te keinoinen avustaja"
   },
   "onboarding": {
     "aiTitle": "Teekohtainen avustaja",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Ota käyttöön",
     "aiEnableDesc": "Lisää avustaja, joka lukee asetuksesi ja ehdottaa muutoksia, jotka hyväksyt. Vaatii palveluntarjoajan, jonka tarjoat, kuten paikallisen Ollaman.",
     "aiNote": "Mitään ei lähetetä mihinkään, ennen kuin lisäät palveluntarjoajan ja lähetät viestin."
-  },
-  "hosts": {
-    "docsLink": "Näytä dokumentaatio"
   },
   "agents": {
     "working": "Työskentelee...",
@@ -215,6 +265,280 @@
     "emptyTranscript": "Lähetä viesti aloittaaksesi agentin."
   },
   "plugin": {
-    "name": "Te keinoinen avustaja"
+    "name": "Te keinoinen avustaja",
+    "description": "Te keinoinen avustaja, joka lukee asetuksesi ja ehdottaa muutoksia hyväksyttäväksesi."
+  },
+  "ops": {
+    "searchHosts": "Hae isäntiä",
+    "selectedCount": "{{count}} valittu",
+    "clear": "Tyhjennä",
+    "fleets": "Laivastot",
+    "folders": "Kansiot",
+    "tags": "Tunnisteet",
+    "allHosts": "Kaikki isännät",
+    "noHosts": "Ei isäntiä",
+    "newConversation": "Uusi keskustelu",
+    "sendHint_one": "Suorittaa {{count}} isännässä. Komennot suoritetaan kysymättä lupaa.",
+    "sendHint_other": "Suorittaa {{count}} isännässä. Komennot suoritetaan kysymättä lupaa.",
+    "runCommand": "Suorita komento",
+    "hostFacts": "Isännän tiedot",
+    "hostCount_one": "{{count}} isäntä",
+    "hostCount_other": "{{count}} isäntää",
+    "succeeded": "{{count}} onnistui",
+    "failed": "{{count}} epäonnistui",
+    "exitCode": "poistumisarvo {{code}}",
+    "timedOut": "aikakatkaisu",
+    "stopped": "pysäytetty",
+    "notRun": "ei suoritettu",
+    "cached": "välimuistissa",
+    "duration": "{{seconds}} s",
+    "noOutput": "(ei tulostetta)"
+  },
+  "assistant": {
+    "title": "Teekohtaaja",
+    "moveHint": "Vedä siirtääksesi. Kaksoisnapsauta kiinnittääksesi sivulle.",
+    "toggle": "Näytä tai piilota teekohtaaja",
+    "close": "Sulje",
+    "dock": "Kiinnitä oikealle",
+    "float": "Leijuva",
+    "openTab": "Avaa koko näkymä",
+    "history": "Keskustelut",
+    "noConversations": "Ei keskusteluja vielä",
+    "untitled": "Nimetön",
+    "deleteConversation": "Poista keskustelu",
+    "deleteConfirm": "Haluatko poistaa tämän keskustelun?",
+    "emptyTitle": "Kysy tai muuta mitä tahansa Termixissä",
+    "emptyHint": "Avustaja toimii puolestasi Termixin komentorivillä ja suorittaa komentoja kohdeisäntiilläsi. Kirjoita @ lisätäksesi isäntiä, laivastoja, kansioita tai tunnisteita kohteiksi.",
+    "inputPlaceholder": "Kysy avustajalta. Kirjoita @ lisätäksesi kohdekohteita.",
+    "noTargets": "Ei kohdekohteita. Kirjoita @ lisätäksesi joitakin.",
+    "sendHint": "Muutokset ja komennot suoritetaan kysymättä lupaa.",
+    "removeTarget": "Poista {{name}}",
+    "kind": {
+      "host": "Isäntä",
+      "fleet": "Laivasto",
+      "folder": "Kansio",
+      "tag": "Tunniste"
+    },
+    "emptyHintBasic": "Avustaja toimii puolestasi Termixin komentoriviliittymän kautta käyttäen oikeuksiasi.",
+    "inputPlaceholderBasic": "Kysy avustajalta.",
+    "sendHintBasic": "Muutokset suoritetaan kysymättä lupaa.",
+    "thinking": "Ajattelee",
+    "thinkingActive": "Ajattelee...",
+    "compacted": "Konteksti tiivistetty: aiemmat viestit on tiivistetty",
+    "compact": "Tiivistä keskustelu",
+    "nothingToCompact": "Keskustelu on vielä liian lyhyt tiivistettäväksi.",
+    "contextMeter": "Konteksti: viimeisin kutsu käytti {{used}} tokenia {{window}} tokenista",
+    "contextMeterSource": "Ikkuna on {{source}}.",
+    "contextMeterReserved": "{{tokens}} tokenia pidetään varattuna vastaukselle.",
+    "todayTokens": "Tänään {{tokens}}",
+    "todayTitle": "Tänään käyttämäsi tokenit. Napsauta nähdäksesi yksityiskohdat.",
+    "usage": "Tokenien käyttö",
+    "conversationTokens": "{{tokens}} tokenia",
+    "openFloating": "Kelluva paneeli",
+    "openFloatingHint": "Avaa avustaja paneelina minkä tahansa sivun päällä. Paina {{shortcut}} missä tahansa avataksesi tai sulkeaksesi sen.",
+    "shortcutHint": "Paina {{shortcut}} missä tahansa sivulla avataksesi avustajan kelluvana paneelina."
+  },
+  "usage": {
+    "title": "Tokenien käyttö",
+    "settingDescription": "Tokenit, joita tekoälykutsusi on käyttänyt viimeisen 30 päivän aikana.",
+    "cardTitle": "Tekeälytokenien käyttö",
+    "today": "Tänään",
+    "week": "7 päivää",
+    "month": "30 päivää",
+    "mine": "Omat",
+    "everyone": "Kaikki käyttäjät",
+    "mineCaption": "Sinun tokenisi kaikissa tekoälyominaisuuksissa.",
+    "everyoneCaption": "Tokenit kaikilta käyttäjiltä ja kaikissa tekoälyominaisuuksissa.",
+    "byDay": "Päivä kohtaan",
+    "byModel": "Malli kohtaan",
+    "bySource": "Ominaisuus kohtaan",
+    "byUser": "Käyttäjä kohtaan",
+    "model": "Malli",
+    "feature": "Ominaisuus",
+    "user": "Käyttäjä",
+    "calls": "Kutsut",
+    "prompt": "Syöte",
+    "completion": "Tuotos",
+    "total": "Yhteensä",
+    "empty": "Ei tekoälyn käyttöä viimeisen 30 päivän aikana.",
+    "loadFailed": "Käyttötilastojen lataaminen epäonnistui",
+    "estimatedNote": "Jotkin arvot ovat arvioita (noin neljä merkkiä per token), koska palveluntarjoaja ei raportoinut käyttötilastojaan.",
+    "source": {
+      "assistant": "Avustaja",
+      "terminal": "Päätepaneeli",
+      "compaction": "Tiivistäminen"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Avustaja",
+    "viewAutoOps": "Automaattiset toiminnot",
+    "intro": "Automaattiset toiminnot mahdollistavat avustajan tarkistaa palvelimesi itsenäisesti. Automaatio käynnistää sen aikataulun mukaan tai kun jokin menee pieleen, ja se laatii raportin tai ehdottaa korjausta, jonka voit hyväksyä. Aloita valmiilla asetelmalla.",
+    "sections": {
+      "tasks": "Tehtävät",
+      "approvals": "Hyväksynnät",
+      "presets": "Valmiit asetelmat"
+    },
+    "provider": "Tehtävien tarjoaja",
+    "providerDefault": "Ensimmäinen tarjoaja, jolla on oletusmalli",
+    "model": "Tehtävien malli",
+    "modelDefault": "Tarjoajan oletusmalli",
+    "saveModel": "Tallenna malli",
+    "preferencesHint": "Taustatehtävien käyttämä tarjoaja ja malli. Jätä ne ennallaan käyttääksesi oletustarjoajaa ja -mallia.",
+    "task": "Tehtävä",
+    "tokens": "{{tokens}} tokenia",
+    "tokenUsage": "{{total}} tokenia ({{prompt}} sisään, {{completion}} ulos)",
+    "dryRun": "Testiajo",
+    "trigger": "Laatiminen",
+    "noTasks": "Ei tehtäviä vielä",
+    "tasksHint": "Tehtävät ovat automaatioiden suorituksia, joissa on Kysy tekoälyltä -vaihe. Ota esiasetus käyttöön tai luo oma automaatio Automaatiot-osiosta: lisää Kysy tekoälyltä -vaihe mihin tahansa automaatioon. Suoritukset näkyvät tässä.",
+    "openAutomations": "Avaa automaatiot",
+    "browsePresets": "Selaa esiasetuksia",
+    "noApprovals": "Ei suunnitelmia, jotka odottavat hyväksyntää",
+    "loadFailed": "Automaattisten toimintojen lataaminen epäonnistui",
+    "decideFailed": "Päätöstä ei voitu tallentaa",
+    "openConversation": "Avaa avustajassa",
+    "approve": "Hyväksy ja suorita",
+    "reject": "Hylkää",
+    "expires": "Vanhenee {{time}}",
+    "enabled": "Ote käytössä",
+    "updateAvailable": "Päivitys saatavilla",
+    "shared": "Jaettu",
+    "needsAutomations": "Vaatii automaatioita",
+    "enableAgain": "Ota käyttöön uudelleen",
+    "deletePreset": "Poista esiasetus",
+    "autonomy": {
+      "report": "Vain raportointi",
+      "propose": "Ehdota suunnitelmaa"
+    },
+    "status": {
+      "running": "Käynnissä",
+      "reported": "Raportoitu",
+      "proposed": "Odottaa hyväksyntää",
+      "approved": "Hyväksytty",
+      "rejected": "Hylätty",
+      "expired": "Vanhentunut",
+      "executing": "Suunnitelma käynnissä",
+      "done": "Valmis",
+      "failed": "Epäonnistui",
+      "skipped": "Ohitettu"
+    },
+    "severity": {
+      "info": "Tieto",
+      "warning": "Varoitus",
+      "critical": "Kriittinen"
+    },
+    "plan": {
+      "title": "Ehdotettu suunnitelma",
+      "commands": "Komennot",
+      "rationale": "Miksi",
+      "risk": "Riski",
+      "rollback": "Palautus",
+      "verify": "Varmistus",
+      "progress": "Edistyminen"
+    },
+    "enable": {
+      "title": "Ota {{name}} käyttöön",
+      "submit": "Ota käyttöön",
+      "name": "Nimi",
+      "targets": "Isäntäpalvelimet",
+      "targetAll": "Kaikki isäntäpalvelimet",
+      "targetTrigger": "Isäntäpalvelin, joka laukaisi sen",
+      "targetHosts": "Valitut isäntäpalvelimet",
+      "noHosts": "Valitse vähintään yksi isäntäpalvelin.",
+      "threshold": "Kynnysarvo (%)",
+      "forSeconds": "Vähintään (sekuntia)",
+      "time": "Kellonaika",
+      "cron": "Aikataulutus (cron)",
+      "dockerEvent": "Säiliötapahtuma",
+      "dockerEvents": {
+        "exited": "Lopetettu",
+        "unhealthy": "Epäterve",
+        "restarting": "Käynnistyy uudelleen"
+      },
+      "badTime": "Syötä aika muodossa TT:MM.",
+      "autonomy": "Mitä avustajan saa tehdä",
+      "maxRunSeconds": "Aikaraja (sekuntia)",
+      "runbook": "Toimintaohje",
+      "runbookHint": "Mitä avustajan tulisi tehdä, selkeillä sanoilla. Englanti toimii parhaiten.",
+      "shared": "Jaa, kun tallennetaan esiasetukseksi",
+      "sharedHint": "Kaikki, joilla on oikeus käyttää automaatioita, voivat sen jälkeen ottaa sen käyttöön.",
+      "saveAsPreset": "Tallenna esiasetukseksi",
+      "savedPreset": "Tallennettu",
+      "failed": "Automaatiota ei voitu luoda",
+      "saveFailed": "Esiasetusta ei voitu tallentaa"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Päivittäinen tarkastus",
+        "description": "Tarkistaa joka aamu kello 09:00 kaikkien isäntien levyt, muistin, kuorman, epäonnistuneet palvelut, kontit, sertifikaatit, päivitykset, odottavat uudelleenkäynnistykset ja ajan synkronoinnin sekä raportoi vakavuuden mukaan."
+      },
+      "disk-cleanup": {
+        "title": "Levytilan siivous",
+        "description": "Kun levyn käyttöaste pysyy 85 % tai enemmän viiden minuutin ajan, etsii syytä täyttyvään tilaan ja ehdottaa turvallista siivousta hyväksyttäväksesi. Liiketietoja ei koskaan muuteta."
+      },
+      "host-down-triage": {
+        "title": "Isäntälaitteen poissaolon vianmääritys",
+        "description": "Kun isäntälaitteesta ei saada yhteyttä, se testataan muista isäntälaitteista ja Proxmoxista, ja ilmoitetaan, johtuuko ongelma verkosta, pysäytetystä koneesta vai SSH:stä."
+      },
+      "service-failure": {
+        "title": "Palvelun epäonnistuminen",
+        "description": "Kun terveydentilan tarkistus alkaa epäonnistua, löydetään sen takana oleva systemd-yksikkö, luetaan sen tila ja lokit, ja ehdotetaan yhden uudelleenkäynnistyksen hyväksymistä, jos se voi auttaa. Asetuksia ei muuteta."
+      },
+      "container-anomaly": {
+        "title": "Säiliön poikkeama",
+        "description": "Kun säiliö päättyy, muuttuu epäterveeksi tai käynnistyy jatkuvasti uudelleen, luetaan sen tila, poistumiskoodi, lokit ja muistinkäyttö, ja ehdotetaan sen käynnistämistä tai uudelleenkäynnistämistä kerran hyväksyttäväksi. Mitään ei poisteta."
+      },
+      "resource-overload-cpu": {
+        "title": "Keskusprosessorin ylikuormitus",
+        "description": "Kun keskusprosessorin käyttöaste pysyy 95 % tai enemmän 15 minuutin ajan, löydetään sen takana olevat prosessit, palvelut ja säiliöt, ja raportoidaan, mitä tehdä. Mitään ei muuteta."
+      },
+      "resource-overload-memory": {
+        "title": "Muistin ylikuormitus",
+        "description": "Kun muistin käyttöaste pysyy 95 % tai enemmän 10 minuutin ajan, löydetään mitä se käyttää, vaihtotiedostointi ja muistinpuutteen vuoksi lopetettuja prosesseja, ja raportoidaan, mitä tehdä. Mitään ei muuteta."
+      },
+      "security-updates-weekly": {
+        "title": "Viikoittaiset tietoturvapäivitykset",
+        "description": "Joka maanantai klo 09:30 listaa odottavat tietoturvapäivityt vakavuuden mukaan, uudelleenkäynnistyksen vaativat päivitykset ja niihin liittyvät paketit, käynnissä olevat ja asennetut ytimet sekä päivien määrän viimeisestä päivityksestä. Kaikki tiedot yhdistetään yhteen taulukkoon kaikille isäntäpalvelimille."
+      },
+      "cert-expiry-weekly": {
+        "title": "Viikoittainen sertifikaattien vanheneminen",
+        "description": "Joka maanantai klo 09:45 tarkistaa Let's Encryptin, web-palvelimien ja Kubernetesin sertifikaattien vanhenemispäivän kaikilla isäntäpalvelimilla ja merkitsee ne, jotka vanhenevat alle 30 päivän kuluessa, sekä kriittiset, jotka vanhenevat alle 7 päivän kuluessa."
+      }
+    },
+    "report": {
+      "verdict": "Päätelmä",
+      "evidence": "Todisteet",
+      "actionsTaken": "Tehdyt toimenpiteet",
+      "recommendations": "Suositukset",
+      "nothingFound": "Ajoa ei löytynyt mitään ennen sen päättymistä.",
+      "noChanges": "Muutoksia ei tehty.",
+      "openConversation": "Avaa keskustelu avustajassa nähdäksesi kaikki vaiheet ja kysyäksesi lisäkysymyksiä.",
+      "noFurtherAction": "Lisätoimia ei tarvita.",
+      "stoppedBudgetRun": "Keskeytetty: tämä suoritus käytti budjettinsa {{tokens}} tokenia.",
+      "stoppedBudgetDaily": "Keskeytetty: omistajan päivittäinen budjetti {{tokens}} tokenia on käytetty loppuun.",
+      "stoppedDeadline": "Keskeytetty: automaation aikaraja saavutettiin.",
+      "stoppedPaused": "Keskeytetty: järjestelmänvalvoja keskeytti tekoälyn automaattitoiminnot.",
+      "stoppedAborted": "Keskeytetty: automaation suoritus peruutettiin.",
+      "providerFailed": "Tekoälyn tarjoaja epäonnistui: {{error}}",
+      "noHosts": "Automaation omistaja ei pääse yhteyteen mihinkään kohde-isäntiin.",
+      "noProvider": "Automaation omistajalla ei ole tekoälyn tarjoajaa, jolla olisi mallia tehtävien suorittamiseen.",
+      "needsOpsUse": "Automaation omistajalla ei ole ai.ops.use-lupaa.",
+      "assistantOff": "Teekoira-assistentti on poissa käytöstä automaation omistajalle.",
+      "skippedPaused": "Järjestelmänvalvoja on keskeyttänyt tekoälyn automaattisen toiminnan.",
+      "skippedDuplicate": "Samaa automaatiota ja isäntää varten tehtävä on vielä käynnissä tai odottaa hyväksyntää.",
+      "skippedRate": "Tämä automaatio on jo käynnistänyt {{count}} tekoälytehtävää viimeisen tunnin aikana.",
+      "hostNotRun": "Ei suoritettu: suunnitelma keskeytettiin.",
+      "hostNoAccess": "Ei suoritettu: omistaja ei enää pysty yhdistämään tähän isäntään.",
+      "hostUnreachable": "Ei suoritettu: isäntään ei voitu yhdistää.",
+      "hostStopped": "Keskeytettiin ensimmäisen epäonnistuneen komennon kohdalla.",
+      "executionDone": "Hyväksytty suunnitelma suoritettiin {{count}} isännällä ja kaikki komennot ja tarkistukset onnistuivat.",
+      "executionFailed": "Hyväksyttyä suunnitelmaa ei voitu suorittaa kaikissa isäntäpalvelimissa.",
+      "executionStopped": "Hyväksytty suunnitelma keskeytettiin ennen sen valmistumista.",
+      "approvedBy": "Hyväksytty suunnitelma suoritettiin kirjoitetussa muodossa. Hyväksynyt: {{user}}.",
+      "noticeReported": "Te keinoin tuotettu raportti: {{title}}",
+      "noticeProposed": "Te keinoin tuotettu suunnitelma odottaa hyväksyntää: {{title}}",
+      "noticeExecuted": "Te keinoin tuotettu suunnitelma suoritettu: {{title}}",
+      "noticeFailed": "Te keinoin tuotettu tehtävä epäonnistui: {{title}}"
+    }
   }
 }

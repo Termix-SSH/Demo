@@ -23,6 +23,18 @@
         "title": "Bendrinti API raktą",
         "description": "Kitos funkcijos gali naudoti išsaugotą dirbtinio intelekto API raktą, jo nematydamos."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Vykdyti komandas serveriuose su MI asistentu",
+        "description": "Leisti asistentui vykdyti bet kokių shell komandų pasirinktuose serveriuose. Numatyta tik administratoriams."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Peržiūrėti visų vartotojų MI naudojimą",
+        "description": "Matyti, kiek žetonų sunaudoti kiekvieno vartotojo MI užklausos, ne tik savo. Numatyta tik administratoriams."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Leidžiami privatus dirbtinio intelekto serveriai",
         "description": "Serveriai jūsų privačiame tinkle, kuriems vartotojai gali nukreipti tiekėją, pavyzdžiui, savarankiškai talpinamą Ollama. Įveskite po vieną serverį kiekvienoje eilutėje."
+      },
+      "opsConcurrency": {
+        "label": "MI asistento lygiagretūs serveriai",
+        "description": "Kiek serverių vienu metu gali būti vykdoma asistento komanda."
+      },
+      "opsCommandTimeout": {
+        "label": "MI asistento komandos laikas (sekundės)",
+        "description": "Kiek laiko komanda gali vykti serveryje, kol bus sustabdyta. Asistentas gali paprašyti iki 600."
+      },
+      "opsOutputLimit": {
+        "label": "MI asistento išvestis vienam serveriui (simboliai)",
+        "description": "Kiek kiekvieno serverio išvesties yra išsaugoma. Ilgesnė išvestis išsaugo pradžią ir pabaigą."
+      },
+      "autoOpsPaused": {
+        "label": "Pristabdyti MI automatinį valdymą",
+        "description": "Sustoja kiekviena vykdoma MI užduotis ir patvirtintas planas, bei atmeta naujus, kol vėl nebus įjungta."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "MI užduotys vienam automatizavimui per valandą",
+        "description": "Tos pačios valandos papildomi paleidimai yra praleidžiami."
+      },
+      "autoOpsRunTokens": {
+        "label": "Žetonų biudžetas vienai MI užduočiai",
+        "description": "Užduotis, kuri sunaudoja tiek žetonų, yra sustabdoma ir praneša, ką rado."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Dienos MI žetonų biudžetas vienam vartotojui",
+        "description": "Kai vartotojas šiandien (UTC) sunaudoja tiek žetonų, jo MI užduotys yra praleidžiamos arba sustabdomos."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "Įjungti dirbtinio intelekto asistentą",
         "description": "Leisti dirbtinio intelekto asistentui padėti šio serverio terminale. Numatyta išjungta, vis tiek reikia įjungti dirbtinį intelektą jūsų paskyroje."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Automatinio valdymo nuostatos"
+      }
     }
   },
   "ai": {
-    "title": "Asistentas",
     "send": "Siųsti",
     "stop": "Sustabdyti",
     "save": "Išsaugoti",
@@ -58,10 +102,9 @@
     "running": "vykdoma",
     "approve": "Patvirtinti",
     "reject": "Atmesti",
-    "inputPlaceholder": "Klauskite apie savo serverius arba aprašykite pakeitimą, kurį norite pasiūlyti",
     "selectProvider": "Pasirinkite tiekėją",
-    "providerSettings": "Tiekėjo nustatymai",
     "addProvider": "Pridėti tiekėją",
+    "manageModels": "Tvarkyti modelius",
     "editProvider": "Redaguoti tiekėją",
     "removeProvider": "Pašalinti tiekėją",
     "providerType": "Tiekėjas",
@@ -95,22 +138,32 @@
     "modelCustom": "Įveskite modelio pavadinimą",
     "modelRefresh": "Atnaujinti sąrašą",
     "modelPlaceholder": "Pasirinkite arba įveskite modelį",
-    "attachHint": "Įveskite @ norėdami nuorodą į hostą, komandų fragmentą ar automatizaciją. Pakeitimai siūlomi jūsų patvirtinimui.",
     "runCommandTitle": "Vykdyti komandą",
     "assistant": "MI pagalbininkas",
     "terminalPanelEmpty": "Klauskite pagalbininko apie šį hostą. Bet kokie būsenos keitimai pirmiausia reikalauja jūsų patvirtinimo.",
     "terminalPanelPlaceholder": "Klauskite apie šį hostą...",
-    "noProvidersConfigured": "Dar nėra sukonfigūruotas joks MI tiekėjas. Pridėkite vieną MI pagalbininko skirtuke.",
+    "noProvidersConfigured": "Dar nėra sukonfigūruotas joks MI tiekėjas. Pridėkite vieną Nustatymuose.",
     "runsInOpenTerminal": "Vykdoma jūsų atidarytoje terminalo sesijoje.",
     "runInTerminal": "Vykdyti",
     "terminalContextPrefill": "Štai mano terminalo išvestis:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Leiskite kitiems funkcijoms naudoti jūsų MI tiekėjo API raktą savo užklausoms. Raktas niekada nėra kopijuojamas, ir bet kada galite jį atšaukti."
     },
-    "removeProviderConfirm": "Pašalinti tiekėją {{name}}?"
+    "removeProviderConfirm": "Pašalinti tiekėją {{name}}?",
+    "contextWindows": "Konteksto langas vienam modeliui",
+    "contextWindowsHint": "Skaitykite iš tiekėjo, jei jis praneša. Įveskite žetonų skaičių, kad pakeistumėte konkrečiam modeliui, arba palikite tuščią, kad naudotumėte tiekėjo pranešamą. Atnaujinimas vėl klauso tiekėjo.",
+    "contextWindowValue": "Konteksto langas: {{tokens}} ({{source}})",
+    "contextOverride": "Konteksto lango pakeitimas modeliui {{model}}",
+    "contextSourceOverride": "nustatyta jūsų",
+    "contextSourceProvider": "pranešta tiekėjo",
+    "contextSourceGuess": "spėjama pagal modelio pavadinimą",
+    "contextSourceDefault": "numatyta nežinomiems modeliams",
+    "contextLoadFailed": "Nepavyko perskaityti konteksto langų",
+    "contextRefresh": "Atnaujinti",
+    "contextWindowInvalid": "Įveskite konteksto langą kaip sveiką žetonų skaičių, bent 1024."
   },
   "nav": {
-    "ai": "MI"
+    "ai": "MI asistentas"
   },
   "onboarding": {
     "aiTitle": "MI pagalbininkas",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Įjungti",
     "aiEnableDesc": "Prideda pagalbininką, kuris skaito jūsų konfigūraciją ir siūlo pakeitimus, kuriuos jūs patvirtinate. Reikia tiekėjo, kurį pateikiate jūs, pvz., vietinio Ollama.",
     "aiNote": "Niekas nėra siunčiamas, kol nepridėsite tiekėjo ir neišsiųsite žinutės."
-  },
-  "hosts": {
-    "docsLink": "Peržiūrėti dokumentaciją"
   },
   "agents": {
     "working": "Dirba...",
@@ -215,6 +265,284 @@
     "emptyTranscript": "Siųskite žinutę, kad pradėtumėte naudoti agentą."
   },
   "plugin": {
-    "name": "AI asistentas"
+    "name": "AI asistentas",
+    "description": "MI asistentas, kuris perskaito jūsų konfigūraciją ir siūlo pakeitimus, kuriuos galite patvirtinti."
+  },
+  "ops": {
+    "searchHosts": "Ieškoti serverių",
+    "selectedCount": "Pasirinkta {{count}}",
+    "clear": "Išvalyti",
+    "fleets": "Parkai",
+    "folders": "Aplankai",
+    "tags": "Žymos",
+    "allHosts": "Visi serveriai",
+    "noHosts": "Nėra serverių",
+    "newConversation": "Naujas pokalbis",
+    "sendHint_one": "Vykdoma {{count}} serveryje. Komandos vykdomos be išankstinio klausimo.",
+    "sendHint_few": "Vykdoma {{count}} serveriuose. Komandos vykdomos be išankstinio klausimo.",
+    "sendHint_many": "Vykdoma {{count}} serverių. Komandos vykdomos be išankstinio klausimo.",
+    "sendHint_other": "Vykdoma {{count}} serveriuose. Komandos vykdomos be išankstinio klausimo.",
+    "runCommand": "Vykdyti komandą",
+    "hostFacts": "Serverio faktai",
+    "hostCount_one": "{{count}} serveris",
+    "hostCount_few": "{{count}} serveriai",
+    "hostCount_many": "{{count}} serverių",
+    "hostCount_other": "{{count}} serverių",
+    "succeeded": "{{count}} sėkmingai",
+    "failed": "{{count}} nepavyko",
+    "exitCode": "baigimo kodas {{code}}",
+    "timedOut": "laiko limitas viršytas",
+    "stopped": "sustabdyta",
+    "notRun": "nevykdyta",
+    "cached": "iš talpyklos",
+    "duration": "{{seconds}} s",
+    "noOutput": "(nėra išvesties)"
+  },
+  "assistant": {
+    "title": "MI asistentas",
+    "moveHint": "Vilkite, kad perkeltumėte. Dukart spustelėkite, kad pritvirtintumėte prie šono.",
+    "toggle": "Perjungti MI asistentą",
+    "close": "Uždaryti",
+    "dock": "Pritvirtinti dešinėje",
+    "float": "Plaukiojantis",
+    "openTab": "Atidaryti pilną vaizdą",
+    "history": "Pokalbiai",
+    "noConversations": "Dar nėra pokalbių",
+    "untitled": "Be pavadinimo",
+    "deleteConversation": "Ištrinti pokalbį",
+    "deleteConfirm": "Ištrinti šį pokalbį?",
+    "emptyTitle": "Klauskite arba keiskite bet ką Termix",
+    "emptyHint": "Asistentas veikia kaip jūs per Termix CLI ir vykdo komandas jūsų tiksliniuose hostuose. Įveskite @, kad pridėtumėte hostus, flote, aplankus arba žymas kaip tikslus.",
+    "inputPlaceholder": "Klauskite asistento. Įveskite @, kad pridėtumėte tikslus.",
+    "noTargets": "Nėra tikslinių hostų. Įveskite @, kad pridėtumėte.",
+    "sendHint": "Pakeitimai ir komandos vykdomi be išankstinio patvirtinimo.",
+    "removeTarget": "Pašalinti {{name}}",
+    "kind": {
+      "host": "Hostas",
+      "fleet": "Flota",
+      "folder": "Aplankas",
+      "tag": "Žyma"
+    },
+    "emptyHintBasic": "Asistentas veikia kaip jūs per Termix CLI, naudodamas jūsų teises.",
+    "inputPlaceholderBasic": "Klauskite asistento.",
+    "sendHintBasic": "Pakeitimai vykdomi be išankstinio patvirtinimo.",
+    "thinking": "Mąsto",
+    "thinkingActive": "Mąsto...",
+    "compacted": "Kontekstas suspaustas: ankstesnės žinutės buvo apibendrintos",
+    "compact": "Suspausti pokalbį",
+    "nothingToCompact": "Pokalbis dar per trumpas, kad būtų galima jį suspausti.",
+    "contextMeter": "Kontekstas: naujausiasis kvietimas naudojo {{used}} iš {{window}} žetonų",
+    "contextMeterSource": "Langas yra {{source}}.",
+    "contextMeterReserved": "{{tokens}} žetonų paliekama laisva atsakymui.",
+    "todayTokens": "Šiandien {{tokens}}",
+    "todayTitle": "Žetonai, kuriuos naudojote šiandien. Spustelėkite, kad pamatytumėte detales.",
+    "usage": "Žetonų naudojimas",
+    "conversationTokens": "{{tokens}} žetonų",
+    "openFloating": "Plaukiojantis skydelis",
+    "openFloatingHint": "Atidarykite asistentą skydelyje bet kurioje puslapyje. Paspauskite {{shortcut}} bet kur, kad jį atidarytumėte arba uždarytumėte.",
+    "shortcutHint": "Paspauskite {{shortcut}} bet kurioje puslapyje, kad atidarytumėte asistentą plaukiojančiame skydelyje."
+  },
+  "usage": {
+    "title": "Žetonų naudojimas",
+    "settingDescription": "Žetonai, kuriuos jūsų AI kvietimai naudojo per pastaruosius 30 dienų.",
+    "cardTitle": "AI žetonų naudojimas",
+    "today": "Šiandien",
+    "week": "7 dienos",
+    "month": "30 dienų",
+    "mine": "Mano",
+    "everyone": "Visi vartotojai",
+    "mineCaption": "Jūsų žetonai visuose AI funkcionalumuose.",
+    "everyoneCaption": "Žetonai visuose vartotojuose ir AI funkcionalumuose.",
+    "byDay": "Per dieną",
+    "byModel": "Per modelį",
+    "bySource": "Per funkciją",
+    "byUser": "Per vartotoją",
+    "model": "Modelis",
+    "feature": "Funkcija",
+    "user": "Vartotojas",
+    "calls": "Kvietimai",
+    "prompt": "Įvestis",
+    "completion": "Išvestis",
+    "total": "Iš viso",
+    "empty": "Per pastaruosius 30 dienų AI naudojimo nebuvo.",
+    "loadFailed": "Nepavyko įkelti naudojimo duomenų",
+    "estimatedNote": "Kai kurie skaičiai yra apytiksliai, maždaug keturi simboliai vienam žetonui, nes tiekėjas nepranešė apie savo naudojimą.",
+    "source": {
+      "assistant": "Asistentas",
+      "terminal": "Terminalo skydelis",
+      "compaction": "Kompaktinimas"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Asistentas",
+    "viewAutoOps": "Automatiniai veiksmai",
+    "intro": "Automatiniai veiksmai leidžia asistentui savarankiškai tikrinti jūsų serverius. Automatizacija paleidžia procesą pagal grafiką arba kai kyla problemų, o asistentas parengia ataskaitą arba pasiūlo sprendimą, kurį galite patvirtinti. Pradėkite nuo iš anksto nustatyto šablono.",
+    "sections": {
+      "tasks": "Užduotys",
+      "approvals": "Patvirtinimai",
+      "presets": "Šablonai"
+    },
+    "provider": "Užduočių teikėjas",
+    "providerDefault": "Pirmasis teikėjas su numatytuoju modeliu",
+    "model": "Užduočių modelis",
+    "modelDefault": "Teikėjo numatytasis modelis",
+    "saveModel": "Išsaugoti modelį",
+    "preferencesHint": "Teikėjas ir modelis, kuriuos naudoja foninės užduotys. Palikite kaip yra, jei norite naudoti savo numatytąjį teikėją ir modelį.",
+    "task": "Užduotis",
+    "tokens": "{{tokens}} žetonų",
+    "tokenUsage": "{{total}} žetonų ({{prompt}} įvesties, {{completion}} išvesties)",
+    "dryRun": "Bandomasis paleidimas",
+    "trigger": "Paleidimo sąlyga",
+    "noTasks": "Dar nėra užduočių",
+    "tasksHint": "Užduotys yra automatizacijų, turinčių „Klausti AI“ žingsnio, vykdymai. Įjunkite šabloną arba sukurti savo automatizacijose: pridėkite „Klausti AI“ žingsnį prie bet kurios automatizacijos. Vykdymai rodomi čia.",
+    "openAutomations": "Atidaryti automatizacijas",
+    "browsePresets": "Naršyti šablonus",
+    "noApprovals": "Nėra planų, laukiančių patvirtinimo",
+    "loadFailed": "Nepavyko įkelti automatinių veiksmų",
+    "decideFailed": "Sprendimo nepavyko išsaugoti",
+    "openConversation": "Atidaryti asistente",
+    "approve": "Patvirtinti ir paleisti",
+    "reject": "Atmesti",
+    "expires": "Galioja iki {{time}}",
+    "enabled": "Įjungta",
+    "updateAvailable": "Yra naujinimas",
+    "shared": "Bendrinamas",
+    "needsAutomations": "Reikalingos automatizacijos",
+    "enableAgain": "Įjungti iš naujo",
+    "deletePreset": "Ištrinti šabloną",
+    "autonomy": {
+      "report": "Tik ataskaita",
+      "propose": "Pasiūlyti planą"
+    },
+    "status": {
+      "running": "Vykdoma",
+      "reported": "Ataskaita pateikta",
+      "proposed": "Laukiama patvirtinimo",
+      "approved": "Patvirtinta",
+      "rejected": "Atmesta",
+      "expired": "Pasibaigęs",
+      "executing": "Vykdomas planas",
+      "done": "Atlikta",
+      "failed": "Nepavyko",
+      "skipped": "Praleista"
+    },
+    "severity": {
+      "info": "Informacija",
+      "warning": "Įspėjimas",
+      "critical": "Kritinė"
+    },
+    "plan": {
+      "title": "Pasiūlytas planas",
+      "commands": "Komandos",
+      "rationale": "Priežastis",
+      "risk": "Rizika",
+      "rollback": "Atšaukimas",
+      "verify": "Patikrinimas",
+      "progress": "Progresas"
+    },
+    "enable": {
+      "title": "Įjungti „{{name}}“",
+      "submit": "Įjungti",
+      "name": "Pavadinimas",
+      "targets": "Serveriai",
+      "targetAll": "Visi serveriai",
+      "targetTrigger": "Serveris, kuris jį suaktyvino",
+      "targetHosts": "Pasirinkti serveriai",
+      "noHosts": "Pasirinkite bent vieną serverį.",
+      "threshold": "Slenkstis (%)",
+      "forSeconds": "Mažiausiai (sekundžių)",
+      "time": "Paros laikas",
+      "cron": "Planograma (cron)",
+      "dockerEvent": "Konteinerio įvykis",
+      "dockerEvents": {
+        "exited": "Baigtas",
+        "unhealthy": "Nesveikas",
+        "restarting": "Paleidžiamas iš naujo"
+      },
+      "badTime": "Įveskite laiką HH:MM formatu.",
+      "autonomy": "Ką asistentas gali daryti",
+      "maxRunSeconds": "Laiko limitas (sekundėmis)",
+      "runbook": "Veiksmų vadovas",
+      "runbookHint": "Ką asistentas turėtų daryti, paprastais žodžiais. Geriausiai veikia anglų kalba.",
+      "shared": "Bendrinti išsaugojus kaip numatytąjį nustatymą",
+      "sharedHint": "Visi, kurie gali naudoti automatinį valdymą, tada galės jį įjungti.",
+      "saveAsPreset": "Išsaugoti kaip numatytąjį nustatymą",
+      "savedPreset": "Išsaugota",
+      "failed": "Nepavyko sukurti automatizacijos",
+      "saveFailed": "Nepavyko išsaugoti numatytojo nustatymo"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Kasdienė patikra",
+        "description": "Kasdien 09:00 val. tikrina visų serverių diskus, atmintį, apkrovą, nesėkmingai veikiančias paslaugas, konteinerius, sertifikatus, atnaujinimus, laukiančius paleidimų iš naujo ir laiko sinchronizaciją, bei pateikia pranešimą pagal sunkumo laipsnį."
+      },
+      "disk-cleanup": {
+        "title": "Disko vietos valymas",
+        "description": "Kai disko užpildymas išlieka 85 % arba daugiau 5 minutes, nustato, kas užima vietą, ir siūlo saugų valymą, kurį galite patvirtinti. Verslo duomenys niekada nėra liečiami."
+      },
+      "host-down-triage": {
+        "title": "Sveikatos tikrinimas, kai serveris nepasiekiamas",
+        "description": "Kai serveris tampa nepasiekiamas, jis tikrinamas iš kitų serverių ir Proxmox, o tada pranešama, ar problema yra tinkle, sustabdytame kompiuteryje, ar SSH."
+      },
+      "service-failure": {
+        "title": "Paslaugos gedimas",
+        "description": "Kai sveikatos tikrinimas pradeda duoti klaidų, randama už tai atsakinga systemd paslauga, perskaitytas jos būsenos ir žurnalų duomenys, o jei padėtų perkrovimas, siūloma vienkartinė perkrova jūsų patvirtinimui. Konfigūracija niekada nekeičiama."
+      },
+      "container-anomaly": {
+        "title": "Konteinerio anomalija",
+        "description": "Kai konteineris baigia darbą, tampa nesveikas arba nuolat perkraunamas, perskaityta jo būsena, išeities kodas, žurnalai ir atminties naudojimas, o tada siūloma vienkartinis paleidimas arba perkrovimas jūsų patvirtinimui. Nieko nėra šalinama."
+      },
+      "resource-overload-cpu": {
+        "title": "CPU perkrova",
+        "description": "Kai CPU naudojimas 15 minučių iš eilės siekia 95 % arba daugiau, randami procesai, paslaugos ir konteineriai, tai sukeliantys, ir pateikiamas pranešimas apie tai, ką daryti. Nieko nekeičiama."
+      },
+      "resource-overload-memory": {
+        "title": "Atminties perkrova",
+        "description": "Kai atminties naudojimas 10 minučių iš eilės siekia 95 % arba daugiau, randama, kas ją naudoja, keitimo (swapping) ir atminties trūkumo sukelti procesų nutraukimai, ir pateikiamas pranešimas apie tai, ką daryti. Nieko nekeičiama."
+      },
+      "security-updates-weekly": {
+        "title": "Kas savaitę saugumo atnaujinimai",
+        "description": "Kas pirmadienį 09:30 val. pagal sunkumą išvardijami laukiantys saugumo atnaujinimai, laukiantys paleidimai iš naujo ir juos sukeliantys paketai, veikiančios ir įdiegtos branduolio versijos bei dienų skaičius nuo paskutinio atnaujinimo – visame viename lentelėje visiems serveriams."
+      },
+      "cert-expiry-weekly": {
+        "title": "Kas savaitę sertifikato galiojimo pabaiga",
+        "description": "Kas pirmadienį 09:45 val. tikrinami Let's Encrypt, web serverių ir Kubernetes sertifikatų galiojimo pabaigos visiems serveriams ir pažymimi tie, kurių liko mažiau nei 30 dienų, o kritiniai – mažiau nei 7."
+      }
+    },
+    "report": {
+      "verdict": "Išvada",
+      "evidence": "Įrodymai",
+      "actionsTaken": "Atlikti veiksmai",
+      "recommendations": "Rekomendacijos",
+      "nothingFound": "Iki paleidimo pabaigos nieko nerasta.",
+      "noChanges": "Pakeitimų nebuvo atlikta.",
+      "openConversation": "Atidarykite pokalbį asistente, kad pamatytumėte kiekvieną žingsnį ir užduotumėte papildomų klausimų.",
+      "noFurtherAction": "Tolesnių veiksmų nereikia.",
+      "stoppedBudgetRun": "Sustabdyta: šis vykdymas pasinaudojo savo {{tokens}} žetonų biudžetu.",
+      "stoppedBudgetDaily": "Sustabdyta: savininko dienos {{tokens}} žetonų biudžetas išnaudotas.",
+      "stoppedDeadline": "Sustabdyta: pasiektas automatizavimo laiko limitas.",
+      "stoppedPaused": "Sustabdyta: administratorius sustabdė dirbtinio intelekto automatinius veiksmus.",
+      "stoppedAborted": "Sustabdyta: automatizavimo vykdymas buvo atšauktas.",
+      "providerFailed": "Dirbtinio intelekto tiekėjas nepavyko: {{error}}",
+      "noHosts": "Automatizavimo savininkas negali pasiekti nė vieno iš tikslinių serverių.",
+      "noProvider": "Automatizavimo savininkas neturi dirbtinio intelekto tiekėjo su modeliu, kuriuo būtų galima vykdyti užduotis.",
+      "needsOpsUse": "Automatizacijos savininkas neturi „ai.ops.use“ leidimo.",
+      "assistantOff": "Automatizacijos savininkui išjungtas dirbtinio intelekto asistentas.",
+      "skippedPaused": "Dirbtinio intelekto automatiniai veiksmai sustabdyti administratoriaus.",
+      "skippedDuplicate": "Tos pačios automatizacijos ir kompiuterio užduotis vis dar vykdoma arba laukia patvirtinimo.",
+      "skippedRate": "Ši automatizacija per pastarąją valandą jau paleido {{count}} dirbtinio intelekto užduotis.",
+      "hostNotRun": "Nevykdoma: planas sustabdytas.",
+      "hostNoAccess": "Nevykdoma: savininkas nebegali prisijungti prie šio kompiuterio.",
+      "hostUnreachable": "Nevykdoma: nepavyko pasiekti kompiuterio.",
+      "hostStopped": "Sustabdyta ties pirmąja nepavykusia komanda.",
+      "executionDone": "Patvirtintas planas buvo vykdomas {{count}} kompiuteryje ir visos komandos bei tikrinimai sėkmingi.",
+      "executionFailed": "Patvirtintas planas nebuvo baigtas vykdyti visuose kompiuteriuose.",
+      "executionStopped": "Patvirtintas planas buvo sustabdytas prieš baigiantis.",
+      "approvedBy": "Patvirtintas planas buvo vykdomas taip, kaip parašyta. Patvirtino {{user}}.",
+      "noticeReported": "Dirbtinio intelekto ataskaita: {{title}}",
+      "noticeProposed": "Dirbtinio intelekto planas laukia patvirtinimo: {{title}}",
+      "noticeExecuted": "Dirbtinio intelekto planas įvykdytas: {{title}}",
+      "noticeFailed": "Dirbtinio intelekto užduotis nepavyko: {{title}}"
+    }
   }
 }

@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "התחבר למארחים שמאחורי Cloudflare Tunnel באמצעות תעבורת WebSocket מקורית, ללא פתיחת פורט 22 גולמי לאינטרנט הציבורי.",
+    "enableCloudflareTunnel": "הפעל Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "הפנה תעבורת SSH דרך Cloudflare Zero Trust (WSS) באמצעות הכתובת הראשית של המארח במקום שקעי TCP ישירים.",
+    "cloudflareTunnelHostname": "שם מארח של ה-Tunnel",
+    "cloudflareTunnelHostnameDesc": "דומיין ציבורי המופנה לשירות המקור של SSH ב-Cloudflare Tunnel (השאר ריק כדי להשתמש בכתובת הראשית של המארח).",
+    "cloudflareTunnelPort": "פורט ה-Tunnel",
+    "cloudflareTunnelPortDesc": "פורט HTTPS/WSS בקצה ב-Cloudflare (ברירת מחדל היא 443).",
+    "cloudflareTunnelClientId": "מזהה לקוח של אסימון שירות",
+    "cloudflareTunnelClientIdDesc": "כותרת אופציונלית CF-Access-Client-Id. נדרש רק אם מדיניות Cloudflare Access Zero Trust אכופה אסימוני שירות.",
+    "cloudflareTunnelClientSecret": "סוד לקוח של אסימון שירות",
+    "cloudflareTunnelClientSecretDesc": "כותרת CF-Access-Client-Secret אופציונלית לאימות Cloudflare Access.",
     "clipboardHttpWarning": "לא ניתן לקרוא את הלוח. דפדפנים מסוימים מגבילים גישה ללוח מחוץ ל-HTTPS - נסה Ctrl+V במקום, או הפעל את Termix דרך HTTPS.",
     "connecting": "מתחבר...",
     "connectionLost": "החיבור אבד",
@@ -87,7 +99,16 @@
     "localShell": "Shell של מסוף מקומי",
     "autocompleteHintComplete": "Tab או Enter להשלמה",
     "autocompleteHintNavigate": "↑↓ לנווט",
-    "autocompleteHintClose": "Esc לסגירה"
+    "autocompleteHintClose": "Esc לסגירה",
+    "cloudflareTunnelClientSecretPlaceholder": "סוד אסימון שירות אופציונלי",
+    "cloudflareTunnelClientSecretPlaceholderNew": "סוד אסימון שירות חדש",
+    "secretSaved": "נשמר",
+    "secretReplace": "החלף",
+    "secretClear": "נקה",
+    "secretCancel": "ביטול",
+    "hideSecret": "הסתר סוד",
+    "showSecret": "הצג סוד",
+    "sessionEndedKeepOpen": "ההפעלה הסתיימה. לחץ על Enter כדי להתחבר מחדש."
   },
   "terminalToolbar": {
     "detachTmux": "ניתוק מ-tmux",
@@ -213,6 +234,26 @@
         "label": "היסטוריית פקודות",
         "description": "הקלט פקודות שרצות בטרמינל זה עבור היסטוריה והשלמה אוטומטית"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "מנהרת Cloudflare",
+        "description": "העברת תעבורת SSH דרך Cloudflare Zero Trust באמצעות WebSocket"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "שם מארח של המנהרה",
+        "description": "שם מארח ציבורי של מנהרת Cloudflare"
+      },
+      "cloudflareTunnelPort": {
+        "label": "פורט המנהרה",
+        "description": "פורט HTTPS/WSS של שפת Cloudflare"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "מזהה לקוח של אסימון שירות Cloudflare Access"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "סוד לקוח של אסימון שירות Cloudflare Access"
+      },
       "enableTerminal": {
         "label": "אפשר טרמינל",
         "description": "הצע טרמינל SSH עבור מארח זה."
@@ -320,6 +361,9 @@
         "moveUp": "הזז למעלה",
         "moveDown": "הזז למטה",
         "tmuxHint": "מוצג רק כאשר tmux מחובר"
+      },
+      "keepOpenOnExit": {
+        "label": "השאר את הלשונית פתוחה ביציאה"
       }
     },
     "user": {
@@ -490,7 +534,9 @@
     "guac": {
       "permissionLevel": "רמת הרשאה"
     },
-    "deleteGlobalThemeConfirm": "למחוק את ערכת הנושא {{name}}?"
+    "deleteGlobalThemeConfirm": "למחוק את ערכת הנושא {{name}}?",
+    "keepOpenOnExitLabel": "השאר את הלשונית פתוחה ביציאה",
+    "keepOpenOnExitDesc": "כאשר מעטפת הפקודות יוצאת או שהחיבור נסגר, שמור על הלשונית ואת הפלט שלה. לחץ על Enter כדי להתחבר מחדש."
   },
   "nav": {
     "history": "היסטוריה",
@@ -522,6 +568,7 @@
     "stopRecording": "עצור הקלטה"
   },
   "keybindings": {
+    "openLocalTerminal": "פתח מסוף מקומי חדש",
     "copy": "העתק בחירה",
     "paste": "הדבק",
     "sendControlCode": "שלח אותר Ctrl+אות",
@@ -641,6 +688,7 @@
     "remoteServerRequired": "נדרש שרת מרוחק. חבר שרת מרוחק בהגדרות כדי להשתמש בסוג חיבור זה."
   },
   "plugin": {
-    "name": "טרמינל SSH"
+    "name": "טרמינל SSH",
+    "description": "הפעלות מסוף SSH עם לשוניות, חלוקת מסך, היסטוריה, מאקרו ומסוף מקומי באפליקציית שולחן העבודה."
   }
 }

@@ -23,6 +23,18 @@
         "title": "Jaga API-võtit",
         "description": "Teised funktsioonid võivad kasutada salvestatud AI API-võtit, ilma seda nägemata."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Käivita käskeid hostidel AI-assistendi abil",
+        "description": "Luba assistendil käivitada suvalisi shell-käske valitud hostidel. Vaikimisi ainult administraatoritele."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Vaata kõigi kasutajate AI-kasutust",
+        "description": "Näe, mitu tokenit iga kasutaja AI-kõned kasutasid, mitte ainult omaenda. Vaikimisi ainult administraatoritele."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Lubatud privaatne AI-pakkuja",
         "description": "Sinu privaatvõrgus asuvad hostid, millele kasutajad võivad pakkuja suunata, näiteks ise majutatud Ollama. Pane iga host eraldi reale."
+      },
+      "opsConcurrency": {
+        "label": "AI-assistendi paralleelsed hostid",
+        "description": "Mitu hosti saab ühe assistendi käsu korral samaaegselt töödelda."
+      },
+      "opsCommandTimeout": {
+        "label": "AI-assistendi käsu aegumine (sekundites)",
+        "description": "Kui kaua võib käsk hostil enne peatamist töötada. Assistent võib paluda kuni 600 sekundit."
+      },
+      "opsOutputLimit": {
+        "label": "AI-assistendi väljund hosti kohta (tähed)",
+        "description": "Kui palju iga hosti väljundist salvestatakse. Pikkadel väljunditel säilitatakse algus ja lõpp."
+      },
+      "autoOpsPaused": {
+        "label": "Peata AI automaatne töö",
+        "description": "Peatab kõik käimasolevad AI ülesanded ja heaks kiidetud plaanid ning keeldub uutest, kuni see uuesti sisse lülitatakse."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "AI ülesandeid automaatika kohta tunnis",
+        "description": "Samal tunnil esinevad lisatriggerid jäetakse vahele."
+      },
+      "autoOpsRunTokens": {
+        "label": "Tokenite eelarve ühe AI ülesande kohta",
+        "description": "Ülesanne, mis kasutab nii palju tokeneid, peatatakse ja teatab, mida leiti."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Iga kasutaja päevane AI tokenite eelarve",
+        "description": "Kui kasutaja on täna (UTC) kasutanud nii palju tokeneid, jäetakse tema AI ülesanded vahele või peatatakse need."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "Luba AI-assistent",
         "description": "Luba AI-assistendil aidata selle hosti terminaaliga. Vaikimisi välja lülitatud ja vajab endiselt AI lubamist sinu kontole."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Automaatse töö eelistused"
+      }
     }
   },
   "ai": {
-    "title": "Assistent",
     "send": "Saada",
     "stop": "Peata",
     "save": "Salvesta",
@@ -58,10 +102,9 @@
     "running": "töötab",
     "approve": "Kinnita",
     "reject": "Lükka tagasi",
-    "inputPlaceholder": "Küsi oma serverite kohta või kirjelda muudatust, mida ette panna",
     "selectProvider": "Vali pakkuja",
-    "providerSettings": "Pakkuja seaded",
     "addProvider": "Lisa pakkuja",
+    "manageModels": "Mudelite haldamine",
     "editProvider": "Muuda pakkuja",
     "removeProvider": "Eemalda pakkuja",
     "providerType": "Pakkuja",
@@ -95,22 +138,32 @@
     "modelCustom": "Sisestage mudeli nimi",
     "modelRefresh": "Värskenda nimekirja",
     "modelPlaceholder": "Valige või sisestage mudel",
-    "attachHint": "Sisestage @, et viidata peremeesmasinale, koodilõikule või automatiseerimisele. Muudatused esitatakse teie heakskiitmiseks.",
     "runCommandTitle": "Käivita käsk",
     "assistant": "AI abiline",
     "terminalPanelEmpty": "Küsi abiliselt selle peremeesmasina kohta. Kõik olekuid muutev tegevus nõuab esmalt teie heakskiitu.",
     "terminalPanelPlaceholder": "Küsi selle peremeesmasina kohta...",
-    "noProvidersConfigured": "Ühtegi AI pakkuja pole veel seadistatud. Lisage üks AI abiline vahekaardil.",
+    "noProvidersConfigured": "Ühtegi tehisintellekti pakkujat pole veel seadistatud. Lisa üks Seadistustes.",
     "runsInOpenTerminal": "Käivitub teie avatud terminalisessioonis.",
     "runInTerminal": "Käivita",
     "terminalContextPrefill": "Siin on minu terminali väljund:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Luba teistel funktsioonidel kasutada teie AI pakkuja API võtit oma päringute jaoks. Vtit ei kopeerita kunagi ja saate selle igal ajal tühistada."
     },
-    "removeProviderConfirm": "Kas eemaldada pakkuja {{name}}?"
+    "removeProviderConfirm": "Kas eemaldada pakkuja {{name}}?",
+    "contextWindows": "Kontekstiaken mudeli kohta",
+    "contextWindowsHint": "Loe pakkujalt, kus see ühe teatab. Sisesta tokenite arv, et see mudeli jaoks ületada, või jäta tühjaks, et kasutada seda, mida pakkuja teatab. Värskendamine küsib pakkujalt uuesti.",
+    "contextWindowValue": "Kontekstiaken: {{tokens}} ({{source}})",
+    "contextOverride": "Kontekstiakeni ületamine mudeli {{model}} jaoks",
+    "contextSourceOverride": "sinu poolt määratud",
+    "contextSourceProvider": "pakkuja poolt teatatud",
+    "contextSourceGuess": "mudeli nime põhjal oletatud",
+    "contextSourceDefault": "vaikimisi tundmatute mudelite jaoks",
+    "contextLoadFailed": "Kontekstiakeni lugemine ei õnnestunud",
+    "contextRefresh": "Värskenda",
+    "contextWindowInvalid": "Sisestage kontekstiaken täisarvulise tokenite arvuna, vähemalt 1024."
   },
   "nav": {
-    "ai": "AI"
+    "ai": "AI-assistent"
   },
   "onboarding": {
     "aiTitle": "AI abiline",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Lülita sisse",
     "aiEnableDesc": "Lisab abilise, mis loeb teie seadistused ja pakub välja muudatusi, mille te heaks kiidate. Nõuab pakkuja, mille te ise varustate, näiteks kohalikku Ollama.",
     "aiNote": "Midagi ei saadeta kuhugi, enne kui lisate pakkuja ja saatke sõnumi."
-  },
-  "hosts": {
-    "docsLink": "Vaata dokumentatsiooni"
   },
   "agents": {
     "working": "Töötab...",
@@ -215,6 +265,280 @@
     "emptyTranscript": "Saada sõnum, et agent saaks tööle hakata."
   },
   "plugin": {
-    "name": "AI-assistent"
+    "name": "AI-assistent",
+    "description": "AI-assistent, mis loeb teie seadistuse ja pakub välja muudatusi, mille kinnitamine on teie otsustada."
+  },
+  "ops": {
+    "searchHosts": "Otsi hoste",
+    "selectedCount": "{{count}} valitud",
+    "clear": "Tühjenda",
+    "fleets": "Rühmad",
+    "folders": "Kaustad",
+    "tags": "Sildid",
+    "allHosts": "Kõik hostid",
+    "noHosts": "Hoste pole",
+    "newConversation": "Uus vestlus",
+    "sendHint_one": "Töötab {{count}} hostil. Käskude käivitamine ilma eelneva küsimiseta.",
+    "sendHint_other": "Töötab {{count}} hostil. Käskude käivitamine ilma eelneva küsimiseta.",
+    "runCommand": "Käivita käsk",
+    "hostFacts": "Hosti andmed",
+    "hostCount_one": "{{count}} host",
+    "hostCount_other": "{{count}} hosti",
+    "succeeded": "{{count}} edukat",
+    "failed": "{{count}} ebaõnnestunud",
+    "exitCode": "väljumiskood {{code}}",
+    "timedOut": "aeg lõppes",
+    "stopped": "peatatud",
+    "notRun": "ei käivitatud",
+    "cached": "vahemälu",
+    "duration": "{{seconds}}s",
+    "noOutput": "(väljundit pole)"
+  },
+  "assistant": {
+    "title": "AI-assistent",
+    "moveHint": "Lohistage liigutamiseks. Topeltklõps kinnitamiseks küljele.",
+    "toggle": "AI-assistent sisse/välja lülitada",
+    "close": "Sulge",
+    "dock": "Kinnita paremale",
+    "float": "Ujuv",
+    "openTab": "Ava täisvaade",
+    "history": "Vestlused",
+    "noConversations": "Vestlusi veel ei ole",
+    "untitled": "Nimetu",
+    "deleteConversation": "Kustuta vestlus",
+    "deleteConfirm": "Kas kustutada see vestlus?",
+    "emptyTitle": "Küsi või muuda midagi Termixis",
+    "emptyHint": "Assistent tegutseb sinu nimel Termixi CLI kaudu ja käivitab käske sihthostidel. Lisa sihthostid, laevastikud, kaustad või sildid, trükkides @",
+    "inputPlaceholder": "Küsi abi assistendilt. Lisa sihtmärke, trükkides @.",
+    "noTargets": "Sihtmärgihoste pole. Lisa mõned, trükkides @.",
+    "sendHint": "Muudatused ja käsud käivitatakse ilma eelneva küsimata.",
+    "removeTarget": "Eemalda {{name}}",
+    "kind": {
+      "host": "Host",
+      "fleet": "Flott",
+      "folder": "Kaust",
+      "tag": "Silt"
+    },
+    "emptyHintBasic": "Assistent töötab sinu kaudu Termixi CLI vahendusel, kasutades sinu õigusi.",
+    "inputPlaceholderBasic": "Küsi abi assistendilt.",
+    "sendHintBasic": "Muudatused käivitatakse ilma esmalt küsimata.",
+    "thinking": "Mõtleb",
+    "thinkingActive": "Mõtleb...",
+    "compacted": "Kontekst tihendatud: varasemad sõnumid on kokku võetud",
+    "compact": "Tihenda vestlus",
+    "nothingToCompact": "Vestlus on veel liiga lühike, et seda tihendada.",
+    "contextMeter": "Kontekst: viimases päringus kasutatud {{used}}/{{window}} tokenit",
+    "contextMeterSource": "Aken on {{source}}.",
+    "contextMeterReserved": "Vastuse jaoks jäetakse {{tokens}} tokenit vabaks.",
+    "todayTokens": "Täna {{tokens}}",
+    "todayTitle": "Täna kasutatud tokenid. Klõpsa üksikasjade vaatamiseks.",
+    "usage": "Tokenite kasutus",
+    "conversationTokens": "{{tokens}} tokenit",
+    "openFloating": "Ujuv paneel",
+    "openFloatingHint": "Ava assistent paneelina mis tahes lehe kohal. Vajuta {{shortcut}} kuskil, et see avada või sulgeda.",
+    "shortcutHint": "Vajuta {{shortcut}} mis tahes lehel, et avada assistent ujuvas paneelis."
+  },
+  "usage": {
+    "title": "Tokenite kasutus",
+    "settingDescription": "Tokenid, mida sinu AI-kõned on viimase 30 päeva jooksul kasutanud.",
+    "cardTitle": "AI tokenite kasutus",
+    "today": "Täna",
+    "week": "7 päeva",
+    "month": "30 päeva",
+    "mine": "Minu",
+    "everyone": "Kõik kasutajad",
+    "mineCaption": "Sinu tokenid kõigis AI-funktsioonides.",
+    "everyoneCaption": "Tokenid kõigi kasutajate ja AI-funktsioonide lõikes.",
+    "byDay": "Päevas",
+    "byModel": "Mudeli lõikes",
+    "bySource": "Funktsiooni lõikes",
+    "byUser": "Kasutaja lõikes",
+    "model": "Mudel",
+    "feature": "Funktsioon",
+    "user": "Kasutaja",
+    "calls": "Kõned",
+    "prompt": "Sisend",
+    "completion": "Väljund",
+    "total": "Kokku",
+    "empty": "Viimase 30 päeva jooksul ei olnud AI kasutust.",
+    "loadFailed": "Kasutuse laadimine ei õnnestunud",
+    "estimatedNote": "Mõned väärtused on hinnangulised (umbes neli märki tokeni kohta), kuna teenusepakkuja ei teatanud oma kasutusest.",
+    "source": {
+      "assistant": "Assistent",
+      "terminal": "Terminalipaneel",
+      "compaction": "Tihendamine"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Assistent",
+    "viewAutoOps": "Automaatopsed",
+    "intro": "Automaatopsed võimaldavad assistendil sinu hoste iseseisvalt kontrollida. Automatiseerimine käivitab selle ajakava alusel või probleemide tekkimisel ning koostab aruande või pakub välja paranduse, mille sa kinnitada. Alusta eelseadistusest.",
+    "sections": {
+      "tasks": "Ülesanded",
+      "approvals": "Kinnitused",
+      "presets": "Eelseadistused"
+    },
+    "provider": "Ülesannete pakkuja",
+    "providerDefault": "Esimene pakkujaga, millel on vaikimisi mudel",
+    "model": "Ülesannete mudel",
+    "modelDefault": "Pakkuja vaikimisi mudel",
+    "saveModel": "Salvesta mudel",
+    "preferencesHint": "Taustülesannete kasutatav pakkuja ja mudel. Jäta need muutmata, et kasutada oma vaikimisi pakkuja ja mudelit.",
+    "task": "Ülesanne",
+    "tokens": "{{tokens}} tokenit",
+    "tokenUsage": "{{total}} tokenit (sisend: {{prompt}}, väljund: {{completion}})",
+    "dryRun": "Testkäik",
+    "trigger": "Lahendaja",
+    "noTasks": "Ülesandeid veel ei ole",
+    "tasksHint": "Ülesanded on automatiseerimiste käivitused, mis sisaldavad sammust „Küsi AI-lt“. Võimalda eelseadistus või loo oma Automatiseerimised: lisa suvalisele automatiseerimisele samm „Küsi AI-lt“. Käivitused kuvatakse siin.",
+    "openAutomations": "Ava Automatiseerimised",
+    "browsePresets": "Sirvi eelseadistusi",
+    "noApprovals": "Ühtegi plaani ei oota heakskiitu",
+    "loadFailed": "Automaatsete operatsioonide laadimine ebaõnnestus",
+    "decideFailed": "Otsust ei õnnestunud salvestada",
+    "openConversation": "Ava assistendis",
+    "approve": "Kinnita ja käivita",
+    "reject": "Lükka tagasi",
+    "expires": "Aegub {{time}}",
+    "enabled": "Lubatud",
+    "updateAvailable": "Uuendus saadaval",
+    "shared": "Jagatud",
+    "needsAutomations": "Nõuab automatiseerimist",
+    "enableAgain": "Luba uuesti",
+    "deletePreset": "Kustuta eelseadistus",
+    "autonomy": {
+      "report": "Ainult aruanne",
+      "propose": "Ettepaneku plaan"
+    },
+    "status": {
+      "running": "Töötab",
+      "reported": "Teatatud",
+      "proposed": "Ootel kinnitamist",
+      "approved": "Kinnitatud",
+      "rejected": "Tagasi lükatud",
+      "expired": "Aegunud",
+      "executing": "Plaanitakse",
+      "done": "Valmis",
+      "failed": "Ebaõnnestus",
+      "skipped": "Jäetud vahele"
+    },
+    "severity": {
+      "info": "Info",
+      "warning": "Hoiatus",
+      "critical": "Kriitiline"
+    },
+    "plan": {
+      "title": "Ettepanek",
+      "commands": "Käsklused",
+      "rationale": "Põhjendus",
+      "risk": "Risk",
+      "rollback": "Tagasipööramine",
+      "verify": "Kinnitamine",
+      "progress": "Edenemine"
+    },
+    "enable": {
+      "title": "Luba {{name}}",
+      "submit": "Luba",
+      "name": "Nimi",
+      "targets": "Majutid",
+      "targetAll": "Kõik majutid",
+      "targetTrigger": "Majut, mis selle käivitas",
+      "targetHosts": "Valitud majutid",
+      "noHosts": "Valige vähemalt üks majut.",
+      "threshold": "Lävi (%)",
+      "forSeconds": "Vähemalt (sekundit)",
+      "time": "Kellaaeg",
+      "cron": "Ajakava (cron)",
+      "dockerEvent": "Konteineri sündmus",
+      "dockerEvents": {
+        "exited": "Lõpetatud",
+        "unhealthy": "Terviketa",
+        "restarting": "Taaskäivitamine"
+      },
+      "badTime": "Sisesta aeg kujul TT:MM.",
+      "autonomy": "Mida abiline tohib teha",
+      "maxRunSeconds": "Ajalimiit (sekundites)",
+      "runbook": "Juhend",
+      "runbookHint": "Mida abiline peaks tegema, lihtsates sõnades. Inglise keel toimib parimalt.",
+      "shared": "Jaga, kui salvestada eelseadistusena",
+      "sharedHint": "Kõik, kellel on lubatud kasutada automaatseid tegevusi, saavad seejärel selle lubada.",
+      "saveAsPreset": "Salvesta eelseadistusena",
+      "savedPreset": "Salvestatud",
+      "failed": "Automaatset tegevust ei õnnestunud luua",
+      "saveFailed": "Eelseadistust ei õnnestunud salvestada"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Igapäevane ülevaatus",
+        "description": "Iga hommik kell 09:00 kontrollib kõigi hostide kettaid, mälu, koormust, katkenud teenuseid, konteinereid, sertifikaate, uuendusi, ootel taaskäivitusi ja aja sünkroonimist ning annab tagasisidet tõsiduse järgi."
+      },
+      "disk-cleanup": {
+        "title": "Kettaruumi puhastamine",
+        "description": "Kui ketta täituvus on 5 minutit järjest 85% või rohkem, tuvastab see, mis ruumi võtab, ja pakub välja ohutu puhastusplaani, mille saate kinnitada. Äriandmeid ei puuduta."
+      },
+      "host-down-triage": {
+        "title": "Hosti väljalangemise diagnostika",
+        "description": "Kui host läheb offline'i, testitakse seda teistelt hostidelt ja Proxmoxilt ning teavitatakse, kas probleem on võrgus, peatatud masinas või SSH-s."
+      },
+      "service-failure": {
+        "title": "Teenuse rike",
+        "description": "Kui tervisekontroll hakkab ebaõnnestuma, leiate selle taga oleva systemd'i üksuse, loete selle oleku ja logi ning pakute välja ühe taaskäivituse, mille saate kinnitada, kui see aitab. Konfiguratsiooni ei muudeta."
+      },
+      "container-anomaly": {
+        "title": "Konteineri anomaalia",
+        "description": "Kui konteiner väljub, muutub ebatervislikuks või taaskäivitub pidevalt, loetakse selle olek, väljumiskood, logid ja mälu ning pakutakse välja ühekordne käivitamine või taaskäivitamine, mille saate kinnitada. Midagi ei eemaldata."
+      },
+      "resource-overload-cpu": {
+        "title": "CPU ülekoormus",
+        "description": "Kui CPU kasutus on 15 minutit järjest 95% või rohkem, leiate selle taga olevad protsessid, teenused ja konteinerid ning teavitatakse, mida teha. Midagi ei muudeta."
+      },
+      "resource-overload-memory": {
+        "title": "Mälu ülekoormus",
+        "description": "Kui mälu kasutus on 10 minutit järjest 95% või rohkem, leiate, mis seda kasutab, vahetusruum ja mälu puudumise tõttu lõpetatud protsessid ning teavitatakse, mida teha. Midagi ei muudeta."
+      },
+      "security-updates-weekly": {
+        "title": "Nädalased turjavärskendused",
+        "description": "Iga esmaspäev kell 09:30 loetleb ootel olevad turjavärskendused tõsiduse järgi, taaskäivitamise vajaduse ja selle taga olevad paketid, käimasolevad ja paigaldatud tuumad ning päevad viimasest värskendusest – kõikidesse hostidesse ühes tabelis."
+      },
+      "cert-expiry-weekly": {
+        "title": "Nädalane sertifikaatide aegumine",
+        "description": "Iga esmaspäev kell 09:45 loeb Let's Encrypti, veebiserverite ja Kubernetesi sertifikaatide aegumistähtaegu igal hostil ja märgistab need, mille aegumiseni on vähem kui 30 päeva, kriitilised on need, mille aegumiseni on vähem kui 7 päeva."
+      }
+    },
+    "report": {
+      "verdict": "Otsus",
+      "evidence": "Tõendid",
+      "actionsTaken": "Läbi viidud tegevused",
+      "recommendations": "Soovitused",
+      "nothingFound": "Enne käivituse lõppu ei leitud midagi.",
+      "noChanges": "Muudatusi ei tehtud.",
+      "openConversation": "Ava vestlus assistendis, et näha kõiki samme ja esitada täpsustavaid küsimusi.",
+      "noFurtherAction": "Lisategevust ei ole vaja.",
+      "stoppedBudgetRun": "Peatatud: see käivitamine kasutas ära oma {{tokens}} märgi eelarve.",
+      "stoppedBudgetDaily": "Peatatud: omaniku päevane {{tokens}} märgi eelarve on ammendunud.",
+      "stoppedDeadline": "Peatatud: automatiseerimise ajapiirang on saavutatud.",
+      "stoppedPaused": "Peatatud: administraator peatas AI automaatse töö.",
+      "stoppedAborted": "Peatatud: automatiseerimise käivitamine tühistati.",
+      "providerFailed": "AI pakkujal tekkis viga: {{error}}",
+      "noHosts": "Ühtegi sihtmärkide hosti ei saa automatiseerimise omanik saavutada.",
+      "noProvider": "Automatiseerimise omanikul puudub AI pakkuja, millel oleks mudel ülesannete täitmiseks.",
+      "needsOpsUse": "Automatsiooni omanikul puudub luba ai.ops.use.",
+      "assistantOff": "Automatsiooni omaniku jaoks on tehisintellekti assistent väljalülitatud.",
+      "skippedPaused": "Tehisintellekti automaatne haldus on administraatori poolt peatatud.",
+      "skippedDuplicate": "Sama automatsiooni ja hosti jaoks on juba ülesanne käimas või ootab kinnitust.",
+      "skippedRate": "See automatsioon on viimase tunni jooksul juba käivitanud {{count}} tehisintellekti ülesannet.",
+      "hostNotRun": "Ei käivitatud: plaan peatati.",
+      "hostNoAccess": "Ei käivitatud: omanik ei saa enam selle hostiga ühendust luua.",
+      "hostUnreachable": "Ei käivitatud: hosti ei saavutatud.",
+      "hostStopped": "Peatati esimese ebaõnnestunud käsu juures.",
+      "executionDone": "Kinnitatud plaan käis {{count}} hostil ja kõik käsud ning kontrollid õnnestusid.",
+      "executionFailed": "Heaks kiidetud plaan ei lõpetanud teostamist kõigil hostidel.",
+      "executionStopped": "Heaks kiidetud plaan peatati enne selle lõppemist.",
+      "approvedBy": "Heaks kiidetud plaan teostati kirjas oleva järgi. Heaks kiitis {{user}}.",
+      "noticeReported": "AI aruanne: {{title}}",
+      "noticeProposed": "AI plaan ootab heakskiitu: {{title}}",
+      "noticeExecuted": "AI plaan teostatud: {{title}}",
+      "noticeFailed": "AI ülesanne ebaõnnestus: {{title}}"
+    }
   }
 }

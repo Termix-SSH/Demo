@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "نفق Cloudflare (Zero Trust)",
+    "cloudflareTunnelDesc": "الاتصال بالمضيفين الموجودين خلف نفق Cloudflare باستخدام نقل WebSocket الأصلي دون فتح المنفذ الخام 22 للإنترنت العام.",
+    "enableCloudflareTunnel": "تفعيل نفق Cloudflare",
+    "enableCloudflareTunnelDesc": "توجيه حركة مرور SSH عبر Cloudflare Zero Trust (WSS) باستخدام العنوان الرئيسي للمضيف بدلاً من مقابس TCP المباشرة.",
+    "cloudflareTunnelHostname": "اسم مضيف النفق",
+    "cloudflareTunnelHostnameDesc": "نطاق عام موجه إلى خدمة SSH الأصلية الخاصة بك في نفق Cloudflare (اتركه فارغًا لاستخدام العنوان الرئيسي للمضيف).",
+    "cloudflareTunnelPort": "منفذ النفق",
+    "cloudflareTunnelPortDesc": "منفذ HTTPS/WSS على Cloudflare (الافتراضي هو 443).",
+    "cloudflareTunnelClientId": "معرف عميل رمز الخدمة",
+    "cloudflareTunnelClientIdDesc": "رأس CF-Access-Client-Id اختياري. مطلوب فقط إذا كانت سياسة Cloudflare Access Zero Trust تفرض استخدام رموز الخدمة (Service Tokens).",
+    "cloudflareTunnelClientSecret": "سر عميل رمز الخدمة",
+    "cloudflareTunnelClientSecretDesc": "رأس CF-Access-Client-Secret الاختياري للمصادقة عبر Cloudflare Access.",
     "clipboardHttpWarning": "تعذر قراءة الحافظة. بعض المتصفحات تقيد الوصول إلى الحافظة خارج HTTPS - جرّب Ctrl+V بدلاً من ذلك، أو قم بتشغيل Termix عبر HTTPS.",
     "connecting": "جارٍ الاتصال...",
     "connectionLost": "انقطع الاتصال",
@@ -93,7 +105,16 @@
     "localShell": "محطة shell المحلية",
     "autocompleteHintComplete": "Tab أو Enter للإكمال",
     "autocompleteHintNavigate": "↑↓ للتنقل",
-    "autocompleteHintClose": "Esc للإغلاق"
+    "autocompleteHintClose": "Esc للإغلاق",
+    "cloudflareTunnelClientSecretPlaceholder": "سر رمز الخدمة الاختياري",
+    "cloudflareTunnelClientSecretPlaceholderNew": "سر رمز الخدمة الجديد",
+    "secretSaved": "تم الحفظ",
+    "secretReplace": "استبدال",
+    "secretClear": "مسح",
+    "secretCancel": "إلغاء",
+    "hideSecret": "إخفاء السر",
+    "showSecret": "إظهار السر",
+    "sessionEndedKeepOpen": "انتهت الجلسة. اضغط Enter لإعادة الاتصال."
   },
   "terminalToolbar": {
     "detachTmux": "فصل tmux",
@@ -222,6 +243,26 @@
         "label": "سجل الأوامر",
         "description": "تسجيل الأوامر التي يتم تشغيلها في هذه الطرفية للسجل والإكمال التلقائي"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "نفق Cloudflare",
+        "description": "توجيه حركة SSH عبر Cloudflare Zero Trust باستخدام WebSocket"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "اسم مضيف النفق",
+        "description": "اسم المضيف العام لـ Cloudflare Tunnel"
+      },
+      "cloudflareTunnelPort": {
+        "label": "منفذ النفق",
+        "description": "منفذ HTTPS/WSS على حافة Cloudflare"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "معرف عميل رمز خدمة Cloudflare Access"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "سر العميل الخاص برمز الخدمة لـ Cloudflare Access"
+      },
       "enableTerminal": {
         "label": "تفعيل الطرفية",
         "description": "توفير طرفية SSH لهذا المضيف."
@@ -329,6 +370,9 @@
         "moveUp": "تحريك لأعلى",
         "moveDown": "تحريك لأسفل",
         "tmuxHint": "يظهر فقط عند الاتصال بـ tmux"
+      },
+      "keepOpenOnExit": {
+        "label": "إبقاء علامة التبويب مفتوحة عند الخروج"
       }
     },
     "user": {
@@ -499,7 +543,9 @@
     "guac": {
       "permissionLevel": "مستوى الإذن"
     },
-    "deleteGlobalThemeConfirm": "حذف السمة {{name}}؟"
+    "deleteGlobalThemeConfirm": "حذف السمة {{name}}؟",
+    "keepOpenOnExitLabel": "إبقاء علامة التبويب مفتوحة عند الخروج",
+    "keepOpenOnExitDesc": "عند خروج shell أو إغلاق الاتصال، احتفظ بعلامة التبويب ومخرجاتها. اضغط Enter لإعادة الاتصال."
   },
   "nav": {
     "history": "السجل",
@@ -537,6 +583,7 @@
     "stopRecording": "إيقاف التسجيل"
   },
   "keybindings": {
+    "openLocalTerminal": "فتح نافذة طرفية محلية جديدة",
     "copy": "نسخ التحديد",
     "paste": "لصق",
     "sendControlCode": "إرسال إشارة Ctrl+حرف",
@@ -659,6 +706,7 @@
     "remoteServerRequired": "الخادم البعيد مطلوب. قم بتوصيل خادم بعيد في الإعدادات لاستخدام هذا نوع الاتصال."
   },
   "plugin": {
-    "name": "طرفية SSH"
+    "name": "طرفية SSH",
+    "description": "جلسات طرفية SSH مع علامات تبويب، وشاشة مقسمة، وسجل، ومacrOs، وطرفية محلية في تطبيق سطح المكتب."
   }
 }

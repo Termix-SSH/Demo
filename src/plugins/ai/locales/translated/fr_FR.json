@@ -23,6 +23,18 @@
         "title": "Partager la clé API",
         "description": "D'autres fonctionnalités peuvent utiliser la clé API d'IA stockée sans la voir."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Exécuter des commandes sur les hôtes avec l'assistant IA",
+        "description": "Permettre à l'assistant d'exécuter n'importe quelle commande shell sur les hôtes que vous sélectionnez. Réservé aux administrateurs par défaut."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Voir l'utilisation de l'IA de tous les utilisateurs",
+        "description": "Voir les jetons consommés par les appels IA de chaque utilisateur, et pas seulement les vôtres. Réservé aux administrateurs par défaut."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Hôtes privés d'IA autorisés",
         "description": "Hôtes de votre réseau privé vers lesquels les utilisateurs peuvent pointer un fournisseur, comme un Ollama auto-hébergé. Mettez un hôte par ligne."
+      },
+      "opsConcurrency": {
+        "label": "Hôtes parallèles pour l'assistant IA",
+        "description": "Nombre d'hôtes sur lesquels une commande de l'assistant s'exécute simultanément."
+      },
+      "opsCommandTimeout": {
+        "label": "Délai d'expiration des commandes de l'assistant IA (secondes)",
+        "description": "Durée maximale d'exécution d'une commande sur un hôte avant son arrêt. L'assistant peut demander jusqu'à 600 secondes."
+      },
+      "opsOutputLimit": {
+        "label": "Sortie de l'assistant IA par hôte (caractères)",
+        "description": "Quantité de sortie conservée pour chaque hôte. Les sorties longues conservent leur début et leur fin."
+      },
+      "autoOpsPaused": {
+        "label": "Mettre en pause les opérations automatiques IA",
+        "description": "Arrête toutes les tâches IA et les plans approuvés en cours d'exécution, et refuse les nouvelles demandes, jusqu'à ce que cette option soit désactivée."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "Tâches IA par heure d'automatisation",
+        "description": "Les déclencheurs supplémentaires dans la même heure sont ignorés."
+      },
+      "autoOpsRunTokens": {
+        "label": "Budget de jetons par tâche IA",
+        "description": "Une tâche qui atteint ce nombre de jetons est arrêtée et rapporte ses résultats."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Budget quotidien de jetons IA par utilisateur",
+        "description": "Une fois qu'un utilisateur a utilisé ce nombre de jetons aujourd'hui (UTC), ses tâches IA sont ignorées ou arrêtées."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "Activer l'assistant IA",
         "description": "Autoriser l'assistant IA à aider dans le terminal de cet hôte. Désactivé par défaut, et nécessite toujours que l'IA soit activée pour votre compte."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Préférences des opérations automatiques"
+      }
     }
   },
   "ai": {
-    "title": "Assistant",
     "send": "Envoyer",
     "stop": "Arrêter",
     "save": "Enregistrer",
@@ -58,10 +102,9 @@
     "running": "en cours d'exécution",
     "approve": "Approuver",
     "reject": "Rejeter",
-    "inputPlaceholder": "Posez des questions sur vos serveurs ou décrivez une modification à proposer",
     "selectProvider": "Sélectionner un fournisseur",
-    "providerSettings": "Paramètres du fournisseur",
     "addProvider": "Ajouter un fournisseur",
+    "manageModels": "Gérer les modèles",
     "editProvider": "Modifier le fournisseur",
     "removeProvider": "Supprimer le fournisseur",
     "providerType": "Fournisseur",
@@ -95,22 +138,32 @@
     "modelCustom": "Saisir un nom de modèle",
     "modelRefresh": "Actualiser la liste",
     "modelPlaceholder": "Choisir ou saisir un modèle",
-    "attachHint": "Tapez @ pour référencer un hôte, un extrait ou une automatisation. Les modifications sont proposées pour votre approbation.",
     "runCommandTitle": "Exécuter la commande",
     "assistant": "Assistant IA",
     "terminalPanelEmpty": "Demandez à l'assistant des informations sur cet hôte. Toute modification d'état nécessite votre approbation préalable.",
     "terminalPanelPlaceholder": "Poser une question sur cet hôte...",
-    "noProvidersConfigured": "Aucun fournisseur IA n'est configuré. Ajoutez-en un dans l'onglet Assistant IA.",
+    "noProvidersConfigured": "Aucun fournisseur d'IA n'est configuré. Ajoutez-en un dans les Paramètres.",
     "runsInOpenTerminal": "S'exécute dans votre session terminal ouverte.",
     "runInTerminal": "Exécuter",
     "terminalContextPrefill": "Voici la sortie de mon terminal :\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Autoriser les autres fonctionnalités à utiliser votre clé API de fournisseur IA pour leurs propres requêtes. La clé n'est jamais copiée et vous pouvez révoquer cette autorisation à tout moment."
     },
-    "removeProviderConfirm": "Supprimer le fournisseur {{name}} ?"
+    "removeProviderConfirm": "Supprimer le fournisseur {{name}} ?",
+    "contextWindows": "Fenêtre de contexte par modèle",
+    "contextWindowsHint": "Lisez la valeur fournie par le fournisseur s'il en indique une. Entrez un nombre de jetons pour la remplacer pour un modèle, ou laissez ce champ vide pour utiliser la valeur indiquée par le fournisseur. Actualiser demande à nouveau au fournisseur.",
+    "contextWindowValue": "Fenêtre de contexte : {{tokens}} ({{source}})",
+    "contextOverride": "Remplacement de la fenêtre de contexte pour {{model}}",
+    "contextSourceOverride": "défini par vous",
+    "contextSourceProvider": "indiqué par le fournisseur",
+    "contextSourceGuess": "déduit du nom du modèle",
+    "contextSourceDefault": "valeur par défaut pour les modèles inconnus",
+    "contextLoadFailed": "Impossible de lire les fenêtres de contexte",
+    "contextRefresh": "Actualiser",
+    "contextWindowInvalid": "Entrez la fenêtre de contexte sous forme de nombre entier de jetons, d'au moins 1024."
   },
   "nav": {
-    "ai": "IA"
+    "ai": "Assistant IA"
   },
   "onboarding": {
     "aiTitle": "Assistant IA",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "L'activer",
     "aiEnableDesc": "Ajoute un assistant qui analyse votre configuration et suggère des modifications que vous approuvez. Nécessite un fournisseur que vous fournissez, comme un Ollama local.",
     "aiNote": "Rien n'est envoyé tant que vous n'avez pas ajouté un fournisseur et envoyé un message."
-  },
-  "hosts": {
-    "docsLink": "Voir la documentation"
   },
   "agents": {
     "working": "En cours...",
@@ -215,6 +265,282 @@
     "emptyTranscript": "Envoyez un message pour démarrer l'agent."
   },
   "plugin": {
-    "name": "Assistant IA"
+    "name": "Assistant IA",
+    "description": "Un assistant IA qui analyse votre configuration et vous propose des modifications à approuver."
+  },
+  "ops": {
+    "searchHosts": "Rechercher des hôtes",
+    "selectedCount": "{{count}} sélectionné(s)",
+    "clear": "Effacer",
+    "fleets": "Flottes",
+    "folders": "Dossiers",
+    "tags": "Étiquettes",
+    "allHosts": "Tous les hôtes",
+    "noHosts": "Aucun hôte",
+    "newConversation": "Nouvelle conversation",
+    "sendHint_one": "Exécuté sur {{count}} hôte. Les commandes s'exécutent sans demande préalable.",
+    "sendHint_many": "Exécuté sur {{count}} hôtes. Les commandes s'exécutent sans demande préalable.",
+    "sendHint_other": "Exécuté sur {{count}} hôtes. Les commandes s'exécutent sans demande préalable.",
+    "runCommand": "Exécuter la commande",
+    "hostFacts": "Informations sur l'hôte",
+    "hostCount_one": "{{count}} hôte",
+    "hostCount_many": "{{count}} hôtes",
+    "hostCount_other": "{{count}} hôtes",
+    "succeeded": "{{count}} réussi(s)",
+    "failed": "{{count}} échoué(s)",
+    "exitCode": "code de sortie {{code}}",
+    "timedOut": "expiré",
+    "stopped": "arrêté",
+    "notRun": "non exécuté",
+    "cached": "en cache",
+    "duration": "{{seconds}}s",
+    "noOutput": "(aucune sortie)"
+  },
+  "assistant": {
+    "title": "Assistant IA",
+    "moveHint": "Glissez pour déplacer. Double-cliquez pour ancrer sur le côté.",
+    "toggle": "Afficher/masquer l'assistant IA",
+    "close": "Fermer",
+    "dock": "Ancrer à droite",
+    "float": "Flottant",
+    "openTab": "Ouvrir la vue complète",
+    "history": "Conversations",
+    "noConversations": "Aucune conversation pour le moment",
+    "untitled": "Sans titre",
+    "deleteConversation": "Supprimer la conversation",
+    "deleteConfirm": "Supprimer cette conversation ?",
+    "emptyTitle": "Posez des questions ou modifiez n'importe quoi dans Termix",
+    "emptyHint": "L'assistant agit en votre nom via l'interface CLI de Termix et exécute des commandes sur vos hôtes cibles. Tapez @ pour ajouter des hôtes, des flottes, des dossiers ou des balises comme cibles.",
+    "inputPlaceholder": "Demandez à l'assistant. Tapez @ pour ajouter des cibles.",
+    "noTargets": "Aucun hôte cible. Tapez @ pour en ajouter.",
+    "sendHint": "Les modifications et commandes s'exécutent sans demande préalable.",
+    "removeTarget": "Supprimer {{name}}",
+    "kind": {
+      "host": "Hôte",
+      "fleet": "Flotte",
+      "folder": "Dossier",
+      "tag": "Étiquette"
+    },
+    "emptyHintBasic": "L'assistant agit en votre nom via la CLI Termix, avec vos autorisations.",
+    "inputPlaceholderBasic": "Demandez à l'assistant.",
+    "sendHintBasic": "Les modifications sont appliquées sans demande de confirmation préalable.",
+    "thinking": "Réflexion",
+    "thinkingActive": "Réflexion...",
+    "compacted": "Contexte condensé : les messages précédents ont été résumés",
+    "compact": "Condenser la conversation",
+    "nothingToCompact": "La conversation est trop courte pour être condensée.",
+    "contextMeter": "Contexte : {{used}} sur {{window}} jetons utilisés par le dernier appel",
+    "contextMeterSource": "La fenêtre est {{source}}.",
+    "contextMeterReserved": "{{tokens}} jetons sont réservés pour la réponse.",
+    "todayTokens": "Aujourd'hui {{tokens}}",
+    "todayTitle": "Jeton(s) utilisé(s) aujourd'hui. Cliquez pour plus de détails.",
+    "usage": "Utilisation des jetons",
+    "conversationTokens": "{{tokens}} jeton(s)",
+    "openFloating": "Panneau flottant",
+    "openFloatingHint": "Ouvrez l'assistant dans un panneau au-dessus de n'importe quelle page. Appuyez sur {{shortcut}} n'importe où pour l'ouvrir ou le fermer.",
+    "shortcutHint": "Appuyez sur {{shortcut}} sur n'importe quelle page pour ouvrir l'assistant dans un panneau flottant."
+  },
+  "usage": {
+    "title": "Utilisation des jetons",
+    "settingDescription": "Jeton(s) utilisé(s) par vos appels IA au cours des 30 derniers jours.",
+    "cardTitle": "Utilisation des jetons IA",
+    "today": "Aujourd'hui",
+    "week": "7 jours",
+    "month": "30 jours",
+    "mine": "Les miens",
+    "everyone": "Tous les utilisateurs",
+    "mineCaption": "Vos jetons sur toutes les fonctionnalités IA.",
+    "everyoneCaption": "Jetons pour tous les utilisateurs et toutes les fonctionnalités IA.",
+    "byDay": "Par jour",
+    "byModel": "Par modèle",
+    "bySource": "Par fonctionnalité",
+    "byUser": "Par utilisateur",
+    "model": "Modèle",
+    "feature": "Fonctionnalité",
+    "user": "Utilisateur",
+    "calls": "Appels",
+    "prompt": "Entrée",
+    "completion": "Sortie",
+    "total": "Total",
+    "empty": "Aucune utilisation de l'IA au cours des 30 derniers jours.",
+    "loadFailed": "Impossible de charger les statistiques d'utilisation",
+    "estimatedNote": "Certaines valeurs sont des estimations, basées sur environ quatre caractères par jeton, car le fournisseur n'a pas communiqué ses données d'utilisation.",
+    "source": {
+      "assistant": "Assistant",
+      "terminal": "Panneau terminal",
+      "compaction": "Compaction"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Assistant",
+    "viewAutoOps": "Auto-ops",
+    "intro": "Auto-ops permet à l'assistant de vérifier vos hôtes de manière autonome. Une automatisation le lance selon un planning ou en cas de problème, puis rédige un rapport ou propose une correction à valider. Commencez par un preset.",
+    "sections": {
+      "tasks": "Tâches",
+      "approvals": "Validations",
+      "presets": "Presets"
+    },
+    "provider": "Fournisseur pour les tâches",
+    "providerDefault": "Premier fournisseur avec un modèle par défaut",
+    "model": "Modèle pour les tâches",
+    "modelDefault": "Le modèle par défaut du fournisseur",
+    "saveModel": "Enregistrer le modèle",
+    "preferencesHint": "Le fournisseur et le modèle utilisés par les tâches en arrière-plan. Laissez-les tels quels pour utiliser votre fournisseur et modèle par défaut.",
+    "task": "Tâche",
+    "tokens": "{{tokens}} jetons",
+    "tokenUsage": "{{total}} jetons ({{prompt}} entrants, {{completion}} sortants)",
+    "dryRun": "Exécution de test",
+    "trigger": "Déclencheur",
+    "noTasks": "Aucune tâche pour le moment",
+    "tasksHint": "Les tâches sont des exécutions d'automatisations contenant une étape « Demander à l'IA ». Activez un preset ou créez le vôtre dans Automatisations : ajoutez une étape « Demander à l'IA » à n'importe quelle automatisation. Les exécutions apparaissent ici.",
+    "openAutomations": "Ouvrir les automatisations",
+    "browsePresets": "Parcourir les presets",
+    "noApprovals": "Aucun plan n'attend d'approbation",
+    "loadFailed": "Échec du chargement des auto-ops",
+    "decideFailed": "La décision n'a pas pu être enregistrée",
+    "openConversation": "Ouvrir dans l'assistant",
+    "approve": "Approuver et exécuter",
+    "reject": "Rejeter",
+    "expires": "Expire dans {{time}}",
+    "enabled": "Activé",
+    "updateAvailable": "Mise à jour disponible",
+    "shared": "Partagé",
+    "needsAutomations": "Nécessite des automatisations",
+    "enableAgain": "Réactiver",
+    "deletePreset": "Supprimer le préréglage",
+    "autonomy": {
+      "report": "Rapport uniquement",
+      "propose": "Proposer un plan"
+    },
+    "status": {
+      "running": "En cours",
+      "reported": "Signalé",
+      "proposed": "En attente d'approbation",
+      "approved": "Approuvé",
+      "rejected": "Rejeté",
+      "expired": "Expiré",
+      "executing": "Exécution du plan",
+      "done": "Terminé",
+      "failed": "Échoué",
+      "skipped": "Ignoré"
+    },
+    "severity": {
+      "info": "Info",
+      "warning": "Avertissement",
+      "critical": "Critique"
+    },
+    "plan": {
+      "title": "Plan proposé",
+      "commands": "Commandes",
+      "rationale": "Pourquoi",
+      "risk": "Risque",
+      "rollback": "Annuler",
+      "verify": "Vérifier",
+      "progress": "Progression"
+    },
+    "enable": {
+      "title": "Activer {{name}}",
+      "submit": "Activer",
+      "name": "Nom",
+      "targets": "Hôtes",
+      "targetAll": "Tous les hôtes",
+      "targetTrigger": "L'hôte qui a déclenché l'action",
+      "targetHosts": "Hôtes sélectionnés",
+      "noHosts": "Sélectionnez au moins un hôte.",
+      "threshold": "Seuil (%)",
+      "forSeconds": "Pendant au moins (secondes)",
+      "time": "Heure de la journée",
+      "cron": "Planification (cron)",
+      "dockerEvent": "Événement de conteneur",
+      "dockerEvents": {
+        "exited": "Arrêté",
+        "unhealthy": "Défectueux",
+        "restarting": "Redémarrage"
+      },
+      "badTime": "Saisissez l'heure au format HH:MM.",
+      "autonomy": "Actions autorisées pour l'assistant",
+      "maxRunSeconds": "Limite de temps (secondes)",
+      "runbook": "Runbook",
+      "runbookHint": "Ce que l'assistant doit faire, en termes simples. L'anglais est recommandé.",
+      "shared": "Partager lors de l'enregistrement en tant que préréglage",
+      "sharedHint": "Toute personne autorisée à utiliser les opérations automatiques pourra alors les activer.",
+      "saveAsPreset": "Enregistrer en tant que préréglage",
+      "savedPreset": "Enregistré",
+      "failed": "L'automatisation n'a pas pu être créée",
+      "saveFailed": "Le préréglage n'a pas pu être enregistré"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Patrouille quotidienne",
+        "description": "Chaque matin à 09h00, vérifie les disques, la mémoire, la charge, les services en échec, les conteneurs, les certificats, les mises à jour, les redémarrages en attente et la synchronisation de l'heure de chaque hôte, et génère un rapport par niveau de gravité."
+      },
+      "disk-cleanup": {
+        "title": "Nettoyage de l'espace disque",
+        "description": "Lorsqu'un disque reste à 85 % ou plus pendant 5 minutes, identifie ce qui l'occupe et propose un nettoyage sûr à approuver. Les données métier ne sont jamais modifiées."
+      },
+      "host-down-triage": {
+        "title": "Analyse d'hôte hors ligne",
+        "description": "Lorsqu'un hôte devient inaccessible, il est sondé depuis d'autres hôtes et Proxmox, puis un rapport indique si le problème vient du réseau, d'une machine arrêtée ou de SSH."
+      },
+      "service-failure": {
+        "title": "Défaillance de service",
+        "description": "Lorsqu'un contrôle de santé échoue, identifie l'unité systemd associée, lit son état et ses journaux, et propose un redémarrage unique à approuver si cela peut aider. La configuration n'est jamais modifiée."
+      },
+      "container-anomaly": {
+        "title": "Anomalie de conteneur",
+        "description": "Lorsqu'un conteneur se termine, devient malsain ou redémarre en boucle, lit son état, son code de sortie, ses journaux et sa mémoire, et propose de le démarrer ou le redémarrer une fois pour approbation. Rien n'est supprimé."
+      },
+      "resource-overload-cpu": {
+        "title": "Surcharge CPU",
+        "description": "Lorsque le CPU reste à 95 % ou plus pendant 15 minutes, identifie les processus, services et conteneurs concernés et rapporte les actions à entreprendre. Rien n'est modifié."
+      },
+      "resource-overload-memory": {
+        "title": "Surcharge mémoire",
+        "description": "Lorsque la mémoire reste à 95 % ou plus pendant 10 minutes, identifie ce qui l'utilise, l'échange (swapping) et les tuages par manque de mémoire, et rapporte les actions à entreprendre. Rien n'est modifié."
+      },
+      "security-updates-weekly": {
+        "title": "Mises à jour de sécurité hebdomadaires",
+        "description": "Chaque lundi à 09h30, répertorie les mises à jour de sécurité en attente par niveau de gravité, les redémarrages en attente et les packages concernés, les noyaux en cours d'exécution et installés, ainsi que le nombre de jours écoulés depuis la dernière mise à jour, le tout dans un tableau unique pour tous les hôtes."
+      },
+      "cert-expiry-weekly": {
+        "title": "Expiration des certificats hebdomadaire",
+        "description": "Chaque lundi à 09h45, vérifie la date d'expiration des certificats Let's Encrypt, des serveurs web et de Kubernetes sur chaque hôte, et signale ceux qui expirent dans moins de 30 jours, ainsi que les cas critiques (moins de 7 jours)."
+      }
+    },
+    "report": {
+      "verdict": "Verdict",
+      "evidence": "Preuves",
+      "actionsTaken": "Actions entreprises",
+      "recommendations": "Recommandations",
+      "nothingFound": "Rien n'a été trouvé avant la fin de l'exécution.",
+      "noChanges": "Aucune modification n'a été apportée.",
+      "openConversation": "Ouvrez la conversation dans l'assistant pour voir chaque étape et poser des questions de suivi.",
+      "noFurtherAction": "Aucune autre action n'est nécessaire.",
+      "stoppedBudgetRun": "Arrêté : cette exécution a utilisé son budget de {{tokens}} jetons.",
+      "stoppedBudgetDaily": "Arrêté : le budget quotidien de {{tokens}} jetons du propriétaire est épuisé.",
+      "stoppedDeadline": "Arrêté : la limite de temps de l'automatisation a été atteinte.",
+      "stoppedPaused": "Arrêté : un administrateur a mis en pause les opérations automatiques IA.",
+      "stoppedAborted": "Arrêté : l'exécution de l'automatisation a été annulée.",
+      "providerFailed": "Le fournisseur IA a échoué : {{error}}",
+      "noHosts": "Aucun des hôtes cibles n'est accessible par le propriétaire de l'automatisation.",
+      "noProvider": "Le propriétaire de l'automatisation ne dispose d'aucun fournisseur IA avec un modèle capable d'exécuter des tâches.",
+      "needsOpsUse": "Le propriétaire de l'automatisation ne dispose pas de l'autorisation ai.ops.use.",
+      "assistantOff": "L'assistant IA est désactivé pour le propriétaire de l'automatisation.",
+      "skippedPaused": "Les opérations automatiques IA sont en pause par un administrateur.",
+      "skippedDuplicate": "Une tâche pour la même automatisation et le même hôte est toujours en cours d'exécution ou en attente d'approbation.",
+      "skippedRate": "Cette automatisation a déjà lancé {{count}} tâche(s) IA au cours de la dernière heure.",
+      "hostNotRun": "Non exécuté : le plan a été arrêté.",
+      "hostNoAccess": "Non exécuté : le propriétaire ne peut plus se connecter à cet hôte.",
+      "hostUnreachable": "Non exécuté : l'hôte n'a pas pu être atteint.",
+      "hostStopped": "Arrêté à la première commande échouée.",
+      "executionDone": "Le plan approuvé a été exécuté sur {{count}} hôte(s) et chaque commande et vérification a réussi.",
+      "executionFailed": "Le plan approuvé n'a pas été exécuté avec succès sur tous les hôtes.",
+      "executionStopped": "Le plan approuvé a été arrêté avant sa fin.",
+      "approvedBy": "Le plan approuvé a été exécuté tel quel. Approuvé par {{user}}.",
+      "noticeReported": "Rapport IA : {{title}}",
+      "noticeProposed": "Plan IA en attente d'approbation : {{title}}",
+      "noticeExecuted": "Plan IA exécuté : {{title}}",
+      "noticeFailed": "Tâche IA échouée : {{title}}"
+    }
   }
 }

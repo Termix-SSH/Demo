@@ -23,6 +23,18 @@
         "title": "Deel die API-sleutel",
         "description": "Andere kenmerke kan die gestoorde AI-API-sleutel gebruik sonder om dit te sien."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Voer opdragte uit op gasheerbedieners met die AI-assistent",
+        "description": "Laat die assistent enige skilopdrag uitvoer op die gasheerbedieners wat jy kies. Slegs administrateurs by verstek."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Beskou almal se AI-gebruik",
+        "description": "Sien die tokens wat elke gebruiker se AI-oproepe gebruik het, nie net joune nie. Slegs administrateurs by verstek."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Toegestane privaat AI-gashere",
         "description": "Gashere op jou privaat netwerk waarna gebruikers 'n verskaffer kan wys, soos 'n self-gehoste Ollama. Plaas een gasheer per lyn."
+      },
+      "opsConcurrency": {
+        "label": "AI-assistent parallelle gasheerbedieners",
+        "description": "Hoeveel gasheerbedieners 'n assistentopdrag gelyktydig op uitvoer."
+      },
+      "opsCommandTimeout": {
+        "label": "AI-assistent opdragtydverstryking (sekondes)",
+        "description": "Hoe lank 'n opdrag op 'n gasheerbediener mag loop voordat dit gestop word. Die assistent kan tot 600 vra."
+      },
+      "opsOutputLimit": {
+        "label": "AI-assistent uitset per gasheerbediener (karakters)",
+        "description": "Hoeveel van elke gasheerbediener se uitset gehou word. Langere uitset hou die begin en einde."
+      },
+      "autoOpsPaused": {
+        "label": "Pouseer AI outo-bediens",
+        "description": "Stop elke AI-taak en goedgekeurde plan wat loop en weier nuwes, totdat dit weer afgeskakel word."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "AI-take per outomatisering per uur",
+        "description": "Meer triggers in dieselfde uur word oorgeslaan."
+      },
+      "autoOpsRunTokens": {
+        "label": "Tokenbegroting per AI-taak",
+        "description": "'n Taak wat hierdie aantal tokens gebruik, word gestop en rapporteer wat dit gevind het."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Daaglikse AI-tokenbegroting per gebruiker",
+        "description": "Sodra 'n gebruiker vandag (UTC) hierdie aantal tokens gebruik het, word hul AI-take oorgeslaan of gestop."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "Aktiveer AI-assistent",
         "description": "Laat die AI-assistent help in hierdie gasheer se terminaal. Standaard af, en benodig steeds AI geaktiveer vir jou rekening."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Outo-bediensvoorkeure"
+      }
     }
   },
   "ai": {
-    "title": "Assistent",
     "send": "Stuur",
     "stop": "Stop",
     "save": "Stoor",
@@ -58,10 +102,9 @@
     "running": "loop",
     "approve": "Goedgekeur",
     "reject": "Verwerp",
-    "inputPlaceholder": "Vra oor jou bedieners, of beskryf 'n verandering om voor te stel",
     "selectProvider": "Kies 'n verskaffer",
-    "providerSettings": "Verskaffer-instellings",
     "addProvider": "Voeg verskaffer by",
+    "manageModels": "Bestuur modelle",
     "editProvider": "Redigeer verskaffer",
     "removeProvider": "Verwyder verskaffer",
     "providerType": "Verskaffer",
@@ -95,22 +138,32 @@
     "modelCustom": "Voer 'n modelnaam in",
     "modelRefresh": "Vernuwe lys",
     "modelPlaceholder": "Kies of tik 'n model",
-    "attachHint": "Tik @ om verwysing te maak na 'n gasheer, kodefragment of outomatisering. Veranderinge word voorgestel vir jou goedkeuring.",
     "runCommandTitle": "Voer opdrag uit",
     "assistant": "AI-assistent",
     "terminalPanelEmpty": "Vra die assistent oor hierdie gasheer. Enige ding wat die toestand verander, benodig eers jou goedkeuring.",
     "terminalPanelPlaceholder": "Vra oor hierdie gasheer...",
-    "noProvidersConfigured": "Geen AI-verskaffer is nog geconfigureer nie. Voeg een by in die AI-assistent-oortjie.",
+    "noProvidersConfigured": "Geen AI-verskaffer is nog geconfigureer nie. Voeg een by in Instellings.",
     "runsInOpenTerminal": "Word uitgevoer in jou oop terminalsessie.",
     "runInTerminal": "Voer uit",
     "terminalContextPrefill": "Hier is my terminale-uitvoer:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Laat ander kenmerke jou AI-verskaffer API-sleutel gebruik vir hul eie versoeke. Die sleutel word nooit gekopieer nie, en jy kan dit te eniger tyd herroep."
     },
-    "removeProviderConfirm": "Verwyder die verskaffer {{name}}?"
+    "removeProviderConfirm": "Verwyder die verskaffer {{name}}?",
+    "contextWindows": "Kontekstvenster per model",
+    "contextWindowsHint": "Lees van die verskaffer waar een gerapporteer word. Voer 'n aantal tokens in om dit vir 'n model te oorskryf, of laat dit leeg om wat die verskaffer rapporteer te gebruik. Verfris vra die verskaffer weer.",
+    "contextWindowValue": "Kontekstvenster: {{tokens}} ({{source}})",
+    "contextOverride": "Kontekstvenster-oorskrywing vir {{model}}",
+    "contextSourceOverride": "gestel deur jou",
+    "contextSourceProvider": "gerapporteer deur die verskaffer",
+    "contextSourceGuess": "geraai uit die modelnaam",
+    "contextSourceDefault": "verstek vir onbekende modelle",
+    "contextLoadFailed": "Kon nie die kontekstvensters lees nie",
+    "contextRefresh": "Verfris",
+    "contextWindowInvalid": "Voer die kontekstvenster in as 'n heelgetal van tokens, ten minste 1024."
   },
   "nav": {
-    "ai": "AI"
+    "ai": "AI-assistent"
   },
   "onboarding": {
     "aiTitle": "AI-assistent",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Skakel dit aan",
     "aiEnableDesc": "Voeg 'n assistent by wat jou opstelling lees en veranderinge voorstel wat jy goedkeur. Benodig 'n verskaffer wat jy verskaf, soos 'n plaaslike Ollama.",
     "aiNote": "Niets word enige plek gestuur nie totdat jy 'n verskaffer byvoeg en 'n boodskap stuur."
-  },
-  "hosts": {
-    "docsLink": "Bekyk dokumentasie"
   },
   "agents": {
     "working": "Besig...",
@@ -215,6 +265,280 @@
     "emptyTranscript": "Stuur ’n boodskap om die agent te begin."
   },
   "plugin": {
-    "name": "AI-Assistent"
+    "name": "AI-Assistent",
+    "description": "'n AI-assistent wat jou opstelling lees en veranderinge voorstel vir jou goedkeuring."
+  },
+  "ops": {
+    "searchHosts": "Soek gasheerbedieners",
+    "selectedCount": "{{count}} gekies",
+    "clear": "Vee uit",
+    "fleets": "Vlootte",
+    "folders": "Gooie",
+    "tags": "Etikette",
+    "allHosts": "Alle gasheerbedieners",
+    "noHosts": "Geen gasheerbedieners nie",
+    "newConversation": "Nuwe gesprek",
+    "sendHint_one": "Loop op {{count}} gasheerbediener. Opdragte loop sonder om eers te vra.",
+    "sendHint_other": "Loop op {{count}} gasheerbedieners. Opdragte loop sonder om eers te vra.",
+    "runCommand": "Voer opdrag uit",
+    "hostFacts": "Gasheerbedienerfeite",
+    "hostCount_one": "{{count}} gasheerbediener",
+    "hostCount_other": "{{count}} gasheerbedieners",
+    "succeeded": "{{count}} ok",
+    "failed": "{{count}} misluk",
+    "exitCode": "uitgang {{code}}",
+    "timedOut": "tydverstryking",
+    "stopped": "gestop",
+    "notRun": "nie uitgevoer nie",
+    "cached": "gekas",
+    "duration": "{{seconds}}s",
+    "noOutput": "(geen uitset nie)"
+  },
+  "assistant": {
+    "title": "AI-assistent",
+    "moveHint": "Sleep om te beweeg. Dubbelklik om aan die kant te dok.",
+    "toggle": "Skakel die AI-assistent",
+    "close": "Maak toe",
+    "dock": "Heenkoppel regs",
+    "float": "Dryw",
+    "openTab": "Open volle aansig",
+    "history": "Gesprekke",
+    "noConversations": "Nog geen gesprekke nie",
+    "untitled": "Naamloos",
+    "deleteConversation": "Vee gesprek uit",
+    "deleteConfirm": "Vee hierdie gesprek uit?",
+    "emptyTitle": "Vra oor of verander enige iets in Termix",
+    "emptyHint": "Die assistent werk as jy deur die Termix CLI en voer opdragte uit op jou teikengasheerders. Tik @ om gasheerders, vlootte, vouers of etikette as teikens by te voeg.",
+    "inputPlaceholder": "Vra die assistent. Tik @ om teikens by te voeg.",
+    "noTargets": "Geen teikengasheerders nie. Tik @ om 'n paar by te voeg.",
+    "sendHint": "Veranderinge en opdragte word uitgevoer sonder om eers te vra.",
+    "removeTarget": "Verwyder {{name}}",
+    "kind": {
+      "host": "Gasheerder",
+      "fleet": "Vloot",
+      "folder": "Vouer",
+      "tag": "Etiket"
+    },
+    "emptyHintBasic": "Die assistent werk as jy deur die Termix CLI, met jou toestemmings.",
+    "inputPlaceholderBasic": "Vra die assistent.",
+    "sendHintBasic": "Veranderinge word uitgevoer sonder om eers te vra.",
+    "thinking": "Dink",
+    "thinkingActive": "Besig om te dink...",
+    "compacted": "Konteks gekompakteer: vroeëre boodskappe is saamgevat",
+    "compact": "Kompakteer die gesprek",
+    "nothingToCompact": "Die gesprek is nog te kort om te kompakteer.",
+    "contextMeter": "Konteks: {{used}} van {{window}} tokens gebruik deur die jongste oproep",
+    "contextMeterSource": "Die venster is {{source}}.",
+    "contextMeterReserved": "{{tokens}} tokens word vry gehou vir die antwoord.",
+    "todayTokens": "Vandag {{tokens}}",
+    "todayTitle": "Tokens wat jy vandag gebruik het. Klik vir besonderhede.",
+    "usage": "Tokengebruik",
+    "conversationTokens": "{{tokens}} tokens",
+    "openFloating": "Drywende paneel",
+    "openFloatingHint": "Open die assistent in 'n paneel oor enige bladsy. Druk {{shortcut}} oral om dit oop te maak of toe te maak.",
+    "shortcutHint": "Druk {{shortcut}} op enige bladsy om die assistent in 'n drywende paneel oop te maak."
+  },
+  "usage": {
+    "title": "Tokengebruik",
+    "settingDescription": "Tokens wat jou AI-oproepe die laaste 30 dae gebruik het.",
+    "cardTitle": "AI-tokengebruik",
+    "today": "Vandag",
+    "week": "7 dae",
+    "month": "30 dae",
+    "mine": "Myne",
+    "everyone": "Alle gebruikers",
+    "mineCaption": "Jou tokens oor elke AI-funksie.",
+    "everyoneCaption": "Tokens oor elke gebruiker en AI-funksie.",
+    "byDay": "Per dag",
+    "byModel": "Per model",
+    "bySource": "Per funksie",
+    "byUser": "Per gebruiker",
+    "model": "Model",
+    "feature": "Funksie",
+    "user": "Gebruiker",
+    "calls": "Oproepe",
+    "prompt": "Invoer",
+    "completion": "Uitvoer",
+    "total": "Totaal",
+    "empty": "Geen AI-gebruik in die laaste 30 dae nie.",
+    "loadFailed": "Kon nie gebruik laai nie",
+    "estimatedNote": "Sommige syfers is skattings, ongeveer vier karakters per token, omdat die verskaffer nie sy gebruik gerapporteer het nie.",
+    "source": {
+      "assistant": "Assistent",
+      "terminal": "Terminaalpaneel",
+      "compaction": "Kompakting"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Assistent",
+    "viewAutoOps": "Outo-ops",
+    "intro": "Outo-ops laat die assistent toe om jou gasheer self te kontroleer. 'n Outomatisering begin dit volgens 'n skedule of wanneer iets verkeerd loop, en dit skryf 'n verslag of stel 'n oplossing voor vir jou om te goedkeur. Begin met 'n voorinstelling.",
+    "sections": {
+      "tasks": "Take",
+      "approvals": "Goedkeurings",
+      "presets": "Voorinstellings"
+    },
+    "provider": "Verskaffer vir take",
+    "providerDefault": "Eerste verskaffer met 'n verstekmodel",
+    "model": "Model vir take",
+    "modelDefault": "Die verskaffer se verstekmodel",
+    "saveModel": "Stoor model",
+    "preferencesHint": "Die verskaffer en model wat agtergrondtake gebruik. Laat hulle soos hulle is om jou verstekverskaffer en -model te gebruik.",
+    "task": "Taak",
+    "tokens": "{{tokens}} tokens",
+    "tokenUsage": "{{total}} tokens ({{prompt}} in, {{completion}} uit)",
+    "dryRun": "Toetsloop",
+    "trigger": "Ontsteker",
+    "noTasks": "Nog geen take nie",
+    "tasksHint": "Take is uitvoerings van outomatiserings met 'n Vra AI-stap. Aktiveer 'n voorinstelling, of bou jou eie in Outomatiserings: voeg 'n Vra AI-stap by enige outomatisering. Uitvoerings verskyn hier.",
+    "openAutomations": "Maak Outomatiserings oop",
+    "browsePresets": "Blader deur voorinstellings",
+    "noApprovals": "Geen planne wag op goedkeuring nie",
+    "loadFailed": "Kon nie outo-ops laai nie",
+    "decideFailed": "Die besluit kon nie gestoor word nie",
+    "openConversation": "Maak oop in assistent",
+    "approve": "Goedkeur en voer uit",
+    "reject": "Verwerp",
+    "expires": "Verval {{time}}",
+    "enabled": "Geaktiveer",
+    "updateAvailable": "Opdatering beskikbaar",
+    "shared": "Gedeel",
+    "needsAutomations": "Benodig Outomatiserings",
+    "enableAgain": "Aktiveer weer",
+    "deletePreset": "Verwyder voorinstelling",
+    "autonomy": {
+      "report": "Slegs verslag",
+      "propose": "Stel 'n plan voor"
+    },
+    "status": {
+      "running": "Besig om uit te voer",
+      "reported": "Gerapporteer",
+      "proposed": "Wag op goedkeuring",
+      "approved": "Goedgekeur",
+      "rejected": "Verwerp",
+      "expired": "Verstryk",
+      "executing": "Voer plan uit",
+      "done": "Klaar",
+      "failed": "Misluk",
+      "skipped": "Oorgeslaan"
+    },
+    "severity": {
+      "info": "Inligting",
+      "warning": "Waarskuwing",
+      "critical": "Krities"
+    },
+    "plan": {
+      "title": "Voorgestelde plan",
+      "commands": "Opdragte",
+      "rationale": "Hoekom",
+      "risk": "Risiko",
+      "rollback": "Terugrol",
+      "verify": "Verifieer",
+      "progress": "Vordering"
+    },
+    "enable": {
+      "title": "Aktiveer {{name}}",
+      "submit": "Aktiveer",
+      "name": "Naam",
+      "targets": "Hosts",
+      "targetAll": "Alle hosts",
+      "targetTrigger": "Die host wat dit geaktiveer het",
+      "targetHosts": "Geselekteerde hosts",
+      "noHosts": "Selekteer ten minste een host.",
+      "threshold": "Drempel (%)",
+      "forSeconds": "Vir ten minste (sekondes)",
+      "time": "Tyd van die dag",
+      "cron": "Skedule (cron)",
+      "dockerEvent": "Behoudergebeurtenis",
+      "dockerEvents": {
+        "exited": "Afgesluit",
+        "unhealthy": "Onsiek",
+        "restarting": "Herbegin"
+      },
+      "badTime": "Voer die tyd in as HH:MM.",
+      "autonomy": "Wat die assistent mag doen",
+      "maxRunSeconds": "Tydperk (sekondes)",
+      "runbook": "Uitvoeringsgids",
+      "runbookHint": "Wat die assistent moet doen, in eenvoudige woorde. Engels werk die beste.",
+      "shared": "Deel wanneer dit as 'n voorinstelling gestoor word",
+      "sharedHint": "Iedereen wat outo-ops kan gebruik, kan dit dan aktiveer.",
+      "saveAsPreset": "Stoor as voorinstelling",
+      "savedPreset": "Gestoor",
+      "failed": "Die outomatisering kon nie geskep word nie",
+      "saveFailed": "Die voorinstelling kon nie gestoor word nie"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Daaglikse patrouille",
+        "description": "Elke oggend om 09:00, kontroleer elke host se skywe, geheue, las, mislukte dienste, behouders, sertifikate, opdaterings, uitstaande herbeginne en tyd-sinkronisering, en rapporteer volgens erns."
+      },
+      "disk-cleanup": {
+        "title": "Skyfruimte-opruiming",
+        "description": "Wanneer 'n skyf 85% of meer vir 5 minute vol is, vind wat dit vul en stel 'n veilige opruiming voor vir jou goedkeuring. Besigheidsdata word nooit aangeraak nie."
+      },
+      "host-down-triage": {
+        "title": "Host af triage",
+        "description": "Wanneer 'n host aflyn gaan, toets dit vanaf ander hosts en Proxmox, en rapporteer of dit die netwerk, 'n gestopte masjien of SSH is."
+      },
+      "service-failure": {
+        "title": "Diensmislukking",
+        "description": "Wanneer 'n gesondheidskontrole begin misluk, vind die systemd-eenheid agter dit, lees sy status en logboek, en stel 'n enkele herbegin voor vir jou goedkeuring wanneer dit kan help. Konfigurasie word nooit verander nie."
+      },
+      "container-anomaly": {
+        "title": "Behouder-anomalie",
+        "description": "Wanneer 'n behouer afsluit, ongesond word of voortdurend herbegin, lees sy staat, afsluitkode, logboeke en geheue, en stel voor om dit een keer te begin of te herbegin vir jou goedkeuring. Niks word verwyder nie."
+      },
+      "resource-overload-cpu": {
+        "title": "CPU-oormatige las",
+        "description": "Wanneer CPU 95% of meer vir 15 minute vol is, vind die prosesse, dienste en behouders agter dit en rapporteer wat gedoen moet word. Niks word verander nie."
+      },
+      "resource-overload-memory": {
+        "title": "Geheue-oormatige las",
+        "description": "Wanneer geheue 95% of meer vir 10 minute vol is, vind wat dit gebruik, wissel en out-of-memory-dodslae, en rapporteer wat gedoen moet word. Niks word verander nie."
+      },
+      "security-updates-weekly": {
+        "title": "Weeklikse sekuriteitsopdaterings",
+        "description": "Elke Maandag om 09:30, lys uitstaande sekuriteitsopdaterings volgens erns, uitstaande herbeginne en die pakkette agter hulle, lopende en geïnstalleerde kernele en dae sedert die laaste opdatering, in een tabel vir alle hosts."
+      },
+      "cert-expiry-weekly": {
+        "title": "Weeklikse sertifikaatverval",
+        "description": "Elke Maandag om 09:45, lees die verval van Let's Encrypt, webbediener en Kubernetes-sertifikate op elke host en merk dié onder 30 dae, kritiek onder 7."
+      }
+    },
+    "report": {
+      "verdict": "Vonnis",
+      "evidence": "Bewyse",
+      "actionsTaken": "Nemings wat geneem is",
+      "recommendations": "Aanbevelings",
+      "nothingFound": "Niks is gevind voordat die uitvoering beëindig is nie.",
+      "noChanges": "Geen veranderinge is gemaak nie.",
+      "openConversation": "Maak die gesprek in die assistent oop om elke stap te sien en opvolgvrae te stel.",
+      "noFurtherAction": "Geen verdere aksie is nodig nie.",
+      "stoppedBudgetRun": "Gestop: hierdie uitvoering het sy begroting van {{tokens}} tokens gebruik.",
+      "stoppedBudgetDaily": "Gestop: die eienaar se daaglikse begroting van {{tokens}} tokens is opgebruik.",
+      "stoppedDeadline": "Gestop: die outomatisering se tydperk is bereik.",
+      "stoppedPaused": "Gestop: 'n administrateur het AI outo-ops gepouseer.",
+      "stoppedAborted": "Gestop: die outomatisering uitvoering is gekanselleer.",
+      "providerFailed": "Die AI-verskaffer het misluk: {{error}}",
+      "noHosts": "Geen van die teikenhosts kan bereik word deur die outomatisering se eienaar nie.",
+      "noProvider": "Die outomatisering se eienaar het geen AI-verskaffer met 'n model om take uit te voer nie.",
+      "needsOpsUse": "Die eienaar van die outomatisering het nie die ai.ops.use-toestemming nie.",
+      "assistantOff": "Die AI-assistent is afgeskakel vir die eienaar van die outomatisering.",
+      "skippedPaused": "AI outomatiese bedrywighede is deur 'n administrateur gepouseer.",
+      "skippedDuplicate": "Daar is nog 'n taak vir dieselfde outomatisering en gasheer wat loop of wag op goedkeuring.",
+      "skippedRate": "Hierdie outomatisering het reeds {{count}} AI-take die afgelope uur begin.",
+      "hostNotRun": "Nie uitgevoer nie: die plan is gestop.",
+      "hostNoAccess": "Nie uitgevoer nie: die eienaar kan nie meer na hierdie gasheer verbind nie.",
+      "hostUnreachable": "Nie uitgevoer nie: die gasheer kon nie bereik word nie.",
+      "hostStopped": "Gestop by die eerste mislukte opdrag.",
+      "executionDone": "Die goedgekeurde plan is op {{count}} gasheer(s) uitgevoer en elke opdrag en kontrole was suksesvol.",
+      "executionFailed": "Die goedgekeurde plan het nie op elke gasheer voltooi nie.",
+      "executionStopped": "Die goedgekeurde plan is gestop voordat dit voltooi is.",
+      "approvedBy": "Die goedgekeurde plan is soos geskryf uitgevoer. Goedgekeur deur {{user}}.",
+      "noticeReported": "AI-verslag: {{title}}",
+      "noticeProposed": "AI-plan wag op goedkeuring: {{title}}",
+      "noticeExecuted": "AI-plan uitgevoer: {{title}}",
+      "noticeFailed": "AI-taak het misluk: {{title}}"
+    }
   }
 }

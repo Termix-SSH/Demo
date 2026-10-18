@@ -23,6 +23,18 @@
         "title": "Kongsi kunci API",
         "description": "Ciri lain mungkin menggunakan kunci API AI yang disimpan tanpa melihatnya."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Jalankan arahan pada hos dengan pembantu AI",
+        "description": "Benarkan pembantu menjalankan sebarang arahan shell pada hos yang anda pilih. Hanya untuk pentadbir secara lalai."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Lihat penggunaan AI semua orang",
+        "description": "Lihat token yang digunakan oleh panggilan AI setiap pengguna, bukan hanya milik anda. Hanya untuk pentadbir secara lalai."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Hos AI peribadi yang dibenarkan",
         "description": "Hos pada rangkaian peribadi anda yang boleh dituju oleh penyedia, seperti Ollama yang dihoskan sendiri. Letakkan satu hos pada setiap baris."
+      },
+      "opsConcurrency": {
+        "label": "Hos selari pembantu AI",
+        "description": "Bilangan hos yang dijalankan oleh arahan pembantu pada masa yang sama."
+      },
+      "opsCommandTimeout": {
+        "label": "Had masa arahan pembantu AI (saat)",
+        "description": "Lama berapa lama arahan boleh berjalan pada hos sebelum dihentikan. Pembantu boleh meminta sehingga 600."
+      },
+      "opsOutputLimit": {
+        "label": "Output pembantu AI per hos (watak)",
+        "description": "Berapa banyak output setiap hos yang disimpan. Output yang lebih panjang akan menyimpan permulaan dan akhirnya."
+      },
+      "autoOpsPaused": {
+        "label": "Jeda auto-ops AI",
+        "description": "Menghentikan setiap tugas AI dan pelan yang diluluskan yang sedang berjalan dan menolak yang baru, sehingga dimatikan semula."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "Tugas AI per automasi per jam",
+        "description": "Pencetus tambahan dalam jam yang sama akan dilangkau."
+      },
+      "autoOpsRunTokens": {
+        "label": "Bajet token per tugas AI",
+        "description": "Tugas yang menggunakan bilangan token ini akan dihentikan dan melaporkan apa yang ditemui."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Bajet token AI harian per pengguna",
+        "description": "Sekali pengguna telah menggunakan bilangan token ini hari ini (UTC), tugas AI mereka akan dilangkau atau dihentikan."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "Hidupkan Pembantu AI",
         "description": "Benarkan pembantu AI membantu dalam terminal hos ini. Dimatikan secara lalai, dan masih memerlukan AI dihidupkan untuk akaun anda."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Keutamaan auto-ops"
+      }
     }
   },
   "ai": {
-    "title": "Pembantu",
     "send": "Hantar",
     "stop": "Henti",
     "save": "Simpan",
@@ -58,10 +102,9 @@
     "running": "berjalan",
     "approve": "Kelulusan",
     "reject": "Tolak",
-    "inputPlaceholder": "Tanya tentang pelayan anda, atau huraikan perubahan untuk dicadangkan",
     "selectProvider": "Pilih penyedia",
-    "providerSettings": "Tetapan penyedia",
     "addProvider": "Tambah penyedia",
+    "manageModels": "Urus model",
     "editProvider": "Sunting penyedia",
     "removeProvider": "Buang penyedia",
     "providerType": "Penyedia",
@@ -95,22 +138,32 @@
     "modelCustom": "Masukkan nama model",
     "modelRefresh": "Muat semula senarai",
     "modelPlaceholder": "Pilih atau taip nama model",
-    "attachHint": "Taip @ untuk merujuk kepada hos, petikan atau automasi. Perubahan akan dicadangkan untuk kelulusan anda.",
     "runCommandTitle": "Jalankan arahan",
     "assistant": "Pembantu AI",
     "terminalPanelEmpty": "Tanya pembantu tentang hos ini. Sebarang perubahan keadaan memerlukan kelulusan anda terlebih dahulu.",
     "terminalPanelPlaceholder": "Tanya tentang hos ini...",
-    "noProvidersConfigured": "Tiada penyedia AI dikonfigurasi lagi. Tambah satu dalam tab pembantu AI.",
+    "noProvidersConfigured": "Tiada penyedia AI dikonfigurasi lagi. Tambah satu dalam Tetapan.",
     "runsInOpenTerminal": "Berjalan dalam sesi terminal terbuka anda.",
     "runInTerminal": "Jalankan",
     "terminalContextPrefill": "Berikut adalah output terminal saya:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Benarkan ciri lain menggunakan kunci API penyedia AI anda untuk permintaan mereka sendiri. Kunci ini tidak pernah disalin, dan anda boleh mencabut kebenaran ini pada bila-bila masa."
     },
-    "removeProviderConfirm": "Buang penyedia {{name}}?"
+    "removeProviderConfirm": "Buang penyedia {{name}}?",
+    "contextWindows": "Tetingkap konteks per model",
+    "contextWindowsHint": "Baca dari penyedia di mana ia melaporkan satu. Masukkan bilangan token untuk menindahnya untuk model, atau biarkan kosong untuk menggunakan apa yang dilaporkan oleh penyedia. Segarkan meminta penyedia sekali lagi.",
+    "contextWindowValue": "Tetingkap konteks: {{tokens}} ({{source}})",
+    "contextOverride": "Penindihan tetingkap konteks untuk {{model}}",
+    "contextSourceOverride": "ditetapkan oleh anda",
+    "contextSourceProvider": "dilaporkan oleh penyedia",
+    "contextSourceGuess": "diteka dari nama model",
+    "contextSourceDefault": "lalai untuk model yang tidak diketahui",
+    "contextLoadFailed": "Tidak dapat membaca tetingkap konteks",
+    "contextRefresh": "Segarkan",
+    "contextWindowInvalid": "Masukkan tetingkap konteks sebagai nombor bulat token, sekurang-kurangnya 1024."
   },
   "nav": {
-    "ai": "AI"
+    "ai": "Pembantu AI"
   },
   "onboarding": {
     "aiTitle": "Pembantu AI",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Hidupkannya",
     "aiEnableDesc": "Menambah pembantu yang membaca persediaan anda dan mencadangkan perubahan yang diluluskan oleh anda. Memerlukan penyedia yang anda sediakan, seperti Ollama tempatan.",
     "aiNote": "Tiada data dihantar ke mana-mana sehingga anda menambah penyedia dan menghantar mesej."
-  },
-  "hosts": {
-    "docsLink": "Lihat dokumentasi"
   },
   "agents": {
     "working": "Sedang bekerja...",
@@ -215,6 +265,278 @@
     "emptyTranscript": "Hantar mesej untuk memulakan ejen."
   },
   "plugin": {
-    "name": "Pembantu AI"
+    "name": "Pembantu AI",
+    "description": "Pembantu AI yang membaca persediaan anda dan mencadangkan perubahan untuk anda luluskan."
+  },
+  "ops": {
+    "searchHosts": "Cari hos",
+    "selectedCount": "{{count}} dipilih",
+    "clear": "Kosongkan",
+    "fleets": "Armada",
+    "folders": "Folder",
+    "tags": "Tag",
+    "allHosts": "Semua hos",
+    "noHosts": "Tiada hos",
+    "newConversation": "Perbualan baru",
+    "sendHint_other": "Berjalan pada {{count}} hos. Arahan berjalan tanpa bertanya dahulu.",
+    "runCommand": "Jalankan arahan",
+    "hostFacts": "Fakta hos",
+    "hostCount_other": "{{count}} hos",
+    "succeeded": "{{count}} berjaya",
+    "failed": "{{count}} gagal",
+    "exitCode": "keluar {{code}}",
+    "timedOut": "had masa tamat",
+    "stopped": "dihentikan",
+    "notRun": "tidak dijalankan",
+    "cached": "disimpan cache",
+    "duration": "{{seconds}}s",
+    "noOutput": "(tiada output)"
+  },
+  "assistant": {
+    "title": "Pembantu AI",
+    "moveHint": "Seret untuk bergerak. Klik dua kali untuk dok ke sisi.",
+    "toggle": "Togol pembantu AI",
+    "close": "Tutup",
+    "dock": "Lekatkan di sebelah kanan",
+    "float": "Melayang",
+    "openTab": "Buka pandangan penuh",
+    "history": "Perbualan",
+    "noConversations": "Belum ada perbualan",
+    "untitled": "Tanpa Tajuk",
+    "deleteConversation": "Padam perbualan",
+    "deleteConfirm": "Padam perbualan ini?",
+    "emptyTitle": "Tanya atau ubah apa sahaja dalam Termix",
+    "emptyHint": "Pembantu bertindak sebagai anda melalui CLI Termix dan menjalankan arahan pada hos sasaran anda. Taip @ untuk menambah hos, armada, folder atau tag sebagai sasaran.",
+    "inputPlaceholder": "Tanya pembantu. Taip @ untuk menambah sasaran.",
+    "noTargets": "Tiada hos sasaran. Taip @ untuk menambah beberapa.",
+    "sendHint": "Perubahan dan arahan dijalankan tanpa bertanya terlebih dahulu.",
+    "removeTarget": "Buang {{name}}",
+    "kind": {
+      "host": "Hos",
+      "fleet": "Armada",
+      "folder": "Folder",
+      "tag": "Tag"
+    },
+    "emptyHintBasic": "Pembantu bertindak sebagai anda melalui CLI Termix, dengan kebenaran anda.",
+    "inputPlaceholderBasic": "Tanya pembantu.",
+    "sendHintBasic": "Perubahan dijalankan tanpa bertanya terlebih dahulu.",
+    "thinking": "Berpikir",
+    "thinkingActive": "Berpikir...",
+    "compacted": "Konteks dipadatkan: mesej awal telah diringkaskan",
+    "compact": "Padatkan perbualan",
+    "nothingToCompact": "Perbualan ini terlalu pendek untuk dipadatkan.",
+    "contextMeter": "Konteks: {{used}} daripada {{window}} token digunakan oleh panggilan terkini",
+    "contextMeterSource": "Tetingkap adalah {{source}}.",
+    "contextMeterReserved": "{{tokens}} token disimpan kosong untuk balasan.",
+    "todayTokens": "Hari ini {{tokens}}",
+    "todayTitle": "Token yang anda gunakan hari ini. Klik untuk butiran.",
+    "usage": "Penggunaan token",
+    "conversationTokens": "{{tokens}} token",
+    "openFloating": "Panel melayang",
+    "openFloatingHint": "Buka pembantu dalam panel di atas mana-mana halaman. Tekan {{shortcut}} di mana sahaja untuk membuka atau menutupnya.",
+    "shortcutHint": "Tekan {{shortcut}} pada mana-mana halaman untuk membuka pembantu dalam panel melayang."
+  },
+  "usage": {
+    "title": "Penggunaan token",
+    "settingDescription": "Token yang digunakan oleh panggilan AI anda dalam 30 hari terakhir.",
+    "cardTitle": "Penggunaan token AI",
+    "today": "Hari ini",
+    "week": "7 hari",
+    "month": "30 hari",
+    "mine": "Milik saya",
+    "everyone": "Semua pengguna",
+    "mineCaption": "Token anda merentasi setiap ciri AI.",
+    "everyoneCaption": "Token merentasi setiap pengguna dan ciri AI.",
+    "byDay": "Setiap hari",
+    "byModel": "Setiap model",
+    "bySource": "Setiap ciri",
+    "byUser": "Setiap pengguna",
+    "model": "Model",
+    "feature": "Ciri",
+    "user": "Pengguna",
+    "calls": "Panggilan",
+    "prompt": "Input",
+    "completion": "Output",
+    "total": "Jumlah",
+    "empty": "Tiada penggunaan AI dalam 30 hari terakhir.",
+    "loadFailed": "Gagal memuatkan penggunaan",
+    "estimatedNote": "Beberapa angka adalah anggaran, kira-kira empat aksara per token, kerana penyedia tidak melaporkan penggunaannya.",
+    "source": {
+      "assistant": "Pembantu",
+      "terminal": "Panel terminal",
+      "compaction": "Pemadatan"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Pembantu",
+    "viewAutoOps": "Auto-ops",
+    "intro": "Auto-ops membolehkan pembantu memeriksa hos anda secara automatik. Satu automasi memulakannya mengikut jadual atau apabila sesuatu berlaku, dan ia menulis laporan atau mencadangkan penyelesaian untuk anda kelulusan. Mulakan dengan pratetap.",
+    "sections": {
+      "tasks": "Tugas",
+      "approvals": "Kelulusan",
+      "presets": "Pratetap"
+    },
+    "provider": "Pembekal untuk tugas",
+    "providerDefault": "Pembekal pertama dengan model lalai",
+    "model": "Model untuk tugas",
+    "modelDefault": "Model lalai pembekal",
+    "saveModel": "Simpan model",
+    "preferencesHint": "Pembekal dan model yang digunakan oleh tugas latar belakang. Biarkan seperti sedia ada untuk menggunakan pembekal dan model lalai anda.",
+    "task": "Tugas",
+    "tokens": "{{tokens}} token",
+    "tokenUsage": "{{total}} token ({{prompt}} masuk, {{completion}} keluar)",
+    "dryRun": "Jalankan ujian",
+    "trigger": "Pencetus",
+    "noTasks": "Tiada tugas lagi",
+    "tasksHint": "Tugas ialah pelaksanaan automasi dengan langkah Tanya AI. Dayakan pratetap, atau bina sendiri dalam Automasi: tambah langkah Tanya AI ke mana-mana automasi. Pelaksanaan akan dipaparkan di sini.",
+    "openAutomations": "Buka Automasi",
+    "browsePresets": "Layari pratetap",
+    "noApprovals": "Tiada rancangan menunggu kelulusan",
+    "loadFailed": "Gagal memuatkan auto-ops",
+    "decideFailed": "Keputusan tidak dapat disimpan",
+    "openConversation": "Buka dalam pembantu",
+    "approve": "Luluskan dan jalankan",
+    "reject": "Tolak",
+    "expires": "Tamat tempoh {{time}}",
+    "enabled": "Didayakan",
+    "updateAvailable": "Kemas kini tersedia",
+    "shared": "Dikongsi",
+    "needsAutomations": "Memerlukan Automasi",
+    "enableAgain": "Dayakan semula",
+    "deletePreset": "Padam pratetap",
+    "autonomy": {
+      "report": "Laporan sahaja",
+      "propose": "Cadangkan rancangan"
+    },
+    "status": {
+      "running": "Sedang berjalan",
+      "reported": "Dilaporkan",
+      "proposed": "Menunggu kelulusan",
+      "approved": "Diluluskan",
+      "rejected": "Ditolak",
+      "expired": "Tamat tempoh",
+      "executing": "Menjalankan rancangan",
+      "done": "Selesai",
+      "failed": "Gagal",
+      "skipped": "Dilangkau"
+    },
+    "severity": {
+      "info": "Maklumat",
+      "warning": "Amaran",
+      "critical": "Kritikal"
+    },
+    "plan": {
+      "title": "Rancangan dicadangkan",
+      "commands": "Arahan",
+      "rationale": "Sebab",
+      "risk": "Risiko",
+      "rollback": "Pemulangan",
+      "verify": "Pengesahan",
+      "progress": "Kemajuan"
+    },
+    "enable": {
+      "title": "Dayakan {{name}}",
+      "submit": "Dayakan",
+      "name": "Nama",
+      "targets": "Hos",
+      "targetAll": "Semua hos",
+      "targetTrigger": "Hos yang mencetuskan ia",
+      "targetHosts": "Hos yang dipilih",
+      "noHosts": "Pilih sekurang-kurangnya satu hos.",
+      "threshold": "Ambang (%)",
+      "forSeconds": "Selama sekurang-kurangnya (saat)",
+      "time": "Masa hari",
+      "cron": "Jadual (cron)",
+      "dockerEvent": "Peristiwa kontena",
+      "dockerEvents": {
+        "exited": "Keluar",
+        "unhealthy": "Tidak sihat",
+        "restarting": "Memulakan semula"
+      },
+      "badTime": "Masukkan masa sebagai HH:MM.",
+      "autonomy": "Apa yang boleh dilakukan oleh pembantu",
+      "maxRunSeconds": "Had masa (saat)",
+      "runbook": "Buku operasi",
+      "runbookHint": "Apa yang perlu dilakukan oleh pembantu, dalam kata-kata biasa. Bahasa Inggeris paling berkesan.",
+      "shared": "Kongsi apabila disimpan sebagai pratetap",
+      "sharedHint": "Semua orang yang boleh menggunakan auto-ops kemudian boleh mengaktifkannya.",
+      "saveAsPreset": "Simpan sebagai pratetap",
+      "savedPreset": "Disimpan",
+      "failed": "Automasi tidak dapat dicipta",
+      "saveFailed": "Pratetap tidak dapat disimpan"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Patroli harian",
+        "description": "Setiap pagi pada 09:00, menyemak cakera, memori, beban, perkhidmatan yang gagal, kontena, sijil, kemas kini, but semula yang tertunda dan penyegerakan masa setiap hos, dan melaporkan mengikut tahap keparahan."
+      },
+      "disk-cleanup": {
+        "title": "Pembersihan ruang cakera",
+        "description": "Apabila cakera kekal pada 85% atau lebih selama 5 minit, mencari apa yang mengisinya dan mencadangkan pembersihan selamat untuk anda kelulusan. Data perniagaan tidak pernah disentuh."
+      },
+      "host-down-triage": {
+        "title": "Triase hos turun",
+        "description": "Apabila hos menjadi luar talian, mengujinya dari hos lain dan Proxmox, dan melaporkan sama ada ia adalah rangkaian, mesin yang berhenti atau SSH."
+      },
+      "service-failure": {
+        "title": "Kegagalan perkhidmatan",
+        "description": "Apabila pemeriksaan kesihatan mula gagal, mencari unit systemd di sebaliknya, membaca status dan lognya, dan mencadangkan satu but semula untuk anda kelulusan apabila ia boleh membantu. Konfigurasi tidak pernah diubah."
+      },
+      "container-anomaly": {
+        "title": "Anomali kontena",
+        "description": "Apabila kontena keluar, menjadi tidak sihat atau terus memulakan semula, membaca keadaan, kod keluar, log dan memorinya, dan mencadangkan memulakan atau memulakan semula ia sekali untuk anda kelulusan. Tiada apa-apa yang dialih keluar."
+      },
+      "resource-overload-cpu": {
+        "title": "Beban terlampau CPU",
+        "description": "Apabila CPU kekal pada 95% atau lebih selama 15 minit, mencari proses, perkhidmatan dan kontena di sebaliknya dan melaporkan apa yang perlu dilakukan. Tiada apa-apa yang diubah."
+      },
+      "resource-overload-memory": {
+        "title": "Beban terlampau memori",
+        "description": "Apabila memori kekal pada 95% atau lebih selama 10 minit, mencari apa yang menggunakannya, pertukaran dan pembunuhan kehabisan memori, dan melaporkan apa yang perlu dilakukan. Tiada apa-apa yang diubah."
+      },
+      "security-updates-weekly": {
+        "title": "Kemas kini keselamatan mingguan",
+        "description": "Setiap Isnin pada 09:30, menyenaraikan kemas kini keselamatan yang tertunda mengikut tahap keparahan, but semula yang tertunda dan pakej di sebaliknya, kernel yang berjalan dan dipasang serta hari sejak kemas kini terakhir, dalam satu jadual untuk semua hos."
+      },
+      "cert-expiry-weekly": {
+        "title": "Tempoh tamat sijil mingguan",
+        "description": "Setiap Isnin pada 09:45, membaca tempoh tamat sijil Let's Encrypt, pelayan web dan Kubernetes pada setiap hos dan menandakan yang bawah 30 hari, kritikal bawah 7."
+      }
+    },
+    "report": {
+      "verdict": "Hukuman",
+      "evidence": "Bukti",
+      "actionsTaken": "Tindakan yang diambil",
+      "recommendations": "Cadangan",
+      "nothingFound": "Tiada apa-apa ditemui sebelum operasi berakhir.",
+      "noChanges": "Tiada perubahan dibuat.",
+      "openConversation": "Buka perbualan dalam pembantu untuk melihat setiap langkah dan bertanya soalan susulan.",
+      "noFurtherAction": "Tiada tindakan lanjut diperlukan.",
+      "stoppedBudgetRun": "Berhenti: operasi ini menggunakan bajet {{tokens}} tokennya.",
+      "stoppedBudgetDaily": "Berhenti: bajet harian pemilik {{tokens}} token telah habis.",
+      "stoppedDeadline": "Berhenti: had masa automasi telah dicapai.",
+      "stoppedPaused": "Berhenti: pentadbir telah menjeda auto-ops AI.",
+      "stoppedAborted": "Berhenti: operasi automasi telah dibatalkan.",
+      "providerFailed": "Pembekal AI gagal: {{error}}",
+      "noHosts": "Tiada hos sasaran yang boleh dicapai oleh pemilik automasi.",
+      "noProvider": "Pemilik automasi tiada pembekal AI dengan model untuk menjalankan tugas.",
+      "needsOpsUse": "Pemilik automasi tidak mempunyai kebenaran ai.ops.use.",
+      "assistantOff": "Pembantu AI dimatikan untuk pemilik automasi.",
+      "skippedPaused": "Auto-ops AI dijeda oleh pentadbir.",
+      "skippedDuplicate": "Tugas untuk automasi dan hos yang sama masih berjalan atau menunggu kelulusan.",
+      "skippedRate": "Automasi ini telah memulakan {{count}} tugas AI dalam jam terakhir.",
+      "hostNotRun": "Tidak dijalankan: rancangan dihentikan.",
+      "hostNoAccess": "Tidak dijalankan: pemilik tidak lagi boleh menyambung ke hos ini.",
+      "hostUnreachable": "Tidak dijalankan: hos tidak dapat dicapai.",
+      "hostStopped": "Dihentikan pada arahan yang gagal pertama.",
+      "executionDone": "Rancangan yang diluluskan dijalankan pada {{count}} hos dan setiap arahan serta pemeriksaan berjaya.",
+      "executionFailed": "Rancangan yang diluluskan tidak selesai pada setiap hos.",
+      "executionStopped": "Rancangan yang diluluskan dihentikan sebelum ia selesai.",
+      "approvedBy": "Rancangan yang diluluskan dijalankan seperti yang ditulis. Diluluskan oleh {{user}}.",
+      "noticeReported": "Laporan AI: {{title}}",
+      "noticeProposed": "Rancangan AI menunggu kelulusan: {{title}}",
+      "noticeExecuted": "Rancangan AI dilaksanakan: {{title}}",
+      "noticeFailed": "Tugas AI gagal: {{title}}"
+    }
   }
 }

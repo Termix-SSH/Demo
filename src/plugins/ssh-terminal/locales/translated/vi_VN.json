@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Kết nối đến các host phía sau Cloudflare Tunnel bằng giao thức WebSocket gốc mà không cần mở cổng 22 thô ra internet công cộng.",
+    "enableCloudflareTunnel": "Bật Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "Định tuyến lưu lượng SSH qua Cloudflare Zero Trust (WSS) bằng cách sử dụng địa chỉ chính của host thay vì các socket TCP trực tiếp.",
+    "cloudflareTunnelHostname": "Tên máy chủ Tunnel",
+    "cloudflareTunnelHostnameDesc": "Tên miền công cộng được định tuyến đến dịch vụ nguồn SSH của bạn trong Cloudflare Tunnel (để trống để sử dụng địa chỉ chính của host).",
+    "cloudflareTunnelPort": "Cổng Tunnel",
+    "cloudflareTunnelPortDesc": "Cổng HTTPS/WSS cạnh trên Cloudflare (mặc định là 443).",
+    "cloudflareTunnelClientId": "ID Client của Service Token",
+    "cloudflareTunnelClientIdDesc": "Tiêu đề CF-Access-Client-Id tùy chọn. Chỉ bắt buộc nếu chính sách Cloudflare Access Zero Trust yêu cầu Service Tokens.",
+    "cloudflareTunnelClientSecret": "Client Secret của Service Token",
+    "cloudflareTunnelClientSecretDesc": "Tiêu đề CF-Access-Client-Secret tùy chọn cho xác thực Cloudflare Access.",
     "clipboardHttpWarning": "Không thể đọc clipboard. Một số trình duyệt hạn chế truy cập clipboard ngoài HTTPS - hãy thử Ctrl+V, hoặc chạy Termix qua HTTPS.",
     "connecting": "Đang kết nối...",
     "connectionLost": "Mất kết nối",
@@ -83,7 +95,16 @@
     "localShell": "Shell terminal cục bộ",
     "autocompleteHintComplete": "Nhấn Tab hoặc Enter để hoàn thành",
     "autocompleteHintNavigate": "↑↓ để di chuyển",
-    "autocompleteHintClose": "Nhấn Esc để đóng"
+    "autocompleteHintClose": "Nhấn Esc để đóng",
+    "cloudflareTunnelClientSecretPlaceholder": "Client secret của service token tùy chọn",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Client secret của service token mới",
+    "secretSaved": "Đã lưu",
+    "secretReplace": "Thay thế",
+    "secretClear": "Xóa",
+    "secretCancel": "Hủy",
+    "hideSecret": "Ẩn bí mật",
+    "showSecret": "Hiển thị bí mật",
+    "sessionEndedKeepOpen": "Phiên đã kết thúc. Nhấn Enter để kết nối lại."
   },
   "terminalToolbar": {
     "detachTmux": "Tách tmux",
@@ -207,6 +228,26 @@
         "label": "Lịch sử lệnh",
         "description": "Ghi lại các lệnh chạy trong terminal này để sử dụng cho lịch sử và tự động hoàn thành"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare Tunnel",
+        "description": "Định tuyến lưu lượng SSH qua Cloudflare Zero Trust thông qua WebSocket"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Tên máy chủ Tunnel",
+        "description": "Tên máy chủ công cộng của Cloudflare Tunnel"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Cổng Tunnel",
+        "description": "Cổng HTTPS/WSS cạnh của Cloudflare"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "ID Client của Service Token Cloudflare Access"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Client Secret của Service Token Cloudflare Access"
+      },
       "enableTerminal": {
         "label": "Bật Terminal",
         "description": "Cung cấp terminal SSH cho máy chủ này."
@@ -314,6 +355,9 @@
         "moveUp": "Di chuyển lên",
         "moveDown": "Di chuyển xuống",
         "tmuxHint": "Chỉ hiển thị khi đang kết nối tmux"
+      },
+      "keepOpenOnExit": {
+        "label": "Giữ tab mở khi thoát"
       }
     },
     "user": {
@@ -484,7 +528,9 @@
     "guac": {
       "permissionLevel": "Mức độ quyền"
     },
-    "deleteGlobalThemeConfirm": "Xóa chủ đề {{name}}?"
+    "deleteGlobalThemeConfirm": "Xóa chủ đề {{name}}?",
+    "keepOpenOnExitLabel": "Giữ tab mở khi thoát",
+    "keepOpenOnExitDesc": "Khi shell thoát hoặc kết nối đóng, giữ lại tab và đầu ra của nó. Nhấn Enter để kết nối lại."
   },
   "nav": {
     "history": "Lịch sử",
@@ -512,6 +558,7 @@
     "stopRecording": "Dừng ghi"
   },
   "keybindings": {
+    "openLocalTerminal": "Mở Terminal Cục bộ mới",
     "copy": "Sao chép vùng chọn",
     "paste": "Dán",
     "sendControlCode": "Gửi tín hiệu Ctrl+ký tự",
@@ -629,6 +676,7 @@
     "remoteServerRequired": "Yêu cầu máy chủ từ xa. Kết nối máy chủ từ xa trong Cài đặt để sử dụng loại kết nối này."
   },
   "plugin": {
-    "name": "Terminal SSH"
+    "name": "Terminal SSH",
+    "description": "Các phiên terminal SSH với tab, chia màn hình, lịch sử, macro và terminal cục bộ trong ứng dụng desktop."
   }
 }

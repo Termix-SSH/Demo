@@ -23,6 +23,18 @@
         "title": "API-sleutel delen",
         "description": "Andere functies kunnen de opgeslagen AI-API-sleutel gebruiken zonder deze te zien."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Voer opdrachten uit op hosts met de AI-assistent",
+        "description": "Laat de assistent elke shell-opdracht uitvoeren op de hosts die je selecteert. Standaard alleen voor beheerders."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Bekijk het AI-gebruik van iedereen",
+        "description": "Bekijk de tokens die de AI-aanroepen van elke gebruiker hebben verbruikt, niet alleen die van jezelf. Standaard alleen voor beheerders."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Toegestane private AI-hosts",
         "description": "Hosts op je private netwerk waarnaar gebruikers een provider kunnen wijzen, zoals een zelfgehoste Ollama. Zet één host per regel."
+      },
+      "opsConcurrency": {
+        "label": "Parallelle hosts voor AI-assistent",
+        "description": "Hoeveel hosts er tegelijkertijd een opdracht van de assistent uitvoeren."
+      },
+      "opsCommandTimeout": {
+        "label": "Time-out voor AI-assistentopdracht (seconden)",
+        "description": "Hoe lang een opdracht op een host mag draaien voordat deze wordt gestopt. De assistent kan maximaal 600 seconden aanvragen."
+      },
+      "opsOutputLimit": {
+        "label": "Uitvoer per host voor AI-assistent (tekens)",
+        "description": "Hoeveel van de uitvoer van elke host wordt bewaard. Langere uitvoer behoudt het begin en het einde."
+      },
+      "autoOpsPaused": {
+        "label": "Pauzeer AI-auto-ops",
+        "description": "Stopt alle lopende AI-taken en goedgekeurde plannen en weigert nieuwe, totdat deze functie weer wordt uitgeschakeld."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "AI-taken per automatisering per uur",
+        "description": "Meer triggers in hetzelfde uur worden overgeslagen."
+      },
+      "autoOpsRunTokens": {
+        "label": "Tokenbudget per AI-taak",
+        "description": "Een taak die dit aantal tokens verbruikt, wordt gestopt en rapporteert wat er is gevonden."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Dagelijks AI-tokenbudget per gebruiker",
+        "description": "Zodra een gebruiker vandaag (UTC) dit aantal tokens heeft verbruikt, worden hun AI-taken overgeslagen of gestopt."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "AI-assistent inschakelen",
         "description": "Sta de AI-assistent toe om te helpen in de terminal van deze host. Standaard uitgeschakeld, en vereist nog steeds dat AI is ingeschakeld voor je account."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Auto-ops-voorkeuren"
+      }
     }
   },
   "ai": {
-    "title": "Assistent",
     "send": "Verzenden",
     "stop": "Stoppen",
     "save": "Opslaan",
@@ -58,10 +102,9 @@
     "running": "bezig",
     "approve": "Goedkeuren",
     "reject": "Afwijzen",
-    "inputPlaceholder": "Stel vragen over je servers, of beschrijf een wijziging om voor te stellen",
     "selectProvider": "Selecteer een provider",
-    "providerSettings": "Provider-instellingen",
     "addProvider": "Provider toevoegen",
+    "manageModels": "Modellen beheren",
     "editProvider": "Provider bewerken",
     "removeProvider": "Provider verwijderen",
     "providerType": "Provider",
@@ -95,22 +138,32 @@
     "modelCustom": "Voer een modelnaam in",
     "modelRefresh": "Lijst vernieuwen",
     "modelPlaceholder": "Kies of typ een model",
-    "attachHint": "Typ @ om een host, snippet of automatisering te refereren. Wijzigingen worden voorgesteld voor goedkeuring.",
     "runCommandTitle": "Opdracht uitvoeren",
     "assistant": "AI-assistent",
     "terminalPanelEmpty": "Vraag de assistent iets over deze host. Alles wat de status wijzigt, heeft eerst jouw goedkeuring nodig.",
     "terminalPanelPlaceholder": "Vraag iets over deze host...",
-    "noProvidersConfigured": "Er is nog geen AI-provider geconfigureerd. Voeg er een toe in het tabblad AI-assistent.",
+    "noProvidersConfigured": "Er is nog geen AI-provider geconfigureerd. Voeg er een toe in Instellingen.",
     "runsInOpenTerminal": "Wordt uitgevoerd in je geopende terminalsessie.",
     "runInTerminal": "Uitvoeren",
     "terminalContextPrefill": "Hier is mijn terminaloutput:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Laat andere functies je AI-provider-API-sleutel gebruiken voor hun eigen verzoeken. De sleutel wordt nooit gekopieerd en je kunt dit op elk moment intrekken."
     },
-    "removeProviderConfirm": "Provider {{name}} verwijderen?"
+    "removeProviderConfirm": "Provider {{name}} verwijderen?",
+    "contextWindows": "Contextvenster per model",
+    "contextWindowsHint": "Lezen van de provider waar deze er een rapporteert. Voer een aantal tokens in om dit voor een model te overschrijven, of laat het leeg om te gebruiken wat de provider rapporteert. Vernieuwen vraagt het opnieuw aan de provider.",
+    "contextWindowValue": "Contextvenster: {{tokens}} ({{source}})",
+    "contextOverride": "Contextvenster-overschrijving voor {{model}}",
+    "contextSourceOverride": "door jou ingesteld",
+    "contextSourceProvider": "gerapporteerd door de provider",
+    "contextSourceGuess": "geraden op basis van de modelnaam",
+    "contextSourceDefault": "standaard voor onbekende modellen",
+    "contextLoadFailed": "Kon de contextvensters niet lezen",
+    "contextRefresh": "Vernieuwen",
+    "contextWindowInvalid": "Voer het contextvenster in als een geheel aantal tokens, minimaal 1024."
   },
   "nav": {
-    "ai": "AI"
+    "ai": "AI-assistent"
   },
   "onboarding": {
     "aiTitle": "AI-assistent",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Inschakelen",
     "aiEnableDesc": "Voegt een assistent toe die je opstelling leest en wijzigingen voorstelt die je goedkeurt. Vereist een provider die je zelf levert, zoals een lokale Ollama.",
     "aiNote": "Er wordt niets ergens naartoe gestuurd totdat je een provider hebt toegevoegd en een bericht hebt verzonden."
-  },
-  "hosts": {
-    "docsLink": "Documentatie bekijken"
   },
   "agents": {
     "working": "Bezig...",
@@ -215,6 +265,280 @@
     "emptyTranscript": "Stuur een bericht om de agent te starten."
   },
   "plugin": {
-    "name": "AI-assistent"
+    "name": "AI-assistent",
+    "description": "Een AI-assistent die je configuratie leest en wijzigingen voorstelt die je kunt goedkeuren."
+  },
+  "ops": {
+    "searchHosts": "Zoek hosts",
+    "selectedCount": "{{count}} geselecteerd",
+    "clear": "Wissen",
+    "fleets": "Fleets",
+    "folders": "Mappen",
+    "tags": "Labels",
+    "allHosts": "Alle hosts",
+    "noHosts": "Geen hosts",
+    "newConversation": "Nieuw gesprek",
+    "sendHint_one": "Wordt uitgevoerd op {{count}} host. Opdrachten worden zonder bevestiging uitgevoerd.",
+    "sendHint_other": "Wordt uitgevoerd op {{count}} hosts. Opdrachten worden zonder bevestiging uitgevoerd.",
+    "runCommand": "Opdracht uitvoeren",
+    "hostFacts": "Hostgegevens",
+    "hostCount_one": "{{count}} host",
+    "hostCount_other": "{{count}} hosts",
+    "succeeded": "{{count}} ok",
+    "failed": "{{count}} mislukt",
+    "exitCode": "exit {{code}}",
+    "timedOut": "verlopen",
+    "stopped": "gestopt",
+    "notRun": "niet uitgevoerd",
+    "cached": "gecacheerd",
+    "duration": "{{seconds}}s",
+    "noOutput": "(geen uitvoer)"
+  },
+  "assistant": {
+    "title": "AI-assistent",
+    "moveHint": "Slepen om te verplaatsen. Dubbelklik om aan de zijkant te bevestigen.",
+    "toggle": "AI-assistent in- of uitschakelen",
+    "close": "Sluiten",
+    "dock": "Aan de rechterkant vastmaken",
+    "float": "Vrij zwevend",
+    "openTab": "Volledige weergave openen",
+    "history": "Gesprekken",
+    "noConversations": "Nog geen gesprekken",
+    "untitled": "Naamloos",
+    "deleteConversation": "Gesprek verwijderen",
+    "deleteConfirm": "Dit gesprek verwijderen?",
+    "emptyTitle": "Vraag iets over Termix of pas iets aan",
+    "emptyHint": "De assistent werkt namens jou via de Termix CLI en voert opdrachten uit op je doelhosts. Typ @ om hosts, vlootten, mappen of labels als doel te toe te voegen.",
+    "inputPlaceholder": "Vraag het de assistent. Typ @ om doelen toe te voegen.",
+    "noTargets": "Geen doelhosts. Typ @ om er een paar toe te voegen.",
+    "sendHint": "Wijzigingen en opdrachten worden uitgevoerd zonder eerst om toestemming te vragen.",
+    "removeTarget": "{{name}} verwijderen",
+    "kind": {
+      "host": "Host",
+      "fleet": "Fleet",
+      "folder": "Map",
+      "tag": "Label"
+    },
+    "emptyHintBasic": "De assistent werkt via de Termix CLI namens jou, met jouw rechten.",
+    "inputPlaceholderBasic": "Vraag het de assistent.",
+    "sendHintBasic": "Wijzigingen worden uitgevoerd zonder eerst om bevestiging te vragen.",
+    "thinking": "Aan het denken",
+    "thinkingActive": "Aan het denken...",
+    "compacted": "Context gecomprimeerd: eerdere berichten zijn samengevat",
+    "compact": "Gesprek comprimeren",
+    "nothingToCompact": "Het gesprek is nog te kort om te comprimeren.",
+    "contextMeter": "Context: {{used}} van {{window}} tokens gebruikt door de laatste aanroep",
+    "contextMeterSource": "Het venster is {{source}}.",
+    "contextMeterReserved": "{{tokens}} tokens worden vrijgehouden voor het antwoord.",
+    "todayTokens": "Vandaag {{tokens}}",
+    "todayTitle": "Tokens die je vandaag hebt gebruikt. Klik voor details.",
+    "usage": "Tokengebruik",
+    "conversationTokens": "{{tokens}} tokens",
+    "openFloating": "Zwevend paneel",
+    "openFloatingHint": "Open de assistent in een paneel boven elke pagina. Druk op {{shortcut}} om het te openen of sluiten.",
+    "shortcutHint": "Druk op {{shortcut}} op elke pagina om de assistent in een zwevend paneel te openen."
+  },
+  "usage": {
+    "title": "Tokengebruik",
+    "settingDescription": "Tokens die je AI-aanroepen de afgelopen 30 dagen hebben gebruikt.",
+    "cardTitle": "AI-tokengebruik",
+    "today": "Vandaag",
+    "week": "7 dagen",
+    "month": "30 dagen",
+    "mine": "Mijn verbruik",
+    "everyone": "Alle gebruikers",
+    "mineCaption": "Jouw tokens over alle AI-functies.",
+    "everyoneCaption": "Tokens over alle gebruikers en AI-functies.",
+    "byDay": "Per dag",
+    "byModel": "Per model",
+    "bySource": "Per functie",
+    "byUser": "Per gebruiker",
+    "model": "Model",
+    "feature": "Functie",
+    "user": "Gebruiker",
+    "calls": "Aanroepen",
+    "prompt": "Invoer",
+    "completion": "Uitvoer",
+    "total": "Totaal",
+    "empty": "Geen AI-gebruik in de afgelopen 30 dagen.",
+    "loadFailed": "Gebruiksgegevens konden niet worden geladen",
+    "estimatedNote": "Sommige cijfers zijn schattingen, ongeveer vier tekens per token, omdat de provider geen gebruiksgegevens heeft gemeld.",
+    "source": {
+      "assistant": "Assistent",
+      "terminal": "Terminalpaneel",
+      "compaction": "Compactie"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Assistent",
+    "viewAutoOps": "Auto-ops",
+    "intro": "Met Auto-ops kan de assistent je hosts zelfstandig controleren. Een automatisering start dit op schema of wanneer er iets misgaat, en schrijft een rapport of stelt een oplossing voor die jij kunt goedkeuren. Begin met een voorinstelling.",
+    "sections": {
+      "tasks": "Taken",
+      "approvals": "Goedkeuringen",
+      "presets": "Voorinstellingen"
+    },
+    "provider": "Provider voor taken",
+    "providerDefault": "Eerste provider met een standaardmodel",
+    "model": "Model voor taken",
+    "modelDefault": "Het standaardmodel van de provider",
+    "saveModel": "Model opslaan",
+    "preferencesHint": "De provider en het model die achtergrondtaken gebruiken. Laat ze zoals ze zijn om je standaardprovider en -model te gebruiken.",
+    "task": "Taak",
+    "tokens": "{{tokens}} tokens",
+    "tokenUsage": "{{total}} tokens ({{prompt}} in, {{completion}} uit)",
+    "dryRun": "Proefrun",
+    "trigger": "Trigger",
+    "noTasks": "Nog geen taken",
+    "tasksHint": "Taken zijn uitvoeringen van automatiseringen met een 'Ask AI'-stap. Schakel een voorinstelling in of maak er zelf een in Automatiseringen: voeg een 'Ask AI'-stap toe aan elke automatisering. Uitvoeringen worden hier weergegeven.",
+    "openAutomations": "Automatiseringen openen",
+    "browsePresets": "Voorinstellingen doorzoeken",
+    "noApprovals": "Er wachten geen plannen op goedkeuring",
+    "loadFailed": "Kan auto-ops niet laden",
+    "decideFailed": "Het besluit kon niet worden opgeslagen",
+    "openConversation": "Openen in assistent",
+    "approve": "Goedkeuren en uitvoeren",
+    "reject": "Afwijzen",
+    "expires": "Verloopt over {{time}}",
+    "enabled": "Ingeschakeld",
+    "updateAvailable": "Update beschikbaar",
+    "shared": "Gedeeld",
+    "needsAutomations": "Vereist automatiseringen",
+    "enableAgain": "Opnieuw inschakelen",
+    "deletePreset": "Voorinstelling verwijderen",
+    "autonomy": {
+      "report": "Alleen rapporteren",
+      "propose": "Plan voorstellen"
+    },
+    "status": {
+      "running": "Bezig",
+      "reported": "Gemeld",
+      "proposed": "In afwachting van goedkeuring",
+      "approved": "Goedgekeurd",
+      "rejected": "Afgewezen",
+      "expired": "Verlopen",
+      "executing": "Plan wordt uitgevoerd",
+      "done": "Klaar",
+      "failed": "Mislukt",
+      "skipped": "Overslagen"
+    },
+    "severity": {
+      "info": "Info",
+      "warning": "Waarschuwing",
+      "critical": "Kritiek"
+    },
+    "plan": {
+      "title": "Voorgesteld plan",
+      "commands": "Opdrachten",
+      "rationale": "Reden",
+      "risk": "Risico",
+      "rollback": "Terugdraaien",
+      "verify": "Verifiëren",
+      "progress": "Voortgang"
+    },
+    "enable": {
+      "title": "{{name}} inschakelen",
+      "submit": "Inschakelen",
+      "name": "Naam",
+      "targets": "Hosts",
+      "targetAll": "Alle hosts",
+      "targetTrigger": "De host die het heeft geactiveerd",
+      "targetHosts": "Geselecteerde hosts",
+      "noHosts": "Selecteer ten minste één host.",
+      "threshold": "Drempelwaarde (%)",
+      "forSeconds": "Voor ten minste (seconden)",
+      "time": "Tijdstip",
+      "cron": "Schema (cron)",
+      "dockerEvent": "Containergebeurtenis",
+      "dockerEvents": {
+        "exited": "Afgesloten",
+        "unhealthy": "Ongezond",
+        "restarting": "Herstarten"
+      },
+      "badTime": "Voer de tijd in als UU:MM.",
+      "autonomy": "Wat de assistent mag doen",
+      "maxRunSeconds": "Tijdslimiet (seconden)",
+      "runbook": "Runbook",
+      "runbookHint": "Wat de assistent moet doen, in gewone taal. Engels werkt het beste.",
+      "shared": "Delen wanneer opgeslagen als voorinstelling",
+      "sharedHint": "Iedereen die auto-ops mag gebruiken, kan het dan inschakelen.",
+      "saveAsPreset": "Opslaan als voorinstelling",
+      "savedPreset": "Opgeslagen",
+      "failed": "De automatisering kon niet worden aangemaakt",
+      "saveFailed": "De voorinstelling kon niet worden opgeslagen"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Dagelijkse ronde",
+        "description": "Elke ochtend om 09:00 uur controleert het de schijven, het geheugen, de belasting, mislukte services, containers, certificaten, updates, uitstaande herstarts en tijdsynchronisatie van elke host en rapporteert het per ernst."
+      },
+      "disk-cleanup": {
+        "title": "Opschonen van schijfruimte",
+        "description": "Wanneer een schijf gedurende 5 minuten 85% of meer bezet is, zoekt het wat de ruimte inneemt en stelt het een veilige opschoning voor die je kunt goedkeuren. Zakelijke gegevens worden nooit aangeraakt."
+      },
+      "host-down-triage": {
+        "title": "Host offline triage",
+        "description": "Wanneer een host offline gaat, wordt deze getest vanaf andere hosts en Proxmox, en wordt gerapporteerd of het probleem ligt aan het netwerk, een uitgeschakelde machine of SSH."
+      },
+      "service-failure": {
+        "title": "Servicefout",
+        "description": "Wanneer een health check begint te falen, wordt de onderliggende systemd-unit gevonden, wordt de status en het logboek gelezen, en wordt eenmalig herstarten voorgesteld ter goedkeuring wanneer dit kan helpen. Configuratie wordt nooit gewijzigd."
+      },
+      "container-anomaly": {
+        "title": "Containeranomalie",
+        "description": "Wanneer een container afsluit, ongezond wordt of blijft herstarten, wordt de status, exitcode, logboeken en geheugengebruik gelezen, en wordt eenmalig starten of herstarten voorgesteld ter goedkeuring. Er wordt niets verwijderd."
+      },
+      "resource-overload-cpu": {
+        "title": "CPU-overbelasting",
+        "description": "Wanneer de CPU 15 minuten op 95% of meer blijft, worden de processen, services en containers die dit veroorzaken gevonden en wordt gerapporteerd wat er gedaan moet worden. Er wordt niets gewijzigd."
+      },
+      "resource-overload-memory": {
+        "title": "Geheugenoverbelasting",
+        "description": "Wanneer het geheugen 10 minuten op 95% of meer blijft, wordt gevonden wat het gebruikt, swapping en out-of-memory-afsluitingen, en wordt gerapporteerd wat er gedaan moet worden. Er wordt niets gewijzigd."
+      },
+      "security-updates-weekly": {
+        "title": "Wekelijkse beveiligingsupdates",
+        "description": "Elke maandag om 09:30 worden uitstaande beveiligingsupdates per ernst, uitstaande herstarts en de bijbehorende pakketten, actieve en geïnstalleerde kernels en dagen sinds de laatste update in één tabel voor alle hosts weergegeven."
+      },
+      "cert-expiry-weekly": {
+        "title": "Wekelijkse certificaatverval",
+        "description": "Elke maandag om 09:45 worden de vervaldatums van Let's Encrypt-, webserver- en Kubernetes-certificaten op elke host gelezen. Certificaten met minder dan 30 dagen worden gemarkeerd, en kritiek als er minder dan 7 dagen over zijn."
+      }
+    },
+    "report": {
+      "verdict": "Oordeel",
+      "evidence": "Bewijs",
+      "actionsTaken": "Uitgevoerde acties",
+      "recommendations": "Aanbevelingen",
+      "nothingFound": "Er is niets gevonden voordat de uitvoering eindigde.",
+      "noChanges": "Er zijn geen wijzigingen aangebracht.",
+      "openConversation": "Open het gesprek in de assistent om elke stap te bekijken en vervolgvragen te stellen.",
+      "noFurtherAction": "Er is geen verdere actie nodig.",
+      "stoppedBudgetRun": "Gestopt: deze uitvoering heeft zijn budget van {{tokens}} tokens gebruikt.",
+      "stoppedBudgetDaily": "Gestopt: het dagelijkse budget van {{tokens}} tokens van de eigenaar is opgebruikt.",
+      "stoppedDeadline": "Gestopt: de tijdslimiet van de automatisering is bereikt.",
+      "stoppedPaused": "Gestopt: een beheerder heeft AI-auto-ops gepauzeerd.",
+      "stoppedAborted": "Gestopt: de automatiseringsuitvoering is geannuleerd.",
+      "providerFailed": "De AI-provider is mislukt: {{error}}",
+      "noHosts": "Geen van de doelhosts is bereikbaar voor de eigenaar van de automatisering.",
+      "noProvider": "De eigenaar van de automatisering heeft geen AI-provider met een model om taken uit te voeren.",
+      "needsOpsUse": "De eigenaar van de automatisering heeft geen ai.ops.use-toestemming.",
+      "assistantOff": "De AI-assistent is uitgeschakeld voor de eigenaar van de automatisering.",
+      "skippedPaused": "AI-auto-ops is gepauzeerd door een beheerder.",
+      "skippedDuplicate": "Er is al een taak voor dezelfde automatisering en host bezig of wacht op goedkeuring.",
+      "skippedRate": "Deze automatisering heeft in het afgelopen uur al {{count}} AI-taakken gestart.",
+      "hostNotRun": "Niet uitgevoerd: het plan is gestopt.",
+      "hostNoAccess": "Niet uitgevoerd: de eigenaar kan geen verbinding meer maken met deze host.",
+      "hostUnreachable": "Niet uitgevoerd: de host was niet bereikbaar.",
+      "hostStopped": "Gestopt bij het eerste mislukte commando.",
+      "executionDone": "Het goedgekeurde plan is uitgevoerd op {{count}} host(s) en elk commando en elke controle is geslaagd.",
+      "executionFailed": "Het goedgekeurde plan is niet op alle hosts voltooid.",
+      "executionStopped": "Het goedgekeurde plan is gestopt voordat het klaar was.",
+      "approvedBy": "Het goedgekeurde plan is zoals beschreven uitgevoerd. Goedgekeurd door {{user}}.",
+      "noticeReported": "AI-rapport: {{title}}",
+      "noticeProposed": "AI-plan wacht op goedkeuring: {{title}}",
+      "noticeExecuted": "AI-plan uitgevoerd: {{title}}",
+      "noticeFailed": "AI-taak mislukt: {{title}}"
+    }
   }
 }

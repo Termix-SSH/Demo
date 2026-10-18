@@ -35,6 +35,13 @@ import {
 } from "./helpers.js";
 import { SSHAuthManager } from "./keyboard-prompt.js";
 import { HOST_KEYS } from "./settings.js";
+import { tmuxScrollCommand } from "./tmux-scroll.js";
+import { SHELL_CWD_COMMAND } from "./shell-cwd.js";
+import {
+  createCloudflareTunnelStream,
+  normalizeCloudflareEndpoint,
+  resolveTunnelSettings,
+} from "./cloudflare-tunnel.js";
 import {
   isMessageAllowedForParticipant,
   type TerminalSessionManager,
@@ -683,7 +690,7 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
                 ws.send(JSON.stringify({ type: "cwd", path: "/" }));
                 break;
               }
-              activeConn.exec("pwd", (err, execStream) => {
+              activeConn.exec(SHELL_CWD_COMMAND, (err, execStream) => {
                 if (err) {
                   ws.send(JSON.stringify({ type: "cwd", path: "/" }));
                   return;
@@ -876,6 +883,27 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
                   }),
                 );
               }
+              break;
+            }
+
+            case "tmux_scroll": {
+              const scroll = asObject(data);
+              const session = currentSessionId
+                ? sessionManager.getSession(currentSessionId)
+                : null;
+              const name =
+                asString(scroll.sessionName) || session?.tmuxSessionName;
+              const direction = scroll.direction === "down" ? "down" : "up";
+              const conn = session?.sshConn ?? sshConn;
+              if (!conn || !name || name === "(active)") break;
+              conn.exec(
+                tmuxScrollCommand(name, direction, Number(scroll.lines)),
+                (err, execStream) => {
+                  if (err) return;
+                  execStream.on("data", () => {});
+                  execStream.stderr.on("data", () => {});
+                },
+              );
               break;
             }
 
@@ -1600,6 +1628,18 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
         }
       }
 
+      const tunnel = await resolveTunnelSettings(
+        serverHostId != null
+          ? (key) => ctx.settings.getHost(serverHostId, key)
+          : null,
+        (hostConfig as Record<string, unknown>).pluginSettings,
+      );
+      const cloudflareTunnelEnabled = tunnel.enabled;
+      const cfTunnelHostname = tunnel.hostname;
+      const cfTunnelPort = tunnel.port;
+      const cfTunnelClientId = tunnel.clientId;
+      const cfTunnelClientSecret = tunnel.clientSecret;
+
       // Resolve credentials server-side when frontend doesn't provide them
       let resolvedCredentials = {
         username,
@@ -1694,6 +1734,16 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
           "info",
           `Skipping local address resolution of ${ip} (resolved by jump host)`,
         );
+      } else if (cloudflareTunnelEnabled) {
+        const cfEndpoint = normalizeCloudflareEndpoint(
+          cfTunnelHostname || ip,
+          cfTunnelPort || 443,
+        );
+        sendLog(
+          "dns",
+          "info",
+          `Routing connection through Cloudflare Tunnel (${cfEndpoint.hostname})`,
+        );
       } else {
         sendLog("dns", "info", `Starting address resolution of ${ip}`);
         try {
@@ -1733,7 +1783,19 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
           return;
         }
       }
-      sendLog("tcp", "info", `Connecting to ${ip} port ${port}`);
+      if (!cloudflareTunnelEnabled) {
+        sendLog("tcp", "info", `Connecting to ${ip} port ${port}`);
+      } else {
+        const cfEndpoint = normalizeCloudflareEndpoint(
+          cfTunnelHostname || ip,
+          cfTunnelPort || 443,
+        );
+        sendLog(
+          "tcp",
+          "info",
+          `Connecting via Cloudflare Tunnel to ${cfEndpoint.hostname}:${cfEndpoint.port}`,
+        );
+      }
 
       // A provider can hold the handshake open pending an out-of-band step
       // (Tailscale SSH check mode delivers its re-auth URL as an auth banner,
@@ -2892,6 +2954,26 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
 
       let transport: Awaited<ReturnType<typeof ctx.ssh.openTransport>>;
       try {
+        if (cloudflareTunnelEnabled) {
+          const cfEndpoint = normalizeCloudflareEndpoint(
+            cfTunnelHostname || ip,
+            cfTunnelPort || 443,
+          );
+          sendLog(
+            "handshake",
+            "info",
+            `Connecting to Cloudflare Zero Trust Tunnel for ${cfEndpoint.hostname}:${cfEndpoint.port}`,
+          );
+          const cfStream = await createCloudflareTunnelStream({
+            hostname: cfEndpoint.hostname,
+            port: cfEndpoint.port,
+            clientId: cfTunnelClientId,
+            clientSecret: cfTunnelClientSecret,
+            log: (level, message) => sendLog("handshake", level, message),
+          });
+          connectConfig.sock = cfStream;
+        }
+
         transport = await ctx.ssh.openTransport(connectTarget, connectConfig, {
           // Resolved above, or deliberately left to the jump host.
           resolveDns: false,
@@ -2904,6 +2986,7 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
           hostId: id,
           ip,
           port,
+          cloudflareTunnel: cloudflareTunnelEnabled,
         });
         ws.send(
           JSON.stringify({
@@ -2931,15 +3014,21 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
       }
       lastJumpClient = transport.jumpClient as SSHClientType | null;
 
+      const viaType = cloudflareTunnelEnabled
+        ? "cloudflare_tunnel"
+        : transport.via;
+
       sendLog(
         "handshake",
         "info",
-        transport.via === "jump"
-          ? "Starting SSH session through jump host" +
+        cloudflareTunnelEnabled
+          ? "Starting SSH session over Cloudflare Tunnel"
+          : transport.via === "jump"
+            ? "Starting SSH session through jump host" +
               (viaProxy ? " (via proxy)" : "")
-          : transport.via === "proxy"
-            ? "Starting SSH session (via proxy)"
-            : "Starting SSH session",
+            : transport.via === "proxy"
+              ? "Starting SSH session (via proxy)"
+              : "Starting SSH session",
       );
       sendLog("auth", "info", `Authenticating as ${username}`);
       sshLogger.info("Initiating SSH connection", {
@@ -2951,7 +3040,7 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
         port,
         username,
         authType: resolvedCredentials.authType,
-        via: transport.via,
+        via: viaType,
       });
       sshConn.connect(connectConfig);
     }

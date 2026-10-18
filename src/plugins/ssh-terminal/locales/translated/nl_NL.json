@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Verbind met hosts achter een Cloudflare Tunnel met behulp van native WebSocket-transport, zonder poort 22 open te stellen voor het openbare internet.",
+    "enableCloudflareTunnel": "Cloudflare Tunnel inschakelen",
+    "enableCloudflareTunnelDesc": "Routeer SSH-verkeer via Cloudflare Zero Trust (WSS) met behulp van het hoofdadres van de host, in plaats van directe TCP-sockets.",
+    "cloudflareTunnelHostname": "Tunnel-hostnaam",
+    "cloudflareTunnelHostnameDesc": "Openbaar domein dat wordt doorgestuurd naar uw SSH-origindienst in Cloudflare Tunnel (laat leeg om het hoofdadres van de host te gebruiken).",
+    "cloudflareTunnelPort": "Tunnelpoort",
+    "cloudflareTunnelPortDesc": "Edge HTTPS/WSS-poort op Cloudflare (standaard is 443).",
+    "cloudflareTunnelClientId": "Service Token Client ID",
+    "cloudflareTunnelClientIdDesc": "Optionele CF-Access-Client-Id-header. Alleen vereist als het Cloudflare Access Zero Trust-beleid Service Tokens afdwingt.",
+    "cloudflareTunnelClientSecret": "Service Token Client Secret",
+    "cloudflareTunnelClientSecretDesc": "Optionele CF-Access-Client-Secret-header voor Cloudflare Access-authenticatie.",
     "clipboardHttpWarning": "Kon het klembord niet lezen. Sommige browsers beperken toegang tot het klembord buiten HTTPS - probeer Ctrl+V, of serveer Termix via HTTPS.",
     "connecting": "Verbinden...",
     "connectionLost": "Verbinding verbroken",
@@ -85,7 +97,16 @@
     "localShell": "Lokale terminalshell",
     "autocompleteHintComplete": "Tab of Enter om te voltooien",
     "autocompleteHintNavigate": "↑↓ om te navigeren",
-    "autocompleteHintClose": "Esc om te sluiten"
+    "autocompleteHintClose": "Esc om te sluiten",
+    "cloudflareTunnelClientSecretPlaceholder": "Optioneel service token-geheim",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Nieuw service token-geheim",
+    "secretSaved": "Opgeslagen",
+    "secretReplace": "Vervangen",
+    "secretClear": "Wissen",
+    "secretCancel": "Annuleren",
+    "hideSecret": "Geheim verbergen",
+    "showSecret": "Geheim tonen",
+    "sessionEndedKeepOpen": "Sessie beëindigd. Druk op Enter om opnieuw te verbinden."
   },
   "terminalToolbar": {
     "detachTmux": "tmux loskoppelen",
@@ -210,6 +231,26 @@
         "label": "Commandogeschiedenis",
         "description": "Neem commando's op die in deze terminal worden uitgevoerd voor geschiedenis en automatische voltooiing"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare Tunnel",
+        "description": "Routeer SSH-verkeer via Cloudflare Zero Trust door WebSocket"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Tunnel-hostnaam",
+        "description": "Openbare hostnaam van Cloudflare Tunnel"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Tunnel-poort",
+        "description": "Cloudflare edge HTTPS/WSS-poort"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Cloudflare Access Service Token Client ID"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Cloudflare Access Service Token Client Secret"
+      },
       "enableTerminal": {
         "label": "Terminal inschakelen",
         "description": "Bied een SSH-terminal aan voor deze host."
@@ -317,6 +358,9 @@
         "moveUp": "Omhoog verplaatsen",
         "moveDown": "Omlaag verplaatsen",
         "tmuxHint": "Wordt alleen weergegeven terwijl tmux is aangesloten"
+      },
+      "keepOpenOnExit": {
+        "label": "Tabblad openhouden bij afsluiten"
       }
     },
     "user": {
@@ -487,7 +531,9 @@
     "guac": {
       "permissionLevel": "Toestemmingsniveau"
     },
-    "deleteGlobalThemeConfirm": "Thema {{name}} verwijderen?"
+    "deleteGlobalThemeConfirm": "Thema {{name}} verwijderen?",
+    "keepOpenOnExitLabel": "Tabblad openhouden bij afsluiten",
+    "keepOpenOnExitDesc": "Houd het tabblad en de uitvoer open wanneer de shell afsluit of de verbinding wordt verbroken. Druk op Enter om opnieuw te verbinden."
   },
   "nav": {
     "history": "Geschiedenis",
@@ -517,6 +563,7 @@
     "stopRecording": "Opname stoppen"
   },
   "keybindings": {
+    "openLocalTerminal": "Nieuwe lokale terminal openen",
     "copy": "Selectie kopiëren",
     "paste": "Plakken",
     "sendControlCode": "Stuur Ctrl+letter signaal",
@@ -635,6 +682,7 @@
     "remoteServerRequired": "Externe server vereist. Verbind een externe server in Instellingen om dit verbindingstype te gebruiken."
   },
   "plugin": {
-    "name": "SSH-terminal"
+    "name": "SSH-terminal",
+    "description": "SSH-terminalsessies met tabbladen, gesplitst scherm, geschiedenis, macros en een lokale terminal in de desktop-app."
   }
 }

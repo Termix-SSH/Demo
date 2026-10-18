@@ -23,6 +23,18 @@
         "title": "Compartir la clau API",
         "description": "Altres funcions poden utilitzar la clau API d'IA emmagatzemada sense veure-la."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Executar ordres als amfitrions amb l'assistent d'IA",
+        "description": "Permet que l'assistent executi qualsevol ordre de shell als amfitrions que seleccioneu. Només per a administradors per defecte."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Veure l'ús de l'IA de tothom",
+        "description": "Veure els tokens que han consumit les crides de l'IA de cada usuari, no només les teves. Només per a administradors per defecte."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Hosts d'IA privats permesos",
         "description": "Hosts de la teva xarxa privada als quals els usuaris poden dirigir un proveïdor, com ara un Ollama autoallotjat. Escriu un host per línia."
+      },
+      "opsConcurrency": {
+        "label": "Amfitrions paral·lels de l'assistent d'IA",
+        "description": "Quants amfitrions pot processar una ordre de l'assistent al mateix temps."
+      },
+      "opsCommandTimeout": {
+        "label": "Temps d'espera de les ordres de l'assistent d'IA (segons)",
+        "description": "El temps màxim que pot executar-se una ordre en un amfitrió abans que s'aturi. L'assistent pot sol·licitar fins a 600."
+      },
+      "opsOutputLimit": {
+        "label": "Sortida de l'assistent d'IA per amfitrió (caràcters)",
+        "description": "Quanta part de la sortida de cada amfitrió es conserva. Les sortides més llargues conserven l'inici i el final."
+      },
+      "autoOpsPaused": {
+        "label": "Pausa les operacions automàtiques de l'IA",
+        "description": "Atura totes les tasques de l'IA i els plans aprovats que s'estiguin executant i rebutja'n de nous, fins que es desactivi de nou."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "Tasques de l'IA per automatització per hora",
+        "description": "Els desencadenaments addicionals dins de la mateixa hora s'ometran."
+      },
+      "autoOpsRunTokens": {
+        "label": "Pressupost de tokens per tasca de l'IA",
+        "description": "Una tasca que utilitzi aquesta quantitat de tokens s'aturarà i informarà del que ha trobat."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Pressupost diari de tokens de l'IA per usuari",
+        "description": "Un cop un usuari hagi utilitzat aquesta quantitat de tokens avui (UTC), les seves tasques de l'IA s'ometran o s'aturaran."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "Activar l'assistent d'IA",
         "description": "Permet que l'assistent d'IA ajudi al terminal d'aquest host. Desactivat per defecte, i encara cal que l'IA estigui activada per al teu compte."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Preferències d'operacions automàtiques"
+      }
     }
   },
   "ai": {
-    "title": "Assistent",
     "send": "Enviar",
     "stop": "Aturar",
     "save": "Desar",
@@ -58,10 +102,9 @@
     "running": "executant-se",
     "approve": "Aprovar",
     "reject": "Rebutjar",
-    "inputPlaceholder": "Pregunta sobre els teus servidors o descriu un canvi per proposar",
     "selectProvider": "Selecciona un proveïdor",
-    "providerSettings": "Configuració del proveïdor",
     "addProvider": "Afegeix proveïdor",
+    "manageModels": "Gestiona els models",
     "editProvider": "Edita proveïdor",
     "removeProvider": "Elimina proveïdor",
     "providerType": "Proveïdor",
@@ -95,22 +138,32 @@
     "modelCustom": "Introduïu un nom de model",
     "modelRefresh": "Actualitza la llista",
     "modelPlaceholder": "Trieu o escriviu un model",
-    "attachHint": "Escriviu @ per fer referència a un amfitrió, un fragment o una automatització. Els canvis es proposen perquè els aprovieu.",
     "runCommandTitle": "Executa l'ordre",
     "assistant": "Assistent d'IA",
     "terminalPanelEmpty": "Pregunteu a l'assistent sobre aquest amfitrió. Qualsevol cosa que modifiqui l'estat necessita la vostra aprovació prèvia.",
     "terminalPanelPlaceholder": "Pregunteu sobre aquest amfitrió...",
-    "noProvidersConfigured": "Encara no s'ha configurat cap proveïdor d'IA. Afegiu-ne un a la pestanya de l'assistent d'IA.",
+    "noProvidersConfigured": "Encara no s'ha configurat cap proveïdor d'IA. Afegeix-ne un a Configuració.",
     "runsInOpenTerminal": "S'executa a la vostra sessió de terminal oberta.",
     "runInTerminal": "Executa",
     "terminalContextPrefill": "Aquest és la sortida del meu terminal:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Permeteu que altres funcions utilitzin la vostra clau API del proveïdor d'IA per a les seves pròpies sol·licituds. La clau mai es copia i podeu revocar-ho en qualsevol moment."
     },
-    "removeProviderConfirm": "Voleu eliminar el proveïdor {{name}}?"
+    "removeProviderConfirm": "Voleu eliminar el proveïdor {{name}}?",
+    "contextWindows": "Finestra de context per model",
+    "contextWindowsHint": "Llegeix del proveïdor on en informa. Introdueix un nombre de tokens per anul·lar-lo per a un model, o deixa'l buit per utilitzar el que informa el proveïdor. Actualitzar demana al proveïdor de nou.",
+    "contextWindowValue": "Finestra de context: {{tokens}} ({{source}})",
+    "contextOverride": "Anul·lació de la finestra de context per a {{model}}",
+    "contextSourceOverride": "establert per tu",
+    "contextSourceProvider": "informat pel proveïdor",
+    "contextSourceGuess": "endevinat a partir del nom del model",
+    "contextSourceDefault": "predeterminat per a models desconeguts",
+    "contextLoadFailed": "No s'han pogut llegir les finestres de context",
+    "contextRefresh": "Refresca",
+    "contextWindowInvalid": "Introdueix la finestra de context com un nombre sencer de tokens, d'almenys 1024."
   },
   "nav": {
-    "ai": "IA"
+    "ai": "Assistent d'IA"
   },
   "onboarding": {
     "aiTitle": "Assistent d'IA",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Activeu-lo",
     "aiEnableDesc": "Afegeix un assistent que llegeix la vostra configuració i suggereix canvis que heu d'aprovar. Necessita un proveïdor que proporcioneu, com ara un Ollama local.",
     "aiNote": "No s'envia res enlloc fins que no afegiu un proveïdor i envieu un missatge."
-  },
-  "hosts": {
-    "docsLink": "Visualitza la documentació"
   },
   "agents": {
     "working": "Treballant...",
@@ -215,6 +265,282 @@
     "emptyTranscript": "Envia un missatge per començar amb l'agent."
   },
   "plugin": {
-    "name": "Assistent d'IA"
+    "name": "Assistent d'IA",
+    "description": "Un assistent d'IA que llegeix la teva configuració i proposa canvis perquè els aprovïs."
+  },
+  "ops": {
+    "searchHosts": "Cerca amfitrions",
+    "selectedCount": "{{count}} seleccionat",
+    "clear": "Neteja",
+    "fleets": "Flotes",
+    "folders": "Carpetes",
+    "tags": "Etiquetes",
+    "allHosts": "Tots els amfitrions",
+    "noHosts": "Cap amfitrió",
+    "newConversation": "Nova conversa",
+    "sendHint_one": "S'executa en {{count}} amfitrió. Els comandaments s'executen sense demanar permís.",
+    "sendHint_many": "S'executa en {{count}} amfitrions. Els comandaments s'executen sense demanar permís.",
+    "sendHint_other": "S'executa en {{count}} amfitrions. Els comandaments s'executen sense demanar permís.",
+    "runCommand": "Executa el comandament",
+    "hostFacts": "Dades de l'amfitrió",
+    "hostCount_one": "{{count}} amfitrió",
+    "hostCount_many": "{{count}} amfitrions",
+    "hostCount_other": "{{count}} amfitrions",
+    "succeeded": "{{count}} correctes",
+    "failed": "{{count}} fallits",
+    "exitCode": "sortida {{code}}",
+    "timedOut": "s'ha esgotat el temps",
+    "stopped": "aturat",
+    "notRun": "no s'ha executat",
+    "cached": "en memòria cau",
+    "duration": "{{seconds}}s",
+    "noOutput": "(sense sortida)"
+  },
+  "assistant": {
+    "title": "Assistent d'IA",
+    "moveHint": "Arrossegueu per moure. Feu doble clic per ancorar-lo al costat.",
+    "toggle": "Mostra o amaga l'assistent d'IA",
+    "close": "Tanca",
+    "dock": "Afixar a la dreta",
+    "float": "Flotant",
+    "openTab": "Obrir la vista completa",
+    "history": "Converses",
+    "noConversations": "Encara no hi ha converses",
+    "untitled": "Sense títol",
+    "deleteConversation": "Eliminar conversa",
+    "deleteConfirm": "Vols eliminar aquesta conversa?",
+    "emptyTitle": "Pregunta o modifica qualsevol cosa a Termix",
+    "emptyHint": "L'assistent actua en el teu nom mitjançant la CLI de Termix i executa ordres als teus hosts destinataris. Escribeix @ per afegir hosts, flotes, carpetes o etiquetes com a destinataris.",
+    "inputPlaceholder": "Demana a l'assistent. Escriu @ per afegir destinataris.",
+    "noTargets": "No hi ha hosts destinataris. Escriu @ per n'afegir alguns.",
+    "sendHint": "Els canvis i les ordres s'executen sense demanar confirmació prèvia.",
+    "removeTarget": "Elimina {{name}}",
+    "kind": {
+      "host": "Host",
+      "fleet": "Flota",
+      "folder": "Carpeta",
+      "tag": "Etiqueta"
+    },
+    "emptyHintBasic": "L'assistent actua en el teu nom a través de la CLI de Termix, amb els teus permisos.",
+    "inputPlaceholderBasic": "Demana a l'assistent.",
+    "sendHintBasic": "Els canvis s'executen sense demanar permís prèviament.",
+    "thinking": "Pensant",
+    "thinkingActive": "Pensant...",
+    "compacted": "Context compactat: els missatges anteriors s'han resumit",
+    "compact": "Compactar la conversa",
+    "nothingToCompact": "La conversa és massa curta per compactar-la encara.",
+    "contextMeter": "Context: {{used}} de {{window}} tokens utilitzats per l'última crida",
+    "contextMeterSource": "La finestra és {{source}}.",
+    "contextMeterReserved": "{{tokens}} tokens es mantenen lliures per a la resposta.",
+    "todayTokens": "Avui {{tokens}}",
+    "todayTitle": "Tokens que has fet servir avui. Feu clic per veure els detalls.",
+    "usage": "Ús de tokens",
+    "conversationTokens": "{{tokens}} tokens",
+    "openFloating": "Panell flotant",
+    "openFloatingHint": "Obre l'assistent en un panell sobre qualsevol pàgina. Prem {{shortcut}} en qualsevol lloc per obrir-lo o tancar-lo.",
+    "shortcutHint": "Prem {{shortcut}} en qualsevol pàgina per obrir l'assistent en un panell flotant."
+  },
+  "usage": {
+    "title": "Ús de tokens",
+    "settingDescription": "Tokens que han fet servir les teves crides d'IA durant els últims 30 dies.",
+    "cardTitle": "Ús de tokens d'IA",
+    "today": "Avui",
+    "week": "7 dies",
+    "month": "30 dies",
+    "mine": "Meus",
+    "everyone": "Tots els usuaris",
+    "mineCaption": "Els teus tokens en totes les funcions d'IA.",
+    "everyoneCaption": "Tokens de tots els usuaris i totes les funcions d'IA.",
+    "byDay": "Per dia",
+    "byModel": "Per model",
+    "bySource": "Per funció",
+    "byUser": "Per usuari",
+    "model": "Model",
+    "feature": "Funció",
+    "user": "Usuari",
+    "calls": "Crides",
+    "prompt": "Entrada",
+    "completion": "Sortida",
+    "total": "Total",
+    "empty": "No s'ha fet servir la IA durant els últims 30 dies.",
+    "loadFailed": "No s'ha pogut carregar l'ús",
+    "estimatedNote": "Algunes xifres són estimacions, d'uns quatre caràcters per token, perquè el proveïdor no ha informat del seu ús.",
+    "source": {
+      "assistant": "Assistent",
+      "terminal": "Panell del terminal",
+      "compaction": "Compactació"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Assistent",
+    "viewAutoOps": "Operacions automàtiques",
+    "intro": "Les operacions automàtiques permeten que l'assistent comprovi els teus servidors de manera autònoma. Una automatització les inicia segons un calendari o quan es produeix un error, i genera un informe o proposa una solució perquè la puguis aprovar. Comença amb una configuració predefinida.",
+    "sections": {
+      "tasks": "Tasques",
+      "approvals": "Aprovacions",
+      "presets": "Configuracions predefinides"
+    },
+    "provider": "Proveïdor de tasques",
+    "providerDefault": "Primer proveïdor amb un model predeterminat",
+    "model": "Model per a tasques",
+    "modelDefault": "El model predeterminat del proveïdor",
+    "saveModel": "Desa el model",
+    "preferencesHint": "El proveïdor i el model que utilitzen les tasques en segon pla. Deixa'ls tal com estan per utilitzar el teu proveïdor i model predeterminats.",
+    "task": "Tasca",
+    "tokens": "{{tokens}} tokens",
+    "tokenUsage": "{{total}} tokens ({{prompt}} d'entrada, {{completion}} de sortida)",
+    "dryRun": "Execució de prova",
+    "trigger": "Disparador",
+    "noTasks": "Encara no hi ha tasques",
+    "tasksHint": "Les tasques són execucions d'automatitzacions amb un pas de Demanar a l'IA. Activa una configuració predeterminada o crea la teva pròpia a Automatitzacions: afegeix un pas de Demanar a l'IA a qualsevol automatització. Les execucions apareixen aquí.",
+    "openAutomations": "Obre Automatitzacions",
+    "browsePresets": "Explora configuracions predeterminades",
+    "noApprovals": "Cap pla està pendent d'aprovació",
+    "loadFailed": "No s'han pogut carregar les operacions automàtiques",
+    "decideFailed": "No s'ha pogut desar la decisió",
+    "openConversation": "Obre a l'assistent",
+    "approve": "Aprueba i executa",
+    "reject": "Rebutja",
+    "expires": "Caduca {{time}}",
+    "enabled": "Habilitat",
+    "updateAvailable": "Actualització disponible",
+    "shared": "Compartit",
+    "needsAutomations": "Requereix automatitzacions",
+    "enableAgain": "Habilitar de nou",
+    "deletePreset": "Eliminar la configuració predefinida",
+    "autonomy": {
+      "report": "Només informe",
+      "propose": "Proposar un pla"
+    },
+    "status": {
+      "running": "S'està executant",
+      "reported": "Reportat",
+      "proposed": "Pendent d'aprovació",
+      "approved": "Aprovat",
+      "rejected": "Rebutjat",
+      "expired": "Caducat",
+      "executing": "Executant el pla",
+      "done": "Fet",
+      "failed": "Ha fallat",
+      "skipped": "Omes"
+    },
+    "severity": {
+      "info": "Informació",
+      "warning": "Avís",
+      "critical": "Crític"
+    },
+    "plan": {
+      "title": "Pla proposat",
+      "commands": "Comandes",
+      "rationale": "Motiu",
+      "risk": "Risc",
+      "rollback": "Reversió",
+      "verify": "Verificar",
+      "progress": "Progrés"
+    },
+    "enable": {
+      "title": "Habilitar {{name}}",
+      "submit": "Activa",
+      "name": "Nom",
+      "targets": "Màquines",
+      "targetAll": "Totes les màquines",
+      "targetTrigger": "La màquina que l'ha activat",
+      "targetHosts": "Màquines seleccionades",
+      "noHosts": "Selecciona almenys una màquina.",
+      "threshold": "Llindar (%)",
+      "forSeconds": "Durant almenys (segons)",
+      "time": "Hora del dia",
+      "cron": "Programació (cron)",
+      "dockerEvent": "Esdeveniment del contenidor",
+      "dockerEvents": {
+        "exited": "Sortit",
+        "unhealthy": "No saludable",
+        "restarting": "Reiniciant"
+      },
+      "badTime": "Introduïu l'hora en format HH:MM.",
+      "autonomy": "Què pot fer l'assistent",
+      "maxRunSeconds": "Límit de temps (segons)",
+      "runbook": "Llibre de procediments",
+      "runbookHint": "Què ha de fer l'assistent, explicat amb paraules senzilles. Funciona millor en anglès.",
+      "shared": "Compartir en desar com a predefinició",
+      "sharedHint": "Tots els usuaris que puguin utilitzar les operacions automàtiques podran activar-la.",
+      "saveAsPreset": "Desa com a predefinició",
+      "savedPreset": "Desat",
+      "failed": "No s'ha pogut crear l'automatització",
+      "saveFailed": "No s'ha pogut desar la predefinició"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Ronda diària",
+        "description": "Cada matí a les 09:00, comprova els discs, la memòria, la càrrega, els serveis fallits, els contenidors, els certificats, les actualitzacions, els reinicis pendents i la sincronització de l'hora de cada amfitrió, i informa segons la gravetat."
+      },
+      "disk-cleanup": {
+        "title": "Neteja d'espai en disc",
+        "description": "Quan un disc es manté al 85% o més durant 5 minuts, identifica què l'omple i proposa una neteja segura perquè la puguis aprovar. Les dades de negoci mai no es toquen."
+      },
+      "host-down-triage": {
+        "title": "Diagnòstic d'host inactiu",
+        "description": "Quan un host es desconnecta, el comprova des d'altres hosts i Proxmox, i informa si el problema és de xarxa, si la màquina s'ha aturat o si és un problema d'SSH."
+      },
+      "service-failure": {
+        "title": "Fallada del servei",
+        "description": "Quan una comprovació d'estat comença a fallar, troba la unitat systemd associada, en llegeix l'estat i el registre, i proposa un reinici únic perquè l'aprovis quan això pugui ajudar. La configuració mai no es modifica."
+      },
+      "container-anomaly": {
+        "title": "Anomalia del contenidor",
+        "description": "Quan un contenidor surt, esdevé no saludable o continua reiniciant-se, en llegeix l'estat, el codi de sortida, els registres i la memòria, i proposa iniciar-lo o reiniciar-lo una sola vegada perquè l'aprovis. Res s'elimina."
+      },
+      "resource-overload-cpu": {
+        "title": "Sobrecàrrega de la CPU",
+        "description": "Quan la CPU es manté al 95 % o més durant 15 minuts, troba els processos, serveis i contenidors implicats i informa sobre què fer. Res es modifica."
+      },
+      "resource-overload-memory": {
+        "title": "Sobrecàrrega de memòria",
+        "description": "Quan la memòria es manté al 95 % o més durant 10 minuts, troba què la consumeix, l'ús d'intercanvi i les matances per falta de memòria, i informa sobre què fer. Res es modifica."
+      },
+      "security-updates-weekly": {
+        "title": "Actualitzacions de seguretat setmanals",
+        "description": "Cada dilluns a les 09:30, llista les actualitzacions de seguretat pendents per gravetat, els reinicis pendents i els paquets associats, els nuclis en execució i instal·lats i els dies des de l'última actualització, en una sola taula per a tots els amfitrions."
+      },
+      "cert-expiry-weekly": {
+        "title": "Caducitat de certificats setmanal",
+        "description": "Cada dilluns a les 09:45, comprova la caducitat dels certificats de Let's Encrypt, del servidor web i de Kubernetes en cada amfitrió i marca els que caduquen en menys de 30 dies, i els crítics en menys de 7."
+      }
+    },
+    "report": {
+      "verdict": "Veredicte",
+      "evidence": "Evidència",
+      "actionsTaken": "Accions realitzades",
+      "recommendations": "Recomanacions",
+      "nothingFound": "No s'ha trobat res abans que acabés l'execució.",
+      "noChanges": "No s'han fet canvis.",
+      "openConversation": "Obriu la conversa a l'assistent per veure cada pas i fer preguntes de seguiment.",
+      "noFurtherAction": "No cal cap acció addicional.",
+      "stoppedBudgetRun": "Aturat: aquesta execució ha consumit el pressupost de {{tokens}} tokens.",
+      "stoppedBudgetDaily": "Aturat: s'ha esgotat el pressupost diari de {{tokens}} tokens del propietari.",
+      "stoppedDeadline": "Aturat: s'ha arribat al límit de temps de l'automatització.",
+      "stoppedPaused": "Aturat: un administrador ha posat en pausa les operacions automàtiques amb IA.",
+      "stoppedAborted": "Aturat: s'ha cancel·lat l'execució de l'automatització.",
+      "providerFailed": "El proveïdor d'IA ha fallat: {{error}}",
+      "noHosts": "Cap dels hosts objectiu és accessible pel propietari de l'automatització.",
+      "noProvider": "El propietari de l'automatització no té cap proveïdor d'IA amb un model per executar tasques.",
+      "needsOpsUse": "El propietari de l'automatització no té el permís ai.ops.use.",
+      "assistantOff": "L'assistent d'IA està desactivat per al propietari de l'automatització.",
+      "skippedPaused": "Les operacions automàtiques d'IA estan en pausa per part d'un administrador.",
+      "skippedDuplicate": "Encara s'està executant una tasca per a la mateixa automatització i amfitrió o està a l'espera d'aprovació.",
+      "skippedRate": "Aquesta automatització ja ha iniciat {{count}} tasques d'IA en l'última hora.",
+      "hostNotRun": "No s'ha executat: el pla s'ha aturat.",
+      "hostNoAccess": "No s'ha executat: el propietari ja no pot connectar-se a aquest amfitrió.",
+      "hostUnreachable": "No s'ha executat: no s'ha pogut arribar a l'amfitrió.",
+      "hostStopped": "S'ha aturat en el primer comandament fallit.",
+      "executionDone": "El pla aprovat s'ha executat en {{count}} amfitrió(s) i tots els comandaments i comprovacions han tingut èxit.",
+      "executionFailed": "El pla aprovat no s'ha completat en tots els amfitrions.",
+      "executionStopped": "El pla aprovat s'ha aturat abans de finalitzar.",
+      "approvedBy": "El pla aprovat s'ha executat tal com estava escrit. Aprovat per {{user}}.",
+      "noticeReported": "Informe d'IA: {{title}}",
+      "noticeProposed": "Pla d'IA pendent d'aprovació: {{title}}",
+      "noticeExecuted": "Pla d'IA executat: {{title}}",
+      "noticeFailed": "La tasca d'IA ha fallat: {{title}}"
+    }
   }
 }

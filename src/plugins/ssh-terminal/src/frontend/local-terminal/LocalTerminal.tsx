@@ -7,6 +7,7 @@ import { getMacLineNavigationSequence } from "../lib/mac-line-navigation";
 import {
   handleTerminalClipboardKeyEvent,
   createTerminalContextMenuHandler,
+  createTerminalSelectionMouseUpHandler,
 } from "../terminal/terminal-clipboard";
 import {
   useAppTheme as useTheme,
@@ -21,7 +22,9 @@ import {
   TERMINAL_FONTS,
 } from "../look/terminal-themes";
 import { ensureTerminalFontsLoaded } from "../look/terminal-global-styles";
-import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
+import { usePluginApi, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
+import { getDefaultAppearance } from "../terminal-api";
+import { resolveTerminalFontFamily } from "../look/terminal-themes";
 
 export function LocalTerminal({
   instanceId,
@@ -37,9 +40,29 @@ export function LocalTerminal({
   const tRef = useRef(t);
   tRef.current = t;
   const { theme: appTheme } = useTheme();
+  const api = usePluginApi();
+  // The same look as SSH terminals get from the user's host defaults.
+  const [appearance, setAppearance] = useState<Awaited<
+    ReturnType<typeof getDefaultAppearance>
+  > | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    getDefaultAppearance(api)
+      .then((value) => {
+        if (!cancelled) setAppearance(value);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [api]);
   const { instance: terminal, ref: xtermRef } = useXTerm();
   const fitAddonRef = useRef<FitAddon | null>(null);
   const sessionIdRef = useRef<string | null>(null);
+  const sessionReadyRef = useRef(false);
+  const visibleRef = useRef(isVisible);
+  visibleRef.current = isVisible;
+  const focusFrameRef = useRef<number | null>(null);
   const [isWindows, setIsWindows] = useState(false);
   const [shell, setShell] = useState<"default" | "wsl">("default");
 
@@ -63,17 +86,50 @@ export function LocalTerminal({
     }
   }, [terminal]);
 
+  const focusWhenReady = useCallback(() => {
+    if (!terminal || !sessionReadyRef.current || !visibleRef.current) return;
+    if (focusFrameRef.current !== null) {
+      cancelAnimationFrame(focusFrameRef.current);
+    }
+    focusFrameRef.current = requestAnimationFrame(() => {
+      focusFrameRef.current = null;
+      if (!sessionReadyRef.current || !visibleRef.current) return;
+      fit();
+      terminal.focus();
+    });
+  }, [fit, terminal]);
+
   useEffect(() => {
     if (!terminal) return;
-    const colors = resolveTermixThemeColors("termix", appTheme);
-    const font = TERMINAL_FONTS.find(
-      (item) => item.value === DEFAULT_TERMINAL_CONFIG.fontFamily,
+    if (!appearance) {
+      const font = TERMINAL_FONTS.find(
+        (item) => item.value === DEFAULT_TERMINAL_CONFIG.fontFamily,
+      );
+      ensureTerminalFontsLoaded(font?.value ?? TERMINAL_FONTS[0].value);
+      terminal.options.theme = resolveTermixThemeColors("termix", appTheme);
+      terminal.options.fontFamily =
+        font?.fallback ?? TERMINAL_FONTS[0].fallback;
+      terminal.options.fontSize = DEFAULT_TERMINAL_CONFIG.fontSize;
+      return;
+    }
+    ensureTerminalFontsLoaded(appearance.fontFamily || TERMINAL_FONTS[0].value);
+    terminal.options.theme = resolveTermixThemeColors(
+      appearance.theme,
+      appTheme,
+      appearance.customThemeColors,
     );
-    ensureTerminalFontsLoaded(font?.value ?? TERMINAL_FONTS[0].value);
-    terminal.options.theme = colors;
-    terminal.options.fontFamily = font?.fallback ?? TERMINAL_FONTS[0].fallback;
-    terminal.options.fontSize = DEFAULT_TERMINAL_CONFIG.fontSize;
-  }, [appTheme, terminal]);
+    terminal.options.fontFamily = resolveTerminalFontFamily(
+      appearance.fontFamily,
+    );
+    terminal.options.fontSize = appearance.fontSize;
+    terminal.options.cursorBlink = appearance.cursorBlink;
+    terminal.options.cursorStyle = appearance.cursorStyle;
+    terminal.options.scrollback = appearance.scrollback;
+    terminal.options.letterSpacing = appearance.letterSpacing;
+    terminal.options.lineHeight = appearance.lineHeight;
+    terminal.options.minimumContrastRatio = appearance.minimumContrastRatio;
+    fit();
+  }, [appTheme, appearance, fit, terminal]);
 
   useEffect(() => {
     if (!terminal || !window.electronAPI?.isElectron) return;
@@ -122,10 +178,16 @@ export function LocalTerminal({
     );
     const element = xtermRef.current;
     element?.addEventListener("contextmenu", handleContextMenu);
+    const handleSelectionMouseUp = createTerminalSelectionMouseUpHandler(
+      terminal,
+      clipboardActions,
+    );
+    element?.addEventListener("mouseup", handleSelectionMouseUp);
 
     let disposed = false;
     let removeData = () => {};
     let removeExit = () => {};
+    sessionReadyRef.current = false;
     const input = terminal.onData((data) => {
       const sessionId = sessionIdRef.current;
       if (sessionId) window.electronAPI.writeLocalTerminal(sessionId, data);
@@ -151,7 +213,11 @@ export function LocalTerminal({
             );
           },
         );
-        return window.electronAPI.readyLocalTerminal(sessionId);
+        return window.electronAPI.readyLocalTerminal(sessionId).then(() => {
+          if (disposed) return;
+          sessionReadyRef.current = true;
+          focusWhenReady();
+        });
       })
       .catch((error: unknown) => {
         const message = error instanceof Error ? error.message : String(error);
@@ -162,12 +228,18 @@ export function LocalTerminal({
     if (xtermRef.current) observer.observe(xtermRef.current);
     return () => {
       disposed = true;
+      sessionReadyRef.current = false;
+      if (focusFrameRef.current !== null) {
+        cancelAnimationFrame(focusFrameRef.current);
+        focusFrameRef.current = null;
+      }
       terminal.attachCustomKeyEventHandler(() => true);
       observer.disconnect();
       input.dispose();
       removeData();
       removeExit();
       element?.removeEventListener("contextmenu", handleContextMenu);
+      element?.removeEventListener("mouseup", handleSelectionMouseUp);
       clipboardProvider.dispose();
       const sessionId = sessionIdRef.current;
       sessionIdRef.current = null;
@@ -175,11 +247,12 @@ export function LocalTerminal({
       fitAddonRef.current = null;
       fitAddon.dispose();
     };
-  }, [fit, instanceId, shell, terminal, xtermRef]);
+  }, [fit, focusWhenReady, instanceId, shell, terminal, xtermRef]);
 
   useEffect(() => {
-    if (isVisible) requestAnimationFrame(fit);
-  }, [fit, isVisible]);
+    if (!isVisible) return;
+    focusWhenReady();
+  }, [focusWhenReady, isVisible]);
 
   return (
     <div className="flex h-full w-full flex-col bg-background">

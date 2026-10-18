@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Свързване с хостове зад Cloudflare Tunnel чрез нативен WebSocket транспорт, без да отваряте порт 22 към публичния интернет.",
+    "enableCloudflareTunnel": "Активиране на Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "Посочете SSH трафика през Cloudflare Zero Trust (WSS), като използвате основния адрес на хоста, вместо директни TCP сокове.",
+    "cloudflareTunnelHostname": "Име на хоста на тунела",
+    "cloudflareTunnelHostnameDesc": "Публично домейн име, насочено към вашия SSH произход в Cloudflare Tunnel (оставете празно, за да използвате основния адрес на хоста).",
+    "cloudflareTunnelPort": "Порт на тунела",
+    "cloudflareTunnelPortDesc": "Порт за HTTPS/WSS на Cloudflare (по подразбиране е 443).",
+    "cloudflareTunnelClientId": "Идентификатор на клиент за служебен токен",
+    "cloudflareTunnelClientIdDesc": "Незадължителна CF-Access-Client-Id заглавка. Изисква се само ако Cloudflare Access Zero Trust политиката изисква Service Tokens.",
+    "cloudflareTunnelClientSecret": "Тайна на клиента за служебен токен",
+    "cloudflareTunnelClientSecretDesc": "Незадължителна CF-Access-Client-Secret заглавка за автентикация чрез Cloudflare Access.",
     "clipboardHttpWarning": "Не може да се прочете буферът за обмен. Някои браузъри ограничават достъпа до буфера извън HTTPS – опитайте с Ctrl+V или сервирайте Termix чрез HTTPS.",
     "connecting": "Свързване...",
     "connectionLost": "Връзката е прекъсната",
@@ -85,7 +97,16 @@
     "localShell": "Локален терминален шел",
     "autocompleteHintComplete": "Tab или Enter за завършване",
     "autocompleteHintNavigate": "↑↓ за навигация",
-    "autocompleteHintClose": "Esc за затваряне"
+    "autocompleteHintClose": "Esc за затваряне",
+    "cloudflareTunnelClientSecretPlaceholder": "Незадължителна тайна на служебния токен",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Нова тайна на служебния токен",
+    "secretSaved": "Запазено",
+    "secretReplace": "Замени",
+    "secretClear": "Изчисти",
+    "secretCancel": "Отказ",
+    "hideSecret": "Скрий тайната",
+    "showSecret": "Покажи тайната",
+    "sessionEndedKeepOpen": "Сесията приключи. Натиснете Enter, за да се свържете отново."
   },
   "terminalToolbar": {
     "detachTmux": "Отделяне на tmux",
@@ -210,6 +231,26 @@
         "label": "История на командите",
         "description": "Записване на командите, изпълнени в този терминал, за история и автоматично довършване"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare Tunnel",
+        "description": "Посочете SSH трафика през Cloudflare Zero Trust чрез WebSocket"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Име на хоста на тунела",
+        "description": "Публично име на хоста на Cloudflare Tunnel"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Порт на тунела",
+        "description": "HTTPS/WSS порт на Cloudflare edge"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Client ID на Cloudflare Access Service Token"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Тайн клиентски ключ за Cloudflare Access Service Token"
+      },
       "enableTerminal": {
         "label": "Активиране на терминала",
         "description": "Предлагане на SSH терминал за този хост."
@@ -317,6 +358,9 @@
         "moveUp": "Преместване нагоре",
         "moveDown": "Преместване надолу",
         "tmuxHint": "Показва се само когато tmux е свързан"
+      },
+      "keepOpenOnExit": {
+        "label": "Запази раздела отворен при изход"
       }
     },
     "user": {
@@ -487,7 +531,9 @@
     "guac": {
       "permissionLevel": "Ниво на разрешение"
     },
-    "deleteGlobalThemeConfirm": "Изтриване на темата {{name}}?"
+    "deleteGlobalThemeConfirm": "Изтриване на темата {{name}}?",
+    "keepOpenOnExitLabel": "Запази раздела отворен при изход",
+    "keepOpenOnExitDesc": "Когато shell-ът приключи или връзката се прекъсне, запази раздела и неговия изход. Натиснете Enter, за да се свържете отново."
   },
   "nav": {
     "history": "История",
@@ -517,6 +563,7 @@
     "stopRecording": "Спиране на запис"
   },
   "keybindings": {
+    "openLocalTerminal": "Отвори нов локален терминал",
     "copy": "Копиране на селекцията",
     "paste": "Поставяне",
     "sendControlCode": "Изпращане на Ctrl+буква сигнал",
@@ -635,6 +682,7 @@
     "remoteServerRequired": "Изисква се отдалечен сървър. Свържете отдалечен сървър в Настройките, за да използвате този тип връзка."
   },
   "plugin": {
-    "name": "SSH терминал"
+    "name": "SSH терминал",
+    "description": "SSH терминални сесии с раздели, разделен екран, история, макроси и локален терминал в десктоп приложението."
   }
 }

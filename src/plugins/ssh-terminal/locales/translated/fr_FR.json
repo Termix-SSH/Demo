@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Connectez-vous aux hôtes situés derrière un Cloudflare Tunnel en utilisant le transport WebSocket natif, sans ouvrir le port 22 brut à Internet public.",
+    "enableCloudflareTunnel": "Activer Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "Acheminez le trafic SSH via Cloudflare Zero Trust (WSS) en utilisant l'adresse principale de l'hôte au lieu de sockets TCP directs.",
+    "cloudflareTunnelHostname": "Nom d'hôte du tunnel",
+    "cloudflareTunnelHostnameDesc": "Domaine public acheminé vers votre service d'origine SSH dans Cloudflare Tunnel (laissez vide pour utiliser l'adresse principale de l'hôte).",
+    "cloudflareTunnelPort": "Port du tunnel",
+    "cloudflareTunnelPortDesc": "Port HTTPS/WSS sur le bord de Cloudflare (la valeur par défaut est 443).",
+    "cloudflareTunnelClientId": "ID client du jeton de service",
+    "cloudflareTunnelClientIdDesc": "En-tête CF-Access-Client-Id facultatif. Requis uniquement si la politique Zero Trust de Cloudflare Access impose l'utilisation de jetons de service.",
+    "cloudflareTunnelClientSecret": "Secret client du jeton de service",
+    "cloudflareTunnelClientSecretDesc": "En-tête CF-Access-Client-Secret facultatif pour l'authentification Cloudflare Access.",
     "clipboardHttpWarning": "Impossible de lire le presse-papiers. Certains navigateurs restreignent l'accès au presse-papiers en dehors de HTTPS - essayez Ctrl+V à la place, ou servez Termix via HTTPS.",
     "connecting": "Connexion en cours...",
     "connectionLost": "Connexion perdue",
@@ -87,7 +99,16 @@
     "localShell": "Shell du terminal local",
     "autocompleteHintComplete": "Tab ou Entrée pour compléter",
     "autocompleteHintNavigate": "↑↓ pour naviguer",
-    "autocompleteHintClose": "Échap pour fermer"
+    "autocompleteHintClose": "Échap pour fermer",
+    "cloudflareTunnelClientSecretPlaceholder": "Secret du jeton de service (facultatif)",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Nouveau secret du jeton de service",
+    "secretSaved": "Enregistré",
+    "secretReplace": "Remplacer",
+    "secretClear": "Effacer",
+    "secretCancel": "Annuler",
+    "hideSecret": "Masquer le secret",
+    "showSecret": "Afficher le secret",
+    "sessionEndedKeepOpen": "Session terminée. Appuyez sur Entrée pour vous reconnecter."
   },
   "terminalToolbar": {
     "detachTmux": "Détacher tmux",
@@ -213,6 +234,26 @@
         "label": "Historique des commandes",
         "description": "Enregistrer les commandes exécutées dans ce terminal pour l'historique et l'auto-complétion"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Tunnel Cloudflare",
+        "description": "Acheminer le trafic SSH via Cloudflare Zero Trust à l'aide de WebSocket"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Nom d'hôte du tunnel",
+        "description": "Nom d'hôte public du tunnel Cloudflare"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Port du tunnel",
+        "description": "Port HTTPS/WSS du nœud de périphérie Cloudflare"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "ID client du jeton de service Cloudflare Access"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Secret client du jeton de service Cloudflare Access"
+      },
       "enableTerminal": {
         "label": "Activer le terminal",
         "description": "Proposer un terminal SSH pour cet hôte."
@@ -320,6 +361,9 @@
         "moveUp": "Déplacer vers le haut",
         "moveDown": "Déplacer vers le bas",
         "tmuxHint": "Affiché uniquement lorsque tmux est attaché"
+      },
+      "keepOpenOnExit": {
+        "label": "Garder l'onglet ouvert à la fermeture"
       }
     },
     "user": {
@@ -490,7 +534,9 @@
     "guac": {
       "permissionLevel": "Niveau de permission"
     },
-    "deleteGlobalThemeConfirm": "Supprimer le thème {{name}} ?"
+    "deleteGlobalThemeConfirm": "Supprimer le thème {{name}} ?",
+    "keepOpenOnExitLabel": "Garder l'onglet ouvert à la fermeture",
+    "keepOpenOnExitDesc": "Lorsque le shell se ferme ou que la connexion est interrompue, conservez l'onglet et sa sortie. Appuyez sur Entrée pour vous reconnecter."
   },
   "nav": {
     "history": "Historique",
@@ -522,6 +568,7 @@
     "stopRecording": "Arrêter l'enregistrement"
   },
   "keybindings": {
+    "openLocalTerminal": "Ouvrir un nouveau terminal local",
     "copy": "Copier la sélection",
     "paste": "Coller",
     "sendControlCode": "Envoyer un signal Ctrl+lettre",
@@ -641,6 +688,7 @@
     "remoteServerRequired": "Serveur distant requis. Connectez un serveur distant dans les Paramètres pour utiliser ce type de connexion."
   },
   "plugin": {
-    "name": "Terminal SSH"
+    "name": "Terminal SSH",
+    "description": "Sessions de terminal SSH avec onglets, écran partagé, historique, macros et un terminal local dans l'application de bureau."
   }
 }

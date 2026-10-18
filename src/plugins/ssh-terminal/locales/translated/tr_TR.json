@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Hamile port 22'yi herkese açık internete açmadan, yerel WebSocket taşıma katmanı kullanarak Cloudflare Tunnel arkasındaki sunuculara bağlanın.",
+    "enableCloudflareTunnel": "Cloudflare Tunnel'ı Etkinleştir",
+    "enableCloudflareTunnelDesc": "Doğrudan TCP soketleri yerine, sunucunun ana adresini kullanarak SSH trafiğini Cloudflare Zero Trust (WSS) üzerinden yönlendirin.",
+    "cloudflareTunnelHostname": "Tunnel Ana Bilgisayar Adı",
+    "cloudflareTunnelHostnameDesc": "Cloudflare Tunnel'da SSH kaynak hizmetinize yönlendirilen genel alan adı (sunucunun ana adresini kullanmak için boş bırakın).",
+    "cloudflareTunnelPort": "Tunnel Bağlantı Noktası",
+    "cloudflareTunnelPortDesc": "Cloudflare'daki uç HTTPS/WSS bağlantı noktası (varsayılan 443'tür).",
+    "cloudflareTunnelClientId": "Hizmet Belirteci İstemci Kimliği",
+    "cloudflareTunnelClientIdDesc": "İsteğe bağlı CF-Access-Client-Id başlığı. Sadece Cloudflare Access Zero Trust ilkesi Hizmet Belirteçlerini zorunlu kılıyorsa gereklidir.",
+    "cloudflareTunnelClientSecret": "Hizmet Kimlik Doğrulama İstemci Sırrı",
+    "cloudflareTunnelClientSecretDesc": "Cloudflare Access kimlik doğrulaması için isteğe bağlı CF-Access-Client-Secret başlığı.",
     "clipboardHttpWarning": "Pano okunamadı. Bazı tarayıcılar HTTPS dışındaki bağlantılarda pano erişimini kısıtlar - bunun yerine Ctrl+V deneyin veya Termix'i HTTPS üzerinden çalıştırın.",
     "connecting": "Bağlanılıyor...",
     "connectionLost": "Bağlantı kesildi",
@@ -85,7 +97,16 @@
     "localShell": "Yerel terminal kabuğu",
     "autocompleteHintComplete": "Tamamlamak için Tab veya Enter'a basın",
     "autocompleteHintNavigate": "Gezinmek için ↑↓",
-    "autocompleteHintClose": "Kapatmak için Esc"
+    "autocompleteHintClose": "Kapatmak için Esc",
+    "cloudflareTunnelClientSecretPlaceholder": "İsteğe bağlı hizmet kimlik doğrulama sırrı",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Yeni hizmet kimlik doğrulama sırrı",
+    "secretSaved": "Kaydedildi",
+    "secretReplace": "Değiştir",
+    "secretClear": "Temizle",
+    "secretCancel": "İptal",
+    "hideSecret": "Sırrı gizle",
+    "showSecret": "Sırrı göster",
+    "sessionEndedKeepOpen": "Oturum sona erdi. Yeniden bağlanmak için Enter'a basın."
   },
   "terminalToolbar": {
     "detachTmux": "tmux'tan ayrıl",
@@ -210,6 +231,26 @@
         "label": "Komut Geçmişi",
         "description": "Geçmiş ve otomatik tamamlama için bu terminalde çalıştırılan komutları kaydet"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare Tunnel",
+        "description": "SSH trafiğini WebSocket üzerinden Cloudflare Zero Trust'a yönlendir"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Tunnel Ana Bilgisayar Adı",
+        "description": "Cloudflare Tunnel genel ana bilgisayar adı"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Tunnel Bağlantı Noktası",
+        "description": "Cloudflare edge HTTPS/WSS bağlantı noktası"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Cloudflare Access Hizmet Token İstemci Kimliği"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Cloudflare Access Hizmet Token İstemci Sırrı"
+      },
       "enableTerminal": {
         "label": "Terminali Etkinleştir",
         "description": "Bu sunucu için bir SSH terminali sun."
@@ -317,6 +358,9 @@
         "moveUp": "Yukarı taşı",
         "moveDown": "Aşağı taşı",
         "tmuxHint": "Sadece tmux bağlıyken gösterilir"
+      },
+      "keepOpenOnExit": {
+        "label": "Çıkışta sekme açık kalsın"
       }
     },
     "user": {
@@ -487,7 +531,9 @@
     "guac": {
       "permissionLevel": "İzin Seviyesi"
     },
-    "deleteGlobalThemeConfirm": "{{name}} teması silinsin mi?"
+    "deleteGlobalThemeConfirm": "{{name}} teması silinsin mi?",
+    "keepOpenOnExitLabel": "Çıkışta sekme açık kalsın",
+    "keepOpenOnExitDesc": "Kabuk çıktığında veya bağlantı kapandığında, sekme ve çıktısını koru. Yeniden bağlanmak için Enter'a bas."
   },
   "nav": {
     "history": "Geçmiş",
@@ -517,6 +563,7 @@
     "stopRecording": "Kaydı Durdur"
   },
   "keybindings": {
+    "openLocalTerminal": "Yeni Yerel Terminal Aç",
     "copy": "Seçimi kopyala",
     "paste": "Yapıştır",
     "sendControlCode": "Ctrl+harf sinyali gönder",
@@ -635,6 +682,7 @@
     "remoteServerRequired": "Uzak sunucu gerekli. Bu bağlantı türünü kullanmak için Ayarlar'dan bir uzak sunucu bağlayın."
   },
   "plugin": {
-    "name": "SSH Terminali"
+    "name": "SSH Terminali",
+    "description": "Sekmeler, bölünmüş ekran, geçmiş, makrolar ve masaüstü uygulamada yerel terminal ile SSH terminal oturumları."
   }
 }

@@ -68,6 +68,8 @@ const LocalTerminal = lazy(() =>
 );
 
 interface TerminalOpenOptions {
+  /** Exact tmux session name to attach to in the newly opened tab. */
+  tmuxSession?: string;
   path?: string;
   joinSharedSessionId?: string;
   joinShareId?: string;
@@ -171,6 +173,12 @@ export function activate(app: TermixApp): void {
       ownBackground: true,
       multiInstance: true,
       inLayouts: false,
+    });
+    app.registerKeybindingAction({
+      id: "openLocalTerminal",
+      titleKey: "keybindings.openLocalTerminal",
+      scope: "global",
+      run: () => app.tabs.openSingletonTab("local-terminal"),
     });
     app.registerRailItem({
       id: "local-terminal",
@@ -303,6 +311,7 @@ export function activate(app: TermixApp): void {
       label: options.label,
       data: {
         ...(options.path ? { initialPath: options.path } : {}),
+        ...(options.tmuxSession ? { tmuxSession: options.tmuxSession } : {}),
         ...(options.joinSharedSessionId
           ? {
               joinSharedSessionId: options.joinSharedSessionId,

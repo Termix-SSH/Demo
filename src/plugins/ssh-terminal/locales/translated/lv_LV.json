@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Savienojieties ar mezgliem aiz Cloudflare Tunnel, izmantojot iebūvēto WebSocket transportu, neatverot 22. portu publiskajam internetam.",
+    "enableCloudflareTunnel": "Iespējot Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "Maršrutējiet SSH datplūsmu caur Cloudflare Zero Trust (WSS), izmantojot mezgla galveno adresi, nevis tiešos TCP savienojumus.",
+    "cloudflareTunnelHostname": "Tunela resursdators",
+    "cloudflareTunnelHostnameDesc": "Publiskais domēns, kas maršrutēts uz jūsu SSH izcelsmes pakalpojumu Cloudflare Tunnel (atstājiet tukšu, lai izmantotu mezgla galveno adresi).",
+    "cloudflareTunnelPort": "Tunela ports",
+    "cloudflareTunnelPortDesc": "Cloudflare malas HTTPS/WSS ports (noklusējums ir 443).",
+    "cloudflareTunnelClientId": "Pakalpojuma marķiera klienta ID",
+    "cloudflareTunnelClientIdDesc": "Neobligāts CF-Access-Client-Id virsraksts. Nepieciešams tikai tad, ja Cloudflare Access Zero Trust politika pieprasa pakalpojuma marķierus.",
+    "cloudflareTunnelClientSecret": "Pakalpojuma marķiera klienta noslēpums",
+    "cloudflareTunnelClientSecretDesc": "Neobligāts CF-Access-Client-Secret virsraksts Cloudflare Access autentifikācijai.",
     "clipboardHttpWarning": "Neizdevās izlasīt starpliktuvi. Daži pārlūkprogrammas ierobežo piekļuvi starpliktuvei ārpus HTTPS — mēģiniet izmantot Ctrl+V vai palaidiet Termix pār HTTPS.",
     "connecting": "Notiek savienojums...",
     "connectionLost": "Savienojums zaudēts",
@@ -87,7 +99,16 @@
     "localShell": "Vietējais termināļa čauls",
     "autocompleteHintComplete": "Nospiediet Tab vai Enter, lai pabeigtu",
     "autocompleteHintNavigate": "↑↓, lai navigētu",
-    "autocompleteHintClose": "Esc, lai aizvērtu"
+    "autocompleteHintClose": "Esc, lai aizvērtu",
+    "cloudflareTunnelClientSecretPlaceholder": "Neobligāts pakalpojuma marķiera noslēpums",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Jauns pakalpojuma marķiera noslēpums",
+    "secretSaved": "Saglabāts",
+    "secretReplace": "Aizstāt",
+    "secretClear": "Notīrīt",
+    "secretCancel": "Atcelt",
+    "hideSecret": "Paslēpt noslēpumu",
+    "showSecret": "Rādīt noslēpumu",
+    "sessionEndedKeepOpen": "Sesija pabeigta. Nospiediet Enter, lai atkārtoti izveidotu savienojumu."
   },
   "terminalToolbar": {
     "detachTmux": "Atvienot tmux",
@@ -213,6 +234,26 @@
         "label": "Komandu vēsture",
         "description": "Ierakstīt šajā terminālī izpildītās komandas vēsturei un automātiskai aizpildei"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare tunelis",
+        "description": "Maršrutēt SSH datplūsmu caur Cloudflare Zero Trust, izmantojot WebSocket"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Tuneļa resursdators",
+        "description": "Cloudflare tuneļa publiskais resursdators"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Tuneļa ports",
+        "description": "Cloudflare malas HTTPS/WSS ports"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Cloudflare Access pakalpojuma marķiera klienta ID"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Cloudflare Access pakalpojuma žetona klienta noslēpums"
+      },
       "enableTerminal": {
         "label": "Iespējot termināli",
         "description": "Piedāvāt SSH termināli šim hostam."
@@ -320,6 +361,9 @@
         "moveUp": "Pārvietot uz augšu",
         "moveDown": "Pārvietot uz leju",
         "tmuxHint": "Rādīts tikai tad, kad ir pieslēgts tmux"
+      },
+      "keepOpenOnExit": {
+        "label": "Paturēt cilni atvērtu pēc iziešanas"
       }
     },
     "user": {
@@ -490,7 +534,9 @@
     "guac": {
       "permissionLevel": "Atļauju līmenis"
     },
-    "deleteGlobalThemeConfirm": "Dzēst tēmu {{name}}?"
+    "deleteGlobalThemeConfirm": "Dzēst tēmu {{name}}?",
+    "keepOpenOnExitLabel": "Paturēt cilni atvērtu pēc iziešanas",
+    "keepOpenOnExitDesc": "Kad čaula iziet vai savienojums tiek aizvērts, saglabājiet cilni un tās izvadi. Nospiediet Enter, lai atkārtoti izveidotu savienojumu."
   },
   "nav": {
     "history": "Vēsture",
@@ -522,6 +568,7 @@
     "stopRecording": "Apturēt ierakstīšanu"
   },
   "keybindings": {
+    "openLocalTerminal": "Atvērt jaunu vietējo termināli",
     "copy": "Kopēt atlasi",
     "paste": "Ielīmēt",
     "sendControlCode": "Sūtīt Ctrl+burtu signālu",
@@ -641,6 +688,7 @@
     "remoteServerRequired": "Nepieciešams attālināts serveris. Lai izmantotu šo savienojuma veidu, pieslēdziet attālinātu serveri Iestatījumos."
   },
   "plugin": {
-    "name": "SSH terminālis"
+    "name": "SSH terminālis",
+    "description": "SSH termināļa sesijas ar ciltīm, sadalītu ekrānu, vēsturi, makro un vietējo termināli darbvirsmas lietotnē."
   }
 }

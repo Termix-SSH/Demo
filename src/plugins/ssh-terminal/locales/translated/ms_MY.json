@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Sambung ke hos di sebalik Cloudflare Tunnel menggunakan penghantaran WebSocket asli tanpa membuka port 22 mentah ke internet awam.",
+    "enableCloudflareTunnel": "Dayakan Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "Halakan trafik SSH melalui Cloudflare Zero Trust (WSS) menggunakan alamat utama hos berbanding soket TCP langsung.",
+    "cloudflareTunnelHostname": "Nama Hos Terowong",
+    "cloudflareTunnelHostnameDesc": "Domain awam yang dihalakan ke perkhidmatan asal SSH anda dalam Cloudflare Tunnel (biarkan kosong untuk menggunakan alamat utama hos).",
+    "cloudflareTunnelPort": "Port Terowong",
+    "cloudflareTunnelPortDesc": "Port HTTPS/WSS tepi di Cloudflare (lalai ialah 443).",
+    "cloudflareTunnelClientId": "ID Pelanggan Token Perkhidmatan",
+    "cloudflareTunnelClientIdDesc": "Pilihan CF-Access-Client-Id header. Diperlukan hanya jika dasar Cloudflare Access Zero Trust menguatkuasakan Token Perkhidmatan.",
+    "cloudflareTunnelClientSecret": "Rahsia Pelanggan Token Perkhidmatan",
+    "cloudflareTunnelClientSecretDesc": "Pilihan CF-Access-Client-Secret header untuk pengesahan Cloudflare Access.",
     "clipboardHttpWarning": "Tidak dapat membaca papan klip. Sesetengah pelayar mengehadkan akses papan klip di luar HTTPS - cuba Ctrl+V sebagai gantinya, atau perkhidmatkan Termix melalui HTTPS.",
     "connecting": "Menyambung...",
     "connectionLost": "Sambungan terputus",
@@ -83,7 +95,16 @@
     "localShell": "Shell terminal tempatan",
     "autocompleteHintComplete": "Tab atau Enter untuk lengkapkan",
     "autocompleteHintNavigate": "↑↓ untuk navigasi",
-    "autocompleteHintClose": "Esc untuk tutup"
+    "autocompleteHintClose": "Esc untuk tutup",
+    "cloudflareTunnelClientSecretPlaceholder": "Rahsia token perkhidmatan (pilihan)",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Rahsia token perkhidmatan baharu",
+    "secretSaved": "Disimpan",
+    "secretReplace": "Ganti",
+    "secretClear": "Kosongkan",
+    "secretCancel": "Batal",
+    "hideSecret": "Sembunyikan rahsia",
+    "showSecret": "Tunjukkan rahsia",
+    "sessionEndedKeepOpen": "Sesi tamat. Tekan Enter untuk menyambung semula."
   },
   "terminalToolbar": {
     "detachTmux": "Lepaskan tmux",
@@ -207,6 +228,26 @@
         "label": "Sejarah Perintah",
         "description": "Rakam perintah yang dijalankan dalam terminal ini untuk sejarah dan auto-lengkap"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Terowong Cloudflare",
+        "description": "Arahkan lalu lintas SSH melalui Cloudflare Zero Trust menggunakan WebSocket"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Nama Hos Terowong",
+        "description": "Nama hos awam Terowong Cloudflare"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Port Terowong",
+        "description": "Port HTTPS/WSS tepi Cloudflare"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "ID Pelanggan Token Perkhidmatan Cloudflare Access"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Rahsia Pelanggan Token Perkhidmatan Akses Cloudflare"
+      },
       "enableTerminal": {
         "label": "Aktifkan Terminal",
         "description": "Tawarkan terminal SSH untuk hos ini."
@@ -314,6 +355,9 @@
         "moveUp": "Gerakkan ke atas",
         "moveDown": "Gerakkan ke bawah",
         "tmuxHint": "Hanya dipaparkan semasa tmux disambungkan"
+      },
+      "keepOpenOnExit": {
+        "label": "Kekalkan tab terbuka semasa keluar"
       }
     },
     "user": {
@@ -484,7 +528,9 @@
     "guac": {
       "permissionLevel": "Tahap Kebenaran"
     },
-    "deleteGlobalThemeConfirm": "Padam tema {{name}}?"
+    "deleteGlobalThemeConfirm": "Padam tema {{name}}?",
+    "keepOpenOnExitLabel": "Kekalkan tab terbuka semasa keluar",
+    "keepOpenOnExitDesc": "Apabila shell keluar atau sambungan ditutup, kekalkan tab dan keluarannya. Tekan Enter untuk menyambung semula."
   },
   "nav": {
     "history": "Sejarah",
@@ -512,6 +558,7 @@
     "stopRecording": "Henti Rakaman"
   },
   "keybindings": {
+    "openLocalTerminal": "Buka Terminal Tempatan Baharu",
     "copy": "Salin pemilihan",
     "paste": "Tampal",
     "sendControlCode": "Hantar isyarat Ctrl+huruf",
@@ -629,6 +676,7 @@
     "remoteServerRequired": "Pelayan jauh diperlukan. Sambungkan pelayan jauh dalam Tetapan untuk menggunakan jenis sambungan ini."
   },
   "plugin": {
-    "name": "Terminal SSH"
+    "name": "Terminal SSH",
+    "description": "Sesi terminal SSH dengan tab, skrin bahagi, sejarah, makro dan terminal tempatan dalam aplikasi desktop."
   }
 }

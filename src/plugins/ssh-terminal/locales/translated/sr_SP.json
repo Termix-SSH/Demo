@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Повежите се са хостовима иза Cloudflare Tunnel користећи нативни WebSocket транспорт, без отварања сировог порта 22 ка јавном интернету.",
+    "enableCloudflareTunnel": "Омогући Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "Усмерите SSH саобраћај кроз Cloudflare Zero Trust (WSS) користећи главну адресу хоста уместо директних TCP сокета.",
+    "cloudflareTunnelHostname": "Име хоста тунела",
+    "cloudflareTunnelHostnameDesc": "Јавни домусин усмерен ка вашем SSH пореклу у Cloudflare Tunnel (оставите празно да бисте користили главну адресу хоста).",
+    "cloudflareTunnelPort": "Порт тунела",
+    "cloudflareTunnelPortDesc": "HTTPS/WSS порт на Cloudflare ивици (подразумевано је 443).",
+    "cloudflareTunnelClientId": "ID клијента сервисног токена",
+    "cloudflareTunnelClientIdDesc": "Опциони CF-Access-Client-Id заглавље. Потребно само ако Cloudflare Access Zero Trust политика захтева сервисне токене.",
+    "cloudflareTunnelClientSecret": "Тајна клијента сервисног токена",
+    "cloudflareTunnelClientSecretDesc": "Опциони CF-Access-Client-Secret заглавље за Cloudflare Access аутентификацију.",
     "clipboardHttpWarning": "Није могуће прочитати клипборд. Неки прегледачи ограничавају приступ клипборду ван HTTPS-а — покушајте Ctrl+V или користите Termix преко HTTPS-а.",
     "connecting": "Повезивање...",
     "connectionLost": "Веза је прекинута",
@@ -87,7 +99,16 @@
     "localShell": "Локални терминал шел",
     "autocompleteHintComplete": "Tab или Enter за потврду",
     "autocompleteHintNavigate": "↑↓ за навигацију",
-    "autocompleteHintClose": "Esc за затварање"
+    "autocompleteHintClose": "Esc за затварање",
+    "cloudflareTunnelClientSecretPlaceholder": "Опциона тајна сервисног токена",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Нова тајна сервисног токена",
+    "secretSaved": "Сачувано",
+    "secretReplace": "Замени",
+    "secretClear": "Обриши",
+    "secretCancel": "Откажи",
+    "hideSecret": "Сакриј тајну",
+    "showSecret": "Прикажи тајну",
+    "sessionEndedKeepOpen": "Сесија је завршена. Притисните Enter за поновно повезивање."
   },
   "terminalToolbar": {
     "detachTmux": "Одвоји tmux",
@@ -213,6 +234,26 @@
         "label": "Историја команди",
         "description": "Бележи команде покренуте у овом терминалу ради историје и аутоматског довршавања"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare Tunnel",
+        "description": "Усмерите SSH саобраћај преко Cloudflare Zero Trust путем WebSocket-а"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Име хоста тунела",
+        "description": "Јавно име хоста Cloudflare Tunnel-а"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Порт тунела",
+        "description": "HTTPS/WSS порт на Cloudflare ивици"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "ID клијента Cloudflare Access сервисног токена"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Тајна клијента Cloudflare Access сервисног токена"
+      },
       "enableTerminal": {
         "label": "Омогући терминал",
         "description": "Нуди SSH терминал за овај хост."
@@ -320,6 +361,9 @@
         "moveUp": "Помери горе",
         "moveDown": "Помери доле",
         "tmuxHint": "Приказује се само док је tmux повезан"
+      },
+      "keepOpenOnExit": {
+        "label": "Задржи картицу отвореном при излазу"
       }
     },
     "user": {
@@ -490,7 +534,9 @@
     "guac": {
       "permissionLevel": "Ниво дозвола"
     },
-    "deleteGlobalThemeConfirm": "Обрисати тему {{name}}?"
+    "deleteGlobalThemeConfirm": "Обрисати тему {{name}}?",
+    "keepOpenOnExitLabel": "Задржи картицу отвореном при излазу",
+    "keepOpenOnExitDesc": "Када shell изађе или се веза прекине, задржите картицу и њен излаз. Притисните Enter за поновно повезивање."
   },
   "nav": {
     "history": "Историја",
@@ -522,6 +568,7 @@
     "stopRecording": "Заустави снимање"
   },
   "keybindings": {
+    "openLocalTerminal": "Отвори нови локални терминал",
     "copy": "Копирај изабрано",
     "paste": "Налепи",
     "sendControlCode": "Пошаљи Ctrl+слово сигнал",
@@ -641,6 +688,7 @@
     "remoteServerRequired": "Потребан је удаљени сервер. Повежите удаљени сервер у Подешавањима да бисте користили овај тип везе."
   },
   "plugin": {
-    "name": "SSH терминал"
+    "name": "SSH терминал",
+    "description": "SSH терминал сесије са картицама, подељеним екраном, историјом, макрима и локалним терминалом у десктоп апликацији."
   }
 }

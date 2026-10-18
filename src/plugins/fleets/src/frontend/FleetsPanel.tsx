@@ -759,13 +759,42 @@ function FleetShareDialog({
   );
 }
 
-function RunCommandTab({ api, fleetId }: { api: FleetsApi; fleetId: number }) {
+interface FleetSnippet {
+  id: number;
+  name: string;
+  content: string;
+}
+
+export function RunCommandTab({
+  api,
+  fleetId,
+}: {
+  api: FleetsApi;
+  fleetId: number;
+}) {
   const { t } = useTranslation();
   const [command, setCommand] = useState("");
   const [inputs, setInputs] = useState<SnippetInput[]>([]);
   const [inputValues, setInputValues] = useState<Record<string, string>>({});
   const [running, setRunning] = useState(false);
   const [results, setResults] = useState<FleetHostResult[] | null>(null);
+  const [snippets, setSnippets] = useState<FleetSnippet[]>([]);
+
+  // Empty when the snippets plugin is off.
+  useEffect(() => {
+    let cancelled = false;
+    void invokeAction("snippets.list").then((list) => {
+      if (cancelled || !Array.isArray(list)) return;
+      setSnippets(
+        (list as Array<FleetSnippet & { isNote?: boolean }>).filter(
+          (snippet) => !snippet.isNote && typeof snippet.content === "string",
+        ),
+      );
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // The snippets plugin owns $INPUT_n parsing; without it the command
   // runs as typed.
@@ -814,6 +843,26 @@ function RunCommandTab({ api, fleetId }: { api: FleetsApi; fleetId: number }) {
 
   return (
     <div className="flex flex-col gap-3">
+      {snippets.length > 0 && (
+        <Select2
+          value=""
+          aria-label={t("newUi.sidebar.fleets.useSnippet")}
+          onChange={(e) => {
+            const picked = snippets.find(
+              (snippet) => String(snippet.id) === e.target.value,
+            );
+            if (picked) setCommand(picked.content);
+          }}
+          className="h-8 w-full px-2.5 text-xs border border-border bg-background hover:bg-muted/40 transition-colors"
+        >
+          <option value="">{t("newUi.sidebar.fleets.useSnippet")}</option>
+          {snippets.map((snippet) => (
+            <option key={snippet.id} value={String(snippet.id)}>
+              {snippet.name}
+            </option>
+          ))}
+        </Select2>
+      )}
       <Textarea
         value={command}
         onChange={(e) => setCommand(e.target.value)}

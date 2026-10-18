@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Συνδεθείτε σε hosts πίσω από ένα Cloudflare Tunnel χρησιμοποιώντας το ενσωματωμένο WebSocket transport, χωρίς να ανοίξετε το raw port 22 στο δημόσιο διαδίκτυο.",
+    "enableCloudflareTunnel": "Ενεργοποίηση Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "Κατευθύνετε την κίνηση SSH μέσω του Cloudflare Zero Trust (WSS) χρησιμοποιώντας τη κύρια διεύθυνση του host αντί για άμεσες TCP sockets.",
+    "cloudflareTunnelHostname": "Hostname Tunnel",
+    "cloudflareTunnelHostnameDesc": "Δημόσιο domain που κατευθύνεται στην υπηρεσία SSH origin σας στο Cloudflare Tunnel (αφήστε κενό για να χρησιμοποιηθεί η κύρια διεύθυνση του host).",
+    "cloudflareTunnelPort": "Θύρα Tunnel",
+    "cloudflareTunnelPortDesc": "Θύρα HTTPS/WSS στο Cloudflare edge (προεπιλογή είναι η 443).",
+    "cloudflareTunnelClientId": "Service Token Client ID",
+    "cloudflareTunnelClientIdDesc": "Προαιρετική κεφαλίδα CF-Access-Client-Id. Απαιτείται μόνο εάν η πολιτική Cloudflare Access Zero Trust επιβάλλει Service Tokens.",
+    "cloudflareTunnelClientSecret": "Μυστικό πελάτη Service Token",
+    "cloudflareTunnelClientSecretDesc": "Προαιρετική κεφαλίδα CF-Access-Client-Secret για την ταυτοποίηση Cloudflare Access.",
     "clipboardHttpWarning": "Αδυναμία ανάγνωσης του clipboard. Ορισμένοι περιηγητές περιορίζουν την πρόσβαση στο clipboard εκτός HTTPS - δοκιμάστε το Ctrl+V αντί για αυτό, ή εξυπηρετήστε το Termix μέσω HTTPS.",
     "connecting": "Σύνδεση...",
     "connectionLost": "Η σύνδεση χάθηκε",
@@ -85,7 +97,16 @@
     "localShell": "Τοπικό shell τερματικού",
     "autocompleteHintComplete": "Tab ή Enter για ολοκλήρωση",
     "autocompleteHintNavigate": "↑↓ για πλοήγηση",
-    "autocompleteHintClose": "Esc για κλείσιμο"
+    "autocompleteHintClose": "Esc για κλείσιμο",
+    "cloudflareTunnelClientSecretPlaceholder": "Προαιρετικό μυστικό service token",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Νέο μυστικό service token",
+    "secretSaved": "Αποθηκεύτηκε",
+    "secretReplace": "Αντικατάσταση",
+    "secretClear": "Εκκαθάριση",
+    "secretCancel": "Ακύρωση",
+    "hideSecret": "Απόκρυψη μυστικού",
+    "showSecret": "Εμφάνιση μυστικού",
+    "sessionEndedKeepOpen": "Η συνεδρία τερματίστηκε. Πατήστε Enter για επανασύνδεση."
   },
   "terminalToolbar": {
     "detachTmux": "Αποσύνδεση tmux",
@@ -210,6 +231,26 @@
         "label": "Ιστορικό εντολών",
         "description": "Καταγραφή των εντολών που εκτελούνται σε αυτόν τον τερματικό για ιστορικό και αυτόματη συμπλήρωση"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Σήραγγα Cloudflare",
+        "description": "Κατεύθυνση της κίνησης SSH μέσω του Cloudflare Zero Trust μέσω WebSocket"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Όνομα υπολογιστή σήραγγας",
+        "description": "Δημόσιο όνομα υπολογιστή της σήραγγας Cloudflare"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Θύρα σήραγγας",
+        "description": "Θύρα HTTPS/WSS στο άκρο του Cloudflare"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Client ID του Service Token πρόσβασης Cloudflare"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Μυστικό πελάτη (Client Secret) για το Cloudflare Access Service Token"
+      },
       "enableTerminal": {
         "label": "Ενεργοποίηση τερματικού",
         "description": "Προσφορά SSH τερματικού για αυτόν τον host."
@@ -317,6 +358,9 @@
         "moveUp": "Μετακίνηση πάνω",
         "moveDown": "Μετακίνηση κάτω",
         "tmuxHint": "Εμφανίζεται μόνο όταν το tmux είναι συνδεδεμένο"
+      },
+      "keepOpenOnExit": {
+        "label": "Διατήρηση ανοιχτής καρτέλας κατά την έξοδο"
       }
     },
     "user": {
@@ -487,7 +531,9 @@
     "guac": {
       "permissionLevel": "Επίπεδο Άδειας"
     },
-    "deleteGlobalThemeConfirm": "Διαγραφή του θέματος {{name}};"
+    "deleteGlobalThemeConfirm": "Διαγραφή του θέματος {{name}};",
+    "keepOpenOnExitLabel": "Διατήρηση ανοιχτής καρτέλας κατά την έξοδο",
+    "keepOpenOnExitDesc": "Όταν το shell τερματίσει ή η σύνδεση κλείσει, διατηρήστε την καρτέλα και την έξοδό της. Πατήστε Enter για επανασύνδεση."
   },
   "nav": {
     "history": "Ιστορικό",
@@ -517,6 +563,7 @@
     "stopRecording": "Διακοπή εγγραφής"
   },
   "keybindings": {
+    "openLocalTerminal": "Άνοιγμα νέου Τοπικού Τερματικού",
     "copy": "Αντιγραφή επιλογής",
     "paste": "Επικόλληση",
     "sendControlCode": "Αποστολή σήματος Ctrl+γράμμα",
@@ -635,6 +682,7 @@
     "remoteServerRequired": "Απαιτείται απομακρυσμένος διακομιστής. Συνδέστε έναν απομακρυσμένο διακομιστή στις Ρυθμίσεις για να χρησιμοποιήσετε αυτόν τον τύπο σύνδεσης."
   },
   "plugin": {
-    "name": "Τερματικός SSH"
+    "name": "Τερματικός SSH",
+    "description": "Σεσόν τερματικού SSH με καρτέλες, χωρισμένη οθόνη, ιστορικό, μακροεντολές και τοπικό τερματικό στην εφαρμογή επιφάνειας εργασίας."
   }
 }

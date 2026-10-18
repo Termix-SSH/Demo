@@ -23,6 +23,18 @@
         "title": "Sdílet API klíč",
         "description": "Ostatní funkce mohou používat uložený API klíč AI, aniž by ho viděly."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Spouštět příkazy na hostitelích pomocí AI asistenta",
+        "description": "Umožněte asistentovi spouštět libovolné shell příkazy na vybraných hostitelích. Ve výchozím nastavení pouze pro administrátory."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Zobrazit využití AI všemi uživateli",
+        "description": "Zobrazte tokeny spotřebované AI voláními všech uživatelů, nejen svými vlastními. Ve výchozím nastavení pouze pro administrátory."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Povolené soukromé AI servery",
         "description": "Servery ve vaší soukromé síti, na které mohou uživatelé namířit poskytovatele, například vlastní Ollama. Uveďte jeden server na řádek."
+      },
+      "opsConcurrency": {
+        "label": "Paralelní hostitelé AI asistenta",
+        "description": "Počet hostitelů, na kterých se příkaz asistenta spouští současně."
+      },
+      "opsCommandTimeout": {
+        "label": "Časový limit příkazu AI asistenta (sekundy)",
+        "description": "Jak dlouho může příkaz na hostiteli běžet, než je ukončen. Asistent může požádat o maximálně 600 sekund."
+      },
+      "opsOutputLimit": {
+        "label": "Výstup AI asistenta na hostitele (znaky)",
+        "description": "Jaká část výstupu každého hostitele je uložena. Delší výstupy si zachovávají začátek a konec."
+      },
+      "autoOpsPaused": {
+        "label": "Pozastavit automatické AI operace",
+        "description": "Zastaví všechny běžící AI úlohy a schválené plány a odmítne nové, dokud není znovu vypnuto."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "AI úlohy na automatizaci za hodinu",
+        "description": "Další spouštěče ve stejné hodině jsou přeskočeny."
+      },
+      "autoOpsRunTokens": {
+        "label": "Rozpočet tokenů na AI úlohu",
+        "description": "Úloha, která spotřebuje tolik tokenů, je zastavena a nahlasuje, co našla."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Denní rozpočet AI tokenů na uživatele",
+        "description": "Jakmile uživatel dnes (UTC) spotřebuje tolik tokenů, jeho AI úlohy jsou přeskočeny nebo zastaveny."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "Povolit AI asistenta",
         "description": "Povolit AI asistentovi pomáhat v terminálu tohoto hostitele. Ve výchozím nastavení vypnuto, stále vyžaduje povolenou AI pro váš účet."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Předvolby automatických operací"
+      }
     }
   },
   "ai": {
-    "title": "Asistent",
     "send": "Odeslat",
     "stop": "Zastavit",
     "save": "Uložit",
@@ -58,10 +102,9 @@
     "running": "probíhá",
     "approve": "Schválit",
     "reject": "Odmítnout",
-    "inputPlaceholder": "Zeptejte se na své servery nebo popište změnu k návrhu",
     "selectProvider": "Vyberte poskytovatele",
-    "providerSettings": "Nastavení poskytovatele",
     "addProvider": "Přidat poskytovatele",
+    "manageModels": "Spravovat modely",
     "editProvider": "Upravit poskytovatele",
     "removeProvider": "Odebrat poskytovatele",
     "providerType": "Poskytovatel",
@@ -95,22 +138,32 @@
     "modelCustom": "Zadejte název modelu",
     "modelRefresh": "Obnovit seznam",
     "modelPlaceholder": "Vyberte nebo zadejte model",
-    "attachHint": "Zadejte @ pro odkaz na hostitele, úryvek nebo automatizaci. Změny jsou navrženy k vašemu schválení.",
     "runCommandTitle": "Spustit příkaz",
     "assistant": "AI asistent",
     "terminalPanelEmpty": "Zeptejte se asistenta na tohoto hostitele. Všechno, co mění stav, vyžaduje nejprve vaše schválení.",
     "terminalPanelPlaceholder": "Zeptejte se na tohoto hostitele...",
-    "noProvidersConfigured": "Zatím není nakonfigurován žádný AI poskytovatel. Přidejte ho na kartě AI asistent.",
+    "noProvidersConfigured": "Zatím není nakonfigurován žádný poskytovatel AI. Přidejte jej v Nastavení.",
     "runsInOpenTerminal": "Běží ve vaší otevřené relaci terminálu.",
     "runInTerminal": "Spustit",
     "terminalContextPrefill": "Zde je výstup mého terminálu:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Umožněte ostatním funkcím používat váš API klíč AI poskytovatele pro jejich vlastní požadavky. Klíč se nikdy nekopíruje a můžete toto kdykoli zrušit."
     },
-    "removeProviderConfirm": "Odebrat poskytovatele {{name}}?"
+    "removeProviderConfirm": "Odebrat poskytovatele {{name}}?",
+    "contextWindows": "Kontextové okno pro každý model",
+    "contextWindowsHint": "Načtěte hodnotu od poskytovatele, pokud ji uvádí. Zadejte počet tokenů pro přepsání hodnoty pro konkrétní model, nebo pole nechte prázdné pro použití hodnoty od poskytovatele. Aktualizace se znovu zeptá poskytovatele.",
+    "contextWindowValue": "Kontextové okno: {{tokens}} ({{source}})",
+    "contextOverride": "Přepsání kontextového okna pro {{model}}",
+    "contextSourceOverride": "nastaveno vámi",
+    "contextSourceProvider": "uvádí poskytovatel",
+    "contextSourceGuess": "odvozeno z názvu modelu",
+    "contextSourceDefault": "výchozí pro neznámé modely",
+    "contextLoadFailed": "Nelze načíst kontextová okna",
+    "contextRefresh": "Obnovit",
+    "contextWindowInvalid": "Zadejte velikost kontextového okna jako celé číslo tokenů, minimálně 1024."
   },
   "nav": {
-    "ai": "AI"
+    "ai": "AI asistent"
   },
   "onboarding": {
     "aiTitle": "AI asistent",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Zapnout",
     "aiEnableDesc": "Přidá asistenta, který čte vaše nastavení a navrhuje změny, které schválíte. Vyžaduje poskytovatele, který dodáte, například místní Ollama.",
     "aiNote": "Nic se nikam neposílá, dokud nepřidáte poskytovatele a nepošlete zprávu."
-  },
-  "hosts": {
-    "docsLink": "Zobrazit dokumentaci"
   },
   "agents": {
     "working": "Pracuje...",
@@ -215,6 +265,284 @@
     "emptyTranscript": "Odešlete zprávu pro spuštění agenta."
   },
   "plugin": {
-    "name": "AI Asistent"
+    "name": "AI Asistent",
+    "description": "AI asistent, který čte vaše nastavení a navrhuje změny k vašemu schválení."
+  },
+  "ops": {
+    "searchHosts": "Hledat hostitele",
+    "selectedCount": "{{count}} vybráno",
+    "clear": "Vymazat",
+    "fleets": "Fleety",
+    "folders": "Složky",
+    "tags": "Štítky",
+    "allHosts": "Všechny hosty",
+    "noHosts": "Žádní hosté",
+    "newConversation": "Nová konverzace",
+    "sendHint_one": "Spustí se na {{count}} hostovi. Příkazy se spustí bez předchozího dotazu.",
+    "sendHint_few": "Spustí se na {{count}} hostech. Příkazy se spustí bez předchozího dotazu.",
+    "sendHint_many": "Spustí se na {{count}} hostech. Příkazy se spustí bez předchozího dotazu.",
+    "sendHint_other": "Spustí se na {{count}} hostech. Příkazy se spustí bez předchozího dotazu.",
+    "runCommand": "Spustit příkaz",
+    "hostFacts": "Informace o hostovi",
+    "hostCount_one": "{{count}} host",
+    "hostCount_few": "{{count}} hosté",
+    "hostCount_many": "{{count}} hostů",
+    "hostCount_other": "{{count}} hostů",
+    "succeeded": "{{count}} v pořádku",
+    "failed": "{{count}} selhalo",
+    "exitCode": "kód ukončení {{code}}",
+    "timedOut": "vypršel časový limit",
+    "stopped": "zastaveno",
+    "notRun": "nespouštěno",
+    "cached": "uloženo v mezipaměti",
+    "duration": "{{seconds}} s",
+    "noOutput": "(žádný výstup)"
+  },
+  "assistant": {
+    "title": "AI asistent",
+    "moveHint": "Tažením přesuňte. Dvojklikem přichyťte k okraji.",
+    "toggle": "Zobrazit/skrýt AI asistenta",
+    "close": "Zavřít",
+    "dock": "Připnout vpravo",
+    "float": "Plovoucí",
+    "openTab": "Otevřít plný pohled",
+    "history": "Konverzace",
+    "noConversations": "Zatím žádné konverzace",
+    "untitled": "Bez názvu",
+    "deleteConversation": "Smazat konverzaci",
+    "deleteConfirm": "Smazat tuto konverzaci?",
+    "emptyTitle": "Zeptejte se nebo změňte cokoliv v Termixu",
+    "emptyHint": "Asistent pracuje za vás prostřednictvím Termix CLI a spouští příkazy na vašich cílových hostitelích. Zadejte @ pro přidání hostitelů, flotil, složek nebo štítků jako cílů.",
+    "inputPlaceholder": "Zeptejte se asistenta. Zadejte @ pro přidání cílů.",
+    "noTargets": "Žádné cílové hosty. Zadejte @ pro přidání.",
+    "sendHint": "Změny a příkazy se provedou bez předchozího potvrzení.",
+    "removeTarget": "Odebrat {{name}}",
+    "kind": {
+      "host": "Host",
+      "fleet": "Fleet",
+      "folder": "Složka",
+      "tag": "Štítek"
+    },
+    "emptyHintBasic": "Asistent pracuje za vás prostřednictvím Termix CLI s vašimi oprávněními.",
+    "inputPlaceholderBasic": "Zeptejte se asistenta.",
+    "sendHintBasic": "Změny se provedou bez předchozího dotazu.",
+    "thinking": "Přemýšlím",
+    "thinkingActive": "Přemýšlím...",
+    "compacted": "Kontext byl zkrácen: starší zprávy byly shrnuty",
+    "compact": "Zkrátit konverzaci",
+    "nothingToCompact": "Konverzace je zatím příliš krátká na zkrácení.",
+    "contextMeter": "Kontext: {{used}} z {{window}} tokenů použito v poslední žádosti",
+    "contextMeterSource": "Okno je {{source}}.",
+    "contextMeterReserved": "{{tokens}} tokenů je vyhrazeno pro odpověď.",
+    "todayTokens": "Dnes {{tokens}}",
+    "todayTitle": "Tokeny, které jste dnes použili. Kliknutím zobrazíte podrobnosti.",
+    "usage": "Spotřeba tokenů",
+    "conversationTokens": "{{tokens}} tokenů",
+    "openFloating": "Plovoucí panel",
+    "openFloatingHint": "Otevřete asistenta v panelu nad libovolnou stránkou. Stisknutím klávesové zkratky {{shortcut}} jej kdekoli otevřete nebo zavřete.",
+    "shortcutHint": "Stiskněte {{shortcut}} na libovolné stránce pro otevření asistenta v plovoucím panelu."
+  },
+  "usage": {
+    "title": "Spotřeba tokenů",
+    "settingDescription": "Tokeny, které vaše volání AI spotřebovala za posledních 30 dní.",
+    "cardTitle": "Spotřeba tokenů AI",
+    "today": "Dnes",
+    "week": "7 dní",
+    "month": "30 dní",
+    "mine": "Moje",
+    "everyone": "Všichni uživatelé",
+    "mineCaption": "Vaše tokeny napříč všemi AI funkcemi.",
+    "everyoneCaption": "Tokeny napříč všemi uživateli a AI funkcemi.",
+    "byDay": "Za den",
+    "byModel": "Za model",
+    "bySource": "Za funkci",
+    "byUser": "Za uživatele",
+    "model": "Model",
+    "feature": "Funkce",
+    "user": "Uživatel",
+    "calls": "Požadavky",
+    "prompt": "Vstup",
+    "completion": "Výstup",
+    "total": "Celkem",
+    "empty": "Žádné využití AI za posledních 30 dní.",
+    "loadFailed": "Nepodařilo se načíst využití",
+    "estimatedNote": "Některé údaje jsou odhady (přibližně čtyři znaky na token), protože poskytovatel nehlásil své využití.",
+    "source": {
+      "assistant": "Asistent",
+      "terminal": "Panel terminálu",
+      "compaction": "Kompakce"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Asistent",
+    "viewAutoOps": "Auto-ops",
+    "intro": "Auto-ops umožňuje asistentovi kontrolovat vaše hosty autonomně. Automatizace jej spustí podle plánu nebo při výskytu problému, poté vytvoří zprávu nebo navrhne opravu k vašemu schválení. Začněte předvolbou.",
+    "sections": {
+      "tasks": "Úkoly",
+      "approvals": "Schválení",
+      "presets": "Předvolby"
+    },
+    "provider": "Poskytovatel pro úkoly",
+    "providerDefault": "První poskytovatel s výchozím modelem",
+    "model": "Model pro úlohy",
+    "modelDefault": "Výchozí model poskytovatele",
+    "saveModel": "Uložit model",
+    "preferencesHint": "Poskytovatel a model, které používají úlohy na pozadí. Nechte je tak, jak jsou, pokud chcete použít svého výchozího poskytovatele a model.",
+    "task": "Úloha",
+    "tokens": "{{tokens}} tokenů",
+    "tokenUsage": "{{total}} tokenů ({{prompt}} vstup, {{completion}} výstup)",
+    "dryRun": "Testovací spuštění",
+    "trigger": "Spouštěč",
+    "noTasks": "Zatím žádné úlohy",
+    "tasksHint": "Úlohy jsou spuštění automatizací s krokem Ask AI. Povolte předvolbu nebo si vytvořte vlastní v sekci Automatizace: přidejte krok Ask AI do libovolné automatizace. Spuštění se zobrazí zde.",
+    "openAutomations": "Otevřít Automatizace",
+    "browsePresets": "Procházet předvolby",
+    "noApprovals": "Žádné plány nečekají na schválení",
+    "loadFailed": "Nepodařilo se načíst auto-ops",
+    "decideFailed": "Rozhodnutí se nepodařilo uložit",
+    "openConversation": "Otevřít v asistentovi",
+    "approve": "Schválit a spustit",
+    "reject": "Odmítnout",
+    "expires": "Expiruje {{time}}",
+    "enabled": "Povoleno",
+    "updateAvailable": "K dispozici je aktualizace",
+    "shared": "Sdílené",
+    "needsAutomations": "Vyžaduje automatizace",
+    "enableAgain": "Znovu povolit",
+    "deletePreset": "Smazat předvolbu",
+    "autonomy": {
+      "report": "Pouze hlášení",
+      "propose": "Navrhnout plán"
+    },
+    "status": {
+      "running": "Běží",
+      "reported": "Nahlášeno",
+      "proposed": "Čeká na schválení",
+      "approved": "Schváleno",
+      "rejected": "Odmítnuto",
+      "expired": "Vypršelo",
+      "executing": "Probíhá plán",
+      "done": "Hotovo",
+      "failed": "Selhalo",
+      "skipped": "Přeskočeno"
+    },
+    "severity": {
+      "info": "Informace",
+      "warning": "Varování",
+      "critical": "Kritické"
+    },
+    "plan": {
+      "title": "Navrhovaný plán",
+      "commands": "Příkazy",
+      "rationale": "Důvod",
+      "risk": "Riziko",
+      "rollback": "Vrácení zpět",
+      "verify": "Ověření",
+      "progress": "Postup"
+    },
+    "enable": {
+      "title": "Povolit {{name}}",
+      "submit": "Povolit",
+      "name": "Název",
+      "targets": "Hostitelé",
+      "targetAll": "Všichni hostitelé",
+      "targetTrigger": "Hostitel, který akci spustil",
+      "targetHosts": "Vybraní hostitelé",
+      "noHosts": "Vyberte alespoň jednoho hostitele.",
+      "threshold": "Prahová hodnota (%)",
+      "forSeconds": "Po dobu alespoň (sekundy)",
+      "time": "Čas dne",
+      "cron": "Rozvržení (cron)",
+      "dockerEvent": "Událost kontejneru",
+      "dockerEvents": {
+        "exited": "Ukončen",
+        "unhealthy": "Nefunkční",
+        "restarting": "Restartuje se"
+      },
+      "badTime": "Zadejte čas ve formátu HH:MM.",
+      "autonomy": "Co může asistent dělat",
+      "maxRunSeconds": "Časový limit (sekundy)",
+      "runbook": "Pracovní postup",
+      "runbookHint": "Co by měl asistent dělat, popsané běžnými slovy. Nejlepší výsledky dosáhnete v angličtině.",
+      "shared": "Sdílet při uložení jako předvolby",
+      "sharedHint": "Každý, kdo může používat automatické operace, je pak může povolit.",
+      "saveAsPreset": "Uložit jako předvolbu",
+      "savedPreset": "Uloženo",
+      "failed": "Automatizaci se nepodařilo vytvořit",
+      "saveFailed": "Předvolbu se nepodařilo uložit"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Denní kontrola",
+        "description": "Každé ráno v 09:00 kontroluje disky, paměť, zátěž, selhání služeb, kontejnery, certifikáty, aktualizace, čekající restarty a synchronizaci času na všech hostitelích a generuje zprávy podle závažnosti."
+      },
+      "disk-cleanup": {
+        "title": "Úklid místa na disku",
+        "description": "Pokud je disk po dobu 5 minut zaplněn na 85 % nebo více, zjistí, co zabírá místo, a navrhne bezpečný úklid k vašemu schválení. Obchodní data se nikdy nedotkne."
+      },
+      "host-down-triage": {
+        "title": "Zjištění příčiny výpadku hostitele",
+        "description": "Když hostitel přestane být dostupný, zkouší ho z jiných hostitelů a z Proxmoxu a hlásí, zda jde o problém sítě, vypnutý stroj nebo SSH."
+      },
+      "service-failure": {
+        "title": "Selhání služby",
+        "description": "Když začne selhávat kontrola stavu, najde příslušnou systemd jednotku, přečte její stav a protokol a navrhne jednorázový restart k vašemu schválení, pokud to může pomoci. Konfigurace se nikdy nemění."
+      },
+      "container-anomaly": {
+        "title": "Anomalie kontejneru",
+        "description": "Když kontejner skončí, přestane být zdravý nebo se neustále restartuje, přečte jeho stav, návratový kód, protokoly a paměť a navrhne jeho jednorázové spuštění nebo restart k vašemu schválení. Nic se neodstraní."
+      },
+      "resource-overload-cpu": {
+        "title": "Přetížení CPU",
+        "description": "Když zůstává CPU na 95 % nebo více po dobu 15 minut, najde procesy, služby a kontejnery, které za to mohou, a hlásí, co dělat. Nic se nemění."
+      },
+      "resource-overload-memory": {
+        "title": "Přetížení paměti",
+        "description": "Když zůstává paměť na 95 % nebo více po dobu 10 minut, najde, co ji používá, swapování a ukončení procesů z důvodu nedostatku paměti, a hlásí, co dělat. Nic se nemění."
+      },
+      "security-updates-weekly": {
+        "title": "Týdenní bezpečnostní aktualizace",
+        "description": "Každý pondělí v 09:30 vypíše přehled čekajících bezpečnostních aktualizací podle závažnosti, čekajících restartů a balíčků, které je vyžadují, spuštěných a nainstalovaných jader a dnů od poslední aktualizace – vše v jedné tabulce pro všechny hosty."
+      },
+      "cert-expiry-weekly": {
+        "title": "Týdenní vypršení platnosti certifikátů",
+        "description": "Každý pondělí v 09:45 zkontroluje datum vypršení platnosti certifikátů Let's Encrypt, webových serverů a Kubernetes na všech hostech a upozorní na ty, jejichž platnost končí do 30 dnů, případně kriticky do 7 dnů."
+      }
+    },
+    "report": {
+      "verdict": "Závěr",
+      "evidence": "Důkazy",
+      "actionsTaken": "Provedené akce",
+      "recommendations": "Doporučení",
+      "nothingFound": "Před ukončením běhu nebylo nic nalezeno.",
+      "noChanges": "Nebyly provedeny žádné změny.",
+      "openConversation": "Otevřete konverzaci v asistentovi, abyste viděli každý krok a mohli položit doplňující otázky.",
+      "noFurtherAction": "Žádná další akce není potřeba.",
+      "stoppedBudgetRun": "Zastaveno: tento běh spotřeboval svůj rozpočet {{tokens}} tokenů.",
+      "stoppedBudgetDaily": "Zastaveno: denní rozpočet vlastníka {{tokens}} tokenů je vyčerpán.",
+      "stoppedDeadline": "Zastaveno: byl dosažen časový limit automatizace.",
+      "stoppedPaused": "Zastaveno: správce pozastavil AI auto-ops.",
+      "stoppedAborted": "Zastaveno: běh automatizace byl zrušen.",
+      "providerFailed": "Poskytovatel AI selhal: {{error}}",
+      "noHosts": "Žádný z cílových hostitelů není přístupný vlastníkem automatizace.",
+      "noProvider": "Vlastník automatizace nemá žádného poskytovatele AI s modelem pro provádění úloh.",
+      "needsOpsUse": "Vlastník automatizace nemá oprávnění ai.ops.use.",
+      "assistantOff": "AI asistent je pro vlastníka automatizace vypnutý.",
+      "skippedPaused": "AI auto-ops je správce pozastaven.",
+      "skippedDuplicate": "Úloha pro stejnou automatizaci a hostitele stále běží nebo čeká na schválení.",
+      "skippedRate": "Tato automatizace již v posledních hodině spustila {{count}} AI úloh.",
+      "hostNotRun": "Nespouštěno: plán byl zastaven.",
+      "hostNoAccess": "Nespouštěno: vlastník se již nemůže připojit k tomuto hostiteli.",
+      "hostUnreachable": "Nespouštěno: hostitel nebyl dosažitelný.",
+      "hostStopped": "Zastaveno u prvního neúspěšného příkazu.",
+      "executionDone": "Schválený plán běžel na {{count}} hostiteli/ch a všechny příkazy i kontroly byly úspěšné.",
+      "executionFailed": "Schválený plán nedokončil na všech hostitelích.",
+      "executionStopped": "Schválený plán byl zastaven před dokončením.",
+      "approvedBy": "Schválený plán byl proveden podle zadání. Schválil uživatel {{user}}.",
+      "noticeReported": "AI zpráva: {{title}}",
+      "noticeProposed": "AI plán čeká na schválení: {{title}}",
+      "noticeExecuted": "AI plán byl proveden: {{title}}",
+      "noticeFailed": "AI úkol selhal: {{title}}"
+    }
   }
 }

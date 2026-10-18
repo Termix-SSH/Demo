@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Prisijunkite prie serverių, esančių už Cloudflare Tunnel, naudodami natyvų WebSocket perdavimą, neatidarydami 22 prievado viešajam internetui.",
+    "enableCloudflareTunnel": "Įjungti Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "Maršrutizuokite SSH srautą per Cloudflare Zero Trust (WSS) naudodami pagrindinį serverio adresą, o ne tiesioginius TCP lizdus.",
+    "cloudflareTunnelHostname": "Tunelio pavadinimas",
+    "cloudflareTunnelHostnameDesc": "Viešas domenas, nukreiptas į jūsų SSH kilmės tarnybą Cloudflare Tunnel (palikite tuščią, jei norite naudoti pagrindinį serverio adresą).",
+    "cloudflareTunnelPort": "Tunelio prievadas",
+    "cloudflareTunnelPortDesc": "Cloudflare HTTPS/WSS prievadas (numatytasis – 443).",
+    "cloudflareTunnelClientId": "Tarnybos žetono kliento ID",
+    "cloudflareTunnelClientIdDesc": "Pasirenkama CF-Access-Client-Id antraštė. Reikalinga tik tada, kai Cloudflare Access Zero Trust politika reikalauja tarnybos žetonų.",
+    "cloudflareTunnelClientSecret": "Paslaugos žetono kliento slaptažodis",
+    "cloudflareTunnelClientSecretDesc": "Pasirinktinė CF-Access-Client-Secret antraštė Cloudflare Access autentifikacijai.",
     "clipboardHttpWarning": "Nepavyko perskaityti iškarpinės. Kai kurie naršyklės riboja iškarpinės prieigą ne HTTPS režimu – bandykite naudoti Ctrl+V arba paleiskite Termix per HTTPS.",
     "connecting": "Jungiamasi...",
     "connectionLost": "Ryšys prarastas",
@@ -89,7 +101,16 @@
     "localShell": "Vietinis terminalo shell",
     "autocompleteHintComplete": "Tab arba Enter, kad užbaigtumėte",
     "autocompleteHintNavigate": "↑↓ naršymui",
-    "autocompleteHintClose": "Esc, kad uždarytumėte"
+    "autocompleteHintClose": "Esc, kad uždarytumėte",
+    "cloudflareTunnelClientSecretPlaceholder": "Pasirinktinis paslaugos žetono slaptažodis",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Naujas paslaugos žetono slaptažodis",
+    "secretSaved": "Išsaugota",
+    "secretReplace": "Pakeisti",
+    "secretClear": "Išvalyti",
+    "secretCancel": "Atšaukti",
+    "hideSecret": "Slėpti slaptažodį",
+    "showSecret": "Rodyti slaptažodį",
+    "sessionEndedKeepOpen": "Sesija baigta. Paspauskite Enter, kad prisijungtumėte iš naujo."
   },
   "terminalToolbar": {
     "detachTmux": "Atsijungti nuo tmux",
@@ -216,6 +237,26 @@
         "label": "Komandų istorija",
         "description": "Įrašyti šio terminalo vykdytas komandas istorijai ir automatiniam užpildymui"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare tunelis",
+        "description": "Maršrutuokite SSH srautą per Cloudflare Zero Trust naudojant WebSocket"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Tunelio pavadinimas",
+        "description": "Cloudflare tunelio viešasis pavadinimas"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Tunelio prievadas",
+        "description": "Cloudflare krašto HTTPS/WSS prievadas"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Cloudflare Access paslaugos žetono kliento ID"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Cloudflare Access paslaugos žetono kliento slaptafrasė"
+      },
       "enableTerminal": {
         "label": "Įgalinti terminalą",
         "description": "Siūlyti SSH terminalą šiam serveriui."
@@ -323,6 +364,9 @@
         "moveUp": "Perkelti aukštyn",
         "moveDown": "Perkelti žemyn",
         "tmuxHint": "Rodoma tik prijungus tmux"
+      },
+      "keepOpenOnExit": {
+        "label": "Išėjus palikti skirtuką atidarytą"
       }
     },
     "user": {
@@ -493,7 +537,9 @@
     "guac": {
       "permissionLevel": "Leidimų lygis"
     },
-    "deleteGlobalThemeConfirm": "Ištrinti temą {{name}}?"
+    "deleteGlobalThemeConfirm": "Ištrinti temą {{name}}?",
+    "keepOpenOnExitLabel": "Išėjus palikti skirtuką atidarytą",
+    "keepOpenOnExitDesc": "Kai komandinė eilutė baigia darbą arba jungtis nutrūksta, palikti skirtuką ir jo išvestį. Paspauskite Enter, kad prisijungtumėte iš naujo."
   },
   "nav": {
     "history": "Istorija",
@@ -527,6 +573,7 @@
     "stopRecording": "Sustabdyti įrašymą"
   },
   "keybindings": {
+    "openLocalTerminal": "Atidaryti naują vietinę komandinę eilutę",
     "copy": "Kopijuoti pasirinkimą",
     "paste": "Įklijuoti",
     "sendControlCode": "Siųsti Ctrl+raidės signalą",
@@ -647,6 +694,7 @@
     "remoteServerRequired": "Reikalingas nuotolinis serveris. Nustatymuose prijunkite nuotolinį serverį, kad galėtumėte naudoti šį ryšio tipą."
   },
   "plugin": {
-    "name": "SSH terminalas"
+    "name": "SSH terminalas",
+    "description": "SSH terminalo sesijos su skirtukais, padalintu ekranu, istorija, makrokomandomis ir vietine komandine eilute darbalaukio programoje."
   }
 }

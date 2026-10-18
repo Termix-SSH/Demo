@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Povežite se s hostovima iza Cloudflare Tunela koristeći nativni WebSocket transport bez otvaranja sirovog porta 22 za javni internet.",
+    "enableCloudflareTunnel": "Omogući Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "Usmjerite SSH promet kroz Cloudflare Zero Trust (WSS) koristeći glavnu adresu hosta umjesto izravnih TCP soketa.",
+    "cloudflareTunnelHostname": "Naziv tunela",
+    "cloudflareTunnelHostnameDesc": "Javna domena usmjerena prema vašoj SSH izvornoj usluzi u Cloudflare Tunelu (ostavite prazno za korištenje glavne adrese hosta).",
+    "cloudflareTunnelPort": "Port tunela",
+    "cloudflareTunnelPortDesc": "HTTPS/WSS port na Cloudflare rubnoj mreži (zadano je 443).",
+    "cloudflareTunnelClientId": "ID klijenta servisnog tokena",
+    "cloudflareTunnelClientIdDesc": "Opcionalna CF-Access-Client-Id zaglavlja. Potrebno samo ako Cloudflare Access Zero Trust politika zahtijeva servisne tokene.",
+    "cloudflareTunnelClientSecret": "Tajni klijenta za servisni token",
+    "cloudflareTunnelClientSecretDesc": "Opcionalna zaglavlja CF-Access-Client-Secret za Cloudflare Access autentifikaciju.",
     "clipboardHttpWarning": "Ne mogu pročitati međuspremnik. Neki preglednici ograničavaju pristup međuspremniku izvan HTTPS-a – pokušajte s Ctrl+V ili pokrenite Termix preko HTTPS-a.",
     "connecting": "Povezivanje...",
     "connectionLost": "Veza prekinuta",
@@ -87,7 +99,16 @@
     "localShell": "Lokalni terminalni shell",
     "autocompleteHintComplete": "Tab ili Enter za dovršetak",
     "autocompleteHintNavigate": "↑↓ za navigaciju",
-    "autocompleteHintClose": "Esc za zatvaranje"
+    "autocompleteHintClose": "Esc za zatvaranje",
+    "cloudflareTunnelClientSecretPlaceholder": "Opcionalna tajna servisnog tokena",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Nova tajna servisnog tokena",
+    "secretSaved": "Spremljeno",
+    "secretReplace": "Zamijeni",
+    "secretClear": "Očisti",
+    "secretCancel": "Otkaži",
+    "hideSecret": "Sakrij tajnu",
+    "showSecret": "Prikaži tajnu",
+    "sessionEndedKeepOpen": "Sesija je završena. Pritisnite Enter za ponovno povezivanje."
   },
   "terminalToolbar": {
     "detachTmux": "Odspoji tmux",
@@ -213,6 +234,26 @@
         "label": "Povijest naredbi",
         "description": "Snimaj naredbe izvršene u ovom terminalu za povijest i automatsko dovršavanje"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare Tunnel",
+        "description": "Usmjerite SSH promet preko Cloudflare Zero Trusta putem WebSocketa"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Naziv hosta tunela",
+        "description": "Javni naziv hosta Cloudflare Tunela"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Port tunela",
+        "description": "Cloudflare edge HTTPS/WSS port"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Cloudflare Access Service Token Client ID"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Tajni klijent za Cloudflare Access Service Token"
+      },
       "enableTerminal": {
         "label": "Omogući terminal",
         "description": "Nudi SSH terminal za ovaj host."
@@ -320,6 +361,9 @@
         "moveUp": "Pomakni gore",
         "moveDown": "Pomakni dolje",
         "tmuxHint": "Prikazuje se samo dok je tmux povezan"
+      },
+      "keepOpenOnExit": {
+        "label": "Ostavi karticu otvorenu pri izlasku"
       }
     },
     "user": {
@@ -490,7 +534,9 @@
     "guac": {
       "permissionLevel": "Razina dozvole"
     },
-    "deleteGlobalThemeConfirm": "Izbrisati temu {{name}}?"
+    "deleteGlobalThemeConfirm": "Izbrisati temu {{name}}?",
+    "keepOpenOnExitLabel": "Ostavi karticu otvorenu pri izlasku",
+    "keepOpenOnExitDesc": "Kada se shell zatvori ili veza prekinе, zadrži karticu i njezin izlaz. Pritisni Enter za ponovno povezivanje."
   },
   "nav": {
     "history": "Povijest",
@@ -522,6 +568,7 @@
     "stopRecording": "Zaustavi snimanje"
   },
   "keybindings": {
+    "openLocalTerminal": "Otvori novi lokalni terminal",
     "copy": "Kopiraj odabrano",
     "paste": "Zalijepi",
     "sendControlCode": "Pošalji Ctrl+znak signal",
@@ -641,6 +688,7 @@
     "remoteServerRequired": "Potreban je udaljeni poslužitelj. Povežite udaljeni poslužitelj u Postavkama da biste koristili ovu vrstu veze."
   },
   "plugin": {
-    "name": "SSH terminal"
+    "name": "SSH terminal",
+    "description": "SSH terminalne sesije s karticama, podijeljenim zaslonom, poviješću, makrama i lokalnim terminalom u desktop aplikaciji."
   }
 }

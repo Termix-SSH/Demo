@@ -23,6 +23,18 @@
         "title": "Az API-kulcs megosztása",
         "description": "Más funkciók használhatják a tárolt AI API-kulcsot anélkül, hogy látnák azt."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Parancsok futtatása a gazdagépeken az AI-asszisztenssel",
+        "description": "Hagyja, hogy az asszisztens futtasson bármilyen shell-parancsot a kiválasztott gazdagépeken. Alapértelmezetten csak adminisztrátorok számára elérhető."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Mindenki AI-használatának megtekintése",
+        "description": "Tekintse meg, hány tokent használt fel minden felhasználó AI-hívása, nem csak a sajátját. Alapértelmezetten csak adminisztrátorok számára elérhető."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Engedélyezett privát AI hosztek",
         "description": "A privát hálózaton lévő hosztek, amelyekre a felhasználók irányíthatnak egy szolgáltatót, például egy saját üzemeltetésű Ollama-ra. Írd soronként egy hosztot."
+      },
+      "opsConcurrency": {
+        "label": "AI-asszisztens párhuzamos gazdagépek",
+        "description": "Hány gazdagépen futtathat egyszerre egy asszisztens-parancs."
+      },
+      "opsCommandTimeout": {
+        "label": "AI-asszisztens parancs időtúllépése (másodperc)",
+        "description": "Mennyi ideig futtatható egy parancs egy gazdagépen, mielőtt leállítják. Az asszisztens maximum 600 másodpercet kérhet."
+      },
+      "opsOutputLimit": {
+        "label": "AI-asszisztens kimenet gazdagépenként (karakter)",
+        "description": "Mennyi részét tartja meg minden gazdagép kimenetének. A hosszabb kimenetből az elejét és a végét őrzi meg."
+      },
+      "autoOpsPaused": {
+        "label": "AI automatikus műveletek szüneteltetése",
+        "description": "Megállítja az összes futó AI feladatot és jóváhagyott tervet, és elutasítja az újakat, amíg újra nem kapcsolják be."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "AI feladatok száma automatizálásonként óránként",
+        "description": "Az ugyanazon órán belüli további indítások kihagyásra kerülnek."
+      },
+      "autoOpsRunTokens": {
+        "label": "Token-költségkeret AI feladatonként",
+        "description": "Egy feladat, amely eléri ezt a token-számot, leáll, és jelentést készít a talált eredményekről."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Napi AI token-költségkeret felhasználónként",
+        "description": "Amint egy felhasználó eléri ezt a napi token-számot (UTC szerint), az AI feladatai kihagyásra vagy leállításra kerülnek."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "AI Asszisztens engedélyezése",
         "description": "Lehetővé teszi az AI asszisztens segítségnyújtását ebben a hosztban. Alapértelmezés szerint ki van kapcsolva, és még mindig engedélyezve kell lennie az AI-nak a fiókodban."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Automatikus műveletek beállításai"
+      }
     }
   },
   "ai": {
-    "title": "Asszisztens",
     "send": "Küldés",
     "stop": "Megállítás",
     "save": "Mentés",
@@ -58,10 +102,9 @@
     "running": "fut",
     "approve": "Jóváhagyás",
     "reject": "Elutasítás",
-    "inputPlaceholder": "Kérdezz a szervereidről, vagy írj le egy javasolt módosítást",
     "selectProvider": "Válassz egy szolgáltatót",
-    "providerSettings": "Szolgáltató beállításai",
     "addProvider": "Szolgáltató hozzáadása",
+    "manageModels": "Modellek kezelése",
     "editProvider": "Szolgáltató szerkesztése",
     "removeProvider": "Szolgáltató eltávolítása",
     "providerType": "Szolgáltató",
@@ -95,22 +138,32 @@
     "modelCustom": "Adjon meg egy modellnevet",
     "modelRefresh": "Lista frissítése",
     "modelPlaceholder": "Válasszon vagy írjon be egy modellt",
-    "attachHint": "Írja be a @ jelet egy gazdagép, kódrészlet vagy automatizálás hivatkozásához. A változtatásokat jóváhagyásra javasolja.",
     "runCommandTitle": "Parancs futtatása",
     "assistant": "AI-asszisztens",
     "terminalPanelEmpty": "Kérdezzen az asszisztensnél erről a gazdagépről. Minden állapotot módosító művelethez először az Ön jóváhagyása szükséges.",
     "terminalPanelPlaceholder": "Kérdezzen erről a gazdagépről...",
-    "noProvidersConfigured": "Még nincs konfigurált AI-szolgáltató. Adjon hozzá egyet az AI-asszisztens fülön.",
+    "noProvidersConfigured": "Még nincs beállítva mesterséges intelligencia szolgáltató. Adj hozzá egyet a Beállításokban.",
     "runsInOpenTerminal": "A megnyitott terminálmunkamenetben fut.",
     "runInTerminal": "Futtatás",
     "terminalContextPrefill": "Íme a terminál kimenete:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Engedélyezze, hogy más funkciók is használják az AI-szolgáltató API-kulcsát a saját kéréseikhez. A kulcsot soha nem másoljuk, és bármikor visszavonhatja ezt a jogosultságot."
     },
-    "removeProviderConfirm": "Törli a(z) {{name}} szolgáltatót?"
+    "removeProviderConfirm": "Törli a(z) {{name}} szolgáltatót?",
+    "contextWindows": "Kontextusablak modellenként",
+    "contextWindowsHint": "Olvassa be a szolgáltatótól, ha azt jelzi. Adjon meg egy token-számot a felülírásához egy modellnél, vagy hagyja üresen a szolgáltató által jelzett érték használatához. A frissítés újból kérdezi meg a szolgáltatót.",
+    "contextWindowValue": "Kontextusablak: {{tokens}} ({{source}})",
+    "contextOverride": "Kontextusablak felülírása a(z) {{model}} modellhez",
+    "contextSourceOverride": "általad beállítva",
+    "contextSourceProvider": "a szolgáltató által jelzett",
+    "contextSourceGuess": "a modell nevéből becsült",
+    "contextSourceDefault": "ismeretlen modellek alapértelmezett értéke",
+    "contextLoadFailed": "Nem sikerült beolvasni a kontextusablakokat",
+    "contextRefresh": "Frissítés",
+    "contextWindowInvalid": "Adja meg a kontextusablakot egész token számként, legalább 1024."
   },
   "nav": {
-    "ai": "AI"
+    "ai": "AI-asszisztens"
   },
   "onboarding": {
     "aiTitle": "AI-asszisztens",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Kapcsolja be",
     "aiEnableDesc": "Egy asszisztenst ad hozzá, amely elemzi a beállításait, és javaslatokat tesz, amelyeket Ön jóváhagy. Szükséges egy Ön által biztosított szolgáltató, például egy helyi Ollama.",
     "aiNote": "Semmit nem küldünk sehova, amíg nem ad hozzá egy szolgáltatót és nem küld egy üzenetet."
-  },
-  "hosts": {
-    "docsLink": "Dokumentáció megtekintése"
   },
   "agents": {
     "working": "Folyamatban...",
@@ -215,6 +265,280 @@
     "emptyTranscript": "Küldjön egy üzenetet az ügynök elindításához."
   },
   "plugin": {
-    "name": "AI-asszisztens"
+    "name": "AI-asszisztens",
+    "description": "Egy AI-asszisztens, amely elemzi a beállításait, és javaslatokat tesz, amelyeket jóvá kell hagynia."
+  },
+  "ops": {
+    "searchHosts": "Szerverek keresése",
+    "selectedCount": "{{count}} kiválasztva",
+    "clear": "Törlés",
+    "fleets": "Flották",
+    "folders": "Mappák",
+    "tags": "Címkék",
+    "allHosts": "Minden host",
+    "noHosts": "Nincsenek hostok",
+    "newConversation": "Új beszélgetés",
+    "sendHint_one": "{{count}} hoston fut. A parancsok előzetes jóváhagyás nélkül futnak le.",
+    "sendHint_other": "{{count}} hoston fut. A parancsok előzetes jóváhagyás nélkül futnak le.",
+    "runCommand": "Parancs futtatása",
+    "hostFacts": "Host adatai",
+    "hostCount_one": "{{count}} host",
+    "hostCount_other": "{{count}} host",
+    "succeeded": "{{count}} sikeres",
+    "failed": "{{count}} sikertelen",
+    "exitCode": "kilépési kód: {{code}}",
+    "timedOut": "időtúllépés",
+    "stopped": "leállítva",
+    "notRun": "nem futtatva",
+    "cached": "gyorsítótárazva",
+    "duration": "{{seconds}}s",
+    "noOutput": "(nincs kimenet)"
+  },
+  "assistant": {
+    "title": "AI-asszisztens",
+    "moveHint": "Húzza a mozgatáshoz. Kattintson duplán az oldalra rögzítéshez.",
+    "toggle": "Az AI-asszisztens be- és kikapcsolása",
+    "close": "Bezárás",
+    "dock": "Rögzítés jobbra",
+    "float": "Lebegő",
+    "openTab": "Teljes nézet megnyitása",
+    "history": "Beszélgetések",
+    "noConversations": "Még nincsenek beszélgetések",
+    "untitled": "Névtelen",
+    "deleteConversation": "Beszélgetés törlése",
+    "deleteConfirm": "Törli ezt a beszélgetést?",
+    "emptyTitle": "Kérdezzen vagy módosítson bármit a Termixben",
+    "emptyHint": "Az asszisztens a Termix CLI-n keresztül, az Ön nevében futtat parancsokat a célhostokon. Írjon @ jelet hostok, flották, mappák vagy címkék hozzáadásához célokként.",
+    "inputPlaceholder": "Kérdezzen az asszisztenset. Írjon @ jelet célok hozzáadásához.",
+    "noTargets": "Nincsenek célhostok. Írjon @ jelet néhány hozzáadásához.",
+    "sendHint": "A módosítások és parancsok előzetes jóváhagyás nélkül futnak.",
+    "removeTarget": "{{name}} eltávolítása",
+    "kind": {
+      "host": "Host",
+      "fleet": "Flotta",
+      "folder": "Mappa",
+      "tag": "Címke"
+    },
+    "emptyHintBasic": "Az asszisztens a Termix CLI-n keresztül, az Ön jogosultságaival dolgozik.",
+    "inputPlaceholderBasic": "Kérdezzen az asszisztenset.",
+    "sendHintBasic": "A módosítások előzetes jóváhagyás nélkül futnak.",
+    "thinking": "Gondolkodik",
+    "thinkingActive": "Gondolkodik...",
+    "compacted": "Kontextus tömörítve: a korábbi üzenetek összefoglalva lettek",
+    "compact": "Beszélgetés tömörítése",
+    "nothingToCompact": "A beszélgetés még túl rövid a tömörítéshez.",
+    "contextMeter": "Kontextus: a legutóbbi hívás {{used}}/{{window}} token-t használt",
+    "contextMeterSource": "Az ablak mérete: {{source}}.",
+    "contextMeterReserved": "{{tokens}} token van fenntartva a válaszhoz.",
+    "todayTokens": "Ma: {{tokens}}",
+    "todayTitle": "Ma használt tokenek. Kattintson a részletekért.",
+    "usage": "Token-használat",
+    "conversationTokens": "{{tokens}} token",
+    "openFloating": "Lebegő panel",
+    "openFloatingHint": "Nyissa meg az asszisztenset egy panelen bármelyik oldalon. Nyomja meg a {{shortcut}} billentyűt bárhonnan a megnyitáshoz vagy bezáráshoz.",
+    "shortcutHint": "Nyomja meg a {{shortcut}} billentyűt bármelyik oldalon az asszisztens lebegő panelen történő megnyitásához."
+  },
+  "usage": {
+    "title": "Token-használat",
+    "settingDescription": "Az Ön AI-hívásai által az elmúlt 30 napban használt tokenek.",
+    "cardTitle": "AI token-használat",
+    "today": "Ma",
+    "week": "7 nap",
+    "month": "30 nap",
+    "mine": "Saját",
+    "everyone": "Minden felhasználó",
+    "mineCaption": "Az Ön token-használata minden AI funkcióban.",
+    "everyoneCaption": "Token-használat minden felhasználó és AI funkció szerint.",
+    "byDay": "Naponta",
+    "byModel": "Modellenként",
+    "bySource": "Funkciónként",
+    "byUser": "Felhasználónként",
+    "model": "Modell",
+    "feature": "Funkció",
+    "user": "Felhasználó",
+    "calls": "Hívások",
+    "prompt": "Bemenet",
+    "completion": "Kimenet",
+    "total": "Összesen",
+    "empty": "Nincs AI-használat az elmúlt 30 napban.",
+    "loadFailed": "A használat betöltése sikertelen",
+    "estimatedNote": "Egyes adatok becslések, kb. négy karakter/token arányban, mivel a szolgáltató nem jelentette a használatot.",
+    "source": {
+      "assistant": "Asszisztens",
+      "terminal": "Terminál panel",
+      "compaction": "Tömörítés"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Asszisztens",
+    "viewAutoOps": "Auto-ops",
+    "intro": "Az Auto-ops lehetővé teszi, hogy az asszisztens önállóan ellenőrizze a hosztjaidat. Egy automatizálás indítja el időzítéssel vagy hiba esetén, és jelentést készít, vagy javítási tervet javasol az jóváhagyásodhoz. Kezdd egy előre beállított profillal.",
+    "sections": {
+      "tasks": "Feladatok",
+      "approvals": "Jóváhagyások",
+      "presets": "Előre beállított profilok"
+    },
+    "provider": "Feladatok szolgáltatója",
+    "providerDefault": "Az első szolgáltató alapértelmezett modelljével",
+    "model": "Feladatok modellje",
+    "modelDefault": "A szolgáltató alapértelmezett modellje",
+    "saveModel": "Modell mentése",
+    "preferencesHint": "A háttérfeladatok által használt szolgáltató és modell. Hagyd őket változatlanul, ha az alapértelmezett szolgáltatót és modellt szeretnéd használni.",
+    "task": "Feladat",
+    "tokens": "{{tokens}} token",
+    "tokenUsage": "{{total}} token ({{prompt}} bemenet, {{completion}} kimenet)",
+    "dryRun": "Teszt futtatás",
+    "trigger": "Esemény",
+    "noTasks": "Még nincsenek feladatok",
+    "tasksHint": "A feladatok az automatizálások futtatásai, amelyek tartalmaznak egy „Kérdezd az AI-t” lépést. Engélyezz egy előre beállított profilt, vagy hozz létre sajátot az Automatizálásokban: adj hozzá egy „Kérdezd az AI-t” lépést bármely automatizáláshoz. A futtatások itt jelennek meg.",
+    "openAutomations": "Automatizálások megnyitása",
+    "browsePresets": "Profilok böngészése",
+    "noApprovals": "Nincsenek jóváhagyásra váró tervek",
+    "loadFailed": "Az auto-ops betöltése sikertelen",
+    "decideFailed": "A döntés mentése sikertelen",
+    "openConversation": "Megnyitás az asszisztensben",
+    "approve": "Jóváhagyás és futtatás",
+    "reject": "Elutasítás",
+    "expires": "Lejár: {{time}}",
+    "enabled": "Engedélyezve",
+    "updateAvailable": "Frissítés elérhető",
+    "shared": "Megosztott",
+    "needsAutomations": "Automatizálások szükségesek",
+    "enableAgain": "Újra engedélyezés",
+    "deletePreset": "Profil törlése",
+    "autonomy": {
+      "report": "Csak jelentés",
+      "propose": "Terv javaslat"
+    },
+    "status": {
+      "running": "Fut",
+      "reported": "Jelentve",
+      "proposed": "Jóváhagyásra vár",
+      "approved": "Jóváhagyva",
+      "rejected": "Elutasítva",
+      "expired": "Lejárt",
+      "executing": "Terv futtatása",
+      "done": "Kész",
+      "failed": "Sikertelen",
+      "skipped": "Kihagyva"
+    },
+    "severity": {
+      "info": "Információ",
+      "warning": "Figyelmeztetés",
+      "critical": "Kritikus"
+    },
+    "plan": {
+      "title": "Javasolt terv",
+      "commands": "Parancsok",
+      "rationale": "Indoklás",
+      "risk": "Kockázat",
+      "rollback": "Visszavonás",
+      "verify": "Ellenőrzés",
+      "progress": "Haladás"
+    },
+    "enable": {
+      "title": "{{name}} engedélyezése",
+      "submit": "Engedélyezés",
+      "name": "Név",
+      "targets": "Hostok",
+      "targetAll": "Minden host",
+      "targetTrigger": "A kiváltó host",
+      "targetHosts": "Kiválasztott hostok",
+      "noHosts": "Válassz ki legalább egy hostot.",
+      "threshold": "Küszöbérték (%)",
+      "forSeconds": "Legalább (másodperc)",
+      "time": "Napszak",
+      "cron": "Ütemezés (cron)",
+      "dockerEvent": "Konténer esemény",
+      "dockerEvents": {
+        "exited": "Kilépve",
+        "unhealthy": "Nem egészséges",
+        "restarting": "Újraindítás"
+      },
+      "badTime": "Adja meg az időt HH:MM formátumban.",
+      "autonomy": "Mit tehet az asszisztens",
+      "maxRunSeconds": "Időkorlát (másodperc)",
+      "runbook": "Futtatási kézikönyv",
+      "runbookHint": "Mit kell tennie az asszisztensnek, egyszerű szavakkal. Az angol működik a legjobban.",
+      "shared": "Megosztás, ha elmentik előre beállításként",
+      "sharedHint": "Mindenki, aki használhatja az automatikus műveleteket, ezután engedélyezheti azt.",
+      "saveAsPreset": "Mentés előre beállításként",
+      "savedPreset": "Elmentve",
+      "failed": "Az automatizálás nem hozható létre",
+      "saveFailed": "Az előre beállítás nem menthető el"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Napi ellenőrzés",
+        "description": "Reggel 09:00-kor ellenőrzi minden gazdagép lemezeit, memóriáját, terhelését, sikertelen szolgáltatásait, konténereit, tanúsítványait, frissítéseit, függő újraindításait és az időszinkronizációt, majd súlyosság szerint jelentést készít."
+      },
+      "disk-cleanup": {
+        "title": "Leméret tisztítás",
+        "description": "Amikor egy lemez 5 percig 85% vagy többet mutat, megtalálja, mi tölti meg, és javasol egy biztonságos tisztítást, amelyet jóvá kell hagynia. Az üzleti adatok soha nem érintettek."
+      },
+      "host-down-triage": {
+        "title": "Szerver leállásának diagnosztikája",
+        "description": "Amikor egy szerver offline állapotba kerül, más szerverekről és a Proxmoxról is ellenőrzi azt, majd jelzi, hogy hálózati hiba, leállt gép vagy SSH-probléma áll-e a háttérben."
+      },
+      "service-failure": {
+        "title": "Szolgáltatás-hiba",
+        "description": "Amikor egy egészségügyi ellenőrzés el kezd sikertelenülni, megkeresi a mögötte álló systemd egységet, elolvassa annak állapotát és naplóját, majd javasol egy újraindítást jóváhagyásodra, ha az segíthet. A konfiguráció soha nem módosul."
+      },
+      "container-anomaly": {
+        "title": "Konténer-anomália",
+        "description": "Amikor egy konténer leáll, egészségtelen állapotba kerül vagy folyamatosan újraindul, elolvassa annak állapotát, kilépési kódját, naplóit és memóriahasználatát, majd javasol egy egyszeri indítást vagy újraindítást jóváhagyásodra. Semmi nem kerül törlésre."
+      },
+      "resource-overload-cpu": {
+        "title": "CPU túlterheltség",
+        "description": "Amikor a CPU-használat 15 percig 95% vagy annál magasabb marad, megkeresi a mögötte álló folyamatokat, szolgáltatásokat és konténereket, majd jelentést készít a teendőkről. Semmi nem módosul."
+      },
+      "resource-overload-memory": {
+        "title": "Memória túlterheltség",
+        "description": "Amikor a memória-használat 10 percig 95% vagy annál magasabb marad, megkeresi, mi használja fel, valamint a cserefájlt és a memória-hiány miatti leállításokat, majd jelentést készít a teendőkről. Semmi nem módosul."
+      },
+      "security-updates-weekly": {
+        "title": "Heti biztonsági frissítések",
+        "description": "Minden hétfőn 09:30-kor felsorolja a függőben lévő biztonsági frissítéseket súlyosság szerint, az újraindítást igénylő csomagokat, a futó és telepített kernel verziókat, valamint az utolsó frissítés óta eltelt napokat egy táblázatban az összes host számára."
+      },
+      "cert-expiry-weekly": {
+        "title": "Heti tanúsítvány-lejárati értesítés",
+        "description": "Minden hétfőn 09:45-kor ellenőrzi a Let's Encrypt, a webszerverek és a Kubernetes tanúsítványainak lejárati dátumát minden hoston, és jelzi azokat, amelyek 30 napon belül, illetve 7 napon belül járnak le."
+      }
+    },
+    "report": {
+      "verdict": "Vélemény",
+      "evidence": "Bizonyítékok",
+      "actionsTaken": "Végrehajtott műveletek",
+      "recommendations": "Javaslatok",
+      "nothingFound": "A futtatás befejezése előtt nem talált semmit.",
+      "noChanges": "Nem történt változtatás.",
+      "openConversation": "Nyisd meg a beszélgetést az asszisztensben, hogy lásd minden lépést, és további kérdéseket tehess fel.",
+      "noFurtherAction": "Nincs további teendő.",
+      "stoppedBudgetRun": "Megállítva: ez a futtatás elérte a {{tokens}} tokenes keretét.",
+      "stoppedBudgetDaily": "Megállítva: a tulajdonos napi {{tokens}} tokenes kerete kimerült.",
+      "stoppedDeadline": "Megállítva: az automatizálás időkorlátja elérkezett.",
+      "stoppedPaused": "Megállítva: egy rendszergazda szüneteltette az AI automatikus műveleteket.",
+      "stoppedAborted": "Megállítva: az automatizálás futtatása megszakadt.",
+      "providerFailed": "Az AI szolgáltató hiba történt: {{error}}",
+      "noHosts": "Az automatizálás tulajdonosa nem fér hozzá egyetlen célszerverhez sem.",
+      "noProvider": "Az automatizálás tulajdonosának nincs olyan AI szolgáltatója, amelyik modelllel feladatokat tudna futtatni.",
+      "needsOpsUse": "Az automatizálás tulajdonosa nem rendelkezik az ai.ops.use engedéllyel.",
+      "assistantOff": "Az AI asszisztens kikapcsolva az automatizálás tulajdonosa számára.",
+      "skippedPaused": "Az AI automatikus műveleteket egy rendszergazda szüneteltette.",
+      "skippedDuplicate": "Ugyanezen automatizáláshoz és gazdagéphez tartozó feladat még fut vagy jóváhagyásra vár.",
+      "skippedRate": "Ez az automatizálás már elindított {{count}} AI feladatot az elmúlt órában.",
+      "hostNotRun": "Nem futtatva: a terv leállt.",
+      "hostNoAccess": "Nem futtatva: a tulajdonos már nem tud csatlakozni ehhez a gazdagéphez.",
+      "hostUnreachable": "Nem futtatva: a gazdagép nem érhető el.",
+      "hostStopped": "Leállt az első sikertelen parancsnál.",
+      "executionDone": "A jóváhagyott terv {{count}} gazdagépen futott le, és minden parancs és ellenőrzés sikeres volt.",
+      "executionFailed": "A jóváhagyott terv nem fejeződött be minden gazdagépen.",
+      "executionStopped": "A jóváhagyott tervet leállították befejezése előtt.",
+      "approvedBy": "A jóváhagyott terv a megadottak szerint futott le. Jóváhagyta: {{user}}.",
+      "noticeReported": "AI jelentés: {{title}}",
+      "noticeProposed": "Jóváhagyásra váró AI terv: {{title}}",
+      "noticeExecuted": "AI terv végrehajtva: {{title}}",
+      "noticeFailed": "AI feladat sikertelen: {{title}}"
+    }
   }
 }

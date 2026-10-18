@@ -23,6 +23,18 @@
         "title": "Dela API-nyckeln",
         "description": "Andra funktioner kan använda den sparade AI-API-nyckeln utan att se den."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Kör kommandon på värdar med AI-assistenten",
+        "description": "Låt assistenten köra valfritt skal-kommando på de värdar du väljer. Endast för administratörer som standard."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Visa allas AI-användning",
+        "description": "Se vilka token varje användares AI-anrop har använt, inte bara dina egna. Endast för administratörer som standard."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Tillåtna privata AI-värdar",
         "description": "Värdar på ditt privata nätverk som användare kan peka en leverantör mot, till exempel en självhostad Ollama. Ange en värd per rad."
+      },
+      "opsConcurrency": {
+        "label": "Parallella värdar för AI-assistenten",
+        "description": "Hur många värdar ett kommando från assistenten körs på samtidigt."
+      },
+      "opsCommandTimeout": {
+        "label": "Timeout för kommandon från AI-assistenten (sekunder)",
+        "description": "Hur länge ett kommando får köras på en värd innan det stoppas. Assistenten kan be om upp till 600."
+      },
+      "opsOutputLimit": {
+        "label": "Utdata per värd för AI-assistenten (tecken)",
+        "description": "Hur mycket av varje värdas utdata som sparas. Längre utdata behåller början och slutet."
+      },
+      "autoOpsPaused": {
+        "label": "Pausa automatiska AI-operationer",
+        "description": "Stoppar alla pågående AI-uppgifter och godkända planer och vägrar nya, tills det stängs av igen."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "AI-uppgifter per automatisering per timme",
+        "description": "Fler utlösare under samma timme hoppas över."
+      },
+      "autoOpsRunTokens": {
+        "label": "Token-budget per AI-uppgift",
+        "description": "En uppgift som använder så många token stoppas och rapporterar vad den hittade."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Daglig AI-token-budget per användare",
+        "description": "När en användare har använt så många token idag (UTC) hoppas deras AI-uppgifter över eller stoppas."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "Aktivera AI-assistent",
         "description": "Tillåt AI-assistenten att hjälpa till i denna värdens terminal. Inaktiverad som standard, och kräver fortfarande att AI är aktiverat för ditt konto."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Inställningar för automatiska operationer"
+      }
     }
   },
   "ai": {
-    "title": "Assistent",
     "send": "Skicka",
     "stop": "Stoppa",
     "save": "Spara",
@@ -58,10 +102,9 @@
     "running": "kör",
     "approve": "Godkänn",
     "reject": "Avvisa",
-    "inputPlaceholder": "Fråga om dina servrar eller beskriv en ändring att föreslå",
     "selectProvider": "Välj en leverantör",
-    "providerSettings": "Leverantörsinställningar",
     "addProvider": "Lägg till leverantör",
+    "manageModels": "Hantera modeller",
     "editProvider": "Redigera leverantör",
     "removeProvider": "Ta bort leverantör",
     "providerType": "Leverantör",
@@ -95,22 +138,32 @@
     "modelCustom": "Ange ett modellnamn",
     "modelRefresh": "Uppdatera lista",
     "modelPlaceholder": "Välj eller skriv en modell",
-    "attachHint": "Skriv @ för att referera till en värd, ett fragment eller en automatisering. Ändringar föreslås för att du ska godkänna dem.",
     "runCommandTitle": "Kör kommando",
     "assistant": "AI-assistent",
     "terminalPanelEmpty": "Fråga assistenten om denna värd. Allt som ändrar tillståndet kräver ditt godkännande först.",
     "terminalPanelPlaceholder": "Fråga om denna värd...",
-    "noProvidersConfigured": "Ingen AI-leverantör är konfigurerad ännu. Lägg till en i fliken AI-assistent.",
+    "noProvidersConfigured": "Ingen AI-leverantör är konfigurerad ännu. Lägg till en i Inställningar.",
     "runsInOpenTerminal": "Körs i din öppna terminalsession.",
     "runInTerminal": "Kör",
     "terminalContextPrefill": "Här är min terminalutdata:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Låt andra funktioner använda din AI-leverantörs API-nyckel för deras egna förfrågningar. Nyckeln kopieras aldrig, och du kan återkalla detta när som helst."
     },
-    "removeProviderConfirm": "Ta bort leverantören {{name}}?"
+    "removeProviderConfirm": "Ta bort leverantören {{name}}?",
+    "contextWindows": "Kontextfönster per modell",
+    "contextWindowsHint": "Läs från leverantören där den rapporterar ett. Ange ett antal token för att åsidosätta det för en modell, eller lämna det tomt för att använda det leverantören rapporterar. Uppdatera frågar leverantören igen.",
+    "contextWindowValue": "Kontextfönster: {{tokens}} ({{source}})",
+    "contextOverride": "Åsidosätt kontextfönster för {{model}}",
+    "contextSourceOverride": "angivet av dig",
+    "contextSourceProvider": "rapporterat av leverantören",
+    "contextSourceGuess": "gissat från modellnamnet",
+    "contextSourceDefault": "standard för okända modeller",
+    "contextLoadFailed": "Kunde inte läsa kontextfönstren",
+    "contextRefresh": "Uppdatera",
+    "contextWindowInvalid": "Ange kontextfönstret som ett helt antal token, minst 1024."
   },
   "nav": {
-    "ai": "AI"
+    "ai": "AI-assistent"
   },
   "onboarding": {
     "aiTitle": "AI-assistent",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Aktivera den",
     "aiEnableDesc": "Lägger till en assistent som läser din konfiguration och föreslår ändringar som du godkänner. Kräver en leverantör som du tillhandahåller, till exempel en lokal Ollama.",
     "aiNote": "Inget skickas någonstans förrän du lägger till en leverantör och skickar ett meddelande."
-  },
-  "hosts": {
-    "docsLink": "Visa dokumentation"
   },
   "agents": {
     "working": "Arbetar...",
@@ -215,6 +265,280 @@
     "emptyTranscript": "Skicka ett meddelande för att starta agenten."
   },
   "plugin": {
-    "name": "AI-assistent"
+    "name": "AI-assistent",
+    "description": "En AI-assistent som läser din konfiguration och föreslår ändringar för dig att godkänna."
+  },
+  "ops": {
+    "searchHosts": "Sök värdar",
+    "selectedCount": "{{count}} valda",
+    "clear": "Rensa",
+    "fleets": "Flottor",
+    "folders": "Mappar",
+    "tags": "Taggar",
+    "allHosts": "Alla värdar",
+    "noHosts": "Inga värdar",
+    "newConversation": "Ny konversation",
+    "sendHint_one": "Körs på {{count}} värd. Kommandon körs utan att fråga först.",
+    "sendHint_other": "Körs på {{count}} värdar. Kommandon körs utan att fråga först.",
+    "runCommand": "Kör kommando",
+    "hostFacts": "Värdinformation",
+    "hostCount_one": "{{count}} värd",
+    "hostCount_other": "{{count}} värdar",
+    "succeeded": "{{count}} okej",
+    "failed": "{{count}} misslyckades",
+    "exitCode": "exit {{code}}",
+    "timedOut": "tidsgräns överskriden",
+    "stopped": "stoppad",
+    "notRun": "ej körd",
+    "cached": "cachelagrad",
+    "duration": "{{seconds}}s",
+    "noOutput": "(ingen utdata)"
+  },
+  "assistant": {
+    "title": "AI-assistent",
+    "moveHint": "Dra för att flytta. Dubbelklicka för att fästa vid sidan.",
+    "toggle": "Växla AI-assistenten",
+    "close": "Stäng",
+    "dock": "Fäst till höger",
+    "float": "Flytande",
+    "openTab": "Öppna fullständig vy",
+    "history": "Samtal",
+    "noConversations": "Inga samtal ännu",
+    "untitled": "Namnlös",
+    "deleteConversation": "Ta bort samtal",
+    "deleteConfirm": "Vill du ta bort detta samtal?",
+    "emptyTitle": "Fråga om eller ändra något i Termix",
+    "emptyHint": "Assistenten arbetar som du via Termix CLI och kör kommandon på dina målserver. Skriv @ för att lägga till servrar, flotta, mappar eller taggar som mål.",
+    "inputPlaceholder": "Fråga assistenten. Skriv @ för att lägga till mål.",
+    "noTargets": "Inga målserver. Skriv @ för att lägga till några.",
+    "sendHint": "Ändringar och kommandon körs utan att fråga först.",
+    "removeTarget": "Ta bort {{name}}",
+    "kind": {
+      "host": "Server",
+      "fleet": "Flotta",
+      "folder": "Mapp",
+      "tag": "Tagg"
+    },
+    "emptyHintBasic": "Assistenten arbetar som du via Termix CLI, med dina behörigheter.",
+    "inputPlaceholderBasic": "Fråga assistenten.",
+    "sendHintBasic": "Ändringar körs utan att fråga först.",
+    "thinking": "Tänker",
+    "thinkingActive": "Tänker...",
+    "compacted": "Kontext komprimerad: tidigare meddelanden har sammanfattats",
+    "compact": "Komprimera samtalet",
+    "nothingToCompact": "Samtalet är för kort för att komprimera ännu.",
+    "contextMeter": "Kontext: {{used}} av {{window}} token användes av det senaste anropet",
+    "contextMeterSource": "Fönstret är {{source}}.",
+    "contextMeterReserved": "{{tokens}} token hålls fria för svaret.",
+    "todayTokens": "Idag {{tokens}}",
+    "todayTitle": "Token du använde idag. Klicka för detaljer.",
+    "usage": "Tokenanvändning",
+    "conversationTokens": "{{tokens}} token",
+    "openFloating": "Flytande panel",
+    "openFloatingHint": "Öppna assistenten i en panel över vilken sida som helst. Tryck på {{shortcut}} var som helst för att öppna eller stänga den.",
+    "shortcutHint": "Tryck på {{shortcut}} på vilken sida som helst för att öppna assistenten i en flytande panel."
+  },
+  "usage": {
+    "title": "Tokenanvändning",
+    "settingDescription": "Token som dina AI-anrop använde under de senaste 30 dagarna.",
+    "cardTitle": "AI-tokenanvändning",
+    "today": "Idag",
+    "week": "7 dagar",
+    "month": "30 dagar",
+    "mine": "Min",
+    "everyone": "Alla användare",
+    "mineCaption": "Dina token över alla AI-funktioner.",
+    "everyoneCaption": "Token över alla användare och AI-funktioner.",
+    "byDay": "Per dag",
+    "byModel": "Per modell",
+    "bySource": "Per funktion",
+    "byUser": "Per användare",
+    "model": "Modell",
+    "feature": "Funktion",
+    "user": "Användare",
+    "calls": "Anrop",
+    "prompt": "Inmatning",
+    "completion": "Utmatning",
+    "total": "Totalt",
+    "empty": "Ingen AI-användning under de senaste 30 dagarna.",
+    "loadFailed": "Kunde inte läsa in användning",
+    "estimatedNote": "Vissa siffror är uppskattningar, på cirka fyra tecken per token, eftersom leverantören inte rapporterade sin användning.",
+    "source": {
+      "assistant": "Assistent",
+      "terminal": "Terminalpanel",
+      "compaction": "Komprimering"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Assistent",
+    "viewAutoOps": "Auto-ops",
+    "intro": "Auto-ops låter assistenten kontrollera dina värdar på egen hand. En automatisering startar den enligt schema eller när något går fel, och den skriver en rapport eller föreslår en åtgärd som du kan godkänna. Börja med en förinställning.",
+    "sections": {
+      "tasks": "Uppgifter",
+      "approvals": "Godkännanden",
+      "presets": "Förinställningar"
+    },
+    "provider": "Tjänstleverantör för uppgifter",
+    "providerDefault": "Första tjänstleverantören med en standardmodell",
+    "model": "Modell för uppgifter",
+    "modelDefault": "Tjänstleverantörens standardmodell",
+    "saveModel": "Spara modell",
+    "preferencesHint": "Den tjänstleverantör och modell som bakgrundsuppgifter använder. Lämna dem som de är för att använda din standardtjänstleverantör och standardmodell.",
+    "task": "Uppgift",
+    "tokens": "{{tokens}} token",
+    "tokenUsage": "{{total}} token ({{prompt}} in, {{completion}} ut)",
+    "dryRun": "Testkörning",
+    "trigger": "Utlösare",
+    "noTasks": "Inga uppgifter ännu",
+    "tasksHint": "Uppgifter är körningar av automatiseringar med ett \"Fråga AI\"-steg. Aktivera en förinställning, eller skapa din egen i Automatiseringar: lägg till ett \"Fråga AI\"-steg i vilken automatisering som helst. Körningar visas här.",
+    "openAutomations": "Öppna Automatiseringar",
+    "browsePresets": "Bläddra bland förinställningar",
+    "noApprovals": "Inga planer väntar på godkännande",
+    "loadFailed": "Kunde inte ladda auto-ops",
+    "decideFailed": "Beslutet kunde inte sparas",
+    "openConversation": "Öppna i assistenten",
+    "approve": "Godkänn och kör",
+    "reject": "Avvisa",
+    "expires": "Utgår {{time}}",
+    "enabled": "Aktiverad",
+    "updateAvailable": "Uppdatering tillgänglig",
+    "shared": "Delad",
+    "needsAutomations": "Kräver Automatiseringar",
+    "enableAgain": "Aktivera igen",
+    "deletePreset": "Ta bort förinställning",
+    "autonomy": {
+      "report": "Endast rapport",
+      "propose": "Föreslå en plan"
+    },
+    "status": {
+      "running": "Körs",
+      "reported": "Rapporterad",
+      "proposed": "Väntar på godkännande",
+      "approved": "Godkänd",
+      "rejected": "Avvisad",
+      "expired": "Utgången",
+      "executing": "Kör plan",
+      "done": "Klar",
+      "failed": "Misslyckades",
+      "skipped": "Hoppad över"
+    },
+    "severity": {
+      "info": "Info",
+      "warning": "Varning",
+      "critical": "Kritisk"
+    },
+    "plan": {
+      "title": "Föreslagen plan",
+      "commands": "Kommandon",
+      "rationale": "Varför",
+      "risk": "Risk",
+      "rollback": "Återställ",
+      "verify": "Verifiera",
+      "progress": "Förlopp"
+    },
+    "enable": {
+      "title": "Aktivera {{name}}",
+      "submit": "Aktivera",
+      "name": "Namn",
+      "targets": "Värdar",
+      "targetAll": "Alla värdar",
+      "targetTrigger": "Värden som utlöste händelsen",
+      "targetHosts": "Valda värdar",
+      "noHosts": "Välj minst en värd.",
+      "threshold": "Tröskelvärde (%)",
+      "forSeconds": "I minst (sekunder)",
+      "time": "Tid på dygnet",
+      "cron": "Schema (cron)",
+      "dockerEvent": "Behållarehändelse",
+      "dockerEvents": {
+        "exited": "Avslutad",
+        "unhealthy": "Ohälsosam",
+        "restarting": "Startar om"
+      },
+      "badTime": "Ange tiden som TT:MM.",
+      "autonomy": "Vad assistenten får göra",
+      "maxRunSeconds": "Tidsgräns (sekunder)",
+      "runbook": "Driftbok",
+      "runbookHint": "Vad assistenten ska göra, med enkla ord. Engelska fungerar bäst.",
+      "shared": "Dela när den sparas som en förinställning",
+      "sharedHint": "Alla som får använda auto-ops kan sedan aktivera den.",
+      "saveAsPreset": "Spara som förinställning",
+      "savedPreset": "Sparad",
+      "failed": "Automatiseringen kunde inte skapas",
+      "saveFailed": "Förinställningen kunde inte sparas"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Daglig patrull",
+        "description": "Varje morgon klockan 09:00 kontrollerar den alla värdars diskar, minne, belastning, misslyckade tjänster, behållare, certifikat, uppdateringar, väntande omstarter och tidsynkronisering, och rapporterar efter allvarlighetsgrad."
+      },
+      "disk-cleanup": {
+        "title": "Rensning av diskutrymme",
+        "description": "När en disk ligger på 85 % eller mer i 5 minuter, hittar den vad som fyller den och föreslår en säker rensning som du kan godkänna. Affärsdata påverkas aldrig."
+      },
+      "host-down-triage": {
+        "title": "Felsökning vid värdavbrott",
+        "description": "När en värd går offline, undersöker den den från andra värdar och Proxmox, och rapporterar om det beror på nätverket, en stoppad maskin eller SSH."
+      },
+      "service-failure": {
+        "title": "Tjänstfel",
+        "description": "När en hälsokontroll börjar misslyckas, hittar den systemd-enheten bakom den, läser dess status och logg, och föreslår en enda omstart som du kan godkänna om det kan hjälpa. Konfigurationen ändras aldrig."
+      },
+      "container-anomaly": {
+        "title": "Behållareavvikelse",
+        "description": "När en behållare avslutas, blir ohälsosam eller fortsätter att starta om, läser den dess tillstånd, avslutningskod, loggar och minne, och föreslår att starta eller starta om den en gång för din godkännande. Inget tas bort."
+      },
+      "resource-overload-cpu": {
+        "title": "CPU-överbelastning",
+        "description": "När CPU ligger på 95 % eller mer i 15 minuter, hittar den processerna, tjänsterna och behållarna bakom det och rapporterar vad som ska göras. Inget ändras."
+      },
+      "resource-overload-memory": {
+        "title": "Minnesöverbelastning",
+        "description": "När minnet ligger på 95 % eller mer i 10 minuter, hittar den vad som använder det, växling och out-of-memory-avslut, och rapporterar vad som ska göras. Inget ändras."
+      },
+      "security-updates-weekly": {
+        "title": "Veckovisa säkerhetsuppdateringar",
+        "description": "Varje måndag klockan 09:30 listar den väntande säkerhetsuppdateringar efter allvarlighetsgrad, väntande omstarter och paketen bakom dem, körande och installerade kärnor och dagar sedan senaste uppdatering, i en tabell för alla värdar."
+      },
+      "cert-expiry-weekly": {
+        "title": "Veckovis certifikatutgång",
+        "description": "Varje måndag klockan 09:45 läser den utgångstiden för Let's Encrypt-, webbserver- och Kubernetes-certifikat på varje värd och markerar de som är under 30 dagar, kritiska under 7."
+      }
+    },
+    "report": {
+      "verdict": "Dom",
+      "evidence": "Bevis",
+      "actionsTaken": "Utförda åtgärder",
+      "recommendations": "Rekommendationer",
+      "nothingFound": "Inget hittades innan körningen avslutades.",
+      "noChanges": "Inga ändringar gjordes.",
+      "openConversation": "Öppna konversationen i assistenten för att se varje steg och ställa uppföljande frågor.",
+      "noFurtherAction": "Ingen ytterligare åtgärd krävs.",
+      "stoppedBudgetRun": "Stoppad: denna körning använde sin budget på {{tokens}} tokens.",
+      "stoppedBudgetDaily": "Stoppad: ägarens dagliga budget på {{tokens}} tokens är slut.",
+      "stoppedDeadline": "Stoppad: automatiseringens tidsgräns nåddes.",
+      "stoppedPaused": "Stoppad: en administratör pausade AI-auto-ops.",
+      "stoppedAborted": "Stoppad: automatiseringskörningen avbröts.",
+      "providerFailed": "AI-leverantören misslyckades: {{error}}",
+      "noHosts": "Ingen av målvärdarna kan nås av automatiseringens ägare.",
+      "noProvider": "Automatiseringens ägare har ingen AI-leverantör med en modell att köra uppgifter på.",
+      "needsOpsUse": "Automatiseringens ägare har inte behörigheten ai.ops.use.",
+      "assistantOff": "AI-assistenten är inaktiverad för automatiseringens ägare.",
+      "skippedPaused": "AI-autoops är pausat av en administratör.",
+      "skippedDuplicate": "En uppgift för samma automatisering och värd körs fortfarande eller väntar på godkännande.",
+      "skippedRate": "Denna automatisering har redan startat {{count}} AI-uppgifter under den senaste timmen.",
+      "hostNotRun": "Inte körd: planen stoppades.",
+      "hostNoAccess": "Inte körd: ägaren kan inte längre ansluta till denna värd.",
+      "hostUnreachable": "Inte körd: värden kunde inte nås.",
+      "hostStopped": "Stoppad vid det första misslyckade kommandot.",
+      "executionDone": "Den godkända planen kördes på {{count}} värd(ar) och alla kommandon och kontroller lyckades.",
+      "executionFailed": "Den godkända planen slutfördes inte på alla värdar.",
+      "executionStopped": "Den godkända planen stoppades innan den var klar.",
+      "approvedBy": "Den godkända planen kördes som skriven. Godkänd av {{user}}.",
+      "noticeReported": "AI-rapport: {{title}}",
+      "noticeProposed": "AI-plan som väntar på godkännande: {{title}}",
+      "noticeExecuted": "AI-plan utförd: {{title}}",
+      "noticeFailed": "AI-uppgift misslyckades: {{title}}"
+    }
   }
 }

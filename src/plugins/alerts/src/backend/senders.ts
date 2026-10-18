@@ -103,6 +103,15 @@ export function validateChannelConfig(
   }
 }
 
+const PLAIN_HEADER = /^[\x20-\x7e]*$/;
+
+/** fetch sends header values as Latin-1, so anything else goes as RFC 2047. */
+function headerText(value: string): string {
+  return PLAIN_HEADER.test(value) && !value.startsWith("=?")
+    ? value
+    : `=?UTF-8?B?${Buffer.from(value, "utf8").toString("base64")}?=`;
+}
+
 function linkUrl(alert: OutgoingAlert): string | undefined {
   const url = alert.link?.url;
   return url && /^https?:\/\//i.test(url) ? url : undefined;
@@ -188,12 +197,14 @@ export async function sendToChannel(
       const topic = str(config.topic);
       if (!topic) throw new Error("ntfy channel is missing a topic");
       const headers: Record<string, string> = {
-        Title: alert.title || "Termix",
+        Title: headerText(alert.title || "Termix"),
         Priority: String(NTFY_PRIORITY[alert.severity]),
         Tags: NTFY_TAGS[alert.severity],
       };
       const click = linkUrl(alert);
-      if (click) headers.Click = click;
+      if (click) {
+        headers.Click = PLAIN_HEADER.test(click) ? click : new URL(click).href;
+      }
       const token = str(config.token);
       if (token) headers.Authorization = `Bearer ${token}`;
       return post(`${url.replace(/\/$/, "")}/${encodeURIComponent(topic)}`, {

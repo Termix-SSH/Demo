@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Connecta't a amfitrions darrere d'un Cloudflare Tunnel mitjançant el transport WebSocket natiu sense obrir el port 22 en brut a Internet.",
+    "enableCloudflareTunnel": "Activa Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "Encamina el tràfic SSH a través de Cloudflare Zero Trust (WSS) utilitzant l'adreça principal de l'amfitrió en lloc de sockets TCP directes.",
+    "cloudflareTunnelHostname": "Nom d'amfitrió del túnel",
+    "cloudflareTunnelHostnameDesc": "Domini públic encaminat al servei d'origen SSH al Cloudflare Tunnel (deixa-ho buit per utilitzar l'adreça principal de l'amfitrió).",
+    "cloudflareTunnelPort": "Port del túnel",
+    "cloudflareTunnelPortDesc": "Port HTTPS/WSS del vora a Cloudflare (per defecte és 443).",
+    "cloudflareTunnelClientId": "ID de client del testimoni de servei",
+    "cloudflareTunnelClientIdDesc": "Capçalera CF-Access-Client-Id opcional. Només és necessari si la política de Cloudflare Access Zero Trust requereix testimonis de servei.",
+    "cloudflareTunnelClientSecret": "Secret del client del testimoni de servei",
+    "cloudflareTunnelClientSecretDesc": "Capçalera opcional CF-Access-Client-Secret per a l'autenticació de Cloudflare Access.",
     "clipboardHttpWarning": "No s'ha pogut llegir el porta-retalls. Alguns navegadors restringeixen l'accés al porta-retalls fora d'HTTPS; proveu de fer servir Ctrl+V o bé executeu Termix amb HTTPS.",
     "connecting": "Connectant...",
     "connectionLost": "Connexió perduda",
@@ -87,7 +99,16 @@
     "localShell": "Shell del terminal local",
     "autocompleteHintComplete": "Tab o Retorn per completar",
     "autocompleteHintNavigate": "↑↓ per navegar",
-    "autocompleteHintClose": "Esc per tancar"
+    "autocompleteHintClose": "Esc per tancar",
+    "cloudflareTunnelClientSecretPlaceholder": "Secret del testimoni de servei (opcional)",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Nou secret del testimoni de servei",
+    "secretSaved": "Desat",
+    "secretReplace": "Substituir",
+    "secretClear": "Esborrar",
+    "secretCancel": "Cancel·lar",
+    "hideSecret": "Amaga el secret",
+    "showSecret": "Mostra el secret",
+    "sessionEndedKeepOpen": "Sessió finalitzada. Premeu Retorn per tornar a connectar."
   },
   "terminalToolbar": {
     "detachTmux": "Desenganxar tmux",
@@ -213,6 +234,26 @@
         "label": "Historial d'ordres",
         "description": "Enregistrar les ordres executades en aquest terminal per a l'historial i l'ompliment automàtic"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Túnel de Cloudflare",
+        "description": "Encamina el trànsit SSH a través de Cloudflare Zero Trust mitjançant WebSocket"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Nom d'amfitrió del túnel",
+        "description": "Nom d'amfitrió públic del túnel de Cloudflare"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Port del túnel",
+        "description": "Port HTTPS/WSS del vora de Cloudflare"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Identificador del client del testimoni de servei de Cloudflare Access"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Clau secreta del client del token de servei d'accés de Cloudflare"
+      },
       "enableTerminal": {
         "label": "Activar el terminal",
         "description": "Ofereix un terminal SSH per a aquest amfitrió."
@@ -320,6 +361,9 @@
         "moveUp": "Mou amunt",
         "moveDown": "Mou avall",
         "tmuxHint": "Només es mostra quan tmux està connectat"
+      },
+      "keepOpenOnExit": {
+        "label": "Mantenir la pestanya oberta en sortir"
       }
     },
     "user": {
@@ -490,7 +534,9 @@
     "guac": {
       "permissionLevel": "Nivell de permís"
     },
-    "deleteGlobalThemeConfirm": "Vols suprimir el tema {{name}}?"
+    "deleteGlobalThemeConfirm": "Vols suprimir el tema {{name}}?",
+    "keepOpenOnExitLabel": "Mantenir la pestanya oberta en sortir",
+    "keepOpenOnExitDesc": "Quan la shell surti o la connexió es tanqui, mantén la pestanya i la seva sortida. Prem Retorn per tornar a connectar."
   },
   "nav": {
     "history": "Historial",
@@ -522,6 +568,7 @@
     "stopRecording": "Atura l'enregistrament"
   },
   "keybindings": {
+    "openLocalTerminal": "Obrir un nou terminal local",
     "copy": "Copia la selecció",
     "paste": "Enganxa",
     "sendControlCode": "Envia el senyal Ctrl+lletra",
@@ -641,6 +688,7 @@
     "remoteServerRequired": "Cal un servidor remot. Connecta un servidor remot a Configuració per utilitzar aquest tipus de connexió."
   },
   "plugin": {
-    "name": "Terminal SSH"
+    "name": "Terminal SSH",
+    "description": "Sessions de terminal SSH amb pestanyes, pantalla dividida, historial, macros i un terminal local a l'aplicació d'escriptori."
   }
 }

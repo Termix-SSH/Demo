@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Підключення до хостів за Cloudflare Tunnel за допомогою нативного транспорту WebSocket без відкриття порту 22 для публічного інтернету.",
+    "enableCloudflareTunnel": "Увімкнути Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "Маршрутизація SSH-трафіку через Cloudflare Zero Trust (WSS) за основною адресою хоста замість прямих TCP-з'єднань.",
+    "cloudflareTunnelHostname": "Ім'я хоста тунелю",
+    "cloudflareTunnelHostnameDesc": "Публічний домен, маршрутизований до вашого SSH-сервісу в Cloudflare Tunnel (залиште порожнім, щоб використовувати основну адресу хоста).",
+    "cloudflareTunnelPort": "Порт тунелю",
+    "cloudflareTunnelPortDesc": "Порт HTTPS/WSS на Cloudflare (за замовчуванням 443).",
+    "cloudflareTunnelClientId": "ID клієнта сервісного токена",
+    "cloudflareTunnelClientIdDesc": "Необов'язковий заголовок CF-Access-Client-Id. Потрібен лише якщо політика Cloudflare Access Zero Trust вимагає сервісні токени.",
+    "cloudflareTunnelClientSecret": "Секрет клієнта сервісного токена",
+    "cloudflareTunnelClientSecretDesc": "Необов'язковий заголовок CF-Access-Client-Secret для автентифікації Cloudflare Access.",
     "clipboardHttpWarning": "Не вдалося прочитати буфер обміну. Деякі браузери обмежують доступ до буфера поза HTTPS — спробуйте Ctrl+V або запустіть Termix через HTTPS.",
     "connecting": "Підключення...",
     "connectionLost": "З'єднання втрачено",
@@ -89,7 +101,16 @@
     "localShell": "Локальна оболонка терміналу",
     "autocompleteHintComplete": "Tab або Enter для завершення",
     "autocompleteHintNavigate": "↑↓ для навігації",
-    "autocompleteHintClose": "Esc для закриття"
+    "autocompleteHintClose": "Esc для закриття",
+    "cloudflareTunnelClientSecretPlaceholder": "Необов'язковий секрет сервісного токена",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Новий секрет сервісного токена",
+    "secretSaved": "Збережено",
+    "secretReplace": "Замінити",
+    "secretClear": "Очистити",
+    "secretCancel": "Скасувати",
+    "hideSecret": "Приховати секрет",
+    "showSecret": "Показати секрет",
+    "sessionEndedKeepOpen": "Сесію завершено. Натисніть Enter, щоб підключитися знову."
   },
   "terminalToolbar": {
     "detachTmux": "Від'єднати tmux",
@@ -216,6 +237,26 @@
         "label": "Історія команд",
         "description": "Записувати команди, виконані в цьому терміналі, для історії та автодоповнення"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare Tunnel",
+        "description": "Маршрутизація SSH-трафіку через Cloudflare Zero Trust за допомогою WebSocket"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Ім'я хоста тунелю",
+        "description": "Публічне ім'я хоста Cloudflare Tunnel"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Порт тунелю",
+        "description": "Порт HTTPS/WSS на Cloudflare"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "ID клієнта сервісного токена Cloudflare Access"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Секрет клієнта сервісного токена Cloudflare Access"
+      },
       "enableTerminal": {
         "label": "Увімкнути термінал",
         "description": "Надавати SSH-термінал для цього хоста."
@@ -323,6 +364,9 @@
         "moveUp": "Перемістити вгору",
         "moveDown": "Перемістити вниз",
         "tmuxHint": "Відображається лише під час підключення до tmux"
+      },
+      "keepOpenOnExit": {
+        "label": "Залишати вкладку відкритою після виходу"
       }
     },
     "user": {
@@ -493,7 +537,9 @@
     "guac": {
       "permissionLevel": "Рівень дозволів"
     },
-    "deleteGlobalThemeConfirm": "Видалити тему {{name}}?"
+    "deleteGlobalThemeConfirm": "Видалити тему {{name}}?",
+    "keepOpenOnExitLabel": "Залишати вкладку відкритою після виходу",
+    "keepOpenOnExitDesc": "Коли оболонка завершує роботу або з'єднання розривається, залишати вкладку та її вивід. Натисніть Enter, щоб підключитися знову."
   },
   "nav": {
     "history": "Історія",
@@ -527,6 +573,7 @@
     "stopRecording": "Зупинити запис"
   },
   "keybindings": {
+    "openLocalTerminal": "Відкрити новий локальний термінал",
     "copy": "Копіювати виділене",
     "paste": "Вставити",
     "sendControlCode": "Надіслати сигнал Ctrl+літера",
@@ -647,6 +694,7 @@
     "remoteServerRequired": "Потрібен віддалений сервер. Підключіть віддалений сервер у Налаштуваннях, щоб використовувати цей тип підключення."
   },
   "plugin": {
-    "name": "SSH-термінал"
+    "name": "SSH-термінал",
+    "description": "SSH-термінал з вкладками, розділеним екраном, історією, макросами та локальним терміналом у десктопному додатку."
   }
 }

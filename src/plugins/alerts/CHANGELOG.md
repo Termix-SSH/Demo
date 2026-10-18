@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.2
+
+### Changed
+
+- The plugin name and description show in your language
+
+### Fixed
+
+- ntfy alerts with non-ASCII titles or links arrived garbled or were not sent
+
 ## 1.0.1
 
 ### Changed

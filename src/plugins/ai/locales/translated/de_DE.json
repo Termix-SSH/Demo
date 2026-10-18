@@ -23,6 +23,18 @@
         "title": "API-Schlüssel teilen",
         "description": "Andere Funktionen können den gespeicherten KI-API-Schlüssel verwenden, ohne ihn einsehen zu können."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Befehle auf Hosts mit dem KI-Assistenten ausführen",
+        "description": "Ermöglicht dem Assistenten, beliebige Shell-Befehle auf den von Ihnen ausgewählten Hosts auszuführen. Standardmäßig nur für Administratoren."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "KI-Nutzung aller Benutzer einsehen",
+        "description": "Sehen Sie die Tokens, die die KI-Aufrufe jedes Benutzers verbraucht haben, nicht nur Ihre eigenen. Standardmäßig nur für Administratoren."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Erlaubte private KI-Hosts",
         "description": "Hosts in Ihrem privaten Netzwerk, auf die Benutzer einen Anbieter verweisen können, z. B. einen selbst gehosteten Ollama. Geben Sie pro Zeile einen Host ein."
+      },
+      "opsConcurrency": {
+        "label": "Parallele Hosts für KI-Assistenten",
+        "description": "Wie viele Hosts ein Befehl des Assistenten gleichzeitig bearbeiten kann."
+      },
+      "opsCommandTimeout": {
+        "label": "Zeitlimit für KI-Assistenten-Befehle (Sekunden)",
+        "description": "Wie lange ein Befehl auf einem Host laufen darf, bevor er gestoppt wird. Der Assistent kann bis zu 600 Sekunden anfordern."
+      },
+      "opsOutputLimit": {
+        "label": "KI-Assistenten-Ausgabe pro Host (Zeichen)",
+        "description": "Wie viel von der Ausgabe jedes Hosts gespeichert wird. Längere Ausgaben behalten ihren Anfang und ihr Ende."
+      },
+      "autoOpsPaused": {
+        "label": "KI-Automatisierung pausieren",
+        "description": "Stoppt alle laufenden KI-Aufgaben und genehmigten Pläne und lehnt neue ab, bis die Funktion wieder aktiviert wird."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "KI-Aufgaben pro Automatisierung pro Stunde",
+        "description": "Weitere Auslösungen innerhalb derselben Stunde werden übersprungen."
+      },
+      "autoOpsRunTokens": {
+        "label": "Token-Budget pro KI-Aufgabe",
+        "description": "Eine Aufgabe, die diese Anzahl an Tokens verbraucht, wird gestoppt und meldet ihre Ergebnisse."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Tägliches KI-Token-Budget pro Benutzer",
+        "description": "Sobald ein Benutzer heute (UTC) diese Anzahl an Tokens verbraucht hat, werden seine KI-Aufgaben übersprungen oder gestoppt."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "KI-Assistent aktivieren",
         "description": "Dem KI-Assistenten erlauben, im Terminal dieses Hosts zu helfen. Standardmäßig deaktiviert und erfordert weiterhin, dass KI für Ihr Konto aktiviert ist."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Einstellungen für Automatisierung"
+      }
     }
   },
   "ai": {
-    "title": "Assistent",
     "send": "Senden",
     "stop": "Stoppen",
     "save": "Speichern",
@@ -58,10 +102,9 @@
     "running": "läuft",
     "approve": "Genehmigen",
     "reject": "Ablehnen",
-    "inputPlaceholder": "Fragen Sie nach Ihren Servern oder beschreiben Sie eine Änderung, die vorgeschlagen werden soll",
     "selectProvider": "Wählen Sie einen Anbieter aus",
-    "providerSettings": "Anbieter-Einstellungen",
     "addProvider": "Anbieter hinzufügen",
+    "manageModels": "Modelle verwalten",
     "editProvider": "Anbieter bearbeiten",
     "removeProvider": "Anbieter entfernen",
     "providerType": "Anbieter",
@@ -95,22 +138,32 @@
     "modelCustom": "Modellnamen eingeben",
     "modelRefresh": "Liste aktualisieren",
     "modelPlaceholder": "Modell auswählen oder eingeben",
-    "attachHint": "Tippe @, um einen Host, einen Snippet oder eine Automatisierung zu referenzieren. Änderungen werden dir zur Genehmigung vorgeschlagen.",
     "runCommandTitle": "Befehl ausführen",
     "assistant": "KI-Assistent",
     "terminalPanelEmpty": "Frag den Assistenten über diesen Host. Alles, was den Zustand verändert, benötigt zuerst deine Genehmigung.",
     "terminalPanelPlaceholder": "Frag über diesen Host...",
-    "noProvidersConfigured": "Es ist noch kein KI-Anbieter konfiguriert. Füge einen im Tab KI-Assistent hinzu.",
+    "noProvidersConfigured": "Noch kein AI-Anbieter konfiguriert. Fügen Sie einen in den Einstellungen hinzu.",
     "runsInOpenTerminal": "Wird in deiner offenen Terminal-Sitzung ausgeführt.",
     "runInTerminal": "Ausführen",
     "terminalContextPrefill": "Hier ist meine Terminalausgabe:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Erlaube anderen Funktionen, deinen KI-Anbieter-API-Schlüssel für ihre eigenen Anfragen zu verwenden. Der Schlüssel wird nie kopiert, und du kannst dies jederzeit widerrufen."
     },
-    "removeProviderConfirm": "Den Anbieter {{name}} entfernen?"
+    "removeProviderConfirm": "Den Anbieter {{name}} entfernen?",
+    "contextWindows": "Kontextfenster pro Modell",
+    "contextWindowsHint": "Wird vom Anbieter gelesen, sofern dieser eines angibt. Geben Sie eine Token-Anzahl ein, um den Wert für ein Modell zu überschreiben, oder lassen Sie das Feld leer, um den vom Anbieter gemeldeten Wert zu verwenden. Aktualisieren fragt den Anbieter erneut ab.",
+    "contextWindowValue": "Kontextfenster: {{tokens}} ({{source}})",
+    "contextOverride": "Kontextfenster-Überschreibung für {{model}}",
+    "contextSourceOverride": "von Ihnen festgelegt",
+    "contextSourceProvider": "vom Anbieter gemeldet",
+    "contextSourceGuess": "aus dem Modellnamen abgeleitet",
+    "contextSourceDefault": "Standard für unbekannte Modelle",
+    "contextLoadFailed": "Kontextfenster konnten nicht gelesen werden",
+    "contextRefresh": "Aktualisieren",
+    "contextWindowInvalid": "Geben Sie das Kontextfenster als ganze Zahl von Tokens ein, mindestens 1024."
   },
   "nav": {
-    "ai": "KI"
+    "ai": "KI-Assistent"
   },
   "onboarding": {
     "aiTitle": "KI-Assistent",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Einschalten",
     "aiEnableDesc": "Fügt einen Assistenten hinzu, der deine Einrichtung liest und Änderungen vorschlägt, die du genehmigst. Benötigt einen von dir bereitgestellten Anbieter, wie z.B. ein lokales Ollama.",
     "aiNote": "Es wird nichts irgendwohin gesendet, bis du einen Anbieter hinzufügst und eine Nachricht sendest."
-  },
-  "hosts": {
-    "docsLink": "Dokumentation ansehen"
   },
   "agents": {
     "working": "Arbeite...",
@@ -215,6 +265,280 @@
     "emptyTranscript": "Senden Sie eine Nachricht, um den Agenten zu starten."
   },
   "plugin": {
-    "name": "KI-Assistent"
+    "name": "KI-Assistent",
+    "description": "Ein KI-Assistent, der Ihre Konfiguration liest und Änderungen vorschlägt, die Sie genehmigen können."
+  },
+  "ops": {
+    "searchHosts": "Hosts durchsuchen",
+    "selectedCount": "{{count}} ausgewählt",
+    "clear": "Leeren",
+    "fleets": "Flotten",
+    "folders": "Ordner",
+    "tags": "Tags",
+    "allHosts": "Alle Hosts",
+    "noHosts": "Keine Hosts",
+    "newConversation": "Neue Konversation",
+    "sendHint_one": "Wird auf {{count}} Host ausgeführt. Befehle werden ohne vorherige Nachfrage ausgeführt.",
+    "sendHint_other": "Wird auf {{count}} Hosts ausgeführt. Befehle werden ohne vorherige Nachfrage ausgeführt.",
+    "runCommand": "Befehl ausführen",
+    "hostFacts": "Host-Informationen",
+    "hostCount_one": "{{count}} Host",
+    "hostCount_other": "{{count}} Hosts",
+    "succeeded": "{{count}} erfolgreich",
+    "failed": "{{count}} fehlgeschlagen",
+    "exitCode": "Exit-Code {{code}}",
+    "timedOut": "Zeitüberschreitung",
+    "stopped": "gestoppt",
+    "notRun": "nicht ausgeführt",
+    "cached": "aus dem Cache",
+    "duration": "{{seconds}}s",
+    "noOutput": "(keine Ausgabe)"
+  },
+  "assistant": {
+    "title": "KI-Assistent",
+    "moveHint": "Zum Verschieben ziehen. Doppelklick zum Andocken an der Seite.",
+    "toggle": "KI-Assistent umschalten",
+    "close": "Schließen",
+    "dock": "An die rechte Seite andocken",
+    "float": "Schwebend",
+    "openTab": "Vollständige Ansicht öffnen",
+    "history": "Konversationen",
+    "noConversations": "Noch keine Konversationen",
+    "untitled": "Unbenannt",
+    "deleteConversation": "Konversation löschen",
+    "deleteConfirm": "Diese Konversation löschen?",
+    "emptyTitle": "Fragen Sie nach oder ändern Sie etwas in Termix",
+    "emptyHint": "Der Assistent agiert als Sie über die Termix-CLI und führt Befehle auf Ihren Ziel-Hosts aus. Geben Sie @ ein, um Hosts, Flotten, Ordner oder Tags als Ziele hinzuzufügen.",
+    "inputPlaceholder": "Fragen Sie den Assistenten. Tippen Sie @, um Ziele hinzuzufügen.",
+    "noTargets": "Keine Zielhosts. Tippen Sie @, um welche hinzuzufügen.",
+    "sendHint": "Änderungen und Befehle werden ohne vorherige Nachfrage ausgeführt.",
+    "removeTarget": "{{name}} entfernen",
+    "kind": {
+      "host": "Host",
+      "fleet": "Fleet",
+      "folder": "Ordner",
+      "tag": "Tag"
+    },
+    "emptyHintBasic": "Der Assistent agiert über die Termix-CLI mit Ihren Berechtigungen.",
+    "inputPlaceholderBasic": "Fragen Sie den Assistenten.",
+    "sendHintBasic": "Änderungen werden ohne vorherige Nachfrage ausgeführt.",
+    "thinking": "Denke nach",
+    "thinkingActive": "Denke nach...",
+    "compacted": "Kontext komprimiert: frühere Nachrichten wurden zusammengefasst",
+    "compact": "Konversation komprimieren",
+    "nothingToCompact": "Die Konversation ist noch zu kurz, um sie zu komprimieren.",
+    "contextMeter": "Kontext: {{used}} von {{window}} Tokens wurden vom letzten Aufruf verwendet",
+    "contextMeterSource": "Das Fenster beträgt {{source}}.",
+    "contextMeterReserved": "{{tokens}} Tokens werden für die Antwort freigehalten.",
+    "todayTokens": "Heute {{tokens}}",
+    "todayTitle": "Tokens, die Sie heute verwendet haben. Klicken Sie für Details.",
+    "usage": "Token-Nutzung",
+    "conversationTokens": "{{tokens}} Tokens",
+    "openFloating": "Schwebendes Panel",
+    "openFloatingHint": "Öffnen Sie den Assistenten in einem Panel über jeder Seite. Drücken Sie {{shortcut}}, um es zu öffnen oder zu schließen.",
+    "shortcutHint": "Drücken Sie {{shortcut}} auf jeder Seite, um den Assistenten in einem schwebenden Panel zu öffnen."
+  },
+  "usage": {
+    "title": "Token-Nutzung",
+    "settingDescription": "Tokens, die Ihre AI-Aufrufe in den letzten 30 Tagen verwendet haben.",
+    "cardTitle": "AI-Token-Nutzung",
+    "today": "Heute",
+    "week": "7 Tage",
+    "month": "30 Tage",
+    "mine": "Meine",
+    "everyone": "Alle Benutzer",
+    "mineCaption": "Ihre Tokens in allen KI-Funktionen.",
+    "everyoneCaption": "Tokens aller Benutzer und KI-Funktionen.",
+    "byDay": "Pro Tag",
+    "byModel": "Pro Modell",
+    "bySource": "Pro Funktion",
+    "byUser": "Pro Benutzer",
+    "model": "Modell",
+    "feature": "Feature",
+    "user": "Benutzer",
+    "calls": "Aufrufe",
+    "prompt": "Eingabe",
+    "completion": "Ausgabe",
+    "total": "Gesamt",
+    "empty": "Keine KI-Nutzung in den letzten 30 Tagen.",
+    "loadFailed": "Nutzungsdaten konnten nicht geladen werden",
+    "estimatedNote": "Einige Werte sind Schätzungen (ca. vier Zeichen pro Token), da der Anbieter keine Nutzungsdaten übermittelt hat.",
+    "source": {
+      "assistant": "Assistent",
+      "terminal": "Terminal-Panel",
+      "compaction": "Kompaktierung"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Assistent",
+    "viewAutoOps": "Auto-ops",
+    "intro": "Auto-ops ermöglicht es dem Assistenten, Ihre Hosts eigenständig zu überprüfen. Eine Automatisierung startet ihn nach Zeitplan oder bei Problemen und erstellt einen Bericht oder schlägt eine Lösung zur Freigabe vor. Beginnen Sie mit einem Voreinstellung.",
+    "sections": {
+      "tasks": "Aufgaben",
+      "approvals": "Freigaben",
+      "presets": "Voreinstellungen"
+    },
+    "provider": "Anbieter für Aufgaben",
+    "providerDefault": "Erster Anbieter mit einem Standardmodell",
+    "model": "Modell für Aufgaben",
+    "modelDefault": "Das Standardmodell des Anbieters",
+    "saveModel": "Modell speichern",
+    "preferencesHint": "Der Anbieter und das Modell, die Hintergrundaufgaben verwenden. Lassen Sie diese unverändert, um Ihren Standardanbieter und Ihr Standardmodell zu nutzen.",
+    "task": "Aufgabe",
+    "tokens": "{{tokens}} Tokens",
+    "tokenUsage": "{{total}} Tokens ({{prompt}} Eingabe, {{completion}} Ausgabe)",
+    "dryRun": "Testlauf",
+    "trigger": "Auslöser",
+    "noTasks": "Noch keine Aufgaben",
+    "tasksHint": "Aufgaben sind Ausführungen von Automatisierungen mit einem „Ask AI“-Schritt. Aktivieren Sie eine Vorlage oder erstellen Sie Ihre eigene in Automatisierungen: Fügen Sie einen „Ask AI“-Schritt zu jeder Automatisierung hinzu. Die Ausführungen werden hier angezeigt.",
+    "openAutomations": "Automatisierungen öffnen",
+    "browsePresets": "Vorlagen durchsuchen",
+    "noApprovals": "Keine Pläne warten auf Genehmigung",
+    "loadFailed": "Auto-Ops konnten nicht geladen werden",
+    "decideFailed": "Die Entscheidung konnte nicht gespeichert werden",
+    "openConversation": "Im Assistenten öffnen",
+    "approve": "Genehmigen und ausführen",
+    "reject": "Ablehnen",
+    "expires": "Läuft um {{time}} ab",
+    "enabled": "Aktiviert",
+    "updateAvailable": "Update verfügbar",
+    "shared": "Geteilt",
+    "needsAutomations": "Benötigt Automatisierungen",
+    "enableAgain": "Erneut aktivieren",
+    "deletePreset": "Voreinstellung löschen",
+    "autonomy": {
+      "report": "Nur melden",
+      "propose": "Plan vorschlagen"
+    },
+    "status": {
+      "running": "Wird ausgeführt",
+      "reported": "Gemeldet",
+      "proposed": "Auf Genehmigung wartend",
+      "approved": "Genehmigt",
+      "rejected": "Abgelehnt",
+      "expired": "Abgelaufen",
+      "executing": "Plan wird ausgeführt",
+      "done": "Fertig",
+      "failed": "Fehlgeschlagen",
+      "skipped": "Übersprungen"
+    },
+    "severity": {
+      "info": "Info",
+      "warning": "Warnung",
+      "critical": "Kritisch"
+    },
+    "plan": {
+      "title": "Vorgeschlagener Plan",
+      "commands": "Befehle",
+      "rationale": "Begründung",
+      "risk": "Risiko",
+      "rollback": "Rückgängig machen",
+      "verify": "Überprüfen",
+      "progress": "Fortschritt"
+    },
+    "enable": {
+      "title": "{{name}} aktivieren",
+      "submit": "Aktivieren",
+      "name": "Name",
+      "targets": "Hosts",
+      "targetAll": "Alle Hosts",
+      "targetTrigger": "Der auslösende Host",
+      "targetHosts": "Ausgewählte Hosts",
+      "noHosts": "Wählen Sie mindestens einen Host aus.",
+      "threshold": "Schwellenwert (%)",
+      "forSeconds": "Für mindestens (Sekunden)",
+      "time": "Uhrzeit",
+      "cron": "Zeitplan (Cron)",
+      "dockerEvent": "Container-Ereignis",
+      "dockerEvents": {
+        "exited": "Beendet",
+        "unhealthy": "Nicht gesund",
+        "restarting": "Wird neu gestartet"
+      },
+      "badTime": "Geben Sie die Uhrzeit im Format HH:MM ein.",
+      "autonomy": "Was der Assistent tun darf",
+      "maxRunSeconds": "Zeitlimit (Sekunden)",
+      "runbook": "Runbook",
+      "runbookHint": "Was der Assistent tun soll, in einfachen Worten. Englisch funktioniert am besten.",
+      "shared": "Teilen, wenn als Voreinstellung gespeichert",
+      "sharedHint": "Jeder, der Auto-Ops verwenden darf, kann es dann aktivieren.",
+      "saveAsPreset": "Als Voreinstellung speichern",
+      "savedPreset": "Gespeichert",
+      "failed": "Die Automatisierung konnte nicht erstellt werden",
+      "saveFailed": "Die Voreinstellung konnte nicht gespeichert werden"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Tägliche Kontrolle",
+        "description": "Jeden Morgen um 09:00 Uhr werden bei allen Hosts Festplatten, Arbeitsspeicher, Auslastung, fehlgeschlagene Dienste, Container, Zertifikate, Updates, ausstehende Neustarts und die Zeitsynchronisation überprüft. Der Bericht wird nach Schweregrad sortiert."
+      },
+      "disk-cleanup": {
+        "title": "Festplattenspeicher bereinigen",
+        "description": "Wenn eine Festplatte für 5 Minuten 85 % oder mehr belegt ist, wird ermittelt, was sie füllt, und eine sichere Bereinigung zur Genehmigung vorgeschlagen. Geschäftsdaten werden niemals berührt."
+      },
+      "host-down-triage": {
+        "title": "Host-Ausfall-Analyse",
+        "description": "Wenn ein Host offline geht, wird er von anderen Hosts und Proxmox aus geprüft, und es wird gemeldet, ob das Problem im Netzwerk, an einer gestoppten Maschine oder an SSH liegt."
+      },
+      "service-failure": {
+        "title": "Dienstfehler",
+        "description": "Wenn ein Health-Check fehlschlägt, wird der dahinterliegende systemd-Dienst ermittelt, sein Status und Log gelesen und bei Bedarf ein einmaliger Neustart zur Genehmigung vorgeschlagen. Die Konfiguration wird niemals geändert."
+      },
+      "container-anomaly": {
+        "title": "Container-Anomalie",
+        "description": "Wenn ein Container beendet wird, als ungesund markiert wird oder sich ständig neu startet, werden sein Status, Exit-Code, Logs und Speicherverbrauch analysiert und ein einmaliger Start oder Neustart zur Genehmigung vorgeschlagen. Es wird nichts entfernt."
+      },
+      "resource-overload-cpu": {
+        "title": "CPU-Überlastung",
+        "description": "Wenn die CPU-Auslastung für 15 Minuten bei 95 % oder mehr liegt, werden die verantwortlichen Prozesse, Dienste und Container ermittelt und Handlungsempfehlungen gegeben. Es wird nichts geändert."
+      },
+      "resource-overload-memory": {
+        "title": "Speicherüberlastung",
+        "description": "Wenn die Speicherauslastung für 10 Minuten bei 95 % oder mehr liegt, wird ermittelt, was den Speicher verbraucht, ob ausgetauscht (swapping) oder durch Out-of-Memory-Kills beendet wurde, und es werden Handlungsempfehlungen gegeben. Es wird nichts geändert."
+      },
+      "security-updates-weekly": {
+        "title": "Wöchentliche Sicherheitsupdates",
+        "description": "Jeden Montag um 09:30 Uhr werden ausstehende Sicherheitsupdates nach Schweregrad, erforderliche Neustarts und die dahinterstehenden Pakete, laufende und installierte Kernel sowie die Tage seit dem letzten Update in einer Tabelle für alle Hosts aufgelistet."
+      },
+      "cert-expiry-weekly": {
+        "title": "Wöchentliche Zertifikatsabläufe",
+        "description": "Jeden Montag um 09:45 Uhr werden die Ablaufdaten von Let's Encrypt-, Webserver- und Kubernetes-Zertifikaten auf jedem Host geprüft. Zertifikate mit weniger als 30 Tagen Restlaufzeit werden markiert, kritisch sind weniger als 7 Tage."
+      }
+    },
+    "report": {
+      "verdict": "Ergebnis",
+      "evidence": "Beweise",
+      "actionsTaken": "Durchgeführte Aktionen",
+      "recommendations": "Empfehlungen",
+      "nothingFound": "Bevor der Lauf beendet wurde, wurde nichts gefunden.",
+      "noChanges": "Es wurden keine Änderungen vorgenommen.",
+      "openConversation": "Öffnen Sie das Gespräch im Assistenten, um jeden Schritt einzusehen und Nachfragen zu stellen.",
+      "noFurtherAction": "Es sind keine weiteren Maßnahmen erforderlich.",
+      "stoppedBudgetRun": "Gestoppt: Dieser Durchlauf hat sein Budget von {{tokens}} Tokens ausgeschöpft.",
+      "stoppedBudgetDaily": "Gestoppt: Das tägliche Budget des Besitzers von {{tokens}} Tokens ist aufgebraucht.",
+      "stoppedDeadline": "Gestoppt: Die Zeitbegrenzung der Automatisierung wurde erreicht.",
+      "stoppedPaused": "Gestoppt: Ein Administrator hat die KI-Automatisierung pausiert.",
+      "stoppedAborted": "Gestoppt: Der Automatisierungsdurchlauf wurde abgebrochen.",
+      "providerFailed": "Der KI-Anbieter ist fehlgeschlagen: {{error}}",
+      "noHosts": "Keiner der Zielhosts kann vom Besitzer der Automatisierung erreicht werden.",
+      "noProvider": "Der Besitzer der Automatisierung verfügt über keinen KI-Anbieter mit einem Modell zur Ausführung von Aufgaben.",
+      "needsOpsUse": "Der Besitzer der Automatisierung verfügt nicht über die Berechtigung ai.ops.use.",
+      "assistantOff": "Der KI-Assistent ist für den Besitzer der Automatisierung deaktiviert.",
+      "skippedPaused": "KI-Automatisierungen wurden von einem Administrator pausiert.",
+      "skippedDuplicate": "Eine Aufgabe für dieselbe Automatisierung und denselben Host wird bereits ausgeführt oder wartet auf Genehmigung.",
+      "skippedRate": "Diese Automatisierung hat in der letzten Stunde bereits {{count}} KI-Aufgaben gestartet.",
+      "hostNotRun": "Nicht ausgeführt: Der Plan wurde gestoppt.",
+      "hostNoAccess": "Nicht ausgeführt: Der Besitzer kann sich nicht mehr mit diesem Host verbinden.",
+      "hostUnreachable": "Nicht ausgeführt: Der Host konnte nicht erreicht werden.",
+      "hostStopped": "Beim ersten fehlgeschlagenen Befehl gestoppt.",
+      "executionDone": "Der genehmigte Plan wurde auf {{count}} Host(s) ausgeführt, und alle Befehle und Prüfungen waren erfolgreich.",
+      "executionFailed": "Der genehmigte Plan wurde nicht auf allen Hosts erfolgreich abgeschlossen.",
+      "executionStopped": "Der genehmigte Plan wurde vor dem Abschluss gestoppt.",
+      "approvedBy": "Der genehmigte Plan wurde wie vorgesehen ausgeführt. Genehmigt von {{user}}.",
+      "noticeReported": "KI-Bericht: {{title}}",
+      "noticeProposed": "KI-Plan wartet auf Genehmigung: {{title}}",
+      "noticeExecuted": "KI-Plan ausgeführt: {{title}}",
+      "noticeFailed": "KI-Aufgabe fehlgeschlagen: {{title}}"
+    }
   }
 }

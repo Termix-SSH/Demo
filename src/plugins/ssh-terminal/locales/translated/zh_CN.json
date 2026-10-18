@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "使用原生 WebSocket 传输连接到 Cloudflare Tunnel 后的主机，无需将原始 22 端口暴露给公网。",
+    "enableCloudflareTunnel": "启用 Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "使用主机的主地址，通过 Cloudflare Zero Trust (WSS) 路由 SSH 流量，而不是直接使用 TCP 套接字。",
+    "cloudflareTunnelHostname": "隧道主机名",
+    "cloudflareTunnelHostnameDesc": "Cloudflare Tunnel 中路由到您 SSH 源服务的公共域名（留空则使用主机的主地址）。",
+    "cloudflareTunnelPort": "隧道端口",
+    "cloudflareTunnelPortDesc": "Cloudflare 上的边缘 HTTPS/WSS 端口（默认为 443）。",
+    "cloudflareTunnelClientId": "服务令牌客户端 ID",
+    "cloudflareTunnelClientIdDesc": "可选的 CF-Access-Client-Id 标头。仅在 Cloudflare Access Zero Trust 策略强制使用服务令牌时才需要。",
+    "cloudflareTunnelClientSecret": "服务令牌客户端密钥",
+    "cloudflareTunnelClientSecretDesc": "用于 Cloudflare Access 身份验证的可选 CF-Access-Client-Secret 标头。",
     "clipboardHttpWarning": "无法读取剪贴板。某些浏览器限制在非 HTTPS 环境下访问剪贴板——请尝试使用 Ctrl+V，或通过 HTTPS 提供 Termix 服务。",
     "connecting": "正在连接...",
     "connectionLost": "连接已断开",
@@ -83,7 +95,16 @@
     "localShell": "本地终端 shell",
     "autocompleteHintComplete": "按 Tab 或 Enter 完成",
     "autocompleteHintNavigate": "↑↓ 导航",
-    "autocompleteHintClose": "按 Esc 关闭"
+    "autocompleteHintClose": "按 Esc 关闭",
+    "cloudflareTunnelClientSecretPlaceholder": "可选的服务令牌密钥",
+    "cloudflareTunnelClientSecretPlaceholderNew": "新的服务令牌密钥",
+    "secretSaved": "已保存",
+    "secretReplace": "替换",
+    "secretClear": "清除",
+    "secretCancel": "取消",
+    "hideSecret": "隐藏密钥",
+    "showSecret": "显示密钥",
+    "sessionEndedKeepOpen": "会话已结束。按 Enter 键重新连接。"
   },
   "terminalToolbar": {
     "detachTmux": "分离 tmux",
@@ -207,6 +228,26 @@
         "label": "命令历史",
         "description": "记录在此终端中运行的命令，用于历史和自动补全"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare Tunnel",
+        "description": "通过 WebSocket 将 SSH 流量路由到 Cloudflare Zero Trust"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Tunnel 主机名",
+        "description": "Cloudflare Tunnel 公共主机名"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Tunnel 端口",
+        "description": "Cloudflare 边缘 HTTPS/WSS 端口"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Cloudflare Access 服务令牌客户端 ID"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Cloudflare Access 服务令牌客户端密钥"
+      },
       "enableTerminal": {
         "label": "启用终端",
         "description": "为此主机提供 SSH 终端。"
@@ -314,6 +355,9 @@
         "moveUp": "上移",
         "moveDown": "下移",
         "tmuxHint": "仅在连接 tmux 时显示"
+      },
+      "keepOpenOnExit": {
+        "label": "退出时保持标签页打开"
       }
     },
     "user": {
@@ -484,7 +528,9 @@
     "guac": {
       "permissionLevel": "权限级别"
     },
-    "deleteGlobalThemeConfirm": "删除主题 {{name}}？"
+    "deleteGlobalThemeConfirm": "删除主题 {{name}}？",
+    "keepOpenOnExitLabel": "退出时保持标签页打开",
+    "keepOpenOnExitDesc": "当 Shell 退出或连接关闭时，保留标签页及其输出。按 Enter 键重新连接。"
   },
   "nav": {
     "history": "历史记录",
@@ -512,6 +558,7 @@
     "stopRecording": "停止录制"
   },
   "keybindings": {
+    "openLocalTerminal": "打开新的本地终端",
     "copy": "复制选区",
     "paste": "粘贴",
     "sendControlCode": "发送 Ctrl+字母 信号",
@@ -629,6 +676,7 @@
     "remoteServerRequired": "需要远程服务器。请在设置中连接远程服务器以使用此连接类型。"
   },
   "plugin": {
-    "name": "SSH 终端"
+    "name": "SSH 终端",
+    "description": "SSH 终端会话，支持标签页、分屏、历史记录、宏，桌面应用中还有本地终端。"
   }
 }

@@ -23,6 +23,18 @@
         "title": "Souporaba API ključa",
         "description": "Druge funkcije lahko uporabijo shranjeni API ključ AI, ne da bi ga videle."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Izvajanje ukazov na gostiteljih z AI asistentom",
+        "description": "Dovoli asistentu, da izvaja poljubne lupinske ukaze na gostiteljih, ki jih izberete. Privzeto le za skrbnike."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Pregled porabe AI vseh uporabnikov",
+        "description": "Prikaz žetonov, porabljenih za AI klice vsakega uporabnika, ne le vaših. Privzeto le za skrbnike."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Dovoljeni zasebni AI strežniki",
         "description": "Strežniki v vašem zasebnem omrežju, na katere lahko uporabniki usmerijo ponudnika, na primer samostojno nameščen Ollama. Vsak strežnik vpišite v novo vrstico."
+      },
+      "opsConcurrency": {
+        "label": "Vzporedni gostitelji AI asistenta",
+        "description": "Število gostiteljev, na katerih se ukaz asistenta izvaja hkrati."
+      },
+      "opsCommandTimeout": {
+        "label": "Časovna omejitev ukaza AI asistenta (sekunde)",
+        "description": "Kako dolgo se lahko ukaz izvaja na gostitelju, preden se ustavi. Asistent lahko zahteva do 600 sekund."
+      },
+      "opsOutputLimit": {
+        "label": "Izhod AI asistenta na gostitelja (znaki)",
+        "description": "Koliko izhoda vsakega gostitelja se shrani. Daljši izhod ohranja začetek in konec."
+      },
+      "autoOpsPaused": {
+        "label": "Premor samodejnih AI operacij",
+        "description": "Ustavi vse tekoče AI naloge in odobrene načrte ter zavrne nove, dokler se ne izklopi."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "AI naloge na avtomatizacijo na uro",
+        "description": "Dodatni sprožilci v isti uri se preskočijo."
+      },
+      "autoOpsRunTokens": {
+        "label": "Proračun žetonov na AI nalogo",
+        "description": "Naloga, ki porabi toliko žetonov, se ustavi in poroča o ugotovitvah."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Dnevni proračun AI žetonov na uporabnika",
+        "description": "Ko uporabnik porabi toliko žetonov danes (UTC), se njegove AI naloge preskočijo ali ustavijo."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "Vklopi AI pomočnika",
         "description": "Dovoli AI pomočniku, da pomaga v terminalu tega gostitelja. Privzeto izklopljeno, poleg tega mora biti AI omogočen za vaš račun."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Nastavitve samodejnih operacij"
+      }
     }
   },
   "ai": {
-    "title": "Pomočnik",
     "send": "Pošlji",
     "stop": "Ustavi",
     "save": "Shrani",
@@ -58,10 +102,9 @@
     "running": "teče",
     "approve": "Odobri",
     "reject": "Zavrni",
-    "inputPlaceholder": "Vprašajte o svojih strežnikih ali opišite spremembo za predlog",
     "selectProvider": "Izberite ponudnika",
-    "providerSettings": "Nastavitve ponudnika",
     "addProvider": "Dodaj ponudnika",
+    "manageModels": "Upravljanje modelov",
     "editProvider": "Uredi ponudnika",
     "removeProvider": "Odstrani ponudnika",
     "providerType": "Ponudnik",
@@ -95,22 +138,32 @@
     "modelCustom": "Vnesite ime modela",
     "modelRefresh": "Osveži seznam",
     "modelPlaceholder": "Izberite ali vpišite model",
-    "attachHint": "Vpišite @ za navedbo gostitelja, odlomka ali avtomatizacije. Spremembe se predlagajo k vaši odobritvi.",
     "runCommandTitle": "Izvedi ukaz",
     "assistant": "AI pomočnik",
     "terminalPanelEmpty": "Vprašajte pomočnika o tem gostitelju. Vsaka sprememba stanja zahteva vašo predhodno odobritev.",
     "terminalPanelPlaceholder": "Vprašajte o tem gostitelju...",
-    "noProvidersConfigured": "AI ponudnik še ni konfiguriran. Dodajte ga na zavihku AI pomočnika.",
+    "noProvidersConfigured": "AI ponudnik še ni konfiguriran. Dodajte ga v Nastavitvah.",
     "runsInOpenTerminal": "Izvede se v vaši odprti terminalski seji.",
     "runInTerminal": "Izvedi",
     "terminalContextPrefill": "Tukaj je izhod mojega terminala:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Dovoli drugim funkcijam uporabo vašega API ključa AI ponudnika za njihove lastne zahteve. Ključ se nikoli ne kopira, to lahko kadarkoli prekličete."
     },
-    "removeProviderConfirm": "Odstraniti ponudnika {{name}}?"
+    "removeProviderConfirm": "Odstraniti ponudnika {{name}}?",
+    "contextWindows": "Okno konteksta na model",
+    "contextWindowsHint": "Preberite od ponudnika, kjer poroča o njem. Vnesite število žetonov za nadomestitev za model ali pustite prazno za uporabo podatkov ponudnika. Osvežitev ponovno vpraša ponudnika.",
+    "contextWindowValue": "Okno konteksta: {{tokens}} ({{source}})",
+    "contextOverride": "Nadomestitev okna konteksta za {{model}}",
+    "contextSourceOverride": "nastavil ste vi",
+    "contextSourceProvider": "poročeno s strani ponudnika",
+    "contextSourceGuess": "ugotovljeno iz imena modela",
+    "contextSourceDefault": "privzeto za neznane modele",
+    "contextLoadFailed": "Ni bilo mogoče prebrati oken konteksta",
+    "contextRefresh": "Osveži",
+    "contextWindowInvalid": "Vnesite okno konteksta kot celo število žetonov, vsaj 1024."
   },
   "nav": {
-    "ai": "AI"
+    "ai": "AI asistent"
   },
   "onboarding": {
     "aiTitle": "AI pomočnik",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Vklopite ga",
     "aiEnableDesc": "Dodaja pomočnika, ki bere vašo nastavitev in predlaga spremembe, ki jih odobrite. Zahteva ponudnika, ki ga zagotovite vi, na primer lokalni Ollama.",
     "aiNote": "Nič se ne pošlje nikamor, dokler ne dodate ponudnika in ne pošljete sporočila."
-  },
-  "hosts": {
-    "docsLink": "Oglejte si dokumentacijo"
   },
   "agents": {
     "working": "V delu...",
@@ -215,6 +265,284 @@
     "emptyTranscript": "Pošljite sporočilo, da zaženete agenta."
   },
   "plugin": {
-    "name": "AI pomočnik"
+    "name": "AI pomočnik",
+    "description": "AI asistent, ki bere vašo nastavitev in predlaga spremembe, ki jih morate odobriti."
+  },
+  "ops": {
+    "searchHosts": "Iskanje gostiteljev",
+    "selectedCount": "Izbranih {{count}}",
+    "clear": "Počisti",
+    "fleets": "Flote",
+    "folders": "Mape",
+    "tags": "Oznake",
+    "allHosts": "Vsi gostitelji",
+    "noHosts": "Brez gostiteljev",
+    "newConversation": "Nov pogovor",
+    "sendHint_one": "Izvede se na {{count}} gostitelju. Ukazi se izvajajo brez predhodnega vprašanja.",
+    "sendHint_two": "Izvede se na {{count}} gostiteljih. Ukazi se izvajajo brez predhodnega vprašanja.",
+    "sendHint_few": "Izvede se na {{count}} gostiteljih. Ukazi se izvajajo brez predhodnega vprašanja.",
+    "sendHint_other": "Izvede se na {{count}} gostiteljih. Ukazi se izvajajo brez predhodnega vprašanja.",
+    "runCommand": "Izvedi ukaz",
+    "hostFacts": "Podatki o gostitelju",
+    "hostCount_one": "{{count}} gostitelj",
+    "hostCount_two": "{{count}} gostitelja",
+    "hostCount_few": "{{count}} gostitelji",
+    "hostCount_other": "{{count}} gostiteljev",
+    "succeeded": "{{count}} v redu",
+    "failed": "{{count}} neuspešno",
+    "exitCode": "izhod {{code}}",
+    "timedOut": "časovna omejitev pretečena",
+    "stopped": "ustavljeno",
+    "notRun": "ni izvedeno",
+    "cached": "v predpomnilniku",
+    "duration": "{{seconds}} s",
+    "noOutput": "(brez izhoda)"
+  },
+  "assistant": {
+    "title": "AI asistent",
+    "moveHint": "Povlecite za premik. Dvakrat kliknite za pritrditev na stran.",
+    "toggle": "Preklopi AI asistenta",
+    "close": "Zapri",
+    "dock": "Pripni desno",
+    "float": "Plavajoče",
+    "openTab": "Odpri poln pogled",
+    "history": "Pogovori",
+    "noConversations": "Še ni pogovorov",
+    "untitled": "Brez naslova",
+    "deleteConversation": "Izbriši pogovor",
+    "deleteConfirm": "Izbrišete ta pogovor?",
+    "emptyTitle": "Vprašajte ali spremenite karkoli v Termixu",
+    "emptyHint": "Pomočnik deluje v vašem imenu prek Termix CLI in izvaja ukaze na vaših ciljnih gostiteljih. Vnesite @ za dodajanje gostiteljev, flot, map ali oznak kot ciljev.",
+    "inputPlaceholder": "Vprašajte pomočnika. Vnesite @ za dodajanje ciljev.",
+    "noTargets": "Ni ciljnih gostiteljev. Vnesite @ za dodajanje.",
+    "sendHint": "Spremembe in ukazi se izvedejo brez predhodnega vprašanja.",
+    "removeTarget": "Odstrani {{name}}",
+    "kind": {
+      "host": "Gostitelj",
+      "fleet": "Flota",
+      "folder": "Mapa",
+      "tag": "Oznaka"
+    },
+    "emptyHintBasic": "Pomočnik deluje v vašem imenu prek Termix CLI z vašimi dovoljenji.",
+    "inputPlaceholderBasic": "Vprašajte pomočnika.",
+    "sendHintBasic": "Spremembe se izvedejo brez predhodnega vprašanja.",
+    "thinking": "Razmišlja",
+    "thinkingActive": "Razmišlja...",
+    "compacted": "Kontekst je bil stisnjen: zgodnejša sporočila so bila povzeta",
+    "compact": "Stisni pogovor",
+    "nothingToCompact": "Pogovor je še prekratko za stiskanje.",
+    "contextMeter": "Kontekst: {{used}} od {{window}} žetonov je porabil zadnji klic",
+    "contextMeterSource": "Okno je {{source}}.",
+    "contextMeterReserved": "{{tokens}} žetonov je rezerviranih za odgovor.",
+    "todayTokens": "Danes {{tokens}}",
+    "todayTitle": "Žetoni, ki ste jih uporabili danes. Kliknite za podrobnosti.",
+    "usage": "Poraba žetonov",
+    "conversationTokens": "{{tokens}} žetonov",
+    "openFloating": "Plavajoča plošča",
+    "openFloatingHint": "Odpri pomočnika v plošči nad katero koli stranjo. Pritisnite {{shortcut}} kjerkoli za odpiranje ali zapiranje.",
+    "shortcutHint": "Pritisnite {{shortcut}} na kateri koli strani za odpiranje pomočnika v plavajoči plošči."
+  },
+  "usage": {
+    "title": "Poraba žetonov",
+    "settingDescription": "Žetoni, ki so jih uporabili vaši AI klici v zadnjih 30 dneh.",
+    "cardTitle": "Poraba AI žetonov",
+    "today": "Danes",
+    "week": "7 dni",
+    "month": "30 dni",
+    "mine": "Moji",
+    "everyone": "Vsi uporabniki",
+    "mineCaption": "Vaši žetoni prek vseh AI funkcij.",
+    "everyoneCaption": "Žetoni prek vseh uporabnikov in AI funkcij.",
+    "byDay": "Na dan",
+    "byModel": "Po modelu",
+    "bySource": "Po funkciji",
+    "byUser": "Po uporabniku",
+    "model": "Model",
+    "feature": "Funkcija",
+    "user": "Uporabnik",
+    "calls": "Klici",
+    "prompt": "Vhod",
+    "completion": "Izhod",
+    "total": "Skupaj",
+    "empty": "V zadnjih 30 dneh ni bilo porabe AI.",
+    "loadFailed": "Porabe ni bilo mogoče naložiti",
+    "estimatedNote": "Nekatere številke so ocene, približno štiri znake na žeton, ker ponudnik ni poročal o porabi.",
+    "source": {
+      "assistant": "Pomočnik",
+      "terminal": "Panel terminala",
+      "compaction": "Kompakcija"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Pomočnik",
+    "viewAutoOps": "Samodejne operacije",
+    "intro": "Samodejne operacije omogočajo pomočniku, da samostojno preverja vaše gostitelje. Avtomatizacija ga zažene po urniku ali ko nekaj ne deluje pravilno, nato pa napiše poročilo ali predlaga popravilo, ki ga morate odobriti. Začnite s prednastavitvijo.",
+    "sections": {
+      "tasks": "Naloge",
+      "approvals": "Odobritve",
+      "presets": "Prednastavitve"
+    },
+    "provider": "Ponudnik za naloge",
+    "providerDefault": "Prvi ponudnik s privzetim modelom",
+    "model": "Model za naloge",
+    "modelDefault": "Privzeti model ponudnika",
+    "saveModel": "Shrani model",
+    "preferencesHint": "Ponudnik in model, ki ju uporabljajo ozadjske naloge. Pustite jih takšne, kot so, če želite uporabiti svoj privzeti ponudnik in model.",
+    "task": "Naloga",
+    "tokens": "{{tokens}} žetonov",
+    "tokenUsage": "{{total}} žetonov ({{prompt}} vhod, {{completion}} izhod)",
+    "dryRun": "Testni zagon",
+    "trigger": "Sprožilec",
+    "noTasks": "Še ni nalog",
+    "tasksHint": "Naloge so zagoni avtomatizacij z korakom Vprašaj AI. Omogočite prednastavitev ali ustvarite svojo v razdelku Avtomatizacije: dodajte korak Vprašaj AI k poljubni avtomatizaciji. Zagoni se prikažejo tukaj.",
+    "openAutomations": "Odpri Avtomatizacije",
+    "browsePresets": "Brskaj po prednastavitvah",
+    "noApprovals": "Noben načrt ne čaka na odobritev",
+    "loadFailed": "Nalaganje samodejnih operacij ni uspelo",
+    "decideFailed": "Odločitve ni bilo mogoče shraniti",
+    "openConversation": "Odpri v pomočniku",
+    "approve": "Odobri in zaženi",
+    "reject": "Zavrni",
+    "expires": "Poteče {{time}}",
+    "enabled": "Omogočeno",
+    "updateAvailable": "Na voljo posodobitev",
+    "shared": "Skupno",
+    "needsAutomations": "Zahteva Avtomatizacije",
+    "enableAgain": "Omogoči znova",
+    "deletePreset": "Izbriši prednastavitev",
+    "autonomy": {
+      "report": "Samo poročilo",
+      "propose": "Predlagaj načrt"
+    },
+    "status": {
+      "running": "V teku",
+      "reported": "Poročano",
+      "proposed": "Čaka na odobritev",
+      "approved": "Odobreno",
+      "rejected": "Zavrnjeno",
+      "expired": "Poteklo",
+      "executing": "Izvajanje načrta",
+      "done": "Končano",
+      "failed": "Ni uspelo",
+      "skipped": "Preskočeno"
+    },
+    "severity": {
+      "info": "Informacija",
+      "warning": "Opozorilo",
+      "critical": "Kritično"
+    },
+    "plan": {
+      "title": "Predlagani načrt",
+      "commands": "Ukazi",
+      "rationale": "Zakaj",
+      "risk": "Tveganje",
+      "rollback": "Vrnitev v prejšnje stanje",
+      "verify": "Preveri",
+      "progress": "Napredek"
+    },
+    "enable": {
+      "title": "Omogoči {{name}}",
+      "submit": "Omogoči",
+      "name": "Ime",
+      "targets": "Gostitelji",
+      "targetAll": "Vsi gostitelji",
+      "targetTrigger": "Gostitelj, ki ga je sprožil",
+      "targetHosts": "Izbrani gostitelji",
+      "noHosts": "Izberite vsaj enega gostitelja.",
+      "threshold": "Prag (%)",
+      "forSeconds": "Vsaj (sekunde)",
+      "time": "Čas dneva",
+      "cron": "Razpored (cron)",
+      "dockerEvent": "Dogodek v kontejnerju",
+      "dockerEvents": {
+        "exited": "Končan",
+        "unhealthy": "Nestabilen",
+        "restarting": "Ponovni zagon"
+      },
+      "badTime": "Vnesite čas v obliki HH:MM.",
+      "autonomy": "Kaj sme narediti asistent",
+      "maxRunSeconds": "Časovna omejitev (sekunde)",
+      "runbook": "Navodila za izvajanje",
+      "runbookHint": "Kaj naj naredi asistent, v navadnih besedah. Najbolje deluje angleščina.",
+      "shared": "Deli, ko je shranjeno kot privzeto nastavitev",
+      "sharedHint": "Vsi, ki lahko uporabljajo samodejne operacije, ga lahko nato omogočijo.",
+      "saveAsPreset": "Shrani kot privzeto nastavitev",
+      "savedPreset": "Shranjeno",
+      "failed": "Samodejnega postopka ni bilo mogoče ustvariti",
+      "saveFailed": "Privzete nastavitve ni bilo mogoče shraniti"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Dnevna patrulja",
+        "description": "Vsak dan ob 09:00 preveri diske, pomnilnik, obremenitev, neuspešne storitve, kontejnerje, certifikate, posodobitve, čakajoče ponovne zagon in sinhronizacijo časa na vseh gostiteljih ter poroča po stopnji resnosti."
+      },
+      "disk-cleanup": {
+        "title": "Čiščenje prostora na disku",
+        "description": "Ko disk ostane pri 85 % ali več 5 minut, najde, kaj ga polni, in predlaga varno čiščenje, ki ga morate odobriti. Poslovni podatki se nikoli ne dotaknejo."
+      },
+      "host-down-triage": {
+        "title": "Triage izpada gostitelja",
+        "description": "Ko gostitelj izgine, ga preveri z drugih gostiteljev in Proxmox ter poroča, ali je vzrok omrežje, ugasnjen stroj ali SSH."
+      },
+      "service-failure": {
+        "title": "Napaka storitve",
+        "description": "Ko zdravstveni pregled začne neuspešno potekati, najde systemd enoto za njim, prebere njen status in dnevnik ter predlaga en sam ponovni zagon, ki ga morate odobriti, če to lahko pomaga. Nastavitve se nikoli ne spremenijo."
+      },
+      "container-anomaly": {
+        "title": "Anomalija kontejnerja",
+        "description": "Ko kontejner konča, postane nestabilen ali se nenehno ponovno zažene, prebere njegovo stanje, izhodno kodo, dnevnike in pomnilnik ter predlaga, da ga enkrat zaženete ali ponovno zaženete, kar morate odobriti. Ničesar ne odstrani."
+      },
+      "resource-overload-cpu": {
+        "title": "Preobremenitev CPU",
+        "description": "Ko CPU ostane pri 95 % ali več 15 minut, najde procese, storitve in kontejnerje za njim ter poroča, kaj storiti. Ničesar ne spremeni."
+      },
+      "resource-overload-memory": {
+        "title": "Preobremenitev pomnilnika",
+        "description": "Ko pomnilnik ostane pri 95 % ali več 10 minut, najde, kaj ga uporablja, zamenjavo in izklope zaradi pomanjkanja pomnilnika ter poroča, kaj storiti. Ničesar ne spremeni."
+      },
+      "security-updates-weekly": {
+        "title": "Tedenske varnostne posodobitve",
+        "description": "Vsak ponedeljek ob 09:30 navede čakajoče varnostne posodobitve po resnosti, čakajoče ponovne zagon in pakete za njimi, delujoča in nameščena jedra ter dni od zadnje posodobitve, v eni tabeli za vse gostitelje."
+      },
+      "cert-expiry-weekly": {
+        "title": "Tedenska poteka certifikatov",
+        "description": "Vsak ponedeljek ob 09:45 prebere potek certifikatov Let's Encrypt, spletnih strežnikov in Kubernetes na vsakem gostitelju in označi tiste pod 30 dni, kritične pod 7."
+      }
+    },
+    "report": {
+      "verdict": "Sodba",
+      "evidence": "Dokazi",
+      "actionsTaken": "Izvedeni ukrepi",
+      "recommendations": "Priporočila",
+      "nothingFound": "Pred koncem izvajanja ni bilo najdeno ničesar.",
+      "noChanges": "Ni bilo narejenih sprememb.",
+      "openConversation": "Odprite pogovor v asistentu, da vidite vsak korak in postavite dodatna vprašanja.",
+      "noFurtherAction": "Ni potrebnih nadaljnjih ukrepov.",
+      "stoppedBudgetRun": "Ustavljeno: to izvajanje je porabilo svoj proračun {{tokens}} žetonov.",
+      "stoppedBudgetDaily": "Ustavljeno: dnevni proračun lastnika {{tokens}} žetonov je porabljen.",
+      "stoppedDeadline": "Ustavljeno: dosežena je bila časovna omejitev samodejnega postopka.",
+      "stoppedPaused": "Ustavljeno: administrator je začasno ustavil AI samodejne operacije.",
+      "stoppedAborted": "Ustavljeno: izvajanje samodejnega postopka je bilo preklicano.",
+      "providerFailed": "AI ponudnik je spodletel: {{error}}",
+      "noHosts": "Nobenega od ciljnih gostiteljev ne more doseči lastnik samodejnega postopka.",
+      "noProvider": "Lastnik samodejnega postopka nima AI ponudnika z modelom za izvajanje nalog.",
+      "needsOpsUse": "Lastnik avtomatizacije nima dovoljenja ai.ops.use.",
+      "assistantOff": "AI asistent je za lastnika avtomatizacije izklopljen.",
+      "skippedPaused": "AI samodejne operacije so začasno ustavljene s strani administratorja.",
+      "skippedDuplicate": "Naloga za isto avtomatizacijo in gostitelja še teče ali čaka na odobritev.",
+      "skippedRate": "Ta avtomatizacija je v zadnji uri že začela {{count}} AI nalog.",
+      "hostNotRun": "Ni izvedeno: načrt je bil ustavljen.",
+      "hostNoAccess": "Ni izvedeno: lastnik se ne more več povezati na ta gostitelj.",
+      "hostUnreachable": "Ni izvedeno: gostitelja ni bilo mogoče doseči.",
+      "hostStopped": "Ustavljeno pri prvi neuspešni ukaz.",
+      "executionDone": "Odobreni načrt je bil izveden na {{count}} gostiteljih in vsi ukazi ter preveritve so bili uspešni.",
+      "executionFailed": "Odobreni načrt ni bil izveden na vseh gostiteljih.",
+      "executionStopped": "Odobreni načrt je bil ustavljen preden se je končal.",
+      "approvedBy": "Odobreni načrt je bil izveden, kot je bilo zapisano. Odobril {{user}}.",
+      "noticeReported": "AI poročilo: {{title}}",
+      "noticeProposed": "AI načrt čaka na odobritev: {{title}}",
+      "noticeExecuted": "AI načrt izveden: {{title}}",
+      "noticeFailed": "AI naloga ni uspela: {{title}}"
+    }
   }
 }

@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Csatlakozzon a Cloudflare Tunnel mögötti gazdagépekhez a natív WebSocket transzport használatával, anélkül, hogy a nyers 22-es portot nyilvánosan elérhetővé tenné az interneten.",
+    "enableCloudflareTunnel": "Cloudflare Tunnel engedélyezése",
+    "enableCloudflareTunnelDesc": "Az SSH-forgalom útvonaltervezése a Cloudflare Zero Trust (WSS) rendszerén keresztül a gazdagép fő címének használatával, közvetlen TCP-szoktok helyett.",
+    "cloudflareTunnelHostname": "Tunnel gazdagépnév",
+    "cloudflareTunnelHostnameDesc": "A Cloudflare Tunnelben az SSH eredeti szolgáltatásához irányított nyilvános domain (hagyja üresen a gazdagép fő címének használatához).",
+    "cloudflareTunnelPort": "Tunnel port",
+    "cloudflareTunnelPortDesc": "A Cloudflare-en lévő HTTPS/WSS port (alapértelmezett: 443).",
+    "cloudflareTunnelClientId": "Szolgáltatási token ügyfélazonosítója",
+    "cloudflareTunnelClientIdDesc": "Opcionális CF-Access-Client-Id fejléc. Csak akkor szükséges, ha a Cloudflare Access Zero Trust szabályzat előírja a szolgáltatási tokenek használatát.",
+    "cloudflareTunnelClientSecret": "Szolgáltatási token ügyfél titka",
+    "cloudflareTunnelClientSecretDesc": "Opcionális CF-Access-Client-Secret fejléc a Cloudflare Access hitelesítéshez.",
     "clipboardHttpWarning": "Nem sikerült olvasni a vágólapot. Egyes böngészők korlátozzák a vágólap hozzáférését HTTPS-en kívül – próbáld meg a Ctrl+V billentyűkombinációt, vagy futtasd a Termixet HTTPS-en keresztül.",
     "connecting": "Csatlakozás...",
     "connectionLost": "A kapcsolat megszakadt",
@@ -85,7 +97,16 @@
     "localShell": "Helyi terminál shell",
     "autocompleteHintComplete": "Tab vagy Enter a befejezéshez",
     "autocompleteHintNavigate": "↑↓ a navigáláshoz",
-    "autocompleteHintClose": "Esc a bezáráshoz"
+    "autocompleteHintClose": "Esc a bezáráshoz",
+    "cloudflareTunnelClientSecretPlaceholder": "Opcionális szolgáltatási token titok",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Új szolgáltatási token titok",
+    "secretSaved": "Mentve",
+    "secretReplace": "Csere",
+    "secretClear": "Törlés",
+    "secretCancel": "Mégse",
+    "hideSecret": "Titok elrejtése",
+    "showSecret": "Titok megjelenítése",
+    "sessionEndedKeepOpen": "A munkamenet véget ért. Nyomja meg az Enter billentyűt az újracsatlakozáshoz."
   },
   "terminalToolbar": {
     "detachTmux": "Tmux leválasztása",
@@ -210,6 +231,26 @@
         "label": "Parancstörténet",
         "description": "A ebben a terminálban futtatott parancsok rögzítése a történet és az automatikus kiegészítés számára"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare-alagút",
+        "description": "Az SSH-forgalom irányítása a Cloudflare Zero Truston keresztül WebSocketen"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Alagút hosztneve",
+        "description": "A Cloudflare-alagút nyilvános hosztneve"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Alagút portja",
+        "description": "Cloudflare edge HTTPS/WSS port"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Cloudflare Access szolgáltatás token kliensazonosítója"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Cloudflare Access szolgáltatási token ügyfél titka"
+      },
       "enableTerminal": {
         "label": "Terminál engedélyezése",
         "description": "SSH terminál biztosítása ehhez a gazdagéphez."
@@ -317,6 +358,9 @@
         "moveUp": "Mozgatás felfelé",
         "moveDown": "Mozgatás lefelé",
         "tmuxHint": "Csak akkor jelenik meg, ha csatlakoztatva van a tmux"
+      },
+      "keepOpenOnExit": {
+        "label": "Fül megnyitva tartása kilépéskor"
       }
     },
     "user": {
@@ -487,7 +531,9 @@
     "guac": {
       "permissionLevel": "Jogosultsági szint"
     },
-    "deleteGlobalThemeConfirm": "Törli a(z) {{name}} témát?"
+    "deleteGlobalThemeConfirm": "Törli a(z) {{name}} témát?",
+    "keepOpenOnExitLabel": "Fül megnyitva tartása kilépéskor",
+    "keepOpenOnExitDesc": "Ha a shell kilép, vagy a kapcsolat megszakad, a fül és a kimenete megmarad. Nyomja meg az Enter billentyűt az újracsatlakozáshoz."
   },
   "nav": {
     "history": "Előzmények",
@@ -517,6 +563,7 @@
     "stopRecording": "Felvétel leállítása"
   },
   "keybindings": {
+    "openLocalTerminal": "Új helyi terminál megnyitása",
     "copy": "Kijelölés másolása",
     "paste": "Beillesztés",
     "sendControlCode": "Ctrl+betű jel küldése",
@@ -635,6 +682,7 @@
     "remoteServerRequired": "Távoli kiszolgáló szükséges. Csatlakoztasson egy távoli kiszolgálót a Beállításokban, hogy használhassa ezt a csatlakozástípust."
   },
   "plugin": {
-    "name": "SSH terminál"
+    "name": "SSH terminál",
+    "description": "SSH terminálmunkamenetek fülekkel, osztott képernyővel, előzményekkel, makrókkal és helyi terminállal az asztali alkalmazásban."
   }
 }

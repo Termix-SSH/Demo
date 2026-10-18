@@ -23,6 +23,18 @@
         "title": "API キーの共有",
         "description": "他の機能が保存された AI API キーを参照することなく使用できる場合があります。"
       }
+    },
+    "ops": {
+      "use": {
+        "title": "AI アシスタントを使用してホストでコマンドを実行する",
+        "description": "選択したホストでアシスタントが任意のシェルコマンドを実行できるようにします。デフォルトでは管理者のみが使用可能です。"
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "全ユーザーの AI 使用状況を表示する",
+        "description": "自分自身だけでなく、すべてのユーザーの AI 呼び出しで使用されたトークン数を確認できます。デフォルトでは管理者のみが使用可能です。"
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "許可されたプライベート AI ホスト",
         "description": "ユーザーがプロバイダーのターゲットとして設定できる、プライベートネットワーク上のホスト（セルフホスト型の Ollama など）です。1行に1つのホストを入力してください。"
+      },
+      "opsConcurrency": {
+        "label": "AI アシスタントの並列ホスト数",
+        "description": "アシスタントコマンドが同時に実行されるホストの数。"
+      },
+      "opsCommandTimeout": {
+        "label": "AI アシスタントのコマンドタイムアウト（秒）",
+        "description": "ホスト上でコマンドが停止されるまでの最大実行時間。アシスタントは最大 600 秒まで要求できます。"
+      },
+      "opsOutputLimit": {
+        "label": "AI アシスタントのホストごとの出力制限（文字数）",
+        "description": "各ホストの出力のうち保持される量。長い出力の場合は先頭と末尾が保持されます。"
+      },
+      "autoOpsPaused": {
+        "label": "AI 自動運用を一時停止する",
+        "description": "実行中のすべての AI タスクと承認済みプランを停止し、再度有効にするまで新しいタスクを受け付けません。"
+      },
+      "autoOpsRunsPerHour": {
+        "label": "1 時間あたりの自動化ごとの AI タスク数",
+        "description": "同じ時間内で発生した追加のトリガーはスキップされます。"
+      },
+      "autoOpsRunTokens": {
+        "label": "AI タスクあたりのトークン予算",
+        "description": "この数のトークンを使用したタスクは停止され、発見した内容を報告します。"
+      },
+      "autoOpsDailyTokens": {
+        "label": "ユーザーごとの 1 日あたりの AI トークン予算",
+        "description": "ユーザーが 1 日（UTC）でこの数のトークンを使用すると、そのユーザーの AI タスクはスキップまたは停止されます。"
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "AI アシスタントを有効にする",
         "description": "このホストのターミナルで AI アシスタントのサポートを有効にします。デフォルトではオフになっており、アカウントで AI が有効になっている必要があります。"
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "自動運用の設定"
+      }
     }
   },
   "ai": {
-    "title": "アシスタント",
     "send": "送信",
     "stop": "停止",
     "save": "保存",
@@ -58,10 +102,9 @@
     "running": "実行中",
     "approve": "承認",
     "reject": "拒否",
-    "inputPlaceholder": "サーバーについて質問するか、提案する変更を説明してください",
     "selectProvider": "プロバイダーを選択",
-    "providerSettings": "プロバイダー設定",
     "addProvider": "プロバイダーを追加",
+    "manageModels": "モデルの管理",
     "editProvider": "プロバイダーを編集",
     "removeProvider": "プロバイダーを削除",
     "providerType": "プロバイダー",
@@ -95,22 +138,32 @@
     "modelCustom": "モデル名を入力",
     "modelRefresh": "リストを更新",
     "modelPlaceholder": "モデルを選択または入力",
-    "attachHint": "@ を入力して、ホスト、スニペット、または自動化を参照してください。変更は承認のために提案されます。",
     "runCommandTitle": "コマンドを実行",
     "assistant": "AI アシスタント",
     "terminalPanelEmpty": "このホストについてアシスタントに質問してください。状態を変更する操作は、まずあなたの承認が必要です。",
     "terminalPanelPlaceholder": "このホストについて質問...",
-    "noProvidersConfigured": "AI プロバイダーがまだ設定されていません。AI アシスタントタブで追加してください。",
+    "noProvidersConfigured": "AI プロバイダーがまだ設定されていません。設定から追加してください。",
     "runsInOpenTerminal": "開いているターミナルセッションで実行されます。",
     "runInTerminal": "実行",
     "terminalContextPrefill": "这是我的终端输出：\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "他の機能が独自のリクエストのためにあなたの AI プロバイダー API キーを使用できるようにします。キーはコピーされず、いつでも取り消すことができます。"
     },
-    "removeProviderConfirm": "プロバイダー {{name}} を削除しますか？"
+    "removeProviderConfirm": "プロバイダー {{name}} を削除しますか？",
+    "contextWindows": "モデルごとのコンテキストウィンドウ",
+    "contextWindowsHint": "プロバイダーが報告している値を読み取ります。モデルに対して上書きするトークン数を入力するか、プロバイダーの報告値を使用する場合は空のままにします。更新するとプロバイダーに再度問い合わせます。",
+    "contextWindowValue": "コンテキストウィンドウ：{{tokens}}（{{source}}）",
+    "contextOverride": "{{model}} のコンテキストウィンドウ上書き",
+    "contextSourceOverride": "あなたによって設定",
+    "contextSourceProvider": "プロバイダーによって報告",
+    "contextSourceGuess": "モデル名から推測",
+    "contextSourceDefault": "不明なモデルのデフォルト値",
+    "contextLoadFailed": "コンテキストウィンドウを読み取れませんでした",
+    "contextRefresh": "更新",
+    "contextWindowInvalid": "コンテキストウィンドウは 1024 以上の整数のトークン数として入力してください。"
   },
   "nav": {
-    "ai": "AI"
+    "ai": "AI アシスタント"
   },
   "onboarding": {
     "aiTitle": "AI アシスタント",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "有効にする",
     "aiEnableDesc": "設定を読み取り、承認した変更を提案するアシスタントを追加します。Ollama のようなローカルプロバイダーが必要です。",
     "aiNote": "プロバイダーを追加してメッセージを送信するまで、何も送信されません。"
-  },
-  "hosts": {
-    "docsLink": "ドキュメントを表示"
   },
   "agents": {
     "working": "処理中...",
@@ -215,6 +265,278 @@
     "emptyTranscript": "エージェントを起動するにはメッセージを送信してください。"
   },
   "plugin": {
-    "name": "AI アシスタント"
+    "name": "AI アシスタント",
+    "description": "設定を読み取り、変更を提案して承認を求める AI アシスタント。"
+  },
+  "ops": {
+    "searchHosts": "ホストを検索",
+    "selectedCount": "{{count}} 件選択中",
+    "clear": "クリア",
+    "fleets": "フリート",
+    "folders": "フォルダ",
+    "tags": "タグ",
+    "allHosts": "すべてのホスト",
+    "noHosts": "ホストなし",
+    "newConversation": "新しい会話",
+    "sendHint_other": "{{count}} 台のホストで実行されます。コマンドは確認なしで実行されます。",
+    "runCommand": "コマンドを実行",
+    "hostFacts": "ホストの事実情報",
+    "hostCount_other": "{{count}} 台のホスト",
+    "succeeded": "{{count}} 件成功",
+    "failed": "{{count}} 件失敗",
+    "exitCode": "終了コード {{code}}",
+    "timedOut": "タイムアウト",
+    "stopped": "停止済み",
+    "notRun": "未実行",
+    "cached": "キャッシュ済み",
+    "duration": "{{seconds}} 秒",
+    "noOutput": "（出力なし）"
+  },
+  "assistant": {
+    "title": "AI アシスタント",
+    "moveHint": "ドラッグして移動します。ダブルクリックしてサイドにドッキングします。",
+    "toggle": "AI アシスタントの表示/非表示",
+    "close": "閉じる",
+    "dock": "右側に固定",
+    "float": "フローティング",
+    "openTab": "全画面で開く",
+    "history": "会話履歴",
+    "noConversations": "まだ会話がありません",
+    "untitled": "無題",
+    "deleteConversation": "会話を削除",
+    "deleteConfirm": "この会話を削除しますか？",
+    "emptyTitle": "Termix のあらゆる設定や操作について質問してください",
+    "emptyHint": "アシスタントは Termix CLI を通じてあなたに代わって動作し、対象ホストでコマンドを実行します。@ を入力して、ホスト、フリート、フォルダ、タグを対象として追加できます。",
+    "inputPlaceholder": "アシスタントに質問しましょう。@ で対象を追加できます。",
+    "noTargets": "対象ホストがありません。@ で追加してください。",
+    "sendHint": "変更やコマンドの実行は確認なしで行われます。",
+    "removeTarget": "{{name}} を削除",
+    "kind": {
+      "host": "ホスト",
+      "fleet": "フリート",
+      "folder": "フォルダ",
+      "tag": "タグ"
+    },
+    "emptyHintBasic": "アシスタントは Termix CLI を通じて、あなたの権限で動作します。",
+    "inputPlaceholderBasic": "アシスタントに質問しましょう。",
+    "sendHintBasic": "変更は確認なしで行われます。",
+    "thinking": "思考中",
+    "thinkingActive": "思考中...",
+    "compacted": "コンテキストを圧縮しました：以前のメッセージは要約されました",
+    "compact": "会話を圧縮",
+    "nothingToCompact": "会話が短すぎるため、圧縮できません。",
+    "contextMeter": "コンテキスト：最新の呼び出しで {{window}} トークン中 {{used}} トークン使用",
+    "contextMeterSource": "ウィンドウサイズは {{source}} です。",
+    "contextMeterReserved": "返信用に {{tokens}} トークンを確保しています。",
+    "todayTokens": "本日 {{tokens}}",
+    "todayTitle": "本日使用したトークン数。クリックして詳細を表示。",
+    "usage": "トークン使用量",
+    "conversationTokens": "{{tokens}} トークン",
+    "openFloating": "フローティングパネル",
+    "openFloatingHint": "任意のページ上にパネルとしてアシスタントを開きます。どこでも {{shortcut}} を押して開閉できます。",
+    "shortcutHint": "任意のページで {{shortcut}} を押して、フローティングパネルでアシスタントを開きます。"
+  },
+  "usage": {
+    "title": "トークン使用量",
+    "settingDescription": "過去30日間のAI呼び出しで使用したトークン数。",
+    "cardTitle": "AI トークン使用量",
+    "today": "本日",
+    "week": "7日間",
+    "month": "30日間",
+    "mine": "自分",
+    "everyone": "全ユーザー",
+    "mineCaption": "すべてのAI機能におけるあなたのトークン数。",
+    "everyoneCaption": "すべてのユーザーとAI機能におけるトークン数。",
+    "byDay": "1日あたり",
+    "byModel": "モデル別",
+    "bySource": "機能別",
+    "byUser": "ユーザー別",
+    "model": "モデル",
+    "feature": "機能",
+    "user": "ユーザー",
+    "calls": "呼び出し数",
+    "prompt": "入力",
+    "completion": "出力",
+    "total": "合計",
+    "empty": "過去30日間にAI使用履歴がありません。",
+    "loadFailed": "使用量の読み込みに失敗しました",
+    "estimatedNote": "プロバイダーが使用量を報告していないため、一部の数値は1トークンあたり約4文字として推定されています。",
+    "source": {
+      "assistant": "アシスタント",
+      "terminal": "ターミナルパネル",
+      "compaction": "コンパクション"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "アシスタント",
+    "viewAutoOps": "自動運用",
+    "intro": "自動運用では、アシスタントがホストを自律的にチェックします。自動化ルールによりスケジュール実行や異常発生時に起動し、レポートを作成するか、承認を待つ修正プランを提案します。プリセットから始めましょう。",
+    "sections": {
+      "tasks": "タスク",
+      "approvals": "承認",
+      "presets": "プリセット"
+    },
+    "provider": "タスク用プロバイダー",
+    "providerDefault": "デフォルトモデルを持つ最初のプロバイダー",
+    "model": "タスク用モデル",
+    "modelDefault": "プロバイダーのデフォルトモデル",
+    "saveModel": "モデルを保存",
+    "preferencesHint": "バックグラウンドタスクで使用するプロバイダーとモデルです。デフォルトのプロバイダーとモデルを使用する場合は、変更せずにそのままにしてください。",
+    "task": "タスク",
+    "tokens": "{{tokens}} トークン",
+    "tokenUsage": "{{total}} トークン（入力 {{prompt}}、出力 {{completion}}）",
+    "dryRun": "テスト実行",
+    "trigger": "トリガー",
+    "noTasks": "タスクはまだありません",
+    "tasksHint": "タスクは、「AI に質問する」ステップを含む自動化の実行履歴です。プリセットを有効にするか、自動化で独自のルールを作成してください（任意の自動化に「AI に質問する」ステップを追加）。実行履歴がここに表示されます。",
+    "openAutomations": "自動化を開く",
+    "browsePresets": "プリセットを参照",
+    "noApprovals": "承認待ちのプランはありません",
+    "loadFailed": "自動運用の読み込みに失敗しました",
+    "decideFailed": "判断結果を保存できませんでした",
+    "openConversation": "アシスタントで開く",
+    "approve": "承認して実行",
+    "reject": "拒否",
+    "expires": "{{time}} に期限切れ",
+    "enabled": "有効",
+    "updateAvailable": "アップデート利用可能",
+    "shared": "共有",
+    "needsAutomations": "自動化が必要です",
+    "enableAgain": "再度有効にする",
+    "deletePreset": "プリセットを削除",
+    "autonomy": {
+      "report": "レポートのみ",
+      "propose": "プランを提案"
+    },
+    "status": {
+      "running": "実行中",
+      "reported": "レポート済み",
+      "proposed": "承認待ち",
+      "approved": "承認済み",
+      "rejected": "拒否済み",
+      "expired": "期限切れ",
+      "executing": "プラン実行中",
+      "done": "完了",
+      "failed": "失敗",
+      "skipped": "スキップ"
+    },
+    "severity": {
+      "info": "情報",
+      "warning": "警告",
+      "critical": "重大"
+    },
+    "plan": {
+      "title": "提案されたプラン",
+      "commands": "コマンド",
+      "rationale": "理由",
+      "risk": "リスク",
+      "rollback": "ロールバック",
+      "verify": "検証",
+      "progress": "進捗"
+    },
+    "enable": {
+      "title": "{{name}} を有効にする",
+      "submit": "有効にする",
+      "name": "名前",
+      "targets": "ホスト",
+      "targetAll": "すべてのホスト",
+      "targetTrigger": "トリガーされたホスト",
+      "targetHosts": "選択したホスト",
+      "noHosts": "少なくとも1つのホストを選択してください。",
+      "threshold": "しきい値（%）",
+      "forSeconds": "継続時間（秒）",
+      "time": "時刻",
+      "cron": "スケジュール（cron）",
+      "dockerEvent": "コンテナイベント",
+      "dockerEvents": {
+        "exited": "終了",
+        "unhealthy": "不健康",
+        "restarting": "再起動中"
+      },
+      "badTime": "時刻を HH:MM の形式で入力してください。",
+      "autonomy": "アシスタントが実行できる操作",
+      "maxRunSeconds": "時間制限（秒）",
+      "runbook": "ランブック",
+      "runbookHint": "アシスタントに実行してほしい内容を平易な言葉で記述してください。英語が最も適切に動作します。",
+      "shared": "プリセットとして保存時に共有する",
+      "sharedHint": "自動運用を使用できるすべてのユーザーがこれを有効にできるようになります。",
+      "saveAsPreset": "プリセットとして保存",
+      "savedPreset": "保存済み",
+      "failed": "自動化の作成に失敗しました",
+      "saveFailed": "プリセットの保存に失敗しました"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "デイリーパトロール",
+        "description": "毎朝 09:00 に、すべてのホストのディスク、メモリ、負荷、失敗したサービス、コンテナ、証明書、アップデート、保留中の再起動、時刻同期をチェックし、重要度別にレポートします。"
+      },
+      "disk-cleanup": {
+        "title": "ディスクスペースのクリーンアップ",
+        "description": "ディスク使用率が 5 分以上 85% 以上になった場合、何が容量を占有しているか特定し、承認を待つ安全なクリーンアップ案を提示します。ビジネスデータは決して操作されません。"
+      },
+      "host-down-triage": {
+        "title": "ホストダウンの初期対応",
+        "description": "ホストがオフラインになった場合、他のホストや Proxmox からプローブし、ネットワーク、停止したマシン、または SSH のいずれが原因かレポートします。"
+      },
+      "service-failure": {
+        "title": "サービス障害",
+        "description": "ヘルスチェックが失敗し始めた場合、背後にある systemd ユニットを特定し、ステータスとログを読み取り、有効な場合に単一の再起動を承認待ちで提案します。設定は決して変更されません。"
+      },
+      "container-anomaly": {
+        "title": "コンテナの異常",
+        "description": "コンテナが終了、不健康、または再起動を繰り返した場合、その状態、終了コード、ログ、メモリを読み取り、一度の起動または再起動を承認待ちで提案します。何も削除されません。"
+      },
+      "resource-overload-cpu": {
+        "title": "CPU 過負荷",
+        "description": "CPU 使用率が 15 分以上 95% 以上になった場合、背後にあるプロセス、サービス、コンテナを特定し、対応策をレポートします。何も変更されません。"
+      },
+      "resource-overload-memory": {
+        "title": "メモリ過負荷",
+        "description": "メモリ使用率が 10 分以上 95% 以上になった場合、使用元、スワップ、OOM キルを特定し、対応策をレポートします。何も変更されません。"
+      },
+      "security-updates-weekly": {
+        "title": "週次セキュリティアップデート",
+        "description": "毎週月曜日 09:30 に、重要度別の保留中のセキュリティアップデート、保留中の再起動とそのパッケージ、実行中およびインストール済みのカーネル、前回のアップデートからの日数を、すべてのホストについて1つの表で表示します。"
+      },
+      "cert-expiry-weekly": {
+        "title": "週次証明書有効期限",
+        "description": "毎週月曜日 09:45 に、すべてのホスト上の Let's Encrypt、Web サーバー、Kubernetes 証明書の有効期限を読み取り、30 日未満のものをフラグ付けし、7 日未満は重要としてマークします。"
+      }
+    },
+    "report": {
+      "verdict": "判定",
+      "evidence": "証拠",
+      "actionsTaken": "実行されたアクション",
+      "recommendations": "推奨事項",
+      "nothingFound": "実行終了までに何も見つかりませんでした。",
+      "noChanges": "変更は行われませんでした。",
+      "openConversation": "アシスタントで会話を開き、すべてのステップを確認し、追加の質問を行ってください。",
+      "noFurtherAction": "これ以上のアクションは必要ありません。",
+      "stoppedBudgetRun": "停止：この実行は {{tokens}} トークンの予算を使い果たしました。",
+      "stoppedBudgetDaily": "停止：所有者の {{tokens}} トークンの日次予算を使い果たしました。",
+      "stoppedDeadline": "停止：自動化の時間制限に達しました。",
+      "stoppedPaused": "停止：管理者が AI 自動運用を一時停止しました。",
+      "stoppedAborted": "停止：自動化の実行がキャンセルされました。",
+      "providerFailed": "AI プロバイダーに失敗しました：{{error}}",
+      "noHosts": "ターゲットホストのいずれも、自動化の所有者から到達できません。",
+      "noProvider": "自動化の所有者には、タスクを実行するためのモデルを持つ AI プロバイダーがありません。",
+      "needsOpsUse": "自動化作成者の ai.ops.use 権限がありません。",
+      "assistantOff": "自動化作成者の AI アシスタントが無効化されています。",
+      "skippedPaused": "管理者により AI 自動運用が一時停止されています。",
+      "skippedDuplicate": "同じ自動化とホストに対するタスクが実行中または承認待ちです。",
+      "skippedRate": "この自動化は過去1時間で既に {{count}} 件の AI タスクを開始しています。",
+      "hostNotRun": "実行されませんでした: プランが停止されました。",
+      "hostNoAccess": "実行されませんでした: 作成者がこのホストに接続できなくなりました。",
+      "hostUnreachable": "実行されませんでした: ホストに到達できませんでした。",
+      "hostStopped": "最初に失敗したコマンドで停止しました。",
+      "executionDone": "承認されたプランが {{count}} 台のホストで実行され、すべてのコマンドとチェックが成功しました。",
+      "executionFailed": "承認されたプランがすべてのホストで完了しませんでした。",
+      "executionStopped": "承認されたプランが完了する前に停止されました。",
+      "approvedBy": "承認されたプランがそのまま実行されました。{{user}} によって承認されました。",
+      "noticeReported": "AI レポート: {{title}}",
+      "noticeProposed": "承認待ちの AI プラン: {{title}}",
+      "noticeExecuted": "実行された AI プラン: {{title}}",
+      "noticeFailed": "AI タスクが失敗しました: {{title}}"
+    }
   }
 }

@@ -44,6 +44,7 @@ import {
 } from "../look/terminal-font-zoom";
 import { TmuxSessionPicker } from "./TmuxSessionPicker";
 import { getTerminalBufferText } from "./terminal-buffer-text.ts";
+import { isPaneNavHotkey } from "../lib/pane-nav-hotkey";
 import { getMacLineNavigationSequence } from "../lib/mac-line-navigation";
 import { useCommandTracker } from "./command-history/useCommandTracker";
 import {
@@ -60,6 +61,7 @@ import {
   buildImageUploadFormData,
   type TerminalImageUploadSource,
 } from "./terminal-image-upload";
+import { createTerminalNativePasteHandler } from "./terminal-native-paste";
 import { TerminalSearchBar } from "./search/TerminalSearchBar.tsx";
 import {
   CommandAutocomplete,
@@ -82,7 +84,9 @@ import { isTabKeyEvent } from "./terminal-key-event.ts";
 import { installTouchWheelCoordinator } from "./touch-wheel-coordinator.ts";
 import {
   terminalWheelAction,
+  tmuxScrollLines,
   wheelHasNothingToScroll,
+  wheelPixels,
 } from "./terminal-wheel.ts";
 import { loadTouchInputSettings } from "./touch-input-settings-store.ts";
 import {
@@ -157,6 +161,8 @@ interface SSHTerminalProps {
   executeCommand?: string;
   /** Attach to this tmux session right after connecting (tmux monitor). */
   tmuxAttachSession?: string;
+  /** The tmux session executeCommand attaches to, so the wheel can scroll it. */
+  tmuxSession?: string;
   onOpenFileManager?: (path?: string) => void;
   onOpenFileInEditor?: (filePath: string) => void;
   previewTheme?: string | null;
@@ -201,6 +207,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       initialPath,
       executeCommand,
       tmuxAttachSession,
+      tmuxSession,
       onOpenFileManager,
       onOpenFileInEditor,
       previewTheme,
@@ -291,6 +298,9 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
     const sessionOriginRef = useRef<"local" | "remote">("local");
     // Set while an auto reconnect runs, so the old output stays on screen.
     const keepScrollbackRef = useRef(false);
+    // The session ended but the tab stays open to show its output.
+    const sessionEndedRef = useRef(false);
+    const reconnectAfterEndRef = useRef<() => void>(() => {});
     const customKeybindingsRef = useRef<CustomKeybinding[]>([]);
     const resizeTimeout = useRef<NodeJS.Timeout | null>(null);
     const wasDisconnectedBySSH = useRef(false);
@@ -302,6 +312,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
     const [isSavingQuickConnect, setIsSavingQuickConnect] = useState(false);
     const [isQuickConnectSaved, setIsQuickConnectSaved] = useState(false);
     const [isImageUploading, setIsImageUploading] = useState(false);
+    const imageUploadRef = useRef(handleImageUpload);
     const [isConnecting, setIsConnecting] = useState(false);
     const [isFitted, setIsFitted] = useState(false);
     const [connectionError, setConnectionError] = useState<string | null>(null);
@@ -397,6 +408,8 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       }>;
     } | null>(null);
     const tmuxSessionNameRef = useRef<string | null>(null);
+    const tmuxSessionPropRef = useRef(tmuxSession);
+    tmuxSessionPropRef.current = tmuxSession;
     const [isTmuxAttached, setIsTmuxAttached] = useState(false);
     const tmuxCopyModeHintShownRef = useRef(false);
 
@@ -436,6 +449,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
     const lastCommandRef = useRef("");
     const outputTailRef = useRef("");
     const passwordInputRef = useRef(false);
+    const alternateScreenModeRef = useRef(false);
 
     const { trackInput, getCurrentCommand, updateCurrentCommand } =
       useCommandTracker({
@@ -445,6 +459,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
           lastCommandRef.current = line;
         },
         isPasswordInput: () => passwordInputRef.current,
+        isFullScreen: () => alternateScreenModeRef.current,
         onCommandExecuted: (command) => {
           if (!autocompleteHistory.current.includes(command)) {
             autocompleteHistory.current = [
@@ -613,8 +628,12 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       autosuggestionRef.current = autosuggestion;
     }, [autosuggestion]);
 
+    // History means nothing inside tmux, vim or less, so Tab and
+    // suggestions go to the app there.
     const isAutocompleteEnabled = useCallback(
-      () => termUserRef.current.commandAutocomplete,
+      () =>
+        termUserRef.current.commandAutocomplete &&
+        !alternateScreenModeRef.current,
       [],
     );
 
@@ -867,7 +886,6 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
     const activityLoggingRef = useRef(false);
     const passwordPromptShownRef = useRef(false);
     const passwordPromptBufferRef = useRef("");
-    const alternateScreenModeRef = useRef(false);
     const controlStringModeRef = useRef(false);
 
     const lastSentSizeRef = useRef<{ cols: number; rows: number } | null>(null);
@@ -1789,6 +1807,10 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
           resolveLocalEchoMode(termSettingsRef.current.localEcho),
         );
         terminalInputDisposableRef.current = terminal.onData((data) => {
+          if (sessionEndedRef.current) {
+            if (data === "\r") reconnectAfterEndRef.current();
+            return;
+          }
           if (ws.readyState !== WebSocket.OPEN) return;
           if (data === "\r" || data === "\n") {
             const currentCmd = getCurrentCommand().trim();
@@ -2056,9 +2078,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
             setIsConnected(false);
             setIsConnecting(false);
             shouldNotReconnectRef.current = true;
-            if (onClose) {
-              onClose();
-            }
+            endSession();
           } else if (msg.type === "disconnected") {
             wasDisconnectedBySSH.current = true;
             shouldNotReconnectRef.current = true;
@@ -2066,7 +2086,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
             setIsConnecting(false);
             if (msg.graceful) {
               wasConnectedRef.current = false;
-              if (onClose) onClose();
+              endSession();
             } else if (wasConnectedRef.current) {
               wasConnectedRef.current = false;
               if (
@@ -2660,7 +2680,8 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
         allowTransparency: true, // MUST be set before open()
         convertEol: false,
         macOptionIsMeta: config.macOptionIsMeta,
-        macOptionClickForcesSelection: false,
+        // Option+drag selects text while an app like mc uses the mouse.
+        macOptionClickForcesSelection: true,
         rightClickSelectsWord: config.rightClickSelectsWord,
         fastScrollSensitivity: config.fastScrollSensitivity,
         allowProposedApi: true,
@@ -2751,6 +2772,8 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
         fitTerminal();
       });
 
+      let tmuxWheelPixels = 0;
+      let tmuxWheelTimer: ReturnType<typeof setTimeout> | null = null;
       terminal.attachCustomWheelEventHandler((ev) => {
         const cfg = termSettingsRef.current;
         const action = terminalWheelAction(ev, cfg);
@@ -2764,6 +2787,39 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
           );
           terminal.scrollLines(ev.deltaY > 0 ? lines : -lines);
           ev.preventDefault();
+          return false;
+        }
+        // Over tmux without mouse mode, xterm would send arrow keys to the
+        // shell. Ask tmux to scroll its own history instead.
+        const tmuxName =
+          tmuxSessionNameRef.current ?? tmuxSessionPropRef.current;
+        if (
+          tmuxName &&
+          tmuxName !== "(active)" &&
+          terminal.buffer.active.type === "alternate" &&
+          terminal.modes.mouseTrackingMode === "none"
+        ) {
+          ev.preventDefault();
+          tmuxWheelPixels += wheelPixels(ev.deltaY, ev.deltaMode);
+          if (!tmuxWheelTimer) {
+            tmuxWheelTimer = setTimeout(() => {
+              tmuxWheelTimer = null;
+              const pixels = tmuxWheelPixels;
+              tmuxWheelPixels = 0;
+              if (pixels === 0) return;
+              if (webSocketRef.current?.readyState !== WebSocket.OPEN) return;
+              webSocketRef.current.send(
+                JSON.stringify({
+                  type: "tmux_scroll",
+                  data: {
+                    sessionName: tmuxName,
+                    direction: pixels < 0 ? "up" : "down",
+                    lines: tmuxScrollLines(pixels),
+                  },
+                }),
+              );
+            }, 50);
+          }
           return false;
         }
         if (wheelHasNothingToScroll(terminal.buffer.active)) {
@@ -2802,7 +2858,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
         if (e.ctrlKey && onOpenFileManager) {
           e.preventDefault();
           e.stopPropagation();
-          onOpenFileManager();
+          openFilesAtCwd();
           return;
         }
 
@@ -2853,15 +2909,12 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       };
       element?.addEventListener("auxclick", handleMiddleClick);
 
-      const handlePaste = (e: ClipboardEvent) => {
-        const text = e.clipboardData?.getData("text");
-        if (text) {
-          e.preventDefault();
-          e.stopPropagation();
-          terminal.paste(text);
-        }
-      };
-      element?.addEventListener("paste", handlePaste);
+      const handlePaste = createTerminalNativePasteHandler(
+        (text) => terminal.paste(text),
+        (file) => void imageUploadRef.current(file, "clipboard"),
+      );
+      // Capture before xterm handles paste, so images do not become empty or duplicate input.
+      element?.addEventListener("paste", handlePaste, true);
 
       let tmuxDragTracking = false;
       const handleTmuxDragStart = (e: MouseEvent) => {
@@ -2935,7 +2988,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
         element?.removeEventListener("contextmenu", handleContextMenu);
         element?.removeEventListener("mouseup", handleSelectionMouseUp);
         element?.removeEventListener("auxclick", handleMiddleClick);
-        element?.removeEventListener("paste", handlePaste);
+        element?.removeEventListener("paste", handlePaste, true);
         element?.removeEventListener("mousedown", handleTmuxDragStart);
         element?.removeEventListener("mousemove", handleTmuxDragMove);
         element?.removeEventListener("mouseup", handleTmuxDragEnd);
@@ -3144,16 +3197,12 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
           }
         }
 
-        if (e.altKey && !e.ctrlKey && !e.shiftKey && !e.metaKey) {
-          const arrowCodes = [
-            "ArrowLeft",
-            "ArrowRight",
-            "ArrowUp",
-            "ArrowDown",
-          ];
-          if (arrowCodes.includes(e.code)) {
+        // Only keep the key when core moved to another pane. Otherwise it
+        // goes to the shell, where Alt+Arrow jumps a word.
+        if (isPaneNavHotkey(e)) {
+          globalShortcutHandler.current?.(e);
+          if (e.defaultPrevented) {
             e.stopPropagation();
-            globalShortcutHandler.current?.(e);
             return false;
           }
         }
@@ -3345,9 +3394,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
             }
           };
 
-          const autocompleteEnabled = termUserRef.current.commandAutocomplete;
-
-          if (!autocompleteEnabled) {
+          if (!isAutocompleteEnabled()) {
             clearAutosuggestion();
             sendTabToShell();
             return false;
@@ -3555,6 +3602,11 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       }
     }
 
+    // Keep the terminal session and upload callback current without rebuilding xterm.
+    useEffect(() => {
+      imageUploadRef.current = handleImageUpload;
+    });
+
     async function handleClipboardImage() {
       if (!navigator.clipboard?.read) {
         toast.error(t("terminal.imageClipboardUnavailable"));
@@ -3636,6 +3688,34 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       />
     );
     const toolbarOnTop = readToolbarSettings(host).position === "top";
+
+    // Closes the tab when the shell ends, unless the host keeps it open to
+    // show the last output.
+    function endSession() {
+      if (!termSettingsRef.current.keepOpenOnExit) {
+        onClose?.();
+        return;
+      }
+      sessionEndedRef.current = true;
+      terminal?.write(
+        `\r\n\x1b[2m${t("terminal.sessionEndedKeepOpen")}\x1b[0m\r\n`,
+      );
+    }
+
+    reconnectAfterEndRef.current = () => {
+      if (!terminal) return;
+      sessionEndedRef.current = false;
+      isUnmountingRef.current = false;
+      shouldNotReconnectRef.current = false;
+      isReconnectingRef.current = false;
+      isConnectingRef.current = false;
+      reconnectAttempts.current = 0;
+      wasDisconnectedBySSH.current = false;
+      wasConnectedRef.current = false;
+      keepScrollbackRef.current = true;
+      updateConnectionError(null);
+      connectToHost(terminal.cols, terminal.rows);
+    };
 
     return (
       <div className="flex h-full w-full flex-col">

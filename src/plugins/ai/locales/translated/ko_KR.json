@@ -23,6 +23,18 @@
         "title": "API 키 공유",
         "description": "다른 기능이 저장된 AI API 키를 확인하지 않고 사용할 수 있습니다."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "AI 어시스턴트를 사용하여 호스트에서 명령 실행",
+        "description": "선택한 호스트에서 어시스턴트가 모든 셸 명령을 실행할 수 있도록 허용합니다. 기본적으로 관리자만 사용 가능합니다."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "모든 사용자의 AI 사용량 보기",
+        "description": "자신의 사용량뿐만 아니라 모든 사용자의 AI 호출에 사용된 토큰을 확인합니다. 기본적으로 관리자만 사용 가능합니다."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "허용된 사설 AI 호스트",
         "description": "사용자가 자체 호스팅 Ollama와 같은 프로바이더를 연결할 수 있는 사설 네트워크의 호스트입니다. 각 줄에 호스트 하나씩 입력하세요."
+      },
+      "opsConcurrency": {
+        "label": "AI 어시스턴트 병렬 호스트 수",
+        "description": "어시스턴트 명령이 동시에 실행되는 호스트의 수입니다."
+      },
+      "opsCommandTimeout": {
+        "label": "AI 어시스턴트 명령 시간 초과(초)",
+        "description": "명령이 중지되기 전에 호스트에서 실행될 수 있는 최대 시간입니다. 어시스턴트는 최대 600초까지 요청할 수 있습니다."
+      },
+      "opsOutputLimit": {
+        "label": "AI 어시스턴트 호스트당 출력량(문자)",
+        "description": "각 호스트의 출력 중 유지되는 양입니다. 출력이 길 경우 시작 부분과 끝 부분만 유지됩니다."
+      },
+      "autoOpsPaused": {
+        "label": "AI 자동 작업 일시 중지",
+        "description": "실행 중인 모든 AI 작업 및 승인된 계획을 중지하고 새로운 작업을 거부합니다. 다시 켜기 전까지 유지됩니다."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "시간당 자동화당 AI 작업 수",
+        "description": "같은 시간 내에 더 많은 트리거가 발생하면 건너뜁니다."
+      },
+      "autoOpsRunTokens": {
+        "label": "AI 작업당 토큰 예산",
+        "description": "이만큼의 토큰을 사용하면 작업이 중지되고 발견된 내용을 보고합니다."
+      },
+      "autoOpsDailyTokens": {
+        "label": "사용자당 일일 AI 토큰 예산",
+        "description": "사용자가 오늘(UTC 기준) 이만큼의 토큰을 사용하면 AI 작업이 건너뛰거나 중지됩니다."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "AI 어시스턴트 활성화",
         "description": "이 호스트의 터미널에서 AI 어시스턴트의 도움을 허용합니다. 기본적으로 꺼져 있으며, 계정에서 AI가 활성화되어 있어야 합니다."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "자동 작업 환경 설정"
+      }
     }
   },
   "ai": {
-    "title": "어시스턴트",
     "send": "보내기",
     "stop": "중지",
     "save": "저장",
@@ -58,10 +102,9 @@
     "running": "실행 중",
     "approve": "승인",
     "reject": "거부",
-    "inputPlaceholder": "서버에 대해 질문하거나 제안할 변경 사항을 설명하세요",
     "selectProvider": "프로바이더 선택",
-    "providerSettings": "프로바이더 설정",
     "addProvider": "프로바이더 추가",
+    "manageModels": "모델 관리",
     "editProvider": "프로바이더 수정",
     "removeProvider": "프로바이더 제거",
     "providerType": "프로바이더",
@@ -95,22 +138,32 @@
     "modelCustom": "모델 이름 입력",
     "modelRefresh": "목록 새로고침",
     "modelPlaceholder": "모델 선택 또는 입력",
-    "attachHint": "@를 입력하여 호스트, 스니펫 또는 자동화를 참조하세요. 변경 사항은 승인을 위해 제안됩니다.",
     "runCommandTitle": "명령어 실행",
     "assistant": "AI 어시스턴트",
     "terminalPanelEmpty": "이 호스트에 대해 어시스턴트에게 질문하세요. 상태를 변경하는 작업은 먼저 승인이 필요합니다.",
     "terminalPanelPlaceholder": "이 호스트에 대해 질문하세요...",
-    "noProvidersConfigured": "AI 제공업체가 아직 설정되지 않았습니다. AI 어시스턴트 탭에서 추가하세요.",
+    "noProvidersConfigured": "아직 AI 제공자가 구성되지 않았습니다. 설정에서 추가하세요.",
     "runsInOpenTerminal": "열려 있는 터미널 세션에서 실행됩니다.",
     "runInTerminal": "실행",
     "terminalContextPrefill": "내 터미널 출력입니다:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "다른 기능이 자체 요청을 위해 AI 제공업체 API 키를 사용할 수 있도록 허용합니다. 키는 절대 복사되지 않으며 언제든지 이를 취소할 수 있습니다."
     },
-    "removeProviderConfirm": "제공업체 {{name}}을(를) 제거하시겠습니까?"
+    "removeProviderConfirm": "제공업체 {{name}}을(를) 제거하시겠습니까?",
+    "contextWindows": "모델별 컨텍스트 윈도우",
+    "contextWindowsHint": "제공자가 보고하는 값을 읽어옵니다. 모델에 대해 토큰 수를 입력하여 덮어쓰거나, 제공자가 보고하는 값을 사용하려면 비워두세요. 새로 고침은 제공자에게 다시 요청합니다.",
+    "contextWindowValue": "컨텍스트 윈도우: {{tokens}} ({{source}})",
+    "contextOverride": "{{model}}의 컨텍스트 윈도우 덮어쓰기",
+    "contextSourceOverride": "사용자가 설정함",
+    "contextSourceProvider": "제공자가 보고함",
+    "contextSourceGuess": "모델 이름에서 추측함",
+    "contextSourceDefault": "알 수 없는 모델의 기본값",
+    "contextLoadFailed": "컨텍스트 윈도우를 읽을 수 없습니다",
+    "contextRefresh": "새로 고침",
+    "contextWindowInvalid": "컨텍스트 윈도우를 1024 이상의 정수 토큰 수로 입력하세요."
   },
   "nav": {
-    "ai": "AI"
+    "ai": "AI 어시스턴트"
   },
   "onboarding": {
     "aiTitle": "AI 어시스턴트",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "활성화",
     "aiEnableDesc": "설정을 읽고 승인한 변경 사항을 제안하는 어시스턴트를 추가합니다. 로컬 Ollama와 같이 사용자가 제공하는 제공업체가 필요합니다.",
     "aiNote": "제공업체를 추가하고 메시지를 보내기 전까지는 아무것도 전송되지 않습니다."
-  },
-  "hosts": {
-    "docsLink": "문서 보기"
   },
   "agents": {
     "working": "작업 중...",
@@ -215,6 +265,278 @@
     "emptyTranscript": "에이전트를 시작하려면 메시지를 보내세요."
   },
   "plugin": {
-    "name": "AI 어시스턴트"
+    "name": "AI 어시스턴트",
+    "description": "설정을 읽고 변경 사항을 제안하여 승인하도록 하는 AI 어시스턴트입니다."
+  },
+  "ops": {
+    "searchHosts": "호스트 검색",
+    "selectedCount": "{{count}}개 선택됨",
+    "clear": "지우기",
+    "fleets": "플릿",
+    "folders": "폴더",
+    "tags": "태그",
+    "allHosts": "모든 호스트",
+    "noHosts": "호스트 없음",
+    "newConversation": "새 대화",
+    "sendHint_other": "{{count}}개 호스트에서 실행됩니다. 명령은 먼저 묻지 않고 실행됩니다.",
+    "runCommand": "명령 실행",
+    "hostFacts": "호스트 정보",
+    "hostCount_other": "{{count}}개 호스트",
+    "succeeded": "{{count}}개 성공",
+    "failed": "{{count}}개 실패",
+    "exitCode": "종료 코드 {{code}}",
+    "timedOut": "시간 초과",
+    "stopped": "중지됨",
+    "notRun": "실행 안 됨",
+    "cached": "캐시됨",
+    "duration": "{{seconds}}초",
+    "noOutput": "(출력 없음)"
+  },
+  "assistant": {
+    "title": "AI 어시스턴트",
+    "moveHint": "드래그하여 이동하세요. 더블 클릭하여 측면에 고정하세요.",
+    "toggle": "AI 어시스턴트 전환",
+    "close": "닫기",
+    "dock": "오른쪽으로 고정",
+    "float": "플로팅",
+    "openTab": "전체 화면 열기",
+    "history": "대화 목록",
+    "noConversations": "아직 대화가 없습니다",
+    "untitled": "제목 없음",
+    "deleteConversation": "대화 삭제",
+    "deleteConfirm": "이 대화를 삭제하시겠습니까?",
+    "emptyTitle": "Termix에서 무엇이든 물어보거나 변경하세요",
+    "emptyHint": "어시스턴트는 Termix CLI를 통해 사용자의 권한으로 작동하며 대상 호스트에서 명령어를 실행합니다. @를 입력하여 호스트, 플릿, 폴더 또는 태그를 대상으로 추가하세요.",
+    "inputPlaceholder": "어시스턴트에게 물어보세요. @를 입력하여 대상을 추가하세요.",
+    "noTargets": "대상 호스트가 없습니다. @를 입력하여 추가하세요.",
+    "sendHint": "변경 사항과 명령어는 사전 확인 없이 실행됩니다.",
+    "removeTarget": "{{name}} 제거",
+    "kind": {
+      "host": "호스트",
+      "fleet": "플릿",
+      "folder": "폴더",
+      "tag": "태그"
+    },
+    "emptyHintBasic": "어시스턴트는 Termix CLI를 통해 사용자의 권한으로 작동합니다.",
+    "inputPlaceholderBasic": "어시스턴트에게 물어보세요.",
+    "sendHintBasic": "변경 사항은 사전 확인 없이 실행됩니다.",
+    "thinking": "생각 중",
+    "thinkingActive": "생각 중...",
+    "compacted": "컨텍스트 압축됨: 이전 메시지가 요약되었습니다",
+    "compact": "대화 압축하기",
+    "nothingToCompact": "대화가 너무 짧아 아직 압축할 수 없습니다.",
+    "contextMeter": "컨텍스트: 최신 호출에서 {{used}}/{{window}} 토큰 사용",
+    "contextMeterSource": "창 크기는 {{source}}입니다.",
+    "contextMeterReserved": "응답을 위해 {{tokens}} 토큰이 예약되어 있습니다.",
+    "todayTokens": "오늘 {{tokens}}",
+    "todayTitle": "오늘 사용한 토큰 수입니다. 세부 정보를 보려면 클릭하세요.",
+    "usage": "토큰 사용량",
+    "conversationTokens": "{{tokens}} 토큰",
+    "openFloating": "플로팅 패널",
+    "openFloatingHint": "어떤 페이지 위에 패널로 어시스턴트를 엽니다. 어디서나 {{shortcut}}을 눌러 열거나 닫을 수 있습니다.",
+    "shortcutHint": "어떤 페이지에서든 {{shortcut}}을 눌러 플로팅 패널로 어시스턴트를 엽니다."
+  },
+  "usage": {
+    "title": "토큰 사용량",
+    "settingDescription": "지난 30일 동안 AI 호출에 사용된 토큰 수입니다.",
+    "cardTitle": "AI 토큰 사용량",
+    "today": "오늘",
+    "week": "7일",
+    "month": "30일",
+    "mine": "내 사용량",
+    "everyone": "모든 사용자",
+    "mineCaption": "모든 AI 기능에서의 내 토큰 사용량입니다.",
+    "everyoneCaption": "모든 사용자와 AI 기능에서의 토큰 사용량입니다.",
+    "byDay": "일별",
+    "byModel": "모델별",
+    "bySource": "기능별",
+    "byUser": "사용자별",
+    "model": "모델",
+    "feature": "기능",
+    "user": "사용자",
+    "calls": "호출 수",
+    "prompt": "입력",
+    "completion": "출력",
+    "total": "합계",
+    "empty": "지난 30일 동안 AI 사용 기록이 없습니다.",
+    "loadFailed": "사용량을 로드할 수 없습니다",
+    "estimatedNote": "제공자가 사용량을 보고하지 않아 일부 수치는 토큰당 약 4자 기준으로 추정된 값입니다.",
+    "source": {
+      "assistant": "어시스턴트",
+      "terminal": "터미널 패널",
+      "compaction": "컴팩션"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "어시스턴트",
+    "viewAutoOps": "자동 운영",
+    "intro": "자동 운영은 어시스턴트가 호스트를 자동으로 확인하도록 합니다. 자동화는 일정 시간마다 또는 문제가 발생했을 때 이를 시작하며, 보고서를 작성하거나 수정안을 제안하여 승인을 받습니다. 사전 설정부터 시작하세요.",
+    "sections": {
+      "tasks": "작업",
+      "approvals": "승인",
+      "presets": "사전 설정"
+    },
+    "provider": "작업 제공자",
+    "providerDefault": "기본 모델이 있는 첫 번째 제공자",
+    "model": "작업 모델",
+    "modelDefault": "제공자의 기본 모델",
+    "saveModel": "모델 저장",
+    "preferencesHint": "백그라운드 작업에서 사용하는 제공자와 모델입니다. 기본 제공자와 모델을 사용하려면 그대로 두세요.",
+    "task": "작업",
+    "tokens": "{{tokens}} 토큰",
+    "tokenUsage": "{{total}} 토큰 (입력 {{prompt}}, 출력 {{completion}})",
+    "dryRun": "테스트 실행",
+    "trigger": "트리거",
+    "noTasks": "아직 작업이 없습니다",
+    "tasksHint": "작업은 AI 질문 단계를 포함한 자동화의 실행입니다. 사전 설정을 활성화하거나 자동화에서 직접 만들어보세요: 자동화에 AI 질문 단계를 추가하세요. 실행 기록이 여기에 표시됩니다.",
+    "openAutomations": "자동화 열기",
+    "browsePresets": "사전 설정 보기",
+    "noApprovals": "승인을 기다리는 계획이 없습니다",
+    "loadFailed": "자동 운영을 불러오지 못했습니다",
+    "decideFailed": "결정을 저장하지 못했습니다",
+    "openConversation": "어시스턴트에서 열기",
+    "approve": "승인 및 실행",
+    "reject": "거부",
+    "expires": "{{time}}에 만료",
+    "enabled": "활성화됨",
+    "updateAvailable": "업데이트 가능",
+    "shared": "공유됨",
+    "needsAutomations": "자동화 필요",
+    "enableAgain": "다시 활성화",
+    "deletePreset": "사전 설정 삭제",
+    "autonomy": {
+      "report": "보고서만 작성",
+      "propose": "계획 제안"
+    },
+    "status": {
+      "running": "실행 중",
+      "reported": "보고 완료",
+      "proposed": "승인 대기 중",
+      "approved": "승인됨",
+      "rejected": "거부됨",
+      "expired": "만료됨",
+      "executing": "계획 실행 중",
+      "done": "완료됨",
+      "failed": "실패함",
+      "skipped": "건너뜀"
+    },
+    "severity": {
+      "info": "정보",
+      "warning": "경고",
+      "critical": "심각"
+    },
+    "plan": {
+      "title": "제안된 계획",
+      "commands": "명령어",
+      "rationale": "이유",
+      "risk": "위험도",
+      "rollback": "롤백",
+      "verify": "검증",
+      "progress": "진행 상황"
+    },
+    "enable": {
+      "title": "{{name}} 활성화",
+      "submit": "활성화",
+      "name": "이름",
+      "targets": "호스트",
+      "targetAll": "모든 호스트",
+      "targetTrigger": "트리거된 호스트",
+      "targetHosts": "선택한 호스트",
+      "noHosts": "최소 하나의 호스트를 선택하세요.",
+      "threshold": "임계값 (%)",
+      "forSeconds": "지속 시간 (초)",
+      "time": "시간",
+      "cron": "일정 (cron)",
+      "dockerEvent": "컨테이너 이벤트",
+      "dockerEvents": {
+        "exited": "종료됨",
+        "unhealthy": "비정상 상태",
+        "restarting": "재시작 중"
+      },
+      "badTime": "시간을 HH:MM 형식으로 입력하세요.",
+      "autonomy": "어시스턴트의 허용 작업",
+      "maxRunSeconds": "시간 제한 (초)",
+      "runbook": "런북",
+      "runbookHint": "어시스턴트가 수행해야 할 작업을 평문으로 설명하세요. 영어가 가장 잘 작동합니다.",
+      "shared": "프리셋으로 저장 시 공유",
+      "sharedHint": "자동 운영(auto-ops)을 사용할 수 있는 모든 사용자가 이를 활성화할 수 있습니다.",
+      "saveAsPreset": "프리셋으로 저장",
+      "savedPreset": "저장됨",
+      "failed": "자동화를 생성하지 못했습니다",
+      "saveFailed": "프리셋을 저장하지 못했습니다"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "일일 순찰",
+        "description": "매일 오전 09:00에 모든 호스트의 디스크, 메모리, 부하, 실패한 서비스, 컨테이너, 인증서, 업데이트, 대기 중인 재부팅 및 시간 동기화를 확인하고 심각도에 따라 보고합니다."
+      },
+      "disk-cleanup": {
+        "title": "디스크 공간 정리",
+        "description": "디스크 사용률이 5분 이상 85% 이상일 때, 공간을 차지하는 항목을 찾아 승인할 안전한 정리 방법을 제안합니다. 비즈니스 데이터는 절대 건드리지 않습니다."
+      },
+      "host-down-triage": {
+        "title": "호스트 다운 조치",
+        "description": "호스트가 오프라인이 되면 다른 호스트와 Proxmox에서 프로브하여 네트워크 문제, 머신 중지 또는 SSH 문제인지 보고합니다."
+      },
+      "service-failure": {
+        "title": "서비스 실패",
+        "description": "건강 상태 확인이 실패하기 시작하면, 해당 systemd 유닛을 찾아 상태와 로그를 읽으며 도움이 될 경우 단일 재시작을 승인할 수 있도록 제안합니다. 구성은 절대 변경되지 않습니다."
+      },
+      "container-anomaly": {
+        "title": "컨테이너 이상 징후",
+        "description": "컨테이너가 종료되거나 비정상 상태가 되거나 계속 재시작되면, 상태, 종료 코드, 로그 및 메모리를 읽고 승인할 수 있도록 한 번 시작하거나 재시작하는 것을 제안합니다. 아무것도 제거되지 않습니다."
+      },
+      "resource-overload-cpu": {
+        "title": "CPU 과부하",
+        "description": "CPU 사용률이 15분 이상 95% 이상일 때, 관련 프로세스, 서비스 및 컨테이너를 찾아 조치 방법을 보고합니다. 아무것도 변경되지 않습니다."
+      },
+      "resource-overload-memory": {
+        "title": "메모리 과부하",
+        "description": "메모리 사용률이 10분 이상 95% 이상일 때, 사용 항목, 스와핑 및 OOM 킬을 찾아 조치 방법을 보고합니다. 아무것도 변경되지 않습니다."
+      },
+      "security-updates-weekly": {
+        "title": "주간 보안 업데이트",
+        "description": "매주 월요일 오전 09:30에 모든 호스트의 대기 중인 보안 업데이트(심각도별), 대기 중인 재부팅 및 관련 패키지, 실행 중 및 설치된 커널, 마지막 업데이트 이후 경과 일수를 하나의 표로 보고합니다."
+      },
+      "cert-expiry-weekly": {
+        "title": "주간 인증서 만료",
+        "description": "매주 월요일 오전 09:45에 모든 호스트의 Let's Encrypt, 웹 서버 및 Kubernetes 인증서 만료일을 확인하고 30일 미만은 경고, 7일 미만은 중요으로 표시합니다."
+      }
+    },
+    "report": {
+      "verdict": "판단",
+      "evidence": "증거",
+      "actionsTaken": "수행된 작업",
+      "recommendations": "권장 사항",
+      "nothingFound": "실행 종료 전에 아무것도 발견되지 않았습니다.",
+      "noChanges": "변경 사항이 없습니다.",
+      "openConversation": "모든 단계를 확인하고 추가 질문을 하려면 어시스턴트에서 대화를 엽니다.",
+      "noFurtherAction": "추가 조치가 필요하지 않습니다.",
+      "stoppedBudgetRun": "중지됨: 이 실행은 할당된 {{tokens}} 토큰 예산을 모두 사용했습니다.",
+      "stoppedBudgetDaily": "중지됨: 소유자의 일일 {{tokens}} 토큰 예산이 모두 소진되었습니다.",
+      "stoppedDeadline": "중지됨: 자동화의 시간 제한에 도달했습니다.",
+      "stoppedPaused": "중지됨: 관리자가 AI 자동 운영을 일시 중지했습니다.",
+      "stoppedAborted": "중지됨: 자동화 실행이 취소되었습니다.",
+      "providerFailed": "AI 제공자 오류: {{error}}",
+      "noHosts": "자동화 소유자가 대상 호스트 중 어디에도 접근할 수 없습니다.",
+      "noProvider": "자동화 소유자에게 작업을 실행할 모델이 있는 AI 제공자가 없습니다.",
+      "needsOpsUse": "자동화 소유자에게 ai.ops.use 권한이 없습니다.",
+      "assistantOff": "자동화 소유자의 AI 어시스턴트가 꺼져 있습니다.",
+      "skippedPaused": "관리자가 AI 자동 운영을 일시 중지했습니다.",
+      "skippedDuplicate": "동일한 자동화와 호스트에 대한 작업이 아직 실행 중이거나 승인 대기 중입니다.",
+      "skippedRate": "이 자동화는 지난 1시간 동안 이미 {{count}}개의 AI 작업을 시작했습니다.",
+      "hostNotRun": "실행 안 함: 계획이 중지되었습니다.",
+      "hostNoAccess": "실행 안 함: 소유자가 더 이상 이 호스트에 연결할 수 없습니다.",
+      "hostUnreachable": "실행 안 함: 호스트에 도달할 수 없습니다.",
+      "hostStopped": "첫 번째 실패한 명령에서 중지되었습니다.",
+      "executionDone": "승인된 계획이 {{count}}개 호스트에서 실행되었으며 모든 명령과 확인이 성공했습니다.",
+      "executionFailed": "승인된 계획이 모든 호스트에서 완료되지 않았습니다.",
+      "executionStopped": "승인된 계획이 완료되기 전에 중지되었습니다.",
+      "approvedBy": "승인된 계획이 작성된 대로 실행되었습니다. {{user}}이(가) 승인했습니다.",
+      "noticeReported": "AI 보고서: {{title}}",
+      "noticeProposed": "승인 대기 중인 AI 계획: {{title}}",
+      "noticeExecuted": "AI 계획 실행됨: {{title}}",
+      "noticeFailed": "AI 작업 실패: {{title}}"
+    }
   }
 }

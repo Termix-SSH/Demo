@@ -10,6 +10,9 @@ import {
   type AiProvider,
 } from "../ai-api";
 
+/** Element id the assistant's dropdown scrolls the settings page to. */
+export const PROVIDERS_ANCHOR = "ai-providers";
+
 /**
  * The "providers" custom field in the plugin's user settings: a list with
  * per-provider forms, which a schema field cannot express.
@@ -47,7 +50,10 @@ export function ProvidersSetting() {
   if (status === null) return null;
 
   return (
-    <div className="flex min-w-0 flex-col gap-1.5 border-b border-border py-3 last:border-0">
+    <div
+      id={PROVIDERS_ANCHOR}
+      className="flex min-w-0 flex-col gap-1.5 border-b border-border py-3 last:border-0"
+    >
       <span className="text-sm font-medium leading-snug">
         {t("settings.providers.label")}
       </span>

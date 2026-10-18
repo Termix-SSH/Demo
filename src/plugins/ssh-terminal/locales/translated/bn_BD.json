@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "পাবলিক ইন্টারনেটে র‍aw পোর্ট 22 খোলা ছাড়াই নেটিভ WebSocket ট্রান্সপোর্ট ব্যবহার করে Cloudflare টানেলের পেছনের হোস্টগুলোর সাথে সংযোগ স্থাপন করুন।",
+    "enableCloudflareTunnel": "Cloudflare টানেল সক্রিয় করুন",
+    "enableCloudflareTunnelDesc": "ডাইরেক্ট TCP সকেটের পরিবর্তে হোস্টের প্রধান ঠিকানা ব্যবহার করে Cloudflare Zero Trust (WSS) এর মাধ্যমে SSH ট্রাফিক রাউট করুন।",
+    "cloudflareTunnelHostname": "টানেল হোস্টনেম",
+    "cloudflareTunnelHostnameDesc": "Cloudflare Tunnel-এ আপনার SSH মূল সেবাতে রাউট করা পাবলিক ডোমেইন (হোস্টের প্রধান ঠিকানা ব্যবহার করতে খালি রাখুন)।",
+    "cloudflareTunnelPort": "টানেল পোর্ট",
+    "cloudflareTunnelPortDesc": "Cloudflare-এর এজ HTTPS/WSS পোর্ট (ডিফল্ট ৪৪৩)।",
+    "cloudflareTunnelClientId": "সার্ভিস টোকেন ক্লায়েন্ট আইডি",
+    "cloudflareTunnelClientIdDesc": "ঐচ্ছিক CF-Access-Client-Id হেডার। শুধুমাত্র তখন প্রয়োজনীয় যদি Cloudflare Access Zero Trust পলিসি সার্ভিস টোকেন বাধ্যতামূলক করে।",
+    "cloudflareTunnelClientSecret": "সার্ভিস টোকেন ক্লায়েন্ট সিক্রেট",
+    "cloudflareTunnelClientSecretDesc": "Cloudflare Access প্রমাণীকরণের জন্য ঐচ্ছিক CF-Access-Client-Secret হেডার।",
     "clipboardHttpWarning": "ক্লিপবোর্ড পড়া যায়নি। কিছু ব্রাউজার HTTPS-এর বাইরে ক্লিপবোর্ড অ্যাক্সেস সীমিত করে - এর পরিবর্তে Ctrl+V চেষ্টা করুন, অথবা HTTPS-এর মাধ্যমে Termix চালান।",
     "connecting": "সংযোগ হচ্ছে...",
     "connectionLost": "সংযোগ বিচ্ছিন্ন হয়েছে",
@@ -85,7 +97,16 @@
     "localShell": "লোকাল টার্মিনাল শেল",
     "autocompleteHintComplete": "সম্পূর্ণ করতে Tab বা Enter চাপুন",
     "autocompleteHintNavigate": "নেভিগেট করতে ↑↓",
-    "autocompleteHintClose": "বন্ধ করতে Esc"
+    "autocompleteHintClose": "বন্ধ করতে Esc",
+    "cloudflareTunnelClientSecretPlaceholder": "ঐচ্ছিক সার্ভিস টোকেন সিক্রেট",
+    "cloudflareTunnelClientSecretPlaceholderNew": "নতুন সার্ভিস টোকেন সিক্রেট",
+    "secretSaved": "সংরক্ষিত হয়েছে",
+    "secretReplace": "প্রতিস্থাপন করুন",
+    "secretClear": "মুছে ফেলুন",
+    "secretCancel": "বাতিল করুন",
+    "hideSecret": "সিক্রেট লুকান",
+    "showSecret": "সিক্রেট দেখান",
+    "sessionEndedKeepOpen": "সেশন শেষ হয়েছে। পুনরায় সংযোগ করতে Enter চাপুন।"
   },
   "terminalToolbar": {
     "detachTmux": "tmux ডিট্যাচ করুন",
@@ -210,6 +231,26 @@
         "label": "কমান্ড হিস্ট্রি",
         "description": "হিস্ট্রি এবং অটোকমপ্লিটের জন্য এই টার্মিনালে চালানো কমান্ড রেকর্ড করুন"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare টানেল",
+        "description": "WebSocket এর মাধ্যমে Cloudflare Zero Trust এর উপর দিয়ে SSH ট্রাফিক রাউট করুন"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "টানেল হোস্টনেম",
+        "description": "Cloudflare টানেলের পাবলিক হোস্টনেম"
+      },
+      "cloudflareTunnelPort": {
+        "label": "টানেল পোর্ট",
+        "description": "Cloudflare এজ HTTPS/WSS পোর্ট"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Cloudflare Access সার্ভিস টোকেন ক্লায়েন্ট আইডি"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Cloudflare Access Service Token Client Secret"
+      },
       "enableTerminal": {
         "label": "টার্মিনাল সক্রিয় করুন",
         "description": "এই হোস্টের জন্য একটি SSH টার্মিনাল অফার করুন।"
@@ -317,6 +358,9 @@
         "moveUp": "উপরে সরান",
         "moveDown": "নিচে সরান",
         "tmuxHint": "শুধুমাত্র tmux সংযুক্ত থাকাকালীন প্রদর্শিত হয়"
+      },
+      "keepOpenOnExit": {
+        "label": "বের হওয়ার সময় ট্যাব খোলা রাখুন"
       }
     },
     "user": {
@@ -487,7 +531,9 @@
     "guac": {
       "permissionLevel": "অনুমতির স্তর"
     },
-    "deleteGlobalThemeConfirm": "থিম {{name}} মুছে ফেলবেন?"
+    "deleteGlobalThemeConfirm": "থিম {{name}} মুছে ফেলবেন?",
+    "keepOpenOnExitLabel": "বের হওয়ার সময় ট্যাবটি খোলা রাখুন",
+    "keepOpenOnExitDesc": "যখন শেল বের হয়ে যায় বা সংযোগ বন্ধ হয়, ট্যাব এবং এর আউটপুট রাখুন। পুনরায় সংযোগ করতে Enter চাপুন।"
   },
   "nav": {
     "history": "ইতিহাস",
@@ -517,6 +563,7 @@
     "stopRecording": "রেকর্ডিং বন্ধ করুন"
   },
   "keybindings": {
+    "openLocalTerminal": "নতুন স্থানীয় টার্মিনাল খুলুন",
     "copy": "নির্বাচন কপি করুন",
     "paste": "পেস্ট",
     "sendControlCode": "Ctrl+অক্ষর সিগন্যাল পাঠান",
@@ -635,6 +682,7 @@
     "remoteServerRequired": "রিমোট সার্ভার প্রয়োজন। এই সংযোগের ধরনটি ব্যবহার করতে সেটিংসে একটি রিমোট সার্ভার সংযুক্ত করুন।"
   },
   "plugin": {
-    "name": "SSH টার্মিনাল"
+    "name": "SSH টার্মিনাল",
+    "description": "ট্যাব, স্প্লিট স্ক্রিন, হিস্ট্রি, ম্যাক্রো এবং ডেস্কটপ অ্যাপে একটি স্থানীয় টার্মিনাল সহ SSH টার্মিনাল সেশন।"
   }
 }

@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Anslut till värdar bakom ett Cloudflare Tunnel med inbyggd WebSocket-transport utan att öppna port 22 mot det offentliga internet.",
+    "enableCloudflareTunnel": "Aktivera Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "Dirigera SSH-trafik genom Cloudflare Zero Trust (WSS) med värdens huvudadress istället för direkta TCP-anslutningar.",
+    "cloudflareTunnelHostname": "Tunnelvärdnamn",
+    "cloudflareTunnelHostnameDesc": "Offentlig domän som dirigeras till din SSH-ursprungstjänst i Cloudflare Tunnel (lämna tomt för att använda värdens huvudadress).",
+    "cloudflareTunnelPort": "Tunnelport",
+    "cloudflareTunnelPortDesc": "Edge HTTPS/WSS-port på Cloudflare (standard är 443).",
+    "cloudflareTunnelClientId": "Service Token Client ID",
+    "cloudflareTunnelClientIdDesc": "Valfritt CF-Access-Client-Id-huvud. Krävs endast om Cloudflare Access Zero Trust-policy kräver Service Tokens.",
+    "cloudflareTunnelClientSecret": "Service Token Client Secret",
+    "cloudflareTunnelClientSecretDesc": "Valfritt CF-Access-Client-Secret-huvud för Cloudflare Access-autentisering.",
     "clipboardHttpWarning": "Kunde inte läsa urklipp. Vissa webbläsare begränsar åtkomst till urklipp utanför HTTPS – prova Ctrl+V istället, eller kör Termix över HTTPS.",
     "connecting": "Ansluter...",
     "connectionLost": "Anslutningen tappades",
@@ -85,7 +97,16 @@
     "localShell": "Lokal terminalshell",
     "autocompleteHintComplete": "Tab eller Enter för att slutföra",
     "autocompleteHintNavigate": "↑↓ för att navigera",
-    "autocompleteHintClose": "Esc för att stänga"
+    "autocompleteHintClose": "Esc för att stänga",
+    "cloudflareTunnelClientSecretPlaceholder": "Valfri service token secret",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Ny service token secret",
+    "secretSaved": "Sparad",
+    "secretReplace": "Ersätt",
+    "secretClear": "Rensa",
+    "secretCancel": "Avbryt",
+    "hideSecret": "Dölj hemlighet",
+    "showSecret": "Visa hemlighet",
+    "sessionEndedKeepOpen": "Sessionen avslutad. Tryck Enter för att ansluta igen."
   },
   "terminalToolbar": {
     "detachTmux": "Koppla bort tmux",
@@ -210,6 +231,26 @@
         "label": "Kommandohistorik",
         "description": "Spela in kommandon som körs i denna terminal för historik och automatisk komplettering"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare Tunnel",
+        "description": "Dirigera SSH-trafik över Cloudflare Zero Trust via WebSocket"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Tunnelvärdnamn",
+        "description": "Offentligt värdnamn för Cloudflare Tunnel"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Tunnelport",
+        "description": "Cloudflare edge HTTPS/WSS-port"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Cloudflare Access Service Token Client ID"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Cloudflare Access Service Token Client Secret"
+      },
       "enableTerminal": {
         "label": "Aktivera terminal",
         "description": "Erbjud en SSH-terminal för denna värdserver."
@@ -317,6 +358,9 @@
         "moveUp": "Flytta upp",
         "moveDown": "Flytta ner",
         "tmuxHint": "Visas endast när tmux är ansluten"
+      },
+      "keepOpenOnExit": {
+        "label": "Behåll fliken öppen vid avslut"
       }
     },
     "user": {
@@ -487,7 +531,9 @@
     "guac": {
       "permissionLevel": "Behörighetsnivå"
     },
-    "deleteGlobalThemeConfirm": "Vill du ta bort temat {{name}}?"
+    "deleteGlobalThemeConfirm": "Vill du ta bort temat {{name}}?",
+    "keepOpenOnExitLabel": "Behåll fliken öppen vid avslut",
+    "keepOpenOnExitDesc": "När skalprogrammet avslutas eller anslutningen stängs, behåll fliken och dess utdata. Tryck Enter för att ansluta igen."
   },
   "nav": {
     "history": "Historik",
@@ -517,6 +563,7 @@
     "stopRecording": "Stoppa inspelning"
   },
   "keybindings": {
+    "openLocalTerminal": "Öppna ny lokal terminal",
     "copy": "Kopiera markering",
     "paste": "Klistra in",
     "sendControlCode": "Skicka Ctrl+bokstav-signal",
@@ -635,6 +682,7 @@
     "remoteServerRequired": "En fjärrserver krävs. Anslut en fjärrserver i Inställningar för att använda den här anslutningstypen."
   },
   "plugin": {
-    "name": "SSH-terminal"
+    "name": "SSH-terminal",
+    "description": "SSH-terminalsessioner med flikar, delad skärm, historik, makron och en lokal terminal i skrivbordsappen."
   }
 }

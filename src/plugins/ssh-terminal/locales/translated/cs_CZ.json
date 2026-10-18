@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Připojte se k hostitelům za Cloudflare Tunnel pomocí nativní WebSocket transportní vrstvy, aniž byste museli otevírat port 22 veřejnému internetu.",
+    "enableCloudflareTunnel": "Povolit Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "Směrovat SSH provoz přes Cloudflare Zero Trust (WSS) pomocí hlavní adresy hostitele místo přímých TCP socketů.",
+    "cloudflareTunnelHostname": "Název hostitele tunelu",
+    "cloudflareTunnelHostnameDesc": "Veřejná doména směrovaná k vaší SSH původní službě v Cloudflare Tunnel (nechte prázdné pro použití hlavní adresy hostitele).",
+    "cloudflareTunnelPort": "Port tunelu",
+    "cloudflareTunnelPortDesc": "Port HTTPS/WSS na Cloudflare (výchozí je 443).",
+    "cloudflareTunnelClientId": "ID klienta Service Token",
+    "cloudflareTunnelClientIdDesc": "Volitelná hlavička CF-Access-Client-Id. Vyžadováno pouze pokud Cloudflare Access Zero Trust politika vynucuje Service Tokens.",
+    "cloudflareTunnelClientSecret": "Tajný klíč klienta service tokenu",
+    "cloudflareTunnelClientSecretDesc": "Volitelný hlavička CF-Access-Client-Secret pro ověřování Cloudflare Access.",
     "clipboardHttpWarning": "Nelze přečíst schránku. Některé prohlížeče omezují přístup ke schránce mimo HTTPS – zkuste místo toho Ctrl+V nebo spusťte Termix přes HTTPS.",
     "connecting": "Připojování...",
     "connectionLost": "Připojení ztraceno",
@@ -89,7 +101,16 @@
     "localShell": "Místní terminálový shell",
     "autocompleteHintComplete": "Tab nebo Enter pro dokončení",
     "autocompleteHintNavigate": "↑↓ pro navigaci",
-    "autocompleteHintClose": "Esc pro zavření"
+    "autocompleteHintClose": "Esc pro zavření",
+    "cloudflareTunnelClientSecretPlaceholder": "Volitelný tajný klíč service tokenu",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Nový tajný klíč service tokenu",
+    "secretSaved": "Uloženo",
+    "secretReplace": "Nahradit",
+    "secretClear": "Vymazat",
+    "secretCancel": "Zrušit",
+    "hideSecret": "Skrýt tajný klíč",
+    "showSecret": "Zobrazit tajný klíč",
+    "sessionEndedKeepOpen": "Relace skončila. Stiskněte Enter pro připojení."
   },
   "terminalToolbar": {
     "detachTmux": "Odpojit tmux",
@@ -216,6 +237,26 @@
         "label": "Historie příkazů",
         "description": "Zaznamenávat příkazy spuštěné v tomto terminálu pro historii a automatické doplňování"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare Tunnel",
+        "description": "Směrovat SSH provoz přes Cloudflare Zero Trust pomocí WebSocketu"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Název tunelu",
+        "description": "Veřejný název Cloudflare Tunnelu"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Port tunelu",
+        "description": "HTTPS/WSS port na Cloudflare edge"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "ID klienta pro Cloudflare Access Service Token"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Tajný klíč klienta pro Cloudflare Access Service Token"
+      },
       "enableTerminal": {
         "label": "Povolit terminál",
         "description": "Nabídnout SSH terminál pro tohoto hostitele."
@@ -323,6 +364,9 @@
         "moveUp": "Posunout nahoru",
         "moveDown": "Posunout dolů",
         "tmuxHint": "Zobrazuje se pouze při připojení k tmux"
+      },
+      "keepOpenOnExit": {
+        "label": "Ponechat kartu otevřenou po ukončení"
       }
     },
     "user": {
@@ -493,7 +537,9 @@
     "guac": {
       "permissionLevel": "Úroveň oprávnění"
     },
-    "deleteGlobalThemeConfirm": "Smazat téma {{name}}?"
+    "deleteGlobalThemeConfirm": "Smazat téma {{name}}?",
+    "keepOpenOnExitLabel": "Ponechat kartu otevřenou po ukončení",
+    "keepOpenOnExitDesc": "Po ukončení shellu nebo uzavření připojení ponechat kartu a její výstup. Stiskněte Enter pro opětovné připojení."
   },
   "nav": {
     "history": "Historie",
@@ -527,6 +573,7 @@
     "stopRecording": "Zastavit nahrávání"
   },
   "keybindings": {
+    "openLocalTerminal": "Otevřít nový místní terminál",
     "copy": "Kopírovat výběr",
     "paste": "Vložit",
     "sendControlCode": "Poslat signál Ctrl+písmeno",
@@ -647,6 +694,7 @@
     "remoteServerRequired": "Je vyžadován vzdálený server. Pro použití tohoto typu připojení připojte vzdálený server v Nastavení."
   },
   "plugin": {
-    "name": "SSH Terminál"
+    "name": "SSH Terminál",
+    "description": "SSH terminálové relace s kartami, rozděleným zobrazením, historií, makry a místním terminálem v desktopové aplikaci."
   }
 }

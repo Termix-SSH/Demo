@@ -23,6 +23,18 @@
         "title": "Chia sẻ khóa API",
         "description": "Các tính năng khác có thể sử dụng khóa API AI đã lưu mà không cần xem nó."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Chạy lệnh trên các host với trợ lý AI",
+        "description": "Cho phép trợ lý chạy bất kỳ lệnh shell nào trên các host bạn chọn. Mặc định chỉ dành cho Quản trị viên."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Xem mức sử dụng AI của tất cả người dùng",
+        "description": "Xem số token mà các cuộc gọi AI của mọi người dùng đã tiêu thụ, không chỉ của riêng bạn. Mặc định chỉ dành cho Quản trị viên."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Máy chủ AI riêng được phép",
         "description": "Các máy chủ trên mạng riêng của bạn mà người dùng có thể trỏ đến, chẳng hạn như Ollama tự lưu trữ. Đặt mỗi máy chủ trên một dòng."
+      },
+      "opsConcurrency": {
+        "label": "Số host song song của trợ lý AI",
+        "description": "Số lượng host mà một lệnh của trợ lý chạy cùng lúc."
+      },
+      "opsCommandTimeout": {
+        "label": "Thời gian chờ lệnh của trợ lý AI (giây)",
+        "description": "Thời gian tối đa một lệnh được phép chạy trên host trước khi bị dừng. Trợ lý có thể yêu cầu tối đa 600 giây."
+      },
+      "opsOutputLimit": {
+        "label": "Đầu ra của trợ lý AI cho mỗi host (ký tự)",
+        "description": "Số lượng đầu ra từ mỗi host được giữ lại. Đầu ra dài sẽ giữ lại phần đầu và phần cuối."
+      },
+      "autoOpsPaused": {
+        "label": "Tạm dừng tự động hóa AI",
+        "description": "Dừng mọi tác vụ AI và kế hoạch đã được phê duyệt đang chạy, đồng thời từ chối các yêu cầu mới, cho đến khi bật lại."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "Số tác vụ AI mỗi giờ cho mỗi quy trình tự động",
+        "description": "Các kích hoạt bổ sung trong cùng một giờ sẽ bị bỏ qua."
+      },
+      "autoOpsRunTokens": {
+        "label": "Ngân sách token cho mỗi tác vụ AI",
+        "description": "Một tác vụ tiêu thụ hết số token này sẽ bị dừng và báo cáo những gì nó tìm thấy."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Ngân sách token AI hàng ngày cho mỗi người dùng",
+        "description": "Khi một người dùng đã sử dụng hết số token này trong ngày (giờ UTC), các tác vụ AI của họ sẽ bị bỏ qua hoặc dừng lại."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "Bật Trợ lý AI",
         "description": "Cho phép trợ lý AI hỗ trợ trong terminal của máy chủ này. Mặc định là tắt và vẫn cần bật AI cho tài khoản của bạn."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Tùy chọn tự động hóa AI"
+      }
     }
   },
   "ai": {
-    "title": "Trợ lý",
     "send": "Gửi",
     "stop": "Dừng",
     "save": "Lưu",
@@ -58,10 +102,9 @@
     "running": "đang chạy",
     "approve": "Phê duyệt",
     "reject": "Từ chối",
-    "inputPlaceholder": "Hỏi về máy chủ của bạn hoặc mô tả một thay đổi để đề xuất",
     "selectProvider": "Chọn nhà cung cấp",
-    "providerSettings": "Cài đặt nhà cung cấp",
     "addProvider": "Thêm nhà cung cấp",
+    "manageModels": "Quản lý mô hình",
     "editProvider": "Chỉnh sửa nhà cung cấp",
     "removeProvider": "Xóa nhà cung cấp",
     "providerType": "Nhà cung cấp",
@@ -95,22 +138,32 @@
     "modelCustom": "Nhập tên mô hình",
     "modelRefresh": "Làm mới danh sách",
     "modelPlaceholder": "Chọn hoặc nhập mô hình",
-    "attachHint": "Nhập @ để tham chiếu đến host, snippet hoặc automation. Các thay đổi sẽ được đề xuất để bạn phê duyệt.",
     "runCommandTitle": "Chạy lệnh",
     "assistant": "Trợ lý AI",
     "terminalPanelEmpty": "Hỏi trợ lý về host này. Bất kỳ thay đổi trạng thái nào đều cần sự phê duyệt của bạn trước.",
     "terminalPanelPlaceholder": "Hỏi về host này...",
-    "noProvidersConfigured": "Chưa cấu hình nhà cung cấp AI nào. Thêm một nhà cung cấp trong tab trợ lý AI.",
+    "noProvidersConfigured": "Chưa cấu hình nhà cung cấp AI nào. Hãy thêm một nhà cung cấp trong Cài đặt.",
     "runsInOpenTerminal": "Chạy trong phiên terminal đang mở của bạn.",
     "runInTerminal": "Chạy",
     "terminalContextPrefill": "Đây là đầu ra terminal của tôi:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Cho phép các tính năng khác sử dụng khóa API nhà cung cấp AI của bạn cho các yêu cầu riêng. Khóa không bao giờ bị sao chép và bạn có thể thu hồi bất cứ lúc nào."
     },
-    "removeProviderConfirm": "Xóa nhà cung cấp {{name}}?"
+    "removeProviderConfirm": "Xóa nhà cung cấp {{name}}?",
+    "contextWindows": "Cửa sổ ngữ cảnh cho mỗi mô hình",
+    "contextWindowsHint": "Đọc từ nhà cung cấp nơi họ báo cáo. Nhập số token để ghi đè cho một mô hình, hoặc để trống để sử dụng giá trị nhà cung cấp báo cáo. Làm mới sẽ hỏi lại nhà cung cấp.",
+    "contextWindowValue": "Cửa sổ ngữ cảnh: {{tokens}} ({{source}})",
+    "contextOverride": "Ghi đè cửa sổ ngữ cảnh cho {{model}}",
+    "contextSourceOverride": "do bạn đặt",
+    "contextSourceProvider": "do nhà cung cấp báo cáo",
+    "contextSourceGuess": "dự đoán từ tên mô hình",
+    "contextSourceDefault": "mặc định cho các mô hình không xác định",
+    "contextLoadFailed": "Không thể đọc cửa sổ ngữ cảnh",
+    "contextRefresh": "Làm mới",
+    "contextWindowInvalid": "Nhập cửa sổ ngữ cảnh là số nguyên token, tối thiểu 1024."
   },
   "nav": {
-    "ai": "AI"
+    "ai": "Trợ lý AI"
   },
   "onboarding": {
     "aiTitle": "Trợ lý AI",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Bật lên",
     "aiEnableDesc": "Thêm một trợ lý đọc cấu hình của bạn và đề xuất các thay đổi bạn phê duyệt. Cần một nhà cung cấp do bạn cung cấp, chẳng hạn như Ollama cục bộ.",
     "aiNote": "Không có dữ liệu nào được gửi đi cho đến khi bạn thêm nhà cung cấp và gửi tin nhắn."
-  },
-  "hosts": {
-    "docsLink": "Xem tài liệu"
   },
   "agents": {
     "working": "Đang xử lý...",
@@ -215,6 +265,278 @@
     "emptyTranscript": "Gửi tin nhắn để bắt đầu agent."
   },
   "plugin": {
-    "name": "Trợ lý AI"
+    "name": "Trợ lý AI",
+    "description": "Một trợ lý AI đọc cấu hình của bạn và đề xuất các thay đổi để bạn phê duyệt."
+  },
+  "ops": {
+    "searchHosts": "Tìm kiếm host",
+    "selectedCount": "Đã chọn {{count}}",
+    "clear": "Xóa",
+    "fleets": "Nhóm host",
+    "folders": "Thư mục",
+    "tags": "Thẻ",
+    "allHosts": "Tất cả host",
+    "noHosts": "Không có host",
+    "newConversation": "Cuộc trò chuyện mới",
+    "sendHint_other": "Chạy trên {{count}} host. Các lệnh chạy mà không cần hỏi trước.",
+    "runCommand": "Chạy lệnh",
+    "hostFacts": "Thông tin host",
+    "hostCount_other": "{{count}} host",
+    "succeeded": "{{count}} thành công",
+    "failed": "{{count}} thất bại",
+    "exitCode": "thoát {{code}}",
+    "timedOut": "hết thời gian chờ",
+    "stopped": "đã dừng",
+    "notRun": "chưa chạy",
+    "cached": "đã lưu bộ nhớ đệm",
+    "duration": "{{seconds}}s",
+    "noOutput": "(không có đầu ra)"
+  },
+  "assistant": {
+    "title": "Trợ lý AI",
+    "moveHint": "Kéo để di chuyển. Nhấp đúp để ghim sang bên.",
+    "toggle": "Bật/tắt trợ lý AI",
+    "close": "Đóng",
+    "dock": "Ghim bên phải",
+    "float": "Nổi",
+    "openTab": "Mở chế độ xem toàn màn hình",
+    "history": "Cuộc trò chuyện",
+    "noConversations": "Chưa có cuộc trò chuyện nào",
+    "untitled": "Không tiêu đề",
+    "deleteConversation": "Xóa cuộc trò chuyện",
+    "deleteConfirm": "Xóa cuộc trò chuyện này?",
+    "emptyTitle": "Hỏi hoặc thay đổi bất kỳ điều gì trong Termix",
+    "emptyHint": "Trợ lý hoạt động thay mặt bạn thông qua Termix CLI và chạy lệnh trên các host mục tiêu. Nhập @ để thêm host, fleet, thư mục hoặc thẻ làm mục tiêu.",
+    "inputPlaceholder": "Hỏi trợ lý. Nhập @ để thêm mục tiêu.",
+    "noTargets": "Không có host mục tiêu. Nhập @ để thêm một số.",
+    "sendHint": "Các thay đổi và lệnh sẽ được thực hiện mà không cần hỏi trước.",
+    "removeTarget": "Xóa {{name}}",
+    "kind": {
+      "host": "Host",
+      "fleet": "Fleet",
+      "folder": "Thư mục",
+      "tag": "Thẻ"
+    },
+    "emptyHintBasic": "Trợ lý hoạt động thay mặt bạn thông qua Termix CLI, với quyền hạn của bạn.",
+    "inputPlaceholderBasic": "Hỏi trợ lý.",
+    "sendHintBasic": "Các thay đổi sẽ được thực hiện mà không cần hỏi trước.",
+    "thinking": "Đang suy nghĩ",
+    "thinkingActive": "Đang suy nghĩ...",
+    "compacted": "Ngữ cảnh đã được nén: các tin nhắn trước đó đã được tóm tắt",
+    "compact": "Nén cuộc trò chuyện",
+    "nothingToCompact": "Cuộc trò chuyện quá ngắn để nén.",
+    "contextMeter": "Ngữ cảnh: {{used}} trong số {{window}} token được sử dụng bởi cuộc gọi gần nhất",
+    "contextMeterSource": "Cửa sổ là {{source}}.",
+    "contextMeterReserved": "{{tokens}} token được giữ trống cho phản hồi.",
+    "todayTokens": "Hôm nay {{tokens}}",
+    "todayTitle": "Token bạn đã sử dụng hôm nay. Nhấp để xem chi tiết.",
+    "usage": "Sử dụng token",
+    "conversationTokens": "{{tokens}} token",
+    "openFloating": "Bảng điều khiển nổi",
+    "openFloatingHint": "Mở trợ lý trong một bảng điều khiển trên bất kỳ trang nào. Nhấn {{shortcut}} ở bất kỳ đâu để mở hoặc đóng nó.",
+    "shortcutHint": "Nhấn {{shortcut}} trên bất kỳ trang nào để mở trợ lý trong bảng điều khiển nổi."
+  },
+  "usage": {
+    "title": "Sử dụng token",
+    "settingDescription": "Token mà các cuộc gọi AI của bạn đã sử dụng trong 30 ngày qua.",
+    "cardTitle": "Sử dụng token AI",
+    "today": "Hôm nay",
+    "week": "7 ngày",
+    "month": "30 ngày",
+    "mine": "Của tôi",
+    "everyone": "Tất cả người dùng",
+    "mineCaption": "Token của bạn trên mọi tính năng AI.",
+    "everyoneCaption": "Token trên mọi người dùng và tính năng AI.",
+    "byDay": "Mỗi ngày",
+    "byModel": "Mỗi mô hình",
+    "bySource": "Mỗi tính năng",
+    "byUser": "Mỗi người dùng",
+    "model": "Mô hình",
+    "feature": "Tính năng",
+    "user": "Người dùng",
+    "calls": "Cuộc gọi",
+    "prompt": "Đầu vào",
+    "completion": "Đầu ra",
+    "total": "Tổng cộng",
+    "empty": "Không có sử dụng AI trong 30 ngày qua.",
+    "loadFailed": "Không thể tải thông tin sử dụng",
+    "estimatedNote": "Một số con số là ước tính, khoảng bốn ký tự mỗi token, vì nhà cung cấp không báo cáo mức sử dụng.",
+    "source": {
+      "assistant": "Trợ lý",
+      "terminal": "Bảng điều khiển Terminal",
+      "compaction": "Nén dữ liệu"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Trợ lý",
+    "viewAutoOps": "Vận hành tự động",
+    "intro": "Vận hành tự động cho phép trợ lý kiểm tra các host của bạn một cách độc lập. Một quy trình tự động sẽ kích hoạt nó theo lịch trình hoặc khi có sự cố, sau đó viết báo cáo hoặc đề xuất phương án khắc phục để bạn phê duyệt. Hãy bắt đầu với một cài đặt có sẵn.",
+    "sections": {
+      "tasks": "Nhiệm vụ",
+      "approvals": "Phê duyệt",
+      "presets": "Cài đặt có sẵn"
+    },
+    "provider": "Nhà cung cấp cho nhiệm vụ",
+    "providerDefault": "Nhà cung cấp đầu tiên có mô hình mặc định",
+    "model": "Mô hình cho nhiệm vụ",
+    "modelDefault": "Mô hình mặc định của nhà cung cấp",
+    "saveModel": "Lưu mô hình",
+    "preferencesHint": "Nhà cung cấp và mô hình mà các nhiệm vụ nền sử dụng. Để nguyên nếu muốn dùng nhà cung cấp và mô hình mặc định của bạn.",
+    "task": "Nhiệm vụ",
+    "tokens": "{{tokens}} token",
+    "tokenUsage": "{{total}} token ({{prompt}} đầu vào, {{completion}} đầu ra)",
+    "dryRun": "Chạy thử",
+    "trigger": "Kích hoạt",
+    "noTasks": "Chưa có nhiệm vụ nào",
+    "tasksHint": "Nhiệm vụ là các lần chạy của quy trình tự động có bước Hỏi AI. Bật một cài đặt có sẵn, hoặc tự tạo trong mục Tự động hóa: thêm bước Hỏi AI vào bất kỳ quy trình tự động nào. Các lần chạy sẽ hiển thị ở đây.",
+    "openAutomations": "Mở Tự động hóa",
+    "browsePresets": "Xem cài đặt có sẵn",
+    "noApprovals": "Không có kế hoạch nào đang chờ phê duyệt",
+    "loadFailed": "Không thể tải vận hành tự động",
+    "decideFailed": "Không thể lưu quyết định",
+    "openConversation": "Mở trong trợ lý",
+    "approve": "Phê duyệt và chạy",
+    "reject": "Từ chối",
+    "expires": "Hết hạn {{time}}",
+    "enabled": "Đã bật",
+    "updateAvailable": "Có bản cập nhật",
+    "shared": "Đã chia sẻ",
+    "needsAutomations": "Cần Tự động hóa",
+    "enableAgain": "Bật lại",
+    "deletePreset": "Xóa cài đặt có sẵn",
+    "autonomy": {
+      "report": "Chỉ báo cáo",
+      "propose": "Đề xuất kế hoạch"
+    },
+    "status": {
+      "running": "Đang chạy",
+      "reported": "Đã báo cáo",
+      "proposed": "Đang chờ phê duyệt",
+      "approved": "Đã phê duyệt",
+      "rejected": "Đã từ chối",
+      "expired": "Đã hết hạn",
+      "executing": "Đang chạy kế hoạch",
+      "done": "Hoàn thành",
+      "failed": "Thất bại",
+      "skipped": "Đã bỏ qua"
+    },
+    "severity": {
+      "info": "Thông tin",
+      "warning": "Cảnh báo",
+      "critical": "Nghiêm trọng"
+    },
+    "plan": {
+      "title": "Kế hoạch đề xuất",
+      "commands": "Lệnh",
+      "rationale": "Lý do",
+      "risk": "Rủi ro",
+      "rollback": "Hoàn tác",
+      "verify": "Xác minh",
+      "progress": "Tiến độ"
+    },
+    "enable": {
+      "title": "Bật {{name}}",
+      "submit": "Bật",
+      "name": "Tên",
+      "targets": "Máy chủ",
+      "targetAll": "Tất cả máy chủ",
+      "targetTrigger": "Máy chủ kích hoạt sự kiện",
+      "targetHosts": "Máy chủ đã chọn",
+      "noHosts": "Hãy chọn ít nhất một máy chủ.",
+      "threshold": "Ngưỡng (%)",
+      "forSeconds": "Trong ít nhất (giây)",
+      "time": "Thời gian trong ngày",
+      "cron": "Lịch trình (cron)",
+      "dockerEvent": "Sự kiện container",
+      "dockerEvents": {
+        "exited": "Đã thoát",
+        "unhealthy": "Không khỏe mạnh",
+        "restarting": "Đang khởi động lại"
+      },
+      "badTime": "Nhập thời gian theo định dạng HH:MM.",
+      "autonomy": "Trợ lý được phép làm gì",
+      "maxRunSeconds": "Giới hạn thời gian (giây)",
+      "runbook": "Sổ tay vận hành",
+      "runbookHint": "Mô tả bằng lời thường những gì trợ lý nên làm. Tiếng Anh hoạt động tốt nhất.",
+      "shared": "Chia sẻ khi lưu dưới dạng cài đặt sẵn",
+      "sharedHint": "Bất kỳ ai có quyền sử dụng tự động hóa đều có thể bật tính năng này.",
+      "saveAsPreset": "Lưu dưới dạng cài đặt sẵn",
+      "savedPreset": "Đã lưu",
+      "failed": "Không thể tạo quy trình tự động",
+      "saveFailed": "Không thể lưu cài đặt sẵn"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Kiểm tra hàng ngày",
+        "description": "Mỗi sáng lúc 09:00, kiểm tra ổ đĩa, bộ nhớ, tải hệ thống, dịch vụ lỗi, container, chứng chỉ, bản cập nhật, yêu cầu khởi động lại và đồng bộ thời gian của mọi máy chủ, sau đó báo cáo theo mức độ nghiêm trọng."
+      },
+      "disk-cleanup": {
+        "title": "Dọn dẹp dung lượng ổ đĩa",
+        "description": "Khi ổ đĩa duy trì ở mức 85% hoặc cao hơn trong 5 phút, tìm nguyên nhân gây đầy và đề xuất phương án dọn dẹp an toàn để bạn phê duyệt. Dữ liệu kinh doanh không bao giờ bị động đến."
+      },
+      "host-down-triage": {
+        "title": "Xử lý máy chủ ngừng hoạt động",
+        "description": "Khi máy chủ ngoại tuyến, kiểm tra từ các máy chủ khác và Proxmox, sau đó báo cáo xem nguyên nhân do mạng, máy tính bị dừng hay SSH."
+      },
+      "service-failure": {
+        "title": "Lỗi dịch vụ",
+        "description": "Khi kiểm tra sức khỏe bắt đầu thất bại, tìm đơn vị systemd đằng sau, đọc trạng thái và nhật ký của nó, sau đó đề xuất khởi động lại một lần để bạn phê duyệt nếu điều đó có thể giúp ích. Cấu hình không bao giờ bị thay đổi."
+      },
+      "container-anomaly": {
+        "title": "Bất thường container",
+        "description": "Khi container thoát, không khỏe mạnh hoặc liên tục khởi động lại, đọc trạng thái, mã thoát, nhật ký và bộ nhớ của nó, sau đó đề xuất khởi động hoặc khởi động lại một lần để bạn phê duyệt. Không có gì bị xóa."
+      },
+      "resource-overload-cpu": {
+        "title": "Quá tải CPU",
+        "description": "Khi CPU duy trì ở mức 95% hoặc cao hơn trong 15 phút, tìm các quy trình, dịch vụ và container đằng sau và báo cáo cách xử lý. Không có gì bị thay đổi."
+      },
+      "resource-overload-memory": {
+        "title": "Quá tải bộ nhớ",
+        "description": "Khi bộ nhớ duy trì ở mức 95% hoặc cao hơn trong 10 phút, tìm nguyên nhân sử dụng bộ nhớ, hoán đổi và các tiến trình bị giết do hết bộ nhớ, sau đó báo cáo cách xử lý. Không có gì bị thay đổi."
+      },
+      "security-updates-weekly": {
+        "title": "Cập nhật bảo mật hàng tuần",
+        "description": "Mỗi thứ Hai lúc 09:30, liệt kê các bản cập nhật bảo mật đang chờ xử lý theo mức độ nghiêm trọng, các yêu cầu khởi động lại và các gói phần mềm liên quan, nhân bản đang chạy và đã cài đặt cùng số ngày kể từ lần cập nhật cuối, trong một bảng cho tất cả máy chủ."
+      },
+      "cert-expiry-weekly": {
+        "title": "Hết hạn chứng chỉ hàng tuần",
+        "description": "Mỗi thứ Hai lúc 09:45, đọc thời hạn của chứng chỉ Let's Encrypt, máy chủ web và Kubernetes trên mọi máy chủ và đánh dấu những chứng chỉ còn dưới 30 ngày, nghiêm trọng nếu dưới 7 ngày."
+      }
+    },
+    "report": {
+      "verdict": "Kết luận",
+      "evidence": "Bằng chứng",
+      "actionsTaken": "Hành động đã thực hiện",
+      "recommendations": "Khuyến nghị",
+      "nothingFound": "Không tìm thấy gì trước khi quy trình kết thúc.",
+      "noChanges": "Không có thay đổi nào được thực hiện.",
+      "openConversation": "Mở cuộc trò chuyện trong trợ lý để xem từng bước và đặt câu hỏi tiếp theo.",
+      "noFurtherAction": "Không cần hành động nào thêm.",
+      "stoppedBudgetRun": "Đã dừng: quy trình này đã sử dụng hết ngân sách {{tokens}} token.",
+      "stoppedBudgetDaily": "Đã dừng: ngân sách hàng ngày của chủ sở hữu là {{tokens}} token đã được sử dụng hết.",
+      "stoppedDeadline": "Đã dừng: đã đạt đến giới hạn thời gian của quy trình tự động.",
+      "stoppedPaused": "Đã dừng: một quản trị viên đã tạm dừng tự động hóa AI.",
+      "stoppedAborted": "Đã dừng: quy trình tự động đã bị hủy.",
+      "providerFailed": "Nhà cung cấp AI gặp lỗi: {{error}}",
+      "noHosts": "Không thể kết nối với bất kỳ máy chủ mục tiêu nào từ chủ sở hữu của quy trình tự động.",
+      "noProvider": "Chủ sở hữu của quy trình tự động không có nhà cung cấp AI nào với mô hình để thực hiện tác vụ.",
+      "needsOpsUse": "Chủ sở hữu của quy trình tự động không có quyền ai.ops.use.",
+      "assistantOff": "Trợ lý AI đã bị tắt cho chủ sở hữu của quy trình tự động.",
+      "skippedPaused": "Tự động hóa AI đang bị tạm dừng bởi quản trị viên.",
+      "skippedDuplicate": "Một tác vụ cho cùng quy trình tự động và máy chủ vẫn đang chạy hoặc đang chờ phê duyệt.",
+      "skippedRate": "Quy trình tự động này đã khởi động {{count}} tác vụ AI trong giờ qua.",
+      "hostNotRun": "Không chạy: kế hoạch đã bị dừng.",
+      "hostNoAccess": "Không chạy: chủ sở hữu không thể kết nối với máy chủ này nữa.",
+      "hostUnreachable": "Không chạy: không thể kết nối đến máy chủ.",
+      "hostStopped": "Đã dừng tại lệnh đầu tiên bị lỗi.",
+      "executionDone": "Kế hoạch đã được phê duyệt chạy trên {{count}} máy chủ và mọi lệnh cùng kiểm tra đều thành công.",
+      "executionFailed": "Kế hoạch đã được phê duyệt không hoàn thành trên mọi máy chủ.",
+      "executionStopped": "Kế hoạch đã được phê duyệt bị dừng trước khi hoàn tất.",
+      "approvedBy": "Kế hoạch đã được phê duyệt chạy đúng như đã viết. Đã được phê duyệt bởi {{user}}.",
+      "noticeReported": "Báo cáo AI: {{title}}",
+      "noticeProposed": "Kế hoạch AI đang chờ phê duyệt: {{title}}",
+      "noticeExecuted": "Kế hoạch AI đã thực thi: {{title}}",
+      "noticeFailed": "Tác vụ AI thất bại: {{title}}"
+    }
   }
 }

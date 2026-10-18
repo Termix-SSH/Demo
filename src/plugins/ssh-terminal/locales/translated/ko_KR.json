@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "원시 포트 22를 인터넷에 공개하지 않고 네이티브 WebSocket 전송을 사용하여 Cloudflare Tunnel 뒤에 있는 호스트에 연결합니다.",
+    "enableCloudflareTunnel": "Cloudflare Tunnel 활성화",
+    "enableCloudflareTunnelDesc": "직접 TCP 소켓 대신 호스트의 기본 주소를 사용하여 Cloudflare Zero Trust(WSS)를 통해 SSH 트래픽을 라우팅합니다.",
+    "cloudflareTunnelHostname": "Tunnel 호스트명",
+    "cloudflareTunnelHostnameDesc": "Cloudflare Tunnel에서 SSH 원본 서비스로 라우팅되는 공개 도메인입니다(호스트의 기본 주소를 사용하려면 비워 두세요).",
+    "cloudflareTunnelPort": "Tunnel 포트",
+    "cloudflareTunnelPortDesc": "Cloudflare의 Edge HTTPS/WSS 포트입니다(기본값은 443).",
+    "cloudflareTunnelClientId": "서비스 토큰 클라이언트 ID",
+    "cloudflareTunnelClientIdDesc": "선택 사항인 CF-Access-Client-Id 헤더입니다. Cloudflare Access Zero Trust 정책에서 서비스 토큰을 강제하는 경우에만 필요합니다.",
+    "cloudflareTunnelClientSecret": "서비스 토큰 클라이언트 시크릿",
+    "cloudflareTunnelClientSecretDesc": "Cloudflare Access 인증을 위한 선택적 CF-Access-Client-Secret 헤더입니다.",
     "clipboardHttpWarning": "클립보드를 읽을 수 없습니다. 일부 브라우저는 HTTPS 외부에서 클립보드 접근을 제한합니다. 대신 Ctrl+V를 사용하거나 Termix를 HTTPS로 제공하세요.",
     "connecting": "연결 중...",
     "connectionLost": "연결 끊김",
@@ -83,7 +95,16 @@
     "localShell": "로컬 터미널 셸",
     "autocompleteHintComplete": "Tab 또는 Enter로 완성",
     "autocompleteHintNavigate": "↑↓로 이동",
-    "autocompleteHintClose": "Esc로 닫기"
+    "autocompleteHintClose": "Esc로 닫기",
+    "cloudflareTunnelClientSecretPlaceholder": "선택적 서비스 토큰 시크릿",
+    "cloudflareTunnelClientSecretPlaceholderNew": "새 서비스 토큰 시크릿",
+    "secretSaved": "저장됨",
+    "secretReplace": "교체",
+    "secretClear": "지우기",
+    "secretCancel": "취소",
+    "hideSecret": "시크릿 숨기기",
+    "showSecret": "시크릿 보기",
+    "sessionEndedKeepOpen": "세션이 종료되었습니다. Enter를 눌러 다시 연결하세요."
   },
   "terminalToolbar": {
     "detachTmux": "tmux 분리",
@@ -207,6 +228,26 @@
         "label": "명령어 기록",
         "description": "이 터미널에서 실행된 명령어를 기록하여 기록 및 자동 완성 기능에 사용합니다."
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare Tunnel",
+        "description": "WebSocket을 통해 Cloudflare Zero Trust로 SSH 트래픽 라우팅"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "터널 호스트명",
+        "description": "Cloudflare Tunnel 공개 호스트명"
+      },
+      "cloudflareTunnelPort": {
+        "label": "터널 포트",
+        "description": "Cloudflare 엣지 HTTPS/WSS 포트"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Cloudflare Access 서비스 토큰 클라이언트 ID"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Cloudflare Access 서비스 토큰 클라이언트 시크릿"
+      },
       "enableTerminal": {
         "label": "터미널 활성화",
         "description": "이 호스트에 SSH 터미널을 제공합니다."
@@ -314,6 +355,9 @@
         "moveUp": "위로 이동",
         "moveDown": "아래로 이동",
         "tmuxHint": "tmux가 연결된 상태에서만 표시됨"
+      },
+      "keepOpenOnExit": {
+        "label": "종료 시 탭 유지"
       }
     },
     "user": {
@@ -484,7 +528,9 @@
     "guac": {
       "permissionLevel": "권한 레벨"
     },
-    "deleteGlobalThemeConfirm": "테마 {{name}}을(를) 삭제하시겠습니까?"
+    "deleteGlobalThemeConfirm": "테마 {{name}}을(를) 삭제하시겠습니까?",
+    "keepOpenOnExitLabel": "종료 시 탭 유지",
+    "keepOpenOnExitDesc": "셸이 종료되거나 연결이 끊길 때 탭과 출력을 유지합니다. 다시 연결하려면 Enter를 누르세요."
   },
   "nav": {
     "history": "기록",
@@ -512,6 +558,7 @@
     "stopRecording": "녹화 중지"
   },
   "keybindings": {
+    "openLocalTerminal": "새 로컬 터미널 열기",
     "copy": "선택 영역 복사",
     "paste": "붙여넣기",
     "sendControlCode": "Ctrl+문자 신호 보내기",
@@ -629,6 +676,7 @@
     "remoteServerRequired": "원격 서버가 필요합니다. 이 연결 유형을 사용하려면 설정에서 원격 서버를 연결하세요."
   },
   "plugin": {
-    "name": "SSH 터미널"
+    "name": "SSH 터미널",
+    "description": "데스크톱 앱에서 탭, 분할 화면, 기록, 매크로 및 로컬 터미널을 갖춘 SSH 터미널 세션."
   }
 }

@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Verbinden Sie sich mit Hosts hinter einem Cloudflare Tunnel über den nativen WebSocket-Transport, ohne den Port 22 direkt ins öffentliche Internet zu öffnen.",
+    "enableCloudflareTunnel": "Cloudflare Tunnel aktivieren",
+    "enableCloudflareTunnelDesc": "Leiten Sie SSH-Verkehr über Cloudflare Zero Trust (WSS) unter Verwendung der Hauptadresse des Hosts statt direkter TCP-Sockets.",
+    "cloudflareTunnelHostname": "Tunnel-Hostname",
+    "cloudflareTunnelHostnameDesc": "Öffentliche Domain, die in Cloudflare Tunnel an Ihren SSH-Ursprungsdienst weitergeleitet wird (leer lassen, um die Hauptadresse des Hosts zu verwenden).",
+    "cloudflareTunnelPort": "Tunnel-Port",
+    "cloudflareTunnelPortDesc": "HTTPS/WSS-Port am Cloudflare-Edge (Standard ist 443).",
+    "cloudflareTunnelClientId": "Service-Token-Client-ID",
+    "cloudflareTunnelClientIdDesc": "Optionaler CF-Access-Client-Id-Header. Erforderlich nur, wenn die Cloudflare Access Zero Trust-Richtlinie Service-Token durchsetzt.",
+    "cloudflareTunnelClientSecret": "Service-Token-Client-Secret",
+    "cloudflareTunnelClientSecretDesc": "Optionaler CF-Access-Client-Secret-Header für die Cloudflare Access-Authentifizierung.",
     "clipboardHttpWarning": "Zwischenablage konnte nicht gelesen werden. Einige Browser schränken den Zugriff auf die Zwischenablage außerhalb von HTTPS ein – versuche es stattdessen mit Strg+V oder richte Termix über HTTPS ein.",
     "connecting": "Verbindung wird hergestellt...",
     "connectionLost": "Verbindung unterbrochen",
@@ -85,7 +97,16 @@
     "localShell": "Lokale Terminal-Shell",
     "autocompleteHintComplete": "Tab oder Enter zum Vervollständigen",
     "autocompleteHintNavigate": "↑↓ zum Navigieren",
-    "autocompleteHintClose": "Esc zum Schließen"
+    "autocompleteHintClose": "Esc zum Schließen",
+    "cloudflareTunnelClientSecretPlaceholder": "Optionales Service-Token-Secret",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Neues Service-Token-Secret",
+    "secretSaved": "Gespeichert",
+    "secretReplace": "Ersetzen",
+    "secretClear": "Löschen",
+    "secretCancel": "Abbrechen",
+    "hideSecret": "Secret ausblenden",
+    "showSecret": "Secret anzeigen",
+    "sessionEndedKeepOpen": "Sitzung beendet. Drücken Sie Enter, um die Verbindung wiederherzustellen."
   },
   "terminalToolbar": {
     "detachTmux": "tmux trennen",
@@ -210,6 +231,26 @@
         "label": "Befehlsverlauf",
         "description": "Aufzeichnen der in diesem Terminal ausgeführten Befehle für Verlauf und Autovervollständigung"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare Tunnel",
+        "description": "SSH-Verkehr über Cloudflare Zero Trust via WebSocket leiten"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Tunnel-Hostname",
+        "description": "Öffentlicher Hostname des Cloudflare Tunnels"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Tunnel-Port",
+        "description": "Cloudflare Edge HTTPS/WSS-Port"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Client-ID des Cloudflare Access Service Tokens"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Client Secret für das Cloudflare Access Service Token"
+      },
       "enableTerminal": {
         "label": "Terminal aktivieren",
         "description": "Ein SSH-Terminal für diesen Host anbieten."
@@ -317,6 +358,9 @@
         "moveUp": "Nach oben",
         "moveDown": "Nach unten",
         "tmuxHint": "Wird nur angezeigt, wenn tmux verbunden ist"
+      },
+      "keepOpenOnExit": {
+        "label": "Tab beim Beenden offen halten"
       }
     },
     "user": {
@@ -487,7 +531,9 @@
     "guac": {
       "permissionLevel": "Berechtigungsebene"
     },
-    "deleteGlobalThemeConfirm": "Theme {{name}} löschen?"
+    "deleteGlobalThemeConfirm": "Theme {{name}} löschen?",
+    "keepOpenOnExitLabel": "Tab beim Beenden offen halten",
+    "keepOpenOnExitDesc": "Wenn die Shell beendet wird oder die Verbindung geschlossen wird, den Tab und seine Ausgabe beibehalten. Drücken Sie Enter, um die Verbindung wiederherzustellen."
   },
   "nav": {
     "history": "Verlauf",
@@ -517,6 +563,7 @@
     "stopRecording": "Aufnahme stoppen"
   },
   "keybindings": {
+    "openLocalTerminal": "Neues lokales Terminal öffnen",
     "copy": "Auswahl kopieren",
     "paste": "Einfügen",
     "sendControlCode": "Ctrl+Buchstabe-Signal senden",
@@ -635,6 +682,7 @@
     "remoteServerRequired": "Remoteserver erforderlich. Verbinden Sie in den Einstellungen einen Remoteserver, um diesen Verbindungstyp zu nutzen."
   },
   "plugin": {
-    "name": "SSH-Terminal"
+    "name": "SSH-Terminal",
+    "description": "SSH-Terminalsitzungen mit Tabs, geteiltem Bildschirm, Verlauf, Makros und einem lokalen Terminal in der Desktop-App."
   }
 }

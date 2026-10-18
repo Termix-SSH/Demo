@@ -23,6 +23,18 @@
         "title": "Kopīgot API atslēgu",
         "description": "Citas funkcijas var izmantot saglabāto MI API atslēgu, to neredzot."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Palaist komandas uz resursdatoriem ar MI palīgu",
+        "description": "Ļaujiet palīgam palaist jebkuru apvalka komandu uz izvēlētajiem resursdatoriem. Noklusējuma režīmā tikai administratoriem."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Apskatīt visu MI lietošanu",
+        "description": "Redzēt žetonus, kurus izmantoja katras lietotājas MI izsaukumi, ne tikai savējos. Noklusējuma režīmā tikai administratoriem."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Atļautie privātie MI mezgli",
         "description": "Mezgli jūsu privātajā tīklā, uz kuriem lietotāji var norādīt pakalpojumu sniedzēju, piemēram, pašhostētu Ollama. Katrā rindā ierakstiet vienu mezglu."
+      },
+      "opsConcurrency": {
+        "label": "MI palīga paralēlie resursdatori",
+        "description": "Cik daudz resursdatoru vienlaicīgi tiek palaista palīga komanda."
+      },
+      "opsCommandTimeout": {
+        "label": "MI palīga komandas laika limits (sekundes)",
+        "description": "Cik ilgi komanda var palaisties uz resursdatora, pirms tā tiek apturēta. Palīgs var lūgt līdz 600 sekundēm."
+      },
+      "opsOutputLimit": {
+        "label": "MI palīga izvade uz vienu resursdatoru (rakstzīmes)",
+        "description": "Cik daudz no katra resursdatora izvades tiek saglabāts. Garāka izvade saglabā savu sākumu un beigas."
+      },
+      "autoOpsPaused": {
+        "label": "Pauzēt MI automātiskās darbības",
+        "description": "Aptur visas izpildāmās MI uzdevumus un apstiprinātos plānus un noraida jaunus, līdz tas tiek atkal ieslēgts."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "MI uzdevumi vienai automatizācijai stundā",
+        "description": "Vairāki trigeri vienā stundā tiek izlaisti."
+      },
+      "autoOpsRunTokens": {
+        "label": "Žetonu budžets vienam MI uzdevumam",
+        "description": "Uzdevums, kas izmanto šādu žetonu skaitu, tiek apturēts un ziņo par to, ko tas atrada."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Ikdienas MI žetonu budžets vienai lietotājai",
+        "description": "Kad lietotāja šodien (UTC) ir izmantojusi šādu žetonu skaitu, viņas MI uzdevumi tiek izlaisti vai apturēti."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "Ieslēgt MI asistentu",
         "description": "Ļaut MI asistentam palīdzēt šī mezgla terminālī. Noklusējuma stāvoklī ir izslēgts, un joprojām ir nepieciešams, lai MI būtu iespējots jūsu kontam."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Automātisko darbību preferences"
+      }
     }
   },
   "ai": {
-    "title": "Asistents",
     "send": "Sūtīt",
     "stop": "Apturēt",
     "save": "Saglabāt",
@@ -58,10 +102,9 @@
     "running": "darbojas",
     "approve": "Apstiprināt",
     "reject": "Noraidīt",
-    "inputPlaceholder": "Jautājiet par saviem serveriem vai aprakstiet izmaiņas priekšlikumam",
     "selectProvider": "Izvēlieties pakalpojumu sniedzēju",
-    "providerSettings": "Pakalpojumu sniedzēja iestatījumi",
     "addProvider": "Pievienot pakalpojumu sniedzēju",
+    "manageModels": "Pārvaldīt modeļus",
     "editProvider": "Rediģēt pakalpojumu sniedzēju",
     "removeProvider": "Noņemt pakalpojumu sniedzēju",
     "providerType": "Pakalpojumu sniedzējs",
@@ -95,22 +138,32 @@
     "modelCustom": "Ievadiet modeļa nosaukumu",
     "modelRefresh": "Atsvaidzināt sarakstu",
     "modelPlaceholder": "Izvēlieties vai ierakstiet modeli",
-    "attachHint": "Ierakstiet @, lai atsauktos uz resursdatoru, fragmentu vai automatizāciju. Izmaiņas tiek piedāvātas jūsu apstiprināšanai.",
     "runCommandTitle": "Izpildīt komandu",
     "assistant": "MI palīgs",
     "terminalPanelEmpty": "Jautājiet palīgā par šo resursdatoru. Viss, kas maina stāvokli, vispirms prasa jūsu apstiprinājumu.",
     "terminalPanelPlaceholder": "Jautājiet par šo resursdatoru...",
-    "noProvidersConfigured": "Vēl nav konfigurēts neviens MI pakalpojumu sniedzējs. Pievienojiet vienu MI palīga cilnē.",
+    "noProvidersConfigured": "Vēl nav konfigurēts neviens MI pakalpojumu sniedzējs. Pievienojiet to Iestatījumos.",
     "runsInOpenTerminal": "Izpildās jūsu atvērtajā termināļa sesijā.",
     "runInTerminal": "Izpildīt",
     "terminalContextPrefill": "Šeit ir mans termināļa izvade:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Ļaujiet citām funkcijām izmantot jūsu MI pakalpojumu sniedzēja API atslēgu savām pieprasījumiem. Atslēga netiek kopēta, un to var atsaukt jebkurā laikā."
     },
-    "removeProviderConfirm": "Vai noņemt pakalpojumu sniedzēju {{name}}?"
+    "removeProviderConfirm": "Vai noņemt pakalpojumu sniedzēju {{name}}?",
+    "contextWindows": "Konteksta logs katram modelim",
+    "contextWindowsHint": "Lasiet no pakalpojumu sniedzēja, kur tas ziņo par vienu. Ievadiet žetonu skaitu, lai to pārrakstītu modelim, vai atstājiet tukšu, lai izmantotu to, ko ziņo pakalpojumu sniedzējs. Atsvaidzināšana atkal vaicā pakalpojumu sniedzējam.",
+    "contextWindowValue": "Konteksta logs: {{tokens}} ({{source}})",
+    "contextOverride": "Konteksta loga pārrakstīšana modelim {{model}}",
+    "contextSourceOverride": "iestatīts no jūsu puses",
+    "contextSourceProvider": "ziņots no pakalpojumu sniedzēja",
+    "contextSourceGuess": "minēts no modeļa nosaukuma",
+    "contextSourceDefault": "noklusējums nezināmiem modeļiem",
+    "contextLoadFailed": "Neizdevās izlasīt konteksta logus",
+    "contextRefresh": "Atsvaidzināt",
+    "contextWindowInvalid": "Ievadiet konteksta logu kā veselu žetonu skaitu, vismaz 1024."
   },
   "nav": {
-    "ai": "MI"
+    "ai": "MI palīgs"
   },
   "onboarding": {
     "aiTitle": "MI palīgs",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Ieslēgt",
     "aiEnableDesc": "Pievieno palīgu, kas lasa jūsu konfigurāciju un piedāvā izmaiņas, kuras jūs apstiprināt. Nepieciešams pakalpojumu sniedzējs, ko nodrošināt jūs, piemēram, lokāls Ollama.",
     "aiNote": "Nekas netiek nosūtīts nekur, līdz pievienojat pakalpojumu sniedzēju un nosūtāt ziņu."
-  },
-  "hosts": {
-    "docsLink": "Apskatīt dokumentāciju"
   },
   "agents": {
     "working": "Strādā...",
@@ -215,6 +265,282 @@
     "emptyTranscript": "Nosūtiet ziņojumu, lai sāktu aģenta darbu."
   },
   "plugin": {
-    "name": "AI Asistents"
+    "name": "AI Asistents",
+    "description": "MI palīgs, kas izlasa jūsu konfigurāciju un piedāvā izmaiņas, kuras varat apstiprināt."
+  },
+  "ops": {
+    "searchHosts": "Meklēt resursdatorus",
+    "selectedCount": "Izvēlēti {{count}}",
+    "clear": "Notīrīt",
+    "fleets": "Flotes",
+    "folders": "Mapes",
+    "tags": "Birkas",
+    "allHosts": "Visi resursdatori",
+    "noHosts": "Nav resursdatoru",
+    "newConversation": "Jauna saruna",
+    "sendHint_zero": "Palaista uz {{count}} resursdatoriem. Komandas tiek palaistas bez iepriekšējas atļaujas.",
+    "sendHint_one": "Palaista uz {{count}} resursdatora. Komandas tiek palaistas bez iepriekšējas atļaujas.",
+    "sendHint_other": "Palaista uz {{count}} resursdatoriem. Komandas tiek palaistas bez iepriekšējas atļaujas.",
+    "runCommand": "Palaist komandu",
+    "hostFacts": "Resursdatora fakti",
+    "hostCount_zero": "{{count}} resursdatori",
+    "hostCount_one": "{{count}} resursdators",
+    "hostCount_other": "{{count}} resursdatori",
+    "succeeded": "{{count}} veiksmīgi",
+    "failed": "{{count}} neizdevās",
+    "exitCode": "izgāšanās kods {{code}}",
+    "timedOut": "laika limits pārsniegts",
+    "stopped": "apturēts",
+    "notRun": "nav palaists",
+    "cached": "kešatmiņā",
+    "duration": "{{seconds}} s",
+    "noOutput": "(nav izvades)"
+  },
+  "assistant": {
+    "title": "MI palīgs",
+    "moveHint": "Velciet, lai pārvietotu. Divreiz noklikšķiniet, lai piestiprinātu pie sāniem.",
+    "toggle": "Pārslēgt MI palīgu",
+    "close": "Aizvērt",
+    "dock": "Pievienot labajā pusē",
+    "float": "Peldošs",
+    "openTab": "Atvērt pilnu skatu",
+    "history": "Sarunas",
+    "noConversations": "Vēl nav sarunu",
+    "untitled": "Bez nosaukuma",
+    "deleteConversation": "Dzēst sarunu",
+    "deleteConfirm": "Dzēst šo sarunu?",
+    "emptyTitle": "Jautājiet vai mainiet jebko Termix",
+    "emptyHint": "Asistents darbojas jūsu vārdā caur Termix CLI un izpilda komandas jūsu mērķa hostēs. Ierakstiet @, lai pievienotu hostes, flotes, mapes vai tagus kā mērķus.",
+    "inputPlaceholder": "Jautājiet asistentam. Ierakstiet @, lai pievienotu mērķus.",
+    "noTargets": "Nav mērķa hostu. Ierakstiet @, lai pievienotu dažas.",
+    "sendHint": "Izmaiņas un komandas tiek izpildītas bez iepriekšējas apstiprināšanas.",
+    "removeTarget": "Noņemt {{name}}",
+    "kind": {
+      "host": "Hosts",
+      "fleet": "Flote",
+      "folder": "Mape",
+      "tag": "Tags"
+    },
+    "emptyHintBasic": "Asistents darbojas jūsu vārdā caur Termix CLI ar jūsu atļaujām.",
+    "inputPlaceholderBasic": "Jautājiet asistentam.",
+    "sendHintBasic": "Izmaiņas tiek izpildītas bez iepriekšējas apstiprināšanas.",
+    "thinking": "Domā",
+    "thinkingActive": "Domā...",
+    "compacted": "Konteksts saspiests: agrākas ziņas tika apkopotas",
+    "compact": "Saspiest sarunu",
+    "nothingToCompact": "Saruna ir pārāk īsa, lai to saspiestu.",
+    "contextMeter": "Konteksts: pēdējā izsaukumā izmantoti {{used}} no {{window}} tokeniem",
+    "contextMeterSource": "Logs ir {{source}}.",
+    "contextMeterReserved": "{{tokens}} tokeni tiek atstāti brīvi atbildei.",
+    "todayTokens": "Šodien {{tokens}}",
+    "todayTitle": "Šodien izmantotie tokeni. Noklikšķiniet, lai redzētu detaļas.",
+    "usage": "Tokenu lietojums",
+    "conversationTokens": "{{tokens}} tokeni",
+    "openFloating": "Peldošs panelis",
+    "openFloatingHint": "Atveriet asistentu panelī virs jebkuras lapas. Nospiediet {{shortcut}} jebkur, lai to atvērtu vai aizvērtu.",
+    "shortcutHint": "Nospiediet {{shortcut}} jebkurā lapā, lai atvērtu asistentu peldošā panelī."
+  },
+  "usage": {
+    "title": "Tokenu lietojums",
+    "settingDescription": "Tokeni, ko jūsu AI izsaukumi izmantoja pēdējo 30 dienu laikā.",
+    "cardTitle": "AI tokenu lietojums",
+    "today": "Šodien",
+    "week": "7 dienas",
+    "month": "30 dienas",
+    "mine": "Mani",
+    "everyone": "Visi lietotāji",
+    "mineCaption": "Jūsu tokeni visos AI funkcionalitātēs.",
+    "everyoneCaption": "Tokeni visos lietotājos un AI funkcionalitātēs.",
+    "byDay": "Par dienu",
+    "byModel": "Par modeli",
+    "bySource": "Par funkcionalitāti",
+    "byUser": "Par lietotāju",
+    "model": "Modelis",
+    "feature": "Funkcionalitāte",
+    "user": "Lietotājs",
+    "calls": "Izsaukumi",
+    "prompt": "Ievade",
+    "completion": "Izvade",
+    "total": "Kopā",
+    "empty": "Nav AI lietojuma pēdējo 30 dienu laikā.",
+    "loadFailed": "Neizdevās ielādēt lietojumu",
+    "estimatedNote": "Daži rādītāji ir aptuveni, aprēķinot aptuveni četrus rakstzīmes vienam tokenam, jo pakalpojumu sniedzējs nenorādīja savu lietojumu.",
+    "source": {
+      "assistant": "Asistents",
+      "terminal": "Termināļa panelis",
+      "compaction": "Kompakcija"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Asistents",
+    "viewAutoOps": "Auto-ops",
+    "intro": "Auto-ops ļauj asistentam neatkarīgi pārbaudīt jūsu serverus. Automatizācija to palaiž pēc grafika vai, kad rodas problēma, un tā sagatavo ziņojumu vai piedāvā risinājumu jūsu apstiprinājumam. Sāciet ar iestatījumu komplektu.",
+    "sections": {
+      "tasks": "Uzdevumi",
+      "approvals": "Apstiprinājumi",
+      "presets": "Iestatījumu komplekti"
+    },
+    "provider": "Uzdevumu sniedzējs",
+    "providerDefault": "Pirmais sniedzējs ar noklusējuma modeli",
+    "model": "Uzdevumu modelis",
+    "modelDefault": "Sniedzēja noklusējuma modelis",
+    "saveModel": "Saglabāt modeli",
+    "preferencesHint": "Fona uzdevumiem izmantotais sniedzējs un modelis. Atstājiet tos nemainītus, lai izmantotu jūsu noklusējuma sniedzēju un modeli.",
+    "task": "Uzdevums",
+    "tokens": "{{tokens}} žetoni",
+    "tokenUsage": "{{total}} žetoni ({{prompt}} ievade, {{completion}} izvade)",
+    "dryRun": "Testa palašana",
+    "trigger": "Izraisītājs",
+    "noTasks": "Vēl nav uzdevumu",
+    "tasksHint": "Uzdevumi ir automatizāciju palaides ar „Jautāt AI” soli. Iespējiet iestatījumu komplektu vai izveidojiet savu Automatizācijās: pievienojiet „Jautāt AI” soli jebkurai automatizācijai. Palaides tiek parādītas šeit.",
+    "openAutomations": "Atvērt Automatizācijas",
+    "browsePresets": "Pārlūkot iestatījumu komplektus",
+    "noApprovals": "Nav plānu, kas gaida apstiprinājumu",
+    "loadFailed": "Neizdevās ielādēt auto-ops",
+    "decideFailed": "Lēmumu neizdevās saglabāt",
+    "openConversation": "Atvērt asistentā",
+    "approve": "Apstiprināt un palaist",
+    "reject": "Noraidīt",
+    "expires": "Beidzas {{time}}",
+    "enabled": "Iespējots",
+    "updateAvailable": "Pieejams atjauninājums",
+    "shared": "Koplietots",
+    "needsAutomations": "Nepieciešamas Automatizācijas",
+    "enableAgain": "Iespējot vēlreiz",
+    "deletePreset": "Dzēst iestatījumu komplektu",
+    "autonomy": {
+      "report": "Tikai ziņojums",
+      "propose": "Piedāvāt plānu"
+    },
+    "status": {
+      "running": "Palošās",
+      "reported": "Ziņots",
+      "proposed": "Gaida apstiprinājumu",
+      "approved": "Apstiprināts",
+      "rejected": "Noraidīts",
+      "expired": "Beidzies",
+      "executing": "Palošs plāns",
+      "done": "Pabeigts",
+      "failed": "Neizdevās",
+      "skipped": "Izlaists"
+    },
+    "severity": {
+      "info": "Informācija",
+      "warning": "Brīdinājums",
+      "critical": "Kritiski"
+    },
+    "plan": {
+      "title": "Piedāvātais plāns",
+      "commands": "Komandas",
+      "rationale": "Pamatojums",
+      "risk": "Risks",
+      "rollback": "Atgriešana",
+      "verify": "Verifikācija",
+      "progress": "Progress"
+    },
+    "enable": {
+      "title": "Iespējot {{name}}",
+      "submit": "Iespējot",
+      "name": "Nosaukums",
+      "targets": "Māziņi",
+      "targetAll": "Visi māziņi",
+      "targetTrigger": "Māziņš, kas to izraisīja",
+      "targetHosts": "Atlasītie māziņi",
+      "noHosts": "Atlasiet vismaz vienu māziņu.",
+      "threshold": "Slieksnis (%)",
+      "forSeconds": "Vismaz (sekundes)",
+      "time": "Laiks diennaktī",
+      "cron": "Grafiks (cron)",
+      "dockerEvent": "Konteinera notikums",
+      "dockerEvents": {
+        "exited": "Izbeigts",
+        "unhealthy": "Neslims",
+        "restarting": "Atsākas"
+      },
+      "badTime": "Ievadiet laiku formātā HH:MM.",
+      "autonomy": "Ko asistents var darīt",
+      "maxRunSeconds": "Laika ierobežojums (sekundes)",
+      "runbook": "Veicamdarbību rokasgrāmata",
+      "runbookHint": "Ko asistentam vajadzētu darīt, vienkāršos vārdos. Labāk darbojas angļu valoda.",
+      "shared": "Koplietot, kad saglabāts kā iestatījums",
+      "sharedHint": "Tad visi, kuriem ir atļauts izmantot automātiskās darbības, var to iespējot.",
+      "saveAsPreset": "Saglabāt kā iestatījumu",
+      "savedPreset": "Saglabāts",
+      "failed": "Automatizāciju neizdevās izveidot",
+      "saveFailed": "Iestatījumu neizdevās saglabāt"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Ikdienas patrulēšana",
+        "description": "Katru rīku plkst. 09:00 pārbauda visu māziņu diskus, atmiņu, slodzi, neizdevušos pakalpojumus, konteinerus, sertifikātus, atjauninājumus, gaidāmos restartus un laika sinhronizāciju, un ziņo pēc nopietnības pakāpes."
+      },
+      "disk-cleanup": {
+        "title": "Diska telpas tīrīšana",
+        "description": "Kad disks ir 85% vai vairāk 5 minūtes, atrod, kas to piepilda, un piedāvā drošu tīrīšanu jūsu apstiprināšanai. Biznesa dati netiek skarti."
+      },
+      "host-down-triage": {
+        "title": "Māziņa izslēgšanas triāža",
+        "description": "Kad māziņš izslēdzas, to pārbauda no citiem māziņiem un Proxmox, un ziņo, vai problēma ir tīklā, izslēgtā mašīnā vai SSH."
+      },
+      "service-failure": {
+        "title": "Pakalpojuma kļūme",
+        "description": "Kad veselības pārbaude sāk neizdoties, atrod aiz tā esošo systemd vienību, izlasa tās statusu un žurnālu, un piedāvā vienu restartu jūsu apstiprināšanai, ja tas var palīdzēt. Konfigurācija netiek mainīta."
+      },
+      "container-anomaly": {
+        "title": "Konteinera anomālija",
+        "description": "Kad konteiners izbeidzas, kļūst neslims vai pastāvīgi atsākas, izlasa tā stāvokli, iziešanas kodu, žurnālus un atmiņu, un piedāvā to vienu reizi palaist vai restartēt jūsu apstiprināšanai. Nekas netiek noņemts."
+      },
+      "resource-overload-cpu": {
+        "title": "CPU pārslodze",
+        "description": "Kad CPU ir 95% vai vairāk 15 minūtes, atrod aiz tā esošos procesus, pakalpojumus un konteinerus un ziņo, ko darīt. Nekas netiek mainīts."
+      },
+      "resource-overload-memory": {
+        "title": "Atmiņas pārslodze",
+        "description": "Kad atmiņa ir 95% vai vairāk 10 minūtes, atrod, kas to izmanto, apmaiņu un atmiņas trūkuma nogalinājumus, un ziņo, ko darīt. Nekas netiek mainīts."
+      },
+      "security-updates-weekly": {
+        "title": "Nedēļas drošības atjauninājumi",
+        "description": "Katru pirmdienu plkst. 09:30 uzskaita gaidāmos drošības atjauninājumus pēc nopietnības pakāpes, gaidāmos restartus un aiz tiem esošos pakotnes, darbojošos un instalētos kodolus un dienas kopš pēdējā atjauninājuma, vienā tabulā visiem māziņiem."
+      },
+      "cert-expiry-weekly": {
+        "title": "Nedēļas sertifikātu derīguma termiņš",
+        "description": "Katru pirmdienu plkst. 09:45 izlasa Let's Encrypt, tīmekļa servera un Kubernetes sertifikātu derīguma termiņu katrā māziņā un atzīmē tos, kas ir mazāk nekā 30 dienas, kritiskos mazāk nekā 7 dienas."
+      }
+    },
+    "report": {
+      "verdict": "Secinājums",
+      "evidence": "Pierādījumi",
+      "actionsTaken": "Veiktās darbības",
+      "recommendations": "Ieteikumi",
+      "nothingFound": "Pirms palašanas beigām nekas netika atrasts.",
+      "noChanges": "Nav veikti nekādi grozījumi.",
+      "openConversation": "Atveriet sarunu asistentā, lai redzētu katru soli un uzdotu papildu jautājumus.",
+      "noFurtherAction": "Nav nepieciešamas turpmākas darbības.",
+      "stoppedBudgetRun": "Apturēts: šī palašana izmantoja savu {{tokens}} tokenu budžetu.",
+      "stoppedBudgetDaily": "Apturēts: īpašnieka ikdienas {{tokens}} tokenu budžets ir izsmelts.",
+      "stoppedDeadline": "Apturēts: sasniegts automatizācijas laika ierobežojums.",
+      "stoppedPaused": "Apturēts: administrators ir apturējis AI automātiskās darbības.",
+      "stoppedAborted": "Apturēts: automatizācijas palašana ir atcelta.",
+      "providerFailed": "AI piegādātājs neizdevās: {{error}}",
+      "noHosts": "Nevienu no mērķa māziņiem nevar sasniegt automatizācijas īpašnieks.",
+      "noProvider": "Automatizācijas īpašniekam nav AI piegādātāja ar modeli uzdevumu veikšanai.",
+      "needsOpsUse": "Automatizācijas īpašniekam nav atļaujas ai.ops.use.",
+      "assistantOff": "Automatizācijas īpašniekam ir izslēgts MI asistents.",
+      "skippedPaused": "MI automātiskās darbības ir apturētas administratora.",
+      "skippedDuplicate": "Uzdevums tai pašai automatizācijai un resursam joprojām tiek izpildīts vai gaida apstiprinājumu.",
+      "skippedRate": "Šī automatizācija pēdējā stundā jau ir uzsākusi {{count}} MI uzdevumus.",
+      "hostNotRun": "Netika izpildīts: plāns tika apturēts.",
+      "hostNoAccess": "Netika izpildīts: īpašnieks vairs nevar izveidot savienojumu ar šo resursu.",
+      "hostUnreachable": "Netika izpildīts: resursu nevarēja sasniegt.",
+      "hostStopped": "Apturēts pie pirmās neizdevušās komandas.",
+      "executionDone": "Apstiprinātais plāns tika izpildīts {{count}} resursā(s), un visas komandas un pārbaudes bija veiksmīgas.",
+      "executionFailed": "Apstiprinātais plāns netika pabeigts visos resursos.",
+      "executionStopped": "Apstiprinātais plāns tika apturēts pirms tā pabeigšanas.",
+      "approvedBy": "Apstiprinātais plāns tika izpildīts tā, kā tas bija uzrakstīts. Apstiprināja {{user}}.",
+      "noticeReported": "MI ziņojums: {{title}}",
+      "noticeProposed": "MI plāns gaida apstiprinājumu: {{title}}",
+      "noticeExecuted": "MI plāns izpildīts: {{title}}",
+      "noticeFailed": "MI uzdevums neizdevās: {{title}}"
+    }
   }
 }

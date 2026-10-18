@@ -23,6 +23,18 @@
         "title": "Del API-nøglen",
         "description": "Andre funktioner kan bruge den gemte AI-API-nøgle uden at se den."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Kør kommandoer på værter med AI-assistenten",
+        "description": "Lad assistenten køre enhver shell-kommando på de værter, du vælger. Kun administratorer som standard."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Se alle brugeres AI-forbrug",
+        "description": "Se de tokens, som hver brugers AI-opkald har brugt, ikke kun dine egne. Kun administratorer som standard."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Tilladte private AI-værter",
         "description": "Værter på dit private netværk, som brugere kan pege en udbyder mod, f.eks. en selvhostet Ollama. Sæt én vært på hver linje."
+      },
+      "opsConcurrency": {
+        "label": "AI-assistent parallelle værter",
+        "description": "Hvor mange værter en assistentkommando kører på samtidig."
+      },
+      "opsCommandTimeout": {
+        "label": "AI-assistent kommandotidsgrænse (sekunder)",
+        "description": "Hvor længe en kommando må køre på en vært, før den stoppes. Assistenten kan anmode om op til 600."
+      },
+      "opsOutputLimit": {
+        "label": "AI-assistent output pr. vært (tegn)",
+        "description": "Hvor meget af hver værts output der gemmes. Længere output bevarer start og slut."
+      },
+      "autoOpsPaused": {
+        "label": "Sæt AI-autoops på pause",
+        "description": "Stopper alle kørende AI-opgaver og godkendte planer og afviser nye, indtil funktionen slås fra igen."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "AI-opgaver pr. automatisering pr. time",
+        "description": "Yderligere udløsninger i samme time springes over."
+      },
+      "autoOpsRunTokens": {
+        "label": "Token-budget pr. AI-opgave",
+        "description": "En opgave, der bruger dette antal tokens, stoppes og rapporterer, hvad den fandt."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Dagligt AI-token-budget pr. bruger",
+        "description": "Når en bruger har brugt dette antal tokens i dag (UTC), springes deres AI-opgaver over eller stoppes."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "Aktivér AI-assistent",
         "description": "Tillad AI-assistenten at hjælpe i denne værts terminal. Slået fra som standard, og kræver stadig, at AI er aktiveret for din konto."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Autoops-præferencer"
+      }
     }
   },
   "ai": {
-    "title": "Assistent",
     "send": "Send",
     "stop": "Stop",
     "save": "Gem",
@@ -58,10 +102,9 @@
     "running": "kører",
     "approve": "Godkend",
     "reject": "Afvis",
-    "inputPlaceholder": "Spørg om dine servere, eller beskriv en ændring, der skal foreslås",
     "selectProvider": "Vælg en udbyder",
-    "providerSettings": "Udbyderindstillinger",
     "addProvider": "Tilføj udbyder",
+    "manageModels": "Administrer modeller",
     "editProvider": "Rediger udbyder",
     "removeProvider": "Fjern udbyder",
     "providerType": "Udbyder",
@@ -95,22 +138,32 @@
     "modelCustom": "Indtast et modelnavn",
     "modelRefresh": "Opdater liste",
     "modelPlaceholder": "Vælg eller skriv en model",
-    "attachHint": "Skriv @ for at referere til en vært, et uddrag eller en automatisering. Ændringer foreslås til din godkendelse.",
     "runCommandTitle": "Kør kommando",
     "assistant": "AI-assistent",
     "terminalPanelEmpty": "Spørg assistenten om denne vært. Alt, der ændrer tilstand, skal godkendes af dig først.",
     "terminalPanelPlaceholder": "Spørg om denne vært...",
-    "noProvidersConfigured": "Der er ikke konfigureret nogen AI-udbyder endnu. Tilføj en i fanen AI-assistent.",
+    "noProvidersConfigured": "Der er endnu ikke konfigureret nogen AI-leverandør. Tilføj en i Indstillinger.",
     "runsInOpenTerminal": "Kører i din åbne terminalsession.",
     "runInTerminal": "Kør",
     "terminalContextPrefill": "Her er min terminaloutput:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Lad andre funktioner bruge din AI-udbyders API-nøgle til deres egne anmodninger. Nøglen kopieres aldrig, og du kan tilbagetrække dette til enhver tid."
     },
-    "removeProviderConfirm": "Fjern udbyderen {{name}}?"
+    "removeProviderConfirm": "Fjern udbyderen {{name}}?",
+    "contextWindows": "Kontekstvindu pr. model",
+    "contextWindowsHint": "Læs fra leverandøren, hvor den rapporterer et. Indtast et antal tokens for at tilsidesætte det for en model, eller lad det være tomt for at bruge det, leverandøren rapporterer. Opdatering spørger leverandøren igen.",
+    "contextWindowValue": "Kontekstvindu: {{tokens}} ({{source}})",
+    "contextOverride": "Tilsidesættelse af kontekstvindu for {{model}}",
+    "contextSourceOverride": "indstillet af dig",
+    "contextSourceProvider": "rapporteret af leverandøren",
+    "contextSourceGuess": "gættet ud fra modelnavnet",
+    "contextSourceDefault": "standard for ukendte modeller",
+    "contextLoadFailed": "Kunne ikke læse kontekstvinduerne",
+    "contextRefresh": "Opdater",
+    "contextWindowInvalid": "Indtast kontekstvinduet som et helt antal tokens, på mindst 1024."
   },
   "nav": {
-    "ai": "AI"
+    "ai": "AI-assistent"
   },
   "onboarding": {
     "aiTitle": "AI-assistent",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Aktivér den",
     "aiEnableDesc": "Tilføjer en assistent, der læser din opsætning og foreslår ændringer, du godkender. Kræver en udbyder, du leverer, f.eks. en lokal Ollama.",
     "aiNote": "Der sendes ingenting nogen steder, før du tilføjer en udbyder og sender en besked."
-  },
-  "hosts": {
-    "docsLink": "Se dokumentation"
   },
   "agents": {
     "working": "Arbejder...",
@@ -215,6 +265,280 @@
     "emptyTranscript": "Send en besked for at starte agenten."
   },
   "plugin": {
-    "name": "AI-assistent"
+    "name": "AI-assistent",
+    "description": "En AI-assistent, der læser din opsætning og foreslår ændringer, du kan godkende."
+  },
+  "ops": {
+    "searchHosts": "Søg efter værter",
+    "selectedCount": "{{count}} valgt",
+    "clear": "Ryd",
+    "fleets": "Flåder",
+    "folders": "Mapper",
+    "tags": "Tags",
+    "allHosts": "Alle værter",
+    "noHosts": "Ingen værter",
+    "newConversation": "Ny samtale",
+    "sendHint_one": "Kører på {{count}} vært. Kommandoer kører uden at spørge først.",
+    "sendHint_other": "Kører på {{count}} værter. Kommandoer kører uden at spørge først.",
+    "runCommand": "Kør kommando",
+    "hostFacts": "Værtfakta",
+    "hostCount_one": "{{count}} vært",
+    "hostCount_other": "{{count}} værter",
+    "succeeded": "{{count}} ok",
+    "failed": "{{count}} fejlet",
+    "exitCode": "afslut {{code}}",
+    "timedOut": "løb ud på tid",
+    "stopped": "stoppet",
+    "notRun": "ikke kørt",
+    "cached": "hentet fra cache",
+    "duration": "{{seconds}}s",
+    "noOutput": "(ingen output)"
+  },
+  "assistant": {
+    "title": "AI-assistent",
+    "moveHint": "Træk for at flytte. Dobbeltklik for at fastgøre til siden.",
+    "toggle": "Skift AI-assistenten til/fra",
+    "close": "Luk",
+    "dock": "Fæst til højre",
+    "float": "Flydende",
+    "openTab": "Åbn fuld visning",
+    "history": "Samtaler",
+    "noConversations": "Ingen samtaler endnu",
+    "untitled": "Uden titel",
+    "deleteConversation": "Slet samtale",
+    "deleteConfirm": "Slet denne samtale?",
+    "emptyTitle": "Spørg om eller ændr noget i Termix",
+    "emptyHint": "Assistenten arbejder som dig via Termix CLI og kører kommandoer på dine målhosts. Skriv @ for at tilføje hosts, flåder, mapper eller tags som mål.",
+    "inputPlaceholder": "Spørg assistenten. Tast @ for at tilføje mål.",
+    "noTargets": "Ingen mål-værter. Tast @ for at tilføje nogle.",
+    "sendHint": "Ændringer og kommandoer køres uden at spørge først.",
+    "removeTarget": "Fjern {{name}}",
+    "kind": {
+      "host": "Vært",
+      "fleet": "Flåde",
+      "folder": "Mappe",
+      "tag": "Mærke"
+    },
+    "emptyHintBasic": "Assistenten arbejder som dig gennem Termix CLI med dine tilladelser.",
+    "inputPlaceholderBasic": "Spørg assistenten.",
+    "sendHintBasic": "Ændringer udføres uden at spørge først.",
+    "thinking": "Tænker",
+    "thinkingActive": "Tænker...",
+    "compacted": "Kontekst komprimeret: tidligere beskeder er blevet opsummeret",
+    "compact": "Komprimer samtalen",
+    "nothingToCompact": "Samtalen er for kort til at kunne komprimeres endnu.",
+    "contextMeter": "Kontekst: {{used}} af {{window}} tokens brugt af den seneste forespørgsel",
+    "contextMeterSource": "Vinduet er {{source}}.",
+    "contextMeterReserved": "{{tokens}} tokens holdes fri til svaret.",
+    "todayTokens": "I dag {{tokens}}",
+    "todayTitle": "Tokens, du har brugt i dag. Klik for detaljer.",
+    "usage": "Tokenforbrug",
+    "conversationTokens": "{{tokens}} tokens",
+    "openFloating": "Flydende panel",
+    "openFloatingHint": "Åbn assistenten i et panel over enhver side. Tryk på {{shortcut}} hvor som helst for at åbne eller lukke det.",
+    "shortcutHint": "Tryk på {{shortcut}} på enhver side for at åbne assistenten i et flydende panel."
+  },
+  "usage": {
+    "title": "Tokenforbrug",
+    "settingDescription": "Tokens, dine AI-opkald har brugt de sidste 30 dage.",
+    "cardTitle": "AI-tokenforbrug",
+    "today": "I dag",
+    "week": "7 dage",
+    "month": "30 dage",
+    "mine": "Mine",
+    "everyone": "Alle brugere",
+    "mineCaption": "Dine tokens på tværs af alle AI-funktioner.",
+    "everyoneCaption": "Tokens på tværs af alle brugere og AI-funktioner.",
+    "byDay": "Pr. dag",
+    "byModel": "Pr. model",
+    "bySource": "Pr. funktion",
+    "byUser": "Pr. bruger",
+    "model": "Model",
+    "feature": "Funktion",
+    "user": "Bruger",
+    "calls": "Ankald",
+    "prompt": "Input",
+    "completion": "Output",
+    "total": "I alt",
+    "empty": "Ingen AI-brug i de sidste 30 dage.",
+    "loadFailed": "Kunne ikke indlæse forbrug",
+    "estimatedNote": "Nogle tal er estimater, på cirka fire tegn pr. token, fordi udbyderen ikke rapporterede sit forbrug.",
+    "source": {
+      "assistant": "Assistent",
+      "terminal": "Terminalpanel",
+      "compaction": "Komprimering"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Assistent",
+    "viewAutoOps": "Auto-ops",
+    "intro": "Auto-ops lader assistenten tjekke dine værter automatisk. En automatisering starter den efter en tidsplan eller når noget går galt, og den skriver en rapport eller foreslår en løsning, du kan godkende. Start med et forudindstillet program.",
+    "sections": {
+      "tasks": "Opgaver",
+      "approvals": "Godkendelser",
+      "presets": "Forudindstillinger"
+    },
+    "provider": "Udbyder til opgaver",
+    "providerDefault": "Første udbyder med et standardmodel",
+    "model": "Model til opgaver",
+    "modelDefault": "Udbyderens standardmodel",
+    "saveModel": "Gem model",
+    "preferencesHint": "Den udbyder og model, som baggrundsopgaver bruger. Lad dem være som de er for at bruge din standardudbyder og -model.",
+    "task": "Opgave",
+    "tokens": "{{tokens}} tokens",
+    "tokenUsage": "{{total}} tokens ({{prompt}} ind, {{completion}} ud)",
+    "dryRun": "Testkørsel",
+    "trigger": "Udløser",
+    "noTasks": "Ingen opgaver endnu",
+    "tasksHint": "Opgaver er kørsler af automatiseringer med et 'Spørg AI'-trin. Aktiver en forudindstillet løsning, eller opbyg din egen i Automatiseringer: tilføj et 'Spørg AI'-trin til enhver automatisering. Kørsler vises her.",
+    "openAutomations": "Åbn Automatiseringer",
+    "browsePresets": "Gennemse forudindstillinger",
+    "noApprovals": "Ingen planer venter på godkendelse",
+    "loadFailed": "Kunne ikke indlæse auto-ops",
+    "decideFailed": "Beslutningen kunne ikke gemmes",
+    "openConversation": "Åbn i assistent",
+    "approve": "Godkend og kør",
+    "reject": "Afvis",
+    "expires": "Udløber {{time}}",
+    "enabled": "Aktiveret",
+    "updateAvailable": "Opdatering tilgængelig",
+    "shared": "Delt",
+    "needsAutomations": "Kræver automatiseringer",
+    "enableAgain": "Aktivér igen",
+    "deletePreset": "Slet forudindstilling",
+    "autonomy": {
+      "report": "Kun rapportering",
+      "propose": "Foreslå en plan"
+    },
+    "status": {
+      "running": "Kører",
+      "reported": "Rapporteret",
+      "proposed": "Afventer godkendelse",
+      "approved": "Godkendt",
+      "rejected": "Afvist",
+      "expired": "Udløbet",
+      "executing": "Kører plan",
+      "done": "Færdig",
+      "failed": "Mislykkedes",
+      "skipped": "Udeladt"
+    },
+    "severity": {
+      "info": "Info",
+      "warning": "Advarsel",
+      "critical": "Kritisk"
+    },
+    "plan": {
+      "title": "Foreslået plan",
+      "commands": "Kommandoer",
+      "rationale": "Hvorfor",
+      "risk": "Risiko",
+      "rollback": "Rul tilbage",
+      "verify": "Verificer",
+      "progress": "Fremgang"
+    },
+    "enable": {
+      "title": "Aktivér {{name}}",
+      "submit": "Aktivér",
+      "name": "Navn",
+      "targets": "Værter",
+      "targetAll": "Alle værter",
+      "targetTrigger": "Den vært, der udløste det",
+      "targetHosts": "Udvalgte værter",
+      "noHosts": "Vælg mindst én vært.",
+      "threshold": "Tærskel (%)",
+      "forSeconds": "I mindst (sekunder)",
+      "time": "Tid på døgnet",
+      "cron": "Planlægning (cron)",
+      "dockerEvent": "Beholderhændelse",
+      "dockerEvents": {
+        "exited": "Afsluttet",
+        "unhealthy": "Usund",
+        "restarting": "Genstarter"
+      },
+      "badTime": "Indtast klokkeslættet som TT:MM.",
+      "autonomy": "Hvad assistenten må gøre",
+      "maxRunSeconds": "Tidsgrænse (sekunder)",
+      "runbook": "Runbook",
+      "runbookHint": "Hvad assistenten skal gøre, beskrevet med almindelige ord. Engelsk fungerer bedst.",
+      "shared": "Del, når det gemmes som en forudindstilling",
+      "sharedHint": "Alle, der kan bruge auto-ops, kan derefter aktivere det.",
+      "saveAsPreset": "Gem som forudindstilling",
+      "savedPreset": "Gemt",
+      "failed": "Automatiseringen kunne ikke oprettes",
+      "saveFailed": "Forudindstillingen kunne ikke gemmes"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Daglig patrulje",
+        "description": "Hver morgen kl. 09:00 tjekkes hver værts diske, hukommelse, belastning, fejlede tjenester, containere, certifikater, opdateringer, ventende genstarte og tidsynkronisering, og der rapporteres efter alvorlighedsgrad."
+      },
+      "disk-cleanup": {
+        "title": "Rydning af diskplads",
+        "description": "Når en disk er ved 85 % eller mere i 5 minutter, findes det, der fylder den, og der foreslås en sikker rydning, som du kan godkende. Forretningsdata røres aldrig."
+      },
+      "host-down-triage": {
+        "title": "Fejlfinding af nedbrudt vært",
+        "description": "Når en vært går offline, udfører den prober fra andre værter og Proxmox, og rapporterer, om årsagen er netværket, en stoppet maskine eller SSH."
+      },
+      "service-failure": {
+        "title": "Tjenestefejl",
+        "description": "Når en sundhedstjek begynder at mislykkes, finder den den underliggende systemd-enhed, læser dens status og logfiler, og foreslår en enkelt genstart, du kan godkende, hvis det kan hjælpe. Konfigurationen ændres aldrig."
+      },
+      "container-anomaly": {
+        "title": "Beholderanomalie",
+        "description": "Når en beholder afsluttes, bliver usund eller genstarter løbende, læser den dens tilstand, afslutningskode, logfiler og hukommelse, og foreslår at starte eller genstarte den én gang, som du kan godkende. Der slettes intet."
+      },
+      "resource-overload-cpu": {
+        "title": "CPU-overbelastning",
+        "description": "Når CPU-forbruget ligger på 95 % eller mere i 15 minutter, finder den processerne, tjenesterne og beholderne bagved og rapporterer, hvad der skal gøres. Der ændres intet."
+      },
+      "resource-overload-memory": {
+        "title": "Hukommelsesoverbelastning",
+        "description": "Når hukommelsesforbruget ligger på 95 % eller mere i 10 minutter, finder den, hvad der bruger den, swapping og out-of-memory-afslutninger, og rapporterer, hvad der skal gøres. Der ændres intet."
+      },
+      "security-updates-weekly": {
+        "title": "Ugentlige sikkerhedsopdateringer",
+        "description": "Hver mandag kl. 09:30 vises ventende sikkerhedsopdateringer efter alvorlighed, ventende genstart og de tilhørende pakker, kørende og installerede kernels samt dage siden sidste opdatering i én tabel for alle værter."
+      },
+      "cert-expiry-weekly": {
+        "title": "Ugentlig udløb af certifikater",
+        "description": "Hver mandag kl. 09:45 læses udløbsdatoen for Let's Encrypt-, webserver- og Kubernetes-certifikater på hver vært, og de med mindre end 30 dage tilbage markeres, mens de med mindre end 7 dage betragtes som kritiske."
+      }
+    },
+    "report": {
+      "verdict": "Konklusion",
+      "evidence": "Beviser",
+      "actionsTaken": "Udførte handlinger",
+      "recommendations": "Anbefalinger",
+      "nothingFound": "Intet blev fundet, før kørslen blev afsluttet.",
+      "noChanges": "Der blev ikke foretaget nogen ændringer.",
+      "openConversation": "Åbn samtalen i assistenten for at se hvert trin og stille opfølgende spørgsmål.",
+      "noFurtherAction": "Der er ikke behov for yderligere handling.",
+      "stoppedBudgetRun": "Stoppet: denne kørsel brugte sin budget på {{tokens}} tokens.",
+      "stoppedBudgetDaily": "Stoppet: ejerens daglige budget på {{tokens}} tokens er brugt op.",
+      "stoppedDeadline": "Stoppet: automatiseringens tidsbegrænsning blev nået.",
+      "stoppedPaused": "Stoppet: en administrator satte AI-autoops på pause.",
+      "stoppedAborted": "Stoppet: automatiseringskørslen blev annulleret.",
+      "providerFailed": "AI-leverandøren fejlede: {{error}}",
+      "noHosts": "Ingen af målhostene kan nås af automatiseringens ejer.",
+      "noProvider": "Automatiseringens ejer har ingen AI-leverandør med en model til at køre opgaver på.",
+      "needsOpsUse": "Automatiseringens ejer har ikke tilladelsen ai.ops.use.",
+      "assistantOff": "AI-assistenten er slået fra for automatiseringens ejer.",
+      "skippedPaused": "AI auto-ops er sat på pause af en administrator.",
+      "skippedDuplicate": "Der kører allerede en opgave for den samme automatisering og vært, eller den venter på godkendelse.",
+      "skippedRate": "Denne automatisering har allerede startet {{count}} AI-opgaver i den sidste time.",
+      "hostNotRun": "Ikke kørt: planen blev stoppet.",
+      "hostNoAccess": "Ikke kørt: ejeren kan ikke længere oprette forbindelse til denne vært.",
+      "hostUnreachable": "Ikke kørt: værten kunne ikke nås.",
+      "hostStopped": "Stoppet ved det første mislykkede kommando.",
+      "executionDone": "Den godkendte plan blev kørt på {{count}} vært(er), og alle kommandoer og kontroller lykkedes.",
+      "executionFailed": "Den godkendte plan blev ikke gennemført på alle værter.",
+      "executionStopped": "Den godkendte plan blev stoppet, før den blev gennemført.",
+      "approvedBy": "Den godkendte plan blev kørt som beskrevet. Godkendt af {{user}}.",
+      "noticeReported": "AI-rapport: {{title}}",
+      "noticeProposed": "AI-plan afventer godkendelse: {{title}}",
+      "noticeExecuted": "AI-plan udført: {{title}}",
+      "noticeFailed": "AI-opgave mislykkedes: {{title}}"
+    }
   }
 }

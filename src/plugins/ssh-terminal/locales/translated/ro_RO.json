@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Conectează-te la gazde aflate în spatele unui Cloudflare Tunnel folosind transportul nativ WebSocket, fără a deschide portul 22 brut către internetul public.",
+    "enableCloudflareTunnel": "Activează Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "Dirijează traficul SSH prin Cloudflare Zero Trust (WSS) folosind adresa principală a gazdei, în loc de socket-uri TCP directe.",
+    "cloudflareTunnelHostname": "Numele gazdei pentru tunnel",
+    "cloudflareTunnelHostnameDesc": "Domeniul public dirijat către serviciul tău SSH de origine în Cloudflare Tunnel (lasă gol pentru a folosi adresa principală a gazdei).",
+    "cloudflareTunnelPort": "Portul tunnel-ului",
+    "cloudflareTunnelPortDesc": "Portul HTTPS/WSS la marginea rețelei Cloudflare (implicit este 443).",
+    "cloudflareTunnelClientId": "ID-ul clientului pentru Service Token",
+    "cloudflareTunnelClientIdDesc": "Antetul opțional CF-Access-Client-Id. Necesitar doar dacă politica Cloudflare Access Zero Trust impune utilizarea Service Token-urilor.",
+    "cloudflareTunnelClientSecret": "Secretul clientului pentru tokenul de serviciu",
+    "cloudflareTunnelClientSecretDesc": "Antetul opțional CF-Access-Client-Secret pentru autentificarea Cloudflare Access.",
     "clipboardHttpWarning": "Nu s-a putut citi clipboard-ul. Unele browsere restricționează accesul la clipboard în afara HTTPS – încearcă Ctrl+V sau servește Termix prin HTTPS.",
     "connecting": "Se conectează...",
     "connectionLost": "Conexiunea a fost pierdută",
@@ -87,7 +99,16 @@
     "localShell": "Shell terminal local",
     "autocompleteHintComplete": "Tab sau Enter pentru a completa",
     "autocompleteHintNavigate": "↑↓ pentru navigare",
-    "autocompleteHintClose": "Esc pentru a închide"
+    "autocompleteHintClose": "Esc pentru a închide",
+    "cloudflareTunnelClientSecretPlaceholder": "Secretul opțional pentru tokenul de serviciu",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Noul secret pentru tokenul de serviciu",
+    "secretSaved": "Salvat",
+    "secretReplace": "Înlocuiește",
+    "secretClear": "Șterge",
+    "secretCancel": "Anulează",
+    "hideSecret": "Ascunde secretul",
+    "showSecret": "Afișează secretul",
+    "sessionEndedKeepOpen": "Sesiunea s-a încheiat. Apasă Enter pentru a reconecta."
   },
   "terminalToolbar": {
     "detachTmux": "Deconectare tmux",
@@ -213,6 +234,26 @@
         "label": "Istoric comenzi",
         "description": "Înregistrează comenzile executate în acest terminal pentru istoric și completare automată"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Tunel Cloudflare",
+        "description": "Rutează traficul SSH prin Cloudflare Zero Trust folosind WebSocket"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Numele gazdei tunelului",
+        "description": "Numele gazdei publice al tunelului Cloudflare"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Portul tunelului",
+        "description": "Portul HTTPS/WSS la marginea rețelei Cloudflare"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "ID-ul clientului pentru tokenul serviciului Cloudflare Access"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Secretul clientului pentru Cloudflare Access Service Token"
+      },
       "enableTerminal": {
         "label": "Activează Terminal",
         "description": "Oferă un terminal SSH pentru această gazdă."
@@ -320,6 +361,9 @@
         "moveUp": "Mută în sus",
         "moveDown": "Mută în jos",
         "tmuxHint": "Se afișează doar când tmux este atașat"
+      },
+      "keepOpenOnExit": {
+        "label": "Păstrează fila deschisă la ieșire"
       }
     },
     "user": {
@@ -490,7 +534,9 @@
     "guac": {
       "permissionLevel": "Nivel de permisiune"
     },
-    "deleteGlobalThemeConfirm": "Ștergeți tema {{name}}?"
+    "deleteGlobalThemeConfirm": "Ștergeți tema {{name}}?",
+    "keepOpenOnExitLabel": "Păstrează fila deschisă la ieșire",
+    "keepOpenOnExitDesc": "Când shell-ul se închide sau conexiunea se întrerupe, păstrează fila și ieșirea acesteia. Apasă Enter pentru a reconecta."
   },
   "nav": {
     "history": "Istoric",
@@ -522,6 +568,7 @@
     "stopRecording": "Oprește înregistrarea"
   },
   "keybindings": {
+    "openLocalTerminal": "Deschide un nou Terminal Local",
     "copy": "Copiază selecția",
     "paste": "Lipește",
     "sendControlCode": "Trimite semnal Ctrl+literă",
@@ -641,6 +688,7 @@
     "remoteServerRequired": "Server remote necesar. Conectează un server remote în Setări pentru a utiliza acest tip de conexiune."
   },
   "plugin": {
-    "name": "Terminal SSH"
+    "name": "Terminal SSH",
+    "description": "Sesiuni de terminal SSH cu file, ecran împărțit, istoric, macro-uri și un terminal local în aplicația desktop."
   }
 }

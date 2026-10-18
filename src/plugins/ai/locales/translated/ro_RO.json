@@ -23,6 +23,18 @@
         "title": "Partajează cheia API",
         "description": "Alte funcții pot folosi cheia API de IA stocată fără a o vedea."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Execută comenzi pe gazde cu asistentul AI",
+        "description": "Permite asistentului să execute orice comandă shell pe gazdele pe care le selectezi. Doar pentru administratori, implicit."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Vizualizează utilizarea AI de către toți utilizatorii",
+        "description": "Vezi tokenii folosiți de apelurile AI ale fiecărui utilizator, nu doar ale tale. Doar pentru administratori, implicit."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Gazde private de IA permise",
         "description": "Gazde din rețeaua ta privată către care utilizatorii pot direcționa un furnizor, cum ar fi un Ollama găzduit local. Pune câte o gazdă pe fiecare linie."
+      },
+      "opsConcurrency": {
+        "label": "Gazde paralele pentru asistentul AI",
+        "description": "Câte gazde pot executa simultan o comandă a asistentului."
+      },
+      "opsCommandTimeout": {
+        "label": "Timpul de expirare al comenzii asistentului AI (secunde)",
+        "description": "Cât timp poate rula o comandă pe o gazdă înainte de a fi oprită. Asistentul poate solicita până la 600."
+      },
+      "opsOutputLimit": {
+        "label": "Ieșirea asistentului AI per gazdă (caractere)",
+        "description": "Cât din ieșirea fiecărei gazde este păstrată. Ieșirile mai lungi își păstrează începutul și sfârșitul."
+      },
+      "autoOpsPaused": {
+        "label": "Pauză operațiuni automate AI",
+        "description": "Oprește fiecare sarcină AI și plan aprobat care rulează și refuză pe cele noi, până este dezactivat din nou."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "Sarcini AI per automatizare pe oră",
+        "description": "Declanșările suplimentare în aceeași oră sunt ignorate."
+      },
+      "autoOpsRunTokens": {
+        "label": "Bugetul de tokeni per sarcină AI",
+        "description": "O sarcină care folosește acest număr de tokeni este oprită și raportează ce a găsit."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Bugetul zilnic de tokeni AI per utilizator",
+        "description": "Odată ce un utilizator a folosit acest număr de tokeni astăzi (UTC), sarcinile sale AI sunt ignorate sau oprite."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "Activează asistentul IA",
         "description": "Permite asistentului de IA să te ajute în terminalul acestei gazde. Dezactivat implicit și necesită totuși activarea IA pentru contul tău."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Preferințe operațiuni automate"
+      }
     }
   },
   "ai": {
-    "title": "Asistent",
     "send": "Trimite",
     "stop": "Oprește",
     "save": "Salvează",
@@ -58,10 +102,9 @@
     "running": "se execută",
     "approve": "Aprobă",
     "reject": "Respinge",
-    "inputPlaceholder": "Întreabă despre serverele tale sau descrie o modificare de propus",
     "selectProvider": "Selectează un furnizor",
-    "providerSettings": "Setări furnizor",
     "addProvider": "Adaugă furnizor",
+    "manageModels": "Gestionează modelele",
     "editProvider": "Editează furnizorul",
     "removeProvider": "Elimină furnizorul",
     "providerType": "Furnizor",
@@ -95,22 +138,32 @@
     "modelCustom": "Introduceți un nume de model",
     "modelRefresh": "Reîmprospătează lista",
     "modelPlaceholder": "Alegeți sau tastați un model",
-    "attachHint": "Tastați @ pentru a face referire la un gazdă, fragment sau automatizare. Modificările sunt propuse pentru aprobarea dumneavoastră.",
     "runCommandTitle": "Execută comanda",
     "assistant": "Asistent AI",
     "terminalPanelEmpty": "Întreabă asistentul despre această gazdă. Orice modificare de stare necesită aprobarea dumneavoastră prealabilă.",
     "terminalPanelPlaceholder": "Întreabă despre această gazdă...",
-    "noProvidersConfigured": "Niciun furnizor AI nu este configurat încă. Adăugați unul în fila Asistent AI.",
+    "noProvidersConfigured": "Niciun furnizor AI nu este configurat încă. Adaugă unul în Setări.",
     "runsInOpenTerminal": "Rulează în sesiunea terminalului deschisă.",
     "runInTerminal": "Execută",
     "terminalContextPrefill": "Iată ieșirea terminalului meu:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Permiteți altor funcții să utilizeze cheia API a furnizorului dumneavoastră AI pentru propriile solicitări. Cheia nu este niciodată copiată, iar puteți revoca această permisiune oricând."
     },
-    "removeProviderConfirm": "Ștergeți furnizorul {{name}}?"
+    "removeProviderConfirm": "Ștergeți furnizorul {{name}}?",
+    "contextWindows": "Fereastra de context per model",
+    "contextWindowsHint": "Citește de la furnizor unde raportează una. Introdu un număr de tokeni pentru a o suprascrie pentru un model, sau lasă gol pentru a folosi ceea ce raportează furnizorul. Reîmprospătarea întreabă din nou furnizorul.",
+    "contextWindowValue": "Fereastră de context: {{tokens}} ({{source}})",
+    "contextOverride": "Suprascriere fereastră de context pentru {{model}}",
+    "contextSourceOverride": "setat de tine",
+    "contextSourceProvider": "raportat de furnizor",
+    "contextSourceGuess": "estimat din numele modelului",
+    "contextSourceDefault": "implicit pentru modele necunoscute",
+    "contextLoadFailed": "Nu s-au putut citi ferestrele de context",
+    "contextRefresh": "Reîmprospătează",
+    "contextWindowInvalid": "Introdu fereastra de context ca un număr întreg de tokeni, cel puțin 1024."
   },
   "nav": {
-    "ai": "AI"
+    "ai": "Asistent AI"
   },
   "onboarding": {
     "aiTitle": "Asistent AI",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Activează-l",
     "aiEnableDesc": "Adaugă un asistent care citește configurația dumneavoastră și sugerează modificări pe care le aprobați. Necesită un furnizor furnizat de dumneavoastră, cum ar fi un Ollama local.",
     "aiNote": "Nimic nu este trimis nicăieri până când nu adăugați un furnizor și trimiteți un mesaj."
-  },
-  "hosts": {
-    "docsLink": "Vezi documentația"
   },
   "agents": {
     "working": "Se lucrează...",
@@ -215,6 +265,282 @@
     "emptyTranscript": "Trimite un mesaj pentru a începe cu agentul."
   },
   "plugin": {
-    "name": "Asistent AI"
+    "name": "Asistent AI",
+    "description": "Un asistent AI care citește configurația ta și propune modificări pe care le poți aproba."
+  },
+  "ops": {
+    "searchHosts": "Caută gazde",
+    "selectedCount": "{{count}} selectate",
+    "clear": "Șterge",
+    "fleets": "Flote",
+    "folders": "Dosare",
+    "tags": "Etichete",
+    "allHosts": "Toate gazdele",
+    "noHosts": "Nicio gazdă",
+    "newConversation": "Conversație nouă",
+    "sendHint_one": "Rulează pe {{count}} gazdă. Comenzile rulează fără a cere confirmare.",
+    "sendHint_few": "Rulează pe {{count}} gazde. Comenzile rulează fără a cere confirmare.",
+    "sendHint_other": "Rulează pe {{count}} gazde. Comenzile rulează fără a cere confirmare.",
+    "runCommand": "Execută comanda",
+    "hostFacts": "Fapte despre gazdă",
+    "hostCount_one": "{{count}} gazdă",
+    "hostCount_few": "{{count}} gazde",
+    "hostCount_other": "{{count}} gazde",
+    "succeeded": "{{count}} ok",
+    "failed": "{{count}} eșuate",
+    "exitCode": "ieșire {{code}}",
+    "timedOut": "timp expirat",
+    "stopped": "oprit",
+    "notRun": "neexecutat",
+    "cached": "din cache",
+    "duration": "{{seconds}}s",
+    "noOutput": "(fără ieșire)"
+  },
+  "assistant": {
+    "title": "Asistent AI",
+    "moveHint": "Trage pentru a muta. Dublu-clic pentru a ancora pe lateral.",
+    "toggle": "Comută asistentul AI",
+    "close": "Închide",
+    "dock": "Fixează în dreapta",
+    "float": "Plutitor",
+    "openTab": "Deschide vizualizarea completă",
+    "history": "Conversații",
+    "noConversations": "Încă nu există conversații",
+    "untitled": "Fără titlu",
+    "deleteConversation": "Șterge conversația",
+    "deleteConfirm": "Șterge această conversație?",
+    "emptyTitle": "Întreabă sau modifică orice în Termix",
+    "emptyHint": "Asistentul acționează în numele tău prin CLI-ul Termix și execută comenzi pe gazdele țintă. Tastează @ pentru a adăuga gazde, flote, dosare sau etichete ca ținte.",
+    "inputPlaceholder": "Întreabă asistentul. Tastează @ pentru a adăuga ținte.",
+    "noTargets": "Nicio gazdă țintă. Tastează @ pentru a adăuga câteva.",
+    "sendHint": "Modificările și comenzile se execută fără a cere confirmare prealabilă.",
+    "removeTarget": "Elimină {{name}}",
+    "kind": {
+      "host": "Gazdă",
+      "fleet": "Flotă",
+      "folder": "Dosar",
+      "tag": "Etichetă"
+    },
+    "emptyHintBasic": "Asistentul acționează în numele tău prin CLI-ul Termix, cu permisiunile tale.",
+    "inputPlaceholderBasic": "Întreabă asistentul.",
+    "sendHintBasic": "Modificările se execută fără a cere confirmare prealabilă.",
+    "thinking": "Gândește",
+    "thinkingActive": "Gândește...",
+    "compacted": "Context comprimat: mesajele anterioare au fost rezumate",
+    "compact": "Comprimă conversația",
+    "nothingToCompact": "Conversația este prea scurtă pentru a fi comprimată.",
+    "contextMeter": "Context: {{used}} din {{window}} token-uri folosite de ultima apelare",
+    "contextMeterSource": "Fereastra este {{source}}.",
+    "contextMeterReserved": "{{tokens}} token-uri sunt rezervate pentru răspuns.",
+    "todayTokens": "Astăzi {{tokens}}",
+    "todayTitle": "Token-urile pe care le-ai folosit astăzi. Click pentru detalii.",
+    "usage": "Utilizare token-uri",
+    "conversationTokens": "{{tokens}} token-uri",
+    "openFloating": "Panou plutitor",
+    "openFloatingHint": "Deschide asistentul într-un panou peste orice pagină. Apasă {{shortcut}} oriunde pentru a-l deschide sau închide.",
+    "shortcutHint": "Apasă {{shortcut}} pe orice pagină pentru a deschide asistentul într-un panou plutitor."
+  },
+  "usage": {
+    "title": "Utilizare token-uri",
+    "settingDescription": "Token-urile folosite de apelările tale AI în ultimele 30 de zile.",
+    "cardTitle": "Utilizare token-uri AI",
+    "today": "Astăzi",
+    "week": "7 zile",
+    "month": "30 de zile",
+    "mine": "Ale mele",
+    "everyone": "Toți utilizatorii",
+    "mineCaption": "Token-urile tale din fiecare funcție AI.",
+    "everyoneCaption": "Token-uri din fiecare utilizator și funcție AI.",
+    "byDay": "Pe zi",
+    "byModel": "Pe model",
+    "bySource": "Pe funcție",
+    "byUser": "Pe utilizator",
+    "model": "Model",
+    "feature": "Funcție",
+    "user": "Utilizator",
+    "calls": "Apelări",
+    "prompt": "Intrare",
+    "completion": "Ieșire",
+    "total": "Total",
+    "empty": "Nicio utilizare AI în ultimele 30 de zile.",
+    "loadFailed": "Nu s-a putut încărca utilizarea",
+    "estimatedNote": "Unele valori sunt estimări, la aproximativ patru caractere per token, deoarece furnizorul nu a raportat utilizarea.",
+    "source": {
+      "assistant": "Asistent",
+      "terminal": "Panoul terminal",
+      "compaction": "Compactare"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Asistent",
+    "viewAutoOps": "Operațiuni automate",
+    "intro": "Operațiunile automate permit asistentului să verifice gazdele tale în mod independent. O automatizare le declanșează pe un program sau când apare o problemă, iar asistentul generează un raport sau propune o soluție pe care o poți aproba. Începe cu un preset.",
+    "sections": {
+      "tasks": "Sarcini",
+      "approvals": "Aprobari",
+      "presets": "Presets"
+    },
+    "provider": "Furnizor pentru sarcini",
+    "providerDefault": "Primul furnizor cu un model implicit",
+    "model": "Model pentru sarcini",
+    "modelDefault": "Modelul implicit al furnizorului",
+    "saveModel": "Salvează modelul",
+    "preferencesHint": "Furnizorul și modelul folosite de sarcinile în fundal. Lasă-le așa cum sunt pentru a folosi furnizorul și modelul implicit.",
+    "task": "Sarcină",
+    "tokens": "{{tokens}} tokeni",
+    "tokenUsage": "{{total}} tokeni ({{prompt}} intrați, {{completion}} ieșiți)",
+    "dryRun": "Rulare de test",
+    "trigger": "Declanșator",
+    "noTasks": "Nicio sarcină încă",
+    "tasksHint": "Sarcinile sunt rulări de automatizări care conțin un pas „Întreabă AI”. Activează un preset sau creează-ți unul în Automatizări: adaugă un pas „Întreabă AI” la orice automatizare. Rulările apar aici.",
+    "openAutomations": "Deschide Automatizări",
+    "browsePresets": "Răsfoiește presets",
+    "noApprovals": "Niciun plan nu așteaptă aprobare",
+    "loadFailed": "Nu s-au putut încărca operațiunile automate",
+    "decideFailed": "Decizia nu a putut fi salvată",
+    "openConversation": "Deschide în asistent",
+    "approve": "Aprobă și execută",
+    "reject": "Respinge",
+    "expires": "Expiră la {{time}}",
+    "enabled": "Activat",
+    "updateAvailable": "Actualizare disponibilă",
+    "shared": "Partajat",
+    "needsAutomations": "Necesită Automatizări",
+    "enableAgain": "Activează din nou",
+    "deletePreset": "Șterge preset",
+    "autonomy": {
+      "report": "Doar raport",
+      "propose": "Propune un plan"
+    },
+    "status": {
+      "running": "În curs de execuție",
+      "reported": "Raportat",
+      "proposed": "În așteptarea aprobării",
+      "approved": "Aprobat",
+      "rejected": "Respins",
+      "expired": "Expirat",
+      "executing": "Execută planul",
+      "done": "Finalizat",
+      "failed": "Eșuat",
+      "skipped": "Omitat"
+    },
+    "severity": {
+      "info": "Informații",
+      "warning": "Avertisment",
+      "critical": "Critic"
+    },
+    "plan": {
+      "title": "Plan propus",
+      "commands": "Comenzi",
+      "rationale": "Motiv",
+      "risk": "Risc",
+      "rollback": "Revocare",
+      "verify": "Verificare",
+      "progress": "Progres"
+    },
+    "enable": {
+      "title": "Activează {{name}}",
+      "submit": "Activează",
+      "name": "Nume",
+      "targets": "Gazde",
+      "targetAll": "Toate gazdele",
+      "targetTrigger": "Gazda care a declanșat evenimentul",
+      "targetHosts": "Gazdele selectate",
+      "noHosts": "Selectează cel puțin o gazdă.",
+      "threshold": "Prag (%)",
+      "forSeconds": "Pentru cel puțin (secunde)",
+      "time": "Ora zilei",
+      "cron": "Programare (cron)",
+      "dockerEvent": "Eveniment container",
+      "dockerEvents": {
+        "exited": "Oprit",
+        "unhealthy": "Nesănătos",
+        "restarting": "Se restartează"
+      },
+      "badTime": "Introdu ora în format HH:MM.",
+      "autonomy": "Ce poate face asistentul",
+      "maxRunSeconds": "Limită de timp (secunde)",
+      "runbook": "Manual de proceduri",
+      "runbookHint": "Ce ar trebui să facă asistentul, în cuvinte simple. Engleza funcționează cel mai bine.",
+      "shared": "Distribuie când este salvat ca presetare",
+      "sharedHint": "Oricine poate folosi operațiile automate îl poate activa apoi.",
+      "saveAsPreset": "Salvează ca presetare",
+      "savedPreset": "Salvat",
+      "failed": "Automatizarea nu a putut fi creată",
+      "saveFailed": "Presetarea nu a putut fi salvată"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Patrol zilnic",
+        "description": "În fiecare dimineață la 09:00, verifică discurile, memoria, încărcarea, serviciile eșuate, containerele, certificatele, actualizările, repornirile în așteptare și sincronizarea timpului pentru fiecare gazdă și raportează după severitate."
+      },
+      "disk-cleanup": {
+        "title": "Curățare spațiu disc",
+        "description": "Când un disc rămâne la 85% sau mai mult timp de 5 minute, identifică ce îl umple și propune o curățare sigură pentru aprobarea ta. Datele de business nu sunt niciodată afectate."
+      },
+      "host-down-triage": {
+        "title": "Triaj gazdă indisponibilă",
+        "description": "Când o gazdă devine indisponibilă, o testează de pe alte gazde și Proxmox, și raportează dacă problema este de rețea, o mașină oprită sau SSH."
+      },
+      "service-failure": {
+        "title": "Eșec serviciu",
+        "description": "Când o verificare de sănătate începe să eșueze, identifică unitatea systemd din spate, citește starea și jurnalul acesteia, și propune un singur restart pentru aprobarea ta atunci când acest lucru poate ajuta. Configurația nu este niciodată modificată."
+      },
+      "container-anomaly": {
+        "title": "Anomalie container",
+        "description": "Când un container se oprește, devine nesănătos sau se restartează continuu, citește starea, codul de ieșire, jurnalele și memoria acestuia, și propune pornirea sau restartarea sa o singură dată pentru aprobarea ta. Nimic nu este șters."
+      },
+      "resource-overload-cpu": {
+        "title": "Supraîncărcare CPU",
+        "description": "Când CPU rămâne la 95% sau mai mult timp de 15 minute, identifică procesele, serviciile și containerele din spate și raportează ce trebuie făcut. Nimic nu este modificat."
+      },
+      "resource-overload-memory": {
+        "title": "Supraîncărcare memorie",
+        "description": "Când memoria rămâne la 95% sau mai mult timp de 10 minute, identifică ce o folosește, swapping-ul și terminările din cauza lipsei de memorie, și raportează ce trebuie făcut. Nimic nu este modificat."
+      },
+      "security-updates-weekly": {
+        "title": "Actualizări de securitate săptămânale",
+        "description": "În fiecare luni la 09:30, listează actualizările de securitate în așteptare după severitate, repornirile în așteptare și pachetele din spatele lor, kernelurile rulate și instalate și zilele de la ultima actualizare, într-un singur tabel pentru toate gazdele."
+      },
+      "cert-expiry-weekly": {
+        "title": "Expirare certificat săptămânală",
+        "description": "În fiecare luni la 09:45, citește expirarea certificatelor Let's Encrypt, ale serverului web și Kubernetes de pe fiecare gazdă și marchează pe cele sub 30 de zile, critice sub 7."
+      }
+    },
+    "report": {
+      "verdict": "Verdict",
+      "evidence": "Dovezi",
+      "actionsTaken": "Acțiuni întreprinse",
+      "recommendations": "Recomandări",
+      "nothingFound": "Nu s-a găsit nimic înainte ca execuția să se încheie.",
+      "noChanges": "Nu s-au făcut modificări.",
+      "openConversation": "Deschide conversația în asistent pentru a vedea fiecare pas și a pune întrebări suplimentare.",
+      "noFurtherAction": "Nu este necesară nicio acțiune suplimentară.",
+      "stoppedBudgetRun": "Oprit: această execuție și-a epuizat bugetul de {{tokens}} token-uri.",
+      "stoppedBudgetDaily": "Oprit: bugetul zilnic al proprietarului de {{tokens}} token-uri este epuizat.",
+      "stoppedDeadline": "Oprit: s-a atins limita de timp a automatizării.",
+      "stoppedPaused": "Oprit: un administrator a pus în pauză operațiile automate AI.",
+      "stoppedAborted": "Oprit: execuția automatizării a fost anulată.",
+      "providerFailed": "Furnizorul AI a eșuat: {{error}}",
+      "noHosts": "Niciuna dintre gazdele țintă nu poate fi atinsă de proprietarul automatizării.",
+      "noProvider": "Proprietarul automatizării nu are un furnizor AI cu un model pentru a executa sarcini.",
+      "needsOpsUse": "Proprietarul automatizării nu are permisiunea ai.ops.use.",
+      "assistantOff": "Asistentul AI este dezactivat pentru proprietarul automatizării.",
+      "skippedPaused": "Operațiile automate AI sunt în pauză de către un administrator.",
+      "skippedDuplicate": "O sarcină pentru aceeași automatizare și gazdă este încă în curs de execuție sau așteaptă aprobarea.",
+      "skippedRate": "Această automatizare a pornit deja {{count}} sarcini AI în ultima oră.",
+      "hostNotRun": "Nu a fost executat: planul a fost oprit.",
+      "hostNoAccess": "Nu a fost executat: proprietarul nu se mai poate conecta la această gazdă.",
+      "hostUnreachable": "Nu a fost executat: gazda nu a putut fi atinsă.",
+      "hostStopped": "Oprit la prima comandă eșuată.",
+      "executionDone": "Planul aprobat a fost executat pe {{count}} gazdă/gazde și fiecare comandă și verificare a reușit.",
+      "executionFailed": "Planul aprobat nu s-a finalizat pe fiecare gazdă.",
+      "executionStopped": "Planul aprobat a fost oprit înainte de finalizare.",
+      "approvedBy": "Planul aprobat a fost executat așa cum a fost scris. Aprobat de {{user}}.",
+      "noticeReported": "Raport AI: {{title}}",
+      "noticeProposed": "Plan AI în așteptarea aprobării: {{title}}",
+      "noticeExecuted": "Plan AI executat: {{title}}",
+      "noticeFailed": "Sarcina AI a eșuat: {{title}}"
+    }
   }
 }

@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "เชื่อมต่อกับโฮสต์ที่อยู่หลัง Cloudflare Tunnel โดยใช้ WebSocket แบบเนทีฟ โดยไม่ต้องเปิดพอร์ต 22 ให้เข้าถึงได้จากอินเทอร์เน็ตสาธารณะ",
+    "enableCloudflareTunnel": "เปิดใช้งาน Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "กำหนดเส้นทาง SSH ผ่าน Cloudflare Zero Trust (WSS) โดยใช้ที่อยู่หลักของโฮสต์ แทนการใช้ TCP socket โดยตรง",
+    "cloudflareTunnelHostname": "ชื่อโฮสต์ของ Tunnel",
+    "cloudflareTunnelHostnameDesc": "โดเมนสาธารณะที่ชี้ไปยังบริการ SSH ต้นทางของคุณใน Cloudflare Tunnel (เว้นว่างไว้เพื่อใช้ที่อยู่หลักของโฮสต์)",
+    "cloudflareTunnelPort": "พอร์ตของ Tunnel",
+    "cloudflareTunnelPortDesc": "พอร์ต HTTPS/WSS ที่ขอบเครือข่ายของ Cloudflare (ค่าเริ่มต้นคือ 443)",
+    "cloudflareTunnelClientId": "Client ID ของ Service Token",
+    "cloudflareTunnelClientIdDesc": "ส่วนหัว CF-Access-Client-Id (ไม่บังคับ) จำเป็นเฉพาะเมื่อ Cloudflare Access Zero Trust กำหนดนโยบายให้ใช้ Service Tokens",
+    "cloudflareTunnelClientSecret": "Service Token Client Secret",
+    "cloudflareTunnelClientSecretDesc": "ส่วนหัว CF-Access-Client-Secret แบบไม่บังคับสำหรับการตรวจสอบสิทธิ์ Cloudflare Access",
     "clipboardHttpWarning": "ไม่สามารถอ่านคลิปบอร์ดได้ บางเบราว์เซอร์จำกัดการเข้าถึงคลิปบอร์ดนอก HTTPS - ลองใช้ Ctrl+V แทน หรือให้บริการ Termix ผ่าน HTTPS",
     "connecting": "กำลังเชื่อมต่อ...",
     "connectionLost": "การเชื่อมต่อขาด",
@@ -83,7 +95,16 @@
     "localShell": "Shell ของเทอร์มินัลท้องถิ่น",
     "autocompleteHintComplete": "กด Tab หรือ Enter เพื่อดำเนินการต่อ",
     "autocompleteHintNavigate": "↑↓ เพื่อเลื่อนเลือก",
-    "autocompleteHintClose": "Esc เพื่อปิด"
+    "autocompleteHintClose": "Esc เพื่อปิด",
+    "cloudflareTunnelClientSecretPlaceholder": "Secret ของ Service Token แบบไม่บังคับ",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Secret ของ Service Token ใหม่",
+    "secretSaved": "บันทึกแล้ว",
+    "secretReplace": "แทนที่",
+    "secretClear": "ล้าง",
+    "secretCancel": "ยกเลิก",
+    "hideSecret": "ซ่อน Secret",
+    "showSecret": "แสดง Secret",
+    "sessionEndedKeepOpen": "เซสชันสิ้นสุดลง กด Enter เพื่อเชื่อมต่อใหม่"
   },
   "terminalToolbar": {
     "detachTmux": "ยกเลิกการแนบ tmux",
@@ -207,6 +228,26 @@
         "label": "ประวัติคำสั่ง",
         "description": "บันทึกคำสั่งที่รันในเทอร์มินัลนี้เพื่อใช้สำหรับประวัติและการเติมอัตโนมัติ"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare Tunnel",
+        "description": "กำหนดเส้นทาง SSH ผ่าน Cloudflare Zero Trust โดยใช้ WebSocket"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "ชื่อโฮสต์ของ Tunnel",
+        "description": "ชื่อโฮสต์สาธารณะของ Cloudflare Tunnel"
+      },
+      "cloudflareTunnelPort": {
+        "label": "พอร์ตของ Tunnel",
+        "description": "พอร์ต HTTPS/WSS ของ Cloudflare edge"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Client ID ของ Cloudflare Access Service Token"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Client Secret ของ Cloudflare Access Service Token"
+      },
       "enableTerminal": {
         "label": "เปิดใช้งานเทอร์มินัล",
         "description": "เสนอเทอร์มินัล SSH สำหรับโฮสต์นี้"
@@ -314,6 +355,9 @@
         "moveUp": "เลื่อนขึ้น",
         "moveDown": "เลื่อนลง",
         "tmuxHint": "แสดงเฉพาะเมื่อเชื่อมต่อ tmux อยู่"
+      },
+      "keepOpenOnExit": {
+        "label": "คงแท็บไว้เมื่อออกจากระบบ"
       }
     },
     "user": {
@@ -484,7 +528,9 @@
     "guac": {
       "permissionLevel": "ระดับสิทธิ์"
     },
-    "deleteGlobalThemeConfirm": "ลบธีม {{name}} หรือไม่?"
+    "deleteGlobalThemeConfirm": "ลบธีม {{name}} หรือไม่?",
+    "keepOpenOnExitLabel": "คงแท็บไว้เมื่อออกจากระบบ",
+    "keepOpenOnExitDesc": "เมื่อ shell สิ้นสุดหรือการเชื่อมต่อปิดลง ให้คงแท็บและผลลัพธ์ไว้ กด Enter เพื่อเชื่อมต่อใหม่"
   },
   "nav": {
     "history": "ประวัติ",
@@ -512,6 +558,7 @@
     "stopRecording": "หยุดบันทึก"
   },
   "keybindings": {
+    "openLocalTerminal": "เปิดเทอร์มินัลท้องถิ่นใหม่",
     "copy": "คัดลอกส่วนที่เลือก",
     "paste": "วาง",
     "sendControlCode": "ส่งสัญญาณ Ctrl+ตัวอักษร",
@@ -629,6 +676,7 @@
     "remoteServerRequired": "จำเป็นต้องมีเซิร์ฟเวอร์ระยะไกล เชื่อมต่อเซิร์ฟเวอร์ระยะไกลในการตั้งค่าเพื่อใช้ประเภทการเชื่อมต่อนี้"
   },
   "plugin": {
-    "name": "เทอร์มินัล SSH"
+    "name": "เทอร์มินัล SSH",
+    "description": "เซสชันเทอร์มินัล SSH พร้อมแท็บ แบ่งหน้าจอ ประวัติ มาโคร และเทอร์มินัลท้องถิ่นในแอปเดสก์ท็อป"
   }
 }

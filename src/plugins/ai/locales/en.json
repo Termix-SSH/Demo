@@ -19,6 +19,18 @@
     "secrets.share": {
       "title": "Share the API key",
       "description": "Other features may use the stored AI API key without seeing it."
+    },
+    "ops": {
+      "use": {
+        "title": "Run commands on hosts with the AI assistant",
+        "description": "Let the assistant run any shell command on the hosts you select. Admins only by default."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "View everyone's AI usage",
+        "description": "See the tokens every user's AI calls used, not only your own. Admins only by default."
+      }
     }
   },
   "settings": {
@@ -36,6 +48,34 @@
       "privateEndpoints": {
         "label": "Allowed private AI hosts",
         "description": "Hosts on your private network that users may point a provider at, such as a self-hosted Ollama. Put one host on each line."
+      },
+      "opsConcurrency": {
+        "label": "AI assistant parallel hosts",
+        "description": "How many hosts an assistant command runs on at the same time."
+      },
+      "opsCommandTimeout": {
+        "label": "AI assistant command timeout (seconds)",
+        "description": "How long a command may run on a host before it is stopped. The assistant can ask for up to 600."
+      },
+      "opsOutputLimit": {
+        "label": "AI assistant output per host (characters)",
+        "description": "How much of each host's output is kept. Longer output keeps its start and end."
+      },
+      "autoOpsPaused": {
+        "label": "Pause AI auto-ops",
+        "description": "Stops every AI task and approved plan that is running and refuses new ones, until turned off again."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "AI tasks per automation per hour",
+        "description": "More triggers in the same hour are skipped."
+      },
+      "autoOpsRunTokens": {
+        "label": "Token budget per AI task",
+        "description": "A task that uses this many tokens is stopped and reports what it found."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Daily AI token budget per user",
+        "description": "Once a user has used this many tokens today (UTC), their AI tasks are skipped or stopped."
       }
     },
     "host": {
@@ -43,10 +83,14 @@
         "label": "Enable AI Assistant",
         "description": "Allow the AI assistant to help in this host's terminal. Off by default, and still needs AI enabled for your account."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Auto-ops preferences"
+      }
     }
   },
   "ai": {
-    "title": "Assistant",
     "send": "Send",
     "stop": "Stop",
     "save": "Save",
@@ -54,10 +98,9 @@
     "running": "running",
     "approve": "Approve",
     "reject": "Reject",
-    "inputPlaceholder": "Ask about your servers, or describe a change to propose",
     "selectProvider": "Select a provider",
-    "providerSettings": "Provider settings",
     "addProvider": "Add provider",
+    "manageModels": "Manage models",
     "editProvider": "Edit provider",
     "removeProvider": "Remove provider",
     "providerType": "Provider",
@@ -91,22 +134,32 @@
     "modelCustom": "Enter a model name",
     "modelRefresh": "Refresh list",
     "modelPlaceholder": "Choose or type a model",
-    "attachHint": "Type @ to reference a host, snippet or automation. Changes are proposed for you to approve.",
     "runCommandTitle": "Run command",
     "assistant": "AI Assistant",
     "terminalPanelEmpty": "Ask the assistant about this host. Anything that changes state needs your approval first.",
     "terminalPanelPlaceholder": "Ask about this host...",
-    "noProvidersConfigured": "No AI provider is configured yet. Add one in the AI assistant tab.",
+    "noProvidersConfigured": "No AI provider is configured yet. Add one in Settings.",
     "runsInOpenTerminal": "Runs in your open terminal session.",
     "runInTerminal": "Run",
     "terminalContextPrefill": "Here is my terminal output:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Let other features use your AI provider API key for their own requests. The key is never copied, and you can revoke this at any time."
     },
-    "removeProviderConfirm": "Remove the provider {{name}}?"
+    "removeProviderConfirm": "Remove the provider {{name}}?",
+    "contextWindows": "Context window per model",
+    "contextWindowsHint": "Read from the provider where it reports one. Enter a number of tokens to override it for a model, or leave it empty to use what the provider reports. Refresh asks the provider again.",
+    "contextWindowValue": "Context window: {{tokens}} ({{source}})",
+    "contextOverride": "Context window override for {{model}}",
+    "contextSourceOverride": "set by you",
+    "contextSourceProvider": "reported by the provider",
+    "contextSourceGuess": "guessed from the model name",
+    "contextSourceDefault": "default for unknown models",
+    "contextLoadFailed": "Could not read the context windows",
+    "contextRefresh": "Refresh",
+    "contextWindowInvalid": "Enter the context window as a whole number of tokens, at least 1024."
   },
   "nav": {
-    "ai": "AI"
+    "ai": "AI assistant"
   },
   "onboarding": {
     "aiTitle": "AI assistant",
@@ -116,9 +169,6 @@
     "aiEnableTitle": "Turn it on",
     "aiEnableDesc": "Adds an assistant that reads your setup and suggests changes you approve. Needs a provider you supply, such as a local Ollama.",
     "aiNote": "Nothing is sent anywhere until you add a provider and send a message."
-  },
-  "hosts": {
-    "docsLink": "View docs"
   },
   "agents": {
     "working": "Working...",
@@ -211,6 +261,280 @@
     "emptyTranscript": "Send a message to get the agent started."
   },
   "plugin": {
-    "name": "AI Assistant"
+    "name": "AI Assistant",
+    "description": "An AI assistant that reads your setup and proposes changes for you to approve."
+  },
+  "ops": {
+    "searchHosts": "Search hosts",
+    "selectedCount": "{{count}} selected",
+    "clear": "Clear",
+    "fleets": "Fleets",
+    "folders": "Folders",
+    "tags": "Tags",
+    "allHosts": "All hosts",
+    "noHosts": "No hosts",
+    "newConversation": "New conversation",
+    "sendHint_one": "Runs on {{count}} host. Commands run without asking first.",
+    "sendHint_other": "Runs on {{count}} hosts. Commands run without asking first.",
+    "runCommand": "Run command",
+    "hostFacts": "Host facts",
+    "hostCount_one": "{{count}} host",
+    "hostCount_other": "{{count}} hosts",
+    "succeeded": "{{count}} ok",
+    "failed": "{{count}} failed",
+    "exitCode": "exit {{code}}",
+    "timedOut": "timed out",
+    "stopped": "stopped",
+    "notRun": "not run",
+    "cached": "cached",
+    "duration": "{{seconds}}s",
+    "noOutput": "(no output)"
+  },
+  "assistant": {
+    "title": "AI assistant",
+    "moveHint": "Drag to move. Double-click to dock to the side.",
+    "toggle": "Toggle the AI assistant",
+    "close": "Close",
+    "dock": "Dock to the right",
+    "float": "Float",
+    "openTab": "Open full view",
+    "history": "Conversations",
+    "noConversations": "No conversations yet",
+    "untitled": "Untitled",
+    "deleteConversation": "Delete conversation",
+    "deleteConfirm": "Delete this conversation?",
+    "emptyTitle": "Ask about or change anything in Termix",
+    "emptyHint": "The assistant works as you through the Termix CLI and runs commands on your target hosts. Type @ to add hosts, fleets, folders or tags as targets.",
+    "inputPlaceholder": "Ask the assistant. Type @ to add targets.",
+    "noTargets": "No target hosts. Type @ to add some.",
+    "sendHint": "Changes and commands run without asking first.",
+    "removeTarget": "Remove {{name}}",
+    "kind": {
+      "host": "Host",
+      "fleet": "Fleet",
+      "folder": "Folder",
+      "tag": "Tag"
+    },
+    "emptyHintBasic": "The assistant works as you through the Termix CLI, with your permissions.",
+    "inputPlaceholderBasic": "Ask the assistant.",
+    "sendHintBasic": "Changes run without asking first.",
+    "thinking": "Thinking",
+    "thinkingActive": "Thinking...",
+    "compacted": "Context compacted: earlier messages were summarized",
+    "compact": "Compact the conversation",
+    "nothingToCompact": "The conversation is too short to compact yet.",
+    "contextMeter": "Context: {{used}} of {{window}} tokens used by the latest call",
+    "contextMeterSource": "The window is {{source}}.",
+    "contextMeterReserved": "{{tokens}} tokens are kept free for the reply.",
+    "todayTokens": "Today {{tokens}}",
+    "todayTitle": "Tokens you used today. Click for details.",
+    "usage": "Token usage",
+    "conversationTokens": "{{tokens}} tokens",
+    "openFloating": "Floating panel",
+    "openFloatingHint": "Open the assistant in a panel over any page. Press {{shortcut}} anywhere to open or close it.",
+    "shortcutHint": "Press {{shortcut}} on any page to open the assistant in a floating panel."
+  },
+  "usage": {
+    "title": "Token usage",
+    "settingDescription": "Tokens your AI calls used over the last 30 days.",
+    "cardTitle": "AI token usage",
+    "today": "Today",
+    "week": "7 days",
+    "month": "30 days",
+    "mine": "Mine",
+    "everyone": "All users",
+    "mineCaption": "Your tokens across every AI feature.",
+    "everyoneCaption": "Tokens across every user and AI feature.",
+    "byDay": "Per day",
+    "byModel": "Per model",
+    "bySource": "Per feature",
+    "byUser": "Per user",
+    "model": "Model",
+    "feature": "Feature",
+    "user": "User",
+    "calls": "Calls",
+    "prompt": "Input",
+    "completion": "Output",
+    "total": "Total",
+    "empty": "No AI usage in the last 30 days.",
+    "loadFailed": "Could not load usage",
+    "estimatedNote": "Some figures are estimates, at about four characters per token, because the provider did not report its usage.",
+    "source": {
+      "assistant": "Assistant",
+      "terminal": "Terminal panel",
+      "compaction": "Compaction"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Assistant",
+    "viewAutoOps": "Auto-ops",
+    "intro": "Auto-ops lets the assistant check your hosts on its own. An automation starts it on a schedule or when something goes wrong, and it writes a report or proposes a fix for you to approve. Start with a preset.",
+    "sections": {
+      "tasks": "Tasks",
+      "approvals": "Approvals",
+      "presets": "Presets"
+    },
+    "provider": "Provider for tasks",
+    "providerDefault": "First provider with a default model",
+    "model": "Model for tasks",
+    "modelDefault": "The provider's default model",
+    "saveModel": "Save model",
+    "preferencesHint": "The provider and model that background tasks use. Leave them as they are to use your default provider and model.",
+    "task": "Task",
+    "tokens": "{{tokens}} tokens",
+    "tokenUsage": "{{total}} tokens ({{prompt}} in, {{completion}} out)",
+    "dryRun": "Test run",
+    "trigger": "Trigger",
+    "noTasks": "No tasks yet",
+    "tasksHint": "Tasks are runs of automations with an Ask AI step. Enable a preset, or build your own in Automations: add an Ask AI step to any automation. Runs show up here.",
+    "openAutomations": "Open Automations",
+    "browsePresets": "Browse presets",
+    "noApprovals": "No plans are waiting for approval",
+    "loadFailed": "Failed to load auto-ops",
+    "decideFailed": "The decision could not be saved",
+    "openConversation": "Open in assistant",
+    "approve": "Approve and run",
+    "reject": "Reject",
+    "expires": "Expires {{time}}",
+    "enabled": "Enabled",
+    "updateAvailable": "Update available",
+    "shared": "Shared",
+    "needsAutomations": "Needs Automations",
+    "enableAgain": "Enable again",
+    "deletePreset": "Delete preset",
+    "autonomy": {
+      "report": "Report only",
+      "propose": "Propose a plan"
+    },
+    "status": {
+      "running": "Running",
+      "reported": "Reported",
+      "proposed": "Awaiting approval",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "expired": "Expired",
+      "executing": "Running plan",
+      "done": "Done",
+      "failed": "Failed",
+      "skipped": "Skipped"
+    },
+    "severity": {
+      "info": "Info",
+      "warning": "Warning",
+      "critical": "Critical"
+    },
+    "plan": {
+      "title": "Proposed plan",
+      "commands": "Commands",
+      "rationale": "Why",
+      "risk": "Risk",
+      "rollback": "Rollback",
+      "verify": "Verify",
+      "progress": "Progress"
+    },
+    "enable": {
+      "title": "Enable {{name}}",
+      "submit": "Enable",
+      "name": "Name",
+      "targets": "Hosts",
+      "targetAll": "All hosts",
+      "targetTrigger": "The host that triggered it",
+      "targetHosts": "Selected hosts",
+      "noHosts": "Select at least one host.",
+      "threshold": "Threshold (%)",
+      "forSeconds": "For at least (seconds)",
+      "time": "Time of day",
+      "cron": "Schedule (cron)",
+      "dockerEvent": "Container event",
+      "dockerEvents": {
+        "exited": "Exited",
+        "unhealthy": "Unhealthy",
+        "restarting": "Restarting"
+      },
+      "badTime": "Enter the time as HH:MM.",
+      "autonomy": "What the assistant may do",
+      "maxRunSeconds": "Time limit (seconds)",
+      "runbook": "Runbook",
+      "runbookHint": "What the assistant should do, in plain words. English works best.",
+      "shared": "Share when saved as a preset",
+      "sharedHint": "Everyone who may use auto-ops can then enable it.",
+      "saveAsPreset": "Save as preset",
+      "savedPreset": "Saved",
+      "failed": "The automation could not be created",
+      "saveFailed": "The preset could not be saved"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Daily patrol",
+        "description": "Every morning at 09:00, checks every host's disks, memory, load, failed services, containers, certificates, updates, pending reboots and time sync, and reports by severity."
+      },
+      "disk-cleanup": {
+        "title": "Disk space cleanup",
+        "description": "When a disk stays at 85% or more for 5 minutes, finds what fills it and proposes a safe cleanup for you to approve. Business data is never touched."
+      },
+      "host-down-triage": {
+        "title": "Host down triage",
+        "description": "When a host goes offline, probes it from other hosts and Proxmox, and reports whether it is the network, a stopped machine or SSH."
+      },
+      "service-failure": {
+        "title": "Service failure",
+        "description": "When a health check starts failing, finds the systemd unit behind it, reads its status and log, and proposes a single restart for you to approve when that can help. Configuration is never changed."
+      },
+      "container-anomaly": {
+        "title": "Container anomaly",
+        "description": "When a container exits, turns unhealthy or keeps restarting, reads its state, exit code, logs and memory, and proposes starting or restarting it once for you to approve. Nothing is removed."
+      },
+      "resource-overload-cpu": {
+        "title": "CPU overload",
+        "description": "When CPU stays at 95% or more for 15 minutes, finds the processes, services and containers behind it and reports what to do. Nothing is changed."
+      },
+      "resource-overload-memory": {
+        "title": "Memory overload",
+        "description": "When memory stays at 95% or more for 10 minutes, finds what uses it, swapping and out-of-memory kills, and reports what to do. Nothing is changed."
+      },
+      "security-updates-weekly": {
+        "title": "Weekly security updates",
+        "description": "Every Monday at 09:30, lists pending security updates by severity, pending reboots and the packages behind them, running and installed kernels and days since the last update, in one table for all hosts."
+      },
+      "cert-expiry-weekly": {
+        "title": "Weekly certificate expiry",
+        "description": "Every Monday at 09:45, reads the expiry of Let's Encrypt, web server and Kubernetes certificates on every host and flags those under 30 days, critical under 7."
+      }
+    },
+    "report": {
+      "verdict": "Verdict",
+      "evidence": "Evidence",
+      "actionsTaken": "Actions taken",
+      "recommendations": "Recommendations",
+      "nothingFound": "Nothing was found before the run ended.",
+      "noChanges": "No changes were made.",
+      "openConversation": "Open the conversation in the assistant to see every step and ask follow-up questions.",
+      "noFurtherAction": "No further action is needed.",
+      "stoppedBudgetRun": "Stopped: this run used its budget of {{tokens}} tokens.",
+      "stoppedBudgetDaily": "Stopped: the owner's daily budget of {{tokens}} tokens is used up.",
+      "stoppedDeadline": "Stopped: the automation's time limit was reached.",
+      "stoppedPaused": "Stopped: an administrator paused AI auto-ops.",
+      "stoppedAborted": "Stopped: the automation run was cancelled.",
+      "providerFailed": "The AI provider failed: {{error}}",
+      "noHosts": "None of the target hosts can be reached by the automation's owner.",
+      "noProvider": "The automation's owner has no AI provider with a model to run tasks on.",
+      "needsOpsUse": "The automation's owner does not have the ai.ops.use permission.",
+      "assistantOff": "The AI assistant is turned off for the automation's owner.",
+      "skippedPaused": "AI auto-ops is paused by an administrator.",
+      "skippedDuplicate": "A task for the same automation and host is still running or waiting for approval.",
+      "skippedRate": "This automation already started {{count}} AI tasks in the last hour.",
+      "hostNotRun": "Not run: the plan was stopped.",
+      "hostNoAccess": "Not run: the owner can no longer connect to this host.",
+      "hostUnreachable": "Not run: the host could not be reached.",
+      "hostStopped": "Stopped at the first failed command.",
+      "executionDone": "The approved plan ran on {{count}} host(s) and every command and check succeeded.",
+      "executionFailed": "The approved plan did not complete on every host.",
+      "executionStopped": "The approved plan was stopped before it finished.",
+      "approvedBy": "The approved plan ran as written. Approved by {{user}}.",
+      "noticeReported": "AI report: {{title}}",
+      "noticeProposed": "AI plan awaiting approval: {{title}}",
+      "noticeExecuted": "AI plan executed: {{title}}",
+      "noticeFailed": "AI task failed: {{title}}"
+    }
   }
 }

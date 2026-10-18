@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "Ühendu hostidega, mis asuvad Cloudflare Tunneli taga, kasutades sisseehitatud WebSocket-i transportkihti ilma, et peaksid avanema port 22 avalikku interneti.",
+    "enableCloudflareTunnel": "Luba Cloudflare Tunnel",
+    "enableCloudflareTunnelDesc": "Suuna SSH-liiklus läbi Cloudflare Zero Trusti (WSS) kasutades hosti peaaadressi asemel otse TCP-pesasid.",
+    "cloudflareTunnelHostname": "Tunneli hostinimi",
+    "cloudflareTunnelHostnameDesc": "Avalik domeen, mis on suunatud sinu SSH päritoluteenusele Cloudflare Tunnelis (jätta tühjaks, kui soovid kasutada hosti peaaadressi).",
+    "cloudflareTunnelPort": "Tunneli port",
+    "cloudflareTunnelPortDesc": "Edge HTTPS/WSS port Cloudflare'is (vaikimisi on 443).",
+    "cloudflareTunnelClientId": "Teenuse tokeni kliendi ID",
+    "cloudflareTunnelClientIdDesc": "Valikuline CF-Access-Client-Id päis. Nõutud ainult siis, kui Cloudflare Access Zero Trusti poliitika nõuab teenuse tokenite kasutamist.",
+    "cloudflareTunnelClientSecret": "Teenuse tokeni kliendi saladus",
+    "cloudflareTunnelClientSecretDesc": "Valikuline CF-Access-Client-Secret päis Cloudflare Access autentimiseks.",
     "clipboardHttpWarning": "Lõikelaua lugemine ei õnnestunud. Mõned brauserid piiravad lõikelaua ligipääsu HTTPS-i väljaspool – proovi Ctrl+V või kasuta Termixit HTTPS-i kaudu.",
     "connecting": "Ühendamine...",
     "connectionLost": "Ühendus katkes",
@@ -85,7 +97,16 @@
     "localShell": "Lokaalne terminali käsurea",
     "autocompleteHintComplete": "Tab või Enter täitmiseks",
     "autocompleteHintNavigate": "↑↓ navigeerimiseks",
-    "autocompleteHintClose": "Esc sulgemiseks"
+    "autocompleteHintClose": "Esc sulgemiseks",
+    "cloudflareTunnelClientSecretPlaceholder": "Valikuline teenuse tokeni saladus",
+    "cloudflareTunnelClientSecretPlaceholderNew": "Uus teenuse tokeni saladus",
+    "secretSaved": "Salvestatud",
+    "secretReplace": "Asenda",
+    "secretClear": "Tühjenda",
+    "secretCancel": "Tühista",
+    "hideSecret": "Peida saladus",
+    "showSecret": "Kuva saladus",
+    "sessionEndedKeepOpen": "Seans on lõppenud. Vajuta Enter, et uuesti ühenduda."
   },
   "terminalToolbar": {
     "detachTmux": "tmuxist lahku",
@@ -210,6 +231,26 @@
         "label": "Käskude ajalugu",
         "description": "Salvesta selles terminalis käivitatud käsud ajaloo ja automaatse täitmise jaoks"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare'i tunnel",
+        "description": "Suuna SSH-liiklus Cloudflare Zero Trusti kaudu WebSocketi vahendusel"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "Tunnele perenimi",
+        "description": "Cloudflare'i tunnele avalik perenimi"
+      },
+      "cloudflareTunnelPort": {
+        "label": "Tunnele port",
+        "description": "Cloudflare'i ääre HTTPS/WSS port"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Cloudflare Accessi teenuse tokeni kliendi ID"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Cloudflare Accessi teenuse tokeni kliendi saladus"
+      },
       "enableTerminal": {
         "label": "Luba terminal",
         "description": "Paku selle hosti jaoks SSH terminali."
@@ -317,6 +358,9 @@
         "moveUp": "Liiguta üles",
         "moveDown": "Liiguta alla",
         "tmuxHint": "Näitab ainult siis, kui tmux on ühendatud"
+      },
+      "keepOpenOnExit": {
+        "label": "Hoia vaheleht avatuna väljumisel"
       }
     },
     "user": {
@@ -487,7 +531,9 @@
     "guac": {
       "permissionLevel": "Õiguste tase"
     },
-    "deleteGlobalThemeConfirm": "Kas kustutada teema {{name}}?"
+    "deleteGlobalThemeConfirm": "Kas kustutada teema {{name}}?",
+    "keepOpenOnExitLabel": "Hoia vaheleht avatuna väljumisel",
+    "keepOpenOnExitDesc": "Kui käsurea seanss lõpeb või ühendus katkeb, hoia vaheleht ja selle väljund avatuna. Vajuta Enter, et ühendus taastada."
   },
   "nav": {
     "history": "Ajalugu",
@@ -517,6 +563,7 @@
     "stopRecording": "Peata salvestamine"
   },
   "keybindings": {
+    "openLocalTerminal": "Ava uus kohalik käsurea aken",
     "copy": "Kopeeri valik",
     "paste": "Kleebi",
     "sendControlCode": "Saada Ctrl+täht signaal",
@@ -635,6 +682,7 @@
     "remoteServerRequired": "Nõutav on kaugserver. Ühenda seadetes kaugserver, et kasutada seda ühenduse tüüpi."
   },
   "plugin": {
-    "name": "SSH-terminal"
+    "name": "SSH-terminal",
+    "description": "SSH käsurea seansid vahelehtede, jagatud ekraani, ajaloo, makrode ja kohaliku käsureaga lauaarvuti rakenduses."
   }
 }

@@ -25,6 +25,18 @@
     "tab": "Tab"
   },
   "terminal": {
+    "cloudflareTunnelTitle": "Cloudflare Tunnel (Zero Trust)",
+    "cloudflareTunnelDesc": "बिना सार्वजनिक इंटरनेट पर कच्चा पोर्ट 22 खोले, नेटिव WebSocket ट्रांसपोर्ट का उपयोग करके Cloudflare Tunnel के पीछे मौजूद होस्ट से कनेक्ट करें।",
+    "enableCloudflareTunnel": "Cloudflare Tunnel सक्षम करें",
+    "enableCloudflareTunnelDesc": "सीधे TCP सॉकेट के बजाय होस्ट के मुख्य पते का उपयोग करके Cloudflare Zero Trust (WSS) के माध्यम से SSH ट्रैफ़िक राउट करें।",
+    "cloudflareTunnelHostname": "टनल होस्टनेम",
+    "cloudflareTunnelHostnameDesc": "Cloudflare Tunnel में आपके SSH ओरिजिन सर्विस के लिए राउट किया गया सार्वजनिक डोमेन (होस्ट के मुख्य पते का उपयोग करने के लिए खाली छोड़ दें)।",
+    "cloudflareTunnelPort": "टनल पोर्ट",
+    "cloudflareTunnelPortDesc": "Cloudflare पर एज HTTPS/WSS पोर्ट (डिफ़ॉल्ट 443 है)।",
+    "cloudflareTunnelClientId": "सर्विस टोकन क्लाइंट ID",
+    "cloudflareTunnelClientIdDesc": "वैकल्पिक CF-Access-Client-Id हेडर। केवल तभी आवश्यक है जब Cloudflare Access Zero Trust नीति सर्विस टोकन को लागू करती हो।",
+    "cloudflareTunnelClientSecret": "सर्विस टोकन क्लाइंट सीक्रेट",
+    "cloudflareTunnelClientSecretDesc": "क्लाउडफ्लेयर एक्सेस प्रमाणीकरण के लिए वैकल्पिक CF-Access-Client-Secret हेडर।",
     "clipboardHttpWarning": "क्लिपबोर्ड पढ़ने में असमर्थ। कुछ ब्राउज़र HTTPS के बाहर क्लिपबोर्ड एक्सेस को सीमित करते हैं - कृपया Ctrl+V का उपयोग करें, या Termix को HTTPS पर सर्व करें।",
     "connecting": "कनेक्ट हो रहा है...",
     "connectionLost": "कनेक्शन खो गया",
@@ -85,7 +97,16 @@
     "localShell": "लोकल टर्मिनल शेल",
     "autocompleteHintComplete": "पूर्ण करने के लिए Tab या Enter दबाएं",
     "autocompleteHintNavigate": "नेविगेट करने के लिए ↑↓",
-    "autocompleteHintClose": "बंद करने के लिए Esc"
+    "autocompleteHintClose": "बंद करने के लिए Esc",
+    "cloudflareTunnelClientSecretPlaceholder": "वैकल्पिक सर्विस टोकन सीक्रेट",
+    "cloudflareTunnelClientSecretPlaceholderNew": "नया सर्विस टोकन सीक्रेट",
+    "secretSaved": "सहेजा गया",
+    "secretReplace": "बदलें",
+    "secretClear": "साफ़ करें",
+    "secretCancel": "रद्द करें",
+    "hideSecret": "सीक्रेट छिपाएं",
+    "showSecret": "सीक्रेट दिखाएं",
+    "sessionEndedKeepOpen": "सत्र समाप्त हो गया। पुनः कनेक्ट करने के लिए Enter दबाएँ।"
   },
   "terminalToolbar": {
     "detachTmux": "tmux डिटेच करें",
@@ -210,6 +231,26 @@
         "label": "कमांड इतिहास",
         "description": "इतिहास और ऑटोकंप्लीट के लिए इस टर्मिनल में चलाई गई कमांड्स को रिकॉर्ड करें"
       },
+      "cloudflareTunnelEnabled": {
+        "label": "Cloudflare टनल",
+        "description": "WebSocket के माध्यम से Cloudflare Zero Trust के ऊपर SSH ट्रैफ़िक राउट करें"
+      },
+      "cloudflareTunnelHostname": {
+        "label": "टनल होस्टनेम",
+        "description": "Cloudflare टनल सार्वजनिक होस्टनेम"
+      },
+      "cloudflareTunnelPort": {
+        "label": "टनल पोर्ट",
+        "description": "Cloudflare एज HTTPS/WSS पोर्ट"
+      },
+      "cloudflareTunnelClientId": {
+        "label": "CF-Access-Client-Id",
+        "description": "Cloudflare Access सेवा टोकन क्लाइंट ID"
+      },
+      "cloudflareTunnelClientSecret": {
+        "label": "CF-Access-Client-Secret",
+        "description": "Cloudflare Access सेवा टोकन क्लाइंट सीक्रेट"
+      },
       "enableTerminal": {
         "label": "टर्मिनल सक्षम करें",
         "description": "इस होस्ट के लिए एक SSH टर्मिनल प्रदान करें।"
@@ -317,6 +358,9 @@
         "moveUp": "ऊपर ले जाएं",
         "moveDown": "नीचे ले जाएं",
         "tmuxHint": "केवल तभी दिखाई देता है जब tmux जुड़ा हो"
+      },
+      "keepOpenOnExit": {
+        "label": "बाहर निकलने पर टैब खुला रखें"
       }
     },
     "user": {
@@ -487,7 +531,9 @@
     "guac": {
       "permissionLevel": "अनुमति स्तर"
     },
-    "deleteGlobalThemeConfirm": "क्या थीम {{name}} को हटाना है?"
+    "deleteGlobalThemeConfirm": "क्या थीम {{name}} को हटाना है?",
+    "keepOpenOnExitLabel": "बाहर निकलने पर टैब खुला रखें",
+    "keepOpenOnExitDesc": "जब शेल बाहर निकलता है या कनेक्शन बंद होता है, तो टैब और उसका आउटपुट रखें। पुनः कनेक्ट करने के लिए Enter दबाएं।"
   },
   "nav": {
     "history": "इतिहास",
@@ -517,6 +563,7 @@
     "stopRecording": "रिकॉर्डिंग बंद करें"
   },
   "keybindings": {
+    "openLocalTerminal": "नया स्थानीय टर्मिनल खोलें",
     "copy": "चयन कॉपी करें",
     "paste": "पेस्ट करें",
     "sendControlCode": "Ctrl+अक्षर सिग्नल भेजें",
@@ -635,6 +682,7 @@
     "remoteServerRequired": "रिमोट सर्वर आवश्यक है। इस कनेक्शन प्रकार का उपयोग करने के लिए सेटिंग्स में एक रिमोट सर्वर कनेक्ट करें।"
   },
   "plugin": {
-    "name": "SSH टर्मिनल"
+    "name": "SSH टर्मिनल",
+    "description": "डेस्कटॉप ऐप में टैब्स, स्प्लिट स्क्रीन, इतिहास, मैक्रो और स्थानीय टर्मिनल के साथ SSH टर्मिनल सत्र।"
   }
 }

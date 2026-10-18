@@ -23,6 +23,18 @@
         "title": "Condividi la chiave API",
         "description": "Altre funzionalità possono utilizzare la chiave API dell'IA salvata senza visualizzarla."
       }
+    },
+    "ops": {
+      "use": {
+        "title": "Esegui comandi sugli host con l'assistente AI",
+        "description": "Consenti all'assistente di eseguire qualsiasi comando shell sugli host selezionati. Solo per amministratori per impostazione predefinita."
+      }
+    },
+    "usage": {
+      "view_all": {
+        "title": "Visualizza l'utilizzo AI di tutti gli utenti",
+        "description": "Visualizza i token utilizzati dalle chiamate AI di ogni utente, non solo le tue. Solo per amministratori per impostazione predefinita."
+      }
     }
   },
   "settings": {
@@ -40,6 +52,34 @@
       "privateEndpoints": {
         "label": "Host privati di IA consentiti",
         "description": "Host sulla tua rete privata a cui gli utenti possono puntare un provider, come un Ollama self-hosted. Inserisci un host per riga."
+      },
+      "opsConcurrency": {
+        "label": "Host paralleli assistente AI",
+        "description": "Numero di host su cui un comando dell'assistente viene eseguito contemporaneamente."
+      },
+      "opsCommandTimeout": {
+        "label": "Timeout comando assistente AI (secondi)",
+        "description": "Durata massima di esecuzione di un comando su un host prima dell'interruzione. L'assistente può richiedere fino a 600 secondi."
+      },
+      "opsOutputLimit": {
+        "label": "Output assistente AI per host (caratteri)",
+        "description": "Quantità di output di ogni host da conservare. Gli output più lunghi mantengono inizio e fine."
+      },
+      "autoOpsPaused": {
+        "label": "Metti in pausa le operazioni automatiche AI",
+        "description": "Interrompe ogni attività AI e piano approvato in esecuzione e rifiuta quelli nuovi, finché non viene disattivato."
+      },
+      "autoOpsRunsPerHour": {
+        "label": "Attività AI per automazione all'ora",
+        "description": "I trigger aggiuntivi nella stessa ora vengono ignorati."
+      },
+      "autoOpsRunTokens": {
+        "label": "Budget token per attività AI",
+        "description": "Un'attività che utilizza questo numero di token viene interrotta e riporta quanto trovato."
+      },
+      "autoOpsDailyTokens": {
+        "label": "Budget giornaliero token AI per utente",
+        "description": "Una volta che un utente ha utilizzato questo numero di token oggi (UTC), le sue attività AI vengono ignorate o interrotte."
       }
     },
     "host": {
@@ -47,10 +87,14 @@
         "label": "Abilita Assistente IA",
         "description": "Consenti all'assistente IA di aiutare nel terminale di questo host. Disattivato di default e richiede comunque che l'IA sia abilitata per il tuo account."
       }
+    },
+    "user": {
+      "autoOpsPreferences": {
+        "label": "Preferenze operazioni automatiche"
+      }
     }
   },
   "ai": {
-    "title": "Assistente",
     "send": "Invia",
     "stop": "Ferma",
     "save": "Salva",
@@ -58,10 +102,9 @@
     "running": "in esecuzione",
     "approve": "Approva",
     "reject": "Rifiuta",
-    "inputPlaceholder": "Chiedi informazioni sui tuoi server o descrivi una modifica da proporre",
     "selectProvider": "Seleziona un provider",
-    "providerSettings": "Impostazioni provider",
     "addProvider": "Aggiungi provider",
+    "manageModels": "Gestisci modelli",
     "editProvider": "Modifica provider",
     "removeProvider": "Rimuovi provider",
     "providerType": "Provider",
@@ -95,22 +138,32 @@
     "modelCustom": "Inserisci un nome del modello",
     "modelRefresh": "Aggiorna lista",
     "modelPlaceholder": "Scegli o digita un modello",
-    "attachHint": "Digita @ per fare riferimento a un host, snippet o automazione. Le modifiche vengono proposte per la tua approvazione.",
     "runCommandTitle": "Esegui comando",
     "assistant": "Assistente AI",
     "terminalPanelEmpty": "Chiedi all'assistente informazioni su questo host. Qualsiasi modifica allo stato richiede prima la tua approvazione.",
     "terminalPanelPlaceholder": "Chiedi informazioni su questo host...",
-    "noProvidersConfigured": "Nessun provider AI è ancora configurato. Aggiungine uno nella scheda Assistente AI.",
+    "noProvidersConfigured": "Nessun provider AI è ancora configurato. Aggiungine uno nelle Impostazioni.",
     "runsInOpenTerminal": "Viene eseguito nella tua sessione terminale aperta.",
     "runInTerminal": "Esegui",
     "terminalContextPrefill": "Ecco l'output del mio terminale:\n\n{{output}}\n\n",
     "secrets": {
       "shareApiKey": "Consenti ad altre funzionalità di utilizzare la tua chiave API del provider AI per le loro richieste. La chiave non viene mai copiata e puoi revocare questa autorizzazione in qualsiasi momento."
     },
-    "removeProviderConfirm": "Rimuovere il provider {{name}}?"
+    "removeProviderConfirm": "Rimuovere il provider {{name}}?",
+    "contextWindows": "Finestra di contesto per modello",
+    "contextWindowsHint": "Leggi dal provider dove ne segnala uno. Inserisci un numero di token per sovrascriverlo per un modello, o lascialo vuoto per usare quello segnalato dal provider. Aggiorna chiede nuovamente al provider.",
+    "contextWindowValue": "Finestra di contesto: {{tokens}} ({{source}})",
+    "contextOverride": "Sovrascrittura finestra di contesto per {{model}}",
+    "contextSourceOverride": "impostato da te",
+    "contextSourceProvider": "segnalato dal provider",
+    "contextSourceGuess": "stimato dal nome del modello",
+    "contextSourceDefault": "predefinito per modelli sconosciuti",
+    "contextLoadFailed": "Impossibile leggere le finestre di contesto",
+    "contextRefresh": "Aggiorna",
+    "contextWindowInvalid": "Inserisci la finestra di contesto come numero intero di token, almeno 1024."
   },
   "nav": {
-    "ai": "AI"
+    "ai": "Assistente AI"
   },
   "onboarding": {
     "aiTitle": "Assistente AI",
@@ -120,9 +173,6 @@
     "aiEnableTitle": "Attivalo",
     "aiEnableDesc": "Aggiunge un assistente che legge la tua configurazione e suggerisce modifiche da approvare. Richiede un provider fornito da te, come un'istanza locale di Ollama.",
     "aiNote": "Nessun dato viene inviato finché non aggiungi un provider e invii un messaggio."
-  },
-  "hosts": {
-    "docsLink": "Visualizza documentazione"
   },
   "agents": {
     "working": "In lavorazione...",
@@ -215,6 +265,282 @@
     "emptyTranscript": "Invia un messaggio per avviare l'agente."
   },
   "plugin": {
-    "name": "Assistente AI"
+    "name": "Assistente AI",
+    "description": "Un assistente AI che legge la tua configurazione e propone modifiche da approvare."
+  },
+  "ops": {
+    "searchHosts": "Cerca host",
+    "selectedCount": "{{count}} selezionati",
+    "clear": "Cancella",
+    "fleets": "Fleet",
+    "folders": "Cartelle",
+    "tags": "Tag",
+    "allHosts": "Tutti gli host",
+    "noHosts": "Nessun host",
+    "newConversation": "Nuova conversazione",
+    "sendHint_one": "Eseguito su {{count}} host. I comandi vengono eseguiti senza chiedere conferma.",
+    "sendHint_many": "Eseguito su {{count}} host. I comandi vengono eseguiti senza chiedere conferma.",
+    "sendHint_other": "Eseguito su {{count}} host. I comandi vengono eseguiti senza chiedere conferma.",
+    "runCommand": "Esegui comando",
+    "hostFacts": "Dettagli host",
+    "hostCount_one": "{{count}} host",
+    "hostCount_many": "{{count}} host",
+    "hostCount_other": "{{count}} host",
+    "succeeded": "{{count}} ok",
+    "failed": "{{count}} falliti",
+    "exitCode": "uscita {{code}}",
+    "timedOut": "timeout",
+    "stopped": "interrotto",
+    "notRun": "non eseguito",
+    "cached": "in cache",
+    "duration": "{{seconds}}s",
+    "noOutput": "(nessun output)"
+  },
+  "assistant": {
+    "title": "Assistente AI",
+    "moveHint": "Trascina per spostare. Doppio clic per agganciare al lato.",
+    "toggle": "Attiva/disattiva l'assistente AI",
+    "close": "Chiudi",
+    "dock": "Ancora a destra",
+    "float": "Finestra mobile",
+    "openTab": "Apri vista completa",
+    "history": "Conversazioni",
+    "noConversations": "Nessuna conversazione ancora",
+    "untitled": "Senza titolo",
+    "deleteConversation": "Elimina conversazione",
+    "deleteConfirm": "Eliminare questa conversazione?",
+    "emptyTitle": "Chiedi o modifica qualsiasi cosa in Termix",
+    "emptyHint": "L'assistente agisce al tuo posto tramite la CLI di Termix ed esegue comandi sui tuoi host di destinazione. Digita @ per aggiungere host, flotte, cartelle o tag come destinazione.",
+    "inputPlaceholder": "Chiedi all'assistente. Digita @ per aggiungere destinazioni.",
+    "noTargets": "Nessun host di destinazione. Digita @ per aggiungerne alcuni.",
+    "sendHint": "Le modifiche e i comandi vengono eseguiti senza chiedere conferma.",
+    "removeTarget": "Rimuovi {{name}}",
+    "kind": {
+      "host": "Host",
+      "fleet": "Flotta",
+      "folder": "Cartella",
+      "tag": "Tag"
+    },
+    "emptyHintBasic": "L'assistente agisce al tuo posto tramite la CLI di Termix, con i tuoi permessi.",
+    "inputPlaceholderBasic": "Chiedi all'assistente.",
+    "sendHintBasic": "Le modifiche vengono eseguite senza chiedere conferma.",
+    "thinking": "Sto pensando",
+    "thinkingActive": "Sto pensando...",
+    "compacted": "Contesto compresso: i messaggi precedenti sono stati riassunti",
+    "compact": "Comprimi la conversazione",
+    "nothingToCompact": "La conversazione è troppo breve per essere compressa.",
+    "contextMeter": "Contesto: {{used}} di {{window}} token usati dall'ultima chiamata",
+    "contextMeterSource": "La finestra è {{source}}.",
+    "contextMeterReserved": "{{tokens}} token sono riservati per la risposta.",
+    "todayTokens": "Oggi {{tokens}}",
+    "todayTitle": "Token usati oggi. Clicca per i dettagli.",
+    "usage": "Utilizzo token",
+    "conversationTokens": "{{tokens}} token",
+    "openFloating": "Pannello mobile",
+    "openFloatingHint": "Apri l'assistente in un pannello sovrapposto a qualsiasi pagina. Premi {{shortcut}} ovunque per aprirlo o chiuderlo.",
+    "shortcutHint": "Premi {{shortcut}} su qualsiasi pagina per aprire l'assistente in un pannello mobile."
+  },
+  "usage": {
+    "title": "Utilizzo token",
+    "settingDescription": "Token usati dalle tue chiamate AI negli ultimi 30 giorni.",
+    "cardTitle": "Utilizzo token AI",
+    "today": "Oggi",
+    "week": "7 giorni",
+    "month": "30 giorni",
+    "mine": "Miei",
+    "everyone": "Tutti gli utenti",
+    "mineCaption": "I tuoi token su tutte le funzionalità AI.",
+    "everyoneCaption": "Token su tutti gli utenti e le funzionalità AI.",
+    "byDay": "Per giorno",
+    "byModel": "Per modello",
+    "bySource": "Per funzionalità",
+    "byUser": "Per utente",
+    "model": "Modello",
+    "feature": "Funzionalità",
+    "user": "Utente",
+    "calls": "Chiamate",
+    "prompt": "Input",
+    "completion": "Output",
+    "total": "Totale",
+    "empty": "Nessun utilizzo AI negli ultimi 30 giorni.",
+    "loadFailed": "Impossibile caricare l'utilizzo",
+    "estimatedNote": "Alcuni valori sono stime, circa quattro caratteri per token, perché il provider non ha segnalato il suo utilizzo.",
+    "source": {
+      "assistant": "Assistente",
+      "terminal": "Pannello terminale",
+      "compaction": "Compattazione"
+    }
+  },
+  "autoOps": {
+    "viewAssistant": "Assistente",
+    "viewAutoOps": "Auto-ops",
+    "intro": "Auto-ops permette all'assistente di controllare i tuoi host in autonomia. Un'automazione lo avvia secondo una pianificazione o quando si verifica un problema, e genera un report o propone una soluzione da approvare. Inizia con un preset.",
+    "sections": {
+      "tasks": "Attività",
+      "approvals": "Approvazioni",
+      "presets": "Preset"
+    },
+    "provider": "Provider per le attività",
+    "providerDefault": "Primo provider con un modello predefinito",
+    "model": "Modello per le attività",
+    "modelDefault": "Il modello predefinito del provider",
+    "saveModel": "Salva modello",
+    "preferencesHint": "Il provider e il modello utilizzati dalle attività in background. Lasciali così come sono per usare il tuo provider e modello predefiniti.",
+    "task": "Attività",
+    "tokens": "{{tokens}} token",
+    "tokenUsage": "{{total}} token ({{prompt}} in ingresso, {{completion}} in uscita)",
+    "dryRun": "Esecuzione di prova",
+    "trigger": "Trigger",
+    "noTasks": "Nessuna attività ancora",
+    "tasksHint": "Le attività sono esecuzioni di automazioni con un passaggio \"Chiedi all'AI\". Abilita un preset o creane uno tuo nelle Automazioni: aggiungi un passaggio \"Chiedi all'AI\" a qualsiasi automazione. Le esecuzioni appariranno qui.",
+    "openAutomations": "Apri Automazioni",
+    "browsePresets": "Sfoglia preset",
+    "noApprovals": "Nessun piano in attesa di approvazione",
+    "loadFailed": "Impossibile caricare auto-ops",
+    "decideFailed": "Impossibile salvare la decisione",
+    "openConversation": "Apri nell'assistente",
+    "approve": "Approva ed esegui",
+    "reject": "Rifiuta",
+    "expires": "Scade {{time}}",
+    "enabled": "Abilitato",
+    "updateAvailable": "Aggiornamento disponibile",
+    "shared": "Condiviso",
+    "needsAutomations": "Richiede Automazioni",
+    "enableAgain": "Abilita di nuovo",
+    "deletePreset": "Elimina preset",
+    "autonomy": {
+      "report": "Solo report",
+      "propose": "Propone un piano"
+    },
+    "status": {
+      "running": "In esecuzione",
+      "reported": "Reportato",
+      "proposed": "In attesa di approvazione",
+      "approved": "Approvato",
+      "rejected": "Rifiutato",
+      "expired": "Scaduto",
+      "executing": "Esecuzione piano",
+      "done": "Completato",
+      "failed": "Fallito",
+      "skipped": "Saltato"
+    },
+    "severity": {
+      "info": "Info",
+      "warning": "Avviso",
+      "critical": "Critico"
+    },
+    "plan": {
+      "title": "Piano proposto",
+      "commands": "Comandi",
+      "rationale": "Motivazione",
+      "risk": "Rischio",
+      "rollback": "Rollback",
+      "verify": "Verifica",
+      "progress": "Avanzamento"
+    },
+    "enable": {
+      "title": "Abilita {{name}}",
+      "submit": "Abilita",
+      "name": "Nome",
+      "targets": "Host",
+      "targetAll": "Tutti gli host",
+      "targetTrigger": "L'host che ha attivato l'azione",
+      "targetHosts": "Host selezionati",
+      "noHosts": "Seleziona almeno un host.",
+      "threshold": "Soglia (%)",
+      "forSeconds": "Per almeno (secondi)",
+      "time": "Orario del giorno",
+      "cron": "Pianificazione (cron)",
+      "dockerEvent": "Evento del container",
+      "dockerEvents": {
+        "exited": "Terminato",
+        "unhealthy": "Non sano",
+        "restarting": "In riavvio"
+      },
+      "badTime": "Inserisci l'orario nel formato HH:MM.",
+      "autonomy": "Cosa può fare l'assistente",
+      "maxRunSeconds": "Limite di tempo (secondi)",
+      "runbook": "Runbook",
+      "runbookHint": "Cosa dovrebbe fare l'assistente, in parole semplici. L'inglese funziona meglio.",
+      "shared": "Condividi quando salvato come predefinito",
+      "sharedHint": "Chiunque possa utilizzare le operazioni automatiche potrà quindi attivarle.",
+      "saveAsPreset": "Salva come predefinito",
+      "savedPreset": "Salvato",
+      "failed": "Non è stato possibile creare l'automazione",
+      "saveFailed": "Non è stato possibile salvare il predefinito"
+    },
+    "presets": {
+      "daily-patrol": {
+        "title": "Pattuglia giornaliera",
+        "description": "Ogni mattina alle 09:00, controlla dischi, memoria, carico, servizi non riusciti, contenitori, certificati, aggiornamenti, riavvii in sospeso e sincronizzazione dell'ora di ogni host e genera un report per gravità."
+      },
+      "disk-cleanup": {
+        "title": "Pulizia spazio disco",
+        "description": "Quando un disco rimane all'85% o più per 5 minuti, individua cosa lo sta riempiendo e propone una pulizia sicura da approvare. I dati aziendali non vengono mai toccati."
+      },
+      "host-down-triage": {
+        "title": "Diagnosi host offline",
+        "description": "Quando un host si disconnette, lo verifica dagli altri host e da Proxmox, e segnala se il problema riguarda la rete, una macchina arrestata o SSH."
+      },
+      "service-failure": {
+        "title": "Guasto del servizio",
+        "description": "Quando un controllo di integrità inizia a fallire, individua l'unità systemd associata, ne legge lo stato e i log, e propone un singolo riavvio da approvare quando utile. La configurazione non viene mai modificata."
+      },
+      "container-anomaly": {
+        "title": "Anomalia del container",
+        "description": "Quando un container termina, diventa non sano o continua a riavviarsi, ne legge lo stato, il codice di uscita, i log e la memoria, e propone di avviarlo o riavviarlo una volta per la tua approvazione. Nessun elemento viene rimosso."
+      },
+      "resource-overload-cpu": {
+        "title": "Sovraccarico CPU",
+        "description": "Quando la CPU rimane al 95% o più per 15 minuti, individua i processi, i servizi e i container responsabili e segnala le azioni da intraprendere. Nessun elemento viene modificato."
+      },
+      "resource-overload-memory": {
+        "title": "Sovraccarico di memoria",
+        "description": "Quando la memoria rimane al 95% o più per 10 minuti, individua ciò che la sta utilizzando, lo swapping e le terminazioni per esaurimento memoria, e segnala le azioni da intraprendere. Nessun elemento viene modificato."
+      },
+      "security-updates-weekly": {
+        "title": "Aggiornamenti di sicurezza settimanali",
+        "description": "Ogni lunedì alle 09:30, elenca gli aggiornamenti di sicurezza in attesa per gravità, i riavvii pendenti e i pacchetti correlati, i kernel in esecuzione e installati e i giorni dall'ultimo aggiornamento, in un'unica tabella per tutti gli host."
+      },
+      "cert-expiry-weekly": {
+        "title": "Scadenza certificati settimanale",
+        "description": "Ogni lunedì alle 09:45, legge la scadenza dei certificati Let's Encrypt, del web server e di Kubernetes su ogni host e segnala quelli con meno di 30 giorni, critici se inferiori a 7."
+      }
+    },
+    "report": {
+      "verdict": "Verdetto",
+      "evidence": "Prove",
+      "actionsTaken": "Azioni eseguite",
+      "recommendations": "Raccomandazioni",
+      "nothingFound": "Nessun risultato trovato prima della fine dell'esecuzione.",
+      "noChanges": "Nessuna modifica è stata apportata.",
+      "openConversation": "Apri la conversazione nell'assistente per vedere ogni passaggio e fare domande di follow-up.",
+      "noFurtherAction": "Nessuna ulteriore azione è necessaria.",
+      "stoppedBudgetRun": "Interrotto: questa esecuzione ha utilizzato il suo budget di {{tokens}} token.",
+      "stoppedBudgetDaily": "Interrotto: il budget giornaliero del proprietario di {{tokens}} token è esaurito.",
+      "stoppedDeadline": "Interrotto: è stato raggiunto il limite di tempo dell'automazione.",
+      "stoppedPaused": "Interrotto: un amministratore ha messo in pausa le auto-ops AI.",
+      "stoppedAborted": "Interrotto: l'esecuzione dell'automazione è stata annullata.",
+      "providerFailed": "Il provider AI ha fallito: {{error}}",
+      "noHosts": "Nessuno degli host di destinazione può essere raggiunto dal proprietario dell'automazione.",
+      "noProvider": "Il proprietario dell'automazione non ha un provider AI con un modello per eseguire i task.",
+      "needsOpsUse": "Il proprietario dell'automazione non ha il permesso ai.ops.use.",
+      "assistantOff": "L'assistente AI è disattivato per il proprietario dell'automazione.",
+      "skippedPaused": "Le operazioni automatiche AI sono state sospese da un amministratore.",
+      "skippedDuplicate": "Un'attività per la stessa automazione e host è ancora in esecuzione o in attesa di approvazione.",
+      "skippedRate": "Questa automazione ha già avviato {{count}} attività AI nell'ultima ora.",
+      "hostNotRun": "Non eseguito: il piano è stato interrotto.",
+      "hostNoAccess": "Non eseguito: il proprietario non può più connettersi a questo host.",
+      "hostUnreachable": "Non eseguito: l'host non era raggiungibile.",
+      "hostStopped": "Interrotto al primo comando fallito.",
+      "executionDone": "Il piano approvato è stato eseguito su {{count}} host e tutti i comandi e i controlli sono riusciti.",
+      "executionFailed": "Il piano approvato non è stato completato su tutti gli host.",
+      "executionStopped": "Il piano approvato è stato interrotto prima del termine.",
+      "approvedBy": "Il piano approvato è stato eseguito come scritto. Approvato da {{user}}.",
+      "noticeReported": "Rapporto AI: {{title}}",
+      "noticeProposed": "Piano AI in attesa di approvazione: {{title}}",
+      "noticeExecuted": "Piano AI eseguito: {{title}}",
+      "noticeFailed": "Attività AI fallita: {{title}}"
+    }
   }
 }
