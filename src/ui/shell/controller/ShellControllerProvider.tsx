@@ -21,7 +21,11 @@ import type { Host, TabType } from "@/types/ui-types";
 import { requestManage } from "@/manage/manage-requests";
 import { useRailItems } from "@/sidebar/rail-items";
 import { usePanels } from "@/shell/panel-registry";
-import { getTabType, type TabShellCallbacks } from "@/shell/tab-registry";
+import {
+  getTabType,
+  useTabTypes,
+  type TabShellCallbacks,
+} from "@/shell/tab-registry";
 import { usePluginStore } from "@/plugin-host/plugin-store";
 import { setShellCallbacks } from "@/plugin-host/shell-bridge";
 import {
@@ -64,9 +68,10 @@ export function useTabStageStore(): TabStageStore {
  * renders it inside the scope its tab-close questions should show in.
  */
 export function ShellConfirmCapture(): null {
-  const { confirmRef } = useShellController();
+  // Optional, so the repair view still draws when the shell itself is broken.
+  const controller = useOptionalShellController();
   const confirm = useConfirm();
-  confirmRef.current = confirm;
+  if (controller) controller.confirmRef.current = confirm;
   return null;
 }
 
@@ -83,6 +88,7 @@ export function ShellControllerProvider({
   // Re-render when plugins add or remove rail items, panels or tabs.
   useRailItems();
   usePanels();
+  useTabTypes();
   const { settled: pluginsSettled } = usePluginStore();
   const isMobile = useIsMobile();
   const [stageStore] = useState(createTabStageStore);

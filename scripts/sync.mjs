@@ -7,6 +7,7 @@
  *
  *   npm run sync
  *   npm run sync -- --termix ../Termix --plugins ../Plugins --registry ../Registry
+ *   npm run sync -- --examples   (also the example plugins, for local checks)
  */
 
 import fs from "node:fs";
@@ -87,14 +88,40 @@ for (const dir of ["icons", "fonts"]) {
 // and type-only backend files; the bundler only pulls in what is imported.
 const pluginsOut = path.join(root, "src/plugins");
 fs.rmSync(pluginsOut, { recursive: true, force: true });
+// A theme plugin's CSS is served as a static file, where the fake backend
+// would serve /plugin-assets/<id>/_themes/<theme>.css.
+const themeAssetsOut = path.join(root, "public/plugin-assets");
+fs.rmSync(themeAssetsOut, { recursive: true, force: true });
 const ids = [];
 for (const name of fs.readdirSync(pluginsDir).sort()) {
   const dir = path.join(pluginsDir, name);
   const manifestPath = path.join(dir, "manifest.json");
   if (!name.startsWith("Plugin-") || !fs.existsSync(manifestPath)) continue;
   const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  // Example plugins teach plugin authors; demo visitors never see them.
+  if (
+    manifest.id.startsWith("example-") &&
+    !process.argv.includes("--examples")
+  )
+    continue;
   const out = path.join(pluginsOut, manifest.id);
-  copyDir(path.join(dir, "src"), path.join(out, "src"));
+  if (fs.existsSync(path.join(dir, "src"))) {
+    copyDir(path.join(dir, "src"), path.join(out, "src"));
+  } else {
+    fs.mkdirSync(out, { recursive: true });
+  }
+  for (const theme of manifest.contributes?.themes ?? []) {
+    const css = path.join(dir, theme.css);
+    if (!fs.existsSync(css)) continue;
+    const target = path.join(
+      themeAssetsOut,
+      manifest.id,
+      "_themes",
+      `${theme.id}.css`,
+    );
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.copyFileSync(css, target);
+  }
   if (fs.existsSync(path.join(dir, "locales"))) {
     copyDir(path.join(dir, "locales"), path.join(out, "locales"));
   }
@@ -159,7 +186,10 @@ function scan(dir, skipBackend) {
 for (const dir of ["src/ui", "src/types", "src/demo"]) {
   if (fs.existsSync(path.join(root, dir))) scan(path.join(root, dir), false);
 }
-for (const id of ids) scan(path.join(pluginsOut, id, "src"), true);
+for (const id of ids) {
+  const src = path.join(pluginsOut, id, "src");
+  if (fs.existsSync(src)) scan(src, true);
+}
 
 console.log(`Synced core and ${ids.length} plugins.`);
 if (missing.size) {

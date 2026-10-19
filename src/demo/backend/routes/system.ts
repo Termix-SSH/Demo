@@ -23,7 +23,7 @@ put("/ui-preferences", (req) => {
   return { success: true, preferences: uiPreferences.set(merged) };
 });
 
-const userPreferences = value<Record<string, unknown>>(
+export const userPreferences = value<Record<string, unknown>>(
   "user-preferences",
   () => ({ reopenTabsOnLogin: false, confirmTabClose: true }),
 );

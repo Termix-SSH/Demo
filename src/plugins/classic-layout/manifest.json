@@ -1,0 +1,58 @@
+{
+  "id": "classic-layout",
+  "name": "Classic Layout",
+  "version": "1.0.0",
+  "description": "The classic Termix layout with an icon rail, sidebar, tab bar and dock.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Classic-Layout",
+  "docs": "https://docs.termix.site/plugins/classic-layout",
+  "category": "Productivity",
+  "icon": "PanelLeft",
+  "features": [
+    "Icon rail, resizable sidebar, tab bar and right dock",
+    "Dashboard, Manage and Settings screens",
+    "Host and credential lists with the host editor",
+    "Command palette and mobile bottom bar"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.10.3",
+    "api": "^1.4"
+  },
+  "capabilities": ["ui:layout", "ui:surface"],
+  "contributes": {
+    "layouts": [
+      {
+        "id": "classic",
+        "label": "layout.name",
+        "description": "layout.description",
+        "default": true
+      }
+    ],
+    "tabs": [
+      {
+        "id": "dashboard",
+        "titleKey": "tab.dashboard",
+        "icon": "LayoutDashboard",
+        "openFrom": ["rail"]
+      },
+      {
+        "id": "host-manager",
+        "titleKey": "tab.manage",
+        "icon": "LibraryBig",
+        "openFrom": ["rail"]
+      },
+      {
+        "id": "settings",
+        "titleKey": "tab.settings",
+        "icon": "Settings",
+        "openFrom": ["rail"]
+      }
+    ]
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

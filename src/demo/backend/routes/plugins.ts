@@ -2,6 +2,7 @@ import { del, get, HttpError, patch, post, put } from "../router";
 import { value } from "../store";
 import { rawFetch } from "../fetch";
 import { hosts } from "./hosts";
+import { userPreferences as userPreferencesStore } from "./system";
 import {
   DEMO_PLUGIN_ID,
   hasPluginFrontend,
@@ -91,6 +92,7 @@ const BUNDLED = new Map(
     bundled.plugins as Array<{
       id: string;
       onboarding?: { recommended?: boolean; consent?: boolean };
+      defaultLook?: boolean;
     }>
   ).map((p) => [p.id, p]),
 );
@@ -100,6 +102,8 @@ const ENABLED_BY_DEFAULT = new Set([
   DEMO_PLUGIN_ID,
   "alerts",
   "automations",
+  "classic-layout",
+  "classic-themes",
   "docker",
   "file-manager",
   "fleets",
@@ -188,6 +192,7 @@ function summary(id: string) {
     frontend: hasPluginFrontend(id),
     css: false,
     assetVersion: m.version,
+    themeVersion: m.contributes?.themes ? m.version : null,
     locales: pluginLocaleFiles(id),
     tier: "bundled",
     source: "registry",
@@ -219,6 +224,60 @@ export function isPluginEnabled(id: string): boolean {
 }
 
 get("/plugins", () => installedIds().map(summary));
+
+/** The first default-look plugin's default layout, and the theme it lists first. */
+function defaultLook() {
+  const look = { layout: null as string | null, theme: null as string | null };
+  for (const id of installedIds()) {
+    if (!BUNDLED.get(id)?.defaultLook) continue;
+    const contributes = MANIFESTS[id].contributes as
+      | {
+          layouts?: Array<{
+            id: string;
+            default?: boolean;
+            defaultTheme?: string;
+          }>;
+          themes?: Array<{ id: string }>;
+        }
+      | undefined;
+    const layouts = contributes?.layouts ?? [];
+    const layout = layouts.find((entry) => entry.default) ?? layouts[0];
+    if (layout && !look.layout) {
+      look.layout = layout.id;
+      look.theme ??= layout.defaultTheme ?? null;
+    }
+    if (!look.theme && contributes?.themes?.length) {
+      look.theme = contributes.themes[0].id;
+    }
+  }
+  return look;
+}
+
+const lookDefaults = value<{ layout: string | null; theme: string | null }>(
+  "look-defaults",
+  () => ({ layout: null, theme: null }),
+);
+get("/user-preferences/look", () => {
+  const prefs = userPreferencesStore.get();
+  return {
+    layoutId: (prefs.layoutId as string | null | undefined) ?? null,
+    themeId: (prefs.themeId as string | null | undefined) ?? null,
+    defaults: lookDefaults.get(),
+    defaultLook: defaultLook(),
+    safeLayout: false,
+    unavailable: [],
+  };
+});
+put("/user-preferences/look/defaults", (req) => {
+  const body = (req.body ?? {}) as {
+    layout?: string | null;
+    theme?: string | null;
+  };
+  return lookDefaults.update((prev) => ({
+    layout: body.layout === undefined ? prev.layout : body.layout,
+    theme: body.theme === undefined ? prev.theme : body.theme,
+  }));
+});
 
 get("/plugins/public", () =>
   installedIds()
@@ -409,6 +468,11 @@ post("/plugins/update-all", () => ({
 function keepDemoPlugin(id: string) {
   if (id === DEMO_PLUGIN_ID) {
     throw new HttpError(400, { error: "The demo needs this plugin to run." });
+  }
+  if (BUNDLED.get(id)?.defaultLook) {
+    throw new HttpError(400, {
+      error: "This plugin gives Termix its look and cannot be removed.",
+    });
   }
 }
 

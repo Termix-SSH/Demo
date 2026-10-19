@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 
 const root = import.meta.dirname;
@@ -16,9 +16,25 @@ const termixVersion = (() => {
   }
 })();
 
+/** In dev the app asks for plugin assets under /__termix_api/<port>/. */
+function pluginAssets(): Plugin {
+  return {
+    name: "termix-demo-plugin-assets",
+    configureServer(server) {
+      server.middlewares.use((req, _res, next) => {
+        const match = req.url?.match(
+          /^\/__termix_api\/\d+(\/plugin-assets\/[^?]*)(\?.*)?$/,
+        );
+        if (match) req.url = match[1] + (match[2] ?? "");
+        next();
+      });
+    },
+  };
+}
+
 export default defineConfig({
   base: "./",
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), pluginAssets()],
   define: {
     "import.meta.env.VITE_APP_VERSION": JSON.stringify(termixVersion),
   },
