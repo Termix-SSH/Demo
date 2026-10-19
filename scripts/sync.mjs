@@ -7,7 +7,6 @@
  *
  *   npm run sync
  *   npm run sync -- --termix ../Termix --plugins ../Plugins --registry ../Registry
- *   npm run sync -- --examples   (also the example plugins, for local checks)
  */
 
 import fs from "node:fs";
@@ -98,12 +97,6 @@ for (const name of fs.readdirSync(pluginsDir).sort()) {
   const manifestPath = path.join(dir, "manifest.json");
   if (!name.startsWith("Plugin-") || !fs.existsSync(manifestPath)) continue;
   const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
-  // Example plugins teach plugin authors; demo visitors never see them.
-  if (
-    manifest.id.startsWith("example-") &&
-    !process.argv.includes("--examples")
-  )
-    continue;
   const out = path.join(pluginsOut, manifest.id);
   if (fs.existsSync(path.join(dir, "src"))) {
     copyDir(path.join(dir, "src"), path.join(out, "src"));
