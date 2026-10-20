@@ -9,8 +9,6 @@ import {
   PasswordInput,
   SectionCard,
   createCredential,
-  generateKeyPair,
-  generatePublicKeyFromPrivate,
   updateCredential,
   duplicateCredential,
   adminCreateUserCredential,
@@ -66,8 +64,6 @@ export function CredentialEditorView({
     certPublicKey: credential?.certPublicKey ?? "",
   }));
   const { t } = useTranslation();
-  const [generatingKey, setGeneratingKey] = useState(false);
-  const [generatingPublicKey, setGeneratingPublicKey] = useState(false);
   const credFileInputRef = useRef<HTMLInputElement>(null);
   const certFileInputRef = useRef<HTMLInputElement>(null);
   const setCredField = <K extends keyof typeof credForm>(
@@ -373,66 +369,17 @@ export function CredentialEditorView({
               />
             )}
             <div className="flex flex-col gap-4">
-              <div className="p-3 border border-border bg-muted/20">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">
-                  {t("hosts.generateKeyPairTitle")}
-                </p>
-                <p className="text-[10px] text-muted-foreground mb-2">
-                  {t("hosts.generateKeyPairDescription")}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    { label: "Ed25519", type: "ssh-ed25519" },
-                    {
-                      label: "ECDSA (nistp256)",
-                      type: "ecdsa-sha2-nistp256",
-                    },
-                    { label: "RSA (2048)", type: "ssh-rsa", bits: 2048 },
-                  ].map(({ label, type: keyType, bits }) => (
-                    <Button
-                      key={label}
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      className="h-7 text-[10px] px-2"
-                      disabled={generatingKey}
-                      onClick={async () => {
-                        setGeneratingKey(true);
-                        try {
-                          const result = await generateKeyPair(
-                            keyType as
-                              "ssh-ed25519" | "ssh-rsa" | "ecdsa-sha2-nistp256",
-                            bits,
-                            credForm.passphrase === "existing_key_password"
-                              ? undefined
-                              : credForm.passphrase || undefined,
-                          );
-                          if (result.success) {
-                            setCredField("value", result.privateKey);
-                            setCredField("publicKey", result.publicKey);
-                            toast.success(
-                              t("hosts.keyPairGenerated", { label }),
-                            );
-                          } else {
-                            toast.error(
-                              result.error ??
-                                t("hosts.failedToGenerateKeyPair"),
-                            );
-                          }
-                        } catch {
-                          toast.error(t("hosts.failedToGenerateKeyPair"));
-                        } finally {
-                          setGeneratingKey(false);
-                        }
-                      }}
-                    >
-                      {generatingKey
-                        ? t("hosts.generatingKey")
-                        : t("hosts.generateLabel", { label })}
-                    </Button>
-                  ))}
-                </div>
-              </div>
+              <PluginComponent
+                id="credentials.keyGenerator"
+                passphrase={credForm.passphrase}
+                onGenerated={(pair: {
+                  privateKey: string;
+                  publicKey: string;
+                }) => {
+                  setCredField("value", pair.privateKey);
+                  setCredField("publicKey", pair.publicKey);
+                }}
+              />
               <div className="flex flex-col gap-1.5">
                 <div className="flex items-center justify-between">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
@@ -498,42 +445,14 @@ export function CredentialEditorView({
                   <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                     {t("hosts.sshPublicKeyOptional")}
                   </label>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="h-6 text-[10px] px-2 border-accent-brand/40 text-accent-brand"
-                    disabled={
-                      !credForm.value ||
-                      credForm.value === "existing_key" ||
-                      generatingPublicKey
+                  <PluginComponent
+                    id="credentials.publicKeyDeriver"
+                    privateKey={credForm.value}
+                    passphrase={credForm.passphrase}
+                    onDerived={(publicKey: string) =>
+                      setCredField("publicKey", publicKey)
                     }
-                    onClick={async () => {
-                      setGeneratingPublicKey(true);
-                      try {
-                        const result = await generatePublicKeyFromPrivate(
-                          credForm.value,
-                          credForm.passphrase === "existing_key_password"
-                            ? undefined
-                            : credForm.passphrase || undefined,
-                        );
-                        if (result?.publicKey) {
-                          setCredField("publicKey", result.publicKey);
-                          toast.success(t("hosts.publicKeyGenerated"));
-                        } else {
-                          toast.error(t("hosts.failedToGeneratePublicKey"));
-                        }
-                      } catch {
-                        toast.error(t("hosts.failedToGeneratePublicKey"));
-                      } finally {
-                        setGeneratingPublicKey(false);
-                      }
-                    }}
-                  >
-                    {generatingPublicKey
-                      ? t("hosts.generatingKey")
-                      : t("hosts.generateFromPrivateKey")}
-                  </Button>
+                  />
                   <Button
                     type="button"
                     variant="outline"

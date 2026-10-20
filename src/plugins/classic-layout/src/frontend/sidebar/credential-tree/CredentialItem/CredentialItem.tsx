@@ -18,7 +18,6 @@ import {
   Pin,
   Trash2,
   Share2,
-  Upload,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -64,7 +63,6 @@ export function CredentialItem({
   isReorderHovered = false,
   reorderHoverEdge = null,
   onReorderHoverChange,
-  onDeploy,
   onEdit,
   onClone,
   onDelete,
@@ -98,7 +96,6 @@ export function CredentialItem({
   isReorderHovered?: boolean;
   reorderHoverEdge?: "before" | "after" | null;
   onReorderHoverChange?: (edge: "before" | "after" | null) => void;
-  onDeploy: () => void;
   onEdit: () => void;
   onClone: () => void;
   onDelete: () => void;
@@ -128,16 +125,13 @@ export function CredentialItem({
 
   const connectionButtons = isKey ? (
     <>
-      <button
-        title={t("credentials.deploySSHKeyTitle")}
-        onClick={(e) => {
-          e.stopPropagation();
-          onDeploy();
+      <ComponentSlot
+        slotId="credentials.rowActions"
+        props={{
+          credential: { id: cred.id, name: cred.name },
+          buttonClassName: trayButtonClass,
         }}
-        className={trayButtonClass}
-      >
-        <Upload className="size-3.5" />
-      </button>
+      />
       <button
         title={t("credentials.copyDeployCommand")}
         onClick={async (e) => {

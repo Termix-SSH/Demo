@@ -653,7 +653,15 @@ export interface HostBadgeContribution {
   id: string;
   when: (host: PluginHostRecord) => boolean;
   component: ComponentType<{ host: PluginHostRecord }>;
+  /** Lower comes first. Ties sort by id. */
+  order?: number;
 }
+
+/** The dot or stripe that shows a host's status on its row. */
+export type HostStatusIndicatorContribution = HostBadgeContribution;
+
+/** A control in the host editor's toolbar. */
+export type HostEditorToolbarItemContribution = HostBadgeContribution;
 
 export interface HostContextMenuItemContribution {
   id: string;
@@ -806,6 +814,66 @@ export interface SettingsComponentProps {
   running: boolean;
 }
 
+/** What a companion starts with. Read from the plugin's own settings. */
+export interface CompanionDefaults {
+  /** Open by itself the first time a matching tab shows. */
+  open?: boolean;
+  side?: "left" | "right" | "bottom";
+  /** Pixels of width, or height at the bottom. */
+  size?: number;
+  /** Show the edge button that opens and closes it. Default true. */
+  edgeButton?: boolean;
+}
+
+/** A panel a tab type can show beside it, for a picker. */
+export interface CompanionInfo {
+  /** The id registerCompanionLayout's hidden and order lists use. */
+  id: string;
+  titleKey: string;
+  icon?: IconComponent;
+}
+
+/** How a host wants the panel bar beside a tab. */
+export interface CompanionLayout {
+  /** False removes the bar and its panels. */
+  enabled?: boolean;
+  /** Where a panel opens until the user moves it. */
+  side?: "left" | "right" | "bottom";
+  /** Companion ids in bar order. */
+  order?: string[];
+  /** Companion ids left out. */
+  hidden?: string[];
+}
+
+export interface CompanionProps {
+  /** The tab it sits beside. */
+  tab: PluginTabRecord;
+  host?: PluginHostRecord;
+  /** The host in the shape the connection APIs take. */
+  sshHost?: Record<string, unknown>;
+  /** The tab's surface handle (see TabHandle), read at call time. */
+  getHandle: () => TabHandle | null;
+  side: "left" | "right" | "bottom";
+  /** False while the tab is in the background or the panel is closed. */
+  isVisible: boolean;
+  close: () => void;
+  setSide: (side: "left" | "right" | "bottom") => void;
+}
+
+export interface CompanionOptions {
+  icon?: IconComponent;
+  titleKey?: string;
+  order?: number;
+  /** Tab types it applies to. Any tab with a host when empty. */
+  tabTypes?: string[];
+  when?: (tab: PluginTabRecord, host?: PluginHostRecord) => boolean;
+  /**
+   * A hook returning the starting state. It runs in the plugin's scope, so it
+   * can read the plugin's settings.
+   */
+  useDefaults?: () => CompanionDefaults;
+}
+
 export type ActionHandler = (...args: never[]) => unknown;
 
 export interface ActionSlotDefinition {
@@ -838,10 +906,11 @@ export type OnboardingMode = "full" | "partial" | "rerun";
  * Where a plugin step sits in onboarding. "setup" comes right after the
  * appearance steps, for things that need doing before the feature works
  * (like pointing at a guacd server). "explore" (the default) comes after
- * that, "security" after the account security step. Onboarding is for
+ * that, "security" after the account security step. "start" comes before
+ * the appearance steps, for choices that shape how the rest looks. Onboarding is for
  * choices, not for explaining features.
  */
-export type OnboardingSection = "setup" | "explore" | "security";
+export type OnboardingSection = "start" | "setup" | "explore" | "security";
 
 export interface OnboardingStepProps {
   /**
@@ -884,6 +953,16 @@ export interface OnboardingStepContribution {
   permission?: string;
   section?: OnboardingSection;
   order?: number;
+  /**
+   * Exact place in the flow, 1 to 99, instead of a section. Core steps sit at
+   * 10 (plugins), 20, 25, 30 (preset), 40 (appearance) and 90 (security).
+   */
+  position?: number;
+  /**
+   * Older step keys this step took over, like "preset". People who already
+   * saw one of them are not shown this step again.
+   */
+  replaces?: string[];
   when?: (context: {
     isAdmin: boolean;
     isDesktop: boolean;
@@ -1049,12 +1128,40 @@ export interface TermixApp extends TermixAppInfo {
     component: ComponentType<TabProps>,
     options?: TabOptions,
   ) => Disposer;
+  /**
+   * A panel that sits beside any host tab the options match (a terminal, a
+   * desktop, ...), bound to that tab's host. The user opens, resizes and moves
+   * it; the tab keeps running underneath.
+   */
+  registerCompanion: (
+    id: string,
+    component: ComponentType<CompanionProps>,
+    options?: CompanionOptions,
+  ) => Disposer;
+  /**
+   * Lets a plugin decide, per host, how the panel bar looks on one tab type.
+   * Read from the host payload, so it must not call hooks.
+   */
+  registerCompanionLayout: (
+    tabType: string,
+    resolve: (host: PluginHostRecord | undefined) => CompanionLayout,
+  ) => Disposer;
+  /** Opens a companion on a tab, or closes it when it is showing. */
+  toggleCompanion: (tab: PluginTabRecord, id?: string) => void;
   registerHostEditorSection: (
     section: HostEditorSectionContribution,
   ) => Disposer;
   registerHostAction: (action: HostActionContribution) => Disposer;
   registerHostProtocol: (protocol: HostProtocolContribution) => Disposer;
   registerHostBadge: (badge: HostBadgeContribution) => Disposer;
+  /** Draws a host row's status. A layout renders every registered one. */
+  registerHostStatusIndicator: (
+    indicator: HostStatusIndicatorContribution,
+  ) => Disposer;
+  /** Adds a control to the host editor's toolbar. */
+  registerHostEditorToolbarItem: (
+    item: HostEditorToolbarItemContribution,
+  ) => Disposer;
   registerHostContextMenuItem: (
     item: HostContextMenuItemContribution,
   ) => Disposer;
@@ -1268,6 +1375,7 @@ export interface PluginHostBridge {
   hostProtocols: (host: PluginHostRecord) => string[];
   useHostStatus: (hostId: number | undefined) => HostStatusInfo | null;
   useHostActions: () => HostActionContribution[];
+  useCompanions: (tabType: string) => CompanionInfo[];
   useActivityTypes: () => string[];
   activityTarget: (type: string) => ActivityTargetInfo | undefined;
   useExtensions: (pointId: string) => ExtensionContribution[];
@@ -1675,6 +1783,14 @@ export function useSlotContributions(
  */
 export function useHostActions(): HostActionContribution[] {
   return requireHost().useHostActions();
+}
+
+/**
+ * Every panel that can open beside a tab of this type, for a settings screen
+ * that lets the user hide or reorder them. Reactive.
+ */
+export function useCompanions(tabType: string): CompanionInfo[] {
+  return requireHost().useCompanions(tabType);
 }
 
 /**

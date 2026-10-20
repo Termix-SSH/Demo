@@ -30,7 +30,6 @@ import {
 
 export function CredentialSidebarTree({
   folders,
-  onDeployCredential,
   onEditCredential,
   onCloneCredential,
   onDeleteCredential,
@@ -52,7 +51,6 @@ export function CredentialSidebarTree({
   onMoveCredentialToFolder,
 }: {
   folders: CredentialFolder[];
-  onDeployCredential: (cred: Credential) => void;
   onEditCredential: (cred: Credential) => void;
   onCloneCredential: (cred: Credential) => void;
   onDeleteCredential: (cred: Credential) => void;
@@ -445,7 +443,6 @@ export function CredentialSidebarTree({
                         setReorderHoverKey(edge ? `cred:${item.id}` : null);
                         setReorderHoverEdge(edge);
                       }}
-                      onDeploy={() => onDeployCredential(item)}
                       onEdit={() => onEditCredential(item)}
                       onClone={() => onCloneCredential(item)}
                       onDelete={() => onDeleteCredential(item)}

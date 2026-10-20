@@ -3,6 +3,7 @@ import {
   defineTable,
   id,
   integer,
+  refHost,
   refUser,
   text,
   timestamp,
@@ -65,4 +66,33 @@ export const dashboardServiceLinks = adoptLegacyTable(
   ),
 );
 
-export const tables = [homepageItems, homepageLayouts, dashboardServiceLinks];
+/** One recent connection per row, newest first, kept to 100 per user. */
+export const recentActivity = adoptLegacyTable(
+  "recent_activity",
+  defineTable(
+    "recent_activity",
+    {
+      id: id(),
+      userId: refUser(),
+      type: text().notNull(),
+      hostId: refHost(),
+      hostName: text(),
+      timestamp: timestamp().notNull().defaultNow(),
+    },
+    {
+      indexes: [
+        {
+          name: "idx_recent_activity_user_ts",
+          columns: ["userId", "timestamp"],
+        },
+      ],
+    },
+  ),
+);
+
+export const tables = [
+  homepageItems,
+  homepageLayouts,
+  dashboardServiceLinks,
+  recentActivity,
+];

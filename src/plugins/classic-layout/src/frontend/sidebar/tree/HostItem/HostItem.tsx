@@ -63,6 +63,7 @@ import {
   KeyRound,
   LayoutPanelLeft,
   Link,
+  Lock,
   MemoryStick,
   MoreHorizontal,
   Pencil,
@@ -75,8 +76,9 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import {
+  canArrangeHost,
   canDeleteHost,
-  canEditHost,
+  canOpenHostEditor,
   canOverrideHostAuth,
   canShareHost,
   authOverrideProtocols as listAuthOverrideProtocols,
@@ -281,7 +283,7 @@ export function HostItem({
 }) {
   const { t } = useTranslation();
   // Shared hosts expose actions matching the recipient's permission level.
-  const onEditHost = canEditHost(host) ? onEditHostProp : undefined;
+  const onEditHost = canOpenHostEditor(host) ? onEditHostProp : undefined;
   const onShareHost = canShareHost(host) ? onShareHostProp : undefined;
   const allowDelete = canDeleteHost(host);
   const allHostActions = useHostActions();
@@ -353,7 +355,7 @@ export function HostItem({
   );
   const reorderEdge = isReorderHovered ? reorderHoverEdge : null;
   const canDrag =
-    arrangeMode && !selectionMode && !isTouchOnly && canEditHost(host);
+    arrangeMode && !selectionMode && !isTouchOnly && canArrangeHost(host);
   // The middle band nests the dragged host under this one; the top/bottom
   // bands reorder. Both live on the same row, so the pointer's position
   // inside it picks the intent instead of a modifier key.
@@ -1145,6 +1147,22 @@ export function HostItem({
           </TooltipProvider>
           {rowFields.showPinIcon && host.pin && (
             <Pin className="size-2.5 text-accent-brand/50 shrink-0" />
+          )}
+          {host.lock && (
+            <TooltipProvider delayDuration={300}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span data-testid="host-managed-marker" className="shrink-0">
+                    <Lock className="size-2.5 text-muted-foreground/70" />
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  {t("hosts.managedTooltip", {
+                    plugin: host.lock.pluginName,
+                  })}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
           {rowFields.showBadges &&
             badges.map((badge) => {

@@ -362,14 +362,6 @@ export { APP_VERSION } from "@/lib/app-version";
 // the shell's copy.
 export { Command as CommandPrimitive } from "cmdk";
 export {
-  buildExportPayload,
-  hostKey,
-  maskSecrets,
-  pluginSecretKeys,
-  type ExportPayload,
-  type FieldGroup,
-} from "@/sidebar/host-export-payload";
-export {
   type AuthOverrideProtocol,
   SSH_AUTH_PROTOCOL,
 } from "@/types/auth-protocols";
@@ -410,12 +402,14 @@ export {
 } from "@/types/host-sidebar-preferences";
 export type {
   HostData,
+  HostLock,
   HostProtocolAuthInput,
   ProxyNode,
   SSHHost,
   SSHHostData,
 } from "@/types";
 export {
+  PRESETS,
   UI_AREA_KEYS,
   type UiAreaKey,
   type UiPreset,
@@ -437,10 +431,8 @@ export type {
 export {
   type AuditLog,
   type AuditLogFilters,
-  getAuditForwarding,
   getAuditLogActions,
   getAuditLogs,
-  updateAuditForwarding,
 } from "@/api/audit-log-api";
 export {
   getUserSecondFactors,
@@ -498,26 +490,7 @@ export {
   shareCredential,
   type ShareTarget,
 } from "@/api/rbac-api";
-export {
-  type BrandingSettings,
-  getBranding,
-  updateBranding,
-} from "@/api/settings-api";
-export {
-  getSyncConflicts,
-  getSyncErrors,
-  retrySyncErrors,
-  settleSyncConflict,
-  type SyncBasicAuth,
-  type SyncConflictItem,
-  type SyncEntityInfo,
-  type SyncErrorItem,
-  syncNow,
-  type SyncProxyHeader,
-  type SyncStatus,
-  unlinkServer,
-  updateSyncSettings,
-} from "@/api/sync-api";
+export { type BrandingSettings, getBranding } from "@/api/settings-api";
 export {
   getChannelReleases,
   getUpdateChannel,
@@ -565,7 +538,6 @@ export {
   getStatusClasses,
   useStatusColorScheme,
 } from "@/hooks/use-status-color-scheme";
-export { useSyncStatus } from "@/hooks/use-sync-status";
 export { useSshAuthProviders } from "@/hooks/useSshAuthProviders";
 export { changeAppLanguage, normalizeLanguageCode } from "@/i18n/i18n";
 export { LANGUAGES } from "@/i18n/languages";
@@ -602,7 +574,7 @@ export {
   invalidateServerStatusCache,
 } from "@/lib/hosts-request-cache";
 export { reportBetaFeedbackUrl, reportCoreIssueUrl } from "@/lib/issue-url";
-export { notifySyncChanged } from "@/lib/linked-server";
+export { notifySyncChanged, useDesktopLinked } from "@/lib/linked-server";
 export {
   clearLocalAdaptivePreferences,
   getPreferredHostAction,
@@ -615,7 +587,6 @@ export { getConnectedRemoteApi } from "@/lib/remote-server-api";
 export { roleLabel } from "@/lib/role-label";
 export type { StatusValue } from "@/lib/server-status-store";
 export { parseServerTime } from "@/lib/server-time";
-export { refreshSyncStatus, setSyncStatus } from "@/lib/sync-status";
 export { tabJumpHotkeyKeys } from "@/lib/tab-jump-hotkey";
 export {
   ACCENT_PRESET_COLORS,
@@ -645,7 +616,6 @@ export {
   adminUpdateUserHost,
   type ApiKey,
   assignRoleToUser,
-  bulkImportSSHHosts,
   bulkUpdateSSHHosts,
   changePassword,
   createApiKey,
@@ -661,11 +631,7 @@ export {
   deleteRole,
   deleteSSHHost,
   deleteUser,
-  deployCredentialToHost,
   duplicateCredential,
-  exportAllSSHHosts,
-  generateKeyPair,
-  generatePublicKeyFromPrivate,
   getActiveSessions,
   getApiKeys,
   getCredentialDetails,
@@ -674,7 +640,11 @@ export {
   getHostAccess,
   getHostAuthOverride,
   getHostPassword,
+  getHostPolicy,
+  type HostPolicy,
   getHostSidebarPreferences,
+  getHttpsSettings,
+  type HttpsSettings,
   getLogLevel,
   getPasswordLoginAllowed,
   getPasswordResetAllowed,
@@ -689,7 +659,6 @@ export {
   getUserInfo,
   getUserList,
   getUserRoles,
-  importSSHConfigHosts,
   type LinkedAccountInfo,
   linkExternalToPasswordAccount,
   logoutUser,
@@ -720,6 +689,7 @@ export {
   updateExternalAutoProvision,
   updateFolderMetadata,
   updateHostAccess,
+  updateHttpsSettings,
   updateLogLevel,
   updatePasswordLoginAllowed,
   updatePasswordResetAllowed,
@@ -753,8 +723,7 @@ export {
   hasVisibleFields,
   isFieldShown,
 } from "@/settings/settings-fields-util";
-export { LinkServerDialog } from "@/settings/sync/LinkServerDialog";
-export { ProxySettingsFields } from "@/settings/sync/ProxySettingsFields";
+export { NativeView, type NativeViewProps } from "./NativeView";
 export { useShellController } from "@/shell/controller/ShellControllerProvider";
 export {
   type KeybindingActionDef,
@@ -816,12 +785,16 @@ export {
   type HostActionDef,
   hostActionsFor,
   hostBadgesFor,
+  hostEditorToolbarItemsFor,
   hostMenuItemsFor,
+  hostStatusIndicatorsFor,
   listHostActions,
   runHostAction,
   useHostActions,
   useHostBadges,
   useHostContextMenuItems,
+  useHostEditorToolbarItems,
+  useHostStatusIndicators,
 } from "@/sidebar/host-contributions";
 export { useEditorDefaultKeys } from "@/sidebar/host-defaults/catalog";
 export {

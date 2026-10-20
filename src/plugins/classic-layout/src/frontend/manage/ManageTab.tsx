@@ -42,6 +42,7 @@ import {
   type HostDefaultsEditorTarget,
 } from "../sidebar/host-defaults/HostDefaultsEditorView";
 import { canDeleteHost } from "../sidebar/host-permissions";
+import { useHostPolicy } from "../sidebar/use-host-policy";
 import { ManageList } from "./ManageList";
 import type { DefaultsRow } from "./defaults-rows";
 
@@ -85,6 +86,10 @@ async function loadCredentialForEdit(cred: Credential): Promise<Credential> {
  */
 export function ManageTab() {
   const { t } = useTranslation();
+  const hostPolicy = useHostPolicy();
+  // Read through a ref so openHost keeps its identity for the effects using it.
+  const hostPolicyRef = useRef(hostPolicy);
+  hostPolicyRef.current = hostPolicy;
   const confirm = useConfirm();
   const { has } = usePermissions();
   const { statuses } = useServerStatus();
@@ -164,18 +169,26 @@ export function ManageTab() {
     [confirmDiscard],
   );
 
-  const openHost = useCallback((host: Host | null, draft?: HostDraft) => {
-    setMode("hosts");
-    setReturnHost(null);
-    setDirty(false);
-    setEditing({
-      kind: "host",
-      host,
-      draft,
-      key: Date.now(),
-      protocols: hostProtocolFlags(host),
-    });
-  }, []);
+  const openHost = useCallback(
+    (host: Host | null, draft?: HostDraft) => {
+      const policy = hostPolicyRef.current;
+      if (!host && !policy.manualCreate) {
+        toast.error(t("hosts.addBlocked", { plugin: policy.blockedBy ?? "" }));
+        return;
+      }
+      setMode("hosts");
+      setReturnHost(null);
+      setDirty(false);
+      setEditing({
+        kind: "host",
+        host,
+        draft,
+        key: Date.now(),
+        protocols: hostProtocolFlags(host),
+      });
+    },
+    [t],
+  );
 
   const openCredential = useCallback(async (credential: Credential | null) => {
     setMode("credentials");
@@ -561,7 +574,8 @@ export function ManageTab() {
               }
               hint={t("manage.pickHint")}
               action={
-                mode !== "defaults" ? (
+                mode !== "defaults" &&
+                (mode !== "hosts" || hostPolicy.manualCreate) ? (
                   <Button
                     variant="outline"
                     size="sm"

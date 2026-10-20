@@ -25,6 +25,7 @@ import {
   User,
 } from "lucide-react";
 import { defaultsRows, type DefaultsRow } from "./defaults-rows";
+import { useHostPolicy } from "../sidebar/use-host-policy";
 import {
   allFolderPaths,
   allParentIds,
@@ -88,6 +89,7 @@ export function ManageList({
   onAdd: () => void;
 }) {
   const { t } = useTranslation();
+  const hostPolicy = useHostPolicy();
   const [query, setQuery] = useState("");
   const needle = query.trim().toLowerCase();
 
@@ -220,26 +222,27 @@ export function ManageList({
             }
             fill
           />
-          {mode !== "defaults" && (
-            <Button
-              variant="outline"
-              size="icon"
-              title={
-                mode === "hosts"
-                  ? t("hosts.addHost")
-                  : t("manage.addCredential")
-              }
-              aria-label={
-                mode === "hosts"
-                  ? t("hosts.addHost")
-                  : t("manage.addCredential")
-              }
-              onClick={onAdd}
-              className="shrink-0 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
-            >
-              <Plus className="size-3.5" />
-            </Button>
-          )}
+          {mode !== "defaults" &&
+            (mode !== "hosts" || hostPolicy.manualCreate) && (
+              <Button
+                variant="outline"
+                size="icon"
+                title={
+                  mode === "hosts"
+                    ? t("hosts.addHost")
+                    : t("manage.addCredential")
+                }
+                aria-label={
+                  mode === "hosts"
+                    ? t("hosts.addHost")
+                    : t("manage.addCredential")
+                }
+                onClick={onAdd}
+                className="shrink-0 border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
+              >
+                <Plus className="size-3.5" />
+              </Button>
+            )}
         </div>
       </div>
 

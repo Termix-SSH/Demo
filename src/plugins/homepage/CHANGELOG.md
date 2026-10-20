@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0
+
+### Changed
+
+- The dashboard's recent activity list is stored by this plugin instead of Termix itself. Existing entries are kept
+- Needs Termix 26.10.3 or newer
+
 ## 1.0.2
 
 ### Changed

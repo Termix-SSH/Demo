@@ -22,6 +22,7 @@ import {
 import { ADMIN_KEYS } from "./settings.js";
 import { commandHistory } from "./tables.js";
 import { createTerminalSocket } from "./terminal-socket.js";
+import { createLocalTerminalSocket } from "./local-terminal.js";
 import {
   validateAdminSettings,
   validateUserSettings,
@@ -118,6 +119,13 @@ export async function activate(ctx: PluginContext) {
     },
   );
   ctx.disposables.add(() => socket.closeAll());
+
+  // The desktop app's own shell. Refuses on a server.
+  const localTerminal = createLocalTerminalSocket(ctx);
+  ctx.ws.route("/local-terminal", (connection) =>
+    localTerminal.handleConnection(connection),
+  );
+  ctx.disposables.add(() => localTerminal.closeAll());
 
   registerTerminalRoutes(ctx.http.router<Router>({ rawBody: true }), {
     ctx,

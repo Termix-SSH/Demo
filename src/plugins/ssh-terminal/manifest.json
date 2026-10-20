@@ -1,7 +1,7 @@
 {
   "id": "ssh-terminal",
   "name": "SSH Terminal",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "SSH terminal sessions with tabs, split screen, history, macros and a local terminal in the desktop app.",
   "author": {
     "name": "Termix"
@@ -57,8 +57,8 @@
     }
   ],
   "engine": {
-    "termix": ">=26.10.0",
-    "api": "^1.2"
+    "termix": ">=26.10.3",
+    "api": "^1.11"
   },
   "capabilities": [
     "hosts:read",
@@ -68,7 +68,8 @@
     "network:serve",
     "db:own",
     "events:core",
-    "ui:surface"
+    "ui:surface",
+    "desktop:local"
   ],
   "provides": [
     {
@@ -324,6 +325,40 @@
             "key": "terminalToolbarButtons",
             "type": "json",
             "labelKey": "settings.host.terminalToolbarButtons.label",
+            "hidden": true
+          },
+          {
+            "key": "enableTerminalPanels",
+            "type": "boolean",
+            "labelKey": "settings.host.enableTerminalPanels.label",
+            "hidden": true,
+            "default": true
+          },
+          {
+            "key": "terminalPanelSide",
+            "type": "select",
+            "labelKey": "settings.host.terminalPanelSide.label",
+            "hidden": true,
+            "default": "right",
+            "options": [
+              {
+                "value": "right",
+                "labelKey": "settings.host.terminalPanelSide.right"
+              },
+              {
+                "value": "left",
+                "labelKey": "settings.host.terminalPanelSide.left"
+              },
+              {
+                "value": "bottom",
+                "labelKey": "settings.host.terminalPanelSide.bottom"
+              }
+            ]
+          },
+          {
+            "key": "terminalPanelButtons",
+            "type": "json",
+            "labelKey": "settings.host.terminalPanelButtons.label",
             "hidden": true
           },
           {
@@ -727,6 +762,9 @@
       },
       {
         "id": "paste"
+      },
+      {
+        "id": "clearConsole"
       },
       {
         "id": "sendControlCode",

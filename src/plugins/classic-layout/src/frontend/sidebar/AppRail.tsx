@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import {
+  ComponentSlot,
   type TabType,
   type ToolsTab,
   Skeleton,
@@ -484,13 +485,13 @@ export function AppRail({
           )}
         </div>
 
-        <div className="shrink-0 border-t border-border">
+        <div className="shrink-0 border-t border-border flex items-center overflow-hidden">
           <button
             type="button"
             onClick={onOpenSettings}
             title={t("nav.openSettings")}
             aria-label={t("nav.openSettings")}
-            className="flex items-center gap-2.5 w-full h-10 text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors focus-visible:ring-1 focus-visible:ring-ring"
+            className="flex items-center gap-2.5 flex-1 min-w-0 h-10 text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors focus-visible:ring-1 focus-visible:ring-ring"
             style={{ padding: `0 ${rem(8)}` }}
           >
             <div
@@ -512,6 +513,14 @@ export function AppRail({
               </span>
             </div>
           </button>
+          {/* Sits in the profile row, so nothing above it moves when the rail opens. */}
+          <div
+            className={`shrink-0 pr-1 transition-opacity duration-150 ${
+              railExpanded ? "opacity-100" : "pointer-events-none opacity-0"
+            }`}
+          >
+            <ComponentSlot slotId="shell.accountSwitcher" />
+          </div>
         </div>
 
         {menuPos && (

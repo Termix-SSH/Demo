@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import {
   Button,
-  Select2,
-  InlineView,
+  ComponentSlot,
   useConfirm,
   deleteCredential,
-  deployCredentialToHost,
   duplicateCredential,
   getCredentials,
   getSSHHosts,
@@ -17,13 +15,11 @@ import {
   type CredentialRowFields,
   type CredentialSidebarFilterState,
   type CredentialSortKey,
-  enabledHostProtocols,
   mapCredentials,
   sshHostToHost,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { toast } from "sonner";
-import { Upload } from "lucide-react";
 import { CredentialShareModal } from "./CredentialShareModal";
 import { CredentialSidebarTree } from "./credential-tree";
 import { credentialPassesFilters, sortCredentials } from "./credential-sort";
@@ -63,9 +59,6 @@ export function CredentialList({
   const [shareCredential, setShareCredential] = useState<Credential | null>(
     null,
   );
-  const [deployTarget, setDeployTarget] = useState<Credential | null>(null);
-  const [deployHostId, setDeployHostId] = useState("");
-  const [deploying, setDeploying] = useState(false);
   const [editingFolderName, setEditingFolderName] = useState<string | null>(
     null,
   );
@@ -191,23 +184,6 @@ export function CredentialList({
     }
   };
 
-  const deploy = async () => {
-    if (!deployTarget || !deployHostId) return;
-    setDeploying(true);
-    try {
-      await deployCredentialToHost(
-        Number(deployTarget.id),
-        Number(deployHostId),
-      );
-      toast.success(t("credentials.keyDeployedSuccess"));
-      setDeployTarget(null);
-    } catch {
-      toast.error(t("credentials.failedToDeployKey"));
-    } finally {
-      setDeploying(false);
-    }
-  };
-
   return (
     <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
       {!loading && filtered.length === 0 ? (
@@ -243,10 +219,6 @@ export function CredentialList({
           onEditingFolderValueChange={setEditingFolderValue}
           onRenameFolder={renameFolder}
           onMoveCredentialToFolder={moveToFolder}
-          onDeployCredential={(cred) => {
-            setDeployHostId("");
-            setDeployTarget(cred);
-          }}
           onEditCredential={(cred) =>
             requestManage({ kind: "credential", credentialId: cred.id })
           }
@@ -261,62 +233,8 @@ export function CredentialList({
         onClose={() => setShareCredential(null)}
       />
 
-      <InlineView
-        open={!!deployTarget}
-        onOpenChange={(open) => {
-          if (!open) setDeployTarget(null);
-        }}
-        icon={<Upload className="size-4" />}
-        title={t("credentials.deployDialogTitle")}
-        footer={
-          <div className="ml-auto flex gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setDeployTarget(null)}
-              disabled={deploying}
-            >
-              {t("hosts.cancelBtn")}
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10"
-              disabled={!deployHostId || deploying}
-              onClick={() => void deploy()}
-            >
-              {deploying
-                ? t("credentials.deployingBtn")
-                : t("credentials.deployBtn")}
-            </Button>
-          </div>
-        }
-      >
-        <p className="text-xs text-muted-foreground">
-          {t("credentials.deployDialogDesc", { name: deployTarget?.name })}
-        </p>
-        <div className="flex flex-col gap-1.5">
-          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-            {t("credentials.targetHostLabel")}
-          </label>
-          <Select2
-            className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring"
-            value={deployHostId}
-            onChange={(e) => setDeployHostId(e.target.value)}
-          >
-            <option value="">{t("credentials.selectHostOption")}</option>
-            {hosts
-              .filter(
-                (h) => h.enableSsh || enabledHostProtocols(h).length === 0,
-              )
-              .map((h) => (
-                <option key={h.id} value={h.id}>
-                  {h.name || h.ip}
-                </option>
-              ))}
-          </Select2>
-        </div>
-      </InlineView>
+      {/* Plugins mount their own credential dialogs here. */}
+      <ComponentSlot slotId="credentials.panel" />
     </div>
   );
 }

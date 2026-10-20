@@ -36,6 +36,7 @@ import { ImageStorageTest } from "./settings/ImageStorageTest";
 import { HostTerminalSection } from "./settings/HostTerminalSection";
 import { resetTouchInputSettingsCache } from "./terminal/touch-input-settings-store";
 import { hostSetting } from "./terminal-api";
+import { readPanelSettings } from "./terminal/panel-settings";
 import { SshToolsPanel } from "./ssh-tools/SshToolsPanel";
 import { MacrosPanel } from "./macros/MacrosPanel";
 import {
@@ -154,6 +155,16 @@ export function activate(app: TermixApp): void {
       !!host.enableSsh && hostSetting(host, "enableTerminal", true),
   });
 
+  app.registerCompanionLayout("terminal", (host) => {
+    const panels = readPanelSettings(host);
+    return {
+      enabled: panels.enabled,
+      side: panels.side,
+      order: panels.buttons.order,
+      hidden: panels.buttons.hidden,
+    };
+  });
+
   app.registerHostEditorSection({
     id: "terminal",
     group: "ssh",
@@ -251,6 +262,10 @@ export function activate(app: TermixApp): void {
     id: "paste",
     titleKey: "keybindings.paste",
     editor: PasteNote,
+  });
+  app.registerKeybindingAction({
+    id: "clearConsole",
+    titleKey: "keybindings.clearConsole",
   });
   app.registerKeybindingAction({
     id: "sendControlCode",

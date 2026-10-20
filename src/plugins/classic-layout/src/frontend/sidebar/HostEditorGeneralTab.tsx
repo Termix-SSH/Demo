@@ -11,7 +11,7 @@ import {
   type Host,
   getSSHFolders,
   isElectron,
-  useSyncStatus,
+  useDesktopLinked,
   Select2,
   useHostProtocols,
   DefaultsOnly,
@@ -53,7 +53,7 @@ export function HostEditorGeneralTab({
   errors?: HostFormErrors;
 }) {
   const { t } = useTranslation();
-  const syncLinked = !!useSyncStatus()?.linked;
+  const syncLinked = useDesktopLinked();
   const pluginProtocols = useHostProtocols();
   const [predefinedTags, setPredefinedTags] = React.useState<string[]>([]);
   React.useEffect(() => {

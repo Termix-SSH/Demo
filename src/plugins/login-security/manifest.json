@@ -1,0 +1,106 @@
+{
+  "id": "login-security",
+  "name": "Login Security",
+  "version": "1.0.0",
+  "description": "Sign people out when idle, limit session length, turn off remember me and require a second factor at login.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Login-Security",
+  "docs": "https://docs.termix.site/plugins/login-security",
+  "category": "Access & Security",
+  "icon": "ShieldCheck",
+  "features": [
+    "Sign out after a set time without activity, in the browser and on the server",
+    "Limit how long a session can last",
+    "Turn off remember me and remembered devices",
+    "Require a second factor at every login or on a new device",
+    "Works with any installed second factor, like an authenticator app or a security key",
+    "People without a second factor are asked to set one up before they can use Termix"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.10.3",
+    "api": "^1.7"
+  },
+  "capabilities": ["auth:policy", "network:serve", "ui:surface"],
+  "contributes": {
+    "permissions": [
+      {
+        "name": "manage",
+        "titleKey": "permissions.manage.title",
+        "descriptionKey": "permissions.manage.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
+    "settings": {
+      "admin": [
+        {
+          "key": "idleTimeoutMinutes",
+          "type": "number",
+          "group": "settings.group.sessions",
+          "labelKey": "settings.admin.idleTimeoutMinutes.label",
+          "descriptionKey": "settings.admin.idleTimeoutMinutes.description",
+          "default": 0,
+          "min": 0,
+          "max": 1440
+        },
+        {
+          "key": "maxSessionHours",
+          "type": "number",
+          "group": "settings.group.sessions",
+          "labelKey": "settings.admin.maxSessionHours.label",
+          "descriptionKey": "settings.admin.maxSessionHours.description",
+          "default": 0,
+          "min": 0,
+          "max": 720
+        },
+        {
+          "key": "rememberDevice",
+          "type": "boolean",
+          "group": "settings.group.sessions",
+          "labelKey": "settings.admin.rememberDevice.label",
+          "descriptionKey": "settings.admin.rememberDevice.description",
+          "default": true
+        },
+        {
+          "key": "secondFactor",
+          "type": "select",
+          "group": "settings.group.secondFactor",
+          "labelKey": "settings.admin.secondFactor.label",
+          "descriptionKey": "settings.admin.secondFactor.description",
+          "default": "off",
+          "options": [
+            { "value": "off", "labelKey": "settings.admin.secondFactor.off" },
+            {
+              "value": "new-device",
+              "labelKey": "settings.admin.secondFactor.newDevice"
+            },
+            {
+              "value": "always",
+              "labelKey": "settings.admin.secondFactor.always"
+            }
+          ]
+        },
+        {
+          "key": "applyToExternal",
+          "type": "boolean",
+          "group": "settings.group.secondFactor",
+          "labelKey": "settings.admin.applyToExternal.label",
+          "descriptionKey": "settings.admin.applyToExternal.description",
+          "default": false
+        },
+        {
+          "key": "factors",
+          "type": "custom",
+          "group": "settings.group.secondFactor",
+          "component": "factors"
+        }
+      ]
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"],
+  "desktop": "server"
+}

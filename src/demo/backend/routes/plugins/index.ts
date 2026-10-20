@@ -20,3 +20,4 @@ import "./access";
 import "./session-sharing";
 import "./ai";
 import "./ai-ops";
+import "./server-tools";

@@ -9,10 +9,14 @@ import {
   type HostTrayTrigger,
   FolderIconEl,
   useServerStatus,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { useState } from "react";
-import { ChevronRight, Check, GripVertical } from "lucide-react";
+import { ChevronRight, Check, GripVertical, Lock } from "lucide-react";
 import { HostItem, statusCheckEnabled } from "../HostItem/HostItem";
 import { isFolder, folderHasMatch, collectAllHosts } from "../visible-rows";
 import { FolderActions } from "./FolderActions";
@@ -155,6 +159,11 @@ export function FolderItem({
   const breadcrumb =
     pathSegments.length > 1 ? pathSegments.slice(0, -1).join(" / ") : null;
   const folderHosts = collectAllHosts(folder.children);
+  // A folder whose hosts are all managed by a plugin is managed too.
+  const managedBy =
+    folderHosts.length > 0 && folderHosts.every((h) => h.lock)
+      ? folderHosts[0].lock?.pluginName
+      : null;
   const folderSelected =
     folderHosts.length > 0 &&
     folderHosts.every((h) => selectedHostIds.has(h.id));
@@ -288,6 +297,23 @@ export function FolderItem({
                   {folder.name}
                 </span>
               </span>
+              {managedBy && (
+                <TooltipProvider delayDuration={300}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span
+                        data-testid="folder-managed-marker"
+                        className="shrink-0"
+                      >
+                        <Lock className="size-2.5 text-muted-foreground/70" />
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent side="right">
+                      {t("hosts.managedTooltip", { plugin: managedBy })}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
               <span className="flex items-center gap-1 text-[10px] tabular-nums shrink-0 ml-1 px-1.5 py-[1px] bg-muted/70">
                 {online > 0 && (
                   <span className="text-accent-brand font-semibold">
@@ -299,6 +325,7 @@ export function FolderItem({
               {!isGroup && (
                 <FolderActions
                   folder={folder}
+                  managed={!!managedBy}
                   onOpenAllSessions={onOpenAllSessions}
                   onShareFolder={onShareFolder}
                   onManageFolder={onManageFolder}

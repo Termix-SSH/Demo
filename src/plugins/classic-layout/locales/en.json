@@ -234,19 +234,13 @@
     "secondFactorAfterExternalLoginDesc": "Off, an enrolled second factor is only asked for after password and other local logins, same as before. On, it is asked for after every login method, including SSO and LDAP.",
     "allowPasswordReset": "Allow Password Reset",
     "allowPasswordResetDesc": "Reset code via Docker logs",
-    "auditForwardingTitle": "Forward to SIEM",
-    "auditForwardingDesc": "Ship a copy of every audit entry to an external collector as NDJSON. Local logs stay the source of truth.",
-    "auditForwardingEnvNotice": "An environment variable also configures forwarding; the URL saved here takes precedence.",
-    "auditForwardingToken": "Bearer token (optional)",
-    "auditForwardingTokenStored": "Bearer token (stored)",
-    "auditForwardingSaved": "Audit forwarding settings saved",
-    "auditForwardingSaveError": "Failed to save audit forwarding settings",
+    "forceHttps": "Redirect HTTP to HTTPS",
+    "forceHttpsDesc": "Send plain HTTP to HTTPS and ask browsers to stay on HTTPS. Only works while Termix serves HTTPS itself",
+    "forceHttpsNoTls": "HTTPS is off in Termix, so nothing is redirected. Turn on ENABLE_SSL or redirect in your reverse proxy",
+    "forceHttpsFailed": "Could not change the HTTPS setting",
     "sessionTimeout": "Session Timeout",
     "hours": "hours",
     "sessionTimeoutRange": "Min 1h, max 720h",
-    "monitoringDefaults": "Monitoring Defaults",
-    "statusCheck": "Status Check",
-    "sec": "sec",
     "logLevel": "Log Level",
     "usersCount_other": "{{count}} users",
     "searchUsers": "Search users...",
@@ -364,9 +358,6 @@
     "sessionTimeoutRange2": "Session timeout must be between 1 and 720 hours",
     "sessionTimeoutSaved": "Session timeout saved",
     "sessionTimeoutSaveFailed": "Failed to save session timeout",
-    "monitoringIntervalInvalid": "Invalid interval values",
-    "monitoringSaved": "Monitoring settings saved",
-    "monitoringSaveFailed": "Failed to save monitoring settings",
     "logLevelUpdateFailed": "Failed to update log level",
     "createUserRequired": "Username and password are required",
     "createUserPasswordTooShort": "Password must be at least 6 characters",
@@ -768,60 +759,6 @@
       "saveFailed": "Could not save the change"
     }
   },
-  "sync": {
-    "server": "Termix server",
-    "account": "Account",
-    "status": "Status",
-    "never": "never",
-    "justNow": "just now",
-    "actionFailed": "That did not work. Try again.",
-    "unlinkedTitle": "This device only",
-    "unlinkedBody": "Termix works on its own on this device. Link it to your Termix server to keep everything in step.",
-    "unlinkedPointHosts": "Your hosts, credentials, snippets and settings follow you to every device.",
-    "unlinkedPointOffline": "Everything still works when the server cannot be reached, and catches up later.",
-    "unlinkedPointAccount": "You sign in with your server account, and hosts people shared with you show up here too.",
-    "linkButton": "Link to a server",
-    "state": {
-      "syncing": "Syncing",
-      "offline": "Server not reachable",
-      "error": "Sync stopped",
-      "signedOut": "Signed out",
-      "synced": "Synced {{time}}"
-    },
-    "signInAgain": "Sign in again",
-    "syncNow": "Sync now",
-    "unlink": "Unlink",
-    "unlinked": "This device is no longer linked",
-    "unlinkTitle": "Unlink this device?",
-    "unlinkDescription": "It stops syncing and signs out of the server. Hosts shared with you by others are removed from this device either way.",
-    "unlinkKeepTitle": "Keep my data here",
-    "unlinkKeepBody": "Your hosts, credentials and settings stay on this device and keep working on their own.",
-    "unlinkRemoveTitle": "Remove synced data",
-    "unlinkRemoveBody": "Everything that came from the server is removed from this device. Hosts kept on this device only stay.",
-    "conflictsTitle": "Conflicts",
-    "conflictsDescription": "These were changed here and on the server at the same time. The server version is in use. Keep yours to send it to the server instead.",
-    "keepMine": "Keep mine",
-    "keepServer": "Keep server",
-    "errorsTitle": "Not synced",
-    "errorsDescription": "The server did not accept these changes. They stay on this device.",
-    "errorPermission": "Your account on the server is not allowed to make this change.",
-    "retry": "Try again",
-    "whatSyncs": "What syncs",
-    "whatSyncsDescription": "Turn off anything you want to keep on this device only.",
-    "coreGroup": "Termix",
-    "notOnServer": "The server does not have this",
-    "notOnDevice": "Not on this device yet",
-    "localOnlyHint": "You can also keep single hosts or folders on this device from their settings.",
-    "originTitle": "Where connections start",
-    "originDescription": "Connect to hosts from this device, or through the server. You can change this per host.",
-    "originLocal": "This device",
-    "originRemote": "The server",
-    "proxy": {
-      "title": "Reverse proxy",
-      "description": "Only needed when something like Cloudflare Access or a login page sits in front of your server.",
-      "saved": "Saved"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Server host defaults",
     "titleUser": "My host defaults",
@@ -878,5 +815,18 @@
     "pickCredential": "Pick a credential to edit",
     "pickDefaults": "Pick a level of defaults to edit",
     "pickHint": "Everything about a connection lives here, grouped so you can find it."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Change branding",
+      "description": "Set the app name, tagline and logo shown to everyone."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "How much do you want on screen?",
+    "presetIntro": "Choose how much shows on screen.",
+    "presetChangeLater": "You can switch presets or change any single setting later in Settings, under Interface.",
+    "appearanceTitle": "Make it yours",
+    "appearanceIntro": "Pick a theme, an accent color, a font and your language. Changes show right away, and you can change them later in Settings."
   }
 }

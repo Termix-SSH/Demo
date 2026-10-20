@@ -1,4 +1,5 @@
 import {
+  ActionSlot,
   useConfirm,
   updatePluginHostSettings,
   resetHostToDefaults,
@@ -75,6 +76,7 @@ import { RESOURCE_ROW_EXTRA, rendersResourceRow } from "./row-metrics";
 import { ReorderIndicator } from "../ReorderIndicator";
 import { useSidebarSelection } from "./hooks/useSidebarSelection";
 import { useSidebarDragState } from "./hooks/useSidebarDragState";
+import { useHostPolicy } from "../use-host-policy";
 
 export function SidebarTree({
   children,
@@ -85,7 +87,6 @@ export function SidebarTree({
   selectionMode,
   onToggleSelectionMode,
   loading = false,
-  onExportSelected,
   arrangeLocked = true,
   density = "comfortable",
   trayTrigger = "hover",
@@ -111,7 +112,6 @@ export function SidebarTree({
   selectionMode: boolean;
   onToggleSelectionMode: () => void;
   loading?: boolean;
-  onExportSelected?: (hostIds: string[]) => void;
   /** When true, drag-to-rearrange is off entirely. Toggled from the panel header. */
   arrangeLocked?: boolean;
   density?: HostDensity;
@@ -124,6 +124,7 @@ export function SidebarTree({
   rowFields?: HostRowFields;
 }) {
   const { t } = useTranslation();
+  const hostPolicy = useHostPolicy();
   const rootRef = useRef<HTMLDivElement>(null);
   // Focus left on the clicked row sends the next keys to the host speed
   // search instead of the session that just opened.
@@ -1028,7 +1029,7 @@ export function SidebarTree({
             }
             hint={query ? undefined : t("hosts.noHostsYetHint")}
             action={
-              query ? undefined : (
+              query || !hostPolicy.manualCreate ? undefined : (
                 <Button
                   size="sm"
                   variant="outline"
@@ -1386,18 +1387,24 @@ export function SidebarTree({
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            <button
-              className="text-[10px] text-muted-foreground hover:text-foreground px-1.5 py-1 hover:bg-muted rounded transition-colors flex items-center gap-1 disabled:opacity-40"
-              disabled={selectedHostIds.size === 0}
-              onClick={() => {
-                onExportSelected?.(Array.from(selectedHostIds));
-                setSelectedHostIds(new Set());
-                onToggleSelectionMode();
-              }}
-            >
-              <Download className="size-3" />
-              {t("hosts.export.bulkButton")}
-            </button>
+            <ActionSlot
+              slotId="hosts.selectionActions"
+              context={() => [Array.from(selectedHostIds)]}
+              renderItem={(contribution, invoke) => (
+                <button
+                  className="text-[10px] text-muted-foreground hover:text-foreground px-1.5 py-1 hover:bg-muted rounded transition-colors flex items-center gap-1 disabled:opacity-40"
+                  disabled={selectedHostIds.size === 0}
+                  onClick={() => {
+                    invoke();
+                    setSelectedHostIds(new Set());
+                    onToggleSelectionMode();
+                  }}
+                >
+                  <Download className="size-3" />
+                  {t(contribution.titleKey)}
+                </button>
+              )}
+            />
             <button
               className="text-[10px] text-muted-foreground hover:text-foreground px-1.5 py-1 hover:bg-muted rounded transition-colors flex items-center gap-1 disabled:opacity-40"
               disabled={selectedHostIds.size === 0}

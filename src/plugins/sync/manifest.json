@@ -1,0 +1,95 @@
+{
+  "id": "sync",
+  "name": "Sync",
+  "version": "1.0.0",
+  "description": "Sync the desktop app with one or more servers, and manage other Termix servers as remote sites from a master.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Sync",
+  "docs": "https://docs.termix.site/plugins/sync",
+  "category": "Infrastructure",
+  "icon": "RefreshCw",
+  "features": [
+    "Link the desktop app to a server and keep hosts, credentials and settings in sync, with an offline copy",
+    "Link several servers and accounts and switch between them, each with its own copy",
+    "Add other Termix servers as remote sites with an API key",
+    "The hosts of other Termix servers appear as real hosts in your own list, read only and kept up to date",
+    "Open a session on one of them like on any host, with the remote server doing the connecting",
+    "A documented sync protocol that other clients can use"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.10.3",
+    "api": "^1.10"
+  },
+  "capabilities": [
+    "sync:provide",
+    "db:own",
+    "hosts:read",
+    "hosts:write",
+    "hosts:lock",
+    "ssh:transport",
+    "users:impersonate",
+    "network:outbound",
+    "network:serve",
+    "kv:own",
+    "secrets:own",
+    "ui:surface"
+  ],
+  "contributes": {
+    "permissions": [
+      {
+        "name": "sites",
+        "titleKey": "permissions.sites.title",
+        "descriptionKey": "permissions.sites.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "fields": [
+          {
+            "key": "siteId",
+            "type": "number",
+            "labelKey": "settings.host.site",
+            "hidden": true,
+            "defaultable": false
+          },
+          {
+            "key": "remoteId",
+            "type": "number",
+            "labelKey": "settings.host.site",
+            "hidden": true,
+            "defaultable": false
+          },
+          {
+            "key": "remoteStatus",
+            "type": "string",
+            "labelKey": "settings.host.site",
+            "hidden": true,
+            "defaultable": false
+          }
+        ]
+      },
+      "admin": [
+        {
+          "key": "sites",
+          "type": "custom",
+          "component": "sites"
+        }
+      ]
+    },
+    "panels": [
+      {
+        "id": "sync",
+        "titleKey": "sync.navTitle",
+        "icon": "Cloud"
+      }
+    ]
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"],
+  "desktop": "local"
+}

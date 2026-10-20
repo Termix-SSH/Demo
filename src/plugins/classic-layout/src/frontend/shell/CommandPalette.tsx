@@ -51,7 +51,7 @@ import {
   Settings,
   ShieldCheck,
 } from "lucide-react";
-import { canEditHost } from "../sidebar/host-permissions";
+import { canOpenHostEditor } from "../sidebar/host-permissions";
 
 interface CommandPaletteProps {
   /** Opens settings, optionally at one section. */
@@ -422,7 +422,7 @@ export function CommandPalette({
                                 </button>
                               );
                             })}
-                            {canEditHost(host) && (
+                            {canOpenHostEditor(host) && (
                               <button
                                 type="button"
                                 title={t("hosts.editHost")}

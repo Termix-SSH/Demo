@@ -200,6 +200,22 @@ export function tmuxShellForStream(stream: ClientChannel): TmuxShell {
 }
 
 /**
+ * Session-scoped options set before attaching. set-option takes a pane target,
+ * where a bare "=name" matches nothing and -q hides the error, so the options
+ * would never be applied. "=name:" names the session exactly.
+ */
+export function sessionOptionCommands(
+  name: string,
+  mouseEnabled: boolean,
+): string[][] {
+  const target = `=${name}:`;
+  return [
+    ["set-option", "-q", "-t", target, "mouse", mouseEnabled ? "on" : "off"],
+    ["set-option", "-q", "-t", target, "history-limit", "50000"],
+  ];
+}
+
+/**
  * Write tmux attach or new-session command to the interactive shell stream.
  * Uses && exit so the shell only closes if tmux started successfully.
  *
@@ -216,15 +232,14 @@ export function attachOrCreateTmuxSession(
 ): void {
   const name =
     existingSessionName || newSessionName || `termix-${randomUUID()}`;
-  const target = `=${name}`;
   const commands = existingSessionName
     ? []
     : [["new-session", "-d", "-s", name]];
-  commands.push(
-    ["set-option", "-q", "-t", target, "mouse", mouseEnabled ? "on" : "off"],
-    ["set-option", "-q", "-t", target, "history-limit", "50000"],
-    ["attach-session", "-t", target],
-  );
+  commands.push(...sessionOptionCommands(name, mouseEnabled), [
+    "attach-session",
+    "-t",
+    `=${name}`,
+  ]);
   const command = buildTmuxCommand(shell, ...commands);
   // PowerShell 5 has no &&, so a Windows shell stays open after a detach.
   stream.write(shell === "windows" ? `${command}\r` : `${command} && exit\r`);

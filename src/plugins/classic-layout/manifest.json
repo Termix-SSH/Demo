@@ -20,10 +20,24 @@
   "env": [],
   "engine": {
     "termix": ">=26.10.3",
-    "api": "^1.4"
+    "api": "^1.6"
   },
-  "capabilities": ["ui:layout", "ui:surface"],
+  "capabilities": [
+    "files:own",
+    "network:serve",
+    "settings:read-core",
+    "ui:layout",
+    "ui:surface"
+  ],
   "contributes": {
+    "permissions": [
+      {
+        "name": "branding",
+        "titleKey": "permissions.branding.title",
+        "descriptionKey": "permissions.branding.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
     "layouts": [
       {
         "id": "classic",

@@ -1,0 +1,65 @@
+{
+  "id": "hosts-config",
+  "name": "Hosts Config",
+  "version": "1.0.0",
+  "description": "Keep hosts, folders and sharing in a YAML or JSON file. Termix loads them as read only hosts and reloads when the file changes.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Hosts-Config",
+  "docs": "https://docs.termix.site/plugins/hosts-config",
+  "category": "Infrastructure",
+  "icon": "FileCode",
+  "features": [
+    "SSH, RDP, VNC, Telnet and any plugin protocol from one YAML or JSON file",
+    "Hosts from the file are read only, while pins and order stay with each user",
+    "Secrets from env vars, files or saved credentials, never written in the file",
+    "Shares with users and roles, per host or per folder",
+    "Turn plugin features on or off per host",
+    "Reloads when the file changes, with clear errors when it can't apply",
+    "Strict mode so every host comes from the file"
+  ],
+  "env": [
+    {
+      "name": "TERMIX_HOSTS_CONFIG",
+      "description": "Path to the hosts file (.yaml, .yml or .json). Unset means the plugin loads nothing and locks no hosts."
+    }
+  ],
+  "engine": {
+    "termix": ">=26.10.3",
+    "api": "^1.6"
+  },
+  "capabilities": [
+    "db:own",
+    "hosts:read",
+    "hosts:write",
+    "hosts:lock",
+    "credentials:use",
+    "users:impersonate",
+    "network:serve",
+    "ui:surface"
+  ],
+  "contributes": {
+    "permissions": [
+      {
+        "name": "manage",
+        "titleKey": "permissions.manage.title",
+        "descriptionKey": "permissions.manage.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
+    "settings": {
+      "admin": [
+        {
+          "key": "status",
+          "type": "custom",
+          "component": "status"
+        }
+      ]
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"],
+  "desktop": "server"
+}

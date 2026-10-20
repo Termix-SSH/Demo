@@ -15,6 +15,7 @@ import {
   copyToClipboard,
   readFromClipboard,
   Select2,
+  pluginWsUrl,
 } from "@termix-ssh/plugin-sdk/ui";
 import { resolveTermixThemeColors } from "../look/terminal-theme";
 import {
@@ -58,7 +59,13 @@ export function LocalTerminal({
   }, [api]);
   const { instance: terminal, ref: xtermRef } = useXTerm();
   const fitAddonRef = useRef<FitAddon | null>(null);
-  const sessionIdRef = useRef<string | null>(null);
+  const socketRef = useRef<WebSocket | null>(null);
+  const sendFrame = useCallback((payload: Record<string, unknown>) => {
+    const socket = socketRef.current;
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify(payload));
+    }
+  }, []);
   const sessionReadyRef = useRef(false);
   const visibleRef = useRef(isVisible);
   visibleRef.current = isVisible;
@@ -74,17 +81,10 @@ export function LocalTerminal({
 
   const fit = useCallback(() => {
     const fitAddon = fitAddonRef.current;
-    const sessionId = sessionIdRef.current;
     if (!terminal || !fitAddon) return;
     fitAddon.fit();
-    if (sessionId) {
-      window.electronAPI.resizeLocalTerminal(
-        sessionId,
-        terminal.cols,
-        terminal.rows,
-      );
-    }
-  }, [terminal]);
+    sendFrame({ type: "resize", cols: terminal.cols, rows: terminal.rows });
+  }, [sendFrame, terminal]);
 
   const focusWhenReady = useCallback(() => {
     if (!terminal || !sessionReadyRef.current || !visibleRef.current) return;
@@ -185,43 +185,61 @@ export function LocalTerminal({
     element?.addEventListener("mouseup", handleSelectionMouseUp);
 
     let disposed = false;
-    let removeData = () => {};
-    let removeExit = () => {};
     sessionReadyRef.current = false;
     const input = terminal.onData((data) => {
-      const sessionId = sessionIdRef.current;
-      if (sessionId) window.electronAPI.writeLocalTerminal(sessionId, data);
+      sendFrame({ type: "input", data });
     });
 
-    window.electronAPI
-      .startLocalTerminal({ cols: terminal.cols, rows: terminal.rows, shell })
-      .then(({ sessionId }) => {
-        if (disposed) {
-          window.electronAPI.closeLocalTerminal(sessionId);
-          return;
-        }
-        sessionIdRef.current = sessionId;
-        removeData = window.electronAPI.onLocalTerminalData(sessionId, (data) =>
-          terminal.write(data),
-        );
-        removeExit = window.electronAPI.onLocalTerminalExit(
-          sessionId,
-          (exitCode) => {
-            sessionIdRef.current = null;
+    const query = new URLSearchParams({
+      cols: String(terminal.cols),
+      rows: String(terminal.rows),
+      shell,
+    });
+    pluginWsUrl("ssh-terminal", `/local-terminal?${query}`, {
+      origin: "local",
+    })
+      .then((target) => {
+        if (disposed) return;
+        if (!target) throw new Error("The local backend is not reachable");
+        const socket = new WebSocket(target.url, target.protocols);
+        socketRef.current = socket;
+        socket.onmessage = (event) => {
+          let frame: Record<string, unknown>;
+          try {
+            frame = JSON.parse(String(event.data));
+          } catch {
+            return;
+          }
+          if (frame.type === "data" && typeof frame.data === "string") {
+            terminal.write(frame.data);
+          } else if (frame.type === "exit") {
             terminal.write(
-              `\r\n\x1b[33mProcess exited (${exitCode})\x1b[0m\r\n`,
+              `
+
+[33mProcess exited (${String(frame.exitCode)})[0m
+
+`,
             );
-          },
-        );
-        return window.electronAPI.readyLocalTerminal(sessionId).then(() => {
-          if (disposed) return;
-          sessionReadyRef.current = true;
-          focusWhenReady();
-        });
+          } else if (frame.type === "error") {
+            terminal.write(`
+
+[31m${String(frame.message)}[0m
+
+`);
+          } else if (frame.type === "started") {
+            sendFrame({ type: "ready" });
+            sessionReadyRef.current = true;
+            focusWhenReady();
+          }
+        };
       })
       .catch((error: unknown) => {
         const message = error instanceof Error ? error.message : String(error);
-        terminal.write(`\r\n\x1b[31m${message}\x1b[0m\r\n`);
+        terminal.write(`
+
+[31m${message}[0m
+
+`);
       });
 
     const observer = new ResizeObserver(() => fit());
@@ -236,18 +254,16 @@ export function LocalTerminal({
       terminal.attachCustomKeyEventHandler(() => true);
       observer.disconnect();
       input.dispose();
-      removeData();
-      removeExit();
       element?.removeEventListener("contextmenu", handleContextMenu);
       element?.removeEventListener("mouseup", handleSelectionMouseUp);
       clipboardProvider.dispose();
-      const sessionId = sessionIdRef.current;
-      sessionIdRef.current = null;
-      if (sessionId) window.electronAPI.closeLocalTerminal(sessionId);
+      const socket = socketRef.current;
+      socketRef.current = null;
+      socket?.close();
       fitAddonRef.current = null;
       fitAddon.dispose();
     };
-  }, [fit, focusWhenReady, instanceId, shell, terminal, xtermRef]);
+  }, [fit, focusWhenReady, instanceId, sendFrame, shell, terminal, xtermRef]);
 
   useEffect(() => {
     if (!isVisible) return;

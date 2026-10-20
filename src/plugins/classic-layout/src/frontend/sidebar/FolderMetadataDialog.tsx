@@ -9,7 +9,7 @@ import {
   HexColorPicker,
   IconPicker,
   getCredentials,
-  useSyncStatus,
+  useDesktopLinked,
   FakeSwitch,
   SettingRow,
 } from "@termix-ssh/plugin-sdk/ui";
@@ -59,7 +59,7 @@ export function FolderMetadataDialog({
   const [icon, setIcon] = useState(DEFAULT_FOLDER_ICON);
   const [credentialId, setCredentialId] = useState<string>("");
   const [localOnly, setLocalOnly] = useState(false);
-  const syncLinked = !!useSyncStatus()?.linked;
+  const syncLinked = useDesktopLinked();
   const [credentials, setCredentials] = useState<CredentialOption[]>([]);
 
   const parentPath =

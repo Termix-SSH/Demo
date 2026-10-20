@@ -3,8 +3,9 @@ import { HostFeatureFields } from "@termix-ssh/plugin-sdk/ui";
 import { HostCloudflareTunnelSettings } from "./HostCloudflareTunnelSettings";
 import { HostTerminalSettings } from "./HostTerminalSettings";
 import { HostToolbarSettings } from "./HostToolbarSettings";
+import { HostPanelSettings } from "./HostPanelSettings";
 
-/** The host editor's Terminal tab: switches, the toolbar, then the look. */
+/** The host editor's Terminal tab: switches, the toolbar, the panel bar, then the look. */
 export function HostTerminalSection({
   form,
   setField,
@@ -15,6 +16,7 @@ export function HostTerminalSection({
     <>
       <HostFeatureFields form={form} updateForm={updateForm} />
       <HostToolbarSettings form={form} updateForm={updateForm} host={host} />
+      <HostPanelSettings form={form} updateForm={updateForm} />
       <HostCloudflareTunnelSettings
         form={form}
         updateForm={updateForm}

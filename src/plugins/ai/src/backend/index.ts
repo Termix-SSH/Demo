@@ -1,3 +1,7 @@
+import { createExposureExplainer } from "./exposure/explain.js";
+import { createExposureRepository } from "./exposure/repository.js";
+import { createExposureService } from "./exposure/service.js";
+import { registerExposureRoutes } from "./exposure/routes.js";
 import type { Router } from "express";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import { hostImportNormalizer } from "./host-import.js";
@@ -5,6 +9,15 @@ import { createModelInfoCache } from "./model-info.js";
 import { createAiRepository } from "./repository.js";
 import { registerProviderSync } from "./sync.js";
 import { registerAgentRoutes } from "./agents/routes.js";
+import { createAnnotationService } from "./assets/annotate.js";
+import { createAssetRepository } from "./assets/repository.js";
+import { registerAssetRoutes } from "./assets/routes.js";
+import {
+  createAssetService,
+  parseTime,
+  SETTINGS as ASSET_SETTINGS,
+  subscribeHostEvents,
+} from "./assets/service.js";
 import { createAgentStore } from "./agents/store.js";
 import { registerOpsRoutes } from "./ops/routes.js";
 import { registerAiRoutes } from "./routes.js";
@@ -62,6 +75,71 @@ export async function activate(ctx: PluginContext) {
   // The kill switch also stops what is already running.
   ctx.settings.onChange("autoOpsPaused", (value) => {
     if (value === true) taskService.stopAll();
+  });
+
+  // Asset inventory: collected daily, on host events and on request.
+  const assetRepository = await createAssetRepository(ctx);
+  await assetRepository.failInterrupted();
+  // Annotated by a model after each collection, unless turned off.
+  const annotation = createAnnotationService({
+    ctx,
+    assets: assetRepository,
+    repository,
+    modelInfo,
+    collector: () => assets.collector(),
+  });
+  const exposureRepository = await createExposureRepository(ctx);
+  const exposure = createExposureService(
+    ctx,
+    exposureRepository,
+    assetRepository,
+  );
+  const assets = createAssetService(ctx, assetRepository, {
+    afterCollect: async (outcomes, userId) => {
+      await exposure.collect(outcomes, userId);
+      await exposure.notify();
+      await annotation.afterCollect();
+    },
+  });
+  registerExposureRoutes(
+    router,
+    ctx,
+    exposureRepository,
+    createExposureExplainer(ctx, repository),
+    () => assetRepository.listAssets(),
+  );
+  ctx.schedule.every(60_000, () =>
+    exposure
+      .notify()
+      .catch(() => ctx.log.warn("Exposure notification retry failed")),
+  );
+  ctx.schedule.every(86400_000, async () => {
+    const days = Number(await ctx.settings.get("exposureRetentionDays")) || 90;
+    await exposureRepository
+      .prune(Date.now(), Math.min(365, Math.max(7, days)))
+      .catch(() => ctx.log.warn("Exposure retention failed"));
+  });
+  ctx.disposables.add(() => exposure.close());
+  registerAssetRoutes(router, ctx, assetRepository, assets, annotation);
+  subscribeHostEvents(ctx, assets);
+  ctx.schedule.every(60_000, () =>
+    assets
+      .tick()
+      .catch((error) => ctx.log.warn(`Asset schedule failed: ${error}`)),
+  );
+  ctx.disposables.add(() => assets.close());
+  ctx.disposables.add(() => annotation.close());
+  ctx.settings.onChange("autoOpsPaused", (value) => {
+    if (value === true) annotation.stop("AI auto-ops was paused");
+  });
+  ctx.settings.onChange("globallyEnabled", (value) => {
+    if (value !== true) annotation.stop("The AI assistant was turned off");
+  });
+  ctx.settings.onValidate("admin", (values) => {
+    const time = values[ASSET_SETTINGS.time];
+    if (time !== undefined && time !== "" && !parseTime(time)) {
+      return { [ASSET_SETTINGS.time]: "Use HH:MM, for example 03:00" };
+    }
   });
 
   ctx.registry.provide("ai.hostImportNormalizer", hostImportNormalizer);

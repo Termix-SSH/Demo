@@ -34,11 +34,6 @@ const QuickConnectPanel = lazy(() =>
     default: m.QuickConnectPanel,
   })),
 );
-const SyncPanel = lazy(() =>
-  import("../settings/sync/SyncPanel").then((m) => ({
-    default: m.SyncPanel,
-  })),
-);
 const CredentialsPanel = lazy(() =>
   import("../sidebar/CredentialsPanel").then((m) => ({
     default: m.CredentialsPanel,
@@ -221,16 +216,6 @@ export function ClassicLayout() {
                 onRenameTab={tabs.rename}
                 onReorderTabs={tabs.setList}
               />
-            </div>,
-          )}
-
-        {railView === "sync" &&
-          panelScope(
-            "sync",
-            owned,
-            true,
-            <div className="flex-1 min-h-0 overflow-y-auto">
-              <SyncPanel />
             </div>,
           )}
       </div>

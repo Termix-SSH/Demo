@@ -5,7 +5,9 @@ import {
   homepageItems,
   homepageLayouts,
   dashboardServiceLinks,
+  recentActivity,
 } from "./tables.js";
+import { createActivityProvider } from "./activity.js";
 import { createHomepageRepository } from "./repository.js";
 import { registerHomepageRoutes } from "./routes.js";
 import { registerOutboundRoutes } from "./outbound-routes.js";
@@ -66,6 +68,17 @@ export async function activate(ctx: PluginContext) {
       ),
     }),
   });
+
+  // Core checks host access, then stores through this.
+  const activity = await ctx.db.define(recentActivity);
+  ctx.hosts.activity.provide(
+    createActivityProvider(ctx.db, activity, (message, error) =>
+      ctx.log.error(
+        message,
+        error instanceof Error ? error : new Error(String(error)),
+      ),
+    ),
+  );
 
   ctx.services.provide("homepage.items", createHomepageItemsService(ctx, repo));
 

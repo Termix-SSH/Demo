@@ -1,4 +1,5 @@
-import type { ComponentType } from "react";
+import { useEffect, type ComponentType } from "react";
+import type { Tab } from "@/types/ui-types";
 import type {
   Disposer,
   PluginManifest,
@@ -10,6 +11,13 @@ import {
 } from "@/api/plugins-api";
 import { registerRailItem } from "@/sidebar/rail-items";
 import { registerTabType, type TabRenderProps } from "@/shell/tab-registry";
+import {
+  registerCompanionDef,
+  registerCompanionLayoutDef,
+  toggleCompanion,
+  type CompanionDefaults,
+  type CompanionRenderProps,
+} from "@/shell/companions";
 import { registerPanel, type PanelRenderProps } from "@/shell/panel-registry";
 import {
   registerHostEditorSection,
@@ -18,6 +26,8 @@ import {
 import {
   registerHostAction,
   registerHostBadge,
+  registerHostEditorToolbarItem,
+  registerHostStatusIndicator,
   registerHostContextMenuItem,
 } from "@/sidebar/host-contributions";
 import {
@@ -223,6 +233,56 @@ export function createPluginApp(
       );
     },
 
+    registerCompanion(id, component, options = {}) {
+      const useDefaults = options.useDefaults;
+      const Defaults = useDefaults
+        ? scoped(function CompanionDefaultsReader({
+            onValue,
+          }: {
+            onValue: (value: CompanionDefaults) => void;
+          }) {
+            const value = useDefaults();
+            const { open, side, size, edgeButton } = value;
+            useEffect(() => {
+              onValue({ open, side, size, edgeButton });
+            }, [onValue, open, side, size, edgeButton]);
+            return null;
+          })
+        : undefined;
+      return track(
+        registerCompanionDef({
+          id: `${pluginId}.${id}`,
+          pluginId,
+          component: scoped(
+            component as unknown as ComponentType<CompanionRenderProps>,
+          ),
+          icon: withIconBoundary(pluginId, options.icon as never) as never,
+          titleKey: options.titleKey ? key(options.titleKey) : undefined,
+          order: options.order,
+          tabTypes: options.tabTypes,
+          when: options.when as never,
+          Defaults,
+        }),
+      );
+    },
+
+    registerCompanionLayout(tabType, resolve) {
+      return track(
+        registerCompanionLayoutDef({
+          id: `${pluginId}.${tabType}`,
+          tabTypes: [tabType],
+          resolve: resolve as never,
+        }),
+      );
+    },
+
+    toggleCompanion(tab, id) {
+      toggleCompanion(
+        tab as unknown as Tab,
+        id ? `${pluginId}.${id}` : undefined,
+      );
+    },
+
     registerTab(type, component, options = {}) {
       requireDeclared("tab", type, "tab type");
       return track(
@@ -335,6 +395,31 @@ export function createPluginApp(
           pluginId,
           when: hostCallback(badge.when) as never,
           component: scoped(badge.component) as never,
+          order: badge.order,
+        }),
+      );
+    },
+
+    registerHostStatusIndicator(indicator) {
+      return track(
+        registerHostStatusIndicator({
+          id: indicator.id,
+          pluginId,
+          when: hostCallback(indicator.when) as never,
+          component: scoped(indicator.component) as never,
+          order: indicator.order,
+        }),
+      );
+    },
+
+    registerHostEditorToolbarItem(item) {
+      return track(
+        registerHostEditorToolbarItem({
+          id: item.id,
+          pluginId,
+          when: hostCallback(item.when) as never,
+          component: scoped(item.component) as never,
+          order: item.order,
         }),
       );
     },
@@ -525,7 +610,8 @@ export function createPluginApp(
           permission: step.permission
             ? resolvePluginPermission(pluginId, step.permission)
             : undefined,
-          position: sectionPosition(step.section, step.order),
+          position: sectionPosition(step.section, step.order, step.position),
+          replaces: step.replaces,
           isRelevant: when
             ? (ctx) =>
                 when({

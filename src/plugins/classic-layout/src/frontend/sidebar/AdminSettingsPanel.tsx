@@ -22,8 +22,6 @@ import {
   updatePasswordResetAllowed,
   getSessionTimeout,
   updateSessionTimeout,
-  getStatusCheckSettings,
-  updateStatusCheckSettings,
   getLogLevel,
   updateLogLevel,
   getExternalAutoProvision,
@@ -33,7 +31,6 @@ import {
   isElectron,
   getUserRoles,
   getBranding,
-  updateBranding,
   type BrandingSettings,
   getTlsStatus,
   uploadTlsCertificate,
@@ -46,7 +43,7 @@ import {
   type Host,
   getDatabaseTransferUrl,
 } from "@termix-ssh/plugin-sdk/ui";
-import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
+import { usePluginApi, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { useState, useEffect } from "react";
 import {
   FeatureSettingsSection,
@@ -104,6 +101,7 @@ export function AdminSettingsPanel({
   section?: AdminSection;
 } = {}) {
   const { t } = useTranslation();
+  const pluginApi = usePluginApi();
   const confirm = useConfirm();
   const [openSections, setOpenSections] = useState<
     Set<AdminSection | FeatureSectionId>
@@ -115,7 +113,6 @@ export function AdminSettingsPanel({
   const [passwordLoginForced, setPasswordLoginForced] = useState(false);
   const [allowPasswordReset, setAllowPasswordReset] = useState(true);
   const [sessionTimeout, setSessionTimeout] = useState("24");
-  const [statusInterval, setStatusInterval] = useState("30");
   const [logLevel, setLogLevel] = useState("info");
   const [notificationPrivateEndpoints, setNotificationPrivateEndpoints] =
     useState<string[]>([]);
@@ -282,7 +279,6 @@ export function AdminSettingsPanel({
         pwLogin,
         pwReset,
         timeout,
-        monitoring,
         level,
         oidcProv,
         secondFactorExternal,
@@ -293,7 +289,6 @@ export function AdminSettingsPanel({
         getPasswordLoginAllowed(),
         getPasswordResetAllowed(),
         getSessionTimeout(),
-        getStatusCheckSettings(),
         getLogLevel(),
         getExternalAutoProvision(),
         getSecondFactorAfterExternalLogin(),
@@ -316,9 +311,6 @@ export function AdminSettingsPanel({
       if (pwReset.status === "fulfilled") setAllowPasswordReset(pwReset.value);
       if (timeout.status === "fulfilled")
         setSessionTimeout(String(timeout.value.timeoutHours));
-      if (monitoring.status === "fulfilled") {
-        setStatusInterval(String(monitoring.value.statusCheckInterval));
-      }
 
       if (level.status === "fulfilled") setLogLevel(level.value.level);
       if (notificationEndpoints.status === "fulfilled") {
@@ -414,6 +406,14 @@ export function AdminSettingsPanel({
     }
   }
 
+  async function updateBranding(update: {
+    appName?: string;
+    tagline?: string;
+    logo?: string | null;
+  }): Promise<BrandingSettings> {
+    return (await pluginApi.patch<BrandingSettings>("/branding", update)).data;
+  }
+
   async function handleSaveBranding() {
     if (!brandingSettings) return;
     setBrandingSaving(true);
@@ -459,20 +459,6 @@ export function AdminSettingsPanel({
       toast.success(t("admin.sessionTimeoutSaved"));
     } catch {
       toast.error(t("admin.sessionTimeoutSaveFailed"));
-    }
-  }
-
-  async function handleSaveMonitoring() {
-    const status = parseInt(statusInterval, 10);
-    if (isNaN(status) || status < 5 || status > 3600) {
-      toast.error(t("admin.monitoringIntervalInvalid"));
-      return;
-    }
-    try {
-      await updateStatusCheckSettings({ statusCheckInterval: status });
-      toast.success(t("admin.monitoringSaved"));
-    } catch {
-      toast.error(t("admin.monitoringSaveFailed"));
     }
   }
 
@@ -802,9 +788,6 @@ export function AdminSettingsPanel({
         sessionTimeout={sessionTimeout}
         setSessionTimeout={setSessionTimeout}
         handleSaveSessionTimeout={handleSaveSessionTimeout}
-        statusInterval={statusInterval}
-        setStatusInterval={setStatusInterval}
-        handleSaveMonitoring={handleSaveMonitoring}
         logLevel={logLevel}
         handleSaveLogLevel={handleSaveLogLevel}
       />

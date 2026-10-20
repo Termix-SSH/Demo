@@ -19,3 +19,12 @@ export function isSudoCommand(line: string): boolean {
 export function isSudoPrompt(output: string, lastCommand: string): boolean {
   return SUDO_OUTPUT.test(output) || isSudoCommand(lastCommand);
 }
+
+// Also covers charset switches like ESC ( B, which colored prompts end with,
+// and OSC titles. Left in, they hide the prompt from the end-of-line match.
+const ANSI =
+  /\x1b(?:\][^\x07\x1b]*(?:\x07|\x1b\\)|[()#%*+][ -~]|[@-Z\\-_]|\[[0-9:;<=>?!]*[@-~])/g;
+
+export function stripAnsi(output: string): string {
+  return output.replace(ANSI, "");
+}

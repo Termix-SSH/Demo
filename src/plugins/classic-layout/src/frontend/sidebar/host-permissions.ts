@@ -23,16 +23,33 @@ export function canViewHostConfig(host: Host): boolean {
   return !host.isShared || sharedLevelRank(host) >= LEVEL_RANK.view;
 }
 
+/** A plugin manages this host, so it is read only for everyone. */
+export function isLockedHost(host: Host): boolean {
+  return !!host.lock;
+}
+
 export function canEditHost(host: Host): boolean {
+  if (isLockedHost(host)) return false;
   return !host.isShared || sharedLevelRank(host) >= LEVEL_RANK.edit;
 }
 
+/** The editor opens read only for a managed host. */
+export function canOpenHostEditor(host: Host): boolean {
+  return canEditHost(host) || isLockedHost(host);
+}
+
+/** Pins and order stay the user's own on a managed host. */
+export function canArrangeHost(host: Host): boolean {
+  return canEditHost(host) || isLockedHost(host);
+}
+
 export function canShareHost(host: Host): boolean {
+  if (isLockedHost(host)) return false;
   return !host.isShared || sharedLevelRank(host) >= LEVEL_RANK.manage;
 }
 
 export function canDeleteHost(host: Host): boolean {
-  return !host.isShared;
+  return !host.isShared && !isLockedHost(host);
 }
 
 /** SSH, then every protocol a running plugin registered. */

@@ -50,6 +50,7 @@ import { useCommandTracker } from "./command-history/useCommandTracker";
 import {
   isPasswordPrompt as endsInPasswordPrompt,
   isSudoPrompt as isSudoPromptOutput,
+  stripAnsi,
 } from "./password-prompt";
 import {
   highlightTerminalOutput,
@@ -293,6 +294,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       : themeColors.background;
     const fitAddonRef = useRef<FitAddon | null>(null);
     const webSocketRef = useRef<WebSocket | null>(null);
+    const cwdWaitersRef = useRef<Array<(path: string) => void>>([]);
     const terminalInputDisposableRef = useRef<{ dispose(): void } | null>(null);
     const localEchoRef = useRef<TerminalLocalEcho | null>(null);
     const sessionOriginRef = useRef<"local" | "remote">("local");
@@ -1531,12 +1533,35 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
         // What the tab menu's share entry needs, read at call time.
         getShareTarget: () => slotApiRef.current?.getShareTarget() ?? null,
         openFileManager: () => openFilesAtCwd(),
+        // Asks the server for the shell's working directory.
+        getCwd: () => requestCwd(),
       }),
       [isConnected, terminal],
     );
 
     function getCopyOnSelect() {
       return getClientPreference("copyOnSelect") === "true";
+    }
+
+    function requestCwd(): Promise<string | null> {
+      const socket = webSocketRef.current;
+      if (!socket || socket.readyState !== WebSocket.OPEN) {
+        return Promise.resolve(null);
+      }
+      return new Promise((resolve) => {
+        const timer = setTimeout(() => {
+          cwdWaitersRef.current = cwdWaitersRef.current.filter(
+            (waiter) => waiter !== done,
+          );
+          resolve(null);
+        }, 4000);
+        const done = (path: string) => {
+          clearTimeout(timer);
+          resolve(path);
+        };
+        cwdWaitersRef.current.push(done);
+        socket.send(JSON.stringify({ type: "get_cwd" }));
+      });
     }
 
     function openFilesAtCwd() {
@@ -1914,10 +1939,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
               scheduleAutosuggestionUpdate();
               // Strip ANSI escape codes before testing, newer sudo versions (Ubuntu 26.04+)
               // emit colored prompts with embedded escape sequences that break the regex.
-              const strippedData = msg.data.replace(
-                /\x1b(?:[@-Z\\-_]|\[[0-9:;<=>?!]*[@-~])/g,
-                "",
-              );
+              const strippedData = stripAnsi(msg.data);
               outputTailRef.current = (
                 outputTailRef.current + strippedData
               ).slice(-200);
@@ -2212,7 +2234,9 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
               connectionTimeoutRef.current = null;
             }
           } else if (msg.type === "cwd") {
-            onOpenFileManager?.(msg.path as string);
+            const waiter = cwdWaitersRef.current.shift();
+            if (waiter) waiter(msg.path as string);
+            else onOpenFileManager?.(msg.path as string);
           } else if (msg.type === "open_file_in_editor") {
             onOpenFileInEditor?.(msg.path as string);
           } else if (msg.type === "passphrase_required") {

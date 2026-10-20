@@ -4,12 +4,14 @@ import { FolderOpen, Pencil, Settings2, Share2, Trash2 } from "lucide-react";
 
 export function FolderActions({
   folder,
+  managed,
   onOpenAllSessions,
   onShareFolder,
   onManageFolder,
   onDeleteFolder,
 }: {
   folder: HostFolder;
+  managed?: boolean;
   onOpenAllSessions: (folder: HostFolder) => void;
   onShareFolder?: (folder: HostFolder) => void;
   onManageFolder: (folder: HostFolder) => void;
@@ -62,28 +64,32 @@ export function FolderActions({
       >
         <Settings2 className="size-3" />
       </button>
-      <button
-        type="button"
-        title={t("hosts.editFolder")}
-        className={actionButtonClass}
-        onClick={(e) => {
-          e.stopPropagation();
-          onManageFolder(folder);
-        }}
-      >
-        <Pencil className="size-3" />
-      </button>
-      <button
-        type="button"
-        title={t("hosts.deleteFolder")}
-        className={`${actionButtonClass} hover:text-destructive`}
-        onClick={(e) => {
-          e.stopPropagation();
-          onDeleteFolder(folder);
-        }}
-      >
-        <Trash2 className="size-3" />
-      </button>
+      {!managed && (
+        <button
+          type="button"
+          title={t("hosts.editFolder")}
+          className={actionButtonClass}
+          onClick={(e) => {
+            e.stopPropagation();
+            onManageFolder(folder);
+          }}
+        >
+          <Pencil className="size-3" />
+        </button>
+      )}
+      {!managed && (
+        <button
+          type="button"
+          title={t("hosts.deleteFolder")}
+          className={`${actionButtonClass} hover:text-destructive`}
+          onClick={(e) => {
+            e.stopPropagation();
+            onDeleteFolder(folder);
+          }}
+        >
+          <Trash2 className="size-3" />
+        </button>
+      )}
     </span>
   );
 }

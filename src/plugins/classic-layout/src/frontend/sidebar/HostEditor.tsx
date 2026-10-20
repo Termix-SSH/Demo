@@ -46,6 +46,7 @@ import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Globe,
+  Lock,
   Pencil,
   Plus,
   Puzzle,
@@ -620,7 +621,9 @@ export function HostEditor({
   // recipients may change the host but never its credential references
   // or auth type (owner-only, enforced server-side too).
   const isSharedHost = !!host?.isShared;
-  const readOnly = isSharedHost && host !== null && !canEditHost(host);
+  const lock = host?.lock ?? null;
+  const readOnly =
+    !!lock || (isSharedHost && host !== null && !canEditHost(host));
   const lockAuthReferences = isSharedHost && !readOnly;
 
   const handleProtocolToggle = (
@@ -756,7 +759,18 @@ export function HostEditor({
         banner={
           <>
             {banner}
-            {isSharedHost && (
+            {lock && (
+              <div className="flex items-start gap-2.5 p-3 border border-accent-brand/30 bg-accent-brand/5 text-xs text-muted-foreground">
+                <Lock className="size-3.5 shrink-0 mt-0.5 text-accent-brand" />
+                <div className="flex flex-col gap-0.5">
+                  <span>
+                    {t("hosts.managedBanner", { plugin: lock.pluginName })}
+                  </span>
+                  {lock.note && <span>{lock.note}</span>}
+                </div>
+              </div>
+            )}
+            {isSharedHost && !lock && (
               <div className="flex items-start gap-2.5 p-3 border border-accent-brand/30 bg-accent-brand/5 text-xs text-muted-foreground">
                 <Shield className="size-3.5 shrink-0 mt-0.5 text-accent-brand" />
                 <div>

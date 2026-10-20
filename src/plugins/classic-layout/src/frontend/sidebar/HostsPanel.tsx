@@ -1,9 +1,7 @@
 import {
-  getErrorMessage,
   enabledHostProtocols,
   useHostProtocols,
   useSshAuthProviders,
-  type HostData,
   ComponentSlot,
   usePluginHostSections,
   Button,
@@ -18,8 +16,6 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
   getSSHHosts,
-  bulkImportSSHHosts,
-  importSSHConfigHosts,
   type SSHHostWithStatus,
   type Host,
   type HostFolder,
@@ -29,15 +25,17 @@ import {
   type HostGroupKey,
   type HostSidebarFilterState,
 } from "@termix-ssh/plugin-sdk/ui";
-import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
+import {
+  useSlotContributions,
+  useTranslation,
+} from "@termix-ssh/plugin-sdk/frontend";
 import { setBarActions } from "./tree/host-bar-actions";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowUpDown,
   Check,
   ChevronsDownUp,
   ChevronsUpDown,
-  Download,
   Filter,
   FolderPlus,
   GripVertical,
@@ -55,12 +53,12 @@ import {
 import { toast } from "sonner";
 import { SidebarTree, isFolder } from "./SidebarTree";
 import { HostShareModal } from "./HostShareModal";
-import { HostExportDialog } from "./HostExportDialog";
 import { CustomizeSidebarPanel } from "./CustomizeSidebarPanel";
 import { sortHostTree, type SortKey } from "./host-sort";
 import { withLiveStatus } from "./live-host-status";
 import { useHostSidebarPreferences } from "./tree/hooks/useHostSidebarPreferences";
 import { useArrangeLock } from "./use-arrange-lock";
+import { useHostPolicy } from "./use-host-policy";
 
 type FilterState = HostSidebarFilterState;
 
@@ -221,6 +219,7 @@ export function HostsPanel({
   onCloseSidebar?: () => void;
 }) {
   const { t } = useTranslation();
+  const hostPolicy = useHostPolicy();
   const { statuses, getStatus } = useServerStatus();
   const liveHostTree = useMemo(
     () => (hostTree ? withLiveStatus(hostTree, getStatus) : undefined),
@@ -237,6 +236,7 @@ export function HostsPanel({
       plugin.contributes!.settings!.host!.enableKey!,
     ]),
   );
+  const hasImportMenu = useSlotContributions("hosts.importMenu").length > 0;
   const hostProtocols = useHostProtocols();
   const sshAuthProviders = useSshAuthProviders();
   const [hostSearch, setHostSearch] = useState("");
@@ -245,10 +245,6 @@ export function HostsPanel({
   const [refreshing, setRefreshing] = useState(false);
   const [rawHosts, setRawHosts] = useState<SSHHostWithStatus[]>([]);
   const [shareModalHost, setShareModalHost] = useState<Host | null>(null);
-  const [exportDialogOpen, setExportDialogOpen] = useState(false);
-  const [exportPreselection, setExportPreselection] = useState<Set<string>>(
-    new Set(),
-  );
   const { preferences: sidebarPrefs, update: updateSidebarPrefs } =
     useHostSidebarPreferences();
   useEffect(() => {
@@ -262,9 +258,6 @@ export function HostsPanel({
   const groupKey = sidebarPrefs.groupKey;
   const filterState = sidebarPrefs.filters;
   const filterActive = Object.values(filterState).some((arr) => arr.length > 0);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const sshConfigInputRef = useRef<HTMLInputElement>(null);
-  const importOverwriteRef = useRef(false);
   const allTags = [...new Set(rawHosts.flatMap((h) => h.tags ?? []))];
 
   function handleSortChange(key: SortKey) {
@@ -366,59 +359,6 @@ export function HostsPanel({
     }
   }
 
-  function handleDownloadSample() {
-    const sample = JSON.stringify(
-      {
-        hosts: [
-          {
-            name: "Web Server (Production)",
-            ip: "192.168.1.100",
-            username: "admin",
-            authType: "password",
-            password: "your_secure_password_here",
-            folder: "Production",
-            tags: ["web", "production", "nginx"],
-            pin: true,
-            notes: "Main production web server running Nginx",
-            enableSsh: true,
-            sshPort: 22,
-            enableTerminal: true,
-            enableTunnel: false,
-            enableFileManager: true,
-            defaultPath: "/var/www",
-          },
-          {
-            name: "Database Server",
-            ip: "192.168.1.101",
-            username: "dbadmin",
-            authType: "key",
-            key: "-----BEGIN OPENSSH PRIVATE KEY-----\nYour SSH private key content here\n-----END OPENSSH PRIVATE KEY-----",
-            keyPassword: "optional_key_passphrase",
-            keyType: "ssh-ed25519",
-            folder: "Production",
-            tags: ["database", "production", "postgresql"],
-            enableSsh: true,
-            sshPort: 22,
-            enableTerminal: true,
-            enableTunnel: true,
-            enableFileManager: false,
-          },
-        ],
-      },
-      null,
-      2,
-    );
-    const blob = new Blob([sample], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "termix-hosts-sample.json";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
-
   return (
     <div className="relative flex flex-col flex-1 min-h-0 overflow-hidden">
       {
@@ -441,95 +381,6 @@ export function HostsPanel({
             )}
           </div>
 
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".json"
-            className="hidden"
-            onChange={async (e) => {
-              const file = e.target.files?.[0];
-              if (!file) return;
-              e.target.value = "";
-              try {
-                const text = await file.text();
-                const parsed = JSON.parse(text);
-                const hostsArray = Array.isArray(parsed)
-                  ? parsed
-                  : (parsed.hosts ?? []);
-                const credentialsArray =
-                  !Array.isArray(parsed) && Array.isArray(parsed.credentials)
-                    ? parsed.credentials
-                    : undefined;
-                if (!Array.isArray(hostsArray) || hostsArray.length === 0) {
-                  toast.error(t("hosts.importNoHosts"));
-                  return;
-                }
-                if (hostsArray.length > 100) {
-                  toast.error(t("hosts.importTooMany", { max: 100 }));
-                  return;
-                }
-                const normalized = hostsArray.map(
-                  (h: Record<string, unknown>) => ({
-                    ...h,
-                    port: h.port ?? h.sshPort ?? 22,
-                    enableSsh: h.enableSsh ?? h.connectionType === "ssh",
-                  }),
-                );
-                const result = await bulkImportSSHHosts(
-                  normalized as unknown as HostData[],
-                  importOverwriteRef.current,
-                  credentialsArray,
-                );
-                const hosts = await getSSHHosts();
-                setRawHosts(hosts);
-                window.dispatchEvent(new CustomEvent("termix:hosts-changed"));
-                toast.success(
-                  t("hosts.importSummary", {
-                    imported: result.success ?? 0,
-                    updated: result.updated ?? 0,
-                    failed: result.failed ?? 0,
-                  }),
-                );
-              } catch (err: unknown) {
-                toast.error(getErrorMessage(err, t("hosts.importHostsFailed")));
-              }
-            }}
-          />
-
-          <input
-            ref={sshConfigInputRef}
-            type="file"
-            accept=".conf,.config,*"
-            className="hidden"
-            onChange={async (e) => {
-              const file = e.target.files?.[0];
-              if (!file) return;
-              e.target.value = "";
-              try {
-                const text = await file.text();
-                const result = await importSSHConfigHosts(
-                  text,
-                  importOverwriteRef.current,
-                );
-                const hosts = await getSSHHosts();
-                setRawHosts(hosts);
-                window.dispatchEvent(new CustomEvent("termix:hosts-changed"));
-                const msg = [
-                  result.success ? `${result.success} imported` : null,
-                  result.updated ? `${result.updated} updated` : null,
-                  result.failed ? `${result.failed} failed` : null,
-                ]
-                  .filter(Boolean)
-                  .join(", ");
-                toast.success(`${t("hosts.importSSHConfig")}: ${msg}`);
-              } catch (err: unknown) {
-                toast.error(
-                  getErrorMessage(err, "Failed to import SSH config"),
-                );
-              }
-            }}
-          />
-
           <div className="flex items-center gap-1.5 overflow-x-auto overflow-y-hidden toolbar-scrollbar">
             <div className="flex items-center border border-border shrink-0">
               <Button
@@ -544,64 +395,29 @@ export function HostsPanel({
                   className={`size-3.5 ${refreshing ? "animate-spin" : ""}`}
                 />
               </Button>
-              <div className="w-px self-stretch bg-border" />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="size-7 text-muted-foreground hover:text-foreground"
-                    title={t("hosts.importExportBtn")}
-                  >
-                    <Upload className="size-3.5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="text-xs">
-                  <DropdownMenuItem
-                    onClick={() => {
-                      importOverwriteRef.current = false;
-                      fileInputRef.current?.click();
-                    }}
-                  >
-                    <Upload className="size-3.5 mr-2" />
-                    {t("hosts.importSkipExisting")}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      importOverwriteRef.current = true;
-                      fileInputRef.current?.click();
-                    }}
-                  >
-                    <Upload className="size-3.5 mr-2" />
-                    {t("hosts.importOverwrite")}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      importOverwriteRef.current = false;
-                      sshConfigInputRef.current?.click();
-                    }}
-                  >
-                    <Upload className="size-3.5 mr-2" />
-                    {t("hosts.importSSHConfig")}
-                  </DropdownMenuItem>
-                  <ComponentSlot slotId="hosts.importMenu" />
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={() => {
-                      setExportPreselection(new Set());
-                      setExportDialogOpen(true);
-                    }}
-                    disabled={rawHosts.length === 0}
-                  >
-                    <Download className="size-3.5 mr-2" />
-                    {t("hosts.export.menuItem")}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleDownloadSample}>
-                    <Download className="size-3.5 mr-2" />
-                    {t("hosts.downloadSample")}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {hasImportMenu && (
+                <>
+                  <div className="w-px self-stretch bg-border" />
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="size-7 text-muted-foreground hover:text-foreground"
+                        title={t("hosts.importExportBtn")}
+                      >
+                        <Upload className="size-3.5" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="text-xs">
+                      <ComponentSlot
+                        slotId="hosts.importMenu"
+                        props={{ hosts: rawHosts }}
+                      />
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </>
+              )}
             </div>
             <div className="flex items-center border border-border shrink-0">
               <button
@@ -945,55 +761,20 @@ export function HostsPanel({
                     <Settings2 className="size-3.5 mr-2" />
                     {t("hostDefaults.menuMyDefaults")}
                   </DropdownMenuItem>
-                  <DropdownMenuSub>
-                    <DropdownMenuSubTrigger className="flex items-center gap-2">
-                      <Upload className="size-3.5 shrink-0" />
-                      {t("hosts.importExportBtn")}
-                    </DropdownMenuSubTrigger>
-                    <DropdownMenuSubContent className="text-xs min-w-[170px]">
-                      <DropdownMenuItem
-                        onClick={() => {
-                          importOverwriteRef.current = false;
-                          fileInputRef.current?.click();
-                        }}
-                      >
-                        <Upload className="size-3.5 mr-2" />
-                        {t("hosts.importSkipExisting")}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => {
-                          importOverwriteRef.current = true;
-                          fileInputRef.current?.click();
-                        }}
-                      >
-                        <Upload className="size-3.5 mr-2" />
-                        {t("hosts.importOverwrite")}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => {
-                          importOverwriteRef.current = false;
-                          sshConfigInputRef.current?.click();
-                        }}
-                      >
-                        <Upload className="size-3.5 mr-2" />
-                        {t("hosts.importSSHConfig")}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => {
-                          setExportPreselection(new Set());
-                          setExportDialogOpen(true);
-                        }}
-                        disabled={rawHosts.length === 0}
-                      >
-                        <Download className="size-3.5 mr-2" />
-                        {t("hosts.export.menuItem")}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={handleDownloadSample}>
-                        <Download className="size-3.5 mr-2" />
-                        {t("hosts.downloadSample")}
-                      </DropdownMenuItem>
-                    </DropdownMenuSubContent>
-                  </DropdownMenuSub>
+                  {hasImportMenu && (
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger className="flex items-center gap-2">
+                        <Upload className="size-3.5 shrink-0" />
+                        {t("hosts.importExportBtn")}
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent className="text-xs min-w-[170px]">
+                        <ComponentSlot
+                          slotId="hosts.importMenu"
+                          props={{ hosts: rawHosts }}
+                        />
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -1006,7 +787,9 @@ export function HostsPanel({
                 <SlidersHorizontal className="size-3.5" />
               </button>
             </div>
-            <div className="flex items-center border border-accent-brand/30 ml-auto shrink-0">
+            <div
+              className={`flex items-center border border-accent-brand/30 ml-auto shrink-0 ${hostPolicy.manualCreate ? "" : "hidden"}`}
+            >
               <button
                 onClick={() =>
                   window.dispatchEvent(new CustomEvent("host-manager:add-host"))
@@ -1056,10 +839,6 @@ export function HostsPanel({
             selectionMode={selectionMode}
             onToggleSelectionMode={toggleSelectionMode}
             loading={loading}
-            onExportSelected={(ids) => {
-              setExportPreselection(new Set(ids));
-              setExportDialogOpen(true);
-            }}
             arrangeLocked={arrangeLocked}
             density={sidebarPrefs.display.density}
             trayTrigger={sidebarPrefs.display.trayTrigger}
@@ -1076,13 +855,6 @@ export function HostsPanel({
         open={shareModalHost !== null}
         onClose={() => setShareModalHost(null)}
         host={shareModalHost}
-      />
-
-      <HostExportDialog
-        open={exportDialogOpen}
-        onClose={() => setExportDialogOpen(false)}
-        hosts={rawHosts}
-        preselectedHostIds={exportPreselection}
       />
 
       {/* Plugins mount their own host-list dialogs here. */}

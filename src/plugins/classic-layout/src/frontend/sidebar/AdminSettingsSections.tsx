@@ -11,6 +11,7 @@ import { Database, Lock, RefreshCw, Server, Settings } from "lucide-react";
 import { AccordionSection, AdminToggle } from "./AdminSettingsShared";
 import { AdminHostTags } from "./AdminHostTags";
 import { AdminPluginDeveloperMode } from "./AdminPluginDeveloperMode";
+import { AdminHttpsSetting } from "./AdminHttpsSetting";
 
 type GeneralSettingsSectionProps = {
   open: boolean;
@@ -31,9 +32,6 @@ type GeneralSettingsSectionProps = {
   sessionTimeout: string;
   setSessionTimeout: Dispatch<SetStateAction<string>>;
   handleSaveSessionTimeout: () => void;
-  statusInterval: string;
-  setStatusInterval: Dispatch<SetStateAction<string>>;
-  handleSaveMonitoring: () => void;
   logLevel: string;
   handleSaveLogLevel: (level: string) => void;
 };
@@ -57,9 +55,6 @@ export function AdminGeneralSettingsSection({
   sessionTimeout,
   setSessionTimeout,
   handleSaveSessionTimeout,
-  statusInterval,
-  setStatusInterval,
-  handleSaveMonitoring,
   logLevel,
   handleSaveLogLevel,
 }: GeneralSettingsSectionProps) {
@@ -146,6 +141,7 @@ export function AdminGeneralSettingsSection({
             onToggle={handleTogglePasswordReset}
           />
         </SettingRow>
+        <AdminHttpsSetting />
         <AdminPluginDeveloperMode />
         <div className="flex flex-col gap-2 pt-3 mt-2">
           <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
@@ -175,36 +171,6 @@ export function AdminGeneralSettingsSection({
           <span className="text-[10px] text-muted-foreground">
             {t("admin.sessionTimeoutRange")}
           </span>
-        </div>
-
-        <div className="flex flex-col gap-2 border-t border-border pt-3 mt-2">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-            {t("admin.monitoringDefaults")}
-          </span>
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">
-              {t("admin.statusCheck")}
-            </label>
-            <div className="flex items-center gap-2">
-              <Input
-                type="number"
-                value={statusInterval}
-                onChange={(e) => setStatusInterval(e.target.value)}
-                className="w-20 text-sm"
-              />
-              <span className="text-xs text-muted-foreground">
-                {t("admin.sec")}
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-xs border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand h-7"
-                onClick={handleSaveMonitoring}
-              >
-                {t("common.save")}
-              </Button>
-            </div>
-          </div>
         </div>
 
         <div className="flex flex-col gap-2 border-t border-border pt-3 mt-2">

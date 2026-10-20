@@ -1,11 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import {
   Button,
+  ComponentSlot,
   Input,
   getAuditLogs,
   getAuditLogActions,
-  getAuditForwarding,
-  updateAuditForwarding,
   type AuditLog,
   type AuditLogFilters,
   Select2,
@@ -20,7 +19,6 @@ import {
   X,
 } from "lucide-react";
 import { AccordionSection } from "./AdminSettingsShared";
-import { toast } from "sonner";
 import type { AdminUser } from "./AdminManagementSections";
 
 const RESOURCE_TYPES = [
@@ -47,39 +45,6 @@ export function AdminAuditLogSection({
   const { t } = useTranslation();
 
   const [logs, setLogs] = useState<AuditLog[]>([]);
-  const [forwardUrl, setForwardUrl] = useState("");
-  const [forwardToken, setForwardToken] = useState("");
-  const [forwardHasToken, setForwardHasToken] = useState(false);
-  const [forwardEnvConfigured, setForwardEnvConfigured] = useState(false);
-  const [forwardSaving, setForwardSaving] = useState(false);
-
-  useEffect(() => {
-    if (!open) return;
-    getAuditForwarding()
-      .then((settings) => {
-        setForwardUrl(settings.url);
-        setForwardHasToken(settings.hasToken);
-        setForwardEnvConfigured(settings.envConfigured);
-      })
-      .catch(() => {});
-  }, [open]);
-
-  async function handleSaveForwarding() {
-    setForwardSaving(true);
-    try {
-      const result = await updateAuditForwarding(
-        forwardUrl,
-        forwardToken || undefined,
-      );
-      setForwardHasToken(result.hasToken || (!!result.url && forwardHasToken));
-      setForwardToken("");
-      toast.success(t("admin.auditForwardingSaved"));
-    } catch {
-      toast.error(t("admin.auditForwardingSaveError"));
-    } finally {
-      setForwardSaving(false);
-    }
-  }
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -207,45 +172,6 @@ export function AdminAuditLogSection({
       onToggle={onToggle}
     >
       <div className="flex flex-col pt-2 gap-2">
-        {/* SIEM forwarding */}
-        <div className="flex flex-col gap-1.5 pb-2 border-b border-border">
-          <span className="text-[9px] font-semibold uppercase tracking-widest text-muted-foreground">
-            {t("admin.auditForwardingTitle")}
-          </span>
-          <p className="text-[10px] text-muted-foreground">
-            {t("admin.auditForwardingDesc")}
-            {forwardEnvConfigured && (
-              <> {t("admin.auditForwardingEnvNotice")}</>
-            )}
-          </p>
-          <Input
-            placeholder="https://siem.example.com/ingest"
-            value={forwardUrl}
-            onChange={(e) => setForwardUrl(e.target.value)}
-            className="text-[10px] h-7"
-          />
-          <Input
-            type="password"
-            placeholder={
-              forwardHasToken
-                ? t("admin.auditForwardingTokenStored")
-                : t("admin.auditForwardingToken")
-            }
-            value={forwardToken}
-            onChange={(e) => setForwardToken(e.target.value)}
-            className="text-[10px] h-7"
-          />
-          <Button
-            size="sm"
-            variant="outline"
-            className="h-7 text-[10px] self-start"
-            onClick={handleSaveForwarding}
-            disabled={forwardSaving}
-          >
-            {t("common.save")}
-          </Button>
-        </div>
-
         {/* Filters */}
         <div className="grid grid-cols-2 gap-1.5">
           <div className="flex flex-col gap-0.5">
@@ -350,6 +276,10 @@ export function AdminAuditLogSection({
             {t("admin.auditLogTotal", { total })}
           </span>
           <div className="flex items-center gap-1">
+            <ComponentSlot
+              slotId="audit.toolbar"
+              props={{ filters: buildFilters() }}
+            />
             {hasFilters && (
               <Button
                 variant="ghost"

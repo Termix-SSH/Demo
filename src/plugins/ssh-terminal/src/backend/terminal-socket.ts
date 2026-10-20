@@ -35,6 +35,7 @@ import {
 } from "./helpers.js";
 import { SSHAuthManager } from "./keyboard-prompt.js";
 import { HOST_KEYS } from "./settings.js";
+import { planTmuxAttach } from "./tmux-attach-plan.js";
 import { tmuxScrollCommand } from "./tmux-scroll.js";
 import { SHELL_CWD_COMMAND } from "./shell-cwd.js";
 import {
@@ -1945,6 +1946,12 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
             } catch {
               /* ignore */
             }
+            try {
+              lastJumpClient?.end();
+            } catch {
+              /* ignore */
+            }
+            lastJumpClient = null;
             sshConn = null;
             sshStream = null;
 
@@ -2288,6 +2295,7 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
                 (async () => {
                   try {
                     const detection = await tmux.detect(conn);
+                    const plan = planTmuxAttach(detection.sessions.length);
                     if (!detection.available) {
                       sshLogger.warn("tmux not found on remote host", {
                         operation: "tmux_detection",
@@ -2301,7 +2309,7 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
                         }),
                       );
                       runPostShellCommands(0);
-                    } else if (detection.sessions.length === 0) {
+                    } else if (plan === "create") {
                       const newName = `termix-${id}-${Date.now().toString(36).slice(-4)}`;
                       void tmux
                         .attachOrCreate(stream, undefined, newName, id)
@@ -2326,6 +2334,28 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
                         }),
                       );
                       runPostShellCommands(0);
+                    } else if (plan === "attach") {
+                      const sessionName = detection.sessions[0].name;
+                      void tmux
+                        .attachOrCreate(stream, sessionName, undefined, id)
+                        .catch(() => {});
+                      const session = sessionManager.getSession(boundSessionId);
+                      if (session) {
+                        session.tmuxSessionName = sessionName;
+                      }
+                      sshLogger.info("Auto-attached to the only tmux session", {
+                        operation: "tmux_auto_attach",
+                        sessionName,
+                        hostId: id,
+                      });
+                      ws.send(
+                        JSON.stringify({
+                          type: "tmux_session_attached",
+                          sessionName,
+                        }),
+                      );
+                      // Reattaching: the session has its own state, so
+                      // initialPath/executeCommand are not re-run in it.
                     } else {
                       sshLogger.info(
                         "Multiple tmux sessions found, sending list to frontend",

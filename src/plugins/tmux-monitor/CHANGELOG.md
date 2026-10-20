@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.4
+
+### Fixed
+
+- Mouse mode and the history limit are applied when Termix attaches to a tmux session, so clicking windows and panes in tmux works again
+
 ## 1.0.3
 
 ### Changed
