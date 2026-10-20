@@ -276,3 +276,20 @@ del("/plugin-api/sync/sites/:id", (req) => {
 });
 get("/plugin-api/sync/accounts", () => ({ accounts: [] }));
 get("/plugin-api/sync/web/accounts", () => ({ ring: true, accounts: [] }));
+
+// Import and Export: every host as the export file, secrets left out.
+get("/plugin-api/import-export/export", () => ({
+  version: "1.0",
+  exportedAt: new Date().toISOString(),
+  credentials: [],
+  hosts: hosts.all().map((host) => {
+    const {
+      id: _id,
+      userId: _userId,
+      password: _password,
+      key: _key,
+      ...rest
+    } = host as Record<string, unknown>;
+    return rest;
+  }),
+}));
