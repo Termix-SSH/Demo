@@ -1,0 +1,51 @@
+{
+  "name": "Sécurité de connexion",
+  "permissions": {
+    "manage": {
+      "title": "Gérer la sécurité de connexion",
+      "description": "Voir l'état du deuxième facteur et modifier les paramètres de sécurité de connexion."
+    }
+  },
+  "settings": {
+    "group": {
+      "sessions": "Sessions",
+      "secondFactor": "Deuxième facteur"
+    },
+    "admin": {
+      "idleTimeoutMinutes": {
+        "label": "Déconnexion après inactivité (minutes)",
+        "description": "Déconnecte les utilisateurs après ce nombre de minutes sans activité. Le serveur met également fin à la session, donc un jeton copié cesse de fonctionner. 0 désactive cette option."
+      },
+      "maxSessionHours": {
+        "label": "Durée maximale de session (heures)",
+        "description": "Les sessions se terminent après ce nombre d'heures, même avec l'option « Se souvenir de moi ». 0 signifie aucune limite supplémentaire."
+      },
+      "rememberDevice": {
+        "label": "Autoriser « Se souvenir de moi »",
+        "description": "Désactivé masque l'option « Se souvenir de moi » lors de la connexion et ignore les appareils mémorisés précédemment, de sorte que chaque connexion demande le deuxième facteur."
+      },
+      "secondFactor": {
+        "label": "Exiger un deuxième facteur",
+        "description": "Les personnes qui n'en ont pas doivent en configurer un après s'être connectées, avant de pouvoir utiliser Termix. Une connexion par passkey avec un code PIN ou une empreinte digitale est prise en compte.",
+        "off": "Désactivé",
+        "newDevice": "Sur un nouvel appareil",
+        "always": "À chaque connexion"
+      },
+      "applyToExternal": {
+        "label": "Également pour l'authentification unique",
+        "description": "Demander le deuxième facteur après les connexions SSO et LDAP également. Laissez cette option désactivée si votre fournisseur d'identité en demande déjà un."
+      }
+    }
+  },
+  "status": {
+    "factors": "Deuxièmes facteurs utilisables : {{factors}}",
+    "noFactors": "Aucun deuxième facteur n'est installé. Installez un plugin comme TOTP ou WebAuthn pour que les utilisateurs puissent en configurer un.",
+    "failed": "Impossible de vérifier les facteurs d'authentification secondaire installés."
+  },
+  "setup": {
+    "title": "Configurer un facteur d'authentification secondaire",
+    "body": "Votre administrateur exige un facteur d'authentification secondaire pour se connecter. Configurez-en un ci-dessous pour continuer à utiliser Termix.",
+    "none": "Rien à configurer ici ? Demandez à votre administrateur d'installer un plugin de facteur d'authentification secondaire.",
+    "signOut": "Se déconnecter"
+  }
+}

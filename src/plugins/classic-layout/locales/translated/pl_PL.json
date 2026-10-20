@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Klasyczny układ",
+    "description": "Klasyczny układ Termix z paskiem ikon, paskiem bocznym, paskiem kart i doku."
+  },
+  "layout": {
+    "name": "Klasyczny",
+    "description": "Pasek ikon, pasek boczny, pasek kart i prawy panel."
+  },
+  "tab": {
+    "dashboard": "Panel główny",
+    "manage": "Zarządzaj",
+    "settings": "Ustawienia"
+  },
   "common": {
     "more": "Więcej",
     "logout": "Wyloguj",
@@ -221,21 +234,18 @@
     "secondFactorAfterExternalLoginDesc": "Gdy wyłączone, drugi czynnik uwierzytelniający jest wymagany tylko po logowaniu hasłem i innych lokalnych metodach logowania, tak jak wcześniej. Gdy włączone, jest wymagany po każdej metodzie logowania, w tym SSO i LDAP",
     "allowPasswordReset": "Zezwól na resetowanie hasła",
     "allowPasswordResetDesc": "Kod resetowania przez logi Docker",
-    "auditForwardingTitle": "Przekieruj do SIEM",
-    "auditForwardingDesc": "Wysyłaj kopię każdego wpisu dziennika audytu do zewnętrznego kolektora w formacie NDJSON. Lokalne logi pozostają źródłem prawdy",
-    "auditForwardingEnvNotice": "Zmienna środowiskowa również konfiguruje przekierowanie; URL zapisany tutaj ma pierwszeństwo",
-    "auditForwardingToken": "Token Bearer (opcjonalnie)",
-    "auditForwardingTokenStored": "Token Bearer (zapisany)",
-    "auditForwardingSaved": "Ustawienia przekierowania audytu zostały zapisane",
-    "auditForwardingSaveError": "Nie udało się zapisać ustawień przekierowania audytu",
+    "forceHttps": "Przekieruj HTTP na HTTPS",
+    "forceHttpsDesc": "Przekieruj zwykłe HTTP na HTTPS i poproś przeglądarki o pozostanie na HTTPS. Działa tylko wtedy, gdy Termix sam obsługuje HTTPS",
+    "forceHttpsNoTls": "HTTPS jest wyłączony w Termix, więc nie ma przekierowań. Włącz ENABLE_SSL lub skonfiguruj przekierowanie w swoim proxy odwrotnym",
+    "forceHttpsFailed": "Nie udało się zmienić ustawienia HTTPS",
     "sessionTimeout": "Limit czasu sesji",
     "hours": "godzin",
     "sessionTimeoutRange": "Min 1h, max 720h",
-    "monitoringDefaults": "Domyślne ustawienia monitorowania",
-    "statusCheck": "Sprawdzenie statusu",
-    "sec": "sek",
     "logLevel": "Poziom logowania",
-    "usersCount_other": "{{count}} użytkownika",
+    "usersCount_one": "{{count}} użytkownik",
+    "usersCount_few": "{{count}} użytkowników",
+    "usersCount_many": "{{count}} użytkowników",
+    "usersCount_other": "{{count}} użytkowników",
     "searchUsers": "Szukaj użytkowników...",
     "noUsers": "Brak użytkowników",
     "noUsersMatch": "Żaden użytkownik nie pasuje do wyszukiwania",
@@ -245,7 +255,10 @@
     "roleName": "Nazwa",
     "roleDisplayName": "Nazwa wyświetlana",
     "roleDescription": "Opis",
-    "rolesCount_other": "{{count}} roli",
+    "rolesCount_one": "{{count}} rola",
+    "rolesCount_few": "{{count}} role",
+    "rolesCount_many": "{{count}} ról",
+    "rolesCount_other": "{{count}} ról",
     "createRole": "Utwórz",
     "creating": "Tworzenie...",
     "exportDatabase": "Eksportuj bazę danych",
@@ -259,7 +272,10 @@
     "changeFile": "Zmień",
     "import": "Importuj",
     "importing": "Importowanie...",
-    "apiKeysCount_other": "{{count}} klucza",
+    "apiKeysCount_one": "{{count}} klucz",
+    "apiKeysCount_few": "{{count}} klucze",
+    "apiKeysCount_many": "{{count}} kluczy",
+    "apiKeysCount_other": "{{count}} kluczy",
     "apiKeysDocsLink": "Zobacz dokumentację",
     "apiKeysCliHint": "Użyj klucza API z CLI Termix, aby zarządzać serwerami z terminala",
     "apiKeysCliLink": "Zobacz dokumentację CLI",
@@ -281,6 +297,9 @@
     "systemBadge": "SYS",
     "customBadge": "WŁASNY",
     "youBadge": "TY",
+    "sessionsActive_one": "{{count}} aktywny",
+    "sessionsActive_few": "{{count}} aktywne",
+    "sessionsActive_many": "{{count}} aktywnych",
     "sessionsActive_other": "{{count}} aktywnych",
     "sessionActive": "Aktywny: {{time}}",
     "sessionExpires": "Wygasa: {{time}}",
@@ -351,9 +370,6 @@
     "sessionTimeoutRange2": "Czas wygaśnięcia sesji musi wynosić od 1 do 720 godzin",
     "sessionTimeoutSaved": "Czas wygaśnięcia sesji zapisany",
     "sessionTimeoutSaveFailed": "Nie udało się zapisać czasu wygaśnięcia sesji",
-    "monitoringIntervalInvalid": "Nieprawidłowe wartości interwału",
-    "monitoringSaved": "Ustawienia monitorowania zapisane",
-    "monitoringSaveFailed": "Nie udało się zapisać ustawień monitorowania",
     "logLevelUpdateFailed": "Nie udało się zaktualizować poziomu logowania",
     "createUserRequired": "Nazwa użytkownika i hasło są wymagane",
     "createUserPasswordTooShort": "Hasło musi mieć co najmniej 6 znaków",
@@ -424,7 +440,10 @@
     "importError": "Import bazy danych nie powiódł się",
     "sectionHostDefaults": "Domyślne ustawienia hosta",
     "rolePermissions": {
-      "count_other": "{{count}} uprawnienia",
+      "count_one": "{{count}} uprawnienie",
+      "count_few": "{{count}} uprawnienia",
+      "count_many": "{{count}} uprawnień",
+      "count_other": "{{count}} uprawnień",
       "editAction": "Edytuj uprawnienia",
       "loadError": "Nie udało się załadować katalogu uprawnień",
       "saved": "Uprawnienia roli zostały zapisane",
@@ -615,7 +634,10 @@
         "apiKeyCreatedWarning": "Klucz utworzony — skopiuj go teraz, nie będzie już wyświetlany.",
         "copyApiKey": "Kopiuj klucz API",
         "copiedToClipboard": "Skopiowano do schowka",
-        "apiKeyCount_other": "{{count}} klucza",
+        "apiKeyCount_one": "{{count}} klucz",
+        "apiKeyCount_few": "{{count}} klucze",
+        "apiKeyCount_many": "{{count}} kluczy",
+        "apiKeyCount_other": "{{count}} kluczy",
         "newKey": "Nowy klucz",
         "noApiKeys": "Brak kluczy API.",
         "apiKeyActive": "Aktywny",
@@ -670,6 +692,9 @@
         "openUpdates": "Aktualizacje"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Układ"
   },
   "plugins": {
     "manager": {
@@ -752,60 +777,6 @@
       "saveFailed": "Nie udało się zapisać zmiany"
     }
   },
-  "sync": {
-    "server": "Serwer Termix",
-    "account": "Konto",
-    "status": "Status",
-    "never": "nigdy",
-    "justNow": "właśnie teraz",
-    "actionFailed": "To nie zadziałało. Spróbuj ponownie.",
-    "unlinkedTitle": "Tylko to urządzenie",
-    "unlinkedBody": "Termix działa samodzielnie na tym urządzeniu. Połącz go z serwerem Termix, aby utrzymać wszystko w synchronizacji.",
-    "unlinkedPointHosts": "Twoje hosty, dane logowania, fragmenty i ustawienia podążają za Tobą na każdym urządzeniu.",
-    "unlinkedPointOffline": "Wszystko nadal działa, gdy serwer jest nieosiągalny, i nadąża później.",
-    "unlinkedPointAccount": "Logujesz się za pomocą konta serwera, a hosty udostępnione przez innych użytkowników pojawiają się tutaj również.",
-    "linkButton": "Połącz z serwerem",
-    "state": {
-      "syncing": "Synchronizowanie",
-      "offline": "Serwer nieosiągalny",
-      "error": "Synchronizacja zatrzymana",
-      "signedOut": "Wylogowano",
-      "synced": "Zsynchronizowano {{time}}"
-    },
-    "signInAgain": "Zaloguj się ponownie",
-    "syncNow": "Synchronizuj teraz",
-    "unlink": "Rozłącz",
-    "unlinked": "To urządzenie nie jest już połączone",
-    "unlinkTitle": "Odłączyć to urządzenie?",
-    "unlinkDescription": "Zatrzymuje synchronizację i wylogowuje z serwera. Hosty udostępnione przez innych użytkowników są w każdym razie usuwane z tego urządzenia.",
-    "unlinkKeepTitle": "Zachowaj moje dane tutaj",
-    "unlinkKeepBody": "Twoje hosty, dane logowania i ustawienia pozostaną na tym urządzeniu i będą działać samodzielnie.",
-    "unlinkRemoveTitle": "Usuń zsynchronizowane dane",
-    "unlinkRemoveBody": "Wszystko, co pochodziło z serwera, zostanie usunięte z tego urządzenia. Pozostaną tylko hosty przechowywane lokalnie.",
-    "conflictsTitle": "Konflikty",
-    "conflictsDescription": "Te elementy zostały zmienione jednocześnie tutaj i na serwerze. W użyciu jest wersja z serwera. Wybierz „Zachowaj moją”, aby wysłać swoją wersję na serwer.",
-    "keepMine": "Zachowaj moją",
-    "keepServer": "Zachowaj z serwera",
-    "errorsTitle": "Nie zsynchronizowano",
-    "errorsDescription": "Serwer nie zaakceptował tych zmian. Pozostaną one na tym urządzeniu.",
-    "errorPermission": "Twoje konto na serwerze nie ma uprawnień do wprowadzenia tej zmiany.",
-    "retry": "Spróbuj ponownie",
-    "whatSyncs": "Co jest synchronizowane",
-    "whatSyncsDescription": "Wyłącz wszystko, co chcesz zachować tylko na tym urządzeniu.",
-    "coreGroup": "Termix",
-    "notOnServer": "Serwer nie ma tego",
-    "notOnDevice": "Jeszcze nie na tym urządzeniu",
-    "localOnlyHint": "Możesz też zachować pojedyncze hosty lub foldery tylko na tym urządzeniu w ich ustawieniach.",
-    "originTitle": "Początek połączeń",
-    "originDescription": "Łącz się z hostami z tego urządzenia lub przez serwer. Możesz to zmienić dla każdego hosta.",
-    "originLocal": "To urządzenie",
-    "originRemote": "Serwer",
-    "proxy": {
-      "title": "Proxy odwrotne",
-      "description": "Wymagane tylko, gdy przed serwerem znajduje się coś takiego jak Cloudflare Access lub strona logowania.",
-      "saved": "Zapisano"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Domyślne ustawienia hostów serwera",
     "titleUser": "Moje domyślne ustawienia hostów",
@@ -862,5 +833,18 @@
     "pickCredential": "Wybierz dane logowania do edycji",
     "pickDefaults": "Wybierz poziom ustawień domyślnych do edycji",
     "pickHint": "Wszystko dotyczące połączenia znajduje się tutaj, pogrupowane dla łatwego znalezienia."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Zmień branding",
+      "description": "Ustaw nazwę aplikacji, hasło reklamowe i logo widoczne dla wszystkich."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Jak dużo chcesz mieć na ekranie?",
+    "presetIntro": "Wybierz, ile elementów ma być wyświetlanych na ekranie.",
+    "presetChangeLater": "Możesz później zmienić preset lub dowolną pojedynczą ustawienie w Ustawieniach, w sekcji Interfejs.",
+    "appearanceTitle": "Dostosuj do siebie",
+    "appearanceIntro": "Wybierz motyw, kolor akcentu, czcionkę oraz język. Zmiany są widoczne od razu, a możesz je później edytować w Ustawieniach."
   }
 }

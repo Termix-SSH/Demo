@@ -1,0 +1,51 @@
+{
+  "name": "Bejelentkezési biztonság",
+  "permissions": {
+    "manage": {
+      "title": "Bejelentkezési biztonság kezelése",
+      "description": "A második hitelesítési tényező állapotának megtekintése és a bejelentkezési biztonsági beállítások módosítása."
+    }
+  },
+  "settings": {
+    "group": {
+      "sessions": "Munkamenetek",
+      "secondFactor": "Második hitelesítési tényező"
+    },
+    "admin": {
+      "idleTimeoutMinutes": {
+        "label": "Kijelentkezés inaktivitás utáni percek száma",
+        "description": "Ennyi perc inaktivitás után a rendszer kijelentkezteti a felhasználókat. A szerver is lezárja a munkamenetet, így a másolt tokenek érvényét vesztik. A 0 érték kikapcsolja ezt a funkciót."
+      },
+      "maxSessionHours": {
+        "label": "Munkamenet maximális hossza órákban",
+        "description": "A munkamenetek ennyi óra után lezárulnak, még a „Emlékezz rám” opció bekapcsolása esetén is. A 0 érték azt jelenti, hogy nincs további korlát."
+      },
+      "rememberDevice": {
+        "label": "Az „Emlékezz rám” engedélyezése",
+        "description": "Ha ki van kapcsolva, a „Megjegyzés” opció elrejtődik a bejelentkezéskor, és a korábban megjegyzett eszközök figyelmen kívül hagyásra kerülnek, így minden bejelentkezéskor meg kell adni a második hitelesítési tényezőt."
+      },
+      "secondFactor": {
+        "label": "Második hitelesítési tényező igénybevétele",
+        "description": "Azoknak, akiknek nincs beállítva, bejelentkezés után, a Termix használata előtt be kell állítaniuk. A PIN-kóddal vagy ujjlenyomattal történő passkeyes bejelentkezés is megfelel.",
+        "off": "Ki",
+        "newDevice": "Új eszközön",
+        "always": "Minden bejelentkezéskor"
+      },
+      "applyToExternal": {
+        "label": "Egyszeri bejelentkezésre is",
+        "description": "Kérje meg a második hitelesítési tényezőt SSO és LDAP bejelentkezések után is. Hagyja ki, ha a hitelesítési szolgáltató már kér ilyet."
+      }
+    }
+  },
+  "status": {
+    "factors": "Használható második hitelesítési tényezők: {{factors}}",
+    "noFactors": "Nincs telepítve második hitelesítési tényező. Telepítsen egy bővítményt, például TOTP vagy WebAuthn, hogy a felhasználók beállíthassák.",
+    "failed": "Nem sikerült ellenőrizni, melyik második hitelesítési módszer van telepítve."
+  },
+  "setup": {
+    "title": "Második hitelesítési módszer beállítása",
+    "body": "A rendszergazdád második hitelesítési módszert ír elő a bejelentkezéshez. Állíts be egyet lentebb, hogy továbbra is használd a Termixet.",
+    "none": "Nincs itt mit beállítani? Kérdezd meg a rendszergazdádat, hogy telepítsen egy második hitelesítési bővítményt.",
+    "signOut": "Kijelentkezés"
+  }
+}

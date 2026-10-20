@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Klasična razporeditev",
+    "description": "Klasična razporeditev Termixa z vrstico ikon, stransko vrstico, vrstico zavihkov in dnom."
+  },
+  "layout": {
+    "name": "Klasična",
+    "description": "Vrstica ikon, stranska vrstica, vrstica zavihkov in desni spodnji del."
+  },
+  "tab": {
+    "dashboard": "Nadzorna plošča",
+    "manage": "Upravljanje",
+    "settings": "Nastavitve"
+  },
   "common": {
     "more": "Več",
     "logout": "Odjava",
@@ -221,20 +234,17 @@
     "secondFactorAfterExternalLoginDesc": "Če je izklopljeno, se za vpisan drugi dejavnik vpraša le po prijavi z geslom in drugih lokalnih prijavah, kot prej. Če je vklopljeno, se zahteva po vsaki metodi prijave, vključno s SSO in LDAP.",
     "allowPasswordReset": "Dovoli ponastavitev gesla",
     "allowPasswordResetDesc": "Koda za ponastavitev prek Docker dnevnika",
-    "auditForwardingTitle": "Posreduj v SIEM",
-    "auditForwardingDesc": "Pošlji kopijo vsakega vnosa revizijskega dnevnika v zunanji zbirnik v formatu NDJSON. Lokalni dnevniki ostanejo vir resnice.",
-    "auditForwardingEnvNotice": "Posredovanje lahko konfigurirate tudi s spremenljivko okolja; URL, shranjen tukaj, ima prednost.",
-    "auditForwardingToken": "Bearer žeton (neobvezno)",
-    "auditForwardingTokenStored": "Bearer žeton (shranjen)",
-    "auditForwardingSaved": "Nastavitve posredovanja revizijskega dnevnika so shranjene",
-    "auditForwardingSaveError": "Shranjevanje nastavitev posredovanja revizijskega dnevnika ni uspelo",
+    "forceHttps": "Preusmeri HTTP na HTTPS",
+    "forceHttpsDesc": "Preusmeri navaden HTTP na HTTPS in zahtevajte od brskalnikov, da ostanejo na HTTPS. Deluje le, če Termix sam ponuja HTTPS.",
+    "forceHttpsNoTls": "HTTPS je v Termixu izklopljen, zato ni preusmeritev. Vklopite ENABLE_SSL ali preusmerite v svojem obratnem proxyju.",
+    "forceHttpsFailed": "Ni bilo mogoče spremeniti nastavitve HTTPS",
     "sessionTimeout": "Časovna omejitev seje",
     "hours": "ur",
     "sessionTimeoutRange": "Min 1 h, max 720 h",
-    "monitoringDefaults": "Privzete nastavitve spremljanja",
-    "statusCheck": "Preverjanje stanja",
-    "sec": "s",
     "logLevel": "Raven dnevnika",
+    "usersCount_one": "{{count}} uporabnik",
+    "usersCount_two": "{{count}} uporabnika",
+    "usersCount_few": "{{count}} uporabniki",
     "usersCount_other": "{{count}} uporabnikov",
     "searchUsers": "Išči uporabnike...",
     "noUsers": "Ni uporabnikov",
@@ -245,6 +255,9 @@
     "roleName": "Ime",
     "roleDisplayName": "Prikazno ime",
     "roleDescription": "Opis",
+    "rolesCount_one": "{{count}} vloga",
+    "rolesCount_two": "{{count}} vlogi",
+    "rolesCount_few": "{{count}} vloge",
     "rolesCount_other": "{{count}} vlog",
     "createRole": "Ustvari",
     "creating": "Ustvarjanje...",
@@ -259,6 +272,9 @@
     "changeFile": "Spremeni",
     "import": "Uvozi",
     "importing": "Uvažanje...",
+    "apiKeysCount_one": "{{count}} ključ",
+    "apiKeysCount_two": "{{count}} ključa",
+    "apiKeysCount_few": "{{count}} ključi",
     "apiKeysCount_other": "{{count}} ključev",
     "apiKeysDocsLink": "Oglejte si dokumentacijo",
     "apiKeysCliHint": "Uporabite API ključ s Termix CLI za upravljanje strežnikov iz terminala.",
@@ -281,6 +297,9 @@
     "systemBadge": "SISTEM",
     "customBadge": "PRILAGOJENO",
     "youBadge": "VI",
+    "sessionsActive_one": "{{count}} aktivna",
+    "sessionsActive_two": "{{count}} aktivni",
+    "sessionsActive_few": "{{count}} aktivne",
     "sessionsActive_other": "{{count}} aktivnih",
     "sessionActive": "Aktivna: {{time}}",
     "sessionExpires": "Potek: {{time}}",
@@ -351,9 +370,6 @@
     "sessionTimeoutRange2": "Časovna omejitev seje mora biti med 1 in 720 urami",
     "sessionTimeoutSaved": "Časovna omejitev seje je bila shranjena",
     "sessionTimeoutSaveFailed": "Shranjevanje časovne omejitve seje ni uspelo",
-    "monitoringIntervalInvalid": "Neveljavne vrednosti intervala",
-    "monitoringSaved": "Nastavitve spremljanja so bile shranjene",
-    "monitoringSaveFailed": "Shranjevanje nastavitev spremljanja ni uspelo",
     "logLevelUpdateFailed": "Posodabljanje ravni dnevnika ni uspelo",
     "createUserRequired": "Uporabniško ime in geslo sta obvezna",
     "createUserPasswordTooShort": "Geslo mora vsebovati vsaj 6 znakov",
@@ -424,6 +440,9 @@
     "importError": "Uvoz baze podatkov ni uspel",
     "sectionHostDefaults": "Privzete nastavitve gostitelja",
     "rolePermissions": {
+      "count_one": "{{count}} dovoljenje",
+      "count_two": "{{count}} dovoljenji",
+      "count_few": "{{count}} dovoljenja",
       "count_other": "{{count}} dovoljenj",
       "editAction": "Uredi dovoljenja",
       "loadError": "Nalaganje kataloga dovoljenj ni uspelo",
@@ -615,6 +634,9 @@
         "apiKeyCreatedWarning": "Ključ ustvarjen – kopirajte ga zdaj, saj se ne bo več prikazal.",
         "copyApiKey": "Kopiraj API ključ",
         "copiedToClipboard": "Kopirano v odložišče",
+        "apiKeyCount_one": "{{count}} ključ",
+        "apiKeyCount_two": "{{count}} ključa",
+        "apiKeyCount_few": "{{count}} ključi",
         "apiKeyCount_other": "{{count}} ključev",
         "newKey": "Nov ključ",
         "noApiKeys": "Še ni API ključev.",
@@ -670,6 +692,9 @@
         "openUpdates": "Posodobitve"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Razporeditev"
   },
   "plugins": {
     "manager": {
@@ -752,60 +777,6 @@
       "saveFailed": "Shranjevanje spremembe ni uspelo"
     }
   },
-  "sync": {
-    "server": "Termix strežnik",
-    "account": "Račun",
-    "status": "Stanje",
-    "never": "nikoli",
-    "justNow": "pravkar",
-    "actionFailed": "To ni delovalo. Poskusite znova.",
-    "unlinkedTitle": "Samo ta naprava",
-    "unlinkedBody": "Termix deluje samostojno na tej napravi. Povežite ga s svojim Termix strežnikom, da boste vse ohranili sinhronizirano.",
-    "unlinkedPointHosts": "Vaši gostitelji, poverilnice, odlomki in nastavitve vas spremljajo na vsako napravo.",
-    "unlinkedPointOffline": "Vse še vedno deluje, ko strežnika ni mogoče doseči, in se kasneje sinhronizira.",
-    "unlinkedPointAccount": "Vpišete se s svojim računom na strežniku, tukaj pa se prikažejo tudi gostitelji, ki so jih z vami delili drugi.",
-    "linkButton": "Poveži s strežnikom",
-    "state": {
-      "syncing": "Sinhroniziranje",
-      "offline": "Strežnika ni mogoče doseči",
-      "error": "Sinhroniziranje ustavljeno",
-      "signedOut": "Odjavljen",
-      "synced": "Sinhronizirano {{time}}"
-    },
-    "signInAgain": "Ponovna prijava",
-    "syncNow": "Sinhroniziraj zdaj",
-    "unlink": "Prekini povezavo",
-    "unlinked": "Ta naprava ni več povezana",
-    "unlinkTitle": "Prekiniti povezavo s to napravo?",
-    "unlinkDescription": "Sinhronizacija se ustavi in odjavite se s strežnika. Strežniki, ki vam jih drugi delijo, bodo s te naprave odstranjeni v vsakem primeru.",
-    "unlinkKeepTitle": "Ohrani moje podatke tukaj",
-    "unlinkKeepBody": "Vaši strežniki, poverilnice in nastavitve ostanejo na tej napravi in bodo delovale samostojno.",
-    "unlinkRemoveTitle": "Odstrani sinhronizirane podatke",
-    "unlinkRemoveBody": "Vse, kar je prišlo s strežnika, bo odstranjeno s te naprave. Ohranjeni bodo le strežniki, ki so bili shranjeni le na tej napravi.",
-    "conflictsTitle": "Sukobi",
-    "conflictsDescription": "Ti so bili spremenjeni tukaj in na strežniku hkrati. Uporablja se različica s strežnika. Če želite namesto tega poslati svojo različico na strežnik, jo ohranite.",
-    "keepMine": "Ohrani mojo različico",
-    "keepServer": "Ohrani različico s strežnika",
-    "errorsTitle": "Ni sinhronizirano",
-    "errorsDescription": "Strežnik ni sprejel teh sprememb. Te ostanejo na tej napravi.",
-    "errorPermission": "Vaš račun na strežniku nima dovoljenja za to spremembo.",
-    "retry": "Poskusi znova",
-    "whatSyncs": "Kaj se sinhronizira",
-    "whatSyncsDescription": "Izklopite vse, kar želite obdržati le na tej napravi.",
-    "coreGroup": "Termix",
-    "notOnServer": "Strežnik tega nima",
-    "notOnDevice": "Še ni na tej napravi",
-    "localOnlyHint": "Posamezne strežnike ali mape lahko ohranite le na tej napravi tudi prek njihovih nastavitev.",
-    "originTitle": "Kje se začnejo povezave",
-    "originDescription": "Povežite se s strežniki iz te naprave ali prek strežnika. To lahko spremenite za vsak strežnik posebej.",
-    "originLocal": "Ta naprava",
-    "originRemote": "Strežnik",
-    "proxy": {
-      "title": "Obratni proxy",
-      "description": "Potreben je le, ko je pred vašim strežnikom nekaj, kot je Cloudflare Access ali stran za prijavo.",
-      "saved": "Shranjeno"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Privzete nastavitve strežniških gostiteljev",
     "titleUser": "Moje privzete nastavitve gostiteljev",
@@ -862,5 +833,18 @@
     "pickCredential": "Izberite poverilnico za urejanje",
     "pickDefaults": "Izberite raven privzetih nastavitev za urejanje",
     "pickHint": "Vse o povezavi je tukaj, razvrščeno, da jo lahko najdete."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Spremeni blagovno znamko",
+      "description": "Nastavite ime aplikacije, slogan in logotip, ki se prikažejo vsem."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Koliko vsebine želite na zaslonu?",
+    "presetIntro": "Izberite, koliko vsebine se prikaže na zaslonu.",
+    "presetChangeLater": "Prednastavitve lahko spremenite ali prilagodite posamezne nastavitve kasneje v Nastavilih, pod razdelkom Vmesnik.",
+    "appearanceTitle": "Prilagodite ga sebi",
+    "appearanceIntro": "Izberite temo, poudarjeno barvo, pisavo in jezik. Spremembe se prikažejo takoj, kasneje pa jih lahko spremenite v Nastavilih."
   }
 }

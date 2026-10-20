@@ -35,6 +35,16 @@
         "title": "Lihat penggunaan AI semua orang",
         "description": "Lihat token yang digunakan oleh panggilan AI setiap pengguna, bukan hanya milik anda. Hanya untuk pentadbir secara lalai."
       }
+    },
+    "assets": {
+      "view": {
+        "title": "Lihat senarai aset",
+        "description": "Lihat hos, tetamu, kontena, zon dan sambungan yang dikumpulkan. Hanya untuk pentadbir secara lalai."
+      },
+      "manage": {
+        "title": "Urus senarai aset",
+        "description": "Mula pengumpulan, sunting peraturan zon, pin zon dan ubah jadual. Pengumpulan membaca hos secara baca-sahaja. Hanya untuk pentadbir secara lalai."
+      }
     }
   },
   "settings": {
@@ -80,6 +90,35 @@
       "autoOpsDailyTokens": {
         "label": "Bajet token AI harian per pengguna",
         "description": "Sekali pengguna telah menggunakan bilangan token ini hari ini (UTC), tugas AI mereka akan dilangkau atau dihentikan."
+      },
+      "assetsDailyCollect": {
+        "label": "Kumpulkan senarai aset setiap hari",
+        "description": "Membaca setiap hos yang pengumpul boleh sambung sekali sehari dengan satu skrip baca-sahaja."
+      },
+      "assetsCollectTime": {
+        "label": "Masa pengumpulan aset (UTC)",
+        "description": "HH:MM, contohnya 03:00."
+      },
+      "assetsCollector": {
+        "label": "Pengumpul aset"
+      },
+      "assetsAnnotateAfterCollect": {
+        "label": "Anotasi aset selepas setiap pengumpulan",
+        "description": "Model menulis peranan, kepentingan dan sistem perniagaan setiap aset yang berubah, serta kebergantungan yang ditunjukkan oleh fakta."
+      },
+      "assetsAnnotateRunTokens": {
+        "label": "Bajet token setiap larian anotasi aset",
+        "description": "Larian berhenti sekali panggilan modelnya telah menggunakan sebanyak ini token; apa yang ditulisnya kekal."
+      },
+      "assetsAnnotateProvider": {
+        "label": "Pembekal anotasi aset"
+      },
+      "assetsAnnotateModel": {
+        "label": "Model anotasi aset"
+      },
+      "exposureRetentionDays": {
+        "label": "Penyimpanan sejarah pendedahan (hari)",
+        "description": "Menyimpan notis tertunda dan bukti yang dirujuk oleh entri semasa tanpa mengira usia."
       }
     },
     "host": {
@@ -364,7 +403,8 @@
     "source": {
       "assistant": "Pembantu",
       "terminal": "Panel terminal",
-      "compaction": "Pemadatan"
+      "compaction": "Pemadatan",
+      "assets": "Anotasi aset"
     }
   },
   "autoOps": {
@@ -536,7 +576,229 @@
       "noticeReported": "Laporan AI: {{title}}",
       "noticeProposed": "Rancangan AI menunggu kelulusan: {{title}}",
       "noticeExecuted": "Rancangan AI dilaksanakan: {{title}}",
-      "noticeFailed": "Tugas AI gagal: {{title}}"
+      "noticeFailed": "Tugas AI gagal: {{title}}",
+      "noticeAssetsAnnotationFailed": "Anotasi aset gagal"
     }
+  },
+  "assets": {
+    "title": "Aset",
+    "search": "Cari nama, kunci atau alamat",
+    "allZones": "Semua zon",
+    "showRemoved": "Papar yang dialih keluar",
+    "collectNow": "Kumpulkan sekarang",
+    "collecting": "Mengumpulkan…",
+    "collectFailed": "Tidak dapat memulakan pengumpulan",
+    "neverRun": "Belum dikumpulkan",
+    "lastRun": "Terakhir dikumpulkan {{time}}: {{ok}} daripada {{total}} hos",
+    "lastRunFailed": "Pengumpulan pada {{time}} gagal",
+    "hostsFailed_other": "{{count}} hos gagal",
+    "loadFailed": "Tidak dapat memuatkan senarai",
+    "saveFailed": "Tidak dapat menyimpan",
+    "empty": "Tiada aset lagi",
+    "emptyHint": "Kumpulkan sekarang untuk membaca setiap hos yang pengumpul boleh sambung.",
+    "emptyHintView": "Seseorang dengan kebenaran ai.assets.manage perlu mengumpulkan dahulu.",
+    "removed": "Dialih keluar",
+    "pinned": "Dipin",
+    "multiZone": "Multi-zon",
+    "multiZoneHint": "Memiliki alamat dalam lebih daripada satu zon, jadi ia boleh mencapai kedua-duanya: potensi pivot.",
+    "columns": {
+      "name": "Nama",
+      "kind": "Jenis",
+      "zone": "Zon",
+      "ips": "Alamat",
+      "listening": "Port",
+      "outbound": "Keluar",
+      "services": "Perkhidmatan",
+      "collected": "Terakhir dikumpulkan",
+      "role": "Peranan",
+      "importance": "Kepentingan",
+      "system": "Sistem"
+    },
+    "kind": {
+      "host": "Hos",
+      "guest": "Tetamu",
+      "container": "Kontena",
+      "external": "Luaran"
+    },
+    "zone": {
+      "internal": "Dalaman",
+      "dmz": "DMZ",
+      "external": "Luaran",
+      "cloud": "Awan",
+      "overlay": "Overlay"
+    },
+    "sections": {
+      "os": "Sistem pengendalian",
+      "hostname": "Nama hos",
+      "uptimeSec": "Masa beroperasi (saat)",
+      "interfaces": "Antara muka",
+      "routes": "Laluan",
+      "listening": "Port mendengar",
+      "connections": "Sambungan yang ditubuhkan",
+      "services": "Perkhidmatan yang berjalan",
+      "containers": "Kontena",
+      "kubernetes": "Kubernetes",
+      "guests": "Tetamu Proxmox",
+      "cloud": "Awan",
+      "missing": "Bahagian tanpa output",
+      "guest": "Tetamu Proxmox",
+      "container": "Kontena"
+    },
+    "outgoing": "Keluar",
+    "incoming": "Masuk",
+    "noEdges": "Tiada",
+    "stale": "Tidak dilihat dalam pengumpulan terkini",
+    "pinZone": "Zon",
+    "rulesDecide": "Ditentukan oleh peraturan",
+    "settingsTitle": "Zon dan jadual",
+    "scheduleTitle": "Pengumpulan",
+    "daily": "Kumpulkan setiap hari",
+    "dailyHint": "Hos juga dikumpulkan semula apabila ditambah atau diubah.",
+    "time": "Masa (UTC)",
+    "save": "Simpan",
+    "collector": "Mengumpul sebagai {{collector}}, mencapai hos yang boleh disambungkan oleh akaun tersebut.",
+    "collectorMe": "anda",
+    "collectorOther": "pengurus lain",
+    "collectorNone": "tiada siapa lagi",
+    "collectAsMe": "Kumpulkan sebagai saya",
+    "zonesTitle": "Peraturan zon",
+    "zonesHint": "Peraturan memetakan CIDR ke zon, sebelum yang terbina dalam. Prefiks paling spesifik menang, kemudian keutamaan yang lebih tinggi. Aset dizon semula apabila anda menyimpan.",
+    "zoneName": "Nama",
+    "zoneNameExample": "LAN pusat data",
+    "zoneKind": "Jenis",
+    "cidr": "CIDR",
+    "priority": "Keutamaan",
+    "addZone": "Tambah peraturan",
+    "deleteZone": "Padam peraturan",
+    "cancelEdit": "Batal",
+    "annotating": "Mencatatkan…",
+    "neverAnnotated": "Belum dicatatkan",
+    "lastAnnotation": "Dicatatkan terakhir {{time}}: {{ok}} daripada {{total}} aset, {{tokens}} token",
+    "annotationFailed": "gagal: {{reason}}",
+    "annotateNow": "Catatkan sekarang",
+    "annotateFailed": "Tidak dapat memulakan pencatatan",
+    "modeTable": "Jadual",
+    "modeGraph": "Graf",
+    "importance": {
+      "critical": "Kritikal",
+      "high": "Tinggi",
+      "medium": "Sederhana",
+      "low": "Rendah"
+    },
+    "importanceUnknown": "Tidak dinilai",
+    "importanceReason": "Mengapa",
+    "sourceAi": "AI",
+    "sourceAiHint": "Ditulis oleh anotasi; larian seterusnya mungkin mengubahnya.",
+    "sourceUser": "Dikunci",
+    "sourceUserHint": "Ditetapkan oleh pengguna; larian anotasi membiarkannya sehingga dibuka kunci.",
+    "unlock": "Buka kunci: benarkan anotasi mengisi ini semula",
+    "unlockField": "Buka kunci {{field}}",
+    "editAnnotation": "Sunting",
+    "lockHint": "Medan yang anda ubah dikunci daripada operasi anotasi kemudian.",
+    "factsTitle": "Fakta",
+    "closePanel": "Tutup",
+    "impact": "Kesan",
+    "clearImpact": "Kosongkan",
+    "impactSummary_other": "Jika gagal, {{count}} aset akan turun bersamanya ({{critical}} kritikal, {{high}} tinggi), {{weak}} lagi hanya menyambung kepada mereka.",
+    "impactTruncated": "Dipotong pada 6 lompatan atau 300 aset.",
+    "impactDirect": "Secara langsung",
+    "impactTransitive": "Melalui yang lain",
+    "impactWeak": "Hanya menyambung kepada mereka",
+    "expandContainers": "Paparkan bekas",
+    "showExternal": "Paparkan alamat luaran",
+    "graphCounts": "{{nodes}} aset, {{edges}} hubungan",
+    "graphTitle": "Graf aset",
+    "noZone": "Tiada zon",
+    "annotationTitle": "Anotasi AI",
+    "annotateAfterCollect": "Anotasi selepas setiap pengumpulan",
+    "annotateAfterCollectHint": "Hanya aset yang berubah sejak anotasi terakhir mereka, dan jiran mereka, dihantar ke model.",
+    "annotateProvider": "Pembekal",
+    "annotateProviderDefault": "Pilihan auto-ops pengumpul",
+    "annotateModel": "Model",
+    "annotateModelDefault": "Model lalai pembekal",
+    "annotationHint": "Anotasi berjalan sebagai pengumpul, dengan pembekal pengumpul. Ringkasan tidak mengandungi persekitaran, baris arahan atau alamat luaran.",
+    "annotateAll": "Anotasi semuanya semula"
+  },
+  "exposure": {
+    "title": "Entri internet",
+    "disclaimer": "Inventori konfigurasi sahaja. Pengikatan awam dan peraturan penerusan tidak membuktikan kebolehcapaian internet. Pendengar peribadi dikekalkan sebagai bukti backend.",
+    "loadFailed": "Tidak dapat memuatkan inventori pendedahan.",
+    "saveFailed": "Tidak dapat menyimpan keutamaan.",
+    "search": "Tapis alamat, hos, nama atau laluan",
+    "allPriority": "Semua keutamaan",
+    "allZones": "Semua zon",
+    "allSources": "Semua sumber",
+    "high": "Tinggi",
+    "medium": "Sederhana",
+    "low": "Rendah",
+    "active": "Aktif",
+    "stale": "Kusam",
+    "resolved": "Tidak lagi diperhatikan",
+    "all": "Semua",
+    "refresh": "Segarkan",
+    "loading": "Memuatkan…",
+    "empty": "Tiada entri sepadan. Semak liputan pengumpulan di bawah sebelum membuat kesimpulan.",
+    "never": "Belum dikumpulkan. Kumpulkan aset untuk menginventori entri.",
+    "endpoint": "Entri",
+    "source": "Sumber",
+    "priority": "Keutamaan semakan",
+    "pathState": "Laluan konfigurasi",
+    "freshness": "Kesegaran",
+    "details": "Butiran bukti",
+    "close": "Tutup",
+    "notTested": "Kebolehcapaian luaran: tidak diuji.",
+    "priorityReason": "Keutamaan adalah petua semakan, bukan keputusan kerentanan. Port pengurusan awam dan perkhidmatan data diberi keutamaan; identiti perkhidmatan dan dasar akses masih memerlukan pengesahan.",
+    "tls": "Konfigurasi TLS",
+    "restrictions": "Sekatan akses",
+    "observed": "Terakhir diperhatikan",
+    "rulePriority": "Keutamaan peraturan (buka kunci)",
+    "evidence": "Pemerhatian",
+    "coverage": "Liputan pengumpulan",
+    "changes": "Perubahan terkini",
+    "current": "Semasa",
+    "partial": "Tidak lengkap",
+    "complete": "Persatuan konfigurasi lengkap",
+    "conflicting": "Ambigu atau kitaran",
+    "configured": "Dinyatakan dalam konfigurasi",
+    "unknown": "Tidak diketahui",
+    "status_ok": "Dikumpul",
+    "status_unsupported": "Alat tidak tersedia",
+    "status_denied": "Kebenaran ditolak",
+    "status_failed": "Pengumpulan atau penguraian gagal",
+    "status_truncated": "Dipotong",
+    "change_baseline": "Garis dasar ditetapkan",
+    "change_added": "Entri ditambah",
+    "change_changed": "Konfigurasi berubah",
+    "change_removed": "Entri tidak lagi diperhatikan",
+    "change_coverage": "Liputan merosot",
+    "explain": "Terangkan bukti",
+    "explaining": "Menjelaskan…",
+    "explainFailed": "Penjelasan gagal atau bukti berubah.",
+    "aiLabel": "Tafsiran AI · bukan penemuan yang disahkan",
+    "previous": "Sebelumnya",
+    "next": "Seterusnya",
+    "binding": "Skop pengikatan",
+    "binding_public": "Calon entri awam",
+    "binding_local": "Backend peribadi/tempatan",
+    "binding_unknown": "Pengikatan tidak diselesaikan",
+    "ruleGaps": "Peraturan tidak diuraikan: {{count}}",
+    "unsupportedRule": "Peraturan tidak disokong; bukti sebelumnya dikekalkan",
+    "scope": "Paparan",
+    "scope_internet": "Calon entri internet",
+    "scope_all": "Semua bukti",
+    "scope_unknown": "Pendedahan tidak diketahui",
+    "inventorySummary": "{{internet}} calon entri internet · {{all}} peraturan jumlah · {{unknown}} dengan pendedahan tidak diketahui",
+    "bindingCount": "{{count}} pengikatan diperhatikan",
+    "pathsTruncated": "Pengembangan laluan mencapai hadnya. Ini adalah bukti separa.",
+    "pathBranch": "Laluan {{index}}",
+    "branched": "Cawangan bersyarat",
+    "reason_sensitive": "Semak port perkhidmatan {{port}} (entri atau backend)",
+    "reason_public-address": "Pengikatan alamat awam diperhatikan",
+    "reason_wan-zone": "Zon sumber WAN OpenWrt; penerimaan firewall tidak disahkan",
+    "reason_configured-public-tunnel": "Terowong awam dikonfigurasi; kebolehcapaian luaran tidak diuji",
+    "reason_internal-only": "Hanya pengikatan dalaman atau tempatan diperhatikan",
+    "reason_exposure-unknown": "Bukti tidak mencukupi untuk mengklasifikasikan pendedahan",
+    "reason_critical-asset": "Aset ditandakan kritikal",
+    "reason_manual": "Keutamaan dipilih oleh pengguna"
   }
 }

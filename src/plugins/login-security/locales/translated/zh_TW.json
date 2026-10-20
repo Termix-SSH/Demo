@@ -1,0 +1,51 @@
+{
+  "name": "登入安全性",
+  "permissions": {
+    "manage": {
+      "title": "管理登入安全性",
+      "description": "查看第二因素狀態並變更登入安全性設定。"
+    }
+  },
+  "settings": {
+    "group": {
+      "sessions": "工作階段",
+      "secondFactor": "第二因素"
+    },
+    "admin": {
+      "idleTimeoutMinutes": {
+        "label": "閒置後自動登出的分鐘數",
+        "description": "使用者閒置超過此分鐘數後將自動登出。伺服器也會終止工作階段，因此複製的權杖將失效。設為 0 可關閉此功能。"
+      },
+      "maxSessionHours": {
+        "label": "工作階段最長時數",
+        "description": "工作階段在此時數後會結束，即使勾選了「記住我」。設為 0 表示無額外限制。"
+      },
+      "rememberDevice": {
+        "label": "允許「記住我」",
+        "description": "關閉時，登入畫面將隱藏「記住裝置」選項，並忽略先前已記住的裝置，因此每次登入都需要進行第二因素驗證。"
+      },
+      "secondFactor": {
+        "label": "要求第二因素驗證",
+        "description": "未設定第二因素的使用者必須在登入後、使用 Termix 之前完成設定。使用 PIN 碼或指紋透過 Passkey 登入也視為已通過驗證。",
+        "off": "關閉",
+        "newDevice": "在新裝置上",
+        "always": "每次登入時"
+      },
+      "applyToExternal": {
+        "label": "同樣適用於單一登入",
+        "description": "在 SSO 和 LDAP 登入後也要求第二因素驗證。如果您的身分提供者已經要求驗證，請保持關閉。"
+      }
+    }
+  },
+  "status": {
+    "factors": "使用者可使用的第二因素：{{factors}}",
+    "noFactors": "未安裝任何第二因素驗證。請安裝 TOTP 或 WebAuthn 等外掛程式，讓使用者能夠設定。",
+    "failed": "無法檢查已安裝的第二因素驗證方式。"
+  },
+  "setup": {
+    "title": "設定第二因素驗證",
+    "body": "您的管理員要求使用第二因素驗證才能登入。請在下方完成設定，以繼續使用 Termix。",
+    "none": "這裡沒有可設定的項目？請洽詢您的管理員安裝第二因素驗證外掛。",
+    "signOut": "登出"
+  }
+}

@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Klassisk layout",
+    "description": "Den klassiska Termix-layouten med ikonfält, sidofält, flikfält och docka."
+  },
+  "layout": {
+    "name": "Klassisk",
+    "description": "Ikonfält, sidofält, flikfält och höger docka."
+  },
+  "tab": {
+    "dashboard": "Instrumentpanel",
+    "manage": "Hantera",
+    "settings": "Inställningar"
+  },
   "common": {
     "more": "Mer",
     "logout": "Logga ut",
@@ -221,20 +234,15 @@
     "secondFactorAfterExternalLoginDesc": "När det är inaktiverat begärs en registrerad andra faktor endast efter inloggning med lösenord och andra lokala metoder, som tidigare. När det är aktiverat begärs den efter varje inloggningsmetod, inklusive SSO och LDAP.",
     "allowPasswordReset": "Tillåt återställning av lösenord",
     "allowPasswordResetDesc": "Återställningskod via Docker-loggar",
-    "auditForwardingTitle": "Vidarebefordra till SIEM",
-    "auditForwardingDesc": "Skicka en kopia av varje granskningspost till en extern samlare som NDJSON. De lokala loggarna förblir den enda källan för sanningen.",
-    "auditForwardingEnvNotice": "En miljövariabel konfigurerar också vidarebefordran; URL:en som sparas här har företräde.",
-    "auditForwardingToken": "Bearer-token (valfritt)",
-    "auditForwardingTokenStored": "Bearer-token (sparad)",
-    "auditForwardingSaved": "Inställningar för vidarebefordran av granskningsloggar sparade",
-    "auditForwardingSaveError": "Misslyckades med att spara inställningar för vidarebefordran av granskningsloggar",
+    "forceHttps": "Omdirigera HTTP till HTTPS",
+    "forceHttpsDesc": "Skicka vanlig HTTP till HTTPS och be webbläsare att stanna på HTTPS. Fungerar endast när Termix själv serverar HTTPS.",
+    "forceHttpsNoTls": "HTTPS är inaktiverat i Termix, så inget omdirigeras. Aktivera ENABLE_SSL eller omdirigera i din omvänd proxy.",
+    "forceHttpsFailed": "Kunde inte ändra HTTPS-inställningen",
     "sessionTimeout": "Sessionstidsgräns",
     "hours": "timmar",
     "sessionTimeoutRange": "Min 1 h, max 720 h",
-    "monitoringDefaults": "Standardinställningar för övervakning",
-    "statusCheck": "Statuskontroll",
-    "sec": "sek",
     "logLevel": "Loggnivå",
+    "usersCount_one": "{{count}} användare",
     "usersCount_other": "{{count}} användare",
     "searchUsers": "Sök bland användare...",
     "noUsers": "Inga användare",
@@ -245,6 +253,7 @@
     "roleName": "Namn",
     "roleDisplayName": "Visningsnamn",
     "roleDescription": "Beskrivning",
+    "rolesCount_one": "{{count}} roll",
     "rolesCount_other": "{{count}} roller",
     "createRole": "Skapa",
     "creating": "Skapar...",
@@ -259,6 +268,7 @@
     "changeFile": "Ändra",
     "import": "Importera",
     "importing": "Importerar...",
+    "apiKeysCount_one": "{{count}} nyckel",
     "apiKeysCount_other": "{{count}} nycklar",
     "apiKeysDocsLink": "Visa dokumentation",
     "apiKeysCliHint": "Använd en API-nyckel med Termix CLI för att hantera servrar från din terminal.",
@@ -281,6 +291,7 @@
     "systemBadge": "SYS",
     "customBadge": "ANPASSAD",
     "youBadge": "DU",
+    "sessionsActive_one": "{{count}} aktiv",
     "sessionsActive_other": "{{count}} aktiva",
     "sessionActive": "Aktiv: {{time}}",
     "sessionExpires": "Utl: {{time}}",
@@ -351,9 +362,6 @@
     "sessionTimeoutRange2": "Sessionstiden måste vara mellan 1 och 720 timmar",
     "sessionTimeoutSaved": "Sessionstid sparad",
     "sessionTimeoutSaveFailed": "Misslyckades med att spara sessionstid",
-    "monitoringIntervalInvalid": "Ogiltiga intervallvärden",
-    "monitoringSaved": "Övervakningsinställningar sparade",
-    "monitoringSaveFailed": "Misslyckades med att spara övervakningsinställningar",
     "logLevelUpdateFailed": "Misslyckades med att uppdatera loggningsnivå",
     "createUserRequired": "Användarnamn och lösenord krävs",
     "createUserPasswordTooShort": "Lösenordet måste vara minst 6 tecken",
@@ -424,6 +432,7 @@
     "importError": "Import av databas misslyckades",
     "sectionHostDefaults": "Standardvärden för värdar",
     "rolePermissions": {
+      "count_one": "{{count}} behörighet",
       "count_other": "{{count}} behörigheter",
       "editAction": "Redigera behörigheter",
       "loadError": "Misslyckades med att ladda behörighetskatalogen",
@@ -615,6 +624,7 @@
         "apiKeyCreatedWarning": "Nyckel skapad – kopiera den nu, den visas inte igen.",
         "copyApiKey": "Kopiera API-nyckel",
         "copiedToClipboard": "Kopierat till urklipp",
+        "apiKeyCount_one": "{{count}} nyckel",
         "apiKeyCount_other": "{{count}} nycklar",
         "newKey": "Ny nyckel",
         "noApiKeys": "Inga API-nycklar ännu.",
@@ -670,6 +680,9 @@
         "openUpdates": "Uppdateringar"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Layout"
   },
   "plugins": {
     "manager": {
@@ -752,60 +765,6 @@
       "saveFailed": "Kunde inte spara ändringen"
     }
   },
-  "sync": {
-    "server": "Termix-server",
-    "account": "Konto",
-    "status": "Status",
-    "never": "aldrig",
-    "justNow": "just nu",
-    "actionFailed": "Det fungerade inte. Försök igen.",
-    "unlinkedTitle": "Endast den här enheten",
-    "unlinkedBody": "Termix fungerar självständigt på den här enheten. Länka den till din Termix-server för att hålla allt synkroniserat.",
-    "unlinkedPointHosts": "Dina värdmaskiner, inloggningsuppgifter, kommandon och inställningar följer med dig till varje enhet.",
-    "unlinkedPointOffline": "Allt fungerar fortfarande när servern inte kan nås, och synkroniseras senare.",
-    "unlinkedPointAccount": "Du loggar in med ditt serverkonto, och värdmaskiner som andra delat med dig visas också här.",
-    "linkButton": "Länka till en server",
-    "state": {
-      "syncing": "Synkroniserar",
-      "offline": "Servern kan inte nås",
-      "error": "Synkronisering stoppad",
-      "signedOut": "Utloggad",
-      "synced": "Synkroniserad {{time}}"
-    },
-    "signInAgain": "Logga in igen",
-    "syncNow": "Synkronisera nu",
-    "unlink": "Koppla bort",
-    "unlinked": "Den här enheten är inte längre länkad",
-    "unlinkTitle": "Vill du koppla bort denna enhet?",
-    "unlinkDescription": "Synkroniseringen stoppas och du loggas ut från servern. Värdar som andra delat med dig tas bort från denna enhet i alla fall.",
-    "unlinkKeepTitle": "Behåll mina data här",
-    "unlinkKeepBody": "Dina värdar, inloggningsuppgifter och inställningar stannar kvar på denna enhet och fungerar oberoende.",
-    "unlinkRemoveTitle": "Ta bort synkroniserade data",
-    "unlinkRemoveBody": "Allt som kom från servern tas bort från denna enhet. Endast värdar som behållits lokalt på enheten stannar kvar.",
-    "conflictsTitle": "Konflikter",
-    "conflictsDescription": "Dessa ändrades både här och på servern samtidigt. Serverns version används. Välj att behålla din version för att skicka den till servern istället.",
-    "keepMine": "Behåll min version",
-    "keepServer": "Behåll serverns version",
-    "errorsTitle": "Inte synkroniserat",
-    "errorsDescription": "Servern accepterade inte dessa ändringar. De stannar kvar på denna enhet.",
-    "errorPermission": "Ditt konto på servern har inte behörighet att göra denna ändring.",
-    "retry": "Försök igen",
-    "whatSyncs": "Vad som synkroniseras",
-    "whatSyncsDescription": "Stäng av allt du vill behålla endast på denna enhet.",
-    "coreGroup": "Termix",
-    "notOnServer": "Servern har inte detta",
-    "notOnDevice": "Inte på denna enhet ännu",
-    "localOnlyHint": "Du kan också behålla enskilda värdar eller mappar lokalt på denna enhet via deras inställningar.",
-    "originTitle": "Var anslutningar startar",
-    "originDescription": "Anslut till värdar från denna enhet, eller via servern. Du kan ändra detta per värd.",
-    "originLocal": "Denna enhet",
-    "originRemote": "Servern",
-    "proxy": {
-      "title": "Omvänd proxy",
-      "description": "Endast nödvändigt när något som Cloudflare Access eller en inloggningssida sitter framför din server.",
-      "saved": "Sparat"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Serverns standardinställningar för värdar",
     "titleUser": "Mina standardinställningar för värdar",
@@ -862,5 +821,18 @@
     "pickCredential": "Välj en inloggningsuppgift att redigera",
     "pickDefaults": "Välj en nivå av standardvärden att redigera",
     "pickHint": "Allt om en anslutning finns här, grupperat så att du lätt hittar det."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Ändra varumärkesanpassning",
+      "description": "Ställ in appnamn, slogan och logotyp som visas för alla."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Hur mycket vill du ha på skärmen?",
+    "presetIntro": "Välj hur mycket som visas på skärmen.",
+    "presetChangeLater": "Du kan byta förinställningar eller ändra enskilda inställningar senare under Gränssnitt i Inställningar.",
+    "appearanceTitle": "Gör den din egen",
+    "appearanceIntro": "Välj ett tema, en accentfärg, ett typsnitt och ditt språk. Ändringarna syns direkt och du kan ändra dem senare i Inställningar."
   }
 }

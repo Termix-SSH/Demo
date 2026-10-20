@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Aspect clasic",
+    "description": "Aspectul clasic Termix, cu bara de iconițe, bara laterală, bara de file și dock."
+  },
+  "layout": {
+    "name": "Clasic",
+    "description": "Bară de iconițe, bară laterală, bară de file și dock pe dreapta."
+  },
+  "tab": {
+    "dashboard": "Panou de control",
+    "manage": "Gestionare",
+    "settings": "Setări"
+  },
   "common": {
     "more": "Mai multe",
     "logout": "Deconectare",
@@ -221,20 +234,16 @@
     "secondFactorAfterExternalLoginDesc": "Dacă este dezactivat, un al doilea factor înregistrat este solicitat doar după autentificările cu parolă și alte metode locale, ca înainte. Dacă este activat, este solicitat după fiecare metodă de autentificare, inclusiv SSO și LDAP.",
     "allowPasswordReset": "Permite resetarea parolei",
     "allowPasswordResetDesc": "Cod de resetare prin logurile Docker",
-    "auditForwardingTitle": "Redirecționează către SIEM",
-    "auditForwardingDesc": "Trimite o copie a fiecărei intrări din jurnalul de audit către un colector extern în format NDJSON. Logurile locale rămân sursa de adevăr.",
-    "auditForwardingEnvNotice": "O variabilă de mediu configurează, de asemenea, redirecționarea; URL-ul salvat aici are prioritate.",
-    "auditForwardingToken": "Token bearer (opțional)",
-    "auditForwardingTokenStored": "Token bearer (salvat)",
-    "auditForwardingSaved": "Setările de redirecționare a jurnalului de audit au fost salvate",
-    "auditForwardingSaveError": "Salvarea setărilor de redirecționare a jurnalului de audit a eșuat",
+    "forceHttps": "Redirecționează HTTP către HTTPS",
+    "forceHttpsDesc": "Redirecționează HTTP simplu către HTTPS și cere browserelor să rămână pe HTTPS. Funcționează doar dacă Termix servește HTTPS.",
+    "forceHttpsNoTls": "HTTPS este dezactivat în Termix, deci nu se face nicio redirecționare. Activează ENABLE_SSL sau configurează redirecționarea în proxy-ul tău invers.",
+    "forceHttpsFailed": "Nu s-a putut modifica setarea HTTPS",
     "sessionTimeout": "Timp de expirare a sesiunii",
     "hours": "ore",
     "sessionTimeoutRange": "Min 1h, max 720h",
-    "monitoringDefaults": "Setări implicite de monitorizare",
-    "statusCheck": "Verificare stare",
-    "sec": "sec",
     "logLevel": "Nivel de logare",
+    "usersCount_one": "{{count}} utilizator",
+    "usersCount_few": "{{count}} utilizatori",
     "usersCount_other": "{{count}} utilizatori",
     "searchUsers": "Caută utilizatori...",
     "noUsers": "Niciun utilizator",
@@ -245,6 +254,8 @@
     "roleName": "Nume",
     "roleDisplayName": "Nume afișat",
     "roleDescription": "Descriere",
+    "rolesCount_one": "{{count}} rol",
+    "rolesCount_few": "{{count}} roluri",
     "rolesCount_other": "{{count}} roluri",
     "createRole": "Creează",
     "creating": "Se creează...",
@@ -259,6 +270,8 @@
     "changeFile": "Schimbă",
     "import": "Importă",
     "importing": "Se importă...",
+    "apiKeysCount_one": "{{count}} cheie",
+    "apiKeysCount_few": "{{count}} chei",
     "apiKeysCount_other": "{{count}} chei",
     "apiKeysDocsLink": "Vezi documentația",
     "apiKeysCliHint": "Folosește o cheie API cu Termix CLI pentru a gestiona serverele din terminal.",
@@ -281,6 +294,8 @@
     "systemBadge": "SISTEM",
     "customBadge": "PERSONALIZAT",
     "youBadge": "DUMNEAVOASTRĂ",
+    "sessionsActive_one": "{{count}} activ",
+    "sessionsActive_few": "{{count}} active",
     "sessionsActive_other": "{{count}} active",
     "sessionActive": "Activă: {{time}}",
     "sessionExpires": "Exp: {{time}}",
@@ -351,9 +366,6 @@
     "sessionTimeoutRange2": "Timpul de expirare al sesiunii trebuie să fie între 1 și 720 de ore",
     "sessionTimeoutSaved": "Timpul de expirare al sesiunii a fost salvat",
     "sessionTimeoutSaveFailed": "Eșec la salvarea timpului de expirare al sesiunii",
-    "monitoringIntervalInvalid": "Valori de interval nevalide",
-    "monitoringSaved": "Setările de monitorizare au fost salvate",
-    "monitoringSaveFailed": "Eșec la salvarea setărilor de monitorizare",
     "logLevelUpdateFailed": "Eșec la actualizarea nivelului de jurnal",
     "createUserRequired": "Numele de utilizator și parola sunt obligatorii",
     "createUserPasswordTooShort": "Parola trebuie să aibă cel puțin 6 caractere",
@@ -424,6 +436,8 @@
     "importError": "Importul bazei de date a eșuat",
     "sectionHostDefaults": "Setări implicite pentru gazde",
     "rolePermissions": {
+      "count_one": "{{count}} permisiune",
+      "count_few": "{{count}} permisiuni",
       "count_other": "{{count}} permisiuni",
       "editAction": "Editează permisiunile",
       "loadError": "Încărcarea catalogului de permisiuni a eșuat",
@@ -615,6 +629,8 @@
         "apiKeyCreatedWarning": "Cheia a fost creată – copiaz-o acum, nu va mai fi afișată.",
         "copyApiKey": "Copiază cheia API",
         "copiedToClipboard": "Copiat în clipboard",
+        "apiKeyCount_one": "{{count}} cheie",
+        "apiKeyCount_few": "{{count}} chei",
         "apiKeyCount_other": "{{count}} chei",
         "newKey": "Cheie nouă",
         "noApiKeys": "Încă nu există chei API.",
@@ -670,6 +686,9 @@
         "openUpdates": "Actualizări"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Aspect"
   },
   "plugins": {
     "manager": {
@@ -752,60 +771,6 @@
       "saveFailed": "Nu s-a putut salva modificarea"
     }
   },
-  "sync": {
-    "server": "Server Termix",
-    "account": "Cont",
-    "status": "Stare",
-    "never": "niciodată",
-    "justNow": "acum",
-    "actionFailed": "Nu a funcționat. Încearcă din nou.",
-    "unlinkedTitle": "Doar pe acest dispozitiv",
-    "unlinkedBody": "Termix funcționează independent pe acest dispozitiv. Conectează-l la serverul tău Termix pentru a menține totul sincronizat.",
-    "unlinkedPointHosts": "Gazdele, credențialele, fragmentele și setările tale te urmează pe fiecare dispozitiv.",
-    "unlinkedPointOffline": "Totul funcționează și când serverul nu poate fi atins, și se sincronizează ulterior.",
-    "unlinkedPointAccount": "Te autentifici cu contul tău de server, iar gazdele pe care alți oameni le-au partajat cu tine apar și aici.",
-    "linkButton": "Conectează la un server",
-    "state": {
-      "syncing": "Sincronizare",
-      "offline": "Serverul nu poate fi atins",
-      "error": "Sincronizarea a fost oprită",
-      "signedOut": "Deconectat",
-      "synced": "Sincronizat {{time}}"
-    },
-    "signInAgain": "Autentifică-te din nou",
-    "syncNow": "Sincronizează acum",
-    "unlink": "Deconectează",
-    "unlinked": "Acest dispozitiv nu mai este conectat",
-    "unlinkTitle": "Dezlegarea acestui dispozitiv?",
-    "unlinkDescription": "Sincronizarea se oprește și se deconectează de pe server. Gazdele partajate cu dvs. de alții sunt eliminate de pe acest dispozitiv în orice caz.",
-    "unlinkKeepTitle": "Păstrează datele mele aici",
-    "unlinkKeepBody": "Gazdele, acreditările și setările dvs. rămân pe acest dispozitiv și continuă să funcționeze independent.",
-    "unlinkRemoveTitle": "Elimină datele sincronizate",
-    "unlinkRemoveBody": "Tot ce a provenit de pe server este eliminat de pe acest dispozitiv. Rămân doar gazdele păstrate local pe acest dispozitiv.",
-    "conflictsTitle": "Conflicte",
-    "conflictsDescription": "Acestea au fost modificate aici și pe server în același timp. Versiunea de pe server este cea utilizată. Păstrați-vă versiunea pentru a o trimite pe server în schimb.",
-    "keepMine": "Păstrează a mea",
-    "keepServer": "Păstrează cea de pe server",
-    "errorsTitle": "Nu sunt sincronizate",
-    "errorsDescription": "Serverul nu a acceptat aceste modificări. Ele rămân pe acest dispozitiv.",
-    "errorPermission": "Contul dvs. de pe server nu are permisiunea de a face această modificare.",
-    "retry": "Încearcă din nou",
-    "whatSyncs": "Ce se sincronizează",
-    "whatSyncsDescription": "Dezactivați orice doriți să păstrați doar pe acest dispozitiv.",
-    "coreGroup": "Termix",
-    "notOnServer": "Serverul nu are acest lucru",
-    "notOnDevice": "Încă nu pe acest dispozitiv",
-    "localOnlyHint": "Puteți păstra, de asemenea, gazde sau foldere individuale pe acest dispozitiv din setările lor.",
-    "originTitle": "De unde încep conexiunile",
-    "originDescription": "Conectați-vă la gazde de pe acest dispozitiv sau prin intermediul serverului. Puteți modifica acest lucru pentru fiecare gazdă.",
-    "originLocal": "Acest dispozitiv",
-    "originRemote": "Serverul",
-    "proxy": {
-      "title": "Proxy invers",
-      "description": "Necesar doar când ceva precum Cloudflare Access sau o pagină de autentificare se află în fața serverului dvs.",
-      "saved": "Salvat"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Setări implicite pentru gazdele serverului",
     "titleUser": "Setările mele implicite pentru gazde",
@@ -862,5 +827,18 @@
     "pickCredential": "Alege un credențial de editat",
     "pickDefaults": "Alege un nivel de valori implicite de editat",
     "pickHint": "Tot ce ține de o conexiune se află aici, grupat pentru a fi ușor de găsit."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Modifică branding-ul",
+      "description": "Setează numele aplicației, sloganul și logo-ul afișate tuturor."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Cât de mult dorești să apară pe ecran?",
+    "presetIntro": "Alege cât de mult să apară pe ecran.",
+    "presetChangeLater": "Poți schimba presetările sau orice setare individuală mai târziu în Setări, la secțiunea Interfață.",
+    "appearanceTitle": "Personalizează-l",
+    "appearanceIntro": "Alege o temă, o culoare de accent, un font și limba ta. Modificările apar imediat și le poți schimba mai târziu în Setări."
   }
 }

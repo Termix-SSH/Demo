@@ -1,0 +1,51 @@
+{
+  "name": "Login-sikkerhed",
+  "permissions": {
+    "manage": {
+      "title": "Administrer login-sikkerhed",
+      "description": "Se status for anden faktor og ændr indstillinger for login-sikkerhed."
+    }
+  },
+  "settings": {
+    "group": {
+      "sessions": "Sessioner",
+      "secondFactor": "Anden faktor"
+    },
+    "admin": {
+      "idleTimeoutMinutes": {
+        "label": "Log ud efter inaktivitetsminutter",
+        "description": "Log brugere ud efter dette antal minutter uden aktivitet. Serveren afslutter også sessionen, så et kopieret token holder op med at virke. 0 slår det fra."
+      },
+      "maxSessionHours": {
+        "label": "Maksimal sessionstid i timer",
+        "description": "Sessioner afsluttes efter dette antal timer, selv med husk mig. 0 betyder ingen ekstra grænse."
+      },
+      "rememberDevice": {
+        "label": "Tillad husk mig",
+        "description": "Deaktiveret skjuler 'Husk mig' ved login og ignorerer tidligere huskede enheder, så hvert login beder om den anden faktor."
+      },
+      "secondFactor": {
+        "label": "Kræv en anden faktor",
+        "description": "Personer uden en anden faktor skal opsætte en efter login, før de kan bruge Termix. Login med en passkey med PIN eller fingeraftryk tæller.",
+        "off": "Deaktiveret",
+        "newDevice": "På en ny enhed",
+        "always": "Ved hvert login"
+      },
+      "applyToExternal": {
+        "label": "Også for single sign-on",
+        "description": "Bed om den anden faktor efter SSO- og LDAP-logins også. Deaktiver det, hvis din identitetsudbyder allerede beder om en."
+      }
+    }
+  },
+  "status": {
+    "factors": "Anden faktor, som personer kan bruge: {{factors}}",
+    "noFactors": "Ingen anden faktor er installeret. Installer et plugin som TOTP eller WebAuthn, så personer kan opsætte en.",
+    "failed": "Kunne ikke tjekke, hvilke andenfaktor-løsninger der er installeret."
+  },
+  "setup": {
+    "title": "Opsæt en anden faktor",
+    "body": "Din administrator kræver en anden faktor for at logge ind. Opsæt en nedenfor for at fortsætte med at bruge Termix.",
+    "none": "Intet at opsætte her? Bed din administrator om at installere et plugin til anden faktor.",
+    "signOut": "Log ud"
+  }
+}

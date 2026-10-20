@@ -35,6 +35,16 @@
         "title": "Xem mức sử dụng AI của tất cả người dùng",
         "description": "Xem số token mà các cuộc gọi AI của mọi người dùng đã tiêu thụ, không chỉ của riêng bạn. Mặc định chỉ dành cho Quản trị viên."
       }
+    },
+    "assets": {
+      "view": {
+        "title": "Xem danh mục tài sản",
+        "description": "Xem các host, máy khách, container, vùng và kết nối đã thu thập. Mặc định chỉ dành cho Quản trị viên."
+      },
+      "manage": {
+        "title": "Quản lý danh mục tài sản",
+        "description": "Bắt đầu thu thập, chỉnh sửa quy tắc vùng, ghim vùng và thay đổi lịch trình. Thu thập chỉ đọc host ở chế độ chỉ đọc. Mặc định chỉ dành cho Quản trị viên."
+      }
     }
   },
   "settings": {
@@ -80,6 +90,35 @@
       "autoOpsDailyTokens": {
         "label": "Ngân sách token AI hàng ngày cho mỗi người dùng",
         "description": "Khi một người dùng đã sử dụng hết số token này trong ngày (giờ UTC), các tác vụ AI của họ sẽ bị bỏ qua hoặc dừng lại."
+      },
+      "assetsDailyCollect": {
+        "label": "Thu thập danh mục tài sản hàng ngày",
+        "description": "Đọc mỗi host mà bộ thu thập có thể kết nối một lần mỗi ngày bằng một tập lệnh chỉ đọc."
+      },
+      "assetsCollectTime": {
+        "label": "Thời gian thu thập tài sản (UTC)",
+        "description": "HH:MM, ví dụ 03:00."
+      },
+      "assetsCollector": {
+        "label": "Bộ thu thập tài sản"
+      },
+      "assetsAnnotateAfterCollect": {
+        "label": "Ghi chú tài sản sau mỗi lần thu thập",
+        "description": "Một mô hình sẽ ghi vai trò, tầm quan trọng và hệ thống kinh doanh của mỗi tài sản thay đổi, cùng các phụ thuộc mà các dữ kiện cho thấy."
+      },
+      "assetsAnnotateRunTokens": {
+        "label": "Ngân sách token cho mỗi lần ghi chú tài sản",
+        "description": "Một lần chạy sẽ dừng lại khi các cuộc gọi mô hình của nó đã sử dụng số token này; những gì đã ghi sẽ được giữ lại."
+      },
+      "assetsAnnotateProvider": {
+        "label": "Nhà cung cấp ghi chú tài sản"
+      },
+      "assetsAnnotateModel": {
+        "label": "Mô hình ghi chú tài sản"
+      },
+      "exposureRetentionDays": {
+        "label": "Thời gian lưu trữ lịch sử phơi nhiễm (ngày)",
+        "description": "Giữ lại các thông báo đang chờ và bằng chứng được tham chiếu bởi các mục hiện tại bất kể thời gian."
       }
     },
     "host": {
@@ -364,7 +403,8 @@
     "source": {
       "assistant": "Trợ lý",
       "terminal": "Bảng điều khiển Terminal",
-      "compaction": "Nén dữ liệu"
+      "compaction": "Nén dữ liệu",
+      "assets": "Ghi chú tài sản"
     }
   },
   "autoOps": {
@@ -536,7 +576,229 @@
       "noticeReported": "Báo cáo AI: {{title}}",
       "noticeProposed": "Kế hoạch AI đang chờ phê duyệt: {{title}}",
       "noticeExecuted": "Kế hoạch AI đã thực thi: {{title}}",
-      "noticeFailed": "Tác vụ AI thất bại: {{title}}"
+      "noticeFailed": "Tác vụ AI thất bại: {{title}}",
+      "noticeAssetsAnnotationFailed": "Ghi chú tài sản thất bại"
     }
+  },
+  "assets": {
+    "title": "Tài sản",
+    "search": "Tìm kiếm tên, khóa hoặc địa chỉ",
+    "allZones": "Tất cả vùng",
+    "showRemoved": "Hiển thị đã xóa",
+    "collectNow": "Thu thập ngay",
+    "collecting": "Đang thu thập…",
+    "collectFailed": "Không thể bắt đầu thu thập",
+    "neverRun": "Chưa thu thập",
+    "lastRun": "Lần thu thập cuối cùng {{time}}: {{ok}} trong số {{total}} host",
+    "lastRunFailed": "Lần thu thập vào {{time}} thất bại",
+    "hostsFailed_other": "{{count}} host thất bại",
+    "loadFailed": "Không thể tải danh mục",
+    "saveFailed": "Không thể lưu",
+    "empty": "Chưa có tài sản nào",
+    "emptyHint": "Thu thập ngay để đọc mọi host mà bộ thu thập có thể kết nối.",
+    "emptyHintView": "Người có quyền ai.assets.manage phải thu thập trước.",
+    "removed": "Đã xóa",
+    "pinned": "Đã ghim",
+    "multiZone": "Đa vùng",
+    "multiZoneHint": "Có địa chỉ ở nhiều hơn một vùng, vì vậy nó có thể tiếp cận cả hai: một điểm xoay tiềm năng.",
+    "columns": {
+      "name": "Tên",
+      "kind": "Loại",
+      "zone": "Vùng",
+      "ips": "Địa chỉ",
+      "listening": "Cổng",
+      "outbound": "Ra ngoài",
+      "services": "Dịch vụ",
+      "collected": "Lần thu thập cuối",
+      "role": "Vai trò",
+      "importance": "Tầm quan trọng",
+      "system": "Hệ thống"
+    },
+    "kind": {
+      "host": "Host",
+      "guest": "Máy khách",
+      "container": "Container",
+      "external": "Bên ngoài"
+    },
+    "zone": {
+      "internal": "Nội bộ",
+      "dmz": "DMZ",
+      "external": "Bên ngoài",
+      "cloud": "Đám mây",
+      "overlay": "Lớp phủ"
+    },
+    "sections": {
+      "os": "Hệ điều hành",
+      "hostname": "Tên máy chủ",
+      "uptimeSec": "Thời gian hoạt động (giây)",
+      "interfaces": "Giao diện mạng",
+      "routes": "Tuyến đường",
+      "listening": "Cổng đang lắng nghe",
+      "connections": "Kết nối đã thiết lập",
+      "services": "Dịch vụ đang chạy",
+      "containers": "Container",
+      "kubernetes": "Kubernetes",
+      "guests": "Máy khách Proxmox",
+      "cloud": "Đám mây",
+      "missing": "Mục không có dữ liệu",
+      "guest": "Máy khách Proxmox",
+      "container": "Container"
+    },
+    "outgoing": "Đi ra",
+    "incoming": "Đến",
+    "noEdges": "Không có",
+    "stale": "Không xuất hiện trong lần thu thập gần nhất",
+    "pinZone": "Khu vực",
+    "rulesDecide": "Được quyết định bởi quy tắc",
+    "settingsTitle": "Khu vực và lịch trình",
+    "scheduleTitle": "Thu thập",
+    "daily": "Thu thập hàng ngày",
+    "dailyHint": "Máy chủ cũng được thu thập lại khi được thêm hoặc thay đổi.",
+    "time": "Thời gian (UTC)",
+    "save": "Lưu",
+    "collector": "Thu thập với tư cách {{collector}}, kết nối đến các máy chủ mà tài khoản này có thể truy cập.",
+    "collectorMe": "bạn",
+    "collectorOther": "một quản trị viên khác",
+    "collectorNone": "chưa có ai",
+    "collectAsMe": "Thu thập với tư cách của tôi",
+    "zonesTitle": "Quy tắc khu vực",
+    "zonesHint": "Một quy tắc ánh xạ CIDR sang một khu vực, ưu tiên hơn các quy tắc mặc định. Tiền tố cụ thể nhất sẽ thắng, sau đó là độ ưu tiên cao hơn. Tài sản sẽ được phân vùng lại khi bạn lưu.",
+    "zoneName": "Tên",
+    "zoneNameExample": "Mạng LAN trung tâm dữ liệu",
+    "zoneKind": "Loại",
+    "cidr": "CIDR",
+    "priority": "Độ ưu tiên",
+    "addZone": "Thêm quy tắc",
+    "deleteZone": "Xóa quy tắc",
+    "cancelEdit": "Hủy",
+    "annotating": "Đang chú thích…",
+    "neverAnnotated": "Chưa được chú thích",
+    "lastAnnotation": "Chú thích lần cuối {{time}}: {{ok}} trong số {{total}} tài sản, {{tokens}} token",
+    "annotationFailed": "thất bại: {{reason}}",
+    "annotateNow": "Chú thích ngay",
+    "annotateFailed": "Không thể bắt đầu chú thích",
+    "modeTable": "Bảng",
+    "modeGraph": "Biểu đồ",
+    "importance": {
+      "critical": "Quan trọng",
+      "high": "Cao",
+      "medium": "Trung bình",
+      "low": "Thấp"
+    },
+    "importanceUnknown": "Chưa đánh giá",
+    "importanceReason": "Lý do",
+    "sourceAi": "AI",
+    "sourceAiHint": "Được viết bởi chú thích; lần chạy tiếp theo có thể thay đổi nó.",
+    "sourceUser": "Đã khóa",
+    "sourceUserHint": "Được đặt bởi người dùng; các lần chạy chú thích sẽ không thay đổi cho đến khi được mở khóa.",
+    "unlock": "Mở khóa: cho phép chú thích điền lại thông tin này",
+    "unlockField": "Mở khóa {{field}}",
+    "editAnnotation": "Chỉnh sửa",
+    "lockHint": "Các trường bạn thay đổi sẽ bị khóa đối với các lần chú thích sau này.",
+    "factsTitle": "Thông tin",
+    "closePanel": "Đóng",
+    "impact": "Tác động",
+    "clearImpact": "Xóa",
+    "impactSummary_other": "Nếu nó gặp sự cố, {{count}} tài sản sẽ ngừng hoạt động cùng với nó ({{critical}} quan trọng, {{high}} cao), {{weak}} tài sản khác chỉ kết nối với chúng.",
+    "impactTruncated": "Cắt bớt ở 6 bước nhảy hoặc 300 tài sản.",
+    "impactDirect": "Trực tiếp",
+    "impactTransitive": "Thông qua người khác",
+    "impactWeak": "Chỉ kết nối với chúng",
+    "expandContainers": "Hiển thị container",
+    "showExternal": "Hiển thị địa chỉ bên ngoài",
+    "graphCounts": "{{nodes}} tài sản, {{edges}} quan hệ",
+    "graphTitle": "Đồ thị tài sản",
+    "noZone": "Không có vùng",
+    "annotationTitle": "Chú thích AI",
+    "annotateAfterCollect": "Chú thích sau mỗi lần thu thập",
+    "annotateAfterCollectHint": "Chỉ các tài sản đã thay đổi kể từ lần chú thích cuối cùng và các hàng xóm của chúng được gửi đến mô hình.",
+    "annotateProvider": "Nhà cung cấp",
+    "annotateProviderDefault": "Lựa chọn auto-ops của bộ thu thập",
+    "annotateModel": "Mô hình",
+    "annotateModelDefault": "Mô hình mặc định của nhà cung cấp",
+    "annotationHint": "Chú thích chạy dưới dạng bộ thu thập, với các nhà cung cấp của bộ thu thập. Tóm tắt không chứa môi trường, dòng lệnh hoặc địa chỉ bên ngoài.",
+    "annotateAll": "Chú thích lại mọi thứ"
+  },
+  "exposure": {
+    "title": "Điểm vào Internet",
+    "disclaimer": "Chỉ dành cho danh mục cấu hình. Các ràng buộc công khai và quy tắc chuyển tiếp không chứng minh khả năng truy cập Internet. Các trình nghe riêng được giữ lại làm bằng chứng backend.",
+    "loadFailed": "Không thể tải danh mục phơi nhiễm.",
+    "saveFailed": "Không thể lưu độ ưu tiên.",
+    "search": "Lọc địa chỉ, host, tên hoặc đường dẫn",
+    "allPriority": "Tất cả độ ưu tiên",
+    "allZones": "Tất cả vùng",
+    "allSources": "Tất cả nguồn",
+    "high": "Cao",
+    "medium": "Trung bình",
+    "low": "Thấp",
+    "active": "Hoạt động",
+    "stale": "Hết hạn",
+    "resolved": "Không còn quan sát thấy",
+    "all": "Tất cả",
+    "refresh": "Làm mới",
+    "loading": "Đang tải…",
+    "empty": "Không có mục nào khớp. Kiểm tra phạm vi thu thập bên dưới trước khi đưa ra kết luận.",
+    "never": "Chưa thu thập. Thu thập tài sản để lập danh mục các mục.",
+    "endpoint": "Điểm vào",
+    "source": "Nguồn",
+    "priority": "Độ ưu tiên xem xét",
+    "pathState": "Đường dẫn cấu hình",
+    "freshness": "Độ mới",
+    "details": "Chi tiết bằng chứng",
+    "close": "Đóng",
+    "notTested": "Khả năng truy cập bên ngoài: chưa kiểm tra.",
+    "priorityReason": "Độ ưu tiên là gợi ý xem xét, không phải phán quyết về lỗ hổng. Các cổng quản lý và dịch vụ dữ liệu công khai được ưu tiên; danh tính dịch vụ và chính sách truy cập vẫn cần xác minh.",
+    "tls": "Cấu hình TLS",
+    "restrictions": "Hạn chế truy cập",
+    "observed": "Lần quan sát cuối",
+    "rulePriority": "Độ ưu tiên quy tắc (mở khóa)",
+    "evidence": "Quan sát",
+    "coverage": "Phạm vi thu thập",
+    "changes": "Thay đổi gần đây",
+    "current": "Hiện tại",
+    "partial": "Chưa hoàn chỉnh",
+    "complete": "Liên kết cấu hình hoàn tất",
+    "conflicting": "Mơ hồ hoặc có chu trình",
+    "configured": "Đã khai báo trong cấu hình",
+    "unknown": "Không xác định",
+    "status_ok": "Đã thu thập",
+    "status_unsupported": "Công cụ không khả dụng",
+    "status_denied": "Từ chối quyền truy cập",
+    "status_failed": "Thu thập hoặc phân tích cú pháp thất bại",
+    "status_truncated": "Đã bị cắt ngắn",
+    "change_baseline": "Đã thiết lập đường cơ sở",
+    "change_added": "Đã thêm mục",
+    "change_changed": "Cấu hình đã thay đổi",
+    "change_removed": "Mục không còn được quan sát",
+    "change_coverage": "Phạm vi bao phủ suy giảm",
+    "explain": "Giải thích bằng chứng",
+    "explaining": "Đang giải thích…",
+    "explainFailed": "Giải thích thất bại hoặc bằng chứng đã thay đổi.",
+    "aiLabel": "Diễn giải AI · không phải là phát hiện đã xác minh",
+    "previous": "Trước",
+    "next": "Tiếp",
+    "binding": "Phạm vi ràng buộc",
+    "binding_public": "Ứng viên mục công khai",
+    "binding_local": "Backend riêng tư/cục bộ",
+    "binding_unknown": "Ràng buộc chưa giải quyết",
+    "ruleGaps": "Quy tắc chưa phân tích: {{count}}",
+    "unsupportedRule": "Quy tắc không được hỗ trợ; giữ lại bằng chứng trước đó",
+    "scope": "Chế độ xem",
+    "scope_internet": "Ứng viên mục Internet",
+    "scope_all": "Tất cả bằng chứng",
+    "scope_unknown": "Phơi nhiễm không xác định",
+    "inventorySummary": "{{internet}} ứng viên mục Internet · tổng cộng {{all}} quy tắc · {{unknown}} có mức độ phơi nhiễm không xác định",
+    "bindingCount": "{{count}} ràng buộc được quan sát",
+    "pathsTruncated": "Mở rộng đường dẫn đã đạt giới hạn. Đây là bằng chứng không đầy đủ.",
+    "pathBranch": "Đường dẫn {{index}}",
+    "branched": "Nhánh điều kiện",
+    "reason_sensitive": "Kiểm tra cổng dịch vụ {{port}} (mục hoặc backend)",
+    "reason_public-address": "Quan sát thấy ràng buộc địa chỉ công khai",
+    "reason_wan-zone": "Vùng nguồn WAN của OpenWrt; việc chấp nhận của tường lửa chưa được xác minh",
+    "reason_configured-public-tunnel": "Đã cấu hình đường hầm công khai; khả năng truy cập từ bên ngoài chưa được kiểm tra",
+    "reason_internal-only": "Chỉ quan sát thấy các ràng buộc nội bộ hoặc cục bộ",
+    "reason_exposure-unknown": "Không đủ bằng chứng để phân loại mức độ phơi nhiễm",
+    "reason_critical-asset": "Tài sản được đánh dấu là quan trọng",
+    "reason_manual": "Ưu tiên do người dùng chọn"
   }
 }

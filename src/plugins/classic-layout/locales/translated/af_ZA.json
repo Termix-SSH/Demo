@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Klassieke Uitleg",
+    "description": "Die klassieke Termix-uitleg met 'n ikoonspoor, sybalk, oortjiebalk en dok."
+  },
+  "layout": {
+    "name": "Klassiek",
+    "description": "Ikoonspoor, sybalk, oortjiebalk en regterdok."
+  },
+  "tab": {
+    "dashboard": "Kontrolepaneel",
+    "manage": "Bestuur",
+    "settings": "Instellings"
+  },
   "common": {
     "more": "Meer",
     "logout": "Teken uit",
@@ -221,20 +234,15 @@
     "secondFactorAfterExternalLoginDesc": "Af: 'n ingeskrewe tweede faktor word slegs gevra na wagwoord- en ander plaaslike inlogpogings, soos voorheen. Aan: dit word gevra na elke inlogmetode, insluitend SSO en LDAP.",
     "allowPasswordReset": "Laat Wagwoordherstel Toe",
     "allowPasswordResetDesc": "Herstelkode via Docker-logboeke",
-    "auditForwardingTitle": "Stuur na SIEM",
-    "auditForwardingDesc": "Stuur 'n kopie van elke ouditinskrywing na 'n eksterne versamelaar as NDJSON. Plaaslike logboeke bly die bron van waarheid.",
-    "auditForwardingEnvNotice": "'n Omgewingsveranderlike stel ook verryging op; die URL wat hier gestoor is, het voorrang.",
-    "auditForwardingToken": "Draer-teken (opsioneel)",
-    "auditForwardingTokenStored": "Draer-teken (gestoor)",
-    "auditForwardingSaved": "Ouditverrygingsinstellings gestoor",
-    "auditForwardingSaveError": "Kon nie ouditverrygingsinstellings stoor nie",
+    "forceHttps": "Herlei HTTP na HTTPS",
+    "forceHttpsDesc": "Stuur plat HTTP na HTTPS en vra browsers om op HTTPS te bly. Werk slegs terwyl Termix self HTTPS bedien",
+    "forceHttpsNoTls": "HTTPS is af in Termix, dus word niks herlei nie. Skakel ENABLE_SSL aan of herlei in jou omgekeerde proxy",
+    "forceHttpsFailed": "Kon nie die HTTPS-instelling verander nie",
     "sessionTimeout": "Sessie-tydperk",
     "hours": "ure",
     "sessionTimeoutRange": "Min 1u, maks 720u",
-    "monitoringDefaults": "Moniteringstandaarde",
-    "statusCheck": "Statuskontrole",
-    "sec": "sek",
     "logLevel": "Logvlak",
+    "usersCount_one": "{{count}} gebruiker",
     "usersCount_other": "{{count}} gebruikers",
     "searchUsers": "Soek gebruikers...",
     "noUsers": "Geen gebruikers nie",
@@ -245,6 +253,7 @@
     "roleName": "Naam",
     "roleDisplayName": "Vertoonnaam",
     "roleDescription": "Beskrywing",
+    "rolesCount_one": "{{count}} rol",
     "rolesCount_other": "{{count}} rolle",
     "createRole": "Skep",
     "creating": "Besig om te skep...",
@@ -259,6 +268,7 @@
     "changeFile": "Verander",
     "import": "Voer In",
     "importing": "Besig om in te voer...",
+    "apiKeysCount_one": "{{count}} sleutel",
     "apiKeysCount_other": "{{count}} sleutels",
     "apiKeysDocsLink": "Bekyk dokumentasie",
     "apiKeysCliHint": "Gebruik 'n API-sleutel met die Termix CLI om bedieners vanaf jou terminaal te bestuur.",
@@ -281,6 +291,7 @@
     "systemBadge": "STEL",
     "customBadge": "AANPAS",
     "youBadge": "JY",
+    "sessionsActive_one": "{{count}} aktief",
     "sessionsActive_other": "{{count}} aktief",
     "sessionActive": "Aktief: {{time}}",
     "sessionExpires": "Verval: {{time}}",
@@ -351,9 +362,6 @@
     "sessionTimeoutRange2": "Sessie-tydskryf moet tussen 1 en 720 uur wees",
     "sessionTimeoutSaved": "Sessie-tydskryf gestoor",
     "sessionTimeoutSaveFailed": "Kon nie sessie-tydskryf stoor nie",
-    "monitoringIntervalInvalid": "Ongeldige intervalwaardes",
-    "monitoringSaved": "Moniteringsinstellings gestoor",
-    "monitoringSaveFailed": "Kon nie moniteringsinstellings stoor nie",
     "logLevelUpdateFailed": "Kon nie logvlak opdateer nie",
     "createUserRequired": "Gebruikersnaam en wagwoord is verpligtend",
     "createUserPasswordTooShort": "Wagwoord moet ten minste 6 karakters lank wees",
@@ -424,6 +432,7 @@
     "importError": "Databasis-invoer het misluk",
     "sectionHostDefaults": "Gasheer-standaarde",
     "rolePermissions": {
+      "count_one": "{{count}} toestemming",
       "count_other": "{{count}} toestemmings",
       "editAction": "Redigeer toestemmings",
       "loadError": "Kon nie die toestemmingskatalogus laai nie",
@@ -615,6 +624,7 @@
         "apiKeyCreatedWarning": "Sleutel geskep - kopieer dit nou, dit sal nie weer vertoon word nie.",
         "copyApiKey": "Kopieer API-sleutel",
         "copiedToClipboard": "Gekopieer na knipbord",
+        "apiKeyCount_one": "{{count}} sleutel",
         "apiKeyCount_other": "{{count}} sleutels",
         "newKey": "Nuwe Sleutel",
         "noApiKeys": "Nog geen API-sleutels nie.",
@@ -670,6 +680,9 @@
         "openUpdates": "Opdaterings"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Uitleg"
   },
   "plugins": {
     "manager": {
@@ -752,60 +765,6 @@
       "saveFailed": "Kon nie die verandering stoor nie"
     }
   },
-  "sync": {
-    "server": "Termix-bediener",
-    "account": "Rekening",
-    "status": "Status",
-    "never": "nooit",
-    "justNow": "net nou",
-    "actionFailed": "Dit het nie gewerk nie. Probeer weer.",
-    "unlinkedTitle": "Slegs hierdie toestel",
-    "unlinkedBody": "Termix werk op sy eie op hierdie toestel. Koppel dit aan jou Termix-bediener om alles op datum te hou.",
-    "unlinkedPointHosts": "Jou gasheer, geloofsbriewe, fragmente en instellings volg jou na elke toestel.",
-    "unlinkedPointOffline": "Alles werk steeds wanneer die bediener nie bereikbaar is nie, en vang later in.",
-    "unlinkedPointAccount": "Jy meld aan met jou bedienerrekening, en gasheer wat mense met jou gedeel het, verskyn hier ook.",
-    "linkButton": "Koppel aan 'n bediener",
-    "state": {
-      "syncing": "Sinkroniseer",
-      "offline": "Bediener nie bereikbaar nie",
-      "error": "Sinkronisering gestop",
-      "signedOut": "Afgemeld",
-      "synced": "Gesinkroniseer {{time}}"
-    },
-    "signInAgain": "Meld weer aan",
-    "syncNow": "Sinkroniseer nou",
-    "unlink": "Ontkoppel",
-    "unlinked": "Hierdie toestel is nie langer gekoppel nie",
-    "unlinkTitle": "Ontkoppel hierdie toestel?",
-    "unlinkDescription": "Dit stop die sinkronisering en meld af van die bediener. Bedieners wat deur ander met jou gedeel is, word in elk geval van hierdie toestel verwyder.",
-    "unlinkKeepTitle": "Behou my data hier",
-    "unlinkKeepBody": "Jou bedieners, inlogbesonderhede en instellings bly op hierdie toestel en gaan voort om onafhanklik te werk.",
-    "unlinkRemoveTitle": "Verwyder gesinkroniseerde data",
-    "unlinkRemoveBody": "Alles wat van die bediener af gekom het, word van hierdie toestel verwyder. Slegs bedieners wat lokaal op hierdie toestel gehou word, bly oor.",
-    "conflictsTitle": "Konflikte",
-    "conflictsDescription": "Hierdie is gelyktydig hier en op die bediener verander. Die bediener se weergawe word tans gebruik. Behou joune om dit in plaas daarvan na die bediener te stuur.",
-    "keepMine": "Behou myne",
-    "keepServer": "Behou bediener",
-    "errorsTitle": "Nie gesinkroniseer nie",
-    "errorsDescription": "Die bediener het hierdie veranderinge nie aanvaar nie. Hulle bly op hierdie toestel.",
-    "errorPermission": "Jou rekening op die bediener het nie toestemming om hierdie verandering te maak nie.",
-    "retry": "Probeer weer",
-    "whatSyncs": "Wat word gesinkroniseer",
-    "whatSyncsDescription": "Skakel iets af wat jy slegs op hierdie toestel wil behou.",
-    "coreGroup": "Termix",
-    "notOnServer": "Die bediener het nie hierdie nie",
-    "notOnDevice": "Nog nie op hierdie toestel nie",
-    "localOnlyHint": "Jy kan ook individuele bedieners of vouers op hierdie toestel behou vanaf hul instellings.",
-    "originTitle": "Waar verbindinge begin",
-    "originDescription": "Maak verbinding met bedieners vanaf hierdie toestel, of deur die bediener. Jy kan dit per bediener verander.",
-    "originLocal": "Hierdie toestel",
-    "originRemote": "Die bediener",
-    "proxy": {
-      "title": "Omgekeerde proxy",
-      "description": "Slegs nodig wanneer iets soos Cloudflare Access of 'n inlogskaaf voor jou bediener sit.",
-      "saved": "Opgeslaan"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Bedienaar-host-verstekke",
     "titleUser": "My host-verstekke",
@@ -862,5 +821,18 @@
     "pickCredential": "Kies aanmeldgegewens om te redigeer",
     "pickDefaults": "Kies 'n vlak van verstekinstellings om te redigeer",
     "pickHint": "Alles oor 'n verbinding is hier, gegroepeer sodat jy dit kan vind."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Verander handelsmerk",
+      "description": "Stel die app-naam, leuse en logo wat vir almal getoon word."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Hoeveel wil jy op die skerm hê?",
+    "presetIntro": "Kies hoeveel op die skerm vertoon.",
+    "presetChangeLater": "Jy kan later voorinstellings wissel of enige enkele instelling verander in Instellings, onder Koppelvlak.",
+    "appearanceTitle": "Maak dit joune",
+    "appearanceIntro": "Kies 'n tema, 'n aksentkleur, 'n lettertipe en jou taal. Veranderinge verskyn dadelik, en jy kan dit later in Instellings verander."
   }
 }

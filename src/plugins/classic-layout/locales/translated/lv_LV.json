@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Klasiskais izkārtojums",
+    "description": "Klasiskais Termix izkārtojums ar ikonu joslu, sānjoslu, cilņu joslu un dokēšanas joslu."
+  },
+  "layout": {
+    "name": "Klasiskais",
+    "description": "Ikonu josla, sānjosla, cilņu josla un labā dokēšanas josla."
+  },
+  "tab": {
+    "dashboard": "Vadības panelis",
+    "manage": "Pārvaldīt",
+    "settings": "Iestatījumi"
+  },
   "common": {
     "more": "Vairāk",
     "logout": "Izrakstīties",
@@ -221,20 +234,16 @@
     "secondFactorAfterExternalLoginDesc": "Ja ir izslēgts, reģistrēts otrais faktors tiek prasīts tikai pēc pieteikšanās ar paroli un citām lokālām metodēm, kā iepriekš. Ja ir ieslēgts, tas tiek prasīts pēc katras pieteikšanās metodes, tostarp SSO un LDAP",
     "allowPasswordReset": "Atļaut paroles atiestatīšanu",
     "allowPasswordResetDesc": "Atiestatīšanas kods caur Docker žurnāliem",
-    "auditForwardingTitle": "Pārsūtīt uz SIEM",
-    "auditForwardingDesc": "Sūtīt katras revīzijas ieraksta kopiju ārējā savācējā NDJSON formātā. Vietējie žurnāli paliek galīgais avots",
-    "auditForwardingEnvNotice": "Pārsūtīšanu var konfigurēt arī ar vides mainīgo; šeit saglabātā URL ir prioritāra",
-    "auditForwardingToken": "Bearer žetons (neobligāts)",
-    "auditForwardingTokenStored": "Bearer žetons (saglabāts)",
-    "auditForwardingSaved": "Revīzijas pārsūtīšanas iestatījumi saglabāti",
-    "auditForwardingSaveError": "Neizdevās saglabāt revīzijas pārsūtīšanas iestatījumus",
+    "forceHttps": "Pāradresēt HTTP uz HTTPS",
+    "forceHttpsDesc": "Pāradresēt parasto HTTP uz HTTPS un lūgt pārlūkprogrammām saglabāt HTTPS savienojumu. Darbojas tikai tad, ja Termix pats nodrošina HTTPS.",
+    "forceHttpsNoTls": "HTTPS Termix ir izslēgts, tāpēc nekas netiek pāradresēts. Ieslēdziet ENABLE_SSL vai iestatiet pāradresēšanu savā reversajā proxy.",
+    "forceHttpsFailed": "Neizdevās mainīt HTTPS iestatījumu",
     "sessionTimeout": "Sesijas time out",
     "hours": "stundas",
     "sessionTimeoutRange": "Min 1h, maks 720h",
-    "monitoringDefaults": "Pārskatīšanas noklusējuma iestatījumi",
-    "statusCheck": "Statusa pārbaude",
-    "sec": "sek",
     "logLevel": "Žurnāla līmenis",
+    "usersCount_zero": "0 lietotāji",
+    "usersCount_one": "{{count}} lietotājs",
     "usersCount_other": "{{count}} lietotāji",
     "searchUsers": "Meklēt lietotājus...",
     "noUsers": "Nav lietotāju",
@@ -245,6 +254,8 @@
     "roleName": "Nosaukums",
     "roleDisplayName": "Attāmajā nosaukums",
     "roleDescription": "Apraksts",
+    "rolesCount_zero": "0 lomas",
+    "rolesCount_one": "{{count}} loma",
     "rolesCount_other": "{{count}} lomas",
     "createRole": "Izveidot",
     "creating": "Izveido...",
@@ -259,6 +270,8 @@
     "changeFile": "Mainīt",
     "import": "Importēt",
     "importing": "Importē...",
+    "apiKeysCount_zero": "0 atslēgas",
+    "apiKeysCount_one": "{{count}} atslēga",
     "apiKeysCount_other": "{{count}} atslēgas",
     "apiKeysDocsLink": "Apskatīt dokumentāciju",
     "apiKeysCliHint": "Izmantojiet API atslēgu kopā ar Termix CLI, lai pārvaldītu serverus no termināļa.",
@@ -281,6 +294,8 @@
     "systemBadge": "SIST",
     "customBadge": "PĒC PASŪTĪJUMA",
     "youBadge": "JŪS",
+    "sessionsActive_zero": "0 aktīvas",
+    "sessionsActive_one": "{{count}} aktīva",
     "sessionsActive_other": "{{count}} aktīvas",
     "sessionActive": "Aktīvs: {{time}}",
     "sessionExpires": "Beidzas: {{time}}",
@@ -351,9 +366,6 @@
     "sessionTimeoutRange2": "Sesijas derīguma termiņam ir jābūt no 1 līdz 720 stundām",
     "sessionTimeoutSaved": "Sesijas derīguma termiņš saglabāts",
     "sessionTimeoutSaveFailed": "Neizdevās saglabāt sesijas derīguma termiņu",
-    "monitoringIntervalInvalid": "Nederīgas intervāla vērtības",
-    "monitoringSaved": "Pārraudzības iestatījumi saglabāti",
-    "monitoringSaveFailed": "Neizdevās saglabāt pārraudzības iestatījumus",
     "logLevelUpdateFailed": "Neizdevās atjaunināt žurnāla līmeni",
     "createUserRequired": "Lietotājvārds un parole ir obligāti",
     "createUserPasswordTooShort": "Parolei ir jābūt vismaz 6 rakstzīmes garai",
@@ -424,6 +436,8 @@
     "importError": "Datubāzes imports neizdevās",
     "sectionHostDefaults": "Hostu noklusējuma iestatījumi",
     "rolePermissions": {
+      "count_zero": "0 atļaujas",
+      "count_one": "{{count}} atļauja",
       "count_other": "{{count}} atļaujas",
       "editAction": "Rediģēt atļaujas",
       "loadError": "Neizdevās ielādēt atļauju katalogu",
@@ -615,6 +629,8 @@
         "apiKeyCreatedWarning": "Atslēga izveidota – nokopējiet to tagad, tā vairs netiks rādīta.",
         "copyApiKey": "Kopēt API atslēgu",
         "copiedToClipboard": "Nokopēts starpliktuvē",
+        "apiKeyCount_zero": "0 atslēgas",
+        "apiKeyCount_one": "{{count}} atslēga",
         "apiKeyCount_other": "{{count}} atslēgas",
         "newKey": "Jauna atslēga",
         "noApiKeys": "Vēl nav API atslēgu.",
@@ -670,6 +686,9 @@
         "openUpdates": "Atjauninājumi"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Izkārtojums"
   },
   "plugins": {
     "manager": {
@@ -752,60 +771,6 @@
       "saveFailed": "Neizdevās saglabāt izmaiņas"
     }
   },
-  "sync": {
-    "server": "Termix serveris",
-    "account": "Konts",
-    "status": "Statuss",
-    "never": "nekad",
-    "justNow": "tikko",
-    "actionFailed": "Tas nestrādāja. Mēģiniet vēlreiz.",
-    "unlinkedTitle": "Tikai šī ierīce",
-    "unlinkedBody": "Termix šajā ierīcē strādā neatkarīgi. Savienojiet to ar savu Termix serveri, lai viss būtu sinhronizēts.",
-    "unlinkedPointHosts": "Jūsu resursi, pieteikšanās dati, fragmenti un iestatījumi seko līdzi uz katru ierīci.",
-    "unlinkedPointOffline": "Viss joprojām strādā, kad serveri nevar sasniegt, un vēlāk sinhronizējas.",
-    "unlinkedPointAccount": "Jūs pieteikties ar sava servera kontu, un resursi, ko ar jums ir dalījušies citi, parādās arī šeit.",
-    "linkButton": "Savienot ar serveri",
-    "state": {
-      "syncing": "Sinhronizē",
-      "offline": "Serveri nevar sasniegt",
-      "error": "Sinhronizācija apturēta",
-      "signedOut": "Izrakstījies",
-      "synced": "Sinhronizēts {{time}}"
-    },
-    "signInAgain": "Pieteikties vēlreiz",
-    "syncNow": "Sinhronizēt tagad",
-    "unlink": "Atsaistīt",
-    "unlinked": "Šī ierīce vairs nav saistīta",
-    "unlinkTitle": "Atvienot šo ierīci?",
-    "unlinkDescription": "Tā aptur sinhronizāciju un izrakstās no servera. Citu lietotāju ar jums kopīgotie mezgli no šīs ierīces tiek noņemti jebkurā gadījumā.",
-    "unlinkKeepTitle": "Atstāt manus datus šeit",
-    "unlinkKeepBody": "Jūsu mezgli, pieteikšanās dati un iestatījumi paliek šajā ierīcē un turpina darboties neatkarīgi.",
-    "unlinkRemoveTitle": "Noņemt sinhronizētos datus",
-    "unlinkRemoveBody": "No šīs ierīces tiek noņemti visi dati, kas nāca no servera. Paliek tikai tie mezgli, kas saglabāti tikai šajā ierīcē.",
-    "conflictsTitle": "Konflikti",
-    "conflictsDescription": "Šie tika mainīti gan šeit, gan serverī vienlaicīgi. Ir lietota servera versija. Saglabājiet savu, lai to nosūtītu serverī vietā.",
-    "keepMine": "Saglabāt manu",
-    "keepServer": "Saglabāt servera",
-    "errorsTitle": "Nav sinhronizēts",
-    "errorsDescription": "Serveris nepieņēma šīs izmaiņas. Tās paliek šajā ierīcē.",
-    "errorPermission": "Jūsu kontam serverī nav atļauts veikt šo izmaiņu.",
-    "retry": "Mēģināt vēlreiz",
-    "whatSyncs": "Ko sinhronizēt",
-    "whatSyncsDescription": "Izslēdziet to, ko vēlaties saglabāt tikai šajā ierīcē.",
-    "coreGroup": "Termix",
-    "notOnServer": "Serverī šī nav",
-    "notOnDevice": "Šajā ierīcē vēl nav",
-    "localOnlyHint": "Jūs varat arī saglabāt atsevišķus mezglus vai mapes tikai šajā ierīcē to iestatījumos.",
-    "originTitle": "Kur sākas savienojumi",
-    "originDescription": "Savienojieties ar mezgliem no šīs ierīces vai caur serveri. To varat mainīt katram mezglam atsevišķi.",
-    "originLocal": "Šī ierīce",
-    "originRemote": "Serveris",
-    "proxy": {
-      "title": "Apgrieztā starpniekserveris",
-      "description": "Nepieciešams tikai tad, ja pirms servera ir kaut kas līdzīgs Cloudflare Access vai pieteikšanās lapai.",
-      "saved": "Saglabāts"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Servera hosta noklusējuma iestatījumi",
     "titleUser": "Mani hosta noklusējuma iestatījumi",
@@ -862,5 +827,18 @@
     "pickCredential": "Izvēlieties akreditācijas datus rediģēšanai",
     "pickDefaults": "Izvēlieties noklusējuma vērtību līmeni rediģēšanai",
     "pickHint": "Visa informācija par savienojumu atrodas šeit, grupēta, lai to būtu viegli atrast."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Mainīt zīmolu identitāti",
+      "description": "Iestatiet lietotnes nosaukumu, saukli un logotipu, kas tiek rādīts visiem."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Cik daudz vēlaties redzēt ekrānā?",
+    "presetIntro": "Izvēlieties, cik daudz informācijas tiek parādīts ekrānā.",
+    "presetChangeLater": "Varat mainīt sagataves vai jebkuru atsevišķu iestatījumu vēlāk Iestatījumos sadaļā Interfeiss.",
+    "appearanceTitle": "Padariet to par savu",
+    "appearanceIntro": "Izvēlieties tēmu, akcenta krāsu, fontu un valodu. Izmaiņas tiek attēlotas uzreiz, un vēlāk tās varat mainīt iestatījumos."
   }
 }

@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Layout Clássico",
+    "description": "O layout clássico do Termix com barra de ícones, barra lateral, barra de separadores e dock."
+  },
+  "layout": {
+    "name": "Clássico",
+    "description": "Barra de ícones, barra lateral, barra de separadores e dock à direita."
+  },
+  "tab": {
+    "dashboard": "Painel",
+    "manage": "Gestão",
+    "settings": "Definições"
+  },
   "common": {
     "more": "Mais",
     "logout": "Terminar sessão",
@@ -221,20 +234,16 @@
     "secondFactorAfterExternalLoginDesc": "Desativado: um segundo fator registado é apenas pedido após inícios de sessão com palavra-passe e outros métodos locais, como antes. Ativado: é pedido após todos os métodos de início de sessão, incluindo SSO e LDAP.",
     "allowPasswordReset": "Permitir Redefinição de Palavra-passe",
     "allowPasswordResetDesc": "Código de redefinição via registos do Docker",
-    "auditForwardingTitle": "Encaminhar para SIEM",
-    "auditForwardingDesc": "Enviar uma cópia de cada entrada de auditoria para um coletor externo em formato NDJSON. Os registos locais permanecem a fonte de verdade.",
-    "auditForwardingEnvNotice": "Uma variável de ambiente também configura o encaminhamento; a URL guardada aqui tem precedência.",
-    "auditForwardingToken": "Token Bearer (opcional)",
-    "auditForwardingTokenStored": "Token Bearer (guardado)",
-    "auditForwardingSaved": "Definições de encaminhamento de auditoria guardadas",
-    "auditForwardingSaveError": "Falha ao guardar definições de encaminhamento de auditoria",
+    "forceHttps": "Redirecionar HTTP para HTTPS",
+    "forceHttpsDesc": "Redirecionar HTTP simples para HTTPS e pedir aos navegadores que mantenham a conexão HTTPS. Apenas funciona enquanto o Termix serve HTTPS diretamente.",
+    "forceHttpsNoTls": "O HTTPS está desativado no Termix, por isso nada é redirecionado. Ative o ENABLE_SSL ou configure o redirecionamento no seu proxy reverso.",
+    "forceHttpsFailed": "Não foi possível alterar a definição HTTPS",
     "sessionTimeout": "Tempo Limite da Sessão",
     "hours": "horas",
     "sessionTimeoutRange": "Mín. 1h, máx. 720h",
-    "monitoringDefaults": "Definições Predefinidas de Monitorização",
-    "statusCheck": "Verificação de Estado",
-    "sec": "seg",
     "logLevel": "Nível de Registo",
+    "usersCount_one": "{{count}} utilizador",
+    "usersCount_many": "{{count}} utilizadores",
     "usersCount_other": "{{count}} utilizadores",
     "searchUsers": "Pesquisar utilizadores...",
     "noUsers": "Sem utilizadores",
@@ -245,6 +254,8 @@
     "roleName": "Nome",
     "roleDisplayName": "Nome para Exibir",
     "roleDescription": "Descrição",
+    "rolesCount_one": "{{count}} função",
+    "rolesCount_many": "{{count}} funções",
     "rolesCount_other": "{{count}} funções",
     "createRole": "Criar",
     "creating": "A criar...",
@@ -259,6 +270,8 @@
     "changeFile": "Alterar",
     "import": "Importar",
     "importing": "A importar...",
+    "apiKeysCount_one": "{{count}} chave",
+    "apiKeysCount_many": "{{count}} chaves",
     "apiKeysCount_other": "{{count}} chaves",
     "apiKeysDocsLink": "Ver documentação",
     "apiKeysCliHint": "Utilize uma chave API com a CLI do Termix para gerir servidores a partir do seu terminal.",
@@ -281,6 +294,8 @@
     "systemBadge": "SIST",
     "customBadge": "PERSONALIZADO",
     "youBadge": "VOCÊ",
+    "sessionsActive_one": "{{count}} ativa",
+    "sessionsActive_many": "{{count}} ativas",
     "sessionsActive_other": "{{count}} ativas",
     "sessionActive": "Ativa: {{time}}",
     "sessionExpires": "Exp: {{time}}",
@@ -351,9 +366,6 @@
     "sessionTimeoutRange2": "O tempo limite da sessão deve estar entre 1 e 720 horas",
     "sessionTimeoutSaved": "Tempo limite da sessão guardado",
     "sessionTimeoutSaveFailed": "Falha ao guardar o tempo limite da sessão",
-    "monitoringIntervalInvalid": "Valores de intervalo inválidos",
-    "monitoringSaved": "Definições de monitorização guardadas",
-    "monitoringSaveFailed": "Falha ao guardar as definições de monitorização",
     "logLevelUpdateFailed": "Falha ao atualizar o nível de registo",
     "createUserRequired": "O nome de utilizador e a palavra-passe são obrigatórios",
     "createUserPasswordTooShort": "A palavra-passe deve ter pelo menos 6 caracteres",
@@ -424,6 +436,8 @@
     "importError": "Falha na importação da base de dados",
     "sectionHostDefaults": "Definições padrão do host",
     "rolePermissions": {
+      "count_one": "{{count}} permissão",
+      "count_many": "{{count}} permissões",
       "count_other": "{{count}} permissões",
       "editAction": "Editar permissões",
       "loadError": "Falha ao carregar o catálogo de permissões",
@@ -615,6 +629,8 @@
         "apiKeyCreatedWarning": "Chave criada - copie-a agora, não será mostrada novamente.",
         "copyApiKey": "Copiar chave API",
         "copiedToClipboard": "Copiado para a área de transferência",
+        "apiKeyCount_one": "{{count}} chave",
+        "apiKeyCount_many": "{{count}} chaves",
         "apiKeyCount_other": "{{count}} chaves",
         "newKey": "Nova Chave",
         "noApiKeys": "Ainda não há chaves API.",
@@ -670,6 +686,9 @@
         "openUpdates": "Atualizações"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Layout"
   },
   "plugins": {
     "manager": {
@@ -752,60 +771,6 @@
       "saveFailed": "Não foi possível guardar a alteração"
     }
   },
-  "sync": {
-    "server": "Servidor Termix",
-    "account": "Conta",
-    "status": "Estado",
-    "never": "nunca",
-    "justNow": "agora mesmo",
-    "actionFailed": "Isto não funcionou. Tente novamente.",
-    "unlinkedTitle": "Apenas neste dispositivo",
-    "unlinkedBody": "O Termix funciona de forma independente neste dispositivo. Ligue-o ao seu servidor Termix para manter tudo sincronizado.",
-    "unlinkedPointHosts": "Os seus hosts, credenciais, snippets e definições acompanham-no em todos os dispositivos.",
-    "unlinkedPointOffline": "Tudo continua a funcionar quando o servidor não está acessível e sincroniza-se mais tarde.",
-    "unlinkedPointAccount": "Inicia sessão com a sua conta do servidor, e os hosts que outras pessoas partilharam consigo também aparecem aqui.",
-    "linkButton": "Ligar a um servidor",
-    "state": {
-      "syncing": "A sincronizar",
-      "offline": "Servidor inacessível",
-      "error": "Sincronização interrompida",
-      "signedOut": "Sessão terminada",
-      "synced": "Sincronizado {{time}}"
-    },
-    "signInAgain": "Iniciar sessão novamente",
-    "syncNow": "Sincronizar agora",
-    "unlink": "Desligar",
-    "unlinked": "Este dispositivo já não está ligado",
-    "unlinkTitle": "Desvincular este dispositivo?",
-    "unlinkDescription": "Isto interrompe a sincronização e termina a sessão no servidor. Os hosts partilhados consigo por outros serão removidos deste dispositivo de qualquer forma.",
-    "unlinkKeepTitle": "Manter os meus dados aqui",
-    "unlinkKeepBody": "Os seus hosts, credenciais e definições permanecem neste dispositivo e continuam a funcionar de forma independente.",
-    "unlinkRemoveTitle": "Remover dados sincronizados",
-    "unlinkRemoveBody": "Tudo o que veio do servidor é removido deste dispositivo. Apenas os hosts mantidos localmente neste dispositivo permanecem.",
-    "conflictsTitle": "Conflitos",
-    "conflictsDescription": "Estes foram alterados aqui e no servidor ao mesmo tempo. A versão do servidor está em uso. Mantenha a sua para a enviar para o servidor em vez disso.",
-    "keepMine": "Manter a minha",
-    "keepServer": "Manter a do servidor",
-    "errorsTitle": "Não sincronizado",
-    "errorsDescription": "O servidor não aceitou estas alterações. Elas permanecem neste dispositivo.",
-    "errorPermission": "A sua conta no servidor não tem permissão para fazer esta alteração.",
-    "retry": "Tentar novamente",
-    "whatSyncs": "O que é sincronizado",
-    "whatSyncsDescription": "Desative qualquer item que queira manter apenas neste dispositivo.",
-    "coreGroup": "Termix",
-    "notOnServer": "O servidor não tem isto",
-    "notOnDevice": "Ainda não neste dispositivo",
-    "localOnlyHint": "Também pode manter hosts ou pastas individuais neste dispositivo através das respetivas definições.",
-    "originTitle": "Origem das ligações",
-    "originDescription": "Ligue-se aos hosts a partir deste dispositivo ou através do servidor. Pode alterar isto para cada host.",
-    "originLocal": "Este dispositivo",
-    "originRemote": "O servidor",
-    "proxy": {
-      "title": "Proxy reverso",
-      "description": "Apenas necessário quando algo como o Cloudflare Access ou uma página de login fica à frente do seu servidor.",
-      "saved": "Guardado"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Predefinições de hosts do servidor",
     "titleUser": "As minhas predefinições de hosts",
@@ -862,5 +827,18 @@
     "pickCredential": "Selecione uma credencial para editar",
     "pickDefaults": "Selecione um nível de predefinições para editar",
     "pickHint": "Tudo sobre uma ligação está aqui, agrupado para facilitar a pesquisa."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Alterar marca",
+      "description": "Definir o nome da aplicação, o slogan e o logótipo visíveis a todos."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Quanto conteúdo quer ver no ecrã?",
+    "presetIntro": "Escolha quanto conteúdo aparece no ecrã.",
+    "presetChangeLater": "Pode alterar predefinições ou qualquer definição individual mais tarde, em Definições, na secção Interface.",
+    "appearanceTitle": "Personalize ao seu gosto",
+    "appearanceIntro": "Escolha um tema, uma cor de destaque, uma fonte e o seu idioma. As alterações aparecem imediatamente e pode alterá-las mais tarde em Definições."
   }
 }

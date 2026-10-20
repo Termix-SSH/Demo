@@ -1,0 +1,51 @@
+{
+  "name": "Inlogbeveiliging",
+  "permissions": {
+    "manage": {
+      "title": "Inlogbeveiliging beheren",
+      "description": "Bekijk de status van de tweede factor en wijzig de instellingen voor inlogbeveiliging."
+    }
+  },
+  "settings": {
+    "group": {
+      "sessions": "Sessies",
+      "secondFactor": "Tweede factor"
+    },
+    "admin": {
+      "idleTimeoutMinutes": {
+        "label": "Uitloggen na inactiviteit (minuten)",
+        "description": "Log gebruikers uit na dit aantal minuten zonder activiteit. De server beëindigt de sessie ook, waardoor een gekopieerde token niet meer werkt. Stel dit op 0 om deze functie uit te schakelen."
+      },
+      "maxSessionHours": {
+        "label": "Maximale sessieduur (uren)",
+        "description": "Sessies worden na dit aantal uren beëindigd, zelfs als 'Onthoud mij' is ingeschakeld. 0 betekent dat er geen extra limiet is."
+      },
+      "rememberDevice": {
+        "label": "'Onthoud mij' toestaan",
+        "description": "Uit verbergt 'Onthoud mij' bij het inloggen en negeert eerder onthouden apparaten, zodat bij elke inlogpoging om de tweede factor wordt gevraagd."
+      },
+      "secondFactor": {
+        "label": "Een tweede factor vereisen",
+        "description": "Gebruikers zonder tweede factor moeten er een instellen na het inloggen, voordat ze Termix kunnen gebruiken. Een inlog met een passkey met PIN of vingerafdruk telt mee.",
+        "off": "Uit",
+        "newDevice": "Op een nieuw apparaat",
+        "always": "Bij elke inlogpoging"
+      },
+      "applyToExternal": {
+        "label": "Ook voor single sign-on",
+        "description": "Vraag ook om de tweede factor na inloggen via SSO en LDAP. Zet dit uit als je identiteitsprovider hier al om vraagt."
+      }
+    }
+  },
+  "status": {
+    "factors": "Beschikbare tweede factoren: {{factors}}",
+    "noFactors": "Er is geen tweede factor geïnstalleerd. Installeer een plugin zoals TOTP of WebAuthn zodat gebruikers er een kunnen instellen.",
+    "failed": "Kan niet controleren welke tweede factoren zijn geïnstalleerd."
+  },
+  "setup": {
+    "title": "Stel een tweede factor in",
+    "body": "Je beheerder vereist een tweede factor om in te loggen. Stel er hieronder een in om Termix te blijven gebruiken.",
+    "none": "Niets in te stellen? Vraag je beheerder om een plugin voor tweede factoren te installeren.",
+    "signOut": "Uitloggen"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "name": "Inloggnings säkerhet",
+  "permissions": {
+    "manage": {
+      "title": "Hantera inloggnings säkerhet",
+      "description": "Visa status för andra faktorn och ändra inställningar för inloggnings säkerhet."
+    }
+  },
+  "settings": {
+    "group": {
+      "sessions": "Sessioner",
+      "secondFactor": "Andra faktorn"
+    },
+    "admin": {
+      "idleTimeoutMinutes": {
+        "label": "Logga ut efter inaktivitet (minuter)",
+        "description": "Logga ut användare efter detta antal minuter utan aktivitet. Servern avslutar också sessionen, så en kopierad token slutar fungera. 0 stänger av detta."
+      },
+      "maxSessionHours": {
+        "label": "Längsta sessionstid (timmar)",
+        "description": "Sessioner avslutas efter detta antal timmar, även med \"Kom ihåg mig\". 0 innebär ingen extra gräns."
+      },
+      "rememberDevice": {
+        "label": "Tillåt \"Kom ihåg mig\"",
+        "description": "När detta är avstängt döljs \"Kom ihåg mig\" vid inloggning och tidigare kom ihågda enheter ignoreras, så varje inloggning kräver andra faktorn."
+      },
+      "secondFactor": {
+        "label": "Kräv andra faktorn",
+        "description": "Användare utan andra faktorn måste konfigurera en efter inloggning innan de kan använda Termix. Inloggning med passkey med PIN eller fingeravtryck räknas.",
+        "off": "Av",
+        "newDevice": "På en ny enhet",
+        "always": "Vid varje inloggning"
+      },
+      "applyToExternal": {
+        "label": "Även för enkel inloggning",
+        "description": "Be om andra faktorn även efter SSO- och LDAP-inloggningar. Lämna detta avstängt om din identitetsleverantör redan ber om en."
+      }
+    }
+  },
+  "status": {
+    "factors": "Andra faktorer som användare kan använda: {{factors}}",
+    "noFactors": "Ingen andra faktor är installerad. Installera ett tillägg som TOTP eller WebAuthn så att användare kan konfigurera en.",
+    "failed": "Kunde inte kontrollera vilka andra faktorer som är installerade."
+  },
+  "setup": {
+    "title": "Konfigurera andra faktorn",
+    "body": "Din administratör kräver andra faktorn för inloggning. Konfigurera en nedan för att fortsätta använda Termix.",
+    "none": "Inget att konfigurera här? Be din administratör installera ett tillägg för andra faktorn.",
+    "signOut": "Logga ut"
+  }
+}

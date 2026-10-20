@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "פריסה קלאסית",
+    "description": "הפריסה הקלאסית של Termix עם מסילת אייקונים, סרגל צד, סרגל לשוניות ודוק."
+  },
+  "layout": {
+    "name": "קלאסי",
+    "description": "מסילת אייקונים, סרגל צד, סרגל לשוניות ודוק ימני."
+  },
+  "tab": {
+    "dashboard": "לוח בקרה",
+    "manage": "ניהול",
+    "settings": "הגדרות"
+  },
   "common": {
     "more": "עוד",
     "logout": "התנתקות",
@@ -221,20 +234,16 @@
     "secondFactorAfterExternalLoginDesc": "כשכבוי, גורם שני רשום נדרש רק אחרי התחברות עם סיסמה והתחברויות מקומיות אחרות, כמו קודם. כשדלוק, הוא נדרש אחרי כל שיטת התחברות, כולל SSO ו-LDAP.",
     "allowPasswordReset": "אפשר איפוס סיסמה",
     "allowPasswordResetDesc": "קוד איפוס דרך יומני Docker",
-    "auditForwardingTitle": "העבר ל-SIEM",
-    "auditForwardingDesc": "שלח עותק של כל רשומת ביקורת לאוסף חיצוני כ-NDJSON. היומנים המקומיים נשארים המקור האמין.",
-    "auditForwardingEnvNotice": "משתנה סביבה גם הוא מציין העברה; ה-URL שנשמר כאן מקבל עדיפות.",
-    "auditForwardingToken": "אסימון Bearer (אופציונלי)",
-    "auditForwardingTokenStored": "אסימון Bearer (נשמר)",
-    "auditForwardingSaved": "הגדרות העברת ביקורת נשמרו",
-    "auditForwardingSaveError": "שגיאה בשמירת הגדרות העברת ביקורת",
+    "forceHttps": "הפניה מ-HTTP ל-HTTPS",
+    "forceHttpsDesc": "הפנה HTTP רגיל ל-HTTPS ובקש מהדפדפנים להישאר ב-HTTPS. עובד רק כאשר Termix מספק HTTPS בעצמו",
+    "forceHttpsNoTls": "HTTPS כבוי ב-Termix, ולכן אין הפניה. הפעל את ENABLE_SSL או בצע הפניה בפרוקסי ההפוך שלך",
+    "forceHttpsFailed": "לא ניתן לשנות את הגדרת ה-HTTPS",
     "sessionTimeout": "פגות סשן",
     "hours": "שעות",
     "sessionTimeoutRange": "מינימום 1 שעה, מקסימום 720 שעות",
-    "monitoringDefaults": "הגדרות ברירת מחדל למעקב",
-    "statusCheck": "בדיקת סטטוס",
-    "sec": "שניות",
     "logLevel": "רמת יומן",
+    "usersCount_one": "משתמש אחד",
+    "usersCount_two": "{{count}} משתמשים",
     "usersCount_other": "{{count}} משתמשים",
     "searchUsers": "חפש משתמשים...",
     "noUsers": "אין משתמשים",
@@ -245,6 +254,8 @@
     "roleName": "שם",
     "roleDisplayName": "שם לתצוגה",
     "roleDescription": "תיאור",
+    "rolesCount_one": "תפקיד אחד",
+    "rolesCount_two": "{{count}} תפקידים",
     "rolesCount_other": "{{count}} תפקידים",
     "createRole": "צור",
     "creating": "יוצר...",
@@ -259,6 +270,8 @@
     "changeFile": "שנה",
     "import": "יבא",
     "importing": "מייבא...",
+    "apiKeysCount_one": "מפתח אחד",
+    "apiKeysCount_two": "{{count}} מפתחות",
     "apiKeysCount_other": "{{count}} מפתחות",
     "apiKeysDocsLink": "צפה בתיעוד",
     "apiKeysCliHint": "השתמש במפתח API עם ממשק השורת הפקודה של Termix כדי לנהל שרתים מהטרמינל שלך.",
@@ -281,6 +294,8 @@
     "systemBadge": "מערכת",
     "customBadge": "מותאם אישית",
     "youBadge": "אתה",
+    "sessionsActive_one": "פעיל אחד",
+    "sessionsActive_two": "{{count}} פעילים",
     "sessionsActive_other": "{{count}} פעילים",
     "sessionActive": "פעיל: {{time}}",
     "sessionExpires": "תפוגה: {{time}}",
@@ -351,9 +366,6 @@
     "sessionTimeoutRange2": "זמן תפוגת הפעילות חייב להיות בין 1 ל-720 שעות",
     "sessionTimeoutSaved": "זמן תפוגת הפעילות נשמר",
     "sessionTimeoutSaveFailed": "שמירת זמן תפוגת הפעילות נכשלה",
-    "monitoringIntervalInvalid": "ערכי מרווח לא תקינים",
-    "monitoringSaved": "הגדרות ניטור נשמרו",
-    "monitoringSaveFailed": "שמירת הגדרות הניטור נכשלה",
     "logLevelUpdateFailed": "עדכון רמת הלוג נכשלה",
     "createUserRequired": "שם משתמש וסיסמה הם שדות חובה",
     "createUserPasswordTooShort": "הסיסמה חייבת להכיל לפחות 6 תווים",
@@ -424,6 +436,8 @@
     "importError": "ייבוא הבסיס הנתונים נכשל",
     "sectionHostDefaults": "ברירות מחדל למארחים",
     "rolePermissions": {
+      "count_one": "הרשאה אחת",
+      "count_two": "{{count}} הרשאות",
       "count_other": "{{count}} הרשאות",
       "editAction": "ערוך הרשאות",
       "loadError": "טעינת קטלוג ההרשאות נכשלה",
@@ -615,6 +629,8 @@
         "apiKeyCreatedWarning": "המפתח נוצר – העתק אותו עכשיו, הוא לא יוצג שוב.",
         "copyApiKey": "העתק מפתח API",
         "copiedToClipboard": "הועתק ללוח",
+        "apiKeyCount_one": "מפתח אחד",
+        "apiKeyCount_two": "{{count}} מפתחות",
         "apiKeyCount_other": "{{count}} מפתחות",
         "newKey": "מפתח חדש",
         "noApiKeys": "אין עדיין מפתחות API.",
@@ -670,6 +686,9 @@
         "openUpdates": "העדכונים"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "פריסה"
   },
   "plugins": {
     "manager": {
@@ -752,60 +771,6 @@
       "saveFailed": "לא ניתן לשמור את השינוי"
     }
   },
-  "sync": {
-    "server": "שרת Termix",
-    "account": "חשבון",
-    "status": "סטטוס",
-    "never": "לעולם לא",
-    "justNow": "עכשיו",
-    "actionFailed": "זה לא עבד. נסה שוב.",
-    "unlinkedTitle": "מכשיר זה בלבד",
-    "unlinkedBody": "Termix עובד באופן עצמאי במכשיר זה. חבר אותו לשרת Termix שלך כדי לשמור על הכל מסונכרן.",
-    "unlinkedPointHosts": "המארחים, האישורים, הקטעים וההגדרות שלך עוקבים אחריך לכל מכשיר.",
-    "unlinkedPointOffline": "הכל עדיין עובד כאשר השרת אינו נגיש, ומתעדכן מאוחר יותר.",
-    "unlinkedPointAccount": "אתה נכנס עם חשבון השרת שלך, והמארחים שאנשים שיתפו איתך מופיעים כאן גם כן.",
-    "linkButton": "חבר לשרת",
-    "state": {
-      "syncing": "מתבצע סנכרון",
-      "offline": "השרת אינו נגיש",
-      "error": "הסנכרון הופסק",
-      "signedOut": "יצאת",
-      "synced": "סונכרן {{time}}"
-    },
-    "signInAgain": "התחבר שוב",
-    "syncNow": "סנכרן עכשיו",
-    "unlink": "נתק",
-    "unlinked": "מכשיר זה אינו מחובר עוד",
-    "unlinkTitle": "להנתק את המכשיר הזה?",
-    "unlinkDescription": "פעולה זו עוצרת את הסנכרון ומנתקת אותך מהשרת. מארחים ששיתפו איתך אחרים יוסרו מהמכשיר הזה בכל מקרה.",
-    "unlinkKeepTitle": "לשמור את הנתונים שלי כאן",
-    "unlinkKeepBody": "המארחים, פרטי ההתחברות וההגדרות שלך יישארו במכשיר הזה וימשיכו לעבוד באופן עצמאי.",
-    "unlinkRemoveTitle": "להסיר נתונים מסונכרנים",
-    "unlinkRemoveBody": "הכל מהשרת יוסר מהמכשיר הזה. רק מארחים שנשמרו במכשיר הזה יישארו.",
-    "conflictsTitle": "סכסוכים",
-    "conflictsDescription": "אלה שונו כאן ובשרת בו זמנית. גרסת השרת בשימוש. שמור את שלך כדי לשלוח אותה לשרת במקום.",
-    "keepMine": "לשמור את שלי",
-    "keepServer": "לשמור את השרת",
-    "errorsTitle": "לא מסונכרן",
-    "errorsDescription": "השרת לא קיבל את השינויים האלה. הם נשארים במכשיר הזה.",
-    "errorPermission": "לחשבון שלך בשרת אין הרשאה לבצע שינוי זה.",
-    "retry": "לנסות שוב",
-    "whatSyncs": "מה מסונכרן",
-    "whatSyncsDescription": "כבה כל דבר שתרצה לשמור רק במכשיר הזה.",
-    "coreGroup": "Termix",
-    "notOnServer": "לשרת אין את זה",
-    "notOnDevice": "עדיין לא במכשיר הזה",
-    "localOnlyHint": "אתה גם יכול לשמור מארחים בודדים או תיקיות במכשיר הזה מההגדרות שלהם.",
-    "originTitle": "מאיפה החיבורים מתחילים",
-    "originDescription": "התחבר למארחים מהמכשיר הזה, או דרך השרת. אתה יכול לשנות את זה לכל מארח.",
-    "originLocal": "המכשיר הזה",
-    "originRemote": "השרת",
-    "proxy": {
-      "title": "פרוקסי הפוך",
-      "description": "נדרש רק כשהמשהו כמו Cloudflare Access או דף התחברות עומד לפני השרת שלך.",
-      "saved": "נשמר"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "ברירות מחדל של מארחים בשרת",
     "titleUser": "ברירות המחדל שלי למארחים",
@@ -862,5 +827,18 @@
     "pickCredential": "בחר אישור לעריכה",
     "pickDefaults": "בחר רמת ברירות מחדל לעריכה",
     "pickHint": "הכל על חיבור נמצא כאן, מקובץ כך שתוכל למצוא אותו."
+  },
+  "permissions": {
+    "branding": {
+      "title": "שינוי מיתוג",
+      "description": "הגדר את שם האפליקציה, הסלוגן והלוגו המוצגים לכולם."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "כמה תרצה לראות על המסך?",
+    "presetIntro": "בחר כמה תוכן יוצג על המסך.",
+    "presetChangeLater": "ניתן להחליף תבניות או לשנות כל הגדרה בודדת מאוחר יותר בהגדרות, תחת ממשק.",
+    "appearanceTitle": "הפוך אותו לשלך",
+    "appearanceIntro": "בחר ערכת נושא, צבע הדגשה, גופן ושפה. השינויים מופיעים מיד, וניתן לשנות אותם מאוחר יותר בהגדרות."
   }
 }

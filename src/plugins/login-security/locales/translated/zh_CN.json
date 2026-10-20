@@ -1,0 +1,51 @@
+{
+  "name": "登录安全",
+  "permissions": {
+    "manage": {
+      "title": "管理登录安全",
+      "description": "查看第二因素状态并更改登录安全设置。"
+    }
+  },
+  "settings": {
+    "group": {
+      "sessions": "会话",
+      "secondFactor": "第二因素"
+    },
+    "admin": {
+      "idleTimeoutMinutes": {
+        "label": "空闲分钟后退出登录",
+        "description": "在用户无活动超过指定分钟后将其退出登录。服务器也会结束会话，因此复制的令牌将失效。设置为 0 可关闭此功能。"
+      },
+      "maxSessionHours": {
+        "label": "最长会话时长（小时）",
+        "description": "会话将在指定小时后结束，即使勾选了“记住我”。设置为 0 表示无额外限制。"
+      },
+      "rememberDevice": {
+        "label": "允许记住我",
+        "description": "关闭后，登录时将隐藏“记住我”选项，并忽略之前已记住的设备，因此每次登录都需要验证第二因素。"
+      },
+      "secondFactor": {
+        "label": "要求使用第二因素",
+        "description": "未设置第二因素的用户必须在登录后、使用 Termix 之前完成设置。使用 PIN 码或指纹进行 Passkey 登录也符合要求。",
+        "off": "关闭",
+        "newDevice": "在新设备上",
+        "always": "每次登录时"
+      },
+      "applyToExternal": {
+        "label": "同样适用于单点登录",
+        "description": "在 SSO 和 LDAP 登录后也要求验证第二因素。如果您的身份提供商已经要求验证，请保持关闭。"
+      }
+    }
+  },
+  "status": {
+    "factors": "用户可使用的第二因素：{{factors}}",
+    "noFactors": "未安装任何第二因素插件。请安装 TOTP 或 WebAuthn 等插件，以便用户进行设置。",
+    "failed": "无法检查已安装的第二因素。"
+  },
+  "setup": {
+    "title": "设置第二因素",
+    "body": "您的管理员要求使用第二因素登录。请在下方设置一个，以继续使用 Termix。",
+    "none": "这里没有可设置的内容？请联系您的管理员安装第二因素插件。",
+    "signOut": "退出登录"
+  }
+}

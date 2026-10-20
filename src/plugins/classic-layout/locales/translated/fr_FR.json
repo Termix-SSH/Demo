@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Mise en page classique",
+    "description": "La mise en page classique de Termix avec une barre d'icônes, une barre latérale, une barre d'onglets et un dock."
+  },
+  "layout": {
+    "name": "Classique",
+    "description": "Barre d'icônes, barre latérale, barre d'onglets et dock droit."
+  },
+  "tab": {
+    "dashboard": "Tableau de bord",
+    "manage": "Gérer",
+    "settings": "Paramètres"
+  },
   "common": {
     "more": "Plus",
     "logout": "Déconnexion",
@@ -221,20 +234,16 @@
     "secondFactorAfterExternalLoginDesc": "Désactivé, un deuxième facteur inscrit n'est demandé qu'après les connexions par mot de passe et autres connexions locales, comme auparavant. Activé, il est demandé après chaque méthode de connexion, y compris SSO et LDAP.",
     "allowPasswordReset": "Autoriser la réinitialisation du mot de passe",
     "allowPasswordResetDesc": "Code de réinitialisation via les journaux Docker",
-    "auditForwardingTitle": "Transmettre au SIEM",
-    "auditForwardingDesc": "Envoyer une copie de chaque entrée d'audit à un collecteur externe au format NDJSON. Les journaux locaux restent la source de vérité.",
-    "auditForwardingEnvNotice": "Une variable d'environnement configure également la transmission ; l'URL enregistrée ici a la priorité.",
-    "auditForwardingToken": "Jeton Bearer (facultatif)",
-    "auditForwardingTokenStored": "Jeton Bearer (stocké)",
-    "auditForwardingSaved": "Paramètres de transmission d'audit enregistrés",
-    "auditForwardingSaveError": "Échec de l'enregistrement des paramètres de transmission d'audit",
+    "forceHttps": "Rediriger HTTP vers HTTPS",
+    "forceHttpsDesc": "Redirige le trafic HTTP vers HTTPS et demande aux navigateurs de rester en HTTPS. Ne fonctionne que si Termix sert lui-même le HTTPS.",
+    "forceHttpsNoTls": "Le HTTPS est désactivé dans Termix, donc aucune redirection n'est effectuée. Activez ENABLE_SSL ou configurez la redirection dans votre proxy inverse.",
+    "forceHttpsFailed": "Impossible de modifier le paramètre HTTPS",
     "sessionTimeout": "Expiration de session",
     "hours": "heures",
     "sessionTimeoutRange": "Min 1h, max 720h",
-    "monitoringDefaults": "Paramètres par défaut de surveillance",
-    "statusCheck": "Vérification d'état",
-    "sec": "sec",
     "logLevel": "Niveau de journalisation",
+    "usersCount_one": "{{count}} utilisateur",
+    "usersCount_many": "{{count}} utilisateurs",
     "usersCount_other": "{{count}} utilisateurs",
     "searchUsers": "Rechercher des utilisateurs...",
     "noUsers": "Aucun utilisateur",
@@ -245,6 +254,8 @@
     "roleName": "Nom",
     "roleDisplayName": "Nom affiché",
     "roleDescription": "Description",
+    "rolesCount_one": "{{count}} rôle",
+    "rolesCount_many": "{{count}} rôles",
     "rolesCount_other": "{{count}} rôles",
     "createRole": "Créer",
     "creating": "Création...",
@@ -259,6 +270,8 @@
     "changeFile": "Modifier",
     "import": "Importer",
     "importing": "Importation...",
+    "apiKeysCount_one": "{{count}} clé",
+    "apiKeysCount_many": "{{count}} clés",
     "apiKeysCount_other": "{{count}} clés",
     "apiKeysDocsLink": "Voir la documentation",
     "apiKeysCliHint": "Utilisez une clé API avec le CLI Termix pour gérer les serveurs depuis votre terminal.",
@@ -281,6 +294,8 @@
     "systemBadge": "SYS",
     "customBadge": "PERSONNALISÉ",
     "youBadge": "VOUS",
+    "sessionsActive_one": "{{count}} actif",
+    "sessionsActive_many": "{{count}} actifs",
     "sessionsActive_other": "{{count}} actifs",
     "sessionActive": "Actif : {{time}}",
     "sessionExpires": "Exp. : {{time}}",
@@ -351,9 +366,6 @@
     "sessionTimeoutRange2": "Le délai d'expiration de session doit être compris entre 1 et 720 heures",
     "sessionTimeoutSaved": "Délai d'expiration de session enregistré",
     "sessionTimeoutSaveFailed": "Échec de l'enregistrement du délai d'expiration de session",
-    "monitoringIntervalInvalid": "Valeurs d'intervalle invalides",
-    "monitoringSaved": "Paramètres de surveillance enregistrés",
-    "monitoringSaveFailed": "Échec de l'enregistrement des paramètres de surveillance",
     "logLevelUpdateFailed": "Échec de la mise à jour du niveau de journalisation",
     "createUserRequired": "Le nom d'utilisateur et le mot de passe sont requis",
     "createUserPasswordTooShort": "Le mot de passe doit contenir au moins 6 caractères",
@@ -424,7 +436,9 @@
     "importError": "Échec de l'importation de la base de données",
     "sectionHostDefaults": "Paramètres par défaut des hôtes",
     "rolePermissions": {
-      "count_other": "{{count}} autorisations",
+      "count_one": "{{count}} permission",
+      "count_many": "{{count}} permissions",
+      "count_other": "{{count}} permissions",
       "editAction": "Modifier les autorisations",
       "loadError": "Échec du chargement du catalogue des autorisations",
       "saved": "Autorisations du rôle enregistrées",
@@ -615,6 +629,8 @@
         "apiKeyCreatedWarning": "Clé créée — copiez-la maintenant, elle ne sera plus affichée.",
         "copyApiKey": "Copier la clé API",
         "copiedToClipboard": "Copié dans le presse-papiers",
+        "apiKeyCount_one": "{{count}} clé",
+        "apiKeyCount_many": "{{count}} clés",
         "apiKeyCount_other": "{{count}} clés",
         "newKey": "Nouvelle clé",
         "noApiKeys": "Aucune clé API pour le moment.",
@@ -670,6 +686,9 @@
         "openUpdates": "Mises à jour"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Mise en page"
   },
   "plugins": {
     "manager": {
@@ -752,60 +771,6 @@
       "saveFailed": "Impossible de sauvegarder la modification"
     }
   },
-  "sync": {
-    "server": "Serveur Termix",
-    "account": "Compte",
-    "status": "État",
-    "never": "jamais",
-    "justNow": "à l'instant",
-    "actionFailed": "Cela n'a pas fonctionné. Réessayez.",
-    "unlinkedTitle": "Cet appareil uniquement",
-    "unlinkedBody": "Termix fonctionne de manière autonome sur cet appareil. Liez-le à votre serveur Termix pour garder tout en synchronisation.",
-    "unlinkedPointHosts": "Vos hôtes, identifiants, extraits et paramètres vous suivent sur chaque appareil.",
-    "unlinkedPointOffline": "Tout fonctionne toujours lorsque le serveur n'est pas accessible, et se met à jour plus tard.",
-    "unlinkedPointAccount": "Vous vous connectez avec votre compte serveur, et les hôtes que d'autres personnes ont partagés avec vous apparaissent également ici.",
-    "linkButton": "Lier à un serveur",
-    "state": {
-      "syncing": "Synchronisation",
-      "offline": "Serveur inaccessible",
-      "error": "Synchronisation arrêtée",
-      "signedOut": "Déconnecté",
-      "synced": "Synchronisé {{time}}"
-    },
-    "signInAgain": "Se reconnecter",
-    "syncNow": "Synchroniser maintenant",
-    "unlink": "Dissocier",
-    "unlinked": "Cet appareil n'est plus lié",
-    "unlinkTitle": "Dissocier cet appareil ?",
-    "unlinkDescription": "Cela arrête la synchronisation et vous déconnecte du serveur. Les hôtes partagés avec vous par d'autres utilisateurs sont supprimés de cet appareil dans tous les cas.",
-    "unlinkKeepTitle": "Conserver mes données ici",
-    "unlinkKeepBody": "Vos hôtes, identifiants et paramètres restent sur cet appareil et continuent de fonctionner de manière autonome.",
-    "unlinkRemoveTitle": "Supprimer les données synchronisées",
-    "unlinkRemoveBody": "Tout ce qui provenait du serveur est supprimé de cet appareil. Seuls les hôtes conservés localement sur cet appareil restent.",
-    "conflictsTitle": "Conflits",
-    "conflictsDescription": "Ces éléments ont été modifiés ici et sur le serveur en même temps. La version du serveur est actuellement utilisée. Conservez la vôtre pour l'envoyer au serveur à la place.",
-    "keepMine": "Conserver la mienne",
-    "keepServer": "Conserver celle du serveur",
-    "errorsTitle": "Non synchronisé",
-    "errorsDescription": "Le serveur n'a pas accepté ces modifications. Elles restent sur cet appareil.",
-    "errorPermission": "Votre compte sur le serveur n'a pas l'autorisation d'effectuer cette modification.",
-    "retry": "Réessayer",
-    "whatSyncs": "Ce qui est synchronisé",
-    "whatSyncsDescription": "Désactivez tout ce que vous souhaitez conserver uniquement sur cet appareil.",
-    "coreGroup": "Termix",
-    "notOnServer": "Le serveur ne dispose pas de cela",
-    "notOnDevice": "Pas encore sur cet appareil",
-    "localOnlyHint": "Vous pouvez également conserver des hôtes ou des dossiers individuels sur cet appareil via leurs paramètres.",
-    "originTitle": "Origine des connexions",
-    "originDescription": "Connectez-vous aux hôtes depuis cet appareil ou via le serveur. Vous pouvez modifier cela pour chaque hôte.",
-    "originLocal": "Cet appareil",
-    "originRemote": "Le serveur",
-    "proxy": {
-      "title": "Proxy inverse",
-      "description": "Uniquement nécessaire lorsque quelque chose comme Cloudflare Access ou une page de connexion se trouve devant votre serveur.",
-      "saved": "Enregistré"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Valeurs par défaut des hôtes du serveur",
     "titleUser": "Mes valeurs par défaut des hôtes",
@@ -862,5 +827,18 @@
     "pickCredential": "Sélectionnez un identifiant à modifier",
     "pickDefaults": "Sélectionnez un niveau de valeurs par défaut à modifier",
     "pickHint": "Tout ce qui concerne une connexion se trouve ici, organisé pour faciliter la recherche."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Modifier l'identité visuelle",
+      "description": "Définissez le nom de l'application, le slogan et le logo affichés à tous les utilisateurs."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Combien d'éléments souhaitez-vous afficher ?",
+    "presetIntro": "Choisissez la quantité d'informations affichées à l'écran.",
+    "presetChangeLater": "Vous pouvez changer de preset ou modifier chaque paramètre individuellement plus tard dans les Paramètres, sous Interface.",
+    "appearanceTitle": "Personnalisez-le",
+    "appearanceIntro": "Choisissez un thème, une couleur d'accentuation, une police et votre langue. Les modifications s'appliquent immédiatement et vous pouvez les changer plus tard dans les Paramètres."
   }
 }

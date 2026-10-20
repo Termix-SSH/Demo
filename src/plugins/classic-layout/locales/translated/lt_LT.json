@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Klasikinė išdėstymo",
+    "description": "Klasikinė „Termix“ išdėstymo versija su piktogramų juosta, šonine juosta, skirtukų juosta ir programų juosta."
+  },
+  "layout": {
+    "name": "Klasikinis",
+    "description": "Piktogramų juosta, šoninė juosta, skirtukų juosta ir dešinysis skydelis."
+  },
+  "tab": {
+    "dashboard": "Valdymo skydelis",
+    "manage": "Tvarkyti",
+    "settings": "Nustatymai"
+  },
   "common": {
     "more": "Daugiau",
     "logout": "Atsijungti",
@@ -221,21 +234,18 @@
     "secondFactorAfterExternalLoginDesc": "Jei išjungta, apie antrąjį patvirtinimo veiksnį klausiama tik po prisijungimo slaptažodžiu ir kitų vietinių prisijungimų, kaip ir anksčiau. Jei įjungta, klausiama po kiekvieno prisijungimo būdo, įskaitant SSO ir LDAP.",
     "allowPasswordReset": "Leisti slaptažodžio atkūrimą",
     "allowPasswordResetDesc": "Atkūrimo kodas per Docker žurnalus",
-    "auditForwardingTitle": "Siųsti į SIEM",
-    "auditForwardingDesc": "Siųsti kiekvienos audito įrašo kopiją į išorinį rinktuvą NDJSON formatu. Vietiniai žurnalai lieka pagrindiniu duomenų šaltiniu.",
-    "auditForwardingEnvNotice": "Siuntimą taip pat galima konfigūruoti aplinkos kintamuoju; čia išsaugotas URL turi prioritetą.",
-    "auditForwardingToken": "Bearer žetonas (nebūtina)",
-    "auditForwardingTokenStored": "Bearer žetonas (išsaugotas)",
-    "auditForwardingSaved": "Audito siuntimo nustatymai išsaugoti",
-    "auditForwardingSaveError": "Nepavyko išsaugoti audito siuntimo nustatymų",
+    "forceHttps": "Perkrauti HTTP į HTTPS",
+    "forceHttpsDesc": "Pereikite paprastą HTTP į HTTPS ir paprašykite naršyklių išlikti HTTPS režime. Veikia tik tada, kai Termix pats teikia HTTPS",
+    "forceHttpsNoTls": "Termix programoje HTTPS išjungtas, todėl niekas nėra nukreipiamas. Įjunkite ENABLE_SSL arba sukonfigūruokite nukreipimą savo atvirkštiniame proxy",
+    "forceHttpsFailed": "Nepavyko pakeisti HTTPS nustatymo",
     "sessionTimeout": "Sesijos laikas",
     "hours": "valandos",
     "sessionTimeoutRange": "Min 1 val., maks 720 val.",
-    "monitoringDefaults": "Stebėjimo numatytieji nustatymai",
-    "statusCheck": "Būsenos tikrinimas",
-    "sec": "sek.",
     "logLevel": "Žurnalo lygis",
-    "usersCount_other": "{{count}} vartotojo",
+    "usersCount_one": "{{count}} vartotojas",
+    "usersCount_few": "{{count}} vartotojai",
+    "usersCount_many": "{{count}} vartotojų",
+    "usersCount_other": "{{count}} vartotojų",
     "searchUsers": "Ieškoti vartotojų...",
     "noUsers": "Nėra vartotojų",
     "noUsersMatch": "Nėra vartotojų, atitinkančių jūsų paiešką",
@@ -245,7 +255,10 @@
     "roleName": "Pavadinimas",
     "roleDisplayName": "Rodomas pavadinimas",
     "roleDescription": "Aprašymas",
-    "rolesCount_other": "{{count}} vaidmens",
+    "rolesCount_one": "{{count}} vaidmuo",
+    "rolesCount_few": "{{count}} vaidmenys",
+    "rolesCount_many": "{{count}} vaidmenų",
+    "rolesCount_other": "{{count}} vaidmenų",
     "createRole": "Sukurti",
     "creating": "Kuriamas...",
     "exportDatabase": "Eksportuoti duomenų bazę",
@@ -259,7 +272,10 @@
     "changeFile": "Keisti",
     "import": "Importuoti",
     "importing": "Importuojama...",
-    "apiKeysCount_other": "{{count}} rakto",
+    "apiKeysCount_one": "{{count}} raktas",
+    "apiKeysCount_few": "{{count}} raktai",
+    "apiKeysCount_many": "{{count}} raktų",
+    "apiKeysCount_other": "{{count}} raktų",
     "apiKeysDocsLink": "Peržiūrėti dokumentaciją",
     "apiKeysCliHint": "Naudokite API raktą su Termix CLI, kad valdytumėte serverius iš savo terminalo.",
     "apiKeysCliLink": "Peržiūrėti CLI dokumentaciją",
@@ -281,6 +297,9 @@
     "systemBadge": "SIST",
     "customBadge": "Pritaikytas",
     "youBadge": "JŪS",
+    "sessionsActive_one": "{{count}} aktyvus",
+    "sessionsActive_few": "{{count}} aktyvūs",
+    "sessionsActive_many": "{{count}} aktyvių",
     "sessionsActive_other": "{{count}} aktyvių",
     "sessionActive": "Aktyvus: {{time}}",
     "sessionExpires": "Galioja: {{time}}",
@@ -351,9 +370,6 @@
     "sessionTimeoutRange2": "Sesijos baigties laikas turi būti nuo 1 iki 720 valandų",
     "sessionTimeoutSaved": "Sesijos baigties laikas išsaugotas",
     "sessionTimeoutSaveFailed": "Nepavyko išsaugoti sesijos baigties laiko",
-    "monitoringIntervalInvalid": "Neteisingos intervalo reikšmės",
-    "monitoringSaved": "Stebėjimo nustatymai išsaugoti",
-    "monitoringSaveFailed": "Nepavyko išsaugoti stebėjimo nustatymų",
     "logLevelUpdateFailed": "Nepavyko atnaujinti žurnalo lygio",
     "createUserRequired": "Vartotojo vardas ir slaptažodis yra privalomi",
     "createUserPasswordTooShort": "Slaptažodis turi būti ne trumpesnis kaip 6 simboliai",
@@ -424,7 +440,10 @@
     "importError": "Duomenų bazės importas nepavyko",
     "sectionHostDefaults": "Serverio numatytieji nustatymai",
     "rolePermissions": {
-      "count_other": "{{count}} leidimo",
+      "count_one": "{{count}} leidimas",
+      "count_few": "{{count}} leidimai",
+      "count_many": "{{count}} leidimų",
+      "count_other": "{{count}} leidimų",
       "editAction": "Redaguoti leidimus",
       "loadError": "Nepavyko įkelti leidimų katalogo",
       "saved": "Rolės leidimai išsaugoti",
@@ -615,7 +634,10 @@
         "apiKeyCreatedWarning": "Raktas sukurtas – nukopijuokite jį dabar, jis nebebus rodomas.",
         "copyApiKey": "Kopijuoti API raktą",
         "copiedToClipboard": "Nukopijuota į iškarpinę",
-        "apiKeyCount_other": "{{count}} rakto",
+        "apiKeyCount_one": "{{count}} raktas",
+        "apiKeyCount_few": "{{count}} raktai",
+        "apiKeyCount_many": "{{count}} raktų",
+        "apiKeyCount_other": "{{count}} raktų",
         "newKey": "Naujas raktas",
         "noApiKeys": "Dar nėra API raktų.",
         "apiKeyActive": "Aktyvus",
@@ -670,6 +692,9 @@
         "openUpdates": "Atnaujinimai"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Išdėstymas"
   },
   "plugins": {
     "manager": {
@@ -752,60 +777,6 @@
       "saveFailed": "Nepavyko išsaugoti pakeitimo"
     }
   },
-  "sync": {
-    "server": "Termix serveris",
-    "account": "Paskyra",
-    "status": "Būsena",
-    "never": "niekada",
-    "justNow": "būtent dabar",
-    "actionFailed": "Tai nepavyko. Bandykite dar kartą.",
-    "unlinkedTitle": "Tik šis įrenginys",
-    "unlinkedBody": "Termix veikia savarankiškai šiame įrenginyje. Susiekite jį su savo Termix serveriu, kad viskas būtų sinchronizuota.",
-    "unlinkedPointHosts": "Jūsų hostai, prisijungimo duomenys, komandos ir nustatymai jus seka į kiekvieną įrenginį.",
-    "unlinkedPointOffline": "Viskas veikia ir tada, kai serveris nepasiekiamas, o vėliau sinchronizuojasi.",
-    "unlinkedPointAccount": "Prisijungiate naudodami savo serverio paskyrą, o čia taip pat atsiras hostai, kuriuos su jumis pasidalino kiti žmonės.",
-    "linkButton": "Susieti su serveriu",
-    "state": {
-      "syncing": "Sinchronizuojama",
-      "offline": "Serveris nepasiekiamas",
-      "error": "Sinchronizavimas sustabdytas",
-      "signedOut": "Atsijungta",
-      "synced": "Sinchronizuota {{time}}"
-    },
-    "signInAgain": "Prisijungti dar kartą",
-    "syncNow": "Sinchronizuoti dabar",
-    "unlink": "Atsieti",
-    "unlinked": "Šis įrenginys nebe susietas",
-    "unlinkTitle": "Atskirti šį įrenginį?",
-    "unlinkDescription": "Sustabdomas sinchronizavimas ir atjungiamas nuo serverio. Kitiems jūsų dalinami serverio įrenginiai bet kuriuo atveju bus pašalinti iš šio įrenginio.",
-    "unlinkKeepTitle": "Palikti mano duomenis čia",
-    "unlinkKeepBody": "Jūsų serveriai, prisijungimo duomenys ir nustatymai lieka šiame įrenginyje ir veikia nepriklausomai.",
-    "unlinkRemoveTitle": "Pašalinti sinchronizuotus duomenis",
-    "unlinkRemoveBody": "Viskas, kas atėjo iš serverio, bus pašalinta iš šio įrenginio. Liks tik tie serveriai, kurie buvo išsaugoti tik šiame įrenginyje.",
-    "conflictsTitle": "Konfliktai",
-    "conflictsDescription": "Šie elementai buvo pakeisti ir čia, ir serveryje tuo pačiu metu. Naudojama serverio versija. Pasirinkite „Palikti mano“, jei norite išsiųsti savo versiją į serverį.",
-    "keepMine": "Palikti mano",
-    "keepServer": "Palikti serverio",
-    "errorsTitle": "Nesinchronizuota",
-    "errorsDescription": "Serveris nepriėmė šių pakeitimų. Jie lieka šiame įrenginyje.",
-    "errorPermission": "Jūsų serverio paskyra neturi leidimo atlikti šį pakeitimą.",
-    "retry": "Bandyti dar kartą",
-    "whatSyncs": "Kas sinchronizuojama",
-    "whatSyncsDescription": "Išjunkite viską, ką norite laikyti tik šiame įrenginyje.",
-    "coreGroup": "Termix",
-    "notOnServer": "Serverio to neturi",
-    "notOnDevice": "Dar nėra šiame įrenginyje",
-    "localOnlyHint": "Galite taip pat išlaikyti atskirus serverius ar aplankus tik šiame įrenginyje per jų nustatymus.",
-    "originTitle": "Kur prasideda ryšiai",
-    "originDescription": "Jungtis prie serverių iš šio įrenginio arba per serverį. Tai galima pakeisti kiekvienam serveriui atskirai.",
-    "originLocal": "Šis įrenginys",
-    "originRemote": "Serveris",
-    "proxy": {
-      "title": "Atvirkštinis šliuzas",
-      "description": "Reikalinga tik tada, kai prieš jūsų serverį yra kažkas panašaus į Cloudflare Access ar prisijungimo puslapį.",
-      "saved": "Išsaugota"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Serverio hostų numatytieji nustatymai",
     "titleUser": "Mano hostų numatytieji nustatymai",
@@ -862,5 +833,18 @@
     "pickCredential": "Pasirinkite pristatymo duomenis, kuriuos norite redaguoti",
     "pickDefaults": "Pasirinkite numatytųjų lygmenį, kurį norite redaguoti",
     "pickHint": "Visa informacija apie jungtį yra čia, sugrupuota, kad lengviau rastumėte."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Pakeisti prekės ženklą",
+      "description": "Nustatykite programos pavadinimą, šūkį ir logotipą, matomus visiems."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Kiek norite matyti ekrane?",
+    "presetIntro": "Pasirinkite, kiek turinio rodyti ekrane.",
+    "presetChangeLater": "Vėliau galite pakeisti iš anksto nustatytus parametrus arba bet kurį atskirą nustatymą skiltyje „Nustatymai“ > „Sąsaja“.",
+    "appearanceTitle": "Pritaikykite sau",
+    "appearanceIntro": "Pasirinkite temą, akcentinę spalvą, šriftą ir kalbą. Pakeitimai taikomi iškart, o vėliau juos galite pakeisti skiltyje „Nustatymai“."
   }
 }

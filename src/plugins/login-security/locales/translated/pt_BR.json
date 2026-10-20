@@ -1,0 +1,51 @@
+{
+  "name": "Segurança de login",
+  "permissions": {
+    "manage": {
+      "title": "Gerenciar segurança de login",
+      "description": "Verifique o status do segundo fator e altere as configurações de segurança de login."
+    }
+  },
+  "settings": {
+    "group": {
+      "sessions": "Sessões",
+      "secondFactor": "Segundo fator"
+    },
+    "admin": {
+      "idleTimeoutMinutes": {
+        "label": "Encerrar sessão após minutos de inatividade",
+        "description": "Encerra a sessão das pessoas após esse número de minutos sem atividade. O servidor também encerra a sessão, então um token copiado para de funcionar. 0 desativa essa opção."
+      },
+      "maxSessionHours": {
+        "label": "Duração máxima da sessão em horas",
+        "description": "As sessões encerram após esse número de horas, mesmo com a opção \"Lembrar-me\" ativada. 0 significa sem limite adicional."
+      },
+      "rememberDevice": {
+        "label": "Permitir \"Lembrar-me\"",
+        "description": "Desativado oculta a opção \"Lembrar-me\" no login e ignora dispositivos lembrados anteriormente, portanto, cada login solicitará o segundo fator."
+      },
+      "secondFactor": {
+        "label": "Exigir um segundo fator",
+        "description": "Usuários sem um segundo fator devem configurá-lo após o login, antes de poderem usar o Termix. O login com passkey usando PIN ou impressão digital é válido.",
+        "off": "Desativado",
+        "newDevice": "Em um novo dispositivo",
+        "always": "Em cada login"
+      },
+      "applyToExternal": {
+        "label": "Também para login único (SSO)",
+        "description": "Solicite o segundo fator também após logins SSO e LDAP. Deixe desativado se seu provedor de identidade já solicitar um."
+      }
+    }
+  },
+  "status": {
+    "factors": "Segundos fatores que os usuários podem usar: {{factors}}",
+    "noFactors": "Nenhum segundo fator está instalado. Instale um plugin como TOTP ou WebAuthn para que os usuários possam configurá-lo.",
+    "failed": "Não foi possível verificar quais fatores secundários estão instalados."
+  },
+  "setup": {
+    "title": "Configurar um fator secundário",
+    "body": "Seu administrador exige um fator secundário para fazer login. Configure um abaixo para continuar usando o Termix.",
+    "none": "Nada para configurar aqui? Peça ao seu administrador para instalar um plugin de fator secundário.",
+    "signOut": "Sair"
+  }
+}

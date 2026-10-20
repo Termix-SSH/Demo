@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Klassieke lay-out",
+    "description": "De klassieke Termix-lay-out met een pictogrambalk, zijbalk, tabbalk en dock."
+  },
+  "layout": {
+    "name": "Klassiek",
+    "description": "Pictogrambalk, zijbalk, tabbalk en rechterdock."
+  },
+  "tab": {
+    "dashboard": "Dashboard",
+    "manage": "Beheren",
+    "settings": "Instellingen"
+  },
   "common": {
     "more": "Meer",
     "logout": "Uitloggen",
@@ -221,20 +234,15 @@
     "secondFactorAfterExternalLoginDesc": "Bij 'Uit' wordt een ingeschreven tweede factor alleen gevraagd na inloggen met wachtwoord en andere lokale methoden, zoals voorheen. Bij 'Aan' wordt het gevraagd na elke inlogmethode, inclusief SSO en LDAP.",
     "allowPasswordReset": "Wachtwoordreset toestaan",
     "allowPasswordResetDesc": "Resetcode via Docker-logs",
-    "auditForwardingTitle": "Doorsturen naar SIEM",
-    "auditForwardingDesc": "Stuur een kopie van elke auditlogboekvermelding naar een externe verzamelaar als NDJSON. Lokale logs blijven de bron van waarheid.",
-    "auditForwardingEnvNotice": "Een omgevingsvariabele configureert ook doorsturen; de hier opgeslagen URL heeft voorrang.",
-    "auditForwardingToken": "Bearertoken (optioneel)",
-    "auditForwardingTokenStored": "Bearertoken (opgeslagen)",
-    "auditForwardingSaved": "Auditdoorstuurinstellingen opgeslagen",
-    "auditForwardingSaveError": "Auditdoorstuurinstellingen konden niet worden opgeslagen",
+    "forceHttps": "HTTP omleiden naar HTTPS",
+    "forceHttpsDesc": "Stuur gewoon HTTP naar HTTPS en vraag browsers om op HTTPS te blijven. Werkt alleen als Termix zelf HTTPS serveert.",
+    "forceHttpsNoTls": "HTTPS is uitgeschakeld in Termix, dus er wordt niets omgeleid. Schakel ENABLE_SSL in of leid om in je reverse proxy.",
+    "forceHttpsFailed": "Kon de HTTPS-instelling niet wijzigen",
     "sessionTimeout": "Sessietijdslimiet",
     "hours": "uur",
     "sessionTimeoutRange": "Min 1u, max 720u",
-    "monitoringDefaults": "Standaardwaarden monitoring",
-    "statusCheck": "Statuscontrole",
-    "sec": "sec",
     "logLevel": "Logniveau",
+    "usersCount_one": "{{count}} gebruiker",
     "usersCount_other": "{{count}} gebruikers",
     "searchUsers": "Zoek gebruikers...",
     "noUsers": "Geen gebruikers",
@@ -245,6 +253,7 @@
     "roleName": "Naam",
     "roleDisplayName": "Weergavenaam",
     "roleDescription": "Beschrijving",
+    "rolesCount_one": "{{count}} rol",
     "rolesCount_other": "{{count}} rollen",
     "createRole": "Aanmaken",
     "creating": "Aanmaken...",
@@ -259,6 +268,7 @@
     "changeFile": "Wijzigen",
     "import": "Importeren",
     "importing": "Importeren...",
+    "apiKeysCount_one": "{{count}} sleutel",
     "apiKeysCount_other": "{{count}} sleutels",
     "apiKeysDocsLink": "Documentatie bekijken",
     "apiKeysCliHint": "Gebruik een API-sleutel met de Termix CLI om servers te beheren vanuit uw terminal.",
@@ -281,6 +291,7 @@
     "systemBadge": "SYS",
     "customBadge": "AANGEPAST",
     "youBadge": "JOU",
+    "sessionsActive_one": "{{count}} actief",
     "sessionsActive_other": "{{count}} actief",
     "sessionActive": "Actief: {{time}}",
     "sessionExpires": "Verv.: {{time}}",
@@ -351,9 +362,6 @@
     "sessionTimeoutRange2": "Sessietime-out moet tussen 1 en 720 uur liggen",
     "sessionTimeoutSaved": "Sessietime-out opgeslagen",
     "sessionTimeoutSaveFailed": "Sessietime-out opslaan mislukt",
-    "monitoringIntervalInvalid": "Ongeldige intervalwaarden",
-    "monitoringSaved": "Monitoring-instellingen opgeslagen",
-    "monitoringSaveFailed": "Monitoring-instellingen opslaan mislukt",
     "logLevelUpdateFailed": "Logniveau bijwerken mislukt",
     "createUserRequired": "Gebruikersnaam en wachtwoord zijn verplicht",
     "createUserPasswordTooShort": "Wachtwoord moet minimaal 6 tekens lang zijn",
@@ -424,6 +432,7 @@
     "importError": "Importeren van database mislukt",
     "sectionHostDefaults": "Standaardwaarden voor hosts",
     "rolePermissions": {
+      "count_one": "{{count}} machtiging",
       "count_other": "{{count}} machtigingen",
       "editAction": "Machtigingen bewerken",
       "loadError": "Laden van het machtigingenoverzicht mislukt",
@@ -615,6 +624,7 @@
         "apiKeyCreatedWarning": "Sleutel aangemaakt - kopieer deze nu, deze wordt niet meer getoond.",
         "copyApiKey": "API-sleutel kopiëren",
         "copiedToClipboard": "Gekopieerd naar klembord",
+        "apiKeyCount_one": "{{count}} sleutel",
         "apiKeyCount_other": "{{count}} sleutels",
         "newKey": "Nieuwe sleutel",
         "noApiKeys": "Nog geen API-sleutels.",
@@ -670,6 +680,9 @@
         "openUpdates": "Updates"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Lay-out"
   },
   "plugins": {
     "manager": {
@@ -752,60 +765,6 @@
       "saveFailed": "Kon de wijziging niet opslaan"
     }
   },
-  "sync": {
-    "server": "Termix-server",
-    "account": "Account",
-    "status": "Status",
-    "never": "nooit",
-    "justNow": "zojuist",
-    "actionFailed": "Dat is niet gelukt. Probeer het opnieuw.",
-    "unlinkedTitle": "Alleen op dit apparaat",
-    "unlinkedBody": "Termix werkt op dit apparaat zelfstandig. Koppel het aan je Termix-server om alles op elkaar afgestemd te houden.",
-    "unlinkedPointHosts": "Je hosts, referenties, snippets en instellingen volgen je naar elk apparaat.",
-    "unlinkedPointOffline": "Alles werkt nog steeds als de server niet bereikbaar is, en wordt later bijgewerkt.",
-    "unlinkedPointAccount": "Je meldt je aan met je serveraccount, en hosts die mensen met je hebben gedeeld, verschijnen hier ook.",
-    "linkButton": "Koppelen aan een server",
-    "state": {
-      "syncing": "Synchroniseren",
-      "offline": "Server niet bereikbaar",
-      "error": "Synchronisatie gestopt",
-      "signedOut": "Afmelding voltooid",
-      "synced": "Gesynchroniseerd {{time}}"
-    },
-    "signInAgain": "Opnieuw aanmelden",
-    "syncNow": "Nu synchroniseren",
-    "unlink": "Ontkoppelen",
-    "unlinked": "Dit apparaat is niet langer gekoppeld",
-    "unlinkTitle": "Dit apparaat ontkoppelen?",
-    "unlinkDescription": "Het synchroniseren stopt en je wordt afgemeld bij de server. Hosts die door anderen met jou zijn gedeeld, worden in ieder geval van dit apparaat verwijderd.",
-    "unlinkKeepTitle": "Mijn gegevens hier bewaren",
-    "unlinkKeepBody": "Je hosts, referenties en instellingen blijven op dit apparaat en blijven zelfstandig werken.",
-    "unlinkRemoveTitle": "Gesynchroniseerde gegevens verwijderen",
-    "unlinkRemoveBody": "Alles wat van de server kwam, wordt van dit apparaat verwijderd. Alleen hosts die lokaal op dit apparaat zijn bewaard, blijven achter.",
-    "conflictsTitle": "Conflicten",
-    "conflictsDescription": "Deze zijn hier en op de server tegelijkertijd gewijzigd. De versie van de server wordt gebruikt. Bewaar jouw versie om deze in plaats daarvan naar de server te sturen.",
-    "keepMine": "De mijne bewaren",
-    "keepServer": "Serverversie bewaren",
-    "errorsTitle": "Niet gesynchroniseerd",
-    "errorsDescription": "De server heeft deze wijzigingen niet geaccepteerd. Ze blijven op dit apparaat.",
-    "errorPermission": "Je account op de server mag deze wijziging niet aanbrengen.",
-    "retry": "Opnieuw proberen",
-    "whatSyncs": "Wat wordt gesynchroniseerd",
-    "whatSyncsDescription": "Schakel uit wat je alleen op dit apparaat wilt bewaren.",
-    "coreGroup": "Termix",
-    "notOnServer": "De server heeft dit niet",
-    "notOnDevice": "Nog niet op dit apparaat",
-    "localOnlyHint": "Je kunt ook individuele hosts of mappen lokaal op dit apparaat bewaren via hun instellingen.",
-    "originTitle": "Waar verbindingen starten",
-    "originDescription": "Verbind met hosts vanaf dit apparaat, of via de server. Je kunt dit per host wijzigen.",
-    "originLocal": "Dit apparaat",
-    "originRemote": "De server",
-    "proxy": {
-      "title": "Reverse proxy",
-      "description": "Alleen nodig als er iets zoals Cloudflare Access of een inlogpagina voor je server staat.",
-      "saved": "Opgeslagen"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Serverstandaarden voor hosts",
     "titleUser": "Mijn hoststandaarden",
@@ -862,5 +821,18 @@
     "pickCredential": "Kies inloggegevens om te bewerken",
     "pickDefaults": "Kies een niveau van standaardwaarden om te bewerken",
     "pickHint": "Alles over een verbinding vind je hier, gegroepeerd zodat je het makkelijk kunt vinden."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Branding wijzigen",
+      "description": "Stel de app-naam, slogan en logo in die voor iedereen worden getoond."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Hoeveel wil je op het scherm zien?",
+    "presetIntro": "Kies hoeveel er op het scherm wordt getoond.",
+    "presetChangeLater": "Je kunt later in Instellingen, onder Interface, van preset wisselen of elke instelling apart aanpassen.",
+    "appearanceTitle": "Maak het je eigen",
+    "appearanceIntro": "Kies een thema, een accentkleur, een lettertype en je taal. Wijzigingen worden direct zichtbaar en je kunt ze later in Instellingen aanpassen."
   }
 }

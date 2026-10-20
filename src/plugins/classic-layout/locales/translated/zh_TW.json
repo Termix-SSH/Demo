@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "經典版面配置",
+    "description": "經典的 Termix 版面配置，包含圖示列、側邊欄、分頁列與停靠列。"
+  },
+  "layout": {
+    "name": "經典",
+    "description": "圖示列、側邊欄、分頁列與右側停靠列。"
+  },
+  "tab": {
+    "dashboard": "儀表板",
+    "manage": "管理",
+    "settings": "設定"
+  },
   "common": {
     "more": "更多",
     "logout": "登出",
@@ -221,19 +234,13 @@
     "secondFactorAfterExternalLoginDesc": "關閉時，僅在密碼及其他本機登入後要求已註冊的第二因素驗證，與以往相同。開啟時，所有登入方式（包括 SSO 和 LDAP）後皆會要求第二因素驗證",
     "allowPasswordReset": "允許密碼重設",
     "allowPasswordResetDesc": "透過 Docker 日誌取得重設代碼",
-    "auditForwardingTitle": "轉送至 SIEM",
-    "auditForwardingDesc": "將每筆稽核記錄的副本以 NDJSON 格式傳送至外部收集器。本機日誌仍為唯一資料來源",
-    "auditForwardingEnvNotice": "環境變數也可用於設定轉送；此處儲存的 URL 具有優先權",
-    "auditForwardingToken": "Bearer 權杖（選填）",
-    "auditForwardingTokenStored": "Bearer 權杖（已儲存）",
-    "auditForwardingSaved": "稽核轉送設定已儲存",
-    "auditForwardingSaveError": "儲存稽核轉送設定失敗",
+    "forceHttps": "將 HTTP 重新導向至 HTTPS",
+    "forceHttpsDesc": "將純 HTTP 流量導向 HTTPS，並要求瀏覽器維持 HTTPS 連線。僅在 Termix 本身提供 HTTPS 服務時生效。",
+    "forceHttpsNoTls": "Termix 中已關閉 HTTPS，因此不會進行任何重新導向。請啟用 ENABLE_SSL，或在您的反向代理伺服器中設定重新導向。",
+    "forceHttpsFailed": "無法變更 HTTPS 設定",
     "sessionTimeout": "工作階段逾時",
     "hours": "小時",
     "sessionTimeoutRange": "最短 1 小時，最長 720 小時",
-    "monitoringDefaults": "監控預設值",
-    "statusCheck": "狀態檢查",
-    "sec": "秒",
     "logLevel": "日誌層級",
     "usersCount_other": "{{count}} 位使用者",
     "searchUsers": "搜尋使用者...",
@@ -351,9 +358,6 @@
     "sessionTimeoutRange2": "工作階段逾時時間必須介於 1 到 720 小時之間",
     "sessionTimeoutSaved": "工作階段逾時時間已儲存",
     "sessionTimeoutSaveFailed": "儲存工作階段逾時時間失敗",
-    "monitoringIntervalInvalid": "間隔值無效",
-    "monitoringSaved": "監控設定已儲存",
-    "monitoringSaveFailed": "儲存監控設定失敗",
     "logLevelUpdateFailed": "更新記錄層級失敗",
     "createUserRequired": "使用者名稱與密碼為必填欄位",
     "createUserPasswordTooShort": "密碼長度至少需為 6 個字元",
@@ -671,6 +675,9 @@
       }
     }
   },
+  "looks": {
+    "layoutLabel": "版面配置"
+  },
   "plugins": {
     "manager": {
       "errors": {
@@ -752,60 +759,6 @@
       "saveFailed": "無法儲存變更"
     }
   },
-  "sync": {
-    "server": "Termix 伺服器",
-    "account": "帳戶",
-    "status": "狀態",
-    "never": "從未",
-    "justNow": "剛剛",
-    "actionFailed": "操作失敗。請再試一次。",
-    "unlinkedTitle": "僅限此裝置",
-    "unlinkedBody": "Termix 在此裝置上可獨立運作。將其連結到您的 Termix 伺服器以保持一致。",
-    "unlinkedPointHosts": "您的主機、憑證、程式碼片段和設定會跟隨您到每一台裝置。",
-    "unlinkedPointOffline": "當無法連線到伺服器時，一切仍會正常運作，並在之後同步。",
-    "unlinkedPointAccount": "您使用伺服器帳戶登入，其他人與您分享的主機也會顯示在此處。",
-    "linkButton": "連結到伺服器",
-    "state": {
-      "syncing": "同步中",
-      "offline": "無法連線到伺服器",
-      "error": "同步已停止",
-      "signedOut": "已登出",
-      "synced": "已於 {{time}} 同步"
-    },
-    "signInAgain": "重新登入",
-    "syncNow": "立即同步",
-    "unlink": "取消連結",
-    "unlinked": "此裝置已不再連結",
-    "unlinkTitle": "解除此裝置的連結？",
-    "unlinkDescription": "這將停止同步並登出伺服器。無論如何，其他人與您分享的伺服器都會從此裝置移除。",
-    "unlinkKeepTitle": "保留此處的資料",
-    "unlinkKeepBody": "您的伺服器、憑證和設定將保留在此裝置上，並繼續獨立運作。",
-    "unlinkRemoveTitle": "移除已同步的資料",
-    "unlinkRemoveBody": "所有來自伺服器的資料都會從此裝置移除。僅保留設定為僅存在於此裝置的伺服器。",
-    "conflictsTitle": "衝突",
-    "conflictsDescription": "這些項目在此裝置和伺服器上同時被修改。目前使用的是伺服器版本。若要改為將您的版本傳送至伺服器，請選擇保留您的版本。",
-    "keepMine": "保留我的版本",
-    "keepServer": "保留伺服器版本",
-    "errorsTitle": "未同步",
-    "errorsDescription": "伺服器未接受這些變更。它們將保留在此裝置上。",
-    "errorPermission": "您在伺服器上的帳戶無權進行此變更。",
-    "retry": "重試",
-    "whatSyncs": "同步內容",
-    "whatSyncsDescription": "關閉任何您希望僅保留在此裝置上的項目。",
-    "coreGroup": "Termix",
-    "notOnServer": "伺服器上沒有此項目",
-    "notOnDevice": "尚未同步至此裝置",
-    "localOnlyHint": "您也可以從個別伺服器或資料夾的設定中，將其設定為僅保留在此裝置上。",
-    "originTitle": "連線起始位置",
-    "originDescription": "從此裝置連線至伺服器，或透過伺服器連線。您可以針對每個伺服器單獨設定。",
-    "originLocal": "此裝置",
-    "originRemote": "伺服器",
-    "proxy": {
-      "title": "反向代理",
-      "description": "僅在伺服器前方有 Cloudflare Access 或登入頁面等服務時需要。",
-      "saved": "已儲存"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "伺服器主機預設值",
     "titleUser": "我的主機預設值",
@@ -862,5 +815,18 @@
     "pickCredential": "選取要編輯的憑證",
     "pickDefaults": "選取要編輯的預設值層級",
     "pickHint": "連線的所有設定都位於此處，並分組以便查找。"
+  },
+  "permissions": {
+    "branding": {
+      "title": "變更品牌資訊",
+      "description": "設定向所有使用者顯示的應用程式名稱、標語與標誌。"
+    }
+  },
+  "onboarding": {
+    "presetTitle": "您希望在畫面上顯示多少內容？",
+    "presetIntro": "選擇要在畫面上顯示的內容量。",
+    "presetChangeLater": "您之後可以在「設定」中的「介面」部分，切換預設方案或調整任何單一設定。",
+    "appearanceTitle": "打造專屬風格",
+    "appearanceIntro": "選擇主題、強調色、字型與語言。變更會立即生效，您之後也可以在「設定」中隨時調整。"
   }
 }

@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Diseño clásico",
+    "description": "El diseño clásico de Termix con barra de iconos, barra lateral, barra de pestañas y dock."
+  },
+  "layout": {
+    "name": "Clásico",
+    "description": "Barra de iconos, barra lateral, barra de pestañas y dock derecho."
+  },
+  "tab": {
+    "dashboard": "Panel de control",
+    "manage": "Administrar",
+    "settings": "Configuración"
+  },
   "common": {
     "more": "Más",
     "logout": "Cerrar sesión",
@@ -221,21 +234,17 @@
     "secondFactorAfterExternalLoginDesc": "Si está desactivado, solo se solicitará un segundo factor registrado después de inicios de sesión con contraseña y otros métodos locales, como antes. Si está activado, se solicitará después de cada método de inicio de sesión, incluidos SSO y LDAP.",
     "allowPasswordReset": "Permitir restablecimiento de contraseña",
     "allowPasswordResetDesc": "Código de restablecimiento a través de los registros de Docker",
-    "auditForwardingTitle": "Reenviar a SIEM",
-    "auditForwardingDesc": "Enviar una copia de cada entrada de auditoría a un recopilador externo en formato NDJSON. Los registros locales seguirán siendo la fuente de verdad.",
-    "auditForwardingEnvNotice": "Una variable de entorno también configura el reenvío; la URL guardada aquí tiene prioridad.",
-    "auditForwardingToken": "Token Bearer (opcional)",
-    "auditForwardingTokenStored": "Token Bearer (guardado)",
-    "auditForwardingSaved": "Configuración de reenvío de auditoría guardada",
-    "auditForwardingSaveError": "Error al guardar la configuración de reenvío de auditoría",
+    "forceHttps": "Redirigir HTTP a HTTPS",
+    "forceHttpsDesc": "Redirige HTTP plano a HTTPS e indica a los navegadores que mantengan la conexión HTTPS. Solo funciona si Termix sirve HTTPS directamente.",
+    "forceHttpsNoTls": "HTTPS está desactivado en Termix, por lo que no se realiza ninguna redirección. Activa ENABLE_SSL o configura la redirección en tu proxy inverso.",
+    "forceHttpsFailed": "No se ha podido cambiar la configuración de HTTPS",
     "sessionTimeout": "Tiempo de espera de sesión",
     "hours": "horas",
     "sessionTimeoutRange": "Mín. 1 h, máx. 720 h",
-    "monitoringDefaults": "Valores predeterminados de supervisión",
-    "statusCheck": "Comprobación de estado",
-    "sec": "seg",
     "logLevel": "Nivel de registro",
-    "usersCount_other": "{{count}} usuario",
+    "usersCount_one": "{{count}} usuario",
+    "usersCount_many": "{{count}} usuarios",
+    "usersCount_other": "{{count}} usuarios",
     "searchUsers": "Buscar usuarios...",
     "noUsers": "No hay usuarios",
     "noUsersMatch": "Ningún usuario coincide con tu búsqueda",
@@ -245,7 +254,9 @@
     "roleName": "Nombre",
     "roleDisplayName": "Nombre para mostrar",
     "roleDescription": "Descripción",
-    "rolesCount_other": "{{count}} rol",
+    "rolesCount_one": "{{count}} rol",
+    "rolesCount_many": "{{count}} roles",
+    "rolesCount_other": "{{count}} roles",
     "createRole": "Crear",
     "creating": "Creando...",
     "exportDatabase": "Exportar base de datos",
@@ -259,7 +270,9 @@
     "changeFile": "Cambiar",
     "import": "Importar",
     "importing": "Importando...",
-    "apiKeysCount_other": "{{count}} clave",
+    "apiKeysCount_one": "{{count}} clave",
+    "apiKeysCount_many": "{{count}} claves",
+    "apiKeysCount_other": "{{count}} claves",
     "apiKeysDocsLink": "Ver documentación",
     "apiKeysCliHint": "Usa una clave API con la CLI de Termix para administrar servidores desde tu terminal.",
     "apiKeysCliLink": "Ver documentación de la CLI",
@@ -281,6 +294,8 @@
     "systemBadge": "SIST",
     "customBadge": "PERSONALIZADO",
     "youBadge": "TÚ",
+    "sessionsActive_one": "{{count}} activa",
+    "sessionsActive_many": "{{count}} activas",
     "sessionsActive_other": "{{count}} activas",
     "sessionActive": "Activa: {{time}}",
     "sessionExpires": "Cad: {{time}}",
@@ -351,9 +366,6 @@
     "sessionTimeoutRange2": "El tiempo de espera de la sesión debe estar entre 1 y 720 horas",
     "sessionTimeoutSaved": "Tiempo de espera de la sesión guardado",
     "sessionTimeoutSaveFailed": "Error al guardar el tiempo de espera de la sesión",
-    "monitoringIntervalInvalid": "Valores de intervalo no válidos",
-    "monitoringSaved": "Configuración de monitorización guardada",
-    "monitoringSaveFailed": "Error al guardar la configuración de monitorización",
     "logLevelUpdateFailed": "Error al actualizar el nivel de registro",
     "createUserRequired": "El nombre de usuario y la contraseña son obligatorios",
     "createUserPasswordTooShort": "La contraseña debe tener al menos 6 caracteres",
@@ -424,7 +436,9 @@
     "importError": "Error al importar la base de datos",
     "sectionHostDefaults": "Valores predeterminados de host",
     "rolePermissions": {
-      "count_other": "{{count}} permiso",
+      "count_one": "{{count}} permiso",
+      "count_many": "{{count}} permisos",
+      "count_other": "{{count}} permisos",
       "editAction": "Editar permisos",
       "loadError": "Error al cargar el catálogo de permisos",
       "saved": "Permisos del rol guardados",
@@ -615,7 +629,9 @@
         "apiKeyCreatedWarning": "Clave creada: cópiala ahora, no se volverá a mostrar.",
         "copyApiKey": "Copiar clave API",
         "copiedToClipboard": "Copiado al portapapeles",
-        "apiKeyCount_other": "{{count}} clave",
+        "apiKeyCount_one": "{{count}} clave",
+        "apiKeyCount_many": "{{count}} claves",
+        "apiKeyCount_other": "{{count}} claves",
         "newKey": "Nueva clave",
         "noApiKeys": "Aún no hay claves API.",
         "apiKeyActive": "Activa",
@@ -670,6 +686,9 @@
         "openUpdates": "Actualizaciones"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Diseño"
   },
   "plugins": {
     "manager": {
@@ -752,60 +771,6 @@
       "saveFailed": "No se ha podido guardar el cambio"
     }
   },
-  "sync": {
-    "server": "Servidor de Termix",
-    "account": "Cuenta",
-    "status": "Estado",
-    "never": "nunca",
-    "justNow": "ahora mismo",
-    "actionFailed": "Eso no ha funcionado. Inténtalo de nuevo.",
-    "unlinkedTitle": "Solo este dispositivo",
-    "unlinkedBody": "Termix funciona de forma independiente en este dispositivo. Vínculalo a tu servidor de Termix para mantener todo sincronizado.",
-    "unlinkedPointHosts": "Tus hosts, credenciales, fragmentos y configuración te seguirán a cada dispositivo.",
-    "unlinkedPointOffline": "Todo sigue funcionando cuando no se puede acceder al servidor y se sincroniza más tarde.",
-    "unlinkedPointAccount": "Inicias sesión con tu cuenta del servidor, y los hosts que otras personas hayan compartido contigo también aparecerán aquí.",
-    "linkButton": "Vincular a un servidor",
-    "state": {
-      "syncing": "Sincronizando",
-      "offline": "Servidor no accesible",
-      "error": "Sincronización detenida",
-      "signedOut": "Sesión cerrada",
-      "synced": "Sincronizado {{time}}"
-    },
-    "signInAgain": "Iniciar sesión de nuevo",
-    "syncNow": "Sincronizar ahora",
-    "unlink": "Desvincular",
-    "unlinked": "Este dispositivo ya no está vinculado",
-    "unlinkTitle": "¿Desvincular este dispositivo?",
-    "unlinkDescription": "Se detiene la sincronización y se cierra la sesión del servidor. Los hosts compartidos contigo por otros se eliminan de este dispositivo en cualquier caso.",
-    "unlinkKeepTitle": "Conservar mis datos aquí",
-    "unlinkKeepBody": "Tus hosts, credenciales y configuraciones permanecen en este dispositivo y siguen funcionando de forma independiente.",
-    "unlinkRemoveTitle": "Eliminar datos sincronizados",
-    "unlinkRemoveBody": "Todo lo que provenga del servidor se elimina de este dispositivo. Solo se conservan los hosts que se mantengan en este dispositivo.",
-    "conflictsTitle": "Conflictos",
-    "conflictsDescription": "Estos elementos se modificaron aquí y en el servidor al mismo tiempo. Se está utilizando la versión del servidor. Conserva la tuya para enviarla al servidor en su lugar.",
-    "keepMine": "Conservar la mía",
-    "keepServer": "Conservar la del servidor",
-    "errorsTitle": "No sincronizado",
-    "errorsDescription": "El servidor no aceptó estos cambios. Permanecen en este dispositivo.",
-    "errorPermission": "Tu cuenta en el servidor no tiene permiso para realizar este cambio.",
-    "retry": "Intentar de nuevo",
-    "whatSyncs": "Qué se sincroniza",
-    "whatSyncsDescription": "Desactiva cualquier elemento que quieras conservar solo en este dispositivo.",
-    "coreGroup": "Termix",
-    "notOnServer": "El servidor no tiene esto",
-    "notOnDevice": "Aún no está en este dispositivo",
-    "localOnlyHint": "También puedes conservar hosts o carpetas individuales en este dispositivo desde sus configuraciones.",
-    "originTitle": "Origen de las conexiones",
-    "originDescription": "Conéctate a los hosts desde este dispositivo o a través del servidor. Puedes cambiar esto para cada host.",
-    "originLocal": "Este dispositivo",
-    "originRemote": "El servidor",
-    "proxy": {
-      "title": "Proxy inverso",
-      "description": "Solo necesario cuando algo como Cloudflare Access o una página de inicio de sesión se sitúa delante de tu servidor.",
-      "saved": "Guardado"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Valores predeterminados de hosts del servidor",
     "titleUser": "Mis valores predeterminados de hosts",
@@ -862,5 +827,18 @@
     "pickCredential": "Selecciona una credencial para editar",
     "pickDefaults": "Selecciona un nivel de valores predeterminados para editar",
     "pickHint": "Todo lo relacionado con una conexión está aquí, agrupado para que lo encuentres fácilmente."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Cambiar la marca",
+      "description": "Establece el nombre de la aplicación, el eslogan y el logotipo que se muestran a todos."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "¿Cuánta información quieres ver en pantalla?",
+    "presetIntro": "Elige cuánto contenido se muestra en pantalla.",
+    "presetChangeLater": "Puedes cambiar los ajustes predefinidos o modificar cualquier configuración individual más tarde en Configuración, en la sección Interfaz.",
+    "appearanceTitle": "Hazlo tuyo",
+    "appearanceIntro": "Elige un tema, un color de acento, una fuente y tu idioma. Los cambios se aplican al instante y puedes modificarlos más tarde en Configuración."
   }
 }

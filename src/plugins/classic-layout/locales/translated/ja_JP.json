@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "クラシックレイアウト",
+    "description": "アイコンレール、サイドバー、タブバー、ドックを備えた Termix のクラシックレイアウトです。"
+  },
+  "layout": {
+    "name": "クラシック",
+    "description": "アイコンレール、サイドバー、タブバー、右ドック。"
+  },
+  "tab": {
+    "dashboard": "ダッシュボード",
+    "manage": "管理",
+    "settings": "設定"
+  },
   "common": {
     "more": "もっと見る",
     "logout": "ログアウト",
@@ -221,19 +234,13 @@
     "secondFactorAfterExternalLoginDesc": "オフの場合、登録済みの二段階認証はパスワードやその他のローカルログイン時のみ要求されます（従来通り）。オンにすると、SSO や LDAP を含むすべてのログイン方法で要求されます",
     "allowPasswordReset": "パスワードリセットを許可する",
     "allowPasswordResetDesc": "Docker ログ経由のリセットコード",
-    "auditForwardingTitle": "SIEM への転送",
-    "auditForwardingDesc": "すべての監査ログエントリのコピーを NDJSON 形式で外部コレクターに送信します。ローカルログは信頼の源として保持されます",
-    "auditForwardingEnvNotice": "環境変数でも転送を構成できますが、ここで保存した URL が優先されます",
-    "auditForwardingToken": "ベアラートークン（オプション）",
-    "auditForwardingTokenStored": "ベアラートークン（保存済み）",
-    "auditForwardingSaved": "監査ログ転送の設定が保存されました",
-    "auditForwardingSaveError": "監査ログ転送の設定の保存に失敗しました",
+    "forceHttps": "HTTP を HTTPS にリダイレクト",
+    "forceHttpsDesc": "HTTP を HTTPS にリダイレクトし、ブラウザに HTTPS を維持するよう指示します。Termix 自体が HTTPS を提供している場合にのみ機能します。",
+    "forceHttpsNoTls": "Termix で HTTPS が無効になっているため、リダイレクトは行われません。ENABLE_SSL を有効にするか、リバースプロキシでリダイレクトを設定してください。",
+    "forceHttpsFailed": "HTTPS 設定を変更できませんでした",
     "sessionTimeout": "セッションタイムアウト",
     "hours": "時間",
     "sessionTimeoutRange": "最小 1 時間、最大 720 時間",
-    "monitoringDefaults": "モニタリングのデフォルト設定",
-    "statusCheck": "ステータスチェック",
-    "sec": "秒",
     "logLevel": "ログレベル",
     "usersCount_other": "{{count}} 人のユーザー",
     "searchUsers": "ユーザーを検索...",
@@ -351,9 +358,6 @@
     "sessionTimeoutRange2": "セッションタイムアウトは1時間以上720時間以下に設定してください",
     "sessionTimeoutSaved": "セッションタイムアウトが保存されました",
     "sessionTimeoutSaveFailed": "セッションタイムアウトの保存に失敗しました",
-    "monitoringIntervalInvalid": "無効な間隔値です",
-    "monitoringSaved": "監視設定が保存されました",
-    "monitoringSaveFailed": "監視設定の保存に失敗しました",
     "logLevelUpdateFailed": "ログレベルの更新に失敗しました",
     "createUserRequired": "ユーザー名とパスワードは必須です",
     "createUserPasswordTooShort": "パスワードは6文字以上にする必要があります",
@@ -671,6 +675,9 @@
       }
     }
   },
+  "looks": {
+    "layoutLabel": "レイアウト"
+  },
   "plugins": {
     "manager": {
       "errors": {
@@ -752,60 +759,6 @@
       "saveFailed": "変更を保存できませんでした"
     }
   },
-  "sync": {
-    "server": "Termix サーバー",
-    "account": "アカウント",
-    "status": "ステータス",
-    "never": "なし",
-    "justNow": "たった今",
-    "actionFailed": "操作に失敗しました。もう一度お試しください。",
-    "unlinkedTitle": "このデバイスのみ",
-    "unlinkedBody": "Termix はこのデバイス上で単独で動作します。すべてを同期させるには、Termix サーバーにリンクしてください。",
-    "unlinkedPointHosts": "ホスト、認証情報、スニペット、設定は、すべてのデバイスに追従します。",
-    "unlinkedPointOffline": "サーバーに接続できない場合でも動作し、後で同期されます。",
-    "unlinkedPointAccount": "サーバーアカウントでサインインし、他のユーザーから共有されたホストもここに表示されます。",
-    "linkButton": "サーバーにリンク",
-    "state": {
-      "syncing": "同期中",
-      "offline": "サーバーに接続できません",
-      "error": "同期が停止しました",
-      "signedOut": "サインアウト済み",
-      "synced": "{{time}} に同期済み"
-    },
-    "signInAgain": "再度サインイン",
-    "syncNow": "今すぐ同期",
-    "unlink": "リンク解除",
-    "unlinked": "このデバイスはリンク解除されました",
-    "unlinkTitle": "このデバイスのリンクを解除しますか？",
-    "unlinkDescription": "同期が停止し、サーバーからサインアウトされます。他のユーザーから共有されたホストは、いずれにせよこのデバイスから削除されます。",
-    "unlinkKeepTitle": "データをこのデバイスに保持",
-    "unlinkKeepBody": "ホスト、認証情報、設定はこのデバイスに残り、個別に動作し続けます。",
-    "unlinkRemoveTitle": "同期されたデータを削除",
-    "unlinkRemoveBody": "サーバー由来のすべてのデータがこのデバイスから削除されます。このデバイスにのみ保持されたホストは残ります。",
-    "conflictsTitle": "競合",
-    "conflictsDescription": "これらは、このデバイスとサーバーで同時に変更されました。現在サーバーのバージョンが使用されています。代わりに自分のバージョンを送信するには、こちらを選択してください。",
-    "keepMine": "自分のデータを保持",
-    "keepServer": "サーバーのデータを保持",
-    "errorsTitle": "同期されていない",
-    "errorsDescription": "サーバーはこれらの変更を受け付けませんでした。これらはこのデバイスに残ります。",
-    "errorPermission": "サーバー上のあなたのアカウントには、この変更を行う権限がありません。",
-    "retry": "再試行",
-    "whatSyncs": "同期対象",
-    "whatSyncsDescription": "このデバイスにのみ保持したい項目はオフにしてください。",
-    "coreGroup": "Termix",
-    "notOnServer": "サーバーにはありません",
-    "notOnDevice": "このデバイスにはまだありません",
-    "localOnlyHint": "設定から、個々のホストやフォルダをこのデバイスにのみ保持することもできます。",
-    "originTitle": "接続の開始場所",
-    "originDescription": "このデバイスからホストに接続するか、サーバー経由で接続するかを選択します。ホストごとに設定を変更できます。",
-    "originLocal": "このデバイス",
-    "originRemote": "サーバー",
-    "proxy": {
-      "title": "リバースプロキシ",
-      "description": "Cloudflare Access やログインページなどがサーバーの前にある場合にのみ必要です。",
-      "saved": "保存済み"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "サーバーのホストデフォルト",
     "titleUser": "マイホストデフォルト",
@@ -862,5 +815,18 @@
     "pickCredential": "編集する認証情報を選択",
     "pickDefaults": "編集するデフォルトのレベルを選択",
     "pickHint": "接続に関するすべての設定は、見つけやすいようグループ化されてここにあります。"
+  },
+  "permissions": {
+    "branding": {
+      "title": "ブランディングの変更",
+      "description": "すべてのユーザーに表示されるアプリ名、キャッチフレーズ、ロゴを設定します。"
+    }
+  },
+  "onboarding": {
+    "presetTitle": "画面に表示する情報量は？",
+    "presetIntro": "画面に表示する情報量を選択してください。",
+    "presetChangeLater": "プリセットの切り替えや、個々の設定の変更は、後で「設定」の「インターフェース」から行うことができます。",
+    "appearanceTitle": "自分好みにカスタマイズ",
+    "appearanceIntro": "テーマ、アクセントカラー、フォント、言語を選択してください。変更はすぐに反映され、後で「設定」から変更できます。"
   }
 }

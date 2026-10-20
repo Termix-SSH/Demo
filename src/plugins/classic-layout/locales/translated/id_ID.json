@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Tata Letak Klasik",
+    "description": "Tata letak klasik Termix dengan rel ikon, bilah sisi, bilah tab, dan dok."
+  },
+  "layout": {
+    "name": "Klasik",
+    "description": "Rel ikon, bilah sisi, bilah tab, dan dok kanan."
+  },
+  "tab": {
+    "dashboard": "Dasbor",
+    "manage": "Kelola",
+    "settings": "Pengaturan"
+  },
   "common": {
     "more": "Lainnya",
     "logout": "Keluar",
@@ -221,19 +234,13 @@
     "secondFactorAfterExternalLoginDesc": "Jika dimatikan, faktor kedua yang terdaftar hanya diminta setelah login kata sandi dan login lokal lainnya, seperti sebelumnya. Jika dihidupkan, faktor kedua diminta setelah setiap metode login, termasuk SSO dan LDAP.",
     "allowPasswordReset": "Izinkan Pengaturan Ulang Kata Sandi",
     "allowPasswordResetDesc": "Kode pengaturan ulang melalui log Docker",
-    "auditForwardingTitle": "Teruskan ke SIEM",
-    "auditForwardingDesc": "Kirim salinan setiap entri audit ke pengumpul eksternal sebagai NDJSON. Log lokal tetap menjadi sumber kebenaran.",
-    "auditForwardingEnvNotice": "Variabel lingkungan juga mengonfigurasi penerusan; URL yang disimpan di sini memiliki prioritas lebih tinggi.",
-    "auditForwardingToken": "Token Bearer (opsional)",
-    "auditForwardingTokenStored": "Token Bearer (tersimpan)",
-    "auditForwardingSaved": "Pengaturan penerusan audit disimpan",
-    "auditForwardingSaveError": "Gagal menyimpan pengaturan penerusan audit",
+    "forceHttps": "Arahkan ulang HTTP ke HTTPS",
+    "forceHttpsDesc": "Arahkan HTTP biasa ke HTTPS dan minta browser tetap menggunakan HTTPS. Hanya berfungsi saat Termix sendiri melayani HTTPS",
+    "forceHttpsNoTls": "HTTPS dimatikan di Termix, sehingga tidak ada pengalihan. Aktifkan ENABLE_SSL atau atur pengalihan di reverse proxy Anda",
+    "forceHttpsFailed": "Gagal mengubah pengaturan HTTPS",
     "sessionTimeout": "Batas Waktu Sesi",
     "hours": "jam",
     "sessionTimeoutRange": "Min 1j, maks 720j",
-    "monitoringDefaults": "Pengaturan Default Pemantauan",
-    "statusCheck": "Pemeriksaan Status",
-    "sec": "det",
     "logLevel": "Tingkat Log",
     "usersCount_other": "{{count}} pengguna",
     "searchUsers": "Cari pengguna...",
@@ -351,9 +358,6 @@
     "sessionTimeoutRange2": "Batas waktu sesi harus antara 1 dan 720 jam",
     "sessionTimeoutSaved": "Batas waktu sesi disimpan",
     "sessionTimeoutSaveFailed": "Gagal menyimpan batas waktu sesi",
-    "monitoringIntervalInvalid": "Nilai interval tidak valid",
-    "monitoringSaved": "Pengaturan pemantauan disimpan",
-    "monitoringSaveFailed": "Gagal menyimpan pengaturan pemantauan",
     "logLevelUpdateFailed": "Gagal memperbarui tingkat log",
     "createUserRequired": "Nama pengguna dan kata sandi wajib diisi",
     "createUserPasswordTooShort": "Kata sandi harus minimal 6 karakter",
@@ -671,6 +675,9 @@
       }
     }
   },
+  "looks": {
+    "layoutLabel": "Tata letak"
+  },
   "plugins": {
     "manager": {
       "errors": {
@@ -752,60 +759,6 @@
       "saveFailed": "Gagal menyimpan perubahan"
     }
   },
-  "sync": {
-    "server": "Server Termix",
-    "account": "Akun",
-    "status": "Status",
-    "never": "tidak pernah",
-    "justNow": "baru saja",
-    "actionFailed": "Itu tidak berhasil. Coba lagi.",
-    "unlinkedTitle": "Hanya perangkat ini",
-    "unlinkedBody": "Termix bekerja secara mandiri di perangkat ini. Hubungkan ke server Termix Anda agar semua tetap sinkron.",
-    "unlinkedPointHosts": "Host, kredensial, snippet, dan pengaturan Anda mengikuti Anda ke setiap perangkat.",
-    "unlinkedPointOffline": "Semua tetap berfungsi saat server tidak dapat dijangkau, dan akan tersinkronisasi nanti.",
-    "unlinkedPointAccount": "Anda masuk dengan akun server Anda, dan host yang dibagikan orang lain juga muncul di sini.",
-    "linkButton": "Hubungkan ke server",
-    "state": {
-      "syncing": "Menyinkronkan",
-      "offline": "Server tidak dapat dijangkau",
-      "error": "Sinkronisasi berhenti",
-      "signedOut": "Keluar",
-      "synced": "Tersinkronisasi {{time}}"
-    },
-    "signInAgain": "Masuk lagi",
-    "syncNow": "Sinkronkan sekarang",
-    "unlink": "Putuskan hubungan",
-    "unlinked": "Perangkat ini tidak lagi terhubung",
-    "unlinkTitle": "Putuskan tautan perangkat ini?",
-    "unlinkDescription": "Sinkronisasi akan berhenti dan Anda akan keluar dari server. Host yang dibagikan kepada Anda oleh orang lain akan dihapus dari perangkat ini dalam semua kasus.",
-    "unlinkKeepTitle": "Simpan data saya di sini",
-    "unlinkKeepBody": "Host, kredensial, dan pengaturan Anda tetap ada di perangkat ini dan terus berfungsi secara mandiri.",
-    "unlinkRemoveTitle": "Hapus data yang disinkronkan",
-    "unlinkRemoveBody": "Semua data yang berasal dari server akan dihapus dari perangkat ini. Hanya host yang disimpan di perangkat ini yang akan tetap ada.",
-    "conflictsTitle": "Konflik",
-    "conflictsDescription": "Item ini diubah di sini dan di server secara bersamaan. Versi server sedang digunakan. Simpan versi Anda untuk mengirimkannya ke server sebagai gantinya.",
-    "keepMine": "Simpan milik saya",
-    "keepServer": "Simpan milik server",
-    "errorsTitle": "Tidak disinkronkan",
-    "errorsDescription": "Server tidak menerima perubahan ini. Perubahan tersebut tetap ada di perangkat ini.",
-    "errorPermission": "Akun Anda di server tidak diizinkan untuk melakukan perubahan ini.",
-    "retry": "Coba lagi",
-    "whatSyncs": "Apa yang disinkronkan",
-    "whatSyncsDescription": "Matikan apa pun yang ingin Anda simpan hanya di perangkat ini.",
-    "coreGroup": "Termix",
-    "notOnServer": "Server tidak memiliki ini",
-    "notOnDevice": "Belum ada di perangkat ini",
-    "localOnlyHint": "Anda juga dapat menyimpan host atau folder tertentu hanya di perangkat ini melalui pengaturan mereka.",
-    "originTitle": "Asal koneksi",
-    "originDescription": "Hubungkan ke host dari perangkat ini, atau melalui server. Anda dapat mengubah ini per host.",
-    "originLocal": "Perangkat ini",
-    "originRemote": "Server",
-    "proxy": {
-      "title": "Proxy terbalik",
-      "description": "Hanya diperlukan ketika ada sesuatu seperti Cloudflare Access atau halaman login yang berada di depan server Anda.",
-      "saved": "Tersimpan"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Pengaturan default host server",
     "titleUser": "Pengaturan default host saya",
@@ -862,5 +815,18 @@
     "pickCredential": "Pilih kredensial untuk diedit",
     "pickDefaults": "Pilih tingkat default untuk diedit",
     "pickHint": "Semua hal tentang koneksi ada di sini, dikelompokkan agar mudah ditemukan."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Ubah branding",
+      "description": "Atur nama aplikasi, tagline, dan logo yang ditampilkan untuk semua orang."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Seberapa padat tampilan yang Anda inginkan?",
+    "presetIntro": "Pilih seberapa banyak elemen yang ditampilkan di layar.",
+    "presetChangeLater": "Anda dapat mengganti preset atau mengubah pengaturan individual kapan saja nanti di Pengaturan, bagian Antarmuka.",
+    "appearanceTitle": "Sesuaikan dengan gaya Anda",
+    "appearanceIntro": "Pilih tema, warna aksen, font, dan bahasa Anda. Perubahan akan langsung terlihat, dan Anda dapat mengubahnya nanti di Pengaturan."
   }
 }

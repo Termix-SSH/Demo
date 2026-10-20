@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Bố cục Cổ điển",
+    "description": "Bố cục Termix cổ điển với thanh biểu tượng, thanh bên, thanh tab và thanh công cụ."
+  },
+  "layout": {
+    "name": "Cổ điển",
+    "description": "Thanh biểu tượng, thanh bên, thanh tab và thanh công cụ bên phải."
+  },
+  "tab": {
+    "dashboard": "Bảng điều khiển",
+    "manage": "Quản lý",
+    "settings": "Cài đặt"
+  },
   "common": {
     "more": "Thêm",
     "logout": "Đăng xuất",
@@ -221,19 +234,13 @@
     "secondFactorAfterExternalLoginDesc": "Khi tắt, xác thực hai yếu tố chỉ được yêu cầu sau khi đăng nhập bằng mật khẩu và các phương thức nội bộ khác, giống như trước đây. Khi bật, nó sẽ được yêu cầu sau mọi phương thức đăng nhập, bao gồm cả SSO và LDAP.",
     "allowPasswordReset": "Cho phép đặt lại mật khẩu",
     "allowPasswordResetDesc": "Mã đặt lại qua nhật ký Docker",
-    "auditForwardingTitle": "Chuyển tiếp đến SIEM",
-    "auditForwardingDesc": "Gửi bản sao của mọi mục nhật ký kiểm toán đến bộ thu thập bên ngoài dưới dạng NDJSON. Nhật ký cục bộ vẫn là nguồn dữ liệu chính xác.",
-    "auditForwardingEnvNotice": "Một biến môi trường cũng cấu hình việc chuyển tiếp; URL được lưu ở đây sẽ có ưu tiên cao hơn.",
-    "auditForwardingToken": "Token Bearer (tùy chọn)",
-    "auditForwardingTokenStored": "Token Bearer (đã lưu)",
-    "auditForwardingSaved": "Đã lưu cài đặt chuyển tiếp nhật ký kiểm toán",
-    "auditForwardingSaveError": "Không thể lưu cài đặt chuyển tiếp nhật ký kiểm toán",
+    "forceHttps": "Chuyển hướng HTTP sang HTTPS",
+    "forceHttpsDesc": "Chuyển đổi HTTP thường sang HTTPS và yêu cầu trình duyệt giữ kết nối HTTPS. Chỉ hoạt động khi Termix tự phục vụ HTTPS.",
+    "forceHttpsNoTls": "HTTPS đang tắt trong Termix, nên không có gì được chuyển hướng. Bật ENABLE_SSL hoặc chuyển hướng qua reverse proxy của bạn.",
+    "forceHttpsFailed": "Không thể thay đổi cài đặt HTTPS",
     "sessionTimeout": "Thời gian hết hạn phiên",
     "hours": "giờ",
     "sessionTimeoutRange": "Tối thiểu 1 giờ, tối đa 720 giờ",
-    "monitoringDefaults": "Cài đặt mặc định cho giám sát",
-    "statusCheck": "Kiểm tra trạng thái",
-    "sec": "giây",
     "logLevel": "Cấp độ nhật ký",
     "usersCount_other": "{{count}} người dùng",
     "searchUsers": "Tìm kiếm người dùng...",
@@ -351,9 +358,6 @@
     "sessionTimeoutRange2": "Thời gian hết hạn phiên phải từ 1 đến 720 giờ",
     "sessionTimeoutSaved": "Đã lưu thời gian hết hạn phiên",
     "sessionTimeoutSaveFailed": "Không thể lưu thời gian hết hạn phiên",
-    "monitoringIntervalInvalid": "Giá trị khoảng thời gian không hợp lệ",
-    "monitoringSaved": "Đã lưu cài đặt giám sát",
-    "monitoringSaveFailed": "Không thể lưu cài đặt giám sát",
     "logLevelUpdateFailed": "Không thể cập nhật mức độ nhật ký",
     "createUserRequired": "Tên đăng nhập và mật khẩu là bắt buộc",
     "createUserPasswordTooShort": "Mật khẩu phải có ít nhất 6 ký tự",
@@ -671,6 +675,9 @@
       }
     }
   },
+  "looks": {
+    "layoutLabel": "Bố cục"
+  },
   "plugins": {
     "manager": {
       "errors": {
@@ -752,60 +759,6 @@
       "saveFailed": "Không thể lưu thay đổi"
     }
   },
-  "sync": {
-    "server": "Máy chủ Termix",
-    "account": "Tài khoản",
-    "status": "Trạng thái",
-    "never": "chưa bao giờ",
-    "justNow": "vừa xong",
-    "actionFailed": "Hành động không thành công. Hãy thử lại.",
-    "unlinkedTitle": "Chỉ thiết bị này",
-    "unlinkedBody": "Termix hoạt động độc lập trên thiết bị này. Kết nối nó với máy chủ Termix của bạn để đồng bộ mọi thứ.",
-    "unlinkedPointHosts": "Máy chủ, thông tin đăng nhập, đoạn lệnh và cài đặt của bạn sẽ theo bạn đến mọi thiết bị.",
-    "unlinkedPointOffline": "Mọi thứ vẫn hoạt động khi không thể kết nối với máy chủ và sẽ đồng bộ lại sau.",
-    "unlinkedPointAccount": "Bạn đăng nhập bằng tài khoản máy chủ của mình, và các máy chủ mà người khác chia sẻ với bạn cũng sẽ hiển thị ở đây.",
-    "linkButton": "Kết nối với máy chủ",
-    "state": {
-      "syncing": "Đang đồng bộ",
-      "offline": "Không thể kết nối đến máy chủ",
-      "error": "Đồng bộ đã dừng",
-      "signedOut": "Đã đăng xuất",
-      "synced": "Đã đồng bộ {{time}}"
-    },
-    "signInAgain": "Đăng nhập lại",
-    "syncNow": "Đồng bộ ngay",
-    "unlink": "Hủy kết nối",
-    "unlinked": "Thiết bị này không còn được kết nối",
-    "unlinkTitle": "Hủy liên kết thiết bị này?",
-    "unlinkDescription": "Hành động này sẽ dừng đồng bộ hóa và đăng xuất khỏi máy chủ. Các máy chủ được người khác chia sẻ với bạn sẽ bị xóa khỏi thiết bị này trong mọi trường hợp.",
-    "unlinkKeepTitle": "Giữ dữ liệu của tôi ở đây",
-    "unlinkKeepBody": "Các máy chủ, thông tin đăng nhập và cài đặt của bạn sẽ vẫn ở trên thiết bị này và tiếp tục hoạt động độc lập.",
-    "unlinkRemoveTitle": "Xóa dữ liệu đã đồng bộ",
-    "unlinkRemoveBody": "Tất cả dữ liệu từ máy chủ sẽ bị xóa khỏi thiết bị này. Chỉ giữ lại các máy chủ được lưu cục bộ trên thiết bị.",
-    "conflictsTitle": "Xung đột",
-    "conflictsDescription": "Những mục này đã được thay đổi trên thiết bị và máy chủ cùng lúc. Phiên bản trên máy chủ đang được sử dụng. Chọn giữ phiên bản của bạn để gửi nó lên máy chủ thay thế.",
-    "keepMine": "Giữ của tôi",
-    "keepServer": "Giữ của máy chủ",
-    "errorsTitle": "Chưa đồng bộ",
-    "errorsDescription": "Máy chủ không chấp nhận những thay đổi này. Chúng vẫn ở trên thiết bị này.",
-    "errorPermission": "Tài khoản của bạn trên máy chủ không được phép thực hiện thay đổi này.",
-    "retry": "Thử lại",
-    "whatSyncs": "Những gì được đồng bộ",
-    "whatSyncsDescription": "Tắt bất kỳ mục nào bạn muốn giữ riêng trên thiết bị này.",
-    "coreGroup": "Termix",
-    "notOnServer": "Máy chủ không có mục này",
-    "notOnDevice": "Chưa có trên thiết bị này",
-    "localOnlyHint": "Bạn cũng có thể giữ riêng từng máy chủ hoặc thư mục trên thiết bị này từ cài đặt của chúng.",
-    "originTitle": "Nơi bắt đầu kết nối",
-    "originDescription": "Kết nối đến máy chủ từ thiết bị này, hoặc thông qua máy chủ. Bạn có thể thay đổi tùy chọn này cho từng máy chủ.",
-    "originLocal": "Thiết bị này",
-    "originRemote": "Máy chủ",
-    "proxy": {
-      "title": "Proxy ngược",
-      "description": "Chỉ cần thiết khi có thành phần như Cloudflare Access hoặc trang đăng nhập đặt trước máy chủ của bạn.",
-      "saved": "Đã lưu"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Mặc định máy chủ",
     "titleUser": "Mặc định của tôi",
@@ -862,5 +815,18 @@
     "pickCredential": "Chọn một thông tin đăng nhập để chỉnh sửa",
     "pickDefaults": "Chọn mức độ mặc định để chỉnh sửa",
     "pickHint": "Mọi thứ về một kết nối đều nằm ở đây, được nhóm lại để bạn dễ tìm."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Thay đổi thương hiệu",
+      "description": "Đặt tên ứng dụng, khẩu hiệu và logo hiển thị cho mọi người."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Bạn muốn hiển thị bao nhiêu nội dung trên màn hình?",
+    "presetIntro": "Chọn mức độ hiển thị trên màn hình.",
+    "presetChangeLater": "Bạn có thể chuyển đổi mẫu cài đặt hoặc thay đổi bất kỳ cài đặt riêng lẻ nào sau này trong phần Cài đặt, mục Giao diện.",
+    "appearanceTitle": "Tùy chỉnh theo ý bạn",
+    "appearanceIntro": "Chọn chủ đề, màu nhấn, phông chữ và ngôn ngữ của bạn. Thay đổi sẽ hiển thị ngay lập tức, và bạn có thể thay đổi chúng sau này trong phần Cài đặt."
   }
 }

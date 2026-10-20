@@ -1,0 +1,51 @@
+{
+  "name": "Keamanan Login",
+  "permissions": {
+    "manage": {
+      "title": "Kelola keamanan login",
+      "description": "Lihat status faktor kedua dan ubah pengaturan keamanan login."
+    }
+  },
+  "settings": {
+    "group": {
+      "sessions": "Sesi",
+      "secondFactor": "Faktor kedua"
+    },
+    "admin": {
+      "idleTimeoutMinutes": {
+        "label": "Keluar setelah tidak aktif selama beberapa menit",
+        "description": "Keluar pengguna setelah jumlah menit ini tanpa aktivitas. Server juga mengakhiri sesi, sehingga token yang disalin berhenti berfungsi. 0 untuk menonaktifkan."
+      },
+      "maxSessionHours": {
+        "label": "Durasi sesi terpanjang dalam jam",
+        "description": "Sesi berakhir setelah jumlah jam ini, bahkan dengan opsi ingat saya. 0 berarti tidak ada batas tambahan."
+      },
+      "rememberDevice": {
+        "label": "Izinkan ingat saya",
+        "description": "Nonaktif menyembunyikan opsi 'Ingat saya' saat masuk dan mengabaikan perangkat yang pernah diingat sebelumnya, sehingga setiap proses masuk akan meminta faktor kedua."
+      },
+      "secondFactor": {
+        "label": "Wajibkan faktor kedua",
+        "description": "Pengguna yang belum memiliki faktor kedua harus mengonfigurasinya setelah masuk, sebelum dapat menggunakan Termix. Masuk menggunakan passkey dengan PIN atau sidik jari juga diperhitungkan.",
+        "off": "Nonaktif",
+        "newDevice": "Pada perangkat baru",
+        "always": "Setiap kali masuk"
+      },
+      "applyToExternal": {
+        "label": "Juga untuk single sign-on",
+        "description": "Minta faktor kedua setelah login SSO dan LDAP juga. Biarkan nonaktif jika penyedia identitas Anda sudah memintanya."
+      }
+    }
+  },
+  "status": {
+    "factors": "Faktor kedua yang dapat digunakan: {{factors}}",
+    "noFactors": "Tidak ada faktor kedua yang terpasang. Pasang plugin seperti TOTP atau WebAuthn agar pengguna dapat mengonfigurasinya.",
+    "failed": "Tidak dapat memeriksa faktor kedua yang terpasang."
+  },
+  "setup": {
+    "title": "Atur faktor kedua",
+    "body": "Admin Anda memerlukan faktor kedua untuk masuk. Atur di bawah ini untuk terus menggunakan Termix.",
+    "none": "Tidak ada yang perlu diatur di sini? Minta admin Anda untuk memasang plugin faktor kedua.",
+    "signOut": "Keluar"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "name": "Segurança de início de sessão",
+  "permissions": {
+    "manage": {
+      "title": "Gerir a segurança de início de sessão",
+      "description": "Verificar o estado do segundo fator e alterar as definições de segurança de início de sessão."
+    }
+  },
+  "settings": {
+    "group": {
+      "sessions": "Sessões",
+      "secondFactor": "Segundo fator"
+    },
+    "admin": {
+      "idleTimeoutMinutes": {
+        "label": "Terminar sessão após minutos de inatividade",
+        "description": "Terminar a sessão das pessoas após este número de minutos sem atividade. O servidor também encerra a sessão, pelo que um token copiado deixa de funcionar. 0 desativa esta opção."
+      },
+      "maxSessionHours": {
+        "label": "Duração máxima da sessão em horas",
+        "description": "As sessões terminam após este número de horas, mesmo com a opção \"Lembrar-me\" ativada. 0 significa sem limite adicional."
+      },
+      "rememberDevice": {
+        "label": "Permitir \"Lembrar-me\"",
+        "description": "Desativado oculta a opção \"Lembrar-me\" no início de sessão e ignora dispositivos já lembrados, pelo que cada início de sessão exige o segundo fator."
+      },
+      "secondFactor": {
+        "label": "Exigir um segundo fator",
+        "description": "Utilizadores sem um segundo fator devem configurá-lo após o início de sessão, antes de poderem utilizar o Termix. Um início de sessão com passkey usando PIN ou impressão digital conta como válido.",
+        "off": "Desativado",
+        "newDevice": "Num novo dispositivo",
+        "always": "Em cada início de sessão"
+      },
+      "applyToExternal": {
+        "label": "Também para início de sessão único",
+        "description": "Pedir o segundo fator também após inícios de sessão via SSO e LDAP. Deixe desativado se o seu fornecedor de identidade já pedir um segundo fator."
+      }
+    }
+  },
+  "status": {
+    "factors": "Segundos fatores disponíveis: {{factors}}",
+    "noFactors": "Nenhum segundo fator está instalado. Instale um plugin como TOTP ou WebAuthn para que os utilizadores possam configurar um.",
+    "failed": "Não foi possível verificar quais fatores de segunda autenticação estão instalados."
+  },
+  "setup": {
+    "title": "Configurar um segundo fator",
+    "body": "O seu administrador exige um segundo fator para iniciar sessão. Configure um abaixo para continuar a utilizar o Termix.",
+    "none": "Nada para configurar aqui? Peça ao seu administrador para instalar um plugin de segundo fator.",
+    "signOut": "Terminar sessão"
+  }
+}

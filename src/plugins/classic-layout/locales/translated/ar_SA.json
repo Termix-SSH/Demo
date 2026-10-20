@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "التخطيط الكلاسيكي",
+    "description": "التخطيط الكلاسيكي لـ Termix مع شريط أيقونات، وشريط جانبي، وشريط علامات تبويب، ووحدة سفلية."
+  },
+  "layout": {
+    "name": "كلاسيكي",
+    "description": "شريط أيقونات، وشريط جانبي، وشريط علامات تبويب، ووحدة جانبية يمينية."
+  },
+  "tab": {
+    "dashboard": "لوحة التحكم",
+    "manage": "الإدارة",
+    "settings": "الإعدادات"
+  },
   "common": {
     "more": "المزيد",
     "logout": "تسجيل الخروج",
@@ -221,20 +234,19 @@
     "secondFactorAfterExternalLoginDesc": "عند الإيقاف، يُطلب عامل المصادقة الثاني المسجل فقط بعد تسجيل الدخول بكلمة المرور وطرق تسجيل الدخول المحلية الأخرى، كما كان من قبل. عند التفعيل، يُطلب بعد كل طريقة تسجيل دخول، بما في ذلك SSO و LDAP.",
     "allowPasswordReset": "السماح بإعادة تعيين كلمة المرور",
     "allowPasswordResetDesc": "رمز إعادة التعيين عبر سجلات Docker",
-    "auditForwardingTitle": "إعادة التوجيه إلى SIEM",
-    "auditForwardingDesc": "أرسل نسخة من كل إدخال تدقيق إلى جامع خارجي بتنسيق NDJSON. تظل السجلات المحلية هي المصدر الموثوق.",
-    "auditForwardingEnvNotice": "تُعد متغير البيئة أيضًا لإعادة التوجيه؛ يأخذ URL المحفوظ هنا الأسبقية.",
-    "auditForwardingToken": "رمز Bearer (اختياري)",
-    "auditForwardingTokenStored": "رمز Bearer (محفوظ)",
-    "auditForwardingSaved": "تم حفظ إعدادات إعادة توجيه التدقيق",
-    "auditForwardingSaveError": "فشل حفظ إعدادات إعادة توجيه التدقيق",
+    "forceHttps": "إعادة توجيه HTTP إلى HTTPS",
+    "forceHttpsDesc": "تحويل الطلبات غير المشفرة عبر HTTP إلى HTTPS وطلب من المتصفحات البقاء على HTTPS. يعمل فقط عندما يقدم Termix خدمة HTTPS بنفسه.",
+    "forceHttpsNoTls": "HTTPS معطل في Termix، لذا لا يتم إعادة توجيه أي شيء. قم بتفعيل ENABLE_SSL أو أعد التوجيه عبر وكيلك العكسي.",
+    "forceHttpsFailed": "تعذر تغيير إعداد HTTPS",
     "sessionTimeout": "مهلة الجلسة",
     "hours": "ساعات",
     "sessionTimeoutRange": "الحد الأدنى 1 ساعة، الحد الأقصى 720 ساعة",
-    "monitoringDefaults": "إعدادات المراقبة الافتراضية",
-    "statusCheck": "فحص الحالة",
-    "sec": "ثانية",
     "logLevel": "مستوى السجل",
+    "usersCount_zero": "لا يوجد مستخدمون",
+    "usersCount_one": "مستخدم واحد",
+    "usersCount_two": "مستخدمان",
+    "usersCount_few": "{{count}} مستخدمين",
+    "usersCount_many": "{{count}} مستخدمًا",
     "usersCount_other": "{{count}} مستخدم",
     "searchUsers": "البحث عن المستخدمين...",
     "noUsers": "لا يوجد مستخدمون",
@@ -245,6 +257,11 @@
     "roleName": "الاسم",
     "roleDisplayName": "اسم العرض",
     "roleDescription": "الوصف",
+    "rolesCount_zero": "لا توجد أدوار",
+    "rolesCount_one": "دور واحد",
+    "rolesCount_two": "دوران",
+    "rolesCount_few": "{{count}} أدوارًا",
+    "rolesCount_many": "{{count}} دورًا",
     "rolesCount_other": "{{count}} دور",
     "createRole": "إنشاء",
     "creating": "جارٍ الإنشاء...",
@@ -259,6 +276,11 @@
     "changeFile": "تغيير",
     "import": "استيراد",
     "importing": "جارٍ الاستيراد...",
+    "apiKeysCount_zero": "لا توجد مفاتيح",
+    "apiKeysCount_one": "مفتاح واحد",
+    "apiKeysCount_two": "مفتاحان",
+    "apiKeysCount_few": "{{count}} مفاتيح",
+    "apiKeysCount_many": "{{count}} مفتاحًا",
     "apiKeysCount_other": "{{count}} مفتاح",
     "apiKeysDocsLink": "عرض التوثيق",
     "apiKeysCliHint": "استخدم مفتاح API مع Termix CLI لإدارة الخوادم من جهازك الطرفي.",
@@ -281,7 +303,12 @@
     "systemBadge": "نظام",
     "customBadge": "مخصص",
     "youBadge": "أنت",
-    "sessionsActive_other": "{{count}} نشطة",
+    "sessionsActive_zero": "لا يوجد نشط",
+    "sessionsActive_one": "نشط واحد",
+    "sessionsActive_two": "نشطان",
+    "sessionsActive_few": "{{count}} نشطة",
+    "sessionsActive_many": "{{count}} نشطًا",
+    "sessionsActive_other": "{{count}} نشط",
     "sessionActive": "نشط: {{time}}",
     "sessionExpires": "ينتهي: {{time}}",
     "revokeAll": "الكل",
@@ -351,9 +378,6 @@
     "sessionTimeoutRange2": "يجب أن يكون مهلة الجلسة بين 1 و 720 ساعة",
     "sessionTimeoutSaved": "تم حفظ مهلة الجلسة",
     "sessionTimeoutSaveFailed": "فشل في حفظ مهلة الجلسة",
-    "monitoringIntervalInvalid": "قيم الفاصل الزمني غير صالحة",
-    "monitoringSaved": "تم حفظ إعدادات المراقبة",
-    "monitoringSaveFailed": "فشل في حفظ إعدادات المراقبة",
     "logLevelUpdateFailed": "فشل في تحديث مستوى السجل",
     "createUserRequired": "اسم المستخدم وكلمة المرور مطلوبان",
     "createUserPasswordTooShort": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
@@ -424,6 +448,11 @@
     "importError": "فشل استيراد قاعدة البيانات",
     "sectionHostDefaults": "الإعدادات الافتراضية للمضيف",
     "rolePermissions": {
+      "count_zero": "لا توجد أذونات",
+      "count_one": "إذن واحد",
+      "count_two": "إذنّان",
+      "count_few": "{{count}} أذونات",
+      "count_many": "{{count}} إذنًا",
       "count_other": "{{count}} إذن",
       "editAction": "تعديل الأذونات",
       "loadError": "فشل تحميل كتالوج الأذونات",
@@ -615,6 +644,11 @@
         "apiKeyCreatedWarning": "تم إنشاء المفتاح - انسخه الآن، لن يظهر مرة أخرى.",
         "copyApiKey": "نسخ مفتاح API",
         "copiedToClipboard": "تم النسخ إلى الحافظة",
+        "apiKeyCount_zero": "لا توجد مفاتيح",
+        "apiKeyCount_one": "مفتاح واحد",
+        "apiKeyCount_two": "مفتاحان",
+        "apiKeyCount_few": "{{count}} مفاتيح",
+        "apiKeyCount_many": "{{count}} مفتاحًا",
         "apiKeyCount_other": "{{count}} مفتاح",
         "newKey": "مفتاح جديد",
         "noApiKeys": "لا توجد مفاتيح API بعد.",
@@ -670,6 +704,9 @@
         "openUpdates": "التحديثات"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "التخطيط"
   },
   "plugins": {
     "manager": {
@@ -752,60 +789,6 @@
       "saveFailed": "تعذر حفظ التغيير"
     }
   },
-  "sync": {
-    "server": "خادم Termix",
-    "account": "الحساب",
-    "status": "الحالة",
-    "never": "أبداً",
-    "justNow": "الآن",
-    "actionFailed": "لم ينجح ذلك. حاول مرة أخرى.",
-    "unlinkedTitle": "هذا الجهاز فقط",
-    "unlinkedBody": "يعمل Termix بشكل مستقل على هذا الجهاز. اربطه بخادم Termix الخاص بك للحفاظ على كل شيء متزامناً.",
-    "unlinkedPointHosts": "مضيفيك، بيانات الاعتماد، الأجزاء الإعدادات تتبعك إلى كل جهاز.",
-    "unlinkedPointOffline": "كل شيء يعمل حتى عندما لا يمكن الوصول إلى الخادم، ويتم المزامنة لاحقاً.",
-    "unlinkedPointAccount": "تسجيل الدخول بحساب الخادم الخاص بك، وستظهر هنا أيضاً المضيفين الذين شاركهم معك الآخرون.",
-    "linkButton": "الربط بخادم",
-    "state": {
-      "syncing": "جارٍ المزامنة",
-      "offline": "الخادم غير متاح",
-      "error": "توقفت المزامنة",
-      "signedOut": "تم تسجيل الخروج",
-      "synced": "تمت المزامنة {{time}}"
-    },
-    "signInAgain": "تسجيل الدخول مرة أخرى",
-    "syncNow": "مزامنة الآن",
-    "unlink": "فك الربط",
-    "unlinked": "لم يعد هذا الجهاز مرتبطاً",
-    "unlinkTitle": "فصل هذا الجهاز؟",
-    "unlinkDescription": "سيؤدي ذلك إلى إيقاف المزامنة وتسجيل الخروج من الخادم. سيتم إزالة المضيفين الذين شاركهم معك آخرون من هذا الجهاز في كلتا الحالتين.",
-    "unlinkKeepTitle": "إبقاء بياناتي هنا",
-    "unlinkKeepBody": "تبقى المضيفين، بيانات الاعتماد والإعدادات على هذا الجهاز وتعمل بشكل مستقل.",
-    "unlinkRemoveTitle": "إزالة البيانات المتزامنة",
-    "unlinkRemoveBody": "يتم إزالة كل ما جاء من الخادم من هذا الجهاز. تبقى فقط المضيفين المحفوظين على هذا الجهاز.",
-    "conflictsTitle": "التعارضات",
-    "conflictsDescription": "تم تغيير هذه هنا وعلى الخادم في نفس الوقت. النسخة الموجودة على الخادم هي المستخدمة حالياً. احتفظ بنسختك لإرسالها إلى الخادم بدلاً من ذلك.",
-    "keepMine": "احتفظ بنسختي",
-    "keepServer": "احتفظ بنسخة الخادم",
-    "errorsTitle": "غير متزامن",
-    "errorsDescription": "لم يقبل الخادم هذه التغييرات. تبقى على هذا الجهاز.",
-    "errorPermission": "حسابك على الخادم غير مسموح له بإجراء هذا التغيير.",
-    "retry": "حاول مرة أخرى",
-    "whatSyncs": "ما الذي يتم مزامنته",
-    "whatSyncsDescription": "أعطِ أي شيء تريد إبقائه على هذا الجهاز فقط.",
-    "coreGroup": "Termix",
-    "notOnServer": "الخادم لا يحتوي على هذا",
-    "notOnDevice": "غير موجود على هذا الجهاز بعد",
-    "localOnlyHint": "يمكنك أيضاً إبقاء مضيفين أو مجلدات فردية على هذا الجهاز من إعداداتهم.",
-    "originTitle": "من أين تبدأ الاتصالات",
-    "originDescription": "اتصل بالمضيفين من هذا الجهاز، أو عبر الخادم. يمكنك تغيير هذا لكل مضيف.",
-    "originLocal": "هذا الجهاز",
-    "originRemote": "الخادم",
-    "proxy": {
-      "title": "الوكيل العكسي",
-      "description": "مطلوب فقط عندما يكون هناك شيء مثل Cloudflare Access أو صفحة تسجيل الدخول أمام خادمك.",
-      "saved": "تم الحفظ"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "الإعدادات الافتراضية لمضيفات الخادم",
     "titleUser": "إعداداتي الافتراضية للمضيفات",
@@ -862,5 +845,18 @@
     "pickCredential": "اختر بيانات اعتماد لتحريرها",
     "pickDefaults": "اختر مستوى من الافتراضيات لتحريره",
     "pickHint": "كل شيء يتعلق بالاتصال موجود هنا، ومجمّع لتسهيل العثور عليه."
+  },
+  "permissions": {
+    "branding": {
+      "title": "تغيير العلامة التجارية",
+      "description": "تعيين اسم التطبيق، والشعار النصي، والشعار المرئي الذي يظهر للجميع."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "كم من العناصر تريد عرضها على الشاشة؟",
+    "presetIntro": "اختر مقدار ما يظهر على الشاشة.",
+    "presetChangeLater": "يمكنك التبديل بين الإعدادات الجاهزة أو تغيير أي إعداد فردي لاحقًا في الإعدادات، تحت قسم الواجهة.",
+    "appearanceTitle": "اجعله خاصًا بك",
+    "appearanceIntro": "اختر سمة، ولونًا مميزًا، وخطًا، ولغتك. تظهر التغييرات فورًا، ويمكنك تعديلها لاحقًا في الإعدادات."
   }
 }

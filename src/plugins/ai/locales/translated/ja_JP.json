@@ -35,6 +35,16 @@
         "title": "全ユーザーの AI 使用状況を表示する",
         "description": "自分自身だけでなく、すべてのユーザーの AI 呼び出しで使用されたトークン数を確認できます。デフォルトでは管理者のみが使用可能です。"
       }
+    },
+    "assets": {
+      "view": {
+        "title": "資産インベントリを表示",
+        "description": "収集されたホスト、ゲスト、コンテナ、ゾーン、および接続を表示します。デフォルトでは管理者のみが利用可能です。"
+      },
+      "manage": {
+        "title": "資産インベントリを管理",
+        "description": "収集を開始し、ゾーンルールを編集し、ゾーンをピン留めし、スケジュールを変更します。収集はホストをリードオンリーで読み取ります。デフォルトでは管理者のみが利用可能です。"
+      }
     }
   },
   "settings": {
@@ -80,6 +90,35 @@
       "autoOpsDailyTokens": {
         "label": "ユーザーごとの 1 日あたりの AI トークン予算",
         "description": "ユーザーが 1 日（UTC）でこの数のトークンを使用すると、そのユーザーの AI タスクはスキップまたは停止されます。"
+      },
+      "assetsDailyCollect": {
+        "label": "資産インベントリを毎日収集する",
+        "description": "収集機が接続できるすべてのホストを、1つのリードオンリースクリプトで1日1回読み取ります。"
+      },
+      "assetsCollectTime": {
+        "label": "資産収集時間 (UTC)",
+        "description": "HH:MM形式、例: 03:00"
+      },
+      "assetsCollector": {
+        "label": "資産収集機"
+      },
+      "assetsAnnotateAfterCollect": {
+        "label": "各収集後に資産に注釈を付ける",
+        "description": "モデルが、変更された各資産の役割、重要度、ビジネスシステム、および事実から示される依存関係を記述します。"
+      },
+      "assetsAnnotateRunTokens": {
+        "label": "資産注釈実行あたりのトークン予算",
+        "description": "モデル呼び出しがこの数のトークンを消費すると実行が停止しますが、記述された内容は保持されます。"
+      },
+      "assetsAnnotateProvider": {
+        "label": "資産注釈プロバイダー"
+      },
+      "assetsAnnotateModel": {
+        "label": "資産注釈モデル"
+      },
+      "exposureRetentionDays": {
+        "label": "公開履歴の保持期間 (日数)",
+        "description": "現在のエントリで参照されている保留中の通知と証拠は、年齢に関係なく保持されます。"
       }
     },
     "host": {
@@ -364,7 +403,8 @@
     "source": {
       "assistant": "アシスタント",
       "terminal": "ターミナルパネル",
-      "compaction": "コンパクション"
+      "compaction": "コンパクション",
+      "assets": "資産注釈"
     }
   },
   "autoOps": {
@@ -536,7 +576,229 @@
       "noticeReported": "AI レポート: {{title}}",
       "noticeProposed": "承認待ちの AI プラン: {{title}}",
       "noticeExecuted": "実行された AI プラン: {{title}}",
-      "noticeFailed": "AI タスクが失敗しました: {{title}}"
+      "noticeFailed": "AI タスクが失敗しました: {{title}}",
+      "noticeAssetsAnnotationFailed": "資産注釈に失敗しました"
     }
+  },
+  "assets": {
+    "title": "資産",
+    "search": "名前、キー、またはアドレスを検索",
+    "allZones": "すべてのゾーン",
+    "showRemoved": "削除済みを表示",
+    "collectNow": "今すぐ収集",
+    "collecting": "収集しています…",
+    "collectFailed": "収集を開始できませんでした",
+    "neverRun": "まだ収集されていません",
+    "lastRun": "最終収集: {{time}} ({{total}}ホスト中{{ok}}成功)",
+    "lastRunFailed": "{{time}}の収集に失敗しました",
+    "hostsFailed_other": "{{count}}ホストが失敗しました",
+    "loadFailed": "インベントリを読み込めませんでした",
+    "saveFailed": "保存できませんでした",
+    "empty": "資産はまだありません",
+    "emptyHint": "今すぐ収集して、収集機が接続できるすべてのホストを読み取ります。",
+    "emptyHintView": "ai.assets.manage権限を持つユーザーが最初に収集する必要があります。",
+    "removed": "削除済み",
+    "pinned": "ピン留め済み",
+    "multiZone": "マルチゾーン",
+    "multiZoneHint": "複数のゾーンにアドレスを持っているため、両方に到達できます。潜在的なピボットポイントです。",
+    "columns": {
+      "name": "名前",
+      "kind": "種類",
+      "zone": "ゾーン",
+      "ips": "アドレス",
+      "listening": "ポート",
+      "outbound": "アウトバウンド",
+      "services": "サービス",
+      "collected": "最終収集",
+      "role": "役割",
+      "importance": "重要度",
+      "system": "システム"
+    },
+    "kind": {
+      "host": "ホスト",
+      "guest": "ゲスト",
+      "container": "コンテナ",
+      "external": "外部"
+    },
+    "zone": {
+      "internal": "内部",
+      "dmz": "DMZ",
+      "external": "外部",
+      "cloud": "クラウド",
+      "overlay": "オーバーレイ"
+    },
+    "sections": {
+      "os": "オペレーティングシステム",
+      "hostname": "ホスト名",
+      "uptimeSec": "稼働時間（秒）",
+      "interfaces": "インターフェース",
+      "routes": "ルート",
+      "listening": "リスニングポート",
+      "connections": "確立された接続",
+      "services": "実行中のサービス",
+      "containers": "コンテナ",
+      "kubernetes": "Kubernetes",
+      "guests": "Proxmox ゲスト",
+      "cloud": "クラウド",
+      "missing": "出力がないセクション",
+      "guest": "Proxmox ゲスト",
+      "container": "コンテナ"
+    },
+    "outgoing": "送信",
+    "incoming": "受信",
+    "noEdges": "なし",
+    "stale": "最新の収集で見つかりませんでした",
+    "pinZone": "ゾーン",
+    "rulesDecide": "ルールによって決定",
+    "settingsTitle": "ゾーンとスケジュール",
+    "scheduleTitle": "収集",
+    "daily": "毎日収集",
+    "dailyHint": "ホストは追加または変更された際にも再収集されます。",
+    "time": "時間（UTC）",
+    "save": "保存",
+    "collector": "{{collector}} として収集し、そのアカウントが接続できるホストに到達します。",
+    "collectorMe": "あなた",
+    "collectorOther": "別の管理者",
+    "collectorNone": "まだ誰もいません",
+    "collectAsMe": "私として収集",
+    "zonesTitle": "ゾーンルール",
+    "zonesHint": "ルールは CIDR をゾーンにマッピングし、組み込みのルールよりも優先されます。最も具体的なプレフィックスが優先され、次に優先度が高いものが選ばれます。保存時にアセットのゾーンが再設定されます。",
+    "zoneName": "名前",
+    "zoneNameExample": "データセンター LAN",
+    "zoneKind": "種類",
+    "cidr": "CIDR",
+    "priority": "優先度",
+    "addZone": "ルールを追加",
+    "deleteZone": "ルールを削除",
+    "cancelEdit": "キャンセル",
+    "annotating": "注釈を追加中…",
+    "neverAnnotated": "まだ注釈が追加されていません",
+    "lastAnnotation": "最終注釈 {{time}}: {{total}} アセット中 {{ok}} 件、{{tokens}} トークン",
+    "annotationFailed": "失敗: {{reason}}",
+    "annotateNow": "今すぐ注釈を追加",
+    "annotateFailed": "注釈の開始に失敗しました",
+    "modeTable": "テーブル",
+    "modeGraph": "グラフ",
+    "importance": {
+      "critical": "重要",
+      "high": "高",
+      "medium": "中",
+      "low": "低"
+    },
+    "importanceUnknown": "評価なし",
+    "importanceReason": "理由",
+    "sourceAi": "AI",
+    "sourceAiHint": "注釈によって記述されたもので、次回の実行で変更される可能性があります。",
+    "sourceUser": "ロック済み",
+    "sourceUserHint": "人が設定したもので、アンロックされるまで注釈の実行は変更しません。",
+    "unlock": "アンロック: 注釈が再度これを埋めることを許可",
+    "unlockField": "「{{field}}」をロック解除",
+    "editAnnotation": "編集",
+    "lockHint": "変更したフィールドは、今後のアノテーション実行時にロックされます。",
+    "factsTitle": "ファクト",
+    "closePanel": "閉じる",
+    "impact": "影響範囲",
+    "clearImpact": "クリア",
+    "impactSummary_other": "障害発生時、{{count}} 個の資産が同時にダウンします（{{critical}} 個が重要、{{high}} 個が高重要度）。さらに {{weak}} 個はこれらにのみ接続しています。",
+    "impactTruncated": "6 ホップまたは 300 資産で切り捨てます。",
+    "impactDirect": "直接的に",
+    "impactTransitive": "他を介して",
+    "impactWeak": "これらにのみ接続",
+    "expandContainers": "コンテナを表示",
+    "showExternal": "外部アドレスを表示",
+    "graphCounts": "{{nodes}} 個の資産、{{edges}} 個の関係",
+    "graphTitle": "資産グラフ",
+    "noZone": "ゾーンなし",
+    "annotationTitle": "AI アノテーション",
+    "annotateAfterCollect": "各収集後にアノテーションを実行",
+    "annotateAfterCollectHint": "前回のアノテーション以降に変更があった資産と、その近隣資産のみがモデルに送信されます。",
+    "annotateProvider": "プロバイダー",
+    "annotateProviderDefault": "コレクターの自動運用選択",
+    "annotateModel": "モデル",
+    "annotateModelDefault": "プロバイダーのデフォルトモデル",
+    "annotationHint": "アノテーションはコレクターとして、コレクターのプロバイダーを使用して実行されます。サマリーには環境、コマンドライン、外部アドレスは含まれません。",
+    "annotateAll": "すべてを再アノテーション"
+  },
+  "exposure": {
+    "title": "インターネットエントリ",
+    "disclaimer": "構成インベントリのみです。パブリックバインディングやフォワーディングルールは、インターネットからの到達性を証明するものではありません。プライベートリスナーはバックエンドの証拠として保持されます。",
+    "loadFailed": "公開インベントリを読み込めませんでした。",
+    "saveFailed": "優先度を保存できませんでした。",
+    "search": "アドレス、ホスト、名前、またはパスでフィルタ",
+    "allPriority": "すべての優先度",
+    "allZones": "すべてのゾーン",
+    "allSources": "すべてのソース",
+    "high": "高",
+    "medium": "中",
+    "low": "低",
+    "active": "アクティブ",
+    "stale": "古い",
+    "resolved": "観測されなくなった",
+    "all": "すべて",
+    "refresh": "更新",
+    "loading": "読み込み中…",
+    "empty": "一致するエントリがありません。結論を出す前に、以下の収集範囲を確認してください。",
+    "never": "まだ収集されていません。エントリをインベントリに追加するには資産を収集してください。",
+    "endpoint": "エントリ",
+    "source": "ソース",
+    "priority": "レビュー優先度",
+    "pathState": "構成パス",
+    "freshness": "鮮度",
+    "details": "証拠の詳細",
+    "close": "閉じる",
+    "notTested": "外部到達性：未テスト。",
+    "priorityReason": "優先度はレビューのヒントであり、脆弱性の判定ではありません。パブリックな管理ポートやデータサービスポートが優先されますが、サービスアイデンティティとアクセスポリシーは依然として検証が必要です。",
+    "tls": "TLS 構成",
+    "restrictions": "アクセス制限",
+    "observed": "最終観測日時",
+    "rulePriority": "ルール優先度（ロック解除）",
+    "evidence": "観測",
+    "coverage": "収集範囲",
+    "changes": "最近の変更",
+    "current": "現在",
+    "partial": "不完全",
+    "complete": "構成の関連付けが完了しました",
+    "conflicting": "曖昧または循環",
+    "configured": "構成で宣言済み",
+    "unknown": "不明",
+    "status_ok": "収集済み",
+    "status_unsupported": "ツールが利用できません",
+    "status_denied": "アクセスが拒否されました",
+    "status_failed": "収集または解析に失敗しました",
+    "status_truncated": "切り捨て済み",
+    "change_baseline": "ベースラインが確立されました",
+    "change_added": "エントリが追加されました",
+    "change_changed": "構成が変更されました",
+    "change_removed": "エントリは観測されなくなりました",
+    "change_coverage": "カバレッジが低下しました",
+    "explain": "証拠を説明する",
+    "explaining": "説明中…",
+    "explainFailed": "説明に失敗しました、または証拠が変更されました。",
+    "aiLabel": "AIによる解釈 · 検証済みの発見ではありません",
+    "previous": "前へ",
+    "next": "次へ",
+    "binding": "バインディングの範囲",
+    "binding_public": "公開エントリの候補",
+    "binding_local": "プライベート/ローカルバックエンド",
+    "binding_unknown": "未解決のバインディング",
+    "ruleGaps": "未解析のルール: {{count}}",
+    "unsupportedRule": "サポートされていないルール; 以前の証拠が保持されています",
+    "scope": "ビュー",
+    "scope_internet": "インターネットエントリの候補",
+    "scope_all": "すべての証拠",
+    "scope_unknown": "不明な公開範囲",
+    "inventorySummary": "{{internet}} のインターネットエントリ候補 · 合計 {{all}} ルール · 公開範囲が不明なものが {{unknown}}",
+    "bindingCount": "観測されたバインディング数: {{count}}",
+    "pathsTruncated": "パスの展開が制限に達しました。これは部分的な証拠です。",
+    "pathBranch": "パス {{index}}",
+    "branched": "条件分岐",
+    "reason_sensitive": "サービスポート {{port}} を確認してください（エントリまたはバックエンド）",
+    "reason_public-address": "公開アドレスのバインディングが観測されました",
+    "reason_wan-zone": "OpenWrt の WAN ソースゾーン; ファイアウォールの許可は未検証です",
+    "reason_configured-public-tunnel": "公開トンネルが構成されています; 外部からの到達可能性は未テストです",
+    "reason_internal-only": "内部またはローカルのバインディングのみが観測されました",
+    "reason_exposure-unknown": "公開範囲を分類するには証拠が不十分です",
+    "reason_critical-asset": "アセットは重要とマークされています",
+    "reason_manual": "ユーザーが優先度を選択しました"
   }
 }

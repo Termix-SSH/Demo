@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Susun Atur Klasik",
+    "description": "Susun atur Termix klasik dengan rel ikon, bar sisi, bar tab dan dok."
+  },
+  "layout": {
+    "name": "Klasik",
+    "description": "Landasan ikon, bar sisi, bar tab dan dok kanan."
+  },
+  "tab": {
+    "dashboard": "Papan Pemuka",
+    "manage": "Urus",
+    "settings": "Tetapan"
+  },
   "common": {
     "more": "Lagi",
     "logout": "Log keluar",
@@ -221,19 +234,13 @@
     "secondFactorAfterExternalLoginDesc": "Apabila dimatikan, faktor kedua yang didaftarkan hanya diminta selepas log masuk kata laluan dan log masuk tempatan lain, sama seperti sebelum ini. Apabila dihidupkan, ia diminta selepas setiap kaedah log masuk, termasuk SSO dan LDAP.",
     "allowPasswordReset": "Benarkan Tetapan Semula Kata Laluan",
     "allowPasswordResetDesc": "Kod tetapan semula melalui log Docker",
-    "auditForwardingTitle": "Hala ke SIEM",
-    "auditForwardingDesc": "Hantar salinan setiap entri audit kepada pengumpul luar sebagai NDJSON. Log tempatan kekal sebagai sumber kebenaran.",
-    "auditForwardingEnvNotice": "Pembolehubah persekitaran juga mengkonfigurasi penghalaan; URL yang disimpan di sini mempunyai keutamaan.",
-    "auditForwardingToken": "Token bearer (pilihan)",
-    "auditForwardingTokenStored": "Token bearer (disimpan)",
-    "auditForwardingSaved": "Tetapan penghalaan audit disimpan",
-    "auditForwardingSaveError": "Gagal menyimpan tetapan penghalaan audit",
+    "forceHttps": "Arahkan semula HTTP ke HTTPS",
+    "forceHttpsDesc": "Arahkan HTTP biasa ke HTTPS dan minta pelayar kekal pada HTTPS. Hanya berfungsi apabila Termix sendiri menyediakan HTTPS",
+    "forceHttpsNoTls": "HTTPS dimatikan dalam Termix, jadi tiada pengalihan berlaku. Hidupkan ENABLE_SSL atau alihkan dalam pelayan songsang anda",
+    "forceHttpsFailed": "Tidak dapat mengubah tetapan HTTPS",
     "sessionTimeout": "Had Masa Sesi",
     "hours": "jam",
     "sessionTimeoutRange": "Min 1j, maks 720j",
-    "monitoringDefaults": "Lalai Pemantauan",
-    "statusCheck": "Semakan Status",
-    "sec": "saat",
     "logLevel": "Aras Log",
     "usersCount_other": "{{count}} pengguna",
     "searchUsers": "Cari pengguna...",
@@ -351,9 +358,6 @@
     "sessionTimeoutRange2": "Tempoh tamat sesi mestilah antara 1 hingga 720 jam",
     "sessionTimeoutSaved": "Tempoh tamat sesi disimpan",
     "sessionTimeoutSaveFailed": "Gagal menyimpan tempoh tamat sesi",
-    "monitoringIntervalInvalid": "Nilai selang tidak sah",
-    "monitoringSaved": "Tetapan pemantauan disimpan",
-    "monitoringSaveFailed": "Gagal menyimpan tetapan pemantauan",
     "logLevelUpdateFailed": "Gagal mengemas kini tahap log",
     "createUserRequired": "Nama pengguna dan kata laluan diperlukan",
     "createUserPasswordTooShort": "Kata laluan mestilah sekurang-kurangnya 6 aksara",
@@ -671,6 +675,9 @@
       }
     }
   },
+  "looks": {
+    "layoutLabel": "Susun Atur"
+  },
   "plugins": {
     "manager": {
       "errors": {
@@ -752,60 +759,6 @@
       "saveFailed": "Gagal menyimpan perubahan"
     }
   },
-  "sync": {
-    "server": "Pelayan Termix",
-    "account": "Akaun",
-    "status": "Status",
-    "never": "tidak pernah",
-    "justNow": "baru sahaja",
-    "actionFailed": "Tindakan itu gagal. Cuba lagi.",
-    "unlinkedTitle": "Peranti ini sahaja",
-    "unlinkedBody": "Termix berfungsi secara bebas pada peranti ini. Pautkan ia ke pelayan Termix anda untuk memastikan segala-galanya selaras.",
-    "unlinkedPointHosts": "Hos, kelayakan, petikan dan tetapan anda akan mengikuti anda ke setiap peranti.",
-    "unlinkedPointOffline": "Segala-galanya masih berfungsi apabila pelayan tidak dapat dicapai, dan akan disegerakkan kemudian.",
-    "unlinkedPointAccount": "Anda log masuk dengan akaun pelayan anda, dan hos yang dikongsi oleh orang lain juga akan muncul di sini.",
-    "linkButton": "Pautkan ke pelayan",
-    "state": {
-      "syncing": "Menyegerakkan",
-      "offline": "Pelayan tidak dapat dicapai",
-      "error": "Penyegerakan dihentikan",
-      "signedOut": "Telah log keluar",
-      "synced": "Disegerakkan {{time}}"
-    },
-    "signInAgain": "Log masuk semula",
-    "syncNow": "Segerakkan sekarang",
-    "unlink": "Putuskan pautan",
-    "unlinked": "Peranti ini tidak lagi dipautkan",
-    "unlinkTitle": "Putuskan pautan peranti ini?",
-    "unlinkDescription": "Ia menghentikan penyegerakan dan log keluar dari pelayan. Hosten yang dikongsi dengan anda oleh orang lain akan dialih keluar dari peranti ini sama ada.",
-    "unlinkKeepTitle": "Simpan data saya di sini",
-    "unlinkKeepBody": "Hosten, kelayakan dan tetapan anda kekal pada peranti ini dan terus berfungsi secara bebas.",
-    "unlinkRemoveTitle": "Alih keluar data disegerakkan",
-    "unlinkRemoveBody": "Segala yang berasal dari pelayan dialih keluar dari peranti ini. Hanya hos yang disimpan pada peranti ini kekal.",
-    "conflictsTitle": "Pertembungan",
-    "conflictsDescription": "Ini diubah di sini dan pada pelayan pada masa yang sama. Versi pelayan sedang digunakan. Simpan milik anda untuk menghantarnya ke pelayan sebagai gantinya.",
-    "keepMine": "Simpan milik saya",
-    "keepServer": "Simpan pelayan",
-    "errorsTitle": "Tidak disegerakkan",
-    "errorsDescription": "Pelayan tidak menerima perubahan ini. Ia kekal pada peranti ini.",
-    "errorPermission": "Akaun anda pada pelayan tidak dibenarkan membuat perubahan ini.",
-    "retry": "Cuba lagi",
-    "whatSyncs": "Apa yang disegerakkan",
-    "whatSyncsDescription": "Matikan apa sahaja yang anda mahu simpan pada peranti ini sahaja.",
-    "coreGroup": "Termix",
-    "notOnServer": "Pelayan tidak mempunyai ini",
-    "notOnDevice": "Belum pada peranti ini",
-    "localOnlyHint": "Anda juga boleh menyimpan hos atau folder tunggal pada peranti ini dari tetapan mereka.",
-    "originTitle": "Di mana sambungan bermula",
-    "originDescription": "Sambung ke hos dari peranti ini, atau melalui pelayan. Anda boleh mengubah ini setiap hos.",
-    "originLocal": "Peranti ini",
-    "originRemote": "Pelayan",
-    "proxy": {
-      "title": "Proksi songsang",
-      "description": "Hanya diperlukan apabila sesuatu seperti Cloudflare Access atau halaman log masuk berada di hadapan pelayan anda.",
-      "saved": "Disimpan"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Tetapan lalai host pelayan",
     "titleUser": "Tetapan lalai host saya",
@@ -862,5 +815,18 @@
     "pickCredential": "Pilih kelayakan untuk disunting",
     "pickDefaults": "Pilih tahap lalai untuk disunting",
     "pickHint": "Segala-galanya tentang sambungan berada di sini, dikumpulkan supaya anda boleh menemukannya."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Tukar jenama",
+      "description": "Tetapkan nama aplikasi, tagline dan logo yang dipaparkan kepada semua orang."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Berapa banyak yang ingin anda paparkan di skrin?",
+    "presetIntro": "Pilih berapa banyak yang dipaparkan pada skrin.",
+    "presetChangeLater": "Anda boleh menukar pratetap atau mengubah sebarang tetapan individu kemudian dalam Tetapan, di bawah Antara Muka.",
+    "appearanceTitle": "Sesuaikan dengan gaya anda",
+    "appearanceIntro": "Pilih tema, warna aksen, fon dan bahasa anda. Perubahan akan ditunjukkan serta-merta, dan anda boleh mengubahnya kemudian dalam Tetapan."
   }
 }

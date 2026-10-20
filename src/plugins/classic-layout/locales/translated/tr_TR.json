@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Klasik Düzen",
+    "description": "Simge rayı, kenar çubuğu, sekme çubuğu ve dock ile klasik Termix düzeni."
+  },
+  "layout": {
+    "name": "Klasik",
+    "description": "Simge rayı, kenar çubuğu, sekme çubuğu ve sağ dock."
+  },
+  "tab": {
+    "dashboard": "Gösterge Paneli",
+    "manage": "Yönet",
+    "settings": "Ayarlar"
+  },
   "common": {
     "more": "Daha fazla",
     "logout": "Çıkış yap",
@@ -221,20 +234,15 @@
     "secondFactorAfterExternalLoginDesc": "Kapalıyken, kayıtlı ikinci faktör yalnızca şifre ve diğer yerel girişlerden sonra istenir, daha önceki gibi. Açıkken, SSO ve LDAP dahil olmak üzere her giriş yönteminin ardından istenir.",
     "allowPasswordReset": "Şifre Sıfırlamaya İzin Ver",
     "allowPasswordResetDesc": "Docker günlükleri üzerinden sıfırlama kodu",
-    "auditForwardingTitle": "SIEM'e Yönlendir",
-    "auditForwardingDesc": "Her denetim girdisinden bir kopyayı NDJSON formatında harici bir toplayıcıya gönder. Yerel günlükler gerçekliğin kaynağı olarak kalır.",
-    "auditForwardingEnvNotice": "Bir ortam değişkeni de yönlendirmeyi yapılandırır; burada kaydedilen URL önceliklidir.",
-    "auditForwardingToken": "Bearer belirteci (isteğe bağlı)",
-    "auditForwardingTokenStored": "Bearer belirteci (kaydedildi)",
-    "auditForwardingSaved": "Denetim yönlendirme ayarları kaydedildi",
-    "auditForwardingSaveError": "Denetim yönlendirme ayarları kaydedilemedi",
+    "forceHttps": "HTTP'yi HTTPS'ye Yönlendir",
+    "forceHttpsDesc": "Düz HTTP'yi HTTPS'ye yönlendir ve tarayıcılara HTTPS üzerinde kalmasını söyle. Sadece Termix kendi HTTPS'yi sunarken çalışır",
+    "forceHttpsNoTls": "Termix'te HTTPS kapalı, bu yüzden hiçbir şey yönlendirilmiyor. ENABLE_SSL'i açın veya ters proxy'nizde yönlendirme yapın",
+    "forceHttpsFailed": "HTTPS ayarı değiştirilemedi",
     "sessionTimeout": "Oturum Zaman Aşımı",
     "hours": "saat",
     "sessionTimeoutRange": "Min 1s, max 720s",
-    "monitoringDefaults": "İzleme Varsayılanları",
-    "statusCheck": "Durum Kontrolü",
-    "sec": "sn",
     "logLevel": "Günlük Seviyesi",
+    "usersCount_one": "{{count}} kullanıcı",
     "usersCount_other": "{{count}} kullanıcı",
     "searchUsers": "Kullanıcıları ara...",
     "noUsers": "Kullanıcı yok",
@@ -245,6 +253,7 @@
     "roleName": "Ad",
     "roleDisplayName": "Görünen Ad",
     "roleDescription": "Açıklama",
+    "rolesCount_one": "{{count}} rol",
     "rolesCount_other": "{{count}} rol",
     "createRole": "Oluştur",
     "creating": "Oluşturuluyor...",
@@ -259,6 +268,7 @@
     "changeFile": "Değiştir",
     "import": "İçe Aktar",
     "importing": "İçe aktarılıyor...",
+    "apiKeysCount_one": "{{count}} anahtar",
     "apiKeysCount_other": "{{count}} anahtar",
     "apiKeysDocsLink": "Belgelere göz at",
     "apiKeysCliHint": "Sunucuları terminalinizden yönetmek için Termix CLI ile bir API anahtarı kullanın.",
@@ -281,6 +291,7 @@
     "systemBadge": "SİSTEM",
     "customBadge": "ÖZEL",
     "youBadge": "SİZ",
+    "sessionsActive_one": "{{count}} aktif",
     "sessionsActive_other": "{{count}} aktif",
     "sessionActive": "Aktif: {{time}}",
     "sessionExpires": "Bitiş: {{time}}",
@@ -351,9 +362,6 @@
     "sessionTimeoutRange2": "Oturum zaman aşımı 1 ile 720 saat arasında olmalıdır",
     "sessionTimeoutSaved": "Oturum zaman aşımı kaydedildi",
     "sessionTimeoutSaveFailed": "Oturum zaman aşımı kaydedilemedi",
-    "monitoringIntervalInvalid": "Geçersiz aralık değerleri",
-    "monitoringSaved": "İzleme ayarları kaydedildi",
-    "monitoringSaveFailed": "İzleme ayarları kaydedilemedi",
     "logLevelUpdateFailed": "Günlük düzeyi güncellenemedi",
     "createUserRequired": "Kullanıcı adı ve şifre gereklidir",
     "createUserPasswordTooShort": "Şifre en az 6 karakter olmalıdır",
@@ -424,6 +432,7 @@
     "importError": "Veritabanı içe aktarımı başarısız oldu",
     "sectionHostDefaults": "Ana Bilgisayar Varsayılanları",
     "rolePermissions": {
+      "count_one": "{{count}} izin",
       "count_other": "{{count}} izin",
       "editAction": "İzinleri düzenle",
       "loadError": "İzinler kataloğu yüklenemedi",
@@ -615,6 +624,7 @@
         "apiKeyCreatedWarning": "Anahtar oluşturuldu - şimdi kopyalayın, bir daha gösterilmeyecek.",
         "copyApiKey": "API anahtarını kopyala",
         "copiedToClipboard": "Panoya kopyalandı",
+        "apiKeyCount_one": "{{count}} anahtar",
         "apiKeyCount_other": "{{count}} anahtar",
         "newKey": "Yeni Anahtar",
         "noApiKeys": "Henüz API anahtarı yok.",
@@ -670,6 +680,9 @@
         "openUpdates": "Güncellemeler"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Düzen"
   },
   "plugins": {
     "manager": {
@@ -752,60 +765,6 @@
       "saveFailed": "Değişiklik kaydedilemedi"
     }
   },
-  "sync": {
-    "server": "Termix sunucusu",
-    "account": "Hesap",
-    "status": "Durum",
-    "never": "asla",
-    "justNow": "az önce",
-    "actionFailed": "Bu işe yaramadı. Tekrar deneyin.",
-    "unlinkedTitle": "Sadece bu cihaz",
-    "unlinkedBody": "Termix bu cihazda kendi başına çalışır. Her şeyi senkronize tutmak için Termix sunucunuza bağlayın.",
-    "unlinkedPointHosts": "Ana bilgisayarlarınız, kimlik bilgileriniz, komut parçacıklarınız ve ayarlarınız her cihaza sizinle birlikte gelir.",
-    "unlinkedPointOffline": "Sunucuya ulaşılamadığında her şey yine de çalışır ve daha sonra senkronize olur.",
-    "unlinkedPointAccount": "Sunucu hesabınızla giriş yaparsınız ve sizinle paylaşılan ana bilgisayarlar da burada görünür.",
-    "linkButton": "Bir sunucuya bağla",
-    "state": {
-      "syncing": "Senkronize ediliyor",
-      "offline": "Sunucuya ulaşılamıyor",
-      "error": "Senkronizasyon durdu",
-      "signedOut": "Çıkış yapıldı",
-      "synced": "{{time}}'da senkronize edildi"
-    },
-    "signInAgain": "Tekrar giriş yap",
-    "syncNow": "Şimdi senkronize et",
-    "unlink": "Bağlantıyı kaldır",
-    "unlinked": "Bu cihaz artık bağlı değil",
-    "unlinkTitle": "Bu cihazın bağlantısı kesilsin mi?",
-    "unlinkDescription": "Eşzamanlama durur ve sunucudan çıkış yapılır. Başkaları tarafından sizinle paylaşılan ana bilgisayarlar her durumda bu cihazdan kaldırılır.",
-    "unlinkKeepTitle": "Verilerimi burada tut",
-    "unlinkKeepBody": "Ana bilgisayarlarınız, kimlik bilgileriniz ve ayarlarınız bu cihazda kalır ve bağımsız olarak çalışmaya devam eder.",
-    "unlinkRemoveTitle": "Eşzamanlanan verileri kaldır",
-    "unlinkRemoveBody": "Sunucudan gelen her şey bu cihazdan kaldırılır. Sadece bu cihazda tutulan ana bilgisayarlar kalır.",
-    "conflictsTitle": "Çakışmalar",
-    "conflictsDescription": "Bu öğeler burada ve sunucuda aynı anda değiştirildi. Sunucu sürümü kullanımda. Bunun yerine sunucuya göndermek için kendi sürümünüzü tutun.",
-    "keepMine": "Kendi sürümümü tut",
-    "keepServer": "Sunucu sürümünü tut",
-    "errorsTitle": "Eşzamanlanmadı",
-    "errorsDescription": "Sunucu bu değişiklikleri kabul etmedi. Bu değişiklikler bu cihazda kalır.",
-    "errorPermission": "Sunucudaki hesabınız bu değişikliği yapmaya yetkili değil.",
-    "retry": "Tekrar dene",
-    "whatSyncs": "Neler eşzamanlanır",
-    "whatSyncsDescription": "Sadece bu cihazda tutmak istediğiniz her şeyi kapatın.",
-    "coreGroup": "Termix",
-    "notOnServer": "Sunucuda bu yok",
-    "notOnDevice": "Henüz bu cihazda değil",
-    "localOnlyHint": "Tekil ana bilgisayarları veya klasörleri de ayarlarından bu cihazda tutabilirsiniz.",
-    "originTitle": "Bağlantıların başladığı yer",
-    "originDescription": "Ana bilgisayarlara bu cihazdan veya sunucu üzerinden bağlanın. Bunu her ana bilgisayar için ayrı ayrı değiştirebilirsiniz.",
-    "originLocal": "Bu cihaz",
-    "originRemote": "Sunucu",
-    "proxy": {
-      "title": "Ters proxy",
-      "description": "Sadece sunucunuzun önünde Cloudflare Access veya bir giriş sayfası gibi bir şey olduğunda gereklidir.",
-      "saved": "Kaydedildi"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Sunucu ana bilgisayar varsayılanları",
     "titleUser": "Ana bilgisayar varsayılanlarım",
@@ -862,5 +821,18 @@
     "pickCredential": "Düzenlemek için bir kimlik bilgisi seçin",
     "pickDefaults": "Düzenlemek için bir varsayılan düzeyi seçin",
     "pickHint": "Bir bağlantıyla ilgili her şey, bulabilmeniz için gruplandırılmış şekilde burada bulunur."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Markalama değiştir",
+      "description": "Herkes tarafından görülen uygulama adını, sloganı ve logoyu ayarla."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Ekranda ne kadar yer kaplamasını istersiniz?",
+    "presetIntro": "Ekranda ne kadar yer kaplayacağını seçin.",
+    "presetChangeLater": "Ayarlar > Arayüz bölümünden daha sonra hazır ayarları değiştirebilir veya herhangi bir tekil ayarı düzenleyebilirsiniz.",
+    "appearanceTitle": "Kendinize göre düzenleyin",
+    "appearanceIntro": "Bir tema, vurgu rengi, yazı tipi ve dil seçin. Değişiklikler hemen yansır ve daha sonra Ayarlar bölümünden değiştirebilirsiniz."
   }
 }

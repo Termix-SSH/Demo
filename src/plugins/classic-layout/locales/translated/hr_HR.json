@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Klasični raspored",
+    "description": "Klasični raspored Termixa s trakom ikona, bočnom trakom, trakom kartica i dokom."
+  },
+  "layout": {
+    "name": "Klasični",
+    "description": "Traka ikona, bočna traka, traka kartica i desni dok."
+  },
+  "tab": {
+    "dashboard": "Nadzorna ploča",
+    "manage": "Upravljanje",
+    "settings": "Postavke"
+  },
   "common": {
     "more": "Više",
     "logout": "Odjava",
@@ -221,20 +234,16 @@
     "secondFactorAfterExternalLoginDesc": "Kada je isključeno, drugi faktor se traži samo nakon prijave lozinkom i drugih lokalnih prijava, kao i prije. Kada je uključeno, traži se nakon svake metode prijave, uključujući SSO i LDAP.",
     "allowPasswordReset": "Dopusti resetiranje lozinke",
     "allowPasswordResetDesc": "Kod za resetiranje putem Docker zapisa",
-    "auditForwardingTitle": "Proslijeđivanje na SIEM",
-    "auditForwardingDesc": "Pošalji kopiju svakog zapisa revizije vanjskom prikupljaču u NDJSON formatu. Lokalni zapisi ostaju izvor istine.",
-    "auditForwardingEnvNotice": "Promjenjiva okruženja također konfigurira proslijeđivanje; URL spremljen ovdje ima prioritet.",
-    "auditForwardingToken": "Bearer token (opcionalno)",
-    "auditForwardingTokenStored": "Bearer token (spremljen)",
-    "auditForwardingSaved": "Postavke proslijeđivanja revizije su spremljene",
-    "auditForwardingSaveError": "Neuspjelo spremanje postavki proslijeđivanja revizije",
+    "forceHttps": "Preusmjeri HTTP na HTTPS",
+    "forceHttpsDesc": "Preusmjeri obični HTTP na HTTPS i zatraži od preglednika da ostanu na HTTPS-u. Radi samo dok Termix sam poslužuje HTTPS.",
+    "forceHttpsNoTls": "HTTPS je isključen u Termixu, pa se ništa ne preusmjerava. Uključite ENABLE_SSL ili preusmjerite putem vašeg reverznog proxyja.",
+    "forceHttpsFailed": "Nije moguće promijeniti postavku HTTPS-a",
     "sessionTimeout": "Istek sesije",
     "hours": "sati",
     "sessionTimeoutRange": "Min 1h, max 720h",
-    "monitoringDefaults": "Zadane postavke nadzora",
-    "statusCheck": "Provjera statusa",
-    "sec": "sek",
     "logLevel": "Razina zapisa",
+    "usersCount_one": "{{count}} korisnik",
+    "usersCount_few": "{{count}} korisnika",
     "usersCount_other": "{{count}} korisnika",
     "searchUsers": "Pretraži korisnike...",
     "noUsers": "Nema korisnika",
@@ -245,6 +254,8 @@
     "roleName": "Naziv",
     "roleDisplayName": "Prikazani naziv",
     "roleDescription": "Opis",
+    "rolesCount_one": "{{count}} uloga",
+    "rolesCount_few": "{{count}} uloge",
     "rolesCount_other": "{{count}} uloga",
     "createRole": "Stvori",
     "creating": "Stvaranje...",
@@ -259,6 +270,8 @@
     "changeFile": "Promijeni",
     "import": "Uvoz",
     "importing": "Uvoz...",
+    "apiKeysCount_one": "{{count}} ključ",
+    "apiKeysCount_few": "{{count}} ključa",
     "apiKeysCount_other": "{{count}} ključeva",
     "apiKeysDocsLink": "Pogledaj dokumentaciju",
     "apiKeysCliHint": "Koristi API ključ s Termix CLI za upravljanje poslužiteljima iz terminala.",
@@ -281,6 +294,8 @@
     "systemBadge": "SIS",
     "customBadge": "PRILAGOĐENO",
     "youBadge": "VI",
+    "sessionsActive_one": "{{count}} aktivna",
+    "sessionsActive_few": "{{count}} aktivne",
     "sessionsActive_other": "{{count}} aktivnih",
     "sessionActive": "Aktivno: {{time}}",
     "sessionExpires": "Ist.: {{time}}",
@@ -351,9 +366,6 @@
     "sessionTimeoutRange2": "Vrijeme isteka sesije mora biti između 1 i 720 sati",
     "sessionTimeoutSaved": "Vrijeme isteka sesije je spremljeno",
     "sessionTimeoutSaveFailed": "Spremanje vremena isteka sesije nije uspjelo",
-    "monitoringIntervalInvalid": "Neispravne vrijednosti intervala",
-    "monitoringSaved": "Postavke praćenja su spremljene",
-    "monitoringSaveFailed": "Spremanje postavki praćenja nije uspjelo",
     "logLevelUpdateFailed": "Ažuriranje razine dnevnika nije uspjelo",
     "createUserRequired": "Korisničko ime i lozinka su obavezni",
     "createUserPasswordTooShort": "Lozinka mora imati najmanje 6 znakova",
@@ -424,6 +436,8 @@
     "importError": "Uvoz baze podataka nije uspio",
     "sectionHostDefaults": "Zadane postavke hostova",
     "rolePermissions": {
+      "count_one": "{{count}} dozvola",
+      "count_few": "{{count}} dozvole",
       "count_other": "{{count}} dozvola",
       "editAction": "Uredi dopuštenja",
       "loadError": "Učitavanje kataloga dopuštenja nije uspjelo",
@@ -615,6 +629,8 @@
         "apiKeyCreatedWarning": "Ključ je izrađen – kopirajte ga sada, više se neće prikazivati.",
         "copyApiKey": "Kopiraj API ključ",
         "copiedToClipboard": "Kopirano u međuspremnik",
+        "apiKeyCount_one": "{{count}} ključ",
+        "apiKeyCount_few": "{{count}} ključa",
         "apiKeyCount_other": "{{count}} ključeva",
         "newKey": "Novi ključ",
         "noApiKeys": "Još nema API ključeva.",
@@ -670,6 +686,9 @@
         "openUpdates": "Ažuriranja"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Raspored"
   },
   "plugins": {
     "manager": {
@@ -752,60 +771,6 @@
       "saveFailed": "Promjena se nije mogla spremiti"
     }
   },
-  "sync": {
-    "server": "Termix poslužitelj",
-    "account": "Račun",
-    "status": "Status",
-    "never": "nikada",
-    "justNow": "upravo sada",
-    "actionFailed": "To nije uspjelo. Pokušajte ponovo.",
-    "unlinkedTitle": "Samo ovaj uređaj",
-    "unlinkedBody": "Termix radi samostalno na ovom uređaju. Povežite ga sa svojim Termix poslužiteljem kako biste sve održavali usklađenim.",
-    "unlinkedPointHosts": "Vaši hostovi, vjerodajnice, isječke i postavke prate vas na svaki uređaj.",
-    "unlinkedPointOffline": "Sve i dalje radi kada poslužitelj nije dostupan, a kasnije se usklađuje.",
-    "unlinkedPointAccount": "Prijavite se s računom poslužitelja, a hostovi koje su vam drugi ljudi podijelili također se pojavljuju ovdje.",
-    "linkButton": "Poveži s poslužiteljem",
-    "state": {
-      "syncing": "Usklađivanje",
-      "offline": "Poslužitelj nije dostupan",
-      "error": "Usklađivanje zaustavljeno",
-      "signedOut": "Odjavljen",
-      "synced": "Usklađeno {{time}}"
-    },
-    "signInAgain": "Prijavi se ponovo",
-    "syncNow": "Uskladi sada",
-    "unlink": "Odspoji",
-    "unlinked": "Ovaj uređaj više nije povezan",
-    "unlinkTitle": "Odspojiti ovaj uređaj?",
-    "unlinkDescription": "Time se zaustavlja sinkronizacija i odjava s poslužitelja. Poslužitelji koje su vam drugi dijelili uklonit će se s ovog uređaja u svakom slučaju.",
-    "unlinkKeepTitle": "Zadrži moje podatke ovdje",
-    "unlinkKeepBody": "Vaši poslužitelji, vjerodajnice i postavke ostat će na ovom uređaju i nastavit će raditi samostalno.",
-    "unlinkRemoveTitle": "Ukloni sinkronizirane podatke",
-    "unlinkRemoveBody": "Sve što je došlo s poslužitelja uklonit će se s ovog uređaja. Ostaju samo poslužitelji koji su zadržani na ovom uređaju.",
-    "conflictsTitle": "Sukobi",
-    "conflictsDescription": "Ovo je izmijenjeno i ovdje i na poslužitelju istovremeno. Trenutno se koristi verzija s poslužitelja. Zadržite svoju verziju ako želite da se ona pošalje na poslužitelj.",
-    "keepMine": "Zadrži moju",
-    "keepServer": "Zadrži poslužiteljsku",
-    "errorsTitle": "Nije sinkronizirano",
-    "errorsDescription": "Poslužitelj nije prihvatio ove promjene. One ostaju na ovom uređaju.",
-    "errorPermission": "Vaš račun na poslužitelju nema dopuštenje za ovu promjenu.",
-    "retry": "Pokušaj ponovo",
-    "whatSyncs": "Što se sinkronizira",
-    "whatSyncsDescription": "Isključite sve što želite zadržati samo na ovom uređaju.",
-    "coreGroup": "Termix",
-    "notOnServer": "Poslužitelj ovo nema",
-    "notOnDevice": "Još nije na ovom uređaju",
-    "localOnlyHint": "Možete zadržati i pojedinačne poslužitelje ili mape samo na ovom uređaju putem njihovih postavki.",
-    "originTitle": "Početak veze",
-    "originDescription": "Povežite se s poslužiteljima s ovog uređaja ili putem poslužitelja. Ovo možete promijeniti za svaki poslužitelj zasebno.",
-    "originLocal": "Ovaj uređaj",
-    "originRemote": "Poslužitelj",
-    "proxy": {
-      "title": "Obrnuti proxy",
-      "description": "Potrebno samo kada se ispred vašeg poslužitelja nalazi nešto poput Cloudflare Accessa ili stranice za prijavu.",
-      "saved": "Spremljeno"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Zadane postavke hostova poslužitelja",
     "titleUser": "Moje zadane postavke hostova",
@@ -862,5 +827,18 @@
     "pickCredential": "Odaberite vjerodajnicu za uređivanje",
     "pickDefaults": "Odaberite razinu zadanih vrijednosti za uređivanje",
     "pickHint": "Sve o vezi nalazi se ovdje, grupirano radi lakšeg pronalaženja."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Promijeni brendiranje",
+      "description": "Postavite naziv aplikacije, slogan i logo koji se prikazuju svima."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Koliko želite na zaslonu?",
+    "presetIntro": "Odaberite koliko će se prikazivati na zaslonu.",
+    "presetChangeLater": "Možete prebaciti predloške ili promijeniti bilo koju pojedinačnu postavku kasnije u Postavkama, pod sučeljem.",
+    "appearanceTitle": "Prilagodite ga sebi",
+    "appearanceIntro": "Odaberite temu, naglašenu boju, font i jezik. Promjene se odmah vide, a možete ih kasnije promijeniti u Postavkama."
   }
 }

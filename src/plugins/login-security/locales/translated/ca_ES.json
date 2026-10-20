@@ -1,0 +1,51 @@
+{
+  "name": "Seguretat d'inici de sessió",
+  "permissions": {
+    "manage": {
+      "title": "Gestionar la seguretat d'inici de sessió",
+      "description": "Consulteu l'estat del segon factor i canvieu la configuració de seguretat d'inici de sessió."
+    }
+  },
+  "settings": {
+    "group": {
+      "sessions": "Sessions",
+      "secondFactor": "Segon factor"
+    },
+    "admin": {
+      "idleTimeoutMinutes": {
+        "label": "Tanca la sessió després de minuts d'inactivitat",
+        "description": "Tanca la sessió dels usuaris després d'aquest nombre de minuts sense activitat. El servidor també finalitza la sessió, de manera que un testimoni copiat deixa de funcionar. 0 desactiva aquesta opció."
+      },
+      "maxSessionHours": {
+        "label": "Durada màxima de la sessió en hores",
+        "description": "Les sessions finalitzen després d'aquest nombre d'hores, fins i tot amb l'opció «Recorda'm». 0 significa que no hi ha cap límit addicional."
+      },
+      "rememberDevice": {
+        "label": "Permet «Recorda'm»",
+        "description": "Desactivat amaga l'opció «Recorda'm» en iniciar sessió i ignora els dispositius recordats prèviament, de manera que cada inici de sessió demanarà el segon factor."
+      },
+      "secondFactor": {
+        "label": "Exigir un segon factor",
+        "description": "Les persones que no en tinguin un hauran de configurar-ne un després d'iniciar sessió, abans de poder utilitzar Termix. Un inici de sessió amb passkey mitjançant un PIN o empremta digital també és vàlid.",
+        "off": "Desactivat",
+        "newDevice": "En un dispositiu nou",
+        "always": "En cada inici de sessió"
+      },
+      "applyToExternal": {
+        "label": "També per a l'inici de sessió únic",
+        "description": "Demana el segon factor també després dels inicis de sessió SSO i LDAP. Deixa-ho desactivat si el teu proveïdor d'identitat ja en demana un."
+      }
+    }
+  },
+  "status": {
+    "factors": "Segons factors que les persones poden utilitzar: {{factors}}",
+    "noFactors": "No s'ha instal·lat cap segon factor. Instal·la un complement com TOTP o WebAuthn perquè les persones puguin configurar-ne un.",
+    "failed": "No s'ha pogut comprovar quins factors secundaris estan instal·lats."
+  },
+  "setup": {
+    "title": "Configura un factor secundari",
+    "body": "El vostre administrador requereix un factor secundari per iniciar la sessió. Configureu-ne un a continuació per continuar utilitzant Termix.",
+    "none": "No hi ha res per configurar aquí? Demaneu al vostre administrador que instal·li un complement de factor secundari.",
+    "signOut": "Tanca la sessió"
+  }
+}

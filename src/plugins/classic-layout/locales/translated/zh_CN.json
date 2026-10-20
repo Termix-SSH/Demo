@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "经典布局",
+    "description": "Termix 的经典布局，包含图标栏、侧边栏、标签栏和停靠栏。"
+  },
+  "layout": {
+    "name": "经典",
+    "description": "图标栏、侧边栏、标签栏和右侧停靠栏。"
+  },
+  "tab": {
+    "dashboard": "仪表板",
+    "manage": "管理",
+    "settings": "设置"
+  },
   "common": {
     "more": "更多",
     "logout": "登出",
@@ -221,19 +234,13 @@
     "secondFactorAfterExternalLoginDesc": "关闭时，仅在密码和其他本地登录后要求已注册的二次验证，与之前相同。开启时，所有登录方式（包括 SSO 和 LDAP）后均要求二次验证",
     "allowPasswordReset": "允许重置密码",
     "allowPasswordResetDesc": "通过 Docker 日志获取重置码",
-    "auditForwardingTitle": "转发至 SIEM",
-    "auditForwardingDesc": "将每条审计日志的副本以 NDJSON 格式发送至外部收集器。本地日志仍为权威数据源",
-    "auditForwardingEnvNotice": "环境变量也可配置转发功能；此处保存的 URL 优先级更高",
-    "auditForwardingToken": "Bearer 令牌（可选）",
-    "auditForwardingTokenStored": "Bearer 令牌（已保存）",
-    "auditForwardingSaved": "审计转发设置已保存",
-    "auditForwardingSaveError": "保存审计转发设置失败",
+    "forceHttps": "将 HTTP 重定向到 HTTPS",
+    "forceHttpsDesc": "将普通 HTTP 请求重定向到 HTTPS，并提示浏览器保持 HTTPS 连接。仅在 Termix 自身提供 HTTPS 服务时有效。",
+    "forceHttpsNoTls": "Termix 中已关闭 HTTPS，因此不会进行任何重定向。请启用 ENABLE_SSL 或在反向代理中配置重定向。",
+    "forceHttpsFailed": "无法更改 HTTPS 设置",
     "sessionTimeout": "会话超时",
     "hours": "小时",
     "sessionTimeoutRange": "最小 1 小时，最大 720 小时",
-    "monitoringDefaults": "监控默认设置",
-    "statusCheck": "状态检查",
-    "sec": "秒",
     "logLevel": "日志级别",
     "usersCount_other": "{{count}} 个用户",
     "searchUsers": "搜索用户...",
@@ -351,9 +358,6 @@
     "sessionTimeoutRange2": "会话超时时间必须在 1 到 720 小时之间",
     "sessionTimeoutSaved": "会话超时时间已保存",
     "sessionTimeoutSaveFailed": "保存会话超时时间失败",
-    "monitoringIntervalInvalid": "无效的间隔值",
-    "monitoringSaved": "监控设置已保存",
-    "monitoringSaveFailed": "保存监控设置失败",
     "logLevelUpdateFailed": "更新日志级别失败",
     "createUserRequired": "用户名和密码为必填项",
     "createUserPasswordTooShort": "密码长度至少为 6 个字符",
@@ -671,6 +675,9 @@
       }
     }
   },
+  "looks": {
+    "layoutLabel": "布局"
+  },
   "plugins": {
     "manager": {
       "errors": {
@@ -752,60 +759,6 @@
       "saveFailed": "无法保存更改"
     }
   },
-  "sync": {
-    "server": "Termix 服务器",
-    "account": "账户",
-    "status": "状态",
-    "never": "从未",
-    "justNow": "刚刚",
-    "actionFailed": "操作失败。请重试。",
-    "unlinkedTitle": "仅限此设备",
-    "unlinkedBody": "Termix 在此设备上独立运行。将其链接到您的 Termix 服务器以保持所有数据同步。",
-    "unlinkedPointHosts": "您的主机、凭据、代码片段和设置将跟随您到每一台设备。",
-    "unlinkedPointOffline": "当服务器无法连接时，一切仍然正常工作，并在稍后同步。",
-    "unlinkedPointAccount": "您使用服务器账户登录，其他人共享给您的主机也会显示在这里。",
-    "linkButton": "链接到服务器",
-    "state": {
-      "syncing": "同步中",
-      "offline": "服务器无法连接",
-      "error": "同步已停止",
-      "signedOut": "已退出登录",
-      "synced": "已于 {{time}} 同步"
-    },
-    "signInAgain": "重新登录",
-    "syncNow": "立即同步",
-    "unlink": "取消链接",
-    "unlinked": "此设备已不再链接",
-    "unlinkTitle": "取消关联此设备？",
-    "unlinkDescription": "这将停止同步并退出服务器登录。无论选择如何，其他用户与您共享的主机都将从此设备移除。",
-    "unlinkKeepTitle": "保留我的数据",
-    "unlinkKeepBody": "您的主机、凭据和设置将保留在此设备上，并继续独立运行。",
-    "unlinkRemoveTitle": "移除已同步的数据",
-    "unlinkRemoveBody": "所有来自服务器的数据都将从此设备移除。仅保留仅存储在此设备上的主机。",
-    "conflictsTitle": "冲突",
-    "conflictsDescription": "这些项目在此设备和服务器上同时被修改。当前使用的是服务器版本。选择“保留我的”可将您的版本发送到服务器。",
-    "keepMine": "保留我的",
-    "keepServer": "保留服务器版本",
-    "errorsTitle": "未同步",
-    "errorsDescription": "服务器未接受这些更改。它们将保留在此设备上。",
-    "errorPermission": "您在服务器上的账户无权进行此更改。",
-    "retry": "重试",
-    "whatSyncs": "同步内容",
-    "whatSyncsDescription": "关闭任何您希望仅保留在此设备上的项目。",
-    "coreGroup": "Termix",
-    "notOnServer": "服务器上没有此项",
-    "notOnDevice": "尚未同步到此设备",
-    "localOnlyHint": "您也可以从单个主机或文件夹的设置中，选择仅将其保留在此设备上。",
-    "originTitle": "连接起点",
-    "originDescription": "从此设备直接连接主机，或通过服务器连接。您可以为每个主机单独设置。",
-    "originLocal": "此设备",
-    "originRemote": "服务器",
-    "proxy": {
-      "title": "反向代理",
-      "description": "仅在服务器前有 Cloudflare Access 或登录页面等中间层时才需要。",
-      "saved": "已保存"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "服务器主机默认设置",
     "titleUser": "我的主机默认设置",
@@ -862,5 +815,18 @@
     "pickCredential": "选择一个凭据进行编辑",
     "pickDefaults": "选择一个默认值级别进行编辑",
     "pickHint": "连接的所有设置都在这里，已分组以便查找。"
+  },
+  "permissions": {
+    "branding": {
+      "title": "更改品牌标识",
+      "description": "设置向所有用户显示的应用名称、标语和徽标。"
+    }
+  },
+  "onboarding": {
+    "presetTitle": "您希望屏幕上显示多少内容？",
+    "presetIntro": "选择屏幕上显示的内容量。",
+    "presetChangeLater": "您以后可以在“设置”中的“界面”部分切换预设或更改任何单独的设置。",
+    "appearanceTitle": "个性化定制",
+    "appearanceIntro": "选择主题、强调色、字体和语言。更改会立即生效，您以后可以在“设置”中随时修改。"
   }
 }

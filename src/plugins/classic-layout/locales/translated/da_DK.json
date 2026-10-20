@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Klassisk layout",
+    "description": "Det klassiske Termix-layout med ikonlinje, sidebjælke, faneflade og dock."
+  },
+  "layout": {
+    "name": "Klassisk",
+    "description": "Ikonlinje, sidebjælke, faneflade og højre dock."
+  },
+  "tab": {
+    "dashboard": "Dashboard",
+    "manage": "Administrer",
+    "settings": "Indstillinger"
+  },
   "common": {
     "more": "Mere",
     "logout": "Log ud",
@@ -221,20 +234,15 @@
     "secondFactorAfterExternalLoginDesc": "Når den er slået fra, bedes der kun om en anden faktor efter login med adgangskode og andre lokale logins, som før. Når den er slået til, bedes der om den efter hver loginmetode, herunder SSO og LDAP.",
     "allowPasswordReset": "Tillad nulstilling af adgangskode",
     "allowPasswordResetDesc": "Nulstillingskode via Docker logs",
-    "auditForwardingTitle": "Videresend til SIEM",
-    "auditForwardingDesc": "Send en kopi af hver auditpost til en ekstern samler som NDJSON. De lokale logs forbliver sandhedens kilde.",
-    "auditForwardingEnvNotice": "En miljøvariabel konfigurerer også videresendelse; URL'en gemt her har forrang.",
-    "auditForwardingToken": "Bearer-token (valgfrit)",
-    "auditForwardingTokenStored": "Bearer-token (gemt)",
-    "auditForwardingSaved": "Audit-videresendelsesindstillinger gemt",
-    "auditForwardingSaveError": "Kunne ikke gemme audit-videresendelsesindstillinger",
+    "forceHttps": "Omdiriger HTTP til HTTPS",
+    "forceHttpsDesc": "Send almindelig HTTP til HTTPS og bed browseren om at forblive på HTTPS. Fungerer kun, når Termix selv serverer HTTPS.",
+    "forceHttpsNoTls": "HTTPS er slået fra i Termix, så der omdirigeres ikke noget. Slå ENABLE_SSL til eller omdiriger i din reverse proxy.",
+    "forceHttpsFailed": "Kunne ikke ændre HTTPS-indstillingen",
     "sessionTimeout": "Sessionstidsgrænse",
     "hours": "timer",
     "sessionTimeoutRange": "Min 1t, maks 720t",
-    "monitoringDefaults": "Standardværdier for overvågning",
-    "statusCheck": "Statuskontrol",
-    "sec": "sek",
     "logLevel": "Logniveau",
+    "usersCount_one": "{{count}} bruger",
     "usersCount_other": "{{count}} brugere",
     "searchUsers": "Søg efter brugere...",
     "noUsers": "Ingen brugere",
@@ -245,6 +253,7 @@
     "roleName": "Navn",
     "roleDisplayName": "Visningsnavn",
     "roleDescription": "Beskrivelse",
+    "rolesCount_one": "{{count}} rolle",
     "rolesCount_other": "{{count}} roller",
     "createRole": "Opret",
     "creating": "Opretter...",
@@ -259,6 +268,7 @@
     "changeFile": "Skift",
     "import": "Importer",
     "importing": "Importerer...",
+    "apiKeysCount_one": "{{count}} nøgle",
     "apiKeysCount_other": "{{count}} nøgler",
     "apiKeysDocsLink": "Se dokumentation",
     "apiKeysCliHint": "Brug en API-nøgle med Termix CLI til at administrere servere fra din terminal.",
@@ -281,6 +291,7 @@
     "systemBadge": "SYS",
     "customBadge": "TILPASSET",
     "youBadge": "DIG",
+    "sessionsActive_one": "{{count}} aktiv",
     "sessionsActive_other": "{{count}} aktive",
     "sessionActive": "Aktiv: {{time}}",
     "sessionExpires": "Udløb: {{time}}",
@@ -351,9 +362,6 @@
     "sessionTimeoutRange2": "Sessionstidsgrænsen skal være mellem 1 og 720 timer",
     "sessionTimeoutSaved": "Sessionstidsgrænse gemt",
     "sessionTimeoutSaveFailed": "Kunne ikke gemme sessionstidsgrænse",
-    "monitoringIntervalInvalid": "Ugyldige intervalværdier",
-    "monitoringSaved": "Overvågningsindstillinger gemt",
-    "monitoringSaveFailed": "Kunne ikke gemme overvågningsindstillinger",
     "logLevelUpdateFailed": "Kunne ikke opdatere logniveau",
     "createUserRequired": "Brugernavn og adgangskode er påkrævet",
     "createUserPasswordTooShort": "Adgangskoden skal være på mindst 6 tegn",
@@ -424,6 +432,7 @@
     "importError": "Databaseimport mislykkedes",
     "sectionHostDefaults": "Værtstandarder",
     "rolePermissions": {
+      "count_one": "{{count}} tilladelse",
       "count_other": "{{count}} tilladelser",
       "editAction": "Rediger tilladelser",
       "loadError": "Kunne ikke indlæse tilladelseskataloget",
@@ -615,6 +624,7 @@
         "apiKeyCreatedWarning": "Nøgle oprettet - kopier den nu, da den ikke vises igen.",
         "copyApiKey": "Kopiér API-nøgle",
         "copiedToClipboard": "Kopieret til udklipsholder",
+        "apiKeyCount_one": "{{count}} nøgle",
         "apiKeyCount_other": "{{count}} nøgler",
         "newKey": "Ny nøgle",
         "noApiKeys": "Ingen API-nøgler endnu.",
@@ -670,6 +680,9 @@
         "openUpdates": "Opdateringer"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Layout"
   },
   "plugins": {
     "manager": {
@@ -752,60 +765,6 @@
       "saveFailed": "Kunne ikke gemme ændringen"
     }
   },
-  "sync": {
-    "server": "Termix-server",
-    "account": "Konto",
-    "status": "Status",
-    "never": "aldrig",
-    "justNow": "lige nu",
-    "actionFailed": "Det virkede ikke. Prøv igen.",
-    "unlinkedTitle": "Kun denne enhed",
-    "unlinkedBody": "Termix fungerer selvstændigt på denne enhed. Link den til din Termix-server for at holde alt synkroniseret.",
-    "unlinkedPointHosts": "Dine værter, legitimationsoplysninger, snippets og indstillinger følger dig til hver enhed.",
-    "unlinkedPointOffline": "Alt fungerer stadig, når serveren ikke kan nås, og opdateres senere.",
-    "unlinkedPointAccount": "Du logger ind med din serverkonto, og værter, som andre har delt med dig, vises også her.",
-    "linkButton": "Link til en server",
-    "state": {
-      "syncing": "Synkroniserer",
-      "offline": "Serveren kan ikke nås",
-      "error": "Synkronisering stoppet",
-      "signedOut": "Logget ud",
-      "synced": "Synkroniseret {{time}}"
-    },
-    "signInAgain": "Log ind igen",
-    "syncNow": "Synkroniser nu",
-    "unlink": "Fjern link",
-    "unlinked": "Denne enhed er ikke længere linket",
-    "unlinkTitle": "Fjern kobling til denne enhed?",
-    "unlinkDescription": "Det stopper synkroniseringen og logger dig ud af serveren. Værter, der er delt med dig af andre, fjernes fra denne enhed uanset hvad.",
-    "unlinkKeepTitle": "Behold mine data her",
-    "unlinkKeepBody": "Dine værter, legitimationsoplysninger og indstillinger forbliver på denne enhed og fungerer fortsat uafhængigt.",
-    "unlinkRemoveTitle": "Fjern synkroniserede data",
-    "unlinkRemoveBody": "Alt, der kom fra serveren, fjernes fra denne enhed. Kun værter, der er gemt lokalt på denne enhed, forbliver.",
-    "conflictsTitle": "Konflikter",
-    "conflictsDescription": "Disse blev ændret her og på serveren på samme tid. Serverversionen er i brug. Behold din version for at sende den til serveren i stedet.",
-    "keepMine": "Behold min version",
-    "keepServer": "Behold serverversion",
-    "errorsTitle": "Ikke synkroniseret",
-    "errorsDescription": "Serveren accepterede ikke disse ændringer. De forbliver på denne enhed.",
-    "errorPermission": "Din konto på serveren har ikke tilladelse til at foretage denne ændring.",
-    "retry": "Prøv igen",
-    "whatSyncs": "Hvad der synkroniseres",
-    "whatSyncsDescription": "Sluk for alt, du vil beholde kun på denne enhed.",
-    "coreGroup": "Termix",
-    "notOnServer": "Serveren har ikke dette",
-    "notOnDevice": "Ikke på denne enhed endnu",
-    "localOnlyHint": "Du kan også beholde enkelte værter eller mapper lokalt på denne enhed via deres indstillinger.",
-    "originTitle": "Hvor forbindelser starter",
-    "originDescription": "Forbind til værter fra denne enhed, eller gennem serveren. Du kan ændre dette pr. vært.",
-    "originLocal": "Denne enhed",
-    "originRemote": "Serveren",
-    "proxy": {
-      "title": "Omvendt proxy",
-      "description": "Kun nødvendigt, når noget som Cloudflare Access eller en login-side sidder foran din server.",
-      "saved": "Gemt"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Serverens værtstandarder",
     "titleUser": "Mine værtstandarder",
@@ -862,5 +821,18 @@
     "pickCredential": "Vælg legitimationsoplysninger at redigere",
     "pickDefaults": "Vælg et niveau af standardværdier at redigere",
     "pickHint": "Alt om en forbindelse findes her, grupperet så du kan finde det."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Skift branding",
+      "description": "Indstil app-navn, slogan og logo, der vises for alle."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Hvor meget vil du have på skærmen?",
+    "presetIntro": "Vælg, hvor meget der vises på skærmen.",
+    "presetChangeLater": "Du kan skifte forudindstillinger eller ændre enhver enkelt indstilling senere i Indstillinger under Grænseflade.",
+    "appearanceTitle": "Gør den din egen",
+    "appearanceIntro": "Vælg et tema, en accentfarve, en skrifttype og dit sprog. Ændringerne vises med det samme, og du kan ændre dem senere i Indstillinger."
   }
 }

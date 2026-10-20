@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Klasické rozloženie",
+    "description": "Klasické rozloženie Termixu s lištou ikon, bočným panelom, lištou kariet a dokovacím panelom."
+  },
+  "layout": {
+    "name": "Klasické",
+    "description": "Lišta ikon, bočný panel, lišta kariet a pravý dokovací panel."
+  },
+  "tab": {
+    "dashboard": "Prehľad",
+    "manage": "Spravovať",
+    "settings": "Nastavenia"
+  },
   "common": {
     "more": "Viac",
     "logout": "Odhlásiť sa",
@@ -221,20 +234,17 @@
     "secondFactorAfterExternalLoginDesc": "Ak je vypnuté, o druhý faktor sa požiada iba po prihlásení heslom a iných lokálnych prihláseniach, ako doteraz. Ak je zapnuté, vyžaduje sa po každej metóde prihlásenia, vrátane SSO a LDAP.",
     "allowPasswordReset": "Povoliť obnovenie hesla",
     "allowPasswordResetDesc": "Obnovovací kód cez Docker logy",
-    "auditForwardingTitle": "Posielanie do SIEM",
-    "auditForwardingDesc": "Odoslať kópiu každého záznamu auditu do externého zberača vo formáte NDJSON. Lokálne logy zostávajú primárnym zdrojom pravdy.",
-    "auditForwardingEnvNotice": "Presmerovanie je možné konfigurovať aj prostredníctvom environmentálnej premennej; URL adresa uložená tu má prednosť.",
-    "auditForwardingToken": "Bearer token (voliteľné)",
-    "auditForwardingTokenStored": "Bearer token (uložený)",
-    "auditForwardingSaved": "Nastavenia presmerovania auditu boli uložené",
-    "auditForwardingSaveError": "Nepodarilo sa uložiť nastavenia presmerovania auditu",
+    "forceHttps": "Presmerovať HTTP na HTTPS",
+    "forceHttpsDesc": "Presmeruje obyčajné HTTP na HTTPS a požiada prehliadače, aby zostali na HTTPS. Funguje len vtedy, keď Termix sám poskytuje HTTPS.",
+    "forceHttpsNoTls": "HTTPS je v Termixi vypnuté, takže sa nič nepresmerováva. Zapnite ENABLE_SSL alebo presmerujte vo svojom reverznom proxy serveri.",
+    "forceHttpsFailed": "Nepodarilo sa zmeniť nastavenie HTTPS",
     "sessionTimeout": "Časový limit relácie",
     "hours": "hodín",
     "sessionTimeoutRange": "Min 1 h, max 720 h",
-    "monitoringDefaults": "Predvolené hodnoty monitorovania",
-    "statusCheck": "Kontrola stavu",
-    "sec": "s",
     "logLevel": "Úroveň logovania",
+    "usersCount_one": "{{count}} používateľ",
+    "usersCount_few": "{{count}} používatelia",
+    "usersCount_many": "{{count}} používateľov",
     "usersCount_other": "{{count}} používateľov",
     "searchUsers": "Vyhľadať používateľov...",
     "noUsers": "Žiadni používatelia",
@@ -245,6 +255,9 @@
     "roleName": "Názov",
     "roleDisplayName": "Zobrazovaný názov",
     "roleDescription": "Popis",
+    "rolesCount_one": "{{count}} rola",
+    "rolesCount_few": "{{count}} role",
+    "rolesCount_many": "{{count}} rolí",
     "rolesCount_other": "{{count}} rolí",
     "createRole": "Vytvoriť",
     "creating": "Vytváranie...",
@@ -259,6 +272,9 @@
     "changeFile": "Zmeniť",
     "import": "Importovať",
     "importing": "Importuje sa...",
+    "apiKeysCount_one": "{{count}} kľúč",
+    "apiKeysCount_few": "{{count}} kľúče",
+    "apiKeysCount_many": "{{count}} kľúčov",
     "apiKeysCount_other": "{{count}} kľúčov",
     "apiKeysDocsLink": "Zobraziť dokumentáciu",
     "apiKeysCliHint": "Použite API kľúč s Termix CLI na správu serverov z vášho terminálu.",
@@ -281,6 +297,9 @@
     "systemBadge": "SYS",
     "customBadge": "VLASTNÝ",
     "youBadge": "VY",
+    "sessionsActive_one": "{{count}} aktívna",
+    "sessionsActive_few": "{{count}} aktívne",
+    "sessionsActive_many": "{{count}} aktívnych",
     "sessionsActive_other": "{{count}} aktívnych",
     "sessionActive": "Aktívne: {{time}}",
     "sessionExpires": "Platnosť: {{time}}",
@@ -351,9 +370,6 @@
     "sessionTimeoutRange2": "Časový limit relácie musí byť medzi 1 a 720 hodinami",
     "sessionTimeoutSaved": "Časový limit relácie bol uložený",
     "sessionTimeoutSaveFailed": "Uloženie časového limitu relácie zlyhalo",
-    "monitoringIntervalInvalid": "Neplatné hodnoty intervalu",
-    "monitoringSaved": "Nastavenia monitorovania boli uložené",
-    "monitoringSaveFailed": "Uloženie nastavení monitorovania zlyhalo",
     "logLevelUpdateFailed": "Aktualizácia úrovne protokolovania zlyhala",
     "createUserRequired": "Meno používateľa a heslo sú povinné",
     "createUserPasswordTooShort": "Heslo musí mať aspoň 6 znakov",
@@ -424,7 +440,10 @@
     "importError": "Import databázy zlyhal",
     "sectionHostDefaults": "Predvolené hodnoty hostov",
     "rolePermissions": {
-      "count_other": "{{count}} oprávnení",
+      "count_one": "{{count}} povolenie",
+      "count_few": "{{count}} povolenia",
+      "count_many": "{{count}} povolení",
+      "count_other": "{{count}} povolení",
       "editAction": "Upraviť oprávnenia",
       "loadError": "Nepodarilo sa načítať katalóg oprávnení",
       "saved": "Oprávnenia role uložené",
@@ -615,6 +634,9 @@
         "apiKeyCreatedWarning": "Kľúč vytvorený – skopírujte ho teraz, pretože sa už nezobrazí znova.",
         "copyApiKey": "Kopírovať API kľúč",
         "copiedToClipboard": "Skopírované do schránky",
+        "apiKeyCount_one": "{{count}} kľúč",
+        "apiKeyCount_few": "{{count}} kľúče",
+        "apiKeyCount_many": "{{count}} kľúčov",
         "apiKeyCount_other": "{{count}} kľúčov",
         "newKey": "Nový kľúč",
         "noApiKeys": "Zatiaľ žiadne API kľúče.",
@@ -670,6 +692,9 @@
         "openUpdates": "Aktualizácie"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Rozloženie"
   },
   "plugins": {
     "manager": {
@@ -752,60 +777,6 @@
       "saveFailed": "Nepodarilo sa uložiť zmenu"
     }
   },
-  "sync": {
-    "server": "Termix server",
-    "account": "Účet",
-    "status": "Stav",
-    "never": "nikdy",
-    "justNow": "práve teraz",
-    "actionFailed": "To nefungovalo. Skúste to znova.",
-    "unlinkedTitle": "Len toto zariadenie",
-    "unlinkedBody": "Termix funguje samostatne na tomto zariadení. Prepojte ho so svojím Termix serverom, aby ste mali všetko synchronizované.",
-    "unlinkedPointHosts": "Vaše hosty, poverenia, útržky a nastavenia vás nasledujú na každé zariadenie.",
-    "unlinkedPointOffline": "Všetko stále funguje, keď nie je možné dosiahnuť server, a neskôr sa synchronizuje.",
-    "unlinkedPointAccount": "Prihlásite sa pomocou svojho serverového účtu a hosty, ktoré vám ľudia zdieľali, sa tiež zobrazia tu.",
-    "linkButton": "Prepojiť so serverom",
-    "state": {
-      "syncing": "Synchronizácia",
-      "offline": "Server nie je dostupný",
-      "error": "Synchronizácia zastavená",
-      "signedOut": "Odhlásený",
-      "synced": "Synchronizované {{time}}"
-    },
-    "signInAgain": "Prihlásiť sa znova",
-    "syncNow": "Synchronizovať teraz",
-    "unlink": "Odpojiť",
-    "unlinked": "Toto zariadenie už nie je prepojené",
-    "unlinkTitle": "Odpojiť toto zariadenie?",
-    "unlinkDescription": "Tým sa zastaví synchronizácia a odhlási sa zo servera. Hosty, ktoré vám zdieľali iní používatelia, sa z tohto zariadenia odstránia v každom prípade.",
-    "unlinkKeepTitle": "Zostať s mojimi dátami",
-    "unlinkKeepBody": "Vaše hosty, poverenia a nastavenia zostanú na tomto zariadení a budú fungovať nezávisle.",
-    "unlinkRemoveTitle": "Odstrániť synchronizované dáta",
-    "unlinkRemoveBody": "Všetko, čo prišlo zo servera, sa z tohto zariadenia odstráni. Zostanú len hosty, ktoré sú uložené iba na tomto zariadení.",
-    "conflictsTitle": "Konflikty",
-    "conflictsDescription": "Tieto položky boli zmenené súčasne na tomto zariadení aj na serveri. Používa sa verzia zo servera. Ak chcete odoslať svoju verziu na server, vyberte možnosť Zostať s mojimi dátami.",
-    "keepMine": "Zostať s mojimi dátami",
-    "keepServer": "Zostať s verziou zo servera",
-    "errorsTitle": "Nesynchronizované",
-    "errorsDescription": "Server tieto zmeny neprijal. Zostávajú na tomto zariadení.",
-    "errorPermission": "Váš účet na serveri nemá povolenie na vykonanie tejto zmeny.",
-    "retry": "Skúsiť znova",
-    "whatSyncs": "Čo sa synchronizuje",
-    "whatSyncsDescription": "Vypnite akúkoľvek položku, ktorú chcete ponechať iba na tomto zariadení.",
-    "coreGroup": "Termix",
-    "notOnServer": "Server túto položku nemá",
-    "notOnDevice": "Ešte nie na tomto zariadení",
-    "localOnlyHint": "Jednotlivé hosty alebo priečinky môžete ponechať iba na tomto zariadení aj v ich nastaveniach.",
-    "originTitle": "Kde začínajú pripojenia",
-    "originDescription": "Pripájajte sa k hostom z tohto zariadenia alebo cez server. Toto môžete zmeniť pre každého hosta zvlášť.",
-    "originLocal": "Toto zariadenie",
-    "originRemote": "Server",
-    "proxy": {
-      "title": "Reverzný proxy server",
-      "description": "Potrebné len vtedy, ak sa pred vaším serverom nachádza niečo ako Cloudflare Access alebo prihlasovacia stránka.",
-      "saved": "Uložené"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Predvolené hodnoty hostov servera",
     "titleUser": "Moje predvolené hodnoty hostov",
@@ -862,5 +833,18 @@
     "pickCredential": "Vyberte poverenie na úpravu",
     "pickDefaults": "Vyberte úroveň predvolených hodnôt na úpravu",
     "pickHint": "Všetko o pripojení je tu, zoradené do skupín pre jednoduché nájdenie."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Zmeniť značkovanie",
+      "description": "Nastavte názov aplikácie, slogan a logo, ktoré vidia všetci."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Koľko chcete mať na obrazovke?",
+    "presetIntro": "Vyberte, koľko obsahu sa zobrazí na obrazovke.",
+    "presetChangeLater": "Preskúpiť prednastavenia alebo zmeniť ľubovoľné nastavenie môžete neskôr v Nastaveniach v sekcii Rozhranie.",
+    "appearanceTitle": "Upravte si ho po svojom",
+    "appearanceIntro": "Vyberte si tému, akcentnú farbu, písmo a jazyk. Zmeny sa prejavia okamžite a neskôr ich môžete upraviť v Nastaveniach."
   }
 }

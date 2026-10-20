@@ -35,6 +35,16 @@
         "title": "모든 사용자의 AI 사용량 보기",
         "description": "자신의 사용량뿐만 아니라 모든 사용자의 AI 호출에 사용된 토큰을 확인합니다. 기본적으로 관리자만 사용 가능합니다."
       }
+    },
+    "assets": {
+      "view": {
+        "title": "자산 목록 보기",
+        "description": "수집된 호스트, 게스트, 컨테이너, 존 및 연결을 확인합니다. 기본적으로 관리자만 접근 가능합니다."
+      },
+      "manage": {
+        "title": "자산 목록 관리",
+        "description": "수집 시작, 존 규칙 편집, 존 고정 및 일정 변경을 수행합니다. 수집은 호스트를 읽기 전용으로 읽습니다. 기본적으로 관리자만 접근 가능합니다."
+      }
     }
   },
   "settings": {
@@ -80,6 +90,35 @@
       "autoOpsDailyTokens": {
         "label": "사용자당 일일 AI 토큰 예산",
         "description": "사용자가 오늘(UTC 기준) 이만큼의 토큰을 사용하면 AI 작업이 건너뛰거나 중지됩니다."
+      },
+      "assetsDailyCollect": {
+        "label": "자산 목록 일일 수집",
+        "description": "수집기가 연결할 수 있는 모든 호스트를 하루에 한 번 읽기 전용 스크립트로 읽습니다."
+      },
+      "assetsCollectTime": {
+        "label": "자산 수집 시간 (UTC)",
+        "description": "HH:MM 형식, 예: 03:00."
+      },
+      "assetsCollector": {
+        "label": "자산 수집기"
+      },
+      "assetsAnnotateAfterCollect": {
+        "label": "각 수집 후 자산 주석 추가",
+        "description": "모델이 변경된 각 자산의 역할, 중요도, 비즈니스 시스템 및 사실에서 나타나는 종속성을 기록합니다."
+      },
+      "assetsAnnotateRunTokens": {
+        "label": "자산 주석 실행당 토큰 예산",
+        "description": "모델 호출이 이 수의 토큰을 사용하면 실행이 중지되며, 기록된 내용은 유지됩니다."
+      },
+      "assetsAnnotateProvider": {
+        "label": "자산 주석 제공자"
+      },
+      "assetsAnnotateModel": {
+        "label": "자산 주석 모델"
+      },
+      "exposureRetentionDays": {
+        "label": "노출 이력 보관 기간 (일)",
+        "description": "현재 항목에서 참조되는 대기 중인 알림 및 증거는 연령과 관계없이 보관됩니다."
       }
     },
     "host": {
@@ -364,7 +403,8 @@
     "source": {
       "assistant": "어시스턴트",
       "terminal": "터미널 패널",
-      "compaction": "컴팩션"
+      "compaction": "컴팩션",
+      "assets": "자산 주석"
     }
   },
   "autoOps": {
@@ -536,7 +576,229 @@
       "noticeReported": "AI 보고서: {{title}}",
       "noticeProposed": "승인 대기 중인 AI 계획: {{title}}",
       "noticeExecuted": "AI 계획 실행됨: {{title}}",
-      "noticeFailed": "AI 작업 실패: {{title}}"
+      "noticeFailed": "AI 작업 실패: {{title}}",
+      "noticeAssetsAnnotationFailed": "자산 주석 실패"
     }
+  },
+  "assets": {
+    "title": "자산",
+    "search": "이름, 키 또는 주소 검색",
+    "allZones": "모든 존",
+    "showRemoved": "제거된 항목 표시",
+    "collectNow": "지금 수집",
+    "collecting": "수집 중…",
+    "collectFailed": "수집을 시작할 수 없습니다",
+    "neverRun": "아직 수집되지 않음",
+    "lastRun": "마지막 수집 {{time}}: {{total}}개 호스트 중 {{ok}}개 성공",
+    "lastRunFailed": "{{time}}에 수행된 수집이 실패했습니다",
+    "hostsFailed_other": "{{count}}개 호스트 실패",
+    "loadFailed": "목록을 로드할 수 없습니다",
+    "saveFailed": "저장할 수 없습니다",
+    "empty": "아직 자산이 없습니다",
+    "emptyHint": "지금 수집하여 수집기가 연결할 수 있는 모든 호스트를 읽어보세요.",
+    "emptyHintView": "ai.assets.manage 권한이 있는 사용자가 먼저 수집해야 합니다.",
+    "removed": "제거됨",
+    "pinned": "고정됨",
+    "multiZone": "다중 존",
+    "multiZoneHint": "여러 존에 주소가 있어 양쪽 모두에 도달할 수 있으므로 잠재적인 피벗입니다.",
+    "columns": {
+      "name": "이름",
+      "kind": "종류",
+      "zone": "존",
+      "ips": "주소",
+      "listening": "포트",
+      "outbound": "아웃바운드",
+      "services": "서비스",
+      "collected": "마지막 수집",
+      "role": "역할",
+      "importance": "중요도",
+      "system": "시스템"
+    },
+    "kind": {
+      "host": "호스트",
+      "guest": "게스트",
+      "container": "컨테이너",
+      "external": "외부"
+    },
+    "zone": {
+      "internal": "내부",
+      "dmz": "DMZ",
+      "external": "외부",
+      "cloud": "클라우드",
+      "overlay": "오버레이"
+    },
+    "sections": {
+      "os": "운영 체제",
+      "hostname": "호스트명",
+      "uptimeSec": "업타임 (초)",
+      "interfaces": "인터페이스",
+      "routes": "라우팅 테이블",
+      "listening": "리스닝 포트",
+      "connections": "설정된 연결",
+      "services": "실행 중인 서비스",
+      "containers": "컨테이너",
+      "kubernetes": "Kubernetes",
+      "guests": "Proxmox 게스트",
+      "cloud": "클라우드",
+      "missing": "출력이 없는 섹션",
+      "guest": "Proxmox 게스트",
+      "container": "컨테이너"
+    },
+    "outgoing": "출력",
+    "incoming": "입력",
+    "noEdges": "없음",
+    "stale": "최신 수집에서 감지되지 않음",
+    "pinZone": "존",
+    "rulesDecide": "규칙에 의해 결정됨",
+    "settingsTitle": "존 및 일정",
+    "scheduleTitle": "수집",
+    "daily": "매일 수집",
+    "dailyHint": "호스트는 추가되거나 변경될 때도 다시 수집됩니다.",
+    "time": "시간 (UTC)",
+    "save": "저장",
+    "collector": "{{collector}}(으)로 수집하여 해당 계정이 연결할 수 있는 호스트에 도달합니다.",
+    "collectorMe": "사용자",
+    "collectorOther": "다른 관리자",
+    "collectorNone": "아직 없음",
+    "collectAsMe": "내 계정으로 수집",
+    "zonesTitle": "존 규칙",
+    "zonesHint": "규칙은 CIDR을 존에 매핑하며, 내장 규칙보다 우선합니다. 가장 구체적인 접두사가 우선하고, 그 다음으로 높은 우선순위가 적용됩니다. 저장 시 자산이 다시 존으로 분류됩니다.",
+    "zoneName": "이름",
+    "zoneNameExample": "데이터 센터 LAN",
+    "zoneKind": "종류",
+    "cidr": "CIDR",
+    "priority": "우선순위",
+    "addZone": "규칙 추가",
+    "deleteZone": "규칙 삭제",
+    "cancelEdit": "취소",
+    "annotating": "주석 처리 중…",
+    "neverAnnotated": "아직 주석이 없음",
+    "lastAnnotation": "마지막 주석 처리 {{time}}: {{total}}개 자산 중 {{ok}}개 성공, {{tokens}}개 토큰",
+    "annotationFailed": "실패: {{reason}}",
+    "annotateNow": "지금 주석 처리",
+    "annotateFailed": "주석 처리를 시작할 수 없습니다",
+    "modeTable": "테이블",
+    "modeGraph": "그래프",
+    "importance": {
+      "critical": "심각",
+      "high": "높음",
+      "medium": "중간",
+      "low": "낮음"
+    },
+    "importanceUnknown": "미평가",
+    "importanceReason": "이유",
+    "sourceAi": "AI",
+    "sourceAiHint": "주석 처리에 의해 작성됨; 다음 실행 시 변경될 수 있습니다.",
+    "sourceUser": "잠김",
+    "sourceUserHint": "사용자가 설정함; 잠금이 해제될 때까지 주석 처리 실행 시 변경되지 않습니다.",
+    "unlock": "잠금 해제: 주석 처리가 다시 채우도록 허용",
+    "unlockField": "{{field}} 잠금 해제",
+    "editAnnotation": "편집",
+    "lockHint": "변경한 필드는 이후 주석 처리 실행에서 잠깁니다.",
+    "factsTitle": "사실 정보",
+    "closePanel": "닫기",
+    "impact": "영향도",
+    "clearImpact": "지우기",
+    "impactSummary_other": "실패 시 {{count}}개 자산이 함께 중단됩니다 ({{critical}}개 중요, {{high}}개 높음), {{weak}}개는 이들에만 연결됩니다.",
+    "impactTruncated": "6단계 또는 300개 자산에서 끊어집니다.",
+    "impactDirect": "직접적으로",
+    "impactTransitive": "다른 자산을 통해",
+    "impactWeak": "이들에만 연결됨",
+    "expandContainers": "컨테이너 보기",
+    "showExternal": "외부 주소 보기",
+    "graphCounts": "{{nodes}}개 자산, {{edges}}개 관계",
+    "graphTitle": "자산 그래프",
+    "noZone": "존 없음",
+    "annotationTitle": "AI 주석 처리",
+    "annotateAfterCollect": "각 수집 후 주석 처리",
+    "annotateAfterCollectHint": "마지막 주석 처리 이후 변경된 자산과 그 이웃만 모델에 전송됩니다.",
+    "annotateProvider": "제공자",
+    "annotateProviderDefault": "수집기의 자동 운영 선택",
+    "annotateModel": "모델",
+    "annotateModelDefault": "제공자의 기본 모델",
+    "annotationHint": "주석 처리는 수집기의 제공자를 사용하여 수집기 권한으로 실행됩니다. 요약에는 환경, 명령줄 또는 외부 주소가 포함되지 않습니다.",
+    "annotateAll": "모든 항목 다시 주석 처리"
+  },
+  "exposure": {
+    "title": "인터넷 엔트리",
+    "disclaimer": "구성 인벤토리만 포함합니다. 공개 바인딩 및 포워딩 규칙은 인터넷 도달 가능성을 증명하지 않습니다. 비공개 리스너는 백엔드 증거로 유지됩니다.",
+    "loadFailed": "노출 인벤토리를 로드할 수 없습니다.",
+    "saveFailed": "우선순위를 저장할 수 없습니다.",
+    "search": "주소, 호스트, 이름 또는 경로 필터링",
+    "allPriority": "모든 우선순위",
+    "allZones": "모든 존",
+    "allSources": "모든 소스",
+    "high": "높음",
+    "medium": "중간",
+    "low": "낮음",
+    "active": "활성",
+    "stale": "만료됨",
+    "resolved": "더 이상 관찰되지 않음",
+    "all": "모두",
+    "refresh": "새로 고침",
+    "loading": "로딩 중…",
+    "empty": "일치하는 엔트리가 없습니다. 결론을 내리기 전에 아래 수집 범위를 확인하세요.",
+    "never": "아직 수집되지 않았습니다. 엔트리를 인벤토리에 추가하려면 자산을 수집하세요.",
+    "endpoint": "엔트리",
+    "source": "소스",
+    "priority": "검토 우선순위",
+    "pathState": "구성 경로",
+    "freshness": "신선도",
+    "details": "증거 세부 정보",
+    "close": "닫기",
+    "notTested": "외부 도달 가능성: 테스트되지 않음.",
+    "priorityReason": "우선순위는 검토 힌트일 뿐 취약점 판정이 아닙니다. 공개 관리 및 데이터 서비스 포트가 우선적으로 처리되며, 서비스 식별 및 액세스 정책은 여전히 확인이 필요합니다.",
+    "tls": "TLS 구성",
+    "restrictions": "액세스 제한",
+    "observed": "마지막 관찰",
+    "rulePriority": "규칙 우선순위 (잠금 해제)",
+    "evidence": "관찰",
+    "coverage": "수집 범위",
+    "changes": "최근 변경 사항",
+    "current": "현재",
+    "partial": "불완전",
+    "complete": "구성 연결 완료",
+    "conflicting": "모호하거나 순환적임",
+    "configured": "구성에 선언됨",
+    "unknown": "알 수 없음",
+    "status_ok": "수집됨",
+    "status_unsupported": "도구 사용 불가",
+    "status_denied": "권한 거부",
+    "status_failed": "수집 또는 파싱 실패",
+    "status_truncated": "절단됨",
+    "change_baseline": "기준선 설정됨",
+    "change_added": "항목 추가됨",
+    "change_changed": "구성 변경됨",
+    "change_removed": "항목 더 이상 관찰되지 않음",
+    "change_coverage": "커버리지 저하",
+    "explain": "증거 설명",
+    "explaining": "설명 중…",
+    "explainFailed": "설명 실패 또는 증거 변경.",
+    "aiLabel": "AI 해석 · 검증되지 않은 결과",
+    "previous": "이전",
+    "next": "다음",
+    "binding": "바인딩 범위",
+    "binding_public": "공개 엔트리 후보",
+    "binding_local": "비공개/로컬 백엔드",
+    "binding_unknown": "해결되지 않은 바인딩",
+    "ruleGaps": "파싱되지 않은 규칙: {{count}}",
+    "unsupportedRule": "지원되지 않는 규칙; 이전 증거 유지",
+    "scope": "보기",
+    "scope_internet": "인터넷 엔트리 후보",
+    "scope_all": "모든 증거",
+    "scope_unknown": "알 수 없는 노출",
+    "inventorySummary": "{{internet}}개 인터넷 엔트리 후보 · 총 {{all}}개 규칙 · {{unknown}}개 알 수 없는 노출",
+    "bindingCount": "관찰된 바인딩 {{count}}개",
+    "pathsTruncated": "경로 확장이 한도에 도달했습니다. 이는 부분적인 증거입니다.",
+    "pathBranch": "경로 {{index}}",
+    "branched": "조건부 분기",
+    "reason_sensitive": "서비스 포트 {{port}} 검토 (엔트리 또는 백엔드)",
+    "reason_public-address": "관찰된 공개 주소 바인딩",
+    "reason_wan-zone": "OpenWrt WAN 소스 영역; 방화벽 허용 미검증",
+    "reason_configured-public-tunnel": "구성된 공개 터널; 외부 도달 가능성 미테스트",
+    "reason_internal-only": "내부 또는 로컬 바인딩만 관찰됨",
+    "reason_exposure-unknown": "노출 분류에 불충분한 증거",
+    "reason_critical-asset": "자산이 중요도로 표시됨",
+    "reason_manual": "사용자가 선택한 우선순위"
   }
 }

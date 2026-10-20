@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Klassinen asettelu",
+    "description": "Termixin klassinen asettelu, jossa on kuvakkeen palkki, sivupalkki, välilehtipalkki ja kiinnityspalkki."
+  },
+  "layout": {
+    "name": "Klassinen",
+    "description": "Kuvakkeen palkki, sivupalkki, välilehtipalkki ja oikea kiinnityspalkki."
+  },
+  "tab": {
+    "dashboard": "Kojelauta",
+    "manage": "Hallinta",
+    "settings": "Asetukset"
+  },
   "common": {
     "more": "Lisää",
     "logout": "Kirjaudu ulos",
@@ -221,20 +234,15 @@
     "secondFactorAfterExternalLoginDesc": "Kun tämä on pois päältä, rekisteröityä toista todennustekijää pyydetään vain salasanan ja muiden paikallisten kirjautumistapojen jälkeen kuten ennenkin. Kun tämä on päällä, sitä pyydetään jokaisen kirjautumistavan jälkeen, mukaan lukien SSO ja LDAP.",
     "allowPasswordReset": "Salli salasanan nollaus",
     "allowPasswordResetDesc": "Nollauskoodi Docker-lokeista",
-    "auditForwardingTitle": "Reititä SIEM-järjestelmään",
-    "auditForwardingDesc": "Lähetä kopio jokaisesta tarkastuslokimerkinnästä ulkoiseen kerääjään NDJSON-muodossa. Paikalliset lokit pysyvät ainoana luotettavana lähteenä.",
-    "auditForwardingEnvNotice": "Ympäristömuuttuja voi myös määrittää reitityksen; täällä tallennettu URL-osoite on etusijalla.",
-    "auditForwardingToken": "Bearer-token (valinnainen)",
-    "auditForwardingTokenStored": "Bearer-token (tallennettu)",
-    "auditForwardingSaved": "Tarkastuslokien reitityksen asetukset tallennettu",
-    "auditForwardingSaveError": "Tarkastuslokien reitityksen asetusten tallennus epäonnistui",
+    "forceHttps": "Uudelleenohjaa HTTP-yhteydet HTTPS:ään",
+    "forceHttpsDesc": "Ohjaa tavalliset HTTP-yhteydet HTTPS:ään ja pyydä selaimia pysymään HTTPS-yhteyksissä. Toimii vain, jos Termix tarjoaa HTTPS-yhteydet itse.",
+    "forceHttpsNoTls": "HTTPS on poissa käytöstä Termixissä, joten mitään ei ohjata uudelleen. Ota ENABLE_SSL käyttöön tai määritä uudelleenohjaus käänteisproxyssäsi.",
+    "forceHttpsFailed": "HTTPS-asetusta ei voitu muuttaa",
     "sessionTimeout": "Istunnon aikakatkaisu",
     "hours": "tuntia",
     "sessionTimeoutRange": "Väh. 1 t, enin. 720 t",
-    "monitoringDefaults": "Valvontan oletusasetukset",
-    "statusCheck": "Tilantarkistus",
-    "sec": "s",
     "logLevel": "Lokitason asetus",
+    "usersCount_one": "{{count}} käyttäjä",
     "usersCount_other": "{{count}} käyttäjää",
     "searchUsers": "Hae käyttäjiä...",
     "noUsers": "Ei käyttäjiä",
@@ -245,6 +253,7 @@
     "roleName": "Nimi",
     "roleDisplayName": "Näyttönimi",
     "roleDescription": "Kuvaus",
+    "rolesCount_one": "{{count}} rooli",
     "rolesCount_other": "{{count}} roolia",
     "createRole": "Luo",
     "creating": "Luodaan...",
@@ -259,6 +268,7 @@
     "changeFile": "Vaihda",
     "import": "Tuo",
     "importing": "Tuodaan...",
+    "apiKeysCount_one": "{{count}} avain",
     "apiKeysCount_other": "{{count}} avainta",
     "apiKeysDocsLink": "Näytä dokumentaatio",
     "apiKeysCliHint": "Käytä API-avainta Termix CLI:n kanssa hallitaksesin palvelimia terminaalista.",
@@ -281,6 +291,7 @@
     "systemBadge": "JÄRJ.",
     "customBadge": "MUKAUTETTU",
     "youBadge": "SINÄ",
+    "sessionsActive_one": "{{count}} aktiivinen",
     "sessionsActive_other": "{{count}} aktiivista",
     "sessionActive": "Aktiivinen: {{time}}",
     "sessionExpires": "Vanhenee: {{time}}",
@@ -351,9 +362,6 @@
     "sessionTimeoutRange2": "Istunnon aikakatkaisun on oltava välillä 1–720 tuntia",
     "sessionTimeoutSaved": "Istunnon aikakatkaisu tallennettu",
     "sessionTimeoutSaveFailed": "Istunnon aikakatkaisun tallentaminen epäonnistui",
-    "monitoringIntervalInvalid": "Virheelliset väliarvot",
-    "monitoringSaved": "Valvontasetukset tallennettu",
-    "monitoringSaveFailed": "Valvontasetusten tallentaminen epäonnistui",
     "logLevelUpdateFailed": "Lokitasoasetuksen päivittäminen epäonnistui",
     "createUserRequired": "Käyttäjänimi ja salasana ovat pakollisia",
     "createUserPasswordTooShort": "Salasanan on oltava vähintään 6 merkkiä",
@@ -424,6 +432,7 @@
     "importError": "Tietokannan tuonti epäonnistui",
     "sectionHostDefaults": "Isäntien oletusarvot",
     "rolePermissions": {
+      "count_one": "{{count}} oikeus",
       "count_other": "{{count}} oikeutta",
       "editAction": "Muokkaa oikeuksia",
       "loadError": "Oikeuskatalogin lataaminen epäonnistui",
@@ -615,6 +624,7 @@
         "apiKeyCreatedWarning": "Avain luotu – kopioi se nyt, sillä sitä ei näytetä uudelleen.",
         "copyApiKey": "Kopioi API-avain",
         "copiedToClipboard": "Kopioitu leikepöydälle",
+        "apiKeyCount_one": "{{count}} avain",
         "apiKeyCount_other": "{{count}} avainta",
         "newKey": "Uusi avain",
         "noApiKeys": "Ei vielä API-avaimia.",
@@ -670,6 +680,9 @@
         "openUpdates": "Päivitykset"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Asettelu"
   },
   "plugins": {
     "manager": {
@@ -752,60 +765,6 @@
       "saveFailed": "Muutoksen tallennus epäonnistui"
     }
   },
-  "sync": {
-    "server": "Termix-palvelin",
-    "account": "Tili",
-    "status": "Tila",
-    "never": "ei koskaan",
-    "justNow": "juuri nyt",
-    "actionFailed": "Tuo ei toiminut. Yritä uudelleen.",
-    "unlinkedTitle": "Vain tämä laite",
-    "unlinkedBody": "Termix toimii itsenäisesti tällä laitteella. Linkitä se Termix-palvelimeesi pitääksesi kaiken synkronoituna.",
-    "unlinkedPointHosts": "Isäntäkonnesi, tunnistetietosi, koodinpätkäsi ja asetukset seuraavat sinua jokaisella laitteella.",
-    "unlinkedPointOffline": "Kaikki toimii edelleen, kun palvelimeen ei saada yhteyttä, ja synkronoi myöhemmin.",
-    "unlinkedPointAccount": "Kirjaudut sisään palvelintillilläsi, ja sinulle jaetut isäntäkonnet näkyvät myös täällä.",
-    "linkButton": "Linkitä palvelimeen",
-    "state": {
-      "syncing": "Synkronoidaan",
-      "offline": "Palvelimeen ei saada yhteyttä",
-      "error": "Synkronointi pysähtyi",
-      "signedOut": "Kirjauduttu ulos",
-      "synced": "Synkronoitu {{time}}"
-    },
-    "signInAgain": "Kirjaudu sisään uudelleen",
-    "syncNow": "Synkronoi nyt",
-    "unlink": "Irrota linkki",
-    "unlinked": "Tätä laitetta ei enää ole linkitetty",
-    "unlinkTitle": "Irroteta tämä laite?",
-    "unlinkDescription": "Synkronointi pysäytetään ja kirjautuminen palvelimelle lopetetaan. Muiden jakamat isäntäpalvelimet poistetaan tältä laitteesta joka tapauksessa.",
-    "unlinkKeepTitle": "Pidä tietoni täällä",
-    "unlinkKeepBody": "Isäntäpalvelimesi, tunnusasi ja asetukset pysyvät tällä laitteella ja toimivat itsenäisesti.",
-    "unlinkRemoveTitle": "Poista synkronoidut tiedot",
-    "unlinkRemoveBody": "Kaikki palvelimelta saatu data poistetaan tältä laitteelta. Vain tälle laitteelle säilytetyt isäntäpalvelimet pysyvät.",
-    "conflictsTitle": "Ristiriidat",
-    "conflictsDescription": "Nämä muutettiin sekä täällä että palvelimella samanaikaisesti. Palvelimen versio on käytössä. Pidä omasi lähettääksesi sen palvelimelle sen sijaan.",
-    "keepMine": "Pidä oma",
-    "keepServer": "Pidä palvelimen",
-    "errorsTitle": "Ei synkronoitu",
-    "errorsDescription": "Palvelin ei hyväksynyt näitä muutoksia. Ne pysyvät tällä laitteella.",
-    "errorPermission": "Tilisi palvelimella ei saa tehdä tätä muutosta.",
-    "retry": "Yritä uudelleen",
-    "whatSyncs": "Mitä synkronoidaan",
-    "whatSyncsDescription": "Kytke pois päältä kaikki, mitä haluat säilyttää vain tällä laitteella.",
-    "coreGroup": "Termix",
-    "notOnServer": "Palvelimella ei ole tätä",
-    "notOnDevice": "Ei vielä tällä laitteella",
-    "localOnlyHint": "Voit myös säilyttää yksittäisiä isäntäpalvelimia tai kansioita tällä laitteella niiden asetuksista.",
-    "originTitle": "Missä yhteydet alkavat",
-    "originDescription": "Yhdistä isäntäpalvelimiin tältä laitteelta tai palvelimen kautta. Voit muuttaa tätä isäntäpalvelimen kerrallaan.",
-    "originLocal": "Tämä laite",
-    "originRemote": "Palvelin",
-    "proxy": {
-      "title": "Käänteisproxy",
-      "description": "Tarvitaan vain, kun esimerkiksi Cloudflare Access tai kirjautumissivu on palvelimesi edessä.",
-      "saved": "Tallennettu"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Palvelimen isäntäoletukset",
     "titleUser": "Omat isäntäoletukset",
@@ -862,5 +821,18 @@
     "pickCredential": "Valitse muokattavat kirjautumistiedot",
     "pickDefaults": "Valitse muokattava oletustaso",
     "pickHint": "Kaikki yhteysasetukset löytyvät täältä ryhmiteltynä, jotta ne on helppo löytää."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Muuta brändäystä",
+      "description": "Määritä sovelluksen nimi, tagline ja logo, jotka näkyvät kaikille."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Paljonko haluat näytöllä?",
+    "presetIntro": "Valitse, kuinka paljon sisältöä näytetään.",
+    "presetChangeLater": "Voit vaihtaa esiasetuksia tai muuttaa yksittäisiä asetuksia myöhemmin Asetukset-osiosta kohdasta Käyttöliittymä.",
+    "appearanceTitle": "Tee siitä omaasi",
+    "appearanceIntro": "Valitse teema, korostusväri, fontti ja kieli. Muutokset näkyvät välittömästi, ja voit muuttaa niitä myöhemmin Asetukset-osiosta."
   }
 }

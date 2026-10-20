@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Disseny clàssic",
+    "description": "El disseny clàssic de Termix amb una barra d'icones, una barra lateral, una barra de pestanyes i un dock."
+  },
+  "layout": {
+    "name": "Clàssic",
+    "description": "Barra d'icones, barra lateral, barra de pestanyes i dock dret."
+  },
+  "tab": {
+    "dashboard": "Panell de control",
+    "manage": "Gestionar",
+    "settings": "Configuració"
+  },
   "common": {
     "more": "Més",
     "logout": "Tanca sessió",
@@ -221,21 +234,17 @@
     "secondFactorAfterExternalLoginDesc": "Si està desactivat, només es demana un segon factor registrat després d'inicis de sessió amb contrasenya i altres inicis de sessió locals, com abans. Si està activat, es demana després de cada mètode d'inici de sessió, incloent-hi SSO i LDAP.",
     "allowPasswordReset": "Permetre la recuperació de contrasenya",
     "allowPasswordResetDesc": "Codi de recuperació a través dels registres de Docker",
-    "auditForwardingTitle": "Reenviar al SIEM",
-    "auditForwardingDesc": "Enviar una còpia de cada entrada de registre d'auditoria a un col·lector extern en format NDJSON. Els registres locals continuen sent la font de veritat.",
-    "auditForwardingEnvNotice": "Una variable d'entorn també configura el reenviament; l'URL desada aquí té prioritat.",
-    "auditForwardingToken": "Token Bearer (opcional)",
-    "auditForwardingTokenStored": "Token Bearer (desat)",
-    "auditForwardingSaved": "Configuració de reenviament d'auditoria desada",
-    "auditForwardingSaveError": "No s'ha pogut desar la configuració de reenviament d'auditoria",
+    "forceHttps": "Redirigir HTTP a HTTPS",
+    "forceHttpsDesc": "Redirigeix el trànsit HTTP pla a HTTPS i demana als navegadors que es mantinguin en HTTPS. Només funciona mentre Termix serveix HTTPS directament.",
+    "forceHttpsNoTls": "HTTPS està desactivat a Termix, per la qual cosa no es redirigeix res. Activa ENABLE_SSL o redirigeix al teu proxy invers.",
+    "forceHttpsFailed": "No s'ha pogut canviar la configuració d'HTTPS",
     "sessionTimeout": "Temps d'expiració de la sessió",
     "hours": "hores",
     "sessionTimeoutRange": "Mín. 1h, màx. 720h",
-    "monitoringDefaults": "Valors predeterminats de monitoratge",
-    "statusCheck": "Comprovació d'estat",
-    "sec": "seg",
     "logLevel": "Nivell de registre",
-    "usersCount_other": "{{count}} usuari",
+    "usersCount_one": "{{count}} usuari",
+    "usersCount_many": "{{count}} usuaris",
+    "usersCount_other": "{{count}} usuaris",
     "searchUsers": "Cercar usuaris...",
     "noUsers": "Cap usuari",
     "noUsersMatch": "Cap usuari coincideix amb la vostra cerca",
@@ -245,7 +254,9 @@
     "roleName": "Nom",
     "roleDisplayName": "Nom visible",
     "roleDescription": "Descripció",
-    "rolesCount_other": "{{count}} rol",
+    "rolesCount_one": "{{count}} rol",
+    "rolesCount_many": "{{count}} rols",
+    "rolesCount_other": "{{count}} rols",
     "createRole": "Crear",
     "creating": "Creant...",
     "exportDatabase": "Exportar base de dades",
@@ -259,7 +270,9 @@
     "changeFile": "Canviar",
     "import": "Importar",
     "importing": "Important...",
-    "apiKeysCount_other": "{{count}} clau",
+    "apiKeysCount_one": "{{count}} clau",
+    "apiKeysCount_many": "{{count}} claus",
+    "apiKeysCount_other": "{{count}} claus",
     "apiKeysDocsLink": "Veure la documentació",
     "apiKeysCliHint": "Utilitza una clau API amb la CLI de Termix per gestionar servidors des del teu terminal.",
     "apiKeysCliLink": "Veure la documentació de la CLI",
@@ -281,7 +294,9 @@
     "systemBadge": "SIS",
     "customBadge": "PERSONALITZAT",
     "youBadge": "TU",
-    "sessionsActive_other": "{{count}} actius",
+    "sessionsActive_one": "{{count}} activa",
+    "sessionsActive_many": "{{count}} actives",
+    "sessionsActive_other": "{{count}} actives",
     "sessionActive": "Activa: {{time}}",
     "sessionExpires": "Cad: {{time}}",
     "revokeAll": "Totes",
@@ -351,9 +366,6 @@
     "sessionTimeoutRange2": "El temps d'expiració de la sessió ha de ser entre 1 i 720 hores",
     "sessionTimeoutSaved": "Temps d'expiració de la sessió desat",
     "sessionTimeoutSaveFailed": "No s'ha pogut desar el temps d'expiració de la sessió",
-    "monitoringIntervalInvalid": "Valors d'interval no vàlids",
-    "monitoringSaved": "Configuració de monitoratge desada",
-    "monitoringSaveFailed": "No s'ha pogut desar la configuració de monitoratge",
     "logLevelUpdateFailed": "No s'ha pogut actualitzar el nivell de registre",
     "createUserRequired": "El nom d'usuari i la contrasenya són obligatoris",
     "createUserPasswordTooShort": "La contrasenya ha de tenir almenys 6 caràcters",
@@ -424,7 +436,9 @@
     "importError": "Ha fallat la importació de la base de dades",
     "sectionHostDefaults": "Valors predeterminats dels amfitrions",
     "rolePermissions": {
-      "count_other": "{{count}} permís",
+      "count_one": "{{count}} permís",
+      "count_many": "{{count}} permisos",
+      "count_other": "{{count}} permisos",
       "editAction": "Edita els permisos",
       "loadError": "No s'ha pogut carregar el catàleg de permisos",
       "saved": "Permisos del rol desats",
@@ -615,7 +629,9 @@
         "apiKeyCreatedWarning": "Clau creada: copia-la ara, no es mostrarà de nou.",
         "copyApiKey": "Copia la clau API",
         "copiedToClipboard": "Copiat al porta-retalls",
-        "apiKeyCount_other": "{{count}} clau",
+        "apiKeyCount_one": "{{count}} clau",
+        "apiKeyCount_many": "{{count}} claus",
+        "apiKeyCount_other": "{{count}} claus",
         "newKey": "Clau nova",
         "noApiKeys": "Encara no hi ha claus API.",
         "apiKeyActive": "Activa",
@@ -670,6 +686,9 @@
         "openUpdates": "Actualitzacions"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Disseny"
   },
   "plugins": {
     "manager": {
@@ -752,60 +771,6 @@
       "saveFailed": "No s'ha pogut desar el canvi"
     }
   },
-  "sync": {
-    "server": "Servidor Termix",
-    "account": "Compte",
-    "status": "Estat",
-    "never": "mai",
-    "justNow": "ara mateix",
-    "actionFailed": "No ha funcionat. Torna-ho a provar.",
-    "unlinkedTitle": "Només aquest dispositiu",
-    "unlinkedBody": "Termix funciona de manera independent en aquest dispositiu. Vincula'l al teu servidor Termix per mantenir tot al dia.",
-    "unlinkedPointHosts": "Els teus amfitrions, credencials, fragments i configuracions et segueixen a cada dispositiu.",
-    "unlinkedPointOffline": "Tot continua funcionant quan el servidor no és accessible i s'actualitza més tard.",
-    "unlinkedPointAccount": "Inicis sessió amb el teu compte del servidor, i els amfitrions que la gent ha compartit amb tu també apareixen aquí.",
-    "linkButton": "Vincula a un servidor",
-    "state": {
-      "syncing": "Sincronitzant",
-      "offline": "Servidor no accessible",
-      "error": "Sincronització aturada",
-      "signedOut": "Sessió tancada",
-      "synced": "Sincronitzat {{time}}"
-    },
-    "signInAgain": "Inicia sessió de nou",
-    "syncNow": "Sincronitza ara",
-    "unlink": "Desvincula",
-    "unlinked": "Aquest dispositiu ja no està vinculat",
-    "unlinkTitle": "Vols desvincular aquest dispositiu?",
-    "unlinkDescription": "S'atura la sincronització i es tanca la sessió del servidor. Els amfitrions compartits amb tu per altres persones s'eliminen d'aquest dispositiu en qualsevol cas.",
-    "unlinkKeepTitle": "Conserva les meves dades aquí",
-    "unlinkKeepBody": "Els teus amfitrions, credencials i configuracions es mantenen en aquest dispositiu i continuen funcionant de manera independent.",
-    "unlinkRemoveTitle": "Elimina les dades sincronitzades",
-    "unlinkRemoveBody": "Tot el que prové del servidor s'elimina d'aquest dispositiu. Només es mantenen els amfitrions conservats en aquest dispositiu.",
-    "conflictsTitle": "Conflictes",
-    "conflictsDescription": "Aquests s'han modificat aquí i al servidor al mateix temps. La versió del servidor està en ús. Conserva la teva per enviar-la al servidor en el seu lloc.",
-    "keepMine": "Conserva la meva",
-    "keepServer": "Conserva la del servidor",
-    "errorsTitle": "No sincronitzat",
-    "errorsDescription": "El servidor no ha acceptat aquests canvis. Es mantenen en aquest dispositiu.",
-    "errorPermission": "El teu compte al servidor no té permís per fer aquest canvi.",
-    "retry": "Torna-ho a provar",
-    "whatSyncs": "Què es sincronitza",
-    "whatSyncsDescription": "Desactiva el que vulguis mantenir només en aquest dispositiu.",
-    "coreGroup": "Termix",
-    "notOnServer": "El servidor no té això",
-    "notOnDevice": "Encara no en aquest dispositiu",
-    "localOnlyHint": "També pots mantenir amfitrions o carpetes individuals en aquest dispositiu des de la seva configuració.",
-    "originTitle": "D'on comencen les connexions",
-    "originDescription": "Connecta't als amfitrions des d'aquest dispositiu o a través del servidor. Pots canviar-ho per amfitrió.",
-    "originLocal": "Aquest dispositiu",
-    "originRemote": "El servidor",
-    "proxy": {
-      "title": "Proxy invers",
-      "description": "Només necessari quan alguna cosa com Cloudflare Access o una pàgina d'inici de sessió es troba davant del teu servidor.",
-      "saved": "Desat"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Valors predeterminats dels amfitrions del servidor",
     "titleUser": "Els meus valors predeterminats d'amfitrió",
@@ -862,5 +827,18 @@
     "pickCredential": "Tria una credencial per editar",
     "pickDefaults": "Tria un nivell de valors predeterminats per editar",
     "pickHint": "Tot el que fa referència a una connexió es troba aquí, agrupat perquè puguis trobar-ho fàcilment."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Canviar la marca",
+      "description": "Estableix el nom de l'aplicació, l'eslògan i el logotip que es mostren a tothom."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Quants elements vols veure a la pantalla?",
+    "presetIntro": "Tria quants elements es mostren a la pantalla.",
+    "presetChangeLater": "Pots canviar els presets o qualsevol configuració individual més tard a Configuració, sota Interfície.",
+    "appearanceTitle": "Fes-lo teu",
+    "appearanceIntro": "Tria un tema, un color d'accentuació, una tipografia i la teva llengua. Els canvis es mostren immediatament i els pots modificar més tard a Configuració."
   }
 }

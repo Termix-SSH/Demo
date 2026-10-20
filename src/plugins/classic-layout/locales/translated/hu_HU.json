@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Klasszikus elrendezés",
+    "description": "A klasszikus Termix elrendezés ikonokkal, oldalsávval, fülcsíkkal és dokkolóval."
+  },
+  "layout": {
+    "name": "Klasszikus",
+    "description": "Ikon sáv, oldalsáv, fülcsík és jobb oldali dokkoló."
+  },
+  "tab": {
+    "dashboard": "Irányítópult",
+    "manage": "Kezelés",
+    "settings": "Beállítások"
+  },
   "common": {
     "more": "Továbbiak",
     "logout": "Kijelentkezés",
@@ -221,20 +234,15 @@
     "secondFactorAfterExternalLoginDesc": "Ha ki van kapcsolva, a regisztrált második hitelesítési tényezőt csak jelszavas és egyéb helyi bejelentkezések után kérdezi, mint eddig. Ha be van kapcsolva, minden bejelentkezési módszer után kérdezi, beleértve az SSO-t és az LDAP-ot is.",
     "allowPasswordReset": "Jelszóvisszaállítás engedélyezése",
     "allowPasswordResetDesc": "Visszaállítási kód a Docker naplóin keresztül",
-    "auditForwardingTitle": "SIEM-re továbbítás",
-    "auditForwardingDesc": "Minden ellenőrzési bejegyzés másolatának küldése egy külső gyűjtőnek NDJSON formátumban. A helyi naplók maradnak az igazság forrása.",
-    "auditForwardingEnvNotice": "Egy környezeti változó is konfigurálja a továbbítást; az itt mentett URL élvez elsőbbséget.",
-    "auditForwardingToken": "Bearer token (opcionális)",
-    "auditForwardingTokenStored": "Bearer token (mentve)",
-    "auditForwardingSaved": "Ellenőrzési továbbítási beállítások mentve",
-    "auditForwardingSaveError": "Az ellenőrzési továbbítási beállítások mentése sikertelen",
+    "forceHttps": "HTTP átirányítása HTTPS-re",
+    "forceHttpsDesc": "Átirányítja a sima HTTP kéréseket HTTPS-re, és utasítja a böngészőket, hogy maradjon HTTPS-en. Csak akkor működik, ha maga a Termix is HTTPS-en szolgálja ki a tartalmat",
+    "forceHttpsNoTls": "A HTTPS ki van kapcsolva a Termixben, így nincs átirányítás. Kapcsold be az ENABLE_SSL beállítást, vagy állítsd be az átirányítást a reverse proxyban",
+    "forceHttpsFailed": "Nem sikerült módosítani a HTTPS beállítást",
     "sessionTimeout": "Munkamenet időtúllépés",
     "hours": "óra",
     "sessionTimeoutRange": "Min. 1 óra, max. 720 óra",
-    "monitoringDefaults": "Monitorozás alapértelmezései",
-    "statusCheck": "Státuszellenőrzés",
-    "sec": "mp",
     "logLevel": "Naplózási szint",
+    "usersCount_one": "{{count}} felhasználó",
     "usersCount_other": "{{count}} felhasználó",
     "searchUsers": "Felhasználók keresése...",
     "noUsers": "Nincsenek felhasználók",
@@ -245,6 +253,7 @@
     "roleName": "Név",
     "roleDisplayName": "Megjelenítési név",
     "roleDescription": "Leírás",
+    "rolesCount_one": "{{count}} szerepkör",
     "rolesCount_other": "{{count}} szerepkör",
     "createRole": "Létrehozás",
     "creating": "Létrehozás...",
@@ -259,6 +268,7 @@
     "changeFile": "Váltás",
     "import": "Importálás",
     "importing": "Importálás...",
+    "apiKeysCount_one": "{{count}} kulcs",
     "apiKeysCount_other": "{{count}} kulcs",
     "apiKeysDocsLink": "Dokumentáció megtekintése",
     "apiKeysCliHint": "Használj API-kulcsot a Termix CLI-vel a szerverek kezeléséhez a terminálból.",
@@ -281,6 +291,7 @@
     "systemBadge": "RENDSZER",
     "customBadge": "EGYEDI",
     "youBadge": "ÖN",
+    "sessionsActive_one": "{{count}} aktív",
     "sessionsActive_other": "{{count}} aktív",
     "sessionActive": "Aktív: {{time}}",
     "sessionExpires": "Lejárat: {{time}}",
@@ -351,9 +362,6 @@
     "sessionTimeoutRange2": "A munkamenet időtúllépésének 1 és 720 óra között kell lennie",
     "sessionTimeoutSaved": "A munkamenet időtúllépése mentve",
     "sessionTimeoutSaveFailed": "A munkamenet időtúllépésének mentése sikertelen",
-    "monitoringIntervalInvalid": "Érvénytelen intervallumértékek",
-    "monitoringSaved": "A monitorozási beállítások mentve",
-    "monitoringSaveFailed": "A monitorozási beállítások mentése sikertelen",
     "logLevelUpdateFailed": "A naplózási szint frissítése sikertelen",
     "createUserRequired": "A felhasználónév és a jelszó megadása kötelező",
     "createUserPasswordTooShort": "A jelszónak legalább 6 karakter hosszúnak kell lennie",
@@ -424,6 +432,7 @@
     "importError": "Az adatbázis importálása sikertelen",
     "sectionHostDefaults": "Host alapértelmezések",
     "rolePermissions": {
+      "count_one": "{{count}} jogosultság",
       "count_other": "{{count}} jogosultság",
       "editAction": "Jogosultságok szerkesztése",
       "loadError": "A jogosultságkatalógus betöltése sikertelen",
@@ -615,6 +624,7 @@
         "apiKeyCreatedWarning": "Kulcs létrehozva – másolja le most, mert nem lesz újra megjelenítve.",
         "copyApiKey": "API-kulcs másolása",
         "copiedToClipboard": "Vágólapra másolva",
+        "apiKeyCount_one": "{{count}} kulcs",
         "apiKeyCount_other": "{{count}} kulcs",
         "newKey": "Új kulcs",
         "noApiKeys": "Még nincsenek API-kulcsok.",
@@ -670,6 +680,9 @@
         "openUpdates": "Frissítések"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Elrendezés"
   },
   "plugins": {
     "manager": {
@@ -752,60 +765,6 @@
       "saveFailed": "Nem sikerült menteni a változtatást"
     }
   },
-  "sync": {
-    "server": "Termix szerver",
-    "account": "Fiók",
-    "status": "Állapot",
-    "never": "soha",
-    "justNow": "épp most",
-    "actionFailed": "Ez nem működött. Próbáld újra.",
-    "unlinkedTitle": "Csak ezen az eszközön",
-    "unlinkedBody": "A Termix önállóan működik ezen az eszközön. Kapcsold össze a Termix szervereddel, hogy minden szinkronban maradjon.",
-    "unlinkedPointHosts": "A hosztjaid, hitelesítő adataid, kódrészleteid és beállításaid követnek minden eszközre.",
-    "unlinkedPointOffline": "Minden továbbra is működik, ha a szerver nem érhető el, és később felzárkózik.",
-    "unlinkedPointAccount": "A szerver fiókoddal jelentkezel be, és a veled megosztott hosztok is megjelennek itt.",
-    "linkButton": "Összekötés egy szerverrel",
-    "state": {
-      "syncing": "Szinkronizálás",
-      "offline": "A szerver nem érhető el",
-      "error": "A szinkron leállt",
-      "signedOut": "Kijelentkezve",
-      "synced": "Szinkronizálva {{time}}"
-    },
-    "signInAgain": "Jelentkezz be újra",
-    "syncNow": "Szinkronizálás most",
-    "unlink": "Leválasztás",
-    "unlinked": "Ez az eszköz már nincs összekötve",
-    "unlinkTitle": "Ezt az eszközt leválasztja?",
-    "unlinkDescription": "A szinkronizálás leáll, és kijelentkezik a szerverről. A mások által megosztott gazdagépek mindenképpen eltávolításra kerülnek erről az eszközről.",
-    "unlinkKeepTitle": "Adatok megtartása itt",
-    "unlinkKeepBody": "A gazdagépek, hitelesítő adatok és beállítások itt maradnak az eszközön, és önállóan működnek tovább.",
-    "unlinkRemoveTitle": "Szinkronizált adatok eltávolítása",
-    "unlinkRemoveBody": "A szerverről származó összes adat eltávolításra kerül erről az eszközről. Csak azok a gazdagépek maradnak, amelyeket kifejezetten itt tartott meg.",
-    "conflictsTitle": "Ütközések",
-    "conflictsDescription": "Ezeket egyszerre módosították itt és a szerveren is. Jelenleg a szerveri verzió van használatban. A saját verzió megtartásával azt küldheti a szervernek.",
-    "keepMine": "Saját verzió megtartása",
-    "keepServer": "Szerveri verzió megtartása",
-    "errorsTitle": "Nem szinkronizált",
-    "errorsDescription": "A szerver nem fogadta el ezeket a módosításokat. Ezek itt maradnak az eszközön.",
-    "errorPermission": "A szerveri fiókja nem jogosult erre a módosításra.",
-    "retry": "Újrapróbálkozás",
-    "whatSyncs": "Mi szinkronizálódik",
-    "whatSyncsDescription": "Kapcsolja ki azokat az elemeket, amelyeket csak ezen az eszközön szeretne megtartani.",
-    "coreGroup": "Termix",
-    "notOnServer": "A szerveren ez nem elérhető",
-    "notOnDevice": "Még nincs ezen az eszközön",
-    "localOnlyHint": "Egyes gazdagépeket vagy mappákat a beállításaikon keresztül is megtarthat itt az eszközön.",
-    "originTitle": "A kapcsolatok eredete",
-    "originDescription": "Csatlakozhat a gazdagépekhez erről az eszközről, vagy a szerveren keresztül. Ezt gazdagépenként módosíthatja.",
-    "originLocal": "Ez az eszköz",
-    "originRemote": "A szerver",
-    "proxy": {
-      "title": "Fordított proxy",
-      "description": "Csak akkor szükséges, ha a szervere előtt valami, például a Cloudflare Access vagy egy bejelentkezési oldal áll.",
-      "saved": "Mentve"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Szerver hoszt alapértelmezései",
     "titleUser": "Saját hoszt alapértelmezéseim",
@@ -862,5 +821,18 @@
     "pickCredential": "Válasszon egy szerkesztendő hitelesítő adatot",
     "pickDefaults": "Válasszon egy szerkesztendő alapértelmezett szintet",
     "pickHint": "A csatlakozással kapcsolatos minden itt található, csoportosítva a könnyebb megtalálhatóság érdekében."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Márka módosítása",
+      "description": "Állítsd be az alkalmazás nevét, alfejezetét és logóját, amelyet mindenki látni fog."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Mennyit szeretnél látni a képernyőn?",
+    "presetIntro": "Válaszd ki, mennyi jelenjen meg a képernyőn.",
+    "presetChangeLater": "A beállításokat később bármikor módosíthatja a Beállítások menüben, az Felület résznél.",
+    "appearanceTitle": "Tegye sajátjává",
+    "appearanceIntro": "Válassz témát, kiemelő színt, betűtípust és nyelvet. A módosítások azonnal megjelennek, később pedig a Beállításokban bármikor megváltoztathatod őket."
   }
 }

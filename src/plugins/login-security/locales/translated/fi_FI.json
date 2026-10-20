@@ -1,0 +1,51 @@
+{
+  "name": "Kirjautumisturvallisuus",
+  "permissions": {
+    "manage": {
+      "title": "Hallitse kirjautumisturvallisuutta",
+      "description": "Näytä toisen tekijän tila ja muuta kirjautumisturvallisuuden asetuksia."
+    }
+  },
+  "settings": {
+    "group": {
+      "sessions": "Istunnot",
+      "secondFactor": "Toinen tekijä"
+    },
+    "admin": {
+      "idleTimeoutMinutes": {
+        "label": "Kirjaudu ulos, kun ei toimintaa minuutteja",
+        "description": "Kirjaa käyttäjät ulos tämän määrän minuuttien toimettomuuden jälkeen. Palvelin päättää istunnon myös, joten kopioitu tunnus lakkaa toimimasta. Arvo 0 poistaa toiminnon käytöstä."
+      },
+      "maxSessionHours": {
+        "label": "Pisin istunto tunneissa",
+        "description": "Istunnot päättyvät tämän määrän tuntien jälkeen, vaikka \"Muista minut\" olisi valittu. Arvo 0 tarkoittaa, ettei ole ylimääräistä aikarajaa."
+      },
+      "rememberDevice": {
+        "label": "Salli \"Muista minut\"",
+        "description": "Kun muista-laite on pois päältä, kirjautumisessa ei näytä \"Muista minut\"-vaihtoehtoa ja aiemmin muistetuilla laitteilla kirjautuminen vaatii aina toisen todennustavan."
+      },
+      "secondFactor": {
+        "label": "Vaadi toinen todennustapa",
+        "description": "Käyttäjien, joilla ei ole toista todennustapaa, on määritettävä se kirjautumisen jälkeen ennen Termixin käyttöä. PIN-koodilla tai sormenjäljellä tehty passkey-kirjautuminen kelpaa.",
+        "off": "Pois päältä",
+        "newDevice": "Uudella laitteella",
+        "always": "Jokaisella kirjautumisella"
+      },
+      "applyToExternal": {
+        "label": "Myös yksittäiselle kirjautumiselle",
+        "description": "Pyydä toista todennustapaa myös SSO- ja LDAP-kirjautumisten jälkeen. Jätä pois päältä, jos identiteettipalveluntarjoajasi pyytää sitä jo."
+      }
+    }
+  },
+  "status": {
+    "factors": "Käytettävissä olevat toiset todennustavat: {{factors}}",
+    "noFactors": "Toista todennustapaa ei ole asennettu. Asenna lisäosa, kuten TOTP tai WebAuthn, jotta käyttäjät voivat määrittää sen.",
+    "failed": "Toimintatapoja ei voitu tarkistaa."
+  },
+  "setup": {
+    "title": "Määritä toinen todennustapa",
+    "body": "Ylläpitäjän vaatima toinen todennustapa puuttuu. Määritä se alla jatkaaksesi Termixin käyttöä.",
+    "none": "Ei mitään määritettävää? Pyydä ylläpitäjää asentamaan toisen todennustavan lisäosa.",
+    "signOut": "Kirjaudu ulos"
+  }
+}

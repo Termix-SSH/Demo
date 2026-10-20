@@ -1,0 +1,51 @@
+{
+  "name": "Bezpieczeństwo logowania",
+  "permissions": {
+    "manage": {
+      "title": "Zarządzaj bezpieczeństwem logowania",
+      "description": "Sprawdzaj status drugiego czynnika uwierzytelniającego i zmieniaj ustawienia bezpieczeństwa logowania."
+    }
+  },
+  "settings": {
+    "group": {
+      "sessions": "Sesje",
+      "secondFactor": "Drugi czynnik uwierzytelniający"
+    },
+    "admin": {
+      "idleTimeoutMinutes": {
+        "label": "Wyloguj po bezczynności (minuty)",
+        "description": "Wyloguj użytkowników po podanej liczbie minut bezczynności. Serwer również kończy sesję, więc skopiowany token przestaje działać. Wartość 0 wyłącza tę opcję."
+      },
+      "maxSessionHours": {
+        "label": "Maksymalny czas trwania sesji (godziny)",
+        "description": "Sesje kończą się po podanej liczbie godzin, nawet przy zaznaczeniu opcji „Zapamiętaj mnie”. Wartość 0 oznacza brak dodatkowego limitu."
+      },
+      "rememberDevice": {
+        "label": "Zezwól na opcję „Zapamiętaj mnie”",
+        "description": "Wyłączenie ukrywa opcję „Zapamiętaj mnie” przy logowaniu i ignoruje wcześniej zapamiętane urządzenia, więc przy każdym logowaniu wymagane jest podanie drugiego czynnika uwierzytelniającego."
+      },
+      "secondFactor": {
+        "label": "Wymagaj drugiego czynnika uwierzytelniającego",
+        "description": "Osoby, które go nie mają, muszą go skonfigurować po zalogowaniu, zanim będą mogły korzystać z Termix. Zalogowanie się za pomocą klucza dostępu z PIN-em lub odciskiem palca jest uznawane za spełnienie tego wymogu.",
+        "off": "Wyłączone",
+        "newDevice": "Na nowym urządzeniu",
+        "always": "Przy każdym logowaniu"
+      },
+      "applyToExternal": {
+        "label": "Również dla logowania jednokrotnego",
+        "description": "Wymagaj drugiego czynnika uwierzytelniającego również po logowaniu przez SSO i LDAP. Pozostaw wyłączone, jeśli Twój dostawca tożsamości już go wymaga."
+      }
+    }
+  },
+  "status": {
+    "factors": "Dostępne drugie czynniki uwierzytelniające: {{factors}}",
+    "noFactors": "Nie zainstalowano żadnego drugiego czynnika uwierzytelniającego. Zainstaluj wtyczkę, taką jak TOTP lub WebAuthn, aby użytkownicy mogli go skonfigurować.",
+    "failed": "Nie udało się sprawdzić, które drugie czynniki uwierzytelniające są zainstalowane."
+  },
+  "setup": {
+    "title": "Skonfiguruj drugi czynnik uwierzytelniający",
+    "body": "Twój administrator wymaga drugiego czynnika uwierzytelniającego do logowania. Skonfiguruj go poniżej, aby nadal korzystać z Termix.",
+    "none": "Brak opcji konfiguracji? Poproś administratora o zainstalowanie wtyczki drugiego czynnika uwierzytelniającego.",
+    "signOut": "Wyloguj się"
+  }
+}

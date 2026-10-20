@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "क्लासिक लेआउट",
+    "description": "आइकन रेल, साइडबार, टैब बार और डॉक के साथ क्लासिक Termix लेआउट।"
+  },
+  "layout": {
+    "name": "क्लासिक",
+    "description": "आइकन रेल, साइडबार, टैब बार और दायाँ डॉक।"
+  },
+  "tab": {
+    "dashboard": "डैशबोर्ड",
+    "manage": "प्रबंधित करें",
+    "settings": "सेटिंग्स"
+  },
   "common": {
     "more": "और",
     "logout": "लॉगआउट",
@@ -221,20 +234,15 @@
     "secondFactorAfterExternalLoginDesc": "बंद होने पर, एनरोल किया गया दूसरा कारक केवल पासवर्ड और अन्य स्थानीय लॉगिन के बाद पूछा जाता है, जैसा कि पहले था। चालू होने पर, इसे हर लॉगिन विधि के बाद पूछा जाता है, जिसमें SSO और LDAP शामिल हैं।",
     "allowPasswordReset": "पासवर्ड रीसेट की अनुमति दें",
     "allowPasswordResetDesc": "Docker लॉग के माध्यम से रीसेट कोड",
-    "auditForwardingTitle": "SIEM को फॉरवर्ड करें",
-    "auditForwardingDesc": "हर ऑडिट एंट्री की एक कॉपी को NDJSON के रूप में एक बाहरी कलेक्टर को भेजें। स्थानीय लॉग सत्य का स्रोत बने रहते हैं।",
-    "auditForwardingEnvNotice": "एक पर्यावरण चर भी फॉरवर्डिंग कॉन्फ़िगर करता है; यहाँ सहेजा गया URL प्राथमिकता रखता है।",
-    "auditForwardingToken": "बियरर टोकन (वैकल्पिक)",
-    "auditForwardingTokenStored": "बियरर टोकन (सहेजा गया)",
-    "auditForwardingSaved": "ऑडिट फॉरवर्डिंग सेटिंग्स सहेजी गईं",
-    "auditForwardingSaveError": "ऑडिट फॉरवर्डिंग सेटिंग्स सहेजने में विफल",
+    "forceHttps": "HTTP को HTTPS पर रीडायरेक्ट करें",
+    "forceHttpsDesc": "सादे HTTP को HTTPS पर भेजें और ब्राउज़रों से HTTPS पर रहने के लिए कहें। यह तभी काम करता है जब Termix स्वयं HTTPS सर्व करता हो",
+    "forceHttpsNoTls": "Termix में HTTPS बंद है, इसलिए कुछ भी रीडायरेक्ट नहीं हो रहा है। ENABLE_SSL चालू करें या अपने रिवर्स प्रॉक्सी में रीडायरेक्ट सेट करें",
+    "forceHttpsFailed": "HTTPS सेटिंग बदल नहीं सकी",
     "sessionTimeout": "सत्र टाइमआउट",
     "hours": "घंटे",
     "sessionTimeoutRange": "न्यूनतम 1 घंटा, अधिकतम 720 घंटे",
-    "monitoringDefaults": "मॉनिटरिंग डिफ़ॉल्ट",
-    "statusCheck": "स्थिति जाँच",
-    "sec": "सेकंड",
     "logLevel": "लॉग स्तर",
+    "usersCount_one": "{{count}} उपयोगकर्ता",
     "usersCount_other": "{{count}} उपयोगकर्ता",
     "searchUsers": "उपयोगकर्ता खोजें...",
     "noUsers": "कोई उपयोगकर्ता नहीं",
@@ -245,7 +253,8 @@
     "roleName": "नाम",
     "roleDisplayName": "प्रदर्शन नाम",
     "roleDescription": "विवरण",
-    "rolesCount_other": "{{count}} भूमिकाएं",
+    "rolesCount_one": "{{count}} भूमिका",
+    "rolesCount_other": "{{count}} भूमिकाएँ",
     "createRole": "बनाएं",
     "creating": "बना रहे हैं...",
     "exportDatabase": "डेटाबेस निर्यात करें",
@@ -259,7 +268,8 @@
     "changeFile": "बदलें",
     "import": "आयात",
     "importing": "आयात कर रहे हैं...",
-    "apiKeysCount_other": "{{count}} कुंजियां",
+    "apiKeysCount_one": "{{count}} कुंजी",
+    "apiKeysCount_other": "{{count}} कुंजियाँ",
     "apiKeysDocsLink": "दस्तावेज़ देखें",
     "apiKeysCliHint": "अपने टर्मिनल से सर्वर प्रबंधित करने के लिए Termix CLI के साथ एक API कुंजी का उपयोग करें।",
     "apiKeysCliLink": "CLI दस्तावेज़ देखें",
@@ -281,6 +291,7 @@
     "systemBadge": "सिस्टम",
     "customBadge": "कस्टम",
     "youBadge": "आप",
+    "sessionsActive_one": "{{count}} सक्रिय",
     "sessionsActive_other": "{{count}} सक्रिय",
     "sessionActive": "सक्रिय: {{time}}",
     "sessionExpires": "समाप्ति: {{time}}",
@@ -351,9 +362,6 @@
     "sessionTimeoutRange2": "सत्र टाइमआउट 1 से 720 घंटों के बीच होना चाहिए",
     "sessionTimeoutSaved": "सत्र टाइमआउट सहेजा गया",
     "sessionTimeoutSaveFailed": "सत्र टाइमआउट सहेजने में विफल",
-    "monitoringIntervalInvalid": "अमान्य अंतराल मान",
-    "monitoringSaved": "मॉनिटरिंग सेटिंग्स सहेजी गईं",
-    "monitoringSaveFailed": "मॉनिटरिंग सेटिंग्स सहेजने में विफल",
     "logLevelUpdateFailed": "लॉग स्तर अपडेट करने में विफल",
     "createUserRequired": "उपयोगकर्ता नाम और पासवर्ड आवश्यक हैं",
     "createUserPasswordTooShort": "पासवर्ड कम से कम 6 अक्षरों का होना चाहिए",
@@ -424,7 +432,8 @@
     "importError": "डेटाबेस आयात विफल",
     "sectionHostDefaults": "होस्ट डिफ़ॉल्ट",
     "rolePermissions": {
-      "count_other": "{{count}} अनुमतियां",
+      "count_one": "{{count}} अनुमति",
+      "count_other": "{{count}} अनुमतियाँ",
       "editAction": "अनुमतियाँ संपादित करें",
       "loadError": "अनुमति कैटलॉग लोड करने में विफल",
       "saved": "भूमिका अनुमतियाँ सहेजी गईं",
@@ -615,7 +624,8 @@
         "apiKeyCreatedWarning": "की बनाया गया - इसे अभी कॉपी करें, यह फिर से नहीं दिखाया जाएगा।",
         "copyApiKey": "API की कॉपी करें",
         "copiedToClipboard": "क्लिपबोर्ड पर कॉपी किया गया",
-        "apiKeyCount_other": "{{count}} कुंजियां",
+        "apiKeyCount_one": "{{count}} key",
+        "apiKeyCount_other": "{{count}} keys",
         "newKey": "नया की",
         "noApiKeys": "अभी तक कोई API की नहीं है।",
         "apiKeyActive": "सक्रिय",
@@ -670,6 +680,9 @@
         "openUpdates": "अपडेट"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "लेआउट"
   },
   "plugins": {
     "manager": {
@@ -752,60 +765,6 @@
       "saveFailed": "बदलाव सहेजा नहीं जा सका"
     }
   },
-  "sync": {
-    "server": "Termix सर्वर",
-    "account": "खाता",
-    "status": "स्थिति",
-    "never": "कभी नहीं",
-    "justNow": "बस अभी",
-    "actionFailed": "यह काम नहीं किया। पुनः प्रयास करें।",
-    "unlinkedTitle": "केवल इस डिवाइस पर",
-    "unlinkedBody": "Termix इस डिवाइस पर अपने आप काम करता है। सब कुछ सिंक रखने के लिए इसे अपने Termix सर्वर से लिंक करें।",
-    "unlinkedPointHosts": "आपके होस्ट, क्रेडेंशियल, स्निपेट और सेटिंग्स आपके साथ हर डिवाइस पर चलते हैं।",
-    "unlinkedPointOffline": "जब सर्वर तक पहुंच नहीं पाई जाती, तब भी सब कुछ काम करता है, और बाद में सिंक हो जाता है।",
-    "unlinkedPointAccount": "आप अपने सर्वर खाते से साइन इन करते हैं, और जो होस्ट लोग आपके साथ शेयर करते हैं, वे भी यहाँ दिखते हैं।",
-    "linkButton": "सर्वर से लिंक करें",
-    "state": {
-      "syncing": "सिंक हो रहा है",
-      "offline": "सर्वर तक पहुंच नहीं पाया जा रहा",
-      "error": "सिंक रुक गया",
-      "signedOut": "साइन आउट",
-      "synced": "{{time}} को सिंक हुआ"
-    },
-    "signInAgain": "फिर से साइन इन करें",
-    "syncNow": "अभी सिंक करें",
-    "unlink": "अनलिंक करें",
-    "unlinked": "यह डिवाइस अब लिंक नहीं है",
-    "unlinkTitle": "इस डिवाइस को अनलिंक करें?",
-    "unlinkDescription": "इससे सिंकिंग बंद हो जाएगी और सर्वर से साइन आउट हो जाएगा। अन्य लोगों द्वारा आपके साथ साझा किए गए होस्ट किसी भी स्थिति में इस डिवाइस से हटा दिए जाएंगे।",
-    "unlinkKeepTitle": "मेरा डेटा यहाँ रखें",
-    "unlinkKeepBody": "आपके होस्ट, क्रेडेंशियल्स और सेटिंग्स इस डिवाइस पर रहेंगे और स्वतंत्र रूप से काम करते रहेंगे।",
-    "unlinkRemoveTitle": "सिंक किया गया डेटा हटाएं",
-    "unlinkRemoveBody": "सर्वर से आया हुआ सब कुछ इस डिवाइस से हटा दिया जाएगा। केवल वे होस्ट रहेंगे जो इस डिवाइस पर ही रखे गए हैं।",
-    "conflictsTitle": "संघर्ष",
-    "conflictsDescription": "ये यहाँ और सर्वर पर एक ही समय में बदले गए थे। सर्वर संस्करण का उपयोग किया जा रहा है। सर्वर को भेजने के लिए अपना संस्करण रखें।",
-    "keepMine": "मेरा रखें",
-    "keepServer": "सर्वर रखें",
-    "errorsTitle": "सिंक नहीं हुआ",
-    "errorsDescription": "सर्वर ने ये परिवर्तन स्वीकार नहीं किए। ये इस डिवाइस पर ही रहेंगे।",
-    "errorPermission": "सर्वर पर आपके खाते को इस परिवर्तन को करने की अनुमति नहीं है।",
-    "retry": "पुनः प्रयास करें",
-    "whatSyncs": "क्या सिंक होता है",
-    "whatSyncsDescription": "जो भी आप केवल इस डिवाइस पर रखना चाहते हैं, उसे बंद कर दें।",
-    "coreGroup": "Termix",
-    "notOnServer": "सर्वर पर यह उपलब्ध नहीं है",
-    "notOnDevice": "इस डिवाइस पर अभी तक नहीं",
-    "localOnlyHint": "आप उनके सेटिंग्स से एकल होस्ट या फोल्डर्स को भी इस डिवाइस पर ही रख सकते हैं।",
-    "originTitle": "कनेक्शन कहाँ से शुरू होते हैं",
-    "originDescription": "इस डिवाइस से होस्ट से कनेक्ट करें, या सर्वर के माध्यम से। आप इसे प्रति होस्ट बदल सकते हैं।",
-    "originLocal": "यह डिवाइस",
-    "originRemote": "सर्वर",
-    "proxy": {
-      "title": "रिवर्स प्रॉक्सी",
-      "description": "केवल तभी आवश्यक जब Cloudflare Access या लॉगिन पेज जैसी कोई चीज़ आपके सर्वर के सामने हो।",
-      "saved": "सहेजा गया"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "सर्वर होस्ट डिफ़ॉल्ट",
     "titleUser": "मेरी होस्ट डिफ़ॉल्ट",
@@ -862,5 +821,18 @@
     "pickCredential": "संपादित करने के लिए एक क्रेडेंशियल चुनें",
     "pickDefaults": "संपादित करने के लिए डिफ़ॉल्ट का एक स्तर चुनें",
     "pickHint": "कनेक्शन के बारे में सब कुछ यहाँ मौजूद है, ताकि आप इसे आसानी से ढूंढ सकें, समूहों में व्यवस्थित है।"
+  },
+  "permissions": {
+    "branding": {
+      "title": "ब्रांडिंग बदलें",
+      "description": "सभी को दिखाई देने वाले ऐप का नाम, टैगलाइन और लोगो सेट करें।"
+    }
+  },
+  "onboarding": {
+    "presetTitle": "आप स्क्रीन पर कितना दिखाना चाहते हैं?",
+    "presetIntro": "स्क्रीन पर कितना दिखे, यह चुनें।",
+    "presetChangeLater": "आप बाद में सेटिंग्स में इंटरफ़ेस के तहत प्रीसेट बदल सकते हैं या कोई भी एकल सेटिंग बदल सकते हैं।",
+    "appearanceTitle": "इसे अपनी पसंद का बनाएं",
+    "appearanceIntro": "थीम, एक्सेंट रंग, फ़ॉन्ट और अपनी भाषा चुनें। बदलाव तुरंत दिखेंगे, और आप बाद में सेटिंग्स में उन्हें बदल सकते हैं।"
   }
 }

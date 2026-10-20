@@ -1,4 +1,17 @@
 {
+  "plugin": {
+    "name": "Klassikaline paigutus",
+    "description": "Klassikaline Termixi paigutus koos ikooniribaga, külgribaga, vahekaardiribaga ja dokiga."
+  },
+  "layout": {
+    "name": "Klassikaline",
+    "description": "Ikooniriba, külgriba, vahekaardiriba ja parem dokk."
+  },
+  "tab": {
+    "dashboard": "Juhtpaneel",
+    "manage": "Halda",
+    "settings": "Seaded"
+  },
   "common": {
     "more": "Rohkem",
     "logout": "Logi välja",
@@ -221,20 +234,15 @@
     "secondFactorAfterExternalLoginDesc": "Kui välja lülitatud, küsitakse registreeritud teist autentimisetappi ainult parooli ja muude kohalike sisselogimiste järel, nagu varemgi. Kui sisse lülitatud, küsitakse seda iga sisselogimismeetodi järel, sealhulgas SSO ja LDAP puhul.",
     "allowPasswordReset": "Luba parooli lähtestamine",
     "allowPasswordResetDesc": "Lähtestuskood Dockeri logide kaudu",
-    "auditForwardingTitle": "Edasta SIEM-ile",
-    "auditForwardingDesc": "Saada iga auditikirje koopia välisele kogujale NDJSON-vormingus. Kohalikud logid jäävad tõekspaaneks.",
-    "auditForwardingEnvNotice": "Edastamist saab seadistada ka keskkonnamuutuja abil; siin salvestatud URL on prioriteetsem.",
-    "auditForwardingToken": "Bearer-token (valikuline)",
-    "auditForwardingTokenStored": "Bearer-token (salvestatud)",
-    "auditForwardingSaved": "Auditiedastuse seaded salvestatud",
-    "auditForwardingSaveError": "Auditiedastuse seadete salvestamine ebaõnnestus",
+    "forceHttps": "Suuna HTTP HTTPS-ile",
+    "forceHttpsDesc": "Suunab tavalise HTTP HTTPS-ile ja palub brauseritel HTTPS-i kasutada. Töötab ainult siis, kui Termix ise HTTPS-i teenindab.",
+    "forceHttpsNoTls": "HTTPS on Termixis välja lülitatud, seetõttu ei suunata midagi. Lülita sisse ENABLE_SSL või suuna oma pöördproksis.",
+    "forceHttpsFailed": "HTTPS-i seadistuse muutmise ebaõnnestumine",
     "sessionTimeout": "Sessiooni aegumine",
     "hours": "tundi",
     "sessionTimeoutRange": "Min 1h, max 720h",
-    "monitoringDefaults": "Jälgimise vaikeväärtused",
-    "statusCheck": "Oleku kontroll",
-    "sec": "sek",
     "logLevel": "Logitase",
+    "usersCount_one": "{{count}} kasutaja",
     "usersCount_other": "{{count}} kasutajat",
     "searchUsers": "Otsi kasutajaid...",
     "noUsers": "Kasutajaid pole",
@@ -245,6 +253,7 @@
     "roleName": "Nimi",
     "roleDisplayName": "Kuvanimi",
     "roleDescription": "Kirjeldus",
+    "rolesCount_one": "{{count}} roll",
     "rolesCount_other": "{{count}} rolli",
     "createRole": "Loo",
     "creating": "Loomine...",
@@ -259,6 +268,7 @@
     "changeFile": "Muuda",
     "import": "Impordi",
     "importing": "Importimine...",
+    "apiKeysCount_one": "{{count}} võti",
     "apiKeysCount_other": "{{count}} võtit",
     "apiKeysDocsLink": "Vaata dokumentatsiooni",
     "apiKeysCliHint": "Kasuta API-võtit Termix CLI-ga, et hallata servereid oma terminalist.",
@@ -281,6 +291,7 @@
     "systemBadge": "SÜSTEEM",
     "customBadge": "KOHANDATUD",
     "youBadge": "SINA",
+    "sessionsActive_one": "{{count}} aktiivne",
     "sessionsActive_other": "{{count}} aktiivset",
     "sessionActive": "Aktiivne: {{time}}",
     "sessionExpires": "Aegumine: {{time}}",
@@ -351,9 +362,6 @@
     "sessionTimeoutRange2": "Seansi aegumisaeg peab olema vahemikus 1–720 tundi",
     "sessionTimeoutSaved": "Seansi aegumisaeg salvestati",
     "sessionTimeoutSaveFailed": "Seansi aegumise aja salvestamine ebaõnnestus",
-    "monitoringIntervalInvalid": "Kehtivad vaatlusintervallid",
-    "monitoringSaved": "Jälgimise seadistused salvestati",
-    "monitoringSaveFailed": "Jälgimise seadistuste salvestamine ebaõnnestus",
     "logLevelUpdateFailed": "Logitase uuendamine ebaõnnestus",
     "createUserRequired": "Kasutajanimi ja parool on kohustuslikud",
     "createUserPasswordTooShort": "Parool peab olema vähemalt 6 tähemärki pikk",
@@ -424,6 +432,7 @@
     "importError": "Andmebaasi importimine ebaõnnestus",
     "sectionHostDefaults": "Hostide vaikimisi seaded",
     "rolePermissions": {
+      "count_one": "{{count}} luba",
       "count_other": "{{count}} luba",
       "editAction": "Muuda õigusi",
       "loadError": "Õiguste kataloogi laadimine ebaõnnestus",
@@ -615,6 +624,7 @@
         "apiKeyCreatedWarning": "Võti loodud – kopeeri see kohe, seda ei kuvata enam.",
         "copyApiKey": "Kopeeri API-võti",
         "copiedToClipboard": "Kopeeritud lõikelauale",
+        "apiKeyCount_one": "{{count}} võti",
         "apiKeyCount_other": "{{count}} võtit",
         "newKey": "Uus võti",
         "noApiKeys": "API-võtmeid pole veel.",
@@ -670,6 +680,9 @@
         "openUpdates": "Uuendused"
       }
     }
+  },
+  "looks": {
+    "layoutLabel": "Paigutus"
   },
   "plugins": {
     "manager": {
@@ -752,60 +765,6 @@
       "saveFailed": "Muudatuse salvestamine ei õnnestunud"
     }
   },
-  "sync": {
-    "server": "Termixi server",
-    "account": "Konto",
-    "status": "Olek",
-    "never": "mitte kunagi",
-    "justNow": "just nüüd",
-    "actionFailed": "See ei õnnestunud. Proovige uuesti.",
-    "unlinkedTitle": "Ainult sellel seadmel",
-    "unlinkedBody": "Termix töötab sellel seadmel iseseisvalt. Ühendage see oma Termixi serveriga, et hoida kõik sünkroonis.",
-    "unlinkedPointHosts": "Teie hostid, sisselogimisandmed, koodilõigud ja seaded liiguvad teiega kaasa igale seadmele.",
-    "unlinkedPointOffline": "Kõik töötab endiselt, kui serverit ei saa saavutada, ja sünkroonitakse hiljem.",
-    "unlinkedPointAccount": "Te sisselogite oma serveri kontoga ja siin kuvatakse ka teiega jagatud hostid.",
-    "linkButton": "Ühenda serveriga",
-    "state": {
-      "syncing": "Sünkroonimine",
-      "offline": "Serverit ei saa saavutada",
-      "error": "Sünkroonimine peatunud",
-      "signedOut": "Sisselogimine lõpetatud",
-      "synced": "Sünkroonitud {{time}}"
-    },
-    "signInAgain": "Logi uuesti sisse",
-    "syncNow": "Sünkrooni nüüd",
-    "unlink": "Ühenduse katkestamine",
-    "unlinked": "See seade ei ole enam ühendatud",
-    "unlinkTitle": "Eemaldada seadme sidumine?",
-    "unlinkDescription": "Sünkroonimine peatub ja sa logid serverist välja. Teiste poolt sinuga jagatud hostid eemaldatakse sellelt seadmelt igal juhul.",
-    "unlinkKeepTitle": "Hoia mu andmed siin",
-    "unlinkKeepBody": "Sinu hostid, sisselogimisandmed ja seaded jäävad sellele seadmele ning töötavad edasi iseseisvalt.",
-    "unlinkRemoveTitle": "Eemalda sünkroonitud andmed",
-    "unlinkRemoveBody": "Kõik serverist pärit andmed eemaldatakse sellelt seadmelt. Ainult sellel seadmel hoitavad hostid jäävad alles.",
-    "conflictsTitle": "Konfliktid",
-    "conflictsDescription": "Need on muudetud nii siin kui ka serveril samaaegselt. Kasutusel on serveri versioon. Hoiab oma versiooni, et saata see serverile.",
-    "keepMine": "Hoia minu versioon",
-    "keepServer": "Hoia serveri versioon",
-    "errorsTitle": "Pole sünkroonitud",
-    "errorsDescription": "Server ei aktsepteerinud neid muudatusi. Need jäävad sellele seadmele.",
-    "errorPermission": "Sinu kontol serveril pole õigust seda muudatust teha.",
-    "retry": "Proovi uuesti",
-    "whatSyncs": "Mis sünkroonitakse",
-    "whatSyncsDescription": "Lülita välja kõik, mida soovid hoida ainult sellel seadmel.",
-    "coreGroup": "Termix",
-    "notOnServer": "Serveril seda pole",
-    "notOnDevice": "Sellel seadmel veel pole",
-    "localOnlyHint": "Sa saad hoida üksikuid hoste või kaustu ainult sellel seadmel nende seadete kaudu.",
-    "originTitle": "Kust ühendused algavad",
-    "originDescription": "Ühendu hostidega sellelt seadmelt või läbi serveri. Seda saab iga hosti jaoks eraldi muuta.",
-    "originLocal": "See seade",
-    "originRemote": "Server",
-    "proxy": {
-      "title": "Pöördproksü",
-      "description": "Vajalik ainult siis, kui sinu serveri ees on näiteks Cloudflare Access või sisselogimisleht.",
-      "saved": "Salvestatud"
-    }
-  },
   "hostDefaults": {
     "titleAdmin": "Serveri perede vaikimisi väärtused",
     "titleUser": "Mu perede vaikimisi väärtused",
@@ -862,5 +821,18 @@
     "pickCredential": "Vali redigeerimiseks tunnus",
     "pickDefaults": "Vali redigeerimiseks vaikimisi väärtuste tase",
     "pickHint": "Kõik ühenduse seaded asuvad siin, gruppidesse jaotatult, et neid oleks lihtne leida."
+  },
+  "permissions": {
+    "branding": {
+      "title": "Brändingu muutmine",
+      "description": "Määra rakenduse nimi, slogan ja logo, mida näidatakse kõigile."
+    }
+  },
+  "onboarding": {
+    "presetTitle": "Kui palju soovid ekraanil näha?",
+    "presetIntro": "Vali, kui palju ekraanil kuvatakse.",
+    "presetChangeLater": "Saad hiljem Seadetes, jaotises Liides, eelseadistusi vahetada või üksikuid seadeid muuta.",
+    "appearanceTitle": "Tee see omaks",
+    "appearanceIntro": "Vali teema, aktsentvärv, font ja keel. Muudatused kuvavad kohe ja saad neid hiljem Seadetes muuta."
   }
 }
