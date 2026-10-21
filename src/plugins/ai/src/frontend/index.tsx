@@ -125,6 +125,11 @@ export function activate(app: TermixApp): void {
 
   // What the assistant shows depends on the admin switch and the user's own
   // choice, so it is re-registered whenever either changes.
+  // The per-host switch is this plugin's host setting.
+  const hostSwitchOn = (host: unknown) =>
+    (host as { pluginSettings?: { ai?: { enableAiAssistant?: boolean } } })
+      ?.pluginSettings?.ai?.enableAiAssistant === true;
+
   const applyStatus = () => {
     clearSurface();
 
@@ -187,18 +192,16 @@ export function activate(app: TermixApp): void {
         kind: "open",
         order: 35,
         tabType: "ai-agents",
-        when: (host) => userEnabled && agentsAllowed && !!host.enableSsh,
+        when: (host) =>
+          userEnabled &&
+          agentsAllowed &&
+          !!host.enableSsh &&
+          hostSwitchOn(host),
       }),
     );
 
-    // The per-host switch is this plugin's host setting.
     const offeredOnHost = (context: Record<string, unknown>) =>
-      userEnabled &&
-      (
-        context.host as
-          | { pluginSettings?: { ai?: { enableAiAssistant?: boolean } } }
-          | undefined
-      )?.pluginSettings?.ai?.enableAiAssistant === true;
+      userEnabled && hostSwitchOn(context.host);
 
     surface.push(
       app.registerSlotContribution("terminal.toolbar", {

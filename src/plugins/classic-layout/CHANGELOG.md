@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1
+
+### Fixed
+
+- The bottom of the app was cut off under the title bar in the desktop app
+
 ## 1.0.0
 
 ### Added

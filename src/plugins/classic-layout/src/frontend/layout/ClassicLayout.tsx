@@ -240,7 +240,7 @@ export function ClassicLayout() {
   return (
     <div
       className="flex flex-col w-screen bg-background"
-      style={{ height: "100dvh" }}
+      style={{ height: "calc(100dvh - var(--termix-titlebar-height, 0px))" }}
     >
       <div className="flex flex-1 min-h-0">
         {/* Skinny icon rail, desktop only */}
@@ -294,7 +294,9 @@ export function ClassicLayout() {
               side="left"
               showCloseButton={false}
               className={`p-0 flex flex-col min-h-0 max-w-full bg-sidebar border-r border-border gap-0 ${left.editing ? "w-screen" : "w-[min(85vw,360px)]"}`}
-              style={{ height: "100dvh" }}
+              style={{
+                height: "calc(100dvh - var(--termix-titlebar-height, 0px))",
+              }}
             >
               <DockPanel
                 side="left"

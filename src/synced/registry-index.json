@@ -4,7 +4,7 @@
   "name": "Termix Official Plugins",
   "apiVersion": 1,
   "publicKey": "rF6ouWTnuLgnZi7yemr+yhZmMxvNMvgro1Mf05IkSGo=",
-  "updatedAt": "2026-10-20T22:08:44.751Z",
+  "updatedAt": "2026-10-21T05:09:25.060Z",
   "plugins": [
     {
       "id": "acme-ssl",
@@ -109,7 +109,7 @@
       "category": "Productivity",
       "repository": "https://github.com/Termix-SSH/Plugin-AI",
       "icon": "Sparkles",
-      "video": "https://www.youtube.com/watch?v=Owlm96XNt7Q",
+      "video": "https://www.youtube.com/watch?v=5usBJanMqiI",
       "features": [
         "Ask about your hosts, snippets, fleets, alerts, automations and more",
         "Proposes changes instead of making them, and nothing runs until you approve it",
@@ -134,6 +134,37 @@
         "uses"
       ],
       "versions": [
+        {
+          "version": "1.2.1",
+          "api": "1",
+          "url": "https://github.com/Termix-SSH/Plugin-AI/releases/download/v1.2.1/ai-1.2.1.tmxplug",
+          "sha256": "3aae6ec21135e7c283b089c341b7f07f1123312381d06d54f89f4a2902114b75",
+          "signature": "KBlJjClwz5kc++ORvbEVW098SYtRGt+Jg8jq+6Qg1mPXMCizPEUk2GeENOqtVeO6f0tycstD9FFv7611aExqBQ==",
+          "size": 2877807,
+          "capabilities": [
+            "hosts:read",
+            "hosts:write",
+            "credentials:use",
+            "ssh:connect",
+            "db:own",
+            "secrets:own",
+            "network:outbound",
+            "notify:send",
+            "network:serve",
+            "ui:surface",
+            "users:impersonate",
+            "users:read",
+            "events:core",
+            "process:spawn"
+          ],
+          "engine": {
+            "api": "^1.2",
+            "termix": ">=26.10.0"
+          },
+          "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-AI/releases/tag/v1.2.1",
+          "notes": "### Fixed\n\n- The AI Agents button no longer shows on hosts where the AI assistant is turned off",
+          "publishedAt": "2026-10-21T05:06:23.000Z"
+        },
         {
           "version": "1.2.0",
           "api": "1",
@@ -162,8 +193,8 @@
             "termix": ">=26.10.0"
           },
           "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-AI/releases/tag/v1.2.0",
-          "notes": "### Added\n\n- Asset inventory: an Assets view in the AI tab lists hosts, Proxmox guests, containers and the external addresses they talk to, collected daily, on host changes or on request by one read-only script per host; zones come from built-in and your own CIDR rules, hosts in more than one zone are marked, and the new `ai.assets.view` and `ai.assets.manage` permissions are admins only by default\n- Asset annotations: after each collection a model writes each changed asset's role, importance (with who depends on it) and business system in the collector's language, a host and its containers in one call and several hosts per call; only assets whose summary changed and their neighbours are sent, never external addresses, environments or command lines\n- The model can suggest `depends_on` relations, kept only when they cite a connection, a container port or a `runs_on` the collector saw\n- Edit role, importance and system yourself to lock them against later runs, and unlock them to hand them back; the table shows each with an AI or Locked mark\n- A Graph view of the inventory, grouped by zone and sized by importance, with containers folded into their host and edge type filters; a node's panel shows its annotations, facts and edges\n- Impact analysis: what fails with an asset, through `runs_on` and `depends_on` and, weaker, `connects_to`, with the path to each and counts by importance, highlighted on the graph\n- Annotation runs are recorded with their tokens, counted as Asset annotation usage, stop at their own token budget and when auto-ops is paused, and use a provider and model you can pick for assets, by default the collector's auto-ops choice\n- Internet entries in the Assets view: a read-only list, for hosts you manage, of services that may be reachable from the internet, found from listening ports, Docker published ports, port forwards and reverse proxies or tunnels. Each entry shows its evidence path and a review priority with the reasons, nothing is probed from outside",
-          "publishedAt": "2026-10-20T20:42:58.000Z"
+          "publishedAt": "2026-10-20T20:42:58.000Z",
+          "notes": "### Added\n\n- Asset inventory: an Assets view in the AI tab lists hosts, Proxmox guests, containers and the external addresses they talk to, collected daily, on host changes or on request by one read-only script per host; zones come from built-in and your own CIDR rules, hosts in more than one zone are marked, and the new `ai.assets.view` and `ai.assets.manage` permissions are admins only by default\n- Asset annotations: after each collection a model writes each changed asset's role, importance (with who depends on it) and business system in the collector's language, a host and its containers in one call and several hosts per call; only assets whose summary changed and their neighbours are sent, never external addresses, environments or command lines\n- The model can suggest `depends_on` relations, kept only when they cite a connection, a container port or a `runs_on` the collector saw\n- Edit role, importance and system yourself to lock them against later runs, and unlock them to hand them back; the table shows each with an AI or Locked mark\n- A Graph view of the inventory, grouped by zone and sized by importance, with containers folded into their host and edge type filters; a node's panel shows its annotations, facts and edges\n- Impact analysis: what fails with an asset, through `runs_on` and `depends_on` and, weaker, `connects_to`, with the path to each and counts by importance, highlighted on the graph\n- Annotation runs are recorded with their tokens, counted as Asset annotation usage, stop at their own token budget and when auto-ops is paused, and use a provider and model you can pick for assets, by default the collector's auto-ops choice\n- Internet entries in the Assets view: a read-only list, for hosts you manage, of services that may be reachable from the internet, found from listening ports, Docker published ports, port forwards and reverse proxies or tunnels. Each entry shows its evidence path and a review priority with the reasons, nothing is probed from outside"
         },
         {
           "version": "1.1.0",
@@ -379,7 +410,7 @@
         "permissions",
         "settings"
       ],
-      "video": "https://www.youtube.com/watch?v=iC2FCkYTaTA",
+      "video": "https://www.youtube.com/watch?v=bUwPFReNIvg",
       "versions": [],
       "gated": [
         {
@@ -432,6 +463,38 @@
       ],
       "versions": [
         {
+          "version": "1.1.0",
+          "api": "1",
+          "url": "https://github.com/Termix-SSH/Plugin-Automations/releases/download/v1.1.0/automations-1.1.0.tmxplug",
+          "sha256": "b386c48b3f03ced2040c960c470b146dba6f218d37b1a273e004dfd8c9a92a8f",
+          "signature": "yLDc4aDWXJ/TqpDU3R7eBGa8LR9w7oC24zixn6HKBIrBYF7i7EqFx/w26Z0pC9s1LlXs2ynKCI3Dpw3GHMCiAA==",
+          "size": 400265,
+          "capabilities": [
+            "hosts:read",
+            "credentials:use",
+            "credentials:read",
+            "ssh:connect",
+            "db:own",
+            "events:core",
+            "notify:send",
+            "network:outbound",
+            "network:serve",
+            "settings:read-core",
+            "ui:surface",
+            "users:impersonate"
+          ],
+          "engine": {
+            "api": "^1.2",
+            "termix": ">=26.10.0"
+          },
+          "dependencies": {
+            "snippets": "^1.0.0"
+          },
+          "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-Automations/releases/tag/v1.1.0",
+          "notes": "### Added\n\n- A per host Enable maintenance switch in the host editor, off by default\n\n### Changed\n\n- The Maintenance button only shows on hosts that have the switch on",
+          "publishedAt": "2026-10-21T05:05:57.000Z"
+        },
+        {
           "version": "1.0.3",
           "api": "1",
           "url": "https://github.com/Termix-SSH/Plugin-Automations/releases/download/v1.0.3/automations-1.0.3.tmxplug",
@@ -460,8 +523,8 @@
             "snippets": "^1.0.0"
           },
           "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-Automations/releases/tag/v1.0.3",
-          "notes": "### Fixed\n\n- The run limit (`maxRunSeconds`) can be set when creating an automation over HTTP and changed afterwards; before, only the service could set it, once",
-          "publishedAt": "2026-10-20T19:16:36.000Z"
+          "publishedAt": "2026-10-20T19:16:36.000Z",
+          "notes": "### Fixed\n\n- The run limit (`maxRunSeconds`) can be set when creating an automation over HTTP and changed afterwards; before, only the service could set it, once"
         },
         {
           "version": "1.0.2",
@@ -569,6 +632,7 @@
       "category": "Productivity",
       "repository": "https://github.com/Termix-SSH/Plugin-Classic-Layout",
       "icon": "PanelLeft",
+      "video": "https://www.youtube.com/watch?v=3rBEzMTCm-o",
       "features": [
         "Icon rail, resizable sidebar, tab bar and right dock",
         "Dashboard, Manage and Settings screens",
@@ -584,12 +648,34 @@
       "versions": [],
       "gated": [
         {
+          "version": "1.0.1",
+          "api": "1",
+          "url": "https://github.com/Termix-SSH/Plugin-Classic-Layout/releases/download/v1.0.1/classic-layout-1.0.1.tmxplug",
+          "sha256": "6b2d9acd77ef4b33fa0761c1aea7ed3c6171c325ee8febcedff94b5b2bc7be34",
+          "signature": "gg2n01w9qai5USOqZAB/QWK6g7d3Odouk6P3/7evVPr33joiXyxc3IQ3LWQkr71HShAjPSoyW8E5jwIx1gVKCg==",
+          "size": 1839033,
+          "capabilities": [
+            "files:own",
+            "network:serve",
+            "settings:read-core",
+            "ui:layout",
+            "ui:surface"
+          ],
+          "engine": {
+            "api": "^1.6",
+            "termix": ">=26.10.3"
+          },
+          "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-Classic-Layout/releases/tag/v1.0.1",
+          "notes": "### Fixed\n\n- The bottom of the app was cut off under the title bar in the desktop app",
+          "publishedAt": "2026-10-20T23:56:28.000Z"
+        },
+        {
           "version": "1.0.0",
           "api": "1",
           "url": "https://github.com/Termix-SSH/Plugin-Classic-Layout/releases/download/v1.0.0/classic-layout-1.0.0.tmxplug",
-          "sha256": "aff01b91a28a17013cd4cf64b47dcc02cb85a35710e3382aa9adfe7d93e0fb3a",
-          "signature": "QgmsvDFTh0OKnddVDVMXRTCktuC1a9KNRO3geeZDyouc3MbB1AEsldEHThFraMlouvkI60gkunlxc/8lTiwnAg==",
-          "size": 1838826,
+          "sha256": "295e1a5aa457c5dca2f991b536bd6352e174194d580944978f6a16b76605fcf4",
+          "signature": "YFRVM8ExvcvA5skg9GN5WVfkT5/WEJi/UV9Z2KZn7fjFdZYMwZWL6dx46nNLgGIjaOF30HV7pgM3ZokUE6g0AA==",
+          "size": 1839020,
           "capabilities": [
             "files:own",
             "network:serve",
@@ -602,8 +688,8 @@
             "termix": ">=26.10.3"
           },
           "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-Classic-Layout/releases/tag/v1.0.0",
-          "notes": "### Added\n\n- A place in the profile row of the app rail where a plugin can put an account switcher\n- The Termix layout as a plugin: icon rail, sidebar, tab bar, right dock, mobile bottom bar, Dashboard, Manage, Settings and the command palette\n- The host list and the Dashboard as components other plugins can place\n- Admins set the app name, tagline and logo here. An existing setup keeps its branding\n- Hosts a plugin manages show a lock and open read only, and Add host is hidden when hosts can only come from that plugin\n- Admins can redirect HTTP to HTTPS from the general admin settings\n- The first run steps for the preset and for theme, accent, font and language",
-          "publishedAt": "2026-10-20T20:01:57.000Z"
+          "publishedAt": "2026-10-20T23:50:37.000Z",
+          "notes": "### Added\n\n- A place in the profile row of the app rail where a plugin can put an account switcher\n- The Termix layout as a plugin: icon rail, sidebar, tab bar, right dock, mobile bottom bar, Dashboard, Manage, Settings and the command palette\n- The host list and the Dashboard as components other plugins can place\n- Admins set the app name, tagline and logo here. An existing setup keeps its branding\n- Hosts a plugin manages show a lock and open read only, and Add host is hidden when hosts can only come from that plugin\n- Admins can redirect HTTP to HTTPS from the general admin settings\n- The first run steps for the preset and for theme, accent, font and language"
         }
       ]
     },
@@ -623,7 +709,7 @@
       "contributes": [
         "themes"
       ],
-      "video": "https://www.youtube.com/watch?v=qjIa8pM3k08",
+      "video": "https://www.youtube.com/watch?v=PhKhH_e4_VU",
       "versions": [],
       "gated": [
         {
@@ -665,6 +751,7 @@
         "http",
         "permissions"
       ],
+      "video": "https://www.youtube.com/watch?v=R--YFT1XvTw",
       "versions": [],
       "gated": [
         {
@@ -700,14 +787,16 @@
       "category": "Infrastructure",
       "repository": "https://github.com/Termix-SSH/Plugin-Docker",
       "icon": "Box",
-      "video": "https://www.youtube.com/watch?v=bbIE8ZcFSBo",
+      "video": "https://www.youtube.com/watch?v=V7F5w_dd0eM",
       "features": [
         "Start, stop, restart, pause and remove containers",
         "Live CPU, memory, network and disk stats",
         "Read and download container logs",
         "Open a shell inside a container",
         "Works with Docker and Podman",
-        "A containers panel beside any SSH terminal"
+        "A containers panel beside any SSH terminal",
+        "Optional stack management for compose projects",
+        "Check images for updates and update containers"
       ],
       "docs": "https://docs.termix.site/plugins/docker",
       "contributes": [
@@ -793,6 +882,30 @@
       ],
       "gated": [
         {
+          "version": "1.2.0",
+          "api": "1",
+          "url": "https://github.com/Termix-SSH/Plugin-Docker/releases/download/v1.2.0/docker-1.2.0.tmxplug",
+          "sha256": "b05ab1a1101dbad95d525352a5dc2016c484112d96fe986801d9274dd036d524",
+          "signature": "iNGe1/RVwh3VO+A84vaMebWssZbux4d9VCP+Qi29dxq91ob8tOhld0xvrevcT+f7TpDvZBsOxAntWmyQcsVwBw==",
+          "size": 1168921,
+          "capabilities": [
+            "hosts:read",
+            "credentials:use",
+            "ssh:connect",
+            "network:serve",
+            "ui:surface",
+            "events:core",
+            "users:impersonate"
+          ],
+          "engine": {
+            "api": "^1.9",
+            "termix": ">=26.10.3"
+          },
+          "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-Docker/releases/tag/v1.2.0",
+          "notes": "### Added\n\n- Optional stack management for compose projects, off until an admin turns it on in the plugin settings and a host turns on Stack management\n- A Containers | Stacks switcher in the Docker tab with a list of stacks, search, status filters and a status for each one\n- Create stacks from a compose file, edit the compose file and the environment file, check a file, and save and deploy\n- Deploy, pull, restart, pause, stop, take down or destroy a stack, or run most of these on a single service\n- Logs for a whole stack or one service, and a terminal into any running service\n- Compose projects that already run on the host show up as stacks\n- Update checks for container images, with an Update badge on containers that have a newer image\n- Update a container with one button. Compose containers pull and recreate their service, other containers pull the new image",
+          "publishedAt": "2026-10-21T02:41:16.000Z"
+        },
+        {
           "version": "1.1.0",
           "api": "1",
           "url": "https://github.com/Termix-SSH/Plugin-Docker/releases/download/v1.1.0/docker-1.1.0.tmxplug",
@@ -813,8 +926,8 @@
             "termix": ">=26.10.3"
           },
           "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-Docker/releases/tag/v1.1.0",
-          "notes": "### Added\n\n- A containers panel beside any SSH terminal on a host with Docker on. See and start, stop or restart containers, and open their logs, stats and console, without leaving the terminal\n- Settings for the panel: open it with new terminals, which side it sits on, its size and the edge button\n- Show containers panel in terminals, per host",
-          "publishedAt": "2026-10-20T19:39:15.000Z"
+          "publishedAt": "2026-10-20T19:39:15.000Z",
+          "notes": "### Added\n\n- A containers panel beside any SSH terminal on a host with Docker on. See and start, stop or restart containers, and open their logs, stats and console, without leaving the terminal\n- Settings for the panel: open it with new terminals, which side it sits on, its size and the edge button\n- Show containers panel in terminals, per host"
         }
       ]
     },
@@ -826,7 +939,7 @@
       "category": "Files & Transfer",
       "repository": "https://github.com/Termix-SSH/Plugin-File-Manager",
       "icon": "FolderSearch",
-      "video": "https://www.youtube.com/watch?v=t68pal4I0dY",
+      "video": "https://www.youtube.com/watch?v=0JMZny47MiI",
       "features": [
         "Browse, upload, download, rename, move and delete files, with sudo support",
         "Edit files in a built-in code editor",
@@ -1213,7 +1326,7 @@
       "category": "Monitoring",
       "repository": "https://github.com/Termix-SSH/Plugin-Host-Metrics",
       "icon": "Activity",
-      "video": "https://www.youtube.com/watch?v=90al7mSOsUc",
+      "video": "https://www.youtube.com/watch?v=_psvlU-s7D4",
       "features": [
         "CPU, memory, disk, network, temperature, NVIDIA and AMD GPUs, processes, ports and logins",
         "History charts for each host",
@@ -1391,7 +1504,7 @@
       "contributes": [
         "settings"
       ],
-      "video": "https://www.youtube.com/watch?v=utIyH-t_Y5c",
+      "video": "https://www.youtube.com/watch?v=vZPsgT9B4-U",
       "versions": [],
       "gated": [
         {
@@ -1442,7 +1555,7 @@
         "permissions",
         "settings"
       ],
-      "video": "https://www.youtube.com/watch?v=N7bYLsRNO7w",
+      "video": "https://www.youtube.com/watch?v=o_uWOGcG7oQ",
       "versions": [],
       "gated": [
         {
@@ -1492,7 +1605,7 @@
         "http",
         "permissions"
       ],
-      "video": "https://www.youtube.com/watch?v=fiQIxkxYrtk",
+      "video": "https://www.youtube.com/watch?v=khRjXFQK4Wk",
       "versions": [],
       "gated": [
         {
@@ -1631,7 +1744,7 @@
         "permissions",
         "settings"
       ],
-      "video": "https://www.youtube.com/watch?v=mbgMJximcrs",
+      "video": "https://www.youtube.com/watch?v=F9fyIuWSAeE",
       "versions": [],
       "gated": [
         {
@@ -2599,7 +2712,7 @@
       "category": "Terminal",
       "repository": "https://github.com/Termix-SSH/Plugin-SSH-Terminal",
       "icon": "SquareTerminal",
-      "video": "https://www.youtube.com/watch?v=rpUYOa-n9YI",
+      "video": "https://www.youtube.com/watch?v=htdU7pw1fiw",
       "features": [
         "Tabs and split screen",
         "Jump hosts and host key verification",
@@ -2987,7 +3100,7 @@
         "permissions",
         "settings"
       ],
-      "video": "https://www.youtube.com/watch?v=mBiGtdZxdK0",
+      "video": "https://www.youtube.com/watch?v=7tPhaP4aNuM",
       "versions": [],
       "gated": [
         {
@@ -3547,7 +3660,7 @@
     {
       "id": "tunnels",
       "name": "Tunnels",
-      "description": "SSH port forwarding that reconnects on its own, plus client tunnels from the desktop app.",
+      "description": "SSH port forwarding that reconnects on its own, WireGuard gateways that publish private services, and client tunnels from the desktop app.",
       "author": "Termix",
       "category": "Networking",
       "repository": "https://github.com/Termix-SSH/Plugin-Tunnels",
@@ -3558,6 +3671,8 @@
         "Reconnects on its own when a tunnel drops",
         "Start tunnels on boot",
         "Route a tunnel through a second host",
+        "WireGuard gateways that forward public ports to services on a private host",
+        "Finds listening ports on its own, with a switch for each one",
         "Client tunnels on your own computer from the desktop app, with presets you can save to the server"
       ],
       "docs": "https://docs.termix.site/plugins/tunnels",
@@ -3568,6 +3683,7 @@
         "permissions",
         "settings",
         "tabs",
+        "uiPresets",
         "uses"
       ],
       "versions": [
@@ -3674,6 +3790,33 @@
       ],
       "gated": [
         {
+          "version": "1.2.0",
+          "api": "1",
+          "url": "https://github.com/Termix-SSH/Plugin-Tunnels/releases/download/v1.2.0/tunnels-1.2.0.tmxplug",
+          "sha256": "79435b0f121bc95468c99b2889088e31daca22ca6f6cdc530ec722cddf601459",
+          "signature": "oE4Uzpdg0M0rPj1bgESSigyJBxy17Kjxd1jat5oFvSVhmZ1nu7qS/jkQqRWbdwHDgxMA0JzfKyHdBs8IXXc7Bw==",
+          "size": 531106,
+          "capabilities": [
+            "hosts:read",
+            "credentials:use",
+            "ssh:connect",
+            "db:own",
+            "network:serve",
+            "ui:surface",
+            "users:impersonate",
+            "db:core-refs",
+            "desktop:local",
+            "secrets:own"
+          ],
+          "engine": {
+            "api": "^1.5",
+            "termix": ">=26.10.3"
+          },
+          "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-Tunnels/releases/tag/v1.2.0",
+          "notes": "### Added\n\n- Gateways: link a private host to a public host over WireGuard and forward public ports to services on the private side, for game servers and other things behind a home network\n- Termix sets up WireGuard and the forwarding rules on both hosts over SSH, keeps them in their own interface and rule table, and puts them back if they go missing\n- Gateway health shows the last handshake, missing rules, and whether each target answers\n- Optional port scan on the private host and extra hosts, with a switch for each port it finds. On a Proxmox host it also scans running VMs and containers\n- A list of public ports to open in your cloud firewall\n\n### Changed\n\n- Server tunnels are now set up in the Tunnels tab instead of the host editor, which keeps the on/off switch for each host (off unless the host defaults turn it on). Tunnels you already saved move over on their own\n- The Tunnels tab has an Add tunnel button and an Edit button on each tunnel",
+          "publishedAt": "2026-10-21T05:08:40.000Z"
+        },
+        {
           "version": "1.1.0",
           "api": "1",
           "url": "https://github.com/Termix-SSH/Plugin-Tunnels/releases/download/v1.1.0/tunnels-1.1.0.tmxplug",
@@ -3696,8 +3839,8 @@
             "termix": ">=26.10.3"
           },
           "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-Tunnels/releases/tag/v1.1.0",
-          "notes": "### Changed\n\n- Client tunnels on your own computer now run inside this plugin instead of the desktop app itself, so fixes to them no longer need a new desktop build\n- Needs Termix 26.10.3 or newer\n\n### Fixed\n\n- Client tunnel sign in prompts are answered through the plugin, and a prompt that has no open window to show it is refused instead of hanging",
-          "publishedAt": "2026-10-20T19:16:29.000Z"
+          "publishedAt": "2026-10-20T19:16:29.000Z",
+          "notes": "### Changed\n\n- Client tunnels on your own computer now run inside this plugin instead of the desktop app itself, so fixes to them no longer need a new desktop build\n- Needs Termix 26.10.3 or newer\n\n### Fixed\n\n- Client tunnel sign in prompts are answered through the plugin, and a prompt that has no open window to show it is refused instead of hanging"
         }
       ]
     },

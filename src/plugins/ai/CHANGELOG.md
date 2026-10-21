@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.1
+
+### Fixed
+
+- The AI Agents button no longer shows on hosts where the AI assistant is turned off
+
 ## 1.2.0
 
 ### Added
