@@ -1,0 +1,66 @@
+{
+  "id": "databases",
+  "name": "Databases",
+  "version": "1.0.0",
+  "description": "Browse and edit MySQL, MariaDB, PostgreSQL and SQLite databases on your hosts from one tab.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Databases",
+  "docs": "https://docs.termix.site/plugins/databases",
+  "category": "Infrastructure",
+  "icon": "Database",
+  "features": [
+    "Save database logins per host with sealed passwords",
+    "Browse databases, tables and views",
+    "Page, sort and filter table data",
+    "Add, edit and delete rows by primary key",
+    "See columns, types and indexes",
+    "Run SQL in a console and export results as CSV or JSON"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.10.3",
+    "api": "^1.5"
+  },
+  "capabilities": [
+    "hosts:read",
+    "credentials:use",
+    "ssh:connect",
+    "network:serve",
+    "ui:surface",
+    "db:own",
+    "secrets:own"
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "databases",
+        "titleKey": "tab.title",
+        "icon": "Database",
+        "openFrom": ["host-context-menu", "palette"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "enableKey": "enableDatabases",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
+        "editorGroup": "ssh",
+        "fields": []
+      }
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

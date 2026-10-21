@@ -58,7 +58,7 @@ function SearchToggle({
           className={cn(
             "font-mono text-[11px] leading-none text-muted-foreground",
             active &&
-              "border-border bg-muted text-foreground hover:bg-muted dark:bg-muted/60",
+              "border-accent-brand/40 bg-accent-brand/15 text-accent-brand hover:bg-accent-brand/25",
             className,
           )}
         >

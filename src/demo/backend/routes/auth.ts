@@ -70,6 +70,7 @@ post("/users/logout", () => {
   return { success: true, message: "Logged out" };
 });
 post("/users/proxy-login", () => ({ enabled: false }));
+post("/users/ws-ticket", () => ({ ticket: "demo-ticket" }));
 post("/users/internal/auto-session", () => {
   throw new HttpError(403, { error: "Not a desktop" });
 });

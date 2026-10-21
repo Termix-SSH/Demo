@@ -67,6 +67,8 @@ export const DEMO_HOSTS = [
     notes: "Primary public web node. Sits behind the load balancer.",
     features: {
       docker: { enableDocker: true, containerRuntime: "docker" },
+      "reverse-proxy": { enableReverseProxy: true },
+      "service-manager": { enableServices: true },
       tunnels: {
         enableTunnel: true,
         tunnelConnections: [
@@ -118,7 +120,10 @@ export const DEMO_HOSTS = [
     tags: ["nginx", "edge"],
     credentialId: 1,
     sortOrder: 1,
-    features: { docker: { enableDocker: true } },
+    features: {
+      docker: { enableDocker: true },
+      kubernetes: { enableKubernetes: true, kubectlFlavor: "k3s" },
+    },
   }),
   host({
     id: 3,
@@ -132,7 +137,11 @@ export const DEMO_HOSTS = [
     keyType: "ssh-ed25519",
     sortOrder: 2,
     notes: "Do not restart during business hours.",
-    features: { "file-manager": { enableFileManager: false } },
+    features: {
+      "file-manager": { enableFileManager: false },
+      databases: { enableDatabases: true },
+      "service-manager": { enableServices: true },
+    },
   }),
   host({
     id: 4,
@@ -193,7 +202,10 @@ export const DEMO_HOSTS = [
     tags: ["storage", "smb"],
     credentialId: 3,
     sortOrder: 1,
-    features: { "wake-on-lan": { macAddress: "a8:a1:59:3c:4e:10" } },
+    features: {
+      "wake-on-lan": { macAddress: "a8:a1:59:3c:4e:10" },
+      samba: { enableSamba: true },
+    },
   }),
   host({
     id: 9,

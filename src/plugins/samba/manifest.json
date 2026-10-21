@@ -1,0 +1,65 @@
+{
+  "id": "samba",
+  "name": "Samba Shares",
+  "version": "1.0.0",
+  "description": "Create and manage Samba (SMB) file shares, users and permissions on your hosts from one tab.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Samba",
+  "docs": "https://docs.termix.site/plugins/samba",
+  "category": "Networking",
+  "icon": "Share2",
+  "features": [
+    "Install Samba and start, stop or restart it on a host",
+    "Create, edit and delete SMB shares with access options",
+    "Add Samba users, set passwords and manage groups",
+    "Set owner, mode and POSIX ACLs on share folders",
+    "See connected users and open files, and disconnect a session",
+    "Check and edit the config, and read the logs"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.10.3",
+    "api": "^1.5"
+  },
+  "capabilities": [
+    "hosts:read",
+    "credentials:use",
+    "ssh:connect",
+    "network:serve",
+    "users:impersonate",
+    "ui:surface"
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "samba",
+        "titleKey": "tab.title",
+        "icon": "Share2",
+        "openFrom": ["host-context-menu", "palette"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "enableKey": "enableSamba",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
+        "editorGroup": "ssh",
+        "fields": []
+      }
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

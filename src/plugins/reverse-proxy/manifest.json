@@ -1,0 +1,169 @@
+{
+  "id": "reverse-proxy",
+  "name": "Reverse Proxy",
+  "version": "1.0.0",
+  "description": "Reverse proxy for TCP, UDP, HTTP and HTTPS with free certificates and Termix login, managed per host.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Reverse-Proxy",
+  "docs": "https://docs.termix.site/plugins/reverse-proxy",
+  "category": "Networking",
+  "icon": "Waypoints",
+  "features": [
+    "TCP, UDP, HTTP and HTTPS routes for each host, with status, search and filters",
+    "Free Let's Encrypt certificates that renew on their own, plus self-signed and uploaded certificates",
+    "Optional Termix login in front of any web route",
+    "WebSocket support, forced HTTPS, custom headers and IP allow and deny lists",
+    "One overview of every route, its status and its certificate"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.10.3",
+    "api": "^1.5"
+  },
+  "capabilities": [
+    "hosts:read",
+    "db:own",
+    "network:serve",
+    "network:outbound",
+    "secrets:own",
+    "kv:own",
+    "notify:send",
+    "users:impersonate",
+    "ui:surface"
+  ],
+  "desktop": "server",
+  "contributes": {
+    "tabs": [
+      {
+        "id": "reverse-proxy",
+        "titleKey": "tab.title",
+        "icon": "Waypoints",
+        "openFrom": ["host-context-menu", "palette"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin"]
+      },
+      {
+        "name": "access",
+        "titleKey": "permissions.access.title",
+        "descriptionKey": "permissions.access.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ],
+    "settings": {
+      "admin": [
+        {
+          "key": "httpPort",
+          "type": "number",
+          "labelKey": "settings.admin.httpPort.label",
+          "descriptionKey": "settings.admin.httpPort.description",
+          "default": 8081,
+          "min": 1,
+          "max": 65535
+        },
+        {
+          "key": "httpsPort",
+          "type": "number",
+          "labelKey": "settings.admin.httpsPort.label",
+          "descriptionKey": "settings.admin.httpsPort.description",
+          "default": 8444,
+          "min": 1,
+          "max": 65535
+        },
+        {
+          "key": "bindHost",
+          "type": "string",
+          "labelKey": "settings.admin.bindHost.label",
+          "descriptionKey": "settings.admin.bindHost.description",
+          "default": "0.0.0.0"
+        },
+        {
+          "key": "publicBaseUrl",
+          "type": "string",
+          "labelKey": "settings.admin.publicBaseUrl.label",
+          "descriptionKey": "settings.admin.publicBaseUrl.description",
+          "default": ""
+        },
+        {
+          "key": "acmeEmail",
+          "type": "string",
+          "labelKey": "settings.admin.acmeEmail.label",
+          "descriptionKey": "settings.admin.acmeEmail.description",
+          "default": ""
+        },
+        {
+          "key": "acmeStaging",
+          "type": "boolean",
+          "labelKey": "settings.admin.acmeStaging.label",
+          "descriptionKey": "settings.admin.acmeStaging.description",
+          "default": false
+        },
+        {
+          "key": "acmeDirectoryUrl",
+          "type": "string",
+          "labelKey": "settings.admin.acmeDirectoryUrl.label",
+          "descriptionKey": "settings.admin.acmeDirectoryUrl.description",
+          "default": ""
+        },
+        {
+          "key": "cookieHours",
+          "type": "number",
+          "labelKey": "settings.admin.cookieHours.label",
+          "descriptionKey": "settings.admin.cookieHours.description",
+          "default": 12,
+          "min": 1,
+          "max": 720
+        }
+      ],
+      "host": {
+        "enableKey": "enableReverseProxy",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
+        "editorGroup": "ssh",
+        "fields": [
+          {
+            "key": "targetAddress",
+            "type": "string",
+            "labelKey": "settings.host.targetAddress.label",
+            "descriptionKey": "settings.host.targetAddress.description",
+            "requires": "enableReverseProxy",
+            "defaultable": false
+          },
+          {
+            "key": "defaultAccess",
+            "type": "select",
+            "labelKey": "settings.host.defaultAccess.label",
+            "descriptionKey": "settings.host.defaultAccess.description",
+            "requires": "enableReverseProxy",
+            "default": "none",
+            "options": [
+              {
+                "value": "none",
+                "labelKey": "settings.host.defaultAccess.none"
+              },
+              {
+                "value": "user",
+                "labelKey": "settings.host.defaultAccess.user"
+              },
+              {
+                "value": "host",
+                "labelKey": "settings.host.defaultAccess.host"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

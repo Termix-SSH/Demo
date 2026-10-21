@@ -1,0 +1,63 @@
+{
+  "id": "cloud-providers",
+  "name": "Cloud Providers",
+  "version": "1.0.0",
+  "description": "Add hosts from AWS, Azure, Google Cloud, DigitalOcean, Hetzner and other clouds, and keep them in sync.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Cloud-Providers",
+  "docs": "https://docs.termix.site/plugins/cloud-providers",
+  "category": "Infrastructure",
+  "icon": "Cloud",
+  "features": [
+    "Works with AWS EC2 and Lightsail, Azure, Google Cloud, DigitalOcean, Hetzner, Linode, Vultr, Oracle Cloud, Scaleway and UpCloud",
+    "Pick instances to import, or sync a whole account on a timer",
+    "Follows IP and name changes and can mark or remove hosts that are gone",
+    "Cloud keys are stored encrypted and never shown again"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.10.3",
+    "api": "^1.10"
+  },
+  "capabilities": [
+    "db:own",
+    "secrets:own",
+    "network:outbound",
+    "network:serve",
+    "ui:surface",
+    "hosts:read",
+    "hosts:write",
+    "credentials:use",
+    "users:impersonate",
+    "notify:send"
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "cloud-providers",
+        "titleKey": "tab.title",
+        "icon": "Cloud",
+        "openFrom": ["rail"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "view",
+        "titleKey": "permissions.view.title",
+        "descriptionKey": "permissions.view.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "manage",
+        "titleKey": "permissions.manage.title",
+        "descriptionKey": "permissions.manage.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ]
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}
