@@ -4,7 +4,7 @@
   "name": "Termix Official Plugins",
   "apiVersion": 1,
   "publicKey": "rF6ouWTnuLgnZi7yemr+yhZmMxvNMvgro1Mf05IkSGo=",
-  "updatedAt": "2026-10-21T05:09:25.060Z",
+  "updatedAt": "2026-10-22T04:36:29.467Z",
   "plugins": [
     {
       "id": "acme-ssl",
@@ -733,6 +733,57 @@
       ]
     },
     {
+      "id": "cloud-providers",
+      "name": "Cloud Providers",
+      "description": "Add hosts from AWS, Azure, Google Cloud, DigitalOcean, Hetzner and other clouds, and keep them in sync.",
+      "author": "Termix",
+      "category": "Infrastructure",
+      "repository": "https://github.com/Termix-SSH/Plugin-Cloud-Providers",
+      "icon": "Cloud",
+      "features": [
+        "Works with AWS EC2 and Lightsail, Azure, Google Cloud, DigitalOcean, Hetzner, Linode, Vultr, Oracle Cloud, Scaleway and UpCloud",
+        "Pick instances to import, or sync a whole account on a timer",
+        "Follows IP and name changes and can mark or remove hosts that are gone",
+        "Cloud keys are stored encrypted and never shown again"
+      ],
+      "docs": "https://docs.termix.site/plugins/cloud-providers",
+      "contributes": [
+        "permissions",
+        "tabs"
+      ],
+      "video": "https://www.youtube.com/watch?v=fgVkd6761qg",
+      "versions": [],
+      "gated": [
+        {
+          "version": "1.0.0",
+          "api": "1",
+          "url": "https://github.com/Termix-SSH/Plugin-Cloud-Providers/releases/download/v1.0.0/cloud-providers-1.0.0.tmxplug",
+          "sha256": "2933f899d936253f0d715fb0374e886110a4b01139f0c32970b789dc957b3c61",
+          "signature": "Wuf77wVQs0VfouHMwgYhJTfMfDUfm+JJeAZsQ2QtQhb8tzM+sf7dRzLxfLHhbRhLoO2u1IbKEwHoVhM0nCyKAA==",
+          "size": 180442,
+          "capabilities": [
+            "db:own",
+            "secrets:own",
+            "network:outbound",
+            "network:serve",
+            "ui:surface",
+            "hosts:read",
+            "hosts:write",
+            "credentials:use",
+            "users:impersonate",
+            "notify:send"
+          ],
+          "engine": {
+            "api": "^1.10",
+            "termix": ">=26.10.3"
+          },
+          "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-Cloud-Providers/releases/tag/v1.0.0",
+          "notes": "### Added\n\n- Cloud accounts for AWS (EC2 and Lightsail), Azure, Google Cloud, DigitalOcean, Hetzner, Linode, Vultr, Oracle Cloud, Scaleway and UpCloud\n- Import chosen servers as hosts, or sync a whole account by hand or on a timer\n- Hosts follow name and IP changes, with an option to keep, tag or delete hosts whose server is gone",
+          "publishedAt": "2026-10-21T22:52:21.000Z"
+        }
+      ]
+    },
+    {
       "id": "credential-tools",
       "name": "Credential Tools",
       "description": "Generate SSH keys, check them and copy a public key to a host.",
@@ -776,6 +827,57 @@
           "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-Credential-Tools/releases/tag/v1.0.0",
           "notes": "### Added\n\n- Generate Ed25519, ECDSA and RSA key pairs in the credential editor\n- Get the public key from a private key, detect key types and check that a key pair matches\n- Deploy a key credential's public key to a host's authorized keys, written to the audit log",
           "publishedAt": "2026-10-20T19:56:43.000Z"
+        }
+      ]
+    },
+    {
+      "id": "databases",
+      "name": "Databases",
+      "description": "Browse and edit MySQL, MariaDB, PostgreSQL and SQLite databases on your hosts from one tab.",
+      "author": "Termix",
+      "category": "Infrastructure",
+      "repository": "https://github.com/Termix-SSH/Plugin-Databases",
+      "icon": "Database",
+      "features": [
+        "Save database logins per host with sealed passwords",
+        "Browse databases, tables and views",
+        "Page, sort and filter table data",
+        "Add, edit and delete rows by primary key",
+        "See columns, types and indexes",
+        "Run SQL in a console and export results as CSV or JSON"
+      ],
+      "docs": "https://docs.termix.site/plugins/databases",
+      "contributes": [
+        "permissions",
+        "settings",
+        "tabs"
+      ],
+      "video": "https://www.youtube.com/watch?v=FZ7QuMcDjKM",
+      "versions": [],
+      "gated": [
+        {
+          "version": "1.0.0",
+          "api": "1",
+          "url": "https://github.com/Termix-SSH/Plugin-Databases/releases/download/v1.0.0/databases-1.0.0.tmxplug",
+          "sha256": "0fd38d64512c18b900c5d3914aa01c8c2b0d9f7b744edeca1131cb27a0c0b678",
+          "signature": "BiHQEhlMHu2Jrnh8K+hyRkdywVsHRYqPuOgK1Yrm63GByTj2H0vDKfNqjatfSSf+Vv5MogD269UBZg4H8WhsCQ==",
+          "size": 213642,
+          "capabilities": [
+            "hosts:read",
+            "credentials:use",
+            "ssh:connect",
+            "network:serve",
+            "ui:surface",
+            "db:own",
+            "secrets:own"
+          ],
+          "engine": {
+            "api": "^1.5",
+            "termix": ">=26.10.3"
+          },
+          "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-Databases/releases/tag/v1.0.0",
+          "notes": "### Added\n\n- A Databases tab for each host to browse and edit MySQL, MariaDB, PostgreSQL and SQLite over SSH\n- Saved logins per host with sealed passwords, socket logins and running the client as another Linux user\n- Table browser with paging, sorting, a filter and row add, edit and delete by primary key\n- Structure view with columns, types, keys and indexes\n- SQL console with history and CSV or JSON export\n- Read only logins, and read only console sessions for users without edit access to the host",
+          "publishedAt": "2026-10-21T22:54:41.000Z"
         }
       ]
     },
@@ -1634,6 +1736,63 @@
       ]
     },
     {
+      "id": "kubernetes",
+      "name": "Kubernetes",
+      "description": "Manage Kubernetes clusters from your hosts over SSH, with logs, metrics, YAML and a shell.",
+      "author": "Termix",
+      "category": "Infrastructure",
+      "repository": "https://github.com/Termix-SSH/Plugin-Kubernetes",
+      "icon": "ShipWheel",
+      "features": [
+        "Browse pods, deployments, statefulsets, daemonsets, jobs and cronjobs",
+        "Scale, restart, roll back and change images of workloads",
+        "Read and download pod logs, and open a shell inside a pod",
+        "View, edit and apply YAML with a dry run and diff first",
+        "Services, ingresses, configmaps, secrets, volumes, nodes and events",
+        "Cordon, uncordon and drain nodes",
+        "CPU and memory from metrics-server",
+        "Helm releases with history, values, rollback and uninstall",
+        "Works with kubectl, k3s, MicroK8s and OpenShift",
+        "A pods panel beside any SSH terminal"
+      ],
+      "docs": "https://docs.termix.site/plugins/kubernetes",
+      "contributes": [
+        "permissions",
+        "settings",
+        "tabs",
+        "uiPresets",
+        "uses"
+      ],
+      "video": "https://www.youtube.com/watch?v=cuOnAbfsO3I",
+      "versions": [],
+      "gated": [
+        {
+          "version": "1.0.0",
+          "api": "1",
+          "url": "https://github.com/Termix-SSH/Plugin-Kubernetes/releases/download/v1.0.0/kubernetes-1.0.0.tmxplug",
+          "sha256": "a516b1db3451bf4f6e740925e5814929c99b6822ef7ce1d06906c771a10004ed",
+          "signature": "GxS9zenRP+Sk01EYuFr0f5vPN4kgxnc4IGV8VIBCQRbFkhDQQ3ylMLLSEXRHxl6iaAgQfp9Swu+OYoG7sJuBBw==",
+          "size": 1239394,
+          "capabilities": [
+            "hosts:read",
+            "credentials:use",
+            "ssh:connect",
+            "network:serve",
+            "ui:surface",
+            "events:core",
+            "users:impersonate"
+          ],
+          "engine": {
+            "api": "^1.9",
+            "termix": ">=26.10.3"
+          },
+          "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-Kubernetes/releases/tag/v1.0.0",
+          "notes": "### Added\n\n- Browse pods, deployments, statefulsets, daemonsets, replicasets, jobs and cronjobs on a host's cluster over SSH\n- Services, ingresses, configmaps, secrets, volume claims, persistent volumes, nodes, namespaces and events\n- Scale, restart, roll back and change the image of workloads, with their rollout history\n- Suspend, resume and run cronjobs now\n- Cordon, uncordon and drain nodes\n- Pod logs with a container picker, the previous run, follow mode and download, plus logs for a whole workload\n- A shell inside a running pod\n- CPU and memory per pod, node and container from metrics-server\n- View, edit and apply YAML with a server side dry run and a diff first\n- Reveal secret values with the new Reveal Kubernetes secrets permission, written to the audit log\n- Helm releases with history, values, manifest, rollback and uninstall\n- kubectl, k3s, MicroK8s and OpenShift, with a kubeconfig path, context, namespace and sudo per host\n- A read only switch per host that blocks every change\n- A Kubernetes panel beside any SSH terminal and a homepage widget\n- kubernetes.workloads and kubernetes.events services for other plugins",
+          "publishedAt": "2026-10-21T23:17:00.000Z"
+        }
+      ]
+    },
+    {
       "id": "ldap",
       "name": "LDAP",
       "description": "Sign in with your LDAP or Active Directory username and password.",
@@ -2216,6 +2375,108 @@
       ]
     },
     {
+      "id": "reverse-proxy",
+      "name": "Reverse Proxy",
+      "description": "Reverse proxy for TCP, UDP, HTTP and HTTPS with free certificates and Termix login, managed per host.",
+      "author": "Termix",
+      "category": "Networking",
+      "repository": "https://github.com/Termix-SSH/Plugin-Reverse-Proxy",
+      "icon": "Waypoints",
+      "features": [
+        "TCP, UDP, HTTP and HTTPS routes for each host, with status, search and filters",
+        "Free Let's Encrypt certificates that renew on their own, plus self-signed and uploaded certificates",
+        "Optional Termix login in front of any web route",
+        "WebSocket support, forced HTTPS, custom headers and IP allow and deny lists",
+        "One overview of every route, its status and its certificate"
+      ],
+      "docs": "https://docs.termix.site/plugins/reverse-proxy",
+      "contributes": [
+        "permissions",
+        "settings",
+        "tabs"
+      ],
+      "video": "https://www.youtube.com/watch?v=yvk_JjcTKsM",
+      "versions": [],
+      "gated": [
+        {
+          "version": "1.0.0",
+          "api": "1",
+          "url": "https://github.com/Termix-SSH/Plugin-Reverse-Proxy/releases/download/v1.0.0/reverse-proxy-1.0.0.tmxplug",
+          "sha256": "2854f69d1c09661d137d958bb5851f79c6567e3451ed9ceb09427dcf766320da",
+          "signature": "whVK2ibT3conQWV0wrWvVvG+5cD6aTwnRaEP9zc/EZdsVC7BrYRIIBIlvWmu31+CrZfr8kDYCUf7FDGUIKsDBA==",
+          "size": 1029623,
+          "capabilities": [
+            "hosts:read",
+            "db:own",
+            "network:serve",
+            "network:outbound",
+            "secrets:own",
+            "kv:own",
+            "notify:send",
+            "users:impersonate",
+            "ui:surface"
+          ],
+          "engine": {
+            "api": "^1.5",
+            "termix": ">=26.10.3"
+          },
+          "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-Reverse-Proxy/releases/tag/v1.0.0",
+          "notes": "### Added\n\n- TCP, UDP, HTTP and HTTPS routes for your hosts, managed from each host\n- Host settings to turn routes off, set a target address and pick the default login\n- Let's Encrypt, self-signed and uploaded certificates, renewed automatically, plus a setting for another ACME certificate authority\n- Termix login in front of web routes\n- WebSocket support, HTTP to HTTPS redirect, custom headers and IP allow and block lists\n- A Reverse Proxy tab with every route, its status, traffic and certificates",
+          "publishedAt": "2026-10-21T23:06:42.000Z"
+        }
+      ]
+    },
+    {
+      "id": "samba",
+      "name": "Samba Shares",
+      "description": "Create and manage Samba (SMB) file shares, users and permissions on your hosts from one tab.",
+      "author": "Termix",
+      "category": "Networking",
+      "repository": "https://github.com/Termix-SSH/Plugin-Samba",
+      "icon": "Share2",
+      "features": [
+        "Install Samba and start, stop or restart it on a host",
+        "Create, edit and delete SMB shares with access options",
+        "Add Samba users, set passwords and manage groups",
+        "Set owner, mode and POSIX ACLs on share folders",
+        "See connected users and open files, and disconnect a session",
+        "Check and edit the config, and read the logs"
+      ],
+      "docs": "https://docs.termix.site/plugins/samba",
+      "contributes": [
+        "permissions",
+        "settings",
+        "tabs"
+      ],
+      "video": "https://www.youtube.com/watch?v=eplAs0N9I60",
+      "versions": [],
+      "gated": [
+        {
+          "version": "1.0.0",
+          "api": "1",
+          "url": "https://github.com/Termix-SSH/Plugin-Samba/releases/download/v1.0.0/samba-1.0.0.tmxplug",
+          "sha256": "6e131ccdca998a9d0802becdd439a88305b64fcd7f07335bec9c7ed6791c0f53",
+          "signature": "SrVmaJGH8nJ25zwTyeQcLKSDOToooikQJOCiMqz7zGDc6c+Jy9lH50UfDwFSXEC7d0t7IhCTmdZVZnlKMMIiCw==",
+          "size": 273388,
+          "capabilities": [
+            "hosts:read",
+            "credentials:use",
+            "ssh:connect",
+            "network:serve",
+            "users:impersonate",
+            "ui:surface"
+          ],
+          "engine": {
+            "api": "^1.5",
+            "termix": ">=26.10.3"
+          },
+          "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-Samba/releases/tag/v1.0.0",
+          "notes": "### Added\n\n- A Samba Shares tab for each host to install and manage Samba over SSH\n- Create, edit and delete shares, with a tested config before every change\n- Samba users, passwords and Linux groups\n- Folder owner, mode and ACL entries for shares\n- Connected users, open files and disconnecting a session\n- A config editor with testparm, a log viewer and service controls",
+          "publishedAt": "2026-10-21T23:07:52.000Z"
+        }
+      ]
+    },
+    {
       "id": "secret-sources",
       "name": "Secret Sources",
       "description": "Pull host passwords and keys from 1Password when you connect instead of storing them in Termix.",
@@ -2389,6 +2650,63 @@
             "api": "^1.2",
             "termix": ">=26.10.0"
           }
+        }
+      ]
+    },
+    {
+      "id": "service-manager",
+      "name": "Services",
+      "description": "Manage services, timers and logs on your hosts over SSH.",
+      "author": "Termix",
+      "category": "Infrastructure",
+      "repository": "https://github.com/Termix-SSH/Plugin-Service-Manager",
+      "icon": "ServerCog",
+      "features": [
+        "List systemd services, sockets, targets and timers with their state",
+        "Start, stop, restart, reload, enable, disable and mask units",
+        "Unit details with memory, CPU, tasks, uptime and restarts",
+        "Edit unit files and overrides, checked with systemd-analyze before saving",
+        "Create a new service from a simple form",
+        "Timers with the last and next run, and run now",
+        "Read the journal by unit, priority, time, boot and text, and follow it live",
+        "Browse, search, follow and download log files in /var/log",
+        "Get an alert when a watched service fails, and when it is back",
+        "A services panel beside any SSH terminal",
+        "Basic OpenRC support for list, start, stop and boot"
+      ],
+      "docs": "https://docs.termix.site/plugins/service-manager",
+      "contributes": [
+        "permissions",
+        "settings",
+        "tabs"
+      ],
+      "video": "https://www.youtube.com/watch?v=uVoLykPpvWk",
+      "versions": [],
+      "gated": [
+        {
+          "version": "1.0.0",
+          "api": "1",
+          "url": "https://github.com/Termix-SSH/Plugin-Service-Manager/releases/download/v1.0.0/service-manager-1.0.0.tmxplug",
+          "sha256": "40af3fa5551986388086522c38b142d8acc66b03ca68345a52dca4014685664a",
+          "signature": "dNngbintbfiQ+WqBMfOpoJUk67sFXXCl5YaRW34xF/nkSj7Xp/KBG+CE1viVO0QdykCEws/hHXV65zGMV7yKAg==",
+          "size": 414630,
+          "capabilities": [
+            "hosts:read",
+            "credentials:use",
+            "ssh:connect",
+            "network:serve",
+            "db:own",
+            "notify:send",
+            "users:impersonate",
+            "ui:surface"
+          ],
+          "engine": {
+            "api": "^1.9",
+            "termix": ">=26.10.3"
+          },
+          "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-Service-Manager/releases/tag/v1.0.0",
+          "notes": "### Added\n\n- A Services tab for each host to manage systemd services over SSH\n- Start, stop, restart, reload, enable, disable, mask and revert units\n- Unit details with memory, CPU, tasks, restarts, files and recent logs\n- Unit file and override editor, checked with systemd-analyze before saving\n- A form to create a new service or a scheduled job with a timer\n- Timers with the last and next run, run now and turn on or off\n- A journal viewer with filters, live follow and download\n- Log files from /var/log with search, live follow and download\n- Alerts when a watched service fails or stops, and when it runs again\n- A services panel beside the SSH terminal\n- Basic OpenRC support",
+          "publishedAt": "2026-10-21T23:17:35.000Z"
         }
       ]
     },
@@ -2595,6 +2913,70 @@
             "api": "^1.2",
             "termix": ">=26.10.0"
           }
+        }
+      ]
+    },
+    {
+      "id": "simple-layout",
+      "name": "Simple Layout",
+      "description": "A simple Termix layout for small setups with a top bar, a Home screen and only the basics.",
+      "author": "Termix",
+      "category": "Productivity",
+      "repository": "https://github.com/Termix-SSH/Plugin-Simple-Layout",
+      "icon": "PanelTop",
+      "features": [
+        "Top bar with tabs, search and settings",
+        "Home screen with a card for each host",
+        "Short host and credential forms",
+        "Only the settings most people need"
+      ],
+      "docs": "https://docs.termix.site/plugins/simple-layout",
+      "contributes": [
+        "layouts",
+        "tabs"
+      ],
+      "video": "https://www.youtube.com/watch?v=KAa9WinKwfw",
+      "versions": [],
+      "gated": [
+        {
+          "version": "1.0.1",
+          "api": "1",
+          "url": "https://github.com/Termix-SSH/Plugin-Simple-Layout/releases/download/v1.0.1/simple-layout-1.0.1.tmxplug",
+          "sha256": "838f08050335b44b62295b87006b50d1db1029699bfe6a35fa75808d4aea2cde",
+          "signature": "Y4ntXDE5y4007tw7sivamhYK6MgJuXXtudhFL29V5W3LEldsXqaIjAKjBTsWa1zuSXUpkFWaUVls5uE1OcolAQ==",
+          "size": 199414,
+          "capabilities": [
+            "settings:read-core",
+            "ui:layout",
+            "ui:surface"
+          ],
+          "engine": {
+            "api": "^1.6",
+            "termix": ">=26.10.3"
+          },
+          "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-Simple-Layout/releases/tag/v1.0.1",
+          "notes": "### Fixed\n\n- The Hosts tab was named Manage in the top bar",
+          "publishedAt": "2026-10-22T04:22:44.000Z"
+        },
+        {
+          "version": "1.0.0",
+          "api": "1",
+          "url": "https://github.com/Termix-SSH/Plugin-Simple-Layout/releases/download/v1.0.0/simple-layout-1.0.0.tmxplug",
+          "sha256": "ee8ce87e76f95bedcb7ef4edf3349a2715ab274d5f2352e115e0914d57d61089",
+          "signature": "aiOt1ZmI8vj8yJJI5oo6GjctmV2BhUXv1hqK8qhVXdsgGzfc2WdvD3GTT5b/guUkoSVH84ed7hj11Ab/H94eCw==",
+          "size": 199341,
+          "capabilities": [
+            "settings:read-core",
+            "ui:layout",
+            "ui:surface"
+          ],
+          "engine": {
+            "api": "^1.6",
+            "termix": ">=26.10.3"
+          },
+          "releaseNotesUrl": "https://github.com/Termix-SSH/Plugin-Simple-Layout/releases/tag/v1.0.0",
+          "publishedAt": "2026-10-22T04:02:57.000Z",
+          "notes": "### Added\n\n- A simple layout for small setups: top bar, Home screen with a card for each host, short host and credential forms, and a short Settings screen\n- A search window that finds hosts, tabs and plugin actions\n- A bottom bar on phones"
         }
       ]
     },

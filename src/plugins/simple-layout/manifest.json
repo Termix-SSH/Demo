@@ -1,0 +1,58 @@
+{
+  "id": "simple-layout",
+  "name": "Simple Layout",
+  "version": "1.0.1",
+  "description": "A simple Termix layout for small setups with a top bar, a Home screen and only the basics.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Simple-Layout",
+  "docs": "https://docs.termix.site/plugins/simple-layout",
+  "video": "https://www.youtube.com/watch?v=KAa9WinKwfw",
+  "category": "Productivity",
+  "icon": "PanelTop",
+  "features": [
+    "Top bar with tabs, search and settings",
+    "Home screen with a card for each host",
+    "Short host and credential forms",
+    "Only the settings most people need"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.10.3",
+    "api": "^1.6"
+  },
+  "capabilities": ["settings:read-core", "ui:layout", "ui:surface"],
+  "contributes": {
+    "layouts": [
+      {
+        "id": "simple",
+        "label": "layout.name",
+        "description": "layout.description"
+      }
+    ],
+    "tabs": [
+      {
+        "id": "dashboard",
+        "titleKey": "tab.home",
+        "icon": "House",
+        "openFrom": ["rail"]
+      },
+      {
+        "id": "host-manager",
+        "titleKey": "tab.hosts",
+        "icon": "Server",
+        "openFrom": ["rail"]
+      },
+      {
+        "id": "settings",
+        "titleKey": "tab.settings",
+        "icon": "Settings",
+        "openFrom": ["rail"]
+      }
+    ]
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}
