@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0
+
+### Added
+
+- HTTPS certificate dashboard card: days left on the certificate, the last error and a button to renew now
+
 ## 1.0.2
 
 ### Changed

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0
+
+### Added
+
+- Alerts dashboard card: your inbox on the dashboard, with mark as read
+
 ## 1.0.2
 
 ### Changed

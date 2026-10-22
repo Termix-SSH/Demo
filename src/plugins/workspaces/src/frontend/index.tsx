@@ -1,7 +1,12 @@
 import { LayoutTemplate } from "lucide-react";
 import { toast } from "sonner";
-import type { PanelProps, TermixApp } from "@termix-ssh/plugin-sdk/frontend";
+import type {
+  DashboardCardProps,
+  PanelProps,
+  TermixApp,
+} from "@termix-ssh/plugin-sdk/frontend";
 import { WorkspacesPanel } from "./WorkspacesPanel";
+import { WorkspacesCard } from "./WorkspacesCard";
 import { createWorkspacesApi } from "./workspaces-api";
 import type { Workspace } from "./types";
 
@@ -52,6 +57,19 @@ export function activate(app: TermixApp): void {
     permission: "use",
   });
   app.registerPanel("workspaces", Panel);
+  app.registerDashboardCard({
+    id: "workspaces",
+    titleKey: "nav.workspaces",
+    defaultPanel: "side",
+    defaultHeight: 200,
+    frame: "framed",
+    component: (props: DashboardCardProps) => (
+      <WorkspacesCard
+        {...props}
+        onApply={(workspace) => void applyWorkspace(workspace)}
+      />
+    ),
+  });
 
   // Without workspaces.use the restore and the autosave below would only
   // collect 403s. The lookup is cached, so asking each time is cheap and a

@@ -5,7 +5,7 @@
  */
 
 const PREFIX = "termix-demo-db:";
-const SCHEMA = "4";
+const SCHEMA = "5";
 const SCHEMA_KEY = "termix-demo-schema";
 
 try {

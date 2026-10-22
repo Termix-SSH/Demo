@@ -66,7 +66,11 @@ export const DEMO_HOSTS = [
     sortOrder: 0,
     notes: "Primary public web node. Sits behind the load balancer.",
     features: {
-      docker: { enableDocker: true, containerRuntime: "docker" },
+      docker: {
+        enableDocker: true,
+        containerRuntime: "docker",
+        enableStacks: true,
+      },
       "reverse-proxy": { enableReverseProxy: true },
       "service-manager": { enableServices: true },
       tunnels: {

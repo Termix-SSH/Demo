@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.2
+
+### Fixed
+
+- Cloning a host now keeps which settings are custom and which follow the defaults
+
 ## 1.0.1
 
 ### Fixed

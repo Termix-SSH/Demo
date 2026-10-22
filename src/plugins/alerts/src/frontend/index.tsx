@@ -1,9 +1,12 @@
 import type { ComponentType } from "react";
 import { Bell } from "lucide-react";
-import type {
-  PanelProps,
-  TabProps,
-  TermixApp,
+import {
+  usePermission,
+  useTranslation,
+  type DashboardCardProps,
+  type PanelProps,
+  type TabProps,
+  type TermixApp,
 } from "@termix-ssh/plugin-sdk/frontend";
 import { AlertToaster } from "./AlertToaster";
 import { AlertsView } from "./AlertsView";
@@ -45,6 +48,18 @@ export function activate(app: TermixApp): void {
     return <InboxView store={store} compact onOpenAll={openTab} />;
   }
 
+  function InboxCard({ isVisible }: DashboardCardProps) {
+    const { t } = useTranslation();
+    const allowed = usePermission("use");
+    if (!allowed) {
+      return (
+        <p className="p-3 text-xs text-muted-foreground">{t("card.denied")}</p>
+      );
+    }
+    if (!isVisible) return null;
+    return <InboxView store={store} compact onOpenAll={openTab} />;
+  }
+
   function AlertsTab() {
     return <AlertsView store={store} sections={sections} />;
   }
@@ -72,6 +87,15 @@ export function activate(app: TermixApp): void {
     singleton: true,
     hostless: true,
     panelFrame: true,
+  });
+
+  app.registerDashboardCard({
+    id: "alerts-inbox",
+    titleKey: "card.title",
+    defaultPanel: "side",
+    defaultHeight: 280,
+    frame: "framed",
+    component: InboxCard,
   });
 
   app.registerSlotContribution("shell.overlay", {

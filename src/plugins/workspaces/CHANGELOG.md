@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0
+
+### Added
+
+- Workspaces dashboard card: open a saved workspace or your last session in one click
+
 ## 1.0.2
 
 ### Changed

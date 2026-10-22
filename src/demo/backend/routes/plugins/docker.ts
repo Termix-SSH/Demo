@@ -1,4 +1,4 @@
-import { del, get, HttpError, post } from "../../router";
+import { del, get, HttpError, post, put } from "../../router";
 import { socket } from "../../sockets";
 import { value } from "../../store";
 import { hosts } from "../hosts";
@@ -375,6 +375,307 @@ del(`${P}/containers/:sessionId/:id/remove`, (req) => {
   const container = find(req.params.sessionId, req.params.id);
   containers.update((all) => all.filter((x) => x.id !== container.id));
   return { success: true, message: "Container removed successfully" };
+});
+
+type StackState = "running" | "partial" | "stopped" | "paused" | "not-deployed";
+
+interface StackService {
+  service: string;
+  name: string;
+  id: string;
+  image: string;
+  state: string;
+  status: string;
+  health: string;
+  ports: string;
+}
+
+interface Stack {
+  hostId: number;
+  name: string;
+  compose: string;
+  env: string;
+  services: StackService[];
+}
+
+function svc(
+  stack: string,
+  service: string,
+  image: string,
+  state: "running" | "exited",
+  ports = "",
+): StackService {
+  return {
+    service,
+    name: `${stack}-${service}-1`,
+    id: Math.random().toString(16).slice(2, 14).padEnd(12, "0"),
+    image,
+    state,
+    status: state === "running" ? "Up 3 days" : "Exited (0) 2 hours ago",
+    health: "",
+    ports,
+  };
+}
+
+const STACKS_SEED: Stack[] = [
+  {
+    hostId: 1,
+    name: "web-app",
+    compose: `services:
+  app:
+    image: ghcr.io/example/app:2.4.1
+    ports:
+      - "3000:3000"
+    env_file: .env
+    depends_on:
+      - postgres
+      - redis
+  postgres:
+    image: postgres:16-alpine
+    volumes:
+      - /srv/pg:/var/lib/postgresql/data
+  redis:
+    image: redis:7-alpine
+`,
+    env: "DATABASE_URL=postgres://app@postgres:5432/app\nREDIS_URL=redis://redis:6379\n",
+    services: [
+      svc(
+        "web-app",
+        "app",
+        "ghcr.io/example/app:2.4.1",
+        "running",
+        "0.0.0.0:3000->3000/tcp",
+      ),
+      svc("web-app", "postgres", "postgres:16-alpine", "running", "5432/tcp"),
+      svc("web-app", "redis", "redis:7-alpine", "running", "6379/tcp"),
+    ],
+  },
+  {
+    hostId: 1,
+    name: "monitoring",
+    compose: `services:
+  grafana:
+    image: grafana/grafana:11.2.0
+    ports:
+      - "3001:3000"
+  prometheus:
+    image: prom/prometheus:v2.54.1
+`,
+    env: "",
+    services: [
+      svc(
+        "monitoring",
+        "grafana",
+        "grafana/grafana:11.2.0",
+        "running",
+        "0.0.0.0:3001->3000/tcp",
+      ),
+      svc("monitoring", "prometheus", "prom/prometheus:v2.54.1", "exited"),
+    ],
+  },
+  {
+    hostId: 1,
+    name: "proxy",
+    compose: `services:
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+`,
+    env: "",
+    services: [
+      svc(
+        "proxy",
+        "caddy",
+        "caddy:2-alpine",
+        "running",
+        "0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp",
+      ),
+    ],
+  },
+  {
+    hostId: 1,
+    name: "backups",
+    compose: `services:
+  restic:
+    image: restic/restic:0.17
+    command: backup /data
+`,
+    env: "",
+    services: [svc("backups", "restic", "restic/restic:0.17", "exited")],
+  },
+];
+
+const stacks = value<Stack[]>("docker-stacks", () => STACKS_SEED);
+
+function declaredServices(compose: string): string[] {
+  return [...compose.matchAll(/^ {2}([a-z][\w-]*):$/gm)].map((m) => m[1]);
+}
+
+function stackSummary(stack: Stack) {
+  const running = stack.services.filter((x) => x.state === "running").length;
+  const total = stack.services.length;
+  const paused = stack.services.some((x) => x.state === "paused");
+  const state: StackState =
+    total === 0
+      ? "not-deployed"
+      : paused
+        ? "paused"
+        : running === total
+          ? "running"
+          : running === 0
+            ? "stopped"
+            : "partial";
+  return { running, total, state };
+}
+
+function findStack(sessionId: string, name: string): Stack {
+  const hostId = sessionHost(sessionId);
+  const stack = stacks
+    .get()
+    .find((x) => x.hostId === hostId && x.name === name);
+  if (!stack) throw new HttpError(404, { error: "Stack not found" });
+  return stack;
+}
+
+function setStack(stack: Stack, changes: Partial<Stack>) {
+  stacks.update((all) =>
+    all.map((x) => (x === stack ? { ...x, ...changes } : x)),
+  );
+}
+
+get(`${P}/stacks-status`, () => ({ enabled: true }));
+get(`${P}/stacks/:sessionId`, (req) => {
+  const hostId = sessionHost(req.params.sessionId);
+  return {
+    root: "/opt/stacks",
+    stacks: stacks
+      .get()
+      .filter((x) => x.hostId === hostId)
+      .map((x) => ({
+        name: x.name,
+        managed: true,
+        composeFile: `/opt/stacks/${x.name}/compose.yaml`,
+        ...stackSummary(x),
+      })),
+  };
+});
+post(`${P}/stacks/:sessionId/validate`, () => ({ valid: true, output: "" }));
+post(`${P}/stacks/:sessionId`, (req) => {
+  const hostId = sessionHost(req.params.sessionId);
+  const body = req.body as { name: string; compose: string; env?: string };
+  stacks.update((all) => [
+    ...all,
+    {
+      hostId,
+      name: body.name,
+      compose: body.compose,
+      env: body.env ?? "",
+      services: [],
+    },
+  ]);
+  return { success: true, name: body.name };
+});
+get(`${P}/stacks/:sessionId/:name/logs`, (req) => {
+  const stack = findStack(req.params.sessionId, req.params.name);
+  const only = req.query.service;
+  const t = Date.now();
+  const lines = stack.services
+    .filter((x) => !only || x.service === only)
+    .flatMap((x, i) => [
+      `${x.name}  | starting ${x.service}`,
+      `${x.name}  | ready (${i + 1})`,
+    ]);
+  return {
+    logs: lines
+      .map(
+        (line, i) =>
+          `${new Date(t - (lines.length - i) * 4_000).toISOString()} ${line}`,
+      )
+      .join("\n"),
+  };
+});
+get(`${P}/stacks/:sessionId/:name`, (req) => {
+  const stack = findStack(req.params.sessionId, req.params.name);
+  return {
+    name: stack.name,
+    managed: true,
+    composeFile: `/opt/stacks/${stack.name}/compose.yaml`,
+    compose: stack.compose,
+    env: stack.env || null,
+    declaredServices: declaredServices(stack.compose),
+    services: stack.services,
+    ...stackSummary(stack),
+  };
+});
+put(`${P}/stacks/:sessionId/:name/:kind`, (req) => {
+  const stack = findStack(req.params.sessionId, req.params.name);
+  const content = (req.body as { content: string }).content;
+  setStack(
+    stack,
+    req.params.kind === "env" ? { env: content } : { compose: content },
+  );
+  return { success: true };
+});
+post(`${P}/stacks/:sessionId/:name/action`, (req) => {
+  const stack = findStack(req.params.sessionId, req.params.name);
+  const { action, service } = req.body as { action: string; service?: string };
+  if (action === "destroy") {
+    stacks.update((all) => all.filter((x) => x !== stack));
+    return { success: true, output: "" };
+  }
+  const state =
+    action === "stop" ? "exited" : action === "pause" ? "paused" : "running";
+  const current =
+    stack.services.length > 0
+      ? stack.services
+      : declaredServices(stack.compose).map((s) =>
+          svc(stack.name, s, `${s}:latest`, "exited"),
+        );
+  const services =
+    action === "down"
+      ? []
+      : current.map((x) =>
+          !service || x.service === service
+            ? {
+                ...x,
+                state,
+                status:
+                  state === "running"
+                    ? "Up Less than a second"
+                    : state === "paused"
+                      ? "Up 3 days (Paused)"
+                      : "Exited (0) Less than a second ago",
+              }
+            : x,
+        );
+  setStack(stack, { services });
+  return { success: true, output: "" };
+});
+
+const UPDATE_IMAGES: Record<string, { status: string }> = {
+  "ghcr.io/example/app:2.4.1": { status: "update" },
+  "grafana/grafana:11.2.0": { status: "update" },
+  "caddy:2-alpine": { status: "update" },
+  "restic/restic:0.17": { status: "pinned" },
+};
+const updated = value<string[]>("docker-updated-images", () => []);
+get(`${P}/updates/:sessionId`, (req) => {
+  const hostId = sessionHost(req.params.sessionId);
+  const done = new Set(updated.get());
+  const images: Record<string, { status: string }> = {};
+  for (const x of containers.get().filter((y) => y.hostId === hostId)) {
+    images[x.image] = done.has(x.image)
+      ? { status: "current" }
+      : (UPDATE_IMAGES[x.image] ?? { status: "current" });
+  }
+  return { checkedAt: Date.now(), images };
+});
+post(`${P}/updates/:sessionId/:id`, (req) => {
+  const container = find(req.params.sessionId, req.params.id);
+  updated.update((all) => [...all, container.image]);
+  return { success: true, recreated: true };
 });
 
 socket("/plugin-ws/docker/console", (ws) => {

@@ -664,6 +664,9 @@ export function SidebarTree({
         statusCheckEnabled: host.statusCheckEnabled,
         statusCheckInterval: host.statusCheckInterval,
         sshOptions: host.sshOptions ?? null,
+        ...(host.defaultOverrides
+          ? { defaultOverrides: host.defaultOverrides }
+          : {}),
       };
       const created = await createSSHHost(duplicateHost);
       // Plugin host settings live outside the host row. Secrets come back
