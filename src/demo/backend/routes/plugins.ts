@@ -120,6 +120,7 @@ const ENABLED_BY_DEFAULT = new Set([
   "remote-desktop",
   "session-recording",
   "session-sharing",
+  "simple-layout",
   "snippets",
   "ssh-terminal",
   "sync",
