@@ -36,6 +36,9 @@ export function HostAuthOverrideModal({
   const [loadError, setLoadError] = useState(false);
   const [saving, setSaving] = useState(false);
   const overrideState = host.authOverrides?.[protocol];
+  // Set when the login comes from the folder (Termix 26.10.6 and later).
+  const inheritedFolder = (overrideState as { folder?: string } | undefined)
+    ?.folder;
   const ownerAuthShared =
     overrideState?.ownerAuthShared ??
     (protocol === SSH_AUTH_PROTOCOL ? !!host.shareSshAuth : false);
@@ -188,6 +191,11 @@ export function HostAuthOverrideModal({
             {overrideState?.required && selectedId === "" && (
               <p className="border border-warning/30 bg-warning/5 p-2 text-[10px] text-warning">
                 {t("hosts.sharing.authOverrideRequired")}
+              </p>
+            )}
+            {inheritedFolder && selectedId === "" && (
+              <p className="text-[10px] text-muted-foreground">
+                {t("sharing.folderLogin.inUse", { folder: inheritedFolder })}
               </p>
             )}
             <p className="text-[10px] text-muted-foreground">

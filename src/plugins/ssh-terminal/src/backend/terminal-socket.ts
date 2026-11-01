@@ -1,5 +1,6 @@
 import { AsyncResource } from "async_hooks";
 import { StringDecoder } from "string_decoder";
+import { decodeZmodemInput, ZmodemGate } from "./zmodem.js";
 import { WebSocket, type RawData } from "ws";
 import ssh2Pkg, {
   type Client as SSHClientType,
@@ -36,6 +37,7 @@ import {
 import { SSHAuthManager } from "./keyboard-prompt.js";
 import { HOST_KEYS } from "./settings.js";
 import { planTmuxAttach } from "./tmux-attach-plan.js";
+import { stripTerminalQueries } from "./terminal-queries.js";
 import { tmuxScrollCommand } from "./tmux-scroll.js";
 import { SHELL_CWD_COMMAND } from "./shell-cwd.js";
 import {
@@ -89,6 +91,7 @@ interface ConnectToHostData {
     }>;
     /** Keepalive, legacy algorithms, agent and environment options. */
     sshOptions?: HostSshOptions | null;
+    pluginSettings?: Record<string, Record<string, unknown>>;
     /** When true, ignore key material and force password auth (fallback path). */
     passwordFallbackOnly?: boolean;
   };
@@ -97,6 +100,8 @@ interface ConnectToHostData {
   /** Attach straight to this tmux session once the shell is ready
    * (tmux monitor opens its panes through a real PTY this way). */
   tmuxAttachSession?: string;
+  /** The browser handles ZMODEM (rz/sz), so transfers get binary frames. */
+  zmodem?: boolean;
 }
 
 interface ResizeData {
@@ -118,6 +123,8 @@ export interface TerminalSocketDeps {
   getSharing: () => SessionSharingV1 | null;
   /** Guest link resolution, published on ctx.registry by session sharing. */
   getGuests: () => SessionGuestsV1 | null;
+  /** Hosts whose tunnel the registered transport opens, so it is not opened twice. */
+  cloudflareClaims?: (hostId: number) => boolean;
 }
 
 /**
@@ -131,6 +138,8 @@ export interface TerminalSocketDeps {
 export function createTerminalSocket(deps: TerminalSocketDeps) {
   const { ctx, log: sshLogger, sessionManager } = deps;
   const authLogger = sshLogger;
+  // Per session, so a reattached tab keeps the transfer state.
+  const zmodemGates = new Map<string, ZmodemGate>();
   const bind = <A extends unknown[], R>(fn: (...args: A) => R) =>
     AsyncResource.bind(fn);
   const sockets = new Set<WebSocket>();
@@ -171,7 +180,7 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
 
     guests.recordJoin(share.id).catch(() => {});
 
-    const buffered = sessionManager.getBuffer(joined);
+    const buffered = stripTerminalQueries(sessionManager.getBuffer(joined));
     if (buffered) {
       ws.send(JSON.stringify({ type: "data", data: buffered }));
     }
@@ -541,6 +550,7 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
                 cols: number;
                 rows: number;
                 tabInstanceId?: string;
+                zmodem?: boolean;
               };
               sshLogger.info("Attempting to attach session", {
                 operation: "terminal_attach_session",
@@ -567,11 +577,16 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
                     : 0,
                 });
                 currentSessionId = attachData.sessionId;
+                zmodemGates
+                  .get(attachData.sessionId)
+                  ?.enable(attachData.zmodem === true);
                 sshStream = session.sshStream;
                 sshConn = session.sshConn;
                 isConnecting = false;
                 isConnected = true;
-                const buffered = sessionManager.getBuffer(session);
+                const buffered = stripTerminalQueries(
+                  sessionManager.getBuffer(session),
+                );
                 if (buffered) {
                   ws.send(JSON.stringify({ type: "data", data: buffered }));
                 }
@@ -797,6 +812,19 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
 
             case "ping":
               ws.send(JSON.stringify({ type: "pong" }));
+              break;
+
+            case "zinput": {
+              const bytes = decodeZmodemInput(data);
+              const zStream =
+                sessionManager.getSession(currentSessionId)?.sshStream ??
+                sshStream;
+              if (bytes && zStream) zStream.write(bytes);
+              break;
+            }
+
+            case "zend":
+              if (currentSessionId) zmodemGates.get(currentSessionId)?.end();
               break;
 
             case "tmux_attach": {
@@ -1149,7 +1177,9 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
 
                 sharing.recordJoin(share.id).catch(() => {});
 
-                const buffered = sessionManager.getBuffer(joinedSession);
+                const buffered = stripTerminalQueries(
+                  sessionManager.getBuffer(joinedSession),
+                );
                 if (buffered) {
                   ws.send(JSON.stringify({ type: "data", data: buffered }));
                 }
@@ -1346,6 +1376,8 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
     async function handleConnectToHost(data: ConnectToHostData) {
       const { hostConfig, initialPath, executeCommand, tmuxAttachSession } =
         data;
+      const tcpNoDelay =
+        hostConfig.pluginSettings?.["ssh-terminal"]?.tcpNoDelay === true;
       const {
         id,
         syncId: hostSyncId,
@@ -1619,11 +1651,18 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
       const serverHostId = resolveServerHostId(id, resolvedHostData);
 
       let autoTmuxEnabled = false;
+      let autoTmuxAskWhenOne = false;
       if (serverHostId != null) {
         try {
           autoTmuxEnabled =
             (await ctx.settings.getHost(serverHostId, HOST_KEYS.autoTmux)) ===
             true;
+          autoTmuxAskWhenOne =
+            autoTmuxEnabled &&
+            (await ctx.settings.getHost(
+              serverHostId,
+              HOST_KEYS.autoTmuxAskWhenOne,
+            )) === true;
         } catch {
           autoTmuxEnabled = false;
         }
@@ -1964,7 +2003,9 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
             isConnected = true;
             sessionManager.attachWs(reusedSessionId, userId, ws, tabInstanceId);
 
-            const buffered = sessionManager.getBuffer(existingSession);
+            const buffered = stripTerminalQueries(
+              sessionManager.getBuffer(existingSession),
+            );
             if (buffered) {
               ws.send(JSON.stringify({ type: "data", data: buffered }));
             }
@@ -2128,6 +2169,7 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
               }
 
               sshStream = stream;
+              sshConn?.setNoDelay(tcpNoDelay);
               sshLogger.success("Terminal shell channel opened", {
                 operation: "terminal_shell_opened",
                 sessionId,
@@ -2168,8 +2210,26 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
               // characters. StringDecoder carries incomplete trailing bytes over
               // to the next chunk so multi-byte characters decode correctly.
               const decoder = new StringDecoder("utf-8");
+              const zmodem = new ZmodemGate();
+              zmodem.enable(data.zmodem === true);
+              if (boundSessionId) zmodemGates.set(boundSessionId, zmodem);
 
-              stream.on("data", (data: Buffer) => {
+              stream.on("data", (chunk: Buffer) => {
+                const parts = zmodem.split(chunk);
+                if (parts.text) sendText(parts.text);
+                if (parts.binary) {
+                  // Only the owner's tab runs the transfer, and it never goes
+                  // into the replay buffer or a recording.
+                  sessionManager.broadcast(
+                    boundSessionId!,
+                    { type: "zdata", data: parts.binary.toString("base64") },
+                    (participant) => participant.isOwner,
+                  );
+                  sessionManager.applyBackpressure(boundSessionId!, stream);
+                }
+              });
+
+              const sendText = (data: Buffer) => {
                 try {
                   const utf8String = decoder.write(data);
 
@@ -2200,9 +2260,10 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
                     });
                   }
                 }
-              });
+              };
 
               stream.on("close", (code: number | null) => {
+                if (boundSessionId) zmodemGates.delete(boundSessionId);
                 const session = sessionManager.getSession(boundSessionId);
                 if (session) {
                   if (code != null) {
@@ -2295,7 +2356,10 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
                 (async () => {
                   try {
                     const detection = await tmux.detect(conn);
-                    const plan = planTmuxAttach(detection.sessions.length);
+                    const plan = planTmuxAttach(
+                      detection.sessions,
+                      autoTmuxAskWhenOne,
+                    );
                     if (!detection.available) {
                       sshLogger.warn("tmux not found on remote host", {
                         operation: "tmux_detection",
@@ -2984,7 +3048,16 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
 
       let transport: Awaited<ReturnType<typeof ctx.ssh.openTransport>>;
       try {
-        if (cloudflareTunnelEnabled) {
+        if (
+          cloudflareTunnelEnabled &&
+          deps.cloudflareClaims?.(connectTarget.id)
+        ) {
+          sendLog(
+            "handshake",
+            "info",
+            "Connecting through the host's Cloudflare Zero Trust Tunnel",
+          );
+        } else if (cloudflareTunnelEnabled) {
           const cfEndpoint = normalizeCloudflareEndpoint(
             cfTunnelHostname || ip,
             cfTunnelPort || 443,

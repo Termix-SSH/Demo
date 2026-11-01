@@ -71,6 +71,7 @@ export function HostTerminalSettings({
   const stored = ((editorForm?.pluginSettings as HostPluginSettings)?.[
     PLUGIN_ID
   ] ?? {}) as Record<string, unknown>;
+  const tcpNoDelay = stored.tcpNoDelay === true;
   // The form holds what the host follows, so this is what it will look like.
   const form = readHostTerminalSettings(stored) as HostTerminalValues;
 
@@ -696,6 +697,15 @@ export function HostTerminalSettings({
         icon={<Zap className="size-3.5" />}
       >
         <div className="flex flex-col gap-4 py-3">
+          <SettingRow
+            label={t("settings.host.tcpNoDelay.label")}
+            description={t("settings.host.tcpNoDelay.description")}
+          >
+            <FakeSwitch
+              checked={tcpNoDelay}
+              onChange={(value) => writeValues({ tcpNoDelay: value })}
+            />
+          </SettingRow>
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between">
               <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
@@ -737,6 +747,18 @@ export function HostTerminalSettings({
               onChange={(v) => setField("autoTmux", v)}
             />
           </SettingRow>
+          {form.autoTmux && (
+            <SettingRow
+              label={t("hosts.autoTmuxAskWhenOne")}
+              defaultKey="autoTmuxAskWhenOne"
+              description={t("hosts.autoTmuxAskWhenOneDesc")}
+            >
+              <FakeSwitch
+                checked={form.autoTmuxAskWhenOne}
+                onChange={(v) => setField("autoTmuxAskWhenOne", v)}
+              />
+            </SettingRow>
+          )}
           <SettingRow
             label={t("hosts.useSSHTitleLabel")}
             defaultKey="useSSHTitle"
@@ -797,6 +819,16 @@ export function HostTerminalSettings({
               onChange={(v) => setField("sudoPasswordAutoFill", v)}
             />
           </SettingRow>
+          <SettingRow
+            label={t("hosts.suPasswordAutoFillLabel")}
+            defaultKey="suPasswordAutoFill"
+            description={t("hosts.suPasswordAutoFillDesc")}
+          >
+            <FakeSwitch
+              checked={form.suPasswordAutoFill}
+              onChange={(v) => setField("suPasswordAutoFill", v)}
+            />
+          </SettingRow>
           <div className="flex flex-col gap-1.5">
             <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
               {t("hosts.localEchoLabel")}
@@ -835,7 +867,7 @@ export function HostTerminalSettings({
               onChange={(e) =>
                 setField(
                   "linkClickBehavior",
-                  e.target.value as "confirm" | "direct",
+                  e.target.value as "confirm" | "direct" | "modifier",
                 )
               }
               className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring"
@@ -845,6 +877,9 @@ export function HostTerminalSettings({
               </option>
               <option value="direct">
                 {t("hosts.linkClickBehaviorDirect")}
+              </option>
+              <option value="modifier">
+                {t("hosts.linkClickBehaviorModifier")}
               </option>
             </Select2>
             <p className="text-[10px] text-muted-foreground">

@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.2.1
+
+### Fixed
+
+- Switching browser tabs no longer shows the connection screen on Proxmox stats. A quick switch keeps the session, and after a longer one the stats stay up while they reconnect, unless the reconnect fails
+
+## 1.2.0
+
+### Added
+
+- Cluster aware sync: nodes of the same cluster share one host per guest, so sync can run on every node
+- Imported guests go in a folder named after the cluster, with a Folder for guests setting and an optional folder per node
+
+### Fixed
+
+- Auto Sync no longer makes duplicate guests when a linked desktop and the server both sync the same Proxmox host. Delete the duplicates once and they stay gone
+- Discovery uses an IP in your Preferred IP ranges for a container with more than one network card, also when that card gets its address from DHCP
+- The Proxmox view no longer fails and retries on the first connect after a restart
+
 ## 1.1.0
 
 ### Added

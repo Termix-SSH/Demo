@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.1.1
+
+### Fixed
+
+- The side rail no longer opens behind Customize sidebar and other panels when you hover over it
+
+## 1.1.0
+
+### Added
+
+- Rail items can show a small status dot, used by Sync to show if the desktop is connected to its server
+- Plugins can replace the status badge in the dashboard's host list, used by Host Metrics to show failing health checks
+- Customize sidebar can turn off alternating row colors in the host list (needs Termix 26.10.6)
+- Removing someone from a shared folder offers to remove their access from the folder's hosts too (needs Termix 26.10.6)
+- A folder with hosts shared with you has a Set personal login button, so you pick your own login once for all of them (needs Termix 26.10.6)
+
+### Fixed
+
+- On the desktop, a host shared with you opens read only with a note to change it on the server, instead of failing with Error saving host
+- A failed host save shows the reason the server gave
+- Compact host rows give the name its own full line, so long names are not cut short or covered by the row actions
+
 ## 1.0.2
 
 ### Fixed

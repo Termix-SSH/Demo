@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0
+
+### Added
+
+- Fleet actions try a host again when its SSH connection times out, only for the hosts that failed, with admin settings for how many tries and how long to wait
+
 ## 1.0.2
 
 ### Added

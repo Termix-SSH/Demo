@@ -59,6 +59,7 @@ import { withLiveStatus } from "./live-host-status";
 import { useHostSidebarPreferences } from "./tree/hooks/useHostSidebarPreferences";
 import { useArrangeLock } from "./use-arrange-lock";
 import { useHostPolicy } from "./use-host-policy";
+import { stripedRows } from "./striped-rows";
 
 type FilterState = HostSidebarFilterState;
 
@@ -846,6 +847,7 @@ export function HostsPanel({
             openOnDoubleClick={sidebarPrefs.display.openOnDoubleClick}
             showFolderPaths={sidebarPrefs.display.showFolderPaths}
             rowFields={sidebarPrefs.display}
+            striped={stripedRows(sidebarPrefs.display)}
             hostClickBehavior={sidebarPrefs.display.hostClickBehavior}
           />
         </div>

@@ -38,9 +38,16 @@ export interface HealthCheckEvent {
 export interface ManagerRoutesDeps {
   validateHostId: RequestHandler;
   runOnHost: RunOnHost;
+  /** Throws unless the acting user has `level` access, without borrowing a connection. */
+  assertAccess: (
+    hostId: number,
+    level: PluginHostShareLevel,
+  ) => Promise<unknown>;
   log: MetricsLogger;
   repository: HostMetricsRepository;
   recordHealth: HealthRecorder;
+  /** Registers a cleanup run when the plugin deactivates. */
+  onDispose?: (fn: () => void) => void;
   /** Live-update policy for a host. Disabled by the admin or by the host's metricsEnabled. */
   liveConfig: (
     hostId: number,

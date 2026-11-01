@@ -540,6 +540,7 @@ export function HostShareModal({
                 className="text-[10px] text-muted-foreground hover:text-destructive"
                 title={t("hosts.sharing.folderRuleRemove")}
                 onClick={async () => {
+                  let fromHosts = false;
                   const ok = await confirm({
                     title: t("sharing.revokeConfirm", {
                       name:
@@ -548,10 +549,26 @@ export function HostShareModal({
                         rule.roleName ??
                         "",
                     }),
+                    description: (
+                      <label className="flex items-center gap-2 text-xs">
+                        <input
+                          type="checkbox"
+                          onChange={(event) => {
+                            fromHosts = event.target.checked;
+                          }}
+                        />
+                        {t("hosts.sharing.folderRuleRemoveFromHosts")}
+                      </label>
+                    ),
                     confirmLabel: t("sharing.revoke"),
                   });
                   if (ok)
-                    void revokeFolderAccess(rule.id).then(refreshFolderRules);
+                    void (
+                      revokeFolderAccess as (
+                        id: number,
+                        options?: { fromHosts?: boolean },
+                      ) => Promise<void>
+                    )(rule.id, { fromHosts }).then(refreshFolderRules);
                 }}
               >
                 <X className="size-3.5" />

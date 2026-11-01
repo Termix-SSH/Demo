@@ -478,8 +478,14 @@ export function HostEditor({
 
       toast.success(host ? t("hosts.hostUpdated") : t("hosts.hostCreated"));
       onSave(saved);
-    } catch {
-      toast.error(t("hosts.failedToSave"));
+    } catch (err) {
+      const reason = (err as { response?: { data?: { error?: unknown } } })
+        ?.response?.data?.error;
+      toast.error(
+        typeof reason === "string" && reason
+          ? `${t("hosts.failedToSave")}: ${reason}`
+          : t("hosts.failedToSave"),
+      );
     } finally {
       setSaving(false);
     }
@@ -622,8 +628,12 @@ export function HostEditor({
   // or auth type (owner-only, enforced server-side too).
   const isSharedHost = !!host?.isShared;
   const lock = host?.lock ?? null;
+  // On a linked desktop a shared host is a copy sync keeps in step, and the
+  // local server refuses edits to it.
+  const sharedCopy = isSharedHost && !!host?.sharedCopy;
   const readOnly =
-    !!lock || (isSharedHost && host !== null && !canEditHost(host));
+    !!lock ||
+    (isSharedHost && host !== null && (sharedCopy || !canEditHost(host)));
   const lockAuthReferences = isSharedHost && !readOnly;
 
   const handleProtocolToggle = (
@@ -774,13 +784,17 @@ export function HostEditor({
               <div className="flex items-start gap-2.5 p-3 border border-accent-brand/30 bg-accent-brand/5 text-xs text-muted-foreground">
                 <Shield className="size-3.5 shrink-0 mt-0.5 text-accent-brand" />
                 <div>
-                  {readOnly
-                    ? t("hosts.sharing.viewOnlyBanner", {
+                  {sharedCopy
+                    ? t("hosts.sharing.sharedCopyBanner", {
                         owner: host?.ownerUsername || "?",
                       })
-                    : t("hosts.sharing.sharedEditBanner", {
-                        owner: host?.ownerUsername || "?",
-                      })}
+                    : readOnly
+                      ? t("hosts.sharing.viewOnlyBanner", {
+                          owner: host?.ownerUsername || "?",
+                        })
+                      : t("hosts.sharing.sharedEditBanner", {
+                          owner: host?.ownerUsername || "?",
+                        })}
                 </div>
               </div>
             )}

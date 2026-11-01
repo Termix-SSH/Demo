@@ -5,6 +5,7 @@ import {
   Button,
   Input,
   PasswordInput,
+  Select2,
   useConfirm,
   Checkbox,
 } from "@termix-ssh/plugin-sdk/ui";
@@ -12,7 +13,15 @@ import { usePluginApi, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
   createSecretSourcesApi,
   type SecretSource,
+  type ReferenceTestResult,
 } from "./secret-sources-api";
+import {
+  credentialComplete,
+  KIND_SPECS,
+  serializeCredential,
+  specFor,
+  type SecretSourceKind,
+} from "./source-kinds";
 
 function errorMessage(error: unknown): string {
   if (error && typeof error === "object" && "message" in error) {
@@ -24,15 +33,17 @@ function errorMessage(error: unknown): string {
 type FormState = {
   id?: string;
   name: string;
+  kind: SecretSourceKind;
   baseUrl: string;
-  token: string;
+  credential: Record<string, string>;
   shared: boolean;
 };
 
 const emptyForm: FormState = {
   name: "",
+  kind: "onepassword-connect",
   baseUrl: "",
-  token: "",
+  credential: {},
   shared: false,
 };
 
@@ -45,6 +56,10 @@ export function SecretSourceManager({ onClose }: { onClose: () => void }) {
   const [form, setForm] = useState<FormState | null>(null);
   const [saving, setSaving] = useState(false);
   const [testing, setTesting] = useState<string | null>(null);
+  const [reference, setReference] = useState("");
+  const [referenceTesting, setReferenceTesting] = useState(false);
+  const [referenceResult, setReferenceResult] =
+    useState<ReferenceTestResult | null>(null);
 
   const reload = useCallback(async () => {
     try {
@@ -63,10 +78,12 @@ export function SecretSourceManager({ onClose }: { onClose: () => void }) {
 
   const handleSave = async () => {
     if (!form) return;
+    const spec = specFor(form.kind);
+    const token = serializeCredential(spec, form.credential);
     if (
       !form.name.trim() ||
       !form.baseUrl.trim() ||
-      (!form.id && !form.token)
+      (!form.id && !credentialComplete(spec, form.credential))
     ) {
       toast.error(t("required"));
       return;
@@ -78,13 +95,14 @@ export function SecretSourceManager({ onClose }: { onClose: () => void }) {
           name: form.name,
           baseUrl: form.baseUrl,
           shared: form.shared,
-          ...(form.token ? { token: form.token } : {}),
+          ...(token ? { token } : {}),
         });
       } else {
         await api.create({
           name: form.name,
+          kind: form.kind,
           baseUrl: form.baseUrl,
-          token: form.token,
+          token,
           shared: form.shared,
         });
       }
@@ -113,12 +131,24 @@ export function SecretSourceManager({ onClose }: { onClose: () => void }) {
     }
   };
 
+  const handleTestReference = async () => {
+    setReferenceTesting(true);
+    setReferenceResult(null);
+    try {
+      setReferenceResult(await api.testReference(reference.trim()));
+    } catch (e) {
+      toast.error(errorMessage(e));
+    } finally {
+      setReferenceTesting(false);
+    }
+  };
+
   const handleTest = async (source: SecretSource) => {
     setTesting(source.id);
     try {
       const result = await api.test(source.id);
       if (result.ok) {
-        toast.success(t("testOk", { count: result.vaults ?? 0 }));
+        toast.success(result.detail ?? t("testPassed"));
       } else {
         toast.error(result.error ?? t("testFailed"));
       }
@@ -164,7 +194,7 @@ export function SecretSourceManager({ onClose }: { onClose: () => void }) {
                   )}
                 </div>
                 <div className="truncate text-[10px] text-muted-foreground">
-                  {source.baseUrl}
+                  {t(specFor(source.kind).labelKey)} | {source.baseUrl}
                 </div>
               </div>
               <Button
@@ -187,8 +217,9 @@ export function SecretSourceManager({ onClose }: { onClose: () => void }) {
                       setForm({
                         id: source.id,
                         name: source.name,
+                        kind: specFor(source.kind).kind,
                         baseUrl: source.baseUrl,
-                        token: "",
+                        credential: {},
                         shared: source.shared,
                       })
                     }
@@ -216,11 +247,85 @@ export function SecretSourceManager({ onClose }: { onClose: () => void }) {
           >
             <Plus className="size-3 mr-1" /> {t("new")}
           </Button>
+          <div className="flex flex-col gap-1 border-t border-border pt-2">
+            <label
+              htmlFor="secret-reference-test"
+              className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground"
+            >
+              {t("referenceTestLabel")}
+            </label>
+            <div className="flex items-center gap-2">
+              <Input
+                id="secret-reference-test"
+                className="h-7 text-xs"
+                value={reference}
+                placeholder="infisical://project/env/folder/name"
+                onChange={(event) => {
+                  setReference(event.target.value);
+                  setReferenceResult(null);
+                }}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="h-7 text-[10px]"
+                disabled={!reference.trim() || referenceTesting}
+                onClick={() => void handleTestReference()}
+              >
+                {t("test")}
+              </Button>
+            </div>
+            {referenceResult && (
+              <p
+                role="status"
+                className={
+                  referenceResult.ok
+                    ? "text-[10px] text-accent-brand"
+                    : "text-[10px] text-destructive"
+                }
+              >
+                {t(`referenceStatus.${referenceResult.status}`, {
+                  source: referenceResult.source,
+                })}
+                {referenceResult.error ? ` | ${referenceResult.error}` : ""}
+              </p>
+            )}
+          </div>
         </>
       )}
 
       {form && (
         <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1">
+            <label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">
+              {t("kindLabel")}
+            </label>
+            <Select2
+              className="h-8 text-xs"
+              value={form.kind}
+              disabled={!!form.id}
+              onChange={(e) => {
+                const spec = specFor(e.target.value);
+                setForm((prev) =>
+                  prev
+                    ? {
+                        ...prev,
+                        kind: spec.kind,
+                        baseUrl: prev.baseUrl || spec.defaultUrl,
+                        credential: {},
+                      }
+                    : prev,
+                );
+              }}
+            >
+              {KIND_SPECS.map((spec) => (
+                <option key={spec.kind} value={spec.kind}>
+                  {t(spec.labelKey)}
+                </option>
+              ))}
+            </Select2>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div className="flex flex-col gap-1">
               <label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">
@@ -235,27 +340,43 @@ export function SecretSourceManager({ onClose }: { onClose: () => void }) {
             </div>
             <div className="flex flex-col gap-1">
               <label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">
-                {t("urlLabel")}
+                {t(specFor(form.kind).urlLabelKey)}
               </label>
               <Input
                 className="h-8 text-xs"
-                placeholder="https://connect.internal:8080"
+                placeholder={specFor(form.kind).urlPlaceholder}
                 value={form.baseUrl}
                 onChange={(e) => setField("baseUrl", e.target.value)}
               />
             </div>
           </div>
-          <div className="flex flex-col gap-1">
-            <label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">
-              {t("tokenLabel")}
-            </label>
-            <PasswordInput
-              className="h-8 text-xs pr-8"
-              placeholder={form.id ? t("tokenKeep") : "eyJhbGciOi..."}
-              value={form.token}
-              onChange={(e) => setField("token", e.target.value)}
-            />
-          </div>
+          {specFor(form.kind).fields.map((field) => {
+            const Field = field.secret ? PasswordInput : Input;
+            return (
+              <div key={field.key} className="flex flex-col gap-1">
+                <label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">
+                  {t(field.labelKey)}
+                </label>
+                <Field
+                  className={`h-8 text-xs${field.secret ? " pr-8" : ""}`}
+                  placeholder={
+                    form.id ? t("tokenKeep") : (field.placeholder ?? "")
+                  }
+                  value={form.credential[field.key] ?? ""}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setField("credential", {
+                      ...form.credential,
+                      [field.key]: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            );
+          })}
+          <p className="text-[10px] text-muted-foreground">
+            {t(`kindHints.${form.kind}`)}{" "}
+            <code className="font-mono">{specFor(form.kind).example}</code>
+          </p>
           <label className="flex items-center gap-2 text-xs text-foreground">
             <Checkbox
               checked={form.shared}

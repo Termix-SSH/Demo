@@ -17,10 +17,7 @@ import {
 import { useXTerm } from "react-xtermjs";
 import { FitAddon } from "@xterm/addon-fit";
 import { ClipboardAddon } from "@xterm/addon-clipboard";
-import {
-  resolveTerminalContextMenuAction,
-  selectedTextToCopy,
-} from "./terminal-clipboard-actions";
+import { selectedTextToCopy } from "./terminal-clipboard-actions";
 import { Unicode11Addon } from "@xterm/addon-unicode11";
 import { WebLinksAddon } from "@xterm/addon-web-links";
 import { SearchAddon } from "@xterm/addon-search";
@@ -44,13 +41,16 @@ import {
 } from "../look/terminal-font-zoom";
 import { TmuxSessionPicker } from "./TmuxSessionPicker";
 import { getTerminalBufferText } from "./terminal-buffer-text.ts";
+import { createTerminalInputAccess } from "./terminal-input-access.ts";
 import { isPaneNavHotkey } from "../lib/pane-nav-hotkey";
 import { getMacLineNavigationSequence } from "../lib/mac-line-navigation";
 import { useCommandTracker } from "./command-history/useCommandTracker";
 import {
+  isAtPasswordPrompt as isWaitingAtPasswordPrompt,
   isPasswordPrompt as endsInPasswordPrompt,
   isSudoPrompt as isSudoPromptOutput,
   stripAnsi,
+  suTargetUser,
 } from "./password-prompt";
 import {
   highlightTerminalOutput,
@@ -78,8 +78,34 @@ import {
 import { toast } from "sonner";
 import { Save } from "lucide-react";
 import { TerminalToolbar } from "./TerminalToolbar.tsx";
+import { BroadcastBar } from "../terminal-tools/broadcast/BroadcastBar";
+import {
+  mirrorTypedInput,
+  reportPasswordPrompt,
+  sendToBroadcastGroup,
+  useBroadcast,
+} from "../terminal-tools/broadcast/broadcast-store";
+import { readBufferLines as readXtermLines } from "../terminal-tools/buffer-lines";
+import { FindAllResults } from "../terminal-tools/find-all/FindAllResults";
+import {
+  TerminalContextMenu,
+  type TerminalMenuActions,
+} from "../terminal-tools/TerminalContextMenu";
+import { buildToolEntries } from "../terminal-tools/ToolsMenu";
+import { WatchEditor } from "../terminal-tools/watch/WatchEditor";
+import {
+  noteWatchInput,
+  useWatchCount,
+} from "../terminal-tools/watch/watch-store";
 import { readToolbarSettings } from "./toolbar-settings.ts";
-import type { TerminalHandle, TerminalHostConfig } from "./terminal-types.ts";
+import { ZmodemController, type ZmodemState } from "./zmodem-transfer.ts";
+import { ZmodemBar } from "./ZmodemBar.tsx";
+import type {
+  PasswordFillResult,
+  TerminalHandle,
+  TerminalHostConfig,
+  TerminalToolView,
+} from "./terminal-types.ts";
 import type { Host, TabType } from "../types";
 import { isTabKeyEvent } from "./terminal-key-event.ts";
 import { installTouchWheelCoordinator } from "./touch-wheel-coordinator.ts";
@@ -91,14 +117,15 @@ import {
 } from "./terminal-wheel.ts";
 import { loadTouchInputSettings } from "./touch-input-settings-store.ts";
 import {
+  createTerminalContextMenuHandler,
+  getCopyOnSelect,
+  getRightClickAction,
   handleTerminalClipboardKeyEvent,
-  getUseRightClickCopyPaste,
 } from "./terminal-clipboard.ts";
 import { quoteTerminalImagePath } from "./terminal-image-path.ts";
 import {
   dispatchKeybindingAction,
   isTerminalKeybindingAction,
-  sendRawToSocket,
 } from "../lib/keybinding-dispatch";
 import {
   TerminalLocalEcho,
@@ -126,6 +153,7 @@ import {
   ConnectionScreen,
   PanePrompt,
   Button,
+  Input,
   hydrateLocalSharedHostAuth,
   findMatchingKeybinding,
   type CustomKeybinding,
@@ -138,11 +166,11 @@ import {
   useSlotContributions,
   getCustomKeybindings,
   runKeybindingAction,
-  getClientPreference,
   logActivity,
   getHostPassword,
   patchOpenTab,
   useHost,
+  useHosts,
 } from "@termix-ssh/plugin-sdk/frontend";
 
 type HostKeyVerificationData = Omit<
@@ -171,6 +199,8 @@ interface SSHTerminalProps {
   disableAutoFocus?: boolean;
   isQuickConnect?: boolean;
   onSaveQuickConnect?: () => Promise<void>;
+  /** Opens the host's editor, offered when the connection fails. */
+  onEditHost?: () => void;
   /** Full host record, used to drive the context-aware terminal toolbar. */
   host?: Host;
   onOpenTab?: (type: TabType) => void;
@@ -178,6 +208,8 @@ interface SSHTerminalProps {
   isFocusedPane?: boolean;
   /** Fires when the backend reports the created session id (collab presenting). */
   onSessionReady?: (sessionId: string) => void;
+  /** This terminal's tab. Embedded terminals have none and stay out of broadcasts. */
+  sessionTabId?: string;
 }
 
 const ALTERNATE_SCREEN_SEQUENCE = /\x1b\[\?(47|1047|1049)([hl])/g;
@@ -215,8 +247,10 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       disableAutoFocus = false,
       isQuickConnect = false,
       onSaveQuickConnect,
+      onEditHost,
       host,
       isFocusedPane = true,
+      sessionTabId,
     },
     ref,
   ) {
@@ -238,6 +272,11 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
     termSettingsRef.current = termSettings;
     const termUserRef = useRef(termUser);
     termUserRef.current = termUser;
+    const [zmodemState, setZmodemState] = useState<ZmodemState>({
+      phase: "idle",
+    });
+    const zmodemRef = useRef<ZmodemController | null>(null);
+    zmodemRef.current ??= new ZmodemController(setZmodemState);
     const showToolbar = hostSetting(host, "enableTerminalToolbar", true);
     const outputListenersRef = useRef(new Set<(data: string) => void>());
 
@@ -451,6 +490,35 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
     const lastCommandRef = useRef("");
     const outputTailRef = useRef("");
     const passwordInputRef = useRef(false);
+    const sessionTabIdRef = useRef(sessionTabId);
+    sessionTabIdRef.current = sessionTabId;
+    const suppressMirrorRef = useRef(false);
+    const [menuAt, setMenuAt] = useState<{ x: number; y: number } | null>(null);
+    const [showWatch, setShowWatch] = useState(false);
+    const [searchAllTerminals, setSearchAllTerminals] = useState(false);
+    const [customKeyOpen, setCustomKeyOpen] = useState(false);
+    const [customKey, setCustomKey] = useState("");
+    const broadcast = useBroadcast();
+    const watchCount = useWatchCount(sessionTabId);
+    const inBroadcast =
+      !!sessionTabId && broadcast.members.includes(sessionTabId);
+
+    // Everything the user types passes here, so a broadcast group and watch
+    // rules see it. Passwords, startup commands and plugin sends don't.
+    const mirrorInput = useCallback((data: string) => {
+      const tabId = sessionTabIdRef.current;
+      if (!tabId || suppressMirrorRef.current) return;
+      noteWatchInput(tabId);
+      mirrorTypedInput(tabId, data);
+    }, []);
+    const sendUserInput = useCallback(
+      (data: string) => {
+        if (webSocketRef.current?.readyState !== 1) return;
+        webSocketRef.current.send(JSON.stringify({ type: "input", data }));
+        mirrorInput(data);
+      },
+      [mirrorInput],
+    );
     const alternateScreenModeRef = useRef(false);
 
     const { trackInput, getCurrentCommand, updateCurrentCommand } =
@@ -757,11 +825,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       const suffix = autosuggestionRef.current;
       if (!suffix || webSocketRef.current?.readyState !== 1) return false;
 
-      for (const char of suffix) {
-        webSocketRef.current.send(
-          JSON.stringify({ type: "input", data: char }),
-        );
-      }
+      for (const char of suffix) sendUserInput(char);
 
       updateCurrentCommandRef.current(
         `${currentAutosuggestionCommand.current}${suffix}`,
@@ -769,7 +833,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       autosuggestionSuppressedRef.current = false;
       clearAutosuggestion();
       return true;
-    }, [clearAutosuggestion]);
+    }, [clearAutosuggestion, sendUserInput]);
 
     const firstDockId = dockContributions[0]?.actionId;
     // Ctrl+Shift+A and the floating button toggle the first docked panel.
@@ -881,11 +945,15 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
           rows: terminal?.rows || 24,
           hostConfig: currentHostConfigRef.current,
         }),
+        input: createTerminalInputAccess(terminal),
       }),
       [host, backgroundColor, updateConnectionError, terminal],
     );
 
     const activityLoggingRef = useRef(false);
+    const { hosts: savedHosts } = useHosts();
+    const savedHostsRef = useRef(savedHosts);
+    savedHostsRef.current = savedHosts;
     const passwordPromptShownRef = useRef(false);
     const passwordPromptBufferRef = useRef("");
     const controlStringModeRef = useRef(false);
@@ -1356,6 +1424,12 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
 
       if (!endsInPasswordPrompt(buffered)) return;
 
+      const suUser = suTargetUser(lastCommandRef.current);
+      if (suUser !== null) {
+        offerSuPasswordFill(suUser);
+        return;
+      }
+
       const isSudoPrompt = isSudoPromptOutput(buffered, lastCommandRef.current);
 
       // Sudo autofill is opt-in: the saved sudo password must not be sent
@@ -1406,6 +1480,53 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       }, 15000);
     }
 
+    /**
+     * A su prompt wants the target user's password, never the login one. It is
+     * offered only when the host turns this on and a saved host with the same
+     * address logs in as that user.
+     */
+    function offerSuPasswordFill(suUser: string) {
+      if (!termSettingsRef.current.suPasswordAutoFill) return;
+      if (passwordPromptShownRef.current) return;
+      const match = savedHostsRef.current.find(
+        (saved) =>
+          saved.ip === hostConfig.ip &&
+          saved.username === suUser &&
+          Number.isFinite(Number(saved.id)),
+      );
+      if (!match) return;
+
+      passwordPromptShownRef.current = true;
+      passwordPromptBufferRef.current = "";
+      void confirm({
+        title: t("terminal.suPasswordFillTitle", { user: suUser }),
+        confirmLabel: t("common.confirm"),
+        cancelLabel: t("common.cancel"),
+        destructive: false,
+      }).then((ok) => {
+        if (ok)
+          void (async () => {
+            const password = await getHostPassword(
+              Number(match.id),
+              "password",
+            );
+            if (
+              password &&
+              webSocketRef.current &&
+              webSocketRef.current.readyState === WebSocket.OPEN
+            ) {
+              webSocketRef.current.send(
+                JSON.stringify({ type: "input", data: password + "\n" }),
+              );
+            }
+          })();
+        setTimeout(() => {
+          passwordPromptShownRef.current = false;
+        }, 3000);
+        return ok;
+      });
+    }
+
     function reconnectTerminal() {
       isUnmountingRef.current = false;
       shouldNotReconnectRef.current = false;
@@ -1424,9 +1545,17 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       }
     }
 
-    useImperativeHandle(
-      ref,
+    const findOptions = useMemo(
       () => ({
+        caseSensitive: searchCaseSensitive,
+        wholeWord: searchWholeWord,
+        regex: searchRegex,
+      }),
+      [searchCaseSensitive, searchWholeWord, searchRegex],
+    );
+
+    const terminalHandle = useMemo(
+      (): TerminalHandle => ({
         disconnect: () => {
           isUnmountingRef.current = true;
           shouldNotReconnectRef.current = true;
@@ -1508,12 +1637,26 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
             webSocketRef.current.send(JSON.stringify({ type: "input", data }));
           }
         },
+        typeInput: (data: string) => sendUserInput(data),
+        injectInput: (data: string) => {
+          if (webSocketRef.current?.readyState !== 1) return;
+          trackInput(data);
+          const tabId = sessionTabIdRef.current;
+          if (tabId) noteWatchInput(tabId);
+          webSocketRef.current.send(JSON.stringify({ type: "input", data }));
+        },
         subscribeOutput: (listener: (data: string) => void) => {
           outputListenersRef.current.add(listener);
           return () => outputListenersRef.current.delete(listener);
         },
-        paste: (text: string) => {
-          terminal?.paste(text);
+        paste: (text: string, options?: { mirror?: boolean }) => {
+          // terminal.paste comes back through onData right away.
+          suppressMirrorRef.current = !options?.mirror;
+          try {
+            terminal?.paste(text);
+          } finally {
+            suppressMirrorRef.current = false;
+          }
         },
         notifyResize: () => {
           try {
@@ -1535,12 +1678,98 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
         openFileManager: () => openFilesAtCwd(),
         // Asks the server for the shell's working directory.
         getCwd: () => requestCwd(),
+        getInputModes: () => ({
+          applicationCursor:
+            terminal?.modes?.applicationCursorKeysMode ?? false,
+          bracketedPaste: terminal?.modes?.bracketedPasteMode ?? false,
+          backspace:
+            termSettingsRef.current.backspaceMode === "control-h"
+              ? "control-h"
+              : "normal",
+        }),
+        isAtPasswordPrompt: () => passwordInputRef.current,
+        fillPassword: () => fillPasswordAtPrompt(),
+        readBufferLines: () =>
+          terminal ? readXtermLines(terminal.buffer.active) : [],
+        getSelection: () => terminal?.getSelection() ?? "",
+        revealLines: (firstRow: number, lastRow: number) => {
+          if (!terminal) return;
+          terminal.scrollToLine(firstRow);
+          terminal.selectLines(firstRow, lastRow);
+        },
+        clearScrollback: () => {
+          terminal?.clearSelection();
+          terminal?.clear();
+        },
+        resetDisplay: () => {
+          terminal?.reset();
+          hardRefresh();
+        },
+        openTool: (view: TerminalToolView) => openToolView(view),
       }),
-      [isConnected, terminal],
+      [isConnected, terminal, sendUserInput],
     );
+    useImperativeHandle(ref, () => terminalHandle, [terminalHandle]);
 
-    function getCopyOnSelect() {
-      return getClientPreference("copyOnSelect") === "true";
+    function openToolView(view: TerminalToolView) {
+      if (view === "find" || view === "findAll") {
+        setSearchAllTerminals(view === "findAll");
+        openSearch();
+      } else if (view === "watch") {
+        setShowWatch(true);
+      } else if (view === "sendKey") {
+        setCustomKey("");
+        setCustomKeyOpen(true);
+      } else {
+        void confirm({
+          title: t("terminalTools.fix.resetShellTitle"),
+          description: t("terminalTools.fix.resetShellDescription"),
+          confirmLabel: t("terminalTools.fix.resetShell"),
+          cancelLabel: t("common.cancel"),
+          destructive: false,
+        }).then((ok) => {
+          if (ok) sendUserInput("stty sane; reset\r");
+          return ok;
+        });
+      }
+    }
+
+    /**
+     * What the Fill password tool does. It answers only a prompt that is on
+     * screen, and a su prompt only with the password of a saved host that logs
+     * in as that user, never the login password.
+     */
+    async function fillPasswordAtPrompt(): Promise<PasswordFillResult> {
+      if (!passwordInputRef.current) return "no-prompt";
+      const suUser = suTargetUser(lastCommandRef.current);
+      let password: string | null | undefined;
+      if (suUser !== null) {
+        const match = savedHostsRef.current.find(
+          (saved) =>
+            saved.ip === hostConfig.ip &&
+            saved.username === suUser &&
+            Number.isFinite(Number(saved.id)),
+        );
+        password = match
+          ? await getHostPassword(Number(match.id), "password")
+          : null;
+      } else {
+        password = await resolvePasswordForPrompt(
+          isSudoPromptOutput(outputTailRef.current, lastCommandRef.current),
+        );
+      }
+      if (!password) return "no-password";
+      // The prompt may have gone while the password loaded.
+      if (
+        !passwordInputRef.current ||
+        webSocketRef.current?.readyState !== WebSocket.OPEN
+      ) {
+        return "no-prompt";
+      }
+      webSocketRef.current.send(
+        JSON.stringify({ type: "input", data: password + "\n" }),
+      );
+      return "filled";
     }
 
     function requestCwd(): Promise<string | null> {
@@ -1729,6 +1958,14 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
 
       const ws = new WebSocket(baseWsUrl, wsProtocols);
       webSocketRef.current = ws;
+      zmodemRef.current?.attach({
+        send: (message) => {
+          if (ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify(message));
+          }
+        },
+        write: (bytes) => terminal.write(bytes),
+      });
       wasDisconnectedBySSH.current = false;
       updateConnectionError(null);
       shouldNotReconnectRef.current = false;
@@ -1780,8 +2017,12 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
         currentHostIdRef.current = hostConfig.id;
         currentHostConfigRef.current = hostConfig;
 
-        // Consume the pending restored session ID once; retries get null so they create fresh connections
-        const restoredSessionId = pendingRestoredSessionIdRef.current;
+        // A restored tab attaches to its saved session once. After that, a
+        // reconnect attaches to the live session it already has instead of
+        // logging in to the host again; a gone session answers sessionExpired
+        // and the tab then connects fresh.
+        const restoredSessionId =
+          pendingRestoredSessionIdRef.current ?? sessionIdRef.current;
         pendingRestoredSessionIdRef.current = null;
 
         if (hostConfig.joinShareId) {
@@ -1808,6 +2049,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
                 cols,
                 rows,
                 tabInstanceId: hostConfig.instanceId,
+                zmodem: termUserRef.current.zmodem,
               },
             }),
           );
@@ -1823,6 +2065,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
                 initialPath,
                 executeCommand,
                 tmuxAttachSession,
+                zmodem: termUserRef.current.zmodem,
               },
             }),
           );
@@ -1892,6 +2135,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
           }
 
           ws.send(JSON.stringify({ type: "input", data }));
+          mirrorInput(data);
         });
 
         pongReceivedRef.current = true;
@@ -1913,6 +2157,10 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       ws.addEventListener("message", (event) => {
         try {
           const msg = JSON.parse(event.data);
+          if (msg.type === "zdata") {
+            if (typeof msg.data === "string") zmodemRef.current?.feed(msg.data);
+            return;
+          }
           if (msg.type !== "data" && msg.type !== "pong") {
             emitSessionMessage(msg);
           }
@@ -1943,9 +2191,15 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
               outputTailRef.current = (
                 outputTailRef.current + strippedData
               ).slice(-200);
-              passwordInputRef.current = endsInPasswordPrompt(
+              passwordInputRef.current = isWaitingAtPasswordPrompt(
                 outputTailRef.current,
               );
+              if (sessionTabIdRef.current) {
+                reportPasswordPrompt(
+                  sessionTabIdRef.current,
+                  passwordInputRef.current,
+                );
+              }
               maybeOfferPasswordFill(strippedData);
             } else {
               const stringData = String(msg.data);
@@ -2534,17 +2788,13 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       (command: string) => {
         if (!terminal || !webSocketRef.current) return;
 
-        for (const char of command) {
-          webSocketRef.current.send(
-            JSON.stringify({ type: "input", data: char }),
-          );
-        }
+        for (const char of command) sendUserInput(char);
 
         setTimeout(() => {
           terminal.focus();
         }, 100);
       },
-      [terminal],
+      [terminal, sendUserInput],
     );
 
     useEffect(() => {
@@ -2558,11 +2808,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
         const currentCmd = currentAutocompleteCommand.current;
         const completion = selectedCommand.substring(currentCmd.length);
 
-        for (const char of completion) {
-          webSocketRef.current.send(
-            JSON.stringify({ type: "input", data: char }),
-          );
-        }
+        for (const char of completion) sendUserInput(char);
 
         updateCurrentCommand(selectedCommand);
 
@@ -2745,15 +2991,18 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       const clipboardAddon = new ClipboardAddon(undefined, clipboardProvider);
       const unicode11Addon = new Unicode11Addon();
       const searchAddon = new SearchAddon();
-      const webLinksAddon = new WebLinksAddon((_event, uri) => {
+      const webLinksAddon = new WebLinksAddon((event, uri) => {
         const url =
           uri.startsWith("http://") || uri.startsWith("https://")
             ? uri
             : `https://${uri}`;
 
         const behavior = termSettingsRef.current.linkClickBehavior;
+        const modifier = event.ctrlKey || event.metaKey;
 
-        if (behavior === "direct") {
+        // A plain click is left alone so it can select text.
+        if (behavior === "modifier" && !modifier) return;
+        if (behavior === "direct" || modifier) {
           window.open(url, "_blank");
         } else {
           setLinkClickDialog({ url });
@@ -2878,33 +3127,14 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
         }
       });
       const element = xtermRef.current;
-      const handleContextMenu = (e: MouseEvent) => {
-        if (e.ctrlKey && onOpenFileManager) {
-          e.preventDefault();
-          e.stopPropagation();
-          openFilesAtCwd();
-          return;
-        }
-
-        const action = resolveTerminalContextMenuAction({
-          rightClickCopyPaste: getUseRightClickCopyPaste(),
-          copyOnSelect: getCopyOnSelect(),
-          hasSelection: terminal.hasSelection(),
-        });
-        if (action !== "native") {
-          e.preventDefault();
-          e.stopPropagation();
-          if (action === "copy") {
-            const text = terminal.getSelection();
-            writeTextToClipboard(text).then(() => terminal.clearSelection());
-          } else {
-            readTextFromClipboard().then((text) => {
-              if (text) terminal.paste(text);
-            });
-          }
-          return;
-        }
-      };
+      const handleContextMenu = createTerminalContextMenuHandler(
+        terminal,
+        { writeTextToClipboard, readTextFromClipboard },
+        {
+          onCtrlClick: onOpenFileManager ? openFilesAtCwd : undefined,
+          onMenu: setMenuAt,
+        },
+      );
       element?.addEventListener("contextmenu", handleContextMenu);
 
       const handleSelectionMouseUp = (e: MouseEvent) => {
@@ -2921,7 +3151,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
         if (
           e.button !== 1 ||
           !getCopyOnSelect() ||
-          !getUseRightClickCopyPaste()
+          getRightClickAction() === "native"
         ) {
           return;
         }
@@ -2969,11 +3199,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
         e.preventDefault();
         e.stopPropagation();
 
-        if (webSocketRef.current?.readyState === 1) {
-          webSocketRef.current.send(
-            JSON.stringify({ type: "input", data: "\x08" }),
-          );
-        }
+        sendUserInput("\x08");
         return false;
       };
 
@@ -3115,6 +3341,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
               ? dispatchKeybindingAction(matched.action, {
                   terminal,
                   webSocketRef,
+                  send: sendUserInput,
                   writeTextToClipboard,
                   readTextFromClipboard,
                 })
@@ -3125,7 +3352,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
                     port: hostConfig.port,
                     name: hostConfig.name,
                   },
-                  send: (data) => sendRawToSocket(webSocketRef, data),
+                  send: sendUserInput,
                 }));
           if (handled) {
             e.preventDefault();
@@ -3169,11 +3396,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
           if (sequence) {
             e.preventDefault();
             e.stopPropagation();
-            if (webSocketRef.current?.readyState === WebSocket.OPEN) {
-              webSocketRef.current.send(
-                JSON.stringify({ type: "input", data: sequence }),
-              );
-            }
+            sendUserInput(sequence);
             return false;
           }
         }
@@ -3195,11 +3418,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
         if (macLineNav) {
           e.preventDefault();
           e.stopPropagation();
-          if (webSocketRef.current?.readyState === WebSocket.OPEN) {
-            webSocketRef.current.send(
-              JSON.stringify({ type: "input", data: macLineNav }),
-            );
-          }
+          sendUserInput(macLineNav);
           return false;
         }
 
@@ -3263,14 +3482,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
             e.preventDefault();
             e.stopPropagation();
             const ctrlCode = key.charCodeAt(0) - 96;
-            if (webSocketRef.current?.readyState === 1) {
-              webSocketRef.current.send(
-                JSON.stringify({
-                  type: "input",
-                  data: String.fromCharCode(ctrlCode),
-                }),
-              );
-            }
+            sendUserInput(String.fromCharCode(ctrlCode));
             return false;
           }
         }
@@ -3318,13 +3530,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
             const currentCmd = currentAutocompleteCommand.current;
             const completion = selectedCommand.substring(currentCmd.length);
 
-            if (webSocketRef.current?.readyState === 1) {
-              for (const char of completion) {
-                webSocketRef.current.send(
-                  JSON.stringify({ type: "input", data: char }),
-                );
-              }
-            }
+            for (const char of completion) sendUserInput(char);
 
             updateCurrentCommandRef.current(selectedCommand);
 
@@ -3392,11 +3598,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
         ) {
           e.preventDefault();
           e.stopPropagation();
-          if (webSocketRef.current?.readyState === 1) {
-            webSocketRef.current.send(
-              JSON.stringify({ type: "input", data: "\x1b[Z" }),
-            );
-          }
+          sendUserInput("\x1b[Z");
           return false;
         }
 
@@ -3410,13 +3612,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
           e.preventDefault();
           e.stopPropagation();
 
-          const sendTabToShell = () => {
-            if (webSocketRef.current?.readyState === 1) {
-              webSocketRef.current.send(
-                JSON.stringify({ type: "input", data: "\t" }),
-              );
-            }
-          };
+          const sendTabToShell = () => sendUserInput("\t");
 
           if (!isAutocompleteEnabled()) {
             clearAutosuggestion();
@@ -3445,11 +3641,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
               const completedCommand = matches[0];
               const completion = completedCommand.substring(currentCmd.length);
 
-              for (const char of completion) {
-                webSocketRef.current.send(
-                  JSON.stringify({ type: "input", data: char }),
-                );
-              }
+              for (const char of completion) sendUserInput(char);
 
               updateCurrentCommandRef.current(completedCommand);
               clearAutosuggestion();
@@ -3693,6 +3885,43 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
       }
     }
 
+    const toolEntries = buildToolEntries(t, {
+      sessionId: sessionTabId,
+      hostName: hostConfig.name || hostConfig.ip,
+      handle: () => terminalHandle,
+    });
+    const menuActions: TerminalMenuActions = {
+      hasSelection: terminal?.hasSelection() ?? false,
+      onCopy: () => {
+        if (!terminal) return;
+        void writeTextToClipboard(terminal.getSelection());
+      },
+      onPaste: () => {
+        void readTextFromClipboard().then((text) => {
+          if (text) terminal?.paste(text);
+        });
+      },
+      onSelectAll: () => terminal?.selectAll(),
+      onFind: () => openToolView("find"),
+      onClear: () => terminalHandle.clearScrollback(),
+      tools: toolEntries,
+    };
+    const closeMenu = () => {
+      setMenuAt(null);
+      setTimeout(() => terminal?.focus(), 0);
+    };
+    function sendCustomKey() {
+      const code = customKey.toLowerCase().charCodeAt(0) - 96;
+      if (!(code >= 1 && code <= 26)) return;
+      if (inBroadcast) {
+        sendToBroadcastGroup(String.fromCharCode(code), { raw: true });
+      } else {
+        sendUserInput(String.fromCharCode(code));
+      }
+      setCustomKeyOpen(false);
+      setTimeout(() => terminal?.focus(), 0);
+    }
+
     const toolbar = host && showToolbar && (
       <TerminalToolbar
         host={host}
@@ -3709,6 +3938,9 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
         slotApi={slotApi}
         onOpenFiles={onOpenFileManager ? openFilesAtCwd : undefined}
         isFocused={isFocusedPane}
+        tools={toolEntries}
+        watchCount={watchCount}
+        onOpenWatch={() => setShowWatch(true)}
       />
     );
     const toolbarOnTop = readToolbarSettings(host).position === "top";
@@ -3729,6 +3961,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
     reconnectAfterEndRef.current = () => {
       if (!terminal) return;
       sessionEndedRef.current = false;
+      sessionIdRef.current = null;
       isUnmountingRef.current = false;
       shouldNotReconnectRef.current = false;
       isReconnectingRef.current = false;
@@ -3742,7 +3975,20 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
     };
 
     return (
-      <div className="flex h-full w-full flex-col">
+      <div className="relative flex h-full w-full flex-col">
+        {inBroadcast && sessionTabId && (
+          <>
+            <BroadcastBar
+              tabId={sessionTabId}
+              onCustomKey={() => openToolView("sendKey")}
+            />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 z-[125] border"
+              style={{ borderColor: "var(--warning)" }}
+            />
+          </>
+        )}
         {toolbarOnTop && toolbar}
         <div
           className="relative min-h-0 w-full flex-1"
@@ -3780,6 +4026,12 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
                 terminal.focus();
               }
             }}
+          />
+
+          <ZmodemBar
+            state={zmodemState}
+            onFiles={(files) => zmodemRef.current?.sendFiles(files)}
+            onCancel={() => zmodemRef.current?.abort()}
           />
 
           {isConnected &&
@@ -3894,6 +4146,13 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
               }
             }}
             onClose={onClose}
+            extraActions={
+              onEditHost ? (
+                <Button size="sm" variant="outline" onClick={onEditHost}>
+                  {t("terminal.editHost")}
+                </Button>
+              ) : undefined
+            }
             logPosition={hasConnectionError ? "top" : "bottom"}
           />
 
@@ -4047,7 +4306,72 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
             resultIndex={searchResultIndex}
             resultCount={searchResultCount}
             inputRef={searchInputRef}
+            allTerminals={searchAllTerminals}
+            onToggleAllTerminals={
+              sessionTabId
+                ? () => setSearchAllTerminals((value) => !value)
+                : undefined
+            }
+          >
+            {searchAllTerminals && sessionTabId && (
+              <FindAllResults query={searchQuery} options={findOptions} />
+            )}
+          </TerminalSearchBar>
+
+          {showWatch && sessionTabId && (
+            <WatchEditor
+              tabId={sessionTabId}
+              onClose={() => {
+                setShowWatch(false);
+                setTimeout(() => terminal?.focus(), 0);
+              }}
+            />
+          )}
+
+          <TerminalContextMenu
+            at={menuAt}
+            onClose={closeMenu}
+            actions={menuActions}
           />
+
+          <PanePrompt
+            open={customKeyOpen}
+            title={t("terminalTools.keys.customTitle")}
+            description={t("terminalTools.keys.customDescription")}
+            onCancel={() => setCustomKeyOpen(false)}
+            actions={
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setCustomKeyOpen(false)}
+                >
+                  {t("common.cancel")}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={!/^[a-zA-Z]$/.test(customKey)}
+                  onClick={sendCustomKey}
+                >
+                  {t("terminalTools.broadcast.send")}
+                </Button>
+              </>
+            }
+          >
+            <Input
+              autoFocus
+              value={customKey}
+              maxLength={1}
+              className="h-8 w-16 text-center font-mono"
+              aria-label={t("terminalTools.keys.customTitle")}
+              onChange={(e) => setCustomKey(e.target.value)}
+              onKeyDown={(e) => {
+                e.stopPropagation();
+                if (e.key === "Enter") sendCustomKey();
+              }}
+            />
+          </PanePrompt>
 
           <PanePrompt
             open={!!linkClickDialog}

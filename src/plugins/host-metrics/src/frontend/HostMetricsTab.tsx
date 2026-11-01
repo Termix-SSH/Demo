@@ -1,14 +1,14 @@
+import { CardSettingsContext } from "./card-settings";
 import {
   Button,
   ComponentSlot,
+  PassphraseDialog,
   TOTPDialog,
   useTabsSafe,
   ConnectionLogProvider,
   useConnectionLog,
   ConnectionScreen,
   runAdaptivePolling,
-  CardGridCanvas,
-  ColumnCountStepper,
   type GridCardCatalogEntry,
 } from "@termix-ssh/plugin-sdk/ui";
 import { readHostMetricsSettings } from "../shared/stats-widgets.js";
@@ -32,8 +32,11 @@ import {
   useSettings,
 } from "@termix-ssh/plugin-sdk/frontend";
 import { toast } from "sonner";
-import { RefreshCw, Server, LayoutDashboard } from "lucide-react";
+import { RefreshCw, Server, LayoutDashboard, Undo2, Redo2 } from "lucide-react";
 import { useHostMetricsPreferences } from "./hooks/useHostMetricsPreferences.ts";
+import { HostMetricsGrid } from "./HostMetricsGrid";
+import { LayoutTemplates } from "./LayoutTemplates";
+import { handleLayoutHistoryKeyDown } from "./layout-history-shortcuts";
 import {
   CARD_DEFINITIONS,
   IMPLEMENTED_CARD_IDS,
@@ -45,7 +48,12 @@ import {
 } from "./cards";
 import { appendGpuHistories } from "./cards/gpu-history";
 import { metricsChangeKey } from "./metrics-change-key";
-import { liveIntervalMs, mergeLive, useLiveMetrics } from "./live-metrics";
+import {
+  backgroundGraceMs,
+  liveIntervalMs,
+  mergeLive,
+  useLiveMetrics,
+} from "./live-metrics";
 
 const HISTORY_LEN = 30;
 
@@ -101,14 +109,20 @@ function HostMetricsInner({
   const [currentHostConfig, setCurrentHostConfig] = React.useState(hostConfig);
   const [isRefreshing, setIsRefreshing] = React.useState(false);
   const [totpRequired, setTotpRequired] = React.useState(false);
+  const [passphraseRequired, setPassphraseRequired] = React.useState(false);
+  const keyPasswordRef = React.useRef<string | undefined>(undefined);
   const [totpSessionId, setTotpSessionId] = React.useState<string | null>(null);
   const [totpPrompt, setTotpPrompt] = React.useState<string>("");
   const [isPageVisible, setIsPageVisible] = React.useState(!document.hidden);
+  // Reconnecting after the page was in the background: the last cards stay up.
+  const [resuming, setResuming] = React.useState(false);
+  const backgroundedRef = React.useRef(false);
+  const metricsRef = React.useRef(metrics);
+  metricsRef.current = metrics;
   const [totpVerified, setTotpVerified] = React.useState(false);
   const [viewerSessionId, setViewerSessionId] = React.useState<string | null>(
     null,
   );
-  const [editMode, setEditMode] = React.useState(false);
 
   const activityLoggedRef = React.useRef(false);
   const activityLoggingRef = React.useRef(false);
@@ -123,21 +137,34 @@ function HostMetricsInner({
   const statusCheckEnabled = currentHostConfig?.statusCheckEnabled !== false;
 
   const hostId = currentHostConfig?.id ?? null;
-  const { layout, setLayout } = useHostMetricsPreferences(hostId);
 
   const { values: metricsPrefs } = usePluginUiPreferences<{
     columns: number;
   }>();
 
-  const effectiveLayout: HostMetricsLayout = React.useMemo(() => {
-    // A saved layout is user-authored, so the preset never rewrites it, it
-    // only decides the shape of the first layout a host gets.
-    if (layout) return layout;
-    return defaultLayoutFromWidgets(
-      statsConfig.enabledWidgets ?? [],
-      metricsPrefs.columns,
-    );
-  }, [layout, statsConfig.enabledWidgets, metricsPrefs.columns]);
+  const defaultLayout: HostMetricsLayout = React.useMemo(
+    () =>
+      defaultLayoutFromWidgets(
+        statsConfig.enabledWidgets ?? [],
+        metricsPrefs.columns,
+      ),
+    [statsConfig.enabledWidgets, metricsPrefs.columns],
+  );
+  const preferences = useHostMetricsPreferences(hostId, defaultLayout);
+  const [templatesOpen, setTemplatesOpen] = React.useState(false);
+  React.useEffect(() => setTemplatesOpen(false), [hostId]);
+  const {
+    layout: effectiveLayout,
+    setLayout,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+    isEditing: editMode,
+    beginEditing,
+    finishEditing,
+    discardChanges,
+  } = preferences;
 
   // Manager cards other plugins contribute (tailscale's, say), merged in next
   // to the ones this plugin ships. A contribution for a slot that never
@@ -155,6 +182,11 @@ function HostMetricsInner({
         getCardDefinition(s.id, pluginManagerDefs),
       ),
     [effectiveLayout.slots, pluginManagerDefs],
+  );
+  // A stable object, so a metrics poll does not cancel a drag in progress.
+  const gridLayout = React.useMemo(
+    () => ({ ...effectiveLayout, slots: visibleSlots }),
+    [effectiveLayout, visibleSlots],
   );
 
   const cardCatalog: GridCardCatalogEntry[] = React.useMemo(
@@ -197,16 +229,37 @@ function HostMetricsInner({
     (id: string) => {
       const def = getCardDefinition(id, pluginManagerDefs);
       if (!def) return null;
-      return def.render({ metrics: liveMetrics, histories, hostId });
+      return (
+        <CardSettingsContext.Provider
+          value={
+            effectiveLayout.slots.find((slot) => slot.id === id)?.settings ?? {}
+          }
+        >
+          {def.render({ metrics: liveMetrics, histories, hostId })}
+        </CardSettingsContext.Provider>
+      );
     },
-    [liveMetrics, histories, hostId, pluginManagerDefs],
+    [liveMetrics, histories, hostId, pluginManagerDefs, effectiveLayout.slots],
   );
 
+  // Alt-tabbing away must not drop the session: only treat the page as hidden
+  // after it stays hidden for the user's grace period (backgroundGraceS).
+  const graceMs = backgroundGraceMs(
+    useSettings("user").values.backgroundGraceS,
+  );
   React.useEffect(() => {
-    const onVis = () => setIsPageVisible(!document.hidden);
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const onVis = () => {
+      clearTimeout(timer);
+      if (!document.hidden) return setIsPageVisible(true);
+      timer = setTimeout(() => setIsPageVisible(false), graceMs);
+    };
     document.addEventListener("visibilitychange", onVis);
-    return () => document.removeEventListener("visibilitychange", onVis);
-  }, []);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, [graceMs]);
 
   const isActuallyVisible = isVisible && isPageVisible;
 
@@ -251,8 +304,8 @@ function HostMetricsInner({
 
   const pushHistory = React.useCallback((data: ServerMetrics) => {
     setHistories((prev) => {
-      const add = (arr: number[], v: number | null | undefined) =>
-        [...arr, v ?? 0].slice(-HISTORY_LEN);
+      const add = (arr: Array<number | null>, v: number | null | undefined) =>
+        [...arr, v ?? null].slice(-HISTORY_LEN);
       return {
         cpu: add(prev.cpu, data.cpu?.percent),
         memory: add(prev.memory, data.memory?.percent),
@@ -277,6 +330,18 @@ function HostMetricsInner({
     } catch {
       toast.error(t("hostMetrics.totpFailed"));
     }
+  };
+
+  const handlePassphraseSubmit = (passphrase: string) => {
+    keyPasswordRef.current = passphrase;
+    setPassphraseRequired(false);
+    metricsRetryRef.current.reset();
+    metricsRetryRef.current.retryNow();
+  };
+
+  const handlePassphraseCancel = () => {
+    setPassphraseRequired(false);
+    if (currentTab !== null) removeTab(currentTab);
   };
 
   const handleTOTPCancel = async () => {
@@ -312,8 +377,9 @@ function HostMetricsInner({
 
   const stopMetricsPollingRef = React.useRef<(() => void) | null>(null);
 
-  const fetchMetrics = React.useCallback(async (): Promise<void> => {
-    if (!currentHostConfig?.id) return;
+  /** Resolves false when it stopped to ask the person for something. */
+  const fetchMetrics = React.useCallback(async (): Promise<boolean> => {
+    if (!currentHostConfig?.id) return false;
     if (currentHostConfig.authType === "none") {
       toast.error(t("hostMetrics.noneAuthNotSupported"));
       if (currentTab !== null) removeTab(currentTab);
@@ -326,16 +392,27 @@ function HostMetricsInner({
         stage: "stats_connecting",
         message: `Connecting to ${currentHostConfig.username}@${currentHostConfig.ip}:${currentHostConfig.port}`,
       });
-      const result = await metricsApi.startMetrics(currentHostConfig.id);
+      const result = await metricsApi.startMetrics(
+        currentHostConfig.id,
+        keyPasswordRef.current,
+      );
       result?.connectionLogs?.forEach((log) =>
         addLog(log as ConnectionLogPayload),
       );
+      if (result.status === "passphrase_required") {
+        if (keyPasswordRef.current) {
+          toast.error(t("hostMetrics.incorrectPassphrase"));
+        }
+        keyPasswordRef.current = undefined;
+        setPassphraseRequired(true);
+        return false;
+      }
       if (result.requires_totp) {
         setTotpRequired(true);
         setTotpSessionId(result.sessionId || null);
         setTotpPrompt(result.prompt || "Verification code");
         // The TOTP dialog gates further progress; retry loop pauses via `enabled`.
-        return;
+        return false;
       }
       if (result.viewerSessionId) setViewerSessionId(result.viewerSessionId);
     }
@@ -384,6 +461,7 @@ function HostMetricsInner({
       },
       { runImmediately: false },
     );
+    return true;
   }, [
     currentHostConfig,
     totpVerified,
@@ -399,8 +477,7 @@ function HostMetricsInner({
   const metricsRetry = useConnectionRetry({
     connect: async () => {
       try {
-        await fetchMetrics();
-        if (!totpRequired) metricsRetry.markConnected();
+        if (await fetchMetrics()) metricsRetry.markConnected();
       } catch (error: unknown) {
         const logError = error as ConnectionLogError;
         if (logError.connectionLogs) {
@@ -416,18 +493,22 @@ function HostMetricsInner({
           });
         }
         metricsRetry.markFailed();
+      } finally {
+        setResuming(false);
       }
     },
     enabled:
       isPageVisible &&
       metricsEnabled &&
       !totpRequired &&
+      !passphraseRequired &&
       !!currentHostConfig?.id,
     autoStart: false,
   });
 
   const metricsRetryRef = React.useRef(metricsRetry);
   metricsRetryRef.current = metricsRetry;
+  const connectionStatus = resuming ? "connected" : metricsRetry.status;
 
   // Connects once per host and stays connected while this tab exists, even
   // when the user switches to another tab and back. Only the browser tab
@@ -435,6 +516,7 @@ function HostMetricsInner({
   // between Termix tabs must not tear down and reconnect the session.
   React.useEffect(() => {
     if (!metricsEnabled || !currentHostConfig?.id) return;
+    if (!isPageVisible) backgroundedRef.current = true;
 
     let cancelled = false;
 
@@ -451,6 +533,8 @@ function HostMetricsInner({
     const debounce = setTimeout(() => {
       if (cancelled) return;
       if (isPageVisible) {
+        setResuming(backgroundedRef.current && !!metricsRef.current);
+        backgroundedRef.current = false;
         clearLogs();
         metricsRetryRef.current.reset();
         metricsRetryRef.current.retryNow();
@@ -488,7 +572,7 @@ function HostMetricsInner({
 
   const handleRefresh = async () => {
     if (!currentHostConfig?.id) return;
-    if (metricsRetry.status !== "connected") {
+    if (connectionStatus !== "connected") {
       metricsRetry.retryNow();
       return;
     }
@@ -507,10 +591,10 @@ function HostMetricsInner({
   };
 
   const showCards =
-    metricsEnabled && metricsRetry.status === "connected" && metrics;
+    metricsEnabled && connectionStatus === "connected" && metrics;
   const showOffline =
     metricsEnabled &&
-    metricsRetry.status !== "connecting" &&
+    connectionStatus !== "connecting" &&
     !metrics &&
     serverStatus === "offline";
 
@@ -518,11 +602,22 @@ function HostMetricsInner({
     <div
       style={wrapperStyle}
       className="relative flex flex-col overflow-hidden"
+      tabIndex={-1}
+      onKeyDown={(event) =>
+        handleLayoutHistoryKeyDown(event, {
+          editMode,
+          isVisible,
+          canUndo,
+          canRedo,
+          undo,
+          redo,
+        })
+      }
     >
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
         <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
           {!totpRequired &&
-            (metricsRetry.status === "connected" || showOffline) && (
+            (connectionStatus === "connected" || showOffline) && (
               <div className="flex h-12.5 shrink-0 items-center justify-between gap-2 border-b border-border px-3">
                 <div className="flex min-w-0 items-center gap-2">
                   <Server className="size-4 shrink-0 text-accent-brand" />
@@ -552,12 +647,42 @@ function HostMetricsInner({
                   />
                   {editMode && (
                     <>
-                      <ColumnCountStepper
-                        columns={effectiveLayout.columns}
-                        onChange={(columns) =>
-                          setLayout({ ...effectiveLayout, columns })
-                        }
-                      />
+                      <Button
+                        variant="ghost"
+                        size="xs"
+                        onClick={() => setTemplatesOpen(true)}
+                      >
+                        {t("hostMetrics.layoutTemplates.open")}
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        title={t("hostMetrics.undoLayout")}
+                        aria-label={t("hostMetrics.undoLayout")}
+                        aria-keyshortcuts="Control+Z Meta+Z"
+                        disabled={!canUndo}
+                        onClick={undo}
+                      >
+                        <Undo2 className="size-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        title={t("hostMetrics.redoLayout")}
+                        aria-label={t("hostMetrics.redoLayout")}
+                        aria-keyshortcuts="Control+Y Control+Shift+Z Meta+Shift+Z"
+                        disabled={!canRedo}
+                        onClick={redo}
+                      >
+                        <Redo2 className="size-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="xs"
+                        onClick={discardChanges}
+                      >
+                        {t("hostMetrics.discardChanges")}
+                      </Button>
                       <Button
                         variant="ghost"
                         size="xs"
@@ -581,7 +706,7 @@ function HostMetricsInner({
                     title={t("hostMetrics.customize")}
                     aria-label={t("hostMetrics.customize")}
                     aria-pressed={editMode}
-                    onClick={() => setEditMode((v) => !v)}
+                    onClick={editMode ? finishEditing : beginEditing}
                   >
                     <LayoutDashboard className="size-4" />
                   </Button>
@@ -613,19 +738,14 @@ function HostMetricsInner({
 
           {showCards && (
             <div className="p-2.5">
-              <CardGridCanvas
-                slots={visibleSlots}
-                columns={effectiveLayout.columns}
-                editMode={editMode}
+              <HostMetricsGrid
+                key={hostId}
+                layout={gridLayout}
+                editMode={editMode && isVisible}
                 renderCard={renderCard}
                 cardCatalog={cardCatalog}
                 cardLabel={cardLabel}
-                onChange={(slots, columns) =>
-                  setLayout({
-                    slots: slots as HostMetricsLayout["slots"],
-                    columns,
-                  })
-                }
+                onChange={setLayout}
               />
             </div>
           )}
@@ -633,7 +753,7 @@ function HostMetricsInner({
 
         {metricsEnabled && !totpRequired && (
           <ConnectionScreen
-            status={showOffline ? "error" : metricsRetry.status}
+            status={showOffline ? "error" : connectionStatus}
             message={t("hostMetrics.connecting")}
             detail={
               currentHostConfig?.ip
@@ -646,14 +766,37 @@ function HostMetricsInner({
             onManualRetry={metricsRetry.retryNow}
             logPosition={
               showOffline ||
-              metricsRetry.status === "error" ||
-              metricsRetry.status === "disconnected"
+              connectionStatus === "error" ||
+              connectionStatus === "disconnected"
                 ? "top"
                 : "bottom"
             }
           />
         )}
       </div>
+
+      {templatesOpen && hostId != null && (
+        <LayoutTemplates
+          key={hostId}
+          layout={effectiveLayout}
+          cardLabel={cardLabel}
+          onClose={() => setTemplatesOpen(false)}
+          onApply={preferences.applyTemplate}
+        />
+      )}
+
+      <PassphraseDialog
+        isOpen={passphraseRequired}
+        onSubmit={handlePassphraseSubmit}
+        onCancel={handlePassphraseCancel}
+        hostInfo={{
+          ip: currentHostConfig?.ip ?? "",
+          port: currentHostConfig?.port ?? 22,
+          username: currentHostConfig?.username ?? "",
+          name: currentHostConfig?.name,
+        }}
+        backgroundColor="var(--bg-canvas)"
+      />
 
       <TOTPDialog
         isOpen={totpRequired}

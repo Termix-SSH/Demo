@@ -65,6 +65,66 @@ const DISCORD_WEBHOOK =
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const TELEGRAM_TOKEN = /^\d+:[A-Za-z0-9_-]+$/;
+const TELEGRAM_CHAT = /^(?:-?\d+|@[A-Za-z0-9_]{4,})$/;
+
+/** The values a webhook body template can use, as {{name}}. */
+export function templateValues(
+  alert: OutgoingAlert,
+  link: string | undefined,
+): Record<string, unknown> {
+  const context = alert.context ?? {};
+  return {
+    title: alert.title,
+    message: alert.body,
+    severity: alert.severity,
+    category: alert.category,
+    source: alert.source,
+    link,
+    hostName: context.hostName,
+    hostId: context.hostId,
+    ruleName: context.sourceName ?? alert.title,
+    ruleId: context.sourceId,
+    triggerType: context.triggerType,
+    value: context.value,
+    threshold: context.threshold,
+    timestamp: new Date().toISOString(),
+  };
+}
+
+/**
+ * Fills {{name}} in a JSON body template. Values are escaped for a JSON
+ * string, so they go inside quotes: "text": "{{title}}". Unknown names are
+ * left empty.
+ */
+export function renderTemplate(
+  template: string,
+  values: Record<string, unknown>,
+): string {
+  return template.replace(/\{\{\s*([A-Za-z]+)\s*\}\}/g, (_match, name) => {
+    const value = values[name];
+    if (value === undefined || value === null) return "";
+    return JSON.stringify(String(value)).slice(1, -1);
+  });
+}
+
+const SAMPLE_VALUES: Record<string, unknown> = {
+  title: "Sample",
+  message: "Sample",
+  severity: "info",
+  category: "sample",
+  source: "sample",
+  link: "https://example.com",
+  hostName: "host",
+  hostId: 1,
+  ruleName: "rule",
+  ruleId: 1,
+  triggerType: "sample",
+  value: 1,
+  threshold: 1,
+  timestamp: new Date(0).toISOString(),
+};
+
 const str = (value: unknown) => (typeof value === "string" ? value.trim() : "");
 
 export function parseRecipients(value: unknown): string[] {
@@ -80,10 +140,24 @@ export function validateChannelConfig(
   config: Record<string, unknown>,
 ): string | null {
   switch (type) {
-    case "webhook":
-      return /^https?:\/\//i.test(str(config.url))
+    case "webhook": {
+      if (!/^https?:\/\//i.test(str(config.url)))
+        return "webhook config requires an http(s) url";
+      const template = str(config.bodyTemplate);
+      if (!template) return null;
+      try {
+        JSON.parse(renderTemplate(template, SAMPLE_VALUES));
+        return null;
+      } catch {
+        return "webhook body template is not valid JSON";
+      }
+    }
+    case "telegram":
+      if (!TELEGRAM_TOKEN.test(str(config.token)))
+        return "telegram config requires a bot token from BotFather";
+      return TELEGRAM_CHAT.test(str(config.chatId))
         ? null
-        : "webhook config requires an http(s) url";
+        : "telegram config requires a chat id or @channel name";
     case "ntfy":
       if (!/^https?:\/\//i.test(str(config.url))) {
         return "ntfy config requires an http(s) url";
@@ -162,6 +236,24 @@ export async function sendToChannel(
     }
   };
 
+  if (channel.type === "telegram") {
+    const token = str(config.token);
+    const chatId = str(config.chatId);
+    if (!token || !chatId) throw new Error("Telegram channel is not set up");
+    const text = [alert.title, alert.body, linkUrl(alert)]
+      .filter(Boolean)
+      .join("\n\n");
+    return post(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: text || "Termix",
+        disable_web_page_preview: true,
+      }),
+    });
+  }
+
   const url = str(config.url);
   if (!url) throw new Error("Channel is missing a URL");
   const context = alert.context ?? {};
@@ -172,6 +264,14 @@ export async function sendToChannel(
         config.headers && typeof config.headers === "object"
           ? (config.headers as Record<string, string>)
           : {};
+      const template = str(config.bodyTemplate);
+      if (template) {
+        return post(url, {
+          method: config.method === "PUT" ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json", ...headers },
+          body: renderTemplate(template, templateValues(alert, linkUrl(alert))),
+        });
+      }
       return post(url, {
         method: config.method === "PUT" ? "PUT" : "POST",
         headers: { "Content-Type": "application/json", ...headers },

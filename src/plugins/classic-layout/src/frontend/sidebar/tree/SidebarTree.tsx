@@ -95,6 +95,7 @@ export function SidebarTree({
   showFolderPaths = true,
   hostClickBehavior = "newTab",
   rowFields,
+  striped = true,
 }: {
   children: (Host | HostFolder)[];
   onOpenTab: (
@@ -122,6 +123,8 @@ export function SidebarTree({
   showFolderPaths?: boolean;
   hostClickBehavior?: HostClickBehavior;
   rowFields?: HostRowFields;
+  /** Shade every other row. */
+  striped?: boolean;
 }) {
   const { t } = useTranslation();
   const hostPolicy = useHostPolicy();
@@ -722,53 +725,32 @@ export function SidebarTree({
     (trayTrigger === "click" || isTouchOnly);
   const isCompactDensity = density === "compact";
 
-  // Fixed, exactly-computed row heights rather than estimate-then-measure:
-  // the redesigned rows have a small, known set of shapes (folder header,
-  // host closed, host with its tray open, in each density), so there is
-  // nothing left to discover at layout time. estimateSize doubled as the
-  // real size unconditionally used to cause visible gaps between rows --
-  // ResizeObserver-based remeasuring raced the tray's open/close transition
-  // and could lock in a stale height for a row that happened to get measured
-  // mid-animation. A fixed lookup has no such window: every row's height is
-  // decided before the virtualizer ever asks.
-  // Re-measured live after fixing two padding bugs: (1) the comfortable-
-  // density row's top/bottom padding asymmetry (was pt-2.5 pb-2, now the
-  // symmetric py-2), and (2) redundant stacked top padding between the
-  // always-visible connection-buttons row and the management-buttons row
-  // (the tray wrapper's own pt-1.5 plus the management row's separate
-  // pt-1 mt-0.5 compounded into a much larger gap there than between any
-  // other pair of rows in the card).
-  // Click mode adds a size-5 expand-actions chevron to the name row, which is
-  // taller than anything hover mode puts there -- the base heights were
-  // measured in hover mode, so a click-mode row renders past its slot and its
-  // status stripe runs into the row below. Most visible down an indented
-  // sub-host group, where rows stack with no folder header between them.
-  // Measured off the rendered row (49.5 in a 45 slot). actionsOnly renders the
-  // same chevron but its own constants were measured with it, so it is not
-  // included here.
+  // Estimate the known row shapes up front; measureElement refines them when
+  // live content changes. Compact hosts always reserve both lines.
+  // Two 19px lines plus 5px top and 5px bottom padding.
+  const COMPACT_HOST_ROW_HEIGHT = 48;
+  // In comfortable density, click mode's 17.5px chevron adds 4.5px to the
+  // 13px name line. actionsOnly already includes it in its measured heights.
   const CLICK_CHEVRON_EXTRA = clickTrayActive ? 4.5 : 0;
-  const HOST_ROW_HEIGHT = (isCompactDensity ? 27.5 : 45) + CLICK_CHEVRON_EXTRA;
+  const HOST_ROW_HEIGHT = 45 + CLICK_CHEVRON_EXTRA;
   const FOLDER_ROW_HEIGHT = 31.5;
   // "always" mode permanently renders the connection-buttons row plus the
   // management row -- measured directly rather than derived, since it has its
   // own fixed shape. The resource bars are NOT included: they only render for
   // an online host with CPU/RAM, so rowHeight adds RESOURCE_ROW_EXTRA per row.
-  // Carries the click-mode chevron so the open row lands at its measured
-  // 104.75 rather than always mode's 100.25. The term cancels out of
-  // OPEN_TRAY_EXTRA below, leaving HOST_ROW_HEIGHT to supply it once.
-  const ALWAYS_ROW_HEIGHT =
-    (isCompactDensity ? 73.75 : 83) + CLICK_CHEVRON_EXTRA;
+  // The click-mode chevron term cancels out of OPEN_TRAY_EXTRA, leaving
+  // HOST_ROW_HEIGHT to supply it once.
+  const ALWAYS_ROW_HEIGHT = 83 + CLICK_CHEVRON_EXTRA;
   const OPEN_TRAY_EXTRA = ALWAYS_ROW_HEIGHT - HOST_ROW_HEIGHT;
   // "actionsOnly" permanently renders just the connection-buttons row above
   // the tray; the management row/resource bars stay collapsed until toggled.
-  const ACTIONS_ONLY_ROW_HEIGHT = isCompactDensity ? 50.25 : 75.75;
+  const ACTIONS_ONLY_ROW_HEIGHT = 75.75;
   // Opening the management row from actionsOnly's closed state (which
   // already includes the connection row). Excludes the resource bars for the
   // same reason as ALWAYS_ROW_HEIGHT -- rowHeight adds them per row.
-  const ACTIONS_ONLY_OPEN_ROW_HEIGHT = isCompactDensity ? 79.25 : 87.5;
-  // Tag pills are a separate flex row. Comfortable density adds the row plus
-  // its gap; compact density pulls it upward by 2px but still needs a slot.
-  const TAG_ROW_EXTRA = isCompactDensity ? 12.5 : 18.5;
+  const ACTIONS_ONLY_OPEN_ROW_HEIGHT = 87.5;
+  // Comfortable tag pills occupy a separate row plus its gap.
+  const TAG_ROW_EXTRA = 18.5;
   // The username@ip line plus its gap.
   const ADDRESS_ROW_SAVED = rowFields && !rowFields.showAddress ? 14.5 : 0;
   // showResourceBars:false simply drops RESOURCE_ROW_EXTRA from every row.
@@ -778,7 +760,7 @@ export function SidebarTree({
       const row = visibleRows[index];
       if (!row) return FOLDER_ROW_HEIGHT;
       if (isFolder(row.item)) return FOLDER_ROW_HEIGHT;
-      if (isCompactDensity) return 29;
+      if (isCompactDensity) return COMPACT_HOST_ROW_HEIGHT;
       const tagRowExtra = showTags && row.item.tags?.length ? TAG_ROW_EXTRA : 0;
       // The resource bars only render for an online host that reported CPU/RAM.
       // Reserving their height unconditionally left a gap under every offline
@@ -1115,7 +1097,7 @@ export function SidebarTree({
                         setReorderHoverKey(null);
                         setReorderHoverEdge(null);
                       }}
-                      stripeIndex={vItem.index}
+                      stripeIndex={striped ? vItem.index : 0}
                       density={density}
                       trayTrigger={trayTrigger}
                       showTags={showTags}
@@ -1159,7 +1141,7 @@ export function SidebarTree({
                       onDelete={() => handleDeleteHost(item)}
                       onDuplicate={() => handleDuplicateHost(item)}
                       query={query}
-                      stripeIndex={vItem.index}
+                      stripeIndex={striped ? vItem.index : 0}
                       selectionMode={selectionMode}
                       selected={selectedHostIds.has(item.id)}
                       onToggleSelect={() => toggleSelect(item.id)}

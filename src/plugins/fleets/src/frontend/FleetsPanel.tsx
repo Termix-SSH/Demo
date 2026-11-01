@@ -118,6 +118,9 @@ function ResultsList({ results }: { results: FleetHostResult[] }) {
               {r.success
                 ? t("newUi.sidebar.fleets.resultSuccess")
                 : t("newUi.sidebar.fleets.resultFailed")}
+              {r.attempts && r.attempts > 1
+                ? ` | ${t("newUi.sidebar.fleets.attempts", { count: r.attempts })}`
+                : ""}
             </span>
           </div>
           {(r.output || r.error) && (

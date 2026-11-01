@@ -16,6 +16,7 @@ import {
   type Host,
   type TabType,
   parseServerTime,
+  useActionSlot,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
@@ -300,6 +301,11 @@ export function HostStatusList({
   const scheme = useStatusColorScheme();
   // A phone has no room for the metric bars next to the host name.
   const isMobile = useIsMobile();
+  // A plugin can draw the status badge, falling back to ours.
+  const RowBadge = useActionSlot("dashboard.hostRowBadge").find(
+    (contribution) =>
+      contribution.kind === "component" && contribution.component,
+  )?.component;
   if (hosts.length === 0) {
     return (
       <div className="flex flex-1 items-center justify-center py-8 text-xs text-muted-foreground/60">
@@ -356,15 +362,29 @@ export function HostStatusList({
                 }}
               />
             )}
-            <span
-              className={`shrink-0 border px-1.5 py-0.5 text-[10px] font-semibold ${getStatusClasses(availability, scheme, "badge", statusLoading)}`}
-            >
-              {statusLoading || availability === "unknown"
-                ? t("dashboardTab.checking")
-                : availability === "online"
-                  ? t("hosts.status.online")
-                  : t("hosts.status.offline")}
-            </span>
+            {(() => {
+              const badge = (
+                <span
+                  className={`shrink-0 border px-1.5 py-0.5 text-[10px] font-semibold ${getStatusClasses(availability, scheme, "badge", statusLoading)}`}
+                >
+                  {statusLoading || availability === "unknown"
+                    ? t("dashboardTab.checking")
+                    : availability === "online"
+                      ? t("hosts.status.online")
+                      : t("hosts.status.offline")}
+                </span>
+              );
+              return RowBadge && !statusLoading ? (
+                <RowBadge
+                  hostId={Number(host.id)}
+                  host={host}
+                  online={availability === "online"}
+                  fallback={badge}
+                />
+              ) : (
+                badge
+              );
+            })()}
             <ExternalLink className="size-2.5 shrink-0 text-muted-foreground/0 transition-colors group-hover/row:text-muted-foreground/60" />
           </div>
         );

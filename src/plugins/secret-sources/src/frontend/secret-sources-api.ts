@@ -1,6 +1,5 @@
 import type { PluginApiClient } from "@termix-ssh/plugin-sdk/frontend";
-
-type SecretSourceKind = "onepassword-connect";
+import type { SecretSourceKind } from "./source-kinds";
 
 export interface SecretSource {
   id: string;
@@ -15,6 +14,7 @@ export interface SecretSource {
 
 export interface SecretSourceInput {
   name: string;
+  kind: SecretSourceKind;
   baseUrl: string;
   token: string;
   shared?: boolean;
@@ -25,6 +25,14 @@ export interface SecretSourceUpdateInput {
   baseUrl?: string;
   token?: string;
   shared?: boolean;
+}
+
+export interface ReferenceTestResult {
+  ok: boolean;
+  status:
+    "found" | "invalid" | "no_source" | "not_found" | "denied" | "connection";
+  source?: string;
+  error?: string;
 }
 
 /** The secret-sources routes, through the plugin's own client. */
@@ -41,10 +49,12 @@ export function createSecretSourcesApi(api: PluginApiClient) {
     remove: (id: string) => data(api.delete<{ success: boolean }>(`/${id}`)),
     test: (id: string) =>
       data(
-        api.post<{ ok: boolean; vaults?: number; error?: string }>(
+        api.post<{ ok: boolean; detail?: string; error?: string }>(
           `/${id}/test`,
         ),
       ),
+    testReference: (reference: string) =>
+      data(api.post<ReferenceTestResult>("/test-reference", { reference })),
   };
 }
 

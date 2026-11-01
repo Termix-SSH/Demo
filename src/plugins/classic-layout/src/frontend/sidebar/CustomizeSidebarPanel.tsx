@@ -15,6 +15,7 @@ import {
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { ListChecks, PanelTop, Rows3, SquareStack } from "lucide-react";
 import { showsInBar } from "./tree/host-bar-actions";
+import { stripedRows } from "./striped-rows";
 
 const ROW_FIELDS: { key: keyof HostRowFields; dependsOnAddress?: boolean }[] = [
   { key: "showAddress" },
@@ -131,6 +132,20 @@ export function CustomizeSidebarPanel({
                 update((prev) => ({
                   ...prev,
                   display: { ...prev.display, showTags: v },
+                }))
+              }
+            />
+          </SettingRow>
+          <SettingRow
+            label={t("hosts.stripedRows")}
+            description={t("hosts.stripedRowsDesc")}
+          >
+            <FakeSwitch
+              checked={stripedRows(preferences.display)}
+              onChange={(v) =>
+                update((prev) => ({
+                  ...prev,
+                  display: { ...prev.display, stripedRows: v },
                 }))
               }
             />

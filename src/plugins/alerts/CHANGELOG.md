@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0
+
+### Added
+
+- Telegram channels: alerts go to a chat, group or channel through your own bot
+- Webhook channels can send your own JSON body with placeholders like {{title}} and {{message}}, for services like Mattermost
+
 ## 1.1.0
 
 ### Added

@@ -1,10 +1,25 @@
-import { and, asc, desc, eq, gte, lt, lte, notInArray } from "drizzle-orm";
+import {
+  and,
+  asc,
+  count,
+  desc,
+  eq,
+  getTableName,
+  gte,
+  lt,
+  lte,
+  notInArray,
+} from "drizzle-orm";
+import { int, longtext, mysqlTable, varchar } from "drizzle-orm/mysql-core";
 import type { PluginDatabase } from "@termix-ssh/plugin-sdk/backend";
+import { KEY_LENGTH } from "@termix-ssh/plugin-sdk/db";
+import { MAX_TEMPLATES } from "../shared/layout-templates.js";
 import {
   hostHealthChecks,
   hostHealthHistory,
   hostMetricsHistory,
   hostMetricsPreferences,
+  layoutTemplates,
 } from "./tables.js";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -36,6 +51,12 @@ export interface HealthChecksRow {
   intervalSeconds: number;
 }
 
+export interface LayoutTemplateRow {
+  id: number;
+  name: string;
+  layout: string;
+}
+
 export interface MetricsHistoryInput {
   hostId: number;
   cpuPercent: number | null;
@@ -64,16 +85,33 @@ export type HostMetricsRepository = Awaited<
 >;
 
 /**
- * Written without RETURNING so it runs the same on all three engines: an
- * upsert reads the row by its unique (user, host) pair first.
+ * Config upserts read the row by its unique (user, host) pair first.
  */
+const SAMPLE_GAP_MS = 55_000;
+const PRUNE_GAP_MS = 10 * 60_000;
+const HISTORY_PERSIST_GAP_MS = 5 * 60_000;
+
 export async function createHostMetricsRepository(db: PluginDatabase) {
+  const sampleTimes = new Map<number, { written: number; pruned: number }>();
+  let lastHistoryPersist = 0;
   const preferences: Table = await db.define(hostMetricsPreferences);
   const checks: Table = await db.define(hostHealthChecks);
   const health: Table = await db.define(hostHealthHistory);
   const history: Table = await db.define(hostMetricsHistory);
+  const definedTemplates: Table = await db.define(layoutTemplates);
+  // The SDK returns sqlite-core tables; MySQL $returningId needs native autoIncrement metadata.
+  const templates: Table =
+    db.dialect === "mysql"
+      ? mysqlTable(getTableName(definedTemplates), {
+          id: int("id").primaryKey().autoincrement(),
+          userId: varchar("user_id", { length: KEY_LENGTH }).notNull(),
+          name: varchar("name", { length: 100 }).notNull(),
+          layout: longtext("layout").notNull(),
+        })
+      : definedTemplates;
+  // shortcut: cap serialization is per backend instance; use DB locking before multi-process writers.
+  const templateCreates = new Map<string, Promise<LayoutTemplateRow | null>>();
   const client = () => db.client<Drizzle>();
-
   async function findOne(table: Table, userId: string, hostId: number) {
     const drizzle = await client();
     const rows = await drizzle
@@ -133,6 +171,95 @@ export async function createHostMetricsRepository(db: PluginDatabase) {
       intervalSeconds: number,
     ) {
       return upsert(checks, userId, hostId, { checks: json, intervalSeconds });
+    },
+
+    async listTemplates(userId: string): Promise<LayoutTemplateRow[]> {
+      const drizzle = await client();
+      return drizzle
+        .select({
+          id: templates.id,
+          name: templates.name,
+          layout: templates.layout,
+        })
+        .from(templates)
+        .where(eq(templates.userId, userId))
+        .orderBy(asc(templates.id));
+    },
+
+    async findTemplate(
+      userId: string,
+      id: number,
+    ): Promise<LayoutTemplateRow | null> {
+      const drizzle = await client();
+      const rows = await drizzle
+        .select({
+          id: templates.id,
+          name: templates.name,
+          layout: templates.layout,
+        })
+        .from(templates)
+        .where(and(eq(templates.userId, userId), eq(templates.id, id)))
+        .limit(1);
+      return rows[0] ?? null;
+    },
+
+    async createTemplate(
+      userId: string,
+      values: Omit<LayoutTemplateRow, "id">,
+    ): Promise<LayoutTemplateRow | null> {
+      const pending = (templateCreates.get(userId) ?? Promise.resolve())
+        .catch(() => {})
+        .then(async () => {
+          const drizzle = await client();
+          const [total] = await drizzle
+            .select({ value: count() })
+            .from(templates)
+            .where(eq(templates.userId, userId));
+          if (total.value >= MAX_TEMPLATES) return null;
+          const insert = drizzle
+            .insert(templates)
+            .values({ userId, ...values });
+          const [row] = await (db.dialect === "mysql"
+            ? insert.$returningId()
+            : insert.returning({ id: templates.id }));
+          await db.persist();
+          return { id: Number(row.id), ...values };
+        });
+      templateCreates.set(userId, pending);
+      try {
+        return await pending;
+      } finally {
+        if (templateCreates.get(userId) === pending)
+          templateCreates.delete(userId);
+      }
+    },
+
+    async deleteTemplate(userId: string, id: number): Promise<void> {
+      const drizzle = await client();
+      await drizzle
+        .delete(templates)
+        .where(and(eq(templates.userId, userId), eq(templates.id, id)));
+      await db.persist();
+    },
+
+    /** One user's saved sets of checks, for the dashboard summary. */
+    async listUserChecks(userId: string): Promise<HealthChecksRow[]> {
+      const drizzle = await client();
+      const rows = await drizzle
+        .select({
+          userId: checks.userId,
+          hostId: checks.hostId,
+          checks: checks.checks,
+          intervalSeconds: checks.intervalSeconds,
+        })
+        .from(checks)
+        .where(eq(checks.userId, userId));
+      return rows.map((row: Record<string, unknown>) => ({
+        userId: String(row.userId),
+        hostId: Number(row.hostId),
+        checks: String(row.checks ?? ""),
+        intervalSeconds: Number(row.intervalSeconds) || 0,
+      }));
     },
 
     /** Every saved set of checks, for the scheduler. */
@@ -209,25 +336,40 @@ export async function createHostMetricsRepository(db: PluginDatabase) {
       }));
     },
 
-    /** One sample, then drops the host's samples older than the retention. */
+    /**
+     * Keeps at most one sample a minute per host and drops the ones past the
+     * retention. On SQLite every save rewrites the whole database, so history
+     * must stay small and must not cause a save for each sample.
+     */
     async recordSample(
       input: MetricsHistoryInput,
       retentionDays: number,
     ): Promise<void> {
+      const nowMs = Date.now();
+      const last = sampleTimes.get(input.hostId);
+      if (last && nowMs - last.written < SAMPLE_GAP_MS) return;
       const drizzle = await client();
-      const now = new Date();
+      const now = new Date(nowMs);
       await drizzle.insert(history).values({ ...input, ts: sqlTimestamp(now) });
-      const cutoff = new Date(now.getTime() - retentionDays * 86_400_000);
-      await drizzle
-        .delete(history)
-        .where(
-          and(
-            eq(history.hostId, input.hostId),
-            lt(history.ts, sqlTimestamp(cutoff)),
-          ),
-        );
-      // A sample every few seconds per host: let the debounced save pick it up.
-      await db.persist({ lazy: true });
+      const entry = last ?? { written: nowMs, pruned: 0 };
+      entry.written = nowMs;
+      sampleTimes.set(input.hostId, entry);
+      if (nowMs - entry.pruned >= PRUNE_GAP_MS) {
+        entry.pruned = nowMs;
+        const cutoff = new Date(nowMs - retentionDays * 86_400_000);
+        await drizzle
+          .delete(history)
+          .where(
+            and(
+              eq(history.hostId, input.hostId),
+              lt(history.ts, sqlTimestamp(cutoff)),
+            ),
+          );
+      }
+      if (nowMs - lastHistoryPersist >= HISTORY_PERSIST_GAP_MS) {
+        lastHistoryPersist = nowMs;
+        await db.persist({ lazy: true });
+      }
     },
 
     async listSamples(

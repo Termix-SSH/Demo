@@ -28,3 +28,29 @@ export function RailBadge({
     </span>
   );
 }
+
+export type RailStatusTone = "ok" | "warning" | "error";
+
+const TONES: Record<RailStatusTone, string> = {
+  ok: "bg-green-500",
+  warning: "bg-warning",
+  error: "bg-destructive",
+};
+
+/** A small colored dot for a rail item that reports a state, like sync. */
+export function RailStatus({
+  useStatus,
+  className = "",
+}: {
+  useStatus: () => RailStatusTone | null | undefined;
+  className?: string;
+}) {
+  const tone = useStatus();
+  if (!tone || !TONES[tone]) return null;
+  return (
+    <span
+      data-tone={tone}
+      className={`absolute size-1.5 rounded-full ${TONES[tone]} ${className}`}
+    />
+  );
+}

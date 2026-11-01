@@ -20,6 +20,10 @@ import { ChevronRight, Check, GripVertical, Lock } from "lucide-react";
 import { HostItem, statusCheckEnabled } from "../HostItem/HostItem";
 import { isFolder, folderHasMatch, collectAllHosts } from "../visible-rows";
 import { FolderActions } from "./FolderActions";
+import {
+  FolderAuthOverrideModal,
+  folderAuthApi,
+} from "../../FolderAuthOverrideModal";
 
 export function folderHostCount(folder: HostFolder): number {
   let total = 0;
@@ -141,6 +145,7 @@ export function FolderItem({
     (h) => statusCheckEnabled(h) && getStatus(Number(h.id)) === "online",
   ).length;
   const [dragOver, setDragOver] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
   const reorderEdge = isReorderHovered ? reorderHoverEdge : null;
 
   if (query && !folderHasMatch(folder, query)) return null;
@@ -159,6 +164,9 @@ export function FolderItem({
   const breadcrumb =
     pathSegments.length > 1 ? pathSegments.slice(0, -1).join(" / ") : null;
   const folderHosts = collectAllHosts(folder.children);
+  const sharedHost = folderAuthApi()
+    ? folderHosts.find((h) => h.isShared)
+    : undefined;
   // A folder whose hosts are all managed by a plugin is managed too.
   const managedBy =
     folderHosts.length > 0 && folderHosts.every((h) => h.lock)
@@ -328,8 +336,19 @@ export function FolderItem({
                   managed={!!managedBy}
                   onOpenAllSessions={onOpenAllSessions}
                   onShareFolder={onShareFolder}
+                  onPersonalLogin={
+                    sharedHost ? () => setLoginOpen(true) : undefined
+                  }
                   onManageFolder={onManageFolder}
                   onDeleteFolder={onDeleteFolder}
+                />
+              )}
+              {sharedHost && loginOpen && (
+                <FolderAuthOverrideModal
+                  open={loginOpen}
+                  onOpenChange={setLoginOpen}
+                  folder={folderPath}
+                  sampleHost={sharedHost}
                 />
               )}
             </>

@@ -11,6 +11,18 @@ export function isPasswordPrompt(output: string): boolean {
   return PASSWORD_PROMPT.test(output);
 }
 
+/**
+ * Whether the terminal is waiting at a password prompt now. Only the last
+ * line counts, since a prompt already answered stays in recent output.
+ */
+export function isAtPasswordPrompt(output: string): boolean {
+  const lineStart = Math.max(
+    output.lastIndexOf("\n"),
+    output.lastIndexOf("\r"),
+  );
+  return isPasswordPrompt(output.slice(lineStart + 1));
+}
+
 export function isSudoCommand(line: string): boolean {
   return SUDO_COMMAND.test(line);
 }
@@ -18,6 +30,41 @@ export function isSudoCommand(line: string): boolean {
 /** Whether a password prompt comes from sudo. */
 export function isSudoPrompt(output: string, lastCommand: string): boolean {
   return SUDO_OUTPUT.test(output) || isSudoCommand(lastCommand);
+}
+
+const SU_VALUE_OPTIONS = new Set([
+  "-c",
+  "--command",
+  "-s",
+  "--shell",
+  "-g",
+  "--group",
+  "-G",
+  "--supp-group",
+  "-w",
+  "--whitelist-environment",
+]);
+
+/**
+ * The user a su command switches to (root when none is named), or null when
+ * the line is not su. sudo su asks for the sudo password, so it is not su here.
+ */
+export function suTargetUser(line: string): string | null {
+  const trimmed = line.trim();
+  if (isSudoCommand(trimmed)) return null;
+  const match = trimmed.match(/(?:^|[;&|(]\s*)su(?:\s+([^;&|]*))?$/);
+  if (!match) return null;
+  const args = (match[1] ?? "").trim().split(/\s+/).filter(Boolean);
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (SU_VALUE_OPTIONS.has(arg)) {
+      i++;
+      continue;
+    }
+    if (arg.startsWith("-")) continue;
+    return /^[a-z_][a-z0-9_.-]*\$?$/i.test(arg) ? arg : null;
+  }
+  return "root";
 }
 
 // Also covers charset switches like ESC ( B, which colored prompts end with,

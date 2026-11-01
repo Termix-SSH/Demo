@@ -5,11 +5,14 @@ import type {
   Response,
   Router,
 } from "express";
-import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
+import type {
+  PluginContext,
+  PluginHostShareLevel,
+} from "@termix-ssh/plugin-sdk/backend";
 import {
   defaultLayoutFromWidgets,
   deriveEnabledWidgets,
-  type HostMetricsLayout,
+  sanitizeLayout,
 } from "../shared/host-metrics.js";
 import { newSessionId, supportsMetrics } from "./helpers.js";
 import {
@@ -23,11 +26,17 @@ import {
   AccessDeniedError,
   editAccessDenied,
 } from "./managers/route-helpers.js";
-import type { HealthRecorder } from "./managers/health.js";
+import {
+  dashboardHealth,
+  parseChecks,
+  type DashboardHealth,
+  type HealthRecorder,
+} from "./managers/health.js";
 import type { MetricsPoller } from "./poller.js";
 import { sqlTimestamp, type HostMetricsRepository } from "./repository.js";
 import { sessionKey, type MetricsSessions } from "./sessions.js";
 import { MANAGER_CONNECTION, sudoPasswordOf } from "./helpers.js";
+import { registerLayoutTemplateRoutes } from "./layout-templates.js";
 
 export interface RouteDeps {
   ctx: PluginContext;
@@ -52,30 +61,6 @@ function validateHostId(req: Request, res: Response, next: NextFunction) {
     return res.status(400).json({ error: "Invalid host ID" });
   }
   next();
-}
-
-function sanitizeLayout(input: unknown): HostMetricsLayout | null {
-  if (!input || typeof input !== "object") return null;
-  const obj = input as Record<string, unknown>;
-  if (!Array.isArray(obj.slots)) return null;
-  const columns =
-    typeof obj.columns === "number" && obj.columns >= 1 && obj.columns <= 4
-      ? Math.round(obj.columns)
-      : 3;
-  const slots = obj.slots
-    .filter((s): s is Record<string, unknown> => !!s && typeof s === "object")
-    .map((s, i) => ({
-      id: String(s.id),
-      order: typeof s.order === "number" ? s.order : i,
-      colSpan:
-        s.colSpan === 1 || s.colSpan === 2 || s.colSpan === 3 ? s.colSpan : 1,
-      height:
-        typeof s.height === "number" && s.height > 0
-          ? Math.round(s.height)
-          : null,
-    }))
-    .filter((s) => s.id && s.id !== "undefined");
-  return { slots, columns } as HostMetricsLayout;
 }
 
 /** Everything under /plugin-api/host-metrics. Core authenticates first. */
@@ -103,6 +88,7 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
     log,
     registerViewer: (hostId, sessionId, userId) =>
       poller.registerViewer(hostId, sessionId, userId),
+    clearAuthFailure: (hostId) => poller.clearAuthFailure(hostId),
   };
 
   /**
@@ -137,6 +123,45 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
       });
     }
     res.json(out);
+  });
+
+  /**
+   * @openapi
+   * /plugin-api/host-metrics/health/summary:
+   *   get:
+   *     summary: Latest dashboard health check results for every host
+   *     description: For each host the caller can connect to, the newest stored result of each of the caller's health checks marked to show on the dashboard, and the worst level among them. It reads stored results only and never runs a check.
+   *     tags:
+   *       - Host Metrics
+   *     responses:
+   *       200:
+   *         description: One entry per host with at least one dashboard check result.
+   *       500:
+   *         description: The results could not be read.
+   */
+  router.get("/health/summary", async (_req, res) => {
+    const userId = actor(res);
+    if (!userId) return;
+    try {
+      const out: DashboardHealth[] = [];
+      for (const row of await repository.listUserChecks(userId)) {
+        const checks = parseChecks(row.checks).filter((c) => c.dashboard);
+        if (!checks.length || !(await canConnect(row.hostId))) continue;
+        const summary = dashboardHealth(
+          row.hostId,
+          checks,
+          await repository.listHealth(userId, row.hostId, 200),
+        );
+        if (summary) out.push(summary);
+      }
+      res.json(out);
+    } catch (error) {
+      log.warn("Could not read the health summary", {
+        operation: "health_summary",
+        error: error instanceof Error ? error.message : String(error),
+      });
+      res.status(500).json({ error: "Could not read health checks" });
+    }
   });
 
   /**
@@ -216,7 +241,16 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
           ],
         });
       }
-      const result = await startInteractive(interactive, host, userId);
+      const keyPassword =
+        typeof req.body?.keyPassword === "string" && req.body.keyPassword
+          ? req.body.keyPassword
+          : undefined;
+      const result = await startInteractive(
+        interactive,
+        host,
+        userId,
+        keyPassword,
+      );
       res.status(result.status).json(result.body);
     } catch (error) {
       log.error("Failed to start metrics collection", error, {
@@ -672,11 +706,33 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
     },
   );
 
+  registerLayoutTemplateRoutes(router, deps);
+
+  const assertAccess = async (
+    hostId: number,
+    level: PluginHostShareLevel,
+  ): Promise<string> => {
+    const userId = ctx.currentActor();
+    if (!userId) throw new AccessDeniedError("Authentication required");
+    const access = await ctx.hosts.checkAccess(hostId, level);
+    if (!access.hasAccess) {
+      if (
+        level !== "connect" &&
+        (await ctx.hosts.checkAccess(hostId, "connect")).hasAccess
+      ) {
+        throw editAccessDenied();
+      }
+      throw new AccessDeniedError();
+    }
+    return userId;
+  };
+
   registerManagerRoutes(router, {
     validateHostId,
     log,
     repository,
     recordHealth: deps.recordHealth,
+    onDispose: (fn) => ctx.disposables.add(fn),
     liveConfig: async (hostId) => {
       const [enabled, min, host] = await Promise.all([
         ctx.settings.get<boolean>("liveEnabled"),
@@ -687,22 +743,12 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
       return {
         enabled: enabled !== false && host.metricsEnabled !== false,
         minSeconds:
-          Number.isFinite(minSeconds) && minSeconds >= 1 ? minSeconds : 2,
+          Number.isFinite(minSeconds) && minSeconds >= 0.25 ? minSeconds : 2,
       };
     },
+    assertAccess,
     runOnHost: async (hostId, level, fn) => {
-      const userId = ctx.currentActor();
-      if (!userId) throw new AccessDeniedError("Authentication required");
-      const access = await ctx.hosts.checkAccess(hostId, level);
-      if (!access.hasAccess) {
-        if (
-          level !== "connect" &&
-          (await ctx.hosts.checkAccess(hostId, "connect")).hasAccess
-        ) {
-          throw editAccessDenied();
-        }
-        throw new AccessDeniedError();
-      }
+      const userId = await assertAccess(hostId, level);
       const host = await poller.resolve(hostId, userId);
       if (!host) throw new AccessDeniedError("Host not found");
       return ctx.ssh.withConnection(host, MANAGER_CONNECTION, (client) =>

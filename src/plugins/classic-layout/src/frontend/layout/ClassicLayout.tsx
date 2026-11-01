@@ -242,7 +242,9 @@ export function ClassicLayout() {
       className="flex flex-col w-screen bg-background"
       style={{ height: "calc(100dvh - var(--termix-titlebar-height, 0px))" }}
     >
-      <div className="flex flex-1 min-h-0">
+      {/* Isolated so the expanded rail covers inline views and prompts in the
+          docks and tabs, while dialogs on the body still cover the rail. */}
+      <div className="isolate flex flex-1 min-h-0">
         {/* Skinny icon rail, desktop only */}
         <AppRail
           railView={left.view}
@@ -314,7 +316,7 @@ export function ClassicLayout() {
 
         {/* Main content area */}
         <div
-          className={`relative flex flex-col flex-1 min-w-0 overflow-hidden transition-[padding] duration-200 ${!isMobile && !left.open ? "pl-6" : ""}`}
+          className={`isolate relative flex flex-col flex-1 min-w-0 overflow-hidden transition-[padding] duration-200 ${!isMobile && !left.open ? "pl-6" : ""}`}
         >
           {!isMobile && !left.open && (
             <DockReopenStrip onClick={() => left.setOpen(true)} />

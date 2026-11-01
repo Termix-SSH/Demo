@@ -1,7 +1,7 @@
 {
   "id": "ssh-terminal",
   "name": "SSH Terminal",
-  "version": "1.1.1",
+  "version": "1.3.0",
   "description": "SSH terminal sessions with tabs, split screen, history, macros and a local terminal in the desktop app.",
   "author": {
     "name": "Termix"
@@ -22,7 +22,10 @@
     "A toolbar with live stats and quick links to the host's other tools",
     "Command history with autocomplete",
     "Macros that automate logins and prompts",
-    "Send keystrokes to several terminals at once",
+    "Broadcast typing and commands to several terminals at once",
+    "Alerts when output matches, a job goes quiet or a background tab has news",
+    "Search all open terminals, and save or copy their output",
+    "Fix a garbled terminal and send keys that are hard to type",
     "A local terminal in the desktop app"
   ],
   "env": [
@@ -65,11 +68,13 @@
     "credentials:use",
     "credentials:read",
     "ssh:connect",
+    "ssh:transport",
     "network:serve",
     "db:own",
     "events:core",
     "ui:surface",
-    "desktop:local"
+    "desktop:local",
+    "notify:send"
   ],
   "provides": [
     {
@@ -121,11 +126,6 @@
         "id": "history",
         "titleKey": "nav.history",
         "icon": "History"
-      },
-      {
-        "id": "ssh-tools",
-        "titleKey": "nav.sshTools",
-        "icon": "Hammer"
       },
       {
         "id": "macros",
@@ -369,10 +369,40 @@
             "default": true
           },
           {
+            "key": "connectFrom",
+            "type": "select",
+            "labelKey": "settings.host.connectFrom.label",
+            "descriptionKey": "settings.host.connectFrom.description",
+            "default": "auto",
+            "personal": true,
+            "options": [
+              {
+                "value": "auto",
+                "labelKey": "settings.host.connectFrom.auto"
+              },
+              {
+                "value": "device",
+                "labelKey": "settings.host.connectFrom.device"
+              },
+              {
+                "value": "server",
+                "labelKey": "settings.host.connectFrom.server"
+              }
+            ]
+          },
+          {
             "key": "cloudflareTunnelEnabled",
             "type": "boolean",
             "labelKey": "settings.host.cloudflareTunnelEnabled.label",
             "descriptionKey": "settings.host.cloudflareTunnelEnabled.description",
+            "hidden": true,
+            "default": false
+          },
+          {
+            "key": "tcpNoDelay",
+            "type": "boolean",
+            "labelKey": "settings.host.tcpNoDelay.label",
+            "descriptionKey": "settings.host.tcpNoDelay.description",
             "hidden": true,
             "default": false
           },
@@ -631,6 +661,13 @@
             "default": false
           },
           {
+            "key": "autoTmuxAskWhenOne",
+            "type": "boolean",
+            "labelKey": "settings.host.autoTmuxAskWhenOne.label",
+            "hidden": true,
+            "default": false
+          },
+          {
             "key": "useSSHTitle",
             "type": "boolean",
             "labelKey": "settings.host.useSSHTitle.label",
@@ -664,6 +701,10 @@
               {
                 "value": "direct",
                 "labelKey": "hosts.linkClickBehaviorDirect"
+              },
+              {
+                "value": "modifier",
+                "labelKey": "hosts.linkClickBehaviorModifier"
               }
             ]
           },
@@ -703,6 +744,13 @@
             "default": false
           },
           {
+            "key": "suPasswordAutoFill",
+            "type": "boolean",
+            "labelKey": "settings.host.suPasswordAutoFill.label",
+            "hidden": true,
+            "default": false
+          },
+          {
             "key": "autoReconnect",
             "type": "boolean",
             "labelKey": "settings.host.autoReconnect.label",
@@ -732,6 +780,55 @@
           "labelKey": "settings.user.commandAutocomplete.label",
           "descriptionKey": "settings.user.commandAutocomplete.description",
           "default": false
+        },
+        {
+          "key": "zmodem",
+          "type": "boolean",
+          "labelKey": "settings.user.zmodem.label",
+          "descriptionKey": "settings.user.zmodem.description",
+          "default": true
+        },
+        {
+          "key": "rightClickAction",
+          "type": "select",
+          "labelKey": "settings.user.rightClickAction.label",
+          "descriptionKey": "settings.user.rightClickAction.description",
+          "default": "copyPaste",
+          "options": [
+            {
+              "value": "copyPaste",
+              "labelKey": "settings.user.rightClickAction.copyPaste"
+            },
+            {
+              "value": "menu",
+              "labelKey": "settings.user.rightClickAction.menu"
+            },
+            {
+              "value": "native",
+              "labelKey": "settings.user.rightClickAction.native"
+            }
+          ]
+        },
+        {
+          "key": "ctrlVPaste",
+          "type": "boolean",
+          "labelKey": "settings.user.ctrlVPaste.label",
+          "descriptionKey": "settings.user.ctrlVPaste.description",
+          "default": true
+        },
+        {
+          "key": "copyOnSelect",
+          "type": "boolean",
+          "labelKey": "settings.user.copyOnSelect.label",
+          "descriptionKey": "settings.user.copyOnSelect.description",
+          "default": false
+        },
+        {
+          "key": "watchRules",
+          "type": "json",
+          "labelKey": "terminalTools.watch.title",
+          "hidden": true,
+          "default": []
         },
         {
           "key": "macros",
@@ -791,6 +888,9 @@
       },
       {
         "id": "openLocalTerminal"
+      },
+      {
+        "id": "toggleBroadcast"
       }
     ],
     "uses": ["files.openEditor", "files.openHost", "snippets.startupCommand"]

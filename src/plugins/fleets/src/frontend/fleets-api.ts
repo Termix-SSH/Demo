@@ -50,6 +50,7 @@ export interface FleetHostResult {
   success: boolean;
   output?: string;
   error?: string;
+  attempts?: number;
 }
 
 interface FleetInventoryRecord {

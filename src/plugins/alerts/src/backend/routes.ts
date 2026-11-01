@@ -376,7 +376,7 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
    *                 type: string
    *               type:
    *                 type: string
-   *                 enum: [webhook, ntfy, discord, email]
+   *                 enum: [webhook, ntfy, discord, telegram, email]
    *               config:
    *                 type: object
    *               enabled:
@@ -428,7 +428,7 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
    *                 type: string
    *               type:
    *                 type: string
-   *                 enum: [webhook, ntfy, discord, email]
+   *                 enum: [webhook, ntfy, discord, telegram, email]
    *               config:
    *                 type: object
    *               enabled:

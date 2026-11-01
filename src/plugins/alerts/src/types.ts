@@ -1,4 +1,10 @@
-export const CHANNEL_TYPES = ["webhook", "ntfy", "discord", "email"] as const;
+export const CHANNEL_TYPES = [
+  "webhook",
+  "ntfy",
+  "discord",
+  "telegram",
+  "email",
+] as const;
 export type ChannelType = (typeof CHANNEL_TYPES)[number];
 
 export const SEVERITIES = ["info", "success", "warning", "critical"] as const;

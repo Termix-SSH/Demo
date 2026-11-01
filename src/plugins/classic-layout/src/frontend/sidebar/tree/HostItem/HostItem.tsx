@@ -129,12 +129,6 @@ function canCopyHostSudoPassword(host: Host): boolean {
   return !!host.hasSudoPassword || !!host.sudoPassword;
 }
 
-/**
- * Per-density layout knobs. Every feature is available in both densities --
- * only spacing/sizing and whether a couple of rows collapse to a single line
- * differ. Keeping this as one lookup (rather than two parallel JSX trees)
- * means a future style tweak only has to be made once.
- */
 const DOUBLE_CLICK_WINDOW_MS = 250;
 
 const DEFAULT_ROW_FIELDS = defaultHostRowFields();
@@ -157,19 +151,18 @@ export function formatHostAddress(
   return `${user}${host.ip}${port}`;
 }
 
+/** Per-density spacing and optional detail rows. */
 const HOST_ITEM_DENSITY_TOKENS = {
   comfortable: {
     rowPadding: "pl-[8.75px] pr-[7px] py-[7px]",
     nameTextSize: "text-[13px]",
     showAddressRow: true,
-    showTagsRow: true,
     showResourceRow: true,
   },
   compact: {
     rowPadding: "pl-[7px] pr-[5.25px] py-[5px]",
     nameTextSize: "text-[12px]",
     showAddressRow: false,
-    showTagsRow: false,
     showResourceRow: false,
   },
 } as const;
@@ -337,7 +330,6 @@ export function HostItem({
   const tokens = {
     ...densityTokens,
     showAddressRow: densityTokens.showAddressRow && rowFields.showAddress,
-    showTagsRow: densityTokens.showTagsRow && showTags,
     showResourceRow: densityTokens.showResourceRow && showResourceBars,
   };
   const isCompact = density === "compact";
@@ -904,7 +896,7 @@ export function HostItem({
   // than its slot and the virtualizer spread the rows apart to match. The
   // negative margin cancels the gap while keeping the element in flow, so the
   // modes that animate open still have something to transition.
-  const trayCollapsedClass = `max-h-0 opacity-0 ${isCompact ? "" : "-mt-[3.5px]"}`;
+  const trayCollapsedClass = "max-h-0 opacity-0 -mt-[3.5px]";
   const trayVisibilityClass =
     alwaysShowTray || actionsOnly
       ? `overflow-hidden transition-[max-height,opacity,margin] duration-150 ease-out ${trayOpenState || alwaysShowTray ? "max-h-[130px] opacity-100" : trayCollapsedClass}`
@@ -915,6 +907,53 @@ export function HostItem({
           // against it leaves the open tray overflowing its shortened row for
           // the length of the animation. Both change together instead.
           `overflow-hidden ${hoverTrayOpen ? "max-h-[130px] opacity-100" : trayCollapsedClass}`;
+
+  const hostBadges = (
+    <>
+      {rowFields.showBadges &&
+        badges.map((badge) => {
+          const Badge = badge.component;
+          return <Badge key={badge.id} host={host} />;
+        })}
+      {rowFields.showSharedBadge && host.isShared && (
+        <TooltipProvider delayDuration={300}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="flex items-center gap-0.5 text-[9px] px-1 py-px border border-accent-brand/30 bg-accent-brand/10 text-accent-brand shrink-0 leading-none uppercase tracking-wider">
+                <Users className="size-2.5" />
+                {t("hosts.sharing.sharedBadge")}
+              </span>
+            </TooltipTrigger>
+            <TooltipContent side="right">
+              {t("hosts.sharing.sharedBadgeTooltip", {
+                owner: host.ownerUsername || "?",
+                level: t(
+                  `hosts.sharing.levels.${host.permissionLevel ?? "connect"}.label`,
+                ),
+              })}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      )}
+    </>
+  );
+
+  const trayToggle = !selectionMode && (shouldUseClickTray || actionsOnly) && (
+    <button
+      type="button"
+      aria-expanded={isTrayOpen}
+      title={isTrayOpen ? t("hosts.collapseActions") : t("hosts.expandActions")}
+      onClick={(e) => {
+        e.stopPropagation();
+        onTrayOpenChange?.(!isTrayOpen);
+      }}
+      className="ml-auto flex items-center justify-center size-[17.5px] rounded text-muted-foreground/30 hover:text-muted-foreground hover:bg-muted-foreground/10 transition-colors shrink-0"
+    >
+      <ChevronRight
+        className={`size-[10.5px] transition-transform duration-150 ${isTrayOpen ? "rotate-90" : ""}`}
+      />
+    </button>
+  );
 
   return (
     <div
@@ -1140,8 +1179,25 @@ export function HostItem({
                   {host.name}
                 </span>
               </TooltipTrigger>
-              <TooltipContent side="right">
-                {buildStatusTooltip(host, availability, t)}
+              <TooltipContent
+                side="right"
+                className={
+                  isCompact ? "max-w-72 whitespace-pre-line break-words" : ""
+                }
+              >
+                {isCompact
+                  ? [
+                      host.name,
+                      formatHostAddress(host, {
+                        showUsername: true,
+                        showPort: true,
+                      }),
+                      host.tags?.join(", "),
+                      buildStatusTooltip(host, availability, t),
+                    ]
+                      .filter(Boolean)
+                      .join("\n")
+                  : buildStatusTooltip(host, availability, t)}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -1164,91 +1220,68 @@ export function HostItem({
               </Tooltip>
             </TooltipProvider>
           )}
-          {rowFields.showBadges &&
-            badges.map((badge) => {
-              const Badge = badge.component;
-              return <Badge key={badge.id} host={host} />;
-            })}
-          {rowFields.showSharedBadge && host.isShared && (
-            <TooltipProvider delayDuration={300}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className="flex items-center gap-0.5 text-[9px] px-1 py-px border border-accent-brand/30 bg-accent-brand/10 text-accent-brand shrink-0 leading-none uppercase tracking-wider">
-                    <Users className="size-2.5" />
-                    {t("hosts.sharing.sharedBadge")}
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent side="right">
-                  {t("hosts.sharing.sharedBadgeTooltip", {
-                    owner: host.ownerUsername || "?",
-                    level: t(
-                      `hosts.sharing.levels.${host.permissionLevel ?? "connect"}.label`,
-                    ),
-                  })}
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
-          {isCompact &&
-            showTags &&
-            host.tags?.slice(0, 2).map((tag) => (
-              <span
-                key={tag}
-                data-testid="host-inline-tag"
-                className="text-[9px] px-1 py-px bg-muted/60 text-muted-foreground/70 lowercase leading-none truncate max-w-[5rem] min-w-0"
-              >
-                {tag}
-              </span>
-            ))}
-          {isCompact && showTags && (host.tags?.length ?? 0) > 2 && (
-            <span className="text-[9px] text-muted-foreground/40 shrink-0 leading-none">
-              +{host.tags!.length - 2}
-            </span>
-          )}
-          {isCompact && rowFields.showAddress && (
-            <span
-              className="text-[11px] text-muted-foreground/70 truncate leading-none ml-auto max-w-[50%] shrink-0"
-              title={host.ip}
-            >
-              {formatHostAddress(host, { ...rowFields, showUsername: false })}
-            </span>
-          )}
-          {isCompact && !selectionMode && (
-            <div
-              data-testid="host-inline-actions"
-              className={`flex items-center gap-[2px] min-w-0 max-w-[60%] overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [&>*]:shrink-0 ${alwaysShowTray || actionsOnly || trayOpenState || hoverTrayOpen ? "" : "hidden"}`}
-            >
-              {connectionButtons}
-              <div
-                className={
-                  alwaysShowTray || trayOpenState || hoverTrayOpen
-                    ? "flex items-center gap-[2px]"
-                    : "hidden"
-                }
-              >
-                {managementButtons}
-              </div>
-            </div>
-          )}
-          {!selectionMode && (shouldUseClickTray || actionsOnly) && (
-            <button
-              title={
-                isTrayOpen
-                  ? t("hosts.collapseActions")
-                  : t("hosts.expandActions")
-              }
-              onClick={(e) => {
-                e.stopPropagation();
-                onTrayOpenChange?.(!isTrayOpen);
-              }}
-              className="ml-auto flex items-center justify-center size-[17.5px] rounded text-muted-foreground/30 hover:text-muted-foreground hover:bg-muted-foreground/10 transition-colors shrink-0"
-            >
-              <ChevronRight
-                className={`size-[10.5px] transition-transform duration-150 ${isTrayOpen ? "rotate-90" : ""}`}
-              />
-            </button>
-          )}
+          {!isCompact && hostBadges}
+          {!isCompact && trayToggle}
         </div>
+
+        {isCompact && (
+          <div
+            data-testid="host-details-row"
+            className="flex items-center min-w-0 min-h-[19px]"
+          >
+            <span className="sr-only">
+              {formatHostAddress(host, { showUsername: true, showPort: true })}
+              {host.tags?.length ? `, ${host.tags.join(", ")}` : ""}
+            </span>
+            <div className="flex items-center gap-1 flex-1 min-w-0 overflow-hidden">
+              {hostBadges}
+              {rowFields.showAddress && (
+                <span
+                  className="text-[11px] text-muted-foreground/70 font-mono min-w-0 truncate leading-none"
+                  title={host.ip}
+                >
+                  {formatHostAddress(host, {
+                    ...rowFields,
+                    showUsername: false,
+                  })}
+                </span>
+              )}
+              {showTags && !!host.tags?.length && (
+                <div className="flex flex-1 basis-0 min-w-0 flex-wrap h-[11px] overflow-hidden gap-x-1">
+                  {host.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      data-testid="host-inline-tag"
+                      className="text-[9px] px-1 py-px bg-muted/60 text-muted-foreground/70 lowercase leading-none truncate max-w-[5rem] min-w-0 shrink-0"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+            {!selectionMode && (
+              <div className="flex items-center min-w-0 max-w-full shrink-0 ml-auto">
+                <div
+                  data-testid="host-inline-actions"
+                  className={`flex items-center gap-[2px] min-w-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [&>*]:shrink-0 ${alwaysShowTray || actionsOnly || trayOpenState || hoverTrayOpen ? "" : "hidden"}`}
+                >
+                  {connectionButtons}
+                  <div
+                    className={
+                      alwaysShowTray || trayOpenState || hoverTrayOpen
+                        ? "flex items-center gap-[2px]"
+                        : "hidden"
+                    }
+                  >
+                    {managementButtons}
+                  </div>
+                </div>
+                {trayToggle}
+              </div>
+            )}
+          </div>
+        )}
 
         {tokens.showAddressRow && (
           <span className="text-[11px] text-muted-foreground/60 truncate leading-none font-mono">
@@ -1258,10 +1291,8 @@ export function HostItem({
 
         {/* Tag pills */}
         {showTags && !isCompact && host.tags && host.tags.length > 0 && (
-          <div
-            className={`flex items-center gap-1 min-w-0 overflow-hidden ${tokens.showTagsRow ? "" : "-mt-0.5"}`}
-          >
-            {host.tags.slice(0, isCompact ? 2 : 4).map((tag) => (
+          <div className="flex items-center gap-1 min-w-0 overflow-hidden">
+            {host.tags.slice(0, 4).map((tag) => (
               <span
                 key={tag}
                 className="text-[9px] px-1.5 py-[1px] bg-muted/60 text-muted-foreground/70 lowercase shrink-0 leading-[1.4]"
@@ -1269,9 +1300,9 @@ export function HostItem({
                 {tag}
               </span>
             ))}
-            {host.tags.length > (isCompact ? 2 : 4) && (
+            {host.tags.length > 4 && (
               <span className="text-[9px] text-muted-foreground/40 shrink-0">
-                +{host.tags.length - (isCompact ? 2 : 4)}
+                +{host.tags.length - 4}
               </span>
             )}
           </div>
@@ -1283,9 +1314,7 @@ export function HostItem({
           (alwaysShowTray ||
             actionsOnly ||
             (shouldUseClickTray && isTrayOpen)) && (
-            <div
-              className={`flex items-center flex-wrap ${isCompact ? "gap-[2px] pt-[3px]" : "gap-[3.5px]"}`}
-            >
+            <div className="flex items-center flex-wrap gap-[3.5px]">
               {connectionButtons}
             </div>
           )}

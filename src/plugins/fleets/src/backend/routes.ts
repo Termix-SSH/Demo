@@ -206,6 +206,63 @@ interface FleetHostResult {
   success: boolean;
   output?: string;
   error?: string;
+  /** Connection tries, when more than one was needed. */
+  attempts?: number;
+}
+
+/**
+ * An SSH connect that timed out before anything ran on the host, so trying
+ * again cannot run a command twice. A command's own timeout is not one.
+ */
+export function isConnectTimeout(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error ?? "");
+  if (/command timeout/i.test(message)) return false;
+  return /timed out while waiting for handshake|connection timeout|connect(?:ion)? timed out|ETIMEDOUT|EHOSTUNREACH/i.test(
+    message,
+  );
+}
+
+export interface RetryPolicy {
+  retries: number;
+  delayMs: number;
+}
+
+/** Runs fn, again on a connect timeout, up to policy.retries more times. */
+export async function withConnectRetry<T>(
+  policy: RetryPolicy,
+  fn: () => Promise<T>,
+  sleep: (ms: number) => Promise<void> = (ms) =>
+    new Promise((resolve) => setTimeout(resolve, ms)),
+): Promise<{ value: T; attempts: number }> {
+  let attempts = 0;
+  for (;;) {
+    attempts++;
+    try {
+      return { value: await fn(), attempts };
+    } catch (error) {
+      if (attempts > policy.retries || !isConnectTimeout(error)) {
+        if (error instanceof Error && attempts > 1)
+          error.message = `${error.message} (after ${attempts} tries)`;
+        throw error;
+      }
+      await sleep(policy.delayMs);
+    }
+  }
+}
+
+async function readRetryPolicy(ctx: PluginContext): Promise<RetryPolicy> {
+  const number = (value: unknown, fallback: number, max: number) =>
+    typeof value === "number" && Number.isFinite(value)
+      ? Math.min(max, Math.max(0, Math.floor(value)))
+      : fallback;
+  const [retries, delay] = await Promise.all([
+    ctx.settings.get("connectRetries").catch(() => undefined),
+    ctx.settings.get("connectRetryDelay").catch(() => undefined),
+  ]);
+  return {
+    retries: number(retries, 2, 10),
+    delayMs: Math.max(1, number(delay, 5, 300)) * 1000,
+  };
 }
 
 // Kernel/arch/hostname/uptime are cheap, always-available facts not covered by
@@ -267,6 +324,7 @@ async function runAcrossFleet(
   }
 
   const members = await repo.listEffectiveMembers(userId, fleetId);
+  const policy = await readRetryPolicy(ctx);
 
   const results = await mapWithLimit(
     members,
@@ -283,8 +341,17 @@ async function runAcrossFleet(
             error: `Access denied (requires '${level}' level)`,
           };
         }
-        const outcome = await fn({ id: host.id, name: hostName });
-        return { hostId: host.id, hostName, ...outcome };
+        // Only the failed hosts try again; the others are done.
+        const { value: outcome, attempts } = await withConnectRetry(
+          policy,
+          () => fn({ id: host.id, name: hostName }),
+        );
+        return {
+          hostId: host.id,
+          hostName,
+          ...outcome,
+          ...(attempts > 1 ? { attempts } : {}),
+        };
       } catch (err) {
         return {
           hostId: host.id,

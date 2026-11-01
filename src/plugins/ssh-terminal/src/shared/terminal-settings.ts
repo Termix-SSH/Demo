@@ -45,7 +45,7 @@ export type BellStyle = "none" | "sound" | "visual" | "both";
 export type FastScrollModifier = "alt" | "ctrl" | "shift";
 export type BackspaceMode = "normal" | "control-h";
 type HostLocalEcho = "default" | "off" | "auto" | "on";
-type HostLinkClickBehavior = "default" | "confirm" | "direct";
+type HostLinkClickBehavior = "default" | "confirm" | "direct" | "modifier";
 
 /** How a terminal looks. Each value follows the host defaults unless the host sets it. */
 export interface TerminalAppearance {
@@ -76,6 +76,8 @@ export interface TerminalBehavior {
   autoMosh: boolean;
   moshCommand: string;
   autoTmux: boolean;
+  /** With one tmux session, ask instead of attaching, so a new one can start. */
+  autoTmuxAskWhenOne: boolean;
   useSSHTitle: boolean;
   syntaxHighlighting: boolean;
   syntaxHighlightingOptions: SyntaxHighlightingOptions;
@@ -83,6 +85,8 @@ export interface TerminalBehavior {
   localEcho: HostLocalEcho;
   passwordPromptAutoFill: boolean;
   sudoPasswordAutoFill: boolean;
+  /** Fill su prompts with the password saved for the target user. */
+  suPasswordAutoFill: boolean;
   autoReconnect: boolean;
   keepOpenOnExit: boolean;
   cloudflareTunnelEnabled: boolean;
@@ -124,6 +128,7 @@ const BEHAVIOR_KEYS = [
   "autoMosh",
   "moshCommand",
   "autoTmux",
+  "autoTmuxAskWhenOne",
   "useSSHTitle",
   "syntaxHighlighting",
   "syntaxHighlightingOptions",
@@ -131,6 +136,7 @@ const BEHAVIOR_KEYS = [
   "localEcho",
   "passwordPromptAutoFill",
   "sudoPasswordAutoFill",
+  "suPasswordAutoFill",
   "autoReconnect",
   "keepOpenOnExit",
   "cloudflareTunnelEnabled",
@@ -178,6 +184,7 @@ export const DEFAULT_BEHAVIOR: TerminalBehavior = {
   autoMosh: false,
   moshCommand: "",
   autoTmux: false,
+  autoTmuxAskWhenOne: false,
   useSSHTitle: false,
   syntaxHighlighting: true,
   syntaxHighlightingOptions: DEFAULT_SYNTAX_HIGHLIGHTING,
@@ -185,6 +192,7 @@ export const DEFAULT_BEHAVIOR: TerminalBehavior = {
   localEcho: "auto",
   passwordPromptAutoFill: true,
   sudoPasswordAutoFill: false,
+  suPasswordAutoFill: false,
   autoReconnect: false,
   keepOpenOnExit: false,
   cloudflareTunnelEnabled: false,
@@ -205,15 +213,26 @@ export interface SavedCustomTheme {
   colors: TerminalThemeColors;
 }
 
+export type RightClickAction = "copyPaste" | "menu" | "native";
+
 /** The ssh-terminal user settings the terminal reads. */
 export interface TerminalUserSettings {
   customThemes: SavedCustomTheme[];
   commandAutocomplete: boolean;
+  /** rz and sz file transfers in the browser. */
+  zmodem: boolean;
+  rightClickAction: RightClickAction;
+  ctrlVPaste: boolean;
+  copyOnSelect: boolean;
 }
 
 export const DEFAULT_USER_SETTINGS: TerminalUserSettings = {
   customThemes: [],
   commandAutocomplete: false,
+  zmodem: true,
+  rightClickAction: "copyPaste",
+  ctrlVPaste: true,
+  copyOnSelect: false,
 };
 
 const ENUMS: Record<string, readonly string[]> = {
@@ -221,7 +240,7 @@ const ENUMS: Record<string, readonly string[]> = {
   bellStyle: ["none", "sound", "visual", "both"],
   fastScrollModifier: ["alt", "ctrl", "shift"],
   backspaceMode: ["normal", "control-h"],
-  linkClickBehavior: ["default", "confirm", "direct"],
+  linkClickBehavior: ["default", "confirm", "direct", "modifier"],
   localEcho: ["default", "off", "auto", "on"],
 };
 
@@ -366,6 +385,13 @@ export function readUserSettings(
         isObject(theme.colors),
     ),
     commandAutocomplete: source.commandAutocomplete === true,
+    zmodem: source.zmodem !== false,
+    rightClickAction:
+      source.rightClickAction === "menu" || source.rightClickAction === "native"
+        ? source.rightClickAction
+        : "copyPaste",
+    ctrlVPaste: source.ctrlVPaste !== false,
+    copyOnSelect: source.copyOnSelect === true,
   };
 }
 

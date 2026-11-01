@@ -1,12 +1,20 @@
 import type { HostFolder } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { FolderOpen, Pencil, Settings2, Share2, Trash2 } from "lucide-react";
+import {
+  FolderOpen,
+  KeyRound,
+  Pencil,
+  Settings2,
+  Share2,
+  Trash2,
+} from "lucide-react";
 
 export function FolderActions({
   folder,
   managed,
   onOpenAllSessions,
   onShareFolder,
+  onPersonalLogin,
   onManageFolder,
   onDeleteFolder,
 }: {
@@ -14,6 +22,8 @@ export function FolderActions({
   managed?: boolean;
   onOpenAllSessions: (folder: HostFolder) => void;
   onShareFolder?: (folder: HostFolder) => void;
+  /** Set when the folder holds hosts shared with this user. */
+  onPersonalLogin?: () => void;
   onManageFolder: (folder: HostFolder) => void;
   onDeleteFolder: (folder: HostFolder) => void;
 }) {
@@ -44,6 +54,20 @@ export function FolderActions({
           }}
         >
           <Share2 className="size-3" />
+        </button>
+      )}
+      {onPersonalLogin && (
+        <button
+          type="button"
+          title={t("sharing.folderLogin.action")}
+          aria-label={t("sharing.folderLogin.action")}
+          className={actionButtonClass}
+          onClick={(e) => {
+            e.stopPropagation();
+            onPersonalLogin();
+          }}
+        >
+          <KeyRound className="size-3" />
         </button>
       )}
       <button

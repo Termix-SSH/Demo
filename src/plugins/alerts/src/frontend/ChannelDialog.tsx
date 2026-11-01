@@ -207,6 +207,45 @@ export function ChannelDialog({
                 className="text-xs font-mono rounded-none"
               />
             </Field>
+            <Field
+              label={t("channels.bodyTemplate")}
+              hint={t("channels.bodyTemplateHint")}
+            >
+              <Textarea
+                value={draft.bodyTemplate}
+                onChange={(event) => set("bodyTemplate", event.target.value)}
+                placeholder={'{"text": "{{title}}: {{message}}"}'}
+                rows={5}
+                className="text-xs font-mono rounded-none"
+              />
+            </Field>
+          </>
+        )}
+
+        {draft.type === "telegram" && (
+          <>
+            <Field
+              label={t("channels.telegramToken")}
+              hint={t("channels.telegramTokenHint")}
+            >
+              <PasswordInput
+                value={draft.token}
+                onChange={(event) => set("token", event.target.value)}
+                placeholder="123456:ABC..."
+                className="text-sm font-mono rounded-none"
+              />
+            </Field>
+            <Field
+              label={t("channels.telegramChat")}
+              hint={t("channels.telegramChatHint")}
+            >
+              <Input
+                value={draft.chatId}
+                onChange={(event) => set("chatId", event.target.value)}
+                placeholder="-1001234567890"
+                className="text-sm font-mono rounded-none"
+              />
+            </Field>
           </>
         )}
 

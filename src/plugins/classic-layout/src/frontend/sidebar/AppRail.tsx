@@ -27,7 +27,7 @@ import {
 } from "lucide-react";
 import { readRailPreference, setRailPreference } from "./rail-preferences";
 import { toggleHiddenRailTab, useHiddenRailTabs } from "./hidden-rail-tabs";
-import { RailBadge } from "./RailBadge";
+import { RailBadge, RailStatus, type RailStatusTone } from "./RailBadge";
 
 /** Core rail views; plugins add their own ids at runtime. */
 export type CoreRailView =
@@ -40,6 +40,11 @@ const btnBase =
 const btnStyle = { margin: `0 ${rem(4)}`, padding: `0 ${rem(8)}` };
 const idle = "text-muted-foreground hover:text-foreground hover:bg-muted/60";
 const activeClass = "text-accent-brand bg-accent-brand/10";
+
+// useStatus is on rail items from Termix 26.10.6; typed here so older SDK
+// types still build.
+const statusHook = (item: object) =>
+  (item as { useStatus?: () => RailStatusTone | null | undefined }).useStatus;
 
 function RailLabel({
   expanded,
@@ -62,9 +67,11 @@ function RailLabel({
 function RailIcon({
   children,
   useBadge,
+  useStatus,
 }: {
   children: React.ReactNode;
   useBadge?: () => number | null | undefined;
+  useStatus?: () => RailStatusTone | null | undefined;
 }) {
   return (
     <span
@@ -74,6 +81,9 @@ function RailIcon({
       {children}
       {useBadge && (
         <RailBadge useBadge={useBadge} className="-top-1.5 -right-2" />
+      )}
+      {useStatus && (
+        <RailStatus useStatus={useStatus} className="-bottom-0.5 -right-0.5" />
       )}
     </span>
   );
@@ -316,7 +326,7 @@ export function AppRail({
         style={btnStyle}
         className={`${btnBase} ${active ? activeClass : idle} ${dragId === item.id ? "opacity-40" : ""} ${dropHere ? "relative before:absolute before:inset-x-1 before:-top-0.5 before:h-0.5 before:bg-accent-brand" : ""}`}
       >
-        <RailIcon useBadge={item.useBadge}>
+        <RailIcon useBadge={item.useBadge} useStatus={statusHook(item)}>
           <Icon size={16} />
         </RailIcon>
         <RailLabel expanded={railExpanded}>{title}</RailLabel>
@@ -336,7 +346,7 @@ export function AppRail({
       style={{ width: rem(takesSpace ? 172 : 40) }}
     >
       <div
-        className="absolute inset-y-0 left-0 z-40 flex flex-col items-stretch bg-sidebar border-r border-border overflow-hidden pt-2 gap-1 transition-[width] duration-200 min-h-0"
+        className="absolute inset-y-0 left-0 z-[60] flex flex-col items-stretch bg-sidebar border-r border-border overflow-hidden pt-2 gap-1 transition-[width] duration-200 min-h-0"
         style={{ width: rem(railExpanded ? 172 : 40) }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}

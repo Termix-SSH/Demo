@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
-import { ClipboardPaste, ImagePlus, MoreHorizontal } from "lucide-react";
+import { Bell, ClipboardPaste, ImagePlus, MoreHorizontal } from "lucide-react";
 
 import {
   TERMINAL_TOOLBAR_STATUS_SLOT,
@@ -14,9 +14,11 @@ import {
 import {
   IMAGE_BUTTON,
   TMUX_DETACH_BUTTON,
+  TOOLS_BUTTON,
   useToolbarButtons,
   type ToolbarButtonInfo,
 } from "./toolbar-buttons";
+import { ToolsMenuItems, type ToolEntry } from "../terminal-tools/ToolsMenu";
 import {
   ComponentSlot,
   DropdownMenu,
@@ -55,6 +57,10 @@ interface TerminalToolbarProps {
   slotApi?: TerminalSlotApi;
   /** Dims the strip of a split pane that is not focused. */
   isFocused?: boolean;
+  tools?: readonly ToolEntry[];
+  /** Watch rules on for this terminal, shown as a bell. */
+  watchCount?: number;
+  onOpenWatch?: () => void;
 }
 
 interface MenuEntry {
@@ -77,6 +83,9 @@ export const TerminalToolbar: React.FC<TerminalToolbarProps> = ({
   onOpenFiles,
   slotApi,
   isFocused = true,
+  tools = [],
+  watchCount = 0,
+  onOpenWatch,
 }) => {
   const { t } = useTranslation();
   const tabs = useTabs();
@@ -212,6 +221,31 @@ export const TerminalToolbar: React.FC<TerminalToolbarProps> = ({
 
   const renderButton = (button: ToolbarButtonInfo) => {
     const title = titleOf(button);
+    if (button.id === TOOLS_BUTTON) {
+      return (
+        <DropdownMenu key={button.id}>
+          <DropdownMenuTrigger asChild>
+            <button
+              type="button"
+              className={BUTTON}
+              aria-label={title}
+              title={title}
+            >
+              {content(button, layout.labeled)}
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            side={settings.position === "top" ? "bottom" : "top"}
+            align="start"
+          >
+            <ToolsMenuItems
+              entries={tools}
+              sendKeyLabel={t("terminalTools.keys.title")}
+            />
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    }
     if (button.id === IMAGE_BUTTON) {
       return (
         <DropdownMenu key={button.id}>
@@ -264,14 +298,16 @@ export const TerminalToolbar: React.FC<TerminalToolbarProps> = ({
   const overflowEntries: MenuEntry[] = overflow.flatMap((button) =>
     button.id === IMAGE_BUTTON
       ? imageEntries
-      : [
-          {
-            key: button.id,
-            label: t(button.titleKey),
-            icon: button.icon,
-            run: () => runButton(button),
-          },
-        ],
+      : button.id === TOOLS_BUTTON
+        ? tools.map(({ key, label, icon, run }) => ({ key, label, icon, run }))
+        : [
+            {
+              key: button.id,
+              label: t(button.titleKey),
+              icon: button.icon,
+              run: () => runButton(button),
+            },
+          ],
   );
   const measureRow = (labeled: boolean, ref: React.Ref<HTMLDivElement>) => (
     <div
@@ -360,6 +396,19 @@ export const TerminalToolbar: React.FC<TerminalToolbarProps> = ({
           </DropdownMenu>
         )}
       </div>
+
+      {watchCount > 0 && (
+        <button
+          type="button"
+          className={BUTTON}
+          aria-label={t("terminalTools.watch.active", { count: watchCount })}
+          title={t("terminalTools.watch.active", { count: watchCount })}
+          onClick={onOpenWatch}
+        >
+          <Bell className="size-3.5" />
+          <span>{watchCount}</span>
+        </button>
+      )}
 
       {hasStatus && wide && (
         <div

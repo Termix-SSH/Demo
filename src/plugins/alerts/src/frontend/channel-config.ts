@@ -6,8 +6,10 @@ export interface Draft {
   url: string;
   method: "POST" | "PUT";
   headers: string;
+  bodyTemplate: string;
   topic: string;
   token: string;
+  chatId: string;
   username: string;
   avatarUrl: string;
   to: string;
@@ -20,8 +22,10 @@ export const EMPTY: Draft = {
   url: "",
   method: "POST",
   headers: "",
+  bodyTemplate: "",
   topic: "",
   token: "",
+  chatId: "",
   username: "",
   avatarUrl: "",
   to: "",
@@ -45,8 +49,10 @@ export function draftFrom(channel: ChannelDetail): Draft {
     url: str(config.url) || (channel.type === "ntfy" ? "https://ntfy.sh" : ""),
     method: config.method === "PUT" ? "PUT" : "POST",
     headers,
+    bodyTemplate: str(config.bodyTemplate),
     topic: str(config.topic),
     token: str(config.token),
+    chatId: str(config.chatId),
     username: str(config.username),
     avatarUrl: str(config.avatar_url),
     to: str(config.to),
@@ -77,6 +83,9 @@ export function configFrom(draft: Draft): Record<string, unknown> {
         url: draft.url.trim(),
         method: draft.method,
         ...(Object.keys(headers).length ? { headers } : {}),
+        ...(draft.bodyTemplate.trim()
+          ? { bodyTemplate: draft.bodyTemplate.trim() }
+          : {}),
         ...privateNetwork,
       };
     }
@@ -95,6 +104,8 @@ export function configFrom(draft: Draft): Record<string, unknown> {
           ? { avatar_url: draft.avatarUrl.trim() }
           : {}),
       };
+    case "telegram":
+      return { token: draft.token.trim(), chatId: draft.chatId.trim() };
     case "email":
       return { to: draft.to.trim() };
   }
