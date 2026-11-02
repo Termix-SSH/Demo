@@ -52,6 +52,10 @@ export default defineConfig({
         replacement: path.resolve(root, "src/ui/plugin-host/sdk-ui.ts"),
       },
       {
+        find: /^@termix-ssh\/plugin-sdk\/host-scripts$/,
+        replacement: path.resolve(root, "src/sdk/host-scripts/index.ts"),
+      },
+      {
         find: /^@termix-ssh\/plugin-sdk\/(.*)$/,
         replacement: path.resolve(root, "src/sdk") + "/$1.ts",
       },
