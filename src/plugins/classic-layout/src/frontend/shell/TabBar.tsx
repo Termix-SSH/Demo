@@ -17,6 +17,7 @@ import {
   type Tab,
   type TabType,
   ActionSlot,
+  ComponentSlot,
   useTabHandlesVersion,
   canJoinSplit,
   isSplitTab,
@@ -30,6 +31,10 @@ import {
   moveSplitDrag,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
+
+/** Plugins add buttons to the right of the tab bar here, beside split view. */
+export const TAB_BAR_ACTIONS_SLOT = "tabbar.actions";
+const TAB_BAR_BUTTON = "h-full w-12.5 rounded-none";
 import { useReducedMotion } from "motion/react";
 import {
   ChevronDown,
@@ -74,6 +79,7 @@ export function TabBar({
   rightDockOpen,
   onToggleRightDock,
   showTabNumbers,
+  targetTab,
 }: {
   tabs: Tab[];
   activeTabId: string;
@@ -93,6 +99,8 @@ export function TabBar({
   rightDockOpen?: boolean;
   onToggleRightDock?: () => void;
   showTabNumbers?: boolean;
+  /** The terminal the user worked in last, handed to tab bar buttons. */
+  targetTab?: Tab;
 }) {
   const { t } = useTranslation();
   // Re-renders when a tab's handle attaches, for buttons whose when reads it.
@@ -620,6 +628,13 @@ export function TabBar({
             </DropdownMenuContent>
           </DropdownMenu>
           <Separator orientation="vertical" />
+          {/* Hidden while no plugin adds a button, so no stray divider shows. */}
+          <div className="flex h-full shrink-0 border-r border-border empty:hidden">
+            <ComponentSlot
+              slotId={TAB_BAR_ACTIONS_SLOT}
+              props={{ targetTab, className: TAB_BAR_BUTTON }}
+            />
+          </div>
           <SplitLayoutMenu
             activeIsSplit={activeIsSplit}
             canAddPane={!activeSplitFull}

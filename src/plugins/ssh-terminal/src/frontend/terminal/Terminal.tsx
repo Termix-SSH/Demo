@@ -3938,9 +3938,6 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
         slotApi={slotApi}
         onOpenFiles={onOpenFileManager ? openFilesAtCwd : undefined}
         isFocused={isFocusedPane}
-        tools={toolEntries}
-        watchCount={watchCount}
-        onOpenWatch={() => setShowWatch(true)}
       />
     );
     const toolbarOnTop = readToolbarSettings(host).position === "top";

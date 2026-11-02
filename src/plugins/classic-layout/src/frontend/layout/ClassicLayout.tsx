@@ -343,6 +343,7 @@ export function ClassicLayout() {
                   isMobile ? undefined : regions.toggleRightDock
                 }
                 showTabNumbers={tabs.showNumbers}
+                targetTab={tabs.targetTerminal}
               />
               <TabStage />
             </div>

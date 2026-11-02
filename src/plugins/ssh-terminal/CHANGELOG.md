@@ -9,7 +9,7 @@
 - Watch output: alerts when output matches some text or a regex, a job goes quiet, or a background tab has new output
 - Find in all terminals: search every open terminal's scrollback and jump to a result
 - Save or copy a terminal's output as plain text
-- Reset display, clear scrollback, reset shell and send keys such as Ctrl+C or Ctrl+Z from a new Tools menu in the toolbar, right click menu, command palette and phone key row
+- Reset display, clear scrollback, reset shell and send keys such as Ctrl+C or Ctrl+Z from a new Tools button in the tab bar next to split view (needs Classic Layout 1.1.1), the terminal's right click menu, the command palette and the phone key row
 - A Right click setting with copy or paste, a terminal menu, or the browser menu
 - Terminal overlay plugins can read the text at the prompt and paste into it, and they now work in the desktop app's local terminal too
 - A per-host Disable Nagle's Algorithm (TCP_NODELAY) option to reduce terminal input latency

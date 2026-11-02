@@ -1,5 +1,5 @@
 import { useMemo, type ComponentType } from "react";
-import { ImageIcon, LogOut, Wrench } from "lucide-react";
+import { ImageIcon, LogOut } from "lucide-react";
 import {
   useHostActions,
   useSlotContributions,
@@ -11,7 +11,6 @@ import { TERMINAL_TOOLBAR_SLOT } from "./terminal-slots";
 
 export const IMAGE_BUTTON = "terminal.image";
 export const TMUX_DETACH_BUTTON = "terminal.tmuxDetach";
-export const TOOLS_BUTTON = "terminal.tools";
 
 type Icon = ComponentType<{ className?: string }>;
 
@@ -65,12 +64,6 @@ export function useToolbarButtons(
         source: { kind: "action", contribution },
       }));
     const builtins: ToolbarButtonInfo[] = [
-      {
-        id: TOOLS_BUTTON,
-        titleKey: "terminalToolbar.tools",
-        icon: Wrench,
-        source: { kind: "builtin" },
-      },
       {
         id: IMAGE_BUTTON,
         titleKey: "terminalToolbar.image",

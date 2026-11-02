@@ -7,7 +7,6 @@ import {
   Copy,
   History,
   Laptop,
-  Radio,
   SquareTerminal,
   Terminal,
 } from "lucide-react";
@@ -54,6 +53,7 @@ import {
   resetWatchStore,
   setWatchAlertSender,
 } from "./terminal-tools/watch/watch-store";
+import { TabBarToolsButton } from "./terminal-tools/TabBarToolsButton";
 import { MacrosPanel } from "./macros/MacrosPanel";
 import {
   TERMINAL_KEYBINDING_DEFAULTS,
@@ -162,20 +162,14 @@ export function activate(app: TermixApp): void {
     },
   });
 
-  app.registerAction(
-    "terminal.toggleBroadcast",
-    ((_handle: unknown, tab?: PluginTabRecord) => {
-      if (tab?.type === "terminal") toggleBroadcast(tab.id);
-    }) as never,
-    { permission: "use" },
-  );
-  app.registerSlotContribution("tab.menu", {
-    actionId: "terminal.toggleBroadcast",
-    titleKey: "terminalTools.broadcast.toggle",
-    icon: Radio,
-    kind: "button",
-    when: ({ tab }) =>
-      (tab as PluginTabRecord | undefined)?.type === "terminal",
+  // The tools in the tab bar, beside split view (Classic Layout 1.1.1+).
+  app.registerSlotContribution("tabbar.actions", {
+    actionId: "terminal.tools",
+    titleKey: "terminalToolbar.tools",
+    kind: "component",
+    component: TabBarToolsButton as unknown as ComponentType<
+      Record<string, unknown>
+    >,
   });
 
   // The terminal's tools in the command palette, on the active terminal.

@@ -13,6 +13,7 @@ import { AppearanceStep } from "./onboarding/AppearanceStep";
 import { DashboardTabType, ManageTabType, SettingsTabType } from "./tabs";
 
 export function activate(app: TermixApp): void {
+  app.declareActionSlot({ id: "tabbar.actions", accepts: ["component"] });
   app.registerLayout({
     id: "classic",
     label: "layout.name",
