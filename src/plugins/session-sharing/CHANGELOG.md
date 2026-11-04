@@ -1,6 +1,14 @@
 # Changelog
 
-## 1.1.1
+## 1.2.0
+
+### Added
+
+- List and revoke active session shares through Termix actions, and see how many are open as a status tile
+
+### Changed
+
+- Needs Termix 26.11.1 or newer
 
 ### Fixed
 

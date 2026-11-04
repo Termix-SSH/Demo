@@ -9,6 +9,7 @@ import {
   Button,
   Input,
   ListRow,
+  useConfirm,
   type HostSectionDef,
 } from "@termix-ssh/plugin-sdk/ui";
 import { Zap } from "lucide-react";
@@ -29,7 +30,19 @@ import {
   initialValues,
   type FormValues,
 } from "./ActionForm";
-import { RiskBadge, Section, StateBadge, when } from "./parts";
+import {
+  Pager,
+  PluginChoice,
+  RiskBadge,
+  Section,
+  StateBadge,
+  filterActions,
+  pageOf,
+  when,
+} from "./parts";
+import { TargetField, useResourceChoices } from "./targets";
+
+const RUN_PAGE = 8;
 
 const TILE: Record<string, string> = {
   ok: "border-emerald-500/40",
@@ -47,6 +60,7 @@ export function HostOverview({
   cards,
   isVisible,
   onOpenTool,
+  compact = false,
 }: {
   host: PluginHostRecord;
   shell: ShellApi;
@@ -55,26 +69,55 @@ export function HostOverview({
   cards: HostSectionDef[];
   isVisible: boolean;
   onOpenTool: (type: string) => void;
+  /** Beside a terminal: no counts, narrower tiles. */
+  compact?: boolean;
 }) {
   const { t } = useTranslation();
   const toast = useToast();
+  const confirm = useConfirm();
   const hostId = Number(host.id);
   const [signals, setSignals] = useState<SignalRead[]>([]);
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [runs, setRuns] = useState<Run[]>([]);
   const [query, setQuery] = useState("");
+  // Plugin id to show, or "" for all of them.
+  const [plugin, setPlugin] = useState("");
   const [picked, setPicked] = useState<CatalogAction | null>(null);
   const [values, setValues] = useState<FormValues>({});
   const [busy, setBusy] = useState(false);
+  const [resourceKey, setResourceKey] = useState("");
+  const [actionPage, setActionPage] = useState(0);
+  // Runs page by the time of the last run on the page before.
+  const [runPage, setRunPage] = useState(0);
+  const [cursors, setCursors] = useState<(string | undefined)[]>([undefined]);
+  const [moreRuns, setMoreRuns] = useState(false);
+  const runCursor = cursors[runPage];
+  const choices = useResourceChoices(
+    picked?.scope === "resource" ? picked : undefined,
+    hostId,
+  );
+
+  useEffect(() => {
+    setRunPage(0);
+    setCursors([undefined]);
+    setActionPage(0);
+    setPicked(null);
+    setPlugin("");
+  }, [hostId]);
 
   const load = useCallback(async () => {
     const [signalList, runList] = await Promise.all([
-      getSignals([hostId]).catch(() => []),
-      listRuns({ hostId, limit: 8 }).catch(() => []),
+      getSignals([hostId]).catch(() => null),
+      listRuns({ hostId, limit: RUN_PAGE + 1, before: runCursor }).catch(
+        () => null,
+      ),
     ]);
-    setSignals(signalList);
-    setRuns(runList);
-  }, [hostId]);
+    if (signalList) setSignals(signalList);
+    if (runList) {
+      setMoreRuns(runList.length > RUN_PAGE);
+      setRuns(runList.slice(0, RUN_PAGE));
+    }
+  }, [hostId, runCursor]);
 
   useEffect(() => {
     if (!isVisible) return;
@@ -85,7 +128,7 @@ export function HostOverview({
 
   // How many of each kind of thing the host has.
   useEffect(() => {
-    if (!catalog || !isVisible) return;
+    if (!catalog || !isVisible || compact) return;
     const ids = new Set(actions.map((action) => action.id));
     const relevant = catalog.resources.filter((resource) =>
       ids.has(resource.list),
@@ -112,7 +155,7 @@ export function HostOverview({
     return () => {
       stop = true;
     };
-  }, [actions, catalog, hostId, isVisible]);
+  }, [actions, catalog, compact, hostId, isVisible]);
 
   const tiles = useMemo(() => {
     if (!catalog) return [];
@@ -124,19 +167,54 @@ export function HostOverview({
       .filter((tile) => tile.signal && tile.read);
   }, [catalog, hostId, signals]);
 
-  const quick = actions.filter(
-    (action) =>
-      action.scope === "host" &&
-      action.risk !== "read" &&
-      action.title.toLowerCase().includes(query.trim().toLowerCase()),
+  // Every action on this host, by plugin, a page at a time.
+  const sorted = useMemo(
+    () =>
+      actions
+        .filter((action) => action.scope !== "server")
+        .sort(
+          (a, b) =>
+            a.pluginName.localeCompare(b.pluginName) ||
+            a.title.localeCompare(b.title),
+        ),
+    [actions],
   );
+  const { matching, plugin: shownPlugin } = filterActions(
+    sorted,
+    plugin,
+    query,
+  );
+  const actionList = pageOf(matching, actionPage, compact ? 6 : 10);
+
+  const pick = (action: CatalogAction) => {
+    setPicked(action);
+    setValues(initialValues(action.inputs));
+    setResourceKey("");
+  };
+
+  const nextRuns = () => {
+    const last = runs[runs.length - 1]?.createdAt;
+    if (!last) return;
+    setCursors((prev) => [...prev.slice(0, runPage + 1), last]);
+    setRunPage(runPage + 1);
+  };
 
   const run = async (dryRun: boolean) => {
     if (!picked) return;
+    if (!dryRun && picked.risk === "destructive") {
+      const ok = await confirm({
+        title: picked.title,
+        description: t("run.destructive"),
+        confirmLabel: t("run.run"),
+        destructive: true,
+      });
+      if (!ok) return;
+    }
     setBusy(true);
     try {
       const outcome = await runAction(picked.id, {
         hostId,
+        resourceKey: picked.scope === "resource" ? resourceKey : undefined,
         input: cleanValues(values),
         dryRun,
         confirmed: !dryRun,
@@ -155,13 +233,19 @@ export function HostOverview({
     }
   };
 
+  const missingTarget = picked?.scope === "resource" && !resourceKey;
+
   const titleOf = (id: string) =>
     catalog?.actions.find((action) => action.id === id)?.title ?? id;
 
   return (
-    <div className="flex h-full flex-col gap-3 overflow-auto p-4">
+    <div
+      className={`flex h-full flex-col gap-3 overflow-auto ${compact ? "p-3" : "p-4"}`}
+    >
       {tiles.length > 0 && (
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] gap-2">
+        <div
+          className={`grid gap-2 ${compact ? "grid-cols-[repeat(auto-fill,minmax(8rem,1fr))]" : "grid-cols-[repeat(auto-fill,minmax(10rem,1fr))]"}`}
+        >
           {tiles.map(({ signal, read }) => {
             const status = read!.value?.status ?? "unknown";
             const fix = signal!.fix
@@ -185,10 +269,7 @@ export function HostOverview({
                     size="sm"
                     variant="outline"
                     className="self-start"
-                    onClick={() => {
-                      setPicked(fix);
-                      setValues(initialValues(fix.inputs));
-                    }}
+                    onClick={() => pick(fix)}
                   >
                     {fix.title}
                   </Button>
@@ -234,13 +315,27 @@ export function HostOverview({
         );
       })}
 
-      <Section title={t("host.actions")}>
+      <Section
+        title={t("host.actions")}
+        action={
+          <span className="text-xs text-muted-foreground">
+            {t("host.actionCount", { count: matching.length })}
+          </span>
+        }
+      >
         {picked ? (
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2 text-sm font-medium">
               {picked.title}
               <RiskBadge risk={picked.risk} />
             </div>
+            {picked.scope === "resource" && (
+              <TargetField
+                choices={choices}
+                value={resourceKey}
+                onChange={setResourceKey}
+              />
+            )}
             <ActionForm
               hostId={hostId}
               fields={picked.inputs}
@@ -251,7 +346,7 @@ export function HostOverview({
               <Button
                 size="sm"
                 variant="outline"
-                disabled={busy}
+                disabled={busy || missingTarget}
                 onClick={() => void run(true)}
               >
                 {t("run.dryRun")}
@@ -261,7 +356,7 @@ export function HostOverview({
                 variant={
                   picked.risk === "destructive" ? "destructive" : "default"
                 }
-                disabled={busy}
+                disabled={busy || missingTarget}
                 onClick={() => void run(false)}
               >
                 {t("run.run")}
@@ -273,37 +368,55 @@ export function HostOverview({
           </div>
         ) : (
           <>
-            <Input
-              value={query}
-              placeholder={t("host.searchActions")}
-              onChange={(event) => setQuery(event.target.value)}
-            />
+            <div className="flex flex-wrap gap-2">
+              <Input
+                className="min-w-40 flex-1"
+                value={query}
+                placeholder={t("host.searchActions")}
+                onChange={(event) => {
+                  setQuery(event.target.value);
+                  setActionPage(0);
+                }}
+              />
+              <PluginChoice
+                actions={sorted}
+                className={compact ? "w-full" : undefined}
+                value={shownPlugin}
+                onChange={(next) => {
+                  setPlugin(next);
+                  setActionPage(0);
+                }}
+              />
+            </div>
             <div className="flex flex-col gap-1">
-              {quick.slice(0, 12).map((action) => (
+              {actionList.rows.map((action) => (
                 <ListRow
                   key={action.id}
                   title={action.title}
                   icon={<Zap className="size-4" />}
                   meta={action.pluginName}
                   badges={<RiskBadge risk={action.risk} />}
-                  onClick={() => {
-                    setPicked(action);
-                    setValues(initialValues(action.inputs));
-                  }}
+                  dimmed={!action.available}
+                  onClick={() => pick(action)}
                 />
               ))}
-              {quick.length === 0 && (
+              {matching.length === 0 && (
                 <p className="text-xs text-muted-foreground">
                   {t("host.noActions")}
                 </p>
               )}
             </div>
+            <Pager
+              page={actionList.page}
+              pages={actionList.pages}
+              onPage={setActionPage}
+            />
           </>
         )}
       </Section>
 
       <Section title={t("host.recent")}>
-        {runs.length === 0 ? (
+        {runs.length === 0 && runPage === 0 ? (
           <p className="text-xs text-muted-foreground">{t("host.noRuns")}</p>
         ) : (
           <div className="flex flex-col gap-1">
@@ -323,6 +436,11 @@ export function HostOverview({
             ))}
           </div>
         )}
+        <Pager
+          page={runPage}
+          hasNext={moreRuns}
+          onPage={(next) => (next > runPage ? nextRuns() : setRunPage(next))}
+        />
       </Section>
     </div>
   );

@@ -700,6 +700,7 @@ export function UserProfilePanel({
         // Layout/view keys that were never snapshotted, so switching to cloud
         // and back silently reset them.
         "dashboardTab.slots",
+        "dashboardTab.grid",
         "dashboardTab.mainWidthPct",
       ];
       const snap: Record<string, string | null> = { __theme: theme };

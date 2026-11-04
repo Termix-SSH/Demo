@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect, useMemo } from "react";
+import { useState, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import {
   APP_VERSION,
   useActionSlot,
@@ -38,28 +38,36 @@ import {
   reportCoreIssueUrl,
   docsUrl,
   useUiPreferencesContext,
+  TileFrame,
+  TileGrid,
+  TilePicker,
+  appendTile,
+  type TilePickerEntry,
+  type TileSlot,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   usePluginUiPreferences,
   useTranslation,
 } from "@termix-ssh/plugin-sdk/frontend";
 import {
+  AUTO_FIRST_CARDS,
   autoSlots,
+  decodeGrid,
+  defaultGrid,
   decodeSlots,
-  encodeSlots,
-  sameLayout,
+  encodeGrid,
+  gridFromColumns,
+  sameGrid,
+  type GridCard,
 } from "./dashboard-layout";
 import {
   Activity,
   Check,
   Database,
-  GripVertical,
   LayoutGrid,
   Pencil,
-  Plus,
   RotateCcw,
   Server,
-  X,
   Zap,
 } from "lucide-react";
 import { withLiveHostStatus } from "../sidebar/live-host-status";
@@ -152,10 +160,16 @@ export function PluginCardSlot({
   id,
   isVisible,
   onOpenSingletonTab,
+  config,
+  setConfig,
+  editMode,
 }: {
   id: string;
   isVisible: boolean;
   onOpenSingletonTab: (type: TabType, pendingEvent?: string) => void;
+  config?: Record<string, unknown>;
+  setConfig?: (config: Record<string, unknown>) => void;
+  editMode?: boolean;
 }) {
   useRegisteredDashboardCards();
   const cardShell = useMemo(
@@ -174,14 +188,20 @@ export function PluginCardSlot({
     );
   }
   const Component = card.component;
-  return <Component isVisible={isVisible} shell={cardShell} />;
+  return (
+    <Component
+      isVisible={isVisible}
+      shell={cardShell}
+      config={config ?? {}}
+      setConfig={setConfig}
+      editMode={editMode}
+    />
+  );
 }
 
 function isStatusCheckEnabled(host: Host): boolean {
   return host.statusCheckEnabled !== false;
 }
-
-// ─── Sections ─────────────────────────────────────────────────────────────────
 
 interface CardMeta {
   label: string;
@@ -190,171 +210,31 @@ interface CardMeta {
   action?: React.ReactNode;
 }
 
-/** One section of a column, separated from the next by a hairline. */
-function Section({
-  slot,
-  meta,
-  editMode,
-  last,
-  dragging,
-  onDragStart,
-  onDrop,
-  onRemove,
-  onHeightChange,
-  autoHeight,
-  children,
-}: {
-  slot: CardSlot;
-  meta: CardMeta;
-  editMode: boolean;
-  last: boolean;
-  dragging: boolean;
-  onDragStart: () => void;
-  onDrop: () => void;
-  onRemove: () => void;
-  onHeightChange: (key: string, h: number) => void;
-  /** Phones stack cards, so each takes the height of its content. */
-  autoHeight?: boolean;
-  children: React.ReactNode;
-}) {
-  const { t } = useTranslation();
-  const ref = useRef<HTMLDivElement | null>(null);
-  // The last section always fills the column, so resizing one never leaves
-  // dead space underneath.
-  const flex = last || slot.height === null;
-  const Icon = meta.icon;
+const GRID_KEY = "dashboardTab.grid";
+const OLD_KEY = "dashboardTab.slots";
 
-  const onResizeMouseDown = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const startY = e.clientY;
-    const startH = ref.current?.getBoundingClientRect().height ?? 100;
-    const onMove = (ev: MouseEvent) =>
-      onHeightChange(slot.key, Math.max(48, startH + (ev.clientY - startY)));
-    const onUp = () => {
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mouseup", onUp);
-    };
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseup", onUp);
-  };
-
-  return (
-    <div
-      ref={ref}
-      draggable={editMode}
-      onDragStart={onDragStart}
-      onDragOver={(e) => editMode && e.preventDefault()}
-      onDrop={(e) => {
-        if (!editMode) return;
-        e.stopPropagation();
-        onDrop();
-      }}
-      style={{
-        height: flex || autoHeight ? undefined : (slot.height ?? undefined),
-      }}
-      className={`relative flex shrink-0 flex-col border-b border-border last:border-b-0 ${
-        flex ? "min-h-48 flex-1" : ""
-      } ${dragging ? "opacity-40" : ""} ${editMode ? "cursor-grab select-none" : ""}`}
-    >
-      {(meta.frame === "framed" || editMode) && (
-        <div className="flex shrink-0 items-center gap-2 border-b border-border px-3 py-1.5">
-          {editMode && (
-            <GripVertical className="size-3 shrink-0 text-muted-foreground/50" />
-          )}
-          <Icon className="size-3 shrink-0 text-muted-foreground" />
-          <span className="truncate text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-            {meta.label}
-          </span>
-          <span className="ml-auto flex shrink-0 items-center gap-1">
-            {!editMode && meta.action}
-            {editMode && (
-              <button
-                type="button"
-                onClick={onRemove}
-                title={t("dashboardTab.removeSection")}
-                aria-label={t("dashboardTab.removeSection")}
-                className="text-muted-foreground transition-colors hover:text-destructive"
-              >
-                <X className="size-3.5" />
-              </button>
-            )}
-          </span>
-        </div>
-      )}
-      <div className="flex min-h-0 flex-1 flex-col overflow-auto thin-scrollbar">
-        {children}
-      </div>
-      {!last && (
-        <div
-          draggable={false}
-          onDragStart={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
-          onMouseDown={onResizeMouseDown}
-          title={t("cardGrid.dragToResize")}
-          className="absolute inset-x-0 bottom-0 z-10 h-1.5 cursor-ns-resize transition-colors hover:bg-accent-brand/40"
-        />
-      )}
-    </div>
-  );
+function readOldSlots(): CardSlot[] | null {
+  try {
+    const saved = localStorage.getItem(OLD_KEY);
+    if (!saved) return null;
+    const parsed = JSON.parse(saved) as CardSlot[];
+    return parsed.map((s, i) => ({ key: s.key ?? `${s.id}_${i}`, ...s }));
+  } catch {
+    return null;
+  }
 }
 
-/** Everything that could go on the dashboard but is not on it. */
-function AddTray({
-  available,
-  labels,
-  onAdd,
-}: {
-  available: { id: string; plugin: boolean }[];
-  labels: Record<string, string>;
-  onAdd: (id: string) => void;
-}) {
-  const { t } = useTranslation();
-  const builtin = available.filter((c) => !c.plugin);
-  const fromPlugins = available.filter((c) => c.plugin);
-  const row = (cards: typeof available) => (
-    <div className="flex flex-wrap gap-1.5">
-      {cards.map((card) => (
-        <button
-          key={card.id}
-          type="button"
-          onClick={() => onAdd(card.id)}
-          className="flex h-7 items-center gap-1.5 border border-border px-2 text-[11px] text-muted-foreground transition-colors hover:border-accent-brand hover:text-accent-brand focus-visible:ring-1 focus-visible:ring-ring"
-        >
-          <Plus className="size-3" />
-          {labels[card.id] ?? card.id}
-        </button>
-      ))}
-    </div>
-  );
-  return (
-    <div className="shrink-0 border-t border-border bg-surface/40 p-2.5">
-      <GroupHeading
-        title={t("dashboardTab.addSection")}
-        count={available.length}
-      />
-      {available.length === 0 ? (
-        <p className="pt-2 text-xs text-muted-foreground">
-          {t("dashboardTab.allSectionsShown")}
-        </p>
-      ) : (
-        <div className="flex flex-col gap-2 pt-2">
-          {builtin.length > 0 && row(builtin)}
-          {fromPlugins.length > 0 && (
-            <>
-              <span className="text-[11px] text-muted-foreground/70">
-                {t("dashboardTab.fromPlugins")}
-              </span>
-              {row(fromPlugins)}
-            </>
-          )}
-        </div>
-      )}
-    </div>
-  );
+function readCachedGrid(): GridCard[] | null {
+  try {
+    const saved = localStorage.getItem(GRID_KEY);
+    return saved ? (JSON.parse(saved) as GridCard[]) : null;
+  } catch {
+    return null;
+  }
 }
+
+/** Picker entry ids for cards placed from an entry: card id, then the entry key. */
+const ENTRY_SEP = "::";
 
 // ─── DashboardTab ─────────────────────────────────────────────────────────────
 
@@ -371,46 +251,71 @@ export function DashboardTab({
   const registeredCards = useRegisteredDashboardCards();
   const layoutPrefs = usePluginUiPreferences<{
     dashboardSlots?: string[];
+    dashboardGrid?: string[];
   }>();
   // Until the saved preferences arrive, a new browser must not save over them.
   const prefsLoaded = useUiPreferencesContext()?.loaded ?? true;
   const registeredIds = registeredCards.map((card) => card.id).join(",");
+  // How tall the view is, so an unarranged dashboard fills it.
+  const viewRef = useRef<HTMLDivElement | null>(null);
+  const [room, setRoom] = useState(0);
+  useLayoutEffect(() => {
+    const element = viewRef.current;
+    if (!element) return;
+    const update = () => setRoom(element.clientHeight);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(element);
+    return () => observer.disconnect();
+  });
   const auto = useMemo(
-    () => autoSlots(DEFAULT_SLOTS, registeredIds.split(",")),
+    () => defaultGrid(registeredIds.split(","), room),
+    [registeredIds, room],
+  );
+  // Layouts that only ever were a default, the old two column ones too, so
+  // nobody who never arranged their dashboard keeps an old default.
+  const defaults = useMemo(
+    () => [
+      defaultGrid([]),
+      defaultGrid(registeredIds.split(",")),
+      gridFromColumns(DEFAULT_SLOTS),
+      gridFromColumns(autoSlots(DEFAULT_SLOTS, registeredIds.split(","))),
+      gridFromColumns(autoSlots(DEFAULT_SLOTS, AUTO_FIRST_CARDS)),
+    ],
     [registeredIds],
   );
+  const isDefault = (grid: GridCard[]) =>
+    defaults.some((entry) => sameGrid(grid, entry));
   const { t, language } = useTranslation();
   const confirm = useConfirm();
   const { initialLoadComplete } = useServerStatusMeta();
   const statusLoading = !initialLoadComplete;
 
-  const [slots, setSlots] = useState<CardSlot[]>(() => {
-    try {
-      const saved = localStorage.getItem("dashboardTab.slots");
-      if (saved) {
-        const parsed = JSON.parse(saved) as CardSlot[];
-        return parsed.map((s, i) => ({ key: s.key ?? `${s.id}_${i}`, ...s }));
-      }
-    } catch {
-      /* ignore */
-    }
-    return DEFAULT_SLOTS;
+  const [cards, setCards] = useState<GridCard[]>(() => {
+    const cached = readCachedGrid();
+    if (cached) return cached;
+    const old = readOldSlots();
+    return old ? gridFromColumns(old) : defaultGrid([]);
   });
+  // Until someone moves, resizes or adds a card the dashboard is the default,
+  // worked out for the current view each time, and nothing is saved.
+  const [arranged, setArranged] = useState(
+    () => !!readCachedGrid() || !!readOldSlots(),
+  );
+  const shown = arranged ? cards : auto;
+  const change = (next: (current: GridCard[]) => GridCard[]) => {
+    setCards(next(shown));
+    setArranged(true);
+  };
 
-  // Picking an interface preset rewrites the stored layout from settings, so
-  // pick it up without waiting for a remount.
+  // Picking an interface preset writes an old style layout, so convert it
+  // without waiting for a remount.
   useEffect(() => {
     const handler = () => {
-      try {
-        const saved = localStorage.getItem("dashboardTab.slots");
-        if (!saved) return;
-        const parsed = JSON.parse(saved) as CardSlot[];
-        setSlots(
-          parsed.map((s, i) => ({ key: s.key ?? `${s.id}_${i}`, ...s })),
-        );
-      } catch {
-        /* ignore */
-      }
+      const old = readOldSlots();
+      if (!old) return;
+      setCards(gridFromColumns(old));
+      setArranged(true);
     };
     window.addEventListener("dashboardSlotsChanged", handler);
     return () => window.removeEventListener("dashboardSlotsChanged", handler);
@@ -445,64 +350,55 @@ export function DashboardTab({
   }, [dashboardView]);
 
   const [editMode, setEditMode] = useState(false);
-  const [dragKey, setDragKey] = useState<string | null>(null);
+  const [pickerOpen, setPickerOpen] = useState(true);
 
-  const [mainWidthPct, setMainWidthPct] = useState(() => {
-    try {
-      const saved = localStorage.getItem("dashboardTab.mainWidthPct");
-      if (saved) return Number(saved);
-    } catch {
-      /* ignore */
-    }
-    return 68;
-  });
-
-  // The saved layout follows the user. One saved only in this browser by an
-  // older version moves over the first time, and a dashboard nobody arranged
-  // stays automatic, so new plugin cards like Needs attention appear on it.
+  // The saved layout follows the user. An old two column layout, saved in
+  // preferences or only in this browser, moves over once, and a dashboard
+  // nobody arranged stays automatic, so new plugin cards appear on it.
+  const savedGrid = layoutPrefs.values.dashboardGrid;
   const savedLines = layoutPrefs.values.dashboardSlots;
-  const savedKey = JSON.stringify(savedLines ?? null);
+  const savedKey = JSON.stringify([savedGrid ?? null, savedLines ?? null]);
   useEffect(() => {
     if (!prefsLoaded) return;
-    const saved = decodeSlots(savedLines);
-    if (saved) {
-      setSlots((current) => (sameLayout(current, saved) ? current : saved));
+    const grid = decodeGrid(savedGrid);
+    if (grid) {
+      setCards((current) => (sameGrid(current, grid) ? current : grid));
+      setArranged(!isDefault(grid));
       return;
     }
-    setSlots((current) =>
-      sameLayout(current, DEFAULT_SLOTS) ||
-      sameLayout(current, autoSlots(DEFAULT_SLOTS, []))
-        ? auto
-        : current,
-    );
-    // savedKey stands in for savedLines, whose identity changes each render.
+    const old = decodeSlots(savedLines);
+    if (old) {
+      const moved = gridFromColumns(old);
+      setCards(moved);
+      setArranged(!isDefault(moved));
+      return;
+    }
+    // A layout kept only in this browser by an older version that was just
+    // a default is not one anybody arranged.
+    setArranged((current) => current && !isDefault(cards));
+    // savedKey stands in for the saved lines, whose identity changes each render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [savedKey, auto, prefsLoaded]);
 
   useEffect(() => {
     if (!prefsLoaded) return;
-    const isAuto = sameLayout(slots, auto) || sameLayout(slots, DEFAULT_SLOTS);
-    const lines = isAuto ? null : encodeSlots(slots);
-    if (JSON.stringify(lines) !== savedKey) {
-      layoutPrefs.set("dashboardSlots", lines);
+    const isAuto = !arranged;
+    const lines = isAuto ? null : encodeGrid(cards);
+    if (JSON.stringify(lines) !== JSON.stringify(savedGrid ?? null)) {
+      layoutPrefs.set("dashboardGrid", lines);
     }
+    // The old lines are only read once to move them over.
+    if (lines && savedLines) layoutPrefs.set("dashboardSlots", null);
     try {
-      if (isAuto) localStorage.removeItem("dashboardTab.slots");
-      else localStorage.setItem("dashboardTab.slots", JSON.stringify(slots));
+      if (isAuto) localStorage.removeItem(GRID_KEY);
+      else localStorage.setItem(GRID_KEY, JSON.stringify(cards));
+      localStorage.removeItem(OLD_KEY);
     } catch {
       /* ignore */
     }
     // layoutPrefs is a new object each render; savedKey covers what it holds.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slots, auto, savedKey, prefsLoaded]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem("dashboardTab.mainWidthPct", String(mainWidthPct));
-    } catch {
-      /* ignore */
-    }
-  }, [mainWidthPct]);
+  }, [cards, arranged, savedKey, prefsLoaded]);
 
   const [configHosts, setHosts] = useState<Host[]>([]);
   const { statuses, getStatus } = useServerStatus();
@@ -624,16 +520,7 @@ export function DashboardTab({
     month: "long",
     day: "numeric",
   });
-  const bodyRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useIsMobile();
-
-  const mainSlots = slots
-    .filter((s) => s.panel === "main")
-    .sort((a, b) => a.order - b.order);
-  const sideSlots = slots
-    .filter((s) => s.panel === "side")
-    .sort((a, b) => a.order - b.order);
-  const showSide = sideSlots.length > 0 || editMode;
 
   const labels: Record<string, string> = {
     stats_bar: t("dashboard.serverOverview"),
@@ -693,8 +580,8 @@ export function DashboardTab({
     };
   };
 
-  const renderCard = (id: string) => {
-    switch (id) {
+  const renderCard = (card: GridCard) => {
+    switch (card.id) {
       case "stats_bar":
         return (
           <StatsStrip
@@ -743,91 +630,145 @@ export function DashboardTab({
       default:
         return (
           <PluginCardSlot
-            id={id}
+            id={card.id}
             isVisible={isVisible}
             onOpenSingletonTab={onOpenSingletonTab}
+            config={card.config}
+            setConfig={(config) =>
+              change((prev) =>
+                prev.map((entry) =>
+                  entry.key === card.key ? { ...entry, config } : entry,
+                ),
+              )
+            }
+            editMode={editMode}
           />
         );
     }
   };
 
-  const onColumnDividerMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      const startX = e.clientX;
-      const startPct = mainWidthPct;
-      const totalW = bodyRef.current?.getBoundingClientRect().width ?? 0;
-      if (!totalW) return;
-      let frame = 0;
-      let clientX = startX;
-      const onMove = (ev: MouseEvent) => {
-        clientX = ev.clientX;
-        if (frame) return;
-        frame = requestAnimationFrame(() => {
-          frame = 0;
-          setMainWidthPct(
-            Math.min(
-              85,
-              Math.max(25, startPct + ((clientX - startX) / totalW) * 100),
-            ),
-          );
-        });
-      };
-      const onUp = () => {
-        window.removeEventListener("mousemove", onMove);
-        window.removeEventListener("mouseup", onUp);
-      };
-      window.addEventListener("mousemove", onMove);
-      window.addEventListener("mouseup", onUp);
-    },
-    [mainWidthPct],
+  // Entries of cards that can be placed many times, read while editing.
+  const [entries, setEntries] = useState<
+    Record<
+      string,
+      Awaited<
+        ReturnType<NonNullable<(typeof registeredCards)[number]["entries"]>>
+      >
+    >
+  >({});
+  useEffect(() => {
+    if (!editMode) return;
+    let stop = false;
+    void Promise.all(
+      registeredCards
+        .filter((card) => card.entries)
+        .map(
+          async (card) =>
+            [card.id, await card.entries!(language).catch(() => [])] as const,
+        ),
+    ).then((list) => {
+      if (!stop) setEntries(Object.fromEntries(list));
+    });
+    return () => {
+      stop = true;
+    };
+  }, [editMode, registeredIds, language]);
+
+  const byKey = useMemo(
+    () => new Map(shown.map((card) => [card.key, card])),
+    [shown],
   );
-
-  const drop = (panel: PanelId, order: number) => {
-    if (!dragKey) return;
-    setSlots((prev) => {
-      const moving = prev.find((s) => s.key === dragKey);
-      if (!moving) return prev;
-      const rest = prev.filter((s) => s.key !== dragKey);
-      const target = rest
-        .filter((s) => s.panel === panel)
-        .sort((a, b) => a.order - b.order);
-      const others = rest.filter((s) => s.panel !== panel);
-      const at = target.findIndex((s) => s.order > order);
-      const index = at === -1 ? target.length : at;
-      const next = [
-        ...target.slice(0, index),
-        { ...moving, panel },
-        ...target.slice(index),
-      ].map((s, i) => ({ ...s, order: i }));
-      return [...others, ...next];
+  const slots: TileSlot[] = shown.map((card) => ({
+    id: card.key,
+    x: card.x,
+    y: card.y,
+    w: card.w,
+    h: card.h,
+  }));
+  const onGridChange = (next: TileSlot[]) =>
+    change((prev) => {
+      const old = new Map(prev.map((card) => [card.key, card]));
+      return next
+        .map((slot) => {
+          const card = old.get(slot.id);
+          return card
+            ? { ...card, x: slot.x, y: slot.y, w: slot.w, h: slot.h ?? null }
+            : null;
+        })
+        .filter((card): card is GridCard => !!card);
     });
-    setDragKey(null);
-  };
 
-  const handleAdd = (id: DashboardCardId) => {
-    const registered = getRegisteredDashboardCard(id);
-    const panel: PanelId = registered?.defaultPanel ?? "main";
-    setSlots((prev) => {
-      const panelSlots = prev.filter((s) => s.panel === panel);
-      const order =
-        panelSlots.length > 0
-          ? Math.max(...panelSlots.map((s) => s.order)) + 1
-          : 0;
-      const height: number | null =
-        registered?.defaultHeight ??
-        (id === "host_status" || id === "recent_activity" ? null : 150);
-      return [
-        ...prev,
-        { key: `${id}_${Date.now()}`, id, panel, order, height },
-      ];
-    });
-  };
+  const pickerEntries = useMemo((): TilePickerEntry[] => {
+    const placedIds = new Set(shown.map((card) => card.id));
+    const fromPlugins = t("dashboardTab.fromPlugins");
+    const builtin = t("dashboard.title");
+    const out: TilePickerEntry[] = DASHBOARD_CARDS.map((card) => ({
+      id: card.id as string,
+      title: labels[card.id] ?? card.id,
+      group: builtin,
+      kind: "card",
+      placed: placedIds.has(card.id),
+    }));
+    for (const card of registeredCards) {
+      if (card.entries) {
+        for (const entry of entries[card.id] ?? []) {
+          const config = JSON.stringify(entry.config);
+          out.push({
+            id: `${card.id}${ENTRY_SEP}${entry.key}`,
+            title: entry.title,
+            description: entry.description,
+            group: entry.group ?? t(card.titleKey),
+            kind: entry.kind ?? "card",
+            placed: shown.some(
+              (placed) =>
+                placed.id === card.id &&
+                JSON.stringify(placed.config ?? {}) === config,
+            ),
+          });
+        }
+        continue;
+      }
+      out.push({
+        id: card.id,
+        title: t(card.titleKey),
+        group: fromPlugins,
+        kind: "card",
+        placed: placedIds.has(card.id),
+      });
+    }
+    return out;
+    // labels is rebuilt each render from the same inputs.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shown, entries, registeredCards, t]);
 
-  const handleHeightChange = (key: string, h: number) =>
-    setSlots((prev) =>
-      prev.map((s) => (s.key === key ? { ...s, height: h } : s)),
-    );
+  const handleAdd = (picked: TilePickerEntry) => {
+    const [cardId, entryKey] = picked.id.split(ENTRY_SEP);
+    const registered = getRegisteredDashboardCard(cardId);
+    const entry = entryKey
+      ? entries[cardId]?.find((item) => item.key === entryKey)
+      : undefined;
+    const size = entry?.defaultSize ?? registered?.defaultSize;
+    const w = size?.w ?? (registered?.defaultPanel === "side" ? 4 : 8);
+    const h =
+      size?.h ??
+      registered?.defaultHeight ??
+      (cardId === "host_status" || cardId === "recent_activity" ? 360 : 200);
+    const key = `${cardId}_${Date.now()}`;
+    const next = appendTile(slots, { id: key, w, h });
+    const placed = next[next.length - 1];
+    change((prev) => [
+      ...prev,
+      {
+        key,
+        id: cardId,
+        x: placed.x,
+        y: placed.y,
+        w: placed.w,
+        h: placed.h ?? null,
+        ...(entry ? { title: entry.title, config: entry.config } : {}),
+      },
+    ]);
+  };
 
   const handleReset = async () => {
     const ok = await confirm({
@@ -835,62 +776,44 @@ export function DashboardTab({
       confirmLabel: t("dashboard.reset"),
     });
     if (!ok) return;
-    setSlots(auto);
+    setArranged(false);
+    layoutPrefs.set("dashboardGrid", null);
     layoutPrefs.set("dashboardSlots", null);
-    setMainWidthPct(68);
     setEditMode(false);
     try {
-      localStorage.removeItem("dashboardTab.slots");
+      localStorage.removeItem(GRID_KEY);
+      localStorage.removeItem(OLD_KEY);
       localStorage.removeItem("dashboardTab.mainWidthPct");
     } catch {
       /* ignore */
     }
   };
 
-  const placed = new Set(slots.map((s) => s.id as string));
-  const available = [
-    ...DASHBOARD_CARDS.map((card) => ({
-      id: card.id as string,
-      plugin: false,
-    })),
-    ...registeredCards.map((card) => ({ id: card.id, plugin: true })),
-  ].filter((card) => !placed.has(card.id));
-
-  const column = (panel: PanelId, columnSlots: CardSlot[], width: string) => (
-    <div
-      style={{ width }}
-      className={`flex min-w-0 flex-col ${
-        isMobile ? "shrink-0" : "min-h-0 overflow-y-auto thin-scrollbar"
-      } ${panel === "side" ? "bg-surface-dim/40" : ""}`}
-      onDragOver={(e) => editMode && e.preventDefault()}
-      onDrop={() => editMode && drop(panel, columnSlots.length)}
-    >
-      {columnSlots.length === 0 && editMode && (
-        <div className="m-2.5 flex flex-1 items-center justify-center border border-dashed border-border p-6 text-xs text-muted-foreground">
-          {t("dashboardTab.dropHere")}
-        </div>
-      )}
-      {columnSlots.map((slot, i) => (
-        <Section
-          key={slot.key}
-          slot={slot}
-          meta={metaFor(slot.id)}
-          editMode={editMode}
-          last={isMobile ? false : i === columnSlots.length - 1}
-          dragging={dragKey === slot.key}
-          onDragStart={() => setDragKey(slot.key)}
-          onDrop={() => drop(panel, slot.order - 0.5)}
-          onRemove={() =>
-            setSlots((prev) => prev.filter((s) => s.key !== slot.key))
-          }
-          onHeightChange={handleHeightChange}
-          autoHeight={isMobile}
-        >
-          {renderCard(slot.id)}
-        </Section>
-      ))}
-    </div>
-  );
+  const tileLabel = (key: string) => {
+    const card = byKey.get(key);
+    if (!card) return key;
+    return card.title ?? labels[card.id] ?? card.id;
+  };
+  const renderTile = (key: string) => {
+    const card = byKey.get(key);
+    if (!card) return null;
+    const meta = metaFor(card.id);
+    const Icon = meta.icon;
+    return (
+      <TileFrame
+        // Cards on the right, where the side column was, keep its tint.
+        className={
+          card.x > 0 && card.x + card.w === 12 ? "bg-surface-dim/40" : undefined
+        }
+        title={card.title ?? meta.label}
+        icon={<Icon />}
+        bare={meta.frame === "bare" && !editMode}
+        actions={editMode ? undefined : meta.action}
+      >
+        {renderCard(card)}
+      </TileFrame>
+    );
+  };
 
   const online = hosts.filter((h) => h.status === "online").length;
   const links = [
@@ -940,6 +863,15 @@ export function DashboardTab({
                   <span className="hidden text-[11px] text-muted-foreground lg:inline">
                     {t("dashboardTab.dragToReorder")}
                   </span>
+                  {!pickerOpen && (
+                    <Button
+                      variant="ghost"
+                      size="xs"
+                      onClick={() => setPickerOpen(true)}
+                    >
+                      {t("dashboardTab.addSection")}
+                    </Button>
+                  )}
                   <Button
                     variant="ghost"
                     size="xs"
@@ -1021,40 +953,25 @@ export function DashboardTab({
           <secondaryView.component onOpenSingletonTab={onOpenSingletonTab} />
         </div>
       ) : (
-        <div className="flex min-h-0 flex-1 flex-col">
+        <div className="flex min-h-0 flex-1">
           <div
-            ref={bodyRef}
-            className={`flex min-h-0 flex-1 ${isMobile ? "flex-col overflow-y-auto" : ""}`}
+            ref={viewRef}
+            className="min-h-0 min-w-0 flex-1 overflow-y-auto thin-scrollbar"
           >
-            {column(
-              "main",
-              mainSlots,
-              isMobile || !showSide ? "100%" : `${mainWidthPct}%`,
-            )}
-            {showSide && (
-              <>
-                <div
-                  onMouseDown={isMobile ? undefined : onColumnDividerMouseDown}
-                  title={t("dashboardTab.dragToResizeColumns")}
-                  className={`shrink-0 bg-border transition-colors ${
-                    isMobile
-                      ? "h-px w-full"
-                      : "w-px cursor-col-resize hover:bg-accent-brand"
-                  }`}
-                />
-                {column(
-                  "side",
-                  sideSlots,
-                  isMobile ? "100%" : `${100 - mainWidthPct}%`,
-                )}
-              </>
-            )}
+            <TileGrid
+              slots={slots}
+              editMode={editMode}
+              renderTile={renderTile}
+              tileLabel={tileLabel}
+              onChange={onGridChange}
+              empty={t("dashboardTab.dropHere")}
+            />
           </div>
-          {editMode && (
-            <AddTray
-              available={available}
-              labels={labels}
-              onAdd={(id) => handleAdd(id as DashboardCardId)}
+          {editMode && pickerOpen && !isMobile && (
+            <TilePicker
+              entries={pickerEntries}
+              onAdd={handleAdd}
+              onClose={() => setPickerOpen(false)}
             />
           )}
         </div>

@@ -2,6 +2,7 @@ import {
   LayoutDashboard,
   LayoutTemplate,
   LibraryBig,
+  Rows3,
   Palette,
   Settings,
 } from "lucide-react";
@@ -10,6 +11,7 @@ import { ClassicLayout } from "./layout/ClassicLayout";
 import { DashboardComponent, HostTreeComponent } from "./components";
 import { PresetStep } from "./onboarding/PresetStep";
 import { AppearanceStep } from "./onboarding/AppearanceStep";
+import { HostRowsStep, hostPageAvailable } from "./onboarding/HostRowsStep";
 import { DashboardTabType, ManageTabType, SettingsTabType } from "./tabs";
 
 export function activate(app: TermixApp): void {
@@ -54,6 +56,15 @@ export function activate(app: TermixApp): void {
     component: AppearanceStep,
     position: 40,
     replaces: ["appearance"],
+  });
+  // Only once a plugin offers a host page, so existing users see it then.
+  app.registerOnboardingStep({
+    id: "host-rows",
+    titleKey: "onboarding.hostRows.title",
+    icon: Rows3,
+    component: HostRowsStep,
+    position: 35,
+    when: () => hostPageAvailable(),
   });
 
   app.registerComponent("classic-layout.hostTree", HostTreeComponent);

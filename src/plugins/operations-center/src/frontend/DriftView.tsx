@@ -30,7 +30,7 @@ import {
   initialValues,
   type FormValues,
 } from "./ActionForm";
-import { Choice, StateBadge, when } from "./parts";
+import { Choice, Pager, StateBadge, usePaged, when } from "./parts";
 import { TargetPicker } from "./TargetPicker";
 
 function EditBaseline({
@@ -172,6 +172,7 @@ function Results({
   const { t } = useTranslation();
   const toast = useToast();
   const [results, setResults] = useState<BaselineResult[]>([]);
+  const resultPage = usePaged(results, 25);
 
   const load = useCallback(async () => {
     try {
@@ -223,7 +224,7 @@ function Results({
         <EmptyState icon={Radar} title={t("drift.notChecked")} />
       ) : (
         <div className="flex flex-col gap-1">
-          {results.map((result) => (
+          {resultPage.rows.map((result) => (
             <ListRow
               key={result.hostId}
               title={result.hostName ?? String(result.hostId)}
@@ -244,6 +245,11 @@ function Results({
               }
             />
           ))}
+          <Pager
+            page={resultPage.page}
+            pages={resultPage.pages}
+            onPage={resultPage.setPage}
+          />
         </div>
       )}
     </InlineView>
@@ -258,6 +264,7 @@ export function DriftView({ actions }: { actions: CatalogAction[] }) {
   const [list, setList] = useState<Baseline[]>([]);
   const [editing, setEditing] = useState<Partial<Baseline> | null>(null);
   const [open, setOpen] = useState<Baseline | null>(null);
+  const shown = usePaged(list, 20);
 
   const load = useCallback(async () => {
     try {
@@ -304,7 +311,7 @@ export function DriftView({ actions }: { actions: CatalogAction[] }) {
         />
       ) : (
         <div className="flex flex-col gap-1 overflow-auto">
-          {list.map((baseline) => (
+          {shown.rows.map((baseline) => (
             <ListRow
               key={baseline.id}
               title={baseline.name}
@@ -339,6 +346,7 @@ export function DriftView({ actions }: { actions: CatalogAction[] }) {
               }
             />
           ))}
+          <Pager page={shown.page} pages={shown.pages} onPage={shown.setPage} />
         </div>
       )}
       {open && <Results baseline={open} onClose={() => setOpen(null)} />}

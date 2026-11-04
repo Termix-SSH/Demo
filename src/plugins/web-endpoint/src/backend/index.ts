@@ -3,6 +3,7 @@ import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import { createWebEndpointRoutes } from "./routes.js";
 import { createProxySessions } from "./proxy.js";
 import { hostImportNormalizer } from "./host-import.js";
+import { registerOperations } from "./operations.js";
 
 export async function activate(ctx: PluginContext) {
   // The proxy streams request bodies and serves a whole web app, so it needs
@@ -17,6 +18,7 @@ export async function activate(ctx: PluginContext) {
   const sessions = createProxySessions();
   ctx.disposables.add(() => sessions.clear());
   router.use(createWebEndpointRoutes(ctx, sessions));
+  registerOperations(ctx);
 
   ctx.registry.provide(
     "web-endpoint.hostImportNormalizer",

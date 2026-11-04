@@ -1,6 +1,14 @@
 # Changelog
 
-## 1.2.1
+## 1.3.0
+
+### Added
+
+- Send yourself an alert through Termix actions, so rules, rollouts and the CLI can notify you, and see unread alerts as a status tile
+
+### Changed
+
+- Needs Termix 26.11.1 or newer
 
 ### Fixed
 

@@ -371,6 +371,8 @@ export async function getAttention() {
   return (
     await plugin().get<{
       drifted: number;
+      /** Older servers leave it out. */
+      running?: number;
       rollouts: { id: number; name: string; reason: string | null }[];
     }>("/attention")
   ).data;

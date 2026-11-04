@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.0
+
+### Added
+
+- Refresh a remote site through Termix actions and see unreachable sites as a status tile
+
+### Changed
+
+- Needs Termix 26.11.1 or newer
+
 ## 1.1.0
 
 ### Added

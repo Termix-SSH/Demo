@@ -5,6 +5,7 @@ import { createHub } from "./hub.js";
 import { readSmtp, sendMail } from "./mail.js";
 import { createAlertsRepository } from "./repository.js";
 import { registerRoutes } from "./routes.js";
+import { registerOperations } from "./operations.js";
 import type { SenderDeps } from "./senders.js";
 import { createAlertStream } from "./stream.js";
 
@@ -50,6 +51,7 @@ export async function activate(ctx: PluginContext) {
   });
 
   ctx.notify.serve(createHub({ repository, stream, senders }));
+  registerOperations(ctx, repository);
 
   registerRoutes(ctx.http.router<Router>(), {
     ctx,

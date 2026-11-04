@@ -29,7 +29,7 @@ import {
   initialValues,
   type FormValues,
 } from "./ActionForm";
-import { Choice, StateBadge, when } from "./parts";
+import { Choice, Pager, StateBadge, usePaged, when } from "./parts";
 import { TargetPicker } from "./TargetPicker";
 
 export interface RolloutDraft {
@@ -207,6 +207,7 @@ function RolloutDetail({ id, onClose }: { id: number; onClose: () => void }) {
     batch: Batch;
     targets: BatchTarget[];
   } | null>(null);
+  const targetPage = usePaged(data?.targets ?? [], 25);
 
   const load = useCallback(async () => {
     try {
@@ -301,7 +302,7 @@ function RolloutDetail({ id, onClose }: { id: number; onClose: () => void }) {
         </p>
       )}
       <div className="flex flex-col gap-1">
-        {data?.targets.map((target) => (
+        {targetPage.rows.map((target) => (
           <ListRow
             key={target.id}
             title={target.hostName ?? String(target.hostId)}
@@ -309,6 +310,11 @@ function RolloutDetail({ id, onClose }: { id: number; onClose: () => void }) {
             badges={<StateBadge state={target.status} />}
           />
         ))}
+        <Pager
+          page={targetPage.page}
+          pages={targetPage.pages}
+          onPage={targetPage.setPage}
+        />
       </div>
     </InlineView>
   );
@@ -329,6 +335,7 @@ export function RolloutsView({
   const [list, setList] = useState<Batch[]>([]);
   const [creating, setCreating] = useState<RolloutDraft | null>(null);
   const [open, setOpen] = useState<number | null>(null);
+  const shown = usePaged(list, 20);
 
   useEffect(() => {
     if (draft) {
@@ -381,7 +388,7 @@ export function RolloutsView({
         />
       ) : (
         <div className="flex flex-col gap-1 overflow-auto">
-          {list.map((batch) => {
+          {shown.rows.map((batch) => {
             const total = Object.values(batch.counts).reduce(
               (a, b) => a + b,
               0,
@@ -404,6 +411,7 @@ export function RolloutsView({
               />
             );
           })}
+          <Pager page={shown.page} pages={shown.pages} onPage={shown.setPage} />
         </div>
       )}
       {open !== null && (

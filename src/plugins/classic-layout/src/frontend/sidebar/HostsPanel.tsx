@@ -26,10 +26,16 @@ import {
   type HostSidebarFilterState,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
+  useSettings,
   useSlotContributions,
   useTranslation,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { setBarActions } from "./tree/host-bar-actions";
+import {
+  parseHostRows,
+  setBarActions,
+  setHostRowSaver,
+  setHostRows,
+} from "./tree/host-bar-actions";
 import { useEffect, useMemo, useState } from "react";
 import {
   ArrowUpDown,
@@ -251,6 +257,20 @@ export function HostsPanel({
   useEffect(() => {
     setBarActions(sidebarPrefs.display.barActions);
   }, [sidebarPrefs.display.barActions]);
+  // Per host click and row button choices, kept in a user setting.
+  const userSettings = useSettings("user");
+  const savedHostRows = userSettings.values.hostRows;
+  useEffect(() => {
+    setHostRows(parseHostRows(savedHostRows));
+  }, [savedHostRows]);
+  const saveUserSettings = userSettings.save;
+  useEffect(() => {
+    if (!userSettings.loaded) return;
+    setHostRowSaver((all) => {
+      void saveUserSettings({ hostRows: all }).catch(() => {});
+    });
+    return () => setHostRowSaver(null);
+  }, [userSettings.loaded, saveUserSettings]);
   const sortKey = sidebarPrefs.sort.key;
   const pinnedFirst = sidebarPrefs.sort.pinnedFirst;
   const { arrangeLocked, toggleArrangeLock } = useArrangeLock(

@@ -1,7 +1,7 @@
 {
   "id": "alerts",
   "name": "Alerts",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "One inbox for every alert in Termix, with delivery to webhooks, ntfy, Discord and email.",
   "author": {
     "name": "Termix"
@@ -21,7 +21,7 @@
     "An alerts inbox card for the dashboard"
   ],
   "engine": {
-    "termix": ">=26.10.0",
+    "termix": ">=26.11.1-0",
     "api": "^1.2"
   },
   "capabilities": [
@@ -33,7 +33,9 @@
     "notify:hub",
     "secrets:own",
     "settings:read-core",
-    "ui:surface"
+    "ui:surface",
+    "operations:provide",
+    "notify:send"
   ],
   "contributes": {
     "tabs": [
@@ -166,7 +168,82 @@
         "titleKey": "card.title",
         "icon": "Bell"
       }
-    ]
+    ],
+    "operations": {
+      "actions": [
+        {
+          "id": "alerts.unread",
+          "titleKey": "operations.unread.title",
+          "icon": "Bell",
+          "scope": "server",
+          "risk": "read",
+          "permission": "use",
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
+          "id": "alerts.send",
+          "titleKey": "operations.send.title",
+          "icon": "BellRing",
+          "scope": "server",
+          "risk": "change",
+          "permission": "use",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "title",
+              "type": "string",
+              "labelKey": "operations.send.alertTitle",
+              "required": true
+            },
+            {
+              "key": "body",
+              "type": "string",
+              "labelKey": "operations.send.body"
+            },
+            {
+              "key": "severity",
+              "type": "select",
+              "labelKey": "operations.send.severity",
+              "default": "info",
+              "options": [
+                {
+                  "value": "info",
+                  "labelKey": "operations.send.info"
+                },
+                {
+                  "value": "success",
+                  "labelKey": "operations.send.success"
+                },
+                {
+                  "value": "warning",
+                  "labelKey": "operations.send.warning"
+                },
+                {
+                  "value": "critical",
+                  "labelKey": "operations.send.critical"
+                }
+              ]
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "alerts.unread-count",
+          "titleKey": "operations.unread.title",
+          "read": "alerts.unread",
+          "scope": "server",
+          "kind": "count",
+          "refreshSec": 120
+        }
+      ]
+    }
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"]

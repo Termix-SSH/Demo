@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.0
+
+### Added
+
+- Reload the hosts file through Termix actions and see whether it applied as a status tile
+
+### Changed
+
+- Needs Termix 26.11.1 or newer
+
 ## 1.0.0
 
 ### Added

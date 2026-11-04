@@ -22,7 +22,7 @@ import {
   type ResourceRows,
 } from "./api";
 import { hostLabel } from "./hosts";
-import { Choice, StateBadge } from "./parts";
+import { Choice, Pager, StateBadge, usePaged } from "./parts";
 
 const CONCURRENT = 4;
 
@@ -69,6 +69,7 @@ export function AllHostsView({
   const [data, setData] = useState<ResourceRows | null>(null);
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("");
+  const [hostFilter, setHostFilter] = useState("");
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [busy, setBusy] = useState(false);
   const hostName = (id: number) => {
@@ -91,6 +92,7 @@ export function AllHostsView({
   useEffect(() => {
     setData(null);
     setSelected(new Set());
+    setStatus("");
     void load();
   }, [load]);
 
@@ -118,6 +120,7 @@ export function AllHostsView({
     if (!data || !resource) return [];
     const text = query.trim().toLowerCase();
     return data.rows.filter((row) => {
+      if (hostFilter && String(row.hostId) !== hostFilter) return false;
       if (status && String(row.row[resource.status ?? ""] ?? "") !== status) {
         return false;
       }
@@ -133,7 +136,22 @@ export function AllHostsView({
     });
     // hostName reads hosts, which are a dependency through it.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, resource, query, status, hosts]);
+  }, [data, resource, query, status, hostFilter, hosts]);
+  const shown = usePaged(
+    rows,
+    50,
+    `${resourceId}|${query}|${status}|${hostFilter}`,
+  );
+
+  // Only hosts that answered with rows for this kind.
+  const hostChoices = useMemo(
+    () =>
+      [...new Set((data?.rows ?? []).map((row) => row.hostId))]
+        .map((id) => ({ value: String(id), label: hostName(id) }))
+        .sort((a, b) => a.label.localeCompare(b.label)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [data, hosts],
+  );
 
   const bulk = actions.filter(
     (action) => action.resource === resourceId && action.scope === "resource",
@@ -219,6 +237,18 @@ export function AllHostsView({
           placeholder={t("allHosts.search")}
           onChange={(event) => setQuery(event.target.value)}
         />
+        {hostChoices.length > 1 && (
+          <Choice
+            label={t("allHosts.host")}
+            className="w-48"
+            value={hostFilter}
+            onChange={setHostFilter}
+            options={[
+              { value: "", label: t("allHosts.anyHost") },
+              ...hostChoices,
+            ]}
+          />
+        )}
         {statuses.length > 0 && (
           <Choice
             label={t("allHosts.status")}
@@ -304,7 +334,7 @@ export function AllHostsView({
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
+            {shown.rows.map((row) => (
               <tr
                 key={rowKey(row)}
                 className="border-b border-border/60 hover:bg-muted/50"
@@ -354,6 +384,7 @@ export function AllHostsView({
           </p>
         )}
       </div>
+      <Pager page={shown.page} pages={shown.pages} onPage={shown.setPage} />
     </div>
   );
 }

@@ -9,7 +9,7 @@ import {
   type Approval,
   type CatalogAction,
 } from "./api";
-import { RiskBadge, when } from "./parts";
+import { Pager, RiskBadge, usePaged, when } from "./parts";
 
 /**
  * Requests waiting for a person. Shows exactly what will run, from the
@@ -21,6 +21,7 @@ export function ApprovalsView({ actions }: { actions: CatalogAction[] }) {
   const [items, setItems] = useState<Approval[]>([]);
   const [comments, setComments] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState<string | null>(null);
+  const shown = usePaged(items, 10);
   const titleOf = (id: string) =>
     actions.find((action) => action.id === id)?.title ?? id;
 
@@ -68,7 +69,7 @@ export function ApprovalsView({ actions }: { actions: CatalogAction[] }) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-auto">
-      {items.map((item) => {
+      {shown.rows.map((item) => {
         const origin = item.run.origin;
         const from =
           origin?.kind === "plugin"
@@ -128,6 +129,7 @@ export function ApprovalsView({ actions }: { actions: CatalogAction[] }) {
           </div>
         );
       })}
+      <Pager page={shown.page} pages={shown.pages} onPage={shown.setPage} />
     </div>
   );
 }

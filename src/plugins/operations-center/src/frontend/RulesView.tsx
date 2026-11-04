@@ -17,7 +17,7 @@ import {
 } from "@termix-ssh/plugin-sdk/ui";
 import { ORIGINS, type Rule } from "../shared/types";
 import { deleteRule, errorText, listRules, saveRule } from "./api";
-import { Choice } from "./parts";
+import { Choice, Pager, usePaged } from "./parts";
 
 const EMPTY: Partial<Rule> = {
   name: "",
@@ -183,6 +183,7 @@ export function RulesView() {
   const canEdit = usePermission("operations-center.rules");
   const [rules, setRules] = useState<Rule[]>([]);
   const [editing, setEditing] = useState<Partial<Rule> | null>(null);
+  const shown = usePaged(rules, 20);
 
   const load = useCallback(async () => {
     try {
@@ -242,7 +243,7 @@ export function RulesView() {
         </div>
       )}
       <div className="flex flex-col gap-1 overflow-auto">
-        {rules.map((rule) => (
+        {shown.rows.map((rule) => (
           <ListRow
             key={rule.id}
             title={rule.name}
@@ -270,6 +271,7 @@ export function RulesView() {
             }
           />
         ))}
+        <Pager page={shown.page} pages={shown.pages} onPage={shown.setPage} />
       </div>
     </div>
   );

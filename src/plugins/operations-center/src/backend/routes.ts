@@ -447,7 +447,7 @@ export function registerRoutes(
    * /plugin-api/operations-center/attention:
    *   get:
    *     summary: What needs a look from this plugin
-   *     description: Drifted hosts and rollouts that stopped. Approvals and failed runs come from core's /operations routes.
+   *     description: Drifted hosts, rollouts that stopped and how many are running. Approvals and failed runs come from core's /operations routes.
    *     tags:
    *       - Operations Center
    *     responses:
@@ -460,6 +460,7 @@ export function registerRoutes(
       const list = await rollouts.list(userId);
       return {
         drifted: await drift.driftedFor(userId),
+        running: list.filter((batch) => batch.status === "running").length,
         rollouts: list
           .filter((batch) => batch.status === "paused")
           .map((batch) => ({

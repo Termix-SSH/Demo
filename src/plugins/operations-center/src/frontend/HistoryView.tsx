@@ -1,5 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
-import { useToast, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useHosts,
+  useToast,
+  useTranslation,
+} from "@termix-ssh/plugin-sdk/frontend";
 import {
   Button,
   EmptyState,
@@ -16,7 +20,10 @@ import {
   type CatalogAction,
   type Run,
 } from "./api";
-import { Choice, StateBadge, when } from "./parts";
+import { hostLabel } from "./hosts";
+import { Choice, Pager, StateBadge, useRunPages, when } from "./parts";
+
+const PAGE = 25;
 
 function originLabel(t: (key: string) => string, run: Run): string {
   const origin = run.origin;
@@ -39,21 +46,55 @@ export function HistoryView({
 }) {
   const { t } = useTranslation();
   const toast = useToast();
+  const { hosts } = useHosts();
   const [runs, setRuns] = useState<Run[]>([]);
+  const [more, setMore] = useState(false);
   const [status, setStatus] = useState("");
+  const [actionId, setActionId] = useState("");
+  const [pickedHost, setPickedHost] = useState("");
   const [open, setOpen] = useState<Run | null>(null);
   const titleOf = (id: string) =>
     actions.find((action) => action.id === id)?.title ?? id;
+  const forHost = hostId ?? (pickedHost ? Number(pickedHost) : undefined);
+  const pages = useRunPages(`${status}|${actionId}|${forHost ?? ""}`);
+
+  const actionOptions = useMemo(
+    () =>
+      [...actions]
+        .sort(
+          (a, b) =>
+            a.pluginName.localeCompare(b.pluginName) ||
+            a.title.localeCompare(b.title),
+        )
+        .map((action) => ({
+          value: action.id,
+          label: `${action.title} | ${action.pluginName}`,
+        })),
+    [actions],
+  );
+  const hostOptions = useMemo(
+    () =>
+      hosts
+        .map((host) => ({ value: String(host.id), label: hostLabel(host) }))
+        .sort((a, b) => a.label.localeCompare(b.label)),
+    [hosts],
+  );
 
   const load = useCallback(async () => {
     try {
-      setRuns(
-        await listRuns({ hostId, status: status || undefined, limit: 100 }),
-      );
+      const list = await listRuns({
+        hostId: forHost,
+        status: status || undefined,
+        actionId: actionId || undefined,
+        before: pages.before,
+        limit: PAGE + 1,
+      });
+      setMore(list.length > PAGE);
+      setRuns(list.slice(0, PAGE));
     } catch (error) {
       toast.error(errorText(error, t("history.failed")));
     }
-  }, [hostId, status, t, toast]);
+  }, [forHost, status, actionId, pages.before, t, toast]);
 
   useEffect(() => {
     void load();
@@ -85,9 +126,32 @@ export function HistoryView({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-2">
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
+        <Choice
+          label={t("history.action")}
+          className="w-64"
+          value={actionId}
+          onChange={setActionId}
+          options={[
+            { value: "", label: t("history.allActions") },
+            ...actionOptions,
+          ]}
+        />
+        {hostId === undefined && (
+          <Choice
+            label={t("history.host")}
+            className="w-48"
+            value={pickedHost}
+            onChange={setPickedHost}
+            options={[
+              { value: "", label: t("history.allHosts") },
+              ...hostOptions,
+            ]}
+          />
+        )}
         <Choice
           label={t("history.status")}
+          className="w-40"
           value={status}
           onChange={setStatus}
           options={[
@@ -103,7 +167,7 @@ export function HistoryView({
           ]}
         />
       </div>
-      {runs.length === 0 ? (
+      {runs.length === 0 && pages.page === 0 ? (
         <EmptyState icon={History} title={t("history.empty")} />
       ) : (
         <div className="flex flex-col gap-1 overflow-auto">
@@ -128,6 +192,11 @@ export function HistoryView({
               onClick={() => setOpen(run)}
             />
           ))}
+          <Pager
+            page={pages.page}
+            hasNext={more}
+            onPage={(next) => pages.go(next, runs[runs.length - 1]?.createdAt)}
+          />
         </div>
       )}
 

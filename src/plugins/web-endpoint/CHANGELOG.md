@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.0
+
+### Added
+
+- Check that a host's web endpoints answer through Termix actions, with a status tile on the host page
+- Permission Check web endpoints
+
+### Changed
+
+- Needs Termix 26.11.1 or newer
+
 ## 1.1.0
 
 ### Added

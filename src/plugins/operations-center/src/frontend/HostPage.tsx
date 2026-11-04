@@ -1,4 +1,11 @@
-import { useEffect, useMemo, useState, type ComponentType } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ComponentType,
+} from "react";
+import { createPortal } from "react-dom";
 import {
   useHostStatus,
   useTranslation,
@@ -15,10 +22,19 @@ import {
   useHostActions,
   useHostSections,
 } from "@termix-ssh/plugin-sdk/ui";
-import { ExternalLink, LayoutDashboard, Pencil, Server } from "lucide-react";
+import {
+  Check,
+  ExternalLink,
+  LayoutDashboard,
+  LayoutGrid,
+  Pencil,
+  Server,
+} from "lucide-react";
 import { getCatalog, type Catalog } from "./api";
 import { appliesTo, hostLabel, splitTags } from "./hosts";
-import { HostOverview } from "./HostOverview";
+import { HostGrid } from "./tiles/HostGrid";
+import { EmbedSlot, useEmbedNodes } from "./tiles/embeds";
+import { FRESH_MS, useSectionRequest } from "./host-page-nav";
 
 type HostAction = ReturnType<typeof useHostActions>[number];
 
@@ -26,9 +42,9 @@ type HostAction = ReturnType<typeof useHostActions>[number];
 const PAGE_TAB = "host";
 
 /**
- * Everything about one host on one tab. Each tool a plugin offers for the
- * host opens inside the page, so ten tools are one tab instead of ten.
- * Sessions such as a terminal keep their own tabs.
+ * Everything about one host on one tab. Each tool and session a plugin
+ * offers for the host opens inside the page and stays alive while you move
+ * between them, so ten tools are one tab instead of ten.
  */
 export function HostPage({ host, tab, isVisible, shell }: TabProps) {
   const { t, language } = useTranslation();
@@ -38,17 +54,24 @@ export function HostPage({ host, tab, isVisible, shell }: TabProps) {
   const status = useHostStatus(Number(host?.id))?.status;
   const wanted = (tab.data as { section?: string } | undefined)?.section;
   const [section, setSection] = useState<string>(wanted ?? "overview");
-  // Tools stay mounted once opened, so switching back keeps their state.
-  const [opened, setOpened] = useState<Set<string>>(
-    new Set(wanted ? [wanted] : []),
-  );
+  const [editMode, setEditMode] = useState(false);
+  // Tools and sessions stay alive once opened, so switching back keeps their state.
+  const embed = useEmbedNodes();
 
   useEffect(() => {
-    if (wanted) {
-      setSection(wanted);
-      setOpened((prev) => new Set(prev).add(wanted));
-    }
+    if (wanted) setSection(wanted);
   }, [wanted]);
+
+  // A tool button on the host row asked for a section of this page.
+  const request = useSectionRequest(host?.id);
+  const seenRequest = useRef<number | null>(null);
+  useEffect(() => {
+    if (!request || seenRequest.current === request.seq) return;
+    const first = seenRequest.current === null;
+    seenRequest.current = request.seq;
+    if (first && Date.now() - request.at > FRESH_MS) return;
+    setSection(request.section);
+  }, [request]);
 
   useEffect(() => {
     void getCatalog(language)
@@ -61,11 +84,18 @@ export function HostPage({ host, tab, isVisible, shell }: TabProps) {
     [all, host],
   );
   const connect = actions.filter((action) => action.kind === "connect");
+  // Sessions such as the terminal open inside the page too, next to the tools.
+  const sessions = connect.filter(
+    (action) => !!action.tabType && !action.run && !action.items,
+  );
   const tools = actions.filter(
     (action: HostAction) =>
       action.kind === "open" && !!action.tabType && action.tabType !== PAGE_TAB,
   );
-  const cards = host ? hostSectionsFor(sections, host as never) : [];
+  const cards = useMemo(
+    () => (host ? hostSectionsFor(sections, host as never) : []),
+    [sections, host],
+  );
   const hostActions = useMemo(
     () =>
       host && catalog
@@ -82,9 +112,11 @@ export function HostPage({ host, tab, isVisible, shell }: TabProps) {
 
   const open = (id: string) => {
     setSection(id);
-    if (id !== "overview") setOpened((prev) => new Set(prev).add(id));
+    if (id !== "overview") setEditMode(false);
   };
-  const current = tools.find((tool) => tool.tabType === section);
+  const inPage = (action: HostAction) => sessions.includes(action);
+  const popOut = (type: string) =>
+    shell.openTab(host as never, type, { forceNewTab: true });
   const tags = splitTags(host.tags);
 
   return (
@@ -108,27 +140,46 @@ export function HostPage({ host, tab, isVisible, shell }: TabProps) {
           </p>
         </div>
         <div className="ml-auto flex flex-wrap items-center gap-1">
-          {connect.map((action) => {
-            const Icon = action.icon as ComponentType<{ className?: string }>;
-            return (
-              <Button
-                key={action.id}
-                size="sm"
-                variant="outline"
-                onClick={() =>
-                  runHostAction(action, host as never, shell as never)
-                }
-              >
-                <Icon className="mr-1 size-3.5" />
-                {action.label?.(host as never) ?? t(action.titleKey)}
-              </Button>
-            );
-          })}
+          {connect
+            .filter((action) => !inPage(action))
+            .map((action) => {
+              const Icon = action.icon as ComponentType<{ className?: string }>;
+              return (
+                <Button
+                  key={action.id}
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    runHostAction(action, host as never, shell as never)
+                  }
+                >
+                  <Icon className="mr-1 size-3.5" />
+                  {action.label?.(host as never) ?? t(action.titleKey)}
+                </Button>
+              );
+            })}
+          {section === "overview" && (
+            <Button
+              size="sm"
+              variant="ghost"
+              className={editMode ? "text-accent-brand" : ""}
+              title={editMode ? t("tiles.done") : t("tiles.customize")}
+              aria-label={editMode ? t("tiles.done") : t("tiles.customize")}
+              onClick={() => setEditMode((on) => !on)}
+            >
+              {editMode ? (
+                <Check className="size-3.5" />
+              ) : (
+                <LayoutGrid className="size-3.5" />
+              )}
+            </Button>
+          )}
           {shell.editHost && (
             <Button
               size="sm"
               variant="ghost"
               title={t("host.edit")}
+              aria-label={t("host.edit")}
               onClick={() => shell.editHost?.(Number(host.id))}
             >
               <Pencil className="size-3.5" />
@@ -145,6 +196,20 @@ export function HostPage({ host, tab, isVisible, shell }: TabProps) {
             label={t("host.overview")}
             onClick={() => open("overview")}
           />
+          {sessions.map((session) => (
+            <NavButton
+              key={session.id}
+              active={section === session.tabType}
+              icon={session.icon as ComponentType<{ className?: string }>}
+              label={session.label?.(host as never) ?? t(session.titleKey)}
+              onClick={() => open(session.tabType!)}
+              onPopOut={() => popOut(session.tabType!)}
+              popOutLabel={t("host.popOut")}
+            />
+          ))}
+          {sessions.length > 0 && tools.length > 0 && (
+            <div className="my-1 h-px shrink-0 bg-border" />
+          )}
           {tools.map((tool) => (
             <NavButton
               key={tool.id}
@@ -152,56 +217,45 @@ export function HostPage({ host, tab, isVisible, shell }: TabProps) {
               icon={tool.icon as ComponentType<{ className?: string }>}
               label={tool.label?.(host as never) ?? t(tool.titleKey)}
               onClick={() => open(tool.tabType!)}
+              onPopOut={() => popOut(tool.tabType!)}
+              popOutLabel={t("host.popOut")}
             />
           ))}
         </nav>
 
         <main className="relative min-h-0 flex-1 overflow-hidden">
-          {section === "overview" && (
-            <HostOverview
+          {section === "overview" ? (
+            <HostGrid
               host={host}
               shell={shell}
               catalog={catalog}
               actions={hostActions}
-              cards={cards}
+              sessions={sessions}
+              sections={cards}
               isVisible={isVisible}
+              editMode={editMode}
+              onEditMode={setEditMode}
               onOpenTool={open}
+              embed={embed}
             />
+          ) : (
+            <div key={section} className="absolute inset-0 flex flex-col">
+              <EmbedSlot type={section} embed={embed} />
+            </div>
           )}
-          {[...opened].map((type) => {
-            const shown = section === type;
-            return (
-              <div
-                key={type}
-                className={`absolute inset-0 flex flex-col ${shown ? "" : "hidden"}`}
-              >
-                {shown && current && (
-                  <div className="flex shrink-0 justify-end border-b border-border px-2 py-1">
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() =>
-                        shell.openTab(host as never, type, {
-                          forceNewTab: true,
-                        })
-                      }
-                    >
-                      <ExternalLink className="mr-1 size-3.5" />
-                      {t("host.popOut")}
-                    </Button>
-                  </div>
-                )}
-                <div className="min-h-0 flex-1">
-                  <HostTabEmbed
-                    host={host as never}
-                    type={type}
-                    isVisible={isVisible && shown}
-                    shell={shell as never}
-                  />
-                </div>
-              </div>
-            );
-          })}
+          <div ref={embed.parking} className="hidden" aria-hidden="true" />
+          {[...embed.wanted].map((type) =>
+            createPortal(
+              <HostTabEmbed
+                host={host as never}
+                type={type}
+                isVisible={isVisible && embed.shown.has(type)}
+                shell={shell as never}
+              />,
+              embed.nodeFor(type),
+              type,
+            ),
+          )}
         </main>
       </div>
     </div>
@@ -213,21 +267,41 @@ function NavButton({
   icon: Icon,
   label,
   onClick,
+  onPopOut,
+  popOutLabel,
 }: {
   active: boolean;
   icon: ComponentType<{ className?: string }>;
   label: string;
   onClick: () => void;
+  /** Opens it in a normal tab instead, for split view. */
+  onPopOut?: () => void;
+  popOutLabel?: string;
 }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`flex items-center gap-2 px-2 py-1.5 text-left text-xs ${active ? "bg-muted font-medium text-foreground" : "text-muted-foreground hover:bg-muted/60"}`}
+    <div
+      className={`group flex items-center ${active ? "bg-muted font-medium text-foreground" : "text-muted-foreground hover:bg-muted/60"}`}
     >
-      <Icon className="size-3.5 shrink-0" />
-      <span className="truncate">{label}</span>
-    </button>
+      <button
+        type="button"
+        onClick={onClick}
+        className="flex min-w-0 flex-1 items-center gap-2 px-2 py-1.5 text-left text-xs"
+      >
+        <Icon className="size-3.5 shrink-0" />
+        <span className="truncate">{label}</span>
+      </button>
+      {onPopOut && (
+        <button
+          type="button"
+          title={popOutLabel}
+          aria-label={popOutLabel}
+          onClick={onPopOut}
+          className={`mr-1 shrink-0 p-1 text-muted-foreground hover:text-foreground ${active ? "" : "opacity-0 group-hover:opacity-100 focus:opacity-100"}`}
+        >
+          <ExternalLink className="size-3" />
+        </button>
+      )}
+    </div>
   );
 }
 

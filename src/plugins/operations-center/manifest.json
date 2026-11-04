@@ -19,15 +19,19 @@
     "Rules for what needs approval, by risk, plugin, action, where it came from and host tag",
     "Drift checks that watch hosts stay the way they should, with an optional fix",
     "A page per host with every tool, status tiles and recent changes in one tab",
+    "A host page made of tiles you arrange: status, sessions, metrics, lists and one click actions",
+    "The host page beside every terminal, in the tab bar and in the host menu",
+    "A dot on the host list when a host needs attention",
     "Tables across every host, such as all containers or services, with bulk actions",
     "An MCP server so outside AI tools can use Termix actions with an API key",
     "A Needs attention card on the dashboard",
+    "Status and action tiles for the dashboard from every plugin",
     "Status tiles and one click action buttons for the homepage"
   ],
   "env": [],
   "engine": {
     "termix": ">=26.11.1-0",
-    "api": "^1.14"
+    "api": "^1.15"
   },
   "capabilities": [
     "db:own",
@@ -61,6 +65,16 @@
         "id": "attention",
         "titleKey": "attention.title",
         "icon": "AlertTriangle"
+      },
+      {
+        "id": "ops-signal",
+        "titleKey": "tiles.signalCard",
+        "icon": "Activity"
+      },
+      {
+        "id": "ops-action",
+        "titleKey": "tiles.actionCard",
+        "icon": "Zap"
       }
     ],
     "permissions": [
@@ -85,6 +99,38 @@
     ],
     "operations": {
       "invokes": ["*"]
+    },
+    "settings": {
+      "user": [
+        {
+          "key": "attentionDot",
+          "type": "boolean",
+          "labelKey": "settings.user.attentionDot.label",
+          "descriptionKey": "settings.user.attentionDot.description",
+          "default": true
+        },
+        {
+          "key": "hostPageLayout",
+          "type": "json",
+          "labelKey": "settings.user.hostPageLayout.label",
+          "default": null,
+          "hidden": true
+        },
+        {
+          "key": "hostPageLayouts",
+          "type": "json",
+          "labelKey": "settings.user.hostPageLayouts.label",
+          "default": {},
+          "hidden": true
+        },
+        {
+          "key": "opsOverviewLayout",
+          "type": "json",
+          "labelKey": "settings.user.opsOverviewLayout.label",
+          "default": null,
+          "hidden": true
+        }
+      ]
     }
   }
 }

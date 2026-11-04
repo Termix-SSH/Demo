@@ -1,7 +1,7 @@
 {
   "id": "web-endpoint",
   "name": "Web Endpoint",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Open a host's web UI inside Termix, directly or over an SSH tunnel.",
   "author": {
     "name": "Termix"
@@ -19,14 +19,16 @@
     "A web UI panel beside the SSH terminal and a dashboard card to open any web UI"
   ],
   "engine": {
-    "termix": ">=26.10.3",
+    "termix": ">=26.11.1-0",
     "api": "^1.9"
   },
   "capabilities": [
     "hosts:read",
     "network:serve",
     "ui:surface",
-    "desktop:window"
+    "desktop:window",
+    "operations:provide",
+    "ssh:connect"
   ],
   "dependencies": {
     "tunnels": "^1.0.0"
@@ -136,7 +138,47 @@
         "titleKey": "card.title",
         "icon": "Globe"
       }
-    ]
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ],
+    "operations": {
+      "actions": [
+        {
+          "id": "web-endpoint.check",
+          "titleKey": "operations.check.title",
+          "icon": "Globe",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableWebUi": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "web-endpoint.up",
+          "titleKey": "operations.up.title",
+          "read": "web-endpoint.check",
+          "scope": "host",
+          "kind": "status",
+          "refreshSec": 300
+        }
+      ]
+    }
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"]
