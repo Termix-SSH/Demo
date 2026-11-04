@@ -49,7 +49,7 @@ import {
   MAX_PANES,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { showsInBar, useBarActions } from "../host-bar-actions";
+import { HOST_PAGE_TAB, showsInBar, useBarActions } from "../host-bar-actions";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { createPortal } from "react-dom";
 import {
@@ -386,9 +386,12 @@ export function HostItem({
   const availableActions: TabType[] = pluginActions.flatMap((action) =>
     action.tabType ? [action.tabType] : [],
   );
+  const hasHostPage = availableActions.includes(HOST_PAGE_TAB);
   // Empty when no running plugin can connect to this host.
   const defaultAction: TabType =
-    defaultConnectAction(allHostActions, host)?.tabType ?? "";
+    hostClickBehavior === "hostPage" && hasHostPage
+      ? HOST_PAGE_TAB
+      : (defaultConnectAction(allHostActions, host)?.tabType ?? "");
   const openHostTab = (
     type: TabType,
     options?: {
@@ -428,7 +431,7 @@ export function HostItem({
         icon: action.icon as typeof Terminal,
         label: action.label?.(host) ?? t(action.titleKey),
         tabType: action.tabType,
-        tray: showsInBar(barActions, action),
+        tray: showsInBar(barActions, action, hasHostPage),
         items:
           items && items.length > 1
             ? items.map((item) => ({

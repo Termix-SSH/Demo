@@ -37,8 +37,18 @@ import {
   Select2,
   reportCoreIssueUrl,
   docsUrl,
+  useUiPreferencesContext,
 } from "@termix-ssh/plugin-sdk/ui";
-import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
+import {
+  usePluginUiPreferences,
+  useTranslation,
+} from "@termix-ssh/plugin-sdk/frontend";
+import {
+  autoSlots,
+  decodeSlots,
+  encodeSlots,
+  sameLayout,
+} from "./dashboard-layout";
 import {
   Activity,
   Check,
@@ -359,6 +369,16 @@ export function DashboardTab({
   isVisible?: boolean;
 }) {
   const registeredCards = useRegisteredDashboardCards();
+  const layoutPrefs = usePluginUiPreferences<{
+    dashboardSlots?: string[];
+  }>();
+  // Until the saved preferences arrive, a new browser must not save over them.
+  const prefsLoaded = useUiPreferencesContext()?.loaded ?? true;
+  const registeredIds = registeredCards.map((card) => card.id).join(",");
+  const auto = useMemo(
+    () => autoSlots(DEFAULT_SLOTS, registeredIds.split(",")),
+    [registeredIds],
+  );
   const { t, language } = useTranslation();
   const confirm = useConfirm();
   const { initialLoadComplete } = useServerStatusMeta();
@@ -437,13 +457,44 @@ export function DashboardTab({
     return 68;
   });
 
+  // The saved layout follows the user. One saved only in this browser by an
+  // older version moves over the first time, and a dashboard nobody arranged
+  // stays automatic, so new plugin cards like Needs attention appear on it.
+  const savedLines = layoutPrefs.values.dashboardSlots;
+  const savedKey = JSON.stringify(savedLines ?? null);
   useEffect(() => {
+    if (!prefsLoaded) return;
+    const saved = decodeSlots(savedLines);
+    if (saved) {
+      setSlots((current) => (sameLayout(current, saved) ? current : saved));
+      return;
+    }
+    setSlots((current) =>
+      sameLayout(current, DEFAULT_SLOTS) ||
+      sameLayout(current, autoSlots(DEFAULT_SLOTS, []))
+        ? auto
+        : current,
+    );
+    // savedKey stands in for savedLines, whose identity changes each render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [savedKey, auto, prefsLoaded]);
+
+  useEffect(() => {
+    if (!prefsLoaded) return;
+    const isAuto = sameLayout(slots, auto) || sameLayout(slots, DEFAULT_SLOTS);
+    const lines = isAuto ? null : encodeSlots(slots);
+    if (JSON.stringify(lines) !== savedKey) {
+      layoutPrefs.set("dashboardSlots", lines);
+    }
     try {
-      localStorage.setItem("dashboardTab.slots", JSON.stringify(slots));
+      if (isAuto) localStorage.removeItem("dashboardTab.slots");
+      else localStorage.setItem("dashboardTab.slots", JSON.stringify(slots));
     } catch {
       /* ignore */
     }
-  }, [slots]);
+    // layoutPrefs is a new object each render; savedKey covers what it holds.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slots, auto, savedKey, prefsLoaded]);
 
   useEffect(() => {
     try {
@@ -784,7 +835,8 @@ export function DashboardTab({
       confirmLabel: t("dashboard.reset"),
     });
     if (!ok) return;
-    setSlots(DEFAULT_SLOTS);
+    setSlots(auto);
+    layoutPrefs.set("dashboardSlots", null);
     setMainWidthPct(68);
     setEditMode(false);
     try {

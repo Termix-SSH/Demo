@@ -1,7 +1,7 @@
 {
   "id": "fleets",
   "name": "Fleets",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Group hosts into fleets and run commands, package actions and file transfers on all of them at once.",
   "author": {
     "name": "Termix"
@@ -21,7 +21,7 @@
     "Share a fleet with users or roles"
   ],
   "engine": {
-    "termix": ">=26.10.0",
+    "termix": ">=26.11.1-0",
     "api": "^1.2"
   },
   "capabilities": [
@@ -32,7 +32,8 @@
     "ssh:connect",
     "db:own",
     "network:serve",
-    "ui:surface"
+    "ui:surface",
+    "operations:provide"
   ],
   "optionalDependencies": {
     "snippets": "^1.0.0"
@@ -111,6 +112,33 @@
           "default": 5,
           "min": 1,
           "max": 300
+        }
+      ]
+    },
+    "operations": {
+      "actions": [
+        {
+          "id": "fleets.run-command",
+          "titleKey": "operations.runCommand.title",
+          "descriptionKey": "operations.runCommand.description",
+          "icon": "TerminalSquare",
+          "scope": "host",
+          "inputs": [
+            {
+              "key": "command",
+              "type": "textarea",
+              "labelKey": "operations.runCommand.command",
+              "required": true
+            }
+          ],
+          "risk": "change",
+          "permission": "execute",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "timeoutMs": 600000,
+          "surfaces": {
+            "palette": false
+          }
         }
       ]
     }

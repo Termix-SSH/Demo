@@ -20,6 +20,7 @@ const BACKEND_PREFIXES = [
   "/database",
   "/sync",
   "/audit-logs",
+  "/operations",
 ];
 
 /** Routes that answer with a raw Response, for streams and file bodies. */

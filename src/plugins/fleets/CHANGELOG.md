@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.0
+
+### Added
+
+- Run a command as a Termix action, so it can roll out across hosts from Operations Center and Automations with a result per host in run history
+
+### Changed
+
+- Needs Termix 26.11.1 or newer
+
 ## 1.1.0
 
 ### Added

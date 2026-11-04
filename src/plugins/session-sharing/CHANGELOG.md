@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1
+
+### Fixed
+
+- The sharing dashboard card scrolls as one list instead of squeezing shares and rooms into two small boxes
+
 ## 1.1.0
 
 ### Added

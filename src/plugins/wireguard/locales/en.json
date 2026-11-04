@@ -1,0 +1,190 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Install WireGuard on your hosts and manage interfaces, clients and configs from one tab."
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "delete": "Delete",
+    "loading": "Loading..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Use WireGuard",
+      "description": "Manage WireGuard interfaces and clients on hosts you can edit."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Open WireGuard from a host.",
+    "error": "Could not load WireGuard from this host.",
+    "sudo": "This host needs a root login or passwordless sudo to manage WireGuard.",
+    "installed": "Installed",
+    "notInstalled": "Not installed",
+    "refresh": "Refresh",
+    "viewInterfaces": "Interfaces",
+    "viewLogs": "Logs"
+  },
+  "install": {
+    "title": "Install WireGuard",
+    "desc": "This installs the WireGuard tools and iptables with the host's package manager.",
+    "confirm": "Install",
+    "done": "WireGuard is installed.",
+    "failed": "Could not install WireGuard.",
+    "empty": "WireGuard is not installed on this host",
+    "noManager": "No supported package manager was found. Install WireGuard by hand.",
+    "hint": "Install it on {{os}} to run a VPN from this host.",
+    "thisHost": "this host",
+    "button": "Install WireGuard",
+    "working": "Installing..."
+  },
+  "interfaces": {
+    "add": "Add interface",
+    "empty": "No interfaces yet. Add one to start a VPN.",
+    "loadFailed": "Could not load the interfaces.",
+    "up": "Up",
+    "down": "Down",
+    "clients": "{{count}} clients",
+    "nat": "NAT",
+    "boot": "Starts at boot"
+  },
+  "create": {
+    "title": "Add interface",
+    "name": "Name",
+    "address": "Address",
+    "addressHint": "The server address and subnet. Clients get the next free addresses.",
+    "port": "UDP port",
+    "nat": "Share the host's internet (NAT)",
+    "natDesc": "Clients can reach the internet and the host's network through this host.",
+    "natMissing": "NAT needs iptables, which is not installed on this host.",
+    "forwarding": "Turn on IP forwarding",
+    "forwardingDesc": "Lets the host pass traffic between clients and the network. Saved for reboots.",
+    "firewall": "Open the port in the firewall",
+    "firewallDesc": "Adds the UDP port to ufw or firewalld when one is running.",
+    "start": "Start now and at boot",
+    "startDesc": "Turns the interface on and keeps it on after a reboot.",
+    "save": "Create",
+    "done": "The interface is ready.",
+    "failed": "Could not create the interface."
+  },
+  "detail": {
+    "clients": "Clients",
+    "settings": "Settings",
+    "config": "Config",
+    "service": "Service",
+    "gone": "This interface no longer exists on the host."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Show the WireGuard tab for this host in its menu."
+      }
+    },
+    "publicKey": "Public key",
+    "port": "UDP port",
+    "endpoint": "Server endpoint",
+    "endpointHint": "The public address clients connect to, like vpn.example.com:51820.",
+    "dns": "DNS for clients",
+    "dnsHint": "Optional. Separate servers with commas.",
+    "allowed": "Traffic through the VPN",
+    "allowedHint": "The ranges clients send through the VPN. 0.0.0.0/0, ::/0 sends everything.",
+    "keepalive": "Keepalive (seconds)",
+    "keepaliveHint": "Keeps clients behind NAT reachable. Use 0 to turn it off.",
+    "saved": "Settings saved.",
+    "saveFailed": "Could not save the settings."
+  },
+  "clients": {
+    "add": "Add client",
+    "empty": "No clients yet.",
+    "loadFailed": "Could not load the clients.",
+    "name": "Name",
+    "nameHint": "Letters, numbers, dots, dashes and underscores.",
+    "allowed": "Traffic through the VPN",
+    "allowedHint": "Leave empty to use the interface default: {{value}}",
+    "create": "Create client",
+    "addFailed": "Could not add the client.",
+    "needEndpoint": "Set the server endpoint in the interface settings first.",
+    "connected": "Connected",
+    "off": "Off",
+    "external": "Made by hand",
+    "handshake": "handshake {{ago}} ago",
+    "showConfig": "Show config and QR code",
+    "configFailed": "Could not read the client config.",
+    "rotate": "New keys",
+    "rotateTitle": "Make new keys for {{name}}?",
+    "rotateDesc": "The old config stops working. Give the client the new config afterwards.",
+    "turnOff": "Turn off",
+    "turnOn": "Turn on",
+    "saveFailed": "Could not change the client.",
+    "deleteTitle": "Delete {{name}}?",
+    "deleteDesc": "The client is removed and can no longer connect.",
+    "deleteFailed": "Could not delete the client."
+  },
+  "clientConfig": {
+    "note": "This config holds the client's private key. Share it only with the person or device that will use it.",
+    "qr": "QR code for the client config",
+    "copy": "Copy",
+    "copied": "Config copied.",
+    "copyFailed": "Could not copy the config.",
+    "download": "Download .conf"
+  },
+  "config": {
+    "title": "Config file",
+    "hint": "Private and preshared keys are hidden. Leave the placeholder to keep a key. The config is checked before it is saved and a backup is kept. Address changes need a restart.",
+    "loadFailed": "Could not read the config.",
+    "saved": "Config saved.",
+    "saveFailed": "Could not save the config."
+  },
+  "logs": {
+    "loadFailed": "Could not read the logs.",
+    "lines": "{{count}} lines",
+    "empty": "No log lines."
+  },
+  "service": {
+    "failed": "The service action failed.",
+    "start": "Start",
+    "stop": "Stop",
+    "restart": "Restart",
+    "autostart": "Start at boot",
+    "autostartDesc": "Start this interface when the host starts.",
+    "needsSystemd": "Starting at boot needs systemd on this host.",
+    "noForward": "IP forwarding is off on this host, so clients cannot reach the network through NAT.",
+    "delete": "Delete interface",
+    "deleteTitle": "Delete {{name}}?",
+    "deleteDesc": "The interface is stopped and its config, keys and saved client files are removed from the host.",
+    "deleteFailed": "Could not delete the interface."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Turn on WireGuard in this host's settings to use this card.",
+    "start": "Bring up",
+    "stop": "Bring down",
+    "done": "{{name}} updated"
+  },
+  "operations": {
+    "list": {
+      "title": "List WireGuard interfaces"
+    },
+    "down": {
+      "title": "WireGuard interfaces down"
+    },
+    "start": {
+      "title": "Start WireGuard interface"
+    },
+    "stop": {
+      "title": "Stop WireGuard interface"
+    },
+    "restart": {
+      "title": "Restart WireGuard interface"
+    },
+    "interfaces": {
+      "title": "WireGuard interfaces",
+      "address": "Address",
+      "port": "Port",
+      "clients": "Clients"
+    }
+  }
+}

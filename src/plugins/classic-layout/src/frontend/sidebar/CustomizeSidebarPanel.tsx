@@ -14,7 +14,7 @@ import {
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { ListChecks, PanelTop, Rows3, SquareStack } from "lucide-react";
-import { showsInBar } from "./tree/host-bar-actions";
+import { HOST_PAGE_TAB, showsInBar } from "./tree/host-bar-actions";
 import { stripedRows } from "./striped-rows";
 
 const ROW_FIELDS: { key: keyof HostRowFields; dependsOnAddress?: boolean }[] = [
@@ -44,6 +44,9 @@ export function CustomizeSidebarPanel({
   const { t } = useTranslation();
   const actions = [...useHostActions()].sort(
     (a, b) => actionOrder(a) - actionOrder(b) || a.id.localeCompare(b.id),
+  );
+  const hasHostPage = actions.some(
+    (action) => action.tabType === HOST_PAGE_TAB,
   );
 
   return (
@@ -221,6 +224,7 @@ export function CustomizeSidebarPanel({
               <option value="focusExistingDoubleClickNew">
                 {t("hosts.hostClickFocusExistingDoubleNew")}
               </option>
+              <option value="hostPage">{t("hosts.hostClickHostPage")}</option>
             </Select2>
           </div>
           <SettingRow
@@ -296,6 +300,7 @@ export function CustomizeSidebarPanel({
                       checked={showsInBar(
                         preferences.display.barActions,
                         action,
+                        hasHostPage,
                       )}
                       onChange={(v) =>
                         update((prev) => ({

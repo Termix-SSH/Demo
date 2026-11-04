@@ -325,7 +325,10 @@ export function AutomationsCompanion({
         </p>
       ) : (
         <>
-          <PanelList empty={<Message>{t("card.noHostAutomations")}</Message>}>
+          <PanelList
+            className="flex-none overflow-visible"
+            empty={<Message>{t("card.noHostAutomations")}</Message>}
+          >
             {mine.map((row, index) => {
               const next = nextRunOf(row);
               return (
@@ -363,7 +366,7 @@ export function AutomationsCompanion({
               <span className="px-1 pt-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
                 {t("newUi.sidebar.automations.tabRuns")}
               </span>
-              <PanelList>
+              <PanelList className="flex-none overflow-visible">
                 <RunRows runs={mineRuns} t={t} />
               </PanelList>
             </>

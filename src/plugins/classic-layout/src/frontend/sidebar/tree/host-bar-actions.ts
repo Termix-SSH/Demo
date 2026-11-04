@@ -30,10 +30,23 @@ export function useBarActions(): Record<string, boolean> {
   );
 }
 
-/** Whether an action shows in the bar: the user's choice, else its own. */
+/** The tab type of a host page, when a plugin offers one. */
+export const HOST_PAGE_TAB = "host";
+
+/**
+ * Whether an action shows in the bar: the user's choice, else its own. With a
+ * host page, tools live on that page, so only ways to connect and the page
+ * itself show unless the user put a tool back.
+ */
 export function showsInBar(
   barActions: Record<string, boolean>,
-  action: { id: string; tray?: boolean },
+  action: { id: string; tray?: boolean; kind?: string; tabType?: string },
+  hostPage = false,
 ): boolean {
-  return barActions[action.id] ?? action.tray !== false;
+  const chosen = barActions[action.id];
+  if (chosen !== undefined) return chosen;
+  if (hostPage && action.kind === "open" && action.tabType !== HOST_PAGE_TAB) {
+    return false;
+  }
+  return action.tray !== false;
 }

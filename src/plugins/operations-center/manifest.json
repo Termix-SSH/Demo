@@ -1,0 +1,90 @@
+{
+  "id": "operations-center",
+  "name": "Operations Center",
+  "version": "1.0.0",
+  "description": "Run, roll out, approve and track every plugin action across your hosts, with a page per host and tables across all of them.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Operations-Center",
+  "docs": "https://docs.termix.site/plugins/operations-center",
+  "category": "Productivity",
+  "icon": "Activity",
+  "features": [
+    "Run any action any plugin offers, with a form, a dry run and the result",
+    "Roll an action out across many hosts with a canary, batches and a failure limit",
+    "One history of every action, who ran it, from where and what happened",
+    "Approve or reject what the assistant, MCP or a rule says needs a person",
+    "Rules for what needs approval, by risk, plugin, action, where it came from and host tag",
+    "Drift checks that watch hosts stay the way they should, with an optional fix",
+    "A page per host with every tool, status tiles and recent changes in one tab",
+    "Tables across every host, such as all containers or services, with bulk actions",
+    "An MCP server so outside AI tools can use Termix actions with an API key",
+    "A Needs attention card on the dashboard",
+    "Status tiles and one click action buttons for the homepage"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.14"
+  },
+  "capabilities": [
+    "db:own",
+    "hosts:read",
+    "kv:own",
+    "network:serve",
+    "notify:send",
+    "operations:approve",
+    "operations:invoke",
+    "secrets:own",
+    "ui:surface",
+    "users:impersonate"
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "operations",
+        "titleKey": "tab.title",
+        "icon": "Activity",
+        "openFrom": ["rail", "palette"]
+      },
+      {
+        "id": "host",
+        "titleKey": "host.title",
+        "icon": "LayoutDashboard",
+        "openFrom": ["host-context-menu"]
+      }
+    ],
+    "dashboardCards": [
+      {
+        "id": "attention",
+        "titleKey": "attention.title",
+        "icon": "AlertTriangle"
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "rules",
+        "titleKey": "permissions.rules.title",
+        "descriptionKey": "permissions.rules.description",
+        "defaultRoles": ["admin"]
+      },
+      {
+        "name": "mcp",
+        "titleKey": "permissions.mcp.title",
+        "descriptionKey": "permissions.mcp.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
+    "operations": {
+      "invokes": ["*"]
+    }
+  }
+}

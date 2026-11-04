@@ -168,6 +168,7 @@ export function AdminSettingsPanel({
   const [newKeyName, setNewKeyName] = useState("");
   const [newKeyUserId, setNewKeyUserId] = useState("");
   const [newKeyExpiry, setNewKeyExpiry] = useState("");
+  const [newKeyScope, setNewKeyScope] = useState("");
   const [newKeyLoading, setNewKeyLoading] = useState(false);
   const [createdKeyToken, setCreatedKeyToken] = useState<string | null>(null);
 
@@ -621,12 +622,14 @@ export function AdminSettingsPanel({
         newKeyName.trim(),
         newKeyUserId.trim(),
         newKeyExpiry ? new Date(newKeyExpiry).toISOString() : undefined,
+        newKeyScope ? [newKeyScope] : null,
       );
       setApiKeys((prev) => [{ ...created, isActive: true }, ...prev]);
       setCreatedKeyToken(created.token);
       setNewKeyName("");
       setNewKeyUserId("");
       setNewKeyExpiry("");
+      setNewKeyScope("");
       toast.success(t("admin.apiKeyCreatedSuccess", { name: created.name }));
     } catch (e: unknown) {
       toast.error(apiErrorMessage(e, t("admin.apiKeyCreateFailed")));
@@ -892,6 +895,8 @@ export function AdminSettingsPanel({
         newKeyUserId={newKeyUserId}
         setNewKeyUserId={setNewKeyUserId}
         newKeyExpiry={newKeyExpiry}
+        newKeyScope={newKeyScope}
+        setNewKeyScope={setNewKeyScope}
         setNewKeyExpiry={setNewKeyExpiry}
         users={users}
         handleCreateApiKey={handleCreateApiKey}

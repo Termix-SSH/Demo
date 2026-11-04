@@ -232,7 +232,7 @@ export function ChannelDialog({
                 value={draft.token}
                 onChange={(event) => set("token", event.target.value)}
                 placeholder="123456:ABC..."
-                className="text-sm font-mono rounded-none"
+                className="h-8 pr-8 text-sm font-mono rounded-none"
               />
             </Field>
             <Field
@@ -272,7 +272,7 @@ export function ChannelDialog({
                 value={draft.token}
                 onChange={(event) => set("token", event.target.value)}
                 placeholder="tk_..."
-                className="text-sm font-mono rounded-none"
+                className="h-8 pr-8 text-sm font-mono rounded-none"
               />
             </Field>
           </>

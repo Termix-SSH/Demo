@@ -10,6 +10,7 @@ import {
 } from "@termix-ssh/plugin-sdk/ui";
 import type { Trigger, TriggerKind } from "../../types";
 import { HostSelectorField } from "./HostSelectorField";
+import { OperationEventFields } from "./OperationFields";
 import {
   missingTriggerProvider,
   type AutomationEditorOptions,
@@ -21,6 +22,7 @@ const TRIGGER_KINDS: TriggerKind[] = [
   "health_check",
   "schedule",
   "docker_event",
+  "operation_event",
   "webhook",
 ];
 
@@ -372,6 +374,14 @@ export function TriggerCard({
         </>
       )}
 
+      {trigger.kind === "operation_event" && (
+        <OperationEventFields
+          trigger={trigger}
+          options={options}
+          onChange={onChange}
+        />
+      )}
+
       {trigger.kind === "webhook" && (
         <p className="text-xs text-muted-foreground">
           {t(`${base}.webhookTokenDescription`)}
@@ -427,6 +437,12 @@ export function defaultTrigger(kind: TriggerKind): Trigger {
         kind: "docker_event",
         hostSelector: { kind: "all" },
         event: "exited",
+        cooldownMinutes: 15,
+      };
+    case "operation_event":
+      return {
+        kind: "operation_event",
+        event: "operation.failed",
         cooldownMinutes: 15,
       };
     case "webhook":

@@ -350,6 +350,7 @@ export function HostForm({
             {form.authType === "password" && (
               <Field label={t("hostForm.password")}>
                 <PasswordInput
+                  className="h-8 pr-8 text-xs"
                   value={form.password}
                   onChange={(e) => setField("password", e.target.value)}
                 />
@@ -377,6 +378,7 @@ export function HostForm({
                 </Field>
                 <Field label={t("hostForm.keyPassphrase")}>
                   <PasswordInput
+                    className="h-8 pr-8 text-xs"
                     value={
                       form.keyPassword === "existing_key_password"
                         ? ""

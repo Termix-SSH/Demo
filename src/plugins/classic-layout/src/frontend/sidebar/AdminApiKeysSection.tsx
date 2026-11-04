@@ -30,6 +30,8 @@ type AdminApiKeysSectionProps = {
   newKeyUserId: string;
   setNewKeyUserId: Dispatch<SetStateAction<string>>;
   newKeyExpiry: string;
+  newKeyScope: string;
+  setNewKeyScope: (value: string) => void;
   setNewKeyExpiry: Dispatch<SetStateAction<string>>;
   users: AdminUser[];
   handleCreateApiKey: () => void;
@@ -51,6 +53,8 @@ export function AdminApiKeysSection({
   newKeyUserId,
   setNewKeyUserId,
   newKeyExpiry,
+  newKeyScope,
+  setNewKeyScope,
   setNewKeyExpiry,
   users,
   handleCreateApiKey,
@@ -168,6 +172,29 @@ export function AdminApiKeysSection({
                 </div>
                 <div className="flex flex-col gap-1">
                   <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">
+                    {t("admin.apiKeyScope")}
+                  </label>
+                  <Select2
+                    value={newKeyScope}
+                    onChange={(e) => setNewKeyScope(e.target.value)}
+                    className="text-xs"
+                  >
+                    <option value="">{t("admin.apiKeyScopeFull")}</option>
+                    <option value="operations:read">
+                      {t("admin.apiKeyScopeRead")}
+                    </option>
+                    <option value="operations:run">
+                      {t("admin.apiKeyScopeRun")}
+                    </option>
+                  </Select2>
+                  {newKeyScope && (
+                    <p className="text-[10px] text-muted-foreground">
+                      {t("admin.apiKeyScopeHint")}
+                    </p>
+                  )}
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">
                     {t("admin.apiKeyExpiresAt")}
                   </label>
                   <Input
@@ -225,6 +252,13 @@ export function AdminApiKeysSection({
               <span className="flex gap-2.5 text-[10px] text-muted-foreground">
                 <span>{key.createdAt.split("T")[0]}</span>
                 <span>
+                  {key.scopes?.length
+                    ? `${t(
+                        key.scopes.includes("operations:run")
+                          ? "admin.apiKeyScopeActionsRun"
+                          : "admin.apiKeyScopeActionsRead",
+                      )} | `
+                    : ""}
                   {key.expiresAt
                     ? key.expiresAt.split("T")[0]
                     : t("admin.apiKeyNoExpiry")}

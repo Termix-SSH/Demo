@@ -8,6 +8,7 @@ import {
 import {
   AddButton,
   Alert,
+  AlertDescription,
   Button,
   PanelShell,
   Segmented,
@@ -16,6 +17,7 @@ import {
 import type { SambaStatus, ShareView } from "../shared/types";
 import { errorCode, errorMessage, getStatus, installSamba } from "./api";
 import { ConfigView } from "./ConfigView";
+import { Loading } from "./Loading";
 import { LogsView } from "./LogsView";
 import { ServiceView } from "./ServiceView";
 import { SessionsView } from "./SessionsView";
@@ -114,7 +116,9 @@ export function SambaTab({ isVisible, host, label }: TabProps) {
         >
           {error ? (
             <p className="p-2 text-sm text-destructive">{error}</p>
-          ) : null}
+          ) : (
+            <Loading />
+          )}
         </PanelShell>
       </Frame>
     );
@@ -192,7 +196,11 @@ export function SambaTab({ isVisible, host, label }: TabProps) {
       >
         <div className="flex shrink-0 flex-col gap-2">
           {!status.root && (
-            <Alert className="rounded-none text-xs">{t("tab.sudo")}</Alert>
+            <Alert className="rounded-none">
+              <AlertDescription className="text-xs">
+                {t("tab.sudo")}
+              </AlertDescription>
+            </Alert>
           )}
           {!status.installed ? (
             <div className="flex flex-col items-start gap-3 border border-border p-4">

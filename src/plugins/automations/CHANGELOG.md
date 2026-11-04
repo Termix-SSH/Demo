@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.2.1
+
+### Added
+
+- Run an automation as a Termix action, from the command palette, the CLI, the phone app or another automation
+- Run an action step: any action a plugin offers, with its own form, on the trigger host, picked hosts or a fleet
+- An event happens trigger: start an automation when a plugin reports an event or an action fails
+
+### Fixed
+
+- The automations dashboard card scrolls as one list instead of squeezing your automations and runs into two small boxes
+
+### Changed
+
+- Needs Termix 26.11.1 or newer
+
 ## 1.2.0
 
 ### Added

@@ -25,12 +25,9 @@ import {
   folderAuthApi,
 } from "../../FolderAuthOverrideModal";
 
+// Counts sub-hosts too, so it matches the online count.
 export function folderHostCount(folder: HostFolder): number {
-  let total = 0;
-  for (const child of folder.children) {
-    total += isFolder(child) ? folderHostCount(child) : 1;
-  }
-  return total;
+  return collectAllHosts(folder.children).length;
 }
 
 export function FolderItem({

@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.0
+
+### Added
+
+- How long the HTTPS certificate has left shows as a status tile, with Request a certificate now as its fix through Termix actions
+
+### Changed
+
+- Needs Termix 26.11.1 or newer
+
 ## 1.1.0
 
 ### Added

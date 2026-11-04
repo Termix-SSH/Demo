@@ -120,6 +120,7 @@ export function CredentialForm({
           error={tried && needsSecret ? t("credentialForm.secretRequired") : ""}
         >
           <PasswordInput
+            className="h-8 pr-8 text-xs"
             value={form.password}
             onChange={(e) => set("password", e.target.value)}
           />
@@ -142,6 +143,7 @@ export function CredentialForm({
           </Field>
           <Field label={t("credentialForm.passphrase")}>
             <PasswordInput
+              className="h-8 pr-8 text-xs"
               value={form.passphrase}
               onChange={(e) => set("passphrase", e.target.value)}
             />

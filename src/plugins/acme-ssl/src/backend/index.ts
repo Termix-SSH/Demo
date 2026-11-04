@@ -7,6 +7,7 @@ import {
   watchSettings,
   type IssueFn,
 } from "./runner.js";
+import { registerOperations } from "./operations.js";
 import { registerRoutes } from "./routes.js";
 
 /** `issue` is swapped out by tests; the plugin always uses acme-client. */
@@ -36,6 +37,7 @@ export async function activateWith(ctx: PluginContext, issue: IssueFn) {
   );
 
   registerRoutes(ctx, ctx.http.router<Router>(), runner);
+  registerOperations(ctx, runner);
   return runner;
 }
 

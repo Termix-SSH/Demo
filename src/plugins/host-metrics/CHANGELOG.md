@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.4.0
+
+### Added
+
+- Processes across hosts and sending them signals through Termix actions, from Automations, the CLI, the phone app and the command palette
+- Health checks show as a status tile on the dashboard and host page
+
+### Removed
+
+- The Firewall manager card. Changing firewall rules moved to the Firewall plugin, which fills the same card when it is installed. The Firewall status card stays
+- The Services, Timers and Log Viewer cards. The Services plugin fills them when it is installed
+- The WireGuard card. The WireGuard plugin fills it when it is installed
+
 ## 1.3.1
 
 ### Fixed

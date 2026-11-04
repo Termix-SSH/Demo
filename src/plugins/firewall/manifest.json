@@ -1,0 +1,455 @@
+{
+  "id": "firewall",
+  "name": "Firewall",
+  "version": "1.0.0",
+  "description": "Manage UFW, firewalld, nftables and iptables rules on your hosts over SSH, with lockout protection.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Firewall",
+  "docs": "https://docs.termix.site/plugins/firewall",
+  "category": "Networking",
+  "icon": "BrickWall",
+  "features": [
+    "See and change firewall rules on UFW, firewalld, nftables and iptables hosts",
+    "Turn the firewall on or off and set the default policies",
+    "Install UFW, firewalld or Fail2ban when a host has none",
+    "SSH lockout check before a change that could cut off Termix",
+    "Risky changes undo themselves on the host unless you press Keep",
+    "Rule sets you can apply to many hosts or a fleet, with a drift check",
+    "Fail2ban jails, banned addresses, ban and unban",
+    "Get an alert when a firewall turns off or its rules change outside Termix",
+    "A firewall panel beside any SSH terminal",
+    "A dashboard card with the firewall state of every host"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.9"
+  },
+  "capabilities": [
+    "hosts:read",
+    "credentials:use",
+    "ssh:connect",
+    "network:serve",
+    "db:own",
+    "notify:send",
+    "users:impersonate",
+    "ui:surface",
+    "operations:provide"
+  ],
+  "optionalDependencies": {
+    "fleets": "^1.0.0"
+  },
+  "requires": [
+    {
+      "service": "fleets.access",
+      "versionRange": "^1.0.0",
+      "optional": true
+    }
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "firewall",
+        "titleKey": "tab.title",
+        "icon": "BrickWall",
+        "openFrom": ["host-context-menu", "palette"]
+      },
+      {
+        "id": "firewall-rulesets",
+        "titleKey": "rulesets.title",
+        "icon": "ListChecks",
+        "openFrom": ["palette"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "enableKey": "enableFirewall",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
+        "editorGroup": "ssh",
+        "fields": [
+          {
+            "key": "useSudo",
+            "type": "boolean",
+            "labelKey": "settings.host.useSudo.label",
+            "descriptionKey": "settings.host.useSudo.description",
+            "default": true,
+            "requires": "enableFirewall"
+          },
+          {
+            "key": "readOnly",
+            "type": "boolean",
+            "labelKey": "settings.host.readOnly.label",
+            "descriptionKey": "settings.host.readOnly.description",
+            "default": false,
+            "requires": "enableFirewall"
+          },
+          {
+            "key": "sshGuard",
+            "type": "boolean",
+            "labelKey": "settings.host.sshGuard.label",
+            "descriptionKey": "settings.host.sshGuard.description",
+            "default": true,
+            "requires": "enableFirewall"
+          },
+          {
+            "key": "rollbackSeconds",
+            "type": "number",
+            "labelKey": "settings.host.rollbackSeconds.label",
+            "descriptionKey": "settings.host.rollbackSeconds.description",
+            "min": 20,
+            "max": 600,
+            "default": 60,
+            "requires": "enableFirewall"
+          },
+          {
+            "key": "confirmAll",
+            "type": "boolean",
+            "labelKey": "settings.host.confirmAll.label",
+            "descriptionKey": "settings.host.confirmAll.description",
+            "default": false,
+            "requires": "enableFirewall"
+          },
+          {
+            "key": "showPanel",
+            "type": "boolean",
+            "labelKey": "settings.host.showPanel.label",
+            "descriptionKey": "settings.host.showPanel.description",
+            "default": true,
+            "requires": "enableFirewall"
+          }
+        ]
+      },
+      "user": [
+        {
+          "key": "companionAutoOpen",
+          "type": "boolean",
+          "labelKey": "settings.user.companionAutoOpen.label",
+          "descriptionKey": "settings.user.companionAutoOpen.description",
+          "default": false
+        },
+        {
+          "key": "companionSide",
+          "type": "select",
+          "labelKey": "settings.user.companionSide.label",
+          "descriptionKey": "settings.user.companionSide.description",
+          "default": "right",
+          "options": [
+            {
+              "value": "right",
+              "labelKey": "settings.user.companionSide.right"
+            },
+            {
+              "value": "left",
+              "labelKey": "settings.user.companionSide.left"
+            },
+            {
+              "value": "bottom",
+              "labelKey": "settings.user.companionSide.bottom"
+            }
+          ]
+        },
+        {
+          "key": "companionSize",
+          "type": "number",
+          "labelKey": "settings.user.companionSize.label",
+          "descriptionKey": "settings.user.companionSize.description",
+          "min": 240,
+          "max": 900,
+          "default": 360
+        },
+        {
+          "key": "companionEdgeButton",
+          "type": "boolean",
+          "labelKey": "settings.user.companionEdgeButton.label",
+          "descriptionKey": "settings.user.companionEdgeButton.description",
+          "default": true
+        }
+      ]
+    },
+    "dashboardCards": [
+      {
+        "id": "firewall-hosts",
+        "titleKey": "card.title",
+        "icon": "BrickWall"
+      }
+    ],
+    "operations": {
+      "actions": [
+        {
+          "id": "firewall.list-rules",
+          "titleKey": "operations.list.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableFirewall": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "firewall.status",
+          "titleKey": "operations.status.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableFirewall": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "firewall.port-allowed",
+          "titleKey": "operations.portAllowed.title",
+          "descriptionKey": "operations.portAllowed.description",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "inputs": [
+            {
+              "key": "port",
+              "type": "string",
+              "labelKey": "operations.port",
+              "required": true,
+              "pattern": "[0-9]{1,5}(-[0-9]{1,5})?(,[0-9]{1,5})*"
+            },
+            {
+              "key": "protocol",
+              "type": "select",
+              "labelKey": "operations.protocol",
+              "default": "tcp",
+              "options": [
+                {
+                  "value": "tcp",
+                  "labelKey": "operations.tcp"
+                },
+                {
+                  "value": "udp",
+                  "labelKey": "operations.udp"
+                },
+                {
+                  "value": "any",
+                  "labelKey": "operations.any"
+                }
+              ]
+            },
+            {
+              "key": "source",
+              "type": "string",
+              "labelKey": "operations.source",
+              "descriptionKey": "operations.sourceHint"
+            }
+          ],
+          "when": {
+            "settings": {
+              "enableFirewall": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "firewall.allow-port",
+          "titleKey": "operations.allow.title",
+          "icon": "ShieldCheck",
+          "scope": "host",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "check": "firewall.port-allowed",
+          "undo": "firewall.remove-port",
+          "idempotent": true,
+          "exclusive": true,
+          "inputs": [
+            {
+              "key": "port",
+              "type": "string",
+              "labelKey": "operations.port",
+              "required": true,
+              "pattern": "[0-9]{1,5}(-[0-9]{1,5})?(,[0-9]{1,5})*"
+            },
+            {
+              "key": "protocol",
+              "type": "select",
+              "labelKey": "operations.protocol",
+              "default": "tcp",
+              "options": [
+                {
+                  "value": "tcp",
+                  "labelKey": "operations.tcp"
+                },
+                {
+                  "value": "udp",
+                  "labelKey": "operations.udp"
+                },
+                {
+                  "value": "any",
+                  "labelKey": "operations.any"
+                }
+              ]
+            },
+            {
+              "key": "source",
+              "type": "string",
+              "labelKey": "operations.source",
+              "descriptionKey": "operations.sourceHint"
+            }
+          ],
+          "when": {
+            "settings": {
+              "enableFirewall": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "firewall.remove-port",
+          "titleKey": "operations.remove.title",
+          "icon": "ShieldOff",
+          "scope": "host",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "undo": "firewall.allow-port",
+          "idempotent": true,
+          "exclusive": true,
+          "inputs": [
+            {
+              "key": "port",
+              "type": "string",
+              "labelKey": "operations.port",
+              "required": true,
+              "pattern": "[0-9]{1,5}(-[0-9]{1,5})?(,[0-9]{1,5})*"
+            },
+            {
+              "key": "protocol",
+              "type": "select",
+              "labelKey": "operations.protocol",
+              "default": "tcp",
+              "options": [
+                {
+                  "value": "tcp",
+                  "labelKey": "operations.tcp"
+                },
+                {
+                  "value": "udp",
+                  "labelKey": "operations.udp"
+                },
+                {
+                  "value": "any",
+                  "labelKey": "operations.any"
+                }
+              ]
+            },
+            {
+              "key": "source",
+              "type": "string",
+              "labelKey": "operations.source",
+              "descriptionKey": "operations.sourceHint"
+            }
+          ],
+          "when": {
+            "settings": {
+              "enableFirewall": true
+            }
+          }
+        },
+        {
+          "id": "firewall.delete-rule",
+          "titleKey": "operations.delete.title",
+          "icon": "Trash2",
+          "scope": "resource",
+          "resource": "firewall.rule",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "exclusive": true,
+          "when": {
+            "settings": {
+              "enableFirewall": true
+            }
+          }
+        }
+      ],
+      "resources": [
+        {
+          "id": "firewall.rule",
+          "titleKey": "operations.rules.title",
+          "icon": "Shield",
+          "list": "firewall.list-rules",
+          "key": "id",
+          "name": "name",
+          "status": "action",
+          "tab": "firewall",
+          "columns": [
+            {
+              "key": "port",
+              "titleKey": "operations.port"
+            },
+            {
+              "key": "protocol",
+              "titleKey": "operations.protocol"
+            },
+            {
+              "key": "source",
+              "titleKey": "operations.source"
+            },
+            {
+              "key": "direction",
+              "titleKey": "operations.direction"
+            }
+          ],
+          "filters": ["action", "protocol"]
+        }
+      ],
+      "signals": [
+        {
+          "id": "firewall.on",
+          "titleKey": "operations.status.title",
+          "read": "firewall.status",
+          "scope": "host",
+          "kind": "status",
+          "refreshSec": 300
+        }
+      ]
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

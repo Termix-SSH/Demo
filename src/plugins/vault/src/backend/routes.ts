@@ -6,10 +6,11 @@ import type {
   ProfileRow,
   ProfileStore,
 } from "./profile-store.js";
+import { isProvider, PROVIDERS } from "./vault-client.js";
 
 /**
- * Vault sends the browser back here without a Termix session: the sign-in is
- * matched by the state Vault issued.
+ * The signer sends the browser back here without a Termix session: the
+ * sign-in is matched by the state the signer issued.
  */
 export const PUBLIC_PATHS = ["/oidc/callback"];
 
@@ -26,9 +27,11 @@ function resultPage(ok: boolean, message: string): string {
   return `<!doctype html><html><head><meta charset="utf-8"><title>Termix</title>
 <style>body{font-family:system-ui,sans-serif;background:#111;color:#eee;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
 main{max-width:28rem;padding:2rem;border:1px solid #333;background:#181818}h1{font-size:1.1rem;margin:0 0 .5rem}p{margin:0;color:#aaa}</style></head>
-<body><main><h1>${ok ? "Vault sign-in complete" : "Vault sign-in failed"}</h1><p>${escapeHtml(message)}</p></main>
+<body><main><h1>${ok ? "Sign-in complete" : "Sign-in failed"}</h1><p>${escapeHtml(message)}</p></main>
 ${ok ? "<script>setTimeout(function(){window.close()},1500)</script>" : ""}</body></html>`;
 }
+
+const providerError = `provider must be one of ${PROVIDERS.join(", ")}`;
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
@@ -54,6 +57,7 @@ function formatProfile(row: ProfileRow, userId: string) {
     description: row.description,
     folder: row.folder,
     tags: row.tags ? row.tags.split(",").filter(Boolean) : [],
+    provider: row.provider ?? "vault",
     vaultAddr: row.vaultAddr,
     vaultNamespace: row.vaultNamespace,
     oidcMount: row.oidcMount,
@@ -86,9 +90,9 @@ export function registerRoutes(
    * @openapi
    * /plugin-api/vault/oidc/callback:
    *   get:
-   *     summary: Vault OIDC callback
-   *     description: Public. The redirect URI a Vault OIDC role allows. Matches the sign-in by the state Vault issued, has Vault sign the ephemeral key and tells the terminal to reconnect.
-   *     tags: [Vault]
+   *     summary: OIDC callback
+   *     description: Public. The redirect URI a Vault or OpenBao OIDC role allows. Matches the sign-in by the state the signer issued, has it sign the ephemeral key and tells the terminal to reconnect.
+   *     tags: [SSH Certificate Signer]
    *     parameters:
    *       - in: query
    *         name: state
@@ -119,7 +123,7 @@ export function registerRoutes(
         .type("html")
         .send(resultPage(ok, message));
 
-    if (error) return reply(false, `Vault returned: ${error}`);
+    if (error) return reply(false, `Sign-in returned: ${error}`);
     if (!state || !code) return reply(false, "Missing state or code.");
     const result = await sessions.complete(state, code);
     return reply(result.ok, result.message);
@@ -131,12 +135,12 @@ export function registerRoutes(
    * @openapi
    * /plugin-api/vault/profiles:
    *   get:
-   *     summary: List Vault profiles
-   *     description: The caller's own Vault signer profiles and every shared one. Needs vault.use.
-   *     tags: [Vault]
+   *     summary: List signer profiles
+   *     description: The caller's own signer profiles and every shared one. Needs vault.use.
+   *     tags: [SSH Certificate Signer]
    *     responses:
    *       200:
-   *         description: Array of Vault profile objects.
+   *         description: Array of signer profile objects.
    *       403:
    *         description: Missing vault.use.
    */
@@ -149,9 +153,9 @@ export function registerRoutes(
    * @openapi
    * /plugin-api/vault/profiles:
    *   post:
-   *     summary: Create a Vault profile
-   *     description: Creates a Vault signer profile owned by the caller. Needs vault.use, and vault.share to mark it shared.
-   *     tags: [Vault]
+   *     summary: Create a signer profile
+   *     description: Creates a signer profile owned by the caller. Needs vault.use, and vault.share to mark it shared.
+   *     tags: [SSH Certificate Signer]
    *     requestBody:
    *       required: true
    *       content:
@@ -162,6 +166,10 @@ export function registerRoutes(
    *             properties:
    *               name:
    *                 type: string
+   *               provider:
+   *                 type: string
+   *                 enum: [vault, openbao]
+   *                 default: vault
    *               vaultAddr:
    *                 type: string
    *               vaultNamespace:
@@ -184,7 +192,7 @@ export function registerRoutes(
    *       201:
    *         description: The created profile.
    *       400:
-   *         description: Missing required fields.
+   *         description: Missing required fields or an unknown provider.
    *       403:
    *         description: Missing vault.use, or vault.share for a shared profile.
    */
@@ -204,14 +212,18 @@ export function registerRoutes(
         .status(400)
         .json({ error: "vaultAddr must be an http or https URL" });
     }
+    if (body.provider !== undefined && !isProvider(body.provider)) {
+      return res.status(400).json({ error: providerError });
+    }
     const shared = !!body.shared;
     if (shared && !(await ctx.rbac.has("share"))) {
       return res
         .status(403)
-        .json({ error: "You are not allowed to share Vault profiles" });
+        .json({ error: "You are not allowed to share signer profiles" });
     }
     const row = await profiles.create(userId(), {
       name: body.name.trim(),
+      provider: isProvider(body.provider) ? body.provider : "vault",
       description: optional(body.description),
       folder: optional(body.folder),
       tags: Array.isArray(body.tags)
@@ -236,9 +248,9 @@ export function registerRoutes(
    * @openapi
    * /plugin-api/vault/profiles/{id}:
    *   put:
-   *     summary: Update a Vault profile
+   *     summary: Update a signer profile
    *     description: Only the owner may edit a profile. Needs vault.use, and vault.share to mark it shared.
-   *     tags: [Vault]
+   *     tags: [SSH Certificate Signer]
    *     parameters:
    *       - in: path
    *         name: id
@@ -254,7 +266,7 @@ export function registerRoutes(
    *       200:
    *         description: The updated profile.
    *       400:
-   *         description: Invalid profile id.
+   *         description: Invalid profile id or unknown provider.
    *       403:
    *         description: Not the owner, or sharing without vault.share.
    *       404:
@@ -285,6 +297,12 @@ export function registerRoutes(
           ? body.tags
           : "";
     }
+    if (body.provider !== undefined) {
+      if (!isProvider(body.provider)) {
+        return res.status(400).json({ error: providerError });
+      }
+      fields.provider = body.provider;
+    }
     if (isNonEmptyString(body.vaultAddr)) {
       if (!isHttpUrl(body.vaultAddr)) {
         return res
@@ -307,7 +325,7 @@ export function registerRoutes(
       if (body.shared && !(await ctx.rbac.has("share"))) {
         return res
           .status(403)
-          .json({ error: "You are not allowed to share Vault profiles" });
+          .json({ error: "You are not allowed to share signer profiles" });
       }
       fields.shared = !!body.shared;
     }
@@ -321,9 +339,9 @@ export function registerRoutes(
    * @openapi
    * /plugin-api/vault/profiles/{id}:
    *   delete:
-   *     summary: Delete a Vault profile
+   *     summary: Delete a signer profile
    *     description: Deletes a profile and every certificate cached for it. Only the owner may delete it. Needs vault.use.
-   *     tags: [Vault]
+   *     tags: [SSH Certificate Signer]
    *     parameters:
    *       - in: path
    *         name: id

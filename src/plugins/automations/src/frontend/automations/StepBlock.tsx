@@ -14,6 +14,7 @@ import {
 import { ChevronDown, ChevronUp, Trash2 } from "lucide-react";
 import { DEFAULT_STEP_TIMEOUT_MS, type Step, type StepType } from "../../types";
 import { HostSelectorField } from "./HostSelectorField";
+import { OperationStepFields } from "./OperationFields";
 import {
   missingStepProvider,
   type AutomationEditorOptions,
@@ -27,6 +28,7 @@ const STEP_TYPES: StepType[] = [
   "docker",
   "tunnel",
   "wol",
+  "operation",
   "ai_task",
   "wait",
   "set_var",
@@ -387,6 +389,14 @@ export function StepBlock({
           </div>
         )}
 
+        {step.type === "operation" && (
+          <OperationStepFields
+            step={step}
+            options={options}
+            onChange={onChange}
+          />
+        )}
+
         {step.type === "wol" && (
           <Field label={t(`${base}.fields.host`)}>
             <Select
@@ -664,6 +674,11 @@ function changeStepType(step: Step, type: StepType): Step {
       next.runbook = "";
       next.autonomy = "report";
       next.hostSelector = { kind: "trigger" };
+      break;
+    case "operation":
+      next.actionId = "";
+      next.hostSelector = { kind: "trigger" };
+      next.input = {};
       break;
     case "wait":
       next.seconds = 30;

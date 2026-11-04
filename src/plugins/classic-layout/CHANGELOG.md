@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.1.2
+
+### Added
+
+- A click on a host can open its host page, when a plugin offers one
+- API keys can be limited to reading or running actions
+- The dashboard layout is saved with your account, so it follows you to every browser. A layout saved in this browser moves over on its own
+- A dashboard you never arranged puts Needs attention first, when Operations Center is on
+
+### Changed
+
+- With a host page available, the host row shows only ways to connect and the host page button. Tools you turned on in Customize stay
+
+### Fixed
+
+- Folder host counts now include sub-hosts, so a folder no longer shows more online hosts than it has
+
 ## 1.1.1
 
 ### Added

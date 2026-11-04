@@ -1,0 +1,356 @@
+{
+  "tab": {
+    "title": "Firewall",
+    "noHost": "Open the firewall from a host.",
+    "refresh": "Refresh",
+    "error": "Could not read the firewall on this host.",
+    "disabled": "Firewall is turned off for this host. Turn it on in the host settings.",
+    "sudo": "This host needs passwordless sudo, or a root login, to read and change the firewall.",
+    "noFirewall": "No firewall",
+    "on": "on",
+    "off": "off",
+    "readOnly": "read only",
+    "ruleCount_one": "{{count}} rule",
+    "ruleCount_other": "{{count}} rules",
+    "viewRules": "Rules",
+    "viewDefaults": "Defaults",
+    "viewZones": "Zones",
+    "viewFail2ban": "Fail2ban",
+    "viewRaw": "Raw"
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "done": "Done",
+    "failed": "That did not work."
+  },
+  "actions": {
+    "allow": "Allow",
+    "deny": "Deny",
+    "reject": "Reject",
+    "limit": "Limit"
+  },
+  "policies": {
+    "allow": "Allow",
+    "deny": "Deny (drop)",
+    "reject": "Reject"
+  },
+  "rule": {
+    "action": "Action",
+    "direction": "Direction",
+    "in": "Incoming",
+    "out": "Outgoing",
+    "protocol": "Protocol",
+    "anyProtocol": "TCP and UDP",
+    "port": "Port",
+    "portPlaceholder": "22, 80,443 or 8000-8100",
+    "portHint": "Leave empty for every port. Lists and ranges need TCP or UDP.",
+    "anyPort": "any port",
+    "source": "From",
+    "destination": "To",
+    "anywhere": "Anywhere",
+    "addressHint": "An address or a range like 10.0.0.0/8.",
+    "family": "IP version",
+    "bothFamilies": "IPv4 and IPv6",
+    "iface": "Interface",
+    "anyIface": "Any interface",
+    "service": "Service",
+    "serviceHint": "A firewalld service name, instead of a port.",
+    "comment": "Comment",
+    "commentPlaceholder": "What this rule is for",
+    "zoneLabel": "Zone",
+    "from": "from {{address}}",
+    "to": "to {{address}}",
+    "on": "on {{iface}}",
+    "zone": "zone {{zone}}"
+  },
+  "presets": {
+    "ssh": "SSH",
+    "http": "HTTP",
+    "https": "HTTPS",
+    "web": "Web",
+    "dns": "DNS",
+    "smtp": "Mail",
+    "mysql": "MySQL",
+    "postgres": "PostgreSQL",
+    "redis": "Redis",
+    "samba": "Samba",
+    "wireguard": "WireGuard",
+    "minecraft": "Minecraft"
+  },
+  "rules": {
+    "add": "Add rule",
+    "addTitle": "New rule",
+    "editTitle": "Edit rule",
+    "added": "Rule added",
+    "saved": "Rule saved",
+    "deleted": "Rule deleted",
+    "confirmDelete": "Delete this rule?",
+    "search": "Search ports, addresses and comments",
+    "empty": "No rules yet.",
+    "noMatch": "No rules match.",
+    "readOnly": "Read only",
+    "deleteOnly": "Delete only",
+    "stale": "The rules changed on the host. Refresh and try again.",
+    "filters": {
+      "all": "All",
+      "in": "Incoming",
+      "out": "Outgoing",
+      "readOnly": "Read only"
+    }
+  },
+  "defaults": {
+    "hint": "What happens to traffic that no rule matches.",
+    "incoming": "Incoming",
+    "outgoing": "Outgoing",
+    "routed": "Routed",
+    "saved": "Defaults saved"
+  },
+  "zones": {
+    "hint": "firewalld puts each network interface and source in a zone. A zone's target is what it does with traffic its rules don't match.",
+    "defaultZone": "Default zone",
+    "default": "Default",
+    "active": "Active",
+    "target": "Target",
+    "interfaces": "interfaces {{list}}",
+    "sources": "sources {{list}}",
+    "saved": "Zone saved",
+    "targets": {
+      "default": "Default (reject)",
+      "ACCEPT": "Accept",
+      "DROP": "Drop",
+      "REJECT": "Reject"
+    }
+  },
+  "enable": {
+    "off": "The firewall is off, so none of these rules apply right now.",
+    "allowSsh": "Allow SSH on port {{ports}} first",
+    "allowSshHint": "Keeps Termix and your own SSH logins working.",
+    "button": "Turn on",
+    "done": "Firewall turned on",
+    "timerHint": "Turning it on starts a timer. If you don't press Keep in time, the host turns it off again by itself."
+  },
+  "disable": {
+    "button": "Turn off",
+    "title": "Turn off the firewall?",
+    "description": "Every rule stops applying until you turn it on again.",
+    "done": "Firewall turned off"
+  },
+  "install": {
+    "none": "This host has no firewall yet.",
+    "hint": "Install one to get started. Nothing is turned on until you say so.",
+    "button": "Install {{name}}",
+    "working": "Installing...",
+    "done": "{{name}} installed",
+    "noPackageManager": "Termix could not find a package manager it knows on this host."
+  },
+  "lockout": {
+    "title": "This could lock Termix out",
+    "description": "{{reason}}. If Termix can't connect after the change, the host undoes it by itself when the timer runs out. Go ahead anyway?",
+    "confirm": "Go ahead"
+  },
+  "pending": {
+    "started": "Change applied. Press Keep to make it stay.",
+    "left": "Undone in {{seconds}} s unless you press Keep",
+    "expired": "Time ran out, the host is undoing the change",
+    "reachable": "Termix could still connect",
+    "unreachable": "Termix could not connect after the change",
+    "unknown": "Checking the connection",
+    "keep": "Keep",
+    "undo": "Undo now",
+    "kept": "Change kept",
+    "undone": "Change undone",
+    "gone": "Time ran out and the host already undid the change.",
+    "first": "Keep or undo the last change first.",
+    "kinds": {
+      "add": "New rule",
+      "update": "Changed rule",
+      "remove": "Deleted rule",
+      "defaults": "New defaults",
+      "enable": "Firewall turned on",
+      "disable": "Firewall turned off",
+      "zoneTarget": "New zone target",
+      "defaultZone": "New default zone",
+      "ruleset": "Rule set applied"
+    }
+  },
+  "fail2ban": {
+    "loadFailed": "Could not read Fail2ban.",
+    "notInstalled": "Fail2ban is not installed. It bans addresses that fail to log in too often.",
+    "stopped": "Fail2ban is installed but not running.",
+    "start": "Start Fail2ban",
+    "started": "Fail2ban started",
+    "noJails": "No jails are turned on.",
+    "none": "Nothing banned.",
+    "bannedCount_one": "{{count}} banned",
+    "bannedCount_other": "{{count}} banned",
+    "counts": "{{failed}} failing now | {{totalFailed}} failed | {{totalBanned}} banned in total",
+    "ban": "Ban",
+    "unban": "Unban",
+    "banAddress": "Ban an address",
+    "banned": "{{ip}} banned",
+    "unbanned": "{{ip}} unbanned",
+    "selfTitle": "Ban the Termix address?",
+    "selfDescription": "Termix connects from this address. Banning it cuts Termix off from this host."
+  },
+  "raw": {
+    "empty": "Nothing to show."
+  },
+  "watch": {
+    "start": "Alert me when this firewall changes",
+    "stop": "Stop alerts for this firewall"
+  },
+  "companion": {
+    "openTab": "Open the Firewall tab",
+    "toggle": "Firewall panel",
+    "allowPort": "Allow a TCP port"
+  },
+  "card": {
+    "title": "Firewalls",
+    "empty": "No hosts have Firewall turned on.",
+    "banned_one": "{{count}} banned",
+    "banned_other": "{{count}} banned",
+    "pending": "Waiting"
+  },
+  "rulesets": {
+    "title": "Firewall rule sets",
+    "hint": "Save a list of rules and add it to many hosts at once. Applying only adds missing rules, it never removes any.",
+    "add": "New rule set",
+    "addTitle": "New rule set",
+    "editTitle": "Edit rule set",
+    "loadFailed": "Could not load your rule sets.",
+    "empty": "No rule sets yet.",
+    "name": "Name",
+    "namePlaceholder": "Web server",
+    "description": "Description",
+    "rules": "Rules",
+    "noRules": "No rules in this set yet.",
+    "hosts": "Hosts",
+    "noHosts": "No hosts have Firewall turned on.",
+    "saved": "Rule set saved",
+    "deleted": "Rule set deleted",
+    "confirmDelete": "Delete {{name}}?",
+    "deleteHint": "Rules it already added to hosts stay.",
+    "ruleCount_one": "{{count}} rule",
+    "ruleCount_other": "{{count}} rules",
+    "hostCount_one": "{{count}} host",
+    "hostCount_other": "{{count}} hosts",
+    "check": "Check hosts",
+    "apply": "Apply",
+    "applyTitle": "Apply {{name}}?",
+    "applyDescription": "Missing rules are added on each host. Each host gets the SSH lockout check, and a host Termix can't reach afterwards undoes the change by itself.",
+    "applied": "Rule set applied",
+    "applyErrors_one": "{{count}} host had a problem",
+    "applyErrors_other": "{{count}} hosts had a problem",
+    "applyResult": "Applied {{name}}",
+    "driftTitle": "{{name}} on each host",
+    "inSync": "Has every rule",
+    "ok": "In sync",
+    "missing_one": "{{count}} missing",
+    "missing_other": "{{count}} missing",
+    "nothingMissing": "Already had every rule",
+    "added_one": "Added {{count}} rule",
+    "added_other": "Added {{count}} rules",
+    "waiting": "Added, but Termix could not connect afterwards. The host will undo it.",
+    "fleet": "Fleet",
+    "applyFleet": "Apply to the fleet"
+  },
+  "permissions": {
+    "use": {
+      "title": "Use Firewall",
+      "description": "Open the Firewall tab on hosts you can reach. Changes also need edit access to the host."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Firewall",
+        "description": "Show the Firewall tab for this host to manage its firewall over SSH."
+      },
+      "useSudo": {
+        "label": "Use sudo",
+        "description": "Run firewall commands with passwordless sudo when the login is not root."
+      },
+      "readOnly": {
+        "label": "Read only",
+        "description": "Show the firewall but block every change from Termix."
+      },
+      "sshGuard": {
+        "label": "SSH lockout check",
+        "description": "Stop and ask before a change that looks like it would block SSH from Termix."
+      },
+      "rollbackSeconds": {
+        "label": "Undo timer",
+        "description": "Seconds you get to press Keep after a risky change before the host undoes it."
+      },
+      "confirmAll": {
+        "label": "Timer on every change",
+        "description": "Use the undo timer for every change, not only the risky ones."
+      },
+      "showPanel": {
+        "label": "Firewall panel",
+        "description": "Offer the firewall panel beside SSH terminals for this host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Open the firewall panel with a terminal",
+        "description": "Show the firewall panel when a terminal opens on a host that has it."
+      },
+      "companionSide": {
+        "label": "Firewall panel side",
+        "description": "Where the panel sits next to the terminal.",
+        "right": "Right",
+        "left": "Left",
+        "bottom": "Bottom"
+      },
+      "companionSize": {
+        "label": "Firewall panel size",
+        "description": "Width, or height at the bottom, in pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Firewall panel edge button",
+        "description": "Show a small button on the terminal edge to open the panel."
+      }
+    }
+  },
+  "manager": {
+    "title": "Firewall",
+    "disabled": "Turn on Firewall in this host's settings to manage its firewall here."
+  },
+  "operations": {
+    "list": {
+      "title": "List firewall rules"
+    },
+    "status": {
+      "title": "Firewall"
+    },
+    "portAllowed": {
+      "title": "Port is allowed",
+      "description": "Whether an allow rule for this port exists. Use it to watch hosts for drift."
+    },
+    "allow": {
+      "title": "Allow a port"
+    },
+    "remove": {
+      "title": "Remove an allowed port"
+    },
+    "delete": {
+      "title": "Delete firewall rule"
+    },
+    "rules": {
+      "title": "Firewall rules"
+    },
+    "port": "Port",
+    "protocol": "Protocol",
+    "tcp": "TCP",
+    "udp": "UDP",
+    "any": "Any",
+    "source": "From",
+    "sourceHint": "An address or range. Empty means anywhere.",
+    "direction": "Direction"
+  }
+}

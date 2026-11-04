@@ -80,6 +80,7 @@ export function SharingCard({
         {t("sessionSharing.activeShares")}
       </span>
       <PanelList
+        className="flex-none overflow-visible"
         empty={
           <p className="px-3 py-2 text-xs text-muted-foreground">
             {t("sessionSharing.noActiveShares")}
@@ -131,6 +132,7 @@ export function SharingCard({
         {t("nav.collab")}
       </span>
       <PanelList
+        className="flex-none overflow-visible"
         empty={
           <p className="px-3 py-2 text-xs text-muted-foreground">
             {t("collab.noRooms")}

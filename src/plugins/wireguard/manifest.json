@@ -1,0 +1,203 @@
+{
+  "id": "wireguard",
+  "name": "WireGuard",
+  "version": "1.0.0",
+  "description": "Install WireGuard on your hosts and manage interfaces, clients and configs from one tab.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-WireGuard",
+  "docs": "https://docs.termix.site/plugins/wireguard",
+  "category": "Networking",
+  "icon": "Network",
+  "features": [
+    "Install WireGuard and start, stop or restart interfaces on a host",
+    "Create server interfaces with NAT and IP forwarding set up for you",
+    "Add clients with generated keys, a free IP, a config file and a QR code",
+    "Turn clients on or off, rotate their keys and remove them",
+    "See live handshakes and traffic for every client",
+    "Edit the raw config with a check before it is saved, and read the logs",
+    "A WireGuard card in Host Metrics"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.5"
+  },
+  "capabilities": [
+    "hosts:read",
+    "credentials:use",
+    "ssh:connect",
+    "network:serve",
+    "users:impersonate",
+    "ui:surface",
+    "operations:provide"
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "wireguard",
+        "titleKey": "tab.title",
+        "icon": "Network",
+        "openFrom": ["host-context-menu", "palette"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "enableKey": "enableWireguard",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
+        "editorGroup": "ssh",
+        "fields": []
+      }
+    },
+    "operations": {
+      "actions": [
+        {
+          "id": "wireguard.list-interfaces",
+          "titleKey": "operations.list.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableWireguard": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "wireguard.down",
+          "titleKey": "operations.down.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableWireguard": true
+            }
+          },
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
+          "id": "wireguard.start",
+          "titleKey": "operations.start.title",
+          "icon": "Play",
+          "scope": "resource",
+          "resource": "wireguard.interface",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "idempotent": true,
+          "exclusive": true,
+          "when": {
+            "settings": {
+              "enableWireguard": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "wireguard.stop",
+          "titleKey": "operations.stop.title",
+          "icon": "Square",
+          "scope": "resource",
+          "resource": "wireguard.interface",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "idempotent": true,
+          "exclusive": true,
+          "when": {
+            "settings": {
+              "enableWireguard": true
+            }
+          }
+        },
+        {
+          "id": "wireguard.restart",
+          "titleKey": "operations.restart.title",
+          "icon": "RotateCw",
+          "scope": "resource",
+          "resource": "wireguard.interface",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "exclusive": true,
+          "when": {
+            "settings": {
+              "enableWireguard": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        }
+      ],
+      "resources": [
+        {
+          "id": "wireguard.interface",
+          "titleKey": "operations.interfaces.title",
+          "icon": "Network",
+          "list": "wireguard.list-interfaces",
+          "key": "name",
+          "name": "name",
+          "status": "state",
+          "tab": "wireguard",
+          "columns": [
+            {
+              "key": "address",
+              "titleKey": "operations.interfaces.address"
+            },
+            {
+              "key": "listenPort",
+              "titleKey": "operations.interfaces.port"
+            },
+            {
+              "key": "clients",
+              "titleKey": "operations.interfaces.clients"
+            }
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "id": "wireguard.down",
+          "titleKey": "operations.down.title",
+          "read": "wireguard.down",
+          "scope": "host",
+          "kind": "count",
+          "refreshSec": 120,
+          "fix": "wireguard.start"
+        }
+      ]
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}
