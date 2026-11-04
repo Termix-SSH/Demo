@@ -28,3 +28,4 @@ import "./kubernetes";
 import "./reverse-proxy";
 import "./samba";
 import "./service-manager";
+import "./wake-on-lan";

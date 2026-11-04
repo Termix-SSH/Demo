@@ -207,7 +207,7 @@ export const DEMO_HOSTS = [
     credentialId: 3,
     sortOrder: 1,
     features: {
-      "wake-on-lan": { macAddress: "a8:a1:59:3c:4e:10" },
+      "wake-on-lan": { enablePower: true, macAddress: "a8:a1:59:3c:4e:10" },
       samba: { enableSamba: true },
     },
   }),
@@ -273,7 +273,10 @@ export const DEMO_HOSTS = [
     tags: ["plex", "docker"],
     credentialId: 3,
     sortOrder: 3,
-    features: { docker: { enableDocker: true } },
+    features: {
+      docker: { enableDocker: true },
+      "wake-on-lan": { enablePower: true, macAddress: "2c:f0:5d:81:6e:3a" },
+    },
   }),
   host({
     id: 11,
