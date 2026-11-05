@@ -1,0 +1,238 @@
+{
+  "id": "certificates",
+  "name": "Certificates",
+  "version": "1.0.0",
+  "description": "See, issue and renew TLS certificates on your hosts with certbot and acme.sh, and get an alert before they expire.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Certificates",
+  "docs": "https://docs.termix.site/plugins/certificates",
+  "category": "Access & Security",
+  "icon": "ShieldCheck",
+  "features": [
+    "See every certbot and acme.sh certificate on a host with its days left",
+    "Issue certificates with the standalone, web root or DNS challenge",
+    "Renew one or all certificates, with a dry run for certbot",
+    "Revoke or stop managing a certificate",
+    "Read any certificate file, or check what a server sends over TLS",
+    "See how automatic renewal is set up",
+    "Get an alert before a certificate expires",
+    "A dashboard card with the certificates that expire next and a Certificates card in Host Metrics"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "hosts:read",
+    "credentials:use",
+    "credentials:read",
+    "ssh:connect",
+    "network:serve",
+    "users:impersonate",
+    "ui:surface",
+    "operations:provide",
+    "kv:own",
+    "notify:send"
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "certificates",
+        "titleKey": "tab.title",
+        "icon": "ShieldCheck",
+        "openFrom": ["host-context-menu", "palette"]
+      }
+    ],
+    "dashboardCards": [
+      {
+        "id": "certificates-expiring",
+        "titleKey": "card.title",
+        "icon": "ShieldCheck"
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "enableKey": "enableCertificates",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
+        "editorGroup": "ssh",
+        "fields": [
+          {
+            "key": "useSudo",
+            "type": "boolean",
+            "labelKey": "settings.host.useSudo.label",
+            "descriptionKey": "settings.host.useSudo.description",
+            "default": true,
+            "requires": "enableCertificates"
+          },
+          {
+            "key": "readOnly",
+            "type": "boolean",
+            "labelKey": "settings.host.readOnly.label",
+            "descriptionKey": "settings.host.readOnly.description",
+            "default": false,
+            "requires": "enableCertificates"
+          },
+          {
+            "key": "expiryWarnDays",
+            "type": "number",
+            "labelKey": "settings.host.expiryWarnDays.label",
+            "descriptionKey": "settings.host.expiryWarnDays.description",
+            "min": 1,
+            "max": 90,
+            "default": 14,
+            "requires": "enableCertificates"
+          }
+        ]
+      }
+    },
+    "operations": {
+      "actions": [
+        {
+          "id": "certificates.list",
+          "titleKey": "operations.list.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableCertificates": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "certificates.expiring",
+          "titleKey": "operations.expiring.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableCertificates": true
+            }
+          },
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
+          "id": "certificates.renew",
+          "titleKey": "operations.renew.title",
+          "icon": "RefreshCw",
+          "scope": "resource",
+          "resource": "certificates.certificate",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "exclusive": true,
+          "when": {
+            "settings": {
+              "enableCertificates": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "certificates.renew-all",
+          "titleKey": "operations.renewAll.title",
+          "icon": "RefreshCw",
+          "scope": "host",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "exclusive": true,
+          "when": {
+            "settings": {
+              "enableCertificates": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "certificates.revoke",
+          "titleKey": "operations.revoke.title",
+          "icon": "ShieldX",
+          "scope": "resource",
+          "resource": "certificates.certificate",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "exclusive": true,
+          "when": {
+            "settings": {
+              "enableCertificates": true
+            }
+          }
+        }
+      ],
+      "resources": [
+        {
+          "id": "certificates.certificate",
+          "titleKey": "operations.certificates.title",
+          "icon": "ShieldCheck",
+          "list": "certificates.list",
+          "key": "key",
+          "name": "name",
+          "status": "state",
+          "tab": "certificates",
+          "columns": [
+            {
+              "key": "client",
+              "titleKey": "operations.certificates.client"
+            },
+            {
+              "key": "domains",
+              "titleKey": "operations.certificates.domains"
+            },
+            {
+              "key": "daysLeft",
+              "titleKey": "operations.certificates.daysLeft"
+            }
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "id": "certificates.expiring",
+          "titleKey": "operations.expiring.title",
+          "read": "certificates.expiring",
+          "scope": "host",
+          "kind": "count",
+          "refreshSec": 3600,
+          "fix": "certificates.renew-all"
+        }
+      ]
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

@@ -1,0 +1,217 @@
+{
+  "id": "package-manager",
+  "name": "Packages",
+  "version": "1.0.0",
+  "description": "See and install updates on your hosts, search, install and remove packages, and read the package history.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Package-Manager",
+  "docs": "https://docs.termix.site/plugins/package-manager",
+  "category": "Infrastructure",
+  "icon": "Package",
+  "features": [
+    "See pending updates with security updates marked, and install one, some or all",
+    "Refresh the package index and see when a reboot is needed",
+    "Browse installed packages, remove them or hold them at their version",
+    "Search for packages and install them",
+    "Read the package history and the list of repositories",
+    "Works with apt, dnf, yum, zypper, pacman and apk",
+    "A dashboard card with pending updates on every host and a Packages card in Host Metrics"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "hosts:read",
+    "credentials:use",
+    "credentials:read",
+    "ssh:connect",
+    "network:serve",
+    "users:impersonate",
+    "ui:surface",
+    "operations:provide"
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "package-manager",
+        "titleKey": "tab.title",
+        "icon": "Package",
+        "openFrom": ["host-context-menu", "palette"]
+      }
+    ],
+    "dashboardCards": [
+      {
+        "id": "package-updates",
+        "titleKey": "card.title",
+        "icon": "Package"
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "enableKey": "enablePackages",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
+        "editorGroup": "ssh",
+        "fields": [
+          {
+            "key": "useSudo",
+            "type": "boolean",
+            "labelKey": "settings.host.useSudo.label",
+            "descriptionKey": "settings.host.useSudo.description",
+            "default": true,
+            "requires": "enablePackages"
+          },
+          {
+            "key": "readOnly",
+            "type": "boolean",
+            "labelKey": "settings.host.readOnly.label",
+            "descriptionKey": "settings.host.readOnly.description",
+            "default": false,
+            "requires": "enablePackages"
+          }
+        ]
+      }
+    },
+    "operations": {
+      "actions": [
+        {
+          "id": "package-manager.list-updates",
+          "titleKey": "operations.list.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enablePackages": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "package-manager.updates",
+          "titleKey": "operations.updates.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enablePackages": true
+            }
+          },
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
+          "id": "package-manager.upgrade-all",
+          "titleKey": "operations.upgradeAll.title",
+          "icon": "ArrowUpCircle",
+          "scope": "host",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "exclusive": true,
+          "when": {
+            "settings": {
+              "enablePackages": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "package-manager.install",
+          "titleKey": "operations.install.title",
+          "icon": "Download",
+          "scope": "host",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "exclusive": true,
+          "inputs": [
+            {
+              "key": "package",
+              "type": "string",
+              "labelKey": "operations.package",
+              "descriptionKey": "operations.packageHint",
+              "required": true,
+              "pattern": "[A-Za-z0-9][A-Za-z0-9+._:@-]*( [A-Za-z0-9][A-Za-z0-9+._:@-]*)*"
+            }
+          ],
+          "when": {
+            "settings": {
+              "enablePackages": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "package-manager.remove",
+          "titleKey": "operations.remove.title",
+          "icon": "Trash2",
+          "scope": "host",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "exclusive": true,
+          "inputs": [
+            {
+              "key": "package",
+              "type": "string",
+              "labelKey": "operations.package",
+              "descriptionKey": "operations.packageHint",
+              "required": true,
+              "pattern": "[A-Za-z0-9][A-Za-z0-9+._:@-]*( [A-Za-z0-9][A-Za-z0-9+._:@-]*)*"
+            }
+          ],
+          "when": {
+            "settings": {
+              "enablePackages": true
+            }
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "package-manager.updates",
+          "titleKey": "operations.updates.title",
+          "read": "package-manager.updates",
+          "scope": "host",
+          "kind": "count",
+          "refreshSec": 3600,
+          "fix": "package-manager.upgrade-all"
+        }
+      ]
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

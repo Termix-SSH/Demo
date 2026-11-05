@@ -1,0 +1,190 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "See, add and run cron jobs on your hosts, with a schedule preview and the system cron files."
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "delete": "Delete"
+  },
+  "permissions": {
+    "use": {
+      "title": "Use Cron",
+      "description": "See cron jobs on hosts you can reach, and change them on hosts you can edit."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Manage cron jobs on this host from the Cron tab."
+      },
+      "useSudo": {
+        "label": "Use sudo",
+        "description": "Use sudo for other users' crontabs and /etc/cron.d. Turn off if the login is root."
+      },
+      "readOnly": {
+        "label": "Read only",
+        "description": "Show cron jobs but never change them on this host."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "Open Cron from a host.",
+    "error": "Could not load cron from this host.",
+    "disabled": "Cron is turned off for this host. Turn it on in the host settings.",
+    "sudo": "This needs a root login, passwordless sudo or a saved Sudo Password.",
+    "refresh": "Refresh",
+    "running": "Cron running",
+    "stopped": "Cron stopped",
+    "readOnly": "Read only",
+    "notInstalled": "Not installed",
+    "notInstalledTitle": "Cron is not installed on this host",
+    "notInstalledHint": "Install cron or cronie with the host's package manager, then refresh.",
+    "notRunning": "The cron service is not running, so no jobs will run.",
+    "viewJobs": "Jobs",
+    "viewSystem": "System",
+    "viewLogs": "Logs"
+  },
+  "jobs": {
+    "add": "Add job",
+    "user": "Crontab of",
+    "ownUser": "{{user}} (login)",
+    "search": "Search jobs",
+    "editText": "Edit as text",
+    "empty": "No cron jobs yet.",
+    "noMatch": "No jobs match.",
+    "off": "Off",
+    "next": "next {{time}}",
+    "run": "Run now",
+    "runTitle": "Run this job now?",
+    "runDesc": "This runs {{command}} once as the crontab's user. It stops after 2 minutes.",
+    "runFailed": "Could not run the job.",
+    "turnOn": "Turn on",
+    "turnOff": "Turn off",
+    "deleteTitle": "Delete this job?",
+    "loadFailed": "Could not read the crontab.",
+    "saveFailed": "Could not save the crontab.",
+    "outputTitle": "Job output",
+    "exitOk": "Finished",
+    "exitCode": "Exit code {{code}}",
+    "noOutput": "The job printed nothing."
+  },
+  "form": {
+    "addTitle": "New job",
+    "editTitle": "Edit job",
+    "forUser": "Crontab of {{user}}",
+    "label": "Label",
+    "labelHint": "Saved as a comment above the job.",
+    "labelPlaceholder": "Nightly backup",
+    "command": "Command",
+    "commandHint": "Runs with sh in the user's home. A % starts the input cron sends, write \\% for a real one.",
+    "schedule": "Schedule",
+    "scheduleHint": "Minute, hour, day of month, month and day of week, or a word like @daily.",
+    "scheduleInvalid": "This is not a valid schedule.",
+    "nextRuns": "Next runs ({{zone}}):",
+    "enabled": "On",
+    "enabledHint": "An off job stays in the crontab as a comment.",
+    "saved": "Saved."
+  },
+  "presets": {
+    "everyMinute": "Every minute",
+    "every5": "Every 5 min",
+    "every15": "Every 15 min",
+    "hourly": "Hourly",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "reboot": "At boot"
+  },
+  "schedule": {
+    "reboot": "At boot",
+    "everyMinute": "Every minute",
+    "everyNMinutes": "Every {{n}} minutes",
+    "hourlyAt": "Every hour at minute {{minute}}",
+    "everyNHours": "Every {{n}} hours at minute {{minute}}",
+    "dailyAt": "Every day at {{time}}",
+    "weekdaysAt": "Monday to Friday at {{time}}",
+    "weeklyAt": "Every {{day}} at {{time}}",
+    "monthlyAt": "On day {{day}} of every month at {{time}}",
+    "custom": "Custom schedule",
+    "invalid": "Not a valid schedule"
+  },
+  "days": {
+    "0": "Sunday",
+    "1": "Monday",
+    "2": "Tuesday",
+    "3": "Wednesday",
+    "4": "Thursday",
+    "5": "Friday",
+    "6": "Saturday"
+  },
+  "raw": {
+    "title": "Crontab as text",
+    "hint": "One job per line. The host checks the text and keeps the old crontab if it has errors."
+  },
+  "system": {
+    "add": "New file",
+    "addTitle": "New file in /etc/cron.d",
+    "edit": "Edit",
+    "name": "File name",
+    "nameHint": "Saved as /etc/cron.d/<name>. Cron skips names with dots.",
+    "nameInvalid": "Use letters, numbers, - and _ only.",
+    "content": "File content",
+    "fileHint": "Each job names the user it runs as: minute hour day month weekday user command. Every line is checked before saving.",
+    "noJobs": "No jobs in this file.",
+    "readHint": "Some files may be hidden without root. Changes here need a root login, passwordless sudo or a saved Sudo Password.",
+    "timers_one": "This host also has {{count}} systemd timer. The Services plugin manages it.",
+    "timers_other": "This host also has {{count}} systemd timers. The Services plugin manages them.",
+    "deleteTitle": "Delete /etc/cron.d/{{name}}?",
+    "deleteDesc": "A copy is kept in /var/lib/termix-cron/backup.",
+    "deleted": "Deleted {{name}}.",
+    "saved": "Saved {{name}}.",
+    "loadFailed": "Could not read the system cron files.",
+    "saveFailed": "Could not save the file.",
+    "period": {
+      "hourly": "Runs every hour",
+      "daily": "Runs every day",
+      "weekly": "Runs every week",
+      "monthly": "Runs every month"
+    }
+  },
+  "logs": {
+    "lines": "Lines",
+    "lineCount_one": "{{count}} line",
+    "lineCount_other": "{{count}} lines",
+    "source": "From {{source}}",
+    "noSource": "No cron log was found on this host.",
+    "empty": "No log lines.",
+    "failed": "Could not read the cron log."
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "Turn on Cron for this host in its settings to see its jobs here."
+  },
+  "operations": {
+    "list": {
+      "title": "List cron jobs"
+    },
+    "enable": {
+      "title": "Turn on cron job"
+    },
+    "disable": {
+      "title": "Turn off cron job"
+    },
+    "run": {
+      "title": "Run cron job now"
+    },
+    "delete": {
+      "title": "Delete cron job"
+    },
+    "jobs": {
+      "title": "Cron jobs",
+      "schedule": "Schedule",
+      "command": "Command"
+    }
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "id": "cron",
+  "name": "Cron",
+  "version": "1.0.0",
+  "description": "See, add and run cron jobs on your hosts, with a schedule preview and the system cron files.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Cron",
+  "docs": "https://docs.termix.site/plugins/cron",
+  "category": "Infrastructure",
+  "icon": "Clock",
+  "features": [
+    "List, add, change and delete cron jobs on a host",
+    "A schedule helper with a plain summary and the next run times",
+    "Turn jobs off without losing them, and run any job now",
+    "Edit another user's crontab, or the whole crontab as text",
+    "See /etc/crontab, /etc/cron.d and the hourly to monthly scripts",
+    "Read the cron log",
+    "A Cron card in Host Metrics"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "hosts:read",
+    "credentials:use",
+    "credentials:read",
+    "ssh:connect",
+    "network:serve",
+    "users:impersonate",
+    "ui:surface",
+    "operations:provide"
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "cron",
+        "titleKey": "tab.title",
+        "icon": "Clock",
+        "openFrom": ["host-context-menu", "palette"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "enableKey": "enableCron",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
+        "editorGroup": "ssh",
+        "fields": [
+          {
+            "key": "useSudo",
+            "type": "boolean",
+            "labelKey": "settings.host.useSudo.label",
+            "descriptionKey": "settings.host.useSudo.description",
+            "default": true,
+            "requires": "enableCron"
+          },
+          {
+            "key": "readOnly",
+            "type": "boolean",
+            "labelKey": "settings.host.readOnly.label",
+            "descriptionKey": "settings.host.readOnly.description",
+            "default": false,
+            "requires": "enableCron"
+          }
+        ]
+      }
+    },
+    "operations": {
+      "actions": [
+        {
+          "id": "cron.list-jobs",
+          "titleKey": "operations.list.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableCron": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "cron.enable",
+          "titleKey": "operations.enable.title",
+          "icon": "Power",
+          "scope": "resource",
+          "resource": "cron.job",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "idempotent": true,
+          "when": {
+            "settings": {
+              "enableCron": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "cron.disable",
+          "titleKey": "operations.disable.title",
+          "icon": "PowerOff",
+          "scope": "resource",
+          "resource": "cron.job",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "idempotent": true,
+          "when": {
+            "settings": {
+              "enableCron": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "cron.run-now",
+          "titleKey": "operations.run.title",
+          "icon": "Play",
+          "scope": "resource",
+          "resource": "cron.job",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "exclusive": true,
+          "when": {
+            "settings": {
+              "enableCron": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "cron.delete",
+          "titleKey": "operations.delete.title",
+          "icon": "Trash2",
+          "scope": "resource",
+          "resource": "cron.job",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "when": {
+            "settings": {
+              "enableCron": true
+            }
+          }
+        }
+      ],
+      "resources": [
+        {
+          "id": "cron.job",
+          "titleKey": "operations.jobs.title",
+          "icon": "Clock",
+          "list": "cron.list-jobs",
+          "key": "id",
+          "name": "name",
+          "status": "state",
+          "tab": "cron",
+          "columns": [
+            {
+              "key": "schedule",
+              "titleKey": "operations.jobs.schedule"
+            },
+            {
+              "key": "command",
+              "titleKey": "operations.jobs.command"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

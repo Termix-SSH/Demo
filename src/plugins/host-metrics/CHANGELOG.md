@@ -14,12 +14,19 @@
 - The default layout puts cards in rows that share one height, so there are no gaps between them
 - CPU, memory and disk open on the number, with a live chart of the last couple of minutes that scales to the data so small changes show, drawn like the history charts
 - Charts show a placeholder until their first readings come in, instead of an empty space
+- Network interfaces are rows with a line between them instead of separate boxes
+
+### Fixed
+
+- The memory card no longer shows an empty Hardware heading when the host does not report its memory modules
+- Disk throughput charts show one decimal for small rates instead of the same label on every line
 
 ### Removed
 
 - The Firewall manager card. Changing firewall rules moved to the Firewall plugin, which fills the same card when it is installed. The Firewall status card stays
 - The Services, Timers and Log Viewer cards. The Services plugin fills them when it is installed
 - The WireGuard card. The WireGuard plugin fills it when it is installed
+- The Packages, Cron, Users and SSL cards. The Packages, Cron, Users and Certificates plugins fill them when they are installed
 
 ## 1.3.1
 

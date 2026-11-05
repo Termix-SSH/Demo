@@ -1,0 +1,207 @@
+{
+  "plugin": {
+    "name": "Certificates",
+    "description": "See, issue and renew TLS certificates on your hosts with certbot and acme.sh, and get an alert before they expire."
+  },
+  "common": {
+    "cancel": "Cancel",
+    "back": "Back"
+  },
+  "permissions": {
+    "use": {
+      "title": "Use Certificates",
+      "description": "See certificates on hosts you can reach, and change them on hosts you can edit."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Certificates",
+        "description": "Manage TLS certificates on this host from the Certificates tab."
+      },
+      "useSudo": {
+        "label": "Use sudo",
+        "description": "Use sudo to read and change certificates. Turn off if the login is root."
+      },
+      "readOnly": {
+        "label": "Read only",
+        "description": "Show certificates but never change them on this host."
+      },
+      "expiryWarnDays": {
+        "label": "Warn before expiry",
+        "description": "Certificates with this many days or fewer left show as expiring and send an alert."
+      }
+    }
+  },
+  "tab": {
+    "title": "Certificates",
+    "noHost": "Open Certificates from a host.",
+    "error": "Could not load certificates from this host.",
+    "disabled": "Certificates is turned off for this host. Turn it on in the host settings.",
+    "sudo": "Changes need a root login, passwordless sudo or a saved Sudo Password on this host.",
+    "refresh": "Refresh",
+    "readOnly": "Read only",
+    "noClient": "No certbot or acme.sh",
+    "viewCertificates": "Certificates",
+    "viewInspect": "Inspect",
+    "viewRenewal": "Renewal"
+  },
+  "actions": {
+    "working": "Working. This can take a few minutes.",
+    "ok": "Done",
+    "failed": "The command failed.",
+    "noOutput": "No output."
+  },
+  "install": {
+    "title": "certbot and acme.sh are not installed on this host",
+    "hint": "Install certbot to get and renew certificates from Let's Encrypt.",
+    "noManager": "No supported package manager was found. Install certbot by hand.",
+    "button": "Install certbot",
+    "confirm": "Install certbot?",
+    "desc": "This installs certbot with the host's package manager.",
+    "working": "Installing...",
+    "done": "certbot is installed."
+  },
+  "certs": {
+    "search": "Search certificates",
+    "empty": "No certificates yet.",
+    "noMatch": "No certificates match.",
+    "loadFailed": "Could not read the certificates.",
+    "expires": "Expires {{date}}",
+    "staging": "Staging",
+    "details": "Certificate",
+    "manage": "Manage",
+    "client": "Client",
+    "path": "File",
+    "authority": "Authority",
+    "renew": "Renew",
+    "renewDone": "Renewed {{name}}.",
+    "renewAll": "Renew all",
+    "renewAllDone": "Renewed the certificates that were due.",
+    "forceRenew": "Renew now anyway",
+    "dryRun": "Dry run",
+    "dryRunDone": "The dry run worked.",
+    "revoke": "Revoke",
+    "revokeTitle": "Revoke {{name}}?",
+    "revokeDesc": "The authority marks it as invalid and it is removed from this host. Anything still using it stops working.",
+    "revokeDone": "Revoked {{name}}.",
+    "delete": "Stop managing",
+    "deleteTitle": "Stop managing {{name}}?",
+    "deleteDesc": "It stays valid but won't renew any more. certbot also deletes its files, acme.sh keeps them.",
+    "deleteDone": "{{name}} is no longer managed."
+  },
+  "expiry": {
+    "expired": "Expired",
+    "unknown": "Unknown",
+    "days_one": "{{count}} day left",
+    "days_other": "{{count}} days left"
+  },
+  "issue": {
+    "add": "Issue certificate",
+    "title": "New certificate",
+    "save": "Issue",
+    "done": "The certificate was issued.",
+    "working": "Asking the authority. This can take a few minutes.",
+    "client": "Client",
+    "domains": "Domains",
+    "domainsPlaceholder": "Type a domain and press Enter",
+    "domainsHint": "The first one names the certificate.",
+    "challenge": "Challenge",
+    "standalone": "Standalone",
+    "standaloneHint": "Runs a small web server on port 80, so nothing else may use that port.",
+    "webroot": "Web root",
+    "webrootHint": "Puts a file in your web server's folder. The web server keeps running.",
+    "dns": "DNS",
+    "dnsHint": "Adds a DNS record through your provider's API. Needed for wildcards.",
+    "webrootPath": "Web root folder",
+    "webrootPathHint": "Must be inside /var/www, /srv or /usr/share/nginx.",
+    "dnsProvider": "DNS provider",
+    "dnsProviderCertbot": "The name of an installed certbot DNS plugin, like cloudflare.",
+    "dnsProviderAcme": "An acme.sh DNS name without dns_, like cf. Its API token must already be set on the host.",
+    "credentials": "Credentials file",
+    "credentialsHint": "The file on the host with your API token. It is never read by Termix.",
+    "email": "Email",
+    "emailHint": "Optional. The authority uses it for expiry notices.",
+    "keyType": "Key type",
+    "staging": "Use the staging server",
+    "stagingHint": "For testing. The certificate is not trusted, and rate limits are much higher."
+  },
+  "inspect": {
+    "server": "Server",
+    "file": "File",
+    "address": "Address",
+    "addressPlaceholder": "example.com",
+    "port": "Port",
+    "path": "File path",
+    "check": "Check",
+    "hint": "Check what a server sends over TLS, as seen from this host, or read a certificate file on it.",
+    "failed": "Could not read the certificate.",
+    "noOpenssl": "openssl is not installed on this host.",
+    "trusted": "Trusted",
+    "notTrusted": "Not trusted",
+    "leaf": "Certificate",
+    "intermediate": "Chain {{index}}",
+    "selfSigned": "Self signed",
+    "name": "Name",
+    "issuer": "Issuer",
+    "domains": "Domains",
+    "validFrom": "Valid from",
+    "validTo": "Valid to",
+    "keyType": "Key",
+    "serial": "Serial",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "How this host renews certificates on its own. Change it on the host.",
+    "on": "On",
+    "off": "Off",
+    "timer": "systemd timer",
+    "next": "Next run {{time}}",
+    "cron": "Cron file /etc/cron.d/certbot",
+    "certbotOff": "No timer or cron job was found, so certificates won't renew on their own.",
+    "acmeCron": "Cron job in the crontab",
+    "acmeOff": "No cron job was found, so certificates won't renew on their own."
+  },
+  "watch": {
+    "start": "Alert me before certificates on this host expire",
+    "stop": "Stop alerts for this host",
+    "on": "You will get an alert before certificates here expire.",
+    "off": "Alerts for this host are off.",
+    "failed": "Could not change the alert."
+  },
+  "card": {
+    "title": "Certificates",
+    "loading": "Checking hosts...",
+    "summary_one": "{{count}} certificate, {{expiring}} expiring",
+    "summary_other": "{{count}} certificates, {{expiring}} expiring",
+    "refresh": "Check again",
+    "empty": "Turn on Certificates for a host to see its certificates here."
+  },
+  "manager": {
+    "title": "Certificates",
+    "disabled": "Turn on Certificates for this host in its settings to see them here."
+  },
+  "operations": {
+    "list": {
+      "title": "List certificates"
+    },
+    "expiring": {
+      "title": "Certificates expiring"
+    },
+    "renew": {
+      "title": "Renew certificate"
+    },
+    "renewAll": {
+      "title": "Renew all certificates"
+    },
+    "revoke": {
+      "title": "Revoke certificate"
+    },
+    "certificates": {
+      "title": "Certificates",
+      "client": "Client",
+      "domains": "Domains",
+      "daysLeft": "Days left"
+    }
+  }
+}

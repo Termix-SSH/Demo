@@ -1,0 +1,217 @@
+{
+  "id": "user-manager",
+  "name": "Users",
+  "version": "1.0.0",
+  "description": "Manage the user accounts, groups, passwords and SSH keys on your hosts.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-User-Manager",
+  "docs": "https://docs.termix.site/plugins/user-manager",
+  "category": "Access & Security",
+  "icon": "Users",
+  "features": [
+    "See every account on a host with its groups, shell and password state",
+    "Create users with a home folder, shell, groups, sudo and a password",
+    "Set passwords, lock accounts and make users pick a new password",
+    "Add and remove the SSH keys a user can log in with",
+    "Create groups and change who is in them",
+    "See who is logged in and recent logins",
+    "A Users card in Host Metrics"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "hosts:read",
+    "credentials:use",
+    "credentials:read",
+    "ssh:connect",
+    "network:serve",
+    "users:impersonate",
+    "ui:surface",
+    "operations:provide"
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "user-manager",
+        "titleKey": "tab.title",
+        "icon": "Users",
+        "openFrom": ["host-context-menu", "palette"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "enableKey": "enableUsers",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
+        "editorGroup": "ssh",
+        "fields": [
+          {
+            "key": "useSudo",
+            "type": "boolean",
+            "labelKey": "settings.host.useSudo.label",
+            "descriptionKey": "settings.host.useSudo.description",
+            "default": true,
+            "requires": "enableUsers"
+          },
+          {
+            "key": "readOnly",
+            "type": "boolean",
+            "labelKey": "settings.host.readOnly.label",
+            "descriptionKey": "settings.host.readOnly.description",
+            "default": false,
+            "requires": "enableUsers"
+          }
+        ]
+      }
+    },
+    "operations": {
+      "actions": [
+        {
+          "id": "user-manager.list-users",
+          "titleKey": "operations.list.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableUsers": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "user-manager.empty-passwords",
+          "titleKey": "operations.emptyPasswords.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableUsers": true
+            }
+          },
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
+          "id": "user-manager.lock",
+          "titleKey": "operations.lock.title",
+          "icon": "Lock",
+          "scope": "resource",
+          "resource": "user-manager.user",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "idempotent": true,
+          "when": {
+            "settings": {
+              "enableUsers": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "user-manager.unlock",
+          "titleKey": "operations.unlock.title",
+          "icon": "LockOpen",
+          "scope": "resource",
+          "resource": "user-manager.user",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "idempotent": true,
+          "when": {
+            "settings": {
+              "enableUsers": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "user-manager.delete-user",
+          "titleKey": "operations.delete.title",
+          "icon": "UserX",
+          "scope": "resource",
+          "resource": "user-manager.user",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "when": {
+            "settings": {
+              "enableUsers": true
+            }
+          }
+        }
+      ],
+      "resources": [
+        {
+          "id": "user-manager.user",
+          "titleKey": "operations.users.title",
+          "icon": "User",
+          "list": "user-manager.list-users",
+          "key": "name",
+          "name": "name",
+          "status": "state",
+          "tab": "user-manager",
+          "columns": [
+            {
+              "key": "uid",
+              "titleKey": "operations.users.uid"
+            },
+            {
+              "key": "sudo",
+              "titleKey": "operations.users.sudo"
+            },
+            {
+              "key": "groups",
+              "titleKey": "operations.users.groups"
+            }
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "id": "user-manager.empty-passwords",
+          "titleKey": "operations.emptyPasswords.title",
+          "read": "user-manager.empty-passwords",
+          "scope": "host",
+          "kind": "count",
+          "refreshSec": 3600
+        }
+      ]
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

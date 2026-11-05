@@ -605,83 +605,10 @@ const managers: Record<string, (hostId: number) => unknown> = {
       },
     ],
   }),
-  cron: () => ({
-    entries: [
-      {
-        raw: "0 3 * * * /usr/local/bin/backup.sh",
-        enabled: true,
-        schedule: "0 3 * * *",
-        command: "/usr/local/bin/backup.sh",
-      },
-      {
-        raw: "*/5 * * * * /opt/healthcheck/ping",
-        enabled: true,
-        schedule: "*/5 * * * *",
-        command: "/opt/healthcheck/ping",
-      },
-      {
-        raw: "# 30 2 * * 0 /usr/bin/certbot renew",
-        enabled: false,
-        schedule: "30 2 * * 0",
-        command: "/usr/bin/certbot renew",
-      },
-    ],
-  }),
-  packages: () => ({
-    pkg: "apt",
-    upgradable: [
-      {
-        name: "openssl",
-        currentVersion: "3.0.13-0ubuntu3.5",
-        newVersion: "3.0.13-0ubuntu3.6",
-      },
-      {
-        name: "nginx",
-        currentVersion: "1.24.0-2ubuntu7.4",
-        newVersion: "1.24.0-2ubuntu7.5",
-      },
-      {
-        name: "linux-image-generic",
-        currentVersion: "6.8.0.79.79",
-        newVersion: "6.8.0.83.83",
-      },
-      {
-        name: "curl",
-        currentVersion: "8.5.0-2ubuntu10.6",
-        newVersion: "8.5.0-2ubuntu10.7",
-      },
-    ],
-  }),
-  ssl: () => ({
-    clients: { certbot: true, acmeSh: false },
-    certs: [
-      {
-        client: "certbot",
-        name: "example.home.arpa",
-        domains: ["example.home.arpa", "www.example.home.arpa"],
-        expiry: new Date(now + 64 * 864e5).toISOString(),
-      },
-      {
-        client: "certbot",
-        name: "grafana.home.arpa",
-        domains: ["grafana.home.arpa"],
-        expiry: new Date(now + 9 * 864e5).toISOString(),
-      },
-    ],
-  }),
   firewall: (hostId) => ({
     ...metricsFor(hostId).firewall,
     type: "nftables",
     status: "active",
-  }),
-  users: () => ({
-    users: [
-      { name: "root", uid: 0, shell: "/bin/bash" },
-      { name: "deploy", uid: 1000, shell: "/bin/bash" },
-      { name: "postgres", uid: 113, shell: "/bin/bash" },
-      { name: "backup", uid: 1001, shell: "/usr/sbin/nologin" },
-    ],
-    sudoers: ["root", "deploy"],
   }),
   health: () => ({
     checks: [

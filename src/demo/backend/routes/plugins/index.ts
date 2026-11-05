@@ -29,3 +29,7 @@ import "./reverse-proxy";
 import "./samba";
 import "./service-manager";
 import "./wake-on-lan";
+import "./cron";
+import "./package-manager";
+import "./user-manager";
+import "./certificates";

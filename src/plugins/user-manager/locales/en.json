@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Users",
+    "description": "Manage the user accounts, groups, passwords and SSH keys on your hosts."
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "delete": "Delete",
+    "loading": "Loading..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Use Users",
+      "description": "See accounts on hosts you can reach, and change them on hosts you can edit."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Users",
+        "description": "Manage user accounts and groups on this host from the Users tab."
+      },
+      "useSudo": {
+        "label": "Use sudo",
+        "description": "Use sudo to read and change accounts. Turn off if the login is root."
+      },
+      "readOnly": {
+        "label": "Read only",
+        "description": "Show accounts but never change them on this host."
+      }
+    }
+  },
+  "tab": {
+    "title": "Users",
+    "noHost": "Open Users from a host.",
+    "error": "Could not load the accounts from this host.",
+    "disabled": "Users is turned off for this host. Turn it on in the host settings.",
+    "sudo": "Changes and password states need a root login, passwordless sudo or a saved Sudo Password on this host.",
+    "noTools": "useradd is not installed on this host. On Alpine, install the shadow package.",
+    "refresh": "Refresh",
+    "readOnly": "Read only",
+    "counts_one": "{{count}} user",
+    "counts_other": "{{count}} users",
+    "viewUsers": "Users",
+    "viewGroups": "Groups",
+    "viewSessions": "Sessions"
+  },
+  "users": {
+    "add": "Add user",
+    "search": "Search users",
+    "people": "People",
+    "systemFilter": "System",
+    "all": "All",
+    "empty": "No users match.",
+    "you": "You",
+    "sudo": "Sudo",
+    "locked": "Locked",
+    "emptyPassword": "No password",
+    "system": "System",
+    "loadFailed": "Could not read the accounts."
+  },
+  "password": {
+    "set": "Set",
+    "locked": "Locked",
+    "none": "Not set, no password login",
+    "empty": "Empty, anyone can log in",
+    "unknown": "Needs root to tell"
+  },
+  "detail": {
+    "info": "Account",
+    "account": "Details",
+    "fullName": "Full name",
+    "uid": "User and group id",
+    "mainGroup": "Main group",
+    "home": "Home folder",
+    "shell": "Shell",
+    "groups": "Groups",
+    "groupsPlaceholder": "Type a group and press Enter",
+    "unknownGroups": "These groups don't exist: {{groups}}",
+    "none": "None",
+    "password": "Password",
+    "passwordChanged": "Password changed",
+    "lastLogin": "Last login",
+    "never": "Never",
+    "unknown": "Unknown",
+    "saved": "Saved.",
+    "failed": "The change failed.",
+    "loadFailed": "Could not read this user's keys and last login.",
+    "passwordSection": "Password",
+    "newPassword": "New password",
+    "newPasswordHint": "Sent to the host over SSH and set with chpasswd. It is never stored in Termix.",
+    "setPassword": "Set password",
+    "passwordSet": "Password set.",
+    "expirePassword": "Ask for a new one at next login",
+    "expired": "They will pick a new password at the next login.",
+    "access": "Access",
+    "sudo": "Sudo",
+    "sudoHint": "Run commands as root through the {{group}} group.",
+    "sudoProtected": "You can't take sudo from root or the user Termix logs in as.",
+    "sudoTitle": "Give {{name}} sudo?",
+    "sudoDesc": "Adds them to the {{group}} group, so they can run any command as root.",
+    "sudoGrant": "Give sudo",
+    "sudoOn": "Sudo given.",
+    "sudoOff": "Sudo taken away.",
+    "lock": "Lock account",
+    "unlock": "Unlock account",
+    "lockTitle": "Lock {{name}}?",
+    "lockDesc": "They can't log in with a password or an SSH key until you unlock the account.",
+    "lockHint": "Blocks password and SSH key logins.",
+    "protected": "Root and the user Termix logs in as can't be locked or deleted.",
+    "locked": "Account locked.",
+    "unlocked": "Account unlocked.",
+    "danger": "Delete",
+    "removeHome": "Also delete the home folder",
+    "removeHomeHint": "Deletes {{home}} and everything in it.",
+    "delete": "Delete user",
+    "deleteTitle": "Delete {{name}}?",
+    "deleteDesc": "The account is removed. Its home folder stays on the host.",
+    "deleteDescHome": "The account and {{home}} are removed. This can't be undone.",
+    "deleted": "Deleted {{name}}."
+  },
+  "keys": {
+    "title": "SSH keys",
+    "empty": "No SSH keys.",
+    "denied": "The keys can't be read without root.",
+    "options": "Options",
+    "remove": "Remove key",
+    "removeTitle": "Remove this key?",
+    "removed": "Key removed.",
+    "add": "Add a key",
+    "addHint": "Paste one public key, like the contents of id_ed25519.pub.",
+    "addButton": "Add key",
+    "added": "Key added."
+  },
+  "create": {
+    "title": "New user",
+    "name": "User name",
+    "nameHint": "Lower case letters, numbers, - and _.",
+    "nameInvalid": "Start with a letter and use only a-z, 0-9, - and _.",
+    "home": "Home folder",
+    "homeHint": "Leave empty for /home/{{name}}.",
+    "createHome": "Create the home folder",
+    "password": "Password",
+    "passwordHint": "Optional. Without one the user can only log in with an SSH key.",
+    "again": "Password again",
+    "mismatch": "The passwords don't match.",
+    "save": "Create user",
+    "done": "Created {{name}}.",
+    "failed": "Could not create the user."
+  },
+  "groups": {
+    "add": "Add group",
+    "name": "Group name",
+    "namePlaceholder": "New group name",
+    "create": "Create",
+    "created": "Created {{name}}.",
+    "search": "Search groups",
+    "empty": "No groups match.",
+    "noMembers": "No members.",
+    "failed": "The change failed.",
+    "addMember": "Add member",
+    "pickUser": "Pick a user",
+    "removeMember": "Remove from group",
+    "memberAdded": "Added {{name}} to {{group}}.",
+    "memberRemoved": "Removed {{name}} from {{group}}.",
+    "mainGroup": "Main group",
+    "mainGroupHint": "This is their main group, so they always belong to it.",
+    "deleteTitle": "Delete {{name}}?",
+    "deleteDesc": "The group is removed. Files it owned keep its old id.",
+    "deleted": "Deleted {{name}}."
+  },
+  "sessions": {
+    "now": "Logged in now",
+    "none": "Nobody is logged in.",
+    "recent": "Recent logins",
+    "noRecent": "No login history was found.",
+    "loadFailed": "Could not read the sessions."
+  },
+  "manager": {
+    "title": "Users",
+    "disabled": "Turn on Users for this host in its settings to see its accounts here."
+  },
+  "operations": {
+    "list": {
+      "title": "List users"
+    },
+    "emptyPasswords": {
+      "title": "Accounts without a password"
+    },
+    "lock": {
+      "title": "Lock user"
+    },
+    "unlock": {
+      "title": "Unlock user"
+    },
+    "delete": {
+      "title": "Delete user"
+    },
+    "users": {
+      "title": "Users",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "Groups"
+    }
+  }
+}
