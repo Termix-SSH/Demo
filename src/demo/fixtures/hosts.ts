@@ -74,9 +74,11 @@ export const DEMO_HOSTS = [
       "reverse-proxy": { enableReverseProxy: true },
       "service-manager": { enableServices: true },
       cron: { enableCron: true },
+      "process-manager": { enableProcesses: true },
       "user-manager": { enableUsers: true },
       "package-manager": { enablePackages: true },
       certificates: { enableCertificates: true },
+      "web-servers": { enableWebServers: true },
       tunnels: {
         enableTunnel: true,
         tunnelConnections: [
@@ -150,9 +152,11 @@ export const DEMO_HOSTS = [
       databases: { enableDatabases: true },
       "service-manager": { enableServices: true },
       cron: { enableCron: true },
+      "process-manager": { enableProcesses: true },
       "user-manager": { enableUsers: true },
       "package-manager": { enablePackages: true },
       certificates: { enableCertificates: true },
+      "web-servers": { enableWebServers: true },
     },
   }),
   host({

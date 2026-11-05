@@ -1,0 +1,876 @@
+{
+  "id": "process-manager",
+  "name": "Process Manager",
+  "version": "1.0.0",
+  "description": "See and control running processes, pm2 and supervisor apps on your hosts, read their logs and get alerts when they fail.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Process-Manager",
+  "docs": "https://docs.termix.site/plugins/process-manager",
+  "category": "Infrastructure",
+  "icon": "Activity",
+  "features": [
+    "A live process list with a tree, sorting and a detail view",
+    "Send signals and change the priority of a process",
+    "Manage pm2 and supervisor apps",
+    "Read and follow logs from services, apps and open files",
+    "Watches that alert on a process or app going down, restarting too often or using too much CPU or memory",
+    "Restart a failed app automatically, up to three times an hour",
+    "Actions, status tiles and events for Operations, Automations, the assistant and the CLI",
+    "A Processes card in Host Metrics, a side panel on terminals and a dashboard card"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "hosts:read",
+    "credentials:use",
+    "credentials:read",
+    "ssh:connect",
+    "network:serve",
+    "db:own",
+    "notify:send",
+    "users:impersonate",
+    "ui:surface",
+    "operations:provide"
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "process-manager",
+        "titleKey": "tab.title",
+        "icon": "Activity",
+        "openFrom": ["host-context-menu", "palette"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "enableKey": "enableProcesses",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
+        "editorGroup": "ssh",
+        "fields": [
+          {
+            "key": "useSudo",
+            "type": "boolean",
+            "labelKey": "settings.host.useSudo.label",
+            "descriptionKey": "settings.host.useSudo.description",
+            "default": true,
+            "requires": "enableProcesses"
+          },
+          {
+            "key": "readOnly",
+            "type": "boolean",
+            "labelKey": "settings.host.readOnly.label",
+            "descriptionKey": "settings.host.readOnly.description",
+            "default": false,
+            "requires": "enableProcesses"
+          },
+          {
+            "key": "pm2User",
+            "type": "string",
+            "labelKey": "settings.host.pm2User.label",
+            "descriptionKey": "settings.host.pm2User.description",
+            "placeholderKey": "settings.host.pm2User.placeholder",
+            "default": "",
+            "requires": "enableProcesses"
+          },
+          {
+            "key": "showPanel",
+            "type": "boolean",
+            "labelKey": "settings.host.showPanel.label",
+            "descriptionKey": "settings.host.showPanel.description",
+            "default": true,
+            "requires": "enableProcesses"
+          }
+        ]
+      },
+      "user": [
+        {
+          "key": "companionAutoOpen",
+          "type": "boolean",
+          "labelKey": "settings.user.companionAutoOpen.label",
+          "descriptionKey": "settings.user.companionAutoOpen.description",
+          "default": false
+        },
+        {
+          "key": "companionSide",
+          "type": "select",
+          "labelKey": "settings.user.companionSide.label",
+          "descriptionKey": "settings.user.companionSide.description",
+          "default": "right",
+          "options": [
+            {
+              "value": "right",
+              "labelKey": "settings.user.companionSide.right"
+            },
+            {
+              "value": "left",
+              "labelKey": "settings.user.companionSide.left"
+            },
+            {
+              "value": "bottom",
+              "labelKey": "settings.user.companionSide.bottom"
+            }
+          ]
+        },
+        {
+          "key": "companionSize",
+          "type": "number",
+          "labelKey": "settings.user.companionSize.label",
+          "descriptionKey": "settings.user.companionSize.description",
+          "min": 240,
+          "max": 900,
+          "default": 360
+        },
+        {
+          "key": "companionEdgeButton",
+          "type": "boolean",
+          "labelKey": "settings.user.companionEdgeButton.label",
+          "descriptionKey": "settings.user.companionEdgeButton.description",
+          "default": true
+        }
+      ]
+    },
+    "dashboardCards": [
+      {
+        "id": "process-watches",
+        "titleKey": "card.title",
+        "icon": "Activity"
+      }
+    ],
+    "operations": {
+      "actions": [
+        {
+          "id": "process-manager.list-processes",
+          "titleKey": "operations.list-processes.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "process-manager.list-apps",
+          "titleKey": "operations.list-apps.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "process-manager.signal-process",
+          "titleKey": "operations.signal-process.title",
+          "scope": "resource",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "resource": "process-manager.process",
+          "icon": "Zap",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "signal",
+              "type": "select",
+              "labelKey": "operations.signal.label",
+              "default": "TERM",
+              "options": [
+                {
+                  "value": "TERM",
+                  "labelKey": "operations.signal.TERM"
+                },
+                {
+                  "value": "HUP",
+                  "labelKey": "operations.signal.HUP"
+                },
+                {
+                  "value": "INT",
+                  "labelKey": "operations.signal.INT"
+                },
+                {
+                  "value": "STOP",
+                  "labelKey": "operations.signal.STOP"
+                },
+                {
+                  "value": "CONT",
+                  "labelKey": "operations.signal.CONT"
+                },
+                {
+                  "value": "USR1",
+                  "labelKey": "operations.signal.USR1"
+                },
+                {
+                  "value": "USR2",
+                  "labelKey": "operations.signal.USR2"
+                }
+              ]
+            },
+            {
+              "key": "expectedCommand",
+              "type": "string",
+              "labelKey": "operations.expectedCommand"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "process-manager.kill-process",
+          "titleKey": "operations.kill-process.title",
+          "scope": "resource",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "resource": "process-manager.process",
+          "icon": "Skull",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "expectedCommand",
+              "type": "string",
+              "labelKey": "operations.expectedCommand"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "process-manager.renice",
+          "titleKey": "operations.renice.title",
+          "scope": "resource",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "resource": "process-manager.process",
+          "icon": "Gauge",
+          "dryRun": "describe",
+          "idempotent": true,
+          "inputs": [
+            {
+              "key": "nice",
+              "type": "number",
+              "labelKey": "operations.renice.nice",
+              "min": -20,
+              "max": 19,
+              "default": 0,
+              "required": true
+            },
+            {
+              "key": "expectedCommand",
+              "type": "string",
+              "labelKey": "operations.expectedCommand"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "process-manager.app-start",
+          "titleKey": "operations.app-start.title",
+          "scope": "resource",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "resource": "process-manager.app",
+          "icon": "Play",
+          "dryRun": "describe",
+          "idempotent": true,
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "process-manager.app-stop",
+          "titleKey": "operations.app-stop.title",
+          "scope": "resource",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "resource": "process-manager.app",
+          "icon": "Square",
+          "dryRun": "describe",
+          "idempotent": true,
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "process-manager.app-restart",
+          "titleKey": "operations.app-restart.title",
+          "scope": "resource",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "resource": "process-manager.app",
+          "icon": "RotateCw",
+          "dryRun": "describe",
+          "exclusive": true,
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "process-manager.app-reload",
+          "titleKey": "operations.app-reload.title",
+          "scope": "resource",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "resource": "process-manager.app",
+          "icon": "RefreshCw",
+          "dryRun": "describe",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "process-manager.app-delete",
+          "titleKey": "operations.app-delete.title",
+          "scope": "resource",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "resource": "process-manager.app",
+          "icon": "Trash2",
+          "dryRun": "describe"
+        },
+        {
+          "id": "process-manager.app-flush-logs",
+          "titleKey": "operations.app-flush-logs.title",
+          "scope": "resource",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "resource": "process-manager.app",
+          "icon": "Eraser",
+          "dryRun": "describe",
+          "idempotent": true
+        },
+        {
+          "id": "process-manager.tail-logs",
+          "titleKey": "operations.tail-logs.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "icon": "ScrollText",
+          "inputs": [
+            {
+              "key": "source",
+              "type": "select",
+              "labelKey": "operations.logs.sourceLabel",
+              "default": "journal",
+              "required": true,
+              "options": [
+                {
+                  "value": "journal",
+                  "labelKey": "operations.logs.source.journal"
+                },
+                {
+                  "value": "journal-pid",
+                  "labelKey": "operations.logs.source.journal-pid"
+                },
+                {
+                  "value": "pm2",
+                  "labelKey": "operations.logs.source.pm2"
+                },
+                {
+                  "value": "supervisor",
+                  "labelKey": "operations.logs.source.supervisor"
+                },
+                {
+                  "value": "file",
+                  "labelKey": "operations.logs.source.file"
+                }
+              ]
+            },
+            {
+              "key": "target",
+              "type": "string",
+              "labelKey": "operations.logs.target",
+              "required": true
+            },
+            {
+              "key": "fd",
+              "type": "number",
+              "labelKey": "operations.logs.fd",
+              "min": 0,
+              "max": 65535
+            },
+            {
+              "key": "stream",
+              "type": "select",
+              "labelKey": "operations.logs.stream",
+              "default": "stdout",
+              "options": [
+                {
+                  "value": "stdout",
+                  "labelKey": "operations.logs.stdout"
+                },
+                {
+                  "value": "stderr",
+                  "labelKey": "operations.logs.stderr"
+                }
+              ]
+            },
+            {
+              "key": "lines",
+              "type": "number",
+              "labelKey": "operations.logs.lines",
+              "min": 1,
+              "max": 2000,
+              "default": 100
+            },
+            {
+              "key": "grep",
+              "type": "string",
+              "labelKey": "operations.logs.grep"
+            }
+          ],
+          "outputs": [
+            {
+              "key": "text",
+              "type": "textarea",
+              "labelKey": "operations.logs.text"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "process-manager.add-watch",
+          "titleKey": "operations.add-watch.title",
+          "scope": "host",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "icon": "Bell",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "kind",
+              "type": "select",
+              "labelKey": "operations.watch.kind",
+              "default": "process",
+              "required": true,
+              "options": [
+                {
+                  "value": "process",
+                  "labelKey": "watch.kind.process"
+                },
+                {
+                  "value": "pm2",
+                  "labelKey": "watch.kind.pm2"
+                },
+                {
+                  "value": "supervisor",
+                  "labelKey": "watch.kind.supervisor"
+                }
+              ]
+            },
+            {
+              "key": "target",
+              "type": "string",
+              "labelKey": "operations.watch.target",
+              "required": true
+            },
+            {
+              "key": "rule",
+              "type": "select",
+              "labelKey": "operations.watch.rule",
+              "default": "down",
+              "options": [
+                {
+                  "value": "down",
+                  "labelKey": "watch.rule.down"
+                },
+                {
+                  "value": "restarts",
+                  "labelKey": "watch.rule.restarts"
+                },
+                {
+                  "value": "cpu",
+                  "labelKey": "watch.rule.cpu"
+                },
+                {
+                  "value": "mem",
+                  "labelKey": "watch.rule.mem"
+                }
+              ]
+            },
+            {
+              "key": "threshold",
+              "type": "number",
+              "labelKey": "operations.watch.threshold",
+              "min": 0,
+              "default": 0
+            },
+            {
+              "key": "autoRestart",
+              "type": "boolean",
+              "labelKey": "operations.watch.autoRestart",
+              "default": false
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "process-manager.remove-watch",
+          "titleKey": "operations.remove-watch.title",
+          "scope": "host",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "icon": "BellOff",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "id",
+              "type": "number",
+              "labelKey": "operations.watch.id",
+              "required": true
+            }
+          ],
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
+          "id": "process-manager.read-zombies",
+          "titleKey": "operations.signals.zombies",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
+          "id": "process-manager.read-busy",
+          "titleKey": "operations.signals.busy",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
+          "id": "process-manager.read-top-cpu",
+          "titleKey": "operations.signals.top-cpu",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
+          "id": "process-manager.read-top-processes",
+          "titleKey": "operations.signals.top-processes",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
+          "id": "process-manager.read-apps-down",
+          "titleKey": "operations.signals.apps-down",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
+          "id": "process-manager.read-managers",
+          "titleKey": "operations.signals.managers",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableProcesses": true
+            }
+          },
+          "surfaces": {
+            "palette": false
+          }
+        }
+      ],
+      "events": [
+        {
+          "id": "process-manager.process-down",
+          "titleKey": "operations.events.processDown",
+          "severity": "critical",
+          "scope": "host"
+        },
+        {
+          "id": "process-manager.app-crashed",
+          "titleKey": "operations.events.appCrashed",
+          "severity": "critical",
+          "scope": "host"
+        },
+        {
+          "id": "process-manager.restart-loop",
+          "titleKey": "operations.events.restartLoop",
+          "severity": "warning",
+          "scope": "host"
+        }
+      ],
+      "resources": [
+        {
+          "id": "process-manager.process",
+          "titleKey": "operations.processes.title",
+          "icon": "Activity",
+          "list": "process-manager.list-processes",
+          "key": "pid",
+          "name": "name",
+          "status": "state",
+          "tab": "process-manager",
+          "columns": [
+            {
+              "key": "user",
+              "titleKey": "operations.processes.user"
+            },
+            {
+              "key": "cpu",
+              "titleKey": "operations.processes.cpu",
+              "type": "percent"
+            },
+            {
+              "key": "mem",
+              "titleKey": "operations.processes.mem",
+              "type": "percent"
+            },
+            {
+              "key": "rss",
+              "titleKey": "operations.processes.rss",
+              "type": "bytes"
+            }
+          ],
+          "filters": ["state", "user"]
+        },
+        {
+          "id": "process-manager.app",
+          "titleKey": "operations.apps.resource",
+          "icon": "Boxes",
+          "list": "process-manager.list-apps",
+          "key": "id",
+          "name": "name",
+          "status": "state",
+          "tab": "process-manager",
+          "columns": [
+            {
+              "key": "manager",
+              "titleKey": "operations.apps.manager"
+            },
+            {
+              "key": "restarts",
+              "titleKey": "operations.apps.restarts"
+            },
+            {
+              "key": "mem",
+              "titleKey": "operations.apps.mem",
+              "type": "bytes"
+            }
+          ],
+          "filters": ["manager", "state"]
+        }
+      ],
+      "signals": [
+        {
+          "id": "process-manager.zombies",
+          "titleKey": "operations.signals.zombies",
+          "read": "process-manager.read-zombies",
+          "scope": "host",
+          "kind": "count",
+          "refreshSec": 120
+        },
+        {
+          "id": "process-manager.busy",
+          "titleKey": "operations.signals.busy",
+          "read": "process-manager.read-busy",
+          "scope": "host",
+          "kind": "count",
+          "refreshSec": 60
+        },
+        {
+          "id": "process-manager.top-cpu",
+          "titleKey": "operations.signals.top-cpu",
+          "read": "process-manager.read-top-cpu",
+          "scope": "host",
+          "kind": "gauge",
+          "refreshSec": 60
+        },
+        {
+          "id": "process-manager.top-processes",
+          "titleKey": "operations.signals.top-processes",
+          "read": "process-manager.read-top-processes",
+          "scope": "host",
+          "kind": "list",
+          "refreshSec": 60
+        },
+        {
+          "id": "process-manager.apps-down",
+          "titleKey": "operations.signals.apps-down",
+          "read": "process-manager.read-apps-down",
+          "scope": "host",
+          "kind": "count",
+          "refreshSec": 60
+        },
+        {
+          "id": "process-manager.managers",
+          "titleKey": "operations.signals.managers",
+          "read": "process-manager.read-managers",
+          "scope": "host",
+          "kind": "status",
+          "refreshSec": 600
+        }
+      ]
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}
