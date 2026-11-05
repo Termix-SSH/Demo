@@ -41,10 +41,7 @@ export function HostSelectorField({
             onChange(defaultFor(next as HostSelector["kind"]))
           }
         >
-          <SelectTrigger
-            size="sm"
-            className="min-w-0 flex-1 rounded-none border-border"
-          >
+          <SelectTrigger size="sm" className="min-w-0 flex-1 border-border">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -74,10 +71,7 @@ export function HostSelectorField({
               onChange({ kind: "host", hostId: Number(next) })
             }
           >
-            <SelectTrigger
-              size="sm"
-              className="min-w-0 flex-1 rounded-none border-border"
-            >
+            <SelectTrigger size="sm" className="min-w-0 flex-1 border-border">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -101,10 +95,7 @@ export function HostSelectorField({
               onChange({ kind: "fleet", fleetId: Number(next) })
             }
           >
-            <SelectTrigger
-              size="sm"
-              className="min-w-0 flex-1 rounded-none border-border"
-            >
+            <SelectTrigger size="sm" className="min-w-0 flex-1 border-border">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

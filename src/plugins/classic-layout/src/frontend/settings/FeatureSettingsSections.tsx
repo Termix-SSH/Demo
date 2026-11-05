@@ -194,9 +194,9 @@ export function FeatureSettingsForm({
   const icon = <PluginIcon name={plugin.icon} className="size-3.5" />;
 
   return (
-    <div className="flex flex-col gap-2 pt-2">
+    <div className="flex flex-col">
       {!running && (
-        <div className="border border-warning/40 bg-warning/10 px-3 py-2 text-xs text-warning">
+        <div className="border-b border-warning/40 bg-warning/10 px-3 py-2 text-xs text-warning">
           {t("settings.featureUnavailable", {
             name: pluginName(t, plugin),
           })}
@@ -213,11 +213,13 @@ export function FeatureSettingsForm({
             {rows(group.fields)}
           </SectionCard>
         ) : (
-          <div key={`group-${index}`}>{rows(group.fields)}</div>
+          <div key={`group-${index}`} data-tile-card="" className="px-3 py-1">
+            {rows(group.fields)}
+          </div>
         ),
       )}
 
-      <div className="flex justify-end">
+      <div data-tile-card="" className="flex justify-end px-3 py-2">
         <Button
           variant="outline"
           size="sm"

@@ -9,6 +9,7 @@ import {
   PanelShell,
   Select2,
   cn,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import { toast } from "sonner";
 import {
@@ -303,9 +304,7 @@ export function FleetInventoryTab({
       }
     >
       {loading ? (
-        <div className="flex h-full items-center justify-center py-16 text-muted-foreground">
-          <Loader2 className="size-5 animate-spin" />
-        </div>
+        <LoadingState />
       ) : fleets.length === 0 ? (
         <EmptyState icon={Server} title={t("newUi.sidebar.fleets.noFleets")} />
       ) : filteredSorted.length === 0 ? (
@@ -365,7 +364,7 @@ export function FleetInventoryTab({
               />
             </tr>
           </thead>
-          <tbody className="divide-y divide-border">
+          <tbody className="divide-y divide-border border-b border-border">
             {filteredSorted.map((entry) => (
               <tr
                 key={entry.hostId}

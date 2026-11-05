@@ -69,9 +69,9 @@ export function RunsTile({
   };
 
   return (
-    <div className="flex flex-col gap-1 p-2">
+    <div className="flex flex-col">
       {runs.length === 0 && page === 0 ? (
-        <p className="p-1 text-xs text-muted-foreground">{t("host.noRuns")}</p>
+        <p className="p-3 text-xs text-muted-foreground">{t("host.noRuns")}</p>
       ) : (
         runs.map((entry) => (
           <ListRow
@@ -173,8 +173,8 @@ export function ActionsListTile({
   }
 
   return (
-    <div className="flex flex-col gap-2 p-2">
-      <div className="flex flex-wrap gap-2">
+    <div className="flex flex-col">
+      <div className="flex flex-wrap gap-2 border-b border-border p-2">
         <Input
           className="h-7 min-w-32 flex-1 text-xs"
           value={query}
@@ -193,7 +193,7 @@ export function ActionsListTile({
           }}
         />
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col">
         {list.rows.map((action) => (
           <ListRow
             key={action.id}
@@ -206,7 +206,9 @@ export function ActionsListTile({
           />
         ))}
         {matching.length === 0 && (
-          <p className="text-xs text-muted-foreground">{t("host.noActions")}</p>
+          <p className="p-3 text-xs text-muted-foreground">
+            {t("host.noActions")}
+          </p>
         )}
       </div>
       <Pager page={list.page} pages={list.pages} onPage={setPage} />

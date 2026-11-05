@@ -110,7 +110,7 @@ export function AcmeStatusSetting({ running }: SettingsComponentProps) {
       <Button
         type="button"
         variant="outline"
-        className="rounded-none self-start"
+        className="self-start"
         disabled={!running || requesting || !!status?.missing}
         onClick={request}
       >

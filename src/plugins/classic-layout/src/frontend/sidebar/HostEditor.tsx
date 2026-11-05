@@ -770,7 +770,7 @@ export function HostEditor({
           <>
             {banner}
             {lock && (
-              <div className="flex items-start gap-2.5 p-3 border border-accent-brand/30 bg-accent-brand/5 text-xs text-muted-foreground">
+              <div className="flex items-start gap-2.5 p-3 border-b border-accent-brand/30 bg-accent-brand/5 text-xs text-muted-foreground">
                 <Lock className="size-3.5 shrink-0 mt-0.5 text-accent-brand" />
                 <div className="flex flex-col gap-0.5">
                   <span>
@@ -781,7 +781,7 @@ export function HostEditor({
               </div>
             )}
             {isSharedHost && !lock && (
-              <div className="flex items-start gap-2.5 p-3 border border-accent-brand/30 bg-accent-brand/5 text-xs text-muted-foreground">
+              <div className="flex items-start gap-2.5 p-3 border-b border-accent-brand/30 bg-accent-brand/5 text-xs text-muted-foreground">
                 <Shield className="size-3.5 shrink-0 mt-0.5 text-accent-brand" />
                 <div>
                   {sharedCopy
@@ -832,7 +832,7 @@ export function HostEditor({
       >
         <fieldset
           disabled={readOnly}
-          className={`flex flex-col gap-2 min-w-0 ${readOnly ? "opacity-80" : ""}`}
+          className={`flex flex-col min-w-0 ${readOnly ? "opacity-80" : ""}`}
         >
           <EditorSection id="general" label={t("hosts.tabGeneral")}>
             <HostEditorGeneralTab

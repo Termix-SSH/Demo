@@ -4,7 +4,11 @@ import { usePluginApi, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { registerWidget } from "./WidgetRegistry";
 import type { PingStatusConfig, WidgetComponentProps } from "../types.js";
 import { GRID_SIZE } from "../types.js";
-import { WidgetTitle, runVisibleInterval } from "@termix-ssh/plugin-sdk/ui";
+import {
+  WidgetTitle,
+  runVisibleInterval,
+  StatusDot,
+} from "@termix-ssh/plugin-sdk/ui";
 
 interface PingResult {
   ok: boolean;
@@ -12,17 +16,8 @@ interface PingResult {
   latencyMs: number;
 }
 
-function StatusDot({ ok, pending }: { ok: boolean | null; pending: boolean }) {
-  if (pending)
-    return (
-      <span className="w-2 h-2 rounded-full bg-muted-foreground/40 shrink-0 inline-block" />
-    );
-  return (
-    <span
-      className="w-2 h-2 rounded-full shrink-0 inline-block"
-      style={{ background: ok ? "var(--accent-brand, #f59145)" : "#ef4444" }}
-    />
-  );
+function PingDot({ ok, pending }: { ok: boolean | null; pending: boolean }) {
+  return <StatusDot tone={pending ? "idle" : ok ? "ok" : "bad"} />;
 }
 
 function PingStatusWidget({
@@ -93,7 +88,7 @@ function PingStatusWidget({
               key={u.url}
               className="flex items-center gap-2 px-2 py-1.5 border-b border-border/30"
             >
-              <StatusDot ok={r?.ok ?? null} pending={isPending} />
+              <PingDot ok={r?.ok ?? null} pending={isPending} />
               <div className="flex flex-col min-w-0 flex-1">
                 <span className="text-[10px] font-medium text-foreground truncate">
                   {u.label || u.url}

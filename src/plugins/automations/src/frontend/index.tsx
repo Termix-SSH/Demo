@@ -1,8 +1,10 @@
+import { PanelShell } from "@termix-ssh/plugin-sdk/ui";
 import { Workflow, Wrench } from "lucide-react";
-import type {
-  PanelProps,
-  TabProps,
-  TermixApp,
+import {
+  useTranslation,
+  type PanelProps,
+  type TabProps,
+  type TermixApp,
 } from "@termix-ssh/plugin-sdk/frontend";
 import { AutomationsPanel } from "./AutomationsPanel";
 import { createAutomationsApi } from "./automations-api";
@@ -43,7 +45,16 @@ function Panel({ active }: PanelProps) {
 }
 
 function AutomationsTab({ isVisible }: TabProps) {
-  return <AutomationsPanel active={isVisible} />;
+  const { t } = useTranslation();
+  return (
+    <PanelShell
+      icon={<Workflow className="size-4" />}
+      title={t("nav.automations")}
+      scroll={false}
+    >
+      <AutomationsPanel active={isVisible} />
+    </PanelShell>
+  );
 }
 
 export function activate(app: TermixApp): void {

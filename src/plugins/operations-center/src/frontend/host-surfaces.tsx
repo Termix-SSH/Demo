@@ -19,6 +19,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
+  StatusDot,
 } from "@termix-ssh/plugin-sdk/ui";
 import { LayoutDashboard, Zap } from "lucide-react";
 import {
@@ -269,10 +270,7 @@ export function HostCompanion({
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden">
       <div className="flex shrink-0 items-center gap-2 border-b border-border px-3 py-2">
-        <span
-          className={`size-2 shrink-0 rounded-full ${status === "online" ? "bg-emerald-500" : status === "offline" ? "bg-destructive" : "bg-muted-foreground"}`}
-          title={t(`state.${status ?? "unknown"}`)}
-        />
+        <StatusDot state={status} title={t(`state.${status ?? "unknown"}`)} />
         <span className="min-w-0 flex-1 truncate text-sm font-medium">
           {hostLabel(host)}
         </span>

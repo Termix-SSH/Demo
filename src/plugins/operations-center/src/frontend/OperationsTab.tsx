@@ -4,14 +4,18 @@ import {
   useTranslation,
   type TabProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { Button, PanelShell, ViewToggle } from "@termix-ssh/plugin-sdk/ui";
+import {
+  PanelShell,
+  RefreshButton,
+  SideNav,
+  ViewToggle,
+} from "@termix-ssh/plugin-sdk/ui";
 import {
   Activity,
   GitCompare,
   History,
   LayoutDashboard,
   ListChecks,
-  RefreshCw,
   Rocket,
   Server,
   ShieldQuestion,
@@ -28,7 +32,6 @@ import { RulesView } from "./RulesView";
 import { RunView } from "./RunView";
 import { HostCardsView } from "./HostCardsView";
 import { OverviewView } from "./OverviewView";
-import { Choice } from "./parts";
 import { useOpsSummary, type OpsSummary } from "./ops-summary";
 
 export const VIEWS = [
@@ -152,67 +155,41 @@ export function OperationsTab({ tab, shell, isVisible }: TabProps) {
                 }
               />
             )}
-            <Button
-              variant="ghost"
-              size="icon"
-              title={t("tab.refresh")}
-              aria-label={t("tab.refresh")}
-              className="text-accent-brand"
+            <RefreshButton
+              label={t("tab.refresh")}
               onClick={() => {
                 void load(true);
                 void reload();
               }}
-            >
-              <RefreshCw className="size-4" />
-            </Button>
+            />
           </>
         }
       >
-        <div className="flex h-full min-h-0">
-          <nav className="hidden w-44 shrink-0 flex-col gap-0.5 overflow-auto border-r border-border p-2 md:flex">
-            {VIEWS.map((value) => {
-              const Icon = ICONS[value];
+        <div className="flex h-full min-h-0 flex-col md:flex-row">
+          <SideNav
+            label={t("tab.view")}
+            active={view}
+            onSelect={(next) => setView(next as View)}
+            entries={VIEWS.map((value) => {
               const badge = badgeFor(value, summary);
-              return (
-                <button
-                  key={value}
-                  type="button"
-                  onClick={() => setView(value)}
-                  aria-current={view === value ? "page" : undefined}
-                  className={`flex items-center gap-2 px-2 py-1.5 text-left text-xs ${view === value ? "bg-muted font-medium text-foreground" : "text-muted-foreground hover:bg-muted/60"}`}
-                >
-                  <Icon className="size-3.5 shrink-0" />
-                  <span className="min-w-0 flex-1 truncate">
-                    {t(`views.${value}`)}
+              return {
+                id: value,
+                icon: ICONS[value],
+                label: t(`views.${value}`),
+                badge: badge && (
+                  <span className={`px-1 ${TONE[badge.tone]}`}>
+                    {badge.count}
                   </span>
-                  {badge && (
-                    <span
-                      className={`px-1 text-[10px] tabular-nums ${TONE[badge.tone]}`}
-                    >
-                      {badge.count}
-                    </span>
-                  )}
-                </button>
-              );
+                ),
+              };
             })}
-          </nav>
-          <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-2 overflow-auto p-2.5">
-            <Choice<View>
-              className="md:hidden"
-              label={t("tab.view")}
-              value={view}
-              onChange={setView}
-              options={VIEWS.map((value) => {
-                const badge = badgeFor(value, summary);
-                return {
-                  value,
-                  label: badge
-                    ? `${t(`views.${value}`)} (${badge.count})`
-                    : t(`views.${value}`),
-                };
-              })}
-            />
-            {error && <p className="text-sm text-destructive">{error}</p>}
+          />
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-auto thin-scrollbar">
+            {error && (
+              <p className="border-b border-border px-3 py-2 text-xs text-destructive">
+                {error}
+              </p>
+            )}
             {view === "overview" && (
               <OverviewView
                 catalog={catalog}

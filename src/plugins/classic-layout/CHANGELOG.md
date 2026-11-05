@@ -17,6 +17,10 @@
 - The dashboard layout is saved with your account, so it follows you to every browser. A layout saved in this browser moves over on its own
 - A dashboard you never arranged puts Needs attention first, when Operations Center is on
 
+### Changed
+
+- Settings, the host and login editors and the dashboard use the shared tile look, with lines between sections instead of separate boxes
+
 ### Fixed
 
 - Folder host counts now include sub-hosts, so a folder no longer shows more online hosts than it has

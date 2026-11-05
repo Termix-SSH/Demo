@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { Badge, Button, Select2 } from "@termix-ssh/plugin-sdk/ui";
+import { Select2, StatusBadge, TileFrame } from "@termix-ssh/plugin-sdk/ui";
 import type { CatalogAction } from "./api";
 
 export function Choice<T extends string>({
@@ -32,32 +32,13 @@ export function Choice<T extends string>({
   );
 }
 
-const TONE: Record<string, string> = {
-  success: "text-emerald-600 dark:text-emerald-400",
-  ok: "text-emerald-600 dark:text-emerald-400",
-  compliant: "text-emerald-600 dark:text-emerald-400",
-  done: "text-emerald-600 dark:text-emerald-400",
-  failed: "text-destructive",
-  fail: "text-destructive",
-  error: "text-destructive",
-  drifted: "text-amber-600 dark:text-amber-400",
-  warn: "text-amber-600 dark:text-amber-400",
-  pending_approval: "text-amber-600 dark:text-amber-400",
-  paused: "text-amber-600 dark:text-amber-400",
-  needs_interaction: "text-amber-600 dark:text-amber-400",
-  interrupted: "text-amber-600 dark:text-amber-400",
-};
-
 /** A run, host or check state as a small word with a color. */
 export function StateBadge({ state }: { state: string }) {
   const { t } = useTranslation();
   return (
-    <Badge
-      variant="outline"
-      className={`rounded-none text-[10px] ${TONE[state] ?? ""}`}
-    >
+    <StatusBadge state={state}>
       {t(`state.${state}`, { defaultValue: state })}
-    </Badge>
+    </StatusBadge>
   );
 }
 
@@ -65,12 +46,9 @@ export function RiskBadge({ risk }: { risk: string }) {
   const { t } = useTranslation();
   if (risk === "read") return null;
   return (
-    <Badge
-      variant="outline"
-      className={`rounded-none text-[10px] ${risk === "destructive" ? "text-destructive" : ""}`}
-    >
+    <StatusBadge tone={risk === "destructive" ? "bad" : "idle"}>
       {t(`risk.${risk}`)}
-    </Badge>
+    </StatusBadge>
   );
 }
 
@@ -90,78 +68,13 @@ export function Section({
   children: ReactNode;
 }) {
   return (
-    <section className="flex flex-col gap-2 border border-border p-3">
-      <div className="flex items-center justify-between gap-2">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          {title}
-        </h3>
-        {action}
-      </div>
+    <TileFrame title={title} actions={action} bodyClassName="gap-2 p-3">
       {children}
-    </section>
+    </TileFrame>
   );
 }
 
-/** One page of a list, with the page number kept in range. */
-export function pageOf<T>(
-  items: T[],
-  page: number,
-  size: number,
-): { rows: T[]; page: number; pages: number } {
-  const pages = Math.max(1, Math.ceil(items.length / size));
-  const at = Math.min(Math.max(0, page), pages - 1);
-  return { rows: items.slice(at * size, at * size + size), page: at, pages };
-}
-
-/** Previous and Next under a list. Hidden when there is only one page. */
-export function Pager({
-  page,
-  pages,
-  hasNext,
-  onPage,
-}: {
-  page: number;
-  /** Total pages when known; leave out for a list read a page at a time. */
-  pages?: number;
-  hasNext?: boolean;
-  onPage: (next: number) => void;
-}) {
-  const { t } = useTranslation();
-  const next = hasNext ?? (pages !== undefined && page < pages - 1);
-  if (page === 0 && !next) return null;
-  return (
-    <div className="flex items-center justify-between gap-2 pt-1 text-xs text-muted-foreground">
-      <Button
-        size="sm"
-        variant="ghost"
-        disabled={page === 0}
-        onClick={() => onPage(page - 1)}
-      >
-        {t("pager.previous")}
-      </Button>
-      <span>
-        {pages !== undefined
-          ? t("pager.pageOf", { page: page + 1, pages })
-          : t("pager.page", { page: page + 1 })}
-      </span>
-      <Button
-        size="sm"
-        variant="ghost"
-        disabled={!next}
-        onClick={() => onPage(page + 1)}
-      >
-        {t("pager.next")}
-      </Button>
-    </div>
-  );
-}
-
-/** A client side list a page at a time, back on page one when reset changes. */
-export function usePaged<T>(items: T[], size: number, reset?: unknown) {
-  const [page, setPage] = useState(0);
-  useEffect(() => setPage(0), [reset]);
-  return { ...pageOf(items, page, size), setPage };
-}
+export { Pager, pageOf, usePaged } from "@termix-ssh/plugin-sdk/ui";
 
 /** Runs read a page at a time, each page starting before the last one's oldest. */
 export function useRunPages(reset?: unknown) {

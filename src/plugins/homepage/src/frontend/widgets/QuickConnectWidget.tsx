@@ -16,17 +16,11 @@ import type {
 import { GRID_SIZE } from "../types.js";
 
 import { quickConnectTargets } from "../quick-connect-targets.js";
-import { WidgetTitle } from "@termix-ssh/plugin-sdk/ui";
+import { WidgetTitle, StatusDot } from "@termix-ssh/plugin-sdk/ui";
 
-function StatusDot({ hostId }: { hostId: number }) {
+function HostDot({ hostId }: { hostId: number }) {
   const status = useHostStatus(hostId);
-  const cls =
-    status?.status === "online"
-      ? "bg-green-500"
-      : status?.status === "offline"
-        ? "bg-red-500"
-        : "bg-muted-foreground/30";
-  return <span className={`size-1.5 rounded-full shrink-0 ${cls}`} />;
+  return <StatusDot state={status?.status} className="size-1.5" />;
 }
 
 function QuickConnectWidget({
@@ -84,7 +78,7 @@ function QuickConnectWidget({
               className={`flex items-center gap-2 py-1.5 border-b border-border/20 last:border-0 ${config.layout === "grid" ? "flex-col items-start" : ""}`}
             >
               <div className="flex items-center gap-1.5 flex-1 min-w-0">
-                {config.showStatus && <StatusDot hostId={Number(host.id)} />}
+                {config.showStatus && <HostDot hostId={Number(host.id)} />}
                 <span className="text-xs font-medium text-foreground truncate">
                   {host.name || host.ip}
                 </span>

@@ -764,7 +764,7 @@ export function AdminSettingsPanel({
     <div
       className={
         section
-          ? "flex w-full flex-col gap-2"
+          ? "flex w-full flex-col"
           : "mx-auto flex w-full max-w-5xl flex-col gap-2 p-3 flex-1 min-h-0 overflow-y-auto"
       }
     >

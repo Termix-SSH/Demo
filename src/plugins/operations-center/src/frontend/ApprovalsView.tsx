@@ -68,7 +68,7 @@ export function ApprovalsView({ actions }: { actions: CatalogAction[] }) {
   }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-auto">
+    <div className="flex min-h-0 flex-1 flex-col overflow-auto">
       {shown.rows.map((item) => {
         const origin = item.run.origin;
         const from =
@@ -78,7 +78,7 @@ export function ApprovalsView({ actions }: { actions: CatalogAction[] }) {
         return (
           <div
             key={item.id}
-            className="flex flex-col gap-2 border border-border p-3 text-xs"
+            className="flex flex-col gap-2 border-b border-border p-3 text-xs"
           >
             <div className="flex items-center gap-2 text-sm font-medium">
               {titleOf(item.run.actionId)}

@@ -119,7 +119,8 @@ export function AccordionSection({
     return (
       <div
         id={`${id}-content`}
-        className="flex flex-col border border-border bg-card px-3 pb-3"
+        data-tile-card=""
+        className="flex flex-col border border-border px-3 pb-3"
       >
         {children}
       </div>
@@ -127,7 +128,7 @@ export function AccordionSection({
   }
 
   return (
-    <div className="border border-border bg-card overflow-hidden">
+    <div data-tile-card="" className="border border-border overflow-hidden">
       <button
         onClick={onToggle}
         aria-expanded={open}
@@ -1128,7 +1129,7 @@ export function UserProfilePanel({
     <div
       className={
         section
-          ? "flex w-full flex-col gap-2"
+          ? "flex w-full flex-col"
           : "mx-auto flex w-full max-w-5xl flex-col gap-2 p-3"
       }
     >
@@ -1143,7 +1144,10 @@ export function UserProfilePanel({
           connected; with no sync there's nowhere for "cloud" to sync to,
           so this stays forced to local storage and hidden. */}
       {(!isElectron() || isLinked) && shows("data") && (
-        <div className="border border-border bg-card px-3 py-2.5 flex flex-col gap-2">
+        <div
+          data-tile-card=""
+          className="border border-border px-3 py-2.5 flex flex-col gap-2"
+        >
           <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
             {t("newUi.sidebar.userProfile.storageModeSwitch")}
           </span>

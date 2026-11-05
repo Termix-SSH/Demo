@@ -129,7 +129,7 @@ export function ChannelDialog({
           <Input
             value={draft.name}
             onChange={(event) => set("name", event.target.value)}
-            className="text-sm rounded-none"
+            className="text-sm"
           />
         </Field>
 
@@ -173,7 +173,7 @@ export function ChannelDialog({
                 value={draft.url}
                 onChange={(event) => set("url", event.target.value)}
                 placeholder="https://example.com/webhook"
-                className="text-sm font-mono rounded-none"
+                className="text-sm font-mono"
               />
             </Field>
             <Field label={t("channels.method")}>
@@ -204,7 +204,7 @@ export function ChannelDialog({
                 onChange={(event) => set("headers", event.target.value)}
                 placeholder="Authorization: Bearer ..."
                 rows={3}
-                className="text-xs font-mono rounded-none"
+                className="text-xs font-mono"
               />
             </Field>
             <Field
@@ -216,7 +216,7 @@ export function ChannelDialog({
                 onChange={(event) => set("bodyTemplate", event.target.value)}
                 placeholder={'{"text": "{{title}}: {{message}}"}'}
                 rows={5}
-                className="text-xs font-mono rounded-none"
+                className="text-xs font-mono"
               />
             </Field>
           </>
@@ -232,7 +232,7 @@ export function ChannelDialog({
                 value={draft.token}
                 onChange={(event) => set("token", event.target.value)}
                 placeholder="123456:ABC..."
-                className="h-8 pr-8 text-sm font-mono rounded-none"
+                className="h-8 pr-8 text-sm font-mono"
               />
             </Field>
             <Field
@@ -243,7 +243,7 @@ export function ChannelDialog({
                 value={draft.chatId}
                 onChange={(event) => set("chatId", event.target.value)}
                 placeholder="-1001234567890"
-                className="text-sm font-mono rounded-none"
+                className="text-sm font-mono"
               />
             </Field>
           </>
@@ -256,7 +256,7 @@ export function ChannelDialog({
                 value={draft.url}
                 onChange={(event) => set("url", event.target.value)}
                 placeholder="https://ntfy.sh"
-                className="text-sm font-mono rounded-none"
+                className="text-sm font-mono"
               />
             </Field>
             <Field label={t("channels.ntfyTopic")}>
@@ -264,7 +264,7 @@ export function ChannelDialog({
                 value={draft.topic}
                 onChange={(event) => set("topic", event.target.value)}
                 placeholder="my-alerts"
-                className="text-sm font-mono rounded-none"
+                className="text-sm font-mono"
               />
             </Field>
             <Field label={t("channels.ntfyToken")}>
@@ -272,7 +272,7 @@ export function ChannelDialog({
                 value={draft.token}
                 onChange={(event) => set("token", event.target.value)}
                 placeholder="tk_..."
-                className="h-8 pr-8 text-sm font-mono rounded-none"
+                className="h-8 pr-8 text-sm font-mono"
               />
             </Field>
           </>
@@ -288,7 +288,7 @@ export function ChannelDialog({
                 value={draft.url}
                 onChange={(event) => set("url", event.target.value)}
                 placeholder="https://discord.com/api/webhooks/..."
-                className="text-sm font-mono rounded-none"
+                className="text-sm font-mono"
               />
             </Field>
             <Field label={t("channels.discordUsername")}>
@@ -296,7 +296,7 @@ export function ChannelDialog({
                 value={draft.username}
                 onChange={(event) => set("username", event.target.value)}
                 placeholder="Termix"
-                className="text-sm rounded-none"
+                className="text-sm"
               />
             </Field>
             <Field label={t("channels.discordAvatar")}>
@@ -304,7 +304,7 @@ export function ChannelDialog({
                 value={draft.avatarUrl}
                 onChange={(event) => set("avatarUrl", event.target.value)}
                 placeholder="https://example.com/avatar.png"
-                className="text-sm font-mono rounded-none"
+                className="text-sm font-mono"
               />
             </Field>
           </>
@@ -316,7 +316,7 @@ export function ChannelDialog({
               value={draft.to}
               onChange={(event) => set("to", event.target.value)}
               placeholder="ops@example.com"
-              className="text-sm rounded-none"
+              className="text-sm"
             />
           </Field>
         )}

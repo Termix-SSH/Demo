@@ -92,7 +92,7 @@ function LinkTreeWidget({
           <div key={si}>
             {section.heading && (
               <div className="flex items-center gap-1.5 px-2 pt-2 pb-0.5 border-b border-border/30">
-                <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider truncate">
+                <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest truncate">
                   {section.heading}
                 </span>
               </div>

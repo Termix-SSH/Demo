@@ -236,7 +236,7 @@ export function HostEditorWebUiSection({
               onChange={(v: boolean) => setSettings({ enableWebUi: v })}
             />
           </SettingRow>
-          <div className="text-xs text-muted-foreground p-3 bg-muted/30 border border-border space-y-1">
+          <div className="space-y-1 border-b border-border p-3 text-xs text-muted-foreground">
             <p>{t("hosts.webUiRequirementsText")}</p>
           </div>
         </div>
@@ -276,7 +276,7 @@ export function HostEditorWebUiSection({
                 return (
                   <div
                     key={endpoint.id}
-                    className="flex flex-col gap-3 p-3 border border-border bg-muted/20 relative group"
+                    className="flex flex-col gap-3 p-3 border border-border relative group"
                   >
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-xs font-bold text-muted-foreground">

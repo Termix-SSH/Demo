@@ -52,7 +52,7 @@ export function SettingsView({
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 p-3">
       {item.publicKey && (
         <TextField
           label={t("settings.publicKey")}

@@ -6,6 +6,10 @@
 
 - Host cards show the badges plugins add next to a host's name, such as the Operations Center attention dot
 
+### Changed
+
+- Home uses the Termix tile look, with host cards edge to edge
+
 ### Fixed
 
 - Password fields with the show button are the same height as the other fields next to them

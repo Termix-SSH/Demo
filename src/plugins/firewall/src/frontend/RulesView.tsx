@@ -72,9 +72,9 @@ export function RulesView({
   const hasReadOnly = status.rules.some((r) => !r.managed);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col">
       {!compact && (
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2">
           <PanelSearch
             value={search}
             onChange={setSearch}
@@ -106,7 +106,7 @@ export function RulesView({
       )}
       <PanelList
         empty={
-          <p className="px-1 py-6 text-center text-xs text-muted-foreground/60">
+          <p className="px-3 py-6 text-center text-xs text-muted-foreground/60">
             {status.rules.length ? t("rules.noMatch") : t("rules.empty")}
           </p>
         }

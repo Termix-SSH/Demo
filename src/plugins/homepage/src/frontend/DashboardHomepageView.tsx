@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Check, ExternalLink, Link } from "lucide-react";
+import { Check, ExternalLink, Link, Pencil } from "lucide-react";
 import { useTranslation, type ShellApi } from "@termix-ssh/plugin-sdk/frontend";
-import { HomepageCanvas } from "./HomepageCanvas.js";
+import { HomepageGrid } from "./HomepageGrid.js";
 
 /** The homepage plugin's contribution to the dashboard's "dashboard.secondaryView" slot. */
 export function DashboardHomepageView({
@@ -11,6 +11,7 @@ export function DashboardHomepageView({
 }) {
   const { t } = useTranslation();
   const [linkCopied, setLinkCopied] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   const handleCopyLink = () => {
     navigator.clipboard
@@ -27,6 +28,13 @@ export function DashboardHomepageView({
           {t("nav.homepage")}
         </span>
         <div className="flex items-center gap-3">
+          <button
+            className="text-[10px] text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+            onClick={() => setEditing((on) => !on)}
+          >
+            <Pencil size={10} />
+            {t("homepage.customize")}
+          </button>
           <button
             className="text-[10px] text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
             onClick={handleCopyLink}
@@ -55,7 +63,11 @@ export function DashboardHomepageView({
         </div>
       </div>
       <div className="flex-1 min-h-0 overflow-hidden">
-        <HomepageCanvas />
+        <HomepageGrid
+          chrome={false}
+          editMode={editing}
+          onEditMode={setEditing}
+        />
       </div>
     </>
   );

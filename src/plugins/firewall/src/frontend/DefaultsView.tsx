@@ -83,7 +83,7 @@ function PolicyForm({
   };
 
   return (
-    <div className="flex max-w-2xl flex-col gap-3">
+    <div className="flex max-w-2xl flex-col gap-3 p-3">
       <p className="text-xs text-muted-foreground">{t("defaults.hint")}</p>
       <FieldPair>
         <SelectField
@@ -137,7 +137,7 @@ function ZonesView({
   const shown = status.zones.filter((z) => z.active || z.isDefault);
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 p-3">
       <p className="text-xs text-muted-foreground">{t("zones.hint")}</p>
       <div className="flex max-w-2xl items-end gap-2">
         <SelectField

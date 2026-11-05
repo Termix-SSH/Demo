@@ -143,8 +143,8 @@ export function RunView({
   };
 
   const catalogList = (
-    <div className="flex min-h-0 flex-col gap-2">
-      <div className="flex flex-wrap gap-2">
+    <div className="flex min-h-0 flex-col">
+      <div className="flex flex-wrap gap-2 border-b border-border px-3 py-2">
         <div className="relative min-w-40 flex-1">
           <Search className="absolute left-2 top-2.5 size-3.5 text-muted-foreground" />
           <Input
@@ -163,12 +163,15 @@ export function RunView({
       {filtered.length === 0 ? (
         <EmptyState icon={Zap} title={t("run.none")} hint={t("run.noneHint")} />
       ) : (
-        <div className="flex min-h-0 flex-col gap-1 overflow-auto thin-scrollbar">
+        <div className="flex min-h-0 flex-col overflow-auto thin-scrollbar">
           {shown.rows.map((entry, index) => (
-            <div key={entry.id} className="flex flex-col gap-1">
+            <div key={entry.id} className="flex flex-col">
               {(index === 0 ||
                 shown.rows[index - 1].pluginName !== entry.pluginName) && (
-                <GroupHeading title={entry.pluginName} className="px-1 pt-1" />
+                <GroupHeading
+                  title={entry.pluginName}
+                  className="px-3 pb-1 pt-2.5"
+                />
               )}
               <ListRow
                 title={entry.title}
@@ -189,7 +192,7 @@ export function RunView({
 
   if (!action) {
     return (
-      <div className="flex min-h-0 flex-1 gap-3">
+      <div className="flex min-h-0 flex-1">
         <div className="flex min-h-0 w-full flex-col md:w-96 md:shrink-0">
           {catalogList}
         </div>
@@ -211,11 +214,11 @@ export function RunView({
     (action.scope !== "resource" || !!resourceKey);
 
   return (
-    <div className="flex min-h-0 flex-1 gap-3">
+    <div className="flex min-h-0 flex-1">
       <div className="hidden min-h-0 w-96 shrink-0 flex-col md:flex">
         {catalogList}
       </div>
-      <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-auto md:border-l md:border-border md:pl-3">
+      <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-auto p-3 thin-scrollbar md:border-l md:border-border">
         <div className="flex items-center justify-between gap-2">
           <div className="min-w-0">
             <div className="flex items-center gap-2 text-sm font-medium">

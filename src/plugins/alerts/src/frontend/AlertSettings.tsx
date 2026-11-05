@@ -48,6 +48,7 @@ export function AlertSettings({
 
   return (
     <InlineView
+      stacked
       open
       onOpenChange={(open) => !open && onBack()}
       icon={<SlidersHorizontal className="size-4" />}

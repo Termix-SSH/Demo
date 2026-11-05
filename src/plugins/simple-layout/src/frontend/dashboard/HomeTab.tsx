@@ -24,6 +24,7 @@ import {
   useHostStatus,
   useShellController,
   type Host,
+  TileWall,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { groupHosts } from "./group-hosts";
@@ -67,8 +68,8 @@ export function HomeTab() {
   return (
     <TooltipProvider delayDuration={300}>
       <div className="flex flex-1 min-h-0 flex-col overflow-y-auto">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 md:p-6">
-          <div className="flex items-center gap-3">
+        <div className="flex w-full flex-col">
+          <div className="flex items-center gap-3 border-b border-border px-3 py-2">
             <h1 className="text-base font-semibold">{t("home.title")}</h1>
             <div className="ml-auto flex items-center gap-2">
               {hosts.list.length >= SEARCH_FROM && (
@@ -90,26 +91,23 @@ export function HomeTab() {
           </div>
 
           {groups.length === 0 && (
-            <p className="text-sm text-muted-foreground">
+            <p className="p-3 text-xs text-muted-foreground">
               {t("home.noMatches")}
             </p>
           )}
 
           {groups.map((group) => (
-            <section
-              key={group.folder || "__none__"}
-              className="flex flex-col gap-2"
-            >
+            <section key={group.folder || "__none__"} className="flex flex-col">
               {groups.length > 1 && (
-                <h2 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+                <h2 className="border-b border-border px-3 py-1.5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
                   {group.folder || t("home.noFolder")}
                 </h2>
               )}
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <TileWall gridClassName="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {group.hosts.map((host) => (
                   <HostCard key={host.id} host={host} />
                 ))}
-              </div>
+              </TileWall>
             </section>
           ))}
         </div>
@@ -140,7 +138,7 @@ function HostCard({ host }: { host: Host }) {
   };
 
   return (
-    <div className="flex flex-col gap-3 border border-border bg-card p-3">
+    <div className="flex flex-col gap-3 p-3">
       <div className="flex items-start gap-2 min-w-0">
         <span
           className={cn(

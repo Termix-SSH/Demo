@@ -14,6 +14,7 @@ import {
 import {
   GroupHeading,
   PANEL,
+  TileColumn,
   PanelSearch,
   TabStrip,
   EmptyState,
@@ -200,8 +201,13 @@ export function EditorSection({
   children: ReactNode;
 }) {
   return (
-    <section data-section={id} className={`flex flex-col ${PANEL.gap}`}>
-      {showHeading && label && <GroupHeading title={label} className="pt-1" />}
+    <section data-section={id} className="flex flex-col">
+      {showHeading && label && (
+        <GroupHeading
+          title={label}
+          className="border-b border-border bg-muted/20 px-3 py-1.5"
+        />
+      )}
       {children}
     </section>
   );
@@ -362,14 +368,12 @@ export function EditorPane({
 
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
         <div className={`shrink-0 border-b border-border ${PANEL.band}`}>
-          <div className="mx-auto w-full max-w-3xl">
-            <PanelSearch
-              value={query}
-              onChange={setQuery}
-              placeholder={t("manage.searchSettings")}
-              fill
-            />
-          </div>
+          <PanelSearch
+            value={query}
+            onChange={setQuery}
+            placeholder={t("manage.searchSettings")}
+            fill
+          />
         </div>
         {showNav && (
           <div className="shrink-0 border-b border-border px-1 lg:hidden">
@@ -384,20 +388,19 @@ export function EditorPane({
         )}
         <div
           ref={scrollRef}
-          className={`min-h-0 flex-1 overflow-y-auto thin-scrollbar ${PANEL.body}`}
+          className="min-h-0 flex-1 overflow-y-auto thin-scrollbar"
         >
           {!anyShown && (
             <EmptyState icon={Search} title={t("manage.noMatchingSettings")} />
           )}
-          <div
-            ref={formRef}
-            className={`mx-auto flex max-w-3xl flex-col ${PANEL.gap} pb-6`}
-          >
-            {banner}
-            <SearchingContext.Provider value={searching || mountAll}>
-              {children}
-            </SearchingContext.Provider>
-          </div>
+          <TileColumn className="w-full">
+            <div ref={formRef} className="contents">
+              {banner}
+              <SearchingContext.Provider value={searching || mountAll}>
+                {children}
+              </SearchingContext.Provider>
+            </div>
+          </TileColumn>
         </div>
         {(footer || errorCount > 0) && (
           <div className="flex shrink-0 items-center gap-3 border-t border-border px-3 py-2">

@@ -9,6 +9,7 @@
 ### Changed
 
 - Needs Termix 26.11.1 or newer
+- Settings and the inventory use the Termix tile look
 
 ## 1.1.0
 

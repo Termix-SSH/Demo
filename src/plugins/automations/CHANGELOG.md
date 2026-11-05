@@ -15,6 +15,7 @@
 ### Changed
 
 - Needs Termix 26.11.1 or newer
+- The maintenance page and the Automations tab use the Termix page header and tile look
 
 ## 1.2.0
 

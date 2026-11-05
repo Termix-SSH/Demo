@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.0
+
+### Changed
+
+- The homepage is now a tile grid like the dashboard, with no zoom or pan. Open Customize to move, resize, add and remove widgets
+- Layouts from the old canvas move over on their own the first time you open the homepage
+- Folders are now headings for a group of widgets
+- Needs Termix 26.11.1 or newer
+
 ## 1.1.0
 
 ### Changed

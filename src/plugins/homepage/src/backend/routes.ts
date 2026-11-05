@@ -236,7 +236,7 @@ export function registerHomepageRoutes(
    * /plugin-api/homepage/layout:
    *   get:
    *     summary: Get homepage layout
-   *     description: Returns the homepage canvas layout (widget positions, pan, zoom) for the authenticated user.
+   *     description: Returns the homepage grid layout (widget positions) for the authenticated user.
    *     tags:
    *       - Homepage
    *     responses:
@@ -268,7 +268,7 @@ export function registerHomepageRoutes(
    * /plugin-api/homepage/layout:
    *   put:
    *     summary: Save homepage layout
-   *     description: Saves or updates the homepage canvas layout for the authenticated user.
+   *     description: Saves or updates the homepage grid layout for the authenticated user.
    *     tags:
    *       - Homepage
    *     requestBody:
@@ -280,9 +280,7 @@ export function registerHomepageRoutes(
    *             properties:
    *               entries:
    *                 type: array
-   *               pan:
-   *                 type: object
-   *               zoom:
+   *               version:
    *                 type: number
    *     responses:
    *       200:

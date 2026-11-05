@@ -6,7 +6,6 @@ import {
 } from "@termix-ssh/plugin-sdk/frontend";
 import {
   AddButton,
-  Alert,
   Button,
   Field,
   FormFooter,
@@ -232,17 +231,19 @@ export function RulesView() {
       .join(" | ");
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-2">
-      <Alert className="rounded-none text-xs">{t("rules.about")}</Alert>
+    <div className="flex min-h-0 flex-1 flex-col">
+      <p className="border-b border-border bg-muted/20 px-3 py-2 text-xs text-muted-foreground">
+        {t("rules.about")}
+      </p>
       {canEdit && (
-        <div className="flex justify-end">
+        <div className="flex justify-end border-b border-border px-3 py-2">
           <AddButton
             label={t("rules.new")}
             onClick={() => setEditing({ ...EMPTY, position: rules.length })}
           />
         </div>
       )}
-      <div className="flex flex-col gap-1 overflow-auto">
+      <div className="flex flex-col overflow-auto">
         {shown.rows.map((rule) => (
           <ListRow
             key={rule.id}

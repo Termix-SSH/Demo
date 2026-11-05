@@ -240,7 +240,10 @@ export function KeybindingsSettings() {
 
   return (
     <>
-      <div className="flex flex-col gap-4 border border-border bg-card p-3">
+      <div
+        data-tile-card=""
+        className="flex flex-col gap-4 border border-border p-3"
+      >
         <p className="text-xs text-muted-foreground">
           {t("newUi.sidebar.keybindings.description")}
         </p>

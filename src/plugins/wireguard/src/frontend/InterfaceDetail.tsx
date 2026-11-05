@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Network } from "lucide-react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { BackButton, PanelShell, Segmented } from "@termix-ssh/plugin-sdk/ui";
+import { BackButton, PanelShell, TabStrip } from "@termix-ssh/plugin-sdk/ui";
 import type { InterfaceView, WireguardStatus } from "../shared/types";
 import { errorMessage, listInterfaces } from "./api";
 import { Loading } from "./Loading";
@@ -62,21 +62,20 @@ export function InterfaceDetail({
           ? `${item.active ? t("interfaces.up") : t("interfaces.down")} | ${item.address.join(", ")}`
           : undefined
       }
-      toolbar={
-        <Segmented<Section>
-          value={section}
-          onChange={setSection}
-          options={[
-            { value: "clients", label: t("detail.clients") },
-            { value: "settings", label: t("detail.settings") },
-            { value: "config", label: t("detail.config") },
-            { value: "service", label: t("detail.service") },
+      tabs={
+        <TabStrip
+          tabs={[
+            { id: "clients", label: t("detail.clients") },
+            { id: "settings", label: t("detail.settings") },
+            { id: "config", label: t("detail.config") },
+            { id: "service", label: t("detail.service") },
           ]}
+          activeTab={section}
+          onTabChange={(id) => setSection(id as Section)}
         />
       }
-      className="gap-2 p-2.5"
     >
-      <div className="flex shrink-0 flex-col gap-2">
+      <div className="flex shrink-0 flex-col">
         {failed ? (
           <p className="p-2 text-sm text-destructive">{failed}</p>
         ) : !item ? (

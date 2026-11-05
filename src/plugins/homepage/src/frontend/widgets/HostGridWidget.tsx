@@ -9,7 +9,7 @@ import {
 import { registerWidget } from "./WidgetRegistry";
 import type { HostGridConfig, WidgetComponentProps } from "../types.js";
 import { GRID_SIZE } from "../types.js";
-import { WidgetTitle } from "@termix-ssh/plugin-sdk/ui";
+import { WidgetTitle, StatusDot } from "@termix-ssh/plugin-sdk/ui";
 
 function getAccentColor(): string {
   return (
@@ -19,19 +19,8 @@ function getAccentColor(): string {
   );
 }
 
-function StatusDot({ status }: { status: string }) {
-  const color =
-    status === "online"
-      ? getAccentColor()
-      : status === "offline"
-        ? "#ef4444"
-        : "#6b7280";
-  return (
-    <span
-      className="w-1.5 h-1.5 rounded-full shrink-0 inline-block"
-      style={{ background: color }}
-    />
-  );
+function HostDot({ status }: { status: string }) {
+  return <StatusDot state={status} className="size-1.5" />;
 }
 
 function HostGridRow({
@@ -44,7 +33,7 @@ function HostGridRow({
   const status = useHostStatus(Number(host.id));
   return (
     <div className="flex items-center gap-1.5 p-1.5 bg-muted/30 border border-border/40 overflow-hidden">
-      <StatusDot status={status?.status ?? "unknown"} />
+      <HostDot status={status?.status ?? "unknown"} />
       <div className="flex flex-col min-w-0">
         <span className="text-[10px] font-medium text-foreground truncate">
           {host.name}

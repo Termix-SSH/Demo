@@ -47,7 +47,7 @@ function ServiceLinkWidget({
   }
 
   const accentBorder = accentColor || getAccentColor();
-  const imgSize = Math.min(48, widget.h * 0.3);
+  const imgSize = 40;
 
   const content = (
     <div

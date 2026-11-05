@@ -860,12 +860,12 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
   }, [liveHosts, graphElements]);
 
   const btnCls =
-    "h-7 w-7 p-0 rounded-sm border-0 hover:bg-muted/60 transition-colors flex items-center justify-center text-muted-foreground hover:text-foreground";
+    "h-7 w-7 p-0 border-0 hover:bg-muted/60 transition-colors flex items-center justify-center text-muted-foreground hover:text-foreground";
 
   const contextMenuEl = contextMenu.visible ? (
     <div
       ref={contextMenuRef}
-      className="fixed z-[300] min-w-[170px] shadow-2xl rounded-none bg-card border border-border"
+      className="fixed z-[300] min-w-[170px] shadow-2xl bg-card border border-border"
       style={{ top: contextMenu.y, left: contextMenu.x }}
     >
       {contextMenu.type === "node" && (
@@ -1032,7 +1032,7 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
           <div className="grid gap-2">
             <Label>{t("networkGraph.selectHost")}</Label>
             <Select2
-              className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring"
+              className="h-8 w-full px-2.5 text-xs"
               value={selectedHostForAddNode}
               onChange={(e) => setSelectedHostForAddNode(e.target.value)}
             >
@@ -1047,7 +1047,7 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
           <div className="grid gap-2">
             <Label>{t("networkGraph.parentGroup")}</Label>
             <Select2
-              className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring"
+              className="h-8 w-full px-2.5 text-xs"
               value={selectedGroupForAddNode}
               onChange={(e) => setSelectedGroupForAddNode(e.target.value)}
             >
@@ -1146,7 +1146,7 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
           <div className="grid gap-2">
             <Label>{t("networkGraph.selectGroup")}</Label>
             <Select2
-              className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring"
+              className="h-8 w-full px-2.5 text-xs"
               value={selectedGroupForMove}
               onChange={(e) => setSelectedGroupForMove(e.target.value)}
             >
@@ -1181,7 +1181,7 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
           <div className="grid gap-2">
             <Label>{t("networkGraph.source")}</Label>
             <Select2
-              className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring"
+              className="h-8 w-full px-2.5 text-xs"
               value={selectedHostForEdge}
               onChange={(e) => setSelectedHostForEdge(e.target.value)}
             >
@@ -1198,7 +1198,7 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
           <div className="grid gap-2">
             <Label>{t("networkGraph.target")}</Label>
             <Select2
-              className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring"
+              className="h-8 w-full px-2.5 text-xs"
               value={targetHostForEdge}
               onChange={(e) => setTargetHostForEdge(e.target.value)}
             >
@@ -1293,7 +1293,7 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
   if (!embedded) {
     return (
       <div className="h-full w-full flex flex-col bg-background">
-        <div className="flex items-center gap-1 px-4 py-2 border-b border-border shrink-0 flex-wrap">
+        <div className="flex items-center gap-1 px-3 py-2 border-b border-border shrink-0 flex-wrap">
           <div className="flex items-center gap-0.5">
             <Button
               variant="ghost"

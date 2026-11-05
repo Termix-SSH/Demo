@@ -85,10 +85,7 @@ export function StepBlock({
             onChange(changeStepType(step, value as StepType))
           }
         >
-          <SelectTrigger
-            size="sm"
-            className="flex-1 rounded-none border-border"
-          >
+          <SelectTrigger size="sm" className="flex-1 border-border">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -112,7 +109,7 @@ export function StepBlock({
         <Button
           variant="ghost"
           size="icon"
-          className="h-8 w-8 rounded-none"
+          className="h-8 w-8"
           disabled={index === 0}
           title={t(`${base}.moveUp`)}
           onClick={() => onMove(-1)}
@@ -122,7 +119,7 @@ export function StepBlock({
         <Button
           variant="ghost"
           size="icon"
-          className="h-8 w-8 rounded-none"
+          className="h-8 w-8"
           disabled={index === total - 1}
           title={t(`${base}.moveDown`)}
           onClick={() => onMove(1)}
@@ -132,7 +129,7 @@ export function StepBlock({
         <Button
           variant="ghost"
           size="icon"
-          className="h-8 w-8 rounded-none"
+          className="h-8 w-8"
           title={t(`${base}.removeStep`)}
           onClick={onRemove}
         >
@@ -145,7 +142,7 @@ export function StepBlock({
           <>
             <Field label={t(`${base}.fields.title`)}>
               <Input
-                className="h-8 rounded-none border-border"
+                className="h-8 border-border"
                 value={step.title ?? ""}
                 onChange={(e) =>
                   patch({ title: e.target.value } as Partial<Step>)
@@ -154,7 +151,7 @@ export function StepBlock({
             </Field>
             <Field label={t(`${base}.fields.message`)}>
               <Textarea
-                className="rounded-none border-border min-h-16"
+                className="border-border min-h-16"
                 value={step.body ?? ""}
                 onChange={(e) =>
                   patch({ body: e.target.value } as Partial<Step>)
@@ -205,10 +202,7 @@ export function StepBlock({
                   patch({ method: value } as Partial<Step>)
                 }
               >
-                <SelectTrigger
-                  size="sm"
-                  className="w-28 rounded-none border-border"
-                >
+                <SelectTrigger size="sm" className="w-28 border-border">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -220,7 +214,7 @@ export function StepBlock({
                 </SelectContent>
               </Select>
               <Input
-                className="h-8 flex-1 rounded-none border-border"
+                className="h-8 flex-1 border-border"
                 placeholder="https://"
                 value={step.url ?? ""}
                 onChange={(e) =>
@@ -230,7 +224,7 @@ export function StepBlock({
             </div>
             <Field label={t(`${base}.fields.body`)}>
               <Textarea
-                className="rounded-none border-border min-h-16 font-mono text-xs"
+                className="border-border min-h-16 font-mono text-xs"
                 value={step.body ?? ""}
                 onChange={(e) =>
                   patch({ body: e.target.value } as Partial<Step>)
@@ -265,7 +259,7 @@ export function StepBlock({
             />
             <Field label={t(`${base}.fields.command`)}>
               <Textarea
-                className="rounded-none border-border min-h-16 font-mono text-xs"
+                className="border-border min-h-16 font-mono text-xs"
                 value={step.command ?? ""}
                 onChange={(e) =>
                   patch({ command: e.target.value } as Partial<Step>)
@@ -295,7 +289,7 @@ export function StepBlock({
                   patch({ snippetId: Number(value) } as Partial<Step>)
                 }
               >
-                <SelectTrigger size="sm" className="rounded-none border-border">
+                <SelectTrigger size="sm" className="border-border">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -332,7 +326,7 @@ export function StepBlock({
               >
                 <SelectTrigger
                   size="sm"
-                  className="min-w-0 flex-1 rounded-none border-border"
+                  className="min-w-0 flex-1 border-border"
                 >
                   <SelectValue />
                 </SelectTrigger>
@@ -345,7 +339,7 @@ export function StepBlock({
                 </SelectContent>
               </Select>
               <Input
-                className="h-8 flex-1 rounded-none border-border"
+                className="h-8 flex-1 border-border"
                 placeholder={t(`${base}.fields.container`)}
                 value={step.container ?? ""}
                 onChange={(e) =>
@@ -364,10 +358,7 @@ export function StepBlock({
                 patch({ action: value } as Partial<Step>)
               }
             >
-              <SelectTrigger
-                size="sm"
-                className="min-w-0 flex-1 rounded-none border-border"
-              >
+              <SelectTrigger size="sm" className="min-w-0 flex-1 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -380,7 +371,7 @@ export function StepBlock({
               </SelectContent>
             </Select>
             <Input
-              className="h-8 flex-1 rounded-none border-border"
+              className="h-8 flex-1 border-border"
               value={step.tunnelName ?? ""}
               onChange={(e) =>
                 patch({ tunnelName: e.target.value } as Partial<Step>)
@@ -405,7 +396,7 @@ export function StepBlock({
                 patch({ hostId: Number(value) } as Partial<Step>)
               }
             >
-              <SelectTrigger size="sm" className="rounded-none border-border">
+              <SelectTrigger size="sm" className="border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -423,7 +414,7 @@ export function StepBlock({
           <>
             <Field label={t(`${base}.fields.title`)}>
               <Input
-                className="h-8 rounded-none border-border"
+                className="h-8 border-border"
                 placeholder={t(`${base}.fields.aiTitlePlaceholder`)}
                 value={step.title ?? ""}
                 onChange={(e) =>
@@ -433,7 +424,7 @@ export function StepBlock({
             </Field>
             <Field label={t(`${base}.fields.runbook`)}>
               <Textarea
-                className="rounded-none border-border min-h-24"
+                className="border-border min-h-24"
                 placeholder={t(`${base}.fields.runbookPlaceholder`)}
                 value={step.runbook ?? ""}
                 onChange={(e) =>
@@ -450,7 +441,7 @@ export function StepBlock({
               >
                 <SelectTrigger
                   size="sm"
-                  className="min-w-0 w-full rounded-none border-border"
+                  className="min-w-0 w-full border-border"
                 >
                   <SelectValue />
                 </SelectTrigger>
@@ -479,7 +470,7 @@ export function StepBlock({
             <Input
               type="number"
               min={1}
-              className="h-8 w-32 rounded-none border-border"
+              className="h-8 w-32 border-border"
               value={step.seconds ?? 0}
               onChange={(e) =>
                 patch({ seconds: Number(e.target.value) } as Partial<Step>)
@@ -491,13 +482,13 @@ export function StepBlock({
         {step.type === "set_var" && (
           <div className="flex gap-2">
             <Input
-              className="h-8 w-40 rounded-none border-border"
+              className="h-8 w-40 border-border"
               placeholder={t(`${base}.fields.variableName`)}
               value={step.name ?? ""}
               onChange={(e) => patch({ name: e.target.value } as Partial<Step>)}
             />
             <Input
-              className="h-8 flex-1 rounded-none border-border"
+              className="h-8 flex-1 border-border"
               placeholder={t(`${base}.fields.variableValue`)}
               value={step.value ?? ""}
               onChange={(e) =>
@@ -511,7 +502,7 @@ export function StepBlock({
           <div className="space-y-3">
             <div className="flex gap-2">
               <Input
-                className="h-8 flex-1 rounded-none border-border font-mono text-xs"
+                className="h-8 flex-1 border-border font-mono text-xs"
                 placeholder={t(`${base}.fields.conditionLeftPlaceholder`)}
                 value={step.condition?.left ?? ""}
                 onChange={(e) =>
@@ -528,10 +519,7 @@ export function StepBlock({
                   } as Partial<Step>)
                 }
               >
-                <SelectTrigger
-                  size="sm"
-                  className="w-28 rounded-none border-border"
-                >
+                <SelectTrigger size="sm" className="w-28 border-border">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -543,7 +531,7 @@ export function StepBlock({
                 </SelectContent>
               </Select>
               <Input
-                className="h-8 flex-1 rounded-none border-border font-mono text-xs"
+                className="h-8 flex-1 border-border font-mono text-xs"
                 placeholder={t(`${base}.fields.conditionRightPlaceholder`)}
                 value={step.condition?.right ?? ""}
                 onChange={(e) =>
@@ -568,7 +556,7 @@ export function StepBlock({
             <Input
               type="number"
               min={1}
-              className="h-8 w-32 rounded-none border-border"
+              className="h-8 w-32 border-border"
               placeholder={String(DEFAULT_STEP_TIMEOUT_MS / 1000)}
               value={step.timeoutMs ? step.timeoutMs / 1000 : ""}
               onChange={(e) => {
@@ -590,10 +578,7 @@ export function StepBlock({
                 patch({ onError: value } as Partial<Step>)
               }
             >
-              <SelectTrigger
-                size="sm"
-                className="min-w-0 w-full rounded-none border-border"
-              >
+              <SelectTrigger size="sm" className="min-w-0 w-full border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

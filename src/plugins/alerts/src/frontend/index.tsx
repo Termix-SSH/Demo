@@ -1,3 +1,4 @@
+import { PanelShell } from "@termix-ssh/plugin-sdk/ui";
 import type { ComponentType } from "react";
 import { Bell } from "lucide-react";
 import {
@@ -61,7 +62,16 @@ export function activate(app: TermixApp): void {
   }
 
   function AlertsTab() {
-    return <AlertsView store={store} sections={sections} />;
+    const { t } = useTranslation();
+    return (
+      <PanelShell
+        icon={<Bell className="size-4" />}
+        title={t("nav.alerts")}
+        scroll={false}
+      >
+        <AlertsView store={store} sections={sections} />
+      </PanelShell>
+    );
   }
 
   function Toaster() {

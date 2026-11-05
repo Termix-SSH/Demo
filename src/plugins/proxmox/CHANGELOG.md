@@ -10,6 +10,7 @@
 ### Changed
 
 - Needs Termix 26.11.1 or newer
+- The overview uses the Termix tile look, with tiles edge to edge and lines between them instead of separate cards
 
 ## 1.2.1
 

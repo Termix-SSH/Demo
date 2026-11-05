@@ -8,7 +8,6 @@ import {
   Skeleton,
   Kbd,
   Facts,
-  GroupHeading,
   PanelShell,
   Segmented,
   useConfirm,
@@ -39,6 +38,7 @@ import {
   docsUrl,
   useUiPreferencesContext,
   TileFrame,
+  TileEditBar,
   TileGrid,
   TilePicker,
   appendTile,
@@ -66,7 +66,6 @@ import {
   Database,
   LayoutGrid,
   Pencil,
-  RotateCcw,
   Server,
   Zap,
 } from "lucide-react";
@@ -858,31 +857,7 @@ export function DashboardTab({
         <>
           {isDashboardView && !viewPending && (
             <>
-              {editMode ? (
-                <>
-                  <span className="hidden text-[11px] text-muted-foreground lg:inline">
-                    {t("dashboardTab.dragToReorder")}
-                  </span>
-                  {!pickerOpen && (
-                    <Button
-                      variant="ghost"
-                      size="xs"
-                      onClick={() => setPickerOpen(true)}
-                    >
-                      {t("dashboardTab.addSection")}
-                    </Button>
-                  )}
-                  <Button
-                    variant="ghost"
-                    size="xs"
-                    className="gap-1"
-                    onClick={() => void handleReset()}
-                  >
-                    <RotateCcw className="size-3" />
-                    {t("dashboard.reset")}
-                  </Button>
-                </>
-              ) : (
+              {!editMode && (
                 <Facts className="hidden px-1.5 text-[11px] text-muted-foreground md:flex">
                   <span>
                     {t("dashboardTab.onlineCount", { count: online })}
@@ -953,28 +928,41 @@ export function DashboardTab({
           <secondaryView.component onOpenSingletonTab={onOpenSingletonTab} />
         </div>
       ) : (
-        <div className="flex min-h-0 flex-1">
-          <div
-            ref={viewRef}
-            className="min-h-0 min-w-0 flex-1 overflow-y-auto thin-scrollbar"
-          >
-            <TileGrid
-              slots={slots}
-              editMode={editMode}
-              renderTile={renderTile}
-              tileLabel={tileLabel}
-              onChange={onGridChange}
-              empty={t("dashboardTab.dropHere")}
-            />
-          </div>
-          {editMode && pickerOpen && !isMobile && (
-            <TilePicker
-              entries={pickerEntries}
-              onAdd={handleAdd}
-              onClose={() => setPickerOpen(false)}
-            />
+        <>
+          {editMode && (
+            <TileEditBar
+              onReset={() => void handleReset()}
+              onAdd={pickerOpen ? undefined : () => setPickerOpen(true)}
+              onDone={() => setEditMode(false)}
+            >
+              <span className="hidden lg:inline">
+                {t("dashboardTab.dragToReorder")}
+              </span>
+            </TileEditBar>
           )}
-        </div>
+          <div className="flex min-h-0 flex-1">
+            <div
+              ref={viewRef}
+              className="min-h-0 min-w-0 flex-1 overflow-y-auto thin-scrollbar"
+            >
+              <TileGrid
+                slots={slots}
+                editMode={editMode}
+                renderTile={renderTile}
+                tileLabel={tileLabel}
+                onChange={onGridChange}
+                empty={t("dashboardTab.dropHere")}
+              />
+            </div>
+            {editMode && pickerOpen && !isMobile && (
+              <TilePicker
+                entries={pickerEntries}
+                onAdd={handleAdd}
+                onClose={() => setPickerOpen(false)}
+              />
+            )}
+          </div>
+        </>
       )}
     </PanelShell>
   );

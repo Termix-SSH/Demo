@@ -7,7 +7,12 @@ import {
   type PluginHostRecord,
   type ShellApi,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { EmptyState, Input } from "@termix-ssh/plugin-sdk/ui";
+import {
+  EmptyState,
+  Input,
+  StatusDot,
+  TileWall,
+} from "@termix-ssh/plugin-sdk/ui";
 import { Server } from "lucide-react";
 import { getSignals, type Catalog, type SignalRead } from "./api";
 import { hostLabel, splitTags } from "./hosts";
@@ -104,28 +109,30 @@ export function HostCardsView({
       : (COLUMNS[panel.columns] ?? "grid-cols-3");
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-2">
-      <Input
-        className="w-64"
-        value={query}
-        placeholder={t("hostCards.search")}
-        onChange={(event) => setQuery(event.target.value)}
-      />
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="border-b border-border px-3 py-2">
+        <Input
+          className="w-64"
+          value={query}
+          placeholder={t("hostCards.search")}
+          onChange={(event) => setQuery(event.target.value)}
+        />
+      </div>
       {cards.length === 0 ? (
         <EmptyState icon={Server} title={t("hostCards.none")} />
       ) : (
-        <div
-          className={`grid min-h-0 gap-px overflow-auto border border-border bg-border thin-scrollbar ${grid}`}
-        >
-          {cards.map(({ host, tiles, worst }) => (
-            <HostCard
-              key={host.id}
-              host={host}
-              tiles={tiles}
-              worst={worst}
-              onOpen={() => shell.openTab(host as never, "host")}
-            />
-          ))}
+        <div className="min-h-0 overflow-auto thin-scrollbar">
+          <TileWall gridClassName={grid}>
+            {cards.map(({ host, tiles, worst }) => (
+              <HostCard
+                key={host.id}
+                host={host}
+                tiles={tiles}
+                worst={worst}
+                onOpen={() => shell.openTab(host as never, "host")}
+              />
+            ))}
+          </TileWall>
         </div>
       )}
     </div>
@@ -150,12 +157,10 @@ function HostCard({
     <button
       type="button"
       onClick={onOpen}
-      className="flex min-w-0 flex-col gap-2 bg-card p-3 text-left transition-colors hover:bg-hover"
+      className="flex min-w-0 flex-col gap-2 p-3 text-left transition-colors hover:bg-muted/40"
     >
       <div className="flex items-center gap-2">
-        <span
-          className={`size-2 shrink-0 rounded-full ${online === "online" ? "bg-emerald-500" : online === "offline" ? "bg-destructive" : "bg-muted-foreground"}`}
-        />
+        <StatusDot state={online} />
         <span className="min-w-0 flex-1 truncate text-sm font-medium">
           {hostLabel(host)}
         </span>

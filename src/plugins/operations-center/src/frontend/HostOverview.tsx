@@ -9,6 +9,8 @@ import {
   Button,
   Input,
   ListRow,
+  TileStack,
+  TileWall,
   useConfirm,
   type HostSectionDef,
 } from "@termix-ssh/plugin-sdk/ui";
@@ -45,10 +47,10 @@ import { TargetField, useResourceChoices } from "./targets";
 const RUN_PAGE = 8;
 
 const TILE: Record<string, string> = {
-  ok: "border-emerald-500/40",
-  warn: "border-amber-500/60",
-  fail: "border-destructive/70",
-  unknown: "border-border",
+  ok: "border-l-emerald-500/60",
+  warn: "border-l-amber-500",
+  fail: "border-l-destructive",
+  unknown: "border-l-border",
 };
 
 /** The host page's first view: tiles, counts, quick actions and history. */
@@ -239,209 +241,213 @@ export function HostOverview({
     catalog?.actions.find((action) => action.id === id)?.title ?? id;
 
   return (
-    <div
-      className={`flex h-full flex-col gap-3 overflow-auto ${compact ? "p-3" : "p-4"}`}
-    >
-      {tiles.length > 0 && (
-        <div
-          className={`grid gap-2 ${compact ? "grid-cols-[repeat(auto-fill,minmax(8rem,1fr))]" : "grid-cols-[repeat(auto-fill,minmax(10rem,1fr))]"}`}
-        >
-          {tiles.map(({ signal, read }) => {
-            const status = read!.value?.status ?? "unknown";
-            const fix = signal!.fix
-              ? actions.find((action) => action.id === signal!.fix)
-              : undefined;
-            return (
-              <div
-                key={signal!.id}
-                className={`flex flex-col gap-1 border-l-4 border p-2 ${TILE[status]}`}
-              >
-                <span className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                  {signal!.title}
-                </span>
-                <span className="text-sm font-medium">
-                  {read!.state === "ok"
-                    ? (read!.value?.label ?? String(read!.value?.value ?? ""))
-                    : t(`state.${read!.state}`)}
-                </span>
-                {fix && status !== "ok" && read!.state === "ok" && (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="self-start"
-                    onClick={() => pick(fix)}
+    <div className="h-full overflow-auto thin-scrollbar">
+      <TileStack>
+        {tiles.length > 0 && (
+          <TileWall minWidth={compact ? 128 : 160}>
+            {tiles.map(({ signal, read }) => {
+              const status = read!.value?.status ?? "unknown";
+              const fix = signal!.fix
+                ? actions.find((action) => action.id === signal!.fix)
+                : undefined;
+              return (
+                <div
+                  key={signal!.id}
+                  className={`flex flex-col gap-1 border-l-2 p-2 ${TILE[status]}`}
+                >
+                  <span className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                    {signal!.title}
+                  </span>
+                  <span className="text-sm font-medium">
+                    {read!.state === "ok"
+                      ? (read!.value?.label ?? String(read!.value?.value ?? ""))
+                      : t(`state.${read!.state}`)}
+                  </span>
+                  {fix && status !== "ok" && read!.state === "ok" && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="self-start"
+                      onClick={() => pick(fix)}
+                    >
+                      {fix.title}
+                    </Button>
+                  )}
+                </div>
+              );
+            })}
+          </TileWall>
+        )}
+
+        {catalog && Object.keys(counts).length > 0 && (
+          <Section title={t("host.things")}>
+            <div className="flex flex-wrap gap-2">
+              {catalog.resources
+                .filter((resource) => counts[resource.id] !== undefined)
+                .map((resource) => (
+                  <button
+                    key={resource.id}
+                    type="button"
+                    className="border border-border px-3 py-2 text-left text-xs hover:bg-muted"
+                    onClick={() => resource.tab && onOpenTool(resource.tab)}
                   >
-                    {fix.title}
-                  </Button>
+                    <div className="text-lg font-semibold">
+                      {counts[resource.id]}
+                    </div>
+                    <div className="text-muted-foreground">
+                      {resource.title}
+                    </div>
+                  </button>
+                ))}
+            </div>
+          </Section>
+        )}
+
+        {cards.map((card) => {
+          const Card = card.component;
+          return (
+            <Section key={card.id} title={t(card.titleKey)}>
+              <Card
+                host={host as never}
+                isVisible={isVisible}
+                shell={shell as never}
+              />
+            </Section>
+          );
+        })}
+
+        <Section
+          title={t("host.actions")}
+          action={
+            <span className="text-xs text-muted-foreground">
+              {t("host.actionCount", { count: matching.length })}
+            </span>
+          }
+        >
+          {picked ? (
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2 text-sm font-medium">
+                {picked.title}
+                <RiskBadge risk={picked.risk} />
+              </div>
+              {picked.scope === "resource" && (
+                <TargetField
+                  choices={choices}
+                  value={resourceKey}
+                  onChange={setResourceKey}
+                />
+              )}
+              <ActionForm
+                hostId={hostId}
+                fields={picked.inputs}
+                values={values}
+                onChange={setValues}
+              />
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={busy || missingTarget}
+                  onClick={() => void run(true)}
+                >
+                  {t("run.dryRun")}
+                </Button>
+                <Button
+                  size="sm"
+                  variant={
+                    picked.risk === "destructive" ? "destructive" : "default"
+                  }
+                  disabled={busy || missingTarget}
+                  onClick={() => void run(false)}
+                >
+                  {t("run.run")}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setPicked(null)}
+                >
+                  {t("form.cancel")}
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="flex flex-wrap gap-2">
+                <Input
+                  className="min-w-40 flex-1"
+                  value={query}
+                  placeholder={t("host.searchActions")}
+                  onChange={(event) => {
+                    setQuery(event.target.value);
+                    setActionPage(0);
+                  }}
+                />
+                <PluginChoice
+                  actions={sorted}
+                  className={compact ? "w-full" : undefined}
+                  value={shownPlugin}
+                  onChange={(next) => {
+                    setPlugin(next);
+                    setActionPage(0);
+                  }}
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                {actionList.rows.map((action) => (
+                  <ListRow
+                    key={action.id}
+                    title={action.title}
+                    icon={<Zap className="size-4" />}
+                    meta={action.pluginName}
+                    badges={<RiskBadge risk={action.risk} />}
+                    dimmed={!action.available}
+                    onClick={() => pick(action)}
+                  />
+                ))}
+                {matching.length === 0 && (
+                  <p className="text-xs text-muted-foreground">
+                    {t("host.noActions")}
+                  </p>
                 )}
               </div>
-            );
-          })}
-        </div>
-      )}
-
-      {catalog && Object.keys(counts).length > 0 && (
-        <Section title={t("host.things")}>
-          <div className="flex flex-wrap gap-2">
-            {catalog.resources
-              .filter((resource) => counts[resource.id] !== undefined)
-              .map((resource) => (
-                <button
-                  key={resource.id}
-                  type="button"
-                  className="border border-border px-3 py-2 text-left text-xs hover:bg-muted"
-                  onClick={() => resource.tab && onOpenTool(resource.tab)}
-                >
-                  <div className="text-lg font-semibold">
-                    {counts[resource.id]}
-                  </div>
-                  <div className="text-muted-foreground">{resource.title}</div>
-                </button>
-              ))}
-          </div>
+              <Pager
+                page={actionList.page}
+                pages={actionList.pages}
+                onPage={setActionPage}
+              />
+            </>
+          )}
         </Section>
-      )}
 
-      {cards.map((card) => {
-        const Card = card.component;
-        return (
-          <Section key={card.id} title={t(card.titleKey)}>
-            <Card
-              host={host as never}
-              isVisible={isVisible}
-              shell={shell as never}
-            />
-          </Section>
-        );
-      })}
-
-      <Section
-        title={t("host.actions")}
-        action={
-          <span className="text-xs text-muted-foreground">
-            {t("host.actionCount", { count: matching.length })}
-          </span>
-        }
-      >
-        {picked ? (
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2 text-sm font-medium">
-              {picked.title}
-              <RiskBadge risk={picked.risk} />
-            </div>
-            {picked.scope === "resource" && (
-              <TargetField
-                choices={choices}
-                value={resourceKey}
-                onChange={setResourceKey}
-              />
-            )}
-            <ActionForm
-              hostId={hostId}
-              fields={picked.inputs}
-              values={values}
-              onChange={setValues}
-            />
-            <div className="flex gap-2">
-              <Button
-                size="sm"
-                variant="outline"
-                disabled={busy || missingTarget}
-                onClick={() => void run(true)}
-              >
-                {t("run.dryRun")}
-              </Button>
-              <Button
-                size="sm"
-                variant={
-                  picked.risk === "destructive" ? "destructive" : "default"
-                }
-                disabled={busy || missingTarget}
-                onClick={() => void run(false)}
-              >
-                {t("run.run")}
-              </Button>
-              <Button size="sm" variant="ghost" onClick={() => setPicked(null)}>
-                {t("form.cancel")}
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className="flex flex-wrap gap-2">
-              <Input
-                className="min-w-40 flex-1"
-                value={query}
-                placeholder={t("host.searchActions")}
-                onChange={(event) => {
-                  setQuery(event.target.value);
-                  setActionPage(0);
-                }}
-              />
-              <PluginChoice
-                actions={sorted}
-                className={compact ? "w-full" : undefined}
-                value={shownPlugin}
-                onChange={(next) => {
-                  setPlugin(next);
-                  setActionPage(0);
-                }}
-              />
-            </div>
+        <Section title={t("host.recent")}>
+          {runs.length === 0 && runPage === 0 ? (
+            <p className="text-xs text-muted-foreground">{t("host.noRuns")}</p>
+          ) : (
             <div className="flex flex-col gap-1">
-              {actionList.rows.map((action) => (
+              {runs.map((entry) => (
                 <ListRow
-                  key={action.id}
-                  title={action.title}
-                  icon={<Zap className="size-4" />}
-                  meta={action.pluginName}
-                  badges={<RiskBadge risk={action.risk} />}
-                  dimmed={!action.available}
-                  onClick={() => pick(action)}
+                  key={entry.id}
+                  title={titleOf(entry.actionId)}
+                  meta={[
+                    entry.summary ?? entry.error,
+                    entry.username,
+                    when(entry.createdAt),
+                  ]
+                    .filter(Boolean)
+                    .join(" | ")}
+                  badges={<StateBadge state={entry.status} />}
                 />
               ))}
-              {matching.length === 0 && (
-                <p className="text-xs text-muted-foreground">
-                  {t("host.noActions")}
-                </p>
-              )}
             </div>
-            <Pager
-              page={actionList.page}
-              pages={actionList.pages}
-              onPage={setActionPage}
-            />
-          </>
-        )}
-      </Section>
-
-      <Section title={t("host.recent")}>
-        {runs.length === 0 && runPage === 0 ? (
-          <p className="text-xs text-muted-foreground">{t("host.noRuns")}</p>
-        ) : (
-          <div className="flex flex-col gap-1">
-            {runs.map((entry) => (
-              <ListRow
-                key={entry.id}
-                title={titleOf(entry.actionId)}
-                meta={[
-                  entry.summary ?? entry.error,
-                  entry.username,
-                  when(entry.createdAt),
-                ]
-                  .filter(Boolean)
-                  .join(" | ")}
-                badges={<StateBadge state={entry.status} />}
-              />
-            ))}
-          </div>
-        )}
-        <Pager
-          page={runPage}
-          hasNext={moreRuns}
-          onPage={(next) => (next > runPage ? nextRuns() : setRunPage(next))}
-        />
-      </Section>
+          )}
+          <Pager
+            page={runPage}
+            hasNext={moreRuns}
+            onPage={(next) => (next > runPage ? nextRuns() : setRunPage(next))}
+          />
+        </Section>
+      </TileStack>
     </div>
   );
 }

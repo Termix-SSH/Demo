@@ -70,9 +70,8 @@ export function InterfaceCreate({
       icon={<Network className="size-4" />}
       leading={<BackButton onClick={onClose} />}
       title={t("create.title")}
-      className="gap-2 p-2.5"
     >
-      <div className="flex shrink-0 flex-col gap-3">
+      <div className="flex shrink-0 flex-col gap-3 p-3">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <TextField
             label={t("create.name")}

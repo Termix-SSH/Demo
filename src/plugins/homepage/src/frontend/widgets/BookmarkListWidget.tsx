@@ -15,9 +15,9 @@ function BookmarkListWidget({
   return (
     <div className="w-full h-full flex flex-col overflow-hidden">
       {widget.title && (
-        <div className="flex items-center gap-1.5 px-3 py-2 border-b border-border shrink-0">
+        <div className="flex items-center gap-2 px-3 py-1.5 border-b border-border shrink-0">
           <Bookmark size={11} className="text-accent-brand shrink-0" />
-          <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider truncate">
+          <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest truncate">
             {widget.title}
           </span>
         </div>

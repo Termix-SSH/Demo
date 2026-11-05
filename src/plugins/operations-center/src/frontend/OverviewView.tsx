@@ -8,6 +8,7 @@ import {
   Button,
   ListRow,
   TileFrame,
+  TileEditBar,
   TileGrid,
   TilePicker,
   appendTile,
@@ -18,11 +19,9 @@ import {
 import {
   Activity,
   AlertTriangle,
-  Check,
   History,
   LayoutGrid,
   Rocket,
-  RotateCcw,
   ShieldQuestion,
 } from "lucide-react";
 import {
@@ -204,32 +203,24 @@ export function OverviewView({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex shrink-0 items-center justify-end gap-1 pb-2">
-        {editMode && (
+      {editMode ? (
+        <TileEditBar
+          onReset={() => void settings.save({ opsOverviewLayout: null })}
+          onDone={() => setEditMode(false)}
+        />
+      ) : (
+        <div className="flex shrink-0 justify-end border-b border-border px-3 py-1">
           <Button
             size="xs"
             variant="ghost"
             className="gap-1"
-            onClick={() => void settings.save({ opsOverviewLayout: null })}
+            onClick={() => setEditMode(true)}
           >
-            <RotateCcw className="size-3" />
-            {t("tiles.reset")}
-          </Button>
-        )}
-        <Button
-          size="xs"
-          variant={editMode ? "default" : "ghost"}
-          className="gap-1"
-          onClick={() => setEditMode((on) => !on)}
-        >
-          {editMode ? (
-            <Check className="size-3" />
-          ) : (
             <LayoutGrid className="size-3" />
-          )}
-          {editMode ? t("tiles.done") : t("tiles.customize")}
-        </Button>
-      </div>
+            {t("tiles.customize")}
+          </Button>
+        </div>
+      )}
       <div className="flex min-h-0 flex-1">
         <div className="min-h-0 min-w-0 flex-1 overflow-y-auto thin-scrollbar">
           <TileGrid
@@ -304,7 +295,7 @@ function ApprovalsTile({
       </p>
     );
   return (
-    <div className="flex flex-col gap-1 p-2">
+    <div className="flex flex-col">
       {approvals.slice(0, 10).map((approval) => (
         <ListRow
           key={approval.id}
@@ -345,7 +336,7 @@ function RecentRunsTile({
       <p className="p-3 text-xs text-muted-foreground">{t("history.empty")}</p>
     );
   return (
-    <div className="flex flex-col gap-1 p-2">
+    <div className="flex flex-col">
       {runs.map((run) => (
         <ListRow
           key={run.id}
@@ -384,7 +375,7 @@ function RolloutsTile({
       </p>
     );
   return (
-    <div className="flex flex-col gap-1 p-2">
+    <div className="flex flex-col">
       {active.slice(0, 10).map((batch) => (
         <ListRow
           key={batch.id}

@@ -32,7 +32,7 @@ export function RuleFields({
   );
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 p-3">
       <div className="flex flex-wrap gap-1.5">
         {PRESETS.map((preset) => (
           <Button

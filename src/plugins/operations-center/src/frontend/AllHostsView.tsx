@@ -8,6 +8,8 @@ import {
 import {
   Button,
   Checkbox,
+  DataTable,
+  DataTableRow,
   EmptyState,
   Input,
   useConfirm,
@@ -220,8 +222,8 @@ export function AllHostsView({
   );
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-2">
-      <div className="flex flex-wrap items-center gap-2">
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2">
         <Choice
           label={t("allHosts.kind")}
           value={resourceId}
@@ -278,7 +280,7 @@ export function AllHostsView({
       </div>
 
       {selected.size > 0 && bulk.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2 border border-border p-2 text-xs">
+        <div className="flex flex-wrap items-center gap-2 border-b border-border bg-muted/20 px-3 py-2 text-xs">
           <span>{t("allHosts.selected", { count: selected.size })}</span>
           {bulk.map((action) => (
             <Button
@@ -297,7 +299,7 @@ export function AllHostsView({
       )}
 
       {problems.length > 0 && (
-        <p className="text-xs text-muted-foreground">
+        <p className="border-b border-border px-3 py-1.5 text-xs text-muted-foreground">
           {problems
             .map(
               (host) =>
@@ -307,83 +309,68 @@ export function AllHostsView({
         </p>
       )}
 
-      <div className="min-h-0 flex-1 overflow-auto border border-border">
-        <table className="w-full text-xs">
-          <thead className="sticky top-0 bg-background">
-            <tr className="border-b border-border text-left text-muted-foreground">
-              <th className="w-8 p-2">
+      <DataTable containerClassName="flex-1">
+        <thead>
+          <tr>
+            <th className="w-8">
+              <Checkbox
+                checked={allShown}
+                onCheckedChange={() =>
+                  setSelected(allShown ? new Set() : new Set(rows.map(rowKey)))
+                }
+              />
+            </th>
+            <th>{t("allHosts.name")}</th>
+            <th>{t("allHosts.host")}</th>
+            {resource?.status && <th>{t("allHosts.status")}</th>}
+            {resource?.columns.map((column) => (
+              <th key={column.key}>{column.title}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {shown.rows.map((row) => (
+            <DataTableRow key={rowKey(row)}>
+              <td>
                 <Checkbox
-                  checked={allShown}
-                  onCheckedChange={() =>
-                    setSelected(
-                      allShown ? new Set() : new Set(rows.map(rowKey)),
-                    )
-                  }
+                  checked={selected.has(rowKey(row))}
+                  onCheckedChange={() => {
+                    const next = new Set(selected);
+                    if (next.has(rowKey(row))) next.delete(rowKey(row));
+                    else next.add(rowKey(row));
+                    setSelected(next);
+                  }}
                 />
-              </th>
-              <th className="p-2 font-medium">{t("allHosts.name")}</th>
-              <th className="p-2 font-medium">{t("allHosts.host")}</th>
+              </td>
+              <td>{String(row.row[resource?.name ?? "name"] ?? row.key)}</td>
+              <td>
+                <button
+                  type="button"
+                  className="text-accent-brand hover:underline"
+                  onClick={() => openOnHost(row.hostId)}
+                >
+                  {hostName(row.hostId)}
+                </button>
+              </td>
               {resource?.status && (
-                <th className="p-2 font-medium">{t("allHosts.status")}</th>
+                <td>
+                  <StateBadge state={String(row.row[resource.status] ?? "")} />
+                </td>
               )}
               {resource?.columns.map((column) => (
-                <th key={column.key} className="p-2 font-medium">
-                  {column.title}
-                </th>
+                <td key={column.key} className="max-w-64 truncate">
+                  {cell(row.row[column.key], column.type)}
+                </td>
               ))}
-            </tr>
-          </thead>
-          <tbody>
-            {shown.rows.map((row) => (
-              <tr
-                key={rowKey(row)}
-                className="border-b border-border/60 hover:bg-muted/50"
-              >
-                <td className="p-2">
-                  <Checkbox
-                    checked={selected.has(rowKey(row))}
-                    onCheckedChange={() => {
-                      const next = new Set(selected);
-                      if (next.has(rowKey(row))) next.delete(rowKey(row));
-                      else next.add(rowKey(row));
-                      setSelected(next);
-                    }}
-                  />
-                </td>
-                <td className="p-2 font-medium">
-                  {String(row.row[resource?.name ?? "name"] ?? row.key)}
-                </td>
-                <td className="p-2">
-                  <button
-                    type="button"
-                    className="text-accent-brand hover:underline"
-                    onClick={() => openOnHost(row.hostId)}
-                  >
-                    {hostName(row.hostId)}
-                  </button>
-                </td>
-                {resource?.status && (
-                  <td className="p-2">
-                    <StateBadge
-                      state={String(row.row[resource.status] ?? "")}
-                    />
-                  </td>
-                )}
-                {resource?.columns.map((column) => (
-                  <td key={column.key} className="max-w-64 truncate p-2">
-                    {cell(row.row[column.key], column.type)}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {rows.length === 0 && (
-          <p className="p-4 text-center text-xs text-muted-foreground">
-            {loading ? t("allHosts.loading") : t("allHosts.empty")}
-          </p>
-        )}
-      </div>
+            </DataTableRow>
+          ))}
+        </tbody>
+      </DataTable>
+      {rows.length === 0 && (
+        <p className="p-4 text-center text-xs text-muted-foreground">
+          {loading ? t("allHosts.loading") : t("allHosts.empty")}
+        </p>
+      )}
       <Pager page={shown.page} pages={shown.pages} onPage={shown.setPage} />
     </div>
   );

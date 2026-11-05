@@ -10,6 +10,7 @@
 ### Changed
 
 - Needs Termix 26.11.1 or newer
+- The host editor section uses the Termix tile look
 
 ## 1.1.0
 

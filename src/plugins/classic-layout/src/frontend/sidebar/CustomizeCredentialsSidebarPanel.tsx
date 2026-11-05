@@ -31,6 +31,7 @@ export function CustomizeCredentialsSidebarPanel({
 
   return (
     <InlineView
+      stacked
       open={open}
       onOpenChange={onOpenChange}
       title={t("credentials.customizeSidebar")}
@@ -38,7 +39,7 @@ export function CustomizeCredentialsSidebarPanel({
       <p className="text-xs text-muted-foreground">
         {t("credentials.customizeSidebarDescription")}
       </p>
-      <div className="flex flex-col gap-4 mt-1">
+      <div className="flex flex-col">
         <SectionCard
           title={t("credentials.customizeDensityTitle")}
           icon={<Rows3 className="size-3.5" />}

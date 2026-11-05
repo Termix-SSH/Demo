@@ -99,7 +99,7 @@ export function TriggerCard({
             onChange(defaultTrigger(value as TriggerKind))
           }
         >
-          <SelectTrigger size="sm" className="rounded-none border-border">
+          <SelectTrigger size="sm" className="border-border">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -136,10 +136,7 @@ export function TriggerCard({
                 patch({ metric: { ...trigger.metric, path: value } })
               }
             >
-              <SelectTrigger
-                size="sm"
-                className="flex-1 rounded-none border-border"
-              >
+              <SelectTrigger size="sm" className="flex-1 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -154,10 +151,7 @@ export function TriggerCard({
               value={trigger.operator}
               onValueChange={(value) => patch({ operator: value })}
             >
-              <SelectTrigger
-                size="sm"
-                className="w-20 rounded-none border-border"
-              >
+              <SelectTrigger size="sm" className="w-20 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -170,7 +164,7 @@ export function TriggerCard({
             </Select>
             <Input
               type="number"
-              className="h-8 w-24 rounded-none border-border"
+              className="h-8 w-24 border-border"
               value={trigger.value ?? 0}
               onChange={(e) => patch({ value: Number(e.target.value) })}
             />
@@ -182,7 +176,7 @@ export function TriggerCard({
                 {t(`${base}.fields.mount`)}
               </Label>
               <Input
-                className="h-8 rounded-none border-border font-mono text-xs"
+                className="h-8 border-border font-mono text-xs"
                 placeholder="/data"
                 value={trigger.metric?.mount ?? ""}
                 onChange={(e) =>
@@ -204,7 +198,7 @@ export function TriggerCard({
                   {t(`${base}.fields.interface`)}
                 </Label>
                 <Input
-                  className="h-8 rounded-none border-border font-mono text-xs"
+                  className="h-8 border-border font-mono text-xs"
                   placeholder="eth0"
                   value={trigger.metric.iface ?? ""}
                   onChange={(e) =>
@@ -246,7 +240,7 @@ export function TriggerCard({
             value={trigger.to}
             onValueChange={(value) => patch({ to: value })}
           >
-            <SelectTrigger size="sm" className="rounded-none border-border">
+            <SelectTrigger size="sm" className="border-border">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -286,7 +280,7 @@ export function TriggerCard({
               {t(`${base}.fields.cron`)}
             </Label>
             <Input
-              className="h-8 rounded-none border-border font-mono text-xs"
+              className="h-8 border-border font-mono text-xs"
               placeholder="0 2 * * *"
               value={trigger.cron ?? ""}
               onChange={(e) =>
@@ -313,10 +307,7 @@ export function TriggerCard({
                 })
               }
             >
-              <SelectTrigger
-                size="sm"
-                className="w-full rounded-none border-border"
-              >
+              <SelectTrigger size="sm" className="w-full border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -347,7 +338,7 @@ export function TriggerCard({
           />
           <div className="flex gap-2">
             <Input
-              className="h-8 flex-1 rounded-none border-border"
+              className="h-8 flex-1 border-border"
               placeholder={t(`${base}.fields.container`)}
               value={trigger.container ?? ""}
               onChange={(e) => patch({ container: e.target.value })}
@@ -356,10 +347,7 @@ export function TriggerCard({
               value={trigger.event}
               onValueChange={(value) => patch({ event: value })}
             >
-              <SelectTrigger
-                size="sm"
-                className="min-w-0 flex-1 rounded-none border-border"
-              >
+              <SelectTrigger size="sm" className="min-w-0 flex-1 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -406,7 +394,7 @@ function NumberField({
       <Input
         type="number"
         min={0}
-        className="h-8 rounded-none border-border"
+        className="h-8 border-border"
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
       />

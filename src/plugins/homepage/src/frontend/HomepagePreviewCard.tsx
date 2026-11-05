@@ -3,7 +3,7 @@ import {
   useTranslation,
   type DashboardCardProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { HomepageCanvas } from "./HomepageCanvas.js";
+import { HomepageGrid } from "./HomepageGrid.js";
 
 export function HomepagePreviewCard({ shell }: DashboardCardProps) {
   const { t } = useTranslation();
@@ -23,7 +23,7 @@ export function HomepagePreviewCard({ shell }: DashboardCardProps) {
       </div>
 
       <div className="flex-1 relative overflow-hidden">
-        <HomepageCanvas isReadOnly={true} fitOnLoad={true} />
+        <HomepageGrid isReadOnly chrome={false} />
       </div>
     </div>
   );

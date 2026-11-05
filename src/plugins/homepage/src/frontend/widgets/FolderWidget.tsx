@@ -32,12 +32,12 @@ function FolderWidget({ widget, config }: WidgetComponentProps<FolderConfig>) {
 registerWidget<FolderConfig>({
   id: "folder",
   name: "Folder",
-  description: "A background card for grouping widgets visually",
+  description: "A heading for a group of widgets",
   category: "links",
   icon: <Folder size={14} />,
   defaultConfig: { isExpanded: true },
-  defaultSize: { w: GRID_SIZE * 14, h: GRID_SIZE * 12 },
-  minSize: { w: GRID_SIZE * 2, h: GRID_SIZE * 2 },
+  defaultSize: { w: GRID_SIZE * 40, h: 36 },
+  minSize: { w: GRID_SIZE * 2, h: 36 },
   component: FolderWidget as unknown as React.ComponentType<
     WidgetComponentProps<FolderConfig>
   >,

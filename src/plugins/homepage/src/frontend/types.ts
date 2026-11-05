@@ -1,7 +1,4 @@
 export const GRID_SIZE = 30;
-export const MIN_ZOOM = 0.4;
-export const MAX_ZOOM = 2.0;
-export const ZOOM_STEP = 0.1;
 
 export type WidgetTypeId =
   | "service_link"
@@ -47,19 +44,18 @@ export interface HomepageItemRow {
   updatedAt: string;
 }
 
-interface HomepageLayoutEntry {
+export interface HomepageLayoutEntry {
   itemId: number;
   x: number;
   y: number;
   w: number;
-  h: number;
-  zOrder?: number;
+  h: number | null;
 }
 
+/** Version 2 holds grid columns. Without it, canvas pixels from before 1.2.0. */
 export interface HomepageLayoutData {
+  version?: 2;
   entries: HomepageLayoutEntry[];
-  pan: { x: number; y: number };
-  zoom: number;
 }
 
 export interface HomepageLayoutRow {
@@ -83,11 +79,6 @@ export interface CanvasWidget {
   typeId: WidgetTypeId;
   title: string | null;
   config: Record<string, unknown>;
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  zOrder: number;
 }
 
 // ---- Per-widget config shapes ----
@@ -368,36 +359,10 @@ export interface WidgetTypeDefinition<C = Record<string, unknown>> {
   labelComponent?: React.ComponentType<{ part: "name" | "description" }>;
 }
 
-export interface DragState {
-  widgetId: number;
-  startMouseX: number;
-  startMouseY: number;
-  startWidgetX: number;
-  startWidgetY: number;
-}
-
 export interface ResizeState {
   widgetId: number;
   startMouseX: number;
   startMouseY: number;
   startW: number;
   startH: number;
-}
-
-interface ContextMenuAnchor {
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
-  width: number;
-  height: number;
-}
-
-export interface ContextMenuState {
-  visible: boolean;
-  screenX: number;
-  screenY: number;
-  canvasX: number;
-  canvasY: number;
-  anchorRect?: ContextMenuAnchor;
 }

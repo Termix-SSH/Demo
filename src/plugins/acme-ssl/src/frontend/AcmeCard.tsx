@@ -108,7 +108,7 @@ export function AcmeCard({ isVisible }: DashboardCardProps) {
           type="button"
           variant="outline"
           size="sm"
-          className="self-start rounded-none"
+          className="self-start"
           disabled={requesting}
           onClick={() => void request()}
         >

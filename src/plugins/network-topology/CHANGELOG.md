@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0
+
+### Changed
+
+- The tab has the Termix page header and matches the rest of the app
+- Needs Termix 26.11.1 or newer
+
 ## 1.0.2
 
 ### Changed

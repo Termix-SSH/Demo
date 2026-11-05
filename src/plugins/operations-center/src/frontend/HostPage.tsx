@@ -19,12 +19,13 @@ import {
   hostActionsFor,
   hostSectionsFor,
   runHostAction,
+  SideNav,
   useHostActions,
   useHostSections,
+  StatusDot,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   Check,
-  ExternalLink,
   LayoutDashboard,
   LayoutGrid,
   Pencil,
@@ -128,8 +129,8 @@ export function HostPage({ host, tab, isVisible, shell }: TabProps) {
             <h2 className="truncate text-base font-semibold">
               {hostLabel(host)}
             </h2>
-            <span
-              className={`size-2 rounded-full ${status === "online" ? "bg-emerald-500" : status === "offline" ? "bg-destructive" : "bg-muted-foreground"}`}
+            <StatusDot
+              state={status}
               title={t(`state.${status ?? "unknown"}`)}
             />
           </div>
@@ -188,40 +189,34 @@ export function HostPage({ host, tab, isVisible, shell }: TabProps) {
         </div>
       </header>
 
-      <div className="flex min-h-0 flex-1">
-        <nav className="flex w-44 shrink-0 flex-col gap-0.5 overflow-auto border-r border-border p-2">
-          <NavButton
-            active={section === "overview"}
-            icon={LayoutDashboard}
-            label={t("host.overview")}
-            onClick={() => open("overview")}
-          />
-          {sessions.map((session) => (
-            <NavButton
-              key={session.id}
-              active={section === session.tabType}
-              icon={session.icon as ComponentType<{ className?: string }>}
-              label={session.label?.(host as never) ?? t(session.titleKey)}
-              onClick={() => open(session.tabType!)}
-              onPopOut={() => popOut(session.tabType!)}
-              popOutLabel={t("host.popOut")}
-            />
-          ))}
-          {sessions.length > 0 && tools.length > 0 && (
-            <div className="my-1 h-px shrink-0 bg-border" />
-          )}
-          {tools.map((tool) => (
-            <NavButton
-              key={tool.id}
-              active={section === tool.tabType}
-              icon={tool.icon as ComponentType<{ className?: string }>}
-              label={tool.label?.(host as never) ?? t(tool.titleKey)}
-              onClick={() => open(tool.tabType!)}
-              onPopOut={() => popOut(tool.tabType!)}
-              popOutLabel={t("host.popOut")}
-            />
-          ))}
-        </nav>
+      <div className="flex min-h-0 flex-1 flex-col md:flex-row">
+        <SideNav
+          label={t("host.sections")}
+          active={section}
+          onSelect={open}
+          entries={[
+            {
+              id: "overview",
+              icon: LayoutDashboard,
+              label: t("host.overview"),
+            },
+            ...sessions.map((session) => ({
+              id: session.tabType!,
+              icon: session.icon as ComponentType<{ className?: string }>,
+              label: session.label?.(host as never) ?? t(session.titleKey),
+              onPopOut: () => popOut(session.tabType!),
+              popOutLabel: t("host.popOut"),
+            })),
+            ...tools.map((tool, index) => ({
+              id: tool.tabType!,
+              icon: tool.icon as ComponentType<{ className?: string }>,
+              label: tool.label?.(host as never) ?? t(tool.titleKey),
+              onPopOut: () => popOut(tool.tabType!),
+              popOutLabel: t("host.popOut"),
+              divider: index === 0 && sessions.length > 0,
+            })),
+          ]}
+        />
 
         <main className="relative min-h-0 flex-1 overflow-hidden">
           {section === "overview" ? (
@@ -258,49 +253,6 @@ export function HostPage({ host, tab, isVisible, shell }: TabProps) {
           )}
         </main>
       </div>
-    </div>
-  );
-}
-
-function NavButton({
-  active,
-  icon: Icon,
-  label,
-  onClick,
-  onPopOut,
-  popOutLabel,
-}: {
-  active: boolean;
-  icon: ComponentType<{ className?: string }>;
-  label: string;
-  onClick: () => void;
-  /** Opens it in a normal tab instead, for split view. */
-  onPopOut?: () => void;
-  popOutLabel?: string;
-}) {
-  return (
-    <div
-      className={`group flex items-center ${active ? "bg-muted font-medium text-foreground" : "text-muted-foreground hover:bg-muted/60"}`}
-    >
-      <button
-        type="button"
-        onClick={onClick}
-        className="flex min-w-0 flex-1 items-center gap-2 px-2 py-1.5 text-left text-xs"
-      >
-        <Icon className="size-3.5 shrink-0" />
-        <span className="truncate">{label}</span>
-      </button>
-      {onPopOut && (
-        <button
-          type="button"
-          title={popOutLabel}
-          aria-label={popOutLabel}
-          onClick={onPopOut}
-          className={`mr-1 shrink-0 p-1 text-muted-foreground hover:text-foreground ${active ? "" : "opacity-0 group-hover:opacity-100 focus:opacity-100"}`}
-        >
-          <ExternalLink className="size-3" />
-        </button>
-      )}
     </div>
   );
 }

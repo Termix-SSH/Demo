@@ -1,16 +1,27 @@
+import { PanelShell } from "@termix-ssh/plugin-sdk/ui";
 import { useCallback, useEffect, useRef } from "react";
 import { Network } from "lucide-react";
-import type {
-  DashboardCardProps,
-  TabProps,
-  TermixApp,
+import {
+  useTranslation,
+  type DashboardCardProps,
+  type TabProps,
+  type TermixApp,
 } from "@termix-ssh/plugin-sdk/frontend";
 import { NetworkGraphCard } from "./NetworkGraphCard";
 
 const VIEW_ID = "network_graph";
 
 function GraphTab({ isVisible }: TabProps) {
-  return <NetworkGraphCard embedded={false} isVisible={isVisible} />;
+  const { t } = useTranslation();
+  return (
+    <PanelShell
+      icon={<Network className="size-4" />}
+      title={t("dashboard.networkGraph")}
+      scroll={false}
+    >
+      <NetworkGraphCard embedded={false} isVisible={isVisible} />
+    </PanelShell>
+  );
 }
 
 function GraphCard({ isVisible, shell }: DashboardCardProps) {

@@ -69,7 +69,7 @@ export function ClientConfigView({
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 p-3">
       <p className="text-sm font-medium">{config.name}</p>
       <p className="text-xs text-muted-foreground">{t("clientConfig.note")}</p>
       <div className="flex flex-col gap-3 sm:flex-row">

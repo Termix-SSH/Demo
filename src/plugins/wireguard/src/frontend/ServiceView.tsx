@@ -5,6 +5,7 @@ import {
   Facts,
   SwitchRow,
   useConfirm,
+  TileStack,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { InterfaceView, WireguardStatus } from "../shared/types";
 import { deleteInterface, errorMessage, serviceAction } from "./api";
@@ -59,8 +60,8 @@ export function ServiceView({
   const systemd = status.init === "systemd";
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex flex-col gap-1 border border-border p-3 text-xs">
+    <TileStack>
+      <div className="flex flex-col gap-1 p-3 text-xs">
         <Facts>
           <span>{item.active ? t("interfaces.up") : t("interfaces.down")}</span>
           <span className="font-mono">wg-quick@{item.name}</span>
@@ -68,7 +69,7 @@ export function ServiceView({
           {status.version && <span>{status.version}</span>}
         </Facts>
       </div>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 p-3">
         <Button
           variant="outline"
           disabled={busy || item.active}
@@ -91,21 +92,23 @@ export function ServiceView({
           {t("service.restart")}
         </Button>
       </div>
-      <SwitchRow
-        label={t("service.autostart")}
-        description={
-          systemd ? t("service.autostartDesc") : t("service.needsSystemd")
-        }
-        checked={item.enabled}
-        disabled={busy || !systemd}
-        onChange={(value) => void run(value ? "enable" : "disable")}
-      />
+      <div className="px-3">
+        <SwitchRow
+          label={t("service.autostart")}
+          description={
+            systemd ? t("service.autostartDesc") : t("service.needsSystemd")
+          }
+          checked={item.enabled}
+          disabled={busy || !systemd}
+          onChange={(value) => void run(value ? "enable" : "disable")}
+        />
+      </div>
       {!status.ipForward && item.nat && (
-        <p className="border border-border p-2 text-xs text-muted-foreground">
+        <p className="p-3 text-xs text-muted-foreground">
           {t("service.noForward")}
         </p>
       )}
-      <div>
+      <div className="p-3">
         <Button
           variant="outline"
           className="text-destructive"
@@ -115,6 +118,6 @@ export function ServiceView({
           {t("service.delete")}
         </Button>
       </div>
-    </div>
+    </TileStack>
   );
 }

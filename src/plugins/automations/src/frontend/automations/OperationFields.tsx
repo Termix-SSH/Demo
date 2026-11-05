@@ -100,7 +100,7 @@ export function OperationStepFields({
             });
           }}
         >
-          <SelectTrigger size="sm" className="rounded-none border-border">
+          <SelectTrigger size="sm" className="border-border">
             <SelectValue placeholder={t(`${BASE}.fields.pickAction`)} />
           </SelectTrigger>
           <SelectContent>
@@ -133,7 +133,7 @@ export function OperationStepFields({
             {t(`${BASE}.fields.actionTarget`)}
           </Label>
           <Input
-            className="h-8 rounded-none border-border"
+            className="h-8 border-border"
             value={step.resourceKey ?? ""}
             onChange={(event) => patch({ resourceKey: event.target.value })}
           />
@@ -157,7 +157,7 @@ export function OperationStepFields({
                 patch({ input: { ...input, [field.key]: value } })
               }
             >
-              <SelectTrigger size="sm" className="rounded-none border-border">
+              <SelectTrigger size="sm" className="border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -170,7 +170,7 @@ export function OperationStepFields({
             </Select>
           ) : (
             <Input
-              className="h-8 rounded-none border-border"
+              className="h-8 border-border"
               type={field.type === "secret" ? "password" : "text"}
               value={String(input[field.key] ?? "")}
               placeholder={field.description}
@@ -216,7 +216,7 @@ export function OperationEventFields({
           value={trigger.event}
           onValueChange={(event) => patch({ event })}
         >
-          <SelectTrigger size="sm" className="rounded-none border-border">
+          <SelectTrigger size="sm" className="border-border">
             <SelectValue placeholder={t(`${BASE}.fields.pickEvent`)} />
           </SelectTrigger>
           <SelectContent>
@@ -241,7 +241,7 @@ export function OperationEventFields({
         <Input
           type="number"
           min={1}
-          className="h-8 rounded-none border-border"
+          className="h-8 border-border"
           value={trigger.cooldownMinutes}
           onChange={(event) =>
             patch({ cooldownMinutes: Math.max(Number(event.target.value), 1) })

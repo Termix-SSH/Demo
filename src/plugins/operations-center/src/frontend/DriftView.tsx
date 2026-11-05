@@ -299,8 +299,8 @@ export function DriftView({ actions }: { actions: CatalogAction[] }) {
   };
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-2">
-      <div className="flex justify-end">
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="flex justify-end border-b border-border px-3 py-2">
         <AddButton label={t("drift.new")} onClick={() => setEditing({})} />
       </div>
       {list.length === 0 ? (
@@ -310,7 +310,7 @@ export function DriftView({ actions }: { actions: CatalogAction[] }) {
           hint={t("drift.emptyHint")}
         />
       ) : (
-        <div className="flex flex-col gap-1 overflow-auto">
+        <div className="flex flex-col overflow-auto">
           {shown.rows.map((baseline) => (
             <ListRow
               key={baseline.id}

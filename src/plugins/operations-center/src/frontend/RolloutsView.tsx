@@ -373,8 +373,8 @@ export function RolloutsView({
   }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-2">
-      <div className="flex justify-end">
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="flex justify-end border-b border-border px-3 py-2">
         <AddButton
           label={t("rollouts.new")}
           onClick={() => setCreating({ actionId: "" })}
@@ -387,7 +387,7 @@ export function RolloutsView({
           hint={t("rollouts.emptyHint")}
         />
       ) : (
-        <div className="flex flex-col gap-1 overflow-auto">
+        <div className="flex flex-col overflow-auto">
           {shown.rows.map((batch) => {
             const total = Object.values(batch.counts).reduce(
               (a, b) => a + b,

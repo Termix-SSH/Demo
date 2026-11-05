@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.1
+
+### Changed
+
+- Settings use the Termix tile look
+- Needs Termix 26.11.1 or newer
+
 ## 1.1.0
 
 ### Added

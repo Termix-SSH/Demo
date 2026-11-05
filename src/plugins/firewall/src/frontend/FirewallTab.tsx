@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState, type ReactNode } from "react";
-import { Bell, BellOff, BrickWall, RefreshCw } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { Bell, BellOff, BrickWall } from "lucide-react";
 import {
   useToast,
   useTranslation,
@@ -11,9 +11,12 @@ import {
   AlertDescription,
   Button,
   PanelShell,
-  Segmented,
   SwitchRow,
   useConfirm,
+  EmptyState,
+  PanelFrame,
+  RefreshButton,
+  TabStrip,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { FirewallStatus, Rule, RuleSpec } from "../shared/types";
 import {
@@ -46,16 +49,6 @@ const BACKEND_NAMES: Record<string, string> = {
 };
 
 // A fixed height box, so the panel body inside it can scroll.
-function Frame({ children }: { children: ReactNode }) {
-  return (
-    <div className="h-full w-full overflow-hidden">
-      <div className="flex h-full w-full min-h-0 flex-1 flex-col overflow-hidden">
-        {children}
-      </div>
-    </div>
-  );
-}
-
 /** Firewall rules, defaults, Fail2ban and the raw view for one host. */
 export function FirewallTab({ isVisible, host, label }: TabProps) {
   const { t } = useTranslation();
@@ -97,18 +90,15 @@ export function FirewallTab({ isVisible, host, label }: TabProps) {
       .catch(() => undefined);
   }, [isVisible, load, hostId]);
 
-  if (!host)
-    return (
-      <p className="p-4 text-sm text-muted-foreground">{t("tab.noHost")}</p>
-    );
+  if (!host) return <EmptyState title={t("tab.noHost")} />;
 
   const title = label || host.name || t("tab.title");
   const icon = <BrickWall className="size-4" />;
 
   if (!status) {
     return (
-      <Frame>
-        <PanelShell icon={icon} title={title} className="gap-2 p-2.5">
+      <PanelFrame>
+        <PanelShell icon={icon} title={title}>
           {error ? (
             <p className="p-2 text-sm text-destructive">{error}</p>
           ) : (
@@ -117,7 +107,7 @@ export function FirewallTab({ isVisible, host, label }: TabProps) {
             </p>
           )}
         </PanelShell>
-      </Frame>
+      </PanelFrame>
     );
   }
 
@@ -164,7 +154,7 @@ export function FirewallTab({ isVisible, host, label }: TabProps) {
     );
 
   return (
-    <Frame>
+    <PanelFrame>
       <PanelShell
         icon={icon}
         title={title}
@@ -184,19 +174,11 @@ export function FirewallTab({ isVisible, host, label }: TabProps) {
                 <BellOff className="size-4" />
               )}
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
+            <RefreshButton
               onClick={() => void load()}
-              disabled={loading}
-              title={t("tab.refresh")}
-              aria-label={t("tab.refresh")}
-              className="text-accent-brand"
-            >
-              <RefreshCw
-                className={`size-4 ${loading ? "animate-spin" : ""}`}
-              />
-            </Button>
+              loading={loading}
+              label={t("tab.refresh")}
+            />
             {status.backend &&
               status.canEdit &&
               !status.pending &&
@@ -208,15 +190,18 @@ export function FirewallTab({ isVisible, host, label }: TabProps) {
               )}
           </>
         }
-        toolbar={
+        tabs={
           status.backend ? (
-            <Segmented<View> value={view} onChange={setView} options={views} />
+            <TabStrip
+              tabs={views.map((o) => ({ id: o.value, label: o.label }))}
+              activeTab={view}
+              onTabChange={(id) => setView(id as View)}
+            />
           ) : undefined
         }
         scroll
-        className="gap-2 p-2.5"
       >
-        <div className="flex shrink-0 flex-col gap-2">
+        <div className="flex shrink-0 flex-col">
           {status.pending && (
             <PendingBanner
               hostId={hostId}
@@ -226,7 +211,7 @@ export function FirewallTab({ isVisible, host, label }: TabProps) {
             />
           )}
           {status.warnings.map((warning) => (
-            <Alert key={warning} className="rounded-none">
+            <Alert key={warning} className="border-x-0 border-t-0">
               <AlertDescription className="text-xs">{warning}</AlertDescription>
             </Alert>
           ))}
@@ -280,7 +265,7 @@ export function FirewallTab({ isVisible, host, label }: TabProps) {
           onSave={saveRule}
         />
       )}
-    </Frame>
+    </PanelFrame>
   );
 }
 

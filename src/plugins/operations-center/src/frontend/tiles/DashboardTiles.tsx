@@ -6,7 +6,7 @@ import {
   type DashboardCardProps,
   type PluginHostRecord,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { ListRow } from "@termix-ssh/plugin-sdk/ui";
+import { ListRow, StatusDot } from "@termix-ssh/plugin-sdk/ui";
 import { getCatalog, getSignals, type Catalog, type SignalRead } from "../api";
 import { appliesTo, hostLabel } from "../hosts";
 import { Choice } from "../parts";
@@ -215,7 +215,7 @@ export function SignalCard({
           {t("tiles.okCount", { count: tally.ok })}
         </span>
       </div>
-      <div className="flex flex-col gap-1 p-2">
+      <div className="flex flex-col">
         {rows.slice(0, 20).map(({ entry, host, status }) => (
           <ListRow
             key={entry.hostId}
@@ -225,11 +225,7 @@ export function SignalCard({
                 ? (entry.value?.label ?? String(entry.value?.value ?? ""))
                 : t(`state.${entry.state}`)
             }
-            badges={
-              <span
-                className={`size-2 rounded-full ${status === "fail" ? "bg-destructive" : status === "warn" ? "bg-amber-500" : status === "ok" ? "bg-emerald-500" : "bg-muted-foreground"}`}
-              />
-            }
+            badges={<StatusDot state={status} />}
             onClick={() => shell.openTab(host as never, "host")}
           />
         ))}

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { BellOff, CheckCheck, Loader2, Maximize2, Trash2 } from "lucide-react";
+import { BellOff, CheckCheck, Maximize2, Trash2 } from "lucide-react";
 import {
   usePluginApi,
   useTabs,
@@ -18,6 +18,7 @@ import {
   useConfirm,
   EmptyState,
   Segmented,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import { SEVERITIES, type AlertItem, type Severity } from "../types";
 import { createAlertsApi } from "./api";
@@ -188,7 +189,7 @@ export function InboxView({
                 setSeverity(value === ALL ? "" : (value as Severity))
               }
             >
-              <SelectTrigger className="h-8 w-[140px] rounded-none text-xs">
+              <SelectTrigger className="h-8 w-[140px] text-xs">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -204,7 +205,7 @@ export function InboxView({
               value={source || ALL}
               onValueChange={(value) => setSource(value === ALL ? "" : value)}
             >
-              <SelectTrigger className="h-8 w-[160px] rounded-none text-xs">
+              <SelectTrigger className="h-8 w-[160px] text-xs">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -261,9 +262,7 @@ export function InboxView({
 
       <div className="flex-1 min-h-0 overflow-y-auto">
         {loading ? (
-          <div className="flex justify-center p-6">
-            <Loader2 className="size-4 animate-spin text-muted-foreground" />
-          </div>
+          <LoadingState />
         ) : shown.length === 0 ? (
           <EmptyState
             icon={BellOff}
@@ -291,7 +290,7 @@ export function InboxView({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="w-full rounded-none text-xs"
+                  className="w-full text-xs"
                   onClick={() => void loadMore()}
                 >
                   {t("inbox.loadMore")}

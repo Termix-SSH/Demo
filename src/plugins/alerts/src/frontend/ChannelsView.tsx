@@ -18,6 +18,7 @@ import {
   ListRow,
   ListRowAction,
   PanelList,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { ChannelSummary } from "../types";
 import type { AlertsApi } from "./api";
@@ -125,9 +126,7 @@ export function ChannelsView({
       <PanelList
         empty={
           loading ? (
-            <div className="flex justify-center p-6">
-              <Loader2 className="size-4 animate-spin text-muted-foreground" />
-            </div>
+            <LoadingState />
           ) : (
             <EmptyState icon={Radio} title={t("channels.empty")} />
           )

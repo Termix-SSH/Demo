@@ -107,7 +107,7 @@ export function AutomationEditor({
         <Button
           variant="outline"
           size="sm"
-          className="rounded-none w-full border-border"
+          className="w-full border-border"
           onClick={() =>
             onStepsChange([
               ...steps,
@@ -129,7 +129,7 @@ export function AutomationEditor({
           {t(`${base}.nameLabel`)}
         </Label>
         <Input
-          className="h-8 rounded-none"
+          className="h-8"
           placeholder={t(`${base}.namePlaceholder`)}
           value={draft.name}
           onChange={(e) => onChange({ ...draft, name: e.target.value })}
@@ -157,10 +157,7 @@ export function AutomationEditor({
             })
           }
         >
-          <SelectTrigger
-            size="sm"
-            className="w-full rounded-none border-border"
-          >
+          <SelectTrigger size="sm" className="w-full border-border">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

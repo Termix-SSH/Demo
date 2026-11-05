@@ -5,7 +5,7 @@ import type {
   TabProps,
   TermixApp,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { HomepageCanvas } from "./HomepageCanvas.js";
+import { HomepageGrid } from "./HomepageGrid.js";
 import { HomepagePreviewCard } from "./HomepagePreviewCard.js";
 import { ServiceLinksCard } from "./ServiceLinksCard.js";
 import { DashboardHomepageView } from "./DashboardHomepageView.js";
@@ -46,11 +46,11 @@ import "./widgets/SearchLinksWidget";
 import "./widgets/LinkTreeWidget";
 
 function HomepageTab(_props: TabProps) {
-  return <HomepageCanvas />;
+  return <HomepageGrid />;
 }
 
 function HomepageStandalone(_props: StandaloneViewProps) {
-  return <HomepageCanvas fitOnLoad={true} />;
+  return <HomepageGrid />;
 }
 
 export function activate(app: TermixApp): void {
@@ -73,7 +73,7 @@ export function activate(app: TermixApp): void {
     id: "homepage.open",
     titleKey: "nav.homepage",
     icon: LayoutGrid,
-    keywords: ["homepage", "widgets", "canvas"],
+    keywords: ["homepage", "widgets"],
     scope: "global",
     run: (shell) => shell.openSingletonTab("homepage"),
   });

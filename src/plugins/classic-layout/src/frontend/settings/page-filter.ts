@@ -2,7 +2,8 @@ import { useEffect, useState, type RefObject } from "react";
 
 export const HIDDEN_ATTR = "data-search-hidden";
 const HIGHLIGHT = "settings-search";
-const BLOCK = ".bg-card, [data-setting-row]";
+const CARD = "[data-tile-card], .bg-card";
+const BLOCK = `${CARD}, [data-setting-row]`;
 
 function matches(el: Element, needle: string) {
   return (el.textContent ?? "").toLowerCase().includes(needle);
@@ -53,7 +54,7 @@ export function filterSettingsPage(
     for (const row of rows) {
       if (!matches(row, needle)) row.setAttribute(HIDDEN_ATTR, "");
     }
-    for (const inner of card.querySelectorAll(".bg-card")) {
+    for (const inner of card.querySelectorAll(CARD)) {
       if (inner !== card && !matches(inner, needle)) {
         inner.setAttribute(HIDDEN_ATTR, "");
       }

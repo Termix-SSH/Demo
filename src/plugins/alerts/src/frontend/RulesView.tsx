@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Loader2, Pencil, Trash2, Route } from "lucide-react";
+import { Pencil, Trash2, Route } from "lucide-react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
   Checkbox,
@@ -19,6 +19,7 @@ import {
   ListRow,
   ListRowAction,
   PanelList,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   SEVERITIES,
@@ -177,9 +178,7 @@ export function RulesView({ api }: { api: AlertsApi }) {
       <PanelList
         empty={
           loading ? (
-            <div className="flex justify-center p-6">
-              <Loader2 className="size-4 animate-spin text-muted-foreground" />
-            </div>
+            <LoadingState />
           ) : (
             <EmptyState
               icon={Route}
@@ -297,7 +296,7 @@ export function RulesView({ api }: { api: AlertsApi }) {
                 setDraft({ ...draft, minSeverity: value as Severity })
               }
             >
-              <SelectTrigger className="h-8 rounded-none text-xs">
+              <SelectTrigger className="h-8 text-xs">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

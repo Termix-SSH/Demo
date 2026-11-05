@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState, type ReactNode } from "react";
-import { Network, RefreshCw } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { Network } from "lucide-react";
 import {
   useToast,
   useTranslation,
@@ -10,8 +10,12 @@ import {
   Alert,
   Button,
   PanelShell,
-  Segmented,
   useConfirm,
+  EmptyState,
+  PanelFrame,
+  RefreshButton,
+  TabStrip,
+  NoticePanel,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { WireguardStatus } from "../shared/types";
 import { errorCode, errorMessage, getStatus, installWireguard } from "./api";
@@ -24,16 +28,6 @@ import { LogsView } from "./LogsView";
 type View = "interfaces" | "logs";
 
 // A fixed height box, so the panel body inside it can scroll.
-function Frame({ children }: { children: ReactNode }) {
-  return (
-    <div className="h-full w-full overflow-hidden">
-      <div className="flex h-full w-full min-h-0 flex-1 flex-col overflow-hidden">
-        {children}
-      </div>
-    </div>
-  );
-}
-
 /** WireGuard for one host: interfaces, clients, config and logs. */
 export function WireguardTab({ isVisible, host, label }: TabProps) {
   const { t } = useTranslation();
@@ -96,47 +90,41 @@ export function WireguardTab({ isVisible, host, label }: TabProps) {
   };
 
   if (!host) {
-    return (
-      <p className="p-4 text-sm text-muted-foreground">{t("tab.noHost")}</p>
-    );
+    return <EmptyState title={t("tab.noHost")} />;
   }
 
   const title = label || host.name || t("tab.title");
 
   if (!status) {
     return (
-      <Frame>
-        <PanelShell
-          icon={<Network className="size-4" />}
-          title={title}
-          className="gap-2 p-2.5"
-        >
+      <PanelFrame>
+        <PanelShell icon={<Network className="size-4" />} title={title}>
           {error ? (
             <p className="p-2 text-sm text-destructive">{error}</p>
           ) : (
             <Loading />
           )}
         </PanelShell>
-      </Frame>
+      </PanelFrame>
     );
   }
 
   if (creating) {
     return (
-      <Frame>
+      <PanelFrame>
         <InterfaceCreate
           hostId={hostId}
           status={status}
           onClose={() => setCreating(false)}
           reload={refresh}
         />
-      </Frame>
+      </PanelFrame>
     );
   }
 
   if (open) {
     return (
-      <Frame>
+      <PanelFrame>
         <InterfaceDetail
           key={open}
           hostId={hostId}
@@ -145,12 +133,12 @@ export function WireguardTab({ isVisible, host, label }: TabProps) {
           onClose={() => setOpen(null)}
           reload={refresh}
         />
-      </Frame>
+      </PanelFrame>
     );
   }
 
   return (
-    <Frame>
+    <PanelFrame>
       <PanelShell
         icon={<Network className="size-4" />}
         title={title}
@@ -161,18 +149,11 @@ export function WireguardTab({ isVisible, host, label }: TabProps) {
         }
         actions={
           <>
-            <Button
-              variant="ghost"
-              size="icon"
+            <RefreshButton
               onClick={refresh}
-              disabled={loading}
-              title={t("tab.refresh")}
-              className="text-accent-brand"
-            >
-              <RefreshCw
-                className={`size-4 ${loading ? "animate-spin" : ""}`}
-              />
-            </Button>
+              loading={loading}
+              label={t("tab.refresh")}
+            />
             {status.installed && view === "interfaces" && (
               <AddButton
                 label={t("interfaces.add")}
@@ -181,44 +162,48 @@ export function WireguardTab({ isVisible, host, label }: TabProps) {
             )}
           </>
         }
-        toolbar={
+        tabs={
           status.installed ? (
-            <Segmented<View>
-              value={view}
-              onChange={setView}
-              options={[
-                { value: "interfaces", label: t("tab.viewInterfaces") },
-                { value: "logs", label: t("tab.viewLogs") },
+            <TabStrip
+              tabs={[
+                { id: "interfaces", label: t("tab.viewInterfaces") },
+                { id: "logs", label: t("tab.viewLogs") },
               ]}
+              activeTab={view}
+              onTabChange={(id) => setView(id as View)}
             />
           ) : undefined
         }
-        className="gap-2 p-2.5"
       >
-        <div className="flex shrink-0 flex-col gap-2">
+        <div className="flex shrink-0 flex-col">
           {!status.root && (
-            <Alert className="rounded-none text-xs">{t("tab.sudo")}</Alert>
+            <Alert className="border-x-0 border-t-0 text-xs">
+              {t("tab.sudo")}
+            </Alert>
           )}
           {!status.installed ? (
-            <div className="flex flex-col items-start gap-3 border border-border p-4">
-              <Network className="size-5 text-muted-foreground" />
-              <p className="text-sm font-medium">{t("install.empty")}</p>
-              <p className="text-xs text-muted-foreground">
-                {status.packageManager === "none"
-                  ? t("install.noManager")
-                  : t("install.hint", {
-                      os: status.os || t("install.thisHost"),
-                    })}
-              </p>
-              <Button
-                onClick={() => void install()}
-                disabled={
-                  installing || !status.root || status.packageManager === "none"
-                }
-              >
-                {installing ? t("install.working") : t("install.button")}
-              </Button>
-            </div>
+            <NoticePanel
+              icon={Network}
+              title={t("install.empty")}
+              action={
+                <Button
+                  onClick={() => void install()}
+                  disabled={
+                    installing ||
+                    !status.root ||
+                    status.packageManager === "none"
+                  }
+                >
+                  {installing ? t("install.working") : t("install.button")}
+                </Button>
+              }
+            >
+              {status.packageManager === "none"
+                ? t("install.noManager")
+                : t("install.hint", {
+                    os: status.os || t("install.thisHost"),
+                  })}
+            </NoticePanel>
           ) : view === "interfaces" ? (
             <InterfacesView
               key={tick}
@@ -231,6 +216,6 @@ export function WireguardTab({ isVisible, host, label }: TabProps) {
           )}
         </div>
       </PanelShell>
-    </Frame>
+    </PanelFrame>
   );
 }

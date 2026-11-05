@@ -106,7 +106,7 @@ export function ClientsView({
 
   if (mode.kind === "add") {
     return (
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 p-3">
         <TextField
           label={t("clients.name")}
           hint={t("clients.nameHint")}
@@ -186,8 +186,8 @@ export function ClientsView({
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-col">
+      <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2">
         <Button variant="outline" onClick={() => setMode({ kind: "add" })}>
           {t("clients.add")}
         </Button>
@@ -196,7 +196,7 @@ export function ClientsView({
         </Button>
       </div>
       {clients.length === 0 ? (
-        <p className="px-1 py-6 text-center text-xs text-muted-foreground/60">
+        <p className="px-3 py-6 text-center text-xs text-muted-foreground/60">
           {t("clients.empty")}
         </p>
       ) : (

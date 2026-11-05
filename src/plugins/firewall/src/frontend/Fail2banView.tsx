@@ -150,15 +150,19 @@ export function Fail2banView({
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <p className="text-xs text-muted-foreground">{status.version}</p>
+    <div className="flex flex-col">
+      <p className="border-b border-border px-3 py-2 text-xs text-muted-foreground">
+        {status.version}
+      </p>
       {status.jails.length === 0 && (
-        <p className="text-sm text-muted-foreground">{t("fail2ban.noJails")}</p>
+        <p className="p-3 text-xs text-muted-foreground">
+          {t("fail2ban.noJails")}
+        </p>
       )}
       {status.jails.map((jail) => (
         <div
           key={jail.name}
-          className="flex flex-col gap-1.5 border border-border p-2"
+          className="flex flex-col gap-1.5 border-b border-border p-3"
         >
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-mono text-sm font-medium">{jail.name}</span>

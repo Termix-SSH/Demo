@@ -78,6 +78,7 @@ export function CustomizeSidebarPanel({
 
   return (
     <InlineView
+      stacked
       open={open}
       onOpenChange={onOpenChange}
       title={t("hosts.customizeSidebar")}
@@ -85,7 +86,7 @@ export function CustomizeSidebarPanel({
       <p className="text-xs text-muted-foreground">
         {t("hosts.customizeSidebarDescription")}
       </p>
-      <div className="flex flex-col gap-4 mt-1">
+      <div className="flex flex-col">
         <SectionCard
           title={t("hosts.customizeDensityTitle")}
           icon={<Rows3 className="size-3.5" />}

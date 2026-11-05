@@ -125,8 +125,8 @@ export function HistoryView({
   };
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-2">
-      <div className="flex flex-wrap gap-2">
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="flex flex-wrap gap-2 border-b border-border px-3 py-2">
         <Choice
           label={t("history.action")}
           className="w-64"
@@ -170,7 +170,7 @@ export function HistoryView({
       {runs.length === 0 && pages.page === 0 ? (
         <EmptyState icon={History} title={t("history.empty")} />
       ) : (
-        <div className="flex flex-col gap-1 overflow-auto">
+        <div className="flex flex-col overflow-auto">
           {runs.map((run) => (
             <ListRow
               key={run.id}

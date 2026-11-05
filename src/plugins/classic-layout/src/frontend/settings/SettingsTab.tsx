@@ -6,6 +6,7 @@ import {
   PanelSearch,
   PanelShell,
   SurfaceScope,
+  TileColumn,
   EmptyState,
   isElectron,
   reportCoreIssueUrl,
@@ -344,83 +345,81 @@ export function SettingsTab({
 
         <SurfaceScope kind="tab" className="min-w-0">
           <div className={`shrink-0 border-b border-border ${PANEL.band}`}>
-            <div className="mx-auto w-full max-w-3xl">
-              <PanelSearch
-                value={pageQuery}
-                onChange={setPageQuery}
-                placeholder={t("settings.searchPage")}
-                fill
-              />
-            </div>
+            <PanelSearch
+              value={pageQuery}
+              onChange={setPageQuery}
+              placeholder={t("settings.searchPage")}
+              fill
+            />
           </div>
           <div
             ref={contentRef}
-            className={`min-h-0 flex-1 overflow-y-auto thin-scrollbar ${PANEL.body}`}
+            className="min-h-0 flex-1 overflow-y-auto thin-scrollbar"
           >
             {!pageHasMatches && (
               <EmptyState icon={Search} title={t("settings.noPageMatches")} />
             )}
-            <div
-              ref={pageRef}
-              className={`mx-auto flex w-full max-w-3xl flex-col ${PANEL.gap} pb-6`}
-            >
-              <SettingsEmbedContext.Provider value>
-                <div className={showProfile ? "contents" : "hidden"}>
-                  <UserProfilePanel
-                    section={page.profileSection ?? "__none__"}
-                    username={username}
-                    onLogout={onLogout}
-                    userPrefs={userPrefs}
-                    onPrefsChange={onPrefsChange}
-                    onOpenSettingsPage={go}
-                  />
-                </div>
-                {isAdmin && (
-                  <div className={showAdmin ? "contents" : "hidden"}>
-                    <AdminSettingsPanel
-                      section={page.adminSection ?? ("__none__" as never)}
-                      onOpenHostTab={onOpenHostTab}
+            <TileColumn className="w-full">
+              <div ref={pageRef} className="contents">
+                <SettingsEmbedContext.Provider value>
+                  <div className={showProfile ? "contents" : "hidden"}>
+                    <UserProfilePanel
+                      section={page.profileSection ?? "__none__"}
+                      username={username}
+                      onLogout={onLogout}
+                      userPrefs={userPrefs}
+                      onPrefsChange={onPrefsChange}
+                      onOpenSettingsPage={go}
                     />
                   </div>
-                )}
-              </SettingsEmbedContext.Provider>
-              {page.id === "keybindings" && <KeybindingsSettings />}
-              {page.id === "updates" && <UpdatesSettings isAdmin={isAdmin} />}
-              {pluginFeature && (
-                <>
-                  {pluginFeature.user && (
-                    <FeatureSettingsForm
-                      plugin={pluginFeature.user}
-                      scope="user"
-                      fields={
-                        pluginFeature.user.contributes?.settings?.user ?? []
-                      }
-                    />
-                  )}
-                  {pluginFeature.admin && (
-                    <>
-                      <GroupHeading
-                        title={t("settings.instanceSettings")}
-                        className="pt-2"
+                  {isAdmin && (
+                    <div className={showAdmin ? "contents" : "hidden"}>
+                      <AdminSettingsPanel
+                        section={page.adminSection ?? ("__none__" as never)}
+                        onOpenHostTab={onOpenHostTab}
                       />
+                    </div>
+                  )}
+                </SettingsEmbedContext.Provider>
+                {page.id === "keybindings" && <KeybindingsSettings />}
+                {page.id === "updates" && <UpdatesSettings isAdmin={isAdmin} />}
+                {pluginFeature && (
+                  <>
+                    {pluginFeature.user && (
                       <FeatureSettingsForm
-                        plugin={pluginFeature.admin}
-                        scope="admin"
+                        plugin={pluginFeature.user}
+                        scope="user"
                         fields={
-                          pluginFeature.admin.contributes?.settings?.admin ?? []
+                          pluginFeature.user.contributes?.settings?.user ?? []
                         }
                       />
-                    </>
-                  )}
-                  {!pluginFeature.user && !pluginFeature.admin && (
-                    <EmptyState
-                      icon={SettingsIcon}
-                      title={t("settings.nothingHere")}
-                    />
-                  )}
-                </>
-              )}
-            </div>
+                    )}
+                    {pluginFeature.admin && (
+                      <>
+                        <GroupHeading
+                          title={t("settings.instanceSettings")}
+                          className="border-b border-border bg-muted/20 px-3 py-1.5"
+                        />
+                        <FeatureSettingsForm
+                          plugin={pluginFeature.admin}
+                          scope="admin"
+                          fields={
+                            pluginFeature.admin.contributes?.settings?.admin ??
+                            []
+                          }
+                        />
+                      </>
+                    )}
+                    {!pluginFeature.user && !pluginFeature.admin && (
+                      <EmptyState
+                        icon={SettingsIcon}
+                        title={t("settings.nothingHere")}
+                      />
+                    )}
+                  </>
+                )}
+              </div>
+            </TileColumn>
           </div>
         </SurfaceScope>
       </div>

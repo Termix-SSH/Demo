@@ -132,7 +132,7 @@ function InstanceUpdates() {
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col">
       <SectionCard
         title={t("settings.updates.betaProgram")}
         icon={<FlaskConical className="size-3.5" />}
@@ -323,7 +323,7 @@ function InstanceUpdates() {
 
 export function UpdatesSettings({ isAdmin }: { isAdmin: boolean }) {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col">
       <DesktopUpdatesCard />
       {isAdmin && <InstanceUpdates />}
     </div>

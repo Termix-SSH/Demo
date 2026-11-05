@@ -123,7 +123,7 @@ export function InterfacePresetSettings({
               className={`flex w-full items-start gap-2 border p-2 text-left transition-colors ${
                 active
                   ? "border-accent-brand bg-accent-brand/10"
-                  : "border-border bg-card hover:bg-muted/40"
+                  : "border-border hover:bg-muted/40"
               }`}
             >
               <Icon
@@ -152,7 +152,7 @@ export function InterfacePresetSettings({
       </div>
 
       {customizedAreas.length > 0 && (
-        <div className="flex flex-col gap-1 border border-border bg-card p-2">
+        <div className="flex flex-col gap-1 border border-border bg-muted/20 p-2">
           <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
             <Layers size={11} className="shrink-0" />
             <span className="min-w-0 truncate">

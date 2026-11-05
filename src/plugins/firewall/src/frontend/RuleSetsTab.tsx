@@ -164,7 +164,6 @@ export function RuleSetsTab() {
           />
         }
         scroll
-        className="gap-2 p-2.5"
       >
         <div className="flex shrink-0 flex-col gap-2">
           <p className="text-xs text-muted-foreground">{t("rulesets.hint")}</p>
@@ -177,7 +176,7 @@ export function RuleSetsTab() {
           ) : (
             <PanelList
               empty={
-                <p className="px-1 py-6 text-center text-xs text-muted-foreground/60">
+                <p className="px-3 py-6 text-center text-xs text-muted-foreground/60">
                   {t("rulesets.empty")}
                 </p>
               }

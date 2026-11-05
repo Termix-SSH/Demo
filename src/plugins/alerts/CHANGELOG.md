@@ -9,6 +9,7 @@
 ### Changed
 
 - Needs Termix 26.11.1 or newer
+- The Alerts tab has the Termix page header and fills the width of the tab
 
 ### Fixed
 
