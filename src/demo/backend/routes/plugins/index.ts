@@ -35,3 +35,4 @@ import "./user-manager";
 import "./certificates";
 import "./process-manager";
 import "./web-servers";
+import "./security-center";

@@ -1,0 +1,360 @@
+{
+  "id": "security-center",
+  "name": "Security Center",
+  "version": "1.0.0",
+  "description": "Audit SSH keys, rotate them and scan hosts for known vulnerabilities over SSH.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Security-Center",
+  "docs": "https://docs.termix.site/plugins/security-center",
+  "category": "Access & Security",
+  "icon": "ShieldCheck",
+  "features": [
+    "Inventory of authorized keys, host keys and private keys on every host",
+    "Findings for weak or old keys, unprotected private keys, loose permissions and risky sshd settings",
+    "Rotate the key Termix logs in with, with a login check before the old key is removed",
+    "Remove a key from a host by fingerprint, and regenerate host keys",
+    "Scan installed packages for known vulnerabilities with OSV, with severity, fixed versions and known exploited flags",
+    "Alerts for new critical vulnerabilities and key problems",
+    "A dashboard card, signals and events for Operations and Automations"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "hosts:read",
+    "hosts:write",
+    "credentials:use",
+    "credentials:read",
+    "credentials:write",
+    "ssh:connect",
+    "network:serve",
+    "network:outbound",
+    "db:own",
+    "kv:own",
+    "files:own",
+    "notify:send",
+    "users:impersonate",
+    "ui:surface",
+    "operations:provide"
+  ],
+  "provides": [
+    {
+      "service": "security-center.access",
+      "version": "1.0.0",
+      "permission": "security-center.use"
+    }
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "security-center",
+        "titleKey": "tab.title",
+        "icon": "ShieldCheck",
+        "openFrom": ["host-context-menu", "palette"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "scan-vulns",
+        "titleKey": "permissions.scanVulns.title",
+        "descriptionKey": "permissions.scanVulns.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "rotate",
+        "titleKey": "permissions.rotate.title",
+        "descriptionKey": "permissions.rotate.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "enableKey": "enableSecurity",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
+        "editorGroup": "ssh",
+        "fields": [
+          {
+            "key": "useSudo",
+            "type": "boolean",
+            "labelKey": "settings.host.useSudo.label",
+            "descriptionKey": "settings.host.useSudo.description",
+            "default": true,
+            "requires": "enableSecurity"
+          },
+          {
+            "key": "readOnly",
+            "type": "boolean",
+            "labelKey": "settings.host.readOnly.label",
+            "descriptionKey": "settings.host.readOnly.description",
+            "default": false,
+            "requires": "enableSecurity"
+          }
+        ]
+      },
+      "admin": [
+        {
+          "key": "scanVulns",
+          "type": "boolean",
+          "labelKey": "settings.admin.scanVulns.label",
+          "descriptionKey": "settings.admin.scanVulns.description",
+          "default": true
+        },
+        {
+          "key": "osvUrl",
+          "type": "string",
+          "labelKey": "settings.admin.osvUrl.label",
+          "descriptionKey": "settings.admin.osvUrl.description",
+          "default": "https://api.osv.dev"
+        },
+        {
+          "key": "checkKev",
+          "type": "boolean",
+          "labelKey": "settings.admin.checkKev.label",
+          "descriptionKey": "settings.admin.checkKev.description",
+          "default": true
+        }
+      ]
+    },
+    "dashboardCards": [
+      {
+        "id": "security-hosts",
+        "titleKey": "card.title",
+        "icon": "ShieldCheck"
+      }
+    ],
+    "operations": {
+      "actions": [
+        {
+          "id": "security-center.keys",
+          "titleKey": "operations.keys.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": { "settings": { "enableSecurity": true } },
+          "surfaces": { "assistant": true, "mcp": true, "palette": false }
+        },
+        {
+          "id": "security-center.findings",
+          "titleKey": "operations.findings.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": { "settings": { "enableSecurity": true } },
+          "surfaces": { "assistant": true, "mcp": true, "palette": false }
+        },
+        {
+          "id": "security-center.vulns",
+          "titleKey": "operations.vulns.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": { "settings": { "enableSecurity": true } },
+          "surfaces": { "assistant": true, "mcp": true, "palette": false }
+        },
+        {
+          "id": "security-center.status",
+          "titleKey": "operations.status.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": { "settings": { "enableSecurity": true } },
+          "surfaces": { "assistant": true, "mcp": true, "palette": false }
+        },
+        {
+          "id": "security-center.critical-vulns",
+          "titleKey": "operations.criticalVulns.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": { "settings": { "enableSecurity": true } },
+          "surfaces": { "assistant": true, "mcp": true, "palette": false }
+        },
+        {
+          "id": "security-center.weak-keys",
+          "titleKey": "operations.weakKeys.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": { "settings": { "enableSecurity": true } },
+          "surfaces": { "assistant": true, "mcp": true, "palette": false }
+        },
+        {
+          "id": "security-center.scan",
+          "titleKey": "operations.scan.title",
+          "icon": "ScanSearch",
+          "scope": "host",
+          "risk": "change",
+          "permission": "scan-vulns",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "idempotent": true,
+          "when": { "settings": { "enableSecurity": true } },
+          "surfaces": { "assistant": true, "mcp": true }
+        },
+        {
+          "id": "security-center.rotate-key",
+          "titleKey": "operations.rotateKey.title",
+          "icon": "RefreshCw",
+          "scope": "host",
+          "risk": "destructive",
+          "permission": "rotate",
+          "hostAccess": "manage",
+          "dryRun": "describe",
+          "exclusive": true,
+          "when": { "settings": { "enableSecurity": true } },
+          "surfaces": { "assistant": true, "mcp": false }
+        },
+        {
+          "id": "security-center.revoke-key",
+          "titleKey": "operations.revokeKey.title",
+          "icon": "KeyRound",
+          "scope": "host",
+          "risk": "destructive",
+          "permission": "rotate",
+          "hostAccess": "manage",
+          "dryRun": "describe",
+          "exclusive": true,
+          "inputs": [
+            {
+              "key": "fingerprint",
+              "type": "string",
+              "labelKey": "operations.revokeKey.fingerprint",
+              "required": true,
+              "pattern": "^SHA256:[A-Za-z0-9+/]{43}$"
+            },
+            {
+              "key": "path",
+              "type": "string",
+              "labelKey": "operations.revokeKey.path",
+              "descriptionKey": "operations.revokeKey.pathHint",
+              "required": true
+            }
+          ],
+          "when": { "settings": { "enableSecurity": true } },
+          "surfaces": { "assistant": true, "mcp": false }
+        },
+        {
+          "id": "security-center.rotate-host-keys",
+          "titleKey": "operations.rotateHostKeys.title",
+          "icon": "ShieldAlert",
+          "scope": "host",
+          "risk": "destructive",
+          "permission": "rotate",
+          "hostAccess": "manage",
+          "dryRun": "describe",
+          "exclusive": true,
+          "when": { "settings": { "enableSecurity": true } },
+          "surfaces": { "assistant": false, "mcp": false }
+        }
+      ],
+      "events": [
+        {
+          "id": "security-center.vuln-found",
+          "titleKey": "operations.events.vulnFound",
+          "severity": "critical",
+          "scope": "host"
+        },
+        {
+          "id": "security-center.key-weak",
+          "titleKey": "operations.events.keyWeak",
+          "severity": "warning",
+          "scope": "host"
+        },
+        {
+          "id": "security-center.rotated",
+          "titleKey": "operations.events.rotated",
+          "severity": "info",
+          "scope": "host"
+        }
+      ],
+      "resources": [
+        {
+          "id": "security-center.key",
+          "titleKey": "operations.keys.title",
+          "icon": "KeyRound",
+          "list": "security-center.keys",
+          "key": "id",
+          "name": "name",
+          "status": "health",
+          "tab": "security-center",
+          "columns": [
+            {
+              "key": "health",
+              "titleKey": "operations.keys.health",
+              "type": "status"
+            },
+            { "key": "kind", "titleKey": "operations.keys.kind" },
+            { "key": "algo", "titleKey": "operations.keys.algo" },
+            { "key": "owner", "titleKey": "operations.keys.owner" }
+          ]
+        },
+        {
+          "id": "security-center.vuln",
+          "titleKey": "operations.vulns.title",
+          "icon": "Bug",
+          "list": "security-center.vulns",
+          "key": "id",
+          "name": "name",
+          "status": "health",
+          "tab": "security-center",
+          "columns": [
+            {
+              "key": "health",
+              "titleKey": "operations.keys.health",
+              "type": "status"
+            },
+            { "key": "package", "titleKey": "operations.vulns.package" },
+            { "key": "fixed", "titleKey": "operations.vulns.fixed" }
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "id": "security-center.health",
+          "titleKey": "operations.status.title",
+          "read": "security-center.status",
+          "scope": "host",
+          "kind": "status",
+          "refreshSec": 120
+        },
+        {
+          "id": "security-center.critical",
+          "titleKey": "operations.criticalVulns.title",
+          "read": "security-center.critical-vulns",
+          "scope": "host",
+          "kind": "count",
+          "refreshSec": 300
+        },
+        {
+          "id": "security-center.weak",
+          "titleKey": "operations.weakKeys.title",
+          "read": "security-center.weak-keys",
+          "scope": "host",
+          "kind": "count",
+          "refreshSec": 300
+        }
+      ]
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}
