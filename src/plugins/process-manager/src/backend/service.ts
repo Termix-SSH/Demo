@@ -29,7 +29,8 @@ import {
   cleanComm,
   detailScript,
   logScript,
-  managersScript,
+  SUPERVISOR_LIST_SCRIPT,
+  pm2ListScript,
   reniceScript,
   signalScript,
 } from "./scripts.js";
@@ -109,19 +110,28 @@ export function createService(remote: Remote) {
       hostId: number,
       settings: HostSettings,
     ): Promise<ManagersView> {
-      const run = settings.pm2User
-        ? remote.root(hostId, settings.sudo, managersScript(settings.pm2User), {
-            allowFail: true,
-          })
-        : remote.read(hostId, settings.sudo, managersScript(""), {
-            allowFail: true,
-          });
-      const s = sections((await run).stdout);
-      const supervisorText = s.supervisor ?? "";
-      const pm2 = !(s.pm2 ?? "").includes("@@none");
+      // pm2 belongs to one user: the login user unless a pm2 user is set.
+      const [pm2Out, supOut] = await Promise.all([
+        settings.pm2User
+          ? remote.root(
+              hostId,
+              settings.sudo,
+              pm2ListScript(settings.pm2User),
+              {
+                allowFail: true,
+              },
+            )
+          : remote.plain(hostId, pm2ListScript(""), { allowFail: true }),
+        remote.read(hostId, settings.sudo, SUPERVISOR_LIST_SCRIPT, {
+          allowFail: true,
+        }),
+      ]);
+      const pm2Text = pm2Out.stdout;
+      const supervisorText = supOut.stdout;
+      const pm2 = !pm2Text.includes("@@none");
       const supervisor = !supervisorText.includes("@@none");
       const apps = [
-        ...(pm2 ? parsePm2(s.pm2 ?? "") : []),
+        ...(pm2 ? parsePm2(pm2Text) : []),
         ...(supervisor ? parseSupervisor(supervisorText) : []),
       ];
       return {
@@ -175,16 +185,14 @@ export function createService(remote: Remote) {
         grep,
         runUser: settings.pm2User,
       });
-      const rooted = target.kind === "pm2" && settings.pm2User;
-      const r = rooted
-        ? await remote.root(hostId, settings.sudo, script, {
-            allowFail: true,
-            maxOutputBytes: 2_000_000,
-          })
-        : await remote.read(hostId, settings.sudo, script, {
-            allowFail: true,
-            maxOutputBytes: 2_000_000,
-          });
+      const opts = { allowFail: true, maxOutputBytes: 2_000_000 };
+      // pm2 logs belong to the pm2 user, never to root by accident.
+      const r =
+        target.kind === "pm2"
+          ? settings.pm2User
+            ? await remote.root(hostId, settings.sudo, script, opts)
+            : await remote.plain(hostId, script, opts)
+          : await remote.read(hostId, settings.sudo, script, opts);
       if (r.code !== 0 && !r.stdout.trim()) {
         throw new HostScriptError(
           out(r.stdout, r.stderr) || "Could not read the log",

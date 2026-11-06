@@ -14,6 +14,7 @@ import { HostMaintenance, MaintenanceBadge } from "./HostMaintenance";
 import {
   AutomationsCompanion,
   RecentRunsCard,
+  runsWidget,
   UpcomingRunsCard,
   useAutomationsCompanionDefaults,
 } from "./AutomationsDashboard";
@@ -124,6 +125,8 @@ export function activate(app: TermixApp): void {
     frame: "framed",
     component: RecentRunsCard,
   });
+
+  app.registerExtension("homepage.widgets", runsWidget);
 
   // Cores before 26.10.3 have no panels beside tabs.
   if (typeof app.registerCompanion === "function") {

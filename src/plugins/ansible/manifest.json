@@ -1,0 +1,242 @@
+{
+  "id": "ansible",
+  "name": "Ansible",
+  "version": "1.0.0",
+  "description": "Run Ansible playbooks and ad-hoc commands from a control host, with an inventory made from your Termix hosts.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Ansible",
+  "docs": "https://docs.termix.site/plugins/ansible",
+  "category": "Infrastructure",
+  "icon": "Workflow",
+  "features": [
+    "Edit the playbooks in a project folder on the control host",
+    "Run playbooks with check mode, diff, tags, limit and extra vars",
+    "Use your Termix hosts and folders as the inventory",
+    "Live run output, a recap per host and run history",
+    "Run ad-hoc modules on any hosts",
+    "Gather and read facts from hosts"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "hosts:read",
+    "credentials:use",
+    "credentials:read",
+    "ssh:connect",
+    "network:serve",
+    "ui:surface",
+    "operations:provide",
+    "kv:own",
+    "notify:send"
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "ansible",
+        "titleKey": "tab.title",
+        "icon": "Workflow",
+        "openFrom": ["host-context-menu", "palette"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "enableKey": "enableAnsible",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
+        "editorGroup": "ssh",
+        "fields": [
+          {
+            "key": "projectDir",
+            "type": "string",
+            "labelKey": "settings.host.projectDir.label",
+            "descriptionKey": "settings.host.projectDir.description",
+            "placeholderKey": "settings.host.projectDir.placeholder",
+            "default": "~/ansible",
+            "requires": "enableAnsible"
+          },
+          {
+            "key": "vaultPasswordFile",
+            "type": "string",
+            "labelKey": "settings.host.vaultPasswordFile.label",
+            "descriptionKey": "settings.host.vaultPasswordFile.description",
+            "placeholderKey": "settings.host.vaultPasswordFile.placeholder",
+            "default": "",
+            "requires": "enableAnsible"
+          },
+          {
+            "key": "readOnly",
+            "type": "boolean",
+            "labelKey": "settings.host.readOnly.label",
+            "descriptionKey": "settings.host.readOnly.description",
+            "default": false,
+            "requires": "enableAnsible"
+          },
+          {
+            "key": "alertRuns",
+            "type": "boolean",
+            "labelKey": "settings.host.alertRuns.label",
+            "descriptionKey": "settings.host.alertRuns.description",
+            "default": true,
+            "requires": "enableAnsible"
+          }
+        ]
+      }
+    },
+    "operations": {
+      "actions": [
+        {
+          "id": "ansible.list-playbooks",
+          "titleKey": "operations.list.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableAnsible": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "ansible.list-runs",
+          "titleKey": "operations.runs.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableAnsible": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "ansible.failed",
+          "titleKey": "operations.failed.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableAnsible": true
+            }
+          },
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
+          "id": "ansible.run-playbook",
+          "titleKey": "operations.run.title",
+          "icon": "Play",
+          "scope": "host",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "when": {
+            "settings": {
+              "enableAnsible": true
+            }
+          },
+          "inputs": [
+            {
+              "key": "playbook",
+              "type": "string",
+              "labelKey": "operations.run.playbook",
+              "required": true
+            },
+            {
+              "key": "limit",
+              "type": "string",
+              "labelKey": "operations.run.limit"
+            },
+            {
+              "key": "tags",
+              "type": "string",
+              "labelKey": "operations.run.tags"
+            },
+            {
+              "key": "check",
+              "type": "boolean",
+              "labelKey": "operations.run.check",
+              "default": true
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "ansible.failed",
+          "titleKey": "operations.failed.title",
+          "read": "ansible.failed",
+          "scope": "host",
+          "kind": "count",
+          "refreshSec": 300
+        }
+      ],
+      "resources": [
+        {
+          "id": "ansible.run",
+          "titleKey": "operations.runs.resource",
+          "icon": "Workflow",
+          "list": "ansible.list-runs",
+          "key": "id",
+          "name": "name",
+          "status": "state",
+          "tab": "ansible",
+          "columns": [
+            {
+              "key": "startedAt",
+              "titleKey": "operations.runs.started",
+              "type": "time"
+            },
+            {
+              "key": "check",
+              "titleKey": "operations.runs.check"
+            }
+          ]
+        }
+      ]
+    },
+    "dashboardCards": [
+      {
+        "id": "ansible-hosts",
+        "titleKey": "card.title",
+        "icon": "Workflow"
+      }
+    ]
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

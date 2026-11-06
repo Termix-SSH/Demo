@@ -1,0 +1,216 @@
+{
+  "plugin": {
+    "name": "IP-KVM",
+    "description": "See and control machines through PiKVM, NanoKVM and JetKVM devices."
+  },
+  "tab": {
+    "title": "KVM"
+  },
+  "card": {
+    "title": "KVM",
+    "loading": "Loading"
+  },
+  "host": {
+    "open": "KVM"
+  },
+  "permissions": {
+    "view": {
+      "title": "See KVMs",
+      "description": "Open the KVM tab and see which KVMs are online and what power state they report."
+    },
+    "power": {
+      "title": "Control power",
+      "description": "Turn machines on and off and reset them through their KVM, or wake them with Wake-on-LAN."
+    },
+    "console": {
+      "title": "Use the screen",
+      "description": "See the screen of a machine and use its keyboard and mouse."
+    },
+    "media": {
+      "title": "Use virtual media",
+      "description": "Mount and eject ISO images on a machine."
+    },
+    "manage": {
+      "title": "Manage KVMs",
+      "description": "Add, change and remove KVMs."
+    }
+  },
+  "settings": {
+    "admin": {
+      "maxSessionMinutes": {
+        "label": "Longest screen session (minutes)",
+        "description": "A screen session ends after this long. Use 0 for no limit."
+      }
+    }
+  },
+  "description": "Add your IP-KVMs to see and control the machines behind them. Termix connects to the KVM, so the screen works even when your browser cannot reach it. Logins are stored encrypted and never shown again.",
+  "summary": "{{count}} KVMs, {{attention}} offline",
+  "empty": "No KVMs yet.",
+  "add": "Add KVM",
+  "edit": "Edit",
+  "delete": "Delete",
+  "back": "Back",
+  "saved": "Saved",
+  "deleteConfirm": "Delete {{name}}?",
+  "status": {
+    "unknown": "Not read yet",
+    "up": "Online",
+    "down": "Offline"
+  },
+  "drivers": {
+    "pikvm": "PiKVM",
+    "nanokvm": "NanoKVM or GL.iNet Comet",
+    "jetkvm": "JetKVM"
+  },
+  "fields": {
+    "username": "Username",
+    "password": "Password"
+  },
+  "power": {
+    "on": "On",
+    "off": "Off",
+    "unknown": "Unknown",
+    "state": "The machine is {{state}}.",
+    "sent": "Asked {{name}} to change power",
+    "sentShort": "Power command sent",
+    "wake": "Wake on LAN",
+    "woke": "Wake packet sent",
+    "action": {
+      "on": "Power on",
+      "off": "Power off",
+      "graceful-shutdown": "Shut down",
+      "reset": "Reset"
+    },
+    "confirm": {
+      "on": "Power on {{name}}?",
+      "off": "Cut the power of {{name}}? The system does not shut down cleanly.",
+      "graceful-shutdown": "Ask {{name}} to shut down?",
+      "reset": "Reset {{name}}? The system restarts at once."
+    }
+  },
+  "form": {
+    "addTitle": "Add KVM",
+    "editTitle": "Edit KVM",
+    "device": "KVM",
+    "access": "Access",
+    "machine": "Machine behind the KVM",
+    "type": "Type",
+    "name": "Name",
+    "address": "Address",
+    "port": "Port",
+    "host": "Termix host",
+    "hostHint": "Link the KVM to the host it belongs to. It then follows that host's sharing and shows on its host menu.",
+    "noHost": "None",
+    "poll": "Check every (seconds)",
+    "pollHint": "At least 30 seconds.",
+    "scheme": "Connection",
+    "ca": "Certificate",
+    "caHint": "Most KVMs use a self signed certificate. Paste its PEM here so Termix can trust it. Leave empty for a trusted certificate.",
+    "caSet": "A certificate is saved. Paste a new one to replace it.",
+    "keepLogin": "Leave empty to keep the saved login",
+    "test": "Test connection",
+    "testOk": "The KVM answered ({{model}}).",
+    "testNeedsLogin": "Enter the login again to test.",
+    "mac": "MAC address",
+    "macHint": "The network card of the machine, for Wake-on-LAN.",
+    "broadcast": "Broadcast address",
+    "broadcastHint": "Where the wake packet goes. Leave empty for 255.255.255.255.",
+    "save": "Save",
+    "add": "Add"
+  },
+  "view": {
+    "screen": "Screen",
+    "power": "Power",
+    "media": "Virtual media",
+    "info": "Info",
+    "refresh": "Read now",
+    "type": "Type",
+    "address": "Address",
+    "model": "Model",
+    "version": "Software",
+    "hostname": "Name",
+    "video": "Video",
+    "noSignal": "No signal",
+    "status": "KVM",
+    "jetHint": "The JetKVM video goes straight from the JetKVM to your browser, so your browser must reach it on the network."
+  },
+  "screen": {
+    "connecting": "Connecting",
+    "failed": "Could not open the screen.",
+    "ended": "The screen session ended.",
+    "hint": "Click the screen to type.",
+    "shortcuts": "Shortcuts",
+    "shortcut": {
+      "ctrl-alt-del": "Ctrl+Alt+Del",
+      "alt-tab": "Alt+Tab",
+      "alt-f4": "Alt+F4",
+      "ctrl-esc": "Ctrl+Esc",
+      "win-l": "Win+L",
+      "win-d": "Win+D",
+      "ctrl-alt-f1": "Ctrl+Alt+F1",
+      "ctrl-alt-f2": "Ctrl+Alt+F2",
+      "ctrl-alt-f7": "Ctrl+Alt+F7",
+      "print-screen": "Print Screen"
+    },
+    "paste": "Paste text",
+    "pasteLabel": "Text to type on the machine",
+    "type": "Type it",
+    "snapshot": "Screenshot",
+    "fullscreen": "Full screen",
+    "reconnect": "Reconnect"
+  },
+  "media": {
+    "none": "No image is mounted.",
+    "mountedNow": "Mounted: {{name}}",
+    "as": "Show it as",
+    "cd": "CD drive",
+    "usb": "USB drive",
+    "empty": "There are no images on this KVM.",
+    "mount": "Mount",
+    "eject": "Eject",
+    "mountedDone": "Image mounted",
+    "ejected": "Image ejected",
+    "url": "Download an image from",
+    "name": "Save it as",
+    "fetch": "Download to the KVM",
+    "fetched": "Image downloaded"
+  },
+  "operations": {
+    "device": "KVM",
+    "list-devices": {
+      "title": "List KVMs"
+    },
+    "poll": {
+      "title": "Read a KVM now"
+    },
+    "power-state": {
+      "title": "Get power state"
+    },
+    "power-on": {
+      "title": "Power on"
+    },
+    "graceful-shutdown": {
+      "title": "Shut down"
+    },
+    "power-off": {
+      "title": "Power off"
+    },
+    "reset": {
+      "title": "Reset"
+    },
+    "wake": {
+      "title": "Wake on LAN"
+    },
+    "eject-media": {
+      "title": "Eject image"
+    },
+    "health": {
+      "title": "KVM status"
+    }
+  },
+  "widget": {
+    "name": "KVM devices",
+    "description": "Which of your IP-KVMs are up.",
+    "summary": "{{up}} of {{total}} up"
+  }
+}

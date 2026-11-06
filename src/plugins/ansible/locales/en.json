@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Run Ansible playbooks and ad-hoc commands from a control host, with an inventory made from your Termix hosts."
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "delete": "Delete"
+  },
+  "permissions": {
+    "use": {
+      "title": "Use Ansible",
+      "description": "See playbooks and runs on control hosts you can reach. Edit files and run Ansible on hosts you can edit."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Use this host as an Ansible control host. Ansible must be installed on it."
+      },
+      "projectDir": {
+        "label": "Project folder",
+        "description": "The folder on this host with your playbooks, roles and ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Vault password file",
+        "description": "A file on this host with the Ansible Vault password. Leave empty if you do not use Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Read only",
+        "description": "Show playbooks and runs but never edit files or start runs on this host."
+      },
+      "alertRuns": {
+        "label": "Alert when a run fails",
+        "description": "Send an alert when a run on this host ends failed or lost. Checked when run state is read."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Open Ansible from a host.",
+    "error": "Could not load Ansible from this host.",
+    "disabled": "Ansible is turned off for this host. Turn it on in the host settings.",
+    "refresh": "Refresh",
+    "readOnly": "Read only",
+    "notInstalled": "Ansible not installed",
+    "notInstalledTitle": "Ansible is not installed on this host",
+    "notInstalledHint": "Install ansible-core on this host, for example with pipx or your package manager, then refresh.",
+    "noSshpass": "sshpass is not installed on this host. Hosts that sign in with a password will fail.",
+    "viewPlaybooks": "Playbooks",
+    "viewRuns": "Runs",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Facts"
+  },
+  "files": {
+    "add": "New file",
+    "search": "Search files",
+    "empty": "No files in the project folder yet.",
+    "noMatch": "No files match.",
+    "noProject": "The folder {{dir}} does not exist on this host. Create it, or set another Project folder in the host settings.",
+    "listFailed": "Could not list the project files.",
+    "loadFailed": "Could not read that file.",
+    "saved": "File saved",
+    "saveFailed": "Could not save that file.",
+    "playbook": "Playbook",
+    "run": "Run",
+    "newTitle": "New file",
+    "name": "File name",
+    "nameHint": "A path inside the project folder, like site.yml or roles/web/tasks/main.yml.",
+    "hint": "A playbook is checked for syntax before it is saved. The old file stays if the check fails.",
+    "text": "File text",
+    "deleteTitle": "Delete this file?"
+  },
+  "targets": {
+    "search": "Search hosts",
+    "addShown": "Add shown",
+    "clear": "Clear",
+    "empty": "No hosts found.",
+    "count": "{{count}} selected",
+    "failed": "Could not load your hosts."
+  },
+  "run": {
+    "title": "Run {{playbook}}",
+    "start": "Run",
+    "startCheck": "Run in check mode",
+    "startFailed": "Could not start the run.",
+    "source": "Hosts",
+    "sourceProject": "Project inventory",
+    "sourceTermix": "Termix hosts",
+    "sourceProjectHint": "Use the inventory from ansible.cfg, or a file in the project.",
+    "sourceTermixHint": "Pick hosts from Termix. Folders become folder_ groups and tags become tag_ groups. All of them are in the termix group.",
+    "inventory": "Inventory file",
+    "inventoryHint": "A path inside the project folder. Leave empty to use ansible.cfg.",
+    "check": "Check mode",
+    "checkHint": "Show what would change without changing anything.",
+    "diff": "Show diffs",
+    "diffHint": "Show the changes made to files.",
+    "become": "Run as root",
+    "becomeHint": "Use sudo on the hosts. A saved Sudo Password is used for Termix hosts.",
+    "limit": "Limit",
+    "limitHint": "Only run on these hosts or groups.",
+    "verbosity": "Output detail",
+    "verbosityOff": "Normal",
+    "tags": "Tags",
+    "skipTags": "Skip tags",
+    "extraVars": "Extra variables",
+    "extraVarsHint": "One key=value per line."
+  },
+  "runs": {
+    "title": "Run",
+    "empty": "No runs yet.",
+    "loadFailed": "Could not load the runs.",
+    "stop": "Stop",
+    "stopFailed": "Could not stop the run.",
+    "deleteTitle": "Delete this run?",
+    "deleteFailed": "Could not delete the run.",
+    "checkMode": "Check",
+    "truncated": "Showing the end of a long output.",
+    "noOutput": "No output yet.",
+    "state": {
+      "running": "Running",
+      "ok": "Done",
+      "failed": "Failed",
+      "cancelled": "Stopped",
+      "lost": "Lost"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Facts"
+    },
+    "recap": {
+      "host": "Host",
+      "ok": "OK",
+      "changed": "Changed",
+      "unreachable": "Unreachable",
+      "failed": "Failed",
+      "skipped": "Skipped"
+    }
+  },
+  "adhoc": {
+    "hint": "Run one module on hosts, like ansible all -m ping.",
+    "pattern": "Hosts pattern",
+    "patternHint": "A host, a group or all.",
+    "module": "Module",
+    "moduleHint": "For example ping, command, shell, apt or systemd.",
+    "args": "Arguments",
+    "argsHint": "For command and shell this is the command. For other modules it is key=value pairs.",
+    "run": "Run"
+  },
+  "facts": {
+    "hint": "Gather facts from hosts with the setup module. Needs Termix hosts so each one has a login.",
+    "gather": "Gather facts",
+    "gathering": "Gathering...",
+    "failed": "Could not gather facts.",
+    "failedHost": "Failed",
+    "none": "No facts came back. Open the run to see why.",
+    "col": {
+      "host": "Host",
+      "os": "System",
+      "kernel": "Kernel",
+      "cpu": "CPUs",
+      "memory": "Memory",
+      "address": "Address",
+      "uptime": "Uptime"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "List playbooks"
+    },
+    "run": {
+      "title": "Run playbook",
+      "playbook": "Playbook",
+      "limit": "Limit",
+      "tags": "Tags",
+      "check": "Check mode"
+    },
+    "runs": {
+      "title": "List runs",
+      "resource": "Runs",
+      "started": "Started",
+      "check": "Check mode"
+    },
+    "failed": {
+      "title": "Failed runs"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Checking hosts...",
+    "summary_one": "{{count}} failed run on {{hosts}} hosts",
+    "summary_other": "{{count}} failed runs on {{hosts}} hosts",
+    "refresh": "Check again",
+    "empty": "Turn on Ansible for a host to see its runs here.",
+    "failed_one": "{{count}} failed",
+    "failed_other": "{{count}} failed",
+    "running_one": "{{count}} running",
+    "running_other": "{{count}} running",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "No runs yet"
+  }
+}

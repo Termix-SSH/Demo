@@ -5,6 +5,7 @@
 ### Added
 
 - Send yourself an alert through Termix actions, so rules, rollouts and the CLI can notify you, and see unread alerts as a status tile
+- Open Alerts from the command palette
 
 ### Changed
 

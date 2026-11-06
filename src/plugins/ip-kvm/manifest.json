@@ -1,0 +1,312 @@
+{
+  "id": "ip-kvm",
+  "name": "IP-KVM",
+  "version": "1.0.0",
+  "description": "See and control machines through PiKVM, NanoKVM and JetKVM devices.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-IP-KVM",
+  "docs": "https://docs.termix.site/plugins/ip-kvm",
+  "category": "Networking",
+  "icon": "MonitorSmartphone",
+  "features": [
+    "Works with PiKVM, NanoKVM (and GL.iNet Comet) and JetKVM",
+    "See the screen of a machine and use its keyboard and mouse in the browser",
+    "Termix connects to the KVM, so it works for KVMs your browser cannot reach",
+    "Power on, shut down, hard power off and reset through the KVM",
+    "Mount ISO images as a USB drive or CD (PiKVM, NanoKVM)",
+    "Ctrl+Alt+Del and other shortcuts, paste text and screenshots",
+    "Wake-on-LAN, alerts when a KVM goes offline, and the ip-kvm.power service",
+    "Link a KVM to a Termix host"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "db:own",
+    "events:core",
+    "hosts:read",
+    "network:broadcast",
+    "network:outbound",
+    "network:serve",
+    "notify:send",
+    "operations:provide",
+    "secrets:own",
+    "ui:surface",
+    "users:impersonate"
+  ],
+  "provides": [
+    {
+      "service": "ip-kvm.power",
+      "version": "1.0.0",
+      "permission": "ip-kvm.power"
+    }
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "ip-kvm",
+        "titleKey": "tab.title",
+        "icon": "MonitorSmartphone",
+        "openFrom": ["rail"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "view",
+        "titleKey": "permissions.view.title",
+        "descriptionKey": "permissions.view.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "power",
+        "titleKey": "permissions.power.title",
+        "descriptionKey": "permissions.power.description",
+        "defaultRoles": ["admin"]
+      },
+      {
+        "name": "console",
+        "titleKey": "permissions.console.title",
+        "descriptionKey": "permissions.console.description",
+        "defaultRoles": ["admin"]
+      },
+      {
+        "name": "media",
+        "titleKey": "permissions.media.title",
+        "descriptionKey": "permissions.media.description",
+        "defaultRoles": ["admin"]
+      },
+      {
+        "name": "manage",
+        "titleKey": "permissions.manage.title",
+        "descriptionKey": "permissions.manage.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
+    "settings": {
+      "admin": [
+        {
+          "key": "maxSessionMinutes",
+          "type": "number",
+          "labelKey": "settings.admin.maxSessionMinutes.label",
+          "descriptionKey": "settings.admin.maxSessionMinutes.description",
+          "default": 240
+        }
+      ]
+    },
+    "dashboardCards": [
+      {
+        "id": "ip-kvm",
+        "titleKey": "card.title",
+        "icon": "MonitorSmartphone"
+      }
+    ],
+    "operations": {
+      "actions": [
+        {
+          "id": "ip-kvm.list-devices",
+          "titleKey": "operations.list-devices.title",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "ip-kvm.poll",
+          "titleKey": "operations.poll.title",
+          "icon": "RefreshCw",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "ip-kvm.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "ip-kvm.power-state",
+          "titleKey": "operations.power-state.title",
+          "icon": "Power",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "ip-kvm.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "ip-kvm.power-on",
+          "titleKey": "operations.power-on.title",
+          "icon": "Power",
+          "scope": "server",
+          "risk": "change",
+          "permission": "power",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "ip-kvm.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "ip-kvm.graceful-shutdown",
+          "titleKey": "operations.graceful-shutdown.title",
+          "icon": "PowerOff",
+          "scope": "server",
+          "risk": "destructive",
+          "permission": "power",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "ip-kvm.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "ip-kvm.power-off",
+          "titleKey": "operations.power-off.title",
+          "icon": "PowerOff",
+          "scope": "server",
+          "risk": "destructive",
+          "permission": "power",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "ip-kvm.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "ip-kvm.reset",
+          "titleKey": "operations.reset.title",
+          "icon": "RotateCcw",
+          "scope": "server",
+          "risk": "destructive",
+          "permission": "power",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "ip-kvm.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "ip-kvm.wake",
+          "titleKey": "operations.wake.title",
+          "icon": "Zap",
+          "scope": "server",
+          "risk": "change",
+          "permission": "power",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "ip-kvm.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "ip-kvm.eject-media",
+          "titleKey": "operations.eject-media.title",
+          "icon": "Disc",
+          "scope": "server",
+          "risk": "change",
+          "permission": "media",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "ip-kvm.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "ip-kvm.health",
+          "titleKey": "operations.health.title",
+          "read": "ip-kvm.list-devices",
+          "scope": "server",
+          "kind": "status",
+          "refreshSec": 120
+        }
+      ]
+    },
+    "uses": ["homepage.widgets"]
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

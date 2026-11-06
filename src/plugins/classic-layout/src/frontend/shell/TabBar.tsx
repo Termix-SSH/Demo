@@ -629,7 +629,8 @@ export function TabBar({
           </DropdownMenu>
           <Separator orientation="vertical" />
           {/* Hidden while no plugin adds a button, so no stray divider shows. */}
-          <div className="flex h-full shrink-0 border-r border-border empty:hidden">
+          {/* Each plugin button gets its own divider, like the built in ones. */}
+          <div className="flex h-full shrink-0 border-r border-border empty:hidden [&>*:not(:last-child)]:border-r [&>*:not(:last-child)]:border-r-border">
             <ComponentSlot
               slotId={TAB_BAR_ACTIONS_SLOT}
               props={{ targetTab, className: TAB_BAR_BUTTON }}

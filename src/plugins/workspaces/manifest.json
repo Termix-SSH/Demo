@@ -23,7 +23,12 @@
     "termix": ">=26.11.1-0",
     "api": "^1.15"
   },
-  "capabilities": ["db:own", "network:serve", "ui:surface"],
+  "capabilities": [
+    "db:own",
+    "network:serve",
+    "ui:surface",
+    "operations:provide"
+  ],
   "provides": [
     {
       "service": "workspaces.saved",
@@ -67,6 +72,22 @@
         "titleKey": "nav.workspaces",
         "icon": "LayoutTemplate"
       }
-    ]
+    ],
+    "operations": {
+      "actions": [
+        {
+          "id": "workspaces.list-workspaces",
+          "titleKey": "operations.list.title",
+          "scope": "server",
+          "risk": "read",
+          "permission": "use",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        }
+      ]
+    }
   }
 }

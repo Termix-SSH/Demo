@@ -21,7 +21,7 @@ import {
   TooltipTrigger,
   StatusDot,
 } from "@termix-ssh/plugin-sdk/ui";
-import { LayoutDashboard, Zap } from "lucide-react";
+import { ServerCog, Zap } from "lucide-react";
 import {
   errorText,
   getCatalog,
@@ -241,7 +241,7 @@ export function TabBarHostPageButton({
       className={`text-muted-foreground hover:text-foreground ${className ?? ""}`}
       onClick={() => host && openHostPage(shell, host)}
     >
-      <LayoutDashboard className="size-4" />
+      <ServerCog className="size-4" />
     </Button>
   );
 }
@@ -266,7 +266,7 @@ export function HostCompanion({
     [catalog, host],
   );
   if (!host) return null;
-  const Icon = LayoutDashboard as ComponentType<{ className?: string }>;
+  const Icon = ServerCog as ComponentType<{ className?: string }>;
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden">
       <div className="flex shrink-0 items-center gap-2 border-b border-border px-3 py-2">

@@ -105,6 +105,34 @@ export function WebEndpointCompanion({ host }: CompanionProps) {
   );
 }
 
+/** This host's web UIs as a tile on the host page. */
+export function WebEndpointHostTile({ hostId }: { hostId: number }) {
+  const { t } = useTranslation();
+  const tabs = useTabs();
+  const { hosts } = useHosts();
+  const host = hosts.find((entry) => Number(entry.id) === Number(hostId));
+  const endpoints = host ? endpointsOf(host) : [];
+  if (!host || endpoints.length === 0) {
+    return (
+      <p className="p-3 text-xs text-muted-foreground">{t("tile.empty")}</p>
+    );
+  }
+  return (
+    <PanelList>
+      {endpoints.map((endpoint, index) => (
+        <ListRow
+          key={endpoint.id}
+          stripe={index}
+          icon={<Globe className="size-3.5" />}
+          title={endpoint.label}
+          meta={`${endpoint.scheme}://${endpoint.port}`}
+          onClick={() => openEndpoint(host, endpoint, tabs)}
+        />
+      ))}
+    </PanelList>
+  );
+}
+
 /** Dashboard card: every web UI on the user's hosts, one click to open. */
 export function WebEndpointsCard({ shell }: DashboardCardProps) {
   const { t } = useTranslation();

@@ -23,7 +23,12 @@
     "termix": ">=26.11.1-0",
     "api": "^1.15"
   },
-  "capabilities": ["db:own", "network:serve", "ui:surface"],
+  "capabilities": [
+    "db:own",
+    "network:serve",
+    "ui:surface",
+    "operations:provide"
+  ],
   "provides": [
     {
       "service": "network-topology.graph",
@@ -55,7 +60,24 @@
         "defaultRoles": ["admin", "user"]
       }
     ],
-    "syncEntities": ["networkTopology"]
+    "syncEntities": ["networkTopology"],
+    "operations": {
+      "actions": [
+        {
+          "id": "network-topology.get-graph",
+          "titleKey": "operations.graph.title",
+          "scope": "server",
+          "risk": "read",
+          "permission": "use",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        }
+      ]
+    },
+    "uses": ["homepage.widgets"]
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"]

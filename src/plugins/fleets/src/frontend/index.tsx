@@ -6,6 +6,7 @@ import type {
 } from "@termix-ssh/plugin-sdk/frontend";
 import { FleetsPanel } from "./FleetsPanel.js";
 import { FleetInventoryTab } from "./FleetInventoryTab.js";
+import { createFleetsCard } from "./FleetsCard.js";
 import { createFleetsApi } from "./fleets-api.js";
 
 const INVENTORY_TAB = "fleet-inventory";
@@ -53,6 +54,15 @@ export function activate(app: TermixApp): void {
     titleKey: "nav.fleets",
     singleton: true,
     hostless: true,
+  });
+
+  app.registerDashboardCard({
+    id: "fleets",
+    titleKey: "nav.fleets",
+    defaultPanel: "side",
+    defaultHeight: 180,
+    frame: "framed",
+    component: createFleetsCard(api, INVENTORY_TAB),
   });
 
   // Other plugins (automations' host picker) list fleets through this.

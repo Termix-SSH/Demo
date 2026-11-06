@@ -10,6 +10,7 @@ import type {
   PluginFetch,
 } from "@termix-ssh/plugin-sdk/backend";
 import { createTxtRecord } from "./cloudflare.js";
+import { createTxtRecordWithDnsPlugin } from "./dns-plugin.js";
 import { directoryUrlFor, type AcmeSettings } from "./settings.js";
 
 const ACCOUNT_KEY = "account";
@@ -173,7 +174,7 @@ export async function issueCertificate(
     // container, which often is not how the CA sees it.
     skipChallengeVerification: true,
     challengePriority:
-      settings.challengeType === "dns-cloudflare" ? ["dns-01"] : ["http-01"],
+      settings.challengeType === "http-01" ? ["http-01"] : ["dns-01"],
     challengeCreateFn: async (authz, challenge, keyAuthorization) => {
       if (challenge.type === "http-01") {
         cleanups.set(
@@ -188,12 +189,18 @@ export async function issueCertificate(
       if (challenge.type === "dns-01") {
         cleanups.set(
           challenge.token,
-          await createTxtRecord(
-            ctx.fetch,
-            settings.cloudflareToken,
-            `_acme-challenge.${authz.identifier.value}`,
-            keyAuthorization,
-          ),
+          settings.challengeType === "dns-plugin"
+            ? await createTxtRecordWithDnsPlugin(
+                ctx,
+                `_acme-challenge.${authz.identifier.value}`,
+                keyAuthorization,
+              )
+            : await createTxtRecord(
+                ctx.fetch,
+                settings.cloudflareToken,
+                `_acme-challenge.${authz.identifier.value}`,
+                keyAuthorization,
+              ),
         );
         await sleep(options.propagationMs ?? DNS_PROPAGATION_MS);
         return;

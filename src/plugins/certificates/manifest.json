@@ -19,7 +19,8 @@
     "Read any certificate file, or check what a server sends over TLS",
     "See how automatic renewal is set up",
     "Get an alert before a certificate expires",
-    "A dashboard card with the certificates that expire next and a Certificates card in Host Metrics"
+    "A dashboard card with the certificates that expire next and a Certificates card in Host Metrics",
+    "A homepage widget with expiring certificates and a panel beside terminals"
   ],
   "env": [],
   "engine": {
@@ -95,9 +96,63 @@
             "max": 90,
             "default": 14,
             "requires": "enableCertificates"
+          },
+          {
+            "key": "showPanel",
+            "type": "boolean",
+            "labelKey": "settings.host.showPanel.label",
+            "descriptionKey": "settings.host.showPanel.description",
+            "default": true,
+            "requires": "enableCertificates"
           }
         ]
-      }
+      },
+      "user": [
+        {
+          "key": "companionAutoOpen",
+          "type": "boolean",
+          "labelKey": "settings.user.companionAutoOpen.label",
+          "descriptionKey": "settings.user.companionAutoOpen.description",
+          "default": false
+        },
+        {
+          "key": "companionSide",
+          "type": "select",
+          "labelKey": "settings.user.companionSide.label",
+          "descriptionKey": "settings.user.companionSide.description",
+          "default": "right",
+          "options": [
+            {
+              "value": "right",
+              "labelKey": "settings.user.companionSide.right"
+            },
+            {
+              "value": "left",
+              "labelKey": "settings.user.companionSide.left"
+            },
+            {
+              "value": "bottom",
+              "labelKey": "settings.user.companionSide.bottom"
+            }
+          ]
+        },
+        {
+          "key": "companionSize",
+          "type": "number",
+          "labelKey": "settings.user.companionSize.label",
+          "descriptionKey": "settings.user.companionSize.description",
+          "min": 240,
+          "max": 900,
+          "default": 380
+        },
+        {
+          "key": "companionEdgeButton",
+          "type": "boolean",
+          "labelKey": "settings.user.companionEdgeButton.label",
+          "descriptionKey": "settings.user.companionEdgeButton.description",
+          "default": true
+        }
+      ]
     },
     "operations": {
       "actions": [
@@ -231,7 +286,8 @@
           "fix": "certificates.renew-all"
         }
       ]
-    }
+    },
+    "uses": ["homepage.widgets"]
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"]

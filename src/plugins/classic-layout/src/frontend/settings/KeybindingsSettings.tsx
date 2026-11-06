@@ -240,17 +240,15 @@ export function KeybindingsSettings() {
 
   return (
     <>
-      <div
-        data-tile-card=""
-        className="flex flex-col gap-4 border border-border p-3"
-      >
-        <p className="text-xs text-muted-foreground">
+      <div data-tile-card="" className="flex flex-col">
+        <p className="border-b border-border px-3 py-2 text-xs text-muted-foreground">
           {t("newUi.sidebar.keybindings.description")}
         </p>
         {defaults.length > 0 && (
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col divide-y divide-border border-b border-border">
             <GroupHeading
               title={t("newUi.sidebar.keybindings.defaultsHeading")}
+              className="px-3 py-2"
             />
             {defaults.map((def) => {
               const override = bindings.find(
@@ -259,7 +257,7 @@ export function KeybindingsSettings() {
               return (
                 <div
                   key={def.id}
-                  className="flex items-center justify-between gap-2 border border-border bg-background px-2.5 py-2"
+                  className="flex items-center justify-between gap-2 px-3 py-2"
                 >
                   <div className="flex flex-col min-w-0">
                     <span className="text-xs font-mono">
@@ -320,9 +318,10 @@ export function KeybindingsSettings() {
           </div>
         )}
 
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col divide-y divide-border border-b border-border">
           <GroupHeading
             title={t("newUi.sidebar.keybindings.customHeading")}
+            className="px-3 py-2"
             action={
               <Button variant="outline" size="sm" onClick={openAddForm}>
                 <Plus className="size-3.5 mr-1" />
@@ -331,11 +330,11 @@ export function KeybindingsSettings() {
             }
           />
           {loading ? (
-            <span className="text-xs text-muted-foreground">
+            <span className="px-3 py-2 text-xs text-muted-foreground">
               {t("newUi.sidebar.keybindings.loading")}
             </span>
           ) : customOnlyBindings.length === 0 ? (
-            <span className="text-xs text-muted-foreground/60">
+            <span className="px-3 py-2 text-xs text-muted-foreground/60">
               {t("newUi.sidebar.keybindings.noCustomBindings")}
             </span>
           ) : (
@@ -344,7 +343,7 @@ export function KeybindingsSettings() {
               return (
                 <div
                   key={kb.id}
-                  className="flex items-center justify-between gap-2 border border-border bg-background px-2.5 py-2"
+                  className="flex items-center justify-between gap-2 px-3 py-2"
                 >
                   <div className="flex flex-col min-w-0">
                     <span className="text-xs font-mono">
@@ -387,7 +386,7 @@ export function KeybindingsSettings() {
         <Button
           variant="ghost"
           size="sm"
-          className="self-start text-muted-foreground"
+          className="mx-3 my-2 self-start text-muted-foreground"
           onClick={() => void handleResetAll()}
           disabled={bindings.length === 0}
         >

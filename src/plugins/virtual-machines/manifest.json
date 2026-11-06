@@ -1,0 +1,680 @@
+{
+  "id": "virtual-machines",
+  "name": "Virtual Machines",
+  "version": "1.0.0",
+  "description": "Create and manage KVM virtual machines on your Linux hosts over SSH with libvirt.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Virtual-Machines",
+  "docs": "https://docs.termix.site/plugins/virtual-machines",
+  "category": "Infrastructure",
+  "icon": "MonitorCog",
+  "features": [
+    "See and control every VM on your KVM hosts, or across all of them at once",
+    "Make VMs from a cloud image or an ISO, with cloud-init for the login",
+    "Change CPUs, memory, disks, network cards and the raw XML",
+    "Snapshots, clones and autostart",
+    "Storage pools, volumes, ISO downloads and virtual networks",
+    "A graphical console through Remote Desktop, and a serial console",
+    "Long jobs run on the host, so they survive a Termix restart",
+    "Alerts when a VM crashes or stops, or a pool fills up",
+    "A VM panel beside any SSH terminal, a dashboard card and host page tiles",
+    "Works with Automations, Fleets, the CLI, the assistant and MCP through Termix actions"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "hosts:read",
+    "credentials:use",
+    "credentials:read",
+    "ssh:connect",
+    "network:serve",
+    "db:own",
+    "notify:send",
+    "users:impersonate",
+    "ui:surface",
+    "operations:provide"
+  ],
+  "optionalDependencies": {
+    "remote-desktop": "^1.4.0"
+  },
+  "requires": [
+    {
+      "service": "remote-desktop.console",
+      "versionRange": "^1.0.0",
+      "optional": true
+    }
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "virtual-machines",
+        "titleKey": "tab.title",
+        "icon": "MonitorCog",
+        "openFrom": ["host-context-menu", "palette"]
+      },
+      {
+        "id": "virtual-machines-all",
+        "titleKey": "all.title",
+        "icon": "MonitorCog",
+        "openFrom": ["palette"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "console",
+        "titleKey": "permissions.console.title",
+        "descriptionKey": "permissions.console.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "enableKey": "enableVirtualMachines",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
+        "editorGroup": "ssh",
+        "fields": [
+          {
+            "key": "useSudo",
+            "type": "boolean",
+            "labelKey": "settings.host.useSudo.label",
+            "descriptionKey": "settings.host.useSudo.description",
+            "default": true,
+            "requires": "enableVirtualMachines"
+          },
+          {
+            "key": "readOnly",
+            "type": "boolean",
+            "labelKey": "settings.host.readOnly.label",
+            "descriptionKey": "settings.host.readOnly.description",
+            "default": false,
+            "requires": "enableVirtualMachines"
+          },
+          {
+            "key": "connectUri",
+            "type": "string",
+            "labelKey": "settings.host.connectUri.label",
+            "descriptionKey": "settings.host.connectUri.description",
+            "default": "qemu:///system",
+            "requires": "enableVirtualMachines"
+          },
+          {
+            "key": "showPanel",
+            "type": "boolean",
+            "labelKey": "settings.host.showPanel.label",
+            "descriptionKey": "settings.host.showPanel.description",
+            "default": true,
+            "requires": "enableVirtualMachines"
+          }
+        ]
+      },
+      "user": [
+        {
+          "key": "companionAutoOpen",
+          "type": "boolean",
+          "labelKey": "settings.user.companionAutoOpen.label",
+          "descriptionKey": "settings.user.companionAutoOpen.description",
+          "default": false
+        },
+        {
+          "key": "companionSide",
+          "type": "select",
+          "labelKey": "settings.user.companionSide.label",
+          "descriptionKey": "settings.user.companionSide.description",
+          "default": "right",
+          "options": [
+            {
+              "value": "right",
+              "labelKey": "settings.user.companionSide.right"
+            },
+            {
+              "value": "left",
+              "labelKey": "settings.user.companionSide.left"
+            },
+            {
+              "value": "bottom",
+              "labelKey": "settings.user.companionSide.bottom"
+            }
+          ]
+        },
+        {
+          "key": "companionSize",
+          "type": "number",
+          "labelKey": "settings.user.companionSize.label",
+          "descriptionKey": "settings.user.companionSize.description",
+          "min": 240,
+          "max": 900,
+          "default": 360
+        },
+        {
+          "key": "companionEdgeButton",
+          "type": "boolean",
+          "labelKey": "settings.user.companionEdgeButton.label",
+          "descriptionKey": "settings.user.companionEdgeButton.description",
+          "default": true
+        }
+      ]
+    },
+    "dashboardCards": [
+      {
+        "id": "vm-hosts",
+        "titleKey": "card.title",
+        "icon": "MonitorCog"
+      }
+    ],
+    "operations": {
+      "actions": [
+        {
+          "id": "virtual-machines.list-vms",
+          "titleKey": "operations.list.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "virtual-machines.vm-state",
+          "titleKey": "operations.state.title",
+          "scope": "resource",
+          "resource": "virtual-machines.vm",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          },
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          }
+        },
+        {
+          "id": "virtual-machines.running-count",
+          "titleKey": "operations.running.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          },
+          "surfaces": {
+            "assistant": false,
+            "mcp": false,
+            "palette": false
+          }
+        },
+        {
+          "id": "virtual-machines.crashed-count",
+          "titleKey": "operations.crashed.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          },
+          "surfaces": {
+            "assistant": false,
+            "mcp": false,
+            "palette": false
+          }
+        },
+        {
+          "id": "virtual-machines.pool-usage",
+          "titleKey": "operations.pools.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          },
+          "surfaces": {
+            "assistant": false,
+            "mcp": false,
+            "palette": false
+          }
+        },
+        {
+          "id": "virtual-machines.list-snapshots",
+          "titleKey": "operations.snapshots.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "virtual-machines.list-pools",
+          "titleKey": "operations.listPools.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "virtual-machines.list-networks",
+          "titleKey": "operations.listNetworks.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "virtual-machines.start",
+          "titleKey": "operations.start.title",
+          "scope": "resource",
+          "resource": "virtual-machines.vm",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "icon": "Play",
+          "idempotent": true,
+          "check": "virtual-machines.vm-state",
+          "undo": "virtual-machines.shutdown",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          },
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          }
+        },
+        {
+          "id": "virtual-machines.reboot",
+          "titleKey": "operations.reboot.title",
+          "scope": "resource",
+          "resource": "virtual-machines.vm",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "icon": "RotateCw",
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          }
+        },
+        {
+          "id": "virtual-machines.suspend",
+          "titleKey": "operations.suspend.title",
+          "scope": "resource",
+          "resource": "virtual-machines.vm",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "icon": "Pause",
+          "undo": "virtual-machines.resume",
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          }
+        },
+        {
+          "id": "virtual-machines.resume",
+          "titleKey": "operations.resume.title",
+          "scope": "resource",
+          "resource": "virtual-machines.vm",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "icon": "Play",
+          "undo": "virtual-machines.suspend",
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          }
+        },
+        {
+          "id": "virtual-machines.set-autostart",
+          "titleKey": "operations.autostart.title",
+          "scope": "resource",
+          "resource": "virtual-machines.vm",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "icon": "Power",
+          "idempotent": true,
+          "inputs": [
+            {
+              "key": "enabled",
+              "type": "boolean",
+              "labelKey": "operations.autostart.enabled",
+              "default": true
+            }
+          ],
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          }
+        },
+        {
+          "id": "virtual-machines.snapshot",
+          "titleKey": "operations.snapshot.title",
+          "scope": "resource",
+          "resource": "virtual-machines.vm",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "icon": "Camera",
+          "exclusive": true,
+          "inputs": [
+            {
+              "key": "name",
+              "type": "string",
+              "labelKey": "operations.snapshot.name",
+              "required": true,
+              "pattern": "[A-Za-z0-9][A-Za-z0-9._+-]{0,63}"
+            },
+            {
+              "key": "description",
+              "type": "string",
+              "labelKey": "operations.snapshot.description"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          },
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          }
+        },
+        {
+          "id": "virtual-machines.clone",
+          "titleKey": "operations.clone.title",
+          "scope": "resource",
+          "resource": "virtual-machines.vm",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "icon": "Copy",
+          "exclusive": true,
+          "inputs": [
+            {
+              "key": "name",
+              "type": "string",
+              "labelKey": "operations.clone.name",
+              "required": true,
+              "pattern": "[A-Za-z0-9][A-Za-z0-9._+-]{0,63}"
+            }
+          ],
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          }
+        },
+        {
+          "id": "virtual-machines.shutdown",
+          "titleKey": "operations.shutdown.title",
+          "scope": "resource",
+          "resource": "virtual-machines.vm",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "icon": "Power",
+          "undo": "virtual-machines.start",
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          }
+        },
+        {
+          "id": "virtual-machines.force-stop",
+          "titleKey": "operations.forceStop.title",
+          "scope": "resource",
+          "resource": "virtual-machines.vm",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "icon": "Skull",
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          }
+        },
+        {
+          "id": "virtual-machines.delete-vm",
+          "titleKey": "operations.delete.title",
+          "scope": "resource",
+          "resource": "virtual-machines.vm",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "icon": "Trash2",
+          "exclusive": true,
+          "inputs": [
+            {
+              "key": "deleteDisks",
+              "type": "boolean",
+              "labelKey": "operations.delete.disks",
+              "default": false
+            }
+          ],
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          }
+        },
+        {
+          "id": "virtual-machines.revert-snapshot",
+          "titleKey": "operations.revert.title",
+          "scope": "resource",
+          "resource": "virtual-machines.snapshot",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "icon": "History",
+          "exclusive": true,
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          }
+        },
+        {
+          "id": "virtual-machines.delete-snapshot",
+          "titleKey": "operations.deleteSnapshot.title",
+          "scope": "resource",
+          "resource": "virtual-machines.snapshot",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "icon": "Trash2",
+          "when": {
+            "settings": {
+              "enableVirtualMachines": true
+            }
+          }
+        }
+      ],
+      "resources": [
+        {
+          "id": "virtual-machines.vm",
+          "titleKey": "operations.vms.title",
+          "icon": "MonitorCog",
+          "list": "virtual-machines.list-vms",
+          "key": "uuid",
+          "name": "name",
+          "status": "state",
+          "tab": "virtual-machines",
+          "columns": [
+            {
+              "key": "vcpus",
+              "titleKey": "operations.column.cpus"
+            },
+            {
+              "key": "memoryMib",
+              "titleKey": "operations.column.memory"
+            },
+            {
+              "key": "ip",
+              "titleKey": "operations.column.ip"
+            },
+            {
+              "key": "autostart",
+              "titleKey": "operations.column.autostart"
+            }
+          ],
+          "filters": ["state", "autostart"]
+        },
+        {
+          "id": "virtual-machines.snapshot",
+          "titleKey": "operations.snapshots.title",
+          "icon": "History",
+          "list": "virtual-machines.list-snapshots",
+          "key": "key",
+          "name": "name",
+          "status": "state",
+          "tab": "virtual-machines",
+          "columns": [
+            {
+              "key": "vm",
+              "titleKey": "operations.column.vm"
+            },
+            {
+              "key": "createdAt",
+              "titleKey": "operations.column.created"
+            }
+          ],
+          "filters": ["vm"]
+        }
+      ],
+      "signals": [
+        {
+          "id": "virtual-machines.running",
+          "titleKey": "operations.running.title",
+          "read": "virtual-machines.running-count",
+          "scope": "host",
+          "kind": "count",
+          "refreshSec": 60
+        },
+        {
+          "id": "virtual-machines.crashed",
+          "titleKey": "operations.crashed.title",
+          "read": "virtual-machines.crashed-count",
+          "scope": "host",
+          "kind": "status",
+          "refreshSec": 60
+        },
+        {
+          "id": "virtual-machines.pools",
+          "titleKey": "operations.pools.title",
+          "read": "virtual-machines.pool-usage",
+          "scope": "host",
+          "kind": "gauge",
+          "refreshSec": 300
+        }
+      ],
+      "events": [
+        {
+          "id": "virtual-machines.vm-started",
+          "titleKey": "operations.events.started",
+          "scope": "host"
+        },
+        {
+          "id": "virtual-machines.vm-stopped",
+          "titleKey": "operations.events.stopped",
+          "scope": "host"
+        },
+        {
+          "id": "virtual-machines.vm-crashed",
+          "titleKey": "operations.events.crashed",
+          "scope": "host"
+        },
+        {
+          "id": "virtual-machines.job-finished",
+          "titleKey": "operations.events.job",
+          "scope": "host"
+        }
+      ]
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

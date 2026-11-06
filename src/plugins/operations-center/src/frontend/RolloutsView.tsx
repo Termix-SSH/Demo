@@ -119,83 +119,91 @@ function NewRollout({
   };
 
   return (
-    <div className="flex flex-col gap-3">
-      <Field label={t("rollouts.action")}>
-        <Choice
-          label={t("rollouts.action")}
-          value={actionId}
-          onChange={(next) => {
-            setActionId(next);
-            const picked = usable.find((entry) => entry.id === next);
-            setValues(picked ? initialValues(picked.inputs) : {});
-          }}
-          options={usable.map((entry) => ({
-            value: entry.id,
-            label: `${entry.title} (${entry.pluginName})`,
-          }))}
+    <InlineView
+      open
+      onOpenChange={(next) => !next && onDone()}
+      title={t("rollouts.new")}
+      footer={
+        <FormFooter
+          onCancel={() => onDone()}
+          onSave={() => void save()}
+          saveLabel={t("rollouts.start")}
+          saving={saving}
+          disabled={!action || !action.available}
         />
-      </Field>
-      <Field label={t("rollouts.name")}>
-        <Input
-          value={name}
-          placeholder={action?.title}
-          onChange={(event) => setName(event.target.value)}
-        />
-      </Field>
-      {action?.scope === "resource" && (
-        <Field label={t("run.target")} hint={t("rollouts.targetHint")}>
-          <Input
-            value={resourceKey}
-            onChange={(event) => setResourceKey(event.target.value)}
+      }
+    >
+      <div className="flex flex-col gap-3">
+        <Field label={t("rollouts.action")}>
+          <Choice
+            label={t("rollouts.action")}
+            value={actionId}
+            onChange={(next) => {
+              setActionId(next);
+              const picked = usable.find((entry) => entry.id === next);
+              setValues(picked ? initialValues(picked.inputs) : {});
+            }}
+            options={usable.map((entry) => ({
+              value: entry.id,
+              label: `${entry.title} (${entry.pluginName})`,
+            }))}
           />
         </Field>
-      )}
-      {action && (
-        <ActionForm
-          fields={action.inputs}
-          values={values}
-          onChange={setValues}
-        />
-      )}
-      <TargetPicker action={action} value={targets} onChange={setTargets} />
-      <div className="grid grid-cols-2 gap-3">
-        <NumberField
-          label={t("rollouts.canary")}
-          hint={t("rollouts.canaryHint")}
-          value={canary}
-          onChange={setCanary}
-        />
-        <NumberField
-          label={t("rollouts.batchSize")}
-          value={batchSize}
-          min={1}
-          onChange={setBatchSize}
-        />
-        <NumberField
-          label={t("rollouts.pause")}
-          hint={t("rollouts.pauseHint")}
-          value={pauseSeconds}
-          onChange={setPauseSeconds}
-        />
-        <NumberField
-          label={t("rollouts.stopAfter")}
-          hint={t("rollouts.stopAfterHint")}
-          value={stopAfter}
-          onChange={setStopAfter}
-        />
+        <Field label={t("rollouts.name")}>
+          <Input
+            value={name}
+            placeholder={action?.title}
+            onChange={(event) => setName(event.target.value)}
+          />
+        </Field>
+        {action?.scope === "resource" && (
+          <Field label={t("run.target")} hint={t("rollouts.targetHint")}>
+            <Input
+              value={resourceKey}
+              onChange={(event) => setResourceKey(event.target.value)}
+            />
+          </Field>
+        )}
+        {action && (
+          <ActionForm
+            fields={action.inputs}
+            values={values}
+            onChange={setValues}
+          />
+        )}
+        <TargetPicker action={action} value={targets} onChange={setTargets} />
+        <div className="grid grid-cols-2 gap-3">
+          <NumberField
+            label={t("rollouts.canary")}
+            hint={t("rollouts.canaryHint")}
+            value={canary}
+            onChange={setCanary}
+          />
+          <NumberField
+            label={t("rollouts.batchSize")}
+            value={batchSize}
+            min={1}
+            onChange={setBatchSize}
+          />
+          <NumberField
+            label={t("rollouts.pause")}
+            hint={t("rollouts.pauseHint")}
+            value={pauseSeconds}
+            onChange={setPauseSeconds}
+          />
+          <NumberField
+            label={t("rollouts.stopAfter")}
+            hint={t("rollouts.stopAfterHint")}
+            value={stopAfter}
+            onChange={setStopAfter}
+          />
+        </div>
+        <label className="flex items-center gap-2 text-xs">
+          <Switch checked={dryRun} onCheckedChange={setDryRun} />
+          {t("rollouts.dryRun")}
+        </label>
       </div>
-      <label className="flex items-center gap-2 text-xs">
-        <Switch checked={dryRun} onCheckedChange={setDryRun} />
-        {t("rollouts.dryRun")}
-      </label>
-      <FormFooter
-        onCancel={() => onDone()}
-        onSave={() => void save()}
-        saveLabel={t("rollouts.start")}
-        saving={saving}
-        disabled={!action || !action.available}
-      />
-    </div>
+    </InlineView>
   );
 }
 

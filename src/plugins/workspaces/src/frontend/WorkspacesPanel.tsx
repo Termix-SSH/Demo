@@ -108,7 +108,7 @@ function WorkspaceSaveDialog({
       </p>
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs text-muted-foreground">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
             {t("newUi.sidebar.workspaces.nameLabel")}
           </label>
           <Input
@@ -123,7 +123,7 @@ function WorkspaceSaveDialog({
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs text-muted-foreground">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
             {t("newUi.sidebar.workspaces.colorLabel")}
           </label>
           <div className="flex gap-1.5">
@@ -205,7 +205,7 @@ function WorkspaceRenameDialog({
     >
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs text-muted-foreground">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
             {t("newUi.sidebar.workspaces.nameLabel")}
           </label>
           <Input
@@ -219,7 +219,7 @@ function WorkspaceRenameDialog({
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs text-muted-foreground">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
             {t("newUi.sidebar.workspaces.colorLabel")}
           </label>
           <div className="flex gap-1.5">

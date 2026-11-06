@@ -1,0 +1,377 @@
+{
+  "id": "uptime",
+  "name": "Uptime",
+  "version": "1.0.0",
+  "description": "Watch websites, ports, hosts and services, get alerts when they go down, and publish status pages.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Uptime",
+  "docs": "https://docs.termix.site/plugins/uptime",
+  "category": "Monitoring",
+  "icon": "HeartPulse",
+  "features": [
+    "Check websites, TCP ports, ping, DNS records and TLS certificates",
+    "Watch Termix hosts, Docker containers, systemd units and your own commands over SSH",
+    "Run any network check from one of your hosts, to reach private networks",
+    "Push monitors for cron jobs and backup scripts",
+    "Uptime numbers, response time charts and an incident history",
+    "Alerts through the Alerts plugin, on every channel you set up there",
+    "Maintenance windows that stop false alarms",
+    "Public status pages with notes",
+    "Share monitors with users and roles",
+    "Dashboard cards, a panel beside the terminal and tiles on the host page"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "hosts:read",
+    "hosts:write",
+    "credentials:use",
+    "ssh:connect",
+    "network:serve",
+    "network:outbound",
+    "network:probe",
+    "process:spawn",
+    "db:own",
+    "db:core-refs",
+    "files:own",
+    "secrets:own",
+    "notify:send",
+    "users:impersonate",
+    "events:core",
+    "ui:surface",
+    "operations:provide"
+  ],
+  "provides": [
+    {
+      "service": "uptime.access",
+      "version": "1.0.0",
+      "permission": "uptime.view"
+    }
+  ],
+  "desktop": "server",
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "uptime",
+        "titleKey": "tab.title",
+        "icon": "HeartPulse",
+        "openFrom": ["rail", "palette"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "view",
+        "titleKey": "permissions.view.title",
+        "descriptionKey": "permissions.view.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "manage",
+        "titleKey": "permissions.manage.title",
+        "descriptionKey": "permissions.manage.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "private-targets",
+        "titleKey": "permissions.privateTargets.title",
+        "descriptionKey": "permissions.privateTargets.description",
+        "defaultRoles": ["admin"]
+      },
+      {
+        "name": "run-commands",
+        "titleKey": "permissions.runCommands.title",
+        "descriptionKey": "permissions.runCommands.description",
+        "defaultRoles": ["admin"]
+      },
+      {
+        "name": "publish",
+        "titleKey": "permissions.publish.title",
+        "descriptionKey": "permissions.publish.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
+    "settings": {
+      "admin": [
+        {
+          "key": "minIntervalSeconds",
+          "type": "number",
+          "labelKey": "settings.admin.minIntervalSeconds.label",
+          "descriptionKey": "settings.admin.minIntervalSeconds.description",
+          "min": 5,
+          "max": 3600,
+          "default": 20
+        },
+        {
+          "key": "defaultIntervalSeconds",
+          "type": "number",
+          "labelKey": "settings.admin.defaultIntervalSeconds.label",
+          "descriptionKey": "settings.admin.defaultIntervalSeconds.description",
+          "min": 5,
+          "max": 86400,
+          "default": 60
+        },
+        {
+          "key": "historyDays",
+          "type": "number",
+          "labelKey": "settings.admin.historyDays.label",
+          "descriptionKey": "settings.admin.historyDays.description",
+          "min": 7,
+          "max": 730,
+          "default": 90
+        },
+        {
+          "key": "publicPages",
+          "type": "boolean",
+          "labelKey": "settings.admin.publicPages.label",
+          "descriptionKey": "settings.admin.publicPages.description",
+          "default": true
+        }
+      ],
+      "user": [
+        {
+          "key": "companionAutoOpen",
+          "type": "boolean",
+          "labelKey": "settings.user.companionAutoOpen.label",
+          "descriptionKey": "settings.user.companionAutoOpen.description",
+          "default": false
+        },
+        {
+          "key": "companionSide",
+          "type": "select",
+          "labelKey": "settings.user.companionSide.label",
+          "descriptionKey": "settings.user.companionSide.description",
+          "default": "right",
+          "options": [
+            {
+              "value": "right",
+              "labelKey": "settings.user.companionSide.right"
+            },
+            {
+              "value": "left",
+              "labelKey": "settings.user.companionSide.left"
+            },
+            {
+              "value": "bottom",
+              "labelKey": "settings.user.companionSide.bottom"
+            }
+          ]
+        },
+        {
+          "key": "companionSize",
+          "type": "number",
+          "labelKey": "settings.user.companionSize.label",
+          "descriptionKey": "settings.user.companionSize.description",
+          "min": 240,
+          "max": 900,
+          "default": 360
+        },
+        {
+          "key": "companionEdgeButton",
+          "type": "boolean",
+          "labelKey": "settings.user.companionEdgeButton.label",
+          "descriptionKey": "settings.user.companionEdgeButton.description",
+          "default": true
+        }
+      ]
+    },
+    "uses": ["homepage.widgets"],
+    "dashboardCards": [
+      {
+        "id": "uptime-overview",
+        "titleKey": "card.title",
+        "icon": "HeartPulse"
+      }
+    ],
+    "operations": {
+      "actions": [
+        {
+          "id": "uptime.summary",
+          "titleKey": "operations.summary.title",
+          "icon": "HeartPulse",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "uptime.monitors",
+          "titleKey": "operations.monitors.title",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "uptime.host-monitors",
+          "titleKey": "operations.hostMonitors.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "view",
+          "hostAccess": "connect",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "uptime.host-health",
+          "titleKey": "operations.hostHealth.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "view",
+          "hostAccess": "connect",
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
+          "id": "uptime.run",
+          "titleKey": "operations.run.title",
+          "icon": "RefreshCw",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "inputs": [
+            {
+              "key": "monitor",
+              "type": "select",
+              "labelKey": "operations.monitor",
+              "required": true,
+              "optionsFrom": "uptime.monitors"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "uptime.pause",
+          "titleKey": "operations.pause.title",
+          "icon": "Pause",
+          "scope": "server",
+          "risk": "change",
+          "permission": "manage",
+          "dryRun": "describe",
+          "undo": "uptime.resume",
+          "idempotent": true,
+          "inputs": [
+            {
+              "key": "monitor",
+              "type": "select",
+              "labelKey": "operations.monitor",
+              "required": true,
+              "optionsFrom": "uptime.monitors"
+            }
+          ]
+        },
+        {
+          "id": "uptime.resume",
+          "titleKey": "operations.resume.title",
+          "icon": "Play",
+          "scope": "server",
+          "risk": "change",
+          "permission": "manage",
+          "dryRun": "describe",
+          "undo": "uptime.pause",
+          "idempotent": true,
+          "inputs": [
+            {
+              "key": "monitor",
+              "type": "select",
+              "labelKey": "operations.monitor",
+              "required": true,
+              "optionsFrom": "uptime.monitors"
+            }
+          ]
+        },
+        {
+          "id": "uptime.add-host",
+          "titleKey": "operations.addHost.title",
+          "icon": "HeartPulse",
+          "scope": "host",
+          "risk": "change",
+          "permission": "manage",
+          "hostAccess": "connect",
+          "dryRun": "describe",
+          "idempotent": true
+        }
+      ],
+      "events": [
+        {
+          "id": "uptime.monitor-down",
+          "titleKey": "operations.events.down",
+          "severity": "critical",
+          "scope": "server"
+        },
+        {
+          "id": "uptime.monitor-up",
+          "titleKey": "operations.events.up",
+          "severity": "info",
+          "scope": "server"
+        },
+        {
+          "id": "uptime.cert-expiring",
+          "titleKey": "operations.events.cert",
+          "severity": "warning",
+          "scope": "server"
+        }
+      ],
+      "resources": [
+        {
+          "id": "uptime.monitor",
+          "titleKey": "operations.resource.title",
+          "icon": "HeartPulse",
+          "list": "uptime.host-monitors",
+          "key": "id",
+          "name": "name",
+          "status": "status",
+          "tab": "uptime",
+          "columns": [
+            {
+              "key": "type",
+              "titleKey": "operations.resource.type"
+            },
+            {
+              "key": "status",
+              "titleKey": "operations.resource.status",
+              "type": "status"
+            },
+            {
+              "key": "uptime",
+              "titleKey": "operations.resource.uptime",
+              "type": "percent"
+            }
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "id": "uptime.host-status",
+          "titleKey": "operations.hostHealth.title",
+          "read": "uptime.host-health",
+          "scope": "host",
+          "kind": "status",
+          "refreshSec": 60
+        }
+      ]
+    }
+  }
+}

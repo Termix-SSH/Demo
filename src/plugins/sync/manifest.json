@@ -38,7 +38,8 @@
     "kv:own",
     "secrets:own",
     "ui:surface",
-    "operations:provide"
+    "operations:provide",
+    "notify:send"
   ],
   "contributes": {
     "permissions": [
@@ -80,6 +81,13 @@
           "key": "sites",
           "type": "custom",
           "component": "sites"
+        },
+        {
+          "key": "alertOnSiteErrors",
+          "type": "boolean",
+          "labelKey": "settings.admin.alertOnSiteErrors.label",
+          "descriptionKey": "settings.admin.alertOnSiteErrors.description",
+          "default": true
         }
       ]
     },
@@ -140,7 +148,14 @@
           "refreshSec": 300
         }
       ]
-    }
+    },
+    "dashboardCards": [
+      {
+        "id": "sync-sites",
+        "titleKey": "card.title",
+        "icon": "Cloud"
+      }
+    ]
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"],

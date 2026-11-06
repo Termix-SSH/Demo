@@ -1,0 +1,375 @@
+{
+  "id": "out-of-band",
+  "name": "Out-of-band",
+  "version": "1.0.0",
+  "description": "Power, sensors, event logs and consoles for server BMCs over Redfish, IPMI and Intel AMT.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Out-Of-Band",
+  "docs": "https://docs.termix.site/plugins/out-of-band",
+  "category": "Networking",
+  "icon": "ServerCog",
+  "features": [
+    "Works with Redfish (iDRAC, iLO, Supermicro, OpenBMC), IPMI over LAN and Intel AMT",
+    "Power on, shut down, power cycle and reset a machine even when its OS is dead",
+    "Temperatures, fans, voltages and power supplies with alerts",
+    "Hardware event log, read and clear",
+    "Boot once from PXE, disk, CD, USB or BIOS setup",
+    "Mount an ISO from a web address as virtual media (Redfish)",
+    "Serial over LAN console through a relay host",
+    "Link a BMC to a Termix host, or reach it through any SSH host"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "credentials:use",
+    "db:own",
+    "events:core",
+    "hosts:read",
+    "network:outbound",
+    "network:serve",
+    "notify:send",
+    "operations:provide",
+    "process:spawn",
+    "secrets:own",
+    "ssh:connect",
+    "ui:surface",
+    "users:impersonate"
+  ],
+  "provides": [
+    {
+      "service": "out-of-band.power",
+      "version": "1.0.0",
+      "permission": "out-of-band.power"
+    }
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "out-of-band",
+        "titleKey": "tab.title",
+        "icon": "ServerCog",
+        "openFrom": ["rail"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "view",
+        "titleKey": "permissions.view.title",
+        "descriptionKey": "permissions.view.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "power",
+        "titleKey": "permissions.power.title",
+        "descriptionKey": "permissions.power.description",
+        "defaultRoles": ["admin"]
+      },
+      {
+        "name": "console",
+        "titleKey": "permissions.console.title",
+        "descriptionKey": "permissions.console.description",
+        "defaultRoles": ["admin"]
+      },
+      {
+        "name": "media",
+        "titleKey": "permissions.media.title",
+        "descriptionKey": "permissions.media.description",
+        "defaultRoles": ["admin"]
+      },
+      {
+        "name": "manage",
+        "titleKey": "permissions.manage.title",
+        "descriptionKey": "permissions.manage.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
+    "settings": {
+      "admin": [
+        {
+          "key": "allowServerIpmitool",
+          "type": "boolean",
+          "labelKey": "settings.admin.allowServerIpmitool.label",
+          "descriptionKey": "settings.admin.allowServerIpmitool.description",
+          "default": true
+        }
+      ]
+    },
+    "dashboardCards": [
+      {
+        "id": "out-of-band",
+        "titleKey": "card.title",
+        "icon": "ServerCog"
+      }
+    ],
+    "operations": {
+      "actions": [
+        {
+          "id": "out-of-band.list-devices",
+          "titleKey": "operations.list.title",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "out-of-band.poll",
+          "titleKey": "operations.poll.title",
+          "icon": "RefreshCw",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "out-of-band.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "out-of-band.power-state",
+          "titleKey": "operations.powerState.title",
+          "icon": "Power",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "out-of-band.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "out-of-band.power-on",
+          "titleKey": "operations.power-on.title",
+          "icon": "Power",
+          "scope": "server",
+          "risk": "change",
+          "permission": "power",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "out-of-band.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "out-of-band.graceful-shutdown",
+          "titleKey": "operations.graceful-shutdown.title",
+          "icon": "PowerOff",
+          "scope": "server",
+          "risk": "change",
+          "permission": "power",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "out-of-band.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "out-of-band.power-off",
+          "titleKey": "operations.power-off.title",
+          "icon": "PowerOff",
+          "scope": "server",
+          "risk": "destructive",
+          "permission": "power",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "out-of-band.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "out-of-band.power-cycle",
+          "titleKey": "operations.power-cycle.title",
+          "icon": "RotateCw",
+          "scope": "server",
+          "risk": "destructive",
+          "permission": "power",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "out-of-band.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "out-of-band.reset",
+          "titleKey": "operations.reset.title",
+          "icon": "RotateCcw",
+          "scope": "server",
+          "risk": "destructive",
+          "permission": "power",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "out-of-band.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "out-of-band.set-boot-once",
+          "titleKey": "operations.setBootOnce.title",
+          "icon": "HardDrive",
+          "scope": "server",
+          "risk": "change",
+          "permission": "power",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "out-of-band.list-devices"
+            },
+            {
+              "key": "boot",
+              "type": "select",
+              "labelKey": "operations.boot",
+              "required": true,
+              "default": "pxe",
+              "options": [
+                {
+                  "value": "pxe",
+                  "labelKey": "boot.pxe"
+                },
+                {
+                  "value": "disk",
+                  "labelKey": "boot.disk"
+                },
+                {
+                  "value": "cd",
+                  "labelKey": "boot.cd"
+                },
+                {
+                  "value": "usb",
+                  "labelKey": "boot.usb"
+                },
+                {
+                  "value": "bios",
+                  "labelKey": "boot.bios"
+                },
+                {
+                  "value": "none",
+                  "labelKey": "boot.none"
+                }
+              ]
+            },
+            {
+              "key": "uefi",
+              "type": "boolean",
+              "labelKey": "operations.uefi",
+              "default": true
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "out-of-band.clear-log",
+          "titleKey": "operations.clearLog.title",
+          "icon": "Eraser",
+          "scope": "server",
+          "risk": "destructive",
+          "permission": "manage",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "out-of-band.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "out-of-band.health",
+          "titleKey": "operations.health.title",
+          "read": "out-of-band.list-devices",
+          "scope": "server",
+          "kind": "status",
+          "refreshSec": 120
+        }
+      ]
+    },
+    "uses": ["homepage.widgets"]
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

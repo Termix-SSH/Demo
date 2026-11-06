@@ -225,7 +225,7 @@ function FleetFormDialog({
       </p>
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs text-muted-foreground">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
             {t("newUi.sidebar.fleets.nameLabel")}
           </label>
           <Input
@@ -237,7 +237,7 @@ function FleetFormDialog({
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs text-muted-foreground">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
             {t("newUi.sidebar.fleets.descriptionLabel")}
           </label>
           <Textarea
@@ -249,7 +249,7 @@ function FleetFormDialog({
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs text-muted-foreground">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
             {t("newUi.sidebar.fleets.colorLabel")}
           </label>
           <div className="flex gap-1.5">
@@ -271,7 +271,7 @@ function FleetFormDialog({
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs text-muted-foreground">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
             {t("newUi.sidebar.fleets.tagRulesLabel")}
           </label>
           <Input
@@ -982,7 +982,7 @@ function TransferTab({ api, fleetId }: { api: FleetsApi; fleetId: number }) {
       />
 
       <div className="flex flex-col gap-1.5">
-        <label className="text-xs text-muted-foreground">
+        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
           {t("newUi.sidebar.fleets.remotePathLabel")}
         </label>
         <Input
@@ -995,7 +995,7 @@ function TransferTab({ api, fleetId }: { api: FleetsApi; fleetId: number }) {
 
       {direction === "push" && (
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs text-muted-foreground">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
             {t("newUi.sidebar.fleets.fileLabel")}
           </label>
           <Input
@@ -1190,7 +1190,7 @@ function PackagesTab({ api, fleetId }: { api: FleetsApi; fleetId: number }) {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-col gap-1.5">
-        <label className="text-xs text-muted-foreground">
+        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
           {t("newUi.sidebar.fleets.packageActionLabel")}
         </label>
         <Select2
@@ -1212,7 +1212,7 @@ function PackagesTab({ api, fleetId }: { api: FleetsApi; fleetId: number }) {
 
       {action !== "upgrade-all" && (
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs text-muted-foreground">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
             {t("newUi.sidebar.fleets.packageNameLabel")}
           </label>
           <Input

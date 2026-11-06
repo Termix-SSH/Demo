@@ -32,6 +32,8 @@
     "db:own",
     "network:serve",
     "ui:surface",
+    "kv:own",
+    "notify:send",
     "users:impersonate",
     "operations:provide"
   ],
@@ -70,10 +72,18 @@
             "type": "custom",
             "component": "proxmoxHostSettings",
             "defaultable": false
+          },
+          {
+            "key": "alertGuests",
+            "type": "boolean",
+            "labelKey": "settings.host.alertGuests.label",
+            "descriptionKey": "settings.host.alertGuests.description",
+            "default": false
           }
         ]
       }
     },
+    "uses": ["homepage.widgets"],
     "dashboardCards": [
       {
         "id": "proxmox-nodes",
@@ -102,6 +112,11 @@
             "assistant": true,
             "mcp": true,
             "palette": false
+          },
+          "when": {
+            "settings": {
+              "enableProxmox": true
+            }
           }
         },
         {
@@ -118,6 +133,11 @@
           "surfaces": {
             "assistant": true,
             "mcp": true
+          },
+          "when": {
+            "settings": {
+              "enableProxmox": true
+            }
           }
         },
         {
@@ -129,7 +149,12 @@
           "permission": "guests",
           "hostAccess": "edit",
           "dryRun": "describe",
-          "resource": "proxmox.guest"
+          "resource": "proxmox.guest",
+          "when": {
+            "settings": {
+              "enableProxmox": true
+            }
+          }
         },
         {
           "id": "proxmox.reboot-guest",
@@ -140,7 +165,12 @@
           "permission": "guests",
           "hostAccess": "edit",
           "dryRun": "describe",
-          "resource": "proxmox.guest"
+          "resource": "proxmox.guest",
+          "when": {
+            "settings": {
+              "enableProxmox": true
+            }
+          }
         },
         {
           "id": "proxmox.stop-guest",
@@ -151,7 +181,12 @@
           "permission": "guests",
           "hostAccess": "edit",
           "dryRun": "describe",
-          "resource": "proxmox.guest"
+          "resource": "proxmox.guest",
+          "when": {
+            "settings": {
+              "enableProxmox": true
+            }
+          }
         }
       ],
       "resources": [

@@ -95,10 +95,11 @@ export function Fail2banView({
     }
   };
 
-  if (failed) return <p className="p-2 text-sm text-destructive">{failed}</p>;
+  if (failed)
+    return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
   if (!status)
     return (
-      <p className="p-2 text-xs text-muted-foreground">{t("common.loading")}</p>
+      <p className="p-3 text-xs text-muted-foreground">{t("common.loading")}</p>
     );
 
   if (!status.installed) {
@@ -179,7 +180,7 @@ export function Fail2banView({
           </div>
           <PanelList
             empty={
-              <p className="px-1 py-2 text-xs text-muted-foreground/60">
+              <p className="px-3 py-2 text-xs text-muted-foreground/60">
                 {t("fail2ban.none")}
               </p>
             }

@@ -395,7 +395,7 @@ export function AdminSSLSection({
           <DocsLink core="https">{t("admin.sslDocsLink")}</DocsLink>
         </span>
 
-        <div className="flex flex-col gap-0.5 p-2 border border-border bg-background/50">
+        <div className="flex flex-col gap-0.5 py-1">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">
               {t("admin.sslCertStatus")}

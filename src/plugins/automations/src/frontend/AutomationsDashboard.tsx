@@ -5,7 +5,7 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
-import { ExternalLink, Play, Wrench } from "lucide-react";
+import { ExternalLink, Play, Wrench, Workflow } from "lucide-react";
 import { toast } from "sonner";
 import {
   usePermission,
@@ -22,8 +22,15 @@ import {
   ListRow,
   ListRowAction,
   PanelList,
+  WidgetTitle,
 } from "@termix-ssh/plugin-sdk/ui";
 import { computeNextDueAt } from "../backend/cron";
+import {
+  GRID_SIZE,
+  type RunsWidgetConfig,
+  type WidgetComponentProps,
+  type WidgetDefinition,
+} from "./homepage";
 import type { RunStatus } from "../types";
 import {
   useAutomationsApi,
@@ -247,6 +254,41 @@ export function RecentRunsCard({ isVisible, shell }: DashboardCardProps) {
     </PanelList>
   );
 }
+
+function RunsWidget({ widget }: WidgetComponentProps<RunsWidgetConfig>) {
+  const { t } = useTranslation();
+  const canView = usePermission("view");
+  const { runs, rows, failed } = useAutomationData(canView, 10);
+  return (
+    <div className="flex h-full w-full flex-col overflow-hidden">
+      <WidgetTitle title={widget.title} icon={<Workflow size={11} />} />
+      {!canView ? (
+        <Message>{t("maintenance.denied")}</Message>
+      ) : failed ? (
+        <Message>{failed}</Message>
+      ) : !rows ? (
+        <Message>{t("maintenance.loading")}</Message>
+      ) : (
+        <PanelList empty={<Message>{t("card.noRuns")}</Message>}>
+          <RunRows runs={runs} t={t} />
+        </PanelList>
+      )}
+    </div>
+  );
+}
+
+/** Registered by the plugin while it runs. */
+export const runsWidget: WidgetDefinition<RunsWidgetConfig> = {
+  id: "automations_runs_widget",
+  name: "Automation runs",
+  description: "The latest automation runs and which ones failed",
+  category: "monitoring",
+  icon: <Workflow size={14} />,
+  defaultConfig: {},
+  defaultSize: { w: GRID_SIZE * 10, h: GRID_SIZE * 8 },
+  minSize: { w: GRID_SIZE * 6, h: GRID_SIZE * 5 },
+  components: { view: RunsWidget },
+};
 
 /** Starting state of the panel, from the user's settings. */
 export function useAutomationsCompanionDefaults(): CompanionDefaults {

@@ -119,22 +119,42 @@ export function defaultHostTiles(sources: HostTileSources): TileSlot[] {
   const quick = quickActions(sources.actions).slice(0, 4);
   for (const action of quick)
     rows.push({ id: `action:${action.id}`, w: 3, h: 170 });
-  rows.push({ id: "actions", w: 12, h: 360 });
+  const actions = { id: "actions", w: 12, h: 360 };
 
-  const out: TileSlot[] = [];
-  let x = 0;
-  let y = 0;
-  let rowHeight = 0;
-  for (const tile of rows) {
-    if (x + tile.w > 12) {
-      x = 0;
-      y += rowHeight || 120;
-      rowHeight = 0;
+  // The grid pulls tiles up, so place them the same way. When the two halves
+  // end at different heights, the last plugin tile on the short side grows to
+  // close the gap above the full width actions tile.
+  const place = () => {
+    const sky = new Array<number>(12).fill(0);
+    const out: TileSlot[] = [];
+    let x = 0;
+    for (const tile of rows) {
+      if (x + tile.w > 12) x = 0;
+      const y = Math.max(...sky.slice(x, x + tile.w));
+      out.push({ id: tile.id, x, y, w: tile.w, h: tile.h });
+      for (let c = x; c < x + tile.w; c++) sky[c] = y + tile.h;
+      x += tile.w;
     }
-    out.push({ id: tile.id, x, y, w: tile.w, h: tile.h });
-    x += tile.w;
-    rowHeight = Math.max(rowHeight, tile.h);
+    return { out, sky };
+  };
+  let { out, sky } = place();
+  const left = Math.max(...sky.slice(0, 6));
+  const right = Math.max(...sky.slice(6));
+  if (left !== right) {
+    const shortSide =
+      left < right
+        ? (s: TileSlot) => s.x + s.w <= 6
+        : (s: TileSlot) => s.x >= 6;
+    const grow = [...out]
+      .reverse()
+      .find((s) => s.id.startsWith("plugin:") && shortSide(s));
+    if (grow) {
+      const row = rows.find((r) => r.id === grow.id)!;
+      row.h += Math.abs(left - right);
+      ({ out, sky } = place());
+    }
   }
+  out.push({ ...actions, x: 0, y: Math.max(...sky) });
   return out;
 }
 

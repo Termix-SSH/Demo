@@ -70,3 +70,14 @@ export interface LogsView {
   text: string;
   source: string;
 }
+
+/** One host in the Cron dashboard card. */
+export interface CronHostSummary {
+  hostId: number;
+  checkedAt: string;
+  installed: boolean;
+  running: boolean;
+  jobs: number;
+  disabled: number;
+  error?: string;
+}

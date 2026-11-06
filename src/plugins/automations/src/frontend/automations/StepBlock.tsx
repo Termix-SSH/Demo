@@ -606,7 +606,9 @@ function Field({
 }) {
   return (
     <div className="space-y-1">
-      <Label className="text-xs text-muted-foreground">{label}</Label>
+      <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+        {label}
+      </Label>
       {children}
     </div>
   );

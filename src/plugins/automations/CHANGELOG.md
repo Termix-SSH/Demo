@@ -7,6 +7,7 @@
 - Run an automation as a Termix action, from the command palette, the CLI, the phone app or another automation
 - Run an action step: any action a plugin offers, with its own form, on the trigger host, picked hosts or a fleet
 - An event happens trigger: start an automation when a plugin reports an event or an action fails
+- A failed runs status tile and a homepage widget with the latest runs
 
 ### Fixed
 
@@ -16,6 +17,7 @@
 
 - Needs Termix 26.11.1 or newer
 - The maintenance page and the Automations tab use the Termix page header and tile look
+- Form labels match the rest of Termix
 
 ## 1.2.0
 

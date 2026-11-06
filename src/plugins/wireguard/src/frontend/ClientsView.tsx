@@ -67,7 +67,8 @@ export function ClientsView({
     void load();
   }, [load]);
 
-  if (failed) return <p className="p-2 text-sm text-destructive">{failed}</p>;
+  if (failed)
+    return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
   if (!clients) return <Loading />;
 
   if (mode.kind === "config") {

@@ -18,7 +18,7 @@
     "Search for packages and install them",
     "Read the package history and the list of repositories",
     "Works with apt, dnf, yum, zypper, pacman and apk",
-    "A dashboard card with pending updates on every host and a Packages card in Host Metrics"
+    "A dashboard card and homepage widget with pending updates on every host, a Packages card in Host Metrics and a panel beside terminals"
   ],
   "env": [],
   "engine": {
@@ -33,7 +33,9 @@
     "network:serve",
     "users:impersonate",
     "ui:surface",
-    "operations:provide"
+    "operations:provide",
+    "kv:own",
+    "notify:send"
   ],
   "contributes": {
     "tabs": [
@@ -82,9 +84,71 @@
             "descriptionKey": "settings.host.readOnly.description",
             "default": false,
             "requires": "enablePackages"
+          },
+          {
+            "key": "showPanel",
+            "type": "boolean",
+            "labelKey": "settings.host.showPanel.label",
+            "descriptionKey": "settings.host.showPanel.description",
+            "default": true,
+            "requires": "enablePackages"
+          },
+          {
+            "key": "alertUpdates",
+            "type": "boolean",
+            "labelKey": "settings.host.alertUpdates.label",
+            "descriptionKey": "settings.host.alertUpdates.description",
+            "default": false,
+            "requires": "enablePackages"
           }
         ]
-      }
+      },
+      "user": [
+        {
+          "key": "companionAutoOpen",
+          "type": "boolean",
+          "labelKey": "settings.user.companionAutoOpen.label",
+          "descriptionKey": "settings.user.companionAutoOpen.description",
+          "default": false
+        },
+        {
+          "key": "companionSide",
+          "type": "select",
+          "labelKey": "settings.user.companionSide.label",
+          "descriptionKey": "settings.user.companionSide.description",
+          "default": "right",
+          "options": [
+            {
+              "value": "right",
+              "labelKey": "settings.user.companionSide.right"
+            },
+            {
+              "value": "left",
+              "labelKey": "settings.user.companionSide.left"
+            },
+            {
+              "value": "bottom",
+              "labelKey": "settings.user.companionSide.bottom"
+            }
+          ]
+        },
+        {
+          "key": "companionSize",
+          "type": "number",
+          "labelKey": "settings.user.companionSize.label",
+          "descriptionKey": "settings.user.companionSize.description",
+          "min": 240,
+          "max": 900,
+          "default": 380
+        },
+        {
+          "key": "companionEdgeButton",
+          "type": "boolean",
+          "labelKey": "settings.user.companionEdgeButton.label",
+          "descriptionKey": "settings.user.companionEdgeButton.description",
+          "default": true
+        }
+      ]
     },
     "operations": {
       "actions": [
@@ -209,8 +273,35 @@
           "refreshSec": 3600,
           "fix": "package-manager.upgrade-all"
         }
+      ],
+      "resources": [
+        {
+          "id": "package-manager.update",
+          "titleKey": "operations.updates.resource",
+          "icon": "Package",
+          "list": "package-manager.list-updates",
+          "key": "name",
+          "name": "name",
+          "status": "state",
+          "tab": "package-manager",
+          "columns": [
+            {
+              "key": "current",
+              "titleKey": "operations.resource.current"
+            },
+            {
+              "key": "available",
+              "titleKey": "operations.resource.available"
+            },
+            {
+              "key": "repo",
+              "titleKey": "operations.resource.repo"
+            }
+          ]
+        }
       ]
-    }
+    },
+    "uses": ["homepage.widgets"]
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"]

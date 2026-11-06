@@ -4,6 +4,7 @@ export interface HostSettings {
   enabled: boolean;
   sudo: boolean;
   readOnly: boolean;
+  alerts: boolean;
 }
 
 export function parseHostSettings(
@@ -13,6 +14,7 @@ export function parseHostSettings(
     enabled: values.enablePackages === true,
     sudo: values.useSudo !== false,
     readOnly: values.readOnly === true,
+    alerts: values.alertUpdates === true,
   };
 }
 

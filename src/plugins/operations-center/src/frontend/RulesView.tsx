@@ -9,6 +9,7 @@ import {
   Button,
   Field,
   FormFooter,
+  InlineView,
   Input,
   ListRow,
   Switch,
@@ -63,114 +64,122 @@ function EditRule({
   };
 
   return (
-    <div className="flex flex-col gap-3">
-      <Field label={t("rules.name")}>
-        <Input
-          value={draft.name ?? ""}
-          onChange={(event) => set({ name: event.target.value })}
+    <InlineView
+      open
+      onOpenChange={(next) => !next && onDone()}
+      title={rule.name || t("rules.new")}
+      footer={
+        <FormFooter
+          onCancel={() => onDone()}
+          onSave={() => void save()}
+          saving={saving}
         />
-      </Field>
-      <Field label={t("rules.effect")}>
-        <Choice
-          label={t("rules.effect")}
-          value={draft.effect ?? "approve"}
-          onChange={(effect) => set({ effect })}
-          options={(["allow", "approve", "deny"] as const).map((value) => ({
-            value,
-            label: t(`rules.effects.${value}`),
-          }))}
-        />
-      </Field>
-      <Field label={t("rules.minRisk")} hint={t("rules.minRiskHint")}>
-        <Choice
-          label={t("rules.minRisk")}
-          value={draft.minRisk ?? "change"}
-          onChange={(minRisk) => set({ minRisk })}
-          options={(["read", "change", "destructive"] as const).map(
-            (value) => ({
+      }
+    >
+      <div className="flex flex-col gap-3">
+        <Field label={t("rules.name")}>
+          <Input
+            value={draft.name ?? ""}
+            onChange={(event) => set({ name: event.target.value })}
+          />
+        </Field>
+        <Field label={t("rules.effect")}>
+          <Choice
+            label={t("rules.effect")}
+            value={draft.effect ?? "approve"}
+            onChange={(effect) => set({ effect })}
+            options={(["allow", "approve", "deny"] as const).map((value) => ({
               value,
-              label: t(`risk.${value}`),
-            }),
-          )}
-        />
-      </Field>
-      <Field label={t("rules.origins")} hint={t("rules.originsHint")}>
-        <div className="flex flex-wrap gap-1">
-          {ORIGINS.map((origin) => (
-            <button
-              key={origin}
-              type="button"
-              onClick={() =>
-                set({
-                  origins: origins.includes(origin)
-                    ? origins.filter((entry) => entry !== origin)
-                    : [...origins, origin],
-                })
-              }
-              className={`border px-2 py-0.5 text-xs ${origins.includes(origin) ? "border-accent-brand text-accent-brand" : "border-border text-muted-foreground"}`}
-            >
-              {t(`origin.${origin}`)}
-            </button>
-          ))}
-        </div>
-      </Field>
-      <Field label={t("rules.plugins")} hint={t("rules.listHint")}>
-        <Input
-          value={(draft.pluginIds ?? []).join(", ")}
-          onChange={(event) => set({ pluginIds: list(event.target.value) })}
-        />
-      </Field>
-      <Field label={t("rules.actions")} hint={t("rules.listHint")}>
-        <Input
-          value={(draft.actionIds ?? []).join(", ")}
-          onChange={(event) => set({ actionIds: list(event.target.value) })}
-        />
-      </Field>
-      <Field label={t("rules.tags")} hint={t("rules.listHint")}>
-        <Input
-          value={(draft.hostTags ?? []).join(", ")}
-          onChange={(event) => set({ hostTags: list(event.target.value) })}
-        />
-      </Field>
-      {draft.effect === "approve" && (
-        <>
-          <label className="flex items-center gap-2 text-xs">
-            <Switch
-              checked={draft.allowSelf === true}
-              onCheckedChange={(allowSelf) => set({ allowSelf })}
-            />
-            {t("rules.allowSelf")}
-          </label>
-          <Field label={t("rules.expires")}>
-            <Input
-              type="number"
-              min={5}
-              value={draft.expiresInMinutes ?? ""}
-              placeholder="1440"
-              onChange={(event) =>
-                set({
-                  expiresInMinutes: event.target.value
-                    ? Number(event.target.value)
-                    : null,
-                })
-              }
-            />
-          </Field>
-        </>
-      )}
-      <label className="flex items-center gap-2 text-xs">
-        <Switch
-          checked={draft.enabled !== false}
-          onCheckedChange={(enabled) => set({ enabled })}
-        />
-        {t("rules.enabled")}
-      </label>
-      <FormFooter
-        onCancel={() => onDone()}
-        onSave={() => void save()}
-        saving={saving}
-      />
-    </div>
+              label: t(`rules.effects.${value}`),
+            }))}
+          />
+        </Field>
+        <Field label={t("rules.minRisk")} hint={t("rules.minRiskHint")}>
+          <Choice
+            label={t("rules.minRisk")}
+            value={draft.minRisk ?? "change"}
+            onChange={(minRisk) => set({ minRisk })}
+            options={(["read", "change", "destructive"] as const).map(
+              (value) => ({
+                value,
+                label: t(`risk.${value}`),
+              }),
+            )}
+          />
+        </Field>
+        <Field label={t("rules.origins")} hint={t("rules.originsHint")}>
+          <div className="flex flex-wrap gap-1">
+            {ORIGINS.map((origin) => (
+              <button
+                key={origin}
+                type="button"
+                onClick={() =>
+                  set({
+                    origins: origins.includes(origin)
+                      ? origins.filter((entry) => entry !== origin)
+                      : [...origins, origin],
+                  })
+                }
+                className={`border px-2 py-0.5 text-xs ${origins.includes(origin) ? "border-accent-brand text-accent-brand" : "border-border text-muted-foreground"}`}
+              >
+                {t(`origin.${origin}`)}
+              </button>
+            ))}
+          </div>
+        </Field>
+        <Field label={t("rules.plugins")} hint={t("rules.listHint")}>
+          <Input
+            value={(draft.pluginIds ?? []).join(", ")}
+            onChange={(event) => set({ pluginIds: list(event.target.value) })}
+          />
+        </Field>
+        <Field label={t("rules.actions")} hint={t("rules.listHint")}>
+          <Input
+            value={(draft.actionIds ?? []).join(", ")}
+            onChange={(event) => set({ actionIds: list(event.target.value) })}
+          />
+        </Field>
+        <Field label={t("rules.tags")} hint={t("rules.listHint")}>
+          <Input
+            value={(draft.hostTags ?? []).join(", ")}
+            onChange={(event) => set({ hostTags: list(event.target.value) })}
+          />
+        </Field>
+        {draft.effect === "approve" && (
+          <>
+            <label className="flex items-center gap-2 text-xs">
+              <Switch
+                checked={draft.allowSelf === true}
+                onCheckedChange={(allowSelf) => set({ allowSelf })}
+              />
+              {t("rules.allowSelf")}
+            </label>
+            <Field label={t("rules.expires")}>
+              <Input
+                type="number"
+                min={5}
+                value={draft.expiresInMinutes ?? ""}
+                placeholder="1440"
+                onChange={(event) =>
+                  set({
+                    expiresInMinutes: event.target.value
+                      ? Number(event.target.value)
+                      : null,
+                  })
+                }
+              />
+            </Field>
+          </>
+        )}
+        <label className="flex items-center gap-2 text-xs">
+          <Switch
+            checked={draft.enabled !== false}
+            onCheckedChange={(enabled) => set({ enabled })}
+          />
+          {t("rules.enabled")}
+        </label>
+      </div>
+    </InlineView>
   );
 }
 

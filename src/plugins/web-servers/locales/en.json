@@ -1,0 +1,287 @@
+{
+  "plugin": {
+    "name": "Web Servers",
+    "description": "Manage nginx, Apache and Caddy on your hosts: sites, config, logs and HTTPS, with every change tested first."
+  },
+  "common": {
+    "cancel": "Cancel",
+    "back": "Back",
+    "loading": "Loading..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Use Web Servers",
+      "description": "See web servers and sites on hosts you can reach, and change them on hosts you can edit."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Web Servers",
+        "description": "Manage nginx, Apache and Caddy on this host from the Web Servers tab."
+      },
+      "useSudo": {
+        "label": "Use sudo",
+        "description": "Use sudo to read and change the web server. Turn off if the login is root."
+      },
+      "readOnly": {
+        "label": "Read only",
+        "description": "Show sites, config and logs but never change them on this host."
+      },
+      "showPanel": {
+        "label": "Panel beside the terminal",
+        "description": "Offer the Web Servers panel on this host's terminal tabs."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Open the panel with the terminal",
+        "description": "Show the Web Servers panel when a terminal opens on a host that has it."
+      },
+      "companionSide": {
+        "label": "Panel side",
+        "description": "Where the panel sits next to the terminal.",
+        "right": "Right",
+        "left": "Left",
+        "bottom": "Bottom"
+      },
+      "companionSize": {
+        "label": "Panel size",
+        "description": "Width of the panel, or its height at the bottom, in pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Edge button",
+        "description": "Show a small button on the terminal edge to open the panel."
+      }
+    }
+  },
+  "tab": {
+    "title": "Web Servers",
+    "noHost": "Open Web Servers from a host.",
+    "error": "Could not load the web servers on this host.",
+    "disabled": "Web Servers is turned off for this host. Turn it on in the host settings.",
+    "sudo": "Changes need a root login, passwordless sudo or a saved Sudo Password on this host.",
+    "refresh": "Refresh",
+    "readOnly": "Read only",
+    "noServer": "No web server installed",
+    "noServerHint": "Install nginx, Apache or Caddy from the Server page.",
+    "openServer": "Open Server",
+    "viewSites": "Sites",
+    "viewConfig": "Config",
+    "viewLogs": "Logs",
+    "viewServer": "Server"
+  },
+  "actions": {
+    "ok": "Done",
+    "failed": "Failed",
+    "noOutput": "No output."
+  },
+  "watch": {
+    "start": "Alert me when a web server stops",
+    "stop": "Stop alerts for this host",
+    "on": "You will get an alert when a web server on this host stops",
+    "off": "Alerts for this host are off",
+    "failed": "Could not change alerts"
+  },
+  "sites": {
+    "add": "Add site",
+    "search": "Search sites",
+    "empty": "No sites yet.",
+    "loadFailed": "Could not load the sites.",
+    "off": "Off",
+    "anyName": "any name",
+    "form": "Form",
+    "certDays_one": "{{count}} day left",
+    "certDays_other": "{{count}} days left",
+    "certExpired": "Certificate expired",
+    "enable": "Turn on",
+    "disable": "Turn off",
+    "enabled": "{{name}} is on",
+    "disabled": "{{name}} is off",
+    "delete": "Delete",
+    "deleteTitle": "Delete {{name}}?",
+    "deleteBody": "The file is removed and the server reloads. A copy stays in /var/lib/termix-web-servers/backups on the host.",
+    "deleted": "{{name}} was deleted"
+  },
+  "site": {
+    "addTitle": "New site",
+    "editTitle": "Save {{name}}",
+    "add": "Add site",
+    "save": "Save",
+    "added": "{{name}} was added",
+    "saved": "{{name}} was saved",
+    "server": "Web server",
+    "name": "Site name",
+    "nameHint": "Used for the file name and the log files, like example.",
+    "modeForm": "Form",
+    "modeText": "Text",
+    "text": "Config",
+    "textHint": "Saving the text turns off the form for this site, so your own changes are kept.",
+    "type": "Type",
+    "typeStatic": "Static files",
+    "typeProxy": "Reverse proxy",
+    "typePhp": "PHP",
+    "typeRedirect": "Redirect",
+    "staticHint": "Serves files from a folder.",
+    "proxyHint": "Sends requests to an app running on this host or another one.",
+    "phpHint": "Serves files from a folder and runs .php files with php-fpm.",
+    "redirectHint": "Sends every visitor to another address.",
+    "domains": "Domains",
+    "domainsHint": "Press Enter after each one. Use _ in nginx to answer any name.",
+    "port": "HTTP port",
+    "root": "Web root",
+    "rootHint": "A folder inside /var/www, /srv, /usr/share/nginx, /opt or /home.",
+    "index": "Index files",
+    "spa": "Single page app",
+    "spaHint": "Send paths that are not files to /index.html.",
+    "upstream": "App address",
+    "upstreamHint": "Where the app listens, like http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Send visitors to",
+    "keepPath": "Keep the path",
+    "keepPathHint": "Send /page to the same page on the new address.",
+    "phpSocket": "php-fpm socket",
+    "phpSocketHint": "No php-fpm socket was found. Install php-fpm or enter host:port.",
+    "https": "HTTPS",
+    "httpsHint": "Needs a certificate. Save the site first, then press Get certificate below.",
+    "httpsCaddy": "Caddy gets and renews the certificate by itself.",
+    "httpsPort": "HTTPS port",
+    "certPath": "Certificate file",
+    "keyPath": "Key file",
+    "forceHttps": "Send HTTP to HTTPS",
+    "gzip": "Compress responses",
+    "accessLog": "Access log",
+    "maxBody": "Upload limit in MB",
+    "maxBodyHint": "0 keeps the server default.",
+    "preview": "Preview",
+    "previewFailed": "Could not build the config."
+  },
+  "tls": {
+    "title": "HTTPS certificate",
+    "hintManaged": "certbot gets a Let's Encrypt certificate for this site's domains, then the site switches to HTTPS. certbot renews it and reloads the server.",
+    "hintText": "certbot gets a Let's Encrypt certificate for this site's domains. Add the certificate to the site yourself afterwards. certbot renews it and reloads the server.",
+    "needCertbot": "Install certbot with its plugin for this server from the Server page first.",
+    "email": "Email",
+    "emailHint": "Let's Encrypt writes here about problems. Optional.",
+    "staging": "Test certificate",
+    "stagingHint": "Use the Let's Encrypt staging server. Browsers won't trust it.",
+    "issue": "Get certificate",
+    "done": "Certificate saved"
+  },
+  "config": {
+    "search": "Search files",
+    "empty": "No files.",
+    "loadFailed": "Could not load the file.",
+    "test": "Test config",
+    "testOk": "The config is fine",
+    "testFailed": "The config has errors",
+    "content": "Content",
+    "save": "Save",
+    "saveHint": "The whole config is tested before the server reloads. A broken file is put back.",
+    "saved": "Saved and reloaded",
+    "backups_one": "{{count}} backup",
+    "backups_other": "{{count}} backups",
+    "restore": "Restore",
+    "restoreTitle": "Restore this backup?",
+    "restoreBody": "The file goes back to how it was at {{time}}. The current text becomes a backup too.",
+    "restored": "Backup restored"
+  },
+  "logs": {
+    "source": "Log",
+    "lines": "Lines",
+    "journal": "{{server}} journal",
+    "follow": "Follow",
+    "stop": "Stop",
+    "connecting": "Connecting...",
+    "ended": "Stopped following.",
+    "followFailed": "Could not follow this log.",
+    "empty": "No lines.",
+    "loadFailed": "Could not read the log.",
+    "requests": "Requests",
+    "topPaths": "Top paths",
+    "topClients": "Top clients"
+  },
+  "server": {
+    "unknown": "unknown",
+    "atBoot": "Starts at boot",
+    "notInstalled": "Not installed",
+    "start": "Start",
+    "stop": "Stop",
+    "restart": "Restart",
+    "reload": "Reload",
+    "enable": "Start at boot",
+    "disable": "Don't start at boot",
+    "boot": "Start at boot",
+    "noBoot": "Don't start at boot",
+    "done": "{{server}} is done",
+    "stopTitle": "Stop {{server}}?",
+    "stopBody": "Every site on it goes offline until you start it again.",
+    "install": "Install",
+    "installTitle": "Install {{server}}?",
+    "installBody": "It is installed with the host's package manager and starts right away. Another web server on port 80 will stop it from starting.",
+    "installed": "{{server}} was installed",
+    "installCertbot": "Install certbot",
+    "certbotInstalled": "certbot was installed",
+    "certbotPlugins": "Plugins: {{plugins}}",
+    "certbotNoPlugins": "No nginx or Apache plugin",
+    "certbotHint": "Gets Let's Encrypt certificates for nginx and Apache sites"
+  },
+  "card": {
+    "title": "Web servers",
+    "loading": "Loading...",
+    "refresh": "Refresh",
+    "empty": "No host has Web Servers turned on.",
+    "summary_one": "{{count}} host | {{down}} need a look",
+    "summary_other": "{{count}} hosts | {{down}} need a look",
+    "sites_one": "{{count}} site",
+    "sites_other": "{{count}} sites"
+  },
+  "companion": {
+    "toggle": "Web Servers panel",
+    "openTab": "Open Web Servers",
+    "reload": "Reload {{server}}"
+  },
+  "manager": {
+    "title": "Web Servers",
+    "disabled": "Turn on Web Servers for this host to see its sites here."
+  },
+  "operations": {
+    "status": {
+      "title": "Web server status"
+    },
+    "listSites": {
+      "title": "List sites"
+    },
+    "test": {
+      "title": "Test web server config"
+    },
+    "reload": {
+      "title": "Reload web server"
+    },
+    "restart": {
+      "title": "Restart web server"
+    },
+    "enableSite": {
+      "title": "Turn site on"
+    },
+    "disableSite": {
+      "title": "Turn site off"
+    },
+    "deleteSite": {
+      "title": "Delete site"
+    },
+    "server": "Server",
+    "allServers": "All of them",
+    "sites": {
+      "title": "Sites",
+      "server": "Server",
+      "domains": "Domains",
+      "https": "HTTPS"
+    }
+  }
+}

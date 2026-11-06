@@ -1028,9 +1028,11 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
           />
         }
       >
-        <div className="grid gap-4 py-4">
+        <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label>{t("networkGraph.selectHost")}</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+              {t("networkGraph.selectHost")}
+            </Label>
             <Select2
               className="h-8 w-full px-2.5 text-xs"
               value={selectedHostForAddNode}
@@ -1045,7 +1047,9 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
             </Select2>
           </div>
           <div className="grid gap-2">
-            <Label>{t("networkGraph.parentGroup")}</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+              {t("networkGraph.parentGroup")}
+            </Label>
             <Select2
               className="h-8 w-full px-2.5 text-xs"
               value={selectedGroupForAddNode}
@@ -1097,9 +1101,11 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
           />
         }
       >
-        <div className="grid gap-4 py-4">
+        <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label>{t("networkGraph.groupName")}</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+              {t("networkGraph.groupName")}
+            </Label>
             <Input
               value={newGroupName}
               onChange={(e) => setNewGroupName(e.target.value)}
@@ -1107,7 +1113,9 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
             />
           </div>
           <div className="grid gap-2">
-            <Label>{t("networkGraph.color")}</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+              {t("networkGraph.color")}
+            </Label>
             <div className="grid grid-cols-4 gap-2">
               {AVAILABLE_COLORS.map((c) => (
                 <button
@@ -1142,9 +1150,11 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
           />
         }
       >
-        <div className="grid gap-4 py-4">
+        <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label>{t("networkGraph.selectGroup")}</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+              {t("networkGraph.selectGroup")}
+            </Label>
             <Select2
               className="h-8 w-full px-2.5 text-xs"
               value={selectedGroupForMove}
@@ -1177,9 +1187,11 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
           />
         }
       >
-        <div className="grid gap-4 py-4">
+        <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label>{t("networkGraph.source")}</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+              {t("networkGraph.source")}
+            </Label>
             <Select2
               className="h-8 w-full px-2.5 text-xs"
               value={selectedHostForEdge}
@@ -1196,7 +1208,9 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
             </Select2>
           </div>
           <div className="grid gap-2">
-            <Label>{t("networkGraph.target")}</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+              {t("networkGraph.target")}
+            </Label>
             <Select2
               className="h-8 w-full px-2.5 text-xs"
               value={targetHostForEdge}

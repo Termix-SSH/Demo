@@ -214,47 +214,56 @@ export function registerFollow(ctx: PluginContext): void {
         const current: Session = { dispose, stream: null };
         session = current;
 
-        client.exec(streamCommand(script, settings.sudo), (err, stream) => {
-          if (err) {
-            send({ type: "error", message: `Could not start: ${err.message}` });
-            if (session === current) endSession();
-            return;
-          }
-          if (session !== current) {
-            stream.close();
-            return;
-          }
-          current.stream = stream;
-          const decoder = new StringDecoder("utf-8");
-          let carry = "";
-          stream.on("data", (chunk: Buffer) => {
-            const text = carry + decoder.write(chunk);
-            const lines = text.split("\n");
-            carry = lines.pop() ?? "";
-            for (const raw of lines) {
-              const line = raw.replace(/\r$/, "");
-              if (line.startsWith("SCRIPT_ERR:")) {
-                send({
-                  type: "error",
-                  message: line.slice("SCRIPT_ERR:".length),
-                });
-                continue;
-              }
-              push(line);
+        client.exec(
+          streamCommand(
+            script,
+            target.kind === "pm2" ? !!settings.pm2User : settings.sudo,
+          ),
+          (err, stream) => {
+            if (err) {
+              send({
+                type: "error",
+                message: `Could not start: ${err.message}`,
+              });
+              if (session === current) endSession();
+              return;
             }
-          });
-          stream.stderr.on("data", (chunk: Buffer) => {
-            const text = chunk.toString();
-            const own = /SCRIPT_ERR:(.*)/.exec(text)?.[1];
-            if (own) send({ type: "error", message: own.trim() });
-          });
-          stream.on("error", () => {});
-          stream.on("close", () => {
-            send({ type: "ended" });
-            if (session === current) endSession();
-          });
-          send({ type: "started" });
-        });
+            if (session !== current) {
+              stream.close();
+              return;
+            }
+            current.stream = stream;
+            const decoder = new StringDecoder("utf-8");
+            let carry = "";
+            stream.on("data", (chunk: Buffer) => {
+              const text = carry + decoder.write(chunk);
+              const lines = text.split("\n");
+              carry = lines.pop() ?? "";
+              for (const raw of lines) {
+                const line = raw.replace(/\r$/, "");
+                if (line.startsWith("SCRIPT_ERR:")) {
+                  send({
+                    type: "error",
+                    message: line.slice("SCRIPT_ERR:".length),
+                  });
+                  continue;
+                }
+                push(line);
+              }
+            });
+            stream.stderr.on("data", (chunk: Buffer) => {
+              const text = chunk.toString();
+              const own = /SCRIPT_ERR:(.*)/.exec(text)?.[1];
+              if (own) send({ type: "error", message: own.trim() });
+            });
+            stream.on("error", () => {});
+            stream.on("close", () => {
+              send({ type: "ended" });
+              if (session === current) endSession();
+            });
+            send({ type: "started" });
+          },
+        );
       } catch (error) {
         send({ type: "error", message: errorText(error, "Could not follow") });
       }

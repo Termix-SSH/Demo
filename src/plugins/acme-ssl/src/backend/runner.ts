@@ -12,6 +12,9 @@ import {
   type AcmeSettings,
 } from "./settings.js";
 
+const EXPIRY_WARN_DAYS = 7;
+const DAY_MS = 24 * 60 * 60 * 1000;
+
 export const CHECK_INTERVAL_MS = 12 * 60 * 60 * 1000;
 /** After a failed attempt, the scheduled check waits this long to retry. */
 export const RETRY_AFTER_MS = 6 * 60 * 60 * 1000;
@@ -99,6 +102,28 @@ export function createAcmeRunner(
     }
   };
 
+  /** Warns admins when the served certificate is close to its end. */
+  const warnExpiry = async (now: Date) => {
+    try {
+      const cert = (await ctx.system.tlsStatus()).certificate;
+      if (!cert || cert.selfSigned) return;
+      const days = Math.floor(
+        (new Date(cert.notAfter).getTime() - now.getTime()) / DAY_MS,
+      );
+      if (days > EXPIRY_WARN_DAYS) return;
+      await ctx.notify.send({
+        title: "The HTTPS certificate ends soon",
+        body: days < 0 ? "It has ended." : `${days} days left.`,
+        severity: days <= 2 ? "critical" : "warning",
+        category: "acme-ssl.expiring",
+        audience: "admins",
+        dedupeKey: `acme-ssl.expiring:${cert.fingerprint}`,
+      });
+    } catch (error) {
+      ctx.log.debug(`Expiry check failed: ${String(error)}`);
+    }
+  };
+
   const runner: AcmeRunner = {
     state,
 
@@ -111,6 +136,7 @@ export function createAcmeRunner(
 
     check: async (now = new Date()) => {
       const settings = await readSettings(ctx);
+      await warnExpiry(now);
       if (!settings.autoRenew || missingSetting(settings)) return false;
 
       const last = await state();

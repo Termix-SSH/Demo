@@ -1,0 +1,427 @@
+{
+  "id": "web-servers",
+  "name": "Web Servers",
+  "version": "1.0.0",
+  "description": "Manage nginx, Apache and Caddy on your hosts: sites, config, logs and HTTPS, with every change tested first.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Web-Servers",
+  "docs": "https://docs.termix.site/plugins/web-servers",
+  "category": "Infrastructure",
+  "icon": "Earth",
+  "features": [
+    "See nginx, Apache and Caddy on a host with their version and state",
+    "List every site with its domains, ports, HTTPS and certificate expiry",
+    "Add static, reverse proxy, PHP and redirect sites from a form",
+    "Edit any config file, with a test before every save and backups to go back to",
+    "Turn sites on and off, start, stop, reload and restart the server",
+    "Get a Let's Encrypt certificate for a site with certbot",
+    "Read and follow access and error logs, with counts by status, path and client",
+    "Install nginx, Apache, Caddy or certbot",
+    "Get an alert when a web server stops",
+    "A dashboard card, a panel beside the terminal and a Web Servers card in Host Metrics"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "hosts:read",
+    "credentials:use",
+    "credentials:read",
+    "ssh:connect",
+    "network:serve",
+    "users:impersonate",
+    "ui:surface",
+    "operations:provide",
+    "kv:own",
+    "notify:send"
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "web-servers",
+        "titleKey": "tab.title",
+        "icon": "Earth",
+        "openFrom": ["host-context-menu", "palette"]
+      }
+    ],
+    "dashboardCards": [
+      {
+        "id": "web-servers-hosts",
+        "titleKey": "card.title",
+        "icon": "Earth"
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "enableKey": "enableWebServers",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
+        "editorGroup": "ssh",
+        "fields": [
+          {
+            "key": "useSudo",
+            "type": "boolean",
+            "labelKey": "settings.host.useSudo.label",
+            "descriptionKey": "settings.host.useSudo.description",
+            "default": true,
+            "requires": "enableWebServers"
+          },
+          {
+            "key": "readOnly",
+            "type": "boolean",
+            "labelKey": "settings.host.readOnly.label",
+            "descriptionKey": "settings.host.readOnly.description",
+            "default": false,
+            "requires": "enableWebServers"
+          },
+          {
+            "key": "showPanel",
+            "type": "boolean",
+            "labelKey": "settings.host.showPanel.label",
+            "descriptionKey": "settings.host.showPanel.description",
+            "default": true,
+            "requires": "enableWebServers"
+          }
+        ]
+      },
+      "user": [
+        {
+          "key": "companionAutoOpen",
+          "type": "boolean",
+          "labelKey": "settings.user.companionAutoOpen.label",
+          "descriptionKey": "settings.user.companionAutoOpen.description",
+          "default": false
+        },
+        {
+          "key": "companionSide",
+          "type": "select",
+          "labelKey": "settings.user.companionSide.label",
+          "descriptionKey": "settings.user.companionSide.description",
+          "default": "right",
+          "options": [
+            {
+              "value": "right",
+              "labelKey": "settings.user.companionSide.right"
+            },
+            {
+              "value": "left",
+              "labelKey": "settings.user.companionSide.left"
+            },
+            {
+              "value": "bottom",
+              "labelKey": "settings.user.companionSide.bottom"
+            }
+          ]
+        },
+        {
+          "key": "companionSize",
+          "type": "number",
+          "labelKey": "settings.user.companionSize.label",
+          "descriptionKey": "settings.user.companionSize.description",
+          "min": 240,
+          "max": 900,
+          "default": 360
+        },
+        {
+          "key": "companionEdgeButton",
+          "type": "boolean",
+          "labelKey": "settings.user.companionEdgeButton.label",
+          "descriptionKey": "settings.user.companionEdgeButton.description",
+          "default": true
+        }
+      ]
+    },
+    "operations": {
+      "actions": [
+        {
+          "id": "web-servers.status",
+          "titleKey": "operations.status.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableWebServers": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "web-servers.list-sites",
+          "titleKey": "operations.listSites.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableWebServers": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "web-servers.test-config",
+          "titleKey": "operations.test.title",
+          "icon": "CircleCheck",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableWebServers": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          },
+          "inputs": [
+            {
+              "key": "server",
+              "type": "select",
+              "labelKey": "operations.server",
+              "default": "all",
+              "options": [
+                {
+                  "value": "all",
+                  "labelKey": "operations.allServers"
+                },
+                {
+                  "value": "nginx",
+                  "labelKey": "servers.nginx"
+                },
+                {
+                  "value": "apache",
+                  "labelKey": "servers.apache"
+                },
+                {
+                  "value": "caddy",
+                  "labelKey": "servers.caddy"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "web-servers.reload",
+          "titleKey": "operations.reload.title",
+          "icon": "RefreshCw",
+          "scope": "host",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "idempotent": true,
+          "exclusive": true,
+          "when": {
+            "settings": {
+              "enableWebServers": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          },
+          "inputs": [
+            {
+              "key": "server",
+              "type": "select",
+              "labelKey": "operations.server",
+              "default": "all",
+              "options": [
+                {
+                  "value": "all",
+                  "labelKey": "operations.allServers"
+                },
+                {
+                  "value": "nginx",
+                  "labelKey": "servers.nginx"
+                },
+                {
+                  "value": "apache",
+                  "labelKey": "servers.apache"
+                },
+                {
+                  "value": "caddy",
+                  "labelKey": "servers.caddy"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "web-servers.restart",
+          "titleKey": "operations.restart.title",
+          "icon": "RotateCw",
+          "scope": "host",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "exclusive": true,
+          "when": {
+            "settings": {
+              "enableWebServers": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          },
+          "inputs": [
+            {
+              "key": "server",
+              "type": "select",
+              "labelKey": "operations.server",
+              "default": "all",
+              "options": [
+                {
+                  "value": "all",
+                  "labelKey": "operations.allServers"
+                },
+                {
+                  "value": "nginx",
+                  "labelKey": "servers.nginx"
+                },
+                {
+                  "value": "apache",
+                  "labelKey": "servers.apache"
+                },
+                {
+                  "value": "caddy",
+                  "labelKey": "servers.caddy"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "web-servers.enable-site",
+          "titleKey": "operations.enableSite.title",
+          "icon": "Power",
+          "scope": "resource",
+          "resource": "web-servers.site",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "idempotent": true,
+          "exclusive": true,
+          "when": {
+            "settings": {
+              "enableWebServers": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "web-servers.disable-site",
+          "titleKey": "operations.disableSite.title",
+          "icon": "PowerOff",
+          "scope": "resource",
+          "resource": "web-servers.site",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "idempotent": true,
+          "exclusive": true,
+          "when": {
+            "settings": {
+              "enableWebServers": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "web-servers.delete-site",
+          "titleKey": "operations.deleteSite.title",
+          "icon": "Trash2",
+          "scope": "resource",
+          "resource": "web-servers.site",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "exclusive": true,
+          "when": {
+            "settings": {
+              "enableWebServers": true
+            }
+          }
+        }
+      ],
+      "resources": [
+        {
+          "id": "web-servers.site",
+          "titleKey": "operations.sites.title",
+          "icon": "Earth",
+          "list": "web-servers.list-sites",
+          "key": "key",
+          "name": "name",
+          "status": "state",
+          "tab": "web-servers",
+          "columns": [
+            {
+              "key": "server",
+              "titleKey": "operations.sites.server"
+            },
+            {
+              "key": "domains",
+              "titleKey": "operations.sites.domains"
+            },
+            {
+              "key": "https",
+              "titleKey": "operations.sites.https"
+            }
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "id": "web-servers.running",
+          "titleKey": "operations.status.title",
+          "read": "web-servers.status",
+          "scope": "host",
+          "kind": "status",
+          "refreshSec": 300,
+          "fix": "web-servers.restart"
+        }
+      ]
+    },
+    "uses": ["homepage.widgets"]
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

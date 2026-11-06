@@ -5,6 +5,7 @@
 ### Added
 
 - List and revoke active session shares through Termix actions, and see how many are open as a status tile
+- Show a host's active shares on the host page
 
 ### Changed
 

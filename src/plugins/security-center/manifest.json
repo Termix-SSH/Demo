@@ -101,6 +101,14 @@
             "descriptionKey": "settings.host.readOnly.description",
             "default": false,
             "requires": "enableSecurity"
+          },
+          {
+            "key": "showPanel",
+            "type": "boolean",
+            "labelKey": "settings.host.showPanel.label",
+            "descriptionKey": "settings.host.showPanel.description",
+            "default": true,
+            "requires": "enableSecurity"
           }
         ]
       },
@@ -126,6 +134,52 @@
           "descriptionKey": "settings.admin.checkKev.description",
           "default": true
         }
+      ],
+      "user": [
+        {
+          "key": "companionAutoOpen",
+          "labelKey": "settings.user.companionAutoOpen.label",
+          "descriptionKey": "settings.user.companionAutoOpen.description",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "key": "companionSide",
+          "labelKey": "settings.user.companionSide.label",
+          "descriptionKey": "settings.user.companionSide.description",
+          "type": "select",
+          "default": "right",
+          "options": [
+            {
+              "value": "right",
+              "labelKey": "settings.user.companionSide.right"
+            },
+            {
+              "value": "left",
+              "labelKey": "settings.user.companionSide.left"
+            },
+            {
+              "value": "bottom",
+              "labelKey": "settings.user.companionSide.bottom"
+            }
+          ]
+        },
+        {
+          "key": "companionSize",
+          "labelKey": "settings.user.companionSize.label",
+          "descriptionKey": "settings.user.companionSize.description",
+          "type": "number",
+          "min": 240,
+          "max": 900,
+          "default": 380
+        },
+        {
+          "key": "companionEdgeButton",
+          "labelKey": "settings.user.companionEdgeButton.label",
+          "descriptionKey": "settings.user.companionEdgeButton.description",
+          "type": "boolean",
+          "default": true
+        }
       ]
     },
     "dashboardCards": [
@@ -144,8 +198,16 @@
           "risk": "read",
           "permission": "use",
           "hostAccess": "connect",
-          "when": { "settings": { "enableSecurity": true } },
-          "surfaces": { "assistant": true, "mcp": true, "palette": false }
+          "when": {
+            "settings": {
+              "enableSecurity": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
         },
         {
           "id": "security-center.findings",
@@ -154,8 +216,16 @@
           "risk": "read",
           "permission": "use",
           "hostAccess": "connect",
-          "when": { "settings": { "enableSecurity": true } },
-          "surfaces": { "assistant": true, "mcp": true, "palette": false }
+          "when": {
+            "settings": {
+              "enableSecurity": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
         },
         {
           "id": "security-center.vulns",
@@ -164,8 +234,16 @@
           "risk": "read",
           "permission": "use",
           "hostAccess": "connect",
-          "when": { "settings": { "enableSecurity": true } },
-          "surfaces": { "assistant": true, "mcp": true, "palette": false }
+          "when": {
+            "settings": {
+              "enableSecurity": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
         },
         {
           "id": "security-center.status",
@@ -174,8 +252,16 @@
           "risk": "read",
           "permission": "use",
           "hostAccess": "connect",
-          "when": { "settings": { "enableSecurity": true } },
-          "surfaces": { "assistant": true, "mcp": true, "palette": false }
+          "when": {
+            "settings": {
+              "enableSecurity": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
         },
         {
           "id": "security-center.critical-vulns",
@@ -184,8 +270,16 @@
           "risk": "read",
           "permission": "use",
           "hostAccess": "connect",
-          "when": { "settings": { "enableSecurity": true } },
-          "surfaces": { "assistant": true, "mcp": true, "palette": false }
+          "when": {
+            "settings": {
+              "enableSecurity": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
         },
         {
           "id": "security-center.weak-keys",
@@ -194,8 +288,16 @@
           "risk": "read",
           "permission": "use",
           "hostAccess": "connect",
-          "when": { "settings": { "enableSecurity": true } },
-          "surfaces": { "assistant": true, "mcp": true, "palette": false }
+          "when": {
+            "settings": {
+              "enableSecurity": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
         },
         {
           "id": "security-center.scan",
@@ -207,8 +309,15 @@
           "hostAccess": "edit",
           "dryRun": "describe",
           "idempotent": true,
-          "when": { "settings": { "enableSecurity": true } },
-          "surfaces": { "assistant": true, "mcp": true }
+          "when": {
+            "settings": {
+              "enableSecurity": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
         },
         {
           "id": "security-center.rotate-key",
@@ -220,8 +329,15 @@
           "hostAccess": "manage",
           "dryRun": "describe",
           "exclusive": true,
-          "when": { "settings": { "enableSecurity": true } },
-          "surfaces": { "assistant": true, "mcp": false }
+          "when": {
+            "settings": {
+              "enableSecurity": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": false
+          }
         },
         {
           "id": "security-center.revoke-key",
@@ -249,8 +365,15 @@
               "required": true
             }
           ],
-          "when": { "settings": { "enableSecurity": true } },
-          "surfaces": { "assistant": true, "mcp": false }
+          "when": {
+            "settings": {
+              "enableSecurity": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": false
+          }
         },
         {
           "id": "security-center.rotate-host-keys",
@@ -262,8 +385,15 @@
           "hostAccess": "manage",
           "dryRun": "describe",
           "exclusive": true,
-          "when": { "settings": { "enableSecurity": true } },
-          "surfaces": { "assistant": false, "mcp": false }
+          "when": {
+            "settings": {
+              "enableSecurity": true
+            }
+          },
+          "surfaces": {
+            "assistant": false,
+            "mcp": false
+          }
         }
       ],
       "events": [
@@ -302,9 +432,18 @@
               "titleKey": "operations.keys.health",
               "type": "status"
             },
-            { "key": "kind", "titleKey": "operations.keys.kind" },
-            { "key": "algo", "titleKey": "operations.keys.algo" },
-            { "key": "owner", "titleKey": "operations.keys.owner" }
+            {
+              "key": "kind",
+              "titleKey": "operations.keys.kind"
+            },
+            {
+              "key": "algo",
+              "titleKey": "operations.keys.algo"
+            },
+            {
+              "key": "owner",
+              "titleKey": "operations.keys.owner"
+            }
           ]
         },
         {
@@ -322,8 +461,14 @@
               "titleKey": "operations.keys.health",
               "type": "status"
             },
-            { "key": "package", "titleKey": "operations.vulns.package" },
-            { "key": "fixed", "titleKey": "operations.vulns.fixed" }
+            {
+              "key": "package",
+              "titleKey": "operations.vulns.package"
+            },
+            {
+              "key": "fixed",
+              "titleKey": "operations.vulns.fixed"
+            }
           ]
         }
       ],
@@ -353,7 +498,8 @@
           "refreshSec": 300
         }
       ]
-    }
+    },
+    "uses": ["homepage.widgets"]
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"]

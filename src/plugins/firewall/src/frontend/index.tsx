@@ -10,6 +10,7 @@ import { FirewallHostsCard } from "./FirewallHostsCard";
 import { FirewallManagerCard } from "./FirewallManagerCard";
 import { FirewallTab } from "./FirewallTab";
 import { RuleSetsTab } from "./RuleSetsTab";
+import { firewallWidget } from "./FirewallWidget";
 
 const TAB_ID = "firewall";
 const RULESETS_ID = "firewall-rulesets";
@@ -112,4 +113,5 @@ export function activate(app: TermixApp): void {
       Record<string, unknown>
     >,
   });
+  app.registerExtension("homepage.widgets", firewallWidget);
 }

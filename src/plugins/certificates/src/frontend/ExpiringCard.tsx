@@ -22,7 +22,9 @@ const WARN_DAYS = 14;
 const SHOWN = 30;
 
 /** Dashboard card: the certificates that expire next across hosts. */
-export function ExpiringCard({ isVisible }: DashboardCardProps) {
+export function ExpiringCard({
+  isVisible,
+}: Pick<DashboardCardProps, "isVisible">) {
   const { t } = useTranslation();
   const allowed = usePermission("use");
   const api = usePluginApi();

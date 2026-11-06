@@ -1,0 +1,451 @@
+{
+  "plugin": {
+    "name": "Backups",
+    "description": "Back up folders, databases and Docker data on your hosts with restic, then browse, download and restore."
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "delete": "Delete",
+    "done": "Done",
+    "loading": "Loading...",
+    "refresh": "Refresh",
+    "retry": "Try again"
+  },
+  "permissions": {
+    "use": {
+      "title": "Use Backups",
+      "description": "Set up backup jobs and repositories, run backups, and browse, download and restore snapshots on hosts they can edit."
+    }
+  },
+  "tab": {
+    "title": "Backups",
+    "viewJobs": "Jobs",
+    "viewRepos": "Repositories",
+    "viewHistory": "History"
+  },
+  "hostTab": {
+    "title": "Backups",
+    "noHost": "Open Backups from a host.",
+    "viewJobs": "Jobs",
+    "viewSnapshots": "Snapshots",
+    "viewHistory": "History",
+    "restic": "restic {{version}}",
+    "noRestic": "restic not installed",
+    "sudo": "Termix needs to log in as root, or as a user with passwordless sudo, to run backups on this host.",
+    "statusFailed": "Could not read this host"
+  },
+  "install": {
+    "missing": "restic is not installed on this host",
+    "tooOld": "restic on this host is older than 0.17",
+    "hint": "Backups use restic. Install it with the package manager, or from the restic release on GitHub when the package is too old.",
+    "button": "Install restic",
+    "working": "Installing...",
+    "title": "Install restic?",
+    "desc": "This installs restic on the host as root.",
+    "confirm": "Install",
+    "done": "restic {{version}} is installed",
+    "failed": "Could not install restic"
+  },
+  "status": {
+    "never": "Never run",
+    "running": "Running",
+    "success": "Done",
+    "warning": "Warnings",
+    "failed": "Failed",
+    "canceled": "Stopped"
+  },
+  "time": {
+    "justNow": "just now",
+    "soon": "in a moment",
+    "ago": {
+      "minutes_one": "{{count}} minute ago",
+      "minutes_other": "{{count}} minutes ago",
+      "hours_one": "{{count}} hour ago",
+      "hours_other": "{{count}} hours ago",
+      "days_one": "{{count}} day ago",
+      "days_other": "{{count}} days ago"
+    },
+    "in": {
+      "minutes_one": "in {{count}} minute",
+      "minutes_other": "in {{count}} minutes",
+      "hours_one": "in {{count}} hour",
+      "hours_other": "in {{count}} hours",
+      "days_one": "in {{count}} day",
+      "days_other": "in {{count}} days"
+    }
+  },
+  "jobs": {
+    "add": "Add job",
+    "empty": "No backup jobs yet",
+    "emptyHint": "Add a job to back up folders, databases or Docker data.",
+    "emptyNoRepo": "Add a repository first, so backups have somewhere to go.",
+    "loadFailed": "Could not load the backup jobs",
+    "lastGood": "Last backup {{when}}",
+    "noGood": "No backup yet",
+    "next": "Next {{when}}",
+    "paused": "Paused",
+    "run": "Run now",
+    "stop": "Stop",
+    "edit": "Edit",
+    "snapshots": "Snapshots",
+    "started": "{{name}} started",
+    "runFailed": "Could not start the backup"
+  },
+  "editor": {
+    "newTitle": "New backup job",
+    "general": "Job",
+    "host": "Host",
+    "pickHost": "Pick a host",
+    "name": "Name",
+    "namePlaceholder": "Nightly backup",
+    "repository": "Repository",
+    "pickRepository": "Pick a repository",
+    "noRepos": "You have no repository this host can use. Add one in the Backups tab first.",
+    "repoLocked": "Only the owner of this repository can change it.",
+    "enabled": "Run on schedule",
+    "enabledHint": "Turn off to pause the schedule. Run now still works.",
+    "oneFileSystem": "Stay on one file system",
+    "oneFileSystemHint": "Skip other disks and mounts found inside the picked folders.",
+    "saved": "Job saved",
+    "saveFailed": "Could not save the job",
+    "deleteTitle": "Delete {{name}}?",
+    "deleteDesc": "The job is removed from Termix. Its snapshots stay in the repository.",
+    "deleted": "Job deleted",
+    "deleteFailed": "Could not delete the job"
+  },
+  "sources": {
+    "add": "Add to backup",
+    "addPaths": "Folders",
+    "addDatabase": "Database",
+    "addDocker": "Docker",
+    "remove": "Remove",
+    "paths": "Folders and files",
+    "folders": "Paths",
+    "foldersHint": "One full path per line.",
+    "excludes": "Skip",
+    "excludesHint": "One restic pattern per line, like *.log.",
+    "database": "Database",
+    "engine": "Type",
+    "engines": {
+      "mysql": "MySQL or MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Login",
+    "ownLogin": "Type a login here",
+    "noDatabasesPlugin": "Turn on the Databases plugin to pick a saved login.",
+    "address": "Address",
+    "addressPlaceholder": "Empty for the local socket",
+    "port": "Port",
+    "username": "User",
+    "password": "Password",
+    "passwordSaved": "Saved, leave empty to keep it",
+    "runAs": "Run as",
+    "runAsHint": "A Linux user to run the dump as, like postgres. Empty runs it as root.",
+    "databases": "Databases",
+    "databasesHint": "One name per line. Leave empty to back up all of them.",
+    "sqliteFiles": "Database files",
+    "sqliteFilesHint": "One full path per line. Each file is copied safely while it is in use.",
+    "docker": "Docker",
+    "stacks": "Stacks",
+    "volumes": "Volumes",
+    "noStacks": "No compose stacks found",
+    "noVolumes": "No volumes found",
+    "dockerFailed": "Could not list Docker on this host",
+    "stop": "Stop stacks during the backup",
+    "stopHint": "Picked stacks are stopped first and started again after, so their files don't change while they are read."
+  },
+  "schedule": {
+    "title": "Schedule",
+    "manual": "By hand",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "custom": "Custom",
+    "day": "Day",
+    "time": "Time",
+    "cron": "Cron",
+    "cronHint": "Minute, hour, day of month, month, day of week.",
+    "cronInvalid": "This cron is not valid",
+    "timezone": "Time zone",
+    "serverTime": "Server time",
+    "manualHint": "This job only runs when you press Run now.",
+    "manualOnly": "By hand",
+    "next": "Next run {{time}}",
+    "noNext": "This schedule never runs",
+    "dailyAt": "Daily at {{time}}",
+    "weeklyAt": "{{day}} at {{time}}",
+    "days": {
+      "0": "Sunday",
+      "1": "Monday",
+      "2": "Tuesday",
+      "3": "Wednesday",
+      "4": "Thursday",
+      "5": "Friday",
+      "6": "Saturday"
+    }
+  },
+  "keep": {
+    "title": "Keep",
+    "last": "Last",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "hint": "After each backup, older snapshots of this job are removed so only these are kept. All 0 keeps everything."
+  },
+  "hooks": {
+    "title": "Commands",
+    "pre": "Before",
+    "preHint": "Runs as root before the backup. If it fails, the backup stops.",
+    "post": "After",
+    "postHint": "Runs as root after the backup, even when it failed. TERMIX_BACKUP_STATUS holds the result."
+  },
+  "alerts": {
+    "title": "Alerts",
+    "onFailure": "Alert when a backup fails",
+    "onFailureHint": "Also alerts on warnings, and once when it works again.",
+    "staleDays": "Days without a backup",
+    "staleDaysHint": "Alert when no backup worked for this many days. 0 turns it off."
+  },
+  "repos": {
+    "add": "Add repository",
+    "empty": "No repositories yet",
+    "emptyHint": "A repository is where backups are stored, like an S3 bucket or a folder.",
+    "loadFailed": "Could not load the repositories",
+    "jobCount_one": "{{count}} job",
+    "jobCount_other": "{{count}} jobs",
+    "newTitle": "New repository",
+    "storage": "Storage",
+    "name": "Name",
+    "namePlaceholder": "Offsite S3",
+    "kind": "Type",
+    "kinds": {
+      "s3": "S3 compatible",
+      "rest": "REST server",
+      "rclone": "rclone",
+      "local": "Folder on a host"
+    },
+    "endpoint": "Endpoint",
+    "endpointHint": "Empty for AWS. For MinIO, R2, B2 or Wasabi, their S3 address.",
+    "region": "Region",
+    "bucket": "Bucket",
+    "prefix": "Folder in the bucket",
+    "prefixHint": "Optional.",
+    "accessKeyId": "Access key id",
+    "secretKey": "Secret access key",
+    "secretSaved": "Saved, leave empty to keep it",
+    "url": "Server address",
+    "username": "User",
+    "usernameHint": "Empty when the server has no login.",
+    "restPassword": "Password",
+    "remote": "Remote name",
+    "remoteHint": "Letters, numbers and _ only.",
+    "path": "Path",
+    "rcloneConfig": "rclone config",
+    "rcloneHint": "The lines of the remote from rclone.conf. Run rclone config on your computer to make them. rclone must be installed on the hosts.",
+    "rcloneSaved": "Saved, leave empty to keep it",
+    "host": "Host",
+    "pickHost": "Pick a host",
+    "folder": "Folder",
+    "folderHint": "Only jobs on this host can use it. A mounted disk is best.",
+    "password": "Encryption",
+    "resticPassword": "Repository password",
+    "passwordHint": "Leave empty and Termix makes a strong one. Keep a copy somewhere safe: without it the backups can't be read.",
+    "passwordKeep": "Saved, leave empty to keep it",
+    "passwordChangeHint": "This only changes what Termix sends. It does not change the password of an existing repository.",
+    "reveal": "Show password",
+    "revealTitle": "Show the repository password?",
+    "revealDesc": "Anyone who has it and the storage keys can read every backup in this repository. This is written to the audit log.",
+    "revealFailed": "Could not read the password",
+    "copy": "Copy",
+    "copied": "Copied",
+    "check": "Check",
+    "checkFrom": "Check from",
+    "checkFromHint": "The host that opens the repository. It needs restic.",
+    "checkButton": "Check",
+    "initButton": "Check and set up",
+    "installRclone": "Install rclone on this host",
+    "rcloneInstalled": "rclone {{version}} is installed.",
+    "rcloneFailed": "Could not install rclone",
+    "checking": "Checking...",
+    "opened": "The repository opened fine.",
+    "created": "The repository was set up and is ready.",
+    "checkFailed": "Could not open the repository",
+    "checkNext": "Saved. Check it from a host to set it up.",
+    "saved": "Repository saved",
+    "saveFailed": "Could not save the repository",
+    "deleteTitle": "Delete {{name}}?",
+    "deleteDesc": "It is removed from Termix only. The backups stay in the storage.",
+    "deleted": "Repository deleted",
+    "deleteFailed": "Could not delete the repository"
+  },
+  "snapshots": {
+    "noJobs": "Add a backup job first.",
+    "job": "Job",
+    "titleFor": "Snapshots of {{name}}",
+    "empty": "No snapshots yet",
+    "loadFailed": "Could not read the snapshots",
+    "latest": "Latest",
+    "files_one": "{{count}} file",
+    "files_other": "{{count}} files",
+    "browse": "Browse",
+    "delete": "Delete",
+    "deleteTitle": "Delete this snapshot?",
+    "deleteDesc": "The snapshot from {{time}} is removed from the repository for good.",
+    "deleted": "Snapshot deleted",
+    "deleteFailed": "Could not delete the snapshot",
+    "browseTitle": "Snapshot {{time}}",
+    "root": "Root",
+    "emptyFolder": "This folder is empty",
+    "filesFailed": "Could not list this folder",
+    "pick": "Pick",
+    "download": "Download",
+    "downloadZip": "Download as zip",
+    "downloadFailed": "Could not download",
+    "restoreAll": "Restore all",
+    "restorePicked_one": "Restore {{count}} item",
+    "restorePicked_other": "Restore {{count}} items"
+  },
+  "restore": {
+    "title": "Restore",
+    "what": "What",
+    "everything": "Everything in the snapshot.",
+    "more_one": "and {{count}} more",
+    "more_other": "and {{count}} more",
+    "where": "Where",
+    "host": "Host",
+    "hostHint": "Any host you can edit that can reach the repository.",
+    "localOnly": "This repository is a folder on its host, so it can only be restored there.",
+    "toFolder": "To a folder",
+    "toOriginal": "Where it was",
+    "folder": "Folder",
+    "folderHint": "Files keep their full path inside this folder.",
+    "originalWarning": "Files are written back to where they were and may replace what is there now.",
+    "overwrite": "Files that already exist",
+    "overwriteOptions": {
+      "if-changed": "Replace when changed",
+      "always": "Always replace",
+      "if-newer": "Replace when the backup is newer",
+      "never": "Never replace"
+    },
+    "start": "Restore",
+    "started": "Restore started",
+    "failed": "Could not start the restore"
+  },
+  "run": {
+    "title": "Run",
+    "backupTitle": "Backup of {{name}}",
+    "restoreTitle": "Restore of {{name}}",
+    "loadFailed": "Could not load the run",
+    "progress": "Progress",
+    "preparing": "Getting ready...",
+    "progressLine": "{{percent}}% | {{files}} of {{totalFiles}} files | {{bytes}} of {{totalBytes}}",
+    "left": "{{time}} left",
+    "details": "Details",
+    "started": "Started",
+    "finished": "Finished",
+    "trigger": "Started by",
+    "triggers": {
+      "manual": "Run now",
+      "schedule": "Schedule",
+      "operation": "Termix action"
+    },
+    "snapshot": "Snapshot",
+    "target": "Restored to",
+    "files": "Files",
+    "filesLine": "{{total}} files, {{added}} new, {{changed}} changed",
+    "size": "Size",
+    "added": "Added to the repository",
+    "took": "Took",
+    "log": "Log",
+    "noLog": "No log yet.",
+    "stopTitle": "Stop this run?",
+    "stopDesc": "A stopped backup saves no snapshot. A stopped restore leaves the files restored so far.",
+    "stopSent": "Stopping",
+    "stopFailed": "Could not stop the run"
+  },
+  "history": {
+    "empty": "Nothing has run yet",
+    "loadFailed": "Could not load the history",
+    "status": "Status",
+    "job": "Job",
+    "host": "Host",
+    "kind": "Type",
+    "kinds": {
+      "backup": "Backup",
+      "restore": "Restore"
+    },
+    "started": "Started",
+    "took": "Took",
+    "size": "Size"
+  },
+  "card": {
+    "title": "Backups",
+    "all": "All backup jobs",
+    "oneJob": "One backup job",
+    "empty": "No backup jobs yet.",
+    "gone": "This backup job was deleted.",
+    "open": "Open"
+  },
+  "operations": {
+    "list": {
+      "title": "List backup jobs"
+    },
+    "failed": {
+      "title": "Failed backups"
+    },
+    "run": {
+      "title": "Run backup"
+    },
+    "cancel": {
+      "title": "Stop backup"
+    },
+    "snapshots": {
+      "title": "List snapshots"
+    },
+    "events": {
+      "finished": "Backup finished",
+      "failed": "Backup failed"
+    },
+    "jobs": {
+      "title": "Backup jobs",
+      "lastSuccess": "Last backup",
+      "nextRun": "Next run",
+      "size": "Size"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Show backups panel in terminals",
+        "description": "Let the backups panel open beside this host's SSH terminal."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Open the backups panel with new terminals",
+        "description": "Show the backups panel beside every SSH terminal that has it turned on. You can still open and close it from the button on the right edge."
+      },
+      "companionSide": {
+        "label": "Backups panel side",
+        "description": "Where the backups panel sits next to a terminal.",
+        "right": "Right",
+        "left": "Left",
+        "bottom": "Bottom"
+      },
+      "companionSize": {
+        "label": "Backups panel size",
+        "description": "Width in pixels, or height when it is at the bottom. You can also drag its edge."
+      },
+      "companionEdgeButton": {
+        "label": "Show the panel button",
+        "description": "Show a small button on the right edge of a terminal that opens the backups panel."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Toggle backups panel"
+  }
+}

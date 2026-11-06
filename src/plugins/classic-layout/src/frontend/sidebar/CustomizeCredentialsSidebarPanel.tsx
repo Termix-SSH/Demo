@@ -36,125 +36,121 @@ export function CustomizeCredentialsSidebarPanel({
       onOpenChange={onOpenChange}
       title={t("credentials.customizeSidebar")}
     >
-      <p className="text-xs text-muted-foreground">
+      <p className="border-b border-border px-3 py-2 text-xs text-muted-foreground">
         {t("credentials.customizeSidebarDescription")}
       </p>
-      <div className="flex flex-col">
-        <SectionCard
-          title={t("credentials.customizeDensityTitle")}
-          icon={<Rows3 className="size-3.5" />}
+      <SectionCard
+        title={t("credentials.customizeDensityTitle")}
+        icon={<Rows3 className="size-3.5" />}
+      >
+        <SettingRow
+          label={t("credentials.customizeDensityTitle")}
+          description={
+            preferences.display.density === "comfortable"
+              ? t("credentials.densityComfortableDesc")
+              : t("credentials.densityCompactDesc")
+          }
         >
-          <SettingRow
-            label={t("credentials.customizeDensityTitle")}
-            description={
-              preferences.display.density === "comfortable"
-                ? t("credentials.densityComfortableDesc")
-                : t("credentials.densityCompactDesc")
+          <Select2
+            value={preferences.display.density}
+            onChange={(e) =>
+              update((prev) => ({
+                ...prev,
+                display: {
+                  ...prev.display,
+                  density: e.target.value as CredentialDensity,
+                },
+              }))
             }
+            className="h-8 border border-border bg-background px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
           >
-            <Select2
-              value={preferences.display.density}
-              onChange={(e) =>
-                update((prev) => ({
-                  ...prev,
-                  display: {
-                    ...prev.display,
-                    density: e.target.value as CredentialDensity,
-                  },
-                }))
-              }
-              className="h-8 border border-border bg-background px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
-            >
-              <option value="comfortable">
-                {t("credentials.displayDensityComfortable")}
-              </option>
-              <option value="compact">
-                {t("credentials.displayDensityCompact")}
-              </option>
-            </Select2>
-          </SettingRow>
-        </SectionCard>
+            <option value="comfortable">
+              {t("credentials.displayDensityComfortable")}
+            </option>
+            <option value="compact">
+              {t("credentials.displayDensityCompact")}
+            </option>
+          </Select2>
+        </SettingRow>
+      </SectionCard>
 
-        <SectionCard
-          title={t("credentials.rowDetailsTitle")}
-          icon={<ListChecks className="size-3.5" />}
-        >
-          <p className="pt-2 text-xs text-muted-foreground">
-            {t("credentials.rowDetailsDesc")}
-          </p>
-          {CREDENTIAL_ROW_FIELD_KEYS.map((key) => (
-            <SettingRow
-              key={key}
-              label={t(`credentials.${key}`)}
-              description={t(`credentials.${key}Desc`)}
-            >
-              <FakeSwitch
-                checked={preferences.display[key]}
-                onChange={(v) =>
-                  update((prev) => ({
-                    ...prev,
-                    display: { ...prev.display, [key]: v },
-                  }))
-                }
-              />
-            </SettingRow>
-          ))}
-        </SectionCard>
-
-        <SectionCard
-          title={t("credentials.customizeBehaviorTitle")}
-          icon={<SquareStack className="size-3.5" />}
-        >
+      <SectionCard
+        title={t("credentials.rowDetailsTitle")}
+        icon={<ListChecks className="size-3.5" />}
+      >
+        <p className="border-b border-border py-2 text-xs text-muted-foreground">
+          {t("credentials.rowDetailsDesc")}
+        </p>
+        {CREDENTIAL_ROW_FIELD_KEYS.map((key) => (
           <SettingRow
-            label={t("credentials.showCredentialTags")}
-            description={t("credentials.showCredentialTagsDesc")}
+            key={key}
+            label={t(`credentials.${key}`)}
+            description={t(`credentials.${key}Desc`)}
           >
             <FakeSwitch
-              checked={preferences.display.showTags}
+              checked={preferences.display[key]}
               onChange={(v) =>
                 update((prev) => ({
                   ...prev,
-                  display: { ...prev.display, showTags: v },
+                  display: { ...prev.display, [key]: v },
                 }))
               }
             />
           </SettingRow>
-          <div className="flex flex-col gap-1.5 py-3 border-b border-border last:border-0">
-            <div className="flex flex-col gap-0.5">
-              <span className="text-sm font-medium leading-snug">
-                {t("credentials.actionsVisibility")}
-              </span>
-              <span className="text-xs text-muted-foreground leading-snug">
-                {t("credentials.actionsVisibilityDesc")}
-              </span>
-            </div>
-            <Select2
-              value={preferences.display.trayTrigger}
-              onChange={(e) =>
-                update((prev) => ({
-                  ...prev,
-                  display: {
-                    ...prev.display,
-                    trayTrigger: e.target.value as CredentialTrayTrigger,
-                  },
-                }))
-              }
-              className="h-8 w-full border border-border bg-background px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
-            >
-              <option value="always">{t("credentials.actionsAlways")}</option>
-              <option value="actionsOnly">
-                {t("credentials.actionsOnly")}
-              </option>
-              <option value="hover">{t("credentials.actionsHover")}</option>
-              <option value="click">{t("credentials.actionsClick")}</option>
-            </Select2>
-          </div>
-        </SectionCard>
+        ))}
+      </SectionCard>
 
-        <p className="text-[11px] text-muted-foreground/70 leading-snug">
-          {t("credentials.customizeSortHint")}
-        </p>
-      </div>
+      <SectionCard
+        title={t("credentials.customizeBehaviorTitle")}
+        icon={<SquareStack className="size-3.5" />}
+      >
+        <SettingRow
+          label={t("credentials.showCredentialTags")}
+          description={t("credentials.showCredentialTagsDesc")}
+        >
+          <FakeSwitch
+            checked={preferences.display.showTags}
+            onChange={(v) =>
+              update((prev) => ({
+                ...prev,
+                display: { ...prev.display, showTags: v },
+              }))
+            }
+          />
+        </SettingRow>
+        <div className="flex flex-col gap-1.5 py-3 border-b border-border last:border-0">
+          <div className="flex flex-col gap-0.5">
+            <span className="text-sm font-medium leading-snug">
+              {t("credentials.actionsVisibility")}
+            </span>
+            <span className="text-xs text-muted-foreground leading-snug">
+              {t("credentials.actionsVisibilityDesc")}
+            </span>
+          </div>
+          <Select2
+            value={preferences.display.trayTrigger}
+            onChange={(e) =>
+              update((prev) => ({
+                ...prev,
+                display: {
+                  ...prev.display,
+                  trayTrigger: e.target.value as CredentialTrayTrigger,
+                },
+              }))
+            }
+            className="h-8 w-full border border-border bg-background px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
+          >
+            <option value="always">{t("credentials.actionsAlways")}</option>
+            <option value="actionsOnly">{t("credentials.actionsOnly")}</option>
+            <option value="hover">{t("credentials.actionsHover")}</option>
+            <option value="click">{t("credentials.actionsClick")}</option>
+          </Select2>
+        </div>
+      </SectionCard>
+
+      <p className="px-3 py-2 text-[11px] text-muted-foreground/70 leading-snug">
+        {t("credentials.customizeSortHint")}
+      </p>
     </InlineView>
   );
 }

@@ -4,8 +4,13 @@ import type { TermixApp } from "@termix-ssh/plugin-sdk/frontend";
 import { initApi } from "./api";
 import { CertificatesCard } from "./CertificatesCard";
 import { CertificatesTab } from "./CertificatesTab";
-import { certificatesEnabled } from "./enabled";
+import { certificatesEnabled, certificatesPanelEnabled } from "./enabled";
 import { ExpiringCard } from "./ExpiringCard";
+import {
+  CertificatesCompanion,
+  useCertificatesCompanionDefaults,
+} from "./CertificatesCompanion";
+import { expiringWidget } from "./ExpiringWidget";
 
 const TAB_ID = "certificates";
 
@@ -42,6 +47,33 @@ export function activate(app: TermixApp): void {
     frame: "framed",
     component: ExpiringCard,
   });
+
+  app.registerExtension("homepage.widgets", expiringWidget);
+
+  if (typeof app.registerCompanion === "function") {
+    app.registerCompanion(TAB_ID, CertificatesCompanion, {
+      icon: ShieldCheck,
+      titleKey: "tab.title",
+      order: 50,
+      tabTypes: ["terminal"],
+      when: (_tab, host) =>
+        canUse && !!host?.enableSsh && certificatesPanelEnabled(host),
+      useDefaults: useCertificatesCompanionDefaults,
+    });
+    app.registerAction("certificates.togglePanel", ((
+      _handle: unknown,
+      tab: unknown,
+    ) => app.toggleCompanion(tab as never, TAB_ID)) as never);
+    app.registerSlotContribution("tab.menu", {
+      actionId: "certificates.togglePanel",
+      titleKey: "nav.togglePanel",
+      icon: ShieldCheck,
+      kind: "button",
+      order: 50,
+      when: (context) =>
+        (context.tab as { type?: string } | null)?.type === "terminal",
+    });
+  }
 
   // Fills the SSL card in Host Metrics, when that plugin runs.
   app.registerSlotContribution("host-metrics.managers", {

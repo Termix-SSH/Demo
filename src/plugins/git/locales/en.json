@@ -1,0 +1,294 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "See, pull, commit and push git repos on your hosts, and keep them up to date with auto pull."
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "loading": "Loading..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Use Git",
+      "description": "See git repos on hosts you can reach, and change them on hosts you can edit."
+    },
+    "runCommands": {
+      "title": "Run commands after auto pull",
+      "description": "Set a command that runs on the host after an auto pull brings in new commits."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Manage git repos on this host from the Git tab."
+      },
+      "repoRoots": {
+        "label": "Scan folders",
+        "description": "Folders searched for repos when you scan this host. Separate them with commas. Default is the home folder.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Use sudo",
+        "description": "Run git as root with sudo. Only for repos that the login user cannot use."
+      },
+      "readOnly": {
+        "label": "Read only",
+        "description": "Show repos but never change them on this host."
+      },
+      "showPanel": {
+        "label": "Panel beside the terminal",
+        "description": "Offer the Git panel on this host's terminal tabs."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Open the panel with the terminal",
+        "description": "Show the Git panel when a terminal opens on a host that has it."
+      },
+      "companionSide": {
+        "label": "Panel side",
+        "description": "Where the panel sits next to the terminal.",
+        "right": "Right",
+        "left": "Left",
+        "bottom": "Bottom"
+      },
+      "companionSize": {
+        "label": "Panel size",
+        "description": "Width of the panel, or its height at the bottom, in pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Edge button",
+        "description": "Show a small button on the terminal edge to open the panel."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Open Git from a host.",
+    "error": "Could not load git from this host.",
+    "disabled": "Git is turned off for this host. Turn it on in the host settings.",
+    "sudo": "This needs a root login, passwordless sudo or a saved Sudo Password.",
+    "refresh": "Refresh",
+    "readOnly": "Read only",
+    "notInstalled": "git not installed",
+    "notInstalledTitle": "git is not installed on this host",
+    "notInstalledHint": "Install git with the host's package manager, then refresh."
+  },
+  "actions": {
+    "ok": "Done",
+    "failed": "Failed",
+    "noOutput": "No output."
+  },
+  "repos": {
+    "add": "Add repo",
+    "search": "Search repos",
+    "empty": "No repos yet. Add one to get started.",
+    "noMatch": "No repos match.",
+    "viewOnly": "No repos have been added to this host.",
+    "detached": "detached",
+    "changes_one": "{{count}} change",
+    "changes_other": "{{count}} changes",
+    "conflicts": "Conflicts",
+    "auto": "Auto pull",
+    "autoFailing": "Pull failing",
+    "remove": "Remove from list",
+    "removeTitle": "Remove {{name}}?",
+    "removeBody": "The repo is only forgotten here. Nothing is deleted on the host.",
+    "removed": "{{name}} removed",
+    "error": {
+      "missing": "Folder missing",
+      "notrepo": "Not a git repo",
+      "unreadable": "Cannot read"
+    }
+  },
+  "add": {
+    "title": "Add repos",
+    "modeScan": "Scan",
+    "modePath": "Folder",
+    "modeClone": "Clone",
+    "scanHint": "Looks for git repos in {{roots}}. Change the folders in the host settings.",
+    "rescan": "Scan again",
+    "noneFound": "No new repos found.",
+    "picked": "Selected",
+    "addPicked_one": "Add {{count}} repo",
+    "addPicked_other": "Add {{count}} repos",
+    "addAll": "Add all",
+    "folder": "Folder on the host",
+    "folderHint": "Full path, or start with ~ for the home folder. It must already be a git repo.",
+    "addRepo": "Add repo",
+    "url": "Address",
+    "urlHint": "Uses the keys and git settings of the host's login user.",
+    "dest": "Clone into",
+    "destHint": "The folder must not exist yet.",
+    "clone": "Clone",
+    "cloned": "Cloned",
+    "added_one": "{{count}} repo added",
+    "added_other": "{{count}} repos added",
+    "failed": "Could not add the repo",
+    "scanFailed": "Could not scan the host"
+  },
+  "repo": {
+    "ahead": "{{count}} ahead",
+    "behind": "{{count}} behind",
+    "fetch": "Fetch",
+    "fetched": "Fetched",
+    "pull": "Pull",
+    "pulled": "Pulled",
+    "push": "Push",
+    "pushed": "Pushed",
+    "viewChanges": "Changes",
+    "viewBranches": "Branches",
+    "viewHistory": "History",
+    "viewStash": "Stash",
+    "viewAuto": "Auto pull"
+  },
+  "changes": {
+    "loadFailed": "Could not read the changes.",
+    "clean": "Nothing to commit. The working tree is clean.",
+    "stagedTitle": "Staged ({{count}})",
+    "unstagedTitle": "Changes ({{count}})",
+    "stage": "Stage",
+    "staged": "Staged",
+    "unstage": "Unstage",
+    "unstaged": "Unstaged",
+    "stageAll": "Stage all",
+    "renamed": "Renamed",
+    "discard": "Discard",
+    "discardTitle": "Discard changes to {{name}}?",
+    "discardBody": "The changes in this file are deleted and cannot be brought back.",
+    "discarded": "Changes discarded",
+    "message": "Commit message",
+    "messagePlaceholder": "What changed",
+    "commit": "Commit",
+    "commitAll": "Commit all changes",
+    "commitStaged_one": "Commit {{count}} staged file",
+    "commitStaged_other": "Commit {{count}} staged files",
+    "committed": "Committed",
+    "noDiff": "No changes to show.",
+    "truncated": "The diff is long, so only the start is shown."
+  },
+  "branches": {
+    "loadFailed": "Could not read the branches.",
+    "empty": "No branches yet.",
+    "current": "Current",
+    "remote": "Remote",
+    "gone": "Upstream gone",
+    "newName": "New branch",
+    "create": "Create branch",
+    "created": "Branch {{name}} created",
+    "switch": "Switch",
+    "switched": "Switched to {{name}}",
+    "merge": "Merge into current",
+    "mergeTitle": "Merge {{name}} into {{into}}?",
+    "mergeBody": "A merge with conflicts is undone right away.",
+    "merged": "{{name}} merged",
+    "delete": "Delete branch",
+    "deleteTitle": "Delete {{name}}?",
+    "deleteBody": "Git refuses if the branch has commits that are not merged.",
+    "deleted": "{{name}} deleted",
+    "forceTitle": "Force delete {{name}}?",
+    "forceBody": "This branch has commits that are not merged. They are lost if you delete it.",
+    "forceDelete": "Force delete"
+  },
+  "history": {
+    "loadFailed": "Could not read the history.",
+    "empty": "No commits yet.",
+    "branch": "This branch",
+    "all": "All branches",
+    "more": "Load more"
+  },
+  "stash": {
+    "loadFailed": "Could not read the stash.",
+    "title": "Stashes",
+    "empty": "No stashes.",
+    "message": "Message",
+    "messagePlaceholder": "Optional",
+    "untracked": "Include untracked files",
+    "push": "Stash changes",
+    "pushDone": "Changes stashed",
+    "apply": "Apply",
+    "applyDone": "Stash applied",
+    "pop": "Pop",
+    "popDone": "Stash applied and removed",
+    "drop": "Drop",
+    "dropDone": "Stash dropped",
+    "dropTitle": "Drop {{name}}?",
+    "dropBody": "The stash is deleted and cannot be brought back.",
+    "remotes": "Remotes",
+    "noRemotes": "No remotes."
+  },
+  "auto": {
+    "intro": "Pulls on a schedule with fast forward only. It never merges, and it skips the repo when it has uncommitted changes or has diverged from its upstream.",
+    "noUpstream": "This branch has no upstream yet, so auto pull will skip it.",
+    "enable": "Auto pull",
+    "enableHint": "Runs as you, with your access to this host.",
+    "interval": "Every (minutes)",
+    "intervalHint": "How long to wait between pulls.",
+    "post": "Command after a pull",
+    "postHint": "Runs in the repo folder after new commits arrive. Needs the run commands permission.",
+    "saved": "Auto pull saved",
+    "saveFailed": "Could not save auto pull",
+    "runNow": "Run now",
+    "next": "Next pull {{when}}",
+    "runs": "Recent runs",
+    "noRuns": "No runs yet.",
+    "outcome": {
+      "pulled": "Pulled",
+      "uptodate": "Up to date",
+      "skipped": "Skipped",
+      "failed": "Failed"
+    }
+  },
+  "card": {
+    "title": "Git repos",
+    "loading": "Loading...",
+    "refresh": "Refresh",
+    "empty": "No host has Git repos yet.",
+    "allClean": "All repos are clean and up to date.",
+    "summary_one": "{{count}} repo | {{attention}} need a look",
+    "summary_other": "{{count}} repos | {{attention}} need a look"
+  },
+  "companion": {
+    "toggle": "Git panel",
+    "openTab": "Open Git",
+    "here": "Repo of this folder",
+    "all": "All repos"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "List git repos"
+    },
+    "fetch": {
+      "title": "Fetch a repo"
+    },
+    "pull": {
+      "title": "Pull a repo"
+    },
+    "push": {
+      "title": "Push a repo"
+    },
+    "checkout": {
+      "title": "Switch branch",
+      "branch": "Branch"
+    },
+    "reset-hard": {
+      "title": "Reset a repo hard",
+      "ref": "Reset to"
+    },
+    "repos": {
+      "title": "Git repos",
+      "branch": "Branch",
+      "ahead": "Ahead",
+      "behind": "Behind",
+      "changed": "Changes"
+    },
+    "signals": {
+      "behind": "Repos behind",
+      "dirty": "Repos with changes",
+      "pull-failing": "Auto pull failing"
+    }
+  }
+}

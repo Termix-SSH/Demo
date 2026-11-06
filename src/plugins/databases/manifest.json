@@ -36,6 +36,13 @@
     "secrets:own",
     "operations:provide"
   ],
+  "provides": [
+    {
+      "service": "databases.logins",
+      "version": "1.0.0",
+      "permission": "databases.use"
+    }
+  ],
   "contributes": {
     "tabs": [
       {
@@ -134,6 +141,22 @@
           }
         },
         {
+          "id": "databases.status",
+          "titleKey": "operations.status.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableDatabases": true
+            }
+          },
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
           "id": "databases.check-connection",
           "titleKey": "operations.check.title",
           "icon": "PlugZap",
@@ -172,8 +195,25 @@
             }
           ]
         }
+      ],
+      "signals": [
+        {
+          "id": "databases.reachable",
+          "titleKey": "operations.status.title",
+          "read": "databases.status",
+          "scope": "host",
+          "kind": "status",
+          "refreshSec": 300
+        }
       ]
-    }
+    },
+    "dashboardCards": [
+      {
+        "id": "databases-hosts",
+        "titleKey": "card.title",
+        "icon": "Database"
+      }
+    ]
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"]

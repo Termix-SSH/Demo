@@ -32,7 +32,8 @@ export function InterfacesView({
     if (isVisible) void load();
   }, [isVisible, load]);
 
-  if (failed) return <p className="p-2 text-sm text-destructive">{failed}</p>;
+  if (failed)
+    return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
   if (!items) return <Loading />;
 
   if (items.length === 0) {

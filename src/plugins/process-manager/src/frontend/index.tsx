@@ -10,6 +10,7 @@ import { HostTile, ProcessCard, ProcessesCompanion } from "./Compact";
 import { processesEnabled, processesPanelEnabled } from "./enabled";
 import { ProcessesTab } from "./ProcessesTab";
 import { WatchesCard } from "./WatchesCard";
+import { processesWidget } from "./ProcessesWidget";
 
 export { processesEnabled, processesPanelEnabled };
 
@@ -112,4 +113,5 @@ export function activate(app: TermixApp): void {
     when: (context: { host?: unknown }) =>
       canUse && processesEnabled(context.host as object),
   });
+  app.registerExtension("homepage.widgets", processesWidget);
 }

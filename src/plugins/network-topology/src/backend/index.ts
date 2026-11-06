@@ -3,6 +3,7 @@ import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import { graphs } from "./tables.js";
 import { createGraphRepository } from "./repository.js";
 import { registerGraphRoutes } from "./routes.js";
+import { registerOperations } from "./operations.js";
 import { mapTopologyHostIds } from "./topology-host-ids.js";
 
 /** What other plugins get from ctx.services.get("network-topology.graph"). */
@@ -46,6 +47,8 @@ export async function activate(ctx: PluginContext) {
       ),
     }),
   });
+
+  registerOperations(ctx, repo);
 
   const service: NetworkTopologyService = {
     get: async () => {

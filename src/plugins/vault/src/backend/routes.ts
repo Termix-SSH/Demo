@@ -6,6 +6,7 @@ import type {
   ProfileRow,
   ProfileStore,
 } from "./profile-store.js";
+import { sendResultPage } from "./result-page.js";
 import { isProvider, PROVIDERS } from "./vault-client.js";
 
 /**
@@ -13,23 +14,6 @@ import { isProvider, PROVIDERS } from "./vault-client.js";
  * sign-in is matched by the state the signer issued.
  */
 export const PUBLIC_PATHS = ["/oidc/callback"];
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-function resultPage(ok: boolean, message: string): string {
-  return `<!doctype html><html><head><meta charset="utf-8"><title>Termix</title>
-<style>body{font-family:system-ui,sans-serif;background:#111;color:#eee;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
-main{max-width:28rem;padding:2rem;border:1px solid #333;background:#181818}h1{font-size:1.1rem;margin:0 0 .5rem}p{margin:0;color:#aaa}</style></head>
-<body><main><h1>${ok ? "Sign-in complete" : "Sign-in failed"}</h1><p>${escapeHtml(message)}</p></main>
-${ok ? "<script>setTimeout(function(){window.close()},1500)</script>" : ""}</body></html>`;
-}
 
 const providerError = `provider must be one of ${PROVIDERS.join(", ")}`;
 
@@ -118,10 +102,7 @@ export function registerRoutes(
     const error = typeof req.query.error === "string" ? req.query.error : "";
 
     const reply = (ok: boolean, message: string) =>
-      res
-        .status(ok ? 200 : 400)
-        .type("html")
-        .send(resultPage(ok, message));
+      sendResultPage(res, ok ? 200 : 400, { ok, detail: message });
 
     if (error) return reply(false, `Sign-in returned: ${error}`);
     if (!state || !code) return reply(false, "Missing state or code.");

@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Power, sensors, event logs and consoles for server BMCs over Redfish, IPMI and Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Loading"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "See BMCs",
+      "description": "Open the Out-of-band tab and see power, health, sensors and logs."
+    },
+    "power": {
+      "title": "Control power and boot",
+      "description": "Turn machines on and off, power cycle them and choose the next boot device."
+    },
+    "console": {
+      "title": "Use the serial console",
+      "description": "Open the serial over LAN console of a machine."
+    },
+    "media": {
+      "title": "Use virtual media",
+      "description": "Mount and eject ISO images on a machine."
+    },
+    "manage": {
+      "title": "Manage BMCs",
+      "description": "Add, change and remove BMCs, and clear their event logs."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Run ipmitool on the Termix server",
+        "description": "When off, IPMI BMCs must use a relay host. Redfish and AMT are not affected."
+      }
+    }
+  },
+  "description": "Add the management controllers (BMCs) of your servers to power them on and off, watch their sensors and read their event logs. Logins are stored encrypted and never shown again.",
+  "summary": "{{count}} BMCs, {{attention}} need attention",
+  "empty": "No BMCs yet.",
+  "add": "Add BMC",
+  "edit": "Edit",
+  "delete": "Delete",
+  "back": "Back",
+  "saved": "Saved",
+  "deleteConfirm": "Delete {{name}}?",
+  "status": {
+    "unknown": "Not read yet",
+    "up": "Reachable",
+    "down": "Unreachable"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI over LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Username",
+    "password": "Password"
+  },
+  "power": {
+    "on": "On",
+    "off": "Off",
+    "unknown": "Unknown",
+    "sent": "Asked {{name}} to change power",
+    "action": {
+      "on": "Power on",
+      "off": "Power off",
+      "graceful-shutdown": "Shut down",
+      "cycle": "Power cycle",
+      "reset": "Reset"
+    },
+    "confirm": {
+      "on": "Power on {{name}}?",
+      "off": "Cut the power of {{name}}? The system does not shut down cleanly.",
+      "graceful-shutdown": "Ask {{name}} to shut down?",
+      "cycle": "Power cycle {{name}}? The system does not shut down cleanly.",
+      "reset": "Reset {{name}}? The system restarts at once."
+    }
+  },
+  "health": {
+    "ok": "Healthy",
+    "warning": "Warning",
+    "critical": "Critical",
+    "unknown": "Unknown"
+  },
+  "kind": {
+    "temperature": "Temperature",
+    "fan": "Fan",
+    "voltage": "Voltage",
+    "power": "Power",
+    "psu": "Power supply",
+    "other": "Other"
+  },
+  "form": {
+    "addTitle": "Add BMC",
+    "editTitle": "Edit BMC",
+    "device": "BMC",
+    "access": "Access",
+    "type": "Type",
+    "name": "Name",
+    "address": "Address",
+    "port": "Port",
+    "host": "Termix host",
+    "hostHint": "Link the BMC to the host it belongs to. It then follows that host's sharing and shows on its host menu.",
+    "noHost": "None",
+    "poll": "Read every (seconds)",
+    "pollHint": "At least 30 seconds, or 60 when a relay host is used.",
+    "scheme": "Connection",
+    "relay": "Relay host",
+    "relayHint": "Run ipmitool on this host instead of the Termix server. Needed for the serial console.",
+    "noRelay": "Termix server",
+    "cipher": "Cipher suite",
+    "cipherHint": "Only change this if the BMC refuses the login. 3 is the usual one, 17 for newer BMCs.",
+    "ca": "CA certificate",
+    "caHint": "Paste the PEM of the BMC's certificate authority. Leave empty for a trusted certificate.",
+    "caSet": "A CA is saved. Paste a new one to replace it.",
+    "keepLogin": "Leave empty to keep the saved login",
+    "test": "Test connection",
+    "testOk": "The BMC answered. Power is {{power}}.",
+    "testNeedsLogin": "Enter the login again to test.",
+    "save": "Save",
+    "add": "Add"
+  },
+  "view": {
+    "overview": "Overview",
+    "sensors": "Sensors",
+    "log": "Event log",
+    "boot": "Boot",
+    "media": "Virtual media",
+    "console": "Console",
+    "refresh": "Read now",
+    "type": "Type",
+    "address": "Address",
+    "power": "Power",
+    "health": "Health",
+    "manufacturer": "Maker",
+    "model": "Model",
+    "serial": "Serial number",
+    "bios": "BIOS",
+    "bmc": "BMC firmware",
+    "status": "BMC",
+    "viaRelay": "Reached through a relay host.",
+    "noSensors": "This BMC reports no sensors.",
+    "sensor": "Sensor",
+    "reading": "Reading",
+    "state": "State"
+  },
+  "log": {
+    "time": "Time",
+    "severity": "Level",
+    "message": "Event",
+    "empty": "The event log is empty.",
+    "clear": "Clear log",
+    "clearConfirm": "Clear the event log of {{name}}? This cannot be undone.",
+    "cleared": "Log cleared",
+    "level": {
+      "info": "Info",
+      "warning": "Warning",
+      "critical": "Critical"
+    }
+  },
+  "boot": {
+    "hint": "The machine boots from this device once, then goes back to its normal order. Apply it before a restart.",
+    "device": "Boot from",
+    "mode": "Mode",
+    "uefi": "UEFI",
+    "legacy": "Legacy BIOS",
+    "apply": "Set for next boot",
+    "done": "{{name}} boots from the chosen device next time",
+    "pxe": "Network (PXE)",
+    "disk": "Hard disk",
+    "cd": "CD or virtual media",
+    "usb": "USB",
+    "bios": "BIOS setup",
+    "none": "Normal order"
+  },
+  "media": {
+    "url": "Image address",
+    "empty": "This BMC has no virtual CD slot.",
+    "mounted": "Mounted",
+    "free": "Empty",
+    "mount": "Mount",
+    "eject": "Eject",
+    "mountedDone": "Image mounted",
+    "ejected": "Image ejected"
+  },
+  "console": {
+    "hint": "Type ~. to leave the console.",
+    "connecting": "Connecting",
+    "ended": "The console closed.",
+    "failed": "Could not open the console.",
+    "needsRelay": "The serial console needs a relay host with ipmitool. Pick one in the BMC settings."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Boot from",
+    "uefi": "UEFI mode",
+    "list": {
+      "title": "List BMCs"
+    },
+    "poll": {
+      "title": "Read a BMC now"
+    },
+    "powerState": {
+      "title": "Get power state"
+    },
+    "power-on": {
+      "title": "Power on"
+    },
+    "graceful-shutdown": {
+      "title": "Shut down"
+    },
+    "power-off": {
+      "title": "Power off"
+    },
+    "power-cycle": {
+      "title": "Power cycle"
+    },
+    "reset": {
+      "title": "Reset"
+    },
+    "setBootOnce": {
+      "title": "Boot once from a device"
+    },
+    "clearLog": {
+      "title": "Clear event log"
+    },
+    "health": {
+      "title": "BMC health"
+    }
+  },
+  "widget": {
+    "name": "Out-of-band",
+    "description": "Power and health of your server BMCs.",
+    "summary": "{{up}} of {{total}} up"
+  }
+}

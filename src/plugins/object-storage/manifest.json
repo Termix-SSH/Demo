@@ -1,0 +1,283 @@
+{
+  "id": "object-storage",
+  "name": "Object Storage",
+  "version": "1.0.0",
+  "description": "Browse and manage S3-compatible object storage buckets and files.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Object-Storage",
+  "docs": "https://docs.termix.site/plugins/object-storage",
+  "category": "Files & Transfer",
+  "icon": "Package",
+  "features": [
+    "Works with Amazon S3, MinIO, Cloudflare R2, Backblaze B2, Wasabi, DigitalOcean Spaces, Hetzner and any other S3-compatible service",
+    "Browse folders and objects, upload large files in parts, download with resume and preview images and text",
+    "Copy, move, rename and delete objects and whole folders",
+    "Share an object with a temporary link",
+    "Create and delete buckets, and set versioning, lifecycle rules, CORS, policy, tags, encryption and public access",
+    "Daily size history for every bucket, with alerts when a bucket passes its limit or a login stops working"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "db:own",
+    "kv:own",
+    "secrets:own",
+    "network:outbound",
+    "network:serve",
+    "ui:surface",
+    "notify:send",
+    "operations:provide"
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "object-storage",
+        "titleKey": "tab.title",
+        "icon": "Package",
+        "openFrom": ["rail", "palette"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "view",
+        "titleKey": "permissions.view.title",
+        "descriptionKey": "permissions.view.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "edit",
+        "titleKey": "permissions.edit.title",
+        "descriptionKey": "permissions.edit.description",
+        "defaultRoles": ["admin"]
+      },
+      {
+        "name": "manage",
+        "titleKey": "permissions.manage.title",
+        "descriptionKey": "permissions.manage.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
+    "dashboardCards": [
+      {
+        "id": "object-storage-usage",
+        "titleKey": "card.title",
+        "icon": "Package"
+      }
+    ],
+    "operations": {
+      "actions": [
+        {
+          "id": "object-storage.list-accounts",
+          "titleKey": "operations.accounts.title",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "object-storage.list-buckets",
+          "titleKey": "operations.buckets.title",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "inputs": [
+            {
+              "key": "account",
+              "type": "string",
+              "labelKey": "operations.account",
+              "required": true,
+              "optionsFrom": "object-storage.list-accounts"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "object-storage.usage",
+          "titleKey": "operations.usage.title",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "object-storage.list-objects",
+          "titleKey": "operations.objects.title",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "inputs": [
+            {
+              "key": "account",
+              "type": "string",
+              "labelKey": "operations.account",
+              "required": true,
+              "optionsFrom": "object-storage.list-accounts"
+            },
+            {
+              "key": "bucket",
+              "type": "string",
+              "labelKey": "operations.bucket",
+              "required": true,
+              "optionsFrom": "object-storage.list-buckets"
+            },
+            {
+              "key": "prefix",
+              "type": "string",
+              "labelKey": "operations.prefix",
+              "required": false
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "object-storage.create-bucket",
+          "titleKey": "operations.create.title",
+          "icon": "PackagePlus",
+          "scope": "server",
+          "risk": "change",
+          "permission": "manage",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "account",
+              "type": "string",
+              "labelKey": "operations.account",
+              "required": true,
+              "optionsFrom": "object-storage.list-accounts"
+            },
+            {
+              "key": "name",
+              "type": "string",
+              "labelKey": "operations.bucketName",
+              "required": true
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "object-storage.delete-object",
+          "titleKey": "operations.delete.title",
+          "icon": "Trash2",
+          "scope": "server",
+          "risk": "destructive",
+          "permission": "edit",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "account",
+              "type": "string",
+              "labelKey": "operations.account",
+              "required": true,
+              "optionsFrom": "object-storage.list-accounts"
+            },
+            {
+              "key": "bucket",
+              "type": "string",
+              "labelKey": "operations.bucket",
+              "required": true
+            },
+            {
+              "key": "key",
+              "type": "string",
+              "labelKey": "operations.key",
+              "required": true
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "object-storage.share",
+          "titleKey": "operations.share.title",
+          "icon": "Link",
+          "scope": "server",
+          "risk": "change",
+          "permission": "edit",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "account",
+              "type": "string",
+              "labelKey": "operations.account",
+              "required": true,
+              "optionsFrom": "object-storage.list-accounts"
+            },
+            {
+              "key": "bucket",
+              "type": "string",
+              "labelKey": "operations.bucket",
+              "required": true
+            },
+            {
+              "key": "key",
+              "type": "string",
+              "labelKey": "operations.key",
+              "required": true
+            },
+            {
+              "key": "seconds",
+              "type": "number",
+              "labelKey": "operations.seconds",
+              "required": false
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "object-storage.logins",
+          "titleKey": "operations.accounts.title",
+          "read": "object-storage.list-accounts",
+          "scope": "server",
+          "kind": "status",
+          "refreshSec": 300
+        },
+        {
+          "id": "object-storage.limits",
+          "titleKey": "operations.usage.title",
+          "read": "object-storage.usage",
+          "scope": "server",
+          "kind": "status",
+          "refreshSec": 3600
+        }
+      ]
+    },
+    "uses": ["homepage.widgets"]
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

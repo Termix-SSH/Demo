@@ -1,0 +1,410 @@
+{
+  "id": "git",
+  "name": "Git",
+  "version": "1.0.0",
+  "description": "See, pull, commit and push git repos on your hosts, and keep them up to date with auto pull.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Git",
+  "docs": "https://docs.termix.site/plugins/git",
+  "category": "Infrastructure",
+  "icon": "GitBranch",
+  "features": [
+    "Add the git repos on a host, or find them with a scan",
+    "Branch, ahead and behind counts, changed files and the last commit for each repo",
+    "Diffs, staging, commits, history and commit details",
+    "Fetch, pull, push, switch, create, merge and delete branches, stash",
+    "Clone a repo onto the host",
+    "Auto pull on a schedule with an optional command after a pull and alerts when it fails",
+    "Uses the keys and git settings of the host's login user, no secrets stored in Termix",
+    "A Git panel beside terminals, a dashboard card and status tiles for Operations Center"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "hosts:read",
+    "credentials:use",
+    "credentials:read",
+    "ssh:connect",
+    "network:serve",
+    "users:impersonate",
+    "ui:surface",
+    "operations:provide",
+    "kv:own",
+    "notify:send"
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "git",
+        "titleKey": "tab.title",
+        "icon": "GitBranch",
+        "openFrom": ["host-context-menu", "palette"]
+      }
+    ],
+    "dashboardCards": [
+      {
+        "id": "git-repos",
+        "titleKey": "card.title",
+        "icon": "GitBranch"
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "run-commands",
+        "titleKey": "permissions.runCommands.title",
+        "descriptionKey": "permissions.runCommands.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "enableKey": "enableGit",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
+        "editorGroup": "ssh",
+        "fields": [
+          {
+            "key": "repoRoots",
+            "type": "string",
+            "labelKey": "settings.host.repoRoots.label",
+            "descriptionKey": "settings.host.repoRoots.description",
+            "placeholderKey": "settings.host.repoRoots.placeholder",
+            "defaultable": false,
+            "requires": "enableGit"
+          },
+          {
+            "key": "useSudo",
+            "type": "boolean",
+            "labelKey": "settings.host.useSudo.label",
+            "descriptionKey": "settings.host.useSudo.description",
+            "default": false,
+            "requires": "enableGit"
+          },
+          {
+            "key": "readOnly",
+            "type": "boolean",
+            "labelKey": "settings.host.readOnly.label",
+            "descriptionKey": "settings.host.readOnly.description",
+            "default": false,
+            "requires": "enableGit"
+          },
+          {
+            "key": "showPanel",
+            "type": "boolean",
+            "labelKey": "settings.host.showPanel.label",
+            "descriptionKey": "settings.host.showPanel.description",
+            "default": true,
+            "requires": "enableGit"
+          }
+        ]
+      },
+      "user": [
+        {
+          "key": "companionAutoOpen",
+          "type": "boolean",
+          "labelKey": "settings.user.companionAutoOpen.label",
+          "descriptionKey": "settings.user.companionAutoOpen.description",
+          "default": false
+        },
+        {
+          "key": "companionSide",
+          "type": "select",
+          "labelKey": "settings.user.companionSide.label",
+          "descriptionKey": "settings.user.companionSide.description",
+          "default": "right",
+          "options": [
+            {
+              "value": "right",
+              "labelKey": "settings.user.companionSide.right"
+            },
+            {
+              "value": "left",
+              "labelKey": "settings.user.companionSide.left"
+            },
+            {
+              "value": "bottom",
+              "labelKey": "settings.user.companionSide.bottom"
+            }
+          ]
+        },
+        {
+          "key": "companionSize",
+          "type": "number",
+          "labelKey": "settings.user.companionSize.label",
+          "descriptionKey": "settings.user.companionSize.description",
+          "min": 240,
+          "max": 900,
+          "default": 360
+        },
+        {
+          "key": "companionEdgeButton",
+          "type": "boolean",
+          "labelKey": "settings.user.companionEdgeButton.label",
+          "descriptionKey": "settings.user.companionEdgeButton.description",
+          "default": true
+        }
+      ]
+    },
+    "operations": {
+      "actions": [
+        {
+          "id": "git.list-repos",
+          "titleKey": "operations.list-repos.title",
+          "icon": "GitBranch",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableGit": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "git.fetch",
+          "titleKey": "operations.fetch.title",
+          "icon": "CloudDownload",
+          "scope": "resource",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "when": {
+            "settings": {
+              "enableGit": true
+            }
+          },
+          "resource": "git.repo",
+          "dryRun": "describe",
+          "idempotent": true,
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "git.pull",
+          "titleKey": "operations.pull.title",
+          "icon": "ArrowDownToLine",
+          "scope": "resource",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "when": {
+            "settings": {
+              "enableGit": true
+            }
+          },
+          "resource": "git.repo",
+          "dryRun": "describe",
+          "exclusive": true,
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "git.push",
+          "titleKey": "operations.push.title",
+          "icon": "ArrowUpFromLine",
+          "scope": "resource",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "when": {
+            "settings": {
+              "enableGit": true
+            }
+          },
+          "resource": "git.repo",
+          "dryRun": "describe",
+          "exclusive": true,
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "git.checkout",
+          "titleKey": "operations.checkout.title",
+          "icon": "GitBranch",
+          "scope": "resource",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "when": {
+            "settings": {
+              "enableGit": true
+            }
+          },
+          "resource": "git.repo",
+          "dryRun": "describe",
+          "exclusive": true,
+          "inputs": [
+            {
+              "key": "branch",
+              "type": "string",
+              "labelKey": "operations.checkout.branch",
+              "required": true
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "git.reset-hard",
+          "titleKey": "operations.reset-hard.title",
+          "icon": "RotateCcw",
+          "scope": "resource",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "when": {
+            "settings": {
+              "enableGit": true
+            }
+          },
+          "resource": "git.repo",
+          "dryRun": "describe",
+          "exclusive": true,
+          "inputs": [
+            {
+              "key": "ref",
+              "type": "string",
+              "labelKey": "operations.reset.ref",
+              "default": "HEAD"
+            }
+          ]
+        },
+        {
+          "id": "git.read-behind",
+          "titleKey": "operations.signals.behind",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableGit": true
+            }
+          },
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
+          "id": "git.read-dirty",
+          "titleKey": "operations.signals.dirty",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableGit": true
+            }
+          },
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
+          "id": "git.read-pull-failing",
+          "titleKey": "operations.signals.pull-failing",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableGit": true
+            }
+          },
+          "surfaces": {
+            "palette": false
+          }
+        }
+      ],
+      "resources": [
+        {
+          "id": "git.repo",
+          "titleKey": "operations.repos.title",
+          "icon": "GitBranch",
+          "list": "git.list-repos",
+          "key": "id",
+          "name": "name",
+          "status": "state",
+          "tab": "git",
+          "columns": [
+            {
+              "key": "branch",
+              "titleKey": "operations.repos.branch"
+            },
+            {
+              "key": "ahead",
+              "titleKey": "operations.repos.ahead"
+            },
+            {
+              "key": "behind",
+              "titleKey": "operations.repos.behind"
+            },
+            {
+              "key": "changed",
+              "titleKey": "operations.repos.changed"
+            }
+          ],
+          "filters": ["state"]
+        }
+      ],
+      "signals": [
+        {
+          "id": "git.behind",
+          "titleKey": "operations.signals.behind",
+          "read": "git.read-behind",
+          "scope": "host",
+          "kind": "count",
+          "refreshSec": 120
+        },
+        {
+          "id": "git.dirty",
+          "titleKey": "operations.signals.dirty",
+          "read": "git.read-dirty",
+          "scope": "host",
+          "kind": "count",
+          "refreshSec": 120
+        },
+        {
+          "id": "git.pull-failing",
+          "titleKey": "operations.signals.pull-failing",
+          "read": "git.read-pull-failing",
+          "scope": "host",
+          "kind": "count",
+          "refreshSec": 300
+        }
+      ]
+    },
+    "uses": ["homepage.widgets"]
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

@@ -5,11 +5,13 @@
 ### Added
 
 - List files, read file info, make folders and delete files through Termix actions, so they work from rules, rollouts and the CLI
+- Open a host's files from the command palette
 
 ### Changed
 
 - Needs Termix 26.11.1 or newer
 - The file viewer, diff view and transfer panes use the darker Termix page background
+- The SFTP transfer tab uses the same header as other tabs, with the two servers side by side and a line between them
 
 ### Fixed
 

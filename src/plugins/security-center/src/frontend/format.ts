@@ -7,6 +7,14 @@ export function enabled(host: object | null | undefined): boolean {
   return all?.["security-center"]?.enableSecurity === true;
 }
 
+/** On for the host, and the terminal panel not switched off. */
+export function panelEnabled(host: object | null | undefined): boolean {
+  const all = (host as { pluginSettings?: unknown } | null | undefined)
+    ?.pluginSettings as
+    Record<string, Record<string, unknown> | undefined> | undefined;
+  return enabled(host) && all?.["security-center"]?.showPanel !== false;
+}
+
 export type RowTone = "destructive" | "warning" | "success" | "muted";
 
 export function rowTone(health: Health): RowTone {

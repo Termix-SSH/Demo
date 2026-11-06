@@ -28,6 +28,45 @@ export async function mapLimit<T, R>(
   return results;
 }
 
+/** Sends one alert per host and kind until the state clears, kept in kv so a restart stays quiet. */
+export async function alertUpdates(
+  ctx: PluginContext,
+  summary: HostUpdateSummary,
+): Promise<void> {
+  const userId = ctx.currentActor();
+  if (!userId) return;
+  const key = `alerted:${userId}:${summary.hostId}`;
+  const sent = await ctx.kv.get(key).catch(() => null);
+  const before = new Set(Array.isArray(sent) ? (sent as string[]) : []);
+  const now = new Set<string>();
+  if (summary.security > 0) now.add("security");
+  if (summary.reboot) now.add("reboot");
+  const host = await ctx.hosts.get(summary.hostId).catch(() => null);
+  const name = host?.name || host?.ip || `#${summary.hostId}`;
+  for (const kind of now) {
+    if (before.has(kind)) continue;
+    await ctx.notify.send({
+      title:
+        kind === "security"
+          ? `${summary.security} security updates waiting on ${name}`
+          : `${name} needs a reboot`,
+      body:
+        kind === "security"
+          ? "Install them from the Packages tab."
+          : "A package update asked for a reboot.",
+      severity: "warning",
+      category: `package-manager.${kind}`,
+      audience: { userId },
+      link: { tab: "package-manager" },
+      dedupeKey: `package-manager:${summary.hostId}:${kind}`,
+      context: { hostId: summary.hostId, hostName: name },
+    });
+  }
+  if (now.size !== before.size || [...now].some((k) => !before.has(k))) {
+    await ctx.kv.set(key, [...now]);
+  }
+}
+
 export interface SummaryCache {
   /** Pending updates for one host, cached for an hour per user. */
   check: (hostId: number, refresh?: boolean) => Promise<HostUpdateSummary>;
@@ -66,6 +105,13 @@ export function createSummaryCache(
           security: updates.filter((item) => item.security).length,
           reboot: status.rebootRequired === true,
         };
+        if (s.alerts) {
+          await alertUpdates(ctx, fresh).catch((error) =>
+            ctx.log.debug(
+              `Update alert failed for host ${hostId}: ${error instanceof Error ? error.message : String(error)}`,
+            ),
+          );
+        }
       } catch (error) {
         fresh = {
           hostId,

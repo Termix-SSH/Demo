@@ -131,6 +131,15 @@ export function activate(app: TermixApp): void {
     },
   });
 
+  app.registerPaletteEntry({
+    id: "alerts.open",
+    titleKey: "nav.alerts",
+    icon: Bell,
+    keywords: ["alerts", "notifications", "inbox", "unread"],
+    scope: "global",
+    run: () => openTab(),
+  });
+
   app.registerAction("alerts.open", () => openTab());
   app.registerAction("alerts.openChannels", () => {
     sections.request("channels");

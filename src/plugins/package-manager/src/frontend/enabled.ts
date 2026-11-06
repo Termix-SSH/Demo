@@ -21,3 +21,11 @@ export function canEditHost(
     shared.permissionLevel === "manage"
   );
 }
+
+/** Packages is on and the host allows its panel beside terminals. */
+export function packagesPanelEnabled(host: object | null | undefined): boolean {
+  const all = (host as { pluginSettings?: unknown } | null | undefined)
+    ?.pluginSettings as
+    Record<string, Record<string, unknown> | undefined> | undefined;
+  return packagesEnabled(host) && all?.["package-manager"]?.showPanel !== false;
+}

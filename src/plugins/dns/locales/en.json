@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Manage DNS records and domains across Cloudflare, Route 53, Namecheap and other providers."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domains",
+    "loading": "Loading",
+    "empty": "No domains yet. Open DNS to add a login.",
+    "ok": "{{domains}} domains, none expiring soon",
+    "accounts": "{{count}} logins",
+    "failingLinks": "{{count}} linked records failing"
+  },
+  "permissions": {
+    "view": {
+      "title": "See DNS",
+      "description": "Open the DNS tab and see zones, records, domains and health checks."
+    },
+    "edit": {
+      "title": "Change DNS records",
+      "description": "Add, change and delete records, import zone files and refresh domains."
+    },
+    "manage": {
+      "title": "Manage DNS logins",
+      "description": "Add provider logins, link records to hosts, watch domains and restore zone copies."
+    }
+  },
+  "operations": {
+    "zone": "Zone",
+    "type": "Type",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Name",
+    "content": "Value",
+    "contentOptional": "Value (leave empty to match any)",
+    "ttl": "TTL in seconds",
+    "label": "Label",
+    "zones": {
+      "title": "List DNS zones"
+    },
+    "records": {
+      "title": "List DNS records"
+    },
+    "domains": {
+      "title": "List domains and expiry dates"
+    },
+    "check": {
+      "title": "Check a zone"
+    },
+    "upsert": {
+      "title": "Set a DNS record"
+    },
+    "delete": {
+      "title": "Delete a DNS record"
+    },
+    "snapshot": {
+      "title": "Save a copy of a zone"
+    },
+    "links": {
+      "title": "Update linked records"
+    },
+    "expiry": {
+      "title": "Domain expiry"
+    }
+  },
+  "description": "Add your DNS and registrar logins to manage records and watch domains in one place. Keys are stored encrypted and never shown again.",
+  "summary": "{{zones}} zones, {{domains}} domains",
+  "saved": "Saved",
+  "delete": "Delete",
+  "edit": "Edit",
+  "back": "Back",
+  "refresh": "Refresh",
+  "section": {
+    "zones": "Zones",
+    "domains": "Domains",
+    "links": "Links",
+    "accounts": "Logins"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "API token",
+    "accessKeyId": "Access key ID",
+    "secretAccessKey": "Secret access key",
+    "sessionToken": "Session token (optional)",
+    "apiUser": "API user",
+    "apiKey": "API key",
+    "userName": "Username (if different from the API user)",
+    "clientIp": "Allowed IP address",
+    "apiSecret": "API secret",
+    "environment": "Environment",
+    "environment_production": "Production",
+    "environment_ote": "Test (OTE)",
+    "secretApiKey": "Secret API key",
+    "token": "Personal access token"
+  },
+  "zones": {
+    "empty": "No zones yet.",
+    "emptyHint": "Add a provider login in Logins to see its zones."
+  },
+  "zone": {
+    "records": "Records",
+    "health": "Health",
+    "copies": "Copies",
+    "files": "Files",
+    "filter": "Filter records",
+    "empty": "No records."
+  },
+  "record": {
+    "section": "Record",
+    "addTitle": "Add record",
+    "editTitle": "Edit record",
+    "add": "Add record",
+    "save": "Save",
+    "type": "Type",
+    "name": "Name",
+    "nameHint": "Use @ for {{zone}} itself",
+    "value": "Value",
+    "priority": "Priority",
+    "ttl": "TTL (seconds)",
+    "ttlHint": "How long resolvers keep the answer. 300 is 5 minutes.",
+    "ttlAuto": "1 means automatic.",
+    "proxied": "Proxied",
+    "proxiedHint": "Send traffic through Cloudflare.",
+    "proxiedBadge": "Proxied",
+    "comment": "Note",
+    "readOnly": "Managed by the provider",
+    "deleteConfirm": "Delete the {{type}} record {{name}}?"
+  },
+  "account": {
+    "add": "Add login",
+    "addTitle": "Add DNS login",
+    "editTitle": "Edit DNS login",
+    "save": "Save",
+    "login": "Login",
+    "provider": "Provider",
+    "name": "Name",
+    "namePlaceholder": "Main Cloudflare",
+    "keep": "Leave empty to keep the saved value",
+    "registrar": "This provider is also a registrar, so its domains show up in Domains.",
+    "options": "Options",
+    "autoBackup": "Keep copies of zones",
+    "autoBackupHint": "Save a copy before each change and when a zone changes outside Termix.",
+    "checkHealth": "Check zones every day",
+    "checkHealthHint": "Run the health checks daily and alert on new problems.",
+    "test": "Test",
+    "testOk": "Works. Found {{zones}} zones and {{domains}} domains.",
+    "deleteConfirm": "Delete {{name}}? Its copies and links go with it. Nothing changes at the provider.",
+    "empty": "No logins yet.",
+    "emptyHint": "Add a Cloudflare, Route 53, Namecheap or other login to start.",
+    "lastSync": "Last checked {{date}}",
+    "never": "Not checked yet",
+    "failed": "The login failed"
+  },
+  "domains": {
+    "empty": "No domains yet.",
+    "emptyHint": "Registrar logins list their domains here. You can also watch any domain by name.",
+    "watchPlaceholder": "example.com",
+    "watch": "Watch domain",
+    "unwatch": "Stop watching",
+    "watched": "Watched",
+    "noRenew": "Auto renew off",
+    "unlocked": "Not locked",
+    "unknown": "Registrar unknown",
+    "expires": "Expires {{date}}",
+    "expired": "Expired",
+    "days": "{{count}} days left",
+    "refreshFailed": "{{count}} lookups failed"
+  },
+  "link": {
+    "add": "Add link",
+    "addTitle": "Add link",
+    "editTitle": "Edit link",
+    "save": "Save",
+    "record": "Record",
+    "address": "Address",
+    "zone": "Zone",
+    "pickZone": "Pick a zone",
+    "source": "Point it at",
+    "sourceHost": "A host",
+    "sourcePublic4": "This server's public IPv4 address",
+    "sourcePublic6": "This server's public IPv6 address",
+    "source_host": "Host",
+    "source_public4": "Public IPv4",
+    "source_public6": "Public IPv6",
+    "host": "Host",
+    "pickHost": "Pick a host",
+    "hostHint": "The record follows the host's address. It updates when the host changes.",
+    "publicHint": "Termix looks up its public address and keeps the record in sync, like dynamic DNS.",
+    "enabled": "Keep this record updated",
+    "empty": "No links yet.",
+    "emptyHint": "A link keeps a record pointed at a host or at this server's public address.",
+    "off": "Off",
+    "hostGone": "Host not found",
+    "lastSync": "Checked {{date}}",
+    "never": "Not checked yet",
+    "syncNow": "Update now",
+    "updated": "The record was updated",
+    "unchanged": "The record was already correct",
+    "deleteConfirm": "Remove the link for {{name}}? The record stays where it is."
+  },
+  "diff": {
+    "none": "Nothing would change.",
+    "add": "Add",
+    "change": "Change",
+    "remove": "Remove"
+  },
+  "copies": {
+    "hint": "Copies are saved before each change and once a day when a zone changed outside Termix.",
+    "save": "Save copy",
+    "saved": "Copy saved",
+    "manualLabel": "Manual copy",
+    "empty": "No copies yet.",
+    "count": "{{count}} records",
+    "compare": "Compare with now",
+    "restore": "Restore",
+    "restoreConfirm": "Restore this copy? {{count}} changes will be made at the provider. A copy of the current records is saved first.",
+    "restored": "Restored. {{count}} changes made.",
+    "source": {
+      "manual": "Manual",
+      "auto": "Daily",
+      "before": "Before change"
+    }
+  },
+  "files": {
+    "export": "Download zone file",
+    "exportHint": "Download the records as a BIND zone file.",
+    "import": "Import a zone file",
+    "placeholder": "Paste a BIND zone file here",
+    "replace": "Remove records that are not in the file",
+    "replaceHint": "Off, the import only adds and changes records.",
+    "preview": "Preview",
+    "apply": "Apply",
+    "applied": "Imported. {{count}} changes made.",
+    "skipped": "Skipped:"
+  },
+  "health": {
+    "run": "Run checks",
+    "running": "Running",
+    "propagation": "Check resolvers",
+    "propagationTitle": "Public resolvers",
+    "lastRun": "Last run {{date}}",
+    "empty": "No checks have run for this zone yet.",
+    "record": "Record",
+    "resolver": "Resolver",
+    "answer": "Answer",
+    "noAnswer": "No answer",
+    "delegation": {
+      "error": "The name servers could not be looked up.",
+      "none": "The zone has no name servers on the internet. The domain may not point at this provider.",
+      "mismatch": "The domain uses different name servers than the provider: {{found}}.",
+      "ok": "The domain points at {{count}} name servers."
+    },
+    "soa": {
+      "differ": "The name servers disagree on the zone version ({{count}} versions). A change may still be spreading.",
+      "same": "{{count}} name servers agree on the zone version."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC could not be checked.",
+      "off": "DNSSEC is not turned on.",
+      "valid": "DNSSEC is on and valid.",
+      "broken": "DNSSEC is set up at the registrar but does not validate. Resolvers that check it will fail."
+    },
+    "cname": {
+      "conflict": "{{name}} has a CNAME and other records. That is not allowed.",
+      "apex": "The zone root cannot be a CNAME.",
+      "dangling": "{{name}} points at {{target}}, which does not resolve.",
+      "ok": "Every CNAME target resolves."
+    },
+    "spf": {
+      "missing": "The domain receives mail but has no SPF record.",
+      "multiple": "There is more than one SPF record. Mail servers will reject all of them.",
+      "lookups": "The SPF record makes {{count}} lookups. The limit is 10.",
+      "ok": "SPF is set ({{count}} lookups)."
+    },
+    "dmarc": {
+      "missing": "There is no DMARC record.",
+      "none": "DMARC is set to monitor only.",
+      "ok": "DMARC is set."
+    },
+    "dkim": {
+      "none": "No DKIM keys were found in this zone.",
+      "found": "{{count}} DKIM keys found."
+    },
+    "mx": {
+      "unresolved": "The mail server {{host}} does not resolve."
+    },
+    "mail": {
+      "none": "The domain has no mail records."
+    },
+    "caa": {
+      "ok": "CAA records limit who can issue certificates.",
+      "none": "There are no CAA records. Any certificate authority can issue certificates."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domains, expiring domains and failing records.",
+    "domains": "Domains",
+    "expiring": "Expiring soon",
+    "failingLinks": "Failing links",
+    "failingAccounts": "Failing logins"
+  }
+}

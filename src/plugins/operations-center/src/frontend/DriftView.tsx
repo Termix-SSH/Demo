@@ -88,77 +88,88 @@ function EditBaseline({
   };
 
   return (
-    <div className="flex flex-col gap-3">
-      <p className="text-xs text-muted-foreground">{t("drift.about")}</p>
-      <Field label={t("drift.name")}>
-        <Input value={name} onChange={(event) => setName(event.target.value)} />
-      </Field>
-      <Field label={t("drift.check")} hint={t("drift.checkHint")}>
-        <Choice
-          label={t("drift.check")}
-          value={checkId}
-          onChange={(next) => {
-            setCheckId(next);
-            const picked = checks.find((action) => action.id === next);
-            setValues(picked ? initialValues(picked.inputs) : {});
-          }}
-          options={checks.map((action) => ({
-            value: action.id,
-            label: `${action.title} (${action.pluginName})`,
-          }))}
+    <InlineView
+      open
+      onOpenChange={(next) => !next && onDone()}
+      title={baseline.name || t("drift.new")}
+      footer={
+        <FormFooter
+          onCancel={onDone}
+          onSave={() => void save()}
+          saving={saving}
+          disabled={!checkId}
         />
-      </Field>
-      {check?.scope === "resource" && (
-        <Field label={t("run.target")}>
+      }
+    >
+      <div className="flex flex-col gap-3">
+        <p className="text-xs text-muted-foreground">{t("drift.about")}</p>
+        <Field label={t("drift.name")}>
           <Input
-            value={resourceKey}
-            onChange={(event) => setResourceKey(event.target.value)}
+            value={name}
+            onChange={(event) => setName(event.target.value)}
           />
         </Field>
-      )}
-      {check && (
-        <ActionForm
-          fields={check.inputs}
-          values={values}
-          onChange={setValues}
-        />
-      )}
-      <TargetPicker action={check} value={targets} onChange={setTargets} />
-      <Field label={t("drift.interval")}>
-        <Input
-          type="number"
-          min={5}
-          value={interval}
-          onChange={(event) => setIntervalMinutes(Number(event.target.value))}
-        />
-      </Field>
-      <Field label={t("drift.fix")} hint={t("drift.fixHint")}>
-        <Choice
-          label={t("drift.fix")}
-          value={fixId}
-          onChange={setFixId}
-          options={[
-            { value: "", label: t("drift.noFix") },
-            ...fixes.map((action) => ({
+        <Field label={t("drift.check")} hint={t("drift.checkHint")}>
+          <Choice
+            label={t("drift.check")}
+            value={checkId}
+            onChange={(next) => {
+              setCheckId(next);
+              const picked = checks.find((action) => action.id === next);
+              setValues(picked ? initialValues(picked.inputs) : {});
+            }}
+            options={checks.map((action) => ({
               value: action.id,
               label: `${action.title} (${action.pluginName})`,
-            })),
-          ]}
-        />
-      </Field>
-      {fixId && (
-        <label className="flex items-center gap-2 text-xs">
-          <Switch checked={autoFix} onCheckedChange={setAutoFix} />
-          {t("drift.autoFix")}
-        </label>
-      )}
-      <FormFooter
-        onCancel={onDone}
-        onSave={() => void save()}
-        saving={saving}
-        disabled={!checkId}
-      />
-    </div>
+            }))}
+          />
+        </Field>
+        {check?.scope === "resource" && (
+          <Field label={t("run.target")}>
+            <Input
+              value={resourceKey}
+              onChange={(event) => setResourceKey(event.target.value)}
+            />
+          </Field>
+        )}
+        {check && (
+          <ActionForm
+            fields={check.inputs}
+            values={values}
+            onChange={setValues}
+          />
+        )}
+        <TargetPicker action={check} value={targets} onChange={setTargets} />
+        <Field label={t("drift.interval")}>
+          <Input
+            type="number"
+            min={5}
+            value={interval}
+            onChange={(event) => setIntervalMinutes(Number(event.target.value))}
+          />
+        </Field>
+        <Field label={t("drift.fix")} hint={t("drift.fixHint")}>
+          <Choice
+            label={t("drift.fix")}
+            value={fixId}
+            onChange={setFixId}
+            options={[
+              { value: "", label: t("drift.noFix") },
+              ...fixes.map((action) => ({
+                value: action.id,
+                label: `${action.title} (${action.pluginName})`,
+              })),
+            ]}
+          />
+        </Field>
+        {fixId && (
+          <label className="flex items-center gap-2 text-xs">
+            <Switch checked={autoFix} onCheckedChange={setAutoFix} />
+            {t("drift.autoFix")}
+          </label>
+        )}
+      </div>
+    </InlineView>
   );
 }
 

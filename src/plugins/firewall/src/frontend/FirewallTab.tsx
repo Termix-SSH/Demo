@@ -100,7 +100,7 @@ export function FirewallTab({ isVisible, host, label }: TabProps) {
       <PanelFrame>
         <PanelShell icon={icon} title={title}>
           {error ? (
-            <p className="p-2 text-sm text-destructive">{error}</p>
+            <p className="px-3 py-2 text-xs text-destructive">{error}</p>
           ) : (
             <p className="p-2 text-xs text-muted-foreground">
               {t("common.loading")}
@@ -180,6 +180,12 @@ export function FirewallTab({ isVisible, host, label }: TabProps) {
               label={t("tab.refresh")}
             />
             {status.backend &&
+              status.active &&
+              status.canEdit &&
+              view === "rules" && (
+                <TurnOff hostId={hostId} status={status} change={change} />
+              )}
+            {status.backend &&
               status.canEdit &&
               !status.pending &&
               view === "rules" && (
@@ -199,9 +205,11 @@ export function FirewallTab({ isVisible, host, label }: TabProps) {
             />
           ) : undefined
         }
-        scroll
+        scroll={view !== "raw"}
       >
-        <div className="flex shrink-0 flex-col">
+        <div
+          className={`flex flex-col ${view === "raw" ? "min-h-0 flex-1" : "shrink-0"}`}
+        >
           {status.pending && (
             <PendingBanner
               hostId={hostId}
@@ -221,9 +229,6 @@ export function FirewallTab({ isVisible, host, label }: TabProps) {
             <>
               {!status.active && view === "rules" && (
                 <TurnOn hostId={hostId} status={status} change={change} />
-              )}
-              {status.active && status.canEdit && view === "rules" && (
-                <TurnOff hostId={hostId} status={status} change={change} />
               )}
               {view === "rules" ? (
                 <RulesView
@@ -282,7 +287,7 @@ function TurnOn({
   const [allowSsh, setAllowSsh] = useState(true);
   const ports = status.ssh.ports.join(", ") || "22";
   return (
-    <div className="flex flex-col gap-2 border border-border p-2.5">
+    <div className="flex flex-col gap-2 border-b border-border p-3">
       <p className="text-sm">{t("enable.off")}</p>
       {status.canEdit && !status.pending && (
         <>
@@ -328,23 +333,20 @@ function TurnOff({
   const confirm = useConfirm();
   if (status.pending) return null;
   return (
-    <div className="flex justify-end">
-      <Button
-        size="sm"
-        variant="ghost"
-        disabled={change.busy}
-        onClick={async () => {
-          const ok = await confirm({
-            title: t("disable.title"),
-            description: t("disable.description"),
-            confirmLabel: t("disable.button"),
-          });
-          if (ok) await change.run(() => disable(hostId), t("disable.done"));
-        }}
-      >
-        {t("disable.button")}
-      </Button>
-    </div>
+    <Button
+      variant="ghost"
+      disabled={change.busy}
+      onClick={async () => {
+        const ok = await confirm({
+          title: t("disable.title"),
+          description: t("disable.description"),
+          confirmLabel: t("disable.button"),
+        });
+        if (ok) await change.run(() => disable(hostId), t("disable.done"));
+      }}
+    >
+      {t("disable.button")}
+    </Button>
   );
 }
 
@@ -432,13 +434,14 @@ function RawView({
       })
       .catch((e) => setFailed(errorMessage(e, t("tab.error"))));
   }, [hostId, isVisible, t]);
-  if (failed) return <p className="p-2 text-sm text-destructive">{failed}</p>;
+  if (failed)
+    return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
   if (text === null)
     return (
-      <p className="p-2 text-xs text-muted-foreground">{t("common.loading")}</p>
+      <p className="p-3 text-xs text-muted-foreground">{t("common.loading")}</p>
     );
   return (
-    <pre className="max-h-[70vh] overflow-auto border border-border bg-muted/30 p-2 font-mono text-xs whitespace-pre">
+    <pre className="min-h-0 flex-1 overflow-auto px-3 py-2 font-mono text-xs whitespace-pre thin-scrollbar">
       {text || t("raw.empty")}
     </pre>
   );

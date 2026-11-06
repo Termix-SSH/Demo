@@ -125,7 +125,7 @@ export function AutomationEditor({
   return (
     <div className="space-y-4">
       <div className="space-y-1">
-        <Label className="text-xs text-muted-foreground">
+        <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
           {t(`${base}.nameLabel`)}
         </Label>
         <Input
@@ -145,7 +145,7 @@ export function AutomationEditor({
       </label>
 
       <div className="space-y-1">
-        <Label className="text-xs text-muted-foreground">
+        <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
           {t(`${base}.concurrencyLabel`)}
         </Label>
         <Select
@@ -219,7 +219,7 @@ export function AutomationEditor({
           />
 
           <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">
+            <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
               {t(`${base}.steps`)}
             </Label>
             {draft.definition.steps.length === 0 && (

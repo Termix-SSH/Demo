@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import { Activity, LayoutDashboard, Table2, Zap } from "lucide-react";
+import { Activity, ServerCog, Table2, Zap } from "lucide-react";
 import type {
   CompanionProps,
   PluginHostRecord,
@@ -51,7 +51,7 @@ export function activate(app: TermixApp): void {
   });
 
   app.registerTab(HOST_TAB, HostPage, {
-    icon: LayoutDashboard,
+    icon: ServerCog,
     titleKey: "host.title",
     requiresHost: true,
     noHostMessageKey: "host.noHost",
@@ -72,7 +72,7 @@ export function activate(app: TermixApp): void {
   app.registerHostAction({
     id: "host-page",
     titleKey: "host.open",
-    icon: LayoutDashboard,
+    icon: ServerCog,
     kind: "open",
     order: 1,
     tabType: HOST_TAB,
@@ -101,7 +101,7 @@ export function activate(app: TermixApp): void {
   app.registerSlotContribution("tab.menu", {
     actionId: FROM_TAB_ACTION,
     titleKey: "host.open",
-    icon: LayoutDashboard,
+    icon: ServerCog,
     kind: "button",
     when: ({ tab }) => {
       const target = tab as PluginTabRecord | undefined;
@@ -123,7 +123,7 @@ export function activate(app: TermixApp): void {
     "operations",
     (props: CompanionProps) => <HostCompanion {...props} opener={app.tabs} />,
     {
-      icon: LayoutDashboard,
+      icon: ServerCog,
       titleKey: "companion.title",
       order: 5,
       tabTypes: ["terminal"],

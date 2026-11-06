@@ -38,7 +38,7 @@ export async function activate(ctx: PluginContext) {
   );
 
   registerFleetRoutes(ctx.http.router<Router>(), repo, ctx);
-  registerOperations(ctx);
+  registerOperations(ctx, repo);
 
   // The service is gated on fleets.view; changing a fleet also needs
   // fleets.manage, as its routes do.

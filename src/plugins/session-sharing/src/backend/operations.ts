@@ -33,6 +33,26 @@ export function registerOperations(deps: SharingDeps): void {
     },
   });
 
+  ctx.operations.register("session-sharing.host-shares", {
+    run: async (_input, context) => {
+      const rows = (await shares.findActiveSharesForOwner(actorOf(ctx))).filter(
+        (share) => share.hostId === context.hostId,
+      );
+      return {
+        summary: `${rows.length} active shares`,
+        data: {
+          rows: rows.map((share) => ({
+            id: share.id,
+            name: `${share.protocol} ${share.shareType}`,
+            type: share.shareType,
+            access: share.permissionLevel,
+            expires: share.expiresAt,
+          })),
+        },
+      };
+    },
+  });
+
   ctx.operations.register("session-sharing.revoke-share", {
     describe: (input) => `Would revoke share ${String(input.share)}`,
     run: async (input) => {

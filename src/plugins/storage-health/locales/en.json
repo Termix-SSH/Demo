@@ -1,0 +1,220 @@
+{
+  "tab": {
+    "title": "Storage",
+    "noHost": "Open Storage from a host.",
+    "disabled": "Storage Health is turned off for this host. Turn it on in the host settings.",
+    "error": "Could not load storage health",
+    "viewDrives": "Drives",
+    "viewPools": "Pools and arrays",
+    "viewEvents": "Events",
+    "viewSettings": "Settings",
+    "readAgo": "Read {{time}} ago",
+    "stale": "Could not read the host, showing the last reading. {{error}}"
+  },
+  "common": {
+    "loading": "Loading...",
+    "failed": "That did not work",
+    "save": "Save",
+    "refresh": "Read now",
+    "back": "Back"
+  },
+  "card": {
+    "title": "Storage health",
+    "empty": "No hosts are watched yet. Turn on Storage Health in a host's settings.",
+    "drives_one": "{{count}} drive",
+    "drives_other": "{{count}} drives",
+    "problems_one": "{{count}} open problem",
+    "problems_other": "{{count}} open problems"
+  },
+  "manager": {
+    "title": "Storage health",
+    "disabled": "Storage Health is turned off for this host."
+  },
+  "health": {
+    "ok": "Healthy",
+    "warn": "Needs attention",
+    "fail": "Failing",
+    "unknown": "Unknown"
+  },
+  "kind": {
+    "hdd": "Hard disk",
+    "ssd": "SSD",
+    "nvme": "NVMe",
+    "unknown": "Drive"
+  },
+  "drives": {
+    "empty": "No drives found on this host",
+    "noRoot": "The checks ran without root, so some drives may show no data. Allow passwordless sudo for this login.",
+    "noTool": "smartctl is not installed on this host. Install smartmontools to read drive health.",
+    "noData": "Nothing was read yet",
+    "wear": "{{value}}% worn",
+    "testing": "Testing"
+  },
+  "detail": {
+    "stop": "Stop test",
+    "short": "Short test",
+    "long": "Long test",
+    "health": "Health",
+    "temp": "Temperature",
+    "wear": "Wear",
+    "hours": "Power on time",
+    "model": "Model",
+    "serial": "Serial",
+    "kind": "Type",
+    "size": "Size",
+    "reallocated": "Reallocated sectors",
+    "pending": "Pending sectors",
+    "uncorrectable": "Uncorrectable sectors",
+    "mediaErrors": "Media errors",
+    "selfTest": "Last self test",
+    "attributes": "SMART attributes",
+    "attrMeta": "Value {{value}} | Raw {{raw}}"
+  },
+  "history": {
+    "24h": "24 hours",
+    "7d": "7 days",
+    "30d": "30 days",
+    "temp": "Temperature",
+    "wear": "Wear",
+    "bad": "Bad sectors",
+    "empty": "History builds up as the host is read. Check back later."
+  },
+  "pools": {
+    "empty": "No ZFS pools, RAID arrays, btrfs filesystems or LVM thin pools found",
+    "startTitle": "Start on {{name}}?",
+    "startText": "This reads every block and can slow the disks for hours.",
+    "start": "Start",
+    "stop": "Stop",
+    "scrub": "Scrub",
+    "thinMeta": "{{data}}% data | {{meta}}% metadata | {{free}} free in the group"
+  },
+  "events": {
+    "error": "Could not load events",
+    "empty": "No events yet",
+    "type": {
+      "smart-failing": "Failing",
+      "smart-attention": "SMART warning",
+      "nvme-critical": "Critical",
+      "wear-high": "Worn",
+      "wear-critical": "Nearly worn out",
+      "temp-high": "Hot",
+      "temp-critical": "Too hot",
+      "pool-degraded": "Pool degraded",
+      "pool-errors": "Pool errors",
+      "raid-degraded": "Array degraded",
+      "raid-rebuilding": "Rebuilding",
+      "btrfs-errors": "btrfs errors",
+      "thin-full": "Thin pool filling",
+      "thin-critical": "Thin pool full",
+      "unreachable": "Unreachable",
+      "test": "Self test",
+      "scrub": "Scrub",
+      "command": "Command"
+    }
+  },
+  "settings": {
+    "saved": "Saved",
+    "alerts": "Send alerts",
+    "alertsHint": "Alert the person who set this up when a problem starts or a failure clears.",
+    "interval": "Read every (minutes)",
+    "intervalHint": "SMART reads are slow, so 15 minutes is a good start.",
+    "tempWarn": "Warn above (C)",
+    "tempCrit": "Critical above (C)",
+    "tempHint": "0 uses the default for the drive type.",
+    "wear": "Warn when worn (%)",
+    "wearHint": "Critical at 95%.",
+    "thin": "Warn when a thin pool is full (%)",
+    "thinHint": "Critical at 95%.",
+    "host": {
+      "enable": {
+        "label": "Storage Health",
+        "description": "Watch drives, pools and arrays on this host."
+      },
+      "useSudo": {
+        "label": "Use sudo",
+        "description": "Run the checks with passwordless sudo. SMART needs root."
+      },
+      "readOnly": {
+        "label": "Read only",
+        "description": "Block self tests and scrubs from Termix."
+      },
+      "showPanel": {
+        "label": "Show the side panel",
+        "description": "Offer the Storage health panel beside terminals on this host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Open the Storage health panel with terminals",
+        "description": "Open the panel by itself on hosts that have it."
+      },
+      "companionSide": {
+        "label": "Panel side",
+        "description": "Where the Storage health panel opens beside a terminal.",
+        "right": "Right",
+        "left": "Left",
+        "bottom": "Bottom"
+      },
+      "companionSize": {
+        "label": "Panel size",
+        "description": "Width or height of the panel in pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Show the edge button",
+        "description": "Show a small button on the edge of the terminal to open the panel."
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "Use Storage Health",
+      "description": "See drive and array health on hosts you can access."
+    },
+    "runTests": {
+      "title": "Run tests and scrubs",
+      "description": "Start SMART self tests and scrubs. Also needs edit access to the host."
+    }
+  },
+  "operations": {
+    "devices": {
+      "title": "Drives",
+      "health": "Health",
+      "kind": "Type",
+      "temp": "Temperature",
+      "wear": "Wear"
+    },
+    "pools": {
+      "title": "Pools and arrays",
+      "state": "State"
+    },
+    "status": {
+      "title": "Storage health"
+    },
+    "temperature": {
+      "title": "Hottest drive"
+    },
+    "selftest": {
+      "title": "SMART self test",
+      "device": "Drive",
+      "action": "Action",
+      "short": "Short test",
+      "long": "Long test",
+      "abort": "Stop the running test"
+    },
+    "scrub": {
+      "title": "Scrub",
+      "target": "Pool, filesystem or array",
+      "targetHint": "An id from the pools list, like zfs:tank, btrfs:/mnt/data or md:md0",
+      "stop": "Stop instead of start"
+    },
+    "events": {
+      "degraded": "Storage problem found",
+      "recovered": "Storage problem cleared",
+      "smartFailing": "Drive failing its SMART check",
+      "raidDegraded": "Pool or array degraded"
+    }
+  },
+  "companion": {
+    "toggle": "Storage health panel"
+  }
+}

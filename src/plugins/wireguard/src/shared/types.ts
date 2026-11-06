@@ -69,3 +69,20 @@ export interface ClientConfig {
 export interface ConfigView {
   text: string;
 }
+
+/** One host in the WireGuard dashboard card. */
+export interface WireguardHostSummary {
+  hostId: number;
+  checkedAt: string;
+  installed: boolean;
+  /** All interfaces found on the host. */
+  total: number;
+  /** Interfaces that are active. */
+  up: number;
+  /** Interfaces set to start at boot that are not active. */
+  down: number;
+  /** Names of the interfaces counted in `down`. */
+  downNames: string[];
+  clients: number;
+  error?: string;
+}

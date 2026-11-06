@@ -3,6 +3,7 @@ import type {
   PluginOperationContext,
 } from "@termix-ssh/plugin-sdk/backend";
 import type { WireguardService } from "./service.js";
+import type { SummaryCache } from "./summary.js";
 
 type Interfaces = {
   list: (hostId: number) => Promise<
@@ -35,6 +36,7 @@ export function registerOperations(
   ctx: PluginContext,
   service: WireguardService,
   interfaces: Interfaces,
+  summary: SummaryCache,
 ): void {
   if (typeof ctx.operations?.register !== "function") return;
 
@@ -56,14 +58,14 @@ export function registerOperations(
 
   ctx.operations.register("wireguard.down", {
     run: async (_input, context) => {
-      const all = await interfaces.list(requireHost(context));
-      const down = all.filter((iface) => iface.enabled && !iface.active).length;
+      const result = await summary.check(requireHost(context));
+      if (result.error) throw new Error(result.error);
       return {
-        summary: `${down} down`,
+        summary: `${result.down} down`,
         data: {
-          value: down,
-          status: down > 0 ? "warn" : "ok",
-          label: `${all.length - down} of ${all.length} up`,
+          value: result.down,
+          status: result.down > 0 ? "warn" : "ok",
+          label: `${result.total - result.down} of ${result.total} up`,
         },
       };
     },

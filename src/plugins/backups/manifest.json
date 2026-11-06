@@ -1,0 +1,274 @@
+{
+  "id": "backups",
+  "name": "Backups",
+  "version": "1.0.0",
+  "description": "Back up folders, databases and Docker data on your hosts with restic, then browse, download and restore.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Backups",
+  "docs": "https://docs.termix.site/plugins/backups",
+  "category": "Infrastructure",
+  "icon": "DatabaseBackup",
+  "features": [
+    "Encrypted, deduplicated backups with restic, installed for you when a host has none",
+    "Store backups in S3 compatible storage, a restic REST server, any rclone remote or a folder on the host",
+    "Back up folders, MySQL, MariaDB, PostgreSQL and SQLite databases, and Docker volumes and stacks",
+    "Run backups on a schedule, with commands before and after and old snapshots removed for you",
+    "Watch a backup run live, stop it, and read its log",
+    "Browse snapshots, download a file or a folder, and restore to the same host or another one",
+    "Get an alert when a backup fails or none has worked for a few days",
+    "A dashboard card with the state of every backup job",
+    "A homepage widget with backup job status and a panel beside terminals",
+    "A homepage widget with backup job status and a panel beside terminals"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "hosts:read",
+    "credentials:use",
+    "ssh:connect",
+    "network:serve",
+    "db:own",
+    "secrets:own",
+    "notify:send",
+    "users:impersonate",
+    "ui:surface",
+    "operations:provide"
+  ],
+  "optionalDependencies": {
+    "databases": "^1.2.0"
+  },
+  "requires": [
+    {
+      "service": "databases.logins",
+      "versionRange": "^1.0.0",
+      "optional": true
+    },
+    {
+      "service": "storage-health.access",
+      "versionRange": "^1.0.0",
+      "optional": true
+    }
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "backups",
+        "titleKey": "tab.title",
+        "icon": "DatabaseBackup",
+        "openFrom": ["rail", "palette"]
+      },
+      {
+        "id": "backups-host",
+        "titleKey": "hostTab.title",
+        "icon": "DatabaseBackup",
+        "openFrom": ["host-context-menu", "palette"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ],
+    "dashboardCards": [
+      {
+        "id": "backups-jobs",
+        "titleKey": "card.title",
+        "icon": "DatabaseBackup"
+      }
+    ],
+    "operations": {
+      "actions": [
+        {
+          "id": "backups.list-jobs",
+          "titleKey": "operations.list.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "backups.failed",
+          "titleKey": "operations.failed.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "surfaces": {
+            "palette": false
+          }
+        },
+        {
+          "id": "backups.run-job",
+          "titleKey": "operations.run.title",
+          "icon": "Play",
+          "scope": "resource",
+          "resource": "backups.job",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "exclusive": true,
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "backups.cancel-run",
+          "titleKey": "operations.cancel.title",
+          "icon": "Square",
+          "scope": "resource",
+          "resource": "backups.job",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "idempotent": true
+        },
+        {
+          "id": "backups.list-snapshots",
+          "titleKey": "operations.snapshots.title",
+          "icon": "History",
+          "scope": "resource",
+          "resource": "backups.job",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        }
+      ],
+      "events": [
+        {
+          "id": "backups.run-finished",
+          "titleKey": "operations.events.finished",
+          "severity": "info",
+          "scope": "host"
+        },
+        {
+          "id": "backups.run-failed",
+          "titleKey": "operations.events.failed",
+          "severity": "warning",
+          "scope": "host"
+        }
+      ],
+      "resources": [
+        {
+          "id": "backups.job",
+          "titleKey": "operations.jobs.title",
+          "icon": "DatabaseBackup",
+          "list": "backups.list-jobs",
+          "key": "id",
+          "name": "name",
+          "status": "status",
+          "tab": "backups-host",
+          "columns": [
+            {
+              "key": "lastSuccess",
+              "titleKey": "operations.jobs.lastSuccess",
+              "type": "time"
+            },
+            {
+              "key": "nextRun",
+              "titleKey": "operations.jobs.nextRun",
+              "type": "time"
+            },
+            {
+              "key": "size",
+              "titleKey": "operations.jobs.size",
+              "type": "bytes"
+            }
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "id": "backups.failed",
+          "titleKey": "operations.failed.title",
+          "read": "backups.failed",
+          "scope": "host",
+          "kind": "count",
+          "refreshSec": 300
+        }
+      ]
+    },
+    "uses": ["homepage.widgets"],
+    "settings": {
+      "host": {
+        "fields": [
+          {
+            "key": "showPanel",
+            "type": "boolean",
+            "labelKey": "settings.host.showPanel.label",
+            "descriptionKey": "settings.host.showPanel.description",
+            "default": false
+          }
+        ]
+      },
+      "user": [
+        {
+          "key": "companionAutoOpen",
+          "type": "boolean",
+          "labelKey": "settings.user.companionAutoOpen.label",
+          "descriptionKey": "settings.user.companionAutoOpen.description",
+          "default": false
+        },
+        {
+          "key": "companionSide",
+          "type": "select",
+          "labelKey": "settings.user.companionSide.label",
+          "descriptionKey": "settings.user.companionSide.description",
+          "default": "right",
+          "options": [
+            {
+              "value": "right",
+              "labelKey": "settings.user.companionSide.right"
+            },
+            {
+              "value": "left",
+              "labelKey": "settings.user.companionSide.left"
+            },
+            {
+              "value": "bottom",
+              "labelKey": "settings.user.companionSide.bottom"
+            }
+          ]
+        },
+        {
+          "key": "companionSize",
+          "type": "number",
+          "labelKey": "settings.user.companionSize.label",
+          "descriptionKey": "settings.user.companionSize.description",
+          "min": 240,
+          "max": 900,
+          "default": 380
+        },
+        {
+          "key": "companionEdgeButton",
+          "type": "boolean",
+          "labelKey": "settings.user.companionEdgeButton.label",
+          "descriptionKey": "settings.user.companionEdgeButton.description",
+          "default": true
+        }
+      ]
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

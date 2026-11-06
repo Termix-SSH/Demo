@@ -1,6 +1,7 @@
 import type { TermixApp } from "@termix-ssh/plugin-sdk/frontend";
 import { AcmeStatusSetting } from "./AcmeStatusSetting";
 import { AcmeCard } from "./AcmeCard";
+import { certWidget } from "./HomepageWidget";
 
 export function activate(app: TermixApp): void {
   app.registerSettingsComponent("status", AcmeStatusSetting);
@@ -12,6 +13,7 @@ export function activate(app: TermixApp): void {
     frame: "framed",
     component: AcmeCard,
   });
+  app.registerExtension("homepage.widgets", certWidget(app.t));
 }
 
 export function deactivate(): void {

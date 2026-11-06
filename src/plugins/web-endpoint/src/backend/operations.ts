@@ -23,6 +23,26 @@ export function checkCommand(endpoint: WebEndpoint): string {
   return `command -v curl >/dev/null || { echo nocurl; exit 0; }; curl -sk -o /dev/null --max-time 10 -w '%{http_code}' ${quote(url)} || echo 000`;
 }
 
+/** Endpoints of a host that do not answer, as acting user over SSH. */
+export async function downEndpoints(
+  ctx: PluginContext,
+  hostId: number,
+): Promise<WebEndpoint[]> {
+  const config = parseWebUiConfig(
+    await ctx.settings.getHost(hostId, "webUiConfig"),
+  );
+  const down: WebEndpoint[] = [];
+  for (const endpoint of config.endpoints) {
+    const result = await ctx.ssh.exec(hostId, checkCommand(endpoint), {
+      purpose: "web-endpoint-check",
+      timeoutMs: 20000,
+    });
+    const code = result.stdout.trim();
+    if (code !== "nocurl" && !/^[1-4]\d\d$/.test(code)) down.push(endpoint);
+  }
+  return down;
+}
+
 /** Web endpoints as actions: list them and check that each one answers. */
 export function registerOperations(ctx: PluginContext): void {
   if (typeof ctx.operations?.register !== "function") return;

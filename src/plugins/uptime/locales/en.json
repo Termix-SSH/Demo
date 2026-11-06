@@ -1,0 +1,373 @@
+{
+  "tab": {
+    "title": "Uptime",
+    "error": "Could not load the monitors.",
+    "monitors": "Monitors",
+    "incidents": "Incidents",
+    "maintenance": "Maintenance",
+    "pages": "Status pages"
+  },
+  "common": {
+    "refresh": "Refresh",
+    "loading": "Loading",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "done": "Done"
+  },
+  "status": {
+    "up": "Up",
+    "down": "Down",
+    "pending": "Retrying",
+    "maintenance": "Maintenance",
+    "paused": "Paused",
+    "unknown": "Waiting"
+  },
+  "types": {
+    "http": "Website (HTTP)",
+    "tcp": "TCP port",
+    "ping": "Ping",
+    "dns": "DNS record",
+    "tls": "TLS certificate",
+    "push": "Push",
+    "host": "Termix host",
+    "docker": "Docker container",
+    "systemd": "systemd unit",
+    "command": "Command"
+  },
+  "typeHints": {
+    "http": "Calls a URL and checks the status code, and a keyword if you set one.",
+    "tcp": "Checks that a port accepts connections.",
+    "ping": "Sends ping from the Termix server, or from a host you pick below.",
+    "dns": "Looks up a record and can check its value.",
+    "tls": "Checks that a certificate is trusted and not about to end.",
+    "push": "Gives you a URL to call from a cron job or script. Goes down when the calls stop.",
+    "host": "Checks a host's port the same way as the host status dot. Never logs in.",
+    "docker": "Logs in to the host over SSH and checks that a container is running and healthy.",
+    "systemd": "Logs in to the host over SSH and checks that a unit is active.",
+    "command": "Logs in to the host over SSH and runs a command. It is up when the exit code is 0."
+  },
+  "stats": {
+    "up": "Up",
+    "down": "Problems",
+    "paused": "Paused or in maintenance",
+    "month": "30 day uptime"
+  },
+  "filter": {
+    "all": "All",
+    "problems": "Problems",
+    "paused": "Paused"
+  },
+  "list": {
+    "name": "Name",
+    "target": "Target",
+    "checks": "Last checks",
+    "uptime": "24 h",
+    "uptimeDay": "24 h: {{value}}",
+    "latency": "Response",
+    "search": "Search",
+    "add": "Add monitor",
+    "addHosts": "Add from hosts",
+    "empty": "No monitors yet",
+    "emptyHint": "Add a monitor to start watching a website, a port or a host.",
+    "noMatch": "Nothing matches"
+  },
+  "range": {
+    "day": "24 h",
+    "week": "7 days",
+    "month": "30 days",
+    "quarter": "90 days"
+  },
+  "detail": {
+    "failed": "That did not work.",
+    "deleteTitle": "Delete {{name}}?",
+    "deleteHint": "Its history and incidents go with it.",
+    "newUrl": "New push URL",
+    "newUrlTitle": "Make a new push URL?",
+    "newUrlHint": "The old URL stops working right away.",
+    "type": "Type",
+    "target": "Target",
+    "lastCheck": "Last check",
+    "message": "Result",
+    "every": "Checks every",
+    "seconds_one": "{{count}} second",
+    "seconds_other": "{{count}} seconds",
+    "group": "Group",
+    "tags": "Tags",
+    "cert": "Certificate",
+    "certValue": "{{days}} days left | {{issuer}}",
+    "noChart": "Not enough checks for a chart yet.",
+    "alertsOn": "Turn alerts on",
+    "alertsOff": "Turn alerts off",
+    "runNow": "Check now",
+    "pause": "Pause",
+    "resume": "Resume",
+    "share": "Share",
+    "now": "Response now",
+    "recent": "Last checks",
+    "response": "Response time",
+    "about": "About",
+    "incidents": "Incidents",
+    "noIncidents": "No incidents."
+  },
+  "editor": {
+    "addTitle": "Add monitor",
+    "editTitle": "Edit monitor",
+    "saveFailed": "Could not save.",
+    "testFailed": "Could not run the test.",
+    "test": "Test",
+    "testing": "Testing",
+    "testOk": "Up",
+    "testBad": "Down",
+    "what": "What to watch",
+    "name": "Name",
+    "type": "Type",
+    "host": "Host",
+    "noHost": "Pick a host",
+    "pushOnce": "Copy this URL now. It is only shown once.",
+    "from": "Check from",
+    "fromHost": "Run the check from",
+    "fromServer": "The Termix server",
+    "fromHint": "Pick a host to reach things only it can see. The check runs there over SSH.",
+    "timing": "Timing and alerts",
+    "interval": "Check every (seconds)",
+    "timeout": "Timeout (seconds)",
+    "grace": "Extra wait (seconds)",
+    "retries": "Retries",
+    "retriesHint": "Failed checks in a row before it counts as down.",
+    "retryInterval": "Time between retries (seconds)",
+    "resend": "Remind me every (minutes)",
+    "resendHint": "While it stays down. 0 sends one alert.",
+    "more": "Group and tags",
+    "group": "Group",
+    "tags": "Tags",
+    "tagsHint": "Separate with commas.",
+    "target": "Address",
+    "port": "Port",
+    "portOptional": "Port",
+    "portOptionalHint": "Leave empty to use the host's own port.",
+    "url": "URL",
+    "method": "Method",
+    "body": "Body",
+    "accepted": "Accepted status codes",
+    "acceptedHint": "Like 200-299,301",
+    "keyword": "Keyword",
+    "keywordHint": "Optional. Text that must be in the answer.",
+    "keywordAbsent": "Fail when the keyword is found",
+    "auth": "Login",
+    "authNone": "None",
+    "authBasic": "Basic",
+    "authBearer": "Bearer token",
+    "username": "Username",
+    "password": "Password",
+    "token": "Token",
+    "keepSecret": "Leave empty to keep the saved value.",
+    "headers": "Headers",
+    "headersHint": "One per line, like Name: value. Stored encrypted.",
+    "follow": "Follow redirects",
+    "ignoreTls": "Accept any certificate",
+    "certDays": "Warn before a certificate ends (days)",
+    "certDaysHint": "0 turns the warning off.",
+    "record": "Record type",
+    "dnsServer": "DNS server",
+    "dnsServerHint": "Optional IP address. Empty uses the server's own.",
+    "expected": "Expected value",
+    "expectedHint": "Optional. Text one record must contain.",
+    "container": "Container name",
+    "unit": "Unit name",
+    "command": "Command",
+    "commandHint": "Runs as your login on that host each check."
+  },
+  "hosts": {
+    "add_one": "Add {{count}} monitor",
+    "add_other": "Add {{count}} monitors"
+  },
+  "shares": {
+    "loadFailed": "Could not load the shares.",
+    "saveFailed": "Could not save the shares.",
+    "pick": "Pick a user or role",
+    "user": "User: {{name}}",
+    "role": "Role: {{name}}",
+    "with": "Share with",
+    "add": "Add",
+    "none": "Only you can see this monitor.",
+    "view": "Can view",
+    "edit": "Can edit"
+  },
+  "incidents": {
+    "none": "No incidents",
+    "ongoing": "Ongoing",
+    "seen": "Seen",
+    "ack": "Mark as seen",
+    "note": "Note"
+  },
+  "maintenance": {
+    "none": "No maintenance windows",
+    "noneHint": "Add one to stop alerts while you work on something.",
+    "add": "Add window",
+    "edit": "Edit window",
+    "active": "Active now",
+    "when": "When",
+    "once": "One time",
+    "weekly": "Every week",
+    "start": "Start",
+    "end": "End",
+    "days": "Days",
+    "time": "Start time",
+    "length": "Length (minutes)",
+    "timezone": "Time zone",
+    "covers": "Covers",
+    "coversAll": "All my monitors",
+    "coversSome": "Chosen monitors",
+    "coversTag": "Monitors with a tag",
+    "deleteTitle": "Delete {{name}}?",
+    "day0": "Sun",
+    "day1": "Mon",
+    "day2": "Tue",
+    "day3": "Wed",
+    "day4": "Thu",
+    "day5": "Fri",
+    "day6": "Sat"
+  },
+  "pages": {
+    "none": "No status pages",
+    "noneHint": "A status page shows people how your services are doing, with no login.",
+    "add": "Add page",
+    "edit": "Edit page",
+    "about": "Page",
+    "title": "Title",
+    "slug": "Address",
+    "slugHint": "Lower case letters, numbers and dashes. This is the end of the link.",
+    "description": "Description",
+    "published": "Published",
+    "publishedHint": "Anyone with the link can see names, states and uptime. Never addresses or errors.",
+    "showLatency": "Show response times",
+    "group": "Group {{number}}",
+    "groupName": "Group name",
+    "addGroup": "Add group",
+    "notes": "Notes",
+    "noteTitle": "Title",
+    "noteBody": "Text",
+    "noteLevel": "Level",
+    "levelInfo": "Info",
+    "levelWarning": "Warning",
+    "levelCritical": "Critical",
+    "post": "Post",
+    "resolve": "Resolve",
+    "resolved": "Resolved",
+    "live": "Published",
+    "draft": "Draft",
+    "open": "Open page",
+    "deleteTitle": "Delete {{name}}?",
+    "offTitle": "Public pages are off",
+    "offHint": "An admin turned them off in the plugin settings, so these links show nothing."
+  },
+  "widget": {
+    "name": "Uptime",
+    "description": "How many monitors are up or down.",
+    "up": "Up",
+    "down": "Down"
+  },
+  "card": {
+    "title": "Uptime",
+    "overview": "All monitors",
+    "attention": "Monitors with problems",
+    "monitors": "Monitors",
+    "allGood": "Everything is up.",
+    "gone": "This monitor is gone.",
+    "loading": "Loading...",
+    "month": "30 days: {{value}}"
+  },
+  "host": {
+    "none": "No monitors for this host.",
+    "add": "Add monitor",
+    "down_one": "{{count}} monitor is down",
+    "down_other": "{{count}} monitors are down"
+  },
+  "permissions": {
+    "view": {
+      "title": "View monitors",
+      "description": "See monitors, history and incidents."
+    },
+    "manage": {
+      "title": "Manage monitors",
+      "description": "Add and change monitors and maintenance windows."
+    },
+    "privateTargets": {
+      "title": "Check private addresses",
+      "description": "Point monitors at LAN, Tailscale and other private addresses the Termix server can reach."
+    },
+    "runCommands": {
+      "title": "Run commands",
+      "description": "Add monitors that run a command on a host over SSH."
+    },
+    "publish": {
+      "title": "Publish status pages",
+      "description": "Make status pages anyone with the link can see."
+    }
+  },
+  "settings": {
+    "admin": {
+      "minIntervalSeconds": {
+        "label": "Shortest check interval",
+        "description": "In seconds. Monitors that log in over SSH never go below 60."
+      },
+      "defaultIntervalSeconds": {
+        "label": "Default check interval",
+        "description": "In seconds, for new monitors."
+      },
+      "historyDays": {
+        "label": "Keep history for",
+        "description": "Days of daily uptime numbers and incidents."
+      },
+      "publicPages": {
+        "label": "Allow public status pages",
+        "description": "Turn off to hide every status page. Push URLs keep working."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Open the panel with each terminal",
+        "description": "Show the uptime panel when a terminal opens."
+      },
+      "companionSide": {
+        "label": "Panel side",
+        "description": "Where the uptime panel opens.",
+        "right": "Right",
+        "left": "Left",
+        "bottom": "Bottom"
+      },
+      "companionSize": {
+        "label": "Panel size",
+        "description": "Width or height of the panel in pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Show the edge button",
+        "description": "A button on the terminal edge that opens the panel."
+      }
+    }
+  },
+  "operations": {
+    "monitor": "Monitor",
+    "summary": { "title": "Uptime summary" },
+    "monitors": { "title": "List monitors" },
+    "hostMonitors": { "title": "Monitors on this host" },
+    "hostHealth": { "title": "Uptime" },
+    "run": { "title": "Check a monitor now" },
+    "pause": { "title": "Pause a monitor" },
+    "resume": { "title": "Resume a monitor" },
+    "addHost": { "title": "Add an uptime monitor" },
+    "events": {
+      "down": "A monitor went down",
+      "up": "A monitor came back up",
+      "cert": "A certificate is about to end"
+    },
+    "resource": {
+      "title": "Monitors",
+      "type": "Type",
+      "status": "Status",
+      "uptime": "30 day uptime"
+    }
+  }
+}

@@ -160,16 +160,17 @@ ${guard}renice -n ${nice} -p $pid 2>&1 || exit 1
 `;
 }
 
-/** Reads pm2 and supervisor. A missing tool prints @@none for its part. */
-export function managersScript(runUser: string): string {
-  const pm2 = pm2Command(runUser, "pm2 jlist 2>/dev/null");
-  return `echo "@@pm2"
-if command -v pm2 >/dev/null 2>&1; then ${pm2}; else echo "@@none"; fi
-echo "@@supervisor"
-if command -v supervisorctl >/dev/null 2>&1; then supervisorctl status 2>&1 | head -n 300; else echo "@@none"; fi
+/** Reads pm2 apps. A missing pm2 prints @@none. Runs as the login user. */
+export function pm2ListScript(runUser: string): string {
+  return `if command -v pm2 >/dev/null 2>&1; then ${pm2Command(runUser, "pm2 jlist 2>/dev/null")}; else echo "@@none"; fi
 exit 0
 `;
 }
+
+/** Reads supervisor. A missing supervisorctl prints @@none. */
+export const SUPERVISOR_LIST_SCRIPT = `if command -v supervisorctl >/dev/null 2>&1; then supervisorctl status 2>&1 | head -n 300; else echo "@@none"; fi
+exit 0
+`;
 
 export function appActionScript(
   manager: ManagerKind,

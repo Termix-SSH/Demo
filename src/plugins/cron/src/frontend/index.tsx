@@ -3,6 +3,7 @@ import { Clock } from "lucide-react";
 import type { TermixApp } from "@termix-ssh/plugin-sdk/frontend";
 import { initApi } from "./api";
 import { CronCard } from "./CronCard";
+import { CronHostsCard } from "./CronHostsCard";
 import { CronTab } from "./CronTab";
 import { cronEnabled } from "./enabled";
 
@@ -31,6 +32,15 @@ export function activate(app: TermixApp): void {
     order: 48,
     tabType: TAB_ID,
     when: (host) => canUse && !!host.enableSsh && cronEnabled(host),
+  });
+
+  app.registerDashboardCard({
+    id: "cron-hosts",
+    titleKey: "card.title",
+    defaultPanel: "side",
+    defaultHeight: 220,
+    frame: "framed",
+    component: CronHostsCard,
   });
 
   // Fills the Cron card in Host Metrics, when that plugin runs.

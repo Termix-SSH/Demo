@@ -64,23 +64,44 @@ export function powerCommand(guest: Guest, verb: string): string {
   return `pvesh create /nodes/${guest.node}/${guest.type}/${guest.vmid}/status/${verb}`;
 }
 
+/** Nodes of the cluster that are not online. */
+export async function offlineNodes(run: PveshRunner): Promise<string[]> {
+  const { stdout, code } = await run(
+    "pvesh get /cluster/resources --type node --output-format json",
+    25000,
+  );
+  if (code !== 0) return [];
+  const parsed = JSON.parse(stdout) as Record<string, unknown>[];
+  if (!Array.isArray(parsed)) return [];
+  return parsed
+    .filter((r) => typeof r.node === "string" && r.status !== "online")
+    .map((r) => r.node as string);
+}
+
+/** Runs pvesh on a host as the acting user, with the saved sudo password. */
+export async function withPveshRunner<T>(
+  ctx: PluginContext,
+  hostId: number,
+  fn: (run: PveshRunner) => Promise<T>,
+): Promise<T> {
+  const resolved = await ctx.ssh.resolveHost(hostId).catch(() => null);
+  const sudoPassword =
+    (resolved?.sudoPassword as string | undefined) || undefined;
+  return ctx.ssh.withConnection<T, Client>(
+    hostId,
+    { pool: "proxmox-ops" },
+    (client) => fn(createPveshRunner(client, sudoPassword)),
+  );
+}
+
 /** Proxmox guests as actions, so they show on the host page and in rollouts. */
 export function registerOperations(ctx: PluginContext): void {
   if (typeof ctx.operations?.register !== "function") return;
 
-  const withRunner = async <T>(
+  const withRunner = <T>(
     hostId: number,
     fn: (run: PveshRunner) => Promise<T>,
-  ): Promise<T> => {
-    const resolved = await ctx.ssh.resolveHost(hostId).catch(() => null);
-    const sudoPassword =
-      (resolved?.sudoPassword as string | undefined) || undefined;
-    return ctx.ssh.withConnection<T, Client>(
-      hostId,
-      { pool: "proxmox-ops" },
-      (client) => fn(createPveshRunner(client, sudoPassword)),
-    );
-  };
+  ): Promise<T> => withPveshRunner(ctx, hostId, fn);
 
   const findGuest = async (run: PveshRunner, vmid: unknown) => {
     const id = Number(vmid);

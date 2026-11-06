@@ -5,13 +5,17 @@ import { createRemote } from "./remote.js";
 import { registerOperations } from "./operations.js";
 import { registerRoutes } from "./routes.js";
 import { createService } from "./service.js";
+import { createSummaryCache, registerSummary } from "./summary.js";
 
 export async function activate(ctx: PluginContext) {
   const remote = createRemote(ctx);
   const service = createService(remote);
   const interfaces = createInterfaces(remote);
-  registerOperations(ctx, service, interfaces);
-  registerRoutes(ctx.http.router<Router>(), ctx, { service, interfaces });
+  const summary = createSummaryCache(ctx, { service, interfaces });
+  registerOperations(ctx, service, interfaces, summary);
+  const router = ctx.http.router<Router>();
+  registerRoutes(router, ctx, { service, interfaces });
+  registerSummary(router, ctx, summary);
   ctx.log.info("WireGuard routes mounted at /plugin-api/wireguard");
 }
 

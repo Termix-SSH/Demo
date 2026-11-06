@@ -1,0 +1,316 @@
+{
+  "id": "dns",
+  "name": "DNS",
+  "version": "1.0.0",
+  "description": "Manage DNS records and domains across Cloudflare, Route 53, Namecheap and other providers.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-DNS",
+  "docs": "https://docs.termix.site/plugins/dns",
+  "category": "Networking",
+  "icon": "Globe",
+  "features": [
+    "Works with Cloudflare, Route 53, DigitalOcean, Hetzner, Namecheap, GoDaddy, Porkbun and Gandi",
+    "Add, change and delete records in one place across all your providers",
+    "Domain list with expiry dates, auto renew, transfer lock and name servers, plus alerts before a domain expires",
+    "Watch any domain by name, even ones you did not register through a connected provider",
+    "Keep a record pointed at a host or at this server's public address",
+    "Health checks for delegation, DNSSEC, SPF, DMARC and broken CNAMEs, and a propagation check against public resolvers",
+    "Copies of every zone with a diff and restore, BIND file import and export, and an alert when a zone changes outside Termix",
+    "A DNS service other plugins use for certificate challenges"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "db:own",
+    "kv:own",
+    "secrets:own",
+    "network:outbound",
+    "network:probe",
+    "network:serve",
+    "ui:surface",
+    "hosts:read",
+    "users:impersonate",
+    "events:core",
+    "notify:send",
+    "operations:provide"
+  ],
+  "provides": [
+    {
+      "service": "dns.records",
+      "version": "1.0.0",
+      "permission": "dns.manage"
+    }
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "dns",
+        "titleKey": "tab.title",
+        "icon": "Globe",
+        "openFrom": ["rail", "palette"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "view",
+        "titleKey": "permissions.view.title",
+        "descriptionKey": "permissions.view.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "edit",
+        "titleKey": "permissions.edit.title",
+        "descriptionKey": "permissions.edit.description",
+        "defaultRoles": ["admin"]
+      },
+      {
+        "name": "manage",
+        "titleKey": "permissions.manage.title",
+        "descriptionKey": "permissions.manage.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
+    "dashboardCards": [
+      {
+        "id": "dns-domains",
+        "titleKey": "card.title",
+        "icon": "Globe"
+      }
+    ],
+    "operations": {
+      "actions": [
+        {
+          "id": "dns.list-zones",
+          "titleKey": "operations.zones.title",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "dns.list-records",
+          "titleKey": "operations.records.title",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "inputs": [
+            {
+              "key": "zone",
+              "type": "string",
+              "labelKey": "operations.zone",
+              "required": true,
+              "optionsFrom": "dns.list-zones"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "dns.list-domains",
+          "titleKey": "operations.domains.title",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "dns.check-zone",
+          "titleKey": "operations.check.title",
+          "icon": "Stethoscope",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "inputs": [
+            {
+              "key": "zone",
+              "type": "string",
+              "labelKey": "operations.zone",
+              "required": true,
+              "optionsFrom": "dns.list-zones"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "dns.upsert-record",
+          "titleKey": "operations.upsert.title",
+          "icon": "Pencil",
+          "scope": "server",
+          "risk": "change",
+          "permission": "edit",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "zone",
+              "type": "string",
+              "labelKey": "operations.zone",
+              "required": true,
+              "optionsFrom": "dns.list-zones"
+            },
+            {
+              "key": "type",
+              "type": "select",
+              "labelKey": "operations.type",
+              "required": true,
+              "default": "A",
+              "options": [
+                {
+                  "value": "A",
+                  "labelKey": "operations.typeA"
+                },
+                {
+                  "value": "AAAA",
+                  "labelKey": "operations.typeAAAA"
+                },
+                {
+                  "value": "CNAME",
+                  "labelKey": "operations.typeCNAME"
+                },
+                {
+                  "value": "TXT",
+                  "labelKey": "operations.typeTXT"
+                }
+              ]
+            },
+            {
+              "key": "name",
+              "type": "string",
+              "labelKey": "operations.name",
+              "required": true
+            },
+            {
+              "key": "content",
+              "type": "string",
+              "labelKey": "operations.content",
+              "required": true
+            },
+            {
+              "key": "ttl",
+              "type": "string",
+              "labelKey": "operations.ttl",
+              "required": false
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "dns.delete-record",
+          "titleKey": "operations.delete.title",
+          "icon": "Trash2",
+          "scope": "server",
+          "risk": "destructive",
+          "permission": "edit",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "zone",
+              "type": "string",
+              "labelKey": "operations.zone",
+              "required": true,
+              "optionsFrom": "dns.list-zones"
+            },
+            {
+              "key": "type",
+              "type": "string",
+              "labelKey": "operations.type",
+              "required": true
+            },
+            {
+              "key": "name",
+              "type": "string",
+              "labelKey": "operations.name",
+              "required": true
+            },
+            {
+              "key": "content",
+              "type": "string",
+              "labelKey": "operations.contentOptional",
+              "required": false
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "dns.snapshot-zone",
+          "titleKey": "operations.snapshot.title",
+          "icon": "Copy",
+          "scope": "server",
+          "risk": "change",
+          "permission": "edit",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "zone",
+              "type": "string",
+              "labelKey": "operations.zone",
+              "required": true,
+              "optionsFrom": "dns.list-zones"
+            },
+            {
+              "key": "label",
+              "type": "string",
+              "labelKey": "operations.label",
+              "required": false
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "dns.sync-links",
+          "titleKey": "operations.links.title",
+          "icon": "RefreshCw",
+          "scope": "server",
+          "risk": "change",
+          "permission": "edit",
+          "dryRun": "describe",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "dns.domain-expiry",
+          "titleKey": "operations.expiry.title",
+          "read": "dns.list-domains",
+          "scope": "server",
+          "kind": "status",
+          "refreshSec": 3600
+        }
+      ]
+    },
+    "uses": ["homepage.widgets"]
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

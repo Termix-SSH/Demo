@@ -23,6 +23,13 @@
     "termix": ">=26.11.1-0",
     "api": "^1.15"
   },
+  "requires": [
+    {
+      "service": "dns.records",
+      "versionRange": "^1.0.0",
+      "optional": true
+    }
+  ],
   "capabilities": [
     "system:tls",
     "kv:own",
@@ -114,6 +121,10 @@
             {
               "value": "dns-cloudflare",
               "labelKey": "settings.challengeType.cloudflare"
+            },
+            {
+              "value": "dns-plugin",
+              "labelKey": "settings.challengeType.dns"
             }
           ]
         },
@@ -125,6 +136,7 @@
         }
       ]
     },
+    "uses": ["homepage.widgets"],
     "dashboardCards": [
       {
         "id": "acme-certificate",

@@ -1,0 +1,234 @@
+{
+  "id": "network-devices",
+  "name": "Network Devices",
+  "version": "1.0.0",
+  "description": "See and manage routers, switches and access points over SNMP and router APIs.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Network-Devices",
+  "docs": "https://docs.termix.site/plugins/network-devices",
+  "category": "Networking",
+  "icon": "Network",
+  "features": [
+    "Works with any SNMP device, MikroTik RouterOS, OPNsense and OpenWrt",
+    "Ports with link state, speed, traffic rates, errors and PoE",
+    "Clients from DHCP, ARP, Wi-Fi and switch MAC tables",
+    "Neighbors from LLDP and MikroTik discovery",
+    "Alerts when a device or a watched port goes down",
+    "Reboot a device, turn a port off or on, and power cycle PoE"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "db:own",
+    "secrets:own",
+    "network:outbound",
+    "network:probe",
+    "network:serve",
+    "ui:surface",
+    "notify:send",
+    "operations:provide"
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "network-devices",
+        "titleKey": "tab.title",
+        "icon": "Network",
+        "openFrom": ["rail"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "view",
+        "titleKey": "permissions.view.title",
+        "descriptionKey": "permissions.view.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "manage",
+        "titleKey": "permissions.manage.title",
+        "descriptionKey": "permissions.manage.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
+    "dashboardCards": [
+      {
+        "id": "network-devices",
+        "titleKey": "card.title",
+        "icon": "Network"
+      }
+    ],
+    "operations": {
+      "actions": [
+        {
+          "id": "network-devices.list-devices",
+          "titleKey": "operations.list.title",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "network-devices.list-ports",
+          "titleKey": "operations.ports.title",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "network-devices.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "network-devices.poll",
+          "titleKey": "operations.poll.title",
+          "icon": "RefreshCw",
+          "scope": "server",
+          "risk": "read",
+          "permission": "view",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "network-devices.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "network-devices.set-port",
+          "titleKey": "operations.setPort.title",
+          "icon": "Power",
+          "scope": "server",
+          "risk": "change",
+          "permission": "manage",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "network-devices.list-devices"
+            },
+            {
+              "key": "port",
+              "type": "string",
+              "labelKey": "operations.port",
+              "required": true
+            },
+            {
+              "key": "state",
+              "type": "select",
+              "labelKey": "operations.state",
+              "required": true,
+              "default": "up",
+              "options": [
+                {
+                  "value": "up",
+                  "labelKey": "operations.stateUp"
+                },
+                {
+                  "value": "down",
+                  "labelKey": "operations.stateDown"
+                }
+              ]
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "network-devices.poe-cycle",
+          "titleKey": "operations.poe.title",
+          "icon": "Zap",
+          "scope": "server",
+          "risk": "change",
+          "permission": "manage",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "network-devices.list-devices"
+            },
+            {
+              "key": "port",
+              "type": "string",
+              "labelKey": "operations.port",
+              "required": true
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "network-devices.reboot",
+          "titleKey": "operations.reboot.title",
+          "icon": "RotateCw",
+          "scope": "server",
+          "risk": "destructive",
+          "permission": "manage",
+          "dryRun": "describe",
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.device",
+              "required": true,
+              "optionsFrom": "network-devices.list-devices"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "network-devices.health",
+          "titleKey": "operations.health.title",
+          "read": "network-devices.list-devices",
+          "scope": "server",
+          "kind": "status",
+          "refreshSec": 120
+        }
+      ]
+    },
+    "uses": ["homepage.widgets"]
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

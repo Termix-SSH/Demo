@@ -1346,7 +1346,8 @@ export function HostItem({
             </div>
           )}
           <TooltipProvider delayDuration={300}>
-            <Tooltip>
+            {/* Hidden while the host menu is open so it never covers it. */}
+            <Tooltip open={isMenuOpen ? false : undefined}>
               <TooltipTrigger asChild>
                 <span
                   className={`${tokens.nameTextSize} font-semibold truncate text-foreground leading-none tracking-tight`}

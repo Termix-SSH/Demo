@@ -1,0 +1,424 @@
+{
+  "id": "storage-health",
+  "name": "Storage Health",
+  "version": "1.0.0",
+  "description": "Watch drive and array health over SSH: SMART, NVMe, ZFS, mdadm, btrfs and LVM, with history, alerts and self tests.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Storage-Health",
+  "docs": "https://docs.termix.site/plugins/storage-health",
+  "category": "Monitoring",
+  "icon": "HardDrive",
+  "features": [
+    "SMART and NVMe health, temperature, wear and bad sectors for every drive",
+    "ZFS pools, mdadm arrays, btrfs filesystems and LVM thin pools",
+    "Charts for temperature and wear over 24 hours, 7 days and 30 days",
+    "Alerts when a drive fails, a pool or array degrades, a drive runs hot or wears out",
+    "A log of problems, self tests and scrubs for every host",
+    "Start SMART self tests and scrubs from Termix",
+    "A Host Metrics card, a dashboard card, signals and events for Operations and Automations"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "hosts:read",
+    "credentials:use",
+    "ssh:connect",
+    "network:serve",
+    "db:own",
+    "kv:own",
+    "files:own",
+    "notify:send",
+    "users:impersonate",
+    "ui:surface",
+    "operations:provide"
+  ],
+  "provides": [
+    {
+      "service": "storage-health.access",
+      "version": "1.0.0",
+      "permission": "storage-health.use"
+    }
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "storage-health",
+        "titleKey": "tab.title",
+        "icon": "HardDrive",
+        "openFrom": ["host-context-menu", "palette"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "run-tests",
+        "titleKey": "permissions.runTests.title",
+        "descriptionKey": "permissions.runTests.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "enableKey": "enableStorage",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
+        "editorGroup": "ssh",
+        "fields": [
+          {
+            "key": "useSudo",
+            "type": "boolean",
+            "labelKey": "settings.host.useSudo.label",
+            "descriptionKey": "settings.host.useSudo.description",
+            "default": true,
+            "requires": "enableStorage"
+          },
+          {
+            "key": "readOnly",
+            "type": "boolean",
+            "labelKey": "settings.host.readOnly.label",
+            "descriptionKey": "settings.host.readOnly.description",
+            "default": false,
+            "requires": "enableStorage"
+          },
+          {
+            "key": "showPanel",
+            "type": "boolean",
+            "labelKey": "settings.host.showPanel.label",
+            "descriptionKey": "settings.host.showPanel.description",
+            "default": true,
+            "requires": "enableStorage"
+          }
+        ]
+      },
+      "user": [
+        {
+          "key": "companionAutoOpen",
+          "labelKey": "settings.user.companionAutoOpen.label",
+          "descriptionKey": "settings.user.companionAutoOpen.description",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "key": "companionSide",
+          "labelKey": "settings.user.companionSide.label",
+          "descriptionKey": "settings.user.companionSide.description",
+          "type": "select",
+          "default": "right",
+          "options": [
+            {
+              "value": "right",
+              "labelKey": "settings.user.companionSide.right"
+            },
+            {
+              "value": "left",
+              "labelKey": "settings.user.companionSide.left"
+            },
+            {
+              "value": "bottom",
+              "labelKey": "settings.user.companionSide.bottom"
+            }
+          ]
+        },
+        {
+          "key": "companionSize",
+          "labelKey": "settings.user.companionSize.label",
+          "descriptionKey": "settings.user.companionSize.description",
+          "type": "number",
+          "min": 240,
+          "max": 900,
+          "default": 380
+        },
+        {
+          "key": "companionEdgeButton",
+          "labelKey": "settings.user.companionEdgeButton.label",
+          "descriptionKey": "settings.user.companionEdgeButton.description",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    "dashboardCards": [
+      {
+        "id": "storage-hosts",
+        "titleKey": "card.title",
+        "icon": "HardDrive"
+      }
+    ],
+    "operations": {
+      "actions": [
+        {
+          "id": "storage-health.devices",
+          "titleKey": "operations.devices.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableStorage": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "storage-health.pools",
+          "titleKey": "operations.pools.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableStorage": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "storage-health.status",
+          "titleKey": "operations.status.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableStorage": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "storage-health.temperature",
+          "titleKey": "operations.temperature.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableStorage": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "storage-health.selftest",
+          "titleKey": "operations.selftest.title",
+          "icon": "HeartPulse",
+          "scope": "host",
+          "risk": "change",
+          "permission": "run-tests",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "exclusive": true,
+          "inputs": [
+            {
+              "key": "device",
+              "type": "string",
+              "labelKey": "operations.selftest.device",
+              "required": true,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}$"
+            },
+            {
+              "key": "action",
+              "type": "select",
+              "labelKey": "operations.selftest.action",
+              "default": "short",
+              "options": [
+                {
+                  "value": "short",
+                  "labelKey": "operations.selftest.short"
+                },
+                {
+                  "value": "long",
+                  "labelKey": "operations.selftest.long"
+                },
+                {
+                  "value": "abort",
+                  "labelKey": "operations.selftest.abort"
+                }
+              ]
+            }
+          ],
+          "when": {
+            "settings": {
+              "enableStorage": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "storage-health.scrub",
+          "titleKey": "operations.scrub.title",
+          "icon": "ScanSearch",
+          "scope": "host",
+          "risk": "change",
+          "permission": "run-tests",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "exclusive": true,
+          "inputs": [
+            {
+              "key": "target",
+              "type": "string",
+              "labelKey": "operations.scrub.target",
+              "descriptionKey": "operations.scrub.targetHint",
+              "required": true
+            },
+            {
+              "key": "stop",
+              "type": "boolean",
+              "labelKey": "operations.scrub.stop",
+              "default": false
+            }
+          ],
+          "when": {
+            "settings": {
+              "enableStorage": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        }
+      ],
+      "events": [
+        {
+          "id": "storage-health.degraded",
+          "titleKey": "operations.events.degraded",
+          "severity": "warning",
+          "scope": "host"
+        },
+        {
+          "id": "storage-health.recovered",
+          "titleKey": "operations.events.recovered",
+          "severity": "info",
+          "scope": "host"
+        },
+        {
+          "id": "storage-health.smart-failing",
+          "titleKey": "operations.events.smartFailing",
+          "severity": "critical",
+          "scope": "host"
+        },
+        {
+          "id": "storage-health.raid-degraded",
+          "titleKey": "operations.events.raidDegraded",
+          "severity": "critical",
+          "scope": "host"
+        }
+      ],
+      "resources": [
+        {
+          "id": "storage-health.drive",
+          "titleKey": "operations.devices.title",
+          "icon": "HardDrive",
+          "list": "storage-health.devices",
+          "key": "id",
+          "name": "name",
+          "status": "health",
+          "tab": "storage-health",
+          "columns": [
+            {
+              "key": "health",
+              "titleKey": "operations.devices.health",
+              "type": "status"
+            },
+            {
+              "key": "kind",
+              "titleKey": "operations.devices.kind"
+            },
+            {
+              "key": "temp",
+              "titleKey": "operations.devices.temp"
+            },
+            {
+              "key": "wear",
+              "titleKey": "operations.devices.wear",
+              "type": "percent"
+            }
+          ]
+        },
+        {
+          "id": "storage-health.pool",
+          "titleKey": "operations.pools.title",
+          "icon": "Layers",
+          "list": "storage-health.pools",
+          "key": "id",
+          "name": "name",
+          "status": "health",
+          "tab": "storage-health",
+          "columns": [
+            {
+              "key": "health",
+              "titleKey": "operations.devices.health",
+              "type": "status"
+            },
+            {
+              "key": "kind",
+              "titleKey": "operations.devices.kind"
+            },
+            {
+              "key": "state",
+              "titleKey": "operations.pools.state"
+            }
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "id": "storage-health.health",
+          "titleKey": "operations.status.title",
+          "read": "storage-health.status",
+          "scope": "host",
+          "kind": "status",
+          "refreshSec": 60
+        },
+        {
+          "id": "storage-health.temperature",
+          "titleKey": "operations.temperature.title",
+          "read": "storage-health.temperature",
+          "scope": "host",
+          "kind": "gauge",
+          "refreshSec": 60
+        }
+      ]
+    },
+    "uses": ["homepage.widgets"]
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

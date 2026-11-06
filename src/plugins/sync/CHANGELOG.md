@@ -5,6 +5,8 @@
 ### Added
 
 - Refresh a remote site through Termix actions and see unreachable sites as a status tile
+- A dashboard card with reachable sites and their hosts
+- An alert when a remote site stops answering and when it is back, with an admin setting to turn it off
 
 ### Changed
 

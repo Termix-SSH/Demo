@@ -168,7 +168,7 @@ export function RuleSetsTab() {
         <div className="flex shrink-0 flex-col gap-2">
           <p className="text-xs text-muted-foreground">{t("rulesets.hint")}</p>
           {failed ? (
-            <p className="p-2 text-sm text-destructive">{failed}</p>
+            <p className="px-3 py-2 text-xs text-destructive">{failed}</p>
           ) : !sets ? (
             <p className="p-2 text-xs text-muted-foreground">
               {t("common.loading")}
@@ -485,7 +485,7 @@ function RuleSetEditor({
         )}
         <PanelList
           empty={
-            <p className="px-1 py-3 text-xs text-muted-foreground/60">
+            <p className="px-3 py-3 text-xs text-muted-foreground/60">
               {t("rulesets.noRules")}
             </p>
           }

@@ -90,7 +90,7 @@ export function TriggerCard({
   return (
     <div className="border border-border p-3 space-y-3">
       <div className="space-y-1">
-        <Label className="text-xs text-muted-foreground">
+        <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
           {t(`${base}.trigger`)}
         </Label>
         <Select
@@ -172,7 +172,7 @@ export function TriggerCard({
 
           {trigger.metric?.path === "disk.percent" && (
             <div className="space-y-1">
-              <Label className="text-xs text-muted-foreground">
+              <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                 {t(`${base}.fields.mount`)}
               </Label>
               <Input
@@ -194,7 +194,7 @@ export function TriggerCard({
           {trigger.metric?.path.startsWith("network.") &&
             "iface" in trigger.metric && (
               <div className="space-y-1">
-                <Label className="text-xs text-muted-foreground">
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                   {t(`${base}.fields.interface`)}
                 </Label>
                 <Input
@@ -276,7 +276,7 @@ export function TriggerCard({
       {trigger.kind === "schedule" && (
         <div className="space-y-3">
           <div className="space-y-1">
-            <Label className="text-xs text-muted-foreground">
+            <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
               {t(`${base}.fields.cron`)}
             </Label>
             <Input
@@ -296,7 +296,7 @@ export function TriggerCard({
             }
           />
           <div className="space-y-1">
-            <Label className="text-xs text-muted-foreground">
+            <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
               {t(`${base}.fields.timezone`)}
             </Label>
             <Select
@@ -390,7 +390,9 @@ function NumberField({
 }) {
   return (
     <div className="space-y-1 flex-1">
-      <Label className="text-xs text-muted-foreground">{label}</Label>
+      <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+        {label}
+      </Label>
       <Input
         type="number"
         min={0}

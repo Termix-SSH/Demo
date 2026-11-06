@@ -5,6 +5,7 @@
 ### Added
 
 - Add an SSH key to a host's authorized_keys through Termix actions, so one key can go to many hosts in a rollout
+- The assistant and MCP can list your SSH key names
 
 ### Changed
 

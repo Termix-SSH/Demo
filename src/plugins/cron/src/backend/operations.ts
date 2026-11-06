@@ -6,6 +6,7 @@ import { HostScriptError } from "@termix-ssh/plugin-sdk/host-scripts";
 import { describeSchedule } from "../shared/schedule.js";
 import { readHostSettings } from "./host-settings.js";
 import type { CronService } from "./service.js";
+import type { SummaryCache } from "./summary.js";
 
 const ID_RE = /^[0-9a-f]{8}(-\d+)?$/;
 
@@ -27,6 +28,7 @@ function requireJob(context: PluginOperationContext): string {
 export function registerOperations(
   ctx: PluginContext,
   service: CronService,
+  summary: SummaryCache,
 ): void {
   if (typeof ctx.operations?.register !== "function") return;
 
@@ -55,6 +57,28 @@ export function registerOperations(
         command: job.command,
       }));
       return { summary: `${rows.length} jobs`, data: { rows } };
+    },
+  });
+
+  ctx.operations.register("cron.status", {
+    run: async (_input, context) => {
+      const result = await summary.check(requireHost(context));
+      if (result.error) throw new Error(result.error);
+      const down = result.installed && !result.running;
+      return {
+        summary: down ? "Cron is not running" : "Cron is running",
+        data: {
+          value: result.jobs,
+          status: !result.installed ? "unknown" : down ? "fail" : "ok",
+          label: !result.installed
+            ? "Not installed"
+            : down
+              ? "Stopped"
+              : result.disabled > 0
+                ? `${result.disabled} off`
+                : undefined,
+        },
+      };
     },
   });
 

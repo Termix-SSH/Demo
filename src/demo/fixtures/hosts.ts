@@ -120,6 +120,12 @@ export const DEMO_HOSTS = [
       },
       "tmux-monitor": { enableTmuxMonitor: true },
       "session-recording": { enableSessionRecording: true },
+      firewall: { enableFirewall: true },
+      wireguard: { enableWireguard: true },
+      git: { enableGit: true },
+      notes: { enableNotes: true },
+      "log-search": { enableLogSearch: true },
+      "storage-health": { enableStorage: true },
     },
   }),
   host({
@@ -134,6 +140,9 @@ export const DEMO_HOSTS = [
     features: {
       docker: { enableDocker: true },
       kubernetes: { enableKubernetes: true, kubectlFlavor: "k3s" },
+      git: { enableGit: true },
+      notes: { enableNotes: true },
+      "log-search": { enableLogSearch: true },
     },
   }),
   host({
@@ -151,6 +160,10 @@ export const DEMO_HOSTS = [
     features: {
       "file-manager": { enableFileManager: false },
       databases: { enableDatabases: true },
+      "storage-health": { enableStorage: true },
+      firewall: { enableFirewall: true },
+      notes: { enableNotes: true },
+      "log-search": { enableLogSearch: true },
       "service-manager": { enableServices: true },
       cron: { enableCron: true },
       "process-manager": { enableProcesses: true },
@@ -195,6 +208,7 @@ export const DEMO_HOSTS = [
     hasKey: true,
     keyType: "ssh-ed25519",
     sortOrder: 4,
+    features: { ansible: { enableAnsible: true } },
   }),
   host({
     id: 7,
@@ -208,6 +222,8 @@ export const DEMO_HOSTS = [
     sortOrder: 0,
     features: {
       proxmox: { enableProxmox: true, enableProxmoxStats: true },
+      "virtual-machines": { enableVirtualMachines: true },
+      "storage-health": { enableStorage: true },
       docker: { enableDocker: false },
     },
   }),
@@ -223,6 +239,9 @@ export const DEMO_HOSTS = [
     features: {
       "wake-on-lan": { enablePower: true, macAddress: "a8:a1:59:3c:4e:10" },
       samba: { enableSamba: true },
+      "storage-health": { enableStorage: true },
+      "ups-manager": { enableUps: true },
+      notes: { enableNotes: true },
     },
   }),
   host({
@@ -235,6 +254,8 @@ export const DEMO_HOSTS = [
     credentialId: 4,
     sortOrder: 2,
     features: {
+      firewall: { enableFirewall: true },
+      wireguard: { enableWireguard: true },
       tunnels: {
         enableTunnel: true,
         tunnelConnections: [

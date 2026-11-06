@@ -4,6 +4,7 @@
 
 ### Added
 
+- A DNS plugin challenge type that answers the DNS challenge at any provider the DNS plugin supports
 - How long the HTTPS certificate has left shows as a status tile, with Request a certificate now as its fix through Termix actions
 
 ### Changed

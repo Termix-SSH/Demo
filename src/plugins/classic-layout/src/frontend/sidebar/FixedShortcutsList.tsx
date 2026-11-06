@@ -19,14 +19,14 @@ export function fixedShortcuts(): Array<{ keys: string[]; labelKey: string }> {
 export function FixedShortcutsList() {
   const { t } = useTranslation();
   return (
-    <div className="flex flex-col gap-1.5">
-      <span className="text-xs font-semibold text-muted-foreground">
+    <div className="flex flex-col divide-y divide-border border-b border-border">
+      <span className="px-3 py-2 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
         {t("newUi.sidebar.keybindings.fixedHeading")}
       </span>
       {fixedShortcuts().map(({ keys, labelKey }) => (
         <div
           key={labelKey}
-          className="flex items-center justify-between gap-2 border border-border/60 px-2.5 py-1.5"
+          className="flex items-center justify-between gap-2 px-3 py-2"
         >
           <span className="text-xs text-muted-foreground flex-1 min-w-0 truncate">
             {t(`newUi.sidebar.keybindings.fixed.${labelKey}`)}

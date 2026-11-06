@@ -1,0 +1,362 @@
+{
+  "id": "ups-manager",
+  "name": "UPS Manager",
+  "version": "1.0.0",
+  "description": "Watch your UPS devices over NUT, apcupsd or SNMP, with history, alerts and self tests.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-UPS-Manager",
+  "docs": "https://docs.termix.site/plugins/ups-manager",
+  "category": "Monitoring",
+  "icon": "BatteryCharging",
+  "features": [
+    "Read UPS devices through NUT, apcupsd or an SNMP card",
+    "Battery charge, runtime, load, voltage and temperature at a glance",
+    "Charts for the last 24 hours, 7 days and 30 days",
+    "Alerts when power is lost, the battery runs low, needs replacing or the UPS is overloaded",
+    "A power event log for every UPS",
+    "Start a battery self test, mute the beeper and send other NUT commands",
+    "A dashboard card with every UPS on your hosts"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "hosts:read",
+    "credentials:use",
+    "ssh:connect",
+    "network:serve",
+    "db:own",
+    "kv:own",
+    "files:own",
+    "secrets:own",
+    "notify:send",
+    "users:impersonate",
+    "ui:surface",
+    "operations:provide"
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "ups-manager",
+        "titleKey": "tab.title",
+        "icon": "BatteryCharging",
+        "openFrom": ["host-context-menu", "palette"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "use",
+        "titleKey": "permissions.use.title",
+        "descriptionKey": "permissions.use.description",
+        "defaultRoles": ["admin", "user"]
+      }
+    ],
+    "settings": {
+      "host": {
+        "enableKey": "enableUps",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "enableDefault": false,
+        "editorGroup": "ssh",
+        "fields": [
+          {
+            "key": "readOnly",
+            "type": "boolean",
+            "labelKey": "settings.host.readOnly.label",
+            "descriptionKey": "settings.host.readOnly.description",
+            "default": false,
+            "requires": "enableUps"
+          }
+        ]
+      }
+    },
+    "dashboardCards": [
+      {
+        "id": "ups-hosts",
+        "titleKey": "card.title",
+        "icon": "BatteryCharging"
+      }
+    ],
+    "operations": {
+      "actions": [
+        {
+          "id": "ups-manager.list",
+          "titleKey": "operations.list.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableUps": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "ups-manager.status",
+          "titleKey": "operations.status.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableUps": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "ups-manager.charge",
+          "titleKey": "operations.charge.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableUps": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "ups-manager.runtime",
+          "titleKey": "operations.runtime.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableUps": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "ups-manager.self-test",
+          "titleKey": "operations.selfTest.title",
+          "icon": "HeartPulse",
+          "scope": "host",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "exclusive": true,
+          "inputs": [
+            {
+              "key": "kind",
+              "type": "select",
+              "labelKey": "operations.selfTest.kind",
+              "default": "quick",
+              "options": [
+                {
+                  "value": "quick",
+                  "labelKey": "operations.selfTest.quick"
+                },
+                {
+                  "value": "deep",
+                  "labelKey": "operations.selfTest.deep"
+                }
+              ]
+            },
+            {
+              "key": "source",
+              "type": "string",
+              "labelKey": "operations.source",
+              "descriptionKey": "operations.sourceHint"
+            }
+          ],
+          "when": {
+            "settings": {
+              "enableUps": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "ups-manager.beeper",
+          "titleKey": "operations.beeper.title",
+          "icon": "BellOff",
+          "scope": "host",
+          "risk": "change",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "idempotent": true,
+          "inputs": [
+            {
+              "key": "mode",
+              "type": "select",
+              "labelKey": "operations.beeper.mode",
+              "default": "mute",
+              "options": [
+                {
+                  "value": "mute",
+                  "labelKey": "operations.beeper.mute"
+                },
+                {
+                  "value": "disable",
+                  "labelKey": "operations.beeper.disable"
+                },
+                {
+                  "value": "enable",
+                  "labelKey": "operations.beeper.enable"
+                }
+              ]
+            },
+            {
+              "key": "source",
+              "type": "string",
+              "labelKey": "operations.source",
+              "descriptionKey": "operations.sourceHint"
+            }
+          ],
+          "when": {
+            "settings": {
+              "enableUps": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
+        },
+        {
+          "id": "ups-manager.calibrate",
+          "titleKey": "operations.calibrate.title",
+          "descriptionKey": "operations.calibrate.description",
+          "icon": "BatteryWarning",
+          "scope": "host",
+          "risk": "destructive",
+          "permission": "use",
+          "hostAccess": "edit",
+          "dryRun": "describe",
+          "exclusive": true,
+          "inputs": [
+            {
+              "key": "source",
+              "type": "string",
+              "labelKey": "operations.source",
+              "descriptionKey": "operations.sourceHint"
+            }
+          ],
+          "when": {
+            "settings": {
+              "enableUps": true
+            }
+          }
+        }
+      ],
+      "resources": [
+        {
+          "id": "ups-manager.device",
+          "titleKey": "operations.devices.title",
+          "icon": "BatteryCharging",
+          "list": "ups-manager.list",
+          "key": "id",
+          "name": "name",
+          "status": "state",
+          "tab": "ups-manager",
+          "columns": [
+            {
+              "key": "state",
+              "titleKey": "operations.devices.state",
+              "type": "status"
+            },
+            {
+              "key": "charge",
+              "titleKey": "operations.devices.charge",
+              "type": "percent"
+            },
+            {
+              "key": "load",
+              "titleKey": "operations.devices.load",
+              "type": "percent"
+            },
+            {
+              "key": "backend",
+              "titleKey": "operations.devices.backend"
+            }
+          ]
+        }
+      ],
+      "signals": [
+        {
+          "id": "ups-manager.power",
+          "titleKey": "operations.status.title",
+          "read": "ups-manager.status",
+          "scope": "host",
+          "kind": "status",
+          "refreshSec": 60
+        },
+        {
+          "id": "ups-manager.charge",
+          "titleKey": "operations.charge.title",
+          "read": "ups-manager.charge",
+          "scope": "host",
+          "kind": "gauge",
+          "refreshSec": 60
+        },
+        {
+          "id": "ups-manager.runtime",
+          "titleKey": "operations.runtime.title",
+          "read": "ups-manager.runtime",
+          "scope": "host",
+          "kind": "gauge",
+          "refreshSec": 60
+        }
+      ],
+      "events": [
+        {
+          "id": "ups-manager.on-battery",
+          "titleKey": "operations.events.onBattery",
+          "severity": "critical",
+          "scope": "host"
+        },
+        {
+          "id": "ups-manager.power-restored",
+          "titleKey": "operations.events.powerRestored",
+          "severity": "info",
+          "scope": "host"
+        }
+      ]
+    },
+    "uses": ["homepage.widgets"]
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"],
+  "provides": [
+    {
+      "service": "ups-manager.access",
+      "version": "1.0.0",
+      "permission": "ups-manager.use"
+    }
+  ]
+}

@@ -58,4 +58,21 @@ export function registerOperations(
       };
     },
   });
+
+  ctx.operations.register("automations.failed-runs", {
+    run: async () => {
+      const since = Date.now() - 24 * 60 * 60 * 1000;
+      const runs = await repository.listRuns(actor(ctx), { limit: 200 });
+      const failed = runs.filter(
+        (row) =>
+          (row.status === "failed" || row.status === "timeout") &&
+          Date.parse(row.started_at) >= since,
+      ).length;
+      const label = `${failed} failed in 24 h`;
+      return {
+        summary: label,
+        data: { value: failed, status: failed > 0 ? "warn" : "ok", label },
+      };
+    },
+  });
 }

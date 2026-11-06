@@ -1,0 +1,246 @@
+{
+  "tab": {
+    "title": "UPS",
+    "noHost": "Open UPS from a host.",
+    "error": "Could not read the UPS on this host.",
+    "disabled": "UPS Manager is turned off for this host. Turn it on in the host settings.",
+    "viewOverview": "Overview",
+    "viewHistory": "History",
+    "viewEvents": "Events",
+    "viewCommands": "Commands",
+    "viewSources": "Devices"
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "failed": "That did not work."
+  },
+  "state": {
+    "online": "On mains",
+    "battery": "On battery",
+    "bypass": "Bypass",
+    "off": "Off",
+    "unknown": "Unknown"
+  },
+  "flag": {
+    "low-battery": "Battery low",
+    "replace-battery": "Replace battery",
+    "overload": "Overloaded",
+    "charging": "Charging",
+    "calibrating": "Calibrating",
+    "alarm": "Alarm",
+    "boost": "Boosting",
+    "trim": "Trimming"
+  },
+  "backend": {
+    "nut": "NUT",
+    "apcupsd": "apcupsd",
+    "snmp": "SNMP card"
+  },
+  "overview": {
+    "noData": "No reading yet.",
+    "stale": "The last read failed: {{error}}",
+    "power": "Power",
+    "charge": "Battery charge",
+    "runtime": "Runtime left",
+    "load": "Load",
+    "nominal": "{{watts}} W rated",
+    "input": "Input voltage",
+    "output": "Output voltage",
+    "batteryVolts": "Battery voltage",
+    "temp": "Temperature",
+    "model": "Model",
+    "serial": "Serial number",
+    "status": "Status",
+    "lastTest": "Last self test",
+    "readAt": "Last read",
+    "ago": "{{time}} ago"
+  },
+  "history": {
+    "error": "Could not load the history.",
+    "24h": "24 hours",
+    "7d": "7 days",
+    "30d": "30 days",
+    "empty": "Not enough readings yet. Termix reads the UPS every 30 seconds.",
+    "charge": "Battery charge",
+    "load": "Load",
+    "runtime": "Runtime left",
+    "voltage": "Voltage"
+  },
+  "events": {
+    "error": "Could not load the events.",
+    "empty": "No power events yet.",
+    "type": {
+      "on-battery": "On battery",
+      "on-battery-cleared": "Power back",
+      "low-battery": "Battery low",
+      "low-battery-cleared": "Battery ok",
+      "replace-battery": "Replace battery",
+      "replace-battery-cleared": "Battery ok",
+      "overload": "Overload",
+      "overload-cleared": "Load ok",
+      "low-charge": "Low charge",
+      "low-charge-cleared": "Charge ok",
+      "low-runtime": "Low runtime",
+      "low-runtime-cleared": "Runtime ok",
+      "unreachable": "Unreachable",
+      "unreachable-cleared": "Reachable",
+      "test-failed": "Test problem",
+      "test-failed-cleared": "Test ok",
+      "test": "Self test",
+      "command": "Command"
+    }
+  },
+  "commands": {
+    "unsupported": "Only NUT devices take commands.",
+    "error": "Could not list the commands.",
+    "confirmTitle": "Run {{name}}?",
+    "confirmText": "This can cut power or change how {{name}} behaves.",
+    "run": "Run",
+    "done": "Sent {{name}}.",
+    "needLogin": "Add a NUT user and password to this device to send commands.",
+    "empty": "This UPS has no instant commands.",
+    "risky": "Can cut power"
+  },
+  "sources": {
+    "add": "Add UPS",
+    "empty": "No UPS set up on this host.",
+    "emptyHint": "Add a NUT or apcupsd device on this host, or an SNMP card this host can reach.",
+    "off": "off",
+    "unreachable": "unreachable",
+    "saved": "Saved.",
+    "deleteTitle": "Remove {{name}}?",
+    "deleteText": "Its history and events are deleted too."
+  },
+  "editor": {
+    "addTitle": "Add UPS",
+    "editTitle": "Edit UPS",
+    "add": "Add",
+    "backend": "How to read it",
+    "label": "Name",
+    "labelPlaceholder": "Rack UPS",
+    "target": {
+      "nut": "NUT device",
+      "apcupsd": "apcupsd address",
+      "snmp": "Card address"
+    },
+    "targetPlaceholder": {
+      "nut": "ups or ups@192.168.1.5:3493",
+      "apcupsd": "Leave empty for this host",
+      "snmp": "192.168.1.20"
+    },
+    "nutFound": "Found on this host: {{names}}",
+    "nutMissing": "upsc is not installed on this host. Install the NUT client first.",
+    "nutHint": "The name from upsc -l, or name@host:port for a remote NUT server.",
+    "apcMissing": "apcaccess is not installed on this host. Install apcupsd first.",
+    "apcHint": "Leave empty to read the daemon on this host, or use host:3551.",
+    "snmpMissing": "snmpwalk is not installed on this host. Install the net-snmp tools first.",
+    "snmpHint": "Termix polls the card from this host with snmpwalk.",
+    "nutUser": "NUT user",
+    "nutPassword": "NUT password",
+    "nutLoginHint": "Only needed to send commands. Reading never needs it.",
+    "saved": "Saved",
+    "snmpVersion": "SNMP version",
+    "community": "Community",
+    "v3User": "SNMP user",
+    "v3Level": "Security level",
+    "v3": {
+      "noAuth": "No authentication",
+      "auth": "Authentication",
+      "authPriv": "Authentication and privacy"
+    },
+    "v3AuthProto": "Authentication type",
+    "v3AuthPass": "Authentication password",
+    "v3PrivProto": "Privacy type",
+    "v3PrivPass": "Privacy password",
+    "clearSecrets": "Remove saved login",
+    "clearSecretsHint": "Deletes the saved NUT or SNMP login for this device.",
+    "lowCharge": "Low charge alert (%)",
+    "lowChargeHint": "Alert when the charge is at or under this while on battery.",
+    "lowRuntime": "Low runtime alert (minutes)",
+    "lowRuntimeHint": "Alert when the runtime left is at or under this while on battery. 0 turns it off.",
+    "alerts": "Send alerts",
+    "alertsHint": "Power loss, low battery, overload and test problems.",
+    "enabled": "Read this UPS",
+    "enabledHint": "Turn off to stop reading and keep the history.",
+    "test": "Test",
+    "testing": "Testing...",
+    "testOk": "Works: {{state}}, {{charge}}% charge, {{runtime}} left.",
+    "testFailed": "Could not read the UPS."
+  },
+  "card": {
+    "title": "UPS",
+    "empty": "No UPS set up. Turn UPS Manager on for a host and add a device.",
+    "runtime": "{{time}} left",
+    "load": "{{value}}% load"
+  },
+  "manager": {
+    "title": "UPS",
+    "disabled": "UPS Manager is turned off for this host."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "UPS Manager",
+        "description": "Read UPS devices from this host and show a UPS tab."
+      },
+      "readOnly": {
+        "label": "UPS read only",
+        "description": "Block changes and commands on this host's UPS devices."
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "Use UPS Manager",
+      "description": "See UPS status and, with edit access to a host, change devices and send commands."
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "List UPS devices"
+    },
+    "status": {
+      "title": "Power status"
+    },
+    "charge": {
+      "title": "Battery charge"
+    },
+    "runtime": {
+      "title": "Runtime left"
+    },
+    "source": "UPS",
+    "sourceHint": "The UPS id. Leave empty for the first one on the host.",
+    "selfTest": {
+      "title": "Start battery self test",
+      "kind": "Kind",
+      "quick": "Quick",
+      "deep": "Deep"
+    },
+    "beeper": {
+      "title": "Set the UPS beeper",
+      "mode": "Beeper",
+      "mute": "Mute",
+      "disable": "Turn off",
+      "enable": "Turn on"
+    },
+    "calibrate": {
+      "title": "Calibrate runtime",
+      "description": "Drains the battery to measure its runtime. Hosts on this UPS lose protection while it runs."
+    },
+    "devices": {
+      "title": "UPS devices",
+      "state": "State",
+      "charge": "Charge",
+      "load": "Load",
+      "backend": "Read with"
+    },
+    "events": {
+      "onBattery": "UPS on battery",
+      "powerRestored": "UPS power restored"
+    }
+  }
+}

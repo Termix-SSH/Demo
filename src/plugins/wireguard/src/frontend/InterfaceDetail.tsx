@@ -77,7 +77,7 @@ export function InterfaceDetail({
     >
       <div className="flex shrink-0 flex-col">
         {failed ? (
-          <p className="p-2 text-sm text-destructive">{failed}</p>
+          <p className="px-3 py-2 text-xs text-destructive">{failed}</p>
         ) : !item ? (
           <Loading />
         ) : section === "clients" ? (

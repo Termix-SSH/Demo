@@ -7,6 +7,7 @@ import {
   type TabProps,
   type TermixApp,
 } from "@termix-ssh/plugin-sdk/frontend";
+import { topologyWidget } from "./HomepageWidget";
 import { NetworkGraphCard } from "./NetworkGraphCard";
 
 const VIEW_ID = "network_graph";
@@ -60,6 +61,7 @@ export function activate(app: TermixApp): void {
     permission: "use",
   });
 
+  app.registerExtension("homepage.widgets", topologyWidget(app.t));
   app.registerDashboardCard({
     id: VIEW_ID,
     titleKey: "dashboard.networkGraph",

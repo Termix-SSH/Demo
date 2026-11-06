@@ -2,6 +2,7 @@ import type { Router } from "express";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import { workspaces } from "./tables.js";
 import { createWorkspaceRepository } from "./repository.js";
+import { registerOperations } from "./operations.js";
 import { registerWorkspaceRoutes } from "./routes.js";
 
 /** What other plugins get from ctx.services.get("workspaces.saved"). */
@@ -15,6 +16,8 @@ export async function activate(ctx: PluginContext) {
   const repo = createWorkspaceRepository(ctx.db, table);
 
   registerWorkspaceRoutes(ctx.http.router<Router>(), repo, ctx);
+
+  registerOperations(ctx, repo);
 
   // The last_session row belongs to one install. Syncing it would leave the
   // user with two, one from each side.

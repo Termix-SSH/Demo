@@ -82,7 +82,7 @@ export function OperationStepFields({
   return (
     <div className="space-y-3">
       <div className="space-y-1">
-        <Label className="text-xs text-muted-foreground">
+        <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
           {t(`${BASE}.fields.action`)}
         </Label>
         <Select
@@ -129,7 +129,7 @@ export function OperationStepFields({
 
       {action?.scope === "resource" && (
         <div className="space-y-1">
-          <Label className="text-xs text-muted-foreground">
+          <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
             {t(`${BASE}.fields.actionTarget`)}
           </Label>
           <Input
@@ -142,7 +142,9 @@ export function OperationStepFields({
 
       {action?.inputs.map((field) => (
         <div key={field.key} className="space-y-1">
-          <Label className="text-xs text-muted-foreground">{field.label}</Label>
+          <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+            {field.label}
+          </Label>
           {field.type === "boolean" ? (
             <Switch
               checked={input[field.key] === true}
@@ -209,7 +211,7 @@ export function OperationEventFields({
   return (
     <div className="space-y-3">
       <div className="space-y-1">
-        <Label className="text-xs text-muted-foreground">
+        <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
           {t(`${BASE}.fields.event`)}
         </Label>
         <Select
@@ -235,7 +237,7 @@ export function OperationEventFields({
         onChange={(hostSelector) => patch({ hostSelector })}
       />
       <div className="space-y-1">
-        <Label className="text-xs text-muted-foreground">
+        <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
           {t(`${BASE}.fields.cooldown`)}
         </Label>
         <Input

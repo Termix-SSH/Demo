@@ -2,6 +2,7 @@ import { LayoutTemplate } from "lucide-react";
 import { toast } from "sonner";
 import type {
   DashboardCardProps,
+  PaletteItem,
   PanelProps,
   TermixApp,
 } from "@termix-ssh/plugin-sdk/frontend";
@@ -69,6 +70,26 @@ export function activate(app: TermixApp): void {
         onApply={(workspace) => void applyWorkspace(workspace)}
       />
     ),
+  });
+
+  // Every saved workspace in the command palette
+  app.registerPaletteGroup({
+    id: "workspaces",
+    titleKey: "nav.workspaces",
+    order: 20,
+    load: async (): Promise<PaletteItem[]> => {
+      if (!(await allowed())) return [];
+      const list = await api.list().catch(() => [] as Workspace[]);
+      return list
+        .filter((workspace) => workspace.kind === "manual")
+        .map((workspace) => ({
+          id: String(workspace.id),
+          title: workspace.name,
+          icon: LayoutTemplate,
+          hint: app.t("palette.hint"),
+          run: () => void applyWorkspace(workspace),
+        }));
+    },
   });
 
   // Without workspaces.use the restore and the autosave below would only

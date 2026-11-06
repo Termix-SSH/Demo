@@ -1,7 +1,7 @@
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 
 type AcmeProvider = "letsencrypt" | "letsencrypt-staging" | "custom";
-type AcmeChallengeType = "http-01" | "dns-cloudflare";
+type AcmeChallengeType = "http-01" | "dns-cloudflare" | "dns-plugin";
 
 export interface AcmeSettings {
   autoRenew: boolean;
@@ -46,7 +46,9 @@ export async function readSettings(ctx: PluginContext): Promise<AcmeSettings> {
         : "letsencrypt",
     directoryUrl: text(all.directoryUrl),
     challengeType:
-      challengeType === "dns-cloudflare" ? challengeType : "http-01",
+      challengeType === "dns-cloudflare" || challengeType === "dns-plugin"
+        ? challengeType
+        : "http-01",
     cloudflareToken: text(all.cloudflareToken),
   };
 }

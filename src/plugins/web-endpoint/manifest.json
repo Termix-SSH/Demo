@@ -24,11 +24,15 @@
   },
   "capabilities": [
     "hosts:read",
+    "credentials:use",
     "network:serve",
     "ui:surface",
     "desktop:window",
     "operations:provide",
-    "ssh:connect"
+    "ssh:connect",
+    "kv:own",
+    "users:impersonate",
+    "notify:send"
   ],
   "dependencies": {
     "tunnels": "^1.0.0"
@@ -60,6 +64,14 @@
             "labelKey": "hosts.webUiEndpointsSection",
             "requires": "enableWebUi",
             "defaultable": false
+          },
+          {
+            "key": "alertDown",
+            "type": "boolean",
+            "labelKey": "settings.host.alertDown.label",
+            "descriptionKey": "settings.host.alertDown.description",
+            "default": false,
+            "requires": "enableWebUi"
           },
           {
             "key": "showPanel",

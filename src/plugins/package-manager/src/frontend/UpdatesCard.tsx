@@ -19,7 +19,9 @@ import type { HostUpdateSummary } from "../shared/types";
 const POLL_MS = 10 * 60_000;
 
 /** Dashboard card: pending updates on each host with Packages on. */
-export function UpdatesCard({ isVisible }: DashboardCardProps) {
+export function UpdatesCard({
+  isVisible,
+}: Pick<DashboardCardProps, "isVisible">) {
   const { t } = useTranslation();
   const allowed = usePermission("use");
   const api = usePluginApi();
