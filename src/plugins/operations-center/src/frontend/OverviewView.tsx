@@ -15,6 +15,7 @@ import {
   sanitizeTiles,
   type TilePickerEntry,
   type TileSlot,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   Activity,
@@ -284,10 +285,7 @@ function ApprovalsTile({
   const approvals = usePoll<Approval[]>(isVisible, listApprovals);
   const titleOf = (id: string) =>
     catalog?.actions.find((action) => action.id === id)?.title ?? id;
-  if (!approvals)
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("state.loading")}</p>
-    );
+  if (!approvals) return <LoadingState label={t("state.loading")} />;
   if (approvals.length === 0)
     return (
       <p className="p-3 text-xs text-muted-foreground">
@@ -327,10 +325,7 @@ function RecentRunsTile({
   const runs = usePoll<Run[]>(isVisible, () => listRuns({ limit: 12 }), 15000);
   const titleOf = (id: string) =>
     catalog?.actions.find((action) => action.id === id)?.title ?? id;
-  if (!runs)
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("state.loading")}</p>
-    );
+  if (!runs) return <LoadingState label={t("state.loading")} />;
   if (runs.length === 0)
     return (
       <p className="p-3 text-xs text-muted-foreground">{t("history.empty")}</p>
@@ -361,10 +356,7 @@ function RolloutsTile({
 }) {
   const { t } = useTranslation();
   const rollouts = usePoll<Batch[]>(isVisible, listRollouts);
-  if (!rollouts)
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("state.loading")}</p>
-    );
+  if (!rollouts) return <LoadingState label={t("state.loading")} />;
   const active = rollouts.filter((batch) =>
     ["running", "paused", "draft"].includes(batch.status),
   );

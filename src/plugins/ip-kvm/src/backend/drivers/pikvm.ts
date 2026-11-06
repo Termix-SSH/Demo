@@ -102,6 +102,7 @@ async function screen(
   const socket = io.connect(socketUrl(target, "/api/ws"), {
     headers: headers(target),
     ca: target.ca,
+    pin: target.options.pin,
   });
   let open = false;
   const queue: string[] = [];
@@ -192,7 +193,7 @@ async function mediaList(target: Target, io: DriverIo): Promise<MediaState> {
   };
 }
 
-export const pikvm: Driver = {
+const pikvmDriver: Driver = {
   info: {
     id: "pikvm",
     defaultPort: 443,
@@ -257,5 +258,20 @@ export const pikvm: Driver = {
         { method: "POST", timeoutMs: 10 * 60_000, lenient: true },
       );
     },
+  },
+};
+
+export const pikvm = pikvmDriver;
+
+/**
+ * GL.iNet Comet runs PiKVM's kvmd with a fixed admin user, so only the
+ * password is asked for.
+ */
+export const glkvm: Driver = {
+  ...pikvmDriver,
+  info: {
+    ...pikvmDriver.info,
+    id: "glkvm",
+    fields: [{ key: "password", type: "secret", required: true }],
   },
 };

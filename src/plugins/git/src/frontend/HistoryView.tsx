@@ -8,12 +8,12 @@ import {
   ListRow,
   PanelList,
   Segmented,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { Commit, CommitDetail } from "../shared/types";
 import { errorMessage, getCommit, getLog } from "./api";
 import { DiffText } from "./DiffText";
 import { ago } from "./format";
-import { Loading } from "./Loading";
 
 const PAGE = 50;
 
@@ -73,7 +73,7 @@ export function HistoryView({
 
   if (failed)
     return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
-  if (!commits) return <Loading />;
+  if (!commits) return <LoadingState />;
 
   return (
     <div className="flex flex-col">
@@ -148,7 +148,7 @@ export function HistoryView({
             )}
           </>
         ) : (
-          <Loading />
+          <LoadingState />
         )}
       </InlineView>
     </div>

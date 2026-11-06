@@ -7,6 +7,7 @@ import {
   PanelList,
   PanelSearch,
   useConfirm,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useState } from "react";
 import type { RepoInfo } from "../shared/types";
@@ -41,11 +42,14 @@ export function RepoList({
   return (
     <div className="flex flex-col">
       {!compact && repos.length > 5 && (
-        <PanelSearch
-          value={search}
-          onChange={setSearch}
-          placeholder={t("repos.search")}
-        />
+        <ToolbarBand>
+          <PanelSearch
+            value={search}
+            onChange={setSearch}
+            placeholder={t("repos.search")}
+            fill
+          />
+        </ToolbarBand>
       )}
       <PanelList
         empty={

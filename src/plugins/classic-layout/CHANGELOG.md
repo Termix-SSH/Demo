@@ -22,6 +22,7 @@
 - Settings, the host and login editors and the dashboard use the shared tile look, with lines between sections instead of separate boxes
 - Keybindings settings use one list with a line between rows instead of separate boxes
 - The SSL certificate status is a plain row instead of a box
+- Toolbars, loading screens, back buttons and Save bars match the rest of Termix
 
 ### Fixed
 

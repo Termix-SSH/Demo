@@ -12,7 +12,11 @@ import { registerWidget } from "./WidgetRegistry";
 import type { WeatherConfig, WidgetComponentProps } from "../types.js";
 import { GRID_SIZE } from "../types.js";
 
-import { WidgetTitle, runVisibleInterval } from "@termix-ssh/plugin-sdk/ui";
+import {
+  WidgetTitle,
+  runVisibleInterval,
+  LoadingState,
+} from "@termix-ssh/plugin-sdk/ui";
 
 interface WttrCurrent {
   temp_C: string;
@@ -106,11 +110,7 @@ function WeatherWidget({
   }
 
   if (!data) {
-    return (
-      <div className="flex items-center justify-center w-full h-full text-xs text-muted-foreground/50">
-        {t("common.loading")}
-      </div>
-    );
+    return <LoadingState compact label={t("common.loading")} />;
   }
 
   const current = data.current_condition[0];

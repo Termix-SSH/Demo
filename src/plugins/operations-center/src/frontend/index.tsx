@@ -10,7 +10,7 @@ import { getCatalog, initApi } from "./api";
 import { AttentionCard } from "./AttentionCard";
 import { HostPage } from "./HostPage";
 import {
-  AttentionBadge,
+  useAttentionDot,
   HostCompanion,
   HostMenuActions,
   TabBarHostPageButton,
@@ -136,7 +136,7 @@ export function activate(app: TermixApp): void {
     id: "attention",
     when: () => canUse,
     order: 50,
-    component: AttentionBadge,
+    useDot: useAttentionDot,
   });
 
   // The host menu in a layout lists the host's actions.

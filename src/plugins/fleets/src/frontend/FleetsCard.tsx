@@ -5,7 +5,7 @@ import {
   useTranslation,
   type DashboardCardProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { ListRow, PanelList } from "@termix-ssh/plugin-sdk/ui";
+import { ListRow, PanelList, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import type { FleetRow, FleetsApi } from "./fleets-api.js";
 
 const POLL_MS = 5 * 60_000;
@@ -31,9 +31,7 @@ export function createFleetsCard(api: FleetsApi, inventoryTab: string) {
 
     if (!canView) return null;
     if (!fleets) {
-      return (
-        <p className="p-3 text-xs text-muted-foreground">{t("card.loading")}</p>
-      );
+      return <LoadingState compact label={t("card.loading")} />;
     }
     return (
       <PanelList

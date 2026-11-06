@@ -9,6 +9,7 @@ import {
   PanelList,
   TextField,
   useConfirm,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { Fail2banStatus } from "../shared/types";
 import {
@@ -97,10 +98,7 @@ export function Fail2banView({
 
   if (failed)
     return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
-  if (!status)
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("common.loading")}</p>
-    );
+  if (!status) return <LoadingState label={t("common.loading")} />;
 
   if (!status.installed) {
     return (

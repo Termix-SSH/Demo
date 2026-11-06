@@ -145,7 +145,7 @@ export function RepoView({
         />
       }
     >
-      <div className="flex shrink-0 flex-col">
+      <div className="flex flex-1 shrink-0 flex-col">
         {view === "changes" ? (
           <ChangesView
             hostId={hostId}

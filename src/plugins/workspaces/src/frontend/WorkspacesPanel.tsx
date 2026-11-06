@@ -10,7 +10,6 @@ import {
   Copy,
   ExternalLink,
   LayoutTemplate,
-  Loader2,
   Save,
   Settings2,
   SlidersHorizontal,
@@ -31,6 +30,8 @@ import {
   ListRow,
   ListRowAction,
   PanelList,
+  LoadingState,
+  TOOLBAR_FIT,
 } from "@termix-ssh/plugin-sdk/ui";
 import { createWorkspacesApi, type WorkspacesApi } from "./workspaces-api";
 import { errorMessage, type Workspace } from "./types";
@@ -504,7 +505,9 @@ export function WorkspacesPanel({
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
-      <div className="flex shrink-0 flex-col gap-2 border-b border-border px-3 py-2">
+      <div
+        className={`flex shrink-0 flex-col gap-2 border-b border-border px-3 py-2 ${TOOLBAR_FIT}`}
+      >
         <PanelSearch
           value={query}
           onChange={setQuery}
@@ -543,9 +546,7 @@ export function WorkspacesPanel({
       <PanelList
         empty={
           loading ? (
-            <div className="flex items-center justify-center py-8 text-muted-foreground">
-              <Loader2 className="size-4 animate-spin" />
-            </div>
+            <LoadingState />
           ) : (
             <EmptyState
               icon={LayoutTemplate}

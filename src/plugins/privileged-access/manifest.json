@@ -1,0 +1,262 @@
+{
+  "id": "privileged-access",
+  "name": "Privileged Access",
+  "version": "1.0.0",
+  "description": "Ask for approval before anyone connects to a privileged host, with access that ends on its own and a full audit trail.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Privileged-Access",
+  "docs": "https://docs.termix.site/plugins/privileged-access",
+  "category": "Access & Security",
+  "icon": "KeyRound",
+  "features": [
+    "Mark hosts as privileged, so SSH and remote desktop need approved access",
+    "Ask for access with a reason, a ticket and how many hours you need",
+    "Approvers say yes or no, never for their own request",
+    "Access ends on its own, and open sessions close when it does",
+    "Break glass access for emergencies, always alerted",
+    "Every request and decision in the audit log, with a CSV report"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.1-0",
+    "api": "^1.15"
+  },
+  "capabilities": [
+    "hosts:read",
+    "hosts:connect-policy",
+    "db:own",
+    "db:core-refs",
+    "kv:own",
+    "network:serve",
+    "ui:surface",
+    "notify:send",
+    "operations:provide",
+    "users:impersonate",
+    "events:core"
+  ],
+  "provides": [
+    {
+      "service": "privileged-access.hosts",
+      "version": "1.0.0",
+      "permission": "privileged-access.request"
+    }
+  ],
+  "requires": [
+    {
+      "service": "sessions.live",
+      "versionRange": "^1.0.0",
+      "optional": true
+    }
+  ],
+  "contributes": {
+    "tabs": [
+      {
+        "id": "access",
+        "titleKey": "tab.title",
+        "icon": "KeyRound",
+        "openFrom": ["rail", "palette", "host-context-menu"]
+      }
+    ],
+    "permissions": [
+      {
+        "name": "request",
+        "titleKey": "permissions.request.title",
+        "descriptionKey": "permissions.request.description",
+        "defaultRoles": ["admin", "user"]
+      },
+      {
+        "name": "approve",
+        "titleKey": "permissions.approve.title",
+        "descriptionKey": "permissions.approve.description",
+        "defaultRoles": ["admin"]
+      },
+      {
+        "name": "bypass",
+        "titleKey": "permissions.bypass.title",
+        "descriptionKey": "permissions.bypass.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
+    "settings": {
+      "admin": [
+        {
+          "key": "pendingHours",
+          "type": "number",
+          "labelKey": "settings.admin.pendingHours.label",
+          "descriptionKey": "settings.admin.pendingHours.description",
+          "min": 1,
+          "max": 168,
+          "default": 24
+        },
+        {
+          "key": "alertBypass",
+          "type": "boolean",
+          "labelKey": "settings.admin.alertBypass.label",
+          "descriptionKey": "settings.admin.alertBypass.description",
+          "default": true
+        }
+      ],
+      "host": {
+        "editorGroup": "top",
+        "editorOrder": 90,
+        "enableKey": "privileged",
+        "enableLabelKey": "settings.host.enable.label",
+        "enableDescriptionKey": "settings.host.enable.description",
+        "fields": [
+          {
+            "key": "approverRoles",
+            "type": "string",
+            "labelKey": "settings.host.approverRoles.label",
+            "descriptionKey": "settings.host.approverRoles.description",
+            "default": ""
+          },
+          {
+            "key": "maxHours",
+            "type": "number",
+            "labelKey": "settings.host.maxHours.label",
+            "descriptionKey": "settings.host.maxHours.description",
+            "min": 1,
+            "max": 168,
+            "default": 4
+          },
+          {
+            "key": "requireReason",
+            "type": "boolean",
+            "labelKey": "settings.host.requireReason.label",
+            "descriptionKey": "settings.host.requireReason.description",
+            "default": true
+          },
+          {
+            "key": "requireTicket",
+            "type": "boolean",
+            "labelKey": "settings.host.requireTicket.label",
+            "descriptionKey": "settings.host.requireTicket.description",
+            "default": false
+          },
+          {
+            "key": "allowBackground",
+            "type": "boolean",
+            "labelKey": "settings.host.allowBackground.label",
+            "descriptionKey": "settings.host.allowBackground.description",
+            "default": false
+          }
+        ]
+      }
+    },
+    "dashboardCards": [
+      {
+        "id": "pending-access",
+        "titleKey": "card.title",
+        "icon": "KeyRound"
+      }
+    ],
+    "operations": {
+      "actions": [
+        {
+          "id": "privileged-access.request",
+          "titleKey": "operations.request.title",
+          "icon": "KeyRound",
+          "scope": "host",
+          "risk": "change",
+          "permission": "request",
+          "hostAccess": "connect",
+          "inputs": [
+            {
+              "key": "hours",
+              "type": "number",
+              "labelKey": "operations.request.hours",
+              "min": 1,
+              "max": 168,
+              "default": 1
+            },
+            {
+              "key": "reason",
+              "type": "string",
+              "labelKey": "operations.request.reason",
+              "default": ""
+            },
+            {
+              "key": "ticket",
+              "type": "string",
+              "labelKey": "operations.request.ticket",
+              "default": ""
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "privileged-access.pending",
+          "titleKey": "operations.pending.title",
+          "icon": "Inbox",
+          "scope": "server",
+          "risk": "read",
+          "permission": "approve",
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "privileged-access.status",
+          "titleKey": "operations.status.title",
+          "icon": "ShieldCheck",
+          "scope": "host",
+          "risk": "read",
+          "permission": "request",
+          "hostAccess": "connect",
+          "surfaces": {
+            "palette": false
+          }
+        }
+      ],
+      "events": [
+        {
+          "id": "privileged-access.requested",
+          "titleKey": "operations.events.requested",
+          "severity": "info",
+          "scope": "host"
+        },
+        {
+          "id": "privileged-access.approved",
+          "titleKey": "operations.events.approved",
+          "severity": "info",
+          "scope": "host"
+        },
+        {
+          "id": "privileged-access.bypassed",
+          "titleKey": "operations.events.bypassed",
+          "severity": "critical",
+          "scope": "host"
+        }
+      ],
+      "signals": [
+        {
+          "id": "privileged-access.pending-count",
+          "titleKey": "operations.pending.title",
+          "read": "privileged-access.pending",
+          "scope": "server",
+          "kind": "count",
+          "refreshSec": 60
+        },
+        {
+          "id": "privileged-access.host-status",
+          "titleKey": "operations.status.title",
+          "read": "privileged-access.status",
+          "scope": "host",
+          "kind": "status",
+          "refreshSec": 60
+        }
+      ]
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

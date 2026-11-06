@@ -9,6 +9,8 @@ import {
   PanelList,
   TextField,
   useConfirm,
+  ToolbarBand,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { Branch } from "../shared/types";
 import {
@@ -19,7 +21,6 @@ import {
   getBranches,
   mergeBranch,
 } from "./api";
-import { Loading } from "./Loading";
 import type { Runner } from "./runner";
 
 /** Local and remote branches: switch, create, merge and delete. */
@@ -59,7 +60,7 @@ export function BranchesView({
 
   if (failed)
     return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
-  if (!branches) return <Loading />;
+  if (!branches) return <LoadingState />;
 
   const current = branches.find((b) => b.current);
   const after = async (ok: boolean) => {
@@ -148,7 +149,7 @@ export function BranchesView({
   return (
     <div className="flex flex-col">
       {canEdit && (
-        <div className="flex items-end gap-2 border-b p-3">
+        <ToolbarBand className="items-end">
           <div className="min-w-0 flex-1">
             <TextField
               label={t("branches.newName")}
@@ -165,7 +166,7 @@ export function BranchesView({
           >
             {t("branches.create")}
           </Button>
-        </div>
+        </ToolbarBand>
       )}
       <PanelList
         empty={

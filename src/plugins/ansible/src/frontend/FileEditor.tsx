@@ -7,9 +7,9 @@ import {
   PanelShell,
   TextField,
   useConfirm,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import { deleteFile, errorMessage, getFile, saveFile } from "./api";
-import { Loading } from "./Loading";
 
 /** One project file as text. Playbooks are syntax checked before they save. */
 export function FileEditor({
@@ -108,7 +108,7 @@ export function FileEditor({
         error ? (
           <p className="px-3 py-2 text-xs text-destructive">{error}</p>
         ) : (
-          <Loading />
+          <LoadingState />
         )
       ) : (
         <div className="flex min-h-0 flex-1 flex-col">

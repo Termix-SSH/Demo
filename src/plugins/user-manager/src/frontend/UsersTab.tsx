@@ -9,12 +9,12 @@ import {
   PanelShell,
   RefreshButton,
   TabStrip,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { UsersList, UsersStatus } from "../shared/types";
 import { errorCode, errorMessage, getStatus, getUsers } from "./api";
 import { GroupDetail } from "./GroupDetail";
 import { GroupsView } from "./GroupsView";
-import { Loading } from "./Loading";
 import { SessionsView } from "./SessionsView";
 import { UserCreate } from "./UserCreate";
 import { UserDetail } from "./UserDetail";
@@ -83,7 +83,7 @@ export function UsersTab({ isVisible, host, label }: TabProps) {
           {error ? (
             <p className="px-3 py-2 text-xs text-destructive">{error}</p>
           ) : (
-            <Loading />
+            <LoadingState />
           )}
         </PanelShell>
       </PanelFrame>
@@ -200,7 +200,7 @@ export function UsersTab({ isVisible, host, label }: TabProps) {
           />
         }
       >
-        <div className="flex shrink-0 flex-col">
+        <div className="flex flex-1 shrink-0 flex-col">
           {status.canEdit && !status.root && (
             <Alert className="border-x-0 border-t-0 text-xs">
               {t("tab.sudo")}
@@ -216,7 +216,7 @@ export function UsersTab({ isVisible, host, label }: TabProps) {
           ) : listError ? (
             <p className="px-3 py-2 text-xs text-destructive">{listError}</p>
           ) : !list ? (
-            <Loading />
+            <LoadingState />
           ) : view === "users" ? (
             <UsersView
               list={list}

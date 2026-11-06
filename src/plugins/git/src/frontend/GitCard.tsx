@@ -13,6 +13,7 @@ import {
   ListBadge,
   ListRow,
   PanelList,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { RepoSummary } from "../shared/types";
 
@@ -59,9 +60,7 @@ export function GitCard({ isVisible }: DashboardCardProps) {
 
   if (!allowed) return null;
   if (!rows) {
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("card.loading")}</p>
-    );
+    return <LoadingState compact label={t("card.loading")} />;
   }
 
   const total = rows.reduce((n, r) => n + r.repos.length, 0);

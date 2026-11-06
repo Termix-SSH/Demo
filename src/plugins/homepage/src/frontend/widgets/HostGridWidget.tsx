@@ -9,7 +9,11 @@ import {
 import { registerWidget } from "./WidgetRegistry";
 import type { HostGridConfig, WidgetComponentProps } from "../types.js";
 import { GRID_SIZE } from "../types.js";
-import { WidgetTitle, StatusDot } from "@termix-ssh/plugin-sdk/ui";
+import {
+  WidgetTitle,
+  StatusDot,
+  LoadingState,
+} from "@termix-ssh/plugin-sdk/ui";
 
 function getAccentColor(): string {
   return (
@@ -61,11 +65,7 @@ function HostGridWidget({
       : allHosts;
 
   if (!loaded) {
-    return (
-      <div className="flex items-center justify-center w-full h-full text-xs text-muted-foreground">
-        {t("common.loading")}
-      </div>
-    );
+    return <LoadingState compact label={t("common.loading")} />;
   }
 
   if (hosts.length === 0) {

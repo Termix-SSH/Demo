@@ -9,6 +9,7 @@ import {
   SectionCard,
   TileStack,
   useConfirm,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { CertStatus, CertView, InspectResult } from "../shared/types";
 import {
@@ -21,7 +22,6 @@ import {
 import type { Runner } from "./CertificatesTab";
 import { ChainCard } from "./ChainView";
 import { ExpiryBadge, formatDate } from "./expiry";
-import { Loading } from "./Loading";
 
 export function CertDetail({
   hostId,
@@ -189,7 +189,7 @@ export function CertDetail({
             {failed ? (
               <p className="text-xs text-destructive">{failed}</p>
             ) : (
-              <Loading />
+              <LoadingState />
             )}
           </div>
         )}

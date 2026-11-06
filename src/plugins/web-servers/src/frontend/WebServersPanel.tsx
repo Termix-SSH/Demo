@@ -8,7 +8,7 @@ import {
   type CompanionDefaults,
   type CompanionProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { Button, ListBadge } from "@termix-ssh/plugin-sdk/ui";
+import { Button, ListBadge, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import type { WebStatus } from "../shared/types";
 import { errorCode, errorMessage, getStatus, serviceAction } from "./api";
 import { SERVER_LABEL, badgeTone, isUp } from "./format";
@@ -131,9 +131,7 @@ export function WebServersPanel({
       {failed ? (
         <p className="p-2 text-xs text-destructive">{failed}</p>
       ) : !status ? (
-        <p className="p-2 text-xs text-muted-foreground">
-          {t("common.loading")}
-        </p>
+        <LoadingState compact label={t("common.loading")} />
       ) : (
         <>
           {status.canEdit && installed.some((s) => isUp(s.state)) && (

@@ -70,6 +70,16 @@ export function InterfaceCreate({
       icon={<Network className="size-4" />}
       leading={<BackButton onClick={onClose} />}
       title={t("create.title")}
+      footer={
+        <FormFooter
+          onCancel={onClose}
+          onSave={() => void save()}
+          saving={saving}
+          saveLabel={t("create.save")}
+          cancelLabel={t("common.cancel")}
+          disabled={!name.trim() || !address.trim() || !listenPort.trim()}
+        />
+      }
     >
       <div className="flex shrink-0 flex-col gap-3 p-3">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -146,14 +156,6 @@ export function InterfaceCreate({
           onChange={setStart}
         />
         {error && <p className="text-xs text-destructive">{error}</p>}
-        <FormFooter
-          onCancel={onClose}
-          onSave={() => void save()}
-          saving={saving}
-          saveLabel={t("create.save")}
-          cancelLabel={t("common.cancel")}
-          disabled={!name.trim() || !address.trim() || !listenPort.trim()}
-        />
       </div>
     </PanelShell>
   );

@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { CircleCheck, FileText, History, Link2 } from "lucide-react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
-  BackButton,
   Button,
   ListRow,
   PanelList,
@@ -10,11 +9,15 @@ import {
   Segmented,
   TextAreaField,
   useConfirm,
+  ToolbarBand,
+  LoadingState,
+  InlineView,
+  FormFooter,
+  PANEL,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { FileContent, ServerKind, WebStatus } from "../shared/types";
 import { errorMessage, getFile, getFiles, saveFile, testConfig } from "./api";
 import { SERVER_LABEL, formatSize } from "./format";
-import { Loading } from "./Loading";
 import type { Runner } from "./WebServersTab";
 
 /** Every file under the server's folder, with a tested editor. */
@@ -96,7 +99,7 @@ export function ConfigView({
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         {kinds.length > 1 && (
           <Segmented<ServerKind>
             value={server}
@@ -110,7 +113,12 @@ export function ConfigView({
             }))}
           />
         )}
-        <span className="flex-1 truncate font-mono text-xs text-muted-foreground">
+        <PanelSearch
+          value={search}
+          onChange={setSearch}
+          placeholder={t("config.search")}
+        />
+        <span className="min-w-0 flex-1 truncate font-mono text-xs text-muted-foreground">
           {root}
         </span>
         <Button
@@ -122,16 +130,11 @@ export function ConfigView({
           <CircleCheck className="size-4" />
           {t("config.test")}
         </Button>
-      </div>
-      <PanelSearch
-        value={search}
-        onChange={setSearch}
-        placeholder={t("config.search")}
-      />
+      </ToolbarBand>
       {failed ? (
         <p className="px-3 py-2 text-xs text-destructive">{failed}</p>
       ) : !files ? (
-        <Loading />
+        <LoadingState />
       ) : (
         <PanelList
           empty={
@@ -239,13 +242,15 @@ function FileEditor({
   const changed = !!file && text !== file.content;
 
   return (
-    <div className="flex flex-col">
-      <div className="flex items-center gap-2 border-b border-border px-2 py-1.5">
-        <BackButton onClick={onBack} label={t("common.back")} />
-        <span className="min-w-0 flex-1 truncate font-mono text-xs">
-          {file?.path ?? path}
-        </span>
-        {file && file.backups.length > 0 && (
+    <InlineView
+      open
+      bare
+      scroll={false}
+      onOpenChange={(open) => !open && onBack()}
+      icon={<FileText className="size-4" />}
+      title={<span className="font-mono">{file?.path ?? path}</span>}
+      actions={
+        file && file.backups.length > 0 ? (
           <Button
             variant="ghost"
             size="sm"
@@ -254,21 +259,25 @@ function FileEditor({
             <History className="size-4" />
             {t("config.backups", { count: file.backups.length })}
           </Button>
-        )}
-        {canEdit && (
-          <Button
-            size="sm"
+        ) : undefined
+      }
+      footer={
+        canEdit && file ? (
+          <FormFooter
+            dirty={changed}
             disabled={!changed || runner.busy}
-            onClick={() => void save()}
-          >
-            {t("config.save")}
-          </Button>
-        )}
-      </div>
+            saving={runner.busy}
+            onCancel={onBack}
+            onSave={() => void save()}
+            saveLabel={t("config.save")}
+          />
+        ) : undefined
+      }
+    >
       {failed ? (
         <p className="px-3 py-2 text-xs text-destructive">{failed}</p>
       ) : !file ? (
-        <Loading />
+        <LoadingState />
       ) : (
         <>
           {showBackups && (
@@ -297,19 +306,19 @@ function FileEditor({
               ))}
             </PanelList>
           )}
-          <div className="p-3">
+          <div className={`flex min-h-0 flex-1 flex-col ${PANEL.body}`}>
             <TextAreaField
               label={t("config.content")}
               hint={canEdit ? t("config.saveHint") : undefined}
               value={text}
               onChange={setText}
-              rows={28}
+              fill
               mono
               disabled={!canEdit}
             />
           </div>
         </>
       )}
-    </div>
+    </InlineView>
   );
 }

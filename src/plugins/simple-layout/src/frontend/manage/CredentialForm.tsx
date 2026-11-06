@@ -10,6 +10,7 @@ import {
   createCredential,
   updateCredential,
   type Credential,
+  PanelShell,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 
@@ -89,79 +90,88 @@ export function CredentialForm({
   const keepHint = credential ? t("credentialForm.keepHint") : undefined;
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:p-6 max-w-2xl w-full mx-auto">
-      <TextField
-        label={t("credentialForm.name")}
-        value={form.name}
-        onChange={(value) => set("name", value)}
-        error={tried && nameMissing ? t("credentialForm.nameRequired") : ""}
-      />
-      <TextField
-        label={t("credentialForm.username")}
-        value={form.username}
-        onChange={(value) => set("username", value)}
-        error={tried && userMissing ? t("credentialForm.usernameRequired") : ""}
-        mono
-      />
-      <SelectField
-        label={t("credentialForm.type")}
-        value={form.type}
-        onChange={(value) => set("type", value)}
-        options={[
-          { value: "password", label: t("credentialForm.typePassword") },
-          { value: "key", label: t("credentialForm.typeKey") },
-        ]}
-      />
+    <PanelShell
+      chrome={false}
+      footer={
+        <FormFooter
+          onCancel={onBack}
+          onSave={() => void save()}
+          saving={saving}
+          onDelete={onDelete}
+          deleteLabel={t("credentialForm.delete")}
+          saveLabel={
+            credential ? t("credentialForm.save") : t("credentialForm.add")
+          }
+          cancelLabel={t("credentialForm.cancel")}
+        />
+      }
+    >
+      <div className="flex flex-col gap-4 p-4 md:p-6 max-w-2xl w-full mx-auto">
+        <TextField
+          label={t("credentialForm.name")}
+          value={form.name}
+          onChange={(value) => set("name", value)}
+          error={tried && nameMissing ? t("credentialForm.nameRequired") : ""}
+        />
+        <TextField
+          label={t("credentialForm.username")}
+          value={form.username}
+          onChange={(value) => set("username", value)}
+          error={
+            tried && userMissing ? t("credentialForm.usernameRequired") : ""
+          }
+          mono
+        />
+        <SelectField
+          label={t("credentialForm.type")}
+          value={form.type}
+          onChange={(value) => set("type", value)}
+          options={[
+            { value: "password", label: t("credentialForm.typePassword") },
+            { value: "key", label: t("credentialForm.typeKey") },
+          ]}
+        />
 
-      {form.type === "password" ? (
-        <Field
-          label={t("credentialForm.password")}
-          hint={keepHint}
-          error={tried && needsSecret ? t("credentialForm.secretRequired") : ""}
-        >
-          <PasswordInput
-            className="h-8 pr-8 text-xs"
-            value={form.password}
-            onChange={(e) => set("password", e.target.value)}
-          />
-        </Field>
-      ) : (
-        <>
+        {form.type === "password" ? (
           <Field
-            label={t("credentialForm.privateKey")}
+            label={t("credentialForm.password")}
             hint={keepHint}
             error={
               tried && needsSecret ? t("credentialForm.secretRequired") : ""
             }
           >
-            <Textarea
-              value={form.key}
-              onChange={(e) => set("key", e.target.value)}
-              className="min-h-28 font-mono text-xs"
-              placeholder="-----BEGIN OPENSSH PRIVATE KEY-----"
-            />
-          </Field>
-          <Field label={t("credentialForm.passphrase")}>
             <PasswordInput
               className="h-8 pr-8 text-xs"
-              value={form.passphrase}
-              onChange={(e) => set("passphrase", e.target.value)}
+              value={form.password}
+              onChange={(e) => set("password", e.target.value)}
             />
           </Field>
-        </>
-      )}
-
-      <FormFooter
-        onCancel={onBack}
-        onSave={() => void save()}
-        saving={saving}
-        onDelete={onDelete}
-        deleteLabel={t("credentialForm.delete")}
-        saveLabel={
-          credential ? t("credentialForm.save") : t("credentialForm.add")
-        }
-        cancelLabel={t("credentialForm.cancel")}
-      />
-    </div>
+        ) : (
+          <>
+            <Field
+              label={t("credentialForm.privateKey")}
+              hint={keepHint}
+              error={
+                tried && needsSecret ? t("credentialForm.secretRequired") : ""
+              }
+            >
+              <Textarea
+                value={form.key}
+                onChange={(e) => set("key", e.target.value)}
+                className="min-h-28 font-mono text-xs"
+                placeholder="-----BEGIN OPENSSH PRIVATE KEY-----"
+              />
+            </Field>
+            <Field label={t("credentialForm.passphrase")}>
+              <PasswordInput
+                className="h-8 pr-8 text-xs"
+                value={form.passphrase}
+                onChange={(e) => set("passphrase", e.target.value)}
+              />
+            </Field>
+          </>
+        )}
+      </div>
+    </PanelShell>
   );
 }

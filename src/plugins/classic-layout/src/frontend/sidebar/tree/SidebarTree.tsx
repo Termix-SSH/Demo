@@ -30,6 +30,7 @@ import {
   type HostRowFields,
   type HostTrayTrigger,
   resolveHostTabType,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { useHostSpeedSearch } from "./hooks/useHostSpeedSearch";
@@ -46,7 +47,6 @@ import {
   ChevronDown,
   Download,
   FolderOpen,
-  Loader2,
   Plus,
   RotateCcw,
   Server,
@@ -923,10 +923,7 @@ export function SidebarTree({
               />
             </div>
           ))}
-          <div className="flex items-center justify-center gap-2 pt-4 text-muted-foreground/40">
-            <Loader2 className="size-3.5 animate-spin" />
-            <span className="text-xs">{t("hosts.loadingHosts")}</span>
-          </div>
+          <LoadingState label={t("hosts.loadingHosts")} />
         </div>
       </div>
     );

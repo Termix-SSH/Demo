@@ -8,6 +8,7 @@ import {
   WidgetTitle,
   getUptime,
   runVisibleInterval,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 
 function formatUptime(seconds: number): {
@@ -60,11 +61,7 @@ function TermixUptimeWidget({
   }
 
   if (seconds === null) {
-    return (
-      <div className="flex items-center justify-center w-full h-full text-xs text-muted-foreground">
-        {t("common.loading")}
-      </div>
-    );
+    return <LoadingState compact label={t("common.loading")} />;
   }
 
   const { days, hours, minutes, secs } = formatUptime(seconds);

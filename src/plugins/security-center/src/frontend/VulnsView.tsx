@@ -8,6 +8,8 @@ import {
   ListRow,
   PanelList,
   Segmented,
+  LoadingState,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { VulnScan, VulnSeverity } from "../shared/types";
 import {
@@ -90,13 +92,11 @@ export function VulnsView({
 
   if (error) return <p className="p-3 text-xs text-destructive">{error}</p>;
   if (scan === undefined) {
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("common.loading")}</p>
-    );
+    return <LoadingState label={t("common.loading")} />;
   }
 
   const header = (
-    <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2">
+    <ToolbarBand>
       <Button
         size="xs"
         variant="outline"
@@ -115,7 +115,7 @@ export function VulnsView({
           })}
         </span>
       )}
-    </div>
+    </ToolbarBand>
   );
 
   if (!scanEnabled) {
@@ -193,7 +193,7 @@ export function VulnsView({
           {t("vulns.noKev")}
         </p>
       )}
-      <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         <Segmented
           value={filter}
           onChange={(v) => setFilter(v as Filter)}
@@ -211,7 +211,7 @@ export function VulnsView({
           )}
           {showIgnored ? t("vulns.hideIgnored") : t("vulns.showIgnored")}
         </Button>
-      </div>
+      </ToolbarBand>
       {rows.length === 0 ? (
         <EmptyState icon={Bug} title={t("vulns.clean")} />
       ) : (

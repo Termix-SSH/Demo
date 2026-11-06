@@ -4,7 +4,7 @@ import {
   useTranslation,
   type DashboardCardProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { ListRow } from "@termix-ssh/plugin-sdk/ui";
+import { ListRow, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import { AlertTriangle, CheckCircle2, ShieldQuestion } from "lucide-react";
 import {
   getAttention,
@@ -114,11 +114,7 @@ export function AttentionCard({ isVisible, shell }: DashboardCardProps) {
   }, [isVisible, load]);
 
   if (items === null) {
-    return (
-      <p className="p-3 text-xs text-muted-foreground">
-        {t("attention.loading")}
-      </p>
-    );
+    return <LoadingState compact label={t("attention.loading")} />;
   }
   if (items.length === 0) {
     return (

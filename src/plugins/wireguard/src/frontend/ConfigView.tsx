@@ -1,8 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { useToast, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { FormFooter, TextAreaField } from "@termix-ssh/plugin-sdk/ui";
+import {
+  FormFooter,
+  TextAreaField,
+  LoadingState,
+  PanelShell,
+} from "@termix-ssh/plugin-sdk/ui";
 import { errorMessage, getConfig, saveConfig } from "./api";
-import { Loading } from "./Loading";
 
 export function ConfigView({ hostId, name }: { hostId: number; name: string }) {
   const { t } = useTranslation();
@@ -30,7 +34,7 @@ export function ConfigView({ hostId, name }: { hostId: number; name: string }) {
 
   if (failed)
     return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
-  if (saved === null) return <Loading />;
+  if (saved === null) return <LoadingState />;
 
   const save = async () => {
     setSaving(true);
@@ -47,26 +51,32 @@ export function ConfigView({ hostId, name }: { hostId: number; name: string }) {
   };
 
   return (
-    <div className="flex flex-col gap-3 p-3">
-      <TextAreaField
-        label={t("config.title")}
-        hint={t("config.hint")}
-        value={text}
-        onChange={setText}
-        rows={18}
-        mono
-      />
-      {error && (
-        <pre className="whitespace-pre-wrap border border-border p-2 font-mono text-xs text-destructive">
-          {error}
-        </pre>
-      )}
-      <FormFooter
-        onSave={() => void save()}
-        saving={saving}
-        dirty={text !== saved}
-        saveLabel={t("common.save")}
-      />
-    </div>
+    <PanelShell
+      chrome={false}
+      footer={
+        <FormFooter
+          onSave={() => void save()}
+          saving={saving}
+          dirty={text !== saved}
+          saveLabel={t("common.save")}
+        />
+      }
+    >
+      <div className="flex min-h-0 flex-1 flex-col gap-3 p-3">
+        <TextAreaField
+          label={t("config.title")}
+          hint={t("config.hint")}
+          value={text}
+          onChange={setText}
+          fill
+          mono
+        />
+        {error && (
+          <pre className="whitespace-pre-wrap border border-border p-2 font-mono text-xs text-destructive">
+            {error}
+          </pre>
+        )}
+      </div>
+    </PanelShell>
   );
 }

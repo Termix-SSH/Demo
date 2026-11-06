@@ -10,6 +10,7 @@ import {
   PanelList,
   TextAreaField,
   useConfirm,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { FileChange, StatusView } from "../shared/types";
 import {
@@ -23,7 +24,6 @@ import {
 } from "./api";
 import { DiffText } from "./DiffText";
 import { isStaged, isUnstaged, letter } from "./format";
-import { Loading } from "./Loading";
 import type { Runner } from "./runner";
 
 type Open = { file: FileChange; mode: "tree" | "staged" | "untracked" };
@@ -90,7 +90,7 @@ export function ChangesView({
 
   if (failed)
     return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
-  if (!status) return <Loading />;
+  if (!status) return <LoadingState />;
 
   const staged = status.files.filter(isStaged);
   const unstaged = status.files.filter(isUnstaged);
@@ -296,7 +296,7 @@ export function ChangesView({
             )}
           </>
         ) : (
-          <Loading />
+          <LoadingState />
         )}
       </InlineView>
     </div>

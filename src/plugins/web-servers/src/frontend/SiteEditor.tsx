@@ -15,6 +15,7 @@ import {
   TagInput,
   TextAreaField,
   TextField,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type {
   ServerKind,
@@ -33,7 +34,6 @@ import {
 } from "./api";
 import { dropSpec } from "../shared/spec";
 import { SERVER_LABEL } from "./format";
-import { Loading } from "./Loading";
 import type { Runner } from "./WebServersTab";
 
 type Mode = "form" | "text";
@@ -173,6 +173,7 @@ export function SiteEditor({
       leading={<BackButton onClick={onClose} label={t("common.back")} />}
       title={isNew ? t("site.addTitle") : site!.name}
       status={file}
+      scroll={mode !== "text"}
       actions={
         mode === "form" ? (
           <Button
@@ -202,7 +203,7 @@ export function SiteEditor({
       {failed ? (
         <p className="px-3 py-2 text-xs text-destructive">{failed}</p>
       ) : !loaded ? (
-        <Loading />
+        <LoadingState />
       ) : (
         <div className="flex flex-col gap-3 p-3">
           {isNew && (
@@ -249,7 +250,7 @@ export function SiteEditor({
                 label={t("site.text")}
                 value={text}
                 onChange={setText}
-                rows={22}
+                fill
                 mono
                 disabled={!canEdit}
               />

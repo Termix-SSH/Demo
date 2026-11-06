@@ -6,7 +6,7 @@ import {
   type ExtensionContribution,
   type TermixApp,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { WidgetTitle } from "@termix-ssh/plugin-sdk/ui";
+import { WidgetTitle, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import { daysLeft } from "./AcmeCard";
 import type { AcmeStatus } from "./AcmeStatusSetting";
 
@@ -57,7 +57,7 @@ function CertWidget({ widget }: WidgetProps) {
         {!allowed ? (
           <p className="text-muted-foreground">{t("card.denied")}</p>
         ) : !status ? (
-          <p className="text-muted-foreground">{t("card.loading")}</p>
+          <LoadingState compact label={t("card.loading")} />
         ) : (
           <>
             <span

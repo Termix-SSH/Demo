@@ -11,6 +11,7 @@ import {
   NoticePanel,
   Segmented,
   pluginWsUrl,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { VmDetail } from "../shared/types";
 import { errorCode, errorMessage, openConsole, switchToVnc } from "./api";
@@ -42,7 +43,7 @@ export function VmConsole({
   }
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         <Segmented
           value={mode}
           onChange={(next) => setMode(next as Mode)}
@@ -51,7 +52,7 @@ export function VmConsole({
             { value: "serial", label: t("console.serial") },
           ]}
         />
-      </div>
+      </ToolbarBand>
       <div className="relative min-h-0 flex-1">
         {mode === "graphical" ? (
           <GraphicalConsole

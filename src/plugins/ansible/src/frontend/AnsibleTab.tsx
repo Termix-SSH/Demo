@@ -10,13 +10,13 @@ import {
   PanelShell,
   RefreshButton,
   TabStrip,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { AnsibleStatus } from "../shared/types";
 import { AdhocView } from "./AdhocView";
 import { errorCode, errorMessage, getStatus } from "./api";
 import { FactsView } from "./FactsView";
 import { FileEditor } from "./FileEditor";
-import { Loading } from "./Loading";
 import { PlaybooksView } from "./PlaybooksView";
 import { RunDetail } from "./RunDetail";
 import { RunForm } from "./RunForm";
@@ -73,7 +73,7 @@ export function AnsibleTab({ isVisible, host, label }: TabProps) {
           {error ? (
             <p className="px-3 py-2 text-xs text-destructive">{error}</p>
           ) : (
-            <Loading />
+            <LoadingState />
           )}
         </PanelShell>
       </PanelFrame>
@@ -176,7 +176,7 @@ export function AnsibleTab({ isVisible, host, label }: TabProps) {
           />
         }
       >
-        <div className="flex shrink-0 flex-col">
+        <div className="flex flex-1 shrink-0 flex-col">
           {!status.installed ? (
             <NoticePanel icon={Workflow} title={t("tab.notInstalledTitle")}>
               {t("tab.notInstalledHint")}

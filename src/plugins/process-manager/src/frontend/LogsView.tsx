@@ -3,7 +3,12 @@ import {
   useTranslation,
   type PluginHostRecord,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { Button } from "@termix-ssh/plugin-sdk/ui";
+import {
+  Button,
+  Input,
+  ToolbarBand,
+  ToolbarSelect,
+} from "@termix-ssh/plugin-sdk/ui";
 import type { LogTarget } from "../shared/types";
 import { LogPane } from "./LogPane";
 
@@ -65,41 +70,41 @@ export function LogsView({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex flex-wrap items-center gap-1 border-b border-border p-1.5">
-        <select
+      <ToolbarBand>
+        <ToolbarSelect
           value={kind}
-          onChange={(e) => setKind(e.target.value as Kind)}
-          aria-label={t("logs.source")}
-          className="h-8 border border-border bg-background px-1 text-xs"
-        >
-          <option value="journal">{t("logs.sourceJournal")}</option>
-          <option value="journal-pid">{t("logs.sourcePid")}</option>
-          <option value="pm2">{t("logs.sourcePm2")}</option>
-          <option value="supervisor">{t("logs.sourceSupervisor")}</option>
-        </select>
-        <input
+          onChange={setKind}
+          label={t("logs.source")}
+          options={[
+            { value: "journal", label: t("logs.sourceJournal") },
+            { value: "journal-pid", label: t("logs.sourcePid") },
+            { value: "pm2", label: t("logs.sourcePm2") },
+            { value: "supervisor", label: t("logs.sourceSupervisor") },
+          ]}
+        />
+        <Input
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && setTarget(build())}
           placeholder={t(`logs.placeholder.${kind}`)}
           aria-label={t("logs.target")}
-          className="h-8 min-w-40 flex-1 border border-border bg-background px-2 font-mono text-xs"
+          className="min-w-40 flex-1 font-mono text-xs"
         />
         {kind === "supervisor" && (
-          <select
+          <ToolbarSelect
             value={stream}
-            onChange={(e) => setStream(e.target.value as "stdout" | "stderr")}
-            aria-label={t("logs.stream")}
-            className="h-8 border border-border bg-background px-1 text-xs"
-          >
-            <option value="stdout">stdout</option>
-            <option value="stderr">stderr</option>
-          </select>
+            onChange={setStream}
+            label={t("logs.stream")}
+            options={[
+              { value: "stdout", label: "stdout" },
+              { value: "stderr", label: "stderr" },
+            ]}
+          />
         )}
         <Button size="sm" onClick={() => setTarget(build())}>
           {t("logs.open")}
         </Button>
-      </div>
+      </ToolbarBand>
       <LogPane host={host} target={target} isVisible={isVisible} />
     </div>
   );

@@ -1,10 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { Network } from "lucide-react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { BackButton, PanelShell, TabStrip } from "@termix-ssh/plugin-sdk/ui";
+import {
+  BackButton,
+  PanelShell,
+  TabStrip,
+  LoadingState,
+} from "@termix-ssh/plugin-sdk/ui";
 import type { InterfaceView, WireguardStatus } from "../shared/types";
 import { errorMessage, listInterfaces } from "./api";
-import { Loading } from "./Loading";
 import { ClientsView } from "./ClientsView";
 import { ConfigView } from "./ConfigView";
 import { ServiceView } from "./ServiceView";
@@ -75,11 +79,11 @@ export function InterfaceDetail({
         />
       }
     >
-      <div className="flex shrink-0 flex-col">
+      <div className="flex flex-1 shrink-0 flex-col">
         {failed ? (
           <p className="px-3 py-2 text-xs text-destructive">{failed}</p>
         ) : !item ? (
-          <Loading />
+          <LoadingState />
         ) : section === "clients" ? (
           <ClientsView hostId={hostId} item={item} />
         ) : section === "settings" ? (

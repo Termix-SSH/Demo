@@ -27,6 +27,7 @@ import {
   type HostProtocols,
   type ResolvedHostDefault,
   type SSHHost,
+  PanelShell,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   useTranslation,
@@ -285,236 +286,243 @@ export function HostForm({
   const otherProtocols = listHostProtocols();
 
   return (
-    <div className="flex flex-col gap-5 p-4 md:p-6 max-w-2xl w-full mx-auto">
-      {locked && host?.lock && (
-        <div className="flex items-start gap-2 border border-accent-brand/30 bg-accent-brand/5 p-3 text-xs text-muted-foreground">
-          <Lock className="mt-0.5 size-3.5 shrink-0 text-accent-brand" />
-          {t("hostForm.managed", { plugin: host.lock.pluginName })}
-        </div>
-      )}
-      {!locked && readOnly && (
-        <div className="border border-border p-3 text-xs text-muted-foreground">
-          {t("hostForm.readOnly")}
-        </div>
-      )}
-
-      <fieldset disabled={readOnly} className="flex flex-col gap-4 min-w-0">
-        <TextField
-          label={t("hostForm.name")}
-          value={form.name}
-          onChange={(value) => setField("name", value)}
-          placeholder={t("hostForm.namePlaceholder")}
+    <PanelShell
+      chrome={false}
+      footer={
+        <FormFooter
+          onCancel={onBack}
+          onSave={() => void save()}
+          saving={saving}
+          disabled={readOnly}
+          onDelete={onDelete}
+          deleteLabel={t("hostForm.delete")}
+          saveLabel={host ? t("hostForm.save") : t("hostForm.add")}
+          cancelLabel={t("hostForm.cancel")}
         />
-
-        <FieldPair>
-          <TextField
-            label={t("hostForm.address")}
-            value={form.ip}
-            onChange={(value) => setField("ip", value)}
-            placeholder="192.168.1.10"
-            error={tried ? errors.ip : ""}
-            mono
-          />
-          {!sshOff && (
-            <TextField
-              label={t("hostForm.port")}
-              value={String(form.sshPort)}
-              onChange={(value) =>
-                setField("sshPort", value === "" ? 0 : Number(value) || 0)
-              }
-              error={tried ? errors.port : ""}
-              mono
-            />
-          )}
-        </FieldPair>
-
-        {!sshOff && (
-          <>
-            <TextField
-              label={t("hostForm.username")}
-              value={form.username}
-              onChange={(value) => setField("username", value)}
-              placeholder="root"
-              mono
-            />
-
-            <SelectField
-              label={t("hostForm.signIn")}
-              value={form.authType}
-              onChange={(value) =>
-                setField("authType", value as HostEditorForm["authType"])
-              }
-              options={authOptions}
-            />
-
-            {form.authType === "password" && (
-              <Field label={t("hostForm.password")}>
-                <PasswordInput
-                  className="h-8 pr-8 text-xs"
-                  value={form.password}
-                  onChange={(e) => setField("password", e.target.value)}
-                />
-              </Field>
-            )}
-
-            {form.authType === "key" && (
-              <>
-                <Field
-                  label={t("hostForm.privateKey")}
-                  hint={t("hostForm.privateKeyHint")}
-                >
-                  <Textarea
-                    value={form.key === "existing_key" ? "" : String(form.key)}
-                    placeholder={
-                      form.key === "existing_key"
-                        ? t("hostForm.keySaved")
-                        : "-----BEGIN OPENSSH PRIVATE KEY-----"
-                    }
-                    onChange={(e) =>
-                      setField("key", e.target.value || "existing_key")
-                    }
-                    className="min-h-28 font-mono text-xs"
-                  />
-                </Field>
-                <Field label={t("hostForm.keyPassphrase")}>
-                  <PasswordInput
-                    className="h-8 pr-8 text-xs"
-                    value={
-                      form.keyPassword === "existing_key_password"
-                        ? ""
-                        : form.keyPassword
-                    }
-                    placeholder={
-                      form.keyPassword === "existing_key_password"
-                        ? t("hostForm.keySaved")
-                        : ""
-                    }
-                    onChange={(e) => setField("keyPassword", e.target.value)}
-                  />
-                </Field>
-              </>
-            )}
-
-            {form.authType === "credential" && (
-              <SelectField
-                label={t("hostForm.credential")}
-                value={form.credentialId}
-                onChange={(value) => setField("credentialId", value)}
-                options={credentials.map((credential) => ({
-                  value: String(credential.id),
-                  label: `${credential.name} (${credential.username})`,
-                }))}
-                placeholder={t("hostForm.credentialPlaceholder")}
-                error={tried ? errors.credential : ""}
-              />
-            )}
-          </>
+      }
+    >
+      <div className="flex flex-col gap-5 p-4 md:p-6 max-w-2xl w-full mx-auto">
+        {locked && host?.lock && (
+          <div className="flex items-start gap-2 border border-accent-brand/30 bg-accent-brand/5 p-3 text-xs text-muted-foreground">
+            <Lock className="mt-0.5 size-3.5 shrink-0 text-accent-brand" />
+            {t("hostForm.managed", { plugin: host.lock.pluginName })}
+          </div>
+        )}
+        {!locked && readOnly && (
+          <div className="border border-border p-3 text-xs text-muted-foreground">
+            {t("hostForm.readOnly")}
+          </div>
         )}
 
-        <Field label={t("hostForm.folder")} hint={t("hostForm.folderHint")}>
-          <>
-            <Input
-              list="simple-layout-folders"
-              value={form.folder}
-              onChange={(e) => setField("folder", e.target.value)}
+        <fieldset disabled={readOnly} className="flex flex-col gap-4 min-w-0">
+          <TextField
+            label={t("hostForm.name")}
+            value={form.name}
+            onChange={(value) => setField("name", value)}
+            placeholder={t("hostForm.namePlaceholder")}
+          />
+
+          <FieldPair>
+            <TextField
+              label={t("hostForm.address")}
+              value={form.ip}
+              onChange={(value) => setField("ip", value)}
+              placeholder="192.168.1.10"
+              error={tried ? errors.ip : ""}
+              mono
             />
-            <datalist id="simple-layout-folders">
-              {folders.map((folder) => (
-                <option key={folder} value={folder} />
-              ))}
-            </datalist>
-          </>
-        </Field>
-
-        <div className="flex flex-col gap-2 border-t border-border pt-4">
-          <button
-            type="button"
-            className="flex items-center gap-1.5 self-start text-xs text-muted-foreground hover:text-foreground"
-            onClick={() => setShowMore((open) => !open)}
-            aria-expanded={showMore}
-          >
-            {showMore ? (
-              <ChevronDown className="size-3.5" />
-            ) : (
-              <ChevronRight className="size-3.5" />
+            {!sshOff && (
+              <TextField
+                label={t("hostForm.port")}
+                value={String(form.sshPort)}
+                onChange={(value) =>
+                  setField("sshPort", value === "" ? 0 : Number(value) || 0)
+                }
+                error={tried ? errors.port : ""}
+                mono
+              />
             )}
-            {t("hostForm.moreOptions")}
-          </button>
+          </FieldPair>
 
-          {showMore && (
-            <div className="flex flex-col gap-4 pt-2">
-              <div className="flex flex-col gap-2">
-                <SwitchRow
-                  label={t("hostForm.useSsh")}
-                  checked={protocols.enableSsh}
-                  onChange={(value) => {
-                    onDirtyChange?.(true);
-                    setProtocols((prev) => ({ ...prev, enableSsh: value }));
-                  }}
-                />
-                {otherProtocols.map((protocol) => (
-                  <SwitchRow
-                    key={protocol.id}
-                    label={t(protocol.titleKey)}
-                    checked={!!protocols[protocol.settingKey]}
-                    onChange={(value) => {
-                      onDirtyChange?.(true);
-                      setProtocols((prev) => ({
-                        ...prev,
-                        [protocol.settingKey]: value,
-                      }));
-                    }}
+          {!sshOff && (
+            <>
+              <TextField
+                label={t("hostForm.username")}
+                value={form.username}
+                onChange={(value) => setField("username", value)}
+                placeholder="root"
+                mono
+              />
+
+              <SelectField
+                label={t("hostForm.signIn")}
+                value={form.authType}
+                onChange={(value) =>
+                  setField("authType", value as HostEditorForm["authType"])
+                }
+                options={authOptions}
+              />
+
+              {form.authType === "password" && (
+                <Field label={t("hostForm.password")}>
+                  <PasswordInput
+                    className="h-8 pr-8 text-xs"
+                    value={form.password}
+                    onChange={(e) => setField("password", e.target.value)}
                   />
-                ))}
-              </div>
+                </Field>
+              )}
 
-              {moreTabs.length > 0 && activeMore && (
+              {form.authType === "key" && (
                 <>
-                  <div className="flex flex-wrap gap-1 border-b border-border">
-                    {moreTabs.map((tab) => (
-                      <button
-                        key={tab.id}
-                        type="button"
-                        onClick={() => setMoreTab(tab.id)}
-                        className={`px-2.5 py-1.5 text-xs border-b-2 ${
-                          tab.id === activeMore.id
-                            ? "border-accent-brand text-foreground"
-                            : "border-transparent text-muted-foreground hover:text-foreground"
-                        }`}
-                      >
-                        {tab.label}
-                      </button>
-                    ))}
-                  </div>
-                  <PluginSection
-                    id={activeMore.id}
-                    form={form}
-                    setField={
-                      setField as unknown as (k: string, v: unknown) => void
-                    }
-                    updateForm={updateForm}
-                    host={host}
-                    credentials={credentials}
-                    protocols={flags}
-                  />
+                  <Field
+                    label={t("hostForm.privateKey")}
+                    hint={t("hostForm.privateKeyHint")}
+                  >
+                    <Textarea
+                      value={
+                        form.key === "existing_key" ? "" : String(form.key)
+                      }
+                      placeholder={
+                        form.key === "existing_key"
+                          ? t("hostForm.keySaved")
+                          : "-----BEGIN OPENSSH PRIVATE KEY-----"
+                      }
+                      onChange={(e) =>
+                        setField("key", e.target.value || "existing_key")
+                      }
+                      className="min-h-28 font-mono text-xs"
+                    />
+                  </Field>
+                  <Field label={t("hostForm.keyPassphrase")}>
+                    <PasswordInput
+                      className="h-8 pr-8 text-xs"
+                      value={
+                        form.keyPassword === "existing_key_password"
+                          ? ""
+                          : form.keyPassword
+                      }
+                      placeholder={
+                        form.keyPassword === "existing_key_password"
+                          ? t("hostForm.keySaved")
+                          : ""
+                      }
+                      onChange={(e) => setField("keyPassword", e.target.value)}
+                    />
+                  </Field>
                 </>
               )}
-            </div>
-          )}
-        </div>
-      </fieldset>
 
-      <FormFooter
-        onCancel={onBack}
-        onSave={() => void save()}
-        saving={saving}
-        disabled={readOnly}
-        onDelete={onDelete}
-        deleteLabel={t("hostForm.delete")}
-        saveLabel={host ? t("hostForm.save") : t("hostForm.add")}
-        cancelLabel={t("hostForm.cancel")}
-      />
-    </div>
+              {form.authType === "credential" && (
+                <SelectField
+                  label={t("hostForm.credential")}
+                  value={form.credentialId}
+                  onChange={(value) => setField("credentialId", value)}
+                  options={credentials.map((credential) => ({
+                    value: String(credential.id),
+                    label: `${credential.name} (${credential.username})`,
+                  }))}
+                  placeholder={t("hostForm.credentialPlaceholder")}
+                  error={tried ? errors.credential : ""}
+                />
+              )}
+            </>
+          )}
+
+          <Field label={t("hostForm.folder")} hint={t("hostForm.folderHint")}>
+            <>
+              <Input
+                list="simple-layout-folders"
+                value={form.folder}
+                onChange={(e) => setField("folder", e.target.value)}
+              />
+              <datalist id="simple-layout-folders">
+                {folders.map((folder) => (
+                  <option key={folder} value={folder} />
+                ))}
+              </datalist>
+            </>
+          </Field>
+
+          <div className="flex flex-col gap-2 border-t border-border pt-4">
+            <button
+              type="button"
+              className="flex items-center gap-1.5 self-start text-xs text-muted-foreground hover:text-foreground"
+              onClick={() => setShowMore((open) => !open)}
+              aria-expanded={showMore}
+            >
+              {showMore ? (
+                <ChevronDown className="size-3.5" />
+              ) : (
+                <ChevronRight className="size-3.5" />
+              )}
+              {t("hostForm.moreOptions")}
+            </button>
+
+            {showMore && (
+              <div className="flex flex-col gap-4 pt-2">
+                <div className="flex flex-col gap-2">
+                  <SwitchRow
+                    label={t("hostForm.useSsh")}
+                    checked={protocols.enableSsh}
+                    onChange={(value) => {
+                      onDirtyChange?.(true);
+                      setProtocols((prev) => ({ ...prev, enableSsh: value }));
+                    }}
+                  />
+                  {otherProtocols.map((protocol) => (
+                    <SwitchRow
+                      key={protocol.id}
+                      label={t(protocol.titleKey)}
+                      checked={!!protocols[protocol.settingKey]}
+                      onChange={(value) => {
+                        onDirtyChange?.(true);
+                        setProtocols((prev) => ({
+                          ...prev,
+                          [protocol.settingKey]: value,
+                        }));
+                      }}
+                    />
+                  ))}
+                </div>
+
+                {moreTabs.length > 0 && activeMore && (
+                  <>
+                    <div className="flex flex-wrap gap-1 border-b border-border">
+                      {moreTabs.map((tab) => (
+                        <button
+                          key={tab.id}
+                          type="button"
+                          onClick={() => setMoreTab(tab.id)}
+                          className={`px-2.5 py-1.5 text-xs border-b-2 ${
+                            tab.id === activeMore.id
+                              ? "border-accent-brand text-foreground"
+                              : "border-transparent text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          {tab.label}
+                        </button>
+                      ))}
+                    </div>
+                    <PluginSection
+                      id={activeMore.id}
+                      form={form}
+                      setField={
+                        setField as unknown as (k: string, v: unknown) => void
+                      }
+                      updateForm={updateForm}
+                      host={host}
+                      credentials={credentials}
+                      protocols={flags}
+                    />
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        </fieldset>
+      </div>
+    </PanelShell>
   );
 }
 

@@ -142,10 +142,10 @@ export function HostTile({
   return <HostList hostId={hostId} isVisible={isVisible} />;
 }
 
-/** A red dot on a host row while one of its monitors is down. */
-export function HostBadge({ host }: { host: PluginHostRecord }) {
+/** The host row dot while one of its monitors is down. */
+export function useHostDot(host: PluginHostRecord) {
   const { t } = useTranslation();
   const down = useDownCount(Number(host.id));
   if (!down) return null;
-  return <StatusDot tone="bad" title={t("host.down", { count: down })} />;
+  return { tone: "bad" as const, label: t("host.down", { count: down }) };
 }

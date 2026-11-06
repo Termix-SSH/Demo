@@ -9,11 +9,12 @@ import {
   PanelList,
   PanelSearch,
   useConfirm,
+  LoadingState,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { Site, WebStatus } from "../shared/types";
 import { deleteSite, errorMessage, getSites, toggleSite } from "./api";
 import { SERVER_LABEL, expiryTone } from "./format";
-import { Loading } from "./Loading";
 import type { Runner } from "./WebServersTab";
 
 /** Every site on the host, from each installed server. */
@@ -53,7 +54,7 @@ export function SitesView({
 
   if (failed)
     return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
-  if (!sites) return <Loading />;
+  if (!sites) return <LoadingState />;
 
   const term = search.trim().toLowerCase();
   const shown = term
@@ -96,11 +97,14 @@ export function SitesView({
   return (
     <div className="flex flex-col">
       {!compact && sites.length > 5 && (
-        <PanelSearch
-          value={search}
-          onChange={setSearch}
-          placeholder={t("sites.search")}
-        />
+        <ToolbarBand>
+          <PanelSearch
+            value={search}
+            onChange={setSearch}
+            placeholder={t("sites.search")}
+            fill
+          />
+        </ToolbarBand>
       )}
       <PanelList
         empty={

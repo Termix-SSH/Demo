@@ -9,10 +9,10 @@ import {
   SwitchRow,
   TextField,
   useConfirm,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { Remote, StashEntry } from "../shared/types";
 import { errorMessage, getRemotes, getStashes, stash } from "./api";
-import { Loading } from "./Loading";
 import type { Runner } from "./runner";
 
 /** Stashes and remotes of a repo. */
@@ -59,7 +59,7 @@ export function StashView({
 
   if (failed)
     return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
-  if (!stashes) return <Loading />;
+  if (!stashes) return <LoadingState />;
 
   const act = async (
     op: "push" | "pop" | "apply" | "drop",

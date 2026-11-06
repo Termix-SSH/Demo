@@ -11,6 +11,7 @@ import {
   type AuthOverrideProtocol,
   mapCredentials,
   getConnectedRemoteApi,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { useEffect, useState } from "react";
@@ -147,9 +148,7 @@ export function HostAuthOverrideModal({
           )}
         </p>
         {loading ? (
-          <p className="py-4 text-center text-muted-foreground">
-            {t("common.loading")}
-          </p>
+          <LoadingState label={t("common.loading")} />
         ) : loadError ? (
           <p className="border border-destructive/30 bg-destructive/5 p-3 text-destructive">
             {t("hosts.sharing.authOverrideLoadError")}

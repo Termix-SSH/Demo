@@ -7,7 +7,12 @@ import {
   useTranslation,
   type DashboardCardProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { ListBadge, ListRow, PanelList } from "@termix-ssh/plugin-sdk/ui";
+import {
+  ListBadge,
+  ListRow,
+  PanelList,
+  LoadingState,
+} from "@termix-ssh/plugin-sdk/ui";
 import type { HostSummary } from "../shared/types";
 import { errorMessage, getSummary } from "./api";
 import { formatRuntime } from "./format";
@@ -47,9 +52,7 @@ export function UpsHostsCard({ isVisible }: DashboardCardProps) {
 
   if (failed) return <p className="p-3 text-xs text-destructive">{failed}</p>;
   if (!rows) {
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("common.loading")}</p>
-    );
+    return <LoadingState compact label={t("common.loading")} />;
   }
 
   const sorted = [...rows].sort((a, b) => rank(a) - rank(b));

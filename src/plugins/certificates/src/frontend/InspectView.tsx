@@ -6,11 +6,12 @@ import {
   ListBadge,
   Segmented,
   TileStack,
+  ToolbarBand,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { CertStatus, InspectResult } from "../shared/types";
 import { errorMessage, inspectFile, inspectRemote } from "./api";
 import { ChainCard } from "./ChainView";
-import { Loading } from "./Loading";
 
 type Mode = "server" | "file";
 
@@ -67,7 +68,7 @@ export function InspectView({
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         <Segmented<Mode>
           value={mode}
           onChange={setMode}
@@ -111,9 +112,9 @@ export function InspectView({
         >
           {t("inspect.check")}
         </Button>
-      </div>
+      </ToolbarBand>
       {loading ? (
-        <Loading />
+        <LoadingState />
       ) : failed ? (
         <p className="px-3 py-2 text-xs text-destructive">{failed}</p>
       ) : !result ? (

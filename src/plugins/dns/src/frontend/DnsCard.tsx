@@ -6,7 +6,7 @@ import {
   useTranslation,
   type DashboardCardProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { ListRow, PanelList } from "@termix-ssh/plugin-sdk/ui";
+import { ListRow, PanelList, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import { createApi, type Summary } from "./api";
 
 const POLL_MS = 5 * 60_000;
@@ -33,9 +33,7 @@ export function DnsCard({ isVisible, shell }: DashboardCardProps) {
 
   if (!canView) return null;
   if (!summary) {
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("card.loading")}</p>
-    );
+    return <LoadingState compact label={t("card.loading")} />;
   }
   const open = () => shell.openSingletonTab("dns");
 

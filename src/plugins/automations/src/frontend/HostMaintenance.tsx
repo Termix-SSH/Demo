@@ -204,7 +204,7 @@ function MaintenanceEditor({
               <Segmented<typeof mode>
                 value={mode}
                 onChange={setMode}
-                className="w-full [&>button]:flex-1"
+
                 options={[
                   { value: "start", label: t("maintenance.startNow") },
                   { value: "schedule", label: t("maintenance.schedule") },
@@ -244,7 +244,7 @@ function MaintenanceEditor({
                   <Segmented<Recurrence>
                     value={recurrence}
                     onChange={setRecurrence}
-                    className="w-full [&>button]:flex-1"
+
                     options={(["once", "weekly", "monthly"] as const).map(
                       (value) => ({
                         value,

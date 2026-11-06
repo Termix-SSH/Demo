@@ -14,6 +14,7 @@ import {
   GroupHeading,
   Button,
   Input,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { useEffect, useMemo, useState } from "react";
@@ -330,9 +331,7 @@ export function KeybindingsSettings() {
             }
           />
           {loading ? (
-            <span className="px-3 py-2 text-xs text-muted-foreground">
-              {t("newUi.sidebar.keybindings.loading")}
-            </span>
+            <LoadingState label={t("newUi.sidebar.keybindings.loading")} />
           ) : customOnlyBindings.length === 0 ? (
             <span className="px-3 py-2 text-xs text-muted-foreground/60">
               {t("newUi.sidebar.keybindings.noCustomBindings")}

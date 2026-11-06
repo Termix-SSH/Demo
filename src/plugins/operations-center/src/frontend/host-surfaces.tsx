@@ -15,11 +15,8 @@ import {
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
   StatusDot,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import { ServerCog, Zap } from "lucide-react";
 import {
@@ -78,26 +75,15 @@ function hostActionsOf(
   );
 }
 
-/** A dot next to a host's name while one of its status tiles is not OK. */
-export function AttentionBadge({ host }: { host: PluginHostRecord }) {
+/** The host row dot while one of its status tiles is not OK. */
+export function useAttentionDot(host: PluginHostRecord) {
   const { values } = useSettings("user");
   const attention = useHostAttention(host.id, values.attentionDot !== false);
   if (!attention) return null;
-  return (
-    <TooltipProvider delayDuration={300}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <span
-            data-testid="ops-attention"
-            className={`size-1.5 shrink-0 rounded-full ${attention.tone === "fail" ? "bg-destructive" : "bg-warning"}`}
-          />
-        </TooltipTrigger>
-        <TooltipContent side="right" className="whitespace-pre-line">
-          {attention.lines.join("\n")}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
+  return {
+    tone: attention.tone === "fail" ? ("bad" as const) : ("warn" as const),
+    label: attention.lines.join("\n"),
+  };
 }
 
 /** Actions that need a form or a target open in Operations instead. */
@@ -269,7 +255,7 @@ export function HostCompanion({
   const Icon = ServerCog as ComponentType<{ className?: string }>;
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden">
-      <div className="flex shrink-0 items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         <StatusDot state={status} title={t(`state.${status ?? "unknown"}`)} />
         <span className="min-w-0 flex-1 truncate text-sm font-medium">
           {hostLabel(host)}
@@ -282,7 +268,7 @@ export function HostCompanion({
           <Icon className="mr-1 size-3.5" />
           {t("host.open")}
         </Button>
-      </div>
+      </ToolbarBand>
       <div className="min-h-0 flex-1">
         <HostOverview
           host={host}

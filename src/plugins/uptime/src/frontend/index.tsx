@@ -4,7 +4,7 @@ import type { TermixApp } from "@termix-ssh/plugin-sdk/frontend";
 import { initApi } from "./api";
 import { uptimeWidget } from "./HomepageWidget";
 import {
-  HostBadge,
+  useHostDot,
   HostTile,
   UptimeCompanion,
   useUptimeCompanionDefaults,
@@ -68,7 +68,7 @@ export function activate(app: TermixApp): void {
   app.registerHostBadge({
     id: "uptime-down",
     when: () => canView,
-    component: HostBadge,
+    useDot: useHostDot,
     order: 40,
   });
 

@@ -1,6 +1,14 @@
 import dgram from "node:dgram";
 import { eq } from "drizzle-orm";
 import { WebSocket } from "ws";
+import {
+  normalizePin,
+  PIN,
+  PinnedAgent,
+  pinnedFetch,
+  readCertificate,
+  type PeerCertificate,
+} from "./pinned.js";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import type {
   Device,
@@ -84,6 +92,8 @@ export interface Service {
   update: (id: number, input: DeviceInput) => Promise<Device>;
   remove: (id: number) => Promise<void>;
   test: (input: DeviceInput) => Promise<Reading>;
+  /** The certificate a device shows, for pinning it. */
+  certificate: (address: string, port: number) => Promise<PeerCertificate>;
   poll: (id: number) => Promise<Device>;
   runDue: () => Promise<void>;
   power: (id: number, action: PowerAction) => Promise<void>;
@@ -112,10 +122,13 @@ function parseJson<T>(value: string | null, fallback: T): T {
 function defaultIo(ctx: PluginContext): DriverIo {
   return {
     fetch: ctx.fetch,
+    fetchPinned: pinnedFetch,
     connect: (url, options) =>
       new WebSocket(url, {
         headers: options.headers,
-        ca: options.ca,
+        ...(options.pin && url.startsWith("wss:")
+          ? { agent: new PinnedAgent(options.pin) }
+          : { ca: options.ca }),
         handshakeTimeout: 15_000,
         perMessageDeflate: false,
       }) as never,
@@ -361,6 +374,12 @@ export function createService(
     if (given.scheme === "http" || given.scheme === "https") {
       options.scheme = given.scheme;
     }
+    if (given.pin) {
+      const pin = normalizePin(given.pin);
+      if (!PIN.test(pin))
+        throw new ServiceError("The certificate pin is not valid");
+      options.pin = pin;
+    }
     if (given.mac) {
       if (!MAC.test(given.mac))
         throw new ServiceError("Enter the MAC like aa:bb:cc:dd:ee:ff");
@@ -546,6 +565,22 @@ export function createService(
         },
         io,
       );
+    },
+
+    async certificate(address, port) {
+      const host = address.trim();
+      if (!host || host.length > 255 || /[\s/\\@?#]/.test(host)) {
+        throw new ServiceError("Enter the KVM address, like 192.168.1.50");
+      }
+      if (!Number.isInteger(port) || port < 1 || port > 65535) {
+        throw new ServiceError("The port must be between 1 and 65535");
+      }
+      try {
+        return await readCertificate(host.replace(/^\[|\]$/g, ""), port);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        throw new ServiceError(`Could not read the certificate: ${message}`);
+      }
     },
 
     poll,

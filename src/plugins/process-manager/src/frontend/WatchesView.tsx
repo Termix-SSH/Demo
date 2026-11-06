@@ -6,6 +6,11 @@ import {
   ListBadge,
   ListRow,
   PanelList,
+  Input,
+  ToolbarBand,
+  LoadingState,
+  PANEL,
+  ToolbarSelect,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { WatchKind, WatchRule, WatchView } from "../shared/types";
 import { addWatch, errorMessage, listWatches, removeWatch } from "./api";
@@ -88,38 +93,35 @@ export function WatchesView({
 
   return (
     <div className="flex min-h-0 flex-col">
-      <div className="flex flex-wrap items-center gap-1 border-b border-border p-1.5">
-        <select
+      <ToolbarBand>
+        <ToolbarSelect
           value={kind}
-          onChange={(e) => setKind(e.target.value as WatchKind)}
-          aria-label={t("watches.kind")}
-          className="h-8 border border-border bg-background px-1 text-xs"
-        >
-          <option value="process">{t("watch.kind.process")}</option>
-          <option value="pm2">{t("watch.kind.pm2")}</option>
-          <option value="supervisor">{t("watch.kind.supervisor")}</option>
-        </select>
-        <input
+          onChange={(next) => setKind(next as WatchKind)}
+          label={t("watches.kind")}
+          options={[
+            { value: "process", label: t("watch.kind.process") },
+            { value: "pm2", label: t("watch.kind.pm2") },
+            { value: "supervisor", label: t("watch.kind.supervisor") },
+          ]}
+        />
+        <Input
           value={target}
           onChange={(e) => setTarget(e.target.value)}
           placeholder={t("watches.targetPlaceholder")}
           aria-label={t("watches.target")}
-          className="h-8 min-w-36 flex-1 border border-border bg-background px-2 font-mono text-xs"
+          className="min-w-36 flex-1 font-mono text-xs"
         />
-        <select
+        <ToolbarSelect
           value={activeRule}
-          onChange={(e) => setRule(e.target.value as WatchRule)}
-          aria-label={t("watches.rule")}
-          className="h-8 border border-border bg-background px-1 text-xs"
-        >
-          {rules.map((r) => (
-            <option key={r} value={r}>
-              {t(`watch.rule.${r}`)}
-            </option>
-          ))}
-        </select>
+          onChange={(next) => setRule(next as WatchRule)}
+          label={t("watches.rule")}
+          options={rules.map((r) => ({
+            value: r,
+            label: t(`watch.rule.${r}`),
+          }))}
+        />
         {activeRule !== "down" && (
-          <input
+          <Input
             value={threshold}
             onChange={(e) => setThreshold(e.target.value)}
             inputMode="numeric"
@@ -127,7 +129,7 @@ export function WatchesView({
             title={t(
               `watches.thresholdHint.${activeRule}.${kind === "process" ? "process" : "app"}`,
             )}
-            className="h-8 w-16 border border-border bg-background px-1 text-center font-mono text-xs"
+            className="w-16 text-center font-mono text-xs"
           />
         )}
         {activeRule === "down" && kind !== "process" && (
@@ -147,12 +149,16 @@ export function WatchesView({
         >
           {t("watches.add")}
         </Button>
-      </div>
+      </ToolbarBand>
       <PanelList
         empty={
-          <p className="p-3 text-xs text-muted-foreground">
-            {watches ? t("watches.empty") : t("tab.loading")}
-          </p>
+          watches ? (
+            <p className={`text-xs text-muted-foreground ${PANEL.body}`}>
+              {t("watches.empty")}
+            </p>
+          ) : (
+            <LoadingState compact label={t("tab.loading")} />
+          )
         }
       >
         {(watches ?? []).map((w, index) => (

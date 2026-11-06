@@ -25,6 +25,7 @@ import {
   RefreshButton,
   TabStrip,
   useConfirm,
+  ToolbarSelect,
 } from "@termix-ssh/plugin-sdk/ui";
 import type {
   Account,
@@ -481,22 +482,18 @@ function StorageTab({ isVisible }: TabProps) {
         {creating && (
           <div className="space-y-2">
             {accounts.length > 1 && (
-              <select
-                className="h-9 w-full border border-border bg-background px-2 text-sm"
-                value={creating.accountId}
-                onChange={(event) =>
-                  setCreating({
-                    ...creating,
-                    accountId: Number(event.target.value),
-                  })
+              <ToolbarSelect
+                className="w-full"
+                label={t("operations.account")}
+                value={String(creating.accountId)}
+                onChange={(next) =>
+                  setCreating({ ...creating, accountId: Number(next) })
                 }
-              >
-                {accounts.map((account) => (
-                  <option key={account.id} value={account.id}>
-                    {account.name}
-                  </option>
-                ))}
-              </select>
+                options={accounts.map((account) => ({
+                  value: String(account.id),
+                  label: account.name,
+                }))}
+              />
             )}
             <Input
               autoFocus

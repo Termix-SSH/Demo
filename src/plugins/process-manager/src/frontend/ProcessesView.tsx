@@ -15,6 +15,8 @@ import {
   StatTile,
   TileWall,
   usePaged,
+  ToolbarBand,
+  ToolbarSelect,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { ProcessList, ProcessRow, StatusView } from "../shared/types";
 import { addWatch, errorMessage, getProcesses } from "./api";
@@ -121,25 +123,25 @@ export function ProcessesView({
           tone={list && list.zombies > 0 ? "warn" : "default"}
         />
       </TileWall>
-      <div className="flex flex-wrap items-center gap-1 border-b border-border p-1.5">
+      <ToolbarBand>
         <PanelSearch
           value={filter}
           onChange={setFilter}
           placeholder={t("list.search")}
           className="min-w-40 flex-1"
         />
-        <select
+        <ToolbarSelect
           value={sort}
           disabled={tree}
-          onChange={(e) => setSort(e.target.value as SortKey)}
-          aria-label={t("list.sort")}
-          className="h-8 border border-border bg-background px-1 text-xs disabled:opacity-40"
-        >
-          <option value="cpu">{t("list.sortCpu")}</option>
-          <option value="mem">{t("list.sortMem")}</option>
-          <option value="pid">{t("list.sortPid")}</option>
-          <option value="age">{t("list.sortAge")}</option>
-        </select>
+          onChange={setSort}
+          label={t("list.sort")}
+          options={[
+            { value: "cpu", label: t("list.sortCpu") },
+            { value: "mem", label: t("list.sortMem") },
+            { value: "pid", label: t("list.sortPid") },
+            { value: "age", label: t("list.sortAge") },
+          ]}
+        />
         <Button
           variant={tree ? "default" : "ghost"}
           size="sm"
@@ -148,7 +150,7 @@ export function ProcessesView({
           <ListTree className="size-4" />
           {t("list.tree")}
         </Button>
-      </div>
+      </ToolbarBand>
       {failed && <p className="px-3 py-2 text-xs text-destructive">{failed}</p>}
       {!status.psOk && (
         <p className="px-3 py-2 text-xs text-muted-foreground">

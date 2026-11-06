@@ -1,9 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { Button, Checkbox, PanelSearch } from "@termix-ssh/plugin-sdk/ui";
+import {
+  Button,
+  Checkbox,
+  PanelSearch,
+  ToolbarBand,
+  LoadingState,
+} from "@termix-ssh/plugin-sdk/ui";
 import type { Target } from "../shared/types";
 import { errorMessage, getTargets } from "./api";
-import { Loading } from "./Loading";
 
 /** Picks Termix hosts for the generated inventory. */
 export function TargetPicker({
@@ -50,11 +55,11 @@ export function TargetPicker({
     onChange([...new Set([...selected, ...visible.map((x) => x.id)])]);
 
   if (failed) return <p className="text-xs text-destructive">{failed}</p>;
-  if (!targets) return <Loading />;
+  if (!targets) return <LoadingState />;
 
   return (
     <div className="flex flex-col border border-border">
-      <div className="flex items-center gap-2 border-b border-border px-2 py-1.5">
+      <ToolbarBand>
         <PanelSearch
           value={search}
           onChange={setSearch}
@@ -72,7 +77,7 @@ export function TargetPicker({
         >
           {t("targets.clear")}
         </Button>
-      </div>
+      </ToolbarBand>
       <div className="max-h-56 overflow-auto">
         {visible.length === 0 ? (
           <p className="px-3 py-4 text-center text-xs text-muted-foreground/60">

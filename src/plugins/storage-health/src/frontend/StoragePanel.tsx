@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { RefreshCw } from "lucide-react";
 import { useToast, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { Button, TabStrip } from "@termix-ssh/plugin-sdk/ui";
+import { Button, TabStrip, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import {
   errorCode,
   errorMessage,
@@ -80,9 +80,7 @@ export function StoragePanel({
     return <p className="px-3 py-2 text-xs text-destructive">{error}</p>;
   }
   if (!data) {
-    return (
-      <p className="p-2 text-xs text-muted-foreground">{t("common.loading")}</p>
-    );
+    return <LoadingState compact label={t("common.loading")} />;
   }
 
   const tabs: Array<{ id: View; label: string; count?: number }> = [

@@ -7,11 +7,12 @@ import {
   ListRowAction,
   PanelList,
   PanelSearch,
+  ToolbarBand,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { AnsibleStatus, ProjectFile } from "../shared/types";
 import { errorMessage, getFiles } from "./api";
 import { formatSize, formatTime } from "./format";
-import { Loading } from "./Loading";
 
 /** Playbooks first, then the other files of the project. */
 export function PlaybooksView({
@@ -60,18 +61,18 @@ export function PlaybooksView({
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         <PanelSearch
           value={search}
           onChange={setSearch}
           placeholder={t("files.search")}
           className="min-w-48 flex-1"
         />
-      </div>
+      </ToolbarBand>
       {failed ? (
         <p className="px-3 py-2 text-xs text-destructive">{failed}</p>
       ) : !files ? (
-        <Loading />
+        <LoadingState />
       ) : visible.length === 0 ? (
         <p className="px-3 py-6 text-center text-xs text-muted-foreground/60">
           {files.length === 0 ? t("files.empty") : t("files.noMatch")}

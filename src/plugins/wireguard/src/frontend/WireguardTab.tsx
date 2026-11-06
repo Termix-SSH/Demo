@@ -16,10 +16,10 @@ import {
   RefreshButton,
   TabStrip,
   NoticePanel,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { WireguardStatus } from "../shared/types";
 import { errorCode, errorMessage, getStatus, installWireguard } from "./api";
-import { Loading } from "./Loading";
 import { InterfaceCreate } from "./InterfaceCreate";
 import { InterfaceDetail } from "./InterfaceDetail";
 import { InterfacesView } from "./InterfacesView";
@@ -102,7 +102,7 @@ export function WireguardTab({ isVisible, host, label }: TabProps) {
           {error ? (
             <p className="px-3 py-2 text-xs text-destructive">{error}</p>
           ) : (
-            <Loading />
+            <LoadingState />
           )}
         </PanelShell>
       </PanelFrame>

@@ -20,6 +20,7 @@ import {
   ListRowAction,
   PanelList,
   LoadingState,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   SEVERITIES,
@@ -161,7 +162,7 @@ export function RulesView({ api }: { api: AlertsApi }) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex shrink-0 items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         <p className="min-w-0 flex-1 text-[11px] leading-snug text-muted-foreground">
           {t("rules.intro")}
         </p>
@@ -173,7 +174,7 @@ export function RulesView({ api }: { api: AlertsApi }) {
           }
           onClick={() => openEditor(null)}
         />
-      </div>
+      </ToolbarBand>
 
       <PanelList
         empty={

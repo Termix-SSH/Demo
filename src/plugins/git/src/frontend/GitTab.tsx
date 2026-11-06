@@ -13,6 +13,7 @@ import {
   PanelFrame,
   PanelShell,
   RefreshButton,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { ActionResult, GitStatus, RepoInfo } from "../shared/types";
 import {
@@ -23,7 +24,6 @@ import {
   removeRepo,
 } from "./api";
 import { AddRepoView } from "./AddRepoView";
-import { Loading } from "./Loading";
 import { RepoList } from "./RepoList";
 import { RepoView } from "./RepoView";
 import type { Runner } from "./runner";
@@ -132,7 +132,7 @@ export function GitTab({ isVisible, host, label }: TabProps) {
           {error ? (
             <p className="px-3 py-2 text-xs text-destructive">{error}</p>
           ) : (
-            <Loading />
+            <LoadingState />
           )}
         </PanelShell>
       </PanelFrame>
@@ -217,7 +217,7 @@ export function GitTab({ isVisible, host, label }: TabProps) {
           </>
         }
       >
-        <div className="flex shrink-0 flex-col">
+        <div className="flex flex-1 shrink-0 flex-col">
           {!status.installed ? (
             <EmptyState
               title={t("tab.notInstalledTitle")}

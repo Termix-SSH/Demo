@@ -1,10 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { Database } from "lucide-react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { ListBadge, ListRow, PanelList } from "@termix-ssh/plugin-sdk/ui";
+import {
+  ListBadge,
+  ListRow,
+  PanelList,
+  LoadingState,
+} from "@termix-ssh/plugin-sdk/ui";
 import type { RepoItem } from "../shared/types";
 import { errorMessage, getRepos } from "./api";
-import { Loading } from "./Loading";
 
 export function ReposView({
   hostId,
@@ -33,7 +37,7 @@ export function ReposView({
   if (failed) {
     return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
   }
-  if (!items) return <Loading />;
+  if (!items) return <LoadingState />;
 
   return (
     <div className="flex flex-col">

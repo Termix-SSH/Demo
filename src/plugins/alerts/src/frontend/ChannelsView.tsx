@@ -19,6 +19,7 @@ import {
   ListRowAction,
   PanelList,
   LoadingState,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { ChannelSummary } from "../types";
 import type { AlertsApi } from "./api";
@@ -110,7 +111,7 @@ export function ChannelsView({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex shrink-0 items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         <p className="min-w-0 flex-1 text-[11px] leading-snug text-muted-foreground">
           {t("channels.intro")}
         </p>
@@ -121,7 +122,7 @@ export function ChannelsView({
             setDialogOpen(true);
           }}
         />
-      </div>
+      </ToolbarBand>
 
       <PanelList
         empty={

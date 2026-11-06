@@ -16,7 +16,11 @@ import type {
 import { GRID_SIZE } from "../types.js";
 
 import { quickConnectTargets } from "../quick-connect-targets.js";
-import { WidgetTitle, StatusDot } from "@termix-ssh/plugin-sdk/ui";
+import {
+  WidgetTitle,
+  StatusDot,
+  LoadingState,
+} from "@termix-ssh/plugin-sdk/ui";
 
 function HostDot({ hostId }: { hostId: number }) {
   const status = useHostStatus(hostId);
@@ -46,11 +50,7 @@ function QuickConnectWidget({
           .map((target) => target.type) as QuickConnectType[]);
 
   if (!loaded) {
-    return (
-      <div className="flex items-center justify-center w-full h-full text-xs text-muted-foreground/60">
-        {t("common.loading")}
-      </div>
-    );
+    return <LoadingState compact label={t("common.loading")} />;
   }
 
   if (hosts.length === 0) {

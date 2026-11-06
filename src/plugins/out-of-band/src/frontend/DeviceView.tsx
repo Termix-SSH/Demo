@@ -17,6 +17,7 @@ import {
   TabStrip,
   TextField,
   useConfirm,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import type {
   BootTarget,
@@ -256,7 +257,7 @@ export function DeviceView({
             </div>
           </div>
           {canPower && (
-            <div className="flex flex-wrap items-center gap-2 border-b border-border p-3">
+            <ToolbarBand>
               {POWER_ACTIONS.filter((action) =>
                 driver?.powerActions.includes(action),
               ).map((action) => (
@@ -269,7 +270,7 @@ export function DeviceView({
                   {t(`power.action.${action}`)}
                 </Button>
               ))}
-            </div>
+            </ToolbarBand>
           )}
         </>
       )}

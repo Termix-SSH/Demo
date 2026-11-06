@@ -1,10 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { Network } from "lucide-react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { ListBadge, ListRow, PanelList } from "@termix-ssh/plugin-sdk/ui";
+import {
+  ListBadge,
+  ListRow,
+  PanelList,
+  LoadingState,
+} from "@termix-ssh/plugin-sdk/ui";
 import type { InterfaceView } from "../shared/types";
 import { errorMessage, listInterfaces } from "./api";
-import { Loading } from "./Loading";
 
 export function InterfacesView({
   hostId,
@@ -34,7 +38,7 @@ export function InterfacesView({
 
   if (failed)
     return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
-  if (!items) return <Loading />;
+  if (!items) return <LoadingState />;
 
   if (items.length === 0) {
     return (

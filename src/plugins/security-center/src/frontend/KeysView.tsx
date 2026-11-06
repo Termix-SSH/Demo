@@ -8,6 +8,8 @@ import {
   ListRow,
   PanelList,
   useConfirm,
+  ToolbarBand,
+  GroupHeading,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { KeyEntry, Reading } from "../shared/types";
 import { errorMessage, revokeKey, rotateHostKeys, rotateLoginKey } from "./api";
@@ -89,7 +91,7 @@ export function KeysView({
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         <Button
           size="xs"
           variant="outline"
@@ -113,7 +115,7 @@ export function KeysView({
         <span className="text-[11px] text-muted-foreground">
           {t("keys.hint")}
         </span>
-      </div>
+      </ToolbarBand>
       {reading.keys.length === 0 ? (
         <EmptyState icon={KeyRound} title={t("keys.empty")} />
       ) : (
@@ -122,9 +124,10 @@ export function KeysView({
           if (!list.length) return null;
           return (
             <section key={kind}>
-              <h3 className="border-b border-border bg-muted/30 px-3 py-1.5 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
-                {t(`keys.kind.${kind}`)}
-              </h3>
+              <GroupHeading
+                title={t(`keys.kind.${kind}`)}
+                className="border-b border-border px-3 py-1.5"
+              />
               <PanelList>
                 {list.map((key, index) => (
                   <ListRow

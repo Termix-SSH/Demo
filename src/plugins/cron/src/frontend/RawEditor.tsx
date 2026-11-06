@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { FileText } from "lucide-react";
 import { useToast, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { BackButton, FormFooter, PanelShell } from "@termix-ssh/plugin-sdk/ui";
+import {
+  BackButton,
+  FormFooter,
+  PanelShell,
+  LoadingState,
+} from "@termix-ssh/plugin-sdk/ui";
 import { errorMessage, getJobs, saveCrontab } from "./api";
-import { Loading } from "./Loading";
 
 /** The whole crontab as text. crontab on the host checks it before saving. */
 export function RawEditor({
@@ -74,7 +78,7 @@ export function RawEditor({
         error ? (
           <p className="px-3 py-2 text-xs text-destructive">{error}</p>
         ) : (
-          <Loading />
+          <LoadingState />
         )
       ) : (
         <div className="flex min-h-0 flex-1 flex-col">

@@ -25,6 +25,7 @@ import {
   PanelList,
   RefreshButton,
   useConfirm,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { Listing, ObjectHead, ObjectRow } from "../shared/types";
 import { saveBlob, errorMessage, type Api } from "./api";
@@ -292,7 +293,7 @@ export function ObjectBrowser({
         pickFiles(event.dataTransfer.files, false);
       }}
     >
-      <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         <nav className="flex min-w-0 flex-1 flex-wrap items-center gap-1 text-sm">
           <button
             type="button"
@@ -365,7 +366,7 @@ export function ObjectBrowser({
             event.target.value = "";
           }}
         />
-      </div>
+      </ToolbarBand>
 
       {transfers.length > 0 && (
         <div className="border-b border-border">
@@ -434,7 +435,7 @@ export function ObjectBrowser({
             />
           )}
           {detail.text !== undefined && (
-            <pre className="max-h-72 overflow-auto border border-border p-2 font-mono text-xs">
+            <pre className="overflow-auto border border-border bg-background p-2 font-mono text-xs">
               {detail.text}
             </pre>
           )}

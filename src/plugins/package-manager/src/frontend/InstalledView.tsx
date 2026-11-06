@@ -10,11 +10,12 @@ import {
   PanelSearch,
   Segmented,
   usePaged,
+  ToolbarBand,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { InstalledItem, PackagesStatus } from "../shared/types";
 import { errorMessage, getInstalled } from "./api";
 import { formatBytes } from "./format";
-import { Loading } from "./Loading";
 import type { Runner } from "./PackagesTab";
 
 type Filter = "all" | "held";
@@ -69,7 +70,7 @@ export function InstalledView({
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         <PanelSearch
           value={search}
           onChange={setSearch}
@@ -90,11 +91,11 @@ export function InstalledView({
             ]}
           />
         )}
-      </div>
+      </ToolbarBand>
       {failed ? (
         <p className="px-3 py-2 text-xs text-destructive">{failed}</p>
       ) : !items ? (
-        <Loading />
+        <LoadingState />
       ) : visible.length === 0 ? (
         <p className="px-3 py-6 text-center text-xs text-muted-foreground/60">
           {t("installed.empty")}

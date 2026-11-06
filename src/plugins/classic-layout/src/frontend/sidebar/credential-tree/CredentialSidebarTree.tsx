@@ -11,10 +11,11 @@ import {
   type CredentialDensity,
   type CredentialRowFields,
   type CredentialTrayTrigger,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { KeyRound, Loader2 } from "lucide-react";
+import { KeyRound } from "lucide-react";
 import { toast } from "sonner";
 import { planReorder, renumberSiblings } from "../reorder-utils";
 import { ReorderIndicator } from "../ReorderIndicator";
@@ -337,12 +338,7 @@ export function CredentialSidebarTree({
               />
             </div>
           ))}
-          <div className="flex items-center justify-center gap-2 pt-2 text-muted-foreground/40">
-            <Loader2 className="size-3.5 animate-spin" />
-            <span className="text-xs">
-              {t("credentials.loadingCredentials")}
-            </span>
-          </div>
+          <LoadingState label={t("credentials.loadingCredentials")} />
         </div>
       </div>
     );

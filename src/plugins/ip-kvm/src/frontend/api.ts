@@ -5,6 +5,7 @@ import type {
   DriverInfo,
   MediaState,
   PowerAction,
+  PeerCertificate,
   Reading,
 } from "../shared/types";
 
@@ -36,6 +37,13 @@ export function createApi(api: PluginApiClient) {
       data(api.post<{ reading: Reading }>("/devices/test", body)).then(
         (r) => r.reading,
       ),
+    certificate: (address: string, port: number) =>
+      data(
+        api.post<{ certificate: PeerCertificate }>("/devices/certificate", {
+          address,
+          port,
+        }),
+      ).then((r) => r.certificate),
     poll: (id: number) =>
       data(api.post<{ device: Device }>(`${at(id)}/poll`)).then(
         (r) => r.device,

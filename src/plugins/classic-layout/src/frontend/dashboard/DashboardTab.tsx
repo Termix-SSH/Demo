@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useMemo } from "react";
 import {
   APP_VERSION,
   useActionSlot,
@@ -256,17 +256,20 @@ export function DashboardTab({
   const prefsLoaded = useUiPreferencesContext()?.loaded ?? true;
   const registeredIds = registeredCards.map((card) => card.id).join(",");
   // How tall the view is, so an unarranged dashboard fills it.
-  const viewRef = useRef<HTMLDivElement | null>(null);
+  const [viewElement, viewRef] = useState<HTMLDivElement | null>(null);
   const [room, setRoom] = useState(0);
   useLayoutEffect(() => {
-    const element = viewRef.current;
+    const element = viewElement;
     if (!element) return;
-    const update = () => setRoom(element.clientHeight);
+    // Never more than the window, so a container that grows with the grid
+    // cannot make the grid grow again.
+    const update = () =>
+      setRoom(Math.min(element.clientHeight, window.innerHeight));
     update();
     const observer = new ResizeObserver(update);
     observer.observe(element);
     return () => observer.disconnect();
-  });
+  }, [viewElement]);
   const auto = useMemo(
     () => defaultGrid(registeredIds.split(","), room),
     [registeredIds, room],

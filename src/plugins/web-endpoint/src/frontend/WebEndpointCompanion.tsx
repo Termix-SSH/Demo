@@ -16,6 +16,7 @@ import {
   ListRowAction,
   PanelList,
   Select2,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { WebEndpoint } from "../shared/web-endpoint-config";
 import { endpointsOf, openEndpoint } from "./endpoints";
@@ -66,7 +67,7 @@ export function WebEndpointCompanion({ host }: CompanionProps) {
   }
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="flex items-center gap-1 border-b border-border p-1.5">
+      <ToolbarBand>
         {endpoints.length > 1 ? (
           <Select2
             value={endpoint.id}
@@ -93,7 +94,7 @@ export function WebEndpointCompanion({ host }: CompanionProps) {
         >
           <ExternalLink className="size-3.5" />
         </Button>
-      </div>
+      </ToolbarBand>
       <div className="relative min-h-0 flex-1">
         <WebEndpointTab
           key={endpoint.id}

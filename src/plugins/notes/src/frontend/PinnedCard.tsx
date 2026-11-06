@@ -5,7 +5,7 @@ import {
   useTranslation,
   type DashboardCardProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { ListRow, PanelList } from "@termix-ssh/plugin-sdk/ui";
+import { ListRow, PanelList, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import type { NoteSummary } from "../shared/types";
 import { listNotes } from "./api";
 
@@ -24,9 +24,7 @@ export function PinnedCard({ isVisible, shell }: DashboardCardProps) {
 
   if (!allowed) return null;
   if (!notes) {
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("card.loading")}</p>
-    );
+    return <LoadingState compact label={t("card.loading")} />;
   }
 
   return (

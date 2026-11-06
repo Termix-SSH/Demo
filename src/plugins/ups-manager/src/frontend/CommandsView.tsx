@@ -9,6 +9,7 @@ import {
   ListRow,
   PanelList,
   useConfirm,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { SourceView, UpsCommand } from "../shared/types";
 import { errorCode, errorMessage, getCommands, sendCommand } from "./api";
@@ -84,9 +85,7 @@ export function CommandsView({
     );
   }
   if (!commands) {
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("common.loading")}</p>
-    );
+    return <LoadingState label={t("common.loading")} />;
   }
   return (
     <div className="flex flex-col">

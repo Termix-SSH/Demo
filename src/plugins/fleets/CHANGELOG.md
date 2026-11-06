@@ -12,6 +12,7 @@
 - Needs Termix 26.11.1 or newer
 - Settings and the inventory use the Termix tile look
 - Form labels match the rest of Termix
+- Toolbars, loading screens, back buttons and Save bars match the rest of Termix
 
 ## 1.1.0
 

@@ -17,7 +17,7 @@ function lineClass(line: string): string {
 export function LogLines({
   lines,
   empty,
-  className = "max-h-[60vh]",
+  className = "",
 }: {
   lines: string[];
   empty?: string;

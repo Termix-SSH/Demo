@@ -1,0 +1,139 @@
+{
+  "plugin": {
+    "name": "Privileged Access",
+    "description": "Ask for approval before anyone connects to a privileged host, with access that ends on its own and a full audit trail."
+  },
+  "tab": {
+    "title": "Access"
+  },
+  "tabs": {
+    "request": "Ask for access",
+    "mine": "My requests",
+    "pending": "To decide",
+    "active": "Active access",
+    "history": "History"
+  },
+  "status": {
+    "pending": "Waiting",
+    "approved": "Ended",
+    "active": "Active",
+    "denied": "Denied",
+    "expired": "Expired",
+    "revoked": "Revoked",
+    "cancelled": "Cancelled"
+  },
+  "request": {
+    "host": "Host",
+    "hostWithAccess": "{{host}} (access until {{until}})",
+    "hours": "Hours",
+    "hoursHint": "This host allows up to {{max}} hours.",
+    "reason": "Why you need access",
+    "reasonOptional": "Why you need access (optional)",
+    "ticket": "Ticket",
+    "ticketOptional": "Ticket (optional)",
+    "send": "Ask for access",
+    "sent": "Request sent. You get an alert when someone decides.",
+    "failed": "Could not send the request",
+    "noHosts": "No privileged hosts",
+    "noHostsHint": "Hosts an admin marks as privileged show here."
+  },
+  "list": {
+    "none": "Nothing here",
+    "loadError": "Could not load requests",
+    "actionFailed": "That did not work",
+    "hours_one": "{{count}} hour",
+    "hours_other": "{{count}} hours",
+    "until": "until {{time}}",
+    "decidedBy": "by {{name}}",
+    "approve": "Approve",
+    "deny": "Deny",
+    "cancel": "Cancel",
+    "endNow": "End now",
+    "export": "Export CSV",
+    "approveConfirm_one": "Give {{user}} access to {{host}} for {{count}} hour?",
+    "approveConfirm_other": "Give {{user}} access to {{host}} for {{count}} hours?",
+    "denyConfirm": "Deny this request?",
+    "cancelConfirm": "Cancel this request?",
+    "endConfirm": "End this access now? Open sessions on the host close.",
+    "approved": "Access approved",
+    "denied": "Request denied",
+    "ended": "Done"
+  },
+  "card": {
+    "title": "Privileged access",
+    "waiting": "waiting on you",
+    "empty": "No requests waiting",
+    "emptyHint": "Your approved access shows here."
+  },
+  "permissions": {
+    "request": {
+      "title": "Ask for privileged access",
+      "description": "Ask for time limited access to privileged hosts."
+    },
+    "approve": {
+      "title": "Approve privileged access",
+      "description": "Decide other people's access requests, end access early and read the report."
+    },
+    "bypass": {
+      "title": "Break glass access",
+      "description": "Connect to privileged hosts without a request. Every use is audited and alerted."
+    }
+  },
+  "settings": {
+    "admin": {
+      "pendingHours": {
+        "label": "Request lifetime (hours)",
+        "description": "A request nobody decides in this time expires."
+      },
+      "alertBypass": {
+        "label": "Alert on break glass access",
+        "description": "Alert approvers when someone connects with break glass access."
+      }
+    },
+    "host": {
+      "enable": {
+        "label": "Privileged host",
+        "description": "SSH and remote desktop sessions to this host need approved access."
+      },
+      "approverRoles": {
+        "label": "Approver roles",
+        "description": "Role names, separated by commas, whose members may approve. Empty lets anyone with the approve permission decide."
+      },
+      "maxHours": {
+        "label": "Longest access (hours)",
+        "description": "The most hours one request can ask for."
+      },
+      "requireReason": {
+        "label": "Ask for a reason",
+        "description": "A request must say why access is needed."
+      },
+      "requireTicket": {
+        "label": "Ask for a ticket",
+        "description": "A request must name a ticket number."
+      },
+      "allowBackground": {
+        "label": "Let background work through",
+        "description": "Polling and other non interactive plugin connections skip the approval. Leave off to block every session without access."
+      }
+    }
+  },
+  "operations": {
+    "request": {
+      "title": "Ask for privileged access",
+      "hours": "Hours",
+      "reason": "Reason",
+      "ticket": "Ticket"
+    },
+    "pending": {
+      "title": "Access requests to decide"
+    },
+    "status": {
+      "title": "Privileged access"
+    },
+    "events": {
+      "requested": "Someone asked for access",
+      "approved": "Access was approved",
+      "bypassed": "Break glass access was used"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { Button, Input, ListRow } from "@termix-ssh/plugin-sdk/ui";
+import { Button, Input, ListRow, ToolbarBand } from "@termix-ssh/plugin-sdk/ui";
 import { ArrowLeft, Zap } from "lucide-react";
 import { listRuns, type Catalog, type CatalogAction, type Run } from "../api";
 import {
@@ -147,7 +147,7 @@ export function ActionsListTile({
   if (picked) {
     return (
       <div className="flex flex-col">
-        <div className="flex items-center gap-2 border-b border-border px-2 py-1">
+        <ToolbarBand>
           <Button
             size="icon-sm"
             variant="ghost"
@@ -158,7 +158,7 @@ export function ActionsListTile({
             <ArrowLeft className="size-3.5" />
           </Button>
           <span className="truncate text-xs font-medium">{picked.title}</span>
-        </div>
+        </ToolbarBand>
         <ActionTile
           key={picked.id}
           action={picked}

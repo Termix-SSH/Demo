@@ -5,6 +5,7 @@ import {
   LoadingState,
   Textarea,
   useConfirm,
+  PanelShell,
 } from "@termix-ssh/plugin-sdk/ui";
 import { errorMessage, getXml, putXml } from "./api";
 import { useAction } from "./useAction";
@@ -41,35 +42,41 @@ export function VmXml({
   if (saved === null) return <LoadingState label={t("common.loading")} />;
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      <p className="border-b border-border px-3 py-2 text-xs text-muted-foreground">
-        {t("xml.hint")}
-      </p>
-      <Textarea
-        value={text}
-        onChange={(event) => setText(event.target.value)}
-        spellCheck={false}
-        className="min-h-0 flex-1 resize-none rounded-none border-0 font-mono text-xs"
-      />
-      <FormFooter
-        saving={action.busy}
-        dirty={text !== saved}
-        saveLabel={t("common.save")}
-        onSave={async () => {
-          const ok = await confirm({
-            title: t("xml.saveTitle"),
-            description: t("xml.saveText"),
-            confirmLabel: t("common.save"),
-            destructive: false,
-          });
-          if (!ok) return;
-          const done = await action.run(
-            () => putXml(hostId, uuid, text),
-            t("xml.saved"),
-          );
-          if (done) setSaved(text);
-        }}
-      />
-    </div>
+    <PanelShell
+      chrome={false}
+      footer={
+        <FormFooter
+          saving={action.busy}
+          dirty={text !== saved}
+          saveLabel={t("common.save")}
+          onSave={async () => {
+            const ok = await confirm({
+              title: t("xml.saveTitle"),
+              description: t("xml.saveText"),
+              confirmLabel: t("common.save"),
+              destructive: false,
+            });
+            if (!ok) return;
+            const done = await action.run(
+              () => putXml(hostId, uuid, text),
+              t("xml.saved"),
+            );
+            if (done) setSaved(text);
+          }}
+        />
+      }
+    >
+      <div className="flex min-h-0 flex-1 flex-col">
+        <p className="border-b border-border px-3 py-2 text-xs text-muted-foreground">
+          {t("xml.hint")}
+        </p>
+        <Textarea
+          value={text}
+          onChange={(event) => setText(event.target.value)}
+          spellCheck={false}
+          className="min-h-0 flex-1 resize-none rounded-none border-0 font-mono text-xs"
+        />
+      </div>
+    </PanelShell>
   );
 }

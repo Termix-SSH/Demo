@@ -10,6 +10,8 @@ import {
   PanelList,
   PanelSearch,
   useConfirm,
+  ToolbarBand,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { CertStatus, CertView } from "../shared/types";
 import {
@@ -21,7 +23,6 @@ import {
 } from "./api";
 import type { Runner } from "./CertificatesTab";
 import { ExpiryBadge, expiryTone, formatDate } from "./expiry";
-import { Loading } from "./Loading";
 
 export function CertsView({
   hostId,
@@ -119,7 +120,7 @@ export function CertsView({
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         <PanelSearch
           value={search}
           onChange={setSearch}
@@ -149,7 +150,7 @@ export function CertsView({
             </Button>
           </>
         )}
-      </div>
+      </ToolbarBand>
       {runner.busy && (
         <p className="border-b border-border bg-accent-brand/5 px-3 py-2 text-xs">
           {t("actions.working")}
@@ -158,7 +159,7 @@ export function CertsView({
       {failed ? (
         <p className="px-3 py-2 text-xs text-destructive">{failed}</p>
       ) : !certs ? (
-        <Loading />
+        <LoadingState />
       ) : visible.length === 0 ? (
         <p className="px-3 py-6 text-center text-xs text-muted-foreground/60">
           {certs.length === 0 ? t("certs.empty") : t("certs.noMatch")}

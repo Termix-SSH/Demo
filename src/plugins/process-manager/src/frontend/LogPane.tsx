@@ -4,7 +4,12 @@ import {
   useTranslation,
   type PluginHostRecord,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { Button, PanelSearch } from "@termix-ssh/plugin-sdk/ui";
+import {
+  Button,
+  PanelSearch,
+  ToolbarBand,
+  ToolbarSelect,
+} from "@termix-ssh/plugin-sdk/ui";
 import type { LogTarget } from "../shared/types";
 import { errorMessage, getLogs } from "./api";
 import { LogLines } from "./LogLines";
@@ -88,7 +93,7 @@ export function LogPane({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex flex-wrap items-center gap-1 border-b border-border p-1.5">
+      <ToolbarBand>
         <PanelSearch
           value={filter}
           onChange={setFilter}
@@ -96,18 +101,15 @@ export function LogPane({
           className="min-w-32 flex-1"
         />
         {!compact && (
-          <select
-            value={lines}
-            onChange={(e) => setLines(Number(e.target.value))}
-            aria-label={t("logs.lines")}
-            className="h-8 border border-border bg-background px-1 text-xs"
-          >
-            {LINE_CHOICES.map((n) => (
-              <option key={n} value={n}>
-                {t("logs.linesCount", { count: n })}
-              </option>
-            ))}
-          </select>
+          <ToolbarSelect
+            value={String(lines)}
+            onChange={(next) => setLines(Number(next))}
+            label={t("logs.lines")}
+            options={LINE_CHOICES.map((n) => ({
+              value: String(n),
+              label: t("logs.linesCount", { count: n }),
+            }))}
+          />
         )}
         <Button
           variant={follow ? "default" : "ghost"}
@@ -161,7 +163,7 @@ export function LogPane({
         >
           <Download className="size-4" />
         </Button>
-      </div>
+      </ToolbarBand>
       {error && <p className="px-3 py-2 text-xs text-destructive">{error}</p>}
       <LogLines
         lines={shown}

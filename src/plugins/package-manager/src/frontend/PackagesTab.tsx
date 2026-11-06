@@ -15,6 +15,7 @@ import {
   RefreshButton,
   TabStrip,
   useConfirm,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { PackageAction, PackagesStatus } from "../shared/types";
 import {
@@ -27,7 +28,6 @@ import {
 import { formatAgo } from "./format";
 import { HistoryView } from "./HistoryView";
 import { InstalledView } from "./InstalledView";
-import { Loading } from "./Loading";
 import { ReposView } from "./ReposView";
 import { SearchView } from "./SearchView";
 import { UpdatesView } from "./UpdatesView";
@@ -135,7 +135,7 @@ export function PackagesTab({ isVisible, host, label }: TabProps) {
           {error ? (
             <p className="px-3 py-2 text-xs text-destructive">{error}</p>
           ) : (
-            <Loading />
+            <LoadingState />
           )}
         </PanelShell>
       </PanelFrame>
@@ -191,7 +191,7 @@ export function PackagesTab({ isVisible, host, label }: TabProps) {
           ) : undefined
         }
       >
-        <div className="flex shrink-0 flex-col">
+        <div className="flex flex-1 shrink-0 flex-col">
           {status.rebootRequired && (
             <Alert className="border-x-0 border-t-0 text-xs">
               {t("tab.reboot")}

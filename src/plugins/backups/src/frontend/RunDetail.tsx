@@ -229,7 +229,7 @@ export function RunDetail({
             )}
           </SectionCard>
           <SectionCard title={t("run.log")} icon={<Activity />}>
-            <pre className="max-h-96 overflow-auto whitespace-pre-wrap break-words py-2 font-mono text-[11px] text-muted-foreground thin-scrollbar">
+            <pre className="overflow-auto whitespace-pre-wrap break-words py-2 font-mono text-[11px] text-muted-foreground thin-scrollbar">
               {run.log || t("run.noLog")}
             </pre>
           </SectionCard>

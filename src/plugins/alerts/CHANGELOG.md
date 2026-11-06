@@ -11,6 +11,7 @@
 
 - Needs Termix 26.11.1 or newer
 - The Alerts tab has the Termix page header and fills the width of the tab
+- Toolbars, loading screens, back buttons and Save bars match the rest of Termix
 
 ### Fixed
 

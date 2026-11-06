@@ -22,7 +22,6 @@ import {
   tabIcon,
   useBranding,
   useShellController,
-  type Tab,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { tabTitle, useMoreItems } from "./nav";

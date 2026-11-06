@@ -43,7 +43,6 @@ import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
-  ArrowLeft,
   Download,
   KeyRound,
   Lock,
@@ -395,13 +394,11 @@ export function AdminUserManagePanel({
     <div className="relative flex flex-col flex-1 min-h-0 overflow-hidden">
       {/* Back bar */}
       <div className="flex flex-col shrink-0 border-b border-border">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors border-b border-border/50"
-        >
-          <ArrowLeft className="size-3.5 shrink-0" />
-          <span>{t("admin.backToUsers")}</span>
-          <span className="ml-auto flex items-center gap-1.5 min-w-0">
+        <div className="flex h-12.5 items-center border-b border-border">
+          <div className="flex h-full shrink-0 border-r border-border">
+            <BackButton onClick={onBack} label={t("admin.backToUsers")} />
+          </div>
+          <span className="flex min-w-0 flex-1 items-center gap-1.5 px-3 text-xs">
             <span
               className="font-semibold text-foreground truncate max-w-[160px]"
               title={user.username}
@@ -420,7 +417,7 @@ export function AdminUserManagePanel({
               </span>
             )}
           </span>
-        </button>
+        </div>
         <TabStrip
           tabs={manageTabs.map((tab) => ({ ...tab, icon: null }))}
           activeTab={activeTab}

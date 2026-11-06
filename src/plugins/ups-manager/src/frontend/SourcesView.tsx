@@ -7,6 +7,7 @@ import {
   ListRow,
   ListRowAction,
   PanelList,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { SourceView } from "../shared/types";
 import { stateKey } from "./format";
@@ -29,9 +30,9 @@ export function SourcesView({
   return (
     <div className="flex flex-col">
       {canEdit && (
-        <div className="flex items-center border-b border-border px-3 py-2">
+        <ToolbarBand>
           <AddButton label={t("sources.add")} onClick={onAdd} />
-        </div>
+        </ToolbarBand>
       )}
       {!sources.length ? (
         <EmptyState

@@ -15,10 +15,11 @@ import {
   SelectTrigger,
   SelectValue,
   useConfirm,
+  ToolbarBand,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { CronJob, CronStatus, RunResult } from "../shared/types";
 import { deleteJob, errorMessage, getJobs, runJob, setJobEnabled } from "./api";
-import { Loading } from "./Loading";
 import { nextRunText, scheduleText } from "./schedule-text";
 
 const OWN = "__own__";
@@ -120,7 +121,7 @@ export function JobsView({
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         {canEdit && status.root && users.length > 0 && (
           <Select
             value={user || OWN}
@@ -157,11 +158,11 @@ export function JobsView({
             {t("jobs.editText")}
           </Button>
         )}
-      </div>
+      </ToolbarBand>
       {failed ? (
         <p className="px-3 py-2 text-xs text-destructive">{failed}</p>
       ) : !jobs ? (
-        <Loading />
+        <LoadingState />
       ) : visible.length === 0 ? (
         <p className="px-3 py-6 text-center text-xs text-muted-foreground/60">
           {jobs.length === 0 ? t("jobs.empty") : t("jobs.noMatch")}

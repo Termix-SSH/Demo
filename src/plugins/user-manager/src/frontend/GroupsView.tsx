@@ -9,6 +9,7 @@ import {
   PanelList,
   PanelSearch,
   Segmented,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { UsersList } from "../shared/types";
 import { createGroup, errorMessage } from "./api";
@@ -69,7 +70,7 @@ export function GroupsView({
   return (
     <div className="flex flex-col">
       {creating && (
-        <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+        <ToolbarBand>
           <Input
             value={name}
             onChange={(e) => setName(e.target.value.toLowerCase())}
@@ -92,9 +93,9 @@ export function GroupsView({
           <Button size="sm" variant="ghost" onClick={() => onCreating(false)}>
             {t("common.cancel")}
           </Button>
-        </div>
+        </ToolbarBand>
       )}
-      <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         <PanelSearch
           value={search}
           onChange={setSearch}
@@ -114,7 +115,7 @@ export function GroupsView({
             { value: "all", label: t("users.all"), count: list.groups.length },
           ]}
         />
-      </div>
+      </ToolbarBand>
       {visible.length === 0 ? (
         <p className="px-3 py-6 text-center text-xs text-muted-foreground/60">
           {t("groups.empty")}

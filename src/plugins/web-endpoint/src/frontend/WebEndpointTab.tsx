@@ -15,7 +15,7 @@ import {
   openWebEndpointTunnel,
   requireNumericHostId,
 } from "./web-endpoint-api";
-import { copyToClipboard } from "@termix-ssh/plugin-sdk/ui";
+import { copyToClipboard, ToolbarBand } from "@termix-ssh/plugin-sdk/ui";
 import { isElectron } from "@termix-ssh/plugin-sdk/ui";
 import {
   Button,
@@ -180,7 +180,7 @@ export function WebEndpointTab({
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center gap-2 border-b border-border px-2 py-1 text-xs">
+      <ToolbarBand className="text-xs">
         <Button
           variant="ghost"
           size="icon-sm"
@@ -217,7 +217,7 @@ export function WebEndpointTab({
             {t("webEndpoint.openIsolatedWindow")}
           </Button>
         )}
-      </div>
+      </ToolbarBand>
       {!native && (
         <p className="px-2 py-1 text-xs text-muted-foreground">
           {t("webEndpoint.isolationNotice")}

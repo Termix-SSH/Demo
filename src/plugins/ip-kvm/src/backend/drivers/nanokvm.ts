@@ -165,6 +165,7 @@ async function screen(
   const socket = io.connect(socketUrl(target, "/api/ws", "http"), {
     headers,
     ca: target.ca,
+    pin: target.options.pin,
   });
   const keyboard = createKeyboard();
   let open = false;

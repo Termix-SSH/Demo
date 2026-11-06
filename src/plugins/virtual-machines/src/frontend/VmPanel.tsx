@@ -13,6 +13,7 @@ import {
   ListBadge,
   ListRow,
   PanelList,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { VmRow } from "../shared/types";
 import { errorMessage, getInventory } from "./api";
@@ -68,9 +69,7 @@ export function VmPanel({
 
   if (failed) return <p className="p-3 text-xs text-destructive">{failed}</p>;
   if (!vms) {
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("common.loading")}</p>
-    );
+    return <LoadingState compact label={t("common.loading")} />;
   }
   return (
     <div className="flex h-full min-h-0 flex-col">

@@ -8,6 +8,7 @@
 - Layouts from the old canvas move over on their own the first time you open the homepage
 - Folders are now headings for a group of widgets
 - Needs Termix 26.11.1 or newer
+- Toolbars, loading screens, back buttons and Save bars match the rest of Termix
 
 ## 1.1.0
 

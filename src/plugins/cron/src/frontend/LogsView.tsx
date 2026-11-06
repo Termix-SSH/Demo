@@ -7,10 +7,11 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  ToolbarBand,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { LogsView as Logs } from "../shared/types";
 import { errorMessage, getLogs } from "./api";
-import { Loading } from "./Loading";
 
 const SIZES = [100, 200, 500, 1000];
 
@@ -39,7 +40,7 @@ export function LogsView({ hostId }: { hostId: number }) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex shrink-0 items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         <span className="flex-1 truncate text-xs text-muted-foreground">
           {logs
             ? logs.source === "none"
@@ -71,11 +72,11 @@ export function LogsView({ hostId }: { hostId: number }) {
           loading={loading}
           label={t("tab.refresh")}
         />
-      </div>
+      </ToolbarBand>
       {failed ? (
         <p className="px-3 py-2 text-xs text-destructive">{failed}</p>
       ) : !logs ? (
-        <Loading />
+        <LoadingState />
       ) : (
         <pre className="min-h-0 flex-1 overflow-auto whitespace-pre-wrap break-all px-3 py-2 font-mono text-xs">
           {logs.text || t("logs.empty")}

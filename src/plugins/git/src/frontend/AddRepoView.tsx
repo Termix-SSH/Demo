@@ -10,10 +10,10 @@ import {
   RefreshButton,
   Segmented,
   TextField,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { GitStatus } from "../shared/types";
 import { addRepos, cloneRepo, discover, errorMessage } from "./api";
-import { Loading } from "./Loading";
 import type { Runner } from "./runner";
 
 type Mode = "scan" | "path" | "clone";
@@ -116,7 +116,7 @@ export function AddRepoView({
               {t("add.scanHint", { roots: status.roots.join(", ") })}
             </p>
             {found === null ? (
-              <Loading />
+              <LoadingState />
             ) : (
               <>
                 <PanelList

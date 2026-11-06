@@ -9,6 +9,7 @@ import {
   EmptyState,
   LoadingState,
   StatusDot,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { HealthReport, PropagationRow } from "../shared/types";
 import { errorMessage, type DnsApi } from "./api";
@@ -74,7 +75,7 @@ export function HealthPanel({
 
   return (
     <div>
-      <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         <Button
           size="sm"
           variant="outline"
@@ -100,7 +101,7 @@ export function HealthPanel({
             })}
           </span>
         )}
-      </div>
+      </ToolbarBand>
       {!loaded && <LoadingState />}
       {loaded && !report && (
         <EmptyState icon={Activity} title={t("health.empty")} />

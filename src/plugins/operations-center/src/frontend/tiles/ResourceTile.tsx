@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { Button } from "@termix-ssh/plugin-sdk/ui";
+import { Button, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import {
   getResources,
   type CatalogAction,
@@ -60,9 +60,7 @@ export function ResourceTile({
     .slice(0, 2);
 
   if (!data || state === "loading")
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("state.loading")}</p>
-    );
+    return <LoadingState compact label={t("state.loading")} />;
   if (state && state !== "ok")
     return (
       <p className="p-3 text-xs text-muted-foreground">

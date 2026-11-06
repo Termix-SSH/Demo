@@ -7,11 +7,11 @@ import {
   PanelShell,
   StatusBadge,
   useConfirm,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { RunDetail as Detail } from "../shared/types";
 import { cancelRun, deleteRun, errorMessage, getRun } from "./api";
 import { formatDuration, formatTime, stateTone } from "./format";
-import { Loading } from "./Loading";
 
 const POLL_MS = 2000;
 
@@ -122,7 +122,7 @@ export function RunDetail({
         error ? (
           <p className="px-3 py-2 text-xs text-destructive">{error}</p>
         ) : (
-          <Loading />
+          <LoadingState />
         )
       ) : (
         <div className="flex min-h-0 flex-1 flex-col">

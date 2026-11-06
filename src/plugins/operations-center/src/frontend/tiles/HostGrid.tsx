@@ -26,6 +26,8 @@ import {
   type TilePickerEntry,
   type TileSlot,
   useHostActions,
+  LoadingState,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   Activity,
@@ -621,16 +623,14 @@ export function HostGrid({
   };
 
   if (!ready) {
-    return (
-      <p className="p-4 text-xs text-muted-foreground">{t("state.loading")}</p>
-    );
+    return <LoadingState label={t("state.loading")} />;
   }
 
   return (
     <div className="flex h-full min-h-0">
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
         {editMode && (
-          <div className="flex shrink-0 flex-wrap items-center gap-3 border-b border-border px-3 py-1.5 text-xs">
+          <ToolbarBand className="gap-3 text-xs">
             <label className="flex items-center gap-2">
               <Switch checked={!!own} onCheckedChange={setOnlyThisHost} />
               {t("tiles.onlyThisHost")}
@@ -660,7 +660,7 @@ export function HostGrid({
             >
               {t("tiles.done")}
             </Button>
-          </div>
+          </ToolbarBand>
         )}
         <div className="min-h-0 flex-1 overflow-y-auto thin-scrollbar">
           <TileGrid

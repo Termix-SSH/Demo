@@ -17,6 +17,7 @@ import {
   PanelFrame,
   RefreshButton,
   TabStrip,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { FirewallStatus, Rule, RuleSpec } from "../shared/types";
 import {
@@ -102,9 +103,7 @@ export function FirewallTab({ isVisible, host, label }: TabProps) {
           {error ? (
             <p className="px-3 py-2 text-xs text-destructive">{error}</p>
           ) : (
-            <p className="p-2 text-xs text-muted-foreground">
-              {t("common.loading")}
-            </p>
+            <LoadingState label={t("common.loading")} />
           )}
         </PanelShell>
       </PanelFrame>
@@ -436,10 +435,7 @@ function RawView({
   }, [hostId, isVisible, t]);
   if (failed)
     return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
-  if (text === null)
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("common.loading")}</p>
-    );
+  if (text === null) return <LoadingState label={t("common.loading")} />;
   return (
     <pre className="min-h-0 flex-1 overflow-auto px-3 py-2 font-mono text-xs whitespace-pre thin-scrollbar">
       {text || t("raw.empty")}

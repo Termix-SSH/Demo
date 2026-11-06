@@ -13,8 +13,8 @@ import {
   LoadingState,
   PanelFrame,
   PanelShell,
-  SelectField,
   StatusBadge,
+  ToolbarSelect,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   SOURCES,
@@ -182,7 +182,7 @@ export function LogsTab({ isVisible }: { isVisible: boolean }) {
         }
         toolbar={
           <form
-            className="flex flex-col gap-2 px-3 py-2"
+            className="flex min-w-0 flex-1 flex-col gap-2"
             onSubmit={(e) => {
               e.preventDefault();
               void run();
@@ -201,7 +201,7 @@ export function LogsTab({ isVisible }: { isVisible: boolean }) {
                 <Search /> {t("search.run")}
               </Button>
             </div>
-            <div className="flex flex-wrap items-end gap-x-4 gap-y-2">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
               <label className="flex items-center gap-1.5 text-xs">
                 <Checkbox
                   checked={regex}
@@ -228,25 +228,23 @@ export function LogsTab({ isVisible }: { isVisible: boolean }) {
                   {t(`source.${source}`)}
                 </label>
               ))}
-              <SelectField
+              <ToolbarSelect
                 label={t("search.range")}
                 value={range}
-                onChange={(v) => setRange(v as RangeId)}
+                onChange={setRange}
                 options={RANGES.map((r) => ({
                   value: r.value,
                   label: t(`range.${r.value}`),
                 }))}
-                className="w-36"
               />
-              <SelectField
+              <ToolbarSelect
                 label={t("search.level")}
                 value={level}
-                onChange={(v) => setLevel(v as LevelFilter)}
+                onChange={setLevel}
                 options={(["all", "warn", "error"] as const).map((l) => ({
                   value: l,
                   label: t(`level.${l}`),
                 }))}
-                className="w-36"
               />
               <Input
                 value={origin}

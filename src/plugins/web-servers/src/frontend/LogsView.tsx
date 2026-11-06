@@ -16,11 +16,12 @@ import {
   SelectField,
   StatTile,
   TileWall,
+  ToolbarBand,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { LogFile, LogResult, LogSource, WebStatus } from "../shared/types";
 import { errorMessage, getLogFiles, readLog } from "./api";
 import { SERVER_LABEL, formatSize } from "./format";
-import { Loading } from "./Loading";
 import { useFollow } from "./useFollow";
 
 const LINE_CHOICES = ["100", "500", "2000"] as const;
@@ -98,7 +99,7 @@ export function LogsView({
     return failed ? (
       <p className="px-3 py-2 text-xs text-destructive">{failed}</p>
     ) : (
-      <Loading />
+      <LoadingState />
     );
   }
 
@@ -120,8 +121,8 @@ export function LogsView({
   const stats = following ? null : result?.stats;
 
   return (
-    <div className="flex flex-col">
-      <div className="flex flex-wrap items-end gap-2 border-b border-border px-3 py-2">
+    <div className="flex min-h-0 flex-1 flex-col">
+      <ToolbarBand className="items-end">
         <SelectField<string>
           label={t("logs.source")}
           value={choice}
@@ -161,7 +162,7 @@ export function LogsView({
           )}
           {following ? t("logs.stop") : t("logs.follow")}
         </Button>
-      </div>
+      </ToolbarBand>
       {following && follow.state !== "live" && (
         <p
           className={`px-3 py-2 text-xs ${follow.state === "error" ? "text-destructive" : "text-muted-foreground"}`}
@@ -232,7 +233,7 @@ function TopList({
 export function LogLines({
   lines,
   empty,
-  className = "max-h-[60vh]",
+  className = "min-h-0 flex-1",
 }: {
   lines: string[];
   empty: string;

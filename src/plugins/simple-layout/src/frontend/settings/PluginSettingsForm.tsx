@@ -17,6 +17,7 @@ import {
   type PluginSettingsErrors,
   type PluginSettingsField,
   type PluginSummary,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 
@@ -107,12 +108,7 @@ export function PluginSettingsForm({
   }, [fields]);
 
   if (loading) {
-    return (
-      <div className="flex items-center gap-2 py-3 text-xs text-muted-foreground">
-        <Loader2 className="size-3.5 animate-spin" />
-        {t("settings.loading")}
-      </div>
-    );
+    return <LoadingState compact label={t("settings.loading")} />;
   }
 
   const rows = (group: PluginSettingsField[]) =>

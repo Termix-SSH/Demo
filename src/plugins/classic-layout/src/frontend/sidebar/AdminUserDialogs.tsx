@@ -9,6 +9,7 @@ import {
   Button,
   Input,
   roleLabel,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
@@ -231,9 +232,7 @@ export function AdminEditUserDialog({
           <div className="flex flex-col gap-2 py-3">
             <span className="text-sm font-medium">{t("admin.userRoles")}</span>
             {editUserRolesLoading ? (
-              <span className="text-xs text-muted-foreground">
-                {t("common.loading")}
-              </span>
+              <LoadingState label={t("common.loading")} />
             ) : (
               <>
                 {editUserRoles.length > 0 && (

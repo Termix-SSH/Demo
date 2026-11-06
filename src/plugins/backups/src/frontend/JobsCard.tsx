@@ -15,6 +15,7 @@ import {
   ListRow,
   PanelList,
   StatusBadge,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { JobView } from "../shared/types";
 import { errorMessage, listJobs, runJob } from "./api";
@@ -62,9 +63,7 @@ export function JobsCard({
 
   if (failed) return <p className="p-3 text-xs text-destructive">{failed}</p>;
   if (!jobs) {
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("common.loading")}</p>
-    );
+    return <LoadingState compact label={t("common.loading")} />;
   }
 
   const hostOf = (job: JobView) =>

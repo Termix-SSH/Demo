@@ -6,6 +6,7 @@ import {
   ListBadge,
   ListRow,
   PanelList,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { StorageEvent } from "../shared/types";
 import { errorMessage, getEvents } from "./api";
@@ -74,9 +75,7 @@ export function EventsView({
 
   if (error) return <p className="p-3 text-xs text-destructive">{error}</p>;
   if (!events) {
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("common.loading")}</p>
-    );
+    return <LoadingState label={t("common.loading")} />;
   }
   if (!events.length) {
     return <EmptyState icon={History} title={t("events.empty")} />;

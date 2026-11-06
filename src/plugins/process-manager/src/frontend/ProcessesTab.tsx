@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
-import { Activity, RefreshCw } from "lucide-react";
+import { Activity } from "lucide-react";
 import { useTranslation, type TabProps } from "@termix-ssh/plugin-sdk/frontend";
 import {
   Alert,
   AlertDescription,
-  Button,
   EmptyState,
   PanelFrame,
   PanelShell,
   TabStrip,
+  LoadingState,
+  RefreshButton,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { LogTarget, StatusView } from "../shared/types";
 import { AppsView } from "./AppsView";
@@ -65,9 +66,7 @@ export function ProcessesTab({ isVisible, host, label }: TabProps) {
           {error ? (
             <p className="px-3 py-2 text-xs text-destructive">{error}</p>
           ) : (
-            <p className="p-2 text-xs text-muted-foreground">
-              {t("tab.loading")}
-            </p>
+            <LoadingState label={t("tab.loading")} />
           )}
         </PanelShell>
       </PanelFrame>
@@ -101,16 +100,11 @@ export function ProcessesTab({ isVisible, host, label }: TabProps) {
         title={title}
         status={statusLine}
         actions={
-          <Button
-            variant="ghost"
-            size="icon"
+          <RefreshButton
             onClick={() => void load()}
-            disabled={loading}
-            title={t("tab.refresh")}
-            className="text-accent-brand"
-          >
-            <RefreshCw className={`size-4 ${loading ? "animate-spin" : ""}`} />
-          </Button>
+            loading={loading}
+            label={t("tab.refresh")}
+          />
         }
         tabs={
           <TabStrip

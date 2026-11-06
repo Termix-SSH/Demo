@@ -11,6 +11,7 @@ import {
   SelectField,
   SwitchRow,
   TextField,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type {
   DatabaseLoginOption,
@@ -124,7 +125,7 @@ function DockerFields({
         </div>
       )}
       {!inventory && !error && (
-        <p className="text-xs text-muted-foreground">{t("common.loading")}</p>
+        <LoadingState compact label={t("common.loading")} />
       )}
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         <div className="min-w-0">

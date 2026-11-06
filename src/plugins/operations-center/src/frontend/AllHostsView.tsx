@@ -13,6 +13,7 @@ import {
   EmptyState,
   Input,
   useConfirm,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import { RefreshCw, Table2 } from "lucide-react";
 import {
@@ -223,7 +224,7 @@ export function AllHostsView({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         <Choice
           label={t("allHosts.kind")}
           value={resourceId}
@@ -277,10 +278,10 @@ export function AllHostsView({
               data?.hosts.filter((host) => host.state === "ok").length ?? 0,
           })}
         </span>
-      </div>
+      </ToolbarBand>
 
       {selected.size > 0 && bulk.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2 border-b border-border bg-muted/20 px-3 py-2 text-xs">
+        <ToolbarBand className="bg-muted/20 text-xs">
           <span>{t("allHosts.selected", { count: selected.size })}</span>
           {bulk.map((action) => (
             <Button
@@ -295,7 +296,7 @@ export function AllHostsView({
               {action.title}
             </Button>
           ))}
-        </div>
+        </ToolbarBand>
       )}
 
       {problems.length > 0 && (

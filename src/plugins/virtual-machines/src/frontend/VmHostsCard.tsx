@@ -4,7 +4,12 @@ import {
   useTranslation,
   type DashboardCardProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { ListBadge, ListRow, PanelList } from "@termix-ssh/plugin-sdk/ui";
+import {
+  ListBadge,
+  ListRow,
+  PanelList,
+  LoadingState,
+} from "@termix-ssh/plugin-sdk/ui";
 import { useSummary } from "./useSummary";
 
 const TAB_ID = "virtual-machines";
@@ -19,9 +24,7 @@ export function VmHostsCard({ isVisible }: DashboardCardProps) {
   if (!allowed) return null;
   if (failed) return <p className="p-3 text-xs text-destructive">{failed}</p>;
   if (!rows) {
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("common.loading")}</p>
-    );
+    return <LoadingState compact label={t("common.loading")} />;
   }
   const rank = (r: (typeof rows)[number]) =>
     r.error || r.crashed ? 0 : r.running ? 1 : 2;

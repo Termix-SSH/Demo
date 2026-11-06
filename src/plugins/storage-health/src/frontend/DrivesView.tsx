@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, HardDrive, Play, Square } from "lucide-react";
+import { HardDrive, Play, Square } from "lucide-react";
 import { useToast, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
   Alert,
@@ -14,6 +14,8 @@ import {
   Segmented,
   StatTile,
   TileWall,
+  ToolbarBand,
+  InlineView,
 } from "@termix-ssh/plugin-sdk/ui";
 import { Thermometer } from "lucide-react";
 import type {
@@ -88,7 +90,7 @@ function Charts({
 
   return (
     <div className="flex flex-col border-t border-border">
-      <div className="flex items-center border-b border-border px-3 py-2">
+      <ToolbarBand>
         <Segmented<HistoryRange>
           value={range}
           onChange={setRange}
@@ -98,7 +100,7 @@ function Charts({
             { value: "30d", label: t("history.30d") },
           ]}
         />
-      </div>
+      </ToolbarBand>
       {points && points.length < 2 && (
         <p className="px-3 py-3 text-xs text-muted-foreground">
           {t("history.empty")}
@@ -168,17 +170,15 @@ function Detail({
 
   const smart = device.passed !== null || device.attributes.length > 0;
   return (
-    <div className="flex flex-col">
-      <div className="flex items-center gap-2 border-b border-border px-3 py-2">
-        <Button size="xs" variant="ghost" onClick={onBack}>
-          <ArrowLeft className="size-3" />
-          {t("common.back")}
-        </Button>
-        <span className="truncate text-sm font-medium">
-          {device.id}
-          {device.model ? ` | ${device.model}` : ""}
-        </span>
-        <span className="ml-auto flex gap-1">
+    <InlineView
+      open
+      bare
+      onOpenChange={(open) => !open && onBack()}
+      icon={<HardDrive className="size-4" />}
+      title={device.id}
+      status={device.model || undefined}
+      actions={
+        <>
           {device.selfTestRunning ? (
             <Button
               size="xs"
@@ -211,8 +211,9 @@ function Detail({
               </Button>
             </>
           )}
-        </span>
-      </div>
+        </>
+      }
+    >
       {device.note && (
         <p className="border-b border-border px-3 py-2 text-xs text-muted-foreground">
           {device.note}
@@ -286,7 +287,7 @@ function Detail({
         </div>
       )}
       <Charts hostId={hostId} device={device} isVisible={isVisible} />
-    </div>
+    </InlineView>
   );
 }
 

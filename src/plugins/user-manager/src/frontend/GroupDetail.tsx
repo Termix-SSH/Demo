@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
   useConfirm,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { GroupView, UserView, UsersStatus } from "../shared/types";
 import { deleteGroup, errorMessage, setMember } from "./api";
@@ -122,7 +123,7 @@ export function GroupDetail({
     >
       <div className="flex flex-col">
         {canEdit && (
-          <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+          <ToolbarBand>
             <Select value={pick} onValueChange={setPick}>
               <SelectTrigger
                 size="sm"
@@ -146,7 +147,7 @@ export function GroupDetail({
             >
               {t("groups.addMember")}
             </Button>
-          </div>
+          </ToolbarBand>
         )}
         {group.primaryOf.length === 0 && group.members.length === 0 ? (
           <p className="px-3 py-6 text-center text-xs text-muted-foreground/60">

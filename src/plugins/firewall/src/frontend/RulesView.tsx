@@ -9,6 +9,7 @@ import {
   PanelSearch,
   Segmented,
   useConfirm,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { FirewallStatus, Rule } from "../shared/types";
 import { deleteRule } from "./api";
@@ -74,7 +75,7 @@ export function RulesView({
   return (
     <div className="flex flex-col">
       {!compact && (
-        <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2">
+        <ToolbarBand>
           <PanelSearch
             value={search}
             onChange={setSearch}
@@ -102,7 +103,7 @@ export function RulesView({
               ]}
             />
           )}
-        </div>
+        </ToolbarBand>
       )}
       <PanelList
         empty={

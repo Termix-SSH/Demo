@@ -20,6 +20,7 @@ import {
   TileWall,
   ViewToggle,
   type DataColumn,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { MonitorView } from "../shared/types";
 import type { Permissions } from "./api";
@@ -199,7 +200,7 @@ export function MonitorsView({
           tone={uptimeTone(month)}
         />
       </TileWall>
-      <div className="flex flex-wrap items-center gap-2 px-3 py-2">
+      <ToolbarBand>
         <Segmented<Filter>
           value={filter}
           onChange={setFilter}
@@ -233,7 +234,7 @@ export function MonitorsView({
             <AddButton label={t("list.add")} onClick={() => setAdding(true)} />
           </>
         ) : null}
-      </div>
+      </ToolbarBand>
       <DataView
         items={shown}
         view={panel.view}

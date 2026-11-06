@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { Monitor } from "lucide-react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { ListRow, PanelList } from "@termix-ssh/plugin-sdk/ui";
+import { ListRow, PanelList, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import type { SessionsView as Sessions } from "../shared/types";
 import { errorMessage, getSessions } from "./api";
-import { Loading } from "./Loading";
 
 export function SessionsView({
   hostId,
@@ -33,7 +32,7 @@ export function SessionsView({
   if (failed) {
     return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
   }
-  if (!data) return <Loading />;
+  if (!data) return <LoadingState />;
 
   return (
     <div className="flex flex-col">

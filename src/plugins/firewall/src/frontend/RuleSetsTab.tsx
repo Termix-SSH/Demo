@@ -27,6 +27,7 @@ import {
   TextAreaField,
   TextField,
   useConfirm,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type {
   ApplyResult,
@@ -170,9 +171,7 @@ export function RuleSetsTab() {
           {failed ? (
             <p className="px-3 py-2 text-xs text-destructive">{failed}</p>
           ) : !sets ? (
-            <p className="p-2 text-xs text-muted-foreground">
-              {t("common.loading")}
-            </p>
+            <LoadingState label={t("common.loading")} />
           ) : (
             <PanelList
               empty={

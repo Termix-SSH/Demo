@@ -18,6 +18,7 @@
 - Needs Termix 26.11.1 or newer
 - The maintenance page and the Automations tab use the Termix page header and tile look
 - Form labels match the rest of Termix
+- Toolbars, loading screens, back buttons and Save bars match the rest of Termix
 
 ## 1.2.0
 

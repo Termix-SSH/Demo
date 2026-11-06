@@ -6,7 +6,7 @@ import {
   type DashboardCardProps,
   type PluginHostRecord,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { ListRow, StatusDot } from "@termix-ssh/plugin-sdk/ui";
+import { ListRow, StatusDot, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import { getCatalog, getSignals, type Catalog, type SignalRead } from "../api";
 import { appliesTo, hostLabel } from "../hosts";
 import { Choice } from "../parts";
@@ -247,10 +247,7 @@ export function ActionCard({ config, setConfig }: DashboardCardProps) {
   const actionId = String(config?.action ?? "");
   const hostId = typeof config?.hostId === "number" ? config.hostId : undefined;
   const action = catalog?.actions.find((entry) => entry.id === actionId);
-  if (!catalog)
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("state.loading")}</p>
-    );
+  if (!catalog) return <LoadingState compact label={t("state.loading")} />;
   if (!action)
     return (
       <p className="p-3 text-xs text-muted-foreground">{t("tiles.gone")}</p>

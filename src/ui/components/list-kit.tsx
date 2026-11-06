@@ -428,7 +428,6 @@ export function FormFooter({
       {onDelete && (
         <Button
           variant="ghost"
-          size="sm"
           onClick={onDelete}
           disabled={saving}
           className="text-destructive hover:bg-destructive/10 hover:text-destructive dark:hover:bg-destructive/10"
@@ -444,7 +443,7 @@ export function FormFooter({
           ))}
       </div>
       {onCancel && (
-        <Button variant="ghost" size="sm" onClick={onCancel} disabled={saving}>
+        <Button variant="ghost" onClick={onCancel} disabled={saving}>
           {cancelLabel ?? t("common.cancel")}
         </Button>
       )}
@@ -454,7 +453,6 @@ export function FormFooter({
           type={saveType}
           form={form}
           variant="outline"
-          size="sm"
           onClick={onSave}
           disabled={disabled || saving}
           className="border-accent-brand/40 px-6 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand dark:border-accent-brand/40 dark:bg-transparent dark:hover:bg-accent-brand/10"

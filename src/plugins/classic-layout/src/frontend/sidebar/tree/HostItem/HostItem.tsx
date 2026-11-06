@@ -51,6 +51,7 @@ import {
   type SplitOpenTarget,
   MAX_PANES,
   PluginComponent,
+  HostDotGroup,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   usePluginUiPreferences,
@@ -1088,8 +1089,9 @@ export function HostItem({
       {rowFields.showBadges &&
         badges.map((badge) => {
           const Badge = badge.component;
-          return <Badge key={badge.id} host={host} />;
+          return Badge ? <Badge key={badge.id} host={host} /> : null;
         })}
+      {rowFields.showBadges && <HostDotGroup host={host} badges={badges} />}
       {rowFields.showSharedBadge && host.isShared && (
         <TooltipProvider delayDuration={300}>
           <Tooltip>
@@ -1227,6 +1229,7 @@ export function HostItem({
         setContextMenuPosition({ x: event.clientX, y: event.clientY });
         onMenuOpenChange?.(true);
       }}
+      data-host-id={host.id}
       className={`group relative flex items-stretch select-none transition-colors motion-interactive hover:bg-muted/50 ${
         canDrag ? "cursor-grab active:cursor-grabbing" : "cursor-pointer"
       } ${

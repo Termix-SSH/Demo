@@ -5,7 +5,11 @@ import {
   type ExtensionContribution,
   type TermixApp,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { StatusDot, WidgetTitle } from "@termix-ssh/plugin-sdk/ui";
+import {
+  StatusDot,
+  WidgetTitle,
+  LoadingState,
+} from "@termix-ssh/plugin-sdk/ui";
 import type { UptimeSummary } from "../shared/types";
 import { getSummary } from "./api";
 import { percentText, POLL_MS } from "./format";
@@ -49,7 +53,7 @@ function UptimeWidget({ widget }: WidgetProps) {
       <WidgetTitle title={widget.title} icon={<HeartPulse size={11} />} />
       <div className="flex min-h-0 flex-1 flex-col gap-1 p-2 text-xs">
         {!summary ? (
-          <p className="text-muted-foreground">{t("card.loading")}</p>
+          <LoadingState compact label={t("card.loading")} />
         ) : (
           <>
             <div className="flex items-center gap-2">

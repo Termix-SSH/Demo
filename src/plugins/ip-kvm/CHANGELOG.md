@@ -2,7 +2,7 @@
 
 ### Added
 
-- Manage PiKVM, NanoKVM (and GL.iNet Comet) and JetKVM devices
+- Manage PiKVM, GL.iNet Comet (GLKVM), NanoKVM and JetKVM devices
 - Screen, keyboard and mouse in the browser through the Termix server
 - JetKVM screen over WebRTC straight from the browser
 - Power on, shut down, power off and reset

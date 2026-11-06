@@ -9,6 +9,7 @@
 ### Changed
 
 - Home uses the Termix tile look, with host cards edge to edge
+- Toolbars, loading screens, back buttons and Save bars match the rest of Termix
 
 ### Fixed
 

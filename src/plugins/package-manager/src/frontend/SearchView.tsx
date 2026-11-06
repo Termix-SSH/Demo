@@ -8,10 +8,11 @@ import {
   ListRowAction,
   PanelList,
   PanelSearch,
+  ToolbarBand,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { PackagesStatus, SearchItem } from "../shared/types";
 import { errorMessage, searchPackages } from "./api";
-import { Loading } from "./Loading";
 import type { Runner } from "./PackagesTab";
 
 const QUERY_RE = /^[A-Za-z0-9+._-]{2,64}$/;
@@ -58,7 +59,7 @@ export function SearchView({
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         <PanelSearch
           value={query}
           onChange={setQuery}
@@ -76,9 +77,9 @@ export function SearchView({
           <Search className="size-4" />
           {t("search.button")}
         </Button>
-      </div>
+      </ToolbarBand>
       {searching ? (
-        <Loading />
+        <LoadingState />
       ) : failed ? (
         <p className="px-3 py-2 text-xs text-destructive">{failed}</p>
       ) : !items ? (

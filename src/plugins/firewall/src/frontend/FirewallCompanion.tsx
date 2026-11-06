@@ -7,7 +7,12 @@ import {
   type CompanionDefaults,
   type CompanionProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { Button, ListBadge, TextField } from "@termix-ssh/plugin-sdk/ui";
+import {
+  Button,
+  ListBadge,
+  TextField,
+  LoadingState,
+} from "@termix-ssh/plugin-sdk/ui";
 import type { FirewallStatus } from "../shared/types";
 import { addRule, errorMessage, getStatus } from "./api";
 import { PendingBanner } from "./PendingBanner";
@@ -122,9 +127,7 @@ export function FirewallPanel({
       {failed ? (
         <p className="p-2 text-xs text-destructive">{failed}</p>
       ) : !status ? (
-        <p className="p-2 text-xs text-muted-foreground">
-          {t("common.loading")}
-        </p>
+        <LoadingState compact label={t("common.loading")} />
       ) : (
         <>
           {status.pending && (

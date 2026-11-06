@@ -23,6 +23,7 @@ import {
   ListRowAction,
   PanelList,
   WidgetTitle,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import { computeNextDueAt } from "../backend/cron";
 import {
@@ -187,7 +188,7 @@ export function UpcomingRunsCard({ isVisible, shell }: DashboardCardProps) {
   const { rows, failed, run } = useAutomationData(isVisible && canView, 1);
   if (!canView) return <Message>{t("maintenance.denied")}</Message>;
   if (failed) return <Message>{failed}</Message>;
-  if (!rows) return <Message>{t("maintenance.loading")}</Message>;
+  if (!rows) return <LoadingState label={t("maintenance.loading")} />;
   const upcoming = rows
     .map((row) => ({ row, next: nextRunOf(row) }))
     .filter(
@@ -237,7 +238,7 @@ export function RecentRunsCard({ isVisible, shell }: DashboardCardProps) {
   const { runs, rows, failed } = useAutomationData(isVisible && canView, 20);
   if (!canView) return <Message>{t("maintenance.denied")}</Message>;
   if (failed) return <Message>{failed}</Message>;
-  if (!rows) return <Message>{t("maintenance.loading")}</Message>;
+  if (!rows) return <LoadingState label={t("maintenance.loading")} />;
   return (
     <PanelList
       empty={
@@ -267,7 +268,7 @@ function RunsWidget({ widget }: WidgetComponentProps<RunsWidgetConfig>) {
       ) : failed ? (
         <Message>{failed}</Message>
       ) : !rows ? (
-        <Message>{t("maintenance.loading")}</Message>
+        <LoadingState label={t("maintenance.loading")} />
       ) : (
         <PanelList empty={<Message>{t("card.noRuns")}</Message>}>
           <RunRows runs={runs} t={t} />
@@ -362,9 +363,7 @@ export function AutomationsCompanion({
       {failed ? (
         <p className="p-2 text-xs text-destructive">{failed}</p>
       ) : !rows ? (
-        <p className="p-2 text-xs text-muted-foreground">
-          {t("maintenance.loading")}
-        </p>
+        <LoadingState label={t("maintenance.loading")} />
       ) : (
         <>
           <PanelList

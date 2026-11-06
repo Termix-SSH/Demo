@@ -4,7 +4,7 @@ import { usePluginApi, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { registerWidget } from "./WidgetRegistry";
 import type { RssFeedConfig, WidgetComponentProps } from "../types.js";
 import { GRID_SIZE } from "../types.js";
-import { WidgetTitle } from "@termix-ssh/plugin-sdk/ui";
+import { WidgetTitle, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 
 interface RssItem {
   title: string;
@@ -74,11 +74,7 @@ function RssFeedWidget({
   }
 
   if (loading && items.length === 0) {
-    return (
-      <div className="flex items-center justify-center w-full h-full text-xs text-muted-foreground/50">
-        {t("common.loading")}
-      </div>
-    );
+    return <LoadingState compact label={t("common.loading")} />;
   }
 
   if (error) {

@@ -13,6 +13,7 @@ import {
   ListBadge,
   ListRow,
   PanelList,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { CronHostSummary } from "../shared/types";
 
@@ -54,9 +55,7 @@ export function CronHostsCard({ isVisible }: DashboardCardProps) {
 
   if (!allowed) return null;
   if (!rows) {
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("card.loading")}</p>
-    );
+    return <LoadingState compact label={t("card.loading")} />;
   }
 
   const sorted = [...rows].sort(

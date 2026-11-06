@@ -10,12 +10,12 @@ import {
   PanelShell,
   RefreshButton,
   TabStrip,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { CronJob, CronStatus } from "../shared/types";
 import { errorCode, errorMessage, getStatus } from "./api";
 import { JobForm } from "./JobForm";
 import { JobsView } from "./JobsView";
-import { Loading } from "./Loading";
 import { LogsView } from "./LogsView";
 import { RawEditor } from "./RawEditor";
 import { SystemFileEditor } from "./SystemFileEditor";
@@ -76,7 +76,7 @@ export function CronTab({ isVisible, host, label }: TabProps) {
           {error ? (
             <p className="px-3 py-2 text-xs text-destructive">{error}</p>
           ) : (
-            <Loading />
+            <LoadingState />
           )}
         </PanelShell>
       </PanelFrame>

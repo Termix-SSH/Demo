@@ -11,6 +11,7 @@
 
 - Needs Termix 26.11.1 or newer
 - The overview uses the Termix tile look, with tiles edge to edge and lines between them instead of separate cards
+- Toolbars, loading screens, back buttons and Save bars match the rest of Termix
 
 ## 1.2.1
 

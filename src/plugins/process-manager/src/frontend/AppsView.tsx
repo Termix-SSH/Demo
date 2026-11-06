@@ -17,6 +17,7 @@ import {
   ListRow,
   PanelList,
   useConfirm,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import type {
   AppRow,
@@ -142,7 +143,7 @@ export function AppsView({
 
   return (
     <div className="flex min-h-0 flex-col">
-      <div className="flex items-center gap-2 border-b border-border p-1.5 text-xs text-muted-foreground">
+      <ToolbarBand className="text-xs text-muted-foreground">
         <span>
           {[view.pm2 ? "pm2" : "", view.supervisor ? "supervisor" : ""]
             .filter(Boolean)
@@ -169,7 +170,7 @@ export function AppsView({
             <RefreshCw className="size-4" />
           </Button>
         </span>
-      </div>
+      </ToolbarBand>
       {failed && <p className="px-3 py-2 text-xs text-destructive">{failed}</p>}
       {view.supervisorError && (
         <p className="px-3 py-2 text-xs text-warning">

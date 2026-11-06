@@ -1,10 +1,16 @@
+import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { Button, TextField } from "@termix-ssh/plugin-sdk/ui";
+import {
+  Button,
+  TextField,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  TOOLBAR_FIT,
+} from "@termix-ssh/plugin-sdk/ui";
 import { SHORTCUTS } from "../shared/types";
-
-const select =
-  "h-7 border border-border bg-background px-2 text-xs text-foreground";
 
 /** The strip above a screen: shortcuts, paste, snapshot, fullscreen, reconnect. */
 export function Toolbar({
@@ -45,23 +51,24 @@ export function Toolbar({
 
   return (
     <div className="border-b border-border">
-      <div className="flex flex-wrap items-center gap-2 px-3 py-1.5">
-        <select
-          className={select}
-          value=""
-          disabled={!live}
-          aria-label={t("screen.shortcuts")}
-          onChange={(event) => {
-            if (event.target.value) onShortcut(event.target.value);
-          }}
-        >
-          <option value="">{t("screen.shortcuts")}</option>
-          {Object.keys(SHORTCUTS).map((name) => (
-            <option key={name} value={name}>
-              {t(`screen.shortcut.${name}`)}
-            </option>
-          ))}
-        </select>
+      <div
+        className={`flex flex-wrap items-center gap-2 px-3 py-2 ${TOOLBAR_FIT}`}
+      >
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" disabled={!live}>
+              {t("screen.shortcuts")}
+              <ChevronDown className="size-3.5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            {Object.keys(SHORTCUTS).map((name) => (
+              <DropdownMenuItem key={name} onSelect={() => onShortcut(name)}>
+                {t(`screen.shortcut.${name}`)}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
         {onPaste && (
           <Button
             variant="outline"

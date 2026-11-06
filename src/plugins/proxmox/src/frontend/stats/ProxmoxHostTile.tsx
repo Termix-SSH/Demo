@@ -1,5 +1,5 @@
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { StatTile, TileWall } from "@termix-ssh/plugin-sdk/ui";
+import { StatTile, TileWall, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import { useNodeStats } from "./useNodeStats";
 
 /** Guest counts of one node, on the host page. */
@@ -14,9 +14,7 @@ export function ProxmoxHostTile({
   const stats = useNodeStats([Number(hostId)], isVisible);
   const counts = stats[Number(hostId)]?.guests.counts;
   if (!counts) {
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("card.loading")}</p>
-    );
+    return <LoadingState compact label={t("card.loading")} />;
   }
   return (
     <TileWall size="3">

@@ -15,6 +15,7 @@ import {
   PanelShell,
   RefreshButton,
   TabStrip,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { ActionResult, CertStatus, CertView } from "../shared/types";
 import {
@@ -28,7 +29,6 @@ import { CertDetail } from "./CertDetail";
 import { CertsView } from "./CertsView";
 import { InspectView } from "./InspectView";
 import { IssueForm } from "./IssueForm";
-import { Loading } from "./Loading";
 import { RenewalView } from "./RenewalView";
 
 type View = "certificates" | "inspect" | "renewal";
@@ -132,7 +132,7 @@ export function CertificatesTab({ isVisible, host, label }: TabProps) {
           {error ? (
             <p className="px-3 py-2 text-xs text-destructive">{error}</p>
           ) : (
-            <Loading />
+            <LoadingState />
           )}
         </PanelShell>
       </PanelFrame>
@@ -248,7 +248,7 @@ export function CertificatesTab({ isVisible, host, label }: TabProps) {
           />
         }
       >
-        <div className="flex shrink-0 flex-col">
+        <div className="flex flex-1 shrink-0 flex-col">
           {canEdit && !status.root && (
             <Alert className="border-x-0 border-t-0 text-xs">
               {t("tab.sudo")}

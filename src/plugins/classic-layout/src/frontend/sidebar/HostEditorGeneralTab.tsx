@@ -441,7 +441,7 @@ export function HostEditorGeneralTab({
                     {t("hosts.knockPort")}
                   </span>
                   <Input
-                    className="h-7 text-xs w-20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    className="h-8 text-xs w-20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     placeholder="8080"
                     type="number"
                     value={knock.port}
@@ -460,7 +460,7 @@ export function HostEditorGeneralTab({
                     {t("hosts.protocol")}
                   </span>
                   <Select2
-                    className="h-7 text-[10px] bg-background border border-border px-1"
+                    className="h-8 text-[10px] bg-background border border-border px-1"
                     value={knock.protocol}
                     onChange={(e) => {
                       const updated = [...form.portKnockSequence];
@@ -480,7 +480,7 @@ export function HostEditorGeneralTab({
                     {t("hosts.delayAfterMs")}
                   </span>
                   <Input
-                    className="h-7 text-xs w-20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    className="h-8 text-xs w-20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     placeholder="100"
                     type="number"
                     value={knock.delay}
@@ -545,7 +545,7 @@ export function HostEditorGeneralTab({
                       {t("hosts.proxyHost")}
                     </label>
                     <Input
-                      className="h-7 text-xs"
+                      className="h-8 text-xs"
                       placeholder="proxy.example.com"
                       value={form.socks5Host}
                       onChange={(e) => setField("socks5Host", e.target.value)}
@@ -556,7 +556,7 @@ export function HostEditorGeneralTab({
                       {t("hosts.proxyPort")}
                     </label>
                     <Input
-                      className="h-7 text-xs"
+                      className="h-8 text-xs"
                       type="number"
                       placeholder="1080"
                       value={form.socks5Port}
@@ -570,7 +570,7 @@ export function HostEditorGeneralTab({
                       {t("hosts.proxyUsername")}
                     </label>
                     <Input
-                      className="h-7 text-xs"
+                      className="h-8 text-xs"
                       placeholder={t("hosts.optional")}
                       value={form.socks5Username}
                       onChange={(e) =>
@@ -584,7 +584,7 @@ export function HostEditorGeneralTab({
                         {t("hosts.proxyPassword")}
                       </label>
                       <PasswordInput
-                        className="h-7 text-xs pr-8"
+                        className="h-8 text-xs pr-8"
                         placeholder={t("hosts.optional")}
                         value={form.socks5Password}
                         onChange={(e) =>
@@ -628,7 +628,7 @@ export function HostEditorGeneralTab({
                             {t("hosts.proxyHost")}
                           </label>
                           <Input
-                            className="h-7 text-xs"
+                            className="h-8 text-xs"
                             placeholder="proxy.example.com"
                             value={node.host}
                             onChange={(e) => {
@@ -643,7 +643,7 @@ export function HostEditorGeneralTab({
                             {t("hosts.proxyPort")}
                           </label>
                           <Input
-                            className="h-7 text-xs"
+                            className="h-8 text-xs"
                             type="number"
                             placeholder="1080"
                             value={node.port}
@@ -662,7 +662,7 @@ export function HostEditorGeneralTab({
                             {t("hosts.proxyType")}
                           </label>
                           <Select2
-                            className="h-7 text-xs border border-border bg-background px-2 outline-none focus:ring-1 focus:ring-ring"
+                            className="h-8 text-xs border border-border bg-background px-2 outline-none focus:ring-1 focus:ring-ring"
                             value={node.type}
                             onChange={(e) => {
                               const u = [...form.socks5ProxyChain];
@@ -683,7 +683,7 @@ export function HostEditorGeneralTab({
                             {t("hosts.proxyUsername")}
                           </label>
                           <Input
-                            className="h-7 text-xs"
+                            className="h-8 text-xs"
                             placeholder={t("hosts.optional")}
                             value={node.username}
                             onChange={(e) => {
@@ -702,7 +702,7 @@ export function HostEditorGeneralTab({
                               {t("hosts.proxyPassword")}
                             </label>
                             <PasswordInput
-                              className="h-7 text-xs pr-8"
+                              className="h-8 text-xs pr-8"
                               placeholder={t("hosts.optional")}
                               value={node.password}
                               onChange={(e) => {
@@ -807,7 +807,7 @@ export function HostEditorGeneralTab({
                 ].join(" ")}
               >
                 <Select2
-                  className="flex h-7 border border-border bg-background px-2 py-0 text-xs outline-none focus:ring-1 focus:ring-ring"
+                  className="flex h-8 border border-border bg-background px-2 py-0 text-xs outline-none focus:ring-1 focus:ring-ring"
                   value={form.connectionOrigin ?? ""}
                   onChange={(e) =>
                     setField(
@@ -860,7 +860,7 @@ export function HostEditorGeneralTab({
                       {i + 1}.
                     </span>
                     <Select2
-                      className="flex h-7 flex-1 border border-border bg-background px-2 py-0 text-xs outline-none focus:ring-1 focus:ring-ring"
+                      className="flex h-8 flex-1 border border-border bg-background px-2 py-0 text-xs outline-none focus:ring-1 focus:ring-ring"
                       value={jh.hostId}
                       onChange={(e) => {
                         const updated = [...form.jumpHosts];
@@ -940,7 +940,7 @@ export function HostEditorGeneralTab({
                 onChange={(e) =>
                   setField("statusCheckInterval", Number(e.target.value))
                 }
-                className="w-20 h-7 text-xs text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                className="w-20 h-8 text-xs text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
             </SettingRow>
           )}

@@ -5,7 +5,12 @@ import {
   useTranslation,
   type DashboardCardProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { ListRow, PanelList, StatusDot } from "@termix-ssh/plugin-sdk/ui";
+import {
+  ListRow,
+  PanelList,
+  StatusDot,
+  LoadingState,
+} from "@termix-ssh/plugin-sdk/ui";
 import type { Device } from "../shared/types";
 import { createApi } from "./api";
 import { statusTone } from "./format";
@@ -37,9 +42,7 @@ export function KvmCard({ isVisible, shell }: DashboardCardProps) {
 
   if (!canView) return null;
   if (!devices) {
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("card.loading")}</p>
-    );
+    return <LoadingState compact label={t("card.loading")} />;
   }
 
   const sorted = [...devices].sort(

@@ -8,7 +8,7 @@ import {
   Info,
 } from "lucide-react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { Input, Checkbox } from "@termix-ssh/plugin-sdk/ui";
+import { Input, Checkbox, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import type { AlertItem } from "../types";
 import type { AlertsApi } from "./api";
 import { timeAgo } from "./format";
@@ -87,11 +87,7 @@ export function createAlertFeedWidget(api: AlertsApi, store: AlertsStore) {
     };
 
     if (items === null) {
-      return (
-        <div className="flex items-center justify-center w-full h-full text-xs text-muted-foreground">
-          {t("widget.loading")}
-        </div>
-      );
+      return <LoadingState compact label={t("widget.loading")} />;
     }
 
     return (

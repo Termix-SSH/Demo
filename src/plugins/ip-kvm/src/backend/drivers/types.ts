@@ -28,10 +28,22 @@ export interface DeviceSocket {
 
 export interface DriverIo {
   fetch: PluginFetch;
+  /** HTTPS to the saved device that only goes through with the pinned certificate. */
+  fetchPinned?: (
+    url: string,
+    pin: string,
+    init: {
+      method?: string;
+      headers?: Record<string, string>;
+      body?: string;
+      timeoutMs?: number;
+      signal?: AbortSignal;
+    },
+  ) => Promise<Response>;
   /** Opens a WebSocket to the KVM. Only called with the saved device's address. */
   connect: (
     url: string,
-    options: { headers?: Record<string, string>; ca?: string },
+    options: { headers?: Record<string, string>; ca?: string; pin?: string },
   ) => DeviceSocket;
 }
 

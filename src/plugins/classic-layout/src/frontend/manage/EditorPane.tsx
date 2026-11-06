@@ -205,7 +205,7 @@ export function EditorSection({
       {showHeading && label && (
         <GroupHeading
           title={label}
-          className="border-b border-border bg-muted/20 px-3 py-1.5"
+          className="border-b border-border px-3 py-1.5"
         />
       )}
       {children}

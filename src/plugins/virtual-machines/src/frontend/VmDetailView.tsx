@@ -27,6 +27,7 @@ import {
   TileStack,
   TileWall,
   useConfirm,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { Inventory, VmDetail, VmRow } from "../shared/types";
 import {
@@ -290,7 +291,7 @@ export function VmDetailView({
           <p className="px-3 py-2 text-xs text-destructive">{failed}</p>
         )}
         {cloning && (
-          <div className="flex items-end gap-2 border-b border-border p-3">
+          <ToolbarBand className="items-end">
             <TextField
               label={t("vm.cloneName")}
               value={cloneName}
@@ -312,7 +313,7 @@ export function VmDetailView({
             <Button variant="ghost" onClick={() => setCloning(false)}>
               {t("common.cancel")}
             </Button>
-          </div>
+          </ToolbarBand>
         )}
         {deleting && (
           <div className="flex flex-col gap-2 border-b border-border p-3">

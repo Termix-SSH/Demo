@@ -7,7 +7,7 @@ import {
   type CompanionDefaults,
   type CompanionProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { Button } from "@termix-ssh/plugin-sdk/ui";
+import { Button, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import type { GitStatus, RepoInfo } from "../shared/types";
 import { errorCode, errorMessage, getRepos, getStatus } from "./api";
 import { RepoList } from "./RepoList";
@@ -99,9 +99,7 @@ export function GitCompanion({ host, isVisible, getHandle }: CompanionProps) {
       {failed ? (
         <p className="p-2 text-xs text-destructive">{failed}</p>
       ) : !repos || !status ? (
-        <p className="p-2 text-xs text-muted-foreground">
-          {t("common.loading")}
-        </p>
+        <LoadingState compact label={t("common.loading")} />
       ) : (
         <RepoList repos={shown} canEdit={false} compact onOpen={openTab} />
       )}

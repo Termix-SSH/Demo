@@ -5,6 +5,7 @@ import {
   ListBadge,
   ListRow,
   PanelList,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import { History } from "lucide-react";
 import type { UpsEvent } from "../shared/types";
@@ -62,9 +63,7 @@ export function EventsView({
 
   if (error) return <p className="p-3 text-xs text-destructive">{error}</p>;
   if (!events) {
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("common.loading")}</p>
-    );
+    return <LoadingState label={t("common.loading")} />;
   }
   if (!events.length) {
     return <EmptyState icon={History} title={t("events.empty")} />;

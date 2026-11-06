@@ -7,10 +7,10 @@ import {
   Pager,
   PanelList,
   usePaged,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { HistoryItem } from "../shared/types";
 import { errorMessage, getHistory } from "./api";
-import { Loading } from "./Loading";
 
 function tone(action: string) {
   if (/remove|purge/i.test(action)) return "destructive" as const;
@@ -48,7 +48,7 @@ export function HistoryView({
   if (failed) {
     return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
   }
-  if (!items) return <Loading />;
+  if (!items) return <LoadingState />;
   if (items.length === 0) {
     return (
       <p className="px-3 py-6 text-center text-xs text-muted-foreground/60">

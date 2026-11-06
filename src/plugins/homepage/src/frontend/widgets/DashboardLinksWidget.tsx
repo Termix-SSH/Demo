@@ -8,7 +8,7 @@ import type {
   WidgetComponentProps,
 } from "../types.js";
 import { GRID_SIZE } from "../types.js";
-import { WidgetTitle } from "@termix-ssh/plugin-sdk/ui";
+import { WidgetTitle, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 
 function getFaviconUrl(url: string): string {
   try {
@@ -99,12 +99,7 @@ function DashboardLinksWidget({
       .finally(() => setLoading(false));
   }, [maxItems]);
 
-  if (loading)
-    return (
-      <div className="flex items-center justify-center w-full h-full text-xs text-muted-foreground">
-        {t("common.loading")}
-      </div>
-    );
+  if (loading) return <LoadingState compact label={t("common.loading")} />;
   if (links.length === 0)
     return (
       <div className="flex items-center justify-center w-full h-full text-xs text-muted-foreground">

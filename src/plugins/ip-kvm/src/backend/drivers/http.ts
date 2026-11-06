@@ -35,6 +35,10 @@ export async function send(
   } = {},
 ): Promise<Response> {
   try {
+    const pin = target.options.pin;
+    if (pin && url.startsWith("https:") && io.fetchPinned) {
+      return await io.fetchPinned(url, pin, init);
+    }
     return await io.fetch(url, {
       method: init.method ?? "GET",
       headers: init.headers,

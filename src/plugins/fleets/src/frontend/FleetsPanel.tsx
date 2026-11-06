@@ -31,6 +31,8 @@ import {
   FormFooter,
   TabStrip,
   Segmented,
+  LoadingState,
+  TOOLBAR_FIT,
 } from "@termix-ssh/plugin-sdk/ui";
 import { toast } from "sonner";
 import {
@@ -966,7 +968,7 @@ function TransferTab({ api, fleetId }: { api: FleetsApi; fleetId: number }) {
       <Segmented<"push" | "pull">
         value={direction}
         onChange={setDirection}
-        className="w-full [&>button]:flex-1"
+
         options={[
           {
             value: "push",
@@ -1093,9 +1095,7 @@ function InventoryTab({ api, fleetId }: { api: FleetsApi; fleetId: number }) {
       </Button>
 
       {loading ? (
-        <div className="flex items-center justify-center py-8 text-muted-foreground">
-          <Loader2 className="size-4 animate-spin" />
-        </div>
+        <LoadingState />
       ) : (
         <div className="flex flex-col gap-2">
           {entries.map((entry) => (
@@ -1366,9 +1366,7 @@ function FleetDetail({
 
       <div className="flex-1 min-h-0 overflow-y-auto p-2.5">
         {loadingMembers ? (
-          <div className="flex items-center justify-center py-8 text-muted-foreground">
-            <Loader2 className="size-4 animate-spin" />
-          </div>
+          <LoadingState />
         ) : members.length === 0 ? (
           <EmptyState
             icon={Server}
@@ -1509,7 +1507,9 @@ export function FleetsPanel({
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
-      <div className="flex shrink-0 flex-col gap-2 border-b border-border px-3 py-2">
+      <div
+        className={`flex shrink-0 flex-col gap-2 border-b border-border px-3 py-2 ${TOOLBAR_FIT}`}
+      >
         <PanelSearch
           value={search}
           onChange={setSearch}
@@ -1551,9 +1551,7 @@ export function FleetsPanel({
       <PanelList
         empty={
           loading ? (
-            <div className="flex items-center justify-center py-8 text-muted-foreground">
-              <Loader2 className="size-4 animate-spin" />
-            </div>
+            <LoadingState />
           ) : (
             <EmptyState
               icon={Boxes}

@@ -6,7 +6,7 @@ import {
   useTranslation,
   type DashboardCardProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { ListRow, PanelList } from "@termix-ssh/plugin-sdk/ui";
+import { ListRow, PanelList, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import type { Summary } from "../shared/types";
 import { createApi } from "./api";
 import { formatBytes } from "./format";
@@ -35,9 +35,7 @@ export function StorageCard({ isVisible, shell }: DashboardCardProps) {
 
   if (!canView) return null;
   if (!summary) {
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("card.loading")}</p>
-    );
+    return <LoadingState compact label={t("card.loading")} />;
   }
   const open = () => shell.openSingletonTab("object-storage");
 

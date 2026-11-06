@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { BatteryCharging } from "lucide-react";
 import { useToast, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { Segmented, TabStrip, useConfirm } from "@termix-ssh/plugin-sdk/ui";
+import {
+  Segmented,
+  TabStrip,
+  useConfirm,
+  LoadingState,
+} from "@termix-ssh/plugin-sdk/ui";
 import type { SourceInput, SourceView } from "../shared/types";
 import {
   addSource,
@@ -154,9 +159,7 @@ export function UpsPanel({
   if (error)
     return <p className="px-3 py-2 text-xs text-destructive">{error}</p>;
   if (!sources) {
-    return (
-      <p className="p-2 text-xs text-muted-foreground">{t("common.loading")}</p>
-    );
+    return <LoadingState compact label={t("common.loading")} />;
   }
 
   const tabs: Array<{ id: View; label: string; count?: number }> = [

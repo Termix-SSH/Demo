@@ -3,14 +3,17 @@ import { MonitorSmartphone } from "lucide-react";
 import { toast } from "sonner";
 import { useHosts, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
+  Button,
   FormFooter,
   InlineView,
+  PANEL,
   NumberField,
   SecretField,
   SectionCard,
   SelectField,
   TextAreaField,
   TextField,
+  useConfirm,
 } from "@termix-ssh/plugin-sdk/ui";
 import type {
   Device,
@@ -22,6 +25,11 @@ import type {
 import { errorMessage, type KvmApi } from "./api";
 
 const NONE = "none";
+
+/** kvmd based devices serve https by default. */
+function defaultScheme(id: DriverId): "http" | "https" {
+  return id === "pikvm" || id === "glkvm" ? "https" : "http";
+}
 
 export function DeviceForm({
   device,
@@ -48,8 +56,11 @@ export function DeviceForm({
     device?.hostId ? String(device.hostId) : NONE,
   );
   const [scheme, setScheme] = useState<"http" | "https">(
-    device?.options.scheme ?? (driverId === "pikvm" ? "https" : "http"),
+    device?.options.scheme ?? defaultScheme(driverId),
   );
+  const [pin, setPin] = useState(device?.options.pin ?? "");
+  const [reading, setReading] = useState(false);
+  const confirm = useConfirm();
   const [mac, setMac] = useState(device?.options.mac ?? "");
   const [broadcast, setBroadcast] = useState(device?.options.broadcast ?? "");
   const [ca, setCa] = useState("");
@@ -76,6 +87,7 @@ export function DeviceForm({
 
   function build(): DeviceInput {
     const options: DeviceOptions = { scheme };
+    if (pin && scheme === "https") options.pin = pin;
     if (mac.trim()) options.mac = mac.trim();
     if (broadcast.trim()) options.broadcast = broadcast.trim();
     return {
@@ -98,6 +110,40 @@ export function DeviceForm({
       await onSave(build());
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function trust() {
+    setReading(true);
+    try {
+      const cert = await api.certificate(
+        address.trim(),
+        port ?? driver?.defaultPort ?? 443,
+      );
+      const ok = await confirm({
+        title: t("form.trustTitle"),
+        description: (
+          <span className="flex flex-col gap-1">
+            <span>{t("form.trustHint")}</span>
+            <span>
+              {t("form.certName", { name: cert.subject || "?" })} |{" "}
+              {t(cert.expired ? "form.certExpired" : "form.certValid", {
+                date: cert.validTo,
+              })}
+            </span>
+            <span className="break-all font-mono text-[10px]">
+              {cert.fingerprint}
+            </span>
+          </span>
+        ),
+        confirmLabel: t("form.trust"),
+        destructive: false,
+      });
+      if (ok) setPin(cert.fingerprint);
+    } catch (error) {
+      toast.error(errorMessage(error));
+    } finally {
+      setReading(false);
     }
   }
 
@@ -137,7 +183,7 @@ export function DeviceForm({
         title={t("form.device")}
         icon={<MonitorSmartphone className="size-3.5" />}
       >
-        <div className="flex flex-col gap-4 py-3">
+        <div className={PANEL.section}>
           {!device && (
             <SelectField
               label={t("form.type")}
@@ -146,7 +192,7 @@ export function DeviceForm({
                 setDriverId(value as DriverId);
                 setKeys({});
                 setPort(null);
-                setScheme(value === "pikvm" ? "https" : "http");
+                setScheme(defaultScheme(value as DriverId));
               }}
               options={drivers.map((item) => ({
                 value: item.id,
@@ -193,7 +239,7 @@ export function DeviceForm({
         title={t("form.access")}
         icon={<MonitorSmartphone className="size-3.5" />}
       >
-        <div className="flex flex-col gap-4 py-3">
+        <div className={PANEL.section}>
           <SelectField
             label={t("form.scheme")}
             value={scheme}
@@ -226,7 +272,22 @@ export function DeviceForm({
               />
             ),
           )}
-          {scheme === "https" && (
+          {scheme === "https" && pin && (
+            <div className="flex flex-col gap-1.5">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                {t("form.pinned")}
+              </span>
+              <div className="flex items-center gap-2">
+                <span className="min-w-0 flex-1 break-all font-mono text-[10px] text-muted-foreground">
+                  {pin}
+                </span>
+                <Button variant="ghost" size="sm" onClick={() => setPin("")}>
+                  {t("form.unpin")}
+                </Button>
+              </div>
+            </div>
+          )}
+          {scheme === "https" && !pin && (
             <TextAreaField
               label={t("form.ca")}
               hint={t(device?.hasCa ? "form.caSet" : "form.caHint")}
@@ -237,14 +298,24 @@ export function DeviceForm({
             />
           )}
           <div>
-            <button
-              type="button"
-              disabled={testing || !address.trim() || (needsKeys && !hasKeys)}
-              onClick={() => void test()}
-              className="border border-border px-3 py-1.5 text-xs hover:bg-accent disabled:opacity-50"
-            >
-              {t("form.test")}
-            </button>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button
+                variant="outline"
+                disabled={testing || !address.trim() || (needsKeys && !hasKeys)}
+                onClick={() => void test()}
+              >
+                {t("form.test")}
+              </Button>
+              {scheme === "https" && !pin && (
+                <Button
+                  variant="ghost"
+                  disabled={reading || !address.trim()}
+                  onClick={() => void trust()}
+                >
+                  {t("form.trust")}
+                </Button>
+              )}
+            </div>
             {device && needsKeys && !hasKeys && (
               <p className="mt-2 text-xs text-muted-foreground">
                 {t("form.testNeedsLogin")}
@@ -258,7 +329,7 @@ export function DeviceForm({
         title={t("form.machine")}
         icon={<MonitorSmartphone className="size-3.5" />}
       >
-        <div className="flex flex-col gap-4 py-3">
+        <div className={PANEL.section}>
           <TextField
             label={t("form.mac")}
             hint={t("form.macHint")}

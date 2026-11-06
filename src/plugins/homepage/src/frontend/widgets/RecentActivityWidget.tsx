@@ -10,6 +10,7 @@ import {
   getRecentActivity,
   runVisibleInterval,
   type RecentActivityItem,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import { registerWidget } from "./WidgetRegistry";
 import type {
@@ -66,11 +67,7 @@ function RecentActivityWidget({
   }, [maxItems, filterTypes.join(",")]);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center w-full h-full text-xs text-muted-foreground">
-        {t("common.loading")}
-      </div>
-    );
+    return <LoadingState compact label={t("common.loading")} />;
   }
 
   if (items.length === 0) {

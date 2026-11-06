@@ -1,11 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { Workflow } from "lucide-react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { ListBadge, ListRow, PanelList } from "@termix-ssh/plugin-sdk/ui";
+import {
+  ListBadge,
+  ListRow,
+  PanelList,
+  LoadingState,
+} from "@termix-ssh/plugin-sdk/ui";
 import type { RunSummary } from "../shared/types";
 import { errorMessage, getRuns } from "./api";
 import { formatDuration, formatTime } from "./format";
-import { Loading } from "./Loading";
 
 const POLL_MS = 4000;
 
@@ -45,7 +49,7 @@ export function RunsView({
 
   if (failed)
     return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
-  if (!runs) return <Loading />;
+  if (!runs) return <LoadingState />;
   if (runs.length === 0) {
     return (
       <p className="px-3 py-6 text-center text-xs text-muted-foreground/60">

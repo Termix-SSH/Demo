@@ -7,10 +7,10 @@ import {
   ListRow,
   PanelList,
   useConfirm,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { CronStatus, SystemView as View } from "../shared/types";
 import { deleteSystemFile, errorMessage, getSystem } from "./api";
-import { Loading } from "./Loading";
 import { nextRunText, scheduleText } from "./schedule-text";
 
 const PERIODS = ["hourly", "daily", "weekly", "monthly"] as const;
@@ -70,7 +70,7 @@ export function SystemView({
 
   if (failed)
     return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
-  if (!view) return <Loading />;
+  if (!view) return <LoadingState />;
 
   const canEdit = status.canEdit && status.root;
 

@@ -161,8 +161,7 @@ export function AdminGeneralSettingsSection({
             </span>
             <Button
               variant="outline"
-              size="sm"
-              className="text-xs border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand h-7"
+              className="text-xs border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
               onClick={handleSaveSessionTimeout}
             >
               {t("common.save")}

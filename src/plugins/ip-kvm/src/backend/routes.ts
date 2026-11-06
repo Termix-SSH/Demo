@@ -213,6 +213,42 @@ export function registerRoutes(
 
   /**
    * @openapi
+   * /plugin-api/ip-kvm/devices/certificate:
+   *   post:
+   *     summary: Read the certificate a KVM shows, so it can be pinned
+   *     tags:
+   *       - IP-KVM
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               address:
+   *                 type: string
+   *               port:
+   *                 type: integer
+   *     responses:
+   *       200:
+   *         description: Fingerprint, names and dates of the certificate
+   */
+  router.post(
+    "/devices/certificate",
+    manage,
+    safe(async (req, res) => {
+      const body = (req.body ?? {}) as { address?: unknown; port?: unknown };
+      res.json({
+        certificate: await service.certificate(
+          String(body.address ?? ""),
+          Number(body.port ?? 443),
+        ),
+      });
+    }),
+  );
+
+  /**
+   * @openapi
    * /plugin-api/ip-kvm/devices/{id}:
    *   put:
    *     summary: Change a KVM. The login is replaced only when sent.

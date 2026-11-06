@@ -28,6 +28,7 @@ import {
   TextField,
   TileStack,
   useConfirm,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type {
   GroupView,
@@ -48,7 +49,6 @@ import {
   updateUser,
 } from "./api";
 import { UserBadges } from "./badges";
-import { Loading } from "./Loading";
 
 /** One account: its details, password, access, SSH keys and delete. */
 export function UserDetail({
@@ -382,7 +382,7 @@ export function UserDetail({
             detailError ? (
               <p className="py-2 text-xs text-destructive">{detailError}</p>
             ) : (
-              <Loading />
+              <LoadingState />
             )
           ) : (
             <div className="-mx-3 flex flex-col">

@@ -20,6 +20,7 @@ import {
   ListRowAction,
   usePageVisibleInterval,
   useAdaptivePolling,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { useState, useEffect, useRef, useCallback } from "react";
@@ -407,14 +408,14 @@ export function ConnectionsPanel({
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+      <ToolbarBand>
         <PanelSearch
           value={search}
           onChange={setSearch}
           placeholder={t("connections.search")}
           fill
         />
-      </div>
+      </ToolbarBand>
 
       {!hasResults && <EmptyState title={t("connections.noSearchResults")} />}
 

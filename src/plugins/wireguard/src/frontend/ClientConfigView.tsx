@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import qrcode from "qrcode-generator";
 import { useToast, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { Button, FormFooter } from "@termix-ssh/plugin-sdk/ui";
+import { Button, FormFooter, PanelShell } from "@termix-ssh/plugin-sdk/ui";
 import type { ClientConfig } from "../shared/types";
 
 /** A QR code drawn as one SVG path. */
@@ -69,24 +69,30 @@ export function ClientConfigView({
   };
 
   return (
-    <div className="flex flex-col gap-3 p-3">
-      <p className="text-sm font-medium">{config.name}</p>
-      <p className="text-xs text-muted-foreground">{t("clientConfig.note")}</p>
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <Qr text={config.config} label={t("clientConfig.qr")} />
-        <pre className="min-w-0 flex-1 overflow-auto whitespace-pre-wrap break-all border border-border p-2 font-mono text-xs">
-          {config.config}
-        </pre>
+    <PanelShell
+      chrome={false}
+      footer={<FormFooter onCancel={onBack} cancelLabel={t("common.back")} />}
+    >
+      <div className="flex flex-col gap-3 p-3">
+        <p className="text-sm font-medium">{config.name}</p>
+        <p className="text-xs text-muted-foreground">
+          {t("clientConfig.note")}
+        </p>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Qr text={config.config} label={t("clientConfig.qr")} />
+          <pre className="min-w-0 flex-1 overflow-auto whitespace-pre-wrap break-all border border-border p-2 font-mono text-xs">
+            {config.config}
+          </pre>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" onClick={() => void copy()}>
+            {t("clientConfig.copy")}
+          </Button>
+          <Button variant="outline" onClick={download}>
+            {t("clientConfig.download")}
+          </Button>
+        </div>
       </div>
-      <div className="flex flex-wrap gap-2">
-        <Button variant="outline" onClick={() => void copy()}>
-          {t("clientConfig.copy")}
-        </Button>
-        <Button variant="outline" onClick={download}>
-          {t("clientConfig.download")}
-        </Button>
-      </div>
-      <FormFooter onCancel={onBack} cancelLabel={t("common.back")} />
-    </div>
+    </PanelShell>
   );
 }

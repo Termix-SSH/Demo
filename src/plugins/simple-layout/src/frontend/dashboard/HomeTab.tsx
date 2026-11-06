@@ -17,6 +17,7 @@ import {
   defaultConnectAction,
   hostActionsFor,
   hostBadgesFor,
+  HostDotGroup,
   requestManage,
   runHostAction,
   useHostActions,
@@ -25,6 +26,7 @@ import {
   useShellController,
   type Host,
   TileWall,
+  ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { groupHosts } from "./group-hosts";
@@ -69,7 +71,7 @@ export function HomeTab() {
     <TooltipProvider delayDuration={300}>
       <div className="flex flex-1 min-h-0 flex-col overflow-y-auto">
         <div className="flex w-full flex-col">
-          <div className="flex items-center gap-3 border-b border-border px-3 py-2">
+          <ToolbarBand className="gap-3">
             <h1 className="text-base font-semibold">{t("home.title")}</h1>
             <div className="ml-auto flex items-center gap-2">
               {hosts.list.length >= SEARCH_FROM && (
@@ -88,7 +90,7 @@ export function HomeTab() {
                 {t("home.addHost")}
               </Button>
             </div>
-          </div>
+          </ToolbarBand>
 
           {groups.length === 0 && (
             <p className="p-3 text-xs text-muted-foreground">
@@ -156,8 +158,9 @@ function HostCard({ host }: { host: Host }) {
             </span>
             {badges.map((badge) => {
               const Badge = badge.component;
-              return <Badge key={badge.id} host={host} />;
+              return Badge ? <Badge key={badge.id} host={host} /> : null;
             })}
+            <HostDotGroup host={host} badges={badges} />
           </div>
           <div className="truncate font-mono text-[11px] text-muted-foreground">
             {host.username ? `${host.username}@` : ""}

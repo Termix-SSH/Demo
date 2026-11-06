@@ -13,6 +13,7 @@ import {
   ListBadge,
   ListRow,
   PanelList,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { HostSummary } from "../shared/types";
 import { SERVER_LABEL, badgeTone, isUp } from "./format";
@@ -55,9 +56,7 @@ export function HostsCard({ isVisible }: DashboardCardProps) {
 
   if (!allowed) return null;
   if (!rows) {
-    return (
-      <p className="p-3 text-xs text-muted-foreground">{t("card.loading")}</p>
-    );
+    return <LoadingState compact label={t("card.loading")} />;
   }
 
   const down = rows.filter(

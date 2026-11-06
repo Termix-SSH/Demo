@@ -1,6 +1,6 @@
 // Types shared by the backend routes and the frontend.
 
-export type DriverId = "pikvm" | "nanokvm" | "jetkvm";
+export type DriverId = "pikvm" | "glkvm" | "nanokvm" | "jetkvm";
 
 export type DeviceStatus = "unknown" | "up" | "down";
 
@@ -35,9 +35,21 @@ export interface DriverInfo {
 
 export interface DeviceOptions {
   scheme?: "http" | "https";
+  // SHA-256 of the device's own certificate, trusted as is
+  pin?: string;
   // MAC of the machine behind the KVM, for Wake-on-LAN
   mac?: string;
   broadcast?: string;
+}
+
+/** The certificate a device shows, read without trusting it. */
+export interface PeerCertificate {
+  fingerprint: string;
+  subject: string;
+  issuer: string;
+  validTo: string;
+  expired: boolean;
+  selfSigned: boolean;
 }
 
 export interface Reading {

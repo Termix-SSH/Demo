@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Bold,
-  ChevronLeft,
   Code,
   Heading2,
   Italic,
@@ -15,7 +14,13 @@ import {
   Trash2,
 } from "lucide-react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { Button, Segmented, cn } from "@termix-ssh/plugin-sdk/ui";
+import {
+  BackButton,
+  Button,
+  Segmented,
+  ToolbarBand,
+  cn,
+} from "@termix-ssh/plugin-sdk/ui";
 import type { Note } from "../shared/types";
 import { applyFormat, type FormatKind } from "./format";
 import { NoteMarkdown } from "./Markdown";
@@ -125,20 +130,17 @@ export function NoteEditor({
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="flex shrink-0 items-center gap-1 border-b border-border p-1.5">
+      <div className="flex h-12.5 shrink-0 items-center gap-1 border-b border-border pr-1.5">
         {onBack && (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => {
-              void flush();
-              onBack();
-            }}
-            title={t("editor.back")}
-            aria-label={t("editor.back")}
-          >
-            <ChevronLeft className="size-4" />
-          </Button>
+          <div className="flex h-full shrink-0 border-r border-border">
+            <BackButton
+              onClick={() => {
+                void flush();
+                onBack();
+              }}
+              label={t("editor.back")}
+            />
+          </div>
         )}
         <input
           value={title}
@@ -150,7 +152,7 @@ export function NoteEditor({
           placeholder={t("editor.titlePlaceholder")}
           aria-label={t("editor.title")}
           maxLength={200}
-          className="min-w-0 flex-1 bg-transparent px-1 text-sm font-medium outline-none placeholder:text-muted-foreground"
+          className="min-w-0 flex-1 bg-transparent px-3 text-sm font-medium outline-none placeholder:text-muted-foreground"
         />
         <span
           className={cn(
@@ -190,7 +192,7 @@ export function NoteEditor({
         )}
       </div>
 
-      <div className="flex shrink-0 flex-wrap items-center gap-1 border-b border-border p-1.5">
+      <ToolbarBand>
         {writable && (
           <Segmented
             value={mode}
@@ -230,7 +232,7 @@ export function NoteEditor({
           aria-label={t("editor.tags")}
           className="ml-auto min-w-24 max-w-48 flex-1 bg-transparent px-1 text-xs outline-none placeholder:text-muted-foreground"
         />
-      </div>
+      </ToolbarBand>
 
       <div
         className={cn(

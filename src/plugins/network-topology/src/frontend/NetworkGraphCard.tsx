@@ -19,6 +19,8 @@ import {
   useTabsSafe,
   InlineView,
   FormFooter,
+  ToolbarBand,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   useTranslation,
@@ -47,7 +49,6 @@ import {
   ArrowUp,
   Info,
   Network,
-  Loader2,
   X,
 } from "lucide-react";
 import {
@@ -965,9 +966,7 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
       onContextMenu={(e) => e.preventDefault()}
     >
       {loading && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-background/80">
-          <Loader2 className="size-5 animate-spin text-muted-foreground" />
-        </div>
+        <LoadingState className="absolute inset-0 z-10 bg-background/80" />
       )}
       {contextMenuEl}
       {containerReady && (
@@ -1307,7 +1306,7 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
   if (!embedded) {
     return (
       <div className="h-full w-full flex flex-col bg-background">
-        <div className="flex items-center gap-1 px-3 py-2 border-b border-border shrink-0 flex-wrap">
+        <ToolbarBand>
           <div className="flex items-center gap-0.5">
             <Button
               variant="ghost"
@@ -1405,7 +1404,7 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
           >
             <ExternalLink className="size-3.5" />
           </a>
-        </div>
+        </ToolbarBand>
         {errorBanner}
         {cytoscapeEl}
         {dialogs}

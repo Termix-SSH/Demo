@@ -13,6 +13,8 @@ import {
   ListRowAction,
   PanelList,
   useConfirm,
+  ToolbarBand,
+  Input,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   SIGNALS,
@@ -156,7 +158,7 @@ export function ProcessDetail({
           />
         )}
         {canEdit && (
-          <div className="flex flex-wrap items-center gap-1 border-y border-border p-2">
+          <ToolbarBand className="border-t">
             {SIGNALS.map((signal) => (
               <Button
                 key={signal}
@@ -171,12 +173,12 @@ export function ProcessDetail({
             ))}
             <span className="ml-auto flex items-center gap-1 text-xs">
               {t("detail.nice")}
-              <input
+              <Input
                 value={nice}
                 onChange={(e) => setNice(e.target.value)}
                 inputMode="numeric"
                 aria-label={t("detail.nice")}
-                className="h-7 w-14 border border-border bg-background px-1 text-center font-mono"
+                className="w-14 text-center font-mono"
               />
               <Button
                 variant="ghost"
@@ -187,7 +189,7 @@ export function ProcessDetail({
                 {t("detail.apply")}
               </Button>
             </span>
-          </div>
+          </ToolbarBand>
         )}
         <PanelList>
           {sources.map((s, i) => (
