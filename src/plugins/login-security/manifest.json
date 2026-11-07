@@ -1,7 +1,7 @@
 {
   "id": "login-security",
   "name": "Login Security",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Sign people out when idle, limit session length, turn off remember me and require a second factor at login.",
   "author": {
     "name": "Termix"
@@ -18,15 +18,30 @@
     "Turn off remember me and remembered devices",
     "Require a second factor at every login or on a new device",
     "Works with any installed second factor, like an authenticator app or a security key",
-    "People without a second factor are asked to set one up before they can use Termix"
+    "People without a second factor are asked to set one up before they can use Termix",
+    "Ask for a second factor before connecting to a host, for every host or only marked ones"
   ],
   "env": [],
   "engine": {
-    "termix": ">=26.10.3",
-    "api": "^1.7"
+    "termix": ">=26.11.1-0",
+    "api": "^1.16"
   },
-  "capabilities": ["auth:policy", "network:serve", "ui:surface"],
+  "capabilities": [
+    "auth:policy",
+    "hosts:connect-policy",
+    "hosts:read",
+    "network:serve",
+    "ui:surface"
+  ],
   "contributes": {
+    "tabs": [
+      {
+        "id": "connect-verify",
+        "titleKey": "verify.title",
+        "icon": "ShieldCheck",
+        "openFrom": ["palette"]
+      }
+    ],
     "permissions": [
       {
         "name": "manage",
@@ -97,8 +112,42 @@
           "type": "custom",
           "group": "settings.group.secondFactor",
           "component": "factors"
+        },
+        {
+          "key": "connectFactor",
+          "type": "select",
+          "group": "settings.group.connect",
+          "labelKey": "settings.admin.connectFactor.label",
+          "descriptionKey": "settings.admin.connectFactor.description",
+          "default": "off",
+          "options": [
+            { "value": "off", "labelKey": "settings.admin.connectFactor.off" },
+            {
+              "value": "marked",
+              "labelKey": "settings.admin.connectFactor.marked"
+            },
+            { "value": "all", "labelKey": "settings.admin.connectFactor.all" }
+          ]
+        },
+        {
+          "key": "connectFactorMinutes",
+          "type": "number",
+          "group": "settings.group.connect",
+          "labelKey": "settings.admin.connectFactorMinutes.label",
+          "descriptionKey": "settings.admin.connectFactorMinutes.description",
+          "default": 60,
+          "min": 1,
+          "max": 1440
         }
-      ]
+      ],
+      "host": {
+        "editorGroup": "top",
+        "editorOrder": 95,
+        "enableKey": "requireConnectFactor",
+        "enableLabelKey": "settings.host.requireConnectFactor.label",
+        "enableDescriptionKey": "settings.host.requireConnectFactor.description",
+        "fields": []
+      }
     }
   },
   "locales": "locales",

@@ -8,6 +8,7 @@ import {
   useCallback,
 } from "react";
 import Guacamole from "guacamole-common-js";
+import { bindAudioUnlock } from "./guacamole-audio";
 import { Upload } from "lucide-react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { toast } from "sonner";
@@ -58,7 +59,7 @@ import { clampGuacamoleZoom, stepGuacamoleZoom } from "./guacamole-zoom.ts";
 import { createRdpReadyGate } from "./guacamole-ready.ts";
 import {
   remoteKeysym,
-  shouldSendKey,
+  isToggleKey,
   watchRightAlt,
 } from "./guacamole-meta-key.ts";
 
@@ -74,6 +75,7 @@ interface GuacamoleConnectionConfig {
   password?: string;
   domain?: string;
   width?: number;
+  rdpAutoResize?: boolean;
   height?: number;
   dpi?: number;
   /**
@@ -144,10 +146,15 @@ export const GuacamoleDisplay = forwardRef<
   ref,
 ) {
   const { t } = useTranslation();
-  // The host config pins the session resolution; without it the display follows
-  // the container.
+  // Fixed dimensions or an RDP resize opt-out keep the initial resolution.
   const hasConfiguredSize =
     connectionConfig.width != null && connectionConfig.height != null;
+  const followsContainer =
+    !hasConfiguredSize &&
+    !(
+      (connectionConfig.protocol ?? connectionConfig.type) === "rdp" &&
+      connectionConfig.rdpAutoResize === false
+    );
   const containerRef = useRef<HTMLDivElement>(null);
   const displayRef = useRef<HTMLDivElement>(null);
   const remoteClipboardRef = useRef<ReturnType<
@@ -181,6 +188,7 @@ export const GuacamoleDisplay = forwardRef<
   // Set once this client reached CONNECTED, so a close before that stays an error.
   const wasConnectedRef = useRef(false);
   const keyboardRef = useRef<Guacamole.Keyboard | null>(null);
+  const unbindAudioRef = useRef<(() => void) | null>(null);
   const unbindPointerRef = useRef<(() => void) | null>(null);
   const unwatchAltRef = useRef<(() => void) | null>(null);
   const scaleRef = useRef<number>(1);
@@ -221,6 +229,8 @@ export const GuacamoleDisplay = forwardRef<
   const disconnectClient = useCallback(() => {
     unbindPointerRef.current?.();
     unbindPointerRef.current = null;
+    unbindAudioRef.current?.();
+    unbindAudioRef.current = null;
     unwatchAltRef.current?.();
     unwatchAltRef.current = null;
     const client = clientRef.current;
@@ -455,15 +465,14 @@ export const GuacamoleDisplay = forwardRef<
         document.activeElement === activeDisplay;
 
       if (!hasKeyboardFocusRef.current && !stillFocused) return;
-      if (!shouldSendKey(keysym, true)) return;
       clientRef.current.sendKeyEvent(
         1,
         remoteKeysym(sessionProtocolRef.current, keysym, true),
       );
+      if (isToggleKey(keysym)) clientRef.current.sendKeyEvent(0, keysym);
     };
 
     keyboard.onkeyup = (keysym: number) => {
-      if (!shouldSendKey(keysym, false)) return;
       // Focus loss must still release keys already sent to the remote host.
       clientRef.current?.sendKeyEvent(
         0,
@@ -600,6 +609,7 @@ export const GuacamoleDisplay = forwardRef<
           client,
           text,
           pasteModifierFor(sessionProtocolRef.current),
+          keyboardRef.current?.pressed,
         );
       }
     });
@@ -609,6 +619,11 @@ export const GuacamoleDisplay = forwardRef<
       displayRef.current.appendChild(displayElement);
       displayRef.current.appendChild(pasteCatcher.element);
     }
+
+    unbindAudioRef.current?.();
+    unbindAudioRef.current = bindAudioUnlock(displayElement, () =>
+      Guacamole.AudioContextFactory.getAudioContext(),
+    );
 
     displayElement.setAttribute("tabindex", "0");
     displayElement.style.outline = "none";
@@ -640,6 +655,7 @@ export const GuacamoleDisplay = forwardRef<
           client,
           text,
           pasteModifierFor(sessionProtocolRef.current),
+          keyboardRef.current?.pressed,
         );
       },
       true,
@@ -679,7 +695,9 @@ export const GuacamoleDisplay = forwardRef<
     );
 
     unwatchAltRef.current?.();
-    unwatchAltRef.current = watchRightAlt(displayElement);
+    unwatchAltRef.current = watchRightAlt(displayElement, (keysym) => {
+      keyboardRef.current?.onkeydown?.(keysym);
+    });
     const keyboard = new Guacamole.Keyboard(displayElement);
     keyboardRef.current = keyboard;
 
@@ -718,10 +736,9 @@ export const GuacamoleDisplay = forwardRef<
             setIsReady(true);
             onConnect?.();
           }
-          // A configured resolution is the size the session should render at;
-          // resizing it to the container would discard it. rescaleDisplay still
-          // fits that fixed display into whatever space is available.
-          if (!hasConfiguredSize && containerRef.current) {
+          // Preserve fixed dimensions and the initial Auto size when resizing is
+          // disabled. Local scaling still fits the display into the container.
+          if (followsContainer && containerRef.current) {
             const rect = containerRef.current.getBoundingClientRect();
             const size = getGuacamoleDisplaySize(
               rect.width,
@@ -858,7 +875,7 @@ export const GuacamoleDisplay = forwardRef<
     connectionConfig.protocol,
     connectionConfig.type,
     connectionConfig.dpi,
-    hasConfiguredSize,
+    followsContainer,
     touchMode,
     t,
   ]);
@@ -940,7 +957,7 @@ export const GuacamoleDisplay = forwardRef<
           if (rect.width > 0 && rect.height > 0) {
             // A size sent while guacd is still dialing a VNC server crashes
             // its VNC client. The connected handler sends the first size.
-            if (!hasConfiguredSize && !isConnectingRef.current) {
+            if (followsContainer && !isConnectingRef.current) {
               const size = getGuacamoleDisplaySize(
                 rect.width,
                 rect.height,
@@ -974,7 +991,7 @@ export const GuacamoleDisplay = forwardRef<
     connectionConfig.dpi,
     connectionConfig.protocol,
     connectionConfig.type,
-    hasConfiguredSize,
+    followsContainer,
     rescaleDisplay,
   ]);
 

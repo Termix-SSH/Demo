@@ -147,7 +147,7 @@ export function SnapshotBrowser({
                 leading={
                   <span
                     onClick={(e) => e.stopPropagation()}
-                    className="flex items-center"
+                    className="flex shrink-0 items-center pl-2"
                   >
                     <Checkbox
                       checked={checked}

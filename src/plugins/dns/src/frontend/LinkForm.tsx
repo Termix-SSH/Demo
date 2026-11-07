@@ -106,86 +106,91 @@ export function LinkForm({
       }
     >
       <SectionCard title={t("link.record")} icon={<Link2 />}>
-        <SelectField
-          label={t("link.zone")}
-          value={zoneKey}
-          placeholder={t("link.pickZone")}
-          disabled={!!link}
-          onChange={setZoneKey}
-          options={zones.map((item) => ({
-            value: `${item.accountId}:${item.id}`,
-            label: `${item.name} (${item.accountName})`,
-          }))}
-        />
-        <TextField
-          label={t("record.name")}
-          value={name}
-          onChange={setName}
-          placeholder="home"
-          hint={t("record.nameHint", { zone: zone?.name ?? "" })}
-          mono
-        />
-        <SelectField
-          label={t("record.type")}
-          value={type}
-          onChange={(value) => {
-            setType(value);
-            if (source === "public4" && value === "AAAA") setSource("public6");
-            if (source === "public6" && value === "A") setSource("public4");
-          }}
-          options={[
-            { value: "A", label: "A (IPv4)" },
-            { value: "AAAA", label: "AAAA (IPv6)" },
-          ]}
-        />
-        <NumberField
-          label={t("record.ttl")}
-          value={ttl}
-          onChange={setTtl}
-          min={1}
-          max={86400}
-        />
-        {features?.proxied && (
-          <SwitchRow
-            label={t("record.proxied")}
-            description={t("record.proxiedHint")}
-            checked={proxied}
-            onChange={setProxied}
-          />
-        )}
-      </SectionCard>
-      <SectionCard title={t("link.address")} icon={<Link2 />}>
-        <SelectField
-          label={t("link.source")}
-          value={source}
-          onChange={(value) => setSource(value as LinkSource)}
-          options={[
-            { value: "host", label: t("link.sourceHost") },
-            type === "A"
-              ? { value: "public4", label: t("link.sourcePublic4") }
-              : { value: "public6", label: t("link.sourcePublic6") },
-          ]}
-        />
-        {source === "host" && (
+        <div className="flex flex-col gap-3 py-2">
           <SelectField
-            label={t("link.host")}
-            value={hostId}
-            placeholder={t("link.pickHost")}
-            onChange={setHostId}
-            options={hosts.map((host) => ({
-              value: String(host.id),
-              label: `${host.name} (${host.ip})`,
+            label={t("link.zone")}
+            value={zoneKey}
+            placeholder={t("link.pickZone")}
+            disabled={!!link}
+            onChange={setZoneKey}
+            options={zones.map((item) => ({
+              value: `${item.accountId}:${item.id}`,
+              label: `${item.name} (${item.accountName})`,
             }))}
           />
-        )}
-        <p className="text-xs text-muted-foreground">
-          {t(source === "host" ? "link.hostHint" : "link.publicHint")}
-        </p>
-        <SwitchRow
-          label={t("link.enabled")}
-          checked={enabled}
-          onChange={setEnabled}
-        />
+          <TextField
+            label={t("record.name")}
+            value={name}
+            onChange={setName}
+            placeholder="home"
+            hint={t("record.nameHint", { zone: zone?.name ?? "" })}
+            mono
+          />
+          <SelectField
+            label={t("record.type")}
+            value={type}
+            onChange={(value) => {
+              setType(value);
+              if (source === "public4" && value === "AAAA")
+                setSource("public6");
+              if (source === "public6" && value === "A") setSource("public4");
+            }}
+            options={[
+              { value: "A", label: "A (IPv4)" },
+              { value: "AAAA", label: "AAAA (IPv6)" },
+            ]}
+          />
+          <NumberField
+            label={t("record.ttl")}
+            value={ttl}
+            onChange={setTtl}
+            min={1}
+            max={86400}
+          />
+          {features?.proxied && (
+            <SwitchRow
+              label={t("record.proxied")}
+              description={t("record.proxiedHint")}
+              checked={proxied}
+              onChange={setProxied}
+            />
+          )}
+        </div>
+      </SectionCard>
+      <SectionCard title={t("link.address")} icon={<Link2 />}>
+        <div className="flex flex-col gap-3 py-2">
+          <SelectField
+            label={t("link.source")}
+            value={source}
+            onChange={(value) => setSource(value as LinkSource)}
+            options={[
+              { value: "host", label: t("link.sourceHost") },
+              type === "A"
+                ? { value: "public4", label: t("link.sourcePublic4") }
+                : { value: "public6", label: t("link.sourcePublic6") },
+            ]}
+          />
+          {source === "host" && (
+            <SelectField
+              label={t("link.host")}
+              value={hostId}
+              placeholder={t("link.pickHost")}
+              onChange={setHostId}
+              options={hosts.map((host) => ({
+                value: String(host.id),
+                label: `${host.name} (${host.ip})`,
+              }))}
+            />
+          )}
+          <p className="text-xs text-muted-foreground">
+            {t(source === "host" ? "link.hostHint" : "link.publicHint")}
+          </p>
+          <SwitchRow
+            label={t("link.enabled")}
+            checked={enabled}
+            onChange={setEnabled}
+          />
+        </div>
       </SectionCard>
     </InlineView>
   );

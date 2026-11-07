@@ -10,7 +10,6 @@ import {
   PanelList,
   PanePrompt,
   Pager,
-  StatusDot,
   TextField,
   usePaged,
 } from "@termix-ssh/plugin-sdk/ui";
@@ -74,12 +73,7 @@ export function IncidentsView({
           <ListRow
             key={incident.id}
             title={incident.monitorName}
-            leading={
-              <StatusDot
-                tone={incident.endedAt ? "idle" : "bad"}
-                pulse={!incident.endedAt}
-              />
-            }
+            tone={incident.endedAt ? "muted" : "destructive"}
             meta={`${whenText(incident.startedAt)} | ${incident.cause}`}
             badges={
               <ListBadge tone={incident.endedAt ? "muted" : "destructive"}>

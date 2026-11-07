@@ -10,13 +10,9 @@ interface Props {
   isVisible: boolean;
 }
 
-function stamp(t: number, range: HistoryRange): string {
-  const d = new Date(t * 1000);
-  return range === "24h"
-    ? d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-    : d.toLocaleDateString([], { month: "short", day: "numeric" }) +
-        " " +
-        d.toLocaleTimeString([], { hour: "2-digit" });
+// LineChart reads ISO times and labels the axis itself.
+function stamp(t: number): string {
+  return new Date(t * 1000).toISOString();
 }
 
 function Block({
@@ -62,7 +58,7 @@ export function HistoryView({ hostId, sourceId, isVisible }: Props) {
     };
   }, [hostId, sourceId, range, isVisible, t]);
 
-  const stamps = (points ?? []).map((p) => stamp(p.t, range));
+  const stamps = (points ?? []).map((p) => stamp(p.t));
   const col = (key: "c" | "l" | "r" | "i" | "o") =>
     (points ?? []).map((p) => p[key]);
   const has = (key: "c" | "l" | "r" | "i" | "o") =>

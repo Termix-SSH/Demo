@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.0
+
+### Added
+
+- Ask for a second factor before connecting to a host, on every host or only marked ones. Once entered it lasts for a set time per person, and background work is never asked (#2)
+
+### Changed
+
+- Needs Termix 26.11.1 or newer
+
 ## 1.0.0
 
 ### Added

@@ -5,12 +5,7 @@ import {
   useTranslation,
   type DashboardCardProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import {
-  ListRow,
-  PanelList,
-  StatusDot,
-  LoadingState,
-} from "@termix-ssh/plugin-sdk/ui";
+import { ListRow, PanelList, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import type { Device } from "../shared/types";
 import { createApi } from "./api";
 import { formatUptime } from "./format";
@@ -18,6 +13,13 @@ import { formatUptime } from "./format";
 const POLL_MS = 30_000;
 
 /** Dashboard card: each device with its state. */
+const ROW_TONE = {
+  ok: "brand",
+  warn: "warning",
+  bad: "destructive",
+  idle: "muted",
+} as const;
+
 export function NetworkCard({ isVisible, shell }: DashboardCardProps) {
   const { t } = useTranslation();
   const canView = usePermission("view");
@@ -61,17 +63,14 @@ export function NetworkCard({ isVisible, shell }: DashboardCardProps) {
         <ListRow
           key={device.id}
           stripe={index}
-          tone={device.status === "down" ? "destructive" : "none"}
-          icon={
-            <StatusDot
-              tone={
-                device.status === "up"
-                  ? "ok"
-                  : device.status === "down"
-                    ? "bad"
-                    : "idle"
-              }
-            />
+          tone={
+            ROW_TONE[
+              device.status === "up"
+                ? "ok"
+                : device.status === "down"
+                  ? "bad"
+                  : "idle"
+            ]
           }
           title={device.name}
           meta={[

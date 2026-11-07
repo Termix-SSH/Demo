@@ -1132,6 +1132,36 @@ export function HostItem({
     </button>
   );
 
+  // With no address or tags to show, a compact row fits on one line.
+  const compactOneLine =
+    isCompact && !rowFields.showAddress && !(showTags && !!host.tags?.length);
+  const compactDetails = (
+    <span className="sr-only">
+      {formatHostAddress(host, { showUsername: true, showPort: true })}
+      {host.tags?.length ? `, ${host.tags.join(", ")}` : ""}
+    </span>
+  );
+  const compactActions = !selectionMode && (
+    <div className="flex items-center min-w-0 max-w-full shrink-0 ml-auto">
+      <div
+        data-testid="host-inline-actions"
+        className={`flex items-center gap-[2px] min-w-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [&>*]:shrink-0 ${alwaysShowTray || actionsOnly || trayOpenState || hoverTrayOpen ? "" : "hidden"}`}
+      >
+        {connectionButtons}
+        <div
+          className={
+            alwaysShowTray || trayOpenState || hoverTrayOpen
+              ? "flex items-center gap-[2px]"
+              : "hidden"
+          }
+        >
+          {managementButtons}
+        </div>
+      </div>
+      {trayToggle}
+    </div>
+  );
+
   return (
     <div
       draggable={canDrag}
@@ -1401,17 +1431,17 @@ export function HostItem({
           )}
           {!isCompact && hostBadges}
           {!isCompact && trayToggle}
+          {compactOneLine && compactDetails}
+          {compactOneLine && hostBadges}
+          {compactOneLine && compactActions}
         </div>
 
-        {isCompact && (
+        {isCompact && !compactOneLine && (
           <div
             data-testid="host-details-row"
             className="flex items-center min-w-0 min-h-[19px]"
           >
-            <span className="sr-only">
-              {formatHostAddress(host, { showUsername: true, showPort: true })}
-              {host.tags?.length ? `, ${host.tags.join(", ")}` : ""}
-            </span>
+            {compactDetails}
             <div className="flex items-center gap-1 flex-1 min-w-0 overflow-hidden">
               {hostBadges}
               {rowFields.showAddress && (
@@ -1439,26 +1469,7 @@ export function HostItem({
                 </div>
               )}
             </div>
-            {!selectionMode && (
-              <div className="flex items-center min-w-0 max-w-full shrink-0 ml-auto">
-                <div
-                  data-testid="host-inline-actions"
-                  className={`flex items-center gap-[2px] min-w-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [&>*]:shrink-0 ${alwaysShowTray || actionsOnly || trayOpenState || hoverTrayOpen ? "" : "hidden"}`}
-                >
-                  {connectionButtons}
-                  <div
-                    className={
-                      alwaysShowTray || trayOpenState || hoverTrayOpen
-                        ? "flex items-center gap-[2px]"
-                        : "hidden"
-                    }
-                  >
-                    {managementButtons}
-                  </div>
-                </div>
-                {trayToggle}
-              </div>
-            )}
+            {compactActions}
           </div>
         )}
 

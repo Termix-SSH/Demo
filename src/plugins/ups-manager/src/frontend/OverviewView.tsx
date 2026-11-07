@@ -12,6 +12,7 @@ import {
   AlertDescription,
   InfoGrid,
   StatTile,
+  TileStack,
   TileWall,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { SourceView } from "../shared/types";
@@ -60,9 +61,9 @@ export function OverviewView({ source }: { source: SourceView }) {
           : "default";
 
   return (
-    <div className="flex flex-col">
+    <TileStack>
       {source.error && (
-        <div className="border-b border-border px-3 py-2 text-xs text-destructive">
+        <div className="px-3 py-2 text-xs text-destructive">
           {t("overview.stale", { error: source.error })}
         </div>
       )}
@@ -136,7 +137,7 @@ export function OverviewView({ source }: { source: SourceView }) {
           unit="C"
         />
       </TileWall>
-      <div className="border-t border-border p-3">
+      <div className="p-3">
         <InfoGrid
           items={[
             {
@@ -155,6 +156,6 @@ export function OverviewView({ source }: { source: SourceView }) {
           ]}
         />
       </div>
-    </div>
+    </TileStack>
   );
 }

@@ -122,6 +122,30 @@ export interface RedirectTarget {
 }
 
 export const MAX_REDIRECTS = 3;
+/**
+ * Windows often makes RDP certificates with only Key Encipherment. BoringSSL,
+ * which the desktop app's Node uses, refuses those for ECDHE key exchange, but
+ * plain RSA key exchange only needs Key Encipherment (Plugin-Remote-Desktop#32).
+ */
+export const RSA_KEY_EXCHANGE = {
+  maxVersion: "TLSv1.2",
+  ciphers:
+    "AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA",
+} as const;
+
+/** Only when the user turned off certificate checks, and only once. */
+export function retryWithRsaKeyExchange(
+  error: Error,
+  verify: boolean,
+  alreadyTried: boolean,
+): boolean {
+  return (
+    !verify && !alreadyTried && /KEY_USAGE_BIT_INCORRECT/.test(error.message)
+  );
+}
+
+/** How long keys wait after a clipboard update, so Ctrl+V pastes the new text. */
+export const CLIPBOARD_KEY_HOLD_MS = 250;
 
 function privateJump(address: string): boolean {
   return (
@@ -331,11 +355,16 @@ export class RdpClient implements RemoteClient, PixelSource {
   private drive: DriveCallbacks | null = null;
   private timer: NodeJS.Timeout | null = null;
   private resizeTimer: NodeJS.Timeout | null = null;
+  /** Keys that wait for the server to take a new clipboard. */
+  private heldKeys: Array<[number, boolean]> | null = null;
+  private holdTimer: NodeJS.Timeout | null = null;
   private connected = false;
   private stopped = false;
   private reconnecting = false;
   private redirect: RedirectTarget | null = null;
   private hops = 0;
+  /** Set after a certificate without the Digital Signature use was refused. */
+  private rsaKeyExchange = false;
   private size = { width: 0, height: 0, dpi: 96 };
   width = 0;
   height = 0;
@@ -482,16 +511,28 @@ export class RdpClient implements RemoteClient, PixelSource {
         : { servername: hostname, host: hostname }),
       // RDP servers often only offer old TLS versions.
       minVersion: "TLSv1",
+      ...(this.rsaKeyExchange ? RSA_KEY_EXCHANGE : {}),
     });
     this.socket = secure;
     secure.on("data", (chunk: Buffer) => this.feed(chunk));
     secure.on("error", (error: Error) => {
       if (this.stopped || this.reconnecting) return;
       if (!this.connected) {
+        if (retryWithRsaKeyExchange(error, verify, this.rsaKeyExchange)) {
+          this.rsaKeyExchange = true;
+          this.host.log(
+            "warn",
+            "RDP certificate lacks the Digital Signature use, retrying with RSA key exchange",
+          );
+          this.reconnect();
+          return;
+        }
         this.host.fail(
-          verify
-            ? `The server certificate was refused: ${error.message}`
-            : `TLS failed: ${error.message}`,
+          verify && /KEY_USAGE_BIT_INCORRECT/.test(error.message)
+            ? "The server certificate is not made for signing. Turn on Ignore certificate errors for this host, or make a new RDP certificate on the server"
+            : verify
+              ? `The server certificate was refused: ${error.message}`
+              : `TLS failed: ${error.message}`,
           Status.UPSTREAM_ERROR,
         );
       }
@@ -629,6 +670,14 @@ export class RdpClient implements RemoteClient, PixelSource {
 
   key(keysym: number, pressed: boolean): void {
     if (!this.connected || this.host.settings.bool("read-only")) return;
+    if (this.heldKeys) {
+      this.heldKeys.push([keysym, pressed]);
+      return;
+    }
+    this.sendKey(keysym, pressed);
+  }
+
+  private sendKey(keysym: number, pressed: boolean): void {
     for (const out of this.keyboard.key(keysym, pressed)) {
       if ("scancode" in out) this.rdp?.key(out.scancode, out.down);
       else this.rdp?.unicode(out.unicode, out.down);
@@ -700,6 +749,23 @@ export class RdpClient implements RemoteClient, PixelSource {
   clipboard(text: string): void {
     this.rdp?.clipboard_set(text);
     this.pump();
+    // Windows has to take the new format list before a Ctrl+V reaches it,
+    // or it pastes the old clipboard (#29). Keys wait a moment, in order.
+    this.heldKeys ??= [];
+    if (this.holdTimer) clearTimeout(this.holdTimer);
+    this.holdTimer = setTimeout(
+      () => this.releaseKeys(),
+      CLIPBOARD_KEY_HOLD_MS,
+    );
+  }
+
+  private releaseKeys(): void {
+    const keys = this.heldKeys ?? [];
+    this.heldKeys = null;
+    this.holdTimer = null;
+    if (!this.connected || this.stopped) return;
+    for (const [keysym, pressed] of keys) this.sendKey(keysym, pressed);
+    this.pump();
   }
 
   stop(): void {
@@ -707,6 +773,7 @@ export class RdpClient implements RemoteClient, PixelSource {
     this.stopped = true;
     if (this.timer) clearInterval(this.timer);
     if (this.resizeTimer) clearTimeout(this.resizeTimer);
+    if (this.holdTimer) clearTimeout(this.holdTimer);
     try {
       this.rdp?.shutdown();
       this.pump();

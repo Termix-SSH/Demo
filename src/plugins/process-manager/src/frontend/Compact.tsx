@@ -16,6 +16,7 @@ import {
   ManagerCardShell,
   PanelList,
   PanelSearch,
+  ToolbarBand,
   useConfirm,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { ManagersView, ProcessList, ProcessRow } from "../shared/types";
@@ -263,12 +264,12 @@ export function ProcessesCompanion({
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="flex items-center gap-1 p-1.5">
+      <ToolbarBand className="flex-nowrap">
         <PanelSearch
           value={filter}
           onChange={setFilter}
           placeholder={t("list.search")}
-          className="flex-1"
+          className="min-w-0 flex-1"
         />
         <Button
           variant="ghost"
@@ -277,7 +278,7 @@ export function ProcessesCompanion({
         >
           {t("companion.open")}
         </Button>
-      </div>
+      </ToolbarBand>
       {error && <p className="px-3 py-1 text-xs text-destructive">{error}</p>}
       <div className="min-h-0 flex-1 overflow-auto">
         <Rows

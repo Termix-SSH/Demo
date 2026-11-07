@@ -1,13 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  ArrowLeft,
-  Bell,
-  BellOff,
-  Copy,
-  MonitorCog,
-  Skull,
-  Trash2,
-} from "lucide-react";
+import { Bell, BellOff, Copy, MonitorCog, Skull, Trash2 } from "lucide-react";
 import {
   useTranslation,
   type PluginHostRecord,
@@ -28,6 +20,7 @@ import {
   TileWall,
   useConfirm,
   ToolbarBand,
+  BackButton,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { Inventory, VmDetail, VmRow } from "../shared/types";
 import {
@@ -148,17 +141,7 @@ export function VmDetailView({
   }, [isVisible, running, view, hostId, uuid, cpus]);
 
   const icon = <MonitorCog className="size-4" />;
-  const back = (
-    <Button
-      variant="ghost"
-      size="icon"
-      onClick={onBack}
-      title={t("vm.back")}
-      aria-label={t("vm.back")}
-    >
-      <ArrowLeft className="size-4" />
-    </Button>
-  );
+  const back = <BackButton onClick={onBack} label={t("vm.back")} />;
 
   if (!detail) {
     return (

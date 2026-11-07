@@ -150,7 +150,6 @@ function ZonesView({
         />
         {canEdit && (
           <Button
-            size="sm"
             disabled={main === status.defaultZone || change.busy}
             onClick={() =>
               void change.run(

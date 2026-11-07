@@ -477,6 +477,9 @@ export {
   getUserSecondFactors,
   resetUserSecondFactors,
   type UserSecondFactorSummary,
+  challengeStepUp,
+  listStepUpFactors,
+  verifyStepUp,
 } from "@/api/auth-methods-api";
 export { getCredentials } from "@/api/credentials-api";
 export {
@@ -680,7 +683,12 @@ export {
   getHostAuthOverride,
   getFolderAuthOverride,
   getHostPassword,
+  getFolderDeviceAuth,
+  getHostDeviceAuth,
   getHostPolicy,
+  setFolderDeviceAuth,
+  setHostDeviceAuth,
+  type DeviceLogin,
   type HostPolicy,
   getHostSidebarPreferences,
   getHttpsSettings,
@@ -690,6 +698,7 @@ export {
   getPasswordResetAllowed,
   getPermissionsCatalog,
   getRegistrationAllowed,
+  getCredentialStorage,
   getSecondFactorAfterExternalLogin,
   getSessions,
   getSessionTimeout,
@@ -736,6 +745,7 @@ export {
   updatePasswordResetAllowed,
   updateRegistrationAllowed,
   updateRole,
+  updateCredentialStorage,
   updateSecondFactorAfterExternalLogin,
   updateSessionTimeout,
   updateSSHHost,
@@ -872,3 +882,4 @@ export { HostTabEmbed } from "@/shell/HostTabEmbed";
 import { createOperationsApi } from "@/lib/plugin-transport";
 /** Core's /operations routes, with the user's own session. */
 export const operationsApi = createOperationsApi();
+export { useSecondFactors } from "@/plugin-host/auth-registry";

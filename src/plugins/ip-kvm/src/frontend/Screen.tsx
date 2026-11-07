@@ -4,7 +4,8 @@ import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { pluginWsUrl } from "@termix-ssh/plugin-sdk/ui";
 import type { InputEvent } from "../shared/types";
 import { errorMessage, type KvmApi } from "./api";
-import { BUTTONS, pointerPosition, shortcutEvents } from "./input";
+import { BUTTONS, keyName, pointerPosition, shortcutEvents } from "./input";
+import { useFullscreen } from "./fullscreen";
 import { Toolbar } from "./Toolbar";
 
 const MOVE_GAP_MS = 16;
@@ -24,6 +25,8 @@ export function Screen({
   const { t } = useTranslation();
   const canvas = useRef<HTMLCanvasElement>(null);
   const wrap = useRef<HTMLDivElement>(null);
+  const root = useRef<HTMLDivElement>(null);
+  const [fullscreen, toggleFullscreen] = useFullscreen(root);
   const socket = useRef<WebSocket | null>(null);
   const held = useRef(new Set<string>());
   const lastMove = useRef(0);
@@ -101,7 +104,11 @@ export function Screen({
           });
       };
       ws.onerror = () => setNote(t("screen.failed"));
-      ws.onclose = () => setLive(false);
+      ws.onclose = () => {
+        if (closed) return;
+        setLive(false);
+        setNote((current) => current || t("screen.ended"));
+      };
     })().catch(() => setNote(t("screen.failed")));
     return () => {
       closed = true;
@@ -150,14 +157,15 @@ export function Screen({
   }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
+    <div ref={root} className="flex min-h-0 flex-1 flex-col bg-background">
       <Toolbar
         note={note}
         live={live}
         onShortcut={runShortcut}
         onPaste={canPaste ? paste : undefined}
         onSnapshot={snapshot}
-        onFullscreen={() => void wrap.current?.requestFullscreen?.()}
+        fullscreen={fullscreen}
+        onFullscreen={toggleFullscreen}
         onReconnect={() => setAttempt((value) => value + 1)}
       />
       <div
@@ -169,14 +177,18 @@ export function Screen({
           if (!live) return;
           event.preventDefault();
           if (event.repeat) return;
-          held.current.add(event.code);
-          send({ t: "key", code: event.code, down: true });
+          const code = keyName(event);
+          if (!code) return;
+          held.current.add(code);
+          send({ t: "key", code, down: true });
         }}
         onKeyUp={(event) => {
           if (!live) return;
           event.preventDefault();
-          held.current.delete(event.code);
-          send({ t: "key", code: event.code, down: false });
+          const code = keyName(event);
+          if (!code) return;
+          held.current.delete(code);
+          send({ t: "key", code, down: false });
         }}
       >
         <canvas

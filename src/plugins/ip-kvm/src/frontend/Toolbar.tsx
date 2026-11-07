@@ -19,6 +19,7 @@ export function Toolbar({
   onShortcut,
   onPaste,
   onSnapshot,
+  fullscreen,
   onFullscreen,
   onReconnect,
   extra,
@@ -28,6 +29,7 @@ export function Toolbar({
   onShortcut: (name: string) => void;
   onPaste?: (text: string) => Promise<void>;
   onSnapshot: () => void;
+  fullscreen: boolean;
   onFullscreen: () => void;
   onReconnect: () => void;
   extra?: React.ReactNode;
@@ -81,8 +83,12 @@ export function Toolbar({
         <Button variant="outline" disabled={!live} onClick={onSnapshot}>
           {t("screen.snapshot")}
         </Button>
-        <Button variant="outline" disabled={!live} onClick={onFullscreen}>
-          {t("screen.fullscreen")}
+        <Button
+          variant="outline"
+          disabled={!live && !fullscreen}
+          onClick={onFullscreen}
+        >
+          {t(fullscreen ? "screen.exitFullscreen" : "screen.fullscreen")}
         </Button>
         <Button variant="outline" onClick={onReconnect}>
           {t("screen.reconnect")}

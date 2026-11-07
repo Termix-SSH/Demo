@@ -63,7 +63,12 @@ interface CommandPaletteProps {
   hosts: Host[];
   terminalTabs?: Tab[];
   activeTabId?: string;
-  onOpenTab: (type: TabType, label?: string, pendingEvent?: string) => void;
+  onOpenTab: (
+    type: TabType,
+    label?: string,
+    pendingEvent?: string,
+    host?: Host,
+  ) => void;
   /** Opens a sidebar panel. Kept separate from onOpenTab, which is TabType-shaped. */
   onOpenPanel?: (view: string) => void;
 }
@@ -309,7 +314,11 @@ export function CommandPalette({
                       onSelect={() =>
                         handleAction(() => {
                           const target = activityTarget(item.type);
-                          if (target) onOpenTab(target.tab, item.hostName);
+                          const host = hosts.find(
+                            (h) => h.id === String(item.hostId),
+                          );
+                          if (target && host)
+                            onOpenTab(target.tab, undefined, undefined, host);
                         })
                       }
                       className={rowClass}

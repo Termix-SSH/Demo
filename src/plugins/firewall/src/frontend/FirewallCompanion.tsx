@@ -150,7 +150,6 @@ export function FirewallPanel({
                 className="flex-1"
               />
               <Button
-                size="sm"
                 disabled={!port.trim() || change.busy}
                 onClick={() => void allow()}
               >

@@ -332,7 +332,6 @@ export function ProxmoxDiscoverDialog({
               ))}
             </Select2>
             <Button
-              size="sm"
               variant="outline"
               disabled={!canDiscover || discovering}
               onClick={handleDiscover}

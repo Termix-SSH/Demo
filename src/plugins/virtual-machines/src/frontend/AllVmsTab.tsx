@@ -16,7 +16,7 @@ import {
   PanelShell,
   RefreshButton,
   StatusBadge,
-  TextField,
+  PanelSearch,
 } from "@termix-ssh/plugin-sdk/ui";
 import { formatBytes, stateTone, statusText } from "./format";
 import { openVm } from "./focus";
@@ -71,10 +71,11 @@ export function AllVmsTab({ isVisible }: TabProps) {
           />
         }
         toolbar={
-          <TextField
-            label={t("all.search")}
+          <PanelSearch
             value={search}
             onChange={setSearch}
+            placeholder={t("all.search")}
+            fill
           />
         }
       >

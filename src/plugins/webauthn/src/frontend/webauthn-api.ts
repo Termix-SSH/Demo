@@ -37,15 +37,22 @@ export function isPasskeySupported(): boolean {
 export function createWebAuthnApi(api: PluginApiClient) {
   return {
     /** Whether the admin left passkey sign in on. */
-    async passwordlessEnabled(): Promise<boolean> {
+    async loginOptions(): Promise<{
+      passwordless: boolean;
+      onSsoPage: boolean;
+    }> {
       try {
-        const { data } = await api.get<{ passwordless?: boolean }>(
-          "login-options",
-        );
-        return data.passwordless !== false;
+        const { data } = await api.get<{
+          passwordless?: boolean;
+          onSsoPage?: boolean;
+        }>("login-options");
+        return {
+          passwordless: data.passwordless !== false,
+          onSsoPage: data.onSsoPage !== false,
+        };
       } catch {
         // An older server without the route always allows it.
-        return true;
+        return { passwordless: true, onSsoPage: true };
       }
     },
     /**

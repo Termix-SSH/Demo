@@ -12,7 +12,6 @@ import {
   Facts,
   ListBadge,
   ListRow,
-  ListRowAction,
   LoadingState,
   NumberField,
   PANEL,
@@ -234,42 +233,48 @@ function RequestRows({
               </Facts>
             }
             trailing={
-              <>
+              <div className="flex items-center gap-1.5">
                 {view === "pending" && (
                   <>
-                    <ListRowAction
-                      label={t("list.approve")}
-                      onClick={() => onApprove(row)}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onApprove(row);
+                      }}
                     >
-                      <span className="text-xs">{t("list.approve")}</span>
-                    </ListRowAction>
-                    <ListRowAction
-                      label={t("list.deny")}
-                      tone="destructive"
-                      onClick={() => onDeny(row)}
+                      {t("list.approve")}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="text-destructive"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDeny(row);
+                      }}
                     >
-                      <span className="text-xs">{t("list.deny")}</span>
-                    </ListRowAction>
+                      {t("list.deny")}
+                    </Button>
                   </>
                 )}
                 {(row.status === "pending" && view === "mine") || active ? (
-                  <ListRowAction
-                    label={
-                      row.status === "pending"
-                        ? t("list.cancel")
-                        : t("list.endNow")
-                    }
-                    tone="destructive"
-                    onClick={() => onEnd(row)}
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="text-destructive"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEnd(row);
+                    }}
                   >
-                    <span className="text-xs">
-                      {row.status === "pending"
-                        ? t("list.cancel")
-                        : t("list.endNow")}
-                    </span>
-                  </ListRowAction>
+                    {row.status === "pending"
+                      ? t("list.cancel")
+                      : t("list.endNow")}
+                  </Button>
                 ) : null}
-              </>
+              </div>
             }
           />
         );

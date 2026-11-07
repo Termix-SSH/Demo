@@ -149,11 +149,16 @@ export function UpdatesView({
               selected={picked.has(item.name)}
               leading={
                 single ? (
-                  <Checkbox
-                    checked={picked.has(item.name)}
-                    onCheckedChange={() => toggle(item.name)}
-                    aria-label={t("updates.pick", { name: item.name })}
-                  />
+                  <span
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex shrink-0 items-center pl-2"
+                  >
+                    <Checkbox
+                      checked={picked.has(item.name)}
+                      onCheckedChange={() => toggle(item.name)}
+                      aria-label={t("updates.pick", { name: item.name })}
+                    />
+                  </span>
                 ) : undefined
               }
               title={<span className="font-mono">{item.name}</span>}

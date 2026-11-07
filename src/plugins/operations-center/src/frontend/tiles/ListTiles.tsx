@@ -176,7 +176,7 @@ export function ActionsListTile({
     <div className="flex flex-col">
       <div className="flex flex-wrap gap-2 border-b border-border p-2">
         <Input
-          className="h-7 min-w-32 flex-1 text-xs"
+          className="h-8 min-w-32 flex-1 text-xs"
           value={query}
           placeholder={t("host.searchActions")}
           onChange={(event) => {

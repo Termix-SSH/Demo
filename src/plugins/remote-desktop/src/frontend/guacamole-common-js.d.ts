@@ -57,6 +57,10 @@ declare module "guacamole-common-js" {
       onundefine: (() => void) | null;
     }
 
+    const AudioContextFactory: {
+      getAudioContext(): AudioContext | null;
+    };
+
     class AudioPlayer {
       static getInstance(
         stream: InputStream,
@@ -173,6 +177,7 @@ declare module "guacamole-common-js" {
     }
 
     class Keyboard {
+      pressed: Record<number, boolean>;
       constructor(element: Document | HTMLElement);
       reset(): void;
       onkeydown: ((keysym: number) => void) | null;

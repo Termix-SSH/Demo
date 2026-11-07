@@ -314,17 +314,19 @@ export function MonitorEditor({
           title={t("editor.from")}
           icon={<Server className="size-4" />}
         >
-          <SelectField
-            label={t("editor.fromHost")}
-            value={form.fromHostId}
-            onChange={(fromHostId) => set({ fromHostId })}
-            options={hostOptions.map((option) =>
-              option.value === NO_HOST
-                ? { ...option, label: t("editor.fromServer") }
-                : option,
-            )}
-            hint={t("editor.fromHint")}
-          />
+          <div className="flex flex-col gap-3 py-2">
+            <SelectField
+              label={t("editor.fromHost")}
+              value={form.fromHostId}
+              onChange={(fromHostId) => set({ fromHostId })}
+              options={hostOptions.map((option) =>
+                option.value === NO_HOST
+                  ? { ...option, label: t("editor.fromServer") }
+                  : option,
+              )}
+              hint={t("editor.fromHint")}
+            />
+          </div>
         </SectionCard>
       ) : null}
       <SectionCard

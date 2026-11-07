@@ -5,12 +5,7 @@ import {
   useTranslation,
   type DashboardCardProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import {
-  ListRow,
-  PanelList,
-  StatusDot,
-  LoadingState,
-} from "@termix-ssh/plugin-sdk/ui";
+import { ListRow, PanelList, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import type { Device } from "../shared/types";
 import { createApi } from "./api";
 import { statusTone } from "./format";
@@ -24,6 +19,13 @@ function rank(device: Device): number {
 }
 
 /** Dashboard card: each BMC with its power and health, worst first. */
+const ROW_TONE = {
+  ok: "brand",
+  warn: "warning",
+  bad: "destructive",
+  idle: "muted",
+} as const;
+
 export function OobCard({ isVisible, shell }: DashboardCardProps) {
   const { t } = useTranslation();
   const canView = usePermission("view");
@@ -68,12 +70,7 @@ export function OobCard({ isVisible, shell }: DashboardCardProps) {
         <ListRow
           key={device.id}
           stripe={index}
-          tone={device.status === "down" ? "destructive" : "none"}
-          icon={
-            <StatusDot
-              tone={statusTone(device.status, device.reading?.health)}
-            />
-          }
+          tone={ROW_TONE[statusTone(device.status, device.reading?.health)]}
           title={device.name}
           meta={[
             device.status === "down"

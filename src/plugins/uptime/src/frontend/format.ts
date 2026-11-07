@@ -72,3 +72,20 @@ export function uptimeTone(
   if (value >= 99.9) return "ok";
   return value >= 95 ? "warn" : "bad";
 }
+
+/** Row stripe for a monitor status. */
+export function rowToneOf(
+  status: MonitorStatus,
+): "brand" | "warning" | "destructive" | "muted" {
+  switch (status) {
+    case "up":
+    case "maintenance":
+      return "brand";
+    case "down":
+      return "destructive";
+    case "pending":
+      return "warning";
+    default:
+      return "muted";
+  }
+}

@@ -80,7 +80,7 @@ export function FolderPathPicker({
       <PopoverTrigger asChild>
         <button
           type="button"
-          className="flex items-center gap-1.5 h-8 w-full min-w-0 rounded-none border border-input bg-transparent px-2.5 text-xs transition-colors hover:border-ring/60 focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50 outline-none"
+          className="flex items-center gap-1.5 h-8 w-full min-w-0 rounded-none border border-border bg-transparent px-2.5 text-xs transition-colors hover:border-ring/60 focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50 outline-none"
         >
           {segments.length > 0 ? (
             <span className="flex items-center gap-1 min-w-0 flex-1">

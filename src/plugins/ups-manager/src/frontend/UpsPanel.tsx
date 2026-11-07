@@ -187,24 +187,26 @@ export function UpsPanel({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <TabStrip
-        tabs={tabs}
-        activeTab={active}
-        onTabChange={(id) => setView(id as View)}
-        trailing={
-          sources.length > 1 ? (
-            <Segmented<string>
-              value={String(selected ?? "")}
-              onChange={(value) => setSelected(Number(value))}
-              options={sources.map((s) => ({
-                value: String(s.id),
-                label: s.label,
-                icon: <BatteryCharging className="size-3" />,
-              }))}
-            />
-          ) : undefined
-        }
-      />
+      <div className="shrink-0 border-b border-border px-1">
+        <TabStrip
+          tabs={tabs}
+          activeTab={active}
+          onTabChange={(id) => setView(id as View)}
+          trailing={
+            sources.length > 1 ? (
+              <Segmented<string>
+                value={String(selected ?? "")}
+                onChange={(value) => setSelected(Number(value))}
+                options={sources.map((s) => ({
+                  value: String(s.id),
+                  label: s.label,
+                  icon: <BatteryCharging className="size-3" />,
+                }))}
+              />
+            ) : undefined
+          }
+        />
+      </div>
       <div className="min-h-0 flex-1 overflow-auto">
         {active === "sources" || !current ? (
           <SourcesView

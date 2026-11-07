@@ -255,6 +255,35 @@ export function createFleetRepository(
       return true;
     },
 
+    /** Sets a fleet's static members to exactly these hosts. */
+    async replaceMembers(
+      fleetId: number,
+      hostIds: number[],
+      now = new Date().toISOString(),
+    ): Promise<void> {
+      const current = new Set(await listStaticMemberIds(fleetId));
+      const wanted = new Set(hostIds);
+      const drizzle = await client();
+      const gone = [...current].filter((id) => !wanted.has(id));
+      if (gone.length > 0) {
+        await drizzle
+          .delete(membersTable)
+          .where(
+            and(
+              eq(membersTable.fleetId, fleetId),
+              inArray(membersTable.hostId, gone),
+            ),
+          );
+      }
+      const added = [...wanted].filter((id) => !current.has(id));
+      if (added.length > 0) {
+        await drizzle
+          .insert(membersTable)
+          .values(added.map((hostId) => ({ fleetId, hostId, addedAt: now })));
+      }
+      if (gone.length > 0 || added.length > 0) await db.persist();
+    },
+
     /**
      * Effective membership = static members rows union hosts whose
      * comma-separated tags string intersects any tag in the fleet's

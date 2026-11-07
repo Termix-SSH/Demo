@@ -342,7 +342,6 @@ function Report({
             className="flex-1"
           />
           <Button
-            size="sm"
             variant="outline"
             disabled={busy || !fleet}
             onClick={() => onApplyFleet(Number(fleet))}

@@ -23,6 +23,7 @@ import {
   NativeView,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { PluginHostRecord as Host } from "@termix-ssh/plugin-sdk/frontend";
+import { opensThroughTermix } from "./endpoints";
 import type { WebEndpoint } from "../shared/web-endpoint-config";
 
 /** True in the desktop app, which can show a page in a native view. */
@@ -104,9 +105,13 @@ export function WebEndpointTab({
       // an idle tunnel after ten minutes and re-binds a fresh kernel-assigned
       // port, so a cached port may be gone. A browser goes through the
       // backend's proxy; the desktop app dials its own local backend.
-      const viaProxy = endpoint.access === "tunnel" && !isElectron();
+      if (opensThroughTermix(endpoint)) {
+        throw new Error(t("hosts.webUiAccessTermixDesc"));
+      }
+      const tunneled = endpoint.access !== "direct";
+      const viaProxy = tunneled && !isElectron();
       const localPort =
-        endpoint.access === "tunnel" && !viaProxy
+        tunneled && !viaProxy
           ? await openWebEndpointTunnel(
               requireNumericHostId(host.id),
               endpoint.id,

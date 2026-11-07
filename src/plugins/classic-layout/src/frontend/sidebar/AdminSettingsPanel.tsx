@@ -26,7 +26,9 @@ import {
   updateLogLevel,
   getExternalAutoProvision,
   updateExternalAutoProvision,
+  getCredentialStorage,
   getSecondFactorAfterExternalLogin,
+  updateCredentialStorage,
   updateSecondFactorAfterExternalLogin,
   isElectron,
   getUserRoles,
@@ -124,6 +126,7 @@ export function AdminSettingsPanel({
 
   // External login state
   const [externalAutoProvision, setExternalAutoProvision] = useState(false);
+  const [credentialStorage, setCredentialStorage] = useState(true);
   const [secondFactorAfterExternalLogin, setSecondFactorAfterExternalLogin] =
     useState(false);
 
@@ -283,6 +286,7 @@ export function AdminSettingsPanel({
         level,
         oidcProv,
         secondFactorExternal,
+        credentialStorageSetting,
         notificationEndpoints,
         branding,
       ] = await Promise.allSettled([
@@ -293,6 +297,7 @@ export function AdminSettingsPanel({
         getLogLevel(),
         getExternalAutoProvision(),
         getSecondFactorAfterExternalLogin(),
+        getCredentialStorage(),
         getNotificationPrivateEndpoints(),
         getBranding(),
       ]);
@@ -309,6 +314,8 @@ export function AdminSettingsPanel({
         setExternalAutoProvision(oidcProv.value.enabled);
       if (secondFactorExternal.status === "fulfilled")
         setSecondFactorAfterExternalLogin(secondFactorExternal.value.enabled);
+      if (credentialStorageSetting.status === "fulfilled")
+        setCredentialStorage(credentialStorageSetting.value.enabled);
       if (pwReset.status === "fulfilled") setAllowPasswordReset(pwReset.value);
       if (timeout.status === "fulfilled")
         setSessionTimeout(String(timeout.value.timeoutHours));
@@ -369,6 +376,17 @@ export function AdminSettingsPanel({
     } catch {
       setExternalAutoProvision(!newVal);
       toast.error(t("admin.updateExternalAutoProvisionFailed"));
+    }
+  }
+
+  async function handleToggleCredentialStorage() {
+    const newVal = !credentialStorage;
+    setCredentialStorage(newVal);
+    try {
+      await updateCredentialStorage(newVal);
+    } catch {
+      setCredentialStorage(!newVal);
+      toast.error(t("admin.updateCredentialStorageFailed"));
     }
   }
 
@@ -782,6 +800,8 @@ export function AdminSettingsPanel({
         handleTogglePasswordLogin={handleTogglePasswordLogin}
         externalAutoProvision={externalAutoProvision}
         handleToggleExternalAutoProvision={handleToggleExternalAutoProvision}
+        credentialStorage={credentialStorage}
+        handleToggleCredentialStorage={handleToggleCredentialStorage}
         secondFactorAfterExternalLogin={secondFactorAfterExternalLogin}
         handleToggleSecondFactorAfterExternalLogin={
           handleToggleSecondFactorAfterExternalLogin

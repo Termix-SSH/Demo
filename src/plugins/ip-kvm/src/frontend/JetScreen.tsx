@@ -5,7 +5,8 @@ import { Button } from "@termix-ssh/plugin-sdk/ui";
 import { createKeyboard } from "../shared/hid";
 import type { InputEvent } from "../shared/types";
 import { errorMessage, type KvmApi } from "./api";
-import { BUTTONS, pointerPosition, shortcutEvents } from "./input";
+import { BUTTONS, keyName, pointerPosition, shortcutEvents } from "./input";
+import { useFullscreen } from "./fullscreen";
 import { Toolbar } from "./Toolbar";
 
 const ABS = 32767;
@@ -31,6 +32,8 @@ export function JetScreen({
   const { t } = useTranslation();
   const video = useRef<HTMLVideoElement>(null);
   const wrap = useRef<HTMLDivElement>(null);
+  const root = useRef<HTMLDivElement>(null);
+  const [fullscreen, toggleFullscreen] = useFullscreen(root);
   const channel = useRef<RTCDataChannel | null>(null);
   const keyboard = useRef(createKeyboard());
   const rpcId = useRef(1);
@@ -148,7 +151,7 @@ export function JetScreen({
   }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
+    <div ref={root} className="flex min-h-0 flex-1 flex-col bg-background">
       <Toolbar
         note={note}
         live={live}
@@ -157,7 +160,8 @@ export function JetScreen({
           wrap.current?.focus();
         }}
         onSnapshot={snapshot}
-        onFullscreen={() => void wrap.current?.requestFullscreen?.()}
+        fullscreen={fullscreen}
+        onFullscreen={toggleFullscreen}
         onReconnect={() => setAttempt((value) => value + 1)}
         extra={
           canPower && (
@@ -198,12 +202,14 @@ export function JetScreen({
         onKeyDown={(event) => {
           if (!live) return;
           event.preventDefault();
-          if (!event.repeat) send({ t: "key", code: event.code, down: true });
+          const code = keyName(event);
+          if (code && !event.repeat) send({ t: "key", code, down: true });
         }}
         onKeyUp={(event) => {
           if (!live) return;
           event.preventDefault();
-          send({ t: "key", code: event.code, down: false });
+          const code = keyName(event);
+          if (code) send({ t: "key", code, down: false });
         }}
       >
         <video

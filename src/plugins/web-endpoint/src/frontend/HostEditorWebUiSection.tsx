@@ -375,9 +375,9 @@ export function HostEditorWebUiSection({
                               // Meaningless for a tunnel, whose host component
                               // is loopback and already exempt.
                               ignoreCert:
-                                value === "direct"
-                                  ? endpoint.ignoreCert
-                                  : false,
+                                value === "tunnel"
+                                  ? false
+                                  : endpoint.ignoreCert,
                             })
                           }
                         >
@@ -391,6 +391,9 @@ export function HostEditorWebUiSection({
                           <SelectContent>
                             <SelectItem value="direct" className="text-xs">
                               {t("hosts.webUiAccessDirect")}
+                            </SelectItem>
+                            <SelectItem value="termix" className="text-xs">
+                              {t("hosts.webUiAccessTermix")}
                             </SelectItem>
                             <SelectItem
                               value="tunnel"
@@ -512,7 +515,13 @@ export function HostEditorWebUiSection({
                       </p>
                     )}
 
-                    {endpoint.access === "direct" && (
+                    {endpoint.access === "termix" && (
+                      <p className="text-[11px] opacity-70">
+                        {t("hosts.webUiAccessTermixDesc")}
+                      </p>
+                    )}
+
+                    {endpoint.access !== "tunnel" && (
                       <div className="flex flex-col gap-1">
                         <label className="flex items-center gap-2 text-xs">
                           <Checkbox

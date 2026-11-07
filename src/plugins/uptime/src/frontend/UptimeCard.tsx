@@ -5,11 +5,11 @@ import {
   type DashboardCardEntry,
   type DashboardCardProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { LoadingState, StatusDot } from "@termix-ssh/plugin-sdk/ui";
+import { ListRow, LoadingState, StatusDot } from "@termix-ssh/plugin-sdk/ui";
 import type { MonitorView } from "../shared/types";
 import { errorMessage, listMonitors } from "./api";
 import { BeatBar } from "./BeatBar";
-import { latencyText, percentText, POLL_MS, toneOf } from "./format";
+import { latencyText, percentText, POLL_MS, rowToneOf, toneOf } from "./format";
 
 export const TAB_ID = "uptime";
 
@@ -34,16 +34,20 @@ function useMonitors(isVisible: boolean) {
   return { monitors, error };
 }
 
-function Row({ monitor }: { monitor: MonitorView }) {
+function Row({ monitor, index }: { monitor: MonitorView; index: number }) {
   return (
-    <div className="flex items-center gap-2 px-3 py-1.5 text-xs">
-      <StatusDot tone={toneOf(monitor.status)} />
-      <span className="w-2/5 min-w-0 truncate">{monitor.name}</span>
-      <BeatBar beats={monitor.beats} count={24} className="min-w-0 flex-1" />
-      <span className="w-14 text-right text-muted-foreground">
-        {percentText(monitor.uptime.day)}
-      </span>
-    </div>
+    <ListRow
+      stripe={index}
+      tone={rowToneOf(monitor.status)}
+      title={monitor.name}
+      trailing={
+        <span className="text-xs text-muted-foreground">
+          {percentText(monitor.uptime.day)}
+        </span>
+      }
+    >
+      <BeatBar beats={monitor.beats} count={24} className="min-w-0" />
+    </ListRow>
   );
 }
 
@@ -108,8 +112,8 @@ export function UptimeCard({ isVisible, config }: DashboardCardProps) {
       className="w-full cursor-pointer text-left"
       onClick={() => tabs.openSingletonTab(TAB_ID)}
     >
-      {list.map((monitor) => (
-        <Row key={monitor.id} monitor={monitor} />
+      {list.map((monitor, index) => (
+        <Row key={monitor.id} monitor={monitor} index={index} />
       ))}
     </button>
   );

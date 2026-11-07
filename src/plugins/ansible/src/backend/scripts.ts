@@ -10,7 +10,11 @@ export const FILE_RE = /^[A-Za-z0-9._/-]+$/;
 export const EDITABLE_RE = /\.(ya?ml|j2|cfg|ini|json|txt|md)$/i;
 export const PLAYBOOK_RE = /\.ya?ml$/i;
 
+// Ansible refuses to start without a UTF-8 locale, and the SDK shell sets LC_ALL=C.
 const PRELUDE = `export PATH="$HOME/.local/bin:$PATH:/usr/local/bin:/opt/homebrew/bin"
+for L in C.UTF-8 C.utf8 en_US.UTF-8 en_US.utf8; do
+  if locale -a 2>/dev/null | grep -qx "$L"; then export LC_ALL="$L" LANG="$L"; break; fi
+done
 `;
 
 /** Sets $P to the project folder, with ~ expanded. */

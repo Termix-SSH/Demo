@@ -16,6 +16,8 @@
 - A setup step to pick how host rows work, connect buttons, buttons plus a host page button, or only the host page, when a plugin offers a host page
 - The dashboard layout is saved with your account, so it follows you to every browser. A layout saved in this browser moves over on its own
 - A dashboard you never arranged puts Needs attention first, when Operations Center is on
+- Admin setting to stop anyone saving passwords and keys, with a note in the host and credential editors (Termix #1753)
+- Desktop app: keep a credential on this device only and use it as your login for a shared host or folder (Termix #1749)
 
 ### Changed
 
@@ -28,6 +30,9 @@
 
 - Folder host counts now include sub-hosts, so a folder no longer shows more online hosts than it has
 - A host's status tooltip no longer covers its right click menu
+- The session timeout box in admin settings is as tall as its Save button
+- Recent activity in quick search opens the host you used, not another host with the same or its old name
+- A compact host row with the address and tags turned off fits on one line, with its buttons next to the name
 
 ## 1.1.1
 

@@ -18,7 +18,7 @@ import {
   LoadingState,
   PanelList,
   PanelShell,
-  StatusDot,
+  StatusBadge,
   useConfirm,
 } from "@termix-ssh/plugin-sdk/ui";
 import type {
@@ -217,20 +217,32 @@ function NetworkTab({ isVisible }: TabProps) {
             <ListRow
               key={device.id}
               stripe={index}
-              tone={device.status === "down" ? "destructive" : "none"}
-              icon={
-                <StatusDot
-                  tone={
-                    device.status === "up"
-                      ? "ok"
-                      : device.status === "down"
-                        ? "bad"
-                        : "idle"
-                  }
-                />
+              tone={
+                ROW_TONE[
+                  device.status === "up"
+                    ? "ok"
+                    : device.status === "down"
+                      ? "bad"
+                      : "idle"
+                ]
               }
               title={device.name}
-              badges={<ListBadge>{t(`drivers.${device.driver}`)}</ListBadge>}
+              badges={
+                <>
+                  <StatusBadge
+                    tone={
+                      device.status === "up"
+                        ? "ok"
+                        : device.status === "down"
+                          ? "bad"
+                          : "idle"
+                    }
+                  >
+                    {t(`status.${device.status}`)}
+                  </StatusBadge>
+                  <ListBadge>{t(`drivers.${device.driver}`)}</ListBadge>
+                </>
+              }
               meta={[
                 device.address,
                 device.status === "down"
@@ -283,6 +295,13 @@ function NetworkTab({ isVisible }: TabProps) {
     </PanelShell>
   );
 }
+
+const ROW_TONE = {
+  ok: "brand",
+  warn: "warning",
+  bad: "destructive",
+  idle: "muted",
+} as const;
 
 export function activate(app: TermixApp): void {
   app.registerRailItem({

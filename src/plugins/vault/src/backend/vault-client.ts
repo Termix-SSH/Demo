@@ -1,8 +1,9 @@
 import crypto from "node:crypto";
-import ssh2Pkg from "ssh2";
+import {
+  generateSshKeyPair,
+  type SshKeyKind,
+} from "@termix-ssh/plugin-sdk/ssh-keys";
 import type { PluginFetch } from "@termix-ssh/plugin-sdk/backend";
-
-const { utils: ssh2Utils } = ssh2Pkg;
 
 /**
  * The Vault HTTP API for SSH signing, which OpenBao speaks too: an OIDC login
@@ -131,22 +132,13 @@ async function vaultRequest(
 export function generateEphemeralKeyPair(
   keyType?: string | null,
 ): EphemeralKeyPair {
-  let type: "ed25519" | "rsa" | "ecdsa" = "ed25519";
-  const options: { bits?: number } = {};
-  switch ((keyType || "ssh-ed25519").trim()) {
-    case "ssh-rsa":
-      type = "rsa";
-      options.bits = 4096;
-      break;
-    case "ecdsa-sha2-nistp256":
-      type = "ecdsa";
-      options.bits = 256;
-      break;
-    default:
-      type = "ed25519";
-  }
-  const pair = ssh2Utils.generateKeyPairSync(type as never, options as never);
-  return { privateKey: pair.private, publicKey: pair.public };
+  const wanted = (keyType || "ssh-ed25519").trim();
+  const type: SshKeyKind =
+    wanted === "ssh-rsa" || wanted === "ecdsa-sha2-nistp256"
+      ? wanted
+      : "ssh-ed25519";
+  const pair = generateSshKeyPair(type);
+  return { privateKey: pair.privateKey, publicKey: pair.publicKey };
 }
 
 /**

@@ -5,6 +5,11 @@
 ### Changed
 
 - The page you land on after signing in now matches the Termix look and follows your theme and language
+- Needs Termix 26.11.1 or newer
+
+### Fixed
+
+- Generated SSH keys always work. About 1 in 256 ed25519 keys used to come out unreadable
 
 ## 1.0.2
 

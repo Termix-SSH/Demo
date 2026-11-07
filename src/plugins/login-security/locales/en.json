@@ -9,7 +9,8 @@
   "settings": {
     "group": {
       "sessions": "Sessions",
-      "secondFactor": "Second factor"
+      "secondFactor": "Second factor",
+      "connect": "Connecting to hosts"
     },
     "admin": {
       "idleTimeoutMinutes": {
@@ -34,8 +35,34 @@
       "applyToExternal": {
         "label": "Also for single sign-on",
         "description": "Ask for the second factor after SSO and LDAP logins too. Leave it off when your identity provider already asks for one."
+      },
+      "connectFactor": {
+        "label": "Ask for a second factor before connecting",
+        "description": "People enter their second factor when they open a terminal, remote desktop or file manager on a host. Metrics, tunnels and other background work are not asked.",
+        "off": "Off",
+        "marked": "Hosts marked for it",
+        "all": "Every host"
+      },
+      "connectFactorMinutes": {
+        "label": "Minutes before asking again",
+        "description": "After entering it, a person can connect to any host for this long. Signing out ends it early."
+      }
+    },
+    "host": {
+      "requireConnectFactor": {
+        "label": "Ask for a second factor before connecting",
+        "description": "Used when Login Security is set to ask on hosts marked for it."
       }
     }
+  },
+  "verify": {
+    "title": "Verify second factor",
+    "intro": "Enter your second factor to connect to this host.",
+    "done": "Verified",
+    "retry": "Go back to the host and connect again.",
+    "failed": "That did not work. Try again.",
+    "noFactor": "No second factor set up",
+    "noFactorHint": "Set one up in Settings, Security, then connect again."
   },
   "status": {
     "factors": "Second factors people can use: {{factors}}",

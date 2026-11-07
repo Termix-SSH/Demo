@@ -946,7 +946,7 @@ export function DashboardTab({
           <div className="flex min-h-0 flex-1">
             <div
               ref={viewRef}
-              className="min-h-0 min-w-0 flex-1 overflow-y-auto thin-scrollbar"
+              className="min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto thin-scrollbar"
             >
               <TileGrid
                 slots={slots}

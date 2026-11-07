@@ -203,6 +203,7 @@ function FileManagerContent({
   const [sshSessionId, setSshSessionId] = useState<string | null>(null);
   const sshSessionIdRef = useRef(sshSessionId);
   sshSessionIdRef.current = sshSessionId;
+  const paneRootRef = useRef<HTMLDivElement>(null);
   const paneVisibleRef = useRef(isVisible);
   paneVisibleRef.current = isVisible;
   const directoryPrefetchRef = useRef<ReturnType<
@@ -1122,21 +1123,32 @@ function FileManagerContent({
   }, [navIndex, navHistory, sshSessionId]);
 
   useEffect(() => {
+    const ownsMouseNavigation = (event: MouseEvent) =>
+      paneVisibleRef.current &&
+      (event.button === 3 || event.button === 4) &&
+      event.target instanceof Node &&
+      !!paneRootRef.current?.contains(event.target);
     const handleMouseNavigation = (event: MouseEvent) => {
-      if (event.button !== 3 && event.button !== 4) return;
+      if (!ownsMouseNavigation(event)) return;
       event.preventDefault();
       if (event.button === 3) goBack();
       else goForward();
     };
     const preventBrowserMouseNavigation = (event: MouseEvent) => {
-      if (event.button === 3 || event.button === 4) event.preventDefault();
+      if (ownsMouseNavigation(event)) event.preventDefault();
     };
 
-    window.addEventListener("mouseup", handleMouseNavigation);
-    window.addEventListener("auxclick", preventBrowserMouseNavigation);
+    // Capture runs before Termix's own handler, which then sees the click
+    // was claimed and leaves tab back and forward alone.
+    window.addEventListener("mouseup", handleMouseNavigation, true);
+    window.addEventListener("auxclick", preventBrowserMouseNavigation, true);
     return () => {
-      window.removeEventListener("mouseup", handleMouseNavigation);
-      window.removeEventListener("auxclick", preventBrowserMouseNavigation);
+      window.removeEventListener("mouseup", handleMouseNavigation, true);
+      window.removeEventListener(
+        "auxclick",
+        preventBrowserMouseNavigation,
+        true,
+      );
     };
   }, [goBack, goForward]);
 
@@ -1671,7 +1683,10 @@ function FileManagerContent({
     updateDeletingPaths(new Set([...deletingPathsRef.current, ...targetPaths]));
     clearSelection();
     const controller = new AbortController();
-    const opId = crypto.randomUUID();
+    // getRandomValues also works on HTTP LAN origins, unlike randomUUID.
+    const opId = Array.from(crypto.getRandomValues(new Uint8Array(16)), (b) =>
+      b.toString(16).padStart(2, "0"),
+    ).join("");
     const labelKey = permanent
       ? "fileManager.deletingItems"
       : "fileManager.movingToTrash";
@@ -3818,7 +3833,10 @@ function FileManagerContent({
   }
 
   return (
-    <div className="h-full flex flex-col bg-background relative overflow-hidden isolate">
+    <div
+      ref={paneRootRef}
+      className="h-full flex flex-col bg-background relative overflow-hidden isolate"
+    >
       <PanelShell
         icon={<Folder className="size-4" />}
         title={t("nav.files")}

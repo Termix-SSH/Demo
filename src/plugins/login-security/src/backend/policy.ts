@@ -1,9 +1,15 @@
 import type {
   PluginAuthPolicyDecision,
   PluginAuthPolicyInput,
+  PluginConnectPolicyDecision,
+  PluginConnectPolicyInput,
 } from "@termix-ssh/plugin-sdk/backend";
 
 export type SecondFactorRule = "off" | "new-device" | "always";
+export type ConnectFactorRule = "off" | "marked" | "all";
+
+/** The tab that asks for the second factor. */
+export const VERIFY_TAB = "connect-verify";
 
 export interface LoginSecuritySettings {
   idleTimeoutMinutes: number;
@@ -11,6 +17,8 @@ export interface LoginSecuritySettings {
   rememberDevice: boolean;
   secondFactor: SecondFactorRule;
   applyToExternal: boolean;
+  connectFactor: ConnectFactorRule;
+  connectFactorMinutes: number;
 }
 
 export const DEFAULT_SETTINGS: LoginSecuritySettings = {
@@ -19,6 +27,8 @@ export const DEFAULT_SETTINGS: LoginSecuritySettings = {
   rememberDevice: true,
   secondFactor: "off",
   applyToExternal: false,
+  connectFactor: "off",
+  connectFactorMinutes: 60,
 };
 
 function wholeNumber(value: unknown): number {
@@ -31,12 +41,17 @@ export function readSettings(
   values: Record<string, unknown>,
 ): LoginSecuritySettings {
   const rule = values.secondFactor;
+  const connect = values.connectFactor;
   return {
     idleTimeoutMinutes: wholeNumber(values.idleTimeoutMinutes),
     maxSessionHours: wholeNumber(values.maxSessionHours),
     rememberDevice: values.rememberDevice !== false,
     secondFactor: rule === "always" || rule === "new-device" ? rule : "off",
     applyToExternal: values.applyToExternal === true,
+    connectFactor: connect === "all" || connect === "marked" ? connect : "off",
+    connectFactorMinutes:
+      wholeNumber(values.connectFactorMinutes) ||
+      DEFAULT_SETTINGS.connectFactorMinutes,
   };
 }
 
@@ -60,3 +75,21 @@ export function decide(
   }
   return decision;
 }
+
+/** Whether this connect needs the host marked for it, so the setting is read only then. */
+export function connectFactorApplies(
+  settings: LoginSecuritySettings,
+  input: Pick<PluginConnectPolicyInput, "interactive" | "stepUpAt">,
+  now = Date.now(),
+): boolean {
+  if (settings.connectFactor === "off" || !input.interactive) return false;
+  const window = settings.connectFactorMinutes * 60_000;
+  return !input.stepUpAt || now - input.stepUpAt >= window;
+}
+
+export const VERIFY_DECISION: PluginConnectPolicyDecision = {
+  decision: "request",
+  reason: "Enter your second factor to connect to this host.",
+  requestTab: VERIFY_TAB,
+  requestKind: "verify",
+};

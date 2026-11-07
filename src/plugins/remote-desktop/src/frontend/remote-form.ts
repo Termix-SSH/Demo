@@ -23,6 +23,8 @@ export interface RemoteDesktopForm {
   security: string;
   ignoreCert: boolean;
   rdpPort: number;
+  rdpAutoReconnect: boolean;
+  rdpAutoResize: boolean;
   vncPort: number;
   ardPort: number;
   telnetPort: number;
@@ -71,6 +73,8 @@ export type RemoteFormSetField = <K extends keyof RemoteDesktopForm>(
 /** Tab field name to this plugin's host setting key. */
 const SETTING_FOR_FIELD: Partial<Record<keyof RemoteDesktopForm, string>> = {
   rdpPort: "rdpPort",
+  rdpAutoReconnect: "rdpAutoReconnect",
+  rdpAutoResize: "rdpAutoResize",
   vncPort: "vncPort",
   ardPort: "ardPort",
   telnetPort: "telnetPort",
@@ -183,6 +187,8 @@ export function remoteDesktopForm(props: HostEditorSectionProps): {
   const rustdesk = loginOf(logins, "rustdesk");
   const form: RemoteDesktopForm = {
     rdpPort: options.rdpPort,
+    rdpAutoReconnect: options.rdpAutoReconnect,
+    rdpAutoResize: options.rdpAutoResize,
     vncPort: options.vncPort,
     ardPort: options.ardPort,
     telnetPort: options.telnetPort,

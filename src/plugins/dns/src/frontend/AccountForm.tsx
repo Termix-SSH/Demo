@@ -74,87 +74,91 @@ export function AccountForm({
       }
     >
       <SectionCard title={t("account.login")} icon={<Globe />}>
-        <SelectField
-          label={t("account.provider")}
-          value={providerId}
-          disabled={!!account}
-          onChange={(value) => {
-            setProviderId(value);
-            setKeys({});
-          }}
-          options={providers.map((item) => ({
-            value: item.id,
-            label: t(`providers.${item.id}`),
-          }))}
-        />
-        <TextField
-          label={t("account.name")}
-          value={name}
-          onChange={setName}
-          placeholder={t("account.namePlaceholder")}
-        />
-        {provider?.features.domains && (
-          <p className="text-xs text-muted-foreground">
-            {t("account.registrar")}
-          </p>
-        )}
-        {(provider?.fields ?? []).map((field) =>
-          field.type === "secret" ? (
-            <SecretField
-              key={field.key}
-              label={t(`fields.${field.key}`)}
-              value={keys[field.key] ?? ""}
-              placeholder={account ? t("account.keep") : undefined}
-              onChange={(value) =>
-                setKeys((current) => ({ ...current, [field.key]: value }))
-              }
-            />
-          ) : field.type === "select" ? (
-            <SelectField
-              key={field.key}
-              label={t(`fields.${field.key}`)}
-              value={keys[field.key] ?? field.options?.[0] ?? ""}
-              onChange={(value) =>
-                setKeys((current) => ({ ...current, [field.key]: value }))
-              }
-              options={(field.options ?? []).map((option) => ({
-                value: option,
-                label: t(`fields.${field.key}_${option}`),
-              }))}
-            />
-          ) : (
-            <TextField
-              key={field.key}
-              label={t(`fields.${field.key}`)}
-              value={keys[field.key] ?? ""}
-              placeholder={
-                field.placeholder
-                  ? field.placeholder
-                  : account
-                    ? t("account.keep")
-                    : undefined
-              }
-              onChange={(value) =>
-                setKeys((current) => ({ ...current, [field.key]: value }))
-              }
-              mono
-            />
-          ),
-        )}
+        <div className="flex flex-col gap-3 py-2">
+          <SelectField
+            label={t("account.provider")}
+            value={providerId}
+            disabled={!!account}
+            onChange={(value) => {
+              setProviderId(value);
+              setKeys({});
+            }}
+            options={providers.map((item) => ({
+              value: item.id,
+              label: t(`providers.${item.id}`),
+            }))}
+          />
+          <TextField
+            label={t("account.name")}
+            value={name}
+            onChange={setName}
+            placeholder={t("account.namePlaceholder")}
+          />
+          {provider?.features.domains && (
+            <p className="text-xs text-muted-foreground">
+              {t("account.registrar")}
+            </p>
+          )}
+          {(provider?.fields ?? []).map((field) =>
+            field.type === "secret" ? (
+              <SecretField
+                key={field.key}
+                label={t(`fields.${field.key}`)}
+                value={keys[field.key] ?? ""}
+                placeholder={account ? t("account.keep") : undefined}
+                onChange={(value) =>
+                  setKeys((current) => ({ ...current, [field.key]: value }))
+                }
+              />
+            ) : field.type === "select" ? (
+              <SelectField
+                key={field.key}
+                label={t(`fields.${field.key}`)}
+                value={keys[field.key] ?? field.options?.[0] ?? ""}
+                onChange={(value) =>
+                  setKeys((current) => ({ ...current, [field.key]: value }))
+                }
+                options={(field.options ?? []).map((option) => ({
+                  value: option,
+                  label: t(`fields.${field.key}_${option}`),
+                }))}
+              />
+            ) : (
+              <TextField
+                key={field.key}
+                label={t(`fields.${field.key}`)}
+                value={keys[field.key] ?? ""}
+                placeholder={
+                  field.placeholder
+                    ? field.placeholder
+                    : account
+                      ? t("account.keep")
+                      : undefined
+                }
+                onChange={(value) =>
+                  setKeys((current) => ({ ...current, [field.key]: value }))
+                }
+                mono
+              />
+            ),
+          )}
+        </div>
       </SectionCard>
       <SectionCard title={t("account.options")} icon={<Globe />}>
-        <SwitchRow
-          label={t("account.autoBackup")}
-          description={t("account.autoBackupHint")}
-          checked={autoBackup}
-          onChange={setAutoBackup}
-        />
-        <SwitchRow
-          label={t("account.checkHealth")}
-          description={t("account.checkHealthHint")}
-          checked={checkHealth}
-          onChange={setCheckHealth}
-        />
+        <div className="flex flex-col gap-3 py-2">
+          <SwitchRow
+            label={t("account.autoBackup")}
+            description={t("account.autoBackupHint")}
+            checked={autoBackup}
+            onChange={setAutoBackup}
+          />
+          <SwitchRow
+            label={t("account.checkHealth")}
+            description={t("account.checkHealthHint")}
+            checked={checkHealth}
+            onChange={setCheckHealth}
+          />
+        </div>
       </SectionCard>
     </InlineView>
   );

@@ -7,13 +7,11 @@ import {
   PanelList,
   PanelSearch,
   Segmented,
-  TextAreaField,
   useConfirm,
   ToolbarBand,
   LoadingState,
   InlineView,
   FormFooter,
-  PANEL,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { FileContent, ServerKind, WebStatus } from "../shared/types";
 import { errorMessage, getFile, getFiles, saveFile, testConfig } from "./api";
@@ -306,15 +304,19 @@ function FileEditor({
               ))}
             </PanelList>
           )}
-          <div className={`flex min-h-0 flex-1 flex-col ${PANEL.body}`}>
-            <TextAreaField
-              label={t("config.content")}
-              hint={canEdit ? t("config.saveHint") : undefined}
+          <div className="flex min-h-0 flex-1 flex-col">
+            {canEdit && (
+              <p className="border-b border-border px-3 py-2 text-xs text-muted-foreground">
+                {t("config.saveHint")}
+              </p>
+            )}
+            <textarea
               value={text}
-              onChange={setText}
-              fill
-              mono
-              disabled={!canEdit}
+              onChange={(e) => setText(e.target.value)}
+              readOnly={!canEdit}
+              spellCheck={false}
+              aria-label={t("config.content")}
+              className="min-h-0 flex-1 resize-none bg-background px-3 py-2 font-mono text-xs outline-none"
             />
           </div>
         </>

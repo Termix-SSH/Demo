@@ -5,7 +5,7 @@ import {
   type CompanionDefaults,
   type CompanionProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { Button, Input } from "@termix-ssh/plugin-sdk/ui";
+import { Button, Input, ToolbarBand } from "@termix-ssh/plugin-sdk/ui";
 import { SOURCES, type LogEntry } from "../shared/types";
 import { errorMessage, search } from "./api";
 import { formatTime } from "./format";
@@ -67,21 +67,22 @@ export function LogsCompanion({ host }: CompanionProps) {
   return (
     <div className="flex h-full min-h-0 flex-col">
       <form
-        className="flex gap-1 border-b p-1.5"
         onSubmit={(e) => {
           e.preventDefault();
           void run();
         }}
       >
-        <Input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={t("companion.placeholder")}
-          className="h-8 flex-1 text-xs"
-        />
-        <Button type="submit" size="sm" disabled={busy}>
-          {t("search.run")}
-        </Button>
+        <ToolbarBand className="flex-nowrap">
+          <Input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t("companion.placeholder")}
+            className="min-w-0 flex-1 text-xs"
+          />
+          <Button type="submit" size="sm" disabled={busy}>
+            {t("search.run")}
+          </Button>
+        </ToolbarBand>
       </form>
       <div className="min-h-0 flex-1 overflow-auto font-mono text-xs">
         {error ? (

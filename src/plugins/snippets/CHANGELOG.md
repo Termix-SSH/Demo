@@ -1,15 +1,18 @@
 # Changelog
 
-## 1.2.1
+## 1.3.0
 
 ### Added
 
 - Run a snippet as a Termix action, so it can roll out across hosts from Operations Center with a result per host. Saved secrets stay out of run history
 - A homepage widget with your snippets and a copy button
+- Run snippets in local terminals in the desktop app, from the side panel or by picking them as targets
 
 ### Fixed
 
 - Password fields with the show button are the same height as the other fields next to them
+- Fill sudo password works with sudo-rs and with German and French sudo prompts
+- A snippet sent to a terminal that has closed fails instead of going to another open terminal
 
 ### Changed
 

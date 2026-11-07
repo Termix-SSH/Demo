@@ -13,7 +13,7 @@ import {
   type PasskeyService,
 } from "./passkeys.js";
 import type { CredentialRepository } from "./repository.js";
-import { passwordlessEnabled } from "./login-options.js";
+import { passkeysOnSsoPage, passwordlessEnabled } from "./login-options.js";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type Table = any;
@@ -143,7 +143,7 @@ export function registerPasskeyRoutes(
    * /plugin-api/webauthn/login-options:
    *   get:
    *     summary: Whether the sign in page shows the Passkeys button
-   *     description: Public. passwordless is false when an admin turned passkey sign in off.
+   *     description: Public. passwordless is false when an admin turned passkey sign in off. onSsoPage is false when the button is hidden on the single sign-on page only.
    *     tags:
    *       - Passkeys
    *     responses:
@@ -151,7 +151,10 @@ export function registerPasskeyRoutes(
    *         description: The login page options.
    */
   router.get("/login-options", async (_req: Request, res: Response) => {
-    res.json({ passwordless: await passwordlessEnabled(ctx) });
+    res.json({
+      passwordless: await passwordlessEnabled(ctx),
+      onSsoPage: await passkeysOnSsoPage(ctx),
+    });
   });
 
   /**

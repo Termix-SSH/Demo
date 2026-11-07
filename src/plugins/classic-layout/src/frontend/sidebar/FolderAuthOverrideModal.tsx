@@ -4,6 +4,9 @@ import {
   FormFooter,
   InlineView,
   getCredentials,
+  getFolderDeviceAuth,
+  isElectron,
+  setFolderDeviceAuth,
   type Credential,
   type Host,
   mapCredentials,
@@ -13,6 +16,7 @@ import {
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { DeviceLoginField, useDeviceLogin } from "./DeviceLoginField";
 
 type FolderAuthApi = {
   getFolderAuthOverride: (
@@ -68,6 +72,11 @@ export function FolderAuthOverrideModal({
   const sharedCopySyncId = sampleHost.sharedCopy
     ? (sampleHost.syncId ?? null)
     : null;
+  const deviceLogin = useDeviceLogin(
+    open && !!sampleHost.sharedCopy && isElectron(),
+    () => getFolderDeviceAuth(folder, "ssh"),
+    (credentialId) => setFolderDeviceAuth(folder, "ssh", credentialId),
+  );
 
   useEffect(() => {
     if (!open || !api) return;
@@ -109,18 +118,25 @@ export function FolderAuthOverrideModal({
     if (!api) return;
     setSaving(true);
     try {
+      if (deviceLogin.dirty) {
+        await deviceLogin.save();
+      }
       const credentialId = selectedId ? Number(selectedId) : null;
-      await api.setFolderAuthOverride(
-        folder,
-        "ssh",
-        credentialId,
-        sharedCopySyncId,
-      );
+      if (selectedId !== initialId) {
+        await api.setFolderAuthOverride(
+          folder,
+          "ssh",
+          credentialId,
+          sharedCopySyncId,
+        );
+      }
       toast.success(
         t(
-          credentialId === null
-            ? "sharing.folderLogin.cleared"
-            : "sharing.folderLogin.saved",
+          selectedId === initialId
+            ? "sharing.deviceLogin.saved"
+            : credentialId === null
+              ? "sharing.folderLogin.cleared"
+              : "sharing.folderLogin.saved",
         ),
       );
       window.dispatchEvent(new CustomEvent("termix:hosts-changed"));
@@ -147,7 +163,11 @@ export function FolderAuthOverrideModal({
             onCancel={() => onOpenChange(false)}
             onSave={() => void handleSave()}
             saving={saving}
-            disabled={loading || loadError || selectedId === initialId}
+            disabled={
+              loading ||
+              (selectedId === initialId && !deviceLogin.dirty) ||
+              (loadError && selectedId !== initialId)
+            }
           />
         }
       >
@@ -193,6 +213,7 @@ export function FolderAuthOverrideModal({
             </p>
           </div>
         )}
+        <DeviceLoginField id={`device-login-${folder}`} login={deviceLogin} />
       </InlineView>
     </span>
   );

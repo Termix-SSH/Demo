@@ -19,12 +19,15 @@ import {
   ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { WebEndpoint } from "../shared/web-endpoint-config";
-import { endpointsOf, openEndpoint } from "./endpoints";
+import { endpointsOf, openEndpoint, opensThroughTermix } from "./endpoints";
 import { WebEndpointTab } from "./WebEndpointTab";
 
 /** Endpoints that can show inside Termix, not only in a browser. */
 export function embeddedEndpointsOf(host: PluginHostRecord): WebEndpoint[] {
-  return endpointsOf(host).filter((endpoint) => endpoint.render !== "external");
+  return endpointsOf(host).filter(
+    (endpoint) =>
+      endpoint.render !== "external" && !opensThroughTermix(endpoint),
+  );
 }
 
 /** Whether the web panel beside this host's terminal is on. */

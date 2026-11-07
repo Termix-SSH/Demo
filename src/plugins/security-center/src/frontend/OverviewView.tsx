@@ -7,6 +7,7 @@ import {
   ListRow,
   PanelList,
   StatTile,
+  TileStack,
   TileWall,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { HostView } from "./api";
@@ -31,7 +32,7 @@ export function OverviewView({
   const critical = scan?.critical ?? 0;
 
   return (
-    <div className="flex flex-col">
+    <TileStack>
       <TileWall minWidth={160}>
         <StatTile
           label={t("overview.score")}
@@ -69,7 +70,7 @@ export function OverviewView({
         />
       </TileWall>
       {reading && (
-        <div className="border-t border-border p-3">
+        <div className="p-3">
           <InfoGrid
             items={[
               { label: t("overview.os"), value: reading.os.name || "-" },
@@ -94,15 +95,15 @@ export function OverviewView({
         </div>
       )}
       {reading && !reading.root && (
-        <p className="border-t border-border px-3 py-2 text-xs text-muted-foreground">
+        <p className="px-3 py-2 text-xs text-muted-foreground">
           {t("overview.noRoot")}
         </p>
       )}
-      <div className="border-t border-border">
+      <div>
         {findings.length === 0 ? (
           <EmptyState icon={ShieldCheck} title={t("overview.clean")} />
         ) : (
-          <PanelList>
+          <PanelList className="[&>*:last-child]:border-b-0">
             {findings.map((f, index) => (
               <ListRow
                 key={f.key}
@@ -120,6 +121,6 @@ export function OverviewView({
           </PanelList>
         )}
       </div>
-    </div>
+    </TileStack>
   );
 }

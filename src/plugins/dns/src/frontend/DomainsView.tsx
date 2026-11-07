@@ -90,7 +90,7 @@ export function DomainsView({
             placeholder={t("domains.watchPlaceholder")}
             className="h-8 max-w-sm text-xs"
           />
-          <Button size="sm" variant="outline" disabled={busy || !name.trim()}>
+          <Button variant="outline" disabled={busy || !name.trim()}>
             {t("domains.watch")}
           </Button>
         </form>

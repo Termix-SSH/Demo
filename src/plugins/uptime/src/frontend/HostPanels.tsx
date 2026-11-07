@@ -7,11 +7,11 @@ import {
   type CompanionProps,
   type PluginHostRecord,
 } from "@termix-ssh/plugin-sdk/frontend";
-import { Button, StatusDot } from "@termix-ssh/plugin-sdk/ui";
+import { Button, ListRow } from "@termix-ssh/plugin-sdk/ui";
 import type { MonitorView } from "../shared/types";
 import { hostMonitors, listMonitors } from "./api";
 import { BeatBar } from "./BeatBar";
-import { latencyText, percentText, POLL_MS, toneOf } from "./format";
+import { latencyText, percentText, POLL_MS, rowToneOf } from "./format";
 import { TAB_ID } from "./UptimeCard";
 
 const BADGE_POLL_MS = 60_000;
@@ -98,18 +98,21 @@ function HostList({
   }
   return (
     <div className="flex flex-col divide-y divide-border">
-      {monitors.map((monitor) => (
-        <div key={monitor.id} className="flex flex-col gap-1 px-3 py-2 text-xs">
-          <div className="flex items-center gap-2">
-            <StatusDot tone={toneOf(monitor.status)} />
-            <span className="min-w-0 flex-1 truncate">{monitor.name}</span>
-            <span className="text-muted-foreground">
+      {monitors.map((monitor, index) => (
+        <ListRow
+          key={monitor.id}
+          stripe={index}
+          tone={rowToneOf(monitor.status)}
+          title={monitor.name}
+          trailing={
+            <span className="text-xs text-muted-foreground">
               {percentText(monitor.uptime.day)} |{" "}
               {latencyText(monitor.latencyMs)}
             </span>
-          </div>
+          }
+        >
           <BeatBar beats={monitor.beats} count={30} />
-        </div>
+        </ListRow>
       ))}
     </div>
   );

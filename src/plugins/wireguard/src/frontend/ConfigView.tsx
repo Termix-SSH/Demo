@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { useToast, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
   FormFooter,
-  TextAreaField,
   LoadingState,
   PanelShell,
 } from "@termix-ssh/plugin-sdk/ui";
@@ -62,17 +61,19 @@ export function ConfigView({ hostId, name }: { hostId: number; name: string }) {
         />
       }
     >
-      <div className="flex min-h-0 flex-1 flex-col gap-3 p-3">
-        <TextAreaField
-          label={t("config.title")}
-          hint={t("config.hint")}
+      <div className="flex min-h-0 flex-1 flex-col">
+        <p className="border-b border-border px-3 py-2 text-xs text-muted-foreground">
+          {t("config.hint")}
+        </p>
+        <textarea
           value={text}
-          onChange={setText}
-          fill
-          mono
+          onChange={(e) => setText(e.target.value)}
+          spellCheck={false}
+          aria-label={t("config.title")}
+          className="min-h-0 flex-1 resize-none bg-background px-3 py-2 font-mono text-xs outline-none"
         />
         {error && (
-          <pre className="whitespace-pre-wrap border border-border p-2 font-mono text-xs text-destructive">
+          <pre className="whitespace-pre-wrap border-t border-border px-3 py-2 font-mono text-xs text-destructive">
             {error}
           </pre>
         )}

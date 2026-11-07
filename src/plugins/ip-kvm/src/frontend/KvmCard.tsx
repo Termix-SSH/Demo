@@ -5,12 +5,7 @@ import {
   useTranslation,
   type DashboardCardProps,
 } from "@termix-ssh/plugin-sdk/frontend";
-import {
-  ListRow,
-  PanelList,
-  StatusDot,
-  LoadingState,
-} from "@termix-ssh/plugin-sdk/ui";
+import { ListRow, PanelList, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import type { Device } from "../shared/types";
 import { createApi } from "./api";
 import { statusTone } from "./format";
@@ -18,6 +13,13 @@ import { statusTone } from "./format";
 const POLL_MS = 30_000;
 
 /** Dashboard card: each KVM with its power, down ones first. */
+const ROW_TONE = {
+  ok: "brand",
+  warn: "warning",
+  bad: "destructive",
+  idle: "muted",
+} as const;
+
 export function KvmCard({ isVisible, shell }: DashboardCardProps) {
   const { t } = useTranslation();
   const canView = usePermission("view");
@@ -64,12 +66,7 @@ export function KvmCard({ isVisible, shell }: DashboardCardProps) {
         <ListRow
           key={device.id}
           stripe={index}
-          tone={device.status === "down" ? "destructive" : "none"}
-          icon={
-            <StatusDot
-              tone={statusTone(device.status, device.reading?.power)}
-            />
-          }
+          tone={ROW_TONE[statusTone(device.status, device.reading?.power)]}
           title={device.name}
           meta={
             device.status === "down"

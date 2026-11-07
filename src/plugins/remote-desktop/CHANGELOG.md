@@ -15,6 +15,9 @@
 - When an admin makes recording required, every session is recorded with the whole screen and keys, the Record button can't stop it, and VNC uses the built-in engine so it can be recorded
 - When a host needs approved access, the connect screen says so and offers a Request access button
 - Admins can let Session Recording list, watch and end everyone's remote sessions with the new Watch everyone's remote desktop sessions permission
+- A host switch to turn off reconnecting an RDP session on its own, so an idle tab does not kick out a session opened elsewhere
+- A host switch to keep the RDP screen size from when you connected instead of following the window
+- A Verify button when a host needs a second factor before connecting
 
 ### Changed
 
@@ -25,6 +28,12 @@
 ### Fixed
 
 - Other features could end a remote session or get a viewer link to it without owning it
+- Pasting with Ctrl or Command still held no longer lets go of that key on the remote side
+- Ctrl+V right after copying pastes the new text in an RDP session instead of the one copied before it
+- The desktop app connects to RDP servers whose certificate is only made for encryption, like many Windows ones, when Ignore certificate errors is on
+- The Korean Han/Eng and Hanja keys work on every tap with keyboards that never send a key release
+- RDP servers that need the graphics pipeline, like GNOME Remote Desktop, connect with the built-in engine
+- RDP sound plays after the first click in the session, and people who join a shared session hear it too
 
 ## 1.3.1
 

@@ -25,6 +25,8 @@ type GeneralSettingsSectionProps = {
   handleTogglePasswordLogin: () => void;
   externalAutoProvision: boolean;
   handleToggleExternalAutoProvision: () => void;
+  credentialStorage: boolean;
+  handleToggleCredentialStorage: () => void;
   secondFactorAfterExternalLogin: boolean;
   handleToggleSecondFactorAfterExternalLogin: () => void;
   allowPasswordReset: boolean;
@@ -50,6 +52,8 @@ export function AdminGeneralSettingsSection({
   handleToggleExternalAutoProvision,
   secondFactorAfterExternalLogin,
   handleToggleSecondFactorAfterExternalLogin,
+  credentialStorage,
+  handleToggleCredentialStorage,
   allowPasswordReset,
   handleTogglePasswordReset,
   sessionTimeout,
@@ -133,6 +137,15 @@ export function AdminGeneralSettingsSection({
           />
         </SettingRow>
         <SettingRow
+          label={t("admin.credentialStorage")}
+          description={t("admin.credentialStorageDesc")}
+        >
+          <AdminToggle
+            on={credentialStorage}
+            onToggle={handleToggleCredentialStorage}
+          />
+        </SettingRow>
+        <SettingRow
           label={t("admin.allowPasswordReset")}
           description={t("admin.allowPasswordResetDesc")}
         >
@@ -154,7 +167,7 @@ export function AdminGeneralSettingsSection({
               max={720}
               value={sessionTimeout}
               onChange={(e) => setSessionTimeout(e.target.value)}
-              className="w-20 text-sm"
+              className="h-8 w-20 text-sm"
             />
             <span className="text-xs text-muted-foreground">
               {t("admin.hours")}

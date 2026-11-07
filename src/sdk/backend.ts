@@ -159,6 +159,14 @@ export interface SyncEntityReference {
   idType?: "number" | "string";
 }
 
+/** An external identity tied to a Termix account. */
+export interface PluginLinkedIdentity {
+  /** The `provider` of the identities the plugin returns from a login. */
+  provider: string;
+  subject: string;
+  email?: string | null;
+}
+
 export interface SyncEntityPermissions {
   /** Checked before a pushed row that does not exist yet is written. */
   create?: string;
@@ -213,6 +221,13 @@ export interface SyncEntityRegistration {
    * inbound row, and ignored when deciding whether a row changed.
    */
   readOnlyFields?: readonly string[];
+  /**
+   * Columns that identify a row besides its syncId, checked after references
+   * are resolved. An inbound row with an unknown syncId takes over the user's
+   * row with the same values here instead of inserting a second one, for
+   * tables with a unique key such as one row per host. API 1.16.
+   */
+  matchOn?: readonly string[];
   /** One row per user rather than many, keyed on the owner. */
   singleton?: boolean;
   /**
@@ -1313,6 +1328,11 @@ export interface PluginConnectPolicyInput {
   interactive: boolean;
   /** Plugin id that asked for the connection, or "core". */
   origin: string;
+  /**
+   * When this user last proved a second factor while signed in, in ms since
+   * the epoch, or null. Filled in by core. Termix 26.11.1+.
+   */
+  stepUpAt?: number | null;
 }
 
 export type PluginConnectPolicyDecision =
@@ -1323,6 +1343,8 @@ export type PluginConnectPolicyDecision =
       reason?: string;
       /** A tab id of the providing plugin where the user can ask for access. */
       requestTab?: string;
+      /** "verify" when the tab asks the user to prove who they are, so clients say Verify. */
+      requestKind?: "access" | "verify";
     };
 
 /**
@@ -1724,6 +1746,8 @@ export type PluginSshAuthOutcome =
       message: string;
       /** For access-required: a tab of the policy plugin where access is asked for. */
       requestTab?: string;
+      /** For access-required: "verify" when that tab asks for a second factor. */
+      requestKind?: string;
     }
   | {
       /** Try once more with these config changes. */
@@ -2450,6 +2474,26 @@ export interface PluginAuth {
    */
   countLinkedUsers: (provider: string) => Promise<number>;
   /**
+   * The external identities tied to an account, so a signed in user can link
+   * one and sign in with it from then on. Every change is audited. Needs
+   * Termix 26.11.1.
+   */
+  identities: {
+    list: (userId: string) => Promise<PluginLinkedIdentity[]>;
+    /**
+     * Ties an identity to the user. Throws a LoginMethodError with code
+     * `identity_in_use` when another account has it, and `provider_linked`
+     * when the user already has a different one from this provider.
+     */
+    link: (userId: string, identity: PluginLinkedIdentity) => Promise<void>;
+    /**
+     * Removes the user's identities from a provider. Throws a
+     * LoginMethodError with code `last_login` when the user could no longer
+     * sign in.
+     */
+    unlink: (userId: string, provider: string) => Promise<void>;
+  };
+  /**
    * A short-lived session for an existing user, for calling core's own HTTP
    * API as them from work with no request behind it, like a scheduled task
    * driving the Termix CLI. The user's RBAC applies unchanged. Needs
@@ -2789,6 +2833,18 @@ export interface PluginCredentials {
     key: string,
     passphrase?: string | null,
   ) => Promise<{ key: string; passphrase?: string }>;
+  /**
+   * Stores a CA-signed OpenSSH certificate next to an existing SSH key
+   * credential, so core offers key plus certificate when it connects through
+   * that credential. Only key credentials can carry one; core refuses the
+   * other auth types instead of dropping the certificate silently. Pass null
+   * to clear a stored one. Needs credentials:write and the core
+   * credentials.update permission. Audited.
+   */
+  setSshKeyCertificate: (
+    credentialId: number,
+    certificate: string | null,
+  ) => Promise<{ id: number; changed: boolean }>;
 }
 
 /**

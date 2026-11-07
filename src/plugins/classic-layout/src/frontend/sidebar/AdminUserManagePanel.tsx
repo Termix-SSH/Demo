@@ -553,7 +553,6 @@ export function AdminUserManagePanel({
                 />
                 <Button
                   variant="outline"
-                  size="sm"
                   className="h-8 text-xs border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand shrink-0"
                   disabled={newKeyLoading || !newKeyName.trim()}
                   onClick={handleCreateApiKey}

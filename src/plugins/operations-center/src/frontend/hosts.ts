@@ -14,6 +14,8 @@ function settingsOf(
 /** Whether an action applies to a host, the same test the gate runs. */
 export function appliesTo(action: CatalogAction, host: PluginHostRecord) {
   if (action.scope === "server") return false;
+  // A plugin only sees its own host settings, so core says which hosts fit.
+  if (action.hostIds) return action.hostIds.includes(Number(host.id));
   const wanted = action.when?.settings ?? {};
   const settings = settingsOf(host, action.pluginId);
   return Object.entries(wanted).every(

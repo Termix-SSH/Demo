@@ -14,18 +14,20 @@ import {
   BackButton,
   Button,
   EmptyState,
-  Input,
+  FormFooter,
+  InlineView,
   ListBadge,
   ListRow,
   ListRowAction,
   LoadingState,
-  PanePrompt,
   PanelList,
   PanelShell,
   RefreshButton,
+  SectionCard,
+  SelectField,
   TabStrip,
+  TextField,
   useConfirm,
-  ToolbarSelect,
 } from "@termix-ssh/plugin-sdk/ui";
 import type {
   Account,
@@ -74,6 +76,7 @@ function StorageTab({ isVisible }: TabProps) {
   >([]);
   const [loaded, setLoaded] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [savingBucket, setSavingBucket] = useState(false);
   const [creating, setCreating] = useState<{
     accountId: number;
     name: string;
@@ -169,12 +172,15 @@ function StorageTab({ isVisible }: TabProps) {
 
   async function createBucket() {
     if (!creating?.name.trim()) return;
+    setSavingBucket(true);
     try {
       await api.createBucket(creating.accountId, creating.name.trim());
       setCreating(null);
       await reload();
     } catch (error) {
       toast.error(errorMessage(error));
+    } finally {
+      setSavingBucket(false);
     }
   }
 
@@ -192,6 +198,52 @@ function StorageTab({ isVisible }: TabProps) {
     } catch (error) {
       toast.error(errorMessage(error));
     }
+  }
+
+  if (creating) {
+    return (
+      <InlineView
+        stacked
+        open
+        onOpenChange={(open) => !open && setCreating(null)}
+        icon={<Package className="size-4" />}
+        title={t("buckets.add")}
+        footer={
+          <FormFooter
+            saving={savingBucket}
+            disabled={!creating.name.trim()}
+            onCancel={() => setCreating(null)}
+            onSave={() => void createBucket()}
+            saveLabel={t("buckets.create")}
+          />
+        }
+      >
+        <SectionCard title={t("buckets.add")} icon={<Package />}>
+          <div className="flex flex-col gap-3 py-2">
+            {accounts.length > 1 && (
+              <SelectField
+                label={t("operations.account")}
+                value={String(creating.accountId)}
+                onChange={(next) =>
+                  setCreating({ ...creating, accountId: Number(next) })
+                }
+                options={accounts.map((account) => ({
+                  value: String(account.id),
+                  label: account.name,
+                }))}
+              />
+            )}
+            <TextField
+              label={t("buckets.name")}
+              hint={t("buckets.nameHint")}
+              value={creating.name}
+              onChange={(name) => setCreating({ ...creating, name })}
+              placeholder={t("buckets.namePlaceholder")}
+            />
+          </div>
+        </SectionCard>
+      </InlineView>
+    );
   }
 
   if (overlay?.kind === "account") {
@@ -462,53 +514,6 @@ function StorageTab({ isVisible }: TabProps) {
           ))}
         </PanelList>
       )}
-
-      <PanePrompt
-        open={!!creating}
-        title={t("buckets.add")}
-        description={t("buckets.nameHint")}
-        onCancel={() => setCreating(null)}
-        actions={
-          <>
-            <Button variant="outline" onClick={() => setCreating(null)}>
-              {t("cancel")}
-            </Button>
-            <Button onClick={() => void createBucket()}>
-              {t("buckets.create")}
-            </Button>
-          </>
-        }
-      >
-        {creating && (
-          <div className="space-y-2">
-            {accounts.length > 1 && (
-              <ToolbarSelect
-                className="w-full"
-                label={t("operations.account")}
-                value={String(creating.accountId)}
-                onChange={(next) =>
-                  setCreating({ ...creating, accountId: Number(next) })
-                }
-                options={accounts.map((account) => ({
-                  value: String(account.id),
-                  label: account.name,
-                }))}
-              />
-            )}
-            <Input
-              autoFocus
-              value={creating.name}
-              onChange={(event) =>
-                setCreating({ ...creating, name: event.target.value })
-              }
-              onKeyDown={(event) =>
-                event.key === "Enter" && void createBucket()
-              }
-              placeholder={t("buckets.namePlaceholder")}
-            />
-          </div>
-        )}
-      </PanePrompt>
     </PanelShell>
   );
 }

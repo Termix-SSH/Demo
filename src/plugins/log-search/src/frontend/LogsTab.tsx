@@ -257,7 +257,6 @@ export function LogsTab({ isVisible }: { isVisible: boolean }) {
               <Button
                 type="button"
                 variant="outline"
-                size="sm"
                 onClick={() => setShowHosts((v) => !v)}
               >
                 {hostSummary}

@@ -51,6 +51,8 @@ export interface CatalogAction {
   when?: { settings?: Record<string, unknown>; os?: string[] };
   surfaces?: Record<string, boolean>;
   available: boolean;
+  /** Hosts a `when` action fits, worked out by core (26.11.1+). */
+  hostIds?: number[];
 }
 
 export interface CatalogResource {

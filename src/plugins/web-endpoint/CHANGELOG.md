@@ -4,6 +4,7 @@
 
 ### Added
 
+- Through Termix: open a host's web page in a new browser tab through this server, with no route to it from your browser. Full apps work, with WebSockets and cookies. Needs Reverse Proxy 1.2.0 with a web endpoint domain (#7)
 - Check that a host's web endpoints answer through Termix actions, with a status tile on the host page
 - Permission Check web endpoints
 

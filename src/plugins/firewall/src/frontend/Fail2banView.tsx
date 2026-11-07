@@ -220,7 +220,6 @@ export function Fail2banView({
                 className="flex-1"
               />
               <Button
-                size="sm"
                 variant="outline"
                 disabled={busy || !(address[jail.name] ?? "").trim()}
                 onClick={() => void doBan(jail.name)}

@@ -91,70 +91,75 @@ export function RecordForm({
       }
     >
       <SectionCard title={t("record.section")} icon={<Globe />}>
-        <SelectField
-          label={t("record.type")}
-          value={type}
-          onChange={setType}
-          options={features.types.map((item) => ({ value: item, label: item }))}
-        />
-        <TextField
-          label={t("record.name")}
-          value={name}
-          onChange={setName}
-          placeholder="@"
-          hint={t("record.nameHint", { zone: zoneName })}
-          mono
-        />
-        {type === "TXT" ? (
-          <TextAreaField
-            label={t("record.value")}
-            value={content}
-            onChange={setContent}
-            placeholder={HINTS[type]}
-            rows={3}
-            mono
+        <div className="flex flex-col gap-3 py-2">
+          <SelectField
+            label={t("record.type")}
+            value={type}
+            onChange={setType}
+            options={features.types.map((item) => ({
+              value: item,
+              label: item,
+            }))}
           />
-        ) : (
           <TextField
-            label={t("record.value")}
-            value={content}
-            onChange={setContent}
-            placeholder={HINTS[type]}
+            label={t("record.name")}
+            value={name}
+            onChange={setName}
+            placeholder="@"
+            hint={t("record.nameHint", { zone: zoneName })}
             mono
           />
-        )}
-        {usesPriority && (
+          {type === "TXT" ? (
+            <TextAreaField
+              label={t("record.value")}
+              value={content}
+              onChange={setContent}
+              placeholder={HINTS[type]}
+              rows={3}
+              mono
+            />
+          ) : (
+            <TextField
+              label={t("record.value")}
+              value={content}
+              onChange={setContent}
+              placeholder={HINTS[type]}
+              mono
+            />
+          )}
+          {usesPriority && (
+            <NumberField
+              label={t("record.priority")}
+              value={priority}
+              onChange={setPriority}
+              min={0}
+              max={65535}
+            />
+          )}
           <NumberField
-            label={t("record.priority")}
-            value={priority}
-            onChange={setPriority}
-            min={0}
-            max={65535}
+            label={t("record.ttl")}
+            value={ttl}
+            onChange={setTtl}
+            min={1}
+            max={604800}
+            hint={features.autoTtl ? t("record.ttlAuto") : t("record.ttlHint")}
           />
-        )}
-        <NumberField
-          label={t("record.ttl")}
-          value={ttl}
-          onChange={setTtl}
-          min={1}
-          max={604800}
-          hint={features.autoTtl ? t("record.ttlAuto") : t("record.ttlHint")}
-        />
-        {canProxy && (
-          <SwitchRow
-            label={t("record.proxied")}
-            description={t("record.proxiedHint")}
-            checked={proxied}
-            onChange={setProxied}
-          />
-        )}
-        {features.comment && (
-          <TextField
-            label={t("record.comment")}
-            value={comment}
-            onChange={setComment}
-          />
-        )}
+          {canProxy && (
+            <SwitchRow
+              label={t("record.proxied")}
+              description={t("record.proxiedHint")}
+              checked={proxied}
+              onChange={setProxied}
+            />
+          )}
+          {features.comment && (
+            <TextField
+              label={t("record.comment")}
+              value={comment}
+              onChange={setComment}
+            />
+          )}
+        </div>
       </SectionCard>
     </InlineView>
   );

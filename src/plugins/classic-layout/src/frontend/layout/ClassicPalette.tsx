@@ -39,7 +39,7 @@ export function ClassicPalette() {
             section ? { section } : undefined,
           )
         }
-        onOpenTab={(type, label, pendingEvent) => {
+        onOpenTab={(type, label, pendingEvent, host) => {
           if (OPENS_AS_SINGLETON.includes(type)) {
             tabs.openSingleton(type, pendingEvent);
           } else if (getTabType(type)?.multiInstance) {
@@ -49,11 +49,12 @@ export function ClassicPalette() {
             tabs.openSingleton(
               type,
               undefined,
-              label ? hosts.list.find((h) => h.name === label) : undefined,
+              host ??
+                (label ? hosts.list.find((h) => h.name === label) : undefined),
             );
-          } else if (label) {
-            const host = hosts.list.find((h) => h.name === label);
-            if (host) tabs.open(host, type);
+          } else {
+            const target = host ?? hosts.list.find((h) => h.name === label);
+            if (target) tabs.open(target, type);
           }
         }}
       />

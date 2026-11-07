@@ -112,75 +112,81 @@ export function AccountForm({
       }
     >
       <SectionCard title={t("account.service")} icon={<Package />}>
-        <SelectField
-          label={t("account.provider")}
-          value={providerId}
-          disabled={!!account}
-          onChange={pick}
-          options={providers.map((item) => ({
-            value: item.id,
-            label: t(`providers.${item.id}`),
-          }))}
-        />
-        <TextField
-          label={t("account.name")}
-          value={name}
-          onChange={setName}
-          placeholder={t("account.namePlaceholder")}
-        />
-        <TextField
-          label={t("account.endpoint")}
-          value={endpoint}
-          onChange={(value) => {
-            setEndpoint(value);
-            setTouched(true);
-          }}
-          hint={preset?.needsAccountId ? t("account.accountIdHint") : undefined}
-          mono
-        />
-        <TextField
-          label={t("account.region")}
-          value={region}
-          onChange={changeRegion}
-          mono
-        />
-        <SwitchRow
-          label={t("account.pathStyle")}
-          description={t("account.pathStyleHint")}
-          checked={pathStyle}
-          onChange={setPathStyle}
-        />
-        <TextAreaField
-          label={t("account.ca")}
-          hint={t("account.caHint")}
-          value={ca}
-          onChange={setCa}
-          placeholder={account?.hasCa ? t("account.keep") : undefined}
-          rows={3}
-          mono
-        />
+        <div className="flex flex-col gap-3 py-2">
+          <SelectField
+            label={t("account.provider")}
+            value={providerId}
+            disabled={!!account}
+            onChange={pick}
+            options={providers.map((item) => ({
+              value: item.id,
+              label: t(`providers.${item.id}`),
+            }))}
+          />
+          <TextField
+            label={t("account.name")}
+            value={name}
+            onChange={setName}
+            placeholder={t("account.namePlaceholder")}
+          />
+          <TextField
+            label={t("account.endpoint")}
+            value={endpoint}
+            onChange={(value) => {
+              setEndpoint(value);
+              setTouched(true);
+            }}
+            hint={
+              preset?.needsAccountId ? t("account.accountIdHint") : undefined
+            }
+            mono
+          />
+          <TextField
+            label={t("account.region")}
+            value={region}
+            onChange={changeRegion}
+            mono
+          />
+          <SwitchRow
+            label={t("account.pathStyle")}
+            description={t("account.pathStyleHint")}
+            checked={pathStyle}
+            onChange={setPathStyle}
+          />
+          <TextAreaField
+            label={t("account.ca")}
+            hint={t("account.caHint")}
+            value={ca}
+            onChange={setCa}
+            placeholder={account?.hasCa ? t("account.keep") : undefined}
+            rows={3}
+            mono
+          />
+        </div>
       </SectionCard>
       <SectionCard title={t("account.keys")} icon={<Package />}>
-        <TextField
-          label={t("account.accessKeyId")}
-          value={accessKeyId}
-          onChange={setAccessKeyId}
-          placeholder={account ? t("account.keep") : undefined}
-          mono
-        />
-        <SecretField
-          label={t("account.secretAccessKey")}
-          value={secretAccessKey}
-          onChange={setSecretAccessKey}
-          placeholder={account ? t("account.keep") : undefined}
-        />
-        <SecretField
-          label={t("account.sessionToken")}
-          hint={t("account.sessionTokenHint")}
-          value={sessionToken}
-          onChange={setSessionToken}
-          placeholder={account ? t("account.keep") : undefined}
-        />
+        <div className="flex flex-col gap-3 py-2">
+          <TextField
+            label={t("account.accessKeyId")}
+            value={accessKeyId}
+            onChange={setAccessKeyId}
+            placeholder={account ? t("account.keep") : undefined}
+            mono
+          />
+          <SecretField
+            label={t("account.secretAccessKey")}
+            value={secretAccessKey}
+            onChange={setSecretAccessKey}
+            placeholder={account ? t("account.keep") : undefined}
+          />
+          <SecretField
+            label={t("account.sessionToken")}
+            hint={t("account.sessionTokenHint")}
+            value={sessionToken}
+            onChange={setSessionToken}
+            placeholder={account ? t("account.keep") : undefined}
+          />
+        </div>
       </SectionCard>
     </InlineView>
   );

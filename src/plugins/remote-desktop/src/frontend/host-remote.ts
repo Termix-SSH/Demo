@@ -38,6 +38,8 @@ export interface RemoteHostOptions {
   moonlightTransport: string;
   rdpSecurity: string;
   rdpIgnoreCert: boolean;
+  rdpAutoReconnect: boolean;
+  rdpAutoResize: boolean;
   guacamoleConfig: GuacamoleConfig;
   enableToolbar: boolean;
 }
@@ -156,6 +158,8 @@ export function remoteOptions(
     rdpSecurity:
       typeof values.rdpSecurity === "string" ? values.rdpSecurity : "",
     rdpIgnoreCert: values.rdpIgnoreCert === true,
+    rdpAutoReconnect: values.rdpAutoReconnect !== false,
+    rdpAutoResize: values.rdpAutoResize !== false,
     guacamoleConfig: parseGuacamoleConfig(values.guacamoleConfig),
     enableToolbar: values.enableToolbar !== false,
   };

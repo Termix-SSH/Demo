@@ -351,6 +351,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
     const pongTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [isConnected, setIsConnected] = useState(false);
     const [isRecording, setIsRecording] = useState(false);
+    const [accessRequestVerify, setAccessRequestVerify] = useState(false);
     const [accessRequestTab, setAccessRequestTab] = useState<string | null>(
       null,
     );
@@ -1449,11 +1450,34 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
         hostConfig.password ||
         hostConfig.hasSudoPassword ||
         hostConfig.hasPassword;
-      if (!hasStoredPassword || passwordPromptShownRef.current) return;
+      // Cores before 26.11.1 leave the has* flags off plugin hosts, so look
+      // the password up instead of assuming there is none.
+      const flagsMissing =
+        hostConfig.hasPassword === undefined &&
+        hostConfig.hasSudoPassword === undefined &&
+        !!hostConfig.id;
+      if (
+        (!hasStoredPassword && !flagsMissing) ||
+        passwordPromptShownRef.current
+      )
+        return;
 
       passwordPromptShownRef.current = true;
       passwordPromptBufferRef.current = "";
 
+      void (async () => {
+        if (
+          !hasStoredPassword &&
+          !(await resolvePasswordForPrompt(isSudoPrompt))
+        ) {
+          passwordPromptShownRef.current = false;
+          return;
+        }
+        offerPasswordFill(isSudoPrompt);
+      })();
+    }
+
+    function offerPasswordFill(isSudoPrompt: boolean) {
       void confirm({
         title: t("terminal.passwordPromptFillTitle"),
         confirmLabel: t("common.confirm"),
@@ -2061,6 +2085,9 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
           );
         } else {
           isAttachingSessionRef.current = false;
+          // clear() preserves mouse modes from a dead tmux client. A fresh
+          // shell must opt in again; keep scrollback and live attaches intact.
+          terminal.write("\x1b[?9;1000;1002;1003;1006;1016l");
           ws.send(
             JSON.stringify({
               type: "connectToHost",
@@ -2223,6 +2250,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
             setAccessRequestTab(
               typeof msg.requestTab === "string" ? msg.requestTab : null,
             );
+            setAccessRequestVerify(msg.requestKind === "verify");
             updateConnectionError(errorMessage);
             setIsConnecting(false);
             shouldNotReconnectRef.current = true;
@@ -3116,7 +3144,12 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
           }
           return false;
         }
-        if (wheelHasNothingToScroll(terminal.buffer.active)) {
+        if (
+          wheelHasNothingToScroll(
+            terminal.buffer.active,
+            terminal.modes.mouseTrackingMode,
+          )
+        ) {
           ev.preventDefault();
           return false;
         }
@@ -3948,6 +3981,7 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
         host={host}
         isConnected={isConnected}
         isTmuxAttached={isTmuxAttached}
+        isRecording={isRecording && isConnected}
         onTmuxDetach={() => {
           if (webSocketRef.current?.readyState === WebSocket.OPEN) {
             webSocketRef.current.send(JSON.stringify({ type: "tmux_detach" }));
@@ -4101,16 +4135,6 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
               );
             })()}
 
-          {isRecording && isConnected && (
-            <div
-              className="pointer-events-none absolute top-2 right-3 z-[110] flex items-center gap-1.5 bg-black/60 px-2 py-0.5 text-xs text-white/80"
-              aria-live="polite"
-            >
-              <span className="size-2 rounded-full bg-red-500" />
-              {t("terminal.recording")}
-            </div>
-          )}
-
           {isQuickConnect &&
             isConnected &&
             !isQuickConnectSaved &&
@@ -4185,7 +4209,11 @@ const TerminalInner = forwardRef<TerminalHandle, SSHTerminalProps>(
                     })
                   }
                 >
-                  {t("terminal.requestAccess")}
+                  {t(
+                    accessRequestVerify
+                      ? "terminal.verifyAccess"
+                      : "terminal.requestAccess",
+                  )}
                 </Button>
               ) : onEditHost ? (
                 <Button size="sm" variant="outline" onClick={onEditHost}>

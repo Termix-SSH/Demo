@@ -18,7 +18,7 @@ import {
   LoadingState,
   PanelList,
   PanelShell,
-  StatusDot,
+  StatusBadge,
   useConfirm,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { Device, DeviceInput, DriverInfo } from "../shared/types";
@@ -190,14 +190,18 @@ function OobTab({ isVisible, tab }: TabProps) {
           <ListRow
             key={device.id}
             stripe={index}
-            tone={device.status === "down" ? "destructive" : "none"}
-            icon={
-              <StatusDot
-                tone={statusTone(device.status, device.reading?.health)}
-              />
-            }
+            tone={ROW_TONE[statusTone(device.status, device.reading?.health)]}
             title={device.name}
-            badges={<ListBadge>{t(`drivers.${device.driver}`)}</ListBadge>}
+            badges={
+              <>
+                <StatusBadge
+                  tone={statusTone(device.status, device.reading?.health)}
+                >
+                  {t(`status.${device.status}`)}
+                </StatusBadge>
+                <ListBadge>{t(`drivers.${device.driver}`)}</ListBadge>
+              </>
+            }
             meta={[
               device.address,
               device.status === "down"
@@ -244,6 +248,13 @@ function OobTab({ isVisible, tab }: TabProps) {
     </PanelShell>
   );
 }
+
+const ROW_TONE = {
+  ok: "brand",
+  warn: "warning",
+  bad: "destructive",
+  idle: "muted",
+} as const;
 
 export function activate(app: TermixApp): void {
   initApi(app.api);

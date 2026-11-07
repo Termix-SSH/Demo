@@ -74,7 +74,7 @@ export function VmXml({
           value={text}
           onChange={(event) => setText(event.target.value)}
           spellCheck={false}
-          className="min-h-0 flex-1 resize-none rounded-none border-0 font-mono text-xs"
+          className="min-h-0 flex-1 resize-none rounded-none border-0 bg-background px-3 py-2 font-mono text-xs shadow-none focus-visible:ring-0 dark:bg-background"
         />
       </div>
     </PanelShell>

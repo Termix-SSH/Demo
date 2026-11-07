@@ -175,84 +175,94 @@ export function MonitorsView({
   );
 
   return (
-    <TileStack>
-      <TileWall gridClassName="grid-cols-2 md:grid-cols-4">
-        <StatTile
-          label={t("stats.up")}
-          icon={<Activity className="size-3.5" />}
-          value={count("up")}
-          tone={count("up") ? "ok" : "default"}
-        />
-        <StatTile
-          label={t("stats.down")}
-          value={problems}
-          tone={problems ? "bad" : "default"}
-          onClick={() => setFilter("problems")}
-        />
-        <StatTile
-          label={t("stats.paused")}
-          value={count("paused", "maintenance")}
-          onClick={() => setFilter("paused")}
-        />
-        <StatTile
-          label={t("stats.month")}
-          value={percentText(month)}
-          tone={uptimeTone(month)}
-        />
-      </TileWall>
-      <ToolbarBand>
-        <Segmented<Filter>
-          value={filter}
-          onChange={setFilter}
-          options={[
-            { value: "all", label: t("filter.all") },
-            { value: "problems", label: t("filter.problems"), count: problems },
-            { value: "paused", label: t("filter.paused") },
-          ]}
-        />
-        <PanelSearch
-          value={query}
-          onChange={setQuery}
-          placeholder={t("list.search")}
-          fill
-        />
-        <ViewToggle
-          view={panel.view}
-          onView={panel.setView}
-          columns={panel.columns}
-          onColumns={panel.setColumns}
-        />
-        {permissions.manage ? (
-          <>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setAddingHosts(true)}
-            >
-              {t("list.addHosts")}
-            </Button>
-            <AddButton label={t("list.add")} onClick={() => setAdding(true)} />
-          </>
-        ) : null}
-      </ToolbarBand>
-      <DataView
-        items={shown}
-        view={panel.view}
-        getKey={(monitor) => String(monitor.id)}
-        renderCard={renderCard}
-        columns={{ base: 1 }}
-        size={panel.columns}
-        minCardWidth={300}
-        listColumns={columns}
-        onRowClick={(monitor) => setOpenId(monitor.id)}
-        empty={
-          <EmptyState
-            icon={HeartPulse}
-            title={t(monitors.length ? "list.noMatch" : "list.empty")}
-            hint={monitors.length ? undefined : t("list.emptyHint")}
+    <>
+      <TileStack>
+        <TileWall gridClassName="grid-cols-2 md:grid-cols-4">
+          <StatTile
+            label={t("stats.up")}
+            icon={<Activity className="size-3.5" />}
+            value={count("up")}
+            tone={count("up") ? "ok" : "default"}
           />
-        }
-      />
+          <StatTile
+            label={t("stats.down")}
+            value={problems}
+            tone={problems ? "bad" : "default"}
+            onClick={() => setFilter("problems")}
+          />
+          <StatTile
+            label={t("stats.paused")}
+            value={count("paused", "maintenance")}
+            onClick={() => setFilter("paused")}
+          />
+          <StatTile
+            label={t("stats.month")}
+            value={percentText(month)}
+            tone={uptimeTone(month)}
+          />
+        </TileWall>
+        <ToolbarBand>
+          <Segmented<Filter>
+            value={filter}
+            onChange={setFilter}
+            options={[
+              { value: "all", label: t("filter.all") },
+              {
+                value: "problems",
+                label: t("filter.problems"),
+                count: problems,
+              },
+              { value: "paused", label: t("filter.paused") },
+            ]}
+          />
+          <PanelSearch
+            value={query}
+            onChange={setQuery}
+            placeholder={t("list.search")}
+            fill
+          />
+          <ViewToggle
+            view={panel.view}
+            onView={panel.setView}
+            columns={panel.columns}
+            onColumns={panel.setColumns}
+          />
+          {permissions.manage ? (
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setAddingHosts(true)}
+              >
+                {t("list.addHosts")}
+              </Button>
+              <AddButton
+                label={t("list.add")}
+                onClick={() => setAdding(true)}
+              />
+            </>
+          ) : null}
+        </ToolbarBand>
+        <DataView
+          items={shown}
+          view={panel.view}
+          getKey={(monitor) => String(monitor.id)}
+          renderCard={renderCard}
+          columns={{ base: 1 }}
+          size={panel.columns}
+          minCardWidth={300}
+          listColumns={columns}
+          onRowClick={(monitor) => setOpenId(monitor.id)}
+          empty={
+            <EmptyState
+              icon={HeartPulse}
+              title={t(monitors.length ? "list.noMatch" : "list.empty")}
+              hint={monitors.length ? undefined : t("list.emptyHint")}
+            />
+          }
+        />
+      </TileStack>
+      {/* Overlays stay outside the stack so they don't add empty sections. */}
       <MonitorEditor
         open={adding}
         presetHostId={presetHostId}
@@ -274,6 +284,6 @@ export function MonitorsView({
           reload={reload}
         />
       ) : null}
-    </TileStack>
+    </>
   );
 }

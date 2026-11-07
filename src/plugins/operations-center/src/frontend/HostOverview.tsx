@@ -375,7 +375,7 @@ export function HostOverview({
             <>
               <div className="flex flex-wrap gap-2">
                 <Input
-                  className="min-w-40 flex-1"
+                  className="h-8 min-w-40 flex-1"
                   value={query}
                   placeholder={t("host.searchActions")}
                   onChange={(event) => {

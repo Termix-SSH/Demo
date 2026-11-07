@@ -88,6 +88,7 @@ import {
 } from "./HostEditorData";
 import { HostEditorGeneralTab } from "./HostEditorGeneralTab";
 import { canEditHost } from "./host-permissions";
+import { useHostPolicy } from "./use-host-policy";
 import { SshAuthProviderFields } from "./SshAuthProviderFields";
 import type { PluginSettingsField } from "@termix-ssh/plugin-sdk/manifest";
 import type { HostDraft } from "@termix-ssh/plugin-sdk/frontend";
@@ -141,6 +142,7 @@ export function HostEditor({
   onDefaultsSaved?: () => void;
 }) {
   const { t } = useTranslation();
+  const hostPolicy = useHostPolicy();
   const confirm = useConfirm();
   // Re-render when a plugin adds or removes a section.
   useHostEditorSections();
@@ -769,6 +771,12 @@ export function HostEditor({
         banner={
           <>
             {banner}
+            {hostPolicy.credentialStorage === false && (
+              <div className="flex items-start gap-2.5 p-3 border-b border-border text-xs text-muted-foreground">
+                <Lock className="size-3.5 shrink-0 mt-0.5" />
+                <span>{t("admin.credentialStorageOff")}</span>
+              </div>
+            )}
             {lock && (
               <div className="flex items-start gap-2.5 p-3 border-b border-accent-brand/30 bg-accent-brand/5 text-xs text-muted-foreground">
                 <Lock className="size-3.5 shrink-0 mt-0.5 text-accent-brand" />

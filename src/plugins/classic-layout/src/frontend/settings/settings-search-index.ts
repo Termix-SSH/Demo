@@ -115,6 +115,8 @@ export const SETTINGS_SEARCH_INDEX: Record<string, string[]> = {
     "admin.allowPasswordResetDesc",
     "admin.allowRegistration",
     "admin.allowRegistrationDesc",
+    "admin.credentialStorage",
+    "admin.credentialStorageDesc",
     "admin.externalAutoProvision",
     "admin.externalAutoProvisionDesc",
     "admin.forceHttps",

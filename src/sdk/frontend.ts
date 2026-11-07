@@ -51,6 +51,10 @@ export interface PluginHostRecord {
   authType?: string;
   credentialId?: string | number | null;
   overrideCredentialUsername?: boolean;
+  /** Whether the host has a saved SSH password. The value never reaches plugins. */
+  hasPassword?: boolean;
+  /** Whether the host has a saved sudo password. The value never reaches plugins. */
+  hasSudoPassword?: boolean;
   /** "ssh", or the id of the plugin protocol a host without SSH uses. */
   connectionType?: string;
   /** Desktop app: where connections to this host start from. */
@@ -1063,6 +1067,11 @@ export interface LoginMethodUIProps {
   disabled: boolean;
   /** What the user typed in the username field, when there is one. */
   username?: string;
+  /**
+   * Which page of the login screen this is drawn on, for a button that only
+   * belongs on one. Termix 26.11.1+.
+   */
+  view?: "password" | "external";
   /**
    * Form methods: posts the body to the method's verify endpoint, then the
    * login screen finishes the login or shows the second-factor step.
