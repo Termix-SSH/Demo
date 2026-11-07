@@ -1,4 +1,5 @@
 import { del, get, post, put } from "../../router";
+import { socket } from "../../sockets";
 import { value } from "../../store";
 
 const P = "/plugin-api/virtual-machines";
@@ -347,10 +348,88 @@ get(`${base}/networks/:name/leases`, () => [
     hostname: "build-runner",
   },
 ]);
-get(`${base}/jobs`, () => []);
+// The serial console: a Debian login that is already signed in.
+const SERIAL_ANSWERS: Record<string, string> = {
+  uptime:
+    " 10:42:07 up 12 days,  3:18,  1 user,  load average: 0.08, 0.05, 0.01",
+  hostname: "debian-web",
+  "df -h": [
+    "Filesystem      Size  Used Avail Use% Mounted on",
+    "/dev/vda1        20G  4.1G   15G  22% /",
+    "tmpfs           992M     0  992M   0% /dev/shm",
+  ].join("\r\n"),
+  "systemctl is-active nginx": "active",
+};
+socket("/plugin-ws/virtual-machines/console", (ws) => {
+  let line = "";
+  const prompt = "\r\nroot@debian-web:~# ";
+  ws.onMessage((raw) => {
+    let message: { type?: string; data?: unknown };
+    try {
+      message = JSON.parse(String(raw));
+    } catch {
+      return;
+    }
+    if (message.type === "connect") {
+      ws.send({ type: "connected" });
+      ws.send({
+        type: "output",
+        data:
+          "\r\nDebian GNU/Linux 13 debian-web ttyS0\r\n\r\ndebian-web login: root\r\nLast login: Fri Nov  6 09:12:44 UTC 2026 on ttyS0" +
+          prompt,
+      });
+      return;
+    }
+    if (message.type !== "input" || typeof message.data !== "string") return;
+    for (const ch of message.data) {
+      if (ch === "\r") {
+        const answer = SERIAL_ANSWERS[line.trim()];
+        ws.send({
+          type: "output",
+          data:
+            "\r\n" +
+            (answer ?? (line.trim() ? `${line.trim()}: done` : "")) +
+            prompt,
+        });
+        line = "";
+      } else if (ch === "\u007f") {
+        if (line) {
+          line = line.slice(0, -1);
+          ws.send({ type: "output", data: "\b \b" });
+        }
+      } else {
+        line += ch;
+        ws.send({ type: "output", data: ch });
+      }
+    }
+  });
+});
+
+// Jobs started in this page run for a few seconds, then finish.
+const started: { row: ReturnType<typeof jobRow>; at: number }[] = [];
+const JOB_MS = 8000;
+const PHASES = ["Downloading the image", "Making the disk", "Starting the VM"];
+
+get(`${base}/jobs`, () =>
+  started
+    .map(({ row, at }) => {
+      const done = Math.min(1, (Date.now() - at) / JOB_MS);
+      return done >= 1
+        ? { ...row, finishedAt: new Date(at + JOB_MS).toISOString() }
+        : {
+            ...row,
+            status: "running",
+            phase: PHASES[Math.min(PHASES.length - 1, Math.floor(done * 3))],
+            percent: Math.round(done * 100),
+            log: PHASES.slice(0, Math.floor(done * 3) + 1).join("\n"),
+            finishedAt: null,
+          };
+    })
+    .reverse(),
+);
 post(`${base}/jobs/:id/cancel`, ok);
 
-function job(kind: string, label: string, vmName: string) {
+function jobRow(kind: string, label: string, vmName: string) {
   return {
     id: Date.now() % 100000,
     hostId: 7,
@@ -359,10 +438,16 @@ function job(kind: string, label: string, vmName: string) {
     status: "success",
     phase: "Done",
     percent: 100,
-    log: "",
+    log: PHASES.join("\n"),
     error: "",
     vmName,
-    startedAt: ago(1),
-    finishedAt: ago(0),
+    startedAt: new Date().toISOString(),
+    finishedAt: null as string | null,
   };
+}
+
+function job(kind: string, label: string, vmName: string) {
+  const row = jobRow(kind, label, vmName);
+  started.push({ row, at: Date.now() });
+  return { ...row, status: "running", phase: PHASES[0], percent: 0 };
 }

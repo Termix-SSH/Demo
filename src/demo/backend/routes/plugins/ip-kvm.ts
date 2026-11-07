@@ -1,4 +1,5 @@
 import { del, get, post, put } from "../../router";
+import { socket } from "../../sockets";
 import { collection } from "../../store";
 
 const P = "/plugin-api/ip-kvm";
@@ -185,3 +186,94 @@ get(`${P}/devices/:id/media`, () => ({
 post(`${P}/devices/:id/media/mount`, () => ({ ok: true }));
 post(`${P}/devices/:id/media/eject`, () => ({ ok: true }));
 post(`${P}/devices/:id/media/fetch`, () => ({ ok: true }));
+
+// The screen: a text console drawn on a canvas and sent as JPEG frames,
+// like a real KVM. Keys typed in the tab show up at the prompt.
+const BOOT = [
+  "Debian GNU/Linux 13 nas tty1",
+  "",
+  "nas login: root",
+  "Password:",
+  "Linux nas 6.12.48-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.48-1 x86_64",
+  "Last login: Fri Nov  6 21:04:11 UTC 2026 on tty1",
+];
+const KEYS: Record<string, string> = {
+  Space: " ",
+  Minus: "-",
+  Period: ".",
+  Slash: "/",
+};
+
+socket("/plugin-ws/ip-kvm/screen", (ws) => {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1024;
+  canvas.height = 576;
+  const ctx = canvas.getContext("2d");
+  const lines = [...BOOT];
+  let typed = "";
+  let blink = 0;
+  let timer: ReturnType<typeof setInterval> | null = null;
+
+  const run = (cmd: string) => {
+    lines.push(`root@nas:~# ${cmd}`);
+    if (cmd === "uptime")
+      lines.push(
+        " 21:08:52 up 41 days,  2:16,  1 user,  load average: 0.21, 0.18, 0.12",
+      );
+    else if (cmd === "df -h") {
+      lines.push("Filesystem      Size  Used Avail Use% Mounted on");
+      lines.push("/dev/sda2       916G  412G  458G  48% /");
+      lines.push("tank            7.2T  5.9T  1.3T  82% /srv/share");
+    } else if (cmd) lines.push(`${cmd.split(" ")[0]}: done`);
+  };
+
+  const draw = () => {
+    if (!ctx || ws.closed) return;
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.font = "16px monospace";
+    ctx.fillStyle = "#c8c8c8";
+    const shown = [
+      ...lines.slice(-28),
+      `root@nas:~# ${typed}${blink++ % 4 < 2 ? "_" : ""}`,
+    ];
+    shown.forEach((text, i) => ctx.fillText(text, 12, 24 + i * 19));
+    canvas.toBlob(
+      (blob) => void blob?.arrayBuffer().then((buffer) => ws.send(buffer)),
+      "image/jpeg",
+      0.85,
+    );
+  };
+
+  ws.onMessage((raw) => {
+    let message: {
+      type?: string;
+      data?: { t?: string; code?: string; down?: boolean };
+    };
+    try {
+      message = JSON.parse(String(raw));
+    } catch {
+      return;
+    }
+    if (message.type === "connect") {
+      ws.send({ type: "started" });
+      draw();
+      timer = setInterval(draw, 200);
+      return;
+    }
+    const event = message.data;
+    if (message.type !== "input" || event?.t !== "key" || !event.down) return;
+    const code = event.code ?? "";
+    if (code === "Enter") {
+      run(typed.trim());
+      typed = "";
+    } else if (code === "Backspace") typed = typed.slice(0, -1);
+    else if (code.startsWith("Key")) typed += code.slice(3).toLowerCase();
+    else if (code.startsWith("Digit")) typed += code.slice(5);
+    else if (KEYS[code]) typed += KEYS[code];
+    draw();
+  });
+  ws.onClose(() => {
+    if (timer) clearInterval(timer);
+  });
+});

@@ -4,6 +4,7 @@ import { value } from "../../store";
 const P = "/plugin-api/storage-health";
 
 const sec = (minAgo: number) => Math.floor(Date.now() / 1000) - minAgo * 60;
+const ms = (minAgo: number) => Date.now() - minAgo * 60_000;
 const TB = 1_000_000_000_000;
 
 const drive = (
@@ -138,14 +139,14 @@ get(`${P}/:host/events`, () => [
   {
     id: 2,
     hostId: 8,
-    at: sec(60 * 5),
+    at: ms(60 * 5),
     type: "smart-attention",
     text: "sdb has 8 reallocated sectors",
   },
   {
     id: 1,
     hostId: 8,
-    at: sec(60 * 30),
+    at: ms(60 * 30),
     type: "recovered",
     text: "md0 finished a check",
   },
@@ -178,7 +179,7 @@ function view(host: number) {
     status: host === 8 ? "warn" : "ok",
     reading: reading(),
     error: "",
-    readAt: sec(2),
+    readAt: ms(2),
     active: host === 8 ? ["smart-attention|sdb"] : [],
   };
 }

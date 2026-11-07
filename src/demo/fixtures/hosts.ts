@@ -224,6 +224,7 @@ export const DEMO_HOSTS = [
       proxmox: { enableProxmox: true, enableProxmoxStats: true },
       "virtual-machines": { enableVirtualMachines: true },
       "storage-health": { enableStorage: true },
+      "service-manager": { enableServices: true },
       docker: { enableDocker: false },
     },
   }),

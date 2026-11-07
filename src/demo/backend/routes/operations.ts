@@ -1,3 +1,4 @@
+import { isRecording } from "../recording";
 import { get, HttpError, post } from "../router";
 import { hosts } from "./hosts";
 import { MANIFESTS } from "./plugins";
@@ -94,6 +95,23 @@ function catalog() {
         })),
         outputs: [],
         inputSchema: { type: "object", properties: {} },
+        // Like core: the hosts whose settings match the action's `when`.
+        hostIds:
+          action.when?.settings && action.scope !== "server"
+            ? hosts
+                .all()
+                .filter((host) => {
+                  const own = (
+                    host as {
+                      pluginSettings?: Record<string, Record<string, unknown>>;
+                    }
+                  ).pluginSettings?.[manifest.id];
+                  return Object.entries(action.when?.settings ?? {}).every(
+                    ([key, value]) => (own?.[key] ?? false) === value,
+                  );
+                })
+                .map((host) => host.id)
+            : undefined,
       });
     }
     for (const event of operations.events ?? []) {
@@ -183,8 +201,8 @@ post("/operations/:id/run", (req) => {
     risk: action.risk,
     status: "success",
     summary: body.dryRun
-      ? `Would run ${action.title} (demo)`
-      : `${action.title} done (demo)`,
+      ? `Would run ${action.title}${isRecording() ? "" : " (demo)"}`
+      : `${action.title} done${isRecording() ? "" : " (demo)"}`,
     input: body.input ?? {},
     undoAvailable: false,
     createdAt: new Date().toISOString(),

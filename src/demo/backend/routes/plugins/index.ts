@@ -50,6 +50,7 @@ import "./storage-health";
 import "./ups-manager";
 import "./uptime";
 import "./virtual-machines";
+import "./privileged-access";
 import "./firewall";
 import "./wireguard";
 import "./web-endpoint";

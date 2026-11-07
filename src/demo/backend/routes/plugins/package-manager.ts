@@ -107,6 +107,40 @@ const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const note = () =>
   isRecording() ? "" : "This is a demo, so nothing changed on a real host.";
 
+// What apt prints, so a recording shows a real looking job.
+const aptOutput = (names: string[]) => {
+  const list = names.length ? names : UPDATES.map((u) => u.name);
+  const lines = [
+    "Reading package lists...",
+    "Building dependency tree...",
+    "Reading state information...",
+    "The following packages will be upgraded:",
+    `  ${list.join(" ")}`,
+    `${list.length} upgraded, 0 newly installed, 0 to remove and 0 not upgraded.`,
+  ];
+  for (const name of list) {
+    const u = UPDATES.find((x) => x.name === name);
+    lines.push(
+      `Get:1 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 ${name} amd64 ${u?.available ?? ""} [412 kB]`,
+    );
+  }
+  for (const name of list) {
+    const u = UPDATES.find((x) => x.name === name);
+    lines.push(
+      `Preparing to unpack .../${name}_${u?.available ?? ""}_amd64.deb ...`,
+    );
+    lines.push(
+      `Unpacking ${name} (${u?.available ?? ""}) over (${u?.current ?? ""}) ...`,
+    );
+  }
+  for (const name of list)
+    lines.push(
+      `Setting up ${name} (${UPDATES.find((x) => x.name === name)?.available ?? ""}) ...`,
+    );
+  lines.push("Processing triggers for man-db (2.12.0-4build2) ...");
+  return lines.join("\n");
+};
+
 get(`${P}/:host/status`, () => ({
   os: "Ubuntu 24.04.1 LTS",
   manager: "apt",
@@ -215,7 +249,11 @@ post(`${P}/:host/action`, async (req) => {
           ? s.held.filter((n) => !names.includes(n))
           : s.held,
   }));
-  return { ok: true, output: note() };
+  const upgrade = b.action === "update" || b.action === "upgrade-all";
+  return {
+    ok: true,
+    output: isRecording() && upgrade ? aptOutput(names) : note(),
+  };
 });
 get(`${P}/summary`, () => {
   const updates = state.get().updates;

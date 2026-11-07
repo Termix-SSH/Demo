@@ -4,6 +4,7 @@ import { collection } from "../../store";
 const P = "/plugin-api/ups-manager";
 
 const sec = (minAgo: number) => Math.floor(Date.now() / 1000) - minAgo * 60;
+const ms = (minAgo: number) => Date.now() - minAgo * 60_000;
 
 const reading = () => ({
   state: "online",
@@ -43,7 +44,7 @@ const sources = collection<Source>("ups-manager-sources", () => [
     hasSecrets: true,
     reading: reading(),
     error: "",
-    readAt: sec(1),
+    readAt: ms(1),
   },
 ]);
 
@@ -92,7 +93,7 @@ post(`${P}/:host/sources`, (req) =>
     hostId: Number(req.params.host),
     reading: reading(),
     error: "",
-    readAt: sec(0),
+    readAt: ms(0),
   } as Source),
 );
 get(`${P}/:host/sources/:id/status`, (req) => sources.find(req.params.id));
@@ -118,14 +119,14 @@ get(`${P}/:host/sources/:id/events`, () => [
   {
     id: 2,
     sourceId: 1,
-    at: sec(60 * 72),
+    at: ms(60 * 72),
     type: "power-restored",
     text: "Power is back, charging",
   },
   {
     id: 1,
     sourceId: 1,
-    at: sec(60 * 72 + 2),
+    at: ms(60 * 72 + 2),
     type: "on-battery",
     text: "Running on battery",
   },

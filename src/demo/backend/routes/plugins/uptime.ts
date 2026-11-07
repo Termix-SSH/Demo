@@ -4,6 +4,7 @@ import { collection } from "../../store";
 const P = "/plugin-api/uptime";
 
 const sec = (minAgo: number) => Math.floor(Date.now() / 1000) - minAgo * 60;
+const ms = (minAgo: number) => Date.now() - minAgo * 60_000;
 
 type Status = "up" | "down" | "pending" | "maintenance" | "paused" | "unknown";
 
@@ -46,8 +47,8 @@ const monitor = (
     access: "owner",
     owner: true,
     status,
-    statusSince: sec(60 * 30),
-    lastCheckAt: sec(1),
+    statusSince: ms(60 * 30),
+    lastCheckAt: ms(1),
     latencyMs: status === "down" ? null : 42,
     message: status === "down" ? "Connection refused" : "OK",
     cert: null,
@@ -255,7 +256,7 @@ get(`${P}/incidents`, () => ({
       id: 1,
       monitorId: 5,
       monitorName: "Media server",
-      startedAt: sec(60 * 3),
+      startedAt: ms(60 * 3),
       endedAt: null,
       cause: "Request timed out",
       ackBy: null,
@@ -266,11 +267,11 @@ get(`${P}/incidents`, () => ({
       id: 2,
       monitorId: 1,
       monitorName: "Termix",
-      startedAt: sec(60 * 52),
-      endedAt: sec(60 * 51),
+      startedAt: ms(60 * 52),
+      endedAt: ms(60 * 51),
       cause: "HTTP 502",
       ackBy: "demo",
-      ackAt: sec(60 * 51),
+      ackAt: ms(60 * 51),
       note: "Upstream restarted",
     },
   ],
@@ -317,7 +318,7 @@ get(`${P}/pages/:id/notes`, () => ({
       title: "Planned patching",
       body: "Short restarts are expected on Sunday night.",
       level: "info",
-      createdAt: sec(60 * 20),
+      createdAt: ms(60 * 20),
       resolvedAt: null,
     },
   ],
