@@ -168,5 +168,31 @@
         `host row ${row.getAttribute("data-host-id")} has ${dots.length} dots`,
       );
   }
+  // Controls squeezed against the lines of the bar they sit in.
+  const lined = (el) => {
+    const cs = getComputedStyle(el);
+    return (
+      (parseFloat(cs.borderBottomWidth) >= 1 &&
+        cs.borderBottomStyle !== "none") ||
+      (parseFloat(cs.borderTopWidth) >= 1 && cs.borderTopStyle !== "none")
+    );
+  };
+  for (const el of all(
+    '[data-slot="segmented"], [data-slot="button"], [data-slot="input"], [data-slot="select-trigger"]',
+  )) {
+    const r = el.getBoundingClientRect();
+    if (!r.height || r.height > 40) continue;
+    let bar = el.parentElement;
+    while (bar && bar !== root && !lined(bar)) bar = bar.parentElement;
+    if (!bar || bar === root) continue;
+    const b = bar.getBoundingClientRect();
+    if (b.height > r.height + 24) continue;
+    const top = r.top - b.top;
+    const bottom = b.bottom - r.bottom;
+    if (top < 2.5 || bottom < 2.5)
+      problems.push(
+        `tight in bar (${top.toFixed(1)}/${bottom.toFixed(1)}): ${label(el)}`,
+      );
+  }
   return [...new Set(problems)];
 })();
