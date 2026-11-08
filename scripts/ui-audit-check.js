@@ -68,7 +68,23 @@
     }
     row.items.push({ el, r });
   }
+  // Split rows where controls are far apart, so a nav item never joins a
+  // toolbar on the other side of the page.
+  const clusters = [];
   for (const row of rows) {
+    const items = row.items.slice().sort((a, b) => a.r.left - b.r.left);
+    let current = [];
+    for (const item of items) {
+      const last = current[current.length - 1];
+      if (last && item.r.left - last.r.right > 120) {
+        clusters.push({ items: current });
+        current = [];
+      }
+      current.push(item);
+    }
+    if (current.length) clusters.push({ items: current });
+  }
+  for (const row of clusters) {
     if (row.items.length < 2) continue;
     // Only rows that read as a toolbar: some input, select or segmented.
     const hasField = row.items.some(({ el }) =>
