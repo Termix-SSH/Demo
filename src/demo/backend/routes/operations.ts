@@ -44,6 +44,8 @@ interface Declared {
   id: string;
   titleKey: string;
   descriptionKey?: string;
+  scope?: string;
+  when?: { settings?: Record<string, unknown> };
   inputs?: DeclaredField[];
   [key: string]: unknown;
 }
