@@ -9,7 +9,8 @@
   "settings": {
     "group": {
       "sessions": "Seansid",
-      "secondFactor": "Teine tegur"
+      "secondFactor": "Teine tegur",
+      "connect": "Ühendamine hostidega"
     },
     "admin": {
       "idleTimeoutMinutes": {
@@ -34,8 +35,34 @@
       "applyToExternal": {
         "label": "Samuti ühe sisselogimisega (SSO)",
         "description": "Küsi teist autentimistegurit ka SSO ja LDAP sisselogimiste järel. Jäta see välja, kui sinu identiteedipakkuja küsib seda juba."
+      },
+      "connectFactor": {
+        "label": "Küsi teist autentimisetappi enne ühendumist",
+        "description": "Kasutajad sisestavad teise autentimisetapi, kui avavad hostil terminali, kauglaua või failihalduri. Meetrikate, tunnelite ja muu taustatöö puhul seda ei küsitakse.",
+        "off": "Väljas",
+        "marked": "Märgistatud hostidel",
+        "all": "Kõigil hostidel"
+      },
+      "connectFactorMinutes": {
+        "label": "Minutit enne uuesti küsimist",
+        "description": "Pärast sisestamist saab kasutaja selles ajavahemikus ühenduda mis tahes hostiga. Seansi lõpetamine katkestab selle ennetähtaegselt."
+      }
+    },
+    "host": {
+      "requireConnectFactor": {
+        "label": "Küsi teist autentimisetappi enne ühendumist",
+        "description": "Kasutatakse, kui Sisselogimise turvalisus on seadistatud küsima märgistatud hostide puhul."
       }
     }
+  },
+  "verify": {
+    "title": "Kinnita teine autentimisetapp",
+    "intro": "Sisesta teine autentimisetapp, et sellega hostiga ühenduda.",
+    "done": "Kinnitatud",
+    "retry": "Mine tagasi hosti juurde ja ühendu uuesti.",
+    "failed": "See ei õnnestunud. Proovi uuesti.",
+    "noFactor": "Teist autentimisetappi pole seadistatud",
+    "noFactorHint": "Seadista see Sätted > Turvalisus ja ühendu seejärel uuesti."
   },
   "status": {
     "factors": "Kasutatavad teised autentimistegurid: {{factors}}",

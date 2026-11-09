@@ -1,0 +1,386 @@
+{
+  "tab": {
+    "title": "稼働時間",
+    "error": "モニタの読み込みに失敗しました。",
+    "monitors": "モニタ",
+    "incidents": "インシデント",
+    "maintenance": "メンテナンス",
+    "pages": "ステータスページ"
+  },
+  "common": {
+    "refresh": "更新",
+    "loading": "読み込み中",
+    "delete": "削除",
+    "edit": "編集",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "done": "完了"
+  },
+  "status": {
+    "up": "稼働中",
+    "down": "停止中",
+    "pending": "再試行中",
+    "maintenance": "メンテナンス中",
+    "paused": "一時停止中",
+    "unknown": "待機中"
+  },
+  "types": {
+    "http": "ウェブサイト (HTTP)",
+    "tcp": "TCP ポート",
+    "ping": "Ping",
+    "dns": "DNS レコード",
+    "tls": "TLS 証明書",
+    "push": "Push",
+    "host": "Termix ホスト",
+    "docker": "Docker コンテナ",
+    "systemd": "systemd ユニット",
+    "command": "コマンド"
+  },
+  "typeHints": {
+    "http": "URL を呼び出してステータスコードを確認し、設定されている場合はキーワードもチェックします。",
+    "tcp": "ポートが接続を受け付けるか確認します。",
+    "ping": "Termix サーバー、または以下で選択したホストから Ping を送信します。",
+    "dns": "レコードを検索し、その値をチェックできます。",
+    "tls": "証明書が信頼されており、期限切れではないか確認します。",
+    "push": "cron ジョブやスクリプトから呼び出すための URL を提供します。呼び出しが停止するとダウン状態になります。",
+    "host": "ホストのステータスドットと同じ方法でホストのポートを確認します。ログインは行いません。",
+    "docker": "SSH 経由でホストにログインし、コンテナが実行中で健全であることを確認します。",
+    "systemd": "SSH 経由でホストにログインし、ユニットがアクティブであることを確認します。",
+    "command": "SSH 経由でホストにログインし、コマンドを実行します。終了コードが 0 の場合、稼働中とみなされます。"
+  },
+  "stats": {
+    "up": "稼働中",
+    "down": "問題あり",
+    "paused": "一時停止またはメンテナンス中",
+    "month": "30 日間の稼働率"
+  },
+  "filter": {
+    "all": "すべて",
+    "problems": "問題あり",
+    "paused": "一時停止中"
+  },
+  "list": {
+    "name": "名前",
+    "target": "ターゲット",
+    "checks": "最終チェック",
+    "uptime": "24 時間",
+    "uptimeDay": "24 時間: {{value}}",
+    "latency": "応答時間",
+    "search": "検索",
+    "add": "モニタを追加",
+    "addHosts": "ホストから追加",
+    "empty": "まだモニタがありません",
+    "emptyHint": "ウェブサイト、ポート、またはホストの監視を開始するには、モニタを追加してください。",
+    "noMatch": "一致するものはありません"
+  },
+  "range": {
+    "day": "24 時間",
+    "week": "7 日間",
+    "month": "30日間",
+    "quarter": "90日間"
+  },
+  "detail": {
+    "failed": "操作に失敗しました。",
+    "deleteTitle": "{{name}} を削除しますか？",
+    "deleteHint": "履歴とインシデントも一緒に削除されます。",
+    "newUrl": "新しいプッシュURL",
+    "newUrlTitle": "新しいプッシュURLを作成しますか？",
+    "newUrlHint": "古いURLはすぐに使えなくなります。",
+    "type": "タイプ",
+    "target": "ターゲット",
+    "lastCheck": "最終チェック",
+    "message": "結果",
+    "every": "チェック間隔",
+    "seconds_other": "{{count}}秒",
+    "group": "グループ",
+    "tags": "タグ",
+    "cert": "証明書",
+    "certValue": "{{days}}日残り | {{issuer}}",
+    "noChart": "グラフを表示するにはチェック回数が不足しています。",
+    "alertsOn": "アラートを有効にする",
+    "alertsOff": "アラートを無効にする",
+    "runNow": "今すぐチェック",
+    "pause": "一時停止",
+    "resume": "再開",
+    "share": "共有",
+    "now": "現在の応答",
+    "recent": "最近のチェック",
+    "response": "応答時間",
+    "about": "概要",
+    "incidents": "インシデント",
+    "noIncidents": "インシデントはありません。"
+  },
+  "editor": {
+    "addTitle": "モニタを追加",
+    "editTitle": "モニタを編集",
+    "saveFailed": "保存できませんでした。",
+    "testFailed": "テストを実行できませんでした。",
+    "test": "テスト",
+    "testing": "テスト中",
+    "testOk": "稼働中",
+    "testBad": "停止中",
+    "what": "監視対象",
+    "name": "名前",
+    "type": "タイプ",
+    "host": "ホスト",
+    "noHost": "ホストを選択",
+    "pushOnce": "このURLは今すぐコピーしてください。一度しか表示されません。",
+    "from": "チェック元",
+    "fromHost": "チェックを実行するホスト",
+    "fromServer": "Termixサーバー",
+    "fromHint": "そのホストからしかアクセスできないリソースをチェックするには、ホストを選択してください。チェックはSSH経由でそのホスト上で実行されます。",
+    "timing": "タイミングとアラート",
+    "interval": "チェック間隔（秒）",
+    "timeout": "タイムアウト（秒）",
+    "grace": "追加待機時間（秒）",
+    "retries": "再試行回数",
+    "retriesHint": "ダウンとみなすまでの連続失敗チェック回数。",
+    "retryInterval": "再試行間隔（秒）",
+    "resend": "リマインダー間隔（分）",
+    "resendHint": "ダウンしている間、定期的に通知します。0に設定すると1回だけ通知します。",
+    "more": "グループとタグ",
+    "group": "グループ",
+    "tags": "タグ",
+    "tagsHint": "カンマで区切ってください。",
+    "target": "アドレス",
+    "port": "ポート",
+    "portOptional": "ポート",
+    "portOptionalHint": "ホストのデフォルトポートを使用する場合は空のままにしてください。",
+    "url": "URL",
+    "method": "メソッド",
+    "body": "本文",
+    "accepted": "許可されるステータスコード",
+    "acceptedHint": "例: 200-299,301",
+    "keyword": "キーワード",
+    "keywordHint": "オプション。レスポンスに含まれている必要があるテキスト。",
+    "keywordAbsent": "キーワードが見つかった場合に失敗とする",
+    "auth": "ログイン",
+    "authNone": "なし",
+    "authBasic": "Basic",
+    "authBearer": "Bearer トークン",
+    "username": "ユーザー名",
+    "password": "パスワード",
+    "token": "トークン",
+    "keepSecret": "保存済みの値を維持する場合は空のままにしてください。",
+    "headers": "ヘッダー",
+    "headersHint": "1行に1つ、Name: value の形式で入力してください。暗号化して保存されます。",
+    "follow": "リダイレクトに従う",
+    "ignoreTls": "すべての証明書を受け入れる",
+    "certDays": "証明書期限切れの警告（日数）",
+    "certDaysHint": "0 に設定すると警告が無効になります。",
+    "record": "レコードタイプ",
+    "dnsServer": "DNS サーバー",
+    "dnsServerHint": "オプションのIPアドレス。空の場合、サーバーのデフォルトを使用します。",
+    "expected": "期待される値",
+    "expectedHint": "オプション。1つのレコードに含まれている必要があるテキスト。",
+    "container": "コンテナ名",
+    "unit": "ユニット名",
+    "command": "コマンド",
+    "commandHint": "各チェック時に、そのホストでのログインユーザーとして実行されます。"
+  },
+  "hosts": {
+    "add_other": "{{count}} 件のモニターを追加"
+  },
+  "shares": {
+    "loadFailed": "共有設定を読み込めませんでした。",
+    "saveFailed": "共有設定を保存できませんでした。",
+    "pick": "ユーザーまたはロールを選択",
+    "user": "ユーザー: {{name}}",
+    "role": "ロール: {{name}}",
+    "with": "共有先",
+    "add": "追加",
+    "none": "このモニターはあなたのみが閲覧できます。",
+    "view": "閲覧可能",
+    "edit": "編集可能"
+  },
+  "incidents": {
+    "none": "インシデントなし",
+    "ongoing": "進行中",
+    "seen": "確認済み",
+    "ack": "確認済みにする",
+    "note": "メモ"
+  },
+  "maintenance": {
+    "none": "メンテナンスウィンドウなし",
+    "noneHint": "作業中にアラートを停止するには、メンテナンスウィンドウを追加してください。",
+    "add": "ウィンドウを追加",
+    "edit": "ウィンドウを編集",
+    "active": "現在アクティブ",
+    "when": "タイミング",
+    "once": "1回限り",
+    "weekly": "毎週",
+    "start": "開始",
+    "end": "終了",
+    "days": "曜日",
+    "time": "開始時刻",
+    "length": "継続時間（分）",
+    "timezone": "タイムゾーン",
+    "covers": "対象",
+    "coversAll": "すべてのモニター",
+    "coversSome": "選択したモニター",
+    "coversTag": "タグ付きのモニター",
+    "deleteTitle": "{{name}} を削除しますか？",
+    "day0": "日",
+    "day1": "月",
+    "day2": "火",
+    "day3": "水",
+    "day4": "木",
+    "day5": "金",
+    "day6": "土"
+  },
+  "pages": {
+    "none": "ステータスページがありません",
+    "noneHint": "ステータスページでは、ログインなしでサービスの稼働状況を公開できます。",
+    "add": "ページを追加",
+    "edit": "ページを編集",
+    "about": "ページ",
+    "title": "タイトル",
+    "slug": "アドレス",
+    "slugHint": "小文字、数字、ハイフンを使用します。リンクの末尾部分になります。",
+    "description": "説明",
+    "published": "公開済み",
+    "publishedHint": "リンクを知っている人は誰でも、名前、状態、稼働時間を確認できます。アドレスやエラーは表示されません。",
+    "showLatency": "応答時間を表示",
+    "group": "グループ {{number}}",
+    "groupName": "グループ名",
+    "addGroup": "グループを追加",
+    "notes": "メモ",
+    "noteTitle": "タイトル",
+    "noteBody": "本文",
+    "noteLevel": "レベル",
+    "levelInfo": "情報",
+    "levelWarning": "警告",
+    "levelCritical": "重大",
+    "post": "投稿",
+    "resolve": "解決",
+    "resolved": "解決済み",
+    "live": "公開済み",
+    "draft": "下書き",
+    "open": "ページを開く",
+    "deleteTitle": "{{name}} を削除しますか？",
+    "offTitle": "公開ページは無効です",
+    "offHint": "管理者がプラグイン設定で無効にしたため、これらのリンクは何も表示されません。"
+  },
+  "widget": {
+    "name": "稼働率",
+    "description": "稼働中または停止中のモニターの数を表示します。",
+    "up": "稼働中",
+    "down": "停止中"
+  },
+  "card": {
+    "title": "稼働率",
+    "overview": "すべてのモニター",
+    "attention": "問題のあるモニター",
+    "monitors": "モニター",
+    "allGood": "すべて稼働しています。",
+    "gone": "このモニターは削除されました。",
+    "loading": "読み込み中...",
+    "month": "30日間: {{value}}"
+  },
+  "host": {
+    "none": "このホストにはモニターがありません。",
+    "add": "モニターを追加",
+    "down_other": "{{count}} 個のモニターがダウンしています"
+  },
+  "permissions": {
+    "view": {
+      "title": "モニターを表示",
+      "description": "モニター、履歴、インシデントを表示します。"
+    },
+    "manage": {
+      "title": "モニターを管理",
+      "description": "モニターとメンテナンスウィンドウの追加と変更を行います。"
+    },
+    "privateTargets": {
+      "title": "プライベートアドレスをチェック",
+      "description": "Termix サーバーが到達可能な LAN、Tailscale、その他のプライベートアドレスをモニターで監視対象にします。"
+    },
+    "runCommands": {
+      "title": "コマンドを実行",
+      "description": "SSH を介してホスト上でコマンドを実行するモニターを追加します。"
+    },
+    "publish": {
+      "title": "ステータスページを公開",
+      "description": "リンクを知っている誰でも閲覧できるステータスページを作成します。"
+    }
+  },
+  "settings": {
+    "admin": {
+      "minIntervalSeconds": {
+        "label": "最短チェック間隔",
+        "description": "秒単位。SSH でログインするモニターは 60 秒未満にはなりません。"
+      },
+      "defaultIntervalSeconds": {
+        "label": "デフォルトのチェック間隔",
+        "description": "秒単位。新しいモニターに適用されます。"
+      },
+      "historyDays": {
+        "label": "履歴の保持期間",
+        "description": "日単位の稼働率とインシデントの保持日数。"
+      },
+      "publicPages": {
+        "label": "公開ステータスページを許可",
+        "description": "オフにするとすべてのステータスページが非表示になります。Push URL は引き続き動作します。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "ターミナルごとにパネルを開く",
+        "description": "ターミナルを開いたときに稼働率パネルを表示します。"
+      },
+      "companionSide": {
+        "label": "パネルの位置",
+        "description": "稼働率パネルが開く位置。",
+        "right": "右",
+        "left": "左",
+        "bottom": "下"
+      },
+      "companionSize": {
+        "label": "パネルのサイズ",
+        "description": "パネルの幅または高さ（ピクセル単位）。"
+      },
+      "companionEdgeButton": {
+        "label": "エッジボタンを表示",
+        "description": "パネルを開くためのターミナル端のボタン。"
+      }
+    }
+  },
+  "operations": {
+    "monitor": "モニター",
+    "summary": {
+      "title": "稼働率の概要"
+    },
+    "monitors": {
+      "title": "モニター一覧"
+    },
+    "hostMonitors": {
+      "title": "このホストのモニター"
+    },
+    "hostHealth": {
+      "title": "稼働率"
+    },
+    "run": {
+      "title": "モニターを今すぐチェック"
+    },
+    "pause": {
+      "title": "モニターを一時停止"
+    },
+    "resume": {
+      "title": "モニターを再開"
+    },
+    "addHost": {
+      "title": "稼働率モニターを追加"
+    },
+    "events": {
+      "down": "モニターがダウンしました",
+      "up": "モニターが復旧しました",
+      "cert": "証明書の期限が近づいています"
+    },
+    "resource": {
+      "title": "モニター",
+      "type": "種類",
+      "status": "ステータス",
+      "uptime": "30日間の稼働率"
+    }
+  }
+}

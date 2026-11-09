@@ -1,0 +1,202 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "Lihat, tambahkan, dan jalankan tugas cron pada host Anda, dengan pratinjau jadwal dan file cron sistem."
+  },
+  "common": {
+    "save": "Simpan",
+    "cancel": "Batal",
+    "back": "Kembali",
+    "delete": "Hapus"
+  },
+  "permissions": {
+    "use": {
+      "title": "Gunakan Cron",
+      "description": "Lihat tugas cron pada host yang dapat Anda jangkau, dan ubah pada host yang dapat Anda edit."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Kelola tugas cron pada host ini dari tab Cron."
+      },
+      "useSudo": {
+        "label": "Gunakan sudo",
+        "description": "Gunakan sudo untuk crontab pengguna lain dan /etc/cron.d. Matikan jika login sebagai root."
+      },
+      "readOnly": {
+        "label": "Hanya baca",
+        "description": "Tampilkan tugas cron tetapi jangan pernah mengubahnya pada host ini."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "Buka Cron dari sebuah host.",
+    "error": "Gagal memuat cron dari host ini.",
+    "disabled": "Cron dimatikan untuk host ini. Nyalakan di pengaturan host.",
+    "sudo": "Ini memerlukan login root, sudo tanpa kata sandi, atau Kata Sandi Sudo yang disimpan.",
+    "refresh": "Segarkan",
+    "running": "Cron berjalan",
+    "stopped": "Cron berhenti",
+    "readOnly": "Hanya baca",
+    "notInstalled": "Tidak terpasang",
+    "notInstalledTitle": "Cron tidak terpasang pada host ini",
+    "notInstalledHint": "Pasang cron atau cronie dengan manajer paket host, lalu segarkan.",
+    "notRunning": "Layanan cron tidak berjalan, jadi tidak ada tugas yang akan dijalankan.",
+    "viewJobs": "Tugas",
+    "viewSystem": "Sistem",
+    "viewLogs": "Log"
+  },
+  "jobs": {
+    "add": "Tambah tugas",
+    "user": "Crontab dari",
+    "ownUser": "{{user}} (login)",
+    "search": "Cari tugas",
+    "editText": "Edit sebagai teks",
+    "empty": "Belum ada tugas cron.",
+    "noMatch": "Tidak ada tugas yang cocok.",
+    "off": "Mati",
+    "next": "selanjutnya {{time}}",
+    "run": "Jalankan sekarang",
+    "runTitle": "Jalankan tugas ini sekarang?",
+    "runDesc": "Ini menjalankan {{command}} sekali sebagai pengguna crontab. Berhenti setelah 2 menit.",
+    "runFailed": "Gagal menjalankan tugas.",
+    "turnOn": "Nyalakan",
+    "turnOff": "Matikan",
+    "deleteTitle": "Hapus tugas ini?",
+    "loadFailed": "Gagal membaca crontab.",
+    "saveFailed": "Gagal menyimpan crontab.",
+    "outputTitle": "Keluaran tugas",
+    "exitOk": "Selesai",
+    "exitCode": "Kode keluar {{code}}",
+    "noOutput": "Tugas tidak mencetak apa pun."
+  },
+  "form": {
+    "addTitle": "Tugas baru",
+    "editTitle": "Edit tugas",
+    "forUser": "Crontab dari {{user}}",
+    "label": "Label",
+    "labelHint": "Disimpan sebagai komentar di atas tugas.",
+    "labelPlaceholder": "Cadangan malam hari",
+    "command": "Perintah",
+    "commandHint": "Berjalan dengan sh di home pengguna. % memulai input yang dikirim cron, tulis \\% untuk yang asli.",
+    "schedule": "Jadwal",
+    "scheduleHint": "Menit, jam, hari dalam bulan, bulan, dan hari dalam minggu, atau kata seperti @daily.",
+    "scheduleInvalid": "Ini bukan jadwal yang valid.",
+    "nextRuns": "Jalankan berikutnya ({{zone}}):",
+    "enabled": "Aktif",
+    "enabledHint": "Tugas yang dinonaktifkan tetap ada di crontab sebagai komentar.",
+    "saved": "Tersimpan."
+  },
+  "presets": {
+    "everyMinute": "Setiap menit",
+    "every5": "Setiap 5 menit",
+    "every15": "Setiap 15 menit",
+    "hourly": "Setiap jam",
+    "daily": "Setiap hari",
+    "weekly": "Setiap minggu",
+    "monthly": "Setiap bulan",
+    "reboot": "Saat boot"
+  },
+  "schedule": {
+    "reboot": "Saat boot",
+    "everyMinute": "Setiap menit",
+    "everyNMinutes": "Setiap {{n}} menit",
+    "hourlyAt": "Setiap jam pada menit ke-{{minute}}",
+    "everyNHours": "Setiap {{n}} jam pada menit ke-{{minute}}",
+    "dailyAt": "Setiap hari pada {{time}}",
+    "weekdaysAt": "Senin hingga Jumat pada {{time}}",
+    "weeklyAt": "Setiap {{day}} pada {{time}}",
+    "monthlyAt": "Pada hari ke-{{day}} setiap bulan pada {{time}}",
+    "custom": "Jadwal kustom",
+    "invalid": "Bukan jadwal yang valid"
+  },
+  "days": {
+    "0": "Minggu",
+    "1": "Senin",
+    "2": "Selasa",
+    "3": "Rabu",
+    "4": "Kamis",
+    "5": "Jumat",
+    "6": "Sabtu"
+  },
+  "raw": {
+    "title": "Crontab sebagai teks",
+    "hint": "Satu tugas per baris. Host memeriksa teks dan menyimpan crontab lama jika ada kesalahan."
+  },
+  "system": {
+    "add": "Buat file baru",
+    "addTitle": "File baru di /etc/cron.d",
+    "edit": "Sunting",
+    "name": "Nama file",
+    "nameHint": "Disimpan sebagai /etc/cron.d/<name>. Cron mengabaikan nama dengan titik.",
+    "nameInvalid": "Gunakan hanya huruf, angka, - dan _.",
+    "content": "Isi file",
+    "fileHint": "Setiap tugas menyebutkan pengguna yang menjalankannya: menit jam hari bulan hari-minggu pengguna perintah. Setiap baris diperiksa sebelum disimpan.",
+    "noJobs": "Tidak ada tugas di file ini.",
+    "readHint": "Beberapa file mungkin tersembunyi tanpa root. Perubahan di sini memerlukan login root, sudo tanpa kata sandi, atau Sudo Password yang disimpan.",
+    "timers_other": "Host ini juga memiliki {{count}} timer systemd. Plugin Layanan mengelolanya.",
+    "deleteTitle": "Hapus /etc/cron.d/{{name}}?",
+    "deleteDesc": "Salinan disimpan di /var/lib/termix-cron/backup.",
+    "deleted": "{{name}} telah dihapus.",
+    "saved": "{{name}} telah disimpan.",
+    "loadFailed": "Tidak dapat membaca file cron sistem.",
+    "saveFailed": "Tidak dapat menyimpan file.",
+    "period": {
+      "hourly": "Berjalan setiap jam",
+      "daily": "Berjalan setiap hari",
+      "weekly": "Berjalan setiap minggu",
+      "monthly": "Berjalan setiap bulan"
+    }
+  },
+  "logs": {
+    "lines": "Baris",
+    "lineCount_other": "{{count}} baris",
+    "source": "Dari {{source}}",
+    "noSource": "Tidak ditemukan log cron di host ini.",
+    "empty": "Tidak ada baris log.",
+    "failed": "Tidak dapat membaca log cron."
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "Aktifkan Cron untuk host ini di pengaturan agar dapat melihat tugasnya di sini."
+  },
+  "operations": {
+    "list": {
+      "title": "Daftar tugas cron"
+    },
+    "enable": {
+      "title": "Aktifkan tugas cron"
+    },
+    "disable": {
+      "title": "Nonaktifkan tugas cron"
+    },
+    "run": {
+      "title": "Jalankan tugas cron sekarang"
+    },
+    "delete": {
+      "title": "Hapus tugas cron"
+    },
+    "jobs": {
+      "title": "Tugas cron",
+      "schedule": "Jadwal",
+      "command": "Perintah"
+    },
+    "status": {
+      "title": "Status Cron"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "Memeriksa host...",
+    "summary_other": "{{count}} tugas di {{hosts}} host",
+    "refresh": "Periksa lagi",
+    "empty": "Aktifkan Cron untuk host agar dapat melihatnya di sini.",
+    "stopped": "Tidak berjalan",
+    "missing": "Tidak terinstal",
+    "jobs_other": "{{count}} tugas",
+    "off": "{{count}} nonaktif"
+  }
+}

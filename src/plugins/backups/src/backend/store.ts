@@ -241,6 +241,9 @@ export function createStore(db: PluginDatabase, t: Tables) {
     },
 
     async getRepo(id: number): Promise<RepoRow | null> {
+      // Postgres refuses NaN, so a bad id from a URL finds nothing.
+      if (!Number.isSafeInteger(id)) return null;
+
       const rows = await (
         await client()
       )
@@ -335,6 +338,9 @@ export function createStore(db: PluginDatabase, t: Tables) {
     },
 
     async getJob(id: number): Promise<JobRow | null> {
+      // Postgres refuses NaN, so a bad id from a URL finds nothing.
+      if (!Number.isSafeInteger(id)) return null;
+
       const rows = await (
         await client()
       )
@@ -445,6 +451,9 @@ export function createStore(db: PluginDatabase, t: Tables) {
     },
 
     async getRun(id: number): Promise<RunRow | null> {
+      // Postgres refuses NaN, so a bad id from a URL finds nothing.
+      if (!Number.isSafeInteger(id)) return null;
+
       const rows = await (
         await client()
       )

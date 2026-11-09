@@ -1,0 +1,214 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Spouštějte Ansible playbooky a ad-hoc příkazy z kontrolního hosta s inventářem vytvořeným z vašich Termix hostů."
+  },
+  "common": {
+    "save": "Uložit",
+    "cancel": "Zrušit",
+    "back": "Zpět",
+    "delete": "Smazat"
+  },
+  "permissions": {
+    "use": {
+      "title": "Používat Ansible",
+      "description": "Zobrazuje playbooky a běhy na kontrolních hostech, ke kterým máte přístup. Umožňuje upravovat soubory a spouštět Ansible na hostech, které můžete upravovat."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Použít tohoto hosta jako Ansible kontrolního hosta. Ansible musí být na něm nainstalován."
+      },
+      "projectDir": {
+        "label": "Složka projektu",
+        "description": "Složka na tomto hostovi obsahující vaše playbooky, role a ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Soubor s heslem Vault",
+        "description": "Soubor na tomto hostovi s heslem pro Ansible Vault. Nechte prázdné, pokud Vault nepoužíváte.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Pouze pro čtení",
+        "description": "Zobrazuje playbooky a běhy, ale nikdy neupravuje soubory ani nespouští běhy na tomto hostovi."
+      },
+      "alertRuns": {
+        "label": "Upozornit při selhání běhu",
+        "description": "Odeslat upozornění, když běh na tomto hostovi skončí selháním nebo ztrátou spojení. Kontroluje se při čtení stavu běhu."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Otevřete Ansible z hosta.",
+    "error": "Nelze načíst Ansible z tohoto hosta.",
+    "disabled": "Ansible je pro tohoto hosta vypnut. Zapněte jej v nastavení hosta.",
+    "refresh": "Obnovit",
+    "readOnly": "Pouze pro čtení",
+    "notInstalled": "Ansible není nainstalován",
+    "notInstalledTitle": "Ansible není na tomto hostovi nainstalován",
+    "notInstalledHint": "Nainstalujte ansible-core na tohoto hosta, například pomocí pipx nebo správce balíčků, a poté obnovte.",
+    "noSshpass": "sshpass není na tomto hostovi nainstalován. Hosté přihlašující se heslem budou selhat.",
+    "viewPlaybooks": "Playbooky",
+    "viewRuns": "Běhy",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Fakty"
+  },
+  "files": {
+    "add": "Nový soubor",
+    "search": "Hledat soubory",
+    "empty": "Ve složce projektu zatím nejsou žádné soubory.",
+    "noMatch": "Žádné soubory neodpovídají.",
+    "noProject": "Složka {{dir}} na tomto hostovi neexistuje. Vytvořte ji nebo v nastavení hosta zadejte jinou složku projektu.",
+    "listFailed": "Nelze vypsat soubory projektu.",
+    "loadFailed": "Nelze přečíst tento soubor.",
+    "saved": "Soubor uložen",
+    "saveFailed": "Nelze uložit tento soubor.",
+    "playbook": "Playbook",
+    "run": "Spustit",
+    "newTitle": "Nový soubor",
+    "name": "Název souboru",
+    "nameHint": "Cesta uvnitř složky projektu, například site.yml nebo roles/web/tasks/main.yml.",
+    "hint": "Playbook je před uložením kontrolován z hlediska syntaxe. Pokud kontrola selže, zůstane původní soubor.",
+    "text": "Text souboru",
+    "deleteTitle": "Smazat tento soubor?"
+  },
+  "targets": {
+    "search": "Hledat hosty",
+    "addShown": "Přidat zobrazené",
+    "clear": "Vymazat",
+    "empty": "Nebyly nalezeny žádné hosty.",
+    "count": "Vybráno {{count}}",
+    "failed": "Nelze načíst vaše hosty."
+  },
+  "run": {
+    "title": "Spustit {{playbook}}",
+    "start": "Spustit",
+    "startCheck": "Spustit v režimu kontroly",
+    "startFailed": "Spuštění se nepodařilo.",
+    "source": "Hostitelé",
+    "sourceProject": "Inventář projektu",
+    "sourceTermix": "Hostitelé Termix",
+    "sourceProjectHint": "Použijte inventář z ansible.cfg nebo soubor v projektu.",
+    "sourceTermixHint": "Vyberte hostitele z Termixu. Složky se stanou skupinami folder_ a značky skupinami tag_. Všechny jsou ve skupině termix.",
+    "inventory": "Soubor inventáře",
+    "inventoryHint": "Cesta uvnitř složky projektu. Nechte prázdné pro použití ansible.cfg.",
+    "check": "Režim kontroly",
+    "checkHint": "Zobrazit, co by se změnilo, aniž by se cokoli měnilo.",
+    "diff": "Zobrazit rozdíly",
+    "diffHint": "Zobrazit změny provedené v souborech.",
+    "become": "Spustit jako root",
+    "becomeHint": "Použít sudo na hostitelích. U hostitelů Termix se použije uložené heslo pro sudo.",
+    "limit": "Omezení",
+    "limitHint": "Spustit pouze na těchto hostitelích nebo skupinách.",
+    "verbosity": "Podrobnost výstupu",
+    "verbosityOff": "Normální",
+    "tags": "Značky",
+    "skipTags": "Přeskočit značky",
+    "extraVars": "Další proměnné",
+    "extraVarsHint": "Jeden pár klíč=hodnota na řádek."
+  },
+  "runs": {
+    "title": "Spuštění",
+    "empty": "Zatím žádná spuštění.",
+    "loadFailed": "Načtení spuštění se nepodařilo.",
+    "stop": "Zastavit",
+    "stopFailed": "Zastavení spuštění se nepodařilo.",
+    "deleteTitle": "Smazat toto spuštění?",
+    "deleteFailed": "Smazání spuštění se nepodařilo.",
+    "checkMode": "Kontrola",
+    "truncated": "Zobrazuje se konec dlouhého výstupu.",
+    "noOutput": "Zatím žádný výstup.",
+    "state": {
+      "running": "Běží",
+      "ok": "Hotovo",
+      "failed": "Selhalo",
+      "cancelled": "Zastaveno",
+      "lost": "Ztraceno"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Fakta"
+    },
+    "recap": {
+      "host": "Hostitel",
+      "ok": "OK",
+      "changed": "Změněno",
+      "unreachable": "Nedostupné",
+      "failed": "Selhalo",
+      "skipped": "Přeskočeno"
+    }
+  },
+  "adhoc": {
+    "hint": "Spustit jeden modul na hostitelích, například ansible all -m ping.",
+    "pattern": "Vzor hostitelů",
+    "patternHint": "Hostitel, skupina nebo all.",
+    "module": "Modul",
+    "moduleHint": "Například ping, command, shell, apt nebo systemd.",
+    "args": "Argumenty",
+    "argsHint": "Pro command a shell je to příkaz. Pro ostatní moduly jsou to páry klíč=hodnota.",
+    "run": "Spustit"
+  },
+  "facts": {
+    "hint": "Sbírat fakta z hostitelů pomocí modulu setup. Vyžaduje hostitele Termix, aby každý měl přihlášení.",
+    "gather": "Sbírat fakta",
+    "gathering": "Sbírání...",
+    "failed": "Sbírání faktů se nepodařilo.",
+    "failedHost": "Selhalo",
+    "none": "Nevrátila se žádná fakta. Otevřete spuštění pro zobrazení důvodu.",
+    "col": {
+      "host": "Host",
+      "os": "Systém",
+      "kernel": "Jádro",
+      "cpu": "CPU",
+      "memory": "Paměť",
+      "address": "Adresa",
+      "uptime": "Doba běhu"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Seznam playbooků"
+    },
+    "run": {
+      "title": "Spustit playbook",
+      "playbook": "Playbook",
+      "limit": "Omezení",
+      "tags": "Štítky",
+      "check": "Režim kontroly"
+    },
+    "runs": {
+      "title": "Seznam spuštění",
+      "resource": "Spuštění",
+      "started": "Začátek",
+      "check": "Režim kontroly"
+    },
+    "failed": {
+      "title": "Neúspěšná spuštění"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Kontrola hostů...",
+    "summary_one": "{{count}} neúspěšné spuštění na {{hosts}} hostech",
+    "summary_few": "{{count}} neúspěšná spuštění na {{hosts}} hostech",
+    "summary_many": "{{count}} neúspěšných spuštění na {{hosts}} hostech",
+    "summary_other": "{{count}} neúspěšných spuštění na {{hosts}} hostech",
+    "refresh": "Zkontrolovat znovu",
+    "empty": "Pro zobrazení spuštění zde zapněte Ansible pro hosta.",
+    "failed_one": "{{count}} neúspěšné",
+    "failed_few": "{{count}} neúspěšná",
+    "failed_many": "{{count}} neúspěšných",
+    "failed_other": "{{count}} neúspěšných",
+    "running_one": "{{count}} běžící",
+    "running_few": "{{count}} běžící",
+    "running_many": "{{count}} běžících",
+    "running_other": "{{count}} běžících",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Zatím žádná spuštění"
+  }
+}

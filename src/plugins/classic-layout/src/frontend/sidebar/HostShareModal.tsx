@@ -533,12 +533,15 @@ export function HostShareModal({
                   : rule.username}
               </span>
               <span className="text-[10px] uppercase text-muted-foreground">
-                {rule.permissionLevel}
+                {t(`hosts.sharing.levels.${rule.permissionLevel}.label`, {
+                  defaultValue: rule.permissionLevel,
+                })}
               </span>
               <button
                 type="button"
                 className="text-[10px] text-muted-foreground hover:text-destructive"
                 title={t("hosts.sharing.folderRuleRemove")}
+                aria-label={t("hosts.sharing.folderRuleRemove")}
                 onClick={async () => {
                   let fromHosts = false;
                   const ok = await confirm({
@@ -568,7 +571,11 @@ export function HostShareModal({
                         id: number,
                         options?: { fromHosts?: boolean },
                       ) => Promise<void>
-                    )(rule.id, { fromHosts }).then(refreshFolderRules);
+                    )(rule.id, { fromHosts })
+                      .then(refreshFolderRules)
+                      .catch(() =>
+                        toast.error(t("hosts.failedToRevokeAccess")),
+                      );
                 }}
               >
                 <X className="size-3.5" />

@@ -1,0 +1,211 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Izpildiet Ansible playbookus un ad-hoc komandas no kontroles hosta, izmantojot inventāru, kas izveidots no jūsu Termix hostiem."
+  },
+  "common": {
+    "save": "Saglabāt",
+    "cancel": "Atcelt",
+    "back": "Atpakaļ",
+    "delete": "Dzēst"
+  },
+  "permissions": {
+    "use": {
+      "title": "Izmantot Ansible",
+      "description": "Apskatiet playbookus un izpildes uz kontroles hostiem, pie kuriem varat piekļūt. Rediģējiet failus un izpildiet Ansible uz hostiem, kurus varat rediģēt."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Izmantot šo hostu kā Ansible kontroles hostu. Tam ir jābūt instalētam Ansible."
+      },
+      "projectDir": {
+        "label": "Projekta mape",
+        "description": "Mape šajā hostā ar jūsu playbookiem, lomām un ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Vault paroles fails",
+        "description": "Fails šajā hostā ar Ansible Vault paroli. Atstājiet tukšu, ja neizmantojat Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Tikai lasīšanai",
+        "description": "Rādīt playbookus un izpildes, bet nekad nerediģēt failus vai sākt izpildi šajā hostā."
+      },
+      "alertRuns": {
+        "label": "Brīdināt, ja izpilde neizdodas",
+        "description": "Sūtīt brīdinājumu, kad izpilde šajā hostā beidzas ar kļūdu vai tiek zaudēta. Pārbaudīts, kad tiek lasīts izpildes stāvoklis."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Atveriet Ansible no hosta.",
+    "error": "Neizdevās ielādēt Ansible no šī hosta.",
+    "disabled": "Ansible ir izslēgts šim hostam. Ieslēdziet to hosta iestatījumos.",
+    "refresh": "Atsvaidzināt",
+    "readOnly": "Tikai lasīšanai",
+    "notInstalled": "Ansible nav instalēts",
+    "notInstalledTitle": "Ansible nav instalēts šajā hostā",
+    "notInstalledHint": "Instalējiet ansible-core šajā hostā, piemēram, izmantojot pipx vai jūsu pakotņu pārvaldnieku, pēc tam atsvaidziniet.",
+    "noSshpass": "sshpass nav instalēts šajā hostā. Hosti, kas piesakās ar paroli, neizdosies.",
+    "viewPlaybooks": "Playbooki",
+    "viewRuns": "Izpildes",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Fakti"
+  },
+  "files": {
+    "add": "Jauns fails",
+    "search": "Meklēt failus",
+    "empty": "Projekta mapē vēl nav failu.",
+    "noMatch": "Nav atbilstošu failu.",
+    "noProject": "Mape {{dir}} neeksistē šajā hostā. Izveidojiet to vai iestatiet citu Projekta mapi hosta iestatījumos.",
+    "listFailed": "Neizdevās uzskaitīt projekta failus.",
+    "loadFailed": "Neizdevās izlasīt šo failu.",
+    "saved": "Fails saglabāts",
+    "saveFailed": "Neizdevās saglabāt šo failu.",
+    "playbook": "Playbook",
+    "run": "Izpildīt",
+    "newTitle": "Jauns fails",
+    "name": "Faila nosaukums",
+    "nameHint": "Ceļš projekta mapē, piemēram, site.yml vai roles/web/tasks/main.yml.",
+    "hint": "Playbook tiek pārbaudīts pēc sintakses pirms saglabāšanas. Vecais fails paliek, ja pārbaude neizdodas.",
+    "text": "Faila teksts",
+    "deleteTitle": "Dzēst šo failu?"
+  },
+  "targets": {
+    "search": "Meklēt hostus",
+    "addShown": "Pievienot redzamos",
+    "clear": "Notīrīt",
+    "empty": "Hosti nav atrasti.",
+    "count": "Atlasīts {{count}}",
+    "failed": "Neizdevās ielādēt jūsu hostus."
+  },
+  "run": {
+    "title": "Izpildīt {{playbook}}",
+    "start": "Izpildīt",
+    "startCheck": "Izpildīt pārbaudes režīmā",
+    "startFailed": "Neizdevās palaist izpildi.",
+    "source": "Resursdatori",
+    "sourceProject": "Projekta inventārs",
+    "sourceTermix": "Termix resursdatori",
+    "sourceProjectHint": "Izmantojiet inventāru no ansible.cfg vai failu projektā.",
+    "sourceTermixHint": "Izvēlieties resursdatorus no Termix. Mapes kļūst par folder_ grupām, bet birkas par tag_ grupām. Visas tās atrodas termix grupā.",
+    "inventory": "Inventāra fails",
+    "inventoryHint": "Ceļš projekta mapē. Atstājiet tukšu, lai izmantotu ansible.cfg.",
+    "check": "Pārbaudes režīms",
+    "checkHint": "Rāda, kas mainītos, neko nemainot.",
+    "diff": "Rādīt atšķirības",
+    "diffHint": "Rāda izmaiņas failos.",
+    "become": "Palaist kā root",
+    "becomeHint": "Izmanto sudo resursdatoros. Termix resursdatoriem tiek izmantots saglabātais Sudo parole.",
+    "limit": "Ierobežot",
+    "limitHint": "Palaist tikai uz šiem resursdatoriem vai grupām.",
+    "verbosity": "Izvades detalizitāte",
+    "verbosityOff": "Parasts",
+    "tags": "Birkas",
+    "skipTags": "Izlaist birkas",
+    "extraVars": "Papildu mainīgie",
+    "extraVarsHint": "Viens key=value katrā rindā."
+  },
+  "runs": {
+    "title": "Izpilde",
+    "empty": "Vēl nav izpildes.",
+    "loadFailed": "Neizdevās ielādēt izpildes.",
+    "stop": "Apturēt",
+    "stopFailed": "Neizdevās apturēt izpildi.",
+    "deleteTitle": "Dzēst šo izpildi?",
+    "deleteFailed": "Neizdevās dzēst izpildi.",
+    "checkMode": "Pārbaude",
+    "truncated": "Rāda garas izvades beigas.",
+    "noOutput": "Vēl nav izvades.",
+    "state": {
+      "running": "Notiek izpilde",
+      "ok": "Pabeigts",
+      "failed": "Neizdevās",
+      "cancelled": "Apturēts",
+      "lost": "Zaudēts"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Fakti"
+    },
+    "recap": {
+      "host": "Resursdators",
+      "ok": "OK",
+      "changed": "Mainīts",
+      "unreachable": "Nesasniedzams",
+      "failed": "Neizdevās",
+      "skipped": "Izlaists"
+    }
+  },
+  "adhoc": {
+    "hint": "Palaižiet vienu moduli resursdatoros, piemēram, ansible all -m ping.",
+    "pattern": "Resursdatoru raksts",
+    "patternHint": "Resursdators, grupa vai all.",
+    "module": "Modulis",
+    "moduleHint": "Piemēram, ping, command, shell, apt vai systemd.",
+    "args": "Argumenti",
+    "argsHint": "Komandai un shell tas ir komanda. Citu moduļu gadījumā tas ir key=value pāri.",
+    "run": "Palaist"
+  },
+  "facts": {
+    "hint": "Vāciet faktus no resursdatoriem, izmantojot setup moduli. Nepieciešami Termix resursdatori, lai katram būtu pieteikšanās.",
+    "gather": "Vākt faktus",
+    "gathering": "Vāc...",
+    "failed": "Neizdevās savākt faktus.",
+    "failedHost": "Neizdevās",
+    "none": "Nav atgriezies neviens fakts. Atveriet izpildi, lai redzētu iemeslu.",
+    "col": {
+      "host": "Resursdators",
+      "os": "Sistēma",
+      "kernel": "Pamats",
+      "cpu": "Procesori",
+      "memory": "Atmiņa",
+      "address": "Adrese",
+      "uptime": "Darba laiks"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Rādīt playbookus"
+    },
+    "run": {
+      "title": "Izpildīt playbooku",
+      "playbook": "Playbook",
+      "limit": "Ierobežojums",
+      "tags": "Birkas",
+      "check": "Pārbaudes režīms"
+    },
+    "runs": {
+      "title": "Rādīt izpildes",
+      "resource": "Izpildes",
+      "started": "Sākts",
+      "check": "Pārbaudes režīms"
+    },
+    "failed": {
+      "title": "Neveiksmīgas izpildes"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Pārbauda resursdatorus...",
+    "summary_zero": "0 neizdevušās izpildes uz {{hosts}} resursdatoriem",
+    "summary_one": "{{count}} neizdevusies izpilde uz {{hosts}} resursdatoriem",
+    "summary_other": "{{count}} neizdevušās izpildes uz {{hosts}} resursdatoriem",
+    "refresh": "Pārbaudīt vēlreiz",
+    "empty": "Ieslēdziet Ansible resursdatoram, lai šeit redzētu tā izpildes.",
+    "failed_zero": "0 neizdevušās",
+    "failed_one": "{{count}} neizdevusies",
+    "failed_other": "{{count}} neizdevušās",
+    "running_zero": "0 darbojas",
+    "running_one": "{{count}} darbojas",
+    "running_other": "{{count}} darbojas",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Vēl nav izpildes"
+  }
+}

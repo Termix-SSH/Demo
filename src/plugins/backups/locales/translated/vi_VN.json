@@ -1,0 +1,441 @@
+{
+  "plugin": {
+    "name": "Sao lưu",
+    "description": "Sao lưu thư mục, cơ sở dữ liệu và dữ liệu Docker trên các máy chủ của bạn bằng restic, sau đó duyệt, tải xuống và khôi phục."
+  },
+  "common": {
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "back": "Quay lại",
+    "delete": "Xóa",
+    "done": "Xong",
+    "loading": "Đang tải...",
+    "refresh": "Làm mới",
+    "retry": "Thử lại"
+  },
+  "permissions": {
+    "use": {
+      "title": "Sử dụng Sao lưu",
+      "description": "Thiết lập công việc và kho lưu trữ sao lưu, chạy sao lưu, và duyệt, tải xuống, khôi phục các bản chụp trên các máy chủ mà người dùng có thể chỉnh sửa."
+    }
+  },
+  "tab": {
+    "title": "Sao lưu",
+    "viewJobs": "Công việc",
+    "viewRepos": "Kho lưu trữ",
+    "viewHistory": "Lịch sử"
+  },
+  "hostTab": {
+    "title": "Sao lưu",
+    "noHost": "Mở Sao lưu từ một máy chủ.",
+    "viewJobs": "Công việc",
+    "viewSnapshots": "Bản chụp",
+    "viewHistory": "Lịch sử",
+    "restic": "restic {{version}}",
+    "noRestic": "restic chưa được cài đặt",
+    "sudo": "Termix cần đăng nhập với quyền root hoặc với một người dùng có sudo không cần mật khẩu để chạy sao lưu trên máy chủ này.",
+    "statusFailed": "Không thể đọc máy chủ này"
+  },
+  "install": {
+    "missing": "restic chưa được cài đặt trên máy chủ này",
+    "tooOld": "restic trên máy chủ này cũ hơn phiên bản 0.17",
+    "hint": "Sao lưu sử dụng restic. Cài đặt nó bằng trình quản lý gói, hoặc từ bản phát hành restic trên GitHub khi gói quá cũ.",
+    "button": "Cài đặt restic",
+    "working": "Đang cài đặt...",
+    "title": "Cài đặt restic?",
+    "desc": "Điều này sẽ cài đặt restic trên máy chủ với quyền root.",
+    "confirm": "Cài đặt",
+    "done": "restic {{version}} đã được cài đặt",
+    "failed": "Không thể cài đặt restic"
+  },
+  "status": {
+    "never": "Chưa từng chạy",
+    "running": "Đang chạy",
+    "success": "Hoàn thành",
+    "warning": "Cảnh báo",
+    "failed": "Thất bại",
+    "canceled": "Đã dừng"
+  },
+  "time": {
+    "justNow": "vừa xong",
+    "soon": "trong chốc lát",
+    "ago": {
+      "minutes_other": "{{count}} phút trước",
+      "hours_other": "{{count}} giờ trước",
+      "days_other": "{{count}} ngày trước"
+    },
+    "in": {
+      "minutes_other": "trong {{count}} phút",
+      "hours_other": "trong {{count}} giờ",
+      "days_other": "trong {{count}} ngày"
+    }
+  },
+  "jobs": {
+    "add": "Thêm công việc",
+    "empty": "Chưa có công việc sao lưu nào",
+    "emptyHint": "Thêm một công việc để sao lưu thư mục, cơ sở dữ liệu hoặc dữ liệu Docker.",
+    "emptyNoRepo": "Hãy thêm một kho lưu trữ trước, để sao lưu có nơi để lưu trữ.",
+    "loadFailed": "Không thể tải các công việc sao lưu",
+    "lastGood": "Sao lưu lần cuối {{when}}",
+    "noGood": "Chưa có sao lưu nào",
+    "next": "Tiếp theo {{when}}",
+    "paused": "Đã tạm dừng",
+    "run": "Chạy ngay",
+    "stop": "Dừng",
+    "edit": "Chỉnh sửa",
+    "snapshots": "Chụp ảnh",
+    "started": "{{name}} đã bắt đầu",
+    "runFailed": "Không thể bắt đầu sao lưu"
+  },
+  "editor": {
+    "newTitle": "Tạo công việc sao lưu mới",
+    "general": "Công việc",
+    "host": "Máy chủ",
+    "pickHost": "Chọn một máy chủ",
+    "name": "Tên",
+    "namePlaceholder": "Sao lưu hàng đêm",
+    "repository": "Kho lưu trữ",
+    "pickRepository": "Chọn một kho lưu trữ",
+    "noRepos": "Bạn chưa có kho lưu trữ nào mà máy chủ này có thể sử dụng. Hãy thêm một kho trong tab Sao lưu trước.",
+    "repoLocked": "Chỉ chủ sở hữu của kho lưu trữ này mới có thể thay đổi nó.",
+    "enabled": "Chạy theo lịch trình",
+    "enabledHint": "Tắt để tạm dừng lịch trình. Chạy ngay vẫn hoạt động.",
+    "oneFileSystem": "Giữ trong một hệ thống tệp",
+    "oneFileSystemHint": "Bỏ qua các đĩa và điểm gắn kết khác được tìm thấy bên trong các thư mục đã chọn.",
+    "saved": "Đã lưu công việc",
+    "saveFailed": "Không thể lưu công việc",
+    "deleteTitle": "Xóa {{name}}?",
+    "deleteDesc": "Công việc sẽ bị xóa khỏi Termix. Các bản chụp của nó vẫn còn trong kho lưu trữ.",
+    "deleted": "Đã xóa công việc",
+    "deleteFailed": "Không thể xóa công việc"
+  },
+  "sources": {
+    "add": "Thêm vào sao lưu",
+    "addPaths": "Thư mục",
+    "addDatabase": "Cơ sở dữ liệu",
+    "addDocker": "Docker",
+    "remove": "Xóa bỏ",
+    "paths": "Thư mục và tệp",
+    "folders": "Đường dẫn",
+    "foldersHint": "Một đường dẫn đầy đủ trên mỗi dòng.",
+    "excludes": "Bỏ qua",
+    "excludesHint": "Một mẫu restic trên mỗi dòng, như *.log.",
+    "database": "Cơ sở dữ liệu",
+    "engine": "Loại",
+    "engines": {
+      "mysql": "MySQL hoặc MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Đăng nhập",
+    "ownLogin": "Nhập thông tin đăng nhập tại đây",
+    "noDatabasesPlugin": "Bật plugin Cơ sở dữ liệu để chọn thông tin đăng nhập đã lưu.",
+    "address": "Địa chỉ",
+    "addressPlaceholder": "Để trống cho socket cục bộ",
+    "port": "Cổng",
+    "username": "Người dùng",
+    "password": "Mật khẩu",
+    "passwordSaved": "Đã lưu, để trống để giữ nguyên",
+    "runAs": "Chạy với tư cách",
+    "runAsHint": "Một người dùng Linux để chạy lệnh dump, như postgres. Để trống sẽ chạy với tư cách root.",
+    "databases": "Cơ sở dữ liệu",
+    "databasesHint": "Một tên trên mỗi dòng. Để trống để sao lưu tất cả.",
+    "sqliteFiles": "Tệp cơ sở dữ liệu",
+    "sqliteFilesHint": "Một đường dẫn đầy đủ trên mỗi dòng. Mỗi tệp sẽ được sao chép an toàn trong khi đang được sử dụng.",
+    "docker": "Docker",
+    "stacks": "Stack",
+    "volumes": "Volume",
+    "noStacks": "Không tìm thấy stack compose nào",
+    "noVolumes": "Không tìm thấy volume nào",
+    "dockerFailed": "Không thể liệt kê Docker trên máy chủ này",
+    "stop": "Dừng các stack trong khi sao lưu",
+    "stopHint": "Các stack được chọn sẽ bị dừng trước và khởi động lại sau, để đảm bảo các tệp của chúng không thay đổi trong khi đang được đọc."
+  },
+  "schedule": {
+    "title": "Lịch trình",
+    "manual": "Thủ công",
+    "daily": "Hàng ngày",
+    "weekly": "Hàng tuần",
+    "custom": "Tùy chỉnh",
+    "day": "Ngày",
+    "time": "Giờ",
+    "cron": "Cron",
+    "cronHint": "Phút, giờ, ngày trong tháng, tháng, ngày trong tuần.",
+    "cronInvalid": "Cron này không hợp lệ",
+    "timezone": "Múi giờ",
+    "serverTime": "Thời gian máy chủ",
+    "manualHint": "Công việc này chỉ chạy khi bạn nhấn Chạy ngay.",
+    "manualOnly": "Thủ công",
+    "next": "Lần chạy tiếp theo {{time}}",
+    "noNext": "Lịch trình này không bao giờ chạy",
+    "dailyAt": "Hàng ngày lúc {{time}}",
+    "weeklyAt": "{{day}} lúc {{time}}",
+    "days": {
+      "0": "Chủ nhật",
+      "1": "Thứ hai",
+      "2": "Thứ ba",
+      "3": "Thứ tư",
+      "4": "Thứ năm",
+      "5": "Thứ sáu",
+      "6": "Thứ bảy"
+    }
+  },
+  "keep": {
+    "title": "Giữ lại",
+    "last": "Gần nhất",
+    "daily": "Hàng ngày",
+    "weekly": "Hàng tuần",
+    "monthly": "Hàng tháng",
+    "yearly": "Hàng năm",
+    "hint": "Sau mỗi lần sao lưu, các bản chụp cũ hơn của công việc này sẽ bị xóa để chỉ giữ lại những bản này. Đặt 0 để giữ tất cả."
+  },
+  "hooks": {
+    "title": "Lệnh",
+    "pre": "Trước khi",
+    "preHint": "Chạy với quyền root trước khi sao lưu. Nếu thất bại, quá trình sao lưu sẽ dừng lại.",
+    "post": "Sau khi",
+    "postHint": "Chạy với quyền root sau khi sao lưu, ngay cả khi thất bại. TERMIX_BACKUP_STATUS chứa kết quả."
+  },
+  "alerts": {
+    "title": "Cảnh báo",
+    "onFailure": "Cảnh báo khi sao lưu thất bại",
+    "onFailureHint": "Cũng cảnh báo khi có cảnh báo, và một lần khi hoạt động trở lại bình thường.",
+    "staleDays": "Số ngày không có sao lưu",
+    "staleDaysHint": "Cảnh báo khi không có sao lưu thành công trong số ngày này. Đặt 0 để tắt."
+  },
+  "repos": {
+    "add": "Thêm kho lưu trữ",
+    "empty": "Chưa có kho lưu trữ nào",
+    "emptyHint": "Kho lưu trữ là nơi lưu trữ các bản sao lưu, như một bucket S3 hoặc một thư mục.",
+    "loadFailed": "Không thể tải các kho lưu trữ",
+    "jobCount_other": "{{count}} công việc",
+    "newTitle": "Kho lưu trữ mới",
+    "storage": "Lưu trữ",
+    "name": "Tên",
+    "namePlaceholder": "S3 ngoài trang",
+    "kind": "Loại",
+    "kinds": {
+      "s3": "Tương thích S3",
+      "rest": "Máy chủ REST",
+      "rclone": "rclone",
+      "local": "Thư mục trên máy chủ"
+    },
+    "endpoint": "Điểm cuối",
+    "endpointHint": "Để trống cho AWS. Đối với MinIO, R2, B2 hoặc Wasabi, hãy nhập địa chỉ S3 của chúng.",
+    "region": "Khu vực",
+    "bucket": "Bucket",
+    "prefix": "Thư mục trong bucket",
+    "prefixHint": "Tùy chọn.",
+    "accessKeyId": "ID khóa truy cập",
+    "secretKey": "Khóa truy cập bí mật",
+    "secretSaved": "Đã lưu, để trống để giữ nguyên",
+    "url": "Địa chỉ máy chủ",
+    "username": "Người dùng",
+    "usernameHint": "Để trống nếu máy chủ không yêu cầu đăng nhập.",
+    "restPassword": "Mật khẩu",
+    "remote": "Tên remote",
+    "remoteHint": "Chỉ dùng chữ, số và dấu _.",
+    "path": "Đường dẫn",
+    "rcloneConfig": "Cấu hình rclone",
+    "rcloneHint": "Các dòng cấu hình remote từ rclone.conf. Chạy lệnh rclone config trên máy tính để tạo chúng. rclone phải được cài đặt trên các host.",
+    "rcloneSaved": "Đã lưu, để trống để giữ nguyên",
+    "host": "Host",
+    "pickHost": "Chọn một host",
+    "folder": "Thư mục",
+    "folderHint": "Chỉ các job trên host này mới có thể sử dụng. Nên dùng ổ đĩa đã gắn kết.",
+    "password": "Mã hóa",
+    "resticPassword": "Mật khẩu kho lưu trữ",
+    "passwordHint": "Để trống để Termix tự tạo mật khẩu mạnh. Hãy lưu bản sao ở nơi an toàn: không có nó sẽ không thể đọc được các bản sao lưu.",
+    "passwordKeep": "Đã lưu, để trống để giữ nguyên",
+    "passwordChangeHint": "Điều này chỉ thay đổi thông tin Termix gửi đi. Nó không thay đổi mật khẩu của kho lưu trữ hiện có.",
+    "reveal": "Hiển thị mật khẩu",
+    "revealTitle": "Hiển thị mật khẩu kho lưu trữ?",
+    "revealDesc": "Bất kỳ ai có mật khẩu này và các khóa lưu trữ đều có thể đọc mọi bản sao lưu trong kho này. Hành động này sẽ được ghi vào nhật ký kiểm toán.",
+    "revealFailed": "Không thể đọc mật khẩu",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép",
+    "check": "Kiểm tra",
+    "checkFrom": "Kiểm tra từ",
+    "checkFromHint": "Host mở kho lưu trữ. Host này cần có restic.",
+    "checkButton": "Kiểm tra",
+    "initButton": "Kiểm tra và thiết lập",
+    "installRclone": "Cài đặt rclone trên host này",
+    "rcloneInstalled": "rclone {{version}} đã được cài đặt.",
+    "rcloneFailed": "Không thể cài đặt rclone",
+    "checking": "Đang kiểm tra...",
+    "opened": "Kho lưu trữ đã mở thành công.",
+    "created": "Kho lưu trữ đã được thiết lập và sẵn sàng.",
+    "checkFailed": "Không thể mở kho lưu trữ",
+    "checkNext": "Đã lưu. Hãy kiểm tra từ một host để thiết lập.",
+    "saved": "Đã lưu kho lưu trữ",
+    "saveFailed": "Không thể lưu kho lưu trữ",
+    "deleteTitle": "Xóa {{name}}?",
+    "deleteDesc": "Nó chỉ bị xóa khỏi Termix. Các bản sao lưu vẫn còn trong kho lưu trữ.",
+    "deleted": "Đã xóa kho lưu trữ",
+    "deleteFailed": "Không thể xóa kho lưu trữ"
+  },
+  "snapshots": {
+    "noJobs": "Hãy thêm một job sao lưu trước.",
+    "job": "Job",
+    "titleFor": "Các bản snapshot của {{name}}",
+    "empty": "Chưa có snapshot nào",
+    "loadFailed": "Không thể đọc các snapshot",
+    "latest": "Mới nhất",
+    "files_other": "{{count}} tệp",
+    "browse": "Duyệt",
+    "delete": "Xóa",
+    "deleteTitle": "Xóa bản chụp này?",
+    "deleteDesc": "Bản chụp từ {{time}} sẽ bị xóa vĩnh viễn khỏi kho lưu trữ.",
+    "deleted": "Đã xóa bản chụp",
+    "deleteFailed": "Không thể xóa bản chụp",
+    "browseTitle": "Bản chụp {{time}}",
+    "root": "Gốc",
+    "emptyFolder": "Thư mục này trống",
+    "filesFailed": "Không thể liệt kê thư mục này",
+    "pick": "Chọn",
+    "download": "Tải xuống",
+    "downloadZip": "Tải xuống dạng zip",
+    "downloadFailed": "Không thể tải xuống",
+    "restoreAll": "Khôi phục tất cả",
+    "restorePicked_other": "Khôi phục {{count}} mục"
+  },
+  "restore": {
+    "title": "Khôi phục",
+    "what": "Nội dung",
+    "everything": "Tất cả trong bản chụp.",
+    "more_other": "và {{count}} mục khác",
+    "where": "Vị trí",
+    "host": "Máy chủ",
+    "hostHint": "Bất kỳ máy chủ nào bạn có thể chỉnh sửa và có thể truy cập kho lưu trữ.",
+    "localOnly": "Kho lưu trữ này là một thư mục trên máy chủ của nó, vì vậy chỉ có thể khôi phục tại đó.",
+    "toFolder": "Vào một thư mục",
+    "toOriginal": "Tại vị trí cũ",
+    "folder": "Thư mục",
+    "folderHint": "Các tệp giữ nguyên đường dẫn đầy đủ bên trong thư mục này.",
+    "originalWarning": "Các tệp sẽ được ghi lại vào vị trí cũ và có thể thay thế những gì đang có ở đó.",
+    "overwrite": "Các tệp đã tồn tại",
+    "overwriteOptions": {
+      "if-changed": "Thay thế khi thay đổi",
+      "always": "Luôn thay thế",
+      "if-newer": "Thay thế khi bản sao lưu mới hơn",
+      "never": "Không bao giờ thay thế"
+    },
+    "start": "Khôi phục",
+    "started": "Đã bắt đầu khôi phục",
+    "failed": "Không thể bắt đầu khôi phục"
+  },
+  "run": {
+    "title": "Chạy",
+    "backupTitle": "Sao lưu của {{name}}",
+    "restoreTitle": "Khôi phục của {{name}}",
+    "loadFailed": "Không thể tải quá trình chạy",
+    "progress": "Tiến độ",
+    "preparing": "Đang chuẩn bị...",
+    "progressLine": "{{percent}}% | {{files}} trong số {{totalFiles}} tệp | {{bytes}} trong số {{totalBytes}}",
+    "left": "Còn lại {{time}}",
+    "details": "Chi tiết",
+    "started": "Bắt đầu",
+    "finished": "Hoàn thành",
+    "trigger": "Bắt đầu bởi",
+    "triggers": {
+      "manual": "Chạy ngay",
+      "schedule": "Lịch trình",
+      "operation": "Hành động của Termix"
+    },
+    "snapshot": "Bản chụp",
+    "target": "Đã khôi phục vào",
+    "files": "Tệp",
+    "filesLine": "{{total}} tệp, {{added}} mới, {{changed}} thay đổi",
+    "size": "Kích thước",
+    "added": "Đã thêm vào kho lưu trữ",
+    "took": "Mất",
+    "log": "Nhật ký",
+    "noLog": "Chưa có nhật ký.",
+    "stopTitle": "Dừng quá trình chạy này?",
+    "stopDesc": "Sao lưu đã dừng sẽ không lưu bản chụp. Khôi phục đã dừng sẽ giữ lại các tệp đã được khôi phục cho đến thời điểm đó.",
+    "stopSent": "Đang dừng",
+    "stopFailed": "Không thể dừng quy trình"
+  },
+  "history": {
+    "empty": "Chưa có quy trình nào chạy",
+    "loadFailed": "Không thể tải lịch sử",
+    "status": "Trạng thái",
+    "job": "Công việc",
+    "host": "Máy chủ",
+    "kind": "Loại",
+    "kinds": {
+      "backup": "Sao lưu",
+      "restore": "Khôi phục"
+    },
+    "started": "Bắt đầu",
+    "took": "Thời gian",
+    "size": "Kích thước"
+  },
+  "card": {
+    "title": "Sao lưu",
+    "all": "Tất cả công việc sao lưu",
+    "oneJob": "Một công việc sao lưu",
+    "empty": "Chưa có công việc sao lưu nào.",
+    "gone": "Công việc sao lưu này đã bị xóa.",
+    "open": "Mở"
+  },
+  "operations": {
+    "list": {
+      "title": "Danh sách công việc sao lưu"
+    },
+    "failed": {
+      "title": "Sao lưu thất bại"
+    },
+    "run": {
+      "title": "Chạy sao lưu"
+    },
+    "cancel": {
+      "title": "Dừng sao lưu"
+    },
+    "snapshots": {
+      "title": "Danh sách bản chụp"
+    },
+    "events": {
+      "finished": "Sao lưu hoàn tất",
+      "failed": "Sao lưu thất bại"
+    },
+    "jobs": {
+      "title": "Công việc sao lưu",
+      "lastSuccess": "Sao lưu gần nhất",
+      "nextRun": "Lần chạy tiếp theo",
+      "size": "Kích thước"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Hiển thị bảng sao lưu trong terminal",
+        "description": "Cho phép bảng sao lưu mở bên cạnh terminal SSH của máy chủ này."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Mở bảng sao lưu cùng với terminal mới",
+        "description": "Hiển thị bảng sao lưu bên cạnh mọi terminal SSH có tính năng này được bật. Bạn vẫn có thể mở và đóng nó từ nút ở cạnh phải."
+      },
+      "companionSide": {
+        "label": "Vị trí bảng sao lưu",
+        "description": "Vị trí của bảng sao lưu so với terminal.",
+        "right": "Phải",
+        "left": "Trái",
+        "bottom": "Dưới"
+      },
+      "companionSize": {
+        "label": "Kích thước bảng sao lưu",
+        "description": "Chiều rộng tính bằng pixel, hoặc chiều cao khi nằm ở phía dưới. Bạn cũng có thể kéo cạnh của nó."
+      },
+      "companionEdgeButton": {
+        "label": "Hiển thị nút bảng",
+        "description": "Hiển thị một nút nhỏ ở cạnh phải của terminal để mở bảng sao lưu."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Bật/tắt bảng sao lưu"
+  }
+}

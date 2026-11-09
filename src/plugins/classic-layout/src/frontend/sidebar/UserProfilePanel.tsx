@@ -367,6 +367,13 @@ function PasswordChangeSection({
             className="pr-9 text-sm"
           />
           <button
+            type="button"
+            title={
+              showPassword ? t("common.hidePassword") : t("common.showPassword")
+            }
+            aria-label={
+              showPassword ? t("common.hidePassword") : t("common.showPassword")
+            }
             onClick={() => setShowPassword((o) => !o)}
             className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
           >
@@ -996,6 +1003,7 @@ export function UserProfilePanel({
   }
 
   async function handleDeleteAccount() {
+    if (deleteLoading) return;
     if (!deletePassword.trim()) {
       toast.error(t("newUi.sidebar.userProfile.deletePasswordRequired"));
       return;
@@ -1097,7 +1105,7 @@ export function UserProfilePanel({
         } else {
           toast.error(
             t("newUi.sidebar.userProfile.importFailed", {
-              error: result.summary?.errors?.join(", ") || "Unknown error",
+              error: result.summary?.errors?.join(", ") || t("common.unknown"),
             }),
           );
         }
@@ -1105,14 +1113,14 @@ export function UserProfilePanel({
         const err = await response.json().catch(() => ({}));
         toast.error(
           t("newUi.sidebar.userProfile.importFailed", {
-            error: err.error || "Unknown error",
+            error: err.error || t("common.unknown"),
           }),
         );
       }
     } catch {
       toast.error(
         t("newUi.sidebar.userProfile.importFailed", {
-          error: "Unknown error",
+          error: t("common.unknown"),
         }),
       );
     } finally {
@@ -1580,7 +1588,7 @@ export function UserProfilePanel({
                 className="h-6 text-[11px] font-mono border-0 bg-transparent p-0 focus-visible:ring-0 flex-1 min-w-0"
               />
               <span className="text-[10px] text-muted-foreground shrink-0">
-                hex
+                {t("newUi.sidebar.userProfile.hexLabel")}
               </span>
             </div>
           </div>
@@ -1866,6 +1874,8 @@ export function UserProfilePanel({
                       variant="ghost"
                       size="icon"
                       className="size-6 text-muted-foreground hover:text-destructive"
+                      title={t("admin.revokeKey")}
+                      aria-label={t("admin.revokeKey")}
                       onClick={async () => {
                         const ok = await confirm({
                           title: t("admin.revokeKeyConfirm", {

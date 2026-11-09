@@ -1,0 +1,421 @@
+{
+  "tab": {
+    "title": "Máy ảo",
+    "noHost": "Mở máy ảo từ một host.",
+    "refresh": "Làm mới",
+    "open": "Mở chế độ xem đầy đủ",
+    "error": "Không thể đọc danh sách máy ảo trên host này.",
+    "disabled": "Chức năng Máy ảo đang bị tắt cho host này. Hãy bật nó trong cài đặt của host.",
+    "sudo": "Host này cần đăng nhập root, sudo không mật khẩu hoặc một Mật khẩu Sudo đã lưu.",
+    "vms": "Máy ảo",
+    "storage": "Bộ nhớ lưu trữ",
+    "networks": "Mạng",
+    "jobs": "Công việc",
+    "runningCount": "{{running}} trong số {{total}} đang chạy",
+    "nodeLine": "{{cpus}} CPU, {{memory}}",
+    "noKvm": "không có KVM, máy ảo sẽ chạy chậm"
+  },
+  "common": {
+    "loading": "Đang tải...",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "failed": "Thao tác không thành công."
+  },
+  "state": {
+    "running": "Đang chạy",
+    "blocked": "Bị chặn",
+    "paused": "Đã tạm dừng",
+    "shutdown": "Đang tắt",
+    "shutoff": "Đã tắt",
+    "crashed": "Đã gặp lỗi",
+    "pmsuspended": "Đã treo",
+    "unknown": "Không xác định"
+  },
+  "power": {
+    "start": "Khởi động",
+    "shutdown": "Tắt máy",
+    "reboot": "Khởi động lại",
+    "stop": "Buộc dừng",
+    "suspend": "Tạm dừng",
+    "resume": "Tiếp tục",
+    "shutdownTitle": "Tắt {{name}}?",
+    "shutdownText": "Hành động này yêu cầu hệ điều hành khách tắt máy. Nó có thể mất một phút, và hệ điều hành khách không hỗ trợ ACPI có thể bỏ qua yêu cầu này.",
+    "stopTitle": "Buộc dừng {{name}}?",
+    "stopText": "Hành động này sẽ cắt nguồn ngay lập tức. Mọi dữ liệu chưa được lưu trong hệ điều hành khách sẽ bị mất."
+  },
+  "setup": {
+    "missing": "Libvirt chưa được cài đặt",
+    "missingText": "Termix có thể cài đặt QEMU và libvirt trên host này. Nó cần quyền root, sudo không mật khẩu hoặc một Mật khẩu Sudo đã lưu.",
+    "noConnect": "Termix không thể kết nối với libvirt trên host này",
+    "noConnectText": "Hãy kiểm tra xem dịch vụ libvirt có đang chạy không và người dùng SSH có thể sử dụng nó được không.",
+    "noKvm": "Host này không có /dev/kvm, do đó máy ảo sẽ chạy mà không có sự hỗ trợ phần cứng. Hãy bật tính năng ảo hóa trong BIOS hoặc cho máy ảo này.",
+    "install": "Cài đặt",
+    "installing": "Đang cài đặt...",
+    "installTitle": "Cài đặt libvirt trên host này?",
+    "installText": "Hành động này sẽ cài đặt QEMU, libvirt và các công cụ liên quan bằng trình quản lý gói của host, khởi động dịch vụ và thiết lập mạng mặc định cùng pool lưu trữ.",
+    "installed": "Libvirt đã được cài đặt"
+  },
+  "vm": {
+    "new": "Máy ảo mới",
+    "none": "Chưa có máy ảo nào trên host này",
+    "noneHint": "Nhấn Máy ảo mới để tạo một máy ảo.",
+    "name": "Tên",
+    "state": "Trạng thái",
+    "size": "Kích thước",
+    "ip": "Địa chỉ IP",
+    "noIp": "Chưa có địa chỉ",
+    "cpus_other": "{{count}} CPU",
+    "back": "Quay lại danh sách",
+    "overview": "Tổng quan",
+    "console": "Bảng điều khiển",
+    "snapshots": "Chụp nhanh",
+    "hardware": "Phần cứng",
+    "xml": "XML",
+    "cpu": "CPU",
+    "memory": "Bộ nhớ",
+    "memoryUsed": "Đã dùng {{used}}",
+    "ofHost": "Máy chủ có {{memory}}",
+    "diskIo": "Đĩa",
+    "diskUsed": "Đĩa {{size}}, {{used}} trên máy chủ",
+    "netIo": "Mạng",
+    "uuid": "UUID",
+    "machine": "Máy ảo",
+    "firmware": "Firmware",
+    "bios": "BIOS",
+    "uefi": "UEFI",
+    "cpuMode": "Chế độ CPU",
+    "guestAgent": "Guest agent",
+    "yes": "Có",
+    "no": "Không",
+    "autostart": "Tự động khởi động",
+    "autostartHint": "Khởi động máy ảo này khi máy chủ bật lên.",
+    "clone": "Nhân bản",
+    "cloneStopped": "Tắt máy ảo để nhân bản",
+    "cloneName": "Tên của bản sao",
+    "cloneStarted": "Đã bắt đầu nhân bản. Xem Công việc để theo dõi tiến trình.",
+    "delete": "Xóa",
+    "deleteTitle": "Xóa {{name}}?",
+    "deleteDisks": "Cùng xóa các đĩa của nó",
+    "deleteDisksHint": "Xóa các đĩa không máy ảo nào khác đang dùng. Thao tác này không thể hoàn tác. ISO và hình ảnh gốc sẽ được giữ lại.",
+    "deleted": "Đã xóa máy ảo"
+  },
+  "watch": {
+    "start": "Báo cho tôi khi máy ảo này dừng",
+    "stop": "Dừng cảnh báo cho máy ảo này"
+  },
+  "console": {
+    "graphical": "Giao diện đồ họa",
+    "serial": "Serial",
+    "notRunning": "Khởi động máy ảo để sử dụng bảng điều khiển của nó.",
+    "connecting": "Đang kết nối...",
+    "failed": "Không thể mở bảng điều khiển.",
+    "retry": "Thử lại",
+    "ended": "Bảng điều khiển đã đóng.",
+    "serialHint": "Nhấn Enter nếu màn hình trống. Máy khách phải chạy getty trên cổng serial của nó.",
+    "noRemoteDesktop": "Bật Remote Desktop để xem màn hình của máy ảo này. Bảng điều khiển serial vẫn hoạt động.",
+    "useVnc": "Chuyển sang VNC",
+    "vncSaved": "Đã lưu. Tắt máy ảo và khởi động lại để sử dụng VNC."
+  },
+  "hardware": {
+    "cpuMemory": "CPU và bộ nhớ",
+    "vcpus": "CPU",
+    "memory": "Bộ nhớ (MiB)",
+    "nextStart": "Thay đổi sẽ có hiệu lực lần tiếp theo máy ảo khởi động.",
+    "saved": "Đã lưu",
+    "disks": "Đĩa",
+    "detach": "Ngắt kết nối",
+    "detachTitle": "Ngắt kết nối {{name}}?",
+    "detachText": "Volume sẽ vẫn ở trong pool của nó.",
+    "pool": "Pool lưu trữ",
+    "sizeGib": "Dung lượng (GiB)",
+    "addDisk": "Thêm đĩa",
+    "cdrom": "Ổ CD",
+    "noMedia": "Trống",
+    "iso": "ISO",
+    "pickIso": "Chọn một ISO",
+    "insert": "Đưa vào",
+    "eject": "Đẩy ra",
+    "nics": "Thẻ mạng",
+    "removeNic": "Xóa",
+    "nicType": "Kết nối tới",
+    "virtualNetwork": "Mạng ảo",
+    "hostBridge": "Cầu nối máy chủ",
+    "network": "Mạng",
+    "bridge": "Cầu nối",
+    "addNic": "Thêm thẻ"
+  },
+  "snapshot": {
+    "name": "Tên bản chụp",
+    "description": "Mô tả",
+    "take": "Tạo bản chụp",
+    "taking": "Đang xử lý...",
+    "taken": "Đã tạo bản chụp",
+    "none": "Không có bản chụp",
+    "noneHint": "Bản chụp lưu trữ đĩa và bộ nhớ của máy ảo đang chạy.",
+    "current": "Hiện tại",
+    "revert": "Khôi phục",
+    "revertTitle": "Quay lại {{name}}?",
+    "revertText": "Mọi thay đổi kể từ bản chụp này sẽ bị mất.",
+    "reverted": "Đã khôi phục máy ảo",
+    "delete": "Xóa",
+    "deleteTitle": "Xóa bản chụp {{name}}?",
+    "deleteText": "Máy ảo sẽ giữ nguyên trạng thái hiện tại."
+  },
+  "xml": {
+    "hint": "Nâng cao. Máy chủ sẽ kiểm tra XML trước khi lưu và giữ một bản sao của file cũ trong /var/lib/termix-vms/backups.",
+    "saveTitle": "Lưu XML này?",
+    "saveText": "Thay đổi sẽ có hiệu lực lần tiếp theo máy ảo khởi động.",
+    "saved": "Đã lưu"
+  },
+  "new": {
+    "title": "Máy ảo mới",
+    "basics": "Cơ bản",
+    "install": "Cài đặt",
+    "name": "Tên",
+    "source": "Cài đặt từ",
+    "sourceCloud": "Ảnh đám mây",
+    "sourceIso": "ISO",
+    "sourceBlank": "Đĩa trống",
+    "noIso": "Không có ISO trong pool này. Tải xuống một file tại mục Lưu trữ.",
+    "image": "Ảnh",
+    "customImage": "URL khác",
+    "imageUrl": "URL ảnh",
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "sshKey": "Khóa công khai SSH",
+    "sshKeyHint": "Nhập mật khẩu, khóa, hoặc cả hai. Mật khẩu chỉ được lưu dưới dạng băm.",
+    "start": "Khởi động khi sẵn sàng",
+    "create": "Tạo máy ảo",
+    "started": "Đang tạo máy ảo. Xem mục Công việc để theo dõi tiến độ.",
+    "noUefi": "Máy chủ này chưa cài đặt firmware UEFI.",
+    "uefiHint": "Máy ảo UEFI chỉ có thể tạo bản chụp khi đã tắt nguồn.",
+    "missingTools": "Máy chủ này thiếu {{tools}}, cần thiết cho các ảnh đám mây."
+  },
+  "storage": {
+    "pools": "Pool lưu trữ",
+    "none": "Không có pool lưu trữ",
+    "noneHint": "Thêm một thư mục để lưu trữ đĩa máy ảo.",
+    "active": "Hoạt động",
+    "inactive": "Không hoạt động",
+    "used": "Đã dùng {{used}} trên {{size}} ({{percent}}%)",
+    "start": "Bật",
+    "stop": "Tắt",
+    "forget": "Quên",
+    "forgetTitle": "Quên pool {{name}}?",
+    "forgetText": "Libvirt sẽ ngừng sử dụng pool này. Các file trong thư mục của nó vẫn còn trên đĩa.",
+    "poolName": "Tên pool",
+    "poolPath": "Thư mục",
+    "addPool": "Thêm pool",
+    "volumes": "Volumes trong {{pool}}",
+    "noVolumes": "Không có volume nào trong pool này",
+    "allocated": "{{size}} trên đĩa",
+    "deleteVolume": "Xóa {{name}}?",
+    "deleteVolumeText": "Hành động này sẽ xóa tệp. Không thể hoàn tác.",
+    "volumeName": "Tên volume",
+    "addVolume": "Thêm volume",
+    "downloadUrl": "Tải tệp xuống pool này",
+    "downloadHint": "Máy chủ sẽ tải xuống, nên quá trình tiếp tục ngay cả khi Termix bị đóng.",
+    "download": "Tải xuống",
+    "downloadStarted": "Đã bắt đầu tải xuống"
+  },
+  "network": {
+    "title": "Mạng ảo",
+    "none": "Không có mạng ảo",
+    "name": "Tên",
+    "kind": "Loại",
+    "nat": "NAT",
+    "isolated": "Cách ly",
+    "bridge": "Bridge máy chủ",
+    "subnet": "Địa chỉ",
+    "add": "Thêm mạng",
+    "stopTitle": "Dừng mạng {{name}}?",
+    "stopText": "Các VM trên mạng này sẽ mất kết nối cho đến khi mạng hoạt động trở lại và chúng kết nối lại.",
+    "deleteTitle": "Xóa mạng {{name}}?",
+    "leases": "Cấp phát DHCP trên {{name}}",
+    "noLeases": "Không có cấp phát"
+  },
+  "jobs": {
+    "none": "Chưa có tác vụ nào",
+    "noneHint": "Các VM mới, bản sao, bản chụp và tệp tải xuống sẽ hiển thị ở đây.",
+    "cancel": "Dừng",
+    "status": {
+      "running": "Đang chạy",
+      "success": "Hoàn tất",
+      "failed": "Thất bại",
+      "cancelled": "Đã dừng"
+    },
+    "kind": {
+      "create": "VM mới",
+      "clone": "Nhân bản",
+      "download": "Tải xuống",
+      "snapshot": "Bản chụp"
+    },
+    "phase": {
+      "download": "Đang tải xuống",
+      "disk": "Đang tạo đĩa",
+      "seed": "Đang ghi cloud-init",
+      "define": "Đang lưu VM",
+      "start": "Đang khởi động",
+      "clone": "Đang sao chép đĩa"
+    }
+  },
+  "all": {
+    "title": "Tất cả VM",
+    "search": "Tìm kiếm",
+    "host": "Máy chủ",
+    "hostCount_other": "{{count}} máy chủ",
+    "noHosts": "Không có máy chủ nào bật tính năng Máy ảo",
+    "noHostsHint": "Mở một máy chủ trong Quản lý và bật Máy ảo."
+  },
+  "card": {
+    "title": "Máy ảo",
+    "unreachable": "Không thể kết nối",
+    "crashed_other": "{{count}} bị lỗi"
+  },
+  "widget": {
+    "running": "VM đang chạy"
+  },
+  "companion": {
+    "toggle": "Bật/tắt bảng VM"
+  },
+  "permissions": {
+    "use": {
+      "title": "Sử dụng Máy ảo",
+      "description": "Xem VM trên các máy chủ bạn có thể kết nối, và chỉnh sửa chúng trên các máy chủ bạn có quyền chỉnh sửa."
+    },
+    "console": {
+      "title": "Mở bảng điều khiển VM",
+      "description": "Mở bảng điều khiển đồ họa và nối tiếp của VM trên các máy chủ bạn có quyền chỉnh sửa."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Bật máy ảo",
+        "description": "Quản lý máy ảo KVM trên host này bằng libvirt."
+      },
+      "useSudo": {
+        "label": "Sử dụng sudo",
+        "description": "Chạy lệnh libvirt với sudo. Tắt nếu đăng nhập bằng root."
+      },
+      "readOnly": {
+        "label": "Chỉ đọc",
+        "description": "Hiển thị máy ảo nhưng chặn mọi thay đổi từ Termix."
+      },
+      "connectUri": {
+        "label": "Kết nối Libvirt",
+        "description": "URI libvirt cần sử dụng. Hầu hết host dùng qemu:///system."
+      },
+      "showPanel": {
+        "label": "Hiển thị bảng VM bên cạnh terminal",
+        "description": "Thêm danh sách VM vào các tab terminal của host này."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Mở bảng VM độc lập",
+        "description": "Mở bảng khi terminal được mở."
+      },
+      "companionSide": {
+        "label": "Vị trí bảng VM",
+        "description": "Vị trí của bảng bên cạnh terminal.",
+        "right": "Phải",
+        "left": "Trái",
+        "bottom": "Dưới"
+      },
+      "companionSize": {
+        "label": "Kích thước bảng VM",
+        "description": "Chiều rộng hoặc chiều cao tính bằng pixel."
+      },
+      "companionEdgeButton": {
+        "label": "Hiển thị nút mép",
+        "description": "Một nút nhỏ ở mép terminal để mở bảng."
+      }
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Danh sách VM"
+    },
+    "state": {
+      "title": "Trạng thái VM"
+    },
+    "running": {
+      "title": "VM đang chạy"
+    },
+    "crashed": {
+      "title": "VM bị lỗi"
+    },
+    "pools": {
+      "title": "Sử dụng pool lưu trữ"
+    },
+    "snapshots": {
+      "title": "Snapshot VM"
+    },
+    "listPools": {
+      "title": "Danh sách pool lưu trữ"
+    },
+    "listNetworks": {
+      "title": "Danh sách mạng ảo"
+    },
+    "start": {
+      "title": "Khởi động VM"
+    },
+    "reboot": {
+      "title": "Khởi động lại VM"
+    },
+    "suspend": {
+      "title": "Tạm dừng VM"
+    },
+    "resume": {
+      "title": "Tiếp tục VM"
+    },
+    "autostart": {
+      "title": "Đặt khởi động tự động cho VM",
+      "enabled": "Khởi động cùng host"
+    },
+    "snapshot": {
+      "title": "Tạo snapshot VM",
+      "name": "Tên snapshot",
+      "description": "Mô tả"
+    },
+    "clone": {
+      "title": "Nhân bản VM",
+      "name": "Tên bản sao"
+    },
+    "shutdown": {
+      "title": "Tắt VM"
+    },
+    "forceStop": {
+      "title": "Buộc dừng VM"
+    },
+    "delete": {
+      "title": "Xóa VM",
+      "disks": "Đồng thời xóa ổ đĩa của nó"
+    },
+    "revert": {
+      "title": "Khôi phục về snapshot"
+    },
+    "deleteSnapshot": {
+      "title": "Xóa snapshot"
+    },
+    "vms": {
+      "title": "Máy ảo"
+    },
+    "column": {
+      "cpus": "CPU",
+      "memory": "Bộ nhớ (MiB)",
+      "ip": "Địa chỉ IP",
+      "autostart": "Khởi động tự động",
+      "vm": "VM",
+      "created": "Ngày tạo"
+    },
+    "events": {
+      "started": "VM đã khởi động",
+      "stopped": "VM đã dừng",
+      "crashed": "VM bị lỗi",
+      "job": "Tác vụ VM hoàn tất"
+    }
+  }
+}

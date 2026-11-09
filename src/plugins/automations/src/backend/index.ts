@@ -47,7 +47,13 @@ export async function activate(ctx: PluginContext) {
     maintenance.isMaintaining,
   );
   triggers.subscribe(ctx.events);
-  watchOperationEvents(ctx, repository, engine, maintenance.isMaintaining);
+  watchOperationEvents(
+    ctx,
+    repository,
+    engine,
+    maintenance.isMaintaining,
+    deps,
+  );
   registerOperations(ctx, repository, engine);
 
   const viewers = createHeadlessViewers(ctx, deps, () =>

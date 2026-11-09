@@ -9,7 +9,8 @@
   "settings": {
     "group": {
       "sessions": "Relácie",
-      "secondFactor": "Druhý faktor"
+      "secondFactor": "Druhý faktor",
+      "connect": "Pripájanie k hostiteľom"
     },
     "admin": {
       "idleTimeoutMinutes": {
@@ -34,8 +35,34 @@
       "applyToExternal": {
         "label": "Tiež pre jednorazové prihlásenie (SSO)",
         "description": "Vyžadovať druhý faktor aj po prihlásení cez SSO a LDAP. Vypnite túto možnosť, ak váš poskytovateľ identít už druhý faktor vyžaduje."
+      },
+      "connectFactor": {
+        "label": "Vyžiadať druhý faktor pred pripojením",
+        "description": "Používatelia zadajú svoj druhý faktor pri otvorení terminálu, vzdialenej plochy alebo správcu súborov na hostiteľovi. Metriky, tunely a iné pozadové úlohy sa nevyžadujú.",
+        "off": "Vypnuté",
+        "marked": "Hostitelia označení pre toto",
+        "all": "Každý hostiteľ"
+      },
+      "connectFactorMinutes": {
+        "label": "Minúty pred opätovným vyžiadaním",
+        "description": "Po zadaní sa môže používateľ pripojiť k akémukoľvek hostiteľovi po túto dobu. Odhlásenie ukončí túto dobu skôr."
+      }
+    },
+    "host": {
+      "requireConnectFactor": {
+        "label": "Vyžiadať druhý faktor pred pripojením",
+        "description": "Používa sa, keď je Bezpečnosť prihlásenia nastavená na vyžiadanie na hostiteľoch označených pre toto."
       }
     }
+  },
+  "verify": {
+    "title": "Overiť druhý faktor",
+    "intro": "Zadajte svoj druhý faktor na pripojenie k tomuto hostiteľovi.",
+    "done": "Overené",
+    "retry": "Vráťte sa k hostiteľovi a pripojte sa znova.",
+    "failed": "To nefungovalo. Skúste to znova.",
+    "noFactor": "Druhý faktor nie je nastavený",
+    "noFactorHint": "Nastavte ho v Nastaveniach, Bezpečnosť, a potom sa pripojte znova."
   },
   "status": {
     "factors": "Dostupné druhy druhého faktora: {{factors}}",

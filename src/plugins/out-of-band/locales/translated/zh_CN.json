@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "带外管理",
+    "description": "通过 Redfish、IPMI 和 Intel AMT 对服务器 BMC 进行电源、传感器、事件日志和控制台管理。"
+  },
+  "tab": {
+    "title": "带外管理"
+  },
+  "card": {
+    "title": "带外管理",
+    "loading": "加载中"
+  },
+  "host": {
+    "open": "带外管理"
+  },
+  "permissions": {
+    "view": {
+      "title": "查看 BMC",
+      "description": "打开带外管理标签页，查看电源、健康状态、传感器和日志。"
+    },
+    "power": {
+      "title": "控制电源和启动",
+      "description": "开启和关闭机器电源、执行电源循环以及选择下一个启动设备。"
+    },
+    "console": {
+      "title": "使用串行控制台",
+      "description": "打开机器的远程串行控制台（Serial over LAN）。"
+    },
+    "media": {
+      "title": "使用虚拟介质",
+      "description": "在机器上挂载和弹出 ISO 镜像。"
+    },
+    "manage": {
+      "title": "管理 BMC",
+      "description": "添加、修改和删除 BMC，并清除其事件日志。"
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "在 Termix 服务器上运行 ipmitool",
+        "description": "关闭时，IPMI BMC 必须使用中继主机。Redfish 和 AMT 不受影响。"
+      }
+    }
+  },
+  "description": "添加服务器的管理控制器（BMC），以便控制电源开关、监控传感器并读取事件日志。登录凭据已加密存储，不会再次明文显示。",
+  "summary": "{{count}} 个 BMC，{{attention}} 需要关注",
+  "empty": "暂无 BMC。",
+  "add": "添加 BMC",
+  "edit": "编辑",
+  "delete": "删除",
+  "back": "返回",
+  "saved": "已保存",
+  "deleteConfirm": "删除 {{name}}？",
+  "status": {
+    "unknown": "尚未读取",
+    "up": "可达",
+    "down": "不可达"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI over LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "用户名",
+    "password": "密码"
+  },
+  "power": {
+    "on": "开启",
+    "off": "关闭",
+    "unknown": "未知",
+    "sent": "已请求 {{name}} 更改电源状态",
+    "action": {
+      "on": "开机",
+      "off": "关机",
+      "graceful-shutdown": "正常关机",
+      "cycle": "电源循环",
+      "reset": "重置"
+    },
+    "confirm": {
+      "on": "开启 {{name}} 的电源？",
+      "off": "切断 {{name}} 的电源？系统将无法正常关机。",
+      "graceful-shutdown": "请求 {{name}} 正常关机？",
+      "cycle": "对 {{name}} 执行电源循环？系统将无法正常关机。",
+      "reset": "重置 {{name}}？系统将立即重启。"
+    }
+  },
+  "health": {
+    "ok": "正常",
+    "warning": "警告",
+    "critical": "严重",
+    "unknown": "未知"
+  },
+  "kind": {
+    "temperature": "温度",
+    "fan": "风扇",
+    "voltage": "电压",
+    "power": "功率",
+    "psu": "电源",
+    "other": "其他"
+  },
+  "form": {
+    "addTitle": "添加 BMC",
+    "editTitle": "编辑 BMC",
+    "device": "BMC",
+    "access": "访问",
+    "type": "类型",
+    "name": "名称",
+    "address": "地址",
+    "port": "端口",
+    "host": "Termix 主机",
+    "hostHint": "将 BMC 关联到其所属的主机。它将继承该主机的共享设置，并显示在该主机的菜单中。",
+    "noHost": "无",
+    "poll": "每 (秒) 读取一次",
+    "pollHint": "至少 30 秒，使用中继主机时至少 60 秒。",
+    "scheme": "连接",
+    "relay": "中继主机",
+    "relayHint": "在此主机上运行 ipmitool，而不是在 Termix 服务器上运行。串行控制台需要此设置。",
+    "noRelay": "Termix 服务器",
+    "cipher": "密码套件",
+    "cipherHint": "仅当 BMC 拒绝登录时才更改此项。通常使用 3，较新的 BMC 使用 17。",
+    "ca": "CA 证书",
+    "caHint": "粘贴 BMC 证书颁发机构的 PEM 内容。若证书受信任，请留空。",
+    "caSet": "已保存 CA。粘贴新的 CA 以替换它。",
+    "keepLogin": "留空以保留已保存的登录信息",
+    "test": "测试连接",
+    "testOk": "BMC 已响应。电源状态为 {{power}}。",
+    "testNeedsLogin": "重新输入登录信息以进行测试。",
+    "save": "保存",
+    "add": "添加"
+  },
+  "view": {
+    "overview": "概览",
+    "sensors": "传感器",
+    "log": "事件日志",
+    "boot": "启动",
+    "media": "虚拟介质",
+    "console": "控制台",
+    "refresh": "立即读取",
+    "type": "类型",
+    "address": "地址",
+    "power": "电源",
+    "health": "健康状态",
+    "manufacturer": "制造商",
+    "model": "型号",
+    "serial": "序列号",
+    "bios": "BIOS",
+    "bmc": "BMC 固件",
+    "status": "BMC",
+    "viaRelay": "通过中继主机连接。",
+    "noSensors": "此 BMC 未报告任何传感器。",
+    "sensor": "传感器",
+    "reading": "读数",
+    "state": "状态"
+  },
+  "log": {
+    "time": "时间",
+    "severity": "级别",
+    "message": "事件",
+    "empty": "事件日志为空。",
+    "clear": "清除日志",
+    "clearConfirm": "确定要清除 {{name}} 的事件日志吗？此操作无法撤销。",
+    "cleared": "日志已清除",
+    "level": {
+      "info": "信息",
+      "warning": "警告",
+      "critical": "严重"
+    }
+  },
+  "boot": {
+    "hint": "机器将从此设备启动一次，然后恢复正常的启动顺序。请在重启前应用此设置。",
+    "device": "启动设备",
+    "mode": "模式",
+    "uefi": "UEFI",
+    "legacy": "传统 BIOS",
+    "apply": "下次启动时生效",
+    "done": "{{name}} 下次将从所选设备启动",
+    "pxe": "网络 (PXE)",
+    "disk": "硬盘",
+    "cd": "光盘或虚拟介质",
+    "usb": "USB",
+    "bios": "BIOS 设置",
+    "none": "默认顺序"
+  },
+  "media": {
+    "url": "镜像地址",
+    "empty": "此 BMC 没有虚拟光驱插槽。",
+    "mounted": "已挂载",
+    "free": "空",
+    "mount": "挂载",
+    "eject": "弹出",
+    "mountedDone": "镜像已挂载",
+    "ejected": "镜像已弹出"
+  },
+  "console": {
+    "hint": "输入 ~. 退出控制台。",
+    "connecting": "正在连接",
+    "ended": "控制台已关闭。",
+    "failed": "无法打开控制台。",
+    "needsRelay": "串行控制台需要一个安装了 ipmitool 的中继主机。请在 BMC 设置中选择一个。"
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "启动设备",
+    "uefi": "UEFI 模式",
+    "list": {
+      "title": "列出 BMC"
+    },
+    "poll": {
+      "title": "立即读取 BMC"
+    },
+    "powerState": {
+      "title": "获取电源状态"
+    },
+    "power-on": {
+      "title": "开机"
+    },
+    "graceful-shutdown": {
+      "title": "关机"
+    },
+    "power-off": {
+      "title": "断电"
+    },
+    "power-cycle": {
+      "title": "重启电源"
+    },
+    "reset": {
+      "title": "重置"
+    },
+    "setBootOnce": {
+      "title": "从设备单次启动"
+    },
+    "clearLog": {
+      "title": "清除事件日志"
+    },
+    "health": {
+      "title": "BMC 健康状态"
+    }
+  },
+  "widget": {
+    "name": "带外管理",
+    "description": "服务器 BMC 的电源和健康状态。",
+    "summary": "{{up}} / {{total}} 在线"
+  }
+}

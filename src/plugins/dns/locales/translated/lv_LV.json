@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Pārvaldiet DNS ierakstus un domēnus Cloudflare, Route 53, Namecheap un citos pakalpojumu sniedzējos."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domēni",
+    "loading": "Ielādē",
+    "empty": "Vēl nav domēnu. Atveriet DNS, lai pievienotu pieteikumu.",
+    "ok": "{{domains}} domēni, neviens drīz nebeidz derēt",
+    "accounts": "{{count}} pieteikumi",
+    "failingLinks": "{{count}} saistīti ieraksti neizdodas"
+  },
+  "permissions": {
+    "view": {
+      "title": "Apskatīt DNS",
+      "description": "Atveriet DNS cilni un apskatiet zonas, ierakstus, domēnus un veselības pārbaudes."
+    },
+    "edit": {
+      "title": "Mainīt DNS ierakstus",
+      "description": "Pievienot, mainīt un dzēst ierakstus, importēt zonas failus un atsvaidzināt domēnus."
+    },
+    "manage": {
+      "title": "Pārvaldīt DNS pieteikumus",
+      "description": "Pievienot pakalpojumu sniedzēju pieteikumus, saistīt ierakstus ar mezgliem, uzraudzīt domēnus un atjaunot zonas kopijas."
+    }
+  },
+  "operations": {
+    "zone": "Zona",
+    "type": "Tips",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Nosaukums",
+    "content": "Vērtība",
+    "contentOptional": "Vērtība (atstājiet tukšu, lai atbilstu jebkuram)",
+    "ttl": "TTL sekundēs",
+    "label": "Etiķete",
+    "zones": {
+      "title": "Uzskaitīt DNS zonas"
+    },
+    "records": {
+      "title": "Uzskaitīt DNS ierakstus"
+    },
+    "domains": {
+      "title": "Uzskaitīt domēnus un beigu datumus"
+    },
+    "check": {
+      "title": "Pārbaudīt zonu"
+    },
+    "upsert": {
+      "title": "Iestatīt DNS ierakstu"
+    },
+    "delete": {
+      "title": "Dzēst DNS ierakstu"
+    },
+    "snapshot": {
+      "title": "Saglabāt zonas kopiju"
+    },
+    "links": {
+      "title": "Atjaunināt saistītos ierakstus"
+    },
+    "expiry": {
+      "title": "Domēna derīguma termiņa beigas"
+    }
+  },
+  "description": "Pievienojiet savus DNS un reģistrētāju pieteikumus, lai pārvaldītu ierakstus un uzraudzītu domēnus vienā vietā. Atslēgas tiek glabātas šifrētā veidā un vairs netiek parādītas.",
+  "summary": "{{zones}} zonas, {{domains}} domēni",
+  "saved": "Saglabāts",
+  "delete": "Dzēst",
+  "edit": "Rediģēt",
+  "back": "Atpakaļ",
+  "refresh": "Atsvaidzināt",
+  "section": {
+    "zones": "Zonas",
+    "domains": "Domēni",
+    "links": "Saites",
+    "accounts": "Pieteikumi"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "API marķieris",
+    "accessKeyId": "Piekļuves atslēgas ID",
+    "secretAccessKey": "Slēptā piekļuves atslēga",
+    "sessionToken": "Sesijas marķieris (neobligāts)",
+    "apiUser": "API lietotājs",
+    "apiKey": "API atslēga",
+    "userName": "Lietotājvārds (ja atšķiras no API lietotāja)",
+    "clientIp": "Atļautā IP adrese",
+    "apiSecret": "API slepenā atslēga",
+    "environment": "Vide",
+    "environment_production": "Produkcija",
+    "environment_ote": "Testēšana (OTE)",
+    "secretApiKey": "Slepenā API atslēga",
+    "token": "Personīgais piekļuves žetons"
+  },
+  "zones": {
+    "empty": "Zonu vēl nav.",
+    "emptyHint": "Lai redzētu zonas, pievienojiet pakalpojuma sniedzēja pieteikumu sadaļā Pieteikumi."
+  },
+  "zone": {
+    "records": "Ieraksti",
+    "health": "Stāvoklis",
+    "copies": "Kopijas",
+    "files": "Faili",
+    "filter": "Filtrēt ierakstus",
+    "empty": "Nav ierakstu."
+  },
+  "record": {
+    "section": "Ieraksts",
+    "addTitle": "Pievienot ierakstu",
+    "editTitle": "Rediģēt ierakstu",
+    "add": "Pievienot ierakstu",
+    "save": "Saglabāt",
+    "type": "Tips",
+    "name": "Nosaukums",
+    "nameHint": "Izmantojiet @ paša {{zone}} apzīmēšanai",
+    "value": "Vērtība",
+    "priority": "Prioritāte",
+    "ttl": "TTL (sekundes)",
+    "ttlHint": "Cik ilgi rezolveri saglabā atbildi. 300 ir 5 minūtes.",
+    "ttlAuto": "1 nozīmē automātiski.",
+    "proxied": "Proksēts",
+    "proxiedHint": "Nosūtīt datplūsmu caur Cloudflare.",
+    "proxiedBadge": "Proksēts",
+    "comment": "Piezīme",
+    "readOnly": "Pārvalda pakalpojuma sniedzējs",
+    "deleteConfirm": "Dzēst {{type}} ierakstu {{name}}?"
+  },
+  "account": {
+    "add": "Pievienot pieteikumu",
+    "addTitle": "Pievienot DNS pieteikumu",
+    "editTitle": "Rediģēt DNS pieteikumu",
+    "save": "Saglabāt",
+    "login": "Pieteikums",
+    "provider": "Pakalpojuma sniedzējs",
+    "name": "Nosaukums",
+    "namePlaceholder": "Galvenais Cloudflare",
+    "keep": "Atstājiet tukšu, lai saglabātu esošo vērtību",
+    "registrar": "Šis pakalpojuma sniedzējs ir arī reģistrētājs, tāpēc tā domēni tiek rādīti sadaļā Domēni.",
+    "options": "Iestatījumi",
+    "autoBackup": "Saglabāt zonu kopijas",
+    "autoBackupHint": "Saglabāt kopiju pirms katras izmaiņas un kad zona tiek mainīta ārpus Termix.",
+    "checkHealth": "Pārbaudīt zonas katru dienu",
+    "checkHealthHint": "Izpildīt stāvokļa pārbaudes katru dienu un brīdināt par jaunām problēmām.",
+    "test": "Testēt",
+    "testOk": "Strādā. Atrastas {{zones}} zonas un {{domains}} domēni.",
+    "deleteConfirm": "Dzēst {{name}}? Tās kopijas un saites tiks dzēstas. Pakalpojuma sniedzēja pusē nekas nemainās.",
+    "empty": "Pieteikumu vēl nav.",
+    "emptyHint": "Lai sāktu, pievienojiet Cloudflare, Route 53, Namecheap vai cita pakalpojuma sniedzēja pieteikumu.",
+    "lastSync": "Pēdējā pārbaude: {{date}}",
+    "never": "Vēl nav pārbaudīts",
+    "failed": "Pieteikums neizdevās"
+  },
+  "domains": {
+    "empty": "Domēnu vēl nav.",
+    "emptyHint": "Reģistrētāju pieteikumi šeit uzskaita savus domēnus. Jūs varat arī uzraudzīt jebkuru domēnu pēc nosaukuma.",
+    "watchPlaceholder": "example.com",
+    "watch": "Novērot domēnu",
+    "unwatch": "Pārtraukt novērošanu",
+    "watched": "Novērotie",
+    "noRenew": "Automātiskā atjaunošana izslēgta",
+    "unlocked": "Nav bloķēts",
+    "unknown": "Reģistrētājs nav zināms",
+    "expires": "Beidzas {{date}}",
+    "expired": "Termiņš beidzies",
+    "days": "Atlikušas {{count}} dienas",
+    "refreshFailed": "Neizdevās veikt {{count}} vaicājumus"
+  },
+  "link": {
+    "add": "Pievienot saiti",
+    "addTitle": "Pievienot saiti",
+    "editTitle": "Rediģēt saiti",
+    "save": "Saglabāt",
+    "record": "Ieraksts",
+    "address": "Adrese",
+    "zone": "Zona",
+    "pickZone": "Izvēlieties zonu",
+    "source": "Norādīt uz",
+    "sourceHost": "Māziņš",
+    "sourcePublic4": "Šī servera publiskā IPv4 adrese",
+    "sourcePublic6": "Šī servera publiskā IPv6 adrese",
+    "source_host": "Māziņš",
+    "source_public4": "Publiskā IPv4",
+    "source_public6": "Publiskā IPv6",
+    "host": "Māziņš",
+    "pickHost": "Izvēlieties māziņu",
+    "hostHint": "Ieraksts seko māziņa adresei. Tas tiek atjaunots, kad māziņa adrese mainās.",
+    "publicHint": "Termix noskaidro savu publisko adresi un tur ierakstu sinhronizētu, līdzīgi kā dinamiskajam DNS.",
+    "enabled": "Turēt šo ierakstu atjaunotu",
+    "empty": "Vēl nav nevienas saites.",
+    "emptyHint": "Saitē tiek turēts ieraksts, kas norāda uz māziņu vai šī servera publisko adresi.",
+    "off": "Izslēgts",
+    "hostGone": "Māziņš nav atrasts",
+    "lastSync": "Pārbaudīts {{date}}",
+    "never": "Vēl nav pārbaudīts",
+    "syncNow": "Atjaunot tagad",
+    "updated": "Ieraksts tika atjaunots",
+    "unchanged": "Ieraksts jau bija pareizs",
+    "deleteConfirm": "Noņemt saiti priekš {{name}}? Ieraksts paliks savā vietā."
+  },
+  "diff": {
+    "none": "Nekas nemainīsies.",
+    "add": "Pievienot",
+    "change": "Mainīt",
+    "remove": "Noņemt"
+  },
+  "copies": {
+    "hint": "Kopijas tiek saglabātas pirms katras izmaiņas un reizi dienā, ja zona tika mainīta ārpus Termix.",
+    "save": "Saglabāt kopiju",
+    "saved": "Kopija saglabāta",
+    "manualLabel": "Manuāla kopija",
+    "empty": "Vēl nav nevienas kopijas.",
+    "count": "{{count}} ieraksti",
+    "compare": "Salīdzināt ar pašreizējo",
+    "restore": "Atjaunot",
+    "restoreConfirm": "Atjaunot šo kopiju? Pieskaitītājā tiks veiktas {{count}} izmaiņas. Vispirms tiek saglabāta pašreizējo ierakstu kopija.",
+    "restored": "Atjaunots. Veiktas {{count}} izmaiņas.",
+    "source": {
+      "manual": "Manuāli",
+      "auto": "Ikdienā",
+      "before": "Pirms izmaiņas"
+    }
+  },
+  "files": {
+    "export": "Lejupielādēt zonas failu",
+    "exportHint": "Lejupielādēt ierakstus kā BIND zonas failu.",
+    "import": "Importēt zonas failu",
+    "placeholder": "Ielīmējiet BIND zonas failu šeit",
+    "replace": "Noņemt ierakstus, kas nav failā",
+    "replaceHint": "Izslēgts, importēšana tikai pievieno un maina ierakstus.",
+    "preview": "Priekšskatījums",
+    "apply": "Piemērot",
+    "applied": "Importēts. Veiktas {{count}} izmaiņas.",
+    "skipped": "Izlaists:"
+  },
+  "health": {
+    "run": "Palaist pārbaudes",
+    "running": "Notiek izpilde",
+    "propagation": "Pārbaudīt rezolverus",
+    "propagationTitle": "Publiekie rezolveri",
+    "lastRun": "Pēdējā izpilde {{date}}",
+    "empty": "Šai zonai vēl nav veikta neviena pārbaude.",
+    "record": "Ieraksts",
+    "resolver": "Rezolveris",
+    "answer": "Atbilde",
+    "noAnswer": "Nav atbildes",
+    "delegation": {
+      "error": "Vārdu serverus neizdevās atrast.",
+      "none": "Zonai internetā nav vārdu serveru. Domēns var norādīt uz citu pakalpojumu sniedzēju.",
+      "mismatch": "Domēns izmanto citus vārdu serverus nekā pakalpojumu sniedzējs: {{found}}.",
+      "ok": "Domēns norāda uz {{count}} vārdu serveriem."
+    },
+    "soa": {
+      "differ": "Vārdu serveri nesaskaņo zonas versiju ({{count}} versijas). Izmaiņas var vēl izplatīties.",
+      "same": "{{count}} vārdu serveri vienojas par zonas versiju."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC nevarēja pārbaudīt.",
+      "off": "DNSSEC nav ieslēgts.",
+      "valid": "DNSSEC ir ieslēgts un derīgs.",
+      "broken": "DNSSEC ir iestatīts reģistratorā, bet neder. Rezolveri, kas to pārbauda, neizdosies."
+    },
+    "cname": {
+      "conflict": "{{name}} ir CNAME un citi ieraksti. Tas nav atļauts.",
+      "apex": "Zonas sakne nevar būt CNAME.",
+      "dangling": "{{name}} norāda uz {{target}}, kas neizšķīst.",
+      "ok": "Katrs CNAME mērķis izšķīst."
+    },
+    "spf": {
+      "missing": "Domēns saņem e-pastu, bet tam nav SPF ieraksta.",
+      "multiple": "Ir vairāk nekā viens SPF ieraksts. E-pasta serveri noraidīs visus.",
+      "lookups": "SPF ieraksts veic {{count}} meklējumus. Ierobežojums ir 10.",
+      "ok": "SPF ir iestatīts ({{count}} meklējumi)."
+    },
+    "dmarc": {
+      "missing": "Nav DMARC ieraksta.",
+      "none": "DMARC ir iestatīts tikai uz monitoringu.",
+      "ok": "DMARC ir iestatīts."
+    },
+    "dkim": {
+      "none": "Šajā zonā netika atrasti DKIM atslēgas.",
+      "found": "Atrastas {{count}} DKIM atslēgas."
+    },
+    "mx": {
+      "unresolved": "E-pasta serveris {{host}} neizšķīst."
+    },
+    "mail": {
+      "none": "Domēnam nav e-pasta ierakstu."
+    },
+    "caa": {
+      "ok": "CAA ieraksti ierobežo, kas var izdot sertifikātus.",
+      "none": "Nav CAA ierakstu. Jebkura sertifikātu izdošanas iestāde var izdot sertifikātus."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domēni, beidzamo derīguma termiņu domēni un kļūdaini ieraksti.",
+    "domains": "Domēni",
+    "expiring": "Drīz beidzas derīguma termiņš",
+    "failingLinks": "Kļūdainas saites",
+    "failingAccounts": "Kļūdaina pieteikšanās"
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "plugin": {
+    "name": "Oikeudellinen pääsy",
+    "description": "Pyydä hyväksyntää ennen kuin kukaan yhdistää oikeudelliseen isäntään. Pääsy päättyy automaattisesti, ja kaikki toiminnat tallentuvat tarkastuslokille."
+  },
+  "tab": {
+    "title": "Pääsy"
+  },
+  "tabs": {
+    "request": "Pyydä pääsyä",
+    "mine": "Omat pyynnöt",
+    "pending": "Odottaa päätöstä",
+    "active": "Aktiivinen pääsy",
+    "history": "Historia"
+  },
+  "status": {
+    "pending": "Odottaa",
+    "approved": "Päättynyt",
+    "active": "Aktiivinen",
+    "denied": "Hylätty",
+    "expired": "Vanhentunut",
+    "revoked": "Peruutettu",
+    "cancelled": "Peruutettu"
+  },
+  "request": {
+    "host": "Isäntä",
+    "hostWithAccess": "{{host}} (pääsy asti {{until}})",
+    "hours": "Tunnit",
+    "hoursHint": "Tämä isäntä sallii enintään {{max}} tuntia.",
+    "reason": "Miksi tarvitset pääsyä",
+    "reasonOptional": "Miksi tarvitset pääsyä (valinnainen)",
+    "ticket": "Lipuke",
+    "ticketOptional": "Lipuke (valinnainen)",
+    "send": "Pyydä pääsyä",
+    "sent": "Pyyntö lähetetty. Saat ilmoituksen, kun joku tekee päätöksen.",
+    "failed": "Pyyntöä ei voitu lähettää",
+    "noHosts": "Ei oikeudellisia isäntiä",
+    "noHostsHint": "Isännät, jotka ylläpitäjä on merkinnyt oikeudellisiksi, näkyvät tässä."
+  },
+  "list": {
+    "none": "Täällä ei ole mitään",
+    "loadError": "Pyyntöjä ei voitu ladata",
+    "actionFailed": "Toiminto epäonnistui",
+    "hours_one": "{{count}} tunti",
+    "hours_other": "{{count}} tuntia",
+    "until": "asti {{time}}",
+    "decidedBy": "teosta {{name}}",
+    "approve": "Hyväksy",
+    "deny": "Hylkää",
+    "cancel": "Peruuta",
+    "endNow": "Päätä nyt",
+    "export": "Vie CSV-tiedostona",
+    "approveConfirm_one": "Myönnetäänkö käyttäjälle {{user}} pääsy isäntään {{host}} {{count}} tunniksi?",
+    "approveConfirm_other": "Myönnetäänkö käyttäjälle {{user}} pääsy isäntään {{host}} {{count}} tunniksi?",
+    "denyConfirm": "Hylätäänkö tämä pyyntö?",
+    "cancelConfirm": "Peruutetaanko tämä pyyntö?",
+    "endConfirm": "Päätetäänkö tämä pääsy nyt? Isännällä olevat avoimet istunnot suljetaan.",
+    "approved": "Pääsy hyväksytty",
+    "denied": "Pyyntö hylätty",
+    "ended": "Valmis"
+  },
+  "card": {
+    "title": "Oikeudellinen pääsy",
+    "waiting": "odottaa sinulta",
+    "empty": "Ei odottavia pyyntöjä",
+    "emptyHint": "Hyväksymäsi pääsy näkyy tässä."
+  },
+  "permissions": {
+    "request": {
+      "title": "Pyydä oikeudellista pääsyä",
+      "description": "Pyydä aikarajoitettua pääsyä oikeudellisiin isäntiin."
+    },
+    "approve": {
+      "title": "Hyväksy oikeudellinen pääsy",
+      "description": "Päätä muiden pääsyyn liittyvistä pyynnöistä, pääty pääsy ennenaikaisesti ja lue raportti."
+    },
+    "bypass": {
+      "title": "Poikkeustilapääsy",
+      "description": "Yhdistä oikeudellisiin isäntiin ilman pyyntöä. Jokainen käyttö kirjataan tarkastuslokille ja siitä lähetetään ilmoitus."
+    },
+    "configure": {
+      "title": "Määritä oikeudelliset isännät",
+      "description": "Merkitse isännät oikeudellisiksi ja muuta sitä, kuka hyväksyy niihin pääsyn"
+    }
+  },
+  "settings": {
+    "admin": {
+      "pendingHours": {
+        "label": "Pyyntöjen elinikä (tunteina)",
+        "description": "Pyyntö vanhenee, jos sitä ei päätetä tässä ajassa."
+      },
+      "alertBypass": {
+        "label": "Ilmoita hätätilapääsystä",
+        "description": "Ilmoita hyväksyjille, kun joku muodostaa yhteyden hätätilapääsyn avulla."
+      }
+    },
+    "host": {
+      "enable": {
+        "label": "Oikeuksilla varustettu isäntä",
+        "description": "Tähän isäntään muodostettavat SSH- ja etätyöpöytäistunnot vaativat hyväksytyn pääsyn."
+      },
+      "approverRoles": {
+        "label": "Hyväksyjien roolit",
+        "description": "Roolien nimet pilkulla erotettuina, joiden jäsenet voivat hyväksyä. Jos jätetään tyhjäksi, kuka tahansa, jolla on hyväksymisoikeus, voi päättää."
+      },
+      "maxHours": {
+        "label": "Pisin pääsy (tuntia)",
+        "description": "Suurin tuntimäärä, jonka yhdellä pyynnöllä voi pyytää."
+      },
+      "requireReason": {
+        "label": "Pyydä syytä",
+        "description": "Pyyntöön on ilmoitettava, miksi pääsyä tarvitaan."
+      },
+      "requireTicket": {
+        "label": "Pyydä lippua",
+        "description": "Pyyntöön on ilmoitettava lipun numero."
+      },
+      "allowBackground": {
+        "label": "Salli taustatyö",
+        "description": "Pollaus ja muut ei-interaktiiviset lisäosan yhteydet ohittavat hyväksymisen. Poista käytöstä estääksesi kaikki istunnot ilman pääsyä."
+      }
+    }
+  },
+  "operations": {
+    "request": {
+      "title": "Pyydä oikeuksilla varustettua pääsyä",
+      "hours": "Tuntia",
+      "reason": "Syy",
+      "ticket": "Lippu"
+    },
+    "pending": {
+      "title": "Päätettävät pääsy pyynnöt"
+    },
+    "status": {
+      "title": "Oikeuksilla varustettu pääsy"
+    },
+    "events": {
+      "requested": "Joku pyysi pääsyä",
+      "approved": "Pääsy hyväksyttiin",
+      "bypassed": "Hätätilapääsyä käytettiin"
+    }
+  }
+}

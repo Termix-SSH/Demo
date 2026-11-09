@@ -1,0 +1,207 @@
+{
+  "plugin": {
+    "name": "使用者",
+    "description": "管理主機上的使用者帳戶、群組、密碼與 SSH 金鑰。"
+  },
+  "common": {
+    "save": "儲存",
+    "cancel": "取消",
+    "back": "返回",
+    "delete": "刪除",
+    "loading": "載入中..."
+  },
+  "permissions": {
+    "use": {
+      "title": "使用使用者功能",
+      "description": "查看可連線主機上的帳戶，並修改可編輯主機上的帳戶。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "使用者",
+        "description": "從「使用者」分頁管理此主機上的使用者帳戶與群組。"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "使用 sudo 讀取與修改帳戶。若以 root 登入，請關閉此選項。"
+      },
+      "readOnly": {
+        "label": "唯讀",
+        "description": "僅顯示帳戶，不允許在此主機上進行任何修改。"
+      }
+    }
+  },
+  "tab": {
+    "title": "使用者",
+    "noHost": "從主機開啟使用者功能。",
+    "error": "無法從此主機載入帳戶。",
+    "disabled": "此主機已關閉使用者功能。請前往主機設定中開啟。",
+    "sudo": "修改操作與密碼狀態需要 root 登入、免密碼 sudo，或在此主機上儲存 Sudo 密碼。",
+    "noTools": "此主機未安裝 useradd。在 Alpine 系統上，請安裝 shadow 套件。",
+    "refresh": "重新整理",
+    "readOnly": "唯讀",
+    "counts_other": "{{count}} 位使用者",
+    "viewUsers": "使用者",
+    "viewGroups": "群組",
+    "viewSessions": "工作階段"
+  },
+  "users": {
+    "add": "新增使用者",
+    "search": "搜尋使用者",
+    "people": "人員",
+    "systemFilter": "系統",
+    "all": "全部",
+    "empty": "沒有符合的使用者。",
+    "you": "您",
+    "sudo": "Sudo",
+    "locked": "已鎖定",
+    "emptyPassword": "無密碼",
+    "system": "系統",
+    "loadFailed": "無法讀取帳戶。"
+  },
+  "password": {
+    "set": "設定",
+    "locked": "已鎖定",
+    "none": "未設定，無法使用密碼登入",
+    "empty": "空白，任何人都可登入",
+    "unknown": "需要 root 權限才能確認"
+  },
+  "detail": {
+    "info": "帳戶",
+    "account": "詳細資訊",
+    "fullName": "全名",
+    "uid": "使用者與群組 ID",
+    "mainGroup": "主要群組",
+    "home": "主目錄",
+    "shell": "Shell",
+    "groups": "群組",
+    "groupsPlaceholder": "輸入群組名稱後按 Enter",
+    "unknownGroups": "這些群組不存在：{{groups}}",
+    "none": "無",
+    "password": "密碼",
+    "passwordChanged": "密碼已變更",
+    "lastLogin": "上次登入",
+    "never": "從未",
+    "unknown": "未知",
+    "saved": "已儲存。",
+    "failed": "變更失敗。",
+    "loadFailed": "無法讀取此使用者的金鑰與上次登入時間。",
+    "passwordSection": "密碼",
+    "newPassword": "新密碼",
+    "newPasswordHint": "透過 SSH 傳送至主機，並使用 chpasswd 設定。不會儲存在 Termix 中。",
+    "setPassword": "設定密碼",
+    "passwordSet": "密碼已設定。",
+    "expirePassword": "下次登入時要求設定新密碼",
+    "expired": "他們將在下次登入時設定新密碼。",
+    "access": "存取權限",
+    "sudo": "Sudo",
+    "sudoHint": "透過 {{group}} 群組以 root 身分執行指令。",
+    "sudoProtected": "無法從 root 或 Termix 登入的使用者身上移除 sudo 權限。",
+    "sudoTitle": "授予 {{name}} sudo 權限？",
+    "sudoDesc": "將其加入 {{group}} 群組，使其能以 root 身分執行任何指令。",
+    "sudoGrant": "授予 sudo 權限",
+    "sudoOn": "已授予 sudo 權限。",
+    "sudoOff": "已移除 sudo 權限。",
+    "lock": "鎖定帳戶",
+    "unlock": "解除帳戶鎖定",
+    "lockTitle": "鎖定 {{name}}？",
+    "lockDesc": "在您解除帳戶鎖定之前，他們無法使用密碼或 SSH 金鑰登入。",
+    "lockHint": "阻擋密碼與 SSH 金鑰登入。",
+    "protected": "root 與 Termix 登入的使用者無法被鎖定或刪除。",
+    "locked": "帳戶已鎖定。",
+    "unlocked": "帳戶已解除鎖定。",
+    "danger": "刪除",
+    "removeHome": "同時刪除主目錄",
+    "removeHomeHint": "刪除 {{home}} 及其中的所有內容。",
+    "delete": "刪除使用者",
+    "deleteTitle": "刪除 {{name}}？",
+    "deleteDesc": "帳戶將被移除。其主目錄將保留在主機上。",
+    "deleteDescHome": "帳戶與 {{home}} 將被移除。此操作無法復原。",
+    "deleted": "已刪除 {{name}}。"
+  },
+  "keys": {
+    "title": "SSH 金鑰",
+    "empty": "沒有 SSH 金鑰。",
+    "denied": "沒有 root 權限無法讀取金鑰。",
+    "options": "選項",
+    "remove": "移除金鑰",
+    "removeTitle": "移除此金鑰？",
+    "removed": "金鑰已移除。",
+    "add": "新增金鑰",
+    "addHint": "貼上單一公鑰，例如 id_ed25519.pub 的內容。",
+    "addButton": "新增金鑰",
+    "added": "金鑰已新增。"
+  },
+  "create": {
+    "title": "新增使用者",
+    "name": "使用者名稱",
+    "nameHint": "小寫字母、數字、- 與 _。",
+    "nameInvalid": "以字母開頭，僅使用 a-z、0-9、- 與 _。",
+    "home": "主目錄",
+    "homeHint": "留空則使用 /home/{{name}}。",
+    "createHome": "建立主目錄",
+    "password": "密碼",
+    "passwordHint": "選填。若未設定，使用者只能使用 SSH 金鑰登入。",
+    "again": "再次輸入密碼",
+    "mismatch": "密碼不一致。",
+    "save": "建立使用者",
+    "done": "已建立 {{name}}。",
+    "failed": "無法建立使用者。"
+  },
+  "groups": {
+    "add": "新增群組",
+    "name": "群組名稱",
+    "namePlaceholder": "新群組名稱",
+    "create": "建立",
+    "created": "已建立 {{name}}。",
+    "search": "搜尋群組",
+    "empty": "沒有符合的群組。",
+    "noMembers": "沒有成員。",
+    "failed": "變更失敗。",
+    "addMember": "新增成員",
+    "pickUser": "選擇使用者",
+    "removeMember": "從群組移除",
+    "memberAdded": "已將 {{name}} 加入 {{group}}。",
+    "memberRemoved": "已將 {{name}} 從 {{group}} 移除。",
+    "mainGroup": "主要群組",
+    "mainGroupHint": "這是他們的主要群組，因此他們永遠屬於此群組。",
+    "deleteTitle": "刪除 {{name}}？",
+    "deleteDesc": "群組將被移除。其擁有的檔案將保留舊的 ID。",
+    "deleted": "已刪除 {{name}}。"
+  },
+  "sessions": {
+    "now": "目前登入",
+    "none": "目前無人登入。",
+    "recent": "近期登入",
+    "noRecent": "找不到登入記錄。",
+    "loadFailed": "無法讀取工作階段。"
+  },
+  "manager": {
+    "title": "使用者",
+    "disabled": "在此主機設定中啟用「使用者」功能，即可在此查看其帳號。"
+  },
+  "operations": {
+    "list": {
+      "title": "列出使用者"
+    },
+    "emptyPasswords": {
+      "title": "沒有密碼的帳號"
+    },
+    "lock": {
+      "title": "鎖定使用者"
+    },
+    "unlock": {
+      "title": "解除鎖定使用者"
+    },
+    "delete": {
+      "title": "刪除使用者"
+    },
+    "users": {
+      "title": "使用者",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "群組"
+    }
+  }
+}

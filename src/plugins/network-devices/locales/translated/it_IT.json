@@ -1,0 +1,180 @@
+{
+  "plugin": {
+    "name": "Dispositivi di rete",
+    "description": "Visualizza e gestisci router, switch e punti di accesso tramite SNMP e le API dei router."
+  },
+  "tab": {
+    "title": "Rete"
+  },
+  "card": {
+    "title": "Dispositivi di rete",
+    "loading": "Caricamento in corso",
+    "uptime": "Attivo da {{time}}"
+  },
+  "permissions": {
+    "view": {
+      "title": "Visualizza i dispositivi di rete",
+      "description": "Apri la scheda Rete e visualizza dispositivi, porte e client."
+    },
+    "manage": {
+      "title": "Gestisci i dispositivi di rete",
+      "description": "Aggiungi dispositivi, attiva e disattiva le porte, riavvia l'alimentazione PoE e riavvia i dispositivi."
+    }
+  },
+  "description": "Aggiungi router, switch e punti di accesso per monitorarne le porte e i client. Le chiavi vengono salvate in modo crittografato e non vengono mai mostrate nuovamente.",
+  "summary": "{{count}} dispositivi, {{down}} non raggiungibili",
+  "ports": "{{up}} di {{total}} porte attive",
+  "empty": "Nessun dispositivo di rete aggiunto.",
+  "add": "Aggiungi dispositivo",
+  "edit": "Modifica",
+  "delete": "Elimina",
+  "back": "Indietro",
+  "saved": "Salvato",
+  "deleteConfirm": "Eliminare {{name}}?",
+  "status": {
+    "unknown": "Non ancora letto",
+    "up": "Attivo",
+    "down": "Non raggiungibile"
+  },
+  "drivers": {
+    "snmp": "Dispositivo SNMP",
+    "routeros": "MikroTik RouterOS",
+    "opnsense": "OPNsense",
+    "openwrt": "OpenWrt"
+  },
+  "fields": {
+    "community": "Community",
+    "writeCommunity": "Community di scrittura (opzionale)",
+    "username": "Nome utente",
+    "password": "Password",
+    "authProtocol": "Autenticazione",
+    "authKey": "Chiave di autenticazione",
+    "privProtocol": "Privacy",
+    "privKey": "Chiave di privacy",
+    "apiKey": "Chiave API",
+    "apiSecret": "Segreto API"
+  },
+  "form": {
+    "addTitle": "Aggiungi dispositivo",
+    "editTitle": "Modifica dispositivo",
+    "device": "Dispositivo",
+    "access": "Accesso",
+    "type": "Tipo",
+    "name": "Nome",
+    "address": "Indirizzo",
+    "port": "Porta",
+    "poll": "Lettura ogni (secondi)",
+    "pollHint": "Da 15 a 3600.",
+    "snmpVersion": "Versione SNMP",
+    "scheme": "L'indirizzo web inizia con",
+    "ca": "Autorità di certificazione (opzionale)",
+    "caHint": "Incolla il PEM dell'autorità di certificazione o del certificato del dispositivo se utilizza un certificato privato.",
+    "caSet": "È stato salvato un certificato. Incollane uno nuovo per sostituirlo.",
+    "keepKeys": "Lascia vuoto per mantenere le chiavi salvate",
+    "test": "Test",
+    "testNeedsKeys": "Inserisci le chiavi per eseguire il test.",
+    "testOk": "Connesso a {{name}}.",
+    "save": "Salva",
+    "add": "Aggiungi"
+  },
+  "discover": {
+    "title": "Trova dispositivi",
+    "hint": "Cerca dispositivi SNMP in un intervallo di indirizzi, fino a 256 indirizzi. Il server deve essere in grado di raggiungere l'intervallo.",
+    "range": "Intervallo indirizzi",
+    "scan": "Scansiona",
+    "scanning": "Scansione in corso",
+    "none": "Nessun dispositivo ha risposto.",
+    "added": "Aggiunto"
+  },
+  "view": {
+    "refresh": "Aggiorna ora",
+    "reboot": "Riavvia",
+    "rebootConfirm": "Riavviare {{name}}? Sarà offline per un po'.",
+    "rebooting": "{{name}} si sta riavviando.",
+    "ports": "Porte",
+    "clients": "Client",
+    "neighbors": "Vicini",
+    "type": "Tipo",
+    "address": "Indirizzo",
+    "model": "Modello",
+    "version": "Versione",
+    "uptime": "Tempo di attività",
+    "cpu": "CPU",
+    "memory": "Memoria",
+    "traffic": "Traffico",
+    "noTraffic": "Il traffico viene visualizzato dopo due letture.",
+    "noPorts": "Nessuna porta ancora. Leggi il dispositivo per compilare questa sezione.",
+    "port": "Porta",
+    "speed": "Velocità",
+    "vlan": "VLAN",
+    "rx": "Ingresso",
+    "tx": "Uscita",
+    "errors": "Errori",
+    "poe": "PoE",
+    "poeOn": "Alimentazione attiva",
+    "poeIdle": "Acceso",
+    "poeOff": "Spento",
+    "linkUp": "Collegamento attivo",
+    "linkDown": "Nessun collegamento",
+    "disabled": "Disabilitato",
+    "watch": "Avvisa quando questa porta cambia",
+    "unwatch": "Interrompi gli avvisi per questa porta",
+    "turnOff": "Spegni la porta",
+    "turnOn": "Accendi la porta",
+    "portOffConfirm": "Spegnere la porta {{name}}? Tutto ciò che è connesso perderà la connessione.",
+    "portOff": "La porta {{name}} è spenta.",
+    "portOn": "La porta {{name}} è accesa.",
+    "poeCycle": "Riavvia l'alimentazione PoE",
+    "poeConfirm": "Interrompere l'alimentazione della porta {{name}} per alcuni secondi?",
+    "poeDone": "Alimentazione PoE riavviata su {{name}}.",
+    "filter": "Cerca client",
+    "noClients": "Nessun client trovato.",
+    "client": "Nome",
+    "ip": "Indirizzo IP",
+    "mac": "Indirizzo MAC",
+    "on": "Su",
+    "source": "Visto in",
+    "kind": {
+      "dhcp": "DHCP",
+      "arp": "ARP",
+      "wifi": "Wi-Fi",
+      "table": "Tabella MAC"
+    },
+    "noNeighbors": "Nessun vicino trovato.",
+    "neighbor": "Vicino",
+    "remotePort": "Porta remota"
+  },
+  "operations": {
+    "device": "Dispositivo",
+    "port": "Porta",
+    "state": "Stato",
+    "stateUp": "Acceso",
+    "stateDown": "Spento",
+    "list": {
+      "title": "Elenca i dispositivi di rete"
+    },
+    "ports": {
+      "title": "Elenca le porte di un dispositivo"
+    },
+    "poll": {
+      "title": "Leggi un dispositivo di rete"
+    },
+    "setPort": {
+      "title": "Accendi o spegni una porta"
+    },
+    "poe": {
+      "title": "Ciclo di alimentazione PoE su una porta"
+    },
+    "reboot": {
+      "title": "Riavvia un dispositivo di rete"
+    },
+    "health": {
+      "title": "Dispositivi di rete"
+    }
+  },
+  "widget": {
+    "name": "Dispositivi di rete",
+    "description": "Quali dei tuoi router, switch e access point sono attivi.",
+    "summary": "{{up}} di {{total}} attivi"
+  }
+}

@@ -1,0 +1,235 @@
+{
+  "plugin": {
+    "name": "Tanúsítványok",
+    "description": "Tekintse meg, adja ki és megújítsa a TLS-tanúsítványokat a kiszolgálóin a certbot és az acme.sh segítségével, és értesítést kap, mielőtt lejárna."
+  },
+  "common": {
+    "cancel": "Mégse",
+    "back": "Vissza"
+  },
+  "permissions": {
+    "use": {
+      "title": "Tanúsítványok használata",
+      "description": "Tekintse meg a tanúsítványokat az elérhető kiszolgálókon, és módosítsa őket azokon, amelyeket szerkeszthet."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Tanúsítványok",
+        "description": "Kezelje a TLS-tanúsítványokat ezen a kiszolgálón a Tanúsítványok fülön keresztül."
+      },
+      "useSudo": {
+        "label": "sudo használata",
+        "description": "Használja a sudo-t a tanúsítványok olvasásához és módosításához. Kapcsolja ki, ha root felhasználóként jelentkezett be."
+      },
+      "readOnly": {
+        "label": "Csak olvasható",
+        "description": "Tanúsítványok megjelenítése, de soha ne módosítsa őket ezen a hoszton."
+      },
+      "expiryWarnDays": {
+        "label": "Figyelmeztetés lejárás előtt",
+        "description": "Akkor jelenjenek meg lejáróként és küldjenek figyelmeztetést, ha ennyi vagy kevesebb nap van hátra a tanúsítványok lejárásáig."
+      },
+      "showPanel": {
+        "label": "Tanúsítványok panel megjelenítése a terminálokban",
+        "description": "Engedélyezi, hogy a tanúsítványok panel megnyíljon ezen a hoszton lévő SSH terminál mellett."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Tanúsítványok panel megnyitása az új terminálokkal",
+        "description": "A tanúsítványok panel megjelenítése minden olyan SSH terminál mellett, amelyen a Tanúsítványok be van kapcsolva. A jobb szélen lévő gombbal továbbra is megnyithatja és bezárhatja."
+      },
+      "companionSide": {
+        "label": "Tanúsítványok panel oldala",
+        "description": "Ahol a tanúsítványok panel a terminál mellett helyezkedik el.",
+        "right": "Jobb",
+        "left": "Bal",
+        "bottom": "Alsó"
+      },
+      "companionSize": {
+        "label": "Tanúsítványok panel mérete",
+        "description": "Szélesség pixelben, vagy magasság, ha az alsó részen van. A szélét is húzhatod."
+      },
+      "companionEdgeButton": {
+        "label": "Panel gomb megjelenítése",
+        "description": "Egy kis gomb megjelenítése a terminál jobb szélén, amely megnyitja a tanúsítványok panelt."
+      }
+    }
+  },
+  "tab": {
+    "title": "Tanúsítványok",
+    "noHost": "Nyisd meg a Tanúsítványokat egy gazdagépről.",
+    "error": "Nem sikerült betölteni a tanúsítványokat erről a gazdagépről.",
+    "disabled": "A tanúsítványok letiltva ezen a hosztban. Kapcsold be a hoszt beállításaiban.",
+    "sudo": "A módosításokhoz root bejelentkezés, jelszó nélküli sudo vagy mentett Sudo jelszó szükséges ezen a hosztban.",
+    "refresh": "Frissítés",
+    "readOnly": "Csak olvasható",
+    "noClient": "Nincs certbot vagy acme.sh",
+    "viewCertificates": "Tanúsítványok",
+    "viewInspect": "Vizsgálat",
+    "viewRenewal": "Megújítás"
+  },
+  "actions": {
+    "working": "Folyamatban. Ez néhány percet is igénybe vehet.",
+    "ok": "Kész",
+    "failed": "A parancs sikertelen volt.",
+    "noOutput": "Nincs kimenet."
+  },
+  "install": {
+    "title": "A certbot és az acme.sh nincs telepítve ezen a hoszton",
+    "hint": "Telepítse a certbotot a Let's Encrypt tanúsítványok lekéréséhez és megújításához.",
+    "noManager": "Nem található támogatott csomagkezelő. Telepítse a certbotot manuálisan.",
+    "button": "certbot telepítése",
+    "confirm": "Telepítse a certbotot?",
+    "desc": "Ez a művelet a hoszt csomagkezelőjével telepíti a certbotot.",
+    "working": "Telepítés...",
+    "done": "A certbot telepítve."
+  },
+  "certs": {
+    "search": "Tanúsítványok keresése",
+    "empty": "Még nincsenek tanúsítványok.",
+    "noMatch": "Nincs egyező tanúsítvány.",
+    "loadFailed": "A tanúsítványok nem olvashatók.",
+    "expires": "Lejárati idő: {{date}}",
+    "staging": "Teszt környezet",
+    "details": "Tanúsítvány",
+    "manage": "Kezelés",
+    "client": "Kliens",
+    "path": "Fájl",
+    "authority": "Tanúsítványkiadó",
+    "renew": "Megújítás",
+    "renewDone": "A(z) {{name}} megújítva.",
+    "renewAll": "Összes megújítása",
+    "renewAllDone": "A lejárt tanúsítványok megújítva.",
+    "forceRenew": "Megújítás most",
+    "dryRun": "Tesztfutás",
+    "dryRunDone": "A tesztfutás sikeres volt.",
+    "revoke": "Megszüntetés",
+    "revokeTitle": "Megszünteti a(z) {{name}} tanúsítványt?",
+    "revokeDesc": "A hatóság érvénytelennek jelöli, és eltávolítják erről a gazdagépről. Minden, ami még használja, leáll.",
+    "revokeDone": "A(z) {{name}} visszavonva.",
+    "delete": "Kezelés leállítása",
+    "deleteTitle": "Megszünteti a(z) {{name}} kezelését?",
+    "deleteDesc": "Érvényes marad, de nem újul meg többé. A certbot törli a fájlokat, az acme.sh megőrzi őket.",
+    "deleteDone": "A(z) {{name}} kezelése megszűnt."
+  },
+  "expiry": {
+    "expired": "Lejárt",
+    "unknown": "Ismeretlen",
+    "days_one": "{{count}} nap van hátra",
+    "days_other": "{{count}} nap van hátra"
+  },
+  "issue": {
+    "add": "Tanúsítvány kibocsátása",
+    "title": "Új tanúsítvány",
+    "save": "Kibocsátás",
+    "done": "A tanúsítványt kibocsátották.",
+    "working": "Kérés küldése a hatóság felé. Ez néhány percet is igénybe vehet.",
+    "client": "Kliens",
+    "domains": "Tartományok",
+    "domainsPlaceholder": "Írjon be egy tartománynevet, majd nyomja meg az Enter billentyűt",
+    "domainsHint": "Az első tartomány nevezi el a tanúsítványt.",
+    "challenge": "Kihívás",
+    "standalone": "Önálló",
+    "standaloneHint": "Egy kis webszervert indít a 80-as porton, így semmi más nem használhatja ezt a portot.",
+    "webroot": "Webgyökér",
+    "webrootHint": "Egy fájlt helyez el a webszerver mappájában. A webszerver továbbra is fut.",
+    "dns": "DNS",
+    "dnsHint": "DNS-bejegyzést ad hozzá a szolgáltató API-ján keresztül. Szükséges a wildcard tanúsítványokhoz.",
+    "webrootPath": "Webgyökér mappa",
+    "webrootPathHint": "A /var/www, /srv vagy /usr/share/nginx mappán belül kell lennie.",
+    "dnsProvider": "DNS-szolgáltató",
+    "dnsProviderCertbot": "Egy telepített certbot DNS-bővítmény neve, például cloudflare.",
+    "dnsProviderAcme": "Egy acme.sh DNS-név a dns_ előtag nélkül, például cf. Az API-tokennek már meg kell lennie állítva a hoszton.",
+    "credentials": "Hitelesítő fájlok",
+    "credentialsHint": "A hoszt azon a fájla, amelyben az API-tokenje található. Termix soha nem olvassa el.",
+    "email": "E-mail",
+    "emailHint": "Opcionális. Az hatóság ezt használja a lejárati értesítésekhez.",
+    "keyType": "Kulcs típusa",
+    "staging": "Staging szerver használata",
+    "stagingHint": "Teszteléshez. A tanúsítvány nem megbízható, és a sebességkorlátok sokkal magasabbak."
+  },
+  "inspect": {
+    "server": "Szerver",
+    "file": "Fájl",
+    "address": "Cím",
+    "addressPlaceholder": "example.com",
+    "port": "Port",
+    "path": "Fájl elérési útja",
+    "check": "Ellenőrzés",
+    "hint": "Ellenőrizze, mit küld egy szerver TLS-en ezen a gépen keresztül, vagy olvasson be egy tanúsítványfájlt róla.",
+    "failed": "Nem sikerült beolvasni a tanúsítványt.",
+    "noOpenssl": "Az openssl nincs telepítve ezen a gépen.",
+    "trusted": "Megbízható",
+    "notTrusted": "Nem megbízható",
+    "leaf": "Tanúsítvány",
+    "intermediate": "Lánc {{index}}",
+    "selfSigned": "Önaláírt",
+    "name": "Név",
+    "issuer": "Kibocsátó",
+    "domains": "Tartományok",
+    "validFrom": "Érvényes ettől",
+    "validTo": "Érvényes eddig",
+    "keyType": "Kulcs",
+    "serial": "Sorszám",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Hogyan újítja meg a tanúsítványokat ez a host automatikusan. Ezt a hoston kell módosítani.",
+    "on": "Be",
+    "off": "Ki",
+    "timer": "systemd időzítő",
+    "next": "Következő futtatás: {{time}}",
+    "cron": "Cron fájl: /etc/cron.d/certbot",
+    "certbotOff": "Nem található időzítő vagy cron feladat, így a tanúsítványok nem újulnak meg automatikusan.",
+    "acmeCron": "Cron feladat a crontabban",
+    "acmeOff": "Nem található cron feladat, így a tanúsítványok nem újulnak meg automatikusan."
+  },
+  "watch": {
+    "start": "Értesíts, mielőtt a tanúsítványok lejártnak ezen a hoston",
+    "stop": "Értesítések kikapcsolása ehhez a hosthoz",
+    "on": "Értesítést kapsz, mielőtt a tanúsítványok lejártnak itt.",
+    "off": "Az értesítések kikapcsolva ehhez a hosthoz.",
+    "failed": "Az értesítés módosítása sikertelen."
+  },
+  "card": {
+    "title": "Tanúsítványok",
+    "loading": "Hostok ellenőrzése...",
+    "summary_one": "{{count}} tanúsítvány, {{expiring}} lejáró",
+    "summary_other": "{{count}} tanúsítvány, {{expiring}} lejáró",
+    "refresh": "Újraellenőrzés",
+    "empty": "Kapcsold be a Tanúsítványokat egy hostnál, hogy itt lásd a tanúsítványait."
+  },
+  "manager": {
+    "title": "Tanúsítványok",
+    "disabled": "Kapcsold be a Tanúsítványokat ehhez a hosthoz a beállításaiban, hogy itt lásd őket."
+  },
+  "operations": {
+    "list": {
+      "title": "Tanúsítványok listázása"
+    },
+    "expiring": {
+      "title": "Lejáró tanúsítványok"
+    },
+    "renew": {
+      "title": "Tanúsítvány megújítása"
+    },
+    "renewAll": {
+      "title": "Összes tanúsítvány megújítása"
+    },
+    "revoke": {
+      "title": "Tanúsítvány visszavonása"
+    },
+    "certificates": {
+      "title": "Tanúsítványok",
+      "client": "Kliens",
+      "domains": "Tartományok",
+      "daysLeft": "Hátralévő napok"
+    }
+  },
+  "nav": {
+    "togglePanel": "Tanúsítványok panel megjelenítése/elrejtése"
+  }
+}

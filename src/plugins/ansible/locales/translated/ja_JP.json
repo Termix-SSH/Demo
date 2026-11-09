@@ -1,0 +1,205 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "コントロールホストから Ansible プレイブックとアドホックコマンドを実行します。インベントリは Termix のホストから作成されます。"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "back": "戻る",
+    "delete": "削除"
+  },
+  "permissions": {
+    "use": {
+      "title": "Ansible の使用",
+      "description": "アクセス可能なコントロールホスト上のプレイブックと実行履歴を表示します。編集可能なホストではファイルの編集や Ansible の実行が可能です。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "このホストを Ansible コントロールホストとして使用します。Ansible がインストールされている必要があります。"
+      },
+      "projectDir": {
+        "label": "プロジェクトフォルダ",
+        "description": "プレイブック、ロール、ansible.cfg が格納されているこのホスト上のフォルダです。",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Vault パスワードファイル",
+        "description": "Ansible Vault のパスワードが記されたこのホスト上のファイルです。Vault を使用しない場合は空のままにしてください。",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "読み取り専用",
+        "description": "プレイブックと実行履歴を表示しますが、このホストではファイルの編集や実行の開始は行いません。"
+      },
+      "alertRuns": {
+        "label": "実行失敗時に通知",
+        "description": "このホストでの実行が失敗または中断した際に通知を送信します。実行状態の読み取り時にチェックされます。"
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "ホストから Ansible を開いてください。",
+    "error": "このホストから Ansible を読み込めませんでした。",
+    "disabled": "このホストでは Ansible が無効化されています。ホスト設定で有効にしてください。",
+    "refresh": "更新",
+    "readOnly": "読み取り専用",
+    "notInstalled": "Ansible がインストールされていません",
+    "notInstalledTitle": "このホストには Ansible がインストールされていません",
+    "notInstalledHint": "pipx やパッケージマネージャーなどを使用して、このホストに ansible-core をインストールし、更新してください。",
+    "noSshpass": "このホストには sshpass がインストールされていません。パスワードでサインインするホストは失敗します。",
+    "viewPlaybooks": "プレイブック",
+    "viewRuns": "実行履歴",
+    "viewAdhoc": "アドホック",
+    "viewFacts": "ファクト"
+  },
+  "files": {
+    "add": "新規ファイル",
+    "search": "ファイルを検索",
+    "empty": "プロジェクトフォルダにまだファイルがありません。",
+    "noMatch": "一致するファイルがありません。",
+    "noProject": "フォルダ {{dir}} はこのホスト上に存在しません。作成するか、ホスト設定で別のプロジェクトフォルダを設定してください。",
+    "listFailed": "プロジェクトファイルの一覧を取得できませんでした。",
+    "loadFailed": "そのファイルを読み込めませんでした。",
+    "saved": "ファイルを保存しました",
+    "saveFailed": "そのファイルを保存できませんでした。",
+    "playbook": "プレイブック",
+    "run": "実行",
+    "newTitle": "新規ファイル",
+    "name": "ファイル名",
+    "nameHint": "プロジェクトフォルダ内のパスです。例: site.yml または roles/web/tasks/main.yml",
+    "hint": "プレイブックは保存前に構文チェックされます。チェックに失敗した場合は、元のファイルが保持されます。",
+    "text": "ファイル内容",
+    "deleteTitle": "このファイルを削除しますか？"
+  },
+  "targets": {
+    "search": "ホストを検索",
+    "addShown": "表示されたものを追加",
+    "clear": "クリア",
+    "empty": "ホストが見つかりません。",
+    "count": "{{count}} 件選択中",
+    "failed": "ホストを読み込めませんでした。"
+  },
+  "run": {
+    "title": "{{playbook}} を実行",
+    "start": "実行",
+    "startCheck": "チェックモードで実行",
+    "startFailed": "実行を開始できませんでした。",
+    "source": "ホスト",
+    "sourceProject": "プロジェクトのインベントリ",
+    "sourceTermix": "Termix ホスト",
+    "sourceProjectHint": "ansible.cfg またはプロジェクト内のファイルからインベントリを使用します。",
+    "sourceTermixHint": "Termix からホストを選択します。フォルダは folder_ グループに、タグは tag_ グループに変換されます。これらはすべて termix グループに含まれます。",
+    "inventory": "インベントリファイル",
+    "inventoryHint": "プロジェクトフォルダ内のパスです。空のままにすると ansible.cfg が使用されます。",
+    "check": "チェックモード",
+    "checkHint": "変更を行わずに、どのような変更が行われるかを表示します。",
+    "diff": "差分を表示",
+    "diffHint": "ファイルに加えられた変更を表示します。",
+    "become": "root として実行",
+    "becomeHint": "ホストで sudo を使用します。Termix ホストの場合は保存された Sudo パスワードが使用されます。",
+    "limit": "制限",
+    "limitHint": "これらのホストまたはグループでのみ実行します。",
+    "verbosity": "出力の詳細度",
+    "verbosityOff": "標準",
+    "tags": "タグ",
+    "skipTags": "スキップするタグ",
+    "extraVars": "追加変数",
+    "extraVarsHint": "1行に1つの key=value を記述します。"
+  },
+  "runs": {
+    "title": "実行",
+    "empty": "まだ実行履歴はありません。",
+    "loadFailed": "実行履歴を読み込めませんでした。",
+    "stop": "停止",
+    "stopFailed": "実行を停止できませんでした。",
+    "deleteTitle": "この実行履歴を削除しますか？",
+    "deleteFailed": "実行履歴を削除できませんでした。",
+    "checkMode": "チェック",
+    "truncated": "長い出力の末尾を表示しています。",
+    "noOutput": "まだ出力はありません。",
+    "state": {
+      "running": "実行中",
+      "ok": "完了",
+      "failed": "失敗",
+      "cancelled": "停止済み",
+      "lost": "接続喪失"
+    },
+    "kind": {
+      "playbook": "プレイブック",
+      "adhoc": "アドホック",
+      "facts": "ファクト"
+    },
+    "recap": {
+      "host": "ホスト",
+      "ok": "OK",
+      "changed": "変更あり",
+      "unreachable": "到達不可",
+      "failed": "失敗",
+      "skipped": "スキップ"
+    }
+  },
+  "adhoc": {
+    "hint": "ansible all -m ping のように、ホストに対して1つのモジュールを実行します。",
+    "pattern": "ホストパターン",
+    "patternHint": "ホスト、グループ、または all を指定します。",
+    "module": "モジュール",
+    "moduleHint": "例: ping, command, shell, apt, systemd など。",
+    "args": "引数",
+    "argsHint": "command および shell モジュールの場合はコマンド文字列です。他のモジュールの場合は key=value ペアです。",
+    "run": "実行"
+  },
+  "facts": {
+    "hint": "setup モジュールを使用してホストからファクトを取得します。各ホストにログイン情報が必要であるため、Termix ホストが必要です。",
+    "gather": "ファクトを取得",
+    "gathering": "取得中...",
+    "failed": "ファクトの取得に失敗しました。",
+    "failedHost": "失敗",
+    "none": "ファクトが返ってきませんでした。理由を確認するには実行履歴を開いてください。",
+    "col": {
+      "host": "ホスト",
+      "os": "システム",
+      "kernel": "カーネル",
+      "cpu": "CPU",
+      "memory": "メモリ",
+      "address": "アドレス",
+      "uptime": "稼働時間"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "プレイブックの一覧"
+    },
+    "run": {
+      "title": "プレイブックの実行",
+      "playbook": "プレイブック",
+      "limit": "制限",
+      "tags": "タグ",
+      "check": "チェックモード"
+    },
+    "runs": {
+      "title": "実行履歴の一覧",
+      "resource": "実行履歴",
+      "started": "開始時刻",
+      "check": "チェックモード"
+    },
+    "failed": {
+      "title": "失敗した実行"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "ホストを確認しています...",
+    "summary_other": "{{hosts}} 台のホストで {{count}} 件の失敗",
+    "refresh": "再確認",
+    "empty": "ホストで Ansible を有効にすると、ここで実行履歴を表示できます。",
+    "failed_other": "{{count}} 件失敗",
+    "running_other": "{{count}} 件実行中",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "まだ実行履歴はありません"
+  }
+}

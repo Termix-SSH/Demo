@@ -1,0 +1,237 @@
+{
+  "plugin": {
+    "name": "Certifikati",
+    "description": "Pregledajte, izdajte i obnavljajte TLS certifikate na svojim hostovima pomoću certbota i acme.sh, te primajte upozorenja prije njihovog isteka."
+  },
+  "common": {
+    "cancel": "Odustani",
+    "back": "Natrag"
+  },
+  "permissions": {
+    "use": {
+      "title": "Koristi certifikate",
+      "description": "Pregledajte certifikate na hostovima na koje možete pristupiti, te ih mijenjajte na hostovima koje možete uređivati."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Certifikati",
+        "description": "Upravljajte TLS certifikatima na ovom hostu putem kartice Certifikati."
+      },
+      "useSudo": {
+        "label": "Koristi sudo",
+        "description": "Koristi sudo za čitanje i promjenu certifikata. Isključite ako se prijavljujete kao root."
+      },
+      "readOnly": {
+        "label": "Samo za čitanje",
+        "description": "Prikaži certifikate, ali ih nikada ne mijenjaj na ovom hostu."
+      },
+      "expiryWarnDays": {
+        "label": "Upozori prije isteka",
+        "description": "Certifikati s ovim brojem dana ili manje preostalih prikazat će se kao oni koji ističu i poslat će upozorenje."
+      },
+      "showPanel": {
+        "label": "Prikaži ploču certifikata u terminalima",
+        "description": "Omogući otvaranje ploče certifikata pored SSH terminala ovog hosta."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otvori ploču certifikata s novim terminalima",
+        "description": "Prikaži ploču certifikata pored svakog SSH terminala koji ima uključene Certifikate. I dalje je možete otvoriti i zatvoriti s gumba na desnoj rubnoj liniji."
+      },
+      "companionSide": {
+        "label": "Strana ploče certifikata",
+        "description": "Gdje se ploča certifikata nalazi pored terminala.",
+        "right": "Desno",
+        "left": "Lijevo",
+        "bottom": "Dolje"
+      },
+      "companionSize": {
+        "label": "Veličina ploče za certifikate",
+        "description": "Širina u pikselima, odnosno visina kada je ploča na dnu. Možete je također povući za rub."
+      },
+      "companionEdgeButton": {
+        "label": "Prikaži gumb ploče",
+        "description": "Prikaži mali gumb na desnom rubu terminala koji otvara ploču za certifikate."
+      }
+    }
+  },
+  "tab": {
+    "title": "Certifikati",
+    "noHost": "Otvorite certifikate s hosta.",
+    "error": "Nije moguće učitati certifikate s ovog hosta.",
+    "disabled": "Certifikati su isključeni za ovaj host. Uključite ih u postavkama hosta.",
+    "sudo": "Promjene zahtijevaju root prijavu, sudo bez lozinke ili spremljenu Sudo lozinku na ovom hostu.",
+    "refresh": "Osvježi",
+    "readOnly": "Samo za čitanje",
+    "noClient": "Nema certbota ili acme.sh",
+    "viewCertificates": "Certifikati",
+    "viewInspect": "Pregled",
+    "viewRenewal": "Obnova"
+  },
+  "actions": {
+    "working": "U tijeku. Ovo može potrajati nekoliko minuta.",
+    "ok": "Gotovo",
+    "failed": "Naredba nije uspjela.",
+    "noOutput": "Nema izlaza."
+  },
+  "install": {
+    "title": "certbot i acme.sh nisu instalirani na ovom hostu",
+    "hint": "Instalirajte certbot za dobivanje i obnavljanje certifikata od Let's Encrypta.",
+    "noManager": "Nije pronađen podržani upravitelj paketa. Instalirajte certbot ručno.",
+    "button": "Instaliraj certbot",
+    "confirm": "Instalirati certbot?",
+    "desc": "Ovo instalira certbot pomoću upravitelja paketa hosta.",
+    "working": "Instaliranje...",
+    "done": "certbot je instaliran."
+  },
+  "certs": {
+    "search": "Pretraži certifikate",
+    "empty": "Još nema certifikata.",
+    "noMatch": "Nema odgovarajućih certifikata.",
+    "loadFailed": "Certifikate nije moguće pročitati.",
+    "expires": "Istječe {{date}}",
+    "staging": "Staging",
+    "details": "Certifikat",
+    "manage": "Upravljanje",
+    "client": "Klijent",
+    "path": "Datoteka",
+    "authority": "Autoritet",
+    "renew": "Obnovi",
+    "renewDone": "Obnovljen {{name}}.",
+    "renewAll": "Obnovi sve",
+    "renewAllDone": "Obnovljeni su certifikati koji su isticali.",
+    "forceRenew": "Obnovi odmah",
+    "dryRun": "Probni pokretaj",
+    "dryRunDone": "Probni pokretaj je uspio.",
+    "revoke": "Poništi",
+    "revokeTitle": "Poništiti {{name}}?",
+    "revokeDesc": "Ovlaštenje ga označava kao nevažeći i uklanja s ovog hosta. Sve što ga još koristi prestaje raditi.",
+    "revokeDone": "Povučeno je {{name}}.",
+    "delete": "Prestani upravljati",
+    "deleteTitle": "Prestati upravljati s {{name}}?",
+    "deleteDesc": "Certifikat ostaje važeći, ali se više neće obnavljati. certbot također briše njegove datoteke, dok acme.sh zadržava.",
+    "deleteDone": "{{name}} se više ne upravlja."
+  },
+  "expiry": {
+    "expired": "Istekao",
+    "unknown": "Nepoznato",
+    "days_one": "Preostao je {{count}} dan",
+    "days_few": "Preostalo je {{count}} dana",
+    "days_other": "Preostalo je {{count}} dana"
+  },
+  "issue": {
+    "add": "Izdaj certifikat",
+    "title": "Novi certifikat",
+    "save": "Izdaj",
+    "done": "Certifikat je izdan.",
+    "working": "Zatraženo je od ovlaštene osobe. To može potrajati nekoliko minuta.",
+    "client": "Klijent",
+    "domains": "Domena",
+    "domainsPlaceholder": "Upišite domenu i pritisnite Enter",
+    "domainsHint": "Prva imenuje certifikat.",
+    "challenge": "Izazov",
+    "standalone": "Samostalni",
+    "standaloneHint": "Pokreće mali web poslužitelj na portu 80, pa taj port ne smije koristiti ništa drugo.",
+    "webroot": "Web root",
+    "webrootHint": "Postavlja datoteku u mapu vašeg web poslužitelja. Web poslužitelj nastaje s radom.",
+    "dns": "DNS",
+    "dnsHint": "Dodaje DNS zapis putem API-ja vašeg pružatelja usluga. Potrebno za wildcard certifikate.",
+    "webrootPath": "Mapa web roota",
+    "webrootPathHint": "Mora se nalaziti unutar /var/www, /srv ili /usr/share/nginx.",
+    "dnsProvider": "Pružatelj DNS usluga",
+    "dnsProviderCertbot": "Naziv instaliranog certbot DNS plugin-a, poput cloudflare.",
+    "dnsProviderAcme": "Naziv acme.sh DNS pružatelja bez prefiksa dns_, poput cf. Njegov API token već mora biti postavljen na poslužitelju.",
+    "credentials": "Datoteka vjerodajnica",
+    "credentialsHint": "Datoteka na poslužitelju s vašim API žetonom. Termix je nikada ne čita.",
+    "email": "E-pošta",
+    "emailHint": "Opcionalno. Autoritet je koristi za obavijesti o isteku.",
+    "keyType": "Vrsta ključa",
+    "staging": "Koristi staging poslužitelj",
+    "stagingHint": "Za testiranje. Certifikat nije pouzdan, a ograničenja brzine su znatno viša."
+  },
+  "inspect": {
+    "server": "Poslužitelj",
+    "file": "Datoteka",
+    "address": "Adresa",
+    "addressPlaceholder": "example.com",
+    "port": "Port",
+    "path": "Putanja do datoteke",
+    "check": "Provjeri",
+    "hint": "Provjerite što poslužitelj šalje putem TLS-a, s gledišta ovog hosta, ili pročitajte datoteku certifikata na njemu.",
+    "failed": "Certifikat se ne može pročitati.",
+    "noOpenssl": "openssl nije instaliran na ovom hostu.",
+    "trusted": "Pouzdano",
+    "notTrusted": "Nepouzdano",
+    "leaf": "Certifikat",
+    "intermediate": "Lanac {{index}}",
+    "selfSigned": "Samopotpisano",
+    "name": "Naziv",
+    "issuer": "Izdavatelj",
+    "domains": "Domena",
+    "validFrom": "Važeće od",
+    "validTo": "Važeće do",
+    "keyType": "Ključ",
+    "serial": "Serijski broj",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Kako ovaj host samostalno obnavlja certifikate. Promijenite postavke na hostu.",
+    "on": "Uključeno",
+    "off": "Isključeno",
+    "timer": "systemd tajmer",
+    "next": "Sljedeće izvršenje {{time}}",
+    "cron": "Cron datoteka /etc/cron.d/certbot",
+    "certbotOff": "Nije pronađen tajmer niti cron zadatak, stoga se certifikati neće samostalno obnavljati.",
+    "acmeCron": "Cron zadatak u crontabu",
+    "acmeOff": "Nije pronađen cron zadatak, stoga se certifikati neće samostalno obnavljati."
+  },
+  "watch": {
+    "start": "Upozori me prije isteka certifikata na ovom hostu",
+    "stop": "Zaustavi upozorenja za ovaj host",
+    "on": "Dobit ćete upozorenje prije isteka certifikata na ovom hostu.",
+    "off": "Upozorenja za ovaj host su isključena.",
+    "failed": "Nije moguće promijeniti upozorenje."
+  },
+  "card": {
+    "title": "Certifikati",
+    "loading": "Provjera hostova...",
+    "summary_one": "{{count}} certifikat, {{expiring}} ističe",
+    "summary_few": "{{count}} certifikata, {{expiring}} ističu",
+    "summary_other": "{{count}} certifikata, {{expiring}} ističu",
+    "refresh": "Provjeri ponovno",
+    "empty": "Uključite Certifikate za host kako biste vidjeli njegove certifikate ovdje."
+  },
+  "manager": {
+    "title": "Certifikati",
+    "disabled": "Uključite certifikate za ovog hosta u postavkama da biste ih vidjeli ovdje."
+  },
+  "operations": {
+    "list": {
+      "title": "Popis certifikata"
+    },
+    "expiring": {
+      "title": "Certifikati koji istječu"
+    },
+    "renew": {
+      "title": "Obnovi certifikat"
+    },
+    "renewAll": {
+      "title": "Obnovi sve certifikate"
+    },
+    "revoke": {
+      "title": "Poništi certifikat"
+    },
+    "certificates": {
+      "title": "Certifikati",
+      "client": "Klijent",
+      "domains": "Domena",
+      "daysLeft": "Preostalih dana"
+    }
+  },
+  "nav": {
+    "togglePanel": "Prikaži/sakrij panel za certifikate"
+  }
+}

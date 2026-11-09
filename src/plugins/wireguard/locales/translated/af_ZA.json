@@ -1,0 +1,234 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Installeer WireGuard op jou gasheërs en bestuur koppelvlakke, kliënte en konfigurasies vanuit een oortjie."
+  },
+  "common": {
+    "save": "Stoor",
+    "cancel": "Kanselleer",
+    "back": "Terug",
+    "delete": "Vee uit",
+    "loading": "Laai tans..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Gebruik WireGuard",
+      "description": "Bestuur WireGuard-koppelvlakke en -kliënte op gasheërs wat jy kan redigeer."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Maak WireGuard oop vanaf 'n gasheer.",
+    "error": "Kon nie WireGuard van hierdie gasheer laai nie.",
+    "sudo": "Hierdie gasheer benodig 'n root-aanmelding of wagwoordlose sudo om WireGuard te bestuur.",
+    "installed": "Geïnstalleer",
+    "notInstalled": "Nie geïnstalleer nie",
+    "refresh": "Verfris",
+    "viewInterfaces": "Koppelvlakke",
+    "viewLogs": "Logboeke"
+  },
+  "install": {
+    "title": "Installeer WireGuard",
+    "desc": "Hierdie installeer die WireGuard-gereedskap en iptables met die gasheer se pakkethandhaerder.",
+    "confirm": "Installeer",
+    "done": "WireGuard is geïnstalleer.",
+    "failed": "Kon nie WireGuard installeer nie.",
+    "empty": "WireGuard is nie op hierdie gasheer geïnstalleer nie",
+    "noManager": "Geen ondersteunde pakkethandhaerder is gevind nie. Installeer WireGuard handmatig.",
+    "hint": "Installeer dit op {{os}} om 'n VPN vanaf hierdie gasheer te draai.",
+    "thisHost": "hierdie gasheer",
+    "button": "Installeer WireGuard",
+    "working": "Installeer tans..."
+  },
+  "interfaces": {
+    "add": "Voeg koppelvlak by",
+    "empty": "Nog geen koppelvlakke nie. Voeg een by om 'n VPN te begin.",
+    "loadFailed": "Kon nie die koppelvlakke laai nie.",
+    "up": "Op",
+    "down": "Af",
+    "nat": "NAT",
+    "boot": "Begin by opstart"
+  },
+  "create": {
+    "title": "Voeg koppelvlak by",
+    "name": "Naam",
+    "address": "Adres",
+    "addressHint": "Die bedieneradres en subnet. Kliënte kry die volgende beskikbare adresse.",
+    "port": "UDP-poort",
+    "nat": "Deel die gasheer se internet (NAT)",
+    "natDesc": "Kliënte kan die internet en die gasheer se netwerk deur hierdie gasheer bereik.",
+    "natMissing": "NAT benodig iptables, wat nie op hierdie gasheer geïnstalleer is nie.",
+    "forwarding": "Skakel IP-doorgif aan",
+    "forwardingDesc": "Laat die gasheer verkeer tussen kliënte en die netwerk deurgaan. Word gestoor vir herstartsels.",
+    "firewall": "Maak die poort in die vuurmuur oop",
+    "firewallDesc": "Voeg die UDP-poort by ufw of firewalld wanneer een loop.",
+    "start": "Begin nou en by opstart",
+    "startDesc": "Skakel die koppelvlak aan en hou dit aan na 'n herstartsels.",
+    "save": "Skep",
+    "done": "Die koppelvlak is gereed.",
+    "failed": "Kon nie die koppelvlak skep nie."
+  },
+  "detail": {
+    "clients": "Kliënte",
+    "settings": "Instellings",
+    "config": "Konfigurasie",
+    "service": "Diens",
+    "gone": "Hierdie koppelvlak bestaan nie meer op die gasheer nie."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Wys die WireGuard-oortjie vir hierdie gasheer in sy spyskaart."
+      },
+      "showPanel": {
+        "label": "Wys WireGuard-paneel in terminale",
+        "description": "Laat die WireGuard-paneel oopmaak langs hierdie gasheer se SSH-terminal."
+      },
+      "alertDown": {
+        "label": "Waarskuwing wanneer 'n koppelvlak af is",
+        "description": "Stuur 'n waarskuwing wanneer 'n koppelvlak wat by opstart begin, nie aktief is nie. Gecontroleer wanneer die WireGuard-status gelees word."
+      }
+    },
+    "publicKey": "Openbare sleutel",
+    "port": "UDP-poort",
+    "endpoint": "Bediener-eindpunt",
+    "endpointHint": "Die openbare adres waarna kliënte verbind, soos vpn.example.com:51820.",
+    "dns": "DNS vir kliënte",
+    "dnsHint": "Opsioneel. Skei bedieners met kommas.",
+    "allowed": "Verkeer deur die VPN",
+    "allowedHint": "Die reekse wat kliënte deur die VPN stuur. 0.0.0.0/0, ::/0 stuur alles.",
+    "keepalive": "Keepalive (sekondes)",
+    "keepaliveHint": "Hou kliënte agter NAT bereikbaar. Gebruik 0 om dit af te skakel.",
+    "saved": "Instellings gestoor.",
+    "saveFailed": "Kon nie die instellings stoor nie.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Maak die WireGuard-paneel oop met nuwe terminale",
+        "description": "Wys die WireGuard-paneel langs elke SSH-terminal wat WireGuard het. Jy kan dit steeds oopmaak en sluit vanaf die knoppie aan die regterkant."
+      },
+      "companionSide": {
+        "label": "WireGuard-paneel kant",
+        "description": "Waar die WireGuard-paneel langs 'n terminal sit.",
+        "right": "Regs",
+        "left": "Links",
+        "bottom": "Onder"
+      },
+      "companionSize": {
+        "label": "WireGuard-paneel grootte",
+        "description": "Wydte in pixels, of hoogte wanneer dit onder is. Jy kan ook die rand sleep."
+      },
+      "companionEdgeButton": {
+        "label": "Wys die paneel-knoppie",
+        "description": "Wys 'n klein knoppie aan die regterkant van 'n terminal wat die WireGuard-paneel oopmaak."
+      }
+    }
+  },
+  "clients": {
+    "add": "Voeg kliënt by",
+    "empty": "Nog geen kliënte nie.",
+    "loadFailed": "Kon nie die kliënte laai nie.",
+    "name": "Naam",
+    "nameHint": "Letters, syfers, punte, strepies en onderstreepies.",
+    "allowed": "Verkeer deur die VPN",
+    "allowedHint": "Laat leeg om die koppelvlak-standaard te gebruik: {{value}}",
+    "create": "Skep kliënt",
+    "addFailed": "Kon nie die kliënt byvoeg nie.",
+    "needEndpoint": "Stel eers die bediener-eindpunt in die koppelvlak-instellings.",
+    "connected": "Verbind",
+    "off": "Af",
+    "external": "Handgemaak",
+    "handshake": "handdruk {{ago}} gelede",
+    "showConfig": "Wys konfigurasie en QR-kode",
+    "configFailed": "Kon nie die kliëntkonfigurasie lees nie.",
+    "rotate": "Nuwe sleutels",
+    "rotateTitle": "Maak nuwe sleutels vir {{name}}?",
+    "rotateDesc": "Die ou konfigurasie hou op werk. Gee die kliënt die nuwe konfigurasie daarna.",
+    "turnOff": "Skakel af",
+    "turnOn": "Skakel aan",
+    "saveFailed": "Kon nie die kliënt verander nie.",
+    "deleteTitle": "Vee {{name}} uit?",
+    "deleteDesc": "Die kliënt word verwyder en kan nie meer verbind nie.",
+    "deleteFailed": "Kon nie die kliënt uitvee nie."
+  },
+  "clientConfig": {
+    "note": "Hierdie konfigurasie bevat die kliënt se privaat sleutel. Deel dit slegs met die persoon of toestel wat dit sal gebruik.",
+    "qr": "QR-kode vir die kliëntkonfigurasie",
+    "copy": "Kopieer",
+    "copied": "Konfigurasie gekopieer.",
+    "copyFailed": "Kon nie die konfigurasie kopieer nie.",
+    "download": "Laai .conf af"
+  },
+  "config": {
+    "title": "Konfigurasie-lêer",
+    "hint": "Privaat en vooraf gedeelde sleutels word verborge. Laat die plaashouer staan om 'n sleutel te behou. Die konfigurasie word gecontroleer voordat dit gestoor word, en 'n rugsteunkopie word gehou. Adresveranderinge vereis 'n herbegin.",
+    "loadFailed": "Kon nie die konfigurasie lees nie.",
+    "saved": "Konfigurasie gestoor.",
+    "saveFailed": "Kon nie die konfigurasie stoor nie."
+  },
+  "logs": {
+    "loadFailed": "Kon nie die logboeke lees nie.",
+    "lines": "{{count}} reëls",
+    "empty": "Geen logreëls nie."
+  },
+  "service": {
+    "failed": "Die diensaksie het misluk.",
+    "start": "Begin",
+    "stop": "Stop",
+    "restart": "Herbegin",
+    "autostart": "Begin by opstart",
+    "autostartDesc": "Begin hierdie koppelvlak wanneer die gasheer opstart.",
+    "needsSystemd": "Begin by opstart vereis systemd op hierdie gasheer.",
+    "noForward": "IP-doorgif is af op hierdie gasheer, so kliënte kan nie die netwerk bereik deur NAT nie.",
+    "delete": "Verwyder koppelvlak",
+    "deleteTitle": "Verwyder {{name}}?",
+    "deleteDesc": "Die koppelvlak word gestop en sy konfigurasie, sleutels en gestoorde kliëntlêers word van die gasheer verwyder.",
+    "deleteFailed": "Kon nie die koppelvlak verwyder nie."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Skakel WireGuard in hierdie gasheer se instellings aan om hierdie kaart te gebruik.",
+    "start": "Aktiveer",
+    "stop": "Deaktiveer",
+    "done": "{{name}} opgedateer"
+  },
+  "operations": {
+    "list": {
+      "title": "Lys WireGuard-koppelvlakke"
+    },
+    "down": {
+      "title": "WireGuard-koppelvlakke af"
+    },
+    "start": {
+      "title": "Begin WireGuard-koppelvlak"
+    },
+    "stop": {
+      "title": "Stop WireGuard-koppelvlak"
+    },
+    "restart": {
+      "title": "Herbegin WireGuard-koppelvlak"
+    },
+    "interfaces": {
+      "title": "WireGuard-koppelvlakke",
+      "address": "Adres",
+      "port": "Poort",
+      "clients": "Kliënte"
+    }
+  },
+  "nav": {
+    "togglePanel": "Wissel WireGuard-paneel"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Kontroleer gasheer...",
+    "summary_one": "{{count}} kliënt op {{hosts}} gasheer",
+    "summary_other": "{{count}} kliënte op {{hosts}} gasheer",
+    "refresh": "Kontroleer weer",
+    "empty": "Skakel WireGuard vir 'n gasheer aan om dit hier te sien.",
+    "missing": "Nie geïnstalleer nie",
+    "down_one": "{{count}} af",
+    "down_other": "{{count}} af",
+    "interfaces_one": "{{count}} koppelvlak, {{clients}} kliënte",
+    "interfaces_other": "{{count}} koppelvlakke, {{clients}} kliënte"
+  }
+}

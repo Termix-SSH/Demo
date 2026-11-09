@@ -72,6 +72,19 @@ export function activate(app: TermixApp): void {
     order: 40,
   });
 
+  // No row button: this is for the host page, which shows this host's monitors.
+  app.registerHostAction({
+    id: TAB_ID,
+    titleKey: "tab.title",
+    icon: HeartPulse,
+    kind: "open",
+    tabType: TAB_ID,
+    tray: false,
+    order: 90,
+    when: () => canView,
+    run: (_host, shell) => shell.openSingletonTab(TAB_ID),
+  });
+
   app.registerHostContextMenuItem({
     id: "add-monitor",
     titleKey: "host.add",

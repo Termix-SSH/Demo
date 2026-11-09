@@ -1,0 +1,289 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "查看、拉取、提交和推送主機上的 Git 儲存庫，並透過自動拉取功能保持它們最新。"
+  },
+  "common": {
+    "save": "儲存",
+    "cancel": "取消",
+    "back": "返回",
+    "loading": "載入中..."
+  },
+  "permissions": {
+    "use": {
+      "title": "使用 Git",
+      "description": "查看您能存取的主機上的 Git 儲存庫，並修改您有權編輯的主機上的儲存庫。"
+    },
+    "runCommands": {
+      "title": "在自動拉取後執行命令",
+      "description": "設定在自動拉取取得新提交後，於主機上執行的命令。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "從 Git 分頁管理此主機上的 Git 儲存庫。"
+      },
+      "repoRoots": {
+        "label": "掃描資料夾",
+        "description": "掃描此主機時搜尋儲存庫的資料夾。以逗號分隔。預設為主目錄。",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "使用 sudo 以 root 身份執行 git。僅適用於登入使用者無法使用的儲存庫。"
+      },
+      "readOnly": {
+        "label": "唯讀",
+        "description": "顯示儲存庫，但永不修改此主機上的內容。"
+      },
+      "showPanel": {
+        "label": "終端機旁的面板",
+        "description": "在此主機的終端機分頁中提供 Git 面板。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "開啟終端機時一併開啟面板",
+        "description": "當終端機在已啟用此功能的主機上開啟時，顯示 Git 面板。"
+      },
+      "companionSide": {
+        "label": "面板位置",
+        "description": "面板相對於終端機的位置。",
+        "right": "右側",
+        "left": "左側",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "面板大小",
+        "description": "面板的寬度，或位於底部時的高度，單位為像素。"
+      },
+      "companionEdgeButton": {
+        "label": "邊緣按鈕",
+        "description": "在終端機邊緣顯示一個小按鈕，用於開啟面板。"
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "從主機開啟 Git。",
+    "error": "無法從此主機載入 git。",
+    "disabled": "此主機已關閉 Git。請前往主機設定中開啟。",
+    "sudo": "這需要 root 登入、免密碼 sudo 或已儲存的 Sudo 密碼。",
+    "refresh": "重新整理",
+    "readOnly": "唯讀",
+    "notInstalled": "未安裝 git",
+    "notInstalledTitle": "此主機未安裝 git",
+    "notInstalledHint": "使用主機的套件管理器安裝 git，然後重新整理。"
+  },
+  "actions": {
+    "ok": "完成",
+    "failed": "失敗",
+    "noOutput": "無輸出。"
+  },
+  "repos": {
+    "add": "新增儲存庫",
+    "search": "搜尋儲存庫",
+    "empty": "尚無儲存庫。新增一個以開始使用。",
+    "noMatch": "沒有符合的儲存庫。",
+    "viewOnly": "尚未為此主機新增任何儲存庫。",
+    "detached": "已分離",
+    "changes_other": "{{count}} 項變更",
+    "conflicts": "衝突",
+    "auto": "自動拉取",
+    "autoFailing": "拉取失敗",
+    "remove": "從清單移除",
+    "removeTitle": "要移除 {{name}} 嗎？",
+    "removeBody": "此儲存庫僅在此處被遺忘。主機上不會刪除任何內容。",
+    "removed": "已移除 {{name}}",
+    "error": {
+      "missing": "資料夾遺失",
+      "notrepo": "不是 Git 存放庫",
+      "unreadable": "無法讀取"
+    }
+  },
+  "add": {
+    "title": "新增存放庫",
+    "modeScan": "掃描",
+    "modePath": "資料夾",
+    "modeClone": "複製",
+    "scanHint": "在 {{roots}} 中尋找 Git 存放庫。可在主機設定中變更資料夾。",
+    "rescan": "再次掃描",
+    "noneFound": "未找到新的存放庫。",
+    "picked": "已選取",
+    "addPicked_other": "新增 {{count}} 個存放庫",
+    "addAll": "全部新增",
+    "folder": "主機上的資料夾",
+    "folderHint": "完整路徑，或以 ~ 開頭表示主資料夾。該路徑必須已是 Git 存放庫。",
+    "addRepo": "新增存放庫",
+    "url": "網址",
+    "urlHint": "使用主機登入使用者的金鑰與 Git 設定。",
+    "dest": "複製至",
+    "destHint": "該資料夾必須尚不存在。",
+    "clone": "複製",
+    "cloned": "已複製",
+    "added_other": "已新增 {{count}} 個存放庫",
+    "failed": "無法新增存放庫",
+    "scanFailed": "無法掃描主機"
+  },
+  "repo": {
+    "ahead": "領先 {{count}} 筆",
+    "behind": "落後 {{count}} 筆",
+    "fetch": "抓取",
+    "fetched": "已抓取",
+    "pull": "拉取",
+    "pulled": "已拉取",
+    "push": "推送",
+    "pushed": "已推送",
+    "viewChanges": "變更",
+    "viewBranches": "分支",
+    "viewHistory": "歷史記錄",
+    "viewStash": "暫存區",
+    "viewAuto": "自動拉取"
+  },
+  "changes": {
+    "loadFailed": "無法讀取變更。",
+    "clean": "沒有可提交的內容。工作樹是乾淨的。",
+    "stagedTitle": "已暫存 ({{count}})",
+    "unstagedTitle": "變更 ({{count}})",
+    "stage": "暫存",
+    "staged": "已暫存",
+    "unstage": "取消暫存",
+    "unstaged": "未暫存",
+    "stageAll": "全部暫存",
+    "renamed": "已重新命名",
+    "discard": "捨棄",
+    "discardTitle": "要捨棄對 {{name}} 的變更嗎？",
+    "discardBody": "此檔案中的變更將被刪除，且無法復原。",
+    "discarded": "已捨棄變更",
+    "message": "提交訊息",
+    "messagePlaceholder": "變更內容",
+    "commit": "提交",
+    "commitAll": "提交所有變更",
+    "commitStaged_other": "提交 {{count}} 個已暫存的檔案",
+    "committed": "已提交",
+    "noDiff": "沒有可顯示的變更。",
+    "truncated": "差異內容過長，僅顯示開頭部分。"
+  },
+  "branches": {
+    "loadFailed": "無法讀取分支。",
+    "empty": "尚無分支。",
+    "current": "目前",
+    "remote": "遠端",
+    "gone": "上游已消失",
+    "newName": "新分支",
+    "create": "建立分支",
+    "created": "已建立分支 {{name}}",
+    "switch": "切換",
+    "switched": "已切換至 {{name}}",
+    "merge": "合併到目前分支",
+    "mergeTitle": "要將 {{name}} 合併至 {{into}} 嗎？",
+    "mergeBody": "若合併發生衝突，將立即復原。",
+    "merged": "已合併 {{name}}",
+    "delete": "刪除分支",
+    "deleteTitle": "要刪除 {{name}} 嗎？",
+    "deleteBody": "若分支包含尚未合併的提交，Git 將拒絕刪除。",
+    "deleted": "已刪除 {{name}}",
+    "forceTitle": "要強制刪除 {{name}} 嗎？",
+    "forceBody": "此分支包含尚未合併的提交。若刪除，這些提交將永久遺失。",
+    "forceDelete": "強制刪除"
+  },
+  "history": {
+    "loadFailed": "無法讀取歷史記錄。",
+    "empty": "尚無提交。",
+    "branch": "此分支",
+    "all": "所有分支",
+    "more": "載入更多"
+  },
+  "stash": {
+    "loadFailed": "無法讀取暫存區。",
+    "title": "暫存區",
+    "empty": "無暫存項目。",
+    "message": "訊息",
+    "messagePlaceholder": "選填",
+    "untracked": "包含未追蹤的檔案",
+    "push": "暫存變更",
+    "pushDone": "已暫存變更",
+    "apply": "套用",
+    "applyDone": "已套用暫存項目",
+    "pop": "彈出",
+    "popDone": "已套用並移除暫存項目",
+    "drop": "移除",
+    "dropDone": "已移除暫存項目",
+    "dropTitle": "要移除 {{name}} 嗎？",
+    "dropBody": "暫存項目將被刪除，且無法復原。",
+    "remotes": "遠端",
+    "noRemotes": "無遠端。"
+  },
+  "auto": {
+    "intro": "依排程執行拉取，僅限快轉合併。不會執行合併，若儲存庫有未提交的變更或與上游分歧，則會跳過該儲存庫。",
+    "noUpstream": "此分支尚無上游，因此自動拉取將跳過它。",
+    "enable": "自動拉取",
+    "enableHint": "以您的身分執行，並使用您對此主機的存取權限。",
+    "interval": "每（分鐘）",
+    "intervalHint": "兩次拉取之間的等待時間。",
+    "post": "拉取後執行的命令",
+    "postHint": "在新提交到達時，於儲存庫資料夾中執行。需要「執行命令」權限。",
+    "saved": "已儲存自動拉取設定",
+    "saveFailed": "無法儲存自動拉取設定",
+    "runNow": "立即執行",
+    "next": "下次拉取時間：{{when}}",
+    "runs": "近期執行記錄",
+    "noRuns": "尚無執行記錄。",
+    "outcome": {
+      "pulled": "已拉取",
+      "uptodate": "已是最新",
+      "skipped": "已跳過",
+      "failed": "失敗"
+    }
+  },
+  "card": {
+    "title": "Git 儲存庫",
+    "loading": "載入中...",
+    "refresh": "重新整理",
+    "empty": "目前沒有任何主機擁有 Git 儲存庫。",
+    "allClean": "所有儲存庫皆為乾淨且已更新。",
+    "summary_other": "{{count}} 個儲存庫 | {{attention}} 需要查看"
+  },
+  "companion": {
+    "toggle": "Git 面板",
+    "openTab": "開啟 Git",
+    "here": "此資料夾的儲存庫",
+    "all": "所有儲存庫"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "列出 Git 儲存庫"
+    },
+    "fetch": {
+      "title": "抓取儲存庫"
+    },
+    "pull": {
+      "title": "拉取儲存庫"
+    },
+    "push": {
+      "title": "推送儲存庫"
+    },
+    "checkout": {
+      "title": "切換分支",
+      "branch": "分支"
+    },
+    "reset-hard": {
+      "title": "強制重設儲存庫",
+      "ref": "重設至"
+    },
+    "repos": {
+      "title": "Git 儲存庫",
+      "branch": "分支",
+      "ahead": "領先",
+      "behind": "落後",
+      "changed": "變更"
+    },
+    "signals": {
+      "behind": "落後的儲存庫",
+      "dirty": "有變更的儲存庫",
+      "pull-failing": "自動拉取失敗"
+    }
+  }
+}

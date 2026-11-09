@@ -50,11 +50,14 @@ export function MonitorsView({
   permissions,
   reload,
   presetHostId,
+  forHostId,
 }: {
   monitors: MonitorView[] | null;
   permissions: Permissions;
   reload: () => Promise<void>;
   presetHostId?: number;
+  /** New monitors start on this host, without opening the form. */
+  forHostId?: number;
 }) {
   const { t } = useTranslation();
   const { hosts } = useHosts();
@@ -265,7 +268,7 @@ export function MonitorsView({
       {/* Overlays stay outside the stack so they don't add empty sections. */}
       <MonitorEditor
         open={adding}
-        presetHostId={presetHostId}
+        presetHostId={presetHostId ?? forHostId}
         permissions={permissions}
         onClose={() => setAdding(false)}
         onSaved={reload}

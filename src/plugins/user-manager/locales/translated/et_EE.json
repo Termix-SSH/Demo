@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Kasutajad",
+    "description": "Halda oma hostide kasutajakontosid, gruppe, parooli ja SSH- võtmeid."
+  },
+  "common": {
+    "save": "Salvesta",
+    "cancel": "Tühista",
+    "back": "Tagasi",
+    "delete": "Kustuta",
+    "loading": "Laadimine..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Kasuta kasutajaid",
+      "description": "Vaata kontosid hostidel, kuhu saad ligi pääseda, ja muuda neid hostidel, mida saad redigeerida."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Kasutajad",
+        "description": "Haldage selle hosti kasutajakontosid ja -gruppe Kasutajad-kaardilt."
+      },
+      "useSudo": {
+        "label": "Kasuta sudo-d",
+        "description": "Kasuta sudo-d kontode lugemiseks ja muutmiseks. Lülita välja, kui sisselogimine toimub root-ina."
+      },
+      "readOnly": {
+        "label": "Ainult lugemiseks",
+        "description": "Kuva kontod, kuid ära kunagi muuda neid sellel hostil."
+      }
+    }
+  },
+  "tab": {
+    "title": "Kasutajad",
+    "noHost": "Ava Kasutajad hostist.",
+    "error": "Selle hosti kontode laadimine ei õnnestunud.",
+    "disabled": "Kasutajad on sellel hostil välja lülitatud. Lülita see sisse hosti seadetes.",
+    "sudo": "Muudatused ja paroolide olekud nõuavad sellel hostil root-sisselogimist, paroolita sudo-d või salvestatud sudo-parooli.",
+    "noTools": "Käsk useradd pole sellel hostil installitud. Alpine'i puhul installige pakett shadow.",
+    "refresh": "Värskenda",
+    "readOnly": "Ainult lugemiseks",
+    "counts_one": "{{count}} kasutaja",
+    "counts_other": "{{count}} kasutajat",
+    "viewUsers": "Kasutajad",
+    "viewGroups": "Rühmad",
+    "viewSessions": "Seansid"
+  },
+  "users": {
+    "add": "Lisa kasutaja",
+    "search": "Otsi kasutajaid",
+    "people": "Inimesed",
+    "systemFilter": "Süsteem",
+    "all": "Kõik",
+    "empty": "Ühtegi kasutajat ei leitud.",
+    "you": "Sina",
+    "sudo": "Sudo",
+    "locked": "Lukustatud",
+    "emptyPassword": "Parool puudub",
+    "system": "Süsteem",
+    "loadFailed": "Kontode lugemine ebaõnnestus."
+  },
+  "password": {
+    "set": "Määra",
+    "locked": "Lukustatud",
+    "none": "Määramata, parooliga sisselogimine puudub",
+    "empty": "Tühi, igaüks saab sisse logida",
+    "unknown": "Vaja on root-õigusi, et seda teada saada"
+  },
+  "detail": {
+    "info": "Konto",
+    "account": "Üksikasjad",
+    "fullName": "Täisnimi",
+    "uid": "Kasutaja ja grupi ID",
+    "mainGroup": "Põhigrupp",
+    "home": "Kodu kaust",
+    "shell": "Kest",
+    "groups": "Rühmad",
+    "groupsPlaceholder": "Kirjutage rühma nimi ja vajutage Enter",
+    "unknownGroups": "Need rühmad ei eksisteeri: {{groups}}",
+    "none": "Puudub",
+    "password": "Parool",
+    "passwordChanged": "Parool muudetud",
+    "lastLogin": "Viimane sisselogimine",
+    "never": "Mitte kunagi",
+    "unknown": "Tundmatu",
+    "saved": "Salvestatud.",
+    "failed": "Muudatus ebaõnnestus.",
+    "loadFailed": "Selle kasutaja võtmeid ja viimast sisselogimist ei õnnestunud lugeda.",
+    "passwordSection": "Parool",
+    "newPassword": "Uus parool",
+    "newPasswordHint": "Saadetakse SSH kaudu hostile ja määratakse käsuga chpasswd. Termix seda kunagi ei salvesta.",
+    "setPassword": "Määra parool",
+    "passwordSet": "Parool määratud.",
+    "expirePassword": "Palu järgmisel sisselogimisel uut parooli",
+    "expired": "Järgmisel sisselogimisel valitakse uus parool.",
+    "access": "Juurdepääs",
+    "sudo": "Sudo",
+    "sudoHint": "Käivita käske rootina läbi {{group}} grupi.",
+    "sudoProtected": "Sa ei saa võtta sudo õigusi root kasutajalt ega kasutajalt, kelle nime all Termix sisselogib.",
+    "sudoTitle": "Anda {{name}}-le sudo õigused?",
+    "sudoDesc": "Lisab ta {{group}} gruppi, et ta saaks käivitada suvalisi käske rootina.",
+    "sudoGrant": "Anna sudo",
+    "sudoOn": "Sudo õigused antud.",
+    "sudoOff": "Sudo õigused eemaldatud.",
+    "lock": "Lukusta konto",
+    "unlock": "Lukusta konto",
+    "lockTitle": "Kas lukustada {{name}}?",
+    "lockDesc": "Kuni konto lukustust eemaldad, ei saa kasutaja sisse logida kas parooli ega SSH- võtmega.",
+    "lockHint": "Blokeerib sisselogimise parooli ja SSH-võtmega.",
+    "protected": "Rooti ja kasutajat, kelle nime all Termix sisse logib, ei saa lukustada ega kustutada.",
+    "locked": "Konto on lukustatud.",
+    "unlocked": "Konto lukustusest vabastatud.",
+    "danger": "Kustuta",
+    "removeHome": "Kustuta ka kodukaust",
+    "removeHomeHint": "Kustutab {{home}} ja kõik selle sisu.",
+    "delete": "Kasutaja kustutamine",
+    "deleteTitle": "Kas kustutada {{name}}?",
+    "deleteDesc": "Konto eemaldatakse. Tema kodukaust jääb hostile alles.",
+    "deleteDescHome": "Konto ja {{home}} eemaldatakse. Seda ei saa tagasi pöörata.",
+    "deleted": "{{name}} kustutatud."
+  },
+  "keys": {
+    "title": "SSH-võtmed",
+    "empty": "SSH-võtmed puuduvad.",
+    "denied": "Võtmeid ei saa ilma root-õigusteta lugeda.",
+    "options": "Valikud",
+    "remove": "Võtme eemaldamine",
+    "removeTitle": "Kas eemaldada see võti?",
+    "removed": "Võti eemaldatud.",
+    "add": "Lisa võti",
+    "addHint": "Kleepige üks avalik võti, näiteks faili id_ed25519.pub sisu.",
+    "addButton": "Lisa võti",
+    "added": "Võti lisatud."
+  },
+  "create": {
+    "title": "Uus kasutaja",
+    "name": "Kasutajanimi",
+    "nameHint": "Väiketähed, numbrid, - ja _.",
+    "nameInvalid": "Alusta tähega ja kasuta ainult a-z, 0-9, - ja _.",
+    "home": "Kodukaust",
+    "homeHint": "Jäta tühjaks, kui soovid /home/{{name}}.",
+    "createHome": "Loo kodukaust",
+    "password": "Parool",
+    "passwordHint": "Valikuline. Ilma paroolita saab kasutaja sisse logida ainult SSH- võtmega.",
+    "again": "Parool uuesti",
+    "mismatch": "Paroolid ei kattu.",
+    "save": "Loo kasutaja",
+    "done": "{{name}} loodud.",
+    "failed": "Kasutajat ei õnnestunud luua."
+  },
+  "groups": {
+    "add": "Lisa rühm",
+    "name": "Rühma nimi",
+    "namePlaceholder": "Uue rühma nimi",
+    "create": "Loo",
+    "created": "Rühm {{name}} on loodud.",
+    "search": "Otsi rühmi",
+    "empty": "Ühtegi rühma ei leitud.",
+    "noMembers": "Liikmeid pole.",
+    "failed": "Muudatus ei õnnestunud.",
+    "addMember": "Lisa liige",
+    "pickUser": "Vali kasutaja",
+    "removeMember": "Eemalda rühmast",
+    "memberAdded": "Liige {{name}} on rühma {{group}} lisatud.",
+    "memberRemoved": "Liige {{name}} on rühmast {{group}} eemaldatud.",
+    "mainGroup": "Põhirühm",
+    "mainGroupHint": "See on tema põhirühm, seega kuulub ta alati sellele.",
+    "deleteTitle": "Kas kustutada {{name}}?",
+    "deleteDesc": "Rühm kustutatakse. Sellele kuuluvad failid säilitavad oma vana ID.",
+    "deleted": "Rühm {{name}} on kustutatud."
+  },
+  "sessions": {
+    "now": "Sisselogitud hetkel",
+    "none": "Ükski kasutaja pole sisseloginud.",
+    "recent": "Viimased sisselogimised",
+    "noRecent": "Sisselogimiste ajalugu ei leitud.",
+    "loadFailed": "Seansse ei õnnestunud lugeda."
+  },
+  "manager": {
+    "title": "Kasutajad",
+    "disabled": "Selle hosti kontode nägemiseks lülita selle seadetes Kasutajad sisse."
+  },
+  "operations": {
+    "list": {
+      "title": "Kasutajate loendamine"
+    },
+    "emptyPasswords": {
+      "title": "Kontod ilma paroolita"
+    },
+    "lock": {
+      "title": "Kasutaja lukustamine"
+    },
+    "unlock": {
+      "title": "Kasutaja avamine"
+    },
+    "delete": {
+      "title": "Kasutaja kustutamine"
+    },
+    "users": {
+      "title": "Kasutajad",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "Rühmad"
+    }
+  }
+}

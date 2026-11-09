@@ -133,6 +133,12 @@ export function decodeGrid(lines: unknown): GridCard[] | null {
         /* a broken config is dropped, the card stays */
       }
     }
+    let name: string | undefined;
+    try {
+      name = title ? decodeURIComponent(title) : undefined;
+    } catch {
+      /* a broken title is dropped, the card stays */
+    }
     cards.push({
       key,
       id,
@@ -140,7 +146,7 @@ export function decodeGrid(lines: unknown): GridCard[] | null {
       y: nums[1],
       w: nums[2],
       h: h ? Number(h) || null : null,
-      ...(title ? { title: decodeURIComponent(title) } : {}),
+      ...(name ? { title: name } : {}),
       ...(parsed ? { config: parsed } : {}),
     });
   }

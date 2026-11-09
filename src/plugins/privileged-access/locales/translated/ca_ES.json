@@ -1,0 +1,145 @@
+{
+  "plugin": {
+    "name": "Accés privilegiat",
+    "description": "Demana aprovació abans que ningú es connecti a un host privilegiat, amb un accés que finalitza automàticament i un registre d'auditoria complet."
+  },
+  "tab": {
+    "title": "Accés"
+  },
+  "tabs": {
+    "request": "Demana accés",
+    "mine": "Les meves sol·licituds",
+    "pending": "Pendent de decisió",
+    "active": "Accés actiu",
+    "history": "Historial"
+  },
+  "status": {
+    "pending": "Pendent",
+    "approved": "Finalitzat",
+    "active": "Actiu",
+    "denied": "Denegat",
+    "expired": "Caducat",
+    "revoked": "Revocat",
+    "cancelled": "Cancel·lat"
+  },
+  "request": {
+    "host": "Host",
+    "hostWithAccess": "{{host}} (accés fins a {{until}})",
+    "hours": "Hores",
+    "hoursHint": "Aquest host permet fins a {{max}} hores.",
+    "reason": "Per què necessites accés",
+    "reasonOptional": "Per què necessites accés (opcional)",
+    "ticket": "Tiquet",
+    "ticketOptional": "Tiquet (opcional)",
+    "send": "Demana accés",
+    "sent": "Sol·licitud enviada. Rebràs una alerta quan algú decideixi.",
+    "failed": "No s'ha pogut enviar la sol·licitud",
+    "noHosts": "No hi ha hosts privilegiats",
+    "noHostsHint": "Els hosts que un administrador marca com a privilegiats es mostren aquí."
+  },
+  "list": {
+    "none": "No hi ha res aquí",
+    "loadError": "No s'han pogut carregar les sol·licituds",
+    "actionFailed": "No ha funcionat",
+    "hours_one": "{{count}} hora",
+    "hours_many": "{{count}} hores",
+    "hours_other": "{{count}} hores",
+    "until": "fins a {{time}}",
+    "decidedBy": "per {{name}}",
+    "approve": "Aprovar",
+    "deny": "Denegar",
+    "cancel": "Cancel·lar",
+    "endNow": "Finalitzar ara",
+    "export": "Exporta CSV",
+    "approveConfirm_one": "Vols donar accés a {{user}} a {{host}} durant {{count}} hora?",
+    "approveConfirm_many": "Vols donar accés a {{user}} a {{host}} durant {{count}} hores?",
+    "approveConfirm_other": "Vols donar accés a {{user}} a {{host}} durant {{count}} hores?",
+    "denyConfirm": "Vols denegar aquesta sol·licitud?",
+    "cancelConfirm": "Vols cancel·lar aquesta sol·licitud?",
+    "endConfirm": "Vols finalitzar aquest accés ara? Les sessions obertes a l'host es tancaran.",
+    "approved": "Accés aprovat",
+    "denied": "Sol·licitud denegada",
+    "ended": "Fet"
+  },
+  "card": {
+    "title": "Accés privilegiat",
+    "waiting": "pendent de la teva decisió",
+    "empty": "No hi ha sol·licituds pendents",
+    "emptyHint": "El teu accés aprovat es mostra aquí."
+  },
+  "permissions": {
+    "request": {
+      "title": "Demana accés privilegiat",
+      "description": "Demana accés amb límit de temps a hosts privilegiats."
+    },
+    "approve": {
+      "title": "Aprova accés privilegiat",
+      "description": "Decideix les sol·licituds d'accés d'altres persones, finalitza l'accés abans de l'hora i llegeix l'informe."
+    },
+    "bypass": {
+      "title": "Accés d'emergència",
+      "description": "Connecta't a hosts privilegiats sense fer una sol·licitud. Cada ús s'audita i s'envia una alerta."
+    },
+    "configure": {
+      "title": "Configura hosts privilegiats",
+      "description": "Marca hosts com a privilegiats i canvia qui aprova l'accés a ells"
+    }
+  },
+  "settings": {
+    "admin": {
+      "pendingHours": {
+        "label": "Durada de la sol·licitud (hores)",
+        "description": "Una sol·licitud que ningú decideixi en aquest temps caduca."
+      },
+      "alertBypass": {
+        "label": "Notifica en accedir amb accés d'emergència",
+        "description": "Notifica els aprovadors quan algú es connecti amb accés d'emergència."
+      }
+    },
+    "host": {
+      "enable": {
+        "label": "Amfitrió privilegiat",
+        "description": "Les sessions SSH i d'escriptori remot a aquest amfitrió requereixen accés aprovat."
+      },
+      "approverRoles": {
+        "label": "Rols d'aprovador",
+        "description": "Noms de rols, separats per comes, els membres dels quals poden aprovar. Si es deixa buit, qualsevol usuari amb el permís d'aprovació pot decidir."
+      },
+      "maxHours": {
+        "label": "Accés màxim (hores)",
+        "description": "El nombre màxim d'hores que es poden sol·licitar en una sola sol·licitud."
+      },
+      "requireReason": {
+        "label": "Demana un motiu",
+        "description": "La sol·licitud ha d'indicar per què es necessita l'accés."
+      },
+      "requireTicket": {
+        "label": "Demana un tiquet",
+        "description": "La sol·licitud ha d'indicar un número de tiquet."
+      },
+      "allowBackground": {
+        "label": "Permet el pas de tasques en segon pla",
+        "description": "Les connexions de plugins no interactius, com ara el polling, ometen l'aprovació. Desactiva-ho per bloquejar totes les sessions sense accés."
+      }
+    }
+  },
+  "operations": {
+    "request": {
+      "title": "Sol·licita accés privilegiat",
+      "hours": "Hores",
+      "reason": "Motiu",
+      "ticket": "Tiquet"
+    },
+    "pending": {
+      "title": "Sol·licituds d'accés pendents de decisió"
+    },
+    "status": {
+      "title": "Accés privilegiat"
+    },
+    "events": {
+      "requested": "Algú ha sol·licitat accés",
+      "approved": "L'accés ha estat aprovat",
+      "bypassed": "S'ha utilitzat l'accés d'emergència"
+    }
+  }
+}

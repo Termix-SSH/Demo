@@ -394,6 +394,9 @@ export function HostsPanel({
             />
             {hostSearch && (
               <button
+                type="button"
+                title={t("panel.clearSearch")}
+                aria-label={t("panel.clearSearch")}
                 onClick={() => setHostSearch("")}
                 className="text-muted-foreground/60 hover:text-muted-foreground transition-colors"
               >

@@ -1,0 +1,226 @@
+{
+  "plugin": {
+    "name": "IP-KVM",
+    "description": "PiKVM、NanoKVM、JetKVM デバイスを介してマシンを表示および制御します。"
+  },
+  "tab": {
+    "title": "KVM"
+  },
+  "card": {
+    "title": "KVM",
+    "loading": "読み込み中"
+  },
+  "host": {
+    "open": "KVM"
+  },
+  "permissions": {
+    "view": {
+      "title": "KVM の表示",
+      "description": "KVM タブを開き、オンラインの KVM とその電源状態を確認します。"
+    },
+    "power": {
+      "title": "電源の制御",
+      "description": "KVM を介してマシンの電源のオン/オフやリセット、または Wake-on-LAN による起動を行います。"
+    },
+    "console": {
+      "title": "画面の使用",
+      "description": "マシンの画面を表示し、キーボードとマウスを操作します。"
+    },
+    "media": {
+      "title": "仮想メディアの使用",
+      "description": "マシンにISOイメージをマウントおよびアンマウントします。"
+    },
+    "manage": {
+      "title": "KVMの管理",
+      "description": "KVMの追加、変更、削除を行います。"
+    }
+  },
+  "settings": {
+    "admin": {
+      "maxSessionMinutes": {
+        "label": "画面セッションの最大時間（分）",
+        "description": "画面セッションはこの時間後に終了します。制限なしにするには0を指定します。"
+      }
+    }
+  },
+  "description": "IP-KVMを追加して、背後にあるマシンの表示と制御を行います。TermixはKVMに接続するため、ブラウザから直接アクセスできない場合でも画面が動作します。ログイン情報は暗号化して保存され、二度と表示されることはありません。",
+  "summary": "{{count}}台のKVM、{{attention}}台オフライン",
+  "empty": "まだKVMがありません。",
+  "add": "KVMを追加",
+  "edit": "編集",
+  "delete": "削除",
+  "back": "戻る",
+  "saved": "保存しました",
+  "deleteConfirm": "{{name}}を削除しますか？",
+  "status": {
+    "unknown": "まだ読み込んでいません",
+    "up": "オンライン",
+    "down": "オフライン"
+  },
+  "drivers": {
+    "pikvm": "PiKVM",
+    "glkvm": "GL.iNet Comet (GLKVM)",
+    "nanokvm": "NanoKVM",
+    "jetkvm": "JetKVM"
+  },
+  "fields": {
+    "username": "ユーザー名",
+    "password": "パスワード"
+  },
+  "power": {
+    "on": "オン",
+    "off": "オフ",
+    "unknown": "不明",
+    "state": "マシンの状態は {{state}} です。",
+    "sent": "{{name}} の電源状態を変更しました",
+    "sentShort": "電源コマンドを送信しました",
+    "wake": "Wake-on-LAN",
+    "woke": "ウェイクパケットを送信しました",
+    "action": {
+      "on": "電源オン",
+      "off": "電源オフ",
+      "graceful-shutdown": "シャットダウン",
+      "reset": "リセット"
+    },
+    "confirm": {
+      "on": "{{name}} の電源をオンにしますか？",
+      "off": "{{name}} の電源を強制切断しますか？システムはクリーンにシャットダウンされません。",
+      "graceful-shutdown": "「{{name}}」をシャットダウンしますか？",
+      "reset": "「{{name}}」をリセットしますか？システムはすぐに再起動します。"
+    }
+  },
+  "form": {
+    "addTitle": "KVM の追加",
+    "editTitle": "KVM の編集",
+    "device": "KVM",
+    "access": "アクセス",
+    "machine": "KVM 背後のマシン",
+    "type": "種類",
+    "name": "名前",
+    "address": "アドレス",
+    "port": "ポート",
+    "host": "Termix ホスト",
+    "hostHint": "KVM を所属するホストにリンクします。リンクすると、そのホストの共有設定に従い、ホストメニューに表示されます。",
+    "noHost": "なし",
+    "poll": "チェック間隔（秒）",
+    "pollHint": "30秒以上を指定してください。",
+    "scheme": "接続方式",
+    "ca": "証明書",
+    "caHint": "プライベート認証局の PEM を貼り付けるか、独自に自己署名証明書を使用する KVM の場合は「この証明書を信頼する」を使用してください。信頼済み証明書の場合は空のままにします。",
+    "caSet": "証明書が保存されています。新しい証明書を貼り付けて上書きしてください。",
+    "keepLogin": "保存されたログイン情報を維持する場合は空のままにします",
+    "test": "接続テスト",
+    "testOk": "KVM から応答がありました（{{model}}）。",
+    "testNeedsLogin": "テストするにはログイン情報を再入力してください。",
+    "mac": "MAC アドレス",
+    "macHint": "Wake-on-LAN 用のマシンのネットワークカードのアドレスです。",
+    "broadcast": "ブロードキャストアドレス",
+    "broadcastHint": "ウェイクアップパケットの送信先です。空のままにすると 255.255.255.255 になります。",
+    "save": "保存",
+    "add": "追加",
+    "trust": "この証明書を信頼する",
+    "trustTitle": "この KVM の証明書を信頼しますか？",
+    "trustHint": "Termix は、この KVM がこの正確な証明書を表示している間のみ通信します。フィンガープリントがデバイス上のものと一致していることを確認してください。",
+    "certName": "名前: {{name}}",
+    "certValid": "{{date}} まで有効",
+    "certExpired": "{{date}} に期限切れ",
+    "pinned": "信頼済み証明書",
+    "unpin": "削除"
+  },
+  "view": {
+    "screen": "画面",
+    "power": "電源",
+    "media": "仮想メディア",
+    "info": "情報",
+    "refresh": "今すぐ読み取る",
+    "type": "種類",
+    "address": "アドレス",
+    "model": "モデル",
+    "version": "ソフトウェア",
+    "hostname": "名前",
+    "video": "ビデオ",
+    "noSignal": "信号なし",
+    "status": "KVM",
+    "jetHint": "JetKVM のビデオは JetKVM からブラウザに直接送信されるため、ブラウザがネットワーク経由で JetKVM に到達できる必要があります。"
+  },
+  "screen": {
+    "connecting": "接続中",
+    "failed": "画面を開けませんでした。",
+    "ended": "画面セッションが終了しました。",
+    "hint": "画面をクリックして入力します。",
+    "shortcuts": "ショートカット",
+    "shortcut": {
+      "ctrl-alt-del": "Ctrl+Alt+Del",
+      "alt-tab": "Alt+Tab",
+      "alt-f4": "Alt+F4",
+      "ctrl-esc": "Ctrl+Esc",
+      "win-l": "Win+L",
+      "win-d": "Win+D",
+      "ctrl-alt-f1": "Ctrl+Alt+F1",
+      "ctrl-alt-f2": "Ctrl+Alt+F2",
+      "ctrl-alt-f7": "Ctrl+Alt+F7",
+      "print-screen": "Print Screen"
+    },
+    "paste": "テキストを貼り付ける",
+    "pasteLabel": "マシンに入力するテキスト",
+    "type": "入力する",
+    "snapshot": "スクリーンショット",
+    "fullscreen": "全画面表示",
+    "exitFullscreen": "全画面表示を終了",
+    "reconnect": "再接続"
+  },
+  "media": {
+    "none": "イメージがマウントされていません。",
+    "mountedNow": "マウント済み: {{name}}",
+    "as": "表示形式",
+    "cd": "CD ドライブ",
+    "usb": "USB ドライブ",
+    "empty": "この KVM にはイメージがありません。",
+    "mount": "マウント",
+    "eject": "取り出し",
+    "mountedDone": "イメージがマウントされました",
+    "ejected": "イメージが取り出されました",
+    "url": "イメージのダウンロード元",
+    "name": "保存名",
+    "fetch": "KVM にダウンロード",
+    "fetched": "イメージがダウンロードされました"
+  },
+  "operations": {
+    "device": "KVM",
+    "list-devices": {
+      "title": "KVM の一覧"
+    },
+    "poll": {
+      "title": "KVM の状態を読み取る"
+    },
+    "power-state": {
+      "title": "電源状態を取得"
+    },
+    "power-on": {
+      "title": "電源オン"
+    },
+    "graceful-shutdown": {
+      "title": "シャットダウン"
+    },
+    "power-off": {
+      "title": "電源オフ"
+    },
+    "reset": {
+      "title": "リセット"
+    },
+    "wake": {
+      "title": "Wake-on-LAN"
+    },
+    "eject-media": {
+      "title": "イメージを取り出す"
+    },
+    "health": {
+      "title": "KVM のステータス"
+    }
+  },
+  "widget": {
+    "name": "KVM デバイス",
+    "description": "IP-KVM の稼働状況を確認します。",
+    "summary": "{{total}} 台中 {{up}} 台稼働中"
+  }
+}

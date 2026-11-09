@@ -1,0 +1,180 @@
+{
+  "plugin": {
+    "name": "네트워크 장치",
+    "description": "SNMP 및 라우터 API를 통해 라우터, 스위치 및 액세스 포인트를 확인하고 관리합니다."
+  },
+  "tab": {
+    "title": "네트워크"
+  },
+  "card": {
+    "title": "네트워크 장치",
+    "loading": "로딩 중",
+    "uptime": "{{time}} 동안 가동 중"
+  },
+  "permissions": {
+    "view": {
+      "title": "네트워크 장치 보기",
+      "description": "네트워크 탭을 열고 장치, 포트 및 클라이언트를 확인합니다."
+    },
+    "manage": {
+      "title": "네트워크 장치 관리",
+      "description": "장치를 추가하고, 포트를 켜고 끄며, PoE 전원 순환 및 장치 재부팅을 수행합니다."
+    }
+  },
+  "description": "라우터, 스위치 및 액세스 포인트를 추가하여 포트와 클라이언트를 모니터링합니다. 키는 암호화되어 저장되며 다시 표시되지 않습니다.",
+  "summary": "{{count}}개 장치, {{down}}개 다운",
+  "ports": "{{total}}개 포트 중 {{up}}개 가동 중",
+  "empty": "아직 네트워크 장치가 없습니다.",
+  "add": "장치 추가",
+  "edit": "편집",
+  "delete": "삭제",
+  "back": "뒤로",
+  "saved": "저장됨",
+  "deleteConfirm": "{{name}}을(를) 삭제하시겠습니까?",
+  "status": {
+    "unknown": "아직 읽지 않음",
+    "up": "가동 중",
+    "down": "다운"
+  },
+  "drivers": {
+    "snmp": "SNMP 장치",
+    "routeros": "MikroTik RouterOS",
+    "opnsense": "OPNsense",
+    "openwrt": "OpenWrt"
+  },
+  "fields": {
+    "community": "커뮤니티",
+    "writeCommunity": "쓰기 커뮤니티(선택 사항)",
+    "username": "사용자 이름",
+    "password": "비밀번호",
+    "authProtocol": "인증",
+    "authKey": "인증 키",
+    "privProtocol": "개인정보",
+    "privKey": "개인정보 키",
+    "apiKey": "API 키",
+    "apiSecret": "API 시크릿"
+  },
+  "form": {
+    "addTitle": "장치 추가",
+    "editTitle": "장치 편집",
+    "device": "장치",
+    "access": "접근",
+    "type": "유형",
+    "name": "이름",
+    "address": "주소",
+    "port": "포트",
+    "poll": "읽기 주기(초)",
+    "pollHint": "15에서 3600 사이.",
+    "snmpVersion": "SNMP 버전",
+    "scheme": "웹 주소 접두사",
+    "ca": "인증 기관(선택 사항)",
+    "caHint": "사설 인증서를 사용하는 경우 CA 또는 장치 인증서의 PEM을 붙여넣으세요.",
+    "caSet": "인증서가 저장되었습니다. 새 인증서를 붙여넣어 교체하세요.",
+    "keepKeys": "저장된 키를 유지하려면 비워두세요",
+    "test": "테스트",
+    "testNeedsKeys": "테스트할 키를 입력하세요.",
+    "testOk": "{{name}}에 연결되었습니다.",
+    "save": "저장",
+    "add": "추가"
+  },
+  "discover": {
+    "title": "장치 찾기",
+    "hint": "주소 범위에서 SNMP 장치를 찾습니다. 최대 256개 주소까지 지원하며, 서버가 해당 범위에 도달할 수 있어야 합니다.",
+    "range": "주소 범위",
+    "scan": "스캔",
+    "scanning": "스캔 중",
+    "none": "응답하는 장치가 없습니다.",
+    "added": "추가됨"
+  },
+  "view": {
+    "refresh": "지금 읽기",
+    "reboot": "재시작",
+    "rebootConfirm": "{{name}}을(를) 재시작하시겠습니까? 잠시 동안 오프라인 상태가 됩니다.",
+    "rebooting": "{{name}}이(가) 재시작 중입니다.",
+    "ports": "포트",
+    "clients": "클라이언트",
+    "neighbors": "인접 장치",
+    "type": "유형",
+    "address": "주소",
+    "model": "모델",
+    "version": "버전",
+    "uptime": "가동 시간",
+    "cpu": "CPU",
+    "memory": "메모리",
+    "traffic": "트래픽",
+    "noTraffic": "트래픽은 두 번의 읽기 후에 표시됩니다.",
+    "noPorts": "아직 포트가 없습니다. 장치를 읽어서 이 항목을 채우세요.",
+    "port": "포트",
+    "speed": "속도",
+    "vlan": "VLAN",
+    "rx": "수신",
+    "tx": "송신",
+    "errors": "오류",
+    "poe": "PoE",
+    "poeOn": "전원 공급 중",
+    "poeIdle": "켜짐",
+    "poeOff": "꺼짐",
+    "linkUp": "링크 연결됨",
+    "linkDown": "링크 없음",
+    "disabled": "꺼짐",
+    "watch": "이 포트가 변경되면 알림",
+    "unwatch": "이 포트 알림 중지",
+    "turnOff": "포트 끄기",
+    "turnOn": "포트 켜기",
+    "portOffConfirm": "포트 {{name}}을(를) 끄시겠습니까? 연결된 모든 장치가 연결을 잃습니다.",
+    "portOff": "포트 {{name}}이(가) 꺼졌습니다.",
+    "portOn": "포트 {{name}}이(가) 켜졌습니다.",
+    "poeCycle": "PoE 전원 순환",
+    "poeConfirm": "포트 {{name}}의 전원을 몇 초 동안 끊으시겠습니까?",
+    "poeDone": "{{name}}에서 PoE가 순환되었습니다.",
+    "filter": "클라이언트 검색",
+    "noClients": "클라이언트를 찾을 수 없습니다.",
+    "client": "이름",
+    "ip": "IP 주소",
+    "mac": "MAC 주소",
+    "on": "켜짐",
+    "source": "확인 위치",
+    "kind": {
+      "dhcp": "DHCP",
+      "arp": "ARP",
+      "wifi": "Wi-Fi",
+      "table": "MAC 테이블"
+    },
+    "noNeighbors": "인접 장치를 찾을 수 없습니다.",
+    "neighbor": "인접 장치",
+    "remotePort": "상대방 포트"
+  },
+  "operations": {
+    "device": "장치",
+    "port": "포트",
+    "state": "상태",
+    "stateUp": "켜짐",
+    "stateDown": "꺼짐",
+    "list": {
+      "title": "네트워크 장치 목록"
+    },
+    "ports": {
+      "title": "장치 포트 목록"
+    },
+    "poll": {
+      "title": "네트워크 장치 읽기"
+    },
+    "setPort": {
+      "title": "포트 켜기/끄기"
+    },
+    "poe": {
+      "title": "포트 PoE 전원 순환"
+    },
+    "reboot": {
+      "title": "네트워크 장치 재시작"
+    },
+    "health": {
+      "title": "네트워크 장치"
+    }
+  },
+  "widget": {
+    "name": "네트워크 장치",
+    "description": "라우터, 스위치 및 액세스 포인트 중 어떤 것이 실행 중인지 확인합니다.",
+    "summary": "{{total}}개 중 {{up}}개 실행 중"
+  }
+}

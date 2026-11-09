@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Beheer DNS-records en domeinen bij Cloudflare, Route 53, Namecheap en andere providers."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domeinen",
+    "loading": "Laden",
+    "empty": "Nog geen domeinen. Open DNS om een aanmelding toe te voegen.",
+    "ok": "{{domains}} domeinen, geen die binnenkort verlopen",
+    "accounts": "{{count}} aanmeldingen",
+    "failingLinks": "{{count}} gekoppelde records mislukt"
+  },
+  "permissions": {
+    "view": {
+      "title": "DNS bekijken",
+      "description": "Open het tabblad DNS en bekijk zones, records, domeinen en health checks."
+    },
+    "edit": {
+      "title": "DNS-records wijzigen",
+      "description": "Records toevoegen, wijzigen en verwijderen, zonebestanden importeren en domeinen vernieuwen."
+    },
+    "manage": {
+      "title": "DNS-aanmeldingen beheren",
+      "description": "Provider-aanmeldingen toevoegen, records koppelen aan hosts, domeinen bewaken en zonekopieën herstellen."
+    }
+  },
+  "operations": {
+    "zone": "Zone",
+    "type": "Type",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Naam",
+    "content": "Waarde",
+    "contentOptional": "Waarde (laat leeg om op alles te matchen)",
+    "ttl": "TTL in seconden",
+    "label": "Label",
+    "zones": {
+      "title": "DNS-zones tonen"
+    },
+    "records": {
+      "title": "DNS-records tonen"
+    },
+    "domains": {
+      "title": "Domeinen en vervaldatums tonen"
+    },
+    "check": {
+      "title": "Zone controleren"
+    },
+    "upsert": {
+      "title": "DNS-record instellen"
+    },
+    "delete": {
+      "title": "DNS-record verwijderen"
+    },
+    "snapshot": {
+      "title": "Kopie van zone opslaan"
+    },
+    "links": {
+      "title": "Gekoppelde records bijwerken"
+    },
+    "expiry": {
+      "title": "Domeinverval"
+    }
+  },
+  "description": "Voeg je DNS- en registrar-aanmeldingen toe om records te beheren en domeinen op één plek te bewaken. Sleutels worden versleuteld opgeslagen en nooit meer getoond.",
+  "summary": "{{zones}} zones, {{domains}} domeinen",
+  "saved": "Opgeslagen",
+  "delete": "Verwijderen",
+  "edit": "Bewerken",
+  "back": "Terug",
+  "refresh": "Vernieuwen",
+  "section": {
+    "zones": "Zones",
+    "domains": "Domeinen",
+    "links": "Koppelingen",
+    "accounts": "Aanmeldingen"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "API-token",
+    "accessKeyId": "Access key-ID",
+    "secretAccessKey": "Geheime access key",
+    "sessionToken": "Sessietoken (optioneel)",
+    "apiUser": "API-gebruiker",
+    "apiKey": "API-sleutel",
+    "userName": "Gebruikersnaam (indien anders dan de API-gebruiker)",
+    "clientIp": "Toegestaan IP-adres",
+    "apiSecret": "API-geheim",
+    "environment": "Omgeving",
+    "environment_production": "Productie",
+    "environment_ote": "Test (OTE)",
+    "secretApiKey": "Geheime API-sleutel",
+    "token": "Persoonlijk toegangstoken"
+  },
+  "zones": {
+    "empty": "Nog geen zones.",
+    "emptyHint": "Voeg een providerlogin toe in Logins om de zones te zien."
+  },
+  "zone": {
+    "records": "Records",
+    "health": "Gezondheid",
+    "copies": "Kopieën",
+    "files": "Bestanden",
+    "filter": "Records filteren",
+    "empty": "Geen records."
+  },
+  "record": {
+    "section": "Record",
+    "addTitle": "Record toevoegen",
+    "editTitle": "Record bewerken",
+    "add": "Record toevoegen",
+    "save": "Opslaan",
+    "type": "Type",
+    "name": "Naam",
+    "nameHint": "Gebruik @ voor {{zone}} zelf",
+    "value": "Waarde",
+    "priority": "Prioriteit",
+    "ttl": "TTL (seconden)",
+    "ttlHint": "Hoe lang resolvers het antwoord bewaren. 300 is 5 minuten.",
+    "ttlAuto": "1 betekent automatisch.",
+    "proxied": "Geproxyd",
+    "proxiedHint": "Verkeer door Cloudflare sturen.",
+    "proxiedBadge": "Geproxyd",
+    "comment": "Notitie",
+    "readOnly": "Beheerd door de provider",
+    "deleteConfirm": "Het {{type}}-record {{name}} verwijderen?"
+  },
+  "account": {
+    "add": "Login toevoegen",
+    "addTitle": "DNS-login toevoegen",
+    "editTitle": "DNS-login bewerken",
+    "save": "Opslaan",
+    "login": "Login",
+    "provider": "Provider",
+    "name": "Naam",
+    "namePlaceholder": "Hoofd Cloudflare",
+    "keep": "Laat leeg om de opgeslagen waarde te behouden",
+    "registrar": "Deze provider is ook een registrar, dus de domeinen worden weergegeven in Domeinen.",
+    "options": "Opties",
+    "autoBackup": "Kopieën van zones bewaren",
+    "autoBackupHint": "Een kopie opslaan vóór elke wijziging en wanneer een zone buiten Termix om wordt gewijzigd.",
+    "checkHealth": "Zones dagelijks controleren",
+    "checkHealthHint": "Gezondheidscontroles dagelijks uitvoeren en waarschuwen bij nieuwe problemen.",
+    "test": "Testen",
+    "testOk": "Werkt. {{zones}} zones en {{domains}} domeinen gevonden.",
+    "deleteConfirm": "{{name}} verwijderen? De kopieën en koppelingen gaan mee. Bij de provider verandert niets.",
+    "empty": "Nog geen logins.",
+    "emptyHint": "Voeg een Cloudflare-, Route 53-, Namecheap- of andere login toe om te beginnen.",
+    "lastSync": "Laatst gecontroleerd op {{date}}",
+    "never": "Nog niet gecontroleerd",
+    "failed": "De login is mislukt"
+  },
+  "domains": {
+    "empty": "Nog geen domeinen.",
+    "emptyHint": "Registrar-logins tonen hun domeinen hier. Je kunt ook elk domein bij naam volgen.",
+    "watchPlaceholder": "example.com",
+    "watch": "Domein volgen",
+    "unwatch": "Niet meer volgen",
+    "watched": "Gevolgd",
+    "noRenew": "Automatische verlenging uit",
+    "unlocked": "Niet vergrendeld",
+    "unknown": "Registrar onbekend",
+    "expires": "Verloopt op {{date}}",
+    "expired": "Verlopen",
+    "days": "{{count}} dagen resterend",
+    "refreshFailed": "{{count}} opzoeken mislukt"
+  },
+  "link": {
+    "add": "Link toevoegen",
+    "addTitle": "Link toevoegen",
+    "editTitle": "Link bewerken",
+    "save": "Opslaan",
+    "record": "Record",
+    "address": "Adres",
+    "zone": "Zone",
+    "pickZone": "Kies een zone",
+    "source": "Wijs het toe aan",
+    "sourceHost": "Een host",
+    "sourcePublic4": "Het openbare IPv4-adres van deze server",
+    "sourcePublic6": "Het openbare IPv6-adres van deze server",
+    "source_host": "Host",
+    "source_public4": "Openbaar IPv4",
+    "source_public6": "Openbaar IPv6",
+    "host": "Host",
+    "pickHost": "Kies een host",
+    "hostHint": "Het record volgt het adres van de host. Het wordt bijgewerkt wanneer de host verandert.",
+    "publicHint": "Termix zoekt zijn openbare adres op en houdt het record gesynchroniseerd, zoals dynamische DNS.",
+    "enabled": "Houd dit record bijgewerkt",
+    "empty": "Nog geen links.",
+    "emptyHint": "Een link houdt een record gericht op een host of op het openbare adres van deze server.",
+    "off": "Uit",
+    "hostGone": "Host niet gevonden",
+    "lastSync": "Gecontroleerd op {{date}}",
+    "never": "Nog niet gecontroleerd",
+    "syncNow": "Nu bijwerken",
+    "updated": "Het record is bijgewerkt",
+    "unchanged": "Het record was al correct",
+    "deleteConfirm": "De link voor {{name}} verwijderen? Het record blijft op zijn huidige locatie staan."
+  },
+  "diff": {
+    "none": "Er verandert niets.",
+    "add": "Toevoegen",
+    "change": "Wijzigen",
+    "remove": "Verwijderen"
+  },
+  "copies": {
+    "hint": "Kopieën worden opgeslagen vóór elke wijziging en eenmaal per dag wanneer een zone buiten Termix om is gewijzigd.",
+    "save": "Kopie opslaan",
+    "saved": "Kopie opgeslagen",
+    "manualLabel": "Handmatige kopie",
+    "empty": "Nog geen kopieën.",
+    "count": "{{count}} records",
+    "compare": "Vergelijken met nu",
+    "restore": "Herstellen",
+    "restoreConfirm": "Deze kopie herstellen? Er worden {{count}} wijzigingen aangebracht bij de provider. Eerst wordt een kopie van de huidige records opgeslagen.",
+    "restored": "Hersteld. {{count}} wijzigingen aangebracht.",
+    "source": {
+      "manual": "Handmatig",
+      "auto": "Dagelijks",
+      "before": "Vóór wijziging"
+    }
+  },
+  "files": {
+    "export": "Zonebestand downloaden",
+    "exportHint": "Download de records als een BIND-zonebestand.",
+    "import": "Importeer een zonebestand",
+    "placeholder": "Plak hier een BIND-zonebestand",
+    "replace": "Verwijder records die niet in het bestand staan",
+    "replaceHint": "Uit: de import voegt alleen records toe en wijzigt bestaande records.",
+    "preview": "Voorbeeld",
+    "apply": "Toepassen",
+    "applied": "Geïmporteerd. {{count}} wijzigingen uitgevoerd.",
+    "skipped": "Overgeslagen:"
+  },
+  "health": {
+    "run": "Controles uitvoeren",
+    "running": "Bezig",
+    "propagation": "Resolvers controleren",
+    "propagationTitle": "Openbare resolvers",
+    "lastRun": "Laatste uitvoering {{date}}",
+    "empty": "Er zijn nog geen controles uitgevoerd voor deze zone.",
+    "record": "Record",
+    "resolver": "Resolver",
+    "answer": "Antwoord",
+    "noAnswer": "Geen antwoord",
+    "delegation": {
+      "error": "De nameservers konden niet worden opgehaald.",
+      "none": "De zone heeft geen nameservers op internet. Het domein wijst mogelijk niet naar deze provider.",
+      "mismatch": "Het domein gebruikt andere nameservers dan de provider: {{found}}.",
+      "ok": "Het domein wijst naar {{count}} nameservers."
+    },
+    "soa": {
+      "differ": "De nameservers komen niet overeen over de zoneversie ({{count}} versies). Een wijziging wordt mogelijk nog verspreid.",
+      "same": "{{count}} nameservers komen overeen over de zoneversie."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC kon niet worden gecontroleerd.",
+      "off": "DNSSEC is niet ingeschakeld.",
+      "valid": "DNSSEC is ingeschakeld en geldig.",
+      "broken": "DNSSEC is ingesteld bij de registrar, maar is niet geldig. Resolvers die dit controleren, zullen falen."
+    },
+    "cname": {
+      "conflict": "{{name}} heeft een CNAME en andere records. Dit is niet toegestaan.",
+      "apex": "De zone-root kan geen CNAME zijn.",
+      "dangling": "{{name}} wijst naar {{target}}, wat niet kan worden opgelost.",
+      "ok": "Alle CNAME-doelen kunnen worden opgelost."
+    },
+    "spf": {
+      "missing": "Het domein ontvangt e-mail, maar heeft geen SPF-record.",
+      "multiple": "Er is meer dan één SPF-record. E-mailservers zullen deze allemaal afwijzen.",
+      "lookups": "Het SPF-record voert {{count}} lookups uit. De limiet is 10.",
+      "ok": "SPF is ingesteld ({{count}} lookups)."
+    },
+    "dmarc": {
+      "missing": "Er is geen DMARC-record.",
+      "none": "DMARC is ingesteld op alleen monitor.",
+      "ok": "DMARC is ingesteld."
+    },
+    "dkim": {
+      "none": "Er zijn geen DKIM-sleutels gevonden in deze zone.",
+      "found": "{{count}} DKIM-sleutels gevonden."
+    },
+    "mx": {
+      "unresolved": "De mailserver {{host}} kan niet worden opgelost."
+    },
+    "mail": {
+      "none": "Het domein heeft geen mailrecords."
+    },
+    "caa": {
+      "ok": "CAA-records beperken wie certificaten kan uitgeven.",
+      "none": "Er zijn geen CAA-records. Elke certificeringsinstantie kan certificaten uitgeven."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domeinen, domeinen die binnenkort verlopen en mislukte records.",
+    "domains": "Domeinen",
+    "expiring": "Binnenkort verlopen",
+    "failingLinks": "Mislukte koppelingen",
+    "failingAccounts": "Mislukte inlogpogingen"
+  }
+}

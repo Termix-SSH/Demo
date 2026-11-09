@@ -1,0 +1,294 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Sien, trek, maak fiks en stoot git-repos op jou gasheerbedieners, en hou hulle op datum met outo-trek."
+  },
+  "common": {
+    "save": "Stoor",
+    "cancel": "Kanselleer",
+    "back": "Terug",
+    "loading": "Laai tans..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Gebruik Git",
+      "description": "Sien git-repos op gasheerbedieners wat jy kan bereik, en verander hulle op gasheerbedieners wat jy kan redigeer."
+    },
+    "runCommands": {
+      "title": "Voer opdragte uit na outo-trek",
+      "description": "Stel 'n opdrag in wat op die gasheerbediener uitgevoer word nadat 'n outo-trek nuwe fiksings inbring."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Bestuur git-repos op hierdie gasheerbediener vanaf die Git-oortjie."
+      },
+      "repoRoots": {
+        "label": "Deursoek vouers",
+        "description": "Vouers wat deursoek word vir repos wanneer jy hierdie gasheerbediener deursoek. Skei hulle met kommas. Verstek is die tuisvouer.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Gebruik sudo",
+        "description": "Voer git uit as root met sudo. Slegs vir repos wat die aanmeldgebruiker nie kan gebruik nie."
+      },
+      "readOnly": {
+        "label": "Slegs-lees",
+        "description": "Wys repos maar verander hulle nooit op hierdie gasheerbediener nie."
+      },
+      "showPanel": {
+        "label": "Paneel langs die terminaal",
+        "description": "Bied die Git-paneel aan op hierdie gasheerbediener se terminaal-oortjies."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Maak die paneel oop saam met die terminaal",
+        "description": "Wys die Git-paneel wanneer 'n terminaal oopmaak op 'n gasheerbediener wat dit het."
+      },
+      "companionSide": {
+        "label": "Paneel se kant",
+        "description": "Waar die paneel langs die terminaal sit.",
+        "right": "Regs",
+        "left": "Links",
+        "bottom": "Onder"
+      },
+      "companionSize": {
+        "label": "Paneel se grootte",
+        "description": "Die breedte van die paneel, of sy hoogte onderaan, in pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Randknoppie",
+        "description": "Wys 'n klein knoppie op die terminaal se rand om die paneel oop te maak."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Maak Git oop vanaf 'n gasheerbediener.",
+    "error": "Kon nie git laai vanaf hierdie gasheerbediener nie.",
+    "disabled": "Git is afgeskakel vir hierdie gasheerbediener. Skakel dit aan in die gasheerbediener se instellings.",
+    "sudo": "Dit vereis 'n root-aanmelding, wagwoordlose sudo of 'n gestoorde Sudo-wagwoord.",
+    "refresh": "Verfris",
+    "readOnly": "Slegs-lees",
+    "notInstalled": "git nie geïnstalleer nie",
+    "notInstalledTitle": "git is nie op hierdie gasheerbediener geïnstalleer nie",
+    "notInstalledHint": "Installeer git met die gasheerbediener se pakkethandhaerder, en verfris dan."
+  },
+  "actions": {
+    "ok": "Klaar",
+    "failed": "Misluk",
+    "noOutput": "Geen uitset nie."
+  },
+  "repos": {
+    "add": "Voeg repo by",
+    "search": "Soek repos",
+    "empty": "Nog geen repos nie. Voeg een by om te begin.",
+    "noMatch": "Geen repos pas nie.",
+    "viewOnly": "Geen repos is by hierdie gasheerbediener gevoeg nie.",
+    "detached": "ontkoppel",
+    "changes_one": "{{count}} verandering",
+    "changes_other": "{{count}} veranderinge",
+    "conflicts": "Konflikte",
+    "auto": "Outo-trek",
+    "autoFailing": "Trek misluk",
+    "remove": "Verwyder van lys",
+    "removeTitle": "Verwyder {{name}}?",
+    "removeBody": "Die repo word slegs hier vergeet. Niks word op die gasheerbediener verwyder nie.",
+    "removed": "{{name}} verwyder",
+    "error": {
+      "missing": "Vouer ontbreek",
+      "notrepo": "Nie 'n git-repo nie",
+      "unreadable": "Kan nie lees nie"
+    }
+  },
+  "add": {
+    "title": "Voeg repos by",
+    "modeScan": "Deursoek",
+    "modePath": "Gids",
+    "modeClone": "Kloon",
+    "scanHint": "Soek na git-repos in {{roots}}. Verander die gidse in die gasheer-instellings.",
+    "rescan": "Deursoek weer",
+    "noneFound": "Geen nuwe repos gevind nie.",
+    "picked": "Geselekteer",
+    "addPicked_one": "Voeg {{count}} repo by",
+    "addPicked_other": "Voeg {{count}} repos by",
+    "addAll": "Voeg alles by",
+    "folder": "Gids op die gasheer",
+    "folderHint": "Volle pad, of begin met ~ vir die tuisgids. Dit moet reeds 'n git-repo wees.",
+    "addRepo": "Voeg repo by",
+    "url": "Adres",
+    "urlHint": "Gebruik die sleutels en git-instellings van die gasheer se aanmeldgebruiker.",
+    "dest": "Kloon na",
+    "destHint": "Die gids mag nog nie bestaan nie.",
+    "clone": "Kloon",
+    "cloned": "Gekloon",
+    "added_one": "{{count}} repo bygevoeg",
+    "added_other": "{{count}} repos bygevoeg",
+    "failed": "Kon nie die repo byvoeg nie",
+    "scanFailed": "Kon nie die gasheer deursoek nie"
+  },
+  "repo": {
+    "ahead": "{{count}} voor",
+    "behind": "{{count}} agter",
+    "fetch": "Haal op",
+    "fetched": "Opgehaal",
+    "pull": "Trek",
+    "pulled": "Getrek",
+    "push": "Stoot",
+    "pushed": "Gestoot",
+    "viewChanges": "Veranderinge",
+    "viewBranches": "Takke",
+    "viewHistory": "Gesiedenis",
+    "viewStash": "Stoor",
+    "viewAuto": "Outo-trek"
+  },
+  "changes": {
+    "loadFailed": "Kon nie die veranderinge lees nie.",
+    "clean": "Niks om te bevestig nie. Die werkboom is skoon.",
+    "stagedTitle": "Gestapel ({{count}})",
+    "unstagedTitle": "Veranderinge ({{count}})",
+    "stage": "Stapel",
+    "staged": "Gestapel",
+    "unstage": "Ontstapel",
+    "unstaged": "Ontstapel",
+    "stageAll": "Stapel alles",
+    "renamed": "Hernoem",
+    "discard": "Verwerp",
+    "discardTitle": "Verwerp veranderinge aan {{name}}?",
+    "discardBody": "Die veranderinge in hierdie lêer word verwyder en kan nie teruggebring word nie.",
+    "discarded": "Veranderinge verwerp",
+    "message": "Bevestigingsboodskap",
+    "messagePlaceholder": "Wat het verander",
+    "commit": "Bevestig",
+    "commitAll": "Bevestig alle veranderinge",
+    "commitStaged_one": "Bevestig {{count}} gestapelde lêer",
+    "commitStaged_other": "Bevestig {{count}} gestapelde lêers",
+    "committed": "Bevestig",
+    "noDiff": "Geen veranderinge om te wys nie.",
+    "truncated": "Die verskil is lank, slegs die begin word gewys."
+  },
+  "branches": {
+    "loadFailed": "Kon nie die takke lees nie.",
+    "empty": "Nog geen takke nie.",
+    "current": "Huidig",
+    "remote": "Afstand",
+    "gone": "Stroomop is weg",
+    "newName": "Nuwe tak",
+    "create": "Skep tak",
+    "created": "Tak {{name}} geskep",
+    "switch": "Wissel",
+    "switched": "Gewissel na {{name}}",
+    "merge": "Voeg by huidige",
+    "mergeTitle": "Voeg {{name}} by {{into}}?",
+    "mergeBody": "'n Samevoeging met konflikte word dadelik ongedaan gemaak.",
+    "merged": "{{name}} gevoeg",
+    "delete": "Vee tak uit",
+    "deleteTitle": "Vee {{name}} uit?",
+    "deleteBody": "Git weier as die tak commits het wat nie gevoeg is nie.",
+    "deleted": "{{name}} uitgevee",
+    "forceTitle": "Dwing uitvee van {{name}}?",
+    "forceBody": "Hierdie tak het commits wat nie gevoeg is nie. Hulle gaan verlore as jy dit uitvee.",
+    "forceDelete": "Dwing uitvee"
+  },
+  "history": {
+    "loadFailed": "Kon nie die geskiedenis lees nie.",
+    "empty": "Nog geen commits nie.",
+    "branch": "Hierdie tak",
+    "all": "Alle takke",
+    "more": "Laai meer"
+  },
+  "stash": {
+    "loadFailed": "Kon nie die stasie lees nie.",
+    "title": "Stasies",
+    "empty": "Geen stasies nie.",
+    "message": "Boodskap",
+    "messagePlaceholder": "Opsioneel",
+    "untracked": "Sluit ongesporde lêers in",
+    "push": "Stoor veranderinge",
+    "pushDone": "Veranderinge gestoor",
+    "apply": "Pas toe",
+    "applyDone": "Stasie toegepas",
+    "pop": "Haal uit",
+    "popDone": "Stasie toegepas en verwyder",
+    "drop": "Verwerp",
+    "dropDone": "Stasie verwerp",
+    "dropTitle": "Verwerp {{name}}?",
+    "dropBody": "Die stasie word uitgevee en kan nie teruggebring word nie.",
+    "remotes": "Afstande",
+    "noRemotes": "Geen afstande nie."
+  },
+  "auto": {
+    "intro": "Trek op 'n skedule met vinnige vorentoe slegs. Dit voeg nooit by nie, en dit slaan die repo oor wanneer dit onbevestigde veranderinge het of van sy stroomop verskil.",
+    "noUpstream": "Hierdie tak het nog geen stroomop nie, so outo-trek sal dit oorslaan.",
+    "enable": "Outo-trek",
+    "enableHint": "Loop as jy, met jou toegang tot hierdie gasheer.",
+    "interval": "Elke (minute)",
+    "intervalHint": "Hoe lank om te wag tussen trekke.",
+    "post": "Opdrag na 'n trek",
+    "postHint": "Loop in die repo-map nadat nuwe commits aankom. Benodig die opdragte-toestemming.",
+    "saved": "Outo-trek gestoor",
+    "saveFailed": "Kon nie outo-trek stoor nie",
+    "runNow": "Loop nou",
+    "next": "Volgende trek {{when}}",
+    "runs": "Onlangse loops",
+    "noRuns": "Nog geen loops nie.",
+    "outcome": {
+      "pulled": "Getrek",
+      "uptodate": "Op datum",
+      "skipped": "Oorgeslaan",
+      "failed": "Misluk"
+    }
+  },
+  "card": {
+    "title": "Git-repos",
+    "loading": "Laai tans...",
+    "refresh": "Verfris",
+    "empty": "Geen gasheer het nog Git-repos nie.",
+    "allClean": "Alle repos is skoon en op datum.",
+    "summary_one": "{{count}} repo | {{attention}} benodig aandag",
+    "summary_other": "{{count}} repos | {{attention}} benodig aandag"
+  },
+  "companion": {
+    "toggle": "Git-paneel",
+    "openTab": "Maak Git oop",
+    "here": "Repo van hierdie gids",
+    "all": "Alle repos"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Lys git-repos"
+    },
+    "fetch": {
+      "title": "Haal 'n repo op"
+    },
+    "pull": {
+      "title": "Trek 'n repo"
+    },
+    "push": {
+      "title": "Stoot 'n repo"
+    },
+    "checkout": {
+      "title": "Wissel tak",
+      "branch": "Tak"
+    },
+    "reset-hard": {
+      "title": "Stel 'n repo hard terug",
+      "ref": "Stel terug na"
+    },
+    "repos": {
+      "title": "Git-repos",
+      "branch": "Tak",
+      "ahead": "Voor",
+      "behind": "Agter",
+      "changed": "Veranderinge"
+    },
+    "signals": {
+      "behind": "Repos agter",
+      "dirty": "Repos met veranderinge",
+      "pull-failing": "Outo-trek misluk"
+    }
+  }
+}

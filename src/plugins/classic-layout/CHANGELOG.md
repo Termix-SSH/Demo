@@ -28,11 +28,21 @@
 
 ### Fixed
 
+- Closing the command palette puts focus back on the terminal, so you can keep typing
 - Folder host counts now include sub-hosts, so a folder no longer shows more online hosts than it has
 - A host's status tooltip no longer covers its right click menu
 - The session timeout box in admin settings is as tall as its Save button
 - Recent activity in quick search opens the host you used, not another host with the same or its old name
 - A compact host row with the address and tags turned off fits on one line, with its buttons next to the name
+- The Manage tab shows the list or the editor, not both squeezed together, when the tab is narrow, like beside the sidebar on a tablet
+- The clear buttons in the folder and parent host pickers have a name and work from the keyboard
+- Protocol switches in the host editor have names for screen readers
+- Folders in the Manage tab start open even when the list loads after the tab opens
+- Picking another credential or defaults level while one is loading in the Manage tab no longer opens the first one
+- Dashboard host status and recent activity rows open with Enter or Space
+- Leaving the keybinding field without pressing a key stops recording
+- Clearing recent activity on the dashboard says so when it fails
+- Tab bar, keybinding and accent color buttons have names for screen readers
 
 ## 1.1.1
 

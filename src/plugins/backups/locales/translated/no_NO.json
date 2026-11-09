@@ -1,0 +1,451 @@
+{
+  "plugin": {
+    "name": "Sikkerhetskopieringer",
+    "description": "Sikkerhetskopier mapper, databaser og Docker-data på vertsene dine med restic, og bla deretter, last ned og gjenopprett."
+  },
+  "common": {
+    "save": "Lagre",
+    "cancel": "Avbryt",
+    "back": "Tilbake",
+    "delete": "Slett",
+    "done": "Ferdig",
+    "loading": "Laster inn...",
+    "refresh": "Oppdater",
+    "retry": "Prøv igjen"
+  },
+  "permissions": {
+    "use": {
+      "title": "Bruk sikkerhetskopieringer",
+      "description": "Sett opp sikkerhetskopieringsjobber og -lagre, kjør sikkerhetskopieringer, og bla, last ned og gjenopprett øyeblikksbilder på verter de kan redigere."
+    }
+  },
+  "tab": {
+    "title": "Sikkerhetskopieringer",
+    "viewJobs": "Jobber",
+    "viewRepos": "Lagre",
+    "viewHistory": "Historikk"
+  },
+  "hostTab": {
+    "title": "Sikkerhetskopieringer",
+    "noHost": "Åpne sikkerhetskopieringer fra en vert.",
+    "viewJobs": "Jobber",
+    "viewSnapshots": "Øyeblikksbilder",
+    "viewHistory": "Historikk",
+    "restic": "restic {{version}}",
+    "noRestic": "restic er ikke installert",
+    "sudo": "Termix må logge inn som root, eller som en bruker med passordløs sudo, for å kjøre sikkerhetskopieringer på denne verten.",
+    "statusFailed": "Kunne ikke lese denne verten"
+  },
+  "install": {
+    "missing": "restic er ikke installert på denne verten",
+    "tooOld": "restic på denne verten er eldre enn 0.17",
+    "hint": "Sikkerhetskopieringer bruker restic. Installer det med pakkehåndtereren, eller fra restic-utgivelsen på GitHub når pakken er for gammel.",
+    "button": "Installer restic",
+    "working": "Installerer...",
+    "title": "Installer restic?",
+    "desc": "Dette installerer restic på verten som root.",
+    "confirm": "Installer",
+    "done": "restic {{version}} er installert",
+    "failed": "Kunne ikke installere restic"
+  },
+  "status": {
+    "never": "Aldri kjørt",
+    "running": "Kjører",
+    "success": "Ferdig",
+    "warning": "Advarsler",
+    "failed": "Mislyktes",
+    "canceled": "Stoppet"
+  },
+  "time": {
+    "justNow": "akkurat nå",
+    "soon": "om et øyeblikk",
+    "ago": {
+      "minutes_one": "{{count}} minutt siden",
+      "minutes_other": "{{count}} minutter siden",
+      "hours_one": "{{count}} time siden",
+      "hours_other": "{{count}} timer siden",
+      "days_one": "{{count}} dag siden",
+      "days_other": "{{count}} dager siden"
+    },
+    "in": {
+      "minutes_one": "om {{count}} minutt",
+      "minutes_other": "om {{count}} minutter",
+      "hours_one": "om {{count}} time",
+      "hours_other": "om {{count}} timer",
+      "days_one": "om {{count}} dag",
+      "days_other": "om {{count}} dager"
+    }
+  },
+  "jobs": {
+    "add": "Legg til jobb",
+    "empty": "Ingen sikkerhetskopieringsjobber ennå",
+    "emptyHint": "Legg til en jobb for å sikkerhetskopiere mapper, databaser eller Docker-data.",
+    "emptyNoRepo": "Legg til et lagre først, slik at sikkerhetskopier har et sted å gå.",
+    "loadFailed": "Kunne ikke laste inn sikkerhetskopieringsjobbene",
+    "lastGood": "Sist sikkerhetskopiert {{when}}",
+    "noGood": "Ingen sikkerhetskopi ennå",
+    "next": "Neste {{when}}",
+    "paused": "På pause",
+    "run": "Kjør nå",
+    "stop": "Stopp",
+    "edit": "Rediger",
+    "snapshots": "Øyeblikksbilder",
+    "started": "{{name}} startet",
+    "runFailed": "Kunne ikke starte sikkerhetskopien"
+  },
+  "editor": {
+    "newTitle": "Ny sikkerhetskopi-oppgave",
+    "general": "Oppgave",
+    "host": "Vert",
+    "pickHost": "Velg en vert",
+    "name": "Navn",
+    "namePlaceholder": "Nattlig sikkerhetskopi",
+    "repository": "Oppbevaringssted",
+    "pickRepository": "Velg et oppbevaringssted",
+    "noRepos": "Du har ingen oppbevaringssteder denne verten kan bruke. Legg til ett i fanen Sikkerhetskopier først.",
+    "repoLocked": "Kun eieren av dette oppbevaringsstedet kan endre det.",
+    "enabled": "Kjør etter tidsplan",
+    "enabledHint": "Slå av for å pause tidsplanen. «Kjør nå» fungerer fortsatt.",
+    "oneFileSystem": "Hold deg til ett filsystem",
+    "oneFileSystemHint": "Hopp over andre disker og monteringene som finnes i de valgte mappene.",
+    "saved": "Oppgaven er lagret",
+    "saveFailed": "Kunne ikke lagre oppgaven",
+    "deleteTitle": "Slett {{name}}?",
+    "deleteDesc": "Oppgaven fjernes fra Termix. Øyeblikksbildene blir igjen i oppbevaringsstedet.",
+    "deleted": "Oppgaven er slettet",
+    "deleteFailed": "Kunne ikke slette oppgaven"
+  },
+  "sources": {
+    "add": "Legg til i sikkerhetskopi",
+    "addPaths": "Mapper",
+    "addDatabase": "Database",
+    "addDocker": "Docker",
+    "remove": "Fjern",
+    "paths": "Mapper og filer",
+    "folders": "Stier",
+    "foldersHint": "En full sti per linje.",
+    "excludes": "Hopp over",
+    "excludesHint": "Ét restic-mønster per linje, som *.log.",
+    "database": "Database",
+    "engine": "Type",
+    "engines": {
+      "mysql": "MySQL eller MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Innlogging",
+    "ownLogin": "Skriv inn en innlogging her",
+    "noDatabasesPlugin": "Slå på Databases-tillegget for å velge en lagret innlogging.",
+    "address": "Adresse",
+    "addressPlaceholder": "Tom for lokal sokkel",
+    "port": "Port",
+    "username": "Bruker",
+    "password": "Passord",
+    "passwordSaved": "Lagret, la stå tomt for å beholde det",
+    "runAs": "Kjør som",
+    "runAsHint": "En Linux-bruker å kjøre dumpeoperasjonen som, for eksempel postgres. Tomt kjører det som root.",
+    "databases": "Databaser",
+    "databasesHint": "Ét navn per linje. La stå tomt for å sikkerhetskopiere alle.",
+    "sqliteFiles": "Databasefiler",
+    "sqliteFilesHint": "En full sti per linje. Hver fil kopieres trygt mens den er i bruk.",
+    "docker": "Docker",
+    "stacks": "Stabler",
+    "volumes": "Volumer",
+    "noStacks": "Ingen compose-stabler funnet",
+    "noVolumes": "Ingen volumer funnet",
+    "dockerFailed": "Kunne ikke liste Docker på denne verten",
+    "stop": "Stopp stakker under sikkerhetskopiering",
+    "stopHint": "Valgte stakker stoppes først og startes på nytt etterpå, slik at filene deres ikke endres mens de leses."
+  },
+  "schedule": {
+    "title": "Tidsplan",
+    "manual": "Manuelt",
+    "daily": "Daglig",
+    "weekly": "Ukentlig",
+    "custom": "Egendefinert",
+    "day": "Dag",
+    "time": "Tid",
+    "cron": "Cron",
+    "cronHint": "Minutt, time, dag i måned, måned, dag i uke.",
+    "cronInvalid": "Denne cron-uttrykket er ugyldig",
+    "timezone": "Tidssone",
+    "serverTime": "Servertid",
+    "manualHint": "Denne jobben kjører kun når du trykker på «Kjør nå».",
+    "manualOnly": "Manuelt",
+    "next": "Neste kjøring {{time}}",
+    "noNext": "Denne tidsplanen kjører aldri",
+    "dailyAt": "Daglig kl. {{time}}",
+    "weeklyAt": "{{day}} kl. {{time}}",
+    "days": {
+      "0": "Søndag",
+      "1": "Mandag",
+      "2": "Tirsdag",
+      "3": "Onsdag",
+      "4": "Torsdag",
+      "5": "Fredag",
+      "6": "Lørdag"
+    }
+  },
+  "keep": {
+    "title": "Behold",
+    "last": "Siste",
+    "daily": "Daglig",
+    "weekly": "Ukentlig",
+    "monthly": "Månedlig",
+    "yearly": "Årlig",
+    "hint": "Etter hver sikkerhetskopiering fjernes eldre øyeblikksbilder av denne jobben, slik at bare disse beholdes. 0 beholder alt."
+  },
+  "hooks": {
+    "title": "Kommandoer",
+    "pre": "Før",
+    "preHint": "Kjører som root før sikkerhetskopieringen. Hvis den mislykkes, stoppes sikkerhetskopieringen.",
+    "post": "Etter",
+    "postHint": "Kjører som root etter sikkerhetskopieringen, selv om den mislyktes. TERMIX_BACKUP_STATUS inneholder resultatet."
+  },
+  "alerts": {
+    "title": "Varsler",
+    "onFailure": "Varsle når en sikkerhetskopiering mislykkes",
+    "onFailureHint": "Varsler også om advarsler, og én gang når den fungerer igjen.",
+    "staleDays": "Dager uten sikkerhetskopiering",
+    "staleDaysHint": "Varsle når ingen sikkerhetskopiering har fungert i så mange dager. 0 slår det av."
+  },
+  "repos": {
+    "add": "Legg til oppbevaringssted",
+    "empty": "Ingen oppbevaringssteder ennå",
+    "emptyHint": "Et oppbevaringssted er der sikkerhetskopier lagres, som en S3-bøtte eller en mappe.",
+    "loadFailed": "Kunne ikke laste oppbevaringssteder",
+    "jobCount_one": "{{count}} jobb",
+    "jobCount_other": "{{count}} jobber",
+    "newTitle": "Nytt oppbevaringssted",
+    "storage": "Lagring",
+    "name": "Navn",
+    "namePlaceholder": "Ekstern S3",
+    "kind": "Type",
+    "kinds": {
+      "s3": "S3-kompatibel",
+      "rest": "REST-server",
+      "rclone": "rclone",
+      "local": "Mappe på en vert"
+    },
+    "endpoint": "Endepunkt",
+    "endpointHint": "Tom for AWS. For MinIO, R2, B2 eller Wasabi, deres S3-adresse.",
+    "region": "Region",
+    "bucket": "Bucket",
+    "prefix": "Mappe i bucketen",
+    "prefixHint": "Valgfritt.",
+    "accessKeyId": "Tilgangs-ID",
+    "secretKey": "Hemmelig tilgangsnøkkel",
+    "secretSaved": "Lagret, la være tom for å beholde den",
+    "url": "Serveradresse",
+    "username": "Bruker",
+    "usernameHint": "La være tom hvis serveren ikke krever innlogging.",
+    "restPassword": "Passord",
+    "remote": "Eksternt navn",
+    "remoteHint": "Bare bokstaver, tall og _.",
+    "path": "Sti",
+    "rcloneConfig": "rclone-konfigurasjon",
+    "rcloneHint": "Linjene for det eksterne lagret fra rclone.conf. Kjør rclone config på datamaskinen din for å opprette dem. rclone må være installert på vertene.",
+    "rcloneSaved": "Lagret, la være tom for å beholde den",
+    "host": "Vert",
+    "pickHost": "Velg en vert",
+    "folder": "Mappe",
+    "folderHint": "Kun jobber på denne verten kan bruke den. En montert disk er best.",
+    "password": "Kryptering",
+    "resticPassword": "Lagerpassord",
+    "passwordHint": "La være tom, så lager Termix et sterkt passord. Ta vare på en kopi et trygt sted: uten det kan ikke sikkerhetskopiene leses.",
+    "passwordKeep": "Lagret, la være tom for å beholde det",
+    "passwordChangeHint": "Dette endrer bare hva Termix sender. Det endrer ikke passordet til et eksisterende lager.",
+    "reveal": "Vis passord",
+    "revealTitle": "Vil du vise lagerpassordet?",
+    "revealDesc": "Alle som har dette og lagringsnøklene, kan lese alle sikkerhetskopiene i dette lageret. Dette logges i revisjonsloggen.",
+    "revealFailed": "Kunne ikke lese passordet",
+    "copy": "Kopier",
+    "copied": "Kopiert",
+    "check": "Sjekk",
+    "checkFrom": "Sjekk fra",
+    "checkFromHint": "Verten som åpner lageret. Den må ha restic installert.",
+    "checkButton": "Sjekk",
+    "initButton": "Sjekk og sett opp",
+    "installRclone": "Installer rclone på denne verten",
+    "rcloneInstalled": "rclone {{version}} er installert.",
+    "rcloneFailed": "Kunne ikke installere rclone",
+    "checking": "Sjekker...",
+    "opened": "Lageret åpnet uten problemer.",
+    "created": "Lageret er satt opp og klart til bruk.",
+    "checkFailed": "Kunne ikke åpne lageret",
+    "checkNext": "Lagret. Sjekk det fra en vert for å sette det opp.",
+    "saved": "Lager lagret",
+    "saveFailed": "Kunne ikke lagre lageret",
+    "deleteTitle": "Vil du slette {{name}}?",
+    "deleteDesc": "Den fjernes bare fra Termix. Sikkerhetskopiene forblir i lagringen.",
+    "deleted": "Lager slettet",
+    "deleteFailed": "Kunne ikke slette lageret"
+  },
+  "snapshots": {
+    "noJobs": "Legg til en sikkerhetskopieringsjobb først.",
+    "job": "Jobb",
+    "titleFor": "Snapshots av {{name}}",
+    "empty": "Ingen snapshots ennå",
+    "loadFailed": "Kunne ikke lese snapshots",
+    "latest": "Siste",
+    "files_one": "{{count}} fil",
+    "files_other": "{{count}} filer",
+    "browse": "Bla gjennom",
+    "delete": "Slett",
+    "deleteTitle": "Slett dette øyeblikksbildet?",
+    "deleteDesc": "Øyeblikksbildet fra {{time}} fjernes permanent fra arkivet.",
+    "deleted": "Øyeblikksbilde slettet",
+    "deleteFailed": "Kunne ikke slette øyeblikksbildet",
+    "browseTitle": "Øyeblikksbilde {{time}}",
+    "root": "Rot",
+    "emptyFolder": "Denne mappen er tom",
+    "filesFailed": "Kunne ikke liste opp denne mappen",
+    "pick": "Velg",
+    "download": "Last ned",
+    "downloadZip": "Last ned som zip",
+    "downloadFailed": "Kunne ikke laste ned",
+    "restoreAll": "Gjenopprett alt",
+    "restorePicked_one": "Gjenopprett {{count}} element",
+    "restorePicked_other": "Gjenopprett {{count}} elementer"
+  },
+  "restore": {
+    "title": "Gjenopprett",
+    "what": "Hva",
+    "everything": "Alt i øyeblikksbildet.",
+    "more_one": "og {{count}} til",
+    "more_other": "og {{count}} til",
+    "where": "Hvor",
+    "host": "Vert",
+    "hostHint": "En hvilken som helst vert du kan redigere som kan nå arkivet.",
+    "localOnly": "Dette arkivet er en mappe på verten, så det kan bare gjenopprettes der.",
+    "toFolder": "Til en mappe",
+    "toOriginal": "Der det var",
+    "folder": "Mappe",
+    "folderHint": "Filer beholder sin fulle sti inne i denne mappen.",
+    "originalWarning": "Filer skrives tilbake til der de var og kan erstatte det som er der nå.",
+    "overwrite": "Filer som allerede finnes",
+    "overwriteOptions": {
+      "if-changed": "Erstatt når endret",
+      "always": "Alltid erstatt",
+      "if-newer": "Erstatt når sikkerhetskopien er nyere",
+      "never": "Aldri erstatt"
+    },
+    "start": "Gjenopprett",
+    "started": "Gjenoppretting startet",
+    "failed": "Kunne ikke starte gjenopprettingen"
+  },
+  "run": {
+    "title": "Kjør",
+    "backupTitle": "Sikkerhetskopi av {{name}}",
+    "restoreTitle": "Gjenoppretting av {{name}}",
+    "loadFailed": "Kunne ikke laste kjøringen",
+    "progress": "Fremgang",
+    "preparing": "Forbereder...",
+    "progressLine": "{{percent}}% | {{files}} av {{totalFiles}} filer | {{bytes}} av {{totalBytes}}",
+    "left": "{{time}} igjen",
+    "details": "Detaljer",
+    "started": "Startet",
+    "finished": "Fullført",
+    "trigger": "Startet av",
+    "triggers": {
+      "manual": "Kjør nå",
+      "schedule": "Tidsplan",
+      "operation": "Termix-handling"
+    },
+    "snapshot": "Øyeblikksbilde",
+    "target": "Gjenopprettet til",
+    "files": "Filer",
+    "filesLine": "{{total}} filer, {{added}} nye, {{changed}} endret",
+    "size": "Størrelse",
+    "added": "Lagt til i arkivet",
+    "took": "Tok",
+    "log": "Logg",
+    "noLog": "Ingen logg ennå.",
+    "stopTitle": "Stopp denne kjøringen?",
+    "stopDesc": "En stoppet sikkerhetskopi lagrer ingen øyeblikksbilde. En stoppet gjenoppretting etterlater filene som er gjenopprettet så langt.",
+    "stopSent": "Stanser",
+    "stopFailed": "Kunne ikke stoppe kjøringen"
+  },
+  "history": {
+    "empty": "Ingenting er kjørt ennå",
+    "loadFailed": "Kunne ikke laste historikken",
+    "status": "Status",
+    "job": "Oppgave",
+    "host": "Vert",
+    "kind": "Type",
+    "kinds": {
+      "backup": "Sikkerhetskopi",
+      "restore": "Gjenoppretting"
+    },
+    "started": "Startet",
+    "took": "Tid brukt",
+    "size": "Størrelse"
+  },
+  "card": {
+    "title": "Sikkerhetskopier",
+    "all": "Alle sikkerhetskopioppgaver",
+    "oneJob": "Én sikkerhetskopioppgave",
+    "empty": "Ingen sikkerhetskopioppgaver ennå.",
+    "gone": "Denne sikkerhetskopioppgaven ble slettet.",
+    "open": "Åpne"
+  },
+  "operations": {
+    "list": {
+      "title": "List opp sikkerhetskopioppgaver"
+    },
+    "failed": {
+      "title": "Mislykkede sikkerhetskopier"
+    },
+    "run": {
+      "title": "Kjør sikkerhetskopi"
+    },
+    "cancel": {
+      "title": "Stopp sikkerhetskopi"
+    },
+    "snapshots": {
+      "title": "List opp øyeblikksbilder"
+    },
+    "events": {
+      "finished": "Sikkerhetskopi fullført",
+      "failed": "Sikkerhetskopi mislyktes"
+    },
+    "jobs": {
+      "title": "Sikkerhetskopioppgaver",
+      "lastSuccess": "Siste sikkerhetskopi",
+      "nextRun": "Neste kjøring",
+      "size": "Størrelse"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Vis sikkerhetskopipanelet i terminaler",
+        "description": "La sikkerhetskopipanelet åpnes ved siden av SSH-terminalen for denne verten."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Åpne sikkerhetskopipanelet med nye terminaler",
+        "description": "Vis sikkerhetskopipanelet ved siden av hver SSH-terminal som har det aktivert. Du kan fortsatt åpne og lukke det fra knappen på høyre kant."
+      },
+      "companionSide": {
+        "label": "Plassering av sikkerhetskopipanelet",
+        "description": "Hvor sikkerhetskopipanelet plasseres ved siden av en terminal.",
+        "right": "Høyre",
+        "left": "Venstre",
+        "bottom": "Bunn"
+      },
+      "companionSize": {
+        "label": "Størrelse på sikkerhetskopipanelet",
+        "description": "Bredde i piksler, eller høyde når det er på bunnen. Du kan også dra i kanten."
+      },
+      "companionEdgeButton": {
+        "label": "Vis panelet-knappen",
+        "description": "Vis en liten knapp på høyre kant av en terminal som åpner sikkerhetskopipanelet."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Veksle sikkerhetskopipanelet"
+  }
+}

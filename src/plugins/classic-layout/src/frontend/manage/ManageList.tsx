@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Button,
   EmptyState,
@@ -62,6 +62,7 @@ const rowFocus =
 /** The list column of the Manage tab. */
 export function ManageList({
   editing,
+  split = true,
   mode,
   onMode,
   hosts,
@@ -75,6 +76,8 @@ export function ManageList({
   onAdd,
 }: {
   editing: boolean;
+  /** List and editor share the tab. Off when the tab is narrow. */
+  split?: boolean;
   mode: ManageMode;
   onMode: (mode: ManageMode) => void;
   hosts: Host[];
@@ -102,12 +105,24 @@ export function ManageList({
   );
 
   // Everything starts open; closing something is remembered while mounted.
+  // Folders that show up later, like once the list loads, open too.
   const [open, setOpen] = useState<Set<string>>(new Set());
+  const seen = useRef<{ mode: ManageMode; keys: Set<string> }>({
+    mode,
+    keys: new Set(),
+  });
   useEffect(() => {
-    setOpen(new Set([...allFolderPaths(tree), ...allParentIds(tree)]));
-    // Rebuilt only when the side changes, so toggles survive an edit.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode]);
+    const keys = [...allFolderPaths(tree), ...allParentIds(tree)];
+    if (seen.current.mode !== mode) {
+      seen.current = { mode, keys: new Set(keys) };
+      setOpen(new Set(keys));
+      return;
+    }
+    const fresh = keys.filter((key) => !seen.current.keys.has(key));
+    if (fresh.length === 0) return;
+    for (const key of fresh) seen.current.keys.add(key);
+    setOpen((prev) => new Set([...prev, ...fresh]));
+  }, [mode, tree]);
 
   const toggle = (key: string) =>
     setOpen((prev) => {
@@ -145,8 +160,9 @@ export function ManageList({
   return (
     <div
       className={cn(
-        editing ? "hidden md:flex" : "flex",
-        "w-full shrink-0 flex-col border-r border-border bg-background md:w-72",
+        editing && !split ? "hidden" : "flex",
+        "shrink-0 flex-col border-r border-border bg-background",
+        split ? "w-72" : "w-full",
       )}
     >
       <nav

@@ -1,0 +1,235 @@
+{
+  "plugin": {
+    "name": "Sertifikater",
+    "description": "Vis, utfør og forny TLS-sertifikater på vertene dine med certbot og acme.sh, og få en varsling før de utløper."
+  },
+  "common": {
+    "cancel": "Avbryt",
+    "back": "Tilbake"
+  },
+  "permissions": {
+    "use": {
+      "title": "Bruk Sertifikater",
+      "description": "Vis sertifikater på vertene du kan nå, og endre dem på vertene du kan redigere."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Sertifikater",
+        "description": "Administrer TLS-sertifikater på denne verten fra fanen Sertifikater."
+      },
+      "useSudo": {
+        "label": "Bruk sudo",
+        "description": "Bruk sudo for å lese og endre sertifikater. Slå av hvis innloggingen er root."
+      },
+      "readOnly": {
+        "label": "Skrivebeskyttet",
+        "description": "Vis sertifikater, men endre dem aldri på denne verten."
+      },
+      "expiryWarnDays": {
+        "label": "Advar før utløp",
+        "description": "Sertifikater med dette antallet dager eller færre igjen vises som utløpende og sender en varsling."
+      },
+      "showPanel": {
+        "label": "Vis sertifikatspanelet i terminaler",
+        "description": "La sertifikatspanelet åpnes ved siden av SSH-terminalen for denne verten."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Åpne sertifikatspanelet med nye terminaler",
+        "description": "Vis sertifikatspanelet ved siden av hver SSH-terminal som har Sertifikater på. Du kan fortsatt åpne og lukke det fra knappen på høyre kant."
+      },
+      "companionSide": {
+        "label": "Plassering av sertifikatspanelet",
+        "description": "Hvor sertifikatspanelet sitter ved siden av en terminal.",
+        "right": "Høyre",
+        "left": "Venstre",
+        "bottom": "Bunn"
+      },
+      "companionSize": {
+        "label": "Størrelse på sertifikatspanelet",
+        "description": "Bredde i piksler, eller høyde når det er på bunnen. Du kan også dra i kanten."
+      },
+      "companionEdgeButton": {
+        "label": "Vis panelet-knappen",
+        "description": "Vis en liten knapp på høyre kant av en terminal som åpner sertifikatspanelet."
+      }
+    }
+  },
+  "tab": {
+    "title": "Sertifikater",
+    "noHost": "Åpne Sertifikater fra en vert.",
+    "error": "Kunne ikke laste sertifikater fra denne verten.",
+    "disabled": "Sertifikater er slått av for denne verten. Slå det på i vertsinnstillingene.",
+    "sudo": "Endringer krever root-innlogging, passordløs sudo eller et lagret Sudo-passord på denne verten.",
+    "refresh": "Oppdater",
+    "readOnly": "Skrivebeskyttet",
+    "noClient": "Ingen certbot eller acme.sh",
+    "viewCertificates": "Sertifikater",
+    "viewInspect": "Inspeksjon",
+    "viewRenewal": "Fornyelse"
+  },
+  "actions": {
+    "working": "Arbeider. Dette kan ta noen minutter.",
+    "ok": "Ferdig",
+    "failed": "Kommandoen mislyktes.",
+    "noOutput": "Ingen utdata."
+  },
+  "install": {
+    "title": "certbot og acme.sh er ikke installert på denne verten",
+    "hint": "Installer certbot for å hente og fornye sertifikater fra Let's Encrypt.",
+    "noManager": "Ingen støttet pakkehåndterer ble funnet. Installer certbot manuelt.",
+    "button": "Installer certbot",
+    "confirm": "Installer certbot?",
+    "desc": "Dette installerer certbot med vertsens pakkehåndterer.",
+    "working": "Installerer...",
+    "done": "certbot er installert."
+  },
+  "certs": {
+    "search": "Søk etter sertifikater",
+    "empty": "Ingen sertifikater ennå.",
+    "noMatch": "Ingen sertifikater matcher.",
+    "loadFailed": "Kunne ikke lese sertifikater.",
+    "expires": "Utløper {{date}}",
+    "staging": "Testmiljø",
+    "details": "Sertifikat",
+    "manage": "Administrer",
+    "client": "Klient",
+    "path": "Fil",
+    "authority": "Autoritet",
+    "renew": "Forny",
+    "renewDone": "Fornyet {{name}}.",
+    "renewAll": "Forny alle",
+    "renewAllDone": "Fornyet sertifikatene som var forfalt.",
+    "forceRenew": "Forny likevel nå",
+    "dryRun": "Testkjøring",
+    "dryRunDone": "Testkjøringen fungerte.",
+    "revoke": "Opphev",
+    "revokeTitle": "Opphev {{name}}?",
+    "revokeDesc": "Autoriteten markerer det som ugyldig, og det fjernes fra denne verten. Alt som fortsatt bruker det, slutter å fungere.",
+    "revokeDone": "Opphevet {{name}}.",
+    "delete": "Slutt å administrere",
+    "deleteTitle": "Slutt å administrere {{name}}?",
+    "deleteDesc": "Det forblir gyldig, men fornyes ikke lenger. certbot sletter også filene, mens acme.sh beholder dem.",
+    "deleteDone": "{{name}} administreres ikke lenger."
+  },
+  "expiry": {
+    "expired": "Utløpt",
+    "unknown": "Ukjent",
+    "days_one": "{{count}} dag igjen",
+    "days_other": "{{count}} dager igjen"
+  },
+  "issue": {
+    "add": "Utfsted sertifikat",
+    "title": "Nytt sertifikat",
+    "save": "Utfsted",
+    "done": "Sertifikatet ble utfstedt.",
+    "working": "Spør autoriteten. Dette kan ta noen minutter.",
+    "client": "Klient",
+    "domains": "Domener",
+    "domainsPlaceholder": "Skriv inn et domene og trykk Enter",
+    "domainsHint": "Det første navngir sertifikatet.",
+    "challenge": "Utfordring",
+    "standalone": "Standalone",
+    "standaloneHint": "Kjører en liten webserver på port 80, så ingenting annet kan bruke den porten.",
+    "webroot": "Webrot",
+    "webrootHint": "Legger en fil i mappen til webserveren din. Webserveren fortsetter å kjøre.",
+    "dns": "DNS",
+    "dnsHint": "Legger til en DNS-post via leverandørens API. Påkrevd for jokertegn.",
+    "webrootPath": "Webrotmappe",
+    "webrootPathHint": "Må være inne i /var/www, /srv eller /usr/share/nginx.",
+    "dnsProvider": "DNS-leverandør",
+    "dnsProviderCertbot": "Navnet på en installert certbot DNS-plugin, som cloudflare.",
+    "dnsProviderAcme": "Et acme.sh DNS-navn uten dns_, som cf. API-tokenet må allerede være satt på verten.",
+    "credentials": "Innloggingsfil",
+    "credentialsHint": "Filen på verten med API-tokenet ditt. Den leses aldri av Termix.",
+    "email": "E-post",
+    "emailHint": "Valgfritt. Autoriteten bruker den for varsel om utløp.",
+    "keyType": "Nøkkeltype",
+    "staging": "Bruk testserveren",
+    "stagingHint": "For testing. Sertifikatet er ikke tillitt, og hastighetsbegrensningene er mye høyere."
+  },
+  "inspect": {
+    "server": "Server",
+    "file": "Fil",
+    "address": "Adresse",
+    "addressPlaceholder": "example.com",
+    "port": "Port",
+    "path": "Filbane",
+    "check": "Sjekk",
+    "hint": "Sjekk hva en server sender over TLS, sett fra denne verten, eller les en sertifikatfil på den.",
+    "failed": "Kunne ikke lese sertifikatet.",
+    "noOpenssl": "openssl er ikke installert på denne verten.",
+    "trusted": "Tillitt",
+    "notTrusted": "Ikke tillitt",
+    "leaf": "Sertifikat",
+    "intermediate": "Kjede {{index}}",
+    "selfSigned": "Selvsignert",
+    "name": "Navn",
+    "issuer": "Utsteder",
+    "domains": "Domener",
+    "validFrom": "Gyldig fra",
+    "validTo": "Gyldig til",
+    "keyType": "Nøkkel",
+    "serial": "Serienummer",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Slik fornyer denne verten sertifikatene sine automatisk. Endre innstillingen på verten.",
+    "on": "På",
+    "off": "Av",
+    "timer": "systemd-timer",
+    "next": "Neste kjøring {{time}}",
+    "cron": "Cron-fil /etc/cron.d/certbot",
+    "certbotOff": "Ingen timer eller cron-jobb ble funnet, så sertifikatene fornyes ikke automatisk.",
+    "acmeCron": "Cron-jobb i crontab",
+    "acmeOff": "Ingen cron-jobb ble funnet, så sertifikatene fornyes ikke automatisk."
+  },
+  "watch": {
+    "start": "Varsle meg før sertifikatene på denne verten utløper",
+    "stop": "Stopp varsler for denne verten",
+    "on": "Du får et varsel før sertifikatene her utløper.",
+    "off": "Varsler for denne verten er deaktivert.",
+    "failed": "Kunne ikke endre varselet."
+  },
+  "card": {
+    "title": "Sertifikater",
+    "loading": "Sjekker verter...",
+    "summary_one": "{{count}} sertifikat, {{expiring}} utløpende",
+    "summary_other": "{{count}} sertifikater, {{expiring}} utløpende",
+    "refresh": "Sjekk igjen",
+    "empty": "Aktiver Sertifikater for en vert for å se dens sertifikater her."
+  },
+  "manager": {
+    "title": "Sertifikater",
+    "disabled": "Aktiver Sertifikater for denne verten i innstillingene for å se dem her."
+  },
+  "operations": {
+    "list": {
+      "title": "List sertifikater"
+    },
+    "expiring": {
+      "title": "Sertifikater som utløper"
+    },
+    "renew": {
+      "title": "Forny sertifikat"
+    },
+    "renewAll": {
+      "title": "Forny alle sertifikater"
+    },
+    "revoke": {
+      "title": "Opphev sertifikat"
+    },
+    "certificates": {
+      "title": "Sertifikater",
+      "client": "Klient",
+      "domains": "Domener",
+      "daysLeft": "Dager igjen"
+    }
+  },
+  "nav": {
+    "togglePanel": "Vis/skjul sertifikatspanelet"
+  }
+}

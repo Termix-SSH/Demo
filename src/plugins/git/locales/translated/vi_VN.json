@@ -1,0 +1,289 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Xem, kéo, commit và đẩy các kho Git trên các host của bạn, và giữ chúng luôn cập nhật với tính năng tự động kéo."
+  },
+  "common": {
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "back": "Quay lại",
+    "loading": "Đang tải..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Sử dụng Git",
+      "description": "Xem các kho Git trên các host bạn có thể truy cập, và chỉnh sửa chúng trên các host bạn có quyền chỉnh sửa."
+    },
+    "runCommands": {
+      "title": "Chạy lệnh sau khi tự động kéo",
+      "description": "Đặt một lệnh sẽ chạy trên host sau khi tự động kéo nhận được các commit mới."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Quản lý kho Git trên máy chủ này từ tab Git."
+      },
+      "repoRoots": {
+        "label": "Quét thư mục",
+        "description": "Các thư mục được tìm kiếm để tìm kho khi bạn quét máy chủ này. Tách chúng bằng dấu phẩy. Mặc định là thư mục home.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Sử dụng sudo",
+        "description": "Chạy git với quyền root bằng sudo. Chỉ dành cho các kho mà người dùng đăng nhập không thể sử dụng."
+      },
+      "readOnly": {
+        "label": "Chỉ đọc",
+        "description": "Hiển thị các kho nhưng không bao giờ thay đổi chúng trên máy chủ này."
+      },
+      "showPanel": {
+        "label": "Bảng bên cạnh terminal",
+        "description": "Hiển thị bảng Git trên các tab terminal của host này."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Mở bảng cùng với terminal",
+        "description": "Hiển thị bảng Git khi mở terminal trên một host có tính năng này."
+      },
+      "companionSide": {
+        "label": "Vị trí bảng",
+        "description": "Vị trí của bảng so với terminal.",
+        "right": "Phải",
+        "left": "Trái",
+        "bottom": "Dưới"
+      },
+      "companionSize": {
+        "label": "Kích thước bảng",
+        "description": "Chiều rộng của bảng, hoặc chiều cao nếu đặt ở dưới, tính bằng pixel."
+      },
+      "companionEdgeButton": {
+        "label": "Nút cạnh",
+        "description": "Hiển thị một nút nhỏ ở cạnh cửa sổ terminal để mở bảng điều khiển."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Mở Git từ một máy chủ.",
+    "error": "Không thể tải Git từ máy chủ này.",
+    "disabled": "Git đã bị tắt cho máy chủ này. Hãy bật nó trong cài đặt máy chủ.",
+    "sudo": "Hành động này yêu cầu đăng nhập root, sudo không mật khẩu hoặc mật khẩu Sudo đã lưu.",
+    "refresh": "Làm mới",
+    "readOnly": "Chỉ đọc",
+    "notInstalled": "git chưa được cài đặt",
+    "notInstalledTitle": "git chưa được cài đặt trên host này",
+    "notInstalledHint": "Cài đặt git bằng trình quản lý gói của host, sau đó làm mới."
+  },
+  "actions": {
+    "ok": "Xong",
+    "failed": "Thất bại",
+    "noOutput": "Không có kết quả."
+  },
+  "repos": {
+    "add": "Thêm kho",
+    "search": "Tìm kiếm kho",
+    "empty": "Chưa có kho nào. Thêm một kho để bắt đầu.",
+    "noMatch": "Không tìm thấy kho phù hợp.",
+    "viewOnly": "Chưa có kho nào được thêm vào host này.",
+    "detached": "tách rời",
+    "changes_other": "{{count}} thay đổi",
+    "conflicts": "Xung đột",
+    "auto": "Tự động kéo",
+    "autoFailing": "Kéo thất bại",
+    "remove": "Xóa khỏi danh sách",
+    "removeTitle": "Xóa {{name}}?",
+    "removeBody": "Kho chỉ bị quên ở đây. Không có gì bị xóa trên máy chủ.",
+    "removed": "Đã xóa {{name}}",
+    "error": {
+      "missing": "Thiếu thư mục",
+      "notrepo": "Không phải kho git",
+      "unreadable": "Không thể đọc"
+    }
+  },
+  "add": {
+    "title": "Thêm kho",
+    "modeScan": "Quét",
+    "modePath": "Thư mục",
+    "modeClone": "Nhân bản",
+    "scanHint": "Tìm kiếm các kho git trong {{roots}}. Thay đổi các thư mục trong cài đặt máy chủ.",
+    "rescan": "Quét lại",
+    "noneFound": "Không tìm thấy kho mới.",
+    "picked": "Đã chọn",
+    "addPicked_other": "Thêm {{count}} kho mã nguồn",
+    "addAll": "Thêm tất cả",
+    "folder": "Thư mục trên máy chủ",
+    "folderHint": "Đường dẫn đầy đủ, hoặc bắt đầu bằng ~ cho thư mục home. Thư mục này phải đã là một kho git.",
+    "addRepo": "Thêm kho mã nguồn",
+    "url": "Địa chỉ",
+    "urlHint": "Sử dụng các khóa và cài đặt git của người dùng đăng nhập trên máy chủ.",
+    "dest": "Nhân bản vào",
+    "destHint": "Thư mục này chưa được tạo.",
+    "clone": "Nhân bản",
+    "cloned": "Đã sao chép",
+    "added_other": "Đã thêm {{count}} kho mã nguồn",
+    "failed": "Không thể thêm kho mã nguồn",
+    "scanFailed": "Không thể quét máy chủ"
+  },
+  "repo": {
+    "ahead": "Dẫn trước {{count}}",
+    "behind": "Trễ hơn {{count}}",
+    "fetch": "Lấy dữ liệu",
+    "fetched": "Đã lấy dữ liệu",
+    "pull": "Kéo dữ liệu",
+    "pulled": "Đã kéo dữ liệu",
+    "push": "Push",
+    "pushed": "Đã push",
+    "viewChanges": "Thay đổi",
+    "viewBranches": "Nhánh",
+    "viewHistory": "Lịch sử",
+    "viewStash": "Stash",
+    "viewAuto": "Tự động pull"
+  },
+  "changes": {
+    "loadFailed": "Không thể đọc các thay đổi.",
+    "clean": "Không có gì để commit. Cây làm việc đang sạch.",
+    "stagedTitle": "Đã chuẩn bị ({{count}})",
+    "unstagedTitle": "Thay đổi ({{count}})",
+    "stage": "Đưa vào vùng chuẩn bị",
+    "staged": "Đã đưa vào vùng chuẩn bị",
+    "unstage": "Bỏ đưa vào vùng chuẩn bị",
+    "unstaged": "Chưa đưa vào vùng chuẩn bị",
+    "stageAll": "Đưa tất cả vào vùng chuẩn bị",
+    "renamed": "Đã đổi tên",
+    "discard": "Hủy bỏ",
+    "discardTitle": "Hủy bỏ thay đổi đối với {{name}}?",
+    "discardBody": "Các thay đổi trong tệp này sẽ bị xóa và không thể khôi phục.",
+    "discarded": "Đã bỏ thay đổi",
+    "message": "Thông tin commit",
+    "messagePlaceholder": "Mô tả thay đổi",
+    "commit": "Commit",
+    "commitAll": "Commit tất cả thay đổi",
+    "commitStaged_other": "Commit {{count}} tệp đã chọn",
+    "committed": "Đã commit",
+    "noDiff": "Không có thay đổi nào để hiển thị.",
+    "truncated": "Khác biệt quá dài, chỉ hiển thị phần đầu."
+  },
+  "branches": {
+    "loadFailed": "Không thể đọc các nhánh.",
+    "empty": "Chưa có nhánh nào.",
+    "current": "Hiện tại",
+    "remote": "Remote",
+    "gone": "Upstream đã bị xóa",
+    "newName": "Nhánh mới",
+    "create": "Tạo nhánh",
+    "created": "Đã tạo nhánh {{name}}",
+    "switch": "Chuyển đổi",
+    "switched": "Đã chuyển sang {{name}}",
+    "merge": "Gộp vào nhánh hiện tại",
+    "mergeTitle": "Gộp {{name}} vào {{into}}?",
+    "mergeBody": "Các lần gộp có xung đột sẽ được hoàn tác ngay lập tức.",
+    "merged": "Đã gộp {{name}}",
+    "delete": "Xóa nhánh",
+    "deleteTitle": "Xóa {{name}}?",
+    "deleteBody": "Git sẽ từ chối nếu nhánh có các commit chưa được gộp.",
+    "deleted": "Đã xóa {{name}}",
+    "forceTitle": "Buộc xóa {{name}}?",
+    "forceBody": "Nhánh này có các commit chưa được gộp. Chúng sẽ bị mất nếu bạn xóa nhánh.",
+    "forceDelete": "Buộc xóa"
+  },
+  "history": {
+    "loadFailed": "Không thể đọc lịch sử.",
+    "empty": "Chưa có commit nào.",
+    "branch": "Nhánh hiện tại",
+    "all": "Tất cả các nhánh",
+    "more": "Tải thêm"
+  },
+  "stash": {
+    "loadFailed": "Không thể đọc stash.",
+    "title": "Stashes",
+    "empty": "Không có stash nào.",
+    "message": "Tin nhắn",
+    "messagePlaceholder": "Tùy chọn",
+    "untracked": "Bao gồm các tệp chưa được theo dõi",
+    "push": "Lưu tạm thay đổi",
+    "pushDone": "Đã lưu tạm thay đổi",
+    "apply": "Áp dụng",
+    "applyDone": "Đã áp dụng bản lưu tạm",
+    "pop": "Áp dụng và xóa",
+    "popDone": "Đã áp dụng và xóa bản lưu tạm",
+    "drop": "Xóa",
+    "dropDone": "Đã xóa bản lưu tạm",
+    "dropTitle": "Xóa {{name}}?",
+    "dropBody": "Kho lưu trữ đã bị xóa và không thể khôi phục.",
+    "remotes": "Kho từ xa",
+    "noRemotes": "Không có kho từ xa."
+  },
+  "auto": {
+    "intro": "Kéo theo lịch trình với chế độ fast-forward chỉ. Nó không bao giờ hợp nhất, và bỏ qua kho khi có thay đổi chưa được cam kết hoặc đã phân kỳ so với nguồn gốc.",
+    "noUpstream": "Nhánh này chưa có nguồn gốc từ xa, vì vậy tự động kéo sẽ bỏ qua nó.",
+    "enable": "Tự động kéo",
+    "enableHint": "Chạy dưới quyền của bạn, với quyền truy cập của bạn vào máy chủ này.",
+    "interval": "Mỗi (phút)",
+    "intervalHint": "Thời gian chờ giữa các lần kéo.",
+    "post": "Lệnh sau khi kéo",
+    "postHint": "Chạy trong thư mục repo sau khi có các commit mới. Cần quyền thực thi lệnh.",
+    "saved": "Đã lưu tự động kéo",
+    "saveFailed": "Không thể lưu tự động kéo",
+    "runNow": "Chạy ngay",
+    "next": "Kéo tiếp theo {{when}}",
+    "runs": "Các lần chạy gần đây",
+    "noRuns": "Chưa có lần chạy nào.",
+    "outcome": {
+      "pulled": "Đã kéo",
+      "uptodate": "Đã cập nhật",
+      "skipped": "Đã bỏ qua",
+      "failed": "Thất bại"
+    }
+  },
+  "card": {
+    "title": "Kho Git",
+    "loading": "Đang tải...",
+    "refresh": "Làm mới",
+    "empty": "Chưa có host nào có kho Git.",
+    "allClean": "Tất cả các kho đều sạch và đã cập nhật.",
+    "summary_other": "{{count}} kho | {{attention}} cần xem xét"
+  },
+  "companion": {
+    "toggle": "Bảng Git",
+    "openTab": "Mở Git",
+    "here": "Kho của thư mục này",
+    "all": "Tất cả các kho"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Liệt kê kho Git"
+    },
+    "fetch": {
+      "title": "Lấy dữ liệu kho"
+    },
+    "pull": {
+      "title": "Kéo dữ liệu kho"
+    },
+    "push": {
+      "title": "Đẩy dữ liệu kho"
+    },
+    "checkout": {
+      "title": "Chuyển nhánh",
+      "branch": "Nhánh"
+    },
+    "reset-hard": {
+      "title": "Đặt lại kho về trạng thái gốc",
+      "ref": "Đặt lại về"
+    },
+    "repos": {
+      "title": "Kho Git",
+      "branch": "Nhánh",
+      "ahead": "Dẫn trước",
+      "behind": "Trễ hơn",
+      "changed": "Thay đổi"
+    },
+    "signals": {
+      "behind": "Kho bị trễ",
+      "dirty": "Kho có thay đổi",
+      "pull-failing": "Tự động kéo thất bại"
+    }
+  }
+}

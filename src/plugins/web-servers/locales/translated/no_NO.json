@@ -1,0 +1,287 @@
+{
+  "plugin": {
+    "name": "Webtjenere",
+    "description": "Administrer nginx, Apache og Caddy på vertene dine: nettsteder, konfigurasjon, logger og HTTPS, med testing av alle endringer først."
+  },
+  "common": {
+    "cancel": "Avbryt",
+    "back": "Tilbake",
+    "loading": "Laster inn..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Bruk Webtjenere",
+      "description": "Se webtjenere og nettsteder på vertene du kan nå, og endre dem på vertene du har skriveadgang til."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Webtjenere",
+        "description": "Administrer nginx, Apache og Caddy på denne verten fra fanen Webtjenere."
+      },
+      "useSudo": {
+        "label": "Bruk sudo",
+        "description": "Bruk sudo for å lese og endre webtjeneren. Slå av hvis innloggingen er som root."
+      },
+      "readOnly": {
+        "label": "Skrivebeskyttet",
+        "description": "Vis nettsteder, konfigurasjon og logger, men endre aldri dem på denne verten."
+      },
+      "showPanel": {
+        "label": "Panel ved siden av terminalen",
+        "description": "Vis panelet for Webtjenere på terminalfanene for denne verten."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Åpne panelet sammen med terminalen",
+        "description": "Vis panelet for Webtjenere når en terminal åpnes på en vert som har det."
+      },
+      "companionSide": {
+        "label": "Panelplassering",
+        "description": "Hvor panelet vises ved siden av terminalen.",
+        "right": "Høyre",
+        "left": "Venstre",
+        "bottom": "Bunn"
+      },
+      "companionSize": {
+        "label": "Panelstørrelse",
+        "description": "Bredde på panelet, eller høyden hvis det er nederst, i piksler."
+      },
+      "companionEdgeButton": {
+        "label": "Knapp på kanten",
+        "description": "Vis en liten knapp på terminalens kant for å åpne panelet."
+      }
+    }
+  },
+  "tab": {
+    "title": "Webtjenere",
+    "noHost": "Åpne Webtjenere fra en vert.",
+    "error": "Kunne ikke laste inn webtjenerne på denne verten.",
+    "disabled": "Webtjenere er slått av for denne verten. Slå det på i vertsinnstillingene.",
+    "sudo": "Endringer krever root-innlogging, passordløs sudo eller et lagret Sudo-passord på denne verten.",
+    "refresh": "Oppdater",
+    "readOnly": "Skrivebeskyttet",
+    "noServer": "Ingen webtjener installert",
+    "noServerHint": "Installer nginx, Apache eller Caddy fra siden Server.",
+    "openServer": "Åpne Server",
+    "viewSites": "Nettsteder",
+    "viewConfig": "Konfigurasjon",
+    "viewLogs": "Logger",
+    "viewServer": "Server"
+  },
+  "actions": {
+    "ok": "Ferdig",
+    "failed": "Mislyktes",
+    "noOutput": "Ingen utdata."
+  },
+  "watch": {
+    "start": "Varsle meg når en webtjener stopper",
+    "stop": "Stopp varsler for denne verten",
+    "on": "Du får et varsel når en webtjener på denne verten stopper",
+    "off": "Varsler for denne verten er slått av",
+    "failed": "Kunne ikke endre varsler"
+  },
+  "sites": {
+    "add": "Legg til nettsted",
+    "search": "Søk etter nettsteder",
+    "empty": "Ingen nettsteder ennå.",
+    "loadFailed": "Kunne ikke laste inn nettstedene.",
+    "off": "Av",
+    "anyName": "ethvert navn",
+    "form": "Skjema",
+    "certDays_one": "{{count}} dag igjen",
+    "certDays_other": "{{count}} dager igjen",
+    "certExpired": "Sertifikat utløpt",
+    "enable": "Skru på",
+    "disable": "Skru av",
+    "enabled": "{{name}} er på",
+    "disabled": "{{name}} er av",
+    "delete": "Slett",
+    "deleteTitle": "Slett {{name}}?",
+    "deleteBody": "Filen blir fjernet og serveren lastes på nytt. En kopi beholdes i /var/lib/termix-web-servers/backups på verten.",
+    "deleted": "{{name}} ble slettet"
+  },
+  "site": {
+    "addTitle": "Ny side",
+    "editTitle": "Lagre {{name}}",
+    "add": "Legg til side",
+    "save": "Lagre",
+    "added": "{{name}} ble lagt til",
+    "saved": "{{name}} ble lagret",
+    "server": "Webserver",
+    "name": "Sidenavn",
+    "nameHint": "Brukes for filnavnet og loggfiler, som eksempel.",
+    "modeForm": "Skjema",
+    "modeText": "Tekst",
+    "text": "Konfigurasjon",
+    "textHint": "Når du lagrer teksten, skrus skjemaet av for denne siden, slik at dine egne endringer beholdes.",
+    "type": "Type",
+    "typeStatic": "Statiske filer",
+    "typeProxy": "Omvendt proxy",
+    "typePhp": "PHP",
+    "typeRedirect": "Omdiriger",
+    "staticHint": "Tjener filer fra en mappe.",
+    "proxyHint": "Sender forespørsler til en app som kjører på denne verten eller en annen.",
+    "phpHint": "Tjener filer fra en mappe og kjører .php-filer med php-fpm.",
+    "redirectHint": "Sender alle besøkende til en annen adresse.",
+    "domains": "Domener",
+    "domainsHint": "Trykk Enter etter hvert. Bruk _ i nginx for å svare på ethvert navn.",
+    "port": "HTTP-port",
+    "root": "Webrot",
+    "rootHint": "En mappe inne i /var/www, /srv, /usr/share/nginx, /opt eller /home.",
+    "index": "Indeksfiler",
+    "spa": "Ensidig app",
+    "spaHint": "Send stier som ikke er filer til /index.html.",
+    "upstream": "Appadresse",
+    "upstreamHint": "Der appen lytter, som http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Send besøkende til",
+    "keepPath": "Behold stien",
+    "keepPathHint": "Send /side til samme side på den nye adressen.",
+    "phpSocket": "php-fpm-socket",
+    "phpSocketHint": "Ingen php-fpm-socket ble funnet. Installer php-fpm eller skriv inn vert:port.",
+    "https": "HTTPS",
+    "httpsHint": "Krever et sertifikat. Lagre siden først, trykk deretter på Hent sertifikat nedenfor.",
+    "httpsCaddy": "Caddy henter og forny sertifikatet automatisk.",
+    "httpsPort": "HTTPS-port",
+    "certPath": "Sertifikatfil",
+    "keyPath": "Nøkkel fil",
+    "forceHttps": "Send HTTP til HTTPS",
+    "gzip": "Komprimer svar",
+    "accessLog": "Tilgangslogg",
+    "maxBody": "Opplastingsgrense i MB",
+    "maxBodyHint": "0 beholder serverens standardverdi.",
+    "preview": "Forhåndsvisning",
+    "previewFailed": "Kunne ikke bygge konfigurasjonen."
+  },
+  "tls": {
+    "title": "HTTPS-sertifikat",
+    "hintManaged": "certbot henter et Let's Encrypt-sertifikat for domeneene til denne siden, og siden bytter deretter til HTTPS. certbot fornyer sertifikatet og laster serveren på nytt.",
+    "hintText": "certbot henter et Let's Encrypt-sertifikat for domeneene til denne siden. Legg til sertifikatet på siden selv etterpå. certbot fornyer sertifikatet og laster serveren på nytt.",
+    "needCertbot": "Installer certbot med tillegget for denne serveren fra Serversiden først.",
+    "email": "E-post",
+    "emailHint": "Let's Encrypt skriver hit om problemer. Valgfritt.",
+    "staging": "Testsertifikat",
+    "stagingHint": "Bruk Let's Encrypts testserver. Nettlesere vil ikke stole på det.",
+    "issue": "Hent sertifikat",
+    "done": "Sertifikat lagret"
+  },
+  "config": {
+    "search": "Søk i filer",
+    "empty": "Ingen filer.",
+    "loadFailed": "Kunne ikke laste filen.",
+    "test": "Test konfigurasjon",
+    "testOk": "Konfigurasjonen er i orden",
+    "testFailed": "Konfigurasjonen har feil",
+    "content": "Innhold",
+    "save": "Lagre",
+    "saveHint": "Hele konfigurasjonen testes før serveren lastes på nytt. En ødelagt fil settes tilbake.",
+    "saved": "Lagret og lastet på nytt",
+    "backups_one": "{{count}} sikkerhetskopi",
+    "backups_other": "{{count}} sikkerhetskopier",
+    "restore": "Gjenopprett",
+    "restoreTitle": "Vil du gjenopprette denne sikkerhetskopien?",
+    "restoreBody": "Filen settes tilbake til hvordan den var ved {{time}}. Nåværende tekst blir også en sikkerhetskopi.",
+    "restored": "Sikkerhetskopi gjenopprettet"
+  },
+  "logs": {
+    "source": "Logg",
+    "lines": "Linjer",
+    "journal": "{{server}}-logg",
+    "follow": "Følg med",
+    "stop": "Stopp",
+    "connecting": "Kobler til...",
+    "ended": "Stoppet å følge med.",
+    "followFailed": "Kunne ikke følge denne loggen.",
+    "empty": "Ingen linjer.",
+    "loadFailed": "Kunne ikke lese loggen.",
+    "requests": "Forespørsler",
+    "topPaths": "Vanligste stier",
+    "topClients": "Vanligste klienter"
+  },
+  "server": {
+    "unknown": "ukjent",
+    "atBoot": "Startes ved oppstart",
+    "notInstalled": "Ikke installert",
+    "start": "Start",
+    "stop": "Stopp",
+    "restart": "Start på nytt",
+    "reload": "Last inn på nytt",
+    "enable": "Start ved oppstart",
+    "disable": "Ikke start ved oppstart",
+    "boot": "Start ved oppstart",
+    "noBoot": "Ikke start ved oppstart",
+    "done": "{{server}} er ferdig",
+    "stopTitle": "Vil du stoppe {{server}}?",
+    "stopBody": "Alle sider på den blir utilgjengelige til du starter den igjen.",
+    "install": "Installer",
+    "installTitle": "Vil du installere {{server}}?",
+    "installBody": "Den installeres med vertsens pakkehåndterer og starter umiddelbart. En annen webserver på port 80 vil hindre den i å starte.",
+    "installed": "{{server}} ble installert",
+    "installCertbot": "Installer certbot",
+    "certbotInstalled": "certbot ble installert",
+    "certbotPlugins": "Tillegg: {{plugins}}",
+    "certbotNoPlugins": "Ingen nginx- eller Apache-tillegg",
+    "certbotHint": "Henter Let's Encrypt-sertifikater for nginx- og Apache-sider"
+  },
+  "card": {
+    "title": "Webservere",
+    "loading": "Laster inn...",
+    "refresh": "Oppdater",
+    "empty": "Ingen vert har webservere aktivert.",
+    "summary_one": "{{count}} vert | {{down}} trenger en titt",
+    "summary_other": "{{count}} verter | {{down}} trenger en titt",
+    "sites_one": "{{count}} nettsted",
+    "sites_other": "{{count}} nettsteder"
+  },
+  "companion": {
+    "toggle": "Webservere-panelet",
+    "openTab": "Åpne webservere",
+    "reload": "Last inn {{server}} på nytt"
+  },
+  "manager": {
+    "title": "Webservere",
+    "disabled": "Aktiver webservere for denne verten for å se nettstedene her."
+  },
+  "operations": {
+    "status": {
+      "title": "Webserverstatus"
+    },
+    "listSites": {
+      "title": "List nettsteder"
+    },
+    "test": {
+      "title": "Test webserverkonfigurasjon"
+    },
+    "reload": {
+      "title": "Last inn webserver på nytt"
+    },
+    "restart": {
+      "title": "Start webserver på nytt"
+    },
+    "enableSite": {
+      "title": "Aktiver nettsted"
+    },
+    "disableSite": {
+      "title": "Deaktiver nettsted"
+    },
+    "deleteSite": {
+      "title": "Slett nettsted"
+    },
+    "server": "Server",
+    "allServers": "Alle",
+    "sites": {
+      "title": "Nettsteder",
+      "server": "Server",
+      "domains": "Domener",
+      "https": "HTTPS"
+    }
+  }
+}

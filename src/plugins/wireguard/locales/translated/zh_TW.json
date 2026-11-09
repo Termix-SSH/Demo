@@ -1,0 +1,232 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "在您的主機上安裝 WireGuard，並從單一標籤頁管理介面、用戶端與設定。"
+  },
+  "common": {
+    "save": "儲存",
+    "cancel": "取消",
+    "back": "返回",
+    "delete": "刪除",
+    "loading": "載入中..."
+  },
+  "permissions": {
+    "use": {
+      "title": "使用 WireGuard",
+      "description": "管理您有權編輯之主機上的 WireGuard 介面與用戶端。"
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "從主機開啟 WireGuard。",
+    "error": "無法從此主機載入 WireGuard。",
+    "sudo": "此主機需要 root 登入或免密碼 sudo 才能管理 WireGuard。",
+    "installed": "已安裝",
+    "notInstalled": "未安裝",
+    "refresh": "重新整理",
+    "viewInterfaces": "介面",
+    "viewLogs": "日誌"
+  },
+  "install": {
+    "title": "安裝 WireGuard",
+    "desc": "這將使用主機的套件管理器安裝 WireGuard 工具與 iptables。",
+    "confirm": "安裝",
+    "done": "WireGuard 已安裝。",
+    "failed": "無法安裝 WireGuard。",
+    "empty": "此主機未安裝 WireGuard",
+    "noManager": "未找到支援的套件管理器。請手動安裝 WireGuard。",
+    "hint": "在 {{os}} 上安裝它以從此主機執行 VPN。",
+    "thisHost": "此主機",
+    "button": "安裝 WireGuard",
+    "working": "安裝中..."
+  },
+  "interfaces": {
+    "add": "新增介面",
+    "empty": "尚無介面。新增一個以啟動 VPN。",
+    "loadFailed": "無法載入介面。",
+    "up": "已啟用",
+    "down": "已停用",
+    "clients": "{{count}} 個用戶端",
+    "nat": "NAT",
+    "boot": "開機時啟動"
+  },
+  "create": {
+    "title": "新增介面",
+    "name": "名稱",
+    "address": "位址",
+    "addressHint": "伺服器位址與子網路。用戶端將獲得下一個可用的位址。",
+    "port": "UDP 埠號",
+    "nat": "共用主機的網際網路 (NAT)",
+    "natDesc": "用戶端可以透過此主機存取網際網路與主機的網路。",
+    "natMissing": "NAT 需要 iptables，但此主機未安裝。",
+    "forwarding": "啟用 IP 轉發",
+    "forwardingDesc": "允許主機在用戶端與網路之間傳遞流量。設定會儲存以便重啟後生效。",
+    "firewall": "在防火牆中開啟埠號",
+    "firewallDesc": "當 ufw 或 firewalld 執行時，將 UDP 埠號加入其中。",
+    "start": "立即啟動並於開機時啟動",
+    "startDesc": "啟用介面，並在重啟後保持啟用狀態。",
+    "save": "建立",
+    "done": "介面已就緒。",
+    "failed": "無法建立介面。"
+  },
+  "detail": {
+    "clients": "用戶端",
+    "settings": "設定",
+    "config": "設定檔",
+    "service": "服務",
+    "gone": "此介面已不存在於主機上。"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "在此主機的選單中顯示 WireGuard 分頁。"
+      },
+      "showPanel": {
+        "label": "在終端機中顯示 WireGuard 面板",
+        "description": "允許 WireGuard 面板在此主機的 SSH 終端機旁開啟。"
+      },
+      "alertDown": {
+        "label": "介面離線時發出警示",
+        "description": "當設定為開機啟動的介面未處於活躍狀態時，發送警示。在讀取 WireGuard 狀態時進行檢查。"
+      }
+    },
+    "publicKey": "公鑰",
+    "port": "UDP 連接埠",
+    "endpoint": "伺服器端點",
+    "endpointHint": "用戶端連線的公開位址，例如 vpn.example.com:51820。",
+    "dns": "用戶端 DNS",
+    "dnsHint": "選填。伺服器之間以逗號分隔。",
+    "allowed": "透過 VPN 的流量",
+    "allowedHint": "用戶端透過 VPN 發送的範圍。0.0.0.0/0, ::/0 表示發送所有流量。",
+    "keepalive": "保持連線（秒）",
+    "keepaliveHint": "讓位於 NAT 後的用戶端可被連線。設為 0 以關閉。",
+    "saved": "設定已儲存。",
+    "saveFailed": "無法儲存設定。",
+    "user": {
+      "companionAutoOpen": {
+        "label": "開啟新終端機時自動開啟 WireGuard 面板",
+        "description": "在每個啟用 WireGuard 的 SSH 終端機旁顯示 WireGuard 面板。您仍可以從右側邊緣的按鈕開啟或關閉它。"
+      },
+      "companionSide": {
+        "label": "WireGuard 面板位置",
+        "description": "WireGuard 面板相對於終端機的位置。",
+        "right": "右側",
+        "left": "左側",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "WireGuard 面板大小",
+        "description": "寬度（像素），若位於底部則為高度。您也可以拖曳其邊緣調整。"
+      },
+      "companionEdgeButton": {
+        "label": "顯示面板按鈕",
+        "description": "在終端機右側邊緣顯示一個小按鈕，用於開啟 WireGuard 面板。"
+      }
+    }
+  },
+  "clients": {
+    "add": "新增用戶端",
+    "empty": "尚無用戶端。",
+    "loadFailed": "無法載入用戶端。",
+    "name": "名稱",
+    "nameHint": "字母、數字、句號、連字號和底線。",
+    "allowed": "透過 VPN 的流量",
+    "allowedHint": "留空以使用介面預設值：{{value}}",
+    "create": "建立用戶端",
+    "addFailed": "無法新增用戶端。",
+    "needEndpoint": "請先在介面設定中設定伺服器端點。",
+    "connected": "已連線",
+    "off": "關閉",
+    "external": "手動建立",
+    "handshake": "於 {{ago}} 前握手",
+    "showConfig": "顯示設定檔與 QR 碼",
+    "configFailed": "無法讀取用戶端設定。",
+    "rotate": "產生新金鑰",
+    "rotateTitle": "要為 {{name}} 產生新金鑰嗎？",
+    "rotateDesc": "舊設定將停止運作。之後請將新設定提供給用戶端。",
+    "turnOff": "關閉",
+    "turnOn": "開啟",
+    "saveFailed": "無法修改用戶端。",
+    "deleteTitle": "要刪除 {{name}} 嗎？",
+    "deleteDesc": "用戶端將被移除，且無法再連線。",
+    "deleteFailed": "無法刪除用戶端。"
+  },
+  "clientConfig": {
+    "note": "此設定檔包含用戶端的私鑰。僅與將使用它的個人或裝置分享。",
+    "qr": "用戶端設定的 QR 碼",
+    "copy": "複製",
+    "copied": "設定已複製。",
+    "copyFailed": "無法複製設定。",
+    "download": "下載 .conf"
+  },
+  "config": {
+    "title": "設定檔",
+    "hint": "私密金鑰與預共享金鑰已隱藏。保留佔位符以維持金鑰。設定在儲存前會經過檢查，並會保留備份。位址變更需要重新啟動。",
+    "loadFailed": "無法讀取設定。",
+    "saved": "設定已儲存。",
+    "saveFailed": "無法儲存設定。"
+  },
+  "logs": {
+    "loadFailed": "無法讀取日誌。",
+    "lines": "{{count}} 行",
+    "empty": "沒有日誌內容。"
+  },
+  "service": {
+    "failed": "服務操作失敗。",
+    "start": "啟動",
+    "stop": "停止",
+    "restart": "重新啟動",
+    "autostart": "開機時啟動",
+    "autostartDesc": "當主機啟動時，啟動此介面。",
+    "needsSystemd": "在此主機上設定開機啟動需要 systemd。",
+    "noForward": "此主機已關閉 IP 轉發，因此用戶端無法透過 NAT 存取網路。",
+    "delete": "刪除介面",
+    "deleteTitle": "要刪除 {{name}} 嗎？",
+    "deleteDesc": "介面將被停止，其設定、金鑰與已儲存的用戶端檔案將從主機中移除。",
+    "deleteFailed": "無法刪除介面。"
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "請在此主機的設定中開啟 WireGuard 以使用此卡片。",
+    "start": "啟用",
+    "stop": "停用",
+    "done": "{{name}} 已更新"
+  },
+  "operations": {
+    "list": {
+      "title": "列出 WireGuard 介面"
+    },
+    "down": {
+      "title": "關閉 WireGuard 介面"
+    },
+    "start": {
+      "title": "啟動 WireGuard 介面"
+    },
+    "stop": {
+      "title": "停止 WireGuard 介面"
+    },
+    "restart": {
+      "title": "重新啟動 WireGuard 介面"
+    },
+    "interfaces": {
+      "title": "WireGuard 介面",
+      "address": "位址",
+      "port": "連接埠",
+      "clients": "用戶端"
+    }
+  },
+  "nav": {
+    "togglePanel": "切換 WireGuard 面板"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "正在檢查主機...",
+    "summary_other": "{{hosts}} 台主機上有 {{count}} 個用戶端",
+    "refresh": "再次檢查",
+    "empty": "為主機開啟 WireGuard 即可在此處查看。",
+    "missing": "未安裝",
+    "down_other": "{{count}} 個已關閉",
+    "interfaces_other": "{{count}} 個介面，{{clients}} 個用戶端"
+  }
+}

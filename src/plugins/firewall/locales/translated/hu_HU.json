@@ -1,0 +1,356 @@
+{
+  "tab": {
+    "title": "Tűzfal",
+    "noHost": "Nyissa meg a tűzfalat egy gazdagépről.",
+    "refresh": "Frissítés",
+    "error": "Nem sikerült beolvasni a tűzfalat ezen a gazdagépen.",
+    "disabled": "A tűzfal kikapcsolva van ezen a gazdagépen. Kapcsolja be a gazdagép beállításaiban.",
+    "sudo": "Ehhez a gazdagéphez jelszó nélküli sudo vagy root bejelentkezés szükséges a tűzfal olvasásához és módosításához.",
+    "noFirewall": "Nincs tűzfal",
+    "on": "be",
+    "off": "ki",
+    "readOnly": "csak olvasható",
+    "ruleCount_one": "{{count}} szabály",
+    "ruleCount_other": "{{count}} szabály",
+    "viewRules": "Szabályok",
+    "viewDefaults": "Alapértelmezések",
+    "viewZones": "Zónák",
+    "viewFail2ban": "Fail2ban",
+    "viewRaw": "Nyers"
+  },
+  "common": {
+    "loading": "Betöltés...",
+    "save": "Mentés",
+    "cancel": "Mégse",
+    "delete": "Törlés",
+    "edit": "Szerkesztés",
+    "done": "Kész",
+    "failed": "Ez nem működött."
+  },
+  "actions": {
+    "allow": "Engedélyezés",
+    "deny": "Megtagadás",
+    "reject": "Elutasítás",
+    "limit": "Korlátozás"
+  },
+  "policies": {
+    "allow": "Engedélyezés",
+    "deny": "Megtagadás (eldobás)",
+    "reject": "Elutasítás"
+  },
+  "rule": {
+    "action": "Művelet",
+    "direction": "Irány",
+    "in": "Bejövő",
+    "out": "Kimenő",
+    "protocol": "Protokoll",
+    "anyProtocol": "TCP és UDP",
+    "port": "Port",
+    "portPlaceholder": "22, 80,443 vagy 8000-8100",
+    "portHint": "Hagyja üresen minden portra. A listák és tartományok TCP vagy UDP protokollt igényelnek.",
+    "anyPort": "bármely port",
+    "source": "Forrás",
+    "destination": "Cél",
+    "anywhere": "Mindenfelé",
+    "addressHint": "Egy cím vagy egy tartomány, például 10.0.0.0/8.",
+    "family": "IP-verzió",
+    "bothFamilies": "IPv4 és IPv6",
+    "iface": "Felület",
+    "anyIface": "Bármely felület",
+    "service": "Szolgáltatás",
+    "serviceHint": "Egy firewalld szolgáltatásnév, port helyett.",
+    "comment": "Megjegyzés",
+    "commentPlaceholder": "Mire szolgál ez a szabály",
+    "zoneLabel": "Zóna",
+    "from": "innen: {{address}}",
+    "to": "ide: {{address}}",
+    "on": "ezen a felületen: {{iface}}",
+    "zone": "{{zone}} zóna"
+  },
+  "presets": {
+    "ssh": "SSH",
+    "http": "HTTP",
+    "https": "HTTPS",
+    "web": "Web",
+    "dns": "DNS",
+    "smtp": "E-mail",
+    "mysql": "MySQL",
+    "postgres": "PostgreSQL",
+    "redis": "Redis",
+    "samba": "Samba",
+    "wireguard": "WireGuard",
+    "minecraft": "Minecraft"
+  },
+  "rules": {
+    "add": "Szabály hozzáadása",
+    "addTitle": "Új szabály",
+    "editTitle": "Szabály szerkesztése",
+    "added": "Szabály hozzáadva",
+    "saved": "Szabály mentve",
+    "deleted": "Szabály törölve",
+    "confirmDelete": "Törli ezt a szabályt?",
+    "search": "Portok, címek és megjegyzések keresése",
+    "empty": "Még nincsenek szabályok.",
+    "noMatch": "Nincs egyező szabály.",
+    "readOnly": "Csak olvasható",
+    "deleteOnly": "Csak törlés",
+    "stale": "A szabályok megváltoztak a hoszton. Frissítse, és próbálja újra.",
+    "filters": {
+      "all": "Összes",
+      "in": "Bejövő",
+      "out": "Kimenő",
+      "readOnly": "Csak olvasható"
+    }
+  },
+  "defaults": {
+    "hint": "Mi történik azzal a forgalommal, amelyikhez nem tartozik szabály.",
+    "incoming": "Bejövő",
+    "outgoing": "Kimenő",
+    "routed": "Útvonalazott",
+    "saved": "Alapértelmezések mentve"
+  },
+  "zones": {
+    "hint": "A firewalld minden hálózati interfészt és forrást egy zónába helyez. A zóna célja határozza meg, mit tesz azzal a forgalommal, amelyikhez a zóna szabályai nem tartoznak.",
+    "defaultZone": "Alapértelmezett zóna",
+    "default": "Alapértelmezett",
+    "active": "Aktív",
+    "target": "Cél",
+    "interfaces": "interfészek {{list}}",
+    "sources": "források {{list}}",
+    "saved": "Zóna mentve",
+    "targets": {
+      "default": "Alapértelmezett (elutasítás)",
+      "ACCEPT": "Elfogadás",
+      "DROP": "Eldobás",
+      "REJECT": "Elutasítás"
+    }
+  },
+  "enable": {
+    "off": "A tűzfal kikapcsolva, így egyik szabály sem érvényes jelenleg.",
+    "allowSsh": "Először engedélyezze az SSH-t a {{ports}} porton",
+    "allowSshHint": "Így a Termix és a saját SSH-bejelentkezései is tovább működnek.",
+    "button": "Bekapcsolás",
+    "done": "Tűzfal bekapcsolva",
+    "timerHint": "A bekapcsolás elindít egy időzítőt. Ha nem nyomja meg időben a Megőrzés gombot, a hoszt automatikusan kikapcsolja."
+  },
+  "disable": {
+    "button": "Kikapcsolás",
+    "title": "Kikapcsolja a tűzfalat?",
+    "description": "Minden szabály érvényét veszti, amíg újra be nem kapcsolja.",
+    "done": "Tűzfal kikapcsolva"
+  },
+  "install": {
+    "none": "Ennek a hosztnak még nincs tűzfala.",
+    "hint": "Telepítsen egyet a kezdéshez. Semmi sem kapcsol be, amíg Ön nem engedélyezi.",
+    "button": "{{name}} telepítése",
+    "working": "Telepítés...",
+    "done": "{{name}} telepítve",
+    "noPackageManager": "A Termix nem talált ismert csomagkezelőt ezen a hoszton."
+  },
+  "lockout": {
+    "title": "Ez zárolhatja a Termixet",
+    "description": "{{reason}}. Ha a Termix nem tud csatlakozni a módosítás után, a host automatikusan visszavonja azt, amikor lejár az idő. Folytatja?",
+    "confirm": "Folytatás"
+  },
+  "pending": {
+    "started": "A módosítás érvényesítve. Nyomja meg a Megőrzés gombot, hogy véglegesítse.",
+    "left": "Visszavonás {{seconds}} mp múlva, hacsak nem nyomja meg a Megőrzés gombot",
+    "expired": "Lejárt az idő, a host visszavonja a módosítást",
+    "reachable": "A Termix továbbra is képes volt csatlakozni",
+    "unreachable": "A Termix nem tudott csatlakozni a módosítás után",
+    "unknown": "A kapcsolat ellenőrzése",
+    "keep": "Megőrzés",
+    "undo": "Azonnali visszavonás",
+    "kept": "Módosítás megtartva",
+    "undone": "Módosítás visszavonva",
+    "gone": "Lejárt az idő, és a host már visszavonta a módosítást.",
+    "first": "Először tartsa meg vagy vonja vissza az utolsó módosítást.",
+    "kinds": {
+      "add": "Új szabály",
+      "update": "Módosított szabály",
+      "remove": "Törölt szabály",
+      "defaults": "Új alapértelmezett értékek",
+      "enable": "Tűzfal bekapcsolva",
+      "disable": "Tűzfal kikapcsolva",
+      "zoneTarget": "Új zónacél",
+      "defaultZone": "Új alapértelmezett zóna",
+      "ruleset": "Szabálykészlet alkalmazva"
+    }
+  },
+  "fail2ban": {
+    "loadFailed": "A Fail2ban nem olvasható.",
+    "notInstalled": "A Fail2ban nincs telepítve. Azok IP-címeit tiltja le, amelyek túl gyakran próbálnak bejelentkezni sikertelenül.",
+    "stopped": "A Fail2ban telepítve van, de nem fut.",
+    "start": "Fail2ban indítása",
+    "started": "Fail2ban elindítva",
+    "noJails": "Nincs bekapcsolt börtön.",
+    "none": "Nincs tiltva semmi.",
+    "bannedCount_one": "{{count}} tiltott",
+    "bannedCount_other": "{{count}} tiltott",
+    "counts": "{{failed}} sikertelen most | {{totalFailed}} sikertelen összesen | {{totalBanned}} tiltott összesen",
+    "ban": "Tiltás",
+    "unban": "Feloldás",
+    "banAddress": "Cím tiltása",
+    "banned": "{{ip}} tiltva",
+    "unbanned": "{{ip}} tiltása feloldva",
+    "selfTitle": "A Termix címe tiltása?",
+    "selfDescription": "A Termix erről a címről kapcsolódik. A tiltása megszakítja a Termix kapcsolatát ezzel a gazdagéppel."
+  },
+  "raw": {
+    "empty": "Nincs megjeleníthető tartalom."
+  },
+  "watch": {
+    "start": "Értesítsen, ha ez a tűzfal megváltozik",
+    "stop": "Értesítések leállítása ehhez a tűzfalhoz"
+  },
+  "companion": {
+    "openTab": "Tűzfal-fül megnyitása",
+    "toggle": "Tűzfal panel",
+    "allowPort": "TCP-port engedélyezése"
+  },
+  "card": {
+    "title": "Tűzfalak",
+    "empty": "Nincs olyan host, amelyiknél be van kapcsolva a tűzfal.",
+    "banned_one": "{{count}} tiltva",
+    "banned_other": "{{count}} tiltva",
+    "pending": "Várakozás"
+  },
+  "rulesets": {
+    "title": "Tűzfal szabálykészletek",
+    "hint": "Mentsen el a szabályok listáját, és adja hozzá egyszerre több gazdagéphez. Az alkalmazás csak a hiányzó szabályokat adja hozzá, soha nem töröl semmit.",
+    "add": "Új szabálykészlet",
+    "addTitle": "Új szabálykészlet",
+    "editTitle": "Szabálykészlet szerkesztése",
+    "loadFailed": "Nem sikerült betölteni a szabálykészleteket.",
+    "empty": "Még nincsenek szabálykészletek.",
+    "name": "Név",
+    "namePlaceholder": "Webes szerver",
+    "description": "Leírás",
+    "rules": "Szabályok",
+    "noRules": "Ebben a halmazban még nincsenek szabályok.",
+    "hosts": "Hostok",
+    "noHosts": "Egyik hoston sem van bekapcsolva a tűzfal.",
+    "saved": "Szabályhalmaz mentve",
+    "deleted": "Szabályhalmaz törölve",
+    "confirmDelete": "Törli a(z) {{name}} szabályhalmazt?",
+    "deleteHint": "A már a hostokhoz hozzáadott szabályok megmaradnak.",
+    "ruleCount_one": "{{count}} szabály",
+    "ruleCount_other": "{{count}} szabály",
+    "hostCount_one": "{{count}} host",
+    "hostCount_other": "{{count}} host",
+    "check": "Hostok ellenőrzése",
+    "apply": "Alkalmaz",
+    "applyTitle": "Alkalmazza a(z) {{name}} szabálykészletet?",
+    "applyDescription": "A hiányzó szabályok hozzáadásra kerülnek minden hoszton. Minden hoszt kap egy SSH zárolási ellenőrzést, és ha a Termix utána nem éri el a hosztot, a változtatás automatikusan visszavonásra kerül.",
+    "applied": "Szabálykészlet alkalmazva",
+    "applyErrors_one": "{{count}} hosztnál hiba történt",
+    "applyErrors_other": "{{count}} hosztnál hiba történt",
+    "applyResult": "A(z) {{name}} szabálykészlet alkalmazva",
+    "driftTitle": "{{name}} minden hoszton",
+    "inSync": "Minden szabály jelen van",
+    "ok": "Szinkronizálva",
+    "missing_one": "{{count}} hiányzik",
+    "missing_other": "{{count}} hiányzik",
+    "nothingMissing": "Minden szabály már létezik",
+    "added_one": "{{count}} szabály hozzáadva",
+    "added_other": "{{count}} szabály hozzáadva",
+    "waiting": "Hozzáadva, de Termix nem tudott csatlakozni utána. A host visszavonja.",
+    "fleet": "Flotta",
+    "applyFleet": "Alkalmazás a flottára"
+  },
+  "permissions": {
+    "use": {
+      "title": "Tűzfal használata",
+      "description": "Nyissa meg a Tűzfal fület azokon a hostokon, amelyek elérhetők. A módosításokhoz szerkesztési hozzáférés is szükséges a hoston."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Tűzfal",
+        "description": "A Tűzfal fül megjelenítése ehhez a hosthoz az SSH-n keresztüli tűzfal-kezeléshez."
+      },
+      "useSudo": {
+        "label": "Sudo használata",
+        "description": "Futtassa a tűzfal-parancsokat jelszó nélküli sudo-val, ha a bejelentkezés nem root felhasználó."
+      },
+      "readOnly": {
+        "label": "Csak olvasható",
+        "description": "Jelenítse meg a tűzfalat, de blokkolja a Termix által végzett minden módosítást."
+      },
+      "sshGuard": {
+        "label": "SSH zárolás ellenőrzése",
+        "description": "Álljon meg és kérdezzen rá, mielőtt egy olyan módosítást végrehajtana, amely úgy tűnik, hogy blokkolja az SSH hozzáférést a Termix számára."
+      },
+      "rollbackSeconds": {
+        "label": "Visszavonási időzítő",
+        "description": "Másodpercek, amíg megnyomhatja a Megőrzés gombot egy kockázatos módosítás után, mielőtt a host visszavonná azt."
+      },
+      "confirmAll": {
+        "label": "Időzítő minden módosításnál",
+        "description": "Használja a visszavonási időzítőt minden módosításnál, nem csak a kockázatosaknál."
+      },
+      "showPanel": {
+        "label": "Tűzfal panel",
+        "description": "Megjeleníti a tűzfal panelt az SSH terminálok mellett ehhez a gazdagéphez."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Tűzfal panel megnyitása terminállal együtt",
+        "description": "A tűzfal panel megjelenítése, amikor egy olyan gazdagépen nyílik meg terminál, amelyik támogatja."
+      },
+      "companionSide": {
+        "label": "Tűzfal panel elhelyezkedése",
+        "description": "Ahol a panel a terminál mellett helyezkedik el.",
+        "right": "Jobb",
+        "left": "Bal",
+        "bottom": "Alsó"
+      },
+      "companionSize": {
+        "label": "Tűzfal panel mérete",
+        "description": "Szélesség, vagy az alsó elhelyezkedés esetén magasság, pixelben."
+      },
+      "companionEdgeButton": {
+        "label": "Tűzfal panel szélére helyezett gomb",
+        "description": "Egy kis gomb megjelenítése a terminál szélén a panel megnyitásához."
+      }
+    }
+  },
+  "manager": {
+    "title": "Tűzfal",
+    "disabled": "A tűzfal itt történő kezeléséhez engedélyezze a tűzfalat ezen a hoszton a beállításokban."
+  },
+  "operations": {
+    "list": {
+      "title": "Tűzfalszabályok listázása"
+    },
+    "status": {
+      "title": "Tűzfal"
+    },
+    "portAllowed": {
+      "title": "A port engedélyezett",
+      "description": "Megmutatja, hogy létezik-e engedélyező szabály ehhez a porthoz. Használja a hosztok eltéréseinek figyeléséhez."
+    },
+    "allow": {
+      "title": "Port engedélyezése"
+    },
+    "remove": {
+      "title": "Engedélyezett port eltávolítása"
+    },
+    "delete": {
+      "title": "Tűzfal-szabály törlése"
+    },
+    "rules": {
+      "title": "Tűzfal-szabályok"
+    },
+    "port": "Port",
+    "protocol": "Protokoll",
+    "tcp": "TCP",
+    "udp": "UDP",
+    "any": "Bármelyik",
+    "source": "Forrás",
+    "sourceHint": "Egy cím vagy tartomány. Üresen hagyva bárhonnan.",
+    "direction": "Irány"
+  }
+}

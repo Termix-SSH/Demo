@@ -1,0 +1,235 @@
+{
+  "plugin": {
+    "name": "Certifikater",
+    "description": "Se, udsted og forny TLS-certifikater på dine værter med certbot og acme.sh, og modtag en advarsel, før de udløber."
+  },
+  "common": {
+    "cancel": "Annuller",
+    "back": "Tilbage"
+  },
+  "permissions": {
+    "use": {
+      "title": "Brug Certifikater",
+      "description": "Se certifikater på værter, du kan nå, og ændr dem på værter, du kan redigere."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Certifikater",
+        "description": "Administrer TLS-certifikater på denne vært fra fanen Certifikater."
+      },
+      "useSudo": {
+        "label": "Brug sudo",
+        "description": "Brug sudo til at læse og ændre certifikater. Slå fra, hvis login er root."
+      },
+      "readOnly": {
+        "label": "Skrivebeskyttet",
+        "description": "Vis certifikater, men ændr dem aldrig på denne vært."
+      },
+      "expiryWarnDays": {
+        "label": "Advar før udløb",
+        "description": "Certifikater med dette antal dage eller færre tilbage vises som udløbende og sender en advarsel."
+      },
+      "showPanel": {
+        "label": "Vis certifikatpanel i terminaler",
+        "description": "Lad certifikatpanelet åbne ved siden af SSH-terminalen for denne vært."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Åbn certifikatpanelet med nye terminaler",
+        "description": "Vis certifikatpanelet ved siden af hver SSH-terminal, der har Certifikater slået til. Du kan stadig åbne og lukke det fra knappen på den højre kant."
+      },
+      "companionSide": {
+        "label": "Placering af certifikatpanel",
+        "description": "Hvor certifikatpanelet sidder ved siden af en terminal.",
+        "right": "Højre",
+        "left": "Venstre",
+        "bottom": "Nederst"
+      },
+      "companionSize": {
+        "label": "Størrelse på certifikatpanel",
+        "description": "Bredde i pixels, eller højde når det er placeret nederst. Du kan også trække i kanten."
+      },
+      "companionEdgeButton": {
+        "label": "Vis knap til panel",
+        "description": "Vis en lille knap på højre kant af terminalen, der åbner certifikatpanelet."
+      }
+    }
+  },
+  "tab": {
+    "title": "Certifikater",
+    "noHost": "Åbn Certifikater fra en vært.",
+    "error": "Kunne ikke indlæse certifikater fra denne vært.",
+    "disabled": "Certifikater er deaktiveret for denne vært. Aktiver det i værtsindstillingerne.",
+    "sudo": "Ændringer kræver root-login, passwordløs sudo eller et gemt Sudo-adgangskode på denne vært.",
+    "refresh": "Opdater",
+    "readOnly": "Skrivebeskyttet",
+    "noClient": "Ingen certbot eller acme.sh",
+    "viewCertificates": "Certifikater",
+    "viewInspect": "Inspicer",
+    "viewRenewal": "Fornyelse"
+  },
+  "actions": {
+    "working": "Arbejder. Dette kan tage et par minutter.",
+    "ok": "Færdig",
+    "failed": "Kommandoen mislykkedes.",
+    "noOutput": "Ingen output."
+  },
+  "install": {
+    "title": "certbot og acme.sh er ikke installeret på denne host",
+    "hint": "Installer certbot for at hente og fornye certifikater fra Let's Encrypt.",
+    "noManager": "Der blev ikke fundet en understøttet pakkehåndterer. Installer certbot manuelt.",
+    "button": "Installer certbot",
+    "confirm": "Installer certbot?",
+    "desc": "Dette installerer certbot med hostens pakkehåndterer.",
+    "working": "Installerer...",
+    "done": "certbot er installeret."
+  },
+  "certs": {
+    "search": "Søg i certifikater",
+    "empty": "Der er ingen certifikater endnu.",
+    "noMatch": "Ingen certifikater matcher.",
+    "loadFailed": "Kunne ikke læse certifikaterne.",
+    "expires": "Udløber {{date}}",
+    "staging": "Testmiljø",
+    "details": "Certifikat",
+    "manage": "Administrer",
+    "client": "Klient",
+    "path": "Fil",
+    "authority": "Autoritet",
+    "renew": "Forny",
+    "renewDone": "Fornyet {{name}}.",
+    "renewAll": "Forny alle",
+    "renewAllDone": "Fornyet de certifikater, der var udløbet.",
+    "forceRenew": "Forny nu alligevel",
+    "dryRun": "Testkørsel",
+    "dryRunDone": "Testkørslen lykkedes.",
+    "revoke": "Ophæv",
+    "revokeTitle": "Ophæv {{name}}?",
+    "revokeDesc": "Autoriteten markerer det som ugyldigt, og det fjernes fra denne vært. Alt, der stadig bruger det, holder op med at virke.",
+    "revokeDone": "{{name}} er blevet tilbagekaldt.",
+    "delete": "Stop styring",
+    "deleteTitle": "Stop styring af {{name}}?",
+    "deleteDesc": "Det forbliver gyldigt, men fornyes ikke længere. certbot sletter også dets filer, mens acme.sh beholder dem.",
+    "deleteDone": "{{name}} styres ikke længere."
+  },
+  "expiry": {
+    "expired": "Udløbet",
+    "unknown": "Ukendt",
+    "days_one": "{{count}} dag tilbage",
+    "days_other": "{{count}} dage tilbage"
+  },
+  "issue": {
+    "add": "Udsted certifikat",
+    "title": "Nyt certifikat",
+    "save": "Udsted",
+    "done": "Certifikatet blev udstedt.",
+    "working": "Spørger myndigheden. Dette kan tage et par minutter.",
+    "client": "Klient",
+    "domains": "Domæner",
+    "domainsPlaceholder": "Skriv et domæne og tryk Enter",
+    "domainsHint": "Det første navngiver certifikatet.",
+    "challenge": "Udfordring",
+    "standalone": "Standalone",
+    "standaloneHint": "Kører en lille webserver på port 80, så intet andet må bruge den port.",
+    "webroot": "Webrod",
+    "webrootHint": "Placerer en fil i din webservers mappe. Webserveren fortsætter med at køre.",
+    "dns": "DNS",
+    "dnsHint": "Tilføjer en DNS-optegning via din providers API. Nødvendigt for jokertegn.",
+    "webrootPath": "Webrod-mappe",
+    "webrootPathHint": "Skal være inde i /var/www, /srv eller /usr/share/nginx.",
+    "dnsProvider": "DNS-provider",
+    "dnsProviderCertbot": "Navnet på et installeret certbot DNS-plugin, f.eks. cloudflare.",
+    "dnsProviderAcme": "Et acme.sh DNS-navn uden dns_, f.eks. cf. Dets API-token skal allerede være indstillet på værten.",
+    "credentials": "Credentials-fil",
+    "credentialsHint": "Filen på værten med dit API-token. Den læses aldrig af Termix.",
+    "email": "E-mail",
+    "emailHint": "Valgfrit. Autoriteten bruger det til udløbsvarsler.",
+    "keyType": "Nøgletype",
+    "staging": "Brug testserveren",
+    "stagingHint": "Til test. Certifikatet er ikke betroet, og hastighedsbegrænsningerne er meget højere."
+  },
+  "inspect": {
+    "server": "Server",
+    "file": "Fil",
+    "address": "Adresse",
+    "addressPlaceholder": "example.com",
+    "port": "Port",
+    "path": "Filsti",
+    "check": "Tjek",
+    "hint": "Tjek, hvad en server sender over TLS, set fra denne host, eller læs en certifikatfil på den.",
+    "failed": "Kunne ikke læse certifikatet.",
+    "noOpenssl": "openssl er ikke installeret på denne host.",
+    "trusted": "Støttet",
+    "notTrusted": "Ikke støttet",
+    "leaf": "Certifikat",
+    "intermediate": "Kæde {{index}}",
+    "selfSigned": "Selvsigneret",
+    "name": "Navn",
+    "issuer": "Udsteder",
+    "domains": "Domæner",
+    "validFrom": "Gyldig fra",
+    "validTo": "Gyldig til",
+    "keyType": "Nøgle",
+    "serial": "Serienummer",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Sådan fornyer denne vært certifikater automatisk. Ændr det på værten.",
+    "on": "Tændt",
+    "off": "Slukket",
+    "timer": "systemd-timer",
+    "next": "Næste kørsel {{time}}",
+    "cron": "Cron-fil /etc/cron.d/certbot",
+    "certbotOff": "Der blev ikke fundet nogen timer eller cron-job, så certifikaterne fornyes ikke automatisk.",
+    "acmeCron": "Cron-job i crontab",
+    "acmeOff": "Der blev ikke fundet noget cron-job, så certifikaterne fornyes ikke automatisk."
+  },
+  "watch": {
+    "start": "Advar mig, før certifikaterne på denne vært udløber",
+    "stop": "Stop advarsler for denne vært",
+    "on": "Du modtager en advarsel, før certifikaterne her udløber.",
+    "off": "Advarsler for denne vært er slået fra.",
+    "failed": "Kunne ikke ændre advarslen."
+  },
+  "card": {
+    "title": "Certifikater",
+    "loading": "Tjekker værter...",
+    "summary_one": "{{count}} certifikat, {{expiring}} udløbende",
+    "summary_other": "{{count}} certifikater, {{expiring}} udløbende",
+    "refresh": "Tjek igen",
+    "empty": "Slå Certifikater til for en vært for at se dens certifikater her."
+  },
+  "manager": {
+    "title": "Certifikater",
+    "disabled": "Slå Certifikater til for denne vært i dens indstillinger for at se dem her."
+  },
+  "operations": {
+    "list": {
+      "title": "List certifikater"
+    },
+    "expiring": {
+      "title": "Udløbende certifikater"
+    },
+    "renew": {
+      "title": "Forny certifikat"
+    },
+    "renewAll": {
+      "title": "Forny alle certifikater"
+    },
+    "revoke": {
+      "title": "Ophæv certifikat"
+    },
+    "certificates": {
+      "title": "Certifikater",
+      "client": "Klient",
+      "domains": "Domæner",
+      "daysLeft": "Dage tilbage"
+    }
+  },
+  "nav": {
+    "togglePanel": "Skift certifikatpanel"
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "tab": {
+    "title": "Stockage",
+    "noHost": "Ouvrez le stockage depuis un hôte.",
+    "disabled": "La surveillance du stockage est désactivée pour cet hôte. Activez-la dans les paramètres de l'hôte.",
+    "error": "Impossible de charger l'état du stockage",
+    "viewDrives": "Disques",
+    "viewPools": "Pools et tableaux",
+    "viewEvents": "Événements",
+    "viewSettings": "Paramètres",
+    "readAgo": "Lu il y a {{time}}",
+    "stale": "Impossible de lire l'hôte, affichage de la dernière lecture. {{error}}"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "failed": "Échec de l'opération",
+    "save": "Enregistrer",
+    "refresh": "Lire maintenant",
+    "back": "Retour"
+  },
+  "card": {
+    "title": "État du stockage",
+    "empty": "Aucun hôte n'est surveillé pour le moment. Activez la surveillance du stockage dans les paramètres d'un hôte.",
+    "drives_one": "{{count}} disque",
+    "drives_many": "{{count}} disques",
+    "drives_other": "{{count}} disques",
+    "problems_one": "{{count}} problème ouvert",
+    "problems_many": "{{count}} problèmes ouverts",
+    "problems_other": "{{count}} problèmes ouverts"
+  },
+  "manager": {
+    "title": "État du stockage",
+    "disabled": "La surveillance du stockage est désactivée pour cet hôte."
+  },
+  "health": {
+    "ok": "Sain",
+    "warn": "Nécessite une attention",
+    "fail": "Défaillant",
+    "unknown": "Inconnu"
+  },
+  "kind": {
+    "hdd": "Disque dur",
+    "ssd": "SSD",
+    "nvme": "NVMe",
+    "unknown": "Disque"
+  },
+  "drives": {
+    "empty": "Aucun disque trouvé sur cet hôte",
+    "noRoot": "Les vérifications ont été exécutées sans les droits root, certains disques peuvent donc ne pas afficher de données. Autorisez sudo sans mot de passe pour cette connexion.",
+    "noTool": "smartctl n'est pas installé sur cet hôte. Installez smartmontools pour lire l'état de santé des disques.",
+    "noData": "Aucune donnée n'a encore été lue",
+    "wear": "{{value}}% d'usure",
+    "testing": "Test en cours"
+  },
+  "detail": {
+    "stop": "Arrêter le test",
+    "short": "Test court",
+    "long": "Test long",
+    "health": "État de santé",
+    "temp": "Température",
+    "wear": "Usure",
+    "hours": "Temps sous tension",
+    "model": "Modèle",
+    "serial": "Numéro de série",
+    "kind": "Type",
+    "size": "Taille",
+    "reallocated": "Secteurs réalloués",
+    "pending": "Secteurs en attente",
+    "uncorrectable": "Secteurs non corrigés",
+    "mediaErrors": "Erreurs de support",
+    "selfTest": "Dernier auto-test",
+    "attributes": "Attributs SMART",
+    "attrMeta": "Valeur {{value}} | Brut {{raw}}"
+  },
+  "history": {
+    "24h": "24 heures",
+    "7d": "7 jours",
+    "30d": "30 jours",
+    "temp": "Température",
+    "wear": "Usure",
+    "bad": "Secteurs défectueux",
+    "empty": "L'historique se construit au fur et à mesure des lectures de l'hôte. Revenez plus tard."
+  },
+  "pools": {
+    "empty": "Aucun pool ZFS, aucun RAID, aucun système de fichiers btrfs ni aucun pool LVM mince n'a été trouvé",
+    "startTitle": "Démarrer sur {{name}} ?",
+    "startText": "Cette opération lit chaque bloc et peut ralentir les disques pendant des heures.",
+    "start": "Démarrer",
+    "stop": "Arrêter",
+    "scrub": "Scrub",
+    "thinMeta": "{{data}} % de données | {{meta}} % de métadonnées | {{free}} libre dans le groupe"
+  },
+  "events": {
+    "error": "Impossible de charger les événements",
+    "empty": "Aucun événement pour le moment",
+    "type": {
+      "smart-failing": "En échec",
+      "smart-attention": "Avertissement SMART",
+      "nvme-critical": "Critique",
+      "wear-high": "Usé",
+      "wear-critical": "Presque usé",
+      "temp-high": "Chaud",
+      "temp-critical": "Trop chaud",
+      "pool-degraded": "Pool dégradé",
+      "pool-errors": "Erreurs de pool",
+      "raid-degraded": "Tableau dégradé",
+      "raid-rebuilding": "Reconstruction",
+      "btrfs-errors": "Erreurs btrfs",
+      "thin-full": "Remplissage du pool mince",
+      "thin-critical": "Pool mince plein",
+      "unreachable": "Inaccessible",
+      "test": "Auto-test",
+      "scrub": "Scrub",
+      "command": "Commande"
+    }
+  },
+  "settings": {
+    "saved": "Enregistré",
+    "alerts": "Envoyer des alertes",
+    "alertsHint": "Avertir la personne qui a configuré cela lorsqu'un problème survient ou qu'une panne est résolue.",
+    "interval": "Lire toutes les (minutes)",
+    "intervalHint": "Les lectures SMART sont lentes, 15 minutes est un bon point de départ.",
+    "tempWarn": "Avertir au-dessus de (°C)",
+    "tempCrit": "Critique au-dessus de (°C)",
+    "tempHint": "0 utilise la valeur par défaut pour le type de disque.",
+    "wear": "Avertir quand usé (%)",
+    "wearHint": "Critique à 95 %.",
+    "thin": "Avertir quand un pool mince est plein (%)",
+    "thinHint": "Critique à 95 %.",
+    "host": {
+      "enable": {
+        "label": "État de santé du stockage",
+        "description": "Surveiller les disques, pools et tableaux sur cet hôte."
+      },
+      "useSudo": {
+        "label": "Utiliser sudo",
+        "description": "Exécuter les vérifications avec sudo sans mot de passe. SMART nécessite root."
+      },
+      "readOnly": {
+        "label": "Lecture seule",
+        "description": "Bloquer les auto-tests et les scrubs depuis Termix."
+      },
+      "showPanel": {
+        "label": "Afficher le panneau latéral",
+        "description": "Proposer le panneau d'état de santé du stockage à côté des terminaux sur cet hôte."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Ouvrir le panneau d'état de santé du stockage avec les terminaux",
+        "description": "Ouvrir le panneau automatiquement sur les hôtes qui le prennent en charge."
+      },
+      "companionSide": {
+        "label": "Position du panneau",
+        "description": "Emplacement du panneau d'état de santé du stockage à côté d'un terminal.",
+        "right": "Droite",
+        "left": "Gauche",
+        "bottom": "Bas"
+      },
+      "companionSize": {
+        "label": "Taille du panneau",
+        "description": "Largeur ou hauteur du panneau en pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Afficher le bouton latéral",
+        "description": "Afficher un petit bouton sur le bord du terminal pour ouvrir le panneau."
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "Utiliser l'état de santé du stockage",
+      "description": "Voir l'état de santé des disques et des tableaux sur les hôtes auxquels vous avez accès."
+    },
+    "runTests": {
+      "title": "Exécuter des tests et des vérifications",
+      "description": "Lancer les tests SMART et les vérifications. Nécessite également un accès en écriture à l'hôte."
+    }
+  },
+  "operations": {
+    "devices": {
+      "title": "Disques",
+      "health": "État de santé",
+      "kind": "Type",
+      "temp": "Température",
+      "wear": "Usure"
+    },
+    "pools": {
+      "title": "Pools et tableaux",
+      "state": "État"
+    },
+    "status": {
+      "title": "État de santé du stockage"
+    },
+    "temperature": {
+      "title": "Disque le plus chaud"
+    },
+    "selftest": {
+      "title": "Test SMART",
+      "device": "Disque",
+      "action": "Action",
+      "short": "Test court",
+      "long": "Test long",
+      "abort": "Arrêter le test en cours"
+    },
+    "scrub": {
+      "title": "Vérification",
+      "target": "Pool, système de fichiers ou tableau",
+      "targetHint": "Un identifiant de la liste des pools, comme zfs:tank, btrfs:/mnt/data ou md:md0",
+      "stop": "Arrêter au lieu de démarrer"
+    },
+    "events": {
+      "degraded": "Problème de stockage détecté",
+      "recovered": "Problème de stockage résolu",
+      "smartFailing": "Le disque échoue à son contrôle SMART",
+      "raidDegraded": "Pool ou tableau dégradé"
+    }
+  },
+  "companion": {
+    "toggle": "Panneau d'état de santé du stockage"
+  }
+}

@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Verwalten von DNS-Einträgen und Domains bei Cloudflare, Route 53, Namecheap und anderen Anbietern."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domains",
+    "loading": "Wird geladen",
+    "empty": "Noch keine Domains. Öffne DNS, um eine Anmeldung hinzuzufügen.",
+    "ok": "{{domains}} Domains, keine laufen bald ab",
+    "accounts": "{{count}} Anmeldungen",
+    "failingLinks": "{{count}} verknüpfte Einträge fehlerhaft"
+  },
+  "permissions": {
+    "view": {
+      "title": "DNS ansehen",
+      "description": "Den DNS-Tab öffnen und Zonen, Einträge, Domains und Health-Checks ansehen."
+    },
+    "edit": {
+      "title": "DNS-Einträge ändern",
+      "description": "Einträge hinzufügen, ändern und löschen, Zonendateien importieren und Domains aktualisieren."
+    },
+    "manage": {
+      "title": "DNS-Anmeldungen verwalten",
+      "description": "Anbieter-Anmeldungen hinzufügen, Einträge mit Hosts verknüpfen, Domains überwachen und Zonenkopien wiederherstellen."
+    }
+  },
+  "operations": {
+    "zone": "Zone",
+    "type": "Typ",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Name",
+    "content": "Wert",
+    "contentOptional": "Wert (leer lassen, um alles zu匹配)",
+    "ttl": "TTL in Sekunden",
+    "label": "Label",
+    "zones": {
+      "title": "DNS-Zonen auflisten"
+    },
+    "records": {
+      "title": "DNS-Einträge auflisten"
+    },
+    "domains": {
+      "title": "Domains und Ablaufdaten auflisten"
+    },
+    "check": {
+      "title": "Zone prüfen"
+    },
+    "upsert": {
+      "title": "DNS-Eintrag setzen"
+    },
+    "delete": {
+      "title": "DNS-Eintrag löschen"
+    },
+    "snapshot": {
+      "title": "Kopie einer Zone speichern"
+    },
+    "links": {
+      "title": "Verknüpfte Einträge aktualisieren"
+    },
+    "expiry": {
+      "title": "Domain-Ablauf"
+    }
+  },
+  "description": "Füge deine DNS- und Registrar-Anmeldungen hinzu, um Einträge zu verwalten und Domains an einem Ort zu überwachen. Schlüssel werden verschlüsselt gespeichert und nie wieder angezeigt.",
+  "summary": "{{zones}} Zonen, {{domains}} Domains",
+  "saved": "Gespeichert",
+  "delete": "Löschen",
+  "edit": "Bearbeiten",
+  "back": "Zurück",
+  "refresh": "Aktualisieren",
+  "section": {
+    "zones": "Zonen",
+    "domains": "Domains",
+    "links": "Verknüpfungen",
+    "accounts": "Anmeldungen"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "API-Token",
+    "accessKeyId": "Zugriffsschlüssel-ID",
+    "secretAccessKey": "Geheimer Zugriffsschlüssel",
+    "sessionToken": "Sitzungstoken (optional)",
+    "apiUser": "API-Benutzer",
+    "apiKey": "API-Schlüssel",
+    "userName": "Benutzername (falls anders als der API-Benutzer)",
+    "clientIp": "Erlaubte IP-Adresse",
+    "apiSecret": "API-Geheimnis",
+    "environment": "Umgebung",
+    "environment_production": "Produktion",
+    "environment_ote": "Test (OTE)",
+    "secretApiKey": "Geheimer API-Schlüssel",
+    "token": "Persönliches Zugriffstoken"
+  },
+  "zones": {
+    "empty": "Noch keine Zonen.",
+    "emptyHint": "Fügen Sie in Anmeldeinformationen einen Provider hinzu, um dessen Zonen zu sehen."
+  },
+  "zone": {
+    "records": "Einträge",
+    "health": "Status",
+    "copies": "Kopien",
+    "files": "Dateien",
+    "filter": "Einträge filtern",
+    "empty": "Keine Einträge."
+  },
+  "record": {
+    "section": "Eintrag",
+    "addTitle": "Eintrag hinzufügen",
+    "editTitle": "Eintrag bearbeiten",
+    "add": "Eintrag hinzufügen",
+    "save": "Speichern",
+    "type": "Typ",
+    "name": "Name",
+    "nameHint": "Verwenden Sie @ für {{zone}} selbst",
+    "value": "Wert",
+    "priority": "Priorität",
+    "ttl": "TTL (Sekunden)",
+    "ttlHint": "Wie lange Resolver die Antwort speichern. 300 entspricht 5 Minuten.",
+    "ttlAuto": "1 bedeutet automatisch.",
+    "proxied": "Proxied",
+    "proxiedHint": "Leiten Sie den Verkehr durch Cloudflare.",
+    "proxiedBadge": "Proxied",
+    "comment": "Notiz",
+    "readOnly": "Wird vom Provider verwaltet",
+    "deleteConfirm": "{{type}}-Eintrag {{name}} löschen?"
+  },
+  "account": {
+    "add": "Anmeldung hinzufügen",
+    "addTitle": "DNS-Anmeldung hinzufügen",
+    "editTitle": "DNS-Anmeldung bearbeiten",
+    "save": "Speichern",
+    "login": "Anmeldung",
+    "provider": "Provider",
+    "name": "Name",
+    "namePlaceholder": "Haupt-Cloudflare",
+    "keep": "Leer lassen, um den gespeicherten Wert zu behalten",
+    "registrar": "Dieser Provider ist auch ein Registrar, daher erscheinen seine Domains unter Domains.",
+    "options": "Optionen",
+    "autoBackup": "Kopien von Zonen behalten",
+    "autoBackupHint": "Speichern Sie vor jeder Änderung und wenn sich eine Zone außerhalb von Termix ändert, eine Kopie.",
+    "checkHealth": "Zonen täglich prüfen",
+    "checkHealthHint": "Führen Sie die Statusprüfungen täglich durch und benachrichtigen Sie bei neuen Problemen.",
+    "test": "Testen",
+    "testOk": "Funktioniert. {{zones}} Zonen und {{domains}} Domains gefunden.",
+    "deleteConfirm": "{{name}} löschen? Seine Kopien und Links werden mitgelöscht. Beim Provider ändert sich nichts.",
+    "empty": "Noch keine Anmeldungen.",
+    "emptyHint": "Fügen Sie eine Cloudflare-, Route 53-, Namecheap- oder andere Anmeldung hinzu, um zu beginnen.",
+    "lastSync": "Zuletzt geprüft am {{date}}",
+    "never": "Noch nicht geprüft",
+    "failed": "Die Anmeldung ist fehlgeschlagen"
+  },
+  "domains": {
+    "empty": "Noch keine Domains.",
+    "emptyHint": "Registrar-Anmeldungen listen ihre Domains hier auf. Sie können auch jede Domain nach Name beobachten.",
+    "watchPlaceholder": "example.com",
+    "watch": "Domain beobachten",
+    "unwatch": "Beobachtung stoppen",
+    "watched": "Beobachtet",
+    "noRenew": "Automatische Verlängerung aus",
+    "unlocked": "Nicht gesperrt",
+    "unknown": "Registrar unbekannt",
+    "expires": "Läuft am {{date}} ab",
+    "expired": "Abgelaufen",
+    "days": "{{count}} Tage übrig",
+    "refreshFailed": "Fehler bei {{count}} Nachschlagevorgängen"
+  },
+  "link": {
+    "add": "text",
+    "addTitle": "text",
+    "editTitle": "text",
+    "save": "text",
+    "record": "text",
+    "address": "text",
+    "zone": "text",
+    "pickZone": "text",
+    "source": "text",
+    "sourceHost": "Ein Host",
+    "sourcePublic4": "Die öffentliche IPv4-Adresse dieses Servers",
+    "sourcePublic6": "Die öffentliche IPv6-Adresse dieses Servers",
+    "source_host": "Host",
+    "source_public4": "Öffentliche IPv4",
+    "source_public6": "Öffentliche IPv6",
+    "host": "Host",
+    "pickHost": "Wählen Sie einen Host aus",
+    "hostHint": "Der Eintrag übernimmt die Adresse des Hosts. Er wird aktualisiert, wenn sich der Host ändert.",
+    "publicHint": "Termix ermittelt die öffentliche Adresse und hält den Eintrag synchron, ähnlich wie dynamisches DNS.",
+    "enabled": "Diesen Eintrag aktuell halten",
+    "empty": "Noch keine Links.",
+    "emptyHint": "Ein Link hält einen Eintrag auf einen Host oder die öffentliche Adresse dieses Servers ausgerichtet.",
+    "off": "Aus",
+    "hostGone": "Host nicht gefunden",
+    "lastSync": "Geprüft am {{date}}",
+    "never": "Noch nicht geprüft",
+    "syncNow": "Jetzt aktualisieren",
+    "updated": "Der Eintrag wurde aktualisiert",
+    "unchanged": "Der Eintrag war bereits korrekt",
+    "deleteConfirm": "Link für {{name}} entfernen? Der Datensatz bleibt an seinem Ort."
+  },
+  "diff": {
+    "none": "Es würde sich nichts ändern.",
+    "add": "Hinzufügen",
+    "change": "Ändern",
+    "remove": "Entfernen"
+  },
+  "copies": {
+    "hint": "Kopien werden vor jeder Änderung und einmal täglich gespeichert, wenn sich eine Zone außerhalb von Termix geändert hat.",
+    "save": "Kopie speichern",
+    "saved": "Kopie gespeichert",
+    "manualLabel": "Manuelle Kopie",
+    "empty": "Noch keine Kopien.",
+    "count": "{{count}} Einträge",
+    "compare": "Mit jetzt vergleichen",
+    "restore": "Wiederherstellen",
+    "restoreConfirm": "Diese Kopie wiederherstellen? {{count}} Änderungen werden beim Anbieter vorgenommen. Zuerst wird eine Kopie der aktuellen Einträge gespeichert.",
+    "restored": "Wiederhergestellt. {{count}} Änderungen vorgenommen.",
+    "source": {
+      "manual": "Manuell",
+      "auto": "Täglich",
+      "before": "Vor Änderung"
+    }
+  },
+  "files": {
+    "export": "Zonendatei herunterladen",
+    "exportHint": "Die Einträge als BIND-Zonendatei herunterladen.",
+    "import": "Zonendatei importieren",
+    "placeholder": "BIND-Zonendatei hier einfügen",
+    "replace": "Einträge entfernen, die nicht in der Datei enthalten sind",
+    "replaceHint": "Aus: Der Import fügt nur Einträge hinzu und ändert bestehende.",
+    "preview": "Vorschau",
+    "apply": "Anwenden",
+    "applied": "Importiert. {{count}} Änderungen vorgenommen.",
+    "skipped": "Übersprungen:"
+  },
+  "health": {
+    "run": "Prüfungen ausführen",
+    "running": "Läuft",
+    "propagation": "Resolver prüfen",
+    "propagationTitle": "Öffentliche Resolver",
+    "lastRun": "Letzte Ausführung: {{date}}",
+    "empty": "Für diese Zone wurden noch keine Prüfungen durchgeführt.",
+    "record": "Eintrag",
+    "resolver": "Resolver",
+    "answer": "Antwort",
+    "noAnswer": "Keine Antwort",
+    "delegation": {
+      "error": "Die Nameserver konnten nicht aufgelöst werden.",
+      "none": "Die Zone hat keine Nameserver im Internet. Die Domain zeigt möglicherweise nicht auf diesen Anbieter.",
+      "mismatch": "Die Domain verwendet andere Nameserver als der Anbieter: {{found}}.",
+      "ok": "Die Domain zeigt auf {{count}} Nameserver."
+    },
+    "soa": {
+      "differ": "Die Nameserver stimmen sich nicht über die Zonenversion ein ({{count}} Versionen). Eine Änderung könnte sich noch ausbreiten.",
+      "same": "{{count}} Nameserver stimmen sich über die Zonenversion ein."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC konnte nicht geprüft werden.",
+      "off": "DNSSEC ist nicht aktiviert.",
+      "valid": "DNSSEC ist aktiv und gültig.",
+      "broken": "DNSSEC ist beim Registrar eingerichtet, validiert aber nicht. Resolver, die dies prüfen, werden fehlschlagen."
+    },
+    "cname": {
+      "conflict": "{{name}} hat einen CNAME und andere Einträge. Das ist nicht erlaubt.",
+      "apex": "Die Zonenwurzel kann kein CNAME sein.",
+      "dangling": "{{name}} zeigt auf {{target}}, was nicht aufgelöst werden kann.",
+      "ok": "Jedes CNAME-Ziel kann aufgelöst werden."
+    },
+    "spf": {
+      "missing": "Die Domain empfängt E-Mails, hat aber keinen SPF-Eintrag.",
+      "multiple": "Es gibt mehr als einen SPF-Eintrag. Mailserver werden alle ablehnen.",
+      "lookups": "Der SPF-Eintrag führt {{count}} Lookups durch. Das Limit liegt bei 10.",
+      "ok": "SPF ist eingerichtet ({{count}} Lookups)."
+    },
+    "dmarc": {
+      "missing": "Es gibt keinen DMARC-Eintrag.",
+      "none": "DMARC ist auf Nur-Überwachung eingestellt.",
+      "ok": "DMARC ist eingerichtet."
+    },
+    "dkim": {
+      "none": "In dieser Zone wurden keine DKIM-Schlüssel gefunden.",
+      "found": "{{count}} DKIM-Schlüssel gefunden."
+    },
+    "mx": {
+      "unresolved": "Der Mailserver {{host}} kann nicht aufgelöst werden."
+    },
+    "mail": {
+      "none": "Die Domain hat keine Mail-Einträge."
+    },
+    "caa": {
+      "ok": "CAA-Einträge begrenzen, wer Zertifikate ausstellen darf.",
+      "none": "Es gibt keine CAA-Einträge. Jede Zertifizierungsstelle kann Zertifikate ausstellen."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domains, auslaufende Domains und fehlerhafte Einträge.",
+    "domains": "Domains",
+    "expiring": "Demnächst auslaufend",
+    "failingLinks": "Fehlerhafte Links",
+    "failingAccounts": "Fehlerhafte Anmeldungen"
+  }
+}

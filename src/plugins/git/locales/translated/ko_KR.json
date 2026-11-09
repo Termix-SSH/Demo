@@ -1,0 +1,289 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "호스트의 Git 저장소를 확인하고, 가져오기(pull), 커밋, 푸시(push)하며, 자동 가져오기로 최신 상태를 유지하세요."
+  },
+  "common": {
+    "save": "저장",
+    "cancel": "취소",
+    "back": "뒤로",
+    "loading": "로딩 중..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Git 사용",
+      "description": "접근 가능한 호스트의 Git 저장소를 확인하고, 수정 가능한 호스트에서 변경합니다."
+    },
+    "runCommands": {
+      "title": "자동 가져오기 후 명령어 실행",
+      "description": "자동 가져오기로 새 커밋이 적용된 후 호스트에서 실행할 명령어를 설정합니다."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Git 탭에서 이 호스트의 Git 저장소를 관리합니다."
+      },
+      "repoRoots": {
+        "label": "폴더 스캔",
+        "description": "이 호스트를 스캔할 때 저장소를 검색할 폴더입니다. 쉼표로 구분하여 입력하세요. 기본값은 홈 폴더입니다.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "sudo 사용",
+        "description": "sudo를 사용하여 root 권한으로 git을 실행합니다. 로그인 사용자가 사용할 수 없는 저장소에만 적용하세요."
+      },
+      "readOnly": {
+        "label": "읽기 전용",
+        "description": "저장소는 표시하지만 이 호스트에서는 절대 변경하지 않습니다."
+      },
+      "showPanel": {
+        "label": "터미널 옆 패널",
+        "description": "이 호스트의 터미널 탭에서 Git 패널을 제공합니다."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "터미널과 함께 패널 열기",
+        "description": "Git 패널이 있는 호스트에서 터미널이 열릴 때 Git 패널을 표시합니다."
+      },
+      "companionSide": {
+        "label": "패널 위치",
+        "description": "터미널 옆에 패널이 표시되는 위치입니다.",
+        "right": "오른쪽",
+        "left": "왼쪽",
+        "bottom": "아래쪽"
+      },
+      "companionSize": {
+        "label": "패널 크기",
+        "description": "패널의 너비 또는 아래쪽 배치 시 높이(픽셀 단위)입니다."
+      },
+      "companionEdgeButton": {
+        "label": "Edge 버튼",
+        "description": "패널을 열 수 있는 작은 버튼을 터미널 가장자리에 표시합니다."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "호스트에서 Git을 엽니다.",
+    "error": "이 호스트에서 git을 로드할 수 없습니다.",
+    "disabled": "이 호스트에서 Git이 꺼져 있습니다. 호스트 설정에서 켜세요.",
+    "sudo": "이 작업에는 루트 로그인, 비밀번호 없는 sudo 또는 저장된 Sudo 비밀번호가 필요합니다.",
+    "refresh": "새로고침",
+    "readOnly": "읽기 전용",
+    "notInstalled": "git이 설치되지 않음",
+    "notInstalledTitle": "이 호스트에 git이 설치되어 있지 않습니다",
+    "notInstalledHint": "호스트의 패키지 관리자로 git을 설치한 후 새로고침하세요."
+  },
+  "actions": {
+    "ok": "완료",
+    "failed": "실패",
+    "noOutput": "출력 없음."
+  },
+  "repos": {
+    "add": "저장소 추가",
+    "search": "저장소 검색",
+    "empty": "저장소가 없습니다. 하나 추가하여 시작하세요.",
+    "noMatch": "일치하는 저장소가 없습니다.",
+    "viewOnly": "이 호스트에 추가된 저장소가 없습니다.",
+    "detached": "분리된 상태",
+    "changes_other": "{{count}}개 변경 사항",
+    "conflicts": "충돌",
+    "auto": "자동 풀",
+    "autoFailing": "풀 실패",
+    "remove": "목록에서 제거",
+    "removeTitle": "{{name}}을(를) 제거하시겠습니까?",
+    "removeBody": "저장소 정보는 여기서만 잊혀집니다. 호스트에서는 아무것도 삭제되지 않습니다.",
+    "removed": "{{name}} 제거됨",
+    "error": {
+      "missing": "폴더 누락",
+      "notrepo": "Git 저장소가 아닙니다",
+      "unreadable": "읽을 수 없습니다"
+    }
+  },
+  "add": {
+    "title": "저장소 추가",
+    "modeScan": "검색",
+    "modePath": "폴더",
+    "modeClone": "복제",
+    "scanHint": "{{roots}}에서 Git 저장소를 검색합니다. 호스트 설정에서 폴더를 변경할 수 있습니다.",
+    "rescan": "다시 검색",
+    "noneFound": "새로운 저장소를 찾을 수 없습니다.",
+    "picked": "선택됨",
+    "addPicked_other": "{{count}}개 저장소 추가",
+    "addAll": "모두 추가",
+    "folder": "호스트의 폴더",
+    "folderHint": "전체 경로 또는 홈 폴더를 나타내는 ~로 시작하세요. 이미 Git 저장소여야 합니다.",
+    "addRepo": "저장소 추가",
+    "url": "주소",
+    "urlHint": "호스트 로그인 사용자의 키 및 Git 설정을 사용합니다.",
+    "dest": "복제 대상",
+    "destHint": "폴더가 아직 존재하지 않아야 합니다.",
+    "clone": "복제",
+    "cloned": "복제 완료",
+    "added_other": "{{count}}개 저장소 추가됨",
+    "failed": "저장소를 추가할 수 없습니다",
+    "scanFailed": "호스트를 검색할 수 없습니다"
+  },
+  "repo": {
+    "ahead": "{{count}}개 앞",
+    "behind": "{{count}}개 뒤",
+    "fetch": "가져오기",
+    "fetched": "가져오기 완료",
+    "pull": "끌기",
+    "pulled": "끌기 완료",
+    "push": "밀기",
+    "pushed": "밀기 완료",
+    "viewChanges": "변경 사항",
+    "viewBranches": "브랜치",
+    "viewHistory": "기록",
+    "viewStash": "stash",
+    "viewAuto": "자동 끌기"
+  },
+  "changes": {
+    "loadFailed": "변경 사항을 읽을 수 없습니다.",
+    "clean": "커밋할 내용이 없습니다. 작업 트리가 깨끗합니다.",
+    "stagedTitle": "스테이지됨 ({{count}})",
+    "unstagedTitle": "변경 사항 ({{count}})",
+    "stage": "스테이지",
+    "staged": "스테이지됨",
+    "unstage": "스테이지 해제",
+    "unstaged": "스테이지 해제됨",
+    "stageAll": "모두 스테이지",
+    "renamed": "이름 변경됨",
+    "discard": "무시",
+    "discardTitle": "{{name}}의 변경 사항을 무시하시겠습니까?",
+    "discardBody": "이 파일의 변경 사항은 삭제되며 복구할 수 없습니다.",
+    "discarded": "변경 사항 무시됨",
+    "message": "커밋 메시지",
+    "messagePlaceholder": "변경 내용",
+    "commit": "커밋",
+    "commitAll": "모든 변경 사항 커밋",
+    "commitStaged_other": "{{count}}개 스테이지된 파일 커밋",
+    "committed": "커밋 완료",
+    "noDiff": "표시할 변경 사항이 없습니다.",
+    "truncated": "차이가 길어 시작 부분만 표시됩니다."
+  },
+  "branches": {
+    "loadFailed": "브랜치를 읽을 수 없습니다.",
+    "empty": "아직 브랜치가 없습니다.",
+    "current": "현재",
+    "remote": "원격",
+    "gone": "상류 브랜치 없음",
+    "newName": "새 브랜치",
+    "create": "브랜치 만들기",
+    "created": "브랜치 {{name}} 생성됨",
+    "switch": "전환",
+    "switched": "{{name}}(으)로 전환됨",
+    "merge": "현재 브랜치에 병합",
+    "mergeTitle": "{{name}}을(를) {{into}}(으)로 병합하시겠습니까?",
+    "mergeBody": "충돌이 있는 병합은 즉시 취소됩니다.",
+    "merged": "{{name}} 병합됨",
+    "delete": "브랜치 삭제",
+    "deleteTitle": "{{name}}을(를) 삭제하시겠습니까?",
+    "deleteBody": "브랜치에 병합되지 않은 커밋이 있으면 Git에서 삭제를 거부합니다.",
+    "deleted": "{{name}} 삭제됨",
+    "forceTitle": "{{name}}을(를) 강제 삭제하시겠습니까?",
+    "forceBody": "이 브랜치에는 병합되지 않은 커밋이 있습니다. 삭제하면 이 커밋들이 손실됩니다.",
+    "forceDelete": "강제 삭제"
+  },
+  "history": {
+    "loadFailed": "기록을 읽을 수 없습니다.",
+    "empty": "아직 커밋이 없습니다.",
+    "branch": "이 브랜치",
+    "all": "모든 브랜치",
+    "more": "더 보기"
+  },
+  "stash": {
+    "loadFailed": "stash를 읽을 수 없습니다.",
+    "title": "Stash",
+    "empty": "stash가 없습니다.",
+    "message": "메시지",
+    "messagePlaceholder": "선택 사항",
+    "untracked": "추적되지 않는 파일 포함",
+    "push": "변경 사항 stash",
+    "pushDone": "변경 사항 stash됨",
+    "apply": "적용",
+    "applyDone": "stash 적용됨",
+    "pop": "Pop",
+    "popDone": "stash 적용 및 제거됨",
+    "drop": "제거",
+    "dropDone": "stash 제거됨",
+    "dropTitle": "{{name}}을(를) 제거하시겠습니까?",
+    "dropBody": "stash가 삭제되며 복구할 수 없습니다.",
+    "remotes": "원격 저장소",
+    "noRemotes": "원격 저장소가 없습니다."
+  },
+  "auto": {
+    "intro": "빠른 전달(fast-forward) 방식으로 일정 간격으로 pull합니다. 병합하지 않으며, 커밋되지 않은 변경 사항이 있거나 상류 브랜치와 분기된 경우 저장소를 건너뜁니다.",
+    "noUpstream": "이 브랜치에는 아직 상류 브랜치가 없으므로 자동 pull에서 건너뜁니다.",
+    "enable": "자동 pull",
+    "enableHint": "이 호스트에 대한 사용자의 접근 권한으로 실행됩니다.",
+    "interval": "간격 (분)",
+    "intervalHint": "pull 사이의 대기 시간입니다.",
+    "post": "pull 후 명령어",
+    "postHint": "새 커밋이 도착한 후 저장소 폴더에서 실행됩니다. 명령어 실행 권한이 필요합니다.",
+    "saved": "자동 pull 저장됨",
+    "saveFailed": "자동 pull을 저장할 수 없습니다",
+    "runNow": "지금 실행",
+    "next": "다음 pull {{when}}",
+    "runs": "최근 실행",
+    "noRuns": "아직 실행 기록이 없습니다.",
+    "outcome": {
+      "pulled": "Pull됨",
+      "uptodate": "최신 상태",
+      "skipped": "건너뜀",
+      "failed": "실패"
+    }
+  },
+  "card": {
+    "title": "Git 저장소",
+    "loading": "로딩 중...",
+    "refresh": "새로고침",
+    "empty": "아직 Git 저장소가 있는 호스트가 없습니다.",
+    "allClean": "모든 저장소가 깨끗하고 최신 상태입니다.",
+    "summary_other": "{{count}}개 저장소 | {{attention}}개 확인 필요"
+  },
+  "companion": {
+    "toggle": "Git 패널",
+    "openTab": "Git 열기",
+    "here": "이 폴더의 저장소",
+    "all": "모든 저장소"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Git 저장소 목록"
+    },
+    "fetch": {
+      "title": "저장소 가져오기"
+    },
+    "pull": {
+      "title": "저장소 가져오기(Pull)"
+    },
+    "push": {
+      "title": "저장소 푸시(Push)"
+    },
+    "checkout": {
+      "title": "브랜치 전환",
+      "branch": "브랜치"
+    },
+    "reset-hard": {
+      "title": "저장소 하드 리셋",
+      "ref": "리셋 대상"
+    },
+    "repos": {
+      "title": "Git 저장소",
+      "branch": "브랜치",
+      "ahead": "앞서 있음",
+      "behind": "뒤처짐",
+      "changed": "변경 사항"
+    },
+    "signals": {
+      "behind": "뒤처진 저장소",
+      "dirty": "변경 사항이 있는 저장소",
+      "pull-failing": "자동 Pull 실패"
+    }
+  }
+}

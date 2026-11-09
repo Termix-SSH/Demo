@@ -1,0 +1,214 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "Zobrazujte, pridávajte a spúšťajte cron úlohy na vašich hostiteľoch s náhľadom rozvrhu a systémovými cron súborami."
+  },
+  "common": {
+    "save": "Uložiť",
+    "cancel": "Zrušiť",
+    "back": "Späť",
+    "delete": "Odstrániť"
+  },
+  "permissions": {
+    "use": {
+      "title": "Používať Cron",
+      "description": "Zobrazovať cron úlohy na hostiteľoch, ku ktorým máte prístup, a meniť ich na hostiteľoch, ktoré môžete upravovať."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Spravovať cron úlohy na tomto hostiteľovi z karty Cron."
+      },
+      "useSudo": {
+        "label": "Používať sudo",
+        "description": "Používať sudo pre crontaby iných používateľov a /etc/cron.d. Vypnúť, ak je prihlásený používateľ root."
+      },
+      "readOnly": {
+        "label": "Iba na čítanie",
+        "description": "Zobrazovať cron úlohy, ale nikdy ich na tomto hostiteľovi nemeniť."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "Otvorte Cron z hostiteľa.",
+    "error": "Nepodarilo sa načítať cron z tohto hostiteľa.",
+    "disabled": "Cron je pre tohto hostiteľa vypnutý. Zapnite ho v nastaveniach hostiteľa.",
+    "sudo": "Toto vyžaduje prihlásenie ako root, sudo bez hesla alebo uložené Sudo Password.",
+    "refresh": "Obnoviť",
+    "running": "Cron beží",
+    "stopped": "Cron zastavený",
+    "readOnly": "Iba na čítanie",
+    "notInstalled": "Nie je nainštalovaný",
+    "notInstalledTitle": "Cron nie je na tomto hostiteľovi nainštalovaný",
+    "notInstalledHint": "Nainštalujte cron alebo cronie pomocou správcu balíkov hostiteľa a potom obnovte.",
+    "notRunning": "Služba cron nebeží, takže sa žiadne úlohy nespustia.",
+    "viewJobs": "Úlohy",
+    "viewSystem": "Systém",
+    "viewLogs": "Protokoly"
+  },
+  "jobs": {
+    "add": "Pridať úlohu",
+    "user": "Crontab používateľa",
+    "ownUser": "{{user}} (prihlásenie)",
+    "search": "Hľadať úlohy",
+    "editText": "Upraviť ako text",
+    "empty": "Zatiaľ žiadne cron úlohy.",
+    "noMatch": "Žiadne úlohy nevyhovujú.",
+    "off": "Vypnuté",
+    "next": "ďalej {{time}}",
+    "run": "Spustiť teraz",
+    "runTitle": "Spustiť túto úlohu teraz?",
+    "runDesc": "Toto spustí {{command}} raz ako používateľ crontabu. Zastaví sa po 2 minútach.",
+    "runFailed": "Nepodarilo sa spustiť úlohu.",
+    "turnOn": "Zapnúť",
+    "turnOff": "Vypnúť",
+    "deleteTitle": "Odstrániť túto úlohu?",
+    "loadFailed": "Nepodarilo sa prečítať crontab.",
+    "saveFailed": "Nepodarilo sa uložiť crontab.",
+    "outputTitle": "Výstup úlohy",
+    "exitOk": "Dokončené",
+    "exitCode": "Ukončovací kód {{code}}",
+    "noOutput": "Úloha nič nevytlačila."
+  },
+  "form": {
+    "addTitle": "Nová úloha",
+    "editTitle": "Upraviť úlohu",
+    "forUser": "Crontab používateľa {{user}}",
+    "label": "Popis",
+    "labelHint": "Uložené ako komentár nad úlohou.",
+    "labelPlaceholder": "Nočná záloha",
+    "command": "Príkaz",
+    "commandHint": "Spúšťa sa pomocou sh v domovskom adresári používateľa. % začína vstup, ktorý posiela cron, pre skutočné % napíšte \\%.",
+    "schedule": "Rozvrh",
+    "scheduleHint": "Minúta, hodina, deň v mesiaci, mesiac a deň v týždni, alebo slovo ako @daily.",
+    "scheduleInvalid": "Toto nie je platný rozvrh.",
+    "nextRuns": "Ďalšie spustenia ({{zone}}):",
+    "enabled": "Zapnuté",
+    "enabledHint": "Vypnutá úloha zostane v crontab ako komentár.",
+    "saved": "Uložené."
+  },
+  "presets": {
+    "everyMinute": "Každú minútu",
+    "every5": "Každých 5 min",
+    "every15": "Každých 15 min",
+    "hourly": "Hodinovo",
+    "daily": "Denne",
+    "weekly": "Týždenne",
+    "monthly": "Mesačne",
+    "reboot": "Po reštarte"
+  },
+  "schedule": {
+    "reboot": "Po reštarte",
+    "everyMinute": "Každú minútu",
+    "everyNMinutes": "Každých {{n}} minút",
+    "hourlyAt": "Každú hodinu na minúte {{minute}}",
+    "everyNHours": "Každých {{n}} hodín na minúte {{minute}}",
+    "dailyAt": "Každý deň o {{time}}",
+    "weekdaysAt": "Pondelok až piatok o {{time}}",
+    "weeklyAt": "Každý {{day}} o {{time}}",
+    "monthlyAt": "{{day}}. deň každého mesiaca o {{time}}",
+    "custom": "Vlastný rozvrh",
+    "invalid": "Nie je platný rozvrh"
+  },
+  "days": {
+    "0": "Nedeľa",
+    "1": "Pondelok",
+    "2": "Utorok",
+    "3": "Streda",
+    "4": "Štvrtok",
+    "5": "Piatok",
+    "6": "Sobota"
+  },
+  "raw": {
+    "title": "Crontab ako text",
+    "hint": "Jedna úloha na riadok. Hostiteľ skontroluje text a zachová starý crontab, ak obsahuje chyby."
+  },
+  "system": {
+    "add": "Nový súbor",
+    "addTitle": "Nový súbor v /etc/cron.d",
+    "edit": "Upraviť",
+    "name": "Názov súboru",
+    "nameHint": "Uložené ako /etc/cron.d/<name>. Cron ignoruje názvy s bodkami.",
+    "nameInvalid": "Používajte iba písmená, čísla, - a _.",
+    "content": "Obsah súboru",
+    "fileHint": "Každá úloha uvádza používateľa, pod ktorým sa spustí: minúta hodina deň mesiac deň_týždňa používateľ príkaz. Každý riadok sa skontroluje pred uložením.",
+    "noJobs": "V tomto súbore nie sú žiadne úlohy.",
+    "readHint": "Niektoré súbory môžu byť skryté bez práv root. Zmeny tu vyžadujú prihlásenie ako root, sudo bez hesla alebo uložené heslo Sudo.",
+    "timers_one": "Tento hostiteľ má tiež {{count}} systemd timer. Spravuje ho plugin Services.",
+    "timers_few": "Tento hostiteľ má tiež {{count}} systemd timers. Spravuje ich plugin Services.",
+    "timers_many": "Tento hostiteľ má tiež {{count}} systemd timers. Spravuje ich plugin Services.",
+    "timers_other": "Tento hostiteľ má tiež {{count}} systemd timers. Spravuje ich plugin Services.",
+    "deleteTitle": "Odstrániť /etc/cron.d/{{name}}?",
+    "deleteDesc": "Kópia sa zachová v /var/lib/termix-cron/backup.",
+    "deleted": "Odstránený {{name}}.",
+    "saved": "Uložený {{name}}.",
+    "loadFailed": "Nepodarilo sa prečítať systémové cron súbory.",
+    "saveFailed": "Nepodarilo sa uložiť súbor.",
+    "period": {
+      "hourly": "Spúšťa sa každú hodinu",
+      "daily": "Spúšťa sa každý deň",
+      "weekly": "Spúšťa sa každý týždeň",
+      "monthly": "Spúšťa sa každý mesiac"
+    }
+  },
+  "logs": {
+    "lines": "Riadky",
+    "lineCount_one": "{{count}} riadok",
+    "lineCount_few": "{{count}} riadky",
+    "lineCount_many": "{{count}} riadkov",
+    "lineCount_other": "{{count}} riadkov",
+    "source": "Z {{source}}",
+    "noSource": "Na tomto hostiteľovi sa nenašiel žiadny cron log.",
+    "empty": "Žiadne riadky v logoch.",
+    "failed": "Nepodarilo sa prečítať cron log."
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "Pre tento hostiteľa zapnite Cron v jeho nastaveniach, aby ste tu videli jeho úlohy."
+  },
+  "operations": {
+    "list": {
+      "title": "Zoznam cron úloh"
+    },
+    "enable": {
+      "title": "Zapnúť cron úlohu"
+    },
+    "disable": {
+      "title": "Vypnúť cron úlohu"
+    },
+    "run": {
+      "title": "Spustiť cron úlohu teraz"
+    },
+    "delete": {
+      "title": "Odstrániť cron úlohu"
+    },
+    "jobs": {
+      "title": "Cron úlohy",
+      "schedule": "Rozvrh",
+      "command": "Príkaz"
+    },
+    "status": {
+      "title": "Stav Cronu"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "Kontrolujem hostiteľov...",
+    "summary_one": "{{count}} úloha na {{hosts}} hostiteľoch",
+    "summary_few": "{{count}} úlohy na {{hosts}} hostiteľoch",
+    "summary_many": "{{count}} úloh na {{hosts}} hostiteľoch",
+    "summary_other": "{{count}} úloh na {{hosts}} hostiteľoch",
+    "refresh": "Skontrolovať znova",
+    "empty": "Pre hostiteľa zapnite Cron, aby ste ho videli tu.",
+    "stopped": "Nespúšťa sa",
+    "missing": "Nie je nainštalovaný",
+    "jobs_one": "{{count}} úloha",
+    "jobs_few": "{{count}} úlohy",
+    "jobs_many": "{{count}} úloh",
+    "jobs_other": "{{count}} úloh",
+    "off": "{{count}} vypnutých"
+  }
+}

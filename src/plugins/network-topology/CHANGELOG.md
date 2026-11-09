@@ -14,6 +14,10 @@
 - Form labels match the rest of Termix
 - Toolbars, loading screens, back buttons and Save bars match the rest of Termix
 
+### Fixed
+
+- The remove button in the graph toolbar has a name for screen readers
+
 ## 1.0.2
 
 ### Changed

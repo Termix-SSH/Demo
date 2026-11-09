@@ -91,7 +91,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /summary:
+   * /plugin-api/security-center/summary:
    *   get:
    *     summary: Security score of every host the user can see
    *     description: Uses the data the background timer already collected, so it never opens an SSH connection.
@@ -203,7 +203,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}:
+   * /plugin-api/security-center/{hostId}:
    *   get:
    *     summary: Keys, findings and scan summary for a host
    *     parameters:
@@ -225,7 +225,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/refresh:
+   * /plugin-api/security-center/{hostId}/refresh:
    *   post:
    *     summary: Read the keys on the host now
    *     parameters:
@@ -247,7 +247,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/config:
+   * /plugin-api/security-center/{hostId}/config:
    *   put:
    *     summary: Change alerts, intervals and key limits for a host
    *     parameters:
@@ -274,7 +274,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/vulns:
+   * /plugin-api/security-center/{hostId}/vulns:
    *   get:
    *     summary: Known vulnerabilities in the installed packages
    *     parameters:
@@ -303,7 +303,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/scan:
+   * /plugin-api/security-center/{hostId}/scan:
    *   post:
    *     summary: Scan the installed packages now
    *     description: Sends package names and versions to OSV, or to the OSV address an admin set.
@@ -333,7 +333,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/ignore:
+   * /plugin-api/security-center/{hostId}/ignore:
    *   post:
    *     summary: Hide an advisory on a host
    *     parameters:
@@ -371,7 +371,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/ignore/{advisory}:
+   * /plugin-api/security-center/{hostId}/ignore/{advisory}:
    *   delete:
    *     summary: Show a hidden advisory again
    *     parameters:
@@ -400,7 +400,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/events:
+   * /plugin-api/security-center/{hostId}/events:
    *   get:
    *     summary: Problems found and cleared, scans and rotations
    *     parameters:
@@ -443,7 +443,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/rotate-login-key:
+   * /plugin-api/security-center/{hostId}/rotate-login-key:
    *   post:
    *     summary: Replace the key Termix logs in to the host with
    *     description: Adds a new key, checks it logs in, saves it as a credential, points the host at it and only then removes the old key. Any failure leaves the old key in place.
@@ -481,7 +481,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/revoke:
+   * /plugin-api/security-center/{hostId}/revoke:
    *   post:
    *     summary: Remove a key from an authorized keys file
    *     description: Removes every line with this fingerprint from the file. The key Termix logs in with is refused. A backup is kept next to the file.
@@ -529,7 +529,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/rotate-host-keys:
+   * /plugin-api/security-center/{hostId}/rotate-host-keys:
    *   post:
    *     summary: Make new SSH host keys on the host
    *     description: Copies the old host keys, makes new ones and reloads sshd. Every client sees a changed host key afterwards, Termix included.

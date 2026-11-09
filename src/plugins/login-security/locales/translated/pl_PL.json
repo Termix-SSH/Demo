@@ -9,7 +9,8 @@
   "settings": {
     "group": {
       "sessions": "Sesje",
-      "secondFactor": "Drugi czynnik uwierzytelniający"
+      "secondFactor": "Drugi czynnik uwierzytelniający",
+      "connect": "Łączenie z hostami"
     },
     "admin": {
       "idleTimeoutMinutes": {
@@ -34,8 +35,34 @@
       "applyToExternal": {
         "label": "Również dla logowania jednokrotnego",
         "description": "Wymagaj drugiego czynnika uwierzytelniającego również po logowaniu przez SSO i LDAP. Pozostaw wyłączone, jeśli Twój dostawca tożsamości już go wymaga."
+      },
+      "connectFactor": {
+        "label": "Wymagaj drugiego czynnika uwierzytelniania przed połączeniem",
+        "description": "Użytkownicy podają drugi czynnik uwierzytelniania przy otwieraniu terminala, pulpitu zdalnego lub menedżera plików na hoście. Nie jest on wymagany dla metryk, tuneli ani innych zadań tła.",
+        "off": "Wyłączone",
+        "marked": "Tylko oznaczone hosty",
+        "all": "Wszystkie hosty"
+      },
+      "connectFactorMinutes": {
+        "label": "Minuty do ponownego pytania",
+        "description": "Po podaniu drugiego czynnika użytkownik może łączyć się z dowolnym hostem przez ten czas. Wylogowanie kończy go wcześniej."
+      }
+    },
+    "host": {
+      "requireConnectFactor": {
+        "label": "Wymagaj drugiego czynnika uwierzytelniania przed połączeniem",
+        "description": "Stosowane, gdy Bezpieczeństwo logowania jest ustawione na pytanie dla oznaczonych hostów."
       }
     }
+  },
+  "verify": {
+    "title": "Weryfikacja drugiego czynnika",
+    "intro": "Podaj drugi czynnik uwierzytelniania, aby połączyć się z tym hostem.",
+    "done": "Zweryfikowano",
+    "retry": "Wróć do hosta i spróbuj połączyć się ponownie.",
+    "failed": "To nie zadziałało. Spróbuj ponownie.",
+    "noFactor": "Nie skonfigurowano drugiego czynnika",
+    "noFactorHint": "Skonfiguruj go w Ustawieniach, Bezpieczeństwo, a następnie spróbuj połączyć się ponownie."
   },
   "status": {
     "factors": "Dostępne drugie czynniki uwierzytelniające: {{factors}}",

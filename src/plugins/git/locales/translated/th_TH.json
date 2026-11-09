@@ -1,0 +1,289 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "ดู ดึง บันทึก และส่งข้อมูลไปยังที่เก็บ Git บนโฮสต์ของคุณ และอัปเดตให้ล่าสุดด้วยการดึงข้อมูลอัตโนมัติ"
+  },
+  "common": {
+    "save": "บันทึก",
+    "cancel": "ยกเลิก",
+    "back": "ย้อนกลับ",
+    "loading": "กำลังโหลด..."
+  },
+  "permissions": {
+    "use": {
+      "title": "ใช้ Git",
+      "description": "ดูที่เก็บ Git บนโฮสต์ที่คุณเข้าถึงได้ และแก้ไขบนโฮสต์ที่คุณมีสิทธิ์แก้ไข"
+    },
+    "runCommands": {
+      "title": "เรียกใช้คำสั่งหลังการดึงข้อมูลอัตโนมัติ",
+      "description": "ตั้งค่าคำสั่งที่จะทำงานบนโฮสต์หลังจากการดึงข้อมูลอัตโนมัติดึงการเปลี่ยนแปลงใหม่เข้ามา"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "จัดการ git repos บนโฮสต์นี้จากแท็บ Git"
+      },
+      "repoRoots": {
+        "label": "สแกนโฟลเดอร์",
+        "description": "โฟลเดอร์ที่จะค้นหา repos เมื่อคุณสแกนโฮสต์นี้ คั่นด้วยเครื่องหมายจุลภาค ค่าเริ่มต้นคือโฟลเดอร์หลัก",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "ใช้ sudo",
+        "description": "รัน git ในฐานะ root ด้วย sudo ใช้เฉพาะกับ repos ที่ผู้ใช้ที่ล็อกอินไม่สามารถใช้งานได้"
+      },
+      "readOnly": {
+        "label": "อ่านอย่างเดียว",
+        "description": "แสดง repos แต่ไม่เปลี่ยนแปลงบนโฮสต์นี้"
+      },
+      "showPanel": {
+        "label": "แผงข้างเทอร์มินัล",
+        "description": "แสดงแผง Git บนแท็บเทอร์มินัลของโฮสต์นี้"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "เปิดแผงพร้อมกับเทอร์มินัล",
+        "description": "แสดงแผง Git เมื่อเปิดเทอร์มินัลบนโฮสต์ที่มีฟีเจอร์นี้"
+      },
+      "companionSide": {
+        "label": "ตำแหน่งแผง",
+        "description": "ตำแหน่งของแผงที่อยู่ถัดจากเทอร์มินัล",
+        "right": "ขวา",
+        "left": "ซ้าย",
+        "bottom": "ด้านล่าง"
+      },
+      "companionSize": {
+        "label": "ขนาดแผง",
+        "description": "ความกว้างของแผง หรือความสูงเมื่ออยู่ด้านล่าง เป็นพิกเซล"
+      },
+      "companionEdgeButton": {
+        "label": "ปุ่มขอบ",
+        "description": "แสดงปุ่มขนาดเล็กที่ขอบเทอร์มินัลเพื่อเปิดแผงควบคุม"
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "เปิด Git จากโฮสต์",
+    "error": "ไม่สามารถโหลด Git จากโฮสต์นี้ได้",
+    "disabled": "Git ถูกปิดใช้งานสำหรับโฮสต์นี้ เปิดใช้งานในตั้งค่าโฮสต์",
+    "sudo": "จำเป็นต้องเข้าสู่ระบบด้วย root, sudo ที่ไม่ต้องใช้รหัสผ่าน หรือรหัสผ่าน Sudo ที่บันทึกไว้",
+    "refresh": "รีเฟรช",
+    "readOnly": "อ่านอย่างเดียว",
+    "notInstalled": "ไม่ได้ติดตั้ง git",
+    "notInstalledTitle": "git ไม่ได้ติดตั้งบนโฮสต์นี้",
+    "notInstalledHint": "ติดตั้ง git โดยใช้ตัวจัดการแพ็กเกจของโฮสต์ แล้วรีเฟรช"
+  },
+  "actions": {
+    "ok": "เสร็จสิ้น",
+    "failed": "ล้มเหลว",
+    "noOutput": "ไม่มีผลลัพธ์"
+  },
+  "repos": {
+    "add": "เพิ่มรีพอ",
+    "search": "ค้นหารีพอ",
+    "empty": "ยังไม่มีรีพอ เพิ่มหนึ่งเพื่อเริ่มต้น",
+    "noMatch": "ไม่มีรีพอที่ตรงกัน",
+    "viewOnly": "ยังไม่มีรีพอใดถูกเพิ่มลงในโฮสต์นี้",
+    "detached": "แยกสาขา",
+    "changes_other": "{{count}} รายการที่เปลี่ยนแปลง",
+    "conflicts": "ความขัดแย้ง",
+    "auto": "ดึงอัตโนมัติ",
+    "autoFailing": "การดึงล้มเหลว",
+    "remove": "ลบออกจากรายการ",
+    "removeTitle": "ต้องการลบ {{name}} หรือไม่?",
+    "removeBody": "เพียงลืมเก็บข้อมูล repo นี้เท่านั้น ไม่มีการลบข้อมูลใด ๆ บนโฮสต์",
+    "removed": "ลบ {{name}} แล้ว",
+    "error": {
+      "missing": "ไม่พบโฟลเดอร์",
+      "notrepo": "ไม่ใช่ git repo",
+      "unreadable": "ไม่สามารถอ่านได้"
+    }
+  },
+  "add": {
+    "title": "เพิ่ม repos",
+    "modeScan": "สแกน",
+    "modePath": "โฟลเดอร์",
+    "modeClone": "โคลน",
+    "scanHint": "ค้นหา git repos ใน {{roots}} เปลี่ยนโฟลเดอร์ในการตั้งค่าโฮสต์",
+    "rescan": "สแกนอีกครั้ง",
+    "noneFound": "ไม่พบ repos ใหม่",
+    "picked": "เลือกแล้ว",
+    "addPicked_other": "เพิ่ม repos {{count}}",
+    "addAll": "เพิ่มทั้งหมด",
+    "folder": "โฟลเดอร์บนโฮสต์",
+    "folderHint": "เส้นทางเต็ม หรือเริ่มด้วย ~ สำหรับโฟลเดอร์บ้าน ต้องเป็น git repo อยู่แล้ว",
+    "addRepo": "เพิ่ม repo",
+    "url": "ที่อยู่",
+    "urlHint": "ใช้คีย์และการตั้งค่า git ของผู้ใช้ที่เข้าสู่ระบบโฮสต์",
+    "dest": "โคลนลงใน",
+    "destHint": "โฟลเดอร์ต้องยังไม่มีการสร้าง",
+    "clone": "โคลน",
+    "cloned": "โคลนแล้ว",
+    "added_other": "เพิ่ม repos {{count}}",
+    "failed": "ไม่สามารถเพิ่ม repo ได้",
+    "scanFailed": "ไม่สามารถสแกนโฮสต์ได้"
+  },
+  "repo": {
+    "ahead": "นำหน้า {{count}}",
+    "behind": "ตามหลัง {{count}}",
+    "fetch": "ดึงข้อมูล",
+    "fetched": "ดึงข้อมูลแล้ว",
+    "pull": "ดึง",
+    "pulled": "ดึงแล้ว",
+    "push": "ส่ง",
+    "pushed": "ส่งแล้ว",
+    "viewChanges": "การเปลี่ยนแปลง",
+    "viewBranches": "สาขา",
+    "viewHistory": "ประวัติ",
+    "viewStash": "เก็บชั่วคราว",
+    "viewAuto": "ดึงอัตโนมัติ"
+  },
+  "changes": {
+    "loadFailed": "ไม่สามารถอ่านการเปลี่ยนแปลงได้",
+    "clean": "ไม่มีอะไรให้คอมมิต ต้นไม้ทำงานสะอาด",
+    "stagedTitle": "จัดเตรียมแล้ว ({{count}})",
+    "unstagedTitle": "การเปลี่ยนแปลง ({{count}})",
+    "stage": "จัดเตรียม",
+    "staged": "จัดเตรียมแล้ว",
+    "unstage": "ยกเลิกจัดเตรียม",
+    "unstaged": "ยกเลิกจัดเตรียมแล้ว",
+    "stageAll": "จัดเตรียมทั้งหมด",
+    "renamed": "เปลี่ยนชื่อแล้ว",
+    "discard": "ยกเลิก",
+    "discardTitle": "ยกเลิกการเปลี่ยนแปลงใน {{name}}?",
+    "discardBody": "การเปลี่ยนแปลงในไฟล์นี้จะถูกลบและไม่สามารถกู้คืนได้",
+    "discarded": "ยกเลิกการเปลี่ยนแปลงแล้ว",
+    "message": "ข้อความคอมมิต",
+    "messagePlaceholder": "มีการเปลี่ยนแปลงอะไร",
+    "commit": "คอมมิต",
+    "commitAll": "คอมมิตการเปลี่ยนแปลงทั้งหมด",
+    "commitStaged_other": "คอมมิตไฟล์ที่จัดเตรียม {{count}}",
+    "committed": "คอมมิตแล้ว",
+    "noDiff": "ไม่มีอะไรให้แสดง",
+    "truncated": "ความแตกต่างยาว จึงแสดงเฉพาะส่วนเริ่มต้น"
+  },
+  "branches": {
+    "loadFailed": "ไม่สามารถอ่านสาขาได้",
+    "empty": "ยังไม่มีสาขา",
+    "current": "ปัจจุบัน",
+    "remote": "ระยะไกล",
+    "gone": "Upstream หายไป",
+    "newName": "สาขาใหม่",
+    "create": "สร้างสาขา",
+    "created": "สร้างสาขา {{name}} เรียบร้อย",
+    "switch": "สลับ",
+    "switched": "สลับไปยัง {{name}} เรียบร้อย",
+    "merge": "ผสานเข้ากับสาขาปัจจุบัน",
+    "mergeTitle": "รวม {{name}} เข้ากับ {{into}} หรือไม่?",
+    "mergeBody": "การรวมที่มีข้อขัดแย้งจะถูกยกเลิกทันที",
+    "merged": "รวม {{name}} เรียบร้อยแล้ว",
+    "delete": "ลบสาขา",
+    "deleteTitle": "ลบ {{name}} หรือไม่?",
+    "deleteBody": "Git จะปฏิเสธหากสาขานี้มี commits ที่ยังไม่ถูกรวม",
+    "deleted": "ลบ {{name}} เรียบร้อยแล้ว",
+    "forceTitle": "บังคับลบ {{name}} หรือไม่?",
+    "forceBody": "สาขานี้มี commits ที่ยังไม่ถูกรวม ข้อมูลเหล่านี้จะหายไปหากคุณลบสาขานี้",
+    "forceDelete": "บังคับลบ"
+  },
+  "history": {
+    "loadFailed": "ไม่สามารถอ่านประวัติได้",
+    "empty": "ยังไม่มีคอมมิต",
+    "branch": "สาขาปัจจุบัน",
+    "all": "ทุกสาขา",
+    "more": "โหลดเพิ่มเติม"
+  },
+  "stash": {
+    "loadFailed": "ไม่สามารถอ่าน stash ได้",
+    "title": "Stashes",
+    "empty": "ไม่มี stash",
+    "message": "ข้อความ",
+    "messagePlaceholder": "ไม่บังคับ",
+    "untracked": "รวมไฟล์ที่ยังไม่ได้ติดตาม",
+    "push": "เก็บการเปลี่ยนแปลงชั่วคราว",
+    "pushDone": "เก็บการเปลี่ยนแปลงเรียบร้อยแล้ว",
+    "apply": "นำไปใช้",
+    "applyDone": "นำการเปลี่ยนแปลงที่เก็บไว้ไปใช้เรียบร้อยแล้ว",
+    "pop": "นำออก",
+    "popDone": "นำการเปลี่ยนแปลงที่เก็บไว้ไปใช้และลบออกเรียบร้อยแล้ว",
+    "drop": "ลบ",
+    "dropDone": "ลบการเปลี่ยนแปลงที่เก็บไว้เรียบร้อยแล้ว",
+    "dropTitle": "ต้องการลบ {{name}} หรือไม่?",
+    "dropBody": "Stash ถูกลบแล้วและไม่สามารถกู้คืนได้",
+    "remotes": "Remotes",
+    "noRemotes": "ไม่มี remotes"
+  },
+  "auto": {
+    "intro": "ดึงข้อมูลตามกำหนดเวลาโดยใช้ fast forward เท่านั้น ไม่มีการ merge และจะข้าม repository ไปหากมีเปลี่ยนแปลงที่ยังไม่ได้ commit หรือแยกทางจาก upstream",
+    "noUpstream": "Branch นี้ยังไม่มี upstream ดังนั้น auto pull จะข้ามไป",
+    "enable": "Auto pull",
+    "enableHint": "ทำงานในนามของคุณ โดยใช้สิทธิ์การเข้าถึง host นี้ของคุณ",
+    "interval": "ทุก (นาที)",
+    "intervalHint": "ระยะเวลาที่จะรอระหว่างการดึงข้อมูลแต่ละครั้ง",
+    "post": "คำสั่งหลังการดึงข้อมูล",
+    "postHint": "ทำงานในโฟลเดอร์ของ repo หลังจากมี commits ใหม่เข้ามา ต้องการสิทธิ์ในการรันคำสั่ง",
+    "saved": "บันทึกการดึงอัตโนมัติแล้ว",
+    "saveFailed": "ไม่สามารถบันทึกการดึงอัตโนมัติได้",
+    "runNow": "รันตอนนี้",
+    "next": "ดึงครั้งถัดไป {{when}}",
+    "runs": "การรันล่าสุด",
+    "noRuns": "ยังไม่มีประวัติการรัน",
+    "outcome": {
+      "pulled": "ดึงแล้ว",
+      "uptodate": "เป็นปัจจุบันแล้ว",
+      "skipped": "ข้าม",
+      "failed": "ล้มเหลว"
+    }
+  },
+  "card": {
+    "title": "Git repos",
+    "loading": "กำลังโหลด...",
+    "refresh": "รีเฟรช",
+    "empty": "ยังไม่มี host ใดมี Git repos",
+    "allClean": "ทุก repos สะอาดและอัปเดตล่าสุดแล้ว",
+    "summary_other": "{{count}} repos | {{attention}} ต้องการตรวจสอบ"
+  },
+  "companion": {
+    "toggle": "แผง Git",
+    "openTab": "เปิด Git",
+    "here": "Repo ของโฟลเดอร์นี้",
+    "all": "ทุก repos"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "แสดงรายการ git repos"
+    },
+    "fetch": {
+      "title": "Fetch repo"
+    },
+    "pull": {
+      "title": "Pull repo"
+    },
+    "push": {
+      "title": "Push repo"
+    },
+    "checkout": {
+      "title": "สลับ branch",
+      "branch": "Branch"
+    },
+    "reset-hard": {
+      "title": "Reset repo แบบ hard",
+      "ref": "Reset เป็น"
+    },
+    "repos": {
+      "title": "Git repos",
+      "branch": "Branch",
+      "ahead": "นำหน้า",
+      "behind": "ตามหลัง",
+      "changed": "การเปลี่ยนแปลง"
+    },
+    "signals": {
+      "behind": "Repos ที่ตามหลัง",
+      "dirty": "Repos ที่มีเปลี่ยนแปลง",
+      "pull-failing": "Auto pull ล้มเหลว"
+    }
+  }
+}

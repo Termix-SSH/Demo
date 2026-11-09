@@ -22,7 +22,7 @@
   "env": [],
   "engine": {
     "termix": ">=26.11.1-0",
-    "api": "^1.15"
+    "api": "^1.17"
   },
   "capabilities": [
     "hosts:read",
@@ -78,6 +78,12 @@
         "titleKey": "permissions.bypass.title",
         "descriptionKey": "permissions.bypass.description",
         "defaultRoles": ["admin"]
+      },
+      {
+        "name": "configure",
+        "titleKey": "permissions.configure.title",
+        "descriptionKey": "permissions.configure.description",
+        "defaultRoles": ["admin"]
       }
     ],
     "settings": {
@@ -111,7 +117,8 @@
             "type": "string",
             "labelKey": "settings.host.approverRoles.label",
             "descriptionKey": "settings.host.approverRoles.description",
-            "default": ""
+            "default": "",
+            "permission": "configure"
           },
           {
             "key": "maxHours",
@@ -120,30 +127,35 @@
             "descriptionKey": "settings.host.maxHours.description",
             "min": 1,
             "max": 168,
-            "default": 4
+            "default": 4,
+            "permission": "configure"
           },
           {
             "key": "requireReason",
             "type": "boolean",
             "labelKey": "settings.host.requireReason.label",
             "descriptionKey": "settings.host.requireReason.description",
-            "default": true
+            "default": true,
+            "permission": "configure"
           },
           {
             "key": "requireTicket",
             "type": "boolean",
             "labelKey": "settings.host.requireTicket.label",
             "descriptionKey": "settings.host.requireTicket.description",
-            "default": false
+            "default": false,
+            "permission": "configure"
           },
           {
             "key": "allowBackground",
             "type": "boolean",
             "labelKey": "settings.host.allowBackground.label",
             "descriptionKey": "settings.host.allowBackground.description",
-            "default": false
+            "default": false,
+            "permission": "configure"
           }
-        ]
+        ],
+        "enablePermission": "configure"
       }
     },
     "dashboardCards": [

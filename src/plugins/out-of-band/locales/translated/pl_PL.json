@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Zasilanie, czujniki, dzienniki zdarzeń i konsole dla BMC serwerów przez Redfish, IPMI i Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Ładowanie"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "Podgląd BMC",
+      "description": "Otwórz kartę Out-of-band i zobacz zasilanie, stan zdrowia, czujniki oraz dzienniki."
+    },
+    "power": {
+      "title": "Kontrola zasilania i rozruchu",
+      "description": "Włączaj i wyłączaj maszyny, wykonuj cykl zasilania oraz wybieraj urządzenie rozruchowe."
+    },
+    "console": {
+      "title": "Użyj konsoli szeregowej",
+      "description": "Otwórz konsolę szeregową przez sieć (SOL) maszyny."
+    },
+    "media": {
+      "title": "Użyj wirtualnych nośników",
+      "description": "Montuj i odmontowywuj obrazy ISO na maszynie."
+    },
+    "manage": {
+      "title": "Zarządzaj BMC",
+      "description": "Dodawaj, edytuj i usuwaj BMC oraz czyść ich dzienniki zdarzeń."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Uruchamiaj ipmitool na serwerze Termix",
+        "description": "Gdy wyłączone, BMC IPMI muszą korzystać z hosta pośredniczącego. Redfish i AMT nie są dotknięte."
+      }
+    }
+  },
+  "description": "Dodaj kontrolery zarządzania (BMC) swoich serwerów, aby włączać i wyłączać zasilanie, monitorować czujniki oraz czytać dzienniki zdarzeń. Logowania są przechowywane w zaszyfrowanej formie i nigdy nie są wyświetlane ponownie.",
+  "summary": "{{count}} BMC, {{attention}} wymaga uwagi",
+  "empty": "Brak BMC.",
+  "add": "Dodaj BMC",
+  "edit": "Edytuj",
+  "delete": "Usuń",
+  "back": "Wróć",
+  "saved": "Zapisano",
+  "deleteConfirm": "Usunąć {{name}}?",
+  "status": {
+    "unknown": "Nie odczytano jeszcze",
+    "up": "Osiągalny",
+    "down": "Niedostępny"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI przez sieć",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Nazwa użytkownika",
+    "password": "Hasło"
+  },
+  "power": {
+    "on": "Wł.",
+    "off": "Wył.",
+    "unknown": "Nieznany",
+    "sent": "Poproszono {{name}} o zmianę zasilania",
+    "action": {
+      "on": "Włącz zasilanie",
+      "off": "Wyłącz zasilanie",
+      "graceful-shutdown": "Wyłącz",
+      "cycle": "Cykl zasilania",
+      "reset": "Resetuj"
+    },
+    "confirm": {
+      "on": "Włączyć zasilanie {{name}}?",
+      "off": "Odciąć zasilanie {{name}}? System nie zostanie zamknięty poprawnie.",
+      "graceful-shutdown": "Poprosić {{name}} o zamknięcie systemu?",
+      "cycle": "Wykonać cykl zasilania {{name}}? System nie zostanie zamknięty poprawnie.",
+      "reset": "Zresetować {{name}}? System uruchomi się od razu."
+    }
+  },
+  "health": {
+    "ok": "Zdrowy",
+    "warning": "Ostrzeżenie",
+    "critical": "Krytyczny",
+    "unknown": "Nieznany"
+  },
+  "kind": {
+    "temperature": "Temperatura",
+    "fan": "Wentylator",
+    "voltage": "Napięcie",
+    "power": "Moc",
+    "psu": "Zasilacz",
+    "other": "Inne"
+  },
+  "form": {
+    "addTitle": "Dodaj BMC",
+    "editTitle": "Edytuj BMC",
+    "device": "BMC",
+    "access": "Dostęp",
+    "type": "Typ",
+    "name": "Nazwa",
+    "address": "Adres",
+    "port": "Port",
+    "host": "Host Termix",
+    "hostHint": "Połącz BMC z hostem, do którego należy. Będzie on dziedziczyć ustawienia udostępniania tego hosta i pojawi się w jego menu.",
+    "noHost": "Brak",
+    "poll": "Częstotliwość odczytu (sekundy)",
+    "pollHint": "Minimum 30 sekund, lub 60, jeśli używany jest host przekaźnikowy.",
+    "scheme": "Połączenie",
+    "relay": "Host przekaźnikowy",
+    "relayHint": "Uruchamia ipmitool na tym hoście zamiast na serwerze Termix. Wymagane dla konsoli szeregowej.",
+    "noRelay": "Serwer Termix",
+    "cipher": "Zestaw szyfrów",
+    "cipherHint": "Zmieniaj to tylko, jeśli BMC odrzuca logowanie. 3 to standardowa wartość, 17 dla nowszych BMC.",
+    "ca": "Certyfikat CA",
+    "caHint": "Wklej PEM autorytetu certyfikatów BMC. Pozostaw puste, jeśli certyfikat jest zaufany.",
+    "caSet": "Zapisano CA. Wklej nowy, aby go zastąpić.",
+    "keepLogin": "Pozostaw puste, aby zachować zapisane dane logowania",
+    "test": "Testuj połączenie",
+    "testOk": "BMC odpowiedział. Zasilanie: {{power}}.",
+    "testNeedsLogin": "Wprowadź dane logowania ponownie, aby przetestować.",
+    "save": "Zapisz",
+    "add": "Dodaj"
+  },
+  "view": {
+    "overview": "Przegląd",
+    "sensors": "Czujniki",
+    "log": "Dziennik zdarzeń",
+    "boot": "Uruchamianie",
+    "media": "Nośniki wirtualne",
+    "console": "Konsola",
+    "refresh": "Odczytaj teraz",
+    "type": "Typ",
+    "address": "Adres",
+    "power": "Zasilanie",
+    "health": "Stan",
+    "manufacturer": "Producent",
+    "model": "Model",
+    "serial": "Numer seryjny",
+    "bios": "BIOS",
+    "bmc": "Oprogramowanie BMC",
+    "status": "BMC",
+    "viaRelay": "Osiągnięty przez hosta przekaźnikowego.",
+    "noSensors": "To BMC nie raportuje żadnych czujników.",
+    "sensor": "Czujnik",
+    "reading": "Wartość",
+    "state": "Stan"
+  },
+  "log": {
+    "time": "Czas",
+    "severity": "Poziom",
+    "message": "Zdarzenie",
+    "empty": "Dziennik zdarzeń jest pusty.",
+    "clear": "Wyczyść dziennik",
+    "clearConfirm": "Wyczyścić dziennik zdarzeń dla {{name}}? Tej operacji nie można cofnąć.",
+    "cleared": "Dziennik wyczyszczony",
+    "level": {
+      "info": "Info",
+      "warning": "Ostrzeżenie",
+      "critical": "Krytyczne"
+    }
+  },
+  "boot": {
+    "hint": "Maszyna uruchomi się z tego urządzenia raz, a następnie wróci do normalnej kolejności. Zastosuj to przed restartem.",
+    "device": "Uruchom z",
+    "mode": "Tryb",
+    "uefi": "UEFI",
+    "legacy": "Legacy BIOS",
+    "apply": "Ustaw dla następnego uruchomienia",
+    "done": "{{name}} uruchomi się z wybranego urządzenia przy następnym starcie",
+    "pxe": "Sieć (PXE)",
+    "disk": "Dysk twardy",
+    "cd": "CD lub nośnik wirtualny",
+    "usb": "USB",
+    "bios": "Konfiguracja BIOS",
+    "none": "Domyślna kolejność"
+  },
+  "media": {
+    "url": "Adres obrazu",
+    "empty": "Ten BMC nie ma wirtualnego napędu CD.",
+    "mounted": "Podłączony",
+    "free": "Pusty",
+    "mount": "Podłącz",
+    "eject": "Wysuń",
+    "mountedDone": "Obraz podłączony",
+    "ejected": "Obraz wysunięty"
+  },
+  "console": {
+    "hint": "Wpisz ~. aby opuścić konsolę.",
+    "connecting": "Łączenie",
+    "ended": "Konsola została zamknięta.",
+    "failed": "Nie udało się otworzyć konsoli.",
+    "needsRelay": "Konsola szeregową wymaga hosta przekaźnikowego z ipmitool. Wybierz go w ustawieniach BMC."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Uruchom z",
+    "uefi": "Tryb UEFI",
+    "list": {
+      "title": "Lista BMC"
+    },
+    "poll": {
+      "title": "Przeczytaj BMC teraz"
+    },
+    "powerState": {
+      "title": "Pobierz stan zasilania"
+    },
+    "power-on": {
+      "title": "Włącz"
+    },
+    "graceful-shutdown": {
+      "title": "Wyłącz"
+    },
+    "power-off": {
+      "title": "Wyłącz zasilanie"
+    },
+    "power-cycle": {
+      "title": "Zresetuj zasilanie"
+    },
+    "reset": {
+      "title": "Resetuj"
+    },
+    "setBootOnce": {
+      "title": "Uruchom raz z urządzenia"
+    },
+    "clearLog": {
+      "title": "Wyczyść dziennik zdarzeń"
+    },
+    "health": {
+      "title": "Stan zdrowia BMC"
+    }
+  },
+  "widget": {
+    "name": "Out-of-band",
+    "description": "Zasilanie i stan zdrowia BMC Twoich serwerów.",
+    "summary": "{{up}} z {{total}} działa"
+  }
+}

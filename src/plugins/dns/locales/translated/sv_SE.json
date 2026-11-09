@@ -1,0 +1,316 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Hantera DNS-poster och domäner hos Cloudflare, Route 53, Namecheap och andra leverantörer."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domäner",
+    "loading": "Laddar",
+    "empty": "Inga domäner ännu. Öppna DNS för att lägga till en inloggning.",
+    "ok": "{{domains}} domäner, ingen utlöper snart",
+    "accounts": "{{count}} inloggningar",
+    "failingLinks": "{{count}} länkade poster misslyckas"
+  },
+  "permissions": {
+    "view": {
+      "title": "Visa DNS",
+      "description": "Öppna fliken DNS och se zoner, poster, domäner och hälsokontroller."
+    },
+    "edit": {
+      "title": "Ändra DNS-poster",
+      "description": "Lägg till, ändra och ta bort poster, importera zoner och uppdatera domäner."
+    },
+    "manage": {
+      "title": "Hantera DNS-inloggningar",
+      "description": "Lägg till inloggningar för leverantörer, länka poster till värdar, övervaka domäner och återställ zoner."
+    }
+  },
+  "operations": {
+    "zone": "Zon",
+    "type": "Typ",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Namn",
+    "content": "Värde",
+    "contentOptional": "Värde (lämna tomt för att matcha alla)",
+    "ttl": "TTL i sekunder",
+    "label": "Etikett",
+    "zones": {
+      "title": "Lista DNS-zoner"
+    },
+    "records": {
+      "title": "Lista DNS-poster"
+    },
+    "domains": {
+      "title": "Lista domäner och utgångsdatum"
+    },
+    "check": {
+      "title": "Kontrollera en zon"
+    },
+    "upsert": {
+      "title": "Sätt en DNS-post"
+    },
+    "delete": {
+      "title": "Ta bort en DNS-post"
+    },
+    "snapshot": {
+      "title": "Spara en kopia av en zon"
+    },
+    "links": {
+      "title": "Uppdatera länkade poster"
+    },
+    "expiry": {
+      "title": "Domänutgång"
+    }
+  },
+  "description": "Lägg till dina DNS- och registreringsinloggningar för att hantera poster och övervaka domäner på ett ställe. Nycklar lagras krypterade och visas aldrig igen.",
+  "summary": "{{zones}} zoner, {{domains}} domäner",
+  "saved": "Sparad",
+  "delete": "Ta bort",
+  "edit": "Redigera",
+  "back": "Tillbaka",
+  "refresh": "Uppdatera",
+  "section": {
+    "zones": "Zoner",
+    "domains": "Domäner",
+    "links": "Länkar",
+    "accounts": "Inloggningar"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "API-token",
+    "accessKeyId": "Access key ID",
+    "secretAccessKey": "Secret access key",
+    "sessionToken": "Sessionstoken (valfritt)",
+    "apiUser": "API-användare",
+    "apiKey": "API-nyckel",
+    "userName": "Användarnamn (om det skiljer sig från API-användaren)",
+    "clientIp": "Tillåten IP-adress",
+    "apiSecret": "API-hemlighet",
+    "environment": "Miljö",
+    "environment_production": "Produktion",
+    "environment_ote": "Test (OTE)",
+    "secretApiKey": "Hemlig API-nyckel",
+    "token": "Personlig åtkomsttoken"
+  },
+  "zones": {
+    "empty": "Inga zoner än.",
+    "emptyHint": "Lägg till en leverantörsinloggning under Inloggningar för att se dess zoner."
+  },
+  "zone": {
+    "records": "Poster",
+    "health": "Hälsa",
+    "copies": "Kopior",
+    "files": "Filer",
+    "filter": "Filtrera poster",
+    "empty": "Inga poster."
+  },
+  "record": {
+    "section": "Post",
+    "addTitle": "Lägg till post",
+    "editTitle": "Redigera post",
+    "add": "Lägg till post",
+    "save": "Spara",
+    "type": "Typ",
+    "name": "Namn",
+    "nameHint": "Använd @ för {{zone}} själv",
+    "value": "Värde",
+    "priority": "Prioritet",
+    "ttl": "TTL (sekunder)",
+    "ttlHint": "Hur länge resolverare behåller svaret. 300 är 5 minuter.",
+    "ttlAuto": "1 betyder automatiskt.",
+    "proxied": "Proxied",
+    "proxiedHint": "Skicka trafik genom Cloudflare.",
+    "proxiedBadge": "Proxied",
+    "comment": "Notering",
+    "readOnly": "Hanteras av leverantören",
+    "deleteConfirm": "Ta bort {{type}}-posten {{name}}?"
+  },
+  "account": {
+    "add": "Lägg till inloggning",
+    "addTitle": "Lägg till DNS-inloggning",
+    "editTitle": "Redigera DNS-inloggning",
+    "save": "Spara",
+    "login": "Inloggning",
+    "provider": "Leverantör",
+    "name": "Namn",
+    "namePlaceholder": "Huvud Cloudflare",
+    "keep": "Lämna tomt för att behålla det sparade värdet",
+    "registrar": "Denna leverantör är också en registratur, så dess domäner visas under Domäner.",
+    "options": "Alternativ",
+    "autoBackup": "Behåll kopior av zoner",
+    "autoBackupHint": "Spara en kopia före varje ändring och när en zon ändras utanför Termix.",
+    "checkHealth": "Kontrollera zoner varje dag",
+    "checkHealthHint": "Kör hälsokontroller dagligen och varna vid nya problem.",
+    "test": "Testa",
+    "testOk": "Fungerar. Hittade {{zones}} zoner och {{domains}} domäner.",
+    "deleteConfirm": "Ta bort {{name}}? Dess kopior och länkar tas bort också. Inget ändras hos leverantören.",
+    "empty": "Inga inloggningar än.",
+    "emptyHint": "Lägg till en Cloudflare, Route 53, Namecheap eller annan inloggning för att komma igång.",
+    "lastSync": "Senast kontrollerad {{date}}",
+    "never": "Inte kontrollerad än",
+    "failed": "Inloggningen misslyckades"
+  },
+  "domains": {
+    "empty": "Inga domäner än.",
+    "emptyHint": "Registraturinloggningar listar sina domäner här. Du kan också övervaka vilken domän som helst efter namn.",
+    "watchPlaceholder": "example.com",
+    "watch": "Övervaka domän",
+    "unwatch": "Sluta övervaka",
+    "watched": "Övervakad",
+    "noRenew": "Automatisk förnyelse av",
+    "unlocked": "Låst upp",
+    "unknown": "Registrator okänd",
+    "expires": "Utlöper {{date}}",
+    "expired": "Utgången",
+    "days": "{{count}} dagar kvar",
+    "refreshFailed": "Ett {{count}} slagen misslyckades"
+  },
+  "link": {
+    "add": "Lägg till länk",
+    "addTitle": "Lägg till länk",
+    "editTitle": "Redigera länk",
+    "save": "Spara",
+    "record": "Post",
+    "address": "Adress",
+    "zone": "Zon",
+    "pickZone": "Välj en zon",
+    "source": "Peка på",
+    "sourceHost": "En värd",
+    "sourcePublic4": "Den här serverns offentliga IPv4-adress",
+    "sourcePublic6": "Den här serverns offentliga IPv6-adress",
+    "source_host": "Värd",
+    "source_public4": "Offentlig IPv4",
+    "source_public6": "Offentlig IPv6",
+    "host": "Värd",
+    "pickHost": "Välj en värd",
+    "hostHint": "Posten följer värdens adress. Den uppdateras när värden ändras.",
+    "publicHint": "Termix slår upp sin offentliga adress och håller posten synkroniserad, som dynamisk DNS.",
+    "enabled": "Håll denna post uppdaterad",
+    "empty": "Inga länkar än.",
+    "emptyHint": "En länk håller en post pekad på en värd eller på den här serverns offentliga adress.",
+    "off": "Av",
+    "hostGone": "Värd hittades inte",
+    "lastSync": "Kontrollerad {{date}}",
+    "never": "Inte kontrollerad än",
+    "syncNow": "Uppdatera nu",
+    "updated": "Posten uppdaterades",
+    "unchanged": "Posten var redan korrekt",
+    "deleteConfirm": "Ta bort länken för {{name}}? Posten förblir kvar."
+  },
+  "diff": {
+    "none": "Inget skulle ändras.",
+    "add": "Lägg till",
+    "change": "Ändra",
+    "remove": "Ta bort"
+  },
+  "copies": {
+    "hint": "Kopior sparas före varje ändring och en gång om dagen när en zon ändrades utanför Termix.",
+    "save": "Spara kopia",
+    "saved": "Kopia sparad",
+    "manualLabel": "Manuell kopia",
+    "empty": "Inga kopior än.",
+    "compare": "Jämför med nu",
+    "restore": "Återställ",
+    "restoreConfirm": "Återställ denna kopia? {{count}} ändringar kommer att göras hos leverantören. En kopia av de aktuella posterna sparas först.",
+    "restored": "Återställd. {{count}} ändringar gjorda.",
+    "source": {
+      "manual": "Manuell",
+      "auto": "Daglig",
+      "before": "Före ändring"
+    }
+  },
+  "files": {
+    "export": "Ladda ner zonfil",
+    "exportHint": "Ladda ner posterna som en BIND-zonfil.",
+    "import": "Importera en zonfil",
+    "placeholder": "Klistra in en BIND-zonfil här",
+    "replace": "Ta bort poster som inte finns i filen",
+    "replaceHint": "Av, importen lägger bara till och ändrar poster.",
+    "preview": "Förhandsgranska",
+    "apply": "Verkställ",
+    "applied": "Importerad. {{count}} ändringar gjorda.",
+    "skipped": "Hoppad över:"
+  },
+  "health": {
+    "run": "Kör kontroller",
+    "running": "Kör",
+    "propagation": "Kontrollera resolvers",
+    "propagationTitle": "Offentliga resolvers",
+    "lastRun": "Senast körd {{date}}",
+    "empty": "Inga kontroller har körs för denna zon ännu.",
+    "record": "Post",
+    "resolver": "Resolver",
+    "answer": "Svar",
+    "noAnswer": "Inget svar",
+    "delegation": {
+      "error": "Namnservrarna kunde inte slås upp.",
+      "none": "Zonen har inga namnservrar på internet. Domänen pekar kanske inte på denna leverantör.",
+      "mismatch": "Domänen använder andra namnservrar än leverantören: {{found}}.",
+      "ok": "Domänen pekar på {{count}} namnservrar."
+    },
+    "soa": {
+      "differ": "Namnservrarna är inte överens om zonversionen ({{count}} versioner). En ändring kan fortfarande spridas.",
+      "same": "{{count}} namnservrar är överens om zonversionen."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC kunde inte kontrolleras.",
+      "off": "DNSSEC är inte aktiverat.",
+      "valid": "DNSSEC är påslaget och giltigt.",
+      "broken": "DNSSEC är inställt hos registraren men validerar inte. Resolvers som kontrollerar det kommer att misslyckas."
+    },
+    "cname": {
+      "conflict": "{{name}} har en CNAME och andra poster. Det är inte tillåtet.",
+      "apex": "Zonens rot kan inte vara en CNAME.",
+      "dangling": "{{name}} pekar på {{target}}, som inte löses.",
+      "ok": "Alla CNAME-mål löses."
+    },
+    "spf": {
+      "missing": "Domänen tar emot e-post men har ingen SPF-post.",
+      "multiple": "Det finns mer än en SPF-post. E-postservrar kommer att avvisa alla.",
+      "lookups": "SPF-posten gör {{count}} uppslag. Gränsen är 10.",
+      "ok": "SPF är inställt ({{count}} uppslag)."
+    },
+    "dmarc": {
+      "missing": "Det finns ingen DMARC-post.",
+      "none": "DMARC är inställt på endast övervakning.",
+      "ok": "DMARC är inställt."
+    },
+    "dkim": {
+      "none": "Inga DKIM-nycklar hittades i denna zon.",
+      "found": "{{count}} DKIM-nycklar hittade."
+    },
+    "mx": {
+      "unresolved": "E-postservraren {{host}} löses inte."
+    },
+    "mail": {
+      "none": "Domänen har inga e-postposter."
+    },
+    "caa": {
+      "ok": "CAA-poster begränsar vem som kan utfärda certifikat.",
+      "none": "Det finns inga CAA-poster. Vilken certifikatutfärdare som helst kan utfärda certifikat."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domäner, domäner som snart löper ut och poster som misslyckas.",
+    "domains": "Domäner",
+    "expiring": "Löper snart ut",
+    "failingLinks": "Länkar som misslyckas",
+    "failingAccounts": "Inloggningar som misslyckas"
+  }
+}

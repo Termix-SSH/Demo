@@ -1,0 +1,235 @@
+{
+  "plugin": {
+    "name": "Sertifikalar",
+    "description": "certbot ve acme.sh kullanarak ana bilgisayarlarınızdaki TLS sertifikalarını görüntüleyin, yayınlayın ve yenileyin; süresi dolmadan önce uyarı alın."
+  },
+  "common": {
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "permissions": {
+    "use": {
+      "title": "Sertifikaları Kullan",
+      "description": "Erişebildiğiniz ana bilgisayarlardaki sertifikaları görüntüleyin ve düzenleyebildiğiniz ana bilgisayarlarda bunları değiştirin."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Sertifikalar",
+        "description": "Sertifikalar sekmesinden bu ana bilgisayardaki TLS sertifikalarını yönetin."
+      },
+      "useSudo": {
+        "label": "sudo kullan",
+        "description": "Sertifikaları okumak ve değiştirmek için sudo kullanın. Giriş root ise kapatın."
+      },
+      "readOnly": {
+        "label": "Salt okunur",
+        "description": "Sertifikaları göster ancak bu ana bilgisayarda asla değiştirmeme."
+      },
+      "expiryWarnDays": {
+        "label": "Süre dolmadan uyar",
+        "description": "Bu kadar gün veya daha az kalan sertifikalar süresi doluyor olarak gösterilir ve bir uyarı gönderir."
+      },
+      "showPanel": {
+        "label": "Terminalde sertifikalar panelini göster",
+        "description": "Sertifikalar panelinin bu ana bilgisayarın SSH terminalinin yanında açılmasına izin ver."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Yeni terminallerle sertifikalar panelini aç",
+        "description": "Sertifikalar özelliği açık olan her SSH terminalinin yanında sertifikalar panelini göster. Sağ kenardaki düğmeden paneli açmaya ve kapatmaya devam edebilirsiniz."
+      },
+      "companionSide": {
+        "label": "Sertifikalar paneli konumu",
+        "description": "Sertifikalar panelinin bir terminalin yanında nerede duracağı.",
+        "right": "Sağ",
+        "left": "Sol",
+        "bottom": "Alt"
+      },
+      "companionSize": {
+        "label": "Sertifikalar paneli boyutu",
+        "description": "Piksel cinsinden genişlik veya altta olduğunda yükseklik. Ayrıca kenarını sürükleyebilirsiniz."
+      },
+      "companionEdgeButton": {
+        "label": "Panel düğmesini göster",
+        "description": "Sertifikalar panelini açan küçük bir düğmeyi terminalin sağ kenarında göster."
+      }
+    }
+  },
+  "tab": {
+    "title": "Sertifikalar",
+    "noHost": "Sertifikaları bir ana bilgisayardan açın.",
+    "error": "Bu ana bilgisayardan sertifikalar yüklenemedi.",
+    "disabled": "Bu ana bilgisayar için Sertifikalar kapalı. Ana bilgisayar ayarlarından açın.",
+    "sudo": "Değişiklikler için bu ana bilgisayarda root girişi, şifresiz sudo veya kaydedilmiş bir Sudo Şifresi gerekir.",
+    "refresh": "Yenile",
+    "readOnly": "Salt okunur",
+    "noClient": "certbot veya acme.sh yok",
+    "viewCertificates": "Sertifikalar",
+    "viewInspect": "İncele",
+    "viewRenewal": "Yenileme"
+  },
+  "actions": {
+    "working": "Çalışıyor. Bu birkaç dakika sürebilir.",
+    "ok": "Tamamlandı",
+    "failed": "Komut başarısız oldu.",
+    "noOutput": "Çıktı yok."
+  },
+  "install": {
+    "title": "Bu ana bilgisayarda certbot ve acme.sh yüklü değil",
+    "hint": "Let's Encrypt'ten sertifika almak ve yenilemek için certbot'u yükleyin.",
+    "noManager": "Desteklenen bir paket yöneticisi bulunamadı. certbot'u elle yükleyin.",
+    "button": "certbot'u yükle",
+    "confirm": "certbot yüklensin mi?",
+    "desc": "Bu, certbot'u ana bilgisayarın paket yöneticisiyle yükler.",
+    "working": "Yükleniyor...",
+    "done": "certbot yüklendi."
+  },
+  "certs": {
+    "search": "Sertifikalarda ara",
+    "empty": "Henüz sertifika yok.",
+    "noMatch": "Eşleşen sertifika yok.",
+    "loadFailed": "Sertifikalar okunamadı.",
+    "expires": "{{date}} tarihinde sona eriyor",
+    "staging": "Hazırlık",
+    "details": "Sertifika",
+    "manage": "Yönet",
+    "client": "İstemci",
+    "path": "Dosya",
+    "authority": "Yetkili",
+    "renew": "Yenile",
+    "renewDone": "{{name}} yenilendi.",
+    "renewAll": "Tümünü yenile",
+    "renewAllDone": "Süresi dolan sertifikalar yenilendi.",
+    "forceRenew": "Yine de şimdi yenile",
+    "dryRun": "Kuru çalıştırma",
+    "dryRunDone": "Kuru çalıştırma başarılı oldu.",
+    "revoke": "İptal et",
+    "revokeTitle": "{{name}} iptal edilsin mi?",
+    "revokeDesc": "Yetkili bunu geçersiz olarak işaretler ve bu sunucudan kaldırılır. Bunu kullanan her şey çalışmayı durdurur.",
+    "revokeDone": "{{name}} iptal edildi.",
+    "delete": "Yönetimi bırak",
+    "deleteTitle": "{{name}} yönetimi bırakılsın mı?",
+    "deleteDesc": "Sertifika geçerliliğini korur ancak artık yenilenmez. certbot dosyalarını siler, acme.sh dosyaları korur.",
+    "deleteDone": "{{name}} artık yönetilmiyor."
+  },
+  "expiry": {
+    "expired": "Süresi doldu",
+    "unknown": "Bilinmiyor",
+    "days_one": "{{count}} gün kaldı",
+    "days_other": "{{count}} gün kaldı"
+  },
+  "issue": {
+    "add": "Sertifika oluştur",
+    "title": "Yeni sertifika",
+    "save": "Oluştur",
+    "done": "Sertifika oluşturuldu.",
+    "working": "Yetkiliden istek yapılıyor. Bu işlem birkaç dakika sürebilir.",
+    "client": "İstemci",
+    "domains": "Alan adları",
+    "domainsPlaceholder": "Bir alan adı yazın ve Enter'a basın",
+    "domainsHint": "İlk alan adı sertifikanın adını belirler.",
+    "challenge": "Doğrulama yöntemi",
+    "standalone": "Bağımsız",
+    "standaloneHint": "80 numaralı bağlantı noktasında küçük bir web sunucusu çalıştırır, bu nedenle başka hiçbir şey bu bağlantı noktasını kullanamaz.",
+    "webroot": "Web kökü",
+    "webrootHint": "Web sunucunuzun klasörüne bir dosya koyar. Web sunucusu çalışmaya devam eder.",
+    "dns": "DNS",
+    "dnsHint": "Sağlayıcınızın API'si aracılığıyla bir DNS kaydı ekler. Joker karakterler için gereklidir.",
+    "webrootPath": "Web kökü klasörü",
+    "webrootPathHint": "/var/www, /srv veya /usr/share/nginx içinde olmalıdır.",
+    "dnsProvider": "DNS sağlayıcısı",
+    "dnsProviderCertbot": "Yükli bir certbot DNS eklentisinin adı, örneğin cloudflare.",
+    "dnsProviderAcme": "dns_ öneki olmadan bir acme.sh DNS adı, örneğin cf. API belirteci sunucuda zaten ayarlanmış olmalıdır.",
+    "credentials": "Kimlik bilgileri dosyası",
+    "credentialsHint": "API belirtecinizin bulunduğu sunucudaki dosya. Termix tarafından asla okunmaz.",
+    "email": "E-posta",
+    "emailHint": "İsteğe bağlı. Yetkili, süresi dolma bildirimleri için bunu kullanır.",
+    "keyType": "Anahtar türü",
+    "staging": "Hazırlık sunucusunu kullan",
+    "stagingHint": "Test amaçlıdır. Sertifika güvenilir değildir ve hız sınırları çok daha yüksektir."
+  },
+  "inspect": {
+    "server": "Sunucu",
+    "file": "Dosya",
+    "address": "Adres",
+    "addressPlaceholder": "example.com",
+    "port": "Bağlantı noktası",
+    "path": "Dosya yolu",
+    "check": "Kontrol et",
+    "hint": "Bu sunucudan görüldüğü gibi bir sunucunun TLS üzerinden ne gönderdiğini kontrol edin veya üzerindeki bir sertifika dosyasını okuyun.",
+    "failed": "Sertifika okunamadı.",
+    "noOpenssl": "Bu sunucuda openssl yüklü değil.",
+    "trusted": "Güvenilir",
+    "notTrusted": "Güvenilir değil",
+    "leaf": "Sertifika",
+    "intermediate": "Zincir {{index}}",
+    "selfSigned": "Kendi kendine imzalı",
+    "name": "Ad",
+    "issuer": "Düzenleyen",
+    "domains": "Alan Adları",
+    "validFrom": "Geçerlilik başlangıcı",
+    "validTo": "Geçerlilik bitişi",
+    "keyType": "Anahtar",
+    "serial": "Seri Numarası",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Bu sunucunun sertifikaları nasıl yenilediği. Bunu sunucuda değiştirin.",
+    "on": "Açık",
+    "off": "Kapalı",
+    "timer": "systemd zamanlayıcısı",
+    "next": "Sonraki çalıştırma {{time}}",
+    "cron": "Cron dosyası /etc/cron.d/certbot",
+    "certbotOff": "Hiçbir zamanlayıcı veya cron görevi bulunamadı, bu nedenle sertifikalar kendiliğinden yenilenmeyecek.",
+    "acmeCron": "Crontab'daki cron görevi",
+    "acmeOff": "Hiçbir cron görevi bulunamadı, bu nedenle sertifikalar kendiliğinden yenilenmeyecek."
+  },
+  "watch": {
+    "start": "Bu sunucudaki sertifikalar süresi dolmadan önce beni uyar",
+    "stop": "Bu sunucu için uyarıları durdur",
+    "on": "Buradaki sertifikalar süresi dolmadan önce bir uyarı alacaksınız.",
+    "off": "Bu sunucu için uyarılar kapalı.",
+    "failed": "Uyarı değiştirilemedi."
+  },
+  "card": {
+    "title": "Sertifikalar",
+    "loading": "Sunucular kontrol ediliyor...",
+    "summary_one": "{{count}} sertifika, {{expiring}} süresi dolacak",
+    "summary_other": "{{count}} sertifika, {{expiring}} süresi dolacak",
+    "refresh": "Tekrar kontrol et",
+    "empty": "Sertifikalarını burada görmek için bir sunucu için Sertifikaları açın."
+  },
+  "manager": {
+    "title": "Sertifikalar",
+    "disabled": "Bunları burada görmek için bu sunucunun ayarlarında Sertifikaları açın."
+  },
+  "operations": {
+    "list": {
+      "title": "Sertifikaları listele"
+    },
+    "expiring": {
+      "title": "Süresi dolacak sertifikalar"
+    },
+    "renew": {
+      "title": "Sertifikayı yenile"
+    },
+    "renewAll": {
+      "title": "Tüm sertifikaları yenile"
+    },
+    "revoke": {
+      "title": "Sertifikayı iptal et"
+    },
+    "certificates": {
+      "title": "Sertifikalar",
+      "client": "İstemci",
+      "domains": "Alan Adları",
+      "daysLeft": "Kalan gün"
+    }
+  },
+  "nav": {
+    "togglePanel": "Sertifikalar panelini aç/kapat"
+  }
+}

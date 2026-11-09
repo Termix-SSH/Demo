@@ -1,0 +1,348 @@
+{
+  "tab": {
+    "title": "防火牆",
+    "noHost": "從主機開啟防火牆。",
+    "refresh": "重新整理",
+    "error": "無法讀取此主機的防火牆。",
+    "disabled": "此主機的防火牆已關閉。請在主機設定中開啟。",
+    "sudo": "此主機需要免密碼 sudo 或 root 登入，才能讀取和修改防火牆。",
+    "noFirewall": "無防火牆",
+    "on": "開啟",
+    "off": "關閉",
+    "readOnly": "唯讀",
+    "ruleCount_other": "{{count}} 個規則",
+    "viewRules": "規則",
+    "viewDefaults": "預設值",
+    "viewZones": "區域",
+    "viewFail2ban": "Fail2ban",
+    "viewRaw": "原始"
+  },
+  "common": {
+    "loading": "載入中...",
+    "save": "儲存",
+    "cancel": "取消",
+    "delete": "刪除",
+    "edit": "編輯",
+    "done": "完成",
+    "failed": "操作失敗。"
+  },
+  "actions": {
+    "allow": "允許",
+    "deny": "拒絕",
+    "reject": "拒絕",
+    "limit": "限制"
+  },
+  "policies": {
+    "allow": "允許",
+    "deny": "拒絕 (丟棄)",
+    "reject": "拒絕"
+  },
+  "rule": {
+    "action": "動作",
+    "direction": "方向",
+    "in": "入站",
+    "out": "出站",
+    "protocol": "通訊協定",
+    "anyProtocol": "TCP 和 UDP",
+    "port": "連接埠",
+    "portPlaceholder": "22、80,443 或 8000-8100",
+    "portHint": "留空表示所有連接埠。列表和範圍需要指定 TCP 或 UDP。",
+    "anyPort": "所有連接埠",
+    "source": "來源",
+    "destination": "目的地",
+    "anywhere": "任何地方",
+    "addressHint": "位址或範圍，例如 10.0.0.0/8。",
+    "family": "IP 版本",
+    "bothFamilies": "IPv4 和 IPv6",
+    "iface": "介面",
+    "anyIface": "任何介面",
+    "service": "服務",
+    "serviceHint": "firewalld 服務名稱，而非連接埠。",
+    "comment": "註解",
+    "commentPlaceholder": "此規則的用途",
+    "zoneLabel": "區域",
+    "from": "來自 {{address}}",
+    "to": "至 {{address}}",
+    "on": "在 {{iface}} 上",
+    "zone": "區域 {{zone}}"
+  },
+  "presets": {
+    "ssh": "SSH",
+    "http": "HTTP",
+    "https": "HTTPS",
+    "web": "Web",
+    "dns": "DNS",
+    "smtp": "郵件",
+    "mysql": "MySQL",
+    "postgres": "PostgreSQL",
+    "redis": "Redis",
+    "samba": "Samba",
+    "wireguard": "WireGuard",
+    "minecraft": "Minecraft"
+  },
+  "rules": {
+    "add": "新增規則",
+    "addTitle": "新增規則",
+    "editTitle": "編輯規則",
+    "added": "規則已新增",
+    "saved": "規則已儲存",
+    "deleted": "規則已刪除",
+    "confirmDelete": "要刪除此規則嗎？",
+    "search": "搜尋埠號、位址與註解",
+    "empty": "目前尚無規則。",
+    "noMatch": "沒有符合的規則。",
+    "readOnly": "唯讀",
+    "deleteOnly": "僅可刪除",
+    "stale": "主機上的規則已變更。請重新整理後再試一次。",
+    "filters": {
+      "all": "全部",
+      "in": "傳入",
+      "out": "傳出",
+      "readOnly": "唯讀"
+    }
+  },
+  "defaults": {
+    "hint": "未符合任何規則的流量將如何處理。",
+    "incoming": "傳入",
+    "outgoing": "傳出",
+    "routed": "路由",
+    "saved": "預設值已儲存"
+  },
+  "zones": {
+    "hint": "firewalld 會將每個網路介面與來源劃分至一個區域。區域的目標設定決定了未符合該區域規則的流量將如何處理。",
+    "defaultZone": "預設區域",
+    "default": "預設",
+    "active": "啟用",
+    "target": "目標",
+    "interfaces": "介面 {{list}}",
+    "sources": "來源 {{list}}",
+    "saved": "區域已儲存",
+    "targets": {
+      "default": "預設（拒絕）",
+      "ACCEPT": "接受",
+      "DROP": "丟棄",
+      "REJECT": "拒絕"
+    }
+  },
+  "enable": {
+    "off": "防火牆已關閉，因此目前這些規則均不生效。",
+    "allowSsh": "請先允許 SSH 使用埠號 {{ports}}",
+    "allowSshHint": "確保 Termix 與您自己的 SSH 登入能正常運作。",
+    "button": "開啟",
+    "done": "防火牆已開啟",
+    "timerHint": "開啟防火牆會啟動一個計時器。若未及時按下「保留」，主機將自動關閉防火牆。"
+  },
+  "disable": {
+    "button": "關閉",
+    "title": "要關閉防火牆嗎？",
+    "description": "所有規則將停止生效，直到您再次開啟防火牆。",
+    "done": "防火牆已關閉"
+  },
+  "install": {
+    "none": "此主機尚未安裝防火牆。",
+    "hint": "安裝一個防火牆以開始使用。在您確認之前，防火牆不會啟用。",
+    "button": "安裝 {{name}}",
+    "working": "安裝中...",
+    "done": "{{name}} 已安裝",
+    "noPackageManager": "Termix 無法在此主機上找到已知的套件管理員。"
+  },
+  "lockout": {
+    "title": "這可能會導致 Termix 被鎖定",
+    "description": "{{reason}}。如果 Termix 在變更後無法連線，主機會在計時器到期時自動復原。確定要繼續嗎？",
+    "confirm": "繼續"
+  },
+  "pending": {
+    "started": "變更已套用。按下「保留」以使其生效。",
+    "left": "除非您按下「保留」，否則將在 {{seconds}} 秒後復原",
+    "expired": "時間已到，主機正在復原變更",
+    "reachable": "Termix 仍可連線",
+    "unreachable": "Termix 在變更後無法連線",
+    "unknown": "正在檢查連線",
+    "keep": "保留",
+    "undo": "立即復原",
+    "kept": "變更已保留",
+    "undone": "變更已復原",
+    "gone": "時間已到，主機已復原變更。",
+    "first": "請先保留或復原上一個變更。",
+    "kinds": {
+      "add": "新增規則",
+      "update": "已變更規則",
+      "remove": "已刪除規則",
+      "defaults": "新增預設值",
+      "enable": "防火牆已開啟",
+      "disable": "防火牆已關閉",
+      "zoneTarget": "新增區域目標",
+      "defaultZone": "新增預設區域",
+      "ruleset": "規則集已套用"
+    }
+  },
+  "fail2ban": {
+    "loadFailed": "無法讀取 Fail2ban。",
+    "notInstalled": "Fail2ban 未安裝。它會封鎖登入失敗次數過多的位址。",
+    "stopped": "Fail2ban 已安裝但未執行。",
+    "start": "啟動 Fail2ban",
+    "started": "Fail2ban 已啟動",
+    "noJails": "未啟用任何監獄。",
+    "none": "沒有被封鎖的項目。",
+    "bannedCount_other": "{{count}} 個被封鎖",
+    "counts": "{{failed}} 個目前失敗 | {{totalFailed}} 個總計失敗 | {{totalBanned}} 個總計封鎖",
+    "ban": "封鎖",
+    "unban": "解除封鎖",
+    "banAddress": "封鎖位址",
+    "banned": "{{ip}} 已封鎖",
+    "unbanned": "{{ip}} 已解除封鎖",
+    "selfTitle": "要封鎖 Termix 的位址嗎？",
+    "selfDescription": "Termix 從此位址連線。封鎖它將使 Termix 無法連線到此主機。"
+  },
+  "raw": {
+    "empty": "沒有內容可顯示。"
+  },
+  "watch": {
+    "start": "當此防火牆變更時通知我",
+    "stop": "停止此防火牆的警示"
+  },
+  "companion": {
+    "openTab": "開啟防火牆分頁",
+    "toggle": "防火牆面板",
+    "allowPort": "允許 TCP 連接埠"
+  },
+  "card": {
+    "title": "防火牆",
+    "empty": "沒有主機啟用防火牆。",
+    "banned_other": "{{count}} 個被封鎖",
+    "pending": "等待中"
+  },
+  "rulesets": {
+    "title": "防火牆規則集",
+    "hint": "儲存規則清單並一次新增至多個主機。套用時只會新增遺漏的規則，不會移除任何規則。",
+    "add": "新增規則集",
+    "addTitle": "新增規則集",
+    "editTitle": "編輯規則集",
+    "loadFailed": "無法載入您的規則集。",
+    "empty": "尚無規則集。",
+    "name": "名稱",
+    "namePlaceholder": "網頁伺服器",
+    "description": "描述",
+    "rules": "規則",
+    "noRules": "此規則集目前尚無規則。",
+    "hosts": "主機",
+    "noHosts": "沒有主機開啟防火牆。",
+    "saved": "規則集已儲存",
+    "deleted": "規則集已刪除",
+    "confirmDelete": "刪除 {{name}}？",
+    "deleteHint": "已新增至主機的規則將保留。",
+    "ruleCount_other": "{{count}} 個規則",
+    "hostCount_other": "{{count}} 個主機",
+    "check": "檢查主機",
+    "apply": "套用",
+    "applyTitle": "套用 {{name}}？",
+    "applyDescription": "遺漏的規則將新增至每個主機。每個主機都會執行 SSH 鎖定檢查，若 Termix 之後無法連線至該主機，則會自動復原變更。",
+    "applied": "規則集已套用",
+    "applyErrors_other": "{{count}} 個主機發生問題",
+    "applyResult": "已套用 {{name}}",
+    "driftTitle": "每個主機上的 {{name}}",
+    "inSync": "包含所有規則",
+    "ok": "已同步",
+    "missing_other": "遺漏 {{count}} 個",
+    "nothingMissing": "已包含所有規則",
+    "added_other": "已新增 {{count}} 個規則",
+    "waiting": "已新增，但 Termix 之後無法連線。主機將自動復原。",
+    "fleet": "機群",
+    "applyFleet": "套用到機群"
+  },
+  "permissions": {
+    "use": {
+      "title": "使用防火牆",
+      "description": "在您能連線的主機上開啟防火牆分頁。進行變更也需要該主機的編輯權限。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "防火牆",
+        "description": "為此主機顯示防火牆分頁，以便透過 SSH 管理其防火牆。"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "當登入身分不是 root 時，使用免密碼 sudo 執行防火牆指令。"
+      },
+      "readOnly": {
+        "label": "唯讀",
+        "description": "顯示防火牆，但阻止 Termix 進行任何變更。"
+      },
+      "sshGuard": {
+        "label": "SSH 鎖定檢查",
+        "description": "在看似會阻斷 Termix SSH 連線的變更前暫停並詢問。"
+      },
+      "rollbackSeconds": {
+        "label": "復原計時器",
+        "description": "在進行高風險變更後，主機自動復原前，您按下「保留」的秒數。"
+      },
+      "confirmAll": {
+        "label": "每次變更都啟用計時器",
+        "description": "對所有變更使用復原計時器，而不僅是高風險變更。"
+      },
+      "showPanel": {
+        "label": "防火牆面板",
+        "description": "為此主機的 SSH 終端機旁提供防火牆面板。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "開啟終端機時同時開啟防火牆面板",
+        "description": "在具有防火牆功能的主機上開啟終端機時，顯示防火牆面板。"
+      },
+      "companionSide": {
+        "label": "防火牆面板位置",
+        "description": "面板相對於終端機的位置。",
+        "right": "右側",
+        "left": "左側",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "防火牆面板大小",
+        "description": "寬度，或位於底部時的高度，單位為像素。"
+      },
+      "companionEdgeButton": {
+        "label": "防火牆面板邊緣按鈕",
+        "description": "在終端機邊緣顯示小按鈕以開啟面板。"
+      }
+    }
+  },
+  "manager": {
+    "title": "防火牆",
+    "disabled": "在此主機的設定中開啟防火牆，即可在此管理其防火牆。"
+  },
+  "operations": {
+    "list": {
+      "title": "列出防火牆規則"
+    },
+    "status": {
+      "title": "防火牆"
+    },
+    "portAllowed": {
+      "title": "允許連接埠",
+      "description": "是否存在允許此連接埠的規則。可用來監控主機的規則漂移。"
+    },
+    "allow": {
+      "title": "允許連接埠"
+    },
+    "remove": {
+      "title": "移除允許的連接埠"
+    },
+    "delete": {
+      "title": "刪除防火牆規則"
+    },
+    "rules": {
+      "title": "防火牆規則"
+    },
+    "port": "連接埠",
+    "protocol": "通訊協定",
+    "tcp": "TCP",
+    "udp": "UDP",
+    "any": "全部",
+    "source": "來源",
+    "sourceHint": "位址或範圍。留空表示允許所有來源。",
+    "direction": "方向"
+  }
+}

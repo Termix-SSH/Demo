@@ -1,0 +1,294 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Se, hent, commit og push git-repositorier på dine hosts, og hold dem opdaterede med automatisk pull."
+  },
+  "common": {
+    "save": "Gem",
+    "cancel": "Annuller",
+    "back": "Tilbage",
+    "loading": "Indlæser..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Brug Git",
+      "description": "Se git-repositorier på hosts, du kan nå, og ændre dem på hosts, du kan redigere."
+    },
+    "runCommands": {
+      "title": "Kør kommandoer efter automatisk pull",
+      "description": "Indstil en kommando, der køres på hosten, når en automatisk pull henter nye commits."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Administrer git-repositorier på denne host fra Git-fanen."
+      },
+      "repoRoots": {
+        "label": "Søg i mapper",
+        "description": "Mapper, der søges efter repos, når du scanner denne host. Adskil dem med kommaer. Standard er hjemmemappen.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Brug sudo",
+        "description": "Kør git som root med sudo. Kun til repos, som den indloggede bruger ikke kan bruge."
+      },
+      "readOnly": {
+        "label": "Skrivebeskyttet",
+        "description": "Vis repos, men ændr dem aldrig på denne host."
+      },
+      "showPanel": {
+        "label": "Panel ved siden af terminalen",
+        "description": "Tilbyd Git-panelet på denne hosts terminalfaner."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Åbn panelet sammen med terminalen",
+        "description": "Vis Git-panelet, når en terminal åbnes på en host, der har det."
+      },
+      "companionSide": {
+        "label": "Panelplacering",
+        "description": "Hvor panelet sidder ved siden af terminalen.",
+        "right": "Højre",
+        "left": "Venstre",
+        "bottom": "Nederst"
+      },
+      "companionSize": {
+        "label": "Panelstørrelse",
+        "description": "Bredde af panelet, eller højden nederst, i pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Kantknap",
+        "description": "Vis en lille knap på terminalens kant for at åbne panelet."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Åbn Git fra en host.",
+    "error": "Kunne ikke indlæse git fra denne host.",
+    "disabled": "Git er slået fra for denne host. Slå det til i host-indstillingerne.",
+    "sudo": "Dette kræver root-login, passwordløs sudo eller en gemt Sudo-adgangskode.",
+    "refresh": "Opdater",
+    "readOnly": "Skrivebeskyttet",
+    "notInstalled": "git ikke installeret",
+    "notInstalledTitle": "git er ikke installeret på denne host",
+    "notInstalledHint": "Installer git med hostens pakkehåndtering, og opdater derefter."
+  },
+  "actions": {
+    "ok": "Færdig",
+    "failed": "Mislykkedes",
+    "noOutput": "Ingen output."
+  },
+  "repos": {
+    "add": "Tilføj repo",
+    "search": "Søg i repos",
+    "empty": "Ingen repos endnu. Tilføj en for at komme i gang.",
+    "noMatch": "Ingen repos matcher.",
+    "viewOnly": "Ingen repos er blevet tilføjet til denne host.",
+    "detached": "losrevet",
+    "changes_one": "{{count}} ændring",
+    "changes_other": "{{count}} ændringer",
+    "conflicts": "Konflikter",
+    "auto": "Automatisk pull",
+    "autoFailing": "Pull mislykkes",
+    "remove": "Fjern fra liste",
+    "removeTitle": "Fjern {{name}}?",
+    "removeBody": "Repoen glemmes kun her. Intet slettes på hosten.",
+    "removed": "{{name}} fjernet",
+    "error": {
+      "missing": "Mappe mangler",
+      "notrepo": "Ikke et git-repo",
+      "unreadable": "Kan ikke læses"
+    }
+  },
+  "add": {
+    "title": "Tilføj repos",
+    "modeScan": "Søg",
+    "modePath": "Mappe",
+    "modeClone": "Klon",
+    "scanHint": "Søger efter git-repos i {{roots}}. Ændr mapperne i værtens indstillinger.",
+    "rescan": "Søg igen",
+    "noneFound": "Ingen nye repos fundet.",
+    "picked": "Valgt",
+    "addPicked_one": "Tilføj {{count}} repo",
+    "addPicked_other": "Tilføj {{count}} repos",
+    "addAll": "Tilføj alle",
+    "folder": "Mappe på værten",
+    "folderHint": "Fuld sti, eller start med ~ for hjemmemappen. Den skal allerede være et git-repo.",
+    "addRepo": "Tilføj repo",
+    "url": "Adresse",
+    "urlHint": "Bruger nøglerne og git-indstillingerne for værtens login-bruger.",
+    "dest": "Klon til",
+    "destHint": "Mappen må ikke eksistere endnu.",
+    "clone": "Klon",
+    "cloned": "Klonet",
+    "added_one": "{{count}} repo tilføjet",
+    "added_other": "{{count}} repos tilføjet",
+    "failed": "Kunne ikke tilføje repoet",
+    "scanFailed": "Kunne ikke søge på værten"
+  },
+  "repo": {
+    "ahead": "{{count}} foran",
+    "behind": "{{count}} bagud",
+    "fetch": "Hent",
+    "fetched": "Hentet",
+    "pull": "Træk",
+    "pulled": "Trukket",
+    "push": "Push",
+    "pushed": "Pushet",
+    "viewChanges": "Ændringer",
+    "viewBranches": "Grene",
+    "viewHistory": "Historik",
+    "viewStash": "Stash",
+    "viewAuto": "Auto-træk"
+  },
+  "changes": {
+    "loadFailed": "Kunne ikke læse ændringerne.",
+    "clean": "Intet at committe. Arbejdstreet er rent.",
+    "stagedTitle": "Staged ({{count}})",
+    "unstagedTitle": "Ændringer ({{count}})",
+    "stage": "Stage",
+    "staged": "Staged",
+    "unstage": "Fjern stage",
+    "unstaged": "Ikke staged",
+    "stageAll": "Stage alle",
+    "renamed": "Omdøbt",
+    "discard": "Kassér",
+    "discardTitle": "Kassér ændringer til {{name}}?",
+    "discardBody": "Ændringerne i denne fil slettes og kan ikke gendannes.",
+    "discarded": "Ændringer kasseret",
+    "message": "Commit-besked",
+    "messagePlaceholder": "Hvad er ændret",
+    "commit": "Commit",
+    "commitAll": "Commit alle ændringer",
+    "commitStaged_one": "Commit {{count}} staged fil",
+    "commitStaged_other": "Commit {{count}} staged filer",
+    "committed": "Committed",
+    "noDiff": "Ingen ændringer at vise.",
+    "truncated": "Diffen er lang, så kun starten vises."
+  },
+  "branches": {
+    "loadFailed": "Kunne ikke læse grenene.",
+    "empty": "Ingen grene endnu.",
+    "current": "Nuværende",
+    "remote": "Fjern",
+    "gone": "Opstream er væk",
+    "newName": "Ny gren",
+    "create": "Opret gren",
+    "created": "Gren {{name}} oprettet",
+    "switch": "Skift",
+    "switched": "Skiftet til {{name}}",
+    "merge": "Sammenflet i nuværende",
+    "mergeTitle": "Sammenflet {{name}} i {{into}}?",
+    "mergeBody": "En sammenfletning med konflikter fortrydes med det samme.",
+    "merged": "{{name}} sammenflettet",
+    "delete": "Slet gren",
+    "deleteTitle": "Slet {{name}}?",
+    "deleteBody": "Git afviser, hvis grenen har commits, der ikke er sammenflettet.",
+    "deleted": "{{name}} slettet",
+    "forceTitle": "Tving sletning af {{name}}?",
+    "forceBody": "Denne gren har commits, der ikke er sammenflettet. De går tabt, hvis du sletter den.",
+    "forceDelete": "Tving sletning"
+  },
+  "history": {
+    "loadFailed": "Kunne ikke læse historikken.",
+    "empty": "Ingen commits endnu.",
+    "branch": "Denne gren",
+    "all": "Alle grene",
+    "more": "Indlæs mere"
+  },
+  "stash": {
+    "loadFailed": "Kunne ikke læse stash.",
+    "title": "Stashes",
+    "empty": "Ingen stashes.",
+    "message": "Besked",
+    "messagePlaceholder": "Valgfrit",
+    "untracked": "Inkluder utracked filer",
+    "push": "Stash ændringer",
+    "pushDone": "Ændringer stashet",
+    "apply": "Anvend",
+    "applyDone": "Stash anvendt",
+    "pop": "Pop",
+    "popDone": "Stash anvendt og fjernet",
+    "drop": "Drop",
+    "dropDone": "Stash droppet",
+    "dropTitle": "Drop {{name}}?",
+    "dropBody": "Stashen slettes og kan ikke gendannes.",
+    "remotes": "Remotes",
+    "noRemotes": "Ingen remotes."
+  },
+  "auto": {
+    "intro": "Trækker efter en tidsplan med kun fast forward. Den sammenfletter aldrig og springer repoet over, hvis det har ucommitted ændringer eller er divergeret fra sin opstream.",
+    "noUpstream": "Denne gren har ingen opstream endnu, så auto pull vil springe den over.",
+    "enable": "Auto pull",
+    "enableHint": "Kører som dig, med din adgang til denne host.",
+    "interval": "Hver (minutter)",
+    "intervalHint": "Hvor længe der skal ventes mellem pulls.",
+    "post": "Kommando efter en pull",
+    "postHint": "Kører i repo-mappen, når nye commits ankommer. Kræver tilladelse til at køre kommandoer.",
+    "saved": "Auto pull gemt",
+    "saveFailed": "Kunne ikke gemme auto pull",
+    "runNow": "Kør nu",
+    "next": "Næste pull {{when}}",
+    "runs": "Seneste kørsler",
+    "noRuns": "Ingen kørsler endnu.",
+    "outcome": {
+      "pulled": "Pulled",
+      "uptodate": "Opdateret",
+      "skipped": "Sprunget over",
+      "failed": "Mislykkedes"
+    }
+  },
+  "card": {
+    "title": "Git-repositorier",
+    "loading": "Indlæser...",
+    "refresh": "Opdater",
+    "empty": "Ingen vært har Git-repositorier endnu.",
+    "allClean": "Alle repositorier er rene og opdaterede.",
+    "summary_one": "{{count}} repo | {{attention}} skal kigges på",
+    "summary_other": "{{count}} repositorier | {{attention}} skal kigges på"
+  },
+  "companion": {
+    "toggle": "Git-panel",
+    "openTab": "Åbn Git",
+    "here": "Repo for denne mappe",
+    "all": "Alle repositorier"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Liste over Git-repositorier"
+    },
+    "fetch": {
+      "title": "Hent et repo"
+    },
+    "pull": {
+      "title": "Træk et repo"
+    },
+    "push": {
+      "title": "Push et repo"
+    },
+    "checkout": {
+      "title": "Skift gren",
+      "branch": "Gren"
+    },
+    "reset-hard": {
+      "title": "Nulstil et repo hårdt",
+      "ref": "Nulstil til"
+    },
+    "repos": {
+      "title": "Git-repositorier",
+      "branch": "Gren",
+      "ahead": "Foran",
+      "behind": "Bagud",
+      "changed": "Ændringer"
+    },
+    "signals": {
+      "behind": "Repositorier bagud",
+      "dirty": "Repositorier med ændringer",
+      "pull-failing": "Automatisk pull mislykkes"
+    }
+  }
+}

@@ -1,0 +1,461 @@
+{
+  "plugin": {
+    "name": "Backups",
+    "description": "Faça backup de pastas, bancos de dados e dados do Docker nos seus hosts com restic, depois navegue, faça download e restaure."
+  },
+  "common": {
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "back": "Voltar",
+    "delete": "Excluir",
+    "done": "Concluído",
+    "loading": "Carregando...",
+    "refresh": "Atualizar",
+    "retry": "Tentar novamente"
+  },
+  "permissions": {
+    "use": {
+      "title": "Usar Backups",
+      "description": "Configure trabalhos e repositórios de backup, execute backups e navegue, faça download e restaure snapshots nos hosts que pode editar."
+    }
+  },
+  "tab": {
+    "title": "Backups",
+    "viewJobs": "Trabalhos",
+    "viewRepos": "Repositórios",
+    "viewHistory": "Histórico"
+  },
+  "hostTab": {
+    "title": "Backups",
+    "noHost": "Abra Backups de um host.",
+    "viewJobs": "Trabalhos",
+    "viewSnapshots": "Snapshots",
+    "viewHistory": "Histórico",
+    "restic": "restic {{version}}",
+    "noRestic": "restic não instalado",
+    "sudo": "O Termix precisa fazer login como root ou como um usuário com sudo sem senha para executar backups neste host.",
+    "statusFailed": "Não foi possível ler este host"
+  },
+  "install": {
+    "missing": "restic não está instalado neste host",
+    "tooOld": "restic neste host é anterior à versão 0.17",
+    "hint": "Backups usam restic. Instale-o pelo gerenciador de pacotes ou pelo release do restic no GitHub quando o pacote for muito antigo.",
+    "button": "Instalar restic",
+    "working": "Instalando...",
+    "title": "Instalar restic?",
+    "desc": "Isso instala o restic no host como root.",
+    "confirm": "Instalar",
+    "done": "restic {{version}} está instalado",
+    "failed": "Não foi possível instalar restic"
+  },
+  "status": {
+    "never": "Nunca executado",
+    "running": "Executando",
+    "success": "Concluído",
+    "warning": "Avisos",
+    "failed": "Falhou",
+    "canceled": "Interrompido"
+  },
+  "time": {
+    "justNow": "agora mesmo",
+    "soon": "em breve",
+    "ago": {
+      "minutes_one": "{{count}} minuto atrás",
+      "minutes_many": "{{count}} minutos atrás",
+      "minutes_other": "{{count}} minutos atrás",
+      "hours_one": "{{count}} hora atrás",
+      "hours_many": "{{count}} horas atrás",
+      "hours_other": "{{count}} horas atrás",
+      "days_one": "{{count}} dia atrás",
+      "days_many": "{{count}} dias atrás",
+      "days_other": "{{count}} dias atrás"
+    },
+    "in": {
+      "minutes_one": "em {{count}} minuto",
+      "minutes_many": "em {{count}} minutos",
+      "minutes_other": "em {{count}} minutos",
+      "hours_one": "em {{count}} hora",
+      "hours_many": "em {{count}} horas",
+      "hours_other": "em {{count}} horas",
+      "days_one": "em {{count}} dia",
+      "days_many": "em {{count}} dias",
+      "days_other": "em {{count}} dias"
+    }
+  },
+  "jobs": {
+    "add": "Adicionar trabalho",
+    "empty": "Nenhum trabalho de backup ainda",
+    "emptyHint": "Adicione um trabalho para fazer backup de pastas, bancos de dados ou dados do Docker.",
+    "emptyNoRepo": "Adicione um repositório primeiro, para que os backups tenham um destino.",
+    "loadFailed": "Não foi possível carregar os trabalhos de backup",
+    "lastGood": "Último backup {{when}}",
+    "noGood": "Nenhum backup ainda",
+    "next": "Próximo {{when}}",
+    "paused": "Pausado",
+    "run": "Executar agora",
+    "stop": "Parar",
+    "edit": "Editar",
+    "snapshots": "Instantâneos",
+    "started": "{{name}} iniciado",
+    "runFailed": "Não foi possível iniciar o backup"
+  },
+  "editor": {
+    "newTitle": "Novo trabalho de backup",
+    "general": "Trabalho",
+    "host": "Host",
+    "pickHost": "Escolha um host",
+    "name": "Nome",
+    "namePlaceholder": "Backup noturno",
+    "repository": "Repositório",
+    "pickRepository": "Escolha um repositório",
+    "noRepos": "Você não tem nenhum repositório que este host possa usar. Adicione um na guia Backups primeiro.",
+    "repoLocked": "Apenas o proprietário deste repositório pode alterá-lo.",
+    "enabled": "Executar agendado",
+    "enabledHint": "Desative para pausar o agendamento. A execução imediata ainda funciona.",
+    "oneFileSystem": "Manter-se em um único sistema de arquivos",
+    "oneFileSystemHint": "Ignorar outros discos e montagens encontrados dentro das pastas selecionadas.",
+    "saved": "Trabalho salvo",
+    "saveFailed": "Não foi possível salvar o trabalho",
+    "deleteTitle": "Excluir {{name}}?",
+    "deleteDesc": "O trabalho será removido do Termix. Seus instantâneos permanecerão no repositório.",
+    "deleted": "Trabalho excluído",
+    "deleteFailed": "Não foi possível excluir o trabalho"
+  },
+  "sources": {
+    "add": "Adicionar ao backup",
+    "addPaths": "Pastas",
+    "addDatabase": "Banco de dados",
+    "addDocker": "Docker",
+    "remove": "Remover",
+    "paths": "Pastas e arquivos",
+    "folders": "Caminhos",
+    "foldersHint": "Um caminho completo por linha.",
+    "excludes": "Ignorar",
+    "excludesHint": "Um padrão restic por linha, como *.log.",
+    "database": "Banco de dados",
+    "engine": "Tipo",
+    "engines": {
+      "mysql": "MySQL ou MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Login",
+    "ownLogin": "Digite um login aqui",
+    "noDatabasesPlugin": "Ative o plugin de Bancos de Dados para escolher um login salvo.",
+    "address": "Endereço",
+    "addressPlaceholder": "Vazio para o soquete local",
+    "port": "Porta",
+    "username": "Usuário",
+    "password": "Senha",
+    "passwordSaved": "Salvo, deixe vazio para manter",
+    "runAs": "Executar como",
+    "runAsHint": "Um usuário Linux para executar o dump, como postgres. Vazio executa como root.",
+    "databases": "Bancos de dados",
+    "databasesHint": "Um nome por linha. Deixe vazio para fazer backup de todos.",
+    "sqliteFiles": "Arquivos de banco de dados",
+    "sqliteFilesHint": "Um caminho completo por linha. Cada arquivo é copiado com segurança enquanto está em uso.",
+    "docker": "Docker",
+    "stacks": "Stacks",
+    "volumes": "Volumes",
+    "noStacks": "Nenhuma stack compose encontrada",
+    "noVolumes": "Nenhum volume encontrado",
+    "dockerFailed": "Não foi possível listar o Docker neste host",
+    "stop": "Parar pilhas durante o backup",
+    "stopHint": "As pilhas selecionadas são interrompidas primeiro e reiniciadas depois, para que seus arquivos não mudem enquanto são lidos."
+  },
+  "schedule": {
+    "title": "Agendamento",
+    "manual": "Manual",
+    "daily": "Diário",
+    "weekly": "Semanal",
+    "custom": "Personalizado",
+    "day": "Dia",
+    "time": "Hora",
+    "cron": "Cron",
+    "cronHint": "Minuto, hora, dia do mês, mês, dia da semana.",
+    "cronInvalid": "Este cron não é válido",
+    "timezone": "Fuso horário",
+    "serverTime": "Hora do servidor",
+    "manualHint": "Esta tarefa só é executada quando você clica em Executar agora.",
+    "manualOnly": "Manual",
+    "next": "Próxima execução {{time}}",
+    "noNext": "Este agendamento nunca é executado",
+    "dailyAt": "Diariamente às {{time}}",
+    "weeklyAt": "{{day}} às {{time}}",
+    "days": {
+      "0": "Domingo",
+      "1": "Segunda-feira",
+      "2": "Terça-feira",
+      "3": "Quarta-feira",
+      "4": "Quinta-feira",
+      "5": "Sexta-feira",
+      "6": "Sábado"
+    }
+  },
+  "keep": {
+    "title": "Manter",
+    "last": "Últimos",
+    "daily": "Diários",
+    "weekly": "Semanais",
+    "monthly": "Mensais",
+    "yearly": "Anuais",
+    "hint": "Após cada backup, os snapshots mais antigos desta tarefa são removidos para que apenas estes sejam mantidos. 0 mantém tudo."
+  },
+  "hooks": {
+    "title": "Comandos",
+    "pre": "Antes",
+    "preHint": "Executado como root antes do backup. Se falhar, o backup é interrompido.",
+    "post": "Depois",
+    "postHint": "Executado como root após o backup, mesmo que tenha falhado. TERMIX_BACKUP_STATUS contém o resultado."
+  },
+  "alerts": {
+    "title": "Alertas",
+    "onFailure": "Alertar quando um backup falhar",
+    "onFailureHint": "Também alerta sobre avisos e uma vez quando voltar a funcionar.",
+    "staleDays": "Dias sem backup",
+    "staleDaysHint": "Alertar quando nenhum backup funcionar por este número de dias. 0 desativa."
+  },
+  "repos": {
+    "add": "Adicionar repositório",
+    "empty": "Nenhum repositório ainda",
+    "emptyHint": "Um repositório é onde os backups são armazenados, como um bucket S3 ou uma pasta.",
+    "loadFailed": "Não foi possível carregar os repositórios",
+    "jobCount_one": "{{count}} tarefa",
+    "jobCount_many": "{{count}} tarefas",
+    "jobCount_other": "{{count}} tarefas",
+    "newTitle": "Novo repositório",
+    "storage": "Armazenamento",
+    "name": "Nome",
+    "namePlaceholder": "S3 externo",
+    "kind": "Tipo",
+    "kinds": {
+      "s3": "Compatível com S3",
+      "rest": "Servidor REST",
+      "rclone": "rclone",
+      "local": "Pasta em um host"
+    },
+    "endpoint": "Endpoint",
+    "endpointHint": "Vazio para AWS. Para MinIO, R2, B2 ou Wasabi, use o endereço S3 deles.",
+    "region": "Região",
+    "bucket": "Bucket",
+    "prefix": "Pasta no bucket",
+    "prefixHint": "Opcional.",
+    "accessKeyId": "ID da chave de acesso",
+    "secretKey": "Chave de acesso secreta",
+    "secretSaved": "Salvo, deixe vazio para manter",
+    "url": "Endereço do servidor",
+    "username": "Usuário",
+    "usernameHint": "Deixe vazio se o servidor não exigir login.",
+    "restPassword": "Senha",
+    "remote": "Nome do remote",
+    "remoteHint": "Apenas letras, números e _.",
+    "path": "Caminho",
+    "rcloneConfig": "Configuração do rclone",
+    "rcloneHint": "As linhas do remote do arquivo rclone.conf. Execute rclone config no seu computador para criá-las. O rclone deve estar instalado nos hosts.",
+    "rcloneSaved": "Salvo, deixe vazio para manter",
+    "host": "Host",
+    "pickHost": "Escolha um host",
+    "folder": "Pasta",
+    "folderHint": "Apenas jobs neste host podem usá-la. Um disco montado é o ideal.",
+    "password": "Criptografia",
+    "resticPassword": "Senha do repositório",
+    "passwordHint": "Deixe vazio e o Termix criará uma senha forte. Guarde uma cópia em local seguro: sem ela, os backups não poderão ser lidos.",
+    "passwordKeep": "Salvo, deixe vazio para manter",
+    "passwordChangeHint": "Isso altera apenas o que o Termix envia. Não altera a senha de um repositório existente.",
+    "reveal": "Mostrar senha",
+    "revealTitle": "Mostrar a senha do repositório?",
+    "revealDesc": "Qualquer pessoa que tenha essa senha e as chaves de armazenamento poderá ler todos os backups deste repositório. Isso será registrado no log de auditoria.",
+    "revealFailed": "Não foi possível ler a senha",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "check": "Verificar",
+    "checkFrom": "Verificar a partir de",
+    "checkFromHint": "O host que abre o repositório. Ele precisa ter o restic instalado.",
+    "checkButton": "Verificar",
+    "initButton": "Verificar e configurar",
+    "installRclone": "Instalar rclone neste host",
+    "rcloneInstalled": "rclone {{version}} está instalado.",
+    "rcloneFailed": "Não foi possível instalar o rclone",
+    "checking": "Verificando...",
+    "opened": "O repositório foi aberto com sucesso.",
+    "created": "O repositório foi configurado e está pronto.",
+    "checkFailed": "Não foi possível abrir o repositório",
+    "checkNext": "Salvo. Verifique a partir de um host para configurá-lo.",
+    "saved": "Repositório salvo",
+    "saveFailed": "Não foi possível salvar o repositório",
+    "deleteTitle": "Excluir {{name}}?",
+    "deleteDesc": "Ele será removido apenas do Termix. Os backups permanecerão no armazenamento.",
+    "deleted": "Repositório excluído",
+    "deleteFailed": "Não foi possível excluir o repositório"
+  },
+  "snapshots": {
+    "noJobs": "Adicione um job de backup primeiro.",
+    "job": "Job",
+    "titleFor": "Snapshots de {{name}}",
+    "empty": "Nenhum snapshot ainda",
+    "loadFailed": "Não foi possível ler os snapshots",
+    "latest": "Mais recente",
+    "files_one": "{{count}} arquivo",
+    "files_many": "{{count}} arquivos",
+    "files_other": "{{count}} arquivos",
+    "browse": "Navegar",
+    "delete": "Excluir",
+    "deleteTitle": "Excluir este snapshot?",
+    "deleteDesc": "O snapshot de {{time}} será removido permanentemente do repositório.",
+    "deleted": "Snapshot excluído",
+    "deleteFailed": "Não foi possível excluir o snapshot",
+    "browseTitle": "Snapshot {{time}}",
+    "root": "Raiz",
+    "emptyFolder": "Esta pasta está vazia",
+    "filesFailed": "Não foi possível listar esta pasta",
+    "pick": "Selecionar",
+    "download": "Baixar",
+    "downloadZip": "Baixar como zip",
+    "downloadFailed": "Não foi possível baixar",
+    "restoreAll": "Restaurar tudo",
+    "restorePicked_one": "Restaurar {{count}} item",
+    "restorePicked_many": "Restaurar {{count}} itens",
+    "restorePicked_other": "Restaurar {{count}} itens"
+  },
+  "restore": {
+    "title": "Restaurar",
+    "what": "O quê",
+    "everything": "Tudo no snapshot.",
+    "more_one": "e mais {{count}}",
+    "more_many": "e mais {{count}}",
+    "more_other": "e mais {{count}}",
+    "where": "Onde",
+    "host": "Host",
+    "hostHint": "Qualquer host que você possa editar e que tenha acesso ao repositório.",
+    "localOnly": "Este repositório é uma pasta no próprio host, portanto só pode ser restaurado nele.",
+    "toFolder": "Para uma pasta",
+    "toOriginal": "Onde estava",
+    "folder": "Pasta",
+    "folderHint": "Os arquivos mantêm seu caminho completo dentro desta pasta.",
+    "originalWarning": "Os arquivos são escritos de volta para onde estavam e podem substituir o que existe atualmente.",
+    "overwrite": "Arquivos que já existem",
+    "overwriteOptions": {
+      "if-changed": "Substituir quando alterado",
+      "always": "Sempre substituir",
+      "if-newer": "Substituir quando o backup for mais recente",
+      "never": "Nunca substituir"
+    },
+    "start": "Restaurar",
+    "started": "Restauração iniciada",
+    "failed": "Não foi possível iniciar a restauração"
+  },
+  "run": {
+    "title": "Executar",
+    "backupTitle": "Backup de {{name}}",
+    "restoreTitle": "Restauração de {{name}}",
+    "loadFailed": "Não foi possível carregar a execução",
+    "progress": "Progresso",
+    "preparing": "Preparando...",
+    "progressLine": "{{percent}}% | {{files}} de {{totalFiles}} arquivos | {{bytes}} de {{totalBytes}}",
+    "left": "{{time}} restantes",
+    "details": "Detalhes",
+    "started": "Iniciado",
+    "finished": "Finalizado",
+    "trigger": "Iniciado por",
+    "triggers": {
+      "manual": "Executar agora",
+      "schedule": "Agendamento",
+      "operation": "Ação do Termix"
+    },
+    "snapshot": "Snapshot",
+    "target": "Restaurado para",
+    "files": "Arquivos",
+    "filesLine": "{{total}} arquivos, {{added}} novos, {{changed}} alterados",
+    "size": "Tamanho",
+    "added": "Adicionado ao repositório",
+    "took": "Levou",
+    "log": "Log",
+    "noLog": "Sem log ainda.",
+    "stopTitle": "Parar esta execução?",
+    "stopDesc": "Um backup parado não salva nenhum snapshot. Uma restauração parada deixa os arquivos restaurados até o momento.",
+    "stopSent": "Parando",
+    "stopFailed": "Não foi possível parar a execução"
+  },
+  "history": {
+    "empty": "Nenhuma execução ainda",
+    "loadFailed": "Não foi possível carregar o histórico",
+    "status": "Status",
+    "job": "Tarefa",
+    "host": "Host",
+    "kind": "Tipo",
+    "kinds": {
+      "backup": "Backup",
+      "restore": "Restauração"
+    },
+    "started": "Iniciado",
+    "took": "Duração",
+    "size": "Tamanho"
+  },
+  "card": {
+    "title": "Backups",
+    "all": "Todas as tarefas de backup",
+    "oneJob": "Uma tarefa de backup",
+    "empty": "Nenhuma tarefa de backup ainda.",
+    "gone": "Esta tarefa de backup foi excluída.",
+    "open": "Abrir"
+  },
+  "operations": {
+    "list": {
+      "title": "Listar tarefas de backup"
+    },
+    "failed": {
+      "title": "Backups com falha"
+    },
+    "run": {
+      "title": "Executar backup"
+    },
+    "cancel": {
+      "title": "Parar backup"
+    },
+    "snapshots": {
+      "title": "Listar snapshots"
+    },
+    "events": {
+      "finished": "Backup concluído",
+      "failed": "Backup com falha"
+    },
+    "jobs": {
+      "title": "Tarefas de backup",
+      "lastSuccess": "Último backup",
+      "nextRun": "Próxima execução",
+      "size": "Tamanho"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Mostrar painel de backups nos terminais",
+        "description": "Permitir que o painel de backups abra ao lado do terminal SSH deste host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Abrir o painel de backups com novos terminais",
+        "description": "Mostrar o painel de backups ao lado de cada terminal SSH que tenha essa opção ativada. Você ainda pode abri-lo e fechá-lo pelo botão na borda direita."
+      },
+      "companionSide": {
+        "label": "Lado do painel de backups",
+        "description": "Onde o painel de backups fica ao lado de um terminal.",
+        "right": "Direita",
+        "left": "Esquerda",
+        "bottom": "Inferior"
+      },
+      "companionSize": {
+        "label": "Tamanho do painel de backups",
+        "description": "Largura em pixels, ou altura quando estiver na parte inferior. Você também pode arrastar sua borda."
+      },
+      "companionEdgeButton": {
+        "label": "Mostrar o botão do painel",
+        "description": "Mostrar um pequeno botão na borda direita de um terminal que abre o painel de backups."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Alternar painel de backups"
+  }
+}

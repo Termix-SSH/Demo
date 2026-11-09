@@ -3,6 +3,7 @@ import { useTabs, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
   Button,
   isElectron,
+  LoadingState,
   resolveRemoteHostId,
   ToolbarBand,
 } from "@termix-ssh/plugin-sdk/ui";
@@ -138,7 +139,7 @@ export function MoonlightTab({ host }: { host?: RemoteHostLogin }) {
   }, [url]);
 
   if (state.status === "loading") {
-    return <Centered>{t("hosts.moonlight.loading")}</Centered>;
+    return <LoadingState label={t("hosts.moonlight.loading")} />;
   }
 
   if (state.status === "failed") {

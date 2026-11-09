@@ -1,0 +1,220 @@
+{
+  "tab": {
+    "title": "Opslag",
+    "noHost": "Open opslag vanaf een host.",
+    "disabled": "Opslaggezondheid is uitgeschakeld voor deze host. Schakel het in de hostinstellingen in.",
+    "error": "Kon opslaggezondheid niet laden",
+    "viewDrives": "Schijven",
+    "viewPools": "Pools en arrays",
+    "viewEvents": "Gebeurtenissen",
+    "viewSettings": "Instellingen",
+    "readAgo": "Laatst gelezen {{time}} geleden",
+    "stale": "Kon de host niet lezen, toont de laatste meting. {{error}}"
+  },
+  "common": {
+    "loading": "Laden...",
+    "failed": "Dat is niet gelukt",
+    "save": "Opslaan",
+    "refresh": "Nu lezen",
+    "back": "Terug"
+  },
+  "card": {
+    "title": "Opslaggezondheid",
+    "empty": "Er worden nog geen hosts bewaakt. Schakel Opslaggezondheid in de instellingen van een host in.",
+    "drives_one": "{{count}} schijf",
+    "drives_other": "{{count}} schijven",
+    "problems_one": "{{count}} open probleem",
+    "problems_other": "{{count}} open problemen"
+  },
+  "manager": {
+    "title": "Opslaggezondheid",
+    "disabled": "Opslaggezondheid is uitgeschakeld voor deze host."
+  },
+  "health": {
+    "ok": "Gezond",
+    "warn": "Vereist aandacht",
+    "fail": "Fout",
+    "unknown": "Onbekend"
+  },
+  "kind": {
+    "hdd": "Harde schijf",
+    "ssd": "SSD",
+    "nvme": "NVMe",
+    "unknown": "Schijf"
+  },
+  "drives": {
+    "empty": "Geen schijven gevonden op deze host",
+    "noRoot": "De controles zijn uitgevoerd zonder root-rechten, dus sommige schijven tonen mogelijk geen gegevens. Sta wachtelloos sudo toe voor deze aanmelding.",
+    "noTool": "smartctl is niet geïnstalleerd op deze host. Installeer smartmontools om de schijfgezondheid te lezen.",
+    "noData": "Er is nog niets gelezen",
+    "wear": "{{value}}% slijtage",
+    "testing": "Bezig met testen"
+  },
+  "detail": {
+    "stop": "Test stoppen",
+    "short": "Korte test",
+    "long": "Lange test",
+    "health": "Gezondheid",
+    "temp": "Temperatuur",
+    "wear": "Slijtage",
+    "hours": "Aanstaande tijd",
+    "model": "Model",
+    "serial": "Serienummer",
+    "kind": "Type",
+    "size": "Grootte",
+    "reallocated": "Her toegewezen sectoren",
+    "pending": "In afwachting van sectoren",
+    "uncorrectable": "Onherstelbare sectoren",
+    "mediaErrors": "Mediaproblemen",
+    "selfTest": "Laatste zelftest",
+    "attributes": "SMART-attributen",
+    "attrMeta": "Waarde {{value}} | Ruw {{raw}}"
+  },
+  "history": {
+    "24h": "24 uur",
+    "7d": "7 dagen",
+    "30d": "30 dagen",
+    "temp": "Temperatuur",
+    "wear": "Slijtage",
+    "bad": "Foute sectoren",
+    "empty": "De geschiedenis wordt gevuld naarmate de host wordt gelezen. Kom later terug."
+  },
+  "pools": {
+    "empty": "Geen ZFS-pools, RAID-arrays, btrfs-bestandssystemen of LVM thin pools gevonden",
+    "startTitle": "Starten op {{name}}?",
+    "startText": "Dit leest elk blok en kan de schijven urenlang vertragen.",
+    "start": "Starten",
+    "stop": "Stoppen",
+    "scrub": "Scrubben",
+    "thinMeta": "{{data}}% gegevens | {{meta}}% metadata | {{free}} vrij in de groep"
+  },
+  "events": {
+    "error": "Kon gebeurtenissen niet laden",
+    "empty": "Nog geen gebeurtenissen",
+    "type": {
+      "smart-failing": "Falen",
+      "smart-attention": "SMART-waarschuwing",
+      "nvme-critical": "Kritiek",
+      "wear-high": "Versleten",
+      "wear-critical": "Bijna versleten",
+      "temp-high": "Heet",
+      "temp-critical": "Te heet",
+      "pool-degraded": "Pool gedegradeerd",
+      "pool-errors": "Poolfouten",
+      "raid-degraded": "Array gedegradeerd",
+      "raid-rebuilding": "Opbouwen",
+      "btrfs-errors": "btrfs-fouten",
+      "thin-full": "Thin pool vult op",
+      "thin-critical": "Thin pool vol",
+      "unreachable": "Onbereikbaar",
+      "test": "Zelftest",
+      "scrub": "Scrub",
+      "command": "Opdracht"
+    }
+  },
+  "settings": {
+    "saved": "Opgeslagen",
+    "alerts": "Waarschuwingen verzenden",
+    "alertsHint": "Waarschuw de persoon die dit heeft ingesteld wanneer er een probleem ontstaat of een storing is opgelost.",
+    "interval": "Elke (minuten) lezen",
+    "intervalHint": "SMART-lezingen zijn traag, dus 15 minuten is een goed startpunt.",
+    "tempWarn": "Waarschuwen boven (°C)",
+    "tempCrit": "Kritiek boven (°C)",
+    "tempHint": "0 gebruikt de standaardwaarde voor het schijftype.",
+    "wear": "Waarschuwen bij slijtage (%)",
+    "wearHint": "Kritiek bij 95%.",
+    "thin": "Waarschuwen wanneer een thin pool vol is (%)",
+    "thinHint": "Kritiek bij 95%.",
+    "host": {
+      "enable": {
+        "label": "Opslaggezondheid",
+        "description": "Bewak schijven, pools en arrays op deze host."
+      },
+      "useSudo": {
+        "label": "Sudo gebruiken",
+        "description": "Voer de controles uit met wachtwoordloze sudo. SMART vereist root."
+      },
+      "readOnly": {
+        "label": "Alleen-lezen",
+        "description": "Blokkeer zelftests en scrubs vanuit Termix."
+      },
+      "showPanel": {
+        "label": "Zijpaneel tonen",
+        "description": "Bied het opslaggezondheidspaneel naast terminals op deze host aan."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Opslaggezondheidspaneel openen met terminals",
+        "description": "Open het paneel automatisch op hosts die dit ondersteunen."
+      },
+      "companionSide": {
+        "label": "Paneelzijde",
+        "description": "Waar het opslaggezondheidspaneel naast een terminal opent.",
+        "right": "Rechts",
+        "left": "Links",
+        "bottom": "Onder"
+      },
+      "companionSize": {
+        "label": "Paneelgrootte",
+        "description": "Breedte of hoogte van het paneel in pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Randknop tonen",
+        "description": "Toon een kleine knop aan de rand van de terminal om het paneel te openen."
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "Opslaggezondheid gebruiken",
+      "description": "Bekijk de gezondheid van schijven en arrays op hosts die je kunt bereiken."
+    },
+    "runTests": {
+      "title": "Voer tests en scrubs uit",
+      "description": "Start SMART-zelftests en scrubs. Vereist ook bewerkingstoegang tot de host."
+    }
+  },
+  "operations": {
+    "devices": {
+      "title": "Schijven",
+      "health": "Gezondheid",
+      "kind": "Type",
+      "temp": "Temperatuur",
+      "wear": "Slijtage"
+    },
+    "pools": {
+      "title": "Pools en arrays",
+      "state": "Status"
+    },
+    "status": {
+      "title": "Opslaggezondheid"
+    },
+    "temperature": {
+      "title": "Warmste schijf"
+    },
+    "selftest": {
+      "title": "SMART-zelftest",
+      "device": "Schijf",
+      "action": "Actie",
+      "short": "Korte test",
+      "long": "Lange test",
+      "abort": "Stop de lopende test"
+    },
+    "scrub": {
+      "title": "Scrub",
+      "target": "Pool, bestandssysteem of array",
+      "targetHint": "Een id uit de poollijst, zoals zfs:tank, btrfs:/mnt/data of md:md0",
+      "stop": "Stop in plaats van start"
+    },
+    "events": {
+      "degraded": "Opslagprobleem gevonden",
+      "recovered": "Opslagprobleem opgelost",
+      "smartFailing": "Schijf faalt SMART-controle",
+      "raidDegraded": "Pool of array gedegradeerd"
+    }
+  },
+  "companion": {
+    "toggle": "Opslaggezondheidspaneel"
+  }
+}

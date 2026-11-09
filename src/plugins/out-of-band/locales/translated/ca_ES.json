@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Control d'energia, sensors, registres d'esdeveniments i consoles per a BMC de servidors mitjançant Redfish, IPMI i Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "S'està carregant"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "Veure BMCs",
+      "description": "Obre la pestanya Out-of-band i consulta l'estat d'energia, salut, sensors i registres."
+    },
+    "power": {
+      "title": "Controlar l'energia i l'arrencada",
+      "description": "Encén i apaga els equips, reinicia'ls i selecciona el dispositiu d'arrencada següent."
+    },
+    "console": {
+      "title": "Utilitzar la consola sèrie",
+      "description": "Obrir la consola sèrie a través de la xarxa d'una màquina."
+    },
+    "media": {
+      "title": "Utilitzar els mitjans virtuals",
+      "description": "Muntar i expulsar imatges ISO en una màquina."
+    },
+    "manage": {
+      "title": "Gestionar els BMC",
+      "description": "Afegir, modificar i eliminar BMC, i esborrar els seus registres d'esdeveniments."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Executar ipmitool al servidor Termix",
+        "description": "Quan està desactivat, els BMC IPMI han d'utilitzar un host de relé. Redfish i AMT no es veuen afectats."
+      }
+    }
+  },
+  "description": "Afegeix els controladors de gestió (BMC) dels teus servidors per encendre'ls i apagar-los, supervisar els seus sensors i llegir els seus registres d'esdeveniments. Les credencials d'inici de sessió s'emmagatzemen xifrades i mai es mostren de nou.",
+  "summary": "{{count}} BMCs, {{attention}} necessiten atenció",
+  "empty": "Encara no hi ha BMCs.",
+  "add": "Afegeix un BMC",
+  "edit": "Edita",
+  "delete": "Suprimeix",
+  "back": "Enrere",
+  "saved": "Desat",
+  "deleteConfirm": "Vols suprimir {{name}}?",
+  "status": {
+    "unknown": "Encara no s'ha llegit",
+    "up": "Accessible",
+    "down": "Inaccessible"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI per LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Nom d'usuari",
+    "password": "Contrasenya"
+  },
+  "power": {
+    "on": "Encès",
+    "off": "Apagat",
+    "unknown": "Desconegut",
+    "sent": "S'ha demanat a {{name}} que canviï l'alimentació",
+    "action": {
+      "on": "Encendre",
+      "off": "Apagar",
+      "graceful-shutdown": "Aturar",
+      "cycle": "Cicle d'encesa",
+      "reset": "Reiniciar"
+    },
+    "confirm": {
+      "on": "Vols encendre {{name}}?",
+      "off": "Vols tallar l'alimentació de {{name}}? El sistema no s'aturarà correctament.",
+      "graceful-shutdown": "Vols demanar a {{name}} que s'aturi?",
+      "cycle": "Vols fer un cicle d'encesa de {{name}}? El sistema no s'aturarà correctament.",
+      "reset": "Vols reiniciar {{name}}? El sistema es reiniciarà immediatament."
+    }
+  },
+  "health": {
+    "ok": "Correcte",
+    "warning": "Avís",
+    "critical": "Crític",
+    "unknown": "Desconegut"
+  },
+  "kind": {
+    "temperature": "Temperatura",
+    "fan": "Ventilador",
+    "voltage": "Voltatge",
+    "power": "Potència",
+    "psu": "Font d'alimentació",
+    "other": "Altres"
+  },
+  "form": {
+    "addTitle": "Afegeix BMC",
+    "editTitle": "Edita el BMC",
+    "device": "BMC",
+    "access": "Accés",
+    "type": "Tipus",
+    "name": "Nom",
+    "address": "Adreça",
+    "port": "Port",
+    "host": "Amfitrió de Termix",
+    "hostHint": "Vincula el BMC a l'amfitrió al qual pertany. D'aquesta manera, seguirà la configuració de compartició d'aquest amfitrió i apareixerà al seu menú.",
+    "noHost": "Cap",
+    "poll": "Llegeix cada (segons)",
+    "pollHint": "Com a mínim 30 segons, o 60 si s'utilitza un amfitrió de retransmissió.",
+    "scheme": "Connexió",
+    "relay": "Amfitrió de retransmissió",
+    "relayHint": "Executa ipmitool en aquest amfitrió en lloc del servidor de Termix. Necessari per a la consola sèrie.",
+    "noRelay": "Servidor de Termix",
+    "cipher": "Conjunt de xifratge",
+    "cipherHint": "Canvia-ho només si el BMC rebutja l'inici de sessió. El 3 és l'habitual, el 17 per a BMC més nous.",
+    "ca": "Certificat de l'AC",
+    "caHint": "Enganxa el PEM de l'autoritat de certificació del BMC. Deixa-ho buit per a un certificat de confiança.",
+    "caSet": "S'ha desat una AC. Enganxa una de nova per substituir-la.",
+    "keepLogin": "Deixa-ho buit per mantenir l'inici de sessió desat",
+    "test": "Prova la connexió",
+    "testOk": "El BMC ha respost. L'alimentació és {{power}}.",
+    "testNeedsLogin": "Introdueix de nou les credencials per provar.",
+    "save": "Desa",
+    "add": "Afegeix"
+  },
+  "view": {
+    "overview": "Vista general",
+    "sensors": "Sensors",
+    "log": "Registre d'esdeveniments",
+    "boot": "Arrencada",
+    "media": "Mitjans virtuals",
+    "console": "Consola",
+    "refresh": "Llegeix ara",
+    "type": "Tipus",
+    "address": "Adreça",
+    "power": "Alimentació",
+    "health": "Estat de salut",
+    "manufacturer": "Fabricant",
+    "model": "Model",
+    "serial": "Número de sèrie",
+    "bios": "BIOS",
+    "bmc": "Microprogramari del BMC",
+    "status": "BMC",
+    "viaRelay": "S'ha accedit a través d'un amfitrió de retransmissió.",
+    "noSensors": "Aquest BMC no informa de cap sensor.",
+    "sensor": "Sensor",
+    "reading": "Lectura",
+    "state": "Estat"
+  },
+  "log": {
+    "time": "Hora",
+    "severity": "Nivell",
+    "message": "Esdeveniment",
+    "empty": "El registre d'esdeveniments és buit.",
+    "clear": "Neteja el registre",
+    "clearConfirm": "Vols netejar el registre d'esdeveniments de {{name}}? Aquesta acció no es pot desfer.",
+    "cleared": "Registre netejat",
+    "level": {
+      "info": "Informació",
+      "warning": "Avís",
+      "critical": "Crític"
+    }
+  },
+  "boot": {
+    "hint": "La màquina s'arrencarà des d'aquest dispositiu una sola vegada i després tornarà a l'ordre normal. Aplica-ho abans de reiniciar.",
+    "device": "Arrencar des de",
+    "mode": "Mode",
+    "uefi": "UEFI",
+    "legacy": "BIOS clàssic",
+    "apply": "Establir per a la propera arrencada",
+    "done": "{{name}} arrencarà des del dispositiu seleccionat la propera vegada",
+    "pxe": "Xarxa (PXE)",
+    "disk": "Disc dur",
+    "cd": "CD o mitjà virtual",
+    "usb": "USB",
+    "bios": "Configuració del BIOS",
+    "none": "Ordre normal"
+  },
+  "media": {
+    "url": "Adreça de la imatge",
+    "empty": "Aquest BMC no té ranura de CD virtual.",
+    "mounted": "Muntat",
+    "free": "Buit",
+    "mount": "Muntar",
+    "eject": "Ejectar",
+    "mountedDone": "Imatge muntada",
+    "ejected": "Imatge ejectada"
+  },
+  "console": {
+    "hint": "Escriu ~. per sortir de la consola.",
+    "connecting": "Connectant",
+    "ended": "La consola s'ha tancat.",
+    "failed": "No s'ha pogut obrir la consola.",
+    "needsRelay": "La consola sèrie necessita un host de retransmissió amb ipmitool. N'has de seleccionar un a la configuració del BMC."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Arrencar des de",
+    "uefi": "Mode UEFI",
+    "list": {
+      "title": "Llistar BMCs"
+    },
+    "poll": {
+      "title": "Llegir un BMC ara"
+    },
+    "powerState": {
+      "title": "Obtenir l'estat d'encesa"
+    },
+    "power-on": {
+      "title": "Encendre"
+    },
+    "graceful-shutdown": {
+      "title": "Apagar"
+    },
+    "power-off": {
+      "title": "Apagar"
+    },
+    "power-cycle": {
+      "title": "Cicle d'encesa"
+    },
+    "reset": {
+      "title": "Reiniciar"
+    },
+    "setBootOnce": {
+      "title": "Arrencar una vegada des d'un dispositiu"
+    },
+    "clearLog": {
+      "title": "Netejar el registre d'esdeveniments"
+    },
+    "health": {
+      "title": "Estat de salut del BMC"
+    }
+  },
+  "widget": {
+    "name": "Gestió fora de banda",
+    "description": "Estat d'encesa i salut dels BMC dels teus servidors.",
+    "summary": "{{up}} de {{total}} en funcionament"
+  }
+}

@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Napájanie, senzory, denníky udalostí a konzoly pre serverové BMC prostredníctvom Redfish, IPMI a Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Načítava sa"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "Zobraziť BMC",
+      "description": "Otvorte kartu Out-of-band a zobrazte napájanie, stav, senzory a denníky."
+    },
+    "power": {
+      "title": "Ovládanie napájania a spúšťania",
+      "description": "Zapínanie a vypínanie strojov, reštart napájania a výber ďalšieho spúšťacieho zariadenia."
+    },
+    "console": {
+      "title": "Používať sériovú konzolu",
+      "description": "Otvoriť sériovú konzolu cez LAN pre stroj."
+    },
+    "media": {
+      "title": "Používať virtuálne médiá",
+      "description": "Pripojiť a odpojiť ISO obrazy na stroji."
+    },
+    "manage": {
+      "title": "Spravovať BMC",
+      "description": "Pridávať, meniť a odstraňovať BMC a vyčistiť ich udalostné denníky."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Spúšťať ipmitool na serveri Termix",
+        "description": "Ak je vypnuté, IPMI BMC musia používať relay host. Redfish a AMT nie sú ovplyvnené."
+      }
+    }
+  },
+  "description": "Pridajte riadiace jednotky (BMC) vašich serverov, aby ste ich mohli zapínať a vypínať, sledovať ich senzory a čítať ich udalostné denníky. Prihlasovacie údaje sú uložené šifrované a nikdy sa nezobrazia znova.",
+  "summary": "{{count}} BMC, {{attention}} vyžaduje pozornosť",
+  "empty": "Zatiaľ žiadne BMC.",
+  "add": "Pridať BMC",
+  "edit": "Upraviť",
+  "delete": "Odstrániť",
+  "back": "Späť",
+  "saved": "Uložené",
+  "deleteConfirm": "Odstrániť {{name}}?",
+  "status": {
+    "unknown": "Zatiaľ nečítané",
+    "up": "Dostupné",
+    "down": "Nedostupné"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI cez LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Meno používateľa",
+    "password": "Heslo"
+  },
+  "power": {
+    "on": "Zapnuté",
+    "off": "Vypnuté",
+    "unknown": "Neznáme",
+    "sent": "Požiadali sme {{name}} o zmenu napájania",
+    "action": {
+      "on": "Zapnúť",
+      "off": "Vypnúť",
+      "graceful-shutdown": "Vypnúť systém",
+      "cycle": "Reštartovať napájanie",
+      "reset": "Obnoviť"
+    },
+    "confirm": {
+      "on": "Zapnúť {{name}}?",
+      "off": "Vypnúť napájanie zariadenia {{name}}? Systém sa nevypne správne.",
+      "graceful-shutdown": "Požiadať zariadenie {{name}} o vypnutie?",
+      "cycle": "Reštartovať napájanie zariadenia {{name}}? Systém sa nevypne správne.",
+      "reset": "Obnoviť zariadenie {{name}}? Systém sa okamžite reštartuje."
+    }
+  },
+  "health": {
+    "ok": "Bez problémov",
+    "warning": "Varovanie",
+    "critical": "Kritické",
+    "unknown": "Neznáme"
+  },
+  "kind": {
+    "temperature": "Teplota",
+    "fan": "Ventilátor",
+    "voltage": "Napätie",
+    "power": "Výkon",
+    "psu": "Zdroj napájania",
+    "other": "Iné"
+  },
+  "form": {
+    "addTitle": "Pridať BMC",
+    "editTitle": "Upraviť BMC",
+    "device": "BMC",
+    "access": "Prístup",
+    "type": "Typ",
+    "name": "Názov",
+    "address": "Adresa",
+    "port": "Port",
+    "host": "Termix hostiteľ",
+    "hostHint": "Prepojte BMC s hostiteľom, ktorému patrí. Bude potom nasledovať zdieľanie tohto hostiteľa a zobrazí sa v jeho ponuke.",
+    "noHost": "Žiadny",
+    "poll": "Čítať každých (sekúnd)",
+    "pollHint": "Aspoň 30 sekúnd, alebo 60 pri použití relay hostiteľa.",
+    "scheme": "Pripojenie",
+    "relay": "Relay hostiteľ",
+    "relayHint": "Spustiť ipmitool na tomto hostiteľovi namiesto servera Termix. Potrebné pre sériovú konzolu.",
+    "noRelay": "Server Termix",
+    "cipher": "Šifrovací súbor",
+    "cipherHint": "Zmeňte to len v prípade, že BMC odmieta prihlásenie. 3 je bežná hodnota, 17 pre novšie BMC.",
+    "ca": "CA certifikát",
+    "caHint": "Vložte PEM certifikátu autority BMC. Nechajte prázdne pre dôveryhodný certifikát.",
+    "caSet": "CA je uložená. Vložte novú na jej nahradenie.",
+    "keepLogin": "Nechajte prázdne pre zachovanie uloženého prihlásenia",
+    "test": "Otestovať pripojenie",
+    "testOk": "BMC odpovedal. Napájanie je {{power}}.",
+    "testNeedsLogin": "Zadajte prihlasovacie údaje znova na otestovanie.",
+    "save": "Uložiť",
+    "add": "Pridať"
+  },
+  "view": {
+    "overview": "Prehľad",
+    "sensors": "Senzory",
+    "log": "Protokol udalostí",
+    "boot": "Spúšťanie",
+    "media": "Virtuálne médiá",
+    "console": "Konzola",
+    "refresh": "Čítať teraz",
+    "type": "Typ",
+    "address": "Adresa",
+    "power": "Napájanie",
+    "health": "Stav",
+    "manufacturer": "Výrobca",
+    "model": "Model",
+    "serial": "Sériové číslo",
+    "bios": "BIOS",
+    "bmc": "Firmware BMC",
+    "status": "BMC",
+    "viaRelay": "Dosiahnuté cez relay hostiteľa.",
+    "noSensors": "Toto BMC nehlási žiadne senzory.",
+    "sensor": "Senzor",
+    "reading": "Hodnota",
+    "state": "Stav"
+  },
+  "log": {
+    "time": "Čas",
+    "severity": "Úroveň",
+    "message": "Udalosť",
+    "empty": "Protokol udalostí je prázdny.",
+    "clear": "Vymazať protokol",
+    "clearConfirm": "Vymazať protokol udalostí pre {{name}}? Tuto akciu nie je možné vrátiť späť.",
+    "cleared": "Protokol vymazaný",
+    "level": {
+      "info": "Informácia",
+      "warning": "Upozornenie",
+      "critical": "Kritické"
+    }
+  },
+  "boot": {
+    "hint": "Stroj sa spustí z tohto zariadenia raz a potom sa vráti k bežnému poriadku. Aplikujte to pred reštartom.",
+    "device": "Spustiť z",
+    "mode": "Režim",
+    "uefi": "UEFI",
+    "legacy": "Legacy BIOS",
+    "apply": "Nastaviť pre ďalší štart",
+    "done": "{{name}} sa pri ďalšom štarte spustí z vybraného zariadenia",
+    "pxe": "Sieť (PXE)",
+    "disk": "Pevný disk",
+    "cd": "CD alebo virtuálne médiá",
+    "usb": "USB",
+    "bios": "Nastavenia BIOS",
+    "none": "Štandardné poradie"
+  },
+  "media": {
+    "url": "Adresa obrazu",
+    "empty": "Tento BMC nemá slot pre virtuálne CD.",
+    "mounted": "Pripojené",
+    "free": "Prázdne",
+    "mount": "Pripojiť",
+    "eject": "Vysunúť",
+    "mountedDone": "Obraz je pripojený",
+    "ejected": "Obraz je vysunutý"
+  },
+  "console": {
+    "hint": "Pre opustenie konzoly zadajte ~.",
+    "connecting": "Pripájanie",
+    "ended": "Konzola bola zatvorená.",
+    "failed": "Nepodarilo sa otvoriť konzolu.",
+    "needsRelay": "Sériová konzola vyžaduje relay host s ipmitool. Vyberte ho v nastaveniach BMC."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Spustiť z",
+    "uefi": "Režim UEFI",
+    "list": {
+      "title": "Zoznam BMC"
+    },
+    "poll": {
+      "title": "Prečítať BMC teraz"
+    },
+    "powerState": {
+      "title": "Získať stav napájania"
+    },
+    "power-on": {
+      "title": "Zapnúť"
+    },
+    "graceful-shutdown": {
+      "title": "Vypnúť"
+    },
+    "power-off": {
+      "title": "Vypnúť napájanie"
+    },
+    "power-cycle": {
+      "title": "Reštartovať napájaním"
+    },
+    "reset": {
+      "title": "Reštartovať"
+    },
+    "setBootOnce": {
+      "title": "Jednorazový štart zo zariadenia"
+    },
+    "clearLog": {
+      "title": "Vymazať udalostný záznam"
+    },
+    "health": {
+      "title": "Stav zdravia BMC"
+    }
+  },
+  "widget": {
+    "name": "Out-of-band",
+    "description": "Napájanie a stav zdravia vašich serverových BMC.",
+    "summary": "{{up}} z {{total}} aktívnych"
+  }
+}

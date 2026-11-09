@@ -10,6 +10,11 @@
 - Needs Termix 26.11.1 or newer
 - Toolbars, loading screens, back buttons and Save bars match the rest of Termix
 
+### Fixed
+
+- A ping widget site that does not answer shows as down without an error in the browser console
+- RSS feeds on a host in the admin private address list load, like ping and link widgets already did
+
 ## 1.1.0
 
 ### Changed

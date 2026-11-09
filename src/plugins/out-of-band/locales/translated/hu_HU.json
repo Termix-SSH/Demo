@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Tápellátás, érzékelők, eseménynaplók és konzolok a szerver BMC-hez Redfish, IPMI és Intel AMT protokollokon keresztül."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Betöltés"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "BMC-k megtekintése",
+      "description": "Az Out-of-band fül megnyitása és a tápellátás, állapot, érzékelők és naplók megtekintése."
+    },
+    "power": {
+      "title": "Tápellátás és indítás vezérlése",
+      "description": "Gépek be- és kikapcsolása, újraindítása, valamint a következő indítóeszköz kiválasztása."
+    },
+    "console": {
+      "title": "Soros konzol használata",
+      "description": "Egy gép soros LAN-alapú konzoljának megnyitása."
+    },
+    "media": {
+      "title": "Virtuális média használata",
+      "description": "ISO-képek csatolása és kioldása egy gépen."
+    },
+    "manage": {
+      "title": "BMC-k kezelése",
+      "description": "BMC-k hozzáadása, módosítása és eltávolítása, valamint eseménynaplóik törlése."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Az ipmitool futtatása a Termix szerveren",
+        "description": "Ha ki van kapcsolva, az IPMI BMC-knek átjárószerverre van szükségük. A Redfish és az AMT nem érintett."
+      }
+    }
+  },
+  "description": "Adja hozzá szerverei kezelővezérlőit (BMC-k) a be- és kikapcsolásukhoz, az érzékelőik figyeléséhez és az eseménynaplóik olvasásához. A bejelentkezési adatok titkosítva tárolódnak, és soha nem jelennek meg újra.",
+  "summary": "{{count}} BMC, {{attention}} igényel figyelmet",
+  "empty": "Még nincsenek BMC-k.",
+  "add": "BMC hozzáadása",
+  "edit": "Szerkesztés",
+  "delete": "Törlés",
+  "back": "Vissza",
+  "saved": "Mentve",
+  "deleteConfirm": "Törli a(z) {{name}} elemet?",
+  "status": {
+    "unknown": "Még nem olvasva",
+    "up": "Elérhető",
+    "down": "Nem elérhető"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI LAN-en keresztül",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Felhasználónév",
+    "password": "Jelszó"
+  },
+  "power": {
+    "on": "Be",
+    "off": "Ki",
+    "unknown": "Ismeretlen",
+    "sent": "A(z) {{name}} áramellátásának módosítását kértük",
+    "action": {
+      "on": "Bekapcsolás",
+      "off": "Kikapcsolás",
+      "graceful-shutdown": "Leállítás",
+      "cycle": "Áramkör újraindítása",
+      "reset": "Újraindítás"
+    },
+    "confirm": {
+      "on": "Bekapcsolja a(z) {{name}} gépet?",
+      "off": "Megszakítja a(z) {{name}} gép áramellátását? A rendszer nem tud rendesen leállni.",
+      "graceful-shutdown": "Megkéri a(z) {{name}} gépet a leállításra?",
+      "cycle": "Újraindítja a(z) {{name}} gépet áramszünettel? A rendszer nem tud rendesen leállni.",
+      "reset": "Újraindítja a(z) {{name}} gépet? A rendszer azonnal újraindul."
+    }
+  },
+  "health": {
+    "ok": "Működőképes",
+    "warning": "Figyelmeztetés",
+    "critical": "Kritikus",
+    "unknown": "Ismeretlen"
+  },
+  "kind": {
+    "temperature": "Hőmérséklet",
+    "fan": "Ventilátor",
+    "voltage": "Feszültség",
+    "power": "Teljesítmény",
+    "psu": "Tápegység",
+    "other": "Egyéb"
+  },
+  "form": {
+    "addTitle": "BMC hozzáadása",
+    "editTitle": "BMC szerkesztése",
+    "device": "BMC",
+    "access": "Hozzáférés",
+    "type": "Típus",
+    "name": "Név",
+    "address": "Cím",
+    "port": "Port",
+    "host": "Termix gazdagép",
+    "hostHint": "Kapcsold a BMC-t a hozzá tartozó gazdagéphez. Így követi a gazdagép megosztási beállításait, és megjelenik annak menüjében.",
+    "noHost": "Nincs",
+    "poll": "Olvasás minden (másodperc) után",
+    "pollHint": "Legalább 30 másodperc, vagy 60, ha átjárószerver használatban van.",
+    "scheme": "Csatlakozás",
+    "relay": "Átjárószerver",
+    "relayHint": "Futtassa az ipmitoolt ezen a szerveren a Termix szerver helyett. Ez szükséges a soros konzolhoz.",
+    "noRelay": "Termix szerver",
+    "cipher": "Titkosítási szuite",
+    "cipherHint": "Csak akkor módosítsa, ha a BMC elutasítja a bejelentkezést. A 3 a szokásos, az újabb BMC-knél a 17.",
+    "ca": "CA tanúsítvány",
+    "caHint": "Illessze be a BMC tanúsítványkiadójának PEM fájlját. Hagyja üresen megbízott tanúsítvány esetén.",
+    "caSet": "Egy CA van mentve. Illesszen be egy újat a helyettesítéshez.",
+    "keepLogin": "Hagyja üresen a mentett bejelentkezés megőrzéséhez",
+    "test": "Kapcsolat tesztelése",
+    "testOk": "A BMC válaszolt. Az áramellátás állapota: {{power}}.",
+    "testNeedsLogin": "Adja meg újra a bejelentkezési adatokat a teszteléshez.",
+    "save": "Mentés",
+    "add": "Hozzáadás"
+  },
+  "view": {
+    "overview": "Áttekintés",
+    "sensors": "Érzékelők",
+    "log": "Eseménynapló",
+    "boot": "Indítás",
+    "media": "Virtuális média",
+    "console": "Konzol",
+    "refresh": "Azonnali olvasás",
+    "type": "Típus",
+    "address": "Cím",
+    "power": "Állapot",
+    "health": "Épség",
+    "manufacturer": "Gyártó",
+    "model": "Modell",
+    "serial": "Sorozatszám",
+    "bios": "BIOS",
+    "bmc": "BMC firmware",
+    "status": "BMC",
+    "viaRelay": "Útvonalítva egy átjárószerveren keresztül.",
+    "noSensors": "Ez a BMC nem jelent érzékelőket.",
+    "sensor": "Érzékelő",
+    "reading": "Érték",
+    "state": "Állapot"
+  },
+  "log": {
+    "time": "Időpont",
+    "severity": "Szint",
+    "message": "Esemény",
+    "empty": "Az eseménynapló üres.",
+    "clear": "Napló törlése",
+    "clearConfirm": "Törli a(z) {{name}} eseménynaplóját? Ez a művelet nem vonható vissza.",
+    "cleared": "A napló törölve",
+    "level": {
+      "info": "Információ",
+      "warning": "Figyelmeztetés",
+      "critical": "Kritikus"
+    }
+  },
+  "boot": {
+    "hint": "A gép egyszer ebből az eszközről indít, majd visszatér a szokásos indítási sorrendhez. Alkalmazza újraindítás előtt.",
+    "device": "Indító eszköz",
+    "mode": "Mód",
+    "uefi": "UEFI",
+    "legacy": "Legacy BIOS",
+    "apply": "Beállítás a következő indításhoz",
+    "done": "A(z) {{name}} legközelebb a kiválasztott eszközről indul",
+    "pxe": "Hálózat (PXE)",
+    "disk": "Merevlemez",
+    "cd": "CD vagy virtuális média",
+    "usb": "USB",
+    "bios": "BIOS beállítások",
+    "none": "Normál sorrend"
+  },
+  "media": {
+    "url": "Képfájl címe",
+    "empty": "Ennek a BMC-nek nincs virtuális CD-meghajtója.",
+    "mounted": "Csatolva",
+    "free": "Üres",
+    "mount": "Csatolás",
+    "eject": "Kiadás",
+    "mountedDone": "Képfájl csatolva",
+    "ejected": "Képfájl kiadva"
+  },
+  "console": {
+    "hint": "A konzolból való kilépéshez írja be a ~. karaktereket.",
+    "connecting": "Csatlakozás",
+    "ended": "A konzol bezárult.",
+    "failed": "Nem sikerült megnyitni a konzolt.",
+    "needsRelay": "A soros konzolhoz egy ipmitool-t futtató átjárószerverre van szükség. Válasszon ki egyet a BMC beállításaiban."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Indítás innen",
+    "uefi": "UEFI mód",
+    "list": {
+      "title": "BMC-k listázása"
+    },
+    "poll": {
+      "title": "BMC azonnali lekérdezése"
+    },
+    "powerState": {
+      "title": "Állapot lekérése"
+    },
+    "power-on": {
+      "title": "Bekapcsolás"
+    },
+    "graceful-shutdown": {
+      "title": "Leállítás"
+    },
+    "power-off": {
+      "title": "Kikapcsolás"
+    },
+    "power-cycle": {
+      "title": "Újraindítás áramtalanítással"
+    },
+    "reset": {
+      "title": "Visszaállítás"
+    },
+    "setBootOnce": {
+      "title": "Egyszeri indítás eszközről"
+    },
+    "clearLog": {
+      "title": "Eseménynapló törlése"
+    },
+    "health": {
+      "title": "BMC állapot"
+    }
+  },
+  "widget": {
+    "name": "Közvetlen (out-of-band)",
+    "description": "A szervereinek BMC-jeinek teljesítménye és állapota.",
+    "summary": "{{up}}/{{total}} működik"
+  }
+}

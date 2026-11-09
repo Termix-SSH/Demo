@@ -1,0 +1,234 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Installera WireGuard på dina värdar och hantera gränssnitt, klienter och konfigurationer från en flik."
+  },
+  "common": {
+    "save": "Spara",
+    "cancel": "Avbryt",
+    "back": "Tillbaka",
+    "delete": "Ta bort",
+    "loading": "Laddar..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Använd WireGuard",
+      "description": "Hantera WireGuard-gränssnitt och klienter på värdar du kan redigera."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Öppna WireGuard från en värd.",
+    "error": "Kunde inte ladda WireGuard från denna värd.",
+    "sudo": "Denna värd kräver root-inloggning eller lösenordsfritt sudo för att hantera WireGuard.",
+    "installed": "Installerad",
+    "notInstalled": "Inte installerad",
+    "refresh": "Uppdatera",
+    "viewInterfaces": "Gränssnitt",
+    "viewLogs": "Loggar"
+  },
+  "install": {
+    "title": "Installera WireGuard",
+    "desc": "Detta installerar WireGuard-verktygen och iptables med värdens pakethanterare.",
+    "confirm": "Installera",
+    "done": "WireGuard är installerat.",
+    "failed": "Kunde inte installera WireGuard.",
+    "empty": "WireGuard är inte installerat på denna värd",
+    "noManager": "Ingen stödd pakethanterare hittades. Installera WireGuard manuellt.",
+    "hint": "Installera det på {{os}} för att köra en VPN från denna värd.",
+    "thisHost": "denna värd",
+    "button": "Installera WireGuard",
+    "working": "Installerar..."
+  },
+  "interfaces": {
+    "add": "Lägg till gränssnitt",
+    "empty": "Inga gränssnitt ännu. Lägg till ett för att starta en VPN.",
+    "loadFailed": "Kunde inte ladda gränssnitten.",
+    "up": "Upp",
+    "down": "Ner",
+    "nat": "NAT",
+    "boot": "Startar vid uppstart"
+  },
+  "create": {
+    "title": "Lägg till gränssnitt",
+    "name": "Namn",
+    "address": "Adress",
+    "addressHint": "Serveradressen och undernätet. Klienter får de nästa lediga adresserna.",
+    "port": "UDP-port",
+    "nat": "Dela värdens internet (NAT)",
+    "natDesc": "Klienter kan nå internet och värdens nätverk genom denna värd.",
+    "natMissing": "NAT kräver iptables, vilket inte är installerat på denna värd.",
+    "forwarding": "Aktivera IP-forwarding",
+    "forwardingDesc": "Låter värden vidarebefordra trafik mellan klienter och nätverket. Spara för omstarter.",
+    "firewall": "Öppna porten i brandväggen",
+    "firewallDesc": "Lägger till UDP-porten i ufw eller firewalld när någon av dem körs.",
+    "start": "Starta nu och vid uppstart",
+    "startDesc": "Aktiverar gränssnittet och håller det aktivt efter en omstart.",
+    "save": "Skapa",
+    "done": "Gränssnittet är klart.",
+    "failed": "Kunde inte skapa gränssnittet."
+  },
+  "detail": {
+    "clients": "Klienter",
+    "settings": "Inställningar",
+    "config": "Konfiguration",
+    "service": "Tjänst",
+    "gone": "Detta gränssnitt finns inte längre på värdens."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Visa fliken WireGuard för denna värd i dess meny."
+      },
+      "showPanel": {
+        "label": "Visa WireGuard-panelen i terminaler",
+        "description": "Låt WireGuard-panelen öppnas bredvid SSH-terminalen för denna värd."
+      },
+      "alertDown": {
+        "label": "Varna när ett gränssnitt är nere",
+        "description": "Skicka en varning när ett gränssnitt som startar vid uppstart inte är aktivt. Kontrolleras när WireGuard-statusen läses."
+      }
+    },
+    "publicKey": "Offentlig nyckel",
+    "port": "UDP-port",
+    "endpoint": "Serverändpunkt",
+    "endpointHint": "Den offentliga adress som klienter ansluter till, t.ex. vpn.example.com:51820.",
+    "dns": "DNS för klienter",
+    "dnsHint": "Valfritt. Separera servrar med kommatecken.",
+    "allowed": "Trafik via VPN",
+    "allowedHint": "De nätverksområden som klienter skickar via VPN. 0.0.0.0/0, ::/0 skickar allt.",
+    "keepalive": "Keepalive (sekunder)",
+    "keepaliveHint": "Håller klienter bakom NAT nåbara. Använd 0 för att stänga av.",
+    "saved": "Inställningarna har sparats.",
+    "saveFailed": "Kunde inte spara inställningarna.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Öppna WireGuard-panelen med nya terminaler",
+        "description": "Visa WireGuard-panelen bredvid varje SSH-terminal som har WireGuard påslaget. Du kan fortfarande öppna och stänga den från knappen på höger kant."
+      },
+      "companionSide": {
+        "label": "Placering för WireGuard-panelen",
+        "description": "Var WireGuard-panelen placeras bredvid en terminal.",
+        "right": "Höger",
+        "left": "Vänster",
+        "bottom": "Botten"
+      },
+      "companionSize": {
+        "label": "Storlek på WireGuard-panelen",
+        "description": "Bredd i pixlar, eller höjd när den är längst ner. Du kan också dra i kanten."
+      },
+      "companionEdgeButton": {
+        "label": "Visa panelknappen",
+        "description": "Visa en liten knapp på höger kant av en terminal som öppnar WireGuard-panelen."
+      }
+    }
+  },
+  "clients": {
+    "add": "Lägg till klient",
+    "empty": "Inga klienter ännu.",
+    "loadFailed": "Kunde inte ladda klienterna.",
+    "name": "Namn",
+    "nameHint": "Bokstäver, siffror, punkter, bindestreck och understreck.",
+    "allowed": "Trafik via VPN",
+    "allowedHint": "Lämna tomt för att använda standardvärdet för gränssnittet: {{value}}",
+    "create": "Skapa klient",
+    "addFailed": "Kunde inte lägga till klienten.",
+    "needEndpoint": "Ställ in serverändpunkten i gränssnittsinställningarna först.",
+    "connected": "Ansluten",
+    "off": "Av",
+    "external": "Manuell",
+    "handshake": "handshake {{ago}} sedan",
+    "showConfig": "Visa konfiguration och QR-kod",
+    "configFailed": "Kunde inte läsa klientkonfigurationen.",
+    "rotate": "Nya nycklar",
+    "rotateTitle": "Skapa nya nycklar för {{name}}?",
+    "rotateDesc": "Den gamla konfigurationen slutar fungera. Ge klienten den nya konfigurationen därefter.",
+    "turnOff": "Stäng av",
+    "turnOn": "Slå på",
+    "saveFailed": "Kunde inte ändra klienten.",
+    "deleteTitle": "Ta bort {{name}}?",
+    "deleteDesc": "Klienten tas bort och kan inte längre ansluta.",
+    "deleteFailed": "Kunde inte ta bort klienten."
+  },
+  "clientConfig": {
+    "note": "Denna konfiguration innehåller klientens privata nyckel. Dela den endast med personen eller enheten som ska använda den.",
+    "qr": "QR-kod för klientkonfigurationen",
+    "copy": "Kopiera",
+    "copied": "Konfigurationen har kopierats.",
+    "copyFailed": "Kunde inte kopiera konfigurationen.",
+    "download": "Ladda ner .conf"
+  },
+  "config": {
+    "title": "Konfigurationsfil",
+    "hint": "Privata och förhandsdelade nycklar är dolda. Lämna platshållaren för att behålla en nyckel. Konfigurationen kontrolleras innan den sparas och en säkerhetskopia görs. Ändringar av adress kräver omstart.",
+    "loadFailed": "Kunde inte läsa konfigurationen.",
+    "saved": "Konfigurationen sparad.",
+    "saveFailed": "Kunde inte spara konfigurationen."
+  },
+  "logs": {
+    "loadFailed": "Kunde inte läsa loggarna.",
+    "lines": "{{count}} rader",
+    "empty": "Inga loggrader."
+  },
+  "service": {
+    "failed": "Tjänståtgärden misslyckades.",
+    "start": "Starta",
+    "stop": "Stoppa",
+    "restart": "Starta om",
+    "autostart": "Starta vid uppstart",
+    "autostartDesc": "Starta detta gränssnitt när värdstarten sker.",
+    "needsSystemd": "Start vid uppstart kräver systemd på denna värd.",
+    "noForward": "IP-forwarding är inaktiverat på denna värd, så klienter kan inte nå nätverket via NAT.",
+    "delete": "Ta bort gränssnitt",
+    "deleteTitle": "Ta bort {{name}}?",
+    "deleteDesc": "Gränssnittet stoppas och dess konfiguration, nycklar och sparade klientfiler tas bort från värden.",
+    "deleteFailed": "Kunde inte ta bort gränssnittet."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Aktivera WireGuard i inställningarna för denna värd för att använda detta kort.",
+    "start": "Aktivera",
+    "stop": "Inaktivera",
+    "done": "{{name}} uppdaterad"
+  },
+  "operations": {
+    "list": {
+      "title": "Lista WireGuard-gränssnitt"
+    },
+    "down": {
+      "title": "WireGuard-gränssnitt inaktiverade"
+    },
+    "start": {
+      "title": "Starta WireGuard-gränssnitt"
+    },
+    "stop": {
+      "title": "Stoppa WireGuard-gränssnitt"
+    },
+    "restart": {
+      "title": "Starta om WireGuard-gränssnitt"
+    },
+    "interfaces": {
+      "title": "WireGuard-gränssnitt",
+      "address": "Adress",
+      "port": "Port",
+      "clients": "Klienter"
+    }
+  },
+  "nav": {
+    "togglePanel": "Växla WireGuard-panel"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Kontrollerar värdar...",
+    "summary_one": "{{count}} klient på {{hosts}} värdar",
+    "summary_other": "{{count}} klienter på {{hosts}} värdar",
+    "refresh": "Kontrollera igen",
+    "empty": "Aktivera WireGuard för en värd för att se den här.",
+    "missing": "Inte installerad",
+    "down_one": "{{count}} inaktiverad",
+    "down_other": "{{count}} inaktiverade",
+    "interfaces_one": "{{count}} gränssnitt, {{clients}} klienter",
+    "interfaces_other": "{{count}} gränssnitt, {{clients}} klienter"
+  }
+}

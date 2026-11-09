@@ -1,0 +1,451 @@
+{
+  "plugin": {
+    "name": "Back-ups",
+    "description": "Maak back-ups van mappen, databases en Docker-gegevens op je hosts met restic, en doorzoek, download en herstel ze."
+  },
+  "common": {
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "back": "Terug",
+    "delete": "Verwijderen",
+    "done": "Klaar",
+    "loading": "Laden...",
+    "refresh": "Vernieuwen",
+    "retry": "Opnieuw proberen"
+  },
+  "permissions": {
+    "use": {
+      "title": "Back-ups gebruiken",
+      "description": "Stel back-uptaken en repositories in, voer back-ups uit en doorzoek, download en herstel snapshots op hosts die ze kunnen bewerken."
+    }
+  },
+  "tab": {
+    "title": "Back-ups",
+    "viewJobs": "Taken",
+    "viewRepos": "Repositories",
+    "viewHistory": "Geschiedenis"
+  },
+  "hostTab": {
+    "title": "Back-ups",
+    "noHost": "Open back-ups vanaf een host.",
+    "viewJobs": "Taken",
+    "viewSnapshots": "Snapshots",
+    "viewHistory": "Geschiedenis",
+    "restic": "restic {{version}}",
+    "noRestic": "restic niet geïnstalleerd",
+    "sudo": "Termix moet zich aanmelden als root, of als een gebruiker met wachtelloos sudo, om back-ups op deze host uit te voeren.",
+    "statusFailed": "Kon deze host niet lezen"
+  },
+  "install": {
+    "missing": "restic is niet geïnstalleerd op deze host",
+    "tooOld": "restic op deze host is ouder dan 0.17",
+    "hint": "Back-ups gebruiken restic. Installeer het via de pakketbeheerder, of vanuit de restic-release op GitHub als het pakket te oud is.",
+    "button": "restic installeren",
+    "working": "Installeren...",
+    "title": "restic installeren?",
+    "desc": "Hiermee wordt restic als root geïnstalleerd op de host.",
+    "confirm": "Installeren",
+    "done": "restic {{version}} is geïnstalleerd",
+    "failed": "restic kon niet worden geïnstalleerd"
+  },
+  "status": {
+    "never": "Nooit uitgevoerd",
+    "running": "Bezig",
+    "success": "Klaar",
+    "warning": "Waarschuwingen",
+    "failed": "Mislukt",
+    "canceled": "Gestopt"
+  },
+  "time": {
+    "justNow": "zojuist",
+    "soon": "over een moment",
+    "ago": {
+      "minutes_one": "{{count}} minuut geleden",
+      "minutes_other": "{{count}} minuten geleden",
+      "hours_one": "{{count}} uur geleden",
+      "hours_other": "{{count}} uur geleden",
+      "days_one": "{{count}} dag geleden",
+      "days_other": "{{count}} dagen geleden"
+    },
+    "in": {
+      "minutes_one": "over {{count}} minuut",
+      "minutes_other": "over {{count}} minuten",
+      "hours_one": "over {{count}} uur",
+      "hours_other": "over {{count}} uur",
+      "days_one": "over {{count}} dag",
+      "days_other": "over {{count}} dagen"
+    }
+  },
+  "jobs": {
+    "add": "Taak toevoegen",
+    "empty": "Nog geen back-uptaken",
+    "emptyHint": "Voeg een taak toe om mappen, databases of Docker-gegevens te back-uppen.",
+    "emptyNoRepo": "Voeg eerst een repository toe, zodat back-ups ergens naartoe kunnen.",
+    "loadFailed": "Kon de back-uptaken niet laden",
+    "lastGood": "Laatste back-up {{when}}",
+    "noGood": "Nog geen back-up",
+    "next": "Volgende {{when}}",
+    "paused": "Gepauzeerd",
+    "run": "Nu uitvoeren",
+    "stop": "Stoppen",
+    "edit": "Bewerken",
+    "snapshots": "Momentopnames",
+    "started": "{{name}} gestart",
+    "runFailed": "De back-up kan niet worden gestart"
+  },
+  "editor": {
+    "newTitle": "Nieuwe back-upjob",
+    "general": "Job",
+    "host": "Host",
+    "pickHost": "Kies een host",
+    "name": "Naam",
+    "namePlaceholder": "Nachtelijke back-up",
+    "repository": "Repository",
+    "pickRepository": "Kies een repository",
+    "noRepos": "Je hebt geen repository die deze host kan gebruiken. Voeg er eerst een toe in het tabblad Back-ups.",
+    "repoLocked": "Alleen de eigenaar van deze repository kan deze wijzigen.",
+    "enabled": "Uitvoeren volgens schema",
+    "enabledHint": "Schakel uit om het schema te pauzeren. 'Nu uitvoeren' werkt nog steeds.",
+    "oneFileSystem": "Blijf op één bestandssysteem",
+    "oneFileSystemHint": "Sla andere schijven en mountpunten over die zich in de geselecteerde mappen bevinden.",
+    "saved": "Job opgeslagen",
+    "saveFailed": "De job kan niet worden opgeslagen",
+    "deleteTitle": "{{name}} verwijderen?",
+    "deleteDesc": "De job wordt uit Termix verwijderd. De momentopnames blijven in de repository staan.",
+    "deleted": "Job verwijderd",
+    "deleteFailed": "De job kan niet worden verwijderd"
+  },
+  "sources": {
+    "add": "Toevoegen aan back-up",
+    "addPaths": "Mappen",
+    "addDatabase": "Database",
+    "addDocker": "Docker",
+    "remove": "Verwijderen",
+    "paths": "Mappen en bestanden",
+    "folders": "Paden",
+    "foldersHint": "Eén volledig pad per regel.",
+    "excludes": "Overslaan",
+    "excludesHint": "Eén restic-patroon per regel, zoals *.log.",
+    "database": "Database",
+    "engine": "Type",
+    "engines": {
+      "mysql": "MySQL of MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Inloggegevens",
+    "ownLogin": "Typ hier inloggegevens",
+    "noDatabasesPlugin": "Schakel de Databases-plugin in om opgeslagen inloggegevens te kiezen.",
+    "address": "Adres",
+    "addressPlaceholder": "Leeg voor de lokale socket",
+    "port": "Poort",
+    "username": "Gebruiker",
+    "password": "Wachtwoord",
+    "passwordSaved": "Opgeslagen, laat leeg om het te behouden",
+    "runAs": "Uitvoeren als",
+    "runAsHint": "Een Linux-gebruiker om de dump als uit te voeren, zoals postgres. Leeg uitvoeren als root.",
+    "databases": "Databases",
+    "databasesHint": "Eén naam per regel. Laat leeg om ze allemaal te back-uppen.",
+    "sqliteFiles": "Databasebestanden",
+    "sqliteFilesHint": "Eén volledig pad per regel. Elk bestand wordt veilig gekopieerd terwijl het in gebruik is.",
+    "docker": "Docker",
+    "stacks": "Stacks",
+    "volumes": "Volumes",
+    "noStacks": "Geen compose-stacks gevonden",
+    "noVolumes": "Geen volumes gevonden",
+    "dockerFailed": "Kan Docker niet weergeven op deze host",
+    "stop": "Stop stacks tijdens de back-up",
+    "stopHint": "De geselecteerde stacks worden eerst gestopt en daarna weer gestart, zodat hun bestanden niet veranderen terwijl ze worden gelezen."
+  },
+  "schedule": {
+    "title": "Schema",
+    "manual": "Handmatig",
+    "daily": "Dagelijks",
+    "weekly": "Wekelijks",
+    "custom": "Aangepast",
+    "day": "Dag",
+    "time": "Tijd",
+    "cron": "Cron",
+    "cronHint": "Minuut, uur, dag van de maand, maand, dag van de week.",
+    "cronInvalid": "Deze cron is ongeldig",
+    "timezone": "Tijdzone",
+    "serverTime": "Servertijd",
+    "manualHint": "Deze taak wordt alleen uitgevoerd als je op Nu uitvoeren drukt.",
+    "manualOnly": "Handmatig",
+    "next": "Volgende uitvoering {{time}}",
+    "noNext": "Dit schema wordt nooit uitgevoerd",
+    "dailyAt": "Dagelijks om {{time}}",
+    "weeklyAt": "{{day}} om {{time}}",
+    "days": {
+      "0": "Zondag",
+      "1": "Maandag",
+      "2": "Dinsdag",
+      "3": "Woensdag",
+      "4": "Donderdag",
+      "5": "Vrijdag",
+      "6": "Zaterdag"
+    }
+  },
+  "keep": {
+    "title": "Behouden",
+    "last": "Laatste",
+    "daily": "Dagelijks",
+    "weekly": "Wekelijks",
+    "monthly": "Maandelijks",
+    "yearly": "Jaarlijks",
+    "hint": "Na elke back-up worden oudere snapshots van deze taak verwijderd, zodat alleen deze worden behouden. 0 behoudt alles."
+  },
+  "hooks": {
+    "title": "Opdrachten",
+    "pre": "Vooraf",
+    "preHint": "Wordt als root uitgevoerd vóór de back-up. Als het mislukt, stopt de back-up.",
+    "post": "Nasleep",
+    "postHint": "Wordt als root uitgevoerd na de back-up, zelfs als deze mislukt is. TERMIX_BACKUP_STATUS bevat het resultaat."
+  },
+  "alerts": {
+    "title": "Waarschuwingen",
+    "onFailure": "Waarschuwen als een back-up mislukt",
+    "onFailureHint": "Waarschuwt ook bij waarschuwingen, en één keer als het weer werkt.",
+    "staleDays": "Dagen zonder back-up",
+    "staleDaysHint": "Waarschuwen als er geen back-up heeft gewerkt gedurende dit aantal dagen. 0 schakelt dit uit."
+  },
+  "repos": {
+    "add": "Repository toevoegen",
+    "empty": "Nog geen repositories",
+    "emptyHint": "Een repository is waar back-ups worden opgeslagen, zoals een S3-bucket of een map.",
+    "loadFailed": "Kon de repositories niet laden",
+    "jobCount_one": "{{count}} taak",
+    "jobCount_other": "{{count}} taken",
+    "newTitle": "Nieuwe repository",
+    "storage": "Opslag",
+    "name": "Naam",
+    "namePlaceholder": "Offsite S3",
+    "kind": "Type",
+    "kinds": {
+      "s3": "S3-compatibel",
+      "rest": "REST-server",
+      "rclone": "rclone",
+      "local": "Map op een host"
+    },
+    "endpoint": "Eindpunt",
+    "endpointHint": "Leeg voor AWS. Voor MinIO, R2, B2 of Wasabi, hun S3-adres.",
+    "region": "Regio",
+    "bucket": "Bucket",
+    "prefix": "Map in de bucket",
+    "prefixHint": "Optioneel.",
+    "accessKeyId": "Access key-id",
+    "secretKey": "Geheime access key",
+    "secretSaved": "Opgeslagen, laat leeg om deze te behouden",
+    "url": "Serveradres",
+    "username": "Gebruiker",
+    "usernameHint": "Leeg als de server geen inloggegevens vereist.",
+    "restPassword": "Wachtwoord",
+    "remote": "Naam van remote",
+    "remoteHint": "Alleen letters, cijfers en _.",
+    "path": "Pad",
+    "rcloneConfig": "rclone-configuratie",
+    "rcloneHint": "De regels van de remote uit rclone.conf. Voer rclone config uit op je computer om deze te maken. rclone moet geïnstalleerd zijn op de hosts.",
+    "rcloneSaved": "Opgeslagen, laat leeg om te behouden",
+    "host": "Host",
+    "pickHost": "Kies een host",
+    "folder": "Map",
+    "folderHint": "Alleen taken op deze host kunnen dit gebruiken. Een gemounte schijf is het beste.",
+    "password": "Versleuteling",
+    "resticPassword": "Wachtwoord voor de repository",
+    "passwordHint": "Laat leeg en Termix maakt er een sterk wachtwoord van. Bewaar een kopie op een veilige plek: zonder dit wachtwoord kunnen de back-ups niet worden gelezen.",
+    "passwordKeep": "Opgeslagen, laat leeg om het te behouden",
+    "passwordChangeHint": "Dit verandert alleen wat Termix verzendt. Het wijzigt niet het wachtwoord van een bestaande repository.",
+    "reveal": "Wachtwoord tonen",
+    "revealTitle": "Wachtwoord voor de repository tonen?",
+    "revealDesc": "Iedereen die dit wachtwoord en de opslagkeys heeft, kan alle back-ups in deze repository lezen. Dit wordt in het auditlogboek geregistreerd.",
+    "revealFailed": "Kon het wachtwoord niet lezen",
+    "copy": "Kopiëren",
+    "copied": "Gekopieerd",
+    "check": "Controleren",
+    "checkFrom": "Controleren vanaf",
+    "checkFromHint": "De host die de repository opent. Deze moet restic hebben.",
+    "checkButton": "Controleren",
+    "initButton": "Controleren en instellen",
+    "installRclone": "rclone op deze host installeren",
+    "rcloneInstalled": "rclone {{version}} is geïnstalleerd.",
+    "rcloneFailed": "rclone kon niet worden geïnstalleerd",
+    "checking": "Controleren...",
+    "opened": "De repository is correct geopend.",
+    "created": "De repository is ingesteld en klaar voor gebruik.",
+    "checkFailed": "Kan de repository niet openen",
+    "checkNext": "Opgeslagen. Controleer het vanaf een host om het in te stellen.",
+    "saved": "Repository opgeslagen",
+    "saveFailed": "Kan de repository niet opslaan",
+    "deleteTitle": "{{name}} verwijderen?",
+    "deleteDesc": "Het wordt alleen uit Termix verwijderd. De back-ups blijven in de opslag.",
+    "deleted": "Repository verwijderd",
+    "deleteFailed": "De repository kon niet worden verwijderd"
+  },
+  "snapshots": {
+    "noJobs": "Voeg eerst een back-upjob toe.",
+    "job": "Job",
+    "titleFor": "Snapshots van {{name}}",
+    "empty": "Nog geen snapshots",
+    "loadFailed": "De snapshots konden niet worden gelezen",
+    "latest": "Nieuwste",
+    "files_one": "{{count}} bestand",
+    "files_other": "{{count}} bestanden",
+    "browse": "Bladeren",
+    "delete": "Verwijderen",
+    "deleteTitle": "Deze snapshot verwijderen?",
+    "deleteDesc": "De snapshot van {{time}} wordt definitief uit de repository verwijderd.",
+    "deleted": "Snapshot verwijderd",
+    "deleteFailed": "Snapshot kon niet worden verwijderd",
+    "browseTitle": "Snapshot {{time}}",
+    "root": "Root",
+    "emptyFolder": "Deze map is leeg",
+    "filesFailed": "Deze map kon niet worden weergegeven",
+    "pick": "Selecteren",
+    "download": "Downloaden",
+    "downloadZip": "Downloaden als zip",
+    "downloadFailed": "Downloaden mislukt",
+    "restoreAll": "Alles herstellen",
+    "restorePicked_one": "{{count}} item herstellen",
+    "restorePicked_other": "{{count}} items herstellen"
+  },
+  "restore": {
+    "title": "Herstellen",
+    "what": "Wat",
+    "everything": "Alles in de snapshot.",
+    "more_one": "en {{count}} meer",
+    "more_other": "en {{count}} meer",
+    "where": "Waar",
+    "host": "Host",
+    "hostHint": "Elke host die je kunt bewerken en die toegang heeft tot de repository.",
+    "localOnly": "Deze repository is een map op de host, dus kan alleen daar worden hersteld.",
+    "toFolder": "Naar een map",
+    "toOriginal": "Op de oorspronkelijke locatie",
+    "folder": "Map",
+    "folderHint": "Bestanden behouden hun volledige pad binnen deze map.",
+    "originalWarning": "Bestanden worden teruggeschreven naar hun oorspronkelijke locatie en kunnen bestaande bestanden vervangen.",
+    "overwrite": "Bestanden die al bestaan",
+    "overwriteOptions": {
+      "if-changed": "Vervangen bij wijziging",
+      "always": "Altijd vervangen",
+      "if-newer": "Vervangen als de back-up nieuwer is",
+      "never": "Nooit vervangen"
+    },
+    "start": "Herstellen",
+    "started": "Herstel gestart",
+    "failed": "Herstel kon niet worden gestart"
+  },
+  "run": {
+    "title": "Uitvoeren",
+    "backupTitle": "Back-up van {{name}}",
+    "restoreTitle": "Herstel van {{name}}",
+    "loadFailed": "Uitvoering kon niet worden geladen",
+    "progress": "Voortgang",
+    "preparing": "Voorbereiden...",
+    "progressLine": "{{percent}}% | {{files}} van {{totalFiles}} bestanden | {{bytes}} van {{totalBytes}}",
+    "left": "{{time}} resterend",
+    "details": "Details",
+    "started": "Gestart",
+    "finished": "Voltooid",
+    "trigger": "Gestart door",
+    "triggers": {
+      "manual": "Nu uitvoeren",
+      "schedule": "Schema",
+      "operation": "Termix-actie"
+    },
+    "snapshot": "Snapshot",
+    "target": "Hersteld naar",
+    "files": "Bestanden",
+    "filesLine": "{{total}} bestanden, {{added}} nieuw, {{changed}} gewijzigd",
+    "size": "Grootte",
+    "added": "Toegevoegd aan de repository",
+    "took": "Duurde",
+    "log": "Logboek",
+    "noLog": "Nog geen logboek.",
+    "stopTitle": "Deze uitvoering stoppen?",
+    "stopDesc": "Een gestopt back-up maakt geen snapshot. Een gestopt herstel laat de tot nu toe herstelde bestanden achter.",
+    "stopSent": "Stoppen",
+    "stopFailed": "Kon de uitvoering niet stoppen"
+  },
+  "history": {
+    "empty": "Er is nog niets uitgevoerd",
+    "loadFailed": "Kon de geschiedenis niet laden",
+    "status": "Status",
+    "job": "Taak",
+    "host": "Host",
+    "kind": "Type",
+    "kinds": {
+      "backup": "Back-up",
+      "restore": "Herstel"
+    },
+    "started": "Gestart",
+    "took": "Duurde",
+    "size": "Grootte"
+  },
+  "card": {
+    "title": "Back-ups",
+    "all": "Alle back-up-taken",
+    "oneJob": "Eén back-up-taak",
+    "empty": "Nog geen back-up-taken.",
+    "gone": "Deze back-up-taak is verwijderd.",
+    "open": "Openen"
+  },
+  "operations": {
+    "list": {
+      "title": "Back-up-taken weergeven"
+    },
+    "failed": {
+      "title": "Mislukte back-ups"
+    },
+    "run": {
+      "title": "Back-up uitvoeren"
+    },
+    "cancel": {
+      "title": "Back-up stoppen"
+    },
+    "snapshots": {
+      "title": "Snapshots weergeven"
+    },
+    "events": {
+      "finished": "Back-up voltooid",
+      "failed": "Back-up mislukt"
+    },
+    "jobs": {
+      "title": "Back-up-taken",
+      "lastSuccess": "Laatste back-up",
+      "nextRun": "Volgende uitvoering",
+      "size": "Grootte"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Back-up-paneel tonen in terminals",
+        "description": "Laat het back-up-paneel open naast de SSH-terminal van deze host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Back-up-paneel openen met nieuwe terminals",
+        "description": "Toon het back-up-paneel naast elke SSH-terminal waar dit is ingeschakeld. Je kunt het paneel nog steeds openen en sluiten via de knop aan de rechterkant."
+      },
+      "companionSide": {
+        "label": "Positie back-up-paneel",
+        "description": "Waar het back-up-paneel naast een terminal staat.",
+        "right": "Rechts",
+        "left": "Links",
+        "bottom": "Onder"
+      },
+      "companionSize": {
+        "label": "Grootte back-up-paneel",
+        "description": "Breedte in pixels, of hoogte wanneer het onderaan staat. Je kunt ook de rand verslepen."
+      },
+      "companionEdgeButton": {
+        "label": "Paneelknop tonen",
+        "description": "Toon een kleine knop aan de rechterkant van een terminal die het back-up-paneel opent."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Back-up-paneel in-/uitschakelen"
+  }
+}

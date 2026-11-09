@@ -818,7 +818,7 @@ export function CollabRoomTab({
                   isVisible={isVisible}
                 />
               ) : (
-                <CenteredNote text={t("collab.stageLoading")} />
+                <LoadingState label={t("collab.stageLoading")} />
               )}
             </>
           ) : iAmPresenter && !draft ? (

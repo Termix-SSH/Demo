@@ -484,6 +484,9 @@ export function AdminUserManagePanel({
                         {roleLabel(t, ur.roleDisplayName)}
                         {!isSystem && (
                           <button
+                            type="button"
+                            title={t("common.remove")}
+                            aria-label={t("common.remove")}
                             onClick={async () => {
                               try {
                                 await removeRoleFromUser(user.id, ur.roleId);
@@ -593,6 +596,8 @@ export function AdminUserManagePanel({
                       variant="ghost"
                       size="icon"
                       className="size-6 text-muted-foreground hover:text-destructive shrink-0"
+                      title={t("admin.revokeKey")}
+                      aria-label={t("admin.revokeKey")}
                       onClick={async () => {
                         try {
                           await deleteApiKey(key.id);
@@ -649,6 +654,8 @@ export function AdminUserManagePanel({
                     size="icon"
                     className="size-6 text-muted-foreground hover:text-foreground"
                     onClick={reloadHosts}
+                    title={t("common.refresh")}
+                    aria-label={t("common.refresh")}
                   >
                     <RefreshCw className="size-3" />
                   </Button>
@@ -701,6 +708,8 @@ export function AdminUserManagePanel({
                       variant="ghost"
                       size="icon"
                       className="size-6 text-muted-foreground hover:text-foreground"
+                      title={t("common.edit")}
+                      aria-label={t("common.edit")}
                       onClick={() => {
                         setEditorProtocols(hostProtocolFlags(host));
                         setEditor({ kind: "host", host });
@@ -712,6 +721,8 @@ export function AdminUserManagePanel({
                       variant="ghost"
                       size="icon"
                       className="size-6 text-muted-foreground hover:text-destructive"
+                      title={t("common.delete")}
+                      aria-label={t("common.delete")}
                       onClick={() =>
                         setConfirmDialog({
                           message: t("admin.deleteHostConfirm", {
@@ -760,6 +771,8 @@ export function AdminUserManagePanel({
                     size="icon"
                     className="size-6 text-muted-foreground hover:text-foreground"
                     onClick={reloadCredentials}
+                    title={t("common.refresh")}
+                    aria-label={t("common.refresh")}
                   >
                     <RefreshCw className="size-3" />
                   </Button>
@@ -803,6 +816,8 @@ export function AdminUserManagePanel({
                       variant="ghost"
                       size="icon"
                       className="size-6 text-muted-foreground hover:text-foreground"
+                      title={t("common.edit")}
+                      aria-label={t("common.edit")}
                       onClick={() => {
                         setEditor({ kind: "credential", credential: cred });
                       }}
@@ -813,6 +828,8 @@ export function AdminUserManagePanel({
                       variant="ghost"
                       size="icon"
                       className="size-6 text-muted-foreground hover:text-destructive"
+                      title={t("common.delete")}
+                      aria-label={t("common.delete")}
                       onClick={() =>
                         setConfirmDialog({
                           message: t("admin.deleteCredentialConfirm", {
@@ -870,6 +887,8 @@ export function AdminUserManagePanel({
                   size="icon"
                   className="size-6 text-muted-foreground hover:text-foreground"
                   onClick={reloadSessions}
+                  title={t("common.refresh")}
+                  aria-label={t("common.refresh")}
                 >
                   <RefreshCw className="size-3" />
                 </Button>
@@ -915,6 +934,8 @@ export function AdminUserManagePanel({
                   variant="ghost"
                   size="icon"
                   className="size-6 text-muted-foreground hover:text-destructive shrink-0"
+                  title={t("admin.revokeSession")}
+                  aria-label={t("admin.revokeSession")}
                   onClick={async () => {
                     try {
                       await revokeSession(session.id);

@@ -1,0 +1,235 @@
+{
+  "plugin": {
+    "name": "Sertifikate",
+    "description": "Beskou, stel uit en hernu TLS-sertifikate op jou gasheerbedieners met certbot en acme.sh, en kry 'n waarskuwing voordat hulle verval."
+  },
+  "common": {
+    "cancel": "Kanselleer",
+    "back": "Terug"
+  },
+  "permissions": {
+    "use": {
+      "title": "Gebruik sertifikate",
+      "description": "Beskou sertifikate op gasheerbedieners wat jy kan bereik, en verander hulle op gasheerbedieners wat jy kan redigeer."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Sertifikate",
+        "description": "Bestuur TLS-sertifikate op hierdie gasheerbediener vanaf die Sertifikate-oortjie."
+      },
+      "useSudo": {
+        "label": "Gebruik sudo",
+        "description": "Gebruik sudo om sertifikate te lees en te verander. Skakel dit af as die aanmelding root is."
+      },
+      "readOnly": {
+        "label": "Slegs-lees",
+        "description": "Wys sertifikate, maar verander hulle nooit op hierdie gasheer nie."
+      },
+      "expiryWarnDays": {
+        "label": "Waarsku voor verval",
+        "description": "Sertifikate met hierdie aantal dae of minder oor, word as vervalldend gewys en stuur 'n waarskuwing."
+      },
+      "showPanel": {
+        "label": "Wys sertifikate-paneel in terminale",
+        "description": "Laat die sertifikate-paneel oopmaak langs hierdie gasheer se SSH-terminal."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Maak die sertifikate-paneel oop met nuwe terminale",
+        "description": "Wys die sertifikate-paneel langs elke SSH-terminal wat Sertifikate aangeskakel het. Jy kan dit steeds oopmaak en sluit vanaf die knoppie aan die regterkant."
+      },
+      "companionSide": {
+        "label": "Sertifikate-paneel se kant",
+        "description": "Waar die sertifikate-paneel langs 'n terminal sit.",
+        "right": "Reg",
+        "left": "Links",
+        "bottom": "Onder"
+      },
+      "companionSize": {
+        "label": "Grootte van sertifikatepaneel",
+        "description": "Wydte in pixels, of hoogte wanneer dit onder is. Jy kan ook die rand sleep."
+      },
+      "companionEdgeButton": {
+        "label": "Wys die paneelknoppie",
+        "description": "Wys 'n klein knoppie aan die regterrand van 'n terminaal wat die sertifikatepaneel oopmaak."
+      }
+    }
+  },
+  "tab": {
+    "title": "Sertifikate",
+    "noHost": "Maak sertifikate vanaf 'n gasheer oop.",
+    "error": "Kon nie sertifikate van hierdie gasheer laai nie.",
+    "disabled": "Sertifikate is vir hierdie gasheer afgeskakel. Skakel dit aan in die gasheerinstellings.",
+    "sudo": "Veranderinge vereis 'n root-aanmelding, wagwoordlose sudo of 'n gestoorde Sudo-wagwoord op hierdie gasheer.",
+    "refresh": "Verfris",
+    "readOnly": "Slegs lees",
+    "noClient": "Geen certbot of acme.sh nie",
+    "viewCertificates": "Sertifikate",
+    "viewInspect": "Inspekteer",
+    "viewRenewal": "Verlenging"
+  },
+  "actions": {
+    "working": "Besig. Dit kan 'n paar minute duur.",
+    "ok": "Klaar",
+    "failed": "Die opdrag het misluk.",
+    "noOutput": "Geen uitvoer nie."
+  },
+  "install": {
+    "title": "certbot en acme.sh is nie op hierdie gasheer geïnstalleer nie",
+    "hint": "Installeer certbot om sertifikate van Let's Encrypt te kry en te vernuwe.",
+    "noManager": "Geen ondersteunde pakkethandhawer is gevind nie. Installeer certbot met die hand.",
+    "button": "Installeer certbot",
+    "confirm": "Installeer certbot?",
+    "desc": "Dit installeer certbot met die gasheer se pakkethandhawer.",
+    "working": "Besig om te installeer...",
+    "done": "certbot is geïnstalleer."
+  },
+  "certs": {
+    "search": "Soek sertifikate",
+    "empty": "Nog geen sertifikate nie.",
+    "noMatch": "Geen sertifikate pas by nie.",
+    "loadFailed": "Kon nie die sertifikate lees nie.",
+    "expires": "Verval op {{date}}",
+    "staging": "Toetsomgewing",
+    "details": "Sertifikaat",
+    "manage": "Bestuur",
+    "client": "Kliënt",
+    "path": "Lêer",
+    "authority": "Oorheid",
+    "renew": "Verleng",
+    "renewDone": "{{name}} is verleng.",
+    "renewAll": "Verleng alles",
+    "renewAllDone": "Die sertifikate wat vervaldatum bereik het, is verleng.",
+    "forceRenew": "Verleng nou tog",
+    "dryRun": "Droë loop",
+    "dryRunDone": "Die droë loop het gewerk.",
+    "revoke": "Intrek",
+    "revokeTitle": "Intrek {{name}}?",
+    "revokeDesc": "Die owerheid merk dit as ongeldig en dit word van hierdie gasheer verwyder. Enige dinge wat dit nog gebruik, hou op om te werk.",
+    "revokeDone": "{{name}} is herroep.",
+    "delete": "Stop bestuur",
+    "deleteTitle": "Stop bestuur van {{name}}?",
+    "deleteDesc": "Dit bly geldig, maar sal nie meer vernuwe nie. certbot verwyder ook sy lêers, acme.sh hou hulle.",
+    "deleteDone": "{{name}} word nie meer bestuur nie."
+  },
+  "expiry": {
+    "expired": "Vervalle",
+    "unknown": "Onbekend",
+    "days_one": "{{count}} dag oor",
+    "days_other": "{{count}} dae oor"
+  },
+  "issue": {
+    "add": "Stel sertifikaat uit",
+    "title": "Nuwe sertifikaat",
+    "save": "Uitreik",
+    "done": "Die sertifikaat is uitgereik.",
+    "working": "Vra die owerheid. Dit kan 'n paar minute neem.",
+    "client": "Kliënt",
+    "domains": "Domeine",
+    "domainsPlaceholder": "Tik 'n domein en druk Enter",
+    "domainsHint": "Die eerste een naam die sertifikaat.",
+    "challenge": "Uitdaging",
+    "standalone": "Standaal",
+    "standaloneHint": "Voer 'n klein webbediener op poort 80 uit, dus mag niks anders daardie poort gebruik nie.",
+    "webroot": "Webwortel",
+    "webrootHint": "Plaas 'n lêer in jou webbediener se gids. Die webbediener bly loop.",
+    "dns": "DNS",
+    "dnsHint": "Voeg 'n DNS-inskrywing by deur jou verskaffer se API. Benodig vir wildkaarte.",
+    "webrootPath": "Webwortelgids",
+    "webrootPathHint": "Moet binne /var/www, /srv of /usr/share/nginx wees.",
+    "dnsProvider": "DNS-verskaffer",
+    "dnsProviderCertbot": "Die naam van 'n geïnstalleerde certbot DNS-plug-in, soos cloudflare.",
+    "dnsProviderAcme": "'n acme.sh DNS-naam sonder dns_, soos cf. Sy API-teken moet reeds op die gasheer gestel wees.",
+    "credentials": "Aanmeldingslêer",
+    "credentialsHint": "Die lêer op die gasheer met jou API-teken. Dit word nooit deur Termix gelees nie.",
+    "email": "E-pos",
+    "emailHint": "Opsioneel. Die owerheid gebruik dit vir kennisgewings oor verval.",
+    "keyType": "Sleutel tipe",
+    "staging": "Gebruik die toetsbediener",
+    "stagingHint": "Vir toetsdoeleindes. Die sertifikaat word nie vertrou nie, en tempo-beperkings is baie hoër."
+  },
+  "inspect": {
+    "server": "Bediener",
+    "file": "Lêer",
+    "address": "Adres",
+    "addressPlaceholder": "example.com",
+    "port": "Poort",
+    "path": "Lêerpad",
+    "check": "Kontroleer",
+    "hint": "Kontroleer wat 'n bediener oor TLS stuur, soos gesien vanaf hierdie gasheer, of lees 'n sertifikaatlêer daarop.",
+    "failed": "Kon nie die sertifikaat lees nie.",
+    "noOpenssl": "openssl is nie op hierdie gasheer geïnstalleer nie.",
+    "trusted": "Vertrou",
+    "notTrusted": "Nie vertrou nie",
+    "leaf": "Sertifikaat",
+    "intermediate": "Ketting {{index}}",
+    "selfSigned": "Selfonderteken",
+    "name": "Naam",
+    "issuer": "Uitreiker",
+    "domains": "Domeine",
+    "validFrom": "Geldig vanaf",
+    "validTo": "Geldig tot",
+    "keyType": "Sleutel",
+    "serial": "Seriële nommer",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Hoe hierdie gasheer sy sertifikate self vernuwe. Verander dit op die gasheer.",
+    "on": "Aan",
+    "off": "Af",
+    "timer": "systemd-timer",
+    "next": "Volgende uitvoering {{time}}",
+    "cron": "Cron-lêer /etc/cron.d/certbot",
+    "certbotOff": "Geen timer of cron-taak is gevind nie, dus sal sertifikate nie outomaties vernuwe nie.",
+    "acmeCron": "Cron-taak in die crontab",
+    "acmeOff": "Geen cron-taak is gevind nie, dus sal sertifikate nie outomaties vernuwe nie."
+  },
+  "watch": {
+    "start": "Stuur my 'n waarskuwing voordat sertifikate op hierdie gasheer verval",
+    "stop": "Stop waarskuwings vir hierdie gasheer",
+    "on": "Jy sal 'n waarskuwing kry voordat sertifikate hier verval.",
+    "off": "Waarskuwings vir hierdie gasheer is af.",
+    "failed": "Kon nie die waarskuwing verander nie."
+  },
+  "card": {
+    "title": "Sertifikate",
+    "loading": "Gasheer word nagegaan...",
+    "summary_one": "{{count}} sertifikaat, {{expiring}} verval",
+    "summary_other": "{{count}} sertifikate, {{expiring}} verval",
+    "refresh": "Kontroleer weer",
+    "empty": "Skakel Sertifikate aan vir 'n gasheer om sy sertifikate hier te sien."
+  },
+  "manager": {
+    "title": "Sertifikate",
+    "disabled": "Skakel Sertifikate aan vir hierdie gasheer in sy instellings om hulle hier te sien."
+  },
+  "operations": {
+    "list": {
+      "title": "Lys sertifikate"
+    },
+    "expiring": {
+      "title": "Sertifikate wat verval"
+    },
+    "renew": {
+      "title": "Vernuwe sertifikaat"
+    },
+    "renewAll": {
+      "title": "Vernuwe alle sertifikate"
+    },
+    "revoke": {
+      "title": "Herroep sertifikaat"
+    },
+    "certificates": {
+      "title": "Sertifikate",
+      "client": "Kliënt",
+      "domains": "Domeine",
+      "daysLeft": "Dae oor"
+    }
+  },
+  "nav": {
+    "togglePanel": "Wissel sertifikate-paneel"
+  }
+}

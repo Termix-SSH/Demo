@@ -1,0 +1,441 @@
+{
+  "plugin": {
+    "name": "バックアップ",
+    "description": "restic を使用してホスト上のフォルダ、データベース、Docker データをバックアップし、スナップショットの閲覧、ダウンロード、復元を行います。"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "back": "戻る",
+    "delete": "削除",
+    "done": "完了",
+    "loading": "読み込み中...",
+    "refresh": "更新",
+    "retry": "再試行"
+  },
+  "permissions": {
+    "use": {
+      "title": "バックアップの使用",
+      "description": "編集可能なホストでバックアップジョブとリポジトリを設定し、バックアップを実行してスナップショットの閲覧、ダウンロード、復元を行います。"
+    }
+  },
+  "tab": {
+    "title": "バックアップ",
+    "viewJobs": "ジョブ",
+    "viewRepos": "リポジトリ",
+    "viewHistory": "履歴"
+  },
+  "hostTab": {
+    "title": "バックアップ",
+    "noHost": "ホストからバックアップを開きます。",
+    "viewJobs": "ジョブ",
+    "viewSnapshots": "スナップショット",
+    "viewHistory": "履歴",
+    "restic": "restic {{version}}",
+    "noRestic": "restic がインストールされていません",
+    "sudo": "このホストでバックアップを実行するには、Termix が root として、またはパスワードなしで sudo できるユーザーとしてログインする必要があります。",
+    "statusFailed": "このホストを読み取れませんでした"
+  },
+  "install": {
+    "missing": "このホストには restic がインストールされていません",
+    "tooOld": "このホストの restic は 0.17 より前のバージョンです",
+    "hint": "バックアップには restic を使用します。パッケージマネージャーでインストールするか、パッケージが古すぎる場合は GitHub の restic リリースからインストールしてください。",
+    "button": "restic をインストール",
+    "working": "インストール中...",
+    "title": "restic をインストールしますか？",
+    "desc": "これにより、ホストに root として restic がインストールされます。",
+    "confirm": "インストール",
+    "done": "restic {{version}} がインストールされました",
+    "failed": "restic のインストールに失敗しました"
+  },
+  "status": {
+    "never": "まだ実行されていません",
+    "running": "実行中",
+    "success": "完了",
+    "warning": "警告あり",
+    "failed": "失敗",
+    "canceled": "停止済み"
+  },
+  "time": {
+    "justNow": "たった今",
+    "soon": "まもなく",
+    "ago": {
+      "minutes_other": "{{count}}分前",
+      "hours_other": "{{count}}時間前",
+      "days_other": "{{count}}日前"
+    },
+    "in": {
+      "minutes_other": "{{count}}分後",
+      "hours_other": "{{count}}時間後",
+      "days_other": "{{count}}日後"
+    }
+  },
+  "jobs": {
+    "add": "ジョブを追加",
+    "empty": "バックアップジョブがありません",
+    "emptyHint": "フォルダ、データベース、または Docker データをバックアップするジョブを追加してください。",
+    "emptyNoRepo": "まずリポジトリを追加して、バックアップの保存先を指定してください。",
+    "loadFailed": "バックアップジョブを読み込めませんでした",
+    "lastGood": "最終バックアップ: {{when}}",
+    "noGood": "まだバックアップされていません",
+    "next": "次回: {{when}}",
+    "paused": "一時停止中",
+    "run": "今すぐ実行",
+    "stop": "停止",
+    "edit": "編集",
+    "snapshots": "スナップショット",
+    "started": "{{name}} が開始されました",
+    "runFailed": "バックアップを開始できませんでした"
+  },
+  "editor": {
+    "newTitle": "新しいバックアップジョブ",
+    "general": "ジョブ",
+    "host": "ホスト",
+    "pickHost": "ホストを選択",
+    "name": "名前",
+    "namePlaceholder": "毎晩のバックアップ",
+    "repository": "リポジトリ",
+    "pickRepository": "リポジトリを選択",
+    "noRepos": "このホストで使用できるリポジトリがありません。まず「バックアップ」タブでリポジトリを追加してください。",
+    "repoLocked": "このリポジトリの所有者のみが変更できます。",
+    "enabled": "スケジュール実行",
+    "enabledHint": "オフにするとスケジュールが一時停止されます。「今すぐ実行」は引き続き使用できます。",
+    "oneFileSystem": "1つのファイルシステム内に留まる",
+    "oneFileSystemHint": "選択したフォルダ内にある他のディスクやマウントをスキップします。",
+    "saved": "ジョブが保存されました",
+    "saveFailed": "ジョブを保存できませんでした",
+    "deleteTitle": "{{name}} を削除しますか？",
+    "deleteDesc": "ジョブは Termix から削除されます。スナップショットはリポジトリに残ります。",
+    "deleted": "ジョブが削除されました",
+    "deleteFailed": "ジョブを削除できませんでした"
+  },
+  "sources": {
+    "add": "バックアップに追加",
+    "addPaths": "フォルダ",
+    "addDatabase": "データベース",
+    "addDocker": "Docker",
+    "remove": "削除",
+    "paths": "フォルダとファイル",
+    "folders": "パス",
+    "foldersHint": "1行に1つの完全パスを入力します。",
+    "excludes": "除外",
+    "excludesHint": "1行に1つの restic パターン（例：*.log）を入力します。",
+    "database": "データベース",
+    "engine": "種類",
+    "engines": {
+      "mysql": "MySQL または MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "ログイン",
+    "ownLogin": "ここにログイン情報を入力",
+    "noDatabasesPlugin": "保存されたログインを選択するには、Databases プラグインを有効にしてください。",
+    "address": "アドレス",
+    "addressPlaceholder": "ローカルソケットの場合は空欄",
+    "port": "ポート",
+    "username": "ユーザー",
+    "password": "パスワード",
+    "passwordSaved": "保存済み。変更しない場合は空欄のままにしてください",
+    "runAs": "実行ユーザー",
+    "runAsHint": "ダンプを実行する Linux ユーザー（例：postgres）。空欄の場合は root で実行されます。",
+    "databases": "データベース",
+    "databasesHint": "1行に1つの名前を入力します。すべてをバックアップする場合は空欄にしてください。",
+    "sqliteFiles": "データベースファイル",
+    "sqliteFilesHint": "1行に1つの完全パスを入力します。使用中でも安全にコピーされます。",
+    "docker": "Docker",
+    "stacks": "スタック",
+    "volumes": "ボリューム",
+    "noStacks": "Compose スタックが見つかりません",
+    "noVolumes": "ボリュームが見つかりません",
+    "dockerFailed": "このホストの Docker リストを取得できませんでした",
+    "stop": "バックアップ中にスタックを停止する",
+    "stopHint": "選択されたスタックは最初に停止され、読み取り後に再起動されます。これにより、ファイルの読み取り中に内容が変更されるのを防ぎます。"
+  },
+  "schedule": {
+    "title": "スケジュール",
+    "manual": "手動",
+    "daily": "毎日",
+    "weekly": "毎週",
+    "custom": "カスタム",
+    "day": "曜日",
+    "time": "時刻",
+    "cron": "Cron",
+    "cronHint": "分、時、月の日、月、曜日。",
+    "cronInvalid": "この cron 式は無効です",
+    "timezone": "タイムゾーン",
+    "serverTime": "サーバー時刻",
+    "manualHint": "このジョブは「今すぐ実行」を押したときのみ実行されます。",
+    "manualOnly": "手動",
+    "next": "次回実行: {{time}}",
+    "noNext": "このスケジュールは実行されません",
+    "dailyAt": "毎日 {{time}} に",
+    "weeklyAt": "{{day}} の {{time}} に",
+    "days": {
+      "0": "日曜日",
+      "1": "月曜日",
+      "2": "火曜日",
+      "3": "水曜日",
+      "4": "木曜日",
+      "5": "金曜日",
+      "6": "土曜日"
+    }
+  },
+  "keep": {
+    "title": "保持",
+    "last": "最新",
+    "daily": "毎日",
+    "weekly": "毎週",
+    "monthly": "毎月",
+    "yearly": "毎年",
+    "hint": "バックアップのたびに、このジョブの古いスナップショットは削除され、指定された数のみ保持されます。0 に設定するとすべて保持されます。"
+  },
+  "hooks": {
+    "title": "コマンド",
+    "pre": "実行前",
+    "preHint": "バックアップ前に root 権限で実行されます。失敗するとバックアップは中止されます。",
+    "post": "実行後",
+    "postHint": "バックアップ後に root 権限で実行されます。失敗した場合でも実行されます。TERMIX_BACKUP_STATUS に結果が格納されます。"
+  },
+  "alerts": {
+    "title": "アラート",
+    "onFailure": "バックアップ失敗時にアラート",
+    "onFailureHint": "警告時にもアラートを送信し、正常に戻った際にも1回アラートを送信します。",
+    "staleDays": "バックアップなしの日数",
+    "staleDaysHint": "バックアップが成功しなかった日数がこの数を超えた場合にアラートを送信します。0 に設定すると無効になります。"
+  },
+  "repos": {
+    "add": "リポジトリを追加",
+    "empty": "リポジトリはまだありません",
+    "emptyHint": "リポジトリは、S3 バケットやフォルダなど、バックアップが保存される場所です。",
+    "loadFailed": "リポジトリを読み込めませんでした",
+    "jobCount_other": "{{count}} 件のジョブ",
+    "newTitle": "新しいリポジトリ",
+    "storage": "ストレージ",
+    "name": "名前",
+    "namePlaceholder": "オフサイト S3",
+    "kind": "種類",
+    "kinds": {
+      "s3": "S3 互換",
+      "rest": "REST サーバー",
+      "rclone": "rclone",
+      "local": "ホスト上のフォルダ"
+    },
+    "endpoint": "エンドポイント",
+    "endpointHint": "AWS の場合は空のままにします。MinIO、R2、B2、Wasabi の場合は、それぞれの S3 アドレスを入力します。",
+    "region": "リージョン",
+    "bucket": "バケット",
+    "prefix": "バケット内のフォルダ",
+    "prefixHint": "任意です。",
+    "accessKeyId": "アクセスキーID",
+    "secretKey": "シークレットアクセスキー",
+    "secretSaved": "保存済み。そのままにする場合は空欄のままにしてください。",
+    "url": "サーバーアドレス",
+    "username": "ユーザー",
+    "usernameHint": "サーバーにログインがない場合は空欄にしてください。",
+    "restPassword": "パスワード",
+    "remote": "リモート名",
+    "remoteHint": "英数字と _ のみ使用可能です。",
+    "path": "パス",
+    "rcloneConfig": "rclone 設定",
+    "rcloneHint": "rclone.conf のリモート設定の行を入力します。コンピューターで rclone config を実行して作成してください。ホストには rclone がインストールされている必要があります。",
+    "rcloneSaved": "保存済み。そのままにする場合は空欄のままにしてください。",
+    "host": "ホスト",
+    "pickHost": "ホストを選択",
+    "folder": "フォルダ",
+    "folderHint": "このホスト上のジョブのみが使用できます。マウントされたディスクが最適です。",
+    "password": "暗号化",
+    "resticPassword": "リポジトリのパスワード",
+    "passwordHint": "空欄にすると、Termix が強力なパスワードを生成します。安全な場所にコピーを保管してください。このパスワードがないと、バックアップを読み取ることができません。",
+    "passwordKeep": "保存済み。そのままにする場合は空欄のままにしてください。",
+    "passwordChangeHint": "これは Termix が送信するパスワードのみを変更します。既存のリポジトリのパスワードは変更されません。",
+    "reveal": "パスワードを表示",
+    "revealTitle": "リポジトリのパスワードを表示しますか？",
+    "revealDesc": "このパスワードとストレージのキーを持っている人は、このリポジトリ内のすべてのバックアップを読み取ることができます。この操作は監査ログに記録されます。",
+    "revealFailed": "パスワードを読み取れませんでした",
+    "copy": "コピー",
+    "copied": "コピーしました",
+    "check": "確認",
+    "checkFrom": "確認元",
+    "checkFromHint": "リポジトリを開くホストです。restic が必要です。",
+    "checkButton": "確認",
+    "initButton": "確認して設定",
+    "installRclone": "このホストに rclone をインストール",
+    "rcloneInstalled": "rclone {{version}} がインストールされています。",
+    "rcloneFailed": "rclone のインストールに失敗しました",
+    "checking": "確認中...",
+    "opened": "リポジトリは正常に開かれました。",
+    "created": "リポジトリが設定され、準備が整いました。",
+    "checkFailed": "リポジトリを開けませんでした",
+    "checkNext": "保存しました。ホストから確認して設定してください。",
+    "saved": "リポジトリが保存されました",
+    "saveFailed": "リポジトリを保存できませんでした",
+    "deleteTitle": "{{name}} を削除しますか？",
+    "deleteDesc": "Termix からのみ削除されます。バックアップはストレージに残ります。",
+    "deleted": "リポジトリが削除されました",
+    "deleteFailed": "リポジトリを削除できませんでした"
+  },
+  "snapshots": {
+    "noJobs": "まずバックアップジョブを追加してください。",
+    "job": "ジョブ",
+    "titleFor": "{{name}} のスナップショット",
+    "empty": "まだスナップショットがありません",
+    "loadFailed": "スナップショットを読み取れませんでした",
+    "latest": "最新",
+    "files_other": "{{count}} ファイル",
+    "browse": "参照",
+    "delete": "削除",
+    "deleteTitle": "このスナップショットを削除しますか？",
+    "deleteDesc": "{{time}} のスナップショットはリポジトリから完全に削除されます。",
+    "deleted": "スナップショットが削除されました",
+    "deleteFailed": "スナップショットの削除に失敗しました",
+    "browseTitle": "スナップショット {{time}}",
+    "root": "ルート",
+    "emptyFolder": "このフォルダは空です",
+    "filesFailed": "このフォルダのリストを取得できませんでした",
+    "pick": "選択",
+    "download": "ダウンロード",
+    "downloadZip": "zip としてダウンロード",
+    "downloadFailed": "ダウンロードに失敗しました",
+    "restoreAll": "すべて復元",
+    "restorePicked_other": "{{count}} 個のアイテムを復元"
+  },
+  "restore": {
+    "title": "復元",
+    "what": "対象",
+    "everything": "スナップショット内のすべて。",
+    "more_other": "他 {{count}} 個",
+    "where": "復元先",
+    "host": "ホスト",
+    "hostHint": "リポジトリにアクセスできる、編集可能な任意のホスト。",
+    "localOnly": "このリポジトリはホスト上のフォルダであるため、そのホストでのみ復元できます。",
+    "toFolder": "フォルダに",
+    "toOriginal": "元の場所へ",
+    "folder": "フォルダ",
+    "folderHint": "ファイルはこのフォルダ内のフルパスを保持します。",
+    "originalWarning": "ファイルは元の場所に戻され、現在のファイルと置き換えられる可能性があります。",
+    "overwrite": "既存のファイル",
+    "overwriteOptions": {
+      "if-changed": "変更があった場合に上書き",
+      "always": "常に上書き",
+      "if-newer": "バックアップが新しい場合に上書き",
+      "never": "上書きしない"
+    },
+    "start": "復元",
+    "started": "復元が開始されました",
+    "failed": "復元の開始に失敗しました"
+  },
+  "run": {
+    "title": "実行",
+    "backupTitle": "{{name}} のバックアップ",
+    "restoreTitle": "{{name}} の復元",
+    "loadFailed": "実行の読み込みに失敗しました",
+    "progress": "進捗状況",
+    "preparing": "準備中...",
+    "progressLine": "{{percent}}% | {{totalFiles}} ファイル中 {{files}} | {{totalBytes}} 中 {{bytes}}",
+    "left": "残り {{time}}",
+    "details": "詳細",
+    "started": "開始",
+    "finished": "完了",
+    "trigger": "開始元",
+    "triggers": {
+      "manual": "今すぐ実行",
+      "schedule": "スケジュール",
+      "operation": "Termix アクション"
+    },
+    "snapshot": "スナップショット",
+    "target": "復元先",
+    "files": "ファイル",
+    "filesLine": "{{total}} ファイル、{{added}} 新規、{{changed}} 変更",
+    "size": "サイズ",
+    "added": "リポジトリに追加",
+    "took": "所要時間",
+    "log": "ログ",
+    "noLog": "ログはまだありません。",
+    "stopTitle": "この実行を停止しますか？",
+    "stopDesc": "停止したバックアップはスナップショットを保存しません。停止した復元は、これまでに復元されたファイルのままになります。",
+    "stopSent": "停止中",
+    "stopFailed": "実行を停止できませんでした"
+  },
+  "history": {
+    "empty": "まだ何も実行されていません",
+    "loadFailed": "履歴を読み込めませんでした",
+    "status": "ステータス",
+    "job": "ジョブ",
+    "host": "ホスト",
+    "kind": "種類",
+    "kinds": {
+      "backup": "バックアップ",
+      "restore": "復元"
+    },
+    "started": "開始時刻",
+    "took": "所要時間",
+    "size": "サイズ"
+  },
+  "card": {
+    "title": "バックアップ",
+    "all": "すべてのバックアップジョブ",
+    "oneJob": "バックアップジョブ 1 件",
+    "empty": "バックアップジョブはまだありません。",
+    "gone": "このバックアップジョブは削除されました。",
+    "open": "開く"
+  },
+  "operations": {
+    "list": {
+      "title": "バックアップジョブの一覧"
+    },
+    "failed": {
+      "title": "失敗したバックアップ"
+    },
+    "run": {
+      "title": "バックアップを実行"
+    },
+    "cancel": {
+      "title": "バックアップを停止"
+    },
+    "snapshots": {
+      "title": "スナップショットの一覧"
+    },
+    "events": {
+      "finished": "バックアップが完了しました",
+      "failed": "バックアップに失敗しました"
+    },
+    "jobs": {
+      "title": "バックアップジョブ",
+      "lastSuccess": "最後のバックアップ",
+      "nextRun": "次回の実行",
+      "size": "サイズ"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "ターミナルでバックアップパネルを表示する",
+        "description": "このホストの SSH ターミナルの横にバックアップパネルを開きます。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "新しいターミナルでバックアップパネルを開く",
+        "description": "有効になっているすべての SSH ターミナルの横にバックアップパネルを表示します。右端のボタンから開閉することもできます。"
+      },
+      "companionSide": {
+        "label": "バックアップパネルの位置",
+        "description": "ターミナルの横にバックアップパネルを表示する位置です。",
+        "right": "右",
+        "left": "左",
+        "bottom": "下"
+      },
+      "companionSize": {
+        "label": "バックアップパネルのサイズ",
+        "description": "ピクセル単位の幅、または下部にある場合は高さです。端をドラッグして調整することもできます。"
+      },
+      "companionEdgeButton": {
+        "label": "パネルボタンを表示する",
+        "description": "ターミナルの右端に、バックアップパネルを開く小さなボタンを表示します。"
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "バックアップパネルの表示/非表示を切り替え"
+  }
+}

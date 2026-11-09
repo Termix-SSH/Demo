@@ -1,0 +1,232 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "在您的主机上安装 WireGuard，并从单个标签页管理接口、客户端和配置。"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "back": "返回",
+    "delete": "删除",
+    "loading": "加载中..."
+  },
+  "permissions": {
+    "use": {
+      "title": "使用 WireGuard",
+      "description": "管理您有编辑权限的主机上的 WireGuard 接口和客户端。"
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "从主机打开 WireGuard。",
+    "error": "无法从此主机加载 WireGuard。",
+    "sudo": "此主机需要 root 登录或无需密码的 sudo 权限才能管理 WireGuard。",
+    "installed": "已安装",
+    "notInstalled": "未安装",
+    "refresh": "刷新",
+    "viewInterfaces": "接口",
+    "viewLogs": "日志"
+  },
+  "install": {
+    "title": "安装 WireGuard",
+    "desc": "这将使用主机的包管理器安装 WireGuard 工具和 iptables。",
+    "confirm": "安装",
+    "done": "WireGuard 已安装。",
+    "failed": "无法安装 WireGuard。",
+    "empty": "此主机未安装 WireGuard",
+    "noManager": "未找到受支持的包管理器。请手动安装 WireGuard。",
+    "hint": "在 {{os}} 上安装它以从此主机运行 VPN。",
+    "thisHost": "此主机",
+    "button": "安装 WireGuard",
+    "working": "正在安装..."
+  },
+  "interfaces": {
+    "add": "添加接口",
+    "empty": "暂无接口。添加一个以启动 VPN。",
+    "loadFailed": "无法加载接口。",
+    "up": "已启动",
+    "down": "已停止",
+    "clients": "{{count}} 个客户端",
+    "nat": "NAT",
+    "boot": "开机自启"
+  },
+  "create": {
+    "title": "添加接口",
+    "name": "名称",
+    "address": "地址",
+    "addressHint": "服务器地址和子网。客户端将获得下一个可用地址。",
+    "port": "UDP 端口",
+    "nat": "共享主机的互联网连接 (NAT)",
+    "natDesc": "客户端可以通过此主机访问互联网和主机网络。",
+    "natMissing": "NAT 需要 iptables，但此主机未安装。",
+    "forwarding": "启用 IP 转发",
+    "forwardingDesc": "允许主机在客户端和网络之间传递流量。设置将在重启后保留。",
+    "firewall": "在防火墙中开放端口",
+    "firewallDesc": "当 ufw 或 firewalld 运行时，将 UDP 端口添加到其中。",
+    "start": "立即启动并开机自启",
+    "startDesc": "启动接口并在重启后保持运行。",
+    "save": "创建",
+    "done": "接口已就绪。",
+    "failed": "无法创建接口。"
+  },
+  "detail": {
+    "clients": "客户端",
+    "settings": "设置",
+    "config": "配置",
+    "service": "服务",
+    "gone": "此接口在主机上已不存在。"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "在此主机的菜单中显示 WireGuard 选项卡。"
+      },
+      "showPanel": {
+        "label": "在终端中显示 WireGuard 面板",
+        "description": "允许 WireGuard 面板在此主机的 SSH 终端旁边打开。"
+      },
+      "alertDown": {
+        "label": "接口断开时发送警报",
+        "description": "当启动时激活的接口未处于活动状态时发送警报。在读取 WireGuard 状态时进行检查。"
+      }
+    },
+    "publicKey": "公钥",
+    "port": "UDP 端口",
+    "endpoint": "服务器端点",
+    "endpointHint": "客户端连接的公共地址，例如 vpn.example.com:51820。",
+    "dns": "客户端 DNS",
+    "dnsHint": "可选。多个服务器请用逗号分隔。",
+    "allowed": "通过 VPN 传输的流量",
+    "allowedHint": "客户端通过 VPN 发送的流量范围。0.0.0.0/0, ::/0 表示发送所有流量。",
+    "keepalive": "保活间隔（秒）",
+    "keepaliveHint": "保持 NAT 后的客户端可访问。设置为 0 可关闭此功能。",
+    "saved": "设置已保存。",
+    "saveFailed": "无法保存设置。",
+    "user": {
+      "companionAutoOpen": {
+        "label": "新终端打开时自动显示 WireGuard 面板",
+        "description": "在每个启用 WireGuard 的 SSH 终端旁边显示 WireGuard 面板。您仍可以通过右侧边缘的按钮打开和关闭它。"
+      },
+      "companionSide": {
+        "label": "WireGuard 面板位置",
+        "description": "WireGuard 面板相对于终端的位置。",
+        "right": "右侧",
+        "left": "左侧",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "WireGuard 面板大小",
+        "description": "宽度（像素），位于底部时为高度。您也可以拖动其边缘进行调整。"
+      },
+      "companionEdgeButton": {
+        "label": "显示面板按钮",
+        "description": "在终端右侧边缘显示一个小按钮，用于打开 WireGuard 面板。"
+      }
+    }
+  },
+  "clients": {
+    "add": "添加客户端",
+    "empty": "暂无客户端。",
+    "loadFailed": "无法加载客户端。",
+    "name": "名称",
+    "nameHint": "字母、数字、点、连字符和下划线。",
+    "allowed": "通过 VPN 传输的流量",
+    "allowedHint": "留空以使用接口默认值：{{value}}",
+    "create": "创建客户端",
+    "addFailed": "无法添加客户端。",
+    "needEndpoint": "请先在接口设置中设置服务器端点。",
+    "connected": "已连接",
+    "off": "已关闭",
+    "external": "手动创建",
+    "handshake": "{{ago}} 前握手",
+    "showConfig": "显示配置和二维码",
+    "configFailed": "无法读取客户端配置。",
+    "rotate": "生成新密钥",
+    "rotateTitle": "为 {{name}} 生成新密钥？",
+    "rotateDesc": "旧配置将停止工作。之后请将新配置提供给客户端。",
+    "turnOff": "关闭",
+    "turnOn": "开启",
+    "saveFailed": "无法修改客户端。",
+    "deleteTitle": "删除 {{name}}？",
+    "deleteDesc": "客户端将被移除，且无法再连接。",
+    "deleteFailed": "无法删除客户端。"
+  },
+  "clientConfig": {
+    "note": "此配置包含客户端的私钥。仅与将使用它的人员或设备共享。",
+    "qr": "客户端配置的二维码",
+    "copy": "复制",
+    "copied": "配置已复制。",
+    "copyFailed": "无法复制配置。",
+    "download": "下载 .conf"
+  },
+  "config": {
+    "title": "配置文件",
+    "hint": "私钥和预共享密钥已隐藏。保留占位符以保留密钥。配置在保存前会进行检查，并保留备份。地址更改需要重启。",
+    "loadFailed": "无法读取配置。",
+    "saved": "配置已保存。",
+    "saveFailed": "无法保存配置。"
+  },
+  "logs": {
+    "loadFailed": "无法读取日志。",
+    "lines": "{{count}} 行",
+    "empty": "无日志行。"
+  },
+  "service": {
+    "failed": "服务操作失败。",
+    "start": "启动",
+    "stop": "停止",
+    "restart": "重启",
+    "autostart": "开机自启",
+    "autostartDesc": "主机启动时启动此接口。",
+    "needsSystemd": "开机自启需要此主机上安装 systemd。",
+    "noForward": "此主机上未启用 IP 转发，因此客户端无法通过 NAT 访问网络。",
+    "delete": "删除接口",
+    "deleteTitle": "删除 {{name}}？",
+    "deleteDesc": "接口将停止运行，其配置、密钥和已保存的客户端文件将从主机中移除。",
+    "deleteFailed": "无法删除接口。"
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "在此主机的设置中启用 WireGuard 以使用此卡片。",
+    "start": "启用",
+    "stop": "禁用",
+    "done": "{{name}} 已更新"
+  },
+  "operations": {
+    "list": {
+      "title": "列出 WireGuard 接口"
+    },
+    "down": {
+      "title": "WireGuard 接口已禁用"
+    },
+    "start": {
+      "title": "启动 WireGuard 接口"
+    },
+    "stop": {
+      "title": "停止 WireGuard 接口"
+    },
+    "restart": {
+      "title": "重启 WireGuard 接口"
+    },
+    "interfaces": {
+      "title": "WireGuard 接口",
+      "address": "地址",
+      "port": "端口",
+      "clients": "客户端"
+    }
+  },
+  "nav": {
+    "togglePanel": "切换 WireGuard 面板"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "正在检查主机...",
+    "summary_other": "{{count}} 个客户端在 {{hosts}} 个主机上",
+    "refresh": "再次检查",
+    "empty": "为主机启用 WireGuard 以在此处查看。",
+    "missing": "未安装",
+    "down_other": "{{count}} 个已禁用",
+    "interfaces_other": "{{count}} 个接口，{{clients}} 个客户端"
+  }
+}

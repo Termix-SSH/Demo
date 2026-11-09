@@ -1,0 +1,299 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Visualizza, esegui pull, commit e push di repository Git sui tuoi host e mantienili aggiornati con il pull automatico."
+  },
+  "common": {
+    "save": "Salva",
+    "cancel": "Annulla",
+    "back": "Indietro",
+    "loading": "Caricamento..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Usa Git",
+      "description": "Visualizza i repository Git sui host a cui puoi accedere e modificali sui host che puoi modificare."
+    },
+    "runCommands": {
+      "title": "Esegui comandi dopo il pull automatico",
+      "description": "Imposta un comando da eseguire sull'host dopo che un pull automatico ha scaricato nuovi commit."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Gestisci i repository Git su questo host dalla scheda Git."
+      },
+      "repoRoots": {
+        "label": "Cartelle da scansionare",
+        "description": "Cartelle cercate per i repository quando si scansiona questo host. Separale con virgole. L'impostazione predefinita è la cartella home.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Usa sudo",
+        "description": "Esegui git come root con sudo. Solo per repository che l'utente di accesso non può utilizzare."
+      },
+      "readOnly": {
+        "label": "Sola lettura",
+        "description": "Mostra i repository ma non modificarli mai su questo host."
+      },
+      "showPanel": {
+        "label": "Pannello accanto al terminale",
+        "description": "Mostra il pannello Git nelle schede del terminale di questo host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Apri il pannello con il terminale",
+        "description": "Mostra il pannello Git quando si apre un terminale su un host che lo supporta."
+      },
+      "companionSide": {
+        "label": "Posizione del pannello",
+        "description": "Dove si trova il pannello accanto al terminale.",
+        "right": "Destra",
+        "left": "Sinistra",
+        "bottom": "In basso"
+      },
+      "companionSize": {
+        "label": "Dimensione del pannello",
+        "description": "Larghezza del pannello, o la sua altezza se in basso, in pixel."
+      },
+      "companionEdgeButton": {
+        "label": "Pulsante laterale",
+        "description": "Mostra un piccolo pulsante sul bordo del terminale per aprire il pannello."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Apri Git da un host.",
+    "error": "Impossibile caricare Git da questo host.",
+    "disabled": "Git è disabilitato per questo host. Attivalo nelle impostazioni dell'host.",
+    "sudo": "È necessario un accesso root, sudo senza password o una password Sudo salvata.",
+    "refresh": "Aggiorna",
+    "readOnly": "Sola lettura",
+    "notInstalled": "git non installato",
+    "notInstalledTitle": "git non è installato su questo host",
+    "notInstalledHint": "Installa git con il gestore pacchetti dell'host, quindi aggiorna."
+  },
+  "actions": {
+    "ok": "Fatto",
+    "failed": "Fallito",
+    "noOutput": "Nessun output."
+  },
+  "repos": {
+    "add": "Aggiungi repository",
+    "search": "Cerca repository",
+    "empty": "Nessun repository ancora. Aggiungine uno per iniziare.",
+    "noMatch": "Nessun repository corrisponde.",
+    "viewOnly": "Nessun repository è stato aggiunto a questo host.",
+    "detached": "distaccato",
+    "changes_one": "{{count}} modifica",
+    "changes_many": "{{count}} modifiche",
+    "changes_other": "{{count}} modifiche",
+    "conflicts": "Conflitti",
+    "auto": "Pull automatico",
+    "autoFailing": "Pull fallito",
+    "remove": "Rimuovi dall'elenco",
+    "removeTitle": "Rimuovere {{name}}?",
+    "removeBody": "Il repository viene solo dimenticato qui. Nulla viene eliminato sull'host.",
+    "removed": "{{name}} rimosso",
+    "error": {
+      "missing": "Cartella mancante",
+      "notrepo": "Non è un repository git",
+      "unreadable": "Impossibile leggere"
+    }
+  },
+  "add": {
+    "title": "Aggiungi repository",
+    "modeScan": "Scansiona",
+    "modePath": "Cartella",
+    "modeClone": "Clona",
+    "scanHint": "Cerca repository git in {{roots}}. Modifica le cartelle nelle impostazioni dell'host.",
+    "rescan": "Scansiona di nuovo",
+    "noneFound": "Nessun nuovo repository trovato.",
+    "picked": "Selezionato",
+    "addPicked_one": "Aggiungi {{count}} repository",
+    "addPicked_many": "Aggiungi {{count}} repository",
+    "addPicked_other": "Aggiungi {{count}} repository",
+    "addAll": "Aggiungi tutti",
+    "folder": "Cartella sull'host",
+    "folderHint": "Percorso completo, o inizia con ~ per la cartella home. Deve già essere un repository git.",
+    "addRepo": "Aggiungi repository",
+    "url": "Indirizzo",
+    "urlHint": "Utilizza le chiavi e le impostazioni git dell'utente di accesso dell'host.",
+    "dest": "Clona in",
+    "destHint": "La cartella non deve esistere ancora.",
+    "clone": "Clona",
+    "cloned": "Clonato",
+    "added_one": "{{count}} repository aggiunto",
+    "added_many": "{{count}} repository aggiunti",
+    "added_other": "{{count}} repository aggiunti",
+    "failed": "Impossibile aggiungere il repository",
+    "scanFailed": "Impossibile scansionare l'host"
+  },
+  "repo": {
+    "ahead": "{{count}} avanti",
+    "behind": "{{count}} indietro",
+    "fetch": "Recupera",
+    "fetched": "Recuperato",
+    "pull": "Aggiorna",
+    "pulled": "Aggiornato",
+    "push": "Invia",
+    "pushed": "Inviato",
+    "viewChanges": "Modifiche",
+    "viewBranches": "Rami",
+    "viewHistory": "Cronologia",
+    "viewStash": "Stash",
+    "viewAuto": "Aggiornamento automatico"
+  },
+  "changes": {
+    "loadFailed": "Impossibile leggere le modifiche.",
+    "clean": "Niente da committare. L'albero di lavoro è pulito.",
+    "stagedTitle": "In attesa ({{count}})",
+    "unstagedTitle": "Modifiche ({{count}})",
+    "stage": "Prepara",
+    "staged": "Preparato",
+    "unstage": "Annulla preparazione",
+    "unstaged": "Non preparato",
+    "stageAll": "Prepara tutto",
+    "renamed": "Rinominato",
+    "discard": "Scarta",
+    "discardTitle": "Scartare le modifiche a {{name}}?",
+    "discardBody": "Le modifiche in questo file vengono eliminate e non possono essere recuperate.",
+    "discarded": "Modifiche scartate",
+    "message": "Messaggio di commit",
+    "messagePlaceholder": "Cosa è cambiato",
+    "commit": "Commit",
+    "commitAll": "Commit di tutte le modifiche",
+    "commitStaged_one": "Commit di {{count}} file preparato",
+    "commitStaged_many": "Commit di {{count}} file preparati",
+    "commitStaged_other": "Commit di {{count}} file preparati",
+    "committed": "Committed",
+    "noDiff": "Nessuna modifica da mostrare.",
+    "truncated": "Il diff è lungo, quindi viene mostrato solo l'inizio."
+  },
+  "branches": {
+    "loadFailed": "Impossibile leggere i rami.",
+    "empty": "Nessun ramo ancora.",
+    "current": "Corrente",
+    "remote": "Remoto",
+    "gone": "Upstream rimosso",
+    "newName": "Nuovo ramo",
+    "create": "Crea ramo",
+    "created": "Ramo {{name}} creato",
+    "switch": "Cambia",
+    "switched": "Passato a {{name}}",
+    "merge": "Unisci nel ramo corrente",
+    "mergeTitle": "Unire {{name}} in {{into}}?",
+    "mergeBody": "Un merge con conflitti viene annullato immediatamente.",
+    "merged": "{{name}} unito",
+    "delete": "Elimina ramo",
+    "deleteTitle": "Eliminare {{name}}?",
+    "deleteBody": "Git rifiuta se il ramo contiene commit non uniti.",
+    "deleted": "{{name}} eliminato",
+    "forceTitle": "Eliminare forzatamente {{name}}?",
+    "forceBody": "Questo ramo contiene commit non uniti. Verranno persi se lo elimini.",
+    "forceDelete": "Elimina forzatamente"
+  },
+  "history": {
+    "loadFailed": "Impossibile leggere la cronologia.",
+    "empty": "Nessun commit ancora.",
+    "branch": "Questo ramo",
+    "all": "Tutti i rami",
+    "more": "Carica altro"
+  },
+  "stash": {
+    "loadFailed": "Impossibile leggere lo stash.",
+    "title": "Stash",
+    "empty": "Nessuno stash.",
+    "message": "Messaggio",
+    "messagePlaceholder": "Opzionale",
+    "untracked": "Includi file non tracciati",
+    "push": "Salva modifiche in stash",
+    "pushDone": "Modifiche salvate in stash",
+    "apply": "Applica",
+    "applyDone": "Stash applicato",
+    "pop": "Estrai",
+    "popDone": "Stash applicato e rimosso",
+    "drop": "Elimina",
+    "dropDone": "Stash eliminato",
+    "dropTitle": "Eliminare {{name}}?",
+    "dropBody": "Lo stash viene eliminato e non può essere recuperato.",
+    "remotes": "Remoti",
+    "noRemotes": "Nessun remoto."
+  },
+  "auto": {
+    "intro": "Esegue pull secondo una pianificazione, solo con fast-forward. Non esegue mai merge e salta il repository se contiene modifiche non committate o se è divergato dall'upstream.",
+    "noUpstream": "Questo ramo non ha ancora un upstream, quindi il pull automatico lo salterà.",
+    "enable": "Pull automatico",
+    "enableHint": "Viene eseguito come te, con i tuoi permessi su questo host.",
+    "interval": "Ogni (minuti)",
+    "intervalHint": "Tempo di attesa tra un pull e l'altro.",
+    "post": "Comando dopo il pull",
+    "postHint": "Viene eseguito nella cartella del repository dopo l'arrivo di nuovi commit. Richiede il permesso di eseguire comandi.",
+    "saved": "Pull automatico salvato",
+    "saveFailed": "Impossibile salvare il pull automatico",
+    "runNow": "Esegui ora",
+    "next": "Prossimo pull {{when}}",
+    "runs": "Esecuzioni recenti",
+    "noRuns": "Nessuna esecuzione ancora.",
+    "outcome": {
+      "pulled": "Pull eseguito",
+      "uptodate": "Aggiornato",
+      "skipped": "Saltato",
+      "failed": "Fallito"
+    }
+  },
+  "card": {
+    "title": "Repo Git",
+    "loading": "Caricamento...",
+    "refresh": "Aggiorna",
+    "empty": "Nessun host ha ancora repo Git.",
+    "allClean": "Tutte le repo sono pulite e aggiornate.",
+    "summary_one": "{{count}} repo | {{attention}} richiede attenzione",
+    "summary_many": "{{count}} repo | {{attention}} richiedono attenzione",
+    "summary_other": "{{count}} repo | {{attention}} richiedono attenzione"
+  },
+  "companion": {
+    "toggle": "Pannello Git",
+    "openTab": "Apri Git",
+    "here": "Repo di questa cartella",
+    "all": "Tutte le repo"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Elenca repo Git"
+    },
+    "fetch": {
+      "title": "Recupera una repo"
+    },
+    "pull": {
+      "title": "Aggiorna una repo"
+    },
+    "push": {
+      "title": "Invia una repo"
+    },
+    "checkout": {
+      "title": "Cambia ramo",
+      "branch": "Ramo"
+    },
+    "reset-hard": {
+      "title": "Reset hard di una repo",
+      "ref": "Reset a"
+    },
+    "repos": {
+      "title": "Repo Git",
+      "branch": "Ramo",
+      "ahead": "In anticipo",
+      "behind": "In ritardo",
+      "changed": "Modifiche"
+    },
+    "signals": {
+      "behind": "Repo in ritardo",
+      "dirty": "Repo con modifiche",
+      "pull-failing": "Aggiornamento automatico fallito"
+    }
+  }
+}

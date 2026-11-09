@@ -306,6 +306,14 @@ export function HostStatusList({
     (contribution) =>
       contribution.kind === "component" && contribution.component,
   )?.component;
+  const openHost = (host: Host) => {
+    // An overview action (a metrics view) wins over connecting.
+    const actions = hostActionsFor(listHostActions(), host);
+    const target =
+      actions.find((action) => action.overview)?.tabType ??
+      defaultConnectAction(actions, host)?.tabType;
+    if (target) onOpenTab(host, target);
+  };
   if (hosts.length === 0) {
     return (
       <div className="flex flex-1 items-center justify-center py-8 text-xs text-muted-foreground/60">
@@ -322,13 +330,11 @@ export function HostStatusList({
             key={host.id}
             role="button"
             tabIndex={0}
-            onClick={() => {
-              // An overview action (a metrics view) wins over connecting.
-              const actions = hostActionsFor(listHostActions(), host);
-              const target =
-                actions.find((action) => action.overview)?.tabType ??
-                defaultConnectAction(actions, host)?.tabType;
-              if (target) onOpenTab(host, target);
+            onClick={() => openHost(host)}
+            onKeyDown={(e) => {
+              if (e.key !== "Enter" && e.key !== " ") return;
+              e.preventDefault();
+              openHost(host);
             }}
             className="group/row flex min-w-0 cursor-pointer items-center gap-2 px-3 py-1.5 hover:bg-muted/50"
           >
@@ -434,6 +440,11 @@ export function RecentActivityList({
             role="button"
             tabIndex={0}
             onClick={() => {
+              if (host && target) onOpenTab(host, target.tab);
+            }}
+            onKeyDown={(e) => {
+              if (e.key !== "Enter" && e.key !== " ") return;
+              e.preventDefault();
               if (host && target) onOpenTab(host, target.tab);
             }}
             className="flex cursor-pointer items-center gap-2 px-3 py-1.5 hover:bg-muted/50"

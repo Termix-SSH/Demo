@@ -1,0 +1,226 @@
+{
+  "plugin": {
+    "name": "IP-KVM",
+    "description": "Xem và điều khiển máy chủ thông qua các thiết bị PiKVM, NanoKVM và JetKVM."
+  },
+  "tab": {
+    "title": "KVM"
+  },
+  "card": {
+    "title": "KVM",
+    "loading": "Đang tải"
+  },
+  "host": {
+    "open": "KVM"
+  },
+  "permissions": {
+    "view": {
+      "title": "Xem KVM",
+      "description": "Mở tab KVM và xem những KVM nào đang trực tuyến cùng trạng thái nguồn mà chúng báo cáo."
+    },
+    "power": {
+      "title": "Điều khiển nguồn",
+      "description": "Bật, tắt và khởi động lại máy chủ thông qua KVM của chúng, hoặc đánh thức chúng bằng Wake-on-LAN."
+    },
+    "console": {
+      "title": "Sử dụng màn hình",
+      "description": "Xem màn hình của máy chủ và sử dụng bàn phím cùng chuột của nó."
+    },
+    "media": {
+      "title": "Sử dụng phương tiện ảo",
+      "description": "Gắn và tháo các hình ảnh ISO trên máy chủ."
+    },
+    "manage": {
+      "title": "Quản lý KVM",
+      "description": "Thêm, chỉnh sửa và xóa KVM."
+    }
+  },
+  "settings": {
+    "admin": {
+      "maxSessionMinutes": {
+        "label": "Thời lượng phiên màn hình tối đa (phút)",
+        "description": "Phiên màn hình sẽ kết thúc sau khoảng thời gian này. Dùng 0 để không giới hạn."
+      }
+    }
+  },
+  "description": "Thêm các IP-KVM của bạn để xem và điều khiển các máy chủ phía sau chúng. Termix kết nối với KVM, nên màn hình vẫn hoạt động ngay cả khi trình duyệt của bạn không thể truy cập được. Thông tin đăng nhập được lưu trữ dưới dạng mã hóa và không bao giờ hiển thị lại.",
+  "summary": "{{count}} KVM, {{attention}} ngoại tuyến",
+  "empty": "Chưa có KVM nào.",
+  "add": "Thêm KVM",
+  "edit": "Chỉnh sửa",
+  "delete": "Xóa",
+  "back": "Quay lại",
+  "saved": "Đã lưu",
+  "deleteConfirm": "Xóa {{name}}?",
+  "status": {
+    "unknown": "Chưa đọc",
+    "up": "Trực tuyến",
+    "down": "Ngoại tuyến"
+  },
+  "drivers": {
+    "pikvm": "PiKVM",
+    "glkvm": "GL.iNet Comet (GLKVM)",
+    "nanokvm": "NanoKVM",
+    "jetkvm": "JetKVM"
+  },
+  "fields": {
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu"
+  },
+  "power": {
+    "on": "Bật",
+    "off": "Tắt",
+    "unknown": "Không xác định",
+    "state": "Máy chủ đang {{state}}.",
+    "sent": "Đã yêu cầu {{name}} thay đổi nguồn",
+    "sentShort": "Đã gửi lệnh nguồn",
+    "wake": "Wake on LAN",
+    "woke": "Đã gửi gói đánh thức",
+    "action": {
+      "on": "Bật nguồn",
+      "off": "Tắt nguồn",
+      "graceful-shutdown": "Tắt máy",
+      "reset": "Khởi động lại"
+    },
+    "confirm": {
+      "on": "Bật nguồn cho {{name}}?",
+      "off": "Cắt nguồn của {{name}}? Hệ thống sẽ không tắt máy sạch sẽ.",
+      "graceful-shutdown": "Yêu cầu {{name}} tắt máy?",
+      "reset": "Khởi động lại {{name}}? Hệ thống sẽ khởi động lại ngay lập tức."
+    }
+  },
+  "form": {
+    "addTitle": "Thêm KVM",
+    "editTitle": "Chỉnh sửa KVM",
+    "device": "KVM",
+    "access": "Truy cập",
+    "machine": "Máy chủ phía sau KVM",
+    "type": "Loại",
+    "name": "Tên",
+    "address": "Địa chỉ",
+    "port": "Cổng",
+    "host": "Máy chủ Termix",
+    "hostHint": "Liên kết KVM với máy chủ mà nó thuộc về. Khi đó, nó sẽ tuân theo cài đặt chia sẻ của máy chủ đó và hiển thị trong menu của máy chủ.",
+    "noHost": "Không có",
+    "poll": "Kiểm tra mỗi (giây)",
+    "pollHint": "Ít nhất 30 giây.",
+    "scheme": "Kết nối",
+    "ca": "Chứng chỉ",
+    "caHint": "Dán PEM của một cơ quan cấp chứng chỉ riêng, hoặc sử dụng Tin tưởng chứng chỉ này cho KVM có chứng chỉ tự ký. Để trống nếu là chứng chỉ đã được tin tưởng.",
+    "caSet": "Đã lưu một chứng chỉ. Dán chứng chỉ mới để thay thế.",
+    "keepLogin": "Để trống để giữ thông tin đăng nhập đã lưu",
+    "test": "Kiểm tra kết nối",
+    "testOk": "KVM đã phản hồi ({{model}}).",
+    "testNeedsLogin": "Nhập lại thông tin đăng nhập để kiểm tra.",
+    "mac": "Địa chỉ MAC",
+    "macHint": "Thẻ mạng của máy, dùng cho Wake-on-LAN.",
+    "broadcast": "Địa chỉ broadcast",
+    "broadcastHint": "Nơi gói tin wake được gửi đến. Để trống để dùng 255.255.255.255.",
+    "save": "Lưu",
+    "add": "Thêm",
+    "trust": "Tin tưởng chứng chỉ này",
+    "trustTitle": "Tin tưởng chứng chỉ của KVM này?",
+    "trustHint": "Termix chỉ giao tiếp với KVM này khi nó hiển thị đúng chứng chỉ này. Hãy kiểm tra xem dấu vân tay có khớp với thiết bị không.",
+    "certName": "Tên: {{name}}",
+    "certValid": "hết hạn {{date}}",
+    "certExpired": "đã hết hạn {{date}}",
+    "pinned": "Chứng chỉ đã tin tưởng",
+    "unpin": "Xóa"
+  },
+  "view": {
+    "screen": "Màn hình",
+    "power": "Nguồn",
+    "media": "Phương tiện ảo",
+    "info": "Thông tin",
+    "refresh": "Đọc ngay",
+    "type": "Loại",
+    "address": "Địa chỉ",
+    "model": "Mẫu",
+    "version": "Phần mềm",
+    "hostname": "Tên",
+    "video": "Video",
+    "noSignal": "Không có tín hiệu",
+    "status": "KVM",
+    "jetHint": "Video từ JetKVM được truyền trực tiếp từ JetKVM đến trình duyệt của bạn, vì vậy trình duyệt phải có thể truy cập nó trên mạng."
+  },
+  "screen": {
+    "connecting": "Đang kết nối",
+    "failed": "Không thể mở màn hình.",
+    "ended": "Phiên màn hình đã kết thúc.",
+    "hint": "Nhấp vào màn hình để gõ.",
+    "shortcuts": "Phím tắt",
+    "shortcut": {
+      "ctrl-alt-del": "Ctrl+Alt+Del",
+      "alt-tab": "Alt+Tab",
+      "alt-f4": "Alt+F4",
+      "ctrl-esc": "Ctrl+Esc",
+      "win-l": "Win+L",
+      "win-d": "Win+D",
+      "ctrl-alt-f1": "Ctrl+Alt+F1",
+      "ctrl-alt-f2": "Ctrl+Alt+F2",
+      "ctrl-alt-f7": "Ctrl+Alt+F7",
+      "print-screen": "In màn hình"
+    },
+    "paste": "Dán văn bản",
+    "pasteLabel": "Văn bản để gõ trên máy",
+    "type": "Gõ vào",
+    "snapshot": "Chụp màn hình",
+    "fullscreen": "Toàn màn hình",
+    "exitFullscreen": "Thoát toàn màn hình",
+    "reconnect": "Kết nối lại"
+  },
+  "media": {
+    "none": "Không có hình ảnh nào được gắn kết.",
+    "mountedNow": "Đã gắn kết: {{name}}",
+    "as": "Hiển thị dưới dạng",
+    "cd": "Ổ CD",
+    "usb": "Ổ USB",
+    "empty": "Không có hình ảnh nào trên KVM này.",
+    "mount": "Gắn kết",
+    "eject": "Tháo",
+    "mountedDone": "Đã gắn kết hình ảnh",
+    "ejected": "Đã tháo hình ảnh",
+    "url": "Tải hình ảnh từ",
+    "name": "Lưu với tên",
+    "fetch": "Tải xuống KVM",
+    "fetched": "Đã tải hình ảnh"
+  },
+  "operations": {
+    "device": "KVM",
+    "list-devices": {
+      "title": "Danh sách KVM"
+    },
+    "poll": {
+      "title": "Đọc KVM ngay bây giờ"
+    },
+    "power-state": {
+      "title": "Lấy trạng thái nguồn"
+    },
+    "power-on": {
+      "title": "Bật nguồn"
+    },
+    "graceful-shutdown": {
+      "title": "Tắt máy"
+    },
+    "power-off": {
+      "title": "Tắt nguồn"
+    },
+    "reset": {
+      "title": "Đặt lại"
+    },
+    "wake": {
+      "title": "Wake-on-LAN"
+    },
+    "eject-media": {
+      "title": "Tháo hình ảnh"
+    },
+    "health": {
+      "title": "Trạng thái KVM"
+    }
+  },
+  "widget": {
+    "name": "Thiết bị KVM",
+    "description": "Những IP-KVM nào của bạn đang hoạt động.",
+    "summary": "{{up}} trong số {{total}} đang hoạt động"
+  }
+}

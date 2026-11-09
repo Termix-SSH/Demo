@@ -1,0 +1,427 @@
+{
+  "tab": {
+    "title": "Virtuālās mašīnas",
+    "noHost": "Atveriet virtuālās mašīnas no resursa.",
+    "refresh": "Atsvaidzināt",
+    "open": "Atvērt pilnu skatu",
+    "error": "Neizdevās izlasīt VM šajā resursā.",
+    "disabled": "Virtuālās mašīnas šim resursam ir izslēgtas. Ieslēdziet tās resursa iestatījumos.",
+    "sudo": "Šim resursam nepieciešama root pieteikšanās, sudo bez paroles vai saglabāta Sudo parole.",
+    "vms": "VM",
+    "storage": "Krātuve",
+    "networks": "Tīkli",
+    "jobs": "Darbības",
+    "runningCount": "{{running}} no {{total}} darbojas",
+    "nodeLine": "{{cpus}} procesori, {{memory}}",
+    "noKvm": "nav KVM, VM būs lēnas"
+  },
+  "common": {
+    "loading": "Ielādē...",
+    "save": "Saglabāt",
+    "cancel": "Atcelt",
+    "delete": "Dzēst",
+    "failed": "Tas nestrādāja."
+  },
+  "state": {
+    "running": "Darbojas",
+    "blocked": "Bloķēts",
+    "paused": "Pauzēts",
+    "shutdown": "Aizveras",
+    "shutoff": "Izslēgts",
+    "crashed": "Krahs",
+    "pmsuspended": "Suspendēts",
+    "unknown": "Nezināms"
+  },
+  "power": {
+    "start": "Startēt",
+    "shutdown": "Izslēgt",
+    "reboot": "Restartēt",
+    "stop": "Piespiedu apturēšana",
+    "suspend": "Pauzēt",
+    "resume": "Turpināt",
+    "shutdownTitle": "Izslēgt {{name}}?",
+    "shutdownText": "Tas lūdz viesim izslēgties. Tas var aizņemt minūti, un viesis bez ACPI atbalsta to var ignorēt.",
+    "stopTitle": "Piespiedu apturēt {{name}}?",
+    "stopText": "Tas uzreiz atslēdz barošanu. Viss, ko viesis nav saglabājis, tiks zaudēts."
+  },
+  "setup": {
+    "missing": "Libvirt nav instalēts",
+    "missingText": "Termix var instalēt QEMU un libvirt šajā resursā. Tam nepieciešama root, sudo bez paroles vai saglabāta Sudo parole.",
+    "noConnect": "Termix nevar sasniegt libvirt šajā resursā",
+    "noConnectText": "Pārbaudiet, vai libvirt pakalpojums darbojas un vai SSH lietotājs to var izmantot.",
+    "noKvm": "Šim resursam nav /dev/kvm, tāpēc VM darbotos bez aparatūras palīdzības. Ieslēdziet virtualizāciju BIOS vai šai VM.",
+    "install": "Instalēt",
+    "installing": "Instalē...",
+    "installTitle": "Instalēt libvirt šajā resursā?",
+    "installText": "Tas instalē QEMU, libvirt un to rīkus ar resursa pakotņu pārvaldnieku, palaiž pakalpojumu un iestata noklusējuma tīklu un krātuves rezervi.",
+    "installed": "Libvirt ir instalēts"
+  },
+  "vm": {
+    "new": "Jauna VM",
+    "none": "Šajā resursā vēl nav VM",
+    "noneHint": "Nospiediet Jauna VM, lai izveidotu vienu.",
+    "name": "Nosaukums",
+    "state": "Stāvoklis",
+    "size": "Izmērs",
+    "ip": "IP adrese",
+    "noIp": "Vēl nav adreses",
+    "cpus_zero": "0 procesori",
+    "cpus_one": "{{count}} procesors",
+    "cpus_other": "{{count}} procesori",
+    "back": "Atpakaļ uz sarakstu",
+    "overview": "Pārskats",
+    "console": "Konsole",
+    "snapshots": "Momentuzņēmumi",
+    "hardware": "Aparatūra",
+    "xml": "XML",
+    "cpu": "CPU",
+    "memory": "Atmiņa",
+    "memoryUsed": "Izmantots: {{used}}",
+    "ofHost": "Resursdatoram ir {{memory}}",
+    "diskIo": "Diska iev./izv.",
+    "diskUsed": "{{size}} disks, resursdatorā izmantots {{used}}",
+    "netIo": "Tīkls",
+    "uuid": "UUID",
+    "machine": "Dators",
+    "firmware": "Mikrokodē",
+    "bios": "BIOS",
+    "uefi": "UEFI",
+    "cpuMode": "CPU režīms",
+    "guestAgent": "Viesmašīnas aģents",
+    "yes": "Jā",
+    "no": "Nē",
+    "autostart": "Autostarts",
+    "autostartHint": "Palaiet šo VM, kad tiek palaists resursdators.",
+    "clone": "Klonēt",
+    "cloneStopped": "Izslēdziet VM, lai to varētu klonēt",
+    "cloneName": "Kopijas nosaukums",
+    "cloneStarted": "Klonēšana uzsākta. Progress redzams sadaļā Darbi.",
+    "delete": "Dzēst",
+    "deleteTitle": "Dzēst {{name}}?",
+    "deleteDisks": "Dzēst arī tā diskus",
+    "deleteDisksHint": "Noņem diskus, kurus neizmanto citas VM. Šo darbību nevar atsaukt. ISO un bāzes attēli netiek dzēsti.",
+    "deleted": "VM izdzēsta"
+  },
+  "watch": {
+    "start": "Brīdināt mani, kad šī VM apstājas",
+    "stop": "Apturēt brīdinājumus par šo VM"
+  },
+  "console": {
+    "graphical": "Grafiskais",
+    "serial": "Seriālais",
+    "notRunning": "Palaidiet VM, lai izmantotu tā konsoles.",
+    "connecting": "Notiek savienojums...",
+    "failed": "Neizdevās atvērt konsoles.",
+    "retry": "Mēģināt vēlreiz",
+    "ended": "Konsole aizvērta.",
+    "serialHint": "Nospiediet Enter, ja ekrāns paliek tukšs. Viesmašīnai ir jāpalaiž getty uz sava seriālā porta.",
+    "noRemoteDesktop": "Ieslēdziet Tālvadības darbvidi, lai redzētu šīs VM ekrānu. Seriālā konsole joprojām strādā.",
+    "useVnc": "Pārslēgties uz VNC",
+    "vncSaved": "Saglabāts. Izslēdziet VM un palaidiet to vēlreiz, lai izmantotu VNC."
+  },
+  "hardware": {
+    "cpuMemory": "CPU un atmiņa",
+    "vcpus": "CPU",
+    "memory": "Atmiņa (MiB)",
+    "nextStart": "Izmaiņas stājas spēkā nākamajā reizi, kad VM tiek palaista.",
+    "saved": "Saglabāts",
+    "disks": "Diski",
+    "detach": "Atvienot",
+    "detachTitle": "Atvienot {{name}}?",
+    "detachText": "Saglabājums paliek savā krātuvē.",
+    "pool": "Glabāšanas krātuve",
+    "sizeGib": "Izmērs (GiB)",
+    "addDisk": "Pievienot disku",
+    "cdrom": "CD gājies",
+    "noMedia": "Tukšs",
+    "iso": "ISO",
+    "pickIso": "Izvēlieties ISO",
+    "insert": "Ievietot",
+    "eject": "Izņemt",
+    "nics": "Tīkla kartes",
+    "removeNic": "Noņemt",
+    "nicType": "Savienot ar",
+    "virtualNetwork": "Virtuālais tīkls",
+    "hostBridge": "Pamītnieka tiltiņš",
+    "network": "Tīkls",
+    "bridge": "Tiltiņš",
+    "addNic": "Pievienot karti"
+  },
+  "snapshot": {
+    "name": "Spraudeņa nosaukums",
+    "description": "Apraksts",
+    "take": "Veikt spraudni",
+    "taking": "Strādā...",
+    "taken": "Spraudnis veikts",
+    "none": "Nav spraudņu",
+    "noneHint": "Spraudnis saglabā disku un darba VM atmiņu.",
+    "current": "Pašreizējais",
+    "revert": "Atgriezties",
+    "revertTitle": "Atgriezties pie {{name}}?",
+    "revertText": "Visi dati kopš šī spraudņa tiks zaudēti.",
+    "reverted": "VM atgriezta",
+    "delete": "Dzēst",
+    "deleteTitle": "Dzēst spraudni {{name}}?",
+    "deleteText": "VM paliek tāda, kāda tā ir tagad."
+  },
+  "xml": {
+    "hint": "Papildu. Pirms saglabāšanas pamītnieks pārbauda XML un saglabā veco versiju mapē /var/lib/termix-vms/backups.",
+    "saveTitle": "Saglabāt šo XML?",
+    "saveText": "Tas tiks piemērots nākamajā reizi, kad VM tiks palaista.",
+    "saved": "Saglabāts"
+  },
+  "new": {
+    "title": "Jauna VM",
+    "basics": "Pamatinformācija",
+    "install": "Instalēt",
+    "name": "Nosaukums",
+    "source": "Instalēt no",
+    "sourceCloud": "Mākoņa attēls",
+    "sourceIso": "ISO",
+    "sourceBlank": "Tukšs disks",
+    "noIso": "Šajā krātuvē nav ISO failu. Lejupielādējiet vienu sadaļā Krātuve.",
+    "image": "Attēls",
+    "customImage": "Cits URL",
+    "imageUrl": "Attēla URL",
+    "username": "Pieteikšanās vārds",
+    "password": "Parole",
+    "sshKey": "SSH publiskā atslēga",
+    "sshKeyHint": "Norādiet paroli, atslēgu vai abus. Parole tiek saglabāta tikai kā hash vērtība.",
+    "start": "Palaist, kad būs gatavs",
+    "create": "Izveidot VM",
+    "started": "VM tiek izveidota. Skatiet progresu Uzdevumos.",
+    "noUefi": "Šajā pamītnī nav instalēta UEFI firmware.",
+    "uefiHint": "UEFI VM var veikt spraudņus tikai tad, kad tā ir izslēgta.",
+    "missingTools": "Šajā pamītnī trūkst {{tools}}, kas nepieciešami mākoņa attēliem."
+  },
+  "storage": {
+    "pools": "Krātuves",
+    "none": "Nav krātuvju",
+    "noneHint": "Pievienojiet mapi, lai glabātu VM diskus.",
+    "active": "Aktīvs",
+    "inactive": "Neaktīvs",
+    "used": "Izmantots {{used}} no {{size}} ({{percent}}%)",
+    "start": "Palaist",
+    "stop": "Apturēt",
+    "forget": "Aizmirst",
+    "forgetTitle": "Aizmirst krātuvi {{name}}?",
+    "forgetText": "Libvirt vairs neizmanto šo krātuvi. Faili tās mapē paliek uz diska.",
+    "poolName": "Pola nosaukums",
+    "poolPath": "Mappe",
+    "addPool": "Pievienot polu",
+    "volumes": "Skaņas {{pool}}",
+    "noVolumes": "Šajā polā nav skaņu",
+    "allocated": "{{size}} diskā",
+    "deleteVolume": "Dzēst {{name}}?",
+    "deleteVolumeText": "Tas noņems failu. To nevar atsaukt.",
+    "volumeName": "Skaņas nosaukums",
+    "addVolume": "Pievienot skaņu",
+    "downloadUrl": "Lejupielādēt failu šajā polā",
+    "downloadHint": "Hosts to lejupielādē, tāpēc tas turpināsies, pat ja Termix ir aizvērts.",
+    "download": "Lejupielādēt",
+    "downloadStarted": "Lejupielāde uzsākta"
+  },
+  "network": {
+    "title": "Virtuālie tīkli",
+    "none": "Nav virtuālo tīklu",
+    "name": "Nosaukums",
+    "kind": "Tips",
+    "nat": "NAT",
+    "isolated": "Izolēts",
+    "bridge": "Hosta tilts",
+    "subnet": "Adrese",
+    "add": "Pievienot tīklu",
+    "stopTitle": "Apturēt tīklu {{name}}?",
+    "stopText": "VM šajā tīklā zaudēs savu savienojumu, līdz tas atgriezīsies un tās atkārtoti pieslēgsies.",
+    "deleteTitle": "Dzēst tīklu {{name}}?",
+    "leases": "DHCP līzingi uz {{name}}",
+    "noLeases": "Nav līzingu"
+  },
+  "jobs": {
+    "none": "Vēl nav uzdevumu",
+    "noneHint": "Jaunas VM, klones, momentānās bildes un lejupielādes parādīsies šeit.",
+    "cancel": "Apturēt",
+    "status": {
+      "running": "Darbojas",
+      "success": "Pabeigts",
+      "failed": "Neizdevās",
+      "cancelled": "Apturēts"
+    },
+    "kind": {
+      "create": "Jauna VM",
+      "clone": "Klonēt",
+      "download": "Lejupielādēt",
+      "snapshot": "Momentānā bilde"
+    },
+    "phase": {
+      "download": "Lejupielāde",
+      "disk": "Disks tiek izveidots",
+      "seed": "Cloud-init rakstīšana",
+      "define": "VM saglabāšana",
+      "start": "Sākšana",
+      "clone": "Disku kopēšana"
+    }
+  },
+  "all": {
+    "title": "Visas VM",
+    "search": "Meklēt",
+    "host": "Hosts",
+    "hostCount_zero": "0 hosti",
+    "hostCount_one": "{{count}} hosts",
+    "hostCount_other": "{{count}} hosti",
+    "noHosts": "Nav hostu, kuriem ir ieslēgtas virtuālās mašīnas",
+    "noHostsHint": "Atveriet hostu Manage un ieslēdziet virtuālās mašīnas."
+  },
+  "card": {
+    "title": "Virtuālās mašīnas",
+    "unreachable": "Nesasniedzams",
+    "crashed_zero": "0 sabrukušas",
+    "crashed_one": "{{count}} sabrukušas",
+    "crashed_other": "{{count}} sabrukušas"
+  },
+  "widget": {
+    "running": "Darbojas VM"
+  },
+  "companion": {
+    "toggle": "Pārslēgt VM paneli"
+  },
+  "permissions": {
+    "use": {
+      "title": "Izmantot virtuālās mašīnas",
+      "description": "Redzēt VM uz hostiem, pie kuriem varat pieslēgties, un mainīt tos uz hostiem, kurus varat rediģēt."
+    },
+    "console": {
+      "title": "Atvērt VM konsoles",
+      "description": "Atvērt VM grafisko un seriālo konsoli uz hostiem, kurus varat rediģēt."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Iespējot virtuālās mašīnas",
+        "description": "Pārvaldiet KVM virtuālās mašīnas šajā resursdatorā, izmantojot libvirt."
+      },
+      "useSudo": {
+        "label": "Izmantot sudo",
+        "description": "Izpildiet libvirt komandas ar sudo. Izslēdziet, ja pieslēdzaties kā root lietotājs."
+      },
+      "readOnly": {
+        "label": "Tikai lasīšanai",
+        "description": "Rādīt VM, bet bloķēt jebkuras izmaiņas no Termix."
+      },
+      "connectUri": {
+        "label": "Libvirt savienojums",
+        "description": "Jāizmantojamais libvirt URI. Lielākajai daļai resursdatoru ir nepieciešams qemu:///system."
+      },
+      "showPanel": {
+        "label": "Rādīt VM paneli blakus termināļiem",
+        "description": "Pievieno VM sarakstu šī resursdatora termināļa cilnēm."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Atvērt VM paneli atsevišķi",
+        "description": "Atvērt paneli, kad tiek atvērts terminālis."
+      },
+      "companionSide": {
+        "label": "VM panela puse",
+        "description": "Kur atrodas panels blakus terminālim.",
+        "right": "Labajā pusē",
+        "left": "Kreisajā pusē",
+        "bottom": "Apakšā"
+      },
+      "companionSize": {
+        "label": "VM panela izmērs",
+        "description": "Platums vai augstums pikseļos."
+      },
+      "companionEdgeButton": {
+        "label": "Rādīt malas pogu",
+        "description": "Maza poga termināļa malā atver paneli."
+      }
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "VM saraksts"
+    },
+    "state": {
+      "title": "VM stāvoklis"
+    },
+    "running": {
+      "title": "Darbojošās VM"
+    },
+    "crashed": {
+      "title": "Apstājušās VM"
+    },
+    "pools": {
+      "title": "Krātuves rezervju izmantošana"
+    },
+    "snapshots": {
+      "title": "VM momentānattēli"
+    },
+    "listPools": {
+      "title": "Krātuves rezervju saraksts"
+    },
+    "listNetworks": {
+      "title": "Virtuālo tīklu saraksts"
+    },
+    "start": {
+      "title": "Palaižt VM"
+    },
+    "reboot": {
+      "title": "Restartēt VM"
+    },
+    "suspend": {
+      "title": "Pauzēt VM"
+    },
+    "resume": {
+      "title": "Turpināt VM"
+    },
+    "autostart": {
+      "title": "Iestatīt VM automātisko palaišanu",
+      "enabled": "Palaižt kopā ar resursdatoru"
+    },
+    "snapshot": {
+      "title": "Izveidot VM momentānattēlu",
+      "name": "Momentānattēla nosaukums",
+      "description": "Apraksts"
+    },
+    "clone": {
+      "title": "Klonēt VM",
+      "name": "Kopijas nosaukums"
+    },
+    "shutdown": {
+      "title": "Izslēgt VM"
+    },
+    "forceStop": {
+      "title": "Piespiedu VM apturēšana"
+    },
+    "delete": {
+      "title": "Dzēst VM",
+      "disks": "Arī dzēst tās diskus"
+    },
+    "revert": {
+      "title": "Atgriezties pie momentānattēla"
+    },
+    "deleteSnapshot": {
+      "title": "Dzēst momentānattēlu"
+    },
+    "vms": {
+      "title": "Virtuālās mašīnas"
+    },
+    "column": {
+      "cpus": "Procesori",
+      "memory": "Atmiņa (MiB)",
+      "ip": "IP adrese",
+      "autostart": "Automātiskā palaišana",
+      "vm": "VM",
+      "created": "Izveidots"
+    },
+    "events": {
+      "started": "VM palaista",
+      "stopped": "VM apturēta",
+      "crashed": "VM apstājās",
+      "job": "VM uzdevums pabeigts"
+    }
+  }
+}

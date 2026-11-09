@@ -1,0 +1,287 @@
+{
+  "plugin": {
+    "name": "Webes szerverek",
+    "description": "Kezelje az nginx, Apache és Caddy szolgáltatásokat a gazdagépein: webhelyek, konfiguráció, naplók és HTTPS, minden változtatást először tesztelve."
+  },
+  "common": {
+    "cancel": "Mégse",
+    "back": "Vissza",
+    "loading": "Betöltés..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Webes szerverek használata",
+      "description": "Tekintse meg a webes szervereket és webhelyeket az elérhető gazdagépeken, és módosítsa őket azokon a gépeken, ahol szerkeszthet."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Webes szerverek",
+        "description": "Kezelje az nginx, Apache és Caddy szolgáltatásokat ezen a gazdagépen a Webes szerverek fülön keresztül."
+      },
+      "useSudo": {
+        "label": "sudo használata",
+        "description": "Használja a sudo-t a webes szerver olvasásához és módosításához. Kapcsolja ki, ha root felhasználóként jelentkezett be."
+      },
+      "readOnly": {
+        "label": "Csak olvasható",
+        "description": "Jelenítse meg a webhelyeket, konfigurációt és naplókat, de ne módosítsa őket ezen a gazdagépen."
+      },
+      "showPanel": {
+        "label": "Panel a terminál mellett",
+        "description": "Jelenítse meg a Webes szerverek panelt ezen a gazdagépen a terminál fülein."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Panel megnyitása a terminállal együtt",
+        "description": "Jelenítse meg a Webes szerverek panelt, amikor egy olyan gazdagép terminálja nyílik meg, amely támogatja."
+      },
+      "companionSide": {
+        "label": "Panel oldala",
+        "description": "Ahol a panel helyezkedik el a terminál mellett.",
+        "right": "Jobb",
+        "left": "Bal",
+        "bottom": "Alsó"
+      },
+      "companionSize": {
+        "label": "Panel mérete",
+        "description": "A panel szélessége, vagy az alsó helyzetben magassága pixelben."
+      },
+      "companionEdgeButton": {
+        "label": "Szélgomb",
+        "description": "Jelenítse meg a kis gombot a terminál szélén a panel megnyitásához."
+      }
+    }
+  },
+  "tab": {
+    "title": "Webes szerverek",
+    "noHost": "Nyissa meg a Webes szervereket egy gazdagépről.",
+    "error": "Nem sikerült betölteni a webes szervereket ezen a gazdagépen.",
+    "disabled": "A Webes szerverek kikapcsolva van ezen a gazdagépen. Kapcsolja be a gazdagép beállításaiban.",
+    "sudo": "A módosításokhoz root bejelentkezés, jelszómentes sudo vagy mentett Sudo jelszó szükséges ezen a gazdagépen.",
+    "refresh": "Frissítés",
+    "readOnly": "Csak olvasható",
+    "noServer": "Nincs telepítve webes szerver",
+    "noServerHint": "Telepítse az nginx, Apache vagy Caddy szolgáltatást a Szerver oldalon.",
+    "openServer": "Szerver megnyitása",
+    "viewSites": "Webhelyek",
+    "viewConfig": "Konfiguráció",
+    "viewLogs": "Naplók",
+    "viewServer": "Szerver"
+  },
+  "actions": {
+    "ok": "Kész",
+    "failed": "Sikertelen",
+    "noOutput": "Nincs kimenet."
+  },
+  "watch": {
+    "start": "Értesítsen, amikor egy webes szerver leáll",
+    "stop": "Értesítések leállítása ehhez a gazdagéphez",
+    "on": "Értesítést kap, amikor egy webes szerver leáll ezen a gazdagépen",
+    "off": "Az értesítések kikapcsolva vannak ehhez a gazdagéphez",
+    "failed": "Nem sikerült módosítani az értesítéseket"
+  },
+  "sites": {
+    "add": "Webhely hozzáadása",
+    "search": "Webhelyek keresése",
+    "empty": "Még nincsenek webhelyek.",
+    "loadFailed": "Nem sikerült betölteni a webhelyeket.",
+    "off": "Ki",
+    "anyName": "bármely név",
+    "form": "Űrlap",
+    "certDays_one": "{{count}} nap van hátra",
+    "certDays_other": "{{count}} nap van hátra",
+    "certExpired": "A tanúsítvány lejárt",
+    "enable": "Bekapcsolás",
+    "disable": "Kikapcsolás",
+    "enabled": "A(z) {{name}} be van kapcsolva",
+    "disabled": "A(z) {{name}} ki van kapcsolva",
+    "delete": "Törlés",
+    "deleteTitle": "Törli a(z) {{name}} oldalt?",
+    "deleteBody": "A fájl törlődik, és a szerver újratöltődik. Egy másolat megmarad a /var/lib/termix-web-servers/backups mappában a gazdagépen.",
+    "deleted": "A(z) {{name}} törölve"
+  },
+  "site": {
+    "addTitle": "Új oldal",
+    "editTitle": "Mentés: {{name}}",
+    "add": "Oldal hozzáadása",
+    "save": "Mentés",
+    "added": "A(z) {{name}} hozzáadva",
+    "saved": "A(z) {{name}} mentve",
+    "server": "Webes szerver",
+    "name": "Oldal neve",
+    "nameHint": "A fájlnévhez és a naplófájlokhoz használt, például example.",
+    "modeForm": "Űrlap",
+    "modeText": "Szöveg",
+    "text": "Konfiguráció",
+    "textHint": "A szöveg mentése kikapcsolja az űrlapot ehhez az oldalhoz, így a saját módosításai megmaradnak.",
+    "type": "Típus",
+    "typeStatic": "Statikus fájlok",
+    "typeProxy": "Fordított proxy",
+    "typePhp": "PHP",
+    "typeRedirect": "Átirányítás",
+    "staticHint": "Fájlokat szolgál ki egy mappából.",
+    "proxyHint": "Kéréseket továbbít egy erre a gépre vagy egy másikra telepített alkalmazás felé.",
+    "phpHint": "Fájlokat szolgál ki egy mappából, és a .php fájlokat a php-fpm segítségével futtatja.",
+    "redirectHint": "Minden látogatót egy másik címre irányít.",
+    "domains": "Tartományok",
+    "domainsHint": "Nyomja meg az Entert mindegyik után. A nginx-ben használja az _ jelet bármely név megválaszolásához.",
+    "port": "HTTP port",
+    "root": "Webes gyökér",
+    "rootHint": "Egy mappa a /var/www, /srv, /usr/share/nginx, /opt vagy /home alatt.",
+    "index": "Indexfájlok",
+    "spa": "Egyoldalas alkalmazás",
+    "spaHint": "Azok az elérési utak, amelyek nem fájlok, az /index.html fájlra mutatnak.",
+    "upstream": "Alkalmazás címe",
+    "upstreamHint": "Ahol az alkalmazás figyel, például http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Látogatók átirányítása ide:",
+    "keepPath": "Elérési út megtartása",
+    "keepPathHint": "A /page elérési út ugyanerre az oldalra mutat az új címen.",
+    "phpSocket": "php-fpm csatlakozó",
+    "phpSocketHint": "Nem található php-fpm csatlakozó. Telepítse a php-fpm-et, vagy adja meg a gazdagépet:portot.",
+    "https": "HTTPS",
+    "httpsHint": "Tanúsítvány szükséges. Először mentse el az oldalt, majd nyomja meg az alábbi Tanúsítvány lekérése gombot.",
+    "httpsCaddy": "A Caddy automatikusan lekéri és megújítja a tanúsítványt.",
+    "httpsPort": "HTTPS port",
+    "certPath": "Tanúsítványfájl",
+    "keyPath": "Kulcsfájl",
+    "forceHttps": "HTTP átirányítása HTTPS-re",
+    "gzip": "Válaszok tömörítése",
+    "accessLog": "Hozzáférési napló",
+    "maxBody": "Feltöltési limit MB-ban",
+    "maxBodyHint": "A 0 érték a szerver alapértelmezett beállítását használja.",
+    "preview": "Előnézet",
+    "previewFailed": "A konfiguráció nem építhető fel."
+  },
+  "tls": {
+    "title": "HTTPS tanúsítvány",
+    "hintManaged": "A certbot Let's Encrypt tanúsítványt szerez a webhely domainjeihez, majd a webhely HTTPS-re vált. A certbot megújítja a tanúsítványt, és újratölti a szervert.",
+    "hintText": "A certbot Let's Encrypt tanúsítványt szerez a webhely domainjeihez. A tanúsítványt utána manuálisan adja hozzá a webhelyhez. A certbot megújítja a tanúsítványt, és újratölti a szervert.",
+    "needCertbot": "Először telepítse a certbotot a megfelelő bővítménnyel erre a szervert a Szerver oldalon.",
+    "email": "E-mail",
+    "emailHint": "Ide írja a Let's Encrypt a problémákról szóló értesítéseket. Opcionális.",
+    "staging": "Teszt tanúsítvány",
+    "stagingHint": "Használja a Let's Encrypt teszt szervert. A böngészők nem fogják megbízni.",
+    "issue": "Tanúsítvány beszerzése",
+    "done": "Tanúsítvány mentve"
+  },
+  "config": {
+    "search": "Fájlok keresése",
+    "empty": "Nincsenek fájlok.",
+    "loadFailed": "A fájl nem tölthető be.",
+    "test": "Konfiguráció tesztelése",
+    "testOk": "A konfiguráció rendben van",
+    "testFailed": "A konfiguráció hibás",
+    "content": "Tartalom",
+    "save": "Mentés",
+    "saveHint": "A teljes konfigurációt tesztelik a szerver újratöltése előtt. Egy hibás fájl visszaáll a korábbi állapotba.",
+    "saved": "Mentve és újratöltve",
+    "backups_one": "{{count}} mentés",
+    "backups_other": "{{count}} mentés",
+    "restore": "Visszaállítás",
+    "restoreTitle": "Visszaállítja ezt a biztonsági mentést?",
+    "restoreBody": "A fájl visszaáll a(z) {{time}} állapotába. Az aktuális szöveg is biztonsági mentéssé válik.",
+    "restored": "Biztonsági mentés visszaállítva"
+  },
+  "logs": {
+    "source": "Napló",
+    "lines": "Sorok",
+    "journal": "{{server}} napló",
+    "follow": "Követés",
+    "stop": "Leállítás",
+    "connecting": "Csatlakozás...",
+    "ended": "A követés leállítva.",
+    "followFailed": "Ezt a naplót nem lehet követni.",
+    "empty": "Nincsenek sorok.",
+    "loadFailed": "A naplót nem lehet olvasni.",
+    "requests": "Kérések",
+    "topPaths": "Leggyakoribb elérési utak",
+    "topClients": "Leggyakoribb kliensek"
+  },
+  "server": {
+    "unknown": "ismeretlen",
+    "atBoot": "Indítás bootoláskor",
+    "notInstalled": "Nincs telepítve",
+    "start": "Indítás",
+    "stop": "Leállítás",
+    "restart": "Újraindítás",
+    "reload": "Újratöltés",
+    "enable": "Indítás bootoláskor",
+    "disable": "Ne induljon bootoláskor",
+    "boot": "Indítás bootoláskor",
+    "noBoot": "Ne induljon bootoláskor",
+    "done": "A(z) {{server}} kész",
+    "stopTitle": "Leállítja a(z) {{server}}t?",
+    "stopBody": "Minden rajta lévő webhely offline lesz, amíg újra nem indítja.",
+    "install": "Telepítés",
+    "installTitle": "Telepíti a(z) {{server}}t?",
+    "installBody": "A host csomagkezelőjével települ, és azonnal elindul. Egy másik, a 80-as porton futó webszerver megakadályozhatja az indítást.",
+    "installed": "A(z) {{server}} telepítve",
+    "installCertbot": "certbot telepítése",
+    "certbotInstalled": "A certbot telepítve",
+    "certbotPlugins": "Bővítmények: {{plugins}}",
+    "certbotNoPlugins": "Nincs nginx vagy Apache bővítmény",
+    "certbotHint": "Let's Encrypt tanúsítványokat szerez nginx és Apache webhelyekhez"
+  },
+  "card": {
+    "title": "Webes szerverek",
+    "loading": "Betöltés...",
+    "refresh": "Frissítés",
+    "empty": "Nincs olyan host, amelyiknél be van kapcsolva a Webes szerverek funkció.",
+    "summary_one": "{{count}} host | {{down}} igényel figyelmet",
+    "summary_other": "{{count}} host | {{down}} igényel figyelmet",
+    "sites_one": "{{count}} oldal",
+    "sites_other": "{{count}} oldal"
+  },
+  "companion": {
+    "toggle": "Webes szerverek panel",
+    "openTab": "Webes szerverek megnyitása",
+    "reload": "{{server}} újratöltése"
+  },
+  "manager": {
+    "title": "Webes szerverek",
+    "disabled": "Kapcsold be a Webes szerverek funkciót ehhez a hosthoz, hogy lásd az oldalait itt."
+  },
+  "operations": {
+    "status": {
+      "title": "Webes szerver állapota"
+    },
+    "listSites": {
+      "title": "Oldalak listázása"
+    },
+    "test": {
+      "title": "Webes szerver konfigurációjának tesztelése"
+    },
+    "reload": {
+      "title": "Webes szerver újratöltése"
+    },
+    "restart": {
+      "title": "Webes szerver újraindítása"
+    },
+    "enableSite": {
+      "title": "Oldal bekapcsolása"
+    },
+    "disableSite": {
+      "title": "Oldal kikapcsolása"
+    },
+    "deleteSite": {
+      "title": "Oldal törlése"
+    },
+    "server": "Szerver",
+    "allServers": "Összes",
+    "sites": {
+      "title": "Oldalak",
+      "server": "Szerver",
+      "domains": "Domainek",
+      "https": "HTTPS"
+    }
+  }
+}

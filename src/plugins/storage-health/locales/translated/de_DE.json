@@ -1,0 +1,220 @@
+{
+  "tab": {
+    "title": "Speicher",
+    "noHost": "Öffnen Sie den Speicher von einem Host aus.",
+    "disabled": "Die Speicherüberwachung ist für diesen Host deaktiviert. Aktivieren Sie sie in den Host-Einstellungen.",
+    "error": "Speicherstatus konnte nicht geladen werden",
+    "viewDrives": "Laufwerke",
+    "viewPools": "Pools und Arrays",
+    "viewEvents": "Ereignisse",
+    "viewSettings": "Einstellungen",
+    "readAgo": "Gelesen vor {{time}}",
+    "stale": "Host konnte nicht gelesen werden, letzte Messung wird angezeigt. {{error}}"
+  },
+  "common": {
+    "loading": "Wird geladen...",
+    "failed": "Das hat nicht funktioniert",
+    "save": "Speichern",
+    "refresh": "Jetzt lesen",
+    "back": "Zurück"
+  },
+  "card": {
+    "title": "Speicherstatus",
+    "empty": "Es werden noch keine Hosts überwacht. Aktivieren Sie die Speicherüberwachung in den Einstellungen eines Hosts.",
+    "drives_one": "{{count}} Laufwerk",
+    "drives_other": "{{count}} Laufwerke",
+    "problems_one": "{{count}} offenes Problem",
+    "problems_other": "{{count}} offene Probleme"
+  },
+  "manager": {
+    "title": "Speicherstatus",
+    "disabled": "Die Speicherüberwachung ist für diesen Host deaktiviert."
+  },
+  "health": {
+    "ok": "Gesund",
+    "warn": "Benötigt Aufmerksamkeit",
+    "fail": "Defekt",
+    "unknown": "Unbekannt"
+  },
+  "kind": {
+    "hdd": "Festplatte",
+    "ssd": "SSD",
+    "nvme": "NVMe",
+    "unknown": "Laufwerk"
+  },
+  "drives": {
+    "empty": "Auf diesem Host wurden keine Laufwerke gefunden",
+    "noRoot": "Die Prüfungen wurden ohne Root-Rechte ausgeführt, daher zeigen einige Laufwerke möglicherweise keine Daten an. Erlauben Sie passwortloses sudo für diese Anmeldung.",
+    "noTool": "smartctl ist auf diesem Host nicht installiert. Installieren Sie smartmontools, um den Laufwerksstatus zu lesen.",
+    "noData": "Noch nichts gelesen",
+    "wear": "{{value}}% verschlissen",
+    "testing": "Wird getestet"
+  },
+  "detail": {
+    "stop": "Test stoppen",
+    "short": "Kurzer Test",
+    "long": "Langer Test",
+    "health": "Status",
+    "temp": "Temperatur",
+    "wear": "Verschleiß",
+    "hours": "Betriebszeit",
+    "model": "Modell",
+    "serial": "Seriennummer",
+    "kind": "Typ",
+    "size": "Größe",
+    "reallocated": "Neuzugeteilte Sektoren",
+    "pending": "Ausstehende Sektoren",
+    "uncorrectable": "Nicht korrigierbare Sektoren",
+    "mediaErrors": "Medienfehler",
+    "selfTest": "Letzter Selbsttest",
+    "attributes": "SMART-Attribute",
+    "attrMeta": "Wert {{value}} | Rohwert {{raw}}"
+  },
+  "history": {
+    "24h": "24 Stunden",
+    "7d": "7 Tage",
+    "30d": "30 Tage",
+    "temp": "Temperatur",
+    "wear": "Verschleiß",
+    "bad": "Defekte Sektoren",
+    "empty": "Der Verlauf wird aufgebaut, während der Host gelesen wird. Schauen Sie später wieder vorbei."
+  },
+  "pools": {
+    "empty": "Keine ZFS-Pools, RAID-Verbände, btrfs-Dateisysteme oder LVM-Thin-Pools gefunden",
+    "startTitle": "Auf {{name}} starten?",
+    "startText": "Dabei wird jeder Block gelesen, was die Festplatten für Stunden verlangsamen kann.",
+    "start": "Starten",
+    "stop": "Stoppen",
+    "scrub": "Scrub",
+    "thinMeta": "{{data}} % Daten | {{meta}} % Metadaten | {{free}} frei in der Gruppe"
+  },
+  "events": {
+    "error": "Ereignisse konnten nicht geladen werden",
+    "empty": "Noch keine Ereignisse",
+    "type": {
+      "smart-failing": "Ausfallend",
+      "smart-attention": "SMART-Warnung",
+      "nvme-critical": "Kritisch",
+      "wear-high": "Abgenutzt",
+      "wear-critical": "Fast verschlissen",
+      "temp-high": "Heiß",
+      "temp-critical": "Zu heiß",
+      "pool-degraded": "Pool degradiert",
+      "pool-errors": "Pool-Fehler",
+      "raid-degraded": "Verbänd degradiert",
+      "raid-rebuilding": "Wird wiederhergestellt",
+      "btrfs-errors": "btrfs-Fehler",
+      "thin-full": "Thin-Pool füllt sich",
+      "thin-critical": "Thin-Pool voll",
+      "unreachable": "Nicht erreichbar",
+      "test": "Selbsttest",
+      "scrub": "Scrub",
+      "command": "Befehl"
+    }
+  },
+  "settings": {
+    "saved": "Gespeichert",
+    "alerts": "Warnungen senden",
+    "alertsHint": "Benachrichtigt die Person, die dies eingerichtet hat, wenn ein Problem auftritt oder behoben wird.",
+    "interval": "Lesen alle (Minuten)",
+    "intervalHint": "SMART-Lesungen sind langsam, daher ist 15 Minuten ein guter Anfang.",
+    "tempWarn": "Warnen über (°C)",
+    "tempCrit": "Kritisch über (°C)",
+    "tempHint": "0 verwendet den Standardwert für den Laufwerkstyp.",
+    "wear": "Warnen bei Verschleiß (%)",
+    "wearHint": "Kritisch bei 95 %.",
+    "thin": "Warnen, wenn ein Thin-Pool voll ist (%)",
+    "thinHint": "Kritisch bei 95 %.",
+    "host": {
+      "enable": {
+        "label": "Speicherstatus",
+        "description": "Überwache Laufwerke, Pools und Verbände auf diesem Host."
+      },
+      "useSudo": {
+        "label": "sudo verwenden",
+        "description": "Führe die Prüfungen mit passwortlosem sudo aus. SMART benötigt Root-Rechte."
+      },
+      "readOnly": {
+        "label": "Schreibgeschützt",
+        "description": "Verhindere Selbsttests und Scrubs von Termix."
+      },
+      "showPanel": {
+        "label": "Seitenleiste anzeigen",
+        "description": "Zeige die Speicherstatus-Seitenleiste neben den Terminals auf diesem Host an."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Speicherstatus-Seitenleiste mit Terminals öffnen",
+        "description": "Öffne die Seitenleiste automatisch auf Hosts, die sie unterstützen."
+      },
+      "companionSide": {
+        "label": "Position der Seitenleiste",
+        "description": "Wo die Speicherstatus-Seitenleiste neben einem Terminal geöffnet wird.",
+        "right": "Rechts",
+        "left": "Links",
+        "bottom": "Unten"
+      },
+      "companionSize": {
+        "label": "Größe der Seitenleiste",
+        "description": "Breite oder Höhe der Seitenleiste in Pixeln."
+      },
+      "companionEdgeButton": {
+        "label": "Kante-Button anzeigen",
+        "description": "Zeige einen kleinen Button am Rand des Terminals an, um die Seitenleiste zu öffnen."
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "Speicherstatus verwenden",
+      "description": "Zeige den Status von Laufwerken und Verbänden auf Hosts, auf die du zugreifen kannst."
+    },
+    "runTests": {
+      "title": "Tests und Scrubs ausführen",
+      "description": "Startet SMART-Selbsttests und Scrubs. Erfordert außerdem Schreibzugriff auf den Host."
+    }
+  },
+  "operations": {
+    "devices": {
+      "title": "Laufwerke",
+      "health": "Status",
+      "kind": "Typ",
+      "temp": "Temperatur",
+      "wear": "Verschleiß"
+    },
+    "pools": {
+      "title": "Pools und Arrays",
+      "state": "Status"
+    },
+    "status": {
+      "title": "Speicherstatus"
+    },
+    "temperature": {
+      "title": "Heißestes Laufwerk"
+    },
+    "selftest": {
+      "title": "SMART-Selbsttest",
+      "device": "Laufwerk",
+      "action": "Aktion",
+      "short": "Kurztest",
+      "long": "Langtest",
+      "abort": "Laufenden Test stoppen"
+    },
+    "scrub": {
+      "title": "Scrub",
+      "target": "Pool, Dateisystem oder Array",
+      "targetHint": "Eine ID aus der Pool-Liste, z. B. zfs:tank, btrfs:/mnt/data oder md:md0",
+      "stop": "Stopp statt Start"
+    },
+    "events": {
+      "degraded": "Speicherproblem erkannt",
+      "recovered": "Speicherproblem behoben",
+      "smartFailing": "Laufwerk schlägt SMART-Check fehl",
+      "raidDegraded": "Pool oder Array degradiert"
+    }
+  },
+  "companion": {
+    "toggle": "Speicherstatus-Panel"
+  }
+}

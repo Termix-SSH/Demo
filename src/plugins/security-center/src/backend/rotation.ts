@@ -180,7 +180,14 @@ export function createRotation(
           .update(hostId, {
             authType: previous.authType,
             credentialId: previous.credentialId,
-            ...(previous.authType === "key" ? { key: oldKey } : {}),
+            ...(previous.authType === "key"
+              ? {
+                  key: oldKey,
+                  keyPassword: passphrase ?? null,
+                  keyType:
+                    typeof host.keyType === "string" ? host.keyType : null,
+                }
+              : {}),
           })
           .catch(() => undefined);
         await undo(hostId, newBlob);

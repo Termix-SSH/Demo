@@ -16,7 +16,9 @@
     "more": "更多",
     "logout": "登出",
     "next": "下一步",
-    "previous": "上一步"
+    "previous": "上一步",
+    "showPassword": "显示密码",
+    "hidePassword": "隐藏密码"
   },
   "desktopUpdates": {
     "title": "桌面应用",
@@ -67,7 +69,10 @@
     "resetRailOrder": "重置顺序",
     "hideFromRail": "从侧边栏隐藏",
     "openSettings": "打开设置",
-    "mobileNavigation": "导航"
+    "mobileNavigation": "导航",
+    "allTabs": "所有标签页",
+    "hideTabBar": "隐藏标签栏",
+    "showTabBar": "显示标签栏"
   },
   "commandPalette": {
     "searchPlaceholder": "搜索主机、命令或设置...",
@@ -110,7 +115,8 @@
     "noSearchResults": "没有匹配的连接",
     "rename": "重命名会话",
     "forgetConfirm": "要结束 {{name}} 的后台会话吗？",
-    "forget": "结束会话"
+    "forget": "结束会话",
+    "expiringNow": "即将结束"
   },
   "placeholders": {
     "apiKeyName": "例如：CI 流水线",
@@ -158,16 +164,14 @@
     "commandPalette": "命令面板",
     "done": "完成",
     "clear": "清除",
-    "dragToResizeColumns": "拖拽以调整列宽",
     "hostsAvailable": "可用主机",
-    "removeSection": "移除区块",
-    "addSection": "添加区块",
-    "allSectionsShown": "所有内容已显示在仪表板上。",
+    "addSection": "添加小部件",
     "fromPlugins": "来自插件",
-    "dropHere": "将区块拖放到此处",
-    "dragToReorder": "拖拽区块以重新排序",
+    "dropHere": "暂无小部件。请从列表中添加。",
+    "dragToReorder": "拖拽小部件可移动，拖拽边缘可调整大小",
     "clearActivityConfirm": "清除您的最近活动？",
-    "resetConfirm": "将仪表板重置为默认布局？"
+    "resetConfirm": "将仪表板重置为默认布局？",
+    "clearFailed": "无法清除最近活动"
   },
   "admin": {
     "sectionGeneral": "常规",
@@ -230,6 +234,9 @@
     "allowPasswordLoginDesc": "用户名/密码登录",
     "externalAutoProvision": "自动创建外部账户",
     "externalAutoProvisionDesc": "当用户首次通过 SSO 或 LDAP 等外部方式登录时，自动为其创建账户。关闭此选项后，只有已拥有账户的用户才能通过外部方式登录",
+    "credentialStorage": "允许保存密码和密钥",
+    "credentialStorageOff": "此服务器已关闭密码和密钥保存功能。请留空，Termix 将在连接时提示您输入。",
+    "credentialStorageDesc": "关闭后，任何人都无法在主机或凭据中保存密码或私钥，Termix 将在连接时提示输入。已保存的登录信息在删除前将继续保留。",
     "secondFactorAfterExternalLogin": "外部登录（SSO、GitHub、Google、LDAP）后要求二次验证",
     "secondFactorAfterExternalLoginDesc": "关闭时，仅在密码和其他本地登录后要求已注册的二次验证，与之前相同。开启时，所有登录方式（包括 SSO 和 LDAP）后均要求二次验证",
     "allowPasswordReset": "允许重置密码",
@@ -275,6 +282,13 @@
     "apiKeyName": "名称",
     "apiKeyUser": "用户",
     "apiKeySelectUser": "选择用户...",
+    "apiKeyScope": "访问权限",
+    "apiKeyScopeFull": "用户可执行的所有操作",
+    "apiKeyScopeRead": "仅读取操作",
+    "apiKeyScopeRun": "执行操作",
+    "apiKeyScopeHint": "操作密钥仅能访问 Termix 操作和 MCP 服务器，无法访问其他内容。",
+    "apiKeyScopeActionsRead": "操作，仅读取",
+    "apiKeyScopeActionsRun": "操作",
     "apiKeyExpiresAt": "过期时间",
     "createKey": "创建密钥",
     "apiKeyNoExpiry": "永不过期",
@@ -311,6 +325,10 @@
     "deleteUserFailed": "删除用户失败",
     "deleteUserSuccess": "用户 \"{{username}}\" 已删除",
     "deleteRoleSuccess": "角色 \"{{name}}\" 已删除",
+    "deleteRoleFailed": "无法删除角色",
+    "roleNamePlaceholder": "developer",
+    "roleDisplayNamePlaceholder": "开发者",
+    "unknownError": "未知错误",
     "revokeKeySuccess": "密钥 \"{{name}}\" 已撤销",
     "revokeKeyFailed": "撤销密钥失败",
     "copiedToClipboard": "已复制到剪贴板",
@@ -353,6 +371,7 @@
     "unlinkAccountFailed": "取消关联外部登录失败",
     "updateRegistrationFailed": "更新注册设置失败",
     "updatePasswordLoginFailed": "更新密码登录设置失败",
+    "updateCredentialStorageFailed": "更新凭据存储设置失败",
     "updateSecondFactorAfterExternalLoginFailed": "更新二次验证设置失败",
     "updatePasswordResetFailed": "更新密码重置设置失败",
     "sessionTimeoutRange2": "会话超时时间必须在 1 到 720 小时之间",
@@ -671,7 +690,8 @@
         "tryBetaTitle": "抢先体验新功能",
         "tryBetaDescription": "在“更新”中参加测试计划。",
         "sendBetaFeedback": "发送测试版反馈",
-        "openUpdates": "更新"
+        "openUpdates": "更新",
+        "hexLabel": "十六进制"
       }
     }
   },
@@ -757,6 +777,11 @@
       "allPluginsBeta": "所有插件使用测试版",
       "allPluginsStable": "所有插件返回稳定版",
       "saveFailed": "无法保存更改"
+    },
+    "user": {
+      "hostRows": {
+        "label": "主机行显示选项"
+      }
     }
   },
   "hostDefaults": {
@@ -783,6 +808,15 @@
   "sharing": {
     "revokeConfirm": "移除 {{name}} 的访问权限？",
     "revoke": "移除访问权限",
+    "deviceLogin": {
+      "label": "仅在此设备上登录",
+      "none": "无",
+      "hint": "仅保留在此设备上，不会发送到服务器。优先使用此凭据，连接将从此设备发起。",
+      "noCredentials": "添加一个仅限此设备保存的凭据，以便在此处使用。",
+      "saved": "设备登录已保存",
+      "keepOnDevice": "仅限此设备保存",
+      "keepOnDeviceDesc": "密码或密钥永远不会同步到服务器。在共享主机上将其用作设备登录。"
+    },
     "folderLogin": {
       "action": "为共享主机设置个人登录凭据",
       "title": "此文件夹的个人登录凭据",
@@ -824,7 +858,10 @@
     "pickHost": "选择一个主机进行编辑",
     "pickCredential": "选择一个凭据进行编辑",
     "pickDefaults": "选择一个默认值级别进行编辑",
-    "pickHint": "连接的所有设置都在这里，已分组以便查找。"
+    "pickHint": "连接的所有设置都在这里，已分组以便查找。",
+    "clearChoice": "清除",
+    "proxyPathTarget": "目标",
+    "hostCopyName": "{{name}} (副本)"
   },
   "permissions": {
     "branding": {
@@ -837,6 +874,33 @@
     "presetIntro": "选择屏幕上显示的内容量。",
     "presetChangeLater": "您以后可以在“设置”中的“界面”部分切换预设或更改任何单独的设置。",
     "appearanceTitle": "个性化定制",
-    "appearanceIntro": "选择主题、强调色、字体和语言。更改会立即生效，您以后可以在“设置”中随时修改。"
+    "appearanceIntro": "选择主题、强调色、字体和语言。更改会立即生效，您以后可以在“设置”中随时修改。",
+    "hostRows": {
+      "title": "主机行应如何工作？",
+      "intro": "启用许多插件后，每个主机行可能会有很多按钮。选择您希望访问主机工具的方式。",
+      "buttons": "连接按钮",
+      "buttonsDesc": "每个主机行上每个工具一个按钮，和以前一样。主机页面保留在主机菜单中。",
+      "both": "按钮和主机页面按钮",
+      "bothDesc": "保留按钮，并添加一个主机页面按钮。工具在主机页面内打开。",
+      "page": "仅主机页面",
+      "pageDesc": "行上没有按钮。点击主机会打开其页面，所有工具都在一个标签页中。",
+      "clickOpensPage": "点击打开主机页面",
+      "changeLater": "您稍后可以在“自定义侧边栏”中更改此设置。"
+    },
+    "accentHex": "十六进制"
+  },
+  "hostTools": {
+    "mode": "在以下位置打开主机工具",
+    "modeDesc": "Docker、文件和其他工具按钮的打开位置。主机页面将主机的所有工具保留在一个标签页中。如果选择“仅主机页面”，主机行上将没有连接按钮，点击会打开主机的页面。",
+    "modeTab": "独立标签页",
+    "modePage": "主机页面",
+    "rowButtons": "主机行上的按钮",
+    "modeOnly": "仅主机页面",
+    "clickOpens": "点击打开",
+    "clickOpensDesc": "点击主机时执行的操作。可以在单个主机的菜单中为其选择其他选项。",
+    "clickAuto": "首选连接方式",
+    "useDefaultNamed": "默认（{{name}}）",
+    "useDefaultButtons": "使用默认按钮",
+    "perHostHint": "若要为单个主机更改设置，请在其菜单中使用“主机行上的按钮”。"
   }
 }

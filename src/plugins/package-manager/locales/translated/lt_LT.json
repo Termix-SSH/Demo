@@ -1,0 +1,230 @@
+{
+  "plugin": {
+    "name": "Paketai",
+    "description": "Peržiūrėkite ir įdiekite atnaujinimus savo serveriuose, ieškokite, įdiekite ir pašalinkite paketus bei peržiūrėkite paketų istoriją."
+  },
+  "common": {
+    "cancel": "Atšaukti",
+    "back": "Atgal"
+  },
+  "permissions": {
+    "use": {
+      "title": "Naudoti paketus",
+      "description": "Peržiūrėkite paketus ir atnaujinimus pasiekiamuose serveriuose bei keiskite juos serveriuose, kuriuose turite redagavimo teises."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Paketai",
+        "description": "Tvarkykite paketus ir atnaujinimus šiame serveryje per „Paketų“ skirtuką."
+      },
+      "useSudo": {
+        "label": "Naudoti sudo",
+        "description": "Naudokite sudo komandą paketams įdiegti, atnaujinti ir pašalinti. Išjunkite, jei prisijungiate kaip root vartotojas."
+      },
+      "readOnly": {
+        "label": "Tik skaitymui",
+        "description": "Rodyti paketus ir atnaujinimus, bet niekada jų nekeisti šiame serveryje."
+      },
+      "showPanel": {
+        "label": "Rodyti atnaujinimų skydelį terminaluose",
+        "description": "Leisti atnaujinimų skydeliui atsiverti šalia šio serverio SSH terminalo."
+      },
+      "alertUpdates": {
+        "label": "Pranešti apie saugumo atnaujinimus",
+        "description": "Siųsti pranešimą, kai šis serveris turi saugumo atnaujinimų arba reikia perkrauti. Tikrinama perskaičius atnaujinimus, maždaug kartą per valandą."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Atidaryti atnaujinimų skydelį kartu su naujais terminalais",
+        "description": "Rodyti atnaujinimų skydelį šalia kiekvieno SSH terminalo, kuriame įjungti „Paketai“. Jį visada galite atidaryti ir uždaryti mygtuku dešiniajame krašte."
+      },
+      "companionSide": {
+        "label": "Atnaujinimų skydelio pusė",
+        "description": "Kur atnaujinimų skydelis yra šalia terminalo.",
+        "right": "Dešinėje",
+        "left": "Kairėje",
+        "bottom": "Apačioje"
+      },
+      "companionSize": {
+        "label": "Atnaujinimų skydelio dydis",
+        "description": "Plotis pikseliais arba aukštis, kai skydelis yra apačioje. Taip pat galite vilkti jo kraštą."
+      },
+      "companionEdgeButton": {
+        "label": "Rodyti skydelio mygtuką",
+        "description": "Rodyti mažą mygtuką terminalo dešiniajame krašte, kuris atidaro atnaujinimų skydelį."
+      }
+    }
+  },
+  "tab": {
+    "title": "Paketai",
+    "noHost": "Atidarykite „Paketus“ iš serverio.",
+    "error": "Nepavyko įkelti paketų iš šio serverio.",
+    "disabled": "Šiam kompiuteriui paketai išjungti. Įjunkite juos kompiuterio nustatymuose.",
+    "sudo": "Pakeitimams reikia root prisijungimo, slaptažodžio nereikalaujančio sudo arba išsaugoto sudo slaptažodžio šiame kompiuteryje.",
+    "refresh": "Atnaujinti",
+    "readOnly": "Tik skaitymui",
+    "noManager": "Nėra paketų valdytojo",
+    "noManagerTitle": "Nerastas palaikomas paketų valdytojas",
+    "noManagerHint": "Paketų valdymas veikia su apt, dnf, yum, zypper, pacman ir apk.",
+    "indexAge": "Indeksas atnaujintas prieš {{ago}}",
+    "reboot": "Šiam kompiuteriui reikia paleisti iš naujo, kad būtų baigtas atnaujinimas.",
+    "viewUpdates": "Atnaujinimai",
+    "viewInstalled": "Įdiegti",
+    "viewSearch": "Paieška",
+    "viewHistory": "Istorija",
+    "viewRepos": "Saugyklos"
+  },
+  "actions": {
+    "working": "Vykdoma {{action}}. Tai gali užtrukti kelias minutes.",
+    "ok": "Atlikta",
+    "failed": "Paketo valdytojas nepavyko.",
+    "noOutput": "Nėra išvesties.",
+    "refresh": {
+      "label": "Atnaujinti indeksą",
+      "confirm": "Atnaujinti paketo indeksą?",
+      "desc": "Atsisiunčia naujausius paketų sąrašus.",
+      "done": "Paketų indeksas yra naujausias."
+    },
+    "update": {
+      "label": "Atnaujinti",
+      "confirm_one": "Atnaujinti {{names}}?",
+      "confirm_few": "Atnaujinti {{count}} paketus?",
+      "confirm_many": "Atnaujinti {{count}} paketų?",
+      "confirm_other": "Atnaujinti {{count}} paketų?",
+      "desc": "Įdiegia naujausią {{names}} versiją.",
+      "done": "Atnaujinta {{names}}."
+    },
+    "upgrade-all": {
+      "label": "Atnaujinti visus",
+      "confirm": "Atnaujinti visus paketus?",
+      "desc": "Atnaujina paketų indeksą ir įdiegia visus atnaujinimus. Paleidimo metu paslaugos gali būti perkraunamos.",
+      "done": "Visi paketai yra naujausi."
+    },
+    "install": {
+      "label": "Įdiegti",
+      "confirm": "Įdiegti „{{names}}“?",
+      "desc": "Įdiegia „{{names}}“ ir viską, ko jam reikia.",
+      "done": "„{{names}}“ įdiegta."
+    },
+    "remove": {
+      "label": "Pašalinti",
+      "confirm": "Pašalinti „{{names}}“?",
+      "desc": "Pašalina „{{names}}“ iš šio serverio. Programos, kurioms jo reikia, gali nustoti veikti.",
+      "done": "„{{names}}“ pašalinta."
+    },
+    "hold": {
+      "label": "Laikyti šią versiją",
+      "confirm": "Laikyti „{{names}}“?",
+      "desc": "Atnaujinimai bus praleisti {{names}}, kol atleisite.",
+      "done": "{{names}} laikinas sustabdytas."
+    },
+    "unhold": {
+      "label": "Atleisti laikiną sustabdymą",
+      "confirm": "Atleisti {{names}}?",
+      "desc": "{{names}} vėl gaus atnaujinimus.",
+      "done": "{{names}} vėl gaus atnaujinimus."
+    }
+  },
+  "updates": {
+    "search": "Filtruoti atnaujinimus",
+    "count_one": "{{count}} atnaujinimas",
+    "count_few": "{{count}} atnaujinimai",
+    "count_many": "{{count}} atnaujinimų",
+    "count_other": "{{count}} atnaujinimų",
+    "countSecurity_one": "{{count}} atnaujinimas, {{security}} saugumo",
+    "countSecurity_few": "{{count}} atnaujinimai, {{security}} saugumo",
+    "countSecurity_many": "{{count}} atnaujinimų, {{security}} saugumo",
+    "countSecurity_other": "{{count}} atnaujinimų, {{security}} saugumo",
+    "updatePicked_one": "Atnaujinti {{count}} paketą",
+    "updatePicked_few": "Atnaujinti {{count}} paketus",
+    "updatePicked_many": "Atnaujinti {{count}} paketų",
+    "updatePicked_other": "Atnaujinti {{count}} paketų",
+    "updateOne": "Atnaujinti",
+    "pick": "Pasirinkti {{name}}",
+    "security": "Saugumas",
+    "empty": "Viskas yra naujausia.",
+    "noMatch": "Atitinkančių atnaujinimų nerasta.",
+    "loadFailed": "Nepavyko perskaityti atnaujinimų."
+  },
+  "installed": {
+    "search": "Filtruoti įdiegtus paketus",
+    "all": "Visi",
+    "held": "Sulaikyti",
+    "heldBadge": "Sulaikyti",
+    "empty": "Nėra atitinkančių paketų.",
+    "loadFailed": "Nepavyko perskaityti įdiegtų paketų."
+  },
+  "search": {
+    "placeholder": "Ieškoti paketų",
+    "button": "Ieškoti",
+    "hint": "Ieškokite paketo, kurį norite įdiegti, šio serverio saugyklose.",
+    "empty": "Nieko nerasta.",
+    "installed": "Įdiegta",
+    "failed": "Paieška nepavyko."
+  },
+  "history": {
+    "empty": "Paketų istorija nerasta.",
+    "loadFailed": "Nepavyko perskaityti paketų istorijos."
+  },
+  "repos": {
+    "hint": "Šio serverio paketų saugyklos. Jas keiskite pačiame serveryje.",
+    "empty": "Paketų saugyklų nerasta.",
+    "off": "Išjungta",
+    "loadFailed": "Nepavyko perskaityti paketų saugyklų."
+  },
+  "card": {
+    "title": "Paketų atnaujinimai",
+    "loading": "Tikrinami serveriai...",
+    "summary_one": "{{count}} atnaujinimas {{hosts}} serveriuose",
+    "summary_few": "{{count}} atnaujinimai {{hosts}} serveriuose",
+    "summary_many": "{{count}} atnaujinimų {{hosts}} serveriuose",
+    "summary_other": "{{count}} atnaujinimų {{hosts}} serveriuose",
+    "refresh": "Patikrinti dar kartą",
+    "empty": "Įjunkite „Packages“ serveriui, kad čia matytumėte jo atnaujinimus.",
+    "security_one": "{{count}} saugumo",
+    "security_few": "{{count}} saugumo",
+    "security_many": "{{count}} saugumo",
+    "security_other": "{{count}} saugumo",
+    "reboot": "Reikalingas paleidimas iš naujo",
+    "updates_one": "{{count}} atnaujinimas",
+    "updates_few": "{{count}} atnaujinimai",
+    "updates_many": "{{count}} atnaujinimų",
+    "updates_other": "{{count}} atnaujinimų",
+    "upToDate": "Atnaujinta"
+  },
+  "manager": {
+    "title": "Paketai",
+    "disabled": "Įjunkite „Paketų“ funkciją šio serverio nustatymuose, kad čia matytumėte jo atnaujinimus."
+  },
+  "operations": {
+    "list": {
+      "title": "Rodyti paketų atnaujinimų sąrašą"
+    },
+    "updates": {
+      "title": "Laukiantys atnaujinimai",
+      "resource": "Laukiantys atnaujinimai"
+    },
+    "upgradeAll": {
+      "title": "Atnaujinti visus paketus"
+    },
+    "install": {
+      "title": "Įdiegti paketus"
+    },
+    "remove": {
+      "title": "Pašalinti paketus"
+    },
+    "package": "Paketai",
+    "packageHint": "Vienas ar daugiau paketų pavadinimų, atskirtų tarpais.",
+    "resource": {
+      "current": "Įdiegta",
+      "available": "Prieinama",
+      "repo": "Saugykla"
+    }
+  },
+  "nav": {
+    "togglePanel": "Perjungti atnaujinimų skydelį"
+  }
+}

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FileText, Folder, Globe, Pin, Server } from "lucide-react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
@@ -62,8 +62,11 @@ export function NotesView({
   const [failed, setFailed] = useState(false);
   const [openUid, setOpenUid] = useState<string | null>(null);
   const [note, setNote] = useState<Note | null>(null);
+  const loadSeq = useRef(0);
 
   const load = useCallback(async () => {
+    // A slow answer for an older view or query must not replace a newer one.
+    const seq = ++loadSeq.current;
     try {
       const q = query.trim();
       const list =
@@ -75,9 +78,11 @@ export function NotesView({
               folder: view === "folder" ? folder : undefined,
               q: q || undefined,
             });
+      if (seq !== loadSeq.current) return;
       setItems(list);
       setFailed(false);
     } catch {
+      if (seq !== loadSeq.current) return;
       setFailed(true);
       setItems((current) => current ?? []);
     }
@@ -132,10 +137,10 @@ export function NotesView({
     }
   };
 
+  // Takes the editor's own uid: a closing editor flushes after openUid moved on.
   const save = useCallback(
-    async (patch: Patch) => {
-      if (!openUid) return;
-      const updated = await updateNote(openUid, patch);
+    async (uid: string, patch: Patch) => {
+      const updated = await updateNote(uid, patch);
       setNote((current) =>
         current && current.uid === updated.uid
           ? {
@@ -163,7 +168,7 @@ export function NotesView({
       );
       if (patch.pinned !== undefined) void load();
     },
-    [openUid, load],
+    [load],
   );
 
   const remove = async () => {
@@ -276,7 +281,7 @@ export function NotesView({
       key={note.uid}
       note={note}
       compact={compact}
-      onSave={save}
+      onSave={(patch) => save(note.uid, patch)}
       onDelete={() => void remove()}
       onBack={compact ? () => setOpenUid(null) : undefined}
       onSend={onSend}

@@ -107,6 +107,9 @@ export function CredentialsPanel({
             />
             {search && (
               <button
+                type="button"
+                title={t("manage.clearChoice")}
+                aria-label={t("manage.clearChoice")}
                 onClick={() => setSearch("")}
                 className="text-muted-foreground/60 hover:text-muted-foreground transition-colors"
               >

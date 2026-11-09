@@ -1,0 +1,294 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Katso, hae, commitoi ja pushaa git-varastoja isäntäsi ja pidä ne ajan tasalla automaattisella haulla."
+  },
+  "common": {
+    "save": "Tallenna",
+    "cancel": "Peruuta",
+    "back": "Takaisin",
+    "loading": "Ladataan..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Käytä Gitiä",
+      "description": "Katso git-varastoja isännöiltä, joihin pääset, ja muokkaa niitä isännöillä, joilla on muokkausoikeudet."
+    },
+    "runCommands": {
+      "title": "Suorita komentoja automaattisen haun jälkeen",
+      "description": "Aseta komento, joka suoritetaan isännällä automaattisen haun tuomien uusien commitien jälkeen."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Hallitse git-varastoja tältä isännältä Git-välilehdeltä."
+      },
+      "repoRoots": {
+        "label": "Selailtavat kansiot",
+        "description": "Kansiot, joista etsitään varastoja isännän selaillessa. Erottele ne pilkuilla. Oletus on kotikansio.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Käytä sudoa",
+        "description": "Suorita git root-käyttäjänä sudo:n avulla. Vain varastoille, joita kirjautunut käyttäjä ei voi käyttää."
+      },
+      "readOnly": {
+        "label": "Vain luku",
+        "description": "Näytä varastot, mutta älä koskaan muokkaa niitä tällä isännällä."
+      },
+      "showPanel": {
+        "label": "Paneeli terminaalin vieressä",
+        "description": "Tarjoa Git-paneeli tämän isännän terminaalin välilehdillä."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Avaa paneeli terminaalin kanssa",
+        "description": "Näytä Git-paneeli, kun terminaali avautuu isännällä, jossa se on käytössä."
+      },
+      "companionSide": {
+        "label": "Paneelin sijainti",
+        "description": "Missä paneeli sijaitsee terminaalin vieressä.",
+        "right": "Oikealla",
+        "left": "Vasemmalla",
+        "bottom": "Alareunassa"
+      },
+      "companionSize": {
+        "label": "Paneelin koko",
+        "description": "Paneelin leveys tai sen korkeus alareunassa pikseleinä."
+      },
+      "companionEdgeButton": {
+        "label": "Reunapainike",
+        "description": "Näytä pieni painike terminaalin reunassa paneelin avaamiseen."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Avaa Git isännältä.",
+    "error": "Gitiä ei voitu ladata tältä isännältä.",
+    "disabled": "Git on poistettu käytöstä tällä isännällä. Ota se käyttöön isännän asetuksista.",
+    "sudo": "Tämä vaatii root-kirjautumisen, salasanasuodan tai tallennetun Sudo-salasanan.",
+    "refresh": "Päivitä",
+    "readOnly": "Vain luku",
+    "notInstalled": "git ei ole asennettu",
+    "notInstalledTitle": "git ei ole asennettu tälle isännälle",
+    "notInstalledHint": "Asenna git isännän pakettienhallinnalla ja päivitä sitten."
+  },
+  "actions": {
+    "ok": "Valmis",
+    "failed": "Epäonnistui",
+    "noOutput": "Ei tulostetta."
+  },
+  "repos": {
+    "add": "Lisää varasto",
+    "search": "Hae varastoja",
+    "empty": "Ei vielä varastoja. Lisää yksi aloittaaksesi.",
+    "noMatch": "Ei vastaavia varastoja.",
+    "viewOnly": "Tälle isännälle ei ole lisätty varastoja.",
+    "detached": "irrotettu",
+    "changes_one": "{{count}} muutos",
+    "changes_other": "{{count}} muutosta",
+    "conflicts": "Ristiriidat",
+    "auto": "Automaattinen haku",
+    "autoFailing": "Haku epäonnistuu",
+    "remove": "Poista listalta",
+    "removeTitle": "Poistetaanko {{name}}?",
+    "removeBody": "Varasto unohdetaan vain täältä. Mitään ei poisteta isännältä.",
+    "removed": "{{name}} poistettu",
+    "error": {
+      "missing": "Kansio puuttuu",
+      "notrepo": "Ei ole git-varastoa",
+      "unreadable": "Ei voida lukea"
+    }
+  },
+  "add": {
+    "title": "Lisää varastoja",
+    "modeScan": "Etsi",
+    "modePath": "Kansio",
+    "modeClone": "Kloonaa",
+    "scanHint": "Etsii git-varastoja kohteista {{roots}}. Voit muuttaa hakukansioita isäntälaitteen asetuksista.",
+    "rescan": "Etsi uudelleen",
+    "noneFound": "Uusia varastoja ei löytynyt.",
+    "picked": "Valittu",
+    "addPicked_one": "Lisää {{count}} varasto",
+    "addPicked_other": "Lisää {{count}} varastoa",
+    "addAll": "Lisää kaikki",
+    "folder": "Kansio isäntälaitteella",
+    "folderHint": "Koko polku tai aloita ~:llä kotikansion merkiksi. Kansion on oltava jo olemassa oleva git-varasto.",
+    "addRepo": "Lisää varasto",
+    "url": "Osoite",
+    "urlHint": "Käyttää isäntälaitteen kirjautuneen käyttäjän avaimia ja git-asetuksia.",
+    "dest": "Kloonaa kohteeseen",
+    "destHint": "Kansion ei saa vielä olla olemassa.",
+    "clone": "Kloonaa",
+    "cloned": "Kloonattu",
+    "added_one": "{{count}} varasto lisätty",
+    "added_other": "{{count}} varastoa lisätty",
+    "failed": "Varaston lisääminen epäonnistui",
+    "scanFailed": "Isäntälaitteen etsintä epäonnistui"
+  },
+  "repo": {
+    "ahead": "{{count}} edellä",
+    "behind": "{{count}} jäljessä",
+    "fetch": "Hae",
+    "fetched": "Haettu",
+    "pull": "Päivitä",
+    "pulled": "Päivitetty",
+    "push": "Lähetä",
+    "pushed": "Lähetetty",
+    "viewChanges": "Muutokset",
+    "viewBranches": "Haarat",
+    "viewHistory": "Historia",
+    "viewStash": "Väliaikainen tallennus",
+    "viewAuto": "Automaattinen päivitys"
+  },
+  "changes": {
+    "loadFailed": "Muutosten lukeminen epäonnistui.",
+    "clean": "Mitään ei ole tallennettavissa. Työpuu on puhdas.",
+    "stagedTitle": "Valmiina ({{count}})",
+    "unstagedTitle": "Muutokset ({{count}})",
+    "stage": "Valmistele",
+    "staged": "Valmisteltu",
+    "unstage": "Peru valmistelu",
+    "unstaged": "Valmistelu peruutettu",
+    "stageAll": "Valmistele kaikki",
+    "renamed": "Nimetty uudelleen",
+    "discard": "Hylkää",
+    "discardTitle": "Hylätäänkö muutokset tiedostossa {{name}}?",
+    "discardBody": "Tämän tiedoston muutokset poistetaan eikä niitä voi enää palauttaa.",
+    "discarded": "Muutokset hylätty",
+    "message": "Tallennusviesti",
+    "messagePlaceholder": "Mitä muutettiin",
+    "commit": "Tallenna",
+    "commitAll": "Tallenna kaikki muutokset",
+    "commitStaged_one": "Tallenna {{count}} valmisteltu tiedosto",
+    "commitStaged_other": "Tallenna {{count}} valmisteltua tiedostoa",
+    "committed": "Tallennettu",
+    "noDiff": "Näytettäviä muutoksia ei ole.",
+    "truncated": "Erovertailu on pitkä, joten vain alku näytetään."
+  },
+  "branches": {
+    "loadFailed": "Haarojen lukeminen epäonnistui.",
+    "empty": "Ei vielä haaroja.",
+    "current": "Nykyinen",
+    "remote": "Etähaara",
+    "gone": "Ylävirta poistettu",
+    "newName": "Uusi haara",
+    "create": "Luo haara",
+    "created": "Haara {{name}} luotu",
+    "switch": "Vaihda",
+    "switched": "Vaihdettu haaraan {{name}}",
+    "merge": "Yhdistä nykyiseen",
+    "mergeTitle": "Yhdistetäänkö {{name}} haaraan {{into}}?",
+    "mergeBody": "Ristiriitatilanteet peruutetaan välittömästi.",
+    "merged": "{{name}} yhdistetty",
+    "delete": "Poista haara",
+    "deleteTitle": "Poistetaanko {{name}}?",
+    "deleteBody": "Git kieltäytyy, jos haarassa on yhdistämättömiä muutoksia.",
+    "deleted": "{{name}} poistettu",
+    "forceTitle": "Pakotetaanko {{name}} poistaminen?",
+    "forceBody": "Tässä haarassa on yhdistämättömiä muutoksia. Ne menetetään, jos haara poistetaan.",
+    "forceDelete": "Pakota poisto"
+  },
+  "history": {
+    "loadFailed": "Historiaa ei voitu lukea.",
+    "empty": "Ei vielä muutoksia.",
+    "branch": "Tämä haara",
+    "all": "Kaikki haarat",
+    "more": "Lataa lisää"
+  },
+  "stash": {
+    "loadFailed": "Stashia ei voitu lukea.",
+    "title": "Stashit",
+    "empty": "Ei stashia.",
+    "message": "Viesti",
+    "messagePlaceholder": "Valinnainen",
+    "untracked": "Sisällytä seurattomat tiedostot",
+    "push": "Tallenna muutokset stashiin",
+    "pushDone": "Muutokset tallennettu stashiin",
+    "apply": "Käytä",
+    "applyDone": "Stash käytetty",
+    "pop": "Pop",
+    "popDone": "Stash käytetty ja poistettu",
+    "drop": "Hylkää",
+    "dropDone": "Stash hylätty",
+    "dropTitle": "Hylätäänkö {{name}}?",
+    "dropBody": "Stash poistetaan eikä sitä voi palauttaa.",
+    "remotes": "Etävarastot",
+    "noRemotes": "Ei etävarastoja."
+  },
+  "auto": {
+    "intro": "Hakee aikataulun mukaan vain nopean eteenpäin siirron avulla. Se ei koskaan yhdistä, ja se ohittaa varaston, jos siinä on tallentamattomia muutoksia tai se on poikkeama ylävirrastaan.",
+    "noUpstream": "Tällä haaralla ei vielä ole ylävirtaa, joten automaattinen haku ohittaa sen.",
+    "enable": "Automaattinen haku",
+    "enableHint": "Suorittaa käyttäjänäsi tämän isäntäpalvelimen oikeuksillasi.",
+    "interval": "Joka (minuutti)",
+    "intervalHint": "Kuinka kauan odotetaan hakuja välillä.",
+    "post": "Komento haun jälkeen",
+    "postHint": "Suorittaa varaston hakemistossa uusien muutosten saavuttua. Vaatii komentojen suorittamisen oikeuden.",
+    "saved": "Automaattinen haku tallennettu",
+    "saveFailed": "Automaattista hakuja ei voitu tallentaa",
+    "runNow": "Suorita nyt",
+    "next": "Seuraava haku {{when}}",
+    "runs": "Viimeaikaiset suoritukset",
+    "noRuns": "Ei vielä suorituksia.",
+    "outcome": {
+      "pulled": "Haettu",
+      "uptodate": "Ajantasalla",
+      "skipped": "Ohitettu",
+      "failed": "Epäonnistui"
+    }
+  },
+  "card": {
+    "title": "Git-varastot",
+    "loading": "Ladataan...",
+    "refresh": "Päivitä",
+    "empty": "Yhdenkään isäntäpalvelimen Git-varastoja ei ole vielä.",
+    "allClean": "Kaikki varastot ovat puhtaita ja ajan tasalla.",
+    "summary_one": "{{count}} varasto | {{attention}} vaatii huomiota",
+    "summary_other": "{{count}} varastoa | {{attention}} vaatii huomiota"
+  },
+  "companion": {
+    "toggle": "Git-paneeli",
+    "openTab": "Avaa Git",
+    "here": "Tämän kansion varasto",
+    "all": "Kaikki varastot"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Listaa Git-varastot"
+    },
+    "fetch": {
+      "title": "Hae varasto"
+    },
+    "pull": {
+      "title": "Vedä varasto"
+    },
+    "push": {
+      "title": "Työnnä varasto"
+    },
+    "checkout": {
+      "title": "Vaihda haaraa",
+      "branch": "Haara"
+    },
+    "reset-hard": {
+      "title": "Nollaa varasto kovasti",
+      "ref": "Nollaa tilaan"
+    },
+    "repos": {
+      "title": "Git-varastot",
+      "branch": "Haara",
+      "ahead": "Edellä",
+      "behind": "Jäljessä",
+      "changed": "Muutokset"
+    },
+    "signals": {
+      "behind": "Varastot jäljessä",
+      "dirty": "Varastot, joissa on muutoksia",
+      "pull-failing": "Automaattinen vetäminen epäonnistuu"
+    }
+  }
+}

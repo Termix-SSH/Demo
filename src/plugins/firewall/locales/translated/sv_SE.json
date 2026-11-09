@@ -1,0 +1,355 @@
+{
+  "tab": {
+    "title": "Brandvägg",
+    "noHost": "Öppna brandväggen från en värd.",
+    "refresh": "Uppdatera",
+    "error": "Kunde inte läsa brandväggen på denna värd.",
+    "disabled": "Brandväggen är inaktiverad för denna värd. Aktivera den i värdinställningarna.",
+    "sudo": "Denna värd kräver lösenordsfritt sudo eller root-inloggning för att läsa och ändra brandväggen.",
+    "noFirewall": "Ingen brandvägg",
+    "on": "på",
+    "off": "av",
+    "readOnly": "skrivskyddad",
+    "ruleCount_one": "{{count}} regel",
+    "ruleCount_other": "{{count}} regler",
+    "viewRules": "Regler",
+    "viewDefaults": "Standardvärden",
+    "viewZones": "Zoner",
+    "viewFail2ban": "Fail2ban",
+    "viewRaw": "Rådata"
+  },
+  "common": {
+    "loading": "Laddar...",
+    "save": "Spara",
+    "cancel": "Avbryt",
+    "delete": "Ta bort",
+    "edit": "Redigera",
+    "done": "Klar",
+    "failed": "Det fungerade inte."
+  },
+  "actions": {
+    "allow": "Tillåt",
+    "deny": "Neka",
+    "reject": "Avvisa",
+    "limit": "Begränsa"
+  },
+  "policies": {
+    "allow": "Tillåt",
+    "deny": "Neka (släpp)",
+    "reject": "Avvisa"
+  },
+  "rule": {
+    "action": "Åtgärd",
+    "direction": "Riktning",
+    "in": "Inkommande",
+    "out": "Utgående",
+    "protocol": "Protokoll",
+    "anyProtocol": "TCP och UDP",
+    "port": "Port",
+    "portPlaceholder": "22, 80,443 eller 8000-8100",
+    "portHint": "Lämna tomt för alla portar. Listor och intervall kräver TCP eller UDP.",
+    "anyPort": "valfri port",
+    "source": "Från",
+    "destination": "Till",
+    "anywhere": "Överallt",
+    "addressHint": "En adress eller ett intervall som 10.0.0.0/8.",
+    "family": "IP-version",
+    "bothFamilies": "IPv4 och IPv6",
+    "iface": "Gränssnitt",
+    "anyIface": "Valfritt gränssnitt",
+    "service": "Tjänst",
+    "serviceHint": "Ett tjänstnamn för firewalld, istället för en port.",
+    "comment": "Kommentar",
+    "commentPlaceholder": "Vad regeln gäller",
+    "zoneLabel": "Zon",
+    "from": "från {{address}}",
+    "to": "till {{address}}",
+    "on": "på {{iface}}",
+    "zone": "zon {{zone}}"
+  },
+  "presets": {
+    "ssh": "SSH",
+    "http": "HTTP",
+    "https": "HTTPS",
+    "web": "Web",
+    "dns": "DNS",
+    "smtp": "E-post",
+    "mysql": "MySQL",
+    "postgres": "PostgreSQL",
+    "redis": "Redis",
+    "samba": "Samba",
+    "wireguard": "WireGuard",
+    "minecraft": "Minecraft"
+  },
+  "rules": {
+    "add": "Lägg till regel",
+    "addTitle": "Ny regel",
+    "editTitle": "Redigera regel",
+    "added": "Regeln lades till",
+    "saved": "Regeln sparades",
+    "deleted": "Regeln togs bort",
+    "confirmDelete": "Ta bort denna regel?",
+    "search": "Sök bland portar, adresser och kommentarer",
+    "empty": "Inga regler ännu.",
+    "noMatch": "Inga regler matchar.",
+    "readOnly": "Skrivskyddad",
+    "deleteOnly": "Endast radering",
+    "stale": "Reglerna har ändrats på värdservern. Uppdatera och försök igen.",
+    "filters": {
+      "all": "Alla",
+      "in": "Inkommande",
+      "out": "Utgående",
+      "readOnly": "Skrivskyddad"
+    }
+  },
+  "defaults": {
+    "hint": "Vad som händer med trafik som ingen regel matchar.",
+    "incoming": "Inkommande",
+    "outgoing": "Utgående",
+    "routed": "Dirigerad",
+    "saved": "Standardvärden sparades"
+  },
+  "zones": {
+    "hint": "firewalld placerar varje nätverksgränssnitt och källa i en zon. En zons mål är vad den gör med trafik som dess regler inte matchar.",
+    "defaultZone": "Standardzon",
+    "default": "Standard",
+    "active": "Aktiv",
+    "target": "Mål",
+    "interfaces": "gränssnitt {{list}}",
+    "sources": "källor {{list}}",
+    "saved": "Zonen sparades",
+    "targets": {
+      "default": "Standard (avvisa)",
+      "ACCEPT": "Acceptera",
+      "DROP": "Släpp",
+      "REJECT": "Avvisa"
+    }
+  },
+  "enable": {
+    "off": "Brandväggen är avstängd, så ingen av dessa regler gäller just nu.",
+    "allowSsh": "Tillåt SSH på port {{ports}} först",
+    "allowSshHint": "Håller Termix och dina egna SSH-inloggningar fungerande.",
+    "button": "Aktivera",
+    "done": "Brandväggen aktiverades",
+    "timerHint": "När du aktiverar den startas en timer. Om du inte trycker på Behåll i tid stänger värdservern av den igen automatiskt."
+  },
+  "disable": {
+    "button": "Inaktivera",
+    "title": "Stäng av brandväggen?",
+    "description": "Alla regler slutar gälla tills du aktiverar den igen.",
+    "done": "Brandväggen inaktiverades"
+  },
+  "install": {
+    "none": "Denna värdserver har ingen brandvägg än.",
+    "hint": "Installera en för att komma igång. Inget aktiveras förrän du säger till.",
+    "button": "Installera {{name}}",
+    "working": "Installerar...",
+    "done": "{{name}} installerades",
+    "noPackageManager": "Termix kunde inte hitta en pakethanterare den känner till på denna värdserver."
+  },
+  "lockout": {
+    "title": "Detta kan låsa ut Termix",
+    "confirm": "Fortsätt"
+  },
+  "pending": {
+    "started": "Ändring tillämpad. Tryck på Behåll för att göra den permanent.",
+    "left": "Ångras om {{seconds}} s om du inte trycker på Behåll",
+    "expired": "Tiden gick ut, värdet ångrar nu ändringen",
+    "reachable": "Termix kunde fortfarande ansluta",
+    "unreachable": "Termix kunde inte ansluta efter ändringen",
+    "unknown": "Kontrollerar anslutningen",
+    "keep": "Behåll",
+    "undo": "Ångra nu",
+    "kept": "Ändring behållen",
+    "undone": "Ändring ångrad",
+    "gone": "Tiden gick ut och värdet har redan ångrat ändringen.",
+    "first": "Behåll eller ångra den senaste ändringen först.",
+    "kinds": {
+      "add": "Ny regel",
+      "update": "Ändrad regel",
+      "remove": "Borttagen regel",
+      "defaults": "Nya standardvärden",
+      "enable": "Brandvägg aktiverad",
+      "disable": "Brandvägg inaktiverad",
+      "zoneTarget": "Nytt zilmål",
+      "defaultZone": "Ny standardzon",
+      "ruleset": "Regelset tillämpat"
+    }
+  },
+  "fail2ban": {
+    "loadFailed": "Kunde inte läsa Fail2ban.",
+    "notInstalled": "Fail2ban är inte installerat. Det blockerar adresser som misslyckas med inloggning för ofta.",
+    "stopped": "Fail2ban är installerat men körs inte.",
+    "start": "Starta Fail2ban",
+    "started": "Fail2ban startat",
+    "noJails": "Inga fängelser är aktiverade.",
+    "none": "Inget blockerat.",
+    "bannedCount_one": "{{count}} blockerad",
+    "bannedCount_other": "{{count}} blockerade",
+    "counts": "{{failed}} misslyckas just nu | {{totalFailed}} misslyckanden | {{totalBanned}} blockerade totalt",
+    "ban": "Blockera",
+    "unban": "Avblockera",
+    "banAddress": "Blockera en adress",
+    "banned": "{{ip}} blockerad",
+    "unbanned": "{{ip}} avblockerad",
+    "selfTitle": "Blockera Termix-adressen?",
+    "selfDescription": "Termix ansluter från denna adress. Om du blockerar den bryts Termix anslutning till denna värd."
+  },
+  "raw": {
+    "empty": "Inget att visa."
+  },
+  "watch": {
+    "start": "Avertisa mig när denna brandvägg ändras",
+    "stop": "Stoppa aviseringar för denna brandvägg"
+  },
+  "companion": {
+    "openTab": "Öppna fliken Brandvägg",
+    "toggle": "Brandväggspanel",
+    "allowPort": "Tillåt en TCP-port"
+  },
+  "card": {
+    "title": "Brandväggar",
+    "empty": "Inga värdar har Brandvägg aktiverad.",
+    "banned_one": "{{count}} blockerad",
+    "banned_other": "{{count}} blockerade",
+    "pending": "Väntar"
+  },
+  "rulesets": {
+    "title": "Brandväggsregelset",
+    "hint": "Spara en lista med regler och lägg till den på många värdar samtidigt. Tillämpning lägger bara till saknade regler, den tar aldrig bort några.",
+    "add": "Nytt regelset",
+    "addTitle": "Nytt regelset",
+    "editTitle": "Redigera regelset",
+    "loadFailed": "Kunde inte ladda dina regelset.",
+    "empty": "Inga regelset ännu.",
+    "name": "Namn",
+    "namePlaceholder": "Webbserver",
+    "description": "Beskrivning",
+    "rules": "Regler",
+    "noRules": "Inga regler i den här uppsättningen än.",
+    "hosts": "Värdar",
+    "noHosts": "Inga värdar har brandvägg aktiverad.",
+    "saved": "Regeluppsättning sparad",
+    "deleted": "Regeluppsättning raderad",
+    "confirmDelete": "Ta bort {{name}}?",
+    "deleteHint": "Regler som redan har lagts till på värdar behålls.",
+    "ruleCount_one": "{{count}} regel",
+    "ruleCount_other": "{{count}} regler",
+    "hostCount_one": "{{count}} värd",
+    "hostCount_other": "{{count}} värdar",
+    "check": "Kontrollera värdar",
+    "apply": "Verkställ",
+    "applyTitle": "Verkställ {{name}}?",
+    "applyDescription": "Saknade regler läggs till på varje värd. Varje värd får en kontroll för SSH-låsning, och en värd som Termix inte kan nå därefter ångrar ändringen automatiskt.",
+    "applied": "Regeluppsättning verkställd",
+    "applyErrors_one": "{{count}} värd hade ett problem",
+    "applyErrors_other": "{{count}} värdar hade ett problem",
+    "applyResult": "Verkställde {{name}}",
+    "driftTitle": "{{name}} på varje värd",
+    "inSync": "Har alla regler",
+    "ok": "Synkroniserad",
+    "missing_one": "{{count}} saknas",
+    "missing_other": "{{count}} saknas",
+    "nothingMissing": "Hade redan alla regler",
+    "added_one": "Lade till {{count}} regel",
+    "added_other": "Lade till {{count}} regler",
+    "waiting": "Lagt till, men Termix kunde inte ansluta därefter. Värdens ändring ångras.",
+    "fleet": "Flotta",
+    "applyFleet": "Verkställ för hela flottan"
+  },
+  "permissions": {
+    "use": {
+      "title": "Använd brandvägg",
+      "description": "Öppna fliken Brandvägg på värdar du kan nå. Ändringar kräver också redigeringsåtkomst till värdens inställningar."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Brandvägg",
+        "description": "Visa fliken Brandvägg för denna värd för att hantera dess brandvägg via SSH."
+      },
+      "useSudo": {
+        "label": "Använd sudo",
+        "description": "Kör brandväggsbefäl med lösenordsfritt sudo när inloggningen inte är root."
+      },
+      "readOnly": {
+        "label": "Skrivskyddad",
+        "description": "Visa brandväggen men blockera alla ändringar från Termix."
+      },
+      "sshGuard": {
+        "label": "Kontroll för SSH-låsning",
+        "description": "Stoppa och fråga innan en ändring som ser ut att blockera SSH från Termix."
+      },
+      "rollbackSeconds": {
+        "label": "Ångra-timer",
+        "description": "Sekunder du har på dig att trycka på Behåll efter en riskfylld ändring innan värdens ändring ångras."
+      },
+      "confirmAll": {
+        "label": "Timer vid varje ändring",
+        "description": "Använd ångra-timern för varje ändring, inte bara de riskfyllda."
+      },
+      "showPanel": {
+        "label": "Brandväggspanel",
+        "description": "Erbjud brandväggspanelen bredvid SSH-terminaler för denna värd."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Öppna brandväggspanelen med en terminal",
+        "description": "Visa brandväggspanelen när en terminal öppnas på en värd som har den."
+      },
+      "companionSide": {
+        "label": "Placering för brandväggspanelen",
+        "description": "Var panelen placeras bredvid terminalen.",
+        "right": "Höger",
+        "left": "Vänster",
+        "bottom": "Botten"
+      },
+      "companionSize": {
+        "label": "Storlek på brandväggspanelen",
+        "description": "Bredd, eller höjd vid botten, i pixlar."
+      },
+      "companionEdgeButton": {
+        "label": "Knapp för brandväggspanelen vid kanten",
+        "description": "Visa en liten knapp vid terminalens kant för att öppna panelen."
+      }
+    }
+  },
+  "manager": {
+    "title": "Brandvägg",
+    "disabled": "Aktivera Brandvägg i inställningarna för denna värd för att hantera dess brandvägg här."
+  },
+  "operations": {
+    "list": {
+      "title": "Lista brandväggsregler"
+    },
+    "status": {
+      "title": "Brandvägg"
+    },
+    "portAllowed": {
+      "title": "Porten är tillåten",
+      "description": "Om en tillåtelse-regel för denna port finns. Använd den för att övervaka värdar för avvikelser."
+    },
+    "allow": {
+      "title": "Tillåt en port"
+    },
+    "remove": {
+      "title": "Ta bort en tillåten port"
+    },
+    "delete": {
+      "title": "Ta bort brandväggsregel"
+    },
+    "rules": {
+      "title": "Brandväggsregler"
+    },
+    "port": "Port",
+    "protocol": "Protokoll",
+    "tcp": "TCP",
+    "udp": "UDP",
+    "any": "Alla",
+    "source": "Från",
+    "sourceHint": "En adress eller ett intervall. Tomt innebär var som helst.",
+    "direction": "Riktning"
+  }
+}

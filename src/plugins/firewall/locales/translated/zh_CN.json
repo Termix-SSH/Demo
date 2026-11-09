@@ -1,0 +1,348 @@
+{
+  "tab": {
+    "title": "防火墙",
+    "noHost": "从主机打开防火墙。",
+    "refresh": "刷新",
+    "error": "无法读取此主机上的防火墙。",
+    "disabled": "此主机已关闭防火墙。请在主机设置中将其开启。",
+    "sudo": "此主机需要无密码 sudo 或 root 登录，才能读取和修改防火墙。",
+    "noFirewall": "无防火墙",
+    "on": "开启",
+    "off": "关闭",
+    "readOnly": "只读",
+    "ruleCount_other": "{{count}} 条规则",
+    "viewRules": "规则",
+    "viewDefaults": "默认值",
+    "viewZones": "区域",
+    "viewFail2ban": "Fail2ban",
+    "viewRaw": "原始"
+  },
+  "common": {
+    "loading": "加载中...",
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "done": "完成",
+    "failed": "操作失败。"
+  },
+  "actions": {
+    "allow": "允许",
+    "deny": "拒绝",
+    "reject": "驳回",
+    "limit": "限制"
+  },
+  "policies": {
+    "allow": "允许",
+    "deny": "拒绝（丢弃）",
+    "reject": "驳回"
+  },
+  "rule": {
+    "action": "操作",
+    "direction": "方向",
+    "in": "入站",
+    "out": "出站",
+    "protocol": "协议",
+    "anyProtocol": "TCP 和 UDP",
+    "port": "端口",
+    "portPlaceholder": "22、80,443 或 8000-8100",
+    "portHint": "留空表示所有端口。列表和范围需要指定 TCP 或 UDP。",
+    "anyPort": "任意端口",
+    "source": "来源",
+    "destination": "目标",
+    "anywhere": "任意位置",
+    "addressHint": "一个地址或范围，如 10.0.0.0/8。",
+    "family": "IP 版本",
+    "bothFamilies": "IPv4 和 IPv6",
+    "iface": "接口",
+    "anyIface": "任意接口",
+    "service": "服务",
+    "serviceHint": "firewalld 服务名称，而非端口。",
+    "comment": "注释",
+    "commentPlaceholder": "此规则的用途",
+    "zoneLabel": "区域",
+    "from": "来自 {{address}}",
+    "to": "至 {{address}}",
+    "on": "在 {{iface}} 上",
+    "zone": "区域 {{zone}}"
+  },
+  "presets": {
+    "ssh": "SSH",
+    "http": "HTTP",
+    "https": "HTTPS",
+    "web": "Web",
+    "dns": "DNS",
+    "smtp": "邮件",
+    "mysql": "MySQL",
+    "postgres": "PostgreSQL",
+    "redis": "Redis",
+    "samba": "Samba",
+    "wireguard": "WireGuard",
+    "minecraft": "Minecraft"
+  },
+  "rules": {
+    "add": "添加规则",
+    "addTitle": "新建规则",
+    "editTitle": "编辑规则",
+    "added": "规则已添加",
+    "saved": "规则已保存",
+    "deleted": "规则已删除",
+    "confirmDelete": "删除此规则？",
+    "search": "搜索端口、地址和注释",
+    "empty": "暂无规则。",
+    "noMatch": "没有匹配的规则。",
+    "readOnly": "只读",
+    "deleteOnly": "仅删除",
+    "stale": "主机上的规则已更改。请刷新后重试。",
+    "filters": {
+      "all": "全部",
+      "in": "入站",
+      "out": "出站",
+      "readOnly": "只读"
+    }
+  },
+  "defaults": {
+    "hint": "未匹配任何规则的流量处理方式。",
+    "incoming": "入站",
+    "outgoing": "出站",
+    "routed": "路由",
+    "saved": "默认值已保存"
+  },
+  "zones": {
+    "hint": "firewalld 将每个网络接口和源地址归入一个区域。区域的目标决定了其规则未匹配的流量如何处理。",
+    "defaultZone": "默认区域",
+    "default": "默认",
+    "active": "活动",
+    "target": "目标",
+    "interfaces": "接口 {{list}}",
+    "sources": "源地址 {{list}}",
+    "saved": "区域已保存",
+    "targets": {
+      "default": "默认（拒绝）",
+      "ACCEPT": "接受",
+      "DROP": "丢弃",
+      "REJECT": "拒绝"
+    }
+  },
+  "enable": {
+    "off": "防火墙已关闭，因此当前这些规则均不生效。",
+    "allowSsh": "请先允许端口 {{ports}} 上的 SSH 连接",
+    "allowSshHint": "确保 Termix 和您自己的 SSH 登录保持可用。",
+    "button": "开启",
+    "done": "防火墙已开启",
+    "timerHint": "开启后会启动一个计时器。如果您未及时点击“保留”，主机将自动再次关闭防火墙。"
+  },
+  "disable": {
+    "button": "关闭",
+    "title": "关闭防火墙？",
+    "description": "所有规则将停止生效，直到您再次开启防火墙。",
+    "done": "防火墙已关闭"
+  },
+  "install": {
+    "none": "此主机尚未安装防火墙。",
+    "hint": "安装一个即可开始使用。在您明确开启之前，不会启用任何功能。",
+    "button": "安装 {{name}}",
+    "working": "正在安装...",
+    "done": "{{name}} 已安装",
+    "noPackageManager": "Termix 在此主机上未找到已知的包管理器。"
+  },
+  "lockout": {
+    "title": "这可能导致 Termix 被锁定",
+    "description": "{{reason}}。如果 Termix 在更改后无法连接，主机将在计时器到期时自动撤销更改。是否继续？",
+    "confirm": "继续"
+  },
+  "pending": {
+    "started": "更改已应用。点击“保留”以使其永久生效。",
+    "left": "除非点击“保留”，否则将在 {{seconds}} 秒后撤销",
+    "expired": "时间已到，主机正在撤销更改",
+    "reachable": "Termix 仍可连接",
+    "unreachable": "更改后 Termix 无法连接",
+    "unknown": "正在检查连接",
+    "keep": "保留",
+    "undo": "立即撤销",
+    "kept": "更改已保留",
+    "undone": "更改已撤销",
+    "gone": "时间已到，主机已撤销更改。",
+    "first": "请先保留或撤销上一次更改。",
+    "kinds": {
+      "add": "新规则",
+      "update": "已更改的规则",
+      "remove": "已删除的规则",
+      "defaults": "新默认值",
+      "enable": "防火墙已开启",
+      "disable": "防火墙已关闭",
+      "zoneTarget": "新区域目标",
+      "defaultZone": "新默认区域",
+      "ruleset": "规则集已应用"
+    }
+  },
+  "fail2ban": {
+    "loadFailed": "无法读取 Fail2ban。",
+    "notInstalled": "Fail2ban 未安装。它会封禁频繁登录失败的地址。",
+    "stopped": "Fail2ban 已安装但未运行。",
+    "start": "启动 Fail2ban",
+    "started": "Fail2ban 已启动",
+    "noJails": "未启用任何监狱。",
+    "none": "无封禁记录。",
+    "bannedCount_other": "{{count}} 个已封禁",
+    "counts": "{{failed}} 当前失败 | {{totalFailed}} 总失败次数 | {{totalBanned}} 总封禁次数",
+    "ban": "封禁",
+    "unban": "解封",
+    "banAddress": "封禁一个地址",
+    "banned": "{{ip}} 已封禁",
+    "unbanned": "{{ip}} 已解封",
+    "selfTitle": "封禁 Termix 地址？",
+    "selfDescription": "Termix 从此地址连接。封禁它将导致 Termix 无法连接到此主机。"
+  },
+  "raw": {
+    "empty": "无内容显示。"
+  },
+  "watch": {
+    "start": "当此防火墙更改时通知我",
+    "stop": "停止此防火墙的通知"
+  },
+  "companion": {
+    "openTab": "打开防火墙标签页",
+    "toggle": "防火墙面板",
+    "allowPort": "允许一个 TCP 端口"
+  },
+  "card": {
+    "title": "防火墙",
+    "empty": "没有主机开启防火墙。",
+    "banned_other": "{{count}} 个已封禁",
+    "pending": "等待中"
+  },
+  "rulesets": {
+    "title": "防火墙规则集",
+    "hint": "保存规则列表并一次性添加到多个主机。应用时仅添加缺失的规则，不会删除任何现有规则。",
+    "add": "新规则集",
+    "addTitle": "新规则集",
+    "editTitle": "编辑规则集",
+    "loadFailed": "无法加载您的规则集。",
+    "empty": "暂无规则集。",
+    "name": "名称",
+    "namePlaceholder": "Web 服务器",
+    "description": "描述",
+    "rules": "规则",
+    "noRules": "此规则集暂无规则。",
+    "hosts": "主机",
+    "noHosts": "没有主机已开启防火墙。",
+    "saved": "规则集已保存",
+    "deleted": "规则集已删除",
+    "confirmDelete": "删除 {{name}}？",
+    "deleteHint": "已添加到主机的规则将保留。",
+    "ruleCount_other": "{{count}} 条规则",
+    "hostCount_other": "{{count}} 台主机",
+    "check": "检查主机",
+    "apply": "应用",
+    "applyTitle": "应用 {{name}}？",
+    "applyDescription": "缺失的规则将添加到每台主机。每台主机都会进行 SSH 锁定检查，如果 Termix 之后无法连接该主机，则会自动撤销更改。",
+    "applied": "规则集已应用",
+    "applyErrors_other": "{{count}} 台主机出现问题",
+    "applyResult": "已应用 {{name}}",
+    "driftTitle": "每台主机上的 {{name}}",
+    "inSync": "包含所有规则",
+    "ok": "已同步",
+    "missing_other": "缺失 {{count}} 条",
+    "nothingMissing": "已包含所有规则",
+    "added_other": "已添加 {{count}} 条规则",
+    "waiting": "已添加，但 Termix 之后无法连接。主机将撤销此更改。",
+    "fleet": "主机群",
+    "applyFleet": "应用到主机群"
+  },
+  "permissions": {
+    "use": {
+      "title": "使用防火墙",
+      "description": "在您能连接的主机上打开防火墙选项卡。更改还需要对主机拥有编辑权限。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "防火墙",
+        "description": "为此主机显示防火墙选项卡，以便通过 SSH 管理其防火墙。"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "当登录用户不是 root 时，使用无密码 sudo 运行防火墙命令。"
+      },
+      "readOnly": {
+        "label": "只读",
+        "description": "显示防火墙，但阻止 Termix 进行任何更改。"
+      },
+      "sshGuard": {
+        "label": "SSH 锁定检查",
+        "description": "在看似会阻止 Termix 进行 SSH 连接的更改之前停止并询问。"
+      },
+      "rollbackSeconds": {
+        "label": "撤销计时器",
+        "description": "在主机自动撤销高风险更改之前，您按下“保留”的秒数。"
+      },
+      "confirmAll": {
+        "label": "每次更改都启用计时器",
+        "description": "对所有更改使用撤销计时器，而不仅仅是高风险更改。"
+      },
+      "showPanel": {
+        "label": "防火墙面板",
+        "description": "为此主机的 SSH 终端旁边提供防火墙面板。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "随终端打开防火墙面板",
+        "description": "在具有防火墙面板的主机上打开终端时显示该面板。"
+      },
+      "companionSide": {
+        "label": "防火墙面板位置",
+        "description": "面板相对于终端的位置。",
+        "right": "右侧",
+        "left": "左侧",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "防火墙面板大小",
+        "description": "宽度（或底部时的高度），单位为像素。"
+      },
+      "companionEdgeButton": {
+        "label": "防火墙面板边缘按钮",
+        "description": "在终端边缘显示一个小按钮以打开面板。"
+      }
+    }
+  },
+  "manager": {
+    "title": "防火墙",
+    "disabled": "在此主机的设置中开启防火墙，以便在此处管理其防火墙。"
+  },
+  "operations": {
+    "list": {
+      "title": "列出防火墙规则"
+    },
+    "status": {
+      "title": "防火墙"
+    },
+    "portAllowed": {
+      "title": "端口已允许",
+      "description": "是否存在允许此端口的规则。用于监控主机的配置漂移。"
+    },
+    "allow": {
+      "title": "允许端口"
+    },
+    "remove": {
+      "title": "移除已允许的端口"
+    },
+    "delete": {
+      "title": "删除防火墙规则"
+    },
+    "rules": {
+      "title": "防火墙规则"
+    },
+    "port": "端口",
+    "protocol": "协议",
+    "tcp": "TCP",
+    "udp": "UDP",
+    "any": "任意",
+    "source": "来源",
+    "sourceHint": "地址或范围。留空表示允许所有来源。",
+    "direction": "方向"
+  }
+}

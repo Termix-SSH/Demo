@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "ניהול רשומות DNS ותחומים ב-Cloudflare, Route 53, Namecheap ובספקים נוספים."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "תחומים",
+    "loading": "טוען",
+    "empty": "אין תחומים עדיין. פתח את DNS כדי להוסיף פרטי התחברות.",
+    "ok": "{{domains}} תחומים, אף אחד לא פג תוקף בקרוב",
+    "accounts": "one: {{count}} התחברות",
+    "failingLinks": "one: {{count}} רשומה מקושרת כושלת"
+  },
+  "permissions": {
+    "view": {
+      "title": "צפייה ב-DNS",
+      "description": "פתח את הלשונית DNS וראה אזורי DNS, רשומות, דומיינים ובדיקות בריאות."
+    },
+    "edit": {
+      "title": "שינוי רשומות DNS",
+      "description": "הוסף, שנה ומחק רשומות, יבא קבצי אזור ורענן דומיינים."
+    },
+    "manage": {
+      "title": "ניהול התחברויות DNS",
+      "description": "הוסף התחברויות לספקים, חבר רשומות למארחים, עקוב אחר דומיינים ושחזר עותקי אזור."
+    }
+  },
+  "operations": {
+    "zone": "אזור",
+    "type": "סוג",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "שם",
+    "content": "ערך",
+    "contentOptional": "ערך (השאר ריק כדי להתאים לכל)",
+    "ttl": "TTL בשניות",
+    "label": "תווית",
+    "zones": {
+      "title": "הצגת אזורי DNS"
+    },
+    "records": {
+      "title": "הצגת רשומות DNS"
+    },
+    "domains": {
+      "title": "הצגת דומיינים ותאריכי פקיעה"
+    },
+    "check": {
+      "title": "בדיקת אזור"
+    },
+    "upsert": {
+      "title": "הגדר רשומת DNS"
+    },
+    "delete": {
+      "title": "מחק רשומת DNS"
+    },
+    "snapshot": {
+      "title": "שמור עותק של אזור"
+    },
+    "links": {
+      "title": "עדכן רשומות מקושרות"
+    },
+    "expiry": {
+      "title": "תפוגת דומיין"
+    }
+  },
+  "description": "הוסף את פרטי ההתחברות ל-DNS ולרשם הדומיינים כדי לנהל רשומות ולעקוב אחר דומיינים במקום אחד. המפתחות מאוחסנים בצורה מוצפנת ולא יוצגו שוב.",
+  "summary": "{{zones}} אזורים, {{domains}} דומיינים",
+  "saved": "נשמר",
+  "delete": "מחק",
+  "edit": "ערוך",
+  "back": "חזרה",
+  "refresh": "רענון",
+  "section": {
+    "zones": "אזורים",
+    "domains": "דומיינים",
+    "links": "קישורים",
+    "accounts": "התחברויות"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "אסימון API",
+    "accessKeyId": "מזהה מפתח גישה",
+    "secretAccessKey": "מפתח גישה סודי",
+    "sessionToken": "אסימון סשן (אופציונלי)",
+    "apiUser": "משתמש API",
+    "apiKey": "מפתח API",
+    "userName": "שם משתמש (אם שונה ממשתמש ה-API)",
+    "clientIp": "כתובת IP מורשית",
+    "apiSecret": "סוד API",
+    "environment": "סביבה",
+    "environment_production": "ייצור",
+    "environment_ote": "בדיקה (OTE)",
+    "secretApiKey": "מפתח API סודי",
+    "token": "אסימון גישה אישי"
+  },
+  "zones": {
+    "empty": "אין אזורות עדיין.",
+    "emptyHint": "הוסף התחברות ספק ב-Logins כדי לראות את האזורות שלו."
+  },
+  "zone": {
+    "records": "רשומות",
+    "health": "מצב בריאות",
+    "copies": "עותקים",
+    "files": "קבצים",
+    "filter": "סינון רשומות",
+    "empty": "אין רשומות."
+  },
+  "record": {
+    "section": "רשומה",
+    "addTitle": "הוספת רשומה",
+    "editTitle": "עריכת רשומה",
+    "add": "הוספת רשומה",
+    "save": "שמירה",
+    "type": "סוג",
+    "name": "שם",
+    "nameHint": "השתמש ב-@ עבור {{zone}} עצמו",
+    "value": "ערך",
+    "priority": "עדיפות",
+    "ttl": "TTL (שניות)",
+    "ttlHint": "כמה זמן פותרים שומרים את התשובה. 300 זה 5 דקות.",
+    "ttlAuto": "1 פירושו אוטומטי.",
+    "proxied": "מאחורי פרוקסי",
+    "proxiedHint": "העברת תעבורה דרך Cloudflare.",
+    "proxiedBadge": "מאוחזר",
+    "comment": "הערה",
+    "readOnly": "מונהל על ידי הספק",
+    "deleteConfirm": "למחוק את רשומת ה-{{type}} {{name}}?"
+  },
+  "account": {
+    "add": "הוספת התחברות",
+    "addTitle": "הוספת התחברות ל-DNS",
+    "editTitle": "עריכת התחברות ל-DNS",
+    "save": "שמירה",
+    "login": "התחברות",
+    "provider": "ספק",
+    "name": "שם",
+    "namePlaceholder": "Cloudflare ראשי",
+    "keep": "השאר ריק כדי לשמור על הערך הקיים",
+    "registrar": "ספק זה הוא גם רשם דומיינים, ולכן הדומיינים שלו מופיעים תחת דומיינים.",
+    "options": "אפשרויות",
+    "autoBackup": "שמור עותקים של אזורי DNS",
+    "autoBackupHint": "שמור עותק לפני כל שינוי וכאשר אזור משתנה מחוץ ל-Termix.",
+    "checkHealth": "בדוק אזורי DNS מדי יום",
+    "checkHealthHint": "הפעל בדיקות בריאות יומיות והתרע על בעיות חדשות.",
+    "test": "בדיקה",
+    "testOk": "עובד. נמצאו {{zones}} אזורי DNS ו-{{domains}} דומיינים.",
+    "deleteConfirm": "למחוק את {{name}}? העותקים והקישורים שלו יימחקו איתו. אין שינוי אצל הספק.",
+    "empty": "אין התחברויות עדיין.",
+    "emptyHint": "הוסף התחברות ל-Cloudflare, Route 53, Namecheap או ספק אחר כדי להתחיל.",
+    "lastSync": "בדיקה אחרונה ב-{{date}}",
+    "never": "טרם נבדק",
+    "failed": "ההתחברות נכשלה"
+  },
+  "domains": {
+    "empty": "אין דומיינים עדיין.",
+    "emptyHint": "התחברויות לרשמי דומיינים מציגות כאן את הדומיינים שלהם. ניתן גם לעקוב אחרי כל דומיין לפי שמו.",
+    "watchPlaceholder": "example.com",
+    "watch": "עקוב אחרי דומיין",
+    "unwatch": "הפסק לעקוב",
+    "watched": "נעקבים",
+    "noRenew": "חידוש אוטומטי כבוי",
+    "unlocked": "לא נעול",
+    "unknown": "רשם הדומיינים לא ידוע",
+    "expires": "פג תוקף ב-{{date}}",
+    "expired": "פג תוקף",
+    "days": "נותרו {{count}} ימים",
+    "refreshFailed": "נכשלו {{count}} שאילתות"
+  },
+  "link": {
+    "add": "הוסף קישור",
+    "addTitle": "הוסף קישור",
+    "editTitle": "ערוך קישור",
+    "save": "שמור",
+    "record": "רשום",
+    "address": "כתובת",
+    "zone": "אזור",
+    "pickZone": "בחר אזור",
+    "source": "הפנה אל",
+    "sourceHost": "מארח",
+    "sourcePublic4": "כתובת ה-IPv4 הציבורית של השרת הזה",
+    "sourcePublic6": "כתובת ה-IPv6 הציבורית של השרת הזה",
+    "source_host": "מארח",
+    "source_public4": "IPv4 ציבורי",
+    "source_public6": "IPv6 ציבורי",
+    "host": "מארח",
+    "pickHost": "בחר מארח",
+    "hostHint": "הרשומה עוקבת אחר כתובת המארח. היא מתעדכנת כשהמארח משתנה.",
+    "publicHint": "Termix בודק את הכתובת הציבורית שלו ושומר על סנכרון הרשומה, כמו DNS דינמי.",
+    "enabled": "שמור רשומה זו מעודכנת",
+    "empty": "אין קישורים עדיין.",
+    "emptyHint": "קישור שומר על רשומה המפנה לארח או לכתובת הציבורית של השרת הזה.",
+    "off": "כבוי",
+    "hostGone": "הארח לא נמצא",
+    "lastSync": "בדוק ב-{{date}}",
+    "never": "טרם נבדק",
+    "syncNow": "עדכן עכשיו",
+    "updated": "הרשומה עודכנה",
+    "unchanged": "הרשומה כבר הייתה נכונה",
+    "deleteConfirm": "להסיר את הקישור ל-{{name}}? הרשמה תישאר במקומה."
+  },
+  "diff": {
+    "none": "אין שינויים.",
+    "add": "הוסף",
+    "change": "שנה",
+    "remove": "הסר"
+  },
+  "copies": {
+    "hint": "עותקים נשמרים לפני כל שינוי ופעם ביום כאשר אזור השתנה מחוץ ל-Termix.",
+    "save": "שמור עותק",
+    "saved": "העותק נשמר",
+    "manualLabel": "עותק ידני",
+    "empty": "אין עותקים עדיין.",
+    "count": "{{count}} רשומות",
+    "compare": "השוואה לעכשיו",
+    "restore": "שחזור",
+    "restoreConfirm": "לשחזר את העותק הזה? יבוצעו {{count}} שינויים אצל הספק. תחילה נשמר עותק של הרשומות הנוכחיות.",
+    "restored": "שוחזר. בוצעו {{count}} שינויים.",
+    "source": {
+      "manual": "ידני",
+      "auto": "יומי",
+      "before": "לפני השינוי"
+    }
+  },
+  "files": {
+    "export": "הורדת קובץ אזור",
+    "exportHint": "הורדת הרשומות כקובץ אזור BIND.",
+    "import": "ייבוא קובץ אזור",
+    "placeholder": "הדבק כאן קובץ אזור BIND",
+    "replace": "הסר רשומות שאינן מופיעות בקובץ",
+    "replaceHint": "כבוי, הייבוא רק מוסיף ומשנה רשומות.",
+    "preview": "תצוגה מקדימה",
+    "apply": "החל",
+    "applied": "התבצע ייבוא. בוצעו {{count}} שינויים.",
+    "skipped": "התעלם:"
+  },
+  "health": {
+    "run": "הפעל בדיקות",
+    "running": "מבצע",
+    "propagation": "בדיקת פותרים",
+    "propagationTitle": "פותרים ציבוריים",
+    "lastRun": "הרצה אחרונה {{date}}",
+    "empty": "טרם בוצעו בדיקות לאזור זה.",
+    "record": "רשומה",
+    "resolver": "פותר",
+    "answer": "תשובה",
+    "noAnswer": "אין תשובה",
+    "delegation": {
+      "error": "לא ניתן היה לאתר את שרתי השמות.",
+      "none": "לאזור אין שרתי שמות באינטרנט. ייתכן שהדומיין אינו מכוון לספק זה.",
+      "mismatch": "הדומיין משתמש בשרתי שמות שונים מספק השירות: {{found}}.",
+      "ok": "הדומיין מכוון ל-{{count}} שרתי שמות."
+    },
+    "soa": {
+      "differ": "שרתי השמות אינם מסכימים לגבי גרסת האזור ({{count}} גרסאות). ייתכן ששינוי עדיין מתפשט.",
+      "same": "{{count}} שרתי שמות מסכימים לגבי גרסת האזור."
+    },
+    "dnssec": {
+      "unknown": "לא ניתן לבדוק את DNSSEC.",
+      "off": "DNSSEC אינו מופעל.",
+      "valid": "DNSSEC מופעל ותקין.",
+      "broken": "DNSSEC מוגדר אצל הרשם אך אינו מתקבל כחוקי. פותרים שמבצעים בדיקה ייכשלו."
+    },
+    "cname": {
+      "conflict": "ל-{{name}} יש רשומת CNAME ורשומות נוספות. הדבר אינו מותר.",
+      "apex": "שורש האזור לא יכול להיות רשומת CNAME.",
+      "dangling": "{{name}} מצביע על {{target}}, שאינו מתורגם.",
+      "ok": "כל יעד CNAME מתורגם בהצלחה."
+    },
+    "spf": {
+      "missing": "הדומיין מקבל דוא״ל אך אין לו רשומת SPF.",
+      "multiple": "יש יותר מרשומת SPF אחת. שרתי דוא״ל ידחו את כולן.",
+      "lookups": "רשומת SPF מבצעת {{count}} שאילתות. המגבלה היא 10.",
+      "ok": "הוגדר SPF ({{count}} שאילתות)."
+    },
+    "dmarc": {
+      "missing": "אין רשומת DMARC.",
+      "none": "הוגדר DMARC למעקב בלבד.",
+      "ok": "הוגדר DMARC."
+    },
+    "dkim": {
+      "none": "לא נמצאו מפתחות DKIM באזור זה.",
+      "found": "נמצאו {{count}} מפתחות DKIM."
+    },
+    "mx": {
+      "unresolved": "שרת הדואר {{host}} אינו מתורגם."
+    },
+    "mail": {
+      "none": "לדומיין אין רשומות דואר."
+    },
+    "caa": {
+      "ok": "רשומות CAA מגבילות את מי יכול להנפיק תעודות.",
+      "none": "אין רשומות CAA. כל רשות אימות יכולה להנפיק תעודות."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "דומיינים, דומיינים שפג תוקפם ורשומות כושלות.",
+    "domains": "דומיינים",
+    "expiring": "פג תוקף בקרוב",
+    "failingLinks": "קישורים כושלים",
+    "failingAccounts": "כניסות כושלות"
+  }
+}

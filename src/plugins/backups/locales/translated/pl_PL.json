@@ -1,0 +1,471 @@
+{
+  "plugin": {
+    "name": "Kopie zapasowe",
+    "description": "Twórz kopie zapasowe folderów, baz danych i danych Docker na swoich hostach za pomocą restic, a następnie przeglądaj, pobieraj i przywracaj."
+  },
+  "common": {
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "back": "Wróć",
+    "delete": "Usuń",
+    "done": "Gotowe",
+    "loading": "Ładowanie...",
+    "refresh": "Odśwież",
+    "retry": "Spróbuj ponownie"
+  },
+  "permissions": {
+    "use": {
+      "title": "Używanie kopii zapasowych",
+      "description": "Konfigurowanie zadań i repozytoriów kopii zapasowych, uruchamianie kopii zapasowych oraz przeglądanie, pobieranie i przywracanie migawek na hostach, które można edytować."
+    }
+  },
+  "tab": {
+    "title": "Kopie zapasowe",
+    "viewJobs": "Zadania",
+    "viewRepos": "Repozytoria",
+    "viewHistory": "Historia"
+  },
+  "hostTab": {
+    "title": "Kopie zapasowe",
+    "noHost": "Otwórz kopie zapasowe z hosta.",
+    "viewJobs": "Zadania",
+    "viewSnapshots": "Migawki",
+    "viewHistory": "Historia",
+    "restic": "restic {{version}}",
+    "noRestic": "restic nie jest zainstalowany",
+    "sudo": "Termix musi zalogować się jako root lub jako użytkownik z sudo bez hasła, aby uruchamiać kopie zapasowe na tym hoście.",
+    "statusFailed": "Nie udało się odczytać tego hosta"
+  },
+  "install": {
+    "missing": "restic nie jest zainstalowany na tym hoście",
+    "tooOld": "restic na tym hoście jest starszy niż wersja 0.17",
+    "hint": "Kopie zapasowe używają restic. Zainstaluj go za pomocą menedżera pakietów lub ze strony wydań restic na GitHubie, jeśli pakiet jest zbyt stary.",
+    "button": "Zainstaluj restic",
+    "working": "Instalowanie...",
+    "title": "Zainstalować restic?",
+    "desc": "Spowoduje to zainstalowanie restic na hoście jako root.",
+    "confirm": "Zainstaluj",
+    "done": "restic {{version}} jest zainstalowany",
+    "failed": "Nie udało się zainstalować restic"
+  },
+  "status": {
+    "never": "Nigdy nie uruchomiono",
+    "running": "Uruchamianie",
+    "success": "Gotowe",
+    "warning": "Ostrzeżenia",
+    "failed": "Nieudane",
+    "canceled": "Zatrzymano"
+  },
+  "time": {
+    "justNow": "właśnie teraz",
+    "soon": "za chwilę",
+    "ago": {
+      "minutes_one": "{{count}} minutę temu",
+      "minutes_few": "{{count}} minuty temu",
+      "minutes_many": "{{count}} minut temu",
+      "minutes_other": "{{count}} minut temu",
+      "hours_one": "{{count}} godzinę temu",
+      "hours_few": "{{count}} godziny temu",
+      "hours_many": "{{count}} godzin temu",
+      "hours_other": "{{count}} godzin temu",
+      "days_one": "{{count}} dzień temu",
+      "days_few": "{{count}} dni temu",
+      "days_many": "{{count}} dni temu",
+      "days_other": "{{count}} dni temu"
+    },
+    "in": {
+      "minutes_one": "za {{count}} minutę",
+      "minutes_few": "za {{count}} minuty",
+      "minutes_many": "za {{count}} minut",
+      "minutes_other": "za {{count}} minut",
+      "hours_one": "za {{count}} godzinę",
+      "hours_few": "za {{count}} godziny",
+      "hours_many": "za {{count}} godzin",
+      "hours_other": "za {{count}} godzin",
+      "days_one": "za {{count}} dzień",
+      "days_few": "za {{count}} dni",
+      "days_many": "za {{count}} dni",
+      "days_other": "za {{count}} dni"
+    }
+  },
+  "jobs": {
+    "add": "Dodaj zadanie",
+    "empty": "Brak zadań kopii zapasowych",
+    "emptyHint": "Dodaj zadanie, aby tworzyć kopie zapasowe folderów, baz danych lub danych Docker.",
+    "emptyNoRepo": "Najpierw dodaj repozytorium, aby kopie zapasowe miały gdzie trafić.",
+    "loadFailed": "Nie udało się załadować zadań kopii zapasowych",
+    "lastGood": "Ostatnia kopia zapasowa {{when}}",
+    "noGood": "Brak kopii zapasowej",
+    "next": "Następna {{when}}",
+    "paused": "Wstrzymane",
+    "run": "Uruchom teraz",
+    "stop": "Zatrzymaj",
+    "edit": "Edytuj",
+    "snapshots": "Snapshots",
+    "started": "{{name}} uruchomiony",
+    "runFailed": "Nie udało się uruchomić kopii zapasowej"
+  },
+  "editor": {
+    "newTitle": "Nowe zadanie kopii zapasowej",
+    "general": "Zadanie",
+    "host": "Host",
+    "pickHost": "Wybierz hosta",
+    "name": "Nazwa",
+    "namePlaceholder": "Codzienna kopia zapasowa",
+    "repository": "Repozytorium",
+    "pickRepository": "Wybierz repozytorium",
+    "noRepos": "Nie masz repozytorium, którego ten host mógłby użyć. Dodaj je najpierw na karcie Kopie zapasowe.",
+    "repoLocked": "Tylko właściciel tego repozytorium może je modyfikować.",
+    "enabled": "Uruchamiaj według harmonogramu",
+    "enabledHint": "Wyłącz, aby wstrzymać harmonogram. Opcja „Uruchom teraz” nadal działa.",
+    "oneFileSystem": "Pozostań w jednym systemie plików",
+    "oneFileSystemHint": "Pomiń inne dyski i punkty montowania znalezione w wybranych folderach.",
+    "saved": "Zadanie zapisane",
+    "saveFailed": "Nie udało się zapisać zadania",
+    "deleteTitle": "Usunąć {{name}}?",
+    "deleteDesc": "Zadanie zostanie usunięte z Termix. Jego snapshots pozostaną w repozytorium.",
+    "deleted": "Zadanie usunięte",
+    "deleteFailed": "Nie udało się usunąć zadania"
+  },
+  "sources": {
+    "add": "Dodaj do kopii zapasowej",
+    "addPaths": "Foldery",
+    "addDatabase": "Baza danych",
+    "addDocker": "Docker",
+    "remove": "Usuń",
+    "paths": "Foldery i pliki",
+    "folders": "Ścieżki",
+    "foldersHint": "Jedna pełna ścieżka w wierszu.",
+    "excludes": "Pomiń",
+    "excludesHint": "Jeden wzorzec restic w wierszu, np. *.log.",
+    "database": "Baza danych",
+    "engine": "Typ",
+    "engines": {
+      "mysql": "MySQL lub MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Logowanie",
+    "ownLogin": "Wpisz dane logowania tutaj",
+    "noDatabasesPlugin": "Włącz wtyczkę Bazy danych, aby wybrać zapisane dane logowania.",
+    "address": "Adres",
+    "addressPlaceholder": "Puste dla lokalnego gniazda",
+    "port": "Port",
+    "username": "Użytkownik",
+    "password": "Hasło",
+    "passwordSaved": "Zapisane, pozostaw puste, aby zachować",
+    "runAs": "Uruchom jako",
+    "runAsHint": "Użytkownik Linuxa, jako który ma zostać uruchomiony dump, np. postgres. Puste uruchamia jako root.",
+    "databases": "Bazy danych",
+    "databasesHint": "Jedna nazwa w wierszu. Pozostaw puste, aby wykonać kopię zapasową wszystkich.",
+    "sqliteFiles": "Pliki bazy danych",
+    "sqliteFilesHint": "Jedna pełna ścieżka w wierszu. Każdy plik jest bezpiecznie kopiowany podczas używania.",
+    "docker": "Docker",
+    "stacks": "Stacki",
+    "volumes": "Wolumeny",
+    "noStacks": "Nie znaleziono stacków compose",
+    "noVolumes": "Nie znaleziono wolumenów",
+    "dockerFailed": "Nie udało się wyświetlić listy Docker na tym hoście",
+    "stop": "Zatrzymaj stosy podczas tworzenia kopii zapasowej",
+    "stopHint": "Wybrane stosy są najpierw zatrzymywane, a następnie uruchamiane ponownie, aby ich pliki nie zmieniały się podczas odczytu."
+  },
+  "schedule": {
+    "title": "Harmonogram",
+    "manual": "Ręcznie",
+    "daily": "Codziennie",
+    "weekly": "Co tydzień",
+    "custom": "Własny",
+    "day": "Dzień",
+    "time": "Godzina",
+    "cron": "Cron",
+    "cronHint": "Minuta, godzina, dzień miesiąca, miesiąc, dzień tygodnia.",
+    "cronInvalid": "Ten wyrażenie cron jest nieprawidłowe",
+    "timezone": "Strefa czasowa",
+    "serverTime": "Czas serwera",
+    "manualHint": "To zadanie uruchamia się tylko po kliknięciu Uruchom teraz.",
+    "manualOnly": "Ręcznie",
+    "next": "Następne uruchomienie: {{time}}",
+    "noNext": "Ten harmonogram nigdy się nie uruchamia",
+    "dailyAt": "Codziennie o {{time}}",
+    "weeklyAt": "{{day}} o {{time}}",
+    "days": {
+      "0": "Niedziela",
+      "1": "Poniedziałek",
+      "2": "Wtorek",
+      "3": "Środa",
+      "4": "Czwartek",
+      "5": "Piątek",
+      "6": "Sobota"
+    }
+  },
+  "keep": {
+    "title": "Zachowaj",
+    "last": "Ostatnie",
+    "daily": "Codzienne",
+    "weekly": "Tygodniowe",
+    "monthly": "Miesięczne",
+    "yearly": "Roczne",
+    "hint": "Po każdej kopii zapasowej starsze migawki tego zadania są usuwane, aby zachować tylko te wymienione. Wartość 0 oznacza zachowanie wszystkich."
+  },
+  "hooks": {
+    "title": "Polecenia",
+    "pre": "Przed",
+    "preHint": "Uruchamiane jako root przed utworzeniem kopii zapasowej. Jeśli zakończy się niepowodzeniem, tworzenie kopii zapasowej zostanie przerwane.",
+    "post": "Po",
+    "postHint": "Uruchamiane jako root po utworzeniu kopii zapasowej, nawet jeśli zakończyła się niepowodzeniem. Zmienna TERMIX_BACKUP_STATUS zawiera wynik."
+  },
+  "alerts": {
+    "title": "Alerty",
+    "onFailure": "Powiadomienie o nieudanej kopii zapasowej",
+    "onFailureHint": "Powiadamia również o ostrzeżeniach oraz raz, gdy działanie zostanie przywrócone.",
+    "staleDays": "Dni bez kopii zapasowej",
+    "staleDaysHint": "Powiadomienie, gdy kopia zapasowa nie powiodła się przez podaną liczbę dni. Wartość 0 wyłącza tę funkcję."
+  },
+  "repos": {
+    "add": "Dodaj repozytorium",
+    "empty": "Brak repozytoriów",
+    "emptyHint": "Repozytorium to miejsce przechowywania kopii zapasowych, np. bucket S3 lub folder.",
+    "loadFailed": "Nie udało się załadować repozytoriów",
+    "jobCount_one": "{{count}} zadanie",
+    "jobCount_few": "{{count}} zadania",
+    "jobCount_many": "{{count}} zadań",
+    "jobCount_other": "{{count}} zadań",
+    "newTitle": "Nowe repozytorium",
+    "storage": "Przechowywanie",
+    "name": "Nazwa",
+    "namePlaceholder": "Zdalne S3",
+    "kind": "Typ",
+    "kinds": {
+      "s3": "Kompatybilne z S3",
+      "rest": "Serwer REST",
+      "rclone": "rclone",
+      "local": "Folder na hoście"
+    },
+    "endpoint": "Punkt końcowy",
+    "endpointHint": "Pozostaw puste dla AWS. Dla MinIO, R2, B2 lub Wasabi podaj ich adres S3.",
+    "region": "Region",
+    "bucket": "Bucket",
+    "prefix": "Folder w bucket",
+    "prefixHint": "Opcjonalne.",
+    "accessKeyId": "ID klucza dostępu",
+    "secretKey": "Tajny klucz dostępu",
+    "secretSaved": "Zapisano, pozostaw puste, aby zachować",
+    "url": "Adres serwera",
+    "username": "Użytkownik",
+    "usernameHint": "Puste, jeśli serwer nie wymaga logowania.",
+    "restPassword": "Hasło",
+    "remote": "Nazwa zdalna",
+    "remoteHint": "Tylko litery, cyfry i _.",
+    "path": "Ścieżka",
+    "rcloneConfig": "Konfiguracja rclone",
+    "rcloneHint": "Wiersze konfiguracji zdalnej z pliku rclone.conf. Uruchom rclone config na swoim komputerze, aby je utworzyć. rclone musi być zainstalowany na hostach.",
+    "rcloneSaved": "Zapisano, pozostaw puste, aby zachować",
+    "host": "Host",
+    "pickHost": "Wybierz hosta",
+    "folder": "Folder",
+    "folderHint": "Tylko zadania na tym hoście mogą go używać. Najlepiej zamontowany dysk.",
+    "password": "Szyfrowanie",
+    "resticPassword": "Hasło repozytorium",
+    "passwordHint": "Pozostaw puste, a Termix wygeneruje silne hasło. Zapisz kopię w bezpiecznym miejscu: bez niego nie można odczytać kopii zapasowych.",
+    "passwordKeep": "Zapisano, pozostaw puste, aby zachować",
+    "passwordChangeHint": "Zmienia to tylko hasło wysyłane przez Termix. Nie zmienia hasła istniejącego repozytorium.",
+    "reveal": "Pokaż hasło",
+    "revealTitle": "Pokaż hasło repozytorium?",
+    "revealDesc": "Każdy, kto ma je i klucze magazynu, może odczytać wszystkie kopie zapasowe w tym repozytorium. To zostanie zapisane w dzienniku audytu.",
+    "revealFailed": "Nie udało się odczytać hasła",
+    "copy": "Kopiuj",
+    "copied": "Skopiowano",
+    "check": "Sprawdź",
+    "checkFrom": "Sprawdź z",
+    "checkFromHint": "Host, który otwiera repozytorium. Wymaga restic.",
+    "checkButton": "Sprawdź",
+    "initButton": "Sprawdź i skonfiguruj",
+    "installRclone": "Zainstaluj rclone na tym hoście",
+    "rcloneInstalled": "rclone {{version}} jest zainstalowany.",
+    "rcloneFailed": "Nie udało się zainstalować rclone",
+    "checking": "Sprawdzanie...",
+    "opened": "Repozytorium otworzyło się poprawnie.",
+    "created": "Repozytorium zostało skonfigurowane i jest gotowe.",
+    "checkFailed": "Nie udało się otworzyć repozytorium",
+    "checkNext": "Zapisano. Sprawdź z hosta, aby je skonfigurować.",
+    "saved": "Repozytorium zapisane",
+    "saveFailed": "Nie udało się zapisać repozytorium",
+    "deleteTitle": "Usunąć {{name}}?",
+    "deleteDesc": "Zostanie usunięte tylko z Termix. Kopie zapasowe pozostaną w magazynie.",
+    "deleted": "Repozytorium usunięte",
+    "deleteFailed": "Nie udało się usunąć repozytorium"
+  },
+  "snapshots": {
+    "noJobs": "Najpierw dodaj zadanie kopii zapasowej.",
+    "job": "Zadanie",
+    "titleFor": "Snapshoty {{name}}",
+    "empty": "Brak snapshotów",
+    "loadFailed": "Nie udało się odczytać snapshotów",
+    "latest": "Najnowszy",
+    "files_one": "{{count}} plik",
+    "files_few": "{{count}} pliki",
+    "files_many": "{{count}} plików",
+    "files_other": "{{count}} plików",
+    "browse": "Przeglądaj",
+    "delete": "Usuń",
+    "deleteTitle": "Usunąć tę migawkę?",
+    "deleteDesc": "Migawka z {{time}} zostanie trwale usunięta z repozytorium.",
+    "deleted": "Migawka usunięta",
+    "deleteFailed": "Nie udało się usunąć migawki",
+    "browseTitle": "Migawka {{time}}",
+    "root": "Katalog główny",
+    "emptyFolder": "Ten katalog jest pusty",
+    "filesFailed": "Nie udało się wyświetlić zawartości tego katalogu",
+    "pick": "Wybierz",
+    "download": "Pobierz",
+    "downloadZip": "Pobierz jako zip",
+    "downloadFailed": "Nie udało się pobrać",
+    "restoreAll": "Przywróć wszystko",
+    "restorePicked_one": "Przywróć {{count}} element",
+    "restorePicked_few": "Przywróć {{count}} elementy",
+    "restorePicked_many": "Przywróć {{count}} elementów",
+    "restorePicked_other": "Przywróć {{count}} elementów"
+  },
+  "restore": {
+    "title": "Przywracanie",
+    "what": "Co",
+    "everything": "Wszystko z migawki.",
+    "more_one": "oraz {{count}} więcej",
+    "more_few": "oraz {{count}} więcej",
+    "more_many": "oraz {{count}} więcej",
+    "more_other": "oraz {{count}} więcej",
+    "where": "Gdzie",
+    "host": "Host",
+    "hostHint": "Każdy host, który możesz edytować i który ma dostęp do repozytorium.",
+    "localOnly": "To repozytorium to katalog na swoim hoście, więc można go przywrócić tylko tam.",
+    "toFolder": "Do katalogu",
+    "toOriginal": "W oryginalnej lokalizacji",
+    "folder": "Katalog",
+    "folderHint": "Pliki zachowują swoją pełną ścieżkę względem tego katalogu.",
+    "originalWarning": "Pliki są zapisywane z powrotem w ich oryginalnych lokalizacjach i mogą zastąpić obecne pliki.",
+    "overwrite": "Istniejące już pliki",
+    "overwriteOptions": {
+      "if-changed": "Zastąp, jeśli zostały zmienione",
+      "always": "Zawsze zastąp",
+      "if-newer": "Zastąp, jeśli kopii zapasowej jest nowsza",
+      "never": "Nigdy nie zastępuj"
+    },
+    "start": "Przywróć",
+    "started": "Rozpoczęto przywracanie",
+    "failed": "Nie udało się rozpocząć przywracania"
+  },
+  "run": {
+    "title": "Uruchom",
+    "backupTitle": "Kopia zapasowa {{name}}",
+    "restoreTitle": "Przywracanie {{name}}",
+    "loadFailed": "Nie udało się załadować zadania",
+    "progress": "Postęp",
+    "preparing": "Przygotowywanie...",
+    "progressLine": "{{percent}}% | {{files}} z {{totalFiles}} plików | {{bytes}} z {{totalBytes}}",
+    "left": "Pozostało {{time}}",
+    "details": "Szczegóły",
+    "started": "Rozpoczęto",
+    "finished": "Zakończono",
+    "trigger": "Rozpoczęte przez",
+    "triggers": {
+      "manual": "Uruchom teraz",
+      "schedule": "Harmonogram",
+      "operation": "Akcja Termix"
+    },
+    "snapshot": "Migawka",
+    "target": "Przywrócono do",
+    "files": "Pliki",
+    "filesLine": "{{total}} plików, {{added}} nowych, {{changed}} zmienionych",
+    "size": "Rozmiar",
+    "added": "Dodano do repozytorium",
+    "took": "Czas trwania",
+    "log": "Dziennik",
+    "noLog": "Brak dziennika.",
+    "stopTitle": "Zatrzymać to zadanie?",
+    "stopDesc": "Zatrzymany kopii zapasowej nie tworzy migawki. Zatrzymana przywracanie pozostawia przywrócone do tej pory pliki.",
+    "stopSent": "Zatrzymywanie",
+    "stopFailed": "Nie udało się zatrzymać zadania"
+  },
+  "history": {
+    "empty": "Nie uruchomiono jeszcze żadnych zadań",
+    "loadFailed": "Nie udało się załadować historii",
+    "status": "Status",
+    "job": "Zadanie",
+    "host": "Host",
+    "kind": "Typ",
+    "kinds": {
+      "backup": "Kopia zapasowa",
+      "restore": "Przywracanie"
+    },
+    "started": "Rozpoczęto",
+    "took": "Czas trwania",
+    "size": "Rozmiar"
+  },
+  "card": {
+    "title": "Kopie zapasowe",
+    "all": "Wszystkie zadania kopii zapasowych",
+    "oneJob": "Jedno zadanie kopii zapasowej",
+    "empty": "Brak zadań kopii zapasowych.",
+    "gone": "To zadanie kopii zapasowej zostało usunięte.",
+    "open": "Otwórz"
+  },
+  "operations": {
+    "list": {
+      "title": "Lista zadań kopii zapasowych"
+    },
+    "failed": {
+      "title": "Nieudane kopie zapasowe"
+    },
+    "run": {
+      "title": "Uruchom kopię zapasową"
+    },
+    "cancel": {
+      "title": "Zatrzymaj kopię zapasową"
+    },
+    "snapshots": {
+      "title": "Lista migawek"
+    },
+    "events": {
+      "finished": "Kopia zapasowa zakończona",
+      "failed": "Kopia zapasowa nieudana"
+    },
+    "jobs": {
+      "title": "Zadania kopii zapasowych",
+      "lastSuccess": "Ostatnia kopia zapasowa",
+      "nextRun": "Następne uruchomienie",
+      "size": "Rozmiar"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Pokaż panel kopii zapasowych w terminalach",
+        "description": "Pozwól, aby panel kopii zapasowych otwierał się obok terminala SSH tego hosta."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otwieraj panel kopii zapasowych z nowymi terminalami",
+        "description": "Pokazuj panel kopii zapasowych obok każdego terminala SSH, który ma tę funkcję włączoną. Możesz go nadal otwierać i zamykać za pomocą przycisku na prawym brzegu."
+      },
+      "companionSide": {
+        "label": "Położenie panelu kopii zapasowych",
+        "description": "Gdzie panel kopii zapasowych znajduje się obok terminala.",
+        "right": "Prawa",
+        "left": "Lewa",
+        "bottom": "Dolna"
+      },
+      "companionSize": {
+        "label": "Rozmiar panelu kopii zapasowych",
+        "description": "Szerokość w pikselach lub wysokość, gdy panel jest u dołu. Możesz też przeciągnąć jego krawędź."
+      },
+      "companionEdgeButton": {
+        "label": "Pokaż przycisk panelu",
+        "description": "Pokazuj mały przycisk na prawym brzegu terminala, który otwiera panel kopii zapasowych."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Przełącz panel kopii zapasowych"
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Gebruikers",
+    "description": "Beheer de gebruikersaccounts, groepen, wachtwoorden en SSH-sleutels op je hosts."
+  },
+  "common": {
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "back": "Terug",
+    "delete": "Verwijderen",
+    "loading": "Laden..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Gebruikers gebruiken",
+      "description": "Bekijk accounts op hosts die je kunt bereiken, en pas ze aan op hosts die je kunt bewerken."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Gebruikers",
+        "description": "Beheer gebruikersaccounts en groepen op deze host via het tabblad Gebruikers."
+      },
+      "useSudo": {
+        "label": "Sudo gebruiken",
+        "description": "Gebruik sudo om accounts te lezen en te wijzigen. Schakel dit uit als je ingelogd bent als root."
+      },
+      "readOnly": {
+        "label": "Alleen-lezen",
+        "description": "Toon accounts, maar wijzig ze nooit op deze host."
+      }
+    }
+  },
+  "tab": {
+    "title": "Gebruikers",
+    "noHost": "Open Gebruikers vanuit een host.",
+    "error": "De accounts van deze host konden niet worden geladen.",
+    "disabled": "Gebruikers is uitgeschakeld voor deze host. Schakel het in via de hostinstellingen.",
+    "sudo": "Wijzigingen en wachtwoordstatus vereisen een root-login, sudo zonder wachtwoord of een opgeslagen Sudo-wachtwoord op deze host.",
+    "noTools": "useradd is niet geïnstalleerd op deze host. Installeer op Alpine het shadow-pakket.",
+    "refresh": "Vernieuwen",
+    "readOnly": "Alleen-lezen",
+    "counts_one": "{{count}} gebruiker",
+    "counts_other": "{{count}} gebruikers",
+    "viewUsers": "Gebruikers",
+    "viewGroups": "Groepen",
+    "viewSessions": "Sessies"
+  },
+  "users": {
+    "add": "Gebruiker toevoegen",
+    "search": "Gebruikers zoeken",
+    "people": "Personen",
+    "systemFilter": "Systeem",
+    "all": "Alle",
+    "empty": "Geen gebruikers gevonden.",
+    "you": "Jij",
+    "sudo": "Sudo",
+    "locked": "Vergrendeld",
+    "emptyPassword": "Geen wachtwoord",
+    "system": "Systeem",
+    "loadFailed": "Kan de accounts niet laden."
+  },
+  "password": {
+    "set": "Instellen",
+    "locked": "Vergrendeld",
+    "none": "Niet ingesteld, geen inloggen met wachtwoord",
+    "empty": "Leeg, iedereen kan inloggen",
+    "unknown": "Root-rechten nodig om dit te bepalen"
+  },
+  "detail": {
+    "info": "Account",
+    "account": "Details",
+    "fullName": "Volledige naam",
+    "uid": "Gebruikers- en groep-ID",
+    "mainGroup": "Hoofdgroep",
+    "home": "Home-map",
+    "shell": "Shell",
+    "groups": "Groepen",
+    "groupsPlaceholder": "Typ een groep en druk op Enter",
+    "unknownGroups": "Deze groepen bestaan niet: {{groups}}",
+    "none": "Geen",
+    "password": "Wachtwoord",
+    "passwordChanged": "Wachtwoord gewijzigd",
+    "lastLogin": "Laatste inlog",
+    "never": "Nooit",
+    "unknown": "Onbekend",
+    "saved": "Opgeslagen.",
+    "failed": "De wijziging is mislukt.",
+    "loadFailed": "De sleutels en het laatste inlogmoment van deze gebruiker konden niet worden opgehaald.",
+    "passwordSection": "Wachtwoord",
+    "newPassword": "Nieuw wachtwoord",
+    "newPasswordHint": "Wordt via SSH naar de host gestuurd en ingesteld met chpasswd. Het wordt nooit opgeslagen in Termix.",
+    "setPassword": "Wachtwoord instellen",
+    "passwordSet": "Wachtwoord ingesteld.",
+    "expirePassword": "Vraag om een nieuw wachtwoord bij de volgende inlog",
+    "expired": "Ze kiezen een nieuw wachtwoord bij de volgende inlog.",
+    "access": "Toegang",
+    "sudo": "Sudo",
+    "sudoHint": "Voer opdrachten uit als root via de {{group}}-groep.",
+    "sudoProtected": "Je kunt sudo niet overnemen van root of van de gebruiker waarmee Termix inlogt.",
+    "sudoTitle": "Sudo toekennen aan {{name}}?",
+    "sudoDesc": "Voegt hen toe aan de {{group}}-groep, zodat ze elke opdracht als root kunnen uitvoeren.",
+    "sudoGrant": "Sudo toekennen",
+    "sudoOn": "Sudo toegekend.",
+    "sudoOff": "Sudo ingetrokken.",
+    "lock": "Account vergrendelen",
+    "unlock": "Account ontgrendelen",
+    "lockTitle": "{{name}} vergrendelen?",
+    "lockDesc": "Ze kunnen zich niet meer aanmelden met een wachtwoord of een SSH-sleutel totdat je het account ontgrendelt.",
+    "lockHint": "Blokkeert aanmeldingen met wachtwoord en SSH-sleutel.",
+    "protected": "Root en de gebruiker waarmee Termix zich aanmeldt, kunnen niet worden vergrendeld of verwijderd.",
+    "locked": "Account vergrendeld.",
+    "unlocked": "Account ontgrendeld.",
+    "danger": "Verwijderen",
+    "removeHome": "Verwijder ook de home-map",
+    "removeHomeHint": "Verwijdert {{home}} en alle inhoud ervan.",
+    "delete": "Gebruiker verwijderen",
+    "deleteTitle": "{{name}} verwijderen?",
+    "deleteDesc": "Het account wordt verwijderd. De home-map blijft op de host staan.",
+    "deleteDescHome": "Het account en {{home}} worden verwijderd. Dit kan niet ongedaan worden gemaakt.",
+    "deleted": "{{name}} verwijderd."
+  },
+  "keys": {
+    "title": "SSH-sleutels",
+    "empty": "Geen SSH-sleutels.",
+    "denied": "De sleutels kunnen niet worden gelezen zonder root-toegang.",
+    "options": "Opties",
+    "remove": "Sleutel verwijderen",
+    "removeTitle": "Deze sleutel verwijderen?",
+    "removed": "Sleutel verwijderd.",
+    "add": "Sleutel toevoegen",
+    "addHint": "Plak één openbare sleutel, zoals de inhoud van id_ed25519.pub.",
+    "addButton": "Sleutel toevoegen",
+    "added": "Sleutel toegevoegd."
+  },
+  "create": {
+    "title": "Nieuwe gebruiker",
+    "name": "Gebruikersnaam",
+    "nameHint": "Kleine letters, cijfers, - en _.",
+    "nameInvalid": "Begin met een letter en gebruik alleen a-z, 0-9, - en _.",
+    "home": "Home-map",
+    "homeHint": "Laat leeg voor /home/{{name}}.",
+    "createHome": "Home-map aanmaken",
+    "password": "Wachtwoord",
+    "passwordHint": "Optioneel. Zonder wachtwoord kan de gebruiker zich alleen aanmelden met een SSH-sleutel.",
+    "again": "Wachtwoord herhalen",
+    "mismatch": "De wachtwoorden komen niet overeen.",
+    "save": "Gebruiker aanmaken",
+    "done": "{{name}} is aangemaakt.",
+    "failed": "De gebruiker kon niet worden aangemaakt."
+  },
+  "groups": {
+    "add": "Groep toevoegen",
+    "name": "Groepsnaam",
+    "namePlaceholder": "Nieuwe groepsnaam",
+    "create": "Aanmaken",
+    "created": "{{name}} aangemaakt.",
+    "search": "Groepen zoeken",
+    "empty": "Geen overeenkomende groepen.",
+    "noMembers": "Geen leden.",
+    "failed": "De wijziging is mislukt.",
+    "addMember": "Lid toevoegen",
+    "pickUser": "Kies een gebruiker",
+    "removeMember": "Uit groep verwijderen",
+    "memberAdded": "{{name}} toegevoegd aan {{group}}.",
+    "memberRemoved": "{{name}} verwijderd uit {{group}}.",
+    "mainGroup": "Hoofdgroep",
+    "mainGroupHint": "Dit is hun hoofdgroep, dus ze behoren er altijd toe.",
+    "deleteTitle": "{{name}} verwijderen?",
+    "deleteDesc": "De groep wordt verwijderd. Bestanden die eigendom waren van de groep behouden hun oude id.",
+    "deleted": "{{name}} verwijderd."
+  },
+  "sessions": {
+    "now": "Nu ingelogd",
+    "none": "Niemand is ingelogd.",
+    "recent": "Recente inloggegevens",
+    "noRecent": "Geen inloggeschiedenis gevonden.",
+    "loadFailed": "De sessies konden niet worden gelezen."
+  },
+  "manager": {
+    "title": "Gebruikers",
+    "disabled": "Schakel Gebruikers in voor deze host in de instellingen om de accounts hier te zien."
+  },
+  "operations": {
+    "list": {
+      "title": "Gebruikers weergeven"
+    },
+    "emptyPasswords": {
+      "title": "Accounts zonder wachtwoord"
+    },
+    "lock": {
+      "title": "Gebruiker vergrendelen"
+    },
+    "unlock": {
+      "title": "Gebruiker ontgrendelen"
+    },
+    "delete": {
+      "title": "Gebruiker verwijderen"
+    },
+    "users": {
+      "title": "Gebruikers",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "Groepen"
+    }
+  }
+}

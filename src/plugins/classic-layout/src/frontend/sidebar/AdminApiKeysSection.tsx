@@ -85,6 +85,8 @@ export function AdminApiKeysSection({
               size="icon"
               className="size-6 text-muted-foreground hover:text-foreground"
               onClick={loadApiKeys}
+              title={t("common.refresh")}
+              aria-label={t("common.refresh")}
             >
               <RefreshCw className="size-3" />
             </Button>
@@ -117,6 +119,9 @@ export function AdminApiKeysSection({
                     {createdKeyToken}
                   </span>
                   <button
+                    type="button"
+                    title={t("common.copy")}
+                    aria-label={t("common.copy")}
                     onClick={() => {
                       copyToClipboard(createdKeyToken);
                       toast.info(t("admin.copiedToClipboard"));
@@ -269,6 +274,8 @@ export function AdminApiKeysSection({
               variant="ghost"
               size="icon"
               className="size-6 text-muted-foreground hover:text-destructive shrink-0"
+              title={t("admin.revokeKey")}
+              aria-label={t("admin.revokeKey")}
               onClick={async () => {
                 const ok = await confirm({
                   title: t("admin.revokeKeyConfirm", { name: key.name }),

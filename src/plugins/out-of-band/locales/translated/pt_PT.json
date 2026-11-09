@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Controlo de energia, sensores, registos de eventos e consolas para BMCs de servidores via Redfish, IPMI e Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "A carregar"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "Ver BMCs",
+      "description": "Abrir a separação Out-of-band e ver energia, estado de saúde, sensores e registos."
+    },
+    "power": {
+      "title": "Controlar energia e arranque",
+      "description": "Ligar e desligar máquinas, reiniciar a energia e escolher o próximo dispositivo de arranque."
+    },
+    "console": {
+      "title": "Usar a consola serial",
+      "description": "Abrir a consola serial over LAN de uma máquina."
+    },
+    "media": {
+      "title": "Usar mídia virtual",
+      "description": "Montar e ejetar imagens ISO numa máquina."
+    },
+    "manage": {
+      "title": "Gerir BMCs",
+      "description": "Adicionar, alterar e remover BMCs, e limpar os respetivos registos de eventos."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Executar ipmitool no servidor Termix",
+        "description": "Quando desativado, os BMCs IPMI devem usar um host de retransmissão. Redfish e AMT não são afetados."
+      }
+    }
+  },
+  "description": "Adicione os controladores de gestão (BMCs) dos seus servidores para ligar e desligar, monitorizar sensores e ler registos de eventos. As credenciais são guardadas encriptadas e nunca são mostradas novamente.",
+  "summary": "{{count}} BMCs, {{attention}} necessitam de atenção",
+  "empty": "Ainda não há BMCs.",
+  "add": "Adicionar BMC",
+  "edit": "Editar",
+  "delete": "Eliminar",
+  "back": "Voltar",
+  "saved": "Guardado",
+  "deleteConfirm": "Eliminar {{name}}?",
+  "status": {
+    "unknown": "Ainda não lido",
+    "up": "Acessível",
+    "down": "Inacessível"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI via LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Nome de utilizador",
+    "password": "Palavra-passe"
+  },
+  "power": {
+    "on": "Ligado",
+    "off": "Desligado",
+    "unknown": "Desconhecido",
+    "sent": "Pediu a {{name}} para alterar o estado de energia",
+    "action": {
+      "on": "Ligar",
+      "off": "Desligar",
+      "graceful-shutdown": "Desligar corretamente",
+      "cycle": "Reiniciar energia",
+      "reset": "Reiniciar"
+    },
+    "confirm": {
+      "on": "Ligar {{name}}?",
+      "off": "Cortar a energia de {{name}}? O sistema não desliga corretamente.",
+      "graceful-shutdown": "Pedir a {{name}} para desligar corretamente?",
+      "cycle": "Reiniciar energia de {{name}}? O sistema não desliga corretamente.",
+      "reset": "Reiniciar {{name}}? O sistema reinicia imediatamente."
+    }
+  },
+  "health": {
+    "ok": "Saudável",
+    "warning": "Aviso",
+    "critical": "Crítico",
+    "unknown": "Desconhecido"
+  },
+  "kind": {
+    "temperature": "Temperatura",
+    "fan": "Ventoinha",
+    "voltage": "Voltagem",
+    "power": "Energia",
+    "psu": "Fonte de alimentação",
+    "other": "Outro"
+  },
+  "form": {
+    "addTitle": "Adicionar BMC",
+    "editTitle": "Editar BMC",
+    "device": "BMC",
+    "access": "Acesso",
+    "type": "Tipo",
+    "name": "Nome",
+    "address": "Endereço",
+    "port": "Porta",
+    "host": "Host Termix",
+    "hostHint": "Ligue o BMC ao host a que pertence. Assim, segue as definições de partilha desse host e aparece no seu menu.",
+    "noHost": "Nenhum",
+    "poll": "Ler a cada (segundos)",
+    "pollHint": "Pelo menos 30 segundos, ou 60 quando se usa um host de retransmissão.",
+    "scheme": "Conexão",
+    "relay": "Host de retransmissão",
+    "relayHint": "Execute o ipmitool neste host em vez do servidor Termix. Necessário para a consola serial.",
+    "noRelay": "Servidor Termix",
+    "cipher": "Suite de cifras",
+    "cipherHint": "Altere apenas se o BMC recusar o login. 3 é o habitual, 17 para BMCs mais recentes.",
+    "ca": "Certificado CA",
+    "caHint": "Cole o PEM da autoridade de certificação do BMC. Deixe vazio para um certificado de confiança.",
+    "caSet": "Uma CA está guardada. Cole uma nova para a substituir.",
+    "keepLogin": "Deixe vazio para manter o login guardado",
+    "test": "Testar conexão",
+    "testOk": "O BMC respondeu. O estado de energia é {{power}}.",
+    "testNeedsLogin": "Introduza novamente o login para testar.",
+    "save": "Guardar",
+    "add": "Adicionar"
+  },
+  "view": {
+    "overview": "Visão geral",
+    "sensors": "Sensores",
+    "log": "Registo de eventos",
+    "boot": "Arranque",
+    "media": "Média virtual",
+    "console": "Consola",
+    "refresh": "Ler agora",
+    "type": "Tipo",
+    "address": "Endereço",
+    "power": "Energia",
+    "health": "Estado",
+    "manufacturer": "Fabricante",
+    "model": "Modelo",
+    "serial": "Número de série",
+    "bios": "BIOS",
+    "bmc": "Firmware BMC",
+    "status": "BMC",
+    "viaRelay": "Acedido através de um host de retransmissão.",
+    "noSensors": "Este BMC não reporta sensores.",
+    "sensor": "Sensor",
+    "reading": "Leitura",
+    "state": "Estado"
+  },
+  "log": {
+    "time": "Hora",
+    "severity": "Nível",
+    "message": "Evento",
+    "empty": "O registo de eventos está vazio.",
+    "clear": "Limpar registo",
+    "clearConfirm": "Limpar o registo de eventos de {{name}}? Esta ação não pode ser desfeita.",
+    "cleared": "Registo limpo",
+    "level": {
+      "info": "Info",
+      "warning": "Aviso",
+      "critical": "Crítico"
+    }
+  },
+  "boot": {
+    "hint": "A máquina arranca uma vez a partir deste dispositivo e depois volta à ordem normal. Aplique antes de reiniciar.",
+    "device": "Iniciar a partir de",
+    "mode": "Modo",
+    "uefi": "UEFI",
+    "legacy": "BIOS Legacy",
+    "apply": "Definir para a próxima inicialização",
+    "done": "{{name}} irá iniciar a partir do dispositivo escolhido na próxima vez",
+    "pxe": "Rede (PXE)",
+    "disk": "Disco rígido",
+    "cd": "CD ou mídia virtual",
+    "usb": "USB",
+    "bios": "Configuração do BIOS",
+    "none": "Ordem normal"
+  },
+  "media": {
+    "url": "Endereço da imagem",
+    "empty": "Este BMC não possui slot de CD virtual.",
+    "mounted": "Montado",
+    "free": "Vazio",
+    "mount": "Montar",
+    "eject": "Ejetar",
+    "mountedDone": "Imagem montada",
+    "ejected": "Imagem ejetada"
+  },
+  "console": {
+    "hint": "Digite ~. para sair do console.",
+    "connecting": "A conectar",
+    "ended": "O console foi fechado.",
+    "failed": "Não foi possível abrir o console.",
+    "needsRelay": "O console serial necessita de um host de retransmissão com ipmitool. Escolha um nas definições do BMC."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Iniciar a partir de",
+    "uefi": "Modo UEFI",
+    "list": {
+      "title": "Listar BMCs"
+    },
+    "poll": {
+      "title": "Ler um BMC agora"
+    },
+    "powerState": {
+      "title": "Obter estado de energia"
+    },
+    "power-on": {
+      "title": "Ligar"
+    },
+    "graceful-shutdown": {
+      "title": "Desligar"
+    },
+    "power-off": {
+      "title": "Desligar energia"
+    },
+    "power-cycle": {
+      "title": "Ciclo de energia"
+    },
+    "reset": {
+      "title": "Reiniciar"
+    },
+    "setBootOnce": {
+      "title": "Iniciar uma vez a partir de um dispositivo"
+    },
+    "clearLog": {
+      "title": "Limpar registo de eventos"
+    },
+    "health": {
+      "title": "Estado de saúde do BMC"
+    }
+  },
+  "widget": {
+    "name": "Fora de banda",
+    "description": "Energia e estado de saúde dos seus BMCs de servidor.",
+    "summary": "{{up}} de {{total}} ativos"
+  }
+}

@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Upravljajte DNS zapisima i domenama na Cloudflareu, Route 53, Namecheapu i drugim pružateljima usluga."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domena",
+    "loading": "Učitavanje",
+    "empty": "Još nema domena. Otvorite DNS da dodate prijavu.",
+    "ok": "{{domains}} domena, nijedna ne ističe uskoro",
+    "accounts": "{{count}} prijava",
+    "failingLinks": "{{count}} povezanih zapisa ne uspijeva"
+  },
+  "permissions": {
+    "view": {
+      "title": "Pregled DNS-a",
+      "description": "Otvorite karticu DNS i pregledajte zone, zapise, domene i provjere stanja."
+    },
+    "edit": {
+      "title": "Promjena DNS zapisa",
+      "description": "Dodajte, promijenite i izbrišite zapise, uvezite zone datoteke i osvježite domene."
+    },
+    "manage": {
+      "title": "Upravljanje DNS prijavama",
+      "description": "Dodajte prijave pružatelja usluga, povežite zapise s hostovima, pratite domene i vratite kopije zona."
+    }
+  },
+  "operations": {
+    "zone": "Zona",
+    "type": "Vrsta",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Naziv",
+    "content": "Vrijednost",
+    "contentOptional": "Vrijednost (ostavite prazno za podudaranje sa svime)",
+    "ttl": "TTL u sekundama",
+    "label": "Oznaka",
+    "zones": {
+      "title": "Popis DNS zona"
+    },
+    "records": {
+      "title": "Popis DNS zapisa"
+    },
+    "domains": {
+      "title": "Popis domena i datuma isteka"
+    },
+    "check": {
+      "title": "Provjeru zone"
+    },
+    "upsert": {
+      "title": "Postavljanje DNS zapisa"
+    },
+    "delete": {
+      "title": "Brisanje DNS zapisa"
+    },
+    "snapshot": {
+      "title": "Spremanje kopije zone"
+    },
+    "links": {
+      "title": "Ažuriranje povezanih zapisa"
+    },
+    "expiry": {
+      "title": "Istek domene"
+    }
+  },
+  "description": "Dodajte svoje DNS i registrar prijave za upravljanje zapisima i praćenje domena na jednom mjestu. Ključevi su pohranjeni šifrirano i nikada se više ne prikazuju.",
+  "summary": "{{zones}} zona, {{domains}} domena",
+  "saved": "Spremljeno",
+  "delete": "Izbriši",
+  "edit": "Uredi",
+  "back": "Natrag",
+  "refresh": "Osvježi",
+  "section": {
+    "zones": "Zone",
+    "domains": "Domena",
+    "links": "Veze",
+    "accounts": "Prijave"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "API token",
+    "accessKeyId": "ID pristupnog ključa",
+    "secretAccessKey": "Tajni pristupni ključ",
+    "sessionToken": "Token sesije (opcionalno)",
+    "apiUser": "API korisnik",
+    "apiKey": "API ključ",
+    "userName": "Korisničko ime (ako je različito od API korisnika)",
+    "clientIp": "Dopuštena IP adresa",
+    "apiSecret": "API tajna",
+    "environment": "Okruženje",
+    "environment_production": "Produkcija",
+    "environment_ote": "Test (OTE)",
+    "secretApiKey": "Tajni API ključ",
+    "token": "Osobni pristupni token"
+  },
+  "zones": {
+    "empty": "Još nema zona.",
+    "emptyHint": "Dodajte prijavu pružatelja usluga u Prijave kako biste vidjeli njegove zone."
+  },
+  "zone": {
+    "records": "Zapisnici",
+    "health": "Zdravlje",
+    "copies": "Kopije",
+    "files": "Datoteke",
+    "filter": "Filtriraj zapisnike",
+    "empty": "Nema zapisnika."
+  },
+  "record": {
+    "section": "Zapisnik",
+    "addTitle": "Dodaj zapisnik",
+    "editTitle": "Uredi zapisnik",
+    "add": "Dodaj zapisnik",
+    "save": "Spremi",
+    "type": "Vrsta",
+    "name": "Naziv",
+    "nameHint": "Koristite @ za samu {{zone}}",
+    "value": "Vrijednost",
+    "priority": "Prioritet",
+    "ttl": "TTL (sekunde)",
+    "ttlHint": "Koliko dugo rješavači zadržavaju odgovor. 300 je 5 minuta.",
+    "ttlAuto": "1 znači automatski.",
+    "proxied": "Posredovano",
+    "proxiedHint": "Usmeri promet kroz Cloudflare.",
+    "proxiedBadge": "Proksirano",
+    "comment": "Bilješka",
+    "readOnly": "Upravljano od strane davatelja usluga",
+    "deleteConfirm": "Želite li izbrisati {{type}} zapis {{name}}?"
+  },
+  "account": {
+    "add": "Dodaj prijavu",
+    "addTitle": "Dodaj DNS prijavu",
+    "editTitle": "Uredi DNS prijavu",
+    "save": "Spremi",
+    "login": "Prijava",
+    "provider": "Pružatelj usluge",
+    "name": "Naziv",
+    "namePlaceholder": "Glavni Cloudflare",
+    "keep": "Ostavite prazno ako želite zadržati spremljenu vrijednost",
+    "registrar": "Ovaj pružatelj usluge je također registrarska kuća, pa se njegove domene prikazuju u odjeljku Domene.",
+    "options": "Opcije",
+    "autoBackup": "Čuvajte kopije zona",
+    "autoBackupHint": "Spremite kopiju prije svake promjene i kada se zona promijeni izvan Termixa.",
+    "checkHealth": "Provjeravajte zone svakodnevno",
+    "checkHealthHint": "Pokrećite provjere stanja svakodnevno i upozoravajte na nove probleme.",
+    "test": "Test",
+    "testOk": "Radi. Pronađeno je {{zones}} zona i {{domains}} domena.",
+    "deleteConfirm": "Izbrisati {{name}}? Njegove kopije i veze će biti obrisane. Ništa se ne mijenja kod pružatelja usluga.",
+    "empty": "Još nema prijava.",
+    "emptyHint": "Dodajte Cloudflare, Route 53, Namecheap ili drugu prijavu za početak.",
+    "lastSync": "Zadnja provjera {{date}}",
+    "never": "Još nije provjereno",
+    "failed": "Prijava nije uspjela"
+  },
+  "domains": {
+    "empty": "Još nema domena.",
+    "emptyHint": "Prijave registrara ovde popisuju svoje domene. Možete pratiti bilo koju domenu po imenu.",
+    "watchPlaceholder": "example.com",
+    "watch": "Prati domenu",
+    "unwatch": "Prestani pratiti",
+    "watched": "Praćene",
+    "noRenew": "Automatsko obnavljanje isključeno",
+    "unlocked": "Otključano",
+    "unknown": "Registrator nepoznat",
+    "expires": "Istječe {{date}}",
+    "expired": "Isteklo",
+    "days": "Preostalo {{count}} dana",
+    "refreshFailed": "Neuspješno je {{count}} upita"
+  },
+  "link": {
+    "add": "Dodaj poveznicu",
+    "addTitle": "Dodaj poveznicu",
+    "editTitle": "Uredi poveznicu",
+    "save": "Spremi",
+    "record": "Zapis",
+    "address": "Adresa",
+    "zone": "Zona",
+    "pickZone": "Odaberi zonu",
+    "source": "Usmjeri na",
+    "sourceHost": "Poslužitelj",
+    "sourcePublic4": "Javna IPv4 adresa ovog poslužitelja",
+    "sourcePublic6": "Javna IPv6 adresa ovog poslužitelja",
+    "source_host": "Poslužitelj",
+    "source_public4": "Javna IPv4",
+    "source_public6": "Javna IPv6",
+    "host": "Poslužitelj",
+    "pickHost": "Odaberi poslužitelj",
+    "hostHint": "Zapis prati adresu poslužitelja. Ažurira se kada se poslužitelj promijeni.",
+    "publicHint": "Termix provjerava svoju javnu adresu i održava zapis usklađenim, poput dinamičkog DNS-a.",
+    "enabled": "Održavaj ovaj zapis ažurnim",
+    "empty": "Još nema poveznica.",
+    "emptyHint": "Poveznica održava zapis usmjerenim na poslužitelj ili na javnu adresu ovog poslužitelja.",
+    "off": "Isključeno",
+    "hostGone": "Poslužitelj nije pronađen",
+    "lastSync": "Provjereno {{date}}",
+    "never": "Još nije provjereno",
+    "syncNow": "Ažuriraj sada",
+    "updated": "Zapis je ažuriran",
+    "unchanged": "Zapis je već bio ispravan",
+    "deleteConfirm": "Ukloniti poveznicu za {{name}}? Zapis ostaje na trenutnoj adresi."
+  },
+  "diff": {
+    "none": "Ništa se neće promijeniti.",
+    "add": "Dodaj",
+    "change": "Promijeni",
+    "remove": "Ukloni"
+  },
+  "copies": {
+    "hint": "Kopije se spremaju prije svake promjene i jednom dnevno kada se zona promijeni izvan Termixa.",
+    "save": "Spremi kopiju",
+    "saved": "Kopija spremljena",
+    "manualLabel": "Ručna kopija",
+    "empty": "Još nema kopija.",
+    "count": "{{count}} zapisa",
+    "compare": "Usporedi s trenutnim stanjem",
+    "restore": "Vrati",
+    "restoreConfirm": "Vratiti ovu kopiju? {{count}} promjena će biti izvršeno kod pružatelja usluga. Prvo se sprema kopija trenutnih zapisa.",
+    "restored": "Vraćeno. Izvršeno {{count}} promjena.",
+    "source": {
+      "manual": "Ručno",
+      "auto": "Dnevno",
+      "before": "Prije promjene"
+    }
+  },
+  "files": {
+    "export": "Preuzmi datoteku zone",
+    "exportHint": "Preuzmi zapise kao BIND datoteku zone.",
+    "import": "Uvezi zonsku datoteku",
+    "placeholder": "Ovdje zalijepite BIND zonsku datoteku",
+    "replace": "Ukloni zapise koji nisu u datoteci",
+    "replaceHint": "Isključeno, uvoz samo dodaje i mijenja zapise.",
+    "preview": "Pregled",
+    "apply": "Primijeni",
+    "applied": "Uvezeno. Izvršeno {{count}} promjena.",
+    "skipped": "Preskočeno:"
+  },
+  "health": {
+    "run": "Pokreni provjere",
+    "running": "Pokreće se",
+    "propagation": "Provjeri rezolucije",
+    "propagationTitle": "Javni rezolucije",
+    "lastRun": "Zadnje pokretanje {{date}}",
+    "empty": "Za ovu zonu još nisu pokrenute provjere.",
+    "record": "Zapis",
+    "resolver": "Rezolucija",
+    "answer": "Odgovor",
+    "noAnswer": "Nema odgovora",
+    "delegation": {
+      "error": "Imenski poslužitelji nisu mogli biti pronađeni.",
+      "none": "Zona nema imenske poslužitelje na internetu. Domena možda ne pokazuje na ovog pružatelja usluga.",
+      "mismatch": "Domena koristi druge imenske poslužitelje od pružatelja usluga: {{found}}.",
+      "ok": "Domena pokazuje na {{count}} imenskih poslužitelja."
+    },
+    "soa": {
+      "differ": "Imenski poslužitelji se ne slažu o verziji zone ({{count}} verzija). Promjena se možda još širi.",
+      "same": "{{count}} imenskih poslužitelja se slaže o verziji zone."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC se nije mogao provjeriti.",
+      "off": "DNSSEC nije uključen.",
+      "valid": "DNSSEC je uključen i valjan.",
+      "broken": "DNSSEC je postavljen kod registrara, ali se ne provjerava. Rezolucije koje ga provjeravaju neće uspjeti."
+    },
+    "cname": {
+      "conflict": "{{name}} ima CNAME i druge zapise. To nije dopušteno.",
+      "apex": "Korijen zone ne može biti CNAME.",
+      "dangling": "{{name}} pokazuje na {{target}}, koji se ne može riješiti.",
+      "ok": "Svaka CNAME meta se može riješiti."
+    },
+    "spf": {
+      "missing": "Domena prima poštu, ali nema SPF zapis.",
+      "multiple": "Postoji više od jednog SPF zapisa. Poštanski poslužitelji će odbaciti sve.",
+      "lookups": "SPF zapis vrši {{count}} pretraga. Granica je 10.",
+      "ok": "SPF je postavljen ({{count}} pretraga)."
+    },
+    "dmarc": {
+      "missing": "Nema DMARC zapisa.",
+      "none": "DMARC je postavljen samo za praćenje.",
+      "ok": "DMARC je postavljen."
+    },
+    "dkim": {
+      "none": "U ovoj zoni nisu pronađeni DKIM ključevi.",
+      "found": "Pronađeno {{count}} DKIM ključeva."
+    },
+    "mx": {
+      "unresolved": "Poštanski poslužitelj {{host}} se ne može riješiti."
+    },
+    "mail": {
+      "none": "Domena nema poštanske zapise."
+    },
+    "caa": {
+      "ok": "CAA zapisi ograničavaju tko može izdavati certifikate.",
+      "none": "Nema CAA zapisa. Bilo koja agencija za certifikate može izdavati certifikate."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domena, domene koje ističu i neuspješni zapisi.",
+    "domains": "Domena",
+    "expiring": "Uskoro ističe",
+    "failingLinks": "Neuspješne veze",
+    "failingAccounts": "Neuspješne prijave"
+  }
+}

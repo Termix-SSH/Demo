@@ -189,11 +189,17 @@ export function KeybindingsSettings() {
         meta: e.metaKey,
       };
       setRecordedCombo(combo);
-      setRecording(false);
-      inputEl.removeEventListener("keydown", handler, true);
+      stop();
       inputEl.blur();
     };
+    // Leaving the field without a key stops recording too.
+    const stop = () => {
+      setRecording(false);
+      inputEl.removeEventListener("keydown", handler, true);
+      inputEl.removeEventListener("blur", stop);
+    };
     inputEl.addEventListener("keydown", handler, true);
+    inputEl.addEventListener("blur", stop);
   }
 
   function handleSave() {
@@ -281,6 +287,8 @@ export function KeybindingsSettings() {
                           size="icon"
                           className="size-7"
                           onClick={() => openEditForm(override)}
+                          title={t("common.edit")}
+                          aria-label={t("common.edit")}
                         >
                           <Pencil className="size-3.5" />
                         </Button>
@@ -290,6 +298,9 @@ export function KeybindingsSettings() {
                           className="size-7 text-muted-foreground hover:text-destructive"
                           onClick={() => void handleDelete(override.id)}
                           title={t("newUi.sidebar.keybindings.resetToDefault")}
+                          aria-label={t(
+                            "newUi.sidebar.keybindings.resetToDefault",
+                          )}
                         >
                           <RotateCcw className="size-3.5" />
                         </Button>
@@ -307,6 +318,7 @@ export function KeybindingsSettings() {
                             openOverrideDefaultForm(def.id, def.combo)
                           }
                           title={t("newUi.sidebar.keybindings.customize")}
+                          aria-label={t("newUi.sidebar.keybindings.customize")}
                         >
                           <Pencil className="size-3.5" />
                         </Button>
@@ -364,6 +376,8 @@ export function KeybindingsSettings() {
                       size="icon"
                       className="size-7"
                       onClick={() => openEditForm(kb)}
+                      title={t("common.edit")}
+                      aria-label={t("common.edit")}
                     >
                       <Pencil className="size-3.5" />
                     </Button>
@@ -372,6 +386,8 @@ export function KeybindingsSettings() {
                       size="icon"
                       className="size-7 text-muted-foreground hover:text-destructive"
                       onClick={() => void handleDelete(kb.id)}
+                      title={t("common.delete")}
+                      aria-label={t("common.delete")}
                     >
                       <Trash2 className="size-3.5" />
                     </Button>

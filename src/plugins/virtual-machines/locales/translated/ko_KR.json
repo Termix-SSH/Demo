@@ -1,0 +1,421 @@
+{
+  "tab": {
+    "title": "가상 머신",
+    "noHost": "호스트에서 가상 머신을 엽니다.",
+    "refresh": "새로고침",
+    "open": "전체 보기 열기",
+    "error": "이 호스트의 VM을 읽을 수 없습니다.",
+    "disabled": "이 호스트에서 가상 머신이 비활성화되어 있습니다. 호스트 설정에서 활성화하세요.",
+    "sudo": "이 호스트에는 루트 로그인, 비밀번호 없는 sudo 또는 저장된 Sudo 비밀번호가 필요합니다.",
+    "vms": "VM",
+    "storage": "저장소",
+    "networks": "네트워크",
+    "jobs": "작업",
+    "runningCount": "{{total}}개 중 {{running}}개 실행 중",
+    "nodeLine": "{{cpus}}개 CPU, {{memory}}",
+    "noKvm": "KVM 없음, VM이 느리게 실행됩니다"
+  },
+  "common": {
+    "loading": "로딩 중...",
+    "save": "저장",
+    "cancel": "취소",
+    "delete": "삭제",
+    "failed": "작업이 실패했습니다."
+  },
+  "state": {
+    "running": "실행 중",
+    "blocked": "차단됨",
+    "paused": "일시정지됨",
+    "shutdown": "종료 중",
+    "shutoff": "꺼짐",
+    "crashed": "크래시됨",
+    "pmsuspended": "대기 중",
+    "unknown": "알 수 없음"
+  },
+  "power": {
+    "start": "시작",
+    "shutdown": "종료",
+    "reboot": "재시작",
+    "stop": "강제 중지",
+    "suspend": "일시정지",
+    "resume": "재개",
+    "shutdownTitle": "{{name}}을(를) 종료하시겠습니까?",
+    "shutdownText": "게스트에 종료를 요청합니다. 완료까지 약 1분이 소요될 수 있으며, ACPI 지원이 없는 게스트는 이를 무시할 수 있습니다.",
+    "stopTitle": "{{name}}을(를) 강제 중지하시겠습니까?",
+    "stopText": "전원이 즉시 차단됩니다. 게스트에서 저장하지 않은 모든 데이터가 손실됩니다."
+  },
+  "setup": {
+    "missing": "Libvirt가 설치되지 않았습니다",
+    "missingText": "Termix는 이 호스트에 QEMU와 libvirt를 설치할 수 있습니다. 루트 권한, 비밀번호 없는 sudo 또는 저장된 Sudo 비밀번호가 필요합니다.",
+    "noConnect": "Termix가 이 호스트의 libvirt에 연결할 수 없습니다",
+    "noConnectText": "libvirt 서비스가 실행 중인지, SSH 사용자가 이를 사용할 수 있는지 확인하세요.",
+    "noKvm": "이 호스트에 /dev/kvm이 없어 VM이 하드웨어 가속 없이 실행됩니다. BIOS 또는 이 VM에서 가상화를 활성화하세요.",
+    "install": "설치",
+    "installing": "설치 중...",
+    "installTitle": "이 호스트에 libvirt를 설치하시겠습니까?",
+    "installText": "호스트의 패키지 관리자를 사용하여 QEMU, libvirt 및 관련 도구를 설치하고, 서비스를 시작하며, 기본 네트워크 및 저장소 풀을 설정합니다.",
+    "installed": "Libvirt가 설치되었습니다"
+  },
+  "vm": {
+    "new": "새 VM",
+    "none": "이 호스트에 아직 VM이 없습니다",
+    "noneHint": "새 VM을 눌러 하나를 만드세요.",
+    "name": "이름",
+    "state": "상태",
+    "size": "크기",
+    "ip": "IP 주소",
+    "noIp": "아직 주소가 없습니다",
+    "cpus_other": "{{count}}개 CPU",
+    "back": "목록으로 돌아가기",
+    "overview": "개요",
+    "console": "콘솔",
+    "snapshots": "스냅샷",
+    "hardware": "하드웨어",
+    "xml": "XML",
+    "cpu": "CPU",
+    "memory": "메모리",
+    "memoryUsed": "{{used}} 사용 중",
+    "ofHost": "호스트 메모리: {{memory}}",
+    "diskIo": "디스크",
+    "diskUsed": "{{size}} 디스크, 호스트에서 {{used}} 사용 중",
+    "netIo": "네트워크",
+    "uuid": "UUID",
+    "machine": "머신",
+    "firmware": "펌웨어",
+    "bios": "BIOS",
+    "uefi": "UEFI",
+    "cpuMode": "CPU 모드",
+    "guestAgent": "게스트 에이전트",
+    "yes": "예",
+    "no": "아니요",
+    "autostart": "자동 시작",
+    "autostartHint": "호스트 부팅 시 이 VM을 시작합니다.",
+    "clone": "복제",
+    "cloneStopped": "복제하려면 VM을 종료하세요",
+    "cloneName": "복제본 이름",
+    "cloneStarted": "복제가 시작되었습니다. 진행 상황은 작업에서 확인하세요.",
+    "delete": "삭제",
+    "deleteTitle": "{{name}}을(를) 삭제하시겠습니까?",
+    "deleteDisks": "디스크도 함께 삭제",
+    "deleteDisksHint": "다른 VM에서 사용하지 않는 디스크를 제거합니다. 이 작업은 되돌릴 수 없습니다. ISO 및 기본 이미지는 유지됩니다.",
+    "deleted": "VM이 삭제되었습니다"
+  },
+  "watch": {
+    "start": "이 VM이 중지되면 알림",
+    "stop": "이 VM에 대한 알림 중지"
+  },
+  "console": {
+    "graphical": "그래픽",
+    "serial": "시리얼",
+    "notRunning": "콘솔을 사용하려면 VM을 시작하세요.",
+    "connecting": "연결 중...",
+    "failed": "콘솔을 열 수 없습니다.",
+    "retry": "다시 시도",
+    "ended": "콘솔이 닫혔습니다.",
+    "serialHint": "화면이 비어 있으면 Enter를 누르세요. 게스트는 시리얼 포트에서 getty를 실행해야 합니다.",
+    "noRemoteDesktop": "이 VM의 화면을 보려면 원격 데스크톱을 켜세요. 시리얼 콘솔은 계속 작동합니다.",
+    "useVnc": "VNC로 전환",
+    "vncSaved": "저장되었습니다. VNC를 사용하려면 VM을 종료한 후 다시 시작하세요."
+  },
+  "hardware": {
+    "cpuMemory": "CPU 및 메모리",
+    "vcpus": "CPU",
+    "memory": "메모리 (MiB)",
+    "nextStart": "변경 사항은 VM이 다음에 시작될 때 적용됩니다.",
+    "saved": "저장됨",
+    "disks": "디스크",
+    "detach": "분리",
+    "detachTitle": "{{name}}을(를) 분리하시겠습니까?",
+    "detachText": "볼륨은 풀에 그대로 유지됩니다.",
+    "pool": "저장소 풀",
+    "sizeGib": "크기 (GiB)",
+    "addDisk": "디스크 추가",
+    "cdrom": "CD 드라이브",
+    "noMedia": "비어 있음",
+    "iso": "ISO",
+    "pickIso": "ISO 선택",
+    "insert": "삽입",
+    "eject": "꺼내기",
+    "nics": "네트워크 카드",
+    "removeNic": "제거",
+    "nicType": "연결 대상",
+    "virtualNetwork": "가상 네트워크",
+    "hostBridge": "호스트 브리지",
+    "network": "네트워크",
+    "bridge": "브리지",
+    "addNic": "카드 추가"
+  },
+  "snapshot": {
+    "name": "스냅샷 이름",
+    "description": "설명",
+    "take": "스냅샷 생성",
+    "taking": "처리 중...",
+    "taken": "스냅샷 생성됨",
+    "none": "스냅샷 없음",
+    "noneHint": "스냅샷은 실행 중인 VM의 디스크와 메모리를 저장합니다.",
+    "current": "현재",
+    "revert": "되돌리기",
+    "revertTitle": "{{name}}(으)로 되돌리시겠습니까?",
+    "revertText": "이 스냅샷 이후의 모든 변경사항이 손실됩니다.",
+    "reverted": "VM 되돌림 완료",
+    "delete": "삭제",
+    "deleteTitle": "스냅샷 {{name}}을(를) 삭제하시겠습니까?",
+    "deleteText": "VM은 현재 상태로 유지됩니다."
+  },
+  "xml": {
+    "hint": "고급 설정입니다. 호스트는 저장 전에 XML을 확인하며, 이전 버전의 사본을 /var/lib/termix-vms/backups에 보관합니다.",
+    "saveTitle": "이 XML을 저장하시겠습니까?",
+    "saveText": "VM이 다음에 시작될 때 적용됩니다.",
+    "saved": "저장됨"
+  },
+  "new": {
+    "title": "새 VM",
+    "basics": "기본 설정",
+    "install": "설치",
+    "name": "이름",
+    "source": "설치 원본",
+    "sourceCloud": "클라우드 이미지",
+    "sourceIso": "ISO",
+    "sourceBlank": "빈 디스크",
+    "noIso": "이 풀에 ISO가 없습니다. 저장소에서 다운로드하세요.",
+    "image": "이미지",
+    "customImage": "다른 URL",
+    "imageUrl": "이미지 URL",
+    "username": "로그인 이름",
+    "password": "비밀번호",
+    "sshKey": "SSH 공개 키",
+    "sshKeyHint": "비밀번호, 키 또는 둘 다 입력하세요. 비밀번호는 해시 값으로만 저장됩니다.",
+    "start": "준비되면 시작",
+    "create": "VM 생성",
+    "started": "VM을 생성 중입니다. 진행 상황은 작업에서 확인하세요.",
+    "noUefi": "이 호스트에는 UEFI 펌웨어가 설치되어 있지 않습니다.",
+    "uefiHint": "UEFI VM은 종료 상태일 때만 스냅샷을 생성할 수 있습니다.",
+    "missingTools": "클라우드 이미지에 필요한 {{tools}}이(가) 이 호스트에 없습니다."
+  },
+  "storage": {
+    "pools": "저장소 풀",
+    "none": "저장소 풀 없음",
+    "noneHint": "VM 디스크를 보관할 폴더를 추가하세요.",
+    "active": "활성",
+    "inactive": "비활성",
+    "used": "{{size}} 중 {{used}} 사용 ({{percent}}%)",
+    "start": "시작",
+    "stop": "정지",
+    "forget": "잊기",
+    "forgetTitle": "풀 {{name}}을(를) 잊으시겠습니까?",
+    "forgetText": "Libvirt가 이 풀을 더 이상 사용하지 않습니다. 폴더 내 파일은 디스크에 그대로 남아 있습니다.",
+    "poolName": "풀 이름",
+    "poolPath": "폴더",
+    "addPool": "풀 추가",
+    "volumes": "{{pool}}의 볼륨",
+    "noVolumes": "이 풀에 볼륨이 없습니다",
+    "allocated": "디스크 사용량 {{size}}",
+    "deleteVolume": "{{name}}을(를) 삭제하시겠습니까?",
+    "deleteVolumeText": "파일이 삭제되며 복구할 수 없습니다.",
+    "volumeName": "볼륨 이름",
+    "addVolume": "볼륨 추가",
+    "downloadUrl": "이 풀로 파일 다운로드",
+    "downloadHint": "호스트에서 다운로드하므로 Termix를 닫아도 계속 진행됩니다.",
+    "download": "다운로드",
+    "downloadStarted": "다운로드 시작됨"
+  },
+  "network": {
+    "title": "가상 네트워크",
+    "none": "가상 네트워크 없음",
+    "name": "이름",
+    "kind": "유형",
+    "nat": "NAT",
+    "isolated": "격리",
+    "bridge": "호스트 브리지",
+    "subnet": "주소",
+    "add": "네트워크 추가",
+    "stopTitle": "네트워크 {{name}}을(를) 중지하시겠습니까?",
+    "stopText": "이 네트워크의 VM은 네트워크가 복구되고 재연결될 때까지 연결이 끊깁니다.",
+    "deleteTitle": "네트워크 {{name}}을(를) 삭제하시겠습니까?",
+    "leases": "{{name}}의 DHCP 할당",
+    "noLeases": "할당 없음"
+  },
+  "jobs": {
+    "none": "작업이 아직 없습니다",
+    "noneHint": "새 VM, 복제본, 스냅샷 및 다운로드가 여기에 표시됩니다.",
+    "cancel": "중지",
+    "status": {
+      "running": "실행 중",
+      "success": "완료",
+      "failed": "실패",
+      "cancelled": "중지됨"
+    },
+    "kind": {
+      "create": "새 VM",
+      "clone": "복제",
+      "download": "다운로드",
+      "snapshot": "스냅샷"
+    },
+    "phase": {
+      "download": "다운로드 중",
+      "disk": "디스크 생성 중",
+      "seed": "cloud-init 작성 중",
+      "define": "VM 저장 중",
+      "start": "시작 중",
+      "clone": "디스크 복사 중"
+    }
+  },
+  "all": {
+    "title": "모든 VM",
+    "search": "검색",
+    "host": "호스트",
+    "hostCount_other": "{{count}}개 호스트",
+    "noHosts": "가상 머신이 활성화된 호스트가 없습니다",
+    "noHostsHint": "Manage에서 호스트를 열고 가상 머신을 활성화하세요."
+  },
+  "card": {
+    "title": "가상 머신",
+    "unreachable": "연결 불가",
+    "crashed_other": "{{count}}개 충돌"
+  },
+  "widget": {
+    "running": "실행 중인 VM"
+  },
+  "companion": {
+    "toggle": "VM 패널 전환"
+  },
+  "permissions": {
+    "use": {
+      "title": "가상 머신 사용",
+      "description": "연결할 수 있는 호스트의 VM을 확인하고, 수정할 수 있는 호스트에서 변경할 수 있습니다."
+    },
+    "console": {
+      "title": "VM 콘솔 열기",
+      "description": "수정할 수 있는 호스트에서 VM의 그래픽 및 시리얼 콘솔을 열 수 있습니다."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "가상 머신 사용",
+        "description": "libvirt를 사용하여 이 호스트의 KVM 가상 머신을 관리합니다."
+      },
+      "useSudo": {
+        "label": "sudo 사용",
+        "description": "sudo로 libvirt 명령을 실행합니다. 루트 로그인 시에는 끄세요."
+      },
+      "readOnly": {
+        "label": "읽기 전용",
+        "description": "가상 머신을 표시하지만 Termix에서의 모든 변경을 차단합니다."
+      },
+      "connectUri": {
+        "label": "Libvirt 연결",
+        "description": "사용할 libvirt URI입니다. 대부분의 호스트는 qemu:///system을 사용합니다."
+      },
+      "showPanel": {
+        "label": "터미널 옆에 가상 머신 패널 표시",
+        "description": "이 호스트의 터미널 탭에 가상 머신 목록을 추가합니다."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "가상 머신 패널 단독 열기",
+        "description": "터미널이 열릴 때 패널을 엽니다."
+      },
+      "companionSide": {
+        "label": "가상 머신 패널 위치",
+        "description": "터미널 옆에 패널이 표시되는 위치입니다.",
+        "right": "오른쪽",
+        "left": "왼쪽",
+        "bottom": "아래쪽"
+      },
+      "companionSize": {
+        "label": "가상 머신 패널 크기",
+        "description": "픽셀 단위의 너비 또는 높이입니다."
+      },
+      "companionEdgeButton": {
+        "label": "가장자리 버튼 표시",
+        "description": "터미널 가장자리의 작은 버튼으로 패널을 엽니다."
+      }
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "가상 머신 목록"
+    },
+    "state": {
+      "title": "가상 머신 상태"
+    },
+    "running": {
+      "title": "실행 중인 가상 머신"
+    },
+    "crashed": {
+      "title": "오류가 발생한 가상 머신"
+    },
+    "pools": {
+      "title": "저장소 풀 사용량"
+    },
+    "snapshots": {
+      "title": "가상 머신 스냅샷"
+    },
+    "listPools": {
+      "title": "저장소 풀 목록"
+    },
+    "listNetworks": {
+      "title": "가상 네트워크 목록"
+    },
+    "start": {
+      "title": "가상 머신 시작"
+    },
+    "reboot": {
+      "title": "가상 머신 재부팅"
+    },
+    "suspend": {
+      "title": "가상 머신 일시 중지"
+    },
+    "resume": {
+      "title": "가상 머신 재개"
+    },
+    "autostart": {
+      "title": "가상 머신 자동 시작 설정",
+      "enabled": "호스트 시작 시 함께 시작"
+    },
+    "snapshot": {
+      "title": "가상 머신 스냅샷 생성",
+      "name": "스냅샷 이름",
+      "description": "설명"
+    },
+    "clone": {
+      "title": "가상 머신 복제",
+      "name": "복제본 이름"
+    },
+    "shutdown": {
+      "title": "가상 머신 종료"
+    },
+    "forceStop": {
+      "title": "가상 머신 강제 중지"
+    },
+    "delete": {
+      "title": "가상 머신 삭제",
+      "disks": "디스크도 함께 삭제"
+    },
+    "revert": {
+      "title": "스냅샷으로 되돌리기"
+    },
+    "deleteSnapshot": {
+      "title": "스냅샷 삭제"
+    },
+    "vms": {
+      "title": "가상 머신"
+    },
+    "column": {
+      "cpus": "CPU",
+      "memory": "메모리 (MiB)",
+      "ip": "IP 주소",
+      "autostart": "자동 시작",
+      "vm": "가상 머신",
+      "created": "생성일"
+    },
+    "events": {
+      "started": "가상 머신 시작됨",
+      "stopped": "가상 머신 중지됨",
+      "crashed": "가상 머신 오류 발생",
+      "job": "가상 머신 작업 완료"
+    }
+  }
+}

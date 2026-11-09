@@ -1,0 +1,364 @@
+{
+  "tab": {
+    "title": "Pare-feu",
+    "noHost": "Ouvrez le pare-feu depuis un hôte.",
+    "refresh": "Actualiser",
+    "error": "Impossible de lire le pare-feu sur cet hôte.",
+    "disabled": "Le pare-feu est désactivé pour cet hôte. Activez-le dans les paramètres de l'hôte.",
+    "sudo": "Cet hôte nécessite un sudo sans mot de passe ou une connexion root pour lire et modifier le pare-feu.",
+    "noFirewall": "Aucun pare-feu",
+    "on": "activé",
+    "off": "désactivé",
+    "readOnly": "lecture seule",
+    "ruleCount_one": "{{count}} règle",
+    "ruleCount_many": "{{count}} règles",
+    "ruleCount_other": "{{count}} règles",
+    "viewRules": "Règles",
+    "viewDefaults": "Par défaut",
+    "viewZones": "Zones",
+    "viewFail2ban": "Fail2ban",
+    "viewRaw": "Brut"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "done": "Terminé",
+    "failed": "Cela n'a pas fonctionné."
+  },
+  "actions": {
+    "allow": "Autoriser",
+    "deny": "Refuser",
+    "reject": "Rejeter",
+    "limit": "Limiter"
+  },
+  "policies": {
+    "allow": "Autoriser",
+    "deny": "Refuser (supprimer)",
+    "reject": "Rejeter"
+  },
+  "rule": {
+    "action": "Action",
+    "direction": "Direction",
+    "in": "Entrant",
+    "out": "Sortant",
+    "protocol": "Protocole",
+    "anyProtocol": "TCP et UDP",
+    "port": "Port",
+    "portPlaceholder": "22, 80,443 ou 8000-8100",
+    "portHint": "Laissez vide pour tous les ports. Les listes et les plages nécessitent TCP ou UDP.",
+    "anyPort": "n'importe quel port",
+    "source": "De",
+    "destination": "À",
+    "anywhere": "Partout",
+    "addressHint": "Une adresse ou une plage comme 10.0.0.0/8.",
+    "family": "Version IP",
+    "bothFamilies": "IPv4 et IPv6",
+    "iface": "Interface",
+    "anyIface": "Toute interface",
+    "service": "Service",
+    "serviceHint": "Un nom de service firewalld, au lieu d'un port.",
+    "comment": "Commentaire",
+    "commentPlaceholder": "À quoi sert cette règle",
+    "zoneLabel": "Zone",
+    "from": "de {{address}}",
+    "to": "vers {{address}}",
+    "on": "sur {{iface}}",
+    "zone": "zone {{zone}}"
+  },
+  "presets": {
+    "ssh": "SSH",
+    "http": "HTTP",
+    "https": "HTTPS",
+    "web": "Web",
+    "dns": "DNS",
+    "smtp": "Courriel",
+    "mysql": "MySQL",
+    "postgres": "PostgreSQL",
+    "redis": "Redis",
+    "samba": "Samba",
+    "wireguard": "WireGuard",
+    "minecraft": "Minecraft"
+  },
+  "rules": {
+    "add": "Ajouter une règle",
+    "addTitle": "Nouvelle règle",
+    "editTitle": "Modifier la règle",
+    "added": "Règle ajoutée",
+    "saved": "Règle enregistrée",
+    "deleted": "Règle supprimée",
+    "confirmDelete": "Supprimer cette règle ?",
+    "search": "Rechercher des ports, adresses et commentaires",
+    "empty": "Aucune règle pour le moment.",
+    "noMatch": "Aucune règle ne correspond.",
+    "readOnly": "Lecture seule",
+    "deleteOnly": "Suppression uniquement",
+    "stale": "Les règles ont changé sur l'hôte. Actualisez et réessayez.",
+    "filters": {
+      "all": "Toutes",
+      "in": "Entrant",
+      "out": "Sortant",
+      "readOnly": "Lecture seule"
+    }
+  },
+  "defaults": {
+    "hint": "Ce qui arrive au trafic qui ne correspond à aucune règle.",
+    "incoming": "Entrant",
+    "outgoing": "Sortant",
+    "routed": "Acheminé",
+    "saved": "Paramètres par défaut enregistrés"
+  },
+  "zones": {
+    "hint": "firewalld place chaque interface réseau et chaque source dans une zone. La cible d'une zone détermine ce qu'elle fait du trafic qui ne correspond à aucune de ses règles.",
+    "defaultZone": "Zone par défaut",
+    "default": "Par défaut",
+    "active": "Active",
+    "target": "Cible",
+    "interfaces": "interfaces {{list}}",
+    "sources": "sources {{list}}",
+    "saved": "Zone enregistrée",
+    "targets": {
+      "default": "Par défaut (rejeter)",
+      "ACCEPT": "Accepter",
+      "DROP": "Abandonner",
+      "REJECT": "Rejeter"
+    }
+  },
+  "enable": {
+    "off": "Le pare-feu est désactivé, aucune de ces règles ne s'applique pour le moment.",
+    "allowSsh": "Autorisez d'abord SSH sur le port {{ports}}",
+    "allowSshHint": "Permet de maintenir le fonctionnement de Termix et de vos propres connexions SSH.",
+    "button": "Activer",
+    "done": "Pare-feu activé",
+    "timerHint": "L'activation démarre un minuteur. Si vous ne cliquez pas sur Conserver à temps, l'hôte le désactivera automatiquement."
+  },
+  "disable": {
+    "button": "Désactiver",
+    "title": "Désactiver le pare-feu ?",
+    "description": "Toutes les règles cessent de s'appliquer jusqu'à ce que vous le réactiviez.",
+    "done": "Pare-feu désactivé"
+  },
+  "install": {
+    "none": "Cet hôte n'a pas encore de pare-feu.",
+    "hint": "Installez-en un pour commencer. Rien n'est activé tant que vous ne le décidez pas.",
+    "button": "Installer {{name}}",
+    "working": "Installation en cours...",
+    "done": "{{name}} installé",
+    "noPackageManager": "Termix n'a pas trouvé de gestionnaire de paquets connu sur cet hôte."
+  },
+  "lockout": {
+    "title": "Cela pourrait bloquer l'accès à Termix",
+    "description": "{{reason}}. Si Termix ne peut pas se connecter après la modification, l'hôte annule automatiquement le changement lorsque le minuteur expire. Continuer quand même ?",
+    "confirm": "Continuer"
+  },
+  "pending": {
+    "started": "Modification appliquée. Appuyez sur Conserver pour la valider.",
+    "left": "Annulation dans {{seconds}} s sauf si vous appuyez sur Conserver",
+    "expired": "Le temps est écoulé, l'hôte annule la modification",
+    "reachable": "Termix a toujours pu se connecter",
+    "unreachable": "Termix n'a pas pu se connecter après la modification",
+    "unknown": "Vérification de la connexion",
+    "keep": "Conserver",
+    "undo": "Annuler maintenant",
+    "kept": "Modification conservée",
+    "undone": "Modification annulée",
+    "gone": "Le temps est écoulé et l'hôte a déjà annulé la modification.",
+    "first": "Conservez ou annulez d'abord la dernière modification.",
+    "kinds": {
+      "add": "Nouvelle règle",
+      "update": "Règle modifiée",
+      "remove": "Règle supprimée",
+      "defaults": "Nouvelles valeurs par défaut",
+      "enable": "Pare-feu activé",
+      "disable": "Pare-feu désactivé",
+      "zoneTarget": "Nouvelle cible de zone",
+      "defaultZone": "Nouvelle zone par défaut",
+      "ruleset": "Ensemble de règles appliqué"
+    }
+  },
+  "fail2ban": {
+    "loadFailed": "Impossible de lire Fail2ban.",
+    "notInstalled": "Fail2ban n'est pas installé. Il bloque les adresses qui échouent trop souvent à se connecter.",
+    "stopped": "Fail2ban est installé mais ne fonctionne pas.",
+    "start": "Démarrer Fail2ban",
+    "started": "Fail2ban démarré",
+    "noJails": "Aucun jail n'est activé.",
+    "none": "Rien de bloqué.",
+    "bannedCount_one": "{{count}} bloqué",
+    "bannedCount_many": "{{count}} bloqués",
+    "bannedCount_other": "{{count}} bloqués",
+    "counts": "{{failed}} échecs en cours | {{totalFailed}} échecs au total | {{totalBanned}} blocages au total",
+    "ban": "Bloquer",
+    "unban": "Débloquer",
+    "banAddress": "Bloquer une adresse",
+    "banned": "{{ip}} bloquée",
+    "unbanned": "{{ip}} débloquée",
+    "selfTitle": "Bloquer l'adresse de Termix ?",
+    "selfDescription": "Termix se connecte depuis cette adresse. La bloquer coupera Termix de cet hôte."
+  },
+  "raw": {
+    "empty": "Rien à afficher."
+  },
+  "watch": {
+    "start": "Avertissez-moi quand ce pare-feu change",
+    "stop": "Arrêter les alertes pour ce pare-feu"
+  },
+  "companion": {
+    "openTab": "Ouvrir l'onglet Pare-feu",
+    "toggle": "Panneau Pare-feu",
+    "allowPort": "Autoriser un port TCP"
+  },
+  "card": {
+    "title": "Pare-feux",
+    "empty": "Aucun hôte n'a le Pare-feu activé.",
+    "banned_one": "{{count}} bloqué",
+    "banned_many": "{{count}} bloqués",
+    "banned_other": "{{count}} bloqués",
+    "pending": "En attente"
+  },
+  "rulesets": {
+    "title": "Ensembles de règles du pare-feu",
+    "hint": "Enregistrez une liste de règles et ajoutez-la à plusieurs hôtes en une seule fois. L'application ne ajoute que les règles manquantes, elle n'en supprime jamais.",
+    "add": "Nouvel ensemble de règles",
+    "addTitle": "Nouvel ensemble de règles",
+    "editTitle": "Modifier l'ensemble de règles",
+    "loadFailed": "Impossible de charger vos ensembles de règles.",
+    "empty": "Aucun ensemble de règles pour le moment.",
+    "name": "Nom",
+    "namePlaceholder": "Serveur Web",
+    "description": "Description",
+    "rules": "Règles",
+    "noRules": "Aucune règle dans cet ensemble pour le moment.",
+    "hosts": "Hôtes",
+    "noHosts": "Aucun hôte n'a le pare-feu activé.",
+    "saved": "Ensemble de règles enregistré",
+    "deleted": "Ensemble de règles supprimé",
+    "confirmDelete": "Supprimer {{name}} ?",
+    "deleteHint": "Les règles déjà ajoutées aux hôtes restent en place.",
+    "ruleCount_one": "{{count}} règle",
+    "ruleCount_many": "{{count}} règles",
+    "ruleCount_other": "{{count}} règles",
+    "hostCount_one": "{{count}} hôte",
+    "hostCount_many": "{{count}} hôtes",
+    "hostCount_other": "{{count}} hôtes",
+    "check": "Vérifier les hôtes",
+    "apply": "Appliquer",
+    "applyTitle": "Appliquer {{name}} ?",
+    "applyDescription": "Les règles manquantes sont ajoutées sur chaque hôte. Chaque hôte est soumis à un test de verrouillage SSH, et si Termix ne peut plus y accéder, le changement est automatiquement annulé.",
+    "applied": "Jeu de règles appliqué",
+    "applyErrors_one": "Un problème est survenu sur {{count}} hôte",
+    "applyErrors_many": "Des problèmes sont survenus sur {{count}} hôtes",
+    "applyErrors_other": "Des problèmes sont survenus sur {{count}} hôtes",
+    "applyResult": "{{name}} appliqué",
+    "driftTitle": "{{name}} sur chaque hôte",
+    "inSync": "Toutes les règles sont présentes",
+    "ok": "Synchronisé",
+    "missing_one": "{{count}} manquant",
+    "missing_many": "{{count}} manquants",
+    "missing_other": "{{count}} manquants",
+    "nothingMissing": "Toutes les règles étaient déjà présentes",
+    "added_one": "{{count}} règle ajoutée",
+    "added_many": "{{count}} règles ajoutées",
+    "added_other": "{{count}} règles ajoutées",
+    "waiting": "Ajouté, mais Termix n'a pas pu se connecter par la suite. L'hôte annulera la modification.",
+    "fleet": "Flotte",
+    "applyFleet": "Appliquer à la flotte"
+  },
+  "permissions": {
+    "use": {
+      "title": "Utiliser le pare-feu",
+      "description": "Ouvrez l'onglet Pare-feu sur les hôtes auxquels vous pouvez accéder. Les modifications nécessitent également un accès en écriture à l'hôte."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Pare-feu",
+        "description": "Affiche l'onglet Pare-feu pour cet hôte afin de gérer son pare-feu via SSH."
+      },
+      "useSudo": {
+        "label": "Utiliser sudo",
+        "description": "Exécuter les commandes de pare-feu avec sudo sans mot de passe lorsque la connexion n'est pas root."
+      },
+      "readOnly": {
+        "label": "Lecture seule",
+        "description": "Afficher le pare-feu mais bloquer toute modification depuis Termix."
+      },
+      "sshGuard": {
+        "label": "Vérification de verrouillage SSH",
+        "description": "Arrêter et demander confirmation avant une modification qui risquerait de bloquer l'accès SSH depuis Termix."
+      },
+      "rollbackSeconds": {
+        "label": "Minuteur d'annulation",
+        "description": "Secondes dont vous disposez pour appuyer sur Conserver après une modification risquée avant que l'hôte ne l'annule."
+      },
+      "confirmAll": {
+        "label": "Minuteur pour chaque modification",
+        "description": "Utiliser le minuteur d'annulation pour chaque modification, pas seulement les modifications risquées."
+      },
+      "showPanel": {
+        "label": "Panneau du pare-feu",
+        "description": "Afficher le panneau du pare-feu à côté des terminaux SSH pour cet hôte."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Ouvrir le panneau du pare-feu avec un terminal",
+        "description": "Afficher le panneau du pare-feu lorsqu'un terminal s'ouvre sur un hôte qui en dispose."
+      },
+      "companionSide": {
+        "label": "Position du panneau du pare-feu",
+        "description": "Emplacement du panneau par rapport au terminal.",
+        "right": "Droite",
+        "left": "Gauche",
+        "bottom": "Bas"
+      },
+      "companionSize": {
+        "label": "Taille du panneau du pare-feu",
+        "description": "Largeur, ou hauteur en bas, en pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Bouton latéral du panneau Pare-feu",
+        "description": "Affiche un petit bouton sur le bord du terminal pour ouvrir le panneau."
+      }
+    }
+  },
+  "manager": {
+    "title": "Pare-feu",
+    "disabled": "Activez le Pare-feu dans les paramètres de cet hôte pour le gérer ici."
+  },
+  "operations": {
+    "list": {
+      "title": "Lister les règles du pare-feu"
+    },
+    "status": {
+      "title": "Pare-feu"
+    },
+    "portAllowed": {
+      "title": "Le port est autorisé",
+      "description": "Indique si une règle d'autorisation existe pour ce port. Utilisez-la pour surveiller les dérives des hôtes."
+    },
+    "allow": {
+      "title": "Autoriser un port"
+    },
+    "remove": {
+      "title": "Supprimer un port autorisé"
+    },
+    "delete": {
+      "title": "Supprimer la règle du pare-feu"
+    },
+    "rules": {
+      "title": "Règles du pare-feu"
+    },
+    "port": "Port",
+    "protocol": "Protocole",
+    "tcp": "TCP",
+    "udp": "UDP",
+    "any": "Tous",
+    "source": "Depuis",
+    "sourceHint": "Une adresse ou une plage. Laisser vide pour autoriser toutes les sources.",
+    "direction": "Direction"
+  }
+}

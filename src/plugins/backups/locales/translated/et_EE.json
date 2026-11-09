@@ -1,0 +1,451 @@
+{
+  "plugin": {
+    "name": "Varundused",
+    "description": "Varunda oma hostide kaustu, andmebaase ja Dockeri andmeid resticuga ning sirvi, laadi alla ja taasta."
+  },
+  "common": {
+    "save": "Salvesta",
+    "cancel": "Tühista",
+    "back": "Tagasi",
+    "delete": "Kustuta",
+    "done": "Valmis",
+    "loading": "Laadimine...",
+    "refresh": "Värskenda",
+    "retry": "Proovi uuesti"
+  },
+  "permissions": {
+    "use": {
+      "title": "Kasuta varukoopiaid",
+      "description": "Seadista varundamisülesandeid ja hoidlaid, käivita varundamisi ning sirvi, laadi alla ja taasta pilte hostidel, mida saate muuta."
+    }
+  },
+  "tab": {
+    "title": "Varukoopiad",
+    "viewJobs": "Ülesanded",
+    "viewRepos": "Hoidlad",
+    "viewHistory": "Ajalugu"
+  },
+  "hostTab": {
+    "title": "Varukoopiad",
+    "noHost": "Ava varukoopiad hostilt.",
+    "viewJobs": "Ülesanded",
+    "viewSnapshots": "Pildid",
+    "viewHistory": "Ajalugu",
+    "restic": "restic {{version}}",
+    "noRestic": "restic pole installitud",
+    "sudo": "Termix peab sisselogima kas root-ina või kasutajana, kellel on paroolita sudo, et teha sellel hostil varukoopiaid.",
+    "statusFailed": "Selle hosti lugemine ei õnnestunud"
+  },
+  "install": {
+    "missing": "restic pole sellel hostil installitud",
+    "tooOld": "Sellel hostil olev restic on vanem kui 0.17",
+    "hint": "Varukoopiaid tehakse resticiga. Paigalda see pakkemanageri kaudu või GitHubist restic vabastusest, kui pakett on liiga vana.",
+    "button": "Paigalda restic",
+    "working": "Paigaldatakse...",
+    "title": "Installida restic?",
+    "desc": "See paigaldab restic'i hostile root-õigustega.",
+    "confirm": "Paigalda",
+    "done": "restic {{version}} on paigaldatud",
+    "failed": "restic'i ei õnnestunud paigaldada"
+  },
+  "status": {
+    "never": "Pole kunagi käivitatud",
+    "running": "Töötab",
+    "success": "Valmis",
+    "warning": "Hoiatused",
+    "failed": "Ebaõnnestus",
+    "canceled": "Peatatud"
+  },
+  "time": {
+    "justNow": "just nüüd",
+    "soon": "peagi",
+    "ago": {
+      "minutes_one": "{{count}} minut tagasi",
+      "minutes_other": "{{count}} minutit tagasi",
+      "hours_one": "{{count}} tund tagasi",
+      "hours_other": "{{count}} tundi tagasi",
+      "days_one": "{{count}} päev tagasi",
+      "days_other": "{{count}} päeva tagasi"
+    },
+    "in": {
+      "minutes_one": "{{count}} minuti pärast",
+      "minutes_other": "{{count}} minuti pärast",
+      "hours_one": "{{count}} tunni pärast",
+      "hours_other": "{{count}} tunni pärast",
+      "days_one": "{{count}} päeva pärast",
+      "days_other": "{{count}} päeva pärast"
+    }
+  },
+  "jobs": {
+    "add": "Lisa ülesanne",
+    "empty": "Varundustüübid puuduvad",
+    "emptyHint": "Lisa ülesanne kaustade, andmebaaside või Dockeri andmete varundamiseks.",
+    "emptyNoRepo": "Lisa esmalt hoidla, et varundustel oleks kuhu minna.",
+    "loadFailed": "Varundusülesannete laadimine ebaõnnestus",
+    "lastGood": "Viimane varundus {{when}}",
+    "noGood": "Varundust veel ei ole",
+    "next": "Järgmine {{when}}",
+    "paused": "Peatatud",
+    "run": "Käivita kohe",
+    "stop": "Peata",
+    "edit": "Muuda",
+    "snapshots": "Hetktõmmised",
+    "started": "{{name}} käivitatud",
+    "runFailed": "Varundamist ei õnnestunud käivitada"
+  },
+  "editor": {
+    "newTitle": "Uus varundamistöö",
+    "general": "Töö",
+    "host": "Peremeesmasin",
+    "pickHost": "Vali peremeesmasin",
+    "name": "Nimi",
+    "namePlaceholder": "Öine varundamine",
+    "repository": "Hoidla",
+    "pickRepository": "Vali hoidla",
+    "noRepos": "Sellel hostil pole kasutatavaid hoidlaid. Lisa üks esmalt varunduste vahekaardil.",
+    "repoLocked": "Ainult selle hoidla omanik saab seda muuta.",
+    "enabled": "Käivita ajakava alusel",
+    "enabledHint": "Ajakava peatamiseks lülita see välja. Hetkel käivitamine töötab ikka.",
+    "oneFileSystem": "Püsi ühes failisüsteemis",
+    "oneFileSystemHint": "Jäta vahele teised kettad ja mntpunktid, mis asuvad valitud kaustade sees.",
+    "saved": "Ülesanne salvestatud",
+    "saveFailed": "Ülesannet ei õnnestunud salvestada",
+    "deleteTitle": "Kas kustutada {{name}}?",
+    "deleteDesc": "Töö eemaldatakse Termixist. Selle hetktõmmised jäävad hoidlasse.",
+    "deleted": "Töö kustutatud",
+    "deleteFailed": "Tööd ei õnnestunud kustutada"
+  },
+  "sources": {
+    "add": "Lisa varundamisse",
+    "addPaths": "Kaustad",
+    "addDatabase": "Andmebaas",
+    "addDocker": "Docker",
+    "remove": "Eemalda",
+    "paths": "Kaustad ja failid",
+    "folders": "Asukohad",
+    "foldersHint": "Üks täielik asukoht rida.",
+    "excludes": "Jäta vahele",
+    "excludesHint": "Üks restic-muster rida, näiteks *.log.",
+    "database": "Andmebaas",
+    "engine": "Tüüp",
+    "engines": {
+      "mysql": "MySQL või MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Sisselogimine",
+    "ownLogin": "Kirjuta siia sisselogimisandmed",
+    "noDatabasesPlugin": "Salvestatud sisselogimisandmete valimiseks lülita sisse andmebaaside plugin.",
+    "address": "Aadress",
+    "addressPlaceholder": "Jäta tühjaks kohaliku sokli kasutamiseks",
+    "port": "Port",
+    "username": "Kasutaja",
+    "password": "Parool",
+    "passwordSaved": "Salvestatud, jäta tühjaks, et säilitada",
+    "runAs": "Käivita kui",
+    "runAsHint": "Linuxi kasutaja, kelle nime all varundamine käivitatakse (nt postgres). Tühjaks jätmisel käivitatakse rootina.",
+    "databases": "Andmebaasid",
+    "databasesHint": "Üks nimi rea kohta. Jäta tühjaks, et varundada kõik.",
+    "sqliteFiles": "Andmebaasifailid",
+    "sqliteFilesHint": "Üks täielik asukohateekond rea kohta. Iga fail kopeeritakse turvaliselt, ka kui seda kasutatakse.",
+    "docker": "Docker",
+    "stacks": "Stackid",
+    "volumes": "Mahuüksused",
+    "noStacks": "Ühtegi compose-stacki ei leitud",
+    "noVolumes": "Ühtegi mahuüksust ei leitud",
+    "dockerFailed": "Dockeri loetelu kuvamine sellel hostil ei õnnestunud",
+    "stop": "Peata stackid varundamise ajal",
+    "stopHint": "Valitud stackid peatatakse esmalt ja käivitatakse uuesti pärast varundamist, et nende failid ei muutuks lugemise ajal."
+  },
+  "schedule": {
+    "title": "Ajakava",
+    "manual": "Käsitsi",
+    "daily": "Igapäevane",
+    "weekly": "Iganädalane",
+    "custom": "Kohandatud",
+    "day": "Päev",
+    "time": "Aeg",
+    "cron": "Cron",
+    "cronHint": "Minut, tund, kuu päev, kuu, nädalapäev.",
+    "cronInvalid": "See cron-avaldis ei kehti",
+    "timezone": "Ajaline tsoon",
+    "serverTime": "Serveri aeg",
+    "manualHint": "See ülesanne käivitub ainult siis, kui vajutate Käivita nüüd.",
+    "manualOnly": "Käsitsi",
+    "next": "Järgmine käivitumine {{time}}",
+    "noNext": "See ajakava ei käivitu kunagi",
+    "dailyAt": "Iga päev kell {{time}}",
+    "weeklyAt": "{{day}} kell {{time}}",
+    "days": {
+      "0": "Pühapäev",
+      "1": "Esmaspäev",
+      "2": "Teisipäev",
+      "3": "Kolmapäev",
+      "4": "Neljapäev",
+      "5": "Reede",
+      "6": "Laupäev"
+    }
+  },
+  "keep": {
+    "title": "Hoia",
+    "last": "Viimane",
+    "daily": "Igapäevane",
+    "weekly": "Iga nädal",
+    "monthly": "Iga kuu",
+    "yearly": "Iga aasta",
+    "hint": "Pärast iga varundamist eemaldatakse selle ülesande vanemad hetktõmmised, nii et alles jäävad vaid need. Väärtus 0 tähendab, et kõik säilitatakse."
+  },
+  "hooks": {
+    "title": "Käsklused",
+    "pre": "Enne",
+    "preHint": "Käivitatakse root-õigustega enne varundamist. Kui see ebaõnnestub, peatub varundamine.",
+    "post": "Pärast",
+    "postHint": "Käivitatakse root-õigustega pärast varundamist, isegi kui see ebaõnnestus. TERMIX_BACKUP_STATUS sisaldab tulemust."
+  },
+  "alerts": {
+    "title": "Hoiatused",
+    "onFailure": "Teata, kui varundamine ebaõnnestub",
+    "onFailureHint": "Teavitab ka hoiatustest ja ühe korra, kui varundamine jälle õnnestub.",
+    "staleDays": "Päevi ilma varunduseta",
+    "staleDaysHint": "Teata, kui varundamine ei õnnestu antud arv päevi. 0 lülitab selle välja."
+  },
+  "repos": {
+    "add": "Lisa hoidla",
+    "empty": "Hoidlaid pole veel lisatud",
+    "emptyHint": "Hoidla on koht, kuhu varundused salvestatakse, näiteks S3 ämber või kaust.",
+    "loadFailed": "Hoidlate laadimine ebaõnnestus",
+    "jobCount_one": "{{count}} ülesanne",
+    "jobCount_other": "{{count}} ülesannet",
+    "newTitle": "Uus hoidla",
+    "storage": "Salvestusruum",
+    "name": "Nimi",
+    "namePlaceholder": "Väline S3",
+    "kind": "Tüüp",
+    "kinds": {
+      "s3": "S3-ga ühilduv",
+      "rest": "REST-server",
+      "rclone": "rclone",
+      "local": "Kaust perel"
+    },
+    "endpoint": "Lõpp-punkt",
+    "endpointHint": "AWS-i puhul jätta tühjaks. MinIO, R2, B2 või Wasabi puhul sisestage nende S3-aadress.",
+    "region": "Piirkond",
+    "bucket": "Anum",
+    "prefix": "Kaust anumis",
+    "prefixHint": "Valikuline.",
+    "accessKeyId": "Juurdepääsupiirde ID",
+    "secretKey": "Salajane juurdepäävupiirde võti",
+    "secretSaved": "Salvestatud, jäta tühjaks, et säilitada",
+    "url": "Serveri aadress",
+    "username": "Kasutaja",
+    "usernameHint": "Tühi, kui serveril pole sisselogimist.",
+    "restPassword": "Salasõna",
+    "remote": "Kaugühenduse nimi",
+    "remoteHint": "Ainult tähed, numbrid ja _.",
+    "path": "Asukoht",
+    "rcloneConfig": "rclone'i seadistus",
+    "rcloneHint": "Kaugühenduse read failist rclone.conf. Looge need, käivitades arvutis käsu rclone config. Hostidel peab olema rclone paigaldatud.",
+    "rcloneSaved": "Salvestatud, jätke tühjaks, et säilitada",
+    "host": "Host",
+    "pickHost": "Valige host",
+    "folder": "Kaust",
+    "folderHint": "Ainult sellel hostil olevad ülesanded saavad seda kasutada. Kõige parem on kasutada ühendatud kettat.",
+    "password": "Krüpteerimine",
+    "resticPassword": "Hoidla parool",
+    "passwordHint": "Jäta tühjaks, et Termix genereeriks tugeva parooli. Säilita koopia turvalises kohas: ilma selleta varukoopiaid ei saa lugeda.",
+    "passwordKeep": "Salvestatud, jäta tühjaks, et säilita olemasolev",
+    "passwordChangeHint": "See muudab ainult seda, mida Termix saadab. See ei muuta olemasoleva hoidla parooli.",
+    "reveal": "Kuva parool",
+    "revealTitle": "Kas kuvada hoidla parool?",
+    "revealDesc": "Igaüks, kellel on see ja salvestusvõtmed, saab lugeda kõiki selle hoidla varukoopiaid. See kantud auditilogi.",
+    "revealFailed": "Parooli lugemine ebaõnnestus",
+    "copy": "Kopeeri",
+    "copied": "Kopeeritud",
+    "check": "Kontrolli",
+    "checkFrom": "Kontrolli hostilt",
+    "checkFromHint": "Host, mis avab hoidla. Sellel peab olema restic.",
+    "checkButton": "Kontrolli",
+    "initButton": "Kontrolli ja seadista",
+    "installRclone": "Paigalda rclone sellele hostile",
+    "rcloneInstalled": "rclone {{version}} on paigaldatud.",
+    "rcloneFailed": "rclone'i paigaldamine ebaõnnestus",
+    "checking": "Kontimine...",
+    "opened": "Hoidla avati edukalt.",
+    "created": "Hoidla seadistamine on lõpetatud ja see on valmis.",
+    "checkFailed": "Hoidla avamine ei õnnestunud",
+    "checkNext": "Salvestatud. Seadista see, kontrollides seda hostist.",
+    "saved": "Hoidla salvestatud",
+    "saveFailed": "Hoidla salvestamine ei õnnestunud",
+    "deleteTitle": "Kas kustutada {{name}}?",
+    "deleteDesc": "See eemaldatakse ainult Termixist. Varundused jäävad salvestusruumi.",
+    "deleted": "Hoidla kustutatud",
+    "deleteFailed": "Hoidlat ei õnnestunud kustutada"
+  },
+  "snapshots": {
+    "noJobs": "Lisage esmalt varundamistöö.",
+    "job": "Töö",
+    "titleFor": "{{name}} hetktõmmised",
+    "empty": "Hetktõmmiseid pole veel",
+    "loadFailed": "Hetktõmmiseid ei õnnestunud lugeda",
+    "latest": "Viimane",
+    "files_one": "{{count}} fail",
+    "files_other": "{{count}} faili",
+    "browse": "Sirvi",
+    "delete": "Kustuta",
+    "deleteTitle": "Kas kustutada see hetktõmmis?",
+    "deleteDesc": "Hetktõmmis ajast {{time}} eemaldatakse hoidlast pöördumatult.",
+    "deleted": "Hetktõmmis kustutatud",
+    "deleteFailed": "Hetktõmmist ei õnnestunud kustutada",
+    "browseTitle": "Hetktõmmis {{time}}",
+    "root": "Juur",
+    "emptyFolder": "See kaust on tühi",
+    "filesFailed": "Selle kausta sisu loetlemine ei õnnestunud",
+    "pick": "Vali",
+    "download": "Laadi alla",
+    "downloadZip": "Laadi alla ZIP-failina",
+    "downloadFailed": "Allalaadimine ebaõnnestus",
+    "restoreAll": "Taasta kõik",
+    "restorePicked_one": "Taasta {{count}} üksus",
+    "restorePicked_other": "Taasta {{count}} üksust"
+  },
+  "restore": {
+    "title": "Taasta",
+    "what": "Mis",
+    "everything": "Kogu salvestise sisu.",
+    "more_one": "ja {{count}} teine",
+    "more_other": "ja {{count}} teist",
+    "where": "Kuhu",
+    "host": "Peremeesmasin",
+    "hostHint": "Iga host, mida saate muuta ja mis suudab hoidlaga ühendust võtta.",
+    "localOnly": "See hoidla on hostil asuv kaust, seega saab seda taastada ainult seal.",
+    "toFolder": "Kausta",
+    "toOriginal": "Sinna, kus see oli",
+    "folder": "Kaust",
+    "folderHint": "Failid säilitavad selle kausta sees oma täieliku tee.",
+    "originalWarning": "Failid kirjutatakse tagasi sinna, kus need varem olid, ja võivad asendada praegu seal olevaid faile.",
+    "overwrite": "Juba olemasolevad failid",
+    "overwriteOptions": {
+      "if-changed": "Asenda muutumisel",
+      "always": "Asenda alati",
+      "if-newer": "Asenda, kui varukoopia on uuem",
+      "never": "Ära kunagi asenda"
+    },
+    "start": "Taasta",
+    "started": "Taastamine käivitatud",
+    "failed": "Taastamist ei õnnestunud käivitada"
+  },
+  "run": {
+    "title": "Käivita",
+    "backupTitle": "{{name}} varukoopia",
+    "restoreTitle": "{{name}} taastamine",
+    "loadFailed": "Käivitust ei õnnestunud laadida",
+    "progress": "Edenemine",
+    "preparing": "Valmistumine...",
+    "progressLine": "{{percent}}% | {{files}}/{{totalFiles}} faili | {{bytes}}/{{totalBytes}}",
+    "left": "{{time}} alles",
+    "details": "Üksikasjad",
+    "started": "Käivitatud",
+    "finished": "Lõpetatud",
+    "trigger": "Käivitas",
+    "triggers": {
+      "manual": "Käivita kohe",
+      "schedule": "Ajakava",
+      "operation": "Termixi tegevus"
+    },
+    "snapshot": "Pilt",
+    "target": "Taastatud olekusse",
+    "files": "Failid",
+    "filesLine": "{{total}} faili, {{added}} uut, {{changed}} muudetud",
+    "size": "Suurus",
+    "added": "Lisatud hoidlasse",
+    "took": "Kulus",
+    "log": "Logi",
+    "noLog": "Logi puudub.",
+    "stopTitle": "Kas katkestada see käivitamine?",
+    "stopDesc": "Peatatud varundamine ei salvesta hetktõmmist. Peatatud taastamine jätab taastatud failid alles.",
+    "stopSent": "Peatamine",
+    "stopFailed": "Tööd ei õnnestunud peatada"
+  },
+  "history": {
+    "empty": "Ühtegi tööd pole veel käivitatud",
+    "loadFailed": "Ajalugu ei õnnestunud laadida",
+    "status": "Olek",
+    "job": "Töö",
+    "host": "Peremeesmasin",
+    "kind": "Tüüp",
+    "kinds": {
+      "backup": "Varundamine",
+      "restore": "Taastamine"
+    },
+    "started": "Käivitatud",
+    "took": "Kulus",
+    "size": "Suurus"
+  },
+  "card": {
+    "title": "Varundused",
+    "all": "Kõik varundustööd",
+    "oneJob": "Üks varundustöö",
+    "empty": "Varundustöid pole veel.",
+    "gone": "See varundustöö kustutati.",
+    "open": "Ava"
+  },
+  "operations": {
+    "list": {
+      "title": "Varundustööde loendamine"
+    },
+    "failed": {
+      "title": "Ebaõnnestunud varundused"
+    },
+    "run": {
+      "title": "Varunduse käivitamine"
+    },
+    "cancel": {
+      "title": "Varunduse peatamine"
+    },
+    "snapshots": {
+      "title": "Hetktõmmiste loendamine"
+    },
+    "events": {
+      "finished": "Varundamine lõpetatud",
+      "failed": "Varundamine ebaõnnestus"
+    },
+    "jobs": {
+      "title": "Varundustööd",
+      "lastSuccess": "Viimane varundus",
+      "nextRun": "Järgmine käivitamine",
+      "size": "Suurus"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Kuva varunduste paneel terminalides",
+        "description": "Luba varunduste paneel avada selle peremeesmasina SSH-terminali kõrval."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Ava varunduste paneel koos uute terminalidega",
+        "description": "Kuva varunduste paneel kõrvale igale SSH-terminaalile, kus see on sisse lülitatud. Paneeli saab ikka avada ja sulgeda nupuga paremal serval."
+      },
+      "companionSide": {
+        "label": "Varunduste paneeli asukoht",
+        "description": "Kus varunduste paneel terminali kõrval asub.",
+        "right": "Parem",
+        "left": "Vasak",
+        "bottom": "Alumine"
+      },
+      "companionSize": {
+        "label": "Varunduste paneeli suurus",
+        "description": "Laius pikslites või kõrgus, kui paneel on all. Saad ka serva lohisedades suurust muuta."
+      },
+      "companionEdgeButton": {
+        "label": "Kuva paneeli nupp",
+        "description": "Kuva terminali paremal serval väike nupp, mis avab varunduste paneeli."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Lülita varunduste paneel sisse/välja"
+  }
+}

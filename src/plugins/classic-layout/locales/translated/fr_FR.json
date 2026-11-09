@@ -16,7 +16,9 @@
     "more": "Plus",
     "logout": "Déconnexion",
     "next": "Suivant",
-    "previous": "Précédent"
+    "previous": "Précédent",
+    "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe"
   },
   "desktopUpdates": {
     "title": "Application de bureau",
@@ -67,7 +69,10 @@
     "resetRailOrder": "Réinitialiser l'ordre",
     "hideFromRail": "Masquer de la barre latérale",
     "openSettings": "Ouvrir les paramètres",
-    "mobileNavigation": "Navigation"
+    "mobileNavigation": "Navigation",
+    "allTabs": "Tous les onglets",
+    "hideTabBar": "Masquer la barre d'onglets",
+    "showTabBar": "Afficher la barre d'onglets"
   },
   "commandPalette": {
     "searchPlaceholder": "Rechercher des hôtes, commandes ou paramètres...",
@@ -110,7 +115,8 @@
     "noSearchResults": "Aucune connexion ne correspond à votre recherche",
     "rename": "Renommer la session",
     "forgetConfirm": "Terminer la session en arrière-plan pour {{name}} ?",
-    "forget": "Terminer la session"
+    "forget": "Terminer la session",
+    "expiringNow": "Se termine maintenant"
   },
   "placeholders": {
     "apiKeyName": "ex. Pipeline CI",
@@ -158,16 +164,14 @@
     "commandPalette": "Palette de commandes",
     "done": "Terminé",
     "clear": "Effacer",
-    "dragToResizeColumns": "Glisser pour redimensionner les colonnes",
     "hostsAvailable": "Hôtes disponibles",
-    "removeSection": "Supprimer la section",
-    "addSection": "Ajouter une section",
-    "allSectionsShown": "Tout est déjà affiché sur le tableau de bord.",
+    "addSection": "Ajouter des tuiles",
     "fromPlugins": "Depuis les plugins",
-    "dropHere": "Déposez une section ici",
-    "dragToReorder": "Glissez les sections pour les réorganiser",
+    "dropHere": "Aucune tuile pour le moment. Ajoutez-en depuis la liste.",
+    "dragToReorder": "Faites glisser les tuiles pour les déplacer et leurs bords pour les redimensionner",
     "clearActivityConfirm": "Effacer votre activité récente ?",
-    "resetConfirm": "Réinitialiser le tableau de bord à sa mise en page par défaut ?"
+    "resetConfirm": "Réinitialiser le tableau de bord à sa mise en page par défaut ?",
+    "clearFailed": "Impossible de vider l'historique récent"
   },
   "admin": {
     "sectionGeneral": "Général",
@@ -230,6 +234,9 @@
     "allowPasswordLoginDesc": "Connexion par nom d'utilisateur et mot de passe",
     "externalAutoProvision": "Créer automatiquement les comptes externes",
     "externalAutoProvisionDesc": "Créer un compte lors de la première connexion via une méthode externe telle que SSO ou LDAP. Désactivé, seules les personnes disposant déjà d'un compte peuvent se connecter de cette manière",
+    "credentialStorage": "Autoriser la sauvegarde des mots de passe et des clés",
+    "credentialStorageOff": "La sauvegarde des mots de passe et des clés est désactivée sur ce serveur. Laissez-les vides et Termix vous les demandera lors de la connexion.",
+    "credentialStorageDesc": "Désactivé, personne ne peut sauvegarder un mot de passe ou une clé privée sur un hôte ou un identifiant, et Termix les demande lors de la connexion. Les connexions déjà sauvegardées restent jusqu'à leur suppression.",
     "secondFactorAfterExternalLogin": "Demander un deuxième facteur après les connexions externes (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Désactivé, un deuxième facteur inscrit n'est demandé qu'après les connexions par mot de passe et autres connexions locales, comme auparavant. Activé, il est demandé après chaque méthode de connexion, y compris SSO et LDAP.",
     "allowPasswordReset": "Autoriser la réinitialisation du mot de passe",
@@ -281,6 +288,13 @@
     "apiKeyName": "Nom",
     "apiKeyUser": "Utilisateur",
     "apiKeySelectUser": "Sélectionner un utilisateur...",
+    "apiKeyScope": "Accès",
+    "apiKeyScopeFull": "Tout ce que l'utilisateur peut faire",
+    "apiKeyScopeRead": "Actions en lecture seule",
+    "apiKeyScopeRun": "Exécuter des actions",
+    "apiKeyScopeHint": "Les clés d'action n'accèdent qu'aux actions de Termix et au serveur MCP, rien d'autre.",
+    "apiKeyScopeActionsRead": "Actions, lecture seule",
+    "apiKeyScopeActionsRun": "Actions",
     "apiKeyExpiresAt": "Expire le",
     "createKey": "Créer une clé",
     "apiKeyNoExpiry": "Sans expiration",
@@ -319,6 +333,10 @@
     "deleteUserFailed": "Échec de la suppression de l'utilisateur",
     "deleteUserSuccess": "Utilisateur « {{username}} » supprimé",
     "deleteRoleSuccess": "Rôle « {{name}} » supprimé",
+    "deleteRoleFailed": "Impossible de supprimer le rôle",
+    "roleNamePlaceholder": "développeur",
+    "roleDisplayNamePlaceholder": "Développeur",
+    "unknownError": "Erreur inconnue",
     "revokeKeySuccess": "Clé « {{name}} » révoquée",
     "revokeKeyFailed": "Échec de la révocation de la clé",
     "copiedToClipboard": "Copié dans le presse-papiers",
@@ -361,6 +379,7 @@
     "unlinkAccountFailed": "Échec de la dissociation de la connexion externe",
     "updateRegistrationFailed": "Échec de la mise à jour du paramètre d'inscription",
     "updatePasswordLoginFailed": "Échec de la mise à jour du paramètre de connexion par mot de passe",
+    "updateCredentialStorageFailed": "Échec de la mise à jour du paramètre de stockage des identifiants",
     "updateSecondFactorAfterExternalLoginFailed": "Échec de la mise à jour du paramètre du deuxième facteur",
     "updatePasswordResetFailed": "Échec de la mise à jour du paramètre de réinitialisation du mot de passe",
     "sessionTimeoutRange2": "Le délai d'expiration de session doit être compris entre 1 et 720 heures",
@@ -683,7 +702,8 @@
         "tryBetaTitle": "Testez les nouvelles fonctionnalités en avant-première",
         "tryBetaDescription": "Rejoignez le programme bêta dans Mises à jour.",
         "sendBetaFeedback": "Envoyer un retour sur la bêta",
-        "openUpdates": "Mises à jour"
+        "openUpdates": "Mises à jour",
+        "hexLabel": "hex"
       }
     }
   },
@@ -769,6 +789,11 @@
       "allPluginsBeta": "Utiliser les versions bêta pour tous les plugins",
       "allPluginsStable": "Tous les plugins revenus à la version stable",
       "saveFailed": "Impossible de sauvegarder la modification"
+    },
+    "user": {
+      "hostRows": {
+        "label": "Options de ligne d'hôte"
+      }
     }
   },
   "hostDefaults": {
@@ -795,6 +820,15 @@
   "sharing": {
     "revokeConfirm": "Supprimer l'accès pour {{name}} ?",
     "revoke": "Supprimer l'accès",
+    "deviceLogin": {
+      "label": "Se connecter uniquement sur cet appareil",
+      "none": "Aucun",
+      "hint": "Reste sur cet appareil et n'est jamais envoyé au serveur. Il est utilisé en premier et les connexions démarrent depuis cet appareil.",
+      "noCredentials": "Ajoutez un identifiant avec l'option « Conserver uniquement sur cet appareil » pour l'utiliser ici.",
+      "saved": "Connexion de l'appareil sauvegardée",
+      "keepOnDevice": "Conserver uniquement sur cet appareil",
+      "keepOnDeviceDesc": "Le mot de passe ou la clé ne se synchronise jamais avec le serveur. Utilisez-le comme connexion d'appareil sur les hôtes partagés."
+    },
     "folderLogin": {
       "action": "Définir une connexion personnelle pour les hôtes partagés",
       "title": "Connexion personnelle pour ce dossier",
@@ -836,7 +870,10 @@
     "pickHost": "Sélectionnez un hôte à modifier",
     "pickCredential": "Sélectionnez un identifiant à modifier",
     "pickDefaults": "Sélectionnez un niveau de valeurs par défaut à modifier",
-    "pickHint": "Tout ce qui concerne une connexion se trouve ici, organisé pour faciliter la recherche."
+    "pickHint": "Tout ce qui concerne une connexion se trouve ici, organisé pour faciliter la recherche.",
+    "clearChoice": "Effacer",
+    "proxyPathTarget": "cible",
+    "hostCopyName": "{{name}} (copie)"
   },
   "permissions": {
     "branding": {
@@ -849,6 +886,33 @@
     "presetIntro": "Choisissez la quantité d'informations affichées à l'écran.",
     "presetChangeLater": "Vous pouvez changer de preset ou modifier chaque paramètre individuellement plus tard dans les Paramètres, sous Interface.",
     "appearanceTitle": "Personnalisez-le",
-    "appearanceIntro": "Choisissez un thème, une couleur d'accentuation, une police et votre langue. Les modifications s'appliquent immédiatement et vous pouvez les changer plus tard dans les Paramètres."
+    "appearanceIntro": "Choisissez un thème, une couleur d'accentuation, une police et votre langue. Les modifications s'appliquent immédiatement et vous pouvez les changer plus tard dans les Paramètres.",
+    "hostRows": {
+      "title": "Comment les lignes d'hôte doivent-elles fonctionner ?",
+      "intro": "Avec de nombreux plugins activés, chaque ligne d'hôte peut avoir beaucoup de boutons. Choisissez comment vous souhaitez accéder aux outils d'un hôte.",
+      "buttons": "Boutons de connexion",
+      "buttonsDesc": "Un bouton par outil sur chaque ligne d'hôte, comme avant. La page de l'hôte reste dans le menu de l'hôte.",
+      "both": "Boutons et bouton de page d'hôte",
+      "bothDesc": "Conservez les boutons et ajoutez-en un pour la page de l'hôte. Les outils s'ouvrent à l'intérieur de la page de l'hôte.",
+      "page": "Page d'hôte uniquement",
+      "pageDesc": "Aucun bouton sur les lignes. Cliquer sur un hôte ouvre sa page, avec tous les outils dans un seul onglet.",
+      "clickOpensPage": "Le clic ouvre la page de l'hôte",
+      "changeLater": "Vous pouvez modifier cela plus tard dans Personnaliser la barre latérale."
+    },
+    "accentHex": "hex"
+  },
+  "hostTools": {
+    "mode": "Ouvrir les outils de l'hôte dans",
+    "modeDesc": "Où s'ouvrent les boutons Docker, Fichiers et autres outils. La page de l'hôte conserve tous les outils d'un hôte dans un seul onglet. Avec « Page d'hôte uniquement », les lignes d'hôte n'ont pas de boutons de connexion et un clic ouvre la page de l'hôte.",
+    "modeTab": "Leur propre onglet",
+    "modePage": "La page de l'hôte",
+    "rowButtons": "Boutons sur les lignes d'hôte",
+    "modeOnly": "Page d'hôte uniquement",
+    "clickOpens": "Le clic ouvre",
+    "clickOpensDesc": "Ce qu'un clic sur un hôte exécute. Choisissez autre chose pour un hôte depuis son menu.",
+    "clickAuto": "La première méthode de connexion",
+    "useDefaultNamed": "Par défaut ({{name}})",
+    "useDefaultButtons": "Utiliser les boutons par défaut",
+    "perHostHint": "Pour les modifier pour un hôte, utilisez « Boutons sur les lignes d'hôte » dans son menu."
   }
 }

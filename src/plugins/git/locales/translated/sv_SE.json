@@ -1,0 +1,294 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Visa, hämta, commita och pusha git-repos på dina värdar, och håll dem uppdaterade med automatisk hämtning."
+  },
+  "common": {
+    "save": "Spara",
+    "cancel": "Avbryt",
+    "back": "Tillbaka",
+    "loading": "Laddar..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Använd Git",
+      "description": "Visa git-repos på värdar du kan nå, och ändra dem på värdar du kan redigera."
+    },
+    "runCommands": {
+      "title": "Kör kommandon efter automatisk hämtning",
+      "description": "Ställ in ett kommando som körs på värden efter att en automatisk hämtning har tagit in nya commits."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Hantera git-repos på denna värd från Git-fliken."
+      },
+      "repoRoots": {
+        "label": "Skanna mappar",
+        "description": "Mappar som söks efter repos när du skannar denna värd. Separera dem med kommatecken. Standard är hemmappen.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Använd sudo",
+        "description": "Kör git som root med sudo. Endast för repos som inloggade användaren inte kan använda."
+      },
+      "readOnly": {
+        "label": "Skrivskyddad",
+        "description": "Visa repos men ändra aldrig dem på denna värd."
+      },
+      "showPanel": {
+        "label": "Panel bredvid terminalen",
+        "description": "Erbjud Git-panelen på denna värdens terminalflikar."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Öppna panelen med terminalen",
+        "description": "Visa Git-panelen när en terminal öppnas på en värd som har den."
+      },
+      "companionSide": {
+        "label": "Panelens sida",
+        "description": "Var panelen sitter bredvid terminalen.",
+        "right": "Höger",
+        "left": "Vänster",
+        "bottom": "Botten"
+      },
+      "companionSize": {
+        "label": "Panelstorlek",
+        "description": "Panelens bredd, eller dess höjd vid botten, i pixlar."
+      },
+      "companionEdgeButton": {
+        "label": "Kantknapp",
+        "description": "Visa en liten knapp på terminalens kant för att öppna panelen."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Öppna Git från en värd.",
+    "error": "Kunde inte ladda git från denna värd.",
+    "disabled": "Git är inaktiverat för denna värd. Aktivera det i värdinställningarna.",
+    "sudo": "Detta kräver root-inloggning, lösenordsfri sudo eller ett sparade Sudo-lösenord.",
+    "refresh": "Uppdatera",
+    "readOnly": "Skrivskyddad",
+    "notInstalled": "git är inte installerat",
+    "notInstalledTitle": "git är inte installerat på denna värd",
+    "notInstalledHint": "Installera git med värdens pakethanterare och uppdatera sedan."
+  },
+  "actions": {
+    "ok": "Klar",
+    "failed": "Misslyckades",
+    "noOutput": "Ingen utdata."
+  },
+  "repos": {
+    "add": "Lägg till repo",
+    "search": "Sök i repos",
+    "empty": "Inga repos ännu. Lägg till ett för att komma igång.",
+    "noMatch": "Inga repos matchar.",
+    "viewOnly": "Inga repos har lagts till på denna värd.",
+    "detached": "losskopplad",
+    "changes_one": "{{count}} ändring",
+    "changes_other": "{{count}} ändringar",
+    "conflicts": "Konflikter",
+    "auto": "Automatisk hämtning",
+    "autoFailing": "Hämtning misslyckas",
+    "remove": "Ta bort från listan",
+    "removeTitle": "Ta bort {{name}}?",
+    "removeBody": "Repon glöms bara bort här. Inget raderas på värden.",
+    "removed": "{{name}} borttagen",
+    "error": {
+      "missing": "Mapp saknas",
+      "notrepo": "Inte ett git-repo",
+      "unreadable": "Kan inte läsa"
+    }
+  },
+  "add": {
+    "title": "Lägg till repos",
+    "modeScan": "Skanna",
+    "modePath": "Mapp",
+    "modeClone": "Klona",
+    "scanHint": "Letar efter git-repos i {{roots}}. Ändra mapparna i värdens inställningar.",
+    "rescan": "Skanna igen",
+    "noneFound": "Inga nya repos hittades.",
+    "picked": "Vald",
+    "addPicked_one": "Lägg till {{count}} repo",
+    "addPicked_other": "Lägg till {{count}} repos",
+    "addAll": "Lägg till alla",
+    "folder": "Mapp på värden",
+    "folderHint": "Fullständig sökväg, eller börja med ~ för hemmappen. Den måste redan vara ett git-repo.",
+    "addRepo": "Lägg till repo",
+    "url": "Adress",
+    "urlHint": "Annynder nycklarna och git-inställningarna för värdens inloggade användare.",
+    "dest": "Klona till",
+    "destHint": "Mappen får inte finnas redan.",
+    "clone": "Klona",
+    "cloned": "Klonad",
+    "added_one": "{{count}} repo tillagt",
+    "added_other": "{{count}} repos tillagda",
+    "failed": "Kunde inte lägga till repo",
+    "scanFailed": "Kunde inte skanna värden"
+  },
+  "repo": {
+    "ahead": "{{count}} framför",
+    "behind": "{{count}} bakom",
+    "fetch": "Hämta",
+    "fetched": "Hämtad",
+    "pull": "Dra",
+    "pulled": "Dragen",
+    "push": "Skjut",
+    "pushed": "Skjuten",
+    "viewChanges": "Ändringar",
+    "viewBranches": "Grenar",
+    "viewHistory": "Historik",
+    "viewStash": "Stash",
+    "viewAuto": "Auto-dra"
+  },
+  "changes": {
+    "loadFailed": "Kunde inte läsa ändringarna.",
+    "clean": "Inget att commita. Arbetsträdet är rent.",
+    "stagedTitle": "Staged ({{count}})",
+    "unstagedTitle": "Ändringar ({{count}})",
+    "stage": "Stage",
+    "staged": "Staged",
+    "unstage": "Avstega",
+    "unstaged": "Avstegad",
+    "stageAll": "Stage alla",
+    "renamed": "Bytt namn",
+    "discard": "Kassera",
+    "discardTitle": "Kassera ändringar i {{name}}?",
+    "discardBody": "Ändringarna i den här filen raderas och kan inte återställas.",
+    "discarded": "Ändringar kasserade",
+    "message": "Commit-meddelande",
+    "messagePlaceholder": "Vad som ändrades",
+    "commit": "Commit",
+    "commitAll": "Commita alla ändringar",
+    "commitStaged_one": "Commita {{count}} staged fil",
+    "commitStaged_other": "Commita {{count}} staged filer",
+    "committed": "Commitad",
+    "noDiff": "Inga ändringar att visa.",
+    "truncated": "Diffen är lång, så endast början visas."
+  },
+  "branches": {
+    "loadFailed": "Kunde inte läsa grenarna.",
+    "empty": "Inga grenar ännu.",
+    "current": "Aktuell",
+    "remote": "Remote",
+    "gone": "Upstream borttagen",
+    "newName": "Ny gren",
+    "create": "Skapa gren",
+    "created": "Grenen {{name}} skapad",
+    "switch": "Byt",
+    "switched": "Bytte till {{name}}",
+    "merge": "Sammanfoga med aktuell",
+    "mergeTitle": "Sammanfoga {{name}} med {{into}}?",
+    "mergeBody": "En sammanfogning med konflikter ångras omedelbart.",
+    "merged": "{{name}} sammanfogad",
+    "delete": "Ta bort gren",
+    "deleteTitle": "Ta bort {{name}}?",
+    "deleteBody": "Git vägrar om grenen har commits som inte är sammanfogade.",
+    "deleted": "{{name}} borttagen",
+    "forceTitle": "Tvinga borttagning av {{name}}?",
+    "forceBody": "Denna gren har commits som inte är sammanfogade. De går förlorade om du tar bort den.",
+    "forceDelete": "Tvinga borttagning"
+  },
+  "history": {
+    "loadFailed": "Kunde inte läsa historiken.",
+    "empty": "Inga commits ännu.",
+    "branch": "Denna gren",
+    "all": "Alla grenar",
+    "more": "Ladda mer"
+  },
+  "stash": {
+    "loadFailed": "Kunde inte läsa stash.",
+    "title": "Stashes",
+    "empty": "Inga stashes.",
+    "message": "Meddelande",
+    "messagePlaceholder": "Valfritt",
+    "untracked": "Inkludera osträckta filer",
+    "push": "Stash ändringar",
+    "pushDone": "Ändringar stashade",
+    "apply": "Tillämpa",
+    "applyDone": "Stash tillämpad",
+    "pop": "Pop",
+    "popDone": "Stash tillämpad och borttagen",
+    "drop": "Släng",
+    "dropDone": "Stash slängd",
+    "dropTitle": "Släng {{name}}?",
+    "dropBody": "Stashen raderas och kan inte återställas.",
+    "remotes": "Remotes",
+    "noRemotes": "Inga remotes."
+  },
+  "auto": {
+    "intro": "Hämtar enligt schema med endast fast framåtrullning. Den sammanfogar aldrig och hoppar över repot när det har osparade ändringar eller har divergerat från sin upstream.",
+    "noUpstream": "Denna gren har ingen upstream ännu, så automatisk hämtning kommer att hoppa över den.",
+    "enable": "Automatisk hämtning",
+    "enableHint": "Körs som du, med din åtkomst till denna värd.",
+    "interval": "Varje (minuter)",
+    "intervalHint": "Hur länge man ska vänta mellan hämtningar.",
+    "post": "Kommando efter hämtning",
+    "postHint": "Körs i repot-mappen efter att nya commits har anlänt. Kräver behörigheten att köra kommandon.",
+    "saved": "Automatisk hämtning sparad",
+    "saveFailed": "Kunde inte spara automatisk hämtning",
+    "runNow": "Kör nu",
+    "next": "Nästa hämtning {{when}}",
+    "runs": "Senaste körningar",
+    "noRuns": "Inga körningar ännu.",
+    "outcome": {
+      "pulled": "Hämtad",
+      "uptodate": "Uppdaterad",
+      "skipped": "Hoppad över",
+      "failed": "Misslyckades"
+    }
+  },
+  "card": {
+    "title": "Git-repoförvar",
+    "loading": "Laddar...",
+    "refresh": "Uppdatera",
+    "empty": "Ingen värd har några Git-repoförvar ännu.",
+    "allClean": "Alla repoförvar är rena och uppdaterade.",
+    "summary_one": "{{count}} repoförvar | {{attention}} behöver en titt",
+    "summary_other": "{{count}} repoförvar | {{attention}} behöver en titt"
+  },
+  "companion": {
+    "toggle": "Git-panel",
+    "openTab": "Öppna Git",
+    "here": "Repoförvar för denna mapp",
+    "all": "Alla repoförvar"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Lista Git-repoförvar"
+    },
+    "fetch": {
+      "title": "Hämta ett repoförvar"
+    },
+    "pull": {
+      "title": "Dra in ett repoförvar"
+    },
+    "push": {
+      "title": "Skicka ett repoförvar"
+    },
+    "checkout": {
+      "title": "Byt gren",
+      "branch": "Gren"
+    },
+    "reset-hard": {
+      "title": "Återställ ett repoförvar hårt",
+      "ref": "Återställ till"
+    },
+    "repos": {
+      "title": "Git-repoförvar",
+      "branch": "Gren",
+      "ahead": "Framför",
+      "behind": "Bakom",
+      "changed": "Ändringar"
+    },
+    "signals": {
+      "behind": "Repoförvar bakom",
+      "dirty": "Repoförvar med ändringar",
+      "pull-failing": "Automatisk hämtning misslyckas"
+    }
+  }
+}

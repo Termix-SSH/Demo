@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "DNS-rekordok és domainek kezelése a Cloudflare, Route 53, Namecheap és egyéb szolgáltatók felületén."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domainek",
+    "loading": "Betöltés",
+    "empty": "Még nincsenek domainek. Nyisd meg a DNS-t, és adj hozzá egy belépést.",
+    "ok": "{{domains}} domain, egyik sem jár le hamarosan",
+    "accounts": "{{count}} belépés",
+    "failingLinks": "{{count}} összekapcsolt rekord hiba"
+  },
+  "permissions": {
+    "view": {
+      "title": "DNS megtekintése",
+      "description": "Nyisd meg a DNS fület, és nézd meg a zónákat, rekordokat, domaineket és az egészségügyi ellenőrzéseket."
+    },
+    "edit": {
+      "title": "DNS-rekordok módosítása",
+      "description": "Rekordok hozzáadása, módosítása és törlése, zónafájlok importálása és domainek frissítése."
+    },
+    "manage": {
+      "title": "DNS-belépések kezelése",
+      "description": "Szolgáltató-belépések hozzáadása, rekordok összekapcsolása hostokkal, domainek figyelése és zónamásolatok visszaállítása."
+    }
+  },
+  "operations": {
+    "zone": "Zóna",
+    "type": "Típus",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Név",
+    "content": "Érték",
+    "contentOptional": "Érték (hagyj üresen, hogy bármelyikre illeszkedjen)",
+    "ttl": "TTL másodpercben",
+    "label": "Címke",
+    "zones": {
+      "title": "DNS-zónák listázása"
+    },
+    "records": {
+      "title": "DNS-rekordok listázása"
+    },
+    "domains": {
+      "title": "Domainek és lejárati dátumok listázása"
+    },
+    "check": {
+      "title": "Zóna ellenőrzése"
+    },
+    "upsert": {
+      "title": "DNS-rekord beállítása"
+    },
+    "delete": {
+      "title": "DNS-rekord törlése"
+    },
+    "snapshot": {
+      "title": "Zóna másolatának mentése"
+    },
+    "links": {
+      "title": "Összekapcsolt rekordok frissítése"
+    },
+    "expiry": {
+      "title": "Domain lejárata"
+    }
+  },
+  "description": "Add hozzá a DNS- és domainregisztrátor-belépéseidet, hogy egy helyről kezelhesd a rekordokat és figyeld a domaineket. A kulcsok titkosítva tárolódnak, és soha nem jelennek meg újra.",
+  "summary": "{{zones}} zóna, {{domains}} domain",
+  "saved": "Mentve",
+  "delete": "Törlés",
+  "edit": "Szerkesztés",
+  "back": "Vissza",
+  "refresh": "Frissítés",
+  "section": {
+    "zones": "Zónák",
+    "domains": "Domainek",
+    "links": "Linkek",
+    "accounts": "Belépések"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "API-token",
+    "accessKeyId": "Hozzáférési kulcs azonosítója",
+    "secretAccessKey": "Titkos hozzáférési kulcs",
+    "sessionToken": "Munkamenet-token (opcionális)",
+    "apiUser": "API-felhasználó",
+    "apiKey": "API-kulcs",
+    "userName": "Felhasználónév (ha eltér az API-felhasználótól)",
+    "clientIp": "Engedélyezett IP-cím",
+    "apiSecret": "API titok",
+    "environment": "Környezet",
+    "environment_production": "Éles környezet",
+    "environment_ote": "Teszt (OTE)",
+    "secretApiKey": "Titkos API-kulcs",
+    "token": "Személyes hozzáférési token"
+  },
+  "zones": {
+    "empty": "Még nincsenek zónák.",
+    "emptyHint": "Adj hozzá egy szolgáltatói bejelentkezést a Bejelentkezések menüpontban, hogy lásd a zónáit."
+  },
+  "zone": {
+    "records": "Bejegyzések",
+    "health": "Állapot",
+    "copies": "Másolatok",
+    "files": "Fájlok",
+    "filter": "Bejegyzések szűrése",
+    "empty": "Nincsenek bejegyzések."
+  },
+  "record": {
+    "section": "Bejegyzés",
+    "addTitle": "Bejegyzés hozzáadása",
+    "editTitle": "Bejegyzés szerkesztése",
+    "add": "Bejegyzés hozzáadása",
+    "save": "Mentés",
+    "type": "Típus",
+    "name": "Név",
+    "nameHint": "Használj @-t a(z) {{zone}} saját nevére",
+    "value": "Érték",
+    "priority": "Prioritás",
+    "ttl": "TTL (másodperc)",
+    "ttlHint": "Meddig tárolják a feloldók a választ. 300 az 5 perc.",
+    "ttlAuto": "1 jelenti az automatikus beállítást.",
+    "proxied": "Proxyzott",
+    "proxiedHint": "A forgalom a Cloudflare-en keresztül halad.",
+    "proxiedBadge": "Proxyzott",
+    "comment": "Megjegyzés",
+    "readOnly": "A szolgáltató kezeli",
+    "deleteConfirm": "Törli a(z) {{type}} típusú {{name}} bejegyzést?"
+  },
+  "account": {
+    "add": "Bejelentkezés hozzáadása",
+    "addTitle": "DNS-bejelentkezés hozzáadása",
+    "editTitle": "DNS-bejelentkezés szerkesztése",
+    "save": "Mentés",
+    "login": "Bejelentkezés",
+    "provider": "Szolgáltató",
+    "name": "Név",
+    "namePlaceholder": "Fő Cloudflare",
+    "keep": "Hagyja üresen a mentett érték megtartásához",
+    "registrar": "Ez a szolgáltató regisztrátor is, így a domainjei a Domainek menüpontban jelennek meg.",
+    "options": "Beállítások",
+    "autoBackup": "Zónák másolatainak megtartása",
+    "autoBackupHint": "Mentsen egy másolatot minden módosítás előtt, és amikor a zóna Termixen kívül változik.",
+    "checkHealth": "Zónák ellenőrzése naponta",
+    "checkHealthHint": "Futtassa az állapotellenőrzéseket naponta, és értesítést küldjön új problémák esetén.",
+    "test": "Teszt",
+    "testOk": "Működik. {{zones}} zónát és {{domains}} domain-t talált.",
+    "deleteConfirm": "Törli a(z) {{name}} bejelentkezést? A másolatok és hivatkozások is törlődnek. A szolgáltatónál semmi sem változik.",
+    "empty": "Még nincsenek bejelentkezések.",
+    "emptyHint": "Kezdéshez adjon hozzá Cloudflare, Route 53, Namecheap vagy más szolgáltatói bejelentkezést.",
+    "lastSync": "Utoljára ellenőrizve: {{date}}",
+    "never": "Még nem ellenőrizve",
+    "failed": "A bejelentkezés sikertelen"
+  },
+  "domains": {
+    "empty": "Még nincsenek domainek.",
+    "emptyHint": "A regisztrátor-bejelentkezések domainjei itt jelennek meg. Bármely domain-t megfigyelhet név alapján is.",
+    "watchPlaceholder": "example.com",
+    "watch": "Domain figyelése",
+    "unwatch": "Figyelés leállítása",
+    "watched": "Figyelt",
+    "noRenew": "Automatikus megújítás ki",
+    "unlocked": "Nincs zárolva",
+    "unknown": "Regisztrátor ismeretlen",
+    "expires": "Lejárati idő: {{date}}",
+    "expired": "Lejárt",
+    "days": "{{count}} nap van hátra",
+    "refreshFailed": "{{count}} lekérdezés sikertelen"
+  },
+  "link": {
+    "add": "Link hozzáadása",
+    "addTitle": "Link hozzáadása",
+    "editTitle": "Link szerkesztése",
+    "save": "Mentés",
+    "record": "Rekord",
+    "address": "Cím",
+    "zone": "Zóna",
+    "pickZone": "Válassz zónát",
+    "source": "Mutasson erre",
+    "sourceHost": "Egy hostra",
+    "sourcePublic4": "Ennek a szervernek a nyilvános IPv4-címe",
+    "sourcePublic6": "Ennek a szervernek a nyilvános IPv6-címe",
+    "source_host": "Host",
+    "source_public4": "Nyilvános IPv4",
+    "source_public6": "Nyilvános IPv6",
+    "host": "Host",
+    "pickHost": "Válassz hostot",
+    "hostHint": "A rekord követi a host címét. Frissül, amikor a host címe megváltozik.",
+    "publicHint": "A Termix lekérdezi a nyilvános címét, és szinkronban tartja a rekordot, hasonlóan a dinamikus DNS-hez.",
+    "enabled": "Tartsd naprakészen ezt a rekordot",
+    "empty": "Még nincsenek linkek.",
+    "emptyHint": "Egy link egy rekordot tart mutatóban egy hostra vagy erre a szerverre.",
+    "off": "Ki",
+    "hostGone": "Host nem található",
+    "lastSync": "Ellenőrizve: {{date}}",
+    "never": "Még nem ellenőrizve",
+    "syncNow": "Frissítés most",
+    "updated": "A rekord frissítve",
+    "unchanged": "A rekord már helyes volt",
+    "deleteConfirm": "Törölni a {{name}} linket? A rekord a helyén marad."
+  },
+  "diff": {
+    "none": "Semmi sem változna.",
+    "add": "Hozzáadás",
+    "change": "Módosítás",
+    "remove": "Eltávolítás"
+  },
+  "copies": {
+    "hint": "A másolatok minden módosítás előtt és naponta egyszer mentésre kerülnek, ha a zóna a Termixen kívül változott.",
+    "save": "Másolat mentése",
+    "saved": "Másolat mentve",
+    "manualLabel": "Kézi másolat",
+    "empty": "Még nincsenek másolatok.",
+    "count": "{{count}} rekord",
+    "compare": "Összehasonlítás a jelenlegi állapottal",
+    "restore": "Visszaállítás",
+    "restoreConfirm": "Visszaállítani ezt a másolatot? {{count}} módosítás történik a szolgáltatónál. A jelenlegi rekordok másolata először mentésre kerül.",
+    "restored": "Visszaállítva. {{count}} módosítás történt.",
+    "source": {
+      "manual": "Kézi",
+      "auto": "Napi",
+      "before": "Módosítás előtt"
+    }
+  },
+  "files": {
+    "export": "Zónafájl letöltése",
+    "exportHint": "Töltsd le a rekordokat BIND zónafájl formátumban.",
+    "import": "Zónafájl importálása",
+    "placeholder": "Illesszen ide egy BIND zónafájlt",
+    "replace": "A fájlban nem szereplő rekordok törlése",
+    "replaceHint": "Ki: az importálás csak új rekordokat ad hozzá és meglévőket módosít.",
+    "preview": "Előnézet",
+    "apply": "Alkalmaz",
+    "applied": "Importálva. {{count}} módosítás történt.",
+    "skipped": "Kihagyva:"
+  },
+  "health": {
+    "run": "Ellenőrzések futtatása",
+    "running": "Fut",
+    "propagation": "Feloldók ellenőrzése",
+    "propagationTitle": "Nyilvános feloldók",
+    "lastRun": "Utolsó futtatás: {{date}}",
+    "empty": "Még nem futottak ellenőrzések erre a zónára.",
+    "record": "Rekord",
+    "resolver": "Feloldó",
+    "answer": "Válasz",
+    "noAnswer": "Nincs válasz",
+    "delegation": {
+      "error": "A névszerverek nem voltak feloldhatók.",
+      "none": "A zónának nincsenek névszerverei az interneten. A domain nem feltétlenül erre a szolgáltatóra mutat.",
+      "mismatch": "A domain más névszervereket használ, mint a szolgáltató: {{found}}.",
+      "ok": "A domain {{count}} névszerverre mutat."
+    },
+    "soa": {
+      "differ": "A névszerverek nem egyeznek a zóna verziójában ({{count}} verzió). Egy módosítás még terjedhet.",
+      "same": "{{count}} névszerver egyezik a zóna verziójában."
+    },
+    "dnssec": {
+      "unknown": "A DNSSEC nem ellenőrizhető.",
+      "off": "A DNSSEC nincs bekapcsolva.",
+      "valid": "A DNSSEC be van kapcsolva és érvényes.",
+      "broken": "A DNSSEC be van állítva a regisztrátornál, de nem érvényes. A feloldók, amelyek ellenőrzik, hibát fognak jelezni."
+    },
+    "cname": {
+      "conflict": "A {{name}}-nek van CNAME-je és egyéb rekordjai is. Ez nem megengedett.",
+      "apex": "A zóna gyökere nem lehet CNAME.",
+      "dangling": "A {{name}} a {{target}}-ra mutat, amely nem oldható fel.",
+      "ok": "Minden CNAME cél feloldható."
+    },
+    "spf": {
+      "missing": "A domain fogad e-mailt, de nincs SPF rekordja.",
+      "multiple": "Több SPF rekord is van. Az e-mail szerverek elutasítják az összeset.",
+      "lookups": "Az SPF rekord {{count}} lekérdezést végez. A limit 10.",
+      "ok": "Az SPF be van állítva ({{count}} lekérdezés)."
+    },
+    "dmarc": {
+      "missing": "Nincs DMARC rekord.",
+      "none": "A DMARC csak figyelő módra van állítva.",
+      "ok": "A DMARC be van állítva."
+    },
+    "dkim": {
+      "none": "Nem találtak DKIM kulcsokat ebben a zónában.",
+      "found": "{{count}} DKIM kulcs található."
+    },
+    "mx": {
+      "unresolved": "Az {{host}} levelezőszerver nem oldható fel."
+    },
+    "mail": {
+      "none": "A domainnek nincsenek e-mail rekordjai."
+    },
+    "caa": {
+      "ok": "A CAA rekordok korlátozzák, ki bocsáthat ki tanúsítványokat.",
+      "none": "Nincsenek CAA rekordok. Bármely tanúsítványkiadó hatóság kiadhat tanúsítványokat."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domainek, hamarosan lejáró domainek és hibás rekordok.",
+    "domains": "Domainek",
+    "expiring": "Hamarosan lejár",
+    "failingLinks": "Hibás hivatkozások",
+    "failingAccounts": "Hibás bejelentkezések"
+  }
+}

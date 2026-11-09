@@ -1,0 +1,223 @@
+{
+  "plugin": {
+    "name": "Pakotnes",
+    "description": "Apskatiet un instalējiet atjauninājumus savos resursdatoros, meklējiet, instalējiet un noņemiet pakotnes, kā arī lasiet pakotņu vēsturi."
+  },
+  "common": {
+    "cancel": "Atcelt",
+    "back": "Atpakaļ"
+  },
+  "permissions": {
+    "use": {
+      "title": "Izmantot pakotnes",
+      "description": "Apskatiet pakotnes un atjauninājumus resursdatoros, pie kuriem varat piekļūt, un mainiet tos resursdatoros, kurus varat rediģēt."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Pakotnes",
+        "description": "Pārvaldiet pakotnes un atjauninājumus šajā resursdatorā no cilnes Pakotnes."
+      },
+      "useSudo": {
+        "label": "Izmantot sudo",
+        "description": "Izmantojiet sudo, lai instalētu, atjauninātu un noņemtu pakotnes. Izslēdziet, ja pieteikšanās tiek veikta kā root."
+      },
+      "readOnly": {
+        "label": "Lai tikai lasītu",
+        "description": "Rādīt pakotnes un atjauninājumus, bet šajā resursdatorā tos nekad nemainīt."
+      },
+      "showPanel": {
+        "label": "Rādīt atjauninājumu paneli termināļos",
+        "description": "Ļaut atjauninājumu panelim atvērties blakus šī resursdatora SSH terminālim."
+      },
+      "alertUpdates": {
+        "label": "Brīdināt par drošības atjauninājumiem",
+        "description": "Nosūtīt brīdinājumu, ja šim resursdatoram ir drošības atjauninājumi vai ir nepieciešama pārlāošana. Pārbaude notiek, kad tiek izlasīti atjauninājumi, aptuveni reizi stundā."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Atvērt atjauninājumu paneli kopā ar jauniem termināļiem",
+        "description": "Rādīt atjauninājumu paneli blakus katram SSH terminālim, kurā ir ieslēgtas Pakotnes. To joprojām var atvērt un aizvērt, izmantojot pogu labajā malā."
+      },
+      "companionSide": {
+        "label": "Atjauninājumu panela puse",
+        "description": "Kur atjauninājumu panels atrodas blakus terminālim.",
+        "right": "Labajā pusē",
+        "left": "Kreisajā pusē",
+        "bottom": "Apakšā"
+      },
+      "companionSize": {
+        "label": "Atjauninājumu panela izmērs",
+        "description": "Platums pikseļos vai augstums, ja panelis ir apakšā. Varat arī vilkt tā malu."
+      },
+      "companionEdgeButton": {
+        "label": "Rādīt panela pogu",
+        "description": "Rādīt mazu pogu termināļa labajā malā, kas atver atjauninājumu paneli."
+      }
+    }
+  },
+  "tab": {
+    "title": "Pakotnes",
+    "noHost": "Atveriet pakotnes no servera.",
+    "error": "Neizdevās ielādēt pakotnes no šī servera.",
+    "disabled": "Šim mezglam pakotņu funkcija ir atspējota. Ieslēdziet to mezgla iestatījumos.",
+    "sudo": "Lai veiktu izmaiņas, šim mezglam ir nepieciešama root pieteikšanās, sudo bez paroles vai saglabāta sudo parole.",
+    "refresh": "Atsvaidzināt",
+    "readOnly": "Tikai lasīšanai",
+    "noManager": "Nav pakotņu pārvaldnieka",
+    "noManagerTitle": "Nav atrasts neviens atbalstīts pakotņu pārvaldnieks",
+    "noManagerHint": "Pakotņu funkcija darbojas ar apt, dnf, yum, zypper, pacman un apk.",
+    "indexAge": "Indekss atsvaidzināts pirms {{ago}}",
+    "reboot": "Lai pabeigtu atjauninājumu, šim mezglam ir nepieciešama pārlāošana.",
+    "viewUpdates": "Atjauninājumi",
+    "viewInstalled": "Instalētie",
+    "viewSearch": "Meklēt",
+    "viewHistory": "Vēsture",
+    "viewRepos": "Depo"
+  },
+  "actions": {
+    "working": "Notiek {{action}}. Tas var aizņemt dažas minūtes.",
+    "ok": "Pabeigts",
+    "failed": "Pakotņu pārvaldnieks neizdevās.",
+    "noOutput": "Nav izvades.",
+    "refresh": {
+      "label": "Atsvaidzināt indeksu",
+      "confirm": "Vai atsvaidzināt pakotņu indeksu?",
+      "desc": "Lejupielādē jaunākās pakotņu sarakstus.",
+      "done": "Pakotņu indekss ir jaunākajā versijā."
+    },
+    "update": {
+      "label": "Atjaunināt",
+      "confirm_zero": "Atjaunināt {{count}} pakotnes?",
+      "confirm_one": "Atjaunināt {{names}}?",
+      "confirm_other": "Atjaunināt {{count}} pakotnes?",
+      "desc": "Instalē jaunāko {{names}} versiju.",
+      "done": "{{names}} ir atjaunināts."
+    },
+    "upgrade-all": {
+      "label": "Atjaunināt visu",
+      "confirm": "Atjaunināt visas pakotnes?",
+      "desc": "Atsvaidzina pakotņu indeksu un instalē visus atjauninājumus. Pakalpojumi var restartēties, kamēr tas notiek.",
+      "done": "Visas pakotnes ir jaunākajā versijā."
+    },
+    "install": {
+      "label": "Instalēt",
+      "confirm": "Instalēt {{names}}?",
+      "desc": "Instalē {{names}} un visu, kas tam nepieciešams.",
+      "done": "{{names}} ir instalēts."
+    },
+    "remove": {
+      "label": "Noņemt",
+      "confirm": "Noņemt {{names}}?",
+      "desc": "Noņem {{names}} no šī mezgla. Programmas, kurām tas nepieciešams, var pārstāt darboties.",
+      "done": "{{names}} ir noņemts."
+    },
+    "hold": {
+      "label": "Saglabāt šo versiju",
+      "confirm": "Saglabāt {{names}}?",
+      "desc": "Atjauninājumi tiks izlaisti {{names}}, līdz to atlaidīsit.",
+      "done": "{{names}} ir apturēts."
+    },
+    "unhold": {
+      "label": "Atlaist apturēšanu",
+      "confirm": "Atlaist {{names}}?",
+      "desc": "{{names}} atkal saņems atjauninājumus.",
+      "done": "{{names}} atkal saņems atjauninājumus."
+    }
+  },
+  "updates": {
+    "search": "Filtrēt atjauninājumus",
+    "count_zero": "0 atjauninājumi",
+    "count_one": "{{count}} atjauninājums",
+    "count_other": "{{count}} atjauninājumi",
+    "countSecurity_zero": "0 atjauninājumi, {{security}} drošībai",
+    "countSecurity_one": "{{count}} atjauninājums, {{security}} drošībai",
+    "countSecurity_other": "{{count}} atjauninājumi, {{security}} drošībai",
+    "updatePicked_zero": "Atjaunināt 0 pakotnes",
+    "updatePicked_one": "Atjaunināt {{count}} pakotni",
+    "updatePicked_other": "Atjaunināt {{count}} pakotnes",
+    "updateOne": "Atjaunināt",
+    "pick": "Izvēlēties {{name}}",
+    "security": "Drošība",
+    "empty": "Viss ir jaunākajā versijā.",
+    "noMatch": "Nav atbilstošu atjauninājumu.",
+    "loadFailed": "Neizdevās nolasīt atjauninājumus."
+  },
+  "installed": {
+    "search": "Filtrēt instalētos pakotnes",
+    "all": "Visas",
+    "held": "Apturētas",
+    "heldBadge": "Apturētas",
+    "empty": "Nav atrodami atbilstoši pakotnes.",
+    "loadFailed": "Neizdevās izlasīt instalētās pakotnes."
+  },
+  "search": {
+    "placeholder": "Meklēt pakotnes",
+    "button": "Meklēt",
+    "hint": "Meklējiet pakotni, ko instalēt, šī servera repozitorijos.",
+    "empty": "Nekas nav atrasts.",
+    "installed": "Instalēta",
+    "failed": "Meklēšana neizdevās."
+  },
+  "history": {
+    "empty": "Pakotņu vēsture nav atrasta.",
+    "loadFailed": "Neizdevās izlasīt pakotņu vēsturi."
+  },
+  "repos": {
+    "hint": "Repozitoriji, no kuriem šis mezgls instalē pakotnes. Mainiet tos pašā mezglā.",
+    "empty": "Repozitoriji netika atrasti.",
+    "off": "Izslēgts",
+    "loadFailed": "Neizdevās izlasīt repozitorijus."
+  },
+  "card": {
+    "title": "Pakotņu atjauninājumi",
+    "loading": "Pārbauda mezglus...",
+    "summary_zero": "0 atjauninājumi {{hosts}} mezglos",
+    "summary_one": "{{count}} atjauninājums {{hosts}} mezglos",
+    "summary_other": "{{count}} atjauninājumi {{hosts}} mezglos",
+    "refresh": "Pārbaudīt vēlreiz",
+    "empty": "Ieslēdziet Pakotnes mezglam, lai šeit redzētu tā atjauninājumus.",
+    "security_zero": "0 drošības",
+    "security_one": "{{count}} drošības",
+    "security_other": "{{count}} drošības",
+    "reboot": "Nepieciešama pārlādišana",
+    "updates_zero": "Nav atjauninājumu",
+    "updates_one": "{{count}} atjauninājums",
+    "updates_other": "{{count}} atjauninājumi",
+    "upToDate": "Ir jaunākā versija"
+  },
+  "manager": {
+    "title": "Pakotnes",
+    "disabled": "Lai šeit redzētu šī servera atjauninājumus, ieslēdziet pakotņu pārvaldību tā iestatījumos."
+  },
+  "operations": {
+    "list": {
+      "title": "Sarakstīt pakotņu atjauninājumus"
+    },
+    "updates": {
+      "title": "Gaidāmie atjauninājumi",
+      "resource": "Gaidāmie atjauninājumi"
+    },
+    "upgradeAll": {
+      "title": "Atjaunināt visas pakotnes"
+    },
+    "install": {
+      "title": "Instalēt pakotnes"
+    },
+    "remove": {
+      "title": "Noņemt pakotnes"
+    },
+    "package": "Pakotnes",
+    "packageHint": "Viena vai vairākas pakotņu nosaukumi, atdalīti ar atstarpēm.",
+    "resource": {
+      "current": "Instalētas",
+      "available": "Pieejamas",
+      "repo": "Repozitorijs"
+    }
+  },
+  "nav": {
+    "togglePanel": "Pārslēgt atjauninājumu paneli"
+  }
+}

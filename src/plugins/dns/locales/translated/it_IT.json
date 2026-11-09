@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Gestisci record DNS e domini su Cloudflare, Route 53, Namecheap e altri provider."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domini",
+    "loading": "Caricamento",
+    "empty": "Nessun dominio ancora. Apri DNS per aggiungere un accesso.",
+    "ok": "{{domains}} domini, nessuno in scadenza a breve",
+    "accounts": "{{count}} accessi",
+    "failingLinks": "{{count}} record collegati in errore"
+  },
+  "permissions": {
+    "view": {
+      "title": "Visualizza DNS",
+      "description": "Apri la scheda DNS e visualizza zone, record, domini e controlli di integrità."
+    },
+    "edit": {
+      "title": "Modifica record DNS",
+      "description": "Aggiungi, modifica ed elimina record, importa file di zona e aggiorna i domini."
+    },
+    "manage": {
+      "title": "Gestisci accessi DNS",
+      "description": "Aggiungi accessi ai provider, collega record agli host, monitora i domini e ripristina copie delle zone."
+    }
+  },
+  "operations": {
+    "zone": "Zona",
+    "type": "Tipo",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Nome",
+    "content": "Valore",
+    "contentOptional": "Valore (lascia vuoto per corrispondere a tutto)",
+    "ttl": "TTL in secondi",
+    "label": "Etichetta",
+    "zones": {
+      "title": "Elenca zone DNS"
+    },
+    "records": {
+      "title": "Elenca record DNS"
+    },
+    "domains": {
+      "title": "Elenca domini e date di scadenza"
+    },
+    "check": {
+      "title": "Verifica una zona"
+    },
+    "upsert": {
+      "title": "Imposta un record DNS"
+    },
+    "delete": {
+      "title": "Elimina un record DNS"
+    },
+    "snapshot": {
+      "title": "Salva una copia di una zona"
+    },
+    "links": {
+      "title": "Aggiorna record collegati"
+    },
+    "expiry": {
+      "title": "Scadenza dominio"
+    }
+  },
+  "description": "Aggiungi i tuoi accessi DNS e di registrazione per gestire i record e monitorare i domini in un unico posto. Le chiavi sono memorizzate in modo crittografato e non verranno mai più visualizzate.",
+  "summary": "{{zones}} zone, {{domains}} domini",
+  "saved": "Salvato",
+  "delete": "Elimina",
+  "edit": "Modifica",
+  "back": "Indietro",
+  "refresh": "Aggiorna",
+  "section": {
+    "zones": "Zone",
+    "domains": "Domini",
+    "links": "Collegamenti",
+    "accounts": "Accessi"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "Token API",
+    "accessKeyId": "ID chiave di accesso",
+    "secretAccessKey": "Chiave di accesso segreta",
+    "sessionToken": "Token di sessione (opzionale)",
+    "apiUser": "Utente API",
+    "apiKey": "Chiave API",
+    "userName": "Nome utente (se diverso dall'utente API)",
+    "clientIp": "Indirizzo IP consentito",
+    "apiSecret": "Segreto API",
+    "environment": "Ambiente",
+    "environment_production": "Produzione",
+    "environment_ote": "Test (OTE)",
+    "secretApiKey": "Chiave API segreta",
+    "token": "Token di accesso personale"
+  },
+  "zones": {
+    "empty": "Nessuna zona ancora.",
+    "emptyHint": "Aggiungi un accesso provider in Accessi per visualizzare le sue zone."
+  },
+  "zone": {
+    "records": "Record",
+    "health": "Stato di salute",
+    "copies": "Coppie",
+    "files": "File",
+    "filter": "Filtra record",
+    "empty": "Nessun record."
+  },
+  "record": {
+    "section": "Record",
+    "addTitle": "Aggiungi record",
+    "editTitle": "Modifica record",
+    "add": "Aggiungi record",
+    "save": "Salva",
+    "type": "Tipo",
+    "name": "Nome",
+    "nameHint": "Usa @ per {{zone}} stesso",
+    "value": "Valore",
+    "priority": "Priorità",
+    "ttl": "TTL (secondi)",
+    "ttlHint": "Per quanto tempo i resolver mantengono la risposta. 300 equivale a 5 minuti.",
+    "ttlAuto": "1 significa automatico.",
+    "proxied": "Prossato",
+    "proxiedHint": "Invia il traffico attraverso Cloudflare.",
+    "proxiedBadge": "Prossato",
+    "comment": "Nota",
+    "readOnly": "Gestito dal provider",
+    "deleteConfirm": "Eliminare il record {{type}} {{name}}?"
+  },
+  "account": {
+    "add": "Aggiungi accesso",
+    "addTitle": "Aggiungi accesso DNS",
+    "editTitle": "Modifica accesso DNS",
+    "save": "Salva",
+    "login": "Accesso",
+    "provider": "Provider",
+    "name": "Nome",
+    "namePlaceholder": "Cloudflare principale",
+    "keep": "Lascia vuoto per mantenere il valore salvato",
+    "registrar": "Questo provider è anche un registrar, quindi i suoi domini appaiono in Domini.",
+    "options": "Opzioni",
+    "autoBackup": "Mantieni copie delle zone",
+    "autoBackupHint": "Salva una copia prima di ogni modifica e quando una zona cambia al di fuori di Termix.",
+    "checkHealth": "Controlla le zone ogni giorno",
+    "checkHealthHint": "Esegui i controlli di salute quotidianamente e avvisa sui nuovi problemi.",
+    "test": "Test",
+    "testOk": "Funziona. Trovate {{zones}} zone e {{domains}} domini.",
+    "deleteConfirm": "Eliminare {{name}}? Le sue copie e i collegamenti verranno eliminati. Niente cambia presso il provider.",
+    "empty": "Nessun accesso ancora.",
+    "emptyHint": "Aggiungi un accesso Cloudflare, Route 53, Namecheap o altro per iniziare.",
+    "lastSync": "Ultimo controllo {{date}}",
+    "never": "Non ancora controllato",
+    "failed": "L'accesso ha fallito"
+  },
+  "domains": {
+    "empty": "Nessun dominio ancora.",
+    "emptyHint": "Gli accessi registrar elencano i loro domini qui. Puoi anche monitorare qualsiasi dominio per nome.",
+    "watchPlaceholder": "example.com",
+    "watch": "Monitora dominio",
+    "unwatch": "Interrompi monitoraggio",
+    "watched": "Monitorato",
+    "noRenew": "Rinnovo automatico disattivato",
+    "unlocked": "Non bloccato",
+    "unknown": "Registrar sconosciuto",
+    "expires": "Scade il {{date}}",
+    "expired": "Scaduto",
+    "days": "Mancano {{count}} giorni",
+    "refreshFailed": "{{count}} ricerche non riuscite"
+  },
+  "link": {
+    "add": "Aggiungi link",
+    "addTitle": "Aggiungi link",
+    "editTitle": "Modifica link",
+    "save": "Salva",
+    "record": "Record",
+    "address": "Indirizzo",
+    "zone": "Zona",
+    "pickZone": "Scegli una zona",
+    "source": "Puntalo a",
+    "sourceHost": "Un host",
+    "sourcePublic4": "L'indirizzo IPv4 pubblico di questo server",
+    "sourcePublic6": "L'indirizzo IPv6 pubblico di questo server",
+    "source_host": "Host",
+    "source_public4": "IPv4 pubblico",
+    "source_public6": "IPv6 pubblico",
+    "host": "Host",
+    "pickHost": "Scegli un host",
+    "hostHint": "Il record segue l'indirizzo dell'host. Viene aggiornato quando l'host cambia.",
+    "publicHint": "Termix cerca il suo indirizzo pubblico e mantiene il record sincronizzato, come un DNS dinamico.",
+    "enabled": "Mantieni questo record aggiornato",
+    "empty": "Nessun link ancora.",
+    "emptyHint": "Un link mantiene un record puntato a un host o all'indirizzo pubblico di questo server.",
+    "off": "Disattivato",
+    "hostGone": "Host non trovato",
+    "lastSync": "Controllato il {{date}}",
+    "never": "Non ancora controllato",
+    "syncNow": "Aggiorna ora",
+    "updated": "Il record è stato aggiornato",
+    "unchanged": "Il record era già corretto",
+    "deleteConfirm": "Rimuovere il link per {{name}}? Il record rimane dove si trova."
+  },
+  "diff": {
+    "none": "Nessuna modifica sarebbe apportata.",
+    "add": "Aggiungi",
+    "change": "Modifica",
+    "remove": "Rimuovi"
+  },
+  "copies": {
+    "hint": "Le copie vengono salvate prima di ogni modifica e una volta al giorno quando una zona viene modificata al di fuori di Termix.",
+    "save": "Salva copia",
+    "saved": "Copia salvata",
+    "manualLabel": "Copia manuale",
+    "empty": "Nessuna copia ancora.",
+    "count": "{{count}} record",
+    "compare": "Confronta con l'attuale",
+    "restore": "Ripristina",
+    "restoreConfirm": "Ripristinare questa copia? Verranno apportate {{count}} modifiche presso il provider. Una copia dei record attuali viene salvata prima.",
+    "restored": "Ripristinato. {{count}} modifiche apportate.",
+    "source": {
+      "manual": "Manuale",
+      "auto": "Quotidiano",
+      "before": "Prima della modifica"
+    }
+  },
+  "files": {
+    "export": "Scarica file di zona",
+    "exportHint": "Scarica i record come file di zona BIND.",
+    "import": "Importa un file di zona",
+    "placeholder": "Incolla qui un file di zona BIND",
+    "replace": "Rimuovi i record non presenti nel file",
+    "replaceHint": "Disattivato, l'importazione aggiunge e modifica solo i record.",
+    "preview": "Anteprima",
+    "apply": "Applica",
+    "applied": "Importato. {{count}} modifiche effettuate.",
+    "skipped": "Saltati:"
+  },
+  "health": {
+    "run": "Esegui controlli",
+    "running": "In esecuzione",
+    "propagation": "Verifica i resolver",
+    "propagationTitle": "Resolver pubblici",
+    "lastRun": "Ultima esecuzione {{date}}",
+    "empty": "Nessun controllo è stato eseguito per questa zona.",
+    "record": "Record",
+    "resolver": "Resolver",
+    "answer": "Risposta",
+    "noAnswer": "Nessuna risposta",
+    "delegation": {
+      "error": "I server dei nomi non sono stati trovati.",
+      "none": "La zona non ha server dei nomi su Internet. Il dominio potrebbe non puntare a questo provider.",
+      "mismatch": "Il dominio utilizza server dei nomi diversi da quelli del provider: {{found}}.",
+      "ok": "Il dominio punta a {{count}} server dei nomi."
+    },
+    "soa": {
+      "differ": "I server dei nomi non sono d'accordo sulla versione della zona ({{count}} versioni). Una modifica potrebbe ancora essere in fase di propagazione.",
+      "same": "{{count}} server dei nomi concordano sulla versione della zona."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC non è stato verificato.",
+      "off": "DNSSEC non è attivato.",
+      "valid": "DNSSEC è attivo e valido.",
+      "broken": "DNSSEC è configurato presso il registrar ma non è valido. I resolver che lo verificano falliranno."
+    },
+    "cname": {
+      "conflict": "{{name}} ha un record CNAME e altri record. Questo non è consentito.",
+      "apex": "La radice della zona non può essere un CNAME.",
+      "dangling": "{{name}} punta a {{target}}, che non viene risolto.",
+      "ok": "Ogni destinazione CNAME viene risolta."
+    },
+    "spf": {
+      "missing": "Il dominio riceve posta ma non ha un record SPF.",
+      "multiple": "È presente più di un record SPF. I server di posta li rifiuteranno tutti.",
+      "lookups": "Il record SPF effettua {{count}} ricerche. Il limite è 10.",
+      "ok": "SPF è impostato ({{count}} ricerche)."
+    },
+    "dmarc": {
+      "missing": "Non è presente alcun record DMARC.",
+      "none": "DMARC è impostato solo per il monitoraggio.",
+      "ok": "DMARC è impostato."
+    },
+    "dkim": {
+      "none": "Nessuna chiave DKIM è stata trovata in questa zona.",
+      "found": "{{count}} chiavi DKIM trovate."
+    },
+    "mx": {
+      "unresolved": "Il server di posta {{host}} non viene risolto."
+    },
+    "mail": {
+      "none": "Il dominio non ha record di posta."
+    },
+    "caa": {
+      "ok": "I record CAA limitano chi può emettere certificati.",
+      "none": "Non sono presenti record CAA. Qualsiasi autorità di certificazione può emettere certificati."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domini, domini in scadenza e record in errore.",
+    "domains": "Domini",
+    "expiring": "In scadenza a breve",
+    "failingLinks": "Link in errore",
+    "failingAccounts": "Accessi in errore"
+  }
+}

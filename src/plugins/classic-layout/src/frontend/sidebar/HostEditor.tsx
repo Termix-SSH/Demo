@@ -607,11 +607,15 @@ export function HostEditor({
       if (!credential) throw new Error(t("hosts.failedToSaveCredential"));
 
       setQuickCreatedCredential(credential);
-      setForm((current) => ({
-        ...current,
-        authType: "credential",
-        credentialId: credential.id,
-      }));
+      // The host now points at the new credential, which still needs a save.
+      onDirtyChange?.(true);
+      setForm((current) =>
+        markOwn(current, {
+          ...current,
+          authType: "credential",
+          credentialId: credential.id,
+        }),
+      );
       toast.success(t("hosts.credentialCreated"));
       if (!adminTargetUserId) {
         window.dispatchEvent(new CustomEvent("termix:credentials-changed"));
@@ -980,6 +984,8 @@ export function HostEditor({
                           />
                           <button
                             type="button"
+                            title={t("common.remove")}
+                            aria-label={t("common.remove")}
                             className="text-destructive"
                             onClick={() =>
                               setField(
@@ -1058,7 +1064,7 @@ export function HostEditor({
                           onClick={() => {
                             setField("authType", m as HostAuthType);
                           }}
-                          className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${authMethod === m ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand" : "border-border text-muted-foreground hover:text-foreground"}`}
+                          className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${authMethod === m ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand" : "border-border bg-popover text-muted-foreground hover:text-foreground"}`}
                         >
                           {authEditorLabel(m)}
                         </button>
@@ -1144,7 +1150,7 @@ export function HostEditor({
                       )}
                     {authMethod === "key" && (
                       <>
-                        <div className="flex flex-col gap-1.5 col-span-2">
+                        <div className="flex flex-col gap-1.5 md:col-span-2">
                           <div className="flex items-center justify-between">
                             <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                               {t("hosts.sshPrivateKey")}
@@ -1155,7 +1161,7 @@ export function HostEditor({
                                   key={tab}
                                   type="button"
                                   onClick={() => setField("keySubTab", tab)}
-                                  className={`px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest border transition-colors ${form.keySubTab === tab ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand" : "border-border text-muted-foreground hover:text-foreground"}`}
+                                  className={`px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest border transition-colors ${form.keySubTab === tab ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand" : "border-border bg-popover text-muted-foreground hover:text-foreground"}`}
                                 >
                                   {tab === "paste"
                                     ? t("hosts.keyPasteTab")
@@ -1358,7 +1364,7 @@ export function HostEditor({
                           </div>
                         </div>
                         {selectedCredential?.username && (
-                          <div className="flex items-center justify-between col-span-2 pt-1">
+                          <div className="flex items-center justify-between md:col-span-2 pt-1">
                             <div className="flex flex-col gap-0.5">
                               <span className="text-xs font-medium">
                                 {t("hosts.overrideCredentialUsername")}

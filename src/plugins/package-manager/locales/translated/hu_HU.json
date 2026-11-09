@@ -1,0 +1,216 @@
+{
+  "plugin": {
+    "name": "Csomagok",
+    "description": "Tekintse meg és telepítse a frissítéseket a gazdagépeken, kereszen, telepítsen és távolítson el csomagokat, valamint tekintse meg a csomagok előzményeit."
+  },
+  "common": {
+    "cancel": "Mégse",
+    "back": "Vissza"
+  },
+  "permissions": {
+    "use": {
+      "title": "Csomagok használata",
+      "description": "Tekintse meg a csomagokat és frissítéseket az elérhető gazdagépeken, és módosítsa őket azokon a gazdagépeken, amelyeken szerkeszthet."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Csomagok",
+        "description": "Kezelje a csomagokat és frissítéseket ezen a gazdagépen a Csomagok fülön keresztül."
+      },
+      "useSudo": {
+        "label": "Sudo használata",
+        "description": "Használja a sudo-t a csomagok telepítéséhez, frissítéséhez és eltávolításához. Kapcsolja ki, ha root felhasználóként lép be."
+      },
+      "readOnly": {
+        "label": "Csak olvasható",
+        "description": "Csomagok és frissítések megjelenítése, de soha ne módosítsa őket ezen a hoszton."
+      },
+      "showPanel": {
+        "label": "Frissítési panel megjelenítése a terminálokban",
+        "description": "Engedélyezi a frissítési panel megnyitását ezen a hoszton az SSH terminál mellett."
+      },
+      "alertUpdates": {
+        "label": "Értesítés biztonsági frissítésekről",
+        "description": "Küldjön értesítést, ha ezen a hoszton biztonsági frissítések érhetők el, vagy újraindításra van szükség. Ellenőrzés a frissítések olvasásakor, körülbelül óránként egyszer."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Frissítési panel megnyitása az új terminálokkal",
+        "description": "A frissítési panel megjelenítése minden olyan SSH terminál mellett, amelyen a Csomagok be van kapcsolva. A jobb szélen található gombbal továbbra is megnyithatja és bezárhatja."
+      },
+      "companionSide": {
+        "label": "Frissítési panel oldala",
+        "description": "Ahol a frissítési panel a terminál mellett helyezkedik el.",
+        "right": "Jobb",
+        "left": "Bal",
+        "bottom": "Alsó"
+      },
+      "companionSize": {
+        "label": "Frissítések panel mérete",
+        "description": "Szélesség pixelekben, vagy magasság, ha az alsó oldalon van. A szélét húzva is módosíthatja."
+      },
+      "companionEdgeButton": {
+        "label": "Panel gomb megjelenítése",
+        "description": "Egy kis gomb megjelenítése a terminál jobb szélén, amely megnyitja a frissítések panelt."
+      }
+    }
+  },
+  "tab": {
+    "title": "Csomagok",
+    "noHost": "Nyissa meg a Csomagokat egy hoston.",
+    "error": "Nem sikerült betölteni a csomagokat erről a hostról.",
+    "disabled": "A csomagkezelő letiltva ezen a hoszton. Kapcsold be a hoszt beállításaiban.",
+    "sudo": "A módosításokhoz root jogosultság, jelszómentes sudo vagy mentett sudo jelszó szükséges ezen a hoszton.",
+    "refresh": "Frissítés",
+    "readOnly": "Csak olvasható",
+    "noManager": "Nincs csomagkezelő",
+    "noManagerTitle": "Nem található támogatott csomagkezelő",
+    "noManagerHint": "A csomagkezelő az apt, dnf, yum, zypper, pacman és apk csomagkezelőkkel működik.",
+    "indexAge": "Az index {{ago}} ezelőtt frissült",
+    "reboot": "Ezen a hoszton újraindítás szükséges a frissítés befejezéséhez.",
+    "viewUpdates": "Frissítések",
+    "viewInstalled": "Telepítve",
+    "viewSearch": "Keresés",
+    "viewHistory": "Előzmények",
+    "viewRepos": "Tárolók"
+  },
+  "actions": {
+    "working": "A(z) {{action}} fut. Ez néhány percet is igénybe vehet.",
+    "ok": "Kész",
+    "failed": "A csomagkezelő hibaüzenetet adott vissza.",
+    "noOutput": "Nincs kimenet.",
+    "refresh": {
+      "label": "Index frissítése",
+      "confirm": "Frissítse a csomagindexet?",
+      "desc": "Letölti a legújabb csomaglistákat.",
+      "done": "A csomagindex naprakész."
+    },
+    "update": {
+      "label": "Frissítés",
+      "confirm_one": "Frissítse a(z) {{names}} csomagot?",
+      "confirm_other": "Frissítse a(z) {{count}} csomagot?",
+      "desc": "A(z) {{names}} legújabb verziójának telepítése.",
+      "done": "A(z) {{names}} frissítve."
+    },
+    "upgrade-all": {
+      "label": "Összes frissítése",
+      "confirm": "Frissítse az összes csomagot?",
+      "desc": "Frissíti a csomagindexet, és telepíti az összes frissítést. A szolgáltatások újraindulhatnak a futtatás során.",
+      "done": "Az összes csomag naprakész."
+    },
+    "install": {
+      "label": "Telepítés",
+      "confirm": "Telepíti a(z) {{names}} elemeket?",
+      "desc": "Telepíti a(z) {{names}} elemeket és a szükséges függőségeiket.",
+      "done": "A(z) {{names}} telepítése kész."
+    },
+    "remove": {
+      "label": "Eltávolítás",
+      "confirm": "Eltávolítja a(z) {{names}} elemeket?",
+      "desc": "Eltávolítja a(z) {{names}} elemeket ebből a gazdagépből. A függő programok nem fognak működni.",
+      "done": "A(z) {{names}} eltávolítása kész."
+    },
+    "hold": {
+      "label": "Verzió rögzítése",
+      "confirm": "Rögzíti a(z) {{names}} verzióját?",
+      "desc": "A frissítések kihagyják a(z) {{names}} elemeket, amíg fel nem engedi.",
+      "done": "A(z) {{names}} elemek frissítése felfüggesztve."
+    },
+    "unhold": {
+      "label": "Felfüggesztés feloldása",
+      "confirm": "Feloldja a(z) {{names}} felfüggesztését?",
+      "desc": "A(z) {{names}} elemek újra kapnak frissítéseket.",
+      "done": "A(z) {{names}} elemek újra kapnak frissítéseket."
+    }
+  },
+  "updates": {
+    "search": "Frissítések szűrése",
+    "count_one": "{{count}} frissítés",
+    "count_other": "{{count}} frissítés",
+    "countSecurity_one": "{{count}} frissítés, ebből {{security}} biztonsági",
+    "countSecurity_other": "{{count}} frissítés, ebből {{security}} biztonsági",
+    "updatePicked_one": "{{count}} csomag frissítése",
+    "updatePicked_other": "{{count}} csomag frissítése",
+    "updateOne": "Frissítés",
+    "pick": "{{name}} kiválasztása",
+    "security": "Biztonság",
+    "empty": "Minden naprakész.",
+    "noMatch": "Nincs egyező frissítés.",
+    "loadFailed": "A frissítések nem olvashatók."
+  },
+  "installed": {
+    "search": "Telepített csomagok szűrése",
+    "all": "Összes",
+    "held": "Rögzített",
+    "heldBadge": "Rögzített",
+    "empty": "Nincs egyező csomag.",
+    "loadFailed": "Nem sikerült beolvasni a telepített csomagokat."
+  },
+  "search": {
+    "placeholder": "Csomagok keresése",
+    "button": "Keresés",
+    "hint": "Keresse meg a telepíteni kívánt csomagot a gazdagép tárolóiban.",
+    "empty": "Nincs találat.",
+    "installed": "Telepítve",
+    "failed": "A keresés sikertelen volt."
+  },
+  "history": {
+    "empty": "Nem található csomagelőzmény.",
+    "loadFailed": "Nem sikerült beolvasni a csomagelőzményeket."
+  },
+  "repos": {
+    "hint": "A tárolók, amelyekből ez a gazdagép telepít. A gazdagépen módosíthatók.",
+    "empty": "Nem találhatóak tárolók.",
+    "off": "Ki",
+    "loadFailed": "Nem sikerült beolvasni a tárolókat."
+  },
+  "card": {
+    "title": "Csomagfrissítések",
+    "loading": "Gazdagépek ellenőrzése...",
+    "summary_one": "{{count}} frissítés {{hosts}} gazdagépen",
+    "summary_other": "{{count}} frissítés {{hosts}} gazdagépen",
+    "refresh": "Újraellenőrzés",
+    "empty": "Kapcsolja be a Csomagokat egy gazdagépnél, hogy itt lássa a frissítéseit.",
+    "security_one": "{{count}} biztonsági",
+    "security_other": "{{count}} biztonsági",
+    "reboot": "Újraindítás szükséges",
+    "updates_one": "{{count}} frissítés",
+    "updates_other": "{{count}} frissítés",
+    "upToDate": "Napi frissítések"
+  },
+  "manager": {
+    "title": "Csomagok",
+    "disabled": "Kapcsold be a Csomagok funkciót a host beállításaiban, hogy itt lásd a frissítéseket."
+  },
+  "operations": {
+    "list": {
+      "title": "Csomagfrissítések listázása"
+    },
+    "updates": {
+      "title": "Várakozó frissítések",
+      "resource": "Várakozó frissítések"
+    },
+    "upgradeAll": {
+      "title": "Összes csomag frissítése"
+    },
+    "install": {
+      "title": "Csomagok telepítése"
+    },
+    "remove": {
+      "title": "Csomagok eltávolítása"
+    },
+    "package": "Csomagok",
+    "packageHint": "Egy vagy több csomagnév, szóközzel elválasztva.",
+    "resource": {
+      "current": "Telepítve",
+      "available": "Elérhető",
+      "repo": "Tároló"
+    }
+  },
+  "nav": {
+    "togglePanel": "Frissítési panel megjelenítése/elrejtése"
+  }
+}

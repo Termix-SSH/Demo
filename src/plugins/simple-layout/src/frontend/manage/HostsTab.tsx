@@ -125,6 +125,11 @@ export function HostsTab() {
         const host = request.hostId
           ? (hostsRef.current.find((h) => h.id === request.hostId) ?? null)
           : null;
+        // A host that is gone must not turn into a new host form.
+        if (request.hostId && !host) {
+          toast.error(t("manage.hostNotFound"));
+          return;
+        }
         openHost(host, request.draft);
       } else if (request.kind === "credential") {
         const credential = request.credentialId
@@ -145,7 +150,7 @@ export function HostsTab() {
         close();
       }
     },
-    [confirmDiscard, openHost],
+    [confirmDiscard, openHost, t],
   );
 
   // A request that opened this tab was parked before it mounted.

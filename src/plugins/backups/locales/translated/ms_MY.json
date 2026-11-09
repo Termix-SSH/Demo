@@ -1,0 +1,441 @@
+{
+  "plugin": {
+    "name": "Salinan Sandaran",
+    "description": "Sandarkan folder, pangkalan data dan data Docker pada hos anda menggunakan restic, kemudian semak, muat turun dan pulihkan."
+  },
+  "common": {
+    "save": "Simpan",
+    "cancel": "Batal",
+    "back": "Kembali",
+    "delete": "Padam",
+    "done": "Selesai",
+    "loading": "Memuatkan...",
+    "refresh": "Muat Semula",
+    "retry": "Cuba lagi"
+  },
+  "permissions": {
+    "use": {
+      "title": "Gunakan Salinan Sandaran",
+      "description": "Sediakan tugas dan repositori sandaran, jalankan sandaran, dan semak, muat turun serta pulihkan snapshot pada hos yang boleh mereka sunting."
+    }
+  },
+  "tab": {
+    "title": "Salinan Sandaran",
+    "viewJobs": "Tugas",
+    "viewRepos": "Repositori",
+    "viewHistory": "Sejarah"
+  },
+  "hostTab": {
+    "title": "Salinan Sandaran",
+    "noHost": "Buka Salinan Sandaran dari hos.",
+    "viewJobs": "Tugas",
+    "viewSnapshots": "Snapshot",
+    "viewHistory": "Sejarah",
+    "restic": "restic {{version}}",
+    "noRestic": "restic tidak dipasang",
+    "sudo": "Termix perlu log masuk sebagai root, atau sebagai pengguna dengan sudo tanpa kata laluan, untuk menjalankan sandaran pada hos ini.",
+    "statusFailed": "Tidak dapat membaca hos ini"
+  },
+  "install": {
+    "missing": "restic tidak dipasang pada hos ini",
+    "tooOld": "restic pada hos ini lebih lama daripada 0.17",
+    "hint": "Salinan Sandaran menggunakan restic. Pasang ia melalui pengurus pakej, atau dari keluaran restic di GitHub jika pakej terlalu lama.",
+    "button": "Pasang restic",
+    "working": "Memasang...",
+    "title": "Pasang restic?",
+    "desc": "Ini akan memasang restic pada hos sebagai root.",
+    "confirm": "Pasang",
+    "done": "restic {{version}} telah dipasang",
+    "failed": "Tidak dapat memasang restic"
+  },
+  "status": {
+    "never": "Tidak pernah dijalankan",
+    "running": "Sedang berjalan",
+    "success": "Selesai",
+    "warning": "Amaran",
+    "failed": "Gagal",
+    "canceled": "Dihentikan"
+  },
+  "time": {
+    "justNow": "baru sahaja",
+    "soon": "sebentar lagi",
+    "ago": {
+      "minutes_other": "{{count}} minit lalu",
+      "hours_other": "{{count}} jam lalu",
+      "days_other": "{{count}} hari lalu"
+    },
+    "in": {
+      "minutes_other": "dalam {{count}} minit",
+      "hours_other": "dalam {{count}} jam",
+      "days_other": "dalam {{count}} hari"
+    }
+  },
+  "jobs": {
+    "add": "Tambah tugas",
+    "empty": "Belum ada tugas sandaran",
+    "emptyHint": "Tambah tugas untuk sandarkan folder, pangkalan data atau data Docker.",
+    "emptyNoRepo": "Tambah repositori terlebih dahulu, supaya sandaran mempunyai tempat untuk disimpan.",
+    "loadFailed": "Tidak dapat memuatkan tugas sandaran",
+    "lastGood": "Sandaran terakhir {{when}}",
+    "noGood": "Belum ada sandaran",
+    "next": "Seterusnya {{when}}",
+    "paused": "Dijeda",
+    "run": "Jalankan sekarang",
+    "stop": "Hentikan",
+    "edit": "Sunting",
+    "snapshots": "Snapshots",
+    "started": "{{name}} dimulakan",
+    "runFailed": "Gagal memulakan sandaran"
+  },
+  "editor": {
+    "newTitle": "Tugas sandaran baharu",
+    "general": "Tugas",
+    "host": "Host",
+    "pickHost": "Pilih host",
+    "name": "Nama",
+    "namePlaceholder": "Sandaran malam",
+    "repository": "Repositori",
+    "pickRepository": "Pilih repositori",
+    "noRepos": "Anda tiada repositori yang boleh digunakan oleh host ini. Tambahkan satu di tab Sandaran terlebih dahulu.",
+    "repoLocked": "Hanya pemilik repositori ini yang boleh mengubahnya.",
+    "enabled": "Jalankan mengikut jadual",
+    "enabledHint": "Matikan untuk menjeda jadual. Jalankan sekarang masih berfungsi.",
+    "oneFileSystem": "Kekal dalam satu sistem fail",
+    "oneFileSystemHint": "Langkau cakera dan mount lain yang ditemui di dalam folder yang dipilih.",
+    "saved": "Tugas disimpan",
+    "saveFailed": "Gagal menyimpan tugas",
+    "deleteTitle": "Padam {{name}}?",
+    "deleteDesc": "Tugas ini akan dialih keluar dari Termix. Snapshotsnya kekal dalam repositori.",
+    "deleted": "Tugas dipadam",
+    "deleteFailed": "Gagal memadam tugas"
+  },
+  "sources": {
+    "add": "Tambah ke sandaran",
+    "addPaths": "Folder",
+    "addDatabase": "Pangkalan data",
+    "addDocker": "Docker",
+    "remove": "Alih keluar",
+    "paths": "Folder dan fail",
+    "folders": "Laluan",
+    "foldersHint": "Satu laluan penuh setiap baris.",
+    "excludes": "Langkau",
+    "excludesHint": "Satu corak restic setiap baris, seperti *.log.",
+    "database": "Pangkalan data",
+    "engine": "Jenis",
+    "engines": {
+      "mysql": "MySQL atau MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Log masuk",
+    "ownLogin": "Taipkan log masuk di sini",
+    "noDatabasesPlugin": "Hidupkan plugin Pangkalan Data untuk memilih log masuk yang disimpan.",
+    "address": "Alamat",
+    "addressPlaceholder": "Kosong untuk soket tempatan",
+    "port": "Port",
+    "username": "Pengguna",
+    "password": "Kata laluan",
+    "passwordSaved": "Disimpan, biarkan kosong untuk mengekalkannya",
+    "runAs": "Jalankan sebagai",
+    "runAsHint": "Pengguna Linux untuk menjalankan dump, seperti postgres. Kosong akan menjalankannya sebagai root.",
+    "databases": "Pangkalan data",
+    "databasesHint": "Satu nama setiap baris. Biarkan kosong untuk menyandarkan kesemuanya.",
+    "sqliteFiles": "Fail pangkalan data",
+    "sqliteFilesHint": "Satu laluan penuh setiap baris. Setiap fail disalin dengan selamat semasa ia digunakan.",
+    "docker": "Docker",
+    "stacks": "Stack",
+    "volumes": "Volume",
+    "noStacks": "Tiada stack compose ditemui",
+    "noVolumes": "Tiada volume ditemui",
+    "dockerFailed": "Gagal menyenaraikan Docker pada host ini",
+    "stop": "Hentikan tumpukan semasa sandaran",
+    "stopHint": "Tumpukan yang dipilih akan dihentikan dahulu dan dimulakan semula selepas itu, supaya failnya tidak berubah semasa ia dibaca."
+  },
+  "schedule": {
+    "title": "Jadual",
+    "manual": "Secara manual",
+    "daily": "Harian",
+    "weekly": "Mingguan",
+    "custom": "Tersuai",
+    "day": "Hari",
+    "time": "Masa",
+    "cron": "Cron",
+    "cronHint": "Minit, jam, hari dalam bulan, bulan, hari dalam minggu.",
+    "cronInvalid": "Cron ini tidak sah",
+    "timezone": "Zon masa",
+    "serverTime": "Masa pelayan",
+    "manualHint": "Tugas ini hanya berjalan apabila anda menekan Jalankan sekarang.",
+    "manualOnly": "Secara manual",
+    "next": "Jalankan seterusnya {{time}}",
+    "noNext": "Jadual ini tidak pernah berjalan",
+    "dailyAt": "Harian pada {{time}}",
+    "weeklyAt": "{{day}} pada {{time}}",
+    "days": {
+      "0": "Ahad",
+      "1": "Isnin",
+      "2": "Selasa",
+      "3": "Rabu",
+      "4": "Khamis",
+      "5": "Jumaat",
+      "6": "Sabtu"
+    }
+  },
+  "keep": {
+    "title": "Simpan",
+    "last": "Terakhir",
+    "daily": "Harian",
+    "weekly": "Mingguan",
+    "monthly": "Bulanan",
+    "yearly": "Tahunan",
+    "hint": "Selepas setiap sandaran, snapshot lama bagi tugas ini akan dibuang supaya hanya yang ini disimpan. Semua 0 menyimpan semuanya."
+  },
+  "hooks": {
+    "title": "Arahan",
+    "pre": "Sebelum",
+    "preHint": "Berjalan sebagai root sebelum sandaran. Jika gagal, sandaran akan berhenti.",
+    "post": "Selepas",
+    "postHint": "Berjalan sebagai root selepas sandaran, walaupun ia gagal. TERMIX_BACKUP_STATUS memegang hasilnya."
+  },
+  "alerts": {
+    "title": "Amaran",
+    "onFailure": "Berikan amaran apabila sandaran gagal",
+    "onFailureHint": "Juga memberikan amaran pada amaran, dan sekali apabila ia berfungsi semula.",
+    "staleDays": "Hari tanpa sandaran",
+    "staleDaysHint": "Berikan amaran apabila tiada sandaran berjaya selama ini banyak hari. 0 mematikannya."
+  },
+  "repos": {
+    "add": "Tambah repositori",
+    "empty": "Tiada repositori lagi",
+    "emptyHint": "Repositori adalah tempat sandaran disimpan, seperti baldi S3 atau folder.",
+    "loadFailed": "Tidak dapat memuatkan repositori",
+    "jobCount_other": "{{count}} tugas",
+    "newTitle": "Repositori baru",
+    "storage": "Storan",
+    "name": "Nama",
+    "namePlaceholder": "S3 Luar Tapak",
+    "kind": "Jenis",
+    "kinds": {
+      "s3": "Serasi S3",
+      "rest": "Pelayan REST",
+      "rclone": "rclone",
+      "local": "Folder pada hos"
+    },
+    "endpoint": "Hujung",
+    "endpointHint": "Kosong untuk AWS. Untuk MinIO, R2, B2 atau Wasabi, alamat S3 mereka.",
+    "region": "Wilayah",
+    "bucket": "Balang",
+    "prefix": "Folder dalam balang",
+    "prefixHint": "Pilihan.",
+    "accessKeyId": "ID kunci akses",
+    "secretKey": "Kunci akses rahsia",
+    "secretSaved": "Disimpan, biarkan kosong untuk mengekalkannya",
+    "url": "Alamat pelayan",
+    "username": "Pengguna",
+    "usernameHint": "Kosong jika pelayan tidak memerlukan log masuk.",
+    "restPassword": "Kata laluan",
+    "remote": "Nama jauh",
+    "remoteHint": "Huruf, nombor dan _ sahaja.",
+    "path": "Laluan",
+    "rcloneConfig": "Konfigurasi rclone",
+    "rcloneHint": "Baris jauh dari rclone.conf. Jalankan rclone config di komputer anda untuk membuatnya. rclone mesti dipasang pada hos.",
+    "rcloneSaved": "Disimpan, biarkan kosong untuk mengekalkannya",
+    "host": "Hos",
+    "pickHost": "Pilih hos",
+    "folder": "Folder",
+    "folderHint": "Hanya tugas pada hos ini boleh menggunakannya. Cakera yang dipasang adalah yang terbaik.",
+    "password": "Penyulitan",
+    "resticPassword": "Kata laluan repositori",
+    "passwordHint": "Biarkan kosong dan Termix akan membuat yang kuat. Simpan salinan di tempat selamat: tanpa ini, sandaran tidak boleh dibaca.",
+    "passwordKeep": "Disimpan, biarkan kosong untuk mengekalkannya",
+    "passwordChangeHint": "Ini hanya mengubah apa yang dihantar oleh Termix. Ia tidak mengubah kata laluan repositori sedia ada.",
+    "reveal": "Tunjukkan kata laluan",
+    "revealTitle": "Tunjukkan kata laluan repositori?",
+    "revealDesc": "Siapa sahaja yang memilikinya dan kunci storan boleh membaca setiap sandaran dalam repositori ini. Ini ditulis ke log audit.",
+    "revealFailed": "Tidak dapat membaca kata laluan",
+    "copy": "Salin",
+    "copied": "Disalin",
+    "check": "Semak",
+    "checkFrom": "Semak dari",
+    "checkFromHint": "Hos yang membuka repositori. Ia memerlukan restic.",
+    "checkButton": "Semak",
+    "initButton": "Semak dan tetapkan",
+    "installRclone": "Pasang rclone pada hos ini",
+    "rcloneInstalled": "rclone {{version}} telah dipasang.",
+    "rcloneFailed": "Tidak dapat memasang rclone",
+    "checking": "Menyemak...",
+    "opened": "Repositori dibuka dengan baik.",
+    "created": "Repositori telah ditetapkan dan sedia.",
+    "checkFailed": "Tidak dapat membuka repositori",
+    "checkNext": "Disimpan. Semak dari hos untuk menetapkannya.",
+    "saved": "Repositori disimpan",
+    "saveFailed": "Tidak dapat menyimpan repositori",
+    "deleteTitle": "Padam {{name}}?",
+    "deleteDesc": "Ia hanya dialih keluar dari Termix. Sandaran kekal dalam storan.",
+    "deleted": "Repositori dipadam",
+    "deleteFailed": "Tidak dapat memadam repositori"
+  },
+  "snapshots": {
+    "noJobs": "Tambah tugas sandaran dahulu.",
+    "job": "Tugas",
+    "titleFor": "Snapshots {{name}}",
+    "empty": "Tiada snapshots lagi",
+    "loadFailed": "Tidak dapat membaca snapshots",
+    "latest": "Terkini",
+    "files_other": "{{count}} fail",
+    "browse": "Layari",
+    "delete": "Padam",
+    "deleteTitle": "Padam snapshot ini?",
+    "deleteDesc": "Snapshot dari {{time}} akan dialih keluar dari repositori secara kekal.",
+    "deleted": "Snapshot dipadam",
+    "deleteFailed": "Gagal memadam snapshot",
+    "browseTitle": "Snapshot {{time}}",
+    "root": "Punca",
+    "emptyFolder": "Folder ini kosong",
+    "filesFailed": "Gagal menyenaraikan folder ini",
+    "pick": "Pilih",
+    "download": "Muat turun",
+    "downloadZip": "Muat turun sebagai zip",
+    "downloadFailed": "Gagal memuat turun",
+    "restoreAll": "Pulihkan semua",
+    "restorePicked_other": "Pulihkan {{count}} item"
+  },
+  "restore": {
+    "title": "Pulihkan",
+    "what": "Apa",
+    "everything": "Semua dalam snapshot.",
+    "more_other": "dan {{count}} lagi",
+    "where": "Di mana",
+    "host": "Hos",
+    "hostHint": "Mana-mana hos yang boleh anda sunting dan boleh mengakses repositori.",
+    "localOnly": "Repositori ini ialah folder pada hosnya, jadi ia hanya boleh dipulihkan di situ.",
+    "toFolder": "Ke folder",
+    "toOriginal": "Di tempat asalnya",
+    "folder": "Folder",
+    "folderHint": "Fail mengekalkan laluan penuh mereka di dalam folder ini.",
+    "originalWarning": "Fail ditulis semula ke tempat asal dan mungkin menggantikan apa yang ada sekarang.",
+    "overwrite": "Fail yang sudah wujud",
+    "overwriteOptions": {
+      "if-changed": "Gantikan apabila berubah",
+      "always": "Sentiasa gantikan",
+      "if-newer": "Gantikan apabila sandaran lebih baru",
+      "never": "Jangan gantikan"
+    },
+    "start": "Pulihkan",
+    "started": "Pemulihan dimulakan",
+    "failed": "Gagal memulakan pemulihan"
+  },
+  "run": {
+    "title": "Jalankan",
+    "backupTitle": "Sandaran {{name}}",
+    "restoreTitle": "Pemulihan {{name}}",
+    "loadFailed": "Gagal memuatkan operasi",
+    "progress": "Kemajuan",
+    "preparing": "Sedang bersiap...",
+    "progressLine": "{{percent}}% | {{files}} daripada {{totalFiles}} fail | {{bytes}} daripada {{totalBytes}}",
+    "left": "{{time}} lagi",
+    "details": "Butiran",
+    "started": "Dimulakan",
+    "finished": "Selesai",
+    "trigger": "Dimulakan oleh",
+    "triggers": {
+      "manual": "Jalankan sekarang",
+      "schedule": "Jadual",
+      "operation": "Tindakan Termix"
+    },
+    "snapshot": "Snapshot",
+    "target": "Dipulihkan ke",
+    "files": "Fail",
+    "filesLine": "{{total}} fail, {{added}} baharu, {{changed}} berubah",
+    "size": "Saiz",
+    "added": "Ditambah ke repositori",
+    "took": "Membawa",
+    "log": "Log",
+    "noLog": "Tiada log lagi.",
+    "stopTitle": "Hentikan operasi ini?",
+    "stopDesc": "Sandaran yang dihenti tidak menyimpan sebarang snapshot. Pemulihan yang dihenti meninggalkan fail yang telah dipulihkan setakat ini.",
+    "stopSent": "Sedang menghentikan",
+    "stopFailed": "Tidak dapat menghentikan proses"
+  },
+  "history": {
+    "empty": "Tiada proses dijalankan lagi",
+    "loadFailed": "Tidak dapat memuatkan sejarah",
+    "status": "Status",
+    "job": "Tugas",
+    "host": "Hos",
+    "kind": "Jenis",
+    "kinds": {
+      "backup": "Sandaran",
+      "restore": "Pemulihan"
+    },
+    "started": "Dimulakan",
+    "took": "Masa diambil",
+    "size": "Saiz"
+  },
+  "card": {
+    "title": "Sandaran",
+    "all": "Semua tugas sandaran",
+    "oneJob": "Satu tugas sandaran",
+    "empty": "Tiada tugas sandaran lagi.",
+    "gone": "Tugas sandaran ini telah dipadam.",
+    "open": "Buka"
+  },
+  "operations": {
+    "list": {
+      "title": "Senaraikan tugas sandaran"
+    },
+    "failed": {
+      "title": "Sandaran gagal"
+    },
+    "run": {
+      "title": "Jalankan sandaran"
+    },
+    "cancel": {
+      "title": "Hentikan sandaran"
+    },
+    "snapshots": {
+      "title": "Senaraikan snapshot"
+    },
+    "events": {
+      "finished": "Sandaran selesai",
+      "failed": "Sandaran gagal"
+    },
+    "jobs": {
+      "title": "Tugas sandaran",
+      "lastSuccess": "Sandaran terakhir",
+      "nextRun": "Jalankan seterusnya",
+      "size": "Saiz"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Paparkan panel sandaran dalam terminal",
+        "description": "Biarkan panel sandaran dibuka di sebelah terminal SSH hos ini."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Buka panel sandaran dengan terminal baharu",
+        "description": "Paparkan panel sandaran di sebelah setiap terminal SSH yang mengaktifkannya. Anda masih boleh membukanya dan menutupnya daripada butang di tepi kanan."
+      },
+      "companionSide": {
+        "label": "Sisi panel sandaran",
+        "description": "Di mana panel sandaran diletakkan di sebelah terminal.",
+        "right": "Kanan",
+        "left": "Kiri",
+        "bottom": "Bawah"
+      },
+      "companionSize": {
+        "label": "Saiz panel sandaran",
+        "description": "Lebar dalam piksel, atau tinggi apabila ia berada di bahagian bawah. Anda juga boleh menyeret tepinya."
+      },
+      "companionEdgeButton": {
+        "label": "Paparkan butang panel",
+        "description": "Paparkan butang kecil di tepi kanan terminal yang membuka panel sandaran."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Togol panel sandaran"
+  }
+}

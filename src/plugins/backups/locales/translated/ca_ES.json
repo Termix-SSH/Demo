@@ -1,0 +1,461 @@
+{
+  "plugin": {
+    "name": "Còpies de seguretat",
+    "description": "Feu còpies de seguretat de carpetes, bases de dades i dades de Docker als vostres servidors amb restic, i després navegueu-les, descarregueu-les i restaureu-les."
+  },
+  "common": {
+    "save": "Desa",
+    "cancel": "Cancel·la",
+    "back": "Enrere",
+    "delete": "Suprimeix",
+    "done": "Fet",
+    "loading": "S'està carregant...",
+    "refresh": "Actualitza",
+    "retry": "Torna-ho a provar"
+  },
+  "permissions": {
+    "use": {
+      "title": "Utilitzar còpies de seguretat",
+      "description": "Configurar tasques i repositoris de còpies de seguretat, executar còpies de seguretat i navegar, descarregar i restaurar instantànies en els amfitrions que puguin editar."
+    }
+  },
+  "tab": {
+    "title": "Còpies de seguretat",
+    "viewJobs": "Tasques",
+    "viewRepos": "Repositoris",
+    "viewHistory": "Historial"
+  },
+  "hostTab": {
+    "title": "Còpies de seguretat",
+    "noHost": "Obre les còpies de seguretat des d'un amfitrió.",
+    "viewJobs": "Tasques",
+    "viewSnapshots": "Instantànies",
+    "viewHistory": "Historial",
+    "restic": "restic {{version}}",
+    "noRestic": "restic no instal·lat",
+    "sudo": "Termix necessita iniciar sessió com a root o com a usuari amb sudo sense contrasenya per executar còpies de seguretat en aquest host.",
+    "statusFailed": "No s'ha pogut llegir aquest host"
+  },
+  "install": {
+    "missing": "restic no està instal·lat en aquest host",
+    "tooOld": "La versió de restic en aquest host és anterior a la 0.17",
+    "hint": "Les còpies de seguretat utilitzen restic. Instal·leu-lo amb el gestor de paquets o des de l'alliberament de restic a GitHub si el paquet és massa antic.",
+    "button": "Instal·lar restic",
+    "working": "Instal·lant...",
+    "title": "Vols instal·lar restic?",
+    "desc": "Això instal·la restic a l'amfitrió com a arrel.",
+    "confirm": "Instal·la",
+    "done": "restic {{version}} està instal·lat",
+    "failed": "No s'ha pogut instal·lar restic"
+  },
+  "status": {
+    "never": "Mai executat",
+    "running": "S'està executant",
+    "success": "Fet",
+    "warning": "Advertències",
+    "failed": "Ha fallat",
+    "canceled": "Aturat"
+  },
+  "time": {
+    "justNow": "ara mateix",
+    "soon": "d'aquí un moment",
+    "ago": {
+      "minutes_one": "fa {{count}} minut",
+      "minutes_many": "fa {{count}} minuts",
+      "minutes_other": "fa {{count}} minuts",
+      "hours_one": "fa {{count}} hora",
+      "hours_many": "fa {{count}} hores",
+      "hours_other": "fa {{count}} hores",
+      "days_one": "fa {{count}} dia",
+      "days_many": "fa {{count}} dies",
+      "days_other": "fa {{count}} dies"
+    },
+    "in": {
+      "minutes_one": "d'aquí {{count}} minut",
+      "minutes_many": "d'aquí {{count}} minuts",
+      "minutes_other": "d'aquí {{count}} minuts",
+      "hours_one": "d'aquí {{count}} hora",
+      "hours_many": "d'aquí {{count}} hores",
+      "hours_other": "d'aquí {{count}} hores",
+      "days_one": "d'aquí {{count}} dia",
+      "days_many": "d'aquí {{count}} dies",
+      "days_other": "d'aquí {{count}} dies"
+    }
+  },
+  "jobs": {
+    "add": "Afegeix feina",
+    "empty": "Encara no hi ha tasques de còpia de seguretat",
+    "emptyHint": "Afegeix una tasca per fer còpies de seguretat de carpetes, bases de dades o dades de Docker.",
+    "emptyNoRepo": "Afegeix primer un repositori perquè les còpies de seguretat tinguin on guardar-se.",
+    "loadFailed": "No s'han pogut carregar les tasques de còpia de seguretat",
+    "lastGood": "Última còpia de seguretat {{when}}",
+    "noGood": "Encara no hi ha cap còpia de seguretat",
+    "next": "Propera {{when}}",
+    "paused": "En pausa",
+    "run": "Executa ara",
+    "stop": "Atura",
+    "edit": "Edita",
+    "snapshots": "Instantànies",
+    "started": "{{name}} iniciat",
+    "runFailed": "No s'ha pogut iniciar la còpia de seguretat"
+  },
+  "editor": {
+    "newTitle": "Nou treball de còpia de seguretat",
+    "general": "Treball",
+    "host": "Amfitrió",
+    "pickHost": "Tria un amfitrió",
+    "name": "Nom",
+    "namePlaceholder": "Còpia de seguretat nocturna",
+    "repository": "Repositori",
+    "pickRepository": "Tria un repositori",
+    "noRepos": "No tens cap repositori que aquest host pugui utilitzar. Afegeix-ne un a la pestanya de còpies de seguretat primer.",
+    "repoLocked": "Només el propietari d'aquest repositori el pot modificar.",
+    "enabled": "Executar segons programació",
+    "enabledHint": "Desactiva-ho per posar la programació en pausa. L'opció d'executar ara continuarà funcionant.",
+    "oneFileSystem": "Romandre en un sol sistema de fitxers",
+    "oneFileSystemHint": "Omet els altres discs i muntatges que es trobin dins de les carpetes seleccionades.",
+    "saved": "Tasca desada",
+    "saveFailed": "No s'ha pogut desar la tasca",
+    "deleteTitle": "Voleu suprimir {{name}}?",
+    "deleteDesc": "La tasca s'elimina de Termix. Les seves instantànies es mantenen al repositori.",
+    "deleted": "Tasca suprimida",
+    "deleteFailed": "No s'ha pogut suprimir la tasca"
+  },
+  "sources": {
+    "add": "Afegir a la còpia de seguretat",
+    "addPaths": "Carpetes",
+    "addDatabase": "Base de dades",
+    "addDocker": "Docker",
+    "remove": "Suprimeix",
+    "paths": "Carpetes i fitxers",
+    "folders": "Camins",
+    "foldersHint": "Un camí complet per línia.",
+    "excludes": "Ometre",
+    "excludesHint": "Un patró de restic per línia, com *.log.",
+    "database": "Base de dades",
+    "engine": "Tipus",
+    "engines": {
+      "mysql": "MySQL o MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Inici de sessió",
+    "ownLogin": "Escriu un nom d'usuari aquí",
+    "noDatabasesPlugin": "Activa el complement de bases de dades per seleccionar un nom d'usuari desat.",
+    "address": "Adreça",
+    "addressPlaceholder": "Deixa-ho buit per utilitzar el socket local",
+    "port": "Port",
+    "username": "Usuari",
+    "password": "Contrasenya",
+    "passwordSaved": "Desat, deixa-ho buit per mantenir-lo",
+    "runAs": "Executa com a",
+    "runAsHint": "Un usuari de Linux per executar la còpia de seguretat, com ara postgres. Si es deixa buit, s'executarà com a root.",
+    "databases": "Bases de dades",
+    "databasesHint": "Un nom per línia. Deixeu-ho buit per fer còpia de seguretat de totes.",
+    "sqliteFiles": "Fitxers de base de dades",
+    "sqliteFilesHint": "Una ruta completa per línia. Cada fitxer es copia de manera segura mentre està en ús.",
+    "docker": "Docker",
+    "stacks": "Stacks",
+    "volumes": "Volums",
+    "noStacks": "No s'han trobat stacks de compose",
+    "noVolumes": "No s'han trobat volums",
+    "dockerFailed": "No s'ha pogut llistar Docker en aquest host",
+    "stop": "Atura les pilotes durant la còpia de seguretat",
+    "stopHint": "Les pilotes seleccionades s'aturen primer i es reinicien després, de manera que els seus fitxers no canviïn mentre es llegeixen."
+  },
+  "schedule": {
+    "title": "Programació",
+    "manual": "Manual",
+    "daily": "Diàriament",
+    "weekly": "Setmanalment",
+    "custom": "Personalitzat",
+    "day": "Dia",
+    "time": "Hora",
+    "cron": "Cron",
+    "cronHint": "Minut, hora, dia del mes, mes, dia de la setmana.",
+    "cronInvalid": "Aquesta expressió cron no és vàlida",
+    "timezone": "Zona horària",
+    "serverTime": "Hora del servidor",
+    "manualHint": "Aquesta tasca s'executa només quan premeu Executa ara.",
+    "manualOnly": "Manualment",
+    "next": "Propera execució {{time}}",
+    "noNext": "Aquest horari mai s'executa",
+    "dailyAt": "Diàriament a les {{time}}",
+    "weeklyAt": "{{day}} a les {{time}}",
+    "days": {
+      "0": "Diumenge",
+      "1": "Dilluns",
+      "2": "Dimarts",
+      "3": "Dimecres",
+      "4": "Dijous",
+      "5": "Divendres",
+      "6": "Dissabte"
+    }
+  },
+  "keep": {
+    "title": "Conservar",
+    "last": "Últim",
+    "daily": "Diari",
+    "weekly": "Setmanal",
+    "monthly": "Mensual",
+    "yearly": "Anual",
+    "hint": "Després de cada còpia de seguretat, s'eliminen les instantànies més antigues d'aquesta tasca per conservar-ne només aquestes. Posar 0 ho conserva tot."
+  },
+  "hooks": {
+    "title": "Comandes",
+    "pre": "Abans",
+    "preHint": "S'executa com a root abans de la còpia de seguretat. Si falla, la còpia de seguretat s'atura.",
+    "post": "Després",
+    "postHint": "S'executa com a root després de la còpia de seguretat, fins i tot si ha fallat. TERMIX_BACKUP_STATUS conté el resultat."
+  },
+  "alerts": {
+    "title": "Alertes",
+    "onFailure": "Notifica quan una còpia de seguretat falla",
+    "onFailureHint": "També notifica sobre advertències i una vegada quan torna a funcionar.",
+    "staleDays": "Dies sense còpia de seguretat",
+    "staleDaysHint": "Notifica quan no s'ha pogut fer cap còpia de seguretat durant aquest nombre de dies. 0 desactiva aquesta opció."
+  },
+  "repos": {
+    "add": "Afegeix repositori",
+    "empty": "Encara no hi ha cap repositori",
+    "emptyHint": "Un repositori és on s'emmagatzemen les còpies de seguretat, com un dipòsit S3 o una carpeta.",
+    "loadFailed": "No s'han pogut carregar els repositoris",
+    "jobCount_one": "{{count}} tasca",
+    "jobCount_many": "{{count}} tasques",
+    "jobCount_other": "{{count}} tasques",
+    "newTitle": "Nou repositori",
+    "storage": "Emmagatzematge",
+    "name": "Nom",
+    "namePlaceholder": "S3 remot",
+    "kind": "Tipus",
+    "kinds": {
+      "s3": "Compatible amb S3",
+      "rest": "Servidor REST",
+      "rclone": "rclone",
+      "local": "Carpeta en un host"
+    },
+    "endpoint": "Punt d'accés",
+    "endpointHint": "Deixa-ho buit per a AWS. Per a MinIO, R2, B2 o Wasabi, indica la seva adreça S3.",
+    "region": "Regió",
+    "bucket": "Bucket",
+    "prefix": "Carpeta dins del bucket",
+    "prefixHint": "Opcional.",
+    "accessKeyId": "ID de la clau d'accés",
+    "secretKey": "Clau d'accés secreta",
+    "secretSaved": "Desat, deixa-ho buit per mantenir-lo",
+    "url": "Adreça del servidor",
+    "username": "Usuari",
+    "usernameHint": "Deixa-ho buit si el servidor no requereix inici de sessió.",
+    "restPassword": "Contrasenya",
+    "remote": "Nom del remot",
+    "remoteHint": "Només lletres, números i _.",
+    "path": "Camí",
+    "rcloneConfig": "Configuració de rclone",
+    "rcloneHint": "Les línies del remot de rclone.conf. Executa rclone config al teu ordinador per crear-les. rclone ha d'estar instal·lat als servidors.",
+    "rcloneSaved": "Desat, deixa-ho buit per mantenir-lo",
+    "host": "Servidor",
+    "pickHost": "Tria un servidor",
+    "folder": "Carpeta",
+    "folderHint": "Només les tasques d'aquest host en poden fer ús. És millor utilitzar un disc muntat.",
+    "password": "Xifratge",
+    "resticPassword": "Contrasenya del repositori",
+    "passwordHint": "Deixa-ho buit i Termix en generarà una de forta. Guarda'n una còpia en un lloc segur: sense ella, no es podran llegir les còpies de seguretat.",
+    "passwordKeep": "Desat, deixa-ho buit per mantenir-lo",
+    "passwordChangeHint": "Això només canvia el que envia Termix. No canvia la contrasenya d'un repositori existent.",
+    "reveal": "Mostra la contrasenya",
+    "revealTitle": "Vols mostrar la contrasenya del repositori?",
+    "revealDesc": "Qualsevol persona que tingui aquesta contrasenya i les claus d'emmagatzematge podrà llegir totes les còpies de seguretat d'aquest repositori. Això es registrarà al registre d'auditoria.",
+    "revealFailed": "No s'ha pogut llegir la contrasenya",
+    "copy": "Copia",
+    "copied": "Copiat",
+    "check": "Comprova",
+    "checkFrom": "Comprova des de",
+    "checkFromHint": "L'amfitrió que obre el repositori. Necessita restic.",
+    "checkButton": "Comprova",
+    "initButton": "Comprova i configura",
+    "installRclone": "Instal·la rclone en aquest amfitrió",
+    "rcloneInstalled": "rclone {{version}} està instal·lat.",
+    "rcloneFailed": "No s'ha pogut instal·lar rclone",
+    "checking": "Comprovant...",
+    "opened": "El repositori s'ha obert correctament.",
+    "created": "El repositori s'ha configurat i està llest.",
+    "checkFailed": "No s'ha pogut obrir el repositori",
+    "checkNext": "Desat. Comprova'l des d'un host per configurar-lo.",
+    "saved": "Repositori desat",
+    "saveFailed": "No s'ha pogut desar el repositori",
+    "deleteTitle": "Vols suprimir {{name}}?",
+    "deleteDesc": "Es suprimeix només de Termix. Les còpies de seguretat es mantenen a l'emmagatzematge.",
+    "deleted": "Repositori suprimit",
+    "deleteFailed": "No s'ha pogut eliminar el repositori"
+  },
+  "snapshots": {
+    "noJobs": "Afegeix una tasca de còpia de seguretat primer.",
+    "job": "Tasca",
+    "titleFor": "Instantànies de {{name}}",
+    "empty": "Encara no hi ha instantànies",
+    "loadFailed": "No s'han pogut llegir les instantànies",
+    "latest": "Última",
+    "files_one": "{{count}} fitxer",
+    "files_many": "{{count}} fitxers",
+    "files_other": "{{count}} fitxers",
+    "browse": "Explorar",
+    "delete": "Eliminar",
+    "deleteTitle": "Vols eliminar aquesta instantània?",
+    "deleteDesc": "L'instantània de {{time}} s'eliminarà definitivament del repositori.",
+    "deleted": "Instantània eliminada",
+    "deleteFailed": "No s'ha pogut eliminar l'instantània",
+    "browseTitle": "Instantània {{time}}",
+    "root": "Arrel",
+    "emptyFolder": "Aquesta carpeta és buida",
+    "filesFailed": "No s'ha pogut llistar aquesta carpeta",
+    "pick": "Tria",
+    "download": "Baixa",
+    "downloadZip": "Descarrega com a zip",
+    "downloadFailed": "No s'ha pogut descarregar",
+    "restoreAll": "Restaura-ho tot",
+    "restorePicked_one": "Restaura {{count}} element",
+    "restorePicked_many": "Restaura {{count}} elements",
+    "restorePicked_other": "Restaura {{count}} elements"
+  },
+  "restore": {
+    "title": "Restaura",
+    "what": "Què",
+    "everything": "Tot el que hi ha a la instantània.",
+    "more_one": "i {{count}} més",
+    "more_many": "i {{count}} més",
+    "more_other": "i {{count}} més",
+    "where": "On",
+    "host": "Amfitrió",
+    "hostHint": "Qualsevol amfitrió que puguis editar i que tingui accés al repositori.",
+    "localOnly": "Aquest repositori és una carpeta al seu amfitrió, per la qual cosa només es pot restaurar allà.",
+    "toFolder": "A una carpeta",
+    "toOriginal": "On era",
+    "folder": "Carpeta",
+    "folderHint": "Els fitxers conserven la seva ruta completa dins d'aquesta carpeta.",
+    "originalWarning": "Els fitxers s'escriuen de nou on eren i poden substituir el que hi ha ara.",
+    "overwrite": "Fitxers que ja existeixen",
+    "overwriteOptions": {
+      "if-changed": "Substituir quan hagin canviat",
+      "always": "Substituir sempre",
+      "if-newer": "Substituir quan la còpia de seguretat sigui més recent",
+      "never": "Mai substituir"
+    },
+    "start": "Restaurar",
+    "started": "Restauració iniciada",
+    "failed": "No s'ha pogut iniciar la restauració"
+  },
+  "run": {
+    "title": "Executar",
+    "backupTitle": "Còpia de seguretat de {{name}}",
+    "restoreTitle": "Restauració de {{name}}",
+    "loadFailed": "No s'ha pogut carregar l'execució",
+    "progress": "Progrés",
+    "preparing": "Preparant...",
+    "progressLine": "{{percent}}% | {{files}} de {{totalFiles}} fitxers | {{bytes}} de {{totalBytes}}",
+    "left": "{{time}} restants",
+    "details": "Detalls",
+    "started": "Iniciat",
+    "finished": "Finalitzat",
+    "trigger": "Iniciat per",
+    "triggers": {
+      "manual": "Executar ara",
+      "schedule": "Programació",
+      "operation": "Acció de Termix"
+    },
+    "snapshot": "Instantània",
+    "target": "Restaurat a",
+    "files": "Fitxers",
+    "filesLine": "{{total}} fitxers, {{added}} nous, {{changed}} modificats",
+    "size": "Mida",
+    "added": "Afegit al repositori",
+    "took": "Ha trigat",
+    "log": "Registre",
+    "noLog": "Encara no hi ha registre.",
+    "stopTitle": "Aturar aquesta execució?",
+    "stopDesc": "Una còpia de seguretat aturada no desa cap instantània. Una restauració aturada deixa els fitxers restaurats fins al moment.",
+    "stopSent": "Aturant",
+    "stopFailed": "No s'ha pogut aturar l'execució"
+  },
+  "history": {
+    "empty": "Encara no s'ha executat res",
+    "loadFailed": "No s'ha pogut carregar l'historial",
+    "status": "Estat",
+    "job": "Treball",
+    "host": "Amfitrió",
+    "kind": "Tipus",
+    "kinds": {
+      "backup": "Còpia de seguretat",
+      "restore": "Restaurar"
+    },
+    "started": "Iniciat",
+    "took": "Durada",
+    "size": "Mida"
+  },
+  "card": {
+    "title": "Còpies de seguretat",
+    "all": "Totes les tasques de còpia de seguretat",
+    "oneJob": "Una tasca de còpia de seguretat",
+    "empty": "Encara no hi ha tasques de còpia de seguretat.",
+    "gone": "Aquesta tasca de còpia de seguretat s'ha eliminat.",
+    "open": "Obrir"
+  },
+  "operations": {
+    "list": {
+      "title": "Llista les tasques de còpia de seguretat"
+    },
+    "failed": {
+      "title": "Còpies de seguretat fallides"
+    },
+    "run": {
+      "title": "Executa la còpia de seguretat"
+    },
+    "cancel": {
+      "title": "Atura la còpia de seguretat"
+    },
+    "snapshots": {
+      "title": "Llista els instantànies"
+    },
+    "events": {
+      "finished": "Còpia de seguretat finalitzada",
+      "failed": "Còpia de seguretat fallida"
+    },
+    "jobs": {
+      "title": "Tasques de còpia de seguretat",
+      "lastSuccess": "Última còpia de seguretat",
+      "nextRun": "Propera execució",
+      "size": "Mida"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Mostra el panell de còpies de seguretat als terminals",
+        "description": "Permet que el panell de còpies de seguretat s'obri al costat del terminal SSH d'aquest amfitrió."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Obre el panell de còpies de seguretat amb els nous terminals",
+        "description": "Mostra el panell de còpies de seguretat al costat de cada terminal SSH que tingui aquesta opció activada. Sempre el pots obrir i tancar des del botó del costat dret."
+      },
+      "companionSide": {
+        "label": "Posició del panell de còpies de seguretat",
+        "description": "On es troba el panell de còpies de seguretat al costat d'un terminal.",
+        "right": "Dreta",
+        "left": "Esquerra",
+        "bottom": "Inferior"
+      },
+      "companionSize": {
+        "label": "Mida del panell de còpies de seguretat",
+        "description": "Amplada en píxels, o alçada quan està a la part inferior. També podeu arrossegar la vora."
+      },
+      "companionEdgeButton": {
+        "label": "Mostra el botó del panell",
+        "description": "Mostra un botó petit a la vora dreta d'un terminal que obre el panell de còpies de seguretat."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Alterna el panell de còpies de seguretat"
+  }
+}

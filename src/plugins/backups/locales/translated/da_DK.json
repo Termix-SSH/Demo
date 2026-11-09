@@ -1,0 +1,451 @@
+{
+  "plugin": {
+    "name": "Backups",
+    "description": "Opret backups af mapper, databaser og Docker-data på dine hosts med restic, og gennemse, download og gendan derefter."
+  },
+  "common": {
+    "save": "Gem",
+    "cancel": "Annuller",
+    "back": "Tilbage",
+    "delete": "Slet",
+    "done": "Færdig",
+    "loading": "Indlæser...",
+    "refresh": "Opdater",
+    "retry": "Prøv igen"
+  },
+  "permissions": {
+    "use": {
+      "title": "Brug Backups",
+      "description": "Opsæt backupjobs og repositories, kør backups, og gennemse, download og gendan snapshots på hosts, de kan redigere."
+    }
+  },
+  "tab": {
+    "title": "Backups",
+    "viewJobs": "Jobs",
+    "viewRepos": "Repositories",
+    "viewHistory": "Historik"
+  },
+  "hostTab": {
+    "title": "Backups",
+    "noHost": "Åbn Backups fra en host.",
+    "viewJobs": "Jobs",
+    "viewSnapshots": "Snapshots",
+    "viewHistory": "Historik",
+    "restic": "restic {{version}}",
+    "noRestic": "restic er ikke installeret",
+    "sudo": "Termix skal logge ind som root, eller som en bruger med passwordless sudo, for at køre backups på denne host.",
+    "statusFailed": "Kunne ikke læse denne host"
+  },
+  "install": {
+    "missing": "restic er ikke installeret på denne host",
+    "tooOld": "restic på denne host er ældre end 0.17",
+    "hint": "Backups bruger restic. Installer det via pakkehåndteringen, eller fra restic-udgivelsen på GitHub, hvis pakken er for gammel.",
+    "button": "Installer restic",
+    "working": "Installerer...",
+    "title": "Installer restic?",
+    "desc": "Dette installerer restic på hosten som root.",
+    "confirm": "Installer",
+    "done": "restic {{version}} er installeret",
+    "failed": "Kunne ikke installere restic"
+  },
+  "status": {
+    "never": "Aldrig kørt",
+    "running": "Kører",
+    "success": "Færdig",
+    "warning": "Advarsler",
+    "failed": "Mislykket",
+    "canceled": "Stopet"
+  },
+  "time": {
+    "justNow": "lige nu",
+    "soon": "om et øjeblik",
+    "ago": {
+      "minutes_one": "{{count}} minut siden",
+      "minutes_other": "{{count}} minutter siden",
+      "hours_one": "{{count}} time siden",
+      "hours_other": "{{count}} timer siden",
+      "days_one": "{{count}} dag siden",
+      "days_other": "{{count}} dage siden"
+    },
+    "in": {
+      "minutes_one": "om {{count}} minut",
+      "minutes_other": "om {{count}} minutter",
+      "hours_one": "om {{count}} time",
+      "hours_other": "om {{count}} timer",
+      "days_one": "om {{count}} dag",
+      "days_other": "om {{count}} dage"
+    }
+  },
+  "jobs": {
+    "add": "Tilføj job",
+    "empty": "Ingen backupjobs endnu",
+    "emptyHint": "Tilføj et job for at oprette backup af mapper, databaser eller Docker-data.",
+    "emptyNoRepo": "Tilføj et repository først, så backups har et sted at gemme sig.",
+    "loadFailed": "Kunne ikke indlæse backupjobs",
+    "lastGood": "Seneste backup {{when}}",
+    "noGood": "Ingen backup endnu",
+    "next": "Næste {{when}}",
+    "paused": "Sat på pause",
+    "run": "Kør nu",
+    "stop": "Stop",
+    "edit": "Rediger",
+    "snapshots": "Snapshots",
+    "started": "{{name}} startet",
+    "runFailed": "Kunne ikke starte sikkerhedskopieringen"
+  },
+  "editor": {
+    "newTitle": "Ny sikkerhedskopieringsjob",
+    "general": "Job",
+    "host": "Vært",
+    "pickHost": "Vælg en vært",
+    "name": "Navn",
+    "namePlaceholder": "Natlig sikkerhedskopi",
+    "repository": "Repository",
+    "pickRepository": "Vælg et repository",
+    "noRepos": "Du har ingen repository, som denne vært kan bruge. Tilføj ét i fanen Sikkerhedskopieringer først.",
+    "repoLocked": "Kun ejeren af dette repository kan ændre det.",
+    "enabled": "Kør efter tidsplan",
+    "enabledHint": "Slå fra for at pause tidsplanen. Kør nu fungerer stadig.",
+    "oneFileSystem": "Bliv på ét filsystem",
+    "oneFileSystemHint": "Spring andre diske og mountpunkter over, der findes i de valgte mapper.",
+    "saved": "Job gemt",
+    "saveFailed": "Kunne ikke gemme jobbet",
+    "deleteTitle": "Slet {{name}}?",
+    "deleteDesc": "Jobbet fjernes fra Termix. Dets snapshots forbliver i repositoryet.",
+    "deleted": "Job slettet",
+    "deleteFailed": "Kunne ikke slette jobbet"
+  },
+  "sources": {
+    "add": "Tilføj til sikkerhedskopi",
+    "addPaths": "Mapper",
+    "addDatabase": "Database",
+    "addDocker": "Docker",
+    "remove": "Fjern",
+    "paths": "Mapper og filer",
+    "folders": "Stier",
+    "foldersHint": "Én fuld sti pr. linje.",
+    "excludes": "Spring over",
+    "excludesHint": "Ét restic-mønster pr. linje, f.eks. *.log.",
+    "database": "Database",
+    "engine": "Type",
+    "engines": {
+      "mysql": "MySQL eller MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Login",
+    "ownLogin": "Indtast et login her",
+    "noDatabasesPlugin": "Aktivér Databases-pluginet for at vælge et gemt login.",
+    "address": "Adresse",
+    "addressPlaceholder": "Tom for lokal socket",
+    "port": "Port",
+    "username": "Bruger",
+    "password": "Adgangskode",
+    "passwordSaved": "Gemt, lad være tom for at beholde den",
+    "runAs": "Kør som",
+    "runAsHint": "En Linux-bruger, der skal køre dumpen som, f.eks. postgres. Tom kører det som root.",
+    "databases": "Databaser",
+    "databasesHint": "Ét navn pr. linje. Lad være tom for at sikkerhedskopiere dem alle.",
+    "sqliteFiles": "Databasefiler",
+    "sqliteFilesHint": "Én fuld sti pr. linje. Hver fil kopieres sikkert, mens den er i brug.",
+    "docker": "Docker",
+    "stacks": "Stacks",
+    "volumes": "Volumes",
+    "noStacks": "Ingen compose-stacks fundet",
+    "noVolumes": "Ingen volumes fundet",
+    "dockerFailed": "Kunne ikke liste Docker på denne vært",
+    "stop": "Stop stacks under backup",
+    "stopHint": "Valgte stacks stoppes først og startes igen bagefter, så deres filer ikke ændrer sig, mens de læses."
+  },
+  "schedule": {
+    "title": "Planlægning",
+    "manual": "Manuelt",
+    "daily": "Dagligt",
+    "weekly": "Ugentligt",
+    "custom": "Tilpasset",
+    "day": "Ugedag",
+    "time": "Tidspunkt",
+    "cron": "Cron",
+    "cronHint": "Minut, time, dag i måneden, måned, ugedag.",
+    "cronInvalid": "Denne cron-udtryk er ikke gyldigt",
+    "timezone": "Tidszone",
+    "serverTime": "Servertid",
+    "manualHint": "Denne opgave kører kun, når du trykker på Kør nu.",
+    "manualOnly": "Manuelt",
+    "next": "Næste kørsel {{time}}",
+    "noNext": "Denne planlægning kører aldrig",
+    "dailyAt": "Dagligt kl. {{time}}",
+    "weeklyAt": "{{day}} kl. {{time}}",
+    "days": {
+      "0": "Søndag",
+      "1": "Mandag",
+      "2": "Tirsdag",
+      "3": "Onsdag",
+      "4": "Torsdag",
+      "5": "Fredag",
+      "6": "Lørdag"
+    }
+  },
+  "keep": {
+    "title": "Behold",
+    "last": "Seneste",
+    "daily": "Dagligt",
+    "weekly": "Ugentligt",
+    "monthly": "Månedligt",
+    "yearly": "Årligt",
+    "hint": "Efter hver backup fjernes ældre snapshots af denne opgave, så kun disse beholdes. 0 betyder, at alt beholdes."
+  },
+  "hooks": {
+    "title": "Kommandoer",
+    "pre": "Før",
+    "preHint": "Kører som root før backup. Hvis det mislykkes, stoppes backuppen.",
+    "post": "Efter",
+    "postHint": "Kører som root efter backup, selv hvis den mislykkedes. TERMIX_BACKUP_STATUS indeholder resultatet."
+  },
+  "alerts": {
+    "title": "Advarsler",
+    "onFailure": "Advar, når en backup mislykkes",
+    "onFailureHint": "Advar også ved advarsler, og én gang, når det igen virker.",
+    "staleDays": "Dage uden backup",
+    "staleDaysHint": "Advar, hvis ingen backup har fungeret i så mange dage. 0 slår det fra."
+  },
+  "repos": {
+    "add": "Tilføj lager",
+    "empty": "Ingen lagre endnu",
+    "emptyHint": "Et lager er, hvor backups gemmes, f.eks. en S3-bucket eller en mappe.",
+    "loadFailed": "Kunne ikke indlæse lagrene",
+    "jobCount_one": "{{count}} opgave",
+    "jobCount_other": "{{count}} opgaver",
+    "newTitle": "Nyt lager",
+    "storage": "Lagerplads",
+    "name": "Navn",
+    "namePlaceholder": "Offsite S3",
+    "kind": "Type",
+    "kinds": {
+      "s3": "S3-kompatibel",
+      "rest": "REST-server",
+      "rclone": "rclone",
+      "local": "Mappe på en vært"
+    },
+    "endpoint": "Endpoint",
+    "endpointHint": "Tom for AWS. For MinIO, R2, B2 eller Wasabi deres S3-adresse.",
+    "region": "Region",
+    "bucket": "Bucket",
+    "prefix": "Mappe i bucket",
+    "prefixHint": "Valgfrit.",
+    "accessKeyId": "Adgangsnøgle-id",
+    "secretKey": "Hemmelig adgangsnøgle",
+    "secretSaved": "Gemt, lad være tomt for at beholde den",
+    "url": "Serveradresse",
+    "username": "Bruger",
+    "usernameHint": "Tomt, hvis serveren ikke kræver login.",
+    "restPassword": "Adgangskode",
+    "remote": "Fjernt navn",
+    "remoteHint": "Kun bogstaver, tal og _.",
+    "path": "Sti",
+    "rcloneConfig": "rclone-konfiguration",
+    "rcloneHint": "Linjerne for fjernplaceringen fra rclone.conf. Kør rclone config på din computer for at oprette dem. rclone skal være installeret på værterne.",
+    "rcloneSaved": "Gemt, lad være tom for at beholde det",
+    "host": "Vært",
+    "pickHost": "Vælg en vært",
+    "folder": "Mappe",
+    "folderHint": "Kun jobs på denne vært kan bruge den. En monteret disk er bedst.",
+    "password": "Kryptering",
+    "resticPassword": "Lageradgangskode",
+    "passwordHint": "Lad feltet være tomt, så genererer Termix en stærk adgangskode. Gem en kopi et sikkert sted: uden den kan sikkerhedskopierne ikke læses.",
+    "passwordKeep": "Gemt, lad være tomt for at beholde den",
+    "passwordChangeHint": "Dette ændrer kun, hvad Termix sender. Det ændrer ikke adgangskoden til et eksisterende lager.",
+    "reveal": "Vis adgangskode",
+    "revealTitle": "Vil du se lagerets adgangskode?",
+    "revealDesc": "Alle, der har adgangskoden og lagerets nøgler, kan læse alle sikkerhedskopier i dette lager. Dette logges i revisionsloggen.",
+    "revealFailed": "Kunne ikke læse adgangskoden",
+    "copy": "Kopier",
+    "copied": "Kopieret",
+    "check": "Tjek",
+    "checkFrom": "Tjek fra",
+    "checkFromHint": "Den vært, der åbner lageret. Den skal have restic installeret.",
+    "checkButton": "Tjek",
+    "initButton": "Tjek og opsæt",
+    "installRclone": "Installer rclone på denne vært",
+    "rcloneInstalled": "rclone {{version}} er installeret.",
+    "rcloneFailed": "Kunne ikke installere rclone",
+    "checking": "Tjekker...",
+    "opened": "Lageret blev åbnet uden problemer.",
+    "created": "Lageret er opsat og klar.",
+    "checkFailed": "Kunne ikke åbne lageret",
+    "checkNext": "Gemt. Tjek det fra en vært for at opsætte det.",
+    "saved": "Lager gemt",
+    "saveFailed": "Kunne ikke gemme lageret",
+    "deleteTitle": "Slet {{name}}?",
+    "deleteDesc": "Det fjernes kun fra Termix. Backupperne forbliver i lageret.",
+    "deleted": "Lager slettet",
+    "deleteFailed": "Kunne ikke slette lageret"
+  },
+  "snapshots": {
+    "noJobs": "Tilføj et backup-job først.",
+    "job": "Job",
+    "titleFor": "Snapshots af {{name}}",
+    "empty": "Ingen snapshots endnu",
+    "loadFailed": "Kunne ikke læse snapshots",
+    "latest": "Seneste",
+    "files_one": "{{count}} fil",
+    "files_other": "{{count}} filer",
+    "browse": "Gennemse",
+    "delete": "Slet",
+    "deleteTitle": "Slet dette snapshot?",
+    "deleteDesc": "Snapshot fra {{time}} fjernes permanent fra lageret.",
+    "deleted": "Snapshot slettet",
+    "deleteFailed": "Kunne ikke slette snapshot",
+    "browseTitle": "Snapshot {{time}}",
+    "root": "Rod",
+    "emptyFolder": "Denne mappe er tom",
+    "filesFailed": "Kunne ikke vise indholdet af denne mappe",
+    "pick": "Vælg",
+    "download": "Download",
+    "downloadZip": "Download som zip",
+    "downloadFailed": "Kunne ikke downloade",
+    "restoreAll": "Gendan alt",
+    "restorePicked_one": "Gendan {{count}} element",
+    "restorePicked_other": "Gendan {{count}} elementer"
+  },
+  "restore": {
+    "title": "Gendan",
+    "what": "Hvad",
+    "everything": "Alt i snapshot.",
+    "more_one": "og {{count}} mere",
+    "more_other": "og {{count}} mere",
+    "where": "Hvor",
+    "host": "Vært",
+    "hostHint": "Enhver vært, du kan redigere, som kan nå lageret.",
+    "localOnly": "Dette lager er en mappe på sin vært, så det kan kun gendannes der.",
+    "toFolder": "Til en mappe",
+    "toOriginal": "Hvor det var",
+    "folder": "Mappe",
+    "folderHint": "Filer beholder deres fulde sti inde i denne mappe.",
+    "originalWarning": "Filer skrives tilbage til deres oprindelige placering og kan erstatte det, der er der nu.",
+    "overwrite": "Filer, der allerede findes",
+    "overwriteOptions": {
+      "if-changed": "Erstat, hvis ændret",
+      "always": "Erstat altid",
+      "if-newer": "Erstat, hvis backup er nyere",
+      "never": "Erstat aldrig"
+    },
+    "start": "Gendan",
+    "started": "Gendannelse startet",
+    "failed": "Kunne ikke starte gendannelse"
+  },
+  "run": {
+    "title": "Kør",
+    "backupTitle": "Backup af {{name}}",
+    "restoreTitle": "Gendannelse af {{name}}",
+    "loadFailed": "Kunne ikke indlæse kørsel",
+    "progress": "Fremgang",
+    "preparing": "Forbereder...",
+    "progressLine": "{{percent}}% | {{files}} af {{totalFiles}} filer | {{bytes}} af {{totalBytes}}",
+    "left": "{{time}} tilbage",
+    "details": "Detaljer",
+    "started": "Startet",
+    "finished": "Fuldført",
+    "trigger": "Startet af",
+    "triggers": {
+      "manual": "Kør nu",
+      "schedule": "Plan",
+      "operation": "Termix-handling"
+    },
+    "snapshot": "Snapshot",
+    "target": "Gendannet til",
+    "files": "Filer",
+    "filesLine": "{{total}} filer, {{added}} nye, {{changed}} ændret",
+    "size": "Størrelse",
+    "added": "Tilføjet til lageret",
+    "took": "Tog",
+    "log": "Log",
+    "noLog": "Ingen log endnu.",
+    "stopTitle": "Stop denne kørsel?",
+    "stopDesc": "En stoppet backup gemmer ikke noget snapshot. En stoppet gendannelse efterlader de filer, der er gendannet hidtil.",
+    "stopSent": "Stopper",
+    "stopFailed": "Kunne ikke stoppe kørslen"
+  },
+  "history": {
+    "empty": "Intet er blevet kørt endnu",
+    "loadFailed": "Kunne ikke indlæse historikken",
+    "status": "Status",
+    "job": "Job",
+    "host": "Vært",
+    "kind": "Type",
+    "kinds": {
+      "backup": "Backup",
+      "restore": "Gendannelse"
+    },
+    "started": "Startet",
+    "took": "Tog",
+    "size": "Størrelse"
+  },
+  "card": {
+    "title": "Backups",
+    "all": "Alle backup-jobs",
+    "oneJob": "Ét backup-job",
+    "empty": "Ingen backup-jobs endnu.",
+    "gone": "Dette backup-job blev slettet.",
+    "open": "Åbn"
+  },
+  "operations": {
+    "list": {
+      "title": "Liste over backup-jobs"
+    },
+    "failed": {
+      "title": "Mislykkede backups"
+    },
+    "run": {
+      "title": "Kør backup"
+    },
+    "cancel": {
+      "title": "Stop backup"
+    },
+    "snapshots": {
+      "title": "Liste over snapshots"
+    },
+    "events": {
+      "finished": "Backup færdig",
+      "failed": "Backup mislykkedes"
+    },
+    "jobs": {
+      "title": "Backup-jobs",
+      "lastSuccess": "Seneste backup",
+      "nextRun": "Næste kørsel",
+      "size": "Størrelse"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Vis backup-panel i terminaler",
+        "description": "Lad backup-panelet åbne ved siden af SSH-terminalen for dette vært."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Åbn backup-panelet med nye terminaler",
+        "description": "Vis backup-panelet ved siden af enhver SSH-terminal, der har det slået til. Du kan stadig åbne og lukke det fra knappen på højre kant."
+      },
+      "companionSide": {
+        "label": "Placering af backup-panel",
+        "description": "Hvor backup-panelet sidder ved siden af en terminal.",
+        "right": "Højre",
+        "left": "Venstre",
+        "bottom": "Nederst"
+      },
+      "companionSize": {
+        "label": "Størrelse på backup-panel",
+        "description": "Bredde i pixels, eller højde, når det er nederst. Du kan også trække i kanten."
+      },
+      "companionEdgeButton": {
+        "label": "Vis panel-knappen",
+        "description": "Vis en lille knap på højre kant af en terminal, der åbner backup-panelet."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Skift backup-panel"
+  }
+}

@@ -1,0 +1,358 @@
+{
+  "tab": {
+    "title": "进程",
+    "noHost": "从主机打开进程。",
+    "loading": "加载中...",
+    "refresh": "刷新",
+    "error": "无法读取此主机。",
+    "sudo": "当前登录用户不是 root。查看其他用户的进程需要无密码 sudo 或已保存的 Sudo 密码。",
+    "disabled": "此主机已关闭进程管理器。",
+    "readOnly": "只读",
+    "viewProcesses": "进程",
+    "viewApps": "应用",
+    "viewLogs": "日志",
+    "viewWatches": "监控"
+  },
+  "manager": {
+    "disabled": "为此主机开启进程管理器以查看其进程。"
+  },
+  "card": {
+    "title": "进程监控",
+    "metricsTitle": "进程",
+    "empty": "暂无监控项。请从主机的“进程”选项卡添加。",
+    "unknown": "未知"
+  },
+  "companion": {
+    "toggle": "进程",
+    "open": "打开选项卡",
+    "close": "关闭"
+  },
+  "list": {
+    "processes": "进程",
+    "cpu": "CPU",
+    "load": "负载",
+    "zombies": "僵尸进程",
+    "mem": "内存",
+    "search": "按名称、用户或 PID 筛选",
+    "sort": "排序方式",
+    "sortCpu": "CPU",
+    "sortMem": "内存",
+    "sortPid": "PID",
+    "sortAge": "最新",
+    "tree": "树状视图",
+    "empty": "没有匹配的进程。",
+    "loadFailed": "无法列出进程。",
+    "noPs": "此主机的 ps 命令功能过于基础。请安装 procps 以查看进程。"
+  },
+  "state": {
+    "running": "运行中",
+    "sleeping": "睡眠中",
+    "zombie": "僵尸",
+    "stopped": "已停止",
+    "waiting": "等待磁盘"
+  },
+  "detail": {
+    "gone": "该进程已消失。",
+    "cmdline": "命令行",
+    "cwd": "工作目录",
+    "exe": "程序",
+    "unit": "服务",
+    "state": "状态",
+    "threads": "线程",
+    "rss": "已用内存",
+    "vsize": "虚拟内存",
+    "age": "运行时长",
+    "fds": "打开的文件",
+    "ports": "监听端口",
+    "env": "环境变量",
+    "nice": "优先级",
+    "apply": "应用",
+    "niceDone": "优先级已更改。",
+    "niceFailed": "无法更改优先级。",
+    "readLog": "读取",
+    "pickLog": "选择上方日志以读取。",
+    "logUnit": "服务日志：{{unit}}",
+    "logPid": "此 PID 的系统日志"
+  },
+  "signal": {
+    "TERM": "停止 (TERM)",
+    "KILL": "强制终止",
+    "sent": "已向 {{pid}} 发送 {{signal}}。",
+    "failed": "无法发送信号。",
+    "confirmDesc": "{{name}} 可能会丢失未保存的工作。",
+    "confirm": {
+      "TERM": "要停止进程 {{pid}} 吗？",
+      "KILL": "要强制终止进程 {{pid}} 吗？"
+    },
+    "hint": {
+      "TERM": "请求其停止",
+      "KILL": "立即停止",
+      "HUP": "重新加载其配置",
+      "INT": "中断，类似 Ctrl+C",
+      "STOP": "暂停它",
+      "CONT": "恢复已暂停的进程",
+      "USR1": "用户信号 1",
+      "USR2": "用户信号 2"
+    }
+  },
+  "apps": {
+    "none": "在此主机上未找到 pm2 和 supervisor。",
+    "empty": "没有可显示的应用。",
+    "loadFailed": "无法读取应用列表。",
+    "failed": "操作失败。",
+    "done": "{{action}}: {{name}}",
+    "refreshed": "Supervisor 已重新读取配置。",
+    "reread": "重新读取配置",
+    "supervisorError": "supervisorctl 提示：{{message}}",
+    "restarts": "{{count}} 次重启",
+    "logs": "日志",
+    "start": "启动",
+    "stop": "停止",
+    "restart": "重启",
+    "reload": "重载",
+    "delete": "删除",
+    "flush": "清除日志",
+    "confirm": {
+      "stop": "要停止 {{name}} 吗？",
+      "delete": "要删除 {{name}} 吗？"
+    },
+    "confirmDesc": {
+      "stop": "应用将停止，直到你再次启动它。",
+      "delete": "pm2 将忘记此应用。其文件将保留。"
+    }
+  },
+  "logs": {
+    "empty": "没有日志行。",
+    "failed": "无法读取日志。",
+    "pick": "请在上方选择日志源。",
+    "filter": "筛选行",
+    "lines": "行数",
+    "linesCount": "{{count}} 行",
+    "follow": "跟随",
+    "following": "正在跟随",
+    "pause": "暂停",
+    "resume": "恢复",
+    "clear": "清除",
+    "download": "下载",
+    "source": "来源",
+    "sourceJournal": "服务日志",
+    "sourcePid": "PID 日志",
+    "sourcePm2": "pm2 应用",
+    "sourceSupervisor": "Supervisor 进程",
+    "target": "名称或 PID",
+    "stream": "流",
+    "open": "打开",
+    "placeholder": {
+      "journal": "nginx.service",
+      "journal-pid": "1234",
+      "pm2": "应用 ID 或名称",
+      "supervisor": "进程名称"
+    }
+  },
+  "watch": {
+    "kind": {
+      "process": "进程",
+      "pm2": "pm2 应用",
+      "supervisor": "Supervisor 应用"
+    },
+    "rule": {
+      "down": "停止运行",
+      "restarts": "重启过于频繁",
+      "cpu": "CPU 高于",
+      "mem": "内存高于"
+    }
+  },
+  "watches": {
+    "kind": "类型",
+    "target": "名称",
+    "targetPlaceholder": "进程或应用名称",
+    "rule": "触发警报条件",
+    "threshold": "阈值",
+    "thresholdHint": {
+      "cpu": {
+        "process": "CPU 百分比，所有匹配进程的总和",
+        "app": "CPU 百分比"
+      },
+      "mem": {
+        "process": "内存百分比，所有匹配进程的总和",
+        "app": "内存（MB）"
+      },
+      "restarts": {
+        "process": "10 分钟内的重启次数",
+        "app": "10 分钟内的重启次数"
+      }
+    },
+    "autoRestart": "自动为我重启",
+    "add": "添加监控",
+    "added": "监控已添加。",
+    "addFailed": "无法添加监控。",
+    "remove": "移除监控",
+    "removeFailed": "无法移除监控。",
+    "loadFailed": "无法加载监控列表。",
+    "empty": "此主机上没有监控。请在上方添加一个，或点击应用旁边的铃铛图标。",
+    "watchThis": "监控此项",
+    "broken": "异常",
+    "fine": "正常",
+    "auto": "自动重启"
+  },
+  "permissions": {
+    "use": {
+      "title": "使用进程管理器",
+      "description": "查看可访问主机上的进程和日志。修改操作还需要对主机拥有编辑权限。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "进程管理器",
+        "description": "显示此主机的进程、pm2 和 Supervisor 应用及日志。"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "当登录用户不是 root 时，使用 root 或 sudo。查看和停止其他用户的进程需要此权限。"
+      },
+      "readOnly": {
+        "label": "只读",
+        "description": "仅查看，不进行任何更改。"
+      },
+      "pm2User": {
+        "label": "以以下用户运行 pm2",
+        "description": "拥有 pm2 应用的用户。留空则使用登录用户。需要 root 或 sudo 权限。",
+        "placeholder": "deploy"
+      },
+      "showPanel": {
+        "label": "显示侧边栏",
+        "description": "在此主机的终端旁边提供进程面板。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "随终端打开进程面板",
+        "description": "在支持的主机上自动打开面板。"
+      },
+      "companionSide": {
+        "label": "面板位置",
+        "description": "进程面板在终端旁边的打开位置。",
+        "right": "右侧",
+        "left": "左侧",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "面板大小",
+        "description": "面板的宽度或高度（像素）。"
+      },
+      "companionEdgeButton": {
+        "label": "显示边缘按钮",
+        "description": "在终端边缘显示一个小按钮，用于打开面板。"
+      }
+    }
+  },
+  "operations": {
+    "expectedCommand": "预期命令名称",
+    "list-processes": {
+      "title": "列出进程"
+    },
+    "list-apps": {
+      "title": "列出 pm2 和 Supervisor 应用"
+    },
+    "signal-process": {
+      "title": "发送信号"
+    },
+    "kill-process": {
+      "title": "终止进程"
+    },
+    "renice": {
+      "title": "更改优先级",
+      "nice": "优先级（-20 到 19）"
+    },
+    "app-start": {
+      "title": "启动应用"
+    },
+    "app-stop": {
+      "title": "停止应用"
+    },
+    "app-restart": {
+      "title": "重启应用"
+    },
+    "app-reload": {
+      "title": "重载应用"
+    },
+    "app-delete": {
+      "title": "删除应用"
+    },
+    "app-flush-logs": {
+      "title": "清除应用日志"
+    },
+    "tail-logs": {
+      "title": "查看日志"
+    },
+    "add-watch": {
+      "title": "添加监控"
+    },
+    "remove-watch": {
+      "title": "移除监控"
+    },
+    "signal": {
+      "label": "信号",
+      "TERM": "停止 (TERM)",
+      "HUP": "重载 (HUP)",
+      "INT": "中断 (INT)",
+      "STOP": "暂停 (STOP)",
+      "CONT": "恢复 (CONT)",
+      "USR1": "用户信号 1",
+      "USR2": "用户信号 2"
+    },
+    "logs": {
+      "sourceLabel": "来源",
+      "source": {
+        "journal": "服务日志",
+        "journal-pid": "进程 ID 日志",
+        "pm2": "pm2 应用",
+        "supervisor": "Supervisor 进程",
+        "file": "打开进程的文件"
+      },
+      "target": "服务、进程 ID 或应用",
+      "fd": "文件描述符（用于打开的文件）",
+      "stream": "流",
+      "stdout": "输出",
+      "stderr": "错误",
+      "lines": "行数",
+      "grep": "仅包含以下内容的行",
+      "text": "日志"
+    },
+    "watch": {
+      "kind": "类型",
+      "target": "名称",
+      "rule": "触发条件",
+      "threshold": "阈值",
+      "autoRestart": "自动重启",
+      "id": "监控 ID"
+    },
+    "processes": {
+      "title": "进程",
+      "user": "用户",
+      "cpu": "CPU",
+      "mem": "内存",
+      "rss": "已用内存"
+    },
+    "apps": {
+      "resource": "应用",
+      "manager": "管理器",
+      "restarts": "重启次数",
+      "mem": "内存"
+    },
+    "signals": {
+      "zombies": "僵尸进程",
+      "busy": "繁忙进程",
+      "top-cpu": "最繁忙的进程",
+      "top-processes": "主要进程",
+      "apps-down": "应用已停止",
+      "managers": "进程管理器"
+    },
+    "events": {
+      "processDown": "受监控的进程已停止",
+      "appCrashed": "受监控的应用已停止",
+      "restartLoop": "应用不断重启"
+    }
+  }
+}

@@ -1,0 +1,451 @@
+{
+  "plugin": {
+    "name": "Varmuuskopiot",
+    "description": "Tee varmuuskopioita kansioista, tietokannoista ja Docker-datasta palvelimillasi restic-ohjelmalla, ja selaa, lataa sekä palauta niitä."
+  },
+  "common": {
+    "save": "Tallenna",
+    "cancel": "Peruuta",
+    "back": "Takaisin",
+    "delete": "Poista",
+    "done": "Valmis",
+    "loading": "Ladataan...",
+    "refresh": "Päivitä",
+    "retry": "Yritä uudelleen"
+  },
+  "permissions": {
+    "use": {
+      "title": "Käytä varmuuskopioita",
+      "description": "Määritä varmuuskopiointitehtäviä ja -varastoja, suorita varmuuskopioita ja selaa, lataa sekä palauta hetkikuvia niillä palvelimilla, joita voit muokata."
+    }
+  },
+  "tab": {
+    "title": "Varmuuskopiot",
+    "viewJobs": "Tehtävät",
+    "viewRepos": "Varastot",
+    "viewHistory": "Historia"
+  },
+  "hostTab": {
+    "title": "Varmuuskopiot",
+    "noHost": "Avaa varmuuskopiot palvelimelta.",
+    "viewJobs": "Tehtävät",
+    "viewSnapshots": "Hetkikuvat",
+    "viewHistory": "Historia",
+    "restic": "restic {{version}}",
+    "noRestic": "restic ei ole asennettu",
+    "sudo": "Termixin on kirjauduttava root-käyttäjänä tai käyttäjänä, jolla on salasanasudon käyttöoikeus, voidakseen suorittaa varmuuskopioita tässä isäntäpalvelimessa.",
+    "statusFailed": "Tämän isäntäpalvelimen lukeminen epäonnistui"
+  },
+  "install": {
+    "missing": "restic ei ole asennettu tähän isäntäpalvelimeen",
+    "tooOld": "Tämän isäntäpalvelimen restic on vanhempi kuin 0.17",
+    "hint": "Varmuuskopiointi käyttää resticiä. Asenna se paketinhallinnalla tai GitHubista, jos paketti on liian vanha.",
+    "button": "Asenna restic",
+    "working": "Asennetaan...",
+    "title": "Asenna restic?",
+    "desc": "Tämä asentaa resticin isäntäpalvelimelle root-käyttäjänä.",
+    "confirm": "Asenna",
+    "done": "restic {{version}} on asennettu",
+    "failed": "resticin asentaminen epäonnistui"
+  },
+  "status": {
+    "never": "Ei koskaan suoritettu",
+    "running": "Käynnissä",
+    "success": "Valmis",
+    "warning": "Varoituksia",
+    "failed": "Epäonnistui",
+    "canceled": "Pysäytetty"
+  },
+  "time": {
+    "justNow": "juuri nyt",
+    "soon": "hetken kuluttua",
+    "ago": {
+      "minutes_one": "{{count}} minuutti sitten",
+      "minutes_other": "{{count}} minuuttia sitten",
+      "hours_one": "{{count}} tunti sitten",
+      "hours_other": "{{count}} tuntia sitten",
+      "days_one": "{{count}} päivä sitten",
+      "days_other": "{{count}} päivää sitten"
+    },
+    "in": {
+      "minutes_one": "{{count}} minuutin kuluttua",
+      "minutes_other": "{{count}} minuutin kuluttua",
+      "hours_one": "{{count}} tunnin kuluttua",
+      "hours_other": "{{count}} tunnin kuluttua",
+      "days_one": "{{count}} päivän kuluttua",
+      "days_other": "{{count}} päivän kuluttua"
+    }
+  },
+  "jobs": {
+    "add": "Lisää työ",
+    "empty": "Ei vielä varmuuskopiointitehtäviä",
+    "emptyHint": "Lisää tehtävä kansioiden, tietokantojen tai Docker-tietojen varmuuskopiointiin.",
+    "emptyNoRepo": "Lisää ensin varastopaikka, jotta varmuuskopioilla on paikka, mihin mennä.",
+    "loadFailed": "Varmuuskopiointitehtäviä ei voitu ladata",
+    "lastGood": "Viimeisin varmuuskopio {{when}}",
+    "noGood": "Ei vielä varmuuskopiota",
+    "next": "Seuraava {{when}}",
+    "paused": "Keskeytetty",
+    "run": "Suorita nyt",
+    "stop": "Pysäytä",
+    "edit": "Muokkaa",
+    "snapshots": "Hetkikuvat",
+    "started": "{{name}} käynnistetty",
+    "runFailed": "Varmuuskopiota ei voitu käynnistää"
+  },
+  "editor": {
+    "newTitle": "Uusi varmuuskopiointityö",
+    "general": "Työ",
+    "host": "Isäntä",
+    "pickHost": "Valitse isäntä",
+    "name": "Nimi",
+    "namePlaceholder": "Yön varmuuskopio",
+    "repository": "Varasto",
+    "pickRepository": "Valitse varasto",
+    "noRepos": "Tällä isäntäpalvelimella ei ole käytettävissä varastoa. Lisää yksi ensin Varmuuskopiutukset-välilehdellä.",
+    "repoLocked": "Vain tämän varaston omistaja voi muuttaa sitä.",
+    "enabled": "Suorita aikataulun mukaan",
+    "enabledHint": "Sammuttaaksesi aikataulun. Suorita nyt -toiminto toimii edelleen.",
+    "oneFileSystem": "Pysy yhdellä tiedostojärjestelmällä",
+    "oneFileSystemHint": "Ohita muut levyt ja liitospisteet, jotka löytyvät valituista kansioista.",
+    "saved": "Tehtävä tallennettu",
+    "saveFailed": "Tehtävää ei voitu tallentaa",
+    "deleteTitle": "Poista {{name}}?",
+    "deleteDesc": "Työ poistetaan Termixistä. Sen tilannekuvat säilyvät varastossa.",
+    "deleted": "Työ poistettu",
+    "deleteFailed": "Työn poistaminen epäonnistui"
+  },
+  "sources": {
+    "add": "Lisää varmuuskopiointiin",
+    "addPaths": "Kansiot",
+    "addDatabase": "Tietokanta",
+    "addDocker": "Docker",
+    "remove": "Poista",
+    "paths": "Kansiot ja tiedostot",
+    "folders": "Polut",
+    "foldersHint": "Yksi täydellinen polku per rivi.",
+    "excludes": "Ohita",
+    "excludesHint": "Yksi restic-kuvio per rivi, kuten *.log.",
+    "database": "Tietokanta",
+    "engine": "Tyyppi",
+    "engines": {
+      "mysql": "MySQL tai MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Kirjautuminen",
+    "ownLogin": "Kirjoita kirjautumistiedot tähän",
+    "noDatabasesPlugin": "Ota Databases-lisäosa käyttöön valitaksesi tallennetut kirjautumistiedot.",
+    "address": "Osoite",
+    "addressPlaceholder": "Jätä tyhjäksi paikallisen socketin käytössä",
+    "port": "Portti",
+    "username": "Käyttäjä",
+    "password": "Salasana",
+    "passwordSaved": "Tallennettu, jätä tyhjäksi säilyttääksesi",
+    "runAs": "Suorita käyttäjänä",
+    "runAsHint": "Linux-käyttäjä, jonka nimissä dump suoritetaan, kuten postgres. Tyhjänä se suoritetaan root-käyttäjänä.",
+    "databases": "Tietokannat",
+    "databasesHint": "Yksi nimi per rivi. Jätä tyhjäksi, jos haluat varmuuskopioida kaikki.",
+    "sqliteFiles": "Tietokantatiedostot",
+    "sqliteFilesHint": "Yksi täydellinen polku per rivi. Jokainen tiedosto kopioidaan turvallisesti, vaikka sitä käytetään.",
+    "docker": "Docker",
+    "stacks": "Stackit",
+    "volumes": "Volyymit",
+    "noStacks": "Compose-stackia ei löytynyt",
+    "noVolumes": "Volyymeja ei löytynyt",
+    "dockerFailed": "Dockerin listaus epäonnistui tässä isäntäpalvelimessa",
+    "stop": "Pysäytä pinojen suoritus varmuuskopioiden aikana",
+    "stopHint": "Valitut pinot pysäytetään ensin ja käynnistetään uudelleen varmuuskopion jälkeen, jotta niiden tiedostot eivät muutu lukemisen aikana."
+  },
+  "schedule": {
+    "title": "Aikataulu",
+    "manual": "Manuaalisesti",
+    "daily": "Päivittäin",
+    "weekly": "Viikoittain",
+    "custom": "Mukautettu",
+    "day": "Päivä",
+    "time": "Aika",
+    "cron": "Cron",
+    "cronHint": "Minuutti, tunti, kuukauden päivä, kuukausi, viikonpäivä.",
+    "cronInvalid": "Tämä cron-lauseke ei ole kelvollinen",
+    "timezone": "Aikavyöhyke",
+    "serverTime": "Palvelimen aika",
+    "manualHint": "Tämä tehtävä suoritetaan vain, kun painat Suorita nyt.",
+    "manualOnly": "Manuaalisesti",
+    "next": "Seuraava suoritus {{time}}",
+    "noNext": "Tätä aikataulua ei koskaan suoriteta",
+    "dailyAt": "Jokapäiväisesti klo {{time}}",
+    "weeklyAt": "{{day}} klo {{time}}",
+    "days": {
+      "0": "Sunnuntai",
+      "1": "Maanantai",
+      "2": "Tiistai",
+      "3": "Keskiviikko",
+      "4": "Torstai",
+      "5": "Perjantai",
+      "6": "Lauantai"
+    }
+  },
+  "keep": {
+    "title": "Säilytä",
+    "last": "Viimeisin",
+    "daily": "Päivittäinen",
+    "weekly": "Viikoittain",
+    "monthly": "Kuukausittain",
+    "yearly": "Vuosittain",
+    "hint": "Jokaisen varmuuskopion jälkeen tämän tehtävän vanhemmat hetkikuvat poistetaan, jotta vain nämä säilytetään. Arvo 0 säilyttää kaiken."
+  },
+  "hooks": {
+    "title": "Komennot",
+    "pre": "Ennen",
+    "preHint": "Suoritetaan root-käyttäjänä ennen varmuuskopiointia. Jos komento epäonnistuu, varmuuskopiointi keskeytyy.",
+    "post": "Jälkeen",
+    "postHint": "Suoritetaan root-käyttäjänä varmuuskopion jälkeen, myös epäonnistumisen tapauksessa. TERMIX_BACKUP_STATUS-muuttuja sisältää tuloksen."
+  },
+  "alerts": {
+    "title": "Hälytykset",
+    "onFailure": "Ilmoita, kun varmuuskopiointi epäonnistuu",
+    "onFailureHint": "Ilmoittaa myös varoituksista ja kerran, kun varmuuskopiointi alkaa toimia uudelleen.",
+    "staleDays": "Päiviä ilman varmuuskopiota",
+    "staleDaysHint": "Ilmoita, jos varmuuskopiointi ei onnistu näin monta päivää peräkkäin. Arvo 0 poistaa ilmoituksen käytöstä."
+  },
+  "repos": {
+    "add": "Lisää arkisto",
+    "empty": "Arkistoja ei vielä ole",
+    "emptyHint": "Arkisto on paikka, johon varmuuskopiot tallennetaan, kuten S3-levy tai kansio.",
+    "loadFailed": "Arkistoja ei voitu ladata",
+    "jobCount_one": "{{count}} tehtävä",
+    "jobCount_other": "{{count}} tehtävää",
+    "newTitle": "Uusi arkisto",
+    "storage": "Tallennustila",
+    "name": "Nimi",
+    "namePlaceholder": "Offsite S3",
+    "kind": "Tyyppi",
+    "kinds": {
+      "s3": "S3-yhteensopiva",
+      "rest": "REST-palvelin",
+      "rclone": "rclone",
+      "local": "Kansio isäntälaitteella"
+    },
+    "endpoint": "Päätepiste",
+    "endpointHint": "Jätä tyhjäksi AWS:n kohdalla. MinIO:n, R2:n, B2:n tai Wasabin kohdalla anna niiden S3-osoite.",
+    "region": "Alue",
+    "bucket": "Ämpäri",
+    "prefix": "Kansio ämpärissä",
+    "prefixHint": "Valinnainen.",
+    "accessKeyId": "Pääsyavaimen tunnus",
+    "secretKey": "Salainen pääsyavain",
+    "secretSaved": "Tallennettu, jätä tyhjäksi säilyttääksesi",
+    "url": "Palvelimen osoite",
+    "username": "Käyttäjä",
+    "usernameHint": "Tyhjä, jos palvelimella ei ole kirjautumista.",
+    "restPassword": "Salasana",
+    "remote": "Etäyhteysnimi",
+    "remoteHint": "Vain kirjaimia, numeroita ja alaviivoja.",
+    "path": "Polku",
+    "rcloneConfig": "rclone-asetukset",
+    "rcloneHint": "rclone.conf-tiedoston etäyhteyden rivit. Luo ne suorittamalla rclone config -käsky tietokoneellasi. rclonen on oltava asennettuna isäntiin.",
+    "rcloneSaved": "Tallennettu, jätä tyhjäksi säilyttääksesi nykyisen",
+    "host": "Isäntä",
+    "pickHost": "Valitse isäntä",
+    "folder": "Kansio",
+    "folderHint": "Vain tämän isäntäkonemiehen tehtävät voivat käyttää sitä. Liitetty levy on paras vaihtoehto.",
+    "password": "Salaus",
+    "resticPassword": "Varastoston salasana",
+    "passwordHint": "Jätä tyhjäksi, niin Termix luo vahvan salasanan. Säilytä kopio jossain turvallisessa paikassa: ilman sitä varmuuskopioita ei voi lukea.",
+    "passwordKeep": "Tallennettu, jätä tyhjäksi säilyttääksesi nykyisen",
+    "passwordChangeHint": "Tämä muuttaa vain sitä, mitä Termix lähettää. Se ei muuta olemassa olevan varastoston salasanaa.",
+    "reveal": "Näytä salasana",
+    "revealTitle": "Näytetäänkö varastoston salasana?",
+    "revealDesc": "Kuka tahansa, jolla on tämä ja tallennusavaimet, voi lukea kaikki tämän varastoston varmuuskopiot. Tämä kirjataan tarkastuslokille.",
+    "revealFailed": "Salasanan lukeminen epäonnistui",
+    "copy": "Kopioi",
+    "copied": "Kopioitu",
+    "check": "Tarkista",
+    "checkFrom": "Tarkista kohteesta",
+    "checkFromHint": "Isäntä, joka avaa varaston. Siinä on oltava restic.",
+    "checkButton": "Tarkista",
+    "initButton": "Tarkista ja aseta",
+    "installRclone": "Asenna rclone tähän isäntään",
+    "rcloneInstalled": "rclone {{version}} on asennettu.",
+    "rcloneFailed": "rclonen asentaminen epäonnistui",
+    "checking": "Tarkistetaan...",
+    "opened": "Varasto avattiin onnistuneesti.",
+    "created": "Varasto on määritetty ja valmis käytettäväksi.",
+    "checkFailed": "Varastoa ei voitu avata",
+    "checkNext": "Tallennettu. Tarkista se isäntälaitteesta määrittääksesi sen.",
+    "saved": "Varasto tallennettu",
+    "saveFailed": "Varastoa ei voitu tallentaa",
+    "deleteTitle": "Haluatko poistaa kohteen {{name}}?",
+    "deleteDesc": "Se poistetaan vain Termixistä. Varmuuskopiot säilyvät tallennustilassa.",
+    "deleted": "Varasto poistettu",
+    "deleteFailed": "Varastoa ei voitu poistaa"
+  },
+  "snapshots": {
+    "noJobs": "Lisää ensin varmuuskopiointitehtävä.",
+    "job": "Tehtävä",
+    "titleFor": "Kohteen {{name}} hetkikuvat",
+    "empty": "Ei vielä hetkikuvia",
+    "loadFailed": "Hetkikuvia ei voitu lukea",
+    "latest": "Viimeisin",
+    "files_one": "{{count}} tiedosto",
+    "files_other": "{{count}} tiedostoa",
+    "browse": "Selaa",
+    "delete": "Poista",
+    "deleteTitle": "Haluatko poistaa tämän tilanteen?",
+    "deleteDesc": "Tilanne ajalta {{time}} poistetaan varmistusarkistosta pysyvästi.",
+    "deleted": "Tilanne poistettu",
+    "deleteFailed": "Tilanteen poistaminen epäonnistui",
+    "browseTitle": "Tilanne {{time}}",
+    "root": "Juuri",
+    "emptyFolder": "Tämä kansio on tyhjä",
+    "filesFailed": "Tämän kansion listaus epäonnistui",
+    "pick": "Valitse",
+    "download": "Lataa",
+    "downloadZip": "Lataa zip-pakettina",
+    "downloadFailed": "Lataaminen epäonnistui",
+    "restoreAll": "Palauta kaikki",
+    "restorePicked_one": "Palauta {{count}} kohde",
+    "restorePicked_other": "Palauta {{count}} kohdetta"
+  },
+  "restore": {
+    "title": "Palauta",
+    "what": "Mitä",
+    "everything": "Kaikki tilanteessa oleva.",
+    "more_one": "ja {{count}} muu",
+    "more_other": "ja {{count}} muuta",
+    "where": "Mihin",
+    "host": "Isäntä",
+    "hostHint": "Mikä tahansa isäntä, jota voit muokata ja joka pääsee varmistusarkistoon.",
+    "localOnly": "Tämä varmistusarkisto on isäntänsä kansio, joten sitä voi palauttaa vain sinne.",
+    "toFolder": "Kansioon",
+    "toOriginal": "Alkuperäiseen paikkaan",
+    "folder": "Kansio",
+    "folderHint": "Tiedostot säilyttävät täyden polkunsa tämän kansion sisällä.",
+    "originalWarning": "Tiedostot kirjoitetaan takaisin alkuperäiseen paikkaansa ja voivat korvata nykyiset tiedostot.",
+    "overwrite": "Olemassa olevat tiedostot",
+    "overwriteOptions": {
+      "if-changed": "Korvaa, jos muutettu",
+      "always": "Korvaa aina",
+      "if-newer": "Korvaa, jos varmistus on uudempi",
+      "never": "Älä koskaan korvaa"
+    },
+    "start": "Palauta",
+    "started": "Palautus aloitettu",
+    "failed": "Palautuksen aloitus epäonnistui"
+  },
+  "run": {
+    "title": "Suorita",
+    "backupTitle": "Varmistus kohteesta {{name}}",
+    "restoreTitle": "Palautus kohteelle {{name}}",
+    "loadFailed": "Suorituksen lataaminen epäonnistui",
+    "progress": "Edistyminen",
+    "preparing": "Valmistellaan...",
+    "progressLine": "{{percent}} % | {{files}} / {{totalFiles}} tiedostoa | {{bytes}} / {{totalBytes}}",
+    "left": "{{time}} jäljellä",
+    "details": "Yksityiskohdat",
+    "started": "Aloitettu",
+    "finished": "Valmis",
+    "trigger": "Aloittaja",
+    "triggers": {
+      "manual": "Suorita nyt",
+      "schedule": "Aikataulu",
+      "operation": "Termix-toiminto"
+    },
+    "snapshot": "Tilanne",
+    "target": "Palautettu kohteeseen",
+    "files": "Tiedostot",
+    "filesLine": "{{total}} tiedostoa, {{added}} uutta, {{changed}} muutettua",
+    "size": "Koko",
+    "added": "Lisätty varmistusarkistoon",
+    "took": "Kestoi",
+    "log": "Loki",
+    "noLog": "Lokia ei vielä ole.",
+    "stopTitle": "Haluatko keskeyttää tämän suorituksen?",
+    "stopDesc": "Keskeytetty varmuuskopiointi ei tallenna hetkikuvaa. Keskeytetty palautus jättää tähän mennessä palautetut tiedot ennalleen.",
+    "stopSent": "Keskeytetään",
+    "stopFailed": "Suoritusta ei voitu keskeyttää"
+  },
+  "history": {
+    "empty": "Mitään ei ole vielä suoritettu",
+    "loadFailed": "Historiaa ei voitu ladata",
+    "status": "Tila",
+    "job": "Tehtävä",
+    "host": "Isäntä",
+    "kind": "Tyyppi",
+    "kinds": {
+      "backup": "Varmuuskopiointi",
+      "restore": "Palautus"
+    },
+    "started": "Aloitettu",
+    "took": "Kestoi",
+    "size": "Koko"
+  },
+  "card": {
+    "title": "Varmuuskopiot",
+    "all": "Kaikki varmuuskopiointitehtävät",
+    "oneJob": "Yksi varmuuskopiointitehtävä",
+    "empty": "Ei vielä varmuuskopiointitehtäviä.",
+    "gone": "Tämä varmuuskopiointitehtävä on poistettu.",
+    "open": "Avaa"
+  },
+  "operations": {
+    "list": {
+      "title": "Listaa varmuuskopiointitehtävät"
+    },
+    "failed": {
+      "title": "Epäonnistuneet varmuuskopiot"
+    },
+    "run": {
+      "title": "Suorita varmuuskopiointi"
+    },
+    "cancel": {
+      "title": "Keskeytä varmuuskopiointi"
+    },
+    "snapshots": {
+      "title": "Listaa hetkikuvat"
+    },
+    "events": {
+      "finished": "Varmuuskopiointi suoritettu",
+      "failed": "Varmuuskopiointi epäonnistui"
+    },
+    "jobs": {
+      "title": "Varmuuskopiointitehtävät",
+      "lastSuccess": "Viimeisin varmuuskopiointi",
+      "nextRun": "Seuraava suoritus",
+      "size": "Koko"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Näytä varmuuskopioiden paneeli terminaaleissa",
+        "description": "Salli varmuuskopioiden paneelin avautuminen tämän isännän SSH-terminaalista vieressä."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Avaa varmuuskopioiden paneeli uusien terminaaleiden kanssa",
+        "description": "Näytä varmuuskopioiden paneeli jokaisen SSH-terminaalin vieressä, jossa se on käytössä. Voit edelleen avata ja sulkea sen painikkeesta oikeasta reunasta."
+      },
+      "companionSide": {
+        "label": "Varmuuskopioiden paneelin sijainti",
+        "description": "Missä varmuuskopioiden paneeli sijaitsee terminaalin vieressä.",
+        "right": "Oikealla",
+        "left": "Vasemmalla",
+        "bottom": "Alareunassa"
+      },
+      "companionSize": {
+        "label": "Varmuuskopioiden paneelin koko",
+        "description": "Leveys pikseleinä tai korkeus, kun se on alareunassa. Voit myös vetää sen reuna."
+      },
+      "companionEdgeButton": {
+        "label": "Näytä paneelin painike",
+        "description": "Näytä pieni painike terminaalin oikeassa reunassa, joka avaa varmuuskopioiden paneelin."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Vaihda varmuuskopioiden paneelin näkyvyys"
+  }
+}

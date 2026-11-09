@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Upravljajte DNS zapise in domene pri Cloudflare, Route 53, Namecheap in drugih ponudnikih."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domena",
+    "loading": "Nalaganje",
+    "empty": "Še ni domen. Odprite DNS, da dodate prijavo.",
+    "ok": "{{domains}} domen, nobena ne poteka kmalu",
+    "accounts": "{{count}} prijav",
+    "failingLinks": "{{count}} povezanih zapisov ne deluje"
+  },
+  "permissions": {
+    "view": {
+      "title": "Ogled DNS",
+      "description": "Odprite zavihek DNS in si oglejte cone, zapise, domene in preverjanja stanja."
+    },
+    "edit": {
+      "title": "Sprememba DNS zapisov",
+      "description": "Dodajanje, spreminjanje in brisanje zapisov, uvoz conskih datotek in osveževanje domen."
+    },
+    "manage": {
+      "title": "Upravljanje prijav za DNS",
+      "description": "Dodajanje prijav ponudnikov, povezovanje zapisov z gostitelji, spremljanje domen in obnavljanje kopij con."
+    }
+  },
+  "operations": {
+    "zone": "Cona",
+    "type": "Vrsta",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Ime",
+    "content": "Vrednost",
+    "contentOptional": "Vrednost (pustite prazno za ujemanje vseh)",
+    "ttl": "TTL v sekundah",
+    "label": "Oznaka",
+    "zones": {
+      "title": "Seznam DNS con"
+    },
+    "records": {
+      "title": "Seznam DNS zapisov"
+    },
+    "domains": {
+      "title": "Seznam domen in datumov poteka"
+    },
+    "check": {
+      "title": "Preverjanje cone"
+    },
+    "upsert": {
+      "title": "Nastavitev DNS zapisa"
+    },
+    "delete": {
+      "title": "Brisanje DNS zapisa"
+    },
+    "snapshot": {
+      "title": "Shranjevanje kopije cone"
+    },
+    "links": {
+      "title": "Posodabljanje povezanih zapisov"
+    },
+    "expiry": {
+      "title": "Potek domene"
+    }
+  },
+  "description": "Dodajte prijave za DNS in registratorje, da upravljate zapise in spremljate domene na enem mestu. Ključi so shranjeni šifrirano in se nikoli več ne prikažejo.",
+  "summary": "{{zones}} con, {{domains}} domen",
+  "saved": "Shranjeno",
+  "delete": "Izbriši",
+  "edit": "Uredi",
+  "back": "Nazaj",
+  "refresh": "Osveži",
+  "section": {
+    "zones": "Cone",
+    "domains": "Domena",
+    "links": "Povezave",
+    "accounts": "Prijave"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "API žeton",
+    "accessKeyId": "ID dostopnega ključa",
+    "secretAccessKey": "Zasebni dostopni ključ",
+    "sessionToken": "Žeton seje (izbirno)",
+    "apiUser": "API uporabnik",
+    "apiKey": "API ključ",
+    "userName": "Uporabniško ime (če se razlikuje od API uporabnika)",
+    "clientIp": "Dovoljen IP naslov",
+    "apiSecret": "API skrivnost",
+    "environment": "Okolje",
+    "environment_production": "Produkcija",
+    "environment_ote": "Test (OTE)",
+    "secretApiKey": "Skrivni API ključ",
+    "token": "Osebni dostopni žeton"
+  },
+  "zones": {
+    "empty": "Še ni con.",
+    "emptyHint": "Dodajte prijavo ponudnika v Prijava, da vidite njegove cone."
+  },
+  "zone": {
+    "records": "Zapisniki",
+    "health": "Stanje",
+    "copies": "Kopije",
+    "files": "Datoteke",
+    "filter": "Filtriraj zapisnike",
+    "empty": "Ni zapisnikov."
+  },
+  "record": {
+    "section": "Zapisnik",
+    "addTitle": "Dodaj zapisnik",
+    "editTitle": "Uredi zapisnik",
+    "add": "Dodaj zapisnik",
+    "save": "Shrani",
+    "type": "Vrsta",
+    "name": "Ime",
+    "nameHint": "Uporabite @ za sam {{zone}}",
+    "value": "Vrednost",
+    "priority": "Prioriteta",
+    "ttl": "TTL (sekunde)",
+    "ttlHint": "Kako dolgo reševalniki hranijo odgovor. 300 je 5 minut.",
+    "ttlAuto": "1 pomeni samodejno.",
+    "proxied": "Posredovano",
+    "proxiedHint": "Pošlji promet skozi Cloudflare.",
+    "proxiedBadge": "Posredovano",
+    "comment": "Opomba",
+    "readOnly": "Upravlja ponudnik",
+    "deleteConfirm": "Izbrišete {{type}} zapisnik {{name}}?"
+  },
+  "account": {
+    "add": "Dodaj prijavo",
+    "addTitle": "Dodaj DNS prijavo",
+    "editTitle": "Uredi DNS prijavo",
+    "save": "Shrani",
+    "login": "Prijava",
+    "provider": "Ponudnik",
+    "name": "Ime",
+    "namePlaceholder": "Glavni Cloudflare",
+    "keep": "Pustite prazno, da ohranite shranjeno vrednost",
+    "registrar": "Ta ponudnik je tudi registrarska hiša, zato se njegove domene prikažejo v Domenah.",
+    "options": "Možnosti",
+    "autoBackup": "Ohrani kopije con",
+    "autoBackupHint": "Shrani kopijo pred vsako spremembo in ko se cona spremeni zunaj Termixa.",
+    "checkHealth": "Preveri cone vsak dan",
+    "checkHealthHint": "Izvedi preverjanja stanja dnevno in opozori na nove težave.",
+    "test": "Preveri",
+    "testOk": "Deluje. Najdenih je {{zones}} con in {{domains}} domen.",
+    "deleteConfirm": "Izbrišete {{name}}? Njegove kopije in povezave bodo izbrisane. Pri ponudniku se nič ne spremeni.",
+    "empty": "Še ni prijav.",
+    "emptyHint": "Za začetek dodajte prijavo za Cloudflare, Route 53, Namecheap ali drugega ponudnika.",
+    "lastSync": "Zadnjič preverjeno {{date}}",
+    "never": "Še ni bilo preverjeno",
+    "failed": "Prijava ni uspela"
+  },
+  "domains": {
+    "empty": "Še ni domen.",
+    "emptyHint": "Registrarske prijave tukaj naštejejo svoje domene. Določeno domeno lahko spremljate tudi po imenu.",
+    "watchPlaceholder": "example.com",
+    "watch": "Spremljaj domeno",
+    "unwatch": "Ustavi spremljanje",
+    "watched": "Spremljane",
+    "noRenew": "Samodejno podaljšanje izklopljeno",
+    "unlocked": "Odklenjeno",
+    "unknown": "Registrarska hiša ni znana",
+    "expires": "Poteče {{date}}",
+    "expired": "Potečeno",
+    "days": "Preostalo {{count}} dni",
+    "refreshFailed": "Neuspešno je {{count}} poizvedb"
+  },
+  "link": {
+    "add": "Dodaj povezavo",
+    "addTitle": "Dodaj povezavo",
+    "editTitle": "Uredi povezavo",
+    "save": "Shrani",
+    "record": "Zapis",
+    "address": "Naslov",
+    "zone": "Cona",
+    "pickZone": "Izberi cono",
+    "source": "Usmeri na",
+    "sourceHost": "Gostitelja",
+    "sourcePublic4": "Javni naslov IPv4 tega strežnika",
+    "sourcePublic6": "Javni naslov IPv6 tega strežnika",
+    "source_host": "Gostitelj",
+    "source_public4": "Javni IPv4",
+    "source_public6": "Javni IPv6",
+    "host": "Gostitelj",
+    "pickHost": "Izberi gostitelja",
+    "hostHint": "Zapis sledi naslovu gostitelja. Posodobi se, ko se gostitelj spremeni.",
+    "publicHint": "Termix preveri svoj javni naslov in ohranja zapis sinhroniziran, podobno kot dinamični DNS.",
+    "enabled": "Ohrani ta zapis posodobljen",
+    "empty": "Še ni povezav.",
+    "emptyHint": "Povezava ohranja zapis usmerjen na gostitelja ali na javni naslov tega strežnika.",
+    "off": "Izklopljeno",
+    "hostGone": "Gostitelja ni mogoče najti",
+    "lastSync": "Preverjeno {{date}}",
+    "never": "Še ni bilo preverjeno",
+    "syncNow": "Posodobi zdaj",
+    "updated": "Zapis je bil posodobljen",
+    "unchanged": "Zapis je bil že pravilen",
+    "deleteConfirm": "Ali želite odstraniti povezavo za {{name}}? Zapis ostane na svojem mestu."
+  },
+  "diff": {
+    "none": "Nič se ne bo spremenilo.",
+    "add": "Dodaj",
+    "change": "Spremeni",
+    "remove": "Odstrani"
+  },
+  "copies": {
+    "hint": "Kopije se shranijo pred vsako spremembo in enkrat dnevno, ko se cona spremeni zunaj Termixa.",
+    "save": "Shrani kopijo",
+    "saved": "Kopija shranjena",
+    "manualLabel": "Ročna kopija",
+    "empty": "Še ni kopij.",
+    "count": "{{count}} zapisov",
+    "compare": "Primerjaj s trenutnim stanjem",
+    "restore": "Obnovi",
+    "restoreConfirm": "Ali želite obnoviti to kopijo? Pri ponudniku bo izvedenih {{count}} sprememb. Kopija trenutnih zapisov se najprej shrani.",
+    "restored": "Obnovljeno. Izvedenih je bilo {{count}} sprememb.",
+    "source": {
+      "manual": "Ročno",
+      "auto": "Dnevno",
+      "before": "Pred spremembo"
+    }
+  },
+  "files": {
+    "export": "Prenesi datoteko cone",
+    "exportHint": "Prenesite zapise kot datoteko cone BIND.",
+    "import": "Uvozi conočno datoteko",
+    "placeholder": "Prilepite BIND conočno datoteko sem",
+    "replace": "Odstrani vnose, ki niso v datoteki",
+    "replaceHint": "Izklopljeno: uvoz samo doda in spremeni vnose.",
+    "preview": "Predogled",
+    "apply": "Uporabi",
+    "applied": "Uvoženo. Izvedenih je bilo {{count}} sprememb.",
+    "skipped": "Preskočeno:"
+  },
+  "health": {
+    "run": "Zaženi preglede",
+    "running": "V teku",
+    "propagation": "Preveri razreševalnike",
+    "propagationTitle": "Javni razreševalniki",
+    "lastRun": "Zadnji pregled: {{date}}",
+    "empty": "Za to cono še niso bili izvedeni pregledi.",
+    "record": "Vnos",
+    "resolver": "Razreševalnik",
+    "answer": "Odgovor",
+    "noAnswer": "Brez odgovora",
+    "delegation": {
+      "error": "Imenskih strežnikov ni bilo mogoče poiskati.",
+      "none": "Cona nima imenskih strežnikov na internetu. Domena morda ne kaže na tega ponudnika.",
+      "mismatch": "Domena uporablja druge imenske strežnike kot ponudnik: {{found}}.",
+      "ok": "Domena kaže na {{count}} imenske strežnike."
+    },
+    "soa": {
+      "differ": "Imenski strežniki se ne strinjajo glede različice cone ({{count}} različic). Sprememba se morda še širi.",
+      "same": "{{count}} imenskih strežnikov se strinja glede različice cone."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC ni bilo mogoče preveriti.",
+      "off": "DNSSEC ni vklopljen.",
+      "valid": "DNSSEC je vklopljen in veljaven.",
+      "broken": "DNSSEC je nastavljen pri registratorju, vendar se ne preveri. Razreševalniki, ki ga preverjajo, bodo spodleteli."
+    },
+    "cname": {
+      "conflict": "{{name}} ima CNAME in druge vnose. To ni dovoljeno.",
+      "apex": "Koren cone ne more biti CNAME.",
+      "dangling": "{{name}} kaže na {{target}}, ki se ne razreši.",
+      "ok": "Vsi cilji CNAME se razrešijo."
+    },
+    "spf": {
+      "missing": "Domena prejema pošto, nima pa vnosa SPF.",
+      "multiple": "Obstaja več kot en vnos SPF. Poštni strežniki bodo zavrnila vse.",
+      "lookups": "Vnos SPF opravi {{count}} poizvedb. Omejitev je 10.",
+      "ok": "SPF je nastavljen ({{count}} poizvedb)."
+    },
+    "dmarc": {
+      "missing": "Ni vnosa DMARC.",
+      "none": "DMARC je nastavljen samo za spremljanje.",
+      "ok": "DMARC je nastavljen."
+    },
+    "dkim": {
+      "none": "V tej coni ni bilo najdenih ključev DKIM.",
+      "found": "Najdenih je bilo {{count}} ključev DKIM."
+    },
+    "mx": {
+      "unresolved": "Poštni strežnik {{host}} se ne razreši."
+    },
+    "mail": {
+      "none": "Domena nima poštnih vnosov."
+    },
+    "caa": {
+      "ok": "Vnosi CAA omejujejo, kdo lahko izda certifikate.",
+      "none": "Ni vnosov CAA. Vsak izdajatelj certifikatov lahko izda certifikate."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domene, domene, ki kmalu potekajo, in vnosi, ki spodletijo.",
+    "domains": "Domene",
+    "expiring": "Kmalu potekajo",
+    "failingLinks": "Povezave, ki spodletijo",
+    "failingAccounts": "Prijava, ki spodleti"
+  }
+}

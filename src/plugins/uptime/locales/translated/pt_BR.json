@@ -1,0 +1,392 @@
+{
+  "tab": {
+    "title": "Tempo de atividade",
+    "error": "Não foi possível carregar os monitores.",
+    "monitors": "Monitores",
+    "incidents": "Incidentes",
+    "maintenance": "Manutenção",
+    "pages": "Páginas de status"
+  },
+  "common": {
+    "refresh": "Atualizar",
+    "loading": "Carregando",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "done": "Concluído"
+  },
+  "status": {
+    "up": "Ativo",
+    "down": "Inativo",
+    "pending": "Tentando novamente",
+    "maintenance": "Manutenção",
+    "paused": "Pausado",
+    "unknown": "Aguardando"
+  },
+  "types": {
+    "http": "Site (HTTP)",
+    "tcp": "Porta TCP",
+    "ping": "Ping",
+    "dns": "Registro DNS",
+    "tls": "Certificado TLS",
+    "push": "Push",
+    "host": "Host do Termix",
+    "docker": "Contêiner Docker",
+    "systemd": "Unidade systemd",
+    "command": "Comando"
+  },
+  "typeHints": {
+    "http": "Chama uma URL e verifica o código de status, além de uma palavra-chave, se definida.",
+    "tcp": "Verifica se uma porta aceita conexões.",
+    "ping": "Envia ping do servidor Termix ou de um host que você escolher abaixo.",
+    "dns": "Consulta um registro e pode verificar seu valor.",
+    "tls": "Verifica se um certificado é confiável e não está prestes a expirar.",
+    "push": "Fornece uma URL para ser chamada por um cron job ou script. Fica inativo quando as chamadas param.",
+    "host": "Verifica a porta de um host da mesma forma que o indicador de status do host. Nunca faz login.",
+    "docker": "Faz login no host via SSH e verifica se um contêiner está em execução e saudável.",
+    "systemd": "Faz login no host via SSH e verifica se uma unidade está ativa.",
+    "command": "Faz login no host via SSH e executa um comando. Fica ativo quando o código de saída é 0."
+  },
+  "stats": {
+    "up": "Ativos",
+    "down": "Problemas",
+    "paused": "Pausados ou em manutenção",
+    "month": "Tempo de atividade de 30 dias"
+  },
+  "filter": {
+    "all": "Todos",
+    "problems": "Problemas",
+    "paused": "Pausados"
+  },
+  "list": {
+    "name": "Nome",
+    "target": "Alvo",
+    "checks": "Últimas verificações",
+    "uptime": "24 h",
+    "uptimeDay": "24 h: {{value}}",
+    "latency": "Resposta",
+    "search": "Pesquisar",
+    "add": "Adicionar monitor",
+    "addHosts": "Adicionar a partir de hosts",
+    "empty": "Nenhum monitor ainda",
+    "emptyHint": "Adicione um monitor para começar a acompanhar um site, uma porta ou um host.",
+    "noMatch": "Nada corresponde"
+  },
+  "range": {
+    "day": "24 h",
+    "week": "7 dias",
+    "month": "30 dias",
+    "quarter": "90 dias"
+  },
+  "detail": {
+    "failed": "Isso não funcionou.",
+    "deleteTitle": "Excluir {{name}}?",
+    "deleteHint": "O histórico e os incidentes serão excluídos junto.",
+    "newUrl": "Novo URL de push",
+    "newUrlTitle": "Criar um novo URL de push?",
+    "newUrlHint": "O URL antigo para de funcionar imediatamente.",
+    "type": "Tipo",
+    "target": "Alvo",
+    "lastCheck": "Última verificação",
+    "message": "Resultado",
+    "every": "Verifica a cada",
+    "seconds_one": "{{count}} segundo",
+    "seconds_many": "{{count}} segundos",
+    "seconds_other": "{{count}} segundos",
+    "group": "Grupo",
+    "tags": "Tags",
+    "cert": "Certificado",
+    "certValue": "{{days}} dias restantes | {{issuer}}",
+    "noChart": "Ainda não há verificações suficientes para um gráfico.",
+    "alertsOn": "Ativar alertas",
+    "alertsOff": "Desativar alertas",
+    "runNow": "Verificar agora",
+    "pause": "Pausar",
+    "resume": "Retomar",
+    "share": "Compartilhar",
+    "now": "Resposta agora",
+    "recent": "Últimas verificações",
+    "response": "Tempo de resposta",
+    "about": "Sobre",
+    "incidents": "Incidentes",
+    "noIncidents": "Nenhum incidente."
+  },
+  "editor": {
+    "addTitle": "Adicionar monitor",
+    "editTitle": "Editar monitor",
+    "saveFailed": "Não foi possível salvar.",
+    "testFailed": "Não foi possível executar o teste.",
+    "test": "Testar",
+    "testing": "Testando",
+    "testOk": "Online",
+    "testBad": "Offline",
+    "what": "O que monitorar",
+    "name": "Nome",
+    "type": "Tipo",
+    "host": "Host",
+    "noHost": "Escolha um host",
+    "pushOnce": "Copie este URL agora. Ele só será mostrado uma vez.",
+    "from": "Verificar de",
+    "fromHost": "Executar a verificação de",
+    "fromServer": "O servidor Termix",
+    "fromHint": "Escolha um host para acessar recursos que só ele pode ver. A verificação é executada lá via SSH.",
+    "timing": "Intervalo e alertas",
+    "interval": "Verificar a cada (segundos)",
+    "timeout": "Tempo limite (segundos)",
+    "grace": "Tempo extra de espera (segundos)",
+    "retries": "Tentativas",
+    "retriesHint": "Verificações falhas consecutivas antes de considerar offline.",
+    "retryInterval": "Intervalo entre tentativas (segundos)",
+    "resend": "Lembrar-me a cada (minutos)",
+    "resendHint": "Enquanto permanecer offline. 0 envia apenas um alerta.",
+    "more": "Grupo e tags",
+    "group": "Grupo",
+    "tags": "Tags",
+    "tagsHint": "Separe por vírgulas.",
+    "target": "Endereço",
+    "port": "Porta",
+    "portOptional": "Porta",
+    "portOptionalHint": "Deixe vazio para usar a porta do host.",
+    "url": "URL",
+    "method": "Método",
+    "body": "Corpo",
+    "accepted": "Códigos de status aceitos",
+    "acceptedHint": "Como 200-299,301",
+    "keyword": "Palavra-chave",
+    "keywordHint": "Opcional. Texto que deve estar na resposta.",
+    "keywordAbsent": "Falhar quando a palavra-chave for encontrada",
+    "auth": "Login",
+    "authNone": "Nenhum",
+    "authBasic": "Básico",
+    "authBearer": "Token Bearer",
+    "username": "Nome de usuário",
+    "password": "Senha",
+    "token": "Token",
+    "keepSecret": "Deixe vazio para manter o valor salvo.",
+    "headers": "Cabeçalhos",
+    "headersHint": "Um por linha, como Nome: valor. Armazenado criptografado.",
+    "follow": "Seguir redirecionamentos",
+    "ignoreTls": "Aceitar qualquer certificado",
+    "certDays": "Avisar antes do fim do certificado (dias)",
+    "certDaysHint": "0 desativa o aviso.",
+    "record": "Tipo de registro",
+    "dnsServer": "Servidor DNS",
+    "dnsServerHint": "Endereço IP opcional. Vazio usa o do servidor.",
+    "expected": "Valor esperado",
+    "expectedHint": "Opcional. Texto que um registro deve conter.",
+    "container": "Nome do container",
+    "unit": "Nome da unidade",
+    "command": "Comando",
+    "commandHint": "Executa como seu login no host a cada verificação."
+  },
+  "hosts": {
+    "add_one": "Adicionar {{count}} monitor",
+    "add_many": "Adicionar {{count}} monitores",
+    "add_other": "Adicionar {{count}} monitores"
+  },
+  "shares": {
+    "loadFailed": "Não foi possível carregar os compartilhamentos.",
+    "saveFailed": "Não foi possível salvar os compartilhamentos.",
+    "pick": "Escolha um usuário ou função",
+    "user": "Usuário: {{name}}",
+    "role": "Função: {{name}}",
+    "with": "Compartilhar com",
+    "add": "Adicionar",
+    "none": "Apenas você pode ver este monitor.",
+    "view": "Pode visualizar",
+    "edit": "Pode editar"
+  },
+  "incidents": {
+    "none": "Nenhum incidente",
+    "ongoing": "Em andamento",
+    "seen": "Visto",
+    "ack": "Marcar como visto",
+    "note": "Nota"
+  },
+  "maintenance": {
+    "none": "Nenhuma janela de manutenção",
+    "noneHint": "Adicione uma para parar os alertas enquanto você trabalha em algo.",
+    "add": "Adicionar janela",
+    "edit": "Editar janela",
+    "active": "Ativa agora",
+    "when": "Quando",
+    "once": "Uma vez",
+    "weekly": "Semanalmente",
+    "start": "Início",
+    "end": "Fim",
+    "days": "Dias",
+    "time": "Horário de início",
+    "length": "Duração (minutos)",
+    "timezone": "Fuso horário",
+    "covers": "Abrange",
+    "coversAll": "Todos os meus monitores",
+    "coversSome": "Monitores selecionados",
+    "coversTag": "Monitores com uma tag",
+    "deleteTitle": "Excluir {{name}}?",
+    "day0": "Dom",
+    "day1": "Seg",
+    "day2": "Ter",
+    "day3": "Qua",
+    "day4": "Qui",
+    "day5": "Sex",
+    "day6": "Sáb"
+  },
+  "pages": {
+    "none": "Nenhuma página de status",
+    "noneHint": "Uma página de status mostra como seus serviços estão se saindo, sem necessidade de login.",
+    "add": "Adicionar página",
+    "edit": "Editar página",
+    "about": "Página",
+    "title": "Título",
+    "slug": "Endereço",
+    "slugHint": "Letras minúsculas, números e hífens. Esta é a parte final do link.",
+    "description": "Descrição",
+    "published": "Publicado",
+    "publishedHint": "Qualquer pessoa com o link pode ver nomes, estados e tempo de atividade. Nunca endereços ou erros.",
+    "showLatency": "Mostrar tempos de resposta",
+    "group": "Grupo {{number}}",
+    "groupName": "Nome do grupo",
+    "addGroup": "Adicionar grupo",
+    "notes": "Notas",
+    "noteTitle": "Título",
+    "noteBody": "Texto",
+    "noteLevel": "Nível",
+    "levelInfo": "Info",
+    "levelWarning": "Aviso",
+    "levelCritical": "Crítico",
+    "post": "Publicar",
+    "resolve": "Resolver",
+    "resolved": "Resolvido",
+    "live": "Publicado",
+    "draft": "Rascunho",
+    "open": "Abrir página",
+    "deleteTitle": "Excluir {{name}}?",
+    "offTitle": "As páginas públicas estão desativadas",
+    "offHint": "Um administrador as desativou nas configurações do plugin, então esses links não mostram nada."
+  },
+  "widget": {
+    "name": "Tempo de atividade",
+    "description": "Quantos monitores estão online ou offline.",
+    "up": "Online",
+    "down": "Offline"
+  },
+  "card": {
+    "title": "Tempo de atividade",
+    "overview": "Todos os monitores",
+    "attention": "Monitores com problemas",
+    "monitors": "Monitores",
+    "allGood": "Tudo está online.",
+    "gone": "Este monitor foi removido.",
+    "loading": "Carregando...",
+    "month": "30 dias: {{value}}"
+  },
+  "host": {
+    "none": "Nenhum monitor para este host.",
+    "add": "Adicionar monitor",
+    "down_one": "{{count}} monitor está fora do ar",
+    "down_many": "{{count}} monitores estão fora do ar",
+    "down_other": "{{count}} monitores estão fora do ar"
+  },
+  "permissions": {
+    "view": {
+      "title": "Ver monitores",
+      "description": "Ver monitores, histórico e incidentes."
+    },
+    "manage": {
+      "title": "Gerenciar monitores",
+      "description": "Adicionar e alterar monitores e janelas de manutenção."
+    },
+    "privateTargets": {
+      "title": "Verificar endereços privados",
+      "description": "Apontar monitores para LAN, Tailscale e outros endereços privados que o servidor Termix pode alcançar."
+    },
+    "runCommands": {
+      "title": "Executar comandos",
+      "description": "Adicionar monitores que executam um comando em um host via SSH."
+    },
+    "publish": {
+      "title": "Publicar páginas de status",
+      "description": "Tornar as páginas de status visíveis para qualquer pessoa com o link."
+    }
+  },
+  "settings": {
+    "admin": {
+      "minIntervalSeconds": {
+        "label": "Intervalo mínimo de verificação",
+        "description": "Em segundos. Monitores que fazem login via SSH nunca ficam abaixo de 60."
+      },
+      "defaultIntervalSeconds": {
+        "label": "Intervalo padrão de verificação",
+        "description": "Em segundos, para novos monitores."
+      },
+      "historyDays": {
+        "label": "Manter histórico por",
+        "description": "Dias de números de disponibilidade diária e incidentes."
+      },
+      "publicPages": {
+        "label": "Permitir páginas de status públicas",
+        "description": "Desative para ocultar todas as páginas de status. URLs de push continuam funcionando."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Abrir o painel com cada terminal",
+        "description": "Mostrar o painel de disponibilidade quando um terminal é aberto."
+      },
+      "companionSide": {
+        "label": "Lado do painel",
+        "description": "Onde o painel de disponibilidade é aberto.",
+        "right": "Direita",
+        "left": "Esquerda",
+        "bottom": "Inferior"
+      },
+      "companionSize": {
+        "label": "Tamanho do painel",
+        "description": "Largura ou altura do painel em pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Mostrar o botão lateral",
+        "description": "Um botão na borda do terminal que abre o painel."
+      }
+    }
+  },
+  "operations": {
+    "monitor": "Monitor",
+    "summary": {
+      "title": "Resumo de disponibilidade"
+    },
+    "monitors": {
+      "title": "Listar monitores"
+    },
+    "hostMonitors": {
+      "title": "Monitores neste host"
+    },
+    "hostHealth": {
+      "title": "Disponibilidade"
+    },
+    "run": {
+      "title": "Verificar um monitor agora"
+    },
+    "pause": {
+      "title": "Pausar um monitor"
+    },
+    "resume": {
+      "title": "Retomar um monitor"
+    },
+    "addHost": {
+      "title": "Adicionar um monitor de disponibilidade"
+    },
+    "events": {
+      "down": "Um monitor caiu",
+      "up": "Um monitor voltou ao ar",
+      "cert": "Um certificado está prestes a expirar"
+    },
+    "resource": {
+      "title": "Monitores",
+      "type": "Tipo",
+      "status": "Status",
+      "uptime": "Disponibilidade de 30 dias"
+    }
+  }
+}

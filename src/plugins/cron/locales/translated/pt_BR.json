@@ -1,0 +1,210 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "Veja, adicione e execute tarefas cron nos seus hosts, com uma prévia do agendamento e os arquivos cron do sistema."
+  },
+  "common": {
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "back": "Voltar",
+    "delete": "Excluir"
+  },
+  "permissions": {
+    "use": {
+      "title": "Usar Cron",
+      "description": "Veja tarefas cron nos hosts que você pode acessar e altere-as nos hosts que você pode editar."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Gerencie tarefas cron neste host pela aba Cron."
+      },
+      "useSudo": {
+        "label": "Usar sudo",
+        "description": "Use sudo para crontabs de outros usuários e /etc/cron.d. Desative se o login for root."
+      },
+      "readOnly": {
+        "label": "Somente leitura",
+        "description": "Mostre as tarefas cron, mas nunca as altere neste host."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "Abra o Cron a partir de um host.",
+    "error": "Não foi possível carregar o cron deste host.",
+    "disabled": "O Cron está desativado para este host. Ative-o nas configurações do host.",
+    "sudo": "Isso requer login como root, sudo sem senha ou uma Senha Sudo salva.",
+    "refresh": "Atualizar",
+    "running": "Cron em execução",
+    "stopped": "Cron parado",
+    "readOnly": "Somente leitura",
+    "notInstalled": "Não instalado",
+    "notInstalledTitle": "O Cron não está instalado neste host",
+    "notInstalledHint": "Instale o cron ou cronie com o gerenciador de pacotes do host e, em seguida, atualize.",
+    "notRunning": "O serviço cron não está em execução, portanto, nenhuma tarefa será executada.",
+    "viewJobs": "Tarefas",
+    "viewSystem": "Sistema",
+    "viewLogs": "Logs"
+  },
+  "jobs": {
+    "add": "Adicionar tarefa",
+    "user": "Crontab de",
+    "ownUser": "{{user}} (login)",
+    "search": "Pesquisar tarefas",
+    "editText": "Editar como texto",
+    "empty": "Nenhuma tarefa cron ainda.",
+    "noMatch": "Nenhuma tarefa corresponde.",
+    "off": "Desativado",
+    "next": "próximo {{time}}",
+    "run": "Executar agora",
+    "runTitle": "Executar esta tarefa agora?",
+    "runDesc": "Isso executa {{command}} uma vez como o usuário da crontab. Para após 2 minutos.",
+    "runFailed": "Não foi possível executar a tarefa.",
+    "turnOn": "Ativar",
+    "turnOff": "Desativar",
+    "deleteTitle": "Excluir esta tarefa?",
+    "loadFailed": "Não foi possível ler a crontab.",
+    "saveFailed": "Não foi possível salvar a crontab.",
+    "outputTitle": "Saída da tarefa",
+    "exitOk": "Concluído",
+    "exitCode": "Código de saída {{code}}",
+    "noOutput": "A tarefa não imprimiu nada."
+  },
+  "form": {
+    "addTitle": "Nova tarefa",
+    "editTitle": "Editar tarefa",
+    "forUser": "Crontab de {{user}}",
+    "label": "Rótulo",
+    "labelHint": "Salvo como um comentário acima da tarefa.",
+    "labelPlaceholder": "Backup noturno",
+    "command": "Comando",
+    "commandHint": "Executa com sh no diretório home do usuário. Um % inicia a entrada que o cron envia; escreva \\% para um literal.",
+    "schedule": "Agendamento",
+    "scheduleHint": "Minuto, hora, dia do mês, mês e dia da semana, ou uma palavra como @daily.",
+    "scheduleInvalid": "Este não é um agendamento válido.",
+    "nextRuns": "Próximas execuções ({{zone}}):",
+    "enabled": "Ativado",
+    "enabledHint": "Um trabalho desativado permanece no crontab como comentário.",
+    "saved": "Salvo."
+  },
+  "presets": {
+    "everyMinute": "A cada minuto",
+    "every5": "A cada 5 min",
+    "every15": "A cada 15 min",
+    "hourly": "Diariamente",
+    "daily": "Diariamente",
+    "weekly": "Semanalmente",
+    "monthly": "Mensalmente",
+    "reboot": "Na inicialização"
+  },
+  "schedule": {
+    "reboot": "Na inicialização",
+    "everyMinute": "A cada minuto",
+    "everyNMinutes": "A cada {{n}} minutos",
+    "hourlyAt": "A cada hora no minuto {{minute}}",
+    "everyNHours": "A cada {{n}} horas no minuto {{minute}}",
+    "dailyAt": "Todos os dias às {{time}}",
+    "weekdaysAt": "Segunda a sexta às {{time}}",
+    "weeklyAt": "Todo {{day}} às {{time}}",
+    "monthlyAt": "No dia {{day}} de cada mês às {{time}}",
+    "custom": "Agendamento personalizado",
+    "invalid": "Não é um agendamento válido"
+  },
+  "days": {
+    "0": "Domingo",
+    "1": "Segunda-feira",
+    "2": "Terça-feira",
+    "3": "Quarta-feira",
+    "4": "Quinta-feira",
+    "5": "Sexta-feira",
+    "6": "Sábado"
+  },
+  "raw": {
+    "title": "Crontab como texto",
+    "hint": "Um trabalho por linha. O host verifica o texto e mantém o crontab antigo se houver erros."
+  },
+  "system": {
+    "add": "Novo arquivo",
+    "addTitle": "Novo arquivo em /etc/cron.d",
+    "edit": "Editar",
+    "name": "Nome do arquivo",
+    "nameHint": "Salvo como /etc/cron.d/<name>. O Cron ignora nomes com pontos.",
+    "nameInvalid": "Use apenas letras, números, - e _.",
+    "content": "Conteúdo do arquivo",
+    "fileHint": "Cada trabalho especifica o usuário que o executa: minuto hora dia mês dia_da_semana usuário comando. Cada linha é verificada antes de salvar.",
+    "noJobs": "Nenhum trabalho neste arquivo.",
+    "readHint": "Alguns arquivos podem estar ocultos sem root. Alterações aqui exigem login como root, sudo sem senha ou uma Senha Sudo salva.",
+    "timers_one": "Este host também tem {{count}} timer do systemd. O plugin Serviços o gerencia.",
+    "timers_many": "Este host também tem {{count}} timers do systemd. O plugin Serviços os gerencia.",
+    "timers_other": "Este host também tem {{count}} timers do systemd. O plugin Serviços os gerencia.",
+    "deleteTitle": "Excluir /etc/cron.d/{{name}}?",
+    "deleteDesc": "Uma cópia é mantida em /var/lib/termix-cron/backup.",
+    "deleted": "{{name}} excluído.",
+    "saved": "{{name}} salvo.",
+    "loadFailed": "Não foi possível ler os arquivos de cron do sistema.",
+    "saveFailed": "Não foi possível salvar o arquivo.",
+    "period": {
+      "hourly": "Executa a cada hora",
+      "daily": "Executa todos os dias",
+      "weekly": "Executa a cada semana",
+      "monthly": "Executa a cada mês"
+    }
+  },
+  "logs": {
+    "lines": "Linhas",
+    "lineCount_one": "{{count}} linha",
+    "lineCount_many": "{{count}} linhas",
+    "lineCount_other": "{{count}} linhas",
+    "source": "De {{source}}",
+    "noSource": "Nenhum log de cron foi encontrado neste host.",
+    "empty": "Nenhuma linha de log.",
+    "failed": "Não foi possível ler o log do cron."
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "Ative o Cron nas configurações deste host para ver seus trabalhos aqui."
+  },
+  "operations": {
+    "list": {
+      "title": "Listar trabalhos do cron"
+    },
+    "enable": {
+      "title": "Ativar trabalho do cron"
+    },
+    "disable": {
+      "title": "Desativar trabalho do cron"
+    },
+    "run": {
+      "title": "Executar trabalho do cron agora"
+    },
+    "delete": {
+      "title": "Excluir trabalho do cron"
+    },
+    "jobs": {
+      "title": "Trabalhos do cron",
+      "schedule": "Agendamento",
+      "command": "Comando"
+    },
+    "status": {
+      "title": "Status do cron"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "Verificando hosts...",
+    "summary_one": "{{count}} trabalho em {{hosts}} hosts",
+    "summary_many": "{{count}} trabalhos em {{hosts}} hosts",
+    "summary_other": "{{count}} trabalhos em {{hosts}} hosts",
+    "refresh": "Verificar novamente",
+    "empty": "Ative o Cron em um host para vê-lo aqui.",
+    "stopped": "Não está em execução",
+    "missing": "Não instalado",
+    "jobs_one": "{{count}} trabalho",
+    "jobs_many": "{{count}} trabalhos",
+    "jobs_other": "{{count}} trabalhos",
+    "off": "{{count}} desativados"
+  }
+}

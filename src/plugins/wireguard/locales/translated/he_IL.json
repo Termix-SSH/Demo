@@ -1,0 +1,238 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "התקן את WireGuard במארחים שלך ונהל ממשקים, לקוחות וקבצי תצורה מתוך לשונית אחת."
+  },
+  "common": {
+    "save": "שמירה",
+    "cancel": "ביטול",
+    "back": "חזרה",
+    "delete": "מחיקה",
+    "loading": "טוען..."
+  },
+  "permissions": {
+    "use": {
+      "title": "שימוש ב-WireGuard",
+      "description": "ניהול ממשקי WireGuard ולקוחות במארחים שיש לך בהם הרשאות עריכה."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "פתח את WireGuard ממארח.",
+    "error": "לא ניתן לטעון את WireGuard ממארח זה.",
+    "sudo": "מארח זה דורש התחברות כ-root או sudo ללא סיסמה כדי לנהל את WireGuard.",
+    "installed": "מותקן",
+    "notInstalled": "לא מותקן",
+    "refresh": "רענון",
+    "viewInterfaces": "ממשקים",
+    "viewLogs": "יומנים"
+  },
+  "install": {
+    "title": "התקנת WireGuard",
+    "desc": "פעולה זו מתקינה את כלי WireGuard ו-iptables באמצעות מנהל החבילות של המארח.",
+    "confirm": "התקנה",
+    "done": "WireGuard מותקן.",
+    "failed": "לא ניתן להתקין את WireGuard.",
+    "empty": "WireGuard אינו מותקן במארח זה",
+    "noManager": "לא נמצא מנהל חבילות נתמך. התקן את WireGuard ידנית.",
+    "hint": "התקן אותו ב-{{os}} כדי להפעיל רשת פרטית וירטואלית (VPN) ממארח זה.",
+    "thisHost": "מארח זה",
+    "button": "התקנת WireGuard",
+    "working": "מתקין..."
+  },
+  "interfaces": {
+    "add": "הוספת ממשק",
+    "empty": "אין ממשקים עדיין. הוסף אחד כדי להתחיל רשת פרטית וירטואלית (VPN).",
+    "loadFailed": "לא ניתן לטעון את הממשקים.",
+    "up": "פעיל",
+    "down": "כבוי",
+    "clients": "לקוחות: {{count}}",
+    "nat": "NAT",
+    "boot": "מתחיל בהפעלה"
+  },
+  "create": {
+    "title": "הוספת ממשק",
+    "name": "שם",
+    "address": "כתובת",
+    "addressHint": "כתובת השרת ותת-הרשת. לקוחות מקבלים את הכתובות החופשיות הבאות.",
+    "port": "פורט UDP",
+    "nat": "שיתוף האינטרנט של המארח (NAT)",
+    "natDesc": "לקוחות יכולים להגיע לאינטרנט ולרשת של המארח דרך המארח הזה.",
+    "natMissing": "NAT דורש iptables, שאינו מותקן במארח זה.",
+    "forwarding": "הפעלת העברת כתובות IP",
+    "forwardingDesc": "מאפשר למארח להעביר תעבורה בין לקוחות לרשת. נשמר להפעלות מחדש.",
+    "firewall": "פתיחת הפורט בחומת האש",
+    "firewallDesc": "מוסיף את פורט ה-UDP ל-ufw או firewalld כאשר אחד מהם פעיל.",
+    "start": "הפעלה עכשיו ובהפעלה",
+    "startDesc": "מפעיל את הממשק ושומר אותו פעיל לאחר הפעלה מחדש.",
+    "save": "יצירה",
+    "done": "הממשק מוכן.",
+    "failed": "לא ניתן ליצור את הממשק."
+  },
+  "detail": {
+    "clients": "לקוחות",
+    "settings": "הגדרות",
+    "config": "תצורה",
+    "service": "שירות",
+    "gone": "ממשק זה אינו קיים עוד במארח."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "הצג את הלשונית WireGuard עבור מארח זה בתפריט שלו."
+      },
+      "showPanel": {
+        "label": "הצג את פאנל ה-WireGuard בטרמינלים",
+        "description": "אפשר לפאנל ה-WireGuard להיפתח ליד הטרמינל SSH של מארח זה."
+      },
+      "alertDown": {
+        "label": "התרע כאשר ממשק כבוי",
+        "description": "שלח התראה כאשר ממשק שמתחיל בהפעלה אינו פעיל. נבדק בעת קריאת מצב ה-WireGuard."
+      }
+    },
+    "publicKey": "מפתח ציבורי",
+    "port": "פורט UDP",
+    "endpoint": "נקודת קצה של שרת",
+    "endpointHint": "הכתובת הציבורית אליה מתחברים הלקוחות, כמו vpn.example.com:51820.",
+    "dns": "DNS ללקוחות",
+    "dnsHint": "אופציונלי. הפרד בין שרתים באמצעות פסיקים.",
+    "allowed": "תעבורה דרך ה-VPN",
+    "allowedHint": "הטווחים שהלקוחות שולחים דרך ה-VPN. 0.0.0.0/0, ::/0 שולח הכל.",
+    "keepalive": "שמירה על חיבור (שניות)",
+    "keepaliveHint": "שומר על לקוחות מאחורי NAT כנגישים. השתמש ב-0 כדי לכבות.",
+    "saved": "ההגדרות נשמרו.",
+    "saveFailed": "לא ניתן לשמור את ההגדרות.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "פתח את פאנל ה-WireGuard עם טרמינלים חדשים",
+        "description": "הצג את פאנל ה-WireGuard ליד כל טרמינל SSH שיש לו WireGuard פעיל. עדיין ניתן לפתוח ולסגור אותו מהכפתור בקצה הימני."
+      },
+      "companionSide": {
+        "label": "צד פאנל ה-WireGuard",
+        "description": "איפה פאנל ה-WireGuard ממוקם ליד טרמינל.",
+        "right": "ימין",
+        "left": "שמאל",
+        "bottom": "מטה"
+      },
+      "companionSize": {
+        "label": "גודל פאנל ה-WireGuard",
+        "description": "רוחב בפיקסלים, או גובה כשהוא למטה. ניתן גם לגרור את הקצה שלו."
+      },
+      "companionEdgeButton": {
+        "label": "הצג את כפתור הפאנל",
+        "description": "הצג כפתור קטן בקצה הימני של טרמינל שפותח את פאנל ה-WireGuard."
+      }
+    }
+  },
+  "clients": {
+    "add": "הוסף לקוח",
+    "empty": "אין לקוחות עדיין.",
+    "loadFailed": "לא ניתן לטעון את הלקוחות.",
+    "name": "שם",
+    "nameHint": "אותיות, מספרים, נקודות, מקפים וקווים תחתונים.",
+    "allowed": "תעבורה דרך ה-VPN",
+    "allowedHint": "השאר ריק כדי להשתמש בהגדרת ברירת המחדל של הממשק: {{value}}",
+    "create": "צור לקוח",
+    "addFailed": "לא ניתן להוסיף את הלקוח.",
+    "needEndpoint": "קודם הגדר את נקודת הקצה של השרת בהגדרות הממשק.",
+    "connected": "מחובר",
+    "off": "כבוי",
+    "external": "נוצר ידנית",
+    "handshake": "התאמה {{ago}} לפני כן",
+    "showConfig": "הצג תצורה וקוד QR",
+    "configFailed": "לא ניתן לקרוא את תצורת הלקוח.",
+    "rotate": "מפתחות חדשים",
+    "rotateTitle": "ליצור מפתחות חדשים עבור {{name}}?",
+    "rotateDesc": "התצורה הישנה מפסיקה לעבוד. לאחר מכן, העבר ללקוח את התצורה החדשה.",
+    "turnOff": "כבה",
+    "turnOn": "הדלק",
+    "saveFailed": "לא ניתן לשנות את הלקוח.",
+    "deleteTitle": "למחוק את {{name}}?",
+    "deleteDesc": "הלקוח יוסר ולא יוכל עוד להתחבר.",
+    "deleteFailed": "לא ניתן למחוק את הלקוח."
+  },
+  "clientConfig": {
+    "note": "תצורה זו מכילה את המפתח הפרטי של הלקוח. שתף אותה רק עם האדם או המכשיר שישתמשו בה.",
+    "qr": "קוד QR לתצורת הלקוח",
+    "copy": "העתק",
+    "copied": "התצורה הועתקה.",
+    "copyFailed": "לא ניתן להעתיק את התצורה.",
+    "download": "הורד .conf"
+  },
+  "config": {
+    "title": "קובץ תצורה",
+    "hint": "מפתחות פרטיים ומשותפים מוסתרים. השאר את המקום הפנוי כדי לשמור על מפתח. התצורה נבדקת לפני השמירה וגרסת גיבוי נשמרת. שינויי כתובות דורשים הפעלה מחדש.",
+    "loadFailed": "לא ניתן לקרוא את התצורה.",
+    "saved": "התצורה נשמרה.",
+    "saveFailed": "לא ניתן לשמור את התצורה."
+  },
+  "logs": {
+    "loadFailed": "לא ניתן לקרוא את היומנים.",
+    "lines": "{{count}} שורות",
+    "empty": "אין שורות יומן."
+  },
+  "service": {
+    "failed": "פעולת השירות נכשלה.",
+    "start": "הפעל",
+    "stop": "עצור",
+    "restart": "הפעל מחדש",
+    "autostart": "הפעל בעת האתחול",
+    "autostartDesc": "הפעל ממשק זה כאשר המארח מתחיל.",
+    "needsSystemd": "הפעלה בעת האתחול דורשת systemd במארח זה.",
+    "noForward": "העברת כתובות IP כבויה במארח זה, ולכן לקוחות אינם יכולים להגיע לרשת דרך NAT.",
+    "delete": "מחק ממשק",
+    "deleteTitle": "למחוק את {{name}}?",
+    "deleteDesc": "הממשק מושהה והתצורה שלו, המפתחות וקבצי הלקוחות השמורים מוסרים מהמארח.",
+    "deleteFailed": "לא ניתן למחוק את הממשק."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "הפעל את WireGuard בהגדרות של מארח זה כדי להשתמש בכרטיס זה.",
+    "start": "הפעל",
+    "stop": "כבה",
+    "done": "{{name}} עודכן"
+  },
+  "operations": {
+    "list": {
+      "title": "רשימת ממשקי WireGuard"
+    },
+    "down": {
+      "title": "ממשקי WireGuard כבויים"
+    },
+    "start": {
+      "title": "הפעל ממשק WireGuard"
+    },
+    "stop": {
+      "title": "עצור ממשק WireGuard"
+    },
+    "restart": {
+      "title": "הפעל מחדש ממשק WireGuard"
+    },
+    "interfaces": {
+      "title": "ממשקי WireGuard",
+      "address": "כתובת",
+      "port": "פורט",
+      "clients": "לקוחות"
+    }
+  },
+  "nav": {
+    "togglePanel": "הצג/הסתר לוח WireGuard"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "בודק מארחים...",
+    "summary_one": "{{count}} לקוח ב-{{hosts}} מארחים",
+    "summary_two": "{{count}} לקוחות ב-{{hosts}} מארחים",
+    "summary_other": "{{count}} לקוחות ב-{{hosts}} מארחים",
+    "refresh": "בדוק שוב",
+    "empty": "הפעל את WireGuard עבור מארח כדי לראות אותו כאן.",
+    "missing": "לא מותקן",
+    "down_one": "{{count}} כבוי",
+    "down_two": "{{count}} כבויים",
+    "down_other": "{{count}} כבויים",
+    "interfaces_one": "{{count}} ממשק, {{clients}} לקוחות",
+    "interfaces_two": "{{count}} ממשקים, {{clients}} לקוחות",
+    "interfaces_other": "{{count}} ממשקים, {{clients}} לקוחות"
+  }
+}

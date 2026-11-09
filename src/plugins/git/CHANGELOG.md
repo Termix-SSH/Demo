@@ -14,7 +14,4 @@
 - A Git panel beside terminals, a dashboard card and status tiles for Operations Center
 - Pull, push, fetch, switch, merge and reset through Termix actions
 - Status tiles for repos that are behind, have changes or fail to pull
-
-### Changed
-
 - Needs Termix 26.11.1 or newer

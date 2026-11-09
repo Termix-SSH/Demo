@@ -1,0 +1,238 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Instalează WireGuard pe host-urile tale și gestionează interfețele, clienții și configurațiile dintr-o singură filă."
+  },
+  "common": {
+    "save": "Salvează",
+    "cancel": "Anulează",
+    "back": "Înapoi",
+    "delete": "Șterge",
+    "loading": "Se încarcă..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Folosește WireGuard",
+      "description": "Gestionează interfețele și clienții WireGuard pe host-urile pe care le poți edita."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Deschide WireGuard dintr-un host.",
+    "error": "Nu s-a putut încărca WireGuard de pe acest host.",
+    "sudo": "Acest host necesită o autentificare root sau sudo fără parolă pentru a gestiona WireGuard.",
+    "installed": "Instalat",
+    "notInstalled": "Neinstalat",
+    "refresh": "Reîmprospătează",
+    "viewInterfaces": "Interfețe",
+    "viewLogs": "Jurnale"
+  },
+  "install": {
+    "title": "Instalează WireGuard",
+    "desc": "Aceasta instalează utilitarele WireGuard și iptables folosind managerul de pachete al host-ului.",
+    "confirm": "Instalează",
+    "done": "WireGuard este instalat.",
+    "failed": "Nu s-a putut instala WireGuard.",
+    "empty": "WireGuard nu este instalat pe acest host",
+    "noManager": "Nu s-a găsit niciun manager de pachete suportat. Instalează WireGuard manual.",
+    "hint": "Instalează-l pe {{os}} pentru a rula un VPN de pe acest host.",
+    "thisHost": "acest host",
+    "button": "Instalează WireGuard",
+    "working": "Se instalează..."
+  },
+  "interfaces": {
+    "add": "Adaugă interfață",
+    "empty": "Nicio interfață încă. Adaugă una pentru a începe un VPN.",
+    "loadFailed": "Nu s-au putut încărca interfețele.",
+    "up": "Activă",
+    "down": "Inactivă",
+    "clients": "{{count}} clienți",
+    "nat": "NAT",
+    "boot": "Se pornește la boot"
+  },
+  "create": {
+    "title": "Adaugă interfață",
+    "name": "Nume",
+    "address": "Adresă",
+    "addressHint": "Adresa serverului și subnetul. Clienții primesc următoarele adrese libere.",
+    "port": "Port UDP",
+    "nat": "Partajează internetul host-ului (NAT)",
+    "natDesc": "Clienții pot accesa internetul și rețeaua host-ului prin acest host.",
+    "natMissing": "NAT necesită iptables, care nu este instalat pe acest host.",
+    "forwarding": "Activează forward-ul IP",
+    "forwardingDesc": "Permite host-ului să transmită traficul între clienți și rețea. Salvat pentru restarturi.",
+    "firewall": "Deschide portul în firewall",
+    "firewallDesc": "Adaugă portul UDP la ufw sau firewalld când unul este activ.",
+    "start": "Pornește acum și la boot",
+    "startDesc": "Activează interfața și o menține activă după un restart.",
+    "save": "Creează",
+    "done": "Interfața este gata.",
+    "failed": "Nu s-a putut crea interfața."
+  },
+  "detail": {
+    "clients": "Clienți",
+    "settings": "Setări",
+    "config": "Configurație",
+    "service": "Serviciu",
+    "gone": "Această interfață nu mai există pe host."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Afișează fila WireGuard pentru acest gazdă în meniul său."
+      },
+      "showPanel": {
+        "label": "Afișează panoul WireGuard în terminale",
+        "description": "Permite deschiderea panoului WireGuard lângă terminalul SSH al acestei gazde."
+      },
+      "alertDown": {
+        "label": "Alertă când o interfață este oprită",
+        "description": "Trimite o alertă când o interfață care ar trebui să pornească la boot nu este activă. Verificat la citirea stării WireGuard."
+      }
+    },
+    "publicKey": "Cheie publică",
+    "port": "Port UDP",
+    "endpoint": "Punct final al serverului",
+    "endpointHint": "Adresa publică la care se conectează clienții, de exemplu vpn.example.com:51820.",
+    "dns": "DNS pentru clienți",
+    "dnsHint": "Opțional. Separați serverele prin virgule.",
+    "allowed": "Trafic prin VPN",
+    "allowedHint": "Intervalurile pe care clienții le trimit prin VPN. 0.0.0.0/0, ::/0 trimite totul.",
+    "keepalive": "Keepalive (secunde)",
+    "keepaliveHint": "Menține clienții din spatele NAT accesibili. Folosiți 0 pentru a dezactiva.",
+    "saved": "Setările au fost salvate.",
+    "saveFailed": "Nu s-au putut salva setările.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Deschide panoul WireGuard cu terminalele noi",
+        "description": "Afișează panoul WireGuard lângă fiecare terminal SSH care are WireGuard activat. Îl puteți deschide și închide în continuare din butonul de pe marginea dreaptă."
+      },
+      "companionSide": {
+        "label": "Poziția panoului WireGuard",
+        "description": "Unde se află panoul WireGuard lângă un terminal.",
+        "right": "Dreapta",
+        "left": "Stânga",
+        "bottom": "Jos"
+      },
+      "companionSize": {
+        "label": "Dimensiunea panoului WireGuard",
+        "description": "Lățimea în pixeli, sau înălțimea când este jos. Puteți trage și de marginea sa."
+      },
+      "companionEdgeButton": {
+        "label": "Afișează butonul panoului",
+        "description": "Afișează un buton mic pe marginea dreaptă a unui terminal care deschide panoul WireGuard."
+      }
+    }
+  },
+  "clients": {
+    "add": "Adaugă client",
+    "empty": "Încă nu există clienți.",
+    "loadFailed": "Nu s-au putut încărca clienții.",
+    "name": "Nume",
+    "nameHint": "Litere, cifre, puncte, cratime și underscore-uri.",
+    "allowed": "Trafic prin VPN",
+    "allowedHint": "Lăsați gol pentru a folosi valoarea implicită a interfeței: {{value}}",
+    "create": "Creează client",
+    "addFailed": "Nu s-a putut adăuga clientul.",
+    "needEndpoint": "Setați mai întâi punctul final al serverului în setările interfeței.",
+    "connected": "Conectat",
+    "off": "Oprit",
+    "external": "Creat manual",
+    "handshake": "handshake acum {{ago}}",
+    "showConfig": "Afișează configurația și codul QR",
+    "configFailed": "Nu s-a putut citi configurația clientului.",
+    "rotate": "Chei noi",
+    "rotateTitle": "Să se genereze chei noi pentru {{name}}?",
+    "rotateDesc": "Configurația veche nu mai funcționează. Furnizați clientului noua configurație ulterior.",
+    "turnOff": "Oprește",
+    "turnOn": "Pornește",
+    "saveFailed": "Nu s-a putut modifica clientul.",
+    "deleteTitle": "Ștergeți {{name}}?",
+    "deleteDesc": "Clientul este eliminat și nu se mai poate conecta.",
+    "deleteFailed": "Nu s-a putut șterge clientul."
+  },
+  "clientConfig": {
+    "note": "Această configurație conține cheia privată a clientului. Distribuiți-o doar persoanei sau dispozitivului care o va folosi.",
+    "qr": "Cod QR pentru configurația clientului",
+    "copy": "Copiază",
+    "copied": "Configurație copiată.",
+    "copyFailed": "Nu s-a putut copia configurația.",
+    "download": "Descarcă .conf"
+  },
+  "config": {
+    "title": "Fișier de configurație",
+    "hint": "Cheile private și pre-partajate sunt ascunse. Lăsați placeholder-ul pentru a păstra o cheie. Configurația este verificată înainte de salvare și se păstrează o copie de rezervă. Modificările adresei necesită o repornire.",
+    "loadFailed": "Nu s-a putut citi configurația.",
+    "saved": "Configurație salvată.",
+    "saveFailed": "Nu s-a putut salva configurația."
+  },
+  "logs": {
+    "loadFailed": "Nu s-au putut citi jurnalele.",
+    "lines": "{{count}} linii",
+    "empty": "Nicio linie în jurnal."
+  },
+  "service": {
+    "failed": "Acțiunea serviciului a eșuat.",
+    "start": "Pornește",
+    "stop": "Oprește",
+    "restart": "Repornire",
+    "autostart": "Pornește la pornire",
+    "autostartDesc": "Pornește această interfață când gazda pornește.",
+    "needsSystemd": "Pornirea la boot necesită systemd pe această gazdă.",
+    "noForward": "Forward-ul IP este dezactivat pe această gazdă, așa că clienții nu pot ajunge la rețea prin NAT.",
+    "delete": "Șterge interfața",
+    "deleteTitle": "Ștergi {{name}}?",
+    "deleteDesc": "Interfața este oprită, iar configurația, cheile și fișierele salvate ale clientului sunt eliminate de pe gazdă.",
+    "deleteFailed": "Nu s-a putut șterge interfața."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Activează WireGuard în setările acestei gazde pentru a folosi acest card.",
+    "start": "Activează",
+    "stop": "Dezactivează",
+    "done": "{{name}} actualizat"
+  },
+  "operations": {
+    "list": {
+      "title": "Listează interfețele WireGuard"
+    },
+    "down": {
+      "title": "Interfețe WireGuard inactive"
+    },
+    "start": {
+      "title": "Pornește interfața WireGuard"
+    },
+    "stop": {
+      "title": "Oprește interfața WireGuard"
+    },
+    "restart": {
+      "title": "Repornire interfață WireGuard"
+    },
+    "interfaces": {
+      "title": "Interfețe WireGuard",
+      "address": "Adresă",
+      "port": "Port",
+      "clients": "Clienți"
+    }
+  },
+  "nav": {
+    "togglePanel": "Comută panoul WireGuard"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Se verifică gazdele...",
+    "summary_one": "{{count}} client pe {{hosts}} gazde",
+    "summary_few": "{{count}} clienți pe {{hosts}} gazde",
+    "summary_other": "{{count}} clienți pe {{hosts}} gazde",
+    "refresh": "Verifică din nou",
+    "empty": "Activează WireGuard pentru o gazdă pentru a o vedea aici.",
+    "missing": "Nu este instalat",
+    "down_one": "{{count}} inactive",
+    "down_few": "{{count}} inactive",
+    "down_other": "{{count}} inactive",
+    "interfaces_one": "{{count}} interfață, {{clients}} clienți",
+    "interfaces_few": "{{count}} interfețe, {{clients}} clienți",
+    "interfaces_other": "{{count}} interfețe, {{clients}} clienți"
+  }
+}

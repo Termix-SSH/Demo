@@ -1,0 +1,209 @@
+{
+  "plugin": {
+    "name": "Paket",
+    "description": "Lihat dan instal pembaruan pada host Anda, cari, instal, dan hapus paket, serta baca riwayat paket."
+  },
+  "common": {
+    "cancel": "Batal",
+    "back": "Kembali"
+  },
+  "permissions": {
+    "use": {
+      "title": "Gunakan Paket",
+      "description": "Lihat paket dan pembaruan pada host yang dapat Anda jangkau, serta ubah paket pada host yang dapat Anda edit."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Paket",
+        "description": "Kelola paket dan pembaruan pada host ini dari tab Paket."
+      },
+      "useSudo": {
+        "label": "Gunakan sudo",
+        "description": "Gunakan sudo untuk menginstal, memperbarui, dan menghapus paket. Matikan jika login sebagai root."
+      },
+      "readOnly": {
+        "label": "Saja baca",
+        "description": "Tampilkan paket dan pembaruan, tetapi jangan pernah mengubahnya di host ini."
+      },
+      "showPanel": {
+        "label": "Tampilkan panel pembaruan di terminal",
+        "description": "Biarkan panel pembaruan terbuka di sebelah terminal SSH host ini."
+      },
+      "alertUpdates": {
+        "label": "Peringatan untuk pembaruan keamanan",
+        "description": "Kirimkan peringatan ketika host ini memiliki pembaruan keamanan atau perlu di-reboot. Diperiksa saat pembaruan dibaca, sekitar sekali per jam."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Buka panel pembaruan bersama terminal baru",
+        "description": "Tampilkan panel pembaruan di sebelah setiap terminal SSH yang memiliki Paket diaktifkan. Anda masih bisa membukanya dan menutupnya dari tombol di tepi kanan."
+      },
+      "companionSide": {
+        "label": "Sisi panel pembaruan",
+        "description": "Di mana panel pembaruan berada di sebelah terminal.",
+        "right": "Kanan",
+        "left": "Kiri",
+        "bottom": "Bawah"
+      },
+      "companionSize": {
+        "label": "Ukuran panel pembaruan",
+        "description": "Lebar dalam piksel, atau tinggi saat berada di bagian bawah. Anda juga dapat menyeret tepinya."
+      },
+      "companionEdgeButton": {
+        "label": "Tampilkan tombol panel",
+        "description": "Tampilkan tombol kecil di tepi kanan terminal yang membuka panel pembaruan."
+      }
+    }
+  },
+  "tab": {
+    "title": "Paket",
+    "noHost": "Buka Paket dari host.",
+    "error": "Tidak dapat memuat paket dari host ini.",
+    "disabled": "Paket dinonaktifkan untuk host ini. Aktifkan di pengaturan host.",
+    "sudo": "Perubahan memerlukan login root, sudo tanpa kata sandi, atau Kata Sandi Sudo yang disimpan pada host ini.",
+    "refresh": "Segarkan",
+    "readOnly": "Saja baca",
+    "noManager": "Tidak ada manajer paket",
+    "noManagerTitle": "Tidak ditemukan manajer paket yang didukung",
+    "noManagerHint": "Paket bekerja dengan apt, dnf, yum, zypper, pacman, dan apk.",
+    "indexAge": "Indeks disegarkan {{ago}} yang lalu",
+    "reboot": "Host ini perlu di-reboot untuk menyelesaikan pembaruan.",
+    "viewUpdates": "Pembaruan",
+    "viewInstalled": "Terinstal",
+    "viewSearch": "Cari",
+    "viewHistory": "Riwayat",
+    "viewRepos": "Repositori"
+  },
+  "actions": {
+    "working": "{{action}} sedang berjalan. Ini bisa memakan waktu beberapa menit.",
+    "ok": "Selesai",
+    "failed": "Manajer paket gagal.",
+    "noOutput": "Tidak ada output.",
+    "refresh": {
+      "label": "Segarkan indeks",
+      "confirm": "Segarkan indeks paket?",
+      "desc": "Mengunduh daftar paket terbaru.",
+      "done": "Indeks paket sudah diperbarui."
+    },
+    "update": {
+      "label": "Perbarui",
+      "confirm_other": "Perbarui {{count}} paket?",
+      "desc": "Menginstal versi terbaru dari {{names}}.",
+      "done": "{{names}} telah diperbarui."
+    },
+    "upgrade-all": {
+      "label": "Tingkatkan semua",
+      "confirm": "Tingkatkan semua paket?",
+      "desc": "Memperbarui indeks paket dan menginstal semua pembaruan. Layanan mungkin akan dimulai ulang selama proses berjalan.",
+      "done": "Semua paket sudah diperbarui."
+    },
+    "install": {
+      "label": "Instal",
+      "confirm": "Instal {{names}}?",
+      "desc": "Menginstal {{names}} dan semua dependensinya.",
+      "done": "{{names}} berhasil diinstal."
+    },
+    "remove": {
+      "label": "Hapus",
+      "confirm": "Hapus {{names}}?",
+      "desc": "Menghapus {{names}} dari host ini. Program yang membutuhkannya mungkin berhenti berfungsi.",
+      "done": "{{names}} berhasil dihapus."
+    },
+    "hold": {
+      "label": "Tahan pada versi ini",
+      "confirm": "Tahan {{names}}?",
+      "desc": "Pembaruan akan melewatkan {{names}} hingga Anda melepaskannya.",
+      "done": "{{names}} sedang ditahan."
+    },
+    "unhold": {
+      "label": "Lepaskan penahanan",
+      "confirm": "Lepaskan {{names}}?",
+      "desc": "{{names}} akan menerima pembaruan lagi.",
+      "done": "{{names}} akan menerima pembaruan lagi."
+    }
+  },
+  "updates": {
+    "search": "Saring pembaruan",
+    "count_other": "{{count}} pembaruan",
+    "countSecurity_other": "{{count}} pembaruan, {{security}} untuk keamanan",
+    "updatePicked_other": "Perbarui {{count}} paket",
+    "updateOne": "Perbarui",
+    "pick": "Pilih {{name}}",
+    "security": "Keamanan",
+    "empty": "Semua sudah terbaru.",
+    "noMatch": "Tidak ada pembaruan yang cocok.",
+    "loadFailed": "Gagal membaca pembaruan."
+  },
+  "installed": {
+    "search": "Saring paket terinstal",
+    "all": "Semua",
+    "held": "Ditahan",
+    "heldBadge": "Ditahan",
+    "empty": "Tidak ada paket yang cocok.",
+    "loadFailed": "Gagal membaca paket terinstal."
+  },
+  "search": {
+    "placeholder": "Cari paket",
+    "button": "Cari",
+    "hint": "Cari paket di repositori host untuk diinstal.",
+    "empty": "Tidak ada hasil.",
+    "installed": "Terinstal",
+    "failed": "Pencarian gagal."
+  },
+  "history": {
+    "empty": "Tidak ada riwayat paket ditemukan.",
+    "loadFailed": "Gagal membaca riwayat paket."
+  },
+  "repos": {
+    "hint": "Repositori tempat host ini menginstal paket. Ubah langsung di host.",
+    "empty": "Tidak ada repositori ditemukan.",
+    "off": "Nonaktif",
+    "loadFailed": "Gagal membaca repositori."
+  },
+  "card": {
+    "title": "Pembaruan paket",
+    "loading": "Memeriksa host...",
+    "summary_other": "{{count}} pembaruan di {{hosts}} host",
+    "refresh": "Periksa lagi",
+    "empty": "Aktifkan Paket untuk host agar pembaruannya muncul di sini.",
+    "security_other": "{{count}} keamanan",
+    "reboot": "Reboot diperlukan",
+    "updates_other": "{{count}} pembaruan",
+    "upToDate": "Sudah terbaru"
+  },
+  "manager": {
+    "title": "Paket",
+    "disabled": "Aktifkan Paket untuk host ini di pengaturan agar pembaruannya muncul di sini."
+  },
+  "operations": {
+    "list": {
+      "title": "Daftar pembaruan paket"
+    },
+    "updates": {
+      "title": "Pembaruan tertunda",
+      "resource": "Pembaruan tertunda"
+    },
+    "upgradeAll": {
+      "title": "Tingkatkan semua paket"
+    },
+    "install": {
+      "title": "Instal paket"
+    },
+    "remove": {
+      "title": "Hapus paket"
+    },
+    "package": "Paket",
+    "packageHint": "Satu atau lebih nama paket, dipisahkan oleh spasi.",
+    "resource": {
+      "current": "Terinstal",
+      "available": "Tersedia",
+      "repo": "Repositori"
+    }
+  },
+  "nav": {
+    "togglePanel": "Buka/tutup panel pembaruan"
+  }
+}

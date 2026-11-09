@@ -97,6 +97,17 @@ export function HostForm({
   const [form, setForm] = useState<HostEditorForm>(() =>
     applyHostDraft(createHostEditorForm(host), host ? undefined : draft),
   );
+  // Emptying a field over a saved secret keeps that secret.
+  const [savedSecrets] = useState(() => {
+    const start = createHostEditorForm(host);
+    const kept = (value: string, marker: string) =>
+      value === marker ? marker : "";
+    return {
+      password: kept(start.password, "existing_password"),
+      key: kept(String(start.key), "existing_key"),
+      keyPassword: kept(start.keyPassword, "existing_key_password"),
+    };
+  });
   const [protocols, setProtocols] = useState<HostProtocols>(() =>
     hostProtocolFlags(host),
   );
@@ -367,8 +378,20 @@ export function HostForm({
                 <Field label={t("hostForm.password")}>
                   <PasswordInput
                     className="h-8 pr-8 text-xs"
-                    value={form.password}
-                    onChange={(e) => setField("password", e.target.value)}
+                    value={
+                      form.password === "existing_password" ? "" : form.password
+                    }
+                    placeholder={
+                      form.password === "existing_password"
+                        ? t("hostForm.keySaved")
+                        : ""
+                    }
+                    onChange={(e) =>
+                      setField(
+                        "password",
+                        e.target.value || savedSecrets.password,
+                      )
+                    }
                   />
                 </Field>
               )}
@@ -389,7 +412,7 @@ export function HostForm({
                           : "-----BEGIN OPENSSH PRIVATE KEY-----"
                       }
                       onChange={(e) =>
-                        setField("key", e.target.value || "existing_key")
+                        setField("key", e.target.value || savedSecrets.key)
                       }
                       className="min-h-28 font-mono text-xs"
                     />
@@ -407,7 +430,12 @@ export function HostForm({
                           ? t("hostForm.keySaved")
                           : ""
                       }
-                      onChange={(e) => setField("keyPassword", e.target.value)}
+                      onChange={(e) =>
+                        setField(
+                          "keyPassword",
+                          e.target.value || savedSecrets.keyPassword,
+                        )
+                      }
                     />
                   </Field>
                 </>

@@ -1,0 +1,294 @@
+{
+  "plugin": {
+    "name": "Web Servers",
+    "description": "Valdykite nginx, Apache ir Caddy savo hostuose: svetaines, konfigūraciją, žurnalus ir HTTPS, kiekvieną pakeitimą pirmiausia patikrinę."
+  },
+  "common": {
+    "cancel": "Atšaukti",
+    "back": "Atgal",
+    "loading": "Kraunama..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Naudoti Web Servers",
+      "description": "Peržiūrėkite web serverius ir svetaines hostuose, kuriuos pasiekiate, ir keiskite jas hostuose, kuriuos galite redaguoti."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Web Servers",
+        "description": "Valdykite nginx, Apache ir Caddy šiame hoste per Web Servers skirtuką."
+      },
+      "useSudo": {
+        "label": "Naudoti sudo",
+        "description": "Naudokite sudo web serverio skaitymui ir keitimui. Išjunkite, jei prisijungiate kaip root."
+      },
+      "readOnly": {
+        "label": "Tik skaitymui",
+        "description": "Rodyti svetaines, konfigūraciją ir žurnalus, bet niekada jų nekeisti šiame hoste."
+      },
+      "showPanel": {
+        "label": "Panelė šalia terminalo",
+        "description": "Pateikti Web Servers panelę šio hosto terminalo skirtukuose."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Atidaryti panelę kartu su terminalu",
+        "description": "Rodyti Web Servers panelę, kai atidaromas terminalas hoste, kuriame ji įgalinta."
+      },
+      "companionSide": {
+        "label": "Panelės pusė",
+        "description": "Kur panelė yra šalia terminalo.",
+        "right": "Dešinėje",
+        "left": "Kairėje",
+        "bottom": "Apačioje"
+      },
+      "companionSize": {
+        "label": "Panelės dydis",
+        "description": "Panelės plotis arba jos aukštis apačioje, pikseliais."
+      },
+      "companionEdgeButton": {
+        "label": "Krašto mygtukas",
+        "description": "Rodyti mažą mygtuką terminalo krašte, skirtą panelės atidarymui."
+      }
+    }
+  },
+  "tab": {
+    "title": "Web Servers",
+    "noHost": "Atidarykite Web Servers iš hosto.",
+    "error": "Nepavyko įkelti web serverių šiame hoste.",
+    "disabled": "Web Servers šiame hoste išjungtas. Įjunkite jį hosto nustatymuose.",
+    "sudo": "Pakeitimams reikia root prisijungimo, slaptažodžio nereikalaujančio sudo arba išsaugoto Sudo slaptažodžio šiame hoste.",
+    "refresh": "Atnaujinti",
+    "readOnly": "Tik skaitymui",
+    "noServer": "Web serveris neįdiegtas",
+    "noServerHint": "Įdiekite nginx, Apache arba Caddy iš Serverio puslapio.",
+    "openServer": "Atidaryti serverį",
+    "viewSites": "Svetainės",
+    "viewConfig": "Konfigūracija",
+    "viewLogs": "Žurnalai",
+    "viewServer": "Serveris"
+  },
+  "actions": {
+    "ok": "Atlikta",
+    "failed": "Nepavyko",
+    "noOutput": "Nėra išvesties."
+  },
+  "watch": {
+    "start": "Praneškite man, kai web serveris sustos",
+    "stop": "Sustabdyti pranešimus šiam hostui",
+    "on": "Gausite pranešimą, kai šio hosto web serveris sustos",
+    "off": "Šio hosto pranešimai išjungti",
+    "failed": "Nepavyko pakeisti pranešimų"
+  },
+  "sites": {
+    "add": "Pridėti svetainę",
+    "search": "Ieškoti svetainių",
+    "empty": "Dar nėra svetainių.",
+    "loadFailed": "Nepavyko įkelti svetainių.",
+    "off": "Išjungta",
+    "anyName": "bet koks pavadinimas",
+    "form": "Forma",
+    "certDays_one": "Liko {{count}} diena",
+    "certDays_few": "Liko {{count}} dienos",
+    "certDays_many": "Liko {{count}} dienų",
+    "certDays_other": "Liko {{count}} dienų",
+    "certExpired": "Sertifikatas pasibaigęs",
+    "enable": "Įjungti",
+    "disable": "Išjungti",
+    "enabled": "{{name}} yra įjungta",
+    "disabled": "{{name}} yra išjungta",
+    "delete": "Ištrinti",
+    "deleteTitle": "Ištrinti {{name}}?",
+    "deleteBody": "Failas bus pašalintas, o serveris perkrautas. Kopija išliks /var/lib/termix-web-servers/backups aplanke serveryje.",
+    "deleted": "{{name}} buvo ištrinta"
+  },
+  "site": {
+    "addTitle": "Naujas svetainės įrašas",
+    "editTitle": "Išsaugoti {{name}}",
+    "add": "Pridėti svetainę",
+    "save": "Išsaugoti",
+    "added": "{{name}} buvo pridėta",
+    "saved": "{{name}} buvo išsaugota",
+    "server": "Web serveris",
+    "name": "Svetainės pavadinimas",
+    "nameHint": "Naudojamas failo ir žurnalų failų pavadinimams, pvz., example.",
+    "modeForm": "Forma",
+    "modeText": "Tekstas",
+    "text": "Konfigūracija",
+    "textHint": "Išsaugojus tekstą, šiai svetainei bus išjungta forma, kad jūsų pakeitimai būtų išsaugoti.",
+    "type": "Tipas",
+    "typeStatic": "Statiniai failai",
+    "typeProxy": "Atvirkštinis proxy",
+    "typePhp": "PHP",
+    "typeRedirect": "Perkrypti",
+    "staticHint": "Pateikia failus iš aplanko.",
+    "proxyHint": "Siunčia užklausas programai, veikiančiai šiame serveryje arba kitame.",
+    "phpHint": "Pateikia failus iš aplanko ir vykdo .php failus su php-fpm.",
+    "redirectHint": "Perkrypti kiekvieną lankytoją į kitą adresą.",
+    "domains": "Domenai",
+    "domainsHint": "Paspauskite Enter po kiekvieno. Nginx atveju naudokite _ bet kuriam vardui atsakyti.",
+    "port": "HTTP prievadas",
+    "root": "Web šaknis",
+    "rootHint": "Aplankas /var/www, /srv, /usr/share/nginx, /opt arba /home viduje.",
+    "index": "Indeksavimo failai",
+    "spa": "Vienpusė programėlė",
+    "spaHint": "Kelius, kurie nėra failai, nukreipkite į /index.html.",
+    "upstream": "Programos adresas",
+    "upstreamHint": "Kur programėlė klausosi, pvz., http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Nukreipti lankytojus į",
+    "keepPath": "Išlaikyti kelią",
+    "keepPathHint": "Nukreipti /page į tą patį puslapį naujame adrese.",
+    "phpSocket": "php-fpm lizdas",
+    "phpSocketHint": "php-fpm lizdas nerastas. Įdiekite php-fpm arba įveskite host:port.",
+    "https": "HTTPS",
+    "httpsHint": "Reikia sertifikato. Pirmiausia išsaugokite svetainę, tada spauskite Gauti sertifikatą žemiau.",
+    "httpsCaddy": "Caddy pats gauna ir atnaujina sertifikatą.",
+    "httpsPort": "HTTPS prievadas",
+    "certPath": "Sertifikato failas",
+    "keyPath": "Raktų failas",
+    "forceHttps": "Nukreipti HTTP į HTTPS",
+    "gzip": "Suspausti atsakymus",
+    "accessLog": "Prieigos žurnalas",
+    "maxBody": "Įkėlimo limitas MB",
+    "maxBodyHint": "0 išlaiko serverio numatytąją reikšmę.",
+    "preview": "Peržiūra",
+    "previewFailed": "Nepavyko sukurti konfigūracijos."
+  },
+  "tls": {
+    "title": "HTTPS sertifikatas",
+    "hintText": "certbot gauna „Let's Encrypt“ sertifikatą šio svetainės domenams. Vėliau patys pridėkite sertifikatą prie svetainės. „certbot“ atnaujina sertifikatą ir perkrauna serverį.",
+    "needCertbot": "Pirmiausia „Server“ puslapyje įdiekite „certbot“ su jo priedu šiam serveriui.",
+    "email": "El. pašto adresas",
+    "emailHint": "Let's Encrypt čia rašo apie problemas. Neprivaloma.",
+    "staging": "Testo sertifikatas",
+    "stagingHint": "Naudoti „Let's Encrypt“ testavimo serverį. Naršyklės jo nepasikliaus.",
+    "issue": "Gauti sertifikatą",
+    "done": "Sertifikatas išsaugotas"
+  },
+  "config": {
+    "search": "Ieškoti failų",
+    "empty": "Nėra failų.",
+    "loadFailed": "Nepavyko įkelti failo.",
+    "test": "Testuoti konfigūraciją",
+    "testOk": "Konfigūracija teisinga",
+    "testFailed": "Konfigūracijoje yra klaidų",
+    "content": "Turinys",
+    "save": "Išsaugoti",
+    "saveHint": "Visa konfigūracija yra tikrinama prieš perkraunant serverį. Sugadintas failas yra atstatomas.",
+    "saved": "Išsaugota ir perkrauta",
+    "backups_one": "{{count}} atsarginė kopija",
+    "backups_few": "{{count}} atsarginės kopijos",
+    "backups_many": "{{count}} atsarginių kopijų",
+    "backups_other": "{{count}} atsarginių kopijų",
+    "restore": "Atkurti",
+    "restoreTitle": "Atkurti šią atsarginę kopiją?",
+    "restoreBody": "Failas bus grąžintas į būseną, kurią jis turėjo {{time}}. Dabartinis tekstas taip pat bus išsaugotas kaip atsarginė kopija.",
+    "restored": "Atsarginė kopija atkurta"
+  },
+  "logs": {
+    "source": "Žurnalai",
+    "lines": "Eilutės",
+    "journal": "{{server}} žurnalas",
+    "follow": "Sekti",
+    "stop": "Sustabdyti",
+    "connecting": "Jungiamasi...",
+    "ended": "Sekimas sustabdytas.",
+    "followFailed": "Nepavyko sekti šio žurnalo.",
+    "empty": "Eilučių nėra.",
+    "loadFailed": "Nepavyko perskaityti žurnalo.",
+    "requests": "Užklausos",
+    "topPaths": "Populiariausi keliai",
+    "topClients": "Populiariausi klientai"
+  },
+  "server": {
+    "unknown": "nežinoma",
+    "atBoot": "Paleidžiama paleidus sistemą",
+    "notInstalled": "Neįdiegta",
+    "start": "Paleisti",
+    "stop": "Sustabdyti",
+    "restart": "Perkrauti",
+    "reload": "Įkelti iš naujo",
+    "enable": "Paleisti paleidus sistemą",
+    "disable": "Nepaleisti paleidus sistemą",
+    "boot": "Paleisti paleidus sistemą",
+    "noBoot": "Nepaleisti paleidus sistemą",
+    "done": "{{server}} baigta",
+    "stopTitle": "Sustabdyti {{server}}?",
+    "stopBody": "Visi jo svetainės svetainės taps nepasiekiamos, kol jas vėl nepaleisite.",
+    "install": "Įdiegti",
+    "installTitle": "Įdiegti {{server}}?",
+    "installBody": "Jis įdiegiamas naudojant serverio paketų valdyklę ir paleidžiamas iškart. Jei 80 prievade veikia kitas svetainės serveris, tai neleis jam paleisti.",
+    "installed": "{{server}} buvo įdiegtas",
+    "installCertbot": "Įdiegti certbot",
+    "certbotInstalled": "certbot buvo įdiegtas",
+    "certbotPlugins": "Priedai: {{plugins}}",
+    "certbotNoPlugins": "Nėra nginx ar Apache priedo",
+    "certbotHint": "Gauna „Let's Encrypt“ sertifikatus nginx ir Apache svetainėms"
+  },
+  "card": {
+    "title": "Web serveriai",
+    "loading": "Įkeliama...",
+    "refresh": "Atnaujinti",
+    "empty": "Nėra jokių hostų, kuriuose būtų įjungti Web serveriai.",
+    "summary_one": "{{count}} hostas | {{down}} reikia patikrinti",
+    "summary_few": "{{count}} hostai | {{down}} reikia patikrinti",
+    "summary_many": "{{count}} hostų | {{down}} reikia patikrinti",
+    "summary_other": "{{count}} hostų | {{down}} reikia patikrinti",
+    "sites_one": "{{count}} svetainė",
+    "sites_few": "{{count}} svetainės",
+    "sites_many": "{{count}} svetainių",
+    "sites_other": "{{count}} svetainių"
+  },
+  "companion": {
+    "toggle": "Web serverių skydelis",
+    "openTab": "Atidaryti Web serverius",
+    "reload": "Perkrauti {{server}}"
+  },
+  "manager": {
+    "title": "Web serveriai",
+    "disabled": "Įjunkite Web serverius šiam hostui, kad čia matytumėte jo svetaines."
+  },
+  "operations": {
+    "status": {
+      "title": "Web serverio būsena"
+    },
+    "listSites": {
+      "title": "Svetainių sąrašas"
+    },
+    "test": {
+      "title": "Testuoti web serverio konfigūraciją"
+    },
+    "reload": {
+      "title": "Perkrauti web serverį"
+    },
+    "restart": {
+      "title": "Perkrauti web serverį iš naujo"
+    },
+    "enableSite": {
+      "title": "Įjungti svetainę"
+    },
+    "disableSite": {
+      "title": "Išjungti svetainę"
+    },
+    "deleteSite": {
+      "title": "Ištrinti svetainę"
+    },
+    "server": "Serveris",
+    "allServers": "Visi",
+    "sites": {
+      "title": "Svetainės",
+      "server": "Serveris",
+      "domains": "Domenai",
+      "https": "HTTPS"
+    }
+  }
+}

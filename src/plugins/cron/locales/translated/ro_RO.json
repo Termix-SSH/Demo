@@ -1,0 +1,210 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "Vizualizați, adăugați și executați sarcini cron pe gazdele dvs., cu o previzualizare a programului și fișierele cron de sistem."
+  },
+  "common": {
+    "save": "Salvează",
+    "cancel": "Anulează",
+    "back": "Înapoi",
+    "delete": "Șterge"
+  },
+  "permissions": {
+    "use": {
+      "title": "Folosește Cron",
+      "description": "Vizualizați sarcinile cron pe gazdele la care aveți acces și modificați-le pe cele pe care le puteți edita."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Gestionați sarcinile cron de pe această gazdă din fila Cron."
+      },
+      "useSudo": {
+        "label": "Folosește sudo",
+        "description": "Folosește sudo pentru crontab-urile altor utilizatori și /etc/cron.d. Dezactivați dacă autentificarea este ca root."
+      },
+      "readOnly": {
+        "label": "Doar citire",
+        "description": "Afișează sarcinile cron, dar nu le modifica niciodată pe această gazdă."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "Deschideți Cron dintr-o gazdă.",
+    "error": "Nu s-a putut încărca cron de pe această gazdă.",
+    "disabled": "Cron este dezactivat pentru această gazdă. Activați-l în setările gazdei.",
+    "sudo": "Aceasta necesită o autentificare root, sudo fără parolă sau o Parolă Sudo salvată.",
+    "refresh": "Reîmprospătează",
+    "running": "Cron rulează",
+    "stopped": "Cron oprit",
+    "readOnly": "Doar citire",
+    "notInstalled": "Nu este instalat",
+    "notInstalledTitle": "Cron nu este instalat pe această gazdă",
+    "notInstalledHint": "Instalați cron sau cronie cu managerul de pachete al gazdei, apoi reîmprospătați.",
+    "notRunning": "Serviciul cron nu rulează, deci nicio sarcină nu va fi executată.",
+    "viewJobs": "Sarcini",
+    "viewSystem": "Sistem",
+    "viewLogs": "Jurnale"
+  },
+  "jobs": {
+    "add": "Adaugă sarcină",
+    "user": "Crontab al",
+    "ownUser": "{{user}} (autentificare)",
+    "search": "Caută sarcini",
+    "editText": "Editează ca text",
+    "empty": "Încă nu există sarcini cron.",
+    "noMatch": "Nicio sarcină nu corespunde.",
+    "off": "Oprit",
+    "next": "următorul {{time}}",
+    "run": "Execută acum",
+    "runTitle": "Execuți această sarcină acum?",
+    "runDesc": "Aceasta execută {{command}} o singură dată ca utilizatorul crontab-ului. Se oprește după 2 minute.",
+    "runFailed": "Nu s-a putut executa sarcina.",
+    "turnOn": "Activează",
+    "turnOff": "Dezactivează",
+    "deleteTitle": "Ștergi această sarcină?",
+    "loadFailed": "Nu s-a putut citi crontab-ul.",
+    "saveFailed": "Nu s-a putut salva crontab-ul.",
+    "outputTitle": "Ieșirea sarcinii",
+    "exitOk": "Finalizat",
+    "exitCode": "Cod de ieșire {{code}}",
+    "noOutput": "Sarcina nu a afișat nimic."
+  },
+  "form": {
+    "addTitle": "Sarcină nouă",
+    "editTitle": "Editează sarcina",
+    "forUser": "Crontab al {{user}}",
+    "label": "Etichetă",
+    "labelHint": "Salvat ca comentariu deasupra sarcinii.",
+    "labelPlaceholder": "Backup zilnic",
+    "command": "Comandă",
+    "commandHint": "Rulează cu sh în directorul home al utilizatorului. Un % începe intrarea trimisă de cron, scrie \\% pentru unul real.",
+    "schedule": "Programare",
+    "scheduleHint": "Minut, oră, zi a lunii, lună și zi a săptămânii, sau un cuvânt precum @daily.",
+    "scheduleInvalid": "Aceasta nu este o programare validă.",
+    "nextRuns": "Următoarele execuții ({{zone}}):",
+    "enabled": "Activat",
+    "enabledHint": "O sarcină dezactivată rămâne în crontab ca un comentariu.",
+    "saved": "Salvat."
+  },
+  "presets": {
+    "everyMinute": "În fiecare minut",
+    "every5": "La fiecare 5 min",
+    "every15": "La fiecare 15 min",
+    "hourly": "Ore",
+    "daily": "Zilnic",
+    "weekly": "Săptămânal",
+    "monthly": "Lunar",
+    "reboot": "La pornire"
+  },
+  "schedule": {
+    "reboot": "La pornire",
+    "everyMinute": "În fiecare minut",
+    "everyNMinutes": "La fiecare {{n}} minute",
+    "hourlyAt": "În fiecare oră la minutul {{minute}}",
+    "everyNHours": "La fiecare {{n}} ore la minutul {{minute}}",
+    "dailyAt": "În fiecare zi la {{time}}",
+    "weekdaysAt": "Luni până Vineri la {{time}}",
+    "weeklyAt": "În fiecare {{day}} la {{time}}",
+    "monthlyAt": "În ziua {{day}} a fiecărei luni la {{time}}",
+    "custom": "Programare personalizată",
+    "invalid": "Nu este o programare validă"
+  },
+  "days": {
+    "0": "Duminică",
+    "1": "Luni",
+    "2": "Marți",
+    "3": "Miercuri",
+    "4": "Joi",
+    "5": "Vineri",
+    "6": "Sâmbătă"
+  },
+  "raw": {
+    "title": "Crontab ca text",
+    "hint": "O sarcină pe linie. Gazda verifică textul și păstrează vechiul crontab dacă există erori."
+  },
+  "system": {
+    "add": "Fișier nou",
+    "addTitle": "Fișier nou în /etc/cron.d",
+    "edit": "Editare",
+    "name": "Numele fișierului",
+    "nameHint": "Salvat ca /etc/cron.d/<name>. Cron ignoră numele cu puncte.",
+    "nameInvalid": "Folosiți doar litere, cifre, - și _.",
+    "content": "Conținutul fișierului",
+    "fileHint": "Fiecare sarcină specifică utilizatorul sub care rulează: minut oră zi lună zi_săptămână utilizator comandă. Fiecare linie este verificată înainte de salvare.",
+    "noJobs": "Nu există sarcini în acest fișier.",
+    "readHint": "Unele fișiere pot fi ascunse fără drepturi de root. Modificările de aici necesită o autentificare root, sudo fără parolă sau o Parolă Sudo salvată.",
+    "timers_one": "Această gazdă are și {{count}} timer systemd. Pluginul Services îl gestionează.",
+    "timers_few": "Această gazdă are și {{count}} timere systemd. Pluginul Services le gestionează.",
+    "timers_other": "Această gazdă are și {{count}} timere systemd. Pluginul Services le gestionează.",
+    "deleteTitle": "Ștergere /etc/cron.d/{{name}}?",
+    "deleteDesc": "O copie este păstrată în /var/lib/termix-cron/backup.",
+    "deleted": "Șters {{name}}.",
+    "saved": "Salvat {{name}}.",
+    "loadFailed": "Nu s-au putut citi fișierele cron de sistem.",
+    "saveFailed": "Nu s-a putut salva fișierul.",
+    "period": {
+      "hourly": "Rulează în fiecare oră",
+      "daily": "Rulează în fiecare zi",
+      "weekly": "Rulează în fiecare săptămână",
+      "monthly": "Rulează în fiecare lună"
+    }
+  },
+  "logs": {
+    "lines": "Linii",
+    "lineCount_one": "{{count}} linie",
+    "lineCount_few": "{{count}} linii",
+    "lineCount_other": "{{count}} linii",
+    "source": "Din {{source}}",
+    "noSource": "Nu s-a găsit niciun jurnal cron pe această gazdă.",
+    "empty": "Nicio linie de jurnal.",
+    "failed": "Nu s-a putut citi jurnalul cron."
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "Activați Cron pentru acest gazdă în setările sale pentru a vedea sarcinile sale aici."
+  },
+  "operations": {
+    "list": {
+      "title": "Listează sarcinile cron"
+    },
+    "enable": {
+      "title": "Activează sarcina cron"
+    },
+    "disable": {
+      "title": "Dezactivează sarcina cron"
+    },
+    "run": {
+      "title": "Execută sarcina cron acum"
+    },
+    "delete": {
+      "title": "Șterge sarcina cron"
+    },
+    "jobs": {
+      "title": "Sarcini cron",
+      "schedule": "Programare",
+      "command": "Comandă"
+    },
+    "status": {
+      "title": "Starea Cron"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "Se verifică gazdele...",
+    "summary_one": "{{count}} sarcină pe {{hosts}} gazde",
+    "summary_few": "{{count}} sarcini pe {{hosts}} gazde",
+    "summary_other": "{{count}} sarcini pe {{hosts}} gazde",
+    "refresh": "Verifică din nou",
+    "empty": "Activați Cron pentru o gazdă pentru a o vedea aici.",
+    "stopped": "Nu rulează",
+    "missing": "Nu este instalat",
+    "jobs_one": "{{count}} sarcină",
+    "jobs_few": "{{count}} sarcini",
+    "jobs_other": "{{count}} sarcini",
+    "off": "{{count}} oprite"
+  }
+}

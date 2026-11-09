@@ -1,0 +1,223 @@
+{
+  "plugin": {
+    "name": "Pacotes",
+    "description": "Veja e instale atualizações nos seus hosts, pesquise, instale e remova pacotes, e leia o histórico de pacotes."
+  },
+  "common": {
+    "cancel": "Cancelar",
+    "back": "Voltar"
+  },
+  "permissions": {
+    "use": {
+      "title": "Usar Pacotes",
+      "description": "Ver pacotes e atualizações nos hosts a que pode aceder, e alterá-los nos hosts que pode editar."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Pacotes",
+        "description": "Gerir pacotes e atualizações neste host a partir da aba Pacotes."
+      },
+      "useSudo": {
+        "label": "Usar sudo",
+        "description": "Usar sudo para instalar, atualizar e remover pacotes. Desative se a conta de login for root."
+      },
+      "readOnly": {
+        "label": "Apenas leitura",
+        "description": "Mostrar pacotes e atualizações, mas nunca alterá-los neste host."
+      },
+      "showPanel": {
+        "label": "Mostrar painel de atualizações nos terminais",
+        "description": "Permitir que o painel de atualizações abra ao lado do terminal SSH deste host."
+      },
+      "alertUpdates": {
+        "label": "Alertar sobre atualizações de segurança",
+        "description": "Enviar um alerta quando este host tiver atualizações de segurança ou precisar de reiniciar. Verificado quando as atualizações são lidas, aproximadamente uma vez por hora."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Abrir o painel de atualizações com novos terminais",
+        "description": "Mostrar o painel de atualizações ao lado de cada terminal SSH que tenha Pacotes ativado. Pode ainda abri-lo e fechá-lo através do botão na borda direita."
+      },
+      "companionSide": {
+        "label": "Lado do painel de atualizações",
+        "description": "Onde o painel de atualizações fica ao lado de um terminal.",
+        "right": "Direita",
+        "left": "Esquerda",
+        "bottom": "Em baixo"
+      },
+      "companionSize": {
+        "label": "Tamanho do painel de atualizações",
+        "description": "Largura em píxeis, ou altura quando está em baixo. Também pode arrastar a sua borda."
+      },
+      "companionEdgeButton": {
+        "label": "Mostrar o botão do painel",
+        "description": "Mostrar um pequeno botão na borda direita de um terminal que abre o painel de atualizações."
+      }
+    }
+  },
+  "tab": {
+    "title": "Pacotes",
+    "noHost": "Abra Pacotes a partir de um host.",
+    "error": "Não foi possível carregar os pacotes deste host.",
+    "disabled": "Pacotes está desativado para este host. Ative-o nas definições do host.",
+    "sudo": "As alterações requerem login root, sudo sem palavra-passe ou uma Palavra-passe Sudo guardada neste host.",
+    "refresh": "Atualizar",
+    "readOnly": "Apenas leitura",
+    "noManager": "Sem gestor de pacotes",
+    "noManagerTitle": "Não foi encontrado nenhum gestor de pacotes suportado",
+    "noManagerHint": "Pacotes funciona com apt, dnf, yum, zypper, pacman e apk.",
+    "indexAge": "Índice atualizado há {{ago}}",
+    "reboot": "Este host precisa de reiniciar para terminar uma atualização.",
+    "viewUpdates": "Atualizações",
+    "viewInstalled": "Instalados",
+    "viewSearch": "Pesquisar",
+    "viewHistory": "Histórico",
+    "viewRepos": "Repositórios"
+  },
+  "actions": {
+    "working": "{{action}} está a correr. Isto pode demorar alguns minutos.",
+    "ok": "Concluído",
+    "failed": "O gestor de pacotes falhou.",
+    "noOutput": "Sem saída.",
+    "refresh": {
+      "label": "Atualizar índice",
+      "confirm": "Atualizar o índice de pacotes?",
+      "desc": "Descarrega as listas de pacotes mais recentes.",
+      "done": "O índice de pacotes está atualizado."
+    },
+    "update": {
+      "label": "Atualizar",
+      "confirm_one": "Atualizar {{names}}?",
+      "confirm_many": "Atualizar {{count}} pacotes?",
+      "confirm_other": "Atualizar {{count}} pacotes?",
+      "desc": "Instala a versão mais recente de {{names}}.",
+      "done": "Atualizado {{names}}."
+    },
+    "upgrade-all": {
+      "label": "Atualizar tudo",
+      "confirm": "Atualizar todos os pacotes?",
+      "desc": "Atualiza o índice de pacotes e instala todas as atualizações. Os serviços podem reiniciar durante a execução.",
+      "done": "Todos os pacotes estão atualizados."
+    },
+    "install": {
+      "label": "Instalar",
+      "confirm": "Instalar {{names}}?",
+      "desc": "Instala {{names}} e tudo o que ele necessita.",
+      "done": "{{names}} instalado."
+    },
+    "remove": {
+      "label": "Remover",
+      "confirm": "Remover {{names}}?",
+      "desc": "Remove {{names}} deste host. Programas que dele dependam podem deixar de funcionar.",
+      "done": "{{names}} removido."
+    },
+    "hold": {
+      "label": "Manter nesta versão",
+      "confirm": "Manter {{names}}?",
+      "desc": "As atualizações ignorarão {{names}} até que o liberte.",
+      "done": "{{names}} está retido."
+    },
+    "unhold": {
+      "label": "Liberar retenção",
+      "confirm": "Liberar {{names}}?",
+      "desc": "{{names}} receberá atualizações novamente.",
+      "done": "{{names}} receberá atualizações novamente."
+    }
+  },
+  "updates": {
+    "search": "Filtrar atualizações",
+    "count_one": "{{count}} atualização",
+    "count_many": "{{count}} atualizações",
+    "count_other": "{{count}} atualizações",
+    "countSecurity_one": "{{count}} atualização, {{security}} de segurança",
+    "countSecurity_many": "{{count}} atualizações, {{security}} de segurança",
+    "countSecurity_other": "{{count}} atualizações, {{security}} de segurança",
+    "updatePicked_one": "Atualizar {{count}} pacote",
+    "updatePicked_many": "Atualizar {{count}} pacotes",
+    "updatePicked_other": "Atualizar {{count}} pacotes",
+    "updateOne": "Atualizar",
+    "pick": "Selecionar {{name}}",
+    "security": "Segurança",
+    "empty": "Tudo está atualizado.",
+    "noMatch": "Nenhuma atualização corresponde.",
+    "loadFailed": "Não foi possível ler as atualizações."
+  },
+  "installed": {
+    "search": "Filtrar pacotes instalados",
+    "all": "Todos",
+    "held": "Retidos",
+    "heldBadge": "Retido",
+    "empty": "Nenhum pacote corresponde.",
+    "loadFailed": "Não foi possível ler os pacotes instalados."
+  },
+  "search": {
+    "placeholder": "Pesquisar pacotes",
+    "button": "Pesquisar",
+    "hint": "Pesquisar nos repositórios do host por um pacote para instalar.",
+    "empty": "Nada encontrado.",
+    "installed": "Instalado",
+    "failed": "A pesquisa falhou."
+  },
+  "history": {
+    "empty": "Nenhum histórico de pacotes foi encontrado.",
+    "loadFailed": "Não foi possível ler o histórico de pacotes."
+  },
+  "repos": {
+    "hint": "Os repositórios deste host para instalação. Altere-os diretamente no host.",
+    "empty": "Nenhum repositório foi encontrado.",
+    "off": "Desativado",
+    "loadFailed": "Não foi possível ler os repositórios."
+  },
+  "card": {
+    "title": "Atualizações de pacotes",
+    "loading": "A verificar hosts...",
+    "summary_one": "{{count}} atualização em {{hosts}} hosts",
+    "summary_many": "{{count}} atualizações em {{hosts}} hosts",
+    "summary_other": "{{count}} atualizações em {{hosts}} hosts",
+    "refresh": "Verificar novamente",
+    "empty": "Ative Pacotes para um host para ver as suas atualizações aqui.",
+    "security_one": "{{count}} de segurança",
+    "security_many": "{{count}} de segurança",
+    "security_other": "{{count}} de segurança",
+    "reboot": "Reinício necessário",
+    "updates_one": "{{count}} atualização",
+    "updates_many": "{{count}} atualizações",
+    "updates_other": "{{count}} atualizações",
+    "upToDate": "Atualizado"
+  },
+  "manager": {
+    "title": "Pacotes",
+    "disabled": "Ative Pacotes para este host nas suas definições para ver as suas atualizações aqui."
+  },
+  "operations": {
+    "list": {
+      "title": "Listar atualizações de pacotes"
+    },
+    "updates": {
+      "title": "Atualizações pendentes",
+      "resource": "Atualizações pendentes"
+    },
+    "upgradeAll": {
+      "title": "Atualizar todos os pacotes"
+    },
+    "install": {
+      "title": "Instalar pacotes"
+    },
+    "remove": {
+      "title": "Remover pacotes"
+    },
+    "package": "Pacotes",
+    "packageHint": "Um ou mais nomes de pacotes, separados por espaços.",
+    "resource": {
+      "current": "Instalado",
+      "available": "Disponível",
+      "repo": "Repositório"
+    }
+  },
+  "nav": {
+    "togglePanel": "Alternar painel de atualizações"
+  }
+}

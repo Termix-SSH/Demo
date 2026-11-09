@@ -72,12 +72,20 @@ export function UptimeTab({ isVisible, tab }: TabProps) {
     return () => clearInterval(timer);
   }, [isVisible, load]);
 
-  const down = monitors?.filter((m) => m.status === "down").length ?? 0;
+  // Embedded in a host page, only that host's monitors show.
+  const forHost = tab.host ? Number(tab.host.id) : undefined;
+  const shown =
+    forHost === undefined
+      ? monitors
+      : (monitors?.filter((m) => m.hostId === forHost) ?? null);
+  const down = shown?.filter((m) => m.status === "down").length ?? 0;
   const tabs = [
     { id: "monitors", label: t("tab.monitors"), count: down || undefined },
     { id: "incidents", label: t("tab.incidents") },
     { id: "maintenance", label: t("tab.maintenance") },
-    ...(permissions.publish ? [{ id: "pages", label: t("tab.pages") }] : []),
+    ...(permissions.publish && forHost === undefined
+      ? [{ id: "pages", label: t("tab.pages") }]
+      : []),
   ];
 
   return (
@@ -109,7 +117,7 @@ export function UptimeTab({ isVisible, tab }: TabProps) {
         ) : null}
         {view === "monitors" ? (
           <MonitorsView
-            monitors={monitors}
+            monitors={shown}
             permissions={permissions}
             reload={load}
             presetHostId={
@@ -117,6 +125,7 @@ export function UptimeTab({ isVisible, tab }: TabProps) {
                 ? tab.data.addForHost
                 : undefined
             }
+            forHostId={forHost}
           />
         ) : null}
         {view === "incidents" ? (
@@ -129,7 +138,7 @@ export function UptimeTab({ isVisible, tab }: TabProps) {
         {view === "maintenance" ? (
           <MaintenanceView
             key={stamp}
-            monitors={monitors ?? []}
+            monitors={shown ?? []}
             canManage={permissions.manage}
           />
         ) : null}

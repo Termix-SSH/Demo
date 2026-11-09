@@ -1,0 +1,202 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "查看、新增並執行主機上的 cron 工作，包含排程預覽與系統 cron 檔案。"
+  },
+  "common": {
+    "save": "儲存",
+    "cancel": "取消",
+    "back": "返回",
+    "delete": "刪除"
+  },
+  "permissions": {
+    "use": {
+      "title": "使用 Cron",
+      "description": "查看可連線主機上的 cron 工作，並修改可編輯主機上的設定。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "從 Cron 分頁管理此主機上的 cron 工作。"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "對其他使用者的 crontab 與 /etc/cron.d 使用 sudo。若登入帳號為 root，請關閉此選項。"
+      },
+      "readOnly": {
+        "label": "唯讀",
+        "description": "僅顯示 cron 工作，不允許在此主機上進行修改。"
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "從主機開啟 Cron。",
+    "error": "無法從此主機載入 cron。",
+    "disabled": "此主機已關閉 Cron。請前往主機設定中開啟。",
+    "sudo": "此功能需要 root 登入、免密碼 sudo 或已儲存的 Sudo 密碼。",
+    "refresh": "重新整理",
+    "running": "Cron 執行中",
+    "stopped": "Cron 已停止",
+    "readOnly": "唯讀",
+    "notInstalled": "未安裝",
+    "notInstalledTitle": "此主機未安裝 Cron",
+    "notInstalledHint": "請使用主機的套件管理員安裝 cron 或 cronie，然後重新整理。",
+    "notRunning": "cron 服務未執行，因此不會執行任何工作。",
+    "viewJobs": "工作",
+    "viewSystem": "系統",
+    "viewLogs": "日誌"
+  },
+  "jobs": {
+    "add": "新增工作",
+    "user": "使用者的 Crontab",
+    "ownUser": "{{user}}（登入帳號）",
+    "search": "搜尋工作",
+    "editText": "以文字編輯",
+    "empty": "尚無 cron 工作。",
+    "noMatch": "沒有符合的工作。",
+    "off": "關閉",
+    "next": "下次於 {{time}}",
+    "run": "立即執行",
+    "runTitle": "要立即執行此工作嗎？",
+    "runDesc": "這會以 crontab 的使用者身分執行一次 {{command}}。執行時間上限為 2 分鐘。",
+    "runFailed": "無法執行工作。",
+    "turnOn": "開啟",
+    "turnOff": "關閉",
+    "deleteTitle": "要刪除此工作嗎？",
+    "loadFailed": "無法讀取 crontab。",
+    "saveFailed": "無法儲存 crontab。",
+    "outputTitle": "工作輸出",
+    "exitOk": "已完成",
+    "exitCode": "結束代碼 {{code}}",
+    "noOutput": "工作未輸出任何內容。"
+  },
+  "form": {
+    "addTitle": "新增工作",
+    "editTitle": "編輯工作",
+    "forUser": "{{user}} 的 Crontab",
+    "label": "標籤",
+    "labelHint": "會儲存為工作上方的註解。",
+    "labelPlaceholder": "每日備份",
+    "command": "指令",
+    "commandHint": "以 sh 在使用者主目錄中執行。% 代表 cron 傳入的輸入內容，若要輸入真正的 % 請寫成 \\%。",
+    "schedule": "排程",
+    "scheduleHint": "分鐘、小時、日期、月份與星期，或類似 @daily 的關鍵字。",
+    "scheduleInvalid": "這不是有效的排程。",
+    "nextRuns": "下次執行時間（{{zone}}）：",
+    "enabled": "開啟",
+    "enabledHint": "關閉的工作會以註解形式保留在 crontab 中。",
+    "saved": "已儲存。"
+  },
+  "presets": {
+    "everyMinute": "每分鐘",
+    "every5": "每 5 分鐘",
+    "every15": "每 15 分鐘",
+    "hourly": "每小時",
+    "daily": "每天",
+    "weekly": "每週",
+    "monthly": "每月",
+    "reboot": "開機時"
+  },
+  "schedule": {
+    "reboot": "開機時",
+    "everyMinute": "每分鐘",
+    "everyNMinutes": "每 {{n}} 分鐘",
+    "hourlyAt": "每小時的第 {{minute}} 分鐘",
+    "everyNHours": "每 {{n}} 小時的第 {{minute}} 分鐘",
+    "dailyAt": "每天 {{time}}",
+    "weekdaysAt": "週一至週五 {{time}}",
+    "weeklyAt": "每週 {{day}} {{time}}",
+    "monthlyAt": "每月 {{day}} 日 {{time}}",
+    "custom": "自訂排程",
+    "invalid": "無效的排程"
+  },
+  "days": {
+    "0": "星期日",
+    "1": "星期一",
+    "2": "星期二",
+    "3": "星期三",
+    "4": "星期四",
+    "5": "星期五",
+    "6": "星期六"
+  },
+  "raw": {
+    "title": "以文字顯示 Crontab",
+    "hint": "每行一個工作。主機檢查文字內容，若有錯誤則保留舊的 crontab。"
+  },
+  "system": {
+    "add": "新增檔案",
+    "addTitle": "在 /etc/cron.d 中新增檔案",
+    "edit": "編輯",
+    "name": "檔案名稱",
+    "nameHint": "儲存為 /etc/cron.d/<name>。Cron 會忽略包含句點的名稱。",
+    "nameInvalid": "僅可使用字母、數字、- 和 _。",
+    "content": "檔案內容",
+    "fileHint": "每個工作需指定執行使用者：分鐘 小時 日期 月份 星期 使用者 指令。儲存前會檢查每一行。",
+    "noJobs": "此檔案中沒有工作。",
+    "readHint": "部分檔案若無 root 權限可能無法顯示。此處的變更需要 root 登入、免密碼 sudo 或已儲存的 Sudo 密碼。",
+    "timers_other": "此主機還有 {{count}} 個 systemd timer。由 Services 外掛管理。",
+    "deleteTitle": "刪除 /etc/cron.d/{{name}}？",
+    "deleteDesc": "副本將保留在 /var/lib/termix-cron/backup。",
+    "deleted": "已刪除 {{name}}。",
+    "saved": "已儲存 {{name}}。",
+    "loadFailed": "無法讀取系統 cron 檔案。",
+    "saveFailed": "無法儲存檔案。",
+    "period": {
+      "hourly": "每小時執行",
+      "daily": "每天執行",
+      "weekly": "每週執行",
+      "monthly": "每月執行"
+    }
+  },
+  "logs": {
+    "lines": "行數",
+    "lineCount_other": "{{count}} 行",
+    "source": "來自 {{source}}",
+    "noSource": "此主機上找不到 cron 日誌。",
+    "empty": "沒有日誌項目。",
+    "failed": "無法讀取 cron 日誌。"
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "請在該主機的設定中啟用 Cron，即可在此查看其工作。"
+  },
+  "operations": {
+    "list": {
+      "title": "列出 cron 工作"
+    },
+    "enable": {
+      "title": "啟用 cron 工作"
+    },
+    "disable": {
+      "title": "停用 cron 工作"
+    },
+    "run": {
+      "title": "立即執行 cron 工作"
+    },
+    "delete": {
+      "title": "刪除 cron 工作"
+    },
+    "jobs": {
+      "title": "Cron 工作",
+      "schedule": "排程",
+      "command": "指令"
+    },
+    "status": {
+      "title": "Cron 狀態"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "正在檢查主機...",
+    "summary_other": "{{hosts}} 台主機上有 {{count}} 個工作",
+    "refresh": "再次檢查",
+    "empty": "請為某台主機啟用 Cron，即可在此查看。",
+    "stopped": "未執行",
+    "missing": "未安裝",
+    "jobs_other": "{{count}} 個工作",
+    "off": "{{count}} 個已停用"
+  }
+}

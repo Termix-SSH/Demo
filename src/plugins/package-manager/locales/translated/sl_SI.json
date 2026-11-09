@@ -1,0 +1,230 @@
+{
+  "plugin": {
+    "name": "Paketi",
+    "description": "Preglejajte in namestite posodobitve na svojih gostiteljih, iščite, nameščajte in odstranjujte pakete ter preberite zgodovino paketov."
+  },
+  "common": {
+    "cancel": "Prekliči",
+    "back": "Nazaj"
+  },
+  "permissions": {
+    "use": {
+      "title": "Uporaba paketov",
+      "description": "Preglejajte pakete in posodobitve na gostiteljih, do katerih lahko dostopate, ter jih spreminjajte na gostiteljih, ki jih lahko urejate."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Paketi",
+        "description": "Upravljajte pakete in posodobitve na tem gostitelju prek zavihka Paketi."
+      },
+      "useSudo": {
+        "label": "Uporaba sudo",
+        "description": "Uporabite sudo za namestitev, posodobitev in odstranitev paketov. Izklopite, če je prijava kot root."
+      },
+      "readOnly": {
+        "label": "Samo za branje",
+        "description": "Prikažite pakete in posodobitve, vendar jih nikoli ne spreminjajte na tem gostitelju."
+      },
+      "showPanel": {
+        "label": "Prikaži ploščo posodobitev v terminalih",
+        "description": "Dovoli odpiranje plošče posodobitev ob SSH terminalu tega gostitelja."
+      },
+      "alertUpdates": {
+        "label": "Opozorilo na varnostne posodobitve",
+        "description": "Pošljite opozorilo, ko ima ta gostitelj varnostne posodobitve ali potrebuje ponovni zagon. Preverjeno ob branju posodobitev, približno enkrat na uro."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Odpri ploščo posodobitev z novimi terminali",
+        "description": "Prikažite ploščo posodobitev ob vsakem SSH terminalu, ki ima vklopljene Pakete. Š vedno jo lahko odprete in zaprete s gumbom na desnem robu."
+      },
+      "companionSide": {
+        "label": "Stran plošče posodobitev",
+        "description": "Kje se plošča posodobitev nahaja ob terminalu.",
+        "right": "Desno",
+        "left": "Levo",
+        "bottom": "Spodaj"
+      },
+      "companionSize": {
+        "label": "Velikost plošče posodobitev",
+        "description": "Širina v slikovnih točkah ali višina, ko je na dnu. Rob lahko tudi povlečete."
+      },
+      "companionEdgeButton": {
+        "label": "Prikaži gumb plošče",
+        "description": "Prikažite majhen gumb na desnem robu terminala, ki odpre ploščo posodobitev."
+      }
+    }
+  },
+  "tab": {
+    "title": "Paketi",
+    "noHost": "Odprite Pakete iz gostitelja.",
+    "error": "Paketov s tega gostitelja ni bilo mogoče naložiti.",
+    "disabled": "Paketi so za ta gostitelj izklopljeni. Vklopite jih v nastavitvah gostitelja.",
+    "sudo": "Spremembe zahtevajo root prijavo, sudo brez gesla ali shranjeno sudo geslo na tem gostitelju.",
+    "refresh": "Osveži",
+    "readOnly": "Samo za branje",
+    "noManager": "Ni upravitelja paketov",
+    "noManagerTitle": "Podprtega upravitelja paketov ni bilo mogoče najti",
+    "noManagerHint": "Paketi delujejo z apt, dnf, yum, zypper, pacman in apk.",
+    "indexAge": "Index osvežen pred {{ago}}",
+    "reboot": "Ta gostitelj potrebuje ponovni zagon za dokončanje posodobitve.",
+    "viewUpdates": "Posodobitve",
+    "viewInstalled": "Nameščeni",
+    "viewSearch": "Iskanje",
+    "viewHistory": "Zgodovina",
+    "viewRepos": "Skladišča"
+  },
+  "actions": {
+    "working": "{{action}} se izvaja. To lahko traja nekaj minut.",
+    "ok": "Končano",
+    "failed": "Upravitelj paketov ni uspel.",
+    "noOutput": "Ni izpisa.",
+    "refresh": {
+      "label": "Osveži index",
+      "confirm": "Osvežiti index paketov?",
+      "desc": "Prenese najnovejše sezname paketov.",
+      "done": "Index paketov je posodobljen."
+    },
+    "update": {
+      "label": "Posodobi",
+      "confirm_one": "Posodobiti {{names}}?",
+      "confirm_two": "Posodobiti {{count}} paketa?",
+      "confirm_few": "Posodobiti {{count}} pakete?",
+      "confirm_other": "Posodobiti {{count}} paketov?",
+      "desc": "Namesti najnovejšo različico {{names}}.",
+      "done": "Posodobljeno {{names}}."
+    },
+    "upgrade-all": {
+      "label": "Posodobi vse",
+      "confirm": "Posodobiti vse pakete?",
+      "desc": "Osveži index paketov in namesti vse posodobitve. Storitve se lahko med izvajanjem ponovno zaženejo.",
+      "done": "Vsi paketi so posodobljeni."
+    },
+    "install": {
+      "label": "Namesti",
+      "confirm": "Namestiti {{names}}?",
+      "desc": "Namesti {{names}} in vse, kar potrebuje.",
+      "done": "{{names}} je nameščen."
+    },
+    "remove": {
+      "label": "Odstrani",
+      "confirm": "Odstraniti {{names}}?",
+      "desc": "Odstrani {{names}} s tega gostitelja. Programi, ki ga potrebujejo, morda ne bodo več delovali.",
+      "done": "{{names}} je odstranjen."
+    },
+    "hold": {
+      "label": "Zadrži na tej različici",
+      "confirm": "Zadržati {{names}}?",
+      "desc": "Posodobitve bodo preskočile {{names}}, dokler ga ne sprostite.",
+      "done": "{{names}} je zadržan."
+    },
+    "unhold": {
+      "label": "Sprosti zadržanje",
+      "confirm": "Sprostiti {{names}}?",
+      "desc": "{{names}} bo spet prejemal posodobitve.",
+      "done": "{{names}} bo spet prejemal posodobitve."
+    }
+  },
+  "updates": {
+    "search": "Filtriraj posodobitve",
+    "count_one": "{{count}} posodobitev",
+    "count_two": "{{count}} posodobitvi",
+    "count_few": "{{count}} posodobitve",
+    "count_other": "{{count}} posodobitev",
+    "countSecurity_one": "{{count}} posodobitev, {{security}} za varnost",
+    "countSecurity_two": "{{count}} posodobitvi, {{security}} za varnost",
+    "countSecurity_few": "{{count}} posodobitve, {{security}} za varnost",
+    "countSecurity_other": "{{count}} posodobitev, {{security}} za varnost",
+    "updatePicked_one": "Posodobi {{count}} paket",
+    "updatePicked_two": "Posodobi {{count}} paketa",
+    "updatePicked_few": "Posodobi {{count}} pakete",
+    "updatePicked_other": "Posodobi {{count}} paketov",
+    "updateOne": "Posodobi",
+    "pick": "Izberi {{name}}",
+    "security": "Varnost",
+    "empty": "Vse je posodobljeno.",
+    "noMatch": "Ni ujemajočih posodobitev.",
+    "loadFailed": "Posodobitev ni bilo mogoče prebrati."
+  },
+  "installed": {
+    "search": "Filtriraj nameščene pakete",
+    "all": "Vsi",
+    "held": "Zadržani",
+    "heldBadge": "Zadržani",
+    "empty": "Ni ujemajočih paketov.",
+    "loadFailed": "Nameščenih paketov ni bilo mogoče prebrati."
+  },
+  "search": {
+    "placeholder": "Išči pakete",
+    "button": "Išči",
+    "hint": "Poiščite paket za namestitev v skladiščih gostitelja.",
+    "empty": "Ni najdeno ničesar.",
+    "installed": "Nameščeno",
+    "failed": "Iskanje ni uspelo."
+  },
+  "history": {
+    "empty": "Zgodovina paketov ni bila najdena.",
+    "loadFailed": "Zgodovine paketov ni bilo mogoče prebrati."
+  },
+  "repos": {
+    "hint": "Skladišča, iz katerih ta gostitelj namešča pakete. Spremenite jih neposredno na gostitelju.",
+    "empty": "Skladišč ni bilo najdenih.",
+    "off": "Izklopljeno",
+    "loadFailed": "Skladišč ni bilo mogoče prebrati."
+  },
+  "card": {
+    "title": "Posodobitve paketov",
+    "loading": "Preverjanje gostiteljev...",
+    "summary_one": "{{count}} posodobitev na {{hosts}} gostiteljih",
+    "summary_two": "{{count}} posodobitvi na {{hosts}} gostiteljih",
+    "summary_few": "{{count}} posodobitve na {{hosts}} gostiteljih",
+    "summary_other": "{{count}} posodobitev na {{hosts}} gostiteljih",
+    "refresh": "Preveri znova",
+    "empty": "Vklopite Pakete za gostitelja, da boste tukaj videli njegove posodobitve.",
+    "security_one": "{{count}} varnostna",
+    "security_two": "{{count}} varnostni",
+    "security_few": "{{count}} varnostne",
+    "security_other": "{{count}} varnostnih",
+    "reboot": "Potreben je ponovni zagon",
+    "updates_one": "{{count}} posodobitev",
+    "updates_two": "{{count}} posodobitvi",
+    "updates_few": "{{count}} posodobitve",
+    "updates_other": "{{count}} posodobitev",
+    "upToDate": "Posodobljeno"
+  },
+  "manager": {
+    "title": "Paketi",
+    "disabled": "V nastavitvah tega gostitelja vklopite pakete, da boste tukaj videli njegove posodobitve."
+  },
+  "operations": {
+    "list": {
+      "title": "Seznam posodobitev paketov"
+    },
+    "updates": {
+      "title": "Čakajoče posodobitve",
+      "resource": "Čakajoče posodobitve"
+    },
+    "upgradeAll": {
+      "title": "Posodobi vse pakete"
+    },
+    "install": {
+      "title": "Namesti pakete"
+    },
+    "remove": {
+      "title": "Odstrani pakete"
+    },
+    "package": "Paketi",
+    "packageHint": "Eno ali več imen paketov, ločenih s presledki.",
+    "resource": {
+      "current": "Nameščeno",
+      "available": "Na voljo",
+      "repo": "Skladišče"
+    }
+  },
+  "nav": {
+    "togglePanel": "Preklopi ploščo posodobitev"
+  }
+}

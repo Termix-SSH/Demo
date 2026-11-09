@@ -274,7 +274,9 @@ export function registerOutboundRoutes(
     }
 
     try {
+      // A feed on the LAN works when its host is on the admin private list.
       const response = await ctx.fetch(feedUrl, {
+        ...(await privateRequestOptions(feedUrl)),
         timeoutMs: FETCH_TIMEOUT_MS,
       });
       if (!response.ok) throw new Error(`RSS fetch failed: ${response.status}`);
@@ -380,8 +382,15 @@ export function registerOutboundRoutes(
       pingCache.set(cacheKey, { ...result, expires: Date.now() + ttl });
       res.json(result);
     } catch (err) {
-      ctx.log.warn(`Ping failed for ${targetUrl}: ${String(err)}`);
-      res.status(500).json({ error: "Ping failed" });
+      // An unreachable site is a down result, not a server error.
+      ctx.log.debug(`Ping failed for ${targetUrl}: ${String(err)}`);
+      const result = {
+        ok: false,
+        statusCode: null,
+        latencyMs: Math.round(performance.now() - start),
+      };
+      pingCache.set(cacheKey, { ...result, expires: Date.now() + ttl });
+      res.json(result);
     }
   });
 

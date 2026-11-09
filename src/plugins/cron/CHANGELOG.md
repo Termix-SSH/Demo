@@ -12,7 +12,3 @@
 - See /etc/crontab, /etc/cron.d and the hourly to monthly scripts
 - Read the cron log
 - A Cron card in Host Metrics
-
-### Changed
-
-- Needs Termix 26.11.1 or newer

@@ -1,0 +1,424 @@
+{
+  "tab": {
+    "title": "Virtuális gépek",
+    "noHost": "Nyisson meg virtuális gépeket egy gazdagépről.",
+    "refresh": "Frissítés",
+    "open": "Teljes nézet megnyitása",
+    "error": "Nem sikerült beolvasni a virtuális gépeket ezen a gazdagépen.",
+    "disabled": "A Virtuális gépek funkció kikapcsolva van ezen a gazdagépen. Kapcsolja be a gazdagép beállításaiban.",
+    "sudo": "Ez a gazdagép root bejelentkezést, jelszómentes sudo-t vagy mentett Sudo jelszót igényel.",
+    "vms": "Virtuális gépek",
+    "storage": "Tárhely",
+    "networks": "Hálózatok",
+    "jobs": "Feladatok",
+    "runningCount": "{{running}}/{{total}} fut",
+    "nodeLine": "{{cpus}} CPU, {{memory}}",
+    "noKvm": "nincs KVM, a virtuális gépek lassan fognak futni"
+  },
+  "common": {
+    "loading": "Betöltés...",
+    "save": "Mentés",
+    "cancel": "Mégse",
+    "delete": "Törlés",
+    "failed": "Ez nem működött."
+  },
+  "state": {
+    "running": "Fut",
+    "blocked": "Blokkolva",
+    "paused": "Szüneteltetve",
+    "shutdown": "Leállás",
+    "shutoff": "Kikapcsolva",
+    "crashed": "Összeomlott",
+    "pmsuspended": "Felfüggesztve",
+    "unknown": "Ismeretlen"
+  },
+  "power": {
+    "start": "Indítás",
+    "shutdown": "Leállítás",
+    "reboot": "Újraindítás",
+    "stop": "Kényszerített leállítás",
+    "suspend": "Szüneteltetés",
+    "resume": "Folytatás",
+    "shutdownTitle": "Leállítja a(z) {{name}} gépet?",
+    "shutdownText": "Ez kérést intéz a vendégrendszerhez a leállásra. Eltarthat egy percig, és az ACPI támogatással nem rendelkező vendégrendszer figyelmen kívül hagyhatja.",
+    "stopTitle": "Kényszerített leállítást hajt végre a(z) {{name}} gépen?",
+    "stopText": "Ez azonnal megszakítja az áramellátást. A vendégrendszer által nem mentett adatok elvesznek."
+  },
+  "setup": {
+    "missing": "A Libvirt nincs telepítve",
+    "missingText": "A Termix telepítheti a QEMU-t és a libvirt-ot erre a gazdagépre. Ehhez root jogosultság, jelszómentes sudo vagy mentett Sudo jelszó szükséges.",
+    "noConnect": "A Termix nem éri el a libvirt-ot ezen a gazdagépen",
+    "noConnectText": "Ellenőrizze, hogy a libvirt szolgáltatás fut-e, és hogy az SSH felhasználó használhatja-e azt.",
+    "noKvm": "Ez a gazdagép nem rendelkezik /dev/kvm eszközzel, így a virtuális gépek hardveres gyorsítás nélkül fognak futni. Kapcsolja be a virtualizációt a BIOS-ban vagy ehhez a virtuális géphez.",
+    "install": "Telepítés",
+    "installing": "Telepítés...",
+    "installTitle": "Telepíti a libvirt-ot erre a gazdagépre?",
+    "installText": "Ez telepíti a QEMU-t, a libvirt-ot és azok eszközeit a gazdagép csomagkezelőjével, elindítja a szolgáltatást, és beállítja az alapértelmezett hálózatot és tárhelytárat.",
+    "installed": "A Libvirt telepítve van"
+  },
+  "vm": {
+    "new": "Új virtuális gép",
+    "none": "Még nincsenek virtuális gépek ezen a gazdagépen",
+    "noneHint": "Nyomja meg az Új virtuális gép gombot a létrehozáshoz.",
+    "name": "Név",
+    "state": "Állapot",
+    "size": "Méret",
+    "ip": "IP-cím",
+    "noIp": "Még nincs cím",
+    "cpus_one": "{{count}} CPU",
+    "cpus_other": "{{count}} CPU",
+    "back": "Vissza a listához",
+    "overview": "Áttekintés",
+    "console": "Konzol",
+    "snapshots": "Pillanatképek",
+    "hardware": "Hardver",
+    "xml": "XML",
+    "cpu": "CPU",
+    "memory": "Memória",
+    "memoryUsed": "{{used}} használatban",
+    "ofHost": "A host {{memory}} memóriával rendelkezik",
+    "diskIo": "Lemez",
+    "diskUsed": "{{size}} lemez, {{used}} a hoston",
+    "netIo": "Hálózat",
+    "uuid": "UUID",
+    "machine": "Gép",
+    "firmware": "Firmware",
+    "bios": "BIOS",
+    "uefi": "UEFI",
+    "cpuMode": "CPU mód",
+    "guestAgent": "Guest agent",
+    "yes": "Igen",
+    "no": "Nem",
+    "autostart": "Automatikus indítás",
+    "autostartHint": "Ez a virtuális gép automatikusan elindul a host bootolásakor.",
+    "clone": "Klónozás",
+    "cloneStopped": "Kapcsold ki a virtuális gépet a klónozáshoz",
+    "cloneName": "A másolat neve",
+    "cloneStarted": "A klónozás elindult. A folyamatot a Feladatok alatt követheted.",
+    "delete": "Törlés",
+    "deleteTitle": "Törli a(z) {{name}} elemet?",
+    "deleteDisks": "A lemezek is törlődjenek",
+    "deleteDisksHint": "Ez eltávolítja azokat a lemezeket, amelyeket más virtuális gép nem használ. Ez a művelet nem vonható vissza. Az ISO-k és az alapképek megmaradnak.",
+    "deleted": "A virtuális gép törölve"
+  },
+  "watch": {
+    "start": "Értesítsen, ha ez a virtuális gép leáll",
+    "stop": "Az értesítések leállítása ehhez a virtuális géphez"
+  },
+  "console": {
+    "graphical": "Grafikus",
+    "serial": "Soros",
+    "notRunning": "Indítsd el a virtuális gépet a konzol használatához.",
+    "connecting": "Csatlakozás...",
+    "failed": "Nem sikerült megnyitni a konzolt.",
+    "retry": "Újrapróbál",
+    "ended": "A konzol bezárult.",
+    "serialHint": "Nyomj Entert, ha a képernyő üres marad. A vendégrendszernek futnia kell egy getty szolgáltatásnak a soros porton.",
+    "noRemoteDesktop": "Kapcsold be a Távoli asztalt, hogy lásd a virtuális gép képernyőjét. A soros konzol továbbra is működik.",
+    "useVnc": "Váltás VNC-re",
+    "vncSaved": "Mentve. Kapcsold ki és indítsd újra a virtuális gépet a VNC használatához."
+  },
+  "hardware": {
+    "cpuMemory": "CPU és memória",
+    "vcpus": "CPU-k",
+    "memory": "Memória (MiB)",
+    "nextStart": "A módosítások a következő indításkor lépnek életbe.",
+    "saved": "Mentve",
+    "disks": "Lemezek",
+    "detach": "Lecsatlakoztatás",
+    "detachTitle": "Lecsatlakoztatja a(z) {{name}} elemet?",
+    "detachText": "A kötet a tárolóhalmazban marad.",
+    "pool": "Tárolóhalmaz",
+    "sizeGib": "Méret (GiB)",
+    "addDisk": "Lemez hozzáadása",
+    "cdrom": "CD-meghajtó",
+    "noMedia": "Üres",
+    "iso": "ISO",
+    "pickIso": "Válassz egy ISO-t",
+    "insert": "Behelyezés",
+    "eject": "Kivetítés",
+    "nics": "Hálózati kártyák",
+    "removeNic": "Eltávolítás",
+    "nicType": "Csatlakozás",
+    "virtualNetwork": "Virtuális hálózat",
+    "hostBridge": "Gazdagép híd",
+    "network": "Hálózat",
+    "bridge": "Híd",
+    "addNic": "Kártya hozzáadása"
+  },
+  "snapshot": {
+    "name": "Pillanatkép neve",
+    "description": "Leírás",
+    "take": "Pillanatkép készítése",
+    "taking": "Folyamatban...",
+    "taken": "Pillanatkép készítése megtörtént",
+    "none": "Nincsenek pillanatképek",
+    "noneHint": "A pillanatkép mentés elmenti a lemezeket és a futó VM memóriáját.",
+    "current": "Jelenlegi",
+    "revert": "Visszaállítás",
+    "revertTitle": "Visszaállítás a(z) {{name}} pillanatképre?",
+    "revertText": "A pillanatkép készítése óta történt minden változás elveszik.",
+    "reverted": "VM visszaállítva",
+    "delete": "Törlés",
+    "deleteTitle": "Törli a(z) {{name}} pillanatképet?",
+    "deleteText": "A VM a jelenlegi állapotban marad."
+  },
+  "xml": {
+    "hint": "Haladóknak. A gazdagép ellenőrzi az XML-t mentés előtt, és megőrzi a régi verziót a /var/lib/termix-vms/backups mappában.",
+    "saveTitle": "Menti ezt az XML-t?",
+    "saveText": "A következő VM indításkor lép életbe.",
+    "saved": "Mentve"
+  },
+  "new": {
+    "title": "Új VM",
+    "basics": "Alapbeállítások",
+    "install": "Telepítés",
+    "name": "Név",
+    "source": "Telepítés forrása",
+    "sourceCloud": "Felhőalapú kép",
+    "sourceIso": "ISO",
+    "sourceBlank": "Üres lemez",
+    "noIso": "Nincsenek ISO fájlok ebben a tárolóban. Töltsön le egyet a Tárolás menüpont alatt.",
+    "image": "Kép",
+    "customImage": "Egyéb URL",
+    "imageUrl": "Kép URL-je",
+    "username": "Bejelentkezési név",
+    "password": "Jelszó",
+    "sshKey": "SSH nyilvános kulcs",
+    "sshKeyHint": "Adjon meg jelszót, kulcsot, vagy mindkettőt. A jelszó csak hash-ként tárolódik.",
+    "start": "Indítás készenléti állapotból",
+    "create": "VM létrehozása",
+    "started": "VM létrehozása folyamatban. A haladásról a Feladatok menüpontban tájékozódhat.",
+    "noUefi": "Ennek a gazdagépnek nincs telepítve UEFI firmware.",
+    "uefiHint": "A UEFI VM csak leállított állapotban készíthet pillanatképet.",
+    "missingTools": "Ennek a gazdagépnek hiányzik a(z) {{tools}}, amelyre a felhőalapú képeknek szükségük van."
+  },
+  "storage": {
+    "pools": "Tároló poolok",
+    "none": "Nincsenek tároló poolok",
+    "noneHint": "Adjon hozzá egy mappát a VM lemezek tárolásához.",
+    "active": "Aktív",
+    "inactive": "Inaktív",
+    "used": "{{used}} / {{size}} használatban ({{percent}}%)",
+    "start": "Indítás",
+    "stop": "Leállítás",
+    "forget": "Felejtés",
+    "forgetTitle": "Felejti el a(z) {{name}} poolt?",
+    "forgetText": "A Libvirt abbahagyja ennek a poolnak a használatát. A mappa fájlok a lemezen maradnak.",
+    "poolName": "Tároló neve",
+    "poolPath": "Mappa",
+    "addPool": "Tároló hozzáadása",
+    "volumes": "Kötetek a(z) {{pool}} tárolóban",
+    "noVolumes": "Nincsenek kötetek ebben a tárolóban",
+    "allocated": "{{size}} a lemezen",
+    "deleteVolume": "Törli a(z) {{name}} kötetet?",
+    "deleteVolumeText": "Ez eltávolítja a fájlt. A művelet nem vonható vissza.",
+    "volumeName": "Kötet neve",
+    "addVolume": "Kötet hozzáadása",
+    "downloadUrl": "Fájl letöltése ebbe a tárolóba",
+    "downloadHint": "A gazdagép tölti le, így a letöltés folytatódik akkor is, ha a Termix bezárul.",
+    "download": "Letöltés",
+    "downloadStarted": "A letöltés elindult"
+  },
+  "network": {
+    "title": "Virtuális hálózatok",
+    "none": "Nincsenek virtuális hálózatok",
+    "name": "Név",
+    "kind": "Típus",
+    "nat": "NAT",
+    "isolated": "Izolált",
+    "bridge": "Gazdagép híd",
+    "subnet": "Cím",
+    "add": "Hálózat hozzáadása",
+    "stopTitle": "Leállítja a(z) {{name}} hálózatot?",
+    "stopText": "A hálózaton lévő virtuális gépek elveszítik a kapcsolatot, amíg a hálózat újra nem indul, és ők újra nem csatlakoznak.",
+    "deleteTitle": "Törli a(z) {{name}} hálózatot?",
+    "leases": "DHCP-licencek a(z) {{name}} hálózaton",
+    "noLeases": "Nincsenek licencek"
+  },
+  "jobs": {
+    "none": "Még nincsenek feladatok",
+    "noneHint": "Az új virtuális gépek, klónok, pillanatképek és letöltések itt jelennek meg.",
+    "cancel": "Leállítás",
+    "status": {
+      "running": "Folyamatban",
+      "success": "Kész",
+      "failed": "Sikertelen",
+      "cancelled": "Megállítva"
+    },
+    "kind": {
+      "create": "Új virtuális gép",
+      "clone": "Klón",
+      "download": "Letöltés",
+      "snapshot": "Pillanatkép"
+    },
+    "phase": {
+      "download": "Letöltés",
+      "disk": "Lemez létrehozása",
+      "seed": "Cloud-init írása",
+      "define": "Virtuális gép mentése",
+      "start": "Indítás",
+      "clone": "Lemezek másolása"
+    }
+  },
+  "all": {
+    "title": "Összes virtuális gép",
+    "search": "Keresés",
+    "host": "Gazdagép",
+    "hostCount_one": "{{count}} gazdagép",
+    "hostCount_other": "{{count}} gazdagép",
+    "noHosts": "Egyik gazdagépen sincs bekapcsolva a Virtuális gépek funkció",
+    "noHostsHint": "Nyisson meg egy gazdagépet a Kezelés menüpontban, és kapcsolja be a Virtuális gépeket."
+  },
+  "card": {
+    "title": "Virtuális gépek",
+    "unreachable": "Elérhetetlen",
+    "crashed_one": "{{count}} összeomlott",
+    "crashed_other": "{{count}} összeomlott"
+  },
+  "widget": {
+    "running": "Futó virtuális gépek"
+  },
+  "companion": {
+    "toggle": "Virtuális gép panel be/ki"
+  },
+  "permissions": {
+    "use": {
+      "title": "Virtuális gépek használata",
+      "description": "Virtuális gépek megtekintése azokon a gazdagépeken, amelyekhez csatlakozhat, és módosításuk azoknál, amelyeket szerkeszthet."
+    },
+    "console": {
+      "title": "Virtuális gép konzolok megnyitása",
+      "description": "Virtuális gép grafikus és soros konzoljának megnyitása azokon a gazdagépeken, amelyeket szerkeszthet."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Virtuális gépek engedélyezése",
+        "description": "KVM virtuális gépek kezelése ezen a gazdagépen a libvirt segítségével."
+      },
+      "useSudo": {
+        "label": "sudo használata",
+        "description": "A libvirt parancsok futtatása sudo-val. Kapcsolja ki root bejelentkezés esetén."
+      },
+      "readOnly": {
+        "label": "Csak olvasható",
+        "description": "A virtuális gépek megjelenítése, de minden módosítás blokkolása a Termix által."
+      },
+      "connectUri": {
+        "label": "Libvirt kapcsolat",
+        "description": "A használandó libvirt URI. A legtöbb gazdagép esetén a qemu:///system szükséges."
+      },
+      "showPanel": {
+        "label": "A virtuális gépek panel megjelenítése a terminálok mellett",
+        "description": "Virtuális gépek listáját adja hozzá a gazdagép terminál lapjaihoz."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "A virtuális gépek panel önálló megnyitása",
+        "description": "A panel megnyitása terminál indításakor."
+      },
+      "companionSide": {
+        "label": "Virtuális gépek panel oldala",
+        "description": "Ahol a panel helyezkedik el a terminál mellett.",
+        "right": "Jobb",
+        "left": "Bal",
+        "bottom": "Alsó"
+      },
+      "companionSize": {
+        "label": "Virtuális gépek panel mérete",
+        "description": "Szélesség vagy magasság pixelben."
+      },
+      "companionEdgeButton": {
+        "label": "A szélgomb megjelenítése",
+        "description": "Egy kis gomb a terminál szélén megnyitja a panelt."
+      }
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Virtuális gépek listázása"
+    },
+    "state": {
+      "title": "Virtuális gép állapota"
+    },
+    "running": {
+      "title": "Futó virtuális gépek"
+    },
+    "crashed": {
+      "title": "Összeomlott virtuális gépek"
+    },
+    "pools": {
+      "title": "Tárolópool-használat"
+    },
+    "snapshots": {
+      "title": "Virtuális gép pillanatképek"
+    },
+    "listPools": {
+      "title": "Tárolópoolok listázása"
+    },
+    "listNetworks": {
+      "title": "Virtuális hálózatok listázása"
+    },
+    "start": {
+      "title": "Virtuális gép indítása"
+    },
+    "reboot": {
+      "title": "Virtuális gép újraindítása"
+    },
+    "suspend": {
+      "title": "Virtuális gép szüneteltetése"
+    },
+    "resume": {
+      "title": "Virtuális gép folytatása"
+    },
+    "autostart": {
+      "title": "Virtuális gép automatikus indításának beállítása",
+      "enabled": "Indítás a gazdagéppel együtt"
+    },
+    "snapshot": {
+      "title": "Virtuális gép pillanatképének készítése",
+      "name": "Pillanatkép neve",
+      "description": "Leírás"
+    },
+    "clone": {
+      "title": "Virtuális gép klónozása",
+      "name": "A másolat neve"
+    },
+    "shutdown": {
+      "title": "Virtuális gép leállítása"
+    },
+    "forceStop": {
+      "title": "Virtuális gép kényszerített leállítása"
+    },
+    "delete": {
+      "title": "Virtuális gép törlése",
+      "disks": "A lemezek is törlődjenek"
+    },
+    "revert": {
+      "title": "Visszaállítás pillanatképre"
+    },
+    "deleteSnapshot": {
+      "title": "Pillanatkép törlése"
+    },
+    "vms": {
+      "title": "Virtuális gépek"
+    },
+    "column": {
+      "cpus": "CPU-k",
+      "memory": "Memória (MiB)",
+      "ip": "IP-cím",
+      "autostart": "Automatikus indítás",
+      "vm": "Virtuális gép",
+      "created": "Létrehozva"
+    },
+    "events": {
+      "started": "Virtuális gép elindult",
+      "stopped": "Virtuális gép leállt",
+      "crashed": "Virtuális gép összeomlott",
+      "job": "Virtuális gép feladata befejeződött"
+    }
+  }
+}

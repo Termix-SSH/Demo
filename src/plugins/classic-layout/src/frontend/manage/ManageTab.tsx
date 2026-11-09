@@ -29,6 +29,7 @@ import {
   type ManageMode,
   type ManageRequest,
   docsUrl,
+  cn,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { KeyRound, LibraryBig, Plus, Server, Trash2 } from "lucide-react";
@@ -80,6 +81,9 @@ async function loadCredentialForEdit(cred: Credential): Promise<Credential> {
   }
 }
 
+/** Below this the list and the editor take turns instead of sharing the tab. */
+const SPLIT_MIN_WIDTH = 760;
+
 /**
  * Hosts, credentials and host defaults, edited at full width: a list on the
  * left, the thing you picked on the right.
@@ -96,6 +100,19 @@ export function ManageTab() {
   const presetMode = useUiPreference("hostEditor", "mode");
 
   const [mode, setMode] = useState<ManageMode>("hosts");
+  // List and editor side by side only when the tab itself is wide enough.
+  // The viewport says nothing when the sidebar or split view takes space.
+  const bodyRef = useRef<HTMLDivElement>(null);
+  const [split, setSplit] = useState(true);
+  useEffect(() => {
+    const el = bodyRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry) setSplit(entry.contentRect.width >= SPLIT_MIN_WIDTH);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
   const [hosts, setHosts] = useState<Host[]>([]);
   const [credentials, setCredentials] = useState<Credential[]>([]);
   const [editing, setEditing] = useState<Editing | null>(null);
@@ -169,6 +186,9 @@ export function ManageTab() {
     [confirmDiscard],
   );
 
+  // Bumped on every open, so a slow load never replaces a newer pick.
+  const openSeq = useRef(0);
+
   const openHost = useCallback(
     (host: Host | null, draft?: HostDraft) => {
       const policy = hostPolicyRef.current;
@@ -176,6 +196,7 @@ export function ManageTab() {
         toast.error(t("hosts.addBlocked", { plugin: policy.blockedBy ?? "" }));
         return;
       }
+      openSeq.current++;
       setMode("hosts");
       setReturnHost(null);
       setDirty(false);
@@ -191,14 +212,17 @@ export function ManageTab() {
   );
 
   const openCredential = useCallback(async (credential: Credential | null) => {
+    const seq = ++openSeq.current;
     setMode("credentials");
     setDirty(false);
     const full = credential ? await loadCredentialForEdit(credential) : null;
+    if (seq !== openSeq.current) return;
     setEditing({ kind: "credential", credential: full, key: Date.now() });
   }, []);
 
   const openDefaults = useCallback(
     async (row: Pick<DefaultsRow, "level" | "folderName">) => {
+      const seq = ++openSeq.current;
       setMode("defaults");
       setReturnHost(null);
       setDirty(false);
@@ -207,6 +231,7 @@ export function ManageTab() {
       if (row.level === "folder" && row.folderName) {
         try {
           const folderId = await getFolderDefaultsId(row.folderName);
+          if (seq !== openSeq.current) return;
           setEditing({
             kind: "defaults",
             rowKey,
@@ -256,6 +281,7 @@ export function ManageTab() {
       } else if (request.kind === "defaults") {
         void openDefaults(request);
       } else {
+        openSeq.current++;
         setDirty(false);
         setEditing(null);
         setMode(request.mode);
@@ -287,6 +313,7 @@ export function ManageTab() {
     };
 
   const close = () => {
+    openSeq.current++;
     setDirty(false);
     setEditing(null);
   };
@@ -492,7 +519,7 @@ export function ManageTab() {
       )}
       leading={
         editing ? (
-          <span className="flex h-full md:hidden">
+          <span className={split ? "hidden" : "flex h-full"}>
             <BackButton
               onClick={() =>
                 void guarded(
@@ -528,9 +555,10 @@ export function ManageTab() {
         </>
       }
     >
-      <div className="flex min-h-0 flex-1">
+      <div ref={bodyRef} className="flex min-h-0 flex-1">
         <ManageList
           editing={!!editing}
+          split={split}
           mode={mode}
           onMode={(next) =>
             void guarded(() => {
@@ -562,7 +590,12 @@ export function ManageTab() {
             {renderEditor()}
           </div>
         ) : (
-          <div className="hidden min-h-0 flex-1 items-center justify-center md:flex">
+          <div
+            className={cn(
+              "min-h-0 flex-1 items-center justify-center",
+              split ? "flex" : "hidden",
+            )}
+          >
             <EmptyState
               icon={mode === "credentials" ? KeyRound : Server}
               title={

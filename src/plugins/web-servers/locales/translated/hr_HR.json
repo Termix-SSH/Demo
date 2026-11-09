@@ -1,0 +1,291 @@
+{
+  "plugin": {
+    "name": "Web poslužitelji",
+    "description": "Upravljajte nginxom, Apacheom i Caddyjem na svojim poslužiteljima: stranice, konfiguracija, dnevnici i HTTPS, pri čemu se svaka promjena prvo testira."
+  },
+  "common": {
+    "cancel": "Odustani",
+    "back": "Natrag",
+    "loading": "Učitavanje..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Koristi Web poslužitelje",
+      "description": "Pregledajte web poslužitelje i stranice na poslužiteljima na koje možete pristupiti te ih mijenjajte na poslužiteljima koje možete uređivati."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Web poslužitelji",
+        "description": "Upravljajte nginxom, Apacheom i Caddyjem na ovom poslužitelju putem kartice Web poslužitelji."
+      },
+      "useSudo": {
+        "label": "Koristi sudo",
+        "description": "Koristi sudo za čitanje i promjenu web poslužitelja. Isključite ako se prijavljujete kao root."
+      },
+      "readOnly": {
+        "label": "Samo za čitanje",
+        "description": "Prikaži stranice, konfiguraciju i dnevnike, ali ih nikada ne mijenjaj na ovom poslužitelju."
+      },
+      "showPanel": {
+        "label": "Panel pored terminala",
+        "description": "Ponudi panel Web poslužitelja na karticama terminala ovog poslužitelja."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otvori panel s terminalom",
+        "description": "Prikaži panel Web poslužitelja kada se terminal otvori na poslužitelju koji ga ima."
+      },
+      "companionSide": {
+        "label": "Strana panela",
+        "description": "Gdje se panel nalazi pored terminala.",
+        "right": "Desno",
+        "left": "Lijevo",
+        "bottom": "Dolje"
+      },
+      "companionSize": {
+        "label": "Veličina panela",
+        "description": "Širina panela, odnosno njegova visina kada je na dnu, u pikselima."
+      },
+      "companionEdgeButton": {
+        "label": "Gumb na rubu",
+        "description": "Prikaži mali gumb na rubu terminala za otvaranje panela."
+      }
+    }
+  },
+  "tab": {
+    "title": "Web poslužitelji",
+    "noHost": "Otvorite Web poslužitelje s poslužitelja.",
+    "error": "Nije moguće učitati web poslužitelje na ovom poslužitelju.",
+    "disabled": "Web poslužitelji su isključeni za ovaj poslužitelj. Uključite ih u postavkama poslužitelja.",
+    "sudo": "Promjene zahtijevaju root prijavu, sudo bez lozinke ili spremljenu Sudo lozinku na ovom poslužitelju.",
+    "refresh": "Osvježi",
+    "readOnly": "Samo za čitanje",
+    "noServer": "Nema instaliranog web poslužitelja",
+    "noServerHint": "Instalirajte nginx, Apache ili Caddy s stranice Poslužitelj.",
+    "openServer": "Otvori Poslužitelj",
+    "viewSites": "Stranice",
+    "viewConfig": "Konfiguracija",
+    "viewLogs": "Dnevnici",
+    "viewServer": "Poslužitelj"
+  },
+  "actions": {
+    "ok": "Gotovo",
+    "failed": "Neuspješno",
+    "noOutput": "Nema izlaza."
+  },
+  "watch": {
+    "start": "Obavijesti me kada web poslužitelj prestane raditi",
+    "stop": "Zaustavi obavijesti za ovaj poslužitelj",
+    "on": "Dobit ćete obavijest kada web poslužitelj na ovom poslužitelju prestane raditi",
+    "off": "Obavijesti za ovaj poslužitelj su isključene",
+    "failed": "Nije moguće promijeniti obavijesti"
+  },
+  "sites": {
+    "add": "Dodaj stranicu",
+    "search": "Pretraži stranice",
+    "empty": "Još nema stranica.",
+    "loadFailed": "Nije moguće učitati stranice.",
+    "off": "Isključeno",
+    "anyName": "bilo koje ime",
+    "form": "Obrazac",
+    "certDays_one": "preostao {{count}} dan",
+    "certDays_few": "preostala {{count}} dana",
+    "certDays_other": "preostalih {{count}} dana",
+    "certExpired": "Certifikat je istekao",
+    "enable": "Uključi",
+    "disable": "Isključi",
+    "enabled": "{{name}} je uključen",
+    "disabled": "{{name}} je isključen",
+    "delete": "Izbriši",
+    "deleteTitle": "Izbrisati {{name}}?",
+    "deleteBody": "Datoteka se uklanja, a poslužitelj se ponovno učitava. Kopija ostaje u /var/lib/termix-web-servers/backups na poslužitelju.",
+    "deleted": "{{name}} je izbrisan"
+  },
+  "site": {
+    "addTitle": "Nova stranica",
+    "editTitle": "Spremi {{name}}",
+    "add": "Dodaj stranicu",
+    "save": "Spremi",
+    "added": "{{name}} je dodan",
+    "saved": "{{name}} je spremljen",
+    "server": "Web poslužitelj",
+    "name": "Naziv stranice",
+    "nameHint": "Koristi se za naziv datoteke i datoteke dnevnika, poput example.",
+    "modeForm": "Obrazac",
+    "modeText": "Tekst",
+    "text": "Konfiguracija",
+    "textHint": "Spremanje teksta isključuje obrazac za ovu stranicu kako bi se sačuvali vaši vlastiti izmjene.",
+    "type": "Vrsta",
+    "typeStatic": "Statičke datoteke",
+    "typeProxy": "Obrnuti proxy",
+    "typePhp": "PHP",
+    "typeRedirect": "Preusmjeravanje",
+    "staticHint": "Poslužuje datoteke iz mape.",
+    "proxyHint": "Šalje zahtjeve aplikaciji koja se izvršava na ovom ili drugom poslužitelju.",
+    "phpHint": "Poslužuje datoteke iz mape i izvršava .php datoteke pomoću php-fpm.",
+    "redirectHint": "Preusmjerava svakog posjetitelja na drugu adresu.",
+    "domains": "Domena",
+    "domainsHint": "Pritisnite Enter nakon svake. Koristite _ u nginxu za odgovaranje na bilo koji naziv.",
+    "port": "HTTP port",
+    "root": "Web korijen",
+    "rootHint": "Mapa unutar /var/www, /srv, /usr/share/nginx, /opt ili /home.",
+    "index": "Indeksne datoteke",
+    "spa": "Jednostranična aplikacija",
+    "spaHint": "Šalje putanje koje nisu datoteke na /index.html.",
+    "upstream": "Adresa aplikacije",
+    "upstreamHint": "Gdje aplikacija sluša, poput http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Preusmjeri posjetitelje na",
+    "keepPath": "Zadrži putanju",
+    "keepPathHint": "Šalje /page na istu stranicu na novoj adresi.",
+    "phpSocket": "php-fpm socket",
+    "phpSocketHint": "Nije pronađen php-fpm socket. Instalirajte php-fpm ili unesite host:port.",
+    "https": "HTTPS",
+    "httpsHint": "Potreban je certifikat. Prvo spremite stranicu, a zatim pritisnite Dohvati certifikat u nastavku.",
+    "httpsCaddy": "Caddy samostalno dohvaća i obnavlja certifikat.",
+    "httpsPort": "HTTPS port",
+    "certPath": "Datoteka certifikata",
+    "keyPath": "Datoteka ključa",
+    "forceHttps": "Preusmjeri HTTP na HTTPS",
+    "gzip": "Komprimiraj odgovore",
+    "accessLog": "Dnevnik pristupa",
+    "maxBody": "Ograničenje otpreme u MB",
+    "maxBodyHint": "0 zadržava zadano vrijednost poslužitelja.",
+    "preview": "Pregled",
+    "previewFailed": "Nije moguće izgraditi konfiguraciju."
+  },
+  "tls": {
+    "title": "HTTPS certifikat",
+    "hintManaged": "certbot dobiva Let's Encrypt certifikat za domene ove stranice, a zatim se stranica prebacuje na HTTPS. certbot ga obnavlja i ponovno učitava poslužitelj.",
+    "hintText": "certbot dobiva Let's Encrypt certifikat za domene ove stranice. Certifikat ručno dodajte stranici nakon toga. certbot ga obnavlja i ponovno učitava poslužitelj.",
+    "needCertbot": "Prvo instalirajte certbot s njegovim priključkom za ovaj poslužitelj s stranice Poslužitelj.",
+    "email": "E-pošta",
+    "emailHint": "Let's Encrypt ovdje šalje obavijesti o problemima. Opcionalno.",
+    "staging": "Testni certifikat",
+    "stagingHint": "Koristi Let's Encrypt staging poslužitelj. Preglednici mu neće vjerovati.",
+    "issue": "Dobavi certifikat",
+    "done": "Certifikat je spremljen"
+  },
+  "config": {
+    "search": "Pretraži datoteke",
+    "empty": "Nema datoteka.",
+    "loadFailed": "Datoteku nije moguće učitati.",
+    "test": "Testiraj konfiguraciju",
+    "testOk": "Konfiguracija je ispravna",
+    "testFailed": "Konfiguracija sadrži greške",
+    "content": "Sadržaj",
+    "save": "Spremi",
+    "saveHint": "Cijela se konfiguracija testira prije ponovnog učitavanja poslužitelja. Neispravna datoteka se vraća na prethodno stanje.",
+    "saved": "Spremljeno i ponovno učitano",
+    "backups_one": "{{count}} sigurnosna kopija",
+    "backups_few": "{{count}} sigurnosne kopije",
+    "backups_other": "{{count}} sigurnosnih kopija",
+    "restore": "Vrati",
+    "restoreTitle": "Vratiti ovu sigurnosnu kopiju?",
+    "restoreBody": "Datoteka se vraća u stanje kakvo je bilo u {{time}}. Trenutni tekst također postaje sigurnosna kopija.",
+    "restored": "Sigurnosna kopija je vraćena"
+  },
+  "logs": {
+    "source": "Dnevnik",
+    "lines": "Retci",
+    "journal": "Dnevnik {{server}}",
+    "follow": "Prati",
+    "stop": "Zaustavi",
+    "connecting": "Povezivanje...",
+    "ended": "Praćenje je zaustavljeno.",
+    "followFailed": "Nije moguće pratiti ovaj dnevnik.",
+    "empty": "Nema retaka.",
+    "loadFailed": "Dnevnik nije moguće pročitati.",
+    "requests": "Zahtjevi",
+    "topPaths": "Najčešće putanje",
+    "topClients": "Najčešći klijenti"
+  },
+  "server": {
+    "unknown": "nepoznato",
+    "atBoot": "Pokreće se pri pokretanju sustava",
+    "notInstalled": "Nije instalirano",
+    "start": "Pokreni",
+    "stop": "Zaustavi",
+    "restart": "Ponovno pokreni",
+    "reload": "Ponovno učitaj",
+    "enable": "Pokreni pri pokretanju sustava",
+    "disable": "Ne pokreći pri pokretanju sustava",
+    "boot": "Pokreni pri pokretanju sustava",
+    "noBoot": "Ne pokreći pri pokretanju sustava",
+    "done": "{{server}} je završio",
+    "stopTitle": "Zaustaviti {{server}}?",
+    "stopBody": "Sve stranice na njemu postaju nedostupne dok ga ponovno ne pokrenete.",
+    "install": "Instaliraj",
+    "installTitle": "Instalirati {{server}}?",
+    "installBody": "Instalira se pomoću upravitelja paketa domaćina i odmah se pokreće. Drugi web poslužitelj na portu 80 spriječit će njegovo pokretanje.",
+    "installed": "{{server}} je instaliran",
+    "installCertbot": "Instaliraj certbot",
+    "certbotInstalled": "certbot je instaliran",
+    "certbotPlugins": "Priključci: {{plugins}}",
+    "certbotNoPlugins": "Nema nginx ili Apache priključka",
+    "certbotHint": "Dobiva Let's Encrypt certifikate za nginx i Apache stranice"
+  },
+  "card": {
+    "title": "Web poslužitelji",
+    "loading": "Učitavanje...",
+    "refresh": "Osvježi",
+    "empty": "Nijedan host nema uključene Web poslužitelje.",
+    "summary_one": "{{count}} host | {{down}} zahtijeva provjeru",
+    "summary_few": "{{count}} hosta | {{down}} zahtijevaju provjeru",
+    "summary_other": "{{count}} hostova | {{down}} zahtijevaju provjeru",
+    "sites_one": "{{count}} stranica",
+    "sites_few": "{{count}} stranice",
+    "sites_other": "{{count}} stranica"
+  },
+  "companion": {
+    "toggle": "Panel Web poslužitelja",
+    "openTab": "Otvori Web poslužitelje",
+    "reload": "Ponovno učitaj {{server}}"
+  },
+  "manager": {
+    "title": "Web poslužitelji",
+    "disabled": "Uključite Web poslužitelje za ovaj host kako biste ovdje vidjeli njegove stranice."
+  },
+  "operations": {
+    "status": {
+      "title": "Status web poslužitelja"
+    },
+    "listSites": {
+      "title": "Popis stranica"
+    },
+    "test": {
+      "title": "Testiraj konfiguraciju web poslužitelja"
+    },
+    "reload": {
+      "title": "Ponovno učitaj web poslužitelj"
+    },
+    "restart": {
+      "title": "Ponovno pokreni web poslužitelj"
+    },
+    "enableSite": {
+      "title": "Uključi stranicu"
+    },
+    "disableSite": {
+      "title": "Isključi stranicu"
+    },
+    "deleteSite": {
+      "title": "Izbriši stranicu"
+    },
+    "server": "Poslužitelj",
+    "allServers": "Svi",
+    "sites": {
+      "title": "Stranice",
+      "server": "Poslužitelj",
+      "domains": "Domena",
+      "https": "HTTPS"
+    }
+  }
+}

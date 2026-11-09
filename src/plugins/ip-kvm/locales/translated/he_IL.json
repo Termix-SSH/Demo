@@ -1,0 +1,226 @@
+{
+  "plugin": {
+    "name": "IP-KVM",
+    "description": "צפה ובצע שליטה במכשירים דרך התקני PiKVM, NanoKVM ו-JetKVM."
+  },
+  "tab": {
+    "title": "KVM"
+  },
+  "card": {
+    "title": "KVM",
+    "loading": "טוען"
+  },
+  "host": {
+    "open": "KVM"
+  },
+  "permissions": {
+    "view": {
+      "title": "צפייה ב-KVM",
+      "description": "פתח את הלשונית KVM וראה אילו מכשירי KVM מחוברים לאינטרנט ומה מצב ההפעלה שלהם."
+    },
+    "power": {
+      "title": "שליטה בהפעלה",
+      "description": "הפעל וכבה מכשירים, או אפס אותם דרך ה-KVM, או הערם באמצעות Wake-on-LAN."
+    },
+    "console": {
+      "title": "שימוש במסך",
+      "description": "צפה במסך של מכשיר והשתמש במקלדת ועכבר שלו."
+    },
+    "media": {
+      "title": "שימוש במדיה וירטואלית",
+      "description": "הצמד והוצא תמונות ISO במכשיר."
+    },
+    "manage": {
+      "title": "ניהול מכשירי KVM",
+      "description": "הוסף, שנה והסר מכשירי KVM."
+    }
+  },
+  "settings": {
+    "admin": {
+      "maxSessionMinutes": {
+        "label": "משך הפעלת מסך מקסימלי (דקות)",
+        "description": "הפעלת מסך מסתיימת לאחר משך זמן זה. השתמש ב-0 ללא הגבלה."
+      }
+    }
+  },
+  "description": "הוסף את מכשירי ה-IP-KVM שלך כדי לצפות ולבצע שליטה במכשירים שמאחוריהם. Termix מתחבר ל-KVM, כך שהמסך עובד גם כאשר הדפדפן שלך לא יכול להגיע אליו. פרטי התחברות מאוחסנים בצורה מוצפנת ולא מוצגים שוב.",
+  "summary": "{{count}} מכשירי KVM, {{attention}} לא מחוברים",
+  "empty": "אין מכשירי KVM עדיין.",
+  "add": "הוסף KVM",
+  "edit": "עריכה",
+  "delete": "מחיקה",
+  "back": "חזרה",
+  "saved": "נשמר",
+  "deleteConfirm": "למחוק את {{name}}?",
+  "status": {
+    "unknown": "לא נקרא עדיין",
+    "up": "מחובר",
+    "down": "לא מחובר"
+  },
+  "drivers": {
+    "pikvm": "PiKVM",
+    "glkvm": "GL.iNet Comet (GLKVM)",
+    "nanokvm": "NanoKVM",
+    "jetkvm": "JetKVM"
+  },
+  "fields": {
+    "username": "שם משתמש",
+    "password": "סיסמה"
+  },
+  "power": {
+    "on": "דלוק",
+    "off": "כבוי",
+    "unknown": "לא ידוע",
+    "state": "המכשיר {{state}}.",
+    "sent": "נשלחה בקשה ל-{{name}} לשנות מצב הפעלה",
+    "sentShort": "פקודת הפעלה נשלחה",
+    "wake": "הערה דרך LAN",
+    "woke": "חבילת הערה נשלחה",
+    "action": {
+      "on": "הפעל",
+      "off": "כבה",
+      "graceful-shutdown": "כבה בזהירות",
+      "reset": "אפס"
+    },
+    "confirm": {
+      "on": "להפעיל את {{name}}?",
+      "off": "לכבות את החשמל של {{name}}? המערכת לא תיכבה בצורה נקייה.",
+      "graceful-shutdown": "לבקש מ-{{name}} לכבות?",
+      "reset": "לאפס את {{name}}? המערכת תתחיל מחדש מיד."
+    }
+  },
+  "form": {
+    "addTitle": "הוסף KVM",
+    "editTitle": "ערוך KVM",
+    "device": "KVM",
+    "access": "גישה",
+    "machine": "מכשיר שמאחורי ה-KVM",
+    "type": "סוג",
+    "name": "שם",
+    "address": "כתובת",
+    "port": "פורט",
+    "host": "מארח Termix",
+    "hostHint": "קשר את ה-KVM למארח השייך אליו. הוא יעקוב אחר שיתוף המארח ויופיע בתפריט המארח שלו.",
+    "noHost": "ללא",
+    "poll": "בדוק כל (שניות)",
+    "pollHint": "לפחות 30 שניות.",
+    "scheme": "חיבור",
+    "ca": "תעודה",
+    "caHint": "הדבק את ה-PEM של רשות תעודות פרטית, או השתמש באפשרות 'אמון תעודה זו' עבור KVM עם תעודה חתומה עצמית. השאר ריק עבור תעודה מאומנת.",
+    "caSet": "תעודה נשמרה. הדבק תעודה חדשה כדי להחליף אותה.",
+    "keepLogin": "השאר ריק כדי לשמור על פרטי ההתחברות השמורים",
+    "test": "בדיקת חיבור",
+    "testOk": "ה-KVM ענה ({{model}}).",
+    "testNeedsLogin": "הזן מחדש את פרטי ההתחברות כדי לבדוק.",
+    "mac": "כתובת MAC",
+    "macHint": "כרטיס הרשת של המכונה, ל-Wake-on-LAN.",
+    "broadcast": "כתובת שידור",
+    "broadcastHint": "לאן חבילת ההערה תישלח. השאר ריק עבור 255.255.255.255.",
+    "save": "שמירה",
+    "add": "הוספה",
+    "trust": "אמון בתעודה זו",
+    "trustTitle": "לאמון בתעודה של ה-KVM הזה?",
+    "trustHint": "Termix יתקשר עם ה-KVM הזה רק כל עוד הוא מציג את התעודה המדויקת הזו. ודא שהטביעה תואמת לזו המופיעה על המכשיר.",
+    "certName": "שם: {{name}}",
+    "certValid": "תקף עד {{date}}",
+    "certExpired": "פג תוקף ב-{{date}}",
+    "pinned": "תעודה מאומתת",
+    "unpin": "הסר"
+  },
+  "view": {
+    "screen": "מסך",
+    "power": "הפעלה",
+    "media": "מדיה וירטואלית",
+    "info": "מידע",
+    "refresh": "קריאה עכשיו",
+    "type": "סוג",
+    "address": "כתובת",
+    "model": "דגם",
+    "version": "תוכנה",
+    "hostname": "שם",
+    "video": "וידאו",
+    "noSignal": "אין אות",
+    "status": "KVM",
+    "jetHint": "הווידאו של JetKVM מגיע ישירות מ-JetKVM לדפדפן שלך, ולכן הדפדפן חייב להיות מסוגל להגיע אליו ברשת."
+  },
+  "screen": {
+    "connecting": "מתחבר",
+    "failed": "לא ניתן לפתוח את המסך.",
+    "ended": "הפעלת המסך הסתיימה.",
+    "hint": "לחץ על המסך כדי להקליד.",
+    "shortcuts": "קיצורי מקשים",
+    "shortcut": {
+      "ctrl-alt-del": "Ctrl+Alt+Del",
+      "alt-tab": "Alt+Tab",
+      "alt-f4": "Alt+F4",
+      "ctrl-esc": "Ctrl+Esc",
+      "win-l": "Win+L",
+      "win-d": "Win+D",
+      "ctrl-alt-f1": "Ctrl+Alt+F1",
+      "ctrl-alt-f2": "Ctrl+Alt+F2",
+      "ctrl-alt-f7": "Ctrl+Alt+F7",
+      "print-screen": "Print Screen"
+    },
+    "paste": "הדבק טקסט",
+    "pasteLabel": "טקסט להקלדה במכונה",
+    "type": "הקלד",
+    "snapshot": "צילום מסך",
+    "fullscreen": "מסך מלא",
+    "exitFullscreen": "יציאה ממסך מלא",
+    "reconnect": "חיבור מחדש"
+  },
+  "media": {
+    "none": "אין תמונה מחוברת.",
+    "mountedNow": "מחובר: {{name}}",
+    "as": "הצג כ",
+    "cd": "כונן CD",
+    "usb": "כונן USB",
+    "empty": "אין תמונות ב-KVM זה.",
+    "mount": "התקן",
+    "eject": "הוצא",
+    "mountedDone": "התמונה הותקנה",
+    "ejected": "התמונה הוצאה",
+    "url": "הורד תמונה מ",
+    "name": "שמור בשם",
+    "fetch": "הורד ל-KVM",
+    "fetched": "התמונה הורדה"
+  },
+  "operations": {
+    "device": "KVM",
+    "list-devices": {
+      "title": "רשימת מכשירי KVM"
+    },
+    "poll": {
+      "title": "קרא KVM עכשיו"
+    },
+    "power-state": {
+      "title": "קבל מצב חשמל"
+    },
+    "power-on": {
+      "title": "הפעל"
+    },
+    "graceful-shutdown": {
+      "title": "כבה"
+    },
+    "power-off": {
+      "title": "כבה חשמל"
+    },
+    "reset": {
+      "title": "אפס"
+    },
+    "wake": {
+      "title": "העורר דרך LAN"
+    },
+    "eject-media": {
+      "title": "הוצא תמונה"
+    },
+    "health": {
+      "title": "מצב KVM"
+    }
+  },
+  "widget": {
+    "name": "מכשירי KVM",
+    "description": "אילו IP-KVM שלך פעילים.",
+    "summary": "{{up}} מתוך {{total}} פעילים"
+  }
+}

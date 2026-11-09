@@ -1,0 +1,235 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Telepítse a WireGuardot a gazdagépeire, és kezelje a felületeket, ügyfeleket és konfigurációkat egyetlen fülön."
+  },
+  "common": {
+    "save": "Mentés",
+    "cancel": "Mégse",
+    "back": "Vissza",
+    "delete": "Törlés",
+    "loading": "Betöltés..."
+  },
+  "permissions": {
+    "use": {
+      "title": "WireGuard használata",
+      "description": "WireGuard-felületek és ügyfelek kezelése azon gazdagépeken, amelyeket szerkeszthet."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Nyissa meg a WireGuardot egy gazdagépről.",
+    "error": "A WireGuard nem tölthető be erről a gazdagépről.",
+    "sudo": "Ehhez a gazdagéphez root bejelentkezés vagy jelszó nélküli sudo szükséges a WireGuard kezeléséhez.",
+    "installed": "Telepítve",
+    "notInstalled": "Nincs telepítve",
+    "refresh": "Frissítés",
+    "viewInterfaces": "Felületek",
+    "viewLogs": "Naplók"
+  },
+  "install": {
+    "title": "WireGuard telepítése",
+    "desc": "Ez a WireGuard eszközök és az iptables telepítését végzi a gazdagép csomagkezelőjével.",
+    "confirm": "Telepítés",
+    "done": "A WireGuard telepítve van.",
+    "failed": "A WireGuard nem telepíthető.",
+    "empty": "A WireGuard nincs telepítve erre a gazdagépre",
+    "noManager": "Nem található támogatott csomagkezelő. Telepítse a WireGuardot manuálisan.",
+    "hint": "Telepítse a {{os}} rendszerre, hogy VPN-t futtasson erről a gazdagépről.",
+    "thisHost": "ez a gazdagép",
+    "button": "WireGuard telepítése",
+    "working": "Telepítés..."
+  },
+  "interfaces": {
+    "add": "Felület hozzáadása",
+    "empty": "Még nincsenek felületek. Adjon hozzá egyet a VPN indításához.",
+    "loadFailed": "A felületek nem tölthetők be.",
+    "up": "Fent",
+    "down": "Lent",
+    "clients": "one: {{count}} ügyfél",
+    "nat": "NAT",
+    "boot": "Indul bootoláskor"
+  },
+  "create": {
+    "title": "Felület hozzáadása",
+    "name": "Név",
+    "address": "Cím",
+    "addressHint": "A szerver címe és alhálózata. Az ügyfelek a következő szabad címeket kapják.",
+    "port": "UDP port",
+    "nat": "A gazdagép internetkapcsolatának megosztása (NAT)",
+    "natDesc": "Az ügyfelek elérhetik az internetet és a gazdagép hálózatát ezen a gazdagépen keresztül.",
+    "natMissing": "A NAT-hoz iptables szükséges, amely nincs telepítve erre a gazdagépre.",
+    "forwarding": "IP-átirányítás bekapcsolása",
+    "forwardingDesc": "Lehetővé teszi a gazdagép számára, hogy forgalmat továbbítson az ügyfelek és a hálózat között. Mentésre kerül újraindításkor.",
+    "firewall": "Port megnyitása a tűzfalon",
+    "firewallDesc": "Hozzáadja az UDP portot a ufw vagy firewalldhoz, ha azok futnak.",
+    "start": "Indítás most és bootoláskor",
+    "startDesc": "Bekapcsolja a felületet, és újraindítás után is fent tartja.",
+    "save": "Létrehozás",
+    "done": "A felület készen áll.",
+    "failed": "A felület nem hozható létre."
+  },
+  "detail": {
+    "clients": "Ügyfelek",
+    "settings": "Beállítások",
+    "config": "Konfiguráció",
+    "service": "Szolgáltatás",
+    "gone": "Ez a felület már nem létezik a gazdagépen."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Megjeleníti a WireGuard fület ennek a hosztjának a menüjében."
+      },
+      "showPanel": {
+        "label": "WireGuard panel megjelenítése a terminálokban",
+        "description": "Engedélyezi a WireGuard panel megnyitását a hoszt SSH termináljának mellett."
+      },
+      "alertDown": {
+        "label": "Riasztás, ha egy interfész le van állítva",
+        "description": "Riasztást küld, ha egy bootkor induló interfész nem aktív. Ellenőrzés történik a WireGuard állapotának olvasásakor."
+      }
+    },
+    "publicKey": "Nyilvános kulcs",
+    "port": "UDP port",
+    "endpoint": "Szerver végpont",
+    "endpointHint": "A nyilvános cím, amelyhez a kliensek csatlakoznak, például vpn.example.com:51820.",
+    "dns": "DNS a klienseknek",
+    "dnsHint": "Opcionális. A szervereket vesszővel válaszd el.",
+    "allowed": "Forgalom a VPN-en keresztül",
+    "allowedHint": "A tartományok, amelyeket a kliensek a VPN-en keresztül küldenek. A 0.0.0.0/0, ::/0 mindent továbbít.",
+    "keepalive": "Keepalive (másodperc)",
+    "keepaliveHint": "Megőrzi a NAT mögötti kliensek elérhetőségét. 0 értékkel kikapcsolható.",
+    "saved": "Beállítások mentve.",
+    "saveFailed": "A beállítások mentése sikertelen.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "WireGuard panel megnyitása az új terminálokkal",
+        "description": "Minden olyan SSH terminál mellett megjeleníti a WireGuard panelt, amelyen a WireGuard be van kapcsolva. A jobb szélen lévő gombbal továbbra is megnyithatod és bezárhatod."
+      },
+      "companionSide": {
+        "label": "WireGuard panel oldala",
+        "description": "Ahol a WireGuard panel helyezkedik el a terminál mellett.",
+        "right": "Jobb",
+        "left": "Bal",
+        "bottom": "Alsó"
+      },
+      "companionSize": {
+        "label": "WireGuard panel mérete",
+        "description": "Szélesség pixelben, vagy magasság, ha alul van. A szélét húzva is módosíthatod."
+      },
+      "companionEdgeButton": {
+        "label": "Panel gomb megjelenítése",
+        "description": "Egy kis gomb megjelenítése a terminál jobb szélén, amely megnyitja a WireGuard panelt."
+      }
+    }
+  },
+  "clients": {
+    "add": "Kliens hozzáadása",
+    "empty": "Még nincsenek kliensek.",
+    "loadFailed": "A kliensek betöltése sikertelen.",
+    "name": "Név",
+    "nameHint": "Betűk, számok, pontok, kötőjelek és aláhúzásjelek.",
+    "allowed": "Forgalom a VPN-en keresztül",
+    "allowedHint": "Hagyja üresen az interfész alapértelmezett értékének használatához: {{value}}",
+    "create": "Kliens létrehozása",
+    "addFailed": "A kliens hozzáadása sikertelen.",
+    "needEndpoint": "Először állítsd be a szerver végpontot az interfész beállításaiban.",
+    "connected": "Csatlakozva",
+    "off": "Ki",
+    "external": "Kézzel készített",
+    "handshake": "handshake {{ago}} ezelőtt",
+    "showConfig": "Konfiguráció és QR-kód megjelenítése",
+    "configFailed": "A kliens konfigurációjának olvasása sikertelen.",
+    "rotate": "Új kulcsok",
+    "rotateTitle": "Új kulcsok létrehozása {{name}} számára?",
+    "rotateDesc": "A régi konfiguráció megszűnik működni. Ezután add át a kliensnek az új konfigurációt.",
+    "turnOff": "Kikapcsolás",
+    "turnOn": "Bekapcsolás",
+    "saveFailed": "A kliens módosítása sikertelen.",
+    "deleteTitle": "{{name}} törlése?",
+    "deleteDesc": "A kliens eltávolításra kerül, és többé nem tud csatlakozni.",
+    "deleteFailed": "A kliens törlése sikertelen."
+  },
+  "clientConfig": {
+    "note": "Ez a konfiguráció tartalmazza a kliens privát kulcsát. Csak azzal a személlyel vagy eszközzel oszd meg, amelyik használni fogja.",
+    "qr": "QR-kód a kliens konfigurációjához",
+    "copy": "Másolás",
+    "copied": "Konfiguráció másolva.",
+    "copyFailed": "A konfiguráció másolása sikertelen.",
+    "download": ".conf letöltése"
+  },
+  "config": {
+    "title": "Konfigurációs fájl",
+    "hint": "A privát és előre megosztott kulcsok elrejtve. Hagyd a helykitöltőt, ha meg akarod tartani a kulcsot. A konfigurációt mentés előtt ellenőrizzük, és biztonsági mentést készítünk. A cím módosítása újraindítást igényel.",
+    "loadFailed": "A konfiguráció nem olvasható.",
+    "saved": "A konfiguráció mentve.",
+    "saveFailed": "A konfiguráció nem menthető."
+  },
+  "logs": {
+    "loadFailed": "A naplók nem olvashatók.",
+    "lines": "{{count}} sor",
+    "empty": "Nincsenek naplóbejegyzések."
+  },
+  "service": {
+    "failed": "A szolgáltatás művelete sikertelen.",
+    "start": "Indítás",
+    "stop": "Leállítás",
+    "restart": "Újraindítás",
+    "autostart": "Indítás bootoláskor",
+    "autostartDesc": "Ez a felület induljon el, amikor a host elindul.",
+    "needsSystemd": "A bootoláskori indításhoz systemd szükséges ezen a hoston.",
+    "noForward": "Az IP-átirányítás ki van kapcsolva ezen a hoston, így a kliensek nem férhetnek hozzá a hálózathoz NAT-on keresztül.",
+    "delete": "Felület törlése",
+    "deleteTitle": "Törli a(z) {{name}} felületet?",
+    "deleteDesc": "A felület leáll, és a konfigurációja, kulcsai, valamint a mentett kliensfájlok eltávolításra kerülnek a hostról.",
+    "deleteFailed": "A felület nem törölhető."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Kapcsold be a WireGuardot a host beállításaiban, hogy használd ezt a kártyát.",
+    "start": "Felhúzás",
+    "stop": "Leresztelés",
+    "done": "A(z) {{name}} frissítve"
+  },
+  "operations": {
+    "list": {
+      "title": "WireGuard-felületek listázása"
+    },
+    "down": {
+      "title": "WireGuard-felületek leállítva"
+    },
+    "start": {
+      "title": "WireGuard-felület indítása"
+    },
+    "stop": {
+      "title": "WireGuard-felület leállítása"
+    },
+    "restart": {
+      "title": "WireGuard-felület újraindítása"
+    },
+    "interfaces": {
+      "title": "WireGuard-felületek",
+      "address": "Cím",
+      "port": "Port",
+      "clients": "Kliensek"
+    }
+  },
+  "nav": {
+    "togglePanel": "WireGuard-panel megjelenítése/elrejtése"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Hostok ellenőrzése...",
+    "summary_one": "{{count}} kliens {{hosts}} hoston",
+    "summary_other": "{{count}} kliens {{hosts}} hoston",
+    "refresh": "Újraellenőrzés",
+    "empty": "Kapcsold be a WireGuardot egy hoston, hogy itt lásd.",
+    "missing": "Nincs telepítve",
+    "down_one": "{{count}} leállítva",
+    "down_other": "{{count}} leállítva",
+    "interfaces_one": "{{count}} felület, {{clients}} kliens",
+    "interfaces_other": "{{count}} felület, {{clients}} kliens"
+  }
+}

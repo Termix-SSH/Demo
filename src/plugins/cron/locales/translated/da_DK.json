@@ -1,0 +1,206 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "Se, tilføj og kør cron-jobs på dine hosts med en planlægningsforhåndsvisning og systemets cron-filer."
+  },
+  "common": {
+    "save": "Gem",
+    "cancel": "Annuller",
+    "back": "Tilbage",
+    "delete": "Slet"
+  },
+  "permissions": {
+    "use": {
+      "title": "Brug Cron",
+      "description": "Se cron-jobs på hosts, du kan nå, og ændre dem på hosts, du kan redigere."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Administrer cron-jobs på denne host fra Cron-fanen."
+      },
+      "useSudo": {
+        "label": "Brug sudo",
+        "description": "Brug sudo til andre brugeres crontabs og /etc/cron.d. Slå fra, hvis login er root."
+      },
+      "readOnly": {
+        "label": "Skrivebeskyttet",
+        "description": "Vis cron-jobs, men ændr dem aldrig på denne host."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "Åbn Cron fra en host.",
+    "error": "Kunne ikke indlæse cron fra denne host.",
+    "disabled": "Cron er slået fra for denne host. Slå det til i host-indstillingerne.",
+    "sudo": "Dette kræver root-login, sudo uden adgangskode eller en gemt Sudo-adgangskode.",
+    "refresh": "Opdater",
+    "running": "Cron kører",
+    "stopped": "Cron stoppet",
+    "readOnly": "Skrivebeskyttet",
+    "notInstalled": "Ikke installeret",
+    "notInstalledTitle": "Cron er ikke installeret på denne host",
+    "notInstalledHint": "Installer cron eller cronie med hostens pakkehåndtering, og opdater derefter.",
+    "notRunning": "Cron-tjenesten kører ikke, så der køres ingen jobs.",
+    "viewJobs": "Jobs",
+    "viewSystem": "System",
+    "viewLogs": "Logs"
+  },
+  "jobs": {
+    "add": "Tilføj job",
+    "user": "Crontab for",
+    "ownUser": "{{user}} (login)",
+    "search": "Søg i jobs",
+    "editText": "Rediger som tekst",
+    "empty": "Ingen cron-jobs endnu.",
+    "noMatch": "Ingen jobs matcher.",
+    "off": "Fra",
+    "next": "næste {{time}}",
+    "run": "Kør nu",
+    "runTitle": "Kør dette job nu?",
+    "runDesc": "Dette kører {{command}} én gang som crontabens bruger. Det stopper efter 2 minutter.",
+    "runFailed": "Kunne ikke køre jobbet.",
+    "turnOn": "Slå til",
+    "turnOff": "Slå fra",
+    "deleteTitle": "Slet dette job?",
+    "loadFailed": "Kunne ikke læse crontab.",
+    "saveFailed": "Kunne ikke gemme crontab.",
+    "outputTitle": "Job-output",
+    "exitOk": "Fuldført",
+    "exitCode": "Afslutningskode {{code}}",
+    "noOutput": "Jobbet skrev ingenting."
+  },
+  "form": {
+    "addTitle": "Nyt job",
+    "editTitle": "Rediger job",
+    "forUser": "Crontab for {{user}}",
+    "label": "Etiket",
+    "labelHint": "Gemmes som en kommentar over jobbet.",
+    "labelPlaceholder": "Natlig backup",
+    "command": "Kommando",
+    "commandHint": "Kører med sh i brugerens hjemmemappe. En % starter input, cron sender. Skriv \\% for en ægte procenttegn.",
+    "schedule": "Planlægning",
+    "scheduleHint": "Minut, time, dag i måneden, måned og ugedag, eller et ord som @daily.",
+    "scheduleInvalid": "Dette er ikke en gyldig planlægning.",
+    "nextRuns": "Næste kørsler ({{zone}}):",
+    "enabled": "Tændt",
+    "enabledHint": "En slukket job forbliver i crontab'en som en kommentar.",
+    "saved": "Gemt."
+  },
+  "presets": {
+    "everyMinute": "Hvert minut",
+    "every5": "Hver 5. min",
+    "every15": "Hver 15. min",
+    "hourly": "Timevis",
+    "daily": "Dagligt",
+    "weekly": "Ugentligt",
+    "monthly": "Månedligt",
+    "reboot": "Ved opstart"
+  },
+  "schedule": {
+    "reboot": "Ved opstart",
+    "everyMinute": "Hvert minut",
+    "everyNMinutes": "Hver {{n}}. minut",
+    "hourlyAt": "Hver time ved minut {{minute}}",
+    "everyNHours": "Hver {{n}}. time ved minut {{minute}}",
+    "dailyAt": "Hver dag kl. {{time}}",
+    "weekdaysAt": "Mandag til fredag kl. {{time}}",
+    "weeklyAt": "Hver {{day}} kl. {{time}}",
+    "monthlyAt": "Den {{day}}. i hver måned kl. {{time}}",
+    "custom": "Brugerdefineret planlægning",
+    "invalid": "Ikke en gyldig planlægning"
+  },
+  "days": {
+    "0": "Søndag",
+    "1": "Mandag",
+    "2": "Tirsdag",
+    "3": "Onsdag",
+    "4": "Torsdag",
+    "5": "Fredag",
+    "6": "Lørdag"
+  },
+  "raw": {
+    "title": "Crontab som tekst",
+    "hint": "Ét job pr. linje. Værten tjekker teksten og beholder den gamle crontab, hvis der er fejl."
+  },
+  "system": {
+    "add": "Ny fil",
+    "addTitle": "Ny fil i /etc/cron.d",
+    "edit": "Rediger",
+    "name": "Filnavn",
+    "nameHint": "Gemmes som /etc/cron.d/<name>. Cron ignorerer navne med prikker.",
+    "nameInvalid": "Brug kun bogstaver, tal, - og _.",
+    "content": "Filindhold",
+    "fileHint": "Hvert job angiver den bruger, det kører som: minut time dag måned ugedag bruger kommando. Hver linje tjekkes, før der gemmes.",
+    "noJobs": "Ingen jobs i denne fil.",
+    "readHint": "Nogle filer kan være skjulte uden root. Ændringer her kræver root-login, passwordløs sudo eller en gemt Sudo Password.",
+    "timers_one": "Denne vært har også {{count}} systemd-timer. Services-pluginet administrerer den.",
+    "timers_other": "Denne vært har også {{count}} systemd-timers. Services-pluginet administrerer dem.",
+    "deleteTitle": "Slet /etc/cron.d/{{name}}?",
+    "deleteDesc": "En kopi beholdes i /var/lib/termix-cron/backup.",
+    "deleted": "Slettede {{name}}.",
+    "saved": "Gemte {{name}}.",
+    "loadFailed": "Kunne ikke læse systemets cron-filer.",
+    "saveFailed": "Kunne ikke gemme filen.",
+    "period": {
+      "hourly": "Kører hver time",
+      "daily": "Kører hver dag",
+      "weekly": "Kører hver uge",
+      "monthly": "Kører hver måned"
+    }
+  },
+  "logs": {
+    "lines": "Linjer",
+    "lineCount_one": "{{count}} linje",
+    "lineCount_other": "{{count}} linjer",
+    "source": "Fra {{source}}",
+    "noSource": "Der blev ikke fundet nogen cron-log på denne vært.",
+    "empty": "Ingen loglinjer.",
+    "failed": "Kunne ikke læse cron-loggen."
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "Aktivér Cron for denne vært i indstillingerne for at se dens opgaver her."
+  },
+  "operations": {
+    "list": {
+      "title": "Liste over cron-opgaver"
+    },
+    "enable": {
+      "title": "Aktivér cron-opgave"
+    },
+    "disable": {
+      "title": "Deaktivér cron-opgave"
+    },
+    "run": {
+      "title": "Kør cron-opgave nu"
+    },
+    "delete": {
+      "title": "Slet cron-opgave"
+    },
+    "jobs": {
+      "title": "Cron-opgaver",
+      "schedule": "Tidsplan",
+      "command": "Kommando"
+    },
+    "status": {
+      "title": "Cron-status"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "Tjekker værter...",
+    "summary_one": "{{count}} opgave på {{hosts}} værter",
+    "summary_other": "{{count}} opgaver på {{hosts}} værter",
+    "refresh": "Tjek igen",
+    "empty": "Aktivér Cron for en vært for at se den her.",
+    "stopped": "Kører ikke",
+    "missing": "Ikke installeret",
+    "jobs_one": "{{count}} opgave",
+    "jobs_other": "{{count}} opgaver",
+    "off": "{{count}} fra"
+  }
+}

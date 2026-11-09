@@ -1,0 +1,205 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Jalankan playbook dan perintah ad-hoc Ansible dari host kontrol, dengan inventaris yang dibuat dari host Termix Anda."
+  },
+  "common": {
+    "save": "Simpan",
+    "cancel": "Batal",
+    "back": "Kembali",
+    "delete": "Hapus"
+  },
+  "permissions": {
+    "use": {
+      "title": "Gunakan Ansible",
+      "description": "Lihat playbook dan eksekusi pada host kontrol yang dapat Anda jangkau. Edit file dan jalankan Ansible pada host yang dapat Anda edit."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Gunakan host ini sebagai host kontrol Ansible. Ansible harus terinstal di dalamnya."
+      },
+      "projectDir": {
+        "label": "Folder proyek",
+        "description": "Folder di host ini yang berisi playbook, role, dan ansible.cfg Anda.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "File kata sandi Vault",
+        "description": "File di host ini yang berisi kata sandi Ansible Vault. Kosongkan jika Anda tidak menggunakan Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Hanya baca",
+        "description": "Tampilkan playbook dan eksekusi, tetapi jangan pernah mengedit file atau memulai eksekusi pada host ini."
+      },
+      "alertRuns": {
+        "label": "Peringatan saat eksekusi gagal",
+        "description": "Kirim peringatan saat eksekusi pada host ini berakhir dengan gagal atau hilang. Diperiksa saat status eksekusi dibaca."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Buka Ansible dari sebuah host.",
+    "error": "Tidak dapat memuat Ansible dari host ini.",
+    "disabled": "Ansible dimatikan untuk host ini. Nyalakan di pengaturan host.",
+    "refresh": "Segarkan",
+    "readOnly": "Hanya baca",
+    "notInstalled": "Ansible tidak terinstal",
+    "notInstalledTitle": "Ansible tidak terinstal di host ini",
+    "notInstalledHint": "Instal ansible-core di host ini, misalnya dengan pipx atau manajer paket Anda, lalu segarkan.",
+    "noSshpass": "sshpass tidak terinstal di host ini. Host yang masuk dengan kata sandi akan gagal.",
+    "viewPlaybooks": "Playbook",
+    "viewRuns": "Eksekusi",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Fakta"
+  },
+  "files": {
+    "add": "File baru",
+    "search": "Cari file",
+    "empty": "Belum ada file di folder proyek.",
+    "noMatch": "Tidak ada file yang cocok.",
+    "noProject": "Folder {{dir}} tidak ada di host ini. Buat folder tersebut, atau atur folder Proyek lain di pengaturan host.",
+    "listFailed": "Tidak dapat menampilkan daftar file proyek.",
+    "loadFailed": "Tidak dapat membaca file tersebut.",
+    "saved": "File disimpan",
+    "saveFailed": "Tidak dapat menyimpan file tersebut.",
+    "playbook": "Playbook",
+    "run": "Jalankan",
+    "newTitle": "File baru",
+    "name": "Nama file",
+    "nameHint": "Path di dalam folder proyek, seperti site.yml atau roles/web/tasks/main.yml.",
+    "hint": "Playbook diperiksa sintaksnya sebelum disimpan. File lama tetap ada jika pemeriksaan gagal.",
+    "text": "Teks file",
+    "deleteTitle": "Hapus file ini?"
+  },
+  "targets": {
+    "search": "Cari host",
+    "addShown": "Tambahkan yang ditampilkan",
+    "clear": "Bersihkan",
+    "empty": "Tidak ada host yang ditemukan.",
+    "count": "{{count}} dipilih",
+    "failed": "Tidak dapat memuat host Anda."
+  },
+  "run": {
+    "title": "Jalankan {{playbook}}",
+    "start": "Jalankan",
+    "startCheck": "Jalankan dalam mode pemeriksaan",
+    "startFailed": "Tidak dapat memulai eksekusi.",
+    "source": "Host",
+    "sourceProject": "Inventaris proyek",
+    "sourceTermix": "Host Termix",
+    "sourceProjectHint": "Gunakan inventaris dari ansible.cfg, atau file di dalam proyek.",
+    "sourceTermixHint": "Pilih host dari Termix. Folder menjadi grup folder_ dan tag menjadi grup tag_. Semua berada di grup termix.",
+    "inventory": "File inventaris",
+    "inventoryHint": "Path di dalam folder proyek. Kosongkan untuk menggunakan ansible.cfg.",
+    "check": "Mode cek",
+    "checkHint": "Tampilkan apa yang akan berubah tanpa melakukan perubahan.",
+    "diff": "Tampilkan perbedaan",
+    "diffHint": "Tampilkan perubahan yang dilakukan pada file.",
+    "become": "Jalankan sebagai root",
+    "becomeHint": "Gunakan sudo pada host. Kata sandi Sudo yang disimpan digunakan untuk host Termix.",
+    "limit": "Batas",
+    "limitHint": "Hanya jalankan pada host atau grup ini.",
+    "verbosity": "Detail output",
+    "verbosityOff": "Normal",
+    "tags": "Tag",
+    "skipTags": "Lewati tag",
+    "extraVars": "Variabel tambahan",
+    "extraVarsHint": "Satu key=value per baris."
+  },
+  "runs": {
+    "title": "Eksekusi",
+    "empty": "Belum ada eksekusi.",
+    "loadFailed": "Tidak dapat memuat eksekusi.",
+    "stop": "Berhenti",
+    "stopFailed": "Tidak dapat menghentikan eksekusi.",
+    "deleteTitle": "Hapus eksekusi ini?",
+    "deleteFailed": "Tidak dapat menghapus eksekusi.",
+    "checkMode": "Cek",
+    "truncated": "Menampilkan akhir dari output yang panjang.",
+    "noOutput": "Belum ada output.",
+    "state": {
+      "running": "Sedang berjalan",
+      "ok": "Selesai",
+      "failed": "Gagal",
+      "cancelled": "Dihentikan",
+      "lost": "Hilang"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Fakta"
+    },
+    "recap": {
+      "host": "Host",
+      "ok": "OK",
+      "changed": "Berubah",
+      "unreachable": "Tidak terjangkau",
+      "failed": "Gagal",
+      "skipped": "Dilewati"
+    }
+  },
+  "adhoc": {
+    "hint": "Jalankan satu modul pada host, seperti ansible all -m ping.",
+    "pattern": "Pola host",
+    "patternHint": "Sebuah host, grup, atau semua.",
+    "module": "Modul",
+    "moduleHint": "Misalnya ping, command, shell, apt, atau systemd.",
+    "args": "Argumen",
+    "argsHint": "Untuk command dan shell ini adalah perintah. Untuk modul lain ini adalah pasangan key=value.",
+    "run": "Jalankan"
+  },
+  "facts": {
+    "hint": "Kumpulkan fakta dari host dengan modul setup. Membutuhkan host Termix agar masing-masing memiliki login.",
+    "gather": "Kumpulkan fakta",
+    "gathering": "Mengumpulkan...",
+    "failed": "Tidak dapat mengumpulkan fakta.",
+    "failedHost": "Gagal",
+    "none": "Tidak ada fakta yang kembali. Buka eksekusi untuk melihat alasannya.",
+    "col": {
+      "host": "Host",
+      "os": "Sistem",
+      "kernel": "Kernel",
+      "cpu": "CPU",
+      "memory": "Memori",
+      "address": "Alamat",
+      "uptime": "Waktu Aktif"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Daftar playbook"
+    },
+    "run": {
+      "title": "Jalankan playbook",
+      "playbook": "Playbook",
+      "limit": "Batas",
+      "tags": "Tag",
+      "check": "Mode Periksa"
+    },
+    "runs": {
+      "title": "Daftar eksekusi",
+      "resource": "Eksekusi",
+      "started": "Dimulai",
+      "check": "Mode Periksa"
+    },
+    "failed": {
+      "title": "Eksekusi Gagal"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Memeriksa host...",
+    "summary_other": "{{count}} eksekusi gagal pada {{hosts}} host",
+    "refresh": "Periksa lagi",
+    "empty": "Aktifkan Ansible untuk host agar eksekusinya muncul di sini.",
+    "failed_other": "{{count}} gagal",
+    "running_other": "{{count}} berjalan",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Belum ada eksekusi"
+  }
+}

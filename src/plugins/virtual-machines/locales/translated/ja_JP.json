@@ -1,0 +1,421 @@
+{
+  "tab": {
+    "title": "仮想マシン",
+    "noHost": "ホストから仮想マシンを開きます。",
+    "refresh": "更新",
+    "open": "フルビューを開く",
+    "error": "このホスト上のVMを読み取れませんでした。",
+    "disabled": "このホストでは仮想マシンが無効になっています。ホスト設定で有効にしてください。",
+    "sudo": "このホストには、rootログイン、パスワードなしのsudo、または保存されたSudoパスワードが必要です。",
+    "vms": "VM",
+    "storage": "ストレージ",
+    "networks": "ネットワーク",
+    "jobs": "ジョブ",
+    "runningCount": "{{total}} 件中 {{running}} 件実行中",
+    "nodeLine": "{{cpus}} CPU、{{memory}}",
+    "noKvm": "KVMなし、VMは低速になります"
+  },
+  "common": {
+    "loading": "読み込み中...",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "failed": "操作に失敗しました。"
+  },
+  "state": {
+    "running": "実行中",
+    "blocked": "ブロック済み",
+    "paused": "一時停止中",
+    "shutdown": "シャットダウン中",
+    "shutoff": "オフ",
+    "crashed": "クラッシュ",
+    "pmsuspended": "サスペンド済み",
+    "unknown": "不明"
+  },
+  "power": {
+    "start": "起動",
+    "shutdown": "シャットダウン",
+    "reboot": "再起動",
+    "stop": "強制停止",
+    "suspend": "一時停止",
+    "resume": "再開",
+    "shutdownTitle": "{{name}} をシャットダウンしますか？",
+    "shutdownText": "ゲストにシャットダウンを要求します。完了まで数分かかる場合があり、ACPIサポートがないゲストは無視する可能性があります。",
+    "stopTitle": "{{name}} を強制停止しますか？",
+    "stopText": "電源を即座に切断します。ゲストが保存していないデータは失われます。"
+  },
+  "setup": {
+    "missing": "Libvirtがインストールされていません",
+    "missingText": "TermixはこのホストにQEMUとlibvirtをインストールできます。root、パスワードなしのsudo、または保存されたSudoパスワードが必要です。",
+    "noConnect": "Termixがこのホスト上のlibvirtに接続できません",
+    "noConnectText": "libvirtサービスが実行中で、SSHユーザーが使用できることを確認してください。",
+    "noKvm": "このホストには/dev/kvmがないため、VMはハードウェア支援なしで実行されます。BIOSまたはこのVMで仮想化を有効にしてください。",
+    "install": "インストール",
+    "installing": "インストール中...",
+    "installTitle": "このホストにlibvirtをインストールしますか？",
+    "installText": "ホストのパッケージマネージャーを使用してQEMU、libvirtおよび関連ツールをインストールし、サービスを開始し、デフォルトのネットワークとストレージプールを設定します。",
+    "installed": "Libvirtがインストールされました"
+  },
+  "vm": {
+    "new": "新しいVM",
+    "none": "このホストにはまだVMがありません",
+    "noneHint": "新しいVMを押して作成してください。",
+    "name": "名前",
+    "state": "状態",
+    "size": "サイズ",
+    "ip": "IPアドレス",
+    "noIp": "アドレスなし",
+    "cpus_other": "{{count}} CPU",
+    "back": "リストに戻る",
+    "overview": "概要",
+    "console": "コンソール",
+    "snapshots": "スナップショット",
+    "hardware": "ハードウェア",
+    "xml": "XML",
+    "cpu": "CPU",
+    "memory": "メモリ",
+    "memoryUsed": "{{used}} 使用中",
+    "ofHost": "ホストのメモリ: {{memory}}",
+    "diskIo": "ディスク",
+    "diskUsed": "ディスク {{size}}、ホスト上 {{used}}",
+    "netIo": "ネットワーク",
+    "uuid": "UUID",
+    "machine": "マシン",
+    "firmware": "ファームウェア",
+    "bios": "BIOS",
+    "uefi": "UEFI",
+    "cpuMode": "CPU モード",
+    "guestAgent": "ゲストエージェント",
+    "yes": "はい",
+    "no": "いいえ",
+    "autostart": "自動起動",
+    "autostartHint": "ホスト起動時にこの VM を起動します。",
+    "clone": "クローン",
+    "cloneStopped": "クローンを作成するには VM をシャットダウンしてください",
+    "cloneName": "コピーの名前",
+    "cloneStarted": "クローン作成を開始しました。進捗はジョブで確認できます。",
+    "delete": "削除",
+    "deleteTitle": "{{name}} を削除しますか？",
+    "deleteDisks": "ディスクも削除する",
+    "deleteDisksHint": "他の VM で使用されていないディスクを削除します。この操作は元に戻せません。ISO やベースイメージは残ります。",
+    "deleted": "VM を削除しました"
+  },
+  "watch": {
+    "start": "この VM が停止したら通知する",
+    "stop": "この VM の通知を停止する"
+  },
+  "console": {
+    "graphical": "グラフィカル",
+    "serial": "シリアル",
+    "notRunning": "コンソールを使用するには VM を起動してください。",
+    "connecting": "接続中...",
+    "failed": "コンソールを開けませんでした。",
+    "retry": "再試行",
+    "ended": "コンソールが閉じられました。",
+    "serialHint": "画面が空白のままの場合は Enter キーを押してください。ゲストはシリアルポートで getty を実行している必要があります。",
+    "noRemoteDesktop": "この VM の画面を表示するにはリモートデスクトップを有効にしてください。シリアルコンソールは引き続き使用できます。",
+    "useVnc": "VNC に切り替え",
+    "vncSaved": "保存しました。VNC を使用するには VM をシャットダウンして再起動してください。"
+  },
+  "hardware": {
+    "cpuMemory": "CPU とメモリ",
+    "vcpus": "CPU",
+    "memory": "メモリ (MiB)",
+    "nextStart": "変更は次回 VM 起動時に適用されます。",
+    "saved": "保存しました",
+    "disks": "ディスク",
+    "detach": "取り外し",
+    "detachTitle": "{{name}} を取り外しますか？",
+    "detachText": "ボリュームはプール内に残ります。",
+    "pool": "ストレージプール",
+    "sizeGib": "サイズ (GiB)",
+    "addDisk": "ディスクを追加",
+    "cdrom": "CD ドライブ",
+    "noMedia": "空",
+    "iso": "ISO",
+    "pickIso": "ISO を選択",
+    "insert": "挿入",
+    "eject": "取り出し",
+    "nics": "ネットワークカード",
+    "removeNic": "削除",
+    "nicType": "接続先",
+    "virtualNetwork": "仮想ネットワーク",
+    "hostBridge": "ホストブリッジ",
+    "network": "ネットワーク",
+    "bridge": "ブリッジ",
+    "addNic": "カードを追加"
+  },
+  "snapshot": {
+    "name": "スナップショット名",
+    "description": "説明",
+    "take": "スナップショットを作成",
+    "taking": "処理中...",
+    "taken": "スナップショットを作成しました",
+    "none": "スナップショットがありません",
+    "noneHint": "スナップショットは、実行中のVMのディスクとメモリを保存します。",
+    "current": "現在",
+    "revert": "元に戻す",
+    "revertTitle": "{{name}} に戻しますか？",
+    "revertText": "このスナップショット以降の変更はすべて失われます。",
+    "reverted": "VMを元に戻しました",
+    "delete": "削除",
+    "deleteTitle": "スナップショット {{name}} を削除しますか？",
+    "deleteText": "VMは現在の状態のままになります。"
+  },
+  "xml": {
+    "hint": "上級者向け。ホストは保存前にXMLをチェックし、/var/lib/termix-vms/backups に旧バージョンのコピーを保持します。",
+    "saveTitle": "このXMLを保存しますか？",
+    "saveText": "VMが次に起動したときに適用されます。",
+    "saved": "保存しました"
+  },
+  "new": {
+    "title": "新しいVM",
+    "basics": "基本設定",
+    "install": "インストール",
+    "name": "名前",
+    "source": "インストール元",
+    "sourceCloud": "クラウドイメージ",
+    "sourceIso": "ISO",
+    "sourceBlank": "空のディスク",
+    "noIso": "このプールにはISOがありません。ストレージからダウンロードしてください。",
+    "image": "イメージ",
+    "customImage": "その他のURL",
+    "imageUrl": "イメージURL",
+    "username": "ログイン名",
+    "password": "パスワード",
+    "sshKey": "SSH公開鍵",
+    "sshKeyHint": "パスワード、鍵、または両方を指定してください。パスワードはハッシュとしてのみ保存されます。",
+    "start": "準備ができたら起動",
+    "create": "VMを作成",
+    "started": "VMを作成しています。進捗はジョブで確認できます。",
+    "noUefi": "このホストにはUEFIファームウェアがインストールされていません。",
+    "uefiHint": "UEFI VMはシャットダウン中のみスナップショットを作成できます。",
+    "missingTools": "このホストには、クラウドイメージに必要な {{tools}} が不足しています。"
+  },
+  "storage": {
+    "pools": "ストレージプール",
+    "none": "ストレージプールがありません",
+    "noneHint": "VMディスクを保存するフォルダを追加してください。",
+    "active": "アクティブ",
+    "inactive": "非アクティブ",
+    "used": "{{size}} のうち {{used}} を使用（{{percent}}%）",
+    "start": "開始",
+    "stop": "停止",
+    "forget": "忘れる",
+    "forgetTitle": "プール {{name}} を忘れますか？",
+    "forgetText": "Libvirtはこのプールを使用しなくなります。フォルダ内のファイルはディスクに残ります。",
+    "poolName": "プール名",
+    "poolPath": "フォルダ",
+    "addPool": "プールの追加",
+    "volumes": "{{pool}} 内のボリューム",
+    "noVolumes": "このプールにはボリュームがありません",
+    "allocated": "ディスク使用量: {{size}}",
+    "deleteVolume": "{{name}} を削除しますか？",
+    "deleteVolumeText": "ファイルが削除されます。この操作は元に戻せません。",
+    "volumeName": "ボリューム名",
+    "addVolume": "ボリュームの追加",
+    "downloadUrl": "このプールにファイルをダウンロード",
+    "downloadHint": "ホスト側でダウンロードが実行されるため、Termix を閉じても処理は続行されます。",
+    "download": "ダウンロード",
+    "downloadStarted": "ダウンロード開始"
+  },
+  "network": {
+    "title": "仮想ネットワーク",
+    "none": "仮想ネットワークがありません",
+    "name": "名前",
+    "kind": "種類",
+    "nat": "NAT",
+    "isolated": "分離型",
+    "bridge": "ホストブリッジ",
+    "subnet": "アドレス",
+    "add": "ネットワークの追加",
+    "stopTitle": "ネットワーク {{name}} を停止しますか？",
+    "stopText": "このネットワーク上の VM は、ネットワークが復旧して再接続されるまで接続が失われます。",
+    "deleteTitle": "ネットワーク {{name}} を削除しますか？",
+    "leases": "{{name}} 上の DHCP リース",
+    "noLeases": "リースがありません"
+  },
+  "jobs": {
+    "none": "ジョブはまだありません",
+    "noneHint": "新しい VM、クローン、スナップショット、ダウンロードがここに表示されます。",
+    "cancel": "停止",
+    "status": {
+      "running": "実行中",
+      "success": "完了",
+      "failed": "失敗",
+      "cancelled": "停止済み"
+    },
+    "kind": {
+      "create": "新しい VM",
+      "clone": "クローン",
+      "download": "ダウンロード",
+      "snapshot": "スナップショット"
+    },
+    "phase": {
+      "download": "ダウンロード中",
+      "disk": "ディスクの作成中",
+      "seed": "cloud-init の書き込み中",
+      "define": "VM の保存中",
+      "start": "起動中",
+      "clone": "ディスクのコピー中"
+    }
+  },
+  "all": {
+    "title": "すべての VM",
+    "search": "検索",
+    "host": "ホスト",
+    "hostCount_other": "{{count}} 台のホスト",
+    "noHosts": "仮想マシンが有効になっているホストがありません",
+    "noHostsHint": "Manage でホストを開き、仮想マシンを有効にしてください。"
+  },
+  "card": {
+    "title": "仮想マシン",
+    "unreachable": "到達不可",
+    "crashed_other": "{{count}} 台がクラッシュ"
+  },
+  "widget": {
+    "running": "実行中の VM"
+  },
+  "companion": {
+    "toggle": "VM パネルの表示/非表示"
+  },
+  "permissions": {
+    "use": {
+      "title": "仮想マシンの使用",
+      "description": "接続可能なホスト上の VM を表示し、編集可能なホスト上の VM を変更できます。"
+    },
+    "console": {
+      "title": "VM コンソールの開く",
+      "description": "編集可能なホスト上の VM のグラフィカルおよびシリアルコンソールを開きます。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "仮想マシンの有効化",
+        "description": "libvirt を使用して、このホスト上の KVM 仮想マシンを管理します。"
+      },
+      "useSudo": {
+        "label": "sudo を使用する",
+        "description": "libvirt コマンドを sudo で実行します。root ログインの場合はオフにしてください。"
+      },
+      "readOnly": {
+        "label": "読み取り専用",
+        "description": "VM を表示しますが、Termix からのすべての変更をブロックします。"
+      },
+      "connectUri": {
+        "label": "Libvirt 接続",
+        "description": "使用する libvirt URI です。ほとんどのホストでは qemu:///system を使用します。"
+      },
+      "showPanel": {
+        "label": "ターミナルの横に VM パネルを表示",
+        "description": "このホストのターミナルタブに VM リストを追加します。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "VM パネルを単独で開く",
+        "description": "ターミナルが開いたときにパネルを開きます。"
+      },
+      "companionSide": {
+        "label": "VM パネルの位置",
+        "description": "ターミナルの横にあるパネルの位置です。",
+        "right": "右",
+        "left": "左",
+        "bottom": "下"
+      },
+      "companionSize": {
+        "label": "VM パネルのサイズ",
+        "description": "ピクセル単位の幅または高さです。"
+      },
+      "companionEdgeButton": {
+        "label": "エッジボタンを表示",
+        "description": "ターミナルの端にある小さなボタンでパネルを開きます。"
+      }
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "VM の一覧"
+    },
+    "state": {
+      "title": "VM の状態"
+    },
+    "running": {
+      "title": "実行中の VM"
+    },
+    "crashed": {
+      "title": "クラッシュした VM"
+    },
+    "pools": {
+      "title": "ストレージプールの使用状況"
+    },
+    "snapshots": {
+      "title": "VM のスナップショット"
+    },
+    "listPools": {
+      "title": "ストレージプールの一覧"
+    },
+    "listNetworks": {
+      "title": "仮想ネットワークの一覧"
+    },
+    "start": {
+      "title": "VM の起動"
+    },
+    "reboot": {
+      "title": "VM の再起動"
+    },
+    "suspend": {
+      "title": "VM の一時停止"
+    },
+    "resume": {
+      "title": "VM の再開"
+    },
+    "autostart": {
+      "title": "VM の自動起動設定",
+      "enabled": "ホスト起動時に開始"
+    },
+    "snapshot": {
+      "title": "VM のスナップショットを作成",
+      "name": "スナップショット名",
+      "description": "説明"
+    },
+    "clone": {
+      "title": "VM のクローン作成",
+      "name": "コピーの名前"
+    },
+    "shutdown": {
+      "title": "VM のシャットダウン"
+    },
+    "forceStop": {
+      "title": "VM の強制停止"
+    },
+    "delete": {
+      "title": "VM の削除",
+      "disks": "ディスクも削除する"
+    },
+    "revert": {
+      "title": "スナップショットに復元"
+    },
+    "deleteSnapshot": {
+      "title": "スナップショットの削除"
+    },
+    "vms": {
+      "title": "仮想マシン"
+    },
+    "column": {
+      "cpus": "CPU",
+      "memory": "メモリ (MiB)",
+      "ip": "IP アドレス",
+      "autostart": "自動起動",
+      "vm": "VM",
+      "created": "作成日"
+    },
+    "events": {
+      "started": "VM が起動しました",
+      "stopped": "VM が停止しました",
+      "crashed": "VM がクラッシュしました",
+      "job": "VM のジョブが完了しました"
+    }
+  }
+}

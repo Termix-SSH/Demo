@@ -1,0 +1,233 @@
+{
+  "plugin": {
+    "name": "憑證",
+    "description": "使用 certbot 和 acme.sh 查看、簽發與更新主機上的 TLS 憑證，並在憑證過期前收到通知。"
+  },
+  "common": {
+    "cancel": "取消",
+    "back": "返回"
+  },
+  "permissions": {
+    "use": {
+      "title": "使用憑證",
+      "description": "查看可連線主機上的憑證，並修改可編輯主機上的憑證。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "憑證",
+        "description": "從憑證分頁管理此主機上的 TLS 憑證。"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "使用 sudo 讀取與修改憑證。若登入身分為 root，請關閉此選項。"
+      },
+      "readOnly": {
+        "label": "唯讀",
+        "description": "在此主機上僅顯示憑證，永不進行修改。"
+      },
+      "expiryWarnDays": {
+        "label": "到期前警告",
+        "description": "剩餘天數少於或等於此數值的憑證將標示為即將到期，並發送警示。"
+      },
+      "showPanel": {
+        "label": "在終端機中顯示憑證面板",
+        "description": "允許憑證面板在此主機的 SSH 終端機旁開啟。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "在新終端機開啟時自動顯示憑證面板",
+        "description": "在每個已啟用憑證功能的 SSH 終端機旁顯示憑證面板。您仍可以透過右側邊緣的按鈕來開啟或關閉它。"
+      },
+      "companionSide": {
+        "label": "憑證面板位置",
+        "description": "憑證面板相對於終端機的位置。",
+        "right": "右側",
+        "left": "左側",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "憑證面板大小",
+        "description": "以像素為單位的寬度，若位於底部則為高度。您也可以拖曳其邊緣來調整。"
+      },
+      "companionEdgeButton": {
+        "label": "顯示面板按鈕",
+        "description": "在終端機右側邊緣顯示一個小按鈕，點擊即可開啟憑證面板。"
+      }
+    }
+  },
+  "tab": {
+    "title": "憑證",
+    "noHost": "從主機開啟憑證。",
+    "error": "無法從此主機載入憑證。",
+    "disabled": "此主機已停用憑證功能。請前往主機設定中將其啟用。",
+    "sudo": "此變更需要 root 登入、免密碼 sudo，或在此主機上儲存 Sudo 密碼。",
+    "refresh": "重新整理",
+    "readOnly": "唯讀",
+    "noClient": "未找到 certbot 或 acme.sh",
+    "viewCertificates": "憑證",
+    "viewInspect": "檢查",
+    "viewRenewal": "續期"
+  },
+  "actions": {
+    "working": "處理中，可能需要幾分鐘。",
+    "ok": "完成",
+    "failed": "命令執行失敗。",
+    "noOutput": "無輸出。"
+  },
+  "install": {
+    "title": "此主機未安裝 certbot 與 acme.sh",
+    "hint": "安裝 certbot 以從 Let's Encrypt 取得並更新憑證。",
+    "noManager": "未找到支援的套件管理器。請手動安裝 certbot。",
+    "button": "安裝 certbot",
+    "confirm": "要安裝 certbot 嗎？",
+    "desc": "這將使用主機的套件管理器安裝 certbot。",
+    "working": "安裝中...",
+    "done": "certbot 已安裝。"
+  },
+  "certs": {
+    "search": "搜尋憑證",
+    "empty": "目前尚無憑證。",
+    "noMatch": "找不到符合的憑證。",
+    "loadFailed": "無法讀取憑證。",
+    "expires": "於 {{date}} 到期",
+    "staging": "測試環境",
+    "details": "憑證",
+    "manage": "管理",
+    "client": "用戶端",
+    "path": "檔案",
+    "authority": "憑證授權單位",
+    "renew": "續期",
+    "renewDone": "已續期 {{name}}。",
+    "renewAll": "全部續期",
+    "renewAllDone": "已續期所有到期的憑證。",
+    "forceRenew": "立即強制續期",
+    "dryRun": "模擬執行",
+    "dryRunDone": "模擬執行成功。",
+    "revoke": "撤銷",
+    "revokeTitle": "確定要撤銷 {{name}} 嗎？",
+    "revokeDesc": "憑證授權單位會將其標記為無效，並從此主機移除。任何仍在使用的服務將停止運作。",
+    "revokeDone": "已撤銷 {{name}}。",
+    "delete": "停止管理",
+    "deleteTitle": "要停止管理 {{name}} 嗎？",
+    "deleteDesc": "憑證仍有效，但不再自動更新。certbot 會刪除其檔案，acme.sh 則會保留。",
+    "deleteDone": "{{name}} 不再受管理。"
+  },
+  "expiry": {
+    "expired": "已過期",
+    "unknown": "未知",
+    "days_other": "剩餘 {{count}} 天"
+  },
+  "issue": {
+    "add": "申請憑證",
+    "title": "新憑證",
+    "save": "申請",
+    "done": "憑證已申請完成。",
+    "working": "正在向憑證授權單位請求，這可能需要幾分鐘。",
+    "client": "用戶端",
+    "domains": "網域",
+    "domainsPlaceholder": "輸入網域後按 Enter",
+    "domainsHint": "第一個網域將作為憑證名稱。",
+    "challenge": "驗證方式",
+    "standalone": "獨立模式",
+    "standaloneHint": "會在 80 埠上執行小型網頁伺服器，因此該埠不能被其他程式使用。",
+    "webroot": "網頁根目錄",
+    "webrootHint": "會將檔案放入網頁伺服器的資料夾中。網頁伺服器會繼續執行。",
+    "dns": "DNS",
+    "dnsHint": "透過您的供應商 API 新增 DNS 記錄。萬用字元憑證需要此功能。",
+    "webrootPath": "網頁根目錄資料夾",
+    "webrootPathHint": "必須位於 /var/www、/srv 或 /usr/share/nginx 內。",
+    "dnsProvider": "DNS 供應商",
+    "dnsProviderCertbot": "已安裝的 certbot DNS 外掛名稱，例如 cloudflare。",
+    "dnsProviderAcme": "acme.sh 的 DNS 名稱（不含 dns_ 前綴），例如 cf。其 API 權杖必須已在主機上設定。",
+    "credentials": "憑證檔案",
+    "credentialsHint": "主機上存放您 API 權杖的檔案。Termix 不會讀取此檔案。",
+    "email": "電子郵件",
+    "emailHint": "選填。授權單位會用它來發送到期通知。",
+    "keyType": "金鑰類型",
+    "staging": "使用測試伺服器",
+    "stagingHint": "僅供測試。此憑證不受信任，且速率限制較寬鬆。"
+  },
+  "inspect": {
+    "server": "伺服器",
+    "file": "檔案",
+    "address": "位址",
+    "addressPlaceholder": "example.com",
+    "port": "連接埠",
+    "path": "檔案路徑",
+    "check": "檢查",
+    "hint": "檢查伺服器透過 TLS 傳送的內容（從本主機的角度），或讀取伺服器上的憑證檔案。",
+    "failed": "無法讀取憑證。",
+    "noOpenssl": "此主機未安裝 openssl。",
+    "trusted": "受信任",
+    "notTrusted": "不受信任",
+    "leaf": "憑證",
+    "intermediate": "鏈結 {{index}}",
+    "selfSigned": "自簽章",
+    "name": "名稱",
+    "issuer": "發行者",
+    "domains": "網域",
+    "validFrom": "有效期自",
+    "validTo": "有效期至",
+    "keyType": "金鑰",
+    "serial": "序號",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "此主機如何自動更新憑證。請在主機上進行變更。",
+    "on": "開啟",
+    "off": "關閉",
+    "timer": "systemd 計時器",
+    "next": "下次執行時間 {{time}}",
+    "cron": "Cron 檔案 /etc/cron.d/certbot",
+    "certbotOff": "未找到計時器或 cron 工作，因此憑證不會自動更新。",
+    "acmeCron": "crontab 中的 cron 工作",
+    "acmeOff": "未找到 cron 工作，因此憑證不會自動更新。"
+  },
+  "watch": {
+    "start": "當此主機的憑證即將過期時通知我",
+    "stop": "停止此主機的警示",
+    "on": "當此處的憑證即將過期時，您將收到警示。",
+    "off": "此主機的警示已關閉。",
+    "failed": "無法變更警示設定。"
+  },
+  "card": {
+    "title": "憑證",
+    "loading": "正在檢查主機...",
+    "summary_other": "{{count}} 個憑證，{{expiring}} 個即將過期",
+    "refresh": "再次檢查",
+    "empty": "為主機開啟憑證功能，即可在此查看其憑證。"
+  },
+  "manager": {
+    "title": "憑證",
+    "disabled": "請在設定中為此主機啟用憑證功能，即可在此處查看。"
+  },
+  "operations": {
+    "list": {
+      "title": "列出憑證"
+    },
+    "expiring": {
+      "title": "即將過期的憑證"
+    },
+    "renew": {
+      "title": "更新憑證"
+    },
+    "renewAll": {
+      "title": "更新所有憑證"
+    },
+    "revoke": {
+      "title": "撤銷憑證"
+    },
+    "certificates": {
+      "title": "憑證",
+      "client": "用戶端",
+      "domains": "網域",
+      "daysLeft": "剩餘天數"
+    }
+  },
+  "nav": {
+    "togglePanel": "切換憑證面板"
+  }
+}

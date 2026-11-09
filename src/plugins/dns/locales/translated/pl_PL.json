@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Zarządzaj rekordami DNS i domenami w Cloudflare, Route 53, Namecheap oraz u innych dostawców."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domeny",
+    "loading": "Ładowanie",
+    "empty": "Brak domen. Otwórz DNS, aby dodać dane logowania.",
+    "ok": "{{domains}} domen, żadna nie wygasa wkrótce",
+    "accounts": "{{count}} logowań",
+    "failingLinks": "{{count}} połączonych rekordów nieudanych"
+  },
+  "permissions": {
+    "view": {
+      "title": "Podgląd DNS",
+      "description": "Otwórz kartę DNS i przeglądaj strefy, rekordy, domeny oraz testy dostępności."
+    },
+    "edit": {
+      "title": "Zmiana rekordów DNS",
+      "description": "Dodawanie, edycja i usuwanie rekordów, import plików stref oraz odświeżanie domen."
+    },
+    "manage": {
+      "title": "Zarządzanie logowaniami DNS",
+      "description": "Dodawanie danych logowania dostawców, łączenie rekordów z hostami, monitorowanie domen oraz przywracanie kopii stref."
+    }
+  },
+  "operations": {
+    "zone": "Strefa",
+    "type": "Typ",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Nazwa",
+    "content": "Wartość",
+    "contentOptional": "Wartość (pozostaw puste, aby dopasować dowolne)",
+    "ttl": "TTL w sekundach",
+    "label": "Etykieta",
+    "zones": {
+      "title": "Lista stref DNS"
+    },
+    "records": {
+      "title": "Lista rekordów DNS"
+    },
+    "domains": {
+      "title": "Lista domen i dat wygaśnięcia"
+    },
+    "check": {
+      "title": "Sprawdź strefę"
+    },
+    "upsert": {
+      "title": "Ustaw rekord DNS"
+    },
+    "delete": {
+      "title": "Usuń rekord DNS"
+    },
+    "snapshot": {
+      "title": "Zapisz kopię strefy"
+    },
+    "links": {
+      "title": "Aktualizuj połączone rekordy"
+    },
+    "expiry": {
+      "title": "Wygaśnięcie domeny"
+    }
+  },
+  "description": "Dodaj dane logowania do DNS i rejestratorów, aby zarządzać rekordami i monitorować domeny w jednym miejscu. Klucze są przechowywane w zaszyfrowanej formie i nigdy nie są wyświetlane ponownie.",
+  "summary": "{{zones}} stref, {{domains}} domen",
+  "saved": "Zapisano",
+  "delete": "Usuń",
+  "edit": "Edytuj",
+  "back": "Wróć",
+  "refresh": "Odśwież",
+  "section": {
+    "zones": "Strefy",
+    "domains": "Domeny",
+    "links": "Powiązania",
+    "accounts": "Logowania"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "Token API",
+    "accessKeyId": "ID klucza dostępu",
+    "secretAccessKey": "Tajny klucz dostępu",
+    "sessionToken": "Token sesji (opcjonalnie)",
+    "apiUser": "Użytkownik API",
+    "apiKey": "Klucz API",
+    "userName": "Nazwa użytkownika (jeśli różni się od użytkownika API)",
+    "clientIp": "Dozwolony adres IP",
+    "apiSecret": "Tajny klucz API",
+    "environment": "Środowisko",
+    "environment_production": "Produkcja",
+    "environment_ote": "Test (OTE)",
+    "secretApiKey": "Tajny klucz API",
+    "token": "Osobisty token dostępu"
+  },
+  "zones": {
+    "empty": "Brak stref.",
+    "emptyHint": "Dodaj dane logowania dostawcy w sekcji Logowania, aby zobaczyć jego strefy."
+  },
+  "zone": {
+    "records": "Rekordy",
+    "health": "Stan zdrowia",
+    "copies": "Kopie",
+    "files": "Pliki",
+    "filter": "Filtruj rekordy",
+    "empty": "Brak rekordów."
+  },
+  "record": {
+    "section": "Rekord",
+    "addTitle": "Dodaj rekord",
+    "editTitle": "Edytuj rekord",
+    "add": "Dodaj rekord",
+    "save": "Zapisz",
+    "type": "Typ",
+    "name": "Nazwa",
+    "nameHint": "Użyj @ dla samej strefy {{zone}}",
+    "value": "Wartość",
+    "priority": "Priorytet",
+    "ttl": "TTL (sekundy)",
+    "ttlHint": "Jak długo resolverzy przechowują odpowiedź. 300 to 5 minut.",
+    "ttlAuto": "1 oznacza tryb automatyczny.",
+    "proxied": "Przekierowane przez proxy",
+    "proxiedHint": "Przesyłaj ruch przez Cloudflare.",
+    "proxiedBadge": "Przekierowane przez proxy",
+    "comment": "Notatka",
+    "readOnly": "Zarządzane przez dostawcę",
+    "deleteConfirm": "Usunąć rekord {{type}} {{name}}?"
+  },
+  "account": {
+    "add": "Dodaj dane logowania",
+    "addTitle": "Dodaj dane logowania DNS",
+    "editTitle": "Edytuj dane logowania DNS",
+    "save": "Zapisz",
+    "login": "Dane logowania",
+    "provider": "Dostawca",
+    "name": "Nazwa",
+    "namePlaceholder": "Główny Cloudflare",
+    "keep": "Pozostaw puste, aby zachować zapisaną wartość",
+    "registrar": "Ten dostawca jest również rejestratorem, więc jego domeny pojawiają się w sekcji Domeny.",
+    "options": "Opcje",
+    "autoBackup": "Przechowuj kopie stref",
+    "autoBackupHint": "Zapisuj kopię przed każdą zmianą oraz gdy strefa ulegnie zmianie poza Termix.",
+    "checkHealth": "Sprawdzaj strefy codziennie",
+    "checkHealthHint": "Wykonuj testy stanu zdrowia codziennie i powiadamiaj o nowych problemach.",
+    "test": "Testuj",
+    "testOk": "Działa. Znaleziono {{zones}} stref i {{domains}} domen.",
+    "deleteConfirm": "Usunąć {{name}}? Jego kopie i powiązania zostaną usunięte. Nic nie zmienia się po stronie dostawcy.",
+    "empty": "Brak danych logowania.",
+    "emptyHint": "Dodaj dane logowania Cloudflare, Route 53, Namecheap lub innego dostawcy, aby rozpocząć.",
+    "lastSync": "Ostatnio sprawdzono {{date}}",
+    "never": "Nie sprawdzono jeszcze",
+    "failed": "Logowanie nie powiodło się"
+  },
+  "domains": {
+    "empty": "Brak domen.",
+    "emptyHint": "Dane logowania rejestratorów wyświetlają ich domeny tutaj. Możesz również obserwować dowolną domenę po nazwie.",
+    "watchPlaceholder": "example.com",
+    "watch": "Obserwuj domenę",
+    "unwatch": "Przestań obserwować",
+    "watched": "Obserwowane",
+    "noRenew": "Automatyczne odnawianie wyłączone",
+    "unlocked": "Nie zablokowane",
+    "unknown": "Rejestrator nieznany",
+    "expires": "Wygasa {{date}}",
+    "expired": "Wygasła",
+    "days": "Pozostało {{count}} dni",
+    "refreshFailed": "Nie udało się wykonać {{count}} zapytań"
+  },
+  "link": {
+    "add": "Dodaj link",
+    "addTitle": "Dodaj link",
+    "editTitle": "Edytuj link",
+    "save": "Zapisz",
+    "record": "Rekord",
+    "address": "Adres",
+    "zone": "Strefa",
+    "pickZone": "Wybierz strefę",
+    "source": "Wskaz na",
+    "sourceHost": "Host",
+    "sourcePublic4": "Publiczny adres IPv4 tego serwera",
+    "sourcePublic6": "Publiczny adres IPv6 tego serwera",
+    "source_host": "Host",
+    "source_public4": "Publiczny IPv4",
+    "source_public6": "Publiczny IPv6",
+    "host": "Host",
+    "pickHost": "Wybierz hosta",
+    "hostHint": "Rekord podąża za adresem hosta. Aktualizuje się, gdy host zmienia adres.",
+    "publicHint": "Termix sprawdza swój publiczny adres i utrzymuje rekord w synchronizacji, podobnie jak dynamiczny DNS.",
+    "enabled": "Utrzymuj ten rekord w aktualnym stanie",
+    "empty": "Brak linków.",
+    "emptyHint": "Link utrzymuje rekord wskazujący na hosta lub publiczny adres tego serwera.",
+    "off": "Wyłączone",
+    "hostGone": "Host nie znaleziony",
+    "lastSync": "Sprawdzono {{date}}",
+    "never": "Nie sprawdzono jeszcze",
+    "syncNow": "Aktualizuj teraz",
+    "updated": "Rekord został zaktualizowany",
+    "unchanged": "Rekord był już poprawny",
+    "deleteConfirm": "Usunąć link dla {{name}}? Rekord pozostanie w obecnej postaci."
+  },
+  "diff": {
+    "none": "Nic się nie zmieni.",
+    "add": "Dodaj",
+    "change": "Zmień",
+    "remove": "Usuń"
+  },
+  "copies": {
+    "hint": "Kopie są zapisywane przed każdą zmianą oraz raz dziennie, gdy strefa uległa zmianie poza Termix.",
+    "save": "Zapisz kopię",
+    "saved": "Kopia zapisana",
+    "manualLabel": "Kopia ręczna",
+    "empty": "Brak kopii.",
+    "count": "{{count}} rekordów",
+    "compare": "Porównaj z obecnym stanem",
+    "restore": "Przywróć",
+    "restoreConfirm": "Przywrócić tę kopię? Wprowadzono zostanie {{count}} zmian u dostawcy. Najpierw zostanie zapisana kopia obecnych rekordów.",
+    "restored": "Przywrócono. Wprowadzono {{count}} zmian.",
+    "source": {
+      "manual": "Ręczna",
+      "auto": "Dzienna",
+      "before": "Przed zmianą"
+    }
+  },
+  "files": {
+    "export": "Pobierz plik strefy",
+    "exportHint": "Pobierz rekordy jako plik strefy BIND.",
+    "import": "Importuj plik strefy",
+    "placeholder": "Wklej tutaj plik strefy BIND",
+    "replace": "Usuń rekordy, których nie ma w pliku",
+    "replaceHint": "Wyłączone: import tylko dodaje i zmienia rekordy.",
+    "preview": "Podgląd",
+    "apply": "Zastosuj",
+    "applied": "Zaimportowano. Wprowadzono {{count}} zmian.",
+    "skipped": "Pominięto:"
+  },
+  "health": {
+    "run": "Uruchom sprawdzanie",
+    "running": "Uruchamianie",
+    "propagation": "Sprawdź resolvery",
+    "propagationTitle": "Publiczne resolvery",
+    "lastRun": "Ostatnie uruchomienie: {{date}}",
+    "empty": "Dla tej strefy nie uruchomiono jeszcze żadnych sprawdzeń.",
+    "record": "Rekord",
+    "resolver": "Resolver",
+    "answer": "Odpowiedź",
+    "noAnswer": "Brak odpowiedzi",
+    "delegation": {
+      "error": "Nie udało się znaleźć serwerów nazw.",
+      "none": "Strefa nie ma serwerów nazw w internecie. Domena może nie wskazywać na tego dostawcę.",
+      "mismatch": "Domena używa innych serwerów nazw niż dostawca: {{found}}.",
+      "ok": "Domena wskazuje na {{count}} serwerów nazw."
+    },
+    "soa": {
+      "differ": "Serwery nazw nie zgadzają się co do wersji strefy ({{count}} wersji). Zmiana może nadal się propagować.",
+      "same": "{{count}} serwerów nazw zgadza się co do wersji strefy."
+    },
+    "dnssec": {
+      "unknown": "Nie udało się sprawdzić DNSSEC.",
+      "off": "DNSSEC nie jest włączony.",
+      "valid": "DNSSEC jest włączony i ważny.",
+      "broken": "DNSSEC jest skonfigurowany u rejestratora, ale nie przechodzi weryfikacji. Resolvery sprawdzające DNSSEC zwrócą błąd."
+    },
+    "cname": {
+      "conflict": "{{name}} ma rekord CNAME i inne rekordy. Nie jest to dozwolone.",
+      "apex": "Korzeń strefy nie może być rekordem CNAME.",
+      "dangling": "{{name}} wskazuje na {{target}}, który nie jest rozwiązywany.",
+      "ok": "Wszystkie cele rekordów CNAME są rozwiązywane."
+    },
+    "spf": {
+      "missing": "Domena odbiera pocztę, ale nie ma rekordu SPF.",
+      "multiple": "Istnieje więcej niż jeden rekord SPF. Serwery pocztowe odrzucą wszystkie.",
+      "lookups": "Rekord SPF wykonuje {{count}} zapytań. Limit to 10.",
+      "ok": "SPF jest ustawiony ({{count}} zapytań)."
+    },
+    "dmarc": {
+      "missing": "Brak rekordu DMARC.",
+      "none": "DMARC jest ustawiony tylko na tryb monitorowania.",
+      "ok": "DMARC jest ustawiony."
+    },
+    "dkim": {
+      "none": "W tej strefie nie znaleziono kluczy DKIM.",
+      "found": "Znaleziono {{count}} kluczy DKIM."
+    },
+    "mx": {
+      "unresolved": "Serwer pocztowy {{host}} nie jest rozwiązywany."
+    },
+    "mail": {
+      "none": "Domena nie ma rekordów pocztowych."
+    },
+    "caa": {
+      "ok": "Rekordy CAA ograniczają, kto może wydawać certyfikaty.",
+      "none": "Brak rekordów CAA. Każda autorytet certyfikacji może wydawać certyfikaty."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domeny, domeny wygasające i nieprawidłowe rekordy.",
+    "domains": "Domeny",
+    "expiring": "Wkrótce wygasają",
+    "failingLinks": "Nieprawidłowe linki",
+    "failingAccounts": "Nieudane logowania"
+  }
+}

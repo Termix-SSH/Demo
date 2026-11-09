@@ -1322,10 +1322,7 @@ export function TmuxMonitor({
                   <Plus className="size-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent
-                className="w-64 rounded-none border-0 p-2 ring-1 ring-border"
-                align="start"
-              >
+              <PopoverContent className="w-64 rounded-none p-2" align="start">
                 <p className="mb-1 text-xs text-muted-foreground">
                   {t("tmuxMonitor.newSessionHint")}
                 </p>

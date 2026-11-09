@@ -1,0 +1,303 @@
+{
+  "plugin": {
+    "name": "خوادم الويب",
+    "description": "إدارة nginx و Apache و Caddy على خوادمك: المواقع، التكوين، السجلات و HTTPS، مع اختبار كل تغيير أولاً."
+  },
+  "common": {
+    "cancel": "إلغاء",
+    "back": "رجوع",
+    "loading": "جارٍ التحميل..."
+  },
+  "permissions": {
+    "use": {
+      "title": "استخدام خوادم الويب",
+      "description": "عرض خوادم الويب والمواقع على الخوادم التي يمكنك الوصول إليها، وتعديلها على الخوادم التي يمكنك تحريرها."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "خوادم الويب",
+        "description": "إدارة nginx و Apache و Caddy على هذا الخادم من علامة تبويب خوادم الويب."
+      },
+      "useSudo": {
+        "label": "استخدام sudo",
+        "description": "استخدام sudo لقراءة وتعديل خادم الويب. قم بإيقاف التشغيل إذا كان تسجيل الدخول باسم root."
+      },
+      "readOnly": {
+        "label": "للقراءة فقط",
+        "description": "عرض المواقع والتكوين والسجلات ولكن دون تعديلها أبداً على هذا الخادم."
+      },
+      "showPanel": {
+        "label": "لوحة بجانب الطرفية",
+        "description": "توفير لوحة خوادم الويب على علامات تبويب الطرفية لهذا الخادم."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "فتح اللوحة مع الطرفية",
+        "description": "عرض لوحة خوادم الويب عند فتح طرفية على خادم يحتوي عليها."
+      },
+      "companionSide": {
+        "label": "جهة اللوحة",
+        "description": "مكان اللوحة بجانب الطرفية.",
+        "right": "يمين",
+        "left": "يسار",
+        "bottom": "أسفل"
+      },
+      "companionSize": {
+        "label": "حجم اللوحة",
+        "description": "عرض اللوحة، أو ارتفاعها عند وضعها في الأسفل، بالبكسل."
+      },
+      "companionEdgeButton": {
+        "label": "زر الحافة",
+        "description": "عرض زر صغير على حافة الطرفية لفتح اللوحة."
+      }
+    }
+  },
+  "tab": {
+    "title": "خوادم الويب",
+    "noHost": "افتح خوادم الويب من خادم.",
+    "error": "تعذر تحميل خوادم الويب على هذا الخادم.",
+    "disabled": "خوادم الويب معطلة لهذا الخادم. قم بتفعيلها في إعدادات الخادم.",
+    "sudo": "تتطلب التغييرات تسجيل دخول باسم root، أو sudo بدون كلمة مرور، أو كلمة مرور Sudo محفوظة على هذا الخادم.",
+    "refresh": "تحديث",
+    "readOnly": "للقراءة فقط",
+    "noServer": "لا يوجد خادم ويب مثبت",
+    "noServerHint": "قم بتثبيت nginx أو Apache أو Caddy من صفحة الخادم.",
+    "openServer": "فتح الخادم",
+    "viewSites": "المواقع",
+    "viewConfig": "التكوين",
+    "viewLogs": "السجلات",
+    "viewServer": "الخادم"
+  },
+  "actions": {
+    "ok": "تم",
+    "failed": "فشل",
+    "noOutput": "لا يوجد إخراج."
+  },
+  "watch": {
+    "start": "أبلغني عند توقف خادم الويب",
+    "stop": "إيقاف التنبيهات لهذا الخادم",
+    "on": "ستتلقى تنبيهاً عند توقف خادم الويب على هذا الخادم",
+    "off": "التنبيهات لهذا الخادم معطلة",
+    "failed": "تعذر تغيير التنبيهات"
+  },
+  "sites": {
+    "add": "إضافة موقع",
+    "search": "البحث في المواقع",
+    "empty": "لا توجد مواقع بعد.",
+    "loadFailed": "تعذر تحميل المواقع.",
+    "off": "معطل",
+    "anyName": "أي اسم",
+    "form": "نموذج",
+    "certDays_zero": "لا توجد أيام متبقية",
+    "certDays_one": "يوم واحد متبقي",
+    "certDays_two": "يومان متبقيان",
+    "certDays_few": "{{count}} أيام متبقية",
+    "certDays_many": "{{count}} يوماً متبقياً",
+    "certDays_other": "{{count}} أيام متبقية",
+    "certExpired": "انتهت صلاحية الشهادة",
+    "enable": "تفعيل",
+    "disable": "تعطيل",
+    "enabled": "{{name}} مفعّل",
+    "disabled": "{{name}} معطّل",
+    "delete": "حذف",
+    "deleteTitle": "هل تريد حذف {{name}}؟",
+    "deleteBody": "سيتم حذف الملف وإعادة تحميل الخادم. سيتم الاحتفاظ بنسخة في /var/lib/termix-web-servers/backups على الخادم.",
+    "deleted": "تم حذف {{name}}"
+  },
+  "site": {
+    "addTitle": "موقع جديد",
+    "editTitle": "حفظ {{name}}",
+    "add": "إضافة موقع",
+    "save": "حفظ",
+    "added": "تمت إضافة {{name}}",
+    "saved": "تم حفظ {{name}}",
+    "server": "خادم الويب",
+    "name": "اسم الموقع",
+    "nameHint": "يُستخدم لاسم الملف وسجلات النظام، مثل example.",
+    "modeForm": "نموذج",
+    "modeText": "نص",
+    "text": "الإعدادات",
+    "textHint": "حفظ النص يعطل نموذج هذا الموقع، بحيث تُحفظ تعديلاتك الخاصة.",
+    "type": "النوع",
+    "typeStatic": "ملفات ثابتة",
+    "typeProxy": "وكيل عكسي",
+    "typePhp": "PHP",
+    "typeRedirect": "إعادة توجيه",
+    "staticHint": "يُقدّم الملفات من مجلد.",
+    "proxyHint": "يُرسِل الطلبات إلى تطبيق يعمل على هذا الخادم أو آخر.",
+    "phpHint": "يُقدّم الملفات من مجلد ويشغّل ملفات .php باستخدام php-fpm.",
+    "redirectHint": "يُوجّه كل الزوار إلى عنوان آخر.",
+    "domains": "النطاقات",
+    "domainsHint": "اضغط Enter بعد كل منها. استخدم _ في nginx للرد على أي اسم.",
+    "port": "منفذ HTTP",
+    "root": "الجذر الويب",
+    "rootHint": "مجلد داخل /var/www أو /srv أو /usr/share/nginx أو /opt أو /home.",
+    "index": "ملفات الفهرس",
+    "spa": "تطبيق صفحة واحدة",
+    "spaHint": "أرسل المسارات التي ليست ملفات إلى /index.html.",
+    "upstream": "عنوان التطبيق",
+    "upstreamHint": "حيث يستمع التطبيق، مثل http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "أرسل الزوار إلى",
+    "keepPath": "الحفاظ على المسار",
+    "keepPathHint": "أرسل /page إلى نفس الصفحة على العنوان الجديد.",
+    "phpSocket": "مقبس php-fpm",
+    "phpSocketHint": "لم يتم العثور على مقبس php-fpm. قم بتثبيت php-fpm أو أدخل host:port.",
+    "https": "HTTPS",
+    "httpsHint": "يتطلب شهادة. احفظ الموقع أولاً، ثم اضغط على 'الحصول على الشهادة' أدناه.",
+    "httpsCaddy": "Caddy يحصل على الشهادة يجددها تلقائيًا.",
+    "httpsPort": "منفذ HTTPS",
+    "certPath": "ملف الشهادة",
+    "keyPath": "ملف المفتاح",
+    "forceHttps": "تحويل HTTP إلى HTTPS",
+    "gzip": "ضغط الاستجابات",
+    "accessLog": "سجل الوصول",
+    "maxBody": "حد التحميل بالميغابايت",
+    "maxBodyHint": "0 يحافظ على الإعداد الافتراضي للخادم.",
+    "preview": "معاينة",
+    "previewFailed": "تعذر إنشاء الإعدادات."
+  },
+  "tls": {
+    "title": "شهادة HTTPS",
+    "hintManaged": "يحصل certbot على شهادة من Let's Encrypt لمجالات هذا الموقع، ثم يتحول الموقع إلى HTTPS. يجدد certbot الشهادة ويعيد تحميل الخادم.",
+    "hintText": "يحصل certbot على شهادة من Let's Encrypt لمجالات هذا الموقع. أضف الشهادة إلى الموقع بنفسك بعد ذلك. يجدد certbot الشهادة ويعيد تحميل الخادم.",
+    "needCertbot": "قم بتثبيت certbot مع إضافته لهذا الخادم من صفحة الخادم أولاً.",
+    "email": "البريد الإلكتروني",
+    "emailHint": "تكتب Let's Encrypt هنا حول المشاكل. اختياري.",
+    "staging": "شهادة اختبار",
+    "stagingHint": "استخدم خادم اختبار Let's Encrypt. لن تثق المتصفحات به.",
+    "issue": "الحصول على الشهادة",
+    "done": "تم حفظ الشهادة"
+  },
+  "config": {
+    "search": "البحث في الملفات",
+    "empty": "لا توجد ملفات.",
+    "loadFailed": "تعذر تحميل الملف.",
+    "test": "اختبار الإعدادات",
+    "testOk": "الإعدادات سليمة",
+    "testFailed": "تحتوي الإعدادات على أخطاء",
+    "content": "المحتوى",
+    "save": "حفظ",
+    "saveHint": "يتم اختبار الإعدادات بالكامل قبل إعادة تحميل الخادم. يتم استعادة الملف التالف.",
+    "saved": "تم الحفظ وإعادة التحميل",
+    "backups_zero": "لا توجد نسخ احتياطية",
+    "backups_one": "نسخة احتياطية واحدة",
+    "backups_two": "نسختان احتياطيتان",
+    "backups_few": "{{count}} نسخ احتياطية",
+    "backups_many": "{{count}} نسخة احتياطية",
+    "backups_other": "{{count}} نسخة احتياطية",
+    "restore": "استعادة",
+    "restoreTitle": "استعادة هذه النسخة الاحتياطية؟",
+    "restoreBody": "يعود الملف إلى حالته في {{time}}. يصبح النص الحالي نسخة احتياطية أيضاً.",
+    "restored": "تم استعادة النسخة الاحتياطية"
+  },
+  "logs": {
+    "source": "السجل",
+    "lines": "الأسطر",
+    "journal": "سجل {{server}}",
+    "follow": "متابعة",
+    "stop": "إيقاف",
+    "connecting": "جاري الاتصال...",
+    "ended": "تم إيقاف المتابعة.",
+    "followFailed": "تعذر متابعة هذا السجل.",
+    "empty": "لا توجد أسطر.",
+    "loadFailed": "تعذر قراءة السجل.",
+    "requests": "الطلبات",
+    "topPaths": "أكثر المسارات استخداماً",
+    "topClients": "أكثر العملاء استخداماً"
+  },
+  "server": {
+    "unknown": "غير معروف",
+    "atBoot": "يبدأ عند التشغيل",
+    "notInstalled": "غير مثبت",
+    "start": "بدء",
+    "stop": "إيقاف",
+    "restart": "إعادة تشغيل",
+    "reload": "إعادة تحميل",
+    "enable": "بدء عند التشغيل",
+    "disable": "عدم البدء عند التشغيل",
+    "boot": "بدء عند التشغيل",
+    "noBoot": "عدم البدء عند التشغيل",
+    "done": "{{server}} انتهى",
+    "stopTitle": "إيقاف {{server}}؟",
+    "stopBody": "كل موقع عليه يصبح غير متصل حتى تبدأه مرة أخرى.",
+    "install": "تثبيت",
+    "installTitle": "تثبيت {{server}}؟",
+    "installBody": "يتم تثبيته باستخدام مدير حزم المضيف ويبدأ فوراً. أي خادم ويب آخر على المنفذ 80 سيمنعه من البدء.",
+    "installed": "تم تثبيت {{server}}",
+    "installCertbot": "تثبيت certbot",
+    "certbotInstalled": "تم تثبيت certbot",
+    "certbotPlugins": "الإضافات: {{plugins}}",
+    "certbotNoPlugins": "لا توجد إضافة لـ nginx أو Apache",
+    "certbotHint": "يحصل على شهادات Let's Encrypt لمواقع nginx و Apache"
+  },
+  "card": {
+    "title": "خوادم الويب",
+    "loading": "جارٍ التحميل...",
+    "refresh": "تحديث",
+    "empty": "لا يوجد أي مضيف تم تفعيل خوادم الويب عليه.",
+    "summary_zero": "لا يوجد مضيفون | لا حاجة للمراجعة",
+    "summary_one": "مضيف واحد | {{down}} يحتاج لمراجعة",
+    "summary_two": "مضيفان | {{down}} يحتاجان لمراجعة",
+    "summary_few": "{{count}} مضيفين | {{down}} تحتاج لمراجعة",
+    "summary_many": "{{count}} مضيفاً | {{down}} تحتاج لمراجعة",
+    "summary_other": "{{count}} مضيف | {{down}} تحتاج لمراجعة",
+    "sites_zero": "لا توجد مواقع",
+    "sites_one": "موقع واحد",
+    "sites_two": "موقعان",
+    "sites_few": "{{count}} مواقع",
+    "sites_many": "{{count}} موقعاً",
+    "sites_other": "{{count}} موقع"
+  },
+  "companion": {
+    "toggle": "لوحة خوادم الويب",
+    "openTab": "فتح خوادم الويب",
+    "reload": "إعادة تحميل {{server}}"
+  },
+  "manager": {
+    "title": "خوادم الويب",
+    "disabled": "قم بتفعيل خوادم الويب لهذا المضيف لعرض مواقعك هنا."
+  },
+  "operations": {
+    "status": {
+      "title": "حالة خادم الويب"
+    },
+    "listSites": {
+      "title": "قائمة المواقع"
+    },
+    "test": {
+      "title": "اختبار إعدادات خادم الويب"
+    },
+    "reload": {
+      "title": "إعادة تحميل خادم الويب"
+    },
+    "restart": {
+      "title": "إعادة تشغيل خادم الويب"
+    },
+    "enableSite": {
+      "title": "تفعيل الموقع"
+    },
+    "disableSite": {
+      "title": "تعطيل الموقع"
+    },
+    "deleteSite": {
+      "title": "حذف الموقع"
+    },
+    "server": "الخادم",
+    "allServers": "جميعها",
+    "sites": {
+      "title": "المواقع",
+      "server": "الخادم",
+      "domains": "النطاقات",
+      "https": "HTTPS"
+    }
+  }
+}

@@ -1,0 +1,220 @@
+{
+  "tab": {
+    "title": "Lagring",
+    "noHost": "Åbn lagring fra en vært.",
+    "disabled": "Lagringsstatus er slået fra for denne vært. Slå den til i værtsindstillingerne.",
+    "error": "Kunne ikke indlæse lagringsstatus",
+    "viewDrives": "Drev",
+    "viewPools": "Pools og arrays",
+    "viewEvents": "Hændelser",
+    "viewSettings": "Indstillinger",
+    "readAgo": "Læst {{time}} siden",
+    "stale": "Kunne ikke læse værten, viser sidste læsning. {{error}}"
+  },
+  "common": {
+    "loading": "Indlæser...",
+    "failed": "Det virkede ikke",
+    "save": "Gem",
+    "refresh": "Læs nu",
+    "back": "Tilbage"
+  },
+  "card": {
+    "title": "Lagringsstatus",
+    "empty": "Ingen værter overvåges endnu. Slå Lagringsstatus til i en værts indstillinger.",
+    "drives_one": "{{count}} drev",
+    "drives_other": "{{count}} drev",
+    "problems_one": "{{count}} åbent problem",
+    "problems_other": "{{count}} åbne problemer"
+  },
+  "manager": {
+    "title": "Lagringsstatus",
+    "disabled": "Lagringsstatus er slået fra for denne vært."
+  },
+  "health": {
+    "ok": "Sund",
+    "warn": "Kræver opmærksomhed",
+    "fail": "Fejler",
+    "unknown": "Ukendt"
+  },
+  "kind": {
+    "hdd": "Hårdisk",
+    "ssd": "SSD",
+    "nvme": "NVMe",
+    "unknown": "Drev"
+  },
+  "drives": {
+    "empty": "Ingen drev fundet på denne vært",
+    "noRoot": "Tjekkerne kørte uden root, så nogle drev kan vise ingen data. Tillad adgangskodeløs sudo for denne login.",
+    "noTool": "smartctl er ikke installeret på denne vært. Installer smartmontools for at læse drevstatus.",
+    "noData": "Intet er læst endnu",
+    "wear": "{{value}}% slidt",
+    "testing": "Tester"
+  },
+  "detail": {
+    "stop": "Stop test",
+    "short": "Kort test",
+    "long": "Lang test",
+    "health": "Status",
+    "temp": "Temperatur",
+    "wear": "Slid",
+    "hours": "Tændtid",
+    "model": "Model",
+    "serial": "Serienummer",
+    "kind": "Type",
+    "size": "Størrelse",
+    "reallocated": "Reallokerede sektorer",
+    "pending": "Afventende sektorer",
+    "uncorrectable": "Urettelige sektorer",
+    "mediaErrors": "Mediefejl",
+    "selfTest": "Seneste selvtest",
+    "attributes": "SMART-attributter",
+    "attrMeta": "Værdi {{value}} | Raw {{raw}}"
+  },
+  "history": {
+    "24h": "24 timer",
+    "7d": "7 dage",
+    "30d": "30 dage",
+    "temp": "Temperatur",
+    "wear": "Slid",
+    "bad": "Dårlige sektorer",
+    "empty": "Historikken opbygges, efterhånden som værten læses. Tjek tilbage senere."
+  },
+  "pools": {
+    "empty": "Ingen ZFS-pools, RAID-arrays, btrfs-filsystemer eller LVM thin pools fundet",
+    "startTitle": "Start på {{name}}?",
+    "startText": "Dette læser hver blok og kan bremse disken i timer.",
+    "start": "Start",
+    "stop": "Stop",
+    "scrub": "Scrub",
+    "thinMeta": "{{data}}% data | {{meta}}% metadata | {{free}} ledig i gruppen"
+  },
+  "events": {
+    "error": "Kunne ikke indlæse begivenheder",
+    "empty": "Ingen begivenheder endnu",
+    "type": {
+      "smart-failing": "Fejler",
+      "smart-attention": "SMART-advarsel",
+      "nvme-critical": "Kritisk",
+      "wear-high": "Slidt",
+      "wear-critical": "Næsten slidt op",
+      "temp-high": "Varm",
+      "temp-critical": "For varm",
+      "pool-degraded": "Pool nedgraderet",
+      "pool-errors": "Pool-fejl",
+      "raid-degraded": "Array nedgraderet",
+      "raid-rebuilding": "Genopbygger",
+      "btrfs-errors": "btrfs-fejl",
+      "thin-full": "Thin pool fylder op",
+      "thin-critical": "Thin pool fuld",
+      "unreachable": "Uopnåelig",
+      "test": "Selvtest",
+      "scrub": "Scrub",
+      "command": "Kommando"
+    }
+  },
+  "settings": {
+    "saved": "Gemt",
+    "alerts": "Send advarsler",
+    "alertsHint": "Advar den person, der opsatte dette, når et problem opstår eller en fejl rettes.",
+    "interval": "Læs hver (minutter)",
+    "intervalHint": "SMART-læsninger er langsomme, så 15 minutter er et godt udgangspunkt.",
+    "tempWarn": "Advar over (°C)",
+    "tempCrit": "Kritisk over (°C)",
+    "tempHint": "0 bruger standardværdien for disktypen.",
+    "wear": "Advar når slidt (%)",
+    "wearHint": "Kritisk ved 95%.",
+    "thin": "Advar når en thin pool er fuld (%)",
+    "thinHint": "Kritisk ved 95%.",
+    "host": {
+      "enable": {
+        "label": "Lagerstatus",
+        "description": "Overvåg diske, pools og arrays på denne vært."
+      },
+      "useSudo": {
+        "label": "Brug sudo",
+        "description": "Kør tjek med passwordløs sudo. SMART kræver root."
+      },
+      "readOnly": {
+        "label": "Skrivebeskyttet",
+        "description": "Bloker selvtests og scrubs fra Termix."
+      },
+      "showPanel": {
+        "label": "Vis sidepanelet",
+        "description": "Vis panelet for lagerstatus ved siden af terminaler på denne vært."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Åbn panelet for lagerstatus sammen med terminaler",
+        "description": "Åbn panelet automatisk på værter, der har det."
+      },
+      "companionSide": {
+        "label": "Panelplacering",
+        "description": "Hvor panelet for lagerstatus åbnes ved siden af en terminal.",
+        "right": "Højre",
+        "left": "Venstre",
+        "bottom": "Nederst"
+      },
+      "companionSize": {
+        "label": "Panelstørrelse",
+        "description": "Bredde eller højde af panelet i pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Vis knap på kanten",
+        "description": "Vis en lille knap på kanten af terminalen for at åbne panelet."
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "Brug lagerstatus",
+      "description": "Se status for diske og arrays på værter, du har adgang til."
+    },
+    "runTests": {
+      "title": "Kør tests og scrub",
+      "description": "Start SMART-selvtests og scrub. Kræver også skriveadgang til værten."
+    }
+  },
+  "operations": {
+    "devices": {
+      "title": "Drev",
+      "health": "Status",
+      "kind": "Type",
+      "temp": "Temperatur",
+      "wear": "Slid"
+    },
+    "pools": {
+      "title": "Pools og arrays",
+      "state": "Tilstand"
+    },
+    "status": {
+      "title": "Lagerstatus"
+    },
+    "temperature": {
+      "title": "Varmeste drev"
+    },
+    "selftest": {
+      "title": "SMART-selvtest",
+      "device": "Drev",
+      "action": "Handling",
+      "short": "Kort test",
+      "long": "Lang test",
+      "abort": "Stop den kørende test"
+    },
+    "scrub": {
+      "title": "Scrub",
+      "target": "Pool, filsystem eller array",
+      "targetHint": "Et id fra pools-listen, f.eks. zfs:tank, btrfs:/mnt/data eller md:md0",
+      "stop": "Stop i stedet for at starte"
+    },
+    "events": {
+      "degraded": "Lagerproblem fundet",
+      "recovered": "Lagerproblem løst",
+      "smartFailing": "Drev fejler SMART-check",
+      "raidDegraded": "Pool eller array nedgraderet"
+    }
+  },
+  "companion": {
+    "toggle": "Panel for lagerstatus"
+  }
+}

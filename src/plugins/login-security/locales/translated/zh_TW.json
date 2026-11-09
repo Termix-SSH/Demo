@@ -9,7 +9,8 @@
   "settings": {
     "group": {
       "sessions": "工作階段",
-      "secondFactor": "第二因素"
+      "secondFactor": "第二因素",
+      "connect": "連線至主機"
     },
     "admin": {
       "idleTimeoutMinutes": {
@@ -34,8 +35,34 @@
       "applyToExternal": {
         "label": "同樣適用於單一登入",
         "description": "在 SSO 和 LDAP 登入後也要求第二因素驗證。如果您的身分提供者已經要求驗證，請保持關閉。"
+      },
+      "connectFactor": {
+        "label": "連線前要求第二重驗證",
+        "description": "當使用者開啟主機上的終端機、遠端桌面或檔案管理器時，系統會要求輸入第二重驗證。指標、隧道與其他背景作業則不會要求。",
+        "off": "關閉",
+        "marked": "僅限已標記的主機",
+        "all": "所有主機"
+      },
+      "connectFactorMinutes": {
+        "label": "再次要求前的分鐘數",
+        "description": "輸入後，使用者可在這段時間內連線至任何主機。登出會提前終止此狀態。"
+      }
+    },
+    "host": {
+      "requireConnectFactor": {
+        "label": "連線前要求第二重驗證",
+        "description": "當「登入安全性」設定為「僅限已標記的主機」時使用。"
       }
     }
+  },
+  "verify": {
+    "title": "驗證第二重驗證",
+    "intro": "請輸入您的第二重驗證以連線至此主機。",
+    "done": "已驗證",
+    "retry": "返回主機並重新連線。",
+    "failed": "驗證失敗，請再試一次。",
+    "noFactor": "未設定第二重驗證",
+    "noFactorHint": "請前往「設定」>「安全性」進行設定，然後重新連線。"
   },
   "status": {
     "factors": "使用者可使用的第二因素：{{factors}}",

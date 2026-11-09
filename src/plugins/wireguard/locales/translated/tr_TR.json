@@ -1,0 +1,234 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "WireGuard'ı sunucularınıza yükleyin ve arayüzleri, istemcileri ve yapılandırmaları tek bir sekmeye yönetin."
+  },
+  "common": {
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri",
+    "delete": "Sil",
+    "loading": "Yükleniyor..."
+  },
+  "permissions": {
+    "use": {
+      "title": "WireGuard Kullan",
+      "description": "Düzenleyebileceğiniz sunuculardaki WireGuard arayüzlerini ve istemcilerini yönetin."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "WireGuard'ı bir sunucudan açın.",
+    "error": "Bu sunucudan WireGuard yüklenemedi.",
+    "sudo": "WireGuard'ı yönetmek için bu sunucuda root girişi veya şifresiz sudo gerekiyor.",
+    "installed": "Yüklü",
+    "notInstalled": "Yükli değil",
+    "refresh": "Yenile",
+    "viewInterfaces": "Arayüzler",
+    "viewLogs": "Günlükler"
+  },
+  "install": {
+    "title": "WireGuard Yükle",
+    "desc": "Bu işlem, sunucunun paket yöneticisi ile WireGuard araçlarını ve iptables'ı yükler.",
+    "confirm": "Yükle",
+    "done": "WireGuard yüklendi.",
+    "failed": "WireGuard yüklenemedi.",
+    "empty": "WireGuard bu sunucuda yüklü değil",
+    "noManager": "Desteklenen bir paket yöneticisi bulunamadı. WireGuard'ı manuel olarak yükleyin.",
+    "hint": "Bu sunucudan VPN çalıştırmak için {{os}} üzerinde yükleyin.",
+    "thisHost": "bu sunucu",
+    "button": "WireGuard Yükle",
+    "working": "Yükleniyor..."
+  },
+  "interfaces": {
+    "add": "Arayüz ekle",
+    "empty": "Henüz arayüz yok. VPN başlatmak için bir tane ekleyin.",
+    "loadFailed": "Arayüzler yüklenemedi.",
+    "up": "Açık",
+    "down": "Kapalı",
+    "nat": "NAT",
+    "boot": "Başlangıçta çalışır"
+  },
+  "create": {
+    "title": "Arayüz ekle",
+    "name": "Ad",
+    "address": "Adres",
+    "addressHint": "Sunucu adresi ve alt ağ. İstemciler sonraki boş adresleri alır.",
+    "port": "UDP portu",
+    "nat": "Sunucunun internetini paylaş (NAT)",
+    "natDesc": "İstemciler bu sunucu üzerinden internete ve sunucunun ağına erişebilir.",
+    "natMissing": "NAT, bu sunucuda yüklü olmayan iptables gerektirir.",
+    "forwarding": "IP yönlendirmesini aç",
+    "forwardingDesc": "Sunucunun istemciler ve ağ arasında trafiği iletmelerine izin verir. Yeniden başlatmalarda kaydedilir.",
+    "firewall": "Portu güvenlik duvarında aç",
+    "firewallDesc": "Çalışıyorsa ufw veya firewalld'a UDP portunu ekler.",
+    "start": "Şimdi ve başlangıçta başlat",
+    "startDesc": "Arayüzü açar ve yeniden başlatma sonrası açık tutar.",
+    "save": "Oluştur",
+    "done": "Arayüz hazır.",
+    "failed": "Arayüz oluşturulamadı."
+  },
+  "detail": {
+    "clients": "İstemciler",
+    "settings": "Ayarlar",
+    "config": "Yapılandırma",
+    "service": "Hizmet",
+    "gone": "Bu arayüz artık sunucuda mevcut değil."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Bu ana bilgisayarın menüsünde WireGuard sekmesini göster."
+      },
+      "showPanel": {
+        "label": "Terminallerde WireGuard panelini göster",
+        "description": "WireGuard panelinin bu ana bilgisayarın SSH terminalinin yanında açılmasına izin ver."
+      },
+      "alertDown": {
+        "label": "Bir arayüz kapalıyken uyar",
+        "description": "Başlangıçta başlayan bir arayüz aktif değilse uyarı gönder. WireGuard durumu okunduğunda kontrol edilir."
+      }
+    },
+    "publicKey": "Genel anahtar",
+    "port": "UDP bağlantı noktası",
+    "endpoint": "Sunucu uç noktası",
+    "endpointHint": "İstemcilerin bağlandığı genel adres, örneğin vpn.example.com:51820.",
+    "dns": "İstemciler için DNS",
+    "dnsHint": "İsteğe bağlı. Sunucuları virgülle ayırın.",
+    "allowed": "VPN üzerinden trafik",
+    "allowedHint": "İstemcilerin VPN üzerinden gönderdiği aralıklar. 0.0.0.0/0, ::/0 her şeyi gönderir.",
+    "keepalive": "Keepalive (saniye)",
+    "keepaliveHint": "NAT arkasındaki istemcilerin erişilebilir kalmasını sağlar. Kapatmak için 0 kullanın.",
+    "saved": "Ayarlar kaydedildi.",
+    "saveFailed": "Ayarlar kaydedilemedi.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Yeni terminallerle WireGuard panelini aç",
+        "description": "WireGuard'ın açık olduğu her SSH terminalinin yanında WireGuard panelini göster. Sağ kenardaki düğmeden hala açıp kapatabilirsiniz."
+      },
+      "companionSide": {
+        "label": "WireGuard paneli konumu",
+        "description": "WireGuard panelinin bir terminalin yanında nerede duracağını belirler.",
+        "right": "Sağ",
+        "left": "Sol",
+        "bottom": "Alt"
+      },
+      "companionSize": {
+        "label": "WireGuard paneli boyutu",
+        "description": "Piksel cinsinden genişlik veya altta olduğunda yükseklik. Kenarını sürükleyerek de ayarlayabilirsiniz."
+      },
+      "companionEdgeButton": {
+        "label": "Panel düğmesini göster",
+        "description": "WireGuard panelini açan küçük bir düğmeyi terminalin sağ kenarında göster."
+      }
+    }
+  },
+  "clients": {
+    "add": "İstemci ekle",
+    "empty": "Henüz istemci yok.",
+    "loadFailed": "İstemciler yüklenemedi.",
+    "name": "Ad",
+    "nameHint": "Harfler, rakamlar, noktalar, tireler ve alt çizgiler.",
+    "allowed": "VPN üzerinden trafik",
+    "allowedHint": "Arayüz varsayılanını kullanmak için boş bırakın: {{value}}",
+    "create": "İstemci oluştur",
+    "addFailed": "İstemci eklenemedi.",
+    "needEndpoint": "Önce arayüz ayarlarında sunucu uç noktasını belirleyin.",
+    "connected": "Bağlı",
+    "off": "Kapalı",
+    "external": "Manuel oluşturuldu",
+    "handshake": "el sıkışması {{ago}} önce",
+    "showConfig": "Yapılandırmayı ve QR kodunu göster",
+    "configFailed": "İstemci yapılandırması okunamadı.",
+    "rotate": "Yeni anahtarlar",
+    "rotateTitle": "{{name}} için yeni anahtarlar oluşturulsun mu?",
+    "rotateDesc": "Eski yapılandırma çalışmayı bırakır. Sonrasında istemciye yeni yapılandırmayı verin.",
+    "turnOff": "Kapat",
+    "turnOn": "Aç",
+    "saveFailed": "İstemci değiştirilemedi.",
+    "deleteTitle": "{{name}} silinsin mi?",
+    "deleteDesc": "İstemci kaldırılır ve artık bağlanamaz.",
+    "deleteFailed": "İstemci silinemedi."
+  },
+  "clientConfig": {
+    "note": "Bu yapılandırma istemcinin özel anahtarını içerir. Sadece kullanacak kişiyle veya cihazla paylaşın.",
+    "qr": "İstemci yapılandırması için QR kodu",
+    "copy": "Kopyala",
+    "copied": "Yapılandırma kopyalandı.",
+    "copyFailed": "Yapılandırma kopyalanamadı.",
+    "download": ".conf indir"
+  },
+  "config": {
+    "title": "Yapılandırma dosyası",
+    "hint": "Özel ve önceden paylaşılan anahtarlar gizlenmiştir. Bir anahtarı korumak için yer tutucuyu boş bırakın. Yapılandırma kaydedilmeden önce kontrol edilir ve bir yedek tutulur. Adres değişiklikleri yeniden başlatma gerektirir.",
+    "loadFailed": "Yapılandırma okunamadı.",
+    "saved": "Yapılandırma kaydedildi.",
+    "saveFailed": "Yapılandırma kaydedilemedi."
+  },
+  "logs": {
+    "loadFailed": "Günlükler okunamadı.",
+    "lines": "{{count}} satır",
+    "empty": "Günlük satırı yok."
+  },
+  "service": {
+    "failed": "Hizmet işlemi başarısız oldu.",
+    "start": "Başlat",
+    "stop": "Durdur",
+    "restart": "Yeniden Başlat",
+    "autostart": "Önyüklemede başlat",
+    "autostartDesc": "Bu arayüzü ana makine başladığında başlatın.",
+    "needsSystemd": "Önyüklemede başlatmak için bu ana makinede systemd gerekir.",
+    "noForward": "Bu ana makinede IP yönlendirmesi kapalı olduğundan, istemciler NAT üzerinden ağa erişemez.",
+    "delete": "Arayüzü sil",
+    "deleteTitle": "{{name}} silinsin mi?",
+    "deleteDesc": "Arayüz durdurulur ve yapılandırması, anahtarları ile kaydedilmiş istemci dosyaları ana makineden kaldırılır.",
+    "deleteFailed": "Arayüz silinemedi."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Bu kartı kullanmak için bu ana makinenin ayarlarında WireGuard'ı açın.",
+    "start": "Aktif et",
+    "stop": "Pasif et",
+    "done": "{{name}} güncellendi"
+  },
+  "operations": {
+    "list": {
+      "title": "WireGuard arayüzlerini listele"
+    },
+    "down": {
+      "title": "WireGuard arayüzleri pasif"
+    },
+    "start": {
+      "title": "WireGuard arayüzünü başlat"
+    },
+    "stop": {
+      "title": "WireGuard arayüzünü durdur"
+    },
+    "restart": {
+      "title": "WireGuard arayüzünü yeniden başlat"
+    },
+    "interfaces": {
+      "title": "WireGuard arayüzleri",
+      "address": "Adres",
+      "port": "Port",
+      "clients": "İstemciler"
+    }
+  },
+  "nav": {
+    "togglePanel": "WireGuard panelini aç/kapat"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Ana makineler kontrol ediliyor...",
+    "summary_one": "{{hosts}} ana makinede {{count}} istemci",
+    "summary_other": "{{hosts}} ana makinede {{count}} istemci",
+    "refresh": "Tekrar kontrol et",
+    "empty": "Bir ana makine için WireGuard'ı açarak burada görünmesini sağlayın.",
+    "missing": "Yüklenmemiş",
+    "down_one": "{{count}} pasif",
+    "down_other": "{{count}} pasif",
+    "interfaces_one": "{{count}} arayüz, {{clients}} istemci",
+    "interfaces_other": "{{count}} arayüz, {{clients}} istemci"
+  }
+}

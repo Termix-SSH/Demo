@@ -1,0 +1,218 @@
+{
+  "tab": {
+    "title": "存储",
+    "noHost": "从主机打开存储。",
+    "disabled": "此主机已关闭存储健康监控。请在主机设置中开启。",
+    "error": "无法加载存储健康状态",
+    "viewDrives": "驱动器",
+    "viewPools": "存储池和阵列",
+    "viewEvents": "事件",
+    "viewSettings": "设置",
+    "readAgo": "{{time}} 前读取",
+    "stale": "无法读取主机，显示上次读取结果。{{error}}"
+  },
+  "common": {
+    "loading": "加载中...",
+    "failed": "操作失败",
+    "save": "保存",
+    "refresh": "立即读取",
+    "back": "返回"
+  },
+  "card": {
+    "title": "存储健康",
+    "empty": "尚未监控任何主机。请在主机设置中开启存储健康监控。",
+    "drives_other": "{{count}} 个驱动器",
+    "problems_other": "{{count}} 个未解决问题"
+  },
+  "manager": {
+    "title": "存储健康",
+    "disabled": "此主机已关闭存储健康监控。"
+  },
+  "health": {
+    "ok": "健康",
+    "warn": "需要关注",
+    "fail": "故障",
+    "unknown": "未知"
+  },
+  "kind": {
+    "hdd": "机械硬盘",
+    "ssd": "固态硬盘",
+    "nvme": "NVMe",
+    "unknown": "驱动器"
+  },
+  "drives": {
+    "empty": "此主机未找到驱动器",
+    "noRoot": "检查以非 root 权限运行，因此部分驱动器可能无数据。请允许此登录免密使用 sudo。",
+    "noTool": "此主机未安装 smartctl。请安装 smartmontools 以读取驱动器健康状态。",
+    "noData": "尚未读取任何数据",
+    "wear": "磨损 {{value}}%",
+    "testing": "测试中"
+  },
+  "detail": {
+    "stop": "停止测试",
+    "short": "短测试",
+    "long": "长测试",
+    "health": "健康状态",
+    "temp": "温度",
+    "wear": "磨损",
+    "hours": "通电时间",
+    "model": "型号",
+    "serial": "序列号",
+    "kind": "类型",
+    "size": "容量",
+    "reallocated": "重映射扇区",
+    "pending": "待处理扇区",
+    "uncorrectable": "不可纠正扇区",
+    "mediaErrors": "介质错误",
+    "selfTest": "上次自检",
+    "attributes": "SMART 属性",
+    "attrMeta": "值 {{value}} | 原始值 {{raw}}"
+  },
+  "history": {
+    "24h": "24 小时",
+    "7d": "7 天",
+    "30d": "30 天",
+    "temp": "温度",
+    "wear": "磨损",
+    "bad": "坏扇区",
+    "empty": "历史记录随主机读取逐渐积累。请稍后再查看。"
+  },
+  "pools": {
+    "empty": "未找到 ZFS 存储池、RAID 阵列、btrfs 文件系统或 LVM 精简池",
+    "startTitle": "在 {{name}} 上开始？",
+    "startText": "此操作将读取每个数据块，可能会使磁盘性能降低数小时。",
+    "start": "开始",
+    "stop": "停止",
+    "scrub": "擦洗",
+    "thinMeta": "{{data}}% 数据 | {{meta}}% 元数据 | 组内剩余 {{free}}"
+  },
+  "events": {
+    "error": "无法加载事件",
+    "empty": "暂无事件",
+    "type": {
+      "smart-failing": "故障",
+      "smart-attention": "SMART 警告",
+      "nvme-critical": "严重",
+      "wear-high": "磨损",
+      "wear-critical": "即将耗尽",
+      "temp-high": "高温",
+      "temp-critical": "过热",
+      "pool-degraded": "存储池降级",
+      "pool-errors": "存储池错误",
+      "raid-degraded": "阵列降级",
+      "raid-rebuilding": "重建中",
+      "btrfs-errors": "btrfs 错误",
+      "thin-full": "精简池正在填满",
+      "thin-critical": "精简池已满",
+      "unreachable": "无法访问",
+      "test": "自检",
+      "scrub": "擦洗",
+      "command": "命令"
+    }
+  },
+  "settings": {
+    "saved": "已保存",
+    "alerts": "发送警报",
+    "alertsHint": "当问题出现或故障清除时，通知设置此功能的人员。",
+    "interval": "读取间隔（分钟）",
+    "intervalHint": "SMART 读取速度较慢，建议从 15 分钟开始。",
+    "tempWarn": "高于此温度时警告（°C）",
+    "tempCrit": "高于此温度时严重警告（°C）",
+    "tempHint": "0 表示使用驱动器类型的默认值。",
+    "wear": "磨损达到此百分比时警告（%）",
+    "wearHint": "95% 时为严重警告。",
+    "thin": "精简池达到此百分比时警告（%）",
+    "thinHint": "95% 时为严重警告。",
+    "host": {
+      "enable": {
+        "label": "存储健康",
+        "description": "监控此主机上的驱动器、存储池和阵列。"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "使用免密码 sudo 运行检查。SMART 需要 root 权限。"
+      },
+      "readOnly": {
+        "label": "只读",
+        "description": "阻止 Termix 执行自检和擦洗操作。"
+      },
+      "showPanel": {
+        "label": "显示侧边栏",
+        "description": "在此主机的终端旁边提供存储健康面板。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "随终端打开存储健康面板",
+        "description": "在支持的主机上自动打开面板。"
+      },
+      "companionSide": {
+        "label": "面板位置",
+        "description": "存储健康面板在终端旁边的打开位置。",
+        "right": "右侧",
+        "left": "左侧",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "面板大小",
+        "description": "面板的宽度或高度（像素）。"
+      },
+      "companionEdgeButton": {
+        "label": "显示边缘按钮",
+        "description": "在终端边缘显示一个小按钮，用于打开面板。"
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "使用存储健康",
+      "description": "查看您有权访问的主机上的驱动器和阵列健康状态。"
+    },
+    "runTests": {
+      "title": "运行测试和 scrub",
+      "description": "启动 SMART 自检和 scrub。还需要对主机的编辑权限。"
+    }
+  },
+  "operations": {
+    "devices": {
+      "title": "磁盘",
+      "health": "健康状态",
+      "kind": "类型",
+      "temp": "温度",
+      "wear": "磨损"
+    },
+    "pools": {
+      "title": "存储池和阵列",
+      "state": "状态"
+    },
+    "status": {
+      "title": "存储健康状态"
+    },
+    "temperature": {
+      "title": "最热磁盘"
+    },
+    "selftest": {
+      "title": "SMART 自检",
+      "device": "磁盘",
+      "action": "操作",
+      "short": "短测试",
+      "long": "长测试",
+      "abort": "停止正在运行的测试"
+    },
+    "scrub": {
+      "title": "Scrub",
+      "target": "存储池、文件系统或阵列",
+      "targetHint": "存储池列表中的 ID，例如 zfs:tank、btrfs:/mnt/data 或 md:md0",
+      "stop": "停止而非启动"
+    },
+    "events": {
+      "degraded": "发现存储问题",
+      "recovered": "存储问题已清除",
+      "smartFailing": "磁盘 SMART 检查失败",
+      "raidDegraded": "存储池或阵列降级"
+    }
+  },
+  "companion": {
+    "toggle": "存储健康状态面板"
+  }
+}

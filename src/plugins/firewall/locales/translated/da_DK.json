@@ -1,0 +1,356 @@
+{
+  "tab": {
+    "title": "Firewall",
+    "noHost": "Åbn firewall fra en vært.",
+    "refresh": "Opdater",
+    "error": "Kunne ikke læse firewall på denne vært.",
+    "disabled": "Firewall er slået fra for denne vært. Slå den til i værtsindstillingerne.",
+    "sudo": "Denne vært kræver passwordløs sudo eller root-login for at læse og ændre firewall.",
+    "noFirewall": "Ingen firewall",
+    "on": "til",
+    "off": "fra",
+    "readOnly": "skrivebeskyttet",
+    "ruleCount_one": "{{count}} regel",
+    "ruleCount_other": "{{count}} regler",
+    "viewRules": "Regler",
+    "viewDefaults": "Standarder",
+    "viewZones": "Zoner",
+    "viewFail2ban": "Fail2ban",
+    "viewRaw": "Rå"
+  },
+  "common": {
+    "loading": "Indlæser...",
+    "save": "Gem",
+    "cancel": "Annuller",
+    "delete": "Slet",
+    "edit": "Rediger",
+    "done": "Udført",
+    "failed": "Det virkede ikke."
+  },
+  "actions": {
+    "allow": "Tillad",
+    "deny": "Nægt",
+    "reject": "Afvis",
+    "limit": "Begræns"
+  },
+  "policies": {
+    "allow": "Tillad",
+    "deny": "Nægt (drop)",
+    "reject": "Afvis"
+  },
+  "rule": {
+    "action": "Handling",
+    "direction": "Retning",
+    "in": "Indgående",
+    "out": "Udgående",
+    "protocol": "Protokol",
+    "anyProtocol": "TCP og UDP",
+    "port": "Port",
+    "portPlaceholder": "22, 80,443 eller 8000-8100",
+    "portHint": "Lad være tom for alle porte. Lister og intervaller kræver TCP eller UDP.",
+    "anyPort": "enhver port",
+    "source": "Fra",
+    "destination": "Til",
+    "anywhere": "Overalt",
+    "addressHint": "En adresse eller et interval som 10.0.0.0/8.",
+    "family": "IP-version",
+    "bothFamilies": "IPv4 og IPv6",
+    "iface": "Interface",
+    "anyIface": "Ethvert interface",
+    "service": "Tjeneste",
+    "serviceHint": "Et firewalld-tjenestenavn i stedet for en port.",
+    "comment": "Kommentar",
+    "commentPlaceholder": "Hvad denne regel er til",
+    "zoneLabel": "Zone",
+    "from": "fra {{address}}",
+    "to": "til {{address}}",
+    "on": "på {{iface}}",
+    "zone": "zone {{zone}}"
+  },
+  "presets": {
+    "ssh": "SSH",
+    "http": "HTTP",
+    "https": "HTTPS",
+    "web": "Web",
+    "dns": "DNS",
+    "smtp": "Mail",
+    "mysql": "MySQL",
+    "postgres": "PostgreSQL",
+    "redis": "Redis",
+    "samba": "Samba",
+    "wireguard": "WireGuard",
+    "minecraft": "Minecraft"
+  },
+  "rules": {
+    "add": "Tilføj regel",
+    "addTitle": "Ny regel",
+    "editTitle": "Rediger regel",
+    "added": "Regel tilføjet",
+    "saved": "Regel gemt",
+    "deleted": "Regel slettet",
+    "confirmDelete": "Slet denne regel?",
+    "search": "Søg i porte, adresser og kommentarer",
+    "empty": "Ingen regler endnu.",
+    "noMatch": "Ingen regler matcher.",
+    "readOnly": "Skrivebeskyttet",
+    "deleteOnly": "Kun sletning",
+    "stale": "Reglerne er ændret på værten. Opdater og prøv igen.",
+    "filters": {
+      "all": "Alle",
+      "in": "Indgående",
+      "out": "Udgående",
+      "readOnly": "Skrivebeskyttet"
+    }
+  },
+  "defaults": {
+    "hint": "Hvad der sker med trafik, der ikke matcher nogen regel.",
+    "incoming": "Indgående",
+    "outgoing": "Udgående",
+    "routed": "Ruteret",
+    "saved": "Standardindstillinger gemt"
+  },
+  "zones": {
+    "hint": "firewalld placerer hvert netværksinterface og hver kilde i en zone. En zones mål er, hvad den gør med trafik, som dens regler ikke matcher.",
+    "defaultZone": "Standardzone",
+    "default": "Standard",
+    "active": "Aktiv",
+    "target": "Mål",
+    "interfaces": "interfaces {{list}}",
+    "sources": "kilder {{list}}",
+    "saved": "Zone gemt",
+    "targets": {
+      "default": "Standard (afvis)",
+      "ACCEPT": "Accepter",
+      "DROP": "Drop",
+      "REJECT": "Afvis"
+    }
+  },
+  "enable": {
+    "off": "Brandmuren er slået fra, så ingen af disse regler gælder lige nu.",
+    "allowSsh": "Tillad SSH på port {{ports}} først",
+    "allowSshHint": "Sikrer, at Termix og dine egne SSH-logins fortsat fungerer.",
+    "button": "Slå til",
+    "done": "Brandmuren er slået til",
+    "timerHint": "Når du slår den til, starter en timer. Hvis du ikke trykker på Behold i tide, slår værten den fra igen automatisk."
+  },
+  "disable": {
+    "button": "Slå fra",
+    "title": "Slå brandmuren fra?",
+    "description": "Alle regler ophører med at gælde, indtil du slår den til igen.",
+    "done": "Brandmuren er slået fra"
+  },
+  "install": {
+    "none": "Denne vært har ingen brandmur endnu.",
+    "hint": "Installer en for at komme i gang. Intet slås til, før du siger det.",
+    "button": "Installer {{name}}",
+    "working": "Installerer...",
+    "done": "{{name}} installeret",
+    "noPackageManager": "Termix kunne ikke finde en pakkehåndterer, den kender, på denne vært."
+  },
+  "lockout": {
+    "title": "Dette kan låse Termix ude",
+    "description": "{{reason}}. Hvis Termix ikke kan oprette forbindelse efter ændringen, fortryder værten ændringen automatisk, når timeren udløber. Vil du fortsætte?",
+    "confirm": "Fortsæt"
+  },
+  "pending": {
+    "started": "Ændring anvendt. Tryk på Behold for at gøre den permanent.",
+    "left": "Fortrydes om {{seconds}} s, medmindre du trykker på Behold",
+    "expired": "Tiden er udløbet, og værten fortryder ændringen",
+    "reachable": "Termix kunne stadig oprette forbindelse",
+    "unreachable": "Termix kunne ikke oprette forbindelse efter ændringen",
+    "unknown": "Tjekker forbindelsen",
+    "keep": "Behold",
+    "undo": "Fortryd nu",
+    "kept": "Ændring beholdt",
+    "undone": "Ændring fortrydt",
+    "gone": "Tiden er udløbet, og værten har allerede fortrydt ændringen.",
+    "first": "Behold eller fortryd den sidste ændring først.",
+    "kinds": {
+      "add": "Ny regel",
+      "update": "Ændret regel",
+      "remove": "Slettet regel",
+      "defaults": "Nye standarder",
+      "enable": "Brandvæg slået til",
+      "disable": "Brandvæg slået fra",
+      "zoneTarget": "Nyt zone-mål",
+      "defaultZone": "Ny standardzone",
+      "ruleset": "Regelsæt anvendt"
+    }
+  },
+  "fail2ban": {
+    "loadFailed": "Kunne ikke læse Fail2ban.",
+    "notInstalled": "Fail2ban er ikke installeret. Den blokerer adresser, der fejler ved login for ofte.",
+    "stopped": "Fail2ban er installeret, men kører ikke.",
+    "start": "Start Fail2ban",
+    "started": "Fail2ban startet",
+    "noJails": "Ingen fængsler er slået til.",
+    "none": "Intet blokeret.",
+    "bannedCount_one": "{{count}} blokeret",
+    "bannedCount_other": "{{count}} blokeret",
+    "counts": "{{failed}} fejler nu | {{totalFailed}} fejlet | {{totalBanned}} blokeret i alt",
+    "ban": "Bloker",
+    "unban": "Ophæv blokering",
+    "banAddress": "Bloker en adresse",
+    "banned": "{{ip}} blokeret",
+    "unbanned": "{{ip}} ophævet blokering",
+    "selfTitle": "Vil du blokere Termix-adressen?",
+    "selfDescription": "Termix opretter forbindelse fra denne adresse. Hvis du blokerer den, afbrydes Termix' forbindelse til denne vært."
+  },
+  "raw": {
+    "empty": "Intet at vise."
+  },
+  "watch": {
+    "start": "Giv mig besked, når denne brandvæg ændres",
+    "stop": "Stop advarsler for denne brandvæg"
+  },
+  "companion": {
+    "openTab": "Åbn fanen Brandvæg",
+    "toggle": "Brandvægspanel",
+    "allowPort": "Tillad en TCP-port"
+  },
+  "card": {
+    "title": "Brandvægge",
+    "empty": "Ingen værter har brandvæg slået til.",
+    "banned_one": "{{count}} blokeret",
+    "banned_other": "{{count}} blokeret",
+    "pending": "Venter"
+  },
+  "rulesets": {
+    "title": "Brandvægsregelsæt",
+    "hint": "Gem en liste over regler og tilføj den til mange værter på én gang. Anvendelse tilføjer kun manglende regler og fjerner aldrig nogen.",
+    "add": "Nyt regelsæt",
+    "addTitle": "Nyt regelsæt",
+    "editTitle": "Rediger regelsæt",
+    "loadFailed": "Kunne ikke indlæse dine regelsæt.",
+    "empty": "Ingen regelsæt endnu.",
+    "name": "Navn",
+    "namePlaceholder": "Webserver",
+    "description": "Beskrivelse",
+    "rules": "Regler",
+    "noRules": "Ingen regler i dette sæt endnu.",
+    "hosts": "Værter",
+    "noHosts": "Ingen værtsmaskiner har Firewall slået til.",
+    "saved": "Regelsæt gemt",
+    "deleted": "Regelsæt slettet",
+    "confirmDelete": "Slet {{name}}?",
+    "deleteHint": "Regler, der allerede er tilføjet til værtsmaskiner, forbliver.",
+    "ruleCount_one": "{{count}} regel",
+    "ruleCount_other": "{{count}} regler",
+    "hostCount_one": "{{count}} vært",
+    "hostCount_other": "{{count}} værtsmaskiner",
+    "check": "Tjek værtsmaskiner",
+    "apply": "Anvend",
+    "applyTitle": "Anvend {{name}}?",
+    "applyDescription": "Manglende regler tilføjes på hver vært. Hver vært får SSH-låsekontrol, og en vært som Termix ikke kan nå bagefter, fortryder ændringen automatisk.",
+    "applied": "Regelsæt anvendt",
+    "applyErrors_one": "{{count}} vært havde et problem",
+    "applyErrors_other": "{{count}} værter havde et problem",
+    "applyResult": "Anvendt {{name}}",
+    "driftTitle": "{{name}} på hver vært",
+    "inSync": "Har alle regler",
+    "ok": "Synkroniseret",
+    "missing_one": "{{count}} mangler",
+    "missing_other": "{{count}} mangler",
+    "nothingMissing": "Allerede alle regler",
+    "added_one": "Tilføjede {{count}} regel",
+    "added_other": "Tilføjede {{count}} regler",
+    "waiting": "Tilføjet, men Termix kunne ikke oprette forbindelse bagefter. Værten vil rulle ændringen tilbage.",
+    "fleet": "Flåde",
+    "applyFleet": "Anvend på flåden"
+  },
+  "permissions": {
+    "use": {
+      "title": "Brug firewall",
+      "description": "Åbn fanen Firewall på værter, du kan nå. Ændringer kræver også redigeringsadgang til værten."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Firewall",
+        "description": "Vis fanen Firewall for denne vært for at administrere dens firewall via SSH."
+      },
+      "useSudo": {
+        "label": "Brug sudo",
+        "description": "Kør firewall-kommandoer med passwordløs sudo, når login ikke er root."
+      },
+      "readOnly": {
+        "label": "Skrivebeskyttet",
+        "description": "Vis firewallen, men bloker alle ændringer fra Termix."
+      },
+      "sshGuard": {
+        "label": "SSH-låsekontrol",
+        "description": "Stop og spørg, før en ændring, der ser ud til at blokere SSH fra Termix, udføres."
+      },
+      "rollbackSeconds": {
+        "label": "Fortryd-timer",
+        "description": "Antal sekunder, du har på at trykke på Behold efter en risikabel ændring, før værten fortryder den."
+      },
+      "confirmAll": {
+        "label": "Timer ved hver ændring",
+        "description": "Brug fortryd-timeren ved hver ændring, ikke kun de risikable."
+      },
+      "showPanel": {
+        "label": "Firewall-panel",
+        "description": "Vis firewall-panelet ved siden af SSH-terminalerne for denne vært."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Åbn firewall-panelet sammen med en terminal",
+        "description": "Vis firewall-panelet, når en terminal åbnes på en vært, der har det."
+      },
+      "companionSide": {
+        "label": "Placering af firewall-panelet",
+        "description": "Hvor panelet placeres i forhold til terminalen.",
+        "right": "Højre",
+        "left": "Venstre",
+        "bottom": "Nederst"
+      },
+      "companionSize": {
+        "label": "Størrelse på firewall-panelet",
+        "description": "Bredde, eller højde hvis det er nederst, i pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Firewall panel edge button",
+        "description": "Vis en lille knap på terminalens kant for at åbne panelet."
+      }
+    }
+  },
+  "manager": {
+    "title": "Firewall",
+    "disabled": "Aktivér firewall i denne værts indstillinger for at administrere dens firewall her."
+  },
+  "operations": {
+    "list": {
+      "title": "Liste over firewall-regler"
+    },
+    "status": {
+      "title": "Firewall"
+    },
+    "portAllowed": {
+      "title": "Porten er tilladt",
+      "description": "Om der findes en tilladelsesregel for denne port. Brug det til at overvåge værter for drift."
+    },
+    "allow": {
+      "title": "Tillad en port"
+    },
+    "remove": {
+      "title": "Fjern en tilladt port"
+    },
+    "delete": {
+      "title": "Slet firewallregel"
+    },
+    "rules": {
+      "title": "Firewallregler"
+    },
+    "port": "Port",
+    "protocol": "Protokol",
+    "tcp": "TCP",
+    "udp": "UDP",
+    "any": "Alle",
+    "source": "Fra",
+    "sourceHint": "En adresse eller et interval. Tomt betyder overalt.",
+    "direction": "Retning"
+  }
+}

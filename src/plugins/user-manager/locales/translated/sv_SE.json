@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Användare",
+    "description": "Hantera användarkonton, grupper, lösenord och SSH-nycklar på dina värdar."
+  },
+  "common": {
+    "save": "Spara",
+    "cancel": "Avbryt",
+    "back": "Tillbaka",
+    "delete": "Ta bort",
+    "loading": "Laddar..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Använd Användare",
+      "description": "Visa konton på värdar du kan nå och ändra dem på värdar du kan redigera."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Användare",
+        "description": "Hantera användarkonton och grupper på denna värd från fliken Användare."
+      },
+      "useSudo": {
+        "label": "Använd sudo",
+        "description": "Använd sudo för att läsa och ändra konton. Stäng av om inloggningen är root."
+      },
+      "readOnly": {
+        "label": "Skrivskyddad",
+        "description": "Visa konton men ändra dem aldrig på denna värd."
+      }
+    }
+  },
+  "tab": {
+    "title": "Användare",
+    "noHost": "Öppna Användare från en värd.",
+    "error": "Kunde inte ladda kontona från denna värd.",
+    "disabled": "Användare är inaktiverat för denna värd. Aktivera det i värdinställningarna.",
+    "sudo": "Ändringar och lösenordstillstånd kräver root-inloggning, lösenordsfritt sudo eller ett sparat Sudo-lösenord på denna värd.",
+    "noTools": "useradd är inte installerat på denna värd. På Alpine, installera shadow-paketet.",
+    "refresh": "Uppdatera",
+    "readOnly": "Skrivskyddad",
+    "counts_one": "{{count}} användare",
+    "counts_other": "{{count}} användare",
+    "viewUsers": "Användare",
+    "viewGroups": "Grupper",
+    "viewSessions": "Sessioner"
+  },
+  "users": {
+    "add": "Lägg till användare",
+    "search": "Sök användare",
+    "people": "Personer",
+    "systemFilter": "System",
+    "all": "Alla",
+    "empty": "Inga användare matchar.",
+    "you": "Du",
+    "sudo": "Sudo",
+    "locked": "Låst",
+    "emptyPassword": "Inget lösenord",
+    "system": "System",
+    "loadFailed": "Kunde inte läsa kontona."
+  },
+  "password": {
+    "set": "Ställ in",
+    "locked": "Låst",
+    "none": "Ej inställt, ingen inloggning med lösenord",
+    "empty": "Tomt, vem som helst kan logga in",
+    "unknown": "Kräver root för att avgöra"
+  },
+  "detail": {
+    "info": "Konto",
+    "account": "Detaljer",
+    "fullName": "Fullständigt namn",
+    "uid": "Användar- och grupp-ID",
+    "mainGroup": "Huvudgrupp",
+    "home": "Hemkatalog",
+    "shell": "Skal",
+    "groups": "Grupper",
+    "groupsPlaceholder": "Skriv en grupp och tryck på Enter",
+    "unknownGroups": "Dessa grupper finns inte: {{groups}}",
+    "none": "Ingen",
+    "password": "Lösenord",
+    "passwordChanged": "Lösenordet har ändrats",
+    "lastLogin": "Senaste inloggningen",
+    "never": "Aldrig",
+    "unknown": "Okänd",
+    "saved": "Sparat.",
+    "failed": "Ändringen misslyckades.",
+    "loadFailed": "Kunde inte läsa användarens nycklar och senaste inloggning.",
+    "passwordSection": "Lösenord",
+    "newPassword": "Nytt lösenord",
+    "newPasswordHint": "Skickas till värdens via SSH och ställs in med chpasswd. Det lagras aldrig i Termix.",
+    "setPassword": "Ställ in lösenord",
+    "passwordSet": "Lösenordet har ställts in.",
+    "expirePassword": "Be om ett nytt vid nästa inloggning",
+    "expired": "De kommer att välja ett nytt lösenord vid nästa inloggning.",
+    "access": "Åtkomst",
+    "sudo": "Sudo",
+    "sudoHint": "Kör kommandon som root via gruppen {{group}}.",
+    "sudoProtected": "Du kan inte ta bort sudo från root eller användaren som Termix loggar in som.",
+    "sudoTitle": "Ge {{name}} sudo?",
+    "sudoDesc": "Lägger till dem i gruppen {{group}}, så att de kan köra valfritt kommando som root.",
+    "sudoGrant": "Ge sudo",
+    "sudoOn": "Sudo har getts.",
+    "sudoOff": "Sudo har tagits bort.",
+    "lock": "Lås konto",
+    "unlock": "Lås upp konto",
+    "lockTitle": "Lås {{name}}?",
+    "lockDesc": "De kan inte logga in med lösenord eller SSH-nyckel förrän du låser upp kontot.",
+    "lockHint": "Blockerar inloggning med lösenord och SSH-nyckel.",
+    "protected": "Root och användaren som Termix loggar in som kan inte låsas eller raderas.",
+    "locked": "Kontot har låsts.",
+    "unlocked": "Kontot har låsts upp.",
+    "danger": "Radera",
+    "removeHome": "Radera även hemkatalogen",
+    "removeHomeHint": "Raderar {{home}} och allt i den.",
+    "delete": "Radera användare",
+    "deleteTitle": "Radera {{name}}?",
+    "deleteDesc": "Kontot tas bort. Hemkatalogen finns kvar på värden.",
+    "deleteDescHome": "Kontot och {{home}} tas bort. Detta kan inte ångras.",
+    "deleted": "Raderade {{name}}."
+  },
+  "keys": {
+    "title": "SSH-nycklar",
+    "empty": "Inga SSH-nycklar.",
+    "denied": "Nycklarna kan inte läsas utan root.",
+    "options": "Alternativ",
+    "remove": "Ta bort nyckel",
+    "removeTitle": "Ta bort denna nyckel?",
+    "removed": "Nyckeln har tagits bort.",
+    "add": "Lägg till en nyckel",
+    "addHint": "Klistra in en offentlig nyckel, till exempel innehållet i id_ed25519.pub.",
+    "addButton": "Lägg till nyckel",
+    "added": "Nyckeln har lagts till."
+  },
+  "create": {
+    "title": "Ny användare",
+    "name": "Användarnamn",
+    "nameHint": "Små bokstäver, siffror, - och _.",
+    "nameInvalid": "Börja med en bokstav och använd endast a-z, 0-9, - och _.",
+    "home": "Hemkatalog",
+    "homeHint": "Lämna tomt för /home/{{name}}.",
+    "createHome": "Skapa hemkatalogen",
+    "password": "Lösenord",
+    "passwordHint": "Valfritt. Utan ett lösenord kan användaren bara logga in med en SSH-nyckel.",
+    "again": "Lösenord igen",
+    "mismatch": "Lösenorden matchar inte.",
+    "save": "Skapa användare",
+    "done": "Skapade {{name}}.",
+    "failed": "Kunde inte skapa användaren."
+  },
+  "groups": {
+    "add": "Lägg till grupp",
+    "name": "Gruppnamn",
+    "namePlaceholder": "Nytt gruppnamn",
+    "create": "Skapa",
+    "created": "Skapade {{name}}.",
+    "search": "Sök i grupper",
+    "empty": "Inga grupper matchar.",
+    "noMembers": "Inga medlemmar.",
+    "failed": "Ändringen misslyckades.",
+    "addMember": "Lägg till medlem",
+    "pickUser": "Välj en användare",
+    "removeMember": "Ta bort från grupp",
+    "memberAdded": "Lade till {{name}} i {{group}}.",
+    "memberRemoved": "Tog bort {{name}} från {{group}}.",
+    "mainGroup": "Huvudgrupp",
+    "mainGroupHint": "Detta är deras huvudgrupp, så de tillhör den alltid.",
+    "deleteTitle": "Ta bort {{name}}?",
+    "deleteDesc": "Gruppen tas bort. Filer som den ägde behåller sitt gamla id.",
+    "deleted": "Tog bort {{name}}."
+  },
+  "sessions": {
+    "now": "Inloggad nu",
+    "none": "Ingen är inloggad.",
+    "recent": "Senaste inloggningarna",
+    "noRecent": "Ingen inloggningshistorik hittades.",
+    "loadFailed": "Kunde inte läsa sessionerna."
+  },
+  "manager": {
+    "title": "Användare",
+    "disabled": "Aktivera Användare för denna värd i dess inställningar för att se dess konton här."
+  },
+  "operations": {
+    "list": {
+      "title": "Lista användare"
+    },
+    "emptyPasswords": {
+      "title": "Konton utan lösenord"
+    },
+    "lock": {
+      "title": "Lås användare"
+    },
+    "unlock": {
+      "title": "Lås upp användare"
+    },
+    "delete": {
+      "title": "Ta bort användare"
+    },
+    "users": {
+      "title": "Användare",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "Grupper"
+    }
+  }
+}

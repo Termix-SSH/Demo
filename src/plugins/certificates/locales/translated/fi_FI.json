@@ -1,0 +1,235 @@
+{
+  "plugin": {
+    "name": "Sertifikaatit",
+    "description": "Hallitse TLS-sertifikaatteja palvelimillasi certbot- ja acme.sh-työkaluilla, ja saa ilmoitus ennen niiden vanhenemista."
+  },
+  "common": {
+    "cancel": "Peruuta",
+    "back": "Takaisin"
+  },
+  "permissions": {
+    "use": {
+      "title": "Sertifikaattien käyttö",
+      "description": "Näe sertifikaatit palvelimilla, joihin pääset, ja muokkaa niitä palvelimilla, joilla on muokkausoikeudet."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Sertifikaatit",
+        "description": "Hallitse tämän palvelimen TLS-sertifikaatteja Sertifikaatit-välilehdeltä."
+      },
+      "useSudo": {
+        "label": "Käytä sudoa",
+        "description": "Käytä sudoa sertifikaattien lukemiseen ja muokkaamiseen. Poista käytöstä, jos kirjautuminen tapahtuu root-käyttäjänä."
+      },
+      "readOnly": {
+        "label": "Vain luku",
+        "description": "Näytä varmenteet, mutta älä koskaan muokkaa niitä tässä isäntäpalvelimessa."
+      },
+      "expiryWarnDays": {
+        "label": "Varoita vanhenemisen edellä",
+        "description": "Varmenteet, joissa on jäljellä tämä määrä päiviä tai vähemmän, näytetään vanhentuvina ja lähettävät hälytyksen."
+      },
+      "showPanel": {
+        "label": "Näytä varmenteiden paneeli terminaaleissa",
+        "description": "Salli varmenteiden paneelin avautuminen tämän isäntäpalvelimen SSH-terminaalista sivuun."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Avaa varmenteiden paneeli uusien terminaaleiden kanssa",
+        "description": "Näytä varmenteiden paneeli jokaisen SSH-terminaalin vieressä, jossa varmenteet on päällä. Voit silti avata ja sulkea sen oikean reunan painikkeesta."
+      },
+      "companionSide": {
+        "label": "Varmenteiden paneelin sijainti",
+        "description": "Missä varmenteiden paneeli sijaitsee terminaalin vieressä.",
+        "right": "Oikea",
+        "left": "Vasen",
+        "bottom": "Alareuna"
+      },
+      "companionSize": {
+        "label": "Varmenne-paneelin koko",
+        "description": "Leveys pikseleinä tai korkeus, kun paneeli on alareunassa. Voit myös vetää paneelin reunaa."
+      },
+      "companionEdgeButton": {
+        "label": "Näytä paneelin painike",
+        "description": "Näytä pieni painike terminaalin oikeassa reunassa, joka avaa varmenne-paneelin."
+      }
+    }
+  },
+  "tab": {
+    "title": "Varmenneet",
+    "noHost": "Avaa varmenteet isäntäpalvelimelta.",
+    "error": "Varmennetta ei voitu ladata tältä isäntäpalvelimelta.",
+    "disabled": "Sertifikaatit ovat poissa käytöstä tässä isäntäpalvelimessa. Ota ne käyttöön isäntäpalvelimen asetuksista.",
+    "sudo": "Muutokset vaativat root-käyttäjän kirjautumisen, salasanasuoran sudo-oikeuden tai tallennetun sudo-salasanan tässä isäntäpalvelimessa.",
+    "refresh": "Päivitä",
+    "readOnly": "Vain lukuoikeus",
+    "noClient": "Ei certbotia tai acme.sh:tä",
+    "viewCertificates": "Sertifikaatit",
+    "viewInspect": "Tarkastele",
+    "viewRenewal": "Uudistaminen"
+  },
+  "actions": {
+    "working": "Käynnissä. Tämä voi kestää muutaman minuutin.",
+    "ok": "Valmis",
+    "failed": "Komento epäonnistui.",
+    "noOutput": "Ei tulostetta."
+  },
+  "install": {
+    "title": "certbotia ja acme.sh:tä ei ole asennettu tähän isäntään",
+    "hint": "Asenna certbot hankkiaksesi ja uusidesi sertifikaatteja Let's Encryptistä.",
+    "noManager": "Yhteensopivaa paketinhallintaa ei löytynyt. Asenna certbot manuaalisesti.",
+    "button": "Asenna certbot",
+    "confirm": "Asennetaanko certbot?",
+    "desc": "Tämä asentaa certbotin isännän paketinhallinnan avulla.",
+    "working": "Asennetaan...",
+    "done": "certbot on asennettu."
+  },
+  "certs": {
+    "search": "Hae sertifikaatteja",
+    "empty": "Sertifikaatteja ei ole vielä.",
+    "noMatch": "Yhtään sertifikaattia ei löydy.",
+    "loadFailed": "Sertifikaatteja ei voitu lukea.",
+    "expires": "Vanhenee {{date}}",
+    "staging": "Testiympäristö",
+    "details": "Sertifikaatti",
+    "manage": "Hallinnoi",
+    "client": "Asiakas",
+    "path": "Tiedosto",
+    "authority": "Viranomainen",
+    "renew": "Uudista",
+    "renewDone": "Sertifikaatti {{name}} on uusittu.",
+    "renewAll": "Uudista kaikki",
+    "renewAllDone": "Vanhentuneet sertifikaatit on uusittu.",
+    "forceRenew": "Uudista silti nyt",
+    "dryRun": "Testiajo",
+    "dryRunDone": "Testiajo onnistui.",
+    "revoke": "Peruuta",
+    "revokeTitle": "Peruutetaanko sertifikaatti {{name}}?",
+    "revokeDesc": "Viranomainen merkitsee sen virheelliseksi ja se poistetaan tästä isäntästä. Kaikki, mikä käyttää sitä edelleen, lakkaa toimimasta.",
+    "revokeDone": "Hylkäsi {{name}}.",
+    "delete": "Lopeta hallinta",
+    "deleteTitle": "Lopeta {{name}}:n hallinta?",
+    "deleteDesc": "Se pysyy voimassa, mutta sitä ei enää uusita. certbot poistaa myös sen tiedostot, acme.sh pitää ne.",
+    "deleteDone": "{{name}}:n hallintaa ei enää jatketa."
+  },
+  "expiry": {
+    "expired": "Vanhentunut",
+    "unknown": "Tuntematon",
+    "days_one": "{{count}} päivää jäljellä",
+    "days_other": "{{count}} päivää jäljellä"
+  },
+  "issue": {
+    "add": "Myönnä sertifikaatti",
+    "title": "Uusi sertifikaatti",
+    "save": "Hanki",
+    "done": "Sertifikaatti on hankittu.",
+    "working": "Kysytään viranomaiselta. Tämä voi kestää muutaman minuutin.",
+    "client": "Asiakas",
+    "domains": "Verkkotunnukset",
+    "domainsPlaceholder": "Kirjoita verkkotunnus ja paina Enter",
+    "domainsHint": "Ensimmäinen nimetään sertifikaatille.",
+    "challenge": "Haaste",
+    "standalone": "Itsenäinen",
+    "standaloneHint": "Käynnistää pienen web-palvelimen portissa 80, joten mikään muu ei saa käyttää sitä porttia.",
+    "webroot": "Web-palvelimen juurihakemisto",
+    "webrootHint": "Sijoittaa tiedoston web-palvelimesi hakemistoon. Web-palvelin jatkaa toimintaansa.",
+    "dns": "DNS",
+    "dnsHint": "Lisää DNS-tietueen palveluntarjoajasi API:n kautta. Tarvitaan jokerimerkkien kanssa.",
+    "webrootPath": "Web-palvelimen juurihakemisto",
+    "webrootPathHint": "Täytyy sijaita hakemistossa /var/www, /srv tai /usr/share/nginx.",
+    "dnsProvider": "DNS-palveluntarjoaja",
+    "dnsProviderCertbot": "Asennetun certbot-DNS-liitännäisen nimi, kuten cloudflare.",
+    "dnsProviderAcme": "acme.sh:n DNS-nimi ilman dns_-etuliitettä, kuten cf. Sen API-tokenin on oltava jo määritettynä isäntäkonessa.",
+    "credentials": "Tunnuksien tiedosto",
+    "credentialsHint": "Tiedosto palvelimella, jossa on API-valtuusavain. Termix ei lue tätä tiedostoa.",
+    "email": "Sähköposti",
+    "emailHint": "Valinnainen. Valtuushankee käyttää sitä vanhenemismuistutuksiin.",
+    "keyType": "Avaimen tyyppi",
+    "staging": "Käytä testipalvelinta",
+    "stagingHint": "Testaukseen. Sertifikaattia ei luoteta, ja nopeusrajoitukset ovat huomattavasti korkeammat."
+  },
+  "inspect": {
+    "server": "Palvelin",
+    "file": "Tiedosto",
+    "address": "Osoite",
+    "addressPlaceholder": "example.com",
+    "port": "Portti",
+    "path": "Tiedostopolku",
+    "check": "Tarkista",
+    "hint": "Tarkista, mitä palvelin lähettää TLS-yhteydellä tämän isäntäkonetta vastaan, tai lue sertifikaattitiedosto palvelimelta.",
+    "failed": "Sertifikaatin lukeminen epäonnistui.",
+    "noOpenssl": "openssl ei ole asennettu tähän isäntäkoneseen.",
+    "trusted": "Luotettu",
+    "notTrusted": "Ei luotettu",
+    "leaf": "Sertifikaatti",
+    "intermediate": "Ketju {{index}}",
+    "selfSigned": "Itse allekirjoitettu",
+    "name": "Nimi",
+    "issuer": "Myöntäjä",
+    "domains": "Verkkotunnukset",
+    "validFrom": "Voimassa alkaen",
+    "validTo": "Voimassa saakka",
+    "keyType": "Avain",
+    "serial": "Sarjanumero",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Miten tämä isäntä uusii sertifikaatit automaattisesti. Muuta asetus isännällä.",
+    "on": "Päällä",
+    "off": "Pois päältä",
+    "timer": "systemd-ajastin",
+    "next": "Seuraava ajo {{time}}",
+    "cron": "Cron-tiedosto /etc/cron.d/certbot",
+    "certbotOff": "Ajastinta tai cron-työtä ei löytynyt, joten sertifikaatteja ei uusita automaattisesti.",
+    "acmeCron": "Cron-työ crontabissa",
+    "acmeOff": "Cron-työtä ei löytynyt, joten sertifikaatteja ei uusita automaattisesti."
+  },
+  "watch": {
+    "start": "Ilmoita minulle ennen tämän isännän sertifikaattien vanhenemista",
+    "stop": "Pysäytä tämän isäntäkonen hälytykset",
+    "on": "Saat hälytyksen, ennen kuin täällä olevat varmenteet vanhenevat.",
+    "off": "Tämän isäntäkonen hälytykset ovat pois päältä.",
+    "failed": "Hälytystä ei voitu muuttaa."
+  },
+  "card": {
+    "title": "Varmenteet",
+    "loading": "Tarkistetaan isäntäkoneita...",
+    "summary_one": "{{count}} varmenne, {{expiring}} vanheneva",
+    "summary_other": "{{count}} varmenetta, {{expiring}} vanhenevaa",
+    "refresh": "Tarkista uudelleen",
+    "empty": "Ota Varmenteet käyttöön isäntäkonetta varten nähdäksesi sen varmenteet täällä."
+  },
+  "manager": {
+    "title": "Varmenteet",
+    "disabled": "Ota sertifikaatit käyttöön tämän isäntäpalvelimen asetuksista nähdäksesi ne täällä."
+  },
+  "operations": {
+    "list": {
+      "title": "Listaa sertifikaatit"
+    },
+    "expiring": {
+      "title": "Vanhenevat sertifikaatit"
+    },
+    "renew": {
+      "title": "Uusi sertifikaatti"
+    },
+    "renewAll": {
+      "title": "Uusi kaikki sertifikaatit"
+    },
+    "revoke": {
+      "title": "Peruuta sertifikaatti"
+    },
+    "certificates": {
+      "title": "Sertifikaatit",
+      "client": "Asiakas",
+      "domains": "Verkkotunnukset",
+      "daysLeft": "Päivää jäljellä"
+    }
+  },
+  "nav": {
+    "togglePanel": "Näytä/piilota sertifikaattien paneeli"
+  }
+}

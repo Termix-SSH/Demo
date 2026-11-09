@@ -1,0 +1,202 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "Xem, thêm và chạy các tác vụ cron trên các máy chủ của bạn, với bản xem trước lịch trình và các tệp cron hệ thống."
+  },
+  "common": {
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "back": "Quay lại",
+    "delete": "Xóa"
+  },
+  "permissions": {
+    "use": {
+      "title": "Sử dụng Cron",
+      "description": "Xem các tác vụ cron trên các máy chủ bạn có thể truy cập, và chỉnh sửa chúng trên các máy chủ bạn có quyền chỉnh sửa."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Quản lý các tác vụ cron trên máy chủ này từ tab Cron."
+      },
+      "useSudo": {
+        "label": "Sử dụng sudo",
+        "description": "Sử dụng sudo cho các bảng crontab của người dùng khác và /etc/cron.d. Tắt tính năng này nếu đăng nhập bằng root."
+      },
+      "readOnly": {
+        "label": "Chỉ đọc",
+        "description": "Hiển thị các tác vụ cron nhưng không bao giờ thay đổi chúng trên máy chủ này."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "Mở Cron từ một máy chủ.",
+    "error": "Không thể tải cron từ máy chủ này.",
+    "disabled": "Cron đã bị tắt cho máy chủ này. Hãy bật nó trong cài đặt máy chủ.",
+    "sudo": "Điều này yêu cầu đăng nhập root, sudo không mật khẩu hoặc Mật khẩu Sudo đã lưu.",
+    "refresh": "Làm mới",
+    "running": "Cron đang chạy",
+    "stopped": "Cron đã dừng",
+    "readOnly": "Chỉ đọc",
+    "notInstalled": "Chưa cài đặt",
+    "notInstalledTitle": "Cron chưa được cài đặt trên máy chủ này",
+    "notInstalledHint": "Cài đặt cron hoặc cronie bằng trình quản lý gói của máy chủ, sau đó làm mới.",
+    "notRunning": "Dịch vụ cron không chạy, do đó không có tác vụ nào sẽ được thực thi.",
+    "viewJobs": "Tác vụ",
+    "viewSystem": "Hệ thống",
+    "viewLogs": "Nhật ký"
+  },
+  "jobs": {
+    "add": "Thêm tác vụ",
+    "user": "Bảng crontab của",
+    "ownUser": "{{user}} (đăng nhập)",
+    "search": "Tìm kiếm tác vụ",
+    "editText": "Chỉnh sửa dưới dạng văn bản",
+    "empty": "Chưa có tác vụ cron nào.",
+    "noMatch": "Không có tác vụ nào khớp.",
+    "off": "Tắt",
+    "next": "tiếp theo {{time}}",
+    "run": "Chạy ngay",
+    "runTitle": "Chạy tác vụ này ngay bây giờ?",
+    "runDesc": "Điều này sẽ chạy {{command}} một lần với tư cách là người dùng của bảng crontab. Nó sẽ dừng sau 2 phút.",
+    "runFailed": "Không thể chạy tác vụ.",
+    "turnOn": "Bật",
+    "turnOff": "Tắt",
+    "deleteTitle": "Xóa tác vụ này?",
+    "loadFailed": "Không thể đọc bảng crontab.",
+    "saveFailed": "Không thể lưu bảng crontab.",
+    "outputTitle": "Đầu ra của tác vụ",
+    "exitOk": "Hoàn tất",
+    "exitCode": "Mã thoát {{code}}",
+    "noOutput": "Tác vụ không in ra gì."
+  },
+  "form": {
+    "addTitle": "Tác vụ mới",
+    "editTitle": "Chỉnh sửa tác vụ",
+    "forUser": "Bảng crontab của {{user}}",
+    "label": "Nhãn",
+    "labelHint": "Được lưu dưới dạng bình luận phía trên tác vụ.",
+    "labelPlaceholder": "Sao lưu hàng đêm",
+    "command": "Lệnh",
+    "commandHint": "Chạy với sh trong thư mục home của người dùng. Một ký tự % bắt đầu đầu vào mà cron gửi, hãy viết \\% cho ký tự % thực sự.",
+    "schedule": "Lịch trình",
+    "scheduleHint": "Phút, giờ, ngày trong tháng, tháng và ngày trong tuần, hoặc một từ khóa như @daily.",
+    "scheduleInvalid": "Đây không phải là lịch trình hợp lệ.",
+    "nextRuns": "Lần chạy tiếp theo ({{zone}}):",
+    "enabled": "Bật",
+    "enabledHint": "Một tác vụ tắt sẽ được giữ trong crontab dưới dạng chú thích.",
+    "saved": "Đã lưu."
+  },
+  "presets": {
+    "everyMinute": "Mỗi phút",
+    "every5": "Mỗi 5 phút",
+    "every15": "Mỗi 15 phút",
+    "hourly": "Mỗi giờ",
+    "daily": "Mỗi ngày",
+    "weekly": "Mỗi tuần",
+    "monthly": "Mỗi tháng",
+    "reboot": "Khi khởi động"
+  },
+  "schedule": {
+    "reboot": "Khi khởi động",
+    "everyMinute": "Mỗi phút",
+    "everyNMinutes": "Mỗi {{n}} phút",
+    "hourlyAt": "Mỗi giờ vào phút {{minute}}",
+    "everyNHours": "Mỗi {{n}} giờ vào phút {{minute}}",
+    "dailyAt": "Mỗi ngày vào lúc {{time}}",
+    "weekdaysAt": "Thứ Hai đến Thứ Sáu vào lúc {{time}}",
+    "weeklyAt": "Mỗi {{day}} vào lúc {{time}}",
+    "monthlyAt": "Vào ngày {{day}} hàng tháng vào lúc {{time}}",
+    "custom": "Lịch trình tùy chỉnh",
+    "invalid": "Không phải là lịch trình hợp lệ"
+  },
+  "days": {
+    "0": "Chủ Nhật",
+    "1": "Thứ Hai",
+    "2": "Thứ Ba",
+    "3": "Thứ Tư",
+    "4": "Thứ Năm",
+    "5": "Thứ Sáu",
+    "6": "Thứ Bảy"
+  },
+  "raw": {
+    "title": "Crontab dưới dạng văn bản",
+    "hint": "Mỗi dòng là một tác vụ. Máy chủ sẽ kiểm tra văn bản và giữ lại crontab cũ nếu có lỗi."
+  },
+  "system": {
+    "add": "Tệp mới",
+    "addTitle": "Tệp mới trong /etc/cron.d",
+    "edit": "Chỉnh sửa",
+    "name": "Tên tệp",
+    "nameHint": "Được lưu dưới dạng /etc/cron.d/<name>. Cron sẽ bỏ qua các tên có dấu chấm.",
+    "nameInvalid": "Chỉ sử dụng chữ cái, số, - và _.",
+    "content": "Nội dung tệp",
+    "fileHint": "Mỗi tác vụ phải chỉ định người dùng thực thi: phút giờ ngày tháng ngày_trong_tuần người_dùng lệnh. Mỗi dòng sẽ được kiểm tra trước khi lưu.",
+    "noJobs": "Không có tác vụ nào trong tệp này.",
+    "readHint": "Một số tệp có thể bị ẩn nếu không có quyền root. Các thay đổi ở đây cần đăng nhập root, sudo không mật khẩu hoặc Mật khẩu Sudo đã lưu.",
+    "timers_other": "Máy chủ này cũng có {{count}} bộ hẹn giờ systemd. Plugin Dịch vụ quản lý chúng.",
+    "deleteTitle": "Xóa /etc/cron.d/{{name}}?",
+    "deleteDesc": "Một bản sao sẽ được giữ lại trong /var/lib/termix-cron/backup.",
+    "deleted": "Đã xóa {{name}}.",
+    "saved": "Đã lưu {{name}}.",
+    "loadFailed": "Không thể đọc các tệp cron hệ thống.",
+    "saveFailed": "Không thể lưu tệp.",
+    "period": {
+      "hourly": "Chạy mỗi giờ",
+      "daily": "Chạy mỗi ngày",
+      "weekly": "Chạy mỗi tuần",
+      "monthly": "Chạy mỗi tháng"
+    }
+  },
+  "logs": {
+    "lines": "Dòng",
+    "lineCount_other": "{{count}} dòng",
+    "source": "Từ {{source}}",
+    "noSource": "Không tìm thấy nhật ký cron nào trên máy chủ này.",
+    "empty": "Không có dòng nhật ký.",
+    "failed": "Không thể đọc nhật ký cron."
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "Bật Cron cho máy chủ này trong cài đặt để xem các tác vụ của nó ở đây."
+  },
+  "operations": {
+    "list": {
+      "title": "Liệt kê tác vụ cron"
+    },
+    "enable": {
+      "title": "Bật tác vụ cron"
+    },
+    "disable": {
+      "title": "Tắt tác vụ cron"
+    },
+    "run": {
+      "title": "Chạy tác vụ cron ngay"
+    },
+    "delete": {
+      "title": "Xóa tác vụ cron"
+    },
+    "jobs": {
+      "title": "Tác vụ cron",
+      "schedule": "Lịch trình",
+      "command": "Lệnh"
+    },
+    "status": {
+      "title": "Trạng thái Cron"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "Đang kiểm tra máy chủ...",
+    "summary_other": "{{count}} tác vụ trên {{hosts}} máy chủ",
+    "refresh": "Kiểm tra lại",
+    "empty": "Bật Cron cho một máy chủ để xem nó ở đây.",
+    "stopped": "Không chạy",
+    "missing": "Chưa cài đặt",
+    "jobs_other": "{{count}} tác vụ",
+    "off": "{{count}} tắt"
+  }
+}

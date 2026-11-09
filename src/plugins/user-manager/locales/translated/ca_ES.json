@@ -1,0 +1,209 @@
+{
+  "plugin": {
+    "name": "Usuaris",
+    "description": "Gestiona els comptes d'usuari, grups, contrasenyes i claus SSH als teus amfitrions."
+  },
+  "common": {
+    "save": "Desa",
+    "cancel": "Cancel·la",
+    "back": "Enrere",
+    "delete": "Suprimeix",
+    "loading": "S'està carregant..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Utilitza Usuaris",
+      "description": "Visualitza els comptes als amfitrions a què pots accedir i modifica'ls als amfitrions que pots editar."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Usuaris",
+        "description": "Gestiona els comptes d'usuari i els grups d'aquest amfitrió des de la pestanya Usuaris."
+      },
+      "useSudo": {
+        "label": "Utilitza sudo",
+        "description": "Utilitza sudo per llegir i modificar els comptes. Desactiva-ho si l'usuari d'inici de sessió és root."
+      },
+      "readOnly": {
+        "label": "Només lectura",
+        "description": "Mostra els comptes, però no els modifiquis mai en aquest amfitrió."
+      }
+    }
+  },
+  "tab": {
+    "title": "Usuaris",
+    "noHost": "Obre Usuaris des d'un amfitrió.",
+    "error": "No s'han pogut carregar els comptes d'aquest amfitrió.",
+    "disabled": "La funció Usuaris està desactivada per a aquest amfitrió. Activa-la a la configuració de l'amfitrió.",
+    "sudo": "Els canvis i els estats de les contrasenyes requereixen un inici de sessió com a root, un sudo sense contrasenya o una contrasenya de sudo desada en aquest amfitrió.",
+    "noTools": "useradd no està instal·lat en aquest host. A Alpine, instal·leu el paquet shadow.",
+    "refresh": "Actualitza",
+    "readOnly": "Només lectura",
+    "counts_one": "{{count}} usuari",
+    "counts_many": "{{count}} usuaris",
+    "counts_other": "{{count}} usuaris",
+    "viewUsers": "Usuaris",
+    "viewGroups": "Grups",
+    "viewSessions": "Sessions"
+  },
+  "users": {
+    "add": "Afegeix un usuari",
+    "search": "Cerca usuaris",
+    "people": "Persones",
+    "systemFilter": "Sistema",
+    "all": "Tots",
+    "empty": "Cap usuari coincideix.",
+    "you": "Tu",
+    "sudo": "Sudo",
+    "locked": "Bloquejat",
+    "emptyPassword": "Sense contrasenya",
+    "system": "Sistema",
+    "loadFailed": "No s'han pogut llegir els comptes."
+  },
+  "password": {
+    "set": "Establir",
+    "locked": "Bloquejat",
+    "none": "No configurat, no es permet l'inici de sessió amb contrasenya",
+    "empty": "Buit, qualsevol pot iniciar sessió",
+    "unknown": "Cal ser root per saber-ho"
+  },
+  "detail": {
+    "info": "Compte",
+    "account": "Detalls",
+    "fullName": "Nom complet",
+    "uid": "ID d'usuari i grup",
+    "mainGroup": "Grup principal",
+    "home": "Carpeta d'inici",
+    "shell": "Shell",
+    "groups": "Grups",
+    "groupsPlaceholder": "Escriu un grup i prem Retorn",
+    "unknownGroups": "Aquests grups no existeixen: {{groups}}",
+    "none": "Cap",
+    "password": "Contrasenya",
+    "passwordChanged": "Contrasenya canviada",
+    "lastLogin": "Últim inici de sessió",
+    "never": "Mai",
+    "unknown": "Desconegut",
+    "saved": "Desat.",
+    "failed": "El canvi ha fallat.",
+    "loadFailed": "No s'han pogut llegir les claus ni l'últim inici de sessió d'aquest usuari.",
+    "passwordSection": "Contrasenya",
+    "newPassword": "Contrasenya nova",
+    "newPasswordHint": "S'envia a l'amfitrió a través d'SSH i s'estableix amb chpasswd. Mai no s'emmagatzema a Termix.",
+    "setPassword": "Establir contrasenya",
+    "passwordSet": "Contrasenya establerta.",
+    "expirePassword": "Demana'n una de nova al proper inici de sessió",
+    "expired": "Tria una contrasenya nova al proper inici de sessió.",
+    "access": "Accés",
+    "sudo": "Sudo",
+    "sudoHint": "Executa ordres com a root a través del grup {{group}}.",
+    "sudoProtected": "No pots treure els permisos de sudo a root ni a l'usuari amb el qual s'ha iniciat sessió Termix.",
+    "sudoTitle": "Donar sudo a {{name}}?",
+    "sudoDesc": "L'afegeix al grup {{group}}, de manera que podrà executar qualsevol ordre com a root.",
+    "sudoGrant": "Donar sudo",
+    "sudoOn": "Sudo concedit.",
+    "sudoOff": "Sudo retirat.",
+    "lock": "Bloquejar el compte",
+    "unlock": "Desbloquejar el compte",
+    "lockTitle": "Bloquejar {{name}}?",
+    "lockDesc": "No podrà iniciar sessió amb contrasenya ni amb clau SSH fins que desbloquegis el compte.",
+    "lockHint": "Bloqueja els inicis de sessió amb contrasenya i clau SSH.",
+    "protected": "Root i l'usuari amb el qual s'ha iniciat sessió Termix no es poden bloquejar ni eliminar.",
+    "locked": "Compte bloquejat.",
+    "unlocked": "Compte desbloquejat.",
+    "danger": "Eliminar",
+    "removeHome": "Eliminar també la carpeta personal",
+    "removeHomeHint": "Elimina {{home}} i tot el que conté.",
+    "delete": "Eliminar usuari",
+    "deleteTitle": "Eliminar {{name}}?",
+    "deleteDesc": "El compte s'elimina. La seva carpeta personal es manté a l'amfitrió.",
+    "deleteDescHome": "El compte i {{home}} s'eliminen. Això no es pot desfer.",
+    "deleted": "{{name}} eliminat."
+  },
+  "keys": {
+    "title": "Claus SSH",
+    "empty": "No hi ha claus SSH.",
+    "denied": "Les claus no es poden llegir sense ser root.",
+    "options": "Opcions",
+    "remove": "Eliminar clau",
+    "removeTitle": "Eliminar aquesta clau?",
+    "removed": "Clau eliminada.",
+    "add": "Afegir una clau",
+    "addHint": "Enganxa una clau pública, com el contingut d'id_ed25519.pub.",
+    "addButton": "Afegir clau",
+    "added": "Clau afegida."
+  },
+  "create": {
+    "title": "Usuari nou",
+    "name": "Nom d'usuari",
+    "nameHint": "Lletres minúscules, números, - i _.",
+    "nameInvalid": "Comença amb una lletra i utilitza només a-z, 0-9, - i _.",
+    "home": "Carpeta personal",
+    "homeHint": "Deixa-ho buit per a /home/{{name}}.",
+    "createHome": "Crear la carpeta personal",
+    "password": "Contrasenya",
+    "passwordHint": "Opcional. Sense ella, l'usuari només podrà iniciar sessió amb una clau SSH.",
+    "again": "Contrasenya de nou",
+    "mismatch": "Les contrasenyes no coincideixen.",
+    "save": "Crear usuari",
+    "done": "{{name}} creat.",
+    "failed": "No s'ha pogut crear l'usuari."
+  },
+  "groups": {
+    "add": "Afegir grup",
+    "name": "Nom del grup",
+    "namePlaceholder": "Nom del nou grup",
+    "create": "Crear",
+    "created": "S'ha creat {{name}}.",
+    "search": "Cercar grups",
+    "empty": "Cap grup no coincideix.",
+    "noMembers": "Cap membre.",
+    "failed": "El canvi ha fallat.",
+    "addMember": "Afegir membre",
+    "pickUser": "Tria un usuari",
+    "removeMember": "Eliminar del grup",
+    "memberAdded": "S'ha afegit {{name}} a {{group}}.",
+    "memberRemoved": "S'ha eliminat {{name}} de {{group}}.",
+    "mainGroup": "Grup principal",
+    "mainGroupHint": "Aquest és el seu grup principal, per la qual cosa sempre en forma part.",
+    "deleteTitle": "Vols eliminar {{name}}?",
+    "deleteDesc": "El grup s'eliminarà. Els fitxers que en tenia la propietat conservaran el seu identificador anterior.",
+    "deleted": "S'ha eliminat {{name}}."
+  },
+  "sessions": {
+    "now": "S'ha iniciat la sessió ara",
+    "none": "Cap usuari no té la sessió iniciada.",
+    "recent": "Inicis de sessió recents",
+    "noRecent": "No s'ha trobat cap historial d'inicis de sessió.",
+    "loadFailed": "No s'han pogut llegir les sessions."
+  },
+  "manager": {
+    "title": "Usuaris",
+    "disabled": "Activa la funció Usuaris per a aquest amfitrió a la configuració per veure'n els comptes aquí."
+  },
+  "operations": {
+    "list": {
+      "title": "Llistar usuaris"
+    },
+    "emptyPasswords": {
+      "title": "Comptes sense contrasenya"
+    },
+    "lock": {
+      "title": "Bloquejar usuari"
+    },
+    "unlock": {
+      "title": "Desbloquejar usuari"
+    },
+    "delete": {
+      "title": "Eliminar usuari"
+    },
+    "users": {
+      "title": "Usuaris",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "Grups"
+    }
+  }
+}

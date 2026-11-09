@@ -1,0 +1,218 @@
+{
+  "tab": {
+    "title": "儲存空間",
+    "noHost": "從主機開啟儲存空間。",
+    "disabled": "此主機已關閉儲存空間健康狀態。請前往主機設定中開啟。",
+    "error": "無法載入儲存空間健康狀態",
+    "viewDrives": "磁碟機",
+    "viewPools": "儲存集區與陣列",
+    "viewEvents": "事件",
+    "viewSettings": "設定",
+    "readAgo": "於 {{time}} 前讀取",
+    "stale": "無法讀取主機，顯示上次讀取的資料。{{error}}"
+  },
+  "common": {
+    "loading": "載入中...",
+    "failed": "操作失敗",
+    "save": "儲存",
+    "refresh": "立即讀取",
+    "back": "返回"
+  },
+  "card": {
+    "title": "儲存空間健康狀態",
+    "empty": "目前尚未監控任何主機。請前往主機設定中開啟儲存空間健康狀態。",
+    "drives_other": "{{count}} 個磁碟機",
+    "problems_other": "{{count}} 個待處理問題"
+  },
+  "manager": {
+    "title": "儲存空間健康狀態",
+    "disabled": "此主機已關閉儲存空間健康狀態。"
+  },
+  "health": {
+    "ok": "正常",
+    "warn": "需要關注",
+    "fail": "故障",
+    "unknown": "未知"
+  },
+  "kind": {
+    "hdd": "硬碟",
+    "ssd": "SSD",
+    "nvme": "NVMe",
+    "unknown": "磁碟機"
+  },
+  "drives": {
+    "empty": "此主機未找到任何磁碟機",
+    "noRoot": "檢查程序未以 root 權限執行，因此部分磁碟機可能無法顯示資料。請允許此登入使用免密碼 sudo。",
+    "noTool": "此主機未安裝 smartctl。請安裝 smartmontools 以讀取磁碟機健康狀態。",
+    "noData": "尚未讀取任何資料",
+    "wear": "磨損 {{value}}%",
+    "testing": "測試中"
+  },
+  "detail": {
+    "stop": "停止測試",
+    "short": "快速測試",
+    "long": "完整測試",
+    "health": "健康狀態",
+    "temp": "溫度",
+    "wear": "磨損",
+    "hours": "開機時間",
+    "model": "型號",
+    "serial": "序號",
+    "kind": "類型",
+    "size": "容量",
+    "reallocated": "重新分配扇區",
+    "pending": "待處理扇區",
+    "uncorrectable": "無法修正扇區",
+    "mediaErrors": "媒體錯誤",
+    "selfTest": "上次自我測試",
+    "attributes": "SMART 屬性",
+    "attrMeta": "數值 {{value}} | 原始值 {{raw}}"
+  },
+  "history": {
+    "24h": "24 小時",
+    "7d": "7 天",
+    "30d": "30 天",
+    "temp": "溫度",
+    "wear": "磨損",
+    "bad": "壞軌扇區",
+    "empty": "歷史資料會隨著主機讀取而累積。請稍後再查看。"
+  },
+  "pools": {
+    "empty": "未找到 ZFS 儲存集區、RAID 陣列、btrfs 檔案系統或 LVM 精簡集區",
+    "startTitle": "要在 {{name}} 上開始嗎？",
+    "startText": "此操作會讀取每個區塊，可能會使磁碟效能降低數小時。",
+    "start": "開始",
+    "stop": "停止",
+    "scrub": "檢查",
+    "thinMeta": "{{data}}% 資料 | {{meta}}% 中繼資料 | 群組中剩餘 {{free}}"
+  },
+  "events": {
+    "error": "無法載入事件",
+    "empty": "尚無事件",
+    "type": {
+      "smart-failing": "故障",
+      "smart-attention": "SMART 警告",
+      "nvme-critical": "嚴重",
+      "wear-high": "磨損",
+      "wear-critical": "即將磨損耗盡",
+      "temp-high": "過熱",
+      "temp-critical": "溫度過高",
+      "pool-degraded": "儲存集區降級",
+      "pool-errors": "儲存集區錯誤",
+      "raid-degraded": "陣列降級",
+      "raid-rebuilding": "重建中",
+      "btrfs-errors": "btrfs 錯誤",
+      "thin-full": "精簡集區填滿中",
+      "thin-critical": "精簡集區已滿",
+      "unreachable": "無法連線",
+      "test": "自我測試",
+      "scrub": "檢查",
+      "command": "指令"
+    }
+  },
+  "settings": {
+    "saved": "已儲存",
+    "alerts": "傳送警示",
+    "alertsHint": "當問題發生或故障解除時，通知設定此功能的使用者。",
+    "interval": "讀取間隔（分鐘）",
+    "intervalHint": "SMART 讀取速度較慢，建議從 15 分鐘開始。",
+    "tempWarn": "高於此溫度時警告（°C）",
+    "tempCrit": "高於此溫度時嚴重警告（°C）",
+    "tempHint": "0 表示使用該磁碟類型的預設值。",
+    "wear": "磨損至此百分比時警告（%）",
+    "wearHint": "95% 時為嚴重狀態。",
+    "thin": "精簡集區填滿至此百分比時警告（%）",
+    "thinHint": "95% 時為嚴重狀態。",
+    "host": {
+      "enable": {
+        "label": "儲存健康狀態",
+        "description": "監控此主機上的磁碟、儲存集區與陣列。"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "使用免密碼 sudo 執行檢查。SMART 需要 root 權限。"
+      },
+      "readOnly": {
+        "label": "唯讀",
+        "description": "阻止 Termix 執行自我測試與檢查。"
+      },
+      "showPanel": {
+        "label": "顯示側邊面板",
+        "description": "在此主機的主機終端機旁提供儲存健康狀態面板。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "開啟終端機時同時開啟儲存健康狀態面板",
+        "description": "在支援的主機上自動開啟面板。"
+      },
+      "companionSide": {
+        "label": "面板位置",
+        "description": "儲存健康狀態面板相對於終端機的開啟位置。",
+        "right": "右側",
+        "left": "左側",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "面板大小",
+        "description": "面板的寬度或高度（像素）。"
+      },
+      "companionEdgeButton": {
+        "label": "顯示邊緣按鈕",
+        "description": "在終端機邊緣顯示一個小按鈕，用於開啟面板。"
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "使用儲存健康狀態",
+      "description": "查看可存取主機上的磁碟與陣列健康狀態。"
+    },
+    "runTests": {
+      "title": "執行測試與資料校驗",
+      "description": "啟動 SMART 自我測試與資料校驗。此操作也需要對主機擁有編輯權限。"
+    }
+  },
+  "operations": {
+    "devices": {
+      "title": "磁碟機",
+      "health": "健康狀態",
+      "kind": "類型",
+      "temp": "溫度",
+      "wear": "磨損程度"
+    },
+    "pools": {
+      "title": "儲存池與陣列",
+      "state": "狀態"
+    },
+    "status": {
+      "title": "儲存健康狀態"
+    },
+    "temperature": {
+      "title": "溫度最高的磁碟機"
+    },
+    "selftest": {
+      "title": "SMART 自我測試",
+      "device": "磁碟機",
+      "action": "動作",
+      "short": "快速測試",
+      "long": "完整測試",
+      "abort": "停止正在執行的測試"
+    },
+    "scrub": {
+      "title": "資料校驗",
+      "target": "儲存池、檔案系統或陣列",
+      "targetHint": "儲存池清單中的識別碼，例如 zfs:tank、btrfs:/mnt/data 或 md:md0",
+      "stop": "改為停止而非啟動"
+    },
+    "events": {
+      "degraded": "偵測到儲存問題",
+      "recovered": "儲存問題已清除",
+      "smartFailing": "磁碟機未通過 SMART 檢查",
+      "raidDegraded": "儲存池或陣列效能降級"
+    }
+  },
+  "companion": {
+    "toggle": "儲存健康狀態面板"
+  }
+}

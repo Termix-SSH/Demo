@@ -9,7 +9,8 @@
   "settings": {
     "group": {
       "sessions": "세션",
-      "secondFactor": "2차 인증"
+      "secondFactor": "2차 인증",
+      "connect": "호스트 연결"
     },
     "admin": {
       "idleTimeoutMinutes": {
@@ -34,8 +35,34 @@
       "applyToExternal": {
         "label": "단일 로그인에도 적용",
         "description": "SSO 및 LDAP 로그인 후에도 두 번째 인증 요소를 요청합니다. IdP에서 이미 두 번째 인증 요소를 요청하는 경우 이 설정을 끄세요."
+      },
+      "connectFactor": {
+        "label": "연결 전 두 번째 인증 요구하고",
+        "description": "사용자가 호스트에서 터미널, 원격 데스크톱 또는 파일 관리자를 열 때 두 번째 인증을 입력합니다. 메트릭, 터널 및 기타 백그라운드 작업에는 인증을 요청하지 않습니다.",
+        "off": "사용 안 함",
+        "marked": "대상 호스트만",
+        "all": "모든 호스트"
+      },
+      "connectFactorMinutes": {
+        "label": "다시 요청하기 전까지의 시간(분)",
+        "description": "입력 후 이 시간 동안 모든 호스트에 연결할 수 있습니다. 로그아웃하면 이 시간이 조기 종료됩니다."
+      }
+    },
+    "host": {
+      "requireConnectFactor": {
+        "label": "연결 전 두 번째 인증 요구하고",
+        "description": "로그인 보안이 '대상 호스트만'으로 설정되어 있을 때 사용됩니다."
       }
     }
+  },
+  "verify": {
+    "title": "두 번째 인증 확인",
+    "intro": "이 호스트에 연결하려면 두 번째 인증을 입력하세요.",
+    "done": "확인 완료",
+    "retry": "호스트로 돌아가 다시 연결하세요.",
+    "failed": "작동하지 않았습니다. 다시 시도하세요.",
+    "noFactor": "두 번째 인증이 설정되지 않음",
+    "noFactorHint": "설정 > 보안에서 설정한 후 다시 연결하세요."
   },
   "status": {
     "factors": "사용 가능한 두 번째 인증 요소: {{factors}}",

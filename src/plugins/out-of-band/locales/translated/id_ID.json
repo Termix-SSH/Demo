@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Daya, sensor, log peristiwa, dan konsol untuk BMC server melalui Redfish, IPMI, dan Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Memuat"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "Lihat BMC",
+      "description": "Buka tab Out-of-band dan lihat daya, kesehatan, sensor, dan log."
+    },
+    "power": {
+      "title": "Kontrol daya dan boot",
+      "description": "Nyalakan dan matikan mesin, lakukan power cycle, dan pilih perangkat boot berikutnya."
+    },
+    "console": {
+      "title": "Gunakan konsol serial",
+      "description": "Buka konsol serial over LAN dari sebuah mesin."
+    },
+    "media": {
+      "title": "Gunakan media virtual",
+      "description": "Pasang dan lepaskan gambar ISO pada sebuah mesin."
+    },
+    "manage": {
+      "title": "Kelola BMC",
+      "description": "Tambahkan, ubah, dan hapus BMC, serta bersihkan log peristiwanya."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Jalankan ipmitool pada server Termix",
+        "description": "Saat dimatikan, BMC IPMI harus menggunakan host relay. Redfish dan AMT tidak terpengaruh."
+      }
+    }
+  },
+  "description": "Tambahkan kontroler manajemen (BMC) dari server Anda untuk menyalakan dan mematikannya, memantau sensor, dan membaca log peristiwanya. Kredensial login disimpan dalam bentuk terenkripsi dan tidak akan pernah ditampilkan lagi.",
+  "summary": "{{count}} BMC, {{attention}} memerlukan perhatian",
+  "empty": "Belum ada BMC.",
+  "add": "Tambahkan BMC",
+  "edit": "Edit",
+  "delete": "Hapus",
+  "back": "Kembali",
+  "saved": "Tersimpan",
+  "deleteConfirm": "Hapus {{name}}?",
+  "status": {
+    "unknown": "Belum dibaca",
+    "up": "Dapat dijangkau",
+    "down": "Tidak dapat dijangkau"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI melalui LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Nama pengguna",
+    "password": "Kata sandi"
+  },
+  "power": {
+    "on": "Hidup",
+    "off": "Mati",
+    "unknown": "Tidak diketahui",
+    "sent": "Meminta {{name}} untuk mengubah daya",
+    "action": {
+      "on": "Nyalakan daya",
+      "off": "Matikan daya",
+      "graceful-shutdown": "Matikan sistem",
+      "cycle": "Siklus daya",
+      "reset": "Atur ulang"
+    },
+    "confirm": {
+      "on": "Nyalakan {{name}}?",
+      "off": "Putuskan daya {{name}}? Sistem tidak akan dimatikan dengan aman.",
+      "graceful-shutdown": "Meminta {{name}} untuk mematikan sistem?",
+      "cycle": "Siklus daya {{name}}? Sistem tidak akan dimatikan dengan aman.",
+      "reset": "Atur ulang {{name}}? Sistem akan dimulai ulang segera."
+    }
+  },
+  "health": {
+    "ok": "Sehat",
+    "warning": "Peringatan",
+    "critical": "Kritis",
+    "unknown": "Tidak diketahui"
+  },
+  "kind": {
+    "temperature": "Suhu",
+    "fan": "Kipas",
+    "voltage": "Tegangan",
+    "power": "Daya",
+    "psu": "Catu daya",
+    "other": "Lainnya"
+  },
+  "form": {
+    "addTitle": "Tambahkan BMC",
+    "editTitle": "Edit BMC",
+    "device": "BMC",
+    "access": "Akses",
+    "type": "Tipe",
+    "name": "Nama",
+    "address": "Alamat",
+    "port": "Port",
+    "host": "Host Termix",
+    "hostHint": "Hubungkan BMC ke host yang dimilikinya. BMC akan mengikuti pengaturan berbagi host tersebut dan muncul di menu host.",
+    "noHost": "Tidak ada",
+    "poll": "Baca setiap (detik)",
+    "pollHint": "Minimal 30 detik, atau 60 saat menggunakan host relay.",
+    "scheme": "Koneksi",
+    "relay": "Host relay",
+    "relayHint": "Jalankan ipmitool pada host ini, bukan pada server Termix. Diperlukan untuk konsol serial.",
+    "noRelay": "Server Termix",
+    "cipher": "Suite cipher",
+    "cipherHint": "Ubah ini hanya jika BMC menolak login. 3 adalah yang umum, 17 untuk BMC yang lebih baru.",
+    "ca": "Sertifikat CA",
+    "caHint": "Tempelkan PEM dari otoritas sertifikat BMC. Kosongkan jika menggunakan sertifikat yang dipercaya.",
+    "caSet": "CA telah disimpan. Tempelkan yang baru untuk menggantinya.",
+    "keepLogin": "Biarkan kosong untuk mempertahankan login yang tersimpan",
+    "test": "Uji koneksi",
+    "testOk": "BMC merespons. Daya adalah {{power}}.",
+    "testNeedsLogin": "Masukkan login lagi untuk menguji.",
+    "save": "Simpan",
+    "add": "Tambah"
+  },
+  "view": {
+    "overview": "Ringkasan",
+    "sensors": "Sensor",
+    "log": "Log peristiwa",
+    "boot": "Boot",
+    "media": "Media virtual",
+    "console": "Konsol",
+    "refresh": "Baca sekarang",
+    "type": "Tipe",
+    "address": "Alamat",
+    "power": "Daya",
+    "health": "Kesehatan",
+    "manufacturer": "Pembuat",
+    "model": "Model",
+    "serial": "Nomor seri",
+    "bios": "BIOS",
+    "bmc": "Firmware BMC",
+    "status": "BMC",
+    "viaRelay": "Dijangkau melalui host relay.",
+    "noSensors": "BMC ini tidak melaporkan sensor.",
+    "sensor": "Sensor",
+    "reading": "Pembacaan",
+    "state": "Status"
+  },
+  "log": {
+    "time": "Waktu",
+    "severity": "Tingkat",
+    "message": "Peristiwa",
+    "empty": "Log peristiwa kosong.",
+    "clear": "Bersihkan log",
+    "clearConfirm": "Bersihkan log peristiwa {{name}}? Tindakan ini tidak dapat dibatalkan.",
+    "cleared": "Log telah dibersihkan",
+    "level": {
+      "info": "Info",
+      "warning": "Peringatan",
+      "critical": "Kritis"
+    }
+  },
+  "boot": {
+    "hint": "Mesin akan boot dari perangkat ini sekali, lalu kembali ke urutan normalnya. Terapkan sebelum memulai ulang.",
+    "device": "Boot dari",
+    "mode": "Mode",
+    "uefi": "UEFI",
+    "legacy": "Legacy BIOS",
+    "apply": "Terapkan untuk boot berikutnya",
+    "done": "{{name}} akan boot dari perangkat yang dipilih pada kali berikutnya",
+    "pxe": "Jaringan (PXE)",
+    "disk": "Hard disk",
+    "cd": "CD atau media virtual",
+    "usb": "USB",
+    "bios": "Pengaturan BIOS",
+    "none": "Urutan normal"
+  },
+  "media": {
+    "url": "Alamat gambar",
+    "empty": "BMC ini tidak memiliki slot CD virtual.",
+    "mounted": "Dipasang",
+    "free": "Kosong",
+    "mount": "Pasang",
+    "eject": "Keluarkan",
+    "mountedDone": "Gambar dipasang",
+    "ejected": "Gambar dikeluarkan"
+  },
+  "console": {
+    "hint": "Ketik ~. untuk keluar dari konsol.",
+    "connecting": "Menghubungkan",
+    "ended": "Konsol ditutup.",
+    "failed": "Gagal membuka konsol.",
+    "needsRelay": "Konsol serial memerlukan host relay dengan ipmitool. Pilih satu di pengaturan BMC."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Boot dari",
+    "uefi": "Mode UEFI",
+    "list": {
+      "title": "Daftar BMC"
+    },
+    "poll": {
+      "title": "Baca BMC sekarang"
+    },
+    "powerState": {
+      "title": "Dapatkan status daya"
+    },
+    "power-on": {
+      "title": "Nyalakan"
+    },
+    "graceful-shutdown": {
+      "title": "Matikan"
+    },
+    "power-off": {
+      "title": "Matikan daya"
+    },
+    "power-cycle": {
+      "title": "Siklus daya"
+    },
+    "reset": {
+      "title": "Reset"
+    },
+    "setBootOnce": {
+      "title": "Boot sekali dari perangkat"
+    },
+    "clearLog": {
+      "title": "Bersihkan log peristiwa"
+    },
+    "health": {
+      "title": "Kesehatan BMC"
+    }
+  },
+  "widget": {
+    "name": "Out-of-band",
+    "description": "Daya dan kesehatan BMC server Anda.",
+    "summary": "{{up}} dari {{total}} aktif"
+  }
+}

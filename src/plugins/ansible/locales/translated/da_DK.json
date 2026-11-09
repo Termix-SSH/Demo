@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Kør Ansible-playbooks og ad-hoc-kommandoer fra en kontrolhost, med et inventory baseret på dine Termix-hosts."
+  },
+  "common": {
+    "save": "Gem",
+    "cancel": "Annuller",
+    "back": "Tilbage",
+    "delete": "Slet"
+  },
+  "permissions": {
+    "use": {
+      "title": "Brug Ansible",
+      "description": "Se playbooks og kørsler på kontrolhosts, du kan nå. Rediger filer og kør Ansible på hosts, du kan redigere."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Brug denne host som Ansible-kontrolhost. Ansible skal være installeret på den."
+      },
+      "projectDir": {
+        "label": "Projektmappe",
+        "description": "Mappen på denne host med dine playbooks, roller og ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Vault-adgangskordsfil",
+        "description": "En fil på denne host med Ansible Vault-adgangskoden. Lad være tom, hvis du ikke bruger Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Skrivebeskyttet",
+        "description": "Vis playbooks og kørsler, men rediger aldrig filer eller start kørsler på denne host."
+      },
+      "alertRuns": {
+        "label": "Advar, når en kørsel mislykkes",
+        "description": "Send en advarsel, når en kørsel på denne host afsluttes som mislykket eller tabt. Tjekkes, når kørselstilstanden læses."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Åbn Ansible fra en host.",
+    "error": "Kunne ikke indlæse Ansible fra denne host.",
+    "disabled": "Ansible er slået fra for denne host. Slå det til i host-indstillingerne.",
+    "refresh": "Opdater",
+    "readOnly": "Skrivebeskyttet",
+    "notInstalled": "Ansible er ikke installeret",
+    "notInstalledTitle": "Ansible er ikke installeret på denne host",
+    "notInstalledHint": "Installer ansible-core på denne host, f.eks. med pipx eller din pakkehåndterer, og opdater derefter.",
+    "noSshpass": "sshpass er ikke installeret på denne host. Hosts, der logger ind med adgangskode, vil mislykkes.",
+    "viewPlaybooks": "Playbooks",
+    "viewRuns": "Kørsler",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Facts"
+  },
+  "files": {
+    "add": "Ny fil",
+    "search": "Søg i filer",
+    "empty": "Der er endnu ingen filer i projektmappe.",
+    "noMatch": "Ingen filer matcher.",
+    "noProject": "Mappen {{dir}} findes ikke på denne host. Opret den, eller angiv en anden projektmappe i host-indstillingerne.",
+    "listFailed": "Kunne ikke liste projektfilerne.",
+    "loadFailed": "Kunne ikke læse den fil.",
+    "saved": "Fil gemt",
+    "saveFailed": "Kunne ikke gemme den fil.",
+    "playbook": "Playbook",
+    "run": "Kør",
+    "newTitle": "Ny fil",
+    "name": "Filnavn",
+    "nameHint": "En sti inde i projektmappe, f.eks. site.yml eller roles/web/tasks/main.yml.",
+    "hint": "Et playbook tjekkes for syntaks, før det gemmes. Den gamle fil beholdes, hvis tjekket mislykkes.",
+    "text": "Filtekst",
+    "deleteTitle": "Slet denne fil?"
+  },
+  "targets": {
+    "search": "Søg i hosts",
+    "addShown": "Tilføj viste",
+    "clear": "Ryd",
+    "empty": "Ingen hosts fundet.",
+    "count": "{{count}} valgt",
+    "failed": "Kunne ikke indlæse dine hosts."
+  },
+  "run": {
+    "title": "Kør {{playbook}}",
+    "start": "Kør",
+    "startCheck": "Kør i check-tilstand",
+    "startFailed": "Kunne ikke starte kørslen.",
+    "source": "Værter",
+    "sourceProject": "Projekt-inventar",
+    "sourceTermix": "Termix-værter",
+    "sourceProjectHint": "Brug inventaret fra ansible.cfg eller en fil i projektet.",
+    "sourceTermixHint": "Vælg værter fra Termix. Mapper bliver til folder_-grupper, og tags bliver til tag_-grupper. Alle er i termix-gruppen.",
+    "inventory": "Inventarfil",
+    "inventoryHint": "En sti inde i projektmappen. Lad være tom for at bruge ansible.cfg.",
+    "check": "Tjek-tilstand",
+    "checkHint": "Vis, hvad der ville ændre sig, uden at ændre noget.",
+    "diff": "Vis forskelle",
+    "diffHint": "Vis de ændringer, der er foretaget i filer.",
+    "become": "Kør som root",
+    "becomeHint": "Brug sudo på værterne. En gemt Sudo-adgangskode bruges for Termix-værter.",
+    "limit": "Begrænsning",
+    "limitHint": "Kør kun på disse værter eller grupper.",
+    "verbosity": "Udskriftsdetaljer",
+    "verbosityOff": "Normal",
+    "tags": "Tags",
+    "skipTags": "Spring tags over",
+    "extraVars": "Ekstra variabler",
+    "extraVarsHint": "Én nøgle=værdi pr. linje."
+  },
+  "runs": {
+    "title": "Kørsel",
+    "empty": "Ingen kørsler endnu.",
+    "loadFailed": "Kunne ikke indlæse kørslerne.",
+    "stop": "Stop",
+    "stopFailed": "Kunne ikke stoppe kørslen.",
+    "deleteTitle": "Slet denne kørsel?",
+    "deleteFailed": "Kunne ikke slette kørslen.",
+    "checkMode": "Tjek",
+    "truncated": "Viser slutningen af en lang udskrift.",
+    "noOutput": "Ingen udskrift endnu.",
+    "state": {
+      "running": "Kører",
+      "ok": "Færdig",
+      "failed": "Mislykket",
+      "cancelled": "Stoppet",
+      "lost": "Tabt"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Facts"
+    },
+    "recap": {
+      "host": "Vært",
+      "ok": "OK",
+      "changed": "Ændret",
+      "unreachable": "Utilgængelig",
+      "failed": "Mislykket",
+      "skipped": "Sprunget over"
+    }
+  },
+  "adhoc": {
+    "hint": "Kør én modul på værter, som ansible all -m ping.",
+    "pattern": "Værtermønster",
+    "patternHint": "En vært, en gruppe eller alle.",
+    "module": "Modul",
+    "moduleHint": "For eksempel ping, command, shell, apt eller systemd.",
+    "args": "Argumenter",
+    "argsHint": "For command og shell er dette kommandoen. For andre moduler er det nøgle=værdi-par.",
+    "run": "Kør"
+  },
+  "facts": {
+    "hint": "Indsaml facts fra værter med setup-modulen. Kræver Termix-værter, så hver enkelt har en login.",
+    "gather": "Indsaml facts",
+    "gathering": "Indsamler...",
+    "failed": "Kunne ikke indsamle facts.",
+    "failedHost": "Mislykket",
+    "none": "Ingen facts blev returneret. Åbn kørslen for at se hvorfor.",
+    "col": {
+      "host": "Vært",
+      "os": "System",
+      "kernel": "Kerne",
+      "cpu": "CPUs",
+      "memory": "Hukommelse",
+      "address": "Adresse",
+      "uptime": "Oppetid"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "List playbooks"
+    },
+    "run": {
+      "title": "Kør playbook",
+      "playbook": "Playbook",
+      "limit": "Begrænsning",
+      "tags": "Tags",
+      "check": "Tjek-tilstand"
+    },
+    "runs": {
+      "title": "List kørsler",
+      "resource": "Kørsler",
+      "started": "Startet",
+      "check": "Tjek-tilstand"
+    },
+    "failed": {
+      "title": "Mislykkede kørsler"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Tjekker værter...",
+    "summary_one": "{{count}} mislykket kørsel på {{hosts}} værter",
+    "summary_other": "{{count}} mislykkede kørsler på {{hosts}} værter",
+    "refresh": "Tjek igen",
+    "empty": "Aktivér Ansible for en vært for at se dens kørsler her.",
+    "failed_one": "{{count}} mislykket",
+    "failed_other": "{{count}} mislykkede",
+    "running_one": "{{count}} kører",
+    "running_other": "{{count}} kører",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Ingen kørsler endnu"
+  }
+}

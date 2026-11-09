@@ -16,7 +16,9 @@
     "more": "Lainnya",
     "logout": "Keluar",
     "next": "Selanjutnya",
-    "previous": "Sebelumnya"
+    "previous": "Sebelumnya",
+    "showPassword": "Tampilkan kata sandi",
+    "hidePassword": "Sembunyikan kata sandi"
   },
   "desktopUpdates": {
     "title": "Aplikasi desktop",
@@ -67,7 +69,10 @@
     "resetRailOrder": "Atur ulang urutan",
     "hideFromRail": "Sembunyikan dari sidebar",
     "openSettings": "Buka pengaturan",
-    "mobileNavigation": "Navigasi"
+    "mobileNavigation": "Navigasi",
+    "allTabs": "Semua tab",
+    "hideTabBar": "Sembunyikan bilah tab",
+    "showTabBar": "Tampilkan bilah tab"
   },
   "commandPalette": {
     "searchPlaceholder": "Cari host, perintah, atau pengaturan...",
@@ -110,7 +115,8 @@
     "noSearchResults": "Tidak ada koneksi yang cocok dengan pencarian Anda",
     "rename": "Ubah nama sesi",
     "forgetConfirm": "Akhiri sesi latar belakang untuk {{name}}?",
-    "forget": "Akhiri sesi"
+    "forget": "Akhiri sesi",
+    "expiringNow": "Berakhir sekarang"
   },
   "placeholders": {
     "apiKeyName": "mis., CI Pipeline",
@@ -158,16 +164,14 @@
     "commandPalette": "Palet Perintah",
     "done": "Selesai",
     "clear": "Hapus",
-    "dragToResizeColumns": "Seret untuk mengubah ukuran kolom",
     "hostsAvailable": "Host Tersedia",
-    "removeSection": "Hapus bagian",
-    "addSection": "Tambahkan bagian",
-    "allSectionsShown": "Semua sudah ada di dasbor.",
+    "addSection": "Tambahkan ubin",
     "fromPlugins": "Dari plugin",
-    "dropHere": "Letakkan bagian di sini",
-    "dragToReorder": "Seret bagian untuk mengubah urutannya",
+    "dropHere": "Belum ada ubin. Tambahkan beberapa dari daftar.",
+    "dragToReorder": "Seret ubin untuk memindahkannya dan tepinya untuk mengubah ukuran",
     "clearActivityConfirm": "Hapus aktivitas terbaru Anda?",
-    "resetConfirm": "Atur ulang dasbor ke tata letak default?"
+    "resetConfirm": "Atur ulang dasbor ke tata letak default?",
+    "clearFailed": "Tidak dapat menghapus aktivitas terbaru"
   },
   "admin": {
     "sectionGeneral": "Umum",
@@ -230,6 +234,9 @@
     "allowPasswordLoginDesc": "Masuk dengan nama pengguna/kata sandi",
     "externalAutoProvision": "Buat akun eksternal secara otomatis",
     "externalAutoProvisionDesc": "Buat akun saat seseorang masuk pertama kali melalui login eksternal seperti SSO atau LDAP. Jika dimatikan, hanya orang yang sudah memiliki akun yang dapat masuk dengan cara tersebut",
+    "credentialStorage": "Izinkan penyimpanan kata sandi dan kunci",
+    "credentialStorageOff": "Penyimpanan kata sandi dan kunci dimatikan di server ini. Kosongkan dan Termix akan meminta saat Anda terhubung.",
+    "credentialStorageDesc": "Nonaktif, tidak ada yang dapat menyimpan kata sandi atau kunci pribadi di host atau kredensial, dan Termix akan memintanya saat terhubung. Login yang sudah disimpan tetap ada hingga dihapus.",
     "secondFactorAfterExternalLogin": "Minta faktor kedua setelah login eksternal (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Jika dimatikan, faktor kedua yang terdaftar hanya diminta setelah login kata sandi dan login lokal lainnya, seperti sebelumnya. Jika dihidupkan, faktor kedua diminta setelah setiap metode login, termasuk SSO dan LDAP.",
     "allowPasswordReset": "Izinkan Pengaturan Ulang Kata Sandi",
@@ -275,6 +282,13 @@
     "apiKeyName": "Nama",
     "apiKeyUser": "Pengguna",
     "apiKeySelectUser": "Pilih pengguna...",
+    "apiKeyScope": "Akses",
+    "apiKeyScopeFull": "Semua yang dapat dilakukan pengguna",
+    "apiKeyScopeRead": "Tindakan baca saja",
+    "apiKeyScopeRun": "Jalankan tindakan",
+    "apiKeyScopeHint": "Kunci tindakan hanya menjangkau tindakan Termix dan server MCP, tidak ada yang lain.",
+    "apiKeyScopeActionsRead": "Tindakan, baca saja",
+    "apiKeyScopeActionsRun": "Tindakan",
     "apiKeyExpiresAt": "Kadaluarsa Pada",
     "createKey": "Buat Kunci",
     "apiKeyNoExpiry": "Tidak ada kadaluarsa",
@@ -311,6 +325,10 @@
     "deleteUserFailed": "Gagal menghapus pengguna",
     "deleteUserSuccess": "Pengguna \"{{username}}\" dihapus",
     "deleteRoleSuccess": "Peran \"{{name}}\" dihapus",
+    "deleteRoleFailed": "Tidak dapat menghapus peran",
+    "roleNamePlaceholder": "pengembang",
+    "roleDisplayNamePlaceholder": "Pengembang",
+    "unknownError": "Kesalahan tidak diketahui",
     "revokeKeySuccess": "Kunci \"{{name}}\" dicabut",
     "revokeKeyFailed": "Gagal mencabut kunci",
     "copiedToClipboard": "Disalin ke papan klip",
@@ -353,6 +371,7 @@
     "unlinkAccountFailed": "Gagal memutuskan masuk eksternal",
     "updateRegistrationFailed": "Gagal memperbarui pengaturan pendaftaran",
     "updatePasswordLoginFailed": "Gagal memperbarui pengaturan masuk kata sandi",
+    "updateCredentialStorageFailed": "Gagal memperbarui pengaturan penyimpanan kredensial",
     "updateSecondFactorAfterExternalLoginFailed": "Gagal memperbarui pengaturan faktor kedua",
     "updatePasswordResetFailed": "Gagal memperbarui pengaturan reset kata sandi",
     "sessionTimeoutRange2": "Batas waktu sesi harus antara 1 dan 720 jam",
@@ -671,7 +690,8 @@
         "tryBetaTitle": "Coba fitur baru lebih awal",
         "tryBetaDescription": "Bergabung dengan program beta di Pembaruan.",
         "sendBetaFeedback": "Kirim umpan balik beta",
-        "openUpdates": "Pembaruan"
+        "openUpdates": "Pembaruan",
+        "hexLabel": "hex"
       }
     }
   },
@@ -757,6 +777,11 @@
       "allPluginsBeta": "Gunakan beta untuk semua plugin",
       "allPluginsStable": "Semua plugin kembali ke stabil",
       "saveFailed": "Gagal menyimpan perubahan"
+    },
+    "user": {
+      "hostRows": {
+        "label": "Pilihan baris host"
+      }
     }
   },
   "hostDefaults": {
@@ -783,6 +808,15 @@
   "sharing": {
     "revokeConfirm": "Hapus akses untuk {{name}}?",
     "revoke": "Hapus akses",
+    "deviceLogin": {
+      "label": "Login hanya di perangkat ini",
+      "none": "Tidak ada",
+      "hint": "Tetap di perangkat ini dan tidak pernah dikirim ke server. Ini digunakan terlebih dahulu, dan koneksi dimulai dari perangkat ini.",
+      "noCredentials": "Tambahkan kredensial dengan Simpan hanya di perangkat ini untuk menggunakannya di sini.",
+      "saved": "Login perangkat disimpan",
+      "keepOnDevice": "Simpan hanya di perangkat ini",
+      "keepOnDeviceDesc": "Kata sandi atau kunci tidak pernah disinkronkan ke server. Gunakan sebagai login perangkat di host bersama."
+    },
     "folderLogin": {
       "action": "Atur login pribadi untuk host yang dibagikan",
       "title": "Login pribadi untuk folder ini",
@@ -824,7 +858,10 @@
     "pickHost": "Pilih host untuk diedit",
     "pickCredential": "Pilih kredensial untuk diedit",
     "pickDefaults": "Pilih tingkat default untuk diedit",
-    "pickHint": "Semua hal tentang koneksi ada di sini, dikelompokkan agar mudah ditemukan."
+    "pickHint": "Semua hal tentang koneksi ada di sini, dikelompokkan agar mudah ditemukan.",
+    "clearChoice": "Hapus",
+    "proxyPathTarget": "target",
+    "hostCopyName": "{{name}} (salinan)"
   },
   "permissions": {
     "branding": {
@@ -837,6 +874,33 @@
     "presetIntro": "Pilih seberapa banyak elemen yang ditampilkan di layar.",
     "presetChangeLater": "Anda dapat mengganti preset atau mengubah pengaturan individual kapan saja nanti di Pengaturan, bagian Antarmuka.",
     "appearanceTitle": "Sesuaikan dengan gaya Anda",
-    "appearanceIntro": "Pilih tema, warna aksen, font, dan bahasa Anda. Perubahan akan langsung terlihat, dan Anda dapat mengubahnya nanti di Pengaturan."
+    "appearanceIntro": "Pilih tema, warna aksen, font, dan bahasa Anda. Perubahan akan langsung terlihat, dan Anda dapat mengubahnya nanti di Pengaturan.",
+    "hostRows": {
+      "title": "Bagaimana baris host harus bekerja?",
+      "intro": "Dengan banyak plugin aktif, setiap baris host bisa mendapatkan banyak tombol. Pilih cara Anda ingin mengakses alat host.",
+      "buttons": "Tombol sambung",
+      "buttonsDesc": "Satu tombol per alat di setiap baris host, seperti sebelumnya. Halaman host tetap di menu host.",
+      "both": "Tombol dan tombol halaman host",
+      "bothDesc": "Pertahankan tombol dan tambahkan satu untuk halaman host. Alat terbuka di dalam halaman host.",
+      "page": "Hanya halaman host",
+      "pageDesc": "Tidak ada tombol di baris. Mengklik host membuka halamannya, dengan setiap alat dalam satu tab.",
+      "clickOpensPage": "Klik membuka halaman host",
+      "changeLater": "Anda dapat mengubah ini nanti di Sesuaikan sidebar."
+    },
+    "accentHex": "hex"
+  },
+  "hostTools": {
+    "mode": "Buka alat host di",
+    "modeDesc": "Di mana Docker, File, dan tombol alat lain terbuka. Halaman host menyimpan setiap alat untuk host dalam satu tab. Dengan Hanya halaman host, baris host tidak memiliki tombol sambung dan klik membuka halaman host.",
+    "modeTab": "Tab mereka sendiri",
+    "modePage": "Halaman host",
+    "rowButtons": "Tombol di baris host",
+    "modeOnly": "Hanya halaman host",
+    "clickOpens": "Klik membuka",
+    "clickOpensDesc": "Apa yang dijalankan saat mengklik host. Pilih yang lain untuk satu host dari menunya.",
+    "clickAuto": "Cara pertama untuk terhubung",
+    "useDefaultNamed": "Bawaan ({{name}})",
+    "useDefaultButtons": "Gunakan tombol bawaan",
+    "perHostHint": "Untuk mengubahnya untuk satu host, gunakan Tombol di baris host di menunya."
   }
 }

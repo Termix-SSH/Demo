@@ -1,0 +1,211 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Execută playbook-uri Ansible și comenzi ad-hoc de pe un host de control, folosind un inventar creat din host-urile Termix."
+  },
+  "common": {
+    "save": "Salvează",
+    "cancel": "Anulează",
+    "back": "Înapoi",
+    "delete": "Șterge"
+  },
+  "permissions": {
+    "use": {
+      "title": "Folosește Ansible",
+      "description": "Vizualizează playbook-urile și execuțiile pe host-urile de control la care ai acces. Editează fișiere și execută Ansible pe host-urile pe care le poți modifica."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Folosește acest host ca host de control Ansible. Ansible trebuie instalat pe el."
+      },
+      "projectDir": {
+        "label": "Dosar proiect",
+        "description": "Dosarul de pe acest host care conține playbook-urile, rolurile și fișierul ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Fișier parolă Vault",
+        "description": "Un fișier de pe acest host care conține parola pentru Ansible Vault. Lasă gol dacă nu folosești Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Doar citire",
+        "description": "Afișează playbook-urile și execuțiile, dar nu permite editarea fișierelor sau pornirea execuțiilor pe acest host."
+      },
+      "alertRuns": {
+        "label": "Alertă la eșecul unei execuții",
+        "description": "Trimite o alertă când o execuție pe acest host se termină cu eșec sau se pierde conexiunea. Verificat când se citește starea execuției."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Deschide Ansible dintr-un host.",
+    "error": "Nu s-a putut încărca Ansible de pe acest host.",
+    "disabled": "Ansible este dezactivat pentru acest host. Activează-l în setările host-ului.",
+    "refresh": "Reîmprospătează",
+    "readOnly": "Doar citire",
+    "notInstalled": "Ansible nu este instalat",
+    "notInstalledTitle": "Ansible nu este instalat pe acest host",
+    "notInstalledHint": "Instalează ansible-core pe acest host, de exemplu cu pipx sau managerul de pachete, apoi reîmprospătează.",
+    "noSshpass": "sshpass nu este instalat pe acest host. Host-urile care se autentifică cu parolă vor eșua.",
+    "viewPlaybooks": "Playbook-uri",
+    "viewRuns": "Execuții",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Fapte"
+  },
+  "files": {
+    "add": "Fișier nou",
+    "search": "Caută fișiere",
+    "empty": "Încă nu există fișiere în dosarul proiectului.",
+    "noMatch": "Niciun fișier nu corespunde.",
+    "noProject": "Dosarul {{dir}} nu există pe acest host. Creează-l sau setează un alt dosar Proiect în setările host-ului.",
+    "listFailed": "Nu s-au putut lista fișierele proiectului.",
+    "loadFailed": "Nu s-a putut citi acel fișier.",
+    "saved": "Fișier salvat",
+    "saveFailed": "Nu s-a putut salva acel fișier.",
+    "playbook": "Playbook",
+    "run": "Execută",
+    "newTitle": "Fișier nou",
+    "name": "Nume fișier",
+    "nameHint": "O cale în interiorul dosarului proiectului, cum ar fi site.yml sau roles/web/tasks/main.yml.",
+    "hint": "Un playbook este verificat pentru sintaxă înainte de a fi salvat. Fișierul vechi rămâne dacă verificarea eșuează.",
+    "text": "Text fișier",
+    "deleteTitle": "Ștergi acest fișier?"
+  },
+  "targets": {
+    "search": "Caută host-uri",
+    "addShown": "Adaugă afișate",
+    "clear": "Șterge tot",
+    "empty": "Niciun host găsit.",
+    "count": "{{count}} selectate",
+    "failed": "Nu s-au putut încărca host-urile tale."
+  },
+  "run": {
+    "title": "Execută {{playbook}}",
+    "start": "Execută",
+    "startCheck": "Execută în modul de verificare",
+    "startFailed": "Nu s-a putut porni execuția.",
+    "source": "Gazde",
+    "sourceProject": "Inventarul proiectului",
+    "sourceTermix": "Gazde Termix",
+    "sourceProjectHint": "Folosește inventarul din ansible.cfg sau un fișier din proiect.",
+    "sourceTermixHint": "Alege gazde din Termix. Dosarele devin grupuri folder_ și etichetele devin grupuri tag_. Toate se află în grupul termix.",
+    "inventory": "Fișier inventar",
+    "inventoryHint": "O cale în interiorul dosarului proiectului. Lasă gol pentru a folosi ansible.cfg.",
+    "check": "Mod verificare",
+    "checkHint": "Afișează ce s-ar schimba fără a face modificări.",
+    "diff": "Afișează diferențele",
+    "diffHint": "Afișează modificările aduse fișierelor.",
+    "become": "Execută ca root",
+    "becomeHint": "Folosește sudo pe gazde. O parolă Sudo salvată este folosită pentru gazdele Termix.",
+    "limit": "Limitare",
+    "limitHint": "Execută doar pe aceste gazde sau grupuri.",
+    "verbosity": "Detalii ieșire",
+    "verbosityOff": "Normal",
+    "tags": "Etichete",
+    "skipTags": "Omite etichete",
+    "extraVars": "Variabile suplimentare",
+    "extraVarsHint": "O pereche cheie=valoare pe linie."
+  },
+  "runs": {
+    "title": "Execuție",
+    "empty": "Nicio execuție încă.",
+    "loadFailed": "Nu s-au putut încărca execuțiile.",
+    "stop": "Oprește",
+    "stopFailed": "Nu s-a putut opri execuția.",
+    "deleteTitle": "Ștergi această execuție?",
+    "deleteFailed": "Nu s-a putut șterge execuția.",
+    "checkMode": "Verificare",
+    "truncated": "Se afișează finalul unei ieșiri lungi.",
+    "noOutput": "Nicio ieșire încă.",
+    "state": {
+      "running": "În curs",
+      "ok": "Finalizat",
+      "failed": "Eșuat",
+      "cancelled": "Oprit",
+      "lost": "Pierdut"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Fapte"
+    },
+    "recap": {
+      "host": "Gazdă",
+      "ok": "OK",
+      "changed": "Modificat",
+      "unreachable": "Nedispunibil",
+      "failed": "Eșuat",
+      "skipped": "Omis"
+    }
+  },
+  "adhoc": {
+    "hint": "Execută un modul pe gazde, ca ansible all -m ping.",
+    "pattern": "Model gazde",
+    "patternHint": "O gazdă, un grup sau all.",
+    "module": "Modul",
+    "moduleHint": "De exemplu ping, command, shell, apt sau systemd.",
+    "args": "Argumente",
+    "argsHint": "Pentru command și shell acesta este comanda. Pentru alte module sunt perechi cheie=valoare.",
+    "run": "Execută"
+  },
+  "facts": {
+    "hint": "Colectează fapte de la gazde cu modulul setup. Necesită gazde Termix pentru ca fiecare să aibă date de autentificare.",
+    "gather": "Colectează fapte",
+    "gathering": "Se colectează...",
+    "failed": "Nu s-au putut colecta faptele.",
+    "failedHost": "Eșuat",
+    "none": "Niciun fapt nu a fost returnat. Deschide execuția pentru a vedea de ce.",
+    "col": {
+      "host": "Gazdă",
+      "os": "Sistem",
+      "kernel": "Kernel",
+      "cpu": "CPUs",
+      "memory": "Memorie",
+      "address": "Adresă",
+      "uptime": "Timp de funcționare"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Listează playbook-urile"
+    },
+    "run": {
+      "title": "Execută playbook",
+      "playbook": "Playbook",
+      "limit": "Limită",
+      "tags": "Etichete",
+      "check": "Mod verificare"
+    },
+    "runs": {
+      "title": "Listă execuții",
+      "resource": "Execuții",
+      "started": "Început",
+      "check": "Mod verificare"
+    },
+    "failed": {
+      "title": "Execuții eșuate"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Se verifică gazdele...",
+    "summary_one": "{{count}} execuție eșuată pe {{hosts}} gazde",
+    "summary_few": "{{count}} execuții eșuate pe {{hosts}} gazde",
+    "summary_other": "{{count}} execuții eșuate pe {{hosts}} gazde",
+    "refresh": "Verifică din nou",
+    "empty": "Activează Ansible pentru o gazdă pentru a-ți vedea execuțiile aici.",
+    "failed_one": "{{count}} eșuată",
+    "failed_few": "{{count}} eșuate",
+    "failed_other": "{{count}} eșuate",
+    "running_one": "{{count}} în curs",
+    "running_few": "{{count}} în curs",
+    "running_other": "{{count}} în curs",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Nicio execuție încă"
+  }
+}

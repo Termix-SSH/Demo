@@ -1,0 +1,392 @@
+{
+  "tab": {
+    "title": "Tempo di attività",
+    "error": "Impossibile caricare i monitor.",
+    "monitors": "Monitor",
+    "incidents": "Incidenti",
+    "maintenance": "Manutenzione",
+    "pages": "Pagine di stato"
+  },
+  "common": {
+    "refresh": "Aggiorna",
+    "loading": "Caricamento",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "done": "Fatto"
+  },
+  "status": {
+    "up": "Online",
+    "down": "Offline",
+    "pending": "Ritento",
+    "maintenance": "Manutenzione",
+    "paused": "In pausa",
+    "unknown": "In attesa"
+  },
+  "types": {
+    "http": "Sito web (HTTP)",
+    "tcp": "Porta TCP",
+    "ping": "Ping",
+    "dns": "Record DNS",
+    "tls": "Certificato TLS",
+    "push": "Push",
+    "host": "Host Termix",
+    "docker": "Contenitore Docker",
+    "systemd": "Unità systemd",
+    "command": "Comando"
+  },
+  "typeHints": {
+    "http": "Chiama un URL e verifica il codice di stato, e una parola chiave se ne hai impostata una.",
+    "tcp": "Verifica che una porta accetti connessioni.",
+    "ping": "Invia un ping dal server Termix o da un host che scegli di seguito.",
+    "dns": "Ricerca un record e può verificarne il valore.",
+    "tls": "Verifica che un certificato sia attendibile e non stia per scadere.",
+    "push": "Ti fornisce un URL da chiamare da un cron job o da uno script. Segnala offline quando le chiamate si interrompono.",
+    "host": "Verifica la porta di un host allo stesso modo del punto di stato dell'host. Non effettua mai l'accesso.",
+    "docker": "Effettua l'accesso all'host tramite SSH e verifica che un contenitore sia in esecuzione e sano.",
+    "systemd": "Effettua l'accesso all'host tramite SSH e verifica che un'unità sia attiva.",
+    "command": "Effettua l'accesso all'host tramite SSH ed esegue un comando. Segnala online quando il codice di uscita è 0."
+  },
+  "stats": {
+    "up": "Online",
+    "down": "Problemi",
+    "paused": "In pausa o in manutenzione",
+    "month": "Tempo di attività 30 giorni"
+  },
+  "filter": {
+    "all": "Tutti",
+    "problems": "Problemi",
+    "paused": "In pausa"
+  },
+  "list": {
+    "name": "Nome",
+    "target": "Destinazione",
+    "checks": "Ultimi controlli",
+    "uptime": "24 h",
+    "uptimeDay": "24 h: {{value}}",
+    "latency": "Risposta",
+    "search": "Cerca",
+    "add": "Aggiungi monitor",
+    "addHosts": "Aggiungi dagli host",
+    "empty": "Nessun monitor ancora",
+    "emptyHint": "Aggiungi un monitor per iniziare a osservare un sito web, una porta o un host.",
+    "noMatch": "Nessuna corrispondenza"
+  },
+  "range": {
+    "day": "24 h",
+    "week": "7 giorni",
+    "month": "30 giorni",
+    "quarter": "90 giorni"
+  },
+  "detail": {
+    "failed": "Non ha funzionato.",
+    "deleteTitle": "Eliminare {{name}}?",
+    "deleteHint": "La cronologia e gli incidenti associati verranno eliminati.",
+    "newUrl": "Nuovo URL push",
+    "newUrlTitle": "Creare un nuovo URL push?",
+    "newUrlHint": "Il vecchio URL smetterà di funzionare immediatamente.",
+    "type": "Tipo",
+    "target": "Destinazione",
+    "lastCheck": "Ultimo controllo",
+    "message": "Risultato",
+    "every": "Controlla ogni",
+    "seconds_one": "{{count}} secondo",
+    "seconds_many": "{{count}} secondi",
+    "seconds_other": "{{count}} secondi",
+    "group": "Gruppo",
+    "tags": "Tag",
+    "cert": "Certificato",
+    "certValue": "{{days}} giorni rimanenti | {{issuer}}",
+    "noChart": "Non ci sono abbastanza controlli per generare un grafico.",
+    "alertsOn": "Attiva le notifiche",
+    "alertsOff": "Disattiva le notifiche",
+    "runNow": "Controlla ora",
+    "pause": "Metti in pausa",
+    "resume": "Riprendi",
+    "share": "Condividi",
+    "now": "Risposta attuale",
+    "recent": "Ultimi controlli",
+    "response": "Tempo di risposta",
+    "about": "Informazioni",
+    "incidents": "Incidenti",
+    "noIncidents": "Nessun incidente."
+  },
+  "editor": {
+    "addTitle": "Aggiungi monitoraggio",
+    "editTitle": "Modifica monitoraggio",
+    "saveFailed": "Impossibile salvare.",
+    "testFailed": "Impossibile eseguire il test.",
+    "test": "Test",
+    "testing": "In fase di test",
+    "testOk": "Online",
+    "testBad": "Offline",
+    "what": "Cosa monitorare",
+    "name": "Nome",
+    "type": "Tipo",
+    "host": "Host",
+    "noHost": "Seleziona un host",
+    "pushOnce": "Copia questo URL ora. Viene mostrato solo una volta.",
+    "from": "Controlla da",
+    "fromHost": "Esegui il controllo da",
+    "fromServer": "Il server Termix",
+    "fromHint": "Seleziona un host per raggiungere risorse accessibili solo da lì. Il controllo verrà eseguito tramite SSH su quell'host.",
+    "timing": "Tempistica e notifiche",
+    "interval": "Controlla ogni (secondi)",
+    "timeout": "Timeout (secondi)",
+    "grace": "Attesa aggiuntiva (secondi)",
+    "retries": "Ritenti",
+    "retriesHint": "Numero di controlli falliti consecutivi prima di segnare lo stato come offline.",
+    "retryInterval": "Intervallo tra i ritentativi (secondi)",
+    "resend": "Ricordami ogni (minuti)",
+    "resendHint": "Mentre rimane offline. 0 invia una sola notifica.",
+    "more": "Gruppo e tag",
+    "group": "Gruppo",
+    "tags": "Etichette",
+    "tagsHint": "Separa con le virgole.",
+    "target": "Indirizzo",
+    "port": "Porta",
+    "portOptional": "Porta",
+    "portOptionalHint": "Lascia vuoto per usare la porta dell'host.",
+    "url": "URL",
+    "method": "Metodo",
+    "body": "Corpo",
+    "accepted": "Codici di stato accettati",
+    "acceptedHint": "Ad esempio 200-299,301",
+    "keyword": "Parola chiave",
+    "keywordHint": "Opzionale. Testo che deve essere presente nella risposta.",
+    "keywordAbsent": "Segnala errore se la parola chiave è trovata",
+    "auth": "Accesso",
+    "authNone": "Nessuno",
+    "authBasic": "Basic",
+    "authBearer": "Token Bearer",
+    "username": "Nome utente",
+    "password": "Password",
+    "token": "Token",
+    "keepSecret": "Lascia vuoto per mantenere il valore salvato.",
+    "headers": "Intestazioni",
+    "headersHint": "Una per riga, ad esempio Nome: valore. Salvate in modo crittografato.",
+    "follow": "Segui i reindirizzamenti",
+    "ignoreTls": "Accetta qualsiasi certificato",
+    "certDays": "Avvisa prima della scadenza del certificato (giorni)",
+    "certDaysHint": "0 disabilita l'avviso.",
+    "record": "Tipo di record",
+    "dnsServer": "Server DNS",
+    "dnsServerHint": "Indirizzo IP opzionale. Se vuoto, usa quello del server.",
+    "expected": "Valore atteso",
+    "expectedHint": "Opzionale. Testo che un record deve contenere.",
+    "container": "Nome del container",
+    "unit": "Nome dell'unità",
+    "command": "Comando",
+    "commandHint": "Viene eseguito con il tuo account di accesso su quell'host ad ogni controllo."
+  },
+  "hosts": {
+    "add_one": "Aggiungi {{count}} monitoraggio",
+    "add_many": "Aggiungi {{count}} monitoraggi",
+    "add_other": "Aggiungi {{count}} monitoraggi"
+  },
+  "shares": {
+    "loadFailed": "Impossibile caricare le condivisioni.",
+    "saveFailed": "Impossibile salvare le condivisioni.",
+    "pick": "Seleziona un utente o un ruolo",
+    "user": "Utente: {{name}}",
+    "role": "Ruolo: {{name}}",
+    "with": "Condividi con",
+    "add": "Aggiungi",
+    "none": "Solo tu puoi vedere questo monitoraggio.",
+    "view": "Può visualizzare",
+    "edit": "Può modificare"
+  },
+  "incidents": {
+    "none": "Nessun incidente",
+    "ongoing": "In corso",
+    "seen": "Visto",
+    "ack": "Segna come visto",
+    "note": "Nota"
+  },
+  "maintenance": {
+    "none": "Nessuna finestra di manutenzione",
+    "noneHint": "Aggiungine una per sospendere gli avvisi mentre lavori su qualcosa.",
+    "add": "Aggiungi finestra",
+    "edit": "Modifica finestra",
+    "active": "Attiva ora",
+    "when": "Quando",
+    "once": "Una sola volta",
+    "weekly": "Ogni settimana",
+    "start": "Inizio",
+    "end": "Fine",
+    "days": "Giorni",
+    "time": "Orario di inizio",
+    "length": "Durata (minuti)",
+    "timezone": "Fuso orario",
+    "covers": "Applica a",
+    "coversAll": "Tutti i miei monitor",
+    "coversSome": "Monitor selezionati",
+    "coversTag": "Monitor con un tag",
+    "deleteTitle": "Eliminare {{name}}?",
+    "day0": "Dom",
+    "day1": "Lun",
+    "day2": "Mar",
+    "day3": "Mer",
+    "day4": "Gio",
+    "day5": "Ven",
+    "day6": "Sab"
+  },
+  "pages": {
+    "none": "Nessuna pagina di stato",
+    "noneHint": "Una pagina di stato mostra a tutti lo stato dei tuoi servizi, senza richiedere il login.",
+    "add": "Aggiungi pagina",
+    "edit": "Modifica pagina",
+    "about": "Pagina",
+    "title": "Titolo",
+    "slug": "Indirizzo",
+    "slugHint": "Caratteri minuscoli, numeri e trattini. Questa è la parte finale del link.",
+    "description": "Descrizione",
+    "published": "Pubblicata",
+    "publishedHint": "Chiunque abbia il link può vedere nomi, stati e uptime. Mai indirizzi o errori.",
+    "showLatency": "Mostra tempi di risposta",
+    "group": "Gruppo {{number}}",
+    "groupName": "Nome gruppo",
+    "addGroup": "Aggiungi gruppo",
+    "notes": "Note",
+    "noteTitle": "Titolo",
+    "noteBody": "Testo",
+    "noteLevel": "Livello",
+    "levelInfo": "Info",
+    "levelWarning": "Avviso",
+    "levelCritical": "Critico",
+    "post": "Pubblica",
+    "resolve": "Risolvi",
+    "resolved": "Risolto",
+    "live": "Pubblicata",
+    "draft": "Bozza",
+    "open": "Apri pagina",
+    "deleteTitle": "Eliminare {{name}}?",
+    "offTitle": "Le pagine pubbliche sono disattivate",
+    "offHint": "Un amministratore le ha disattivate nelle impostazioni del plugin, quindi questi link non mostrano nulla."
+  },
+  "widget": {
+    "name": "Uptime",
+    "description": "Quanti monitor sono attivi o inattivi.",
+    "up": "Attivo",
+    "down": "Inattivo"
+  },
+  "card": {
+    "title": "Uptime",
+    "overview": "Tutti i monitor",
+    "attention": "Monitor con problemi",
+    "monitors": "Monitor",
+    "allGood": "Tutto è attivo.",
+    "gone": "Questo monitor non esiste più.",
+    "loading": "Caricamento...",
+    "month": "30 giorni: {{value}}"
+  },
+  "host": {
+    "none": "Nessun monitor per questo host.",
+    "add": "Aggiungi monitor",
+    "down_one": "{{count}} monitor è offline",
+    "down_many": "{{count}} monitor sono offline",
+    "down_other": "{{count}} monitor sono offline"
+  },
+  "permissions": {
+    "view": {
+      "title": "Visualizza monitor",
+      "description": "Visualizza monitor, cronologia e incidenti."
+    },
+    "manage": {
+      "title": "Gestisci monitor",
+      "description": "Aggiungi e modifica monitor e finestre di manutenzione."
+    },
+    "privateTargets": {
+      "title": "Verifica indirizzi privati",
+      "description": "Punta i monitor verso LAN, Tailscale e altri indirizzi privati raggiungibili dal server Termix."
+    },
+    "runCommands": {
+      "title": "Esegui comandi",
+      "description": "Aggiungi monitor che eseguono un comando su un host tramite SSH."
+    },
+    "publish": {
+      "title": "Pubblica pagine di stato",
+      "description": "Rendi le pagine di stato visibili a chiunque abbia il link."
+    }
+  },
+  "settings": {
+    "admin": {
+      "minIntervalSeconds": {
+        "label": "Intervallo di controllo minimo",
+        "description": "In secondi. I monitor che accedono tramite SSH non scendono mai sotto i 60."
+      },
+      "defaultIntervalSeconds": {
+        "label": "Intervallo di controllo predefinito",
+        "description": "In secondi, per i nuovi monitor."
+      },
+      "historyDays": {
+        "label": "Conserva la cronologia per",
+        "description": "Giorni di dati giornalieri di uptime e incidenti."
+      },
+      "publicPages": {
+        "label": "Consenti pagine di stato pubbliche",
+        "description": "Disattiva per nascondere tutte le pagine di stato. Gli URL di push continuano a funzionare."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Apri il pannello con ogni terminale",
+        "description": "Mostra il pannello di uptime quando si apre un terminale."
+      },
+      "companionSide": {
+        "label": "Lato del pannello",
+        "description": "Dove si apre il pannello di uptime.",
+        "right": "Destra",
+        "left": "Sinistra",
+        "bottom": "In basso"
+      },
+      "companionSize": {
+        "label": "Dimensione del pannello",
+        "description": "Larghezza o altezza del pannello in pixel."
+      },
+      "companionEdgeButton": {
+        "label": "Mostra il pulsante laterale",
+        "description": "Un pulsante sul bordo del terminale che apre il pannello."
+      }
+    }
+  },
+  "operations": {
+    "monitor": "Monitor",
+    "summary": {
+      "title": "Riepilogo uptime"
+    },
+    "monitors": {
+      "title": "Elenco monitor"
+    },
+    "hostMonitors": {
+      "title": "Monitor su questo host"
+    },
+    "hostHealth": {
+      "title": "Uptime"
+    },
+    "run": {
+      "title": "Verifica un monitor ora"
+    },
+    "pause": {
+      "title": "Metti in pausa un monitor"
+    },
+    "resume": {
+      "title": "Riprendi un monitor"
+    },
+    "addHost": {
+      "title": "Aggiungi un monitor di uptime"
+    },
+    "events": {
+      "down": "Un monitor è andato offline",
+      "up": "Un monitor è tornato online",
+      "cert": "Un certificato sta per scadere"
+    },
+    "resource": {
+      "title": "Monitor",
+      "type": "Tipo",
+      "status": "Stato",
+      "uptime": "Uptime 30 giorni"
+    }
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Pokrećite Ansible playbookove i ad-hoc naredbe s kontrolnog hosta, koristeći inventar stvoren od vaših Termix hostova."
+  },
+  "common": {
+    "save": "Spremi",
+    "cancel": "Otkaži",
+    "back": "Natrag",
+    "delete": "Izbriši"
+  },
+  "permissions": {
+    "use": {
+      "title": "Koristi Ansible",
+      "description": "Pregledajte playbookove i izvođenja na kontrolnim hostovima na koje možete pristupiti. Uređujte datoteke i pokrećite Ansible na hostovima koje možete uređivati."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Koristite ovaj host kao Ansible kontrolni host. Ansible mora biti instaliran na njemu."
+      },
+      "projectDir": {
+        "label": "Mapa projekta",
+        "description": "Mapa na ovom hostu koja sadrži vaše playbookove, uloge i ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Datoteka lozinke za Vault",
+        "description": "Datoteka na ovom hostu koja sadrži lozinku za Ansible Vault. Ostavite prazno ako ne koristite Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Samo za čitanje",
+        "description": "Prikaži playbookove i izvođenja, ali nikada ne uređuj datoteke niti pokreći izvođenja na ovom hostu."
+      },
+      "alertRuns": {
+        "label": "Upozori pri neuspjehu izvođenja",
+        "description": "Pošalji upozorenje kada izvođenje na ovom hostu završi neuspjehom ili se izgubi. Provjerava se pri čitanju stanja izvođenja."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Otvorite Ansible s hosta.",
+    "error": "Nije moguće učitati Ansible s ovog hosta.",
+    "disabled": "Ansible je isključen za ovaj host. Uključite ga u postavkama hosta.",
+    "refresh": "Osvježi",
+    "readOnly": "Samo za čitanje",
+    "notInstalled": "Ansible nije instaliran",
+    "notInstalledTitle": "Ansible nije instaliran na ovom hostu",
+    "notInstalledHint": "Instalirajte ansible-core na ovom hostu, na primjer pomoću pipx ili vašeg upravitelja paketa, a zatim osvježite.",
+    "noSshpass": "sshpass nije instaliran na ovom hostu. Hostovi koji se prijavljuju lozinkom neće uspjeti.",
+    "viewPlaybooks": "Playbookovi",
+    "viewRuns": "Izvođenja",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Fakture"
+  },
+  "files": {
+    "add": "Nova datoteka",
+    "search": "Pretraži datoteke",
+    "empty": "Još nema datoteka u mapi projekta.",
+    "noMatch": "Nema podudarnih datoteka.",
+    "noProject": "Mapa {{dir}} ne postoji na ovom hostu. Stvorite je ili postavite drugu Mapu projekta u postavkama hosta.",
+    "listFailed": "Nije moguće izlistati datoteke projekta.",
+    "loadFailed": "Nije moguće pročitati tu datoteku.",
+    "saved": "Datoteka spremljena",
+    "saveFailed": "Nije moguće spremiti tu datoteku.",
+    "playbook": "Playbook",
+    "run": "Pokreni",
+    "newTitle": "Nova datoteka",
+    "name": "Naziv datoteke",
+    "nameHint": "Putanja unutar mape projekta, poput site.yml ili roles/web/tasks/main.yml.",
+    "hint": "Playbook se provjerava na sintaksu prije spremanja. Stara datoteka ostaje ako provjera ne uspije.",
+    "text": "Tekst datoteke",
+    "deleteTitle": "Izbrisati ovu datoteku?"
+  },
+  "targets": {
+    "search": "Pretraži hostove",
+    "addShown": "Dodaj prikazane",
+    "clear": "Očisti",
+    "empty": "Nema pronađenih hostova.",
+    "count": "odabrano: {{count}}",
+    "failed": "Nije moguće učitati vaše hostove."
+  },
+  "run": {
+    "title": "Pokreni {{playbook}}",
+    "start": "Pokreni",
+    "startCheck": "Pokreni u načinu provjere",
+    "startFailed": "Pokretanje nije uspjelo.",
+    "source": "Domaćini",
+    "sourceProject": "Popis projekta",
+    "sourceTermix": "Termix domaćini",
+    "sourceProjectHint": "Koristi popis iz ansible.cfg ili datoteku unutar projekta.",
+    "sourceTermixHint": "Odaberi domaćine iz Termixa. Mape postaju grupe s prefiksom folder_, a oznake postaju grupe s prefiksom tag_. Sve su u grupi termix.",
+    "inventory": "Datoteka popisa",
+    "inventoryHint": "Putanja unutar mape projekta. Ostavi prazno za korištenje ansible.cfg.",
+    "check": "Način provjere",
+    "checkHint": "Prikaži što bi se promijenilo bez stvarnih promjena.",
+    "diff": "Prikaži razlike",
+    "diffHint": "Prikaži promjene napravljene u datotekama.",
+    "become": "Pokreni kao root",
+    "becomeHint": "Koristi sudo na domaćinima. Za Termix domaćine koristi se spremljena sudo lozinka.",
+    "limit": "Ograniči",
+    "limitHint": "Pokreni samo na ovim domaćinima ili grupama.",
+    "verbosity": "Razina detalja izlaza",
+    "verbosityOff": "Normalno",
+    "tags": "Oznake",
+    "skipTags": "Preskoči oznake",
+    "extraVars": "Dodatne varijable",
+    "extraVarsHint": "Jedan par ključ=vrijednost po retku."
+  },
+  "runs": {
+    "title": "Pokreni",
+    "empty": "Još nema pokretanja.",
+    "loadFailed": "Učitavanje pokretanja nije uspjelo.",
+    "stop": "Zaustavi",
+    "stopFailed": "Zaustavljanje pokretanja nije uspjelo.",
+    "deleteTitle": "Izbrisati ovo pokretanje?",
+    "deleteFailed": "Brisanje pokretanja nije uspjelo.",
+    "checkMode": "Provjera",
+    "truncated": "Prikazuje se kraj dugog izlaza.",
+    "noOutput": "Još nema izlaza.",
+    "state": {
+      "running": "Pokreće se",
+      "ok": "Gotovo",
+      "failed": "Neuspješno",
+      "cancelled": "Zaustavljeno",
+      "lost": "Izgubljeno"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Činjenice"
+    },
+    "recap": {
+      "host": "Domaćin",
+      "ok": "U redu",
+      "changed": "Promijenjeno",
+      "unreachable": "Nedostupno",
+      "failed": "Neuspješno",
+      "skipped": "Preskočeno"
+    }
+  },
+  "adhoc": {
+    "hint": "Pokreni jedan modul na domaćinima, poput ansible all -m ping.",
+    "pattern": "Uzorak domaćina",
+    "patternHint": "Domaćin, grupa ili all.",
+    "module": "Modul",
+    "moduleHint": "Na primjer ping, command, shell, apt ili systemd.",
+    "args": "Argumenti",
+    "argsHint": "Za command i shell ovo je naredba. Za druge module to su parovi ključ=vrijednost.",
+    "run": "Pokreni"
+  },
+  "facts": {
+    "hint": "Prikupi činjenice s domaćina pomoću modula setup. Potrebni su Termix domaćini kako bi svaki imao prijavu.",
+    "gather": "Prikupi činjenice",
+    "gathering": "Prikupljanje...",
+    "failed": "Prikupljanje činjenica nije uspjelo.",
+    "failedHost": "Neuspješno",
+    "none": "Nema povratnih činjenica. Otvori pokretanje da vidiš zašto.",
+    "col": {
+      "host": "Host",
+      "os": "Sustav",
+      "kernel": "Jezgra",
+      "cpu": "CPU-ovi",
+      "memory": "Memorija",
+      "address": "Adresa",
+      "uptime": "Vrijeme rada"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Popis playbooka"
+    },
+    "run": {
+      "title": "Izvrši playbook",
+      "playbook": "Playbook",
+      "limit": "Ograniči",
+      "tags": "Oznake",
+      "check": "Način provjere"
+    },
+    "runs": {
+      "title": "Popis izvršenja",
+      "resource": "Izvršenja",
+      "started": "Pokrenuto",
+      "check": "Način provjere"
+    },
+    "failed": {
+      "title": "Neuspjela izvršenja"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Provjera hostova...",
+    "summary_one": "{{count}} neuspjelo izvršenje na {{hosts}} hostu",
+    "summary_few": "{{count}} neuspjela izvršenja na {{hosts}} hostova",
+    "summary_other": "{{count}} neuspjelih izvršenja na {{hosts}} hostova",
+    "refresh": "Provjeri ponovno",
+    "empty": "Uključite Ansible za host kako biste ovdje vidjela njegova izvršenja.",
+    "failed_one": "{{count}} neuspjelo",
+    "failed_few": "{{count}} neuspjela",
+    "failed_other": "{{count}} neuspjelih",
+    "running_one": "{{count}} u tijeku",
+    "running_few": "{{count}} u tijeku",
+    "running_other": "{{count}} u tijeku",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Još nema izvršenja"
+  }
+}

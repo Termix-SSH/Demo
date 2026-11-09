@@ -1,0 +1,461 @@
+{
+  "plugin": {
+    "name": "Sauvegardes",
+    "description": "Sauvegardez des dossiers, des bases de données et des données Docker sur vos hôtes avec restic, puis parcourez, téléchargez et restaurez."
+  },
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "back": "Retour",
+    "delete": "Supprimer",
+    "done": "Terminé",
+    "loading": "Chargement...",
+    "refresh": "Actualiser",
+    "retry": "Réessayer"
+  },
+  "permissions": {
+    "use": {
+      "title": "Utiliser les sauvegardes",
+      "description": "Configurer des tâches et des dépôts de sauvegarde, exécuter des sauvegardes, et parcourir, télécharger et restaurer des instantanés sur les hôtes qu'ils peuvent modifier."
+    }
+  },
+  "tab": {
+    "title": "Sauvegardes",
+    "viewJobs": "Tâches",
+    "viewRepos": "Dépôts",
+    "viewHistory": "Historique"
+  },
+  "hostTab": {
+    "title": "Sauvegardes",
+    "noHost": "Ouvrir les sauvegardes depuis un hôte.",
+    "viewJobs": "Tâches",
+    "viewSnapshots": "Instantanés",
+    "viewHistory": "Historique",
+    "restic": "restic {{version}}",
+    "noRestic": "restic n'est pas installé",
+    "sudo": "Termix doit se connecter en tant que root, ou en tant qu'utilisateur disposant de sudo sans mot de passe, pour exécuter des sauvegardes sur cet hôte.",
+    "statusFailed": "Impossible de lire cet hôte"
+  },
+  "install": {
+    "missing": "restic n'est pas installé sur cet hôte",
+    "tooOld": "La version de restic sur cet hôte est antérieure à la 0.17",
+    "hint": "Les sauvegardes utilisent restic. Installez-le via le gestionnaire de paquets, ou depuis la page de publication de restic sur GitHub si le paquet est trop ancien.",
+    "button": "Installer restic",
+    "working": "Installation en cours...",
+    "title": "Installer restic ?",
+    "desc": "Cela installe restic sur l'hôte en tant que root.",
+    "confirm": "Installer",
+    "done": "restic {{version}} est installé",
+    "failed": "Impossible d'installer restic"
+  },
+  "status": {
+    "never": "Jamais exécuté",
+    "running": "En cours",
+    "success": "Terminé",
+    "warning": "Avertissements",
+    "failed": "Échoué",
+    "canceled": "Arrêté"
+  },
+  "time": {
+    "justNow": "à l'instant",
+    "soon": "dans un instant",
+    "ago": {
+      "minutes_one": "il y a {{count}} minute",
+      "minutes_many": "il y a {{count}} minutes",
+      "minutes_other": "il y a {{count}} minutes",
+      "hours_one": "il y a {{count}} heure",
+      "hours_many": "il y a {{count}} heures",
+      "hours_other": "il y a {{count}} heures",
+      "days_one": "il y a {{count}} jour",
+      "days_many": "il y a {{count}} jours",
+      "days_other": "il y a {{count}} jours"
+    },
+    "in": {
+      "minutes_one": "dans {{count}} minute",
+      "minutes_many": "dans {{count}} minutes",
+      "minutes_other": "dans {{count}} minutes",
+      "hours_one": "dans {{count}} heure",
+      "hours_many": "dans {{count}} heures",
+      "hours_other": "dans {{count}} heures",
+      "days_one": "dans {{count}} jour",
+      "days_many": "dans {{count}} jours",
+      "days_other": "dans {{count}} jours"
+    }
+  },
+  "jobs": {
+    "add": "Ajouter un tâche",
+    "empty": "Aucune tâche de sauvegarde pour le moment",
+    "emptyHint": "Ajoutez une tâche pour sauvegarder des dossiers, des bases de données ou des données Docker.",
+    "emptyNoRepo": "Ajoutez d'abord un dépôt afin d'avoir un emplacement pour les sauvegardes.",
+    "loadFailed": "Impossible de charger les tâches de sauvegarde",
+    "lastGood": "Dernière sauvegarde {{when}}",
+    "noGood": "Aucune sauvegarde pour le moment",
+    "next": "Prochaine {{when}}",
+    "paused": "En pause",
+    "run": "Exécuter maintenant",
+    "stop": "Arrêter",
+    "edit": "Modifier",
+    "snapshots": "Instantanés",
+    "started": "{{name}} démarré",
+    "runFailed": "Impossible de démarrer la sauvegarde"
+  },
+  "editor": {
+    "newTitle": "Nouvelle tâche de sauvegarde",
+    "general": "Tâche",
+    "host": "Hôte",
+    "pickHost": "Choisir un hôte",
+    "name": "Nom",
+    "namePlaceholder": "Sauvegarde nocturne",
+    "repository": "Dépôt",
+    "pickRepository": "Choisir un dépôt",
+    "noRepos": "Vous n'avez aucun dépôt utilisable par cet hôte. Ajoutez-en un dans l'onglet Sauvegardes d'abord.",
+    "repoLocked": "Seul le propriétaire de ce dépôt peut le modifier.",
+    "enabled": "Exécuter selon un planning",
+    "enabledHint": "Désactivez pour mettre le planning en pause. L'exécution immédiate fonctionne toujours.",
+    "oneFileSystem": "Rester sur un seul système de fichiers",
+    "oneFileSystemHint": "Ignorer les autres disques et points de montage trouvés dans les dossiers sélectionnés.",
+    "saved": "Tâche enregistrée",
+    "saveFailed": "Impossible d'enregistrer la tâche",
+    "deleteTitle": "Supprimer {{name}} ?",
+    "deleteDesc": "La tâche est supprimée de Termix. Ses instantanés restent dans le dépôt.",
+    "deleted": "Tâche supprimée",
+    "deleteFailed": "Impossible de supprimer la tâche"
+  },
+  "sources": {
+    "add": "Ajouter à la sauvegarde",
+    "addPaths": "Dossiers",
+    "addDatabase": "Base de données",
+    "addDocker": "Docker",
+    "remove": "Supprimer",
+    "paths": "Dossiers et fichiers",
+    "folders": "Chemins",
+    "foldersHint": "Un chemin complet par ligne.",
+    "excludes": "Ignorer",
+    "excludesHint": "Un motif restic par ligne, comme *.log.",
+    "database": "Base de données",
+    "engine": "Type",
+    "engines": {
+      "mysql": "MySQL ou MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Connexion",
+    "ownLogin": "Saisir une connexion ici",
+    "noDatabasesPlugin": "Activez le plugin Bases de données pour choisir une connexion enregistrée.",
+    "address": "Adresse",
+    "addressPlaceholder": "Laisser vide pour utiliser le socket local",
+    "port": "Port",
+    "username": "Utilisateur",
+    "password": "Mot de passe",
+    "passwordSaved": "Enregistré, laissez vide pour le conserver",
+    "runAs": "Exécuter en tant que",
+    "runAsHint": "Un utilisateur Linux pour exécuter l'export, comme postgres. Laisser vide pour exécuter en tant que root.",
+    "databases": "Bases de données",
+    "databasesHint": "Un nom par ligne. Laissez vide pour sauvegarder toutes les bases.",
+    "sqliteFiles": "Fichiers de base de données",
+    "sqliteFilesHint": "Un chemin complet par ligne. Chaque fichier est copié en toute sécurité pendant son utilisation.",
+    "docker": "Docker",
+    "stacks": "Stacks",
+    "volumes": "Volumes",
+    "noStacks": "Aucun stack compose trouvé",
+    "noVolumes": "Aucun volume trouvé",
+    "dockerFailed": "Impossible de lister Docker sur cet hôte",
+    "stop": "Arrêter les stacks pendant la sauvegarde",
+    "stopHint": "Les stacks sélectionnées sont arrêtées en premier et redémarrées ensuite, afin que leurs fichiers ne changent pas pendant leur lecture."
+  },
+  "schedule": {
+    "title": "Planification",
+    "manual": "Manuellement",
+    "daily": "Quotidien",
+    "weekly": "Hebdomadaire",
+    "custom": "Personnalisé",
+    "day": "Jour",
+    "time": "Heure",
+    "cron": "Cron",
+    "cronHint": "Minute, heure, jour du mois, mois, jour de la semaine.",
+    "cronInvalid": "Cette expression cron n'est pas valide",
+    "timezone": "Fuseau horaire",
+    "serverTime": "Heure du serveur",
+    "manualHint": "Cette tâche ne s'exécute que lorsque vous cliquez sur Exécuter maintenant.",
+    "manualOnly": "Manuellement",
+    "next": "Prochaine exécution {{time}}",
+    "noNext": "Cette planification ne s'exécute jamais",
+    "dailyAt": "Quotidiennement à {{time}}",
+    "weeklyAt": "{{day}} à {{time}}",
+    "days": {
+      "0": "Dimanche",
+      "1": "Lundi",
+      "2": "Mardi",
+      "3": "Mercredi",
+      "4": "Jeudi",
+      "5": "Vendredi",
+      "6": "Samedi"
+    }
+  },
+  "keep": {
+    "title": "Conserver",
+    "last": "Derniers",
+    "daily": "Quotidiens",
+    "weekly": "Hebdomadaires",
+    "monthly": "Mensuels",
+    "yearly": "Annuel",
+    "hint": "Après chaque sauvegarde, les snapshots plus anciens de cette tâche sont supprimés pour ne conserver que ceux-ci. 0 conserve tout."
+  },
+  "hooks": {
+    "title": "Commandes",
+    "pre": "Avant",
+    "preHint": "S'exécute en tant que root avant la sauvegarde. En cas d'échec, la sauvegarde est arrêtée.",
+    "post": "Après",
+    "postHint": "S'exécute en tant que root après la sauvegarde, même en cas d'échec. TERMIX_BACKUP_STATUS contient le résultat."
+  },
+  "alerts": {
+    "title": "Alertes",
+    "onFailure": "Alerter en cas d'échec d'une sauvegarde",
+    "onFailureHint": "Alerte également sur les avertissements, et une fois lorsque cela fonctionne à nouveau.",
+    "staleDays": "Jours sans sauvegarde",
+    "staleDaysHint": "Alerter si aucune sauvegarde n'a réussi depuis ce nombre de jours. 0 désactive cette option."
+  },
+  "repos": {
+    "add": "Ajouter un dépôt",
+    "empty": "Aucun dépôt pour le moment",
+    "emptyHint": "Un dépôt est l'endroit où les sauvegardes sont stockées, comme un bucket S3 ou un dossier.",
+    "loadFailed": "Impossible de charger les dépôts",
+    "jobCount_one": "{{count}} tâche",
+    "jobCount_many": "{{count}} tâches",
+    "jobCount_other": "{{count}} tâches",
+    "newTitle": "Nouveau dépôt",
+    "storage": "Stockage",
+    "name": "Nom",
+    "namePlaceholder": "S3 hors site",
+    "kind": "Type",
+    "kinds": {
+      "s3": "Compatible S3",
+      "rest": "Serveur REST",
+      "rclone": "rclone",
+      "local": "Dossier sur un hôte"
+    },
+    "endpoint": "Point de terminaison",
+    "endpointHint": "Laisser vide pour AWS. Pour MinIO, R2, B2 ou Wasabi, indiquez leur adresse S3.",
+    "region": "Région",
+    "bucket": "Bucket",
+    "prefix": "Dossier dans le bucket",
+    "prefixHint": "Facultatif.",
+    "accessKeyId": "ID de clé d'accès",
+    "secretKey": "Clé d'accès secrète",
+    "secretSaved": "Enregistré, laissez vide pour le conserver",
+    "url": "Adresse du serveur",
+    "username": "Utilisateur",
+    "usernameHint": "Laissez vide si le serveur n'a pas de connexion.",
+    "restPassword": "Mot de passe",
+    "remote": "Nom distant",
+    "remoteHint": "Lettres, chiffres et _ uniquement.",
+    "path": "Chemin",
+    "rcloneConfig": "Configuration rclone",
+    "rcloneHint": "Les lignes de la configuration distante issues de rclone.conf. Exécutez rclone config sur votre ordinateur pour les générer. rclone doit être installé sur les hôtes.",
+    "rcloneSaved": "Enregistré, laissez vide pour le conserver",
+    "host": "Hôte",
+    "pickHost": "Choisir un hôte",
+    "folder": "Dossier",
+    "folderHint": "Seuls les tâches sur cet hôte peuvent l'utiliser. Un disque monté est idéal.",
+    "password": "Chiffrement",
+    "resticPassword": "Mot de passe du dépôt",
+    "passwordHint": "Laissez vide et Termix en générera un robuste. Conservez une copie en lieu sûr : sans lui, les sauvegardes ne peuvent pas être lues.",
+    "passwordKeep": "Enregistré, laissez vide pour le conserver",
+    "passwordChangeHint": "Cela ne modifie que ce que Termix envoie. Cela ne change pas le mot de passe d'un dépôt existant.",
+    "reveal": "Afficher le mot de passe",
+    "revealTitle": "Afficher le mot de passe du dépôt ?",
+    "revealDesc": "Quiconque possède ce mot de passe et les clés de stockage peut lire toutes les sauvegardes de ce dépôt. Cette action est consignée dans le journal d'audit.",
+    "revealFailed": "Impossible de lire le mot de passe",
+    "copy": "Copier",
+    "copied": "Copié",
+    "check": "Vérifier",
+    "checkFrom": "Vérifier depuis",
+    "checkFromHint": "L'hôte qui ouvre le dépôt. Il doit avoir restic.",
+    "checkButton": "Vérifier",
+    "initButton": "Vérifier et configurer",
+    "installRclone": "Installer rclone sur cet hôte",
+    "rcloneInstalled": "rclone {{version}} est installé.",
+    "rcloneFailed": "Impossible d'installer rclone",
+    "checking": "Vérification en cours...",
+    "opened": "Le dépôt s'est ouvert correctement.",
+    "created": "Le dépôt a été configuré et est prêt.",
+    "checkFailed": "Impossible d'ouvrir le dépôt",
+    "checkNext": "Enregistré. Vérifiez-le depuis un hôte pour le configurer.",
+    "saved": "Dépôt enregistré",
+    "saveFailed": "Impossible d'enregistrer le dépôt",
+    "deleteTitle": "Supprimer {{name}} ?",
+    "deleteDesc": "Il sera supprimé de Termix uniquement. Les sauvegardes restent dans le stockage.",
+    "deleted": "Dépôt supprimé",
+    "deleteFailed": "Impossible de supprimer le dépôt"
+  },
+  "snapshots": {
+    "noJobs": "Ajoutez d'abord une tâche de sauvegarde.",
+    "job": "Tâche",
+    "titleFor": "Instantanés de {{name}}",
+    "empty": "Aucun instantané pour le moment",
+    "loadFailed": "Impossible de lire les instantanés",
+    "latest": "Plus récent",
+    "files_one": "{{count}} fichier",
+    "files_many": "{{count}} fichiers",
+    "files_other": "{{count}} fichiers",
+    "browse": "Parcourir",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer cette sauvegarde ?",
+    "deleteDesc": "La sauvegarde de {{time}} sera définitivement supprimée du référentiel.",
+    "deleted": "Sauvegarde supprimée",
+    "deleteFailed": "Impossible de supprimer la sauvegarde",
+    "browseTitle": "Sauvegarde {{time}}",
+    "root": "Racine",
+    "emptyFolder": "Ce dossier est vide",
+    "filesFailed": "Impossible de lister ce dossier",
+    "pick": "Sélectionner",
+    "download": "Télécharger",
+    "downloadZip": "Télécharger en zip",
+    "downloadFailed": "Impossible de télécharger",
+    "restoreAll": "Tout restaurer",
+    "restorePicked_one": "Restaurer {{count}} élément",
+    "restorePicked_many": "Restaurer {{count}} éléments",
+    "restorePicked_other": "Restaurer {{count}} éléments"
+  },
+  "restore": {
+    "title": "Restaurer",
+    "what": "Quoi",
+    "everything": "Tout le contenu de la sauvegarde.",
+    "more_one": "et {{count}} autre",
+    "more_many": "et {{count}} autres",
+    "more_other": "et {{count}} autres",
+    "where": "Où",
+    "host": "Hôte",
+    "hostHint": "Tout hôte que vous pouvez modifier et qui peut accéder au référentiel.",
+    "localOnly": "Ce référentiel est un dossier sur son hôte, il ne peut donc être restauré que sur cet hôte.",
+    "toFolder": "Dans un dossier",
+    "toOriginal": "À l'endroit d'origine",
+    "folder": "Dossier",
+    "folderHint": "Les fichiers conservent leur chemin complet à l'intérieur de ce dossier.",
+    "originalWarning": "Les fichiers sont réécrits à leur emplacement d'origine et peuvent remplacer les fichiers actuels.",
+    "overwrite": "Fichiers existants",
+    "overwriteOptions": {
+      "if-changed": "Remplacer si modifié",
+      "always": "Toujours remplacer",
+      "if-newer": "Remplacer si la sauvegarde est plus récente",
+      "never": "Ne jamais remplacer"
+    },
+    "start": "Restaurer",
+    "started": "Restauration démarrée",
+    "failed": "Impossible de démarrer la restauration"
+  },
+  "run": {
+    "title": "Exécuter",
+    "backupTitle": "Sauvegarde de {{name}}",
+    "restoreTitle": "Restauration de {{name}}",
+    "loadFailed": "Impossible de charger l'exécution",
+    "progress": "Progression",
+    "preparing": "Préparation...",
+    "progressLine": "{{percent}}% | {{files}} sur {{totalFiles}} fichiers | {{bytes}} sur {{totalBytes}}",
+    "left": "{{time}} restants",
+    "details": "Détails",
+    "started": "Démarré",
+    "finished": "Terminé",
+    "trigger": "Démarré par",
+    "triggers": {
+      "manual": "Exécuter maintenant",
+      "schedule": "Planification",
+      "operation": "Action Termix"
+    },
+    "snapshot": "Sauvegarde",
+    "target": "Restauré vers",
+    "files": "Fichiers",
+    "filesLine": "{{total}} fichiers, {{added}} nouveaux, {{changed}} modifiés",
+    "size": "Taille",
+    "added": "Ajouté au référentiel",
+    "took": "Durée",
+    "log": "Journal",
+    "noLog": "Aucun journal pour le moment.",
+    "stopTitle": "Arrêter cette exécution ?",
+    "stopDesc": "Une sauvegarde arrêtée ne crée aucune sauvegarde instantanée. Une restauration arrêtée laisse les fichiers restaurés jusqu'à présent.",
+    "stopSent": "Arrêt en cours",
+    "stopFailed": "Impossible d'arrêter l'exécution"
+  },
+  "history": {
+    "empty": "Aucune exécution n'a encore eu lieu",
+    "loadFailed": "Impossible de charger l'historique",
+    "status": "Statut",
+    "job": "Tâche",
+    "host": "Hôte",
+    "kind": "Type",
+    "kinds": {
+      "backup": "Sauvegarde",
+      "restore": "Restauration"
+    },
+    "started": "Début",
+    "took": "Durée",
+    "size": "Taille"
+  },
+  "card": {
+    "title": "Sauvegardes",
+    "all": "Toutes les tâches de sauvegarde",
+    "oneJob": "Une tâche de sauvegarde",
+    "empty": "Aucune tâche de sauvegarde pour le moment.",
+    "gone": "Cette tâche de sauvegarde a été supprimée.",
+    "open": "Ouvrir"
+  },
+  "operations": {
+    "list": {
+      "title": "Lister les tâches de sauvegarde"
+    },
+    "failed": {
+      "title": "Sauvegardes échouées"
+    },
+    "run": {
+      "title": "Exécuter la sauvegarde"
+    },
+    "cancel": {
+      "title": "Arrêter la sauvegarde"
+    },
+    "snapshots": {
+      "title": "Lister les sauvegardes instantanées"
+    },
+    "events": {
+      "finished": "Sauvegarde terminée",
+      "failed": "Échec de la sauvegarde"
+    },
+    "jobs": {
+      "title": "Tâches de sauvegarde",
+      "lastSuccess": "Dernière sauvegarde",
+      "nextRun": "Prochaine exécution",
+      "size": "Taille"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Afficher le panneau de sauvegarde dans les terminaux",
+        "description": "Permet d'ouvrir le panneau de sauvegarde à côté du terminal SSH de cet hôte."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Ouvrir le panneau de sauvegarde avec les nouveaux terminaux",
+        "description": "Affiche le panneau de sauvegarde à côté de chaque terminal SSH qui l'a activé. Vous pouvez toujours l'ouvrir et le fermer via le bouton sur le bord droit."
+      },
+      "companionSide": {
+        "label": "Position du panneau de sauvegarde",
+        "description": "Emplacement du panneau de sauvegarde par rapport au terminal.",
+        "right": "Droite",
+        "left": "Gauche",
+        "bottom": "Bas"
+      },
+      "companionSize": {
+        "label": "Taille du panneau de sauvegarde",
+        "description": "Largeur en pixels, ou hauteur lorsqu'il est en bas. Vous pouvez également redimensionner en faisant glisser son bord."
+      },
+      "companionEdgeButton": {
+        "label": "Afficher le bouton du panneau",
+        "description": "Affiche un petit bouton sur le bord droit d'un terminal qui ouvre le panneau de sauvegarde."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Basculer le panneau de sauvegarde"
+  }
+}

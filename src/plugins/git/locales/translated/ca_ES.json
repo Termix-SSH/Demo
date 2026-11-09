@@ -1,0 +1,299 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Visualitza, actualitza, confirma i puja repositoris Git als teus amfitrions i mantén-los actualitzats amb l'actualització automàtica."
+  },
+  "common": {
+    "save": "Desa",
+    "cancel": "Cancel·la",
+    "back": "Enrere",
+    "loading": "S'està carregant..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Utilitza Git",
+      "description": "Visualitza els repositoris Git als amfitrions a què pots accedir i modifica'ls als que pots editar."
+    },
+    "runCommands": {
+      "title": "Executa ordres després de l'actualització automàtica",
+      "description": "Estableix una ordre que s'executi a l'amfitrió després que una actualització automàtica incorpori nous compromisos."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Gestiona els repositoris Git d'aquest amfitrió des de la pestanya Git."
+      },
+      "repoRoots": {
+        "label": "Carpetes d'exploració",
+        "description": "Carpetes que s'exploraran en busca de repositoris quan exploris aquest amfitrió. Separa-les amb comes. Per defecte és la carpeta d'inici.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Utilitza sudo",
+        "description": "Executa git com a arrel amb sudo. Només per a repositoris que l'usuari d'inici de sessió no pot utilitzar."
+      },
+      "readOnly": {
+        "label": "Només lectura",
+        "description": "Mostra els repositoris però mai no els modifiquis en aquest amfitrió."
+      },
+      "showPanel": {
+        "label": "Panell al costat del terminal",
+        "description": "Mostra el panell Git a les pestanyes del terminal d'aquest amfitrió."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Obre el panell amb el terminal",
+        "description": "Mostra el panell Git quan s'obri un terminal en un amfitrió que el tingui."
+      },
+      "companionSide": {
+        "label": "Costat del panell",
+        "description": "On es troba el panell al costat del terminal.",
+        "right": "Dreta",
+        "left": "Esquerra",
+        "bottom": "Inferior"
+      },
+      "companionSize": {
+        "label": "Mida del panell",
+        "description": "Amplada del panell, o la seva alçada a la part inferior, en píxels."
+      },
+      "companionEdgeButton": {
+        "label": "Botó de vora",
+        "description": "Mostra un botó petit a la vora del terminal per obrir el panell."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Obre Git des d'un amfitrió.",
+    "error": "No s'ha pogut carregar git d'aquest amfitrió.",
+    "disabled": "Git està desactivat per a aquest amfitrió. Activa'l a la configuració de l'amfitrió.",
+    "sudo": "Això requereix un inici de sessió com a arrel, sudo sense contrasenya o una contrasenya Sudo desada.",
+    "refresh": "Actualitza",
+    "readOnly": "Només lectura",
+    "notInstalled": "git no instal·lat",
+    "notInstalledTitle": "git no està instal·lat en aquest amfitrió",
+    "notInstalledHint": "Instal·la git amb el gestor de paquets de l'amfitrió i després actualitza."
+  },
+  "actions": {
+    "ok": "Fet",
+    "failed": "Ha fallat",
+    "noOutput": "Sense sortida."
+  },
+  "repos": {
+    "add": "Afegeix repositori",
+    "search": "Cerca repositoris",
+    "empty": "Encara no hi ha repositoris. Afegeix-ne un per començar.",
+    "noMatch": "Cap repositori no coincideix.",
+    "viewOnly": "No s'ha afegit cap repositori a aquest amfitrió.",
+    "detached": "desenganxat",
+    "changes_one": "{{count}} canvi",
+    "changes_many": "{{count}} canvis",
+    "changes_other": "{{count}} canvis",
+    "conflicts": "Conflictes",
+    "auto": "Actualització automàtica",
+    "autoFailing": "L'actualització ha fallat",
+    "remove": "Elimina de la llista",
+    "removeTitle": "Vols eliminar {{name}}?",
+    "removeBody": "El repositori només s'oblida aquí. No s'esborra res a l'amfitrió.",
+    "removed": "{{name}} eliminat",
+    "error": {
+      "missing": "Carpeta que falta",
+      "notrepo": "No és un repositori git",
+      "unreadable": "No es pot llegir"
+    }
+  },
+  "add": {
+    "title": "Afegir repositoris",
+    "modeScan": "Escanejar",
+    "modePath": "Carpeta",
+    "modeClone": "Clonar",
+    "scanHint": "Cerca repositoris git a {{roots}}. Canvia les carpetes a la configuració de l'amfitrió.",
+    "rescan": "Tornar a escanejar",
+    "noneFound": "No s'han trobat repositoris nous.",
+    "picked": "Seleccionats",
+    "addPicked_one": "Afegeix {{count}} repositori",
+    "addPicked_many": "Afegeix {{count}} repositoris",
+    "addPicked_other": "Afegeix {{count}} repositoris",
+    "addAll": "Afegir-ho tot",
+    "folder": "Carpeta a l'amfitrió",
+    "folderHint": "Ruta completa o comença amb ~ per a la carpeta d'inici. Ha de ser ja un repositori git.",
+    "addRepo": "Afegir repositori",
+    "url": "Adreça",
+    "urlHint": "Utilitza les claus i la configuració de git de l'usuari que ha iniciat sessió a l'amfitrió.",
+    "dest": "Clonar a",
+    "destHint": "La carpeta no ha d'existir encara.",
+    "clone": "Clonar",
+    "cloned": "Clonat",
+    "added_one": "{{count}} repositori afegit",
+    "added_many": "{{count}} repositoris afegits",
+    "added_other": "{{count}} repositoris afegits",
+    "failed": "No s'ha pogut afegir el repositori",
+    "scanFailed": "No s'ha pogut escanejar l'amfitrió"
+  },
+  "repo": {
+    "ahead": "{{count}} per davant",
+    "behind": "{{count}} per darrere",
+    "fetch": "Recollir",
+    "fetched": "Recollit",
+    "pull": "Actualitzar",
+    "pulled": "Actualitzat",
+    "push": "Enviar",
+    "pushed": "Enviat",
+    "viewChanges": "Canvis",
+    "viewBranches": "Branques",
+    "viewHistory": "Historial",
+    "viewStash": "Reserva",
+    "viewAuto": "Actualització automàtica"
+  },
+  "changes": {
+    "loadFailed": "No s'han pogut llegir els canvis.",
+    "clean": "No hi ha res per confirmar. L'arbre de treball és net.",
+    "stagedTitle": "Preparats ({{count}})",
+    "unstagedTitle": "Canvis ({{count}})",
+    "stage": "Preparar",
+    "staged": "Preparat",
+    "unstage": "Despreparar",
+    "unstaged": "No preparat",
+    "stageAll": "Preparar-ho tot",
+    "renamed": "Reanomenat",
+    "discard": "Descartar",
+    "discardTitle": "Vols descartar els canvis de {{name}}?",
+    "discardBody": "Els canvis d'aquest fitxer s'eliminen i no es poden recuperar.",
+    "discarded": "Canvis descartats",
+    "message": "Missatge de confirmació",
+    "messagePlaceholder": "Què ha canviat",
+    "commit": "Confirmar",
+    "commitAll": "Confirmar tots els canvis",
+    "commitStaged_one": "Confirmar {{count}} fitxer preparat",
+    "commitStaged_many": "Confirmar {{count}} fitxers preparats",
+    "commitStaged_other": "Confirmar {{count}} fitxers preparats",
+    "committed": "Confirmat",
+    "noDiff": "No hi ha canvis per mostrar.",
+    "truncated": "La diferència és llarga, per la qual cosa només es mostra el principi."
+  },
+  "branches": {
+    "loadFailed": "No s'han pogut llegir les branques.",
+    "empty": "Encara no hi ha branques.",
+    "current": "Actual",
+    "remote": "Remota",
+    "gone": "L'origen s'ha perdut",
+    "newName": "Nova branca",
+    "create": "Crear branca",
+    "created": "Branca {{name}} creada",
+    "switch": "Canviar",
+    "switched": "S'ha canviat a {{name}}",
+    "merge": "Fusionar amb l'actual",
+    "mergeTitle": "Fusionar {{name}} amb {{into}}?",
+    "mergeBody": "Una fusió amb conflictes es desferà immediatament.",
+    "merged": "{{name}} fusionada",
+    "delete": "Eliminar branca",
+    "deleteTitle": "Eliminar {{name}}?",
+    "deleteBody": "Git es negarà si la branca té commits que no s'han fusionat.",
+    "deleted": "{{name}} eliminada",
+    "forceTitle": "Forçar l'eliminació de {{name}}?",
+    "forceBody": "Aquesta branca té commits que no s'han fusionat. Es perdran si l'elimineu.",
+    "forceDelete": "Forçar eliminació"
+  },
+  "history": {
+    "loadFailed": "No s'ha pogut llegir l'historial.",
+    "empty": "Encara no hi ha commits.",
+    "branch": "Aquesta branca",
+    "all": "Totes les branques",
+    "more": "Carregar-ne més"
+  },
+  "stash": {
+    "loadFailed": "No s'ha pogut llegir la pila de canvis.",
+    "title": "Piles de canvis",
+    "empty": "No hi ha piles de canvis.",
+    "message": "Missatge",
+    "messagePlaceholder": "Opcional",
+    "untracked": "Incloure fitxers no rastrejats",
+    "push": "Guardar canvis",
+    "pushDone": "Canvis guardats",
+    "apply": "Aplicar",
+    "applyDone": "Pila de canvis aplicada",
+    "pop": "Aplicar i eliminar",
+    "popDone": "Pila de canvis aplicada i eliminada",
+    "drop": "Eliminar",
+    "dropDone": "Pila de canvis eliminada",
+    "dropTitle": "Eliminar {{name}}?",
+    "dropBody": "La pila de canvis s'eliminarà i no es podrà recuperar.",
+    "remotes": "Remotes",
+    "noRemotes": "No hi ha remotes."
+  },
+  "auto": {
+    "intro": "Realitza actualitzacions segons un calendari, només amb avançament ràpid. Mai fusiona i ignora el repositori si té canvis no confirmats o si ha divergit de l'origen.",
+    "noUpstream": "Aquesta branca encara no té un origen, per la qual cosa l'actualització automàtica la saltarà.",
+    "enable": "Actualització automàtica",
+    "enableHint": "S'executa com a vosaltres, amb el vostre accés a aquest host.",
+    "interval": "Cada (minuts)",
+    "intervalHint": "Quant de temps esperar entre actualitzacions.",
+    "post": "Comandament després d'una actualització",
+    "postHint": "S'executa a la carpeta del repositori quan arriben nous commits. Requereix el permís d'executar comandaments.",
+    "saved": "Actualització automàtica desada",
+    "saveFailed": "No s'ha pogut desar l'actualització automàtica",
+    "runNow": "Executar ara",
+    "next": "Propera actualització {{when}}",
+    "runs": "Execucions recents",
+    "noRuns": "Encara no hi ha execucions.",
+    "outcome": {
+      "pulled": "Actualitzat",
+      "uptodate": "Actualitzat",
+      "skipped": "Saltat",
+      "failed": "Ha fallat"
+    }
+  },
+  "card": {
+    "title": "Repositoris Git",
+    "loading": "S'està carregant...",
+    "refresh": "Actualitza",
+    "empty": "Encara no hi ha cap amfitrió amb repositoris Git.",
+    "allClean": "Tots els repositoris estan nets i actualitzats.",
+    "summary_one": "{{count}} repositori | {{attention}} necessita una mirada",
+    "summary_many": "{{count}} repositoris | {{attention}} necessiten una mirada",
+    "summary_other": "{{count}} repositoris | {{attention}} necessiten una mirada"
+  },
+  "companion": {
+    "toggle": "Panell de Git",
+    "openTab": "Obre Git",
+    "here": "Repositori d'aquesta carpeta",
+    "all": "Tots els repositoris"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Llista repositoris Git"
+    },
+    "fetch": {
+      "title": "Obté un repositori"
+    },
+    "pull": {
+      "title": "Actualitza un repositori"
+    },
+    "push": {
+      "title": "Puja un repositori"
+    },
+    "checkout": {
+      "title": "Canvia de branca",
+      "branch": "Branca"
+    },
+    "reset-hard": {
+      "title": "Restableix un repositori de forma forçada",
+      "ref": "Restableix a"
+    },
+    "repos": {
+      "title": "Repositoris Git",
+      "branch": "Branca",
+      "ahead": "Per davant",
+      "behind": "Per darrere",
+      "changed": "Canvis"
+    },
+    "signals": {
+      "behind": "Repositoris per darrere",
+      "dirty": "Repositoris amb canvis",
+      "pull-failing": "L'actualització automàtica ha fallat"
+    }
+  }
+}

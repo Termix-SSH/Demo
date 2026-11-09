@@ -1,0 +1,232 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "ホストに WireGuard をインストールし、インターフェース、クライアント、設定を1つのタブで管理します。"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "back": "戻る",
+    "delete": "削除",
+    "loading": "読み込み中..."
+  },
+  "permissions": {
+    "use": {
+      "title": "WireGuard の使用",
+      "description": "編集可能なホスト上の WireGuard インターフェースとクライアントを管理します。"
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "ホストから WireGuard を開いてください。",
+    "error": "このホストから WireGuard を読み込めませんでした。",
+    "sudo": "WireGuard を管理するには、このホストで root ログインまたはパスワードなしの sudo が必要です。",
+    "installed": "インストール済み",
+    "notInstalled": "未インストール",
+    "refresh": "更新",
+    "viewInterfaces": "インターフェース",
+    "viewLogs": "ログ"
+  },
+  "install": {
+    "title": "WireGuard のインストール",
+    "desc": "ホストのパッケージマネージャーを使用して、WireGuard ツールと iptables をインストールします。",
+    "confirm": "インストール",
+    "done": "WireGuard がインストールされました。",
+    "failed": "WireGuard のインストールに失敗しました。",
+    "empty": "このホストには WireGuard がインストールされていません",
+    "noManager": "サポートされているパッケージマネージャーが見つかりませんでした。手動で WireGuard をインストールしてください。",
+    "hint": "{{os}} にインストールして、このホストから VPN を実行してください。",
+    "thisHost": "このホスト",
+    "button": "WireGuard をインストール",
+    "working": "インストール中..."
+  },
+  "interfaces": {
+    "add": "インターフェースを追加",
+    "empty": "インターフェースがありません。VPN を開始するには1つ追加してください。",
+    "loadFailed": "インターフェースを読み込めませんでした。",
+    "up": "起動中",
+    "down": "停止中",
+    "clients": "forms: { \"other\": \"{{count}} クライアント\" }",
+    "nat": "NAT",
+    "boot": "起動時に開始"
+  },
+  "create": {
+    "title": "インターフェースを追加",
+    "name": "名前",
+    "address": "アドレス",
+    "addressHint": "サーバーのアドレスとサブネット。クライアントは次の空きアドレスを取得します。",
+    "port": "UDP ポート",
+    "nat": "ホストのインターネットを共有 (NAT)",
+    "natDesc": "クライアントは、このホストを通じてインターネットとホストのネットワークにアクセスできます。",
+    "natMissing": "NAT には iptables が必要ですが、このホストにはインストールされていません。",
+    "forwarding": "IP フォワーディングを有効にする",
+    "forwardingDesc": "ホストがクライアントとネットワーク間のトラフィックを通過できるようにします。再起動後も設定が保持されます。",
+    "firewall": "ファイアウォールでポートを開く",
+    "firewallDesc": "ufw または firewalld が実行中の場合、UDP ポートを追加します。",
+    "start": "今すぐ開始し、起動時にも開始する",
+    "startDesc": "インターフェースを有効にし、再起動後も有効な状態に保ちます。",
+    "save": "作成",
+    "done": "インターフェースの準備ができました。",
+    "failed": "インターフェースの作成に失敗しました。"
+  },
+  "detail": {
+    "clients": "クライアント",
+    "settings": "設定",
+    "config": "設定ファイル",
+    "service": "サービス",
+    "gone": "このインターフェースはホスト上に存在しなくなりました。"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "このホストのメニューに WireGuard タブを表示します。"
+      },
+      "showPanel": {
+        "label": "ターミナルに WireGuard パネルを表示",
+        "description": "このホストの SSH ターミナルの横に WireGuard パネルを開くことを許可します。"
+      },
+      "alertDown": {
+        "label": "インターフェースがダウンしたときにアラート",
+        "description": "起動時に開始されるインターフェースがアクティブでない場合にアラートを送信します。WireGuard のステータスが読み取られたときにチェックされます。"
+      }
+    },
+    "publicKey": "公開鍵",
+    "port": "UDP ポート",
+    "endpoint": "サーバーエンドポイント",
+    "endpointHint": "クライアントが接続する公開アドレス（例：vpn.example.com:51820）。",
+    "dns": "クライアント用 DNS",
+    "dnsHint": "オプション。サーバーはカンマで区切ってください。",
+    "allowed": "VPN 経由のトラフィック",
+    "allowedHint": "クライアントが VPN 経由で送信する範囲。0.0.0.0/0、::/0 はすべてを送信します。",
+    "keepalive": "キープアライブ（秒）",
+    "keepaliveHint": "NAT 背後のクライアントに到達可能に保ちます。無効にするには 0 を使用します。",
+    "saved": "設定が保存されました。",
+    "saveFailed": "設定を保存できませんでした。",
+    "user": {
+      "companionAutoOpen": {
+        "label": "新しいターミナルで WireGuard パネルを開く",
+        "description": "WireGuard が有効なすべての SSH ターミナルの横に WireGuard パネルを表示します。右端のボタンから引き続き開閉できます。"
+      },
+      "companionSide": {
+        "label": "WireGuard パネルの位置",
+        "description": "ターミナルの横に WireGuard パネルを配置する場所。",
+        "right": "右",
+        "left": "左",
+        "bottom": "下"
+      },
+      "companionSize": {
+        "label": "WireGuard パネルのサイズ",
+        "description": "ピクセル単位の幅、または下部にある場合は高さ。端をドラッグして調整することもできます。"
+      },
+      "companionEdgeButton": {
+        "label": "パネルボタンを表示",
+        "description": "ターミナルの右端に WireGuard パネルを開く小さなボタンを表示します。"
+      }
+    }
+  },
+  "clients": {
+    "add": "クライアントを追加",
+    "empty": "まだクライアントがありません。",
+    "loadFailed": "クライアントを読み込めませんでした。",
+    "name": "名前",
+    "nameHint": "英数字、ドット、ダッシュ、アンダースコアを使用できます。",
+    "allowed": "VPN 経由のトラフィック",
+    "allowedHint": "インターフェースのデフォルト（{{value}}）を使用する場合は空のままにしてください。",
+    "create": "クライアントを作成",
+    "addFailed": "クライアントを追加できませんでした。",
+    "needEndpoint": "まず、インターフェース設定でサーバーエンドポイントを設定してください。",
+    "connected": "接続済み",
+    "off": "オフ",
+    "external": "手動で作成",
+    "handshake": "{{ago}} 前にハンドシェイク",
+    "showConfig": "設定と QR コードを表示",
+    "configFailed": "クライアント設定を読み取れませんでした。",
+    "rotate": "新しい鍵",
+    "rotateTitle": "{{name}} の新しい鍵を作成しますか？",
+    "rotateDesc": "古い設定は機能しなくなります。その後、クライアントに新しい設定を提供してください。",
+    "turnOff": "オフにする",
+    "turnOn": "オンにする",
+    "saveFailed": "クライアントを変更できませんでした。",
+    "deleteTitle": "{{name}} を削除しますか？",
+    "deleteDesc": "クライアントは削除され、それ以上接続できなくなります。",
+    "deleteFailed": "クライアントを削除できませんでした。"
+  },
+  "clientConfig": {
+    "note": "この設定にはクライアントの秘密鍵が含まれています。使用する人物やデバイスとのみ共有してください。",
+    "qr": "クライアント設定の QR コード",
+    "copy": "コピー",
+    "copied": "設定がコピーされました。",
+    "copyFailed": "設定をコピーできませんでした。",
+    "download": ".conf をダウンロード"
+  },
+  "config": {
+    "title": "設定ファイル",
+    "hint": "プライベートキーと事前共有キーは非表示です。プレースホルダーのままにするとキーが保持されます。設定は保存前にチェックされ、バックアップが作成されます。アドレスの変更には再起動が必要です。",
+    "loadFailed": "設定を読み込めませんでした。",
+    "saved": "設定が保存されました。",
+    "saveFailed": "設定を保存できませんでした。"
+  },
+  "logs": {
+    "loadFailed": "ログを読み込めませんでした。",
+    "lines": "{{count}} 行",
+    "empty": "ログはありません。"
+  },
+  "service": {
+    "failed": "サービス操作に失敗しました。",
+    "start": "開始",
+    "stop": "停止",
+    "restart": "再起動",
+    "autostart": "起動時に開始",
+    "autostartDesc": "ホストの起動時にこのインターフェースを開始します。",
+    "needsSystemd": "起動時の開始には、このホストで systemd が必要です。",
+    "noForward": "このホストでは IP フォワーディングが無効化されているため、クライアントは NAT を介してネットワークにアクセスできません。",
+    "delete": "インターフェースを削除",
+    "deleteTitle": "{{name}} を削除しますか？",
+    "deleteDesc": "インターフェースが停止され、その設定、キー、および保存されたクライアントファイルがホストから削除されます。",
+    "deleteFailed": "インターフェースを削除できませんでした。"
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "このカードを使用するには、このホストの設定で WireGuard を有効にしてください。",
+    "start": "有効化",
+    "stop": "無効化",
+    "done": "{{name}} が更新されました"
+  },
+  "operations": {
+    "list": {
+      "title": "WireGuard インターフェースの一覧"
+    },
+    "down": {
+      "title": "WireGuard インターフェースを停止"
+    },
+    "start": {
+      "title": "WireGuard インターフェースを開始"
+    },
+    "stop": {
+      "title": "WireGuard インターフェースを停止"
+    },
+    "restart": {
+      "title": "WireGuard インターフェースを再起動"
+    },
+    "interfaces": {
+      "title": "WireGuard インターフェース",
+      "address": "アドレス",
+      "port": "ポート",
+      "clients": "クライアント"
+    }
+  },
+  "nav": {
+    "togglePanel": "WireGuard パネルの表示/非表示"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "ホストを確認中...",
+    "summary_other": "{{hosts}} 台のホストに {{count}} 人のクライアント",
+    "refresh": "再確認",
+    "empty": "ホストで WireGuard を有効にすると、ここに表示されます。",
+    "missing": "インストールされていません",
+    "down_other": "{{count}} 停止中",
+    "interfaces_other": "{{count}} 個のインターフェース、{{clients}} 人のクライアント"
+  }
+}

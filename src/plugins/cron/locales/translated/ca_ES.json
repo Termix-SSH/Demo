@@ -1,0 +1,210 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "Visualitza, afegeix i executa tasques cron als teus amfitrions, amb una vista prèvia del calendari i els fitxers cron del sistema."
+  },
+  "common": {
+    "save": "Desa",
+    "cancel": "Cancel·la",
+    "back": "Enrere",
+    "delete": "Suprimeix"
+  },
+  "permissions": {
+    "use": {
+      "title": "Utilitza Cron",
+      "description": "Visualitza les tasques cron als amfitrions a què tens accés i modifica-les als que pots editar."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Gestiona les tasques cron d'aquest amfitrió des de la pestanya Cron."
+      },
+      "useSudo": {
+        "label": "Utilitza sudo",
+        "description": "Utilitza sudo per a les taules cron d'altres usuaris i /etc/cron.d. Desactiva-ho si l'usuari d'inici de sessió és root."
+      },
+      "readOnly": {
+        "label": "Només lectura",
+        "description": "Mostra les tasques cron però no les modifiquis mai en aquest amfitrió."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "Obre Cron des d'un amfitrió.",
+    "error": "No s'ha pogut carregar cron d'aquest amfitrió.",
+    "disabled": "Cron està desactivat per a aquest amfitrió. Activa'l a la configuració de l'amfitrió.",
+    "sudo": "Això requereix un inici de sessió com a root, sudo sense contrasenya o una contrasenya de sudo desada.",
+    "refresh": "Actualitza",
+    "running": "Cron en execució",
+    "stopped": "Cron aturat",
+    "readOnly": "Només lectura",
+    "notInstalled": "No instal·lat",
+    "notInstalledTitle": "Cron no està instal·lat en aquest amfitrió",
+    "notInstalledHint": "Instal·la cron o cronie amb el gestor de paquets de l'amfitrió i, a continuació, actualitza.",
+    "notRunning": "El servei cron no s'està executant, per tant, no s'executarà cap tasca.",
+    "viewJobs": "Tasques",
+    "viewSystem": "Sistema",
+    "viewLogs": "Registres"
+  },
+  "jobs": {
+    "add": "Afegeix tasca",
+    "user": "Taula cron de",
+    "ownUser": "{{user}} (inici de sessió)",
+    "search": "Cerca tasques",
+    "editText": "Edita com a text",
+    "empty": "Encara no hi ha tasques cron.",
+    "noMatch": "Cap tasca coincideix.",
+    "off": "Desactivat",
+    "next": "següent {{time}}",
+    "run": "Executa ara",
+    "runTitle": "Vols executar aquesta tasca ara?",
+    "runDesc": "Això executa {{command}} una vegada com a usuari de la taula cron. S'atura després de 2 minuts.",
+    "runFailed": "No s'ha pogut executar la tasca.",
+    "turnOn": "Activa",
+    "turnOff": "Desactiva",
+    "deleteTitle": "Vols suprimir aquesta tasca?",
+    "loadFailed": "No s'ha pogut llegir la taula cron.",
+    "saveFailed": "No s'ha pogut desar la taula cron.",
+    "outputTitle": "Sortida de la tasca",
+    "exitOk": "Finalitzat",
+    "exitCode": "Codi de sortida {{code}}",
+    "noOutput": "La tasca no ha imprès res."
+  },
+  "form": {
+    "addTitle": "Tasca nova",
+    "editTitle": "Edita la tasca",
+    "forUser": "Taula cron de {{user}}",
+    "label": "Etiqueta",
+    "labelHint": "Es desa com a comentari per sobre de la tasca.",
+    "labelPlaceholder": "Còpia de seguretat nocturna",
+    "command": "Comanda",
+    "commandHint": "S'executa amb sh al directori d'inici de l'usuari. Un % inicia l'entrada que envia cron, escriu \\% per a un de real.",
+    "schedule": "Programació",
+    "scheduleHint": "Minut, hora, dia del mes, mes i dia de la setmana, o una paraula com @daily.",
+    "scheduleInvalid": "Aquesta no és una programació vàlida.",
+    "nextRuns": "Pròximes execucions ({{zone}}):",
+    "enabled": "Activat",
+    "enabledHint": "Una tasca desactivada es manté al crontab com a comentari.",
+    "saved": "Desat."
+  },
+  "presets": {
+    "everyMinute": "Cada minut",
+    "every5": "Cada 5 min",
+    "every15": "Cada 15 min",
+    "hourly": "Cada hora",
+    "daily": "Diàriament",
+    "weekly": "Setmanalment",
+    "monthly": "Mensualment",
+    "reboot": "En arrencar"
+  },
+  "schedule": {
+    "reboot": "En arrencar",
+    "everyMinute": "Cada minut",
+    "everyNMinutes": "Cada {{n}} minuts",
+    "hourlyAt": "Cada hora al minut {{minute}}",
+    "everyNHours": "Cada {{n}} hores al minut {{minute}}",
+    "dailyAt": "Cada dia a les {{time}}",
+    "weekdaysAt": "De dilluns a divendres a les {{time}}",
+    "weeklyAt": "Cada {{day}} a les {{time}}",
+    "monthlyAt": "El dia {{day}} de cada mes a les {{time}}",
+    "custom": "Programació personalitzada",
+    "invalid": "No és una programació vàlida"
+  },
+  "days": {
+    "0": "Diumenge",
+    "1": "Dilluns",
+    "2": "Dimarts",
+    "3": "Dimecres",
+    "4": "Dijous",
+    "5": "Divendres",
+    "6": "Dissabte"
+  },
+  "raw": {
+    "title": "Crontab com a text",
+    "hint": "Una tasca per línia. L'amfitrió comprova el text i manté el crontab anterior si hi ha errors."
+  },
+  "system": {
+    "add": "Nou fitxer",
+    "addTitle": "Nou fitxer a /etc/cron.d",
+    "edit": "Edita",
+    "name": "Nom del fitxer",
+    "nameHint": "Es desa com a /etc/cron.d/<name>. Cron ignora els noms amb punts.",
+    "nameInvalid": "Utilitza només lletres, números, - i _.",
+    "content": "Contingut del fitxer",
+    "fileHint": "Cada tasca indica l'usuari amb què s'executa: minut hora dia mes dia_setmana usuari comanda. Cada línia es comprova abans de desar.",
+    "noJobs": "No hi ha tasques en aquest fitxer.",
+    "readHint": "Alguns fitxers poden estar ocults sense ser root. Els canvis aquí requereixen un inici de sessió com a root, sudo sense contrasenya o una contrasenya de Sudo desada.",
+    "timers_one": "Aquest amfitrió també té {{count}} temporitzador systemd. El complement Serveis el gestiona.",
+    "timers_many": "Aquest amfitrió també té {{count}} temporitzadors systemd. El complement Serveis els gestiona.",
+    "timers_other": "Aquest amfitrió també té {{count}} temporitzadors systemd. El complement Serveis els gestiona.",
+    "deleteTitle": "Vols suprimir /etc/cron.d/{{name}}?",
+    "deleteDesc": "Es manté una còpia a /var/lib/termix-cron/backup.",
+    "deleted": "S'ha suprimit {{name}}.",
+    "saved": "S'ha desat {{name}}.",
+    "loadFailed": "No s'han pogut llegir els fitxers cron del sistema.",
+    "saveFailed": "No s'ha pogut desar el fitxer.",
+    "period": {
+      "hourly": "S'executa cada hora",
+      "daily": "S'executa cada dia",
+      "weekly": "S'executa cada setmana",
+      "monthly": "S'executa cada mes"
+    }
+  },
+  "logs": {
+    "lines": "Línies",
+    "lineCount_one": "{{count}} línia",
+    "lineCount_many": "{{count}} línies",
+    "lineCount_other": "{{count}} línies",
+    "source": "De {{source}}",
+    "noSource": "No s'ha trobat cap registre cron en aquest amfitrió.",
+    "empty": "No hi ha línies de registre.",
+    "failed": "No s'ha pogut llegir el registre de cron."
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "Activa Cron per a aquest amfitrió a la seva configuració per veure'n les tasques aquí."
+  },
+  "operations": {
+    "list": {
+      "title": "Llista de tasques de cron"
+    },
+    "enable": {
+      "title": "Activa la tasca de cron"
+    },
+    "disable": {
+      "title": "Desactiva la tasca de cron"
+    },
+    "run": {
+      "title": "Executa la tasca de cron ara"
+    },
+    "delete": {
+      "title": "Suprimeix la tasca de cron"
+    },
+    "jobs": {
+      "title": "Tasques de cron",
+      "schedule": "Programació",
+      "command": "Comanda"
+    },
+    "status": {
+      "title": "Estat de cron"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "Comprovant amfitrions...",
+    "summary_one": "{{count}} tasca a {{hosts}} amfitrions",
+    "summary_many": "{{count}} tasques a {{hosts}} amfitrions",
+    "summary_other": "{{count}} tasques a {{hosts}} amfitrions",
+    "refresh": "Torna a comprovar",
+    "empty": "Activa Cron per a un amfitrió per veure'l aquí.",
+    "stopped": "No s'està executant",
+    "missing": "No instal·lat",
+    "jobs_one": "{{count}} tasca",
+    "jobs_many": "{{count}} tasques",
+    "jobs_other": "{{count}} tasques",
+    "off": "{{count}} desactivades"
+  }
+}

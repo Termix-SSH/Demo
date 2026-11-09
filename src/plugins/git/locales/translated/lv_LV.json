@@ -1,0 +1,299 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Apskatiet, velciet, fiksējiet un nosūtiet Git repozitorijus uz saviem hostiem un turiet tos atjauninātus ar automātisko vilkšanu."
+  },
+  "common": {
+    "save": "Saglabāt",
+    "cancel": "Atcelt",
+    "back": "Atpakaļ",
+    "loading": "Ielādē..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Izmantot Git",
+      "description": "Apskatiet Git repozitorijus hostos, kurus varat sasniegt, un mainiet tos hostos, kurus varat rediģēt."
+    },
+    "runCommands": {
+      "title": "Palaist komandas pēc automātiskās vilkšanas",
+      "description": "Iestatiet komandu, kas tiek palaista hostā pēc automātiskās vilkšanas, kas ienes jaunus fiksējumus."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Pārvaldiet Git repozitorijus šajā hostā no Git cilnes."
+      },
+      "repoRoots": {
+        "label": "Skenēt mapes",
+        "description": "Mapes, kurās tiek meklēti repozitoriji, skenējot šo hostu. Atdaliet tās ar komatiem. Noklusējums ir mājas mape.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Izmantot sudo",
+        "description": "Palaist Git kā root ar sudo. Tikai repozitorijiem, kurus pieteiktā lietotāja konts nevar izmantot."
+      },
+      "readOnly": {
+        "label": "Tikai lasīšanai",
+        "description": "Rādīt repozitorijus, bet nekad tos nemainīt šajā hostā."
+      },
+      "showPanel": {
+        "label": "Panelis blakus terminālim",
+        "description": "Piedāvāt Git paneli šī hosta termināļa cilnēs."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Atvērt paneli kopā ar termināli",
+        "description": "Rādīt Git paneli, kad terminālis atveras hostā, kuram tas ir iespējots."
+      },
+      "companionSide": {
+        "label": "Paneļa puse",
+        "description": "Kur panelis atrodas blakus terminālim.",
+        "right": "Labajā pusē",
+        "left": "Kreisajā pusē",
+        "bottom": "Apakšā"
+      },
+      "companionSize": {
+        "label": "Paneļa izmērs",
+        "description": "Paneļa platums vai tā augstums apakšā pikseļos."
+      },
+      "companionEdgeButton": {
+        "label": "Malas poga",
+        "description": "Rādīt mazu pogu termināļa malā, lai atvērtu paneli."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Atveriet Git no hosta.",
+    "error": "Neizdevās ielādēt Git no šī hosta.",
+    "disabled": "Git ir izslēgts šim hostam. Ieslēdziet to hosta iestatījumos.",
+    "sudo": "Šim ir nepieciešama root pieteikšanās, sudo bez paroles vai saglabāta Sudo parole.",
+    "refresh": "Atsvaidzināt",
+    "readOnly": "Tikai lasīšanai",
+    "notInstalled": "Git nav instalēts",
+    "notInstalledTitle": "Git nav instalēts šajā hostā",
+    "notInstalledHint": "Instalējiet Git ar hosta pakotņu pārvaldnieku, pēc tam atsvaidziniet."
+  },
+  "actions": {
+    "ok": "Gatavs",
+    "failed": "Neizdevās",
+    "noOutput": "Nav izvades."
+  },
+  "repos": {
+    "add": "Pievienot repozitoriju",
+    "search": "Meklēt repozitorijus",
+    "empty": "Vēl nav repozitoriju. Pievienojiet vienu, lai sāktu.",
+    "noMatch": "Nav atbilstošu repozitoriju.",
+    "viewOnly": "Šim hostam nav pievienoti repozitoriji.",
+    "detached": "atvienots",
+    "changes_zero": "0 izmaiņas",
+    "changes_one": "{{count}} izmaiņa",
+    "changes_other": "{{count}} izmaiņas",
+    "conflicts": "Konflikti",
+    "auto": "Automātiska vilkšana",
+    "autoFailing": "Vilkšana neizdodas",
+    "remove": "Noņemt no saraksta",
+    "removeTitle": "Noņemt {{name}}?",
+    "removeBody": "Repozitorijs tiek tikai aizmirsts šeit. Hostā nekas netiek dzēsts.",
+    "removed": "{{name}} noņemts",
+    "error": {
+      "missing": "Mape trūkst",
+      "notrepo": "Nav git repozitorijs",
+      "unreadable": "Nevar lasīt"
+    }
+  },
+  "add": {
+    "title": "Pievienot repozitorijus",
+    "modeScan": "Skenēt",
+    "modePath": "Mapes",
+    "modeClone": "Klonēt",
+    "scanHint": "Meklē git repozitorijus mapēs {{roots}}. Mapes var mainīt hosta iestatījumos.",
+    "rescan": "Skenēt vēlreiz",
+    "noneFound": "Jauni repozitorijs nav atrasti.",
+    "picked": "Atlasīts",
+    "addPicked_zero": "Pievienot {{count}} repozitorijus",
+    "addPicked_one": "Pievienot {{count}} repozitoriju",
+    "addPicked_other": "Pievienot {{count}} repozitorijus",
+    "addAll": "Pievienot visus",
+    "folder": "Mape hostā",
+    "folderHint": "Pilns ceļš vai sāciet ar ~, lai norādītu mājas mapi. Tai jau ir jābūt git repozitorijam.",
+    "addRepo": "Pievienot repozitoriju",
+    "url": "Adrese",
+    "urlHint": "Izmanto hosta pieteikšanās lietotāja atslēgas un git iestatījumus.",
+    "dest": "Klonēt uz",
+    "destHint": "Šai mapei vēl nedrīkst pastāvēt.",
+    "clone": "Klonēt",
+    "cloned": "Klonēts",
+    "added_zero": "Pievienoti {{count}} repozitorijs",
+    "added_one": "Pievienots {{count}} repozitorijs",
+    "added_other": "Pievienoti {{count}} repozitorijs",
+    "failed": "Nevarēja pievienot repozitoriju",
+    "scanFailed": "Nevarēja skenēt hostu"
+  },
+  "repo": {
+    "ahead": "{{count}} priekšā",
+    "behind": "{{count}} aiz",
+    "fetch": "Atjaunināt",
+    "fetched": "Atjaunināts",
+    "pull": "Izvilkt",
+    "pulled": "Izvilkt",
+    "push": "Izspiest",
+    "pushed": "Izspiests",
+    "viewChanges": "Izmaiņas",
+    "viewBranches": "Zari",
+    "viewHistory": "Vēsture",
+    "viewStash": "Glābšana",
+    "viewAuto": "Automātiska izvilkšana"
+  },
+  "changes": {
+    "loadFailed": "Nevarēja izlasīt izmaiņas.",
+    "clean": "Nav ko fiksēt. Darba koks ir tīrs.",
+    "stagedTitle": "Sagatavots ({{count}})",
+    "unstagedTitle": "Izmaiņas ({{count}})",
+    "stage": "Sagatavot",
+    "staged": "Sagatavots",
+    "unstage": "Atcelt sagatavošanu",
+    "unstaged": "Nesagatavots",
+    "stageAll": "Sagatavot visus",
+    "renamed": "Pārdēvēts",
+    "discard": "Atmest",
+    "discardTitle": "Atmest izmaiņas failā {{name}}?",
+    "discardBody": "Šī faila izmaiņas tiks dzēstas un nevarēs tikt atjaunotas.",
+    "discarded": "Izmaiņas atmestas",
+    "message": "Fiksācijas ziņojums",
+    "messagePlaceholder": "Kas ir mainīts",
+    "commit": "Fiksēt",
+    "commitAll": "Fiksēt visas izmaiņas",
+    "commitStaged_zero": "Fiksēt {{count}} sagatavotus failus",
+    "commitStaged_one": "Fiksēt {{count}} sagatavotu failu",
+    "commitStaged_other": "Fiksēt {{count}} sagatavotus failus",
+    "committed": "Fiksēts",
+    "noDiff": "Nav izmaiņu, ko parādīt.",
+    "truncated": "Atšķirības ir garas, tāpēc tiek parādīta tikai sākuma daļa."
+  },
+  "branches": {
+    "loadFailed": "Nevarēja izlasīt zarus.",
+    "empty": "Vēl nav zaru.",
+    "current": "Pašreizējais",
+    "remote": "Tālvietnes",
+    "gone": "Upstream vairs nepastāv",
+    "newName": "Jauns zars",
+    "create": "Izveidot zaru",
+    "created": "Zars {{name}} izveidots",
+    "switch": "Pārslēgties",
+    "switched": "Pārslēgts uz {{name}}",
+    "merge": "Apvienot ar pašreizējo",
+    "mergeTitle": "Apvienot {{name}} ar {{into}}?",
+    "mergeBody": "Apvienošana ar konflikt tiek nekavējoties atcelta.",
+    "merged": "{{name}} apvienots",
+    "delete": "Dzēst zaru",
+    "deleteTitle": "Dzēst {{name}}?",
+    "deleteBody": "Git atsakās, ja zaram ir fiksācijas, kas nav apvienotas.",
+    "deleted": "{{name}} dzēsts",
+    "forceTitle": "Piespiedu dzēšana {{name}}?",
+    "forceBody": "Šim zaram ir fiksācijas, kas nav apvienotas. Tās tiks zaudētas, ja to dzēsīsit.",
+    "forceDelete": "Piespiedu dzēšana"
+  },
+  "history": {
+    "loadFailed": "Neizdevās izlasīt vēsturi.",
+    "empty": "Vēl nav veikti fiksējumi.",
+    "branch": "Šī zaru līnija",
+    "all": "Visas zaru līnijas",
+    "more": "Ielādēt vairāk"
+  },
+  "stash": {
+    "loadFailed": "Neizdevās izlasīt glabātuvi.",
+    "title": "Glabātuves",
+    "empty": "Nav glabātuves.",
+    "message": "Ziņojums",
+    "messagePlaceholder": "Neobligāts",
+    "untracked": "Iekļaut neizsekotos failus",
+    "push": "Saglabāt izmaiņas",
+    "pushDone": "Izmaiņas saglabātas",
+    "apply": "Pielietot",
+    "applyDone": "Saglabātās izmaiņas pielietotas",
+    "pop": "Atjaunot",
+    "popDone": "Saglabātās izmaiņas pielietotas un noņemtas",
+    "drop": "Noņemt",
+    "dropDone": "Saglabātās izmaiņas noņemtas",
+    "dropTitle": "Vai noņemt {{name}}?",
+    "dropBody": "Stash tiek dzēsts un to nevar atjaunot.",
+    "remotes": "Attālinātās repozitorijas",
+    "noRemotes": "Nav attālināto repozitoriju."
+  },
+  "auto": {
+    "intro": "Veic vilkšanu pēc grafika, izmantojot tikai ātro priekšgaitu. Tas nekad nesapina un izlaiž repozitoriju, tai ir nesaglabātas izmaiņas vai tā ir atšķīrusies no augšupstream avota.",
+    "noUpstream": "Šai zariem vēl nav augšupstream avota, tāpēc automātiskā vilkšana to izlaidīs.",
+    "enable": "Automātiska vilkšana",
+    "enableHint": "Izpildās jūsu vārdā, izmantojot jūsu piekļuvi šim resursam.",
+    "interval": "Katru (minūtes)",
+    "intervalHint": "Cik ilgi gaidīt starp vilkšanām.",
+    "post": "Komanda pēc vilkšanas",
+    "postHint": "Izpildās repozitorija mapē pēc jaunu fiksēšanu saņemšanas. Nepieciešama atļauja komandu izpildei.",
+    "saved": "Automātiskā vilkšana saglabāta",
+    "saveFailed": "Neizdevās saglabāt automātisko vilkšanu",
+    "runNow": "Izpildīt tagad",
+    "next": "Nākamā vilkšana {{when}}",
+    "runs": "Nesenās izpildes",
+    "noRuns": "Vēl nav izpildes.",
+    "outcome": {
+      "pulled": "Izvilkts",
+      "uptodate": "Atjaunots",
+      "skipped": "Izlaists",
+      "failed": "Neizdevās"
+    }
+  },
+  "card": {
+    "title": "Git reponi",
+    "loading": "Ielādē...",
+    "refresh": "Atsvaidzināt",
+    "empty": "Pavisam vēl nav neviena hosta ar Git reponiem.",
+    "allClean": "Visi reponi ir tīri un atjaunināti.",
+    "summary_zero": "{{count}} reponi | {{attention}} prasa uzmanību",
+    "summary_one": "{{count}} repozitorijs | {{attention}} prasa uzmanību",
+    "summary_other": "{{count}} reponi | {{attention}} prasa uzmanību"
+  },
+  "companion": {
+    "toggle": "Git panelis",
+    "openTab": "Atvērt Git",
+    "here": "Šī foldera repozitorijs",
+    "all": "Visi reponi"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Uzskaitīt Git reponus"
+    },
+    "fetch": {
+      "title": "Atjaunināt repozitoriju"
+    },
+    "pull": {
+      "title": "Pielikt repozitoriju"
+    },
+    "push": {
+      "title": "Izspiest repozitoriju"
+    },
+    "checkout": {
+      "title": "Pārslēgt zaru",
+      "branch": "Zars"
+    },
+    "reset-hard": {
+      "title": "Stingri atiestatīt repozitoriju",
+      "ref": "Atiestatīt uz"
+    },
+    "repos": {
+      "title": "Git reponi",
+      "branch": "Zars",
+      "ahead": "Priekšā",
+      "behind": "Aiz muguras",
+      "changed": "Izmaiņas"
+    },
+    "signals": {
+      "behind": "Reponi aiz muguras",
+      "dirty": "Reponi ar izmaiņām",
+      "pull-failing": "Automātiskā pielikšana neizdodas"
+    }
+  }
+}

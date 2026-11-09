@@ -1,0 +1,216 @@
+{
+  "plugin": {
+    "name": "Pakkette",
+    "description": "Sien en installeer opdaterings op jou gasheer, soek, installeer en verwyder pakkette, en lees die pakketgeskiedenis."
+  },
+  "common": {
+    "cancel": "Kanselleer",
+    "back": "Terug"
+  },
+  "permissions": {
+    "use": {
+      "title": "Gebruik Pakkette",
+      "description": "Sien pakkette en opdaterings op gasheer wat jy kan bereik, en verander hulle op gasheer wat jy kan redigeer."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Pakkette",
+        "description": "Bestuur pakkette en opdaterings op hierdie gasheer vanaf die Pakkette-oortjie."
+      },
+      "useSudo": {
+        "label": "Gebruik sudo",
+        "description": "Gebruik sudo om pakkette te installeer, opdateer en verwyder. Skakel dit af as die aanmelding root is."
+      },
+      "readOnly": {
+        "label": "Slegs lees",
+        "description": "Wys pakkette en opdaterings, maar verander nooit hulle op hierdie gasheer nie."
+      },
+      "showPanel": {
+        "label": "Wys opdateringspaneel in terminale",
+        "description": "Laat die opdateringspaneel oopmaak langs hierdie gasheer se SSH-terminal."
+      },
+      "alertUpdates": {
+        "label": "Waarskuwing vir sekuriteitsopdaterings",
+        "description": "Stuur 'n waarskuwing wanneer hierdie gasheer sekuriteitsopdaterings het of 'n herstart nodig het. Gecontroleer wanneer opdaterings gelees word, ongeveer een keer per uur."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Maak die opdateringspaneel oop met nuwe terminale",
+        "description": "Wys die opdateringspaneel langs elke SSH-terminal wat Pakkette aangeskakel het. Jy kan dit steeds oopmaak en sluit vanaf die knoppie aan die regterkant."
+      },
+      "companionSide": {
+        "label": "Opdateringspaneel kant",
+        "description": "Waar die opdateringspaneel langs 'n terminal sit.",
+        "right": "Reg",
+        "left": "Links",
+        "bottom": "Onder"
+      },
+      "companionSize": {
+        "label": "Opdateringspaneel grootte",
+        "description": "Wydte in pixels, of hoogte wanneer dit onder is. Jy kan ook die rand sleep."
+      },
+      "companionEdgeButton": {
+        "label": "Wys die paneelknoppie",
+        "description": "Wys 'n klein knoppie aan die regterkant van 'n terminal wat die opdateringspaneel oopmaak."
+      }
+    }
+  },
+  "tab": {
+    "title": "Pakkette",
+    "noHost": "Maak Pakkette oop vanaf 'n gasheer.",
+    "error": "Kon nie pakkette van hierdie gasheer laai nie.",
+    "disabled": "Pakkette is afgeskakel vir hierdie gasheer. Skakel dit aan in die gasheerinstellings.",
+    "sudo": "Veranderinge benodig 'n root-aanmelding, wagwoordlose sudo of 'n gestoorde Sudo-wagwoord op hierdie gasheer.",
+    "refresh": "Verfris",
+    "readOnly": "Slegs lees",
+    "noManager": "Geen pakketbestuurder nie",
+    "noManagerTitle": "Geen ondersteunde pakketbestuurder is gevind nie",
+    "noManagerHint": "Pakkette werk met apt, dnf, yum, zypper, pacman en apk.",
+    "indexAge": "Index verfris {{ago}} gelede",
+    "reboot": "Hierdie gasheer benodig 'n herstart om 'n opdatering te voltooi.",
+    "viewUpdates": "Opdaterings",
+    "viewInstalled": "Geïnstalleer",
+    "viewSearch": "Soek",
+    "viewHistory": "Geskiedenis",
+    "viewRepos": "Stoorplekke"
+  },
+  "actions": {
+    "working": "{{action}} word uitgevoer. Dit kan 'n paar minute neem.",
+    "ok": "Klaar",
+    "failed": "Die pakketbestuurder het misluk.",
+    "noOutput": "Geen uitset nie.",
+    "refresh": {
+      "label": "Verfris indeks",
+      "confirm": "Verfris die pakketindeks?",
+      "desc": "Laai die nuutste pakketlyste af.",
+      "done": "Die pakketindeks is op datum."
+    },
+    "update": {
+      "label": "Opdateer",
+      "confirm_one": "Opdateer {{names}}?",
+      "confirm_other": "Opdateer {{count}} pakkette?",
+      "desc": "Installeer die nuutste weergawe van {{names}}.",
+      "done": "Het {{names}} opgedateer."
+    },
+    "upgrade-all": {
+      "label": "Opgradeer alles",
+      "confirm": "Opgradeer elke pakket?",
+      "desc": "Verfris die pakketindeks en installeer elke opdatering. Dienste mag herbegin terwyl dit loop.",
+      "done": "Alle pakkette is op datum."
+    },
+    "install": {
+      "label": "Installeer",
+      "confirm": "Installeer {{names}}?",
+      "desc": "Installeer {{names}} en alles wat dit benodig.",
+      "done": "{{names}} geïnstalleer."
+    },
+    "remove": {
+      "label": "Verwyder",
+      "confirm": "Verwyder {{names}}?",
+      "desc": "Verwyder {{names}} van hierdie gasheer. Programme wat dit benodig, mag ophou werk.",
+      "done": "{{names}} verwyder."
+    },
+    "hold": {
+      "label": "Hou by hierdie weergawe",
+      "confirm": "Hou {{names}}?",
+      "desc": "Opdaterings sal {{names}} oorslaan tot jy dit vrylaat.",
+      "done": "{{names}} word gehou."
+    },
+    "unhold": {
+      "label": "Hou vrylaat",
+      "confirm": "Vrylaat {{names}}?",
+      "desc": "{{names}} kry weer opdaterings.",
+      "done": "{{names}} kry weer opdaterings."
+    }
+  },
+  "updates": {
+    "search": "Filter opdaterings",
+    "count_one": "{{count}} opdatering",
+    "count_other": "{{count}} opdaterings",
+    "countSecurity_one": "{{count}} opdatering, {{security}} vir sekuriteit",
+    "countSecurity_other": "{{count}} opdaterings, {{security}} vir sekuriteit",
+    "updatePicked_one": "Dateer {{count}} pakket op",
+    "updatePicked_other": "Dateer {{count}} pakkette op",
+    "updateOne": "Opdateer",
+    "pick": "Kies {{name}}",
+    "security": "Veiligheid",
+    "empty": "Alles is op datum.",
+    "noMatch": "Geen opdaterings pas by nie.",
+    "loadFailed": "Kon nie die opdaterings lees nie."
+  },
+  "installed": {
+    "search": "Filter geïnstalleerde pakkette",
+    "all": "Alles",
+    "held": "Vasgehou",
+    "heldBadge": "Vasgehou",
+    "empty": "Geen pakkette stem ooreen nie.",
+    "loadFailed": "Kon nie die geïnstalleerde pakkette lees nie."
+  },
+  "search": {
+    "placeholder": "Soek pakkette",
+    "button": "Soek",
+    "hint": "Soek die gasheer se opslagplekke vir 'n pakket om te installeer.",
+    "empty": "Niks gevind nie.",
+    "installed": "Geïnstalleer",
+    "failed": "Die soektog het misluk."
+  },
+  "history": {
+    "empty": "Geen pakketgeskiedenis is gevind nie.",
+    "loadFailed": "Kon nie die pakketgeskiedenis lees nie."
+  },
+  "repos": {
+    "hint": "Die stoorplekke waarvandaan hierdie gasheer installeer. Verander dit op die gasheer self.",
+    "empty": "Geen stoorplekke is gevind nie.",
+    "off": "Af",
+    "loadFailed": "Kon nie die stoorplekke lees nie."
+  },
+  "card": {
+    "title": "Pakketopdaterings",
+    "loading": "Gasheer word nagegaan...",
+    "summary_one": "{{count}} opdatering op {{hosts}} gasheer",
+    "summary_other": "{{count}} opdaterings op {{hosts}} gasheer",
+    "refresh": "Nagaan weer",
+    "empty": "Skakel Pakkette vir 'n gasheer aan om sy opdaterings hier te sien.",
+    "security_one": "{{count}} sekuriteit",
+    "security_other": "{{count}} sekuriteit",
+    "reboot": "Herstart nodig",
+    "updates_one": "{{count}} opdatering",
+    "updates_other": "{{count}} opdaterings",
+    "upToDate": "Op datum"
+  },
+  "manager": {
+    "title": "Pakkette",
+    "disabled": "Skakel Pakkette vir hierdie gasheer in sy instellings aan om sy opdaterings hier te sien."
+  },
+  "operations": {
+    "list": {
+      "title": "Lys pakketaanpassings"
+    },
+    "updates": {
+      "title": "Hangende opdaterings",
+      "resource": "Hangende opdaterings"
+    },
+    "upgradeAll": {
+      "title": "Gradeer alle pakkette op"
+    },
+    "install": {
+      "title": "Installeer pakkette"
+    },
+    "remove": {
+      "title": "Verwyder pakkette"
+    },
+    "package": "Pakkette",
+    "packageHint": "Een of meer pakketname, geskei deur spasies.",
+    "resource": {
+      "current": "Geïnstalleer",
+      "available": "Beskikbaar",
+      "repo": "Repository"
+    }
+  },
+  "nav": {
+    "togglePanel": "Wissel opdateringspaneel"
+  }
+}

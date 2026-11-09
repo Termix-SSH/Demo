@@ -93,7 +93,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /summary:
+   * /plugin-api/ups-manager/summary:
    *   get:
    *     summary: Latest reading of every UPS the user can see
    *     description: Uses the readings the background timer already took, so it never opens an SSH connection.
@@ -144,7 +144,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/detect:
+   * /plugin-api/ups-manager/{hostId}/detect:
    *   get:
    *     summary: Which UPS tools and devices the host has
    *     parameters:
@@ -168,7 +168,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/sources:
+   * /plugin-api/ups-manager/{hostId}/sources:
    *   get:
    *     summary: The UPS devices set up on a host
    *     parameters:
@@ -199,7 +199,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/sources:
+   * /plugin-api/ups-manager/{hostId}/sources:
    *   post:
    *     summary: Add a UPS to a host
    *     parameters:
@@ -235,7 +235,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/sources/{id}:
+   * /plugin-api/ups-manager/{hostId}/sources/{id}:
    *   put:
    *     summary: Change a UPS
    *     description: Secrets left out are kept. Send clearSecrets to remove them.
@@ -272,7 +272,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/sources/{id}:
+   * /plugin-api/ups-manager/{hostId}/sources/{id}:
    *   delete:
    *     summary: Remove a UPS and its history
    *     parameters:
@@ -306,7 +306,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/test-source:
+   * /plugin-api/ups-manager/{hostId}/test-source:
    *   post:
    *     summary: Read a UPS with the given settings without saving it
    *     parameters:
@@ -347,7 +347,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/sources/{id}/status:
+   * /plugin-api/ups-manager/{hostId}/sources/{id}/status:
    *   get:
    *     summary: Read a UPS now
    *     parameters:
@@ -380,7 +380,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/sources/{id}/history:
+   * /plugin-api/ups-manager/{hostId}/sources/{id}/history:
    *   get:
    *     summary: Charge, runtime, load and voltage over time
    *     parameters:
@@ -417,7 +417,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/sources/{id}/events:
+   * /plugin-api/ups-manager/{hostId}/sources/{id}/events:
    *   get:
    *     summary: Power events for a UPS, newest first
    *     parameters:
@@ -449,7 +449,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/sources/{id}/commands:
+   * /plugin-api/ups-manager/{hostId}/sources/{id}/commands:
    *   get:
    *     summary: Instant commands a NUT UPS supports
    *     parameters:
@@ -481,7 +481,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/sources/{id}/commands:
+   * /plugin-api/ups-manager/{hostId}/sources/{id}/commands:
    *   post:
    *     summary: Send an instant command to a NUT UPS
    *     parameters:

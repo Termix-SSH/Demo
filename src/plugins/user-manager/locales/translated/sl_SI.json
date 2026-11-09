@@ -1,0 +1,210 @@
+{
+  "plugin": {
+    "name": "Uporabniki",
+    "description": "Upravljajte uporabniške račune, skupine, gesla in SSH ključe na svojih gostiteljih."
+  },
+  "common": {
+    "save": "Shrani",
+    "cancel": "Prekliči",
+    "back": "Nazaj",
+    "delete": "Izbriši",
+    "loading": "Nalaganje..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Uporaba uporabnikov",
+      "description": "Oglejte si račune na gostiteljih, do katerih lahko dostopate, in jih spremenite na gostiteljih, ki jih lahko urejate."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Uporabniki",
+        "description": "Upravljajte uporabniške račune in skupine na tem gostitelju prek zavihka Uporabniki."
+      },
+      "useSudo": {
+        "label": "Uporaba sudo",
+        "description": "Uporabite sudo za branje in spreminjanje računov. Izklopite, če je prijava kot root."
+      },
+      "readOnly": {
+        "label": "Samo za branje",
+        "description": "Prikaži račune, vendar jih nikoli ne spreminjaj na tem gostitelju."
+      }
+    }
+  },
+  "tab": {
+    "title": "Uporabniki",
+    "noHost": "Odprite Uporabnike iz gostitelja.",
+    "error": "Računov s tega gostitelja ni bilo mogoče naložiti.",
+    "disabled": "Uporabniki so za ta gostitelj izklopljeni. Vklopite jih v nastavitvah gostitelja.",
+    "sudo": "Spremembe in stanja gesel zahtevajo prijavo kot root, sudo brez gesla ali shranjeno sudo geslo na tem gostitelju.",
+    "noTools": "Na tem gostitelju ni nameščen useradd. Na Alpine namestite paket shadow.",
+    "refresh": "Osveži",
+    "readOnly": "Samo za branje",
+    "counts_one": "{{count}} uporabnik",
+    "counts_two": "{{count}} uporabnika",
+    "counts_few": "{{count}} uporabniki",
+    "counts_other": "{{count}} uporabnikov",
+    "viewUsers": "Uporabniki",
+    "viewGroups": "Skupine",
+    "viewSessions": "Seje"
+  },
+  "users": {
+    "add": "Dodaj uporabnika",
+    "search": "Išči uporabnike",
+    "people": "Osebe",
+    "systemFilter": "Sistem",
+    "all": "Vsi",
+    "empty": "Ni ujemajočih se uporabnikov.",
+    "you": "Vi",
+    "sudo": "Sudo",
+    "locked": "Zaklenjeno",
+    "emptyPassword": "Brez gesla",
+    "system": "Sistem",
+    "loadFailed": "Računov ni bilo mogoče prebrati."
+  },
+  "password": {
+    "set": "Nastavi",
+    "locked": "Zaklenjeno",
+    "none": "Ni nastavljeno, prijava z geslom ni mogoča",
+    "empty": "Prazno, lahko se prijavi vsakdo",
+    "unknown": "Za ugotovitev potreben root"
+  },
+  "detail": {
+    "info": "Račun",
+    "account": "Podrobnosti",
+    "fullName": "Polno ime",
+    "uid": "ID uporabnika in skupine",
+    "mainGroup": "Glavna skupina",
+    "home": "Domača mapa",
+    "shell": "Lupina",
+    "groups": "Skupine",
+    "groupsPlaceholder": "Vnesite skupino in pritisnite Enter",
+    "unknownGroups": "Te skupine ne obstajajo: {{groups}}",
+    "none": "Brez",
+    "password": "Geslo",
+    "passwordChanged": "Geslo spremenjeno",
+    "lastLogin": "Zadnja prijava",
+    "never": "Nikoli",
+    "unknown": "Neznano",
+    "saved": "Shranjeno.",
+    "failed": "Sprememba ni uspela.",
+    "loadFailed": "Ni bilo mogoče prebrati ključev in zadnje prijave tega uporabnika.",
+    "passwordSection": "Geslo",
+    "newPassword": "Novo geslo",
+    "newPasswordHint": "Poslano na strežnik prek SSH in nastavljeno z ukazom chpasswd. Geslo se nikoli ne shrani v Termix.",
+    "setPassword": "Nastavi geslo",
+    "passwordSet": "Geslo nastavljeno.",
+    "expirePassword": "Pri naslednji prijavi zahtevaj novo geslo",
+    "expired": "Pri naslednji prijavi bodo izbrali novo geslo.",
+    "access": "Dostop",
+    "sudo": "Sudo",
+    "sudoHint": "Izvajaj ukaze kot root prek skupine {{group}}.",
+    "sudoProtected": "Sudo pravice ne morete odvzeti uporabniku root ali uporabniku, kot se Termix prijavi.",
+    "sudoTitle": "Dodeliti uporabniku {{name}} sudo pravice?",
+    "sudoDesc": "Uporabnika doda v skupino {{group}}, tako da lahko izvaja poljubne ukaze kot root.",
+    "sudoGrant": "Dodeli sudo",
+    "sudoOn": "Sudo pravice dodeljene.",
+    "sudoOff": "Sudo pravice odvzete.",
+    "lock": "Zakleni račun",
+    "unlock": "Odkleni račun",
+    "lockTitle": "Zakleniti uporabnika {{name}}?",
+    "lockDesc": "Ne bodo se mogli prijaviti z geslom ali SSH ključem, dokler računa ne odklenete.",
+    "lockHint": "Blokira prijave z geslom in SSH ključem.",
+    "protected": "Uporabnika root in uporabnika, kot se Termix prijavi, ni mogoče zakleniti ali izbrisati.",
+    "locked": "Račun zaklenjen.",
+    "unlocked": "Račun odklenjen.",
+    "danger": "Izbriši",
+    "removeHome": "Izbriši tudi domačo mapo",
+    "removeHomeHint": "Izbriše {{home}} in vsebino v njej.",
+    "delete": "Izbriši uporabnika",
+    "deleteTitle": "Izbrisati uporabnika {{name}}?",
+    "deleteDesc": "Račun bo odstranjen. Njegova domača mapa bo ostala na strežniku.",
+    "deleteDescHome": "Račun in mapa {{home}} bosta odstranjena. Tega ni mogoče razveljaviti.",
+    "deleted": "Uporabnik {{name}} izbrisan."
+  },
+  "keys": {
+    "title": "SSH ključi",
+    "empty": "Ni SSH ključev.",
+    "denied": "Ključev ni mogoče prebrati brez pravic root.",
+    "options": "Možnosti",
+    "remove": "Odstrani ključ",
+    "removeTitle": "Odstraniti ta ključ?",
+    "removed": "Ključ odstranjen.",
+    "add": "Dodaj ključ",
+    "addHint": "Prilepite en javni ključ, na primer vsebino datoteke id_ed25519.pub.",
+    "addButton": "Dodaj ključ",
+    "added": "Ključ dodan."
+  },
+  "create": {
+    "title": "Nov uporabnik",
+    "name": "Uporabniško ime",
+    "nameHint": "Mala črka, številke, - in _.",
+    "nameInvalid": "Začnite s črko in uporabljajte le a-z, 0-9, - in _.",
+    "home": "Domača mapa",
+    "homeHint": "Pustite prazno za /home/{{name}}.",
+    "createHome": "Ustvari domačo mapo",
+    "password": "Geslo",
+    "passwordHint": "Neobvezno. Brez gesla se lahko uporabnik prijavi le s SSH ključem.",
+    "again": "Geslo ponovno",
+    "mismatch": "Gesli se ne ujemata.",
+    "save": "Ustvari uporabnika",
+    "done": "Uporabnik {{name}} ustvarjen.",
+    "failed": "Uporabnika ni bilo mogoče ustvariti."
+  },
+  "groups": {
+    "add": "Dodaj skupino",
+    "name": "Ime skupine",
+    "namePlaceholder": "Ime nove skupine",
+    "create": "Ustvari",
+    "created": "Ustvarjena skupina {{name}}.",
+    "search": "Išči skupine",
+    "empty": "Ni ujemajočih se skupin.",
+    "noMembers": "Ni članov.",
+    "failed": "Sprememba ni uspela.",
+    "addMember": "Dodaj člana",
+    "pickUser": "Izberite uporabnika",
+    "removeMember": "Odstrani iz skupine",
+    "memberAdded": "Uporabnik {{name}} je bil dodan v skupino {{group}}.",
+    "memberRemoved": "Uporabnik {{name}} je bil odstranjen iz skupine {{group}}.",
+    "mainGroup": "Glavna skupina",
+    "mainGroupHint": "To je njihova glavna skupina, zato ji vedno pripadajo.",
+    "deleteTitle": "Izbrišem skupino {{name}}?",
+    "deleteDesc": "Skupina bo odstranjena. Datoteke, ki jih je lastnila, bodo ohranile svojo staro identifikacijsko številko.",
+    "deleted": "Izbrisana skupina {{name}}."
+  },
+  "sessions": {
+    "now": "Trenutno prijavljeni",
+    "none": "Nihče ni prijavljen.",
+    "recent": "Nedavne prijave",
+    "noRecent": "Zgodovina prijav ni bila najdena.",
+    "loadFailed": "Seje ni bilo mogoče prebrati."
+  },
+  "manager": {
+    "title": "Uporabniki",
+    "disabled": "V nastavitvah tega gostitelja vklopite funkcijo Uporabniki, da boste tukaj videli njegove račune."
+  },
+  "operations": {
+    "list": {
+      "title": "Seznam uporabnikov"
+    },
+    "emptyPasswords": {
+      "title": "Računi brez gesla"
+    },
+    "lock": {
+      "title": "Zakleni uporabnika"
+    },
+    "unlock": {
+      "title": "Odkleni uporabnika"
+    },
+    "delete": {
+      "title": "Izbriši uporabnika"
+    },
+    "users": {
+      "title": "Uporabniki",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "Skupine"
+    }
+  }
+}

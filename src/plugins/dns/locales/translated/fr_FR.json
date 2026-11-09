@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Gérez les enregistrements DNS et les domaines sur Cloudflare, Route 53, Namecheap et d'autres fournisseurs."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domaines",
+    "loading": "Chargement",
+    "empty": "Aucun domaine pour le moment. Ouvrez DNS pour ajouter une connexion.",
+    "ok": "{{domains}} domaines, aucun n'expire bientôt",
+    "accounts": "{{count}} connexions",
+    "failingLinks": "{{count}} enregistrements liés en échec"
+  },
+  "permissions": {
+    "view": {
+      "title": "Voir le DNS",
+      "description": "Ouvrez l'onglet DNS et consultez les zones, les enregistrements, les domaines et les vérifications d'état."
+    },
+    "edit": {
+      "title": "Modifier les enregistrements DNS",
+      "description": "Ajoutez, modifiez et supprimez des enregistrements, importez des fichiers de zone et actualisez les domaines."
+    },
+    "manage": {
+      "title": "Gérer les connexions DNS",
+      "description": "Ajoutez des connexions de fournisseur, liez des enregistrements à des hôtes, surveillez les domaines et restaurez des copies de zone."
+    }
+  },
+  "operations": {
+    "zone": "Zone",
+    "type": "Type",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Nom",
+    "content": "Valeur",
+    "contentOptional": "Valeur (laissez vide pour tout correspondre)",
+    "ttl": "TTL en secondes",
+    "label": "Étiquette",
+    "zones": {
+      "title": "Lister les zones DNS"
+    },
+    "records": {
+      "title": "Lister les enregistrements DNS"
+    },
+    "domains": {
+      "title": "Lister les domaines et les dates d'expiration"
+    },
+    "check": {
+      "title": "Vérifier une zone"
+    },
+    "upsert": {
+      "title": "Définir un enregistrement DNS"
+    },
+    "delete": {
+      "title": "Supprimer un enregistrement DNS"
+    },
+    "snapshot": {
+      "title": "Sauvegarder une copie d'une zone"
+    },
+    "links": {
+      "title": "Mettre à jour les enregistrements liés"
+    },
+    "expiry": {
+      "title": "Expiration du domaine"
+    }
+  },
+  "description": "Ajoutez vos connexions DNS et d'enregistreur pour gérer les enregistrements et surveiller les domaines en un seul endroit. Les clés sont stockées de manière chiffrée et ne sont plus affichées.",
+  "summary": "{{zones}} zones, {{domains}} domaines",
+  "saved": "Enregistré",
+  "delete": "Supprimer",
+  "edit": "Modifier",
+  "back": "Retour",
+  "refresh": "Actualiser",
+  "section": {
+    "zones": "Zones",
+    "domains": "Domaines",
+    "links": "Liens",
+    "accounts": "Connexions"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "Jeton API",
+    "accessKeyId": "ID de clé d'accès",
+    "secretAccessKey": "Clé d'accès secrète",
+    "sessionToken": "Jeton de session (facultatif)",
+    "apiUser": "Utilisateur API",
+    "apiKey": "Clé API",
+    "userName": "Nom d'utilisateur (s'il diffère de l'utilisateur API)",
+    "clientIp": "Adresse IP autorisée",
+    "apiSecret": "Secret API",
+    "environment": "Environnement",
+    "environment_production": "Production",
+    "environment_ote": "Test (OTE)",
+    "secretApiKey": "Clé API secrète",
+    "token": "Jeton d'accès personnel"
+  },
+  "zones": {
+    "empty": "Aucune zone pour le moment.",
+    "emptyHint": "Ajoutez une connexion fournisseur dans Connexions pour voir ses zones."
+  },
+  "zone": {
+    "records": "Enregistrements",
+    "health": "État de santé",
+    "copies": "Copies",
+    "files": "Fichiers",
+    "filter": "Filtrer les enregistrements",
+    "empty": "Aucun enregistrement."
+  },
+  "record": {
+    "section": "Enregistrement",
+    "addTitle": "Ajouter un enregistrement",
+    "editTitle": "Modifier l'enregistrement",
+    "add": "Ajouter un enregistrement",
+    "save": "Enregistrer",
+    "type": "Type",
+    "name": "Nom",
+    "nameHint": "Utilisez @ pour {{zone}} lui-même",
+    "value": "Valeur",
+    "priority": "Priorité",
+    "ttl": "TTL (secondes)",
+    "ttlHint": "Durée de conservation de la réponse par les résolveurs. 300 correspond à 5 minutes.",
+    "ttlAuto": "1 signifie automatique.",
+    "proxied": "Proxifié",
+    "proxiedHint": "Acheminer le trafic via Cloudflare.",
+    "proxiedBadge": "Proxifié",
+    "comment": "Note",
+    "readOnly": "Géré par le fournisseur",
+    "deleteConfirm": "Supprimer l'enregistrement {{type}} {{name}} ?"
+  },
+  "account": {
+    "add": "Ajouter une connexion",
+    "addTitle": "Ajouter une connexion DNS",
+    "editTitle": "Modifier la connexion DNS",
+    "save": "Enregistrer",
+    "login": "Connexion",
+    "provider": "Fournisseur",
+    "name": "Nom",
+    "namePlaceholder": "Cloudflare principal",
+    "keep": "Laissez vide pour conserver la valeur enregistrée",
+    "registrar": "Ce fournisseur est également un registraire, ses domaines apparaissent donc dans Domaines.",
+    "options": "Options",
+    "autoBackup": "Conserver des copies des zones",
+    "autoBackupHint": "Sauvegarder une copie avant chaque modification et lorsqu'une zone change en dehors de Termix.",
+    "checkHealth": "Vérifier les zones chaque jour",
+    "checkHealthHint": "Exécuter les vérifications d'état quotidiennement et alerter en cas de nouveaux problèmes.",
+    "test": "Tester",
+    "testOk": "Fonctionne. {{zones}} zones et {{domains}} domaines trouvés.",
+    "deleteConfirm": "Supprimer {{name}} ? Ses copies et liens seront supprimés. Aucun changement ne sera effectué chez le fournisseur.",
+    "empty": "Aucune connexion pour le moment.",
+    "emptyHint": "Ajoutez une connexion Cloudflare, Route 53, Namecheap ou autre pour commencer.",
+    "lastSync": "Dernière vérification le {{date}}",
+    "never": "Pas encore vérifié",
+    "failed": "La connexion a échoué"
+  },
+  "domains": {
+    "empty": "Aucun domaine pour le moment.",
+    "emptyHint": "Les connexions de registraire listent leurs domaines ici. Vous pouvez également surveiller n'importe quel domaine par son nom.",
+    "watchPlaceholder": "example.com",
+    "watch": "Surveiller le domaine",
+    "unwatch": "Arrêter la surveillance",
+    "watched": "Surveillé",
+    "noRenew": "Renouvellement automatique désactivé",
+    "unlocked": "Non verrouillé",
+    "unknown": "Bureau d'enregistrement inconnu",
+    "expires": "Expire le {{date}}",
+    "expired": "Expiré",
+    "days": "{{count}} jour restant",
+    "refreshFailed": "{{count}} requêtes ont échoué"
+  },
+  "link": {
+    "add": "Ajouter un lien",
+    "addTitle": "Ajouter un lien",
+    "editTitle": "Modifier le lien",
+    "save": "Enregistrer",
+    "record": "Enregistrement",
+    "address": "Adresse",
+    "zone": "Zone",
+    "pickZone": "Choisir une zone",
+    "source": "Pointer vers",
+    "sourceHost": "Un hôte",
+    "sourcePublic4": "L'adresse IPv4 publique de ce serveur",
+    "sourcePublic6": "L'adresse IPv6 publique de ce serveur",
+    "source_host": "Hôte",
+    "source_public4": "IPv4 publique",
+    "source_public6": "IPv6 publique",
+    "host": "Hôte",
+    "pickHost": "Choisir un hôte",
+    "hostHint": "L'enregistrement suit l'adresse de l'hôte. Il se met à jour lorsque l'hôte change.",
+    "publicHint": "Termix recherche son adresse publique et maintient l'enregistrement synchronisé, comme un DNS dynamique.",
+    "enabled": "Garder cet enregistrement à jour",
+    "empty": "Aucun lien pour le moment.",
+    "emptyHint": "Un lien maintient un enregistrement pointant vers un hôte ou vers l'adresse publique de ce serveur.",
+    "off": "Désactivé",
+    "hostGone": "Hôte introuvable",
+    "lastSync": "Vérifié le {{date}}",
+    "never": "Pas encore vérifié",
+    "syncNow": "Mettre à jour maintenant",
+    "updated": "L'enregistrement a été mis à jour",
+    "unchanged": "L'enregistrement était déjà correct",
+    "deleteConfirm": "Supprimer le lien pour {{name}} ? L'enregistrement reste tel quel."
+  },
+  "diff": {
+    "none": "Rien ne changerait.",
+    "add": "Ajouter",
+    "change": "Modifier",
+    "remove": "Supprimer"
+  },
+  "copies": {
+    "hint": "Les copies sont sauvegardées avant chaque modification et une fois par jour si une zone a été modifiée en dehors de Termix.",
+    "save": "Sauvegarder une copie",
+    "saved": "Copie sauvegardée",
+    "manualLabel": "Copie manuelle",
+    "empty": "Aucune copie pour le moment.",
+    "count": "{{count}} enregistrement",
+    "compare": "Comparer avec l'état actuel",
+    "restore": "Restaurer",
+    "restoreConfirm": "Restaurer cette copie ? {{count}} modifications seront effectuées chez le fournisseur. Une copie des enregistrements actuels est sauvegardée au préalable.",
+    "restored": "Restauré. {{count}} modifications effectuées.",
+    "source": {
+      "manual": "Manuel",
+      "auto": "Quotidien",
+      "before": "Avant modification"
+    }
+  },
+  "files": {
+    "export": "Télécharger le fichier de zone",
+    "exportHint": "Télécharger les enregistrements sous forme de fichier de zone BIND.",
+    "import": "Importer un fichier de zone",
+    "placeholder": "Collez un fichier de zone BIND ici",
+    "replace": "Supprimer les enregistrements absents du fichier",
+    "replaceHint": "Désactivé, l'importation ajoute et modifie uniquement les enregistrements.",
+    "preview": "Aperçu",
+    "apply": "Appliquer",
+    "applied": "Importé. {{count}} modifications effectuées.",
+    "skipped": "Ignorés :"
+  },
+  "health": {
+    "run": "Exécuter les vérifications",
+    "running": "En cours",
+    "propagation": "Vérifier les résolveurs",
+    "propagationTitle": "Résolveurs publics",
+    "lastRun": "Dernière exécution le {{date}}",
+    "empty": "Aucune vérification n'a encore été exécutée pour cette zone.",
+    "record": "Enregistrement",
+    "resolver": "Résolveur",
+    "answer": "Réponse",
+    "noAnswer": "Aucune réponse",
+    "delegation": {
+      "error": "Les serveurs de noms n'ont pas pu être résolus.",
+      "none": "La zone ne possède aucun serveur de noms sur Internet. Le domaine ne pointe peut-être pas vers ce fournisseur.",
+      "mismatch": "Le domaine utilise des serveurs de noms différents de ceux du fournisseur : {{found}}.",
+      "ok": "Le domaine pointe vers {{count}} serveur(s) de noms."
+    },
+    "soa": {
+      "differ": "Les serveurs de noms ne sont pas d'accord sur la version de la zone ({{count}} versions). Une modification est peut-être encore en cours de propagation.",
+      "same": "{{count}} serveur(s) de noms sont d'accord sur la version de la zone."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC n'a pas pu être vérifié.",
+      "off": "DNSSEC n'est pas activé.",
+      "valid": "DNSSEC est activé et valide.",
+      "broken": "DNSSEC est configuré chez l'enregistreur mais ne valide pas. Les résolveurs qui le vérifient échoueront."
+    },
+    "cname": {
+      "conflict": "{{name}} possède un enregistrement CNAME et d'autres enregistrements. Cela n'est pas autorisé.",
+      "apex": "La racine de la zone ne peut pas être un enregistrement CNAME.",
+      "dangling": "{{name}} pointe vers {{target}}, qui ne se résout pas.",
+      "ok": "Toutes les cibles CNAME se résolvent."
+    },
+    "spf": {
+      "missing": "Le domaine reçoit des e-mails mais ne possède pas d'enregistrement SPF.",
+      "multiple": "Il y a plus d'un enregistrement SPF. Les serveurs de messagerie les rejetteront tous.",
+      "lookups": "L'enregistrement SPF effectue {{count}} requêtes. La limite est de 10.",
+      "ok": "SPF est configuré ({{count}} requêtes)."
+    },
+    "dmarc": {
+      "missing": "Il n'y a pas d'enregistrement DMARC.",
+      "none": "DMARC est configuré en mode surveillance uniquement.",
+      "ok": "DMARC est configuré."
+    },
+    "dkim": {
+      "none": "Aucune clé DKIM n'a été trouvée dans cette zone.",
+      "found": "{{count}} clé(s) DKIM trouvée(s)."
+    },
+    "mx": {
+      "unresolved": "Le serveur de messagerie {{host}} ne se résout pas."
+    },
+    "mail": {
+      "none": "Le domaine ne possède aucun enregistrement de messagerie."
+    },
+    "caa": {
+      "ok": "Les enregistrements CAA limitent les autorités de certification pouvant émettre des certificats.",
+      "none": "Il n'y a pas d'enregistrements CAA. Toute autorité de certification peut émettre des certificats."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domaines, domaines expirant et enregistrements en échec.",
+    "domains": "Domaines",
+    "expiring": "Expiration prochaine",
+    "failingLinks": "Liens en échec",
+    "failingAccounts": "Connexions en échec"
+  }
+}

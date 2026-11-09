@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Napajanje, senzori, dnevnici događaja i konzole za server BMC putem Redfisha, IPMI i Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Učitavanje"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "Pregled BMC-a",
+      "description": "Otvorite karticu Out-of-band i pregledavajte napajanje, stanje, senzore i dnevnike."
+    },
+    "power": {
+      "title": "Upravljanje napajanjem i pokretanjem",
+      "description": "Uključivanje i isključivanje strojeva, ponovno pokretanje napajanja te odabir sljedećeg uređaja za pokretanje."
+    },
+    "console": {
+      "title": "Koristi serijsku konzolu",
+      "description": "Otvori serijsku konzolu putem LAN-a za uređaj."
+    },
+    "media": {
+      "title": "Koristi virtualne medije",
+      "description": "Poveži i isključi ISO slike na uređaju."
+    },
+    "manage": {
+      "title": "Upravljaj BMC-ovima",
+      "description": "Dodaj, promijeni i ukloni BMC-ove te očisti njihove dnevnike događaja."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Pokreni ipmitool na Termix poslužitelju",
+        "description": "Kada je isključeno, IPMI BMC-ovi moraju koristiti posrednički poslužitelj. Redfish i AMT nisu pogođeni."
+      }
+    }
+  },
+  "description": "Dodajte upravljačke kontrolere (BMC-ove) vaših poslužitelja kako biste ih uključivali i isključivali, pratili njihove senzore i čitali njihove dnevnike događaja. Prijavni podaci se pohranjuju šifrirano i nikada se više ne prikazuju.",
+  "summary": "{{count}} BMC-ova, {{attention}} zahtijeva pažnju",
+  "empty": "Još nema BMC-a.",
+  "add": "Dodaj BMC",
+  "edit": "Uredi",
+  "delete": "Izbriši",
+  "back": "Natrag",
+  "saved": "Spremljeno",
+  "deleteConfirm": "Izbrisati {{name}}?",
+  "status": {
+    "unknown": "Još nije pročitano",
+    "up": "Dostupno",
+    "down": "Nedostupno"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI preko LAN-a",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Korisničko ime",
+    "password": "Lozinka"
+  },
+  "power": {
+    "on": "Uključeno",
+    "off": "Isključeno",
+    "unknown": "Nepoznato",
+    "sent": "Zatraženo od {{name}} da promijeni napajanje",
+    "action": {
+      "on": "Uključi napajanje",
+      "off": "Isključi napajanje",
+      "graceful-shutdown": "Isključi sustav",
+      "cycle": "Ciklus napajanja",
+      "reset": "Ponovno pokretanje"
+    },
+    "confirm": {
+      "on": "Uključiti {{name}}?",
+      "off": "Prekinuti napajanje uređaja {{name}}? Sustav se neće ispravno isključiti.",
+      "graceful-shutdown": "Zatražiti isključivanje uređaja {{name}}?",
+      "cycle": "Pokrenuti ciklus napajanja uređaja {{name}}? Sustav se neće ispravno isključiti.",
+      "reset": "Ponovno pokrenuti uređaj {{name}}? Sustav će se odmah ponovno pokrenuti."
+    }
+  },
+  "health": {
+    "ok": "Ispravan",
+    "warning": "Upozorenje",
+    "critical": "Kritično",
+    "unknown": "Nepoznato"
+  },
+  "kind": {
+    "temperature": "Temperatura",
+    "fan": "Ventilator",
+    "voltage": "Napon",
+    "power": "Snaga",
+    "psu": "Napajanje",
+    "other": "Ostalo"
+  },
+  "form": {
+    "addTitle": "Dodaj BMC",
+    "editTitle": "Uredi BMC",
+    "device": "BMC",
+    "access": "Pristup",
+    "type": "Vrsta",
+    "name": "Naziv",
+    "address": "Adresa",
+    "port": "Port",
+    "host": "Termix domaćin",
+    "hostHint": "Povežite BMC s domaćinu kojem pripada. Tada će pratiti njegovo dijeljenje i pojavljivati se u izborniku tog domaćina.",
+    "noHost": "Ništa",
+    "poll": "Čitaj svakih (sekundi)",
+    "pollHint": "Najmanje 30 sekundi, odnosno 60 kada se koristi posrednički domaćin.",
+    "scheme": "Veza",
+    "relay": "Posrednički domaćin",
+    "relayHint": "Pokrenite ipmitool na ovom domaćinu umjesto na Termix poslužitelju. Potrebno za serijsku konzolu.",
+    "noRelay": "Termix poslužitelj",
+    "cipher": "Skup šifri",
+    "cipherHint": "Promijenite ovo samo ako BMC odbija prijavu. 3 je uobičajena vrijednost, 17 za novije BMC-e.",
+    "ca": "CA certifikat",
+    "caHint": "Zalijepite PEM certifikata ovlaštenja za izdavanje certifikata (CA) BMC-a. Ostavite prazno za pouzdani certifikat.",
+    "caSet": "CA je spremljen. Zalijepite novi kako biste ga zamijenili.",
+    "keepLogin": "Ostavite prazno da zadržite spremljenu prijavu",
+    "test": "Testiraj vezu",
+    "testOk": "BMC je odgovorio. Napajanje je {{power}}.",
+    "testNeedsLogin": "Unesite prijavu ponovno za testiranje.",
+    "save": "Spremi",
+    "add": "Dodaj"
+  },
+  "view": {
+    "overview": "Pregled",
+    "sensors": "Senzori",
+    "log": "Dnevnik događaja",
+    "boot": "Pokretanje",
+    "media": "Virtualni mediji",
+    "console": "Konzola",
+    "refresh": "Pročitaj sada",
+    "type": "Vrsta",
+    "address": "Adresa",
+    "power": "Napajanje",
+    "health": "Zdravlje",
+    "manufacturer": "Proizvođač",
+    "model": "Model",
+    "serial": "Serijski broj",
+    "bios": "BIOS",
+    "bmc": "BMC firmware",
+    "status": "BMC",
+    "viaRelay": "Dostupno putem posredničkog domaćina.",
+    "noSensors": "Ovaj BMC ne prijavljuje senzore.",
+    "sensor": "Senzor",
+    "reading": "Očitavanje",
+    "state": "Stanje"
+  },
+  "log": {
+    "time": "Vrijeme",
+    "severity": "Razina",
+    "message": "Događaj",
+    "empty": "Dnevnik događaja je prazan.",
+    "clear": "Očisti dnevnik",
+    "clearConfirm": "Očistiti dnevnik događaja za {{name}}? Ovo se ne može poništiti.",
+    "cleared": "Dnevnik očišćen",
+    "level": {
+      "info": "Info",
+      "warning": "Upozorenje",
+      "critical": "Kritično"
+    }
+  },
+  "boot": {
+    "hint": "Računalo će se pokrenuti s ovog uređaja jednom, a zatim se vratiti na normalan redoslijed. Primijenite prije ponovnog pokretanja.",
+    "device": "Pokreni s",
+    "mode": "Način",
+    "uefi": "UEFI",
+    "legacy": "Legacy BIOS",
+    "apply": "Postavi za sljedeći pokret",
+    "done": "{{name}} će se sljedeći put pokrenuti s odabranog uređaja",
+    "pxe": "Mreža (PXE)",
+    "disk": "Tvrdi disk",
+    "cd": "CD ili virtualni medij",
+    "usb": "USB",
+    "bios": "BIOS postavke",
+    "none": "Normalni redoslijed"
+  },
+  "media": {
+    "url": "Adresa slike",
+    "empty": "Ovaj BMC nema utor za virtualni CD.",
+    "mounted": "Povezano",
+    "free": "Prazno",
+    "mount": "Poveži",
+    "eject": "Izbaci",
+    "mountedDone": "Slika je povezana",
+    "ejected": "Slika je izbačena"
+  },
+  "console": {
+    "hint": "Upišite ~. za napuštanje konzole.",
+    "connecting": "Povezivanje",
+    "ended": "Konzola je zatvorena.",
+    "failed": "Konzola se nije mogla otvoriti.",
+    "needsRelay": "Serijska konzola zahtijeva posrednički host s ipmitoolom. Odaberite ga u postavkama BMC-a."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Pokreni s",
+    "uefi": "UEFI način",
+    "list": {
+      "title": "Popis BMC-ova"
+    },
+    "poll": {
+      "title": "Očitaj BMC sada"
+    },
+    "powerState": {
+      "title": "Dohvati stanje napajanja"
+    },
+    "power-on": {
+      "title": "Uključi"
+    },
+    "graceful-shutdown": {
+      "title": "Isključi"
+    },
+    "power-off": {
+      "title": "Isključi napajanje"
+    },
+    "power-cycle": {
+      "title": "Ciklus napajanja"
+    },
+    "reset": {
+      "title": "Ponovno pokreni"
+    },
+    "setBootOnce": {
+      "title": "Pokreni jednom s uređaja"
+    },
+    "clearLog": {
+      "title": "Obriši dnevnik događaja"
+    },
+    "health": {
+      "title": "Zdravlje BMC-a"
+    }
+  },
+  "widget": {
+    "name": "Out-of-band",
+    "description": "Napajanje i zdravlje vaših servera BMC-ova.",
+    "summary": "{{up}} od {{total}} aktivno"
+  }
+}

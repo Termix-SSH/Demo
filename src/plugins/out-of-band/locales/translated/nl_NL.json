@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Voeding, sensoren, gebeurtenislogboeken en consoles voor server-BMC's via Redfish, IPMI en Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Laden"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "BMC's bekijken",
+      "description": "Open het tabblad Out-of-band en bekijk voeding, gezondheid, sensoren en logboeken."
+    },
+    "power": {
+      "title": "Voeding en opstarten beheren",
+      "description": "Schakel machines in en uit, voer een power cycle uit en kies het volgende opstartapparaat."
+    },
+    "console": {
+      "title": "Gebruik de seriële console",
+      "description": "Open de serial-over-LAN-console van een machine."
+    },
+    "media": {
+      "title": "Gebruik virtuele media",
+      "description": "Koppel en ejecteer ISO-images op een machine."
+    },
+    "manage": {
+      "title": "BMC's beheren",
+      "description": "Voeg BMC's toe, wijzig ze, verwijder ze en wis hun gebeurtenislogboeken."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Voer ipmitool uit op de Termix-server",
+        "description": "Als dit uitstaat, moeten IPMI-BMC's een relay-host gebruiken. Redfish en AMT worden hierdoor niet beïnvloed."
+      }
+    }
+  },
+  "description": "Voeg de beheercontrollers (BMC's) van uw servers toe om ze in en uit te schakelen, hun sensoren te bewaken en hun gebeurtenislogboeken te lezen. Inloggegevens worden versleuteld opgeslagen en nooit meer getoond.",
+  "summary": "{{count}} BMC's, {{attention}} hebben aandacht nodig",
+  "empty": "Nog geen BMC's.",
+  "add": "BMC toevoegen",
+  "edit": "Bewerken",
+  "delete": "Verwijderen",
+  "back": "Terug",
+  "saved": "Opgeslagen",
+  "deleteConfirm": "{{name}} verwijderen?",
+  "status": {
+    "unknown": "Nog niet gelezen",
+    "up": "Bereikbaar",
+    "down": "Onbereikbaar"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI over LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Gebruikersnaam",
+    "password": "Wachtwoord"
+  },
+  "power": {
+    "on": "Aan",
+    "off": "Uit",
+    "unknown": "Onbekend",
+    "sent": "Aan {{name}} gevraagd om de voeding te wijzigen",
+    "action": {
+      "on": "Inschakelen",
+      "off": "Uitschakelen",
+      "graceful-shutdown": "Afsluiten",
+      "cycle": "Power cycle",
+      "reset": "Herstellen"
+    },
+    "confirm": {
+      "on": "{{name}} inschakelen?",
+      "off": "De stroom van {{name}} onderbreken? Het systeem wordt niet netjes afgesloten.",
+      "graceful-shutdown": "Aan {{name}} vragen om af te sluiten?",
+      "cycle": "{{name}} een power cycle geven? Het systeem wordt niet netjes afgesloten.",
+      "reset": "{{name}} herstellen? Het systeem start onmiddellijk opnieuw op."
+    }
+  },
+  "health": {
+    "ok": "Gezond",
+    "warning": "Waarschuwing",
+    "critical": "Kritiek",
+    "unknown": "Onbekend"
+  },
+  "kind": {
+    "temperature": "Temperatuur",
+    "fan": "Ventilator",
+    "voltage": "Spanning",
+    "power": "Vermogen",
+    "psu": "Voeding",
+    "other": "Overig"
+  },
+  "form": {
+    "addTitle": "BMC toevoegen",
+    "editTitle": "BMC bewerken",
+    "device": "BMC",
+    "access": "Toegang",
+    "type": "Type",
+    "name": "Naam",
+    "address": "Adres",
+    "port": "Poort",
+    "host": "Termix-host",
+    "hostHint": "Koppel de BMC aan de host waartoe hij behoort. Hij volgt dan het deelbeleid van die host en wordt weergegeven in het hostmenu.",
+    "noHost": "Geen",
+    "poll": "Lees elke (seconden)",
+    "pollHint": "Minimaal 30 seconden, of 60 wanneer een relay-host wordt gebruikt.",
+    "scheme": "Verbinding",
+    "relay": "Relay-host",
+    "relayHint": "Voer ipmitool uit op deze host in plaats van op de Termix-server. Vereist voor de seriële console.",
+    "noRelay": "Termix-server",
+    "cipher": "Versleutelingsreeks",
+    "cipherHint": "Wijzig dit alleen als de BMC de inlogpoging weigert. 3 is de gebruikelijke waarde, 17 voor nieuwere BMC's.",
+    "ca": "CA-certificaat",
+    "caHint": "Plak de PEM van de certificeringsautoriteit van de BMC. Laat leeg voor een vertrouwd certificaat.",
+    "caSet": "Er is een CA opgeslagen. Plak een nieuwe om deze te vervangen.",
+    "keepLogin": "Laat leeg om de opgeslagen inloggegevens te behouden",
+    "test": "Verbinding testen",
+    "testOk": "De BMC heeft gereageerd. De voeding is {{power}}.",
+    "testNeedsLogin": "Voer de inloggegevens opnieuw in om te testen.",
+    "save": "Opslaan",
+    "add": "Toevoegen"
+  },
+  "view": {
+    "overview": "Overzicht",
+    "sensors": "Sensoren",
+    "log": "Gebeurtenislogboek",
+    "boot": "Opstarten",
+    "media": "Virtuele media",
+    "console": "Console",
+    "refresh": "Nu lezen",
+    "type": "Type",
+    "address": "Adres",
+    "power": "Vermogen",
+    "health": "Gezondheid",
+    "manufacturer": "Fabrikant",
+    "model": "Model",
+    "serial": "Serienummer",
+    "bios": "BIOS",
+    "bmc": "BMC-firmware",
+    "status": "BMC",
+    "viaRelay": "Bereikt via een relay-host.",
+    "noSensors": "Deze BMC rapporteert geen sensoren.",
+    "sensor": "Sensor",
+    "reading": "Waarde",
+    "state": "Status"
+  },
+  "log": {
+    "time": "Tijd",
+    "severity": "Niveau",
+    "message": "Gebeurtenis",
+    "empty": "Het gebeurtenislogboek is leeg.",
+    "clear": "Logboek wissen",
+    "clearConfirm": "Het gebeurtenislogboek van {{name}} wissen? Dit kan niet ongedaan worden gemaakt.",
+    "cleared": "Logboek gewist",
+    "level": {
+      "info": "Info",
+      "warning": "Waarschuwing",
+      "critical": "Kritiek"
+    }
+  },
+  "boot": {
+    "hint": "De machine start een keer op vanaf dit apparaat en keert daarna terug naar de normale opstartvolgorde. Pas dit toe voordat u herstart.",
+    "device": "Opstarten vanaf",
+    "mode": "Modus",
+    "uefi": "UEFI",
+    "legacy": "Legacy BIOS",
+    "apply": "Instellen voor volgende opstart",
+    "done": "{{name}} start de volgende keer op vanaf het gekozen apparaat",
+    "pxe": "Netwerk (PXE)",
+    "disk": "Harde schijf",
+    "cd": "CD of virtuele media",
+    "usb": "USB",
+    "bios": "BIOS-instellingen",
+    "none": "Standaard volgorde"
+  },
+  "media": {
+    "url": "Afbeeldingsadres",
+    "empty": "Deze BMC heeft geen virtuele CD-sleuf.",
+    "mounted": "Gemount",
+    "free": "Leeg",
+    "mount": "Mounten",
+    "eject": "Uitschieten",
+    "mountedDone": "Afbeelding gemount",
+    "ejected": "Afbeelding uitgeschoten"
+  },
+  "console": {
+    "hint": "Typ ~. om de console te verlaten.",
+    "connecting": "Verbinden",
+    "ended": "De console is gesloten.",
+    "failed": "De console kon niet worden geopend.",
+    "needsRelay": "De seriële console vereist een relay-host met ipmitool. Kies er een in de BMC-instellingen."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Opstarten vanaf",
+    "uefi": "UEFI-modus",
+    "list": {
+      "title": "BMC's weergeven"
+    },
+    "poll": {
+      "title": "BMC nu lezen"
+    },
+    "powerState": {
+      "title": "Voedingsstatus ophalen"
+    },
+    "power-on": {
+      "title": "Inschakelen"
+    },
+    "graceful-shutdown": {
+      "title": "Afsluiten"
+    },
+    "power-off": {
+      "title": "Uitschakelen"
+    },
+    "power-cycle": {
+      "title": "Voeding herstarten"
+    },
+    "reset": {
+      "title": "Herstellen"
+    },
+    "setBootOnce": {
+      "title": "Eén keer opstarten vanaf apparaat"
+    },
+    "clearLog": {
+      "title": "Gebeurtenislogboek wissen"
+    },
+    "health": {
+      "title": "BMC-gezondheid"
+    }
+  },
+  "widget": {
+    "name": "Out-of-band",
+    "description": "Voeding en gezondheid van uw server-BMC's.",
+    "summary": "{{up}} van {{total}} actief"
+  }
+}

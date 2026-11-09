@@ -1,0 +1,206 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "Visa, lägg till och kör cron-jobb på dina värdar, med en schemaförhandsgranskning och systemets cron-filer."
+  },
+  "common": {
+    "save": "Spara",
+    "cancel": "Avbryt",
+    "back": "Tillbaka",
+    "delete": "Ta bort"
+  },
+  "permissions": {
+    "use": {
+      "title": "Använd Cron",
+      "description": "Visa cron-jobb på värdar du kan nå och ändra dem på värdar du kan redigera."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Hantera cron-jobb på denna värd från Cron-fliken."
+      },
+      "useSudo": {
+        "label": "Använd sudo",
+        "description": "Använd sudo för andra användares crontabber och /etc/cron.d. Stäng av om inloggningen är root."
+      },
+      "readOnly": {
+        "label": "Skrivskyddad",
+        "description": "Visa cron-jobb men ändra aldrig dem på denna värd."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "Öppna Cron från en värd.",
+    "error": "Kunde inte ladda cron från denna värd.",
+    "disabled": "Cron är inaktiverat för denna värd. Aktivera det i värdinställningarna.",
+    "sudo": "Detta kräver root-inloggning, lösenordsfritt sudo eller ett sparade Sudo-lösenord.",
+    "refresh": "Uppdatera",
+    "running": "Cron körs",
+    "stopped": "Cron stoppad",
+    "readOnly": "Skrivskyddad",
+    "notInstalled": "Inte installerad",
+    "notInstalledTitle": "Cron är inte installerad på denna värd",
+    "notInstalledHint": "Installera cron eller cronie med värdens pakethanterare och uppdatera sedan.",
+    "notRunning": "Cron-tjänsten körs inte, så inga jobb kommer att köras.",
+    "viewJobs": "Jobb",
+    "viewSystem": "System",
+    "viewLogs": "Loggar"
+  },
+  "jobs": {
+    "add": "Lägg till jobb",
+    "user": "Crontab för",
+    "ownUser": "{{user}} (inloggning)",
+    "search": "Sök jobb",
+    "editText": "Redigera som text",
+    "empty": "Inga cron-jobb ännu.",
+    "noMatch": "Inga jobb matchar.",
+    "off": "Av",
+    "next": "nästa {{time}}",
+    "run": "Kör nu",
+    "runTitle": "Kör detta jobb nu?",
+    "runDesc": "Detta kör {{command}} en gång som crontabens användare. Det stoppar efter 2 minuter.",
+    "runFailed": "Kunde inte köra jobbet.",
+    "turnOn": "Aktivera",
+    "turnOff": "Inaktivera",
+    "deleteTitle": "Ta bort detta jobb?",
+    "loadFailed": "Kunde inte läsa crontabben.",
+    "saveFailed": "Kunde inte spara crontabben.",
+    "outputTitle": "Jobbets utdata",
+    "exitOk": "Klar",
+    "exitCode": "Avslutningskod {{code}}",
+    "noOutput": "Jobbet skrev ut ingenting."
+  },
+  "form": {
+    "addTitle": "Nytt jobb",
+    "editTitle": "Redigera jobb",
+    "forUser": "Crontab för {{user}}",
+    "label": "Etikett",
+    "labelHint": "Sparas som en kommentar ovanför jobbet.",
+    "labelPlaceholder": "Nattlig säkerhetskopia",
+    "command": "Kommando",
+    "commandHint": "Körs med sh i användarens hemkatalog. Ett % startar den inmatning cron skickar, skriv \\% för ett verkligt tecken.",
+    "schedule": "Schema",
+    "scheduleHint": "Minut, timme, dag i månaden, månad och veckodag, eller ett ord som @daily.",
+    "scheduleInvalid": "Detta är inte ett giltigt schema.",
+    "nextRuns": "Nästa körningar ({{zone}}):",
+    "enabled": "På",
+    "enabledHint": "En inaktiverad jobb förblir i crontab som en kommentar.",
+    "saved": "Sparat."
+  },
+  "presets": {
+    "everyMinute": "Varje minut",
+    "every5": "Var 5:e minut",
+    "every15": "Var 15:e minut",
+    "hourly": "Varje timme",
+    "daily": "Varje dag",
+    "weekly": "Varje vecka",
+    "monthly": "Varje månad",
+    "reboot": "Vid start"
+  },
+  "schedule": {
+    "reboot": "Vid start",
+    "everyMinute": "Varje minut",
+    "everyNMinutes": "Var {{n}}:e minut",
+    "hourlyAt": "Varje timme vid minut {{minute}}",
+    "everyNHours": "Var {{n}}:e timme vid minut {{minute}}",
+    "dailyAt": "Varje dag kl. {{time}}",
+    "weekdaysAt": "Måndag till fredag kl. {{time}}",
+    "weeklyAt": "Var {{day}} kl. {{time}}",
+    "monthlyAt": "Den {{day}}:e i varje månad kl. {{time}}",
+    "custom": "Anpassat schema",
+    "invalid": "Inte ett giltigt schema"
+  },
+  "days": {
+    "0": "Söndag",
+    "1": "Måndag",
+    "2": "Tisdag",
+    "3": "Onsdag",
+    "4": "Torsdag",
+    "5": "Fredag",
+    "6": "Lördag"
+  },
+  "raw": {
+    "title": "Crontab som text",
+    "hint": "Ett jobb per rad. Värdens kontrollerar texten och behåller den gamla crontab om det finns fel."
+  },
+  "system": {
+    "add": "Ny fil",
+    "addTitle": "Ny fil i /etc/cron.d",
+    "edit": "Redigera",
+    "name": "Filnamn",
+    "nameHint": "Sparas som /etc/cron.d/<name>. Cron ignorerar namn med punkter.",
+    "nameInvalid": "Använd endast bokstäver, siffror, - och _.",
+    "content": "Filinnehåll",
+    "fileHint": "Varje jobb anger användaren det körs som: minut timme dag månad veckodag användare kommando. Varje rad kontrolleras innan sparande.",
+    "noJobs": "Inga jobb i denna fil.",
+    "readHint": "Vissa filer kan vara dolda utan root. Ändringar här kräver root-inloggning, lösenordsfritt sudo eller ett sparade Sudo-lösenord.",
+    "timers_one": "Denna värd har också {{count}} systemd-timer. Services-plugin hanterar den.",
+    "timers_other": "Denna värd har också {{count}} systemd-timers. Services-plugin hanterar dem.",
+    "deleteTitle": "Ta bort /etc/cron.d/{{name}}?",
+    "deleteDesc": "En kopia behålls i /var/lib/termix-cron/backup.",
+    "deleted": "Tog bort {{name}}.",
+    "saved": "Sparade {{name}}.",
+    "loadFailed": "Kunde inte läsa systemets cron-filer.",
+    "saveFailed": "Kunde inte spara filen.",
+    "period": {
+      "hourly": "Körs varje timme",
+      "daily": "Körs varje dag",
+      "weekly": "Körs varje vecka",
+      "monthly": "Körs varje månad"
+    }
+  },
+  "logs": {
+    "lines": "Rader",
+    "lineCount_one": "{{count}} rad",
+    "lineCount_other": "{{count}} rader",
+    "source": "Från {{source}}",
+    "noSource": "Ingen cron-logg hittades på denna värd.",
+    "empty": "Inga loggrader.",
+    "failed": "Kunde inte läsa cron-loggen."
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "Aktivera Cron för denna värd i dess inställningar för att se dess jobb här."
+  },
+  "operations": {
+    "list": {
+      "title": "Lista cron-jobb"
+    },
+    "enable": {
+      "title": "Aktivera cron-jobb"
+    },
+    "disable": {
+      "title": "Inaktivera cron-jobb"
+    },
+    "run": {
+      "title": "Kör cron-jobb nu"
+    },
+    "delete": {
+      "title": "Ta bort cron-jobb"
+    },
+    "jobs": {
+      "title": "Cron-jobb",
+      "schedule": "Schema",
+      "command": "Kommando"
+    },
+    "status": {
+      "title": "Cron-status"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "Kontrollerar värdar...",
+    "summary_one": "{{count}} jobb på {{hosts}} värdar",
+    "summary_other": "{{count}} jobb på {{hosts}} värdar",
+    "refresh": "Kontrollera igen",
+    "empty": "Aktivera Cron för en värd för att se den här.",
+    "stopped": "Kör inte",
+    "missing": "Inte installerad",
+    "jobs_one": "{{count}} jobb",
+    "jobs_other": "{{count}} jobb",
+    "off": "{{count}} av"
+  }
+}

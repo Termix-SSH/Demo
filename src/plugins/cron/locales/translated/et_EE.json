@@ -1,0 +1,206 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "Vaata, lisa ja käivita cron-i ülesandeid oma hostidel, koos ajastuse eelvaatega ja süsteemi cron-i failidega."
+  },
+  "common": {
+    "save": "Salvesta",
+    "cancel": "Tühista",
+    "back": "Tagasi",
+    "delete": "Kustuta"
+  },
+  "permissions": {
+    "use": {
+      "title": "Cron-i kasutamine",
+      "description": "Vaata cron-i ülesandeid hostidel, millele pääsed, ja muuda neid hostidel, mida saad redigeerida."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Halda selle hosti cron-i ülesandeid Cron-i vahekaardilt."
+      },
+      "useSudo": {
+        "label": "Kasuta sudo-d",
+        "description": "Kasuta sudo-d teiste kasutajate crontabide ja /etc/cron.d jaoks. Lülita välja, kui sisselogimine on root."
+      },
+      "readOnly": {
+        "label": "Ainult lugemiseks",
+        "description": "Kuva cron-i ülesanded, kuid ära kunagi muuda neid sellel hostil."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "Ava Cron hostist.",
+    "error": "Cron-i ei õnnestunud sellelt hostilt laadida.",
+    "disabled": "Cron on sellel hostil välja lülitatud. Lülita see sisse hosti seadistustes.",
+    "sudo": "Selleks on vaja root sisselogimist, paroolita sudo-d või salvestatud Sudo parooli.",
+    "refresh": "Värskenda",
+    "running": "Cron töötab",
+    "stopped": "Cron peatatud",
+    "readOnly": "Ainult lugemiseks",
+    "notInstalled": "Pole paigaldatud",
+    "notInstalledTitle": "Cron ei ole sellel hostil paigaldatud",
+    "notInstalledHint": "Paigalda cron või cronie hosti pakkemanageriga ja värskenda seejärel.",
+    "notRunning": "Cron teenus ei tööta, seega ülesandeid ei käivitata.",
+    "viewJobs": "Ülesanded",
+    "viewSystem": "Süsteem",
+    "viewLogs": "Logid"
+  },
+  "jobs": {
+    "add": "Lisa ülesanne",
+    "user": "Crontab kasutajale",
+    "ownUser": "{{user}} (sisselogimine)",
+    "search": "Otsi ülesandeid",
+    "editText": "Redigeeri tekstina",
+    "empty": "Cron-i ülesandeid pole veel.",
+    "noMatch": "Ühtegi ülesannet ei leitud.",
+    "off": "Väljas",
+    "next": "järgmine {{time}}",
+    "run": "Käivita nüüd",
+    "runTitle": "Kas käivitada see ülesanne nüüd?",
+    "runDesc": "See käivitab {{command}} ühe korra crontabi kasutajana. See peatub pärast 2 minutit.",
+    "runFailed": "Ülesannet ei õnnestunud käivitada.",
+    "turnOn": "Lülita sisse",
+    "turnOff": "Lülita välja",
+    "deleteTitle": "Kas kustutada see ülesanne?",
+    "loadFailed": "Crontabi ei õnnestunud lugeda.",
+    "saveFailed": "Crontabi ei õnnestunud salvestada.",
+    "outputTitle": "Ülesande väljund",
+    "exitOk": "Lõpetatud",
+    "exitCode": "Väljumiskood {{code}}",
+    "noOutput": "Ülesanne ei väljastanud midagi."
+  },
+  "form": {
+    "addTitle": "Uus ülesanne",
+    "editTitle": "Redigeeri ülesannet",
+    "forUser": "Crontab kasutajale {{user}}",
+    "label": "Silt",
+    "labelHint": "Salvestatakse kommentaarina ülesande kohal.",
+    "labelPlaceholder": "Öine varundamine",
+    "command": "Käsk",
+    "commandHint": "Käivitatakse sh-ga kasutaja kodukataloogis. % algab sisendiga, mille cron saadab, kirjuta \\% tegeliku % jaoks.",
+    "schedule": "Ajakava",
+    "scheduleHint": "Minut, tund, kuu päev, kuu ja nädalapäev või sõna nagu @daily.",
+    "scheduleInvalid": "See ei ole kehtiv ajakava.",
+    "nextRuns": "Järgmised käivitused ({{zone}}):",
+    "enabled": "Sees",
+    "enabledHint": "Väljalülitatud ülesanne jääb crontabi kommentaari.",
+    "saved": "Salvestatud."
+  },
+  "presets": {
+    "everyMinute": "Iga minut",
+    "every5": "Iga 5 minuti tagant",
+    "every15": "Iga 15 minuti tagant",
+    "hourly": "Tunniti",
+    "daily": "Igapäevaselt",
+    "weekly": "Iganädalaselt",
+    "monthly": "Iga kuu",
+    "reboot": "Taaskäivitamisel"
+  },
+  "schedule": {
+    "reboot": "Taaskäivitamisel",
+    "everyMinute": "Iga minut",
+    "everyNMinutes": "Iga {{n}} minuti järel",
+    "hourlyAt": "Iga tund minutil {{minute}}",
+    "everyNHours": "Iga {{n}} tunni järel minutil {{minute}}",
+    "dailyAt": "Iga päev kell {{time}}",
+    "weekdaysAt": "Esmaspäevast reedeni kell {{time}}",
+    "weeklyAt": "Iga {{day}} kell {{time}}",
+    "monthlyAt": "Iga kuu {{day}}. päeval kell {{time}}",
+    "custom": "Kohandatud ajakava",
+    "invalid": "Sobimatu ajakava"
+  },
+  "days": {
+    "0": "Pühapäev",
+    "1": "Esmaspäev",
+    "2": "Teisipäev",
+    "3": "Kolmapäev",
+    "4": "Neljapäev",
+    "5": "Reede",
+    "6": "Laupäev"
+  },
+  "raw": {
+    "title": "Crontab tekstina",
+    "hint": "Üks ülesanne rea kohta. Host kontrollib teksti ja säilitab vana crontabi, kui selles on vigu."
+  },
+  "system": {
+    "add": "Uus fail",
+    "addTitle": "Uus fail kataloogis /etc/cron.d",
+    "edit": "Muuda",
+    "name": "Faili nimi",
+    "nameHint": "Salvestatakse kui /etc/cron.d/<nimi>. Cron eirab nimesid, mis sisaldavad punkte.",
+    "nameInvalid": "Kasuta ainult tähti, numbreid, - ja _.",
+    "content": "Faili sisu",
+    "fileHint": "Iga ülesanne nimetab kasutaja, kelle õigustes see käivitub: minut tund päev kuu nädalapäev kasutaja käsk. Iga rida kontrollitakse enne salvestamist.",
+    "noJobs": "Selles failis pole ülesandeid.",
+    "readHint": "Mõned failid võivad olla peidetud ilma root-õigusteta. Muudatused siin vajavad root-sisselogimist, paroolita sudo-d või salvestatud Sudo parooli.",
+    "timers_one": "Sellel hostil on ka {{count}} systemd-taimer. Teenuste plugin haldab seda.",
+    "timers_other": "Sellel hostil on ka {{count}} systemd-taimerit. Teenuste plugin haldab neid.",
+    "deleteTitle": "Kas kustutada /etc/cron.d/{{name}}?",
+    "deleteDesc": "Koopia säilitatakse kaustas /var/lib/termix-cron/backup.",
+    "deleted": "Kustutatud {{name}}.",
+    "saved": "Salvestatud {{name}}.",
+    "loadFailed": "Süsteemi cron-faile ei õnnestunud lugeda.",
+    "saveFailed": "Faili ei õnnestunud salvestada.",
+    "period": {
+      "hourly": "Töötab iga tund",
+      "daily": "Töötab iga päev",
+      "weekly": "Töötab iga nädal",
+      "monthly": "Töötab iga kuu"
+    }
+  },
+  "logs": {
+    "lines": "Read",
+    "lineCount_one": "{{count}} rida",
+    "lineCount_other": "{{count}} rida",
+    "source": "Allikas: {{source}}",
+    "noSource": "Sellel hostil cron-logi ei leitud.",
+    "empty": "Päevikuid ei ole.",
+    "failed": "Croni päevikut ei õnnestunud lugeda."
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "Selle hosti ülesannete siin nägemiseks lülitage selle seadetes Cron sisse."
+  },
+  "operations": {
+    "list": {
+      "title": "Croni ülesannete loendamine"
+    },
+    "enable": {
+      "title": "Croni ülesande sisselülitamine"
+    },
+    "disable": {
+      "title": "Croni ülesande väljalülitamine"
+    },
+    "run": {
+      "title": "Croni ülesande käivitamine kohe"
+    },
+    "delete": {
+      "title": "Croni ülesande kustutamine"
+    },
+    "jobs": {
+      "title": "Croni ülesanded",
+      "schedule": "Ajakava",
+      "command": "Käsk"
+    },
+    "status": {
+      "title": "Croni olek"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "Hostide kontrollimine...",
+    "summary_one": "{{count}} ülesanne {{hosts}} hostil",
+    "summary_other": "{{count}} ülesannet {{hosts}} hostil",
+    "refresh": "Kontrolli uuesti",
+    "empty": "Lülitage Cron hosti jaoks sisse, et näha seda siin.",
+    "stopped": "Ei tööta",
+    "missing": "Pole paigaldatud",
+    "jobs_one": "{{count}} ülesanne",
+    "jobs_other": "{{count}} ülesannet",
+    "off": "{{count}} väljas"
+  }
+}

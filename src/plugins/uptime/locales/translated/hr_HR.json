@@ -1,0 +1,392 @@
+{
+  "tab": {
+    "title": "Dostupnost",
+    "error": "Nije moguće učitati monitore.",
+    "monitors": "Monitori",
+    "incidents": "Incidenti",
+    "maintenance": "Održavanje",
+    "pages": "Stranice statusa"
+  },
+  "common": {
+    "refresh": "Osvježi",
+    "loading": "Učitavanje",
+    "delete": "Izbriši",
+    "edit": "Uredi",
+    "save": "Spremi",
+    "cancel": "Otkaži",
+    "done": "Gotovo"
+  },
+  "status": {
+    "up": "Aktivan",
+    "down": "Neaktivan",
+    "pending": "Ponovni pokušaj",
+    "maintenance": "Održavanje",
+    "paused": "Pauzirano",
+    "unknown": "Čekanje"
+  },
+  "types": {
+    "http": "Web stranica (HTTP)",
+    "tcp": "TCP port",
+    "ping": "Ping",
+    "dns": "DNS zapis",
+    "tls": "TLS certifikat",
+    "push": "Push",
+    "host": "Termix host",
+    "docker": "Docker kontejner",
+    "systemd": "systemd jedinica",
+    "command": "Naredba"
+  },
+  "typeHints": {
+    "http": "Poziva URL i provjerava statusni kod te ključnu riječ ako je postavite.",
+    "tcp": "Provjerava prihvaća li port veze.",
+    "ping": "Šalje ping s Termix poslužitelja ili s hosta koji odaberete ispod.",
+    "dns": "Pretražuje zapis i može provjeriti njegovu vrijednost.",
+    "tls": "Provjerava je li certifikat pouzdan i da li mu istek nije blizu.",
+    "push": "Daje vam URL koji možete pozvati iz cron posla ili skripte. Status postaje neaktivan kada pozivi prestanu.",
+    "host": "Provjerava port hosta na isti način kao točka statusa hosta. Nikada se ne prijavljuje.",
+    "docker": "Prijavljuje se na host putem SSH-a i provjerava je li kontejner pokrenut i zdrav.",
+    "systemd": "Prijavljuje se na host putem SSH-a i provjerava je li jedinica aktivna.",
+    "command": "Prijavljuje se na host putem SSH-a i izvršava naredbu. Status je aktivan kada je izlazni kod 0."
+  },
+  "stats": {
+    "up": "Aktivni",
+    "down": "Problemi",
+    "paused": "Pauzirani ili u održavanju",
+    "month": "Dostupnost u 30 dana"
+  },
+  "filter": {
+    "all": "Svi",
+    "problems": "Problemi",
+    "paused": "Pauzirani"
+  },
+  "list": {
+    "name": "Naziv",
+    "target": "Cilj",
+    "checks": "Zadnje provjere",
+    "uptime": "24 h",
+    "uptimeDay": "24 h: {{value}}",
+    "latency": "Odgovor",
+    "search": "Pretraži",
+    "add": "Dodaj monitor",
+    "addHosts": "Dodaj iz hostova",
+    "empty": "Još nema monitora",
+    "emptyHint": "Dodajte monitor za početak praćenja web stranice, porta ili hosta.",
+    "noMatch": "Ništa se ne podudara"
+  },
+  "range": {
+    "day": "24 h",
+    "week": "7 dana",
+    "month": "30 dana",
+    "quarter": "90 dana"
+  },
+  "detail": {
+    "failed": "To nije uspjelo.",
+    "deleteTitle": "Izbrisati {{name}}?",
+    "deleteHint": "Povijest i incidenti bit će obrisani zajedno s njim.",
+    "newUrl": "Novi push URL",
+    "newUrlTitle": "Stvoriti novi push URL?",
+    "newUrlHint": "Stari URL odmah prestaje raditi.",
+    "type": "Vrsta",
+    "target": "Cilj",
+    "lastCheck": "Zadnja provjera",
+    "message": "Rezultat",
+    "every": "Provjerava svakih",
+    "seconds_one": "{{count}} sekunda",
+    "seconds_few": "{{count}} sekunde",
+    "seconds_other": "{{count}} sekundi",
+    "group": "Grupa",
+    "tags": "Oznake",
+    "cert": "Certifikat",
+    "certValue": "Preostalo {{days}} dana | {{issuer}}",
+    "noChart": "Još nema dovoljno provjera za grafikon.",
+    "alertsOn": "Uključi obavijesti",
+    "alertsOff": "Isključi obavijesti",
+    "runNow": "Provjeri sada",
+    "pause": "Pauziraj",
+    "resume": "Nastavi",
+    "share": "Podijeli",
+    "now": "Odgovor sada",
+    "recent": "Zadnje provjere",
+    "response": "Vrijeme odgovora",
+    "about": "O aplikaciji",
+    "incidents": "Incidenti",
+    "noIncidents": "Nema incidenata."
+  },
+  "editor": {
+    "addTitle": "Dodaj monitor",
+    "editTitle": "Uredi monitor",
+    "saveFailed": "Spremanje nije uspjelo.",
+    "testFailed": "Test se nije mogao pokrenuti.",
+    "test": "Testiraj",
+    "testing": "Testiranje",
+    "testOk": "Dostupan",
+    "testBad": "Nedostupan",
+    "what": "Što pratiti",
+    "name": "Naziv",
+    "type": "Vrsta",
+    "host": "Host",
+    "noHost": "Odaberi host",
+    "pushOnce": "Kopiraj ovaj URL sada. Prikazuje se samo jednom.",
+    "from": "Provjeri od",
+    "fromHost": "Pokreni provjeru s",
+    "fromServer": "Termix poslužitelj",
+    "fromHint": "Odaberi host za pristup resursima vidljivim samo s njega. Provjera se tamo pokreće putem SSH-a.",
+    "timing": "Vremenski intervali i obavijesti",
+    "interval": "Provjeri svakih (sekundi)",
+    "timeout": "Vrijeme čekanja (sekundi)",
+    "grace": "Dodatno čekanje (sekundi)",
+    "retries": "Ponovni pokušaji",
+    "retriesHint": "Neuspjele provjere zaredom prije nego što se smatra nedostupnim.",
+    "retryInterval": "Vrijeme između ponovnih pokušaja (sekundi)",
+    "resend": "Podsjeti me svakih (minuta)",
+    "resendHint": "Dok ostane nedostupan. 0 šalje samo jednu obavijest.",
+    "more": "Grupa i oznake",
+    "group": "Grupa",
+    "tags": "Oznake",
+    "tagsHint": "Odvojite zarezima.",
+    "target": "Adresa",
+    "port": "Port",
+    "portOptional": "Port",
+    "portOptionalHint": "Ostavite prazno za korištenje vlastitog porta hosta.",
+    "url": "URL",
+    "method": "Metoda",
+    "body": "Sadržaj",
+    "accepted": "Prihvaćeni statusni kodovi",
+    "acceptedHint": "Npr. 200-299,301",
+    "keyword": "Ključna riječ",
+    "keywordHint": "Opcionalno. Tekst koji se mora nalaziti u odgovoru.",
+    "keywordAbsent": "Neuspjeh kada se pronađe ključna riječ",
+    "auth": "Prijava",
+    "authNone": "Ništa",
+    "authBasic": "Osnovna",
+    "authBearer": "Bearer token",
+    "username": "Korisničko ime",
+    "password": "Lozinka",
+    "token": "Token",
+    "keepSecret": "Ostavite prazno za zadržavanje spremljene vrijednosti.",
+    "headers": "Zaglavlja",
+    "headersHint": "Jedno po retku, npr. Naziv: vrijednost. Spremljeno šifrirano.",
+    "follow": "Prati preusmjeravanja",
+    "ignoreTls": "Prihvati bilo koji certifikat",
+    "certDays": "Upozori prije isteka certifikata (dana)",
+    "certDaysHint": "0 isključuje upozorenje.",
+    "record": "Vrsta zapisa",
+    "dnsServer": "DNS poslužitelj",
+    "dnsServerHint": "Opcionalna IP adresa. Prazno koristi vlastitu poslužitelja.",
+    "expected": "Očekivana vrijednost",
+    "expectedHint": "Opcionalno. Tekst koji jedan zapis mora sadržavati.",
+    "container": "Naziv kontejnera",
+    "unit": "Naziv jedinice",
+    "command": "Naredba",
+    "commandHint": "Pokreće se kao vaša prijava na tom hostu pri svakoj provjeri."
+  },
+  "hosts": {
+    "add_one": "Dodaj {{count}} monitor",
+    "add_few": "Dodaj {{count}} monitora",
+    "add_other": "Dodaj {{count}} monitora"
+  },
+  "shares": {
+    "loadFailed": "Dijeljenja se ne mogu učitati.",
+    "saveFailed": "Dijeljenja se ne mogu spremiti.",
+    "pick": "Odaberite korisnika ili ulogu",
+    "user": "Korisnik: {{name}}",
+    "role": "Uloga: {{name}}",
+    "with": "Dijeli s",
+    "add": "Dodaj",
+    "none": "Samo vi možete vidjeti ovaj monitor.",
+    "view": "Može pregledavati",
+    "edit": "Može uređivati"
+  },
+  "incidents": {
+    "none": "Nema incidenata",
+    "ongoing": "Trenutni",
+    "seen": "Viđeno",
+    "ack": "Označi kao viđeno",
+    "note": "Bilješka"
+  },
+  "maintenance": {
+    "none": "Nema prozora za održavanje",
+    "noneHint": "Dodajte jedan za zaustavljanje upozorenja dok radite na nečemu.",
+    "add": "Dodaj prozor",
+    "edit": "Uredi prozor",
+    "active": "Aktivan sada",
+    "when": "Kada",
+    "once": "Jednokratno",
+    "weekly": "Svaki tjedan",
+    "start": "Početak",
+    "end": "Kraj",
+    "days": "Dani",
+    "time": "Vrijeme početka",
+    "length": "Trajanje (minute)",
+    "timezone": "Vremenska zona",
+    "covers": "Obuhvaća",
+    "coversAll": "Sve moje monitore",
+    "coversSome": "Odabrani monitori",
+    "coversTag": "Monitori s oznakom",
+    "deleteTitle": "Izbrisati {{name}}?",
+    "day0": "Ned",
+    "day1": "Pon",
+    "day2": "Uto",
+    "day3": "Sri",
+    "day4": "Čet",
+    "day5": "Pet",
+    "day6": "Sub"
+  },
+  "pages": {
+    "none": "Nema stranica statusa",
+    "noneHint": "Stranica statusa prikazuje ljudima kako vaši servisi rade, bez potrebe za prijavom.",
+    "add": "Dodaj stranicu",
+    "edit": "Uredi stranicu",
+    "about": "Stranica",
+    "title": "Naslov",
+    "slug": "Adresa",
+    "slugHint": "Mala slova, brojevi i crtice. Ovo je kraj veze.",
+    "description": "Opis",
+    "published": "Objavljeno",
+    "publishedHint": "Svatko s vezom može vidjeti nazive, stanja i dostupnost. Nikada adrese ili greške.",
+    "showLatency": "Prikaži vrijeme odgovora",
+    "group": "Grupa {{number}}",
+    "groupName": "Naziv grupe",
+    "addGroup": "Dodaj grupu",
+    "notes": "Bilješke",
+    "noteTitle": "Naslov",
+    "noteBody": "Tekst",
+    "noteLevel": "Razina",
+    "levelInfo": "Info",
+    "levelWarning": "Upozorenje",
+    "levelCritical": "Kritično",
+    "post": "Objavi",
+    "resolve": "Riješi",
+    "resolved": "Riješeno",
+    "live": "Objavljeno",
+    "draft": "Nacrt",
+    "open": "Otvori stranicu",
+    "deleteTitle": "Izbrisati {{name}}?",
+    "offTitle": "Javne stranice su isključene",
+    "offHint": "Administrator ih je isključio u postavkama dodatka, pa ove veze ništa ne prikazuju."
+  },
+  "widget": {
+    "name": "Dostupnost",
+    "description": "Koliko je monitora aktivno ili neaktivno.",
+    "up": "Aktivno",
+    "down": "Neaktivno"
+  },
+  "card": {
+    "title": "Dostupnost",
+    "overview": "Svi monitori",
+    "attention": "Monitori s problemima",
+    "monitors": "Monitori",
+    "allGood": "Sve je aktivno.",
+    "gone": "Ovaj monitor više ne postoji.",
+    "loading": "Učitavanje...",
+    "month": "30 dana: {{value}}"
+  },
+  "host": {
+    "none": "Nema nadzornika za ovaj host.",
+    "add": "Dodaj nadzornik",
+    "down_one": "{{count}} nadzornik je nedostupan",
+    "down_few": "{{count}} nadzornika su nedostupna",
+    "down_other": "{{count}} nadzornika je nedostupno"
+  },
+  "permissions": {
+    "view": {
+      "title": "Pregled nadzornika",
+      "description": "Pregled nadzornika, povijesti i incidenata."
+    },
+    "manage": {
+      "title": "Upravljanje nadzornicima",
+      "description": "Dodavanje i izmjena nadzornika te prozora za održavanje."
+    },
+    "privateTargets": {
+      "title": "Provjera privatnih adresa",
+      "description": "Usmjerite monitore na LAN, Tailscale i druge privatne adrese koje Termix poslužitelj može doseći."
+    },
+    "runCommands": {
+      "title": "Izvršavanje naredbi",
+      "description": "Dodajte monitore koji izvršavaju naredbu na domaćinu putem SSH-a."
+    },
+    "publish": {
+      "title": "Objavljivanje stranica statusa",
+      "description": "Omogućite da stranice statusa mogu vidjeti svi koji imaju poveznicu."
+    }
+  },
+  "settings": {
+    "admin": {
+      "minIntervalSeconds": {
+        "label": "Najkraći interval provjere",
+        "description": "U sekundama. Monitori koji se prijavljuju putem SSH-a nikada ne idu ispod 60."
+      },
+      "defaultIntervalSeconds": {
+        "label": "Zadani interval provjere",
+        "description": "U sekundama, za nove monitore."
+      },
+      "historyDays": {
+        "label": "Čuvaj povijest za",
+        "description": "Dani za dnevne brojeve dostupnosti i incidente."
+      },
+      "publicPages": {
+        "label": "Dopusti javne stranice statusa",
+        "description": "Isključite da biste sakrili sve stranice statusa. Push URL-ovi i dalje rade."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otvori panel uz svaki terminal",
+        "description": "Prikaži panel dostupnosti kada se otvori terminal."
+      },
+      "companionSide": {
+        "label": "Stranica panela",
+        "description": "Gdje se otvara panel dostupnosti.",
+        "right": "Desno",
+        "left": "Lijevo",
+        "bottom": "Dolje"
+      },
+      "companionSize": {
+        "label": "Veličina ploče",
+        "description": "Širina ili visina ploče u pikselima."
+      },
+      "companionEdgeButton": {
+        "label": "Prikaži gumb na rubu",
+        "description": "Gumb na rubu terminala koji otvara ploču."
+      }
+    }
+  },
+  "operations": {
+    "monitor": "Praćenje",
+    "summary": {
+      "title": "Sažetak dostupnosti"
+    },
+    "monitors": {
+      "title": "Popis monitora"
+    },
+    "hostMonitors": {
+      "title": "Monitori na ovom hostu"
+    },
+    "hostHealth": {
+      "title": "Dostupnost"
+    },
+    "run": {
+      "title": "Provjeri monitor sada"
+    },
+    "pause": {
+      "title": "Zaustavi monitor"
+    },
+    "resume": {
+      "title": "Nastavi s radom monitora"
+    },
+    "addHost": {
+      "title": "Dodaj monitor dostupnosti"
+    },
+    "events": {
+      "down": "Monitor je prestao raditi",
+      "up": "Monitor je ponovno aktivan",
+      "cert": "Certifikat uskoro istječe"
+    },
+    "resource": {
+      "title": "Monitori",
+      "type": "Vrsta",
+      "status": "Status",
+      "uptime": "Dostupnost u posljednjih 30 dana"
+    }
+  }
+}

@@ -1,0 +1,239 @@
+{
+  "plugin": {
+    "name": "Potrdila",
+    "description": "Oglejte si, izdajte in podaljšajte TLS potrdila na svojih gostiteljih z orodjema certbot in acme.sh ter prejmite opozorilo pred potekom roka veljavnosti."
+  },
+  "common": {
+    "cancel": "Prekliči",
+    "back": "Nazaj"
+  },
+  "permissions": {
+    "use": {
+      "title": "Uporaba potrdil",
+      "description": "Oglejte si potrdila na gostiteljih, do katerih lahko dostopate, in jih spremenite na gostiteljih, ki jih lahko urejate."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Potrdila",
+        "description": "Upravljajte TLS potrdila na tem gostitelju prek zavihka Potrdila."
+      },
+      "useSudo": {
+        "label": "Uporabi sudo",
+        "description": "Uporabite sudo za branje in spreminjanje potrdil. Izklopite, če je prijava kot root."
+      },
+      "readOnly": {
+        "label": "Samo za branje",
+        "description": "Prikaži potrdila, vendar jih na tem gostitelju nikoli ne spreminjaj."
+      },
+      "expiryWarnDays": {
+        "label": "Opozori pred potekom",
+        "description": "Potrdila s tem številom dni ali manj do poteka se prikažejo kot potekajoča in pošljejo opozorilo."
+      },
+      "showPanel": {
+        "label": "Prikaži ploščo potrdil v terminalih",
+        "description": "Dovoli odpiranje plošče potrdil ob SSH terminalu tega gostitelja."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Odpri ploščo potrdil z novimi terminali",
+        "description": "Prikaži ploščo potrdil ob vsakem SSH terminalu, ki ima vklopljena Potrdila. Ploščo lahko še vedno odprete in zaprete s gumbom na desnem robu."
+      },
+      "companionSide": {
+        "label": "Stran plošče potrdil",
+        "description": "Kje se plošča potrdil nahaja ob terminalu.",
+        "right": "Desno",
+        "left": "Levo",
+        "bottom": "Spodaj"
+      },
+      "companionSize": {
+        "label": "Velikost plošče potrdil",
+        "description": "Širina v slikovnih točkah ali višina, ko je na dnu. Rob lahko tudi povlečete."
+      },
+      "companionEdgeButton": {
+        "label": "Prikaži gumb za ploščo",
+        "description": "Prikaži majhen gumb na desnem robu terminala, ki odpre ploščo potrdil."
+      }
+    }
+  },
+  "tab": {
+    "title": "Potrdila",
+    "noHost": "Odprite Potrdila iz gostitelja.",
+    "error": "Potrdil s tega gostitelja ni bilo mogoče naložiti.",
+    "disabled": "Potrdila so za ta gostitelj izklopljena. Vklopite jih v nastavitvah gostitelja.",
+    "sudo": "Spremembe zahtevajo prijavo kot root, sudo brez gesla ali shranjeno sudo geslo na tem gostitelju.",
+    "refresh": "Osveži",
+    "readOnly": "Samo za branje",
+    "noClient": "certbot ali acme.sh ni nameščen",
+    "viewCertificates": "Potrdila",
+    "viewInspect": "Pregled",
+    "viewRenewal": "Podaljševanje"
+  },
+  "actions": {
+    "working": "V teku. To lahko traja nekaj minut.",
+    "ok": "Končano",
+    "failed": "Ukaz ni uspel.",
+    "noOutput": "Ni izpisa."
+  },
+  "install": {
+    "title": "certbot in acme.sh nista nameščena na tem gostitelju",
+    "hint": "Namestite certbot za pridobivanje in podaljševanje potrdil od Let's Encrypt.",
+    "noManager": "Ni bilo najdenega podprtega upravitelja paketov. Namestite certbot ročno.",
+    "button": "Namesti certbot",
+    "confirm": "Namestiti certbot?",
+    "desc": "To namesti certbot z upraviteljem paketov gostitelja.",
+    "working": "Nameščanje...",
+    "done": "certbot je nameščen."
+  },
+  "certs": {
+    "search": "Išči potrdila",
+    "empty": "Še ni potrdil.",
+    "noMatch": "Nobeno potrdilo se ne ujema.",
+    "loadFailed": "Potrdil ni bilo mogoče prebrati.",
+    "expires": "Poteče {{date}}",
+    "staging": "Testno okolje",
+    "details": "Potrdilo",
+    "manage": "Upravljanje",
+    "client": "Odjemalec",
+    "path": "Datoteka",
+    "authority": "Urad",
+    "renew": "Podaljšaj",
+    "renewDone": "Podaljšano {{name}}.",
+    "renewAll": "Podaljšaj vse",
+    "renewAllDone": "Podaljšani so bili certifikati, ki so bili na vrsti.",
+    "forceRenew": "Vendar podaljšaj zdaj",
+    "dryRun": "Suho testiranje",
+    "dryRunDone": "Suho testiranje je uspelo.",
+    "revoke": "Razveljavi",
+    "revokeTitle": "Razveljaviti {{name}}?",
+    "revokeDesc": "Urad ga označi kot neveljavnega in odstrani iz tega gostitelja. Vse, kar ga še uporablja, bo prenehalo delovati.",
+    "revokeDone": "Razveljavljeno {{name}}.",
+    "delete": "Ustavi upravljanje",
+    "deleteTitle": "Ustaviti upravljanje {{name}}?",
+    "deleteDesc": "Certifikat ostane veljaven, vendar se ne bo več podaljševal. certbot izbriše tudi njegove datoteke, acme.sh pa jih obdrži.",
+    "deleteDone": "{{name}} se ne upravlja več."
+  },
+  "expiry": {
+    "expired": "Poteklo",
+    "unknown": "Neznano",
+    "days_one": "Preostanek {{count}} dan",
+    "days_two": "Preostanek {{count}} dneva",
+    "days_few": "Preostanek {{count}} dni",
+    "days_other": "Preostanek {{count}} dni"
+  },
+  "issue": {
+    "add": "Izdaj certifikat",
+    "title": "Nov certifikat",
+    "save": "Izdaj",
+    "done": "Certifikat je bil izdan.",
+    "working": "Pošiljanje zahteve uradu. To lahko traja nekaj minut.",
+    "client": "Odjemalec",
+    "domains": "Domena",
+    "domainsPlaceholder": "Vnesite domeno in pritisnite Enter",
+    "domainsHint": "Prva določa ime certifikata.",
+    "challenge": "Preizkus",
+    "standalone": "Samostojno",
+    "standaloneHint": "Zažene majhen spletni strežnik na vratih 80, zato ta vrata ne sme uporabljati nič drugega.",
+    "webroot": "Koren spletnega strežnika",
+    "webrootHint": "Postavi datoteko v mapo spletnega strežnika. Spletni strežnik bo deloval naprej.",
+    "dns": "DNS",
+    "dnsHint": "Preko API-ja ponudnika doda DNS zapis. Potrebno za zvezdice.",
+    "webrootPath": "Mapa korena spletnega strežnika",
+    "webrootPathHint": "Mora biti znotraj /var/www, /srv ali /usr/share/nginx.",
+    "dnsProvider": "Ponudnik DNS",
+    "dnsProviderCertbot": "Ime nameščenega certbot DNS vtičnika, na primer cloudflare.",
+    "dnsProviderAcme": "Ime DNS za acme.sh brez predpone dns_, na primer cf. Njegov API žeton mora biti že nastavljen na gostitelju.",
+    "credentials": "Datoteka poverilnic",
+    "credentialsHint": "Datoteka na gostitelju z vašim API žetonom. Termix je nikoli ne prebere.",
+    "email": "E-pošta",
+    "emailHint": "Neobvezno. Urad jo uporablja za obvestila o poteku.",
+    "keyType": "Vrsta ključa",
+    "staging": "Uporabi strežnik za testiranje",
+    "stagingHint": "Za testiranje. Certifikat ni zaupanja vreden, omejitve hitrosti pa so veliko višje."
+  },
+  "inspect": {
+    "server": "Strežnik",
+    "file": "Datoteka",
+    "address": "Naslov",
+    "addressPlaceholder": "example.com",
+    "port": "Vrata",
+    "path": "Pot do datoteke",
+    "check": "Preveri",
+    "hint": "Preverite, kaj strežnik pošlje prek TLS, kot je videti iz tega gostitelja, ali preberite datoteko certifikata nanj.",
+    "failed": "Certifikata ni bilo mogoče prebrati.",
+    "noOpenssl": "openssl ni nameščen na tem gostitelju.",
+    "trusted": "Zaupanja vreden",
+    "notTrusted": "Ni zaupanja vreden",
+    "leaf": "Certifikat",
+    "intermediate": "Veriga {{index}}",
+    "selfSigned": "Samopodpisano",
+    "name": "Ime",
+    "issuer": "Izdajatelj",
+    "domains": "Domenije",
+    "validFrom": "Veljavno od",
+    "validTo": "Veljavno do",
+    "keyType": "Ključ",
+    "serial": "Serijska številka",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Kako ta strežnik samodejno podaljšuje potrdila. Spremenite to na strežniku.",
+    "on": "Vklopljeno",
+    "off": "Izklopljeno",
+    "timer": "systemd časovnik",
+    "next": "Naslednji zagon {{time}}",
+    "cron": "Cron datoteka /etc/cron.d/certbot",
+    "certbotOff": "Ni bilo najdenega časovnika ali cron naloga, zato se potrdila ne bodo samodejno podaljšala.",
+    "acmeCron": "Cron naloga v crontab",
+    "acmeOff": "Ni bilo najdene cron naloge, zato se potrdila ne bodo samodejno podaljšala."
+  },
+  "watch": {
+    "start": "Opozori me, preden potekajo potrdila na tem strežniku",
+    "stop": "Ustavi opozorila za ta strežnik",
+    "on": "Prejeli boste opozorilo, preden potekajo potrdila tukaj.",
+    "off": "Opozorila za ta strežnik so izklopljena.",
+    "failed": "Opozorila ni bilo mogoče spremeniti."
+  },
+  "card": {
+    "title": "Potrdila",
+    "loading": "Preverjanje strežnikov...",
+    "summary_one": "{{count}} potrdilo, {{expiring}} poteka",
+    "summary_two": "{{count}} potrdili, {{expiring}} potekata",
+    "summary_few": "{{count}} potrdila, {{expiring}} potekajo",
+    "summary_other": "{{count}} potrdil, {{expiring}} potekajo",
+    "refresh": "Preveri znova",
+    "empty": "Vklopite Potrdila za strežnik, da boste tukaj videli njegova potrdila."
+  },
+  "manager": {
+    "title": "Potrdila",
+    "disabled": "Vklopite Potrdila za ta strežnik v nastavitvah, da boste videli potrdila tukaj."
+  },
+  "operations": {
+    "list": {
+      "title": "Seznam potrdil"
+    },
+    "expiring": {
+      "title": "Potekajoča potrdila"
+    },
+    "renew": {
+      "title": "Podaljšaj potrdilo"
+    },
+    "renewAll": {
+      "title": "Podaljšaj vsa potrdila"
+    },
+    "revoke": {
+      "title": "Prekliči potrdilo"
+    },
+    "certificates": {
+      "title": "Potrdila",
+      "client": "Odjemalec",
+      "domains": "Domenije",
+      "daysLeft": "Preostali dnevi"
+    }
+  },
+  "nav": {
+    "togglePanel": "Preklopi ploščo potrdil"
+  }
+}

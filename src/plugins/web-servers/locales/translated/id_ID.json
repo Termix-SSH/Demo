@@ -1,0 +1,283 @@
+{
+  "plugin": {
+    "name": "Web Servers",
+    "description": "Kelola nginx, Apache, dan Caddy di host Anda: situs, konfigurasi, log, dan HTTPS, dengan setiap perubahan diuji terlebih dahulu."
+  },
+  "common": {
+    "cancel": "Batal",
+    "back": "Kembali",
+    "loading": "Memuat..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Gunakan Web Servers",
+      "description": "Lihat web server dan situs di host yang dapat Anda jangkau, serta ubah di host yang dapat Anda edit."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Web Servers",
+        "description": "Kelola nginx, Apache, dan Caddy di host ini dari tab Web Servers."
+      },
+      "useSudo": {
+        "label": "Gunakan sudo",
+        "description": "Gunakan sudo untuk membaca dan mengubah web server. Matikan jika login sebagai root."
+      },
+      "readOnly": {
+        "label": "Hanya baca",
+        "description": "Tampilkan situs, konfigurasi, dan log, tetapi jangan pernah mengubahnya di host ini."
+      },
+      "showPanel": {
+        "label": "Panel di samping terminal",
+        "description": "Tawarkan panel Web Servers di tab terminal host ini."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Buka panel bersama terminal",
+        "description": "Tampilkan panel Web Servers saat terminal terbuka di host yang memilikinya."
+      },
+      "companionSide": {
+        "label": "Posisi panel",
+        "description": "Di mana panel berada di samping terminal.",
+        "right": "Kanan",
+        "left": "Kiri",
+        "bottom": "Bawah"
+      },
+      "companionSize": {
+        "label": "Ukuran panel",
+        "description": "Lebar panel, atau tingginya di bagian bawah, dalam piksel."
+      },
+      "companionEdgeButton": {
+        "label": "Tombol tepi",
+        "description": "Tampilkan tombol kecil di tepi terminal untuk membuka panel."
+      }
+    }
+  },
+  "tab": {
+    "title": "Web Servers",
+    "noHost": "Buka Web Servers dari host.",
+    "error": "Gagal memuat web server di host ini.",
+    "disabled": "Web Servers dimatikan untuk host ini. Nyalakan di pengaturan host.",
+    "sudo": "Perubahan memerlukan login root, sudo tanpa kata sandi, atau Sudo Password yang disimpan di host ini.",
+    "refresh": "Segarkan",
+    "readOnly": "Hanya baca",
+    "noServer": "Tidak ada web server terinstal",
+    "noServerHint": "Instal nginx, Apache, atau Caddy dari halaman Server.",
+    "openServer": "Buka Server",
+    "viewSites": "Situs",
+    "viewConfig": "Konfigurasi",
+    "viewLogs": "Log",
+    "viewServer": "Server"
+  },
+  "actions": {
+    "ok": "Selesai",
+    "failed": "Gagal",
+    "noOutput": "Tidak ada output."
+  },
+  "watch": {
+    "start": "Beritahu saya saat web server berhenti",
+    "stop": "Hentikan peringatan untuk host ini",
+    "on": "Anda akan menerima peringatan saat web server di host ini berhenti",
+    "off": "Peringatan untuk host ini dimatikan",
+    "failed": "Gagal mengubah peringatan"
+  },
+  "sites": {
+    "add": "Tambah situs",
+    "search": "Cari situs",
+    "empty": "Belum ada situs.",
+    "loadFailed": "Gagal memuat situs.",
+    "off": "Mati",
+    "anyName": "nama apa pun",
+    "form": "Formulir",
+    "certDays_other": "{{count}} hari tersisa",
+    "certExpired": "Sertifikat kedaluwarsa",
+    "enable": "Aktifkan",
+    "disable": "Nonaktifkan",
+    "enabled": "{{name}} aktif",
+    "disabled": "{{name}} tidak aktif",
+    "delete": "Hapus",
+    "deleteTitle": "Hapus {{name}}?",
+    "deleteBody": "File akan dihapus dan server akan dimuat ulang. Salinan cadangan tetap tersimpan di /var/lib/termix-web-servers/backups pada host.",
+    "deleted": "{{name}} telah dihapus"
+  },
+  "site": {
+    "addTitle": "Situs baru",
+    "editTitle": "Simpan {{name}}",
+    "add": "Tambah situs",
+    "save": "Simpan",
+    "added": "{{name}} telah ditambahkan",
+    "saved": "{{name}} telah disimpan",
+    "server": "Server web",
+    "name": "Nama situs",
+    "nameHint": "Digunakan untuk nama file dan file log, seperti example.",
+    "modeForm": "Formulir",
+    "modeText": "Teks",
+    "text": "Konfigurasi",
+    "textHint": "Menyimpan teks akan menonaktifkan formulir untuk situs ini, sehingga perubahan Anda tetap terjaga.",
+    "type": "Tipe",
+    "typeStatic": "File statis",
+    "typeProxy": "Proxy balik",
+    "typePhp": "PHP",
+    "typeRedirect": "Pengalihan",
+    "staticHint": "Menyajikan file dari sebuah folder.",
+    "proxyHint": "Mengirimkan permintaan ke aplikasi yang berjalan di host ini atau host lain.",
+    "phpHint": "Menyajikan file dari sebuah folder dan menjalankan file .php dengan php-fpm.",
+    "redirectHint": "Mengalihkan setiap pengunjung ke alamat lain.",
+    "domains": "Domain",
+    "domainsHint": "Tekan Enter setelah setiap entri. Gunakan _ di nginx untuk menjawab nama apa pun.",
+    "port": "Port HTTP",
+    "root": "Akar web",
+    "rootHint": "Sebuah folder di dalam /var/www, /srv, /usr/share/nginx, /opt, atau /home.",
+    "index": "File indeks",
+    "spa": "Aplikasi halaman tunggal",
+    "spaHint": "Arahkan jalur yang bukan file ke /index.html.",
+    "upstream": "Alamat aplikasi",
+    "upstreamHint": "Di mana aplikasi mendengarkan, seperti http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Arahkan pengunjung ke",
+    "keepPath": "Pertahankan jalur",
+    "keepPathHint": "Arahkan /page ke halaman yang sama di alamat baru.",
+    "phpSocket": "Socket php-fpm",
+    "phpSocketHint": "Tidak ditemukan socket php-fpm. Instal php-fpm atau masukkan host:port.",
+    "https": "HTTPS",
+    "httpsHint": "Memerlukan sertifikat. Simpan situs terlebih dahulu, lalu tekan Dapatkan sertifikat di bawah.",
+    "httpsCaddy": "Caddy mengambil dan memperbarui sertifikat secara otomatis.",
+    "httpsPort": "Port HTTPS",
+    "certPath": "File sertifikat",
+    "keyPath": "File kunci",
+    "forceHttps": "Arahkan HTTP ke HTTPS",
+    "gzip": "Kompres respons",
+    "accessLog": "Log akses",
+    "maxBody": "Batas unggah dalam MB",
+    "maxBodyHint": "0 mempertahankan pengaturan default server.",
+    "preview": "Pratinjau",
+    "previewFailed": "Tidak dapat membuat konfigurasi."
+  },
+  "tls": {
+    "title": "Sertifikat HTTPS",
+    "hintManaged": "certbot mengambil sertifikat Let's Encrypt untuk domain situs ini, lalu situs beralih ke HTTPS. certbot memperbaruinya dan memuat ulang server.",
+    "hintText": "certbot mengambil sertifikat Let's Encrypt untuk domain situs ini. Tambahkan sertifikat ke situs Anda sendiri setelahnya. certbot memperbaruinya dan memuat ulang server.",
+    "needCertbot": "Instal certbot beserta plugin-nya untuk server ini dari halaman Server terlebih dahulu.",
+    "email": "Email",
+    "emailHint": "Let's Encrypt menulis ke sini mengenai masalah. Opsional.",
+    "staging": "Sertifikat uji",
+    "stagingHint": "Gunakan server staging Let's Encrypt. Peramban tidak akan mempercayainya.",
+    "issue": "Dapatkan sertifikat",
+    "done": "Sertifikat disimpan"
+  },
+  "config": {
+    "search": "Cari file",
+    "empty": "Tidak ada file.",
+    "loadFailed": "Tidak dapat memuat file.",
+    "test": "Uji konfigurasi",
+    "testOk": "Konfigurasi baik-baik saja",
+    "testFailed": "Konfigurasi memiliki kesalahan",
+    "content": "Konten",
+    "save": "Simpan",
+    "saveHint": "Seluruh konfigurasi diuji sebelum server dimuat ulang. File yang rusak akan dikembalikan.",
+    "saved": "Disimpan dan dimuat ulang",
+    "backups_other": "{{count}} cadangan",
+    "restore": "Pulihkan",
+    "restoreTitle": "Pulihkan cadangan ini?",
+    "restoreBody": "File kembali ke kondisi saat {{time}}. Teks saat ini juga menjadi cadangan.",
+    "restored": "Cadangan dipulihkan"
+  },
+  "logs": {
+    "source": "Log",
+    "lines": "Baris",
+    "journal": "Jurnal {{server}}",
+    "follow": "Ikuti",
+    "stop": "Berhenti",
+    "connecting": "Menghubungkan...",
+    "ended": "Berhenti mengikuti.",
+    "followFailed": "Tidak dapat mengikuti log ini.",
+    "empty": "Tidak ada baris.",
+    "loadFailed": "Tidak dapat membaca log.",
+    "requests": "Permintaan",
+    "topPaths": "Jalur teratas",
+    "topClients": "Klien teratas"
+  },
+  "server": {
+    "unknown": "tidak diketahui",
+    "atBoot": "Mulai saat boot",
+    "notInstalled": "Tidak terinstal",
+    "start": "Mulai",
+    "stop": "Berhenti",
+    "restart": "Mulai ulang",
+    "reload": "Muat ulang",
+    "enable": "Mulai saat boot",
+    "disable": "Jangan mulai saat boot",
+    "boot": "Mulai saat boot",
+    "noBoot": "Jangan mulai saat boot",
+    "done": "{{server}} selesai",
+    "stopTitle": "Hentikan {{server}}?",
+    "stopBody": "Setiap situs di dalamnya akan offline hingga Anda memulainya lagi.",
+    "install": "Instal",
+    "installTitle": "Instal {{server}}?",
+    "installBody": "Ini diinstal dengan pengelola paket host dan langsung dimulai. Web server lain di port 80 akan mencegahnya dimulai.",
+    "installed": "{{server}} telah diinstal",
+    "installCertbot": "Instal certbot",
+    "certbotInstalled": "certbot telah diinstal",
+    "certbotPlugins": "Plugin: {{plugins}}",
+    "certbotNoPlugins": "Tidak ada plugin nginx atau Apache",
+    "certbotHint": "Mendapatkan sertifikat Let's Encrypt untuk situs nginx dan Apache"
+  },
+  "card": {
+    "title": "Server web",
+    "loading": "Memuat...",
+    "refresh": "Muat ulang",
+    "empty": "Tidak ada host yang mengaktifkan Server Web.",
+    "summary_other": "{{count}} host | {{down}} perlu diperiksa",
+    "sites_other": "{{count}} situs"
+  },
+  "companion": {
+    "toggle": "Panel Server Web",
+    "openTab": "Buka Server Web",
+    "reload": "Muat ulang {{server}}"
+  },
+  "manager": {
+    "title": "Server Web",
+    "disabled": "Aktifkan Server Web untuk host ini agar situs-situsnya muncul di sini."
+  },
+  "operations": {
+    "status": {
+      "title": "Status server web"
+    },
+    "listSites": {
+      "title": "Daftar situs"
+    },
+    "test": {
+      "title": "Uji konfigurasi server web"
+    },
+    "reload": {
+      "title": "Muat ulang server web"
+    },
+    "restart": {
+      "title": "Mulai ulang server web"
+    },
+    "enableSite": {
+      "title": "Aktifkan situs"
+    },
+    "disableSite": {
+      "title": "Nonaktifkan situs"
+    },
+    "deleteSite": {
+      "title": "Hapus situs"
+    },
+    "server": "Server",
+    "allServers": "Semua server",
+    "sites": {
+      "title": "Situs",
+      "server": "Server",
+      "domains": "Domain",
+      "https": "HTTPS"
+    }
+  }
+}

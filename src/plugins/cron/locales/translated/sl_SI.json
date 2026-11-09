@@ -1,0 +1,214 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "Oglejte si, dodajte in izvajajte cron naloge na svojih gostiteljih, s predogledom urnika in sistemskimi cron datotekami."
+  },
+  "common": {
+    "save": "Shrani",
+    "cancel": "Prekliči",
+    "back": "Nazaj",
+    "delete": "Izbriši"
+  },
+  "permissions": {
+    "use": {
+      "title": "Uporaba Crona",
+      "description": "Oglejte si cron naloge na gostiteljih, do katerih lahko dostopate, in jih spremenite na gostiteljih, ki jih lahko urejate."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Upravljajte cron naloge na tem gostitelju prek zavihka Cron."
+      },
+      "useSudo": {
+        "label": "Uporabi sudo",
+        "description": "Uporabi sudo za crontabe drugih uporabnikov in /etc/cron.d. Izklopite, če je prijava kot root."
+      },
+      "readOnly": {
+        "label": "Samo za branje",
+        "description": "Prikaži cron naloge, vendar jih nikoli ne spreminjaj na tem gostitelju."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "Odprite Cron iz gostitelja.",
+    "error": "Crona ni bilo mogoče naložiti s tega gostitelja.",
+    "disabled": "Cron je za ta gostitelj izklopljen. Vklopite ga v nastavitvah gostitelja.",
+    "sudo": "To zahteva root prijavo, sudo brez gesla ali shranjeno sudo geslo.",
+    "refresh": "Osveži",
+    "running": "Cron se izvaja",
+    "stopped": "Cron je ustavljen",
+    "readOnly": "Samo za branje",
+    "notInstalled": "Ni nameščeno",
+    "notInstalledTitle": "Cron ni nameščen na tem gostitelju",
+    "notInstalledHint": "Namestite cron ali cronie z upraviteljem paketov gostitelja, nato osvežite.",
+    "notRunning": "Cron storitev ne teče, zato se nobena naloga ne bo izvedla.",
+    "viewJobs": "Naloge",
+    "viewSystem": "Sistem",
+    "viewLogs": "Dnevniki"
+  },
+  "jobs": {
+    "add": "Dodaj nalogo",
+    "user": "Crontab uporabnika",
+    "ownUser": "{{user}} (prijava)",
+    "search": "Išči naloge",
+    "editText": "Uredi kot besedilo",
+    "empty": "Še ni cron nalog.",
+    "noMatch": "Ni ujemajočih se nalog.",
+    "off": "Izklopljeno",
+    "next": "čez {{time}}",
+    "run": "Izvedi zdaj",
+    "runTitle": "Izvesti to nalogo zdaj?",
+    "runDesc": "To enkrat izvede {{command}} kot uporabnik crontaba. Ustavi se po 2 minutah.",
+    "runFailed": "Naloge ni bilo mogoče izvesti.",
+    "turnOn": "Vklopi",
+    "turnOff": "Izklopi",
+    "deleteTitle": "Izbrisati to nalogo?",
+    "loadFailed": "Crontaba ni bilo mogoče prebrati.",
+    "saveFailed": "Crontaba ni bilo mogoče shraniti.",
+    "outputTitle": "Izhod naloge",
+    "exitOk": "Končano",
+    "exitCode": "Izhodna koda {{code}}",
+    "noOutput": "Naloga ni ničesar izpisala."
+  },
+  "form": {
+    "addTitle": "Nova naloga",
+    "editTitle": "Uredi nalogo",
+    "forUser": "Crontab uporabnika {{user}}",
+    "label": "Oznaka",
+    "labelHint": "Shranjeno kot komentar nad nalogo.",
+    "labelPlaceholder": "Nočni varnostni kopiji",
+    "command": "Ukaz",
+    "commandHint": "Izvede se z sh v domačem imeniku uporabnika. % začne vhod, ki ga pošlje cron, za pravi % napišite \\%.",
+    "schedule": "Razpored",
+    "scheduleHint": "Minuta, ura, dan v mesecu, mesec in dan v tednu ali beseda, kot je @daily.",
+    "scheduleInvalid": "To ni veljaven razpored.",
+    "nextRuns": "Naslednji zagoni ({{zone}}):",
+    "enabled": "Vklopljeno",
+    "enabledHint": "Izklopljeno opravilo ostane v crontabu kot komentar.",
+    "saved": "Shranjeno."
+  },
+  "presets": {
+    "everyMinute": "Vsako minuto",
+    "every5": "Vsakih 5 min",
+    "every15": "Vsakih 15 min",
+    "hourly": "Vsako uro",
+    "daily": "Dnevno",
+    "weekly": "Tedensko",
+    "monthly": "Mesečno",
+    "reboot": "Ob zagonu"
+  },
+  "schedule": {
+    "reboot": "Ob zagonu",
+    "everyMinute": "Vsako minuto",
+    "everyNMinutes": "Vsakih {{n}} minut",
+    "hourlyAt": "Vsako uro ob minuti {{minute}}",
+    "everyNHours": "Vsakih {{n}} ur ob minuti {{minute}}",
+    "dailyAt": "Vsak dan ob {{time}}",
+    "weekdaysAt": "Ponedeljek do petek ob {{time}}",
+    "weeklyAt": "Vsak {{day}} ob {{time}}",
+    "monthlyAt": "Vsak {{day}}. dan v mesecu ob {{time}}",
+    "custom": "Poljuben razpored",
+    "invalid": "Ni veljaven razpored"
+  },
+  "days": {
+    "0": "Nedelja",
+    "1": "Ponedeljek",
+    "2": "Torek",
+    "3": "Sreda",
+    "4": "Četrtek",
+    "5": "Petek",
+    "6": "Sobota"
+  },
+  "raw": {
+    "title": "Crontab kot besedilo",
+    "hint": "Eno opravilo na vrstico. Gostitelj preveri besedilo in obhrani stari crontab, če so napake."
+  },
+  "system": {
+    "add": "Nova datoteka",
+    "addTitle": "Nova datoteka v /etc/cron.d",
+    "edit": "Uredi",
+    "name": "Ime datoteke",
+    "nameHint": "Shranjeno kot /etc/cron.d/<name>. Cron preskoči imena z piko.",
+    "nameInvalid": "Uporabite le črke, številke, - in _.",
+    "content": "Vsebina datoteke",
+    "fileHint": "Vsako opravilo navede uporabnika, pod katerim se izvaja: minuta ura dan mesec dan_v_tednu uporabnik ukaz. Vsaka vrstica se preveri pred shranjevanjem.",
+    "noJobs": "V tej datoteki ni opravil.",
+    "readHint": "Nekatere datoteke so lahko skrite brez root dostopa. Spremembe zahtevajo root prijavo, sudo brez gesla ali shranjeno Sudo geslo.",
+    "timers_one": "Ta gostitelj ima tudi {{count}} systemd časovnik. Vtičnik Storitve ga upravlja.",
+    "timers_two": "Ta gostitelj ima tudi {{count}} systemd časovnika. Vtičnik Storitve ju upravlja.",
+    "timers_few": "Ta gostitelj ima tudi {{count}} systemd časovnike. Vtičnik Storitve jih upravlja.",
+    "timers_other": "Ta gostitelj ima tudi {{count}} systemd časovnikov. Vtičnik Storitve jih upravlja.",
+    "deleteTitle": "Izbriši /etc/cron.d/{{name}}?",
+    "deleteDesc": "Kopija je shranjena v /var/lib/termix-cron/backup.",
+    "deleted": "Izbrisano {{name}}.",
+    "saved": "Shranjeno {{name}}.",
+    "loadFailed": "Sistemskih cron datotek ni bilo mogoče prebrati.",
+    "saveFailed": "Datoteke ni bilo mogoče shraniti.",
+    "period": {
+      "hourly": "Zažene se vsako uro",
+      "daily": "Zažene se vsak dan",
+      "weekly": "Zažene se vsak teden",
+      "monthly": "Zažene se vsak mesec"
+    }
+  },
+  "logs": {
+    "lines": "Vrstice",
+    "lineCount_one": "{{count}} vrstica",
+    "lineCount_two": "{{count}} vrstici",
+    "lineCount_few": "{{count}} vrstice",
+    "lineCount_other": "{{count}} vrstic",
+    "source": "Iz {{source}}",
+    "noSource": "Na tem gostitelju ni bilo mogoče najti cron dnevnika.",
+    "empty": "Ni zapisnikov.",
+    "failed": "Dnevnika cron ni bilo mogoče prebrati."
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "V nastavitvah tega gostitelja vklopite Cron, da boste tukaj videli njegova opravila."
+  },
+  "operations": {
+    "list": {
+      "title": "Seznam cron opravil"
+    },
+    "enable": {
+      "title": "Vklopi cron opravilo"
+    },
+    "disable": {
+      "title": "Izklopi cron opravilo"
+    },
+    "run": {
+      "title": "Zaženi cron opravilo zdaj"
+    },
+    "delete": {
+      "title": "Izbriši cron opravilo"
+    },
+    "jobs": {
+      "title": "Cron opravila",
+      "schedule": "Razpored",
+      "command": "Ukaz"
+    },
+    "status": {
+      "title": "Stanje Crona"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "Preverjanje gostiteljev...",
+    "summary_one": "{{count}} opravilo na {{hosts}} gostiteljih",
+    "summary_two": "{{count}} opravili na {{hosts}} gostiteljih",
+    "summary_few": "{{count}} opravila na {{hosts}} gostiteljih",
+    "summary_other": "{{count}} opravil na {{hosts}} gostiteljih",
+    "refresh": "Preveri znova",
+    "empty": "Vklopite Cron za gostitelja, da ga boste videli tukaj.",
+    "stopped": "Ne deluje",
+    "missing": "Ni nameščeno",
+    "jobs_one": "{{count}} opravilo",
+    "jobs_two": "{{count}} opravili",
+    "jobs_few": "{{count}} opravila",
+    "jobs_other": "{{count}} opravil",
+    "off": "{{count}} izklopljenih"
+  }
+}

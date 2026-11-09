@@ -16,7 +16,9 @@
     "more": "Mais",
     "logout": "Sair",
     "next": "Próximo",
-    "previous": "Anterior"
+    "previous": "Anterior",
+    "showPassword": "Mostrar senha",
+    "hidePassword": "Ocultar senha"
   },
   "desktopUpdates": {
     "title": "App para desktop",
@@ -67,7 +69,10 @@
     "resetRailOrder": "Redefinir ordem",
     "hideFromRail": "Ocultar da barra lateral",
     "openSettings": "Abrir configurações",
-    "mobileNavigation": "Navegação"
+    "mobileNavigation": "Navegação",
+    "allTabs": "Todas as abas",
+    "hideTabBar": "Ocultar barra de abas",
+    "showTabBar": "Mostrar barra de abas"
   },
   "commandPalette": {
     "searchPlaceholder": "Pesquisar hosts, comandos ou configurações...",
@@ -110,7 +115,8 @@
     "noSearchResults": "Nenhuma conexão corresponde à sua pesquisa",
     "rename": "Renomear sessão",
     "forgetConfirm": "Encerrar a sessão em segundo plano de {{name}}?",
-    "forget": "Encerrar sessão"
+    "forget": "Encerrar sessão",
+    "expiringNow": "Encerrando agora"
   },
   "placeholders": {
     "apiKeyName": "ex.: Pipeline de CI",
@@ -158,16 +164,14 @@
     "commandPalette": "Paleta de Comandos",
     "done": "Concluído",
     "clear": "Limpar",
-    "dragToResizeColumns": "Arraste para redimensionar as colunas",
     "hostsAvailable": "Hosts Disponíveis",
-    "removeSection": "Remover seção",
-    "addSection": "Adicionar uma seção",
-    "allSectionsShown": "Tudo já está no painel.",
+    "addSection": "Adicionar blocos",
     "fromPlugins": "De plugins",
-    "dropHere": "Solte uma seção aqui",
-    "dragToReorder": "Arraste as seções para reordená-las",
+    "dropHere": "Nenhum bloco ainda. Adicione alguns da lista.",
+    "dragToReorder": "Arraste os blocos para movê-los e as bordas para redimensioná-los",
     "clearActivityConfirm": "Limpar sua atividade recente?",
-    "resetConfirm": "Restaurar o layout padrão do painel?"
+    "resetConfirm": "Restaurar o layout padrão do painel?",
+    "clearFailed": "Não foi possível limpar a atividade recente"
   },
   "admin": {
     "sectionGeneral": "Geral",
@@ -230,6 +234,9 @@
     "allowPasswordLoginDesc": "Login com nome de usuário e senha",
     "externalAutoProvision": "Criar contas externas automaticamente",
     "externalAutoProvisionDesc": "Crie uma conta na primeira vez que alguém fizer login por meio de um método externo, como SSO ou LDAP. Quando desativado, apenas pessoas que já possuem uma conta podem fazer login dessa forma",
+    "credentialStorage": "Permitir salvar senhas e chaves",
+    "credentialStorageOff": "O salvamento de senhas e chaves está desativado neste servidor. Deixe-os em branco e o Termix solicitará ao conectar.",
+    "credentialStorageDesc": "Desativado: ninguém pode salvar uma senha ou chave privada em um host ou credencial, e o Termix solicitará ao conectar. Logins já salvos permanecem até serem removidos.",
     "secondFactorAfterExternalLogin": "Solicitar segundo fator após logins externos (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Desativado: um segundo fator cadastrado é solicitado apenas após login com senha e outros logins locais, como antes. Ativado: é solicitado após todos os métodos de login, incluindo SSO e LDAP.",
     "allowPasswordReset": "Permitir Redefinição de Senha",
@@ -281,6 +288,13 @@
     "apiKeyName": "Nome",
     "apiKeyUser": "Usuário",
     "apiKeySelectUser": "Selecione um usuário...",
+    "apiKeyScope": "Acesso",
+    "apiKeyScopeFull": "Tudo o que o usuário pode fazer",
+    "apiKeyScopeRead": "Apenas ações de leitura",
+    "apiKeyScopeRun": "Executar ações",
+    "apiKeyScopeHint": "Chaves de ação acessam apenas as ações do Termix e o servidor MCP, nada mais.",
+    "apiKeyScopeActionsRead": "Ações, apenas leitura",
+    "apiKeyScopeActionsRun": "Ações",
     "apiKeyExpiresAt": "Expira em",
     "createKey": "Criar chave",
     "apiKeyNoExpiry": "Sem expiração",
@@ -319,6 +333,10 @@
     "deleteUserFailed": "Falha ao excluir usuário",
     "deleteUserSuccess": "Usuário \"{{username}}\" excluído",
     "deleteRoleSuccess": "Função \"{{name}}\" excluída",
+    "deleteRoleFailed": "Não foi possível excluir a função",
+    "roleNamePlaceholder": "desenvolvedor",
+    "roleDisplayNamePlaceholder": "Desenvolvedor",
+    "unknownError": "Erro desconhecido",
     "revokeKeySuccess": "Chave \"{{name}}\" revogada",
     "revokeKeyFailed": "Falha ao revogar chave",
     "copiedToClipboard": "Copiado para a área de transferência",
@@ -361,6 +379,7 @@
     "unlinkAccountFailed": "Falha ao desvincular login externo",
     "updateRegistrationFailed": "Falha ao atualizar a configuração de registro",
     "updatePasswordLoginFailed": "Falha ao atualizar a configuração de login por senha",
+    "updateCredentialStorageFailed": "Falha ao atualizar a configuração de armazenamento de credenciais",
     "updateSecondFactorAfterExternalLoginFailed": "Falha ao atualizar a configuração do segundo fator",
     "updatePasswordResetFailed": "Falha ao atualizar a configuração de redefinição de senha",
     "sessionTimeoutRange2": "O tempo limite da sessão deve ser entre 1 e 720 horas",
@@ -683,7 +702,8 @@
         "tryBetaTitle": "Experimente novos recursos antes",
         "tryBetaDescription": "Participe do programa beta em Atualizações.",
         "sendBetaFeedback": "Enviar feedback da beta",
-        "openUpdates": "Atualizações"
+        "openUpdates": "Atualizações",
+        "hexLabel": "hex"
       }
     }
   },
@@ -769,6 +789,11 @@
       "allPluginsBeta": "Usar betas para todos os plugins",
       "allPluginsStable": "Todos os plugins de volta à versão estável",
       "saveFailed": "Não foi possível salvar a alteração"
+    },
+    "user": {
+      "hostRows": {
+        "label": "Opções de linhas de hosts"
+      }
     }
   },
   "hostDefaults": {
@@ -795,6 +820,15 @@
   "sharing": {
     "revokeConfirm": "Remover acesso para {{name}}?",
     "revoke": "Remover acesso",
+    "deviceLogin": {
+      "label": "Fazer login apenas neste dispositivo",
+      "none": "Nenhum",
+      "hint": "Fica apenas neste dispositivo e nunca é enviado para o servidor. É usado primeiro e as conexões partem deste dispositivo.",
+      "noCredentials": "Adicione uma credencial com a opção \"Manter apenas neste dispositivo\" para usá-la aqui.",
+      "saved": "Login do dispositivo salvo",
+      "keepOnDevice": "Manter apenas neste dispositivo",
+      "keepOnDeviceDesc": "A senha ou chave nunca é sincronizada com o servidor. Use-a como login do dispositivo em hosts compartilhados."
+    },
     "folderLogin": {
       "action": "Definir login pessoal para hosts compartilhados",
       "title": "Login pessoal para esta pasta",
@@ -836,7 +870,10 @@
     "pickHost": "Escolha um host para editar",
     "pickCredential": "Escolha uma credencial para editar",
     "pickDefaults": "Escolha um nível de padrões para editar",
-    "pickHint": "Tudo sobre uma conexão está aqui, agrupado para facilitar a busca."
+    "pickHint": "Tudo sobre uma conexão está aqui, agrupado para facilitar a busca.",
+    "clearChoice": "Limpar",
+    "proxyPathTarget": "alvo",
+    "hostCopyName": "{{name}} (cópia)"
   },
   "permissions": {
     "branding": {
@@ -849,6 +886,33 @@
     "presetIntro": "Escolha o que aparece na tela.",
     "presetChangeLater": "Você pode alternar os predefinidos ou alterar qualquer configuração individual depois, em Configurações, em Interface.",
     "appearanceTitle": "Personalize ao seu gosto",
-    "appearanceIntro": "Escolha um tema, uma cor de destaque, uma fonte e seu idioma. As alterações aparecem imediatamente e você pode mudá-las depois em Configurações."
+    "appearanceIntro": "Escolha um tema, uma cor de destaque, uma fonte e seu idioma. As alterações aparecem imediatamente e você pode mudá-las depois em Configurações.",
+    "hostRows": {
+      "title": "Como as linhas de hosts devem funcionar?",
+      "intro": "Com muitos plugins ativados, cada linha de host pode ter muitos botões. Escolha como você quer acessar as ferramentas de um host.",
+      "buttons": "Botões de conexão",
+      "buttonsDesc": "Um botão por ferramenta em cada linha de host, como antes. A página do host permanece no menu do host.",
+      "both": "Botões e um botão para a página do host",
+      "bothDesc": "Mantenha os botões e adicione um para a página do host. As ferramentas abrem dentro da página do host.",
+      "page": "Apenas página do host",
+      "pageDesc": "Sem botões nas linhas. Clicar em um host abre sua página, com todas as ferramentas em uma única aba.",
+      "clickOpensPage": "Clique abre a página do host",
+      "changeLater": "Você pode alterar isso depois em Personalizar barra lateral."
+    },
+    "accentHex": "hex"
+  },
+  "hostTools": {
+    "mode": "Abrir ferramentas do host em",
+    "modeDesc": "Onde os botões de Docker, Arquivos e outras ferramentas abrem. A página do host mantém todas as ferramentas de um host em uma única aba. Com Apenas a página do host, as linhas de host não têm botões de conexão e um clique abre a página do host.",
+    "modeTab": "Sua própria aba",
+    "modePage": "A página do host",
+    "rowButtons": "Botões nas linhas dos hosts",
+    "modeOnly": "Apenas a página do host",
+    "clickOpens": "Clique abre",
+    "clickOpensDesc": "O que um clique em um host executa. Escolha outra opção para um host específico no menu dele.",
+    "clickAuto": "A primeira forma de conexão",
+    "useDefaultNamed": "Padrão ({{name}})",
+    "useDefaultButtons": "Usar os botões padrão",
+    "perHostHint": "Para alterá-los para um host específico, use Botões nas linhas dos hosts no menu dele."
   }
 }

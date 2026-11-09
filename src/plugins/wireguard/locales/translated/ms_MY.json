@@ -1,0 +1,232 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Pasang WireGuard pada hos anda dan uruskannya antara muka, klien dan konfigurasi dari satu tab."
+  },
+  "common": {
+    "save": "Simpan",
+    "cancel": "Batal",
+    "back": "Kembali",
+    "delete": "Padam",
+    "loading": "Memuatkan..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Gunakan WireGuard",
+      "description": "Urus antara muka dan klien WireGuard pada hos yang boleh anda sunting."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Buka WireGuard dari hos.",
+    "error": "Gagal memuatkan WireGuard dari hos ini.",
+    "sudo": "Hos ini memerlukan log masuk root atau sudo tanpa kata laluan untuk mengurus WireGuard.",
+    "installed": "Dipasang",
+    "notInstalled": "Tidak dipasang",
+    "refresh": "Muat semula",
+    "viewInterfaces": "Antara muka",
+    "viewLogs": "Log"
+  },
+  "install": {
+    "title": "Pasang WireGuard",
+    "desc": "Ini memasang alat WireGuard dan iptables dengan pengurus pakej hos.",
+    "confirm": "Pasang",
+    "done": "WireGuard telah dipasang.",
+    "failed": "Gagal memasang WireGuard.",
+    "empty": "WireGuard tidak dipasang pada hos ini",
+    "noManager": "Tiada pengurus pakej yang disokong ditemui. Pasang WireGuard secara manual.",
+    "hint": "Pasang pada {{os}} untuk menjalankan VPN dari hos ini.",
+    "thisHost": "hos ini",
+    "button": "Pasang WireGuard",
+    "working": "Memasang..."
+  },
+  "interfaces": {
+    "add": "Tambah antara muka",
+    "empty": "Tiada antara muka lagi. Tambah satu untuk memulakan VPN.",
+    "loadFailed": "Gagal memuatkan antara muka.",
+    "up": "Aktif",
+    "down": "Tidak aktif",
+    "clients": "{{count}} klien",
+    "nat": "NAT",
+    "boot": "Mula semasa boot"
+  },
+  "create": {
+    "title": "Tambah antara muka",
+    "name": "Nama",
+    "address": "Alamat",
+    "addressHint": "Alamat pelayan dan sub rangkaian. Klien mendapat alamat kosong seterusnya.",
+    "port": "Port UDP",
+    "nat": "Kongsi internet hos (NAT)",
+    "natDesc": "Klien boleh mencapai internet dan rangkaian hos melalui hos ini.",
+    "natMissing": "NAT memerlukan iptables, yang tidak dipasang pada hos ini.",
+    "forwarding": "Hidupkan penghalaan IP",
+    "forwardingDesc": "Membolehkan hos menghantar trafik antara klien dan rangkaian. Disimpan untuk boot semula.",
+    "firewall": "Buka port dalam tembok api",
+    "firewallDesc": "Menambah port UDP ke ufw atau firewalld apabila salah satu sedang berjalan.",
+    "start": "Mula sekarang dan semasa boot",
+    "startDesc": "Menghidupkan antara muka dan mengekalkannya selepas boot semula.",
+    "save": "Cipta",
+    "done": "Antara muka sedia.",
+    "failed": "Gagal mencipta antara muka."
+  },
+  "detail": {
+    "clients": "Klien",
+    "settings": "Tetapan",
+    "config": "Konfigurasi",
+    "service": "Perkhidmatan",
+    "gone": "Antara muka ini tidak lagi wujud pada hos."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Paparkan tab WireGuard untuk hos ini dalam menunya."
+      },
+      "showPanel": {
+        "label": "Paparkan panel WireGuard dalam terminal",
+        "description": "Benarkan panel WireGuard dibuka di sebelah terminal SSH hos ini."
+      },
+      "alertDown": {
+        "label": "Amaran apabila antara muka tidak aktif",
+        "description": "Hantar amaran apabila antara muka yang sepatutnya aktif semasa but tidak berfungsi. Disemak apabila status WireGuard dibaca."
+      }
+    },
+    "publicKey": "Kunci awam",
+    "port": "Port UDP",
+    "endpoint": "Hujung server",
+    "endpointHint": "Alamat awam yang disambungkan oleh klien, seperti vpn.example.com:51820.",
+    "dns": "DNS untuk klien",
+    "dnsHint": "Pilihan. Pisahkan pelayan dengan koma.",
+    "allowed": "Laluan trafik melalui VPN",
+    "allowedHint": "Julat yang dihantar klien melalui VPN. 0.0.0.0/0, ::/0 menghantar semua.",
+    "keepalive": "Keepalive (saat)",
+    "keepaliveHint": "Menjaga klien di sebalik NAT boleh dicapai. Gunakan 0 untuk mematikannya.",
+    "saved": "Tetapan disimpan.",
+    "saveFailed": "Tidak dapat menyimpan tetapan.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Buka panel WireGuard dengan terminal baharu",
+        "description": "Paparkan panel WireGuard di sebelah setiap terminal SSH yang mempunyai WireGuard. Anda masih boleh membukanya dan menutupnya dari butang di tepi kanan."
+      },
+      "companionSide": {
+        "label": "Sisi panel WireGuard",
+        "description": "Di mana panel WireGuard diletakkan di sebelah terminal.",
+        "right": "Kanan",
+        "left": "Kiri",
+        "bottom": "Bawah"
+      },
+      "companionSize": {
+        "label": "Saiz panel WireGuard",
+        "description": "Lebar dalam piksel, atau tinggi apabila ia di bahagian bawah. Anda juga boleh menyeret tepinya."
+      },
+      "companionEdgeButton": {
+        "label": "Paparkan butang panel",
+        "description": "Paparkan butang kecil di tepi kanan terminal yang membuka panel WireGuard."
+      }
+    }
+  },
+  "clients": {
+    "add": "Tambah klien",
+    "empty": "Tiada klien lagi.",
+    "loadFailed": "Tidak dapat memuatkan klien.",
+    "name": "Nama",
+    "nameHint": "Huruf, nombor, titik, tanda tolak dan garis bawah.",
+    "allowed": "Laluan trafik melalui VPN",
+    "allowedHint": "Kosongkan untuk menggunakan lalai antara muka: {{value}}",
+    "create": "Cipta klien",
+    "addFailed": "Tidak dapat menambah klien.",
+    "needEndpoint": "Tetapkan hujung server dalam tetapan antara muka terlebih dahulu.",
+    "connected": "Disambung",
+    "off": "Mati",
+    "external": "Dibuat secara manual",
+    "handshake": "jabat tangan {{ago}} yang lalu",
+    "showConfig": "Paparkan konfigurasi dan kod QR",
+    "configFailed": "Tidak dapat membaca konfigurasi klien.",
+    "rotate": "Kunci baharu",
+    "rotateTitle": "Buat kunci baharu untuk {{name}}?",
+    "rotateDesc": "Konfigurasi lama akan berhenti berfungsi. Berikan konfigurasi baharu kepada klien selepas ini.",
+    "turnOff": "Matikan",
+    "turnOn": "Hidupkan",
+    "saveFailed": "Tidak dapat mengubah klien.",
+    "deleteTitle": "Padam {{name}}?",
+    "deleteDesc": "Klien akan dialih keluar dan tidak dapat menyambung lagi.",
+    "deleteFailed": "Tidak dapat memadam klien."
+  },
+  "clientConfig": {
+    "note": "Konfigurasi ini mengandungi kunci peribadi klien. Kongsi hanya dengan orang atau peranti yang akan menggunakannya.",
+    "qr": "Kod QR untuk konfigurasi klien",
+    "copy": "Salin",
+    "copied": "Konfigurasi disalin.",
+    "copyFailed": "Tidak dapat menyalin konfigurasi.",
+    "download": "Muat turun .conf"
+  },
+  "config": {
+    "title": "Fail konfigurasi",
+    "hint": "Kunci peribadi dan berkongsi tersembunyi. Biarkan placeholder untuk mengekalkan kunci. Konfigurasi diperiksa sebelum disimpan dan sandaran dikekalkan. Perubahan alamat memerlukan mulakan semula.",
+    "loadFailed": "Tidak dapat membaca konfigurasi.",
+    "saved": "Konfigurasi disimpan.",
+    "saveFailed": "Tidak dapat menyimpan konfigurasi."
+  },
+  "logs": {
+    "loadFailed": "Tidak dapat membaca log.",
+    "lines": "{{count}} baris",
+    "empty": "Tiada baris log."
+  },
+  "service": {
+    "failed": "Tindakan perkhidmatan gagal.",
+    "start": "Mula",
+    "stop": "Henti",
+    "restart": "Mulakan semula",
+    "autostart": "Mula pada boot",
+    "autostartDesc": "Mula antara muka ini apabila hos bermula.",
+    "needsSystemd": "Mula pada boot memerlukan systemd pada hos ini.",
+    "noForward": "Pengehalaan IP dimatikan pada hos ini, jadi klien tidak dapat mencapai rangkaian melalui NAT.",
+    "delete": "Padam antara muka",
+    "deleteTitle": "Padam {{name}}?",
+    "deleteDesc": "Antara muka dihentikan dan konfigurasi, kunci serta fail klien yang disimpan dipadam dari hos.",
+    "deleteFailed": "Tidak dapat memadam antara muka."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Hidupkan WireGuard dalam tetapan hos ini untuk menggunakan kad ini.",
+    "start": "Aktifkan",
+    "stop": "Nyahaktif",
+    "done": "{{name}} dikemas kini"
+  },
+  "operations": {
+    "list": {
+      "title": "Senaraikan antara muka WireGuard"
+    },
+    "down": {
+      "title": "Antara muka WireGuard dimatikan"
+    },
+    "start": {
+      "title": "Mula antara muka WireGuard"
+    },
+    "stop": {
+      "title": "Henti antara muka WireGuard"
+    },
+    "restart": {
+      "title": "Mulakan semula antara muka WireGuard"
+    },
+    "interfaces": {
+      "title": "Antara muka WireGuard",
+      "address": "Alamat",
+      "port": "Port",
+      "clients": "Klien"
+    }
+  },
+  "nav": {
+    "togglePanel": "Togol panel WireGuard"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Memeriksa hos...",
+    "summary_other": "{{count}} klien pada {{hosts}} hos",
+    "refresh": "Semak semula",
+    "empty": "Hidupkan WireGuard untuk hos untuk melihatnya di sini.",
+    "missing": "Tidak dipasang",
+    "down_other": "{{count}} dimatikan",
+    "interfaces_other": "{{count}} antara muka, {{clients}} klien"
+  }
+}

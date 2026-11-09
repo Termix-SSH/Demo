@@ -16,7 +16,9 @@
     "more": "Thêm",
     "logout": "Đăng xuất",
     "next": "Tiếp theo",
-    "previous": "Trước đó"
+    "previous": "Trước đó",
+    "showPassword": "Hiển thị mật khẩu",
+    "hidePassword": "Ẩn mật khẩu"
   },
   "desktopUpdates": {
     "title": "Ứng dụng máy tính để bàn",
@@ -67,7 +69,10 @@
     "resetRailOrder": "Đặt lại thứ tự",
     "hideFromRail": "Ẩn khỏi thanh bên",
     "openSettings": "Mở cài đặt",
-    "mobileNavigation": "Điều hướng"
+    "mobileNavigation": "Điều hướng",
+    "allTabs": "Tất cả các tab",
+    "hideTabBar": "Ẩn thanh tab",
+    "showTabBar": "Hiển thị thanh tab"
   },
   "commandPalette": {
     "searchPlaceholder": "Tìm kiếm máy chủ, lệnh hoặc cài đặt...",
@@ -110,7 +115,8 @@
     "noSearchResults": "Không có kết nối nào khớp với tìm kiếm của bạn",
     "rename": "Đổi tên phiên làm việc",
     "forgetConfirm": "Kết thúc phiên nền cho {{name}}?",
-    "forget": "Kết thúc phiên làm việc"
+    "forget": "Kết thúc phiên làm việc",
+    "expiringNow": "Đang kết thúc"
   },
   "placeholders": {
     "apiKeyName": "ví dụ: CI Pipeline",
@@ -158,16 +164,14 @@
     "commandPalette": "Bảng lệnh",
     "done": "Xong",
     "clear": "Xóa",
-    "dragToResizeColumns": "Kéo để thay đổi kích thước cột",
     "hostsAvailable": "Máy chủ khả dụng",
-    "removeSection": "Xóa phần",
-    "addSection": "Thêm một phần",
-    "allSectionsShown": "Tất cả đã có trên bảng điều khiển.",
+    "addSection": "Thêm ô",
     "fromPlugins": "Từ plugin",
-    "dropHere": "Thả một phần vào đây",
-    "dragToReorder": "Kéo các phần để sắp xếp lại",
+    "dropHere": "Chưa có ô nào. Thêm từ danh sách.",
+    "dragToReorder": "Kéo thả ô để di chuyển, kéo cạnh để thay đổi kích thước",
     "clearActivityConfirm": "Xóa hoạt động gần đây của bạn?",
-    "resetConfirm": "Đặt lại bảng điều khiển về bố cục mặc định?"
+    "resetConfirm": "Đặt lại bảng điều khiển về bố cục mặc định?",
+    "clearFailed": "Không thể xóa hoạt động gần đây"
   },
   "admin": {
     "sectionGeneral": "Chung",
@@ -230,6 +234,9 @@
     "allowPasswordLoginDesc": "Đăng nhập bằng tên người dùng/mật khẩu",
     "externalAutoProvision": "Tự động tạo tài khoản bên ngoài",
     "externalAutoProvisionDesc": "Tạo tài khoản khi người dùng đăng nhập lần đầu qua phương thức bên ngoài như SSO hoặc LDAP. Khi tắt, chỉ những người đã có tài khoản mới có thể đăng nhập theo cách này",
+    "credentialStorage": "Cho phép lưu mật khẩu và khóa",
+    "credentialStorageOff": "Tính năng lưu mật khẩu và khóa đã bị tắt trên máy chủ này. Hãy để trống các trường này, Termix sẽ yêu cầu nhập lại khi bạn kết nối.",
+    "credentialStorageDesc": "Khi tắt, không ai có thể lưu mật khẩu hoặc khóa riêng tư trên máy chủ hoặc thông tin đăng nhập, và Termix sẽ yêu cầu nhập chúng khi kết nối. Các thông tin đăng nhập đã được lưu trước đó sẽ vẫn còn cho đến khi bị xóa.",
     "secondFactorAfterExternalLogin": "Yêu cầu xác thực hai yếu tố sau khi đăng nhập bên ngoài (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Khi tắt, xác thực hai yếu tố chỉ được yêu cầu sau khi đăng nhập bằng mật khẩu và các phương thức nội bộ khác, giống như trước đây. Khi bật, nó sẽ được yêu cầu sau mọi phương thức đăng nhập, bao gồm cả SSO và LDAP.",
     "allowPasswordReset": "Cho phép đặt lại mật khẩu",
@@ -275,6 +282,13 @@
     "apiKeyName": "Tên",
     "apiKeyUser": "Người dùng",
     "apiKeySelectUser": "Chọn một người dùng...",
+    "apiKeyScope": "Quyền truy cập",
+    "apiKeyScopeFull": "Tất cả các thao tác người dùng có thể thực hiện",
+    "apiKeyScopeRead": "Chỉ các thao tác đọc",
+    "apiKeyScopeRun": "Thực hiện thao tác",
+    "apiKeyScopeHint": "Khóa thao tác chỉ truy cập vào các thao tác của Termix và máy chủ MCP, không truy cập bất kỳ thứ gì khác.",
+    "apiKeyScopeActionsRead": "Thao tác, chỉ đọc",
+    "apiKeyScopeActionsRun": "Thao tác",
     "apiKeyExpiresAt": "Hết hạn lúc",
     "createKey": "Tạo khóa",
     "apiKeyNoExpiry": "Không hết hạn",
@@ -311,6 +325,10 @@
     "deleteUserFailed": "Không thể xóa người dùng",
     "deleteUserSuccess": "Đã xóa người dùng \"{{username}}\"",
     "deleteRoleSuccess": "Đã xóa vai trò \"{{name}}\"",
+    "deleteRoleFailed": "Không thể xóa vai trò",
+    "roleNamePlaceholder": "developer",
+    "roleDisplayNamePlaceholder": "Developer",
+    "unknownError": "Lỗi không xác định",
     "revokeKeySuccess": "Đã hủy khóa \"{{name}}\"",
     "revokeKeyFailed": "Không thể hủy khóa",
     "copiedToClipboard": "Đã sao chép vào bộ nhớ tạm",
@@ -353,6 +371,7 @@
     "unlinkAccountFailed": "Không thể hủy liên kết đăng nhập bên ngoài",
     "updateRegistrationFailed": "Không thể cập nhật cài đặt đăng ký",
     "updatePasswordLoginFailed": "Không thể cập nhật cài đặt đăng nhập bằng mật khẩu",
+    "updateCredentialStorageFailed": "Không thể cập nhật cài đặt lưu trữ thông tin đăng nhập",
     "updateSecondFactorAfterExternalLoginFailed": "Không thể cập nhật cài đặt xác thực hai yếu tố",
     "updatePasswordResetFailed": "Không thể cập nhật cài đặt đặt lại mật khẩu",
     "sessionTimeoutRange2": "Thời gian hết hạn phiên phải từ 1 đến 720 giờ",
@@ -671,7 +690,8 @@
         "tryBetaTitle": "Thử tính năng mới sớm",
         "tryBetaDescription": "Tham gia chương trình beta trong mục Cập nhật.",
         "sendBetaFeedback": "Gửi phản hồi về phiên bản beta",
-        "openUpdates": "Cập nhật"
+        "openUpdates": "Cập nhật",
+        "hexLabel": "hex"
       }
     }
   },
@@ -757,6 +777,11 @@
       "allPluginsBeta": "Sử dụng Beta cho tất cả plugin",
       "allPluginsStable": "Tất cả plugin quay lại bản ổn định",
       "saveFailed": "Không thể lưu thay đổi"
+    },
+    "user": {
+      "hostRows": {
+        "label": "Số hàng hiển thị máy chủ"
+      }
     }
   },
   "hostDefaults": {
@@ -783,6 +808,15 @@
   "sharing": {
     "revokeConfirm": "Gỡ quyền truy cập cho {{name}}?",
     "revoke": "Gỡ quyền truy cập",
+    "deviceLogin": {
+      "label": "Chỉ đăng nhập trên thiết bị này",
+      "none": "Không có",
+      "hint": "Chỉ lưu trên thiết bị này và không bao giờ gửi lên máy chủ. Ưu tiên sử dụng thông tin này, và các kết nối sẽ được khởi tạo từ thiết bị này.",
+      "noCredentials": "Thêm thông tin đăng nhập với tùy chọn Chỉ lưu trên thiết bị này để sử dụng ở đây.",
+      "saved": "Đã lưu đăng nhập thiết bị",
+      "keepOnDevice": "Chỉ lưu trên thiết bị này",
+      "keepOnDeviceDesc": "Mật khẩu hoặc khóa sẽ không bao giờ đồng bộ lên máy chủ. Sử dụng nó như thông tin đăng nhập thiết bị trên các máy chủ dùng chung."
+    },
     "folderLogin": {
       "action": "Đặt thông tin đăng nhập cá nhân cho các máy chủ được chia sẻ",
       "title": "Thông tin đăng nhập cá nhân cho thư mục này",
@@ -824,7 +858,10 @@
     "pickHost": "Chọn một máy chủ để chỉnh sửa",
     "pickCredential": "Chọn một thông tin đăng nhập để chỉnh sửa",
     "pickDefaults": "Chọn mức độ mặc định để chỉnh sửa",
-    "pickHint": "Mọi thứ về một kết nối đều nằm ở đây, được nhóm lại để bạn dễ tìm."
+    "pickHint": "Mọi thứ về một kết nối đều nằm ở đây, được nhóm lại để bạn dễ tìm.",
+    "clearChoice": "Xóa",
+    "proxyPathTarget": "đích",
+    "hostCopyName": "{{name}} (bản sao)"
   },
   "permissions": {
     "branding": {
@@ -837,6 +874,33 @@
     "presetIntro": "Chọn mức độ hiển thị trên màn hình.",
     "presetChangeLater": "Bạn có thể chuyển đổi mẫu cài đặt hoặc thay đổi bất kỳ cài đặt riêng lẻ nào sau này trong phần Cài đặt, mục Giao diện.",
     "appearanceTitle": "Tùy chỉnh theo ý bạn",
-    "appearanceIntro": "Chọn chủ đề, màu nhấn, phông chữ và ngôn ngữ của bạn. Thay đổi sẽ hiển thị ngay lập tức, và bạn có thể thay đổi chúng sau này trong phần Cài đặt."
+    "appearanceIntro": "Chọn chủ đề, màu nhấn, phông chữ và ngôn ngữ của bạn. Thay đổi sẽ hiển thị ngay lập tức, và bạn có thể thay đổi chúng sau này trong phần Cài đặt.",
+    "hostRows": {
+      "title": "Hàng máy chủ nên hoạt động như thế nào?",
+      "intro": "Khi bật nhiều tiện ích mở rộng, mỗi hàng máy chủ có thể hiển thị rất nhiều nút. Hãy chọn cách bạn muốn truy cập các công cụ của máy chủ.",
+      "buttons": "Nút kết nối",
+      "buttonsDesc": "Một nút cho mỗi công cụ trên mỗi hàng máy chủ, như trước đây. Trang máy chủ vẫn nằm trong menu máy chủ.",
+      "both": "Nút và nút trang máy chủ",
+      "bothDesc": "Giữ các nút và thêm một nút cho trang máy chủ. Các công cụ mở bên trong trang máy chủ.",
+      "page": "Chỉ trang máy chủ",
+      "pageDesc": "Không có nút trên các hàng. Nhấp vào máy chủ sẽ mở trang của nó, với mọi công cụ trong một tab.",
+      "clickOpensPage": "Nhấp để mở trang máy chủ",
+      "changeLater": "Bạn có thể thay đổi điều này sau trong Tùy chỉnh thanh bên."
+    },
+    "accentHex": "hex"
+  },
+  "hostTools": {
+    "mode": "Mở công cụ máy chủ trong",
+    "modeDesc": "Nơi các nút công cụ như Docker, Files và các công cụ khác mở ra. Trang máy chủ giữ mọi công cụ cho một máy chủ trong một tab. Với Chỉ trang máy chủ, các hàng máy chủ không có nút kết nối và một cú nhấp chuột sẽ mở trang của máy chủ.",
+    "modeTab": "Tab riêng",
+    "modePage": "Trang chủ của host",
+    "rowButtons": "Nút trên dòng host",
+    "modeOnly": "Chỉ trang chủ của host",
+    "clickOpens": "Nhấp chuột mở",
+    "clickOpensDesc": "Hành động khi nhấp vào một host. Chọn tùy chọn khác cho một host cụ thể từ menu của nó.",
+    "clickAuto": "Cách kết nối đầu tiên",
+    "useDefaultNamed": "Mặc định ({{name}})",
+    "useDefaultButtons": "Sử dụng các nút mặc định",
+    "perHostHint": "Để thay đổi cho một host cụ thể, hãy sử dụng tùy chọn Nút trên dòng host trong menu của nó."
   }
 }

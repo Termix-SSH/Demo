@@ -1,0 +1,461 @@
+{
+  "plugin": {
+    "name": "Sigurnosne kopije",
+    "description": "Napravite sigurnosne kopije mapa, baza podataka i Docker podataka na svojim hostovima pomoću restic-a, a zatim ih pregledavajte, preuzimajte i vraćajte."
+  },
+  "common": {
+    "save": "Spremi",
+    "cancel": "Otkaži",
+    "back": "Natrag",
+    "delete": "Izbriši",
+    "done": "Gotovo",
+    "loading": "Učitavanje...",
+    "refresh": "Osvježi",
+    "retry": "Pokušaj ponovno"
+  },
+  "permissions": {
+    "use": {
+      "title": "Koristi sigurnosne kopije",
+      "description": "Postavite zadatke i spremišta za sigurnosne kopije, pokrećite sigurnosne kopije te pregledavajte, preuzimajte i vraćajte snimke na poslužiteljima koje mogu uređivati."
+    }
+  },
+  "tab": {
+    "title": "Sigurnosne kopije",
+    "viewJobs": "Zadaci",
+    "viewRepos": "Spremišta",
+    "viewHistory": "Povijest"
+  },
+  "hostTab": {
+    "title": "Sigurnosne kopije",
+    "noHost": "Otvorite sigurnosne kopije s poslužitelja.",
+    "viewJobs": "Zadaci",
+    "viewSnapshots": "Snimke",
+    "viewHistory": "Povijest",
+    "restic": "restic {{version}}",
+    "noRestic": "restic nije instaliran",
+    "sudo": "Termix se mora prijaviti kao root ili kao korisnik s sudo bez lozinke kako bi pokrenuo sigurnosne kopije na ovom hostu.",
+    "statusFailed": "Nije moguće pročitati ovaj host"
+  },
+  "install": {
+    "missing": "restic nije instaliran na ovom hostu",
+    "tooOld": "restic na ovom hostu je stariji od 0.17",
+    "hint": "Sigurnosne kopije koriste restic. Instalirajte ga putem upravitelja paketa ili iz restic izdanja na GitHubu ako je paket prestar.",
+    "button": "Instaliraj restic",
+    "working": "Instaliranje...",
+    "title": "Instalirati restic?",
+    "desc": "Ovo instalira restic na host kao root.",
+    "confirm": "Instaliraj",
+    "done": "restic {{version}} je instaliran",
+    "failed": "Nije moguće instalirati restic"
+  },
+  "status": {
+    "never": "Nikada nije pokrenuto",
+    "running": "Pokreće se",
+    "success": "Gotovo",
+    "warning": "Upozorenja",
+    "failed": "Neuspješno",
+    "canceled": "Zaustavljeno"
+  },
+  "time": {
+    "justNow": "upravo sada",
+    "soon": "za trenutak",
+    "ago": {
+      "minutes_one": "prije {{count}} minute",
+      "minutes_few": "prije {{count}} minute",
+      "minutes_other": "prije {{count}} minuta",
+      "hours_one": "prije {{count}} sat",
+      "hours_few": "prije {{count}} sata",
+      "hours_other": "prije {{count}} sati",
+      "days_one": "prije {{count}} dan",
+      "days_few": "prije {{count}} dana",
+      "days_other": "prije {{count}} dana"
+    },
+    "in": {
+      "minutes_one": "za {{count}} minutu",
+      "minutes_few": "za {{count}} minute",
+      "minutes_other": "za {{count}} minuta",
+      "hours_one": "za {{count}} sat",
+      "hours_few": "za {{count}} sata",
+      "hours_other": "za {{count}} sati",
+      "days_one": "za {{count}} dan",
+      "days_few": "za {{count}} dana",
+      "days_other": "za {{count}} dana"
+    }
+  },
+  "jobs": {
+    "add": "Dodaj zadatak",
+    "empty": "Još nema poslova za sigurnosno kopiranje",
+    "emptyHint": "Dodajte posao za sigurnosno kopiranje mapa, baza podataka ili Docker podataka.",
+    "emptyNoRepo": "Prvo dodajte spremište kako bi sigurnosne kopije imale gdje pohraniti podatke.",
+    "loadFailed": "Nije moguće učitati poslove za sigurnosno kopiranje",
+    "lastGood": "Posljednje sigurnosno kopiranje {{when}}",
+    "noGood": "Još nema sigurnosne kopije",
+    "next": "Sljedeće {{when}}",
+    "paused": "Pauzirano",
+    "run": "Pokreni sada",
+    "stop": "Zaustavi",
+    "edit": "Uredi",
+    "snapshots": "Snimke stanja",
+    "started": "{{name}} je pokrenut",
+    "runFailed": "Sigurnosno kopiranje se nije moglo pokrenuti"
+  },
+  "editor": {
+    "newTitle": "Novi posao za sigurnosno kopiranje",
+    "general": "Posao",
+    "host": "Poslužitelj",
+    "pickHost": "Odaberi poslužitelj",
+    "name": "Naziv",
+    "namePlaceholder": "Noćno sigurnosno kopiranje",
+    "repository": "Skladište",
+    "pickRepository": "Odaberi skladište",
+    "noRepos": "Nemate skladište koje ovaj host može koristiti. Prvo dodajte jedno na kartici Sigurnosne kopije.",
+    "repoLocked": "Samo vlasnik ovog skladišta ga može mijenjati.",
+    "enabled": "Pokreni prema rasporedu",
+    "enabledHint": "Isključite za pauziranje rasporeda. Opcija Pokreni sada i dalje radi.",
+    "oneFileSystem": "Ostani na jednom datotečnom sustavu",
+    "oneFileSystemHint": "Preskoči druge diskove i mount točke pronađene unutar odabranih mapa.",
+    "saved": "Zadatak spremljen",
+    "saveFailed": "Nije moguće spremiti zadatak",
+    "deleteTitle": "Izbrisati {{name}}?",
+    "deleteDesc": "Posao se uklanja iz Termixa. Njegovi snimci ostaju u spremištu.",
+    "deleted": "Posao izbrisan",
+    "deleteFailed": "Posao se nije mogao izbrisati"
+  },
+  "sources": {
+    "add": "Dodaj u sigurnosnu kopiju",
+    "addPaths": "Mape",
+    "addDatabase": "Baza podataka",
+    "addDocker": "Docker",
+    "remove": "Ukloni",
+    "paths": "Mape i datoteke",
+    "folders": "Putanje",
+    "foldersHint": "Jedna puna putanja po retku.",
+    "excludes": "Preskoči",
+    "excludesHint": "Jedan restic obrazac po retku, npr. *.log.",
+    "database": "Baza podataka",
+    "engine": "Vrsta",
+    "engines": {
+      "mysql": "MySQL ili MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Prijava",
+    "ownLogin": "Upišite prijavu ovdje",
+    "noDatabasesPlugin": "Uključite Databases dodatak za odabir spremljene prijave.",
+    "address": "Adresa",
+    "addressPlaceholder": "Prazno za lokalni socket",
+    "port": "Port",
+    "username": "Korisnik",
+    "password": "Lozinka",
+    "passwordSaved": "Spremljeno, ostavite prazno za zadržavanje",
+    "runAs": "Pokreni kao",
+    "runAsHint": "Linux korisnik za pokretanje dumpa, npr. postgres. Prazno pokreće kao root.",
+    "databases": "Baze podataka",
+    "databasesHint": "Jedno ime po retku. Ostavite prazno za sigurnosnu kopiju svih baza.",
+    "sqliteFiles": "Datoteke baza podataka",
+    "sqliteFilesHint": "Jedna puna putanja po retku. Svaka datoteka se sigurno kopira dok je u uporabi.",
+    "docker": "Docker",
+    "stacks": "Stogovi",
+    "volumes": "Zapremine",
+    "noStacks": "Nisu pronađeni compose stogovi",
+    "noVolumes": "Nisu pronađene zapremine",
+    "dockerFailed": "Nije moguće izlistati Docker na ovom hostu",
+    "stop": "Zaustavi stackove tijekom sigurnosnog kopiranja",
+    "stopHint": "Odabrani stackovi se prvo zaustavljaju, a zatim ponovno pokreću kako se njihove datoteke ne bi mijenjale tijekom čitanja."
+  },
+  "schedule": {
+    "title": "Raspored",
+    "manual": "Ručno",
+    "daily": "Svakodnevno",
+    "weekly": "Tjedno",
+    "custom": "Prilagođeno",
+    "day": "Dan",
+    "time": "Vrijeme",
+    "cron": "Cron",
+    "cronHint": "Minuta, sat, dan u mjesecu, mjesec, dan u tjednu.",
+    "cronInvalid": "Ovaj cron izraz nije valjan",
+    "timezone": "Vremenska zona",
+    "serverTime": "Vrijeme poslužitelja",
+    "manualHint": "Ovaj posao se pokreće samo kada pritisnete Pokreni sada.",
+    "manualOnly": "Ručno",
+    "next": "Sljedeće izvršenje {{time}}",
+    "noNext": "Ovaj raspored se nikada ne pokreće",
+    "dailyAt": "Svakodnevno u {{time}}",
+    "weeklyAt": "{{day}} u {{time}}",
+    "days": {
+      "0": "Nedjelja",
+      "1": "Ponedjeljak",
+      "2": "Utorak",
+      "3": "Srijeda",
+      "4": "Četvrtak",
+      "5": "Petak",
+      "6": "Subota"
+    }
+  },
+  "keep": {
+    "title": "Zadrži",
+    "last": "Zadnji",
+    "daily": "Dnevno",
+    "weekly": "Tjedno",
+    "monthly": "Mjesečno",
+    "yearly": "Godišnje",
+    "hint": "Nakon svake sigurnosne kopije, starije snimke ovog posla se brišu tako da se zadrže samo ove. Vrijednost 0 zadržava sve."
+  },
+  "hooks": {
+    "title": "Naredbe",
+    "pre": "Prije",
+    "preHint": "Pokreće se kao root prije sigurnosne kopije. Ako ne uspije, sigurnosna kopija se zaustavlja.",
+    "post": "Nakon",
+    "postHint": "Pokreće se kao root nakon sigurnosne kopije, čak i ako nije uspjela. TERMIX_BACKUP_STATUS sadrži rezultat."
+  },
+  "alerts": {
+    "title": "Obavijesti",
+    "onFailure": "Upozori kada sigurnosna kopija ne uspije",
+    "onFailureHint": "Također upozorava na upozorenja i jednom kada ponovno uspije.",
+    "staleDays": "Dana bez sigurnosne kopije",
+    "staleDaysHint": "Upozori kada sigurnosna kopija ne uspije tijekom ovog broja dana. 0 ga isključuje."
+  },
+  "repos": {
+    "add": "Dodaj spremište",
+    "empty": "Još nema spremišta",
+    "emptyHint": "Spremište je mjesto gdje se pohranjuju sigurnosne kopije, poput S3 spremnika ili mape.",
+    "loadFailed": "Nije moguće učitati spremišta",
+    "jobCount_one": "{{count}} zadatak",
+    "jobCount_few": "{{count}} zadatka",
+    "jobCount_other": "{{count}} zadataka",
+    "newTitle": "Novo spremište",
+    "storage": "Skladište",
+    "name": "Naziv",
+    "namePlaceholder": "Offsite S3",
+    "kind": "Vrsta",
+    "kinds": {
+      "s3": "S3 kompatibilno",
+      "rest": "REST poslužitelj",
+      "rclone": "rclone",
+      "local": "Mapa na poslužitelju"
+    },
+    "endpoint": "Točka pristupa",
+    "endpointHint": "Prazno za AWS. Za MinIO, R2, B2 ili Wasabi, njihova S3 adresa.",
+    "region": "Regija",
+    "bucket": "Posuda",
+    "prefix": "Mapa u posudi",
+    "prefixHint": "Opcionalno.",
+    "accessKeyId": "ID pristupnog ključa",
+    "secretKey": "Tajni pristupni ključ",
+    "secretSaved": "Spremljeno, ostavite prazno za zadržavanje",
+    "url": "Adresa poslužitelja",
+    "username": "Korisnik",
+    "usernameHint": "Prazno ako poslužitelj nema prijavu.",
+    "restPassword": "Lozinka",
+    "remote": "Naziv udaljenog spremišta",
+    "remoteHint": "Samo slova, brojevi i _.",
+    "path": "Putanja",
+    "rcloneConfig": "rclone konfiguracija",
+    "rcloneHint": "Redci udaljenog spremišta iz rclone.conf. Pokrenite rclone config na svom računalu da ih stvorite. rclone mora biti instaliran na domaćinima.",
+    "rcloneSaved": "Spremljeno, ostavite prazno za zadržavanje",
+    "host": "Domaćin",
+    "pickHost": "Odaberite domaćina",
+    "folder": "Mapa",
+    "folderHint": "Samo poslovi na ovom hostu mogu ga koristiti. Najbolje je koristiti montirani disk.",
+    "password": "Šifriranje",
+    "resticPassword": "Lozinka spremišta",
+    "passwordHint": "Ostavite prazno i Termix će generirati jaku lozinku. Sačuvajte kopiju na sigurnom mjestu: bez nje se sigurnosne kopije ne mogu čitati.",
+    "passwordKeep": "Spremljeno, ostavite prazno da zadržite trenutnu",
+    "passwordChangeHint": "Ovo mijenja samo ono što Termix šalje. Ne mijenja lozinku postojećeg spremišta.",
+    "reveal": "Prikaži lozinku",
+    "revealTitle": "Prikazati lozinku spremišta?",
+    "revealDesc": "Svatko tko ima ovu lozinku i ključeve pohrane može pročitati sve sigurnosne kopije u ovom spremištu. Ovo se bilježi u revizijski zapisnik.",
+    "revealFailed": "Lozinka se ne može pročitati",
+    "copy": "Kopiraj",
+    "copied": "Kopirano",
+    "check": "Provjeri",
+    "checkFrom": "Provjeri od",
+    "checkFromHint": "Poslužitelj koji otvara spremište. Potrebna mu je restic.",
+    "checkButton": "Provjeri",
+    "initButton": "Provjeri i postavi",
+    "installRclone": "Instaliraj rclone na ovaj poslužitelj",
+    "rcloneInstalled": "rclone {{version}} je instaliran.",
+    "rcloneFailed": "Instalacija rclonea nije uspjela",
+    "checking": "Provjeravanje...",
+    "opened": "Skladište je uspješno otvoreno.",
+    "created": "Skladište je postavljeno i spremno za korištenje.",
+    "checkFailed": "Nije moguće otvoriti skladište",
+    "checkNext": "Spremljeno. Provjerite ga s hosta kako biste ga postavili.",
+    "saved": "Skladište je spremljeno",
+    "saveFailed": "Nije moguće spremiti skladište",
+    "deleteTitle": "Izbrisati {{name}}?",
+    "deleteDesc": "Uklanja se samo iz Termixa. Sigurnosne kopije ostaju u pohrani.",
+    "deleted": "Skladište je izbrisano",
+    "deleteFailed": "Nije moguće izbrisati spremište"
+  },
+  "snapshots": {
+    "noJobs": "Prvo dodajte posao za sigurnosno kopiranje.",
+    "job": "Posao",
+    "titleFor": "Snimke stanja za {{name}}",
+    "empty": "Još nema snimki stanja",
+    "loadFailed": "Nije moguće pročitati snimke stanja",
+    "latest": "Najnovije",
+    "files_one": "{{count}} datoteka",
+    "files_few": "{{count}} datoteke",
+    "files_other": "{{count}} datoteka",
+    "browse": "Pregledaj",
+    "delete": "Izbriši",
+    "deleteTitle": "Izbrisati ovu snimku?",
+    "deleteDesc": "Snimka iz {{time}} trajno će biti uklonjena iz spremišta.",
+    "deleted": "Snimka je izbrisana",
+    "deleteFailed": "Nije moguće izbrisati snimku",
+    "browseTitle": "Snimka {{time}}",
+    "root": "Korijen",
+    "emptyFolder": "Ova mapa je prazna",
+    "filesFailed": "Nije moguće izlistati ovu mapu",
+    "pick": "Odaberi",
+    "download": "Preuzmi",
+    "downloadZip": "Preuzmi kao zip",
+    "downloadFailed": "Preuzimanje nije uspjelo",
+    "restoreAll": "Vrati sve",
+    "restorePicked_one": "Vrati {{count}} stavku",
+    "restorePicked_few": "Vrati {{count}} stavke",
+    "restorePicked_other": "Vrati {{count}} stavki"
+  },
+  "restore": {
+    "title": "Vrati",
+    "what": "Što",
+    "everything": "Sve u snimci stanja.",
+    "more_one": "i {{count}} drugi",
+    "more_few": "i {{count}} druga",
+    "more_other": "i {{count}} drugih",
+    "where": "Gdje",
+    "host": "Poslužitelj",
+    "hostHint": "Bilo koji host koji možete uređivati i koji može pristupiti spremištu.",
+    "localOnly": "Ovo spremište je mapa na svom hostu, stoga se može vratiti samo tamo.",
+    "toFolder": "U mapu",
+    "toOriginal": "Tamo gdje je bilo",
+    "folder": "Mapa",
+    "folderHint": "Datoteke zadržavaju svoju punu putanju unutar ove mape.",
+    "originalWarning": "Datoteke se zapisuju natrag na njihova izvorna mjesta i mogu zamijeniti ono što se tamo trenutno nalazi.",
+    "overwrite": "Datoteke koje već postoje",
+    "overwriteOptions": {
+      "if-changed": "Zamijeni ako su promijenjene",
+      "always": "Uvijek zamijeni",
+      "if-newer": "Zamijeni ako je sigurnosna kopija novija",
+      "never": "Nikada ne zamjenjuj"
+    },
+    "start": "Vrati",
+    "started": "Vraćanje je započelo",
+    "failed": "Vraćanje se nije moglo pokrenuti"
+  },
+  "run": {
+    "title": "Pokreni",
+    "backupTitle": "Sigurnosna kopija od {{name}}",
+    "restoreTitle": "Vraćanje od {{name}}",
+    "loadFailed": "Pokretanje se nije moglo učitati",
+    "progress": "Napredak",
+    "preparing": "Priprema...",
+    "progressLine": "{{percent}}% | {{files}} od {{totalFiles}} datoteka | {{bytes}} od {{totalBytes}}",
+    "left": "Preostalo: {{time}}",
+    "details": "Detalji",
+    "started": "Pokrenuto",
+    "finished": "Završeno",
+    "trigger": "Pokrenuto od",
+    "triggers": {
+      "manual": "Pokreni sada",
+      "schedule": "Raspored",
+      "operation": "Termix radnja"
+    },
+    "snapshot": "Snimka",
+    "target": "Vraćeno na",
+    "files": "Datoteke",
+    "filesLine": "{{total}} datoteka, {{added}} novih, {{changed}} promijenjenih",
+    "size": "Veličina",
+    "added": "Dodano u spremište",
+    "took": "Trajalo",
+    "log": "Dnevnik",
+    "noLog": "Još nema dnevnika.",
+    "stopTitle": "Zaustaviti ovaj pokret?",
+    "stopDesc": "Zaustavljeno sigurnosno kopiranje ne sprema snimku. Zaustavljena obnova ostavlja datoteke koje su do tada vraćene.",
+    "stopSent": "Zaustavljanje",
+    "stopFailed": "Nije moguće zaustaviti izvršavanje"
+  },
+  "history": {
+    "empty": "Još ništa nije pokrenuto",
+    "loadFailed": "Nije moguće učitati povijest",
+    "status": "Status",
+    "job": "Posao",
+    "host": "Poslužitelj",
+    "kind": "Vrsta",
+    "kinds": {
+      "backup": "Sigurnosno kopiranje",
+      "restore": "Obnova"
+    },
+    "started": "Pokrenuto",
+    "took": "Trajalo",
+    "size": "Veličina"
+  },
+  "card": {
+    "title": "Sigurnosne kopije",
+    "all": "Svi poslovi sigurnosnog kopiranja",
+    "oneJob": "Jedan posao sigurnosnog kopiranja",
+    "empty": "Još nema poslova sigurnosnog kopiranja.",
+    "gone": "Ovaj posao sigurnosnog kopiranja je obrisan.",
+    "open": "Otvori"
+  },
+  "operations": {
+    "list": {
+      "title": "Popis poslova sigurnosnog kopiranja"
+    },
+    "failed": {
+      "title": "Neuspjele sigurnosne kopije"
+    },
+    "run": {
+      "title": "Pokreni sigurnosno kopiranje"
+    },
+    "cancel": {
+      "title": "Zaustavi sigurnosno kopiranje"
+    },
+    "snapshots": {
+      "title": "Popis snimki"
+    },
+    "events": {
+      "finished": "Sigurnosno kopiranje je završeno",
+      "failed": "Sigurnosno kopiranje nije uspjelo"
+    },
+    "jobs": {
+      "title": "Poslovi sigurnosnog kopiranja",
+      "lastSuccess": "Zadnja sigurnosna kopija",
+      "nextRun": "Sljedeće izvršavanje",
+      "size": "Veličina"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Prikaži ploču sigurnosnih kopija u terminalima",
+        "description": "Omogući otvaranje ploče sigurnosnih kopija pored SSH terminala ovog poslužitelja."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otvori ploču sigurnosnih kopija s novim terminalima",
+        "description": "Prikaži ploču sigurnosnih kopija pored svakog SSH terminala koji ima tu opciju uključenu. I dalje je možete otvoriti i zatvoriti pomoću gumba na desnoj rubnoj liniji."
+      },
+      "companionSide": {
+        "label": "Strana ploče sigurnosnih kopija",
+        "description": "Gdje se ploča sigurnosnih kopija nalazi pored terminala.",
+        "right": "Desno",
+        "left": "Lijevo",
+        "bottom": "Dolje"
+      },
+      "companionSize": {
+        "label": "Veličina ploče sigurnosnih kopija",
+        "description": "Širina u pikselima, ili visina kada je na dnu. Također možete povući njezin rub."
+      },
+      "companionEdgeButton": {
+        "label": "Prikaži gumb ploče",
+        "description": "Prikaži mali gumb na desnom rubu terminala koji otvara ploču sigurnosnih kopija."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Uključi/isključi ploču sigurnosnih kopija"
+  }
+}

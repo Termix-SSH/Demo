@@ -1,0 +1,141 @@
+{
+  "plugin": {
+    "name": "Privileged Access",
+    "description": "特権ホストへの接続前に承認を求め、アクセスは自動的に終了し、完全な監査証跡を残します。"
+  },
+  "tab": {
+    "title": "アクセス"
+  },
+  "tabs": {
+    "request": "アクセスをリクエスト",
+    "mine": "自分のリクエスト",
+    "pending": "承認待ち",
+    "active": "アクティブなアクセス",
+    "history": "履歴"
+  },
+  "status": {
+    "pending": "保留中",
+    "approved": "終了済み",
+    "active": "アクティブ",
+    "denied": "却下",
+    "expired": "期限切れ",
+    "revoked": "取り消し済み",
+    "cancelled": "キャンセル済み"
+  },
+  "request": {
+    "host": "ホスト",
+    "hostWithAccess": "{{host}}（{{until}} までアクセス可能）",
+    "hours": "時間",
+    "hoursHint": "このホストは最大 {{max}} 時間まで許可されています。",
+    "reason": "アクセスが必要な理由",
+    "reasonOptional": "アクセスが必要な理由（任意）",
+    "ticket": "チケット",
+    "ticketOptional": "チケット（任意）",
+    "send": "アクセスをリクエスト",
+    "sent": "リクエストを送信しました。承認結果が決まると通知が届きます。",
+    "failed": "リクエストを送信できませんでした",
+    "noHosts": "特権ホストがありません",
+    "noHostsHint": "管理者が特権としてマークしたホストがここに表示されます。"
+  },
+  "list": {
+    "none": "何もありません",
+    "loadError": "リクエストを読み込めませんでした",
+    "actionFailed": "操作に失敗しました",
+    "hours_other": "{{count}} 時間",
+    "until": "{{time}} まで",
+    "decidedBy": "{{name}} によって",
+    "approve": "承認",
+    "deny": "却下",
+    "cancel": "キャンセル",
+    "endNow": "今すぐ終了",
+    "export": "CSV をエクスポート",
+    "approveConfirm_other": "{{user}} に {{host}} へのアクセスを {{count}} 時間許可しますか？",
+    "denyConfirm": "このリクエストを却下しますか？",
+    "cancelConfirm": "このリクエストをキャンセルしますか？",
+    "endConfirm": "このアクセスを今すぐ終了しますか？ホスト上の開いているセッションは閉じられます。",
+    "approved": "アクセスが承認されました",
+    "denied": "リクエストが却下されました",
+    "ended": "完了"
+  },
+  "card": {
+    "title": "特権アクセス",
+    "waiting": "あなたの承認を待っています",
+    "empty": "保留中のリクエストはありません",
+    "emptyHint": "承認されたアクセスがここに表示されます。"
+  },
+  "permissions": {
+    "request": {
+      "title": "特権アクセスをリクエスト",
+      "description": "特権ホストへの時間制限付きアクセスをリクエストします。"
+    },
+    "approve": {
+      "title": "特権アクセスを承認",
+      "description": "他の人のアクセスリクエストを承認・却下し、アクセスを早期に終了したり、レポートを確認したりできます。"
+    },
+    "bypass": {
+      "title": "緊急アクセス（ブレイクグラス）",
+      "description": "リクエストなしで特権ホストに接続できます。すべての使用は監査され、通知されます。"
+    },
+    "configure": {
+      "title": "特権ホストの設定",
+      "description": "ホストを特権としてマークし、アクセスの承認者を設定できます。"
+    }
+  },
+  "settings": {
+    "admin": {
+      "pendingHours": {
+        "label": "リクエストの有効期間（時間）",
+        "description": "この時間内に承認されなかったリクエストは期限切れになります。"
+      },
+      "alertBypass": {
+        "label": "アラート on break glass access",
+        "description": "break glass access で接続した際に承認者にアラートを送信します。"
+      }
+    },
+    "host": {
+      "enable": {
+        "label": "特権ホスト",
+        "description": "このホストへの SSH およびリモートデスクトップセッションには、承認されたアクセスが必要です。"
+      },
+      "approverRoles": {
+        "label": "承認者ロール",
+        "description": "カンマ区切りのロール名。これらのメンバーが承認できます。空にすると、承認権限を持つ誰でも決定できます。"
+      },
+      "maxHours": {
+        "label": "最大アクセス時間（時間）",
+        "description": "1つのリクエストで要求できる最大時間数。"
+      },
+      "requireReason": {
+        "label": "理由を要求する",
+        "description": "リクエストにはアクセスが必要な理由を記載する必要があります。"
+      },
+      "requireTicket": {
+        "label": "チケットを要求する",
+        "description": "リクエストにはチケット番号を記載する必要があります。"
+      },
+      "allowBackground": {
+        "label": "バックグラウンド処理を許可する",
+        "description": "ポーリングやその他の非対話型プラグイン接続は承認をスキップします。すべてのセッションをブロックするにはオフにしてください。"
+      }
+    }
+  },
+  "operations": {
+    "request": {
+      "title": "特権アクセスをリクエスト",
+      "hours": "時間",
+      "reason": "理由",
+      "ticket": "チケット"
+    },
+    "pending": {
+      "title": "決定が必要なアクセスリクエスト"
+    },
+    "status": {
+      "title": "特権アクセス"
+    },
+    "events": {
+      "requested": "アクセスがリクエストされました",
+      "approved": "アクセスが承認されました",
+      "bypassed": "break glass access が使用されました"
+    }
+  }
+}

@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "管理 Cloudflare、Route 53、Namecheap 及其他提供商的 DNS 记录和域名。"
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "域名",
+    "loading": "加载中",
+    "empty": "暂无域名。打开 DNS 以添加登录凭据。",
+    "ok": "{{domains}} 个域名，近期无到期",
+    "accounts": "{{count}} 个登录凭据",
+    "failingLinks": "{{count}} 个关联记录失败"
+  },
+  "permissions": {
+    "view": {
+      "title": "查看 DNS",
+      "description": "打开 DNS 标签页，查看区域、记录、域名和健康检查。"
+    },
+    "edit": {
+      "title": "修改 DNS 记录",
+      "description": "添加、修改和删除记录，导入区域文件并刷新域名。"
+    },
+    "manage": {
+      "title": "管理 DNS 登录凭据",
+      "description": "添加提供商登录凭据，将记录关联到主机，监控域名并恢复区域副本。"
+    }
+  },
+  "operations": {
+    "zone": "区域",
+    "type": "类型",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "名称",
+    "content": "值",
+    "contentOptional": "值（留空以匹配任意）",
+    "ttl": "TTL（秒）",
+    "label": "标签",
+    "zones": {
+      "title": "列出 DNS 区域"
+    },
+    "records": {
+      "title": "列出 DNS 记录"
+    },
+    "domains": {
+      "title": "列出域名及到期日期"
+    },
+    "check": {
+      "title": "检查区域"
+    },
+    "upsert": {
+      "title": "设置 DNS 记录"
+    },
+    "delete": {
+      "title": "删除 DNS 记录"
+    },
+    "snapshot": {
+      "title": "保存区域副本"
+    },
+    "links": {
+      "title": "更新关联记录"
+    },
+    "expiry": {
+      "title": "域名到期"
+    }
+  },
+  "description": "添加您的 DNS 和注册商登录凭据，以便在一个地方管理记录并监控域名。密钥经过加密存储，且不会再次显示。",
+  "summary": "{{zones}} 个区域，{{domains}} 个域名",
+  "saved": "已保存",
+  "delete": "删除",
+  "edit": "编辑",
+  "back": "返回",
+  "refresh": "刷新",
+  "section": {
+    "zones": "区域",
+    "domains": "域名",
+    "links": "关联",
+    "accounts": "登录凭据"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "API 令牌",
+    "accessKeyId": "访问密钥 ID",
+    "secretAccessKey": "秘密访问密钥",
+    "sessionToken": "会话令牌（可选）",
+    "apiUser": "API 用户",
+    "apiKey": "API 密钥",
+    "userName": "用户名（如果与 API 用户不同）",
+    "clientIp": "允许的 IP 地址",
+    "apiSecret": "API 密钥",
+    "environment": "环境",
+    "environment_production": "生产环境",
+    "environment_ote": "测试环境 (OTE)",
+    "secretApiKey": "API 密钥",
+    "token": "个人访问令牌"
+  },
+  "zones": {
+    "empty": "暂无区域。",
+    "emptyHint": "在“登录”中添加提供商凭据以查看其区域。"
+  },
+  "zone": {
+    "records": "记录",
+    "health": "健康状态",
+    "copies": "副本",
+    "files": "文件",
+    "filter": "筛选记录",
+    "empty": "暂无记录。"
+  },
+  "record": {
+    "section": "记录",
+    "addTitle": "添加记录",
+    "editTitle": "编辑记录",
+    "add": "添加记录",
+    "save": "保存",
+    "type": "类型",
+    "name": "名称",
+    "nameHint": "使用 @ 代表 {{zone}} 本身",
+    "value": "值",
+    "priority": "优先级",
+    "ttl": "TTL（秒）",
+    "ttlHint": "解析器缓存答案的时间。300 表示 5 分钟。",
+    "ttlAuto": "1 表示自动。",
+    "proxied": "代理",
+    "proxiedHint": "通过 Cloudflare 转发流量。",
+    "proxiedBadge": "已代理",
+    "comment": "备注",
+    "readOnly": "由提供商管理",
+    "deleteConfirm": "删除 {{type}} 记录 {{name}}？"
+  },
+  "account": {
+    "add": "添加登录",
+    "addTitle": "添加 DNS 登录",
+    "editTitle": "编辑 DNS 登录",
+    "save": "保存",
+    "login": "登录",
+    "provider": "提供商",
+    "name": "名称",
+    "namePlaceholder": "主 Cloudflare",
+    "keep": "留空以保留已保存的值",
+    "registrar": "该提供商也是注册商，因此其域名会显示在“域名”中。",
+    "options": "选项",
+    "autoBackup": "保留区域副本",
+    "autoBackupHint": "在每次更改前以及区域在 Termix 外部发生更改时保存副本。",
+    "checkHealth": "每天检查区域",
+    "checkHealthHint": "每天运行健康检查，并在出现新问题时发出警报。",
+    "test": "测试",
+    "testOk": "成功。找到 {{zones}} 个区域和 {{domains}} 个域名。",
+    "deleteConfirm": "删除 {{name}}？其副本和链接也将被删除。提供商端不会有任何更改。",
+    "empty": "暂无登录。",
+    "emptyHint": "添加 Cloudflare、Route 53、Namecheap 或其他登录凭据以开始使用。",
+    "lastSync": "上次检查时间：{{date}}",
+    "never": "尚未检查",
+    "failed": "登录失败"
+  },
+  "domains": {
+    "empty": "暂无域名。",
+    "emptyHint": "注册商登录凭据会在此处列出其域名。您也可以按名称监视任何域名。",
+    "watchPlaceholder": "example.com",
+    "watch": "监控域名",
+    "unwatch": "停止监控",
+    "watched": "已监控",
+    "noRenew": "自动续期已关闭",
+    "unlocked": "未锁定",
+    "unknown": "注册商未知",
+    "expires": "将于 {{date}} 到期",
+    "expired": "已过期",
+    "days": "剩余 {{count}} 天",
+    "refreshFailed": "{{count}} 次查询失败"
+  },
+  "link": {
+    "add": "添加链接",
+    "addTitle": "添加链接",
+    "editTitle": "编辑链接",
+    "save": "保存",
+    "record": "记录",
+    "address": "地址",
+    "zone": "区域",
+    "pickZone": "选择一个区域",
+    "source": "指向",
+    "sourceHost": "主机",
+    "sourcePublic4": "此服务器的公网 IPv4 地址",
+    "sourcePublic6": "此服务器的公网 IPv6 地址",
+    "source_host": "主机",
+    "source_public4": "公网 IPv4",
+    "source_public6": "公网 IPv6",
+    "host": "主机",
+    "pickHost": "选择一台主机",
+    "hostHint": "该记录将跟随主机的地址。当主机地址变更时，记录会自动更新。",
+    "publicHint": "Termix 会查询其公网地址并保持记录同步，类似于动态 DNS。",
+    "enabled": "保持此记录更新",
+    "empty": "暂无链接。",
+    "emptyHint": "链接可将一条记录指向某台主机或此服务器的公网地址。",
+    "off": "已关闭",
+    "hostGone": "未找到主机",
+    "lastSync": "上次检查于 {{date}}",
+    "never": "尚未检查",
+    "syncNow": "立即更新",
+    "updated": "记录已更新",
+    "unchanged": "记录已正确，无需更改",
+    "deleteConfirm": "要删除 {{name}} 的链接吗？现有记录将保持不变。"
+  },
+  "diff": {
+    "none": "不会有任何更改。",
+    "add": "添加",
+    "change": "更改",
+    "remove": "删除"
+  },
+  "copies": {
+    "hint": "每次更改前以及当区域在 Termix 外部发生变更时（每天一次），都会保存副本。",
+    "save": "保存副本",
+    "saved": "副本已保存",
+    "manualLabel": "手动副本",
+    "empty": "暂无副本。",
+    "count": "{{count}} 条记录",
+    "compare": "与当前状态对比",
+    "restore": "恢复",
+    "restoreConfirm": "要恢复此副本吗？将在服务商处执行 {{count}} 项更改。当前记录的副本将先行保存。",
+    "restored": "已恢复。共执行 {{count}} 项更改。",
+    "source": {
+      "manual": "手动",
+      "auto": "每日",
+      "before": "更改前"
+    }
+  },
+  "files": {
+    "export": "下载区域文件",
+    "exportHint": "将记录下载为 BIND 区域文件。",
+    "import": "导入区域文件",
+    "placeholder": "在此粘贴 BIND 区域文件",
+    "replace": "移除文件中不存在的记录",
+    "replaceHint": "关闭时，导入仅添加和修改记录。",
+    "preview": "预览",
+    "apply": "应用",
+    "applied": "已导入。共 {{count}} 处更改。",
+    "skipped": "已跳过："
+  },
+  "health": {
+    "run": "运行检查",
+    "running": "运行中",
+    "propagation": "检查解析器",
+    "propagationTitle": "公共解析器",
+    "lastRun": "上次运行于 {{date}}",
+    "empty": "此区域尚未运行任何检查。",
+    "record": "记录",
+    "resolver": "解析器",
+    "answer": "响应",
+    "noAnswer": "无响应",
+    "delegation": {
+      "error": "无法查找名称服务器。",
+      "none": "该区域在互联网上没有名称服务器。域名可能未指向此服务商。",
+      "mismatch": "域名使用的名称服务器与服务商不同：{{found}}。",
+      "ok": "域名指向 {{count}} 个名称服务器。"
+    },
+    "soa": {
+      "differ": "名称服务器对区域版本存在分歧（{{count}} 个版本）。更改可能仍在传播中。",
+      "same": "{{count}} 个名称服务器对区域版本达成一致。"
+    },
+    "dnssec": {
+      "unknown": "无法检查 DNSSEC。",
+      "off": "DNSSEC 未启用。",
+      "valid": "DNSSEC 已启用且有效。",
+      "broken": "DNSSEC 已在注册商处配置，但验证失败。检查它的解析器将会失败。"
+    },
+    "cname": {
+      "conflict": "{{name}} 同时拥有 CNAME 和其他记录。这是不允许的。",
+      "apex": "区域根节点不能是 CNAME。",
+      "dangling": "{{name}} 指向 {{target}}，但该目标无法解析。",
+      "ok": "所有 CNAME 目标均可解析。"
+    },
+    "spf": {
+      "missing": "域名接收邮件，但没有 SPF 记录。",
+      "multiple": "存在多个 SPF 记录。邮件服务器将拒绝所有记录。",
+      "lookups": "SPF 记录进行了 {{count}} 次查找。限制为 10 次。",
+      "ok": "SPF 已设置（{{count}} 次查找）。"
+    },
+    "dmarc": {
+      "missing": "没有 DMARC 记录。",
+      "none": "DMARC 设置为仅监控。",
+      "ok": "DMARC 已设置。"
+    },
+    "dkim": {
+      "none": "此区域中未找到 DKIM 密钥。",
+      "found": "找到 {{count}} 个 DKIM 密钥。"
+    },
+    "mx": {
+      "unresolved": "邮件服务器 {{host}} 无法解析。"
+    },
+    "mail": {
+      "none": "域名没有邮件记录。"
+    },
+    "caa": {
+      "ok": "CAA 记录限制了谁可以颁发证书。",
+      "none": "没有 CAA 记录。任何证书颁发机构都可以颁发证书。"
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "域名、即将过期的域名和失败的记录。",
+    "domains": "域名",
+    "expiring": "即将过期",
+    "failingLinks": "失败的链接",
+    "failingAccounts": "失败的登录"
+  }
+}

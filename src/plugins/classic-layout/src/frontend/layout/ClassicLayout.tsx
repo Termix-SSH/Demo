@@ -18,6 +18,7 @@ import {
   ShellConfirmCapture,
   useShellController,
   TabStage,
+  LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { MobileBar } from "../shell/MobileBar";
@@ -46,11 +47,7 @@ const ConnectionsPanel = lazy(() =>
 );
 
 function SidebarPanelFallback() {
-  return (
-    <div className="flex flex-1 items-center justify-center p-6">
-      <div className="size-5 rounded-full border-2 border-muted-foreground/30 border-t-muted-foreground/70 animate-spin" />
-    </div>
-  );
+  return <LoadingState />;
 }
 
 /**

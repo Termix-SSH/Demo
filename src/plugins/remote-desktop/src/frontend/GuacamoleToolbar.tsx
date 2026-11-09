@@ -240,8 +240,11 @@ export const GuacamoleToolbar: React.FC<GuacamoleToolbarProps> = ({
       // The last measured child is the overflow trigger.
       const overflowWidth = icons.pop() ?? 0;
       labeled.pop();
-      const labeledTotal = labeled.reduce((sum, width) => sum + width, 0);
-      const fit = countFittingButtons(icons, available, overflowWidth);
+      const gap = parseFloat(getComputedStyle(row).columnGap) || 0;
+      const labeledTotal =
+        labeled.reduce((sum, width) => sum + width, 0) +
+        gap * Math.max(0, labeled.length - 1);
+      const fit = countFittingButtons(icons, available, overflowWidth, gap);
       const next =
         settings.labels === "labeled" && labeledTotal <= available
           ? { labeled: true, fit: null }

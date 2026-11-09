@@ -1,0 +1,287 @@
+{
+  "plugin": {
+    "name": "Web-palvelimet",
+    "description": "Hallinnoi nginx-, Apache- ja Caddy-palvelimia palvelimillasi: sivustoja, asetuksia, lokitiedostoja ja HTTPS:ää. Jokainen muutos testataan ennen soveltamista."
+  },
+  "common": {
+    "cancel": "Peruuta",
+    "back": "Takaisin",
+    "loading": "Ladataan..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Käytä Web-palvelimia",
+      "description": "Näe web-palvelimet ja sivustot palvelimilla, joihin pääset käsiksi, ja muokkaa niitä palvelimilla, joilla on muokkausoikeudet."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Web-palvelimet",
+        "description": "Hallinnoi nginx-, Apache- ja Caddy-palvelimia tässä palvelimessa Web-palvelimet-välilehdeltä."
+      },
+      "useSudo": {
+        "label": "Käytä sudoa",
+        "description": "Käytä sudoa web-palvelimen lukemiseen ja muokkaamiseen. Ota pois käytöstä, jos kirjautuminen tapahtuu root-käyttäjänä."
+      },
+      "readOnly": {
+        "label": "Vain luku",
+        "description": "Näytä sivustot, asetukset ja lokit, mutta älä koskaan muokkaa niitä tässä palvelimessa."
+      },
+      "showPanel": {
+        "label": "Paneeli terminaalin vieressä",
+        "description": "Tarjoa Web-palvelimet-paneeli tämän palvelimen terminaalivälilehdillä."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Avaa paneeli terminaalin kanssa",
+        "description": "Näytä Web-palvelimet-paneeli, kun terminaali avautuu palvelimessa, jossa se on käytössä."
+      },
+      "companionSide": {
+        "label": "Paneelin sijainti",
+        "description": "Missä paneeli sijaitsee terminaalin vieressä.",
+        "right": "Oikealla",
+        "left": "Vasemmalla",
+        "bottom": "Alareunassa"
+      },
+      "companionSize": {
+        "label": "Paneelin koko",
+        "description": "Paneelin leveys tai sen korkeus alareunassa pikseleinä."
+      },
+      "companionEdgeButton": {
+        "label": "Reunapainike",
+        "description": "Näytä pieni painike terminaalin reunassa paneelin avaamiseksi."
+      }
+    }
+  },
+  "tab": {
+    "title": "Web-palvelimet",
+    "noHost": "Avaa Web-palvelimet palvelimesta.",
+    "error": "Web-palvelimia ei voitu ladata tässä palvelimessa.",
+    "disabled": "Web-palvelimet on poistettu käytöstä tässä palvelimessa. Ota se käyttöön palvelimen asetuksista.",
+    "sudo": "Muutokset vaativat root-kirjautumisen, salasanasuodan tai tallennetun Sudo-salasanan tässä palvelimessa.",
+    "refresh": "Päivitä",
+    "readOnly": "Vain luku",
+    "noServer": "Web-palvelinta ei ole asennettu",
+    "noServerHint": "Asenna nginx, Apache tai Caddy Palvelin-sivulta.",
+    "openServer": "Avaa palvelin",
+    "viewSites": "Sivustot",
+    "viewConfig": "Asetukset",
+    "viewLogs": "Lokit",
+    "viewServer": "Palvelin"
+  },
+  "actions": {
+    "ok": "Valmis",
+    "failed": "Epäonnistui",
+    "noOutput": "Ei tulostetta."
+  },
+  "watch": {
+    "start": "Ilmoita minulle, kun web-palvelin pysähtyy",
+    "stop": "Lopeta ilmoitukset tästä palvelimesta",
+    "on": "Saat ilmoituksen, kun web-palvelin tässä palvelimessa pysähtyy",
+    "off": "Ilmoitukset tästä palvelimesta ovat pois päältä",
+    "failed": "Ilmoituksia ei voitu muuttaa"
+  },
+  "sites": {
+    "add": "Lisää sivusto",
+    "search": "Hae sivustoja",
+    "empty": "Ei vielä sivustoja.",
+    "loadFailed": "Sivustoja ei voitu ladata.",
+    "off": "Pois päältä",
+    "anyName": "mikä tahansa nimi",
+    "form": "Lomake",
+    "certDays_one": "{{count}} päivää jäljellä",
+    "certDays_other": "{{count}} päivää jäljellä",
+    "certExpired": "Varmenne on vanhentunut",
+    "enable": "Käytä",
+    "disable": "Poista käytöstä",
+    "enabled": "{{name}} on käytössä",
+    "disabled": "{{name}} on poissa käytöstä",
+    "delete": "Poista",
+    "deleteTitle": "Haluatko poistaa kohteen {{name}}?",
+    "deleteBody": "Tiedosto poistetaan ja palvelin käynnistetään uudelleen. Kopio säilytetään osoitteessa /var/lib/termix-web-servers/backups isäntäpalvelimella.",
+    "deleted": "Kohteen {{name}} poisto onnistui"
+  },
+  "site": {
+    "addTitle": "Uusi sivusto",
+    "editTitle": "Tallenna {{name}}",
+    "add": "Lisää sivusto",
+    "save": "Tallenna",
+    "added": "Sivusto {{name}} lisätty",
+    "saved": "Sivusto {{name}} tallennettu",
+    "server": "WWW-palvelin",
+    "name": "Sivuston nimi",
+    "nameHint": "Käytetään tiedostonimessä ja lokitiedostoissa, kuten example.",
+    "modeForm": "Lomake",
+    "modeText": "Teksti",
+    "text": "Määritykset",
+    "textHint": "Tekstin tallentaminen poistaa lomakkeen käytöstä tälle sivustolle, jotta omat muutoksesi säilyvät.",
+    "type": "Tyyppi",
+    "typeStatic": "Staattiset tiedostot",
+    "typeProxy": "Käänteinen välityspalvelin",
+    "typePhp": "PHP",
+    "typeRedirect": "Uudelleenohjaus",
+    "staticHint": "Palvelee tiedostoja kansiossa.",
+    "proxyHint": "Lähettää pyynnöt sovellukseen, joka toimii tässä tai toisessa palvelimessa.",
+    "phpHint": "Palvelee tiedostoja kansiossa ja suorittaa .php-tiedostot php-fpm:n avulla.",
+    "redirectHint": "Ohjaa kaikki kävijät toiseen osoitteeseen.",
+    "domains": "Verkkotunnukset",
+    "domainsHint": "Paina Enter-näppäintä jokaisen jälkeen. Käytä nginxissä merkkiä _ vastaamaan mihin tahansa nimeen.",
+    "port": "HTTP-portti",
+    "root": "WWW-juuri",
+    "rootHint": "Kansio poluissa /var/www, /srv, /usr/share/nginx, /opt tai /home.",
+    "index": "Oletustiedostot",
+    "spa": "Yhden sivun sovellus",
+    "spaHint": "Lähettää polut, jotka eivät ole tiedostoja, osoitteeseen /index.html.",
+    "upstream": "Sovelluksen osoite",
+    "upstreamHint": "Sovelluksen kuunteluosoite, kuten http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Ohjaa kävijät osoitteeseen",
+    "keepPath": "Säilytä polku",
+    "keepPathHint": "Lähettää polun /page saman polun uuteen osoitteeseen.",
+    "phpSocket": "php-fpm-pistoke",
+    "phpSocketHint": "php-fpm-pistoketta ei löydetty. Asenna php-fpm tai syötä isäntä:portti.",
+    "https": "HTTPS",
+    "httpsHint": "Vaatii varmenteen. Tallenna sivusto ensin ja paina sitten Hae varmenteet alla.",
+    "httpsCaddy": "Caddy hankkii ja uusii varmenteen automaattisesti.",
+    "httpsPort": "HTTPS-portti",
+    "certPath": "Varmennetiedosto",
+    "keyPath": "Avaintiedosto",
+    "forceHttps": "Ohjaa HTTP HTTPS:ään",
+    "gzip": "Pakkaa vastaukset",
+    "accessLog": "Käyttöloki",
+    "maxBody": "Latausraja megatavuissa",
+    "maxBodyHint": "Arvo 0 käyttää palvelimen oletusarvoa.",
+    "preview": "Esikatselu",
+    "previewFailed": "Määrityksiä ei voitu luoda."
+  },
+  "tls": {
+    "title": "HTTPS-varmenne",
+    "hintManaged": "certbot hankkii Let's Encrypt -sertifikaatin tämän sivuston verkkotunnuksille, ja sivusto siirtyy HTTPS:ään. certbot uusii sertifikaatin ja lataa palvelimen uudelleen.",
+    "hintText": "certbot hankkii Let's Encrypt -sertifikaatin tämän sivuston verkkotunnuksille. Lisää sertifikaatti sivustoon itse sen jälkeen. certbot uusii sertifikaatin ja lataa palvelimen uudelleen.",
+    "needCertbot": "Asenna certbot sen lisäosineen tälle palvelimelle ensin Palvelin-sivulta.",
+    "email": "Sähköposti",
+    "emailHint": "Let's Encrypt ilmoittaa ongelmista tähän. Valinnainen.",
+    "staging": "Testisertifikaatti",
+    "stagingHint": "Käytä Let's Encryptin testipalvelinta. Selaimet eivät luota siihen.",
+    "issue": "Hanki sertifikaatti",
+    "done": "Sertifikaatti tallennettu"
+  },
+  "config": {
+    "search": "Etsi tiedostoja",
+    "empty": "Ei tiedostoja.",
+    "loadFailed": "Tiedostoa ei voitu ladata.",
+    "test": "Testaa asetukset",
+    "testOk": "Asetukset ovat kunnossa",
+    "testFailed": "Aseetuksissa on virheitä",
+    "content": "Sisältö",
+    "save": "Tallenna",
+    "saveHint": "Koko asetustiedosto testataan ennen palvelimen uudelleenlatausta. Viallinen tiedosto palautetaan.",
+    "saved": "Tallennettu ja ladattu uudelleen",
+    "backups_one": "{{count}} varmuuskopio",
+    "backups_other": "{{count}} varmuuskopiota",
+    "restore": "Palauta",
+    "restoreTitle": "Palautetaanko tämä varmuuskopio?",
+    "restoreBody": "Tiedosto palautuu tilaan, jossa se oli ajankohtana {{time}}. Nykyinen teksti tallennetaan myös varmuuskopiona.",
+    "restored": "Varmuuskopio palautettu"
+  },
+  "logs": {
+    "source": "Loki",
+    "lines": "Rivit",
+    "journal": "{{server}}-loki",
+    "follow": "Seuraa",
+    "stop": "Pysäytä",
+    "connecting": "Yhdistetään...",
+    "ended": "Seuranta lopetettu.",
+    "followFailed": "Tätä lokia ei voitu seurata.",
+    "empty": "Ei rivejä.",
+    "loadFailed": "Lokia ei voitu lukea.",
+    "requests": "Pyyntöjä",
+    "topPaths": "Useimmat polut",
+    "topClients": "Useimmat asiakkaat"
+  },
+  "server": {
+    "unknown": "tuntematon",
+    "atBoot": "Käynnistyy käynnistyksen yhteydessä",
+    "notInstalled": "Ei asennettu",
+    "start": "Käynnistä",
+    "stop": "Pysäytä",
+    "restart": "Käynnistä uudelleen",
+    "reload": "Lataa uudelleen",
+    "enable": "Käynnistä käynnistyksen yhteydessä",
+    "disable": "Älä käynnistä käynnistyksen yhteydessä",
+    "boot": "Käynnistä käynnistyksen yhteydessä",
+    "noBoot": "Älä käynnistä käynnistyksen yhteydessä",
+    "done": "{{server}} on valmis",
+    "stopTitle": "Pysäytetäänkö {{server}}?",
+    "stopBody": "Kaikki sen sivustot poistuvat käytöstä, kunnes käynnistät sen uudelleen.",
+    "install": "Asenna",
+    "installTitle": "Asennetaanko {{server}}?",
+    "installBody": "Se asennetaan isäntäpalvelimen pakettienhallinnalla ja käynnistyy välittömästi. Toinen web-palvelin portissa 80 estää sen käynnistymisen.",
+    "installed": "{{server}} on asennettu",
+    "installCertbot": "Asenna certbot",
+    "certbotInstalled": "certbot on asennettu",
+    "certbotPlugins": "Lisäosat: {{plugins}}",
+    "certbotNoPlugins": "Ei nginx- tai Apache-lisäosaa",
+    "certbotHint": "Hankkii Let's Encrypt -sertifikaatit nginx- ja Apache-sivustoille"
+  },
+  "card": {
+    "title": "Web-palvelimet",
+    "loading": "Ladataan...",
+    "refresh": "Päivitä",
+    "empty": "Yhdenkään isäntäpalvelimen web-palvelimet eivät ole päällä.",
+    "summary_one": "{{count}} isäntäpalvelin | {{down}} vaatii huomiota",
+    "summary_other": "{{count}} isäntäpalvelinta | {{down}} vaatii huomiota",
+    "sites_one": "{{count}} sivusto",
+    "sites_other": "{{count}} sivustoa"
+  },
+  "companion": {
+    "toggle": "Web-palvelimet-paneeli",
+    "openTab": "Avaa web-palvelimet",
+    "reload": "Lataa {{server}} uudelleen"
+  },
+  "manager": {
+    "title": "Web-palvelimet",
+    "disabled": "Ota web-palvelimet käyttöön tässä isäntäpalvelimessa nähdäksesi sen sivustot täällä."
+  },
+  "operations": {
+    "status": {
+      "title": "Web-palvelimen tila"
+    },
+    "listSites": {
+      "title": "Listaa sivustot"
+    },
+    "test": {
+      "title": "Testaa web-palvelimen asetukset"
+    },
+    "reload": {
+      "title": "Lataa web-palvelin uudelleen"
+    },
+    "restart": {
+      "title": "Käynnistä web-palvelin uudelleen"
+    },
+    "enableSite": {
+      "title": "Ota sivusto käyttöön"
+    },
+    "disableSite": {
+      "title": "Poista sivusto käytöstä"
+    },
+    "deleteSite": {
+      "title": "Poista sivusto"
+    },
+    "server": "Palvelin",
+    "allServers": "Kaikki",
+    "sites": {
+      "title": "Sivustot",
+      "server": "Palvelin",
+      "domains": "Verkkotunnukset",
+      "https": "HTTPS"
+    }
+  }
+}

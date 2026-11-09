@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "הפעלה, חיישנים, יומני אירועים ומסופים ל-BMC של שרתים באמצעות Redfish, IPMI ו-Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "טוען"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "צפייה ב-BMC",
+      "description": "פתיחת הלשונית Out-of-band והצגת מצב הפעלה, בריאות, חיישנים ויומנים."
+    },
+    "power": {
+      "title": "שליטה בהפעלה ובאתחול",
+      "description": "הפעלה וכיבוי מכשירים, הפעלה מחדש ובחירת התקן האתחול הבא."
+    },
+    "console": {
+      "title": "השתמש בקונסולת סיריאל",
+      "description": "פתח את קונסולת ה-SOL (Serial over LAN) של מכונה."
+    },
+    "media": {
+      "title": "השתמש במדיה וירטואלית",
+      "description": "הצא והוצא תמונות ISO במכונה."
+    },
+    "manage": {
+      "title": "נהל יחידות BMC",
+      "description": "הוסף, שנה והסר יחידות BMC, ונקה את יומני האירועים שלהן."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "הפעל את ipmitool על שרת ה-Termix",
+        "description": "כשכבוי, יחידות BMC של IPMI חייבות להשתמש במארח ייעודי (relay host). Redfish ו-AMT אינם מושפעים."
+      }
+    }
+  },
+  "description": "הוסף את בקרי הניהול (BMCs) של השרתים שלך כדי להדליק ולכבות אותם, לעקוב אחר החיישנים שלהם ולקרוא את יומני האירועים שלהם. פרטי התחברות מאוחסנים בצורה מוצפנת ולא מוצגים שוב.",
+  "summary": "{{count}} יחידות BMC, {{attention}} דורשות תשומת לב",
+  "empty": "אין BMCs עדיין.",
+  "add": "הוסף BMC",
+  "edit": "ערוך",
+  "delete": "מחק",
+  "back": "חזור",
+  "saved": "נשמר",
+  "deleteConfirm": "למחוק את {{name}}?",
+  "status": {
+    "unknown": "לא נקרא עדיין",
+    "up": "נגיש",
+    "down": "לא נגיש"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI דרך LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "שם משתמש",
+    "password": "סיסמה"
+  },
+  "power": {
+    "on": "דלוק",
+    "off": "כבוי",
+    "unknown": "לא ידוע",
+    "sent": "נשלח לבקשה ל-{{name}} לשנות מצב חשמל",
+    "action": {
+      "on": "הדלק",
+      "off": "כבה",
+      "graceful-shutdown": "כבה את המערכת",
+      "cycle": "הפעל מחדש (Power cycle)",
+      "reset": "אפס"
+    },
+    "confirm": {
+      "on": "להפעיל את {{name}}?",
+      "off": "לנתק את החשמל של {{name}}? המערכת לא תיכבה בצורה מסודרת.",
+      "graceful-shutdown": "לבקש מ-{{name}} לכבות את המערכת?",
+      "cycle": "להפעיל מחדש (Power cycle) את {{name}}? המערכת לא תיכבה בצורה מסודרת.",
+      "reset": "לאפס את {{name}}? המערכת תתחיל מחדש מיד."
+    }
+  },
+  "health": {
+    "ok": "בריא",
+    "warning": "אזהרה",
+    "critical": "קריטי",
+    "unknown": "לא ידוע"
+  },
+  "kind": {
+    "temperature": "טמפרטורה",
+    "fan": "מאוורר",
+    "voltage": "מתח",
+    "power": "הספק",
+    "psu": "ספק כוח",
+    "other": "אחר"
+  },
+  "form": {
+    "addTitle": "הוסף BMC",
+    "editTitle": "עריכת BMC",
+    "device": "BMC",
+    "access": "גישה",
+    "type": "סוג",
+    "name": "שם",
+    "address": "כתובת",
+    "port": "פורט",
+    "host": "מארח Termix",
+    "hostHint": "קשר את ה-BMC למארח השייך לו. הוא יעקוב אחר שיתוף המארח ויופיע בתפריט המארח שלו.",
+    "noHost": "ללא",
+    "poll": "קריאה כל (שניות)",
+    "pollHint": "לפחות 30 שניות, או 60 כאשר משתמשים במארח משנה.",
+    "scheme": "חיבור",
+    "relay": "מארח משנה",
+    "relayHint": "הרץ את ipmitool על מארח זה במקום על שרת Termix. נדרש לקונסולה הסדרתית.",
+    "noRelay": "שרת Termix",
+    "cipher": "ערכת הצפנה",
+    "cipherHint": "שנה זאת רק אם ה-BMC מסרב להתחברות. 3 הוא הרגיל, 17 ל-BMCs חדשים יותר.",
+    "ca": "תעודת רשות אישור (CA)",
+    "caHint": "הדבק את ה-PEM של רשות האישור של ה-BMC. השאר ריק עבור תעודה מאומתת.",
+    "caSet": "רשות אישורים (CA) שמורה. הדבק חדשה כדי להחליף אותה.",
+    "keepLogin": "השאר ריק כדי לשמור על פרטי ההתחברות השמורים",
+    "test": "בדיקת חיבור",
+    "testOk": "ה-BMC הגיב. מצב החשמל הוא {{power}}.",
+    "testNeedsLogin": "הזן שוב את פרטי ההתחברות כדי לבדוק.",
+    "save": "שמירה",
+    "add": "הוספה"
+  },
+  "view": {
+    "overview": "סקירה כללית",
+    "sensors": "חיישנים",
+    "log": "יומן אירועים",
+    "boot": "הפעלה",
+    "media": "מדיה וירטואלית",
+    "console": "קונסולה",
+    "refresh": "קריאה עכשיו",
+    "type": "סוג",
+    "address": "כתובת",
+    "power": "הפעלה",
+    "health": "מצב בריאות",
+    "manufacturer": "יצרן",
+    "model": "דגם",
+    "serial": "מספר סידורי",
+    "bios": "BIOS",
+    "bmc": "קושחת BMC",
+    "status": "BMC",
+    "viaRelay": "הגעה דרך מארח ייעודי.",
+    "noSensors": "BMC זה מדווח על חוסר בחיישנים.",
+    "sensor": "חיישן",
+    "reading": "קריאה",
+    "state": "מצב"
+  },
+  "log": {
+    "time": "זמן",
+    "severity": "רמה",
+    "message": "אירוע",
+    "empty": "יומן האירועים ריק.",
+    "clear": "נקה יומן",
+    "clearConfirm": "לנקות את יומן האירועים של {{name}}? פעולה זו אינה ניתנת לביטול.",
+    "cleared": "היומן נוקה",
+    "level": {
+      "info": "מידע",
+      "warning": "אזהרה",
+      "critical": "קריטי"
+    }
+  },
+  "boot": {
+    "hint": "המכונה תתחיל את ההפעלה מהמכשיר הזה פעם אחת, ואז תחזור לסדר ההפעלה הרגיל שלה. יש להפעיל זאת לפני אתחול מחדש.",
+    "device": "התחל מ",
+    "mode": "מצב",
+    "uefi": "UEFI",
+    "legacy": "Legacy BIOS",
+    "apply": "הגדר להפעלה הבאה",
+    "done": "{{name}} יתחיל מההתקן הנבחר בפעם הבאה",
+    "pxe": "רשת (PXE)",
+    "disk": "דיסק קשיח",
+    "cd": "CD או מדיה וירטואלית",
+    "usb": "USB",
+    "bios": "הגדרות BIOS",
+    "none": "סדר רגיל"
+  },
+  "media": {
+    "url": "כתובת תמונה",
+    "empty": "ל-BMC זה אין חריץ CD וירטואלי.",
+    "mounted": "מוצמד",
+    "free": "ריק",
+    "mount": "הצמד",
+    "eject": "הוצא",
+    "mountedDone": "התמונה הוצמדה",
+    "ejected": "התמונה הוצאה"
+  },
+  "console": {
+    "hint": "הקלד ~. כדי לצאת מהקונסולה.",
+    "connecting": "מתחבר",
+    "ended": "הקונסולה נסגרה.",
+    "failed": "לא ניתן לפתוח את הקונסולה.",
+    "needsRelay": "הקונסולה הסדרתית דורשת מארח משנה עם ipmitool. בחר אחד בהגדרות ה-BMC."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "התחל מ",
+    "uefi": "מצב UEFI",
+    "list": {
+      "title": "רשימת BMCs"
+    },
+    "poll": {
+      "title": "קרא BMC עכשיו"
+    },
+    "powerState": {
+      "title": "קבל מצב חשמל"
+    },
+    "power-on": {
+      "title": "הדלק"
+    },
+    "graceful-shutdown": {
+      "title": "כבה"
+    },
+    "power-off": {
+      "title": "כבה חשמל"
+    },
+    "power-cycle": {
+      "title": "אפס חשמל"
+    },
+    "reset": {
+      "title": "אפס"
+    },
+    "setBootOnce": {
+      "title": "התחל פעם אחת מהתקן"
+    },
+    "clearLog": {
+      "title": "נקה יומן אירועים"
+    },
+    "health": {
+      "title": "בריאות BMC"
+    }
+  },
+  "widget": {
+    "name": "Out-of-band",
+    "description": "חשמל ובריאות של ה-BMCs של השרתים שלך.",
+    "summary": "{{up}} מתוך {{total}} פעילים"
+  }
+}

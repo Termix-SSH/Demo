@@ -1,5 +1,6 @@
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import type { AutomationDefinition } from "../types.js";
+import type { Deps } from "./deps.js";
 import type { AutomationEngine } from "./engine.js";
 import type { AutomationRepository } from "./repository.js";
 
@@ -26,6 +27,7 @@ export function watchOperationEvents(
   repository: AutomationRepository,
   engine: AutomationEngine,
   isMaintaining: (userId: string, hostId: number) => Promise<boolean>,
+  deps?: Pick<Deps, "fleets">,
 ): void {
   if (typeof ctx.operations?.onEvent !== "function") return;
 
@@ -35,6 +37,18 @@ export function watchOperationEvents(
         ? ctx.rbac.has("admin.plugins.manage")
         : (await ctx.hosts.checkAccess(hostId, "connect")).hasAccess,
     );
+
+  // A fleet trigger only fires for its members, read as the owner.
+  const inFleet = async (userId: string, fleetId: number, hostId: number) => {
+    const fleets = deps?.fleets();
+    if (typeof fleets?.members !== "function") return false;
+    try {
+      const members = await ctx.asUser(userId, () => fleets.members!(fleetId));
+      return members.some((member) => member.id === hostId);
+    } catch {
+      return false;
+    }
+  };
 
   const handle = async (event: EventLike) => {
     for (const row of await repository.listAllEnabled()) {
@@ -58,6 +72,13 @@ export function watchOperationEvents(
         event.hostId !== undefined &&
         trigger.hostSelector?.kind === "hosts" &&
         !trigger.hostSelector.hostIds.includes(event.hostId)
+      ) {
+        continue;
+      }
+      if (
+        event.hostId !== undefined &&
+        trigger.hostSelector?.kind === "fleet" &&
+        !(await inFleet(row.userId, trigger.hostSelector.fleetId, event.hostId))
       ) {
         continue;
       }

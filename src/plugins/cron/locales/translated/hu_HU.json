@@ -1,0 +1,206 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "Nézze meg, adja hozzá és futtassa a cron feladatokat a hosztjain, ütemezési előnézettel és a rendszer cron fájljaival."
+  },
+  "common": {
+    "save": "Mentés",
+    "cancel": "Mégse",
+    "back": "Vissza",
+    "delete": "Törlés"
+  },
+  "permissions": {
+    "use": {
+      "title": "Cron használata",
+      "description": "Nézze meg a cron feladatokat az elérhető hosztokon, és módosítsa őket azokon a hosztokon, amelyeket szerkeszthet."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Cron feladatok kezelése ezen a hoszton a Cron fülön."
+      },
+      "useSudo": {
+        "label": "sudo használata",
+        "description": "Használja a sudo-t más felhasználók crontabjaihoz és az /etc/cron.d mappához. Kapcsolja ki, ha root felhasználóként jelentkezett be."
+      },
+      "readOnly": {
+        "label": "Csak olvasható",
+        "description": "A cron feladatok megjelenítése, de soha nem módosítása ezen a hoszton."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "Nyissa meg a Cron-t egy hosztról.",
+    "error": "Nem sikerült betölteni a cron-t erről a hosztról.",
+    "disabled": "A cron kikapcsolva van ezen a hoszton. Kapcsolja be a hoszt beállításaiban.",
+    "sudo": "Ehhez root bejelentkezés, jelszó nélküli sudo vagy mentett Sudo jelszó szükséges.",
+    "refresh": "Frissítés",
+    "running": "Cron fut",
+    "stopped": "Cron leállítva",
+    "readOnly": "Csak olvasható",
+    "notInstalled": "Nincs telepítve",
+    "notInstalledTitle": "A cron nincs telepítve ezen a hoszton",
+    "notInstalledHint": "Telepítse a cront vagy a cronie-t a hoszt csomagkezelőjével, majd frissítsen.",
+    "notRunning": "A cron szolgáltatás nem fut, így a feladatok nem fognak lefutni.",
+    "viewJobs": "Feladatok",
+    "viewSystem": "Rendszer",
+    "viewLogs": "Naplók"
+  },
+  "jobs": {
+    "add": "Feladat hozzáadása",
+    "user": "Crontabja:",
+    "ownUser": "{{user}} (bejelentkezés)",
+    "search": "Feladatok keresése",
+    "editText": "Szerkesztés szövegként",
+    "empty": "Még nincsenek cron feladatok.",
+    "noMatch": "Nincs egyező feladat.",
+    "off": "Ki",
+    "next": "következő: {{time}}",
+    "run": "Futtatás most",
+    "runTitle": "Futtatjuk ezt a feladatot most?",
+    "runDesc": "Ez egyszer futtatja le a {{command}} parancsot a crontab felhasználójaként. 2 perc után leáll.",
+    "runFailed": "Nem sikerült elindítani a feladatot.",
+    "turnOn": "Bekapcsolás",
+    "turnOff": "Kikapcsolás",
+    "deleteTitle": "Töröljük ezt a feladatot?",
+    "loadFailed": "Nem sikerült beolvasni a crontabot.",
+    "saveFailed": "Nem sikerült menteni a crontabot.",
+    "outputTitle": "Feladat kimenete",
+    "exitOk": "Befejezve",
+    "exitCode": "Kilépési kód: {{code}}",
+    "noOutput": "A feladat nem adott ki semmit."
+  },
+  "form": {
+    "addTitle": "Új feladat",
+    "editTitle": "Feladat szerkesztése",
+    "forUser": "{{user}} crontabja",
+    "label": "Címke",
+    "labelHint": "A feladat felett megjegyzésként kerül mentésre.",
+    "labelPlaceholder": "Éjszakai mentés",
+    "command": "Parancs",
+    "commandHint": "A felhasználó home könyvtárában fut sh-val. A % jelzi a cron által küldött bemenetet, valódi % jelhez írj \\%-t.",
+    "schedule": "Ütemezés",
+    "scheduleHint": "Perc, óra, hónap napja, hónap és hét napja, vagy egy szó, például @daily.",
+    "scheduleInvalid": "Ez nem érvényes ütemezés.",
+    "nextRuns": "Következő futtatások ({{zone}}):",
+    "enabled": "Be",
+    "enabledHint": "A kikapcsolt feladat kommentként marad a crontabban.",
+    "saved": "Mentve."
+  },
+  "presets": {
+    "everyMinute": "Minden percben",
+    "every5": "5 percenként",
+    "every15": "15 percenként",
+    "hourly": "Óránként",
+    "daily": "Naponta",
+    "weekly": "Hetenként",
+    "monthly": "Havonta",
+    "reboot": "Indításkor"
+  },
+  "schedule": {
+    "reboot": "Indításkor",
+    "everyMinute": "Minden percben",
+    "everyNMinutes": "Minden {{n}} percben",
+    "hourlyAt": "Minden órában a {{minute}}. percben",
+    "everyNHours": "Minden {{n}} órában a {{minute}}. percben",
+    "dailyAt": "Minden nap {{time}}-kor",
+    "weekdaysAt": "Hétfőtől péntekig {{time}}-kor",
+    "weeklyAt": "Minden {{day}}-kor {{time}}-kor",
+    "monthlyAt": "Minden hónap {{day}}. napján {{time}}-kor",
+    "custom": "Egyéni ütemezés",
+    "invalid": "Érvénytelen ütemezés"
+  },
+  "days": {
+    "0": "Vasárnap",
+    "1": "Hétfő",
+    "2": "Kedd",
+    "3": "Szerda",
+    "4": "Csütörtök",
+    "5": "Péntek",
+    "6": "Szombat"
+  },
+  "raw": {
+    "title": "Crontab szövegként",
+    "hint": "Sorban egy-egy feladat. A host ellenőrzi a szöveget, és ha hibát talál, megtartja a régi crontabot."
+  },
+  "system": {
+    "add": "Új fájl",
+    "addTitle": "Új fájl a /etc/cron.d-ben",
+    "edit": "Szerkesztés",
+    "name": "Fájlnév",
+    "nameHint": "Mentés a /etc/cron.d/<name> néven. A cron kihagyja a pontot tartalmazó neveket.",
+    "nameInvalid": "Csak betűket, számokat, - és _ karaktereket használjon.",
+    "content": "Fájltartalom",
+    "fileHint": "Minden feladat tartalmazza a felhasználó nevét, akinek a nevében fut: perc óra nap hónap hénapja felhasználó parancs. Minden sort ellenőrzésnek vetnek alá mentés előtt.",
+    "noJobs": "Nincsenek feladatok ebben a fájlban.",
+    "readHint": "Egyes fájlok rejtve maradhatnak root jogosultság nélkül. A módosításokhoz root bejelentkezés, jelszómentes sudo vagy mentett Sudo jelszó szükséges.",
+    "timers_one": "Ennek a hostnak van még {{count}} systemd időzítője is. A Szolgáltatások bővítmény kezeli azt.",
+    "timers_other": "Ennek a hostnak van még {{count}} systemd időzítője is. A Szolgáltatások bővítmény kezeli őket.",
+    "deleteTitle": "Törli az /etc/cron.d/{{name}} fájlt?",
+    "deleteDesc": "Egy másolat megmarad a /var/lib/termix-cron/backup könyvtárban.",
+    "deleted": "A(z) {{name}} törölve.",
+    "saved": "A(z) {{name}} mentve.",
+    "loadFailed": "Nem sikerült beolvasni a rendszer cron fájljait.",
+    "saveFailed": "Nem sikerült menteni a fájlt.",
+    "period": {
+      "hourly": "Minden órában fut",
+      "daily": "Minden nap fut",
+      "weekly": "Minden héten fut",
+      "monthly": "Minden hónapban fut"
+    }
+  },
+  "logs": {
+    "lines": "Sorok",
+    "lineCount_one": "{{count}} sor",
+    "lineCount_other": "{{count}} sor",
+    "source": "Forrás: {{source}}",
+    "noSource": "Nem található cron napló ezen a gazdagépen.",
+    "empty": "Nincs naplóbejegyzés.",
+    "failed": "A cron napló nem olvasható."
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "Kapcsold be a Cron szolgáltatást ezen a hosztban a beállításokban, hogy itt lásd a feladatait."
+  },
+  "operations": {
+    "list": {
+      "title": "Cron feladatok listázása"
+    },
+    "enable": {
+      "title": "Cron feladat bekapcsolása"
+    },
+    "disable": {
+      "title": "Cron feladat kikapcsolása"
+    },
+    "run": {
+      "title": "Cron feladat azonnali futtatása"
+    },
+    "delete": {
+      "title": "Cron feladat törlése"
+    },
+    "jobs": {
+      "title": "Cron feladatok",
+      "schedule": "Ütemezés",
+      "command": "Parancs"
+    },
+    "status": {
+      "title": "Cron állapot"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "Hosztok ellenőrzése...",
+    "summary_one": "{{count}} feladat {{hosts}} hoszton",
+    "summary_other": "{{count}} feladat {{hosts}} hoszton",
+    "refresh": "Újraellenőrzés",
+    "empty": "Kapcsold be a Cron szolgáltatást egy hosztnál, hogy itt megjelenjen.",
+    "stopped": "Nem fut",
+    "missing": "Nincs telepítve",
+    "jobs_one": "{{count}} feladat",
+    "jobs_other": "{{count}} feladat",
+    "off": "{{count}} kikapcsolva"
+  }
+}

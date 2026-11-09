@@ -1,0 +1,304 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Peržiūrėkite, atnaujinkite, fiksuokite ir siųskite „Git“ saugyklas savo serveriuose bei palaikykite jas naujausias su automatinio atnaujinimo funkcija."
+  },
+  "common": {
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti",
+    "back": "Atgal",
+    "loading": "Kraunama..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Naudoti „Git“",
+      "description": "Peržiūrėkite „Git“ saugyklas pasiekiamuose serveriuose ir keiskite jas serveriuose, kuriuose turite rašymo teises."
+    },
+    "runCommands": {
+      "title": "Vykdyti komandas po automatinio atnaujinimo",
+      "description": "Nustatykite komandą, kuri bus vykdoma serveryje po to, kai automatinis atnaujinimas atneš naujus fiksavimus."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "„Git“",
+        "description": "Tvarkykite „Git“ saugyklas šiame serveryje per „Git“ skirtuką."
+      },
+      "repoRoots": {
+        "label": "Skenuojami aplankai",
+        "description": "Aplankai, kuriuose ieškoma saugyklų skenuojant šį serverį. Aplankus atskirkite kableliais. Numatytasis – namų aplankas.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Naudoti „sudo“",
+        "description": "Vykdykite „git“ kaip root naudotoją su „sudo“. Tik saugykloms, kurių prisijungęs naudotojas negali naudoti."
+      },
+      "readOnly": {
+        "label": "Tik skaitymui",
+        "description": "Rodyti saugyklas, bet niekada jų nekeisti šiame serveryje."
+      },
+      "showPanel": {
+        "label": "Skydelis šalia terminalo",
+        "description": "Rodyti „Git“ skydelį šio serverio terminalo skirtukuose."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Atidaryti skydelį kartu su terminalu",
+        "description": "Rodyti „Git“ skydelį, kai atidaromas terminalas serveryje, kuriame jis įgalintas."
+      },
+      "companionSide": {
+        "label": "Skydelio pusė",
+        "description": "Kur skydelis yra šalia terminalo.",
+        "right": "Dešinėje",
+        "left": "Kairėje",
+        "bottom": "Apačioje"
+      },
+      "companionSize": {
+        "label": "Skydelio dydis",
+        "description": "Skydelio plotis arba aukštis (jei apačioje) pikseliais."
+      },
+      "companionEdgeButton": {
+        "label": "Krašto mygtukas",
+        "description": "Rodyti mažą mygtuką terminalo krašte, skirtą atidaryti skydelį."
+      }
+    }
+  },
+  "tab": {
+    "title": "„Git“",
+    "noHost": "Atidarykite „Git“ iš serverio.",
+    "error": "Nepavyko įkelti „Git“ iš šio serverio.",
+    "disabled": "„Git“ šiame serveryje išjungtas. Įjunkite jį serverio nustatymuose.",
+    "sudo": "Tam reikia root prisijungimo, slaptažodžio nereikalaujančio „sudo“ arba išsaugoto „Sudo“ slaptažodžio.",
+    "refresh": "Atnaujinti",
+    "readOnly": "Tik skaitymui",
+    "notInstalled": "„git“ neįdiegta",
+    "notInstalledTitle": "„git“ šiame serveryje neįdiegta",
+    "notInstalledHint": "Įdiekite „git“ naudodami serverio paketų tvarkyklę, tada atnaujinkite."
+  },
+  "actions": {
+    "ok": "Atlikta",
+    "failed": "Nepavyko",
+    "noOutput": "Nėra išvesties."
+  },
+  "repos": {
+    "add": "Pridėti saugyklą",
+    "search": "Ieškoti saugyklų",
+    "empty": "Dar nėra saugyklų. Pridėkite vieną, kad pradėtumėte.",
+    "noMatch": "Nėra atitinkančių saugyklų.",
+    "viewOnly": "Šiam serveriui nepridėta jokių saugyklų.",
+    "detached": "atskirta",
+    "changes_one": "{{count}} pakeitimas",
+    "changes_few": "{{count}} pakeitimai",
+    "changes_many": "{{count}} pakeitimų",
+    "changes_other": "{{count}} pakeitimų",
+    "conflicts": "Konfliktai",
+    "auto": "Automatinis atnaujinimas",
+    "autoFailing": "Atnaujinimas nepavyksta",
+    "remove": "Pašalinti iš sąrašo",
+    "removeTitle": "Pašalinti „{{name}}“?",
+    "removeBody": "Saugykla tik pamirštama čia. Serveryje nieko nėra ištrinama.",
+    "removed": "„{{name}}“ pašalinta",
+    "error": {
+      "missing": "Aplankas nerastas",
+      "notrepo": "Tai nėra git saugykla",
+      "unreadable": "Nepavyksta perskaityti"
+    }
+  },
+  "add": {
+    "title": "Pridėti saugyklas",
+    "modeScan": "Nuskaityti",
+    "modePath": "Aplankas",
+    "modeClone": "Klonuoti",
+    "scanHint": "Ieško git saugyklų aplanke {{roots}}. Aplanke galite pakeisti hosto nustatymuose.",
+    "rescan": "Nuskaityti dar kartą",
+    "noneFound": "Nerasta jokių naujų saugyklų.",
+    "picked": "Pasirinkta",
+    "addPicked_one": "Pridėti {{count}} saugyklą",
+    "addPicked_few": "Pridėti {{count}} saugyklos",
+    "addPicked_many": "Pridėti {{count}} saugyklų",
+    "addPicked_other": "Pridėti {{count}} saugyklų",
+    "addAll": "Pridėti visus",
+    "folder": "Aplankas serveryje",
+    "folderHint": "Pilnas kelias arba pradėkite nuo ~, kad nurodytumėte namų aplanką. Tai jau turi būti „git“ saugykla.",
+    "addRepo": "Pridėti saugyklą",
+    "url": "Adresas",
+    "urlHint": "Nauda prisijungusio vartotojo raktus ir „git“ nustatymus.",
+    "dest": "Klonuoti į",
+    "destHint": "Aplankas dar neturi egzistuoti.",
+    "clone": "Klonuoti",
+    "cloned": "Klonuota",
+    "added_one": "Pridėtas {{count}} saugyklos",
+    "added_few": "Pridėta {{count}} saugyklų",
+    "added_many": "Pridėta {{count}} saugyklų",
+    "added_other": "Pridėta {{count}} saugyklų",
+    "failed": "Nepavyko pridėti saugyklos",
+    "scanFailed": "Nepavyko nuskaityti kompiuterio"
+  },
+  "repo": {
+    "ahead": "{{count}} priekyje",
+    "behind": "{{count}} atsilikę",
+    "fetch": "Atsisiųsti",
+    "fetched": "Atsisiųsta",
+    "pull": "Atsisiųsti pakeitimus",
+    "pulled": "Pakeitimai atsisiųsti",
+    "push": "Push",
+    "pushed": "Pushed",
+    "viewChanges": "Pakeitimai",
+    "viewBranches": "Šakos",
+    "viewHistory": "Istorija",
+    "viewStash": "Stash",
+    "viewAuto": "Automatinis atsiėmimas"
+  },
+  "changes": {
+    "loadFailed": "Nepavyko perskaityti pakeitimų.",
+    "clean": "Nėra ką fiksuoti. Darbo medis švarus.",
+    "stagedTitle": "Pasiruošę ({{count}})",
+    "unstagedTitle": "Pakeitimai ({{count}})",
+    "stage": "Pridėti",
+    "staged": "Pridėta",
+    "unstage": "Atšaukti pridėjimą",
+    "unstaged": "Nepiridėta",
+    "stageAll": "Pridėti viską",
+    "renamed": "Pervadinta",
+    "discard": "Atmesti",
+    "discardTitle": "Atmesti pakeitimus faile „{{name}}“?",
+    "discardBody": "Šio failo pakeitimai bus ištrinti ir jų nebus galima atkurti.",
+    "discarded": "Pakeitimai atmesti",
+    "message": "Fiksuojimo žinutė",
+    "messagePlaceholder": "Kas pasikeitė",
+    "commit": "Fiksuoti",
+    "commitAll": "Fiksuoti visus pakeitimus",
+    "commitStaged_one": "Fiksuoti {{count}} paruoštą failą",
+    "commitStaged_few": "Fiksuoti {{count}} paruoštus failus",
+    "commitStaged_many": "Fiksuoti {{count}} paruošto failo",
+    "commitStaged_other": "Fiksuoti {{count}} paruoštų failų",
+    "committed": "Fiksuota",
+    "noDiff": "Nėra pakeitimų, kuriuos būtų galima rodyti.",
+    "truncated": "Skirtumų sąrašas ilgas, todėl rodoma tik pradžia."
+  },
+  "branches": {
+    "loadFailed": "Nepavyko perskaityti šakų.",
+    "empty": "Šakų dar nėra.",
+    "current": "Dabartinė",
+    "remote": "Nuotolinė",
+    "gone": "Nuotolinė šaka pašalinta",
+    "newName": "Nauja šaka",
+    "create": "Sukurti šaką",
+    "created": "Šaka {{name}} sukurta",
+    "switch": "Perjungti",
+    "switched": "Perjungta į {{name}}",
+    "merge": "Sujungti su dabartine",
+    "mergeTitle": "Sujungti {{name}} su {{into}}?",
+    "mergeBody": "Sujungimas su konfliktais bus nedelsiant atšauktas.",
+    "merged": "{{name}} sujungta",
+    "delete": "Ištrinti šaką",
+    "deleteTitle": "Ištrinti {{name}}?",
+    "deleteBody": "Git atsisako, jei šaka turi nesujungtų įsipareigojimų.",
+    "deleted": "{{name}} ištrinta",
+    "forceTitle": "Priverstinai ištrinti {{name}}?",
+    "forceBody": "Ši šaka turi nesujungtų įsipareigojimų. Jie bus prarasti, jei ją ištrinsite.",
+    "forceDelete": "Priverstinai ištrinti"
+  },
+  "history": {
+    "loadFailed": "Nepavyko perskaityti istorijos.",
+    "empty": "Dar nėra įsipareigojimų.",
+    "branch": "Ši šaka",
+    "all": "Visos šakos",
+    "more": "Įkelti daugiau"
+  },
+  "stash": {
+    "loadFailed": "Nepavyko perskaityti laikinos saugyklos.",
+    "title": "Laikinai išsaugoti",
+    "empty": "Nėra laikinai išsaugotų.",
+    "message": "Žinutė",
+    "messagePlaceholder": "Pasirenkama",
+    "untracked": "Įtraukti nevaldomus failus",
+    "push": "Sukaupti pakeitimus",
+    "pushDone": "Pakeitimai sukaupti",
+    "apply": "Taikyti",
+    "applyDone": "Sukaupta taikyta",
+    "pop": "Ištraukti",
+    "popDone": "Sukaupta taikyta ir pašalinta",
+    "drop": "Pašalinti",
+    "dropDone": "Sukaupta pašalinta",
+    "dropTitle": "Pašalinti „{{name}}“?",
+    "dropBody": "Stashas yra ištrintas ir jo nebegalima atkurti.",
+    "remotes": "Nuotoliniai saugyklos",
+    "noRemotes": "Nėra nuotolinių saugyklų."
+  },
+  "auto": {
+    "intro": "Atsisiunčia pagal grafiką, naudojant tik „fast-forward“. Niekada nesujungia šakų ir praleidžia saugyklą, jei joje yra neišsaugotų pakeitimų arba ji nukrypo nuo pagrindinės šakos.",
+    "noUpstream": "Ši šaka dar neturi pagrindinės šakos, todėl automatinis atsisiuntimas ją praleis.",
+    "enable": "Automatinis atsisiuntimas",
+    "enableHint": "Vykdoma jūsų vardu, naudojant jūsų prieigos teises prie šio serverio.",
+    "interval": "Kiekvieną (min.)",
+    "intervalHint": "Kiek laiko laukti tarp atsisiuntimų.",
+    "post": "Komanda po atsisiuntimo",
+    "postHint": "Vykdoma saugyklos aplanke po naujų įsipareigojimų gavimo. Reikalinga vykdyti komandas leidimas.",
+    "saved": "Automatinis atsiėmimas išsaugotas",
+    "saveFailed": "Nepavyko išsaugoti automatinio atsiėmimo",
+    "runNow": "Vykdyti dabar",
+    "next": "Kitas atsiėmimas {{when}}",
+    "runs": "Naujausi vykdymai",
+    "noRuns": "Dar nėra vykdymų.",
+    "outcome": {
+      "pulled": "Atsiųsta",
+      "uptodate": "Atnaujinta",
+      "skipped": "Praleista",
+      "failed": "Nepavyko"
+    }
+  },
+  "card": {
+    "title": "Git saugyklos",
+    "loading": "Įkeliama...",
+    "refresh": "Atnaujinti",
+    "empty": "Dar nėra saugyklos su Git.",
+    "allClean": "Visos saugyklos švarios ir atnaujintos.",
+    "summary_one": "{{count}} saugykla | {{attention}} reikia patikrinti",
+    "summary_few": "{{count}} saugyklos | {{attention}} reikia patikrinti",
+    "summary_many": "{{count}} saugyklos | {{attention}} reikia patikrinti",
+    "summary_other": "{{count}} saugyklos | {{attention}} reikia patikrinti"
+  },
+  "companion": {
+    "toggle": "Git skydelis",
+    "openTab": "Atidaryti Git",
+    "here": "Šio aplanko saugykla",
+    "all": "Visos saugyklos"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Išvardinti Git saugyklas"
+    },
+    "fetch": {
+      "title": "Atsisiųsti saugyklą"
+    },
+    "pull": {
+      "title": "Atsisiųsti ir integruoti saugyklą"
+    },
+    "push": {
+      "title": "Įkelti saugyklą"
+    },
+    "checkout": {
+      "title": "Perjungti šaką",
+      "branch": "Šaka"
+    },
+    "reset-hard": {
+      "title": "Pilnai atstatyti saugyklą",
+      "ref": "Atstatyti iki"
+    },
+    "repos": {
+      "title": "Git saugyklos",
+      "branch": "Šaka",
+      "ahead": "Priekyje",
+      "behind": "Už nugaros",
+      "changed": "Pakeitimai"
+    },
+    "signals": {
+      "behind": "Saugyklos už nugaros",
+      "dirty": "Saugyklos su pakeitimais",
+      "pull-failing": "Nepavyksta automatiškai atsisiųsti"
+    }
+  }
+}

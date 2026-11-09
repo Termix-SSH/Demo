@@ -1,0 +1,143 @@
+{
+  "plugin": {
+    "name": "Privileged Access",
+    "description": "Bed om godkendelse, før nogen forbinder til en privilegeret host, med adgang, der udløber automatisk, og en fuld revisionslog."
+  },
+  "tab": {
+    "title": "Adgang"
+  },
+  "tabs": {
+    "request": "Bed om adgang",
+    "mine": "Mine anmodninger",
+    "pending": "Afventer beslutning",
+    "active": "Aktiv adgang",
+    "history": "Historik"
+  },
+  "status": {
+    "pending": "Afventer",
+    "approved": "Afsluttet",
+    "active": "Aktiv",
+    "denied": "Afvist",
+    "expired": "Udløbet",
+    "revoked": "Ophævet",
+    "cancelled": "Annulleret"
+  },
+  "request": {
+    "host": "Host",
+    "hostWithAccess": "{{host}} (adgang indtil {{until}})",
+    "hours": "Timer",
+    "hoursHint": "Denne host tillader op til {{max}} timer.",
+    "reason": "Hvorfor du har brug for adgang",
+    "reasonOptional": "Hvorfor du har brug for adgang (valgfrit)",
+    "ticket": "Ticket",
+    "ticketOptional": "Ticket (valgfrit)",
+    "send": "Bed om adgang",
+    "sent": "Anmodning sendt. Du får en underretning, når nogen træffer en beslutning.",
+    "failed": "Kunne ikke sende anmodningen",
+    "noHosts": "Ingen privilegerede hosts",
+    "noHostsHint": "Hosts, som en administrator markerer som privilegerede, vises her."
+  },
+  "list": {
+    "none": "Intet her",
+    "loadError": "Kunne ikke indlæse anmodninger",
+    "actionFailed": "Det virkede ikke",
+    "hours_one": "{{count}} time",
+    "hours_other": "{{count}} timer",
+    "until": "indtil {{time}}",
+    "decidedBy": "af {{name}}",
+    "approve": "Godkend",
+    "deny": "Afvis",
+    "cancel": "Annuller",
+    "endNow": "Afslut nu",
+    "export": "Eksporter CSV",
+    "approveConfirm_one": "Giv {{user}} adgang til {{host}} i {{count}} time?",
+    "approveConfirm_other": "Giv {{user}} adgang til {{host}} i {{count}} timer?",
+    "denyConfirm": "Afvis denne anmodning?",
+    "cancelConfirm": "Annuller denne anmodning?",
+    "endConfirm": "Afslut denne adgang nu? Åbne sessioner på hosten lukkes.",
+    "approved": "Adgang godkendt",
+    "denied": "Anmodning afvist",
+    "ended": "Færdig"
+  },
+  "card": {
+    "title": "Privilegeret adgang",
+    "waiting": "afventer din beslutning",
+    "empty": "Ingen anmodninger afventer",
+    "emptyHint": "Din godkendte adgang vises her."
+  },
+  "permissions": {
+    "request": {
+      "title": "Bed om privilegeret adgang",
+      "description": "Bed om tidsbegrænset adgang til privilegerede hosts."
+    },
+    "approve": {
+      "title": "Godkend privilegeret adgang",
+      "description": "Træf beslutning om andres adgangsanmodninger, afslut adgang tidligt og læs rapporten."
+    },
+    "bypass": {
+      "title": "Break glass-adgang",
+      "description": "Forbind til privilegerede hosts uden en anmodning. Hver brug er logget og giver en underretning."
+    },
+    "configure": {
+      "title": "Konfigurer privilegerede hosts",
+      "description": "Marker hosts som privilegerede og ændr, hvem der godkender adgang til dem"
+    }
+  },
+  "settings": {
+    "admin": {
+      "pendingHours": {
+        "label": "Anmodningens levetid (timer)",
+        "description": "En anmodning, som ingen træffer beslutning om inden for denne tid, udløber."
+      },
+      "alertBypass": {
+        "label": "Advarsel ved nøgleadgang",
+        "description": "Underret godkendere, når nogen opretter forbindelse med nøgleadgang."
+      }
+    },
+    "host": {
+      "enable": {
+        "label": "Privilegeret vært",
+        "description": "SSH- og fjernskrivebordsessioner til denne vært kræver godkendt adgang."
+      },
+      "approverRoles": {
+        "label": "Godkenderroller",
+        "description": "Rollenavne adskilt med kommaer, hvis medlemmer kan godkende. Hvis feltet er tomt, kan alle med godkendelsesrettighed afgøre."
+      },
+      "maxHours": {
+        "label": "Maksimal adgangstid (timer)",
+        "description": "Det maksimale antal timer, en enkelt anmodning kan anmode om."
+      },
+      "requireReason": {
+        "label": "Kræv en årsag",
+        "description": "En anmodning skal angive, hvorfor adgang er nødvendig."
+      },
+      "requireTicket": {
+        "label": "Kræv en sag",
+        "description": "En anmodning skal angive et sag-nummer."
+      },
+      "allowBackground": {
+        "label": "Tillad baggrundsarbejde",
+        "description": "Polling og andre ikke-interaktive plugin-forbindelser springer godkendelsen over. Deaktiver for at blokere alle sessioner uden adgang."
+      }
+    }
+  },
+  "operations": {
+    "request": {
+      "title": "Anmod om privilegeret adgang",
+      "hours": "Timer",
+      "reason": "Årsag",
+      "ticket": "Sag"
+    },
+    "pending": {
+      "title": "Adgangsanmodninger, der skal afgøres"
+    },
+    "status": {
+      "title": "Privilegeret adgang"
+    },
+    "events": {
+      "requested": "Nogen har anmodet om adgang",
+      "approved": "Adgang blev godkendt",
+      "bypassed": "Nøgleadgang blev brugt"
+    }
+  }
+}

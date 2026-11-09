@@ -1,0 +1,246 @@
+{
+  "tab": {
+    "title": "UPS",
+    "noHost": "Abre el UPS desde un host.",
+    "error": "No se ha podido leer el UPS en este host.",
+    "disabled": "El gestor de UPS está desactivado para este host. Actívalo en la configuración del host.",
+    "viewOverview": "Resumen",
+    "viewHistory": "Historial",
+    "viewEvents": "Eventos",
+    "viewCommands": "Comandos",
+    "viewSources": "Dispositivos"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "failed": "Eso no ha funcionado."
+  },
+  "state": {
+    "online": "Conectado a la red",
+    "battery": "En batería",
+    "bypass": "Derivación",
+    "off": "Apagado",
+    "unknown": "Desconocido"
+  },
+  "flag": {
+    "low-battery": "Batería baja",
+    "replace-battery": "Reemplazar batería",
+    "overload": "Sobrecargado",
+    "charging": "Cargando",
+    "calibrating": "Calibrando",
+    "alarm": "Alarma",
+    "boost": "Refuerzo",
+    "trim": "Recorte"
+  },
+  "backend": {
+    "nut": "NUT",
+    "apcupsd": "apcupsd",
+    "snmp": "Tarjeta SNMP"
+  },
+  "overview": {
+    "noData": "Aún no hay lecturas.",
+    "stale": "La última lectura falló: {{error}}",
+    "power": "Potencia",
+    "charge": "Carga de la batería",
+    "runtime": "Tiempo restante",
+    "load": "Carga",
+    "nominal": "{{watts}} W nominales",
+    "input": "Voltaje de entrada",
+    "output": "Voltaje de salida",
+    "batteryVolts": "Voltaje de la batería",
+    "temp": "Temperatura",
+    "model": "Modelo",
+    "serial": "Número de serie",
+    "status": "Estado",
+    "lastTest": "Última autoprueba",
+    "readAt": "Última lectura",
+    "ago": "Hace {{time}}"
+  },
+  "history": {
+    "error": "No se ha podido cargar el historial.",
+    "24h": "24 horas",
+    "7d": "7 días",
+    "30d": "30 días",
+    "empty": "Aún no hay suficientes lecturas. Termix lee el UPS cada 30 segundos.",
+    "charge": "Carga de la batería",
+    "load": "Carga",
+    "runtime": "Tiempo restante",
+    "voltage": "Voltaje"
+  },
+  "events": {
+    "error": "No se han podido cargar los eventos.",
+    "empty": "Aún no hay eventos de energía.",
+    "type": {
+      "on-battery": "En batería",
+      "on-battery-cleared": "Alimentación restaurada",
+      "low-battery": "Batería baja",
+      "low-battery-cleared": "Batería correcta",
+      "replace-battery": "Reemplazar batería",
+      "replace-battery-cleared": "Batería correcta",
+      "overload": "Sobrecarga",
+      "overload-cleared": "Carga correcta",
+      "low-charge": "Carga baja",
+      "low-charge-cleared": "Carga correcta",
+      "low-runtime": "Autonomía baja",
+      "low-runtime-cleared": "Funcionamiento correcto",
+      "unreachable": "Inalcanzable",
+      "unreachable-cleared": "Alcanzable",
+      "test-failed": "Error en la prueba",
+      "test-failed-cleared": "Prueba correcta",
+      "test": "Autoprueba",
+      "command": "Comando"
+    }
+  },
+  "commands": {
+    "unsupported": "Solo los dispositivos NUT aceptan comandos.",
+    "error": "No se ha podido listar los comandos.",
+    "confirmTitle": "¿Ejecutar {{name}}?",
+    "confirmText": "Esto puede cortar la alimentación o cambiar el comportamiento de {{name}}.",
+    "run": "Ejecutar",
+    "done": "Se ha enviado {{name}}.",
+    "needLogin": "Añade un usuario y contraseña de NUT a este dispositivo para enviar comandos.",
+    "empty": "Este SAI no tiene comandos instantáneos.",
+    "risky": "Puede cortar la alimentación"
+  },
+  "sources": {
+    "add": "Añadir SAI",
+    "empty": "No hay ningún SAI configurado en este host.",
+    "emptyHint": "Añade un dispositivo NUT o apcupsd en este host, o una tarjeta SNMP a la que este host pueda acceder.",
+    "off": "apagado",
+    "unreachable": "inalcanable",
+    "saved": "Guardado.",
+    "deleteTitle": "¿Eliminar {{name}}?",
+    "deleteText": "Su historial y eventos también se eliminarán."
+  },
+  "editor": {
+    "addTitle": "Añadir UPS",
+    "editTitle": "Editar UPS",
+    "add": "Añadir",
+    "backend": "Cómo leerlo",
+    "label": "Nombre",
+    "labelPlaceholder": "UPS de rack",
+    "target": {
+      "nut": "Dispositivo NUT",
+      "apcupsd": "Dirección de apcupsd",
+      "snmp": "Dirección de la tarjeta"
+    },
+    "targetPlaceholder": {
+      "nut": "ups o ups@192.168.1.5:3493",
+      "apcupsd": "Dejar vacío para este host",
+      "snmp": "192.168.1.20"
+    },
+    "nutFound": "Encontrado en este host: {{names}}",
+    "nutMissing": "upsc no está instalado en este host. Instala primero el cliente NUT.",
+    "nutHint": "El nombre de upsc -l, o nombre@host:puerto para un servidor NUT remoto.",
+    "apcMissing": "apcaccess no está instalado en este host. Instala primero apcupsd.",
+    "apcHint": "Déjalo vacío para leer el daemon en este host, o usa host:3551.",
+    "snmpMissing": "snmpwalk no está instalado en este host. Instala primero las herramientas net-snmp.",
+    "snmpHint": "Termix consulta la tarjeta desde este host con snmpwalk.",
+    "nutUser": "Usuario de NUT",
+    "nutPassword": "Contraseña de NUT",
+    "nutLoginHint": "Solo necesario para enviar comandos. La lectura nunca lo requiere.",
+    "saved": "Guardado",
+    "snmpVersion": "Versión de SNMP",
+    "community": "Comunidad",
+    "v3User": "Usuario de SNMP",
+    "v3Level": "Nivel de seguridad",
+    "v3": {
+      "noAuth": "Sin autenticación",
+      "auth": "Autenticación",
+      "authPriv": "Autenticación y privacidad"
+    },
+    "v3AuthProto": "Tipo de autenticación",
+    "v3AuthPass": "Contraseña de autenticación",
+    "v3PrivProto": "Tipo de privacidad",
+    "v3PrivPass": "Contraseña de privacidad",
+    "clearSecrets": "Eliminar inicio de sesión guardado",
+    "clearSecretsHint": "Elimina el inicio de sesión NUT o SNMP guardado para este dispositivo.",
+    "lowCharge": "Alerta de carga baja (%)",
+    "lowChargeHint": "Avisar cuando la carga esté en o por debajo de este valor mientras se usa la batería.",
+    "lowRuntime": "Alerta de tiempo de ejecución bajo (minutos)",
+    "lowRuntimeHint": "Avisar cuando el tiempo de ejecución restante esté en o por debajo de este valor mientras se usa la batería. 0 lo desactiva.",
+    "alerts": "Enviar alertas",
+    "alertsHint": "Pérdida de alimentación, batería baja, sobrecarga y problemas de prueba.",
+    "enabled": "Leer este SAI",
+    "enabledHint": "Desactivar para dejar de leer y conservar el historial.",
+    "test": "Probar",
+    "testing": "Probando...",
+    "testOk": "Funciona: {{state}}, {{charge}}% de carga, {{runtime}} restantes.",
+    "testFailed": "No se ha podido leer el SAI."
+  },
+  "card": {
+    "title": "SAI",
+    "empty": "No hay ningún SAI configurado. Activa el Gestor de SAI para un host y añade un dispositivo.",
+    "runtime": "{{time}} restantes",
+    "load": "{{value}}% de carga"
+  },
+  "manager": {
+    "title": "SAI",
+    "disabled": "El Gestor de SAI está desactivado para este host."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Gestor de SAI",
+        "description": "Lee los dispositivos SAI de este host y muestra una pestaña de SAI."
+      },
+      "readOnly": {
+        "label": "UPS de solo lectura",
+        "description": "Bloquea los cambios y comandos en los dispositivos UPS de este host."
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "Usar el gestor de UPS",
+      "description": "Ver el estado del UPS y, con acceso de edición a un host, modificar dispositivos y enviar comandos."
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Listar dispositivos UPS"
+    },
+    "status": {
+      "title": "Estado de la alimentación"
+    },
+    "charge": {
+      "title": "Carga de la batería"
+    },
+    "runtime": {
+      "title": "Tiempo restante"
+    },
+    "source": "UPS",
+    "sourceHint": "El id. del UPS. Déjalo vacío para usar el primero del host.",
+    "selfTest": {
+      "title": "Iniciar autotest de la batería",
+      "kind": "Tipo",
+      "quick": "Rápido",
+      "deep": "Profundo"
+    },
+    "beeper": {
+      "title": "Configurar la alarma del UPS",
+      "mode": "Alarma",
+      "mute": "Silenciar",
+      "disable": "Apagar",
+      "enable": "Encender"
+    },
+    "calibrate": {
+      "title": "Calibrar el tiempo de autonomía",
+      "description": "Drena la batería para medir su tiempo de funcionamiento. Los hosts conectados a este SAI pierden protección mientras se ejecuta."
+    },
+    "devices": {
+      "title": "Dispositivos SAI",
+      "state": "Estado",
+      "charge": "Carga",
+      "load": "Carga",
+      "backend": "Leer con"
+    },
+    "events": {
+      "onBattery": "SAI funcionando con batería",
+      "powerRestored": "Energía del SAI restaurada"
+    }
+  }
+}

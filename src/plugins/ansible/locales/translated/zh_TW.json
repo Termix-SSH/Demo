@@ -1,0 +1,205 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "從控制主機執行 Ansible 劇本與即席指令，並使用由您的 Termix 主機產生的清單。"
+  },
+  "common": {
+    "save": "儲存",
+    "cancel": "取消",
+    "back": "返回",
+    "delete": "刪除"
+  },
+  "permissions": {
+    "use": {
+      "title": "使用 Ansible",
+      "description": "查看您可存取的控制主機上的劇本與執行記錄。編輯您可編輯的主機上的檔案並執行 Ansible。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "將此主機用作 Ansible 控制主機。該主機上必須已安裝 Ansible。"
+      },
+      "projectDir": {
+        "label": "專案資料夾",
+        "description": "此主機上存放您的劇本、角色與 ansible.cfg 的資料夾。",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Vault 密碼檔案",
+        "description": "此主機上存放 Ansible Vault 密碼的檔案。若您不使用 Vault，請留空。",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "唯讀",
+        "description": "僅顯示劇本與執行記錄，不允許在此主機上編輯檔案或啟動執行。"
+      },
+      "alertRuns": {
+        "label": "執行失敗時通知",
+        "description": "當此主機上的執行結果為失敗或中斷時發送通知。在讀取執行狀態時檢查。"
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "從主機開啟 Ansible。",
+    "error": "無法從此主機載入 Ansible。",
+    "disabled": "此主機已關閉 Ansible。請前往主機設定中開啟。",
+    "refresh": "重新整理",
+    "readOnly": "唯讀",
+    "notInstalled": "未安裝 Ansible",
+    "notInstalledTitle": "此主機未安裝 Ansible",
+    "notInstalledHint": "請在此主機上安裝 ansible-core（例如使用 pipx 或套件管理器），然後重新整理。",
+    "noSshpass": "此主機未安裝 sshpass。使用密碼登入的主機將會失敗。",
+    "viewPlaybooks": "劇本",
+    "viewRuns": "執行記錄",
+    "viewAdhoc": "即席",
+    "viewFacts": "事實"
+  },
+  "files": {
+    "add": "新增檔案",
+    "search": "搜尋檔案",
+    "empty": "專案資料夾中尚無檔案。",
+    "noMatch": "沒有符合的檔案。",
+    "noProject": "此主機上不存在資料夾 {{dir}}。請建立該資料夾，或在主機設定中設定其他專案資料夾。",
+    "listFailed": "無法列出專案檔案。",
+    "loadFailed": "無法讀取該檔案。",
+    "saved": "檔案已儲存",
+    "saveFailed": "無法儲存該檔案。",
+    "playbook": "劇本",
+    "run": "執行",
+    "newTitle": "新增檔案",
+    "name": "檔案名稱",
+    "nameHint": "專案資料夾內的路徑，例如 site.yml 或 roles/web/tasks/main.yml。",
+    "hint": "儲存前會檢查劇本的語法。若檢查失敗，則保留舊檔案。",
+    "text": "檔案內容",
+    "deleteTitle": "要刪除此檔案嗎？"
+  },
+  "targets": {
+    "search": "搜尋主機",
+    "addShown": "新增顯示項目",
+    "clear": "清除",
+    "empty": "找不到主機。",
+    "count": "已選取 {{count}} 項",
+    "failed": "無法載入您的主機。"
+  },
+  "run": {
+    "title": "執行 {{playbook}}",
+    "start": "執行",
+    "startCheck": "以檢查模式執行",
+    "startFailed": "無法啟動執行。",
+    "source": "主機",
+    "sourceProject": "專案清單",
+    "sourceTermix": "Termix 主機",
+    "sourceProjectHint": "使用 ansible.cfg 中的清單，或專案中的檔案。",
+    "sourceTermixHint": "從 Termix 選擇主機。資料夾會變成 folder_ 群組，標籤會變成 tag_ 群組。它們都屬於 termix 群組。",
+    "inventory": "清單檔案",
+    "inventoryHint": "專案資料夾中的路徑。留空則使用 ansible.cfg。",
+    "check": "檢查模式",
+    "checkHint": "顯示將會發生的變更，但不實際執行。",
+    "diff": "顯示差異",
+    "diffHint": "顯示檔案的變更內容。",
+    "become": "以 root 身分執行",
+    "becomeHint": "在主機上使用 sudo。Termix 主機會使用已儲存的 Sudo 密碼。",
+    "limit": "限制",
+    "limitHint": "僅在這些主機或群組上執行。",
+    "verbosity": "輸出詳細程度",
+    "verbosityOff": "一般",
+    "tags": "標籤",
+    "skipTags": "跳過標籤",
+    "extraVars": "額外變數",
+    "extraVarsHint": "每行一個 key=value。"
+  },
+  "runs": {
+    "title": "執行",
+    "empty": "尚無執行記錄。",
+    "loadFailed": "無法載入執行記錄。",
+    "stop": "停止",
+    "stopFailed": "無法停止執行。",
+    "deleteTitle": "刪除這項執行記錄？",
+    "deleteFailed": "無法刪除執行記錄。",
+    "checkMode": "檢查",
+    "truncated": "顯示長輸出的結尾部分。",
+    "noOutput": "尚無輸出。",
+    "state": {
+      "running": "執行中",
+      "ok": "已完成",
+      "failed": "失敗",
+      "cancelled": "已停止",
+      "lost": "連線中斷"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Facts"
+    },
+    "recap": {
+      "host": "主機",
+      "ok": "OK",
+      "changed": "已變更",
+      "unreachable": "無法連線",
+      "failed": "失敗",
+      "skipped": "已跳過"
+    }
+  },
+  "adhoc": {
+    "hint": "在主機上執行單一模組，例如 ansible all -m ping。",
+    "pattern": "主機模式",
+    "patternHint": "主機、群組或 all。",
+    "module": "模組",
+    "moduleHint": "例如 ping、command、shell、apt 或 systemd。",
+    "args": "參數",
+    "argsHint": "對於 command 和 shell，這是命令。對於其他模組，這是 key=value 配對。",
+    "run": "執行"
+  },
+  "facts": {
+    "hint": "使用 setup 模組從主機收集 Facts。需要 Termix 主機，以便每個主機都有登入資訊。",
+    "gather": "收集 Facts",
+    "gathering": "收集中...",
+    "failed": "無法收集 Facts。",
+    "failedHost": "失敗",
+    "none": "沒有回傳任何 Facts。請開啟執行記錄查看原因。",
+    "col": {
+      "host": "主機",
+      "os": "系統",
+      "kernel": "核心",
+      "cpu": "CPU",
+      "memory": "記憶體",
+      "address": "位址",
+      "uptime": "運行時間"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "列出 Playbook"
+    },
+    "run": {
+      "title": "執行 Playbook",
+      "playbook": "Playbook",
+      "limit": "限制",
+      "tags": "標籤",
+      "check": "檢查模式"
+    },
+    "runs": {
+      "title": "列出執行記錄",
+      "resource": "執行記錄",
+      "started": "開始時間",
+      "check": "檢查模式"
+    },
+    "failed": {
+      "title": "失敗的執行記錄"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "正在檢查主機...",
+    "summary_other": "{{hosts}} 台主機上有 {{count}} 筆失敗的執行記錄",
+    "refresh": "再次檢查",
+    "empty": "為主機啟用 Ansible 即可在此查看其執行記錄。",
+    "failed_other": "{{count}} 筆失敗",
+    "running_other": "{{count}} 筆執行中",
+    "last": "{{title}}：{{state}}",
+    "noRuns": "尚無執行記錄"
+  }
+}

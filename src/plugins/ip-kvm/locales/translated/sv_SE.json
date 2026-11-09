@@ -1,0 +1,226 @@
+{
+  "plugin": {
+    "name": "IP-KVM",
+    "description": "Se och kontrollera maskiner via PiKVM-, NanoKVM- och JetKVM-enheter."
+  },
+  "tab": {
+    "title": "KVM"
+  },
+  "card": {
+    "title": "KVM",
+    "loading": "Laddar"
+  },
+  "host": {
+    "open": "KVM"
+  },
+  "permissions": {
+    "view": {
+      "title": "Visa KVM:er",
+      "description": "Öppna KVM-fliken och se vilka KVM:er som är online och vilken strömstatus de rapporterar."
+    },
+    "power": {
+      "title": "Kontrollera strömmen",
+      "description": "Starta och stäng av maskiner och starta om dem via deras KVM, eller väck dem med Wake-on-LAN."
+    },
+    "console": {
+      "title": "Använd skärmen",
+      "description": "Se en maskins skärm och använd dess tangentbord och mus."
+    },
+    "media": {
+      "title": "Använd virtuell media",
+      "description": "Montera och lossa ISO-bilder på en maskin."
+    },
+    "manage": {
+      "title": "Hantera KVM:er",
+      "description": "Lägg till, ändra och ta bort KVM:er."
+    }
+  },
+  "settings": {
+    "admin": {
+      "maxSessionMinutes": {
+        "label": "Längsta skärmsession (minuter)",
+        "description": "En skärmsession avslutas efter denna tid. Använd 0 för ingen gräns."
+      }
+    }
+  },
+  "description": "Lägg till dina IP-KVM:er för att se och kontrollera maskinerna bakom dem. Termix ansluter till KVM:en, så skärmen fungerar även när din webbläsare inte kan nå den. Inloggningsuppgifter lagras krypterade och visas aldrig igen.",
+  "summary": "{{count}} KVM:er, {{attention}} offline",
+  "empty": "Inga KVM:er ännu.",
+  "add": "Lägg till KVM",
+  "edit": "Redigera",
+  "delete": "Ta bort",
+  "back": "Tillbaka",
+  "saved": "Sparad",
+  "deleteConfirm": "Ta bort {{name}}?",
+  "status": {
+    "unknown": "Inte läst än",
+    "up": "Online",
+    "down": "Offline"
+  },
+  "drivers": {
+    "pikvm": "PiKVM",
+    "glkvm": "GL.iNet Comet (GLKVM)",
+    "nanokvm": "NanoKVM",
+    "jetkvm": "JetKVM"
+  },
+  "fields": {
+    "username": "Användarnamn",
+    "password": "Lösenord"
+  },
+  "power": {
+    "on": "På",
+    "off": "Av",
+    "unknown": "Okänd",
+    "state": "Maskinen är {{state}}.",
+    "sent": "Badade {{name}} att ändra ström",
+    "sentShort": "Strömkommando skickat",
+    "wake": "Väck via LAN",
+    "woke": "Väckpaket skickat",
+    "action": {
+      "on": "Starta",
+      "off": "Stäng av",
+      "graceful-shutdown": "Stäng ner",
+      "reset": "Starta om"
+    },
+    "confirm": {
+      "on": "Starta {{name}}?",
+      "off": "Koppla bort strömmen från {{name}}? Systemet stängs inte ner korrekt.",
+      "graceful-shutdown": "Be {{name}} stänga ner?",
+      "reset": "Starta om {{name}}? Systemet startar omedelbart om."
+    }
+  },
+  "form": {
+    "addTitle": "Lägg till KVM",
+    "editTitle": "Redigera KVM",
+    "device": "KVM",
+    "access": "Åtkomst",
+    "machine": "Maskin bakom KVM:en",
+    "type": "Typ",
+    "name": "Namn",
+    "address": "Adress",
+    "port": "Port",
+    "host": "Termix-värd",
+    "hostHint": "Länka KVM:n till den värd den tillhör. Den följer då värdens delningsinställningar och visas i värdens meny.",
+    "noHost": "Ingen",
+    "poll": "Kontrollera var (sekunder)",
+    "pollHint": "Minst 30 sekunder.",
+    "scheme": "Anslutning",
+    "ca": "Certifikat",
+    "caHint": "Klistra in PEM för en privat certifikatutfärdare, eller använd Lita på detta certifikat för en KVM med sitt eget självsignerade certifikat. Lämna tomt för ett betrodd certifikat.",
+    "caSet": "Ett certifikat är sparat. Klistra in ett nytt för att ersätta det.",
+    "keepLogin": "Lämna tomt för att behålla den sparade inloggningen",
+    "test": "Testa anslutning",
+    "testOk": "KVM:n svarade ({{model}}).",
+    "testNeedsLogin": "Ange inloggningen igen för att testa.",
+    "mac": "MAC-adress",
+    "macHint": "Maskinens nätverkskort, för Wake-on-LAN.",
+    "broadcast": "Broadcast-adress",
+    "broadcastHint": "Vart wake-paketet skickas. Lämna tomt för 255.255.255.255.",
+    "save": "Spara",
+    "add": "Lägg till",
+    "trust": "Lita på detta certifikat",
+    "trustTitle": "Lita på denna KVM:s certifikat?",
+    "trustHint": "Termix kommunicerar endast med denna KVM så länge den visar exakt detta certifikat. Kontrollera att fingeravtrycket matchar det på enheten.",
+    "certName": "Namn: {{name}}",
+    "certValid": "giltigt till {{date}}",
+    "certExpired": "utgånget {{date}}",
+    "pinned": "Betrodd certifikat",
+    "unpin": "Ta bort"
+  },
+  "view": {
+    "screen": "Skärm",
+    "power": "Ström",
+    "media": "Virtuell media",
+    "info": "Info",
+    "refresh": "Läs nu",
+    "type": "Typ",
+    "address": "Adress",
+    "model": "Modell",
+    "version": "Mjukvara",
+    "hostname": "Namn",
+    "video": "Video",
+    "noSignal": "Ingen signal",
+    "status": "KVM",
+    "jetHint": "JetKVM-videon går direkt från JetKVM till din webbläsare, så din webbläsare måste kunna nå den på nätverket."
+  },
+  "screen": {
+    "connecting": "Ansluter",
+    "failed": "Kunde inte öppna skärmen.",
+    "ended": "Skärmsessionen avslutades.",
+    "hint": "Klicka på skärmen för att skriva.",
+    "shortcuts": "Genvägar",
+    "shortcut": {
+      "ctrl-alt-del": "Ctrl+Alt+Del",
+      "alt-tab": "Alt+Tab",
+      "alt-f4": "Alt+F4",
+      "ctrl-esc": "Ctrl+Esc",
+      "win-l": "Win+L",
+      "win-d": "Win+D",
+      "ctrl-alt-f1": "Ctrl+Alt+F1",
+      "ctrl-alt-f2": "Ctrl+Alt+F2",
+      "ctrl-alt-f7": "Ctrl+Alt+F7",
+      "print-screen": "Print Screen"
+    },
+    "paste": "Klistra in text",
+    "pasteLabel": "Text att skriva på maskinen",
+    "type": "Skriv in",
+    "snapshot": "Skärmdump",
+    "fullscreen": "Helskärm",
+    "exitFullscreen": "Avsluta helskärm",
+    "reconnect": "Återanslut"
+  },
+  "media": {
+    "none": "Ingen bild är monterad.",
+    "mountedNow": "Monterad: {{name}}",
+    "as": "Visa som",
+    "cd": "CD-låda",
+    "usb": "USB-enhet",
+    "empty": "Det finns inga bilder på denna KVM.",
+    "mount": "Montera",
+    "eject": "Lossa",
+    "mountedDone": "Bild monterad",
+    "ejected": "Bild lossad",
+    "url": "Ladda ner en bild från",
+    "name": "Spara som",
+    "fetch": "Ladda ner till KVM",
+    "fetched": "Bild nedladdad"
+  },
+  "operations": {
+    "device": "KVM",
+    "list-devices": {
+      "title": "Lista KVM:er"
+    },
+    "poll": {
+      "title": "Läs en KVM nu"
+    },
+    "power-state": {
+      "title": "Hämta strömläge"
+    },
+    "power-on": {
+      "title": "Starta"
+    },
+    "graceful-shutdown": {
+      "title": "Stäng av"
+    },
+    "power-off": {
+      "title": "Stäng av strömmen"
+    },
+    "reset": {
+      "title": "Återställ"
+    },
+    "wake": {
+      "title": "Wake on LAN"
+    },
+    "eject-media": {
+      "title": "Lossa bild"
+    },
+    "health": {
+      "title": "KVM-status"
+    }
+  },
+  "widget": {
+    "name": "KVM-enheter",
+    "description": "Vilka av dina IP-KVM:er som är igång.",
+    "summary": "{{up}} av {{total}} igång"
+  }
+}

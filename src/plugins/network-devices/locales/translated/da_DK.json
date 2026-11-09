@@ -1,0 +1,180 @@
+{
+  "plugin": {
+    "name": "Netværksenheder",
+    "description": "Se og administrér routere, switches og access points via SNMP og router-API'er."
+  },
+  "tab": {
+    "title": "Netværk"
+  },
+  "card": {
+    "title": "Netværksenheder",
+    "loading": "Indlæser",
+    "uptime": "Oppe i {{time}}"
+  },
+  "permissions": {
+    "view": {
+      "title": "Se netværksenheder",
+      "description": "Åbn fanen Netværk og se enheder, porte og klienter."
+    },
+    "manage": {
+      "title": "Administrér netværksenheder",
+      "description": "Tilføj enheder, tænd og sluk porte, genstart PoE og genstart enheder."
+    }
+  },
+  "description": "Tilføj routere, switches og access points for at overvåge deres porte og klienter. Nøgler gemmes krypteret og vises aldrig igen.",
+  "summary": "{{count}} enheder, {{down}} nede",
+  "ports": "{{up}} af {{total}} porte oppe",
+  "empty": "Ingen netværksenheder endnu.",
+  "add": "Tilføj enhed",
+  "edit": "Redigér",
+  "delete": "Slet",
+  "back": "Tilbage",
+  "saved": "Gemt",
+  "deleteConfirm": "Slet {{name}}?",
+  "status": {
+    "unknown": "Ikke læst endnu",
+    "up": "Oppe",
+    "down": "Nede"
+  },
+  "drivers": {
+    "snmp": "SNMP-enhed",
+    "routeros": "MikroTik RouterOS",
+    "opnsense": "OPNsense",
+    "openwrt": "OpenWrt"
+  },
+  "fields": {
+    "community": "Community",
+    "writeCommunity": "Skrive-community (valgfrit)",
+    "username": "Brugernavn",
+    "password": "Adgangskode",
+    "authProtocol": "Autentificering",
+    "authKey": "Autentificeringsnøgle",
+    "privProtocol": "Privatliv",
+    "privKey": "Privatlivsnøgle",
+    "apiKey": "API-nøgle",
+    "apiSecret": "API-hemmelighed"
+  },
+  "form": {
+    "addTitle": "Tilføj enhed",
+    "editTitle": "Redigér enhed",
+    "device": "Enhed",
+    "access": "Adgang",
+    "type": "Type",
+    "name": "Navn",
+    "address": "Adresse",
+    "port": "Port",
+    "poll": "Læs hver (sekunder)",
+    "pollHint": "Fra 15 til 3600.",
+    "snmpVersion": "SNMP-version",
+    "scheme": "Webadresse starter med",
+    "ca": "Certifikatautoritet (valgfrit)",
+    "caHint": "Indsæt PEM for CA eller enhedscertifikatet, hvis det bruger et privat certifikat.",
+    "caSet": "Et certifikat er gemt. Indsæt et nyt for at erstatte det.",
+    "keepKeys": "Lad være tomt for at beholde de gemte nøgler",
+    "test": "Test",
+    "testNeedsKeys": "Indtast nøglerne for at teste.",
+    "testOk": "Forbundet til {{name}}.",
+    "save": "Gem",
+    "add": "Tilføj"
+  },
+  "discover": {
+    "title": "Find enheder",
+    "hint": "Søger efter SNMP-enheder i et adresseområde, op til 256 adresser. Serveren skal kunne nå området.",
+    "range": "Adresseområde",
+    "scan": "Søg",
+    "scanning": "Søger...",
+    "none": "Ingen enheder svarede.",
+    "added": "Tilføjet"
+  },
+  "view": {
+    "refresh": "Opdater nu",
+    "reboot": "Genstart",
+    "rebootConfirm": "Genstart {{name}}? Den vil være offline i et stykke tid.",
+    "rebooting": "{{name}} genstarter.",
+    "ports": "Porte",
+    "clients": "Klienter",
+    "neighbors": "Naboer",
+    "type": "Type",
+    "address": "Adresse",
+    "model": "Model",
+    "version": "Version",
+    "uptime": "Oppetid",
+    "cpu": "CPU",
+    "memory": "Hukommelse",
+    "traffic": "Trafik",
+    "noTraffic": "Trafik vises efter to målinger.",
+    "noPorts": "Ingen porte endnu. Læs enheden for at udfylde dette.",
+    "port": "Port",
+    "speed": "Hastighed",
+    "vlan": "VLAN",
+    "rx": "Ind",
+    "tx": "Ud",
+    "errors": "Fejl",
+    "poe": "PoE",
+    "poeOn": "Strømforsyning",
+    "poeIdle": "Tændt",
+    "poeOff": "Slukket",
+    "linkUp": "Link op",
+    "linkDown": "Intet link",
+    "disabled": "Slukket",
+    "watch": "Advar, når denne port ændres",
+    "unwatch": "Stop advarsler for denne port",
+    "turnOff": "Sluk port",
+    "turnOn": "Tænd port",
+    "portOffConfirm": "Sluk port {{name}}? Alt, der er tilsluttet, mister forbindelsen.",
+    "portOff": "Port {{name}} er slukket.",
+    "portOn": "Port {{name}} er tændt.",
+    "poeCycle": "Genstart PoE-strøm",
+    "poeConfirm": "Afbryd strømmen til port {{name}} i et par sekunder?",
+    "poeDone": "PoE genstartet på {{name}}.",
+    "filter": "Søg i klienter",
+    "noClients": "Ingen klienter fundet.",
+    "client": "Navn",
+    "ip": "IP-adresse",
+    "mac": "MAC-adresse",
+    "on": "Tændt",
+    "source": "Set i",
+    "kind": {
+      "dhcp": "DHCP",
+      "arp": "ARP",
+      "wifi": "Wi-Fi",
+      "table": "MAC-tabel"
+    },
+    "noNeighbors": "Ingen naboer fundet.",
+    "neighbor": "Nabo",
+    "remotePort": "Der port"
+  },
+  "operations": {
+    "device": "Enhed",
+    "port": "Port",
+    "state": "Status",
+    "stateUp": "Tændt",
+    "stateDown": "Slukket",
+    "list": {
+      "title": "Liste over netværksenheder"
+    },
+    "ports": {
+      "title": "Liste over porte på en enhed"
+    },
+    "poll": {
+      "title": "Læs en netværksenhed"
+    },
+    "setPort": {
+      "title": "Tænd eller sluk for en port"
+    },
+    "poe": {
+      "title": "Genstart PoE-strøm på en port"
+    },
+    "reboot": {
+      "title": "Genstart en netværksenhed"
+    },
+    "health": {
+      "title": "Netværksenheder"
+    }
+  },
+  "widget": {
+    "name": "Netværksenheder",
+    "description": "Hvilke af dine routere, switches og access points er oppe.",
+    "summary": "{{up}} af {{total}} oppe"
+  }
+}

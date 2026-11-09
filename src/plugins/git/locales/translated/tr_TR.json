@@ -1,0 +1,294 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Ana bilgisayarlarınızdaki git depolarını görüntüleyin, çekin, taahhüt edin ve gönderin; otomatik çekme ile güncel tutun."
+  },
+  "common": {
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri",
+    "loading": "Yükleniyor..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Git Kullan",
+      "description": "Erişebildiğiniz ana bilgisayarlardaki git depolarını görüntüleyin ve düzenleyebildiğiniz ana bilgisayarlarda değişiklik yapın."
+    },
+    "runCommands": {
+      "title": "Otomatik çekimden sonra komut çalıştır",
+      "description": "Otomatik çekim yeni taahhütleri getirdiğinde ana bilgisayarda çalışacak bir komut ayarlayın."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Bu ana bilgisayardaki git depolarını Git sekmesinden yönetin."
+      },
+      "repoRoots": {
+        "label": "Taranacak klasörler",
+        "description": "Bu ana bilgisayarı tararken depolar için aranacak klasörler. Virgülle ayırın. Varsayılan ana dizindir.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Sudo kullan",
+        "description": "Git'i sudo ile root olarak çalıştırın. Sadece giriş kullanıcısının kullanamadığı depolar için."
+      },
+      "readOnly": {
+        "label": "Salt okunur",
+        "description": "Depoları göster ancak bu ana bilgisayarda asla değiştirme."
+      },
+      "showPanel": {
+        "label": "Terminalin yanında panel",
+        "description": "Bu ana bilgisayarın terminal sekmelerinde Git panelini sun."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Paneli terminalle birlikte aç",
+        "description": "Bir terminal, Git paneline sahip bir ana bilgisayarda açıldığında Git panelini göster."
+      },
+      "companionSide": {
+        "label": "Panel konumu",
+        "description": "Panelin terminalin yanında nerede duracağı.",
+        "right": "Sağ",
+        "left": "Sol",
+        "bottom": "Alt"
+      },
+      "companionSize": {
+        "label": "Panel boyutu",
+        "description": "Panelin genişliği veya altta iken yüksekliği (piksel cinsinden)."
+      },
+      "companionEdgeButton": {
+        "label": "Kenar düğmesi",
+        "description": "Paneli açmak için terminal kenarında küçük bir düğme göster."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Git'i bir ana bilgisayardan açın.",
+    "error": "Bu ana bilgisayardan git yüklenemedi.",
+    "disabled": "Bu ana bilgisayar için Git kapalı. Ana bilgisayar ayarlarından açın.",
+    "sudo": "Bunun için root girişi, şifresiz sudo veya kaydedilmiş Sudo Şifresi gerekir.",
+    "refresh": "Yenile",
+    "readOnly": "Salt okunur",
+    "notInstalled": "git yüklü değil",
+    "notInstalledTitle": "Bu ana bilgisayarda git yüklü değil",
+    "notInstalledHint": "Git'i ana bilgisayarın paket yöneticisiyle yükleyin, ardından yenileyin."
+  },
+  "actions": {
+    "ok": "Tamam",
+    "failed": "Başarısız",
+    "noOutput": "Çıktı yok."
+  },
+  "repos": {
+    "add": "Depo ekle",
+    "search": "Depo ara",
+    "empty": "Henüz depo yok. Başlamak için bir tane ekleyin.",
+    "noMatch": "Eşleşen depo yok.",
+    "viewOnly": "Bu ana bilgisayara henüz depo eklenmemiş.",
+    "detached": "bağımsız",
+    "changes_one": "{{count}} değişiklik",
+    "changes_other": "{{count}} değişiklik",
+    "conflicts": "Çakışmalar",
+    "auto": "Otomatik çekim",
+    "autoFailing": "Çekim başarısız",
+    "remove": "Listeden kaldır",
+    "removeTitle": "{{name}} kaldırılsın mı?",
+    "removeBody": "Depo sadece burada unutulur. Ana bilgisayarda hiçbir şey silinmez.",
+    "removed": "{{name}} kaldırıldı",
+    "error": {
+      "missing": "Klasör eksik",
+      "notrepo": "Git deposu değil",
+      "unreadable": "Okunamıyor"
+    }
+  },
+  "add": {
+    "title": "Depo ekle",
+    "modeScan": "Tara",
+    "modePath": "Klasör",
+    "modeClone": "Klonla",
+    "scanHint": "{{roots}} içinde git depolarını arar. Klasörleri ana bilgisayar ayarlarından değiştirebilirsiniz.",
+    "rescan": "Yeniden tara",
+    "noneFound": "Yeni depo bulunamadı.",
+    "picked": "Seçili",
+    "addPicked_one": "{{count}} depo ekle",
+    "addPicked_other": "{{count}} depo ekle",
+    "addAll": "Tümünü ekle",
+    "folder": "Ana bilgisayardaki klasör",
+    "folderHint": "Tam yol veya ev klasörü için ~ ile başlayın. Zaten bir git deposu olmalıdır.",
+    "addRepo": "Depo ekle",
+    "url": "Adres",
+    "urlHint": "Ana bilgisayarın giriş kullanıcısının anahtarlarını ve git ayarlarını kullanır.",
+    "dest": "Şuraya klonla",
+    "destHint": "Klasör henüz mevcut olmamalıdır.",
+    "clone": "Klonla",
+    "cloned": "Klonlandı",
+    "added_one": "{{count}} depo eklendi",
+    "added_other": "{{count}} depo eklendi",
+    "failed": "Depo eklenemedi",
+    "scanFailed": "Ana bilgisayar taranamadı"
+  },
+  "repo": {
+    "ahead": "{{count}} ileride",
+    "behind": "{{count}} geride",
+    "fetch": "Getir",
+    "fetched": "Getirildi",
+    "pull": "Çek",
+    "pulled": "Çekildi",
+    "push": "Gönder",
+    "pushed": "Gönderildi",
+    "viewChanges": "Değişiklikler",
+    "viewBranches": "Dallar",
+    "viewHistory": "Geçmiş",
+    "viewStash": "Gizle",
+    "viewAuto": "Otomatik çek"
+  },
+  "changes": {
+    "loadFailed": "Değişiklikler okunamadı.",
+    "clean": "Taşınacak bir şey yok. Çalışma ağacı temiz.",
+    "stagedTitle": "Hazırlanan ({{count}})",
+    "unstagedTitle": "Değişiklikler ({{count}})",
+    "stage": "Hazırla",
+    "staged": "Hazırlanmış",
+    "unstage": "Hazırlığı kaldır",
+    "unstaged": "Hazırlanmamış",
+    "stageAll": "Tümünü hazırla",
+    "renamed": "Yeniden adlandırıldı",
+    "discard": "İptal et",
+    "discardTitle": "{{name}} dosyasındaki değişiklikler iptal edilsin mi?",
+    "discardBody": "Bu dosyadaki değişiklikler silinir ve geri getirilemez.",
+    "discarded": "Değişiklikler iptal edildi",
+    "message": "Taşıma mesajı",
+    "messagePlaceholder": "Ne değişti",
+    "commit": "Taşı",
+    "commitAll": "Tüm değişiklikleri taşı",
+    "commitStaged_one": "{{count}} hazırlanan dosyayı taşı",
+    "commitStaged_other": "{{count}} hazırlanan dosyayı taşı",
+    "committed": "Taşındı",
+    "noDiff": "Gösterilecek değişiklik yok.",
+    "truncated": "Fark uzun olduğu için yalnızca başlangıç gösteriliyor."
+  },
+  "branches": {
+    "loadFailed": "Dallar okunamadı.",
+    "empty": "Henüz dal yok.",
+    "current": "Mevcut",
+    "remote": "Uzak",
+    "gone": "Üst akış kaldırıldı",
+    "newName": "Yeni dal",
+    "create": "Dal oluştur",
+    "created": "{{name}} dalı oluşturuldu",
+    "switch": "Değiştir",
+    "switched": "{{name}} dalına geçildi",
+    "merge": "Mevcut dala birleştir",
+    "mergeTitle": "{{name}} dalı {{into}} dalına birleştirilsin mi?",
+    "mergeBody": "Çakışma içeren bir birleştirme hemen geri alınır.",
+    "merged": "{{name}} dalı birleştirildi",
+    "delete": "Dalı sil",
+    "deleteTitle": "{{name}} dalı silinsin mi?",
+    "deleteBody": "Dal, birleştirilmemiş işlemler içeriyorsa Git bunu reddeder.",
+    "deleted": "{{name}} dalı silindi",
+    "forceTitle": "{{name}} dalı zorla silinsin mi?",
+    "forceBody": "Bu dal, birleştirilmemiş işlemler içeriyor. Sildiğinizde bu işlemler kaybolur.",
+    "forceDelete": "Zorla sil"
+  },
+  "history": {
+    "loadFailed": "Geçmiş okunamadı.",
+    "empty": "Henüz işlem yok.",
+    "branch": "Bu dal",
+    "all": "Tüm dallar",
+    "more": "Daha fazla yükle"
+  },
+  "stash": {
+    "loadFailed": "Depo okunamadı.",
+    "title": "Depolar",
+    "empty": "Depo yok.",
+    "message": "Mesaj",
+    "messagePlaceholder": "İsteğe bağlı",
+    "untracked": "Takip edilmeyen dosyaları dahil et",
+    "push": "Değişiklikleri depola",
+    "pushDone": "Değişiklikler depolandı",
+    "apply": "Uygula",
+    "applyDone": "Depo uygulandı",
+    "pop": "Çıkar",
+    "popDone": "Depo uygulandı ve kaldırıldı",
+    "drop": "Kaldır",
+    "dropDone": "Depo kaldırıldı",
+    "dropTitle": "{{name}} deposu kaldırılsın mı?",
+    "dropBody": "Depo silinir ve geri getirilemez.",
+    "remotes": "Uzaklar",
+    "noRemotes": "Uzak yok."
+  },
+  "auto": {
+    "intro": "Sadece hızlı ileri ile zamanlanmış çekme işlemleri yapar. Asla birleştirmez ve taahhüt edilmemiş değişiklikleri olan veya üst akışından ayrılmış olan depoyu atlar.",
+    "noUpstream": "Bu dalın henüz üst akışı yok, bu nedenle otomatik çekme onu atlayacak.",
+    "enable": "Otomatik çekme",
+    "enableHint": "Bu ana makineye erişiminizle sizin adınıza çalışır.",
+    "interval": "Her (dakika)",
+    "intervalHint": "Çekme işlemleri arasında ne kadar beklenmesi gerektiği.",
+    "post": "Çekme sonrası komut",
+    "postHint": "Yeni işlemler geldiğinde depo klasöründe çalışır. Komut çalıştırma izni gerektirir.",
+    "saved": "Otomatik çekme kaydedildi",
+    "saveFailed": "Otomatik çekme kaydedilemedi",
+    "runNow": "Şimdi çalıştır",
+    "next": "Sonraki çekme {{when}}",
+    "runs": "Son çalıştırmalar",
+    "noRuns": "Henüz çalıştırma yok.",
+    "outcome": {
+      "pulled": "Çekildi",
+      "uptodate": "Güncel",
+      "skipped": "Atlandı",
+      "failed": "Başarısız"
+    }
+  },
+  "card": {
+    "title": "Git depoları",
+    "loading": "Yükleniyor...",
+    "refresh": "Yenile",
+    "empty": "Henüz hiçbir sunucuda Git deposu yok.",
+    "allClean": "Tüm depolar temiz ve güncel.",
+    "summary_one": "{{count}} depo | {{attention}} dikkat gerektiriyor",
+    "summary_other": "{{count}} depo | {{attention}} dikkat gerektiriyor"
+  },
+  "companion": {
+    "toggle": "Git paneli",
+    "openTab": "Git'i Aç",
+    "here": "Bu klasörün deposu",
+    "all": "Tüm depolar"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Git depolarını listele"
+    },
+    "fetch": {
+      "title": "Bir depoyu çek"
+    },
+    "pull": {
+      "title": "Bir depoyu indir"
+    },
+    "push": {
+      "title": "Bir depoyu gönder"
+    },
+    "checkout": {
+      "title": "Dal değiştir",
+      "branch": "Dal"
+    },
+    "reset-hard": {
+      "title": "Bir depoyu sert sıfırla",
+      "ref": "Şuna sıfırla"
+    },
+    "repos": {
+      "title": "Git depoları",
+      "branch": "Dal",
+      "ahead": "Önde",
+      "behind": "Arkada",
+      "changed": "Değişiklikler"
+    },
+    "signals": {
+      "behind": "Arkada kalan depolar",
+      "dirty": "Değişiklik içeren depolar",
+      "pull-failing": "Otomatik çekme başarısız"
+    }
+  }
+}

@@ -1,0 +1,180 @@
+{
+  "plugin": {
+    "name": "网络设备",
+    "description": "通过 SNMP 和路由器 API 查看和管理路由器、交换机和接入点。"
+  },
+  "tab": {
+    "title": "网络"
+  },
+  "card": {
+    "title": "网络设备",
+    "loading": "加载中",
+    "uptime": "已运行 {{time}}"
+  },
+  "permissions": {
+    "view": {
+      "title": "查看网络设备",
+      "description": "打开“网络”选项卡，查看设备、端口和客户端。"
+    },
+    "manage": {
+      "title": "管理网络设备",
+      "description": "添加设备，开启或关闭端口，重启 PoE 电源以及重启设备。"
+    }
+  },
+  "description": "添加路由器、交换机和接入点以监控其端口和客户端。密钥经过加密存储，且不会再次显示。",
+  "summary": "{{count}} 台设备，{{down}} 台离线",
+  "ports": "{{up}} / {{total}} 个端口在线",
+  "empty": "暂无网络设备。",
+  "add": "添加设备",
+  "edit": "编辑",
+  "delete": "删除",
+  "back": "返回",
+  "saved": "已保存",
+  "deleteConfirm": "删除 {{name}}？",
+  "status": {
+    "unknown": "尚未读取",
+    "up": "在线",
+    "down": "离线"
+  },
+  "drivers": {
+    "snmp": "SNMP 设备",
+    "routeros": "MikroTik RouterOS",
+    "opnsense": "OPNsense",
+    "openwrt": "OpenWrt"
+  },
+  "fields": {
+    "community": "社区字符串",
+    "writeCommunity": "写社区字符串（可选）",
+    "username": "用户名",
+    "password": "密码",
+    "authProtocol": "认证协议",
+    "authKey": "认证密钥",
+    "privProtocol": "隐私协议",
+    "privKey": "隐私密钥",
+    "apiKey": "API 密钥",
+    "apiSecret": "API 密钥"
+  },
+  "form": {
+    "addTitle": "添加设备",
+    "editTitle": "编辑设备",
+    "device": "设备",
+    "access": "访问",
+    "type": "类型",
+    "name": "名称",
+    "address": "地址",
+    "port": "端口",
+    "poll": "读取间隔（秒）",
+    "pollHint": "范围从 15 到 3600。",
+    "snmpVersion": "SNMP 版本",
+    "scheme": "Web 地址前缀",
+    "ca": "证书颁发机构（可选）",
+    "caHint": "如果设备使用私有证书，请粘贴 CA 或设备证书的 PEM 内容。",
+    "caSet": "已保存证书。粘贴新证书以替换它。",
+    "keepKeys": "留空以保留已保存的密钥",
+    "test": "测试",
+    "testNeedsKeys": "输入密钥以进行测试。",
+    "testOk": "已连接到 {{name}}。",
+    "save": "保存",
+    "add": "添加"
+  },
+  "discover": {
+    "title": "发现设备",
+    "hint": "在地址范围内查找 SNMP 设备，最多支持 256 个地址。服务器必须能够访问该范围。",
+    "range": "地址范围",
+    "scan": "扫描",
+    "scanning": "正在扫描",
+    "none": "没有设备响应。",
+    "added": "已添加"
+  },
+  "view": {
+    "refresh": "立即读取",
+    "reboot": "重启",
+    "rebootConfirm": "重启 {{name}}？它将暂时离线。",
+    "rebooting": "{{name}} 正在重启。",
+    "ports": "端口",
+    "clients": "客户端",
+    "neighbors": "邻居",
+    "type": "类型",
+    "address": "地址",
+    "model": "型号",
+    "version": "版本",
+    "uptime": "运行时间",
+    "cpu": "CPU",
+    "memory": "内存",
+    "traffic": "流量",
+    "noTraffic": "两次读取后显示流量。",
+    "noPorts": "暂无端口。读取设备以填充此信息。",
+    "port": "端口",
+    "speed": "速率",
+    "vlan": "VLAN",
+    "rx": "入站",
+    "tx": "出站",
+    "errors": "错误",
+    "poe": "PoE",
+    "poeOn": "供电中",
+    "poeIdle": "开启",
+    "poeOff": "关闭",
+    "linkUp": "链路已连接",
+    "linkDown": "无链路",
+    "disabled": "关闭",
+    "watch": "此端口变更时发送警报",
+    "unwatch": "停止此端口的警报",
+    "turnOff": "关闭端口",
+    "turnOn": "开启端口",
+    "portOffConfirm": "关闭端口 {{name}}？连接在其上的设备将断开连接。",
+    "portOff": "端口 {{name}} 已关闭。",
+    "portOn": "端口 {{name}} 已开启。",
+    "poeCycle": "PoE 断电重启",
+    "poeConfirm": "切断端口 {{name}} 的电源几秒钟？",
+    "poeDone": "{{name}} 的 PoE 已重启。",
+    "filter": "搜索客户端",
+    "noClients": "未找到客户端。",
+    "client": "名称",
+    "ip": "IP 地址",
+    "mac": "MAC 地址",
+    "on": "开启",
+    "source": "发现于",
+    "kind": {
+      "dhcp": "DHCP",
+      "arp": "ARP",
+      "wifi": "Wi-Fi",
+      "table": "MAC 地址表"
+    },
+    "noNeighbors": "未找到邻居。",
+    "neighbor": "邻居",
+    "remotePort": "对端端口"
+  },
+  "operations": {
+    "device": "设备",
+    "port": "端口",
+    "state": "状态",
+    "stateUp": "开启",
+    "stateDown": "关闭",
+    "list": {
+      "title": "列出网络设备"
+    },
+    "ports": {
+      "title": "列出设备的端口"
+    },
+    "poll": {
+      "title": "读取网络设备"
+    },
+    "setPort": {
+      "title": "开启或关闭端口"
+    },
+    "poe": {
+      "title": "循环重启端口的 PoE 供电"
+    },
+    "reboot": {
+      "title": "重启网络设备"
+    },
+    "health": {
+      "title": "网络设备"
+    }
+  },
+  "widget": {
+    "name": "网络设备",
+    "description": "查看您的路由器、交换机和接入点是否在线。",
+    "summary": "{{up}} / {{total}} 在线"
+  }
+}

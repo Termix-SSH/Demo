@@ -1,0 +1,441 @@
+{
+  "plugin": {
+    "name": "Cadangan",
+    "description": "Cadangkan folder, database, dan data Docker di host Anda menggunakan restic, lalu jelajahi, unduh, dan pulihkan."
+  },
+  "common": {
+    "save": "Simpan",
+    "cancel": "Batal",
+    "back": "Kembali",
+    "delete": "Hapus",
+    "done": "Selesai",
+    "loading": "Memuat...",
+    "refresh": "Segarkan",
+    "retry": "Coba lagi"
+  },
+  "permissions": {
+    "use": {
+      "title": "Gunakan Cadangan",
+      "description": "Atur pekerjaan dan repositori cadangan, jalankan cadangan, serta jelajahi, unduh, dan pulihkan snapshot pada host yang dapat diedit."
+    }
+  },
+  "tab": {
+    "title": "Cadangan",
+    "viewJobs": "Pekerjaan",
+    "viewRepos": "Repositori",
+    "viewHistory": "Riwayat"
+  },
+  "hostTab": {
+    "title": "Cadangan",
+    "noHost": "Buka Cadangan dari sebuah host.",
+    "viewJobs": "Pekerjaan",
+    "viewSnapshots": "Snapshot",
+    "viewHistory": "Riwayat",
+    "restic": "restic {{version}}",
+    "noRestic": "restic tidak terinstal",
+    "sudo": "Termix perlu masuk sebagai root, atau sebagai pengguna dengan sudo tanpa kata sandi, untuk menjalankan cadangan di host ini.",
+    "statusFailed": "Tidak dapat membaca host ini"
+  },
+  "install": {
+    "missing": "restic tidak terinstal di host ini",
+    "tooOld": "restic di host ini lebih lama dari versi 0.17",
+    "hint": "Cadangan menggunakan restic. Instal melalui manajer paket, atau dari rilis restic di GitHub jika paketnya terlalu lama.",
+    "button": "Instal restic",
+    "working": "Menginstal...",
+    "title": "Instal restic?",
+    "desc": "Ini akan menginstal restic di host sebagai root.",
+    "confirm": "Instal",
+    "done": "restic {{version}} telah terinstal",
+    "failed": "Tidak dapat menginstal restic"
+  },
+  "status": {
+    "never": "Belum pernah dijalankan",
+    "running": "Sedang berjalan",
+    "success": "Selesai",
+    "warning": "Peringatan",
+    "failed": "Gagal",
+    "canceled": "Dihentikan"
+  },
+  "time": {
+    "justNow": "baru saja",
+    "soon": "sebentar lagi",
+    "ago": {
+      "minutes_other": "{{count}} menit yang lalu",
+      "hours_other": "{{count}} jam yang lalu",
+      "days_other": "{{count}} hari yang lalu"
+    },
+    "in": {
+      "minutes_other": "dalam {{count}} menit",
+      "hours_other": "dalam {{count}} jam",
+      "days_other": "dalam {{count}} hari"
+    }
+  },
+  "jobs": {
+    "add": "Tambah pekerjaan",
+    "empty": "Belum ada pekerjaan cadangan",
+    "emptyHint": "Tambah pekerjaan untuk mencadangkan folder, database, atau data Docker.",
+    "emptyNoRepo": "Tambah repositori terlebih dahulu, agar cadangan memiliki tempat penyimpanan.",
+    "loadFailed": "Tidak dapat memuat pekerjaan cadangan",
+    "lastGood": "Cadangan terakhir {{when}}",
+    "noGood": "Belum ada cadangan",
+    "next": "Berikutnya {{when}}",
+    "paused": "Dijeda",
+    "run": "Jalankan sekarang",
+    "stop": "Hentikan",
+    "edit": "Edit",
+    "snapshots": "Snapshot",
+    "started": "{{name}} dimulai",
+    "runFailed": "Tidak dapat memulai backup"
+  },
+  "editor": {
+    "newTitle": "Pekerjaan backup baru",
+    "general": "Pekerjaan",
+    "host": "Host",
+    "pickHost": "Pilih host",
+    "name": "Nama",
+    "namePlaceholder": "Backup malam hari",
+    "repository": "Repositori",
+    "pickRepository": "Pilih repositori",
+    "noRepos": "Anda tidak memiliki repositori yang dapat digunakan host ini. Tambahkan satu di tab Backup terlebih dahulu.",
+    "repoLocked": "Hanya pemilik repositori ini yang dapat mengubahnya.",
+    "enabled": "Jalankan sesuai jadwal",
+    "enabledHint": "Matikan untuk menjeda jadwal. Jalankan sekarang tetap berfungsi.",
+    "oneFileSystem": "Tetap di satu sistem file",
+    "oneFileSystemHint": "Lewati disk dan mount lain yang ditemukan di dalam folder yang dipilih.",
+    "saved": "Pekerjaan disimpan",
+    "saveFailed": "Tidak dapat menyimpan pekerjaan",
+    "deleteTitle": "Hapus {{name}}?",
+    "deleteDesc": "Pekerjaan dihapus dari Termix. Snapshot-nya tetap ada di repositori.",
+    "deleted": "Pekerjaan dihapus",
+    "deleteFailed": "Tidak dapat menghapus pekerjaan"
+  },
+  "sources": {
+    "add": "Tambahkan ke backup",
+    "addPaths": "Folder",
+    "addDatabase": "Basis data",
+    "addDocker": "Docker",
+    "remove": "Hapus",
+    "paths": "Folder dan file",
+    "folders": "Path",
+    "foldersHint": "Satu path lengkap per baris.",
+    "excludes": "Lewati",
+    "excludesHint": "Satu pola restic per baris, seperti *.log.",
+    "database": "Basis data",
+    "engine": "Tipe",
+    "engines": {
+      "mysql": "MySQL atau MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Login",
+    "ownLogin": "Ketik login di sini",
+    "noDatabasesPlugin": "Aktifkan plugin Basis Data untuk memilih login yang disimpan.",
+    "address": "Alamat",
+    "addressPlaceholder": "Kosongkan untuk socket lokal",
+    "port": "Port",
+    "username": "Pengguna",
+    "password": "Kata sandi",
+    "passwordSaved": "Disimpan, biarkan kosong untuk mempertahankannya",
+    "runAs": "Jalankan sebagai",
+    "runAsHint": "Pengguna Linux untuk menjalankan dump, seperti postgres. Kosongkan untuk menjalankannya sebagai root.",
+    "databases": "Basis data",
+    "databasesHint": "Satu nama per baris. Biarkan kosong untuk mem-backup semuanya.",
+    "sqliteFiles": "File basis data",
+    "sqliteFilesHint": "Satu path lengkap per baris. Setiap file disalin dengan aman saat sedang digunakan.",
+    "docker": "Docker",
+    "stacks": "Stack",
+    "volumes": "Volume",
+    "noStacks": "Tidak ada stack compose ditemukan",
+    "noVolumes": "Tidak ada volume ditemukan",
+    "dockerFailed": "Tidak dapat mendaftar Docker di host ini",
+    "stop": "Hentikan tumpukan selama proses pencadangan",
+    "stopHint": "Tumpukan yang dipilih akan dihentikan terlebih dahulu dan dimulai kembali setelahnya, agar filenya tidak berubah saat dibaca."
+  },
+  "schedule": {
+    "title": "Jadwal",
+    "manual": "Manual",
+    "daily": "Harian",
+    "weekly": "Mingguan",
+    "custom": "Sesuaikan",
+    "day": "Hari",
+    "time": "Waktu",
+    "cron": "Cron",
+    "cronHint": "Menit, jam, hari dalam bulan, bulan, hari dalam minggu.",
+    "cronInvalid": "Ekspresi cron ini tidak valid",
+    "timezone": "Zona waktu",
+    "serverTime": "Waktu server",
+    "manualHint": "Tugas ini hanya berjalan saat Anda menekan Jalankan sekarang.",
+    "manualOnly": "Manual",
+    "next": "Jalankan berikutnya {{time}}",
+    "noNext": "Jadwal ini tidak pernah berjalan",
+    "dailyAt": "Harian pada {{time}}",
+    "weeklyAt": "{{day}} pada {{time}}",
+    "days": {
+      "0": "Minggu",
+      "1": "Senin",
+      "2": "Selasa",
+      "3": "Rabu",
+      "4": "Kamis",
+      "5": "Jumat",
+      "6": "Sabtu"
+    }
+  },
+  "keep": {
+    "title": "Simpan",
+    "last": "Terakhir",
+    "daily": "Harian",
+    "weekly": "Mingguan",
+    "monthly": "Bulanan",
+    "yearly": "Tahunan",
+    "hint": "Setelah setiap pencadangan, snapshot lama dari tugas ini akan dihapus sehingga hanya yang berikut ini yang disimpan. 0 berarti simpan semua."
+  },
+  "hooks": {
+    "title": "Perintah",
+    "pre": "Sebelum",
+    "preHint": "Berjalan sebagai root sebelum pencadangan. Jika gagal, pencadangan akan berhenti.",
+    "post": "Sesudah",
+    "postHint": "Berjalan sebagai root setelah pencadangan, bahkan jika gagal. TERMIX_BACKUP_STATUS menyimpan hasilnya."
+  },
+  "alerts": {
+    "title": "Peringatan",
+    "onFailure": "Berikan peringatan saat pencadangan gagal",
+    "onFailureHint": "Juga memberikan peringatan pada peringatan (warning), dan sekali saat berhasil kembali.",
+    "staleDays": "Hari tanpa pencadangan",
+    "staleDaysHint": "Berikan peringatan jika tidak ada pencadangan yang berhasil selama jumlah hari ini. 0 untuk menonaktifkannya."
+  },
+  "repos": {
+    "add": "Tambahkan repositori",
+    "empty": "Belum ada repositori",
+    "emptyHint": "Repositori adalah tempat penyimpanan cadangan, seperti bucket S3 atau folder.",
+    "loadFailed": "Gagal memuat repositori",
+    "jobCount_other": "{{count}} tugas",
+    "newTitle": "Repositori baru",
+    "storage": "Penyimpanan",
+    "name": "Nama",
+    "namePlaceholder": "S3 Offsite",
+    "kind": "Tipe",
+    "kinds": {
+      "s3": "Kompatibel S3",
+      "rest": "Server REST",
+      "rclone": "rclone",
+      "local": "Folder di host"
+    },
+    "endpoint": "Titik akhir",
+    "endpointHint": "Kosongkan untuk AWS. Untuk MinIO, R2, B2, atau Wasabi, masukkan alamat S3 mereka.",
+    "region": "Wilayah",
+    "bucket": "Bucket",
+    "prefix": "Folder di dalam bucket",
+    "prefixHint": "Opsional.",
+    "accessKeyId": "ID kunci akses",
+    "secretKey": "Kunci akses rahasia",
+    "secretSaved": "Tersimpan, biarkan kosong untuk mempertahankannya",
+    "url": "Alamat server",
+    "username": "Pengguna",
+    "usernameHint": "Kosongkan jika server tidak memerlukan login.",
+    "restPassword": "Kata sandi",
+    "remote": "Nama remote",
+    "remoteHint": "Hanya huruf, angka, dan _.",
+    "path": "Path",
+    "rcloneConfig": "Konfigurasi rclone",
+    "rcloneHint": "Baris-baris remote dari rclone.conf. Jalankan rclone config di komputer Anda untuk membuatnya. rclone harus terinstal di host.",
+    "rcloneSaved": "Tersimpan, biarkan kosong untuk mempertahankannya",
+    "host": "Host",
+    "pickHost": "Pilih host",
+    "folder": "Folder",
+    "folderHint": "Hanya pekerjaan di host ini yang dapat menggunakannya. Disk yang dimount adalah yang terbaik.",
+    "password": "Enkripsi",
+    "resticPassword": "Kata sandi repositori",
+    "passwordHint": "Biarkan kosong dan Termix akan membuat yang kuat. Simpan salinannya di tempat yang aman: tanpa ini, cadangan tidak dapat dibaca.",
+    "passwordKeep": "Tersimpan, biarkan kosong untuk mempertahankannya",
+    "passwordChangeHint": "Ini hanya mengubah apa yang dikirim Termix. Ini tidak mengubah kata sandi repositori yang sudah ada.",
+    "reveal": "Tampilkan kata sandi",
+    "revealTitle": "Tampilkan kata sandi repositori?",
+    "revealDesc": "Siapa pun yang memilikinya dan kunci penyimpanan dapat membaca setiap cadangan di repositori ini. Ini dicatat dalam log audit.",
+    "revealFailed": "Tidak dapat membaca kata sandi",
+    "copy": "Salin",
+    "copied": "Tersalin",
+    "check": "Periksa",
+    "checkFrom": "Periksa dari",
+    "checkFromHint": "Host yang membuka repositori. Host ini memerlukan restic.",
+    "checkButton": "Periksa",
+    "initButton": "Periksa dan atur",
+    "installRclone": "Instal rclone di host ini",
+    "rcloneInstalled": "rclone {{version}} terinstal.",
+    "rcloneFailed": "Tidak dapat menginstal rclone",
+    "checking": "Memeriksa...",
+    "opened": "Repositori berhasil dibuka.",
+    "created": "Repositori telah diatur dan siap digunakan.",
+    "checkFailed": "Tidak dapat membuka repositori",
+    "checkNext": "Tersimpan. Periksa dari host untuk mengaturnya.",
+    "saved": "Repositori tersimpan",
+    "saveFailed": "Tidak dapat menyimpan repositori",
+    "deleteTitle": "Hapus {{name}}?",
+    "deleteDesc": "Ini hanya dihapus dari Termix. Cadangan tetap ada di penyimpanan.",
+    "deleted": "Repositori dihapus",
+    "deleteFailed": "Tidak dapat menghapus repositori"
+  },
+  "snapshots": {
+    "noJobs": "Tambahkan pekerjaan cadangan terlebih dahulu.",
+    "job": "Pekerjaan",
+    "titleFor": "Snapshot dari {{name}}",
+    "empty": "Belum ada snapshot",
+    "loadFailed": "Tidak dapat membaca snapshot",
+    "latest": "Terbaru",
+    "files_other": "{{count}} file",
+    "browse": "Jelajahi",
+    "delete": "Hapus",
+    "deleteTitle": "Hapus snapshot ini?",
+    "deleteDesc": "Snapshot dari {{time}} akan dihapus permanen dari repositori.",
+    "deleted": "Snapshot dihapus",
+    "deleteFailed": "Gagal menghapus snapshot",
+    "browseTitle": "Snapshot {{time}}",
+    "root": "Akar",
+    "emptyFolder": "Folder ini kosong",
+    "filesFailed": "Gagal menampilkan folder ini",
+    "pick": "Pilih",
+    "download": "Unduh",
+    "downloadZip": "Unduh sebagai zip",
+    "downloadFailed": "Gagal mengunduh",
+    "restoreAll": "Pulihkan semua",
+    "restorePicked_other": "Pulihkan {{count}} item"
+  },
+  "restore": {
+    "title": "Pulihkan",
+    "what": "Apa",
+    "everything": "Semua yang ada di snapshot.",
+    "more_other": "dan {{count}} lainnya",
+    "where": "Ke mana",
+    "host": "Host",
+    "hostHint": "Host mana pun yang dapat Anda edit dan dapat mengakses repositori.",
+    "localOnly": "Repositori ini adalah folder pada hostnya, sehingga hanya dapat dipulihkan di sana.",
+    "toFolder": "Ke folder",
+    "toOriginal": "Di tempat asalnya",
+    "folder": "Folder",
+    "folderHint": "File tetap mempertahankan jalur lengkapnya di dalam folder ini.",
+    "originalWarning": "File akan ditulis kembali ke lokasi asalnya dan mungkin menggantikan file yang ada saat ini.",
+    "overwrite": "File yang sudah ada",
+    "overwriteOptions": {
+      "if-changed": "Ganti jika berubah",
+      "always": "Selalu ganti",
+      "if-newer": "Ganti jika cadangan lebih baru",
+      "never": "Jangan pernah ganti"
+    },
+    "start": "Pulihkan",
+    "started": "Pemulihan dimulai",
+    "failed": "Gagal memulai pemulihan"
+  },
+  "run": {
+    "title": "Jalankan",
+    "backupTitle": "Cadangan dari {{name}}",
+    "restoreTitle": "Pemulihan dari {{name}}",
+    "loadFailed": "Gagal memuat proses",
+    "progress": "Progres",
+    "preparing": "Menyiapkan...",
+    "progressLine": "{{percent}}% | {{files}} dari {{totalFiles}} file | {{bytes}} dari {{totalBytes}}",
+    "left": "{{time}} tersisa",
+    "details": "Detail",
+    "started": "Dimulai",
+    "finished": "Selesai",
+    "trigger": "Dipicu oleh",
+    "triggers": {
+      "manual": "Jalankan sekarang",
+      "schedule": "Jadwal",
+      "operation": "Aksi Termix"
+    },
+    "snapshot": "Snapshot",
+    "target": "Dipulihkan ke",
+    "files": "File",
+    "filesLine": "{{total}} file, {{added}} baru, {{changed}} berubah",
+    "size": "Ukuran",
+    "added": "Ditambahkan ke repositori",
+    "took": "Membutuhkan",
+    "log": "Log",
+    "noLog": "Belum ada log.",
+    "stopTitle": "Hentikan proses ini?",
+    "stopDesc": "Cadangan yang dihentikan tidak menyimpan snapshot. Pemulihan yang dihentikan akan meninggalkan file yang telah dipulihkan sejauh ini.",
+    "stopSent": "Menghentikan",
+    "stopFailed": "Tidak dapat menghentikan proses"
+  },
+  "history": {
+    "empty": "Belum ada proses yang dijalankan",
+    "loadFailed": "Tidak dapat memuat riwayat",
+    "status": "Status",
+    "job": "Pekerjaan",
+    "host": "Host",
+    "kind": "Tipe",
+    "kinds": {
+      "backup": "Cadangan",
+      "restore": "Pemulihan"
+    },
+    "started": "Dimulai",
+    "took": "Durasi",
+    "size": "Ukuran"
+  },
+  "card": {
+    "title": "Cadangan",
+    "all": "Semua pekerjaan cadangan",
+    "oneJob": "Satu pekerjaan cadangan",
+    "empty": "Belum ada pekerjaan cadangan.",
+    "gone": "Pekerjaan cadangan ini telah dihapus.",
+    "open": "Buka"
+  },
+  "operations": {
+    "list": {
+      "title": "Daftar pekerjaan cadangan"
+    },
+    "failed": {
+      "title": "Cadangan gagal"
+    },
+    "run": {
+      "title": "Jalankan cadangan"
+    },
+    "cancel": {
+      "title": "Hentikan cadangan"
+    },
+    "snapshots": {
+      "title": "Daftar snapshot"
+    },
+    "events": {
+      "finished": "Cadangan selesai",
+      "failed": "Cadangan gagal"
+    },
+    "jobs": {
+      "title": "Pekerjaan cadangan",
+      "lastSuccess": "Cadangan terakhir",
+      "nextRun": "Jalankan berikutnya",
+      "size": "Ukuran"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Tampilkan panel cadangan di terminal",
+        "description": "Biarkan panel cadangan terbuka di samping terminal SSH host ini."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Buka panel cadangan bersama terminal baru",
+        "description": "Tampilkan panel cadangan di samping setiap terminal SSH yang mengaktifkannya. Anda masih dapat membuka dan menutupnya dari tombol di tepi kanan."
+      },
+      "companionSide": {
+        "label": "Posisi panel cadangan",
+        "description": "Di mana panel cadangan berada di samping terminal.",
+        "right": "Kanan",
+        "left": "Kiri",
+        "bottom": "Bawah"
+      },
+      "companionSize": {
+        "label": "Ukuran panel cadangan",
+        "description": "Lebar dalam piksel, atau tinggi saat berada di bawah. Anda juga dapat menyeret tepinya."
+      },
+      "companionEdgeButton": {
+        "label": "Tampilkan tombol panel",
+        "description": "Tampilkan tombol kecil di tepi kanan terminal yang membuka panel cadangan."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Alihkan panel cadangan"
+  }
+}

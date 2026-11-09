@@ -34,6 +34,9 @@
 - The Korean Han/Eng and Hanja keys work on every tap with keyboards that never send a key release
 - RDP servers that need the graphics pipeline, like GNOME Remote Desktop, connect with the built-in engine
 - RDP sound plays after the first click in the session, and people who join a shared session hear it too
+- An idle RDP session is no longer reconnected after you switch browser tabs and come back
+- The RDP drive file panel shows an error instead of loading forever when a folder can't be listed
+- The session toolbar moves buttons into More before they run off the edge, so the last one is no longer cut off
 
 ## 1.3.1
 

@@ -680,7 +680,10 @@ export function registerRoutes(
   router.get("/gate", async (req: Request, res: Response) => {
     try {
       // Only a real link names the site, so a made up one can't borrow the page.
-      const route = await repo.getRoute(Number(req.query.route));
+      const routeId = Number(req.query.route);
+      const route = Number.isSafeInteger(routeId)
+        ? await repo.getRoute(routeId)
+        : null;
       const usable =
         route &&
         route.kind === "http" &&

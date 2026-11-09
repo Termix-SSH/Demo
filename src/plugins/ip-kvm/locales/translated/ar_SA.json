@@ -1,0 +1,226 @@
+{
+  "plugin": {
+    "name": "IP-KVM",
+    "description": "عرض الأجهزة والتحكم فيها عبر أجهزة PiKVM وNanoKVM وJetKVM."
+  },
+  "tab": {
+    "title": "KVM"
+  },
+  "card": {
+    "title": "KVM",
+    "loading": "جارٍ التحميل"
+  },
+  "host": {
+    "open": "KVM"
+  },
+  "permissions": {
+    "view": {
+      "title": "عرض أجهزة KVM",
+      "description": "فتح علامة KVM وعرض الأجهزة المتصلة وحالة الطاقة التي تبلغ عنها."
+    },
+    "power": {
+      "title": "التحكم في الطاقة",
+      "description": "تشغيل وإيقاف وإعادة تشغيل الأجهزة عبر أجهزة KVM الخاصة بها، أو إيقاظها باستخدام Wake-on-LAN."
+    },
+    "console": {
+      "title": "استخدام الشاشة",
+      "description": "عرض شاشة الجهاز واستخدام لوحة المفاتيح والماوس الخاصة به."
+    },
+    "media": {
+      "title": "استخدام وسائط افتراضية",
+      "description": "تثبيت وإخراج صور ISO على الجهاز."
+    },
+    "manage": {
+      "title": "إدارة أجهزة KVM",
+      "description": "إضافة وتعديل وإزالة أجهزة KVM."
+    }
+  },
+  "settings": {
+    "admin": {
+      "maxSessionMinutes": {
+        "label": "أقصى مدة لجلسة الشاشة (بالدقائق)",
+        "description": "تنتهي جلسة الشاشة بعد هذه المدة. استخدم 0 لعدم وجود حد."
+      }
+    }
+  },
+  "description": "أضف أجهزة IP-KVM الخاصة بك لعرض الأجهزة خلفها والتحكم فيها. يتصل Termix بجهاز KVM، لذا تعمل الشاشة حتى عندما لا يتمكن متصفحك من الوصول إليه. يتم تخزين بيانات تسجيل الدخول مشفرة ولا تظهر مرة أخرى.",
+  "summary": "{{count}} أجهزة KVM، {{attention}} غير متصل",
+  "empty": "لا توجد أجهزة KVM بعد.",
+  "add": "إضافة جهاز KVM",
+  "edit": "تعديل",
+  "delete": "حذف",
+  "back": "رجوع",
+  "saved": "تم الحفظ",
+  "deleteConfirm": "حذف {{name}}؟",
+  "status": {
+    "unknown": "لم يتم القراءة بعد",
+    "up": "متصل",
+    "down": "غير متصل"
+  },
+  "drivers": {
+    "pikvm": "PiKVM",
+    "glkvm": "GL.iNet Comet (GLKVM)",
+    "nanokvm": "NanoKVM",
+    "jetkvm": "JetKVM"
+  },
+  "fields": {
+    "username": "اسم المستخدم",
+    "password": "كلمة المرور"
+  },
+  "power": {
+    "on": "تشغيل",
+    "off": "إيقاف",
+    "unknown": "غير معروف",
+    "state": "الجهاز {{state}}.",
+    "sent": "تم طلب تغيير الطاقة من {{name}}",
+    "sentShort": "تم إرسال أمر الطاقة",
+    "wake": "Wake on LAN",
+    "woke": "تم إرسال حزمة الإيقاظ",
+    "action": {
+      "on": "تشغيل الطاقة",
+      "off": "إيقاف الطاقة",
+      "graceful-shutdown": "إيقاف التشغيل",
+      "reset": "إعادة تعيين"
+    },
+    "confirm": {
+      "on": "تشغيل {{name}}؟",
+      "off": "قطع الطاقة عن {{name}}؟ لن يتم إيقاف النظام بشكل نظيف.",
+      "graceful-shutdown": "طلب إيقاف {{name}}؟",
+      "reset": "إعادة تعيين {{name}}؟ سيعيد النظام التشغيل فوراً."
+    }
+  },
+  "form": {
+    "addTitle": "إضافة جهاز KVM",
+    "editTitle": "تعديل جهاز KVM",
+    "device": "جهاز KVM",
+    "access": "الوصول",
+    "machine": "الجهاز خلف KVM",
+    "type": "النوع",
+    "name": "الاسم",
+    "address": "العنوان",
+    "port": "المنفذ",
+    "host": "مضيف Termix",
+    "hostHint": "اربط الـ KVM بالمضيف الذي ينتمي إليه. سيتبع بعد ذلك إعدادات المشاركة الخاصة بذلك المضيف وسيظهر في قائمة المضيف الخاصة به.",
+    "noHost": "لا شيء",
+    "poll": "التحقق كل (ثوانٍ)",
+    "pollHint": "30 ثانية على الأقل.",
+    "scheme": "الاتصال",
+    "ca": "الشهادة",
+    "caHint": "الصق PEM لسلطة شهادة خاصة، أو استخدم \"ثقة بهذه الشهادة\" لـ KVM يحتوي على شهادة موقعة ذاتيًا. اتركه فارغًا للشهادة الموثوقة.",
+    "caSet": "تم حفظ شهادة. الصق شهادة جديدة لاستبدالها.",
+    "keepLogin": "اتركه فارغًا للحفاظ على بيانات الدخول المحفوظة",
+    "test": "اختبار الاتصال",
+    "testOk": "أجاب الـ KVM ({{model}}).",
+    "testNeedsLogin": "أدخل بيانات الدخول مرة أخرى للاختبار.",
+    "mac": "عنوان MAC",
+    "macHint": "بطاقة الشبكة الخاصة بالجهاز، لاستخدام Wake-on-LAN.",
+    "broadcast": "عنوان البث",
+    "broadcastHint": "الوجهة التي سيذهب إليها حزمة الإيقاظ. اتركه فارغًا لاستخدام 255.255.255.255.",
+    "save": "حفظ",
+    "add": "إضافة",
+    "trust": "ثقة بهذه الشهادة",
+    "trustTitle": "هل تثق بشهادة هذا الـ KVM؟",
+    "trustHint": "سيتواصل Termix مع هذا الـ KVM فقط طالما يظهر هذه الشهادة بالضبط. تحقق من تطابق البصمة مع تلك الموجودة على الجهاز.",
+    "certName": "الاسم: {{name}}",
+    "certValid": "صالحة حتى {{date}}",
+    "certExpired": "منتهية الصلاحية في {{date}}",
+    "pinned": "شهادة موثوقة",
+    "unpin": "إزالة"
+  },
+  "view": {
+    "screen": "الشاشة",
+    "power": "الطاقة",
+    "media": "وسائط افتراضية",
+    "info": "معلومات",
+    "refresh": "قراءة الآن",
+    "type": "النوع",
+    "address": "العنوان",
+    "model": "الموديل",
+    "version": "البرنامج",
+    "hostname": "الاسم",
+    "video": "الفيديو",
+    "noSignal": "لا يوجد إشارة",
+    "status": "KVM",
+    "jetHint": "يتم بث فيديو JetKVM مباشرة من JetKVM إلى متصفحك، لذا يجب أن يتمكن متصفحك من الوصول إليه عبر الشبكة."
+  },
+  "screen": {
+    "connecting": "جاري الاتصال",
+    "failed": "تعذر فتح الشاشة.",
+    "ended": "انتهت جلسة الشاشة.",
+    "hint": "انقر على الشاشة للكتابة.",
+    "shortcuts": "الاختصارات",
+    "shortcut": {
+      "ctrl-alt-del": "Ctrl+Alt+Del",
+      "alt-tab": "Alt+Tab",
+      "alt-f4": "Alt+F4",
+      "ctrl-esc": "Ctrl+Esc",
+      "win-l": "Win+L",
+      "win-d": "Win+D",
+      "ctrl-alt-f1": "Ctrl+Alt+F1",
+      "ctrl-alt-f2": "Ctrl+Alt+F2",
+      "ctrl-alt-f7": "Ctrl+Alt+F7",
+      "print-screen": "Print Screen"
+    },
+    "paste": "لصق النص",
+    "pasteLabel": "النص للكتابة على الجهاز",
+    "type": "اكتبه",
+    "snapshot": "لقطة شاشة",
+    "fullscreen": "ملء الشاشة",
+    "exitFullscreen": "الخروج من ملء الشاشة",
+    "reconnect": "إعادة الاتصال"
+  },
+  "media": {
+    "none": "لا توجد صورة مُرفقة.",
+    "mountedNow": "مُرفقة: {{name}}",
+    "as": "عرضها كـ",
+    "cd": "قارئ أقراص CD",
+    "usb": "قارئ أقراص USB",
+    "empty": "لا توجد صور على هذا الجهاز KVM.",
+    "mount": "إرفاق",
+    "eject": "إخراج",
+    "mountedDone": "تم إرفاق الصورة",
+    "ejected": "تم إخراج الصورة",
+    "url": "تحميل صورة من",
+    "name": "حفظها باسم",
+    "fetch": "تحميل إلى جهاز KVM",
+    "fetched": "تم تحميل الصورة"
+  },
+  "operations": {
+    "device": "جهاز KVM",
+    "list-devices": {
+      "title": "قائمة أجهزة KVM"
+    },
+    "poll": {
+      "title": "قراءة جهاز KVM الآن"
+    },
+    "power-state": {
+      "title": "الحصول على حالة الطاقة"
+    },
+    "power-on": {
+      "title": "تشغيل"
+    },
+    "graceful-shutdown": {
+      "title": "إيقاف التشغيل"
+    },
+    "power-off": {
+      "title": "إيقاف الطاقة"
+    },
+    "reset": {
+      "title": "إعادة تعيين"
+    },
+    "wake": {
+      "title": "التشغيل عبر الشبكة (Wake-on-LAN)"
+    },
+    "eject-media": {
+      "title": "إخراج الصورة"
+    },
+    "health": {
+      "title": "حالة جهاز KVM"
+    }
+  },
+  "widget": {
+    "name": "أجهزة KVM",
+    "description": "أي أجهزة IP-KVM الخاصة بك تعمل.",
+    "summary": "{{up}} من أصل {{total}} تعمل"
+  }
+}

@@ -1,0 +1,214 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Spúšťajte Ansible playbooky a ad-hoc príkazy z ovládacieho hostiteľa, pričom inventár je vytvorený z vašich Termix hostiteľov."
+  },
+  "common": {
+    "save": "Uložiť",
+    "cancel": "Zrušiť",
+    "back": "Späť",
+    "delete": "Odstrániť"
+  },
+  "permissions": {
+    "use": {
+      "title": "Používať Ansible",
+      "description": "Zobrazovať playbooky a spustenia na ovládacích hostiteľoch, ku ktorým máte prístup. Upravovať súbory a spúšťať Ansible na hostiteľoch, ktoré môžete upravovať."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Použiť tento hostiteľ ako ovládaci hostiteľ Ansible. Ansible musí byť na ňom nainštalovaný."
+      },
+      "projectDir": {
+        "label": "Priečinok projektu",
+        "description": "Priečinok na tomto hostiteľovi s vašimi playbookmi, rolami a ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Súbor s heslom Vault",
+        "description": "Súbor na tomto hostiteľovi s heslom Ansible Vault. Nechajte prázdne, ak Vault nepoužívate.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Iba na čítanie",
+        "description": "Zobrazovať playbooks a behy, ale nikdy neupravovať súbory ani nespúšťať behy na tomto hostiteľovi."
+      },
+      "alertRuns": {
+        "label": "Upozorniť pri zlyhaní behu",
+        "description": "Poslať upozornenie, keď beh na tomto hostiteľovi skončí zlyhaním alebo stratou spojenia. Kontroluje sa pri čítaní stavu behu."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Otvorte Ansible z hostiteľa.",
+    "error": "Nie je možné načítať Ansible z tohto hostiteľa.",
+    "disabled": "Ansible je pre tento hostiteľ vypnutý. Zapnite ho v nastaveniach hostiteľa.",
+    "refresh": "Obnoviť",
+    "readOnly": "Len na čítanie",
+    "notInstalled": "Ansible nie je nainštalovaný",
+    "notInstalledTitle": "Ansible nie je na tomto hostiteľovi nainštalovaný",
+    "notInstalledHint": "Nainštalujte ansible-core na tomto hostiteľovi, napríklad pomocou pipx alebo vášho správcu balíkov, a potom obnovte.",
+    "noSshpass": "sshpass nie je na tomto hostiteľovi nainštalovaný. Prihlásenie hostiteľov pomocou hesla zlyhá.",
+    "viewPlaybooks": "Playbooks",
+    "viewRuns": "Spustenia",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Fakty"
+  },
+  "files": {
+    "add": "Nový súbor",
+    "search": "Vyhľadať súbory",
+    "empty": "V priečinku projektu zatiaľ nie sú žiadne súbory.",
+    "noMatch": "Žiadne súbory nevyhovujú.",
+    "noProject": "Priečinok {{dir}} na tomto hostiteľovi neexistuje. Vytvorte ho alebo v nastaveniach hostiteľa nastavte iný priečinok projektu.",
+    "listFailed": "Nepodarilo sa zobraziť súbory projektu.",
+    "loadFailed": "Tento súbor sa nepodarilo prečítať.",
+    "saved": "Súbor bol uložený",
+    "saveFailed": "Tento súbor sa nepodarilo uložiť.",
+    "playbook": "Playbook",
+    "run": "Spustiť",
+    "newTitle": "Nový súbor",
+    "name": "Názov súboru",
+    "nameHint": "Cesta vo vnútri priečinka projektu, napríklad site.yml alebo roles/web/tasks/main.yml.",
+    "hint": "Playbook sa pred uložením overí z hľadiska syntaxe. Ak overenie zlyhá, zostane pôvodný súbor.",
+    "text": "Text súboru",
+    "deleteTitle": "Odstrániť tento súbor?"
+  },
+  "targets": {
+    "search": "Vyhľadať hosty",
+    "addShown": "Pridať zobrazené",
+    "clear": "Vymazať",
+    "empty": "Nenašli sa žiadne hosty.",
+    "count": "Vybraných: {{count}}",
+    "failed": "Nepodarilo sa načítať vaše hosty."
+  },
+  "run": {
+    "title": "Spustiť {{playbook}}",
+    "start": "Spustiť",
+    "startCheck": "Spustiť v režime overenia",
+    "startFailed": "Nepodarilo sa spustiť úlohu.",
+    "source": "Hosty",
+    "sourceProject": "Inventár projektu",
+    "sourceTermix": "Hosty Termix",
+    "sourceProjectHint": "Použite inventár z ansible.cfg alebo súbor v projekte.",
+    "sourceTermixHint": "Vyberte hosty z Termix. Zložky sa stanú skupinami folder_ a značky skupinami tag_. Všetky patria do skupiny termix.",
+    "inventory": "Súbor inventára",
+    "inventoryHint": "Cesta vo vnútri priečinka projektu. Nechajte prázdne, ak chcete použiť ansible.cfg.",
+    "check": "Režim kontroly",
+    "checkHint": "Zobrazí, čo by sa zmenilo, bez toho, aby sa niečo skutočne zmenilo.",
+    "diff": "Zobraziť rozdiely",
+    "diffHint": "Zobraziť zmeny vykonané v súboroch.",
+    "become": "Spustiť ako root",
+    "becomeHint": "Použiť sudo na hostiteľoch. Pre hostiteľov Termix sa použije uložené heslo sudo.",
+    "limit": "Obmedzenie",
+    "limitHint": "Spustiť iba na týchto hostiteľoch alebo skupinách.",
+    "verbosity": "Podrobnosti výstupu",
+    "verbosityOff": "Normálne",
+    "tags": "Štítky",
+    "skipTags": "Preskočiť štítky",
+    "extraVars": "Ďalšie premenné",
+    "extraVarsHint": "Jeden kľúč=hodnota na riadok."
+  },
+  "runs": {
+    "title": "Spustiť",
+    "empty": "Zatiaľ žiadne spustenia.",
+    "loadFailed": "Nepodarilo sa načítať spustenia.",
+    "stop": "Zastaviť",
+    "stopFailed": "Nepodarilo sa zastaviť spustenie.",
+    "deleteTitle": "Odstrániť toto spustenie?",
+    "deleteFailed": "Nepodarilo sa odstrániť spustenie.",
+    "checkMode": "Kontrola",
+    "truncated": "Zobrazuje sa koniec dlhého výstupu.",
+    "noOutput": "Zatiaľ žiadny výstup.",
+    "state": {
+      "running": "Prebieha",
+      "ok": "Hotovo",
+      "failed": "Zlyhalo",
+      "cancelled": "Zastavené",
+      "lost": "Stratené"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Fakty"
+    },
+    "recap": {
+      "host": "Host",
+      "ok": "OK",
+      "changed": "Zmenené",
+      "unreachable": "Nedostupné",
+      "failed": "Zlyhalé",
+      "skipped": "Preskočené"
+    }
+  },
+  "adhoc": {
+    "hint": "Spustite jeden modul na hostoch, napr. ansible all -m ping.",
+    "pattern": "Vzor hostov",
+    "patternHint": "Host, skupina alebo všetko.",
+    "module": "Modul",
+    "moduleHint": "Napríklad ping, command, shell, apt alebo systemd.",
+    "args": "Argumenty",
+    "argsHint": "Pre moduly command a shell je to príkaz. Pre ostatné moduly sú to páre kľud=hodnota.",
+    "run": "Spustiť"
+  },
+  "facts": {
+    "hint": "Zozbierajte fakty z hostov pomocou modulu setup. Vyžaduje hosty Termix, aby každý mal prihlásenie.",
+    "gather": "Zozbierať fakty",
+    "gathering": "Zber...",
+    "failed": "Nepodarilo sa zozbierať fakty.",
+    "failedHost": "Zlyhalo",
+    "none": "Nezobrali sa žiadne fakty. Otvorte spustenie, aby ste zistili prečo.",
+    "col": {
+      "host": "Host",
+      "os": "Systém",
+      "kernel": "Jadro",
+      "cpu": "CPU",
+      "memory": "Pamäť",
+      "address": "Adresa",
+      "uptime": "Uptime"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Zoznam playbookov"
+    },
+    "run": {
+      "title": "Spustiť playbook",
+      "playbook": "Playbook",
+      "limit": "Obmedzenie",
+      "tags": "Štítky",
+      "check": "Režim kontroly"
+    },
+    "runs": {
+      "title": "Zoznam spustení",
+      "resource": "Spustenia",
+      "started": "Spustené",
+      "check": "Režim kontroly"
+    },
+    "failed": {
+      "title": "Neúspešné spustenia"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Kontrola hostov...",
+    "summary_one": "{{count}} neúspešné spustenie na {{hosts}} hostoch",
+    "summary_few": "{{count}} neúspešné spustenia na {{hosts}} hostoch",
+    "summary_many": "{{count}} neúspešných spustení na {{hosts}} hostoch",
+    "summary_other": "{{count}} neúspešných spustení na {{hosts}} hostoch",
+    "refresh": "Skontrolovať znova",
+    "empty": "Pre hosta zapnite Ansible, aby ste tu videli jeho spustenia.",
+    "failed_one": "{{count}} neúspešné",
+    "failed_few": "{{count}} neúspešné",
+    "failed_many": "{{count}} neúspešných",
+    "failed_other": "{{count}} neúspešných",
+    "running_one": "{{count}} bežiaci",
+    "running_few": "{{count}} bežiace",
+    "running_many": "{{count}} bežiacich",
+    "running_other": "{{count}} bežiacich",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Zatiaľ žiadne spustenia"
+  }
+}

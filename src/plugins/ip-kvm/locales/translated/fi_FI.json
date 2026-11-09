@@ -1,0 +1,226 @@
+{
+  "plugin": {
+    "name": "IP-KVM",
+    "description": "Katso ja hallinnoi koneita PiKVM-, NanoKVM- ja JetKVM-laitteiden kautta."
+  },
+  "tab": {
+    "title": "KVM"
+  },
+  "card": {
+    "title": "KVM",
+    "loading": "Ladataan"
+  },
+  "host": {
+    "open": "KVM"
+  },
+  "permissions": {
+    "view": {
+      "title": "KVMjen katselu",
+      "description": "Avaa KVM-välilehti ja näe, mitkä KVMt ovat online ja mikä on niiden virtatilanne."
+    },
+    "power": {
+      "title": "Virtahallinta",
+      "description": "Kytke koneet päälle ja pois päältä tai käynnistä ne uudelleen KVM:n kautta, tai herätä ne Wake-on-LANilla."
+    },
+    "console": {
+      "title": "Näytön käyttö",
+      "description": "Katso koneen näyttöä ja käytä sen näppäimistöä ja hiirtä."
+    },
+    "media": {
+      "title": "Virtuaalisen median käyttö",
+      "description": "Liitä ja irrota ISO-kuvia koneelle."
+    },
+    "manage": {
+      "title": "KVMjen hallinta",
+      "description": "Lisää, muokkaa ja poista KVMjä."
+    }
+  },
+  "settings": {
+    "admin": {
+      "maxSessionMinutes": {
+        "label": "Pisin näytön istunto (minuutteina)",
+        "description": "Näytön istunto päättyy tämän ajan jälkeen. Käytä arvoa 0, jos et halua aikarajaa."
+      }
+    }
+  },
+  "description": "Lisää IP-KVMt nähdäksesi ja hallitaksesi niiden takana olevia koneita. Termix yhdistää KVM:ään, joten näyttö toimii vaikka selaimesi ei pääsekään suoraan siihen. Kirjautumistiedot tallennetaan salattuina eivätkä ne koskaan näy uudelleen.",
+  "summary": "{{count}} KVM:tä, {{attention}} offline",
+  "empty": "Ei vielä KVMjä.",
+  "add": "Lisää KVM",
+  "edit": "Muokkaa",
+  "delete": "Poista",
+  "back": "Takaisin",
+  "saved": "Tallennettu",
+  "deleteConfirm": "Poistetaanko {{name}}?",
+  "status": {
+    "unknown": "Ei vielä luettu",
+    "up": "Online",
+    "down": "Offline"
+  },
+  "drivers": {
+    "pikvm": "PiKVM",
+    "glkvm": "GL.iNet Comet (GLKVM)",
+    "nanokvm": "NanoKVM",
+    "jetkvm": "JetKVM"
+  },
+  "fields": {
+    "username": "Käyttäjänimi",
+    "password": "Salasana"
+  },
+  "power": {
+    "on": "Päällä",
+    "off": "Pois päältä",
+    "unknown": "Tuntematon",
+    "state": "Kone on {{state}}.",
+    "sent": "Pyydetty {{name}}:tä vaihtamaan virtatilaa",
+    "sentShort": "Virtakomento lähetetty",
+    "wake": "Wake on LAN",
+    "woke": "Herätyspaketti lähetetty",
+    "action": {
+      "on": "Kytke päälle",
+      "off": "Kytke pois päältä",
+      "graceful-shutdown": "Sammuta",
+      "reset": "Käynnistä uudelleen"
+    },
+    "confirm": {
+      "on": "Kytkekö {{name}} päälle?",
+      "off": "Katkaistaanko {{name}}:n virta? Järjestelmää ei sammuteta siististi.",
+      "graceful-shutdown": "Pyydetäänkö {{name}}:tä sammuttamaan?",
+      "reset": "Käynnistetäänkö {{name}} uudelleen? Järjestelmä käynnistyy välittömästi."
+    }
+  },
+  "form": {
+    "addTitle": "Lisää KVM",
+    "editTitle": "Muokkaa KVM:tä",
+    "device": "KVM",
+    "access": "Pääsy",
+    "machine": "Kone KVM:n takana",
+    "type": "Tyyppi",
+    "name": "Nimi",
+    "address": "Osoite",
+    "port": "Portti",
+    "host": "Termix-isäntä",
+    "hostHint": "Linkitä KVM siihen isäntään, johon se kuuluu. Se seuraa isännän jakoa ja näkyy isännän valikossa.",
+    "noHost": "Ei mitään",
+    "poll": "Tarkista joka (sekuntia)",
+    "pollHint": "Vähintään 30 sekuntia.",
+    "scheme": "Yhteys",
+    "ca": "Varmenne",
+    "caHint": "Liitä yksityisen varmennekeskustan PEM tai käytä Luota tähän varmenne -vaihtoehtoa KVM:lle, jossa on oma itseallekirjoitettu varmenne. Jätä tyhjäksi luotetun varmenteen kohdalla.",
+    "caSet": "Varmenne on tallennettu. Liitä uusi varmenne korvataksesi sen.",
+    "keepLogin": "Jätä tyhjäksi säilyttääksesi tallennetun kirjautumistiedon",
+    "test": "Testaa yhteys",
+    "testOk": "KVM vastasi ({{model}}).",
+    "testNeedsLogin": "Syötä kirjautumistiedot uudelleen testaamiseksi.",
+    "mac": "MAC-osoite",
+    "macHint": "Laitteen verkkokortti Wake-on-LANia varten.",
+    "broadcast": "Lähetysohje",
+    "broadcastHint": "Mihin herätyspaketti lähetetään. Jätä tyhjäksi käyttääksesi osoitetta 255.255.255.255.",
+    "save": "Tallenna",
+    "add": "Lisää",
+    "trust": "Luota tähän varmeneeseen",
+    "trustTitle": "Luotatko tämän KVM:n varmeneeseen?",
+    "trustHint": "Termix kommunikoi vain tämän KVM:n kanssa, kun se näyttää tämän tarkan varmenteen. Varmista, että sormenjälki vastaa laitteen näyttämää.",
+    "certName": "Nimi: {{name}}",
+    "certValid": "voimassa {{date}} asti",
+    "certExpired": "vanhentunut {{date}}",
+    "pinned": "Luotettu varmenne",
+    "unpin": "Poista"
+  },
+  "view": {
+    "screen": "Näyttö",
+    "power": "Virta",
+    "media": "Virtuaalinen media",
+    "info": "Tiedot",
+    "refresh": "Lue nyt",
+    "type": "Tyyppi",
+    "address": "Osoite",
+    "model": "Malli",
+    "version": "Ohjelmisto",
+    "hostname": "Nimi",
+    "video": "Video",
+    "noSignal": "Ei signaalia",
+    "status": "KVM",
+    "jetHint": "JetKVM:n video menee suoraan JetKVM:stä selaimeesi, joten selaimen on päästävä siihen verkossa."
+  },
+  "screen": {
+    "connecting": "Yhdistetään",
+    "failed": "Näyttöä ei voitu avata.",
+    "ended": "Näyttöistunto päättyi.",
+    "hint": "Napsauta näyttöä kirjoittaaksesi.",
+    "shortcuts": "Pikanäppäimet",
+    "shortcut": {
+      "ctrl-alt-del": "Ctrl+Alt+Del",
+      "alt-tab": "Alt+Tab",
+      "alt-f4": "Alt+F4",
+      "ctrl-esc": "Ctrl+Esc",
+      "win-l": "Win+L",
+      "win-d": "Win+D",
+      "ctrl-alt-f1": "Ctrl+Alt+F1",
+      "ctrl-alt-f2": "Ctrl+Alt+F2",
+      "ctrl-alt-f7": "Ctrl+Alt+F7",
+      "print-screen": "Print Screen"
+    },
+    "paste": "Liitä teksti",
+    "pasteLabel": "Teksti, joka kirjoitetaan laitteelle",
+    "type": "Kirjoita se",
+    "snapshot": "Kuvakaappaus",
+    "fullscreen": "Koko näyttö",
+    "exitFullscreen": "Poistu koko näytöstä",
+    "reconnect": "Yhdistä uudelleen"
+  },
+  "media": {
+    "none": "Kuvaa ei ole kiinnitetty.",
+    "mountedNow": "Kiinnitetty: {{name}}",
+    "as": "Näytä muodossa",
+    "cd": "CD-asema",
+    "usb": "USB-tikku",
+    "empty": "Tässä KVM:ssä ei ole kuvia.",
+    "mount": "Kiinnitä",
+    "eject": "Poista",
+    "mountedDone": "Kuva kiinnitetty",
+    "ejected": "Kuva poistettu",
+    "url": "Lataa kuva osoitteesta",
+    "name": "Tallenna nimellä",
+    "fetch": "Lataa KVM:ään",
+    "fetched": "Kuva ladattu"
+  },
+  "operations": {
+    "device": "KVM",
+    "list-devices": {
+      "title": "Listaa KVM:t"
+    },
+    "poll": {
+      "title": "Lue KVM nyt"
+    },
+    "power-state": {
+      "title": "Hae virtatilaa"
+    },
+    "power-on": {
+      "title": "Käynnistä"
+    },
+    "graceful-shutdown": {
+      "title": "Sammuta"
+    },
+    "power-off": {
+      "title": "Sammuta virta"
+    },
+    "reset": {
+      "title": "Nollaa"
+    },
+    "wake": {
+      "title": "Wake-on-LAN"
+    },
+    "eject-media": {
+      "title": "Poista kuva"
+    },
+    "health": {
+      "title": "KVM-tila"
+    }
+  },
+  "widget": {
+    "name": "KVM-laitteet",
+    "description": "Mitkä IP-KVM:istä ovat päällä.",
+    "summary": "{{up}}/{{total}} päällä"
+  }
+}

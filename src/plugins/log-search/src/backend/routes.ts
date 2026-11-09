@@ -29,7 +29,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /hosts:
+   * /plugin-api/log-search/hosts:
    *   get:
    *     summary: Hosts the signed in user can search
    *     description: Hosts with Log Search turned on that the user can connect to.
@@ -47,7 +47,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /search:
+   * /plugin-api/log-search/search:
    *   post:
    *     summary: Search logs on many hosts
    *     description: Reads the journal, log files and Docker logs on the chosen hosts over SSH and returns the matching lines, newest first. Nothing is stored.

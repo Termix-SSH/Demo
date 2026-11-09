@@ -1,0 +1,207 @@
+{
+  "plugin": {
+    "name": "ユーザー",
+    "description": "ホスト上のユーザーアカウント、グループ、パスワード、SSHキーを管理します。"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "back": "戻る",
+    "delete": "削除",
+    "loading": "読み込み中..."
+  },
+  "permissions": {
+    "use": {
+      "title": "ユーザーの使用",
+      "description": "アクセス可能なホスト上のアカウントを表示し、編集可能なホスト上で変更します。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "ユーザー",
+        "description": "ユーザータブから、このホスト上のユーザーアカウントとグループを管理します。"
+      },
+      "useSudo": {
+        "label": "sudoを使用",
+        "description": "アカウントの読み取りと変更のためにsudoを使用します。ログインがrootの場合はオフにしてください。"
+      },
+      "readOnly": {
+        "label": "読み取り専用",
+        "description": "アカウントを表示しますが、このホスト上では変更しません。"
+      }
+    }
+  },
+  "tab": {
+    "title": "ユーザー",
+    "noHost": "ホストからユーザーを開いてください。",
+    "error": "このホストからアカウントを読み込めませんでした。",
+    "disabled": "このホストではユーザーが無効化されています。ホスト設定で有効にしてください。",
+    "sudo": "変更とパスワード状態には、rootログイン、パスワード不要のsudo、またはこのホストに保存されたSudoパスワードが必要です。",
+    "noTools": "このホストにはuseraddがインストールされていません。Alpineではshadowパッケージをインストールしてください。",
+    "refresh": "更新",
+    "readOnly": "読み取り専用",
+    "counts_other": "{{count}}人のユーザー",
+    "viewUsers": "ユーザー",
+    "viewGroups": "グループ",
+    "viewSessions": "セッション"
+  },
+  "users": {
+    "add": "ユーザーを追加",
+    "search": "ユーザーを検索",
+    "people": "一般ユーザー",
+    "systemFilter": "システム",
+    "all": "すべて",
+    "empty": "一致するユーザーが見つかりません。",
+    "you": "あなた",
+    "sudo": "Sudo",
+    "locked": "ロック済み",
+    "emptyPassword": "パスワードなし",
+    "system": "システム",
+    "loadFailed": "アカウントを読み取れませんでした。"
+  },
+  "password": {
+    "set": "設定",
+    "locked": "ロック済み",
+    "none": "未設定、パスワードログイン不可",
+    "empty": "空、誰でもログイン可能",
+    "unknown": "root権限が必要です"
+  },
+  "detail": {
+    "info": "アカウント",
+    "account": "詳細",
+    "fullName": "氏名",
+    "uid": "ユーザーIDとグループID",
+    "mainGroup": "メイングループ",
+    "home": "ホームディレクトリ",
+    "shell": "シェル",
+    "groups": "グループ",
+    "groupsPlaceholder": "グループを入力してEnterを押してください",
+    "unknownGroups": "これらのグループは存在しません: {{groups}}",
+    "none": "なし",
+    "password": "パスワード",
+    "passwordChanged": "パスワードが変更されました",
+    "lastLogin": "最終ログイン",
+    "never": "なし",
+    "unknown": "不明",
+    "saved": "保存しました。",
+    "failed": "変更が失敗しました。",
+    "loadFailed": "このユーザーのキーと最終ログイン情報を読み取れませんでした。",
+    "passwordSection": "パスワード",
+    "newPassword": "新しいパスワード",
+    "newPasswordHint": "SSH を介してホストに送信され、chpasswd で設定されます。Termix には保存されません。",
+    "setPassword": "パスワードを設定",
+    "passwordSet": "パスワードが設定されました。",
+    "expirePassword": "次回ログイン時に新しいパスワードの入力を求める",
+    "expired": "次回ログイン時に新しいパスワードを設定します。",
+    "access": "アクセス",
+    "sudo": "Sudo",
+    "sudoHint": "{{group}} グループを通じて root としてコマンドを実行します。",
+    "sudoProtected": "root または Termix がログインするユーザーから sudo 権限を奪うことはできません。",
+    "sudoTitle": "{{name}} に sudo 権限を与えますか？",
+    "sudoDesc": "{{group}} グループに追加し、root として任意のコマンドを実行できるようにします。",
+    "sudoGrant": "sudo 権限を付与",
+    "sudoOn": "sudo 権限を付与しました。",
+    "sudoOff": "sudo 権限を取り消しました。",
+    "lock": "アカウントをロック",
+    "unlock": "アカウントをアンロック",
+    "lockTitle": "{{name}} をロックしますか？",
+    "lockDesc": "アカウントをアンロックするまで、パスワードまたは SSH キーでのログインはできません。",
+    "lockHint": "パスワードと SSH キーでのログインをブロックします。",
+    "protected": "root ユーザーと Termix がログインに使用するユーザーは、ロックまたは削除できません。",
+    "locked": "アカウントがロックされました。",
+    "unlocked": "アカウントがアンロックされました。",
+    "danger": "削除",
+    "removeHome": "ホームフォルダも削除する",
+    "removeHomeHint": "{{home}} とその中身をすべて削除します。",
+    "delete": "ユーザーを削除",
+    "deleteTitle": "{{name}} を削除しますか？",
+    "deleteDesc": "アカウントは削除されます。ホームフォルダはホスト上に残ります。",
+    "deleteDescHome": "アカウントと {{home}} が削除されます。この操作は元に戻せません。",
+    "deleted": "{{name}} を削除しました。"
+  },
+  "keys": {
+    "title": "SSH キー",
+    "empty": "SSH キーがありません。",
+    "denied": "root 権限がないとキーを読み取れません。",
+    "options": "オプション",
+    "remove": "キーを削除",
+    "removeTitle": "このキーを削除しますか？",
+    "removed": "キーが削除されました。",
+    "add": "キーを追加",
+    "addHint": "id_ed25519.pub の内容など、公開キーを1つ貼り付けてください。",
+    "addButton": "キーを追加",
+    "added": "キーが追加されました。"
+  },
+  "create": {
+    "title": "新規ユーザー",
+    "name": "ユーザー名",
+    "nameHint": "小文字の英字、数字、-、_ を使用できます。",
+    "nameInvalid": "英字で始まり、a-z、0-9、-、_ のみを使用してください。",
+    "home": "ホームフォルダ",
+    "homeHint": "/home/{{name}} を使用するには空白のままにしてください。",
+    "createHome": "ホームフォルダを作成する",
+    "password": "パスワード",
+    "passwordHint": "任意。設定しない場合、SSH キーでのみログインできます。",
+    "again": "パスワード（確認）",
+    "mismatch": "パスワードが一致しません。",
+    "save": "ユーザーを作成",
+    "done": "{{name}} を作成しました。",
+    "failed": "ユーザーを作成できませんでした。"
+  },
+  "groups": {
+    "add": "グループを追加",
+    "name": "グループ名",
+    "namePlaceholder": "新しいグループ名",
+    "create": "作成",
+    "created": "{{name}} を作成しました。",
+    "search": "グループを検索",
+    "empty": "一致するグループがありません。",
+    "noMembers": "メンバーがいません。",
+    "failed": "変更が失敗しました。",
+    "addMember": "メンバーを追加",
+    "pickUser": "ユーザーを選択",
+    "removeMember": "グループから削除",
+    "memberAdded": "{{name}} を {{group}} に追加しました。",
+    "memberRemoved": "{{name}} を {{group}} から削除しました。",
+    "mainGroup": "メイングループ",
+    "mainGroupHint": "これはメイングループなので、常に所属しています。",
+    "deleteTitle": "{{name}} を削除しますか？",
+    "deleteDesc": "グループは削除されます。所有していたファイルは以前の ID を保持します。",
+    "deleted": "{{name}} を削除しました。"
+  },
+  "sessions": {
+    "now": "現在ログイン中",
+    "none": "ログインしているユーザーはいません。",
+    "recent": "最近のログイン",
+    "noRecent": "ログイン履歴が見つかりませんでした。",
+    "loadFailed": "セッションを読み取れませんでした。"
+  },
+  "manager": {
+    "title": "ユーザー",
+    "disabled": "ここでアカウントを表示するには、このホストの設定で「ユーザー」を有効にしてください。"
+  },
+  "operations": {
+    "list": {
+      "title": "ユーザーの一覧"
+    },
+    "emptyPasswords": {
+      "title": "パスワードなしのアカウント"
+    },
+    "lock": {
+      "title": "ユーザーをロック"
+    },
+    "unlock": {
+      "title": "ユーザーのロックを解除"
+    },
+    "delete": {
+      "title": "ユーザーを削除"
+    },
+    "users": {
+      "title": "ユーザー",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "グループ"
+    }
+  }
+}

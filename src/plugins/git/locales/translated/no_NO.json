@@ -1,0 +1,294 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Se, hent, committ og push git-repoer på vertene dine, og hold dem oppdatert med automatisk henting."
+  },
+  "common": {
+    "save": "Lagre",
+    "cancel": "Avbryt",
+    "back": "Tilbake",
+    "loading": "Laster..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Bruk Git",
+      "description": "Se git-repoer på vertene du kan nå, og endre dem på vertene du har skrive tilgang til."
+    },
+    "runCommands": {
+      "title": "Kjør kommandoer etter automatisk henting",
+      "description": "Angi en kommando som kjøres på verten etter at en automatisk henting har hentet inn nye commits."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Administrer git-repoer på denne verten fra Git-fanen."
+      },
+      "repoRoots": {
+        "label": "Skann mapper",
+        "description": "Mapper som søkes etter repoer når du skanner denne verten. Skille dem med komma. Standard er hjemmemappen.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Bruk sudo",
+        "description": "Kjør git som root med sudo. Kun for repoer som innlogget bruker ikke kan bruke."
+      },
+      "readOnly": {
+        "label": "Skrivebeskyttet",
+        "description": "Vis repoer, men endre dem aldri på denne verten."
+      },
+      "showPanel": {
+        "label": "Panel ved siden av terminalen",
+        "description": "Vis Git-panelet på terminalfanene for denne verten."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Åpne panelet sammen med terminalen",
+        "description": "Vis Git-panelet når en terminal åpnes på en vert som har det."
+      },
+      "companionSide": {
+        "label": "Panelplassering",
+        "description": "Hvor panelet vises i forhold til terminalen.",
+        "right": "Høyre",
+        "left": "Venstre",
+        "bottom": "Bunn"
+      },
+      "companionSize": {
+        "label": "Panelstørrelse",
+        "description": "Bredde på panelet, eller høyden hvis det er plassert nederst, i piksler."
+      },
+      "companionEdgeButton": {
+        "label": "Edge-knapp",
+        "description": "Vis en liten knapp på terminalkanten for å åpne panelet."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Åpne Git fra en vert.",
+    "error": "Kunne ikke laste inn git fra denne verten.",
+    "disabled": "Git er slått av for denne verten. Slå den på i vertsinnstillingene.",
+    "sudo": "Dette krever root-innlogging, passordløs sudo eller et lagret Sudo-passord.",
+    "refresh": "Oppdater",
+    "readOnly": "Skrivebeskyttet",
+    "notInstalled": "git er ikke installert",
+    "notInstalledTitle": "git er ikke installert på denne verten",
+    "notInstalledHint": "Installer git med vertens pakkehåndterer, og oppdater deretter."
+  },
+  "actions": {
+    "ok": "Ferdig",
+    "failed": "Mislyktes",
+    "noOutput": "Ingen utdata."
+  },
+  "repos": {
+    "add": "Legg til repo",
+    "search": "Søk etter repoer",
+    "empty": "Ingen repoer ennå. Legg til en for å komme i gang.",
+    "noMatch": "Ingen repoer matcher.",
+    "viewOnly": "Ingen repoer er lagt til på denne verten.",
+    "detached": "loskilt",
+    "changes_one": "{{count}} endring",
+    "changes_other": "{{count}} endringer",
+    "conflicts": "Konflikter",
+    "auto": "Automatisk henting",
+    "autoFailing": "Henting mislykkes",
+    "remove": "Fjern fra listen",
+    "removeTitle": "Fjerne {{name}}?",
+    "removeBody": "Lageret glemmes bare her. Ingenting slettes på verten.",
+    "removed": "{{name}} fjernet",
+    "error": {
+      "missing": "Mappen mangler",
+      "notrepo": "Ikke et git-repo",
+      "unreadable": "Kan ikke lese"
+    }
+  },
+  "add": {
+    "title": "Legg til repoer",
+    "modeScan": "Skann",
+    "modePath": "Mappe",
+    "modeClone": "Klon",
+    "scanHint": "Søker etter git-repoer i {{roots}}. Endre mappene i vertsinnstillingene.",
+    "rescan": "Skann igjen",
+    "noneFound": "Ingen nye repoer funnet.",
+    "picked": "Valgt",
+    "addPicked_one": "Legg til {{count}} repo",
+    "addPicked_other": "Legg til {{count}} repoer",
+    "addAll": "Legg til alle",
+    "folder": "Mappe på verten",
+    "folderHint": "Fullstendig sti, eller start med ~ for hjemmemappen. Den må allerede være et git-repo.",
+    "addRepo": "Legg til repo",
+    "url": "Adresse",
+    "urlHint": "Bruker nøklene og git-innstillingene til vertsens påloggingsbruker.",
+    "dest": "Klon til",
+    "destHint": "Mappen må ikke eksistere ennå.",
+    "clone": "Klon",
+    "cloned": "Klonet",
+    "added_one": "{{count}} repo lagt til",
+    "added_other": "{{count}} repoer lagt til",
+    "failed": "Kunne ikke legge til repoet",
+    "scanFailed": "Kunne ikke skanne verten"
+  },
+  "repo": {
+    "ahead": "{{count}} foran",
+    "behind": "{{count}} bak",
+    "fetch": "Hent",
+    "fetched": "Hentet",
+    "pull": "Trekk inn",
+    "pulled": "Trekket inn",
+    "push": "Skyv ut",
+    "pushed": "Skjøvet ut",
+    "viewChanges": "Endringer",
+    "viewBranches": "Grener",
+    "viewHistory": "Historikk",
+    "viewStash": "Stash",
+    "viewAuto": "Automatisk trekk inn"
+  },
+  "changes": {
+    "loadFailed": "Kunne ikke lese endringene.",
+    "clean": "Ingenting å commite. Arbeidstre er rent.",
+    "stagedTitle": "Staged ({{count}})",
+    "unstagedTitle": "Endringer ({{count}})",
+    "stage": "Stage",
+    "staged": "Staged",
+    "unstage": "Fjern fra stage",
+    "unstaged": "Ikke staged",
+    "stageAll": "Stage alle",
+    "renamed": "Omdøpt",
+    "discard": "Forkast",
+    "discardTitle": "Forkast endringer i {{name}}?",
+    "discardBody": "Endringene i denne filen slettes og kan ikke gjenopprettes.",
+    "discarded": "Endringer forkastet",
+    "message": "Commit-melding",
+    "messagePlaceholder": "Hva som endret seg",
+    "commit": "Commit",
+    "commitAll": "Commit alle endringer",
+    "commitStaged_one": "Commit {{count}} staged fil",
+    "commitStaged_other": "Commit {{count}} staged filer",
+    "committed": "Committed",
+    "noDiff": "Ingen endringer å vise.",
+    "truncated": "Diffen er lang, så kun starten vises."
+  },
+  "branches": {
+    "loadFailed": "Kunne ikke lese grener.",
+    "empty": "Ingen grener ennå.",
+    "current": "Nåværende",
+    "remote": "Ekstern",
+    "gone": "Oppstrøms borte",
+    "newName": "Ny gren",
+    "create": "Opprett gren",
+    "created": "Gren {{name}} opprettet",
+    "switch": "Bytt",
+    "switched": "Byttet til {{name}}",
+    "merge": "Slå sammen til nåværende",
+    "mergeTitle": "Vil du slå sammen {{name}} med {{into}}?",
+    "mergeBody": "En sammenslåing med konflikter blir angre umiddelbart.",
+    "merged": "{{name}} slått sammen",
+    "delete": "Slett gren",
+    "deleteTitle": "Vil du slette {{name}}?",
+    "deleteBody": "Git nekter hvis grenen har forpliktelser som ikke er slått sammen.",
+    "deleted": "{{name}} slettet",
+    "forceTitle": "Vil du tvinge sletting av {{name}}?",
+    "forceBody": "Denne grenen har forpliktelser som ikke er slått sammen. De går tapt hvis du sletter den.",
+    "forceDelete": "Tving sletting"
+  },
+  "history": {
+    "loadFailed": "Kunne ikke lese historikken.",
+    "empty": "Ingen commits ennå.",
+    "branch": "Denne grenen",
+    "all": "Alle grener",
+    "more": "Last inn mer"
+  },
+  "stash": {
+    "loadFailed": "Kunne ikke lese stash-en.",
+    "title": "Stashes",
+    "empty": "Ingen stashes.",
+    "message": "Melding",
+    "messagePlaceholder": "Valgfritt",
+    "untracked": "Inkluder uoppdagede filer",
+    "push": "Lagre endringer midlertidig",
+    "pushDone": "Endringer lagret midlertidig",
+    "apply": "Bruk",
+    "applyDone": "Midlertidig lagring brukt",
+    "pop": "Bruk og fjern",
+    "popDone": "Midlertidig lagring brukt og fjernet",
+    "drop": "Fjern",
+    "dropDone": "Midlertidig lagring fjernet",
+    "dropTitle": "Fjerne {{name}}?",
+    "dropBody": "Stashen er slettet og kan ikke gjenopprettes.",
+    "remotes": "Remotes",
+    "noRemotes": "Ingen remotes."
+  },
+  "auto": {
+    "intro": "Henter inn etter en tidsplan med kun hurtigframspoling. Den slår aldri sammen, og den hopper over lageret hvis det har uinnsendte endringer eller har divergert fra oppstrøms.",
+    "noUpstream": "Denne grenen har ingen oppstrøms ennå, så automatisk henting vil hoppe over den.",
+    "enable": "Automatisk henting",
+    "enableHint": "Kjøres som deg, med din tilgang til denne verten.",
+    "interval": "Hver (minutter)",
+    "intervalHint": "Hvor lenge det skal ventes mellom hentingene.",
+    "post": "Kommando etter en henting",
+    "postHint": "Kjøres i repo-mappen når nye commits ankommer. Krever tillatelse til å kjøre kommandoer.",
+    "saved": "Automatisk pulling lagret",
+    "saveFailed": "Kunne ikke lagre automatisk pulling",
+    "runNow": "Kjør nå",
+    "next": "Neste pulling {{when}}",
+    "runs": "Siste kjøringar",
+    "noRuns": "Ingen kjøringar ennå.",
+    "outcome": {
+      "pulled": "Pulled",
+      "uptodate": "Oppdatert",
+      "skipped": "Hoppet over",
+      "failed": "Mislyktes"
+    }
+  },
+  "card": {
+    "title": "Git-lager",
+    "loading": "Laster...",
+    "refresh": "Oppdater",
+    "empty": "Ingen vert har Git-lager ennå.",
+    "allClean": "Alle lager er rene og oppdaterte.",
+    "summary_one": "{{count}} lager | {{attention}} trenger en titt",
+    "summary_other": "{{count}} lager | {{attention}} trenger en titt"
+  },
+  "companion": {
+    "toggle": "Git-panelet",
+    "openTab": "Åpne Git",
+    "here": "Lager for denne mappen",
+    "all": "Alle lager"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "List opp Git-lager"
+    },
+    "fetch": {
+      "title": "Hent et lager"
+    },
+    "pull": {
+      "title": "Trekk inn et lager"
+    },
+    "push": {
+      "title": "Skyv et lager"
+    },
+    "checkout": {
+      "title": "Bytt gren",
+      "branch": "Gren"
+    },
+    "reset-hard": {
+      "title": "Nullstill et lager hardt",
+      "ref": "Nullstill til"
+    },
+    "repos": {
+      "title": "Git-lager",
+      "branch": "Gren",
+      "ahead": "Foran",
+      "behind": "Bak",
+      "changed": "Endringer"
+    },
+    "signals": {
+      "behind": "Lager bak",
+      "dirty": "Lager med endringer",
+      "pull-failing": "Automatisk trekk inn mislykkes"
+    }
+  }
+}

@@ -1,0 +1,232 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Cài đặt WireGuard trên các host của bạn và quản lý giao diện, máy khách và cấu hình từ một tab."
+  },
+  "common": {
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "back": "Quay lại",
+    "delete": "Xóa",
+    "loading": "Đang tải..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Sử dụng WireGuard",
+      "description": "Quản lý giao diện và máy khách WireGuard trên các host bạn có quyền chỉnh sửa."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Mở WireGuard từ một host.",
+    "error": "Không thể tải WireGuard từ host này.",
+    "sudo": "Host này cần đăng nhập root hoặc sudo không mật khẩu để quản lý WireGuard.",
+    "installed": "Đã cài đặt",
+    "notInstalled": "Chưa cài đặt",
+    "refresh": "Làm mới",
+    "viewInterfaces": "Giao diện",
+    "viewLogs": "Nhật ký"
+  },
+  "install": {
+    "title": "Cài đặt WireGuard",
+    "desc": "Điều này sẽ cài đặt các công cụ WireGuard và iptables bằng trình quản lý gói của host.",
+    "confirm": "Cài đặt",
+    "done": "WireGuard đã được cài đặt.",
+    "failed": "Không thể cài đặt WireGuard.",
+    "empty": "WireGuard chưa được cài đặt trên host này",
+    "noManager": "Không tìm thấy trình quản lý gói nào được hỗ trợ. Hãy cài đặt WireGuard thủ công.",
+    "hint": "Cài đặt nó trên {{os}} để chạy VPN từ host này.",
+    "thisHost": "host này",
+    "button": "Cài đặt WireGuard",
+    "working": "Đang cài đặt..."
+  },
+  "interfaces": {
+    "add": "Thêm giao diện",
+    "empty": "Chưa có giao diện nào. Thêm một giao diện để bắt đầu VPN.",
+    "loadFailed": "Không thể tải các giao diện.",
+    "up": "Đang hoạt động",
+    "down": "Đã tắt",
+    "clients": "other: {{count}} máy khách",
+    "nat": "NAT",
+    "boot": "Khởi động cùng hệ thống"
+  },
+  "create": {
+    "title": "Thêm giao diện",
+    "name": "Tên",
+    "address": "Địa chỉ",
+    "addressHint": "Địa chỉ máy chủ và mạng con. Máy khách sẽ nhận các địa chỉ trống tiếp theo.",
+    "port": "Cổng UDP",
+    "nat": "Chia sẻ internet của host (NAT)",
+    "natDesc": "Máy khách có thể truy cập internet và mạng của host thông qua host này.",
+    "natMissing": "NAT cần iptables, nhưng chưa được cài đặt trên host này.",
+    "forwarding": "Bật chuyển tiếp IP",
+    "forwardingDesc": "Cho phép host chuyển tiếp lưu lượng giữa máy khách và mạng. Được lưu lại sau khi khởi động lại.",
+    "firewall": "Mở cổng trên tường lửa",
+    "firewallDesc": "Thêm cổng UDP vào ufw hoặc firewalld khi một trong hai đang chạy.",
+    "start": "Khởi động ngay và khi khởi động hệ thống",
+    "startDesc": "Bật giao diện và giữ nguyên trạng thái sau khi khởi động lại.",
+    "save": "Tạo",
+    "done": "Giao diện đã sẵn sàng.",
+    "failed": "Không thể tạo giao diện."
+  },
+  "detail": {
+    "clients": "Máy khách",
+    "settings": "Cài đặt",
+    "config": "Cấu hình",
+    "service": "Dịch vụ",
+    "gone": "Giao diện này không còn tồn tại trên host."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Hiển thị tab WireGuard cho máy chủ này trong menu của nó."
+      },
+      "showPanel": {
+        "label": "Hiển thị bảng điều khiển WireGuard trong terminal",
+        "description": "Cho phép bảng điều khiển WireGuard mở bên cạnh terminal SSH của máy chủ này."
+      },
+      "alertDown": {
+        "label": "Cảnh báo khi giao diện bị ngắt kết nối",
+        "description": "Gửi cảnh báo khi một giao diện khởi động cùng hệ thống không hoạt động. Được kiểm tra khi đọc trạng thái WireGuard."
+      }
+    },
+    "publicKey": "Khóa công khai",
+    "port": "Cổng UDP",
+    "endpoint": "Điểm cuối máy chủ",
+    "endpointHint": "Địa chỉ công khai mà máy khách kết nối đến, ví dụ: vpn.example.com:51820.",
+    "dns": "DNS cho máy khách",
+    "dnsHint": "Tùy chọn. Tách các máy chủ bằng dấu phẩy.",
+    "allowed": "Lưu lượng qua VPN",
+    "allowedHint": "Các dải địa chỉ mà máy khách gửi qua VPN. 0.0.0.0/0, ::/0 gửi mọi thứ.",
+    "keepalive": "Keepalive (giây)",
+    "keepaliveHint": "Giữ cho máy khách sau NAT có thể truy cập được. Dùng 0 để tắt.",
+    "saved": "Đã lưu cài đặt.",
+    "saveFailed": "Không thể lưu cài đặt.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Mở bảng điều khiển WireGuard cùng với terminal mới",
+        "description": "Hiển thị bảng điều khiển WireGuard bên cạnh mọi terminal SSH có bật WireGuard. Bạn vẫn có thể mở và đóng nó từ nút ở cạnh phải."
+      },
+      "companionSide": {
+        "label": "Vị trí bảng điều khiển WireGuard",
+        "description": "Nơi bảng điều khiển WireGuard nằm cạnh terminal.",
+        "right": "Phải",
+        "left": "Trái",
+        "bottom": "Dưới"
+      },
+      "companionSize": {
+        "label": "Kích thước bảng điều khiển WireGuard",
+        "description": "Chiều rộng tính bằng pixel, hoặc chiều cao khi nó ở dưới cùng. Bạn cũng có thể kéo cạnh của nó."
+      },
+      "companionEdgeButton": {
+        "label": "Hiển thị nút bảng điều khiển",
+        "description": "Hiển thị một nút nhỏ ở cạnh phải của terminal để mở bảng điều khiển WireGuard."
+      }
+    }
+  },
+  "clients": {
+    "add": "Thêm máy khách",
+    "empty": "Chưa có máy khách nào.",
+    "loadFailed": "Không thể tải danh sách máy khách.",
+    "name": "Tên",
+    "nameHint": "Chữ cái, số, dấu chấm, dấu gạch ngang và dấu gạch dưới.",
+    "allowed": "Lưu lượng qua VPN",
+    "allowedHint": "Để trống để dùng mặc định của giao diện: {{value}}",
+    "create": "Tạo máy khách",
+    "addFailed": "Không thể thêm máy khách.",
+    "needEndpoint": "Hãy đặt điểm cuối máy chủ trong cài đặt giao diện trước.",
+    "connected": "Đã kết nối",
+    "off": "Tắt",
+    "external": "Tạo thủ công",
+    "handshake": "thao tác bắt tay {{ago}} trước",
+    "showConfig": "Hiển thị cấu hình và mã QR",
+    "configFailed": "Không thể đọc cấu hình máy khách.",
+    "rotate": "Khóa mới",
+    "rotateTitle": "Tạo khóa mới cho {{name}}?",
+    "rotateDesc": "Cấu hình cũ sẽ ngừng hoạt động. Hãy cung cấp cấu hình mới cho máy khách sau đó.",
+    "turnOff": "Tắt",
+    "turnOn": "Bật",
+    "saveFailed": "Không thể thay đổi máy khách.",
+    "deleteTitle": "Xóa {{name}}?",
+    "deleteDesc": "Máy khách sẽ bị xóa và không thể kết nối nữa.",
+    "deleteFailed": "Không thể xóa máy khách."
+  },
+  "clientConfig": {
+    "note": "Cấu hình này chứa khóa riêng tư của máy khách. Chỉ chia sẻ với người hoặc thiết bị sẽ sử dụng nó.",
+    "qr": "Mã QR cho cấu hình máy khách",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép cấu hình.",
+    "copyFailed": "Không thể sao chép cấu hình.",
+    "download": "Tải xuống .conf"
+  },
+  "config": {
+    "title": "Tệp cấu hình",
+    "hint": "Các khóa riêng và khóa chia sẻ trước bị ẩn. Để nguyên chỗ giữ chỗ để giữ lại khóa. Cấu hình được kiểm tra trước khi lưu và bản sao lưu được giữ lại. Thay đổi địa chỉ cần khởi động lại.",
+    "loadFailed": "Không thể đọc cấu hình.",
+    "saved": "Đã lưu cấu hình.",
+    "saveFailed": "Không thể lưu cấu hình."
+  },
+  "logs": {
+    "loadFailed": "Không thể đọc nhật ký.",
+    "lines": "{{count}} dòng",
+    "empty": "Không có dòng nhật ký."
+  },
+  "service": {
+    "failed": "Hành động dịch vụ thất bại.",
+    "start": "Bắt đầu",
+    "stop": "Dừng",
+    "restart": "Khởi động lại",
+    "autostart": "Khởi động cùng hệ thống",
+    "autostartDesc": "Khởi động giao diện này khi máy chủ khởi động.",
+    "needsSystemd": "Khởi động cùng hệ thống cần systemd trên máy chủ này.",
+    "noForward": "Chuyển tiếp IP bị tắt trên máy chủ này, vì vậy máy khách không thể truy cập mạng thông qua NAT.",
+    "delete": "Xóa giao diện",
+    "deleteTitle": "Xóa {{name}}?",
+    "deleteDesc": "Giao diện bị dừng và cấu hình, khóa cùng các tệp máy khách đã lưu của nó bị xóa khỏi máy chủ.",
+    "deleteFailed": "Không thể xóa giao diện."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Bật WireGuard trong cài đặt của máy chủ này để sử dụng thẻ này.",
+    "start": "Kích hoạt",
+    "stop": "Vô hiệu hóa",
+    "done": "{{name}} đã cập nhật"
+  },
+  "operations": {
+    "list": {
+      "title": "Liệt kê giao diện WireGuard"
+    },
+    "down": {
+      "title": "Giao diện WireGuard đang tắt"
+    },
+    "start": {
+      "title": "Khởi động giao diện WireGuard"
+    },
+    "stop": {
+      "title": "Dừng giao diện WireGuard"
+    },
+    "restart": {
+      "title": "Khởi động lại giao diện WireGuard"
+    },
+    "interfaces": {
+      "title": "Giao diện WireGuard",
+      "address": "Địa chỉ",
+      "port": "Cổng",
+      "clients": "Máy khách"
+    }
+  },
+  "nav": {
+    "togglePanel": "Bật/tắt bảng WireGuard"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Đang kiểm tra máy chủ...",
+    "summary_other": "{{count}} máy khách trên {{hosts}} máy chủ",
+    "refresh": "Kiểm tra lại",
+    "empty": "Bật WireGuard cho một máy chủ để xem nó ở đây.",
+    "missing": "Chưa cài đặt",
+    "down_other": "{{count}} đang tắt",
+    "interfaces_other": "{{count}} giao diện, {{clients}} máy khách"
+  }
+}

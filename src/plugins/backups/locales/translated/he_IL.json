@@ -1,0 +1,461 @@
+{
+  "plugin": {
+    "name": "גיבויים",
+    "description": "בצע גיבוי של תיקיות, מסדי נתונים ונתוני Docker במארחים שלך באמצעות restic, ולאחר מכן דפדף, הורד ושחזר."
+  },
+  "common": {
+    "save": "שמור",
+    "cancel": "ביטול",
+    "back": "חזרה",
+    "delete": "מחיקה",
+    "done": "בוצע",
+    "loading": "טוען...",
+    "refresh": "רענון",
+    "retry": "נסה שוב"
+  },
+  "permissions": {
+    "use": {
+      "title": "השתמש בגיבויים",
+      "description": "הגדר משימות ומאגרי גיבוי, הרץ גיבויים, ודפדף, הורד ושחזר תצלומי מצב במארחים שיש לך בהם הרשאות עריכה."
+    }
+  },
+  "tab": {
+    "title": "גיבויים",
+    "viewJobs": "משימות",
+    "viewRepos": "מאגרים",
+    "viewHistory": "היסטוריה"
+  },
+  "hostTab": {
+    "title": "גיבויים",
+    "noHost": "פתח גיבויים ממארח.",
+    "viewJobs": "משימות",
+    "viewSnapshots": "תצלומי מצב",
+    "viewHistory": "היסטוריה",
+    "restic": "restic {{version}}",
+    "noRestic": "restic לא מותקן",
+    "sudo": "Termix צריך להתחבר כ-root, או כמשתמש עם sudo ללא סיסמה, כדי להפעיל גיבויים במארח זה.",
+    "statusFailed": "לא ניתן לקרוא את המארח הזה"
+  },
+  "install": {
+    "missing": "restic לא מותקן במארח זה",
+    "tooOld": "גרסת restic במארח זה ישנה מ-0.17",
+    "hint": "גיבויים משתמשים ב-restic. התקן אותו באמצעות מנהל החבילות, או מהשחרור של restic ב-GitHub כאשר החבילה ישנה מדי.",
+    "button": "התקן את restic",
+    "working": "מתקין...",
+    "title": "התקנת restic?",
+    "desc": "פעולה זו מתקינה את restic על המארח כמשתמש root.",
+    "confirm": "התקן",
+    "done": "restic {{version}} מותקן",
+    "failed": "לא ניתן להתקין את restic"
+  },
+  "status": {
+    "never": "לא הורץ מעולם",
+    "running": "מפעיל",
+    "success": "הושלם",
+    "warning": "אזהרות",
+    "failed": "נכשל",
+    "canceled": "הופסק"
+  },
+  "time": {
+    "justNow": "עכשיו",
+    "soon": "בעוד רגע",
+    "ago": {
+      "minutes_one": "לפני דקה אחת",
+      "minutes_two": "לפני {{count}} דקות",
+      "minutes_other": "לפני {{count}} דקות",
+      "hours_one": "לפני שעה אחת",
+      "hours_two": "לפני {{count}} שעות",
+      "hours_other": "לפני {{count}} שעות",
+      "days_one": "לפני יום אחד",
+      "days_two": "לפני {{count}} ימים",
+      "days_other": "לפני {{count}} ימים"
+    },
+    "in": {
+      "minutes_one": "בעוד דקה אחת",
+      "minutes_two": "בעוד {{count}} דקות",
+      "minutes_other": "בעוד {{count}} דקות",
+      "hours_one": "בעוד שעה אחת",
+      "hours_two": "בעוד {{count}} שעות",
+      "hours_other": "בעוד {{count}} שעות",
+      "days_one": "בעוד יום אחד",
+      "days_two": "בעוד {{count}} ימים",
+      "days_other": "בעוד {{count}} ימים"
+    }
+  },
+  "jobs": {
+    "add": "הוסף משימה",
+    "empty": "אין עדיין משימות גיבוי",
+    "emptyHint": "הוסף משימה לגיבוי תיקיות, מסדי נתונים או נתוני Docker.",
+    "emptyNoRepo": "הוסף תחילה מאגר, כדי שיהיה לאן לשמור את הגיבויים.",
+    "loadFailed": "טעינת משימות הגיבוי נכשלה",
+    "lastGood": "הגיבוי האחרון {{when}}",
+    "noGood": "אין עדיין גיבוי",
+    "next": "הבא {{when}}",
+    "paused": "מושהה",
+    "run": "הפעל עכשיו",
+    "stop": "עצור",
+    "edit": "עריכה",
+    "snapshots": "תצלומי מצב",
+    "started": "{{name}} הופעל",
+    "runFailed": "לא ניתן להפעיל את הגיבוי"
+  },
+  "editor": {
+    "newTitle": "משימת גיבוי חדשה",
+    "general": "משימה",
+    "host": "מארח",
+    "pickHost": "בחר מארח",
+    "name": "שם",
+    "namePlaceholder": "גיבוי לילי",
+    "repository": "מאגר",
+    "pickRepository": "בחר מאגר",
+    "noRepos": "אין לך מאגר שמארח זה יכול להשתמש בו. הוסף אחד בטאב גיבויים תחילה.",
+    "repoLocked": "רק בעל המאגר יכול לשנות אותו.",
+    "enabled": "הפעל לפי לוח זמנים",
+    "enabledHint": "כבה כדי להשהות את לוח הזמנים. הפעלה עכשיו עדיין עובדת.",
+    "oneFileSystem": "הישאר על מערכת קבצים אחת",
+    "oneFileSystemHint": "דלג על דיסקים והתקנים אחרים שנמצאים בתוך התיקיות שנבחרו.",
+    "saved": "המשימה נשמרה",
+    "saveFailed": "לא ניתן לשמור את המשימה",
+    "deleteTitle": "למחוק את {{name}}?",
+    "deleteDesc": "המשימה תוסר מ-Termix. תצלומי המצב שלה יישארו במאגר.",
+    "deleted": "המשימה נמחקה",
+    "deleteFailed": "לא ניתן למחוק את המשימה"
+  },
+  "sources": {
+    "add": "הוסף לגיבוי",
+    "addPaths": "תיקיות",
+    "addDatabase": "מסד נתונים",
+    "addDocker": "Docker",
+    "remove": "הסר",
+    "paths": "תיקיות וקבצים",
+    "folders": "נתיבים",
+    "foldersHint": "נתיב מלא אחד בשורה.",
+    "excludes": "דלג",
+    "excludesHint": "תבנית restic אחת בשורה, כמו *.log.",
+    "database": "מסד נתונים",
+    "engine": "סוג",
+    "engines": {
+      "mysql": "MySQL או MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "התחברות",
+    "ownLogin": "הקלד פרטי התחברות כאן",
+    "noDatabasesPlugin": "הפעל את התוסף מסדי נתונים כדי לבחור פרטי התחברות ששמרת.",
+    "address": "כתובת",
+    "addressPlaceholder": "ריק עבור שקע מקומי",
+    "port": "פורט",
+    "username": "משתמש",
+    "password": "סיסמה",
+    "passwordSaved": "נשמר, השאר ריק כדי לשמור אותו",
+    "runAs": "הפעל כ",
+    "runAsHint": "משתמש Linux להפעלת הריקון כ, כמו postgres. ריק מפעיל אותו כ-root.",
+    "databases": "מסדי נתונים",
+    "databasesHint": "שם אחד בשורה. השאר ריק כדי לגבות את כולם.",
+    "sqliteFiles": "קבצי מסד נתונים",
+    "sqliteFilesHint": "נתיב מלא אחד בשורה. כל קובץ מועתק בבטחה בזמן שהוא בשימוש.",
+    "docker": "Docker",
+    "stacks": "ערימות",
+    "volumes": "כרכים",
+    "noStacks": "לא נמצאו ערימות compose",
+    "noVolumes": "לא נמצאו כרכים",
+    "dockerFailed": "לא ניתן לרשום את Docker במארח זה",
+    "stop": "עצור ערימות במהלך הגיבוי",
+    "stopHint": "הערימות הנבחרות מועצרות תחילה ומופעלות מחדש לאחר מכן, כך שהקבצים שלהן לא משתנים בזמן הקריאה."
+  },
+  "schedule": {
+    "title": "לוח זמנים",
+    "manual": "ידני",
+    "daily": "יומי",
+    "weekly": "שבועי",
+    "custom": "מותאם אישית",
+    "day": "יום",
+    "time": "שעה",
+    "cron": "Cron",
+    "cronHint": "דקה, שעה, יום בחודש, חודש, יום בשבוע.",
+    "cronInvalid": "ביטוי ה-Cron הזה לא תקין",
+    "timezone": "אזור זמן",
+    "serverTime": "שעת שרת",
+    "manualHint": "משימה זו מופעלת רק כאשר לוחצים על הפעל עכשיו.",
+    "manualOnly": "ידני",
+    "next": "הפעלה הבאה {{time}}",
+    "noNext": "לוח זמנים זה לעולם לא מופעל",
+    "dailyAt": "יומי ב-{{time}}",
+    "weeklyAt": "{{day}} ב-{{time}}",
+    "days": {
+      "0": "ראשון",
+      "1": "שני",
+      "2": "שלישי",
+      "3": "רביעי",
+      "4": "חמישי",
+      "5": "שישי",
+      "6": "שבת"
+    }
+  },
+  "keep": {
+    "title": "שמירה",
+    "last": "אחרון",
+    "daily": "יומי",
+    "weekly": "שבועי",
+    "monthly": "חודשי",
+    "yearly": "שנתי",
+    "hint": "לאחר כל גיבוי, נקודות זמן ישנות יותר של משימה זו מוסרות כך שרק אלו נשמרות. 0 שומר הכל."
+  },
+  "hooks": {
+    "title": "פקודות",
+    "pre": "לפני",
+    "preHint": "מבוצע כ-root לפני הגיבוי. אם הוא נכשל, הגיבוי נעצר.",
+    "post": "אחרי",
+    "postHint": "מבוצע כ-root לאחר הגיבוי, גם אם הוא נכשל. TERMIX_BACKUP_STATUS מכיל את התוצאה."
+  },
+  "alerts": {
+    "title": "התראות",
+    "onFailure": "התרע כאשר גיבוי נכשל",
+    "onFailureHint": "מציג גם התראות על אזהרות, ופעם אחת כאשר זה עובד שוב.",
+    "staleDays": "ימים ללא גיבוי",
+    "staleDaysHint": "התרע כאשר לא היה גיבוי מוצלח במשך מספר ימים זה. 0 מכבה זאת."
+  },
+  "repos": {
+    "add": "הוסף מאגר",
+    "empty": "אין מאגרים עדיין",
+    "emptyHint": "מאגר הוא המקום שבו מאוחסנים גיבויים, כמו דלי S3 או תיקייה.",
+    "loadFailed": "לא ניתן היה לטעון את המאגרים",
+    "jobCount_one": "{{count}} משימה",
+    "jobCount_two": "{{count}} משימות",
+    "jobCount_other": "{{count}} משימות",
+    "newTitle": "מאגר חדש",
+    "storage": "אחסון",
+    "name": "שם",
+    "namePlaceholder": "S3 חיצוני",
+    "kind": "סוג",
+    "kinds": {
+      "s3": "תואם S3",
+      "rest": "שרת REST",
+      "rclone": "rclone",
+      "local": "תיקייה בשרת"
+    },
+    "endpoint": "נקודת קצה",
+    "endpointHint": "ריק עבור AWS. עבור MinIO, R2, B2 או Wasabi, כתובת ה-S3 שלהם.",
+    "region": "אזור",
+    "bucket": "מיכל (Bucket)",
+    "prefix": "תיקייה במיכל",
+    "prefixHint": "אופציונלי.",
+    "accessKeyId": "מזהה מפתח גישה",
+    "secretKey": "מפתח גישה סודי",
+    "secretSaved": "נשמר, השאר ריק כדי לשמור אותו",
+    "url": "כתובת השרת",
+    "username": "משתמש",
+    "usernameHint": "השאר ריק אם לשרת אין התחברות.",
+    "restPassword": "סיסמה",
+    "remote": "שם מרוחק",
+    "remoteHint": "אותיות, מספרים ו- _ בלבד.",
+    "path": "נתיב",
+    "rcloneConfig": "קובץ תצורה של rclone",
+    "rcloneHint": "שורות ה-remote מקובץ rclone.conf. הרץ את rclone config במחשב שלך כדי ליצור אותן. rclone חייב להיות מותקן על השרתים.",
+    "rcloneSaved": "נשמר, השאר ריק כדי לשמור אותו",
+    "host": "מארח",
+    "pickHost": "בחר מארח",
+    "folder": "תיקייה",
+    "folderHint": "רק משימות על מארח זה יכולות להשתמש בו. דיסק ממופה הוא האופציה הטובה ביותר.",
+    "password": "הצפנה",
+    "resticPassword": "סיסמת מאגר",
+    "passwordHint": "השאר ריק ו-Termix ייצור אחת חזקה. שמור עותק במקום בטוח: בלעדיו לא ניתן לקרוא את הגיבויים.",
+    "passwordKeep": "נשמר, השאר ריק כדי לשמור אותו",
+    "passwordChangeHint": "זה משנה רק מה ש-Termix שולח. זה לא משנה את הסיסמה של מאגר קיים.",
+    "reveal": "הצג סיסמה",
+    "revealTitle": "להציג את סיסמת המאגר?",
+    "revealDesc": "כל מי שיש לו את זה ואת מפתחות האחסון יכול לקרוא כל גיבוי במאגר זה. פעולה זו מתועדת ביומן הניטור.",
+    "revealFailed": "לא ניתן לקרוא את הסיסמה",
+    "copy": "העתק",
+    "copied": "הועתק",
+    "check": "בדיקה",
+    "checkFrom": "בדוק מ-",
+    "checkFromHint": "המארח שפותח את המאגר. הוא צריך את restic.",
+    "checkButton": "בדיקה",
+    "initButton": "בדיקה והגדרה",
+    "installRclone": "התקן את rclone על מארח זה",
+    "rcloneInstalled": "rclone {{version}} מותקן.",
+    "rcloneFailed": "לא ניתן להתקין את rclone",
+    "checking": "בודק...",
+    "opened": "המאגר נפתח בהצלחה.",
+    "created": "המאגר הוגדר ומוכן.",
+    "checkFailed": "לא ניתן לפתוח את המאגר",
+    "checkNext": "נשמר. בדוק אותו ממארח כדי להגדיר אותו.",
+    "saved": "המאגר נשמר",
+    "saveFailed": "לא ניתן לשמור את המאגר",
+    "deleteTitle": "למחוק את {{name}}?",
+    "deleteDesc": "הוא יוסר מ-Termix בלבד. הגיבויים נשארים באחסון.",
+    "deleted": "המאגר נמחק",
+    "deleteFailed": "לא ניתן למחוק את המאגר"
+  },
+  "snapshots": {
+    "noJobs": "הוסף משימת גיבוי קודם.",
+    "job": "משימה",
+    "titleFor": "תמונות מצב של {{name}}",
+    "empty": "אין תמונות מצב עדיין",
+    "loadFailed": "לא ניתן לקרוא את תמונות המצב",
+    "latest": "האחרון",
+    "files_one": "{{count}} קובץ",
+    "files_two": "{{count}} קבצים",
+    "files_other": "{{count}} קבצים",
+    "browse": "דפדוף",
+    "delete": "מחיקה",
+    "deleteTitle": "מחיקת נקודת זמן זו?",
+    "deleteDesc": "נקודת הזמן מ-{{time}} תוסר מהמאגר לצמיתות.",
+    "deleted": "נקודת הזמן נמחקה",
+    "deleteFailed": "לא ניתן למחוק את נקודת הזמן",
+    "browseTitle": "נקודת זמן {{time}}",
+    "root": "שורש",
+    "emptyFolder": "תיקייה זו ריקה",
+    "filesFailed": "לא ניתן להציג את תיקייה זו",
+    "pick": "בחירה",
+    "download": "הורדה",
+    "downloadZip": "הורדה כקובץ zip",
+    "downloadFailed": "לא ניתן להוריד",
+    "restoreAll": "שחזור הכל",
+    "restorePicked_one": "שחזור פריט {{count}}",
+    "restorePicked_two": "שחזור {{count}} פריטים",
+    "restorePicked_other": "שחזור {{count}} פריטים"
+  },
+  "restore": {
+    "title": "שחזור",
+    "what": "מה",
+    "everything": "הכל בנקודת הזמן.",
+    "more_one": "ועוד {{count}}",
+    "more_two": "ועוד {{count}}",
+    "more_other": "ועוד {{count}}",
+    "where": "לאן",
+    "host": "מארח",
+    "hostHint": "כל מארח שבו ניתן לערוך ושיש לו גישה למאגר.",
+    "localOnly": "מאגר זה הוא תיקייה במארח שלו, ולכן ניתן לשחזר אותו רק שם.",
+    "toFolder": "לתיקייה",
+    "toOriginal": "למיקום המקורי",
+    "folder": "תיקייה",
+    "folderHint": "הקבצים שומרים על הנתיב המלא שלהם בתוך תיקייה זו.",
+    "originalWarning": "הקבצים יכתבו חזרה למיקום המקורי שלהם ועשויים להחליף את מה שנמצא שם כעת.",
+    "overwrite": "קבצים שכבר קיימים",
+    "overwriteOptions": {
+      "if-changed": "החלפה בעת שינוי",
+      "always": "החלפה תמידית",
+      "if-newer": "החלפה כאשר הגיבוי חדש יותר",
+      "never": "לעולם לא להחליף"
+    },
+    "start": "שחזור",
+    "started": "השחזור החל",
+    "failed": "לא ניתן להתחיל את השחזור"
+  },
+  "run": {
+    "title": "הפעלה",
+    "backupTitle": "גיבוי של {{name}}",
+    "restoreTitle": "שחזור של {{name}}",
+    "loadFailed": "לא ניתן לטעון את ההפעלה",
+    "progress": "התקדמות",
+    "preparing": "מתכונן...",
+    "progressLine": "{{percent}}% | {{files}} מתוך {{totalFiles}} קבצים | {{bytes}} מתוך {{totalBytes}}",
+    "left": "נותרו {{time}}",
+    "details": "פרטים",
+    "started": "התחיל",
+    "finished": "הסתיים",
+    "trigger": "הופעל על ידי",
+    "triggers": {
+      "manual": "הפעלה עכשיו",
+      "schedule": "לוח זמנים",
+      "operation": "פעולת Termix"
+    },
+    "snapshot": "נקודת זמן",
+    "target": "שוחזר ל",
+    "files": "קבצים",
+    "filesLine": "{{total}} קבצים, {{added}} חדשים, {{changed}} שונו",
+    "size": "גודל",
+    "added": "נוסף למאגר",
+    "took": "נמשך",
+    "log": "יומן",
+    "noLog": "אין יומן עדיין.",
+    "stopTitle": "עצירת הפעלה זו?",
+    "stopDesc": "גיבוי שהופסק אינו שומר תצלום מצב. שחזור שהופסיק משאיר את הקבצים ששוחזרו עד כה.",
+    "stopSent": "מפסיק",
+    "stopFailed": "לא ניתן להפסיק את הפעולה"
+  },
+  "history": {
+    "empty": "אין פעולות שרצו עדיין",
+    "loadFailed": "לא ניתן לטעון את ההיסטוריה",
+    "status": "סטטוס",
+    "job": "משימה",
+    "host": "מארח",
+    "kind": "סוג",
+    "kinds": {
+      "backup": "גיבוי",
+      "restore": "שחזור"
+    },
+    "started": "התחיל",
+    "took": "נמשך",
+    "size": "גודל"
+  },
+  "card": {
+    "title": "גיבויים",
+    "all": "כל משימות הגיבוי",
+    "oneJob": "משימת גיבוי אחת",
+    "empty": "אין משימות גיבוי עדיין.",
+    "gone": "משימת הגיבוי הזו נמחקה.",
+    "open": "פתח"
+  },
+  "operations": {
+    "list": {
+      "title": "רשימת משימות גיבוי"
+    },
+    "failed": {
+      "title": "גיבויים שנכשלו"
+    },
+    "run": {
+      "title": "הפעל גיבוי"
+    },
+    "cancel": {
+      "title": "הפסק גיבוי"
+    },
+    "snapshots": {
+      "title": "רשימת תצלומי מצב"
+    },
+    "events": {
+      "finished": "הגיבוי הסתיים",
+      "failed": "הגיבוי נכשל"
+    },
+    "jobs": {
+      "title": "משימות גיבוי",
+      "lastSuccess": "הגיבוי האחרון",
+      "nextRun": "הפעלה הבאה",
+      "size": "גודל"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "הצג לוח גיבויים בטרמינלים",
+        "description": "אפשר ללוח הגיבויים להיפתח ליד טרמינל ה-SSH של המארח הזה."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "פתח את לוח הגיבויים עם טרמינלים חדשים",
+        "description": "הצג את לוח הגיבויים ליד כל טרמינל SSH שבו הפונקציה מופעלת. ניתן עדיין לפתוח ולסגור אותו מהכפתור בקצה הימני."
+      },
+      "companionSide": {
+        "label": "צד לוח הגיבויים",
+        "description": "איפה לוח הגיבויים ממוקם ליד טרמינל.",
+        "right": "ימין",
+        "left": "שמאל",
+        "bottom": "תחתון"
+      },
+      "companionSize": {
+        "label": "גודל לוח הגיבויים",
+        "description": "רוחב בפיקסלים, או גובה כשהוא בתחתית. ניתן גם לגרור את הקצה שלו."
+      },
+      "companionEdgeButton": {
+        "label": "הצג את כפתור הלוח",
+        "description": "הצג כפתור קטן בקצה הימני של טרמינל שפותח את לוח הגיבויים."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "החלף מצב לוח גיבויים"
+  }
+}

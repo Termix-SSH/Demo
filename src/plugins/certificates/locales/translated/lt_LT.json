@@ -1,0 +1,239 @@
+{
+  "plugin": {
+    "name": "Sertifikatai",
+    "description": "Peržiūrėkite, išduokite ir atnaujinkite TLS sertifikatus savo serveriuose naudodami „certbot“ ir „acme.sh“, bei gaukite įspėjimą prieš jiems pasibaigiant."
+  },
+  "common": {
+    "cancel": "Atšaukti",
+    "back": "Atgal"
+  },
+  "permissions": {
+    "use": {
+      "title": "Naudoti sertifikatus",
+      "description": "Peržiūrėkite sertifikatus serveriuose, prie kurių galite prisijungti, ir keiskite juos serveriuose, kuriuos galite redaguoti."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Sertifikatai",
+        "description": "Tvarkykite TLS sertifikatus šiame serveryje per skirtuką „Sertifikatai“."
+      },
+      "useSudo": {
+        "label": "Naudoti sudo",
+        "description": "Naudokite „sudo“ sertifikatai skaityti ir keisti. Išjunkite, jei prisijungiate kaip root."
+      },
+      "readOnly": {
+        "label": "Tik skaitymui",
+        "description": "Rodyti sertifikatus, bet niekada jų nekeisti šiame serveryje."
+      },
+      "expiryWarnDays": {
+        "label": "Įspėti prieš galiojimo pabaigą",
+        "description": "Sertifikatai, kurių liko tiek dienų arba mažiau, rodomi kaip baigiantys galioti ir siunčia įspėjimą."
+      },
+      "showPanel": {
+        "label": "Rodyti sertifikatų skydelį terminaluose",
+        "description": "Leisti sertifikatų skydeliui atsiverti šalia šio serverio SSH terminalo."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Atidaryti sertifikatų skydelį kartu su naujais terminalais",
+        "description": "Rodyti sertifikatų skydelį šalia kiekvieno SSH terminalo, kuriame įjungti sertifikatai. Jį visada galite atidaryti ir uždaryti mygtuku dešiniajame krašte."
+      },
+      "companionSide": {
+        "label": "Sertifikatų skydelio pusė",
+        "description": "Kur sertifikatų skydelis yra šalia terminalo.",
+        "right": "Dešinėje",
+        "left": "Kairėje",
+        "bottom": "Apačioje"
+      },
+      "companionSize": {
+        "label": "Sertifikatų skydelio dydis",
+        "description": "Plotis pikseliais arba aukštis, kai skydelis yra apačioje. Taip pat galite vilkti jo kraštą."
+      },
+      "companionEdgeButton": {
+        "label": "Rodyti skydelio mygtuką",
+        "description": "Rodyti mažą mygtuką terminalo dešiniajame krašte, kuris atidaro sertifikatų skydelį."
+      }
+    }
+  },
+  "tab": {
+    "title": "Sertifikatai",
+    "noHost": "Atidarykite sertifikatus iš serverio.",
+    "error": "Nepavyko įkelti sertifikatų iš šio serverio.",
+    "disabled": "Šiam hostui sertifikatai išjungti. Įjunkite juos hosto nustatymuose.",
+    "sudo": "Pakeitimams reikia root prisijungimo, slaptažodžio nereikalaujančio sudo arba išsaugoto sudo slaptažodžio šiame hoste.",
+    "refresh": "Atnaujinti",
+    "readOnly": "Tik skaitymui",
+    "noClient": "Nėra certbot arba acme.sh",
+    "viewCertificates": "Sertifikatai",
+    "viewInspect": "Išsami informacija",
+    "viewRenewal": "Atnaujinimas"
+  },
+  "actions": {
+    "working": "Vykdoma. Tai gali užtrukti kelias minutes.",
+    "ok": "Atlikta",
+    "failed": "Komanda nepavyko.",
+    "noOutput": "Išvesties nėra."
+  },
+  "install": {
+    "title": "certbot ir acme.sh nėra įdiegti šiame serveryje",
+    "hint": "Įdiekite certbot, kad gautumėte ir atnaujintumėte sertifikatus iš Let's Encrypt.",
+    "noManager": "Nerasta palaikomo paketų valdytojo. Įdiekite certbot rankiniu būdu.",
+    "button": "Įdiekti certbot",
+    "confirm": "Įdiegti certbot?",
+    "desc": "Tai įdiegia certbot naudojant serverio paketų valdytoją.",
+    "working": "Diegiama...",
+    "done": "certbot įdiegtas."
+  },
+  "certs": {
+    "search": "Ieškoti sertifikatų",
+    "empty": "Sertifikatų dar nėra.",
+    "noMatch": "Nerasta atitinkančių sertifikatų.",
+    "loadFailed": "Nepavyko perskaityti sertifikatų.",
+    "expires": "Galioja iki {{date}}",
+    "staging": "Staging",
+    "details": "Sertifikatas",
+    "manage": "Tvarkyti",
+    "client": "Klientas",
+    "path": "Failas",
+    "authority": "Autoritetas",
+    "renew": "Atnaujinti",
+    "renewDone": "„{{name}}“ atnaujinta.",
+    "renewAll": "Atnaujinti visus",
+    "renewAllDone": "Atnaujinti pasibaigusio galiojimo sertifikatus.",
+    "forceRenew": "Vis tiek atnaujinti dabar",
+    "dryRun": "Bandomasis paleidimas",
+    "dryRunDone": "Bandomasis paleidimas pavyko.",
+    "revoke": "Anuliuoti",
+    "revokeTitle": "Anuliuoti „{{name}}“?",
+    "revokeDesc": "Autoritetas pažymi jį kaip negaliojantį, ir jis pašalinamas iš šio serverio. Viskas, kas jį naudoja, nustoja veikti.",
+    "revokeDone": "„{{name}}“ anuliuota.",
+    "delete": "Nustoti valdyti",
+    "deleteTitle": "Nustoti valdyti „{{name}}“?",
+    "deleteDesc": "Jis lieka galiojantis, bet nebebus atnaujinamas. „certbot“ taip pat ištrina savo failus, „acme.sh“ juos išsaugo.",
+    "deleteDone": "„{{name}}“ nebevaldoma."
+  },
+  "expiry": {
+    "expired": "Pasibaigęs",
+    "unknown": "Nežinoma",
+    "days_one": "Liko {{count}} diena",
+    "days_few": "Liko {{count}} dienos",
+    "days_many": "Liko {{count}} dienų",
+    "days_other": "Liko {{count}} dienų"
+  },
+  "issue": {
+    "add": "Išduoti sertifikatą",
+    "title": "Naujas sertifikatas",
+    "save": "Išduoti",
+    "done": "Sertifikatas išduotas.",
+    "working": "Kreipiamasi į autoritetą. Tai gali užtrukti kelias minutes.",
+    "client": "Klientas",
+    "domains": "Domenai",
+    "domainsPlaceholder": "Įveskite domeną ir paspauskite Enter",
+    "domainsHint": "Pirmasis nurodo sertifikato pavadinimą.",
+    "challenge": "Patikrinimas",
+    "standalone": "Standalone",
+    "standaloneHint": "Paleidžia mažą svetainės serverį 80 prievade, todėl niekas kitas negali naudoti šio prievado.",
+    "webroot": "Svetainės šaknis",
+    "webrootHint": "Įkelia failą į jūsų svetainės serverio aplanką. Svetainės serveris toliau veikia.",
+    "dns": "DNS",
+    "dnsHint": "Per jūsų teikėjo API prideda DNS įrašą. Būtina šablonams (wildcards).",
+    "webrootPath": "Svetainės šaknies aplankas",
+    "webrootPathHint": "Privalo būti /var/www, /srv arba /usr/share/nginx viduje.",
+    "dnsProvider": "DNS teikėjas",
+    "dnsProviderCertbot": "Įdiegto „certbot“ DNS priedo pavadinimas, pvz., cloudflare.",
+    "dnsProviderAcme": "„acme.sh“ DNS pavadinimas be dns_ priešdėlio, pvz., cf. Jo API žetonas jau turi būti nustatytas serveryje.",
+    "credentials": "Prijungimo duomenų failas",
+    "credentialsHint": "Failas serveryje su jūsų API žetonu. „Termix“ jo niekada neskaito.",
+    "email": "El. paštas",
+    "emailHint": "Pasirenkama. Autoritetas jo naudoja galiojimo pabaigos pranešimams.",
+    "keyType": "Rakto tipas",
+    "staging": "Naudoti testavimo serverį",
+    "stagingHint": "Testavimui. Sertifikatas nėra patikimas, o dažnio limitai yra daug didesni."
+  },
+  "inspect": {
+    "server": "Serveris",
+    "file": "Failas",
+    "address": "Adresas",
+    "addressPlaceholder": "example.com",
+    "port": "Prievadas",
+    "path": "Failo kelias",
+    "check": "Patikrinti",
+    "hint": "Patikrinkite, ką serveris siunčia per TLS, kaip matoma iš šio serverio, arba perskaitykite sertifikato failą jame.",
+    "failed": "Nepavyko perskaityti sertifikato.",
+    "noOpenssl": "„openssl“ nėra įdiegta šiame serveryje.",
+    "trusted": "Patikima",
+    "notTrusted": "Nepatikima",
+    "leaf": "Sertifikatas",
+    "intermediate": "Grandinė {{index}}",
+    "selfSigned": "Saviparašytas",
+    "name": "Pavadinimas",
+    "issuer": "Išdavėjas",
+    "domains": "Domenai",
+    "validFrom": "Galioja nuo",
+    "validTo": "Galioja iki",
+    "keyType": "Raktas",
+    "serial": "Serijinis numeris",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Kaip šis serveris pats atnaujina sertifikatus. Pakeiskite tai serveryje.",
+    "on": "Įjungta",
+    "off": "Išjungta",
+    "timer": "systemd laikmatis",
+    "next": "Kitas paleidimas {{time}}",
+    "cron": "Cron failas /etc/cron.d/certbot",
+    "certbotOff": "Nerastas joks laikmatis ar cron darbas, todėl sertifikatai neatsinaujins automatiškai.",
+    "acmeCron": "Cron darbas crontab faile",
+    "acmeOff": "Nerastas joks cron darbas, todėl sertifikatai neatsinaujins automatiškai."
+  },
+  "watch": {
+    "start": "Praneškite man, prieš sertifikatai šiame serveryje pasibaigs",
+    "stop": "Nustokite siųsti pranešimus dėl šio serverio",
+    "on": "Gausite pranešimą, prieš sertifikatai čia pasibaigs.",
+    "off": "Pranešimai dėl šio serverio išjungti.",
+    "failed": "Nepavyko pakeisti pranešimo nustatymų."
+  },
+  "card": {
+    "title": "Sertifikatai",
+    "loading": "Tikrinami serveriai...",
+    "summary_one": "{{count}} sertifikatas, {{expiring}} baigiasi",
+    "summary_few": "{{count}} sertifikatai, {{expiring}} baigiasi",
+    "summary_many": "{{count}} sertifikatų, {{expiring}} baigiasi",
+    "summary_other": "{{count}} sertifikatai, {{expiring}} baigiasi",
+    "refresh": "Patikrinti dar kartą",
+    "empty": "Įjunkite Sertifikatus serveriui, kad čia matytumėte jo sertifikatus."
+  },
+  "manager": {
+    "title": "Sertifikatai",
+    "disabled": "Įjunkite Sertifikatus šio serverio nustatymuose, kad čia matytumėte juos."
+  },
+  "operations": {
+    "list": {
+      "title": "Sąrašas sertifikatų"
+    },
+    "expiring": {
+      "title": "Sertifikatai, kurie baigiasi"
+    },
+    "renew": {
+      "title": "Atnaujinti sertifikatą"
+    },
+    "renewAll": {
+      "title": "Atnaujinti visus sertifikatus"
+    },
+    "revoke": {
+      "title": "Anuliuoti sertifikatą"
+    },
+    "certificates": {
+      "title": "Sertifikatai",
+      "client": "Klientas",
+      "domains": "Domenai",
+      "daysLeft": "Liko dienų"
+    }
+  },
+  "nav": {
+    "togglePanel": "Perjungti sertifikatų skydelį"
+  }
+}

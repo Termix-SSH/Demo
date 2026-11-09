@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Virta, anturit, tapahtumalokit ja konsolit palvelimen BMC:lle Redfish-, IPMI- ja Intel AMT -protokollien kautta."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Ladataan"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "Näytä BMC:t",
+      "description": "Avaa Out-of-band-välilehti ja näytä virta, kunto, anturit ja lokit."
+    },
+    "power": {
+      "title": "Hallitse virtaa ja käynnistystä",
+      "description": "Kytke koneet päälle ja pois päältä, suorita virtasylitus ja valitse seuraava käynnistyslaite."
+    },
+    "console": {
+      "title": "Käytä sarjakonsolia",
+      "description": "Avaa laitteen LAN-yhteydellä toimiva sarjakonsoli."
+    },
+    "media": {
+      "title": "Käytä virtuaalivälineitä",
+      "description": "Liitä ja irrota ISO-kuvia laitteesta."
+    },
+    "manage": {
+      "title": "Hallinnoi BMC-ohjaimia",
+      "description": "Lisää, muokkaa ja poista BMC-ohjaimia sekä tyhjennä niiden tapahtumalokit."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Suorita ipmitool Termix-palvelimella",
+        "description": "Kun tämä on pois päältä, IPMI-BMC-ohjainten on käytettävä välityspalvelinta. Redfish ja AMT eivät ole vaikuttu."
+      }
+    }
+  },
+  "description": "Lisää palvelimesi hallintakontrollerit (BMC:t) Termixiin, jotta voit käynnistää ja sammuttaa niitä, seurata antureita ja lukea tapahtumalokien sisältöä. Kirjautumistiedot tallennetaan salattuina, eikä niitä näytetä uudelleen.",
+  "summary": "{{count}} BMC-ohjainta, {{attention}} vaatii huomiota",
+  "empty": "Ei vielä yhtään BMC:tä.",
+  "add": "Lisää BMC",
+  "edit": "Muokkaa",
+  "delete": "Poista",
+  "back": "Takaisin",
+  "saved": "Tallennettu",
+  "deleteConfirm": "Haluatko poistaa kohteen {{name}}?",
+  "status": {
+    "unknown": "Ei vielä luettu",
+    "up": "Saavutettavissa",
+    "down": "Ei saavutettavissa"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI over LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Käyttäjänimi",
+    "password": "Salasana"
+  },
+  "power": {
+    "on": "Päällä",
+    "off": "Pois päältä",
+    "unknown": "Tuntematon",
+    "sent": "Pyysit laitetta {{name}} vaihtamaan virtatilaa",
+    "action": {
+      "on": "Kytke päälle",
+      "off": "Sammuta",
+      "graceful-shutdown": "Sammuta järjestelmä",
+      "cycle": "Käynnistä uudelleen",
+      "reset": "Nollaa"
+    },
+    "confirm": {
+      "on": "Käynnistetäänkö {{name}}?",
+      "off": "Sammutetaanko {{name}}? Järjestelmää ei sammuteta siististi.",
+      "graceful-shutdown": "Pyydetäänkö {{name}} sammuttamaan itsensä?",
+      "cycle": "Käynnistetäänkö {{name}} uudelleen? Järjestelmää ei sammuteta siististi.",
+      "reset": "Nollataanko {{name}}? Järjestelmä käynnistyy uudelleen välittömästi."
+    }
+  },
+  "health": {
+    "ok": "Kunnossa",
+    "warning": "Varoitus",
+    "critical": "Kriittinen",
+    "unknown": "Tuntematon"
+  },
+  "kind": {
+    "temperature": "Lämpötila",
+    "fan": "Tuuletin",
+    "voltage": "Jännite",
+    "power": "Teho",
+    "psu": "Virtalähde",
+    "other": "Muu"
+  },
+  "form": {
+    "addTitle": "Lisää BMC",
+    "editTitle": "Muokkaa BMC:tä",
+    "device": "BMC",
+    "access": "Pääsy",
+    "type": "Tyyppi",
+    "name": "Nimi",
+    "address": "Osoite",
+    "port": "Portti",
+    "host": "Termix-isäntä",
+    "hostHint": "Yhdistä BMC siihen isäntään, johon se kuuluu. Se perii isännän jakoasetukset ja näkyy isännän valikossa.",
+    "noHost": "Ei mitään",
+    "poll": "Lue joka (sekunti)",
+    "pollHint": "Vähintään 30 sekuntia tai 60, jos käytetään välityspalvelinta.",
+    "scheme": "Yhteys",
+    "relay": "Välityspalvelin",
+    "relayHint": "Suorita ipmitool-täällä palvelimella Termix-palvelimen sijaan. Tarvitaan sarjakonsolia varten.",
+    "noRelay": "Termix-palvelin",
+    "cipher": "Salausmenetelmä",
+    "cipherHint": "Muuta tätä vain, jos BMC hylkää kirjautumisen. 3 on yleisin, 17 uudemmissa BMC:ssä.",
+    "ca": "Varmennemyöntäjän varmenne",
+    "caHint": "Liitä BMC:n varmenneyksikön PEM-varmenne. Jätä tyhjäksi luotetun varmenteen tapauksessa.",
+    "caSet": "Varmuuskopio on tallennettu. Liitä uusi korvataksesi sen.",
+    "keepLogin": "Jätä tyhjäksi, jos haluat säilyttää tallennetut kirjautumistiedot",
+    "test": "Testaa yhteys",
+    "testOk": "BMC vastasi. Virta on {{power}}.",
+    "testNeedsLogin": "Syötä kirjautumistiedot uudelleen testataksesi.",
+    "save": "Tallenna",
+    "add": "Lisää"
+  },
+  "view": {
+    "overview": "Yleiskatsaus",
+    "sensors": "Anturit",
+    "log": "Tapahtumaloki",
+    "boot": "Käynnistä",
+    "media": "Virtuaalinen media",
+    "console": "Konsoli",
+    "refresh": "Lue nyt",
+    "type": "Tyyppi",
+    "address": "Osoite",
+    "power": "Virta",
+    "health": "Kunto",
+    "manufacturer": "Valmistaja",
+    "model": "Malli",
+    "serial": "Sarjanumero",
+    "bios": "BIOS",
+    "bmc": "BMC-ohjelmisto",
+    "status": "BMC",
+    "viaRelay": "Yhteys välitetään välityspalvelimen kautta.",
+    "noSensors": "Tämä BMC ei raportoita antureita.",
+    "sensor": "Anturi",
+    "reading": "Mittaus",
+    "state": "Tila"
+  },
+  "log": {
+    "time": "Aika",
+    "severity": "Taso",
+    "message": "Tapahtuma",
+    "empty": "Tapahtumaloki on tyhjä.",
+    "clear": "Tyhjennä loki",
+    "clearConfirm": "Tyhjennetäänkö {{name}}:n tapahtumaloki? Toimintoa ei voi peruuttaa.",
+    "cleared": "Loki tyhjennetty",
+    "level": {
+      "info": "Tietoa",
+      "warning": "Varoitus",
+      "critical": "Kriittinen"
+    }
+  },
+  "boot": {
+    "hint": "Kone käynnistyy tältä laitteelta kerran ja palaa sen jälkeen normaaliin käynnistysjärjestykseen. Sovella asetus ennen uudelleenkäynnistystä.",
+    "device": "Käynnistä laitteesta",
+    "mode": "Tila",
+    "uefi": "UEFI",
+    "legacy": "Legacy BIOS",
+    "apply": "Aseta seuraavaan käynnistykseen",
+    "done": "{{name}} käynnistyy valitusta laitteesta seuraavan kerran",
+    "pxe": "Verkko (PXE)",
+    "disk": "Kovalevy",
+    "cd": "CD tai virtuaalinen media",
+    "usb": "USB",
+    "bios": "BIOS-asetukset",
+    "none": "Normaali järjestys"
+  },
+  "media": {
+    "url": "Kuvan osoite",
+    "empty": "Tällä BMC:llä ei ole virtuaalista CD-asemaa.",
+    "mounted": "Liitetty",
+    "free": "Tyhjä",
+    "mount": "Liitä",
+    "eject": "Poista",
+    "mountedDone": "Kuva liitetty",
+    "ejected": "Kuva poistettu"
+  },
+  "console": {
+    "hint": "Kirjoita ~. poistuaksesi konsolista.",
+    "connecting": "Yhdistetään",
+    "ended": "Konsoli suljettiin.",
+    "failed": "Konsolia ei voitu avata.",
+    "needsRelay": "Sarjakonsoli tarvitsee välityspalvelimen, jossa on ipmitool. Valitse yksi BMC-asetuksista."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Käynnistä laitteesta",
+    "uefi": "UEFI-tila",
+    "list": {
+      "title": "Listaa BMC:t"
+    },
+    "poll": {
+      "title": "Lue BMC nyt"
+    },
+    "powerState": {
+      "title": "Hae virtatilaa"
+    },
+    "power-on": {
+      "title": "Käynnistä"
+    },
+    "graceful-shutdown": {
+      "title": "Sammuta"
+    },
+    "power-off": {
+      "title": "Sammuta virta"
+    },
+    "power-cycle": {
+      "title": "Virtasylkynä"
+    },
+    "reset": {
+      "title": "Nollaa"
+    },
+    "setBootOnce": {
+      "title": "Käynnistä kerran laitteesta"
+    },
+    "clearLog": {
+      "title": "Tyhjennä tapahtumaloki"
+    },
+    "health": {
+      "title": "BMC:n kunto"
+    }
+  },
+  "widget": {
+    "name": "Out-of-band",
+    "description": "Palvelimesi BMC:iden virta ja kunto.",
+    "summary": "{{up}}/{{total}} yllä"
+  }
+}

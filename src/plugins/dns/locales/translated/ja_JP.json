@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Cloudflare、Route 53、Namecheap などのプロバイダー間で DNS レコードとドメインを管理します。"
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "ドメイン",
+    "loading": "読み込み中",
+    "empty": "ドメインがありません。DNS を開いてログインを追加してください。",
+    "ok": "{{domains}} 件のドメイン、近日中に期限切れのものはありません",
+    "accounts": "{{count}} 件のログイン",
+    "failingLinks": "{{count}} 件のリンク済みレコードが失敗しています"
+  },
+  "permissions": {
+    "view": {
+      "title": "DNS を表示",
+      "description": "DNS タブを開き、ゾーン、レコード、ドメイン、ヘルスチェックを表示します。"
+    },
+    "edit": {
+      "title": "DNS レコードを変更",
+      "description": "レコードの追加、変更、削除、ゾーンファイルのインポート、ドメインの更新を行います。"
+    },
+    "manage": {
+      "title": "DNS ログインを管理",
+      "description": "プロバイダーのログインを追加し、レコードをホストにリンクし、ドメインを監視し、ゾーンのコピーを復元します。"
+    }
+  },
+  "operations": {
+    "zone": "ゾーン",
+    "type": "タイプ",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "名前",
+    "content": "値",
+    "contentOptional": "値（すべてに一致させる場合は空のままにします）",
+    "ttl": "TTL（秒）",
+    "label": "ラベル",
+    "zones": {
+      "title": "DNS ゾーンの一覧表示"
+    },
+    "records": {
+      "title": "DNS レコードの一覧表示"
+    },
+    "domains": {
+      "title": "ドメインと有効期限の一覧表示"
+    },
+    "check": {
+      "title": "ゾーンのチェック"
+    },
+    "upsert": {
+      "title": "DNS レコードの設定"
+    },
+    "delete": {
+      "title": "DNS レコードの削除"
+    },
+    "snapshot": {
+      "title": "ゾーンのコピーを保存"
+    },
+    "links": {
+      "title": "リンク済みレコードの更新"
+    },
+    "expiry": {
+      "title": "ドメインの有効期限"
+    }
+  },
+  "description": "DNS とレジストラのログインを追加して、レコードの管理とドメインの監視を一箇所で実行します。キーは暗号化して保存され、二度と表示されることはありません。",
+  "summary": "{{zones}} 件のゾーン、{{domains}} 件のドメイン",
+  "saved": "保存済み",
+  "delete": "削除",
+  "edit": "編集",
+  "back": "戻る",
+  "refresh": "更新",
+  "section": {
+    "zones": "ゾーン",
+    "domains": "ドメイン",
+    "links": "リンク",
+    "accounts": "ログイン"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "API トークン",
+    "accessKeyId": "アクセスキー ID",
+    "secretAccessKey": "シークレットアクセスキー",
+    "sessionToken": "セッショントークン（オプション）",
+    "apiUser": "API ユーザー",
+    "apiKey": "API キー",
+    "userName": "ユーザー名（API ユーザーと異なる場合）",
+    "clientIp": "許可された IP アドレス",
+    "apiSecret": "API シークレット",
+    "environment": "環境",
+    "environment_production": "本番環境",
+    "environment_ote": "テスト環境（OTE）",
+    "secretApiKey": "シークレット API キー",
+    "token": "パーソナルアクセストークン"
+  },
+  "zones": {
+    "empty": "ゾーンはまだありません。",
+    "emptyHint": "ログインにプロバイダーのログインを追加すると、そのゾーンが表示されます。"
+  },
+  "zone": {
+    "records": "レコード",
+    "health": "ヘルスチェック",
+    "copies": "コピー",
+    "files": "ファイル",
+    "filter": "レコードをフィルタリング",
+    "empty": "レコードがありません。"
+  },
+  "record": {
+    "section": "レコード",
+    "addTitle": "レコードの追加",
+    "editTitle": "レコードの編集",
+    "add": "レコードの追加",
+    "save": "保存",
+    "type": "タイプ",
+    "name": "名前",
+    "nameHint": "{{zone}} 自体には @ を使用します",
+    "value": "値",
+    "priority": "優先度",
+    "ttl": "TTL（秒）",
+    "ttlHint": "リゾルバーが回答を保持する時間。300 は 5 分です。",
+    "ttlAuto": "1 は自動を意味します。",
+    "proxied": "プロキシ経由",
+    "proxiedHint": "トラフィックを Cloudflare 経由で送信します。",
+    "proxiedBadge": "プロキシ経由",
+    "comment": "メモ",
+    "readOnly": "プロバイダーによって管理されています",
+    "deleteConfirm": "{{type}} レコード {{name}} を削除しますか？"
+  },
+  "account": {
+    "add": "ログインの追加",
+    "addTitle": "DNS ログインの追加",
+    "editTitle": "DNS ログインの編集",
+    "save": "保存",
+    "login": "ログイン",
+    "provider": "プロバイダー",
+    "name": "名前",
+    "namePlaceholder": "メイン Cloudflare",
+    "keep": "保存された値を維持する場合は空のままにします",
+    "registrar": "このプロバイダーはレジストラでもあるため、そのドメインはドメインに表示されます。",
+    "options": "オプション",
+    "autoBackup": "ゾーンのバックアップを保持",
+    "autoBackupHint": "変更のたびに、および Termix 外部でゾーンが変更されたときにコピーを保存します。",
+    "checkHealth": "毎日ゾーンをチェック",
+    "checkHealthHint": "毎日ヘルスチェックを実行し、新しい問題が発生したら通知します。",
+    "test": "テスト",
+    "testOk": "正常です。{{zones}} 個のゾーンと {{domains}} 個のドメインが見つかりました。",
+    "deleteConfirm": "{{name}} を削除しますか？そのコピーとリンクも削除されます。プロバイダー側では何も変更されません。",
+    "empty": "ログインはまだありません。",
+    "emptyHint": "Cloudflare、Route 53、Namecheap、または他のログインを追加して開始します。",
+    "lastSync": "最終チェック：{{date}}",
+    "never": "まだチェックされていません",
+    "failed": "ログインに失敗しました"
+  },
+  "domains": {
+    "empty": "ドメインはまだありません。",
+    "emptyHint": "レジストラのログインはここにドメインをリストします。名前で任意のドメインを監視することもできます。",
+    "watchPlaceholder": "example.com",
+    "watch": "ドメインを監視",
+    "unwatch": "監視を停止",
+    "watched": "監視中",
+    "noRenew": "自動更新オフ",
+    "unlocked": "ロック解除済み",
+    "unknown": "レジストラ不明",
+    "expires": "{{date}} に期限切れ",
+    "expired": "期限切れ",
+    "days": "あと {{count}} 日",
+    "refreshFailed": "{{count}} 件の照会に失敗しました"
+  },
+  "link": {
+    "add": "リンクを追加",
+    "addTitle": "リンクを追加",
+    "editTitle": "リンクを編集",
+    "save": "保存",
+    "record": "レコード",
+    "address": "アドレス",
+    "zone": "ゾーン",
+    "pickZone": "ゾーンを選択",
+    "source": "対象",
+    "sourceHost": "ホスト",
+    "sourcePublic4": "このサーバーの公開 IPv4 アドレス",
+    "sourcePublic6": "このサーバーの公開 IPv6 アドレス",
+    "source_host": "ホスト",
+    "source_public4": "公開 IPv4",
+    "source_public6": "公開 IPv6",
+    "host": "ホスト",
+    "pickHost": "ホストを選択",
+    "hostHint": "レコードはホストのアドレスに従います。ホストが変更されると更新されます。",
+    "publicHint": "Termix は公開アドレスを照会し、ダイナミック DNS のようにレコードを同期します。",
+    "enabled": "このレコードを更新し続ける",
+    "empty": "リンクはまだありません。",
+    "emptyHint": "リンクは、レコードをホストまたはこのサーバーの公開アドレスに向け続けます。",
+    "off": "オフ",
+    "hostGone": "ホストが見つかりません",
+    "lastSync": "{{date}} に確認済み",
+    "never": "まだ確認されていません",
+    "syncNow": "今すぐ更新",
+    "updated": "レコードが更新されました",
+    "unchanged": "レコードはすでに正しく設定されていました",
+    "deleteConfirm": "{{name}} のリンクを削除しますか？レコードは現在のまま残ります。"
+  },
+  "diff": {
+    "none": "変更はありません。",
+    "add": "追加",
+    "change": "変更",
+    "remove": "削除"
+  },
+  "copies": {
+    "hint": "コピーは、各変更前と、Termix 外部でゾーンが変更された場合に1日1回保存されます。",
+    "save": "コピーを保存",
+    "saved": "コピーが保存されました",
+    "manualLabel": "手動コピー",
+    "empty": "コピーはまだありません。",
+    "count": "{{count}} 件のレコード",
+    "compare": "現在と比較",
+    "restore": "復元",
+    "restoreConfirm": "このコピーを復元しますか？プロバイダで {{count}} 件の変更が行われます。現在のレコードのコピーが先に保存されます。",
+    "restored": "復元しました。{{count}} 件の変更が行われました。",
+    "source": {
+      "manual": "手動",
+      "auto": "毎日",
+      "before": "変更前"
+    }
+  },
+  "files": {
+    "export": "ゾーンファイルをダウンロード",
+    "exportHint": "レコードを BIND ゾーンファイルとしてダウンロードします。",
+    "import": "ゾーンファイルをインポート",
+    "placeholder": "BIND ゾーンファイルをここに貼り付け",
+    "replace": "ファイルに含まれていないレコードを削除",
+    "replaceHint": "オフの場合、インポートはレコードの追加と変更のみを行います。",
+    "preview": "プレビュー",
+    "apply": "適用",
+    "applied": "インポート完了。{{count}} 件の変更を行いました。",
+    "skipped": "スキップ:"
+  },
+  "health": {
+    "run": "チェックを実行",
+    "running": "実行中",
+    "propagation": "リゾルバを確認",
+    "propagationTitle": "パブリックリゾルバ",
+    "lastRun": "最終実行: {{date}}",
+    "empty": "このゾーンに対するチェックはまだ実行されていません。",
+    "record": "レコード",
+    "resolver": "リゾルバ",
+    "answer": "応答",
+    "noAnswer": "応答なし",
+    "delegation": {
+      "error": "ネームサーバーを検索できませんでした。",
+      "none": "このゾーンにはインターネット上のネームサーバーがありません。ドメインがこのプロバイダを指していない可能性があります。",
+      "mismatch": "ドメインは、プロバイダとは異なるネームサーバーを使用しています: {{found}}。",
+      "ok": "ドメインは {{count}} 個のネームサーバーを指しています。"
+    },
+    "soa": {
+      "differ": "ネームサーバー間でゾーンのバージョンが一致していません（{{count}} 種類）。変更がまだ伝播中である可能性があります。",
+      "same": "{{count}} 個のネームサーバーでゾーンのバージョンが一致しています。"
+    },
+    "dnssec": {
+      "unknown": "DNSSEC を確認できませんでした。",
+      "off": "DNSSEC は有効になっていません。",
+      "valid": "DNSSEC は有効で、検証に合格しています。",
+      "broken": "レジストラで DNSSEC が設定されていますが、検証に失敗しています。検証を行うリゾルバではエラーになります。"
+    },
+    "cname": {
+      "conflict": "{{name}} には CNAME と他のレコードが両方存在します。これは許可されていません。",
+      "apex": "ゾーンのルートは CNAME にできません。",
+      "dangling": "{{name}} は {{target}} を指していますが、解決できません。",
+      "ok": "すべての CNAME ターゲットが解決できます。"
+    },
+    "spf": {
+      "missing": "ドメインはメールを受信していますが、SPF レコードがありません。",
+      "multiple": "SPF レコードが複数存在します。メールサーバーはすべてを拒否します。",
+      "lookups": "SPF レコードで {{count}} 回の検索を行っています。上限は 10 回です。",
+      "ok": "SPF が設定されています（{{count}} 回の検索）。"
+    },
+    "dmarc": {
+      "missing": "DMARC レコードがありません。",
+      "none": "DMARC は監視モードに設定されています。",
+      "ok": "DMARC が設定されています。"
+    },
+    "dkim": {
+      "none": "このゾーンに DKIM キーが見つかりませんでした。",
+      "found": "{{count}} 個の DKIM キーが見つかりました。"
+    },
+    "mx": {
+      "unresolved": "メールサーバー {{host}} が解決できません。"
+    },
+    "mail": {
+      "none": "ドメインにメールレコードがありません。"
+    },
+    "caa": {
+      "ok": "CAA レコードが、証明書の発行元を制限しています。",
+      "none": "CAA レコードがありません。どの認証局でも証明書を発行できます。"
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "ドメイン、期限切れのドメイン、およびエラーのあるレコード。",
+    "domains": "ドメイン",
+    "expiring": "まもなく期限切れ",
+    "failingLinks": "エラーのあるリンク",
+    "failingAccounts": "エラーのあるログイン"
+  }
+}

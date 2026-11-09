@@ -1,0 +1,216 @@
+{
+  "plugin": {
+    "name": "Paketit",
+    "description": "Näytä ja asenna päivityksiä isäntiin, hae, asenna ja poista paketteja sekä lue paketinhistoriaa."
+  },
+  "common": {
+    "cancel": "Peruuta",
+    "back": "Takaisin"
+  },
+  "permissions": {
+    "use": {
+      "title": "Käytä paketteja",
+      "description": "Näytä paketit ja päivitykset isännissä, joihin pääset käsiksi, ja muokkaa niitä isännissä, joissa sinulla on muokkausoikeudet."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Paketit",
+        "description": "Hallitse paketteja ja päivityksiä tässä isännässä Paketteja-välilehdellä."
+      },
+      "useSudo": {
+        "label": "Käytä sudoa",
+        "description": "Käytä sudoa pakettien asentamiseen, päivittämiseen ja poistamiseen. Ota pois käytöstä, jos kirjautuminen tapahtuu root-käyttäjänä."
+      },
+      "readOnly": {
+        "label": "Vain luku",
+        "description": "Näytä paketit ja päivitykset, mutta älä koskaan muuta niitä tässä isäntäpalvelimessa."
+      },
+      "showPanel": {
+        "label": "Näytä päivitysten paneeli terminaaleissa",
+        "description": "Salli päivitysten paneelin avautuminen tämän isäntäpalvelimen SSH-terminaalista vieressä."
+      },
+      "alertUpdates": {
+        "label": "Ilmoita tietoturvapäivityksistä",
+        "description": "Lähetä ilmoitus, kun tässä isäntäpalvelimessa on tietoturvapäivityksiä tai se tarvitsee uudelleenkäynnistyksen. Tarkistetaan, kun päivitykset luetaan, noin kerran tunnissa."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Avaa päivitysten paneeli uusien terminaaleiden kanssa",
+        "description": "Näytä päivitysten paneeli jokaisen SSH-terminaalin vieressä, jossa Paketit on päällä. Voit silti avata ja sulkea sen oikean reunan painikkeesta."
+      },
+      "companionSide": {
+        "label": "Päivitysten paneelin sijainti",
+        "description": "Missä päivitysten paneeli sijaitsee terminaalin vieressä.",
+        "right": "Oikea",
+        "left": "Vasen",
+        "bottom": "Alareuna"
+      },
+      "companionSize": {
+        "label": "Päivitys-paneelin koko",
+        "description": "Leveys pikseleinä tai korkeus, kun paneeli on alareunassa. Voit myös vetää paneelin reunaa."
+      },
+      "companionEdgeButton": {
+        "label": "Näytä paneelin painike",
+        "description": "Näytä pieni painike terminaalin oikeassa reunassa, joka avaa päivitys-paneelin."
+      }
+    }
+  },
+  "tab": {
+    "title": "Paketit",
+    "noHost": "Avaa Paketit -välilehti isännältä.",
+    "error": "Paketteja ei voitu ladata tältä isännältä.",
+    "disabled": "Paketit on poistettu käytöstä tässä isäntäpalvelimessa. Ota se käyttöön isäntäpalvelimen asetuksista.",
+    "sudo": "Muutokset vaativat root-käyttäjän kirjautumisen, salasanasuoran sudo-oikeuden tai tallennetun Sudo-salasanan tässä isäntäpalvelimessa.",
+    "refresh": "Päivitä",
+    "readOnly": "Vain luku",
+    "noManager": "Ei paketinhallintaa",
+    "noManagerTitle": "Tuettua paketinhallintaa ei löytynyt",
+    "noManagerHint": "Paketit toimii apt:n, dnf:n, yum:n, zypperin, pacmanin ja apkin kanssa.",
+    "indexAge": "Hakemisto päivitetty {{ago}} sitten",
+    "reboot": "Tämä isäntäpalvelin tarvitsee uudelleenkäynnistyksen päivityksen viimeistelemiseksi.",
+    "viewUpdates": "Päivitykset",
+    "viewInstalled": "Asennettu",
+    "viewSearch": "Hae",
+    "viewHistory": "Historia",
+    "viewRepos": "Varastot"
+  },
+  "actions": {
+    "working": "{{action}} suoritetaan. Tämä voi kestää muutaman minuutin.",
+    "ok": "Valmis",
+    "failed": "Pakettienhallinta epäonnistui.",
+    "noOutput": "Ei tulostetta.",
+    "refresh": {
+      "label": "Päivitä indeksi",
+      "confirm": "Päivitetäänkö paketin indeksi?",
+      "desc": "Lataa uusimmat paketteliatat.",
+      "done": "Pakettiluettelo on ajan tasalla."
+    },
+    "update": {
+      "label": "Päivitä",
+      "confirm_one": "Päivitetäänkö {{names}}?",
+      "confirm_other": "Päivitetäänkö {{count}} pakettia?",
+      "desc": "Asentaa {{names}}:n uuden version.",
+      "done": "Päivitettiin {{names}}."
+    },
+    "upgrade-all": {
+      "label": "Päivitä kaikki",
+      "confirm": "Päivitetäänkö kaikki paketit?",
+      "desc": "Päivittää pakettiluettelon ja asentaa kaikki päivitykset. Palvelut voivat uudelleenkäynnistyä toimenpiteen aikana.",
+      "done": "Kaikki paketit ovat ajan tasalla."
+    },
+    "install": {
+      "label": "Asenna",
+      "confirm": "Asenna {{names}}?",
+      "desc": "Asentaa {{names}} ja sen tarvitsemat riippuvuudet.",
+      "done": "{{names}} on asennettu."
+    },
+    "remove": {
+      "label": "Poista",
+      "confirm": "Poista {{names}}?",
+      "desc": "Poistaa {{names}} tämän palvelimen asennuksista. Ohjelmat, jotka tarvitsevat sitä, voivat lakata toimimasta.",
+      "done": "{{names}} on poistettu."
+    },
+    "hold": {
+      "label": "Pidä tämä versio",
+      "confirm": "Pidä {{names}}?",
+      "desc": "Päivitykset ohittavat kohteen {{names}}, kunnes vapautat sen.",
+      "done": "Kohteen {{names}} päivitykset on pidätetty."
+    },
+    "unhold": {
+      "label": "Vapauta pidätys",
+      "confirm": "Vapautetaanko kohde {{names}}?",
+      "desc": "Kohteen {{names}} päivitykset jatkuvat.",
+      "done": "Kohteen {{names}} päivitykset jatkuvat."
+    }
+  },
+  "updates": {
+    "search": "Suodata päivityksiä",
+    "count_one": "{{count}} päivitys",
+    "count_other": "{{count}} päivitystä",
+    "countSecurity_one": "{{count}} päivitys, joista {{security}} on tietoturvaan liittyvä",
+    "countSecurity_other": "{{count}} päivitystä, joista {{security}} on tietoturvaan liittyviä",
+    "updatePicked_one": "Päivitä {{count}} paketti",
+    "updatePicked_other": "Päivitä {{count}} pakettia",
+    "updateOne": "Päivitä",
+    "pick": "Valitse {{name}}",
+    "security": "Turvallisuus",
+    "empty": "Kaikki on ajan tasalla.",
+    "noMatch": "Päivityksiä ei löytynyt.",
+    "loadFailed": "Päivityksiä ei voitu lukea."
+  },
+  "installed": {
+    "search": "Suodata asennetut paketit",
+    "all": "Kaikki",
+    "held": "Pidätetyt",
+    "heldBadge": "Pidätetty",
+    "empty": "Ei paketteja, jotka täsmäävät.",
+    "loadFailed": "Asennettuja paketteja ei voitu lukea."
+  },
+  "search": {
+    "placeholder": "Hae paketteja",
+    "button": "Hae",
+    "hint": "Hae paketin asennettavaksi isäntälaitteen arkistoista.",
+    "empty": "Ei tuloksia.",
+    "installed": "Asennettu",
+    "failed": "Haku epäonnistui."
+  },
+  "history": {
+    "empty": "Pakettihistoriaa ei löytynyt.",
+    "loadFailed": "Pakettihistoriaa ei voitu lukea."
+  },
+  "repos": {
+    "hint": "Varastot, joista tämä isäntä asentaa paketteja. Muuta niitä isännässä itse.",
+    "empty": "Varastoja ei löytynyt.",
+    "off": "Pois päältä",
+    "loadFailed": "Varastojen lukeminen epäonnistui."
+  },
+  "card": {
+    "title": "Päivitykset",
+    "loading": "Tarkistetaan isäntiä...",
+    "summary_one": "{{count}} päivitys {{hosts}} isännällä",
+    "summary_other": "{{count}} päivitystä {{hosts}} isännällä",
+    "refresh": "Tarkista uudelleen",
+    "empty": "Ota Pakettien hallinta käyttöön isännässä nähdäksesi sen päivitykset täällä.",
+    "security_one": "{{count}} tietoturva",
+    "security_other": "{{count}} tietoturva",
+    "reboot": "Uudelleenkäynnistys vaaditaan",
+    "updates_one": "{{count}} päivitys",
+    "updates_other": "{{count}} päivitystä",
+    "upToDate": "Ajantasainen"
+  },
+  "manager": {
+    "title": "Paketit",
+    "disabled": "Ota Paketit käyttöön tämän isäntäkonfiguraation asetuksista nähdäksesi sen päivitykset täällä."
+  },
+  "operations": {
+    "list": {
+      "title": "Listaa paketinpäivitykset"
+    },
+    "updates": {
+      "title": "Odottavat päivitykset",
+      "resource": "Odottavat päivitykset"
+    },
+    "upgradeAll": {
+      "title": "Päivitä kaikki paketit"
+    },
+    "install": {
+      "title": "Asenna paketteja"
+    },
+    "remove": {
+      "title": "Poista paketit"
+    },
+    "package": "Paketit",
+    "packageHint": "Yksi tai useampi pakettinimi, välilyönnillä erotettuna.",
+    "resource": {
+      "current": "Asennettu",
+      "available": "Saatavilla",
+      "repo": "Varasto"
+    }
+  },
+  "nav": {
+    "togglePanel": "Näytä/piilota päivityspaneeli"
+  }
+}

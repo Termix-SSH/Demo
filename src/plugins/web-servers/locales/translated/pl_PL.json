@@ -1,0 +1,295 @@
+{
+  "plugin": {
+    "name": "Serwery WWW",
+    "description": "Zarządzaj nginx, Apache i Caddy na swoich hostach: witryny, konfiguracja, logi i HTTPS, z testowaniem każdej zmiany przed zastosowaniem."
+  },
+  "common": {
+    "cancel": "Anuluj",
+    "back": "Wróć",
+    "loading": "Ładowanie..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Użyj Serwerów WWW",
+      "description": "Wyświetlaj serwery WWW i witryny na hostach, do których masz dostęp, oraz modyfikuj je na hostach, które możesz edytować."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Serwery WWW",
+        "description": "Zarządzaj nginx, Apache i Caddy na tym hoście z zakładki Serwery WWW."
+      },
+      "useSudo": {
+        "label": "Używaj sudo",
+        "description": "Używaj sudo do odczytu i modyfikacji serwera WWW. Wyłącz, jeśli zalogowany jako root."
+      },
+      "readOnly": {
+        "label": "Tylko do odczytu",
+        "description": "Wyświetlaj witryny, konfigurację i logi, ale nigdy ich nie modyfikuj na tym hoście."
+      },
+      "showPanel": {
+        "label": "Panel obok terminala",
+        "description": "Wyświetlaj panel Serwerów WWW na kartach terminala tego hosta."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otwieraj panel razem z terminalem",
+        "description": "Wyświetlaj panel Serwerów WWW, gdy terminal otwiera się na hoście, który go obsługuje."
+      },
+      "companionSide": {
+        "label": "Położenie panelu",
+        "description": "Gdzie panel znajduje się obok terminala.",
+        "right": "Prawa",
+        "left": "Lewa",
+        "bottom": "Dolna"
+      },
+      "companionSize": {
+        "label": "Rozmiar panelu",
+        "description": "Szerokość panelu lub jego wysokość, gdy jest na dole, w pikselach."
+      },
+      "companionEdgeButton": {
+        "label": "Przycisk na krawędzi",
+        "description": "Wyświetlaj mały przycisk na krawędzi terminala do otwierania panelu."
+      }
+    }
+  },
+  "tab": {
+    "title": "Serwery WWW",
+    "noHost": "Otwórz Serwery WWW z hosta.",
+    "error": "Nie udało się załadować serwerów WWW na tym hoście.",
+    "disabled": "Serwery WWW są wyłączone dla tego hosta. Włącz je w ustawieniach hosta.",
+    "sudo": "Zmiany wymagają logowania jako root, sudo bez hasła lub zapisanego hasła sudo na tym hoście.",
+    "refresh": "Odśwież",
+    "readOnly": "Tylko do odczytu",
+    "noServer": "Brak zainstalowanego serwera WWW",
+    "noServerHint": "Zainstaluj nginx, Apache lub Caddy ze strony Serwer.",
+    "openServer": "Otwórz Serwer",
+    "viewSites": "Witryny",
+    "viewConfig": "Konfiguracja",
+    "viewLogs": "Logi",
+    "viewServer": "Serwer"
+  },
+  "actions": {
+    "ok": "Gotowe",
+    "failed": "Nieudane",
+    "noOutput": "Brak wyniku."
+  },
+  "watch": {
+    "start": "Powiadom mnie, gdy serwer WWW się zatrzyma",
+    "stop": "Zatrzymaj powiadomienia dla tego hosta",
+    "on": "Otrzymasz powiadomienie, gdy serwer WWW na tym hoście się zatrzyma",
+    "off": "Powiadomienia dla tego hosta są wyłączone",
+    "failed": "Nie udało się zmienić powiadomień"
+  },
+  "sites": {
+    "add": "Dodaj witrynę",
+    "search": "Szukaj witryn",
+    "empty": "Brak witryn.",
+    "loadFailed": "Nie udało się załadować witryn.",
+    "off": "Wyłączone",
+    "anyName": "dowolna nazwa",
+    "form": "Formularz",
+    "certDays_one": "Pozostał {{count}} dzień",
+    "certDays_few": "Pozostały {{count}} dni",
+    "certDays_many": "Pozostało {{count}} dni",
+    "certDays_other": "Pozostało {{count}} dni",
+    "certExpired": "Certyfikat wygasł",
+    "enable": "Włącz",
+    "disable": "Wyłącz",
+    "enabled": "{{name}} jest włączony",
+    "disabled": "{{name}} jest wyłączony",
+    "delete": "Usuń",
+    "deleteTitle": "Usunąć {{name}}?",
+    "deleteBody": "Plik zostanie usunięty, a serwer zrestartowany. Kopia zapasowa zostanie zachowana w /var/lib/termix-web-servers/backups na hoście.",
+    "deleted": "{{name}} został usunięty"
+  },
+  "site": {
+    "addTitle": "Nowa strona",
+    "editTitle": "Zapisz {{name}}",
+    "add": "Dodaj stronę",
+    "save": "Zapisz",
+    "added": "{{name}} została dodana",
+    "saved": "{{name}} została zapisana",
+    "server": "Serwer WWW",
+    "name": "Nazwa strony",
+    "nameHint": "Używana do nazwy pliku i plików dziennika, np. example.",
+    "modeForm": "Formularz",
+    "modeText": "Tekst",
+    "text": "Konfiguracja",
+    "textHint": "Zapisanie tekstu wyłącza formularz dla tej strony, dzięki czemu Twoje zmiany zostaną zachowane.",
+    "type": "Typ",
+    "typeStatic": "Pliki statyczne",
+    "typeProxy": "Proxy odwrócone",
+    "typePhp": "PHP",
+    "typeRedirect": "Przekierowanie",
+    "staticHint": "Serwuje pliki z folderu.",
+    "proxyHint": "Przekazuje żądania do aplikacji działającej na tym hoście lub innym.",
+    "phpHint": "Serwuje pliki z folderu i uruchamia pliki .php za pomocą php-fpm.",
+    "redirectHint": "Przekazuje każdego odwiedzającego na inny adres.",
+    "domains": "Domeny",
+    "domainsHint": "Naciśnij Enter po każdej z nich. Użyj _ w nginx, aby odpowiadać na dowolną nazwę.",
+    "port": "Port HTTP",
+    "root": "Katalog główny",
+    "rootHint": "Folder wewnątrz /var/www, /srv, /usr/share/nginx, /opt lub /home.",
+    "index": "Pliki indeksu",
+    "spa": "Aplikacja SPA",
+    "spaHint": "Przekieruj ścieżki, które nie są plikami, do /index.html.",
+    "upstream": "Adres aplikacji",
+    "upstreamHint": "Gdzie aplikacja nasłuchuje, np. http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Przekieruj odwiedzających do",
+    "keepPath": "Zachowaj ścieżkę",
+    "keepPathHint": "Przekieruj /page na tę samą stronę pod nowym adresem.",
+    "phpSocket": "Gniazdo php-fpm",
+    "phpSocketHint": "Nie znaleziono gniazda php-fpm. Zainstaluj php-fpm lub podaj host:port.",
+    "https": "HTTPS",
+    "httpsHint": "Wymaga certyfikatu. Najpierw zapisz stronę, a następnie kliknij Pobierz certyfikat poniżej.",
+    "httpsCaddy": "Caddy samodzielnie pobiera i odnawia certyfikat.",
+    "httpsPort": "Port HTTPS",
+    "certPath": "Plik certyfikatu",
+    "keyPath": "Plik klucza",
+    "forceHttps": "Przekieruj HTTP do HTTPS",
+    "gzip": "Kompresuj odpowiedzi",
+    "accessLog": "Dziennik dostępu",
+    "maxBody": "Limit przesyłania w MB",
+    "maxBodyHint": "0 oznacza zachowanie domyślnej wartości serwera.",
+    "preview": "Podgląd",
+    "previewFailed": "Nie udało się zbudować konfiguracji."
+  },
+  "tls": {
+    "title": "Certyfikat HTTPS",
+    "hintManaged": "certbot pobiera certyfikat Let's Encrypt dla domen tej strony, a następnie strona przełącza się na HTTPS. certbot odnawia certyfikat i przeładowuje serwer.",
+    "hintText": "certbot pobiera certyfikat Let's Encrypt dla domen tej strony. Dodaj certyfikat do strony samodzielnie. certbot odnawia certyfikat i przeładowuje serwer.",
+    "needCertbot": "Najpierw zainstaluj certbota z jego wtyczką dla tego serwera ze strony Serwer.",
+    "email": "E-mail",
+    "emailHint": "Let's Encrypt wysyła tutaj informacje o problemach. Opcjonalne.",
+    "staging": "Certyfikat testowy",
+    "stagingHint": "Użyj serwera staging Let's Encrypt. Przeglądarki nie będą mu ufać.",
+    "issue": "Pobierz certyfikat",
+    "done": "Certyfikat zapisany"
+  },
+  "config": {
+    "search": "Szukaj plików",
+    "empty": "Brak plików.",
+    "loadFailed": "Nie udało się załadować pliku.",
+    "test": "Przetestuj konfigurację",
+    "testOk": "Konfiguracja jest poprawna",
+    "testFailed": "Konfiguracja zawiera błędy",
+    "content": "Zawartość",
+    "save": "Zapisz",
+    "saveHint": "Cała konfiguracja jest testowana przed przeładowaniem serwera. Uszkodzony plik jest przywracany.",
+    "saved": "Zapisano i przeładowano",
+    "backups_one": "{{count}} kopia zapasowa",
+    "backups_few": "{{count}} kopie zapasowe",
+    "backups_many": "{{count}} kopii zapasowych",
+    "backups_other": "{{count}} kopii zapasowych",
+    "restore": "Przywróć",
+    "restoreTitle": "Przywrócić tę kopię zapasową?",
+    "restoreBody": "Plik zostanie przywrócony do stanu z {{time}}. Obecna zawartość zostanie również zapisana jako kopia zapasowa.",
+    "restored": "Kopia zapasowa przywrócona"
+  },
+  "logs": {
+    "source": "Dziennik",
+    "lines": "Wiersze",
+    "journal": "Dziennik {{server}}",
+    "follow": "Śledź",
+    "stop": "Zatrzymaj",
+    "connecting": "Łączenie...",
+    "ended": "Śledzenie zatrzymane.",
+    "followFailed": "Nie udało się śledzić tego dziennika.",
+    "empty": "Brak wierszy.",
+    "loadFailed": "Nie udało się odczytać dziennika.",
+    "requests": "Żądania",
+    "topPaths": "Najczęściej odwiedzane ścieżki",
+    "topClients": "Najczęściej łączący się klienci"
+  },
+  "server": {
+    "unknown": "nieznany",
+    "atBoot": "Uruchamia się przy starcie",
+    "notInstalled": "Nie zainstalowano",
+    "start": "Uruchom",
+    "stop": "Zatrzymaj",
+    "restart": "Uruchom ponownie",
+    "reload": "Przeładuj",
+    "enable": "Uruchamiaj przy starcie",
+    "disable": "Nie uruchamiaj przy starcie",
+    "boot": "Uruchamiaj przy starcie",
+    "noBoot": "Nie uruchamiaj przy starcie",
+    "done": "{{server}} zakończył działanie",
+    "stopTitle": "Zatrzymać {{server}}?",
+    "stopBody": "Wszystkie strony na nim staną się niedostępne, aż do ponownego uruchomienia.",
+    "install": "Zainstaluj",
+    "installTitle": "Zainstalować {{server}}?",
+    "installBody": "Zostanie zainstalowany za pomocą menedżera pakietów hosta i uruchomiony od razu. Inny serwer WWW na porcie 80 może uniemożliwić jego uruchomienie.",
+    "installed": "{{server}} został zainstalowany",
+    "installCertbot": "Zainstaluj certbota",
+    "certbotInstalled": "certbot został zainstalowany",
+    "certbotPlugins": "Wtyczki: {{plugins}}",
+    "certbotNoPlugins": "Brak wtyczki nginx ani Apache",
+    "certbotHint": "Pobiera certyfikaty Let's Encrypt dla stron nginx i Apache"
+  },
+  "card": {
+    "title": "Serwery WWW",
+    "loading": "Ładowanie...",
+    "refresh": "Odśwież",
+    "empty": "Żaden host nie ma włączonych serwerów WWW.",
+    "summary_one": "{{count}} host | {{down}} wymaga uwagi",
+    "summary_few": "{{count}} hosty | {{down}} wymagają uwagi",
+    "summary_many": "{{count}} hostów | {{down}} wymaga uwagi",
+    "summary_other": "{{count}} hostów | {{down}} wymaga uwagi",
+    "sites_one": "{{count}} witryna",
+    "sites_few": "{{count}} witryny",
+    "sites_many": "{{count}} witryn",
+    "sites_other": "{{count}} witryn"
+  },
+  "companion": {
+    "toggle": "Panel serwerów WWW",
+    "openTab": "Otwórz serwery WWW",
+    "reload": "Przeładuj {{server}}"
+  },
+  "manager": {
+    "title": "Serwery WWW",
+    "disabled": "Włącz serwery WWW dla tego hosta, aby zobaczyć jego witryny tutaj."
+  },
+  "operations": {
+    "status": {
+      "title": "Status serwera WWW"
+    },
+    "listSites": {
+      "title": "Lista witryn"
+    },
+    "test": {
+      "title": "Przetestuj konfigurację serwera WWW"
+    },
+    "reload": {
+      "title": "Przeładuj serwer WWW"
+    },
+    "restart": {
+      "title": "Uruchom ponownie serwer WWW"
+    },
+    "enableSite": {
+      "title": "Włącz witrynę"
+    },
+    "disableSite": {
+      "title": "Wyłącz witrynę"
+    },
+    "deleteSite": {
+      "title": "Usuń witrynę"
+    },
+    "server": "Serwer",
+    "allServers": "Wszystkie",
+    "sites": {
+      "title": "Witryny",
+      "server": "Serwer",
+      "domains": "Domeny",
+      "https": "HTTPS"
+    }
+  }
+}

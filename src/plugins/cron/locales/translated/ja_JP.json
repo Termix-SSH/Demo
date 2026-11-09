@@ -1,0 +1,202 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "ホスト上の cron ジョブを表示、追加、実行できます。スケジュールのプレビューやシステム cron ファイルも利用可能です。"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "back": "戻る",
+    "delete": "削除"
+  },
+  "permissions": {
+    "use": {
+      "title": "Cron の使用",
+      "description": "アクセス可能なホスト上の cron ジョブを表示し、編集可能なホストでは変更できます。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Cron タブからこのホスト上の cron ジョブを管理します。"
+      },
+      "useSudo": {
+        "label": "sudo を使用する",
+        "description": "他のユーザーの crontab や /etc/cron.d の操作に sudo を使用します。ログインユーザーが root の場合はオフにしてください。"
+      },
+      "readOnly": {
+        "label": "読み取り専用",
+        "description": "cron ジョブは表示しますが、このホストでは変更しません。"
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "ホストから Cron を開いてください。",
+    "error": "このホストから cron を読み込めませんでした。",
+    "disabled": "このホストでは Cron が無効になっています。ホスト設定で有効にしてください。",
+    "sudo": "root ログイン、パスワードなしの sudo、または保存された Sudo パスワードが必要です。",
+    "refresh": "更新",
+    "running": "Cron 実行中",
+    "stopped": "Cron 停止中",
+    "readOnly": "読み取り専用",
+    "notInstalled": "未インストール",
+    "notInstalledTitle": "このホストには Cron がインストールされていません",
+    "notInstalledHint": "ホストのパッケージマネージャーで cron または cronie をインストールし、更新してください。",
+    "notRunning": "cron サービスが実行されていないため、ジョブは実行されません。",
+    "viewJobs": "ジョブ",
+    "viewSystem": "システム",
+    "viewLogs": "ログ"
+  },
+  "jobs": {
+    "add": "ジョブを追加",
+    "user": "crontab の所有者",
+    "ownUser": "{{user}} (ログイン)",
+    "search": "ジョブを検索",
+    "editText": "テキストとして編集",
+    "empty": "まだ cron ジョブがありません。",
+    "noMatch": "一致するジョブがありません。",
+    "off": "オフ",
+    "next": "{{time}} に実行",
+    "run": "今すぐ実行",
+    "runTitle": "このジョブを今すぐ実行しますか？",
+    "runDesc": "crontab のユーザーとして {{command}} を1回実行します。2分後に停止します。",
+    "runFailed": "ジョブを実行できませんでした。",
+    "turnOn": "オンにする",
+    "turnOff": "オフにする",
+    "deleteTitle": "このジョブを削除しますか？",
+    "loadFailed": "crontab を読み取れませんでした。",
+    "saveFailed": "crontab を保存できませんでした。",
+    "outputTitle": "ジョブの出力",
+    "exitOk": "完了",
+    "exitCode": "終了コード {{code}}",
+    "noOutput": "ジョブは出力しませんでした。"
+  },
+  "form": {
+    "addTitle": "新しいジョブ",
+    "editTitle": "ジョブを編集",
+    "forUser": "{{user}} の crontab",
+    "label": "ラベル",
+    "labelHint": "ジョブの上部にコメントとして保存されます。",
+    "labelPlaceholder": "毎晩のバックアップ",
+    "command": "コマンド",
+    "commandHint": "ユーザーのホームディレクトリで sh を使用して実行されます。% は cron が送信する入力から始まるため、実際の % を書くには \\% と記述します。",
+    "schedule": "スケジュール",
+    "scheduleHint": "分、時、月の日、月、曜日、または @daily のようなキーワードを入力します。",
+    "scheduleInvalid": "有効なスケジュールではありません。",
+    "nextRuns": "次回の実行予定 ({{zone}}):",
+    "enabled": "有効",
+    "enabledHint": "無効にされたジョブは、コメントとして crontab に残ります。",
+    "saved": "保存しました。"
+  },
+  "presets": {
+    "everyMinute": "毎分",
+    "every5": "5分ごと",
+    "every15": "15分ごと",
+    "hourly": "毎時",
+    "daily": "毎日",
+    "weekly": "毎週",
+    "monthly": "毎月",
+    "reboot": "起動時"
+  },
+  "schedule": {
+    "reboot": "起動時",
+    "everyMinute": "毎分",
+    "everyNMinutes": "{{n}}分ごと",
+    "hourlyAt": "毎時の {{minute}} 分",
+    "everyNHours": "{{n}}時間ごとの {{minute}} 分",
+    "dailyAt": "毎日の {{time}}",
+    "weekdaysAt": "月曜日から金曜日の {{time}}",
+    "weeklyAt": "毎週{{day}}の {{time}}",
+    "monthlyAt": "毎月{{day}}日の {{time}}",
+    "custom": "カスタムスケジュール",
+    "invalid": "有効なスケジュールではありません"
+  },
+  "days": {
+    "0": "日曜日",
+    "1": "月曜日",
+    "2": "火曜日",
+    "3": "水曜日",
+    "4": "木曜日",
+    "5": "金曜日",
+    "6": "土曜日"
+  },
+  "raw": {
+    "title": "テキスト形式の Crontab",
+    "hint": "1行に1つのジョブを入力します。ホストはテキストをチェックし、エラーがある場合は古い crontab を保持します。"
+  },
+  "system": {
+    "add": "新しいファイル",
+    "addTitle": "/etc/cron.d に新しいファイルを作成",
+    "edit": "編集",
+    "name": "ファイル名",
+    "nameHint": "/etc/cron.d/<name> として保存されます。ドットを含む名前は Cron がスキップします。",
+    "nameInvalid": "英数字、-、_ のみを使用してください。",
+    "content": "ファイルの内容",
+    "fileHint": "各ジョブは実行するユーザーを指定します: 分 時 日 月 曜日 ユーザー コマンド。保存前に各行がチェックされます。",
+    "noJobs": "このファイルにはジョブがありません。",
+    "readHint": "一部のファイルは root 権限がないと表示されない場合があります。ここでの変更には、root ログイン、パスワードなしの sudo、または保存された Sudo パスワードが必要です。",
+    "timers_other": "このホストには {{count}} 個の systemd タイマーもあります。Services プラグインで管理できます。",
+    "deleteTitle": "/etc/cron.d/{{name}} を削除しますか？",
+    "deleteDesc": "コピーは /var/lib/termix-cron/backup に保持されます。",
+    "deleted": "{{name}} を削除しました。",
+    "saved": "{{name}} を保存しました。",
+    "loadFailed": "システム cron ファイルを読み取れませんでした。",
+    "saveFailed": "ファイルを保存できませんでした。",
+    "period": {
+      "hourly": "毎時実行",
+      "daily": "毎日実行",
+      "weekly": "毎週実行",
+      "monthly": "毎月実行"
+    }
+  },
+  "logs": {
+    "lines": "行数",
+    "lineCount_other": "{{count}} 行",
+    "source": "{{source}} から",
+    "noSource": "このホストには cron ログが見つかりませんでした。",
+    "empty": "ログ行がありません。",
+    "failed": "Cron ログを読み取れませんでした。"
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "ここでジョブを表示するには、このホストの設定で Cron を有効にしてください。"
+  },
+  "operations": {
+    "list": {
+      "title": "Cron ジョブの一覧"
+    },
+    "enable": {
+      "title": "Cron ジョブを有効にする"
+    },
+    "disable": {
+      "title": "Cron ジョブを無効にする"
+    },
+    "run": {
+      "title": "Cron ジョブを今すぐ実行"
+    },
+    "delete": {
+      "title": "Cron ジョブを削除"
+    },
+    "jobs": {
+      "title": "Cron ジョブ",
+      "schedule": "スケジュール",
+      "command": "コマンド"
+    },
+    "status": {
+      "title": "Cron のステータス"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "ホストを確認中...",
+    "summary_other": "{{hosts}} 台のホストで {{count}} 件のジョブ",
+    "refresh": "再確認",
+    "empty": "ホストで Cron を有効にすると、ここで表示されます。",
+    "stopped": "実行中ではありません",
+    "missing": "インストールされていません",
+    "jobs_other": "{{count}} 件のジョブ",
+    "off": "{{count}} 件が無効"
+  }
+}

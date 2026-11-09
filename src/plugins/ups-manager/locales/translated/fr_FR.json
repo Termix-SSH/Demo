@@ -1,0 +1,246 @@
+{
+  "tab": {
+    "title": "UPS",
+    "noHost": "Ouvrir l'interface UPS depuis un hôte.",
+    "error": "Impossible de lire les données de l'UPS sur cet hôte.",
+    "disabled": "Le gestionnaire UPS est désactivé pour cet hôte. Activez-le dans les paramètres de l'hôte.",
+    "viewOverview": "Vue d'ensemble",
+    "viewHistory": "Historique",
+    "viewEvents": "Événements",
+    "viewCommands": "Commandes",
+    "viewSources": "Appareils"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "failed": "L'opération a échoué."
+  },
+  "state": {
+    "online": "Alimenté secteur",
+    "battery": "Alimenté batterie",
+    "bypass": "Bypass",
+    "off": "Éteint",
+    "unknown": "Inconnu"
+  },
+  "flag": {
+    "low-battery": "Batterie faible",
+    "replace-battery": "Remplacer la batterie",
+    "overload": "Surcharge",
+    "charging": "En charge",
+    "calibrating": "Calibration",
+    "alarm": "Alarme",
+    "boost": "Boost",
+    "trim": "Trim"
+  },
+  "backend": {
+    "nut": "NUT",
+    "apcupsd": "apcupsd",
+    "snmp": "Carte SNMP"
+  },
+  "overview": {
+    "noData": "Aucune donnée disponible.",
+    "stale": "La dernière lecture a échoué : {{error}}",
+    "power": "Alimentation",
+    "charge": "Charge de la batterie",
+    "runtime": "Autonomie restante",
+    "load": "Charge",
+    "nominal": "{{watts}} W nominal",
+    "input": "Tension d'entrée",
+    "output": "Tension de sortie",
+    "batteryVolts": "Tension de la batterie",
+    "temp": "Température",
+    "model": "Modèle",
+    "serial": "Numéro de série",
+    "status": "État",
+    "lastTest": "Dernier auto-test",
+    "readAt": "Dernière lecture",
+    "ago": "Il y a {{time}}"
+  },
+  "history": {
+    "error": "Impossible de charger l'historique.",
+    "24h": "24 heures",
+    "7d": "7 jours",
+    "30d": "30 jours",
+    "empty": "Pas assez de données. Termix lit l'UPS toutes les 30 secondes.",
+    "charge": "Charge de la batterie",
+    "load": "Charge",
+    "runtime": "Autonomie restante",
+    "voltage": "Tension"
+  },
+  "events": {
+    "error": "Impossible de charger les événements.",
+    "empty": "Aucun événement d'alimentation.",
+    "type": {
+      "on-battery": "Alimenté batterie",
+      "on-battery-cleared": "Alimentation rétablie",
+      "low-battery": "Batterie faible",
+      "low-battery-cleared": "Batterie OK",
+      "replace-battery": "Remplacer la batterie",
+      "replace-battery-cleared": "Batterie OK",
+      "overload": "Surcharge",
+      "overload-cleared": "Charge OK",
+      "low-charge": "Charge faible",
+      "low-charge-cleared": "Charge OK",
+      "low-runtime": "Autonomie faible",
+      "low-runtime-cleared": "Autonomie OK",
+      "unreachable": "Inaccessible",
+      "unreachable-cleared": "Accessible",
+      "test-failed": "Problème de test",
+      "test-failed-cleared": "Test OK",
+      "test": "Auto-test",
+      "command": "Commande"
+    }
+  },
+  "commands": {
+    "unsupported": "Seuls les appareils NUT acceptent des commandes.",
+    "error": "Impossible de lister les commandes.",
+    "confirmTitle": "Exécuter {{name}} ?",
+    "confirmText": "Cela peut couper l'alimentation ou modifier le comportement de {{name}}.",
+    "run": "Exécuter",
+    "done": "{{name}} envoyé.",
+    "needLogin": "Ajoutez un utilisateur et un mot de passe NUT à cet appareil pour envoyer des commandes.",
+    "empty": "Ce onduiseur n'a pas de commandes instantanées.",
+    "risky": "Peut couper l'alimentation"
+  },
+  "sources": {
+    "add": "Ajouter un onduiseur",
+    "empty": "Aucun onduiseur configuré sur cet hôte.",
+    "emptyHint": "Ajoutez un appareil NUT ou apcupsd sur cet hôte, ou une carte SNMP accessible depuis cet hôte.",
+    "off": "éteint",
+    "unreachable": "inaccessible",
+    "saved": "Enregistré.",
+    "deleteTitle": "Supprimer {{name}} ?",
+    "deleteText": "Son historique et ses événements seront également supprimés."
+  },
+  "editor": {
+    "addTitle": "Ajouter un onduiseur",
+    "editTitle": "Modifier l'onduiseur",
+    "add": "Ajouter",
+    "backend": "Méthode de lecture",
+    "label": "Nom",
+    "labelPlaceholder": "Onduleur de rack",
+    "target": {
+      "nut": "Appareil NUT",
+      "apcupsd": "Adresse apcupsd",
+      "snmp": "Adresse de la carte"
+    },
+    "targetPlaceholder": {
+      "nut": "ups ou ups@192.168.1.5:3493",
+      "apcupsd": "Laissez vide pour cet hôte",
+      "snmp": "192.168.1.20"
+    },
+    "nutFound": "Trouvé sur cet hôte : {{names}}",
+    "nutMissing": "upsc n'est pas installé sur cet hôte. Installez d'abord le client NUT.",
+    "nutHint": "Le nom issu de upsc -l, ou nom@hôte:port pour un serveur NUT distant.",
+    "apcMissing": "apcaccess n'est pas installé sur cet hôte. Installez d'abord apcupsd.",
+    "apcHint": "Laissez vide pour lire le démon sur cet hôte, ou utilisez hôte:3551.",
+    "snmpMissing": "snmpwalk n'est pas installé sur cet hôte. Installez d'abord les outils net-snmp.",
+    "snmpHint": "Termix interroge la carte depuis cet hôte avec snmpwalk.",
+    "nutUser": "Utilisateur NUT",
+    "nutPassword": "Mot de passe NUT",
+    "nutLoginHint": "Uniquement nécessaire pour envoyer des commandes. La lecture n'en a jamais besoin.",
+    "saved": "Enregistré",
+    "snmpVersion": "Version SNMP",
+    "community": "Communauté",
+    "v3User": "Utilisateur SNMP",
+    "v3Level": "Niveau de sécurité",
+    "v3": {
+      "noAuth": "Aucune authentification",
+      "auth": "Authentification",
+      "authPriv": "Authentification et confidentialité"
+    },
+    "v3AuthProto": "Type d'authentification",
+    "v3AuthPass": "Mot de passe d'authentification",
+    "v3PrivProto": "Type de confidentialité",
+    "v3PrivPass": "Mot de passe de confidentialité",
+    "clearSecrets": "Supprimer les identifiants enregistrés",
+    "clearSecretsHint": "Supprime les identifiants NUT ou SNMP enregistrés pour cet appareil.",
+    "lowCharge": "Alerte batterie faible (%)",
+    "lowChargeHint": "Alerte lorsque la charge est inférieure ou égale à ce seuil en mode batterie.",
+    "lowRuntime": "Alerte autonomie faible (minutes)",
+    "lowRuntimeHint": "Alerte lorsque l'autonomie restante est inférieure ou égale à ce seuil en mode batterie. 0 désactive l'alerte.",
+    "alerts": "Envoyer des alertes",
+    "alertsHint": "Perte d'alimentation, batterie faible, surcharge et problèmes de test.",
+    "enabled": "Lire cet onduleur",
+    "enabledHint": "Désactivez pour arrêter la lecture et conserver l'historique.",
+    "test": "Tester",
+    "testing": "Test en cours...",
+    "testOk": "Fonctionne : {{state}}, charge {{charge}}%, {{runtime}} restants.",
+    "testFailed": "Impossible de lire l'onduleur."
+  },
+  "card": {
+    "title": "Onduleur",
+    "empty": "Aucun onduleur configuré. Activez le gestionnaire d'onduleurs pour un hôte et ajoutez un appareil.",
+    "runtime": "{{time}} restants",
+    "load": "Charge {{value}}%"
+  },
+  "manager": {
+    "title": "Onduleur",
+    "disabled": "Le gestionnaire d'onduleurs est désactivé pour cet hôte."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Gestionnaire d'onduleurs",
+        "description": "Lire les appareils onduleurs de cet hôte et afficher un onglet Onduleur."
+      },
+      "readOnly": {
+        "label": "Onduleur en lecture seule",
+        "description": "Bloquer les modifications et les commandes sur les appareils onduleurs de cet hôte."
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "Utiliser le gestionnaire d'onduleurs",
+      "description": "Voir l'état de l'onduleur et, avec un accès en modification à un hôte, modifier les appareils et envoyer des commandes."
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Lister les appareils onduleurs"
+    },
+    "status": {
+      "title": "État de l'alimentation"
+    },
+    "charge": {
+      "title": "Charge de la batterie"
+    },
+    "runtime": {
+      "title": "Autonomie restante"
+    },
+    "source": "Onduleur",
+    "sourceHint": "L'ID de l'onduleur. Laissez vide pour le premier sur l'hôte.",
+    "selfTest": {
+      "title": "Démarrer l'auto-test de la batterie",
+      "kind": "Type",
+      "quick": "Rapide",
+      "deep": "Profond"
+    },
+    "beeper": {
+      "title": "Configurer le bip de l'onduleur",
+      "mode": "Bip",
+      "mute": "Couper le son",
+      "disable": "Désactiver",
+      "enable": "Activer"
+    },
+    "calibrate": {
+      "title": "Calibrer l'autonomie",
+      "description": "Vide la batterie pour mesurer son autonomie. Les hôtes connectés à cet onduleur perdent leur protection pendant l'opération."
+    },
+    "devices": {
+      "title": "Appareils onduleurs",
+      "state": "État",
+      "charge": "Charge",
+      "load": "Charge",
+      "backend": "Lire avec"
+    },
+    "events": {
+      "onBattery": "Onduleur en mode batterie",
+      "powerRestored": "Alimentation de l'onduleur rétablie"
+    }
+  }
+}

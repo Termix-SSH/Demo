@@ -1,0 +1,239 @@
+{
+  "plugin": {
+    "name": "Certifikáty",
+    "description": "Zobrazujte, vydávejte a obnovujte TLS certifikáty na svých hostitelích pomocí certbot a acme.sh a dostávejte upozornění před jejich vypršením."
+  },
+  "common": {
+    "cancel": "Zrušit",
+    "back": "Zpět"
+  },
+  "permissions": {
+    "use": {
+      "title": "Používat certifikáty",
+      "description": "Zobrazujte certifikáty na hostitelích, ke kterým máte přístup, a upravujte je na hostitelích, které můžete editovat."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Certifikáty",
+        "description": "Spravujte TLS certifikáty na tomto hostiteli z karty Certifikáty."
+      },
+      "useSudo": {
+        "label": "Použít sudo",
+        "description": "Použijte sudo pro čtení a změnu certifikátů. Vypněte, pokud se přihlašujete jako root."
+      },
+      "readOnly": {
+        "label": "Pouze pro čtení",
+        "description": "Zobrazovat certifikáty, ale nikdy je na tomto hostiteli neměnit."
+      },
+      "expiryWarnDays": {
+        "label": "Upozornit před vypršením",
+        "description": "Certifikáty s tímto počtem dnů nebo méně do vypršení se zobrazí jako vypršelé a odešlou upozornění."
+      },
+      "showPanel": {
+        "label": "Zobrazit panel certifikátů v terminálech",
+        "description": "Umožnit otevření panelu certifikátů vedle SSH terminálu tohoto hostitele."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otevírat panel certifikátů s novými terminály",
+        "description": "Zobrazit panel certifikátů vedle každého SSH terminálu, který má Certifikáty zapnuté. Stále jej můžete otevírat a zavírat pomocí tlačítka na pravém okraji."
+      },
+      "companionSide": {
+        "label": "Strana panelu certifikátů",
+        "description": "Kde se panel certifikátů nachází vedle terminálu.",
+        "right": "Vpravo",
+        "left": "Vlevo",
+        "bottom": "Dole"
+      },
+      "companionSize": {
+        "label": "Velikost panelu certifikátů",
+        "description": "Šířka v pixelech, nebo výška, pokud je panel dole. Můžete také přetáhnout jeho okraj."
+      },
+      "companionEdgeButton": {
+        "label": "Zobrazit tlačítko panelu",
+        "description": "Zobrazí malé tlačítko na pravém okraji terminálu, které otevře panel certifikátů."
+      }
+    }
+  },
+  "tab": {
+    "title": "Certifikáty",
+    "noHost": "Otevřete Certifikáty z hostitele.",
+    "error": "Nelze načíst certifikáty z tohoto hostitele.",
+    "disabled": "Certifikáty jsou pro tohoto hostitele vypnuty. Zapněte je v nastavení hostitele.",
+    "sudo": "Změny vyžadují přihlášení jako root, sudo bez hesla nebo uložené sudo heslo na tomto hostiteli.",
+    "refresh": "Obnovit",
+    "readOnly": "Pouze pro čtení",
+    "noClient": "Chybí certbot nebo acme.sh",
+    "viewCertificates": "Certifikáty",
+    "viewInspect": "Prohlédnout",
+    "viewRenewal": "Obnova"
+  },
+  "actions": {
+    "working": "Pracuji. To může trvat několik minut.",
+    "ok": "Hotovo",
+    "failed": "Příkaz selhal.",
+    "noOutput": "Žádný výstup."
+  },
+  "install": {
+    "title": "certbot a acme.sh nejsou na tomto hostiteli nainstalovány",
+    "hint": "Nainstalujte certbot pro získávání a obnovu certifikátů od Let's Encrypt.",
+    "noManager": "Nebyl nalezen žádný podporovaný správce balíčků. Nainstalujte certbot ručně.",
+    "button": "Nainstalovat certbot",
+    "confirm": "Nainstalovat certbot?",
+    "desc": "Tím se certbot nainstaluje pomocí správce balíčků hostitele.",
+    "working": "Instalace...",
+    "done": "certbot je nainstalován."
+  },
+  "certs": {
+    "search": "Hledat certifikáty",
+    "empty": "Zatím žádné certifikáty.",
+    "noMatch": "Žádné certifikáty neodpovídají.",
+    "loadFailed": "Nelze přečíst certifikáty.",
+    "expires": "Vyprší {{date}}",
+    "staging": "Testovací prostředí",
+    "details": "Certifikát",
+    "manage": "Spravovat",
+    "client": "Klient",
+    "path": "Soubor",
+    "authority": "Autorita",
+    "renew": "Obnovit",
+    "renewDone": "Obnoveno {{name}}.",
+    "renewAll": "Obnovit vše",
+    "renewAllDone": "Obnoveny certifikáty, které měly být obnoveny.",
+    "forceRenew": "Obnovit přesto nyní",
+    "dryRun": "Testovací spuštění",
+    "dryRunDone": "Testovací spuštění proběhlo úspěšně.",
+    "revoke": "Zrušit platnost",
+    "revokeTitle": "Zrušit platnost {{name}}?",
+    "revokeDesc": "Autorita ji označí jako neplatnou a odstraní z tohoto hostitele. Vše, co ji stále používá, přestane fungovat.",
+    "revokeDone": "Odvolen {{name}}.",
+    "delete": "Přestat spravovat",
+    "deleteTitle": "Přestat spravovat {{name}}?",
+    "deleteDesc": "Zůstane platná, ale již se nebude obnovovat. certbot také smaže její soubory, acme.sh je ponechá.",
+    "deleteDone": "{{name}} již není spravován."
+  },
+  "expiry": {
+    "expired": "Vypršela platnost",
+    "unknown": "Neznámé",
+    "days_one": "Zbývá {{count}} den",
+    "days_few": "Zbývají {{count}} dny",
+    "days_many": "Zbývá {{count}} dní",
+    "days_other": "Zbývá {{count}} dní"
+  },
+  "issue": {
+    "add": "Vydát certifikát",
+    "title": "Nový certifikát",
+    "save": "Vydát",
+    "done": "Certifikát byl vydán.",
+    "working": "Dotaz na autoritu. To může trvat několik minut.",
+    "client": "Klient",
+    "domains": "Domény",
+    "domainsPlaceholder": "Zadejte doménu a stiskněte Enter",
+    "domainsHint": "První z nich slouží jako název certifikátu.",
+    "challenge": "Výzva",
+    "standalone": "Samostatný",
+    "standaloneHint": "Spustí malý webový server na portu 80, takže žádný jiný proces tento port nemůže používat.",
+    "webroot": "Kořen webu",
+    "webrootHint": "Umístí soubor do složky vašeho webového serveru. Webový server zůstane spuštěný.",
+    "dns": "DNS",
+    "dnsHint": "Přidá DNS záznam prostřednictvím API vašeho poskytovatele. Potřebné pro zástupné znaky.",
+    "webrootPath": "Složka kořene webu",
+    "webrootPathHint": "Musí být uvnitř /var/www, /srv nebo /usr/share/nginx.",
+    "dnsProvider": "Poskytovatel DNS",
+    "dnsProviderCertbot": "Název nainstalovaného DNS pluginu pro certbot, například cloudflare.",
+    "dnsProviderAcme": "Název DNS pro acme.sh bez prefixu dns_, například cf. Jeho API token musí být již nastaven na hostiteli.",
+    "credentials": "Soubor s přihlašovacími údaji",
+    "credentialsHint": "Soubor na hostiteli s vaším API tokenem. Termix ho nikdy nečte.",
+    "email": "E-mail",
+    "emailHint": "Volitelné. Autorita ho používá pro upozornění na vypršení platnosti.",
+    "keyType": "Typ klíče",
+    "staging": "Použít testovací server",
+    "stagingHint": "Pro testování. Certifikát není důvěryhodný a limity rychlosti jsou mnohem vyšší."
+  },
+  "inspect": {
+    "server": "Server",
+    "file": "Soubor",
+    "address": "Adresa",
+    "addressPlaceholder": "example.com",
+    "port": "Port",
+    "path": "Cesta k souboru",
+    "check": "Zkontrolovat",
+    "hint": "Zkontrolujte, co server odesílá přes TLS z pohledu tohoto hostitele, nebo přečtěte soubor s certifikátem na něm.",
+    "failed": "Nelze přečíst certifikát.",
+    "noOpenssl": "openssl není na tomto hostiteli nainstalován.",
+    "trusted": "Důvěryhodný",
+    "notTrusted": "Nedůvěryhodný",
+    "leaf": "Certifikát",
+    "intermediate": "Řetězec {{index}}",
+    "selfSigned": "Sebevydaný",
+    "name": "Název",
+    "issuer": "Vydavatel",
+    "domains": "Domény",
+    "validFrom": "Platný od",
+    "validTo": "Platný do",
+    "keyType": "Klíč",
+    "serial": "Sériové číslo",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Jak tento hostitel obnovuje certifikáty automaticky. Změňte to na hostiteli.",
+    "on": "Zapnuto",
+    "off": "Vypnuto",
+    "timer": "systemd timer",
+    "next": "Další spuštění {{time}}",
+    "cron": "Cron soubor /etc/cron.d/certbot",
+    "certbotOff": "Nebyl nalezen žádný timer ani cron úloha, takže se certifikáty neobnoví automaticky.",
+    "acmeCron": "Cron úloha v crontab",
+    "acmeOff": "Nebyla nalezena žádná cron úloha, takže se certifikáty neobnoví automaticky."
+  },
+  "watch": {
+    "start": "Upozornit mě před vypršením platnosti certifikátů na tomto hostiteli",
+    "stop": "Zastavit upozornění pro tohoto hostitele",
+    "on": "Obdržíte upozornění před vypršením platnosti certifikátů zde.",
+    "off": "Upozornění pro tohoto hostitele jsou vypnuta.",
+    "failed": "Nelze změnit upozornění."
+  },
+  "card": {
+    "title": "Certifikáty",
+    "loading": "Kontrola hostitelů...",
+    "summary_one": "{{count}} certifikát, {{expiring}} vyprší",
+    "summary_few": "{{count}} certifikáty, {{expiring}} vyprší",
+    "summary_many": "{{count}} certifikátů, {{expiring}} vyprší",
+    "summary_other": "{{count}} certifikátů, {{expiring}} vyprší",
+    "refresh": "Zkontrolovat znovu",
+    "empty": "Zapněte Certifikáty pro hostitele, abyste zde viděli jeho certifikáty."
+  },
+  "manager": {
+    "title": "Certifikáty",
+    "disabled": "Zapněte Certifikáty pro tohoto hostitele v jeho nastavení, abyste je zde viděli."
+  },
+  "operations": {
+    "list": {
+      "title": "Seznam certifikátů"
+    },
+    "expiring": {
+      "title": "Vypršelé certifikáty"
+    },
+    "renew": {
+      "title": "Obnovit certifikát"
+    },
+    "renewAll": {
+      "title": "Obnovit všechny certifikáty"
+    },
+    "revoke": {
+      "title": "Zrušit certifikát"
+    },
+    "certificates": {
+      "title": "Certifikáty",
+      "client": "Klient",
+      "domains": "Domény",
+      "daysLeft": "Zbývá dní"
+    }
+  },
+  "nav": {
+    "togglePanel": "Přepnout panel certifikátů"
+  }
+}

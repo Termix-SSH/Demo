@@ -1,0 +1,295 @@
+{
+  "plugin": {
+    "name": "Webové servery",
+    "description": "Spravujte nginx, Apache a Caddy na svojich hostoch: stránky, konfiguráciu, logy a HTTPS, pričom sa každá zmena najprv otestuje."
+  },
+  "common": {
+    "cancel": "Zrušiť",
+    "back": "Späť",
+    "loading": "Načítava sa..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Používať Webové servery",
+      "description": "Zobrazovať webové servery a stránky na hostoch, ku ktorým máte prístup, a meniť ich na hostoch, ktoré viete upravovať."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Webové servery",
+        "description": "Spravujte nginx, Apache a Caddy na tomto hostovi z karty Webové servery."
+      },
+      "useSudo": {
+        "label": "Použiť sudo",
+        "description": "Použiť sudo na čítanie a zmenu webového servera. Vypnite, ak sa prihlasujete ako root."
+      },
+      "readOnly": {
+        "label": "Iba na čítanie",
+        "description": "Zobrazovať stránky, konfiguráciu a logy, ale nikdy ich na tomto hostovi nemeniť."
+      },
+      "showPanel": {
+        "label": "Panel vedľa terminálu",
+        "description": "Nabídnuť panel Webové servery na kartách terminálu tohto hosta."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otvoriť panel s terminálom",
+        "description": "Zobraziť panel Webové servery pri otvorení terminálu na hostovi, ktorý ho má."
+      },
+      "companionSide": {
+        "label": "Poloha panela",
+        "description": "Kde sa nachádza panel vedľa terminálu.",
+        "right": "Vpravo",
+        "left": "Vľavo",
+        "bottom": "Dole"
+      },
+      "companionSize": {
+        "label": "Veľkosť panela",
+        "description": "Šírka panela, alebo jeho výška pri umiestnení dole, v pixeloch."
+      },
+      "companionEdgeButton": {
+        "label": "Tlačidlo na okraji",
+        "description": "Zobraziť malé tlačidlo na okraji terminálu na otvorenie panela."
+      }
+    }
+  },
+  "tab": {
+    "title": "Webové servery",
+    "noHost": "Otvorte Webové servery z hosta.",
+    "error": "Nepodarilo sa načítať webové servery na tomto hostovi.",
+    "disabled": "Webové servery sú pre tohto hosta vypnuté. Zapnite ich v nastaveniach hosta.",
+    "sudo": "Zmeny vyžadujú prihlásenie ako root, sudo bez hesla alebo uložené Sudo Password na tomto hostovi.",
+    "refresh": "Obnoviť",
+    "readOnly": "Iba na čítanie",
+    "noServer": "Nie je nainštalovaný žiadny webový server",
+    "noServerHint": "Nainštalujte nginx, Apache alebo Caddy zo stránky Server.",
+    "openServer": "Otvoriť Server",
+    "viewSites": "Stránky",
+    "viewConfig": "Konfigurácia",
+    "viewLogs": "Logy",
+    "viewServer": "Server"
+  },
+  "actions": {
+    "ok": "Hotovo",
+    "failed": "Zlyhalo",
+    "noOutput": "Žiadny výstup."
+  },
+  "watch": {
+    "start": "Upozorniť ma, keď sa webový server zastaví",
+    "stop": "Zastaviť upozornenia pre tohto hosta",
+    "on": "Dostanete upozornenie, keď sa webový server na tomto hostovi zastaví",
+    "off": "Upozornenia pre tohto hosta sú vypnuté",
+    "failed": "Nepodarilo sa zmeniť upozornenia"
+  },
+  "sites": {
+    "add": "Pridať stránku",
+    "search": "Hľadať stránky",
+    "empty": "Zatiaľ žiadne stránky.",
+    "loadFailed": "Nepodarilo sa načítať stránky.",
+    "off": "Vypnuté",
+    "anyName": "akýkoľvek názov",
+    "form": "Formulár",
+    "certDays_one": "Zostáva {{count}} deň",
+    "certDays_few": "Zostávajú {{count}} dni",
+    "certDays_many": "Zostáva {{count}} dní",
+    "certDays_other": "Zostáva {{count}} dní",
+    "certExpired": "Certifikát vypršal",
+    "enable": "Zapnúť",
+    "disable": "Vypnúť",
+    "enabled": "{{name}} je zapnutý",
+    "disabled": "{{name}} je vypnutý",
+    "delete": "Odstrániť",
+    "deleteTitle": "Odstrániť {{name}}?",
+    "deleteBody": "Súbor sa odstráni a server sa reštartuje. Kópia zostane na hostiteľovi v /var/lib/termix-web-servers/backups.",
+    "deleted": "{{name}} bol odstránený"
+  },
+  "site": {
+    "addTitle": "Nová stránka",
+    "editTitle": "Uložiť {{name}}",
+    "add": "Pridať stránku",
+    "save": "Uložiť",
+    "added": "{{name}} bola pridaná",
+    "saved": "{{name}} bola uložená",
+    "server": "Webový server",
+    "name": "Názov stránky",
+    "nameHint": "Používa sa pre názov súboru a súbory s protokolmi, napríklad example.",
+    "modeForm": "Formulár",
+    "modeText": "Text",
+    "text": "Konfigurácia",
+    "textHint": "Uložením textu sa pre túto stránku vypne formulár, takže sa zachovajú vaše vlastné zmeny.",
+    "type": "Typ",
+    "typeStatic": "Statické súbory",
+    "typeProxy": "Reverzný proxy",
+    "typePhp": "PHP",
+    "typeRedirect": "Presmerovanie",
+    "staticHint": "Poskytuje súbory z priečinka.",
+    "proxyHint": "Posiela požiadavky na aplikáciu bežiacu na tomto alebo inom hostiteľovi.",
+    "phpHint": "Poskytuje súbory z priečinka a spúšťa súbory .php pomocou php-fpm.",
+    "redirectHint": "Presmeruje každého návštevníka na inú adresu.",
+    "domains": "Domény",
+    "domainsHint": "Po každej stlačte Enter. V nginx použite _ na odpovedanie na akýkoľvek názov.",
+    "port": "HTTP port",
+    "root": "Koreň webu",
+    "rootHint": "Priečinok vo vnútri /var/www, /srv, /usr/share/nginx, /opt alebo /home.",
+    "index": "Indexové súbory",
+    "spa": "Jednostránková aplikácia",
+    "spaHint": "Poslať cesty, ktoré nie sú súbormi, na /index.html.",
+    "upstream": "Adresa aplikácie",
+    "upstreamHint": "Kde aplikácia počúva, napríklad http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Presmerovať návštevníkov na",
+    "keepPath": "Zachovať cestu",
+    "keepPathHint": "Poslať /page na rovnakú stránku na novej adrese.",
+    "phpSocket": "php-fpm socket",
+    "phpSocketHint": "Nenašiel sa žiadny php-fpm socket. Nainštalujte php-fpm alebo zadajte hostiteľ:port.",
+    "https": "HTTPS",
+    "httpsHint": "Vyžaduje certifikát. Najprv uložte stránku, potom nižšie stlačte Získať certifikát.",
+    "httpsCaddy": "Caddy si certifikát sám získava a obnovuje.",
+    "httpsPort": "HTTPS port",
+    "certPath": "Súbor certifikátu",
+    "keyPath": "Súbor kľúča",
+    "forceHttps": "Presmerovať HTTP na HTTPS",
+    "gzip": "Komprimovať odpovede",
+    "accessLog": "Prístupový protokol",
+    "maxBody": "Limit nahrávania v MB",
+    "maxBodyHint": "0 ponechá predvolenú hodnotu servera.",
+    "preview": "Náhľad",
+    "previewFailed": "Nepodarilo sa zostaviť konfiguráciu."
+  },
+  "tls": {
+    "title": "HTTPS certifikát",
+    "hintManaged": "certbot získava certifikát Let's Encrypt pre domény tohto webu, potom sa web prepne na HTTPS. certbot ho obnovuje a reštartuje server.",
+    "hintText": "certbot získava certifikát Let's Encrypt pre domény tohto webu. Certifikát potom pridajte do webu sami. certbot ho obnovuje a reštartuje server.",
+    "needCertbot": "Najprv nainštalujte certbot s jeho pluginom pre tento server na stránke Server.",
+    "email": "E-mail",
+    "emailHint": "Let's Encrypt sem posiela správy o problémoch. Voliteľné.",
+    "staging": "Testovací certifikát",
+    "stagingHint": "Použiť testovací server Let's Encrypt. Prehliadače mu nebudú dôverovať.",
+    "issue": "Získať certifikát",
+    "done": "Certifikát uložený"
+  },
+  "config": {
+    "search": "Hľadať v súboroch",
+    "empty": "Žiadne súbory.",
+    "loadFailed": "Nepodarilo sa načítať súbor.",
+    "test": "Otestovať konfiguráciu",
+    "testOk": "Konfigurácia je v poriadku",
+    "testFailed": "Konfigurácia obsahuje chyby",
+    "content": "Obsah",
+    "save": "Uložiť",
+    "saveHint": "Celá konfigurácia sa otestuje pred reštartom servera. Pokazený súbor sa vráti späť.",
+    "saved": "Uložené a reštartované",
+    "backups_one": "{{count}} záloha",
+    "backups_few": "{{count}} zálohy",
+    "backups_many": "{{count}} záloh",
+    "backups_other": "{{count}} záloh",
+    "restore": "Obnoviť",
+    "restoreTitle": "Obnoviť túto zálohu?",
+    "restoreBody": "Súbor sa vráti do stavu z {{time}}. Aktuálny text sa tiež stane zálohou.",
+    "restored": "Záloha obnovená"
+  },
+  "logs": {
+    "source": "Log",
+    "lines": "Riadky",
+    "journal": "Záznamy {{server}}",
+    "follow": "Sledovať",
+    "stop": "Zastaviť",
+    "connecting": "Pripájanie...",
+    "ended": "Sledovanie zastavené.",
+    "followFailed": "Nepodarilo sa sledovať tento log.",
+    "empty": "Žiadne riadky.",
+    "loadFailed": "Nepodarilo sa prečítať log.",
+    "requests": "Požiadavky",
+    "topPaths": "Najčastejšie cesty",
+    "topClients": "Najčastejší klienti"
+  },
+  "server": {
+    "unknown": "neznámy",
+    "atBoot": "Spúšťa sa pri štarte",
+    "notInstalled": "Nie je nainštalovaný",
+    "start": "Spustiť",
+    "stop": "Zastaviť",
+    "restart": "Reštartovať",
+    "reload": "Načítať znova",
+    "enable": "Spúšťať pri štarte",
+    "disable": "Nespúšťať pri štarte",
+    "boot": "Spúšťať pri štarte",
+    "noBoot": "Nespúšťať pri štarte",
+    "done": "{{server}} je hotový",
+    "stopTitle": "Zastaviť {{server}}?",
+    "stopBody": "Všetky weby na ňom budú offline, kým ho znova nespustíte.",
+    "install": "Nainštalovať",
+    "installTitle": "Nainštalovať {{server}}?",
+    "installBody": "Nainštaluje sa pomocou správcu balíkov hostiteľa a spustí sa hneď. Ďalší webový server na porte 80 mu bráni v spustení.",
+    "installed": "{{server}} bol nainštalovaný",
+    "installCertbot": "Nainštalovať certbot",
+    "certbotInstalled": "certbot bol nainštalovaný",
+    "certbotPlugins": "Pluginy: {{plugins}}",
+    "certbotNoPlugins": "Žiadny plugin pre nginx ani Apache",
+    "certbotHint": "Získava certifikáty Let's Encrypt pre weby nginx a Apache"
+  },
+  "card": {
+    "title": "Webové servery",
+    "loading": "Načítava sa...",
+    "refresh": "Obnoviť",
+    "empty": "Žiadny hostiteľ nemá zapnuté webové servery.",
+    "summary_one": "{{count}} hostiteľ | {{down}} potrebuje pozornosť",
+    "summary_few": "{{count}} hostitelia | {{down}} potrebujú pozornosť",
+    "summary_many": "{{count}} hostiteľov | {{down}} potrebuje pozornosť",
+    "summary_other": "{{count}} hostiteľov | {{down}} potrebujú pozornosť",
+    "sites_one": "{{count}} webstránka",
+    "sites_few": "{{count}} webstránky",
+    "sites_many": "{{count}} webstránok",
+    "sites_other": "{{count}} webstránok"
+  },
+  "companion": {
+    "toggle": "Panel webových serverov",
+    "openTab": "Otvoriť webové servery",
+    "reload": "Obnoviť {{server}}"
+  },
+  "manager": {
+    "title": "Webové servery",
+    "disabled": "Zapnite webové servery pre tohoto hostiteľa, aby ste tu videli jeho webstránky."
+  },
+  "operations": {
+    "status": {
+      "title": "Stav webového servera"
+    },
+    "listSites": {
+      "title": "Zoznam webstránok"
+    },
+    "test": {
+      "title": "Otestovať konfiguráciu webového servera"
+    },
+    "reload": {
+      "title": "Obnoviť webový server"
+    },
+    "restart": {
+      "title": "Reštartovať webový server"
+    },
+    "enableSite": {
+      "title": "Zapnúť webstránku"
+    },
+    "disableSite": {
+      "title": "Vypnúť webstránku"
+    },
+    "deleteSite": {
+      "title": "Odstrániť webstránku"
+    },
+    "server": "Server",
+    "allServers": "Všetky",
+    "sites": {
+      "title": "Webstránky",
+      "server": "Server",
+      "domains": "Domény",
+      "https": "HTTPS"
+    }
+  }
+}

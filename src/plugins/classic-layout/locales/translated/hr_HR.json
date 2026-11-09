@@ -16,7 +16,9 @@
     "more": "Više",
     "logout": "Odjava",
     "next": "Dalje",
-    "previous": "Prethodno"
+    "previous": "Prethodno",
+    "showPassword": "Prikaži lozinku",
+    "hidePassword": "Sakrij lozinku"
   },
   "desktopUpdates": {
     "title": "Desktop aplikacija",
@@ -67,7 +69,10 @@
     "resetRailOrder": "Poništi redoslijed",
     "hideFromRail": "Sakrij iz bočne trake",
     "openSettings": "Otvori postavke",
-    "mobileNavigation": "Navigacija"
+    "mobileNavigation": "Navigacija",
+    "allTabs": "Sve kartice",
+    "hideTabBar": "Sakrij traku kartica",
+    "showTabBar": "Prikaži traku kartica"
   },
   "commandPalette": {
     "searchPlaceholder": "Pretraži hostove, naredbe ili postavke...",
@@ -110,7 +115,8 @@
     "noSearchResults": "Nema veza koje odgovaraju pretrazi",
     "rename": "Preimenuj sesiju",
     "forgetConfirm": "Završiti pozadinsku sesiju za {{name}}?",
-    "forget": "Završi sesiju"
+    "forget": "Završi sesiju",
+    "expiringNow": "Ističe sada"
   },
   "placeholders": {
     "apiKeyName": "npr. CI Pipeline",
@@ -158,16 +164,14 @@
     "commandPalette": "Paleta naredbi",
     "done": "Gotovo",
     "clear": "Očisti",
-    "dragToResizeColumns": "Povucite za promjenu veličine stupaca",
     "hostsAvailable": "Dostupni hostovi",
-    "removeSection": "Ukloni odjeljak",
-    "addSection": "Dodaj odjeljak",
-    "allSectionsShown": "Sve je već na nadzornoj ploči.",
+    "addSection": "Dodaj pločice",
     "fromPlugins": "Iz dodataka",
-    "dropHere": "Spustite odjeljak ovdje",
-    "dragToReorder": "Povucite odjeljke za promjenu redoslijeda",
+    "dropHere": "Još nema pločica. Dodajte ih s popisa.",
+    "dragToReorder": "Povucite pločice za pomicanje, a rubove za promjenu veličine",
     "clearActivityConfirm": "Očistiti nedavnu aktivnost?",
-    "resetConfirm": "Vratiti nadzornu ploču na zadani raspored?"
+    "resetConfirm": "Vratiti nadzornu ploču na zadani raspored?",
+    "clearFailed": "Nije moguće obrisati nedavnu aktivnost"
   },
   "admin": {
     "sectionGeneral": "Općenito",
@@ -230,6 +234,9 @@
     "allowPasswordLoginDesc": "Prijava korisničkim imenom i lozinkom",
     "externalAutoProvision": "Automatsko stvaranje vanjskih računa",
     "externalAutoProvisionDesc": "Stvori račun prvi put kada se netko prijavi putem vanjske prijave poput SSO-a ili LDAP-a. Kada je isključeno, samo osobe koje već imaju račun mogu se prijaviti na taj način",
+    "credentialStorage": "Dopusti spremanje lozinki i ključeva",
+    "credentialStorageOff": "Spremanje lozinki i ključeva je isključeno na ovom poslužitelju. Ostavite ih praznima, a Termix će vas pitati za njih pri povezivanju.",
+    "credentialStorageDesc": "Kada je isključeno, nitko ne može spremiti lozinku ili privatni ključ na domaćinu ili vjerodajnici, a Termix će vas tražiti za njih pri povezivanju. Već spremljene prijave ostaju do njihova uklanjanja.",
     "secondFactorAfterExternalLogin": "Zatraži drugi faktor nakon vanjskih prijava (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Kada je isključeno, drugi faktor se traži samo nakon prijave lozinkom i drugih lokalnih prijava, kao i prije. Kada je uključeno, traži se nakon svake metode prijave, uključujući SSO i LDAP.",
     "allowPasswordReset": "Dopusti resetiranje lozinke",
@@ -281,6 +288,13 @@
     "apiKeyName": "Naziv",
     "apiKeyUser": "Korisnik",
     "apiKeySelectUser": "Odaberite korisnika...",
+    "apiKeyScope": "Pristup",
+    "apiKeyScopeFull": "Sve što korisnik može raditi",
+    "apiKeyScopeRead": "Samo za čitanje",
+    "apiKeyScopeRun": "Izvršavanje radnji",
+    "apiKeyScopeHint": "Ključevi za radnje imaju pristup samo Termix radnjama i MCP poslužitelju, ništa drugo.",
+    "apiKeyScopeActionsRead": "Radnje, samo za čitanje",
+    "apiKeyScopeActionsRun": "Radnje",
     "apiKeyExpiresAt": "Ističe",
     "createKey": "Stvori ključ",
     "apiKeyNoExpiry": "Bez isteka",
@@ -319,6 +333,10 @@
     "deleteUserFailed": "Neuspješno brisanje korisnika",
     "deleteUserSuccess": "Korisnik \"{{username}}\" je obrisan",
     "deleteRoleSuccess": "Uloga \"{{name}}\" je obrisana",
+    "deleteRoleFailed": "Uloga se nije mogla izbrisati",
+    "roleNamePlaceholder": "developer",
+    "roleDisplayNamePlaceholder": "Developer",
+    "unknownError": "Nepoznata pogreška",
     "revokeKeySuccess": "Ključ \"{{name}}\" je opozvan",
     "revokeKeyFailed": "Neuspješno opozivanje ključa",
     "copiedToClipboard": "Kopirano u međuspremnik",
@@ -361,6 +379,7 @@
     "unlinkAccountFailed": "Odspajanje vanjske prijave nije uspjelo",
     "updateRegistrationFailed": "Ažuriranje postavki registracije nije uspjelo",
     "updatePasswordLoginFailed": "Ažuriranje postavki prijave lozinkom nije uspjelo",
+    "updateCredentialStorageFailed": "Ažuriranje postavke pohrane vjerodajnica nije uspjelo",
     "updateSecondFactorAfterExternalLoginFailed": "Ažuriranje postavki drugog faktora nije uspjelo",
     "updatePasswordResetFailed": "Ažuriranje postavki poništavanja lozinke nije uspjelo",
     "sessionTimeoutRange2": "Vrijeme isteka sesije mora biti između 1 i 720 sati",
@@ -683,7 +702,8 @@
         "tryBetaTitle": "Isprobajte nove značajke unaprijed",
         "tryBetaDescription": "Pridružite se beta programu u Ažuriranjima.",
         "sendBetaFeedback": "Pošaljite povratne informacije o beta verziji",
-        "openUpdates": "Ažuriranja"
+        "openUpdates": "Ažuriranja",
+        "hexLabel": "hex"
       }
     }
   },
@@ -769,6 +789,11 @@
       "allPluginsBeta": "Koristi beta verzije za sve dodatke",
       "allPluginsStable": "Svi dodatci natrag na stabilne",
       "saveFailed": "Promjena se nije mogla spremiti"
+    },
+    "user": {
+      "hostRows": {
+        "label": "Broj redaka za hostove"
+      }
     }
   },
   "hostDefaults": {
@@ -795,6 +820,15 @@
   "sharing": {
     "revokeConfirm": "Ukloniti pristup za {{name}}?",
     "revoke": "Ukloni pristup",
+    "deviceLogin": {
+      "label": "Prijava samo na ovom uređaju",
+      "none": "Ništa",
+      "hint": "Ostaje na ovom uređaju i nikada se ne šalje na poslužitelj. Koristi se prvo, a veze se pokreću s ovog uređaja.",
+      "noCredentials": "Dodajte vjerodajnicu s opcijom Zadrži samo na ovom uređaju da biste je koristili ovdje.",
+      "saved": "Prijava uređaja spremljena",
+      "keepOnDevice": "Zadrži samo na ovom uređaju",
+      "keepOnDeviceDesc": "Lozinka ili ključ se nikada ne sinkroniziraju na poslužitelj. Koristite ih za prijavu s uređaja na zajedničkim poslužiteljima."
+    },
     "folderLogin": {
       "action": "Postavi osobnu prijavu za dijeljene hostove",
       "title": "Osobna prijava za ovu mapu",
@@ -836,7 +870,10 @@
     "pickHost": "Odaberite poslužitelj za uređivanje",
     "pickCredential": "Odaberite vjerodajnicu za uređivanje",
     "pickDefaults": "Odaberite razinu zadanih vrijednosti za uređivanje",
-    "pickHint": "Sve o vezi nalazi se ovdje, grupirano radi lakšeg pronalaženja."
+    "pickHint": "Sve o vezi nalazi se ovdje, grupirano radi lakšeg pronalaženja.",
+    "clearChoice": "Izbriši",
+    "proxyPathTarget": "cilj",
+    "hostCopyName": "{{name}} (kopija)"
   },
   "permissions": {
     "branding": {
@@ -849,6 +886,33 @@
     "presetIntro": "Odaberite koliko će se prikazivati na zaslonu.",
     "presetChangeLater": "Možete prebaciti predloške ili promijeniti bilo koju pojedinačnu postavku kasnije u Postavkama, pod sučeljem.",
     "appearanceTitle": "Prilagodite ga sebi",
-    "appearanceIntro": "Odaberite temu, naglašenu boju, font i jezik. Promjene se odmah vide, a možete ih kasnije promijeniti u Postavkama."
+    "appearanceIntro": "Odaberite temu, naglašenu boju, font i jezik. Promjene se odmah vide, a možete ih kasnije promijeniti u Postavkama.",
+    "hostRows": {
+      "title": "Kako bi trebale funkcionirati retke poslužitelja?",
+      "intro": "S uključenim dodatcima, svaki redak poslužitelja može imati mnogo gumba. Odaberite kako želite pristupiti alatima poslužitelja.",
+      "buttons": "Gumbi za povezivanje",
+      "buttonsDesc": "Gumb za svaki alat u svakom retku hosta, kao prije. Stranica hosta ostaje u izborniku hosta.",
+      "both": "Gumbi i gumb za stranicu hosta",
+      "bothDesc": "Zadrži gumbe i dodaj jedan za stranicu hosta. Alati se otvaraju unutar stranice hosta.",
+      "page": "Samo stranica hosta",
+      "pageDesc": "Bez gumba u retcima. Klik na host otvara njegovu stranicu, sa svim alatima u jednoj kartici.",
+      "clickOpensPage": "Klik otvara stranicu hosta",
+      "changeLater": "Ovo možete kasnije promijeniti u Prilagodi bočnu traku."
+    },
+    "accentHex": "hex"
+  },
+  "hostTools": {
+    "mode": "Otvori alate hosta u",
+    "modeDesc": "Gdje se otvaraju gumbi za Docker, Datoteke i druge alate. Stranica hosta sadrži sve alate za host u jednoj kartici. S opcijom Samo stranica hosta, retci hosta nemaju gumbe za povezivanje, a klik otvara stranicu hosta.",
+    "modeTab": "Vlastiti jezičak",
+    "modePage": "Stranica hosta",
+    "rowButtons": "Gumbi na redovima hostova",
+    "modeOnly": "Samo stranica hosta",
+    "clickOpens": "Klik otvara",
+    "clickOpensDesc": "Što pokreće klik na host. Za pojedini host odaberite drugu opciju iz njegovog izbornika.",
+    "clickAuto": "Prvi način povezivanja",
+    "useDefaultNamed": "Zadano ({{name}})",
+    "useDefaultButtons": "Koristi zadane gumbe",
+    "perHostHint": "Da ih promijenite za pojedini host, koristite opciju Gumbi na redovima hostova u njegovom izborniku."
   }
 }

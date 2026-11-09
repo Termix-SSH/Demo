@@ -26,11 +26,6 @@ import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ExternalLink, Plug, X, Pencil, Check } from "lucide-react";
 
-/** Core badge labels; plugin tabs are labelled by their registered title. */
-const CORE_TYPE_LABELS: Record<string, string> = {
-  files: "Files",
-};
-
 /** Saved connection tabs: the ones reopened after login. */
 function isConnectionTabType(type: TabType): boolean {
   return isPersistentTabType(type);
@@ -67,11 +62,11 @@ function sessionsUnchanged(
   return true;
 }
 
-function formatExpiry(updatedAt: string): string {
-  const TTL_MS = 30 * 60 * 1000;
+/** Time left before a background session ends, or null once it is due. */
+function expiryRemaining(updatedAt: string, ttlMinutes: number): string | null {
   const elapsed = Date.now() - new Date(updatedAt).getTime();
-  const remaining = TTL_MS - elapsed;
-  if (remaining <= 0) return "expiring";
+  const remaining = ttlMinutes * 60 * 1000 - elapsed;
+  if (remaining <= 0) return null;
   return formatDuration(remaining);
 }
 
@@ -119,8 +114,8 @@ function ConnectionRow({
   }
 
   const registered = getTabType(tabType)?.titleKey;
-  const typeLabel =
-    CORE_TYPE_LABELS[tabType] ?? (registered ? t(registered) : tabType);
+  // Tab types are labelled by their registered title.
+  const typeLabel = registered ? t(registered) : tabType;
   const stop = (e: React.PointerEvent) => e.stopPropagation();
 
   return (
@@ -514,7 +509,7 @@ export function ConnectionsPanel({
             const host = record.hostId
               ? allHosts.find((h) => h.id === String(record.hostId))
               : undefined;
-            const expiresIn = formatExpiry(record.updatedAt);
+            const expiresIn = expiryRemaining(record.updatedAt, persistMinutes);
 
             return (
               <ConnectionRow
@@ -524,7 +519,11 @@ export function ConnectionsPanel({
                 faded
                 tabType={record.tabType}
                 name={host?.name ?? record.label}
-                subLabel={t("connections.expiresIn", { duration: expiresIn })}
+                subLabel={
+                  expiresIn
+                    ? t("connections.expiresIn", { duration: expiresIn })
+                    : t("connections.expiringNow")
+                }
                 icon={tabIcon(record.tabType as TabType)}
                 onSwitch={() => {
                   const liveSession = sessionByInstanceId.get(record.id);

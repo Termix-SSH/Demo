@@ -1,0 +1,211 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "הפעל פלייבוקים ופקודות אד-הוק של Ansible מארח בקרה, עם מלאי המבוסס על הארחים שלך ב-Termix."
+  },
+  "common": {
+    "save": "שמור",
+    "cancel": "ביטול",
+    "back": "חזרה",
+    "delete": "מחק"
+  },
+  "permissions": {
+    "use": {
+      "title": "השתמש ב-Ansible",
+      "description": "צפה בפלייבוקים ובריצות על ארחי בקרה שאתה יכול להגיע אליהם. ערוך קבצים והפעל Ansible על ארחים שאתה יכול לערוך."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "השתמש בארח זה כארח בקרה ל-Ansible. Ansible חייב להיות מותקן עליו."
+      },
+      "projectDir": {
+        "label": "תיקיית פרויקט",
+        "description": "התיקייה בארח זה עם הפלייבוקים, התפקידים (roles) וקובץ ה-ansible.cfg שלך.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "קובץ סיסמת Vault",
+        "description": "קובץ בארח זה עם סיסמת ה-Ansible Vault. השאר ריק אם אינך משתמש ב-Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "לקריאה בלבד",
+        "description": "הצג פלייבוקים וריצות אך לעולם אל תערוך קבצים או תתחיל ריצות בארח זה."
+      },
+      "alertRuns": {
+        "label": "התרע כאשר ריצה נכשלת",
+        "description": "שלח התראה כאשר ריצה בארח זה מסתיימת בכישלון או באובדן. נבדק כאשר מצב הריצה נקרא."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "פתח את Ansible מארח.",
+    "error": "לא ניתן היה לטעון את Ansible מארח זה.",
+    "disabled": "Ansible כבוי עבור ארח זה. הפעל אותו בהגדרות הארח.",
+    "refresh": "רענן",
+    "readOnly": "לקריאה בלבד",
+    "notInstalled": "Ansible לא מותקן",
+    "notInstalledTitle": "Ansible לא מותקן בארח זה",
+    "notInstalledHint": "התקן את ansible-core בארח זה, למשל באמצעות pipx או מנהל החבילות שלך, ואז רענן.",
+    "noSshpass": "sshpass לא מותקן בארח זה. ארחים שנכנסים עם סיסמה ייכשלו.",
+    "viewPlaybooks": "פלייבוקים",
+    "viewRuns": "ריצות",
+    "viewAdhoc": "אד-הוק",
+    "viewFacts": "עובדות"
+  },
+  "files": {
+    "add": "קובץ חדש",
+    "search": "חפש קבצים",
+    "empty": "אין עדיין קבצים בתיקיית הפרויקט.",
+    "noMatch": "אין קבצים תואמים.",
+    "noProject": "התיקייה {{dir}} אינה קיימת בארח זה. צור אותה, או הגדר תיקיית פרויקט אחרת בהגדרות הארח.",
+    "listFailed": "לא ניתן היה לרשום את קבצי הפרויקט.",
+    "loadFailed": "לא ניתן היה לקרוא את הקובץ הזה.",
+    "saved": "הקובץ נשמר",
+    "saveFailed": "לא ניתן היה לשמור את הקובץ הזה.",
+    "playbook": "פלייבוק",
+    "run": "הפעל",
+    "newTitle": "קובץ חדש",
+    "name": "שם קובץ",
+    "nameHint": "נתיב בתוך תיקיית הפרויקט, כמו site.yml או roles/web/tasks/main.yml.",
+    "hint": "פלייבוק נבדק לתחביר לפני שהוא נשמר. הקובץ הישן נשאר אם הבדיקה נכשלת.",
+    "text": "תוכן הקובץ",
+    "deleteTitle": "למחוק את הקובץ הזה?"
+  },
+  "targets": {
+    "search": "חפש ארחים",
+    "addShown": "הצג מוספים",
+    "clear": "נקה",
+    "empty": "לא נמצאו ארחים.",
+    "count": "{{count}} נבחרו",
+    "failed": "לא ניתן היה לטעון את הארחים שלך."
+  },
+  "run": {
+    "title": "הפעל את {{playbook}}",
+    "start": "הפעל",
+    "startCheck": "הפעל במצב בדיקה",
+    "startFailed": "לא ניתן היה להפעיל את ההרצה.",
+    "source": "מארחים",
+    "sourceProject": "מלאי הפרויקט",
+    "sourceTermix": "מארחי Termix",
+    "sourceProjectHint": "השתמש במלאי מ-ansible.cfg, או בקובץ בפרויקט.",
+    "sourceTermixHint": "בחר מארחים מ-Termix. תיקיות הופכות לקבוצות folder_ ותגיות הופכות לקבוצות tag_. כולן נמצאות בקבוצה termix.",
+    "inventory": "קובץ מלאי",
+    "inventoryHint": "נתיב בתוך תיקיית הפרויקט. השאר ריק כדי להשתמש ב-ansible.cfg.",
+    "check": "מצב בדיקה",
+    "checkHint": "הצג מה היה משתנה ללא ביצוע שינויים.",
+    "diff": "הצג הבדלים",
+    "diffHint": "הצג את השינויים שבוצעו בקבצים.",
+    "become": "הפעל כ-root",
+    "becomeHint": "השתמש ב-sudo במארחים. סיסמת Sudo שמורה משמשת למארחי Termix.",
+    "limit": "הגבלה",
+    "limitHint": "הפעל רק על מארחים או קבוצות אלו.",
+    "verbosity": "רמת פירוט",
+    "verbosityOff": "רגיל",
+    "tags": "תגיות",
+    "skipTags": "דלג על תגיות",
+    "extraVars": "משתנים נוספים",
+    "extraVarsHint": "מפתח=ערך אחד בשורה."
+  },
+  "runs": {
+    "title": "הרצה",
+    "empty": "אין הרצות עדיין.",
+    "loadFailed": "לא ניתן היה לטעון את ההרצות.",
+    "stop": "עצור",
+    "stopFailed": "לא ניתן היה לעצור את ההרצה.",
+    "deleteTitle": "למחוק את ההרצה הזו?",
+    "deleteFailed": "לא ניתן היה למחוק את ההרצה.",
+    "checkMode": "בדיקה",
+    "truncated": "מוצג סוף פלט ארוך.",
+    "noOutput": "אין פלט עדיין.",
+    "state": {
+      "running": "מפעיל",
+      "ok": "הושלם",
+      "failed": "נכשל",
+      "cancelled": "הופסק",
+      "lost": "אבד"
+    },
+    "kind": {
+      "playbook": "ספר משחקים",
+      "adhoc": "Ad-hoc",
+      "facts": "עובדות"
+    },
+    "recap": {
+      "host": "מארח",
+      "ok": "אישור",
+      "changed": "שונה",
+      "unreachable": "לא נגיש",
+      "failed": "נכשל",
+      "skipped": "דלג"
+    }
+  },
+  "adhoc": {
+    "hint": "הפעל מודול אחד על מארחים, כמו ansible all -m ping.",
+    "pattern": "תבנית מארחים",
+    "patternHint": "מארח, קבוצה או כל.",
+    "module": "מודול",
+    "moduleHint": "למשל ping, command, shell, apt או systemd.",
+    "args": "ארגומנטים",
+    "argsHint": "עבור command ו-shell זהו הפקודה. עבור מודולים אחרים אלו זוגות מפתח=ערך.",
+    "run": "הפעל"
+  },
+  "facts": {
+    "hint": "אסוף עובדות ממארחים עם מודול setup. דורש מארחי Termix כך שלכל אחד יש התחברות.",
+    "gather": "אסוף עובדות",
+    "gathering": "מאסוף...",
+    "failed": "לא ניתן היה לאסוף עובדות.",
+    "failedHost": "נכשל",
+    "none": "לא חזרו עובדות. פתח את ההרצה כדי לראות מדוע.",
+    "col": {
+      "host": "מארח",
+      "os": "מערכת",
+      "kernel": "ליבה",
+      "cpu": "מעבדים",
+      "memory": "זיכרון",
+      "address": "כתובת",
+      "uptime": "זמן פעולה"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "רשימת ספרי עבודה"
+    },
+    "run": {
+      "title": "הפעלת ספר עבודה",
+      "playbook": "ספר עבודה",
+      "limit": "הגבלה",
+      "tags": "תגיות",
+      "check": "מצב בדיקה"
+    },
+    "runs": {
+      "title": "רשימת הפעלות",
+      "resource": "הפעלות",
+      "started": "התחיל",
+      "check": "מצב בדיקה"
+    },
+    "failed": {
+      "title": "הפעלות שנכשלו"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "בודק מארחים...",
+    "summary_one": "{{count}} הפעלה שנכשלה ב-{{hosts}} מארחים",
+    "summary_two": "{{count}} הפעלות שנכשלו ב-{{hosts}} מארחים",
+    "summary_other": "{{count}} הפעלות שנכשלו ב-{{hosts}} מארחים",
+    "refresh": "בדיקה שוב",
+    "empty": "הפעל את Ansible עבור מארח כדי לראות את ההפעלות שלו כאן.",
+    "failed_one": "{{count}} נכשל",
+    "failed_two": "{{count}} נכשלו",
+    "failed_other": "{{count}} נכשלו",
+    "running_one": "{{count}} פועל",
+    "running_two": "{{count}} פועלים",
+    "running_other": "{{count}} פועלים",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "אין הפעלות עדיין"
+  }
+}

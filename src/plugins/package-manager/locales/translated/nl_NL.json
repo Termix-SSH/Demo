@@ -1,0 +1,216 @@
+{
+  "plugin": {
+    "name": "Pakketten",
+    "description": "Bekijk en installeer updates op je hosts, zoek, installeer en verwijder pakketten, en lees de pakketgeschiedenis."
+  },
+  "common": {
+    "cancel": "Annuleren",
+    "back": "Terug"
+  },
+  "permissions": {
+    "use": {
+      "title": "Pakketten gebruiken",
+      "description": "Bekijk pakketten en updates op hosts die je kunt bereiken, en pas ze aan op hosts die je kunt bewerken."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Pakketten",
+        "description": "Beheer pakketten en updates op deze host vanuit het tabblad Pakketten."
+      },
+      "useSudo": {
+        "label": "Sudo gebruiken",
+        "description": "Gebruik sudo om pakketten te installeren, bij te werken en te verwijderen. Zet dit uit als je inlogt als root."
+      },
+      "readOnly": {
+        "label": "Alleen-lezen",
+        "description": "Toon pakketten en updates, maar pas ze nooit aan op deze host."
+      },
+      "showPanel": {
+        "label": "Toon updatespaneel in terminals",
+        "description": "Laat het updatespaneel openen naast de SSH-terminal van deze host."
+      },
+      "alertUpdates": {
+        "label": "Waarschuwen bij beveiligingsupdates",
+        "description": "Stuur een waarschuwing als deze host beveiligingsupdates heeft of een herstart nodig heeft. Wordt gecontroleerd wanneer updates worden gelezen, ongeveer eenmaal per uur."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Open het updatespaneel met nieuwe terminals",
+        "description": "Toon het updatespaneel naast elke SSH-terminal die Pakketten heeft ingeschakeld. Je kunt het nog steeds openen en sluiten via de knop aan de rechterkant."
+      },
+      "companionSide": {
+        "label": "Positie updatespaneel",
+        "description": "Waar het updatespaneel naast een terminal staat.",
+        "right": "Rechts",
+        "left": "Links",
+        "bottom": "Onder"
+      },
+      "companionSize": {
+        "label": "Grootte updatespaneel",
+        "description": "Breedte in pixels, of hoogte wanneer het onderaan staat. Je kunt de rand ook verslepen."
+      },
+      "companionEdgeButton": {
+        "label": "Toon paneelknop",
+        "description": "Toon een kleine knop aan de rechterkant van een terminal die het updatespaneel opent."
+      }
+    }
+  },
+  "tab": {
+    "title": "Pakketten",
+    "noHost": "Open Pakketten vanuit een host.",
+    "error": "Kon pakketten van deze host niet laden.",
+    "disabled": "Pakketten is uitgeschakeld voor deze host. Schakel het in via de host-instellingen.",
+    "sudo": "Wijzigingen vereisen een root-login, sudo zonder wachtwoord of een opgeslagen Sudo-wachtwoord op deze host.",
+    "refresh": "Vernieuwen",
+    "readOnly": "Alleen-lezen",
+    "noManager": "Geen pakketbeheerder",
+    "noManagerTitle": "Geen ondersteunde pakketbeheerder gevonden",
+    "noManagerHint": "Pakketten werkt met apt, dnf, yum, zypper, pacman en apk.",
+    "indexAge": "Index vernieuwd {{ago}} geleden",
+    "reboot": "Deze host moet opnieuw worden opgestart om een update af te ronden.",
+    "viewUpdates": "Updates",
+    "viewInstalled": "Geïnstalleerd",
+    "viewSearch": "Zoeken",
+    "viewHistory": "Geschiedenis",
+    "viewRepos": "Repositories"
+  },
+  "actions": {
+    "working": "{{action}} wordt uitgevoerd. Dit kan enkele minuten duren.",
+    "ok": "Klaar",
+    "failed": "De pakketbeheerder is mislukt.",
+    "noOutput": "Geen uitvoer.",
+    "refresh": {
+      "label": "Index vernieuwen",
+      "confirm": "Pakketindex vernieuwen?",
+      "desc": "Downloadt de nieuwste pakketlijsten.",
+      "done": "De pakketindex is bijgewerkt."
+    },
+    "update": {
+      "label": "Bijwerken",
+      "confirm_one": "{{names}} bijwerken?",
+      "confirm_other": "{{count}} pakketten bijwerken?",
+      "desc": "Installeert de nieuwste versie van {{names}}.",
+      "done": "{{names}} bijgewerkt."
+    },
+    "upgrade-all": {
+      "label": "Alles upgraden",
+      "confirm": "Alle pakketten upgraden?",
+      "desc": "Vernieuwt de pakketindex en installeert alle updates. Diensten kunnen opnieuw worden gestart tijdens het uitvoeren.",
+      "done": "Alle pakketten zijn bijgewerkt."
+    },
+    "install": {
+      "label": "Installeren",
+      "confirm": "{{names}} installeren?",
+      "desc": "Installeert {{names}} en alle benodigde afhankelijkheden.",
+      "done": "{{names}} geïnstalleerd."
+    },
+    "remove": {
+      "label": "Verwijderen",
+      "confirm": "{{names}} verwijderen?",
+      "desc": "Verwijdert {{names}} van deze host. Programma's die ervan afhankelijk zijn, kunnen stoppen met werken.",
+      "done": "{{names}} verwijderd."
+    },
+    "hold": {
+      "label": "Op deze versie vastzetten",
+      "confirm": "{{names}} vastzetten?",
+      "desc": "Updates worden voor {{names}} overgeslagen totdat je het vrijgeeft.",
+      "done": "{{names}} is vastgezet."
+    },
+    "unhold": {
+      "label": "Vastzetting opheffen",
+      "confirm": "{{names}} vrijgeven?",
+      "desc": "{{names}} ontvangt weer updates.",
+      "done": "{{names}} ontvangt weer updates."
+    }
+  },
+  "updates": {
+    "search": "Updates filteren",
+    "count_one": "{{count}} update",
+    "count_other": "{{count}} updates",
+    "countSecurity_one": "{{count}} update, waarvan {{security}} beveiligingsupdates",
+    "countSecurity_other": "{{count}} updates, waarvan {{security}} beveiligingsupdates",
+    "updatePicked_one": "{{count}} pakket updaten",
+    "updatePicked_other": "{{count}} pakketten updaten",
+    "updateOne": "Updaten",
+    "pick": "{{name}} selecteren",
+    "security": "Beveiliging",
+    "empty": "Alles is bijgewerkt.",
+    "noMatch": "Geen updates gevonden.",
+    "loadFailed": "Updates konden niet worden opgehaald."
+  },
+  "installed": {
+    "search": "Geïnstalleerde pakketten filteren",
+    "all": "Alles",
+    "held": "Vastgezet",
+    "heldBadge": "Vastgezet",
+    "empty": "Geen pakketten gevonden.",
+    "loadFailed": "Geïnstalleerde pakketten konden niet worden opgehaald."
+  },
+  "search": {
+    "placeholder": "Pakketten zoeken",
+    "button": "Zoeken",
+    "hint": "Zoek in de repositories van de host naar een pakket om te installeren.",
+    "empty": "Niets gevonden.",
+    "installed": "Geïnstalleerd",
+    "failed": "Zoeken mislukt."
+  },
+  "history": {
+    "empty": "Geen pakketgeschiedenis gevonden.",
+    "loadFailed": "Pakketgeschiedenis kon niet worden opgehaald."
+  },
+  "repos": {
+    "hint": "De repositories waaruit deze host pakketten installeert. Pas deze aan op de host zelf.",
+    "empty": "Geen repositories gevonden.",
+    "off": "Uit",
+    "loadFailed": "Repositories konden niet worden opgehaald."
+  },
+  "card": {
+    "title": "Pakketupdates",
+    "loading": "Hosts controleren...",
+    "summary_one": "{{count}} update op {{hosts}} hosts",
+    "summary_other": "{{count}} updates op {{hosts}} hosts",
+    "refresh": "Opnieuw controleren",
+    "empty": "Schakel Pakketten in voor een host om de updates hier te zien.",
+    "security_one": "{{count}} beveiligingsupdate",
+    "security_other": "{{count}} beveiligingsupdates",
+    "reboot": "Herstart vereist",
+    "updates_one": "{{count}} update",
+    "updates_other": "{{count}} updates",
+    "upToDate": "Bijgewerkt"
+  },
+  "manager": {
+    "title": "Pakketten",
+    "disabled": "Schakel Pakketten in voor deze host in de instellingen om de updates hier te zien."
+  },
+  "operations": {
+    "list": {
+      "title": "Pakketupdates weergeven"
+    },
+    "updates": {
+      "title": "Aanstaande updates",
+      "resource": "Aanstaande updates"
+    },
+    "upgradeAll": {
+      "title": "Alle pakketten upgraden"
+    },
+    "install": {
+      "title": "Pakketten installeren"
+    },
+    "remove": {
+      "title": "Verwijder pakketten"
+    },
+    "package": "Pakketten",
+    "packageHint": "Eén of meer pakketnamen, gescheiden door spaties.",
+    "resource": {
+      "current": "Geïnstalleerd",
+      "available": "Beschikbaar",
+      "repo": "Repository"
+    }
+  },
+  "nav": {
+    "togglePanel": "Schakel updatespaneel"
+  }
+}

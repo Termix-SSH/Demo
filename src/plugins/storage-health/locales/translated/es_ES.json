@@ -1,0 +1,222 @@
+{
+  "tab": {
+    "title": "Almacenamiento",
+    "noHost": "Abre el almacenamiento desde un host.",
+    "disabled": "El estado del almacenamiento está desactivado para este host. Actívalo en la configuración del host.",
+    "error": "No se ha podido cargar el estado del almacenamiento",
+    "viewDrives": "Unidades",
+    "viewPools": "Pools y arrays",
+    "viewEvents": "Eventos",
+    "viewSettings": "Configuración",
+    "readAgo": "Lectura hace {{time}}",
+    "stale": "No se ha podido leer el host, se muestra la última lectura. {{error}}"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "failed": "Eso no ha funcionado",
+    "save": "Guardar",
+    "refresh": "Leer ahora",
+    "back": "Atrás"
+  },
+  "card": {
+    "title": "Estado del almacenamiento",
+    "empty": "Aún no se está monitorizando ningún host. Activa el estado del almacenamiento en la configuración de un host.",
+    "drives_one": "{{count}} unidad",
+    "drives_many": "{{count}} unidades",
+    "drives_other": "{{count}} unidades",
+    "problems_one": "{{count}} problema abierto",
+    "problems_many": "{{count}} problemas abiertos",
+    "problems_other": "{{count}} problemas abiertos"
+  },
+  "manager": {
+    "title": "Estado del almacenamiento",
+    "disabled": "El estado del almacenamiento está desactivado para este host."
+  },
+  "health": {
+    "ok": "Sano",
+    "warn": "Requiere atención",
+    "fail": "Con fallos",
+    "unknown": "Desconocido"
+  },
+  "kind": {
+    "hdd": "Disco duro",
+    "ssd": "SSD",
+    "nvme": "NVMe",
+    "unknown": "Unidad"
+  },
+  "drives": {
+    "empty": "No se han encontrado unidades en este host",
+    "noRoot": "Las comprobaciones se han ejecutado sin privilegios de root, por lo que algunas unidades pueden no mostrar datos. Permite sudo sin contraseña para este inicio de sesión.",
+    "noTool": "smartctl no está instalado en este host. Instala smartmontools para leer el estado de las unidades.",
+    "noData": "Aún no se ha leído nada",
+    "wear": "{{value}}% desgastado",
+    "testing": "Probando"
+  },
+  "detail": {
+    "stop": "Detener prueba",
+    "short": "Prueba corta",
+    "long": "Prueba larga",
+    "health": "Estado",
+    "temp": "Temperatura",
+    "wear": "Desgaste",
+    "hours": "Tiempo encendido",
+    "model": "Modelo",
+    "serial": "Número de serie",
+    "kind": "Tipo",
+    "size": "Tamaño",
+    "reallocated": "Sectores realocados",
+    "pending": "Sectores pendientes",
+    "uncorrectable": "Sectores no corregibles",
+    "mediaErrors": "Errores de medios",
+    "selfTest": "Última autoprueba",
+    "attributes": "Atributos SMART",
+    "attrMeta": "Valor {{value}} | Raw {{raw}}"
+  },
+  "history": {
+    "24h": "24 horas",
+    "7d": "7 días",
+    "30d": "30 días",
+    "temp": "Temperatura",
+    "wear": "Desgaste",
+    "bad": "Sectores defectuosos",
+    "empty": "El historial se va construyendo a medida que se lee el host. Vuelve a comprobarlo más tarde."
+  },
+  "pools": {
+    "empty": "No se han encontrado grupos ZFS, matrices RAID, sistemas de archivos btrfs ni grupos finos LVM",
+    "startTitle": "¿Iniciar en {{name}}?",
+    "startText": "Esto lee cada bloque y puede ralentizar los discos durante horas.",
+    "start": "Iniciar",
+    "stop": "Detener",
+    "scrub": "Verificación",
+    "thinMeta": "{{data}} % datos | {{meta}} % metadatos | {{free}} libre en el grupo"
+  },
+  "events": {
+    "error": "No se pudieron cargar los eventos",
+    "empty": "Aún no hay eventos",
+    "type": {
+      "smart-failing": "Fallo",
+      "smart-attention": "Advertencia SMART",
+      "nvme-critical": "Crítico",
+      "wear-high": "Desgastado",
+      "wear-critical": "Casi agotado",
+      "temp-high": "Caliente",
+      "temp-critical": "Demasiado caliente",
+      "pool-degraded": "Grupo degradado",
+      "pool-errors": "Errores del grupo",
+      "raid-degraded": "Matriz degradada",
+      "raid-rebuilding": "Reconstruyendo",
+      "btrfs-errors": "Errores de btrfs",
+      "thin-full": "Grupo fino llenándose",
+      "thin-critical": "Grupo fino lleno",
+      "unreachable": "Inalcanzable",
+      "test": "Autoprueba",
+      "scrub": "Verificación",
+      "command": "Comando"
+    }
+  },
+  "settings": {
+    "saved": "Guardado",
+    "alerts": "Enviar alertas",
+    "alertsHint": "Avisar a la persona que configuró esto cuando aparezca un problema o se resuelva una avería.",
+    "interval": "Leer cada (minutos)",
+    "intervalHint": "Las lecturas SMART son lentas, así que 15 minutos es un buen punto de partida.",
+    "tempWarn": "Advertir por encima de (°C)",
+    "tempCrit": "Crítico por encima de (°C)",
+    "tempHint": "0 usa el valor predeterminado para el tipo de disco.",
+    "wear": "Advertir cuando esté desgastado (%)",
+    "wearHint": "Crítico al 95 %.",
+    "thin": "Advertir cuando un grupo fino esté lleno (%)",
+    "thinHint": "Crítico al 95 %.",
+    "host": {
+      "enable": {
+        "label": "Estado del almacenamiento",
+        "description": "Vigilar discos, grupos y matrices en este host."
+      },
+      "useSudo": {
+        "label": "Usar sudo",
+        "description": "Ejecutar las comprobaciones con sudo sin contraseña. SMART necesita root."
+      },
+      "readOnly": {
+        "label": "Solo lectura",
+        "description": "Bloquear autopruebas y verificaciones desde Termix."
+      },
+      "showPanel": {
+        "label": "Mostrar el panel lateral",
+        "description": "Mostrar el panel de estado del almacenamiento junto a los terminales en este host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Abrir el panel de estado del almacenamiento con los terminales",
+        "description": "Abrir el panel automáticamente en los hosts que lo tengan."
+      },
+      "companionSide": {
+        "label": "Lado del panel",
+        "description": "Dónde se abre el panel de estado del almacenamiento junto a un terminal.",
+        "right": "Derecha",
+        "left": "Izquierda",
+        "bottom": "Abajo"
+      },
+      "companionSize": {
+        "label": "Tamaño del panel",
+        "description": "Ancho o alto del panel en píxeles."
+      },
+      "companionEdgeButton": {
+        "label": "Mostrar el botón del borde",
+        "description": "Mostrar un pequeño botón en el borde del terminal para abrir el panel."
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "Usar el estado del almacenamiento",
+      "description": "Ver el estado de discos y matrices en los hosts a los que tienes acceso."
+    },
+    "runTests": {
+      "title": "Ejecutar pruebas y verificaciones",
+      "description": "Iniciar pruebas automáticas SMART y verificaciones. También se requiere acceso de edición al host."
+    }
+  },
+  "operations": {
+    "devices": {
+      "title": "Unidades",
+      "health": "Estado",
+      "kind": "Tipo",
+      "temp": "Temperatura",
+      "wear": "Desgaste"
+    },
+    "pools": {
+      "title": "Pools y arrays",
+      "state": "Estado"
+    },
+    "status": {
+      "title": "Estado del almacenamiento"
+    },
+    "temperature": {
+      "title": "Unidad más caliente"
+    },
+    "selftest": {
+      "title": "Prueba automática SMART",
+      "device": "Unidad",
+      "action": "Acción",
+      "short": "Prueba corta",
+      "long": "Prueba larga",
+      "abort": "Detener la prueba en ejecución"
+    },
+    "scrub": {
+      "title": "Verificación",
+      "target": "Pool, sistema de archivos o array",
+      "targetHint": "Un identificador de la lista de pools, como zfs:tank, btrfs:/mnt/data o md:md0",
+      "stop": "Detener en lugar de iniciar"
+    },
+    "events": {
+      "degraded": "Se ha detectado un problema de almacenamiento",
+      "recovered": "El problema de almacenamiento se ha resuelto",
+      "smartFailing": "La unidad está fallando en su comprobación SMART",
+      "raidDegraded": "Pool o array degradado"
+    }
+  },
+  "companion": {
+    "toggle": "Panel de estado del almacenamiento"
+  }
+}

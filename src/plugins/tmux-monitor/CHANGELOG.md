@@ -5,6 +5,7 @@
 ### Added
 
 - tmux sessions across hosts in the All hosts table, and ending a session through Termix actions
+- Opens inside the host page, set to that host
 
 ### Changed
 

@@ -1,0 +1,216 @@
+{
+  "plugin": {
+    "name": "Pakete",
+    "description": "Updates auf Ihren Hosts anzeigen und installieren, Pakete suchen, installieren und entfernen sowie den Paketverlauf einsehen."
+  },
+  "common": {
+    "cancel": "Abbrechen",
+    "back": "Zurück"
+  },
+  "permissions": {
+    "use": {
+      "title": "Pakete verwenden",
+      "description": "Pakete und Updates auf Hosts anzeigen, auf die Sie Zugriff haben, und Änderungen auf Hosts vornehmen, die Sie bearbeiten dürfen."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Pakete",
+        "description": "Pakete und Updates auf diesem Host über den Tab „Pakete“ verwalten."
+      },
+      "useSudo": {
+        "label": "sudo verwenden",
+        "description": "sudo zum Installieren, Aktualisieren und Entfernen von Paketen verwenden. Deaktivieren, wenn die Anmeldung als root erfolgt."
+      },
+      "readOnly": {
+        "label": "Schreibgeschützt",
+        "description": "Pakete und Updates anzeigen, aber auf diesem Host niemals ändern."
+      },
+      "showPanel": {
+        "label": "Updates-Panel in Terminals anzeigen",
+        "description": "Das Updates-Panel neben dem SSH-Terminal dieses Hosts öffnen lassen."
+      },
+      "alertUpdates": {
+        "label": "Bei Sicherheitsupdates benachrichtigen",
+        "description": "Eine Benachrichtigung senden, wenn dieser Host Sicherheitsupdates hat oder einen Neustart benötigt. Wird geprüft, wenn Updates gelesen werden, etwa einmal pro Stunde."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Updates-Panel mit neuen Terminals öffnen",
+        "description": "Das Updates-Panel neben jedem SSH-Terminal anzeigen, bei dem Pakete aktiviert sind. Du kannst es weiterhin über die Schaltfläche am rechten Rand öffnen und schließen."
+      },
+      "companionSide": {
+        "label": "Position des Updates-Panels",
+        "description": "Wo das Updates-Panel neben einem Terminal angezeigt wird.",
+        "right": "Rechts",
+        "left": "Links",
+        "bottom": "Unten"
+      },
+      "companionSize": {
+        "label": "Größe des Updates-panels",
+        "description": "Breite in Pixeln, oder Höhe, wenn es unten angezeigt wird. Du kannst auch den Rand ziehen."
+      },
+      "companionEdgeButton": {
+        "label": "Panel-Schaltfläche anzeigen",
+        "description": "Zeige eine kleine Schaltfläche am rechten Rand eines Terminals, die das Updates-Panel öffnet."
+      }
+    }
+  },
+  "tab": {
+    "title": "Pakete",
+    "noHost": "Öffne Pakete von einem Host.",
+    "error": "Pakete konnten von diesem Host nicht geladen werden.",
+    "disabled": "Pakete sind für diesen Host deaktiviert. Aktivieren Sie sie in den Host-Einstellungen.",
+    "sudo": "Änderungen erfordern einen Root-Login, ein passwortloses sudo oder ein gespeichertes Sudo-Passwort auf diesem Host.",
+    "refresh": "Aktualisieren",
+    "readOnly": "Schreibgeschützt",
+    "noManager": "Kein Paketmanager",
+    "noManagerTitle": "Kein unterstützter Paketmanager gefunden",
+    "noManagerHint": "Pakete funktioniert mit apt, dnf, yum, zypper, pacman und apk.",
+    "indexAge": "Index wurde vor {{ago}} aktualisiert",
+    "reboot": "Dieser Host muss neu gestartet werden, um ein Update abzuschließen.",
+    "viewUpdates": "Updates",
+    "viewInstalled": "Installiert",
+    "viewSearch": "Suche",
+    "viewHistory": "Verlauf",
+    "viewRepos": "Repositories"
+  },
+  "actions": {
+    "working": "{{action}} wird ausgeführt. Dies kann einige Minuten dauern.",
+    "ok": "Fertig",
+    "failed": "Der Paketmanager ist fehlgeschlagen.",
+    "noOutput": "Keine Ausgabe.",
+    "refresh": {
+      "label": "Index aktualisieren",
+      "confirm": "Paketindex aktualisieren?",
+      "desc": "Lädt die neuesten Paketlisten herunter.",
+      "done": "Der Paketindex ist auf dem neuesten Stand."
+    },
+    "update": {
+      "label": "Aktualisieren",
+      "confirm_one": "{{names}} aktualisieren?",
+      "confirm_other": "{{count}} Pakete aktualisieren?",
+      "desc": "Installiert die neueste Version von {{names}}.",
+      "done": "{{names}} aktualisiert."
+    },
+    "upgrade-all": {
+      "label": "Alle aktualisieren",
+      "confirm": "Alle Pakete aktualisieren?",
+      "desc": "Aktualisiert den Paketindex und installiert alle Updates. Dienste können während des Vorgangs neu gestartet werden.",
+      "done": "Alle Pakete sind auf dem neuesten Stand."
+    },
+    "install": {
+      "label": "Installieren",
+      "confirm": "{{names}} installieren?",
+      "desc": "Installiert {{names}} und alle erforderlichen Abhängigkeiten.",
+      "done": "{{names}} wurde installiert."
+    },
+    "remove": {
+      "label": "Entfernen",
+      "confirm": "{{names}} entfernen?",
+      "desc": "Entfernt {{names}} von diesem Host. Programme, die davon abhängen, funktionieren möglicherweise nicht mehr.",
+      "done": "{{names}} wurde entfernt."
+    },
+    "hold": {
+      "label": "Auf dieser Version belassen",
+      "confirm": "{{names}} auf dieser Version belassen?",
+      "desc": "Updates werden für {{names}} übersprungen, bis Sie die Sperre aufheben.",
+      "done": "{{names}} ist gesperrt."
+    },
+    "unhold": {
+      "label": "Sperre aufheben",
+      "confirm": "{{names}} entsperren?",
+      "desc": "{{names}} erhält wieder Updates.",
+      "done": "{{names}} erhält wieder Updates."
+    }
+  },
+  "updates": {
+    "search": "Updates filtern",
+    "count_one": "{{count}} Update",
+    "count_other": "{{count}} Updates",
+    "countSecurity_one": "{{count}} Update, {{security}} davon Sicherheitsupdates",
+    "countSecurity_other": "{{count}} Updates, {{security}} davon Sicherheitsupdates",
+    "updatePicked_one": "{{count}} Paket aktualisieren",
+    "updatePicked_other": "{{count}} Pakete aktualisieren",
+    "updateOne": "Aktualisieren",
+    "pick": "{{name}} auswählen",
+    "security": "Sicherheit",
+    "empty": "Alles ist auf dem neuesten Stand.",
+    "noMatch": "Keine passenden Updates gefunden.",
+    "loadFailed": "Updates konnten nicht gelesen werden."
+  },
+  "installed": {
+    "search": "Installierte Pakete filtern",
+    "all": "Alle",
+    "held": "Gesperrt",
+    "heldBadge": "Gesperrt",
+    "empty": "Keine Pakete gefunden.",
+    "loadFailed": "Die installierten Pakete konnten nicht gelesen werden."
+  },
+  "search": {
+    "placeholder": "Pakete durchsuchen",
+    "button": "Suchen",
+    "hint": "Durchsuche die Repositorys des Hosts nach einem zu installierenden Paket.",
+    "empty": "Nichts gefunden.",
+    "installed": "Installiert",
+    "failed": "Die Suche ist fehlgeschlagen."
+  },
+  "history": {
+    "empty": "Kein Paketverlauf gefunden.",
+    "loadFailed": "Der Paketverlauf konnte nicht gelesen werden."
+  },
+  "repos": {
+    "hint": "Die Paketquellen, von denen dieser Host installiert. Ändern Sie diese direkt auf dem Host.",
+    "empty": "Keine Paketquellen gefunden.",
+    "off": "Aus",
+    "loadFailed": "Die Paketquellen konnten nicht gelesen werden."
+  },
+  "card": {
+    "title": "Paketaktualisierungen",
+    "loading": "Hosts werden überprüft...",
+    "summary_one": "{{count}} Aktualisierung auf {{hosts}} Hosts",
+    "summary_other": "{{count}} Aktualisierungen auf {{hosts}} Hosts",
+    "refresh": "Erneut überprüfen",
+    "empty": "Aktivieren Sie Pakete für einen Host, um dessen Aktualisierungen hier zu sehen.",
+    "security_one": "{{count}} Sicherheitsaktualisierung",
+    "security_other": "{{count}} Sicherheitsaktualisierungen",
+    "reboot": "Neustart erforderlich",
+    "updates_one": "{{count}} Aktualisierung",
+    "updates_other": "{{count}} Aktualisierungen",
+    "upToDate": "Aktualisiert"
+  },
+  "manager": {
+    "title": "Pakete",
+    "disabled": "Aktiviere Pakete für diesen Host in den Einstellungen, um die Updates hier anzuzeigen."
+  },
+  "operations": {
+    "list": {
+      "title": "Paket-Updates auflisten"
+    },
+    "updates": {
+      "title": "Ausstehende Updates",
+      "resource": "Ausstehende Updates"
+    },
+    "upgradeAll": {
+      "title": "Alle Pakete aktualisieren"
+    },
+    "install": {
+      "title": "Pakete installieren"
+    },
+    "remove": {
+      "title": "Pakete entfernen"
+    },
+    "package": "Pakete",
+    "packageHint": "Ein oder mehrere Paketnamen, durch Leerzeichen getrennt.",
+    "resource": {
+      "current": "Installiert",
+      "available": "Verfügbar",
+      "repo": "Repository"
+    }
+  },
+  "nav": {
+    "togglePanel": "Updates-Panel umschalten"
+  }
+}

@@ -1,0 +1,226 @@
+{
+  "plugin": {
+    "name": "IP-KVM",
+    "description": "Gépek megtekintése és irányítása PiKVM, NanoKVM és JetKVM eszközökön keresztül."
+  },
+  "tab": {
+    "title": "KVM"
+  },
+  "card": {
+    "title": "KVM",
+    "loading": "Betöltés"
+  },
+  "host": {
+    "open": "KVM"
+  },
+  "permissions": {
+    "view": {
+      "title": "KVM-ek megtekintése",
+      "description": "A KVM-fül megnyitása, az online KVM-ek és az általuk jelentett áramellátási állapotok megtekintése."
+    },
+    "power": {
+      "title": "Áramellátás irányítása",
+      "description": "Gépek be- és kikapcsolása, újraindítása a KVM-en keresztül, vagy ébresztése Wake-on-LAN segítségével."
+    },
+    "console": {
+      "title": "Képernyő használata",
+      "description": "Egy gép képernyőjének megtekintése, billentyűzetének és egérének használata."
+    },
+    "media": {
+      "title": "Virtuális média használata",
+      "description": "ISO-képek csatolása és kioldása egy gépen."
+    },
+    "manage": {
+      "title": "KVM-ek kezelése",
+      "description": "KVM-ek hozzáadása, módosítása és eltávolítása."
+    }
+  },
+  "settings": {
+    "admin": {
+      "maxSessionMinutes": {
+        "label": "Leghosszabb képernyős munkamenet (perc)",
+        "description": "Egy képernyős munkamenet ennyi idő után ér véget. 0 esetén nincs korlát."
+      }
+    }
+  },
+  "description": "Adja hozzá IP-KVM-eszközeit, hogy láthassa és irányíthassa a mögöttük lévő gépeket. Termix a KVM-hez csatlakozik, így a képernyő akkor is működik, ha a böngészője nem éri el azt. A bejelentkezési adatok titkosítva tárolódnak, és soha nem jelennek meg újra.",
+  "summary": "{{count}} KVM, {{attention}} offline",
+  "empty": "Még nincsenek KVM-ek.",
+  "add": "KVM hozzáadása",
+  "edit": "Szerkesztés",
+  "delete": "Törlés",
+  "back": "Vissza",
+  "saved": "Mentve",
+  "deleteConfirm": "Törli a(z) {{name}} elemet?",
+  "status": {
+    "unknown": "Még nem olvasva",
+    "up": "Online",
+    "down": "Offline"
+  },
+  "drivers": {
+    "pikvm": "PiKVM",
+    "glkvm": "GL.iNet Comet (GLKVM)",
+    "nanokvm": "NanoKVM",
+    "jetkvm": "JetKVM"
+  },
+  "fields": {
+    "username": "Felhasználónév",
+    "password": "Jelszó"
+  },
+  "power": {
+    "on": "Be",
+    "off": "Ki",
+    "unknown": "Ismeretlen",
+    "state": "A gép állapota: {{state}}.",
+    "sent": "Kérés küldve a(z) {{name}} áramellátásának módosítására",
+    "sentShort": "Áramellátási parancs elküldve",
+    "wake": "Wake on LAN",
+    "woke": "Ébresztőcsomag elküldve",
+    "action": {
+      "on": "Bekapcsolás",
+      "off": "Kikapcsolás",
+      "graceful-shutdown": "Leállítás",
+      "reset": "Újraindítás"
+    },
+    "confirm": {
+      "on": "Bekapcsolja a(z) {{name}} elemet?",
+      "off": "Megszakítja a(z) {{name}} áramellátását? A rendszer nem áll le rendesen.",
+      "graceful-shutdown": "Kéri a(z) {{name}} leállítását?",
+      "reset": "Újraindítja a(z) {{name}} elemet? A rendszer azonnal újraindul."
+    }
+  },
+  "form": {
+    "addTitle": "KVM hozzáadása",
+    "editTitle": "KVM szerkesztése",
+    "device": "KVM",
+    "access": "Hozzáférés",
+    "machine": "A KVM mögötti gép",
+    "type": "Típus",
+    "name": "Név",
+    "address": "Cím",
+    "port": "Port",
+    "host": "Termix gazdagép",
+    "hostHint": "Kapcsolja össze a KVM-t a hozzá tartozó gazdagéppel. Így követi a gazdagép megosztási beállításait, és megjelenik annak menüjében.",
+    "noHost": "Nincs",
+    "poll": "Ellenőrzés (másodpercenként)",
+    "pollHint": "Legalább 30 másodperc.",
+    "scheme": "Kapcsolat",
+    "ca": "Tanúsítvány",
+    "caHint": "Illessze be egy privát tanúsítványhatóság PEM fájlját, vagy használja a „Megbízom ebben a tanúsítványban” lehetőséget, ha a KVM saját, önállóan aláírt tanúsítvánnyal rendelkezik. Hagyja üresen, ha a tanúsítvány megbízható.",
+    "caSet": "Egy tanúsítvány van mentve. Illesszen be egy újat a helyettesítéshez.",
+    "keepLogin": "Hagyja üresen a mentett bejelentkezés megőrzéséhez",
+    "test": "Kapcsolat tesztelése",
+    "testOk": "A KVM válaszolt ({{model}}).",
+    "testNeedsLogin": "Adja meg újra a bejelentkezési adatokat a teszteléshez.",
+    "mac": "MAC-cím",
+    "macHint": "A gép hálózati kártyájának címe a Wake-on-LAN használatához.",
+    "broadcast": "Broadcast cím",
+    "broadcastHint": "Ide kerül az ébresztőcsomag. Hagyja üresen a 255.255.255.255 alapértelmezett értékhez.",
+    "save": "Mentés",
+    "add": "Hozzáadás",
+    "trust": "Megbízom ebben a tanúsítványban",
+    "trustTitle": "Megbízható ez a KVM tanúsítványa?",
+    "trustHint": "A Termix csak akkor kommunikál ezzel a KVM-mel, ha ez a pontos tanúsítvány jelenik meg. Ellenőrizze, hogy a ujjlenyomat megegyezik-e az eszközön láthatóval.",
+    "certName": "Név: {{name}}",
+    "certValid": "érvényes {{date}}-ig",
+    "certExpired": "lejárt {{date}}-kor",
+    "pinned": "Megbízható tanúsítvány",
+    "unpin": "Eltávolítás"
+  },
+  "view": {
+    "screen": "Képernyő",
+    "power": "Bekapcsolás",
+    "media": "Virtuális média",
+    "info": "Információ",
+    "refresh": "Frissítés most",
+    "type": "Típus",
+    "address": "Cím",
+    "model": "Modell",
+    "version": "Szoftver",
+    "hostname": "Név",
+    "video": "Videó",
+    "noSignal": "Nincs jel",
+    "status": "KVM",
+    "jetHint": "A JetKVM videó közvetlenül a JetKVM-ről érkezik a böngészőjébe, így a böngészőnek elérnie kell azt a hálózaton."
+  },
+  "screen": {
+    "connecting": "Csatlakozás",
+    "failed": "Nem sikerült megnyitni a képernyőt.",
+    "ended": "A képernyős munkamenet véget ért.",
+    "hint": "Kattintson a képernyőre a gépeléshez.",
+    "shortcuts": "Gyorsbillentyűk",
+    "shortcut": {
+      "ctrl-alt-del": "Ctrl+Alt+Del",
+      "alt-tab": "Alt+Tab",
+      "alt-f4": "Alt+F4",
+      "ctrl-esc": "Ctrl+Esc",
+      "win-l": "Win+L",
+      "win-d": "Win+D",
+      "ctrl-alt-f1": "Ctrl+Alt+F1",
+      "ctrl-alt-f2": "Ctrl+Alt+F2",
+      "ctrl-alt-f7": "Ctrl+Alt+F7",
+      "print-screen": "Print Screen"
+    },
+    "paste": "Szöveg beillesztése",
+    "pasteLabel": "A gépre beírandó szöveg",
+    "type": "Beírás",
+    "snapshot": "Képernyőkép",
+    "fullscreen": "Teljes képernyő",
+    "exitFullscreen": "Kilépés a teljes képernyős módból",
+    "reconnect": "Újracsatlakozás"
+  },
+  "media": {
+    "none": "Nincs csatolt kép.",
+    "mountedNow": "Csatolva: {{name}}",
+    "as": "Megjelenítés mint",
+    "cd": "CD-meghajtó",
+    "usb": "USB-meghajtó",
+    "empty": "Nincsenek képek ezen a KVM-en.",
+    "mount": "Csatolás",
+    "eject": "Kiadás",
+    "mountedDone": "Kép csatolva",
+    "ejected": "Kép kiadva",
+    "url": "Kép letöltése innen:",
+    "name": "Mentés mint",
+    "fetch": "Letöltés a KVM-re",
+    "fetched": "Kép letöltve"
+  },
+  "operations": {
+    "device": "KVM",
+    "list-devices": {
+      "title": "KVM-ek listázása"
+    },
+    "poll": {
+      "title": "KVM azonnali lekérdezése"
+    },
+    "power-state": {
+      "title": "Állapot lekérése"
+    },
+    "power-on": {
+      "title": "Bekapcsolás"
+    },
+    "graceful-shutdown": {
+      "title": "Leállítás"
+    },
+    "power-off": {
+      "title": "Kikapcsolás"
+    },
+    "reset": {
+      "title": "Újraindítás"
+    },
+    "wake": {
+      "title": "Wake-on-LAN"
+    },
+    "eject-media": {
+      "title": "Kép kiadása"
+    },
+    "health": {
+      "title": "KVM állapot"
+    }
+  },
+  "widget": {
+    "name": "KVM-eszközök",
+    "description": "Melyik IP-KVM működik.",
+    "summary": "{{up}}/{{total}} működik"
+  }
+}

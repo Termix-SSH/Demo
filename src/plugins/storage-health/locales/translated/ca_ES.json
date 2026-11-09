@@ -1,0 +1,222 @@
+{
+  "tab": {
+    "title": "Emmagatzematge",
+    "noHost": "Obre l'emmagatzematge des d'un amfitrió.",
+    "disabled": "L'estat de l'emmagatzematge està desactivat per a aquest amfitrió. Activeu-lo a la configuració de l'amfitrió.",
+    "error": "No s'ha pogut carregar l'estat de l'emmagatzematge",
+    "viewDrives": "Unitats",
+    "viewPools": "Piscines i matrius",
+    "viewEvents": "Esdeveniments",
+    "viewSettings": "Configuració",
+    "readAgo": "Llegit fa {{time}}",
+    "stale": "No s'ha pogut llegir l'amfitrió, es mostra l'última lectura. {{error}}"
+  },
+  "common": {
+    "loading": "S'està carregant...",
+    "failed": "No ha funcionat",
+    "save": "Desa",
+    "refresh": "Llegeix ara",
+    "back": "Enrere"
+  },
+  "card": {
+    "title": "Estat de l'emmagatzematge",
+    "empty": "Encara no s'està supervisant cap amfitrió. Activeu l'estat de l'emmagatzematge a la configuració d'un amfitrió.",
+    "drives_one": "{{count}} unitat",
+    "drives_many": "{{count}} unitats",
+    "drives_other": "{{count}} unitats",
+    "problems_one": "{{count}} problema obert",
+    "problems_many": "{{count}} problemes oberts",
+    "problems_other": "{{count}} problemes oberts"
+  },
+  "manager": {
+    "title": "Estat de l'emmagatzematge",
+    "disabled": "L'estat de l'emmagatzematge està desactivat per a aquest amfitrió."
+  },
+  "health": {
+    "ok": "Sa",
+    "warn": "Cal atenció",
+    "fail": "Fallant",
+    "unknown": "Desconegut"
+  },
+  "kind": {
+    "hdd": "Disc dur",
+    "ssd": "SSD",
+    "nvme": "NVMe",
+    "unknown": "Unitat"
+  },
+  "drives": {
+    "empty": "No s'han trobat unitats en aquest amfitrió",
+    "noRoot": "Les comprovacions s'han executat sense privilegis d'arrel, per la qual cosa algunes unitats poden no mostrar dades. Permeteu l'ús de sudo sense contrasenya per a aquesta sessió.",
+    "noTool": "smartctl no està instal·lat en aquest amfitrió. Instal·leu smartmontools per llegir l'estat de les unitats.",
+    "noData": "Encara no s'ha llegit res",
+    "wear": "{{value}}% desgastat",
+    "testing": "S'està provant"
+  },
+  "detail": {
+    "stop": "Atura la prova",
+    "short": "Prova curta",
+    "long": "Prova llarga",
+    "health": "Estat",
+    "temp": "Temperatura",
+    "wear": "Desgast",
+    "hours": "Temps d'encesa",
+    "model": "Model",
+    "serial": "Número de sèrie",
+    "kind": "Tipus",
+    "size": "Mida",
+    "reallocated": "Sectors reassignats",
+    "pending": "Sectors pendents",
+    "uncorrectable": "Sectors no corregibles",
+    "mediaErrors": "Errors de mitjà",
+    "selfTest": "Última autoprova",
+    "attributes": "Atributs SMART",
+    "attrMeta": "Valor {{value}} | Cru {{raw}}"
+  },
+  "history": {
+    "24h": "24 hores",
+    "7d": "7 dies",
+    "30d": "30 dies",
+    "temp": "Temperatura",
+    "wear": "Desgast",
+    "bad": "Sectors defectuosos",
+    "empty": "L'historial s'anirà omplint a mesura que es llegeixi l'amfitrió. Torneu a consultar-ho més tard."
+  },
+  "pools": {
+    "empty": "No s'han trobat cap pool ZFS, matriu RAID, sistema de fitxers btrfs ni pool prim LVM",
+    "startTitle": "Iniciar a {{name}}?",
+    "startText": "Això llegeix cada bloc i pot alentir els discs durant hores.",
+    "start": "Iniciar",
+    "stop": "Aturar",
+    "scrub": "Neteja",
+    "thinMeta": "{{data}}% de dades | {{meta}}% de metadades | {{free}} lliures al grup"
+  },
+  "events": {
+    "error": "No s'han pogut carregar els esdeveniments",
+    "empty": "Encara no hi ha esdeveniments",
+    "type": {
+      "smart-failing": "Fallant",
+      "smart-attention": "Avís SMART",
+      "nvme-critical": "Crític",
+      "wear-high": "Desgastat",
+      "wear-critical": "Gairebé esgotat",
+      "temp-high": "Calent",
+      "temp-critical": "Massa calent",
+      "pool-degraded": "Pool degradat",
+      "pool-errors": "Errors del pool",
+      "raid-degraded": "Matriu degradada",
+      "raid-rebuilding": "Reconstruint",
+      "btrfs-errors": "Errors de btrfs",
+      "thin-full": "Pool prim omplint-se",
+      "thin-critical": "Pool prim ple",
+      "unreachable": "Inaccessible",
+      "test": "Autodiagnòstic",
+      "scrub": "Neteja",
+      "command": "Comanda"
+    }
+  },
+  "settings": {
+    "saved": "Desat",
+    "alerts": "Enviar alertes",
+    "alertsHint": "Notifica la persona que ho va configurar quan comenci un problema o es resolgui una fallada.",
+    "interval": "Llegir cada (minuts)",
+    "intervalHint": "Les lectures SMART són lentes, així que 15 minuts és un bon punt de partida.",
+    "tempWarn": "Avisar per sobre de (°C)",
+    "tempCrit": "Crític per sobre de (°C)",
+    "tempHint": "0 utilitza el valor predeterminat per al tipus de disc.",
+    "wear": "Avisar quan estigui desgastat (%)",
+    "wearHint": "Crític al 95%.",
+    "thin": "Avisar quan un pool prim estigui ple (%)",
+    "thinHint": "Crític al 95%.",
+    "host": {
+      "enable": {
+        "label": "Estat de l'emmagatzematge",
+        "description": "Vigila els discs, pools i matrius d'aquest amfitrió."
+      },
+      "useSudo": {
+        "label": "Utilitzar sudo",
+        "description": "Executa les comprovacions amb sudo sense contrasenya. SMART necessita drets d'arrel."
+      },
+      "readOnly": {
+        "label": "Només lectura",
+        "description": "Bloqueja els autodiagnòstics i les neteges des de Termix."
+      },
+      "showPanel": {
+        "label": "Mostrar el panell lateral",
+        "description": "Mostra el panell d'estat de l'emmagatzematge al costat dels terminals d'aquest amfitrió."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Obrir el panell d'estat de l'emmagatzematge amb els terminals",
+        "description": "Obre el panell automàticament als amfitrions que el tinguin."
+      },
+      "companionSide": {
+        "label": "Costat del panell",
+        "description": "On s'obre el panell d'estat de l'emmagatzematge al costat d'un terminal.",
+        "right": "Dreta",
+        "left": "Esquerra",
+        "bottom": "Inferior"
+      },
+      "companionSize": {
+        "label": "Mida del panell",
+        "description": "Amplada o alçada del panell en píxels."
+      },
+      "companionEdgeButton": {
+        "label": "Mostrar el botó de vora",
+        "description": "Mostra un botó petit a la vora del terminal per obrir el panell."
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "Utilitzar l'estat de l'emmagatzematge",
+      "description": "Veure l'estat dels discs i matrius als amfitrions a què tens accés."
+    },
+    "runTests": {
+      "title": "Executar proves i neteges",
+      "description": "Inicia proves automàtiques SMART i neteges. També cal accés d'edició a l'amfitrió."
+    }
+  },
+  "operations": {
+    "devices": {
+      "title": "Discs",
+      "health": "Estat de salut",
+      "kind": "Tipus",
+      "temp": "Temperatura",
+      "wear": "Desgast"
+    },
+    "pools": {
+      "title": "Piscines i matrius",
+      "state": "Estat"
+    },
+    "status": {
+      "title": "Estat de salut de l'emmagatzematge"
+    },
+    "temperature": {
+      "title": "Disc més calent"
+    },
+    "selftest": {
+      "title": "Prova automàtica SMART",
+      "device": "Disc",
+      "action": "Acció",
+      "short": "Prova curta",
+      "long": "Prova llarga",
+      "abort": "Atura la prova en curs"
+    },
+    "scrub": {
+      "title": "Neteja",
+      "target": "Piscina, sistema de fitxers o matriu",
+      "targetHint": "Un identificador de la llista de piscines, com zfs:tank, btrfs:/mnt/data o md:md0",
+      "stop": "Atura en lloc d'iniciar"
+    },
+    "events": {
+      "degraded": "S'ha detectat un problema d'emmagatzematge",
+      "recovered": "El problema d'emmagatzematge s'ha resolt",
+      "smartFailing": "El disc està fallant la comprovació SMART",
+      "raidDegraded": "Piscina o matriu degradada"
+    }
+  },
+  "companion": {
+    "toggle": "Panell d'estat de salut de l'emmagatzematge"
+  }
+}

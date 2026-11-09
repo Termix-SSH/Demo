@@ -16,7 +16,9 @@
     "more": "Más",
     "logout": "Cerrar sesión",
     "next": "Siguiente",
-    "previous": "Anterior"
+    "previous": "Anterior",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña"
   },
   "desktopUpdates": {
     "title": "Aplicación de escritorio",
@@ -67,7 +69,10 @@
     "resetRailOrder": "Restablecer orden",
     "hideFromRail": "Ocultar de la barra lateral",
     "openSettings": "Abrir configuración",
-    "mobileNavigation": "Navegación"
+    "mobileNavigation": "Navegación",
+    "allTabs": "Todas las pestañas",
+    "hideTabBar": "Ocultar barra de pestañas",
+    "showTabBar": "Mostrar barra de pestañas"
   },
   "commandPalette": {
     "searchPlaceholder": "Buscar hosts, comandos o ajustes...",
@@ -110,7 +115,8 @@
     "noSearchResults": "No hay conexiones que coincidan con tu búsqueda",
     "rename": "Renombrar sesión",
     "forgetConfirm": "¿Terminar la sesión en segundo plano de {{name}}?",
-    "forget": "Terminar sesión"
+    "forget": "Terminar sesión",
+    "expiringNow": "Finalizando ahora"
   },
   "placeholders": {
     "apiKeyName": "p. ej., Pipeline de CI",
@@ -158,16 +164,14 @@
     "commandPalette": "Paleta de comandos",
     "done": "Hecho",
     "clear": "Limpiar",
-    "dragToResizeColumns": "Arrastra para cambiar el tamaño de las columnas",
     "hostsAvailable": "Hosts disponibles",
-    "removeSection": "Eliminar sección",
-    "addSection": "Añadir una sección",
-    "allSectionsShown": "Todo ya está en el panel de control.",
+    "addSection": "Añadir widgets",
     "fromPlugins": "De complementos",
-    "dropHere": "Suelta una sección aquí",
-    "dragToReorder": "Arrastra las secciones para reordenarlas",
+    "dropHere": "Aún no hay widgets. Añade algunos desde la lista.",
+    "dragToReorder": "Arrastra los widgets para moverlos y sus bordes para cambiar su tamaño",
     "clearActivityConfirm": "¿Quieres borrar tu actividad reciente?",
-    "resetConfirm": "¿Quieres restablecer el panel de control a su diseño predeterminado?"
+    "resetConfirm": "¿Quieres restablecer el panel de control a su diseño predeterminado?",
+    "clearFailed": "No se ha podido borrar la actividad reciente"
   },
   "admin": {
     "sectionGeneral": "General",
@@ -230,6 +234,9 @@
     "allowPasswordLoginDesc": "Inicio de sesión con nombre de usuario y contraseña",
     "externalAutoProvision": "Crear cuentas externas automáticamente",
     "externalAutoProvisionDesc": "Crear una cuenta la primera vez que alguien inicie sesión a través de un método externo como SSO o LDAP. Si está desactivado, solo las personas que ya tengan una cuenta podrán iniciar sesión de esta manera",
+    "credentialStorage": "Permitir guardar contraseñas y claves",
+    "credentialStorageOff": "El guardado de contraseñas y claves está desactivado en este servidor. Déjalas vacías y Termix te las pedirá al conectarte.",
+    "credentialStorageDesc": "Desactivado: nadie puede guardar una contraseña o clave privada en un host o credencial, y Termix te las pedirá al conectarte. Los inicios de sesión ya guardados permanecerán hasta que se eliminen.",
     "secondFactorAfterExternalLogin": "Solicitar un segundo factor después de inicios de sesión externos (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Si está desactivado, solo se solicitará un segundo factor registrado después de inicios de sesión con contraseña y otros métodos locales, como antes. Si está activado, se solicitará después de cada método de inicio de sesión, incluidos SSO y LDAP.",
     "allowPasswordReset": "Permitir restablecimiento de contraseña",
@@ -281,6 +288,13 @@
     "apiKeyName": "Nombre",
     "apiKeyUser": "Usuario",
     "apiKeySelectUser": "Selecciona un usuario...",
+    "apiKeyScope": "Acceso",
+    "apiKeyScopeFull": "Todo lo que el usuario puede hacer",
+    "apiKeyScopeRead": "Solo lectura",
+    "apiKeyScopeRun": "Ejecutar acciones",
+    "apiKeyScopeHint": "Las claves de acción solo acceden a las acciones de Termix y al servidor MCP, nada más.",
+    "apiKeyScopeActionsRead": "Acciones, solo lectura",
+    "apiKeyScopeActionsRun": "Acciones",
     "apiKeyExpiresAt": "Caduca el",
     "createKey": "Crear clave",
     "apiKeyNoExpiry": "Sin caducidad",
@@ -319,6 +333,10 @@
     "deleteUserFailed": "Error al eliminar el usuario",
     "deleteUserSuccess": "Usuario «{{username}}» eliminado",
     "deleteRoleSuccess": "Rol «{{name}}» eliminado",
+    "deleteRoleFailed": "No se pudo eliminar el rol",
+    "roleNamePlaceholder": "desarrollador",
+    "roleDisplayNamePlaceholder": "Desarrollador",
+    "unknownError": "Error desconocido",
     "revokeKeySuccess": "Clave «{{name}}» revocada",
     "revokeKeyFailed": "Error al revocar la clave",
     "copiedToClipboard": "Copiado al portapapeles",
@@ -361,6 +379,7 @@
     "unlinkAccountFailed": "Error al desvincular el inicio de sesión externo",
     "updateRegistrationFailed": "Error al actualizar la configuración de registro",
     "updatePasswordLoginFailed": "Error al actualizar la configuración de inicio de sesión con contraseña",
+    "updateCredentialStorageFailed": "Error al actualizar la configuración del almacenamiento de credenciales",
     "updateSecondFactorAfterExternalLoginFailed": "Error al actualizar la configuración del segundo factor",
     "updatePasswordResetFailed": "Error al actualizar la configuración de restablecimiento de contraseña",
     "sessionTimeoutRange2": "El tiempo de espera de la sesión debe estar entre 1 y 720 horas",
@@ -683,7 +702,8 @@
         "tryBetaTitle": "Prueba nuevas funciones antes que nadie",
         "tryBetaDescription": "Únete al programa beta en Actualizaciones.",
         "sendBetaFeedback": "Enviar comentarios sobre la beta",
-        "openUpdates": "Actualizaciones"
+        "openUpdates": "Actualizaciones",
+        "hexLabel": "hex"
       }
     }
   },
@@ -769,6 +789,11 @@
       "allPluginsBeta": "Usar versiones beta para todos los complementos",
       "allPluginsStable": "Todos los complementos de vuelta a la versión estable",
       "saveFailed": "No se ha podido guardar el cambio"
+    },
+    "user": {
+      "hostRows": {
+        "label": "Opciones de filas de hosts"
+      }
     }
   },
   "hostDefaults": {
@@ -795,6 +820,15 @@
   "sharing": {
     "revokeConfirm": "¿Eliminar el acceso de {{name}}?",
     "revoke": "Eliminar acceso",
+    "deviceLogin": {
+      "label": "Iniciar sesión solo en este dispositivo",
+      "none": "Ninguno",
+      "hint": "Se mantiene en este dispositivo y nunca se envía al servidor. Se utiliza primero y las conexiones se inician desde este dispositivo.",
+      "noCredentials": "Añade una credencial con la opción «Solo en este dispositivo» para usarla aquí.",
+      "saved": "Inicio de sesión del dispositivo guardado",
+      "keepOnDevice": "Solo en este dispositivo",
+      "keepOnDeviceDesc": "La contraseña o clave nunca se sincroniza con el servidor. Úsala como inicio de sesión del dispositivo en hosts compartidos."
+    },
     "folderLogin": {
       "action": "Establecer inicio de sesión personal para hosts compartidos",
       "title": "Inicio de sesión personal para esta carpeta",
@@ -836,7 +870,10 @@
     "pickHost": "Selecciona un host para editar",
     "pickCredential": "Selecciona una credencial para editar",
     "pickDefaults": "Selecciona un nivel de valores predeterminados para editar",
-    "pickHint": "Todo lo relacionado con una conexión está aquí, agrupado para que lo encuentres fácilmente."
+    "pickHint": "Todo lo relacionado con una conexión está aquí, agrupado para que lo encuentres fácilmente.",
+    "clearChoice": "Borrar",
+    "proxyPathTarget": "destino",
+    "hostCopyName": "{{name}} (copia)"
   },
   "permissions": {
     "branding": {
@@ -849,6 +886,33 @@
     "presetIntro": "Elige cuánto contenido se muestra en pantalla.",
     "presetChangeLater": "Puedes cambiar los ajustes predefinidos o modificar cualquier configuración individual más tarde en Configuración, en la sección Interfaz.",
     "appearanceTitle": "Hazlo tuyo",
-    "appearanceIntro": "Elige un tema, un color de acento, una fuente y tu idioma. Los cambios se aplican al instante y puedes modificarlos más tarde en Configuración."
+    "appearanceIntro": "Elige un tema, un color de acento, una fuente y tu idioma. Los cambios se aplican al instante y puedes modificarlos más tarde en Configuración.",
+    "hostRows": {
+      "title": "¿Cómo quieres que funcionen las filas de hosts?",
+      "intro": "Con muchos complementos activados, cada fila de host puede tener muchos botones. Elige cómo quieres acceder a las herramientas de un host.",
+      "buttons": "Botones de conexión",
+      "buttonsDesc": "Un botón por herramienta en cada fila de host, como antes. La página del host permanece en el menú del host.",
+      "both": "Botones y un botón de página de host",
+      "bothDesc": "Conserva los botones y añade uno para la página del host. Las herramientas se abren dentro de la página del host.",
+      "page": "Solo página de host",
+      "pageDesc": "Sin botones en las filas. Al hacer clic en un host se abre su página, con todas las herramientas en una sola pestaña.",
+      "clickOpensPage": "Hacer clic abre la página del host",
+      "changeLater": "Puedes cambiar esto más tarde en Personalizar barra lateral."
+    },
+    "accentHex": "hex"
+  },
+  "hostTools": {
+    "mode": "Abrir herramientas del host en",
+    "modeDesc": "Dónde se abren los botones de Docker, Archivos y otras herramientas. La página del host mantiene todas las herramientas de un host en una sola pestaña. Con Solo la página del host, las filas de host no tienen botones de conexión y un clic abre la página del host.",
+    "modeTab": "Su propia pestaña",
+    "modePage": "La página del host",
+    "rowButtons": "Botones en las filas de hosts",
+    "modeOnly": "Solo la página del host",
+    "clickOpens": "Al hacer clic se abre",
+    "clickOpensDesc": "Qué ejecuta un clic en un host. Elige otra opción para un host específico desde su menú.",
+    "clickAuto": "La primera forma de conectarse",
+    "useDefaultNamed": "Predeterminado ({{name}})",
+    "useDefaultButtons": "Usar los botones predeterminados",
+    "perHostHint": "Para cambiarlos para un host específico, usa Botones en las filas de hosts en su menú."
   }
 }

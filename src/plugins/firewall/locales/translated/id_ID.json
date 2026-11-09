@@ -1,0 +1,348 @@
+{
+  "tab": {
+    "title": "Firewall",
+    "noHost": "Buka firewall dari host.",
+    "refresh": "Segarkan",
+    "error": "Tidak dapat membaca firewall pada host ini.",
+    "disabled": "Firewall dimatikan untuk host ini. Nyalakan di pengaturan host.",
+    "sudo": "Host ini memerlukan sudo tanpa kata sandi, atau login root, untuk membaca dan mengubah firewall.",
+    "noFirewall": "Tidak ada firewall",
+    "on": "nyala",
+    "off": "mati",
+    "readOnly": "saja baca",
+    "ruleCount_other": "{{count}} aturan",
+    "viewRules": "Aturan",
+    "viewDefaults": "Bawaan",
+    "viewZones": "Zona",
+    "viewFail2ban": "Fail2ban",
+    "viewRaw": "Mentah"
+  },
+  "common": {
+    "loading": "Memuat...",
+    "save": "Simpan",
+    "cancel": "Batal",
+    "delete": "Hapus",
+    "edit": "Sunting",
+    "done": "Selesai",
+    "failed": "Itu tidak berhasil."
+  },
+  "actions": {
+    "allow": "Izinkan",
+    "deny": "Tolak",
+    "reject": "Tolak",
+    "limit": "Batas"
+  },
+  "policies": {
+    "allow": "Izinkan",
+    "deny": "Tolak (drop)",
+    "reject": "Tolak"
+  },
+  "rule": {
+    "action": "Tindakan",
+    "direction": "Arah",
+    "in": "Masuk",
+    "out": "Keluar",
+    "protocol": "Protokol",
+    "anyProtocol": "TCP dan UDP",
+    "port": "Port",
+    "portPlaceholder": "22, 80,443 atau 8000-8100",
+    "portHint": "Kosongkan untuk semua port. Daftar dan rentang memerlukan TCP atau UDP.",
+    "anyPort": "semua port",
+    "source": "Dari",
+    "destination": "Ke",
+    "anywhere": "Semua tempat",
+    "addressHint": "Sebuah alamat atau rentang seperti 10.0.0.0/8.",
+    "family": "Versi IP",
+    "bothFamilies": "IPv4 dan IPv6",
+    "iface": "Antarmuka",
+    "anyIface": "Semua antarmuka",
+    "service": "Layanan",
+    "serviceHint": "Nama layanan firewalld, bukan port.",
+    "comment": "Komentar",
+    "commentPlaceholder": "Untuk apa aturan ini",
+    "zoneLabel": "Zona",
+    "from": "dari {{address}}",
+    "to": "ke {{address}}",
+    "on": "pada {{iface}}",
+    "zone": "zona {{zone}}"
+  },
+  "presets": {
+    "ssh": "SSH",
+    "http": "HTTP",
+    "https": "HTTPS",
+    "web": "Web",
+    "dns": "DNS",
+    "smtp": "Surel",
+    "mysql": "MySQL",
+    "postgres": "PostgreSQL",
+    "redis": "Redis",
+    "samba": "Samba",
+    "wireguard": "WireGuard",
+    "minecraft": "Minecraft"
+  },
+  "rules": {
+    "add": "Tambah aturan",
+    "addTitle": "Aturan baru",
+    "editTitle": "Sunting aturan",
+    "added": "Aturan ditambahkan",
+    "saved": "Aturan disimpan",
+    "deleted": "Aturan dihapus",
+    "confirmDelete": "Hapus aturan ini?",
+    "search": "Cari port, alamat, dan komentar",
+    "empty": "Belum ada aturan.",
+    "noMatch": "Tidak ada aturan yang cocok.",
+    "readOnly": "Baca saja",
+    "deleteOnly": "Hapus saja",
+    "stale": "Aturan berubah di host. Segarkan dan coba lagi.",
+    "filters": {
+      "all": "Semua",
+      "in": "Masuk",
+      "out": "Keluar",
+      "readOnly": "Baca saja"
+    }
+  },
+  "defaults": {
+    "hint": "Apa yang terjadi pada lalu lintas yang tidak cocok dengan aturan apa pun.",
+    "incoming": "Masuk",
+    "outgoing": "Keluar",
+    "routed": "Dirutekan",
+    "saved": "Default disimpan"
+  },
+  "zones": {
+    "hint": "firewalld menempatkan setiap antarmuka jaringan dan sumber ke dalam zona. Target zona menentukan apa yang dilakukan terhadap lalu lintas yang tidak cocok dengan aturannya.",
+    "defaultZone": "Zona default",
+    "default": "Default",
+    "active": "Aktif",
+    "target": "Target",
+    "interfaces": "antarmuka {{list}}",
+    "sources": "sumber {{list}}",
+    "saved": "Zona disimpan",
+    "targets": {
+      "default": "Default (tolak)",
+      "ACCEPT": "Terima",
+      "DROP": "Buang",
+      "REJECT": "Tolak"
+    }
+  },
+  "enable": {
+    "off": "Firewall mati, jadi tidak ada aturan yang berlaku saat ini.",
+    "allowSsh": "Izinkan SSH di port {{ports}} terlebih dahulu",
+    "allowSshHint": "Menjaga Termix dan login SSH Anda tetap berfungsi.",
+    "button": "Nyalakan",
+    "done": "Firewall dinyalakan",
+    "timerHint": "Menyalakannya memulai penghitung waktu. Jika Anda tidak menekan Simpan tepat waktu, host akan mematikannya kembali secara otomatis."
+  },
+  "disable": {
+    "button": "Matikan",
+    "title": "Matikan firewall?",
+    "description": "Setiap aturan berhenti berlaku hingga Anda menyalakannya kembali.",
+    "done": "Firewall dimatikan"
+  },
+  "install": {
+    "none": "Host ini belum memiliki firewall.",
+    "hint": "Instal salah satu untuk memulai. Tidak ada yang diaktifkan sampai Anda mengizinkannya.",
+    "button": "Instal {{name}}",
+    "working": "Menginstal...",
+    "done": "{{name}} terinstal",
+    "noPackageManager": "Termix tidak dapat menemukan manajer paket yang dikenal di host ini."
+  },
+  "lockout": {
+    "title": "Ini bisa mengunci Termix keluar",
+    "description": "{{reason}}. Jika Termix tidak dapat terhubung setelah perubahan, host akan membatalkannya secara otomatis ketika waktu habis. Lanjutkan?",
+    "confirm": "Lanjutkan"
+  },
+  "pending": {
+    "started": "Perubahan diterapkan. Tekan Simpan agar tetap berlaku.",
+    "left": "Dibatalkan dalam {{seconds}} detik kecuali Anda menekan Simpan",
+    "expired": "Waktu habis, host sedang membatalkan perubahan",
+    "reachable": "Termix masih dapat terhubung",
+    "unreachable": "Termix tidak dapat terhubung setelah perubahan",
+    "unknown": "Memeriksa koneksi",
+    "keep": "Simpan",
+    "undo": "Batalkan sekarang",
+    "kept": "Perubahan disimpan",
+    "undone": "Perubahan dibatalkan",
+    "gone": "Waktu habis dan host sudah membatalkan perubahan.",
+    "first": "Simpan atau batalkan perubahan terakhir terlebih dahulu.",
+    "kinds": {
+      "add": "Aturan baru",
+      "update": "Aturan diubah",
+      "remove": "Aturan dihapus",
+      "defaults": "Default baru",
+      "enable": "Firewall diaktifkan",
+      "disable": "Firewall dinonaktifkan",
+      "zoneTarget": "Target zona baru",
+      "defaultZone": "Zona default baru",
+      "ruleset": "Set aturan diterapkan"
+    }
+  },
+  "fail2ban": {
+    "loadFailed": "Tidak dapat membaca Fail2ban.",
+    "notInstalled": "Fail2ban tidak terinstal. Fail2ban memblokir alamat yang gagal login terlalu sering.",
+    "stopped": "Fail2ban terinstal tetapi tidak berjalan.",
+    "start": "Mulai Fail2ban",
+    "started": "Fail2ban dimulai",
+    "noJails": "Tidak ada penjara yang diaktifkan.",
+    "none": "Tidak ada yang diblokir.",
+    "bannedCount_other": "{{count}} diblokir",
+    "counts": "{{failed}} gagal sekarang | {{totalFailed}} gagal | {{totalBanned}} total diblokir",
+    "ban": "Blokir",
+    "unban": "Buka blokir",
+    "banAddress": "Blokir alamat",
+    "banned": "{{ip}} diblokir",
+    "unbanned": "{{ip}} dibuka blokirnya",
+    "selfTitle": "Blokir alamat Termix?",
+    "selfDescription": "Termix terhubung dari alamat ini. Memblokirnya akan memutus koneksi Termix dari host ini."
+  },
+  "raw": {
+    "empty": "Tidak ada yang ditampilkan."
+  },
+  "watch": {
+    "start": "Beritahu saya saat firewall ini berubah",
+    "stop": "Hentikan pemberitahuan untuk firewall ini"
+  },
+  "companion": {
+    "openTab": "Buka tab Firewall",
+    "toggle": "Panel Firewall",
+    "allowPort": "Izinkan port TCP"
+  },
+  "card": {
+    "title": "Firewall",
+    "empty": "Tidak ada host yang mengaktifkan Firewall.",
+    "banned_other": "{{count}} diblokir",
+    "pending": "Menunggu"
+  },
+  "rulesets": {
+    "title": "Set aturan Firewall",
+    "hint": "Simpan daftar aturan dan tambahkan ke banyak host sekaligus. Penerapan hanya menambahkan aturan yang hilang, tidak pernah menghapus aturan yang ada.",
+    "add": "Set aturan baru",
+    "addTitle": "Set aturan baru",
+    "editTitle": "Edit set aturan",
+    "loadFailed": "Tidak dapat memuat set aturan Anda.",
+    "empty": "Belum ada set aturan.",
+    "name": "Nama",
+    "namePlaceholder": "Server web",
+    "description": "Deskripsi",
+    "rules": "Aturan",
+    "noRules": "Belum ada aturan dalam set ini.",
+    "hosts": "Host",
+    "noHosts": "Tidak ada host yang mengaktifkan Firewall.",
+    "saved": "Set aturan disimpan",
+    "deleted": "Set aturan dihapus",
+    "confirmDelete": "Hapus {{name}}?",
+    "deleteHint": "Aturan yang sudah ditambahkan ke host tetap ada.",
+    "ruleCount_other": "{{count}} aturan",
+    "hostCount_other": "{{count}} host",
+    "check": "Periksa host",
+    "apply": "Terapkan",
+    "applyTitle": "Terapkan {{name}}?",
+    "applyDescription": "Aturan yang hilang akan ditambahkan di setiap host. Setiap host akan mendapatkan pemeriksaan penguncian SSH, dan jika Termix tidak dapat mengakses host setelahnya, perubahan akan dibatalkan secara otomatis.",
+    "applied": "Set aturan diterapkan",
+    "applyErrors_other": "{{count}} host mengalami masalah",
+    "applyResult": "{{name}} diterapkan",
+    "driftTitle": "{{name}} di setiap host",
+    "inSync": "Memiliki semua aturan",
+    "ok": "Sinkron",
+    "missing_other": "{{count}} hilang",
+    "nothingMissing": "Sudah memiliki semua aturan",
+    "added_other": "Menambahkan {{count}} aturan",
+    "waiting": "Ditambahkan, tetapi Termix tidak dapat terhubung setelahnya. Host akan membatalkannya.",
+    "fleet": "Fleet",
+    "applyFleet": "Terapkan ke fleet"
+  },
+  "permissions": {
+    "use": {
+      "title": "Gunakan Firewall",
+      "description": "Buka tab Firewall pada host yang dapat Anda jangkau. Perubahan juga memerlukan akses edit ke host."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Firewall",
+        "description": "Tampilkan tab Firewall untuk host ini guna mengelola firewall-nya melalui SSH."
+      },
+      "useSudo": {
+        "label": "Gunakan sudo",
+        "description": "Jalankan perintah firewall dengan sudo tanpa kata sandi saat login bukan sebagai root."
+      },
+      "readOnly": {
+        "label": "Saja baca",
+        "description": "Tampilkan firewall tetapi blokir setiap perubahan dari Termix."
+      },
+      "sshGuard": {
+        "label": "Pengecekan penguncian SSH",
+        "description": "Berhenti dan minta konfirmasi sebelum perubahan yang terlihat akan memblokir SSH dari Termix."
+      },
+      "rollbackSeconds": {
+        "label": "Timer batalkan",
+        "description": "Detik yang Anda miliki untuk menekan Simpan setelah perubahan berisiko sebelum host membatalkannya."
+      },
+      "confirmAll": {
+        "label": "Timer pada setiap perubahan",
+        "description": "Gunakan timer batalkan untuk setiap perubahan, bukan hanya yang berisiko."
+      },
+      "showPanel": {
+        "label": "Panel firewall",
+        "description": "Tampilkan panel firewall di samping terminal SSH untuk host ini."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Buka panel firewall bersama terminal",
+        "description": "Tampilkan panel firewall saat terminal terbuka pada host yang memilikinya."
+      },
+      "companionSide": {
+        "label": "Posisi panel firewall",
+        "description": "Di mana panel berada di samping terminal.",
+        "right": "Kanan",
+        "left": "Kiri",
+        "bottom": "Bawah"
+      },
+      "companionSize": {
+        "label": "Ukuran panel firewall",
+        "description": "Lebar, atau tinggi jika di bawah, dalam piksel."
+      },
+      "companionEdgeButton": {
+        "label": "Tombol tepi panel firewall",
+        "description": "Tampilkan tombol kecil di tepi terminal untuk membuka panel."
+      }
+    }
+  },
+  "manager": {
+    "title": "Firewall",
+    "disabled": "Nyalakan Firewall di pengaturan host ini untuk mengelolanya di sini."
+  },
+  "operations": {
+    "list": {
+      "title": "Daftar aturan firewall"
+    },
+    "status": {
+      "title": "Firewall"
+    },
+    "portAllowed": {
+      "title": "Port diizinkan",
+      "description": "Apakah aturan izin untuk port ini ada. Gunakan ini untuk memantau host terhadap perubahan."
+    },
+    "allow": {
+      "title": "Izinkan port"
+    },
+    "remove": {
+      "title": "Hapus port yang diizinkan"
+    },
+    "delete": {
+      "title": "Hapus aturan firewall"
+    },
+    "rules": {
+      "title": "Aturan firewall"
+    },
+    "port": "Port",
+    "protocol": "Protokol",
+    "tcp": "TCP",
+    "udp": "UDP",
+    "any": "Semua",
+    "source": "Dari",
+    "sourceHint": "Sebuah alamat atau rentang. Kosong berarti dari mana saja.",
+    "direction": "Arah"
+  }
+}

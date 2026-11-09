@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Hallinnoi DNS-tietueita ja verkkotunnuksia Cloudflare-, Route 53-, Namecheap- ja muiden palveluntarjoajien kautta."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Verkkotunnukset",
+    "loading": "Ladataan",
+    "empty": "Ei verkkotunnuksia vielä. Avaa DNS-välilehti lisätäksesi kirjautumistiedot.",
+    "ok": "{{domains}} verkkotunnusta, ei pian vanhenevia",
+    "accounts": "{{count}} kirjautumistietoa",
+    "failingLinks": "{{count}} linkitettyä tietuetta epäonnistuu"
+  },
+  "permissions": {
+    "view": {
+      "title": "Näe DNS",
+      "description": "Avaa DNS-välilehti ja näe vyöhykkeet, tietueet, verkkotunnukset ja kunnontarkistukset."
+    },
+    "edit": {
+      "title": "Muokkaa DNS-tietueita",
+      "description": "Lisää, muokkaa ja poista tietueita, tuo vyöhyketiedostoja ja päivitä verkkotunnuksia."
+    },
+    "manage": {
+      "title": "Hallinnoi DNS-kirjautumistietoja",
+      "description": "Lisää palveluntarjoajien kirjautumistietoja, linkitä tietueita isäntiin, seuraa verkkotunnuksia ja palauta vyöhykkeiden varmuuskopioita."
+    }
+  },
+  "operations": {
+    "zone": "Vyöhyke",
+    "type": "Tyyppi",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Nimi",
+    "content": "Arvo",
+    "contentOptional": "Arvo (jätä tyhjäksi, jos haluat sopia mihin tahansa)",
+    "ttl": "TTL sekunneissa",
+    "label": "Tunniste",
+    "zones": {
+      "title": "Listaa DNS-vyöhykkeet"
+    },
+    "records": {
+      "title": "Listaa DNS-tietueet"
+    },
+    "domains": {
+      "title": "Listaa verkkotunnukset ja vanhenemisajat"
+    },
+    "check": {
+      "title": "Tarkista vyöhyke"
+    },
+    "upsert": {
+      "title": "Aseta DNS-tietue"
+    },
+    "delete": {
+      "title": "Poista DNS-tietue"
+    },
+    "snapshot": {
+      "title": "Tallenna vyöhykkeen kopio"
+    },
+    "links": {
+      "title": "Päivitä linkitetyt tietueet"
+    },
+    "expiry": {
+      "title": "Verkkotunnuksen vanheneminen"
+    }
+  },
+  "description": "Lisää DNS- ja rekisteröijän kirjautumistietosi hallitaksesi tietueita ja seurataksesi verkkotunnuksia yhdessä paikassa. Avaimet tallennetaan salattuina eivätkä niitä näytetä uudelleen.",
+  "summary": "{{zones}} vyöhykettä, {{domains}} verkkotunnusta",
+  "saved": "Tallennettu",
+  "delete": "Poista",
+  "edit": "Muokkaa",
+  "back": "Takaisin",
+  "refresh": "Päivitä",
+  "section": {
+    "zones": "Vyöhykkeet",
+    "domains": "Verkkotunnukset",
+    "links": "Linkit",
+    "accounts": "Kirjautumistiedot"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "API-token",
+    "accessKeyId": "Pääsyavaimen ID",
+    "secretAccessKey": "Salainen pääsyavain",
+    "sessionToken": "Istunto-token (valinnainen)",
+    "apiUser": "API-käyttäjä",
+    "apiKey": "API-avain",
+    "userName": "Käyttäjänimi (jos poikkeaa API-käyttäjän nimestä)",
+    "clientIp": "Sallittu IP-osoite",
+    "apiSecret": "API-salaisuus",
+    "environment": "Ympäristö",
+    "environment_production": "Tuotanto",
+    "environment_ote": "Testi (OTE)",
+    "secretApiKey": "Salainen API-avain",
+    "token": "Henkilökohtainen pääsytunnus"
+  },
+  "zones": {
+    "empty": "Alueita ei vielä ole.",
+    "emptyHint": "Lisää kirjautuminen Kirjautumiset-osioon nähdäksesi sen alueet."
+  },
+  "zone": {
+    "records": "Tietueet",
+    "health": "Tila",
+    "copies": "Kopiot",
+    "files": "Tiedostot",
+    "filter": "Suodata tietueet",
+    "empty": "Tietueita ei ole."
+  },
+  "record": {
+    "section": "Tietue",
+    "addTitle": "Lisää tietue",
+    "editTitle": "Muokkaa tietuetta",
+    "add": "Lisää tietue",
+    "save": "Tallenna",
+    "type": "Tyyppi",
+    "name": "Nimi",
+    "nameHint": "Käytä @-merkkiä itse {{zone}}:lle",
+    "value": "Arvo",
+    "priority": "Etusija",
+    "ttl": "TTL (sekuntia)",
+    "ttlHint": "Kuinka kauan resolutiot säilyttävät vastauksen. 300 on 5 minuuttia.",
+    "ttlAuto": "1 tarkoittaa automaattista.",
+    "proxied": "Välitetty",
+    "proxiedHint": "Ohjaa liikenne Cloudflaren kautta.",
+    "proxiedBadge": "Välitetty",
+    "comment": "Huomautus",
+    "readOnly": "Palveluntarjoajan hallinnoima",
+    "deleteConfirm": "Haluatko poistaa {{type}}-tietueen {{name}}?"
+  },
+  "account": {
+    "add": "Lisää kirjautuminen",
+    "addTitle": "Lisää DNS-kirjautuminen",
+    "editTitle": "Muokkaa DNS-kirjautumista",
+    "save": "Tallenna",
+    "login": "Kirjautuminen",
+    "provider": "Palveluntarjoaja",
+    "name": "Nimi",
+    "namePlaceholder": "Pää Cloudflare",
+    "keep": "Jätä tyhjäksi säilyttääksesi tallennetun arvon",
+    "registrar": "Tämä palveluntarjoaja on myös rekisteröijä, joten sen verkkotunnukset näkyvät Verkkotunnukset-osiossa.",
+    "options": "Asetukset",
+    "autoBackup": "Pidä alueiden kopiot",
+    "autoBackupHint": "Tallenna kopio ennen jokaista muutosta ja kun alue muuttuu Termixin ulkopuolella.",
+    "checkHealth": "Tarkista alueet päivittäin",
+    "checkHealthHint": "Suorita tilan tarkistukset päivittäin ja ilmoita uusista ongelmista.",
+    "test": "Testaa",
+    "testOk": "Toimii. Löydettiin {{zones}} aluetta ja {{domains}} verkkotunnusta.",
+    "deleteConfirm": "Haluatko poistaa kohteen {{name}}? Sen kopiot ja linkit poistuvat myös. Palveluntarjoajalla ei tapahdu muutoksia.",
+    "empty": "Kirjautumisia ei vielä ole.",
+    "emptyHint": "Aloita lisäämällä Cloudflare-, Route 53-, Namecheap- tai muu kirjautuminen.",
+    "lastSync": "Viimeksi tarkistettu {{date}}",
+    "never": "Ei vielä tarkistettu",
+    "failed": "Kirjautuminen epäonnistui"
+  },
+  "domains": {
+    "empty": "Verkkotunnuksia ei vielä ole.",
+    "emptyHint": "Rekisteröijien kirjautumiset listaa verkkotunnuksensa tähän. Voit myös seurata mitä tahansa verkkotunnusta nimen perusteella.",
+    "watchPlaceholder": "example.com",
+    "watch": "Seuraa domainia",
+    "unwatch": "Lopeta seuranta",
+    "watched": "Seurattavat",
+    "noRenew": "Automaattinen uusiminen pois päältä",
+    "unlocked": "Ei lukittu",
+    "unknown": "Rekisteröijä tuntematon",
+    "expires": "Vanhenee {{date}}",
+    "expired": "Vanhentunut",
+    "days": "{{count}} päivää jäljellä",
+    "refreshFailed": "{{count}} hakua epäonnistui"
+  },
+  "link": {
+    "add": "Lisää linkki",
+    "addTitle": "Lisää linkki",
+    "editTitle": "Muokkaa linkkiä",
+    "save": "Tallenna",
+    "record": "Tietue",
+    "address": "Osoite",
+    "zone": "Vyöhyke",
+    "pickZone": "Valitse vyöhyke",
+    "source": "Viittaa osoitteeseen",
+    "sourceHost": "Isäntä",
+    "sourcePublic4": "Tämän palvelimen julkinen IPv4-osoite",
+    "sourcePublic6": "Tämän palvelimen julkinen IPv6-osoite",
+    "source_host": "Isäntä",
+    "source_public4": "Julkinen IPv4",
+    "source_public6": "Julkinen IPv6",
+    "host": "Isäntä",
+    "pickHost": "Valitse isäntä",
+    "hostHint": "Tietue seuraa isännän osoitetta. Se päivittyy, kun isäntä muuttuu.",
+    "publicHint": "Termix hakee julkisen osoitteen ja pitää tietueen ajan tasalla, kuten dynaaminen DNS.",
+    "enabled": "Pidä tämä tietue ajan tasalla",
+    "empty": "Ei linkkejä vielä.",
+    "emptyHint": "Linkki pitää tietueen osoittamassa isäntään tai tähän palvelimeen.",
+    "off": "Pois päältä",
+    "hostGone": "Isäntää ei löydy",
+    "lastSync": "Tarkistettu {{date}}",
+    "never": "Ei vielä tarkistettu",
+    "syncNow": "Päivitä nyt",
+    "updated": "Tietue päivitetty",
+    "unchanged": "Tietue oli jo oikein",
+    "deleteConfirm": "Poistetaanko linkki kohteelle {{name}}? Tietue jää nykyiseen osoitteeseensa."
+  },
+  "diff": {
+    "none": "Mitään ei muutu.",
+    "add": "Lisää",
+    "change": "Muuta",
+    "remove": "Poista"
+  },
+  "copies": {
+    "hint": "Kopiot tallennetaan ennen jokaista muutosta ja kerran päivässä, kun vyöhyke on muuttunut Termixin ulkopuolella.",
+    "save": "Tallenna kopio",
+    "saved": "Kopio tallennettu",
+    "manualLabel": "Manuaalinen kopio",
+    "empty": "Ei kopioita vielä.",
+    "count": "{{count}} tietuetta",
+    "compare": "Vertaa nykyiseen",
+    "restore": "Palauta",
+    "restoreConfirm": "Palautetaanko tämä kopio? {{count}} muutosta tehdään palveluntarjoajalla. Nykyinen tietueiden kopio tallennetaan ensin.",
+    "restored": "Palautettu. {{count}} muutosta tehty.",
+    "source": {
+      "manual": "Manuaalinen",
+      "auto": "Päivittäinen",
+      "before": "Ennen muutosta"
+    }
+  },
+  "files": {
+    "export": "Lataa vyöhyketiedosto",
+    "exportHint": "Lataa tietueet BIND-vyöhyketiedostona.",
+    "import": "Tuo alueen tiedosto",
+    "placeholder": "Liitä BIND-alueen tiedosto tähän",
+    "replace": "Poista tiedostossa olevat merkinnät",
+    "replaceHint": "Ei käytössä: tuonti lisää ja muuttaa vain merkintöjä.",
+    "preview": "Esikatselu",
+    "apply": "Käytä",
+    "applied": "Tuotu. Tehty {{count}} muutosta.",
+    "skipped": "Ohitettu:"
+  },
+  "health": {
+    "run": "Suorita tarkistukset",
+    "running": "Käynnissä",
+    "propagation": "Tarkista resolutiot",
+    "propagationTitle": "Julkinen resolutio",
+    "lastRun": "Viimeisin ajot {{date}}",
+    "empty": "Tälle alueelle ei ole vielä suoritettu tarkistuksia.",
+    "record": "Merkintä",
+    "resolver": "Resolutio",
+    "answer": "Vastaus",
+    "noAnswer": "Ei vastausta",
+    "delegation": {
+      "error": "Nimipalvelimia ei voitu etsiä.",
+      "none": "Alueella ei ole nimipalvelimia internetissä. Verkkotunnus ei ehkä osoita tähän palveluntarjoajaan.",
+      "mismatch": "Verkkotunnus käyttää eri nimipalvelimia kuin palveluntarjoaja: {{found}}.",
+      "ok": "Verkkotunnus osoittaa {{count}} nimipalvelimeen."
+    },
+    "soa": {
+      "differ": "Nimipalvelimet eivät ole samaa mieltä alueen versiosta ({{count}} versiota). Muutos voi olla vielä levittäytymässä.",
+      "same": "{{count}} nimipalvelinta on samaa mieltä alueen versiosta."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC:tä ei voitu tarkistaa.",
+      "off": "DNSSEC ei ole käytössä.",
+      "valid": "DNSSEC on käytössä ja kelvollinen.",
+      "broken": "DNSSEC on määritetty rekisteröijällä, mutta se ei ole kelvollinen. Resolutiot, jotka tarkistavat sen, epäonnistuvat."
+    },
+    "cname": {
+      "conflict": "{{name}}:lla on CNAME ja muita merkintöjä. Tämä ei ole sallittua.",
+      "apex": "Alueen juuri ei voi olla CNAME.",
+      "dangling": "{{name}} osoittaa kohteeseen {{target}}, jota ei voi ratkaista.",
+      "ok": "Kaikki CNAME-kohteet ratkeavat."
+    },
+    "spf": {
+      "missing": "Verkkotunnus vastaanottaa sähköposteja, mutta sillä ei ole SPF-merkintää.",
+      "multiple": "SPF-merkintöjä on useampi kuin yksi. Sähköpostipalvelimet hylkäävät kaikki ne.",
+      "lookups": "SPF-merkintä tekee {{count}} etsintää. Raja on 10.",
+      "ok": "SPF on määritetty ({{count}} etsintää)."
+    },
+    "dmarc": {
+      "missing": "DMARC-merkintää ei ole.",
+      "none": "DMARC on asetettu vain valvontaan.",
+      "ok": "DMARC on määritetty."
+    },
+    "dkim": {
+      "none": "Tältä alueelta ei löydetty DKIM-avaimia.",
+      "found": "Löydettiin {{count}} DKIM-avainta."
+    },
+    "mx": {
+      "unresolved": "Sähköpostipalvelinta {{host}} ei voi ratkaista."
+    },
+    "mail": {
+      "none": "Verkkotunnusella ei ole sähköpostimerkintöjä."
+    },
+    "caa": {
+      "ok": "CAA-merkinnät rajoittavat sitä, kuka voi myöntää sertifikaatteja.",
+      "none": "CAA-merkintöjä ei ole. Mikä tahansa sertifikaatinmyöntäjä voi myöntää sertifikaatteja."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Verkkotunnukset, pian vanhentuvat verkkotunnukset ja epäonnistuneet merkinnät.",
+    "domains": "Verkkotunnukset",
+    "expiring": "Pian vanhentuvat",
+    "failingLinks": "Epäonnistuneet linkit",
+    "failingAccounts": "Epäonnistuneet kirjautumiset"
+  }
+}

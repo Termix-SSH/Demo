@@ -9,7 +9,8 @@
   "settings": {
     "group": {
       "sessions": "Sessioni",
-      "secondFactor": "Secondo fattore"
+      "secondFactor": "Secondo fattore",
+      "connect": "Connessione agli host"
     },
     "admin": {
       "idleTimeoutMinutes": {
@@ -34,8 +35,34 @@
       "applyToExternal": {
         "label": "Anche per il single sign-on",
         "description": "Richiedi il secondo fattore anche dopo gli accessi tramite SSO e LDAP. Lascialo disattivato se il tuo provider di identità lo richiede già."
+      },
+      "connectFactor": {
+        "label": "Richiedi un secondo fattore prima della connessione",
+        "description": "Gli utenti inseriscono il secondo fattore quando aprono un terminale, un desktop remoto o un file manager su un host. Metriche, tunnel e altre attività in background non richiedono questa verifica.",
+        "off": "Disattivato",
+        "marked": "Solo host contrassegnati",
+        "all": "Tutti gli host"
+      },
+      "connectFactorMinutes": {
+        "label": "Minuti prima di richiedere di nuovo",
+        "description": "Dopo l'inserimento, un utente può connettersi a qualsiasi host per questo periodo. L'uscita dall'account termina la sessione in anticipo."
+      }
+    },
+    "host": {
+      "requireConnectFactor": {
+        "label": "Richiedi un secondo fattore prima della connessione",
+        "description": "Utilizzato quando la Sicurezza di accesso è impostata per richiedere la verifica solo sugli host contrassegnati."
       }
     }
+  },
+  "verify": {
+    "title": "Verifica secondo fattore",
+    "intro": "Inserisci il tuo secondo fattore per connetterti a questo host.",
+    "done": "Verificato",
+    "retry": "Torna all'host e connettiti di nuovo.",
+    "failed": "Non ha funzionato. Riprova.",
+    "noFactor": "Nessun secondo fattore configurato",
+    "noFactorHint": "Configurane uno in Impostazioni, Sicurezza, poi connettiti di nuovo."
   },
   "status": {
     "factors": "Secondi fattori utilizzabili: {{factors}}",

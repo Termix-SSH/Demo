@@ -14,6 +14,10 @@
 - Form labels match the rest of Termix
 - Toolbars, loading screens, back buttons and Save bars match the rest of Termix
 
+### Fixed
+
+- A failed save no longer leaves an uncaught error behind the toast
+
 ## 1.1.0
 
 ### Added

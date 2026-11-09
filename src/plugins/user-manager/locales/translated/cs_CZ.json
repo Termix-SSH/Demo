@@ -1,0 +1,210 @@
+{
+  "plugin": {
+    "name": "Uživatelé",
+    "description": "Spravujte uživatelské účty, skupiny, hesla a SSH klíče na vašich hostitelích."
+  },
+  "common": {
+    "save": "Uložit",
+    "cancel": "Zrušit",
+    "back": "Zpět",
+    "delete": "Smazat",
+    "loading": "Načítání..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Používat Uživatele",
+      "description": "Zobrazit účty na hostitelích, ke kterým máte přístup, a měnit je na hostitelích, které můžete upravovat."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Uživatelé",
+        "description": "Spravujte uživatelské účty a skupiny na tomto hostiteli z karty Uživatelé."
+      },
+      "useSudo": {
+        "label": "Používat sudo",
+        "description": "Používat sudo pro čtení a změnu účtů. Vypněte, pokud se přihlašujete jako root."
+      },
+      "readOnly": {
+        "label": "Pouze pro čtení",
+        "description": "Zobrazit účty, ale nikdy je na tomto hostiteli neměnit."
+      }
+    }
+  },
+  "tab": {
+    "title": "Uživatelé",
+    "noHost": "Otevřete Uživatele z hostitele.",
+    "error": "Nelze načíst účty z tohoto hostitele.",
+    "disabled": "Uživatelé jsou pro tohoto hostitele vypnuti. Zapněte je v nastavení hostitele.",
+    "sudo": "Změny a stavy hesel vyžadují přihlášení jako root, sudo bez hesla nebo uložené Sudo heslo na tomto hostiteli.",
+    "noTools": "Na tomto hostiteli není nainstalován useradd. Na Alpine nainstalujte balíček shadow.",
+    "refresh": "Obnovit",
+    "readOnly": "Pouze pro čtení",
+    "counts_one": "{{count}} uživatel",
+    "counts_few": "{{count}} uživatelé",
+    "counts_many": "{{count}} uživatelů",
+    "counts_other": "{{count}} uživatelů",
+    "viewUsers": "Uživatelé",
+    "viewGroups": "Skupiny",
+    "viewSessions": "Relace"
+  },
+  "users": {
+    "add": "Přidat uživatele",
+    "search": "Hledat uživatele",
+    "people": "Lidé",
+    "systemFilter": "Systém",
+    "all": "Všichni",
+    "empty": "Žádní uživatelé neodpovídají.",
+    "you": "Vy",
+    "sudo": "Sudo",
+    "locked": "Uzamčeno",
+    "emptyPassword": "Žádné heslo",
+    "system": "Systém",
+    "loadFailed": "Nelze přečíst účty."
+  },
+  "password": {
+    "set": "Nastavit",
+    "locked": "Uzamčeno",
+    "none": "Nenastaveno, přihlášení heslem není možné",
+    "empty": "Prázdné, může se přihlásit kdokoli",
+    "unknown": "Vyžaduje root pro zjištění"
+  },
+  "detail": {
+    "info": "Účet",
+    "account": "Podrobnosti",
+    "fullName": "Celé jméno",
+    "uid": "ID uživatele a skupiny",
+    "mainGroup": "Hlavní skupina",
+    "home": "Domovská složka",
+    "shell": "Shell",
+    "groups": "Skupiny",
+    "groupsPlaceholder": "Zadejte skupinu a stiskněte Enter",
+    "unknownGroups": "Tyto skupiny neexistují: {{groups}}",
+    "none": "Žádné",
+    "password": "Heslo",
+    "passwordChanged": "Heslo změněno",
+    "lastLogin": "Poslední přihlášení",
+    "never": "Nikdy",
+    "unknown": "Neznámé",
+    "saved": "Uloženo.",
+    "failed": "Změna selhala.",
+    "loadFailed": "Nelze načíst klíče tohoto uživatele a čas posledního přihlášení.",
+    "passwordSection": "Heslo",
+    "newPassword": "Nové heslo",
+    "newPasswordHint": "Odesláno na hostitel přes SSH a nastaveno pomocí chpasswd. Nikdy není uloženo v Termix.",
+    "setPassword": "Nastavit heslo",
+    "passwordSet": "Heslo nastaveno.",
+    "expirePassword": "Požádat o nové při dalším přihlášení",
+    "expired": "Při dalším přihlášení si zvolí nové heslo.",
+    "access": "Přístup",
+    "sudo": "Sudo",
+    "sudoHint": "Spouštění příkazů jako root prostřednictvím skupiny {{group}}.",
+    "sudoProtected": "Nelze odebrat sudo uživateli root nebo uživateli, pod kterým Termix přihlašuje.",
+    "sudoTitle": "Udělit {{name}} sudo?",
+    "sudoDesc": "Přidá je do skupiny {{group}}, takže budou moci spouštět libovolné příkazy jako root.",
+    "sudoGrant": "Udělit sudo",
+    "sudoOn": "Sudo uděleno.",
+    "sudoOff": "Sudo odebráno.",
+    "lock": "Uzamknout účet",
+    "unlock": "Odemknout účet",
+    "lockTitle": "Uzamknout {{name}}?",
+    "lockDesc": "Uživatel se nebude moci přihlásit pomocí hesla ani SSH klíče, dokud účet neodemknete.",
+    "lockHint": "Blokuje přihlášení pomocí hesla a SSH klíče.",
+    "protected": "Účet root a účet, pod kterým se Termix přihlašuje, nelze uzamknout ani smazat.",
+    "locked": "Účet byl uzamčen.",
+    "unlocked": "Účet byl odemknut.",
+    "danger": "Smazat",
+    "removeHome": "Zároveň smazat domovský adresář",
+    "removeHomeHint": "Smaže {{home}} a veškerý obsah v něm.",
+    "delete": "Smazat uživatele",
+    "deleteTitle": "Smazat {{name}}?",
+    "deleteDesc": "Účet bude odstraněn. Jeho domovský adresář zůstane na hostiteli.",
+    "deleteDescHome": "Účet a {{home}} budou odstraněny. Tuto akci nelze vrátit zpět.",
+    "deleted": "Uživatel {{name}} byl smazán."
+  },
+  "keys": {
+    "title": "SSH klíče",
+    "empty": "Žádné SSH klíče.",
+    "denied": "Klíče nelze přečíst bez oprávnění root.",
+    "options": "Možnosti",
+    "remove": "Odebrat klíč",
+    "removeTitle": "Odebrat tento klíč?",
+    "removed": "Klíč byl odebrán.",
+    "add": "Přidat klíč",
+    "addHint": "Vložte jeden veřejný klíč, například obsah souboru id_ed25519.pub.",
+    "addButton": "Přidat klíč",
+    "added": "Klíč byl přidán."
+  },
+  "create": {
+    "title": "Nový uživatel",
+    "name": "Uživatelské jméno",
+    "nameHint": "Malá písmena, číslice, - a _.",
+    "nameInvalid": "Začněte písmenem a použijte pouze a-z, 0-9, - a _.",
+    "home": "Domovská složka",
+    "homeHint": "Ponechte prázdné pro /home/{{name}}.",
+    "createHome": "Vytvořit domovskou složku",
+    "password": "Heslo",
+    "passwordHint": "Volitelné. Bez něj se uživatel může přihlásit pouze pomocí SSH klíče.",
+    "again": "Heslo znovu",
+    "mismatch": "Hesla se neshodují.",
+    "save": "Vytvořit uživatele",
+    "done": "Uživatel {{name}} byl vytvořen.",
+    "failed": "Uživatele se nepodařilo vytvořit."
+  },
+  "groups": {
+    "add": "Přidat skupinu",
+    "name": "Název skupiny",
+    "namePlaceholder": "Nový název skupiny",
+    "create": "Vytvořit",
+    "created": "Skupina {{name}} byla vytvořena.",
+    "search": "Hledat ve skupinách",
+    "empty": "Žádné odpovídající skupiny.",
+    "noMembers": "Žádní členové.",
+    "failed": "Změna selhala.",
+    "addMember": "Přidat člena",
+    "pickUser": "Vyberte uživatele",
+    "removeMember": "Odebrat ze skupiny",
+    "memberAdded": "Uživatel {{name}} byl přidán do skupiny {{group}}.",
+    "memberRemoved": "Uživatel {{name}} byl odebrán ze skupiny {{group}}.",
+    "mainGroup": "Hlavní skupina",
+    "mainGroupHint": "Toto je jejich hlavní skupina, takže k ní vždy patří.",
+    "deleteTitle": "Smazat {{name}}?",
+    "deleteDesc": "Skupina bude odstraněna. Soubory, které vlastnila, si ponechají své původní ID.",
+    "deleted": "Skupina {{name}} byla smazána."
+  },
+  "sessions": {
+    "now": "Přihlášen právě teď",
+    "none": "Nikdo není přihlášen.",
+    "recent": "Nedávná přihlášení",
+    "noRecent": "Historie přihlášení nebyla nalezena.",
+    "loadFailed": "Nelze načíst relace."
+  },
+  "manager": {
+    "title": "Uživatelé",
+    "disabled": "Pro zobrazení účtů tohoto hostitele zde zapněte funkci Uživatelé v jeho nastavení."
+  },
+  "operations": {
+    "list": {
+      "title": "Seznam uživatelů"
+    },
+    "emptyPasswords": {
+      "title": "Účty bez hesla"
+    },
+    "lock": {
+      "title": "Uzamknout uživatele"
+    },
+    "unlock": {
+      "title": "Odemknout uživatele"
+    },
+    "delete": {
+      "title": "Smazat uživatele"
+    },
+    "users": {
+      "title": "Uživatelé",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "Skupiny"
+    }
+  }
+}

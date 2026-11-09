@@ -1,0 +1,348 @@
+{
+  "tab": {
+    "title": "ファイアウォール",
+    "noHost": "ホストからファイアウォールを開きます。",
+    "refresh": "更新",
+    "error": "このホストのファイアウォールを読み取れませんでした。",
+    "disabled": "このホストではファイアウォールが無効化されています。ホスト設定で有効にしてください。",
+    "sudo": "ファイアウォールを読み取り・変更するには、このホストでパスワード不要の sudo または root ログインが必要です。",
+    "noFirewall": "ファイアウォールなし",
+    "on": "オン",
+    "off": "オフ",
+    "readOnly": "読み取り専用",
+    "ruleCount_other": "{{count}} 件のルール",
+    "viewRules": "ルール",
+    "viewDefaults": "デフォルト",
+    "viewZones": "ゾーン",
+    "viewFail2ban": "Fail2ban",
+    "viewRaw": "Raw"
+  },
+  "common": {
+    "loading": "読み込み中...",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "edit": "編集",
+    "done": "完了",
+    "failed": "操作に失敗しました。"
+  },
+  "actions": {
+    "allow": "許可",
+    "deny": "拒否",
+    "reject": "拒否",
+    "limit": "制限"
+  },
+  "policies": {
+    "allow": "許可",
+    "deny": "拒否（ドロップ）",
+    "reject": "拒否"
+  },
+  "rule": {
+    "action": "アクション",
+    "direction": "方向",
+    "in": "着信",
+    "out": "送信",
+    "protocol": "プロトコル",
+    "anyProtocol": "TCP および UDP",
+    "port": "ポート",
+    "portPlaceholder": "22, 80,443 または 8000-8100",
+    "portHint": "すべてのポートにする場合は空のままにしてください。リストや範囲には TCP または UDP が必要です。",
+    "anyPort": "すべてのポート",
+    "source": "送信元",
+    "destination": "宛先",
+    "anywhere": "すべて",
+    "addressHint": "アドレスまたは 10.0.0.0/8 のような範囲を指定します。",
+    "family": "IP バージョン",
+    "bothFamilies": "IPv4 および IPv6",
+    "iface": "インターフェース",
+    "anyIface": "すべてのインターフェース",
+    "service": "サービス",
+    "serviceHint": "ポートの代わりに firewalld サービス名を指定します。",
+    "comment": "コメント",
+    "commentPlaceholder": "このルールの目的",
+    "zoneLabel": "ゾーン",
+    "from": "{{address}} から",
+    "to": "{{address}} へ",
+    "on": "{{iface}} 上",
+    "zone": "ゾーン {{zone}}"
+  },
+  "presets": {
+    "ssh": "SSH",
+    "http": "HTTP",
+    "https": "HTTPS",
+    "web": "Web",
+    "dns": "DNS",
+    "smtp": "メール",
+    "mysql": "MySQL",
+    "postgres": "PostgreSQL",
+    "redis": "Redis",
+    "samba": "Samba",
+    "wireguard": "WireGuard",
+    "minecraft": "Minecraft"
+  },
+  "rules": {
+    "add": "ルールを追加",
+    "addTitle": "新しいルール",
+    "editTitle": "ルールを編集",
+    "added": "ルールが追加されました",
+    "saved": "ルールが保存されました",
+    "deleted": "ルールが削除されました",
+    "confirmDelete": "このルールを削除しますか？",
+    "search": "ポート、アドレス、コメントを検索",
+    "empty": "ルールはまだありません。",
+    "noMatch": "一致するルールがありません。",
+    "readOnly": "読み取り専用",
+    "deleteOnly": "削除のみ",
+    "stale": "ホスト上のルールが変更されました。更新して再試行してください。",
+    "filters": {
+      "all": "すべて",
+      "in": "着信",
+      "out": "送信",
+      "readOnly": "読み取り専用"
+    }
+  },
+  "defaults": {
+    "hint": "どのルールにも一致しないトラフィックの処理方法です。",
+    "incoming": "着信",
+    "outgoing": "送信",
+    "routed": "ルーティング",
+    "saved": "デフォルトが保存されました"
+  },
+  "zones": {
+    "hint": "firewalld は各ネットワークインターフェースとソースをゾーンに配置します。ゾーンのターゲットは、そのルールに一致しないトラフィックをどのように処理するかを示します。",
+    "defaultZone": "デフォルトゾーン",
+    "default": "デフォルト",
+    "active": "アクティブ",
+    "target": "ターゲット",
+    "interfaces": "インターフェース {{list}}",
+    "sources": "ソース {{list}}",
+    "saved": "ゾーンが保存されました",
+    "targets": {
+      "default": "デフォルト（拒否）",
+      "ACCEPT": "許可",
+      "DROP": "ドロップ",
+      "REJECT": "拒否"
+    }
+  },
+  "enable": {
+    "off": "ファイアウォールが無効なため、現在これらのルールは適用されていません。",
+    "allowSsh": "まずポート {{ports}} で SSH を許可してください",
+    "allowSshHint": "Termix およびご自身の SSH ログインが機能し続けるようにします。",
+    "button": "有効化",
+    "done": "ファイアウォールが有効になりました",
+    "timerHint": "有効化するとタイマーが開始されます。タイム内に「保持」を押さない場合、ホストは自動的に無効化します。"
+  },
+  "disable": {
+    "button": "無効化",
+    "title": "ファイアウォールを無効化しますか？",
+    "description": "再度有効化するまで、すべてのルールが適用されなくなります。",
+    "done": "ファイアウォールが無効になりました"
+  },
+  "install": {
+    "none": "このホストにはまだファイアウォールがインストールされていません。",
+    "hint": "開始するにはファイアウォールをインストールしてください。指示があるまで何も有効化されません。",
+    "button": "{{name}} をインストール",
+    "working": "インストール中...",
+    "done": "{{name}} がインストールされました",
+    "noPackageManager": "Termix はこのホストで認識できるパッケージマネージャーを見つけることができませんでした。"
+  },
+  "lockout": {
+    "title": "これにより Termix がロックアウトされる可能性があります",
+    "description": "{{reason}}。変更後に Termix が接続できない場合、タイマーが切れるとホストは自動的に変更を元に戻します。続行しますか？",
+    "confirm": "続行"
+  },
+  "pending": {
+    "started": "変更が適用されました。保持するには「保持」を押してください。",
+    "left": "「保持」を押さない場合、{{seconds}} 秒後に元に戻ります",
+    "expired": "時間が経過し、ホストは変更を元に戻しています",
+    "reachable": "Termix はまだ接続できました",
+    "unreachable": "変更後、Termix は接続できませんでした",
+    "unknown": "接続を確認中",
+    "keep": "保持",
+    "undo": "今すぐ元に戻す",
+    "kept": "変更を保持しました",
+    "undone": "変更を取り消しました",
+    "gone": "タイムアウトし、ホストはすでに変更を取り消しました。",
+    "first": "まず、直近の変更を保持または取り消してください。",
+    "kinds": {
+      "add": "新しいルール",
+      "update": "変更されたルール",
+      "remove": "削除されたルール",
+      "defaults": "新しいデフォルト",
+      "enable": "ファイアウォールを有効化しました",
+      "disable": "ファイアウォールを無効化しました",
+      "zoneTarget": "新しいゾーンターゲット",
+      "defaultZone": "新しいデフォルトゾーン",
+      "ruleset": "ルールセットが適用されました"
+    }
+  },
+  "fail2ban": {
+    "loadFailed": "Fail2banを読み取れませんでした。",
+    "notInstalled": "Fail2banがインストールされていません。ログインに失敗した回数が多すぎるアドレスをブロックします。",
+    "stopped": "Fail2banはインストールされていますが、実行されていません。",
+    "start": "Fail2banを起動",
+    "started": "Fail2banが起動しました",
+    "noJails": "有効なジェイルがありません。",
+    "none": "ブロックされたアドレスはありません。",
+    "bannedCount_other": "{{count}} 件BAN済み",
+    "counts": "{{failed}} 件失敗中 | {{totalFailed}} 件失敗 | {{totalBanned}} 件BAN済み",
+    "ban": "BAN",
+    "unban": "BAN解除",
+    "banAddress": "アドレスをBAN",
+    "banned": "{{ip}} をBANしました",
+    "unbanned": "{{ip}} のBANを解除しました",
+    "selfTitle": "TermixのアドレスをBANしますか？",
+    "selfDescription": "Termixはこのアドレスから接続しています。BANすると、このホストへのTermixの接続が切断されます。"
+  },
+  "raw": {
+    "empty": "表示する内容がありません。"
+  },
+  "watch": {
+    "start": "このファイアウォールが変更されたら通知する",
+    "stop": "このファイアウォールの通知を停止する"
+  },
+  "companion": {
+    "openTab": "ファイアウォールタブを開く",
+    "toggle": "ファイアウォールパネル",
+    "allowPort": "TCP ポートを許可する"
+  },
+  "card": {
+    "title": "ファイアウォール",
+    "empty": "ファイアウォールが有効になっているホストはありません。",
+    "banned_other": "{{count}} 件ブロック済み",
+    "pending": "待機中"
+  },
+  "rulesets": {
+    "title": "ファイアウォールルールセット",
+    "hint": "ルールの一覧を保存し、複数のホストに一度に追加できます。適用時は不足しているルールのみが追加され、既存のルールは削除されません。",
+    "add": "新しいルールセット",
+    "addTitle": "新しいルールセット",
+    "editTitle": "ルールセットを編集",
+    "loadFailed": "ルールセットを読み込めませんでした。",
+    "empty": "ルールセットがありません。",
+    "name": "名前",
+    "namePlaceholder": "Web サーバー",
+    "description": "説明",
+    "rules": "ルール",
+    "noRules": "このセットにはまだルールがありません。",
+    "hosts": "ホスト",
+    "noHosts": "ファイアウォールが有効になっているホストはありません。",
+    "saved": "ルールセットが保存されました",
+    "deleted": "ルールセットが削除されました",
+    "confirmDelete": "{{name}} を削除しますか？",
+    "deleteHint": "すでにホストに追加されたルールは残ります。",
+    "ruleCount_other": "{{count}} 件のルール",
+    "hostCount_other": "{{count}} 件のホスト",
+    "check": "ホストを確認",
+    "apply": "適用",
+    "applyTitle": "{{name}} を適用しますか？",
+    "applyDescription": "不足しているルールは各ホストに追加されます。各ホストには SSH ロックアウトチェックが適用され、適用後に Termix が接続できなくなったホストは変更を自動的に元に戻します。",
+    "applied": "ルールセットを適用しました",
+    "applyErrors_other": "{{count}} 台のホストで問題が発生しました",
+    "applyResult": "{{name}} を適用しました",
+    "driftTitle": "各ホストの {{name}}",
+    "inSync": "すべてのルールが揃っています",
+    "ok": "同期済み",
+    "missing_other": "{{count}} 個不足しています",
+    "nothingMissing": "すでにすべてのルールが適用済みです",
+    "added_other": "{{count}} 件のルールを追加しました",
+    "waiting": "追加しましたが、Termix がその後接続できませんでした。ホスト側で元に戻されます。",
+    "fleet": "フリート",
+    "applyFleet": "フリートに適用"
+  },
+  "permissions": {
+    "use": {
+      "title": "ファイアウォールの使用",
+      "description": "接続可能なホストでファイアウォールタブを開きます。変更にはホストの編集権限も必要です。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "ファイアウォール",
+        "description": "このホストのファイアウォールタブを表示し、SSH 経由でファイアウォールを管理します。"
+      },
+      "useSudo": {
+        "label": "sudo を使用する",
+        "description": "ログインユーザーが root でない場合、パスワードなしの sudo でファイアウォールコマンドを実行します。"
+      },
+      "readOnly": {
+        "label": "読み取り専用",
+        "description": "ファイアウォールを表示しますが、Termix からのすべての変更をブロックします。"
+      },
+      "sshGuard": {
+        "label": "SSH ロックアウトチェック",
+        "description": "Termix からの SSH 接続をブロックする可能性のある変更を行う前に、停止して確認します。"
+      },
+      "rollbackSeconds": {
+        "label": "元に戻すタイマー",
+        "description": "危険な変更を行った後、ホストが変更を元に戻す前に「保持」を押せる秒数です。"
+      },
+      "confirmAll": {
+        "label": "すべての変更でタイマーを使用",
+        "description": "危険な変更だけでなく、すべての変更で元に戻すタイマーを使用します。"
+      },
+      "showPanel": {
+        "label": "ファイアウォールパネル",
+        "description": "このホストの SSH ターミナルの横にファイアウォールパネルを表示します。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "ターミナルと同時にファイアウォールパネルを開く",
+        "description": "ファイアウォールパネルが利用可能なホストでターミナルを開いた際、パネルを表示します。"
+      },
+      "companionSide": {
+        "label": "ファイアウォールパネルの配置",
+        "description": "ターミナルの横にパネルを配置する位置です。",
+        "right": "右",
+        "left": "左",
+        "bottom": "下"
+      },
+      "companionSize": {
+        "label": "ファイアウォールパネルのサイズ",
+        "description": "幅、または下部に配置する場合の高さ（ピクセル単位）です。"
+      },
+      "companionEdgeButton": {
+        "label": "ファイアウォールパネルのエッジボタン",
+        "description": "パネルを開くための小さなボタンをターミナルのエッジに表示します。"
+      }
+    }
+  },
+  "manager": {
+    "title": "ファイアウォール",
+    "disabled": "ここでファイアウォールを管理するには、このホストの設定でファイアウォールを有効にしてください。"
+  },
+  "operations": {
+    "list": {
+      "title": "ファイアウォールルールの一覧"
+    },
+    "status": {
+      "title": "ファイアウォール"
+    },
+    "portAllowed": {
+      "title": "ポートが許可されています",
+      "description": "このポートの許可ルールが存在するかどうかを確認します。ホストの構成変更（ドリフト）を監視するために使用します。"
+    },
+    "allow": {
+      "title": "ポートを許可する"
+    },
+    "remove": {
+      "title": "許可されたポートを削除する"
+    },
+    "delete": {
+      "title": "ファイアウォールルールを削除"
+    },
+    "rules": {
+      "title": "ファイアウォールルール"
+    },
+    "port": "ポート",
+    "protocol": "プロトコル",
+    "tcp": "TCP",
+    "udp": "UDP",
+    "any": "すべて",
+    "source": "送信元",
+    "sourceHint": "アドレスまたは範囲。空欄の場合はすべての場所を意味します。",
+    "direction": "方向"
+  }
+}

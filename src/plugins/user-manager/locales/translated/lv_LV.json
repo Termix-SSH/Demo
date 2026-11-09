@@ -1,0 +1,209 @@
+{
+  "plugin": {
+    "name": "Lietotāji",
+    "description": "Pārvaldiet lietotāju kontus, grupas, paroles un SSH atslēgas savos resursdatoros."
+  },
+  "common": {
+    "save": "Saglabāt",
+    "cancel": "Atcelt",
+    "back": "Atpakaļ",
+    "delete": "Dzēst",
+    "loading": "Ielādē..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Izmantot lietotājus",
+      "description": "Apskatiet kontus resursdatoros, kurus varat sasniegt, un mainiet tos resursdatoros, kurus varat rediģēt."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Lietotāji",
+        "description": "Pārvaldiet lietotāju kontus un grupas šajā resursdatorā no cilnes Lietotāji."
+      },
+      "useSudo": {
+        "label": "Izmantot sudo",
+        "description": "Izmantojiet sudo, lai lasītu un mainītu kontus. Izslēdziet, ja pieteikšanās tiek veikta kā root."
+      },
+      "readOnly": {
+        "label": "Tikai lasīšanai",
+        "description": "Rādīt kontus, bet nekad tos nemainīt šajā resursdatorā."
+      }
+    }
+  },
+  "tab": {
+    "title": "Lietotāji",
+    "noHost": "Atveriet Lietotājus no resursdatora.",
+    "error": "Neizdevās ielādēt kontus no šī resursdatora.",
+    "disabled": "Lietotāji ir izslēgti šim resursdatoram. Ieslēdziet to resursdatora iestatījumos.",
+    "sudo": "Lai veiktu izmaiņas un parolu stāvokļus, ir nepieciešams root pieteikums, sudo bez paroles vai saglabāta Sudo parole šajā resursdatorā.",
+    "noTools": "Šajā mezglā nav instalēta komanda useradd. Alpine Linux sistēmā instalējiet paketi shadow.",
+    "refresh": "Atsvaidzināt",
+    "readOnly": "Tikai lasīšana",
+    "counts_zero": "0 lietotāji",
+    "counts_one": "{{count}} lietotājs",
+    "counts_other": "{{count}} lietotāji",
+    "viewUsers": "Lietotāji",
+    "viewGroups": "Grupas",
+    "viewSessions": "Sesijas"
+  },
+  "users": {
+    "add": "Pievienot lietotāju",
+    "search": "Meklēt lietotājus",
+    "people": "Cilvēki",
+    "systemFilter": "Sistēma",
+    "all": "Visi",
+    "empty": "Nav atbilstošu lietotāju.",
+    "you": "Jūs",
+    "sudo": "Sudo",
+    "locked": "Bloķēts",
+    "emptyPassword": "Nav paroles",
+    "system": "Sistēma",
+    "loadFailed": "Neizdevās izlasīt kontus."
+  },
+  "password": {
+    "set": "Iestatīt",
+    "locked": "Aizslēgts",
+    "none": "Nav iestatīts, pieteikšanās ar paroli nav iespējama",
+    "empty": "Tukšs, var pieteikties jebkurš",
+    "unknown": "Nepieciešams root, lai noskaidrotu"
+  },
+  "detail": {
+    "info": "Konts",
+    "account": "Informācija",
+    "fullName": "Pilns vārds",
+    "uid": "Lietotāja un grupas ID",
+    "mainGroup": "Galvenā grupa",
+    "home": "Mājas mape",
+    "shell": "Komandrzinātne",
+    "groups": "Grupas",
+    "groupsPlaceholder": "Ierakstiet grupu un nospiediet Enter",
+    "unknownGroups": "Šādas grupas neeksistē: {{groups}}",
+    "none": "Nav",
+    "password": "Parole",
+    "passwordChanged": "Parole ir mainīta",
+    "lastLogin": "Pēdējā pieteikšanās",
+    "never": "Nekad",
+    "unknown": "Nezināms",
+    "saved": "Saglabāts.",
+    "failed": "Izmaiņas neizdevās veikt.",
+    "loadFailed": "Neizdevās izlasīt šī lietotāja atslēgas un pēdējo pieteikšanos.",
+    "passwordSection": "Parole",
+    "newPassword": "Jauna parole",
+    "newPasswordHint": "Nosūtīta uz hosti caur SSH un iestatīta ar chpasswd. Tā netiek glabāta Termix.",
+    "setPassword": "Iestatīt paroli",
+    "passwordSet": "Parole iestatīta.",
+    "expirePassword": "Prasīt jaunu paroli nākamajā pieteikšanās reizē",
+    "expired": "Viņi izvēlēsies jaunu paroli nākamajā pieteikšanās reizē.",
+    "access": "Piekļuve",
+    "sudo": "Sudo",
+    "sudoHint": "Izpildiet komandas kā root, izmantojot {{group}} grupu.",
+    "sudoProtected": "Nevar atņemt sudo privilēģijas root lietotājam vai lietotājam, ar kuru Termix ir pieslēdzies.",
+    "sudoTitle": "Piešķirt {{name}} sudo?",
+    "sudoDesc": "Pievieno viņu {{group}} grupai, lai varētu izpildīt jebkuru komandu kā root.",
+    "sudoGrant": "Piešķirt sudo",
+    "sudoOn": "Sudo piešķirts.",
+    "sudoOff": "Sudo atņemts.",
+    "lock": "Bloķēt kontu",
+    "unlock": "Atbloķēt kontu",
+    "lockTitle": "Bloķēt {{name}}?",
+    "lockDesc": "Līdz kamēr neatbloķēsiet kontu, lietotājs nevarēs pieteikties, izmantojot paroli vai SSH atslēgu.",
+    "lockHint": "Bloķē pieteikšanos ar paroli un SSH atslēgu.",
+    "protected": "Root un lietotājs, ar kuru Termix pieteicas, nevar tikt bloķēts vai dzēsts.",
+    "locked": "Konts ir bloķēts.",
+    "unlocked": "Konts ir atbloķēts.",
+    "danger": "Dzēst",
+    "removeHome": "Arī dzēst mājas mapi",
+    "removeHomeHint": "Dzēs {{home}} un visu, kas tajā atrodas.",
+    "delete": "Dzēst lietotāju",
+    "deleteTitle": "Vai dzēst {{name}}?",
+    "deleteDesc": "Konts tiek noņemts. Tā mājas mape paliek uz servera.",
+    "deleteDescHome": "Konts un {{home}} tiek noņemti. Šo darbību nevar atsaukt.",
+    "deleted": "{{name}} ir dzēsts."
+  },
+  "keys": {
+    "title": "SSH atslēgas",
+    "empty": "Nav SSH atslēgu.",
+    "denied": "Atslēgas nevar izlasīt bez root tiesībām.",
+    "options": "Opcijas",
+    "remove": "Noņemt atslēgu",
+    "removeTitle": "Noņemt šo atslēgu?",
+    "removed": "Atslēga noņemta.",
+    "add": "Pievienot atslēgu",
+    "addHint": "Ielīmējiet vienu publisko atslēgu, piemēram, id_ed25519.pub saturu.",
+    "addButton": "Pievienot atslēgu",
+    "added": "Atslēga pievienota."
+  },
+  "create": {
+    "title": "Jauns lietotājs",
+    "name": "Lietotājvārds",
+    "nameHint": "Mazie burti, cipari, - un _.",
+    "nameInvalid": "Jāsākas ar burtu un jāizmanto tikai a-z, 0-9, - un _.",
+    "home": "Mājas mape",
+    "homeHint": "Atstājiet tukšu, lai izmantotu /home/{{name}}.",
+    "createHome": "Izveidot mājas mapi",
+    "password": "Parole",
+    "passwordHint": "Neobligāts. Bez paroles lietotājs varēs pieteikties tikai ar SSH atslēgu.",
+    "again": "Parole vēlreiz",
+    "mismatch": "Paroles nesakrīt.",
+    "save": "Izveidot lietotāju",
+    "done": "{{name}} ir izveidots.",
+    "failed": "Neizdevās izveidot lietotāju."
+  },
+  "groups": {
+    "add": "Pievienot grupu",
+    "name": "Grupas nosaukums",
+    "namePlaceholder": "Jaunās grupas nosaukums",
+    "create": "Izveidot",
+    "created": "Izveidota {{name}}.",
+    "search": "Meklēt grupas",
+    "empty": "Nav atrasta neviena atbilstoša grupa.",
+    "noMembers": "Nav dalībnieku.",
+    "failed": "Izmaiņas neizdevās veikt.",
+    "addMember": "Pievienot dalībnieku",
+    "pickUser": "Izvēlieties lietotāju",
+    "removeMember": "Noņemt no grupas",
+    "memberAdded": "Dalībnieks {{name}} pievienots grupai {{group}}.",
+    "memberRemoved": "Dalībnieks {{name}} noņemts no grupas {{group}}.",
+    "mainGroup": "Galvenā grupa",
+    "mainGroupHint": "Šī ir viņu galvenā grupa, tāpēc viņi vienmēr tai pieder.",
+    "deleteTitle": "Dzēst {{name}}?",
+    "deleteDesc": "Grupa tiks noņemta. Tās īpašumā esošās failus saglabās savu iepriekšējo ID.",
+    "deleted": "Dzēsta {{name}}."
+  },
+  "sessions": {
+    "now": "Šobrīd pieteicies",
+    "none": "Nav neviena pieteikta lietotāja.",
+    "recent": "Nesenie pieteikumi",
+    "noRecent": "Pieteikumu vēsture nav atrasta.",
+    "loadFailed": "Neizdevās nolasīt sesijas."
+  },
+  "manager": {
+    "title": "Lietotāji",
+    "disabled": "Lai šeit redzētu šī hosta kontus, ieslēdziet Lietotājus tā iestatījumos."
+  },
+  "operations": {
+    "list": {
+      "title": "Uzskaitīt lietotājus"
+    },
+    "emptyPasswords": {
+      "title": "Konti bez paroles"
+    },
+    "lock": {
+      "title": "Bloķēt lietotāju"
+    },
+    "unlock": {
+      "title": "Atbloķēt lietotāju"
+    },
+    "delete": {
+      "title": "Dzēst lietotāju"
+    },
+    "users": {
+      "title": "Lietotāji",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "Grupas"
+    }
+  }
+}

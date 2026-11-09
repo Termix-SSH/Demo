@@ -1,0 +1,205 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "从控制主机运行 Ansible playbook 和临时命令，库存基于您的 Termix 主机生成。"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "back": "返回",
+    "delete": "删除"
+  },
+  "permissions": {
+    "use": {
+      "title": "使用 Ansible",
+      "description": "查看您可访问的控制主机上的 playbook 和运行记录。编辑您可修改的主机上的文件并运行 Ansible。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "将此主机用作 Ansible 控制主机。该主机上必须已安装 Ansible。"
+      },
+      "projectDir": {
+        "label": "项目文件夹",
+        "description": "此主机上包含您的 playbook、角色和 ansible.cfg 的文件夹。",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Vault 密码文件",
+        "description": "此主机上包含 Ansible Vault 密码的文件。如果您不使用 Vault，请留空。",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "只读",
+        "description": "显示 playbook 和运行记录，但永不在此主机上编辑文件或启动运行。"
+      },
+      "alertRuns": {
+        "label": "运行失败时提醒",
+        "description": "当此主机上的运行以失败或丢失状态结束时发送提醒。在读取运行状态时进行检查。"
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "从主机打开 Ansible。",
+    "error": "无法从此主机加载 Ansible。",
+    "disabled": "此主机已关闭 Ansible。请在主机设置中将其开启。",
+    "refresh": "刷新",
+    "readOnly": "只读",
+    "notInstalled": "未安装 Ansible",
+    "notInstalledTitle": "此主机上未安装 Ansible",
+    "notInstalledHint": "在此主机上安装 ansible-core（例如使用 pipx 或您的包管理器），然后刷新。",
+    "noSshpass": "此主机上未安装 sshpass。使用密码登录的主机将会失败。",
+    "viewPlaybooks": "Playbooks",
+    "viewRuns": "运行记录",
+    "viewAdhoc": "临时命令",
+    "viewFacts": "事实"
+  },
+  "files": {
+    "add": "新建文件",
+    "search": "搜索文件",
+    "empty": "项目文件夹中尚无文件。",
+    "noMatch": "没有匹配的文件。",
+    "noProject": "此主机上不存在文件夹 {{dir}}。请创建它，或在主机设置中设置另一个项目文件夹。",
+    "listFailed": "无法列出项目文件。",
+    "loadFailed": "无法读取该文件。",
+    "saved": "文件已保存",
+    "saveFailed": "无法保存该文件。",
+    "playbook": "Playbook",
+    "run": "运行",
+    "newTitle": "新建文件",
+    "name": "文件名",
+    "nameHint": "项目文件夹内的路径，例如 site.yml 或 roles/web/tasks/main.yml。",
+    "hint": "保存前会检查 playbook 的语法。如果检查失败，旧文件将保留。",
+    "text": "文件内容",
+    "deleteTitle": "删除此文件？"
+  },
+  "targets": {
+    "search": "搜索主机",
+    "addShown": "添加显示的主机",
+    "clear": "清除",
+    "empty": "未找到主机。",
+    "count": "已选择 {{count}} 项",
+    "failed": "无法加载您的主机。"
+  },
+  "run": {
+    "title": "运行 {{playbook}}",
+    "start": "运行",
+    "startCheck": "以检查模式运行",
+    "startFailed": "无法启动运行。",
+    "source": "主机",
+    "sourceProject": "项目清单",
+    "sourceTermix": "Termix 主机",
+    "sourceProjectHint": "使用 ansible.cfg 中的清单，或项目中的文件。",
+    "sourceTermixHint": "从 Termix 中选择主机。文件夹将变为 folder_ 组，标签将变为 tag_ 组。它们都属于 termix 组。",
+    "inventory": "清单文件",
+    "inventoryHint": "项目文件夹内的路径。留空则使用 ansible.cfg。",
+    "check": "检查模式",
+    "checkHint": "显示将会发生的变化，但不实际执行更改。",
+    "diff": "显示差异",
+    "diffHint": "显示对文件所做的更改。",
+    "become": "以 root 身份运行",
+    "becomeHint": "在主机上使用 sudo。对于 Termix 主机，将使用已保存的 Sudo 密码。",
+    "limit": "限制",
+    "limitHint": "仅在这些主机或组上运行。",
+    "verbosity": "输出详细程度",
+    "verbosityOff": "普通",
+    "tags": "标签",
+    "skipTags": "跳过标签",
+    "extraVars": "额外变量",
+    "extraVarsHint": "每行一个 key=value。"
+  },
+  "runs": {
+    "title": "运行",
+    "empty": "暂无运行记录。",
+    "loadFailed": "无法加载运行记录。",
+    "stop": "停止",
+    "stopFailed": "无法停止运行。",
+    "deleteTitle": "删除此运行记录？",
+    "deleteFailed": "无法删除运行记录。",
+    "checkMode": "检查",
+    "truncated": "显示长输出的末尾部分。",
+    "noOutput": "暂无输出。",
+    "state": {
+      "running": "运行中",
+      "ok": "已完成",
+      "failed": "失败",
+      "cancelled": "已停止",
+      "lost": "已丢失"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Facts"
+    },
+    "recap": {
+      "host": "主机",
+      "ok": "成功",
+      "changed": "已更改",
+      "unreachable": "不可达",
+      "failed": "失败",
+      "skipped": "已跳过"
+    }
+  },
+  "adhoc": {
+    "hint": "在主机上运行单个模块，例如 ansible all -m ping。",
+    "pattern": "主机模式",
+    "patternHint": "一个主机、一个组或 all。",
+    "module": "模块",
+    "moduleHint": "例如 ping、command、shell、apt 或 systemd。",
+    "args": "参数",
+    "argsHint": "对于 command 和 shell，这是命令。对于其他模块，这是 key=value 对。",
+    "run": "运行"
+  },
+  "facts": {
+    "hint": "使用 setup 模块从主机收集 facts。需要 Termix 主机，以便每个主机都有登录凭据。",
+    "gather": "收集 facts",
+    "gathering": "正在收集...",
+    "failed": "无法收集 facts。",
+    "failedHost": "失败",
+    "none": "未返回任何 facts。打开运行记录查看原因。",
+    "col": {
+      "host": "主机",
+      "os": "系统",
+      "kernel": "内核",
+      "cpu": "CPU",
+      "memory": "内存",
+      "address": "地址",
+      "uptime": "运行时间"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "列出 playbook"
+    },
+    "run": {
+      "title": "运行 playbook",
+      "playbook": "Playbook",
+      "limit": "限制",
+      "tags": "标签",
+      "check": "检查模式"
+    },
+    "runs": {
+      "title": "列出运行记录",
+      "resource": "运行记录",
+      "started": "开始时间",
+      "check": "检查模式"
+    },
+    "failed": {
+      "title": "失败的运行"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "正在检查主机...",
+    "summary_other": "{{hosts}} 台主机上有 {{count}} 次运行失败",
+    "refresh": "再次检查",
+    "empty": "为主机启用 Ansible 以在此处查看其运行记录。",
+    "failed_other": "{{count}} 次失败",
+    "running_other": "{{count}} 次运行中",
+    "last": "{{title}}：{{state}}",
+    "noRuns": "暂无运行记录"
+  }
+}

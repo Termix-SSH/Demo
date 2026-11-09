@@ -1,0 +1,234 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Asenna WireGuard-palvelimiisi ja hallinnoi liitäntöjä, asiakkaita ja asetuksia yhdellä välilehdellä."
+  },
+  "common": {
+    "save": "Tallenna",
+    "cancel": "Peruuta",
+    "back": "Takaisin",
+    "delete": "Poista",
+    "loading": "Ladataan..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Käytä WireGuardia",
+      "description": "Hallinnoi WireGuard-liitäntöjä ja asiakkaita palvelimilla, joita voit muokata."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Avaa WireGuard palvelimen kautta.",
+    "error": "WireGuardia ei voitu ladata tältä palvelimelta.",
+    "sudo": "Tämä palvelin vaatii root-käyttäjätunnuksen tai salasanasuoran sudo-oikeuden WireGuardin hallintaan.",
+    "installed": "Asennettu",
+    "notInstalled": "Ei asennettu",
+    "refresh": "Päivitä",
+    "viewInterfaces": "Liitännät",
+    "viewLogs": "Lokit"
+  },
+  "install": {
+    "title": "Asenna WireGuard",
+    "desc": "Tämä asentaa WireGuard-työkalut ja iptablesin palvelimen pakettienhallinnan avulla.",
+    "confirm": "Asenna",
+    "done": "WireGuard on asennettu.",
+    "failed": "WireGuardia ei voitu asentaa.",
+    "empty": "WireGuardia ei ole asennettu tähän palvelimeen",
+    "noManager": "Yhteensopivaa pakettienhallintaa ei löydetty. Asenna WireGuard manuaalisesti.",
+    "hint": "Asenna se {{os}}-järjestelmään VPN:n käyttämiseksi tältä palvelimelta.",
+    "thisHost": "tämä palvelin",
+    "button": "Asenna WireGuard",
+    "working": "Asennetaan..."
+  },
+  "interfaces": {
+    "add": "Lisää liitäntä",
+    "empty": "Liitäntöjä ei vielä ole. Lisää yksi VPN:n aloittamiseksi.",
+    "loadFailed": "Liitäntöjä ei voitu ladata.",
+    "up": "Ylhäällä",
+    "down": "Alhaalla",
+    "nat": "NAT",
+    "boot": "Käynnistyy käynnistyksen yhteydessä"
+  },
+  "create": {
+    "title": "Lisää liitäntä",
+    "name": "Nimi",
+    "address": "Osoite",
+    "addressHint": "Palvelimen osoite ja aliverkko. Asiakkaat saavat seuraavat vapaat osoitteet.",
+    "port": "UDP-portti",
+    "nat": "Jaa palvelimen internet-yhteys (NAT)",
+    "natDesc": "Asiakkaat voivat saavuttaa internetin ja palvelimen verkon tämän palvelimen kautta.",
+    "natMissing": "NAT vaatii iptablesin, jota ei ole asennettu tähän palvelimeen.",
+    "forwarding": "Ota IP-reititys käyttöön",
+    "forwardingDesc": "Mahdollistaa palvelimen välittämään liikenteen asiakkaiden ja verkon välillä. Tallennetaan uudelleenkäynnistyksiä varten.",
+    "firewall": "Avaa portti palomuurissa",
+    "firewallDesc": "Lisää UDP-portti ufw:hen tai firewalld:ään, jos kumpikaan on käytössä.",
+    "start": "Käynnistä nyt ja käynnistyksen yhteydessä",
+    "startDesc": "Ottaa liitännän käyttöön ja pitää sen päällä uudelleenkäynnistyksen jälkeen.",
+    "save": "Luo",
+    "done": "Liitäntä on valmis.",
+    "failed": "Liitäntää ei voitu luoda."
+  },
+  "detail": {
+    "clients": "Asiakkaat",
+    "settings": "Asetukset",
+    "config": "Määritys",
+    "service": "Palvelu",
+    "gone": "Tätä liitäntää ei enää ole palvelimella."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Näytä WireGuard-välilehti tämän isäntäkohteen valikossa."
+      },
+      "showPanel": {
+        "label": "Näytä WireGuard-paneeli terminaaleissa",
+        "description": "Salli WireGuard-paneelin avautuminen tämän isäntäkohteen SSH-terminaalin viereen."
+      },
+      "alertDown": {
+        "label": "Ilmoita, kun liitäntä on poissa käytöstä",
+        "description": "Lähetä ilmoitus, jos käynnistyksen yhteydessä aloitettava liitäntä ei ole aktiivinen. Tarkistetaan, kun WireGuardin tilaa luetaan."
+      }
+    },
+    "publicKey": "Julkinen avain",
+    "port": "UDP-portti",
+    "endpoint": "Palvelimen päätepiste",
+    "endpointHint": "Julkinen osoite, johon asiakkaat yhdistävät, kuten vpn.example.com:51820.",
+    "dns": "DNS asiakkaalle",
+    "dnsHint": "Valinnainen. Erottele palvelimet pilkuilla.",
+    "allowed": "Liikenne VPN:n kautta",
+    "allowedHint": "Verkkotilat, joita asiakkaat lähettävät VPN:n kautta. 0.0.0.0/0, ::/0 lähettää kaiken.",
+    "keepalive": "Keepalive (sekuntia)",
+    "keepaliveHint": "Pitää NAT:n takana olevat asiakkaat tavoitettavissa. Käytä arvoa 0 poistaaksesi käytöstä.",
+    "saved": "Asetukset tallennettu.",
+    "saveFailed": "Asetuksia ei voitu tallentaa.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Avaa WireGuard-paneeli uusien terminaaleiden kanssa",
+        "description": "Näytä WireGuard-paneeli jokaisen WireGuard-ominaisuuden omaavan SSH-terminaalin viereen. Voit silti avata ja sulkea sen oikean reunan painikkeesta."
+      },
+      "companionSide": {
+        "label": "WireGuard-paneelin sijainti",
+        "description": "Missä WireGuard-paneeli sijaitsee terminaalin vieressä.",
+        "right": "Oikealla",
+        "left": "Vasemmalla",
+        "bottom": "Alareunassa"
+      },
+      "companionSize": {
+        "label": "WireGuard-paneelin koko",
+        "description": "Leveys pikseleinä tai korkeus, kun se on alareunassa. Voit myös vetää sen reuna."
+      },
+      "companionEdgeButton": {
+        "label": "Näytä paneelin painike",
+        "description": "Näytä pieni painike terminaalin oikeassa reunassa, joka avaa WireGuard-paneelin."
+      }
+    }
+  },
+  "clients": {
+    "add": "Lisää asiakas",
+    "empty": "Asiakkaita ei vielä ole.",
+    "loadFailed": "Asiakkaita ei voitu ladata.",
+    "name": "Nimi",
+    "nameHint": "Kirjaimia, numeroita, pisteitä, viivoja ja alaviivoja.",
+    "allowed": "Liikenne VPN:n kautta",
+    "allowedHint": "Jätä tyhjäksi käyttääksesi liitännän oletusarvoa: {{value}}",
+    "create": "Luo asiakas",
+    "addFailed": "Asiakasta ei voitu lisätä.",
+    "needEndpoint": "Aseta palvelimen päätepiste liitännän asetuksiin ensin.",
+    "connected": "Yhdistetty",
+    "off": "Pois päältä",
+    "external": "Manuaalisesti luotu",
+    "handshake": "käsitely {{ago}} sitten",
+    "showConfig": "Näytä konfiguraatio ja QR-koodi",
+    "configFailed": "Asiakkaan konfiguraatiota ei voitu lukea.",
+    "rotate": "Uudet avaimet",
+    "rotateTitle": "Luodaanko uudet avaimet kohteelle {{name}}?",
+    "rotateDesc": "Vanha konfiguraatio lakkaa toimimasta. Anna asiakkaalle uusi konfiguraatio tämän jälkeen.",
+    "turnOff": "Sammuta",
+    "turnOn": "Kytke päälle",
+    "saveFailed": "Asiakasta ei voitu muuttaa.",
+    "deleteTitle": "Poistetaanko {{name}}?",
+    "deleteDesc": "Asiakas poistetaan, eikä se voi enää yhdistää.",
+    "deleteFailed": "Asiakasta ei voitu poistaa."
+  },
+  "clientConfig": {
+    "note": "Tämä konfiguraatio sisältää asiakkaan yksityisen avaimen. Jaa se vain henkilön tai laitteen kanssa, joka käyttää sitä.",
+    "qr": "QR-koodi asiakkaan konfiguraatiolle",
+    "copy": "Kopioi",
+    "copied": "Konfiguraatio kopioitu.",
+    "copyFailed": "Konfiguraatiota ei voitu kopioida.",
+    "download": "Lataa .conf"
+  },
+  "config": {
+    "title": "Konfiguraatiotiedosto",
+    "hint": "Yksityiset ja etukäteen jaetut avaimet on piilotettu. Jätä paikkamerkki ennalleen, jos haluat säilyttää avaimen. Konfiguraatio tarkistetaan ennen tallennusta, ja varmuuskopio säilytetään. Osoitteiden muutokset vaativat uudelleenkäynnistyksen.",
+    "loadFailed": "Konfiguraatiota ei voitu lukea.",
+    "saved": "Konfiguraatio tallennettu.",
+    "saveFailed": "Konfiguraatiota ei voitu tallentaa."
+  },
+  "logs": {
+    "loadFailed": "Lokitiedostoja ei voitu lukea.",
+    "lines": "{{count}} riviä",
+    "empty": "Ei lokirivejä."
+  },
+  "service": {
+    "failed": "Palvelutoiminto epäonnistui.",
+    "start": "Käynnistä",
+    "stop": "Pysäytä",
+    "restart": "Käynnistä uudelleen",
+    "autostart": "Käynnistä käynnistyksen yhteydessä",
+    "autostartDesc": "Käynnistä tämä liitäntä, kun isäntä käynnistyy.",
+    "needsSystemd": "Käynnistyksen yhteydessä käynnistäminen vaatii systemd-palvelun tässä isännässä.",
+    "noForward": "IP-reititys on poissa käytöstä tässä isännässä, joten asiakkaat eivät voi saavuttaa verkkoa NAT:n kautta.",
+    "delete": "Poista liitäntä",
+    "deleteTitle": "Poista {{name}}?",
+    "deleteDesc": "Liitäntä pysäytetään, ja sen konfiguraatio, avaimet sekä tallennetut asiakastiedostot poistetaan isännältä.",
+    "deleteFailed": "Liitäntää ei voitu poistaa."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Ota WireGuard käyttöön tämän isännän asetuksista käyttääksesi tätä korttia.",
+    "start": "Ota käyttöön",
+    "stop": "Poista käytöstä",
+    "done": "{{name}} päivitetty"
+  },
+  "operations": {
+    "list": {
+      "title": "Listaa WireGuard-liitännät"
+    },
+    "down": {
+      "title": "WireGuard-liitännät pois päältä"
+    },
+    "start": {
+      "title": "Käynnistä WireGuard-liitäntä"
+    },
+    "stop": {
+      "title": "Pysäytä WireGuard-liitäntä"
+    },
+    "restart": {
+      "title": "Käynnistä WireGuard-liitäntä uudelleen"
+    },
+    "interfaces": {
+      "title": "WireGuard-liitännät",
+      "address": "Osoite",
+      "port": "Portti",
+      "clients": "Asiakkaat"
+    }
+  },
+  "nav": {
+    "togglePanel": "Näytä/piilota WireGuard-paneeli"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Tarkistetaan isäntiä...",
+    "summary_one": "{{count}} asiakas {{hosts}} isännällä",
+    "summary_other": "{{count}} asiakasta {{hosts}} isännällä",
+    "refresh": "Tarkista uudelleen",
+    "empty": "Ota WireGuard käyttöön isännässä nähdäksesi sen täällä.",
+    "missing": "Ei asennettu",
+    "down_one": "{{count}} pois päältä",
+    "down_other": "{{count}} pois päältä",
+    "interfaces_one": "{{count}} liitäntä, {{clients}} asiakas",
+    "interfaces_other": "{{count}} liitäntää, {{clients}} asiakasta"
+  }
+}

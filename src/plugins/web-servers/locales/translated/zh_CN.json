@@ -1,0 +1,283 @@
+{
+  "plugin": {
+    "name": "Web 服务器",
+    "description": "管理主机上的 nginx、Apache 和 Caddy：站点、配置、日志和 HTTPS，每次更改都会先进行测试。"
+  },
+  "common": {
+    "cancel": "取消",
+    "back": "返回",
+    "loading": "加载中..."
+  },
+  "permissions": {
+    "use": {
+      "title": "使用 Web 服务器",
+      "description": "查看可访问主机上的 Web 服务器和站点，并修改可编辑主机上的配置。"
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Web 服务器",
+        "description": "从“Web 服务器”选项卡管理此主机上的 nginx、Apache 和 Caddy。"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "使用 sudo 读取和修改 Web 服务器。如果登录用户是 root，请关闭此选项。"
+      },
+      "readOnly": {
+        "label": "只读",
+        "description": "显示站点、配置和日志，但不会在此主机上进行任何修改。"
+      },
+      "showPanel": {
+        "label": "终端旁边的面板",
+        "description": "在此主机的终端选项卡上提供 Web 服务器面板。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "随终端打开面板",
+        "description": "当在启用了该功能的主机上打开终端时，显示 Web 服务器面板。"
+      },
+      "companionSide": {
+        "label": "面板位置",
+        "description": "面板相对于终端的位置。",
+        "right": "右侧",
+        "left": "左侧",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "面板大小",
+        "description": "面板的宽度，或位于底部时的高度，单位为像素。"
+      },
+      "companionEdgeButton": {
+        "label": "边缘按钮",
+        "description": "在终端边缘显示一个小按钮，用于打开面板。"
+      }
+    }
+  },
+  "tab": {
+    "title": "Web 服务器",
+    "noHost": "从主机打开 Web 服务器。",
+    "error": "无法加载此主机上的 Web 服务器。",
+    "disabled": "此主机已关闭 Web 服务器功能。请在主机设置中开启。",
+    "sudo": "更改需要 root 登录、免密码 sudo 或在此主机上保存的 Sudo 密码。",
+    "refresh": "刷新",
+    "readOnly": "只读",
+    "noServer": "未安装 Web 服务器",
+    "noServerHint": "从“服务器”页面安装 nginx、Apache 或 Caddy。",
+    "openServer": "打开服务器",
+    "viewSites": "站点",
+    "viewConfig": "配置",
+    "viewLogs": "日志",
+    "viewServer": "服务器"
+  },
+  "actions": {
+    "ok": "完成",
+    "failed": "失败",
+    "noOutput": "无输出。"
+  },
+  "watch": {
+    "start": "Web 服务器停止时通知我",
+    "stop": "停止对此主机的警报",
+    "on": "当此主机上的 Web 服务器停止时，您将收到警报",
+    "off": "此主机的警报已关闭",
+    "failed": "无法更改警报设置"
+  },
+  "sites": {
+    "add": "添加站点",
+    "search": "搜索站点",
+    "empty": "暂无站点。",
+    "loadFailed": "无法加载站点。",
+    "off": "关闭",
+    "anyName": "任意名称",
+    "form": "表单",
+    "certDays_other": "剩余 {{count}} 天",
+    "certExpired": "证书已过期",
+    "enable": "开启",
+    "disable": "关闭",
+    "enabled": "{{name}} 已开启",
+    "disabled": "{{name}} 已关闭",
+    "delete": "删除",
+    "deleteTitle": "删除 {{name}}？",
+    "deleteBody": "文件将被移除，服务器将重新加载。副本将保留在主机上的 /var/lib/termix-web-servers/backups 目录中。",
+    "deleted": "{{name}} 已删除"
+  },
+  "site": {
+    "addTitle": "新建站点",
+    "editTitle": "保存 {{name}}",
+    "add": "添加站点",
+    "save": "保存",
+    "added": "{{name}} 已添加",
+    "saved": "{{name}} 已保存",
+    "server": "Web 服务器",
+    "name": "站点名称",
+    "nameHint": "用于文件名和日志文件，例如 example。",
+    "modeForm": "表单",
+    "modeText": "文本",
+    "text": "配置",
+    "textHint": "保存文本将关闭此站点的表单模式，以保留您的自定义更改。",
+    "type": "类型",
+    "typeStatic": "静态文件",
+    "typeProxy": "反向代理",
+    "typePhp": "PHP",
+    "typeRedirect": "重定向",
+    "staticHint": "从文件夹提供文件。",
+    "proxyHint": "将请求转发到在此主机或其他主机上运行的应用程序。",
+    "phpHint": "从文件夹提供文件，并使用 php-fpm 运行 .php 文件。",
+    "redirectHint": "将所有访问者重定向到另一个地址。",
+    "domains": "域名",
+    "domainsHint": "每输入一个后按回车。在 nginx 中使用 _ 可匹配任意域名。",
+    "port": "HTTP 端口",
+    "root": "Web 根目录",
+    "rootHint": "/var/www、/srv、/usr/share/nginx、/opt 或 /home 内的文件夹。",
+    "index": "索引文件",
+    "spa": "单页应用",
+    "spaHint": "将非文件路径的请求转发到 /index.html。",
+    "upstream": "应用地址",
+    "upstreamHint": "应用程序监听的地址，例如 http://127.0.0.1:3000。",
+    "websockets": "WebSockets",
+    "redirectTo": "将访问者重定向至",
+    "keepPath": "保留路径",
+    "keepPathHint": "将 /page 重定向到新地址的相同页面。",
+    "phpSocket": "php-fpm 套接字",
+    "phpSocketHint": "未找到 php-fpm 套接字。请安装 php-fpm 或输入 host:port。",
+    "https": "HTTPS",
+    "httpsHint": "需要证书。请先保存站点，然后点击下方的“获取证书”。",
+    "httpsCaddy": "Caddy 会自动获取和续期证书。",
+    "httpsPort": "HTTPS 端口",
+    "certPath": "证书文件",
+    "keyPath": "密钥文件",
+    "forceHttps": "将 HTTP 重定向到 HTTPS",
+    "gzip": "压缩响应",
+    "accessLog": "访问日志",
+    "maxBody": "上传限制（MB）",
+    "maxBodyHint": "0 表示使用服务器默认值。",
+    "preview": "预览",
+    "previewFailed": "无法生成配置。"
+  },
+  "tls": {
+    "title": "HTTPS 证书",
+    "hintManaged": "certbot 会为本站点的域名获取 Let's Encrypt 证书，然后站点将切换到 HTTPS。certbot 会自动续期并重新加载服务器。",
+    "hintText": "certbot 会为本站点的域名获取 Let's Encrypt 证书。之后请手动将证书添加到站点。certbot 会自动续期并重新加载服务器。",
+    "needCertbot": "请先在服务器页面安装 certbot 及其适用于此服务器的插件。",
+    "email": "电子邮件",
+    "emailHint": "Let's Encrypt 会在此处发送问题通知。可选。",
+    "staging": "测试证书",
+    "stagingHint": "使用 Let's Encrypt 测试服务器。浏览器不会信任该证书。",
+    "issue": "获取证书",
+    "done": "证书已保存"
+  },
+  "config": {
+    "search": "搜索文件",
+    "empty": "没有文件。",
+    "loadFailed": "无法加载文件。",
+    "test": "测试配置",
+    "testOk": "配置正常",
+    "testFailed": "配置存在错误",
+    "content": "内容",
+    "save": "保存",
+    "saveHint": "服务器重新加载前会测试整个配置。如果文件损坏，将恢复原状。",
+    "saved": "已保存并重新加载",
+    "backups_other": "{{count}} 个备份",
+    "restore": "恢复",
+    "restoreTitle": "恢复此备份？",
+    "restoreBody": "文件将恢复到 {{time}} 时的状态。当前文本也会成为备份。",
+    "restored": "备份已恢复"
+  },
+  "logs": {
+    "source": "日志",
+    "lines": "行数",
+    "journal": "{{server}} 日志",
+    "follow": "跟随",
+    "stop": "停止",
+    "connecting": "正在连接...",
+    "ended": "已停止跟随。",
+    "followFailed": "无法跟随此日志。",
+    "empty": "没有日志行。",
+    "loadFailed": "无法读取日志。",
+    "requests": "请求",
+    "topPaths": "热门路径",
+    "topClients": "热门客户端"
+  },
+  "server": {
+    "unknown": "未知",
+    "atBoot": "开机自启",
+    "notInstalled": "未安装",
+    "start": "启动",
+    "stop": "停止",
+    "restart": "重启",
+    "reload": "重新加载",
+    "enable": "开机自启",
+    "disable": "禁止开机自启",
+    "boot": "开机自启",
+    "noBoot": "禁止开机自启",
+    "done": "{{server}} 已完成",
+    "stopTitle": "停止 {{server}}？",
+    "stopBody": "其上的所有站点将离线，直到您再次启动它。",
+    "install": "安装",
+    "installTitle": "安装 {{server}}？",
+    "installBody": "它将使用主机的包管理器安装并立即启动。端口 80 上的其他 Web 服务器会阻止其启动。",
+    "installed": "{{server}} 已安装",
+    "installCertbot": "安装 certbot",
+    "certbotInstalled": "certbot 已安装",
+    "certbotPlugins": "插件：{{plugins}}",
+    "certbotNoPlugins": "没有 nginx 或 Apache 插件",
+    "certbotHint": "为 nginx 和 Apache 站点获取 Let's Encrypt 证书"
+  },
+  "card": {
+    "title": "Web 服务器",
+    "loading": "加载中...",
+    "refresh": "刷新",
+    "empty": "没有主机启用 Web 服务器。",
+    "summary_other": "{{count}} 台主机 | {{down}} 台需要检查",
+    "sites_other": "{{count}} 个站点"
+  },
+  "companion": {
+    "toggle": "Web 服务器面板",
+    "openTab": "打开 Web 服务器",
+    "reload": "重新加载 {{server}}"
+  },
+  "manager": {
+    "title": "Web 服务器",
+    "disabled": "为此主机启用 Web 服务器以在此处查看其站点。"
+  },
+  "operations": {
+    "status": {
+      "title": "Web 服务器状态"
+    },
+    "listSites": {
+      "title": "列出站点"
+    },
+    "test": {
+      "title": "测试 Web 服务器配置"
+    },
+    "reload": {
+      "title": "重新加载 Web 服务器"
+    },
+    "restart": {
+      "title": "重启 Web 服务器"
+    },
+    "enableSite": {
+      "title": "启用站点"
+    },
+    "disableSite": {
+      "title": "禁用站点"
+    },
+    "deleteSite": {
+      "title": "删除站点"
+    },
+    "server": "服务器",
+    "allServers": "全部",
+    "sites": {
+      "title": "站点",
+      "server": "服务器",
+      "domains": "域名",
+      "https": "HTTPS"
+    }
+  }
+}

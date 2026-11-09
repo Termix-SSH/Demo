@@ -1,0 +1,226 @@
+{
+  "plugin": {
+    "name": "IP-KVM",
+    "description": "PiKVM, NanoKVM 및 JetKVM 장치를 통해 기기를 확인하고 제어하세요."
+  },
+  "tab": {
+    "title": "KVM"
+  },
+  "card": {
+    "title": "KVM",
+    "loading": "로딩 중"
+  },
+  "host": {
+    "open": "KVM"
+  },
+  "permissions": {
+    "view": {
+      "title": "KVM 보기",
+      "description": "KVM 탭을 열어 온라인 상태인 KVM과 보고된 전원 상태를 확인합니다."
+    },
+    "power": {
+      "title": "전원 제어",
+      "description": "KVM을 통해 기기를 켜고 끄거나 재설정하거나, Wake-on-LAN으로 깨웁니다."
+    },
+    "console": {
+      "title": "화면 사용",
+      "description": "기기의 화면을 보고 키보드와 마우스를 사용합니다."
+    },
+    "media": {
+      "title": "가상 미디어 사용",
+      "description": "기기에 ISO 이미지를 마운트하고 제거합니다."
+    },
+    "manage": {
+      "title": "KVM 관리",
+      "description": "KVM을 추가, 수정 및 제거합니다."
+    }
+  },
+  "settings": {
+    "admin": {
+      "maxSessionMinutes": {
+        "label": "최대 화면 세션 시간(분)",
+        "description": "이 시간 이후 화면 세션이 종료됩니다. 제한이 없으면 0을 사용하세요."
+      }
+    }
+  },
+  "description": "IP-KVM을 추가하여 뒤의 기기를 확인하고 제어하세요. Termix는 KVM에 연결하므로 브라우저에서 접근할 수 없어도 화면이 작동합니다. 로그인 정보는 암호화되어 저장되며 다시 표시되지 않습니다.",
+  "summary": "{{count}}개 KVM, {{attention}}개 오프라인",
+  "empty": "아직 KVM이 없습니다.",
+  "add": "KVM 추가",
+  "edit": "수정",
+  "delete": "삭제",
+  "back": "뒤로",
+  "saved": "저장됨",
+  "deleteConfirm": "{{name}}을(를) 삭제하시겠습니까?",
+  "status": {
+    "unknown": "아직 읽지 않음",
+    "up": "온라인",
+    "down": "오프라인"
+  },
+  "drivers": {
+    "pikvm": "PiKVM",
+    "glkvm": "GL.iNet Comet (GLKVM)",
+    "nanokvm": "NanoKVM",
+    "jetkvm": "JetKVM"
+  },
+  "fields": {
+    "username": "사용자 이름",
+    "password": "비밀번호"
+  },
+  "power": {
+    "on": "켜짐",
+    "off": "꺼짐",
+    "unknown": "알 수 없음",
+    "state": "기기가 {{state}} 상태입니다.",
+    "sent": "{{name}}에 전원 변경 요청",
+    "sentShort": "전원 명령 전송됨",
+    "wake": "Wake on LAN",
+    "woke": "Wake 패킷 전송됨",
+    "action": {
+      "on": "전원 켜기",
+      "off": "전원 끄기",
+      "graceful-shutdown": "종료",
+      "reset": "재설정"
+    },
+    "confirm": {
+      "on": "{{name}}의 전원을 켜시겠습니까?",
+      "off": "{{name}}의 전원을 차단하시겠습니까? 시스템이 깔끔하게 종료되지 않습니다.",
+      "graceful-shutdown": "{{name}}에 종료를 요청하시겠습니까?",
+      "reset": "{{name}}을(를) 재설정하시겠습니까? 시스템이 즉시 재시작됩니다."
+    }
+  },
+  "form": {
+    "addTitle": "KVM 추가",
+    "editTitle": "KVM 수정",
+    "device": "KVM",
+    "access": "접근",
+    "machine": "KVM 뒤의 기기",
+    "type": "유형",
+    "name": "이름",
+    "address": "주소",
+    "port": "포트",
+    "host": "Termix 호스트",
+    "hostHint": "KVM을 속한 호스트에 연결합니다. 그러면 해당 호스트의 공유 설정을 따르고 호스트 메뉴에 표시됩니다.",
+    "noHost": "없음",
+    "poll": "체크 주기 (초)",
+    "pollHint": "최소 30초 이상이어야 합니다.",
+    "scheme": "연결",
+    "ca": "인증서",
+    "caHint": "개인 인증 기관의 PEM을 붙여넣거나, 자체 서명 인증서를 사용하는 KVM의 경우 이 인증서 신뢰를 사용하세요. 신뢰할 수 있는 인증서의 경우 비워두세요.",
+    "caSet": "인증서가 저장되었습니다. 새 인증서를 붙여넣어 교체하세요.",
+    "keepLogin": "저장된 로그인을 유지하려면 비워두세요",
+    "test": "연결 테스트",
+    "testOk": "KVM이 응답했습니다 ({{model}}).",
+    "testNeedsLogin": "테스트하려면 로그인을 다시 입력하세요.",
+    "mac": "MAC 주소",
+    "macHint": "Wake-on-LAN을 위한 기계의 네트워크 카드입니다.",
+    "broadcast": "브로드캐스트 주소",
+    "broadcastHint": "웨이크 패킷이 전송되는 위치입니다. 비워두면 255.255.255.255가 사용됩니다.",
+    "save": "저장",
+    "add": "추가",
+    "trust": "이 인증서 신뢰",
+    "trustTitle": "이 KVM의 인증서를 신뢰하시겠습니까?",
+    "trustHint": "Termix는 이 KVM이 정확히 이 인증서를 표시하는 동안에만 통신합니다. 지문과 장치의 지문이 일치하는지 확인하세요.",
+    "certName": "이름: {{name}}",
+    "certValid": "{{date}}까지 유효",
+    "certExpired": "{{date}} 만료",
+    "pinned": "신뢰할 수 있는 인증서",
+    "unpin": "제거"
+  },
+  "view": {
+    "screen": "화면",
+    "power": "전원",
+    "media": "가상 미디어",
+    "info": "정보",
+    "refresh": "지금 읽기",
+    "type": "유형",
+    "address": "주소",
+    "model": "모델",
+    "version": "소프트웨어",
+    "hostname": "이름",
+    "video": "비디오",
+    "noSignal": "신호 없음",
+    "status": "KVM",
+    "jetHint": "JetKVM 비디오는 JetKVM에서 브라우저로 직접 전송되므로 브라우저가 네트워크에서 이를 도달할 수 있어야 합니다."
+  },
+  "screen": {
+    "connecting": "연결 중",
+    "failed": "화면을 열 수 없습니다.",
+    "ended": "화면 세션이 종료되었습니다.",
+    "hint": "화면을 클릭하여 입력하세요.",
+    "shortcuts": "단축키",
+    "shortcut": {
+      "ctrl-alt-del": "Ctrl+Alt+Del",
+      "alt-tab": "Alt+Tab",
+      "alt-f4": "Alt+F4",
+      "ctrl-esc": "Ctrl+Esc",
+      "win-l": "Win+L",
+      "win-d": "Win+D",
+      "ctrl-alt-f1": "Ctrl+Alt+F1",
+      "ctrl-alt-f2": "Ctrl+Alt+F2",
+      "ctrl-alt-f7": "Ctrl+Alt+F7",
+      "print-screen": "Print Screen"
+    },
+    "paste": "텍스트 붙여넣기",
+    "pasteLabel": "기계에서 입력할 텍스트",
+    "type": "직접 입력",
+    "snapshot": "스크린샷",
+    "fullscreen": "전체 화면",
+    "exitFullscreen": "전체 화면 종료",
+    "reconnect": "재연결"
+  },
+  "media": {
+    "none": "이미지가 마운트되지 않았습니다.",
+    "mountedNow": "마운트됨: {{name}}",
+    "as": "다음으로 표시",
+    "cd": "CD 드라이브",
+    "usb": "USB 드라이브",
+    "empty": "이 KVM에는 이미지가 없습니다.",
+    "mount": "마운트",
+    "eject": "꺼내기",
+    "mountedDone": "이미지 마운트됨",
+    "ejected": "이미지 꺼냄",
+    "url": "이미지 다운로드 위치",
+    "name": "저장 이름",
+    "fetch": "KVM으로 다운로드",
+    "fetched": "이미지 다운로드됨"
+  },
+  "operations": {
+    "device": "KVM",
+    "list-devices": {
+      "title": "KVM 목록"
+    },
+    "poll": {
+      "title": "KVM 상태 즉시 읽기"
+    },
+    "power-state": {
+      "title": "전원 상태 확인"
+    },
+    "power-on": {
+      "title": "전원 켜기"
+    },
+    "graceful-shutdown": {
+      "title": "종료"
+    },
+    "power-off": {
+      "title": "전원 끄기"
+    },
+    "reset": {
+      "title": "재시작"
+    },
+    "wake": {
+      "title": "Wake-on-LAN"
+    },
+    "eject-media": {
+      "title": "이미지 꺼내기"
+    },
+    "health": {
+      "title": "KVM 상태"
+    }
+  },
+  "widget": {
+    "name": "KVM 장치",
+    "description": "IP-KVM 중 실행 중인 항목",
+    "summary": "{{total}}개 중 {{up}}개 실행 중"
+  }
+}

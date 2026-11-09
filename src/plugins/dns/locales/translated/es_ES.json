@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Gestiona registros DNS y dominios en Cloudflare, Route 53, Namecheap y otros proveedores."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Dominios",
+    "loading": "Cargando",
+    "empty": "Aún no hay dominios. Abre DNS para añadir una cuenta.",
+    "ok": "{{domains}} dominios, ninguno expira pronto",
+    "accounts": "{{count}} cuentas",
+    "failingLinks": "{{count}} registros vinculados fallando"
+  },
+  "permissions": {
+    "view": {
+      "title": "Ver DNS",
+      "description": "Abre la pestaña DNS y consulta zonas, registros, dominios y comprobaciones de estado."
+    },
+    "edit": {
+      "title": "Modificar registros DNS",
+      "description": "Añade, modifica y elimina registros, importa archivos de zona y actualiza dominios."
+    },
+    "manage": {
+      "title": "Gestionar cuentas DNS",
+      "description": "Añade cuentas de proveedores, vincula registros a hosts, supervisa dominios y restaura copias de zonas."
+    }
+  },
+  "operations": {
+    "zone": "Zona",
+    "type": "Tipo",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Nombre",
+    "content": "Valor",
+    "contentOptional": "Valor (déjalo vacío para coincidir con cualquier)",
+    "ttl": "TTL en segundos",
+    "label": "Etiqueta",
+    "zones": {
+      "title": "Listar zonas DNS"
+    },
+    "records": {
+      "title": "Listar registros DNS"
+    },
+    "domains": {
+      "title": "Listar dominios y fechas de expiración"
+    },
+    "check": {
+      "title": "Comprobar una zona"
+    },
+    "upsert": {
+      "title": "Establecer un registro DNS"
+    },
+    "delete": {
+      "title": "Eliminar un registro DNS"
+    },
+    "snapshot": {
+      "title": "Guardar una copia de una zona"
+    },
+    "links": {
+      "title": "Actualizar registros vinculados"
+    },
+    "expiry": {
+      "title": "Expiración del dominio"
+    }
+  },
+  "description": "Añade tus cuentas de DNS y registradores para gestionar registros y supervisar dominios en un solo lugar. Las claves se almacenan cifradas y nunca se vuelven a mostrar.",
+  "summary": "{{zones}} zonas, {{domains}} dominios",
+  "saved": "Guardado",
+  "delete": "Eliminar",
+  "edit": "Editar",
+  "back": "Atrás",
+  "refresh": "Actualizar",
+  "section": {
+    "zones": "Zonas",
+    "domains": "Dominios",
+    "links": "Vínculos",
+    "accounts": "Cuentas"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "Token de API",
+    "accessKeyId": "ID de clave de acceso",
+    "secretAccessKey": "Clave de acceso secreta",
+    "sessionToken": "Token de sesión (opcional)",
+    "apiUser": "Usuario de API",
+    "apiKey": "Clave de API",
+    "userName": "Nombre de usuario (si es diferente del usuario de la API)",
+    "clientIp": "Dirección IP permitida",
+    "apiSecret": "Secreto de la API",
+    "environment": "Entorno",
+    "environment_production": "Producción",
+    "environment_ote": "Pruebas (OTE)",
+    "secretApiKey": "Clave secreta de la API",
+    "token": "Token de acceso personal"
+  },
+  "zones": {
+    "empty": "Aún no hay zonas.",
+    "emptyHint": "Añade un inicio de sesión de proveedor en Inicios de sesión para ver sus zonas."
+  },
+  "zone": {
+    "records": "Registros",
+    "health": "Estado",
+    "copies": "Copias",
+    "files": "Archivos",
+    "filter": "Filtrar registros",
+    "empty": "No hay registros."
+  },
+  "record": {
+    "section": "Registro",
+    "addTitle": "Añadir registro",
+    "editTitle": "Editar registro",
+    "add": "Añadir registro",
+    "save": "Guardar",
+    "type": "Tipo",
+    "name": "Nombre",
+    "nameHint": "Usa @ para {{zone}} mismo",
+    "value": "Valor",
+    "priority": "Prioridad",
+    "ttl": "TTL (segundos)",
+    "ttlHint": "Tiempo que los resolutores conservan la respuesta. 300 son 5 minutos.",
+    "ttlAuto": "1 significa automático.",
+    "proxied": "Enviado por proxy",
+    "proxiedHint": "Enviar el tráfico a través de Cloudflare.",
+    "proxiedBadge": "Enviado por proxy",
+    "comment": "Nota",
+    "readOnly": "Gestionado por el proveedor",
+    "deleteConfirm": "¿Eliminar el registro {{type}} {{name}}?"
+  },
+  "account": {
+    "add": "Añadir inicio de sesión",
+    "addTitle": "Añadir inicio de sesión de DNS",
+    "editTitle": "Editar inicio de sesión de DNS",
+    "save": "Guardar",
+    "login": "Inicio de sesión",
+    "provider": "Proveedor",
+    "name": "Nombre",
+    "namePlaceholder": "Cloudflare principal",
+    "keep": "Déjalo vacío para conservar el valor guardado",
+    "registrar": "Este proveedor también es un registrador, por lo que sus dominios aparecen en Dominios.",
+    "options": "Opciones",
+    "autoBackup": "Conservar copias de las zonas",
+    "autoBackupHint": "Guardar una copia antes de cada cambio y cuando una zona cambie fuera de Termix.",
+    "checkHealth": "Comprobar las zonas cada día",
+    "checkHealthHint": "Ejecutar las comprobaciones de estado diariamente y alertar sobre nuevos problemas.",
+    "test": "Probar",
+    "testOk": "Funciona. Se encontraron {{zones}} zonas y {{domains}} dominios.",
+    "deleteConfirm": "¿Eliminar {{name}}? Sus copias y enlaces se eliminarán también. No se cambiará nada en el proveedor.",
+    "empty": "Aún no hay inicios de sesión.",
+    "emptyHint": "Añade un inicio de sesión de Cloudflare, Route 53, Namecheap u otro para empezar.",
+    "lastSync": "Última comprobación: {{date}}",
+    "never": "Aún no se ha comprobado",
+    "failed": "El inicio de sesión ha fallado"
+  },
+  "domains": {
+    "empty": "Aún no hay dominios.",
+    "emptyHint": "Los inicios de sesión de registradores listan sus dominios aquí. También puedes vigilar cualquier dominio por su nombre.",
+    "watchPlaceholder": "example.com",
+    "watch": "Vigilar dominio",
+    "unwatch": "Dejar de vigilar",
+    "watched": "Vigilado",
+    "noRenew": "Renovación automática desactivada",
+    "unlocked": "Sin bloquear",
+    "unknown": "Registrador desconocido",
+    "expires": "Expira el {{date}}",
+    "expired": "Expirado",
+    "days": "Quedan {{count}} días",
+    "refreshFailed": "Fallaron {{count}} consultas"
+  },
+  "link": {
+    "add": "Añadir enlace",
+    "addTitle": "Añadir enlace",
+    "editTitle": "Editar enlace",
+    "save": "Guardar",
+    "record": "Registro",
+    "address": "Dirección",
+    "zone": "Zona",
+    "pickZone": "Selecciona una zona",
+    "source": "Apuntar a",
+    "sourceHost": "Un host",
+    "sourcePublic4": "La dirección IPv4 pública de este servidor",
+    "sourcePublic6": "La dirección IPv6 pública de este servidor",
+    "source_host": "Host",
+    "source_public4": "IPv4 pública",
+    "source_public6": "IPv6 pública",
+    "host": "Host",
+    "pickHost": "Selecciona un host",
+    "hostHint": "El registro sigue la dirección del host. Se actualiza cuando el host cambia.",
+    "publicHint": "Termix consulta su dirección pública y mantiene el registro sincronizado, como un DNS dinámico.",
+    "enabled": "Mantener este registro actualizado",
+    "empty": "Aún no hay enlaces.",
+    "emptyHint": "Un enlace mantiene un registro apuntando a un host o a la dirección pública de este servidor.",
+    "off": "Desactivado",
+    "hostGone": "Host no encontrado",
+    "lastSync": "Comprobado el {{date}}",
+    "never": "Aún no se ha comprobado",
+    "syncNow": "Actualizar ahora",
+    "updated": "El registro se ha actualizado",
+    "unchanged": "El registro ya era correcto",
+    "deleteConfirm": "¿Eliminar el enlace de {{name}}? El registro permanece donde está."
+  },
+  "diff": {
+    "none": "Nada cambiaría.",
+    "add": "Añadir",
+    "change": "Cambiar",
+    "remove": "Eliminar"
+  },
+  "copies": {
+    "hint": "Las copias se guardan antes de cada cambio y una vez al día cuando una zona cambia fuera de Termix.",
+    "save": "Guardar copia",
+    "saved": "Copia guardada",
+    "manualLabel": "Copia manual",
+    "empty": "Aún no hay copias.",
+    "count": "{{count}} registros",
+    "compare": "Comparar con el estado actual",
+    "restore": "Restaurar",
+    "restoreConfirm": "¿Restaurar esta copia? Se realizarán {{count}} cambios en el proveedor. Primero se guarda una copia de los registros actuales.",
+    "restored": "Restaurado. Se han realizado {{count}} cambios.",
+    "source": {
+      "manual": "Manual",
+      "auto": "Diaria",
+      "before": "Antes del cambio"
+    }
+  },
+  "files": {
+    "export": "Descargar archivo de zona",
+    "exportHint": "Descarga los registros como un archivo de zona BIND.",
+    "import": "Importar un archivo de zona",
+    "placeholder": "Pega aquí un archivo de zona BIND",
+    "replace": "Eliminar registros que no estén en el archivo",
+    "replaceHint": "Desactivado: la importación solo añade y modifica registros.",
+    "preview": "Vista previa",
+    "apply": "Aplicar",
+    "applied": "Importado. Se han realizado {{count}} cambios.",
+    "skipped": "Omitidos:"
+  },
+  "health": {
+    "run": "Ejecutar comprobaciones",
+    "running": "Ejecutando",
+    "propagation": "Comprobar resolutores",
+    "propagationTitle": "Resolutores públicos",
+    "lastRun": "Última ejecución: {{date}}",
+    "empty": "Aún no se han ejecutado comprobaciones para esta zona.",
+    "record": "Registro",
+    "resolver": "Resolutor",
+    "answer": "Respuesta",
+    "noAnswer": "Sin respuesta",
+    "delegation": {
+      "error": "No se han podido buscar los servidores de nombres.",
+      "none": "La zona no tiene servidores de nombres en Internet. Es posible que el dominio no apunte a este proveedor.",
+      "mismatch": "El dominio utiliza servidores de nombres diferentes a los del proveedor: {{found}}.",
+      "ok": "El dominio apunta a {{count}} servidores de nombres."
+    },
+    "soa": {
+      "differ": "Los servidores de nombres no coinciden en la versión de la zona ({{count}} versiones). Es posible que un cambio aún se esté propagando.",
+      "same": "{{count}} servidores de nombres coinciden en la versión de la zona."
+    },
+    "dnssec": {
+      "unknown": "No se ha podido comprobar DNSSEC.",
+      "off": "DNSSEC no está activado.",
+      "valid": "DNSSEC está activado y es válido.",
+      "broken": "DNSSEC está configurado en el registrador, pero no se valida. Los resolutores que lo comprueban fallarán."
+    },
+    "cname": {
+      "conflict": "{{name}} tiene un registro CNAME y otros registros. Esto no está permitido.",
+      "apex": "La raíz de la zona no puede ser un CNAME.",
+      "dangling": "{{name}} apunta a {{target}}, que no se resuelve.",
+      "ok": "Todos los destinos de CNAME se resuelven correctamente."
+    },
+    "spf": {
+      "missing": "El dominio recibe correo, pero no tiene registro SPF.",
+      "multiple": "Hay más de un registro SPF. Los servidores de correo rechazarán todos ellos.",
+      "lookups": "El registro SPF realiza {{count}} búsquedas. El límite es 10.",
+      "ok": "SPF está configurado ({{count}} búsquedas)."
+    },
+    "dmarc": {
+      "missing": "No hay registro DMARC.",
+      "none": "DMARC está configurado solo para monitorización.",
+      "ok": "DMARC está configurado."
+    },
+    "dkim": {
+      "none": "No se han encontrado claves DKIM en esta zona.",
+      "found": "Se han encontrado {{count}} claves DKIM."
+    },
+    "mx": {
+      "unresolved": "El servidor de correo {{host}} no se resuelve."
+    },
+    "mail": {
+      "none": "El dominio no tiene registros de correo."
+    },
+    "caa": {
+      "ok": "Los registros CAA limitan quién puede emitir certificados.",
+      "none": "No hay registros CAA. Cualquier autoridad de certificación puede emitir certificados."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Dominios, dominios próximos a expirar y registros con errores.",
+    "domains": "Dominios",
+    "expiring": "Próximos a expirar",
+    "failingLinks": "Enlaces con errores",
+    "failingAccounts": "Inicios de sesión con errores"
+  }
+}

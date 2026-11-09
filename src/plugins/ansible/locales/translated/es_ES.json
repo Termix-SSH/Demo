@@ -1,0 +1,211 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Ejecuta playbooks y comandos ad-hoc de Ansible desde un host de control, con un inventario creado a partir de tus hosts de Termix."
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "back": "Atrás",
+    "delete": "Eliminar"
+  },
+  "permissions": {
+    "use": {
+      "title": "Usar Ansible",
+      "description": "Ver playbooks y ejecuciones en hosts de control a los que puedes acceder. Editar archivos y ejecutar Ansible en hosts que puedes editar."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Usar este host como host de control de Ansible. Ansible debe estar instalado en él."
+      },
+      "projectDir": {
+        "label": "Carpeta del proyecto",
+        "description": "La carpeta en este host con tus playbooks, roles y ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Archivo de contraseña de Vault",
+        "description": "Un archivo en este host con la contraseña de Ansible Vault. Déjalo vacío si no usas Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Solo lectura",
+        "description": "Mostrar playbooks y ejecuciones, pero nunca editar archivos ni iniciar ejecuciones en este host."
+      },
+      "alertRuns": {
+        "label": "Alertar cuando una ejecución falle",
+        "description": "Enviar una alerta cuando una ejecución en este host termine con fallo o se pierda. Se comprueba al leer el estado de la ejecución."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Abre Ansible desde un host.",
+    "error": "No se ha podido cargar Ansible desde este host.",
+    "disabled": "Ansible está desactivado para este host. Actívalo en la configuración del host.",
+    "refresh": "Actualizar",
+    "readOnly": "Solo lectura",
+    "notInstalled": "Ansible no instalado",
+    "notInstalledTitle": "Ansible no está instalado en este host",
+    "notInstalledHint": "Instala ansible-core en este host, por ejemplo con pipx o tu gestor de paquetes, y luego actualiza.",
+    "noSshpass": "sshpass no está instalado en este host. Los hosts que inician sesión con contraseña fallarán.",
+    "viewPlaybooks": "Playbooks",
+    "viewRuns": "Ejecuciones",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Hechos"
+  },
+  "files": {
+    "add": "Nuevo archivo",
+    "search": "Buscar archivos",
+    "empty": "Aún no hay archivos en la carpeta del proyecto.",
+    "noMatch": "No hay archivos que coincidan.",
+    "noProject": "La carpeta {{dir}} no existe en este host. Créala o establece otra carpeta de proyecto en la configuración del host.",
+    "listFailed": "No se han podido listar los archivos del proyecto.",
+    "loadFailed": "No se ha podido leer ese archivo.",
+    "saved": "Archivo guardado",
+    "saveFailed": "No se ha podido guardar ese archivo.",
+    "playbook": "Playbook",
+    "run": "Ejecutar",
+    "newTitle": "Nuevo archivo",
+    "name": "Nombre del archivo",
+    "nameHint": "Una ruta dentro de la carpeta del proyecto, como site.yml o roles/web/tasks/main.yml.",
+    "hint": "Se comprueba la sintaxis de un playbook antes de guardarlo. El archivo anterior se conserva si la comprobación falla.",
+    "text": "Texto del archivo",
+    "deleteTitle": "¿Eliminar este archivo?"
+  },
+  "targets": {
+    "search": "Buscar hosts",
+    "addShown": "Añadir mostrados",
+    "clear": "Limpiar",
+    "empty": "No se han encontrado hosts.",
+    "count": "{{count}} seleccionado",
+    "failed": "No se han podido cargar tus hosts."
+  },
+  "run": {
+    "title": "Ejecutar {{playbook}}",
+    "start": "Ejecutar",
+    "startCheck": "Ejecutar en modo de comprobación",
+    "startFailed": "No se ha podido iniciar la ejecución.",
+    "source": "Hosts",
+    "sourceProject": "Inventario del proyecto",
+    "sourceTermix": "Hosts de Termix",
+    "sourceProjectHint": "Usa el inventario de ansible.cfg o un archivo dentro del proyecto.",
+    "sourceTermixHint": "Selecciona hosts desde Termix. Las carpetas se convierten en grupos folder_ y las etiquetas en grupos tag_. Todos pertenecen al grupo termix.",
+    "inventory": "Archivo de inventario",
+    "inventoryHint": "Una ruta dentro de la carpeta del proyecto. Déjalo vacío para usar ansible.cfg.",
+    "check": "Modo de comprobación",
+    "checkHint": "Muestra qué cambiaría sin realizar ningún cambio.",
+    "diff": "Mostrar diferencias",
+    "diffHint": "Mostrar los cambios realizados en los archivos.",
+    "become": "Ejecutar como root",
+    "becomeHint": "Usar sudo en los hosts. Se utiliza una contraseña de sudo guardada para los hosts de Termix.",
+    "limit": "Límite",
+    "limitHint": "Ejecutar solo en estos hosts o grupos.",
+    "verbosity": "Detalle de salida",
+    "verbosityOff": "Normal",
+    "tags": "Etiquetas",
+    "skipTags": "Omitir etiquetas",
+    "extraVars": "Variables adicionales",
+    "extraVarsHint": "Una clave=valor por línea."
+  },
+  "runs": {
+    "title": "Ejecución",
+    "empty": "Aún no hay ejecuciones.",
+    "loadFailed": "No se han podido cargar las ejecuciones.",
+    "stop": "Detener",
+    "stopFailed": "No se ha podido detener la ejecución.",
+    "deleteTitle": "¿Eliminar esta ejecución?",
+    "deleteFailed": "No se ha podido eliminar la ejecución.",
+    "checkMode": "Comprobar",
+    "truncated": "Mostrando el final de una salida larga.",
+    "noOutput": "Aún no hay salida.",
+    "state": {
+      "running": "En ejecución",
+      "ok": "Finalizado",
+      "failed": "Fallido",
+      "cancelled": "Detenido",
+      "lost": "Perdido"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Hechos"
+    },
+    "recap": {
+      "host": "Host",
+      "ok": "Correcto",
+      "changed": "Modificado",
+      "unreachable": "Inalcanzable",
+      "failed": "Fallido",
+      "skipped": "Omitido"
+    }
+  },
+  "adhoc": {
+    "hint": "Ejecuta un módulo en los hosts, como ansible all -m ping.",
+    "pattern": "Patrón de hosts",
+    "patternHint": "Un host, un grupo o todos.",
+    "module": "Módulo",
+    "moduleHint": "Por ejemplo, ping, command, shell, apt o systemd.",
+    "args": "Argumentos",
+    "argsHint": "Para command y shell, este es el comando. Para otros módulos, son pares clave=valor.",
+    "run": "Ejecutar"
+  },
+  "facts": {
+    "hint": "Recopila datos de los hosts con el módulo setup. Necesita hosts de Termix para que cada uno tenga una sesión iniciada.",
+    "gather": "Recopilar datos",
+    "gathering": "Recopilando...",
+    "failed": "No se han podido recopilar los datos.",
+    "failedHost": "Error",
+    "none": "No se han recibido datos. Abre la ejecución para ver por qué.",
+    "col": {
+      "host": "Host",
+      "os": "Sistema",
+      "kernel": "Kernel",
+      "cpu": "CPUs",
+      "memory": "Memoria",
+      "address": "Dirección",
+      "uptime": "Tiempo activo"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Listar playbooks"
+    },
+    "run": {
+      "title": "Ejecutar playbook",
+      "playbook": "Playbook",
+      "limit": "Límite",
+      "tags": "Etiquetas",
+      "check": "Modo de comprobación"
+    },
+    "runs": {
+      "title": "Listar ejecuciones",
+      "resource": "Ejecuciones",
+      "started": "Iniciado",
+      "check": "Modo de comprobación"
+    },
+    "failed": {
+      "title": "Ejecuciones fallidas"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Comprobando hosts...",
+    "summary_one": "{{count}} ejecución fallida en {{hosts}} hosts",
+    "summary_many": "{{count}} ejecuciones fallidas en {{hosts}} hosts",
+    "summary_other": "{{count}} ejecuciones fallidas en {{hosts}} hosts",
+    "refresh": "Comprobar de nuevo",
+    "empty": "Activa Ansible para un host para ver sus ejecuciones aquí.",
+    "failed_one": "{{count}} fallido",
+    "failed_many": "{{count}} fallidos",
+    "failed_other": "{{count}} fallidos",
+    "running_one": "{{count}} en ejecución",
+    "running_many": "{{count}} en ejecución",
+    "running_other": "{{count}} en ejecución",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Aún no hay ejecuciones"
+  }
+}

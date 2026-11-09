@@ -1,0 +1,223 @@
+{
+  "plugin": {
+    "name": "Paketi",
+    "description": "Pregledajte i instalirajte ažuriranja na svojim hostovima, pretražujte, instalirajte i uklanjajte pakete te pregledavajte povijest paketa."
+  },
+  "common": {
+    "cancel": "Odustani",
+    "back": "Natrag"
+  },
+  "permissions": {
+    "use": {
+      "title": "Koristi pakete",
+      "description": "Pregledajte pakete i ažuriranja na hostovima na koje možete pristupiti te ih mijenjajte na hostovima koje možete uređivati."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Paketi",
+        "description": "Upravljajte paketima i ažuriranjima na ovom hostu putem kartice Paketi."
+      },
+      "useSudo": {
+        "label": "Koristi sudo",
+        "description": "Koristi sudo za instalaciju, ažuriranje i uklanjanje paketa. Isključite ako se prijavljujete kao root."
+      },
+      "readOnly": {
+        "label": "Samo za čitanje",
+        "description": "Prikaži pakete i ažuriranja, ali ih nikada ne mijenjaj na ovom hostu."
+      },
+      "showPanel": {
+        "label": "Prikaži panel ažuriranja u terminalima",
+        "description": "Omogući otvaranje panela ažuriranja pored SSH terminala ovog hosta."
+      },
+      "alertUpdates": {
+        "label": "Obavijesti o sigurnosnim ažuriranjima",
+        "description": "Pošalji obavijest kada ovaj host ima sigurnosna ažuriranja ili treba ponovno pokretanje. Provjerava se pri čitanju ažuriranja, otprilike jednom na sat."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otvori panel ažuriranja s novim terminalima",
+        "description": "Prikaži panel ažuriranja pored svakog SSH terminala koji ima uključene Pakete. I dalje ga možete otvoriti i zatvoriti putem gumba na desnoj ivici."
+      },
+      "companionSide": {
+        "label": "Stranica panela ažuriranja",
+        "description": "Gdje se panel ažuriranja nalazi pored terminala.",
+        "right": "Desno",
+        "left": "Lijevo",
+        "bottom": "Dolje"
+      },
+      "companionSize": {
+        "label": "Veličina panela za ažuriranja",
+        "description": "Širina u pikselima, odnosno visina kada je panel na dnu. Rub panela možete i povući mišem."
+      },
+      "companionEdgeButton": {
+        "label": "Prikaži gumb za panel",
+        "description": "Prikaži mali gumb na desnom rubu terminala koji otvara panel za ažuriranja."
+      }
+    }
+  },
+  "tab": {
+    "title": "Paketi",
+    "noHost": "Otvorite Pakete s nekog hosta.",
+    "error": "Paketi se ne mogu učitati s ovog hosta.",
+    "disabled": "Funkcija Paketi je onemogućena za ovaj host. Uključite je u postavkama hosta.",
+    "sudo": "Promjene zahtijevaju root prijavu, sudo bez lozinke ili spremljenu Sudo lozinku na ovom hostu.",
+    "refresh": "Osvježi",
+    "readOnly": "Samo za čitanje",
+    "noManager": "Nema upravitelja paketa",
+    "noManagerTitle": "Nije pronađen podržani upravitelj paketa",
+    "noManagerHint": "Paketi rade s apt, dnf, yum, zypper, pacman i apk.",
+    "indexAge": "Indeks je osvježen prije {{ago}}",
+    "reboot": "Ovaj host treba ponovno pokretanje za dovršavanje ažuriranja.",
+    "viewUpdates": "Ažuriranja",
+    "viewInstalled": "Instalirano",
+    "viewSearch": "Pretraži",
+    "viewHistory": "Povijest",
+    "viewRepos": "Skladišta"
+  },
+  "actions": {
+    "working": "Akcija {{action}} se izvršava. Ovo može potrajati nekoliko minuta.",
+    "ok": "Gotovo",
+    "failed": "Upravitelj paketa nije uspio.",
+    "noOutput": "Nema izlaza.",
+    "refresh": {
+      "label": "Osvježi indeks",
+      "confirm": "Osvježiti indeks paketa?",
+      "desc": "Preuzima najnovije popise paketa.",
+      "done": "Indeks paketa je ažuriran."
+    },
+    "update": {
+      "label": "Ažuriraj",
+      "confirm_one": "Ažurirati {{names}}?",
+      "confirm_few": "Ažurirati {{count}} paketa?",
+      "confirm_other": "Ažurirati {{count}} paketa?",
+      "desc": "Instalira najnoviju verziju paketa {{names}}.",
+      "done": "Ažurirani su paketi {{names}}."
+    },
+    "upgrade-all": {
+      "label": "Ažuriraj sve",
+      "confirm": "Ažurirati sve pakete?",
+      "desc": "Osvježava indeks paketa i instalira sva ažuriranja. Usluge se mogu ponovno pokrenuti tijekom izvršavanja.",
+      "done": "Svi paketi su ažurirani."
+    },
+    "install": {
+      "label": "Instaliraj",
+      "confirm": "Instalirati {{names}}?",
+      "desc": "Instalira {{names}} i sve što mu je potrebno.",
+      "done": "Instalirano {{names}}."
+    },
+    "remove": {
+      "label": "Ukloni",
+      "confirm": "Ukloniti {{names}}?",
+      "desc": "Uklanja {{names}} s ovog hosta. Programi koji ovise o njemu mogu prestati raditi.",
+      "done": "Uklonjeno {{names}}."
+    },
+    "hold": {
+      "label": "Zadrži na ovoj verziji",
+      "confirm": "Zadržati {{names}}?",
+      "desc": "Ažuriranja će preskočiti {{names}} dok ga ne otpustite.",
+      "done": "{{names}} je zadržan."
+    },
+    "unhold": {
+      "label": "Oslobodi zadržavanje",
+      "confirm": "Osloboditi {{names}}?",
+      "desc": "{{names}} ponovno prima ažuriranja.",
+      "done": "{{names}} ponovno prima ažuriranja."
+    }
+  },
+  "updates": {
+    "search": "Filtriraj ažuriranja",
+    "count_one": "{{count}} ažuriranje",
+    "count_few": "{{count}} ažuriranja",
+    "count_other": "{{count}} ažuriranja",
+    "countSecurity_one": "{{count}} ažuriranje, {{security}} za sigurnost",
+    "countSecurity_few": "{{count}} ažuriranja, {{security}} za sigurnost",
+    "countSecurity_other": "{{count}} ažuriranja, {{security}} za sigurnost",
+    "updatePicked_one": "Ažuriraj {{count}} paket",
+    "updatePicked_few": "Ažuriraj {{count}} paketa",
+    "updatePicked_other": "Ažuriraj {{count}} paketa",
+    "updateOne": "Ažuriraj",
+    "pick": "Odaberi {{name}}",
+    "security": "Sigurnost",
+    "empty": "Sve je ažurirano.",
+    "noMatch": "Nema odgovarajućih ažuriranja.",
+    "loadFailed": "Nije moguće pročitati ažuriranja."
+  },
+  "installed": {
+    "search": "Filtriraj instalirane pakete",
+    "all": "Svi",
+    "held": "Zadržano",
+    "heldBadge": "Zadržano",
+    "empty": "Nema paketa koji odgovaraju.",
+    "loadFailed": "Nije moguće pročitati instalirane pakete."
+  },
+  "search": {
+    "placeholder": "Pretraži pakete",
+    "button": "Pretraži",
+    "hint": "Pretraži repozitorije hosta za paket koji želite instalirati.",
+    "empty": "Ništa nije pronađeno.",
+    "installed": "Instalirano",
+    "failed": "Pretraga nije uspjela."
+  },
+  "history": {
+    "empty": "Povijest paketa nije pronađena.",
+    "loadFailed": "Nije moguće pročitati povijest paketa."
+  },
+  "repos": {
+    "hint": "Skladišta s kojima ovaj host instalira pakete. Promijenite ih izravno na hostu.",
+    "empty": "Nisu pronađena skladišta.",
+    "off": "Isključeno",
+    "loadFailed": "Skladišta se ne mogu pročitati."
+  },
+  "card": {
+    "title": "Ažuriranja paketa",
+    "loading": "Provjeravanje hostova...",
+    "summary_one": "{{count}} ažuriranje na {{hosts}} hostu",
+    "summary_few": "{{count}} ažuriranja na {{hosts}} hosta",
+    "summary_other": "{{count}} ažuriranja na {{hosts}} hostova",
+    "refresh": "Provjeri ponovno",
+    "empty": "Uključite Pakete za host kako biste ovdje vidjela njegova ažuriranja.",
+    "security_one": "{{count}} sigurnosno",
+    "security_few": "{{count}} sigurnosna",
+    "security_other": "{{count}} sigurnosnih",
+    "reboot": "Potreban je ponovni pokret",
+    "updates_one": "{{count}} ažuriranje",
+    "updates_few": "{{count}} ažuriranja",
+    "updates_other": "{{count}} ažuriranja",
+    "upToDate": "Sve je ažurirano"
+  },
+  "manager": {
+    "title": "Paketi",
+    "disabled": "Uključite pakete za ovog hosta u postavkama kako biste ovdje vidjela njegova ažuriranja."
+  },
+  "operations": {
+    "list": {
+      "title": "Popis ažuriranja paketa"
+    },
+    "updates": {
+      "title": "Čekajuća ažuriranja",
+      "resource": "Čekajuća ažuriranja"
+    },
+    "upgradeAll": {
+      "title": "Nadogradi sve pakete"
+    },
+    "install": {
+      "title": "Instaliraj pakete"
+    },
+    "remove": {
+      "title": "Ukloni pakete"
+    },
+    "package": "Paketi",
+    "packageHint": "Jedno ili više naziva paketa, odvojeno razmacima.",
+    "resource": {
+      "current": "Instalirano",
+      "available": "Dostupno",
+      "repo": "Skladište"
+    }
+  },
+  "nav": {
+    "togglePanel": "Prikaži/sakrij panel za ažuriranja"
+  }
+}

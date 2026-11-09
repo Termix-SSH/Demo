@@ -1,0 +1,210 @@
+{
+  "plugin": {
+    "name": "Użytkownicy",
+    "description": "Zarządzaj kontami użytkowników, grupami, hasłami i kluczami SSH na swoich hostach."
+  },
+  "common": {
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "back": "Wróć",
+    "delete": "Usuń",
+    "loading": "Ładowanie..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Użyj Użytkowników",
+      "description": "Wyświetlaj konta na hostach, do których masz dostęp, oraz modyfikuj je na hostach, które możesz edytować."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Użytkownicy",
+        "description": "Zarządzaj kontami użytkowników i grupami na tym hoście z zakładki Użytkownicy."
+      },
+      "useSudo": {
+        "label": "Używaj sudo",
+        "description": "Używaj sudo do odczytu i modyfikacji kont. Wyłącz, jeśli zalogowany jesteś jako root."
+      },
+      "readOnly": {
+        "label": "Tylko do odczytu",
+        "description": "Wyświetlaj konta, ale nigdy ich nie modyfikuj na tym hoście."
+      }
+    }
+  },
+  "tab": {
+    "title": "Użytkownicy",
+    "noHost": "Otwórz Użytkowników z hosta.",
+    "error": "Nie udało się załadować kont z tego hosta.",
+    "disabled": "Moduł Użytkownicy jest wyłączony dla tego hosta. Włącz go w ustawieniach hosta.",
+    "sudo": "Zmiany i stany haseł wymagają logowania jako root, sudo bez hasła lub zapisanego hasła sudo na tym hoście.",
+    "noTools": "useradd nie jest zainstalowany na tym hoście. W przypadku Alpine zainstaluj pakiet shadow.",
+    "refresh": "Odśwież",
+    "readOnly": "Tylko do odczytu",
+    "counts_one": "{{count}} użytkownik",
+    "counts_few": "{{count}} użytkowników",
+    "counts_many": "{{count}} użytkowników",
+    "counts_other": "{{count}} użytkowników",
+    "viewUsers": "Użytkownicy",
+    "viewGroups": "Grupy",
+    "viewSessions": "Sesje"
+  },
+  "users": {
+    "add": "Dodaj użytkownika",
+    "search": "Szukaj użytkowników",
+    "people": "Osoby",
+    "systemFilter": "System",
+    "all": "Wszystkie",
+    "empty": "Brak pasujących użytkowników.",
+    "you": "Ty",
+    "sudo": "Sudo",
+    "locked": "Zablokowany",
+    "emptyPassword": "Brak hasła",
+    "system": "System",
+    "loadFailed": "Nie udało się odczytać kont."
+  },
+  "password": {
+    "set": "Ustaw",
+    "locked": "Zablokowany",
+    "none": "Nie ustawiono, brak logowania hasłem",
+    "empty": "Puste, każdy może się zalogować",
+    "unknown": "Wymaga roota, aby sprawdzić"
+  },
+  "detail": {
+    "info": "Konto",
+    "account": "Szczegóły",
+    "fullName": "Pełne imię i nazwisko",
+    "uid": "ID użytkownika i grupy",
+    "mainGroup": "Główna grupa",
+    "home": "Katalog domowy",
+    "shell": "Powłoka",
+    "groups": "Grupy",
+    "groupsPlaceholder": "Wpisz grupę i naciśnij Enter",
+    "unknownGroups": "Te grupy nie istnieją: {{groups}}",
+    "none": "Brak",
+    "password": "Hasło",
+    "passwordChanged": "Hasło zmienione",
+    "lastLogin": "Ostatnie logowanie",
+    "never": "Nigdy",
+    "unknown": "Nieznane",
+    "saved": "Zapisano.",
+    "failed": "Zmiana nie powiodła się.",
+    "loadFailed": "Nie udało się odczytać kluczy i ostatniego logowania tego użytkownika.",
+    "passwordSection": "Hasło",
+    "newPassword": "Nowe hasło",
+    "newPasswordHint": "Przesyłane do hosta przez SSH i ustawiane za pomocą chpasswd. Nigdy nie jest przechowywane w Termix.",
+    "setPassword": "Ustaw hasło",
+    "passwordSet": "Hasło ustawione.",
+    "expirePassword": "Poproś o nowe przy następnym logowaniu",
+    "expired": "Użytkownik wybierze nowe hasło przy następnym logowaniu.",
+    "access": "Dostęp",
+    "sudo": "Sudo",
+    "sudoHint": "Uruchamiaj polecenia jako root przez grupę {{group}}.",
+    "sudoProtected": "Nie możesz odebrać uprawnień sudo użytkownikowi root ani użytkownikowi, jako który loguje się Termix.",
+    "sudoTitle": "Przyznać sudo użytkownikowi {{name}}?",
+    "sudoDesc": "Dodaje go do grupy {{group}}, dzięki czemu będzie mógł uruchamiać dowolne polecenia jako root.",
+    "sudoGrant": "Przyznaj sudo",
+    "sudoOn": "Przyznano sudo.",
+    "sudoOff": "Odebrano sudo.",
+    "lock": "Zablokuj konto",
+    "unlock": "Odblokuj konto",
+    "lockTitle": "Zablokować {{name}}?",
+    "lockDesc": "Nie będzie mógł się zalogować hasłem ani kluczem SSH, dopóki nie odblokujesz konta.",
+    "lockHint": "Blokuje logowanie hasłem i kluczem SSH.",
+    "protected": "Konta root i użytkownika, jako który loguje się Termix, nie można blokować ani usuwać.",
+    "locked": "Konto zablokowane.",
+    "unlocked": "Konto odblokowane.",
+    "danger": "Usuń",
+    "removeHome": "Usuń również katalog domowy",
+    "removeHomeHint": "Usuwa {{home}} oraz wszystkie jego zawartość.",
+    "delete": "Usuń użytkownika",
+    "deleteTitle": "Usunąć {{name}}?",
+    "deleteDesc": "Konto zostanie usunięte. Jego folder domowy pozostanie na hoście.",
+    "deleteDescHome": "Konto i {{home}} zostaną usunięte. Tej operacji nie można cofnąć.",
+    "deleted": "Usunięto {{name}}."
+  },
+  "keys": {
+    "title": "Klucze SSH",
+    "empty": "Brak kluczy SSH.",
+    "denied": "Kluczy nie można odczytać bez uprawnień root.",
+    "options": "Opcje",
+    "remove": "Usuń klucz",
+    "removeTitle": "Usunąć ten klucz?",
+    "removed": "Klucz usunięty.",
+    "add": "Dodaj klucz",
+    "addHint": "Wklej jeden klucz publiczny, np. zawartość pliku id_ed25519.pub.",
+    "addButton": "Dodaj klucz",
+    "added": "Klucz dodany."
+  },
+  "create": {
+    "title": "Nowy użytkownik",
+    "name": "Nazwa użytkownika",
+    "nameHint": "Małe litery, cyfry, - i _.",
+    "nameInvalid": "Zacznij od litery i używaj tylko a-z, 0-9, - oraz _.",
+    "home": "Folder domowy",
+    "homeHint": "Pozostaw puste, aby użyć /home/{{name}}.",
+    "createHome": "Utwórz folder domowy",
+    "password": "Hasło",
+    "passwordHint": "Opcjonalne. Bez hasła użytkownik może logować się tylko za pomocą klucza SSH.",
+    "again": "Hasło ponownie",
+    "mismatch": "Hasła nie są identyczne.",
+    "save": "Utwórz użytkownika",
+    "done": "Utworzono użytkownika {{name}}.",
+    "failed": "Nie udało się utworzyć użytkownika."
+  },
+  "groups": {
+    "add": "Dodaj grupę",
+    "name": "Nazwa grupy",
+    "namePlaceholder": "Nowa nazwa grupy",
+    "create": "Utwórz",
+    "created": "Utworzono {{name}}.",
+    "search": "Szukaj grup",
+    "empty": "Brak pasujących grup.",
+    "noMembers": "Brak członków.",
+    "failed": "Zmiana nie powiodła się.",
+    "addMember": "Dodaj członka",
+    "pickUser": "Wybierz użytkownika",
+    "removeMember": "Usuń z grupy",
+    "memberAdded": "Dodano {{name}} do {{group}}.",
+    "memberRemoved": "Usunięto {{name}} z {{group}}.",
+    "mainGroup": "Główna grupa",
+    "mainGroupHint": "To jest ich główna grupa, więc zawsze do niej należą.",
+    "deleteTitle": "Usunąć {{name}}?",
+    "deleteDesc": "Grupa zostanie usunięta. Pliki, które jej należały, zachowają swój stary identyfikator.",
+    "deleted": "Usunięto {{name}}."
+  },
+  "sessions": {
+    "now": "Zalogowany teraz",
+    "none": "Nikt nie jest zalogowany.",
+    "recent": "Ostatnie logowania",
+    "noRecent": "Nie znaleziono historii logowań.",
+    "loadFailed": "Nie udało się odczytać sesji."
+  },
+  "manager": {
+    "title": "Użytkownicy",
+    "disabled": "Włącz Użytkowników dla tego hosta w jego ustawieniach, aby zobaczyć jego konta tutaj."
+  },
+  "operations": {
+    "list": {
+      "title": "Lista użytkowników"
+    },
+    "emptyPasswords": {
+      "title": "Konta bez hasła"
+    },
+    "lock": {
+      "title": "Zablokuj użytkownika"
+    },
+    "unlock": {
+      "title": "Odblokuj użytkownika"
+    },
+    "delete": {
+      "title": "Usuń użytkownika"
+    },
+    "users": {
+      "title": "Użytkownicy",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "Grupy"
+    }
+  }
+}

@@ -1,0 +1,209 @@
+{
+  "plugin": {
+    "name": "Usuarios",
+    "description": "Gestiona las cuentas de usuario, grupos, contraseñas y claves SSH en tus hosts."
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "back": "Atrás",
+    "delete": "Eliminar",
+    "loading": "Cargando..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Usar Usuarios",
+      "description": "Ver cuentas en los hosts a los que puedes acceder y modificarlas en los hosts que puedes editar."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Usuarios",
+        "description": "Gestiona las cuentas de usuario y grupos en este host desde la pestaña Usuarios."
+      },
+      "useSudo": {
+        "label": "Usar sudo",
+        "description": "Usa sudo para leer y modificar cuentas. Desactívalo si el inicio de sesión es como root."
+      },
+      "readOnly": {
+        "label": "Solo lectura",
+        "description": "Muestra las cuentas pero nunca las modifica en este host."
+      }
+    }
+  },
+  "tab": {
+    "title": "Usuarios",
+    "noHost": "Abre Usuarios desde un host.",
+    "error": "No se han podido cargar las cuentas de este host.",
+    "disabled": "Usuarios está desactivado para este host. Actívalo en la configuración del host.",
+    "sudo": "Los cambios y los estados de contraseña requieren un inicio de sesión como root, sudo sin contraseña o una contraseña de sudo guardada en este host.",
+    "noTools": "useradd no está instalado en este host. En Alpine, instala el paquete shadow.",
+    "refresh": "Actualizar",
+    "readOnly": "Solo lectura",
+    "counts_one": "{{count}} usuario",
+    "counts_many": "{{count}} usuarios",
+    "counts_other": "{{count}} usuarios",
+    "viewUsers": "Usuarios",
+    "viewGroups": "Grupos",
+    "viewSessions": "Sesiones"
+  },
+  "users": {
+    "add": "Añadir usuario",
+    "search": "Buscar usuarios",
+    "people": "Personas",
+    "systemFilter": "Sistema",
+    "all": "Todos",
+    "empty": "No hay usuarios que coincidan.",
+    "you": "Tú",
+    "sudo": "Sudo",
+    "locked": "Bloqueado",
+    "emptyPassword": "Sin contraseña",
+    "system": "Sistema",
+    "loadFailed": "No se han podido leer las cuentas."
+  },
+  "password": {
+    "set": "Establecer",
+    "locked": "Bloqueado",
+    "none": "No establecida, sin inicio de sesión con contraseña",
+    "empty": "Vacía, cualquiera puede iniciar sesión",
+    "unknown": "Se necesita root para saberlo"
+  },
+  "detail": {
+    "info": "Cuenta",
+    "account": "Detalles",
+    "fullName": "Nombre completo",
+    "uid": "ID de usuario y grupo",
+    "mainGroup": "Grupo principal",
+    "home": "Carpeta de inicio",
+    "shell": "Shell",
+    "groups": "Grupos",
+    "groupsPlaceholder": "Escribe un grupo y pulsa Intro",
+    "unknownGroups": "Estos grupos no existen: {{groups}}",
+    "none": "Ninguno",
+    "password": "Contraseña",
+    "passwordChanged": "Contraseña cambiada",
+    "lastLogin": "Último inicio de sesión",
+    "never": "Nunca",
+    "unknown": "Desconocido",
+    "saved": "Guardado.",
+    "failed": "El cambio ha fallado.",
+    "loadFailed": "No se han podido leer las claves y el último inicio de sesión de este usuario.",
+    "passwordSection": "Contraseña",
+    "newPassword": "Nueva contraseña",
+    "newPasswordHint": "Se envía al host a través de SSH y se establece con chpasswd. Nunca se almacena en Termix.",
+    "setPassword": "Establecer contraseña",
+    "passwordSet": "Contraseña establecida.",
+    "expirePassword": "Solicitar una nueva en el próximo inicio de sesión",
+    "expired": "Elegirán una nueva contraseña en el próximo inicio de sesión.",
+    "access": "Acceso",
+    "sudo": "Sudo",
+    "sudoHint": "Ejecutar comandos como root a través del grupo {{group}}.",
+    "sudoProtected": "No puedes quitar sudo a root ni al usuario con el que Termix inicia sesión.",
+    "sudoTitle": "¿Dar sudo a {{name}}?",
+    "sudoDesc": "Los añade al grupo {{group}}, para que puedan ejecutar cualquier comando como root.",
+    "sudoGrant": "Dar sudo",
+    "sudoOn": "Sudo concedido.",
+    "sudoOff": "Sudo retirado.",
+    "lock": "Bloquear cuenta",
+    "unlock": "Desbloquear cuenta",
+    "lockTitle": "¿Bloquear a {{name}}?",
+    "lockDesc": "No podrán iniciar sesión con contraseña ni con clave SSH hasta que desbloquees la cuenta.",
+    "lockHint": "Bloquea los inicios de sesión con contraseña y clave SSH.",
+    "protected": "Root y el usuario con el que Termix inicia sesión no pueden bloquearse ni eliminarse.",
+    "locked": "Cuenta bloqueada.",
+    "unlocked": "Cuenta desbloqueada.",
+    "danger": "Eliminar",
+    "removeHome": "También eliminar la carpeta personal",
+    "removeHomeHint": "Elimina {{home}} y todo su contenido.",
+    "delete": "Eliminar usuario",
+    "deleteTitle": "¿Eliminar a {{name}}?",
+    "deleteDesc": "La cuenta se elimina. Su carpeta personal permanece en el host.",
+    "deleteDescHome": "La cuenta y {{home}} se eliminan. Esto no se puede deshacer.",
+    "deleted": "Se ha eliminado a {{name}}."
+  },
+  "keys": {
+    "title": "Claves SSH",
+    "empty": "No hay claves SSH.",
+    "denied": "Las claves no se pueden leer sin permisos de root.",
+    "options": "Opciones",
+    "remove": "Eliminar clave",
+    "removeTitle": "¿Eliminar esta clave?",
+    "removed": "Clave eliminada.",
+    "add": "Añadir una clave",
+    "addHint": "Pega una clave pública, como el contenido de id_ed25519.pub.",
+    "addButton": "Añadir clave",
+    "added": "Clave añadida."
+  },
+  "create": {
+    "title": "Nuevo usuario",
+    "name": "Nombre de usuario",
+    "nameHint": "Letras minúsculas, números, - y _.",
+    "nameInvalid": "Empieza con una letra y usa solo a-z, 0-9, - y _.",
+    "home": "Carpeta personal",
+    "homeHint": "Déjalo vacío para /home/{{name}}.",
+    "createHome": "Crear la carpeta personal",
+    "password": "Contraseña",
+    "passwordHint": "Opcional. Sin ella, el usuario solo podrá iniciar sesión con una clave SSH.",
+    "again": "Repetir contraseña",
+    "mismatch": "Las contraseñas no coinciden.",
+    "save": "Crear usuario",
+    "done": "Se ha creado a {{name}}.",
+    "failed": "No se ha podido crear el usuario."
+  },
+  "groups": {
+    "add": "Añadir grupo",
+    "name": "Nombre del grupo",
+    "namePlaceholder": "Nombre del nuevo grupo",
+    "create": "Crear",
+    "created": "Se ha creado {{name}}.",
+    "search": "Buscar grupos",
+    "empty": "No se han encontrado grupos.",
+    "noMembers": "Sin miembros.",
+    "failed": "El cambio ha fallado.",
+    "addMember": "Añadir miembro",
+    "pickUser": "Seleccionar un usuario",
+    "removeMember": "Quitar del grupo",
+    "memberAdded": "Se ha añadido {{name}} a {{group}}.",
+    "memberRemoved": "Se ha quitado {{name}} de {{group}}.",
+    "mainGroup": "Grupo principal",
+    "mainGroupHint": "Este es su grupo principal, por lo que siempre pertenece a él.",
+    "deleteTitle": "¿Eliminar {{name}}?",
+    "deleteDesc": "El grupo se eliminará. Los archivos que poseía conservarán su antiguo identificador.",
+    "deleted": "Se ha eliminado {{name}}."
+  },
+  "sessions": {
+    "now": "Sesión iniciada ahora",
+    "none": "Nadie ha iniciado sesión.",
+    "recent": "Inicios de sesión recientes",
+    "noRecent": "No se ha encontrado historial de inicios de sesión.",
+    "loadFailed": "No se han podido leer las sesiones."
+  },
+  "manager": {
+    "title": "Usuarios",
+    "disabled": "Activa la opción Usuarios para este host en su configuración para ver sus cuentas aquí."
+  },
+  "operations": {
+    "list": {
+      "title": "Listar usuarios"
+    },
+    "emptyPasswords": {
+      "title": "Cuentas sin contraseña"
+    },
+    "lock": {
+      "title": "Bloquear usuario"
+    },
+    "unlock": {
+      "title": "Desbloquear usuario"
+    },
+    "delete": {
+      "title": "Eliminar usuario"
+    },
+    "users": {
+      "title": "Usuarios",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "Grupos"
+    }
+  }
+}

@@ -1,0 +1,237 @@
+{
+  "plugin": {
+    "name": "Sertifikāti",
+    "description": "Apskatiet, izsniedziet un atjauniniet TLS sertifikātus savos resursdatoros, izmantojot certbot un acme.sh, un saņemiet brīdinājumu pirms to derīguma termiņa beigām."
+  },
+  "common": {
+    "cancel": "Atcelt",
+    "back": "Atpakaļ"
+  },
+  "permissions": {
+    "use": {
+      "title": "Izmantot sertifikātus",
+      "description": "Apskatīt sertifikātus resursdatoros, pie kuriem varat piekļūt, un mainīt tos resursdatoros, kurus varat rediģēt."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Sertifikāti",
+        "description": "Pārvaldīt TLS sertifikātus šajā resursdatorā no cilnes Sertifikāti."
+      },
+      "useSudo": {
+        "label": "Izmantot sudo",
+        "description": "Izmantot sudo sertifikātu lasīšanai un maiņai. Izslēdziet, ja pieteikšanās tiek veikta kā root."
+      },
+      "readOnly": {
+        "label": "Tikai lasīšanai",
+        "description": "Rādīt sertifikātus, bet nekad tos nemainīt šajā resursdatorā."
+      },
+      "expiryWarnDays": {
+        "label": "Brīdināt pirms derīguma termiņa beigām",
+        "description": "Sertifikātiem, kuru derīguma termiņš beidzas šajā dienaskaitā vai mazāk, tiks rādīts, ka tie beidzas, un tiks nosūtīts brīdinājums."
+      },
+      "showPanel": {
+        "label": "Rādīt sertifikātu paneli termināļos",
+        "description": "Ļaut sertifikātu panelim atvērties blakus šī resursdatora SSH terminālim."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Atvērt sertifikātu paneli kopā ar jauniem termināļiem",
+        "description": "Rādīt sertifikātu paneli blakus katram SSH terminālim, kurā ir ieslēgta funkcija Sertifikāti. To joprojām varat atvērt un aizvērt, izmantojot pogu labajā malā."
+      },
+      "companionSide": {
+        "label": "Sertifikātu paneļa atrašanās vieta",
+        "description": "Kur atrodas sertifikātu panels blakus terminālim.",
+        "right": "Labajā pusē",
+        "left": "Kreisajā pusē",
+        "bottom": "Apakšā"
+      },
+      "companionSize": {
+        "label": "Sertifikātu paneļa izmērs",
+        "description": "Platums pikseļos vai augstums, ja tas atrodas apakšā. Varat arī vilkt tā malu."
+      },
+      "companionEdgeButton": {
+        "label": "Rādīt paneļa pogu",
+        "description": "Rādīt mazu pogu termināļa labajā malā, kas atver sertifikātu paneli."
+      }
+    }
+  },
+  "tab": {
+    "title": "Sertifikāti",
+    "noHost": "Atveriet Sertifikātus no resursdatora.",
+    "error": "Neizdevās ielādēt sertifikātus no šī resursdatora.",
+    "disabled": "Sertifikāti šim resursdatoram ir izslēgti. Ieslēdziet tos resursdatora iestatījumos.",
+    "sudo": "Izmaiņām nepieciešama root pieteikšanās, sudo bez paroles vai saglabāta Sudo parole šajā resursdatorā.",
+    "refresh": "Atsvaidzināt",
+    "readOnly": "Tikai lasīšanai",
+    "noClient": "Nav certbot vai acme.sh",
+    "viewCertificates": "Sertifikāti",
+    "viewInspect": "Pārbaudīt",
+    "viewRenewal": "Atjaunināšana"
+  },
+  "actions": {
+    "working": "Strādā. Tas var aizņemt dažas minūtes.",
+    "ok": "Pabeigts",
+    "failed": "Komanda neizdevās.",
+    "noOutput": "Nav izvades."
+  },
+  "install": {
+    "title": "Šajā resursdatorā nav instalēti certbot un acme.sh",
+    "hint": "Instalējiet certbot, lai iegūtu un atjauninātu sertifikātus no Let's Encrypt.",
+    "noManager": "Nav atrasts neviens atbalstīts pakotņu pārvaldnieks. Instalējiet certbot manuāli.",
+    "button": "Instalēt certbot",
+    "confirm": "Instalēt certbot?",
+    "desc": "Tiks instalēts certbot, izmantojot resursdatora pakotņu pārvaldnieku.",
+    "working": "Instalēšana...",
+    "done": "certbot ir instalēts."
+  },
+  "certs": {
+    "search": "Meklēt sertifikātus",
+    "empty": "Vēl nav sertifikātu.",
+    "noMatch": "Nav atbilstošu sertifikātu.",
+    "loadFailed": "Neizdevās izlasīt sertifikātus.",
+    "expires": "Derīguma termiņš beidzas {{date}}",
+    "staging": "Testēšana",
+    "details": "Sertifikāts",
+    "manage": "Pārvaldīt",
+    "client": "Klients",
+    "path": "Fails",
+    "authority": "Autoritāte",
+    "renew": "Atjaunot",
+    "renewDone": "Sertifikāts {{name}} ir atjaunots.",
+    "renewAll": "Atjaunot visus",
+    "renewAllDone": "Atjaunoti sertifikāti, kuru derīguma termiņš bija beidzies.",
+    "forceRenew": "Atjaunot tūlīt",
+    "dryRun": "Testa režīms",
+    "dryRunDone": "Testa režīms veiksmīgi pabeigts.",
+    "revoke": "Atsaukt",
+    "revokeTitle": "Vai atsaukt {{name}}?",
+    "revokeDesc": "Autoritāte to atzīmēs kā nederīgu, un tas tiks noņemts no šī servera. Viss, kas joprojām to izmanto, pārstās darboties.",
+    "revokeDone": "Sertifikāts {{name}} ir atsaukts.",
+    "delete": "Pārtraukt pārvaldību",
+    "deleteTitle": "Vai pārtraukt {{name}} pārvaldību?",
+    "deleteDesc": "Tas paliks derīgs, bet vairs netiks atjaunots. certbot dzēsīs tā failus, bet acme.sh tos saglabās.",
+    "deleteDone": "{{name}} vairs netiek pārvaldīts."
+  },
+  "expiry": {
+    "expired": "Derīguma termiņš beidzies",
+    "unknown": "Nezināms",
+    "days_zero": "Atlicis {{count}} dienas",
+    "days_one": "Atlicis {{count}} diena",
+    "days_other": "Atlicis {{count}} dienas"
+  },
+  "issue": {
+    "add": "Izdot sertifikātu",
+    "title": "Jauns sertifikāts",
+    "save": "Izdot",
+    "done": "Sertifikāts ir izdots.",
+    "working": "Jautā autoritātei. Tas var aizņemt dažas minūtes.",
+    "client": "Klients",
+    "domains": "Domenes",
+    "domainsPlaceholder": "Ievadiet domeni un nospiediet Enter",
+    "domainsHint": "Pirmā nosauc sertifikātu.",
+    "challenge": "Izrēķins",
+    "standalone": "Stāvoklis",
+    "standaloneHint": "Palaiž mazu tīmekļa serveri 80. portā, tāpēc nekas cits nedrīkst izmantot šo portu.",
+    "webroot": "Tīmekļa sakne",
+    "webrootHint": "Ievieto failu jūsu tīmekļa servera mapē. Tīmekļa serveris turpina darboties.",
+    "dns": "DNS",
+    "dnsHint": "Pievieno DNS ierakstu, izmantojot jūsu pakalpojumu sniedzēja API. Nepieciešams vispārīgajiem (wildcard) sertifikātiem.",
+    "webrootPath": "Tīmekļa saknes mape",
+    "webrootPathHint": "Jābūt iekš /var/www, /srv vai /usr/share/nginx.",
+    "dnsProvider": "DNS pakalpojumu sniedzējs",
+    "dnsProviderCertbot": "Instalēta certbot DNS spraudņa nosaukums, piemēram, cloudflare.",
+    "dnsProviderAcme": "acme.sh DNS nosaukums bez dns_ priekšsūknis, piemēram, cf. Tā API žetons jau ir jābūt iestatītam uz servera.",
+    "credentials": "Piekļuves datu fails",
+    "credentialsHint": "Fails uz servera ar jūsu API žetonu. Termix to nekad neizlasa.",
+    "email": "E-pasts",
+    "emailHint": "Neobligāts. Autoritāte to izmanto derīguma termiņa paziņojumiem.",
+    "keyType": "Atslēgas tips",
+    "staging": "Izmantot testēšanas serveri",
+    "stagingHint": "Testēšanai. Sertifikāts netiek uzticēts, un ātruma ierobežojumi ir daudz augstāki."
+  },
+  "inspect": {
+    "server": "Serveris",
+    "file": "Fails",
+    "address": "Adrese",
+    "addressPlaceholder": "example.com",
+    "port": "Ports",
+    "path": "Faila ceļš",
+    "check": "Pārbaudīt",
+    "hint": "Pārbaudiet, ko serveris sūta pār TLS, kā redzams no šī servera, vai izlasiet sertifikāta failu uz tā.",
+    "failed": "Neizdevās izlasīt sertifikātu.",
+    "noOpenssl": "openssl nav instalēts uz šī servera.",
+    "trusted": "Uzticams",
+    "notTrusted": "Neuzticams",
+    "leaf": "Sertifikāts",
+    "intermediate": "Sērija {{index}}",
+    "selfSigned": "Pašparakstīts",
+    "name": "Nosaukums",
+    "issuer": "Izdevējs",
+    "domains": "Domēni",
+    "validFrom": "Derīgs no",
+    "validTo": "Derīgs līdz",
+    "keyType": "Atslēga",
+    "serial": "Sērijas numurs",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Kā šis resursdators pats atjauno sertifikātus. Mainiet to resursdatorā.",
+    "on": "Ieslēgts",
+    "off": "Izslēgts",
+    "timer": "systemd taimeris",
+    "next": "Nākamā palaidešana {{time}}",
+    "cron": "Cron fails /etc/cron.d/certbot",
+    "certbotOff": "Nav atrasts ne taimeris, ne cron uzdevums, tāpēc sertifikāti neatjaunosies automātiski.",
+    "acmeCron": "Cron uzdevums crontab",
+    "acmeOff": "Nav atrasts cron uzdevums, tāpēc sertifikāti neatjaunosies automātiski."
+  },
+  "watch": {
+    "start": "Brīdiniet mani pirms šī resursdatora sertifikāti beidzas",
+    "stop": "Apturēt brīdinājumus šim resursdatoram",
+    "on": "Jūs saņemsiet brīdinājumu pirms šeit esošo sertifikātu derīguma termiņa beigām.",
+    "off": "Šī resursdatora brīdinājumi ir izslēgti.",
+    "failed": "Neizdevās mainīt brīdinājumu."
+  },
+  "card": {
+    "title": "Sertifikāti",
+    "loading": "Pārbauda resursdatorus...",
+    "summary_zero": "0 sertifikāti, 0 beidzas",
+    "summary_one": "{{count}} sertifikāts, {{expiring}} beidzas",
+    "summary_other": "{{count}} sertifikāti, {{expiring}} beidzas",
+    "refresh": "Pārbaudīt vēlreiz",
+    "empty": "Ieslēdziet Sertifikātus resursdatoram, lai šeit redzētu tā sertifikātus."
+  },
+  "manager": {
+    "title": "Sertifikāti",
+    "disabled": "Ieslēdziet Sertifikātus šī resursdatora iestatījumos, lai šeit redzētu sertifikātus."
+  },
+  "operations": {
+    "list": {
+      "title": "Sarakstīt sertifikātus"
+    },
+    "expiring": {
+      "title": "Sertifikāti, kuru derīgums beidzas"
+    },
+    "renew": {
+      "title": "Atjaunot sertifikātu"
+    },
+    "renewAll": {
+      "title": "Atjaunot visus sertifikātus"
+    },
+    "revoke": {
+      "title": "Atcelt sertifikātu"
+    },
+    "certificates": {
+      "title": "Sertifikāti",
+      "client": "Klients",
+      "domains": "Domēni",
+      "daysLeft": "Atlikušās dienas"
+    }
+  },
+  "nav": {
+    "togglePanel": "Pārslēgt sertifikātu paneli"
+  }
+}

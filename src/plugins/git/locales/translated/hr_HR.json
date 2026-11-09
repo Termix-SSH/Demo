@@ -1,0 +1,299 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Pregledajte, preuzmite, spremite i pošaljite Git repozitorije na svojim hostovima te ih održavajte ažurnima automatskim preuzimanjem."
+  },
+  "common": {
+    "save": "Spremi",
+    "cancel": "Otkaži",
+    "back": "Natrag",
+    "loading": "Učitavanje..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Koristi Git",
+      "description": "Pregledajte Git repozitorije na hostovima na koje možete pristupiti te ih mijenjajte na hostovima koje možete uređivati."
+    },
+    "runCommands": {
+      "title": "Pokreni naredbe nakon automatskog preuzimanja",
+      "description": "Postavite naredbu koja se izvršava na hostu nakon što automatsko preuzimanje donese nove commitove."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Upravljajte Git repozitorijima na ovom hostu putem kartice Git."
+      },
+      "repoRoots": {
+        "label": "Mapa za skeniranje",
+        "description": "Mape koje se pretražuju za repozitorije prilikom skeniranja ovog hosta. Odvojite ih zarezima. Zadano je domovska mapa.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Koristi sudo",
+        "description": "Pokreće Git kao root pomoću sudo. Samo za repozitorije koje prijavljeni korisnik ne može koristiti."
+      },
+      "readOnly": {
+        "label": "Samo za čitanje",
+        "description": "Prikaži repozitorije, ali ih nikada ne mijenjaj na ovom hostu."
+      },
+      "showPanel": {
+        "label": "Panel pored terminala",
+        "description": "Prikaži Git ploču na karticama terminala za ovog hosta."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otvori ploču s terminalom",
+        "description": "Prikaži Git ploču kada se terminal otvori na hostu koji je podržava."
+      },
+      "companionSide": {
+        "label": "Stranica ploče",
+        "description": "Gdje se ploča nalazi uz terminal.",
+        "right": "Desno",
+        "left": "Lijevo",
+        "bottom": "Dolje"
+      },
+      "companionSize": {
+        "label": "Veličina ploče",
+        "description": "Širina ploče, odnosno njena visina kada je postavljena dolje, u pikselima."
+      },
+      "companionEdgeButton": {
+        "label": "Gumb na rubu",
+        "description": "Prikaži mali gumb na rubu terminala za otvaranje ploče."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Otvorite Git s hosta.",
+    "error": "Nije moguće učitati Git s ovog hosta.",
+    "disabled": "Git je isključen za ovaj host. Uključite ga u postavkama hosta.",
+    "sudo": "Ovo zahtijeva root prijavu, sudo bez lozinke ili spremljenu Sudo lozinku.",
+    "refresh": "Osvježi",
+    "readOnly": "Samo za čitanje",
+    "notInstalled": "git nije instaliran",
+    "notInstalledTitle": "git nije instaliran na ovom hostu",
+    "notInstalledHint": "Instalirajte git pomoću upravitelja paketa hosta, a zatim osvježite."
+  },
+  "actions": {
+    "ok": "Gotovo",
+    "failed": "Neuspješno",
+    "noOutput": "Nema izlaza."
+  },
+  "repos": {
+    "add": "Dodaj spremište",
+    "search": "Pretraži spremišta",
+    "empty": "Još nema spremišta. Dodajte jedno da biste započeli.",
+    "noMatch": "Nema podudarnih spremišta.",
+    "viewOnly": "Na ovaj host nisu dodana nijedna spremišta.",
+    "detached": "odspojeno",
+    "changes_one": "{{count}} promjena",
+    "changes_few": "{{count}} promjene",
+    "changes_other": "{{count}} promjena",
+    "conflicts": "Sukobi",
+    "auto": "Automatsko preuzimanje",
+    "autoFailing": "Preuzimanje neuspješno",
+    "remove": "Ukloni s popisa",
+    "removeTitle": "Ukloniti {{name}}?",
+    "removeBody": "Repozitorij se samo zaboravlja ovdje. Ništa se ne briše na hostu.",
+    "removed": "{{name}} uklonjen",
+    "error": {
+      "missing": "Mapa nedostaje",
+      "notrepo": "Nije git repozitorij",
+      "unreadable": "Nije moguće čitati"
+    }
+  },
+  "add": {
+    "title": "Dodaj repozitorije",
+    "modeScan": "Skeniraj",
+    "modePath": "Mapa",
+    "modeClone": "Kloniraj",
+    "scanHint": "Traži git repozitorije u {{roots}}. Promijenite mape u postavkama hosta.",
+    "rescan": "Skeniraj ponovno",
+    "noneFound": "Nema novih repozitorija.",
+    "picked": "Odabrano",
+    "addPicked_one": "Dodaj {{count}} repozitorij",
+    "addPicked_few": "Dodaj {{count}} repozitorija",
+    "addPicked_other": "Dodaj {{count}} repozitorija",
+    "addAll": "Dodaj sve",
+    "folder": "Mapa na hostu",
+    "folderHint": "Potpuna putanja ili počnite s ~ za domovsku mapu. Već mora biti git repozitorij.",
+    "addRepo": "Dodaj repozitorij",
+    "url": "Adresa",
+    "urlHint": "Koristi ključeve i git postavke korisnika koji je prijavljen na hostu.",
+    "dest": "Kloniraj u",
+    "destHint": "Mapa još ne smije postojati.",
+    "clone": "Kloniraj",
+    "cloned": "Klonirano",
+    "added_one": "{{count}} repozitorij dodan",
+    "added_few": "{{count}} repozitorija dodana",
+    "added_other": "{{count}} repozitorija dodano",
+    "failed": "Nije moguće dodati repozitorij",
+    "scanFailed": "Nije moguće skenirati host"
+  },
+  "repo": {
+    "ahead": "{{count}} ispred",
+    "behind": "{{count}} iza",
+    "fetch": "Preuzmi",
+    "fetched": "Preuzeto",
+    "pull": "Povuci",
+    "pulled": "Povučeno",
+    "push": "Guraj",
+    "pushed": "Gurano",
+    "viewChanges": "Promjene",
+    "viewBranches": "Grane",
+    "viewHistory": "Povijest",
+    "viewStash": "Sklonište",
+    "viewAuto": "Automatsko povlačenje"
+  },
+  "changes": {
+    "loadFailed": "Nije moguće pročitati promjene.",
+    "clean": "Ništa za commitati. Radno stablo je čisto.",
+    "stagedTitle": "Pripremljeno ({{count}})",
+    "unstagedTitle": "Promjene ({{count}})",
+    "stage": "Pripremi",
+    "staged": "Pripremljeno",
+    "unstage": "Otpremi",
+    "unstaged": "Nepripremljeno",
+    "stageAll": "Pripremi sve",
+    "renamed": "Preimenovano",
+    "discard": "Odbaci",
+    "discardTitle": "Odbaciti promjene u {{name}}?",
+    "discardBody": "Promjene u ovoj datoteci će biti obrisane i ne mogu se vratiti.",
+    "discarded": "Promjene odbacene",
+    "message": "Poruka commita",
+    "messagePlaceholder": "Što se promijenilo",
+    "commit": "Commit",
+    "commitAll": "Commitaj sve promjene",
+    "commitStaged_one": "Commitaj {{count}} pripremljenu datoteku",
+    "commitStaged_few": "Commitaj {{count}} pripremljene datoteke",
+    "commitStaged_other": "Commitaj {{count}} pripremljenih datoteka",
+    "committed": "Commitano",
+    "noDiff": "Nema promjena za prikaz.",
+    "truncated": "Diff je dugačak, pa se prikazuje samo početak."
+  },
+  "branches": {
+    "loadFailed": "Nije moguće pročitati grane.",
+    "empty": "Još nema grana.",
+    "current": "Trenutna",
+    "remote": "Udaljena",
+    "gone": "Gornji tok je nestao",
+    "newName": "Nova grana",
+    "create": "Stvori granu",
+    "created": "Grana {{name}} je stvorena",
+    "switch": "Prebaci",
+    "switched": "Prebačeno na {{name}}",
+    "merge": "Spoji u trenutnu",
+    "mergeTitle": "Spojiti {{name}} u {{into}}?",
+    "mergeBody": "Spajanje s konfliktima se odmah poništava.",
+    "merged": "{{name}} spojeno",
+    "delete": "Obriši granu",
+    "deleteTitle": "Obriši {{name}}?",
+    "deleteBody": "Git odbija ako grana ima potvrde koje nisu spojene.",
+    "deleted": "{{name}} obrisano",
+    "forceTitle": "Prisilno obrisati {{name}}?",
+    "forceBody": "Ova grana ima potvrde koje nisu spojene. One će biti izgubljene ako je obrišete.",
+    "forceDelete": "Prisilno obriši"
+  },
+  "history": {
+    "loadFailed": "Povijest se ne može pročitati.",
+    "empty": "Još nema potvrda.",
+    "branch": "Ova grana",
+    "all": "Sve grane",
+    "more": "Učitaj više"
+  },
+  "stash": {
+    "loadFailed": "Skladište se ne može pročitati.",
+    "title": "Skladišta",
+    "empty": "Nema skladišta.",
+    "message": "Poruka",
+    "messagePlaceholder": "Opcionalno",
+    "untracked": "Uključi neprosljeđene datoteke",
+    "push": "Spremi promjene",
+    "pushDone": "Promjene su spremljene",
+    "apply": "Primijeni",
+    "applyDone": "Skladište je primijenjeno",
+    "pop": "Izvuci",
+    "popDone": "Skladište je primijenjeno i uklonjeno",
+    "drop": "Ukloni",
+    "dropDone": "Skladište je uklonjeno",
+    "dropTitle": "Ukloniti {{name}}?",
+    "dropBody": "Skladište je obrisano i ne može se vratiti.",
+    "remotes": "Udaljene",
+    "noRemotes": "Nema udaljenih."
+  },
+  "auto": {
+    "intro": "Povlačenje po rasporedu samo s brzim napredovanjem. Nikada ne spaja i preskače spremište ako ima nespremljene promjene ili se razlikuje od gornjeg toka.",
+    "noUpstream": "Ova grana još nema gornji tok, pa će automatsko povlačenje preskočiti.",
+    "enable": "Automatsko povlačenje",
+    "enableHint": "Pokreće se kao vi, s vašim pristupom ovom hostu.",
+    "interval": "Svake (minute)",
+    "intervalHint": "Koliko dugo čekati između povlačenja.",
+    "post": "Naredba nakon povlačenja",
+    "postHint": "Pokreće se u mapi spremišta nakon dolaska novih potvrda. Potrebna je dozvola za pokretanje naredbi.",
+    "saved": "Automatsko povlačenje je spremljeno",
+    "saveFailed": "Automatsko povlačenje se ne može spremiti",
+    "runNow": "Pokreni sada",
+    "next": "Sljedeće povlačenje {{when}}",
+    "runs": "Nedavna pokretanja",
+    "noRuns": "Još nema pokretanja.",
+    "outcome": {
+      "pulled": "Povučeno",
+      "uptodate": "Ažurirano",
+      "skipped": "Preskočeno",
+      "failed": "Neuspješno"
+    }
+  },
+  "card": {
+    "title": "Git repozitoriji",
+    "loading": "Učitavanje...",
+    "refresh": "Osvježi",
+    "empty": "Još nijedan host nema Git repozitorije.",
+    "allClean": "Svi repozitoriji su čisti i ažurni.",
+    "summary_one": "{{count}} repozitorij | {{attention}} zahtijeva provjeru",
+    "summary_few": "{{count}} repozitorija | {{attention}} zahtijevaju provjeru",
+    "summary_other": "{{count}} repozitorija | {{attention}} zahtijevaju provjeru"
+  },
+  "companion": {
+    "toggle": "Git ploča",
+    "openTab": "Otvori Git",
+    "here": "Repozitorij ove mape",
+    "all": "Svi repozitoriji"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Popis Git repozitorija"
+    },
+    "fetch": {
+      "title": "Preuzmi repozitorij"
+    },
+    "pull": {
+      "title": "Povuci repozitorij"
+    },
+    "push": {
+      "title": "Guraj repozitorij"
+    },
+    "checkout": {
+      "title": "Promijeni granu",
+      "branch": "Grana"
+    },
+    "reset-hard": {
+      "title": "Potpuni reset repozitorija",
+      "ref": "Resetiraj na"
+    },
+    "repos": {
+      "title": "Git repozitoriji",
+      "branch": "Grana",
+      "ahead": "Naprijed",
+      "behind": "Iza",
+      "changed": "Promjene"
+    },
+    "signals": {
+      "behind": "Repozitoriji iza",
+      "dirty": "Repozitoriji s promjenama",
+      "pull-failing": "Automatsko povlačenje neuspješno"
+    }
+  }
+}

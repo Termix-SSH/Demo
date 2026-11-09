@@ -18,6 +18,7 @@
 
 - The Open Termix button on the login page opened an error page instead of Termix
 - The Reverse Proxy tab shows a loading message instead of a blank screen while it loads
+- The sign in page no longer fails on PostgreSQL when the link has no valid route
 
 ### Changed
 

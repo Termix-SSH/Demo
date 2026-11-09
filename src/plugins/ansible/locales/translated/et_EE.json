@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Käivita Ansible'i playbooksid ja ad-hoc käske juhtimisservérit, kasutades Termix'i peremeesmasinatest koostatud inventuuri."
+  },
+  "common": {
+    "save": "Salvesta",
+    "cancel": "Tühista",
+    "back": "Tagasi",
+    "delete": "Kustuta"
+  },
+  "permissions": {
+    "use": {
+      "title": "Kasuta Ansible'i",
+      "description": "Vaata playbookseid ja käivitusi juhtimisservéritel, millele sul ligipääs on. Muuda faile ja käivita Ansible'i neil peremeesmasinatel, mida sa muuta saad."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Kasuta seda peremeesmasinat Ansible'i juhtimisservérit. Sellel peab olema Ansible paigaldatud."
+      },
+      "projectDir": {
+        "label": "Projekti kaust",
+        "description": "Kaust sellel peremeesmasinaga, kus asuvad sinu playbooksid, rollid ja ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Vault'i paroolifail",
+        "description": "Fail sellel peremeesmasinaga, mis sisaldab Ansible Vault'i parooli. Jäta tühjaks, kui Vault'i ei kasuta.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Ainult lugemiseks",
+        "description": "Kuva playbooksid ja käivitused, kuid ära kunagi muuda faile ega käivita töödeid sellel peremeesmasinaga."
+      },
+      "alertRuns": {
+        "label": "Teavita, kui käivitamine ebaõnnestub",
+        "description": "Saada teavitus, kui käivitamine sellel peremeesmasinaga lõpeb ebaõnnestumisega või kaob. Kontrollitakse, kui käivituse olekut loetakse."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Ava Ansible peremeesmasina kaudu.",
+    "error": "Ansible'i ei õnnestunud sellelt peremeesmasinaga laadida.",
+    "disabled": "Ansible on sellel peremeesmasinaga välja lülitatud. Lülita see sisse peremeesmasina seadetes.",
+    "refresh": "Värskenda",
+    "readOnly": "Ainult lugemiseks",
+    "notInstalled": "Ansible ei ole paigaldatud",
+    "notInstalledTitle": "Ansible ei ole sellel peremeesmasinaga paigaldatud",
+    "notInstalledHint": "Paigalda sellele peremeesmasinaga ansible-core, näiteks pipx või pakihalduri abil, ja värskenda seejärel.",
+    "noSshpass": "sshpass ei ole sellel peremeesmasinaga paigaldatud. Peremeesmasinad, mis sisselogimiseks parooli kasutavad, ebaõnnestuvad.",
+    "viewPlaybooks": "Playbookid",
+    "viewRuns": "Käivitused",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Faktid"
+  },
+  "files": {
+    "add": "Uus fail",
+    "search": "Otsi faile",
+    "empty": "Projekti kaustas pole veel faile.",
+    "noMatch": "Ühtegi faili ei leitud.",
+    "noProject": "Kaust {{dir}} ei eksisteeri sellel peremeesmasinaga. Loo see või määra peremeesmasina seadetes teine projekti kaust.",
+    "listFailed": "Projekti faile ei õnnestunud loetleda.",
+    "loadFailed": "Seda faili ei õnnestunud lugeda.",
+    "saved": "Fail salvestatud",
+    "saveFailed": "Seda faili ei õnnestunud salvestada.",
+    "playbook": "Playbook",
+    "run": "Käivita",
+    "newTitle": "Uus fail",
+    "name": "Faili nimi",
+    "nameHint": "Teekond projekti kausta sees, näiteks site.yml või roles/web/tasks/main.yml.",
+    "hint": "Playbooki süntaksit kontrollitakse enne salvestamist. Kui kontroll ebaõnnestub, jääb vana fail alles.",
+    "text": "Faili tekst",
+    "deleteTitle": "Kustuta see fail?"
+  },
+  "targets": {
+    "search": "Otsi peremeesmasinaid",
+    "addShown": "Lisa näidatud",
+    "clear": "Tühjenda",
+    "empty": "Ühtegi peremeesmasinat ei leitud.",
+    "count": "{{count}} valitud",
+    "failed": "Sinu peremeesmasinaid ei õnnestunud laadida."
+  },
+  "run": {
+    "title": "Käivita {{playbook}}",
+    "start": "Käivita",
+    "startCheck": "Käivita kontrollrežiimis",
+    "startFailed": "Tööd ei õnnestunud käivitada.",
+    "source": "Majutid",
+    "sourceProject": "Projekti inventuur",
+    "sourceTermix": "Termixi majutid",
+    "sourceProjectHint": "Kasuta inventuuri failist ansible.cfg või projekti failist.",
+    "sourceTermixHint": "Vali majutid Termixist. Kaustad muutuvad kausta_ rühmadeks ja sildid tag_ rühmadeks. Kõik need kuuluvad termix rühma.",
+    "inventory": "Inventuurifail",
+    "inventoryHint": "Asukoha tee projekti kausta sees. Jäta tühjaks, et kasutada ansible.cfg.",
+    "check": "Kontrollrežiim",
+    "checkHint": "Näita, mida muudetaks, ilma midagi tegelikult muutmata.",
+    "diff": "Näita erinevusi",
+    "diffHint": "Näita failides tehtud muudatusi.",
+    "become": "Käivita rootina",
+    "becomeHint": "Kasuta majutitel sudo-d. Termixi majutite puhul kasutatakse salvestatud sudo parooli.",
+    "limit": "Piirang",
+    "limitHint": "Käivita ainult nendel majutitel või rühmadel.",
+    "verbosity": "Väljundi detailne tase",
+    "verbosityOff": "Tavaline",
+    "tags": "Sildid",
+    "skipTags": "Jäta sildid vahele",
+    "extraVars": "Lisamuutujad",
+    "extraVarsHint": "Üks võtm=väärtus rida."
+  },
+  "runs": {
+    "title": "Töö",
+    "empty": "Töid veel ei ole.",
+    "loadFailed": "Töid ei õnnestunud laadida.",
+    "stop": "Peata",
+    "stopFailed": "Tööd ei õnnestunud peatada.",
+    "deleteTitle": "Kas kustutada see töö?",
+    "deleteFailed": "Tööd ei õnnestunud kustutada.",
+    "checkMode": "Kontroll",
+    "truncated": "Kuvatakse pikast väljundist lõppu.",
+    "noOutput": "Väljundit veel ei ole.",
+    "state": {
+      "running": "Töötamine",
+      "ok": "Valmis",
+      "failed": "Ebaõnnestus",
+      "cancelled": "Peatatud",
+      "lost": "Kaotatud"
+    },
+    "kind": {
+      "playbook": "Mänguraamat",
+      "adhoc": "Ad-hoc",
+      "facts": "Faktid"
+    },
+    "recap": {
+      "host": "Majutid",
+      "ok": "OK",
+      "changed": "Muudetud",
+      "unreachable": "Saavutamatu",
+      "failed": "Ebaõnnestunud",
+      "skipped": "Vahele jäetud"
+    }
+  },
+  "adhoc": {
+    "hint": "Käivita üks moodul majutitel, nagu ansible all -m ping.",
+    "pattern": "Majutite muster",
+    "patternHint": "Majut, rühm või all.",
+    "module": "Moodul",
+    "moduleHint": "Näiteks ping, command, shell, apt või systemd.",
+    "args": "Argumendid",
+    "argsHint": "Commandi ja shelli puhul on see käsk. Teiste moodulite puhul on need võtm=väärtus paarid.",
+    "run": "Käivita"
+  },
+  "facts": {
+    "hint": "Kogu majutite faktid setup mooduli abil. Vajab Termixi majuteid, et igal oleks sisselogimine.",
+    "gather": "Kogu faktid",
+    "gathering": "Kogumine...",
+    "failed": "Fakte ei õnnestunud koguda.",
+    "failedHost": "Ebaõnnestus",
+    "none": "Ühtegi fakti ei tagastatud. Ava töö, et näha, miks.",
+    "col": {
+      "host": "Host",
+      "os": "Süsteem",
+      "kernel": "Tuum",
+      "cpu": "Protsessorid",
+      "memory": "Mälu",
+      "address": "Aadress",
+      "uptime": "Tööaeg"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Loetle stsenaariumid"
+    },
+    "run": {
+      "title": "Käivita stsenaarium",
+      "playbook": "Stsenaarium",
+      "limit": "Piirang",
+      "tags": "Sildid",
+      "check": "Kontrollrežiim"
+    },
+    "runs": {
+      "title": "Loetle käivitused",
+      "resource": "Käivitused",
+      "started": "Käivitatud",
+      "check": "Kontrollrežiim"
+    },
+    "failed": {
+      "title": "Ebaõnnestunud käivitused"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Hostide kontrollimine...",
+    "summary_one": "{{count}} ebaõnnestunud käivitus {{hosts}} hostil",
+    "summary_other": "{{count}} ebaõnnestunud käivitust {{hosts}} hostil",
+    "refresh": "Kontrolli uuesti",
+    "empty": "Lülita Ansible sisse mingil hostil, et näha selle käivitusi siin.",
+    "failed_one": "{{count}} ebaõnnestunud",
+    "failed_other": "{{count}} ebaõnnestunud",
+    "running_one": "{{count}} käimas",
+    "running_other": "{{count}} käimas",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Käivitusi veel ei ole"
+  }
+}

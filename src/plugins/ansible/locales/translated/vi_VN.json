@@ -1,0 +1,205 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Chạy các playbook và lệnh ad-hoc của Ansible từ một máy chủ điều khiển, với danh sách máy chủ được tạo từ các host của Termix."
+  },
+  "common": {
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "back": "Quay lại",
+    "delete": "Xóa"
+  },
+  "permissions": {
+    "use": {
+      "title": "Sử dụng Ansible",
+      "description": "Xem các playbook và lần chạy trên các máy chủ điều khiển mà bạn có thể truy cập. Chỉnh sửa tệp và chạy Ansible trên các host mà bạn có thể chỉnh sửa."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Sử dụng host này làm máy chủ điều khiển Ansible. Ansible phải được cài đặt trên host này."
+      },
+      "projectDir": {
+        "label": "Thư mục dự án",
+        "description": "Thư mục trên máy chủ này chứa các playbook, roles và ansible.cfg của bạn.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Tệp mật khẩu Vault",
+        "description": "Tệp trên máy chủ này chứa mật khẩu Ansible Vault. Để trống nếu bạn không sử dụng Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Chỉ đọc",
+        "description": "Hiển thị các playbook và lần chạy nhưng không bao giờ chỉnh sửa tệp hoặc bắt đầu chạy trên máy chủ này."
+      },
+      "alertRuns": {
+        "label": "Cảnh báo khi lần chạy thất bại",
+        "description": "Gửi cảnh báo khi một lần chạy trên máy chủ này kết thúc thất bại hoặc bị mất. Được kiểm tra khi trạng thái chạy được đọc."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Mở Ansible từ một host.",
+    "error": "Không thể tải Ansible từ host này.",
+    "disabled": "Ansible đã bị tắt cho host này. Hãy bật nó trong cài đặt host.",
+    "refresh": "Làm mới",
+    "readOnly": "Chỉ đọc",
+    "notInstalled": "Chưa cài đặt Ansible",
+    "notInstalledTitle": "Ansible chưa được cài đặt trên host này",
+    "notInstalledHint": "Cài đặt ansible-core trên host này, ví dụ bằng pipx hoặc trình quản lý gói, sau đó làm mới.",
+    "noSshpass": "sshpass chưa được cài đặt trên host này. Các host đăng nhập bằng mật khẩu sẽ thất bại.",
+    "viewPlaybooks": "Playbooks",
+    "viewRuns": "Chạy",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Facts"
+  },
+  "files": {
+    "add": "Tệp mới",
+    "search": "Tìm kiếm tệp",
+    "empty": "Chưa có tệp nào trong thư mục dự án.",
+    "noMatch": "Không có tệp nào khớp.",
+    "noProject": "Thư mục {{dir}} không tồn tại trên máy chủ này. Hãy tạo nó hoặc đặt một thư mục Dự án khác trong cài đặt máy chủ.",
+    "listFailed": "Không thể liệt kê các tệp dự án.",
+    "loadFailed": "Không thể đọc tệp đó.",
+    "saved": "Đã lưu tệp",
+    "saveFailed": "Không thể lưu tệp đó.",
+    "playbook": "Playbook",
+    "run": "Chạy",
+    "newTitle": "Tệp mới",
+    "name": "Tên tệp",
+    "nameHint": "Đường dẫn bên trong thư mục dự án, ví dụ: site.yml hoặc roles/web/tasks/main.yml.",
+    "hint": "Playbook sẽ được kiểm tra cú pháp trước khi lưu. Tệp cũ sẽ được giữ lại nếu kiểm tra thất bại.",
+    "text": "Nội dung tệp",
+    "deleteTitle": "Xóa tệp này?"
+  },
+  "targets": {
+    "search": "Tìm kiếm máy chủ",
+    "addShown": "Hiển thị thêm",
+    "clear": "Xóa",
+    "empty": "Không tìm thấy máy chủ nào.",
+    "count": "Đã chọn {{count}} mục",
+    "failed": "Không thể tải danh sách máy chủ của bạn."
+  },
+  "run": {
+    "title": "Chạy {{playbook}}",
+    "start": "Chạy",
+    "startCheck": "Chạy ở chế độ kiểm tra",
+    "startFailed": "Không thể bắt đầu chạy.",
+    "source": "Máy chủ",
+    "sourceProject": "Danh mục dự án",
+    "sourceTermix": "Máy chủ Termix",
+    "sourceProjectHint": "Sử dụng danh mục từ ansible.cfg hoặc một tệp trong dự án.",
+    "sourceTermixHint": "Chọn máy chủ từ Termix. Thư mục sẽ trở thành nhóm folder_ và thẻ sẽ trở thành nhóm tag_. Tất cả đều nằm trong nhóm termix.",
+    "inventory": "Tệp danh mục",
+    "inventoryHint": "Đường dẫn bên trong thư mục dự án. Để trống để sử dụng ansible.cfg.",
+    "check": "Chế độ kiểm tra",
+    "checkHint": "Hiển thị những thay đổi sẽ xảy ra mà không thực sự thay đổi gì.",
+    "diff": "Hiển thị sự khác biệt",
+    "diffHint": "Hiển thị các thay đổi đã thực hiện trên tệp.",
+    "become": "Chạy với quyền root",
+    "becomeHint": "Sử dụng sudo trên các máy chủ. Mật khẩu Sudo đã lưu sẽ được sử dụng cho các máy chủ Termix.",
+    "limit": "Giới hạn",
+    "limitHint": "Chỉ chạy trên các máy chủ hoặc nhóm này.",
+    "verbosity": "Chi tiết đầu ra",
+    "verbosityOff": "Bình thường",
+    "tags": "Thẻ",
+    "skipTags": "Bỏ qua thẻ",
+    "extraVars": "Biến bổ sung",
+    "extraVarsHint": "Một cặp key=value mỗi dòng."
+  },
+  "runs": {
+    "title": "Chạy",
+    "empty": "Chưa có lần chạy nào.",
+    "loadFailed": "Không thể tải các lần chạy.",
+    "stop": "Dừng",
+    "stopFailed": "Không thể dừng lần chạy.",
+    "deleteTitle": "Xóa lần chạy này?",
+    "deleteFailed": "Không thể xóa lần chạy.",
+    "checkMode": "Kiểm tra",
+    "truncated": "Đang hiển thị phần cuối của đầu ra dài.",
+    "noOutput": "Chưa có đầu ra.",
+    "state": {
+      "running": "Đang chạy",
+      "ok": "Hoàn thành",
+      "failed": "Thất bại",
+      "cancelled": "Đã dừng",
+      "lost": "Mất kết nối"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Thông tin hệ thống"
+    },
+    "recap": {
+      "host": "Máy chủ",
+      "ok": "OK",
+      "changed": "Đã thay đổi",
+      "unreachable": "Không thể truy cập",
+      "failed": "Thất bại",
+      "skipped": "Đã bỏ qua"
+    }
+  },
+  "adhoc": {
+    "hint": "Chạy một module trên các máy chủ, giống như ansible all -m ping.",
+    "pattern": "Mẫu máy chủ",
+    "patternHint": "Một máy chủ, một nhóm hoặc tất cả.",
+    "module": "Module",
+    "moduleHint": "Ví dụ: ping, command, shell, apt hoặc systemd.",
+    "args": "Đối số",
+    "argsHint": "Đối với command và shell, đây là lệnh. Đối với các module khác, đây là các cặp key=value.",
+    "run": "Chạy"
+  },
+  "facts": {
+    "hint": "Thu thập thông tin từ các máy chủ bằng module setup. Cần các máy chủ Termix để mỗi máy có thông tin đăng nhập.",
+    "gather": "Thu thập thông tin",
+    "gathering": "Đang thu thập...",
+    "failed": "Không thể thu thập thông tin.",
+    "failedHost": "Thất bại",
+    "none": "Không có thông tin nào được trả về. Mở lần chạy để xem lý do.",
+    "col": {
+      "host": "Máy chủ",
+      "os": "Hệ điều hành",
+      "kernel": "Nhân",
+      "cpu": "CPU",
+      "memory": "Bộ nhớ",
+      "address": "Địa chỉ",
+      "uptime": "Thời gian hoạt động"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Danh sách playbook"
+    },
+    "run": {
+      "title": "Chạy playbook",
+      "playbook": "Playbook",
+      "limit": "Giới hạn",
+      "tags": "Thẻ",
+      "check": "Chế độ kiểm tra"
+    },
+    "runs": {
+      "title": "Danh sách lần chạy",
+      "resource": "Lần chạy",
+      "started": "Bắt đầu",
+      "check": "Chế độ kiểm tra"
+    },
+    "failed": {
+      "title": "Lần chạy thất bại"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Đang kiểm tra máy chủ...",
+    "summary_other": "{{count}} lần chạy thất bại trên {{hosts}} máy chủ",
+    "refresh": "Kiểm tra lại",
+    "empty": "Bật Ansible cho một máy chủ để xem các lần chạy của nó ở đây.",
+    "failed_other": "{{count}} thất bại",
+    "running_other": "{{count}} đang chạy",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Chưa có lần chạy nào"
+  }
+}

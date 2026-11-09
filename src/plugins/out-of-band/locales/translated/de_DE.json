@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-Band",
+    "description": "Stromversorgung, Sensoren, Ereignisprotokolle und Konsolen für Server-BMCs über Redfish, IPMI und Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-Band"
+  },
+  "card": {
+    "title": "Out-of-Band",
+    "loading": "Wird geladen"
+  },
+  "host": {
+    "open": "Out-of-Band"
+  },
+  "permissions": {
+    "view": {
+      "title": "BMCs anzeigen",
+      "description": "Öffnen Sie den Tab „Out-of-Band“ und sehen Sie Stromversorgung, Status, Sensoren und Protokolle."
+    },
+    "power": {
+      "title": "Stromversorgung und Bootvorgang steuern",
+      "description": "Schalten Sie Geräte ein und aus, führen Sie einen Neustart durch und wählen Sie das nächste Bootmedium."
+    },
+    "console": {
+      "title": "Serienkonsole verwenden",
+      "description": "Die Serial-over-LAN-Konsole eines Geräts öffnen."
+    },
+    "media": {
+      "title": "Virtuelle Medien verwenden",
+      "description": "ISO-Images auf einem Gerät ein- und auswerfen."
+    },
+    "manage": {
+      "title": "BMCs verwalten",
+      "description": "BMCs hinzufügen, bearbeiten und entfernen sowie deren Ereignisprotokolle löschen."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "ipmitool auf dem Termix-Server ausführen",
+        "description": "Wenn deaktiviert, müssen IPMI-BMCs einen Relay-Host verwenden. Redfish und AMT sind davon nicht betroffen."
+      }
+    }
+  },
+  "description": "Fügen Sie die Management-Controller (BMCs) Ihrer Server hinzu, um sie ein- und auszuschalten, deren Sensoren zu überwachen und deren Ereignisprotokolle einzusehen. Anmeldeinformationen werden verschlüsselt gespeichert und niemals erneut angezeigt.",
+  "summary": "{{count}} BMCs, {{attention}} benötigen Aufmerksamkeit",
+  "empty": "Noch keine BMCs.",
+  "add": "BMC hinzufügen",
+  "edit": "Bearbeiten",
+  "delete": "Löschen",
+  "back": "Zurück",
+  "saved": "Gespeichert",
+  "deleteConfirm": "{{name}} löschen?",
+  "status": {
+    "unknown": "Noch nicht gelesen",
+    "up": "Erreichbar",
+    "down": "Nicht erreichbar"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI über LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Benutzername",
+    "password": "Passwort"
+  },
+  "power": {
+    "on": "Ein",
+    "off": "Aus",
+    "unknown": "Unbekannt",
+    "sent": "An {{name}} wurde eine Änderung des Stromzustands angefordert",
+    "action": {
+      "on": "Einschalten",
+      "off": "Ausschalten",
+      "graceful-shutdown": "Herunterfahren",
+      "cycle": "Neustart",
+      "reset": "Zurücksetzen"
+    },
+    "confirm": {
+      "on": "{{name}} einschalten?",
+      "off": "Stromversorgung von {{name}} unterbrechen? Das System wird nicht sauber heruntergefahren.",
+      "graceful-shutdown": "{{name}} zum Herunterfahren auffordern?",
+      "cycle": "{{name}} neustarten? Das System wird nicht sauber heruntergefahren.",
+      "reset": "{{name}} zurücksetzen? Das System startet sofort neu."
+    }
+  },
+  "health": {
+    "ok": "Betriebsbereit",
+    "warning": "Warnung",
+    "critical": "Kritisch",
+    "unknown": "Unbekannt"
+  },
+  "kind": {
+    "temperature": "Temperatur",
+    "fan": "Lüfter",
+    "voltage": "Spannung",
+    "power": "Leistung",
+    "psu": "Netzteil",
+    "other": "Sonstiges"
+  },
+  "form": {
+    "addTitle": "BMC hinzufügen",
+    "editTitle": "BMC bearbeiten",
+    "device": "BMC",
+    "access": "Zugriff",
+    "type": "Typ",
+    "name": "Name",
+    "address": "Adresse",
+    "port": "Port",
+    "host": "Termix-Host",
+    "hostHint": "Verknüpfe die BMC mit dem Host, dem sie gehört. Sie übernimmt dann die Freigabeeinstellungen dieses Hosts und wird in dessen Host-Menü angezeigt.",
+    "noHost": "Keine",
+    "poll": "Abfrageintervall (Sekunden)",
+    "pollHint": "Mindestens 30 Sekunden, bzw. 60 Sekunden, wenn ein Relay-Host verwendet wird.",
+    "scheme": "Verbindung",
+    "relay": "Relay-Host",
+    "relayHint": "Führe ipmitool auf diesem Host statt auf dem Termix-Server aus. Erforderlich für die serielle Konsole.",
+    "noRelay": "Termix-Server",
+    "cipher": "Verschlüsselungssatz",
+    "cipherHint": "Ändere dies nur, wenn die BMC die Anmeldung ablehnt. 3 ist der Standardwert, 17 für neuere BMCs.",
+    "ca": "CA-Zertifikat",
+    "caHint": "Füge das PEM-Zertifikat der Zertifizierungsstelle der BMC ein. Leer lassen, wenn das Zertifikat vertrauenswürdig ist.",
+    "caSet": "Eine CA ist gespeichert. Füge ein neues Zertifikat ein, um es zu ersetzen.",
+    "keepLogin": "Leer lassen, um die gespeicherten Anmeldeinformationen beizubehalten",
+    "test": "Verbindung testen",
+    "testOk": "Die BMC hat geantwortet. Der Stromzustand ist {{power}}.",
+    "testNeedsLogin": "Gib die Anmeldeinformationen erneut ein, um zu testen.",
+    "save": "Speichern",
+    "add": "Hinzufügen"
+  },
+  "view": {
+    "overview": "Übersicht",
+    "sensors": "Sensoren",
+    "log": "Ereignisprotokoll",
+    "boot": "Boot",
+    "media": "Virtuelle Medien",
+    "console": "Konsole",
+    "refresh": "Jetzt lesen",
+    "type": "Typ",
+    "address": "Adresse",
+    "power": "Strom",
+    "health": "Status",
+    "manufacturer": "Hersteller",
+    "model": "Modell",
+    "serial": "Seriennummer",
+    "bios": "BIOS",
+    "bmc": "BMC-Firmware",
+    "status": "BMC",
+    "viaRelay": "Erreichbar über einen Relay-Host.",
+    "noSensors": "Diese BMC meldet keine Sensoren.",
+    "sensor": "Sensor",
+    "reading": "Wert",
+    "state": "Status"
+  },
+  "log": {
+    "time": "Zeit",
+    "severity": "Stufe",
+    "message": "Ereignis",
+    "empty": "Das Ereignisprotokoll ist leer.",
+    "clear": "Protokoll löschen",
+    "clearConfirm": "Ereignisprotokoll von {{name}} löschen? Dies kann nicht rückgängig gemacht werden.",
+    "cleared": "Protokoll gelöscht",
+    "level": {
+      "info": "Info",
+      "warning": "Warnung",
+      "critical": "Kritisch"
+    }
+  },
+  "boot": {
+    "hint": "Der Computer bootet einmal von diesem Gerät und kehrt dann zur normalen Bootreihenfolge zurück. Wende dies vor einem Neustart an.",
+    "device": "Starten von",
+    "mode": "Modus",
+    "uefi": "UEFI",
+    "legacy": "Legacy BIOS",
+    "apply": "Für nächsten Start festlegen",
+    "done": "{{name}} startet beim nächsten Mal vom gewählten Gerät",
+    "pxe": "Netzwerk (PXE)",
+    "disk": "Festplatte",
+    "cd": "CD oder virtuelles Medium",
+    "usb": "USB",
+    "bios": "BIOS-Einrichtung",
+    "none": "Normale Reihenfolge"
+  },
+  "media": {
+    "url": "Bild-Adresse",
+    "empty": "Dieses BMC hat keinen virtuellen CD-Schacht.",
+    "mounted": "Eingehängt",
+    "free": "Leer",
+    "mount": "Einhängen",
+    "eject": "Ausschmeißen",
+    "mountedDone": "Bild eingehängt",
+    "ejected": "Bild ausgeschmissen"
+  },
+  "console": {
+    "hint": "Gib ~. ein, um die Konsole zu verlassen.",
+    "connecting": "Verbinden",
+    "ended": "Die Konsole wurde geschlossen.",
+    "failed": "Die Konsole konnte nicht geöffnet werden.",
+    "needsRelay": "Die serielle Konsole benötigt einen Relay-Host mit ipmitool. Wähle einen in den BMC-Einstellungen."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Starten von",
+    "uefi": "UEFI-Modus",
+    "list": {
+      "title": "BMCs auflisten"
+    },
+    "poll": {
+      "title": "BMC jetzt lesen"
+    },
+    "powerState": {
+      "title": "Stromzustand abrufen"
+    },
+    "power-on": {
+      "title": "Einschalten"
+    },
+    "graceful-shutdown": {
+      "title": "Herunterfahren"
+    },
+    "power-off": {
+      "title": "Ausschalten"
+    },
+    "power-cycle": {
+      "title": "Neustart"
+    },
+    "reset": {
+      "title": "Zurücksetzen"
+    },
+    "setBootOnce": {
+      "title": "Einmal von einem Gerät starten"
+    },
+    "clearLog": {
+      "title": "Ereignisprotokoll löschen"
+    },
+    "health": {
+      "title": "BMC-Gesundheit"
+    }
+  },
+  "widget": {
+    "name": "Out-of-Band",
+    "description": "Strom und Gesundheit deiner Server-BMCs.",
+    "summary": "{{up}} von {{total}} aktiv"
+  }
+}

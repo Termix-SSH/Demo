@@ -1,0 +1,287 @@
+{
+  "plugin": {
+    "name": "Webbserver",
+    "description": "Hantera nginx, Apache och Caddy på dina värdar: webbplatser, konfiguration, loggar och HTTPS, med varje ändring testad först."
+  },
+  "common": {
+    "cancel": "Avbryt",
+    "back": "Tillbaka",
+    "loading": "Laddar..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Använd Webbserver",
+      "description": "Se webbserver och webbplatser på värdar du kan nå, och ändra dem på värdar du kan redigera."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Webbserver",
+        "description": "Hantera nginx, Apache och Caddy på denna värd från fliken Webbserver."
+      },
+      "useSudo": {
+        "label": "Använd sudo",
+        "description": "Använd sudo för att läsa och ändra webbservern. Stäng av om inloggningen är root."
+      },
+      "readOnly": {
+        "label": "Skrivskyddad",
+        "description": "Visa webbplatser, konfiguration och loggar men ändra aldrig dem på denna värd."
+      },
+      "showPanel": {
+        "label": "Panel bredvid terminalen",
+        "description": "Erbjud panelen Webbserver på denna värd terminalflikar."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Öppna panelen med terminalen",
+        "description": "Visa panelen Webbserver när en terminal öppnas på en värd som har den."
+      },
+      "companionSide": {
+        "label": "Panelens sida",
+        "description": "Var panelen sitter bredvid terminalen.",
+        "right": "Höger",
+        "left": "Vänster",
+        "bottom": "Botten"
+      },
+      "companionSize": {
+        "label": "Panelstorlek",
+        "description": "Panelens bredd, eller dess höjd vid botten, i pixlar."
+      },
+      "companionEdgeButton": {
+        "label": "Kantknapp",
+        "description": "Visa en liten knapp på terminalens kant för att öppna panelen."
+      }
+    }
+  },
+  "tab": {
+    "title": "Webbserver",
+    "noHost": "Öppna Webbserver från en värd.",
+    "error": "Kunde inte ladda webbservern på denna värd.",
+    "disabled": "Webbserver är avstängt för denna värd. Aktivera det i värdinställningarna.",
+    "sudo": "Ändringar kräver root-inloggning, lösenordsfri sudo eller ett sparad Sudo-lösenord på denna värd.",
+    "refresh": "Uppdatera",
+    "readOnly": "Skrivskyddad",
+    "noServer": "Ingen webbserver installerad",
+    "noServerHint": "Installera nginx, Apache eller Caddy från sidan Server.",
+    "openServer": "Öppna Server",
+    "viewSites": "Webbplatser",
+    "viewConfig": "Konfiguration",
+    "viewLogs": "Loggar",
+    "viewServer": "Server"
+  },
+  "actions": {
+    "ok": "Klar",
+    "failed": "Misslyckades",
+    "noOutput": "Ingen utdata."
+  },
+  "watch": {
+    "start": "Avertisa mig när en webbserver slutar",
+    "stop": "Stoppa aviseringar för denna värd",
+    "on": "Du kommer att få en avisering när en webbserver på denna värd slutar",
+    "off": "Aviseringar för denna värd är avstängda",
+    "failed": "Kunde inte ändra aviseringar"
+  },
+  "sites": {
+    "add": "Lägg till webbplats",
+    "search": "Sök webbplatser",
+    "empty": "Inga webbplatser ännu.",
+    "loadFailed": "Kunde inte ladda webbplatserna.",
+    "off": "Av",
+    "anyName": "valfritt namn",
+    "form": "Formulär",
+    "certDays_one": "{{count}} dag kvar",
+    "certDays_other": "{{count}} dagar kvar",
+    "certExpired": "Certifikatet har löpt ut",
+    "enable": "Aktivera",
+    "disable": "Inaktivera",
+    "enabled": "{{name}} är aktiverat",
+    "disabled": "{{name}} är inaktiverat",
+    "delete": "Ta bort",
+    "deleteTitle": "Ta bort {{name}}?",
+    "deleteBody": "Filen tas bort och servern startas om. En kopia sparas i /var/lib/termix-web-servers/backups på värdservern.",
+    "deleted": "{{name}} togs bort"
+  },
+  "site": {
+    "addTitle": "Ny webbplats",
+    "editTitle": "Spara {{name}}",
+    "add": "Lägg till webbplats",
+    "save": "Spara",
+    "added": "{{name}} lades till",
+    "saved": "{{name}} sparades",
+    "server": "Webbserver",
+    "name": "Webbplatsnamn",
+    "nameHint": "Används för filnamnet och loggfiler, till exempel example.",
+    "modeForm": "Formulär",
+    "modeText": "Text",
+    "text": "Konfiguration",
+    "textHint": "När du sparar texten inaktiveras formuläret för denna webbplats, så att dina egna ändringar behålls.",
+    "type": "Typ",
+    "typeStatic": "Statiska filer",
+    "typeProxy": "Omvänd proxy",
+    "typePhp": "PHP",
+    "typeRedirect": "Omdirigering",
+    "staticHint": "Serverar filer från en mapp.",
+    "proxyHint": "Skickar förfrågningar till en app som körs på denna eller en annan värdserver.",
+    "phpHint": "Serverar filer från en mapp och kör .php-filer med php-fpm.",
+    "redirectHint": "Skickar alla besökare till en annan adress.",
+    "domains": "Domäner",
+    "domainsHint": "Tryck på Retur efter varje domän. Använd _ i nginx för att svara på alla namn.",
+    "port": "HTTP-port",
+    "root": "Webbrot",
+    "rootHint": "En mapp inuti /var/www, /srv, /usr/share/nginx, /opt eller /home.",
+    "index": "Indexfiler",
+    "spa": "Ensidig app",
+    "spaHint": "Skicka sökvägar som inte är filer till /index.html.",
+    "upstream": "Appadress",
+    "upstreamHint": "Där appen lyssnar, till exempel http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Skicka besökare till",
+    "keepPath": "Behåll sökvägen",
+    "keepPathHint": "Skicka /page till samma sida på den nya adressen.",
+    "phpSocket": "php-fpm-socket",
+    "phpSocketHint": "Ingen php-fpm-socket hittades. Installera php-fpm eller ange värd:port.",
+    "https": "HTTPS",
+    "httpsHint": "Kräver ett certifikat. Spara webbplatsen först och tryck sedan på Hämta certifikat nedan.",
+    "httpsCaddy": "Caddy hämtar och förnyar certifikatet automatiskt.",
+    "httpsPort": "HTTPS-port",
+    "certPath": "Certifikatfil",
+    "keyPath": "Nyckelfil",
+    "forceHttps": "Skicka HTTP till HTTPS",
+    "gzip": "Komprimera svar",
+    "accessLog": "Åtkomstlogg",
+    "maxBody": "Uppladdningsgräns i MB",
+    "maxBodyHint": "0 behåller serverns standardvärde.",
+    "preview": "Förhandsgranskning",
+    "previewFailed": "Kunde inte skapa konfigurationen."
+  },
+  "tls": {
+    "title": "HTTPS-certifikat",
+    "hintManaged": "certbot hämtar ett Let's Encrypt-certifikat för domänerna på den här webbplatsen, och webbplatsen byter sedan till HTTPS. certbot förnyar certifikatet och laddar om servern.",
+    "hintText": "certbot hämtar ett Let's Encrypt-certifikat för domänerna på den här webbplatsen. Lägg till certifikatet på webbplatsen själv efteråt. certbot förnyar det och laddar om servern.",
+    "needCertbot": "Installera certbot med dess plugin för den här servern från sidan Server först.",
+    "email": "E-postadress",
+    "emailHint": "Let's Encrypt skriver hit vid problem. Valfritt.",
+    "staging": "Testcertifikat",
+    "stagingHint": "Använd Let's Encrypts testserver. Webbläsare kommer inte att lita på det.",
+    "issue": "Hämta certifikat",
+    "done": "Certifikatet har sparats"
+  },
+  "config": {
+    "search": "Sök i filer",
+    "empty": "Inga filer.",
+    "loadFailed": "Kunde inte läsa in filen.",
+    "test": "Testa konfiguration",
+    "testOk": "Konfigurationen är korrekt",
+    "testFailed": "Konfigurationen innehåller fel",
+    "content": "Innehåll",
+    "save": "Spara",
+    "saveHint": "Hela konfigurationen testas innan servern laddas om. En trasig fil återställs.",
+    "saved": "Sparat och omladdat",
+    "backups_one": "{{count}} säkerhetskopia",
+    "backups_other": "{{count}} säkerhetskopior",
+    "restore": "Återställ",
+    "restoreTitle": "Vill du återställa den här säkerhetskopian?",
+    "restoreBody": "Filen återgår till hur den såg ut vid {{time}}. Det nuvarande innehållet blir också en säkerhetskopia.",
+    "restored": "Säkerhetskopian har återställts"
+  },
+  "logs": {
+    "source": "Logg",
+    "lines": "Rader",
+    "journal": "{{server}}-logg",
+    "follow": "Följ",
+    "stop": "Stoppa",
+    "connecting": "Ansluter...",
+    "ended": "Slutade följa.",
+    "followFailed": "Kunde inte följa den här loggen.",
+    "empty": "Inga rader.",
+    "loadFailed": "Kunde inte läsa loggen.",
+    "requests": "Begäranden",
+    "topPaths": "Vanligaste sökvägar",
+    "topClients": "Vanligaste klienter"
+  },
+  "server": {
+    "unknown": "okänd",
+    "atBoot": "Startar vid uppstart",
+    "notInstalled": "Inte installerad",
+    "start": "Starta",
+    "stop": "Stoppa",
+    "restart": "Starta om",
+    "reload": "Ladda om",
+    "enable": "Starta vid uppstart",
+    "disable": "Starta inte vid uppstart",
+    "boot": "Starta vid uppstart",
+    "noBoot": "Starta inte vid uppstart",
+    "done": "{{server}} är klar",
+    "stopTitle": "Vill du stoppa {{server}}?",
+    "stopBody": "Alla webbplatser på den blir offline tills du startar den igen.",
+    "install": "Installera",
+    "installTitle": "Vill du installera {{server}}?",
+    "installBody": "Den installeras med värdens pakethanterare och startar direkt. En annan webbserver på port 80 kommer att hindra den från att starta.",
+    "installed": "{{server}} har installerats",
+    "installCertbot": "Installera certbot",
+    "certbotInstalled": "certbot har installerats",
+    "certbotPlugins": "Plugins: {{plugins}}",
+    "certbotNoPlugins": "Inget nginx- eller Apache-plugin",
+    "certbotHint": "Hämtar Let's Encrypt-certifikat för nginx- och Apache-webbplatser"
+  },
+  "card": {
+    "title": "Webbserver",
+    "loading": "Laddar...",
+    "refresh": "Uppdatera",
+    "empty": "Ingen värd har webbserver aktiverad.",
+    "summary_one": "{{count}} värd | {{down}} behöver en titt",
+    "summary_other": "{{count}} värdar | {{down}} behöver en titt",
+    "sites_one": "{{count}} webbplats",
+    "sites_other": "{{count}} webbplatser"
+  },
+  "companion": {
+    "toggle": "Webbserver-panel",
+    "openTab": "Öppna webbserver",
+    "reload": "Ladda om {{server}}"
+  },
+  "manager": {
+    "title": "Webbserver",
+    "disabled": "Aktivera webbserver för denna värd för att se dess webbplatser här."
+  },
+  "operations": {
+    "status": {
+      "title": "Webbservers status"
+    },
+    "listSites": {
+      "title": "Lista webbplatser"
+    },
+    "test": {
+      "title": "Testa webbserverkonfiguration"
+    },
+    "reload": {
+      "title": "Ladda om webbserver"
+    },
+    "restart": {
+      "title": "Starta om webbserver"
+    },
+    "enableSite": {
+      "title": "Aktivera webbplats"
+    },
+    "disableSite": {
+      "title": "Inaktivera webbplats"
+    },
+    "deleteSite": {
+      "title": "Ta bort webbplats"
+    },
+    "server": "Server",
+    "allServers": "Alla",
+    "sites": {
+      "title": "Webbplatser",
+      "server": "Server",
+      "domains": "Domäner",
+      "https": "HTTPS"
+    }
+  }
+}

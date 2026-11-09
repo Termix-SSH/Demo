@@ -20,6 +20,7 @@ import {
   Share2,
 } from "lucide-react";
 import { toast } from "sonner";
+import { deployKeyCommand } from "../deploy-command";
 
 /**
  * Per-density layout knobs, mirroring HOST_ITEM_DENSITY_TOKENS in
@@ -141,8 +142,7 @@ export function CredentialItem({
             toast.error(t("credentials.noPublicKeyAvailable"));
             return;
           }
-          const cmd = `mkdir -p ~/.ssh && chmod 700 ~/.ssh && echo "${pubKey}" >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys`;
-          const ok = await copyToClipboard(cmd);
+          const ok = await copyToClipboard(deployKeyCommand(pubKey));
           if (ok) toast.success(t("credentials.deployCommandCopied"));
           else toast.error(t("common.copyFailed"));
         }}

@@ -10,6 +10,7 @@ import {
   ListBadge,
   ListRow,
   ListRowAction,
+  LoadingState,
   PanelList,
   useConfirm,
 } from "@termix-ssh/plugin-sdk/ui";
@@ -45,12 +46,15 @@ export function WorkspacesCard({
     if (isVisible && allowed) void load();
   }, [isVisible, allowed, load]);
 
-  if (!allowed || failed || !workspaces) {
+  if (!allowed || failed) {
     return (
       <p className="p-3 text-xs text-muted-foreground">
-        {failed || !allowed ? t(`${KEY}.loadFailed`) : t("card.loading")}
+        {t(`${KEY}.loadFailed`)}
       </p>
     );
+  }
+  if (!workspaces) {
+    return <LoadingState compact label={t("card.loading")} />;
   }
 
   const sorted = [...workspaces].sort(

@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Käyttäjät",
+    "description": "Hallitse isäntien käyttäjätiliä, ryhmiä, salasanoja ja SSH-avaimia."
+  },
+  "common": {
+    "save": "Tallenna",
+    "cancel": "Peruuta",
+    "back": "Takaisin",
+    "delete": "Poista",
+    "loading": "Ladataan..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Käytä käyttäjiä",
+      "description": "Näe tilit isännillä, joihin pääset käsiksi, ja muokkaa niitä isännillä, joita voit muokata."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Käyttäjät",
+        "description": "Hallinnoi tämän isäntäkonnon käyttäjätiliä ja ryhmiä Käyttäjät-välilehdeltä."
+      },
+      "useSudo": {
+        "label": "Käytä sudoa",
+        "description": "Käytä sudoa tilien lukemiseen ja muokkaamiseen. Poista käytöstä, jos kirjautuminen tapahtuu root-tilillä."
+      },
+      "readOnly": {
+        "label": "Vain luku",
+        "description": "Näytä tilit, mutta älä koskaan muokkaa niitä tässä isäntäkonnessa."
+      }
+    }
+  },
+  "tab": {
+    "title": "Käyttäjät",
+    "noHost": "Avaa Käyttäjät isäntäkonnon kautta.",
+    "error": "Tilien lataaminen tästä isäntäkonnessa epäonnistui.",
+    "disabled": "Käyttäjät on poistettu käytöstä tässä isäntäkonnessa. Ota se käyttöön isäntäkonnon asetuksista.",
+    "sudo": "Muutokset ja salasanan tilat vaativat root-kirjautumisen, salasanasuodattimen tai tallennetun Sudo-salasanan tässä isäntäkonnessa.",
+    "noTools": "useradd ei ole asennettu tähän isäntään. Asenna Alpine-jakelussa shadow-paketti.",
+    "refresh": "Päivitä",
+    "readOnly": "Vain luku",
+    "counts_one": "{{count}} käyttäjä",
+    "counts_other": "{{count}} käyttäjää",
+    "viewUsers": "Käyttäjät",
+    "viewGroups": "Ryhmät",
+    "viewSessions": "Istunnot"
+  },
+  "users": {
+    "add": "Lisää käyttäjä",
+    "search": "Hae käyttäjiä",
+    "people": "Henkilöt",
+    "systemFilter": "Järjestelmä",
+    "all": "Kaikki",
+    "empty": "Yhtään käyttäjää ei löydy.",
+    "you": "Sinä",
+    "sudo": "Sudo",
+    "locked": "Lukittu",
+    "emptyPassword": "Ei salasanaa",
+    "system": "Järjestelmä",
+    "loadFailed": "Tilejä ei voitu lukea."
+  },
+  "password": {
+    "set": "Aseta",
+    "locked": "Lukittu",
+    "none": "Ei asetettu, ei salasanasisäänkirjautumista",
+    "empty": "Tyhjä, kuka tahansa voi kirjautua sisään",
+    "unknown": "Vaatii root-oikeudet"
+  },
+  "detail": {
+    "info": "Tili",
+    "account": "Tiedot",
+    "fullName": "Koko nimi",
+    "uid": "Käyttäjän ja ryhmän ID",
+    "mainGroup": "Pääryhmä",
+    "home": "Kotikansio",
+    "shell": "Komentorivi",
+    "groups": "Ryhmät",
+    "groupsPlaceholder": "Kirjoita ryhmä ja paina Enter",
+    "unknownGroups": "Nämä ryhmät eivät ole olemassa: {{groups}}",
+    "none": "Ei mitään",
+    "password": "Salasana",
+    "passwordChanged": "Salasana muutettu",
+    "lastLogin": "Viimekirjautuminen",
+    "never": "Ei koskaan",
+    "unknown": "Tuntematon",
+    "saved": "Tallennettu.",
+    "failed": "Muutos epäonnistui.",
+    "loadFailed": "Tämän käyttäjän avaimia ja viimeisintä kirjautumisaikaa ei voitu lukea.",
+    "passwordSection": "Salasana",
+    "newPassword": "Uusi salasana",
+    "newPasswordHint": "Lähetetään isäntälaitteelle SSH-yhteyden kautta ja asetetaan chpasswd-komennolla. Salasanaa ei tallenneta Termixiin.",
+    "setPassword": "Aseta salasana",
+    "passwordSet": "Salasana asetettu.",
+    "expirePassword": "Pyydä uutta salasanaa seuraavassa kirjautumisessa",
+    "expired": "Käyttäjä valitsee uuden salasanan seuraavassa kirjautumisessa.",
+    "access": "Pääsy",
+    "sudo": "Sudo",
+    "sudoHint": "Suorita komennot root-käyttäjänä {{group}}-ryhmän kautta.",
+    "sudoProtected": "Et voi ottaa sudo-oikeuksia pois root-käyttäjältä tai käyttäjältä, jolla Termix kirjautuu sisään.",
+    "sudoTitle": "Anna {{name}}:lle sudo-oikeudet?",
+    "sudoDesc": "Lisää heidät {{group}}-ryhmään, jolloin he voivat suorittaa mitä tahansa komentoa root-käyttäjänä.",
+    "sudoGrant": "Anna sudo-oikeudet",
+    "sudoOn": "Sudo-oikeudet myönnetty.",
+    "sudoOff": "Sudo-oikeudet poistettu.",
+    "lock": "Lukitse tili",
+    "unlock": "Avaa tilin lukitus",
+    "lockTitle": "Lukita {{name}}?",
+    "lockDesc": "He eivät voi kirjautua sisään salasanalla tai SSH-avaimella, ennen kuin avaat tilin lukituksen.",
+    "lockHint": "Estää kirjautumisen salasanalla ja SSH-avaimella.",
+    "protected": "Root-tiliä ja Termixin kirjautumiskäyttäjää ei voi lukita tai poistaa.",
+    "locked": "Tili lukittu.",
+    "unlocked": "Tilin lukitus avattu.",
+    "danger": "Poista",
+    "removeHome": "Poista myös kotikansio",
+    "removeHomeHint": "Poistaa {{home}}-kansion ja sen sisällön.",
+    "delete": "Poista käyttäjä",
+    "deleteTitle": "Poistetaanko {{name}}?",
+    "deleteDesc": "Tili poistetaan. Sen kotikansio säilyy isäntälaitteella.",
+    "deleteDescHome": "Tili ja {{home}} poistetaan. Tätä ei voi peruuttaa.",
+    "deleted": "Käyttäjä {{name}} poistettu."
+  },
+  "keys": {
+    "title": "SSH-avaimet",
+    "empty": "Ei SSH-avaimia.",
+    "denied": "Avaimia ei voi lukea ilman root-oikeuksia.",
+    "options": "Asetukset",
+    "remove": "Poista avain",
+    "removeTitle": "Haluatko poistaa tämän avaimen?",
+    "removed": "Avain poistettu.",
+    "add": "Lisää avain",
+    "addHint": "Liitä yksi julkinen avain, esimerkiksi id_ed25519.pub-tiedoston sisältö.",
+    "addButton": "Lisää avain",
+    "added": "Avain lisätty."
+  },
+  "create": {
+    "title": "Uusi käyttäjä",
+    "name": "Käyttäjänimi",
+    "nameHint": "Pienet kirjaimet, numerot, - ja _.",
+    "nameInvalid": "Aloita kirjaimella ja käytä vain merkkejä a–z, 0–9, - ja _.",
+    "home": "Kotikansio",
+    "homeHint": "Jätä tyhjäksi, jos haluat poluksi /home/{{name}}.",
+    "createHome": "Luo kotikansio",
+    "password": "Salasana",
+    "passwordHint": "Valinnainen. Ilman salasanaa käyttäjä voi kirjautua vain SSH-avaimella.",
+    "again": "Salasana uudelleen",
+    "mismatch": "Salasanat eivät täsmää.",
+    "save": "Luo käyttäjä",
+    "done": "Käyttäjä {{name}} luotu.",
+    "failed": "Käyttäjän luominen epäonnistui."
+  },
+  "groups": {
+    "add": "Lisää ryhmä",
+    "name": "Ryhmän nimi",
+    "namePlaceholder": "Uuden ryhmän nimi",
+    "create": "Luo",
+    "created": "Luotiin {{name}}.",
+    "search": "Hae ryhmiä",
+    "empty": "Ryhmää ei löytynyt.",
+    "noMembers": "Ei jäseniä.",
+    "failed": "Muutos epäonnistui.",
+    "addMember": "Lisää jäsen",
+    "pickUser": "Valitse käyttäjä",
+    "removeMember": "Poista ryhmästä",
+    "memberAdded": "Lisättiin {{name}} ryhmään {{group}}.",
+    "memberRemoved": "Poistettiin {{name}} ryhmästä {{group}}.",
+    "mainGroup": "Pääryhmä",
+    "mainGroupHint": "Tämä on heidän pääryhmänsä, joten he kuuluvat siihen aina.",
+    "deleteTitle": "Haluatko poistaa {{name}}?",
+    "deleteDesc": "Ryhmä poistetaan. Sen omistamat tiedostot säilyttävät vanhan tunnuksensa.",
+    "deleted": "Poistettiin {{name}}."
+  },
+  "sessions": {
+    "now": "Kirjautunut sisään nyt",
+    "none": "Kukaan ei ole kirjautunut sisään.",
+    "recent": "Viimeisimmät kirjautumiset",
+    "noRecent": "Kirjautumishistoriaa ei löytynyt.",
+    "loadFailed": "Istuntoja ei voitu lukea."
+  },
+  "manager": {
+    "title": "Käyttäjät",
+    "disabled": "Ota Käyttäjät käyttöön tämän isäntäpalvelimen asetuksista nähdäksesi sen tilit täällä."
+  },
+  "operations": {
+    "list": {
+      "title": "Listaa käyttäjät"
+    },
+    "emptyPasswords": {
+      "title": "Tilit ilman salasanaa"
+    },
+    "lock": {
+      "title": "Lukitse käyttäjä"
+    },
+    "unlock": {
+      "title": "Avaa käyttäjän lukitus"
+    },
+    "delete": {
+      "title": "Poista käyttäjä"
+    },
+    "users": {
+      "title": "Käyttäjät",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "Ryhmät"
+    }
+  }
+}

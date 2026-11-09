@@ -1,0 +1,230 @@
+{
+  "plugin": {
+    "name": "Balíčky",
+    "description": "Zobrazte a nainstalujte aktualizace na svých hostitelích, hledejte, instalujte a odstraňujte balíčky a prohlížejte historii balíčků."
+  },
+  "common": {
+    "cancel": "Zrušit",
+    "back": "Zpět"
+  },
+  "permissions": {
+    "use": {
+      "title": "Používat balíčky",
+      "description": "Zobrazte balíčky a aktualizace na hostitelích, ke kterým máte přístup, a měňte je na hostitelích, které můžete upravovat."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Balíčky",
+        "description": "Spravujte balíčky a aktualizace na tomto hostiteli ze záložky Balíčky."
+      },
+      "useSudo": {
+        "label": "Použít sudo",
+        "description": "Použijte sudo pro instalaci, aktualizaci a odstraňování balíčků. Vypněte, pokud je přihlášení jako root."
+      },
+      "readOnly": {
+        "label": "Pouze pro čtení",
+        "description": "Zobrazit balíčky a aktualizace, ale na tomto hostiteli je nikdy neměnit."
+      },
+      "showPanel": {
+        "label": "Zobrazit panel aktualizací v terminálech",
+        "description": "Povolit otevření panelu aktualizací vedle SSH terminálu tohoto hostitele."
+      },
+      "alertUpdates": {
+        "label": "Upozornit na bezpečnostní aktualizace",
+        "description": "Odeslat upozornění, když má tento hostitel bezpečnostní aktualizace nebo potřebuje restart. Kontrola se provádí při čtení aktualizací, přibližně jednou za hodinu."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otevřít panel aktualizací s novými terminály",
+        "description": "Zobrazit panel aktualizací vedle každého SSH terminálu, který má povolené balíčky. Stále ho můžete otevírat a zavírat pomocí tlačítka na pravém okraji."
+      },
+      "companionSide": {
+        "label": "Poloha panelu aktualizací",
+        "description": "Kde se panel aktualizací nachází vedle terminálu.",
+        "right": "Vpravo",
+        "left": "Vlevo",
+        "bottom": "Dole"
+      },
+      "companionSize": {
+        "label": "Velikost panelu aktualizací",
+        "description": "Šířka v pixelech, nebo výška, pokud je panel dole. Můžete také přetáhnout jeho okraj."
+      },
+      "companionEdgeButton": {
+        "label": "Zobrazit tlačítko panelu",
+        "description": "Zobrazí malé tlačítko na pravém okraji terminálu, které otevře panel aktualizací."
+      }
+    }
+  },
+  "tab": {
+    "title": "Balíčky",
+    "noHost": "Otevřete Balíčky z hostitele.",
+    "error": "Nelze načíst balíčky z tohoto hostitele.",
+    "disabled": "Balíčky jsou pro tohoto hostitele vypnuty. Zapněte je v nastavení hostitele.",
+    "sudo": "Změny vyžadují přihlášení jako root, sudo bez hesla nebo uložené heslo pro sudo na tomto hostiteli.",
+    "refresh": "Obnovit",
+    "readOnly": "Pouze pro čtení",
+    "noManager": "Žádný správce balíčků",
+    "noManagerTitle": "Nebyl nalezen žádný podporovaný správce balíčků",
+    "noManagerHint": "Balíčky fungují s apt, dnf, yum, zypper, pacman a apk.",
+    "indexAge": "Index byl obnoven před {{ago}}",
+    "reboot": "Tento hostitel potřebuje restart pro dokončení aktualizace.",
+    "viewUpdates": "Aktualizace",
+    "viewInstalled": "Nainstalované",
+    "viewSearch": "Hledat",
+    "viewHistory": "Historie",
+    "viewRepos": "Repozitáře"
+  },
+  "actions": {
+    "working": "Akce {{action}} probíhá. Může to trvat několik minut.",
+    "ok": "Hotovo",
+    "failed": "Správce balíčků selhal.",
+    "noOutput": "Žádný výstup.",
+    "refresh": {
+      "label": "Obnovit index",
+      "confirm": "Obnovit index balíčků?",
+      "desc": "Stáhne nejnovější seznamy balíčků.",
+      "done": "Index balíčků je aktuální."
+    },
+    "update": {
+      "label": "Aktualizovat",
+      "confirm_one": "Aktualizovat {{names}}?",
+      "confirm_few": "Aktualizovat {{count}} balíčky?",
+      "confirm_many": "Aktualizovat {{count}} balíčků?",
+      "confirm_other": "Aktualizovat {{count}} balíčků?",
+      "desc": "Nainstaluje nejnovější verzi {{names}}.",
+      "done": "Aktualizováno {{names}}."
+    },
+    "upgrade-all": {
+      "label": "Aktualizovat vše",
+      "confirm": "Aktualizovat všechny balíčky?",
+      "desc": "Obnoví index balíčků a nainstaluje všechny aktualizace. Během procesu se mohou restartovat služby.",
+      "done": "Všechny balíčky jsou aktuální."
+    },
+    "install": {
+      "label": "Nainstalovat",
+      "confirm": "Nainstalovat {{names}}?",
+      "desc": "Nainstaluje {{names}} a všechny potřebné závislosti.",
+      "done": "Nainstalováno {{names}}."
+    },
+    "remove": {
+      "label": "Odstranit",
+      "confirm": "Odstranit {{names}}?",
+      "desc": "Odstraní {{names}} z tohoto hostitele. Programy, které na něm závisí, mohou přestat fungovat.",
+      "done": "Odstraněno {{names}}."
+    },
+    "hold": {
+      "label": "Zamknout tuto verzi",
+      "confirm": "Zamknout {{names}}?",
+      "desc": "Aktualizace se přeskočí pro {{names}}, dokud to neuvolníte.",
+      "done": "{{names}} je pozastaveno."
+    },
+    "unhold": {
+      "label": "Uvolnit pozastavení",
+      "confirm": "Uvolnit {{names}}?",
+      "desc": "{{names}} bude znovu dostávat aktualizace.",
+      "done": "{{names}} bude znovu dostávat aktualizace."
+    }
+  },
+  "updates": {
+    "search": "Filtrovat aktualizace",
+    "count_one": "{{count}} aktualizace",
+    "count_few": "{{count}} aktualizace",
+    "count_many": "{{count}} aktualizací",
+    "count_other": "{{count}} aktualizací",
+    "countSecurity_one": "{{count}} aktualizace, {{security}} pro zabezpečení",
+    "countSecurity_few": "{{count}} aktualizace, {{security}} pro zabezpečení",
+    "countSecurity_many": "{{count}} aktualizací, {{security}} pro zabezpečení",
+    "countSecurity_other": "{{count}} aktualizací, {{security}} pro zabezpečení",
+    "updatePicked_one": "Aktualizovat {{count}} balíček",
+    "updatePicked_few": "Aktualizovat {{count}} balíčky",
+    "updatePicked_many": "Aktualizovat {{count}} balíčků",
+    "updatePicked_other": "Aktualizovat {{count}} balíčků",
+    "updateOne": "Aktualizovat",
+    "pick": "Vybrat {{name}}",
+    "security": "Zabezpečení",
+    "empty": "Vše je aktuální.",
+    "noMatch": "Žádné aktualizace neodpovídají.",
+    "loadFailed": "Nelze načíst aktualizace."
+  },
+  "installed": {
+    "search": "Filtrovat nainstalované balíčky",
+    "all": "Vše",
+    "held": "Zamčené",
+    "heldBadge": "Zamčené",
+    "empty": "Žádné balíčky neodpovídají.",
+    "loadFailed": "Nelze přečíst nainstalované balíčky."
+  },
+  "search": {
+    "placeholder": "Hledat balíčky",
+    "button": "Hledat",
+    "hint": "Hledejte v repozitářích hostitele balíček k instalaci.",
+    "empty": "Nic nenalezeno.",
+    "installed": "Nainstalováno",
+    "failed": "Vyhledávání selhalo."
+  },
+  "history": {
+    "empty": "Historie balíčků nebyla nalezena.",
+    "loadFailed": "Nelze přečíst historii balíčků."
+  },
+  "repos": {
+    "hint": "Repozitáře, ze kterých tento hostitel instaluje. Změňte je přímo na hostiteli.",
+    "empty": "Nebyly nalezeny žádné repozitáře.",
+    "off": "Vypnuto",
+    "loadFailed": "Nelze přečíst repozitáře."
+  },
+  "card": {
+    "title": "Aktualizace balíčků",
+    "loading": "Kontrola hostitelů...",
+    "summary_one": "{{count}} aktualizace na {{hosts}} hostitelích",
+    "summary_few": "{{count}} aktualizace na {{hosts}} hostitelích",
+    "summary_many": "{{count}} aktualizací na {{hosts}} hostitelích",
+    "summary_other": "{{count}} aktualizací na {{hosts}} hostitelích",
+    "refresh": "Zkontrolovat znovu",
+    "empty": "Pro zobrazení aktualizací hostitele zde zapněte funkci Balíčky.",
+    "security_one": "{{count}} bezpečnostní",
+    "security_few": "{{count}} bezpečnostní",
+    "security_many": "{{count}} bezpečnostních",
+    "security_other": "{{count}} bezpečnostních",
+    "reboot": "Je vyžadován restart",
+    "updates_one": "{{count}} aktualizace",
+    "updates_few": "{{count}} aktualizace",
+    "updates_many": "{{count}} aktualizací",
+    "updates_other": "{{count}} aktualizace",
+    "upToDate": "Aktuální"
+  },
+  "manager": {
+    "title": "Balíčky",
+    "disabled": "Pro zobrazení aktualizací tohoto hostitele zde povolte funkci Balíčky v jeho nastavení."
+  },
+  "operations": {
+    "list": {
+      "title": "Seznam aktualizací balíčků"
+    },
+    "updates": {
+      "title": "Čekající aktualizace",
+      "resource": "Čekající aktualizace"
+    },
+    "upgradeAll": {
+      "title": "Aktualizovat všechny balíčky"
+    },
+    "install": {
+      "title": "Instalovat balíčky"
+    },
+    "remove": {
+      "title": "Odstranit balíčky"
+    },
+    "package": "Balíčky",
+    "packageHint": "Jeden nebo více názvů balíčků oddělených mezerami.",
+    "resource": {
+      "current": "Nainstalováno",
+      "available": "Dostupné",
+      "repo": "Repozitář"
+    }
+  },
+  "nav": {
+    "togglePanel": "Přepnout panel aktualizací"
+  }
+}

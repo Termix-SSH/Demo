@@ -1,0 +1,205 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Jalankan playbook dan arahan ad-hoc Ansible dari hos kawalan, dengan senarai inventori yang dibuat daripada hos Termix anda."
+  },
+  "common": {
+    "save": "Simpan",
+    "cancel": "Batal",
+    "back": "Kembali",
+    "delete": "Padam"
+  },
+  "permissions": {
+    "use": {
+      "title": "Gunakan Ansible",
+      "description": "Lihat playbook dan pelaksanaan pada hos kawalan yang boleh anda capai. Edit fail dan jalankan Ansible pada hos yang boleh anda edit."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Gunakan hos ini sebagai hos kawalan Ansible. Ansible mesti dipasang di atasnya."
+      },
+      "projectDir": {
+        "label": "Folder projek",
+        "description": "Folder pada hos ini yang mengandungi playbook, peranan, dan ansible.cfg anda.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Fail kata laluan Vault",
+        "description": "Fail pada hos ini yang mengandungi kata laluan Ansible Vault. Biarkan kosong jika anda tidak menggunakan Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Baca sahaja",
+        "description": "Paparkan playbook dan pelaksanaan tetapi jangan pernah edit fail atau mulakan pelaksanaan pada hos ini."
+      },
+      "alertRuns": {
+        "label": "Amaran apabila pelaksanaan gagal",
+        "description": "Hantar amaran apabila pelaksanaan pada hos ini berakhir dengan kegagalan atau hilang. Disemak apabila keadaan pelaksanaan dibaca."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Buka Ansible dari hos.",
+    "error": "Tidak dapat memuatkan Ansible dari hos ini.",
+    "disabled": "Ansible dimatikan untuk hos ini. Hidupkannya dalam tetapan hos.",
+    "refresh": "Segarkan",
+    "readOnly": "Baca sahaja",
+    "notInstalled": "Ansible tidak dipasang",
+    "notInstalledTitle": "Ansible tidak dipasang pada hos ini",
+    "notInstalledHint": "Pasang ansible-core pada hos ini, contohnya dengan pipx atau pengurus pakej anda, kemudian segarkan.",
+    "noSshpass": "sshpass tidak dipasang pada hos ini. Hos yang log masuk dengan kata laluan akan gagal.",
+    "viewPlaybooks": "Playbook",
+    "viewRuns": "Pelaksanaan",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Fakta"
+  },
+  "files": {
+    "add": "Fail baru",
+    "search": "Cari fail",
+    "empty": "Tiada fail dalam folder projek lagi.",
+    "noMatch": "Tiada fail sepadan.",
+    "noProject": "Folder {{dir}} tidak wujud pada hos ini. Ciptakannya, atau tetapkan folder Projek lain dalam tetapan hos.",
+    "listFailed": "Tidak dapat menyenaraikan fail projek.",
+    "loadFailed": "Tidak dapat membaca fail tersebut.",
+    "saved": "Fail disimpan",
+    "saveFailed": "Tidak dapat menyimpan fail tersebut.",
+    "playbook": "Playbook",
+    "run": "Jalankan",
+    "newTitle": "Fail baru",
+    "name": "Nama fail",
+    "nameHint": "Laluan di dalam folder projek, seperti site.yml atau roles/web/tasks/main.yml.",
+    "hint": "Playbook diperiksa sintaksnya sebelum disimpan. Fail lama kekal jika pemeriksaan gagal.",
+    "text": "Teks fail",
+    "deleteTitle": "Padam fail ini?"
+  },
+  "targets": {
+    "search": "Cari hos",
+    "addShown": "Tambah yang dipaparkan",
+    "clear": "Kosongkan",
+    "empty": "Tiada hos ditemui.",
+    "count": "{{count}} dipilih",
+    "failed": "Tidak dapat memuatkan hos anda."
+  },
+  "run": {
+    "title": "Jalankan {{playbook}}",
+    "start": "Jalankan",
+    "startCheck": "Jalankan dalam mod semakan",
+    "startFailed": "Tidak dapat memulakan pelaksanaan.",
+    "source": "Hos",
+    "sourceProject": "Inventori projek",
+    "sourceTermix": "Hos Termix",
+    "sourceProjectHint": "Gunakan inventori dari ansible.cfg, atau fail dalam projek.",
+    "sourceTermixHint": "Pilih hos dari Termix. Folder menjadi kumpulan folder_ dan tag menjadi kumpulan tag_. Kesemuanya berada dalam kumpulan termix.",
+    "inventory": "Fail inventori",
+    "inventoryHint": "Laluan di dalam folder projek. Kosongkan untuk menggunakan ansible.cfg.",
+    "check": "Mod semakan",
+    "checkHint": "Paparkan apa yang akan berubah tanpa membuat sebarang perubahan.",
+    "diff": "Paparkan perbezaan",
+    "diffHint": "Paparkan perubahan yang dibuat pada fail.",
+    "become": "Jalankan sebagai root",
+    "becomeHint": "Gunakan sudo pada hos. Kata laluan Sudo yang disimpan digunakan untuk hos Termix.",
+    "limit": "Hadkan",
+    "limitHint": "Hanya jalankan pada hos atau kumpulan ini.",
+    "verbosity": "Perincian output",
+    "verbosityOff": "Biasa",
+    "tags": "Tag",
+    "skipTags": "Langkau tag",
+    "extraVars": "Pemboleh ubah tambahan",
+    "extraVarsHint": "Satu kunci=nilai setiap baris."
+  },
+  "runs": {
+    "title": "Jalankan",
+    "empty": "Belum ada pelaksanaan.",
+    "loadFailed": "Tidak dapat memuatkan pelaksanaan.",
+    "stop": "Hentikan",
+    "stopFailed": "Tidak dapat menghentikan pelaksanaan.",
+    "deleteTitle": "Padamkan pelaksanaan ini?",
+    "deleteFailed": "Tidak dapat memadamkan pelaksanaan.",
+    "checkMode": "Semakan",
+    "truncated": "Memaparkan akhir output yang panjang.",
+    "noOutput": "Belum ada output.",
+    "state": {
+      "running": "Sedang berjalan",
+      "ok": "Selesai",
+      "failed": "Gagal",
+      "cancelled": "Dihentikan",
+      "lost": "Hilang"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Fakta"
+    },
+    "recap": {
+      "host": "Hos",
+      "ok": "OK",
+      "changed": "Berubah",
+      "unreachable": "Tidak dapat dicapai",
+      "failed": "Gagal",
+      "skipped": "Dilangkau"
+    }
+  },
+  "adhoc": {
+    "hint": "Jalankan satu modul pada hos, seperti ansible all -m ping.",
+    "pattern": "Corak hos",
+    "patternHint": "Satu hos, satu kumpulan atau semua.",
+    "module": "Modul",
+    "moduleHint": "Contohnya ping, command, shell, apt atau systemd.",
+    "args": "Argumen",
+    "argsHint": "Untuk command dan shell, ini adalah arahan. Untuk modul lain, ia adalah pasangan kunci=nilai.",
+    "run": "Jalankan"
+  },
+  "facts": {
+    "hint": "Kumpulkan fakta dari hos menggunakan modul setup. Memerlukan hos Termix supaya setiap satu mempunyai log masuk.",
+    "gather": "Kumpulkan fakta",
+    "gathering": "Mengumpulkan...",
+    "failed": "Tidak dapat mengumpulkan fakta.",
+    "failedHost": "Gagal",
+    "none": "Tiada fakta diterima. Buka pelaksanaan untuk melihat sebabnya.",
+    "col": {
+      "host": "Hos",
+      "os": "Sistem",
+      "kernel": "Teras",
+      "cpu": "CPU",
+      "memory": "Memori",
+      "address": "Alamat",
+      "uptime": "Masa Aktif"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Senaraikan playbook"
+    },
+    "run": {
+      "title": "Jalankan playbook",
+      "playbook": "Playbook",
+      "limit": "Had",
+      "tags": "Tag",
+      "check": "Mod semakan"
+    },
+    "runs": {
+      "title": "Senaraikan pelaksanaan",
+      "resource": "Pelaksanaan",
+      "started": "Dimulakan",
+      "check": "Mod semakan"
+    },
+    "failed": {
+      "title": "Pelaksanaan gagal"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Menyemak hos...",
+    "summary_other": "{{count}} pelaksanaan gagal pada {{hosts}} hos",
+    "refresh": "Semak semula",
+    "empty": "Hidupkan Ansible untuk hos untuk melihat pelaksanaannya di sini.",
+    "failed_other": "{{count}} gagal",
+    "running_other": "{{count}} sedang berjalan",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Belum ada pelaksanaan"
+  }
+}

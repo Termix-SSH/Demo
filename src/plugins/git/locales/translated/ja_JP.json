@@ -1,0 +1,289 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "ホスト上の Git リポジトリを表示、pull、commit、push でき、自動 pull で最新の状態を維持します。"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "back": "戻る",
+    "loading": "読み込み中..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Git の使用",
+      "description": "アクセス可能なホスト上の Git リポジトリを表示し、編集可能なホストで変更を行います。"
+    },
+    "runCommands": {
+      "title": "自動 pull 後のコマンド実行",
+      "description": "自動 pull で新しいコミットが取得された後、ホスト上で実行するコマンドを設定します。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Git タブから、このホスト上の Git リポジトリを管理します。"
+      },
+      "repoRoots": {
+        "label": "スキャンするフォルダ",
+        "description": "このホストをスキャンする際にリポジトリを検索するフォルダです。カンマ区切りで指定します。デフォルトはホームフォルダです。",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "sudo を使用する",
+        "description": "sudo を使用して root 権限で git を実行します。ログインユーザーが操作できないリポジトリの場合にのみ使用してください。"
+      },
+      "readOnly": {
+        "label": "読み取り専用",
+        "description": "リポジトリを表示しますが、このホスト上では変更を行いません。"
+      },
+      "showPanel": {
+        "label": "ターミナルの横にパネルを表示",
+        "description": "このホストのターミナルタブで Git パネルを表示します。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "ターミナルと同時にパネルを開く",
+        "description": "Git パネルが有効なホストでターミナルを開いたとき、Git パネルを表示します。"
+      },
+      "companionSide": {
+        "label": "パネルの配置",
+        "description": "ターミナルの横にパネルを配置する位置です。",
+        "right": "右",
+        "left": "左",
+        "bottom": "下"
+      },
+      "companionSize": {
+        "label": "パネルのサイズ",
+        "description": "パネルの幅、または下部に配置した場合の高さ（ピクセル単位）です。"
+      },
+      "companionEdgeButton": {
+        "label": "エッジボタン",
+        "description": "パネルを開くための小さなボタンをターミナルの端に表示します。"
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "ホストからGitを開きます。",
+    "error": "このホストからGitを読み込めませんでした。",
+    "disabled": "このホストではGitが無効になっています。ホスト設定で有効にしてください。",
+    "sudo": "rootログイン、パスワードなしのsudo、または保存されたSudoパスワードが必要です。",
+    "refresh": "更新",
+    "readOnly": "読み取り専用",
+    "notInstalled": "gitがインストールされていません",
+    "notInstalledTitle": "このホストには git がインストールされていません",
+    "notInstalledHint": "ホストのパッケージマネージャーで git をインストールし、更新してください。"
+  },
+  "actions": {
+    "ok": "完了",
+    "failed": "失敗",
+    "noOutput": "出力がありません。"
+  },
+  "repos": {
+    "add": "リポジトリを追加",
+    "search": "リポジトリを検索",
+    "empty": "まだリポジトリがありません。追加して始めましょう。",
+    "noMatch": "一致するリポジトリがありません。",
+    "viewOnly": "このホストにはリポジトリが追加されていません。",
+    "detached": "デタッチ済み",
+    "changes_other": "{{count}} 件の変更",
+    "conflicts": "競合",
+    "auto": "自動プル",
+    "autoFailing": "プル失敗",
+    "remove": "リストから削除",
+    "removeTitle": "{{name}} を削除しますか？",
+    "removeBody": "リポジトリはここで忘れられるだけです。ホスト上では何も削除されません。",
+    "removed": "{{name}} を削除しました",
+    "error": {
+      "missing": "フォルダが見つかりません",
+      "notrepo": "Git リポジトリではありません",
+      "unreadable": "読み取りできません"
+    }
+  },
+  "add": {
+    "title": "リポジトリを追加",
+    "modeScan": "スキャン",
+    "modePath": "フォルダ",
+    "modeClone": "クローン",
+    "scanHint": "{{roots}} 内の Git リポジトリを検索します。フォルダはホスト設定で変更できます。",
+    "rescan": "再スキャン",
+    "noneFound": "新しいリポジトリが見つかりませんでした。",
+    "picked": "選択済み",
+    "addPicked_other": "{{count}} 個のリポジトリを追加",
+    "addAll": "すべて追加",
+    "folder": "ホスト上のフォルダ",
+    "folderHint": "フルパス、またはホームフォルダを示す ~ から始めてください。対象は既に Git リポジトリである必要があります。",
+    "addRepo": "リポジトリを追加",
+    "url": "アドレス",
+    "urlHint": "ホストのログインユーザーのキーと Git 設定を使用します。",
+    "dest": "クローン先",
+    "destHint": "フォルダは存在してはいけません。",
+    "clone": "クローン",
+    "cloned": "複製済み",
+    "added_other": "{{count}} 件のリポジトリを追加しました",
+    "failed": "リポジトリを追加できませんでした",
+    "scanFailed": "ホストをスキャンできませんでした"
+  },
+  "repo": {
+    "ahead": "{{count}} 件先行",
+    "behind": "{{count}} 件後方",
+    "fetch": "フェッチ",
+    "fetched": "フェッチ済み",
+    "pull": "プル",
+    "pulled": "プル済み",
+    "push": "Push",
+    "pushed": "Pushed",
+    "viewChanges": "変更内容",
+    "viewBranches": "ブランチ",
+    "viewHistory": "履歴",
+    "viewStash": "Stash",
+    "viewAuto": "自動 Pull"
+  },
+  "changes": {
+    "loadFailed": "変更内容を読み込めませんでした。",
+    "clean": "コミットする変更はありません。ワーキングツリーはクリーンです。",
+    "stagedTitle": "ステージ済み ({{count}})",
+    "unstagedTitle": "変更 ({{count}})",
+    "stage": "ステージ",
+    "staged": "ステージ済み",
+    "unstage": "ステージ解除",
+    "unstaged": "未ステージ",
+    "stageAll": "すべてステージ",
+    "renamed": "名前変更済み",
+    "discard": "破棄",
+    "discardTitle": "{{name}} の変更を破棄しますか？",
+    "discardBody": "このファイルの変更は削除され、元に戻すことはできません。",
+    "discarded": "変更が破棄されました",
+    "message": "コミットメッセージ",
+    "messagePlaceholder": "変更内容",
+    "commit": "コミット",
+    "commitAll": "すべての変更をコミット",
+    "commitStaged_other": "{{count}} 個のステージ済みファイルをコミット",
+    "committed": "コミット済み",
+    "noDiff": "表示すべき変更はありません。",
+    "truncated": "差分が長いため、先頭部分のみ表示しています。"
+  },
+  "branches": {
+    "loadFailed": "ブランチを読み取れませんでした。",
+    "empty": "ブランチがありません。",
+    "current": "現在",
+    "remote": "リモート",
+    "gone": "アップストリームが存在しません",
+    "newName": "新しいブランチ",
+    "create": "ブランチを作成",
+    "created": "ブランチ {{name}} が作成されました",
+    "switch": "切り替え",
+    "switched": "{{name}} に切り替えました",
+    "merge": "現在のブランチにマージ",
+    "mergeTitle": "{{name}} を {{into}} にマージしますか？",
+    "mergeBody": "競合があるマージはすぐに元に戻されます。",
+    "merged": "{{name}} をマージしました",
+    "delete": "ブランチを削除",
+    "deleteTitle": "{{name}} を削除しますか？",
+    "deleteBody": "マージされていないコミットがある場合、Git は削除を拒否します。",
+    "deleted": "{{name}} を削除しました",
+    "forceTitle": "{{name}} を強制的に削除しますか？",
+    "forceBody": "このブランチにはマージされていないコミットがあります。削除すると、それらは失われます。",
+    "forceDelete": "強制的に削除"
+  },
+  "history": {
+    "loadFailed": "履歴を読み込めませんでした。",
+    "empty": "コミットはまだありません。",
+    "branch": "現在のブランチ",
+    "all": "すべてのブランチ",
+    "more": "もっと読み込む"
+  },
+  "stash": {
+    "loadFailed": "スタッシュを読み込めませんでした。",
+    "title": "スタッシュ",
+    "empty": "スタッシュはありません。",
+    "message": "メッセージ",
+    "messagePlaceholder": "任意",
+    "untracked": "追跡されていないファイルを含める",
+    "push": "変更をスタッシュする",
+    "pushDone": "変更がスタッシュされました",
+    "apply": "適用",
+    "applyDone": "スタッシュが適用されました",
+    "pop": "ポップ",
+    "popDone": "スタッシュが適用され、削除されました",
+    "drop": "削除",
+    "dropDone": "スタッシュが削除されました",
+    "dropTitle": "{{name}} を削除しますか？",
+    "dropBody": "スタッシュは削除され、復元できません。",
+    "remotes": "リモート",
+    "noRemotes": "リモートがありません。"
+  },
+  "auto": {
+    "intro": "スケジュールに従ってプルし、ファストフォワードのみを使用します。マージは行わず、コミットされていない変更がある場合やアップストリームと分岐している場合はリポジトリをスキップします。",
+    "noUpstream": "このブランチにはまだアップストリームがないため、自動プルはスキップされます。",
+    "enable": "自動プル",
+    "enableHint": "このホストへのアクセス権を持つあなたとして実行されます。",
+    "interval": "間隔（分）",
+    "intervalHint": "プル間の待機時間。",
+    "post": "プル後のコマンド",
+    "postHint": "新しいコミットが届くと、リポジトリフォルダ内で実行されます。「コマンドの実行」権限が必要です。",
+    "saved": "自動プルが保存されました",
+    "saveFailed": "自動プルを保存できませんでした",
+    "runNow": "今すぐ実行",
+    "next": "次のプル: {{when}}",
+    "runs": "最近の実行",
+    "noRuns": "まだ実行されていません。",
+    "outcome": {
+      "pulled": "プル済み",
+      "uptodate": "最新の状態",
+      "skipped": "スキップ",
+      "failed": "失敗"
+    }
+  },
+  "card": {
+    "title": "Git リポジトリ",
+    "loading": "読み込み中...",
+    "refresh": "更新",
+    "empty": "まだ Git リポジトリがあるホストがありません。",
+    "allClean": "すべてのリポジトリはクリーンで最新の状態です。",
+    "summary_other": "{{count}} 件のリポジトリ | {{attention}} 件の確認が必要です"
+  },
+  "companion": {
+    "toggle": "Git パネル",
+    "openTab": "Git を開く",
+    "here": "このフォルダのリポジトリ",
+    "all": "すべてのリポジトリ"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Git リポジトリの一覧表示"
+    },
+    "fetch": {
+      "title": "リポジトリのフェッチ"
+    },
+    "pull": {
+      "title": "リポジトリのプル"
+    },
+    "push": {
+      "title": "リポジトリのプッシュ"
+    },
+    "checkout": {
+      "title": "ブランチの切り替え",
+      "branch": "ブランチ"
+    },
+    "reset-hard": {
+      "title": "リポジトリのハードリセット",
+      "ref": "リセット先"
+    },
+    "repos": {
+      "title": "Git リポジトリ",
+      "branch": "ブランチ",
+      "ahead": "先行",
+      "behind": "後方",
+      "changed": "変更"
+    },
+    "signals": {
+      "behind": "後方のリポジトリ",
+      "dirty": "変更のあるリポジトリ",
+      "pull-failing": "自動プッシュの失敗"
+    }
+  }
+}

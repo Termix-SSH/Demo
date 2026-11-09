@@ -1,0 +1,291 @@
+{
+  "plugin": {
+    "name": "Servidores Web",
+    "description": "Gerencie nginx, Apache e Caddy nos seus hosts: sites, configuração, logs e HTTPS, com cada alteração testada primeiro."
+  },
+  "common": {
+    "cancel": "Cancelar",
+    "back": "Voltar",
+    "loading": "Carregando..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Usar Servidores Web",
+      "description": "Veja os servidores web e sites nos hosts que você pode acessar, e altere-os nos hosts que você pode editar."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Servidores Web",
+        "description": "Gerencie nginx, Apache e Caddy neste host pela aba Servidores Web."
+      },
+      "useSudo": {
+        "label": "Usar sudo",
+        "description": "Use sudo para ler e alterar o servidor web. Desative se o login for root."
+      },
+      "readOnly": {
+        "label": "Somente leitura",
+        "description": "Mostre sites, configuração e logs, mas nunca os altere neste host."
+      },
+      "showPanel": {
+        "label": "Painel ao lado do terminal",
+        "description": "Ofereça o painel de Servidores Web nas abas do terminal deste host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Abrir o painel com o terminal",
+        "description": "Mostre o painel de Servidores Web quando um terminal abrir em um host que o tenha."
+      },
+      "companionSide": {
+        "label": "Lado do painel",
+        "description": "Onde o painel fica ao lado do terminal.",
+        "right": "Direita",
+        "left": "Esquerda",
+        "bottom": "Inferior"
+      },
+      "companionSize": {
+        "label": "Tamanho do painel",
+        "description": "Largura do painel, ou sua altura na parte inferior, em pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Botão na borda",
+        "description": "Mostre um pequeno botão na borda do terminal para abrir o painel."
+      }
+    }
+  },
+  "tab": {
+    "title": "Servidores Web",
+    "noHost": "Abra Servidores Web a partir de um host.",
+    "error": "Não foi possível carregar os servidores web neste host.",
+    "disabled": "Servidores Web está desativado para este host. Ative-o nas configurações do host.",
+    "sudo": "As alterações precisam de login como root, sudo sem senha ou uma Senha Sudo salva neste host.",
+    "refresh": "Atualizar",
+    "readOnly": "Somente leitura",
+    "noServer": "Nenhum servidor web instalado",
+    "noServerHint": "Instale nginx, Apache ou Caddy na página Servidor.",
+    "openServer": "Abrir Servidor",
+    "viewSites": "Sites",
+    "viewConfig": "Configuração",
+    "viewLogs": "Logs",
+    "viewServer": "Servidor"
+  },
+  "actions": {
+    "ok": "Concluído",
+    "failed": "Falhou",
+    "noOutput": "Nenhuma saída."
+  },
+  "watch": {
+    "start": "Alerte-me quando um servidor web parar",
+    "stop": "Parar alertas para este host",
+    "on": "Você receberá um alerta quando um servidor web neste host parar",
+    "off": "Os alertas para este host estão desativados",
+    "failed": "Não foi possível alterar os alertas"
+  },
+  "sites": {
+    "add": "Adicionar site",
+    "search": "Pesquisar sites",
+    "empty": "Nenhum site ainda.",
+    "loadFailed": "Não foi possível carregar os sites.",
+    "off": "Desativado",
+    "anyName": "qualquer nome",
+    "form": "Formulário",
+    "certDays_one": "{{count}} dia restante",
+    "certDays_many": "{{count}} dias restantes",
+    "certDays_other": "{{count}} dias restantes",
+    "certExpired": "Certificado expirado",
+    "enable": "Ativar",
+    "disable": "Desativar",
+    "enabled": "{{name}} está ativado",
+    "disabled": "{{name}} está desativado",
+    "delete": "Excluir",
+    "deleteTitle": "Excluir {{name}}?",
+    "deleteBody": "O arquivo será removido e o servidor será recarregado. Uma cópia permanece em /var/lib/termix-web-servers/backups no host.",
+    "deleted": "{{name}} foi excluído"
+  },
+  "site": {
+    "addTitle": "Novo site",
+    "editTitle": "Salvar {{name}}",
+    "add": "Adicionar site",
+    "save": "Salvar",
+    "added": "{{name}} foi adicionado",
+    "saved": "{{name}} foi salvo",
+    "server": "Servidor web",
+    "name": "Nome do site",
+    "nameHint": "Usado para o nome do arquivo e os arquivos de log, como exemplo.",
+    "modeForm": "Formulário",
+    "modeText": "Texto",
+    "text": "Configuração",
+    "textHint": "Salvar o texto desativa o formulário para este site, mantendo suas alterações personalizadas.",
+    "type": "Tipo",
+    "typeStatic": "Arquivos estáticos",
+    "typeProxy": "Proxy reverso",
+    "typePhp": "PHP",
+    "typeRedirect": "Redirecionamento",
+    "staticHint": "Servir arquivos de uma pasta.",
+    "proxyHint": "Encaminhar solicitações para um aplicativo executado neste host ou em outro.",
+    "phpHint": "Servir arquivos de uma pasta e executar arquivos .php com php-fpm.",
+    "redirectHint": "Encaminhar todos os visitantes para outro endereço.",
+    "domains": "Domínios",
+    "domainsHint": "Pressione Enter após cada um. Use _ no nginx para responder a qualquer nome.",
+    "port": "Porta HTTP",
+    "root": "Raiz web",
+    "rootHint": "Uma pasta dentro de /var/www, /srv, /usr/share/nginx, /opt ou /home.",
+    "index": "Arquivos de índice",
+    "spa": "Aplicativo de página única",
+    "spaHint": "Encaminhar caminhos que não são arquivos para /index.html.",
+    "upstream": "Endereço do aplicativo",
+    "upstreamHint": "Onde o aplicativo está escutando, como http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Encaminhar visitantes para",
+    "keepPath": "Manter o caminho",
+    "keepPathHint": "Encaminhar /page para a mesma página no novo endereço.",
+    "phpSocket": "Socket php-fpm",
+    "phpSocketHint": "Nenhum socket php-fpm foi encontrado. Instale o php-fpm ou insira host:porta.",
+    "https": "HTTPS",
+    "httpsHint": "Requer um certificado. Salve o site primeiro, depois pressione Obter certificado abaixo.",
+    "httpsCaddy": "O Caddy obtém e renova o certificado automaticamente.",
+    "httpsPort": "Porta HTTPS",
+    "certPath": "Arquivo de certificado",
+    "keyPath": "Arquivo de chave",
+    "forceHttps": "Redirecionar HTTP para HTTPS",
+    "gzip": "Comprimir respostas",
+    "accessLog": "Log de acesso",
+    "maxBody": "Limite de upload em MB",
+    "maxBodyHint": "0 mantém o padrão do servidor.",
+    "preview": "Visualização",
+    "previewFailed": "Não foi possível gerar a configuração."
+  },
+  "tls": {
+    "title": "Certificado HTTPS",
+    "hintManaged": "certbot obtém um certificado Let's Encrypt para os domínios deste site, em seguida, o site passa a usar HTTPS. O certbot renova o certificado e recarrega o servidor.",
+    "hintText": "certbot obtém um certificado Let's Encrypt para os domínios deste site. Adicione o certificado ao site manualmente depois. O certbot renova o certificado e recarrega o servidor.",
+    "needCertbot": "Instale o certbot com seu plugin para este servidor na página do Servidor primeiro.",
+    "email": "E-mail",
+    "emailHint": "Let's Encrypt usa este e-mail para avisar sobre problemas. Opcional.",
+    "staging": "Certificado de teste",
+    "stagingHint": "Usa o servidor de staging do Let's Encrypt. Navegadores não confiarão nele.",
+    "issue": "Obter certificado",
+    "done": "Certificado salvo"
+  },
+  "config": {
+    "search": "Buscar arquivos",
+    "empty": "Nenhum arquivo.",
+    "loadFailed": "Não foi possível carregar o arquivo.",
+    "test": "Testar configuração",
+    "testOk": "A configuração está correta",
+    "testFailed": "A configuração contém erros",
+    "content": "Conteúdo",
+    "save": "Salvar",
+    "saveHint": "Toda a configuração é testada antes de recarregar o servidor. Um arquivo com erro é restaurado.",
+    "saved": "Salvo e recarregado",
+    "backups_one": "{{count}} backup",
+    "backups_many": "{{count}} backups",
+    "backups_other": "{{count}} backups",
+    "restore": "Restaurar",
+    "restoreTitle": "Restaurar este backup?",
+    "restoreBody": "O arquivo volta ao estado de {{time}}. O texto atual também se torna um backup.",
+    "restored": "Backup restaurado"
+  },
+  "logs": {
+    "source": "Log",
+    "lines": "Linhas",
+    "journal": "Journal de {{server}}",
+    "follow": "Acompanhar",
+    "stop": "Parar",
+    "connecting": "Conectando...",
+    "ended": "Acompanhamento parado.",
+    "followFailed": "Não foi possível acompanhar este log.",
+    "empty": "Nenhuma linha.",
+    "loadFailed": "Não foi possível ler o log.",
+    "requests": "Requisições",
+    "topPaths": "Caminhos mais acessados",
+    "topClients": "Clientes mais ativos"
+  },
+  "server": {
+    "unknown": "desconhecido",
+    "atBoot": "Inicia na inicialização",
+    "notInstalled": "Não instalado",
+    "start": "Iniciar",
+    "stop": "Parar",
+    "restart": "Reiniciar",
+    "reload": "Recarregar",
+    "enable": "Iniciar na inicialização",
+    "disable": "Não iniciar na inicialização",
+    "boot": "Iniciar na inicialização",
+    "noBoot": "Não iniciar na inicialização",
+    "done": "{{server}} concluído",
+    "stopTitle": "Parar {{server}}?",
+    "stopBody": "Todos os sites nele ficarão offline até que você os inicie novamente.",
+    "install": "Instalar",
+    "installTitle": "Instalar {{server}}?",
+    "installBody": "Será instalado pelo gerenciador de pacotes do host e iniciado imediatamente. Outro servidor web na porta 80 impedirá sua inicialização.",
+    "installed": "{{server}} foi instalado",
+    "installCertbot": "Instalar certbot",
+    "certbotInstalled": "certbot foi instalado",
+    "certbotPlugins": "Plugins: {{plugins}}",
+    "certbotNoPlugins": "Sem plugin para nginx ou Apache",
+    "certbotHint": "Obtém certificados Let's Encrypt para sites nginx e Apache"
+  },
+  "card": {
+    "title": "Servidores web",
+    "loading": "Carregando...",
+    "refresh": "Atualizar",
+    "empty": "Nenhum host tem servidores web ativados.",
+    "summary_one": "{{count}} host | {{down}} precisa de atenção",
+    "summary_many": "{{count}} hosts | {{down}} precisam de atenção",
+    "summary_other": "{{count}} hosts | {{down}} precisam de atenção",
+    "sites_one": "{{count}} site",
+    "sites_many": "{{count}} sites",
+    "sites_other": "{{count}} sites"
+  },
+  "companion": {
+    "toggle": "Painel de servidores web",
+    "openTab": "Abrir servidores web",
+    "reload": "Recarregar {{server}}"
+  },
+  "manager": {
+    "title": "Servidores web",
+    "disabled": "Ative os servidores web neste host para ver seus sites aqui."
+  },
+  "operations": {
+    "status": {
+      "title": "Status do servidor web"
+    },
+    "listSites": {
+      "title": "Listar sites"
+    },
+    "test": {
+      "title": "Testar configuração do servidor web"
+    },
+    "reload": {
+      "title": "Recarregar servidor web"
+    },
+    "restart": {
+      "title": "Reiniciar servidor web"
+    },
+    "enableSite": {
+      "title": "Ativar site"
+    },
+    "disableSite": {
+      "title": "Desativar site"
+    },
+    "deleteSite": {
+      "title": "Excluir site"
+    },
+    "server": "Servidor",
+    "allServers": "Todos eles",
+    "sites": {
+      "title": "Sites",
+      "server": "Servidor",
+      "domains": "Domínios",
+      "https": "HTTPS"
+    }
+  }
+}

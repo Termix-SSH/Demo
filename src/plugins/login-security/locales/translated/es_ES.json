@@ -9,7 +9,8 @@
   "settings": {
     "group": {
       "sessions": "Sesiones",
-      "secondFactor": "Segundo factor"
+      "secondFactor": "Segundo factor",
+      "connect": "Conexión a hosts"
     },
     "admin": {
       "idleTimeoutMinutes": {
@@ -34,8 +35,34 @@
       "applyToExternal": {
         "label": "También para inicio de sesión único",
         "description": "Solicitar el segundo factor también tras los inicios de sesión con SSO y LDAP. Déjalo desactivado si tu proveedor de identidad ya lo solicita."
+      },
+      "connectFactor": {
+        "label": "Solicitar un segundo factor antes de conectar",
+        "description": "Los usuarios introducen su segundo factor al abrir un terminal, escritorio remoto o administrador de archivos en un host. No se solicita para métricas, túneles ni otras tareas en segundo plano.",
+        "off": "Desactivado",
+        "marked": "Solo en hosts marcados",
+        "all": "Todos los hosts"
+      },
+      "connectFactorMinutes": {
+        "label": "Minutos antes de volver a solicitarlo",
+        "description": "Tras introducirlo, el usuario puede conectarse a cualquier host durante este tiempo. Cerrar sesión lo finaliza antes."
+      }
+    },
+    "host": {
+      "requireConnectFactor": {
+        "label": "Solicitar un segundo factor antes de conectar",
+        "description": "Se aplica cuando la Seguridad de inicio de sesión está configurada para solicitarlo en hosts marcados."
       }
     }
+  },
+  "verify": {
+    "title": "Verificar segundo factor",
+    "intro": "Introduce tu segundo factor para conectarte a este host.",
+    "done": "Verificado",
+    "retry": "Vuelve al host y conéctate de nuevo.",
+    "failed": "Eso no ha funcionado. Inténtalo de nuevo.",
+    "noFactor": "No hay segundo factor configurado",
+    "noFactorHint": "Configura uno en Configuración, Seguridad y vuelve a conectarte."
   },
   "status": {
     "factors": "Segundos factores disponibles: {{factors}}",

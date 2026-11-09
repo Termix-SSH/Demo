@@ -412,7 +412,7 @@ export function DeviceView({
                 value={filter}
                 onChange={(event) => setFilter(event.target.value)}
                 placeholder={t("view.filter")}
-                className="w-full border border-border bg-transparent px-2 py-1 text-xs"
+                className="w-full border border-border bg-popover px-2 py-1 text-xs"
               />
             </div>
             {rows.length === 0 ? (

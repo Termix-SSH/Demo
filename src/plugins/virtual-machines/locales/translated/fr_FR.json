@@ -1,0 +1,427 @@
+{
+  "tab": {
+    "title": "Machines virtuelles",
+    "noHost": "Ouvrez les machines virtuelles depuis un hôte.",
+    "refresh": "Actualiser",
+    "open": "Ouvrir la vue complète",
+    "error": "Impossible de lire les machines virtuelles sur cet hôte.",
+    "disabled": "Les machines virtuelles sont désactivées pour cet hôte. Activez-les dans les paramètres de l'hôte.",
+    "sudo": "Cet hôte nécessite une connexion root, un sudo sans mot de passe ou un mot de passe Sudo enregistré.",
+    "vms": "Machines virtuelles",
+    "storage": "Stockage",
+    "networks": "Réseaux",
+    "jobs": "Tâches",
+    "runningCount": "{{running}} sur {{total}} en cours d'exécution",
+    "nodeLine": "{{cpus}} CPU, {{memory}}",
+    "noKvm": "pas de KVM, les machines virtuelles seront lentes"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "failed": "Cela n'a pas fonctionné."
+  },
+  "state": {
+    "running": "En cours d'exécution",
+    "blocked": "Bloqué",
+    "paused": "En pause",
+    "shutdown": "Arrêt en cours",
+    "shutoff": "Éteint",
+    "crashed": "Planté",
+    "pmsuspended": "Suspendu",
+    "unknown": "Inconnu"
+  },
+  "power": {
+    "start": "Démarrer",
+    "shutdown": "Éteindre",
+    "reboot": "Redémarrer",
+    "stop": "Arrêt forcé",
+    "suspend": "Mettre en pause",
+    "resume": "Reprendre",
+    "shutdownTitle": "Éteindre {{name}} ?",
+    "shutdownText": "Cela demande à l'invité de s'éteindre. Cela peut prendre une minute, et un invité sans prise en charge ACPI peut l'ignorer.",
+    "stopTitle": "Arrêter brutalement {{name}} ?",
+    "stopText": "Cela coupe l'alimentation immédiatement. Tout ce que l'invité n'a pas enregistré sera perdu."
+  },
+  "setup": {
+    "missing": "Libvirt n'est pas installé",
+    "missingText": "Termix peut installer QEMU et libvirt sur cet hôte. Cela nécessite root, un sudo sans mot de passe ou un mot de passe Sudo enregistré.",
+    "noConnect": "Termix ne peut pas atteindre libvirt sur cet hôte",
+    "noConnectText": "Vérifiez que le service libvirt est en cours d'exécution et que l'utilisateur SSH peut l'utiliser.",
+    "noKvm": "Cet hôte ne dispose pas de /dev/kvm, donc les machines virtuelles s'exécuteraient sans assistance matérielle. Activez la virtualisation dans le BIOS ou pour cette machine virtuelle.",
+    "install": "Installer",
+    "installing": "Installation...",
+    "installTitle": "Installer libvirt sur cet hôte ?",
+    "installText": "Cela installe QEMU, libvirt et leurs outils avec le gestionnaire de paquets de l'hôte, démarre le service et configure le réseau et le pool de stockage par défaut.",
+    "installed": "Libvirt est installé"
+  },
+  "vm": {
+    "new": "Nouvelle machine virtuelle",
+    "none": "Aucune machine virtuelle sur cet hôte pour le moment",
+    "noneHint": "Appuyez sur Nouvelle machine virtuelle pour en créer une.",
+    "name": "Nom",
+    "state": "État",
+    "size": "Taille",
+    "ip": "Adresse IP",
+    "noIp": "Aucune adresse pour le moment",
+    "cpus_one": "{{count}} CPU",
+    "cpus_many": "{{count}} CPU",
+    "cpus_other": "{{count}} CPU",
+    "back": "Retour à la liste",
+    "overview": "Aperçu",
+    "console": "Console",
+    "snapshots": "Instantanés",
+    "hardware": "Matériel",
+    "xml": "XML",
+    "cpu": "CPU",
+    "memory": "Mémoire",
+    "memoryUsed": "{{used}} utilisés",
+    "ofHost": "L'hôte dispose de {{memory}}",
+    "diskIo": "Disque",
+    "diskUsed": "Disque de {{size}}, {{used}} sur l'hôte",
+    "netIo": "Réseau",
+    "uuid": "UUID",
+    "machine": "Machine",
+    "firmware": "Micrologiciel",
+    "bios": "BIOS",
+    "uefi": "UEFI",
+    "cpuMode": "Mode CPU",
+    "guestAgent": "Agent invité",
+    "yes": "Oui",
+    "no": "Non",
+    "autostart": "Démarrage automatique",
+    "autostartHint": "Démarrer cette VM au démarrage de l'hôte.",
+    "clone": "Cloner",
+    "cloneStopped": "Éteignez la VM pour la cloner",
+    "cloneName": "Nom de la copie",
+    "cloneStarted": "Clonage en cours. Consultez les Tâches pour suivre la progression.",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer {{name}} ?",
+    "deleteDisks": "Supprimer également ses disques",
+    "deleteDisksHint": "Supprime les disques non utilisés par d'autres VM. Cette action est irréversible. Les ISO et les images de base sont conservés.",
+    "deleted": "VM supprimée"
+  },
+  "watch": {
+    "start": "M'avertir quand cette VM s'arrête",
+    "stop": "Arrêter les alertes pour cette VM"
+  },
+  "console": {
+    "graphical": "Graphique",
+    "serial": "Série",
+    "notRunning": "Démarrez la VM pour utiliser sa console.",
+    "connecting": "Connexion en cours...",
+    "failed": "Impossible d'ouvrir la console.",
+    "retry": "Réessayer",
+    "ended": "La console s'est fermée.",
+    "serialHint": "Appuyez sur Entrée si l'écran reste vide. L'invité doit exécuter un getty sur son port série.",
+    "noRemoteDesktop": "Activez le Bureau à distance pour voir l'écran de cette VM. La console série fonctionne toujours.",
+    "useVnc": "Passer en VNC",
+    "vncSaved": "Enregistré. Éteignez la VM et redémarrez-la pour utiliser VNC."
+  },
+  "hardware": {
+    "cpuMemory": "CPU et mémoire",
+    "vcpus": "CPU",
+    "memory": "Mémoire (MiB)",
+    "nextStart": "Les modifications s'appliqueront au prochain démarrage de la VM.",
+    "saved": "Enregistré",
+    "disks": "Disques",
+    "detach": "Détacher",
+    "detachTitle": "Détacher {{name}} ?",
+    "detachText": "Le volume reste dans son pool.",
+    "pool": "Pool de stockage",
+    "sizeGib": "Taille (GiB)",
+    "addDisk": "Ajouter un disque",
+    "cdrom": "Lecteur CD",
+    "noMedia": "Vide",
+    "iso": "ISO",
+    "pickIso": "Choisir un ISO",
+    "insert": "Insérer",
+    "eject": "Éjecter",
+    "nics": "Cartes réseau",
+    "removeNic": "Supprimer",
+    "nicType": "Connecter à",
+    "virtualNetwork": "Réseau virtuel",
+    "hostBridge": "Pont hôte",
+    "network": "Réseau",
+    "bridge": "Pont",
+    "addNic": "Ajouter une carte"
+  },
+  "snapshot": {
+    "name": "Nom de l'instantané",
+    "description": "Description",
+    "take": "Créer un instantané",
+    "taking": "En cours...",
+    "taken": "Instantané créé",
+    "none": "Aucun instantané",
+    "noneHint": "Un instantané sauvegarde les disques et la mémoire d'une VM en cours d'exécution.",
+    "current": "Actuel",
+    "revert": "Rétablir",
+    "revertTitle": "Revenir à {{name}} ?",
+    "revertText": "Toutes les modifications apportées depuis cet instantané seront perdues.",
+    "reverted": "VM rétablie",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer l'instantané {{name}} ?",
+    "deleteText": "La VM reste dans son état actuel."
+  },
+  "xml": {
+    "hint": "Avancé. L'hôte vérifie le XML avant de sauvegarder et conserve une copie de l'ancien dans /var/lib/termix-vms/backups.",
+    "saveTitle": "Sauvegarder ce XML ?",
+    "saveText": "Il sera appliqué au prochain démarrage de la VM.",
+    "saved": "Sauvegardé"
+  },
+  "new": {
+    "title": "Nouvelle VM",
+    "basics": "Informations de base",
+    "install": "Installation",
+    "name": "Nom",
+    "source": "Installer à partir de",
+    "sourceCloud": "Image cloud",
+    "sourceIso": "ISO",
+    "sourceBlank": "Disque vide",
+    "noIso": "Aucun ISO dans ce pool. Téléchargez-en un dans Stockage.",
+    "image": "Image",
+    "customImage": "Autre URL",
+    "imageUrl": "URL de l'image",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "sshKey": "Clé publique SSH",
+    "sshKeyHint": "Fournissez un mot de passe, une clé, ou les deux. Le mot de passe est stocké uniquement sous forme de hachage.",
+    "start": "Démarrer une fois prêt",
+    "create": "Créer la VM",
+    "started": "Création de la VM. Consultez les Tâches pour suivre la progression.",
+    "noUefi": "Cet hôte n'a aucun firmware UEFI installé.",
+    "uefiHint": "Une VM UEFI ne peut créer des instantanés que lorsqu'elle est éteinte.",
+    "missingTools": "Cet hôte manque {{tools}}, requis par les images cloud."
+  },
+  "storage": {
+    "pools": "Pools de stockage",
+    "none": "Aucun pool de stockage",
+    "noneHint": "Ajoutez un dossier pour stocker les disques des VM.",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "used": "{{used}} sur {{size}} utilisés ({{percent}}%)",
+    "start": "Démarrer",
+    "stop": "Arrêter",
+    "forget": "Oublier",
+    "forgetTitle": "Oublier le pool {{name}} ?",
+    "forgetText": "Libvirt cessera d'utiliser ce pool. Les fichiers dans son dossier resteront sur le disque.",
+    "poolName": "Nom du pool",
+    "poolPath": "Dossier",
+    "addPool": "Ajouter un pool",
+    "volumes": "Volumes dans {{pool}}",
+    "noVolumes": "Aucun volume dans ce pool",
+    "allocated": "{{size}} sur le disque",
+    "deleteVolume": "Supprimer {{name}} ?",
+    "deleteVolumeText": "Cela supprime le fichier. Cette action est irréversible.",
+    "volumeName": "Nom du volume",
+    "addVolume": "Ajouter un volume",
+    "downloadUrl": "Télécharger un fichier dans ce pool",
+    "downloadHint": "L'hôte effectue le téléchargement, il continue donc même si Termix est fermé.",
+    "download": "Télécharger",
+    "downloadStarted": "Téléchargement démarré"
+  },
+  "network": {
+    "title": "Réseaux virtuels",
+    "none": "Aucun réseau virtuel",
+    "name": "Nom",
+    "kind": "Type",
+    "nat": "NAT",
+    "isolated": "Isolé",
+    "bridge": "Pont hôte",
+    "subnet": "Adresse",
+    "add": "Ajouter un réseau",
+    "stopTitle": "Arrêter le réseau {{name}} ?",
+    "stopText": "Les machines virtuelles sur ce réseau perdent leur connexion jusqu'à ce qu'il soit rétabli et qu'elles se reconnectent.",
+    "deleteTitle": "Supprimer le réseau {{name}} ?",
+    "leases": "Baux DHCP sur {{name}}",
+    "noLeases": "Aucun bail"
+  },
+  "jobs": {
+    "none": "Aucune tâche pour le moment",
+    "noneHint": "Les nouvelles machines virtuelles, clones, instantanés et téléchargements apparaissent ici.",
+    "cancel": "Arrêter",
+    "status": {
+      "running": "En cours",
+      "success": "Terminé",
+      "failed": "Échoué",
+      "cancelled": "Arrêté"
+    },
+    "kind": {
+      "create": "Nouvelle machine virtuelle",
+      "clone": "Clone",
+      "download": "Téléchargement",
+      "snapshot": "Instantané"
+    },
+    "phase": {
+      "download": "Téléchargement en cours",
+      "disk": "Création du disque",
+      "seed": "Écriture de cloud-init",
+      "define": "Enregistrement de la machine virtuelle",
+      "start": "Démarrage",
+      "clone": "Copie des disques"
+    }
+  },
+  "all": {
+    "title": "Toutes les machines virtuelles",
+    "search": "Rechercher",
+    "host": "Hôte",
+    "hostCount_one": "{{count}} hôte",
+    "hostCount_many": "{{count}} hôtes",
+    "hostCount_other": "{{count}} hôtes",
+    "noHosts": "Aucun hôte n'a les machines virtuelles activées",
+    "noHostsHint": "Ouvrez un hôte dans Gérer et activez les machines virtuelles."
+  },
+  "card": {
+    "title": "Machines virtuelles",
+    "unreachable": "Inaccessible",
+    "crashed_one": "{{count}} en panne",
+    "crashed_many": "{{count}} en panne",
+    "crashed_other": "{{count}} en panne"
+  },
+  "widget": {
+    "running": "Machines virtuelles en cours d'exécution"
+  },
+  "companion": {
+    "toggle": "Afficher/masquer le panneau des machines virtuelles"
+  },
+  "permissions": {
+    "use": {
+      "title": "Utiliser les machines virtuelles",
+      "description": "Voir les machines virtuelles sur les hôtes auxquels vous pouvez vous connecter, et les modifier sur les hôtes que vous pouvez éditer."
+    },
+    "console": {
+      "title": "Ouvrir les consoles des machines virtuelles",
+      "description": "Ouvrir la console graphique et série d'une machine virtuelle sur les hôtes que vous pouvez éditer."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Activer les machines virtuelles",
+        "description": "Gérer les machines virtuelles KVM sur cet hôte avec libvirt."
+      },
+      "useSudo": {
+        "label": "Utiliser sudo",
+        "description": "Exécuter les commandes libvirt avec sudo. Désactiver pour une connexion root."
+      },
+      "readOnly": {
+        "label": "Lecture seule",
+        "description": "Afficher les VM mais bloquer toute modification depuis Termix."
+      },
+      "connectUri": {
+        "label": "Connexion Libvirt",
+        "description": "L'URI libvirt à utiliser. La plupart des hôtes utilisent qemu:///system."
+      },
+      "showPanel": {
+        "label": "Afficher le panneau VM à côté des terminaux",
+        "description": "Ajoute une liste de VM aux onglets du terminal de cet hôte."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Ouvrir le panneau VM automatiquement",
+        "description": "Ouvrir le panneau lorsqu'un terminal s'ouvre."
+      },
+      "companionSide": {
+        "label": "Position du panneau VM",
+        "description": "Emplacement du panneau à côté d'un terminal.",
+        "right": "Droite",
+        "left": "Gauche",
+        "bottom": "Bas"
+      },
+      "companionSize": {
+        "label": "Taille du panneau VM",
+        "description": "Largeur ou hauteur en pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Afficher le bouton latéral",
+        "description": "Un petit bouton sur le bord du terminal ouvre le panneau."
+      }
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Lister les VM"
+    },
+    "state": {
+      "title": "État des VM"
+    },
+    "running": {
+      "title": "VM en cours d'exécution"
+    },
+    "crashed": {
+      "title": "VM en panne"
+    },
+    "pools": {
+      "title": "Utilisation des pools de stockage"
+    },
+    "snapshots": {
+      "title": "Instantanés des VM"
+    },
+    "listPools": {
+      "title": "Lister les pools de stockage"
+    },
+    "listNetworks": {
+      "title": "Lister les réseaux virtuels"
+    },
+    "start": {
+      "title": "Démarrer la VM"
+    },
+    "reboot": {
+      "title": "Redémarrer la VM"
+    },
+    "suspend": {
+      "title": "Mettre en pause la VM"
+    },
+    "resume": {
+      "title": "Reprendre la VM"
+    },
+    "autostart": {
+      "title": "Configurer le démarrage automatique de la VM",
+      "enabled": "Démarrer avec l'hôte"
+    },
+    "snapshot": {
+      "title": "Créer un instantané de la VM",
+      "name": "Nom de l'instantané",
+      "description": "Description"
+    },
+    "clone": {
+      "title": "Cloner la VM",
+      "name": "Nom de la copie"
+    },
+    "shutdown": {
+      "title": "Arrêter la VM"
+    },
+    "forceStop": {
+      "title": "Arrêter la VM de force"
+    },
+    "delete": {
+      "title": "Supprimer la VM",
+      "disks": "Supprimer également ses disques"
+    },
+    "revert": {
+      "title": "Restaurer un instantané"
+    },
+    "deleteSnapshot": {
+      "title": "Supprimer l'instantané"
+    },
+    "vms": {
+      "title": "Machines virtuelles"
+    },
+    "column": {
+      "cpus": "CPU",
+      "memory": "Mémoire (MiB)",
+      "ip": "Adresse IP",
+      "autostart": "Démarrage auto",
+      "vm": "VM",
+      "created": "Créé le"
+    },
+    "events": {
+      "started": "VM démarrée",
+      "stopped": "VM arrêtée",
+      "crashed": "VM en panne",
+      "job": "Tâche VM terminée"
+    }
+  }
+}

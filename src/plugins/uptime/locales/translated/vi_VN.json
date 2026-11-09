@@ -1,0 +1,386 @@
+{
+  "tab": {
+    "title": "Thời gian hoạt động",
+    "error": "Không thể tải các bộ giám sát.",
+    "monitors": "Bộ giám sát",
+    "incidents": "Sự cố",
+    "maintenance": "Bảo trì",
+    "pages": "Trang trạng thái"
+  },
+  "common": {
+    "refresh": "Làm mới",
+    "loading": "Đang tải",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "done": "Xong"
+  },
+  "status": {
+    "up": "Hoạt động",
+    "down": "Ngừng hoạt động",
+    "pending": "Đang thử lại",
+    "maintenance": "Bảo trì",
+    "paused": "Đã tạm dừng",
+    "unknown": "Đang chờ"
+  },
+  "types": {
+    "http": "Trang web (HTTP)",
+    "tcp": "Cổng TCP",
+    "ping": "Ping",
+    "dns": "Bản ghi DNS",
+    "tls": "Chứng chỉ TLS",
+    "push": "Push",
+    "host": "Máy chủ Termix",
+    "docker": "Container Docker",
+    "systemd": "Đơn vị systemd",
+    "command": "Lệnh"
+  },
+  "typeHints": {
+    "http": "Gọi một URL và kiểm tra mã trạng thái, cùng với một từ khóa nếu bạn đã đặt.",
+    "tcp": "Kiểm tra xem một cổng có chấp nhận kết nối hay không.",
+    "ping": "Gửi ping từ máy chủ Termix, hoặc từ một máy chủ bạn chọn bên dưới.",
+    "dns": "Tra cứu một bản ghi và có thể kiểm tra giá trị của nó.",
+    "tls": "Kiểm tra xem một chứng chỉ có được tin cậy và sắp hết hạn hay không.",
+    "push": "Cung cấp cho bạn một URL để gọi từ một cron job hoặc script. Sẽ báo ngừng hoạt động khi các cuộc gọi dừng lại.",
+    "host": "Kiểm tra cổng của máy chủ giống như chấm trạng thái của máy chủ. Không bao giờ đăng nhập.",
+    "docker": "Đăng nhập vào máy chủ qua SSH và kiểm tra xem một container có đang chạy và khỏe mạnh hay không.",
+    "systemd": "Đăng nhập vào máy chủ qua SSH và kiểm tra xem một đơn vị có đang hoạt động hay không.",
+    "command": "Đăng nhập vào máy chủ qua SSH và chạy một lệnh. Sẽ báo hoạt động khi mã thoát là 0."
+  },
+  "stats": {
+    "up": "Hoạt động",
+    "down": "Sự cố",
+    "paused": "Đã tạm dừng hoặc đang bảo trì",
+    "month": "Thời gian hoạt động 30 ngày"
+  },
+  "filter": {
+    "all": "Tất cả",
+    "problems": "Sự cố",
+    "paused": "Đã tạm dừng"
+  },
+  "list": {
+    "name": "Tên",
+    "target": "Mục tiêu",
+    "checks": "Kiểm tra gần đây",
+    "uptime": "24 giờ",
+    "uptimeDay": "24 giờ: {{value}}",
+    "latency": "Phản hồi",
+    "search": "Tìm kiếm",
+    "add": "Thêm bộ giám sát",
+    "addHosts": "Thêm từ máy chủ",
+    "empty": "Chưa có bộ giám sát nào",
+    "emptyHint": "Thêm một bộ giám sát để bắt đầu theo dõi một trang web, một cổng hoặc một máy chủ.",
+    "noMatch": "Không có kết quả phù hợp"
+  },
+  "range": {
+    "day": "24 giờ",
+    "week": "7 ngày",
+    "month": "30 ngày",
+    "quarter": "90 ngày"
+  },
+  "detail": {
+    "failed": "Thao tác không thành công.",
+    "deleteTitle": "Xóa {{name}}?",
+    "deleteHint": "Lịch sử và các sự cố liên quan cũng sẽ bị xóa.",
+    "newUrl": "URL push mới",
+    "newUrlTitle": "Tạo URL push mới?",
+    "newUrlHint": "URL cũ sẽ ngừng hoạt động ngay lập tức.",
+    "type": "Loại",
+    "target": "Mục tiêu",
+    "lastCheck": "Lần kiểm tra cuối",
+    "message": "Kết quả",
+    "every": "Kiểm tra mỗi",
+    "seconds_other": "{{count}} giây",
+    "group": "Nhóm",
+    "tags": "Thẻ",
+    "cert": "Chứng chỉ",
+    "certValue": "{{days}} ngày còn lại | {{issuer}}",
+    "noChart": "Chưa đủ lần kiểm tra để hiển thị biểu đồ.",
+    "alertsOn": "Bật cảnh báo",
+    "alertsOff": "Tắt cảnh báo",
+    "runNow": "Kiểm tra ngay",
+    "pause": "Tạm dừng",
+    "resume": "Tiếp tục",
+    "share": "Chia sẻ",
+    "now": "Phản hồi hiện tại",
+    "recent": "Lần kiểm tra gần đây",
+    "response": "Thời gian phản hồi",
+    "about": "Giới thiệu",
+    "incidents": "Sự cố",
+    "noIncidents": "Không có sự cố."
+  },
+  "editor": {
+    "addTitle": "Thêm trình giám sát",
+    "editTitle": "Chỉnh sửa trình giám sát",
+    "saveFailed": "Không thể lưu.",
+    "testFailed": "Không thể chạy thử nghiệm.",
+    "test": "Thử nghiệm",
+    "testing": "Đang thử nghiệm",
+    "testOk": "Hoạt động",
+    "testBad": "Ngừng hoạt động",
+    "what": "Nội dung giám sát",
+    "name": "Tên",
+    "type": "Loại",
+    "host": "Máy chủ",
+    "noHost": "Chọn một máy chủ",
+    "pushOnce": "Sao chép URL này ngay. Nó chỉ được hiển thị một lần.",
+    "from": "Kiểm tra từ",
+    "fromHost": "Chạy kiểm tra từ",
+    "fromServer": "Máy chủ Termix",
+    "fromHint": "Chọn một máy chủ để truy cập các tài nguyên chỉ máy chủ đó mới thấy được. Kiểm tra sẽ chạy trên máy chủ đó qua SSH.",
+    "timing": "Thời gian và cảnh báo",
+    "interval": "Kiểm tra mỗi (giây)",
+    "timeout": "Thời gian chờ (giây)",
+    "grace": "Thời gian chờ thêm (giây)",
+    "retries": "Số lần thử lại",
+    "retriesHint": "Số lần kiểm tra thất bại liên tiếp trước khi được coi là ngừng hoạt động.",
+    "retryInterval": "Khoảng thời gian giữa các lần thử lại (giây)",
+    "resend": "Nhắc tôi mỗi (phút)",
+    "resendHint": "Trong khi vẫn ngừng hoạt động. 0 gửi một cảnh báo duy nhất.",
+    "more": "Nhóm và thẻ",
+    "group": "Nhóm",
+    "tags": "Thẻ",
+    "tagsHint": "Tách bằng dấu phẩy.",
+    "target": "Địa chỉ",
+    "port": "Cổng",
+    "portOptional": "Cổng",
+    "portOptionalHint": "Để trống để sử dụng cổng mặc định của máy chủ.",
+    "url": "URL",
+    "method": "Phương thức",
+    "body": "Nội dung",
+    "accepted": "Mã trạng thái được chấp nhận",
+    "acceptedHint": "Ví dụ: 200-299,301",
+    "keyword": "Từ khóa",
+    "keywordHint": "Tùy chọn. Văn bản bắt buộc phải có trong phản hồi.",
+    "keywordAbsent": "Báo lỗi khi tìm thấy từ khóa",
+    "auth": "Đăng nhập",
+    "authNone": "Không",
+    "authBasic": "Cơ bản",
+    "authBearer": "Token Bearer",
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "token": "Token",
+    "keepSecret": "Để trống để giữ nguyên giá trị đã lưu.",
+    "headers": "Tiêu đề",
+    "headersHint": "Mỗi dòng một tiêu đề, dạng Tên: giá trị. Được lưu dưới dạng mã hóa.",
+    "follow": "Theo dõi chuyển hướng",
+    "ignoreTls": "Chấp nhận mọi chứng chỉ",
+    "certDays": "Cảnh báo trước khi chứng chỉ hết hạn (ngày)",
+    "certDaysHint": "Đặt 0 để tắt cảnh báo.",
+    "record": "Loại bản ghi",
+    "dnsServer": "Máy chủ DNS",
+    "dnsServerHint": "Địa chỉ IP tùy chọn. Để trống để sử dụng máy chủ DNS mặc định.",
+    "expected": "Giá trị mong đợi",
+    "expectedHint": "Tùy chọn. Văn bản mà một bản ghi phải chứa.",
+    "container": "Tên container",
+    "unit": "Tên đơn vị",
+    "command": "Lệnh",
+    "commandHint": "Chạy với quyền đăng nhập của bạn trên máy chủ đó mỗi lần kiểm tra."
+  },
+  "hosts": {
+    "add_other": "Thêm {{count}} bộ giám sát"
+  },
+  "shares": {
+    "loadFailed": "Không thể tải các mục chia sẻ.",
+    "saveFailed": "Không thể lưu các mục chia sẻ.",
+    "pick": "Chọn một người dùng hoặc vai trò",
+    "user": "Người dùng: {{name}}",
+    "role": "Vai trò: {{name}}",
+    "with": "Chia sẻ với",
+    "add": "Thêm",
+    "none": "Chỉ bạn mới có thể xem bộ giám sát này.",
+    "view": "Có thể xem",
+    "edit": "Có thể chỉnh sửa"
+  },
+  "incidents": {
+    "none": "Không có sự cố",
+    "ongoing": "Đang diễn ra",
+    "seen": "Đã xem",
+    "ack": "Đánh dấu là đã xem",
+    "note": "Ghi chú"
+  },
+  "maintenance": {
+    "none": "Không có khung giờ bảo trì",
+    "noneHint": "Thêm một khung giờ để tắt cảnh báo trong khi bạn làm việc.",
+    "add": "Thêm khung giờ",
+    "edit": "Chỉnh sửa khung giờ",
+    "active": "Đang hoạt động",
+    "when": "Khi nào",
+    "once": "Một lần",
+    "weekly": "Mỗi tuần",
+    "start": "Bắt đầu",
+    "end": "Kết thúc",
+    "days": "Ngày",
+    "time": "Thời gian bắt đầu",
+    "length": "Thời lượng (phút)",
+    "timezone": "Múi giờ",
+    "covers": "Áp dụng cho",
+    "coversAll": "Tất cả trình giám sát của tôi",
+    "coversSome": "Trình giám sát đã chọn",
+    "coversTag": "Trình giám sát có nhãn",
+    "deleteTitle": "Xóa {{name}}?",
+    "day0": "CN",
+    "day1": "T2",
+    "day2": "T3",
+    "day3": "T4",
+    "day4": "T5",
+    "day5": "T6",
+    "day6": "T7"
+  },
+  "pages": {
+    "none": "Không có trang trạng thái",
+    "noneHint": "Trang trạng thái hiển thị tình trạng dịch vụ của bạn cho mọi người mà không cần đăng nhập.",
+    "add": "Thêm trang",
+    "edit": "Chỉnh sửa trang",
+    "about": "Trang",
+    "title": "Tiêu đề",
+    "slug": "Địa chỉ",
+    "slugHint": "Chữ thường, số và dấu gạch ngang. Đây là phần cuối của liên kết.",
+    "description": "Mô tả",
+    "published": "Đã xuất bản",
+    "publishedHint": "Bất kỳ ai có liên kết đều có thể xem tên, trạng thái và thời gian hoạt động. Không bao giờ hiển thị địa chỉ hoặc lỗi.",
+    "showLatency": "Hiển thị thời gian phản hồi",
+    "group": "Nhóm {{number}}",
+    "groupName": "Tên nhóm",
+    "addGroup": "Thêm nhóm",
+    "notes": "Ghi chú",
+    "noteTitle": "Tiêu đề",
+    "noteBody": "Nội dung",
+    "noteLevel": "Mức độ",
+    "levelInfo": "Thông tin",
+    "levelWarning": "Cảnh báo",
+    "levelCritical": "Nghiêm trọng",
+    "post": "Đăng",
+    "resolve": "Đã giải quyết",
+    "resolved": "Đã giải quyết",
+    "live": "Đã xuất bản",
+    "draft": "Bản nháp",
+    "open": "Mở trang",
+    "deleteTitle": "Xóa {{name}}?",
+    "offTitle": "Trang công khai đã tắt",
+    "offHint": "Quản trị viên đã tắt chúng trong cài đặt plugin, nên các liên kết này không hiển thị gì."
+  },
+  "widget": {
+    "name": "Thời gian hoạt động",
+    "description": "Số lượng trình giám sát đang hoạt động hoặc ngừng hoạt động.",
+    "up": "Hoạt động",
+    "down": "Ngừng hoạt động"
+  },
+  "card": {
+    "title": "Thời gian hoạt động",
+    "overview": "Tất cả trình giám sát",
+    "attention": "Trình giám sát có sự cố",
+    "monitors": "Trình giám sát",
+    "allGood": "Tất cả đều hoạt động bình thường.",
+    "gone": "Trình giám sát này đã bị xóa.",
+    "loading": "Đang tải...",
+    "month": "30 ngày: {{value}}"
+  },
+  "host": {
+    "none": "Không có trình giám sát nào cho máy chủ này.",
+    "add": "Thêm trình giám sát",
+    "down_other": "{{count}} trình giám sát đang ngừng hoạt động"
+  },
+  "permissions": {
+    "view": {
+      "title": "Xem trình giám sát",
+      "description": "Xem trình giám sát, lịch sử và sự cố."
+    },
+    "manage": {
+      "title": "Quản lý trình giám sát",
+      "description": "Thêm và thay đổi trình giám sát cùng khung giờ bảo trì."
+    },
+    "privateTargets": {
+      "title": "Kiểm tra địa chỉ riêng",
+      "description": "Định hướng trình giám sát đến các địa chỉ riêng như LAN, Tailscale và các địa chỉ khác mà máy chủ Termix có thể truy cập."
+    },
+    "runCommands": {
+      "title": "Chạy lệnh",
+      "description": "Thêm trình giám sát chạy lệnh trên máy chủ qua SSH."
+    },
+    "publish": {
+      "title": "Xuất bản trang trạng thái",
+      "description": "Cho phép bất kỳ ai có liên kết đều có thể xem trang trạng thái."
+    }
+  },
+  "settings": {
+    "admin": {
+      "minIntervalSeconds": {
+        "label": "Khoảng thời gian kiểm tra ngắn nhất",
+        "description": "Tính bằng giây. Các trình giám sát đăng nhập qua SSH không bao giờ thấp hơn 60 giây."
+      },
+      "defaultIntervalSeconds": {
+        "label": "Khoảng thời gian kiểm tra mặc định",
+        "description": "Tính bằng giây, áp dụng cho trình giám sát mới."
+      },
+      "historyDays": {
+        "label": "Giữ lịch sử trong",
+        "description": "Số ngày lưu số liệu hoạt động hàng ngày và sự cố."
+      },
+      "publicPages": {
+        "label": "Cho phép trang trạng thái công khai",
+        "description": "Tắt để ẩn mọi trang trạng thái. Các URL đẩy vẫn hoạt động bình thường."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Mở bảng điều khiển cùng với mỗi terminal",
+        "description": "Hiển thị bảng điều khiển thời gian hoạt động khi terminal mở."
+      },
+      "companionSide": {
+        "label": "Vị trí bảng điều khiển",
+        "description": "Nơi bảng điều khiển thời gian hoạt động mở ra.",
+        "right": "Phải",
+        "left": "Trái",
+        "bottom": "Dưới"
+      },
+      "companionSize": {
+        "label": "Kích thước bảng điều khiển",
+        "description": "Chiều rộng hoặc chiều cao của bảng điều khiển tính bằng pixel."
+      },
+      "companionEdgeButton": {
+        "label": "Hiển thị nút cạnh",
+        "description": "Một nút ở cạnh terminal để mở bảng điều khiển."
+      }
+    }
+  },
+  "operations": {
+    "monitor": "Giám sát",
+    "summary": {
+      "title": "Tóm tắt thời gian hoạt động"
+    },
+    "monitors": {
+      "title": "Danh sách trình giám sát"
+    },
+    "hostMonitors": {
+      "title": "Trình giám sát trên máy chủ này"
+    },
+    "hostHealth": {
+      "title": "Thời gian hoạt động"
+    },
+    "run": {
+      "title": "Kiểm tra trình giám sát ngay bây giờ"
+    },
+    "pause": {
+      "title": "Tạm dừng trình giám sát"
+    },
+    "resume": {
+      "title": "Tiếp tục trình giám sát"
+    },
+    "addHost": {
+      "title": "Thêm trình giám sát thời gian hoạt động"
+    },
+    "events": {
+      "down": "Một trình giám sát đã ngừng hoạt động",
+      "up": "Một trình giám sát đã hoạt động trở lại",
+      "cert": "Một chứng chỉ sắp hết hạn"
+    },
+    "resource": {
+      "title": "Trình giám sát",
+      "type": "Loại",
+      "status": "Trạng thái",
+      "uptime": "Thời gian hoạt động 30 ngày"
+    }
+  }
+}

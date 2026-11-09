@@ -1,0 +1,207 @@
+{
+  "plugin": {
+    "name": "用户",
+    "description": "管理主机上的用户账户、组、密码和 SSH 密钥。"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "back": "返回",
+    "delete": "删除",
+    "loading": "加载中..."
+  },
+  "permissions": {
+    "use": {
+      "title": "使用用户管理",
+      "description": "查看可访问主机上的账户，并修改可编辑主机上的账户。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "用户",
+        "description": "在“用户”选项卡中管理此主机上的用户账户和组。"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "使用 sudo 读取和修改账户。如果登录用户是 root，请关闭此选项。"
+      },
+      "readOnly": {
+        "label": "只读",
+        "description": "仅显示账户，不在此主机上进行任何修改。"
+      }
+    }
+  },
+  "tab": {
+    "title": "用户",
+    "noHost": "从主机打开用户管理。",
+    "error": "无法从此主机加载账户。",
+    "disabled": "此主机已禁用用户管理。请在主机设置中启用。",
+    "sudo": "修改操作和密码状态检查需要 root 登录、免密 sudo 或在此主机上保存的 Sudo 密码。",
+    "noTools": "此主机未安装 useradd。在 Alpine 上，请安装 shadow 包。",
+    "refresh": "刷新",
+    "readOnly": "只读",
+    "counts_other": "{{count}} 个用户",
+    "viewUsers": "用户",
+    "viewGroups": "组",
+    "viewSessions": "会话"
+  },
+  "users": {
+    "add": "添加用户",
+    "search": "搜索用户",
+    "people": "人员",
+    "systemFilter": "系统",
+    "all": "全部",
+    "empty": "没有匹配的用户。",
+    "you": "你",
+    "sudo": "Sudo",
+    "locked": "已锁定",
+    "emptyPassword": "无密码",
+    "system": "系统",
+    "loadFailed": "无法读取账户。"
+  },
+  "password": {
+    "set": "设置",
+    "locked": "已锁定",
+    "none": "未设置，禁止密码登录",
+    "empty": "为空，任何人都可登录",
+    "unknown": "需要 root 权限才能确定"
+  },
+  "detail": {
+    "info": "账户",
+    "account": "详细信息",
+    "fullName": "全名",
+    "uid": "用户和组 ID",
+    "mainGroup": "主组",
+    "home": "主目录",
+    "shell": "Shell",
+    "groups": "组",
+    "groupsPlaceholder": "输入组名并按回车",
+    "unknownGroups": "以下组不存在：{{groups}}",
+    "none": "无",
+    "password": "密码",
+    "passwordChanged": "密码已更改",
+    "lastLogin": "上次登录",
+    "never": "从未",
+    "unknown": "未知",
+    "saved": "已保存。",
+    "failed": "更改失败。",
+    "loadFailed": "无法读取此用户的密钥和最后登录时间。",
+    "passwordSection": "密码",
+    "newPassword": "新密码",
+    "newPasswordHint": "通过 SSH 发送到主机并使用 chpasswd 设置。Termix 不会存储此密码。",
+    "setPassword": "设置密码",
+    "passwordSet": "密码已设置。",
+    "expirePassword": "下次登录时要求设置新密码",
+    "expired": "他们将在下次登录时选择新密码。",
+    "access": "访问权限",
+    "sudo": "Sudo",
+    "sudoHint": "通过 {{group}} 组以 root 身份运行命令。",
+    "sudoProtected": "无法从 root 或 Termix 登录的用户那里移除 sudo 权限。",
+    "sudoTitle": "授予 {{name}} sudo 权限？",
+    "sudoDesc": "将其添加到 {{group}} 组，使其能够以 root 身份运行任何命令。",
+    "sudoGrant": "授予 sudo 权限",
+    "sudoOn": "已授予 sudo 权限。",
+    "sudoOff": "已移除 sudo 权限。",
+    "lock": "锁定账户",
+    "unlock": "解锁账户",
+    "lockTitle": "锁定 {{name}}？",
+    "lockDesc": "在您解锁账户之前，他们无法使用密码或 SSH 密钥登录。",
+    "lockHint": "阻止密码和 SSH 密钥登录。",
+    "protected": "root 和 Termix 登录的用户无法被锁定或删除。",
+    "locked": "账户已锁定。",
+    "unlocked": "账户已解锁。",
+    "danger": "删除",
+    "removeHome": "同时删除主文件夹",
+    "removeHomeHint": "删除 {{home}} 及其中的所有文件。",
+    "delete": "删除用户",
+    "deleteTitle": "删除 {{name}}？",
+    "deleteDesc": "账户将被移除。其主文件夹将保留在主机上。",
+    "deleteDescHome": "账户和 {{home}} 将被移除。此操作无法撤销。",
+    "deleted": "已删除 {{name}}。"
+  },
+  "keys": {
+    "title": "SSH 密钥",
+    "empty": "没有 SSH 密钥。",
+    "denied": "没有 root 权限无法读取密钥。",
+    "options": "选项",
+    "remove": "移除密钥",
+    "removeTitle": "移除此密钥？",
+    "removed": "密钥已移除。",
+    "add": "添加密钥",
+    "addHint": "粘贴一个公钥，例如 id_ed25519.pub 的内容。",
+    "addButton": "添加密钥",
+    "added": "密钥已添加。"
+  },
+  "create": {
+    "title": "新用户",
+    "name": "用户名",
+    "nameHint": "小写字母、数字、- 和 _。",
+    "nameInvalid": "以字母开头，仅使用 a-z、0-9、- 和 _。",
+    "home": "主文件夹",
+    "homeHint": "留空则为 /home/{{name}}。",
+    "createHome": "创建主文件夹",
+    "password": "密码",
+    "passwordHint": "可选。如果不设置，用户只能通过 SSH 密钥登录。",
+    "again": "再次输入密码",
+    "mismatch": "密码不匹配。",
+    "save": "创建用户",
+    "done": "已创建 {{name}}。",
+    "failed": "无法创建用户。"
+  },
+  "groups": {
+    "add": "添加组",
+    "name": "组名称",
+    "namePlaceholder": "新组名称",
+    "create": "创建",
+    "created": "已创建 {{name}}。",
+    "search": "搜索组",
+    "empty": "没有匹配的组。",
+    "noMembers": "无成员。",
+    "failed": "更改失败。",
+    "addMember": "添加成员",
+    "pickUser": "选择用户",
+    "removeMember": "从组中移除",
+    "memberAdded": "已将 {{name}} 添加到 {{group}}。",
+    "memberRemoved": "已将 {{name}} 从 {{group}} 中移除。",
+    "mainGroup": "主组",
+    "mainGroupHint": "这是他们的主组，因此他们始终属于该组。",
+    "deleteTitle": "删除 {{name}}？",
+    "deleteDesc": "该组将被移除。其拥有的文件将保留旧的 ID。",
+    "deleted": "已删除 {{name}}。"
+  },
+  "sessions": {
+    "now": "当前已登录",
+    "none": "无人登录。",
+    "recent": "最近登录",
+    "noRecent": "未找到登录历史记录。",
+    "loadFailed": "无法读取会话。"
+  },
+  "manager": {
+    "title": "用户",
+    "disabled": "在此主机的设置中启用“用户”功能，即可在此处查看其账户。"
+  },
+  "operations": {
+    "list": {
+      "title": "列出用户"
+    },
+    "emptyPasswords": {
+      "title": "无密码账户"
+    },
+    "lock": {
+      "title": "锁定用户"
+    },
+    "unlock": {
+      "title": "解锁用户"
+    },
+    "delete": {
+      "title": "删除用户"
+    },
+    "users": {
+      "title": "用户",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "组"
+    }
+  }
+}

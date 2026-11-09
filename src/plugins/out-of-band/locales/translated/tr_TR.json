@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Redfish, IPMI ve Intel AMT üzerinden sunucu BMC'leri için güç, sensörler, olay günlükleri ve konsollar."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Yükleniyor"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "BMC'leri görüntüle",
+      "description": "Out-of-band sekmesini açın ve güç, sağlık, sensörler ve günlükleri görüntüleyin."
+    },
+    "power": {
+      "title": "Güç ve önyükleme kontrolü",
+      "description": "Makineleri açın ve kapatın, güç döngüsünden geçirin ve bir sonraki önyükleme cihazını seçin."
+    },
+    "console": {
+      "title": "Seri konsolu kullan",
+      "description": "Bir makinenin LAN üzerinden seri konsolunu açın."
+    },
+    "media": {
+      "title": "Sanal medyayı kullan",
+      "description": "Bir makineye ISO görüntülerini bağlayın ve çıkarın."
+    },
+    "manage": {
+      "title": "BMC'leri yönet",
+      "description": "BMC'leri ekleyin, değiştirin ve kaldırın; olay günlüklerini temizleyin."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Termix sunucusunda ipmitool çalıştır",
+        "description": "Kapalıyken, IPMI BMC'leri bir ara sunucu kullanmalıdır. Redfish ve AMT etkilenmez."
+      }
+    }
+  },
+  "description": "Sunucularınızın yönetim denetleyicilerini (BMC) ekleyin; onları açın ve kapatın, sensörlerini izleyin ve olay günlüklerini okuyun. Giriş bilgileri şifreli olarak saklanır ve bir daha gösterilmez.",
+  "summary": "{{count}} BMC, {{attention}} dikkat gerektiriyor",
+  "empty": "Henüz BMC yok.",
+  "add": "BMC Ekle",
+  "edit": "Düzenle",
+  "delete": "Sil",
+  "back": "Geri",
+  "saved": "Kaydedildi",
+  "deleteConfirm": "{{name}} silinsin mi?",
+  "status": {
+    "unknown": "Henüz okunmadı",
+    "up": "Erişilebilir",
+    "down": "Erişilemiyor"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "LAN üzerinden IPMI",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Kullanıcı adı",
+    "password": "Şifre"
+  },
+  "power": {
+    "on": "Açık",
+    "off": "Kapalı",
+    "unknown": "Bilinmiyor",
+    "sent": "{{name}}'e güç değişikliği istendi",
+    "action": {
+      "on": "Güç aç",
+      "off": "Güç kapat",
+      "graceful-shutdown": "Kapat",
+      "cycle": "Güç döngüsü",
+      "reset": "Sıfırla"
+    },
+    "confirm": {
+      "on": "{{name}} açılsın mı?",
+      "off": "{{name}}'in gücü kesilsin mi? Sistem düzgün kapanmaz.",
+      "graceful-shutdown": "{{name}}'e kapatma istensin mi?",
+      "cycle": "{{name}} güç döngüsünden geçirilsin mi? Sistem düzgün kapanmaz.",
+      "reset": "{{name}} sıfırlansın mı? Sistem hemen yeniden başlar."
+    }
+  },
+  "health": {
+    "ok": "Sağlıklı",
+    "warning": "Uyarı",
+    "critical": "Kritik",
+    "unknown": "Bilinmiyor"
+  },
+  "kind": {
+    "temperature": "Sıcaklık",
+    "fan": "Fan",
+    "voltage": "Voltaj",
+    "power": "Güç",
+    "psu": "Güç kaynağı",
+    "other": "Diğer"
+  },
+  "form": {
+    "addTitle": "BMC Ekle",
+    "editTitle": "BMC'yi Düzenle",
+    "device": "BMC",
+    "access": "Erişim",
+    "type": "Tür",
+    "name": "Ad",
+    "address": "Adres",
+    "port": "Port",
+    "host": "Termix sunucusu",
+    "hostHint": "BMC'yi ait olduğu sunucuya bağlayın. Böylece o sunucunun paylaşım ayarlarını miras alır ve sunucu menüsünde görünür.",
+    "noHost": "Yok",
+    "poll": "Okuma sıklığı (saniye)",
+    "pollHint": "En az 30 saniye, ara sunucu kullanılıyorsa 60 saniye.",
+    "scheme": "Bağlantı",
+    "relay": "Ara sunucu",
+    "relayHint": "ipmitool'u Termix sunucusu yerine bu sunucuda çalıştırın. Seri konsol için gereklidir.",
+    "noRelay": "Termix sunucusu",
+    "cipher": "Şifreleme paketi",
+    "cipherHint": "BMC giriş reddediyorsa bunu değiştirin. Genelde 3 kullanılır, yeni BMC'ler için 17.",
+    "ca": "CA sertifikası",
+    "caHint": "BMC'nin sertifika yetkilisinin PEM dosyasını yapıştırın. Güvenilen sertifika için boş bırakın.",
+    "caSet": "Bir CA kaydedildi. Değiştirmek için yeni birini yapıştırın.",
+    "keepLogin": "Kayıtlı girişi korumak için boş bırakın",
+    "test": "Bağlantıyı test et",
+    "testOk": "BMC yanıt verdi. Güç durumu {{power}}.",
+    "testNeedsLogin": "Test etmek için girişi tekrar girin.",
+    "save": "Kaydet",
+    "add": "Ekle"
+  },
+  "view": {
+    "overview": "Genel Bakış",
+    "sensors": "Sensörler",
+    "log": "Olay günlüğü",
+    "boot": "Önyükleme",
+    "media": "Sanal medya",
+    "console": "Konsol",
+    "refresh": "Şimdi oku",
+    "type": "Tür",
+    "address": "Adres",
+    "power": "Güç",
+    "health": "Sağlık",
+    "manufacturer": "Üretici",
+    "model": "Model",
+    "serial": "Seri numarası",
+    "bios": "BIOS",
+    "bmc": "BMC yazılımı",
+    "status": "BMC",
+    "viaRelay": "Ara sunucu üzerinden erişildi.",
+    "noSensors": "Bu BMC sensör bildirmiyor.",
+    "sensor": "Sensör",
+    "reading": "Okuma",
+    "state": "Durum"
+  },
+  "log": {
+    "time": "Zaman",
+    "severity": "Seviye",
+    "message": "Olay",
+    "empty": "Olay günlüğü boş.",
+    "clear": "Günlüğü temizle",
+    "clearConfirm": "{{name}} olay günlüğü temizlensin mi? Bu işlem geri alınamaz.",
+    "cleared": "Günlük temizlendi",
+    "level": {
+      "info": "Bilgi",
+      "warning": "Uyarı",
+      "critical": "Kritik"
+    }
+  },
+  "boot": {
+    "hint": "Makine bu cihazdan bir kez önyüklenir, ardından normal sırasına döner. Yeniden başlatmadan önce uygulayın.",
+    "device": "Açılış kaynağı",
+    "mode": "Mod",
+    "uefi": "UEFI",
+    "legacy": "Eski BIOS",
+    "apply": "Sonraki açılış için ayarla",
+    "done": "{{name}} bir sonraki açılışta seçilen cihazdan açılacak",
+    "pxe": "Ağ (PXE)",
+    "disk": "Sabit disk",
+    "cd": "CD veya sanal medya",
+    "usb": "USB",
+    "bios": "BIOS ayarları",
+    "none": "Normal sıra"
+  },
+  "media": {
+    "url": "Görüntü adresi",
+    "empty": "Bu BMC'nin sanal CD yuvası yok.",
+    "mounted": "Bağlı",
+    "free": "Boş",
+    "mount": "Bağla",
+    "eject": "Çıkar",
+    "mountedDone": "Görüntü bağlandı",
+    "ejected": "Görüntü çıkarıldı"
+  },
+  "console": {
+    "hint": "Konsoldan çıkmak için ~. yazın.",
+    "connecting": "Bağlanıyor",
+    "ended": "Konsol kapatıldı.",
+    "failed": "Konsol açılamadı.",
+    "needsRelay": "Seri konsol için ipmitool destekli bir ara sunucu gerekir. BMC ayarlarından birini seçin."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Açılış kaynağı",
+    "uefi": "UEFI modu",
+    "list": {
+      "title": "BMC'leri listele"
+    },
+    "poll": {
+      "title": "Bir BMC'yi şimdi oku"
+    },
+    "powerState": {
+      "title": "Güç durumunu al"
+    },
+    "power-on": {
+      "title": "Aç"
+    },
+    "graceful-shutdown": {
+      "title": "Kapat"
+    },
+    "power-off": {
+      "title": "Gücü kapat"
+    },
+    "power-cycle": {
+      "title": "Güç döngüsü"
+    },
+    "reset": {
+      "title": "Sıfırla"
+    },
+    "setBootOnce": {
+      "title": "Bir cihazdan tek seferlik açılış yap"
+    },
+    "clearLog": {
+      "title": "Olay günlüğünü temizle"
+    },
+    "health": {
+      "title": "BMC sağlığı"
+    }
+  },
+  "widget": {
+    "name": "Bant dışı",
+    "description": "Sunucu BMC'lerinizin güç ve sağlık durumu.",
+    "summary": "{{total}}'den {{up}}'ü çalışıyor"
+  }
+}

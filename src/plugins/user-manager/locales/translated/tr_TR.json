@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Kullanıcılar",
+    "description": "Sunucularınızdaki kullanıcı hesaplarını, grupları, şifreleri ve SSH anahtarlarını yönetin."
+  },
+  "common": {
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri",
+    "delete": "Sil",
+    "loading": "Yükleniyor..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Kullanıcıları Kullan",
+      "description": "Erişebildiğiniz sunuculardaki hesapları görüntüleyin ve düzenleyebildiğiniz sunucularda değişiklik yapın."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Kullanıcılar",
+        "description": "Bu sunucudaki kullanıcı hesaplarını ve grupları Kullanıcılar sekmesinden yönetin."
+      },
+      "useSudo": {
+        "label": "Sudo kullan",
+        "description": "Hesapları okumak ve değiştirmek için sudo kullanın. Giriş root ise kapatın."
+      },
+      "readOnly": {
+        "label": "Salt okunur",
+        "description": "Hesapları gösterin ancak bu sunucuda asla değiştirmeyin."
+      }
+    }
+  },
+  "tab": {
+    "title": "Kullanıcılar",
+    "noHost": "Kullanıcıları bir sunucudan açın.",
+    "error": "Bu sunucudaki hesaplar yüklenemedi.",
+    "disabled": "Bu sunucu için Kullanıcılar devre dışı bırakıldı. Sunucu ayarlarından açın.",
+    "sudo": "Değişiklikler ve şifre durumları için bu sunucuda root girişi, şifresiz sudo veya kaydedilmiş bir Sudo Şifresi gerekir.",
+    "noTools": "Bu sunucuda useradd yüklü değil. Alpine'de shadow paketini yükleyin.",
+    "refresh": "Yenile",
+    "readOnly": "Salt okunur",
+    "counts_one": "{{count}} kullanıcı",
+    "counts_other": "{{count}} kullanıcı",
+    "viewUsers": "Kullanıcılar",
+    "viewGroups": "Gruplar",
+    "viewSessions": "Oturumlar"
+  },
+  "users": {
+    "add": "Kullanıcı ekle",
+    "search": "Kullanıcı ara",
+    "people": "Kişiler",
+    "systemFilter": "Sistem",
+    "all": "Tümü",
+    "empty": "Eşleşen kullanıcı yok.",
+    "you": "Siz",
+    "sudo": "Sudo",
+    "locked": "Kilitli",
+    "emptyPassword": "Şifre yok",
+    "system": "Sistem",
+    "loadFailed": "Hesaplar okunamadı."
+  },
+  "password": {
+    "set": "Ayarla",
+    "locked": "Kilitli",
+    "none": "Ayarlanmadı, şifre ile giriş yok",
+    "empty": "Boş, herkes giriş yapabilir",
+    "unknown": "Bilgi için root gerekli"
+  },
+  "detail": {
+    "info": "Hesap",
+    "account": "Ayrıntılar",
+    "fullName": "Tam ad",
+    "uid": "Kullanıcı ve grup kimliği",
+    "mainGroup": "Ana grup",
+    "home": "Ev dizini",
+    "shell": "Kabuk",
+    "groups": "Gruplar",
+    "groupsPlaceholder": "Bir grup yazın ve Enter'a basın",
+    "unknownGroups": "Bu gruplar mevcut değil: {{groups}}",
+    "none": "Yok",
+    "password": "Şifre",
+    "passwordChanged": "Şifre değiştirildi",
+    "lastLogin": "Son giriş",
+    "never": "Asla",
+    "unknown": "Bilinmiyor",
+    "saved": "Kaydedildi.",
+    "failed": "Değişiklik başarısız oldu.",
+    "loadFailed": "Bu kullanıcının anahtarları ve son giriş bilgisi okunamadı.",
+    "passwordSection": "Şifre",
+    "newPassword": "Yeni şifre",
+    "newPasswordHint": "SSH üzerinden ana makineye gönderilir ve chpasswd ile ayarlanır. Termix içinde asla saklanmaz.",
+    "setPassword": "Şifre belirle",
+    "passwordSet": "Şifre ayarlandı.",
+    "expirePassword": "Bir sonraki girişte yeni şifre istenir",
+    "expired": "Bir sonraki girişte yeni bir şifre belirleyecekler.",
+    "access": "Erişim",
+    "sudo": "Sudo",
+    "sudoHint": "Komutları {{group}} grubu üzerinden root olarak çalıştırın.",
+    "sudoProtected": "Root veya Termix'in giriş yaptığı kullanıcıdan sudo yetkisini alamazsınız.",
+    "sudoTitle": "{{name}} kullanıcısına sudo verilsin mi?",
+    "sudoDesc": "Onları {{group}} grubuna ekler, böylece herhangi bir komutu root olarak çalıştırabilirler.",
+    "sudoGrant": "Sudo ver",
+    "sudoOn": "Sudo verildi.",
+    "sudoOff": "Sudo yetkisi kaldırıldı.",
+    "lock": "Hesabı kilitle",
+    "unlock": "Hesabın kilidini aç",
+    "lockTitle": "{{name}} kullanıcısı kilitlensin mi?",
+    "lockDesc": "Hesabın kilidini açana kadar şifre veya SSH anahtarı ile giriş yapamazlar.",
+    "lockHint": "Şifre ve SSH anahtarı girişlerini engeller.",
+    "protected": "Root ve Termix'in giriş yaptığı kullanıcı kilitlenemez veya silinemez.",
+    "locked": "Hesap kilitlendi.",
+    "unlocked": "Hesabın kilidi açıldı.",
+    "danger": "Sil",
+    "removeHome": "Ev klasörünü de sil",
+    "removeHomeHint": "{{home}} ve içindeki her şeyi siler.",
+    "delete": "Kullanıcıyı sil",
+    "deleteTitle": "{{name}} kullanıcısı silinsin mi?",
+    "deleteDesc": "Hesap kaldırılır. Ev klasörü ana makinede kalır.",
+    "deleteDescHome": "Hesap ve {{home}} kaldırılır. Bu işlem geri alınamaz.",
+    "deleted": "{{name}} kullanıcısı silindi."
+  },
+  "keys": {
+    "title": "SSH anahtarları",
+    "empty": "SSH anahtarı yok.",
+    "denied": "Anahtarlar root olmadan okunamaz.",
+    "options": "Seçenekler",
+    "remove": "Anahtarı kaldır",
+    "removeTitle": "Bu anahtar kaldırılsın mı?",
+    "removed": "Anahtar kaldırıldı.",
+    "add": "Anahtar ekle",
+    "addHint": "id_ed25519.pub içeriği gibi tek bir genel anahtarı yapıştırın.",
+    "addButton": "Anahtar ekle",
+    "added": "Anahtar eklendi."
+  },
+  "create": {
+    "title": "Yeni kullanıcı",
+    "name": "Kullanıcı adı",
+    "nameHint": "Küçük harf, rakam, - ve _.",
+    "nameInvalid": "Bir harfle başlayın ve yalnızca a-z, 0-9, - ve _ kullanın.",
+    "home": "Ev klasörü",
+    "homeHint": "/home/{{name}} için boş bırakın.",
+    "createHome": "Ev klasörünü oluştur",
+    "password": "Şifre",
+    "passwordHint": "İsteğe bağlı. Şifre olmadan kullanıcı yalnızca SSH anahtarı ile giriş yapabilir.",
+    "again": "Şifre tekrar",
+    "mismatch": "Şifreler eşleşmiyor.",
+    "save": "Kullanıcı oluştur",
+    "done": "{{name}} kullanıcısı oluşturuldu.",
+    "failed": "Kullanıcı oluşturulamadı."
+  },
+  "groups": {
+    "add": "Grup ekle",
+    "name": "Grup adı",
+    "namePlaceholder": "Yeni grup adı",
+    "create": "Oluştur",
+    "created": "{{name}} oluşturuldu.",
+    "search": "Grupları ara",
+    "empty": "Eşleşen grup yok.",
+    "noMembers": "Üye yok.",
+    "failed": "Değişiklik başarısız oldu.",
+    "addMember": "Üye ekle",
+    "pickUser": "Bir kullanıcı seçin",
+    "removeMember": "Gruptan çıkar",
+    "memberAdded": "{{name}}, {{group}} grubuna eklendi.",
+    "memberRemoved": "{{name}}, {{group}} grubundan çıkarıldı.",
+    "mainGroup": "Ana grup",
+    "mainGroupHint": "Bu ana gruplarıdır, bu nedenle her zaman bu gruba aittirler.",
+    "deleteTitle": "{{name}} silinsin mi?",
+    "deleteDesc": "Grup kaldırılır. Sahip olduğu dosyalar eski kimliğini korur.",
+    "deleted": "{{name}} silindi."
+  },
+  "sessions": {
+    "now": "Şu anda oturum açmış",
+    "none": "Kimse oturum açmamış.",
+    "recent": "Son oturum açmalar",
+    "noRecent": "Oturum açma geçmişi bulunamadı.",
+    "loadFailed": "Oturumlar okunamadı."
+  },
+  "manager": {
+    "title": "Kullanıcılar",
+    "disabled": "Hesaplarını burada görmek için bu sunucunun ayarlarından Kullanıcıları etkinleştirin."
+  },
+  "operations": {
+    "list": {
+      "title": "Kullanıcıları listele"
+    },
+    "emptyPasswords": {
+      "title": "Şifresi olmayan hesaplar"
+    },
+    "lock": {
+      "title": "Kullanıcıyı kilitle"
+    },
+    "unlock": {
+      "title": "Kullanıcının kilidini aç"
+    },
+    "delete": {
+      "title": "Kullanıcıyı sil"
+    },
+    "users": {
+      "title": "Kullanıcılar",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "Gruplar"
+    }
+  }
+}

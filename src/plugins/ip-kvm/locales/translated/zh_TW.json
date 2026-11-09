@@ -1,0 +1,226 @@
+{
+  "plugin": {
+    "name": "IP-KVM",
+    "description": "透過 PiKVM、NanoKVM 和 JetKVM 裝置查看並控制機器。"
+  },
+  "tab": {
+    "title": "KVM"
+  },
+  "card": {
+    "title": "KVM",
+    "loading": "載入中"
+  },
+  "host": {
+    "open": "KVM"
+  },
+  "permissions": {
+    "view": {
+      "title": "查看 KVM",
+      "description": "開啟 KVM 分頁，查看哪些 KVM 線上以及它們回報的電源狀態。"
+    },
+    "power": {
+      "title": "控制電源",
+      "description": "透過 KVM 開啟、關閉或重設機器，或使用 Wake-on-LAN 喚醒它們。"
+    },
+    "console": {
+      "title": "使用畫面",
+      "description": "查看機器畫面並使用其鍵盤和滑鼠。"
+    },
+    "media": {
+      "title": "使用虛擬媒體",
+      "description": "在機器上掛載和卸除 ISO 映像檔。"
+    },
+    "manage": {
+      "title": "管理 KVM",
+      "description": "新增、修改和移除 KVM。"
+    }
+  },
+  "settings": {
+    "admin": {
+      "maxSessionMinutes": {
+        "label": "最長畫面會話時間（分鐘）",
+        "description": "畫面會話在此時間後結束。設為 0 表示無限制。"
+      }
+    }
+  },
+  "description": "新增您的 IP-KVM 以查看並控制其後方的機器。Termix 會連接到 KVM，因此即使瀏覽器無法直接存取，畫面仍能正常運作。登入資訊會加密儲存且不會再次顯示。",
+  "summary": "{{count}} 個 KVM，{{attention}} 離線",
+  "empty": "尚無 KVM。",
+  "add": "新增 KVM",
+  "edit": "編輯",
+  "delete": "刪除",
+  "back": "返回",
+  "saved": "已儲存",
+  "deleteConfirm": "刪除 {{name}}？",
+  "status": {
+    "unknown": "尚未讀取",
+    "up": "線上",
+    "down": "離線"
+  },
+  "drivers": {
+    "pikvm": "PiKVM",
+    "glkvm": "GL.iNet Comet (GLKVM)",
+    "nanokvm": "NanoKVM",
+    "jetkvm": "JetKVM"
+  },
+  "fields": {
+    "username": "使用者名稱",
+    "password": "密碼"
+  },
+  "power": {
+    "on": "開啟",
+    "off": "關閉",
+    "unknown": "未知",
+    "state": "機器狀態為 {{state}}。",
+    "sent": "已要求 {{name}} 變更電源",
+    "sentShort": "電源指令已傳送",
+    "wake": "Wake-on-LAN",
+    "woke": "喚醒封包已傳送",
+    "action": {
+      "on": "開機",
+      "off": "關機",
+      "graceful-shutdown": "關機",
+      "reset": "重設"
+    },
+    "confirm": {
+      "on": "開啟 {{name}} 的電源？",
+      "off": "切斷 {{name}} 的電源？系統不會正常關機。",
+      "graceful-shutdown": "要求 {{name}} 關機？",
+      "reset": "重設 {{name}}？系統將立即重新啟動。"
+    }
+  },
+  "form": {
+    "addTitle": "新增 KVM",
+    "editTitle": "編輯 KVM",
+    "device": "KVM",
+    "access": "存取",
+    "machine": "KVM 後方的機器",
+    "type": "類型",
+    "name": "名稱",
+    "address": "位址",
+    "port": "Port",
+    "host": "Termix 主機",
+    "hostHint": "將 KVM 連結至其所属的主機。它將遵循該主機的分享設定，並顯示在其主機選單中。",
+    "noHost": "無",
+    "poll": "檢查間隔（秒）",
+    "pollHint": "至少 30 秒。",
+    "scheme": "連線",
+    "ca": "憑證",
+    "caHint": "貼上私人憑證授權中心的 PEM，或對使用自簽憑證的 KVM 使用「信任此憑證」。若為受信任的憑證則留空。",
+    "caSet": "已儲存憑證。貼上新的憑證以取代它。",
+    "keepLogin": "留空以保留已儲存的登入資訊",
+    "test": "測試連線",
+    "testOk": "KVM 已回應（{{model}}）。",
+    "testNeedsLogin": "請再次輸入登入資訊以進行測試。",
+    "mac": "MAC 位址",
+    "macHint": "機器的網路卡位址，用於 Wake-on-LAN。",
+    "broadcast": "廣播位址",
+    "broadcastHint": "喚醒封包的目的地。留空則預設為 255.255.255.255。",
+    "save": "儲存",
+    "add": "新增",
+    "trust": "信任此憑證",
+    "trustTitle": "信任此 KVM 的憑證？",
+    "trustHint": "Termix 僅在該 KVM 顯示完全相同的憑證時才會與其通訊。請檢查指紋是否與裝置上的一致。",
+    "certName": "名稱：{{name}}",
+    "certValid": "有效期至 {{date}}",
+    "certExpired": "已過期 {{date}}",
+    "pinned": "受信任的憑證",
+    "unpin": "移除"
+  },
+  "view": {
+    "screen": "螢幕",
+    "power": "電源",
+    "media": "虛擬媒體",
+    "info": "資訊",
+    "refresh": "立即讀取",
+    "type": "類型",
+    "address": "位址",
+    "model": "型號",
+    "version": "軟體",
+    "hostname": "名稱",
+    "video": "影片",
+    "noSignal": "無訊號",
+    "status": "KVM",
+    "jetHint": "JetKVM 的影片直接從 JetKVM 傳送至您的瀏覽器，因此您的瀏覽器必須能在網路上存取它。"
+  },
+  "screen": {
+    "connecting": "連線中",
+    "failed": "無法開啟螢幕。",
+    "ended": "螢幕工作階段已結束。",
+    "hint": "點擊螢幕以輸入。",
+    "shortcuts": "快捷鍵",
+    "shortcut": {
+      "ctrl-alt-del": "Ctrl+Alt+Del",
+      "alt-tab": "Alt+Tab",
+      "alt-f4": "Alt+F4",
+      "ctrl-esc": "Ctrl+Esc",
+      "win-l": "Win+L",
+      "win-d": "Win+D",
+      "ctrl-alt-f1": "Ctrl+Alt+F1",
+      "ctrl-alt-f2": "Ctrl+Alt+F2",
+      "ctrl-alt-f7": "Ctrl+Alt+F7",
+      "print-screen": "Print Screen"
+    },
+    "paste": "貼上文字",
+    "pasteLabel": "要在機器上輸入的文字",
+    "type": "輸入",
+    "snapshot": "螢幕截圖",
+    "fullscreen": "全螢幕",
+    "exitFullscreen": "退出全螢幕",
+    "reconnect": "重新連線"
+  },
+  "media": {
+    "none": "未掛載任何映像檔。",
+    "mountedNow": "已掛載：{{name}}",
+    "as": "顯示為",
+    "cd": "CD 光碟機",
+    "usb": "USB 隨身碟",
+    "empty": "此 KVM 上沒有任何映像檔。",
+    "mount": "掛載",
+    "eject": "卸除",
+    "mountedDone": "映像檔已掛載",
+    "ejected": "映像檔已卸除",
+    "url": "從以下位置下載映像檔",
+    "name": "另存為",
+    "fetch": "下載至 KVM",
+    "fetched": "映像檔已下載"
+  },
+  "operations": {
+    "device": "KVM",
+    "list-devices": {
+      "title": "列出 KVM"
+    },
+    "poll": {
+      "title": "立即讀取 KVM"
+    },
+    "power-state": {
+      "title": "取得電源狀態"
+    },
+    "power-on": {
+      "title": "開機"
+    },
+    "graceful-shutdown": {
+      "title": "關機"
+    },
+    "power-off": {
+      "title": "強制關機"
+    },
+    "reset": {
+      "title": "重新啟動"
+    },
+    "wake": {
+      "title": "Wake-on-LAN"
+    },
+    "eject-media": {
+      "title": "卸除映像檔"
+    },
+    "health": {
+      "title": "KVM 狀態"
+    }
+  },
+  "widget": {
+    "name": "KVM 裝置",
+    "description": "哪些 IP-KVM 正在運作。",
+    "summary": "{{up}} / {{total}} 正在運作"
+  }
+}

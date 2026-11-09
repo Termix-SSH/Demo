@@ -1,0 +1,287 @@
+{
+  "plugin": {
+    "name": "Web Servers",
+    "description": "Beheer nginx, Apache en Caddy op je hosts: sites, configuratie, logs en HTTPS, waarbij elke wijziging eerst wordt getest."
+  },
+  "common": {
+    "cancel": "Annuleren",
+    "back": "Terug",
+    "loading": "Laden..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Web Servers gebruiken",
+      "description": "Bekijk web servers en sites op hosts die je kunt bereiken, en pas ze aan op hosts die je kunt bewerken."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Web Servers",
+        "description": "Beheer nginx, Apache en Caddy op deze host via het tabblad Web Servers."
+      },
+      "useSudo": {
+        "label": "Sudo gebruiken",
+        "description": "Gebruik sudo om de web server te lezen en aan te passen. Zet dit uit als je inlogt als root."
+      },
+      "readOnly": {
+        "label": "Alleen-lezen",
+        "description": "Toon sites, configuratie en logs, maar pas ze nooit aan op deze host."
+      },
+      "showPanel": {
+        "label": "Paneel naast de terminal",
+        "description": "Bied het Web Servers-paneel aan op de terminaltabbladen van deze host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Paneel openen met de terminal",
+        "description": "Toon het Web Servers-paneel wanneer een terminal opent op een host die dit ondersteunt."
+      },
+      "companionSide": {
+        "label": "Positie paneel",
+        "description": "Waar het paneel naast de terminal wordt weergegeven.",
+        "right": "Rechts",
+        "left": "Links",
+        "bottom": "Onder"
+      },
+      "companionSize": {
+        "label": "Grootte paneel",
+        "description": "Breedte van het paneel, of de hoogte als het onderaan staat, in pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Knop aan de rand",
+        "description": "Toon een kleine knop aan de rand van de terminal om het paneel te openen."
+      }
+    }
+  },
+  "tab": {
+    "title": "Web Servers",
+    "noHost": "Open Web Servers vanuit een host.",
+    "error": "Kon de web servers op deze host niet laden.",
+    "disabled": "Web Servers is uitgeschakeld voor deze host. Schakel het in via de host-instellingen.",
+    "sudo": "Wijzigingen vereisen een root-login, sudo zonder wachtwoord of een opgeslagen Sudo-wachtwoord op deze host.",
+    "refresh": "Vernieuwen",
+    "readOnly": "Alleen-lezen",
+    "noServer": "Geen web server geïnstalleerd",
+    "noServerHint": "Installeer nginx, Apache of Caddy via de pagina Server.",
+    "openServer": "Server openen",
+    "viewSites": "Sites",
+    "viewConfig": "Configuratie",
+    "viewLogs": "Logs",
+    "viewServer": "Server"
+  },
+  "actions": {
+    "ok": "Klaar",
+    "failed": "Mislukt",
+    "noOutput": "Geen uitvoer."
+  },
+  "watch": {
+    "start": "Waarschuw me als een web server stopt",
+    "stop": "Waarschuwingen voor deze host stoppen",
+    "on": "Je ontvangt een waarschuwing als een web server op deze host stopt",
+    "off": "Waarschuwingen voor deze host zijn uitgeschakeld",
+    "failed": "Kon waarschuwingen niet wijzigen"
+  },
+  "sites": {
+    "add": "Site toevoegen",
+    "search": "Zoeken in sites",
+    "empty": "Nog geen sites.",
+    "loadFailed": "Kon de sites niet laden.",
+    "off": "Uit",
+    "anyName": "elke naam",
+    "form": "Formulier",
+    "certDays_one": "{{count}} dag over",
+    "certDays_other": "{{count}} dagen over",
+    "certExpired": "Certificaat verlopen",
+    "enable": "Inschakelen",
+    "disable": "Uitschakelen",
+    "enabled": "{{name}} is ingeschakeld",
+    "disabled": "{{name}} is uitgeschakeld",
+    "delete": "Verwijderen",
+    "deleteTitle": "{{name}} verwijderen?",
+    "deleteBody": "Het bestand wordt verwijderd en de server herlaadt. Een kopie blijft bewaard in /var/lib/termix-web-servers/backups op de host.",
+    "deleted": "{{name}} is verwijderd"
+  },
+  "site": {
+    "addTitle": "Nieuwe site",
+    "editTitle": "{{name}} opslaan",
+    "add": "Site toevoegen",
+    "save": "Opslaan",
+    "added": "{{name}} is toegevoegd",
+    "saved": "{{name}} is opgeslagen",
+    "server": "Webserver",
+    "name": "Sitenaam",
+    "nameHint": "Wordt gebruikt voor de bestandsnaam en logbestanden, zoals example.",
+    "modeForm": "Formulier",
+    "modeText": "Tekst",
+    "text": "Configuratie",
+    "textHint": "Als je de tekst opslaat, wordt het formulier voor deze site uitgeschakeld, zodat je eigen wijzigingen behouden blijven.",
+    "type": "Type",
+    "typeStatic": "Statische bestanden",
+    "typeProxy": "Reverse proxy",
+    "typePhp": "PHP",
+    "typeRedirect": "Doorsturen",
+    "staticHint": "Serveert bestanden vanuit een map.",
+    "proxyHint": "Stuurt verzoeken door naar een app die op deze host of een andere draait.",
+    "phpHint": "Serveert bestanden vanuit een map en voert .php-bestanden uit met php-fpm.",
+    "redirectHint": "Stuurt elke bezoeker door naar een ander adres.",
+    "domains": "Domeinen",
+    "domainsHint": "Druk na elk domein op Enter. Gebruik _ in nginx om op elke naam te reageren.",
+    "port": "HTTP-poort",
+    "root": "Webroot",
+    "rootHint": "Een map binnen /var/www, /srv, /usr/share/nginx, /opt of /home.",
+    "index": "Indexbestanden",
+    "spa": "Single page app",
+    "spaHint": "Stuur paden die geen bestanden zijn naar /index.html.",
+    "upstream": "App-adres",
+    "upstreamHint": "Waar de app luistert, zoals http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Bezoekers doorsturen naar",
+    "keepPath": "Pad behouden",
+    "keepPathHint": "Stuur /page door naar dezelfde pagina op het nieuwe adres.",
+    "phpSocket": "php-fpm-soket",
+    "phpSocketHint": "Er is geen php-fpm-soket gevonden. Installeer php-fpm of voer host:poort in.",
+    "https": "HTTPS",
+    "httpsHint": "Vereist een certificaat. Sla de site eerst op en druk vervolgens hieronder op Certificaat ophalen.",
+    "httpsCaddy": "Caddy haalt het certificaat zelf op en vernieuwt het.",
+    "httpsPort": "HTTPS-poort",
+    "certPath": "Certificaatbestand",
+    "keyPath": "Sleutelbestand",
+    "forceHttps": "HTTP omleiden naar HTTPS",
+    "gzip": "Antwoorden comprimeren",
+    "accessLog": "Toegangslogboek",
+    "maxBody": "Uploadlimiet in MB",
+    "maxBodyHint": "0 behoudt de standaardwaarde van de server.",
+    "preview": "Voorbeeld",
+    "previewFailed": "De configuratie kon niet worden gegenereerd."
+  },
+  "tls": {
+    "title": "HTTPS-certificaat",
+    "hintManaged": "certbot haalt een Let's Encrypt-certificaat op voor de domeinen van deze site, waarna de site overschakelt naar HTTPS. certbot vernieuwt het certificaat en laadt de server opnieuw.",
+    "hintText": "certbot haalt een Let's Encrypt-certificaat op voor de domeinen van deze site. Voeg het certificaat daarna handmatig toe aan de site. certbot vernieuwt het certificaat en laadt de server opnieuw.",
+    "needCertbot": "Installeer eerst certbot met de plugin voor deze server via de pagina Server.",
+    "email": "E-mailadres",
+    "emailHint": "Let's Encrypt stuurt hier meldingen naar bij problemen. Optioneel.",
+    "staging": "Testcertificaat",
+    "stagingHint": "Gebruik de staging-server van Let's Encrypt. Browsers vertrouwen dit certificaat niet.",
+    "issue": "Certificaat ophalen",
+    "done": "Certificaat opgeslagen"
+  },
+  "config": {
+    "search": "Bestanden zoeken",
+    "empty": "Geen bestanden.",
+    "loadFailed": "Het bestand kon niet worden geladen.",
+    "test": "Configuratie testen",
+    "testOk": "De configuratie is correct",
+    "testFailed": "De configuratie bevat fouten",
+    "content": "Inhoud",
+    "save": "Opslaan",
+    "saveHint": "De volledige configuratie wordt getest voordat de server opnieuw wordt geladen. Een beschadigd bestand wordt teruggedraaid.",
+    "saved": "Opgeslagen en opnieuw geladen",
+    "backups_one": "{{count}} back-up",
+    "backups_other": "{{count}} back-ups",
+    "restore": "Herstellen",
+    "restoreTitle": "Deze back-up herstellen?",
+    "restoreBody": "Het bestand wordt teruggezet naar de staat van {{time}}. De huidige tekst wordt ook een back-up.",
+    "restored": "Back-up hersteld"
+  },
+  "logs": {
+    "source": "Logboek",
+    "lines": "Regels",
+    "journal": "Journal van {{server}}",
+    "follow": "Volgen",
+    "stop": "Stoppen",
+    "connecting": "Verbinden...",
+    "ended": "Volgen gestopt.",
+    "followFailed": "Dit logboek kon niet worden gevolgd.",
+    "empty": "Geen regels.",
+    "loadFailed": "Het logboek kon niet worden gelezen.",
+    "requests": "Verzoeken",
+    "topPaths": "Meest bezochte paden",
+    "topClients": "Meest actieve clients"
+  },
+  "server": {
+    "unknown": "onbekend",
+    "atBoot": "Start bij opstarten",
+    "notInstalled": "Niet geïnstalleerd",
+    "start": "Starten",
+    "stop": "Stoppen",
+    "restart": "Herstarten",
+    "reload": "Opnieuw laden",
+    "enable": "Starten bij opstarten",
+    "disable": "Niet starten bij opstarten",
+    "boot": "Starten bij opstarten",
+    "noBoot": "Niet starten bij opstarten",
+    "done": "{{server}} is klaar",
+    "stopTitle": "{{server}} stoppen?",
+    "stopBody": "Alle sites erop gaan offline tot je het opnieuw start.",
+    "install": "Installeren",
+    "installTitle": "{{server}} installeren?",
+    "installBody": "Het wordt geïnstalleerd met het pakketbeheer van de host en start direct. Een andere webserver op poort 80 kan dit voorkomen.",
+    "installed": "{{server}} is geïnstalleerd",
+    "installCertbot": "certbot installeren",
+    "certbotInstalled": "certbot is geïnstalleerd",
+    "certbotPlugins": "Plugins: {{plugins}}",
+    "certbotNoPlugins": "Geen nginx- of Apache-plugin",
+    "certbotHint": "Haalt Let's Encrypt-certificaten op voor nginx- en Apache-sites"
+  },
+  "card": {
+    "title": "Webservers",
+    "loading": "Laden...",
+    "refresh": "Vernieuwen",
+    "empty": "Geen host heeft webservers ingeschakeld.",
+    "summary_one": "{{count}} host | {{down}} heeft aandacht nodig",
+    "summary_other": "{{count}} hosts | {{down}} hebben aandacht nodig",
+    "sites_one": "{{count}} site",
+    "sites_other": "{{count}} sites"
+  },
+  "companion": {
+    "toggle": "Webserver-paneel",
+    "openTab": "Webservers openen",
+    "reload": "{{server}} herladen"
+  },
+  "manager": {
+    "title": "Webservers",
+    "disabled": "Schakel webservers in voor deze host om de sites hier te zien."
+  },
+  "operations": {
+    "status": {
+      "title": "Webserverstatus"
+    },
+    "listSites": {
+      "title": "Sites tonen"
+    },
+    "test": {
+      "title": "Webserverconfiguratie testen"
+    },
+    "reload": {
+      "title": "Webserver herladen"
+    },
+    "restart": {
+      "title": "Webserver herstarten"
+    },
+    "enableSite": {
+      "title": "Site inschakelen"
+    },
+    "disableSite": {
+      "title": "Site uitschakelen"
+    },
+    "deleteSite": {
+      "title": "Site verwijderen"
+    },
+    "server": "Server",
+    "allServers": "Allemaal",
+    "sites": {
+      "title": "Sites",
+      "server": "Server",
+      "domains": "Domeinen",
+      "https": "HTTPS"
+    }
+  }
+}

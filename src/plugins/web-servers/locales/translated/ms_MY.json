@@ -1,0 +1,283 @@
+{
+  "plugin": {
+    "name": "Pelayan Web",
+    "description": "Urus nginx, Apache dan Caddy pada hos anda: tapak, konfigurasi, log dan HTTPS, dengan setiap perubahan diuji terlebih dahulu."
+  },
+  "common": {
+    "cancel": "Batal",
+    "back": "Kembali",
+    "loading": "Memuatkan..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Gunakan Pelayan Web",
+      "description": "Lihat pelayan web dan tapak pada hos yang boleh dicapai, dan ubah suai pada hos yang boleh diedit."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Pelayan Web",
+        "description": "Urus nginx, Apache dan Caddy pada hos ini dari tab Pelayan Web."
+      },
+      "useSudo": {
+        "label": "Gunakan sudo",
+        "description": "Gunakan sudo untuk membaca dan mengubah pelayan web. Matikan jika log masuk adalah root."
+      },
+      "readOnly": {
+        "label": "Baca sahaja",
+        "description": "Paparkan tapak, konfigurasi dan log tetapi jangan ubah suai pada hos ini."
+      },
+      "showPanel": {
+        "label": "Panel di sebelah terminal",
+        "description": "Tawarkan panel Pelayan Web pada tab terminal hos ini."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Buka panel bersama terminal",
+        "description": "Paparkan panel Pelayan Web apabila terminal dibuka pada hos yang memilikinya."
+      },
+      "companionSide": {
+        "label": "Sisi panel",
+        "description": "Di mana panel diletakkan di sebelah terminal.",
+        "right": "Kanan",
+        "left": "Kiri",
+        "bottom": "Bawah"
+      },
+      "companionSize": {
+        "label": "Saiz panel",
+        "description": "Lebar panel, atau tingginya di bahagian bawah, dalam piksel."
+      },
+      "companionEdgeButton": {
+        "label": "Butang tepi",
+        "description": "Paparkan butang kecil di tepi terminal untuk membuka panel."
+      }
+    }
+  },
+  "tab": {
+    "title": "Pelayan Web",
+    "noHost": "Buka Pelayan Web dari hos.",
+    "error": "Tidak dapat memuatkan pelayan web pada hos ini.",
+    "disabled": "Pelayan Web dimatikan untuk hos ini. Hidupkan dalam tetapan hos.",
+    "sudo": "Perubahan memerlukan log masuk root, sudo tanpa kata laluan atau Kata Laluan Sudo yang disimpan pada hos ini.",
+    "refresh": "Segarkan",
+    "readOnly": "Baca sahaja",
+    "noServer": "Tiada pelayan web dipasang",
+    "noServerHint": "Pasang nginx, Apache atau Caddy dari halaman Pelayan.",
+    "openServer": "Buka Pelayan",
+    "viewSites": "Tapak",
+    "viewConfig": "Konfigurasi",
+    "viewLogs": "Log",
+    "viewServer": "Pelayan"
+  },
+  "actions": {
+    "ok": "Selesai",
+    "failed": "Gagal",
+    "noOutput": "Tiada output."
+  },
+  "watch": {
+    "start": "Beritahu saya apabila pelayan web berhenti",
+    "stop": "Hentikan amaran untuk hos ini",
+    "on": "Anda akan menerima amaran apabila pelayan web pada hos ini berhenti",
+    "off": "Amaran untuk hos ini dimatikan",
+    "failed": "Tidak dapat mengubah amaran"
+  },
+  "sites": {
+    "add": "Tambah tapak",
+    "search": "Cari tapak",
+    "empty": "Tiada tapak lagi.",
+    "loadFailed": "Tidak dapat memuatkan tapak.",
+    "off": "Mati",
+    "anyName": "mana-mana nama",
+    "form": "Borang",
+    "certDays_other": "{{count}} hari lagi",
+    "certExpired": "Sijil telah tamat tempoh",
+    "enable": "Hidupkan",
+    "disable": "Matikan",
+    "enabled": "{{name}} dihidupkan",
+    "disabled": "{{name}} dimatikan",
+    "delete": "Padam",
+    "deleteTitle": "Padam {{name}}?",
+    "deleteBody": "Fail akan dipadam dan pelayan akan dimuat semula. Salinan akan disimpan di /var/lib/termix-web-servers/backups pada hos.",
+    "deleted": "{{name}} telah dipadam"
+  },
+  "site": {
+    "addTitle": "Laman web baharu",
+    "editTitle": "Simpan {{name}}",
+    "add": "Tambah laman web",
+    "save": "Simpan",
+    "added": "{{name}} telah ditambah",
+    "saved": "{{name}} telah disimpan",
+    "server": "Pelayan web",
+    "name": "Nama laman web",
+    "nameHint": "Digunakan untuk nama fail dan fail log, seperti contoh.",
+    "modeForm": "Borang",
+    "modeText": "Teks",
+    "text": "Konfigurasi",
+    "textHint": "Menyimpan teks akan mematikan borang untuk laman web ini, supaya perubahan anda sendiri dikekalkan.",
+    "type": "Jenis",
+    "typeStatic": "Fail statik",
+    "typeProxy": "Proksi songsang",
+    "typePhp": "PHP",
+    "typeRedirect": "Pengalihan",
+    "staticHint": "Menyediakan fail daripada satu folder.",
+    "proxyHint": "Menghantar permintaan kepada aplikasi yang berjalan pada hos ini atau hos lain.",
+    "phpHint": "Menyediakan fail daripada satu folder dan menjalankan fail .php dengan php-fpm.",
+    "redirectHint": "Menghantar setiap pelawat ke alamat lain.",
+    "domains": "Domain",
+    "domainsHint": "Tekan Enter selepas setiap satu. Gunakan _ dalam nginx untuk menjawab sebarang nama.",
+    "port": "Port HTTP",
+    "root": "Akar web",
+    "rootHint": "Sebuah folder di dalam /var/www, /srv, /usr/share/nginx, /opt atau /home.",
+    "index": "Fail indeks",
+    "spa": "Aplikasi halaman tunggal",
+    "spaHint": "Hantar laluan yang bukan fail ke /index.html.",
+    "upstream": "Alamat aplikasi",
+    "upstreamHint": "Di mana aplikasi mendengar, seperti http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Hantar pelawat ke",
+    "keepPath": "Kekalkan laluan",
+    "keepPathHint": "Hantar /page ke halaman yang sama pada alamat baharu.",
+    "phpSocket": "Socket php-fpm",
+    "phpSocketHint": "Tiada socket php-fpm ditemui. Pasang php-fpm atau masukkan hos:port.",
+    "https": "HTTPS",
+    "httpsHint": "Memerlukan sijil. Simpan laman web dahulu, kemudian tekan Dapatkan sijil di bawah.",
+    "httpsCaddy": "Caddy mendapatkan dan memperbaharui sijil secara automatik.",
+    "httpsPort": "Port HTTPS",
+    "certPath": "Fail sijil",
+    "keyPath": "Fail kunci",
+    "forceHttps": "Hantar HTTP ke HTTPS",
+    "gzip": "Mampatkan respons",
+    "accessLog": "Log akses",
+    "maxBody": "Had muat naik dalam MB",
+    "maxBodyHint": "0 mengekalkan lalai pelayan.",
+    "preview": "Pratonton",
+    "previewFailed": "Tidak dapat membina konfigurasi."
+  },
+  "tls": {
+    "title": "Sijil HTTPS",
+    "hintManaged": "certbot mendapatkan sijil Let's Encrypt untuk domain laman web ini, kemudian laman web beralih ke HTTPS. certbot memperbaharui sijil dan memuat semula pelayan.",
+    "hintText": "certbot mendapatkan sijil Let's Encrypt untuk domain laman web ini. Tambahkan sijil ke laman web anda sendiri selepas itu. certbot memperbaharui sijil dan memuat semula pelayan.",
+    "needCertbot": "Pasang certbot dengan pluginnya untuk pelayan ini dari halaman Pelayan terlebih dahulu.",
+    "email": "E-mel",
+    "emailHint": "Let's Encrypt menulis di sini tentang masalah. Pilihan.",
+    "staging": "Sijil ujian",
+    "stagingHint": "Gunakan pelayan peringkat Let's Encrypt. Pelayar web tidak akan mempercayainya.",
+    "issue": "Dapatkan sijil",
+    "done": "Sijil disimpan"
+  },
+  "config": {
+    "search": "Cari fail",
+    "empty": "Tiada fail.",
+    "loadFailed": "Tidak dapat memuatkan fail.",
+    "test": "Uji konfigurasi",
+    "testOk": "Konfigurasi baik",
+    "testFailed": "Konfigurasi mempunyai ralat",
+    "content": "Kandungan",
+    "save": "Simpan",
+    "saveHint": "Seluruh konfigurasi diuji sebelum pelayan dimuat semula. Fail yang rosak akan dikembalikan.",
+    "saved": "Disimpan dan dimuat semula",
+    "backups_other": "{{count}} sandaran",
+    "restore": "Pulihkan",
+    "restoreTitle": "Pulihkan sandaran ini?",
+    "restoreBody": "Fail kembali ke keadaan pada {{time}}. Teks semasa juga menjadi sandaran.",
+    "restored": "Sandaran dipulihkan"
+  },
+  "logs": {
+    "source": "Log",
+    "lines": "Baris",
+    "journal": "Jurnal {{server}}",
+    "follow": "Ikuti",
+    "stop": "Henti",
+    "connecting": "Menyambung...",
+    "ended": "Berhenti mengikuti.",
+    "followFailed": "Tidak dapat mengikuti log ini.",
+    "empty": "Tiada baris.",
+    "loadFailed": "Tidak dapat membaca log.",
+    "requests": "Permintaan",
+    "topPaths": "Laluan teratas",
+    "topClients": "Pelanggan teratas"
+  },
+  "server": {
+    "unknown": "tidak diketahui",
+    "atBoot": "Mula semasa boot",
+    "notInstalled": "Tidak dipasang",
+    "start": "Mula",
+    "stop": "Henti",
+    "restart": "Mula semula",
+    "reload": "Muat semula",
+    "enable": "Mula semasa boot",
+    "disable": "Jangan mula semasa boot",
+    "boot": "Mula semasa boot",
+    "noBoot": "Jangan mula semasa boot",
+    "done": "{{server}} selesai",
+    "stopTitle": "Hentikan {{server}}?",
+    "stopBody": "Setiap laman web di atasnya akan luar talian sehingga anda memulakannya semula.",
+    "install": "Pasang",
+    "installTitle": "Pasang {{server}}?",
+    "installBody": "Ia dipasang dengan pengurus pakej hos dan mula serta-merta. Pelayan web lain pada port 80 akan menghalangnya daripada bermula.",
+    "installed": "{{server}} telah dipasang",
+    "installCertbot": "Pasang certbot",
+    "certbotInstalled": "certbot telah dipasang",
+    "certbotPlugins": "Plugin: {{plugins}}",
+    "certbotNoPlugins": "Tiada plugin nginx atau Apache",
+    "certbotHint": "Mendapatkan sijil Let's Encrypt untuk laman web nginx dan Apache"
+  },
+  "card": {
+    "title": "Pelayan web",
+    "loading": "Memuatkan...",
+    "refresh": "Muat semula",
+    "empty": "Tiada hos yang menghidupkan Pelayan Web.",
+    "summary_other": "{{count}} hos | {{down}} perlu diperiksa",
+    "sites_other": "{{count}} laman"
+  },
+  "companion": {
+    "toggle": "Panel Pelayan Web",
+    "openTab": "Buka Pelayan Web",
+    "reload": "Muat semula {{server}}"
+  },
+  "manager": {
+    "title": "Pelayan Web",
+    "disabled": "Hidupkan Pelayan Web untuk hos ini untuk melihat lamannya di sini."
+  },
+  "operations": {
+    "status": {
+      "title": "Status pelayan web"
+    },
+    "listSites": {
+      "title": "Senaraikan laman"
+    },
+    "test": {
+      "title": "Uji konfigurasi pelayan web"
+    },
+    "reload": {
+      "title": "Muat semula pelayan web"
+    },
+    "restart": {
+      "title": "Mulakan semula pelayan web"
+    },
+    "enableSite": {
+      "title": "Hidupkan laman"
+    },
+    "disableSite": {
+      "title": "Matikan laman"
+    },
+    "deleteSite": {
+      "title": "Padam laman"
+    },
+    "server": "Pelayan",
+    "allServers": "Semua",
+    "sites": {
+      "title": "Laman",
+      "server": "Pelayan",
+      "domains": "Domain",
+      "https": "HTTPS"
+    }
+  }
+}

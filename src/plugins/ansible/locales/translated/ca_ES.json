@@ -1,0 +1,211 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Executa llibrets de jugades (playbooks) i ordres ad hoc des d'un host de control, amb un inventari creat a partir dels teus hosts de Termix."
+  },
+  "common": {
+    "save": "Desa",
+    "cancel": "Cancel·la",
+    "back": "Enrere",
+    "delete": "Suprimeix"
+  },
+  "permissions": {
+    "use": {
+      "title": "Utilitza Ansible",
+      "description": "Consulta els llibrets de jugades i les execucions en els hosts de control a què tens accés. Edita fitxers i executa Ansible en els hosts que pots editar."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Utilitza aquest host com a host de control d'Ansible. Cal que Ansible estigui instal·lat en ell."
+      },
+      "projectDir": {
+        "label": "Carpeta del projecte",
+        "description": "La carpeta d'aquest host que conté els teus llibrets de jugades, rols i ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Fitxer de contrasenya de Vault",
+        "description": "Un fitxer en aquest host amb la contrasenya d'Ansible Vault. Deixa-ho buit si no utilitzes Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Només lectura",
+        "description": "Mostra els llibrets de jugades i les execucions, però mai editis fitxers ni iniciïs execucions en aquest host."
+      },
+      "alertRuns": {
+        "label": "Avisa quan una execució falli",
+        "description": "Envia una alerta quan una execució en aquest host acabi amb error o es perdi. S'ha de comprovar l'estat de l'execució."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Obre Ansible des d'un host.",
+    "error": "No s'ha pogut carregar Ansible des d'aquest host.",
+    "disabled": "Ansible està desactivat per a aquest host. Activa'l a la configuració de l'host.",
+    "refresh": "Actualitza",
+    "readOnly": "Només lectura",
+    "notInstalled": "Ansible no instal·lat",
+    "notInstalledTitle": "Ansible no està instal·lat en aquest host",
+    "notInstalledHint": "Instal·la ansible-core en aquest host, per exemple amb pipx o el gestor de paquets, i després actualitza.",
+    "noSshpass": "sshpass no està instal·lat en aquest host. Els hosts que inicien sessió amb contrasenya fallaran.",
+    "viewPlaybooks": "Llibrets de jugades",
+    "viewRuns": "Execucions",
+    "viewAdhoc": "Ad hoc",
+    "viewFacts": "Fets"
+  },
+  "files": {
+    "add": "Fitxer nou",
+    "search": "Cerca fitxers",
+    "empty": "Encara no hi ha fitxers a la carpeta del projecte.",
+    "noMatch": "Cap fitxer coincideix.",
+    "noProject": "La carpeta {{dir}} no existeix en aquest host. Crea-la o estableix una altra carpeta de projecte a la configuració de l'host.",
+    "listFailed": "No s'han pogut llistar els fitxers del projecte.",
+    "loadFailed": "No s'ha pogut llegir aquest fitxer.",
+    "saved": "Fitxer desat",
+    "saveFailed": "No s'ha pogut desar aquest fitxer.",
+    "playbook": "Llibret de jugades",
+    "run": "Executa",
+    "newTitle": "Fitxer nou",
+    "name": "Nom del fitxer",
+    "nameHint": "Una ruta dins de la carpeta del projecte, com site.yml o roles/web/tasks/main.yml.",
+    "hint": "Un llibret de jugades es comprova per sintaxi abans de desar-se. El fitxer antic es manté si la comprovació falla.",
+    "text": "Text del fitxer",
+    "deleteTitle": "Vols suprimir aquest fitxer?"
+  },
+  "targets": {
+    "search": "Cerca hosts",
+    "addShown": "Afegeix els mostrats",
+    "clear": "Neteja",
+    "empty": "No s'han trobat hosts.",
+    "count": "{{count}} seleccionats",
+    "failed": "No s'han pogut carregar els teus hosts."
+  },
+  "run": {
+    "title": "Executa {{playbook}}",
+    "start": "Executa",
+    "startCheck": "Executa en mode de comprovació",
+    "startFailed": "No s'ha pogut iniciar l'execució.",
+    "source": "Amfitrions",
+    "sourceProject": "Inventari del projecte",
+    "sourceTermix": "Amfitrions de Termix",
+    "sourceProjectHint": "Utilitza l'inventari d'ansible.cfg o un fitxer del projecte.",
+    "sourceTermixHint": "Tria amfitrions de Termix. Les carpetes es converteixen en grups folder_ i les etiquetes en grups tag_. Tots ells estan al grup termix.",
+    "inventory": "Fitxer d'inventari",
+    "inventoryHint": "Una ruta dins de la carpeta del projecte. Deixa-ho buit per utilitzar ansible.cfg.",
+    "check": "Mode de comprovació",
+    "checkHint": "Mostra què canviaria sense fer cap canvi.",
+    "diff": "Mostra les diferències",
+    "diffHint": "Mostra els canvis fets als fitxers.",
+    "become": "Executa com a arrel",
+    "becomeHint": "Utilitza sudo als amfitrions. S'utilitza una contrasenya de sudo desada per als amfitrions de Termix.",
+    "limit": "Limita",
+    "limitHint": "Executa només en aquests amfitrions o grups.",
+    "verbosity": "Detall de la sortida",
+    "verbosityOff": "Normal",
+    "tags": "Etiquetes",
+    "skipTags": "Omet etiquetes",
+    "extraVars": "Variables addicionals",
+    "extraVarsHint": "Un clau=valor per línia."
+  },
+  "runs": {
+    "title": "Execució",
+    "empty": "Encara no hi ha execucions.",
+    "loadFailed": "No s'han pogut carregar les execucions.",
+    "stop": "Atura",
+    "stopFailed": "No s'ha pogut aturar l'execució.",
+    "deleteTitle": "Vols eliminar aquesta execució?",
+    "deleteFailed": "No s'ha pogut eliminar l'execució.",
+    "checkMode": "Comprova",
+    "truncated": "Mostrant el final d'una sortida llarga.",
+    "noOutput": "Encara no hi ha sortida.",
+    "state": {
+      "running": "S'està executant",
+      "ok": "Fet",
+      "failed": "Ha fallat",
+      "cancelled": "Aturat",
+      "lost": "Perdut"
+    },
+    "kind": {
+      "playbook": "Llibre de jugades",
+      "adhoc": "Ad-hoc",
+      "facts": "Fets"
+    },
+    "recap": {
+      "host": "Amfitrió",
+      "ok": "D'acord",
+      "changed": "Canviat",
+      "unreachable": "Inaccessible",
+      "failed": "Ha fallat",
+      "skipped": "Omes"
+    }
+  },
+  "adhoc": {
+    "hint": "Executa un mòdul en amfitrions, com ansible all -m ping.",
+    "pattern": "Patró d'amfitrions",
+    "patternHint": "Un amfitrió, un grup o tots.",
+    "module": "Mòdul",
+    "moduleHint": "Per exemple ping, command, shell, apt o systemd.",
+    "args": "Arguments",
+    "argsHint": "Per a command i shell, això és l'ordre. Per a altres mòduls, són parells clau=valor.",
+    "run": "Executa"
+  },
+  "facts": {
+    "hint": "Recull fets dels amfitrions amb el mòdul setup. Necessita amfitrions de Termix perquè cadascun tingui un inici de sessió.",
+    "gather": "Recull fets",
+    "gathering": "Recollint...",
+    "failed": "No s'han pogut recollir els fets.",
+    "failedHost": "Ha fallat",
+    "none": "No s'han tornat cap fet. Obre l'execució per veure per què.",
+    "col": {
+      "host": "Amfitrió",
+      "os": "Sistema",
+      "kernel": "Nucli",
+      "cpu": "CPUs",
+      "memory": "Memòria",
+      "address": "Adreça",
+      "uptime": "Temps actiu"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Llista de llibrets"
+    },
+    "run": {
+      "title": "Executa el llibret",
+      "playbook": "Llibret",
+      "limit": "Límit",
+      "tags": "Etiquetes",
+      "check": "Mode de comprovació"
+    },
+    "runs": {
+      "title": "Llista d'execucions",
+      "resource": "Execucions",
+      "started": "Iniciat",
+      "check": "Mode de comprovació"
+    },
+    "failed": {
+      "title": "Execucions fallides"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Comprovant amfitrions...",
+    "summary_one": "{{count}} execució fallida en {{hosts}} amfitrions",
+    "summary_many": "{{count}} execucions fallides en {{hosts}} amfitrions",
+    "summary_other": "{{count}} execucions fallides en {{hosts}} amfitrions",
+    "refresh": "Comprova de nou",
+    "empty": "Activa Ansible per a un amfitrió per veure'n les execucions aquí.",
+    "failed_one": "{{count}} fallit",
+    "failed_many": "{{count}} fallits",
+    "failed_other": "{{count}} fallits",
+    "running_one": "{{count}} en execució",
+    "running_many": "{{count}} en execució",
+    "running_other": "{{count}} en execució",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Encara no hi ha execucions"
+  }
+}

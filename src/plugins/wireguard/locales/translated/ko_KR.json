@@ -1,0 +1,232 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "호스트에 WireGuard를 설치하고 하나의 탭에서 인터페이스, 클라이언트 및 설정을 관리하세요."
+  },
+  "common": {
+    "save": "저장",
+    "cancel": "취소",
+    "back": "뒤로",
+    "delete": "삭제",
+    "loading": "로딩 중..."
+  },
+  "permissions": {
+    "use": {
+      "title": "WireGuard 사용",
+      "description": "편집할 수 있는 호스트의 WireGuard 인터페이스 및 클라이언트 관리."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "호스트에서 WireGuard를 엽니다.",
+    "error": "이 호스트에서 WireGuard를 로드할 수 없습니다.",
+    "sudo": "WireGuard를 관리하려면 이 호스트에 루트 로그인 또는 비밀번호 없는 sudo가 필요합니다.",
+    "installed": "설치됨",
+    "notInstalled": "설치 안 됨",
+    "refresh": "새로고침",
+    "viewInterfaces": "인터페이스",
+    "viewLogs": "로그"
+  },
+  "install": {
+    "title": "WireGuard 설치",
+    "desc": "호스트의 패키지 관리자를 사용하여 WireGuard 도구와 iptables를 설치합니다.",
+    "confirm": "설치",
+    "done": "WireGuard가 설치되었습니다.",
+    "failed": "WireGuard를 설치할 수 없습니다.",
+    "empty": "이 호스트에는 WireGuard가 설치되어 있지 않습니다",
+    "noManager": "지원되는 패키지 관리자를 찾을 수 없습니다. WireGuard를 수동으로 설치하세요.",
+    "hint": "이 호스트에서 VPN을 실행하려면 {{os}}에 설치하세요.",
+    "thisHost": "이 호스트",
+    "button": "WireGuard 설치",
+    "working": "설치 중..."
+  },
+  "interfaces": {
+    "add": "인터페이스 추가",
+    "empty": "아직 인터페이스가 없습니다. VPN을 시작하려면 하나 추가하세요.",
+    "loadFailed": "인터페이스를 로드할 수 없습니다.",
+    "up": "실행 중",
+    "down": "정지됨",
+    "clients": "forms: { \"other\": \"{{count}}개 클라이언트\" }",
+    "nat": "NAT",
+    "boot": "부팅 시 시작"
+  },
+  "create": {
+    "title": "인터페이스 추가",
+    "name": "이름",
+    "address": "주소",
+    "addressHint": "서버 주소 및 서브넷입니다. 클라이언트는 다음 사용 가능한 주소를 받습니다.",
+    "port": "UDP 포트",
+    "nat": "호스트의 인터넷 공유(NAT)",
+    "natDesc": "클라이언트가 이 호스트를 통해 인터넷과 호스트 네트워크에 접근할 수 있습니다.",
+    "natMissing": "NAT에는 iptables가 필요하며, 이 호스트에는 설치되어 있지 않습니다.",
+    "forwarding": "IP 포워딩 켜기",
+    "forwardingDesc": "호스트가 클라이언트와 네트워크 간 트래픽을 전달할 수 있게 합니다. 재부팅 후에도 유지됩니다.",
+    "firewall": "방화벽에서 포트 열기",
+    "firewallDesc": "ufw 또는 firewalld가 실행 중일 때 UDP 포트를 추가합니다.",
+    "start": "지금 시작 및 부팅 시 시작",
+    "startDesc": "인터페이스를 켜고 재부팅 후에도 켜져 있도록 유지합니다.",
+    "save": "생성",
+    "done": "인터페이스가 준비되었습니다.",
+    "failed": "인터페이스를 생성할 수 없습니다."
+  },
+  "detail": {
+    "clients": "클라이언트",
+    "settings": "설정",
+    "config": "설정 파일",
+    "service": "서비스",
+    "gone": "이 인터페이스는 더 이상 호스트에 존재하지 않습니다."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "이 호스트의 메뉴에서 WireGuard 탭을 표시합니다."
+      },
+      "showPanel": {
+        "label": "터미널에서 WireGuard 패널 표시",
+        "description": "이 호스트의 SSH 터미널 옆에 WireGuard 패널을 열 수 있게 합니다."
+      },
+      "alertDown": {
+        "label": "인터페이스가 다운되었을 때 알림",
+        "description": "부팅 시 시작해야 하는 인터페이스가 활성화되지 않았을 때 알림을 보냅니다. WireGuard 상태를 읽을 때 확인됩니다."
+      }
+    },
+    "publicKey": "공개 키",
+    "port": "UDP 포트",
+    "endpoint": "서버 엔드포인트",
+    "endpointHint": "클라이언트가 연결하는 공개 주소입니다. 예: vpn.example.com:51820",
+    "dns": "클라이언트용 DNS",
+    "dnsHint": "선택 사항입니다. 서버는 쉼표로 구분합니다.",
+    "allowed": "VPN을 통한 트래픽",
+    "allowedHint": "클라이언트가 VPN을 통해 보내는 범위입니다. 0.0.0.0/0, ::/0 은 모든 트래픽을 의미합니다.",
+    "keepalive": "킵얼라이브(초)",
+    "keepaliveHint": "NAT 뒤의 클라이언트에 도달할 수 있게 유지합니다. 0을 입력하면 비활성화됩니다.",
+    "saved": "설정이 저장되었습니다.",
+    "saveFailed": "설정을 저장할 수 없습니다.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "새 터미널과 함께 WireGuard 패널 열기",
+        "description": "WireGuard가 활성화된 모든 SSH 터미널 옆에 WireGuard 패널을 표시합니다. 오른쪽 가장자리의 버튼에서 여전히 열고 닫을 수 있습니다."
+      },
+      "companionSide": {
+        "label": "WireGuard 패널 위치",
+        "description": "터미널 옆에 WireGuard 패널이 표시되는 위치입니다.",
+        "right": "오른쪽",
+        "left": "왼쪽",
+        "bottom": "아래쪽"
+      },
+      "companionSize": {
+        "label": "WireGuard 패널 크기",
+        "description": "픽셀 단위의 너비 또는 아래쪽에 있을 때의 높이입니다. 가장자리를 드래그하여 조정할 수도 있습니다."
+      },
+      "companionEdgeButton": {
+        "label": "패널 버튼 표시",
+        "description": "WireGuard 패널을 여는 작은 버튼을 터미널의 오른쪽 가장자리에 표시합니다."
+      }
+    }
+  },
+  "clients": {
+    "add": "클라이언트 추가",
+    "empty": "아직 클라이언트가 없습니다.",
+    "loadFailed": "클라이언트를 로드할 수 없습니다.",
+    "name": "이름",
+    "nameHint": "글자, 숫자, 점, 대시 및 밑줄만 사용할 수 있습니다.",
+    "allowed": "VPN을 통한 트래픽",
+    "allowedHint": "인터페이스 기본값({{value}})을 사용하려면 비워 둡니다.",
+    "create": "클라이언트 생성",
+    "addFailed": "클라이언트를 추가할 수 없습니다.",
+    "needEndpoint": "먼저 인터페이스 설정에서 서버 엔드포인트를 설정하세요.",
+    "connected": "연결됨",
+    "off": "꺼짐",
+    "external": "수동 생성",
+    "handshake": "{{ago}} 전 핸드셰이크",
+    "showConfig": "설정 및 QR 코드 보기",
+    "configFailed": "클라이언트 설정을 읽을 수 없습니다.",
+    "rotate": "새 키 생성",
+    "rotateTitle": "{{name}}의 새 키를 생성하시겠습니까?",
+    "rotateDesc": "이전 설정은 더 이상 작동하지 않습니다. 이후 클라이언트에 새 설정을 제공해야 합니다.",
+    "turnOff": "끄기",
+    "turnOn": "켜기",
+    "saveFailed": "클라이언트를 변경할 수 없습니다.",
+    "deleteTitle": "{{name}}을(를) 삭제하시겠습니까?",
+    "deleteDesc": "클라이언트가 제거되며 더 이상 연결할 수 없습니다.",
+    "deleteFailed": "클라이언트를 삭제할 수 없습니다."
+  },
+  "clientConfig": {
+    "note": "이 설정에는 클라이언트의 개인 키가 포함되어 있습니다. 이를 사용할 사람이나 장치와만 공유하세요.",
+    "qr": "클라이언트 설정용 QR 코드",
+    "copy": "복사",
+    "copied": "설정이 복사되었습니다.",
+    "copyFailed": "설정을 복사할 수 없습니다.",
+    "download": ".conf 다운로드"
+  },
+  "config": {
+    "title": "설정 파일",
+    "hint": "비밀 키와 사전 공유 키는 숨겨집니다. 키를 유지하려면 플레이스홀더를 그대로 두세요. 설정은 저장 전에 확인되며 백업이 유지됩니다. 주소 변경 시 재시작이 필요합니다.",
+    "loadFailed": "설정을 읽을 수 없습니다.",
+    "saved": "설정이 저장되었습니다.",
+    "saveFailed": "설정을 저장할 수 없습니다."
+  },
+  "logs": {
+    "loadFailed": "로그를 읽을 수 없습니다.",
+    "lines": "{{count}}줄",
+    "empty": "로그 줄이 없습니다."
+  },
+  "service": {
+    "failed": "서비스 작업이 실패했습니다.",
+    "start": "시작",
+    "stop": "정지",
+    "restart": "재시작",
+    "autostart": "부팅 시 시작",
+    "autostartDesc": "호스트가 시작될 때 이 인터페이스를 시작합니다.",
+    "needsSystemd": "부팅 시 시작하려면 이 호스트에 systemd가 필요합니다.",
+    "noForward": "이 호스트에서 IP 포워딩이 꺼져 있어 클라이언트가 NAT를 통해 네트워크에 접근할 수 없습니다.",
+    "delete": "인터페이스 삭제",
+    "deleteTitle": "{{name}}을(를) 삭제하시겠습니까?",
+    "deleteDesc": "인터페이스가 정지되고 설정, 키 및 저장된 클라이언트 파일이 호스트에서 제거됩니다.",
+    "deleteFailed": "인터페이스를 삭제할 수 없습니다."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "이 카드를 사용하려면 이 호스트의 설정에서 WireGuard를 켜세요.",
+    "start": "활성화",
+    "stop": "비활성화",
+    "done": "{{name}} 업데이트됨"
+  },
+  "operations": {
+    "list": {
+      "title": "WireGuard 인터페이스 목록"
+    },
+    "down": {
+      "title": "WireGuard 인터페이스 비활성화"
+    },
+    "start": {
+      "title": "WireGuard 인터페이스 시작"
+    },
+    "stop": {
+      "title": "WireGuard 인터페이스 정지"
+    },
+    "restart": {
+      "title": "WireGuard 인터페이스 재시작"
+    },
+    "interfaces": {
+      "title": "WireGuard 인터페이스",
+      "address": "주소",
+      "port": "포트",
+      "clients": "클라이언트"
+    }
+  },
+  "nav": {
+    "togglePanel": "WireGuard 패널 전환"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "호스트 확인 중...",
+    "summary_other": "{{hosts}}개 호스트에서 {{count}}개 클라이언트",
+    "refresh": "다시 확인",
+    "empty": "여기에 표시하려면 호스트의 WireGuard를 켜세요.",
+    "missing": "설치 안 됨",
+    "down_other": "{{count}}개 비활성화",
+    "interfaces_other": "{{count}}개 인터페이스, {{clients}}개 클라이언트"
+  }
+}

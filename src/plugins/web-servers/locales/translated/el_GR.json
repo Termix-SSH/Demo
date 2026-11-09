@@ -1,0 +1,287 @@
+{
+  "plugin": {
+    "name": "Web Servers",
+    "description": "Διαχείριση nginx, Apache και Caddy στους hosts σας: sites, ρυθμίσεις, αρχεία καταγραφής και HTTPS, με κάθε αλλαγή να ελέγχεται πρώτα."
+  },
+  "common": {
+    "cancel": "Ακύρωση",
+    "back": "Πίσω",
+    "loading": "Φόρτωση..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Χρήση Web Servers",
+      "description": "Προβολή web servers και sites σε hosts που μπορείτε να φτάσετε, και αλλαγή τους σε hosts που μπορείτε να επεξεργαστείτε."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Web Servers",
+        "description": "Διαχείριση nginx, Apache και Caddy σε αυτόν τον host από την καρτέλα Web Servers."
+      },
+      "useSudo": {
+        "label": "Χρήση sudo",
+        "description": "Χρήση sudo για ανάγνωση και αλλαγή του web server. Απενεργοποιήστε αν η σύνδεση είναι ως root."
+      },
+      "readOnly": {
+        "label": "Μόνο για ανάγνωση",
+        "description": "Προβολή sites, ρυθμίσεων και αρχείων καταγραφής αλλά ποτέ αλλαγή τους σε αυτόν τον host."
+      },
+      "showPanel": {
+        "label": "Πίνακας δίπλα στο terminal",
+        "description": "Προσφορά του πίνακα Web Servers στις καρτέλες terminal αυτού του host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Άνοιγμα του πίνακα με το terminal",
+        "description": "Προβολή του πίνακα Web Servers όταν ανοίγει ένα terminal σε host που το διαθέτει."
+      },
+      "companionSide": {
+        "label": "Πλευρά πίνακα",
+        "description": "Πού βρίσκεται ο πίνακας δίπλα στο terminal.",
+        "right": "Δεξιά",
+        "left": "Αριστερά",
+        "bottom": "Κάτω"
+      },
+      "companionSize": {
+        "label": "Μέγεθος πίνακα",
+        "description": "Πλάτος του πίνακα, ή το ύψος του αν είναι κάτω, σε pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Κουμπί άκρης",
+        "description": "Προβολή μικρού κουμπιού στην άκρη του terminal για άνοιγμα του πίνακα."
+      }
+    }
+  },
+  "tab": {
+    "title": "Web Servers",
+    "noHost": "Ανοίξτε τους Web Servers από έναν host.",
+    "error": "Αδυναμία φόρτωσης των web servers σε αυτόν τον host.",
+    "disabled": "Το Web Servers είναι απενεργοποιημένο για αυτόν τον host. Ενεργοποιήστε το στις ρυθμίσεις του host.",
+    "sudo": "Οι αλλαγές απαιτούν σύνδεση root, sudo χωρίς κωδικό ή αποθηκευμένο Κωδικό Sudo σε αυτόν τον host.",
+    "refresh": "Ανανέωση",
+    "readOnly": "Μόνο για ανάγνωση",
+    "noServer": "Δεν έχει εγκατασταθεί web server",
+    "noServerHint": "Εγκαταστήστε nginx, Apache ή Caddy από τη σελίδα Server.",
+    "openServer": "Άνοιγμα Server",
+    "viewSites": "Sites",
+    "viewConfig": "Ρυθμίσεις",
+    "viewLogs": "Αρχεία καταγραφής",
+    "viewServer": "Server"
+  },
+  "actions": {
+    "ok": "Ολοκληρώθηκε",
+    "failed": "Απέτυχε",
+    "noOutput": "Καμία έξοδος."
+  },
+  "watch": {
+    "start": "Ειδοποίησέ με όταν σταματήσει ένας web server",
+    "stop": "Διακοπή ειδοποιήσεων για αυτόν τον host",
+    "on": "Θα λάβετε ειδοποίηση όταν σταματήσει ένας web server σε αυτόν τον host",
+    "off": "Οι ειδοποιήσεις για αυτόν τον host είναι απενεργοποιημένες",
+    "failed": "Αδυναμία αλλαγής των ειδοποιήσεων"
+  },
+  "sites": {
+    "add": "Προσθήκη site",
+    "search": "Αναζήτηση sites",
+    "empty": "Δεν υπάρχουν sites ακόμα.",
+    "loadFailed": "Αδυναμία φόρτωσης των sites.",
+    "off": "Απενεργοποιημένο",
+    "anyName": "οποιοδήποτε όνομα",
+    "form": "Φόρμα",
+    "certDays_one": "{{count}} ημέρα απομένει",
+    "certDays_other": "{{count}} ημέρες απομένουν",
+    "certExpired": "Το πιστοποιητικό έχει λήξει",
+    "enable": "Ενεργοποίηση",
+    "disable": "Απενεργοποίηση",
+    "enabled": "Το {{name}} είναι ενεργό",
+    "disabled": "Το {{name}} είναι ανενεργό",
+    "delete": "Διαγραφή",
+    "deleteTitle": "Διαγραφή του {{name}};",
+    "deleteBody": "Το αρχείο διαγράφεται και ο διακομιστής επανεκκινείται. Ένα αντίγραφο παραμένει στο /var/lib/termix-web-servers/backups στον διακομιστή.",
+    "deleted": "Το {{name}} διαγράφηκε"
+  },
+  "site": {
+    "addTitle": "Νέα ιστοσελίδα",
+    "editTitle": "Αποθήκευση του {{name}}",
+    "add": "Προσθήκη ιστοσελίδας",
+    "save": "Αποθήκευση",
+    "added": "Το {{name}} προστέθηκε",
+    "saved": "Το {{name}} αποθηκεύτηκε",
+    "server": "Web διακομιστής",
+    "name": "Όνομα ιστοσελίδας",
+    "nameHint": "Χρησιμοποιείται για το όνομα αρχείου και τα αρχεία καταγραφής, όπως example.",
+    "modeForm": "Φόρμα",
+    "modeText": "Κείμενο",
+    "text": "Διαμόρφωση",
+    "textHint": "Η αποθήκευση του κειμένου απενεργοποιεί τη φόρμα για αυτή την ιστοσελίδα, ώστε να διατηρούνται οι δικές σας αλλαγές.",
+    "type": "Τύπος",
+    "typeStatic": "Στατικά αρχεία",
+    "typeProxy": "Αντίστροφος διαμεσολαβητής",
+    "typePhp": "PHP",
+    "typeRedirect": "Ανακατεύθυνση",
+    "staticHint": "Παρέχει αρχεία από έναν φάκελο.",
+    "proxyHint": "Απευθύνει αιτήματα σε μια εφαρμογή που εκτελείται σε αυτόν ή σε άλλο διακομιστή.",
+    "phpHint": "Παρέχει αρχεία από έναν φάκελο και εκτελεί αρχεία .php με php-fpm.",
+    "redirectHint": "Απευθύνει κάθε επισκέπτη σε άλλη διεύθυνση.",
+    "domains": "Δομίνια",
+    "domainsHint": "Πατήστε Enter μετά από το καθένα. Χρησιμοποιήστε _ στο nginx για να απαντά σε οποιοδήποτε όνομα.",
+    "port": "Θύρα HTTP",
+    "root": "Ρίζα web",
+    "rootHint": "Ένας φάκελος μέσα στο /var/www, /srv, /usr/share/nginx, /opt ή /home.",
+    "index": "Αρχεία ευρετηρίου",
+    "spa": "Εφαρμογή μιας σελίδας",
+    "spaHint": "Απευθύνει διαδρομές που δεν είναι αρχεία στο /index.html.",
+    "upstream": "Διεύθυνση εφαρμογής",
+    "upstreamHint": "Πού ακούει η εφαρμογή, όπως http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Απευθύνει επισκέπτες σε",
+    "keepPath": "Διατήρηση διαδρομής",
+    "keepPathHint": "Απευθύνει το /page στην ίδια σελίδα στη νέα διεύθυνση.",
+    "phpSocket": "Υποδοχή php-fpm",
+    "phpSocketHint": "Δεν βρέθηκε υποδοχή php-fpm. Εγκαταστήστε php-fpm ή εισάγετε host:port.",
+    "https": "HTTPS",
+    "httpsHint": "Απαιτεί πιστοποιητικό. Αποθηκεύστε πρώτα την ιστοσελίδα, μετά πατήστε Λήψη πιστοποιητικού παρακάτω.",
+    "httpsCaddy": "Το Caddy λαμβάνει και ανανεώνει το πιστοποιητικό αυτόματα.",
+    "httpsPort": "Θύρα HTTPS",
+    "certPath": "Αρχείο πιστοποιητικού",
+    "keyPath": "Αρχείο κλειδιού",
+    "forceHttps": "Απευθύνει HTTP σε HTTPS",
+    "gzip": "Συμπίεση απαντήσεων",
+    "accessLog": "Καταγραφή πρόσβασης",
+    "maxBody": "Όριο αποστολής σε MB",
+    "maxBodyHint": "Το 0 διατηρεί την προεπιλογή του διακομιστή.",
+    "preview": "Προεπισκόπηση",
+    "previewFailed": "Αδυναμία δημιουργίας διαμόρφωσης."
+  },
+  "tls": {
+    "title": "Πιστοποιητικό HTTPS",
+    "hintManaged": "Το certbot λαμβάνει ένα πιστοποιητικό Let's Encrypt για τα domains αυτού του site, στη συνέχεια το site μεταβαίνει στο HTTPS. Το certbot το ανανεώνει και κάνει reload στον server.",
+    "hintText": "Το certbot λαμβάνει ένα πιστοποιητικό Let's Encrypt για τα domains αυτού του site. Προσθέστε το πιστοποιητικό στο site μόνοι σας μετά. Το certbot το ανανεώνει και κάνει reload στον server.",
+    "needCertbot": "Εγκαταστήστε πρώτα το certbot με το plugin του για αυτόν τον server από τη σελίδα Server.",
+    "email": "Email",
+    "emailHint": "Το Let's Encrypt γράφει εδώ για προβλήματα. Προαιρετικό.",
+    "staging": "Δοκιμαστικό πιστοποιητικό",
+    "stagingHint": "Χρησιμοποιήστε τον staging server του Let's Encrypt. Οι browsers δεν θα το εμπιστευτούν.",
+    "issue": "Λήψη πιστοποιητικού",
+    "done": "Το πιστοποιητικό αποθηκεύτηκε"
+  },
+  "config": {
+    "search": "Αναζήτηση αρχείων",
+    "empty": "Δεν υπάρχουν αρχεία.",
+    "loadFailed": "Αδυναμία φόρτωσης του αρχείου.",
+    "test": "Έλεγχος ρυθμίσεων",
+    "testOk": "Οι ρυθμίσεις είναι εντάξει",
+    "testFailed": "Οι ρυθμίσεις έχουν σφάλματα",
+    "content": "Περιεχόμενο",
+    "save": "Αποθήκευση",
+    "saveHint": "Ολόκληρες οι ρυθμίσεις ελέγχονται πριν γίνει reload στον server. Ένα χαλασμένο αρχείο επαναφέρεται.",
+    "saved": "Αποθηκεύτηκε και έγινε reload",
+    "backups_one": "{{count}} αντίγραφο ασφαλείας",
+    "backups_other": "{{count}} αντίγραφα ασφαλείας",
+    "restore": "Επαναφορά",
+    "restoreTitle": "Επαναφορά αυτού του αντιγράφου ασφαλείας;",
+    "restoreBody": "Το αρχείο επιστρέφει στην κατάσταση που ήταν στις {{time}}. Το τρέχον κείμενο γίνεται επίσης αντίγραφο ασφαλείας.",
+    "restored": "Το αντίγραφο ασφαλείας επαναφέρθηκε"
+  },
+  "logs": {
+    "source": "Καταγραφή",
+    "lines": "Γραμμές",
+    "journal": "Καταγραφή {{server}}",
+    "follow": "Ακολούθηση",
+    "stop": "Διακοπή",
+    "connecting": "Σύνδεση...",
+    "ended": "Η ακολουθία σταμάτησε.",
+    "followFailed": "Αδυναμία ακολουθίας αυτής της καταγραφής.",
+    "empty": "Δεν υπάρχουν γραμμές.",
+    "loadFailed": "Αδυναμία ανάγνωσης της καταγραφής.",
+    "requests": "Αιτήματα",
+    "topPaths": "Κορυφαίες διαδρομές",
+    "topClients": "Κορυφαίοι πελάτες"
+  },
+  "server": {
+    "unknown": "άγνωστο",
+    "atBoot": "Εκκινεί κατά την εκκίνηση",
+    "notInstalled": "Δεν είναι εγκατεστημένο",
+    "start": "Εκκίνηση",
+    "stop": "Διακοπή",
+    "restart": "Επανεκκίνηση",
+    "reload": "Reload",
+    "enable": "Εκκίνηση κατά την εκκίνηση",
+    "disable": "Μην εκκινείς κατά την εκκίνηση",
+    "boot": "Εκκίνηση κατά την εκκίνηση",
+    "noBoot": "Μην εκκινείς κατά την εκκίνηση",
+    "done": "Το {{server}} ολοκληρώθηκε",
+    "stopTitle": "Διακοπή του {{server}};",
+    "stopBody": "Κάθε site σε αυτόν θα πάει offline μέχρι να το εκκινήσετε ξανά.",
+    "install": "Εγκατάσταση",
+    "installTitle": "Εγκατάσταση του {{server}};",
+    "installBody": "Εγκαθίσταται με το package manager του host και ξεκινά αμέσως. Ένας άλλος web server στην θύρα 80 θα τον εμποδίσει να ξεκινήσει.",
+    "installed": "Το {{server}} εγκαταστάθηκε",
+    "installCertbot": "Εγκατάσταση certbot",
+    "certbotInstalled": "Το certbot εγκαταστάθηκε",
+    "certbotPlugins": "Plugins: {{plugins}}",
+    "certbotNoPlugins": "Δεν υπάρχει plugin για nginx ή Apache",
+    "certbotHint": "Λαμβάνει πιστοποιητικά Let's Encrypt για sites nginx και Apache"
+  },
+  "card": {
+    "title": "Web servers",
+    "loading": "Φόρτωση...",
+    "refresh": "Ανανέωση",
+    "empty": "Κανένας host δεν έχει ενεργοποιημένους Web Servers.",
+    "summary_one": "{{count}} host | {{down}} χρειάζονται προσοχή",
+    "summary_other": "{{count}} hosts | {{down}} χρειάζονται προσοχή",
+    "sites_one": "{{count}} site",
+    "sites_other": "{{count}} sites"
+  },
+  "companion": {
+    "toggle": "Πίνακας Web Servers",
+    "openTab": "Άνοιγμα Web Servers",
+    "reload": "Επαναφόρτωση {{server}}"
+  },
+  "manager": {
+    "title": "Web Servers",
+    "disabled": "Ενεργοποιήστε τους Web Servers για αυτόν τον host για να δείτε τα sites του εδώ."
+  },
+  "operations": {
+    "status": {
+      "title": "Κατάσταση web server"
+    },
+    "listSites": {
+      "title": "Λίστα sites"
+    },
+    "test": {
+      "title": "Έλεγχος ρυθμίσεων web server"
+    },
+    "reload": {
+      "title": "Επαναφόρτωση web server"
+    },
+    "restart": {
+      "title": "Επανεκκίνηση web server"
+    },
+    "enableSite": {
+      "title": "Ενεργοποίηση site"
+    },
+    "disableSite": {
+      "title": "Απενεργοποίηση site"
+    },
+    "deleteSite": {
+      "title": "Διαγραφή site"
+    },
+    "server": "Server",
+    "allServers": "Όλα",
+    "sites": {
+      "title": "Sites",
+      "server": "Server",
+      "domains": "Domains",
+      "https": "HTTPS"
+    }
+  }
+}

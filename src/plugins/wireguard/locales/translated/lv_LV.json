@@ -1,0 +1,238 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Instalējiet WireGuard savos serveros un pārvaldiet saskarnes, klientus un konfigurācijas no vienas cilnes."
+  },
+  "common": {
+    "save": "Saglabāt",
+    "cancel": "Atcelt",
+    "back": "Atpakaļ",
+    "delete": "Dzēst",
+    "loading": "Ielādē..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Izmantot WireGuard",
+      "description": "Pārvaldiet WireGuard saskarnes un klientus serveros, kurus varat rediģēt."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Atveriet WireGuard no servera.",
+    "error": "Neizdevās ielādēt WireGuard no šī servera.",
+    "sudo": "Šim serverim ir nepieciešama root pieteikšanās vai sudo bez paroles, lai pārvaldītu WireGuard.",
+    "installed": "Instalēts",
+    "notInstalled": "Nav instalēts",
+    "refresh": "Atsvaidzināt",
+    "viewInterfaces": "Saskarnes",
+    "viewLogs": "Žurnāli"
+  },
+  "install": {
+    "title": "Instalēt WireGuard",
+    "desc": "Tiek instalēti WireGuard rīki un iptables, izmantojot servera pakotņu pārvaldnieku.",
+    "confirm": "Instalēt",
+    "done": "WireGuard ir instalēts.",
+    "failed": "Neizdevās instalēt WireGuard.",
+    "empty": "WireGuard nav instalēts šajā serverī",
+    "noManager": "Nav atrasts atbalstīts pakotņu pārvaldnieks. Instalējiet WireGuard manuāli.",
+    "hint": "Instalējiet to uz {{os}}, lai palaistu VPN no šī servera.",
+    "thisHost": "šis serveris",
+    "button": "Instalēt WireGuard",
+    "working": "Instalē..."
+  },
+  "interfaces": {
+    "add": "Pievienot saskarni",
+    "empty": "Vēl nav saskarņu. Pievienojiet vienu, lai sāktu VPN.",
+    "loadFailed": "Neizdevās ielādēt saskarnes.",
+    "up": "Aktīva",
+    "down": "Neaktīva",
+    "clients": "zero: \"0 klienti\", one: \"1 klients\", other: \"{{count}} klienti\"",
+    "nat": "NAT",
+    "boot": "Palaiž startējot"
+  },
+  "create": {
+    "title": "Pievienot saskarni",
+    "name": "Nosaukums",
+    "address": "Adrese",
+    "addressHint": "Servera adrese un apakštīkls. Klienti saņem nākamos brīvos adreses.",
+    "port": "UDP ports",
+    "nat": "Koplietot servera internetu (NAT)",
+    "natDesc": "Klienti var sasniegt internetu un servera tīklu caur šo serveri.",
+    "natMissing": "NAT prasa iptables, kas nav instalēts šajā serverī.",
+    "forwarding": "Ieslēgt IP pārraidi",
+    "forwardingDesc": "Ļauj serverim pārvadīt datplūsmu starp klientiem un tīklu. Saglabāts pārstartēšanai.",
+    "firewall": "Atvērt portu ugunsmūrī",
+    "firewallDesc": "Pievieno UDP portu ufw vai firewalld, ja kāds no tiem darbojas.",
+    "start": "Palaist tagad un startējot",
+    "startDesc": "Ieslēdz saskarni un saglabā to ieslēgtu pēc pārstartēšanas.",
+    "save": "Izveidot",
+    "done": "Saskarne ir gatava.",
+    "failed": "Neizdevās izveidot saskarni."
+  },
+  "detail": {
+    "clients": "Klienti",
+    "settings": "Iestatījumi",
+    "config": "Konfigurācija",
+    "service": "Pakalpojums",
+    "gone": "Šī saskarne vairs neeksistē serverī."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Rādīt WireGuard cilni šī resursa izvēlnē."
+      },
+      "showPanel": {
+        "label": "Rādīt WireGuard paneli termināļos",
+        "description": "Ļaut WireGuard panelim atvērties blakus šī resursa SSH terminālim."
+      },
+      "alertDown": {
+        "label": "Brīdināt, ja saskarne ir izslēgta",
+        "description": "Sūtīt brīdinājumu, ja saskarne, kas tiek palaista sistēmas startēšanas laikā, nav aktīva. Pārbauda, kad tiek lasīts WireGuard statuss."
+      }
+    },
+    "publicKey": "Publiskā atslēga",
+    "port": "UDP ports",
+    "endpoint": "Servera galapunkts",
+    "endpointHint": "Publiskā adrese, kurai klienti pieslēdzas, piemēram, vpn.example.com:51820.",
+    "dns": "DNS klientiem",
+    "dnsHint": "Neobligāti. Atdaliet serverus ar komatiem.",
+    "allowed": "Datplūsma caur VPN",
+    "allowedHint": "Adrešu diapazoni, kurus klienti nosūta caur VPN. 0.0.0.0/0, ::/0 nosūta visu.",
+    "keepalive": "Keepalive (sekundes)",
+    "keepaliveHint": "Tur klientus aiz NAT sasniedzamus. Izmantojiet 0, lai to izslēgtu.",
+    "saved": "Iestatījumi saglabāti.",
+    "saveFailed": "Neizdevās saglabāt iestatījumus.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Atvērt WireGuard paneli kopā ar jauniem termināļiem",
+        "description": "Rādīt WireGuard paneli blakus katram SSH terminālim, kurā ir iespējots WireGuard. To joprojām varat atvērt un aizvērt, izmantojot pogu labajā malā."
+      },
+      "companionSide": {
+        "label": "WireGuard panela puse",
+        "description": "Kur WireGuard panels atrodas blakus terminālim.",
+        "right": "Labajā pusē",
+        "left": "Kreisajā pusē",
+        "bottom": "Apakšā"
+      },
+      "companionSize": {
+        "label": "WireGuard panela izmērs",
+        "description": "Platums pikseļos vai augstums, ja tas atrodas apakšā. Varat arī vilkt tā malu."
+      },
+      "companionEdgeButton": {
+        "label": "Rādīt panela pogu",
+        "description": "Rādīt mazu pogu termināļa labajā malā, kas atver WireGuard paneli."
+      }
+    }
+  },
+  "clients": {
+    "add": "Pievienot klientu",
+    "empty": "Vēl nav klientu.",
+    "loadFailed": "Neizdevās ielādēt klientus.",
+    "name": "Nosaukums",
+    "nameHint": "Burti, cipari, punkti, domuzīmes un pasvītrojumi.",
+    "allowed": "Datplūsma caur VPN",
+    "allowedHint": "Atstājiet tukšu, lai izmantotu saskarnes noklusējumu: {{value}}",
+    "create": "Izveidot klientu",
+    "addFailed": "Neizdevās pievienot klientu.",
+    "needEndpoint": "Vispirms iestatiet servera galapunktu saskarnes iestatījumos.",
+    "connected": "Pieslēdzies",
+    "off": "Izslēgts",
+    "external": "Izveidots manuāli",
+    "handshake": "rokasspieziens pirms {{ago}}",
+    "showConfig": "Rādīt konfigurāciju un QR kodu",
+    "configFailed": "Neizdevās izlasīt klienta konfigurāciju.",
+    "rotate": "Jaunas atslēgas",
+    "rotateTitle": "Izveidot jaunas atslēgas klientam {{name}}?",
+    "rotateDesc": "Vecā konfigurācija vairs nestrādās. Pēc tam klientam jāsniedz jaunā konfigurācija.",
+    "turnOff": "Izslēgt",
+    "turnOn": "Ieslēgt",
+    "saveFailed": "Neizdevās mainīt klientu.",
+    "deleteTitle": "Dzēst {{name}}?",
+    "deleteDesc": "Klients tiek noņemts un vairs nevar pieslēgties.",
+    "deleteFailed": "Neizdevās dzēst klientu."
+  },
+  "clientConfig": {
+    "note": "Šī konfigurācija satur klienta privāto atslēgu. Dalieties ar to tikai ar personu vai ierīci, kas to izmantos.",
+    "qr": "QR kods klienta konfigurācijai",
+    "copy": "Kopēt",
+    "copied": "Konfigurācija nokopēta.",
+    "copyFailed": "Neizdevās kopēt konfigurāciju.",
+    "download": "Lejupielādēt .conf"
+  },
+  "config": {
+    "title": "Konfigurācijas fails",
+    "hint": "Privātie un iepriekš dalītie atslēgu pāri ir paslēpti. Atstājiet aizvietotāju, lai saglabātu atslēgu. Konfigurācija tiek pārbaudīta pirms saglabāšanas, un tiek saglabāta rezerves kopija. Adrešu izmaiņas prasa restartu.",
+    "loadFailed": "Neizdevās izlasīt konfigurāciju.",
+    "saved": "Konfigurācija saglabāta.",
+    "saveFailed": "Neizdevās saglabāt konfigurāciju."
+  },
+  "logs": {
+    "loadFailed": "Neizdevās izlasīt žurnālus.",
+    "lines": "{{count}} rindas",
+    "empty": "Nav žurnāla ierakstu."
+  },
+  "service": {
+    "failed": "Pakalpojuma darbība neizdevās.",
+    "start": "Sākt",
+    "stop": "Apturēt",
+    "restart": "Restartēt",
+    "autostart": "Sākt pie ielādes",
+    "autostartDesc": "Sākt šo saskarni, kad tiek palaista saimniekdators.",
+    "needsSystemd": "Lai sāktu pie ielādes, šim saimniekdatoram ir nepieciešams systemd.",
+    "noForward": "Šajā saimniekdatorā IP pārvirzīšana ir izslēgta, tāpēc klienti nevar sasniegt tīklu caur NAT.",
+    "delete": "Dzēst saskarni",
+    "deleteTitle": "Dzēst {{name}}?",
+    "deleteDesc": "Saskarne tiek apturēta, un tās konfigurācija, atslēgas un saglabātie klienta faili tiek noņemti no saimniekdatora.",
+    "deleteFailed": "Neizdevās dzēst saskarni."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Ieslēdziet WireGuard šī saimniekdatora iestatījumos, lai izmantotu šo karti.",
+    "start": "Ieslēgt",
+    "stop": "Izslēgt",
+    "done": "{{name}} atjaunināts"
+  },
+  "operations": {
+    "list": {
+      "title": "Uzskaitīt WireGuard saskarnes"
+    },
+    "down": {
+      "title": "WireGuard saskarnes izslēgtas"
+    },
+    "start": {
+      "title": "Sākt WireGuard saskarni"
+    },
+    "stop": {
+      "title": "Apturēt WireGuard saskarni"
+    },
+    "restart": {
+      "title": "Restartēt WireGuard saskarni"
+    },
+    "interfaces": {
+      "title": "WireGuard saskarnes",
+      "address": "Adrese",
+      "port": "Ports",
+      "clients": "Klienti"
+    }
+  },
+  "nav": {
+    "togglePanel": "Pārslēgt WireGuard paneli"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Pārbauda saimniekdatorus...",
+    "summary_zero": "0 klienti uz {{hosts}} saimniekdatoriem",
+    "summary_one": "{{count}} klients uz {{hosts}} saimniekdatoriem",
+    "summary_other": "{{count}} klienti uz {{hosts}} saimniekdatoriem",
+    "refresh": "Pārbaudīt vēlreiz",
+    "empty": "Ieslēdziet WireGuard saimniekdatoram, lai to redzētu šeit.",
+    "missing": "Nav instalēts",
+    "down_zero": "0 izslēgti",
+    "down_one": "{{count}} izslēgts",
+    "down_other": "{{count}} izslēgti",
+    "interfaces_zero": "0 saskarnes, 0 klienti",
+    "interfaces_one": "{{count}} saskarne, {{clients}} klienti",
+    "interfaces_other": "{{count}} saskarnes, {{clients}} klienti"
+  }
+}

@@ -1,0 +1,226 @@
+{
+  "plugin": {
+    "name": "IP-KVM",
+    "description": "Visualitza i controla màquines a través de dispositius PiKVM, NanoKVM i JetKVM."
+  },
+  "tab": {
+    "title": "KVM"
+  },
+  "card": {
+    "title": "KVM",
+    "loading": "S'està carregant"
+  },
+  "host": {
+    "open": "KVM"
+  },
+  "permissions": {
+    "view": {
+      "title": "Veure els KVM",
+      "description": "Obre la pestanya KVM i consulta quins KVM estan en línia i quin estat d'encesa reporten."
+    },
+    "power": {
+      "title": "Controlar l'encesa",
+      "description": "Encén i apaga màquines, reinicia-les a través del seu KVM o activa-les amb Wake-on-LAN."
+    },
+    "console": {
+      "title": "Utilitzar la pantalla",
+      "description": "Veure la pantalla d'una màquina i utilitzar-ne el teclat i el ratolí."
+    },
+    "media": {
+      "title": "Utilitzar mitjans virtuals",
+      "description": "Muntar i expulsar imatges ISO en una màquina."
+    },
+    "manage": {
+      "title": "Gestionar KVMs",
+      "description": "Afegir, modificar i eliminar KVMs."
+    }
+  },
+  "settings": {
+    "admin": {
+      "maxSessionMinutes": {
+        "label": "Durada màxima de la sessió de pantalla (minuts)",
+        "description": "Una sessió de pantalla finalitza després d'aquest temps. Utilitza 0 per no establir límit."
+      }
+    }
+  },
+  "description": "Afegeix els teus IP-KVMs per veure i controlar les màquines que hi ha darrere. Termix es connecta al KVM, de manera que la pantalla funciona fins i tot quan el navegador no hi pot accedir. Les credencials d'inici de sessió s'emmagatzemen xifrades i mai es mostren de nou.",
+  "summary": "{{count}} KVMs, {{attention}} fora de línia",
+  "empty": "Encara no hi ha KVMs.",
+  "add": "Afegeix un KVM",
+  "edit": "Edita",
+  "delete": "Suprimeix",
+  "back": "Enrere",
+  "saved": "Desat",
+  "deleteConfirm": "Vols suprimir {{name}}?",
+  "status": {
+    "unknown": "Encara no s'ha llegit",
+    "up": "En línia",
+    "down": "Fora de línia"
+  },
+  "drivers": {
+    "pikvm": "PiKVM",
+    "glkvm": "GL.iNet Comet (GLKVM)",
+    "nanokvm": "NanoKVM",
+    "jetkvm": "JetKVM"
+  },
+  "fields": {
+    "username": "Nom d'usuari",
+    "password": "Contrasenya"
+  },
+  "power": {
+    "on": "Encès",
+    "off": "Apagat",
+    "unknown": "Desconegut",
+    "state": "El sistema està {{state}}.",
+    "sent": "S'ha demanat a {{name}} que canviï l'alimentació",
+    "sentShort": "Comandament d'alimentació enviat",
+    "wake": "Wake-on-LAN",
+    "woke": "Paquet de despertar enviat",
+    "action": {
+      "on": "Encendre",
+      "off": "Apagar",
+      "graceful-shutdown": "Aturar",
+      "reset": "Reiniciar"
+    },
+    "confirm": {
+      "on": "Vols encendre {{name}}?",
+      "off": "Vols tallar l'alimentació de {{name}}? El sistema no s'aturarà correctament.",
+      "graceful-shutdown": "Vols demanar a {{name}} que s'apagui?",
+      "reset": "Vols reiniciar {{name}}? El sistema es reiniciarà immediatament."
+    }
+  },
+  "form": {
+    "addTitle": "Afegeix KVM",
+    "editTitle": "Edita KVM",
+    "device": "KVM",
+    "access": "Accés",
+    "machine": "Màquina darrere del KVM",
+    "type": "Tipus",
+    "name": "Nom",
+    "address": "Adreça",
+    "port": "Port",
+    "host": "Amfitrió de Termix",
+    "hostHint": "Vincula el KVM a l'amfitrió al qual pertany. D'aquesta manera, seguirà el compartiment d'aquest amfitrió i es mostrarà al menú de l'amfitrió.",
+    "noHost": "Cap",
+    "poll": "Comprovar cada (segons)",
+    "pollHint": "Com a mínim 30 segons.",
+    "scheme": "Connexió",
+    "ca": "Certificat",
+    "caHint": "Enganxa el PEM d'una autoritat de certificats privada o fes servir Confia en aquest certificat per a un KVM amb el seu propi certificat autofirmat. Deixa-ho buit per a un certificat de confiança.",
+    "caSet": "S'ha desat un certificat. Enganxa'n un de nou per substituir-lo.",
+    "keepLogin": "Deixa-ho buit per mantenir l'inici de sessió desat",
+    "test": "Prova la connexió",
+    "testOk": "El KVM ha respost ({{model}}).",
+    "testNeedsLogin": "Introdueix de nou les credencials per provar.",
+    "mac": "Adreça MAC",
+    "macHint": "La targeta de xarxa de la màquina, per a Wake-on-LAN.",
+    "broadcast": "Adreça de difusió",
+    "broadcastHint": "On va el paquet d'activació. Deixa-ho buit per a 255.255.255.255.",
+    "save": "Desa",
+    "add": "Afegeix",
+    "trust": "Confia en aquest certificat",
+    "trustTitle": "Vols confiar en el certificat d'aquest KVM?",
+    "trustHint": "Termix només comunicarà amb aquest KVM mentre mostri aquest certificat exacte. Comprova que l'empremta coincideix amb la que hi ha al dispositiu.",
+    "certName": "Nom: {{name}}",
+    "certValid": "vàlid fins al {{date}}",
+    "certExpired": "caducat el {{date}}",
+    "pinned": "Certificat de confiança",
+    "unpin": "Elimina"
+  },
+  "view": {
+    "screen": "Pantalla",
+    "power": "Encesa",
+    "media": "Mitjans virtuals",
+    "info": "Informació",
+    "refresh": "Llegeix ara",
+    "type": "Tipus",
+    "address": "Adreça",
+    "model": "Model",
+    "version": "Programari",
+    "hostname": "Nom",
+    "video": "Vídeo",
+    "noSignal": "Sense senyal",
+    "status": "KVM",
+    "jetHint": "El vídeo del JetKVM va directament del JetKVM al teu navegador, per la qual cosa el navegador ha d'arribar-hi a la xarxa."
+  },
+  "screen": {
+    "connecting": "Connectant",
+    "failed": "No s'ha pogut obrir la pantalla.",
+    "ended": "La sessió de pantalla ha finalitzat.",
+    "hint": "Fes clic a la pantalla per escriure.",
+    "shortcuts": "Dreceres",
+    "shortcut": {
+      "ctrl-alt-del": "Ctrl+Alt+Supr",
+      "alt-tab": "Alt+Tab",
+      "alt-f4": "Alt+F4",
+      "ctrl-esc": "Ctrl+Esc",
+      "win-l": "Win+L",
+      "win-d": "Win+D",
+      "ctrl-alt-f1": "Ctrl+Alt+F1",
+      "ctrl-alt-f2": "Ctrl+Alt+F2",
+      "ctrl-alt-f7": "Ctrl+Alt+F7",
+      "print-screen": "Impr Pant"
+    },
+    "paste": "Enganxa text",
+    "pasteLabel": "Text per escriure a la màquina",
+    "type": "Escriu-ho",
+    "snapshot": "Captura de pantalla",
+    "fullscreen": "Pantalla completa",
+    "exitFullscreen": "Sortir de la pantalla completa",
+    "reconnect": "Tornar a connectar"
+  },
+  "media": {
+    "none": "No hi ha cap imatge muntada.",
+    "mountedNow": "Muntada: {{name}}",
+    "as": "Mostra-la com a",
+    "cd": "Unitat de CD",
+    "usb": "Unitat USB",
+    "empty": "No hi ha cap imatge en aquest KVM.",
+    "mount": "Munta",
+    "eject": "Expulsa",
+    "mountedDone": "Imatge muntada",
+    "ejected": "Imatge expulsada",
+    "url": "Descarrega una imatge des de",
+    "name": "Desa-la com a",
+    "fetch": "Descarrega al KVM",
+    "fetched": "Imatge descarregada"
+  },
+  "operations": {
+    "device": "KVM",
+    "list-devices": {
+      "title": "Llista de KVMs"
+    },
+    "poll": {
+      "title": "Llegeix un KVM ara"
+    },
+    "power-state": {
+      "title": "Obté l'estat d'encesa"
+    },
+    "power-on": {
+      "title": "Encén"
+    },
+    "graceful-shutdown": {
+      "title": "Apaga"
+    },
+    "power-off": {
+      "title": "Apaga"
+    },
+    "reset": {
+      "title": "Reinicia"
+    },
+    "wake": {
+      "title": "Wake-on-LAN"
+    },
+    "eject-media": {
+      "title": "Expulsa la imatge"
+    },
+    "health": {
+      "title": "Estat del KVM"
+    }
+  },
+  "widget": {
+    "name": "Dispositius KVM",
+    "description": "Quins dels teus IP-KVMs estan en funcionament.",
+    "summary": "{{up}} de {{total}} en funcionament"
+  }
+}

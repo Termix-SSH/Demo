@@ -279,7 +279,7 @@ export function CredentialEditorView({
               />
             </div>
             {!credential && !adminTargetUserId && isElectron() && (
-              <div className="flex items-center justify-between gap-3 col-span-2">
+              <div className="flex items-center justify-between gap-3 md:col-span-2">
                 <div className="flex flex-col gap-0.5">
                   <span className="text-xs">
                     {t("sharing.deviceLogin.keepOnDevice")}
@@ -291,7 +291,7 @@ export function CredentialEditorView({
                 <FakeSwitch checked={deviceOnly} onChange={setDeviceOnly} />
               </div>
             )}
-            <div className="flex flex-col gap-1.5 col-span-2">
+            <div className="flex flex-col gap-1.5 md:col-span-2">
               <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                 {t("hosts.descriptionLabel")}
               </label>
@@ -301,7 +301,7 @@ export function CredentialEditorView({
                 onChange={(e) => setCredField("description", e.target.value)}
               />
             </div>
-            <div className="flex flex-col gap-1.5 col-span-2">
+            <div className="flex flex-col gap-1.5 md:col-span-2">
               <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                 {t("hosts.tags")}
               </label>
@@ -314,6 +314,8 @@ export function CredentialEditorView({
                     {tag}
                     <button
                       type="button"
+                      title={t("common.remove")}
+                      aria-label={t("common.remove")}
                       onClick={() =>
                         setCredField(
                           "tags",
@@ -501,7 +503,7 @@ export function CredentialEditorView({
                   rows={3}
                   value={credForm.publicKey}
                   onChange={(e) => setCredField("publicKey", e.target.value)}
-                  className="w-full px-3 py-2 text-[10px] bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"
+                  className="w-full px-3 py-2 text-[10px] bg-popover border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"
                 />
               </div>
               <div className="flex flex-col gap-1.5 p-3 border border-border bg-muted/20">

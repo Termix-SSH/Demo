@@ -407,7 +407,15 @@ export function registerTransferRoutes(router: Router, deps: RouteDeps): void {
             )
               .slice(0, MAX_HEALTH_ROWS)
               .flatMap((r) => healthRow(r) ?? []);
-            result.imported += await repository.importSamples(host.id, metrics);
+            // Metric samples are shared by everyone who can see the host.
+            if (
+              metrics.length &&
+              (await ctx.hosts.checkAccess(host.id, "edit")).hasAccess
+            )
+              result.imported += await repository.importSamples(
+                host.id,
+                metrics,
+              );
             result.imported += await repository.importHealth(
               userId,
               host.id,

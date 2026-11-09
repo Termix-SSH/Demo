@@ -233,7 +233,7 @@ export function AutomationEditor({
       ) : (
         <div className="space-y-2">
           <textarea
-            className="w-full min-h-64 bg-background border border-border p-2 font-mono text-xs"
+            className="w-full min-h-64 bg-popover border border-border p-2 font-mono text-xs"
             value={jsonText}
             onChange={(e) => {
               setJsonText(e.target.value);

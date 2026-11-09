@@ -1,0 +1,235 @@
+{
+  "plugin": {
+    "name": "Certifikat",
+    "description": "Visa, utfärda och förnya TLS-certifikat på dina värdar med certbot och acme.sh, och få ett varningssignal innan de löper ut."
+  },
+  "common": {
+    "cancel": "Avbryt",
+    "back": "Tillbaka"
+  },
+  "permissions": {
+    "use": {
+      "title": "Använd Certifikat",
+      "description": "Visa certifikat på värdar du kan nå, och ändra dem på värdar du kan redigera."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Certifikat",
+        "description": "Hantera TLS-certifikat på denna värd från fliken Certifikat."
+      },
+      "useSudo": {
+        "label": "Använd sudo",
+        "description": "Använd sudo för att läsa och ändra certifikat. Stäng av om inloggningen är root."
+      },
+      "readOnly": {
+        "label": "Skrivskyddad",
+        "description": "Visa certifikat men ändra dem aldrig på denna värd."
+      },
+      "expiryWarnDays": {
+        "label": "Varna innan utgång",
+        "description": "Certifikat med detta antal dagar eller färre kvar visas som utgående och skickar ett varningsmeddelande."
+      },
+      "showPanel": {
+        "label": "Visa certifikatpanel i terminaler",
+        "description": "Låt certifikatpanelen öppnas bredvid denna värdas SSH-terminal."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Öppna certifikatpanelen med nya terminaler",
+        "description": "Visa certifikatpanelen bredvid varje SSH-terminal som har Certifikat på. Du kan fortfarande öppna och stänga den från knappen på höger kant."
+      },
+      "companionSide": {
+        "label": "Certifikatpanelens sida",
+        "description": "Var certifikatpanelen sitter bredvid en terminal.",
+        "right": "Höger",
+        "left": "Vänster",
+        "bottom": "Botten"
+      },
+      "companionSize": {
+        "label": "Certifikatpanelens storlek",
+        "description": "Bredd i pixlar, eller höjd när den är längst ner. Du kan också dra i dess kant."
+      },
+      "companionEdgeButton": {
+        "label": "Visa panelknappen",
+        "description": "Visa en liten knapp på höger kant av en terminal som öppnar certifikatpanelen."
+      }
+    }
+  },
+  "tab": {
+    "title": "Certifikat",
+    "noHost": "Öppna Certifikat från en värd.",
+    "error": "Kunde inte ladda certifikat från denna värd.",
+    "disabled": "Certifikat är avstängt för denna värd. Aktivera det i värdinställningarna.",
+    "sudo": "Ändringar kräver root-inloggning, lösenordsfri sudo eller ett sparade Sudo-lösenord på denna värd.",
+    "refresh": "Uppdatera",
+    "readOnly": "Skrivskyddad",
+    "noClient": "Ingen certbot eller acme.sh",
+    "viewCertificates": "Certifikat",
+    "viewInspect": "Inspektera",
+    "viewRenewal": "Förnyelse"
+  },
+  "actions": {
+    "working": "Arbetar. Detta kan ta några minuter.",
+    "ok": "Klar",
+    "failed": "Kommandot misslyckades.",
+    "noOutput": "Ingen utdata."
+  },
+  "install": {
+    "title": "certbot och acme.sh är inte installerade på denna värd",
+    "hint": "Installera certbot för att hämta och förnya certifikat från Let's Encrypt.",
+    "noManager": "Ingen stödd pakethanterare hittades. Installera certbot manuellt.",
+    "button": "Installera certbot",
+    "confirm": "Installera certbot?",
+    "desc": "Detta installerar certbot med värdens pakethanterare.",
+    "working": "Installerar...",
+    "done": "certbot är installerat."
+  },
+  "certs": {
+    "search": "Sök certifikat",
+    "empty": "Inga certifikat ännu.",
+    "noMatch": "Inga certifikat matchar.",
+    "loadFailed": "Kunde inte läsa certifikaten.",
+    "expires": "Går ut {{date}}",
+    "staging": "Testmiljö",
+    "details": "Certifikat",
+    "manage": "Hantera",
+    "client": "Klient",
+    "path": "Fil",
+    "authority": "Myndighet",
+    "renew": "Förnya",
+    "renewDone": "Förnyade {{name}}.",
+    "renewAll": "Förnya alla",
+    "renewAllDone": "Förnyade de certifikat som var förfallna.",
+    "forceRenew": "Förnya ändå nu",
+    "dryRun": "Testkörning",
+    "dryRunDone": "Testkörningen lyckades.",
+    "revoke": "Återkalla",
+    "revokeTitle": "Återkalla {{name}}?",
+    "revokeDesc": "Myndigheten markerar det som ogiltigt och det tas bort från denna värd. Allt som fortfarande använder det slutar fungera.",
+    "revokeDone": "Återkallade {{name}}.",
+    "delete": "Sluta hantera",
+    "deleteTitle": "Sluta hantera {{name}}?",
+    "deleteDesc": "Det förblir giltigt men förnyas inte längre. certbot tar också bort sina filer, medan acme.sh behåller dem.",
+    "deleteDone": "{{name}} hanteras inte längre."
+  },
+  "expiry": {
+    "expired": "Förfallen",
+    "unknown": "Okänd",
+    "days_one": "{{count}} dag kvar",
+    "days_other": "{{count}} dagar kvar"
+  },
+  "issue": {
+    "add": "Utfärda certifikat",
+    "title": "Nytt certifikat",
+    "save": "Utfärda",
+    "done": "Certifikatet utfärdades.",
+    "working": "Begär certifikat från myndigheten. Detta kan ta några minuter.",
+    "client": "Klient",
+    "domains": "Domäner",
+    "domainsPlaceholder": "Skriv en domän och tryck Enter",
+    "domainsHint": "Den första namnger certifikatet.",
+    "challenge": "Utmaning",
+    "standalone": "Standalone",
+    "standaloneHint": "Kör en liten webbserver på port 80, så inget annat får använda den porten.",
+    "webroot": "Webbrot",
+    "webrootHint": "Placerar en fil i webbserverns mapp. Webbservern fortsätter att köras.",
+    "dns": "DNS",
+    "dnsHint": "Lägger till en DNS-post via leverantörens API. Krävs för jokertecken.",
+    "webrootPath": "Webbrotmapp",
+    "webrootPathHint": "Måste ligga under /var/www, /srv eller /usr/share/nginx.",
+    "dnsProvider": "DNS-leverantör",
+    "dnsProviderCertbot": "Namnet på ett installerat certbot DNS-plugin, som cloudflare.",
+    "dnsProviderAcme": "Ett acme.sh DNS-namn utan dns_, som cf. Dess API-token måste redan vara inställd på värden.",
+    "credentials": "Inloggningsfil",
+    "credentialsHint": "Filen på värden med din API-token. Den läses aldrig av Termix.",
+    "email": "E-post",
+    "emailHint": "Valfritt. Myndigheten använder den för påminnelser om förfall.",
+    "keyType": "Nyckeltyp",
+    "staging": "Använd testservern",
+    "stagingHint": "För testning. Certifikatet är inte betrodd och hastighetsbegränsningarna är mycket högre."
+  },
+  "inspect": {
+    "server": "Server",
+    "file": "Fil",
+    "address": "Adress",
+    "addressPlaceholder": "example.com",
+    "port": "Port",
+    "path": "Filsökväg",
+    "check": "Kontrollera",
+    "hint": "Kontrollera vad en server skickar över TLS, sett från denna värd, eller läs en certifikatfil på den.",
+    "failed": "Kunde inte läsa certifikatet.",
+    "noOpenssl": "openssl är inte installerat på denna värd.",
+    "trusted": "Betrodd",
+    "notTrusted": "Inte betrodd",
+    "leaf": "Certifikat",
+    "intermediate": "Kedja {{index}}",
+    "selfSigned": "Självsignerad",
+    "name": "Namn",
+    "issuer": "Utfärdare",
+    "domains": "Domäner",
+    "validFrom": "Giltig från",
+    "validTo": "Giltig till",
+    "keyType": "Nyckel",
+    "serial": "Serienummer",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Hur denna värd förnyar certifikat automatiskt. Ändra inställningen på värden.",
+    "on": "På",
+    "off": "Av",
+    "timer": "systemd-timer",
+    "next": "Nästa körning {{time}}",
+    "cron": "Cron-fil /etc/cron.d/certbot",
+    "certbotOff": "Ingen timer eller cron-jobb hittades, så certifikaten förnyas inte automatiskt.",
+    "acmeCron": "Cron-jobb i crontab",
+    "acmeOff": "Inget cron-jobb hittades, så certifikaten förnyas inte automatiskt."
+  },
+  "watch": {
+    "start": "Avisa mig innan certifikat på denna värd går ut",
+    "stop": "Stoppa aviseringar för denna värd",
+    "on": "Du kommer att få en avisering innan certifikaten här går ut.",
+    "off": "Aviseringar för denna värd är inaktiverade.",
+    "failed": "Kunde inte ändra aviseringen."
+  },
+  "card": {
+    "title": "Certifikat",
+    "loading": "Kontrollerar värdar...",
+    "summary_one": "{{count}} certifikat, {{expiring}} går ut",
+    "summary_other": "{{count}} certifikat, {{expiring}} går ut",
+    "refresh": "Kontrollera igen",
+    "empty": "Aktivera Certifikat för en värd för att se dess certifikat här."
+  },
+  "manager": {
+    "title": "Certifikat",
+    "disabled": "Aktivera Certifikat för denna värd i dess inställningar för att se dem här."
+  },
+  "operations": {
+    "list": {
+      "title": "Lista certifikat"
+    },
+    "expiring": {
+      "title": "Certifikat som går ut"
+    },
+    "renew": {
+      "title": "Förnya certifikat"
+    },
+    "renewAll": {
+      "title": "Förnya alla certifikat"
+    },
+    "revoke": {
+      "title": "Återkalla certifikat"
+    },
+    "certificates": {
+      "title": "Certifikat",
+      "client": "Klient",
+      "domains": "Domäner",
+      "daysLeft": "Dagar kvar"
+    }
+  },
+  "nav": {
+    "togglePanel": "Visa/dölj certifikatpanel"
+  }
+}

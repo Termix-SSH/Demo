@@ -1,0 +1,356 @@
+{
+  "tab": {
+    "title": "Brannmur",
+    "noHost": "Åpne brannmuren fra en vert.",
+    "refresh": "Oppdater",
+    "error": "Kunne ikke lese brannmuren på denne verten.",
+    "disabled": "Brannmuren er slått av for denne verten. Slå den på i vertsinnstillingene.",
+    "sudo": "Denne verten trenger passordløs sudo eller root-innlogging for å lese og endre brannmuren.",
+    "noFirewall": "Ingen brannmur",
+    "on": "på",
+    "off": "av",
+    "readOnly": "skrivebeskyttet",
+    "ruleCount_one": "{{count}} regel",
+    "ruleCount_other": "{{count}} regler",
+    "viewRules": "Regler",
+    "viewDefaults": "Standardverdier",
+    "viewZones": "Soner",
+    "viewFail2ban": "Fail2ban",
+    "viewRaw": "Rå"
+  },
+  "common": {
+    "loading": "Laster...",
+    "save": "Lagre",
+    "cancel": "Avbryt",
+    "delete": "Slett",
+    "edit": "Rediger",
+    "done": "Ferdig",
+    "failed": "Det fungerte ikke."
+  },
+  "actions": {
+    "allow": "Tillat",
+    "deny": "Nekt",
+    "reject": "Avvis",
+    "limit": "Begrens"
+  },
+  "policies": {
+    "allow": "Tillat",
+    "deny": "Nekt (dropp)",
+    "reject": "Avvis"
+  },
+  "rule": {
+    "action": "Handling",
+    "direction": "Retning",
+    "in": "Innkommende",
+    "out": "Utgående",
+    "protocol": "Protokoll",
+    "anyProtocol": "TCP og UDP",
+    "port": "Port",
+    "portPlaceholder": "22, 80,443 eller 8000-8100",
+    "portHint": "La stå tomt for alle porter. Lister og områder krever TCP eller UDP.",
+    "anyPort": "alle porter",
+    "source": "Fra",
+    "destination": "Til",
+    "anywhere": "Overalt",
+    "addressHint": "En adresse eller et område som 10.0.0.0/8.",
+    "family": "IP-versjon",
+    "bothFamilies": "IPv4 og IPv6",
+    "iface": "Grensesnitt",
+    "anyIface": "Alle grensesnitt",
+    "service": "Tjeneste",
+    "serviceHint": "Et firewalld-tjenestenavn, i stedet for en port.",
+    "comment": "Kommentar",
+    "commentPlaceholder": "Hva denne regelen er for",
+    "zoneLabel": "Sone",
+    "from": "fra {{address}}",
+    "to": "til {{address}}",
+    "on": "på {{iface}}",
+    "zone": "sone {{zone}}"
+  },
+  "presets": {
+    "ssh": "SSH",
+    "http": "HTTP",
+    "https": "HTTPS",
+    "web": "Web",
+    "dns": "DNS",
+    "smtp": "E-post",
+    "mysql": "MySQL",
+    "postgres": "PostgreSQL",
+    "redis": "Redis",
+    "samba": "Samba",
+    "wireguard": "WireGuard",
+    "minecraft": "Minecraft"
+  },
+  "rules": {
+    "add": "Legg til regel",
+    "addTitle": "Ny regel",
+    "editTitle": "Rediger regel",
+    "added": "Regel lagt til",
+    "saved": "Regel lagret",
+    "deleted": "Regel slettet",
+    "confirmDelete": "Slett denne regelen?",
+    "search": "Søk etter porter, adresser og kommentarer",
+    "empty": "Ingen regler ennå.",
+    "noMatch": "Ingen regler matcher.",
+    "readOnly": "Skrivebeskyttet",
+    "deleteOnly": "Kun sletting",
+    "stale": "Reglene har endret seg på verten. Oppdater og prøv igjen.",
+    "filters": {
+      "all": "Alle",
+      "in": "Innkommende",
+      "out": "Utgående",
+      "readOnly": "Skrivebeskyttet"
+    }
+  },
+  "defaults": {
+    "hint": "Hva som skjer med trafikk som ingen regel matcher.",
+    "incoming": "Innkommende",
+    "outgoing": "Utgående",
+    "routed": "Rutet",
+    "saved": "Standardverdier lagret"
+  },
+  "zones": {
+    "hint": "firewalld plasserer hvert nettverksgrensesnitt og hver kilde i en sone. En zones mål er hva den gjør med trafikk som dens regler ikke matcher.",
+    "defaultZone": "Standardsone",
+    "default": "Standard",
+    "active": "Aktiv",
+    "target": "Mål",
+    "interfaces": "grensesnitt {{list}}",
+    "sources": "kilder {{list}}",
+    "saved": "Sone lagret",
+    "targets": {
+      "default": "Standard (avvis)",
+      "ACCEPT": "Godta",
+      "DROP": "Forkast",
+      "REJECT": "Avvis"
+    }
+  },
+  "enable": {
+    "off": "Brannmuren er slått av, så ingen av disse reglene gjelder for øyeblikket.",
+    "allowSsh": "Tillat SSH på port {{ports}} først",
+    "allowSshHint": "Holder Termix og dine egne SSH-innlogginger i gang.",
+    "button": "Slå på",
+    "done": "Brannmur slått på",
+    "timerHint": "Å slå den på starter en nedtelling. Hvis du ikke trykker på Behold i tide, slår verten den av igjen automatisk."
+  },
+  "disable": {
+    "button": "Slå av",
+    "title": "Slå av brannmuren?",
+    "description": "Hver regel slutter å gjelde til du slår den på igjen.",
+    "done": "Brannmur slått av"
+  },
+  "install": {
+    "none": "Denne verten har ingen brannmur ennå.",
+    "hint": "Installer en for å komme i gang. Ingenting slås på før du sier det.",
+    "button": "Installer {{name}}",
+    "working": "Installerer...",
+    "done": "{{name}} installert",
+    "noPackageManager": "Termix kunne ikke finne en pakkehåndterer den kjenner til på denne verten."
+  },
+  "lockout": {
+    "title": "Dette kan sperre Termix ute",
+    "description": "Forsøk å låse ut {{reason}}. Hvis Termix ikke kan koble til etter endringen, reverserer verten den automatisk når tiden går ut. Vil du likevel fortsette?",
+    "confirm": "Fortsett"
+  },
+  "pending": {
+    "started": "Endring er implementert. Trykk på Behold for å gjøre den permanent.",
+    "left": "Blir reversert om {{seconds}} s med mindre du trykker på Behold",
+    "expired": "Tiden gikk ut, verten reverserer nå endringen",
+    "reachable": "Termix kunne fortsatt koble til",
+    "unreachable": "Termix kunne ikke koble til etter endringen",
+    "unknown": "Sjekker tilkoblingen",
+    "keep": "Behold",
+    "undo": "Angre nå",
+    "kept": "Endring beholdt",
+    "undone": "Endring angret",
+    "gone": "Tiden gikk ut, og verten har allerede reversert endringen.",
+    "first": "Behold eller angre den siste endringen først.",
+    "kinds": {
+      "add": "Ny regel",
+      "update": "Endret regel",
+      "remove": "Slettet regel",
+      "defaults": "Nye standarder",
+      "enable": "Brannmur slått på",
+      "disable": "Brannmur slått av",
+      "zoneTarget": "Nytt sone-mål",
+      "defaultZone": "Ny standard sone",
+      "ruleset": "Regelsett implementert"
+    }
+  },
+  "fail2ban": {
+    "loadFailed": "Kunne ikke lese Fail2ban.",
+    "notInstalled": "Fail2ban er ikke installert. Den blokkerer adresser som mislykkes med å logge inn for ofte.",
+    "stopped": "Fail2ban er installert, men kjører ikke.",
+    "start": "Start Fail2ban",
+    "started": "Fail2ban startet",
+    "noJails": "Ingen fengsler er slått på.",
+    "none": "Ingenting er blokkert.",
+    "bannedCount_one": "{{count}} blokkert",
+    "bannedCount_other": "{{count}} blokkert",
+    "counts": "{{failed}} mislykkes nå | {{totalFailed}} mislykket | {{totalBanned}} blokkert totalt",
+    "ban": "Blokker",
+    "unban": "Opphev blokkering",
+    "banAddress": "Blokker en adresse",
+    "banned": "{{ip}} blokkert",
+    "unbanned": "{{ip}} opphevet blokkering",
+    "selfTitle": "Blokker Termix-adressen?",
+    "selfDescription": "Termix kobler til fra denne adressen. Å blokkere den kutter Termix fra verten."
+  },
+  "raw": {
+    "empty": "Ingenting å vise."
+  },
+  "watch": {
+    "start": "Varsle meg når denne brannmuren endres",
+    "stop": "Stopp varsler for denne brannmuren"
+  },
+  "companion": {
+    "openTab": "Åpne fanen Brannmur",
+    "toggle": "Brannmurpanel",
+    "allowPort": "Tillat en TCP-port"
+  },
+  "card": {
+    "title": "Brannmurer",
+    "empty": "Ingen verter har Brannmur slått på.",
+    "banned_one": "{{count}} blokkert",
+    "banned_other": "{{count}} blokkert",
+    "pending": "Venter"
+  },
+  "rulesets": {
+    "title": "Brannmurregelsett",
+    "hint": "Lagre en liste over regler og legg den til mange verter samtidig. Implementering legger kun til manglende regler, den fjerner aldri noen.",
+    "add": "Nytt regelsett",
+    "addTitle": "Nytt regelsett",
+    "editTitle": "Rediger regelsett",
+    "loadFailed": "Kunne ikke laste inn regelsettene dine.",
+    "empty": "Ingen regelsett ennå.",
+    "name": "Navn",
+    "namePlaceholder": "Webserver",
+    "description": "Beskrivelse",
+    "rules": "Regler",
+    "noRules": "Ingen regler i denne settet ennå.",
+    "hosts": "Verter",
+    "noHosts": "Ingen verter har brannmur på.",
+    "saved": "Regelsett lagret",
+    "deleted": "Regelsett slettet",
+    "confirmDelete": "Slett {{name}}?",
+    "deleteHint": "Regler som allerede er lagt til på verter, beholdes.",
+    "ruleCount_one": "{{count}} regel",
+    "ruleCount_other": "{{count}} regler",
+    "hostCount_one": "{{count}} vert",
+    "hostCount_other": "{{count}} verter",
+    "check": "Sjekk verter",
+    "apply": "Bruk",
+    "applyTitle": "Bruk {{name}}?",
+    "applyDescription": "Manglende regler legges til på hver vert. Hver vert får SSH-låseut-sjekken, og en vert Termix ikke kan nå etterpå, reverserer endringen automatisk.",
+    "applied": "Regelsett brukt",
+    "applyErrors_one": "{{count}} vert hadde et problem",
+    "applyErrors_other": "{{count}} verter hadde et problem",
+    "applyResult": "Brukte {{name}}",
+    "driftTitle": "{{name}} på hver vert",
+    "inSync": "Har alle regler",
+    "ok": "Synkronisert",
+    "missing_one": "{{count}} mangler",
+    "missing_other": "{{count}} mangler",
+    "nothingMissing": "Allerede alle regler på plass",
+    "added_one": "La til {{count}} regel",
+    "added_other": "La til {{count}} regler",
+    "waiting": "Lagt til, men Termix kunne ikke koble til etterpå. Verten vil reversere endringen.",
+    "fleet": "Flåte",
+    "applyFleet": "Bruk på flåten"
+  },
+  "permissions": {
+    "use": {
+      "title": "Bruk brannmur",
+      "description": "Åpne fanen Brannmur på verter du kan nå. Endringer krever også skriveadgang til verten."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Brannmur",
+        "description": "Vis fanen Brannmur for denne verten for å administrere brannmuren via SSH."
+      },
+      "useSudo": {
+        "label": "Bruk sudo",
+        "description": "Kjør brannmurkommandoer med passordløs sudo når innloggingen ikke er root."
+      },
+      "readOnly": {
+        "label": "Skrivebeskyttet",
+        "description": "Vis brannmuren, men blokker alle endringer fra Termix."
+      },
+      "sshGuard": {
+        "label": "Sjekk for SSH-låsing",
+        "description": "Stopp og spør før en endring som ser ut til å blokkere SSH fra Termix."
+      },
+      "rollbackSeconds": {
+        "label": "Angrotimer",
+        "description": "Sekunder du har på deg til å trykke Behold etter en risikabel endring før verten angir den."
+      },
+      "confirmAll": {
+        "label": "Timer for alle endringer",
+        "description": "Bruk angrotimeren for alle endringer, ikke bare de risikable."
+      },
+      "showPanel": {
+        "label": "Brannmurpanel",
+        "description": "Vis brannmurspanelet ved siden av SSH-terminalene for denne verten."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Åpne brannmurspanelet sammen med en terminal",
+        "description": "Vis brannmurspanelet når en terminal åpnes på en vert som har det."
+      },
+      "companionSide": {
+        "label": "Plassering av brannmurspanel",
+        "description": "Hvor panelet vises i forhold til terminalen.",
+        "right": "Høyre",
+        "left": "Venstre",
+        "bottom": "Bunn"
+      },
+      "companionSize": {
+        "label": "Størrelse på brannmurspanel",
+        "description": "Bredde, eller høyde hvis det er plassert nederst, i piksler."
+      },
+      "companionEdgeButton": {
+        "label": "Knapp for brannmurspanel i kanten",
+        "description": "Vis en liten knapp i terminalkanten for å åpne panelet."
+      }
+    }
+  },
+  "manager": {
+    "title": "Brannmur",
+    "disabled": "Aktiver brannmur i innstillingene for denne verten for å administrere brannmuren her."
+  },
+  "operations": {
+    "list": {
+      "title": "Liste over brannmurregler"
+    },
+    "status": {
+      "title": "Brannmur"
+    },
+    "portAllowed": {
+      "title": "Porten er tillatt",
+      "description": "Om en tillatelsesregel for denne porten finnes. Bruk dette for å overvåke vertene for endringer."
+    },
+    "allow": {
+      "title": "Tillat en port"
+    },
+    "remove": {
+      "title": "Fjern en tillatt port"
+    },
+    "delete": {
+      "title": "Slett brannmurregel"
+    },
+    "rules": {
+      "title": "Brannmurregler"
+    },
+    "port": "Port",
+    "protocol": "Protokoll",
+    "tcp": "TCP",
+    "udp": "UDP",
+    "any": "Alle",
+    "source": "Fra",
+    "sourceHint": "En adresse eller et område. Tomt betyr overalt.",
+    "direction": "Retning"
+  }
+}

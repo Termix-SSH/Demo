@@ -11,6 +11,7 @@ import {
   readSettings,
   type AcmeSettings,
 } from "./settings.js";
+import { rememberDnsUser } from "./dns-plugin.js";
 
 const EXPIRY_WARN_DAYS = 7;
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -78,6 +79,7 @@ export function createAcmeRunner(
     const missing = missingSetting(settings);
     if (missing) throw new AcmeNotConfiguredError(missing);
 
+    if (settings.challengeType === "dns-plugin") await rememberDnsUser(ctx);
     const attemptAt = new Date().toISOString();
     try {
       const issued = await issue(ctx, settings);

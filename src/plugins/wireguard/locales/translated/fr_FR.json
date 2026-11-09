@@ -1,0 +1,238 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Installez WireGuard sur vos hôtes et gérez les interfaces, les clients et les configurations depuis un seul onglet."
+  },
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "back": "Retour",
+    "delete": "Supprimer",
+    "loading": "Chargement..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Utiliser WireGuard",
+      "description": "Gérer les interfaces et les clients WireGuard sur les hôtes que vous pouvez modifier."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Ouvrez WireGuard depuis un hôte.",
+    "error": "Impossible de charger WireGuard depuis cet hôte.",
+    "sudo": "Cet hôte nécessite une connexion root ou un sudo sans mot de passe pour gérer WireGuard.",
+    "installed": "Installé",
+    "notInstalled": "Non installé",
+    "refresh": "Actualiser",
+    "viewInterfaces": "Interfaces",
+    "viewLogs": "Journaux"
+  },
+  "install": {
+    "title": "Installer WireGuard",
+    "desc": "Cela installe les outils WireGuard et iptables avec le gestionnaire de paquets de l'hôte.",
+    "confirm": "Installer",
+    "done": "WireGuard est installé.",
+    "failed": "Impossible d'installer WireGuard.",
+    "empty": "WireGuard n'est pas installé sur cet hôte",
+    "noManager": "Aucun gestionnaire de paquets pris en charge n'a été trouvé. Installez WireGuard manuellement.",
+    "hint": "Installez-le sur {{os}} pour exécuter un VPN depuis cet hôte.",
+    "thisHost": "cet hôte",
+    "button": "Installer WireGuard",
+    "working": "Installation en cours..."
+  },
+  "interfaces": {
+    "add": "Ajouter une interface",
+    "empty": "Aucune interface pour le moment. Ajoutez-en une pour démarrer un VPN.",
+    "loadFailed": "Impossible de charger les interfaces.",
+    "up": "Actif",
+    "down": "Inactif",
+    "clients": "{{count}} clients",
+    "nat": "NAT",
+    "boot": "Démarrage au boot"
+  },
+  "create": {
+    "title": "Ajouter une interface",
+    "name": "Nom",
+    "address": "Adresse",
+    "addressHint": "L'adresse du serveur et le sous-réseau. Les clients obtiennent les adresses libres suivantes.",
+    "port": "Port UDP",
+    "nat": "Partager l'internet de l'hôte (NAT)",
+    "natDesc": "Les clients peuvent accéder à Internet et au réseau de l'hôte via cet hôte.",
+    "natMissing": "Le NAT nécessite iptables, qui n'est pas installé sur cet hôte.",
+    "forwarding": "Activer le transfert IP",
+    "forwardingDesc": "Permet à l'hôte de transférer le trafic entre les clients et le réseau. Conservé après un redémarrage.",
+    "firewall": "Ouvrir le port dans le pare-feu",
+    "firewallDesc": "Ajoute le port UDP à ufw ou firewalld si l'un d'eux est en cours d'exécution.",
+    "start": "Démarrer maintenant et au boot",
+    "startDesc": "Active l'interface et la maintient active après un redémarrage.",
+    "save": "Créer",
+    "done": "L'interface est prête.",
+    "failed": "Impossible de créer l'interface."
+  },
+  "detail": {
+    "clients": "Clients",
+    "settings": "Paramètres",
+    "config": "Configuration",
+    "service": "Service",
+    "gone": "Cette interface n'existe plus sur l'hôte."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Afficher l'onglet WireGuard pour cet hôte dans son menu."
+      },
+      "showPanel": {
+        "label": "Afficher le panneau WireGuard dans les terminaux",
+        "description": "Permettre l'ouverture du panneau WireGuard à côté du terminal SSH de cet hôte."
+      },
+      "alertDown": {
+        "label": "Alerter lorsqu'une interface est inactive",
+        "description": "Envoyer une alerte lorsqu'une interface qui démarre au boot n'est pas active. Vérifié lors de la lecture de l'état WireGuard."
+      }
+    },
+    "publicKey": "Clé publique",
+    "port": "Port UDP",
+    "endpoint": "Point de terminaison du serveur",
+    "endpointHint": "L'adresse publique à laquelle les clients se connectent, comme vpn.example.com:51820.",
+    "dns": "DNS pour les clients",
+    "dnsHint": "Facultatif. Séparez les serveurs par des virgules.",
+    "allowed": "Trafic via le VPN",
+    "allowedHint": "Les plages que les clients envoient via le VPN. 0.0.0.0/0, ::/0 envoie tout.",
+    "keepalive": "Keepalive (secondes)",
+    "keepaliveHint": "Garde les clients derrière un NAT accessibles. Utilisez 0 pour le désactiver.",
+    "saved": "Paramètres enregistrés.",
+    "saveFailed": "Impossible d'enregistrer les paramètres.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Ouvrir le panneau WireGuard avec les nouveaux terminaux",
+        "description": "Afficher le panneau WireGuard à côté de chaque terminal SSH qui a WireGuard activé. Vous pouvez toujours l'ouvrir et le fermer depuis le bouton sur le bord droit."
+      },
+      "companionSide": {
+        "label": "Position du panneau WireGuard",
+        "description": "Où le panneau WireGuard se trouve par rapport à un terminal.",
+        "right": "Droite",
+        "left": "Gauche",
+        "bottom": "Bas"
+      },
+      "companionSize": {
+        "label": "Taille du panneau WireGuard",
+        "description": "Largeur en pixels, ou hauteur lorsqu'il est en bas. Vous pouvez également redimensionner en faisant glisser son bord."
+      },
+      "companionEdgeButton": {
+        "label": "Afficher le bouton du panneau",
+        "description": "Afficher un petit bouton sur le bord droit d'un terminal qui ouvre le panneau WireGuard."
+      }
+    }
+  },
+  "clients": {
+    "add": "Ajouter un client",
+    "empty": "Aucun client pour le moment.",
+    "loadFailed": "Impossible de charger les clients.",
+    "name": "Nom",
+    "nameHint": "Lettres, chiffres, points, tirets et underscores.",
+    "allowed": "Trafic via le VPN",
+    "allowedHint": "Laissez vide pour utiliser la valeur par défaut de l'interface : {{value}}",
+    "create": "Créer un client",
+    "addFailed": "Impossible d'ajouter le client.",
+    "needEndpoint": "Définissez d'abord le point de terminaison du serveur dans les paramètres de l'interface.",
+    "connected": "Connecté",
+    "off": "Désactivé",
+    "external": "Créé manuellement",
+    "handshake": "poignée de main il y a {{ago}}",
+    "showConfig": "Afficher la configuration et le code QR",
+    "configFailed": "Impossible de lire la configuration du client.",
+    "rotate": "Nouvelles clés",
+    "rotateTitle": "Générer de nouvelles clés pour {{name}} ?",
+    "rotateDesc": "L'ancienne configuration cessera de fonctionner. Fournissez la nouvelle configuration au client ensuite.",
+    "turnOff": "Désactiver",
+    "turnOn": "Activer",
+    "saveFailed": "Impossible de modifier le client.",
+    "deleteTitle": "Supprimer {{name}} ?",
+    "deleteDesc": "Le client sera supprimé et ne pourra plus se connecter.",
+    "deleteFailed": "Impossible de supprimer le client."
+  },
+  "clientConfig": {
+    "note": "Cette configuration contient la clé privée du client. Partagez-la uniquement avec la personne ou l'appareil qui l'utilisera.",
+    "qr": "Code QR pour la configuration du client",
+    "copy": "Copier",
+    "copied": "Configuration copiée.",
+    "copyFailed": "Impossible de copier la configuration.",
+    "download": "Télécharger .conf"
+  },
+  "config": {
+    "title": "Fichier de configuration",
+    "hint": "Les clés privées et prépartagées sont masquées. Laissez le texte de remplacement pour conserver une clé. La configuration est vérifiée avant d'être enregistrée et une sauvegarde est conservée. Les modifications d'adresse nécessitent un redémarrage.",
+    "loadFailed": "Impossible de lire la configuration.",
+    "saved": "Configuration enregistrée.",
+    "saveFailed": "Impossible d'enregistrer la configuration."
+  },
+  "logs": {
+    "loadFailed": "Impossible de lire les journaux.",
+    "lines": "{{count}} lignes",
+    "empty": "Aucune ligne de journal."
+  },
+  "service": {
+    "failed": "L'action du service a échoué.",
+    "start": "Démarrer",
+    "stop": "Arrêter",
+    "restart": "Redémarrer",
+    "autostart": "Démarrer au démarrage",
+    "autostartDesc": "Démarrer cette interface lorsque l'hôte démarre.",
+    "needsSystemd": "Le démarrage au démarrage nécessite systemd sur cet hôte.",
+    "noForward": "Le transfert IP est désactivé sur cet hôte, les clients ne peuvent donc pas accéder au réseau via le NAT.",
+    "delete": "Supprimer l'interface",
+    "deleteTitle": "Supprimer {{name}} ?",
+    "deleteDesc": "L'interface est arrêtée et sa configuration, ses clés et les fichiers clients enregistrés sont supprimés de l'hôte.",
+    "deleteFailed": "Impossible de supprimer l'interface."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Activez WireGuard dans les paramètres de cet hôte pour utiliser cette carte.",
+    "start": "Activer",
+    "stop": "Désactiver",
+    "done": "{{name}} mis à jour"
+  },
+  "operations": {
+    "list": {
+      "title": "Lister les interfaces WireGuard"
+    },
+    "down": {
+      "title": "Interfaces WireGuard désactivées"
+    },
+    "start": {
+      "title": "Démarrer l'interface WireGuard"
+    },
+    "stop": {
+      "title": "Arrêter l'interface WireGuard"
+    },
+    "restart": {
+      "title": "Redémarrer l'interface WireGuard"
+    },
+    "interfaces": {
+      "title": "Interfaces WireGuard",
+      "address": "Adresse",
+      "port": "Port",
+      "clients": "Clients"
+    }
+  },
+  "nav": {
+    "togglePanel": "Afficher/masquer le panneau WireGuard"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Vérification des hôtes...",
+    "summary_one": "{{count}} client sur {{hosts}} hôtes",
+    "summary_many": "{{count}} clients sur {{hosts}} hôtes",
+    "summary_other": "{{count}} clients sur {{hosts}} hôtes",
+    "refresh": "Vérifier à nouveau",
+    "empty": "Activez WireGuard pour un hôte afin de le voir ici.",
+    "missing": "Non installé",
+    "down_one": "{{count}} arrêté",
+    "down_many": "{{count}} arrêtés",
+    "down_other": "{{count}} arrêtés",
+    "interfaces_one": "{{count}} interface, {{clients}} clients",
+    "interfaces_many": "{{count}} interfaces, {{clients}} clients",
+    "interfaces_other": "{{count}} interfaces, {{clients}} clients"
+  }
+}

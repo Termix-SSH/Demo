@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Alimentation, capteurs, journaux d'événements et consoles pour les BMC de serveurs via Redfish, IPMI et Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Chargement"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "Voir les BMC",
+      "description": "Ouvrez l'onglet Out-of-band et consultez l'alimentation, l'état de santé, les capteurs et les journaux."
+    },
+    "power": {
+      "title": "Contrôler l'alimentation et le démarrage",
+      "description": "Allumer et éteindre les machines, effectuer un redémarrage électrique et choisir le prochain périphérique de démarrage."
+    },
+    "console": {
+      "title": "Utiliser la console série",
+      "description": "Ouvrir la console série via le réseau (SoL) d'une machine."
+    },
+    "media": {
+      "title": "Utiliser les médias virtuels",
+      "description": "Monter et éjecter des images ISO sur une machine."
+    },
+    "manage": {
+      "title": "Gérer les BMC",
+      "description": "Ajouter, modifier et supprimer des BMC, et effacer leurs journaux d'événements."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Exécuter ipmitool sur le serveur Termix",
+        "description": "Désactivé, les BMC IPMI doivent utiliser un hôte relais. Redfish et AMT ne sont pas affectés."
+      }
+    }
+  },
+  "description": "Ajoutez les contrôleurs de gestion (BMC) de vos serveurs pour les allumer et les éteindre, surveiller leurs capteurs et lire leurs journaux d'événements. Les identifiants de connexion sont stockés de manière chiffrée et ne sont plus affichés.",
+  "summary": "{{count}} BMC, {{attention}} nécessitent une attention",
+  "empty": "Aucun BMC pour le moment.",
+  "add": "Ajouter un BMC",
+  "edit": "Modifier",
+  "delete": "Supprimer",
+  "back": "Retour",
+  "saved": "Enregistré",
+  "deleteConfirm": "Supprimer {{name}} ?",
+  "status": {
+    "unknown": "Non encore lu",
+    "up": "Accessible",
+    "down": "Inaccessible"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI via LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe"
+  },
+  "power": {
+    "on": "Allumé",
+    "off": "Éteint",
+    "unknown": "Inconnu",
+    "sent": "Demande à {{name}} de modifier l'alimentation",
+    "action": {
+      "on": "Allumer",
+      "off": "Éteindre",
+      "graceful-shutdown": "Arrêter",
+      "cycle": "Redémarrer",
+      "reset": "Réinitialiser"
+    },
+    "confirm": {
+      "on": "Allumer {{name}} ?",
+      "off": "Couper l'alimentation de {{name}} ? Le système ne s'arrêtera pas proprement.",
+      "graceful-shutdown": "Demander à {{name}} de s'arrêter ?",
+      "cycle": "Redémarrer {{name}} ? Le système ne s'arrêtera pas proprement.",
+      "reset": "Réinitialiser {{name}} ? Le système redémarre immédiatement."
+    }
+  },
+  "health": {
+    "ok": "Sain",
+    "warning": "Avertissement",
+    "critical": "Critique",
+    "unknown": "Inconnu"
+  },
+  "kind": {
+    "temperature": "Température",
+    "fan": "Ventilateur",
+    "voltage": "Tension",
+    "power": "Puissance",
+    "psu": "Alimentation",
+    "other": "Autre"
+  },
+  "form": {
+    "addTitle": "Ajouter un BMC",
+    "editTitle": "Modifier le BMC",
+    "device": "BMC",
+    "access": "Accès",
+    "type": "Type",
+    "name": "Nom",
+    "address": "Adresse",
+    "port": "Port",
+    "host": "Hôte Termix",
+    "hostHint": "Liez le BMC à l'hôte auquel il appartient. Il suivra alors le partage de cet hôte et apparaîtra dans son menu.",
+    "noHost": "Aucun",
+    "poll": "Lire toutes les (secondes)",
+    "pollHint": "Au moins 30 secondes, ou 60 lorsqu'un hôte relais est utilisé.",
+    "scheme": "Connexion",
+    "relay": "Hôte relais",
+    "relayHint": "Exécuter ipmitool sur cet hôte au lieu du serveur Termix. Nécessaire pour la console série.",
+    "noRelay": "Serveur Termix",
+    "cipher": "Suite de chiffrement",
+    "cipherHint": "Ne modifiez ceci que si le BMC refuse la connexion. 3 est le plus courant, 17 pour les BMC plus récents.",
+    "ca": "Certificat de l'autorité de certification",
+    "caHint": "Collez le PEM de l'autorité de certification du BMC. Laissez vide pour un certificat de confiance.",
+    "caSet": "Une autorité de certification est enregistrée. Collez-en une nouvelle pour la remplacer.",
+    "keepLogin": "Laissez vide pour conserver les identifiants enregistrés",
+    "test": "Tester la connexion",
+    "testOk": "Le BMC a répondu. L'alimentation est {{power}}.",
+    "testNeedsLogin": "Saisissez à nouveau les identifiants pour tester.",
+    "save": "Enregistrer",
+    "add": "Ajouter"
+  },
+  "view": {
+    "overview": "Vue d'ensemble",
+    "sensors": "Capteurs",
+    "log": "Journal des événements",
+    "boot": "Démarrer",
+    "media": "Médias virtuels",
+    "console": "Console",
+    "refresh": "Lire maintenant",
+    "type": "Type",
+    "address": "Adresse",
+    "power": "Alimentation",
+    "health": "État",
+    "manufacturer": "Fabricant",
+    "model": "Modèle",
+    "serial": "Numéro de série",
+    "bios": "BIOS",
+    "bmc": "Micrologiciel BMC",
+    "status": "BMC",
+    "viaRelay": "Atteint via un hôte relais.",
+    "noSensors": "Ce BMC ne signale aucun capteur.",
+    "sensor": "Capteur",
+    "reading": "Valeur",
+    "state": "État"
+  },
+  "log": {
+    "time": "Heure",
+    "severity": "Niveau",
+    "message": "Événement",
+    "empty": "Le journal des événements est vide.",
+    "clear": "Vider le journal",
+    "clearConfirm": "Vider le journal des événements de {{name}} ? Cette action est irréversible.",
+    "cleared": "Journal vidé",
+    "level": {
+      "info": "Info",
+      "warning": "Avertissement",
+      "critical": "Critique"
+    }
+  },
+  "boot": {
+    "hint": "La machine démarre à partir de cet appareil une seule fois, puis revient à son ordre de démarrage normal. Appliquez cette modification avant un redémarrage.",
+    "device": "Démarrer sur",
+    "mode": "Mode",
+    "uefi": "UEFI",
+    "legacy": "BIOS Legacy",
+    "apply": "Appliquer au prochain démarrage",
+    "done": "{{name}} démarrera sur le périphérique choisi la prochaine fois",
+    "pxe": "Réseau (PXE)",
+    "disk": "Disque dur",
+    "cd": "CD ou média virtuel",
+    "usb": "USB",
+    "bios": "Configuration du BIOS",
+    "none": "Ordre normal"
+  },
+  "media": {
+    "url": "Adresse de l'image",
+    "empty": "Ce BMC ne possède pas de lecteur CD virtuel.",
+    "mounted": "Monté",
+    "free": "Vide",
+    "mount": "Monter",
+    "eject": "Éjecter",
+    "mountedDone": "Image montée",
+    "ejected": "Image éjectée"
+  },
+  "console": {
+    "hint": "Tapez ~. pour quitter la console.",
+    "connecting": "Connexion en cours",
+    "ended": "La console s'est fermée.",
+    "failed": "Impossible d'ouvrir la console.",
+    "needsRelay": "La console série nécessite un hôte relais avec ipmitool. Choisissez-en un dans les paramètres du BMC."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Démarrer sur",
+    "uefi": "Mode UEFI",
+    "list": {
+      "title": "Lister les BMC"
+    },
+    "poll": {
+      "title": "Lire un BMC maintenant"
+    },
+    "powerState": {
+      "title": "Obtenir l'état d'alimentation"
+    },
+    "power-on": {
+      "title": "Allumer"
+    },
+    "graceful-shutdown": {
+      "title": "Éteindre"
+    },
+    "power-off": {
+      "title": "Couper l'alimentation"
+    },
+    "power-cycle": {
+      "title": "Cycle d'alimentation"
+    },
+    "reset": {
+      "title": "Redémarrer"
+    },
+    "setBootOnce": {
+      "title": "Démarrer une fois sur un périphérique"
+    },
+    "clearLog": {
+      "title": "Effacer le journal des événements"
+    },
+    "health": {
+      "title": "État de santé du BMC"
+    }
+  },
+  "widget": {
+    "name": "Out-of-band",
+    "description": "Alimentation et état de santé de vos BMC de serveur.",
+    "summary": "{{up}} sur {{total}} actifs"
+  }
+}

@@ -1,0 +1,299 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Vizualizează, descarcă, comitează și încarcă repozitorii Git pe host-urile tale și menține-le actualizate cu pull automat."
+  },
+  "common": {
+    "save": "Salvează",
+    "cancel": "Anulează",
+    "back": "Înapoi",
+    "loading": "Se încarcă..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Folosește Git",
+      "description": "Vizualizează repozitoriile Git pe host-urile la care ai acces și modifică-le pe cele pe care le poți edita."
+    },
+    "runCommands": {
+      "title": "Execută comenzi după pull automat",
+      "description": "Setează o comandă care se execută pe host după ce un pull automat aduce commit-uri noi."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Gestionați repo-urile Git de pe acest gazdă din fila Git."
+      },
+      "repoRoots": {
+        "label": "Căutați în foldere",
+        "description": "Folderele în care se caută repo-uri când scanați această gazdă. Separați-le prin virgule. Implicit este folderul home.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Folosește sudo",
+        "description": "Rulează git ca root cu sudo. Doar pentru repo-uri pe care utilizatorul conectat nu le poate folosi."
+      },
+      "readOnly": {
+        "label": "Doar citire",
+        "description": "Afișează repo-urile, dar nu le modifica niciodată pe această gazdă."
+      },
+      "showPanel": {
+        "label": "Panou lângă terminal",
+        "description": "Afișează panoul Git în filele terminalului acestui gazdă."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Deschide panoul împreună cu terminalul",
+        "description": "Afișează panoul Git când se deschide un terminal pe o gazdă care îl are activat."
+      },
+      "companionSide": {
+        "label": "Poziția panoului",
+        "description": "Unde este poziționat panoul în raport cu terminalul.",
+        "right": "Dreapta",
+        "left": "Stânga",
+        "bottom": "Jos"
+      },
+      "companionSize": {
+        "label": "Dimensiunea panoului",
+        "description": "Lățimea panoului, sau înălțimea acestuia când este poziționat jos, în pixeli."
+      },
+      "companionEdgeButton": {
+        "label": "Buton Edge",
+        "description": "Afișează un buton mic pe marginea terminalului pentru a deschide panoul."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Deschide Git dintr-un host.",
+    "error": "Nu s-a putut încărca git de pe acest host.",
+    "disabled": "Git este dezactivat pentru acest host. Activează-l în setările host-ului.",
+    "sudo": "Aceasta necesită o autentificare root, sudo fără parolă sau o Parolă Sudo salvată.",
+    "refresh": "Reîmprospătează",
+    "readOnly": "Doar citire",
+    "notInstalled": "git nu este instalat",
+    "notInstalledTitle": "git nu este instalat pe acest gazdă",
+    "notInstalledHint": "Instalează git folosind managerul de pachete al gazdei, apoi reîmprospătează."
+  },
+  "actions": {
+    "ok": "Gata",
+    "failed": "Eșuat",
+    "noOutput": "Niciun rezultat."
+  },
+  "repos": {
+    "add": "Adaugă repo",
+    "search": "Caută repo-uri",
+    "empty": "Nu există repo-uri încă. Adaugă unul pentru a începe.",
+    "noMatch": "Niciun repo nu corespunde.",
+    "viewOnly": "Niciun repo nu a fost adăugat pe această gazdă.",
+    "detached": "deconectat",
+    "changes_one": "{{count}} modificare",
+    "changes_few": "{{count}} modificări",
+    "changes_other": "{{count}} modificări",
+    "conflicts": "Conflicte",
+    "auto": "Extracție automată",
+    "autoFailing": "Extracție eșuată",
+    "remove": "Elimină din listă",
+    "removeTitle": "Elimină {{name}}?",
+    "removeBody": "Depozitul este uitat doar aici. Nimic nu este șters pe gazdă.",
+    "removed": "{{name}} eliminat",
+    "error": {
+      "missing": "Dosar lipsă",
+      "notrepo": "Nu este un repository git",
+      "unreadable": "Nu se poate citi"
+    }
+  },
+  "add": {
+    "title": "Adaugă repository-uri",
+    "modeScan": "Scanare",
+    "modePath": "Dosar",
+    "modeClone": "Clonare",
+    "scanHint": "Caută repository-uri git în {{roots}}. Modifică dosarele în setările gazdei.",
+    "rescan": "Scanează din nou",
+    "noneFound": "Nu s-au găsit repository-uri noi.",
+    "picked": "Selectat",
+    "addPicked_one": "Adaugă {{count}} repository",
+    "addPicked_few": "Adaugă {{count}} repository-uri",
+    "addPicked_other": "Adaugă {{count}} repository-uri",
+    "addAll": "Adaugă toate",
+    "folder": "Dosar pe gazdă",
+    "folderHint": "Calea completă sau începe cu ~ pentru dosarul home. Trebuie să fie deja un repository git.",
+    "addRepo": "Adaugă repository",
+    "url": "Adresă",
+    "urlHint": "Folosește cheile și setările git ale utilizatorului conectat la gazdă.",
+    "dest": "Clonează în",
+    "destHint": "Dosarul nu trebuie să existe încă.",
+    "clone": "Clonează",
+    "cloned": "Clonat",
+    "added_one": "{{count}} repository adăugat",
+    "added_few": "{{count}} repository-uri adăugate",
+    "added_other": "{{count}} repository-uri adăugate",
+    "failed": "Nu s-a putut adăuga repository-ul",
+    "scanFailed": "Nu s-a putut scana gazda"
+  },
+  "repo": {
+    "ahead": "{{count}} înainte",
+    "behind": "{{count}} în urmă",
+    "fetch": "Fetch",
+    "fetched": "Fetch efectuat",
+    "pull": "Pull",
+    "pulled": "Pull efectuat",
+    "push": "Push",
+    "pushed": "Push efectuat",
+    "viewChanges": "Modificări",
+    "viewBranches": "Ramuri",
+    "viewHistory": "Istoric",
+    "viewStash": "Stash",
+    "viewAuto": "Pull automat"
+  },
+  "changes": {
+    "loadFailed": "Nu s-au putut citi modificările.",
+    "clean": "Nimic de commitat. Arborele de lucru este curat.",
+    "stagedTitle": "Staged ({{count}})",
+    "unstagedTitle": "Modificări ({{count}})",
+    "stage": "Stage",
+    "staged": "Staged",
+    "unstage": "Unstage",
+    "unstaged": "Unstaged",
+    "stageAll": "Stage all",
+    "renamed": "Redenumit",
+    "discard": "Renunță",
+    "discardTitle": "Renunți la modificările din {{name}}?",
+    "discardBody": "Modificările din acest fișier sunt șterse și nu pot fi recuperate.",
+    "discarded": "Modificări renunțate",
+    "message": "Mesaj de commit",
+    "messagePlaceholder": "Ce s-a schimbat",
+    "commit": "Commit",
+    "commitAll": "Commit toate modificările",
+    "commitStaged_one": "Commit {{count}} fișier staged",
+    "commitStaged_few": "Commit {{count}} fișiere staged",
+    "commitStaged_other": "Commit {{count}} fișiere staged",
+    "committed": "Committed",
+    "noDiff": "Nicio modificare de afișat.",
+    "truncated": "Diff-ul este lung, așa că se afișează doar începutul."
+  },
+  "branches": {
+    "loadFailed": "Nu s-au putut citi ramurile.",
+    "empty": "Încă nu există ramuri.",
+    "current": "Curentă",
+    "remote": "Remote",
+    "gone": "Upstream dispărut",
+    "newName": "Ramură nouă",
+    "create": "Creare ramură",
+    "created": "Ramura {{name}} a fost creată",
+    "switch": "Comutare",
+    "switched": "Comutat la {{name}}",
+    "merge": "Fuziune în ramura curentă",
+    "mergeTitle": "Fuziune {{name}} în {{into}}?",
+    "mergeBody": "O fuziune cu conflicte este anulată imediat.",
+    "merged": "{{name}} fuzionată",
+    "delete": "Ștergere ramură",
+    "deleteTitle": "Ștergere {{name}}?",
+    "deleteBody": "Git refuză dacă ramura are commit-uri care nu au fost fuzionate.",
+    "deleted": "{{name}} ștearsă",
+    "forceTitle": "Ștergere forțată {{name}}?",
+    "forceBody": "Această ramură are commit-uri care nu au fost fuzionate. Acestea se vor pierde dacă o ștergeți.",
+    "forceDelete": "Ștergere forțată"
+  },
+  "history": {
+    "loadFailed": "Nu s-a putut citi istoricul.",
+    "empty": "Încă nu există commit-uri.",
+    "branch": "Această ramură",
+    "all": "Toate ramurile",
+    "more": "Încarcă mai multe"
+  },
+  "stash": {
+    "loadFailed": "Nu s-a putut citi stash-ul.",
+    "title": "Stash-uri",
+    "empty": "Niciun stash.",
+    "message": "Mesaj",
+    "messagePlaceholder": "Opțional",
+    "untracked": "Includere fișiere netrackate",
+    "push": "Stash schimbări",
+    "pushDone": "Schimbări stash-uite",
+    "apply": "Aplică",
+    "applyDone": "Stash aplicat",
+    "pop": "Pop",
+    "popDone": "Stash aplicat și eliminat",
+    "drop": "Elimină",
+    "dropDone": "Stash eliminat",
+    "dropTitle": "Eliminare {{name}}?",
+    "dropBody": "Stash-ul este șters și nu poate fi recuperat.",
+    "remotes": "Remote-uri",
+    "noRemotes": "Niciun remote."
+  },
+  "auto": {
+    "intro": "Pull-uri programate, doar cu fast-forward. Nu face niciodată fuziuni și ocolește repo-ul dacă are schimbări nesalvate sau s-a divergent de upstream.",
+    "noUpstream": "Această ramură nu are încă un upstream, așa că auto-pull o va omite.",
+    "enable": "Auto pull",
+    "enableHint": "Rulează ca tine, cu accesul tău la acest host.",
+    "interval": "La fiecare (minute)",
+    "intervalHint": "Cât timp să aștepte între pull-uri.",
+    "post": "Comandă după un pull",
+    "postHint": "Rulează în folderul repo după sosirea commit-urilor noi. Necesită permisiunea de a rula comenzi.",
+    "saved": "Auto pull salvat",
+    "saveFailed": "Nu s-a putut salva auto pull",
+    "runNow": "Rulează acum",
+    "next": "Următorul pull {{when}}",
+    "runs": "Execuții recente",
+    "noRuns": "Încă nu există execuții.",
+    "outcome": {
+      "pulled": "Pull făcut",
+      "uptodate": "Actualizat",
+      "skipped": "Omis",
+      "failed": "Eșuat"
+    }
+  },
+  "card": {
+    "title": "Repo-uri Git",
+    "loading": "Se încarcă...",
+    "refresh": "Reîmprospătare",
+    "empty": "Niciun gazdă nu are încă repo-uri Git.",
+    "allClean": "Toate repo-urile sunt curate și actualizate.",
+    "summary_one": "{{count}} repo | {{attention}} necesită atenție",
+    "summary_few": "{{count}} repo-uri | {{attention}} necesită atenție",
+    "summary_other": "{{count}} repo-uri | {{attention}} necesită atenție"
+  },
+  "companion": {
+    "toggle": "Panou Git",
+    "openTab": "Deschide Git",
+    "here": "Repo-ul acestui folder",
+    "all": "Toate repo-urile"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Listează repo-uri Git"
+    },
+    "fetch": {
+      "title": "Fetch pentru un repo"
+    },
+    "pull": {
+      "title": "Pull pentru un repo"
+    },
+    "push": {
+      "title": "Push pentru un repo"
+    },
+    "checkout": {
+      "title": "Comută ramura",
+      "branch": "Ramură"
+    },
+    "reset-hard": {
+      "title": "Resetare hard a unui repo",
+      "ref": "Resetează la"
+    },
+    "repos": {
+      "title": "Repo-uri Git",
+      "branch": "Ramură",
+      "ahead": "Înainte",
+      "behind": "Înapoi",
+      "changed": "Modificări"
+    },
+    "signals": {
+      "behind": "Repo-uri în urmă",
+      "dirty": "Repo-uri cu modificări",
+      "pull-failing": "Pull automat eșuat"
+    }
+  }
+}

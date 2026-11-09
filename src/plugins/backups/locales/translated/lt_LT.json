@@ -1,0 +1,471 @@
+{
+  "plugin": {
+    "name": "Atsarginiai kopijos",
+    "description": "Darykite aplankų, duomenų bazių ir Docker duomenų atsargines kopijas savo serveriuose naudodami restic, tada naršykite, atsisiųskite ir atkurkite."
+  },
+  "common": {
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti",
+    "back": "Atgal",
+    "delete": "Pašalinti",
+    "done": "Atlikta",
+    "loading": "Įkeliama...",
+    "refresh": "Atnaujinti",
+    "retry": "Bandyti dar kartą"
+  },
+  "permissions": {
+    "use": {
+      "title": "Naudoti atsargines kopijas",
+      "description": "Sukonfigūruokite atsarginių kopijų užduotis ir saugyklas, vykdykite atsarginių kopijų kūrimą, naršykite, atsisiųskite ir atkurkite momentines būsenas serveriuose, kuriuos gali redaguoti."
+    }
+  },
+  "tab": {
+    "title": "Atsarginės kopijos",
+    "viewJobs": "Užduotys",
+    "viewRepos": "Saugyklos",
+    "viewHistory": "Istorija"
+  },
+  "hostTab": {
+    "title": "Atsarginės kopijos",
+    "noHost": "Atidarykite atsargines kopijas iš serverio.",
+    "viewJobs": "Užduotys",
+    "viewSnapshots": "Momentinės būsenos",
+    "viewHistory": "Istorija",
+    "restic": "restic {{version}}",
+    "noRestic": "restic neįdiegta",
+    "sudo": "Termix turi prisijungti kaip root arba kaip vartotojas, turintis slaptažodžio nereikalaujantį sudo, kad galėtų vykdyti atsargines kopijas šiame serveryje.",
+    "statusFailed": "Nepavyko nuskaityti šio serverio"
+  },
+  "install": {
+    "missing": "restic nėra įdiegta šiame serveryje",
+    "tooOld": "restic šiame serveryje yra senesnė nei 0.17",
+    "hint": "Atsarginės kopijos naudoja restic. Įdiekite ją naudodami paketų valdyklą arba iš restic išleidimo puslapio GitHub, jei paketas per senas.",
+    "button": "Įdiegti restic",
+    "working": "Diegiama...",
+    "title": "Įdiegti restic?",
+    "desc": "Tai įdiegs restic serveryje kaip root.",
+    "confirm": "Įdiegti",
+    "done": "restic {{version}} įdiegta",
+    "failed": "Nepavyko įdiegti restic"
+  },
+  "status": {
+    "never": "Niekada nevykdyta",
+    "running": "Vykdoma",
+    "success": "Atlikta",
+    "warning": "Įspėjimai",
+    "failed": "Nepavyko",
+    "canceled": "Sustabdyta"
+  },
+  "time": {
+    "justNow": "būtent dabar",
+    "soon": "po akimirkos",
+    "ago": {
+      "minutes_one": "prieš {{count}} minutę",
+      "minutes_few": "prieš {{count}} minutes",
+      "minutes_many": "prieš {{count}} minučių",
+      "minutes_other": "prieš {{count}} minučių",
+      "hours_one": "prieš {{count}} valandą",
+      "hours_few": "prieš {{count}} valandas",
+      "hours_many": "prieš {{count}} valandų",
+      "hours_other": "prieš {{count}} valandų",
+      "days_one": "prieš {{count}} dieną",
+      "days_few": "prieš {{count}} dienas",
+      "days_many": "prieš {{count}} dienų",
+      "days_other": "prieš {{count}} dienų"
+    },
+    "in": {
+      "minutes_one": "po {{count}} minutės",
+      "minutes_few": "po {{count}} minučių",
+      "minutes_many": "po {{count}} minučių",
+      "minutes_other": "po {{count}} minučių",
+      "hours_one": "po {{count}} valandos",
+      "hours_few": "po {{count}} valandų",
+      "hours_many": "po {{count}} valandų",
+      "hours_other": "po {{count}} valandų",
+      "days_one": "po {{count}} dienos",
+      "days_few": "po {{count}} dienų",
+      "days_many": "po {{count}} dienų",
+      "days_other": "po {{count}} dienų"
+    }
+  },
+  "jobs": {
+    "add": "Pridėti užduotį",
+    "empty": "Dar nėra atsarginių kopijų užduočių",
+    "emptyHint": "Pridėkite užduotį, kad darytumėte aplankų, duomenų bazių arba Docker duomenų atsargines kopijas.",
+    "emptyNoRepo": "Pirmiausia pridėkite saugyklą, kad atsarginės kopijos turėtų kur saugoti.",
+    "loadFailed": "Nepavyko įkelti atsarginių kopijų užduočių",
+    "lastGood": "Paskutinė atsarginė kopija {{when}}",
+    "noGood": "Dar nėra atsarginės kopijos",
+    "next": "Kita {{when}}",
+    "paused": "Pristabdyta",
+    "run": "Vykdyti dabar",
+    "stop": "Sustabdyti",
+    "edit": "Redaguoti",
+    "snapshots": "Momentinės nuotraukos",
+    "started": "{{name}} pradėta",
+    "runFailed": "Nepavyko pradėti atsarginės kopijos kūrimo"
+  },
+  "editor": {
+    "newTitle": "Naujas atsarginės kopijos kūrimo darbas",
+    "general": "Darbas",
+    "host": "Serveris",
+    "pickHost": "Pasirinkite serverį",
+    "name": "Pavadinimas",
+    "namePlaceholder": "Kasdienė atsarginė kopija",
+    "repository": "Saugykla",
+    "pickRepository": "Pasirinkite saugyklą",
+    "noRepos": "Šiam serveriui neturite tinkamos saugyklos. Pirmiausia pridėkite ją skirtuke „Atsarginės kopijos“.",
+    "repoLocked": "Tik šios saugyklos savininkas gali ją keisti.",
+    "enabled": "Vykdyti pagal grafiką",
+    "enabledHint": "Išjunkite, jei norite sustabdyti grafiką. Vykdyti dabar vis tiek veiks.",
+    "oneFileSystem": "Likti vienoje failų sistemoje",
+    "oneFileSystemHint": "Praleisti kitus diskus ir prijungimus, rastus pasirinktuose aplanakuose.",
+    "saved": "Darbas išsaugotas",
+    "saveFailed": "Nepavyko išsaugoti darbo",
+    "deleteTitle": "Ištrinti {{name}}?",
+    "deleteDesc": "Darbas bus pašalintas iš Termix. Jo momentinės nuotraukos liks saugykloje.",
+    "deleted": "Darbas ištrintas",
+    "deleteFailed": "Nepavyko ištrinti darbo"
+  },
+  "sources": {
+    "add": "Pridėti prie atsarginės kopijos",
+    "addPaths": "Aplanakai",
+    "addDatabase": "Duomenų bazė",
+    "addDocker": "Docker",
+    "remove": "Pašalinti",
+    "paths": "Aplanakai ir failai",
+    "folders": "Keliai",
+    "foldersHint": "Po vieną pilną kelią eilutėje.",
+    "excludes": "Praleisti",
+    "excludesHint": "Po vieną restic šabloną eilutėje, pvz., *.log.",
+    "database": "Duomenų bazė",
+    "engine": "Tipas",
+    "engines": {
+      "mysql": "MySQL arba MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Prisijungimas",
+    "ownLogin": "Įveskite prisijungimą čia",
+    "noDatabasesPlugin": "Įjunkite „Duomenų bazių“ įskiepį, kad galėtumėte pasirinkti išsaugotą prisijungimą.",
+    "address": "Adresas",
+    "addressPlaceholder": "Tuščia vietiniam lizdui",
+    "port": "Prievadas",
+    "username": "Vartotojas",
+    "password": "Slaptažodis",
+    "passwordSaved": "Išsaugota, palikite tuščią, jei norite jį išlaikyti",
+    "runAs": "Vykdyti kaip",
+    "runAsHint": "Linux vartotojas, kuriuo bus vykdoma iškrovimo operacija, pvz., postgres. Jei paliksite tuščią, bus vykdoma kaip root.",
+    "databases": "Duomenų bazės",
+    "databasesHint": "Po vieną pavadinimą eilutėje. Palikite tuščią, jei norite sukurti visų atsargines kopijas.",
+    "sqliteFiles": "Duomenų bazių failai",
+    "sqliteFilesHint": "Po vieną pilną kelią eilutėje. Kiekvienas failas bus saugiai nukopijuojamas, kol jis naudojamas.",
+    "docker": "Docker",
+    "stacks": "Stukai",
+    "volumes": "Tomes",
+    "noStacks": "Nerasta jokių compose stakų",
+    "noVolumes": "Nerasta jokių tomų",
+    "dockerFailed": "Nepavyko išvardinti Docker šioje serverio",
+    "stop": "Sustabdyti stekus atsarginės kopijos metu",
+    "stopHint": "Pasirinkti stekai pirmiausia sustabdomi, o vėliau paleidžiami iš naujo, kad jų failai nesikeistų skaitant."
+  },
+  "schedule": {
+    "title": "Laikotarpis",
+    "manual": "Rankiniu būdu",
+    "daily": "Kasdien",
+    "weekly": "Kas savaitę",
+    "custom": "Pasirinktinai",
+    "day": "Diena",
+    "time": "Laikas",
+    "cron": "Cron",
+    "cronHint": "Minutė, valanda, diena mėnesį, mėnuo, savaitės diena.",
+    "cronInvalid": "Šis cron išraiška neteisinga",
+    "timezone": "Laiko juosta",
+    "serverTime": "Serverio laikas",
+    "manualHint": "Šis darbas vykdomas tik paspaudus „Vykdyti dabar“.",
+    "manualOnly": "Rankiniu būdu",
+    "next": "Kitas vykdymas {{time}}",
+    "noNext": "Šis laikotarpis niekada nevykdomas",
+    "dailyAt": "Kasdien {{time}}",
+    "weeklyAt": "{{day}} {{time}}",
+    "days": {
+      "0": "Sekmadienis",
+      "1": "Pirmadienis",
+      "2": "Antradienis",
+      "3": "Trečiadienis",
+      "4": "Ketvirtadienis",
+      "5": "Penktadienis",
+      "6": "Šeštadienis"
+    }
+  },
+  "keep": {
+    "title": "Išsaugoti",
+    "last": "Paskutiniai",
+    "daily": "Kasdien",
+    "weekly": "Kas savaitę",
+    "monthly": "Kas mėnesį",
+    "yearly": "Kasmet",
+    "hint": "Po kiekvienos atsarginės kopijos senesni šio darbo momentiniai vaizdai yra šalinami, todėl išlieka tik nurodyti. 0 reiškia išsaugoti viską."
+  },
+  "hooks": {
+    "title": "Komandos",
+    "pre": "Prieš",
+    "preHint": "Vykdoma kaip root prieš atsarginę kopiją. Jei nepavyksta, atsarginės kopijos kūrimas sustojamas.",
+    "post": "Po",
+    "postHint": "Vykdoma kaip root po atsarginės kopijos, net jei ji nepavyko. TERMIX_BACKUP_STATUS kintamajame saugomas rezultatas."
+  },
+  "alerts": {
+    "title": "Įspėjimai",
+    "onFailure": "Įspėti, kai atsarginė kopija nepavyksta",
+    "onFailureHint": "Taip pat įspėja apie įspėjimus ir vieną kartą, kai vėl veikia.",
+    "staleDays": "Dienų be atsarginės kopijos",
+    "staleDaysHint": "Įspėti, jei atsarginė kopija nepavyko nurodytą dienų skaičių. 0 išjungia."
+  },
+  "repos": {
+    "add": "Pridėti saugyklą",
+    "empty": "Dar nėra saugyklų",
+    "emptyHint": "Saugykla yra vieta, kurioje saugomos atsarginės kopijos, pavyzdžiui, S3 kibiras arba aplankas.",
+    "loadFailed": "Nepavyko įkelti saugyklų",
+    "jobCount_one": "{{count}} darbas",
+    "jobCount_few": "{{count}} darbai",
+    "jobCount_many": "{{count}} darbų",
+    "jobCount_other": "{{count}} darbų",
+    "newTitle": "Nauja saugykla",
+    "storage": "Saugykla",
+    "name": "Pavadinimas",
+    "namePlaceholder": "Nuotolinė S3",
+    "kind": "Tipas",
+    "kinds": {
+      "s3": "S3 suderinama",
+      "rest": "REST serveris",
+      "rclone": "rclone",
+      "local": "Aplankas serveryje"
+    },
+    "endpoint": "Galūnė",
+    "endpointHint": "Tuščia AWS atveju. MinIO, R2, B2 arba Wasabi atveju – jų S3 adresas.",
+    "region": "Regionas",
+    "bucket": "Bucketas",
+    "prefix": "Aplankas buckete",
+    "prefixHint": "Neprivaloma.",
+    "accessKeyId": "Prieigos rakšto ID",
+    "secretKey": "Slaptasis prieigos raktas",
+    "secretSaved": "Išsaugota, palikite tuščią, jei norite jį išlaikyti",
+    "url": "Serverio adresas",
+    "username": "Vartotojas",
+    "usernameHint": "Palikite tuščią, jei serveris nereikalauja prisijungimo.",
+    "restPassword": "Slaptažodis",
+    "remote": "Nuotolinio šaltinio pavadinimas",
+    "remoteHint": "Tik raidės, skaičiai ir _.",
+    "path": "Kelias",
+    "rcloneConfig": "rclone konfigūracija",
+    "rcloneHint": "Nuotolinio šaltinio eilutės iš rclone.conf. Sukurkite jas paleisdami rclone config savo kompiuteryje. rclone turi būti įdiegta serveriuose.",
+    "rcloneSaved": "Išsaugota, palikite tuščią, jei norite jį išlaikyti",
+    "host": "Serveris",
+    "pickHost": "Pasirinkite serverį",
+    "folder": "Aplankas",
+    "folderHint": "Jo gali naudoti tik šio serverio darbai. Geriausia, jei tai būtų prijungtas diskas.",
+    "password": "Šifravimas",
+    "resticPassword": "Saugyklos slaptažodis",
+    "passwordHint": "Palikite tuščią ir Termix sugeneruos stiprų slaptažodį. Saugokite jo kopiją: be jo atsarginių kopijų nebus galima perskaityti.",
+    "passwordKeep": "Išsaugota, palikite tuščią, jei norite jį išlaikyti",
+    "passwordChangeHint": "Tai pakeičia tik tai, ką siunčia Termix. Tai nepakeičia esamos saugyklos slaptažodžio.",
+    "reveal": "Rodyti slaptažodį",
+    "revealTitle": "Rodyti saugyklos slaptažodį?",
+    "revealDesc": "Bet kas, turintis šį slaptažodį ir saugojimo raktus, gali perskaityti visas šios saugyklos atsargines kopijas. Tai bus užregistruota audito žurnale.",
+    "revealFailed": "Nepavyko perskaityti slaptažodžio",
+    "copy": "Kopijuoti",
+    "copied": "Nukopijuota",
+    "check": "Patikrinti",
+    "checkFrom": "Patikrinti iš",
+    "checkFromHint": "Serveris, kuris atidaro saugyklą. Jam reikia restic.",
+    "checkButton": "Patikrinti",
+    "initButton": "Patikrinti ir nustatyti",
+    "installRclone": "Įdiegti rclone šiame serveryje",
+    "rcloneInstalled": "Įdiegta rclone {{version}}.",
+    "rcloneFailed": "Nepavyko įdiegti rclone",
+    "checking": "Tikrinama...",
+    "opened": "Saugykla atidaryta sėkmingai.",
+    "created": "Saugykla sukonfigūruota ir paruošta.",
+    "checkFailed": "Nepavyko atidaryti saugyklos",
+    "checkNext": "Išsaugota. Patikrinkite iš serverio, kad ją sukonfigūruotumėte.",
+    "saved": "Saugykla išsaugota",
+    "saveFailed": "Nepavyko išsaugoti saugyklos",
+    "deleteTitle": "Pašalinti „{{name}}“?",
+    "deleteDesc": "Ji bus pašalinta tik iš Termix. Atsarginės kopijos liks saugykloje.",
+    "deleted": "Saugykla pašalinta",
+    "deleteFailed": "Nepavyko pašalinti saugyklos"
+  },
+  "snapshots": {
+    "noJobs": "Pirmiausia pridėkite atsarginės kopijos darbą.",
+    "job": "Darbas",
+    "titleFor": "„{{name}}“ momentinės būsenos",
+    "empty": "Dar nėra momentinių būsenų",
+    "loadFailed": "Nepavyko perskaityti momentinių būsenų",
+    "latest": "Naujausia",
+    "files_one": "{{count}} failas",
+    "files_few": "{{count}} failai",
+    "files_many": "{{count}} failų",
+    "files_other": "{{count}} failų",
+    "browse": "Naršyti",
+    "delete": "Pašalinti",
+    "deleteTitle": "Ištrinti šią akimirkos nuotrauką?",
+    "deleteDesc": "Akimirkos nuotrauka iš {{time}} bus amžinai pašalinta iš saugyklos.",
+    "deleted": "Akimirkos nuotrauka ištrinta",
+    "deleteFailed": "Nepavyko ištrinti akimirkos nuotraukos",
+    "browseTitle": "Akimirkos nuotrauka {{time}}",
+    "root": "Šaknis",
+    "emptyFolder": "Ši aplankas tuščias",
+    "filesFailed": "Nepavyko išvardinti šio aplanke",
+    "pick": "Pasirinkti",
+    "download": "Atsisiųsti",
+    "downloadZip": "Atsisiųsti kaip zip",
+    "downloadFailed": "Nepavyko atsisiųsti",
+    "restoreAll": "Atkurti viską",
+    "restorePicked_one": "Atkurti {{count}} elementą",
+    "restorePicked_few": "Atkurti {{count}} elementus",
+    "restorePicked_many": "Atkurti {{count}} elementų",
+    "restorePicked_other": "Atkurti {{count}} elementų"
+  },
+  "restore": {
+    "title": "Atkūrimas",
+    "what": "Ką",
+    "everything": "Viskas, kas yra akimirkos nuotraukoje.",
+    "more_one": "ir {{count}} daugiau",
+    "more_few": "ir {{count}} daugiau",
+    "more_many": "ir {{count}} daugiau",
+    "more_other": "ir {{count}} daugiau",
+    "where": "Kur",
+    "host": "Svečias",
+    "hostHint": "Bet kuris svečias, kurį galite redaguoti ir kuris gali pasiekti saugyklą.",
+    "localOnly": "Ši saugykla yra aplankas savo serveryje, todėl ją galima atkurti tik ten.",
+    "toFolder": "Į aplanką",
+    "toOriginal": "Kur buvo",
+    "folder": "Aplankas",
+    "folderHint": "Failai išlaiko savo pilną kelią šio aplanke viduje.",
+    "originalWarning": "Failai bus įrašyti ten, kur jie buvo, ir gali pakeisti tai, kas ten yra dabar.",
+    "overwrite": "Failai, kurie jau egzistuoja",
+    "overwriteOptions": {
+      "if-changed": "Pakeisti, kai pasikeitė",
+      "always": "Visada pakeisti",
+      "if-newer": "Pakeisti, kai atsarginė kopija naujesnė",
+      "never": "Niekada nepakeisti"
+    },
+    "start": "Atkurti",
+    "started": "Atkūrimas pradėtas",
+    "failed": "Nepavyko pradėti atkūrimo"
+  },
+  "run": {
+    "title": "Vykdyti",
+    "backupTitle": "{{name}} atsarginė kopija",
+    "restoreTitle": "{{name}} atkūrimas",
+    "loadFailed": "Nepavyko įkelti vykdymo",
+    "progress": "Progresas",
+    "preparing": "Ruošiamasi...",
+    "progressLine": "{{percent}}% | {{files}} iš {{totalFiles}} failų | {{bytes}} iš {{totalBytes}}",
+    "left": "Liko {{time}}",
+    "details": "Išsami informacija",
+    "started": "Pradėta",
+    "finished": "Užbaigta",
+    "trigger": "Pradėta",
+    "triggers": {
+      "manual": "Vykdyti dabar",
+      "schedule": "Tvarkaraštis",
+      "operation": "Termix veiksmas"
+    },
+    "snapshot": "Akimirkos nuotrauka",
+    "target": "Atkurta į",
+    "files": "Failai",
+    "filesLine": "{{total}} failų, {{added}} naujų, {{changed}} pakeistų",
+    "size": "Dydis",
+    "added": "Pridėta į saugyklą",
+    "took": "Truko",
+    "log": "Žurnalas",
+    "noLog": "Žurnalo dar nėra.",
+    "stopTitle": "Sustabdyti šį vykdymą?",
+    "stopDesc": "Sustabdytas atsarginės kopijos kūrimas nesukuria momentinės būsenos. Sustabdytas atkūrimas palieka iki šiol atkurtus failus.",
+    "stopSent": "Stabdymas",
+    "stopFailed": "Nepavyko sustabdyti vykdymo"
+  },
+  "history": {
+    "empty": "Dar nieko nebuvo vykdyta",
+    "loadFailed": "Nepavyko įkelti istorijos",
+    "status": "Būsena",
+    "job": "Užduotis",
+    "host": "Serveris",
+    "kind": "Tipas",
+    "kinds": {
+      "backup": "Atsarginė kopija",
+      "restore": "Atkūrimas"
+    },
+    "started": "Pradėta",
+    "took": "Trukmė",
+    "size": "Dydis"
+  },
+  "card": {
+    "title": "Atsarginės kopijos",
+    "all": "Visos atsarginių kopijų užduotys",
+    "oneJob": "Viena atsarginės kopijos užduotis",
+    "empty": "Dar nėra atsarginių kopijų užduočių.",
+    "gone": "Ši atsarginės kopijos užduotis buvo ištrinta.",
+    "open": "Atidaryti"
+  },
+  "operations": {
+    "list": {
+      "title": "Išvardinti atsarginių kopijų užduotis"
+    },
+    "failed": {
+      "title": "Nepavykusios atsarginės kopijos"
+    },
+    "run": {
+      "title": "Kurti atsarginę kopiją"
+    },
+    "cancel": {
+      "title": "Stabdyti atsarginės kopijos kūrimą"
+    },
+    "snapshots": {
+      "title": "Išvardinti momentines būsenas"
+    },
+    "events": {
+      "finished": "Atsarginės kopijos kūrimas baigtas",
+      "failed": "Atsarginės kopijos kūrimas nepavyko"
+    },
+    "jobs": {
+      "title": "Atsarginių kopijų užduotys",
+      "lastSuccess": "Paskutinė atsarginė kopija",
+      "nextRun": "Kitas vykdymas",
+      "size": "Dydis"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Rodyti atsarginių kopijų skydelį terminaluose",
+        "description": "Leisti atsarginių kopijų skydeliui atsiverti šalia šio serverio SSH terminalo."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Atidaryti atsarginių kopijų skydelį su naujais terminalais",
+        "description": "Rodyti atsarginių kopijų skydelį šalia kiekvieno SSH terminalo, kuriame ši funkcija įjungta. Jį visada galite atidaryti ir uždaryti mygtuku dešiniajame krašte."
+      },
+      "companionSide": {
+        "label": "Atsarginių kopijų skydelio padėtis",
+        "description": "Kur atsarginių kopijų skydelis yra šalia terminalo.",
+        "right": "Dešinėje",
+        "left": "Kairėje",
+        "bottom": "Apačioje"
+      },
+      "companionSize": {
+        "label": "Atsarginių kopijų skydelio dydis",
+        "description": "Plotis pikseliais arba aukštis, kai skydelis yra apačioje. Taip pat galite vilkti jo kraštą."
+      },
+      "companionEdgeButton": {
+        "label": "Rodyti skydelio mygtuką",
+        "description": "Rodyti mažą mygtuką terminalo dešiniajame krašte, kuris atidaro atsarginių kopijų skydelį."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Perjungti atsarginių kopijų skydelį"
+  }
+}

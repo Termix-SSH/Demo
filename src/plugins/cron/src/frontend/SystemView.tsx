@@ -5,7 +5,9 @@ import {
   Button,
   ListBadge,
   ListRow,
+  PANEL,
   PanelList,
+  ToolbarBand,
   useConfirm,
   LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
@@ -25,17 +27,20 @@ function Heading({
   actions?: ReactNode;
 }) {
   return (
-    <div className="flex min-h-10 items-center gap-2 border-b border-border px-3 py-1.5">
-      <span className="min-w-0 flex-1 truncate font-mono text-xs font-medium">
+    <ToolbarBand className="flex-nowrap">
+      <span className="flex min-h-8 min-w-0 flex-1 items-center truncate font-mono text-xs font-medium">
         {title}
         {count !== undefined && (
           <span className="ml-2 font-sans text-muted-foreground">{count}</span>
         )}
       </span>
       {actions}
-    </div>
+    </ToolbarBand>
   );
 }
+
+const LIST = "flex-none overflow-visible [&>*:last-child]:border-b-0";
+const SECTION = "flex flex-col border-b border-border";
 
 /** /etc/crontab, /etc/cron.d and the periodic script folders. */
 export function SystemView({
@@ -69,7 +74,7 @@ export function SystemView({
   }, [isVisible, load]);
 
   if (failed)
-    return <p className="px-3 py-2 text-xs text-destructive">{failed}</p>;
+    return <p className={`${PANEL.body} text-xs text-destructive`}>{failed}</p>;
   if (!view) return <LoadingState />;
 
   const canEdit = status.canEdit && status.root;
@@ -94,12 +99,14 @@ export function SystemView({
   return (
     <div className="flex flex-col">
       {!status.root && (
-        <p className="border-b border-border px-3 py-2 text-xs text-muted-foreground">
+        <p
+          className={`${PANEL.body} border-b border-border text-xs text-muted-foreground`}
+        >
           {t("system.readHint")}
         </p>
       )}
       {view.files.map((file) => (
-        <div key={file.path} className="flex flex-col">
+        <div key={file.path} className={SECTION}>
           <Heading
             title={file.path}
             count={file.jobs.length}
@@ -128,11 +135,11 @@ export function SystemView({
             }
           />
           {file.jobs.length === 0 ? (
-            <p className="border-b border-border px-3 py-2 text-xs text-muted-foreground/60">
+            <p className={`${PANEL.body} text-xs text-muted-foreground/60`}>
               {t("system.noJobs")}
             </p>
           ) : (
-            <PanelList className="border-b border-border">
+            <PanelList className={LIST}>
               {file.jobs.map((job, index) => {
                 const next = job.enabled
                   ? nextRunText(job.schedule, status.offsetMinutes, language)
@@ -166,12 +173,12 @@ export function SystemView({
       ))}
       {PERIODS.map((period) =>
         view.scripts[period].length === 0 ? null : (
-          <div key={period} className="flex flex-col">
+          <div key={period} className={SECTION}>
             <Heading
               title={`/etc/cron.${period}`}
               count={view.scripts[period].length}
             />
-            <PanelList className="border-b border-border">
+            <PanelList className={LIST}>
               {view.scripts[period].map((name, index) => (
                 <ListRow
                   key={name}
@@ -186,7 +193,7 @@ export function SystemView({
         ),
       )}
       {view.timers !== null && (
-        <p className="px-3 py-2 text-xs text-muted-foreground">
+        <p className={`${PANEL.body} text-xs text-muted-foreground`}>
           {t("system.timers", { count: view.timers })}
         </p>
       )}

@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Kjør Ansible-playbooks og ad-hoc-kommandoer fra en kontrollvert, med et inventar basert på Termix-vertene dine."
+  },
+  "common": {
+    "save": "Lagre",
+    "cancel": "Avbryt",
+    "back": "Tilbake",
+    "delete": "Slett"
+  },
+  "permissions": {
+    "use": {
+      "title": "Bruk Ansible",
+      "description": "Se playbooks og kjøringar på kontrollverter du kan nå. Rediger filer og kjør Ansible på verter du har skrive tilgang til."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Bruk denne verten som en Ansible-kontrollvert. Ansible må være installert på den."
+      },
+      "projectDir": {
+        "label": "Prosjektmappe",
+        "description": "Mappen på denne verten som inneholder playbooks, roller og ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Vault-passordfil",
+        "description": "En fil på denne verten med Ansible Vault-passordet. La være tom hvis du ikke bruker Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Skrivebeskyttet",
+        "description": "Vis playbooks og kjøringar, men rediger aldri filer eller start kjøringar på denne verten."
+      },
+      "alertRuns": {
+        "label": "Varsle ved feil i kjøring",
+        "description": "Send en varsel når en kjøring på denne verten slutter med feil eller går tapt. Sjekk når kjøringstilstanden leses."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Åpne Ansible fra en vert.",
+    "error": "Kunne ikke laste Ansible fra denne verten.",
+    "disabled": "Ansible er slått av for denne verten. Slå den på i vertsinnstillingene.",
+    "refresh": "Oppdater",
+    "readOnly": "Skrivebeskyttet",
+    "notInstalled": "Ansible er ikke installert",
+    "notInstalledTitle": "Ansible er ikke installert på denne verten",
+    "notInstalledHint": "Installer ansible-core på denne verten, for eksempel med pipx eller pakkehåndtereren din, og oppdater deretter.",
+    "noSshpass": "sshpass er ikke installert på denne verten. Venter som logger seg på med passord vil mislykkes.",
+    "viewPlaybooks": "Playbooks",
+    "viewRuns": "Kjøringar",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Facts"
+  },
+  "files": {
+    "add": "Ny fil",
+    "search": "Søk i filer",
+    "empty": "Ingen filer i prosjektmappen ennå.",
+    "noMatch": "Ingen filer matcher.",
+    "noProject": "Mappen {{dir}} finnes ikke på denne verten. Opprett den, eller angi en annen prosjektmappe i vertsinnstillingene.",
+    "listFailed": "Kunne ikke liste opp prosjektfilene.",
+    "loadFailed": "Kunne ikke lese den filen.",
+    "saved": "Fil lagret",
+    "saveFailed": "Kunne ikke lagre den filen.",
+    "playbook": "Playbook",
+    "run": "Kjør",
+    "newTitle": "Ny fil",
+    "name": "Filnavn",
+    "nameHint": "En sti inne i prosjektmappen, som site.yml eller roles/web/tasks/main.yml.",
+    "hint": "En playbook sjekkes for syntaks før den lagres. Den gamle filen beholdes hvis sjekken mislykkes.",
+    "text": "Filinnhold",
+    "deleteTitle": "Slett denne filen?"
+  },
+  "targets": {
+    "search": "Søk etter verter",
+    "addShown": "Legg til viste",
+    "clear": "Tøm",
+    "empty": "Ingen verter funnet.",
+    "count": "{{count}} valgt",
+    "failed": "Kunne ikke laste vertene dine."
+  },
+  "run": {
+    "title": "Kjør {{playbook}}",
+    "start": "Kjør",
+    "startCheck": "Kjør i sjekkmodus",
+    "startFailed": "Kunne ikke starte kjøringen.",
+    "source": "Verter",
+    "sourceProject": "Prosjektinventar",
+    "sourceTermix": "Termix-verter",
+    "sourceProjectHint": "Bruk inventaret fra ansible.cfg, eller en fil i prosjektet.",
+    "sourceTermixHint": "Velg verter fra Termix. Mapper blir til folder_-grupper og tagger blir til tag_-grupper. Alle er i termix-gruppen.",
+    "inventory": "Inventarfil",
+    "inventoryHint": "En sti inne i prosjektmappen. La stå tomt for å bruke ansible.cfg.",
+    "check": "Sjekkmodus",
+    "checkHint": "Vis hva som ville blitt endret uten å gjøre noen endringer.",
+    "diff": "Vis endringer",
+    "diffHint": "Vis endringene som ble gjort i filer.",
+    "become": "Kjør som root",
+    "becomeHint": "Bruk sudo på vertene. En lagret Sudo-passord brukes for Termix-verter.",
+    "limit": "Begrens",
+    "limitHint": "Kjør bare på disse vertene eller gruppene.",
+    "verbosity": "Utskriftsdetaljer",
+    "verbosityOff": "Normal",
+    "tags": "Tagger",
+    "skipTags": "Hopp over tagger",
+    "extraVars": "Ekstra variabler",
+    "extraVarsHint": "Én nøkkel=verdi per linje."
+  },
+  "runs": {
+    "title": "Kjør",
+    "empty": "Ingen kjøring ennå.",
+    "loadFailed": "Kunne ikke laste inn kjøringene.",
+    "stop": "Stopp",
+    "stopFailed": "Kunne ikke stoppe kjøringen.",
+    "deleteTitle": "Slett denne kjøringen?",
+    "deleteFailed": "Kunne ikke slette kjøringen.",
+    "checkMode": "Sjekk",
+    "truncated": "Viser slutten av et langt utskrift.",
+    "noOutput": "Ingen utskrift ennå.",
+    "state": {
+      "running": "Kjører",
+      "ok": "Fullført",
+      "failed": "Mislyktes",
+      "cancelled": "Stoppet",
+      "lost": "Tapt"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Fakta"
+    },
+    "recap": {
+      "host": "Vert",
+      "ok": "OK",
+      "changed": "Endret",
+      "unreachable": "Uoppnåelig",
+      "failed": "Mislyktes",
+      "skipped": "Hoppet over"
+    }
+  },
+  "adhoc": {
+    "hint": "Kjør én modul på verter, som ansible all -m ping.",
+    "pattern": "Vertsmønster",
+    "patternHint": "En vert, en gruppe eller all.",
+    "module": "Modul",
+    "moduleHint": "For eksempel ping, command, shell, apt eller systemd.",
+    "args": "Argumenter",
+    "argsHint": "For command og shell er dette kommandoen. For andre moduler er det nøkkel=verdi-par.",
+    "run": "Kjør"
+  },
+  "facts": {
+    "hint": "Samle inn fakta fra verter med setup-modulen. Krever Termix-verter slik at hver har en pålogging.",
+    "gather": "Samle inn fakta",
+    "gathering": "Samler inn...",
+    "failed": "Kunne ikke samle inn fakta.",
+    "failedHost": "Mislyktes",
+    "none": "Ingen fakta kom tilbake. Åpne kjøringen for å se hvorfor.",
+    "col": {
+      "host": "Vert",
+      "os": "System",
+      "kernel": "Kjerne",
+      "cpu": "CPU-er",
+      "memory": "Minne",
+      "address": "Adresse",
+      "uptime": "Oppetid"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "List opp playbook-er"
+    },
+    "run": {
+      "title": "Kjør playbook",
+      "playbook": "Playbook",
+      "limit": "Begrensning",
+      "tags": "Tagger",
+      "check": "Sjekkmodus"
+    },
+    "runs": {
+      "title": "List opp kjøringar",
+      "resource": "Kjøringar",
+      "started": "Startet",
+      "check": "Sjekkmodus"
+    },
+    "failed": {
+      "title": "Mislykkede kjøringar"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Sjekker vertene...",
+    "summary_one": "{{count}} mislykket kjøring på {{hosts}} vert(er)",
+    "summary_other": "{{count}} mislykkede kjøringar på {{hosts}} vert(er)",
+    "refresh": "Sjekk igjen",
+    "empty": "Aktiver Ansible for en vert for å se kjøringene her.",
+    "failed_one": "{{count}} mislykket",
+    "failed_other": "{{count}} mislykkede",
+    "running_one": "{{count}} kjører",
+    "running_other": "{{count}} kjører",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Ingen kjøringar ennå"
+  }
+}

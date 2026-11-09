@@ -1,0 +1,246 @@
+{
+  "tab": {
+    "title": "UPS",
+    "noHost": "Åbn UPS fra en vært.",
+    "error": "Kunne ikke læse UPS på denne vært.",
+    "disabled": "UPS Manager er slået fra for denne vært. Slå den til i værtsindstillingerne.",
+    "viewOverview": "Oversigt",
+    "viewHistory": "Historik",
+    "viewEvents": "Hændelser",
+    "viewCommands": "Kommandoer",
+    "viewSources": "Enheder"
+  },
+  "common": {
+    "loading": "Indlæser...",
+    "save": "Gem",
+    "cancel": "Annuller",
+    "delete": "Slet",
+    "edit": "Rediger",
+    "failed": "Det virkede ikke."
+  },
+  "state": {
+    "online": "Fra net",
+    "battery": "På batteri",
+    "bypass": "Bypass",
+    "off": "Fra",
+    "unknown": "Ukendt"
+  },
+  "flag": {
+    "low-battery": "Lavt batteri",
+    "replace-battery": "Skift batteri",
+    "overload": "Overbelastet",
+    "charging": "Oplader",
+    "calibrating": "Kalibrerer",
+    "alarm": "Alarm",
+    "boost": "Boost",
+    "trim": "Trim"
+  },
+  "backend": {
+    "nut": "NUT",
+    "apcupsd": "apcupsd",
+    "snmp": "SNMP-kort"
+  },
+  "overview": {
+    "noData": "Ingen måling endnu.",
+    "stale": "Den sidste læsning mislykkedes: {{error}}",
+    "power": "Strøm",
+    "charge": "Batteriniveau",
+    "runtime": "Køretid tilbage",
+    "load": "Belastning",
+    "nominal": "{{watts}} W nominel",
+    "input": "Indgangsspænding",
+    "output": "Udgangsspænding",
+    "batteryVolts": "Batterispænding",
+    "temp": "Temperatur",
+    "model": "Model",
+    "serial": "Serienummer",
+    "status": "Status",
+    "lastTest": "Sidste selvtest",
+    "readAt": "Sidste læsning",
+    "ago": "{{time}} siden"
+  },
+  "history": {
+    "error": "Kunne ikke indlæse historikken.",
+    "24h": "24 timer",
+    "7d": "7 dage",
+    "30d": "30 dage",
+    "empty": "Ikke nok målinger endnu. Termix læser UPS hver 30. sekund.",
+    "charge": "Batteriniveau",
+    "load": "Belastning",
+    "runtime": "Køretid tilbage",
+    "voltage": "Spænding"
+  },
+  "events": {
+    "error": "Kunne ikke indlæse hændelserne.",
+    "empty": "Ingen strømhændelser endnu.",
+    "type": {
+      "on-battery": "På batteri",
+      "on-battery-cleared": "Strøm tilkoblet",
+      "low-battery": "Lavt batteriniveau",
+      "low-battery-cleared": "Batteriet er OK",
+      "replace-battery": "Bytt batteri",
+      "replace-battery-cleared": "Batteriet er OK",
+      "overload": "Overbelastning",
+      "overload-cleared": "Belastning er OK",
+      "low-charge": "Lav ladning",
+      "low-charge-cleared": "Ladning er OK",
+      "low-runtime": "Kort driftstid",
+      "low-runtime-cleared": "Driftstid er OK",
+      "unreachable": "Uopprettelig",
+      "unreachable-cleared": "Nåbar",
+      "test-failed": "Testfeil",
+      "test-failed-cleared": "Testen er OK",
+      "test": "Selvtest",
+      "command": "Kommando"
+    }
+  },
+  "commands": {
+    "unsupported": "Kun NUT-enheter støtter kommandoer.",
+    "error": "Kunne ikke liste kommandoer.",
+    "confirmTitle": "Kjør {{name}}?",
+    "confirmText": "Dette kan kutte strømmen eller endre hvordan {{name}} oppfører seg.",
+    "run": "Kjør",
+    "done": "Sendte {{name}}.",
+    "needLogin": "Legg til en NUT-bruker og passord for denne enheten for å sende kommandoer.",
+    "empty": "Denne UPS-en har ingen øyeblikkelige kommandoer.",
+    "risky": "Kan kutte strømmen"
+  },
+  "sources": {
+    "add": "Legg til UPS",
+    "empty": "Ingen UPS er konfigurert på denne verten.",
+    "emptyHint": "Legg til en NUT- eller apcupsd-enhet på denne verten, eller et SNMP-kort som denne verten kan nå.",
+    "off": "av",
+    "unreachable": "uopprettelig",
+    "saved": "Lagret.",
+    "deleteTitle": "Fjern {{name}}?",
+    "deleteText": "Historikken og hendelsene blir også slettet."
+  },
+  "editor": {
+    "addTitle": "Legg til UPS",
+    "editTitle": "Rediger UPS",
+    "add": "Legg til",
+    "backend": "Hvordan lese den",
+    "label": "Navn",
+    "labelPlaceholder": "Rack-UPS",
+    "target": {
+      "nut": "NUT-enhet",
+      "apcupsd": "apcupsd-adresse",
+      "snmp": "Kortadresse"
+    },
+    "targetPlaceholder": {
+      "nut": "ups eller ups@192.168.1.5:3493",
+      "apcupsd": "La stå tomt for denne verten",
+      "snmp": "192.168.1.20"
+    },
+    "nutFound": "Funnet på denne verten: {{names}}",
+    "nutMissing": "upsc er ikke installert på denne verten. Installer NUT-klienten først.",
+    "nutHint": "Navnet fra upsc -l, eller navn@vert:port for en fjern NUT-tjener.",
+    "apcMissing": "apcaccess er ikke installert på denne verten. Installer apcupsd først.",
+    "apcHint": "La stå tomt for å lese demonen på denne verten, eller bruk vert:3551.",
+    "snmpMissing": "snmpwalk er ikke installert på denne verten. Installer net-snmp-verktøyene først.",
+    "snmpHint": "Termix henter data fra kortet fra denne verten med snmpwalk.",
+    "nutUser": "NUT-bruker",
+    "nutPassword": "NUT-passord",
+    "nutLoginHint": "Kun nødvendig for å sende kommandoer. Lesing krever det aldri.",
+    "saved": "Lagret",
+    "snmpVersion": "SNMP-versjon",
+    "community": "Community",
+    "v3User": "SNMP-bruker",
+    "v3Level": "Sikkerhedsniveau",
+    "v3": {
+      "noAuth": "Ingen godkendelse",
+      "auth": "Godkendelse",
+      "authPriv": "Godkendelse og privatliv"
+    },
+    "v3AuthProto": "Godkendelsestype",
+    "v3AuthPass": "Godkendelsesadgangskode",
+    "v3PrivProto": "Privatlivstype",
+    "v3PrivPass": "Privatlivsadgangskode",
+    "clearSecrets": "Fjern gemt login",
+    "clearSecretsHint": "Sletter det gemte NUT- eller SNMP-login til denne enhed.",
+    "lowCharge": "Advarsel ved lavt batteri (%)",
+    "lowChargeHint": "Advar, når batteriniveauet er på eller under dette, mens der kører på batteri.",
+    "lowRuntime": "Advarsel ved kort driftstid (minutter)",
+    "lowRuntimeHint": "Advar, når den resterende driftstid er på eller under dette, mens der kører på batteri. 0 slår det fra.",
+    "alerts": "Send advarsler",
+    "alertsHint": "Strømafbrydelse, lavt batteri, overbelastning og testproblemer.",
+    "enabled": "Læs denne UPS",
+    "enabledHint": "Slå fra for at stoppe læsningen og beholde historikken.",
+    "test": "Test",
+    "testing": "Tester...",
+    "testOk": "Fungerer: {{state}}, {{charge}}% opladet, {{runtime}} tilbage.",
+    "testFailed": "Kunne ikke læse UPS'en."
+  },
+  "card": {
+    "title": "UPS",
+    "empty": "Ingen UPS er opsat. Slå UPS Manager til for en vært og tilføj en enhed.",
+    "runtime": "{{time}} tilbage",
+    "load": "{{value}}% belastning"
+  },
+  "manager": {
+    "title": "UPS",
+    "disabled": "UPS Manager er slået fra for denne vært."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "UPS Manager",
+        "description": "Læs UPS-enheder fra denne vært og vis en UPS-fane."
+      },
+      "readOnly": {
+        "label": "UPS skrivebeskyttet",
+        "description": "Blokér ændringer og kommandoer på denne værts UPS-enheder."
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "Brug UPS Manager",
+      "description": "Se UPS-status og, med redigeradgang til en vært, ændre enheder og sende kommandoer."
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Liste over UPS-enheder"
+    },
+    "status": {
+      "title": "Strømstatus"
+    },
+    "charge": {
+      "title": "Batteriniveau"
+    },
+    "runtime": {
+      "title": "Resterende driftstid"
+    },
+    "source": "UPS",
+    "sourceHint": "UPS-id. Lad være tom for den første på værten.",
+    "selfTest": {
+      "title": "Start batteriselftest",
+      "kind": "Type",
+      "quick": "Hurtig",
+      "deep": "Dybgående"
+    },
+    "beeper": {
+      "title": "Indstil UPS-piberen",
+      "mode": "Piber",
+      "mute": "Stum",
+      "disable": "Sluk",
+      "enable": "Tænd"
+    },
+    "calibrate": {
+      "title": "Kalibrer driftstid",
+      "description": "Tømmer batteriet for at måle dets driftstid. Værter på denne UPS mister beskyttelsen, mens den kører."
+    },
+    "devices": {
+      "title": "UPS-enheder",
+      "state": "Status",
+      "charge": "Opladning",
+      "load": "Belastning",
+      "backend": "Læs med"
+    },
+    "events": {
+      "onBattery": "UPS kører på batteri",
+      "powerRestored": "UPS-strøm genoprettet"
+    }
+  }
+}

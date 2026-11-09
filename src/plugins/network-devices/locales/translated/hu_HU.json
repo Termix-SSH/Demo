@@ -1,0 +1,180 @@
+{
+  "plugin": {
+    "name": "Hálózati eszközök",
+    "description": "Útválasztók, kapcsolók és hozzáférési pontok megtekintése és kezelése SNMP és router API-kon keresztül."
+  },
+  "tab": {
+    "title": "Hálózat"
+  },
+  "card": {
+    "title": "Hálózati eszközök",
+    "loading": "Betöltés",
+    "uptime": "Fent {{time}} ideje"
+  },
+  "permissions": {
+    "view": {
+      "title": "Hálózati eszközök megtekintése",
+      "description": "Nyissa meg a Hálózat fület, és tekintse meg az eszközöket, portokat és klienseket."
+    },
+    "manage": {
+      "title": "Hálózati eszközök kezelése",
+      "description": "Eszközök hozzáadása, portok be- és kikapcsolása, PoE áramellátás újraindítása és eszközök újraindítása."
+    }
+  },
+  "description": "Adjon hozzá útválasztókat, kapcsolókat és hozzáférési pontokat a portjaik és klienseik figyeléséhez. A kulcsok titkosítva tárolódnak, és soha nem jelennek meg újra.",
+  "summary": "{{count}} eszköz, {{down}} leállt",
+  "ports": "{{up}}/{{total}} port aktív",
+  "empty": "Még nincsenek hálózati eszközök.",
+  "add": "Eszköz hozzáadása",
+  "edit": "Szerkesztés",
+  "delete": "Törlés",
+  "back": "Vissza",
+  "saved": "Mentve",
+  "deleteConfirm": "Törli a(z) {{name}} elemet?",
+  "status": {
+    "unknown": "Még nem olvasva",
+    "up": "Aktív",
+    "down": "Inaktív"
+  },
+  "drivers": {
+    "snmp": "SNMP eszköz",
+    "routeros": "MikroTik RouterOS",
+    "opnsense": "OPNsense",
+    "openwrt": "OpenWrt"
+  },
+  "fields": {
+    "community": "Közösség",
+    "writeCommunity": "Írási közösség (opcionális)",
+    "username": "Felhasználónév",
+    "password": "Jelszó",
+    "authProtocol": "Hitelesítés",
+    "authKey": "Hitelesítési kulcs",
+    "privProtocol": "Adatvédelem",
+    "privKey": "Adatvédelmi kulcs",
+    "apiKey": "API kulcs",
+    "apiSecret": "API titok"
+  },
+  "form": {
+    "addTitle": "Eszköz hozzáadása",
+    "editTitle": "Eszköz szerkesztése",
+    "device": "Eszköz",
+    "access": "Hozzáférés",
+    "type": "Típus",
+    "name": "Név",
+    "address": "Cím",
+    "port": "Port",
+    "poll": "Olvasás minden (másodperc)",
+    "pollHint": "15 és 3600 között.",
+    "snmpVersion": "SNMP verzió",
+    "scheme": "Webcím kezdete",
+    "ca": "Tanúsítványhatóság (opcionális)",
+    "caHint": "Illessze be a CA vagy az eszköz tanúsítványának PEM fájlját, ha privát tanúsítványt használ.",
+    "caSet": "Egy tanúsítvány mentve van. Illesszen be egy újat a cseréhez.",
+    "keepKeys": "Hagyja üresen a mentett kulcsok megtartásához",
+    "test": "Teszt",
+    "testNeedsKeys": "Adja meg a kulcsokat a teszteléshez.",
+    "testOk": "Csatlakozva a(z) {{name}} eszközhöz.",
+    "save": "Mentés",
+    "add": "Hozzáadás"
+  },
+  "discover": {
+    "title": "Eszközök keresése",
+    "hint": "Keresi az SNMP eszközöket egy címhatáron belül, legfeljebb 256 címre. A szervernek elérhetőnek kell lennie a tartományt.",
+    "range": "Címhatár",
+    "scan": "Felderítés",
+    "scanning": "Felderítés folyamatban",
+    "none": "Nem válaszolt egyik eszköz sem.",
+    "added": "Hozzáadva"
+  },
+  "view": {
+    "refresh": "Frissítés",
+    "reboot": "Újraindítás",
+    "rebootConfirm": "Újraindítja a(z) {{name}} eszközt? Egy ideig elérhetetlen lesz.",
+    "rebooting": "A(z) {{name}} újraindul.",
+    "ports": "Portok",
+    "clients": "Kliensek",
+    "neighbors": "Szomszédok",
+    "type": "Típus",
+    "address": "Cím",
+    "model": "Modell",
+    "version": "Verzió",
+    "uptime": "Üzemidő",
+    "cpu": "CPU",
+    "memory": "Memória",
+    "traffic": "Forgalom",
+    "noTraffic": "A forgalom két mérés után jelenik meg.",
+    "noPorts": "Még nincsenek portok. Olvassa be az eszközt a kitöltéshez.",
+    "port": "Port",
+    "speed": "Sebesség",
+    "vlan": "VLAN",
+    "rx": "Bejövő",
+    "tx": "Kimenő",
+    "errors": "Hibák",
+    "poe": "PoE",
+    "poeOn": "Tápellátás",
+    "poeIdle": "Be",
+    "poeOff": "Ki",
+    "linkUp": "Kapcsolat aktív",
+    "linkDown": "Nincs kapcsolat",
+    "disabled": "Letiltva",
+    "watch": "Értesítés, ha ez a port megváltozik",
+    "unwatch": "Értesítések leállítása ehhez a porthoz",
+    "turnOff": "Port kikapcsolása",
+    "turnOn": "Port bekapcsolása",
+    "portOffConfirm": "Kikapcsolja a(z) {{name}} portot? Minden csatlakoztatott eszköz elveszíti a kapcsolatot.",
+    "portOff": "A(z) {{name}} port kikapcsolva.",
+    "portOn": "A(z) {{name}} port bekapcsolva.",
+    "poeCycle": "PoE áramkör újraindítása",
+    "poeConfirm": "Eltávolítja a tápellátást a(z) {{name}} portról néhány másodpercre?",
+    "poeDone": "PoE újraindítva a(z) {{name}} porton.",
+    "filter": "Kliensek keresése",
+    "noClients": "Nem található kliens.",
+    "client": "Név",
+    "ip": "IP-cím",
+    "mac": "MAC-cím",
+    "on": "Be",
+    "source": "Látható itt",
+    "kind": {
+      "dhcp": "DHCP",
+      "arp": "ARP",
+      "wifi": "Wi-Fi",
+      "table": "MAC-tábla"
+    },
+    "noNeighbors": "Nem található szomszéd.",
+    "neighbor": "Szomszéd",
+    "remotePort": "Távoli port"
+  },
+  "operations": {
+    "device": "Eszköz",
+    "port": "Port",
+    "state": "Állapot",
+    "stateUp": "Be",
+    "stateDown": "Ki",
+    "list": {
+      "title": "Hálózati eszközök listázása"
+    },
+    "ports": {
+      "title": "Eszköz portjainak listázása"
+    },
+    "poll": {
+      "title": "Hálózati eszköz lekérdezése"
+    },
+    "setPort": {
+      "title": "Port be- vagy kikapcsolása"
+    },
+    "poe": {
+      "title": "PoE áramellátás újraindítása egy porton"
+    },
+    "reboot": {
+      "title": "Hálózati eszköz újraindítása"
+    },
+    "health": {
+      "title": "Hálózati eszközök"
+    }
+  },
+  "widget": {
+    "name": "Hálózati eszközök",
+    "description": "Melyik router, switch és hozzáférési pont működik éppen.",
+    "summary": "{{up}}/{{total}} működik"
+  }
+}

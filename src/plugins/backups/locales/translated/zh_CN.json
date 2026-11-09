@@ -1,0 +1,441 @@
+{
+  "plugin": {
+    "name": "备份",
+    "description": "使用 restic 备份主机上的文件夹、数据库和 Docker 数据，然后浏览、下载和恢复。"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "back": "返回",
+    "delete": "删除",
+    "done": "完成",
+    "loading": "加载中...",
+    "refresh": "刷新",
+    "retry": "重试"
+  },
+  "permissions": {
+    "use": {
+      "title": "使用备份",
+      "description": "设置备份任务和存储库，运行备份，并在可编辑的主机上浏览、下载和恢复快照。"
+    }
+  },
+  "tab": {
+    "title": "备份",
+    "viewJobs": "任务",
+    "viewRepos": "存储库",
+    "viewHistory": "历史记录"
+  },
+  "hostTab": {
+    "title": "备份",
+    "noHost": "从主机打开备份。",
+    "viewJobs": "任务",
+    "viewSnapshots": "快照",
+    "viewHistory": "历史记录",
+    "restic": "restic {{version}}",
+    "noRestic": "未安装 restic",
+    "sudo": "Termix 需要以 root 用户或具有无密码 sudo 权限的用户身份登录，才能在此主机上运行备份。",
+    "statusFailed": "无法读取此主机"
+  },
+  "install": {
+    "missing": "此主机未安装 restic",
+    "tooOld": "此主机上的 restic 版本低于 0.17",
+    "hint": "备份使用 restic。请使用包管理器安装，如果包版本过旧，可从 GitHub 上的 restic 发布版安装。",
+    "button": "安装 restic",
+    "working": "正在安装...",
+    "title": "安装 restic？",
+    "desc": "这将以 root 身份在主机上安装 restic。",
+    "confirm": "安装",
+    "done": "已安装 restic {{version}}",
+    "failed": "无法安装 restic"
+  },
+  "status": {
+    "never": "从未运行",
+    "running": "运行中",
+    "success": "完成",
+    "warning": "警告",
+    "failed": "失败",
+    "canceled": "已停止"
+  },
+  "time": {
+    "justNow": "刚刚",
+    "soon": "片刻后",
+    "ago": {
+      "minutes_other": "{{count}} 分钟前",
+      "hours_other": "{{count}} 小时前",
+      "days_other": "{{count}} 天前"
+    },
+    "in": {
+      "minutes_other": "{{count}} 分钟后",
+      "hours_other": "{{count}} 小时后",
+      "days_other": "{{count}} 天后"
+    }
+  },
+  "jobs": {
+    "add": "添加任务",
+    "empty": "暂无备份任务",
+    "emptyHint": "添加一个任务来备份文件夹、数据库或 Docker 数据。",
+    "emptyNoRepo": "请先添加一个存储库，以便备份有地方存放。",
+    "loadFailed": "无法加载备份任务",
+    "lastGood": "上次备份 {{when}}",
+    "noGood": "暂无备份",
+    "next": "下次 {{when}}",
+    "paused": "已暂停",
+    "run": "立即运行",
+    "stop": "停止",
+    "edit": "编辑",
+    "snapshots": "快照",
+    "started": "{{name}} 已启动",
+    "runFailed": "无法启动备份"
+  },
+  "editor": {
+    "newTitle": "新建备份任务",
+    "general": "任务",
+    "host": "主机",
+    "pickHost": "选择主机",
+    "name": "名称",
+    "namePlaceholder": "每日备份",
+    "repository": "存储库",
+    "pickRepository": "选择存储库",
+    "noRepos": "该主机没有可用的存储库。请先在“备份”选项卡中添加一个。",
+    "repoLocked": "只有存储库的所有者才能修改它。",
+    "enabled": "按计划运行",
+    "enabledHint": "关闭以暂停计划。“立即运行”仍然有效。",
+    "oneFileSystem": "限制在单个文件系统内",
+    "oneFileSystemHint": "跳过所选文件夹内发现的其他磁盘和挂载点。",
+    "saved": "任务已保存",
+    "saveFailed": "无法保存任务",
+    "deleteTitle": "删除 {{name}}？",
+    "deleteDesc": "任务将从 Termix 中移除。其快照将保留在存储库中。",
+    "deleted": "任务已删除",
+    "deleteFailed": "无法删除任务"
+  },
+  "sources": {
+    "add": "添加到备份",
+    "addPaths": "文件夹",
+    "addDatabase": "数据库",
+    "addDocker": "Docker",
+    "remove": "移除",
+    "paths": "文件夹和文件",
+    "folders": "路径",
+    "foldersHint": "每行一个完整路径。",
+    "excludes": "排除",
+    "excludesHint": "每行一个 restic 模式，例如 *.log。",
+    "database": "数据库",
+    "engine": "类型",
+    "engines": {
+      "mysql": "MySQL 或 MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "登录凭据",
+    "ownLogin": "在此输入登录凭据",
+    "noDatabasesPlugin": "启用“数据库”插件以选择已保存的登录凭据。",
+    "address": "地址",
+    "addressPlaceholder": "留空表示使用本地套接字",
+    "port": "端口",
+    "username": "用户",
+    "password": "密码",
+    "passwordSaved": "已保存，留空则保持不变",
+    "runAs": "运行身份",
+    "runAsHint": "用于运行转储的 Linux 用户，例如 postgres。留空则以 root 身份运行。",
+    "databases": "数据库",
+    "databasesHint": "每行一个名称。留空则备份所有数据库。",
+    "sqliteFiles": "数据库文件",
+    "sqliteFilesHint": "每行一个完整路径。每个文件在使用期间会被安全复制。",
+    "docker": "Docker",
+    "stacks": "服务栈",
+    "volumes": "卷",
+    "noStacks": "未找到 compose 服务栈",
+    "noVolumes": "未找到卷",
+    "dockerFailed": "无法列出该主机上的 Docker 资源",
+    "stop": "备份期间停止服务栈",
+    "stopHint": "选定的服务栈会先停止，备份完成后再重新启动，以确保在读取文件时它们不会发生变化。"
+  },
+  "schedule": {
+    "title": "计划",
+    "manual": "手动",
+    "daily": "每天",
+    "weekly": "每周",
+    "custom": "自定义",
+    "day": "日期",
+    "time": "时间",
+    "cron": "Cron",
+    "cronHint": "分钟、小时、日期、月份、星期。",
+    "cronInvalid": "此 Cron 表达式无效",
+    "timezone": "时区",
+    "serverTime": "服务器时间",
+    "manualHint": "此任务仅在您点击“立即运行”时执行。",
+    "manualOnly": "手动",
+    "next": "下次运行时间：{{time}}",
+    "noNext": "此计划永不执行",
+    "dailyAt": "每天 {{time}}",
+    "weeklyAt": "{{day}} {{time}}",
+    "days": {
+      "0": "星期日",
+      "1": "星期一",
+      "2": "星期二",
+      "3": "星期三",
+      "4": "星期四",
+      "5": "星期五",
+      "6": "星期六"
+    }
+  },
+  "keep": {
+    "title": "保留",
+    "last": "最近",
+    "daily": "每日",
+    "weekly": "每周",
+    "monthly": "每月",
+    "yearly": "每年",
+    "hint": "每次备份后，此作业的旧快照将被删除，仅保留这些快照。设置为 0 表示保留所有快照。"
+  },
+  "hooks": {
+    "title": "命令",
+    "pre": "之前",
+    "preHint": "在备份前以 root 身份运行。如果执行失败，备份将停止。",
+    "post": "之后",
+    "postHint": "在备份后以 root 身份运行，即使备份失败也会执行。TERMIX_BACKUP_STATUS 变量保存执行结果。"
+  },
+  "alerts": {
+    "title": "告警",
+    "onFailure": "备份失败时发送警报",
+    "onFailureHint": "也会在出现警告时发送警报，并在恢复正常运行后发送一次通知。",
+    "staleDays": "未备份天数",
+    "staleDaysHint": "当连续这么多天没有成功备份时发送警报。设置为 0 可关闭此功能。"
+  },
+  "repos": {
+    "add": "添加存储库",
+    "empty": "暂无存储库",
+    "emptyHint": "存储库是存放备份的位置，例如 S3 存储桶或文件夹。",
+    "loadFailed": "无法加载存储库",
+    "jobCount_other": "{{count}} 个任务",
+    "newTitle": "新建存储库",
+    "storage": "存储",
+    "name": "名称",
+    "namePlaceholder": "异地 S3",
+    "kind": "类型",
+    "kinds": {
+      "s3": "S3 兼容",
+      "rest": "REST 服务器",
+      "rclone": "rclone",
+      "local": "主机上的文件夹"
+    },
+    "endpoint": "端点",
+    "endpointHint": "AWS 留空。MinIO、R2、B2 或 Wasabi 请填写其 S3 地址。",
+    "region": "区域",
+    "bucket": "存储桶",
+    "prefix": "存储桶中的文件夹",
+    "prefixHint": "可选。",
+    "accessKeyId": "访问密钥 ID",
+    "secretKey": "秘密访问密钥",
+    "secretSaved": "已保存，留空以保留现有值",
+    "url": "服务器地址",
+    "username": "用户",
+    "usernameHint": "如果服务器无需登录，请留空。",
+    "restPassword": "密码",
+    "remote": "远程名称",
+    "remoteHint": "仅限字母、数字和下划线。",
+    "path": "路径",
+    "rcloneConfig": "rclone 配置",
+    "rcloneHint": "rclone.conf 中该远程存储的配置行。请在您的计算机上运行 rclone config 来生成这些配置。主机上必须已安装 rclone。",
+    "rcloneSaved": "已保存，留空则保留原值",
+    "host": "主机",
+    "pickHost": "选择一台主机",
+    "folder": "文件夹",
+    "folderHint": "仅限此主机上的任务使用。建议使用挂载的磁盘。",
+    "password": "加密",
+    "resticPassword": "仓库密码",
+    "passwordHint": "留空由 Termix 生成强密码。请务必妥善保管副本：丢失后将无法读取备份。",
+    "passwordKeep": "已保存，留空以保留当前密码",
+    "passwordChangeHint": "此操作仅更改 Termix 发送的密码，不会更改现有仓库的密码。",
+    "reveal": "显示密码",
+    "revealTitle": "显示仓库密码？",
+    "revealDesc": "任何拥有此密码及存储密钥的人均可读取该仓库中的所有备份。此操作将记录到审计日志中。",
+    "revealFailed": "无法读取密码",
+    "copy": "复制",
+    "copied": "已复制",
+    "check": "检查",
+    "checkFrom": "从以下主机检查",
+    "checkFromHint": "用于打开存储库的主机。该主机需要安装 restic。",
+    "checkButton": "检查",
+    "initButton": "检查并设置",
+    "installRclone": "在此主机上安装 rclone",
+    "rcloneInstalled": "已安装 rclone {{version}}。",
+    "rcloneFailed": "无法安装 rclone",
+    "checking": "正在检查...",
+    "opened": "仓库已正常打开。",
+    "created": "仓库已配置完毕，准备就绪。",
+    "checkFailed": "无法打开仓库",
+    "checkNext": "已保存。请从主机进行检查以完成配置。",
+    "saved": "仓库已保存",
+    "saveFailed": "无法保存仓库",
+    "deleteTitle": "删除 {{name}}？",
+    "deleteDesc": "仅从 Termix 中移除。备份仍保留在存储中。",
+    "deleted": "仓库已删除",
+    "deleteFailed": "无法删除存储库"
+  },
+  "snapshots": {
+    "noJobs": "请先添加备份任务。",
+    "job": "任务",
+    "titleFor": "{{name}} 的快照",
+    "empty": "暂无快照",
+    "loadFailed": "无法读取快照",
+    "latest": "最新",
+    "files_other": "{{count}} 个文件",
+    "browse": "浏览",
+    "delete": "删除",
+    "deleteTitle": "删除此快照？",
+    "deleteDesc": "来自 {{time}} 的快照将从存储库中永久移除。",
+    "deleted": "快照已删除",
+    "deleteFailed": "无法删除快照",
+    "browseTitle": "快照 {{time}}",
+    "root": "根目录",
+    "emptyFolder": "此文件夹为空",
+    "filesFailed": "无法列出此文件夹",
+    "pick": "选择",
+    "download": "下载",
+    "downloadZip": "下载为 zip 文件",
+    "downloadFailed": "无法下载",
+    "restoreAll": "全部恢复",
+    "restorePicked_other": "恢复 {{count}} 个项目"
+  },
+  "restore": {
+    "title": "恢复",
+    "what": "恢复内容",
+    "everything": "快照中的所有文件。",
+    "more_other": "及其他 {{count}} 项",
+    "where": "恢复位置",
+    "host": "主机",
+    "hostHint": "任何您可以编辑且能访问该存储库的主机。",
+    "localOnly": "此存储库位于其主机上的文件夹中，因此只能在该主机上恢复。",
+    "toFolder": "恢复到文件夹",
+    "toOriginal": "恢复到原位置",
+    "folder": "文件夹",
+    "folderHint": "文件将保留其在此文件夹内的完整路径。",
+    "originalWarning": "文件将写回其原始位置，可能会覆盖当前存在的文件。",
+    "overwrite": "已存在的文件",
+    "overwriteOptions": {
+      "if-changed": "仅在文件变更时替换",
+      "always": "始终替换",
+      "if-newer": "仅在备份更新时替换",
+      "never": "从不替换"
+    },
+    "start": "恢复",
+    "started": "恢复已开始",
+    "failed": "无法启动恢复"
+  },
+  "run": {
+    "title": "运行",
+    "backupTitle": "{{name}} 的备份",
+    "restoreTitle": "{{name}} 的恢复",
+    "loadFailed": "无法加载运行记录",
+    "progress": "进度",
+    "preparing": "准备中...",
+    "progressLine": "{{percent}}% | {{files}} / {{totalFiles}} 个文件 | {{bytes}} / {{totalBytes}}",
+    "left": "剩余 {{time}}",
+    "details": "详细信息",
+    "started": "开始时间",
+    "finished": "完成时间",
+    "trigger": "触发方式",
+    "triggers": {
+      "manual": "立即运行",
+      "schedule": "计划任务",
+      "operation": "Termix 操作"
+    },
+    "snapshot": "快照",
+    "target": "已恢复到",
+    "files": "文件",
+    "filesLine": "{{total}} 个文件，{{added}} 个新增，{{changed}} 个已变更",
+    "size": "大小",
+    "added": "已添加到存储库",
+    "took": "耗时",
+    "log": "日志",
+    "noLog": "暂无日志。",
+    "stopTitle": "停止此运行？",
+    "stopDesc": "已停止的备份不会保存快照。已停止的还原将保留目前已还原的文件。",
+    "stopSent": "正在停止",
+    "stopFailed": "无法停止运行"
+  },
+  "history": {
+    "empty": "尚未运行任何任务",
+    "loadFailed": "无法加载历史记录",
+    "status": "状态",
+    "job": "任务",
+    "host": "主机",
+    "kind": "类型",
+    "kinds": {
+      "backup": "备份",
+      "restore": "还原"
+    },
+    "started": "开始时间",
+    "took": "耗时",
+    "size": "大小"
+  },
+  "card": {
+    "title": "备份",
+    "all": "所有备份任务",
+    "oneJob": "一个备份任务",
+    "empty": "暂无备份任务。",
+    "gone": "此备份任务已被删除。",
+    "open": "打开"
+  },
+  "operations": {
+    "list": {
+      "title": "列出备份任务"
+    },
+    "failed": {
+      "title": "失败的备份"
+    },
+    "run": {
+      "title": "运行备份"
+    },
+    "cancel": {
+      "title": "停止备份"
+    },
+    "snapshots": {
+      "title": "列出快照"
+    },
+    "events": {
+      "finished": "备份已完成",
+      "failed": "备份失败"
+    },
+    "jobs": {
+      "title": "备份任务",
+      "lastSuccess": "上次备份",
+      "nextRun": "下次运行",
+      "size": "大小"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "在终端中显示备份面板",
+        "description": "让备份面板在此主机的 SSH 终端旁边打开。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "在新终端中打开备份面板",
+        "description": "在每个已启用此功能的 SSH 终端旁边显示备份面板。您仍可以通过右侧边缘的按钮打开和关闭它。"
+      },
+      "companionSide": {
+        "label": "备份面板位置",
+        "description": "备份面板相对于终端的位置。",
+        "right": "右侧",
+        "left": "左侧",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "备份面板大小",
+        "description": "宽度（像素），或位于底部时的高度。您也可以拖动其边缘进行调整。"
+      },
+      "companionEdgeButton": {
+        "label": "显示面板按钮",
+        "description": "在终端右侧边缘显示一个小按钮，用于打开备份面板。"
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "切换备份面板"
+  }
+}

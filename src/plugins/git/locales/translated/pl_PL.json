@@ -1,0 +1,304 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Przeglądaj, pobieraj, commituj i wysyłaj repozytoria Git na swoich hostach oraz utrzymuj je na bieżąco dzięki automatycznemu pull."
+  },
+  "common": {
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "back": "Wstecz",
+    "loading": "Ładowanie..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Użyj Gita",
+      "description": "Przeglądaj repozytoria Git na hostach, do których masz dostęp, oraz modyfikuj je na hostach, które możesz edytować."
+    },
+    "runCommands": {
+      "title": "Uruchamiaj polecenia po automatycznym pull",
+      "description": "Ustaw polecenie, które zostanie uruchomione na hoście po automatycznym pull, gdy pojawią się nowe commity."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Zarządzaj repozytoriami Git na tym hoście z karty Git."
+      },
+      "repoRoots": {
+        "label": "Skanuj foldery",
+        "description": "Foldery przeszukiwane pod kątem repozytoriów podczas skanowania tego hosta. Oddziel je przecinkami. Domyślnie jest to folder domowy.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Używaj sudo",
+        "description": "Uruchamiaj git jako root za pomocą sudo. Tylko dla repozytoriów, których użytkownik logujący się nie może używać."
+      },
+      "readOnly": {
+        "label": "Tylko do odczytu",
+        "description": "Wyświetlaj repozytoria, ale nigdy ich nie modyfikuj na tym hoście."
+      },
+      "showPanel": {
+        "label": "Panel obok terminala",
+        "description": "Wyświetl panel Git na kartach terminala tego hosta."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otwieraj panel razem z terminalem",
+        "description": "Wyświetlaj panel Git, gdy terminal otwiera się na hoście, który go obsługuje."
+      },
+      "companionSide": {
+        "label": "Położenie panelu",
+        "description": "Gdzie panel znajduje się względem terminala.",
+        "right": "Prawa strona",
+        "left": "Lewa strona",
+        "bottom": "Dół"
+      },
+      "companionSize": {
+        "label": "Rozmiar panelu",
+        "description": "Szerokość panelu lub jego wysokość, gdy jest umieszczony na dole, w pikselach."
+      },
+      "companionEdgeButton": {
+        "label": "Przycisk krawędziowy",
+        "description": "Wyświetl mały przycisk na krawędzi terminala, aby otworzyć panel."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Otwórz Git z hosta.",
+    "error": "Nie udało się załadować Gita z tego hosta.",
+    "disabled": "Git jest wyłączony dla tego hosta. Włącz go w ustawieniach hosta.",
+    "sudo": "Wymaga to logowania jako root, sudo bez hasła lub zapisanego hasła sudo.",
+    "refresh": "Odśwież",
+    "readOnly": "Tylko do odczytu",
+    "notInstalled": "git nie jest zainstalowany",
+    "notInstalledTitle": "git nie jest zainstalowany na tym hoście",
+    "notInstalledHint": "Zainstaluj git za pomocą menedżera pakietów hosta, a następnie odśwież."
+  },
+  "actions": {
+    "ok": "Gotowe",
+    "failed": "Nieudane",
+    "noOutput": "Brak wyjścia."
+  },
+  "repos": {
+    "add": "Dodaj repozytorium",
+    "search": "Szukaj repozytoriów",
+    "empty": "Brak repozytoriów. Dodaj jedno, aby rozpocząć.",
+    "noMatch": "Brak pasujących repozytoriów.",
+    "viewOnly": "Do tego hosta nie dodano żadnych repozytoriów.",
+    "detached": "odłączony",
+    "changes_one": "{{count}} zmiana",
+    "changes_few": "{{count}} zmiany",
+    "changes_many": "{{count}} zmian",
+    "changes_other": "{{count}} zmian",
+    "conflicts": "Konflikty",
+    "auto": "Automatyczne ściąganie",
+    "autoFailing": "Błąd ściągania",
+    "remove": "Usuń z listy",
+    "removeTitle": "Usunąć {{name}}?",
+    "removeBody": "Repozytorium zostanie tylko zapomniane tutaj. Nic nie zostanie usunięte na hoście.",
+    "removed": "{{name}} usunięte",
+    "error": {
+      "missing": "Brakujący folder",
+      "notrepo": "Nie jest to repozytorium Git",
+      "unreadable": "Nie można odczytać"
+    }
+  },
+  "add": {
+    "title": "Dodaj repozytoria",
+    "modeScan": "Skanuj",
+    "modePath": "Katalog",
+    "modeClone": "Klonuj",
+    "scanHint": "Szuka repozytoriów Git w {{roots}}. Zmień katalogi w ustawieniach hosta.",
+    "rescan": "Skanuj ponownie",
+    "noneFound": "Nie znaleziono nowych repozytoriów.",
+    "picked": "Wybrane",
+    "addPicked_one": "Dodaj {{count}} repozytorium",
+    "addPicked_few": "Dodaj {{count}} repozytoria",
+    "addPicked_many": "Dodaj {{count}} repozytorium",
+    "addPicked_other": "Dodaj {{count}} repozytoriów",
+    "addAll": "Dodaj wszystkie",
+    "folder": "Katalog na hoście",
+    "folderHint": "Pełna ścieżka lub zacznij od ~ dla katalogu domowego. Musi to być już repozytorium Git.",
+    "addRepo": "Dodaj repozytorium",
+    "url": "Adres",
+    "urlHint": "Używa kluczy i ustawień Git użytkownika zalogowanego na hoście.",
+    "dest": "Klonuj do",
+    "destHint": "Katalog nie może jeszcze istnieć.",
+    "clone": "Klonuj",
+    "cloned": "Sklonowano",
+    "added_one": "Dodano {{count}} repozytorium",
+    "added_few": "Dodano {{count}} repozytoria",
+    "added_many": "Dodano {{count}} repozytorium",
+    "added_other": "Dodano {{count}} repozytoriów",
+    "failed": "Nie udało się dodać repozytorium",
+    "scanFailed": "Nie udało się zeskanować hosta"
+  },
+  "repo": {
+    "ahead": "{{count}} naprzód",
+    "behind": "{{count}} w tyle",
+    "fetch": "Pobierz",
+    "fetched": "Pobrano",
+    "pull": "Pobierz zmiany",
+    "pulled": "Pobrano zmiany",
+    "push": "Wyślij",
+    "pushed": "Wysłano",
+    "viewChanges": "Zmiany",
+    "viewBranches": "Gałęzie",
+    "viewHistory": "Historia",
+    "viewStash": "Zapisz tymczasowo",
+    "viewAuto": "Automatyczne pobieranie"
+  },
+  "changes": {
+    "loadFailed": "Nie udało się odczytać zmian.",
+    "clean": "Brak zmian do zatwierdzenia. Drzewo robocze jest czyste.",
+    "stagedTitle": "Do zatwierdzenia ({{count}})",
+    "unstagedTitle": "Zmiany ({{count}})",
+    "stage": "Do zatwierdzenia",
+    "staged": "Do zatwierdzenia",
+    "unstage": "Anuluj dodanie",
+    "unstaged": "Nie dodane",
+    "stageAll": "Dodaj wszystkie",
+    "renamed": "Zmieniono nazwę",
+    "discard": "Odrzuć",
+    "discardTitle": "Odrzucić zmiany w {{name}}?",
+    "discardBody": "Zmiany w tym pliku zostaną usunięte i nie można ich przywrócić.",
+    "discarded": "Zmiany odrzucone",
+    "message": "Komunikat zatwierdzenia",
+    "messagePlaceholder": "Co się zmieniło",
+    "commit": "Zatwierdź",
+    "commitAll": "Zatwierdź wszystkie zmiany",
+    "commitStaged_one": "Zatwierdź {{count}} plik do zatwierdzenia",
+    "commitStaged_few": "Zatwierdź {{count}} pliki do zatwierdzenia",
+    "commitStaged_many": "Zatwierdź {{count}} plików do zatwierdzenia",
+    "commitStaged_other": "Zatwierdź {{count}} plików do zatwierdzenia",
+    "committed": "Zatwierdzono",
+    "noDiff": "Brak zmian do wyświetlenia.",
+    "truncated": "Różnice są długie, więc wyświetlana jest tylko ich początkowa część."
+  },
+  "branches": {
+    "loadFailed": "Nie udało się odczytać gałęzi.",
+    "empty": "Brak gałęzi.",
+    "current": "Aktualna",
+    "remote": "Zdalna",
+    "gone": "Góra strumienia nie istnieje",
+    "newName": "Nowa gałąź",
+    "create": "Utwórz gałąź",
+    "created": "Utworzono gałąź {{name}}",
+    "switch": "Przełącz",
+    "switched": "Przełączono na {{name}}",
+    "merge": "Scal z aktualną",
+    "mergeTitle": "Scalić {{name}} z {{into}}?",
+    "mergeBody": "Scalanie z konfliktami jest natychmiast cofane.",
+    "merged": "Scalono {{name}}",
+    "delete": "Usuń gałąź",
+    "deleteTitle": "Usunąć {{name}}?",
+    "deleteBody": "Git odmówi, jeśli gałąź zawiera commity, które nie zostały scalone.",
+    "deleted": "Usunięto {{name}}",
+    "forceTitle": "Wymusić usunięcie {{name}}?",
+    "forceBody": "Ta gałąź zawiera commity, które nie zostały scalone. Zostaną one utracone po usunięciu gałęzi.",
+    "forceDelete": "Wymuś usunięcie"
+  },
+  "history": {
+    "loadFailed": "Nie udało się odczytać historii.",
+    "empty": "Brak commitów.",
+    "branch": "Ta gałąź",
+    "all": "Wszystkie gałęzie",
+    "more": "Załaduj więcej"
+  },
+  "stash": {
+    "loadFailed": "Nie udało się odczytać stashes.",
+    "title": "Stashes",
+    "empty": "Brak stashów.",
+    "message": "Komunikat",
+    "messagePlaceholder": "Opcjonalnie",
+    "untracked": "Uwzględnij pliki nieśledzone",
+    "push": "Zapisz zmiany w stashu",
+    "pushDone": "Zmiany zapisane w stashu",
+    "apply": "Zastosuj",
+    "applyDone": "Stash zastosowany",
+    "pop": "Wyjmij",
+    "popDone": "Stash zastosowany i usunięty",
+    "drop": "Odrzuć",
+    "dropDone": "Stash odrzucony",
+    "dropTitle": "Odrzucić {{name}}?",
+    "dropBody": "Stash zostanie usunięty i nie można go przywrócić.",
+    "remotes": "Repozytoria zdalne",
+    "noRemotes": "Brak repozytoriów zdalnych."
+  },
+  "auto": {
+    "intro": "Pobiera według harmonogramu, używając tylko fast-forward. Nigdy nie scala i pomija repozytorium, jeśli zawiera niezapisane zmiany lub rozbiega się z górą strumienia.",
+    "noUpstream": "Ta gałąź nie ma jeszcze góry strumienia, więc automatyczne pobieranie ją pominie.",
+    "enable": "Automatyczne pobieranie",
+    "enableHint": "Uruchamiane jako Ty, z Twoim dostępem do tego hosta.",
+    "interval": "Co (minuty)",
+    "intervalHint": "Jak długo czekać między pobraniami.",
+    "post": "Polecenie po pobraniu",
+    "postHint": "Uruchamiane w folderze repozytorium po nadejściu nowych commitów. Wymaga uprawnień do uruchamiania poleceń.",
+    "saved": "Zapisano automatyczne pobieranie",
+    "saveFailed": "Nie udało się zapisać automatycznego pobierania",
+    "runNow": "Uruchom teraz",
+    "next": "Następne pobranie {{when}}",
+    "runs": "Ostatnie uruchomienia",
+    "noRuns": "Brak uruchomień.",
+    "outcome": {
+      "pulled": "Pobrano",
+      "uptodate": "Aktualne",
+      "skipped": "Pominięto",
+      "failed": "Nieudane"
+    }
+  },
+  "card": {
+    "title": "Repozytoria Git",
+    "loading": "Ładowanie...",
+    "refresh": "Odśwież",
+    "empty": "Żaden host nie ma jeszcze repozytoriów Git.",
+    "allClean": "Wszystkie repozytoria są czyste i aktualne.",
+    "summary_one": "{{count}} repozytorium | {{attention}} wymaga uwagi",
+    "summary_few": "{{count}} repozytoria | {{attention}} wymagają uwagi",
+    "summary_many": "{{count}} repozytoriów | {{attention}} wymaga uwagi",
+    "summary_other": "{{count}} repozytorium | {{attention}} wymaga uwagi"
+  },
+  "companion": {
+    "toggle": "Panel Git",
+    "openTab": "Otwórz Git",
+    "here": "Repozytorium tego folderu",
+    "all": "Wszystkie repozytoria"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Lista repozytoriów Git"
+    },
+    "fetch": {
+      "title": "Pobierz repozytorium"
+    },
+    "pull": {
+      "title": "Pobierz zmiany z repozytorium"
+    },
+    "push": {
+      "title": "Wyślij zmiany do repozytorium"
+    },
+    "checkout": {
+      "title": "Przełącz gałąź",
+      "branch": "Gałąź"
+    },
+    "reset-hard": {
+      "title": "Twarde resetowanie repozytorium",
+      "ref": "Resetuj do"
+    },
+    "repos": {
+      "title": "Repozytoria Git",
+      "branch": "Gałąź",
+      "ahead": "Wyprzedza",
+      "behind": "Opóźnia się",
+      "changed": "Zmiany"
+    },
+    "signals": {
+      "behind": "Repozytoria opóźnione",
+      "dirty": "Repozytoria ze zmianami",
+      "pull-failing": "Automatyczne pobieranie nieudane"
+    }
+  }
+}

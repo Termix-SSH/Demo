@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Εκτελέστε playbooks και εντολές ad-hoc του Ansible από έναν control host, χρησιμοποιώντας ένα inventory που δημιουργείται από τους hosts του Termix."
+  },
+  "common": {
+    "save": "Αποθήκευση",
+    "cancel": "Ακύρωση",
+    "back": "Πίσω",
+    "delete": "Διαγραφή"
+  },
+  "permissions": {
+    "use": {
+      "title": "Χρήση του Ansible",
+      "description": "Προβολή playbooks και εκτελέσεων σε control hosts που μπορείτε να φτάσετε. Επεξεργασία αρχείων και εκτέλεση Ansible σε hosts που μπορείτε να επεξεργαστείτε."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Χρήση αυτού του host ως control host για το Ansible. Το Ansible πρέπει να είναι εγκατεστημένο σε αυτόν."
+      },
+      "projectDir": {
+        "label": "Φάκελος έργου",
+        "description": "Ο φάκελος σε αυτόν τον host που περιέχει τα playbooks, τα roles και το ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Αρχείο κωδικού Vault",
+        "description": "Ένα αρχείο σε αυτόν τον host με τον κωδικό πρόσβασης του Ansible Vault. Αφήστε το κενό αν δεν χρησιμοποιείτε το Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Μόνο για ανάγνωση",
+        "description": "Προβολή playbooks και εκτελέσεων, αλλά χωρίς επεξεργασία αρχείων ή εκκίνηση εκτελέσεων σε αυτόν τον host."
+      },
+      "alertRuns": {
+        "label": "Ειδοποίηση σε περίπτωση αποτυχίας εκτέλεσης",
+        "description": "Αποστολή ειδοποίησης όταν μια εκτέλεση σε αυτόν τον host ολοκληρωθεί με αποτυχία ή χαθεί. Ελέγχεται όταν διαβάζεται η κατάσταση της εκτέλεσης."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Ανοίξτε το Ansible από έναν host.",
+    "error": "Αδυναμία φόρτωσης του Ansible από αυτόν τον host.",
+    "disabled": "Το Ansible είναι απενεργοποιημένο για αυτόν τον host. Ενεργοποιήστε το στις ρυθμίσεις του host.",
+    "refresh": "Ανανέωση",
+    "readOnly": "Μόνο για ανάγνωση",
+    "notInstalled": "Το Ansible δεν είναι εγκατεστημένο",
+    "notInstalledTitle": "Το Ansible δεν είναι εγκατεστημένο σε αυτόν τον host",
+    "notInstalledHint": "Εγκαταστήστε το ansible-core σε αυτόν τον host, για παράδειγμα με το pipx ή τον διαχειριστή πακέτων σας, και στη συνέχεια κάντε ανανέωση.",
+    "noSshpass": "Το sshpass δεν είναι εγκατεστημένο σε αυτόν τον host. Οι hosts που συνδέονται με κωδικό πρόσβασης θα αποτύχουν.",
+    "viewPlaybooks": "Playbooks",
+    "viewRuns": "Εκτελέσεις",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Facts"
+  },
+  "files": {
+    "add": "Νέο αρχείο",
+    "search": "Αναζήτηση αρχείων",
+    "empty": "Δεν υπάρχουν αρχεία στον φάκελο έργου ακόμα.",
+    "noMatch": "Κανένα αρχείο δεν ταιριάζει.",
+    "noProject": "Ο φάκελος {{dir}} δεν υπάρχει σε αυτόν τον host. Δημιουργήστε τον ή ορίστε έναν διαφορετικό φάκελο έργου στις ρυθμίσεις του host.",
+    "listFailed": "Αδυναμία εμφάνισης των αρχείων του έργου.",
+    "loadFailed": "Αδυναμία ανάγνωσης αυτού του αρχείου.",
+    "saved": "Το αρχείο αποθηκεύτηκε",
+    "saveFailed": "Αδυναμία αποθήκευσης αυτού του αρχείου.",
+    "playbook": "Playbook",
+    "run": "Εκτέλεση",
+    "newTitle": "Νέο αρχείο",
+    "name": "Όνομα αρχείου",
+    "nameHint": "Μια διαδρομή μέσα στον φάκελο έργου, όπως site.yml ή roles/web/tasks/main.yml.",
+    "hint": "Ένα playbook ελέγχεται για σύνταξη πριν αποθηκευτεί. Το παλιό αρχείο παραμένει αν ο έλεγχος αποτύχει.",
+    "text": "Κείμενο αρχείου",
+    "deleteTitle": "Διαγραφή αυτού του αρχείου;"
+  },
+  "targets": {
+    "search": "Αναζήτηση hosts",
+    "addShown": "Προσθήκη εμφανιζόμενων",
+    "clear": "Εκκαθάριση",
+    "empty": "Δεν βρέθηκαν hosts.",
+    "count": "{{count}} επιλεγμένα",
+    "failed": "Αδυναμία φόρτωσης των hosts σας."
+  },
+  "run": {
+    "title": "Εκτέλεση του {{playbook}}",
+    "start": "Εκτέλεση",
+    "startCheck": "Εκτέλεση σε λειτουργία ελέγχου",
+    "startFailed": "Αδυναμία εκκίνησης της εκτέλεσης.",
+    "source": "Κόμβοι",
+    "sourceProject": "Αποθετήριο έργου",
+    "sourceTermix": "Κόμβοι Termix",
+    "sourceProjectHint": "Χρησιμοποιήστε το αποθετήριο από το ansible.cfg ή ένα αρχείο μέσα στο έργο.",
+    "sourceTermixHint": "Επιλέξτε κόμβους από το Termix. Οι φάκελοι γίνονται ομάδες folder_ και οι ετικέτες γίνονται ομάδες tag_. Όλοι ανήκουν στην ομάδα termix.",
+    "inventory": "Αρχείο αποθετηρίου",
+    "inventoryHint": "Μια διαδρομή μέσα στον φάκελο του έργου. Αφήστε κενό για να χρησιμοποιηθεί το ansible.cfg.",
+    "check": "Λειτουργία ελέγχου",
+    "checkHint": "Εμφάνιση των αλλαγών που θα γίνονταν χωρίς να εφαρμοστούν.",
+    "diff": "Εμφάνιση διαφορών",
+    "diffHint": "Εμφάνιση των αλλαγών που έγιναν στα αρχεία.",
+    "become": "Εκτέλεση ως root",
+    "becomeHint": "Χρήση sudo στους κόμβους. Για τους κόμβους Termix χρησιμοποιείται ο αποθηκευμένος κωδικός Sudo.",
+    "limit": "Περιορισμός",
+    "limitHint": "Εκτέλεση μόνο σε αυτούς τους κόμβους ή ομάδες.",
+    "verbosity": "Λεπτομέρειες εξόδου",
+    "verbosityOff": "Κανονική",
+    "tags": "Ετικέτες",
+    "skipTags": "Παράλειψη ετικετών",
+    "extraVars": "Επιπλέον μεταβλητές",
+    "extraVarsHint": "Ένα key=value ανά γραμμή."
+  },
+  "runs": {
+    "title": "Εκτέλεση",
+    "empty": "Δεν υπάρχουν εκτελέσεις ακόμα.",
+    "loadFailed": "Αδυναμία φόρτωσης των εκτελέσεων.",
+    "stop": "Διακοπή",
+    "stopFailed": "Αδυναμία διακοπής της εκτέλεσης.",
+    "deleteTitle": "Διαγραφή αυτής της εκτέλεσης;",
+    "deleteFailed": "Αδυναμία διαγραφής της εκτέλεσης.",
+    "checkMode": "Έλεγχος",
+    "truncated": "Εμφάνιση του τέλους μιας μεγάλης εξόδου.",
+    "noOutput": "Δεν υπάρχει έξοδος ακόμα.",
+    "state": {
+      "running": "Εν εξελίξει",
+      "ok": "Ολοκληρώθηκε",
+      "failed": "Απέτυχε",
+      "cancelled": "Διακόπηκε",
+      "lost": "Χάθηκε"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Στοιχεία"
+    },
+    "recap": {
+      "host": "Κόμβος",
+      "ok": "Επιτυχώς",
+      "changed": "Αλλαγές",
+      "unreachable": "Μη προσβάσιμος",
+      "failed": "Απέτυχε",
+      "skipped": "Παράλειψη"
+    }
+  },
+  "adhoc": {
+    "hint": "Εκτέλεση ενός module σε κόμβους, όπως ansible all -m ping.",
+    "pattern": "Σχέδιο κόμβων",
+    "patternHint": "Ένας κόμβος, μια ομάδα ή all.",
+    "module": "Module",
+    "moduleHint": "Για παράδειγμα ping, command, shell, apt ή systemd.",
+    "args": "Ορίσματα",
+    "argsHint": "Για command και shell αυτό είναι η εντολή. Για άλλα modules είναι ζεύγη key=value.",
+    "run": "Εκτέλεση"
+  },
+  "facts": {
+    "hint": "Συλλογή στοιχείων από κόμβους με το module setup. Απαιτούνται κόμβοι Termix ώστε ο καθένας να έχει σύνδεση.",
+    "gather": "Συλλογή στοιχείων",
+    "gathering": "Συλλογή...",
+    "failed": "Αδυναμία συλλογής στοιχείων.",
+    "failedHost": "Απέτυχε",
+    "none": "Δεν επιστράφηκαν στοιχεία. Ανοίξτε την εκτέλεση για να δείτε γιατί.",
+    "col": {
+      "host": "Host",
+      "os": "Σύστημα",
+      "kernel": "Πυρήνας",
+      "cpu": "CPUs",
+      "memory": "Μνήμη",
+      "address": "Διεύθυνση",
+      "uptime": "Χρόνος λειτουργίας"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Αναφορά playbooks"
+    },
+    "run": {
+      "title": "Εκτέλεση playbook",
+      "playbook": "Playbook",
+      "limit": "Όριο",
+      "tags": "Ετικέτες",
+      "check": "Λειτουργία ελέγχου"
+    },
+    "runs": {
+      "title": "Αναφορά εκτελέσεων",
+      "resource": "Εκτελέσεις",
+      "started": "Έναρξη",
+      "check": "Λειτουργία ελέγχου"
+    },
+    "failed": {
+      "title": "Αποτυχημένες εκτελέσεις"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Έλεγχος hosts...",
+    "summary_one": "{{count}} αποτυχημένη εκτέλεση σε {{hosts}} hosts",
+    "summary_other": "{{count}} αποτυχημένες εκτελέσεις σε {{hosts}} hosts",
+    "refresh": "Έλεγχος ξανά",
+    "empty": "Ενεργοποιήστε το Ansible για έναν host για να δείτε τις εκτελέσεις του εδώ.",
+    "failed_one": "{{count}} αποτυχία",
+    "failed_other": "{{count}} αποτυχίες",
+    "running_one": "{{count}} σε εκτέλεση",
+    "running_other": "{{count}} σε εκτέλεση",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Δεν υπάρχουν εκτελέσεις ακόμη"
+  }
+}

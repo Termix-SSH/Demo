@@ -1,0 +1,246 @@
+{
+  "tab": {
+    "title": "UPS",
+    "noHost": "從主機開啟 UPS。",
+    "error": "無法讀取此主機上的 UPS。",
+    "disabled": "此主機的 UPS 管理員已關閉。請在主机設定中開啟。",
+    "viewOverview": "概覽",
+    "viewHistory": "歷史記錄",
+    "viewEvents": "事件",
+    "viewCommands": "指令",
+    "viewSources": "裝置"
+  },
+  "common": {
+    "loading": "載入中...",
+    "save": "儲存",
+    "cancel": "取消",
+    "delete": "刪除",
+    "edit": "編輯",
+    "failed": "操作失敗。"
+  },
+  "state": {
+    "online": "市電供電",
+    "battery": "電池供電",
+    "bypass": "旁路",
+    "off": "關閉",
+    "unknown": "未知"
+  },
+  "flag": {
+    "low-battery": "電池電量低",
+    "replace-battery": "更換電池",
+    "overload": "過載",
+    "charging": "充電中",
+    "calibrating": "校準中",
+    "alarm": "警報",
+    "boost": "升壓中",
+    "trim": "降壓中"
+  },
+  "backend": {
+    "nut": "NUT",
+    "apcupsd": "apcupsd",
+    "snmp": "SNMP 卡"
+  },
+  "overview": {
+    "noData": "尚無讀數。",
+    "stale": "上次讀取失敗：{{error}}",
+    "power": "電源",
+    "charge": "電池電量",
+    "runtime": "剩餘運行時間",
+    "load": "負載",
+    "nominal": "額定 {{watts}} W",
+    "input": "輸入電壓",
+    "output": "輸出電壓",
+    "batteryVolts": "電池電壓",
+    "temp": "溫度",
+    "model": "型號",
+    "serial": "序號",
+    "status": "狀態",
+    "lastTest": "上次自檢",
+    "readAt": "上次讀取",
+    "ago": "{{time}} 前"
+  },
+  "history": {
+    "error": "無法載入歷史記錄。",
+    "24h": "24 小時",
+    "7d": "7 天",
+    "30d": "30 天",
+    "empty": "讀數尚不足。Termix 每 30 秒讀取一次 UPS。",
+    "charge": "電池電量",
+    "load": "負載",
+    "runtime": "剩餘運行時間",
+    "voltage": "電壓"
+  },
+  "events": {
+    "error": "無法載入事件。",
+    "empty": "尚無電源事件。",
+    "type": {
+      "on-battery": "電池供電",
+      "on-battery-cleared": "電源恢復",
+      "low-battery": "電池電量低",
+      "low-battery-cleared": "電池正常",
+      "replace-battery": "更換電池",
+      "replace-battery-cleared": "電池正常",
+      "overload": "過載",
+      "overload-cleared": "負載正常",
+      "low-charge": "充電量低",
+      "low-charge-cleared": "充電正常",
+      "low-runtime": "剩餘運行時間短",
+      "low-runtime-cleared": "運行時間正常",
+      "unreachable": "無法連線",
+      "unreachable-cleared": "可連線",
+      "test-failed": "測試異常",
+      "test-failed-cleared": "測試正常",
+      "test": "自我測試",
+      "command": "指令"
+    }
+  },
+  "commands": {
+    "unsupported": "僅 NUT 裝置支援指令。",
+    "error": "無法列出指令。",
+    "confirmTitle": "執行 {{name}}？",
+    "confirmText": "此操作可能會切斷電源或改變 {{name}} 的行為。",
+    "run": "執行",
+    "done": "已發送 {{name}}。",
+    "needLogin": "請為此裝置新增 NUT 使用者與密碼，才能發送指令。",
+    "empty": "此 UPS 沒有即時指令。",
+    "risky": "可能切斷電源"
+  },
+  "sources": {
+    "add": "新增 UPS",
+    "empty": "此主機未設定任何 UPS。",
+    "emptyHint": "在此主機上新增 NUT 或 apcupsd 裝置，或新增此主機可連線的 SNMP 卡。",
+    "off": "關閉",
+    "unreachable": "無法連線",
+    "saved": "已儲存。",
+    "deleteTitle": "移除 {{name}}？",
+    "deleteText": "其歷史記錄與事件也會一併刪除。"
+  },
+  "editor": {
+    "addTitle": "新增 UPS",
+    "editTitle": "編輯 UPS",
+    "add": "新增",
+    "backend": "讀取方式",
+    "label": "名稱",
+    "labelPlaceholder": "機架式 UPS",
+    "target": {
+      "nut": "NUT 裝置",
+      "apcupsd": "apcupsd 位址",
+      "snmp": "卡位址"
+    },
+    "targetPlaceholder": {
+      "nut": "ups 或 ups@192.168.1.5:3493",
+      "apcupsd": "留空表示使用此主機",
+      "snmp": "192.168.1.20"
+    },
+    "nutFound": "在此主機上找到：{{names}}",
+    "nutMissing": "此主機未安裝 upsc。請先安裝 NUT 用戶端。",
+    "nutHint": "upsc -l 顯示的名稱，或遠端 NUT 伺服器的 name@host:port。",
+    "apcMissing": "此主機未安裝 apcaccess。請先安裝 apcupsd。",
+    "apcHint": "留空表示讀取此主機上的守護程序，或使用 host:3551。",
+    "snmpMissing": "此主機未安裝 snmpwalk。請先安裝 net-snmp 工具。",
+    "snmpHint": "Termix 會從此主機使用 snmpwalk 輪詢該卡。",
+    "nutUser": "NUT 使用者",
+    "nutPassword": "NUT 密碼",
+    "nutLoginHint": "僅在發送指令時需要。讀取資料時不需要。",
+    "saved": "已儲存",
+    "snmpVersion": "SNMP 版本",
+    "community": "社群名稱",
+    "v3User": "SNMP 使用者",
+    "v3Level": "安全等級",
+    "v3": {
+      "noAuth": "無需驗證",
+      "auth": "驗證",
+      "authPriv": "驗證與隱私"
+    },
+    "v3AuthProto": "驗證類型",
+    "v3AuthPass": "驗證密碼",
+    "v3PrivProto": "隱私類型",
+    "v3PrivPass": "隱私密碼",
+    "clearSecrets": "移除已儲存的登入資訊",
+    "clearSecretsHint": "刪除此裝置已儲存的 NUT 或 SNMP 登入資訊。",
+    "lowCharge": "低電量警示（%）",
+    "lowChargeHint": "當使用電池供電且電量低於或等於此數值時發出警示。",
+    "lowRuntime": "低剩餘時間警示（分鐘）",
+    "lowRuntimeHint": "當使用電池供電且剩餘時間低於或等於此數值時發出警示。設為 0 可關閉此功能。",
+    "alerts": "傳送警示",
+    "alertsHint": "斷電、低電量、過載與測試問題。",
+    "enabled": "讀取此 UPS",
+    "enabledHint": "關閉以停止讀取並保留歷史記錄。",
+    "test": "測試",
+    "testing": "測試中...",
+    "testOk": "運作正常：{{state}}，電量 {{charge}}%，剩餘時間 {{runtime}}。",
+    "testFailed": "無法讀取 UPS。"
+  },
+  "card": {
+    "title": "UPS",
+    "empty": "尚未設定 UPS。請為主機啟用 UPS 管理員並新增裝置。",
+    "runtime": "剩餘 {{time}}",
+    "load": "負載 {{value}}%"
+  },
+  "manager": {
+    "title": "UPS",
+    "disabled": "此主機的 UPS 管理員已關閉。"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "UPS 管理員",
+        "description": "從此主機讀取 UPS 裝置並顯示 UPS 分頁。"
+      },
+      "readOnly": {
+        "label": "UPS 唯讀",
+        "description": "阻止對此主機 UPS 裝置的變更與指令。"
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "使用 UPS 管理員",
+      "description": "查看 UPS 狀態，並在擁有主機編輯權限時變更裝置與傳送指令。"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "列出 UPS 裝置"
+    },
+    "status": {
+      "title": "電源狀態"
+    },
+    "charge": {
+      "title": "電池電量"
+    },
+    "runtime": {
+      "title": "剩餘時間"
+    },
+    "source": "UPS",
+    "sourceHint": "UPS ID。留空則使用主機上的第一個 UPS。",
+    "selfTest": {
+      "title": "啟動電池自檢",
+      "kind": "類型",
+      "quick": "快速",
+      "deep": "深度"
+    },
+    "beeper": {
+      "title": "設定 UPS 警示音",
+      "mode": "警示音",
+      "mute": "靜音",
+      "disable": "關閉",
+      "enable": "開啟"
+    },
+    "calibrate": {
+      "title": "校準剩餘時間",
+      "description": "耗盡電池以測量其剩餘時間。執行期間，連接至此 UPS 的主機將失去保護。"
+    },
+    "devices": {
+      "title": "UPS 裝置",
+      "state": "狀態",
+      "charge": "電量",
+      "load": "負載",
+      "backend": "讀取方式"
+    },
+    "events": {
+      "onBattery": "UPS 使用電池供電",
+      "powerRestored": "UPS 電源已恢復"
+    }
+  }
+}

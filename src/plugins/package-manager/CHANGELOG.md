@@ -12,7 +12,4 @@
 - Read the package history and the list of repositories
 - Works with apt, dnf, yum, zypper, pacman and apk
 - A dashboard card with pending updates on every host and a Packages card in Host Metrics
-
-### Changed
-
 - Needs Termix 26.11.1 or newer

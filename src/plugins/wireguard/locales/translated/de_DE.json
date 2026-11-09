@@ -1,0 +1,234 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Installieren Sie WireGuard auf Ihren Hosts und verwalten Sie Schnittstellen, Clients und Konfigurationen aus einer einzigen Registerkarte."
+  },
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück",
+    "delete": "Löschen",
+    "loading": "Wird geladen..."
+  },
+  "permissions": {
+    "use": {
+      "title": "WireGuard verwenden",
+      "description": "Verwalten Sie WireGuard-Schnittstellen und -Clients auf Hosts, die Sie bearbeiten können."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Öffnen Sie WireGuard von einem Host aus.",
+    "error": "WireGuard konnte von diesem Host nicht geladen werden.",
+    "sudo": "Dieser Host benötigt einen Root-Login oder ein passwortloses sudo, um WireGuard zu verwalten.",
+    "installed": "Installiert",
+    "notInstalled": "Nicht installiert",
+    "refresh": "Aktualisieren",
+    "viewInterfaces": "Schnittstellen",
+    "viewLogs": "Protokolle"
+  },
+  "install": {
+    "title": "WireGuard installieren",
+    "desc": "Dadurch werden die WireGuard-Tools und iptables mit dem Paketmanager des Hosts installiert.",
+    "confirm": "Installieren",
+    "done": "WireGuard ist installiert.",
+    "failed": "WireGuard konnte nicht installiert werden.",
+    "empty": "WireGuard ist auf diesem Host nicht installiert",
+    "noManager": "Es wurde kein unterstützter Paketmanager gefunden. Installieren Sie WireGuard manuell.",
+    "hint": "Installieren Sie es auf {{os}}, um einen VPN von diesem Host aus zu betreiben.",
+    "thisHost": "diesem Host",
+    "button": "WireGuard installieren",
+    "working": "Wird installiert..."
+  },
+  "interfaces": {
+    "add": "Schnittstelle hinzufügen",
+    "empty": "Noch keine Schnittstellen. Fügen Sie eine hinzu, um einen VPN zu starten.",
+    "loadFailed": "Die Schnittstellen konnten nicht geladen werden.",
+    "up": "Aktiv",
+    "down": "Inaktiv",
+    "nat": "NAT",
+    "boot": "Startet beim Booten"
+  },
+  "create": {
+    "title": "Schnittstelle hinzufügen",
+    "name": "Name",
+    "address": "Adresse",
+    "addressHint": "Die Serveradresse und das Subnetz. Clients erhalten die nächsten freien Adressen.",
+    "port": "UDP-Port",
+    "nat": "Internet des Hosts teilen (NAT)",
+    "natDesc": "Clients können über diesen Host auf das Internet und das Netzwerk des Hosts zugreifen.",
+    "natMissing": "NAT benötigt iptables, das auf diesem Host nicht installiert ist.",
+    "forwarding": "IP-Forwarding aktivieren",
+    "forwardingDesc": "Ermöglicht dem Host, den Datenverkehr zwischen Clients und dem Netzwerk weiterzuleiten. Wird für Neustarts gespeichert.",
+    "firewall": "Port in der Firewall öffnen",
+    "firewallDesc": "Fügt den UDP-Port zu ufw oder firewalld hinzu, wenn einer davon läuft.",
+    "start": "Jetzt und beim Booten starten",
+    "startDesc": "Schaltet die Schnittstelle ein und hält sie nach einem Neustart aktiv.",
+    "save": "Erstellen",
+    "done": "Die Schnittstelle ist bereit.",
+    "failed": "Die Schnittstelle konnte nicht erstellt werden."
+  },
+  "detail": {
+    "clients": "Clients",
+    "settings": "Einstellungen",
+    "config": "Konfiguration",
+    "service": "Dienst",
+    "gone": "Diese Schnittstelle existiert auf dem Host nicht mehr."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Zeige den WireGuard-Tab für diesen Host in seinem Menü."
+      },
+      "showPanel": {
+        "label": "WireGuard-Panel in Terminals anzeigen",
+        "description": "Erlaube dem WireGuard-Panel, neben dem SSH-Terminal dieses Hosts geöffnet zu werden."
+      },
+      "alertDown": {
+        "label": "Benachrichtigen, wenn eine Schnittstelle deaktiviert ist",
+        "description": "Sende eine Benachrichtigung, wenn eine Schnittstelle, die beim Start aktiviert werden soll, nicht aktiv ist. Wird geprüft, wenn der WireGuard-Status gelesen wird."
+      }
+    },
+    "publicKey": "Öffentlicher Schlüssel",
+    "port": "UDP-Port",
+    "endpoint": "Server-Endpunkt",
+    "endpointHint": "Die öffentliche Adresse, mit der sich Clients verbinden, z. B. vpn.example.com:51820.",
+    "dns": "DNS für Clients",
+    "dnsHint": "Optional. Trenne Server durch Kommas.",
+    "allowed": "Datenverkehr durch das VPN",
+    "allowedHint": "Die Bereiche, die Clients durch das VPN senden. 0.0.0.0/0, ::/0 sendet alles.",
+    "keepalive": "Keepalive (Sekunden)",
+    "keepaliveHint": "Hält Clients hinter NAT erreichbar. Verwende 0, um es zu deaktivieren.",
+    "saved": "Einstellungen gespeichert.",
+    "saveFailed": "Einstellungen konnten nicht gespeichert werden.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "WireGuard-Panel mit neuen Terminals öffnen",
+        "description": "Zeige das WireGuard-Panel neben jedem SSH-Terminal, das WireGuard aktiviert hat. Du kannst es weiterhin über die Schaltfläche am rechten Rand öffnen und schließen."
+      },
+      "companionSide": {
+        "label": "Position des WireGuard-Panels",
+        "description": "Wo das WireGuard-Panel neben einem Terminal platziert wird.",
+        "right": "Rechts",
+        "left": "Links",
+        "bottom": "Unten"
+      },
+      "companionSize": {
+        "label": "Größe des WireGuard-Panels",
+        "description": "Breite in Pixeln oder Höhe, wenn es unten platziert ist. Du kannst auch den Rand ziehen."
+      },
+      "companionEdgeButton": {
+        "label": "Panel-Schaltfläche anzeigen",
+        "description": "Zeige eine kleine Schaltfläche am rechten Rand eines Terminals, die das WireGuard-Panel öffnet."
+      }
+    }
+  },
+  "clients": {
+    "add": "Client hinzufügen",
+    "empty": "Noch keine Clients.",
+    "loadFailed": "Clients konnten nicht geladen werden.",
+    "name": "Name",
+    "nameHint": "Buchstaben, Zahlen, Punkte, Bindestriche und Unterstriche.",
+    "allowed": "Datenverkehr durch das VPN",
+    "allowedHint": "Leer lassen, um den Standardwert der Schnittstelle zu verwenden: {{value}}",
+    "create": "Client erstellen",
+    "addFailed": "Client konnte nicht hinzugefügt werden.",
+    "needEndpoint": "Setze zuerst den Server-Endpunkt in den Schnittstelleneinstellungen.",
+    "connected": "Verbunden",
+    "off": "Aus",
+    "external": "Manuell erstellt",
+    "handshake": "Handshake vor {{ago}}",
+    "showConfig": "Konfiguration und QR-Code anzeigen",
+    "configFailed": "Client-Konfiguration konnte nicht gelesen werden.",
+    "rotate": "Neue Schlüssel",
+    "rotateTitle": "Neue Schlüssel für {{name}} erstellen?",
+    "rotateDesc": "Die alte Konfiguration funktioniert nicht mehr. Gib dem Client danach die neue Konfiguration.",
+    "turnOff": "Ausschalten",
+    "turnOn": "Einschalten",
+    "saveFailed": "Client konnte nicht geändert werden.",
+    "deleteTitle": "{{name}} löschen?",
+    "deleteDesc": "Der Client wird entfernt und kann sich nicht mehr verbinden.",
+    "deleteFailed": "Client konnte nicht gelöscht werden."
+  },
+  "clientConfig": {
+    "note": "Diese Konfiguration enthält den privaten Schlüssel des Clients. Teile sie nur mit der Person oder dem Gerät, das sie verwenden wird.",
+    "qr": "QR-Code für die Client-Konfiguration",
+    "copy": "Kopieren",
+    "copied": "Konfiguration kopiert.",
+    "copyFailed": "Konfiguration konnte nicht kopiert werden.",
+    "download": ".conf herunterladen"
+  },
+  "config": {
+    "title": "Konfigurationsdatei",
+    "hint": "Private und vorab geteilte Schlüssel werden ausgeblendet. Lassen Sie den Platzhalter stehen, um einen Schlüssel zu behalten. Die Konfiguration wird vor dem Speichern geprüft und ein Backup erstellt. Änderungen an Adressen erfordern einen Neustart.",
+    "loadFailed": "Die Konfiguration konnte nicht gelesen werden.",
+    "saved": "Konfiguration gespeichert.",
+    "saveFailed": "Die Konfiguration konnte nicht gespeichert werden."
+  },
+  "logs": {
+    "loadFailed": "Die Protokolle konnten nicht gelesen werden.",
+    "lines": "{{count}} Zeilen",
+    "empty": "Keine Protokolleinträge."
+  },
+  "service": {
+    "failed": "Die Dienstaktion ist fehlgeschlagen.",
+    "start": "Starten",
+    "stop": "Stoppen",
+    "restart": "Neustarten",
+    "autostart": "Beim Start starten",
+    "autostartDesc": "Starten Sie diese Schnittstelle, wenn der Host startet.",
+    "needsSystemd": "Das Starten beim Booten erfordert systemd auf diesem Host.",
+    "noForward": "IP-Forwarding ist auf diesem Host deaktiviert, daher können Clients das Netzwerk nicht über NAT erreichen.",
+    "delete": "Schnittstelle löschen",
+    "deleteTitle": "{{name}} löschen?",
+    "deleteDesc": "Die Schnittstelle wird gestoppt und ihre Konfiguration, Schlüssel und gespeicherten Client-Dateien werden vom Host entfernt.",
+    "deleteFailed": "Die Schnittstelle konnte nicht gelöscht werden."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Aktivieren Sie WireGuard in den Einstellungen dieses Hosts, um diese Karte zu verwenden.",
+    "start": "Aktivieren",
+    "stop": "Deaktivieren",
+    "done": "{{name}} aktualisiert"
+  },
+  "operations": {
+    "list": {
+      "title": "WireGuard-Schnittstellen auflisten"
+    },
+    "down": {
+      "title": "WireGuard-Schnittstellen deaktivieren"
+    },
+    "start": {
+      "title": "WireGuard-Schnittstelle starten"
+    },
+    "stop": {
+      "title": "WireGuard-Schnittstelle stoppen"
+    },
+    "restart": {
+      "title": "WireGuard-Schnittstelle neu starten"
+    },
+    "interfaces": {
+      "title": "WireGuard-Schnittstellen",
+      "address": "Adresse",
+      "port": "Port",
+      "clients": "Clients"
+    }
+  },
+  "nav": {
+    "togglePanel": "WireGuard-Panel umschalten"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Hosts werden überprüft...",
+    "summary_one": "{{count}} Client auf {{hosts}} Hosts",
+    "summary_other": "{{count}} Clients auf {{hosts}} Hosts",
+    "refresh": "Erneut überprüfen",
+    "empty": "Aktivieren Sie WireGuard für einen Host, um ihn hier zu sehen.",
+    "missing": "Nicht installiert",
+    "down_one": "{{count}} deaktiviert",
+    "down_other": "{{count}} deaktiviert",
+    "interfaces_one": "{{count}} Schnittstelle, {{clients}} Clients",
+    "interfaces_other": "{{count}} Schnittstellen, {{clients}} Clients"
+  }
+}

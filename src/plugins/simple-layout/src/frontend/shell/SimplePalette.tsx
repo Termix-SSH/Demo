@@ -86,7 +86,13 @@ function PaletteBody() {
   const filteredHosts = useMemo(
     () =>
       hosts.list.filter((host) =>
-        matches(host.name, host.ip, host.username, host.folder, ...host.tags),
+        matches(
+          host.name,
+          host.ip,
+          host.username,
+          host.folder,
+          ...(host.tags ?? []),
+        ),
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [hosts.list, query],

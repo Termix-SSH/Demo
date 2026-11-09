@@ -69,6 +69,7 @@ import {
   Server,
   Zap,
 } from "lucide-react";
+import { toast } from "sonner";
 import { withLiveHostStatus } from "../sidebar/live-host-status";
 import { sortHostTree, type SortKey } from "../sidebar/host-sort";
 import {
@@ -513,7 +514,7 @@ export function DashboardTab({
       await resetRecentActivity();
       setActivity([]);
     } catch {
-      /* ignore */
+      toast.error(t("dashboardTab.clearFailed"));
     }
   };
 

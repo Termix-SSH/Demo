@@ -115,7 +115,7 @@ export function ServiceLinksCard({ isVisible }: DashboardCardProps) {
           value={label}
           onChange={(e) => setLabel(e.target.value)}
           placeholder={t("dashboardTab.serviceLinksLabelPlaceholder")}
-          className="flex-1 min-w-0 text-xs bg-transparent border border-border px-2 py-1 focus:outline-none focus:border-accent-brand/60"
+          className="flex-1 min-w-0 text-xs bg-popover border border-border px-2 py-1 focus:outline-none focus:border-accent-brand/60"
         />
         <input
           type="text"

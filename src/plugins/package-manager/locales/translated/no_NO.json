@@ -1,0 +1,216 @@
+{
+  "plugin": {
+    "name": "Pakker",
+    "description": "Se og installer oppdateringer på vertene dine, søk, installer og fjern pakker, og les pakkehistorikken."
+  },
+  "common": {
+    "cancel": "Avbryt",
+    "back": "Tilbake"
+  },
+  "permissions": {
+    "use": {
+      "title": "Bruk Pakker",
+      "description": "Se pakker og oppdateringer på vertene du kan nå, og endre dem på vertene du kan redigere."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Pakker",
+        "description": "Administrer pakker og oppdateringer på denne verten fra fanen Pakker."
+      },
+      "useSudo": {
+        "label": "Bruk sudo",
+        "description": "Bruk sudo for å installere, oppdatere og fjerne pakker. Slå av hvis innloggingen er root."
+      },
+      "readOnly": {
+        "label": "Skrivebeskyttet",
+        "description": "Vis pakker og oppdateringer, men endre aldri dem på denne verten."
+      },
+      "showPanel": {
+        "label": "Vis oppdateringspanelet i terminaler",
+        "description": "La oppdateringspanelet åpnes ved siden av SSH-terminalen for denne verten."
+      },
+      "alertUpdates": {
+        "label": "Varsle om sikkerhetsoppdateringer",
+        "description": "Send et varsel når denne verten har sikkerhetsoppdateringer eller må starte på nytt. Sjekkes når oppdateringer leses, omtrent en gang i timen."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Åpne oppdateringspanelet med nye terminaler",
+        "description": "Vis oppdateringspanelet ved siden av hver SSH-terminal som har Pakker på. Du kan fortsatt åpne og lukke det fra knappen på høyre kant."
+      },
+      "companionSide": {
+        "label": "Plassering av oppdateringspanelet",
+        "description": "Hvor oppdateringspanelet vises ved siden av en terminal.",
+        "right": "Høyre",
+        "left": "Venstre",
+        "bottom": "Bunn"
+      },
+      "companionSize": {
+        "label": "Størrelse på oppdateringspanelet",
+        "description": "Bredde i piksler, eller høyde når det er nederst. Du kan også dra i kanten."
+      },
+      "companionEdgeButton": {
+        "label": "Vis panelknappen",
+        "description": "Vis en liten knapp på høyre kant av terminalen som åpner oppdateringspanelet."
+      }
+    }
+  },
+  "tab": {
+    "title": "Pakker",
+    "noHost": "Åpne Pakker fra en vert.",
+    "error": "Kunne ikke laste inn pakker fra denne verten.",
+    "disabled": "Pakker er deaktivert for denne verten. Aktiver det i vertsinnstillingene.",
+    "sudo": "Endringer krever root-innlogging, passordløs sudo eller et lagret Sudo-passord på denne verten.",
+    "refresh": "Oppdater",
+    "readOnly": "Skrivebeskyttet",
+    "noManager": "Ingen pakkehåndterer",
+    "noManagerTitle": "Fant ingen støttet pakkehåndterer",
+    "noManagerHint": "Pakker fungerer med apt, dnf, yum, zypper, pacman og apk.",
+    "indexAge": "Indeks oppdatert {{ago}} siden",
+    "reboot": "Denne verten må starte på nytt for å fullføre en oppdatering.",
+    "viewUpdates": "Oppdateringer",
+    "viewInstalled": "Installert",
+    "viewSearch": "Søk",
+    "viewHistory": "Historikk",
+    "viewRepos": "Repositoryer"
+  },
+  "actions": {
+    "working": "{{action}} kjører. Dette kan ta noen minutter.",
+    "ok": "Ferdig",
+    "failed": "Pakkehåndtereren mislyktes.",
+    "noOutput": "Ingen utdata.",
+    "refresh": {
+      "label": "Oppdater indeks",
+      "confirm": "Vil du oppdatere pakkeindeksen?",
+      "desc": "Laster ned de nyeste pakkelistene.",
+      "done": "Pakkeindeksen er oppdatert."
+    },
+    "update": {
+      "label": "Oppdater",
+      "confirm_one": "Oppdater {{names}}?",
+      "confirm_other": "Oppdater {{count}} pakker?",
+      "desc": "Installerer den nyeste versjonen av {{names}}.",
+      "done": "Oppdaterte {{names}}."
+    },
+    "upgrade-all": {
+      "label": "Oppgrader alle",
+      "confirm": "Oppgrader alle pakker?",
+      "desc": "Oppdaterer pakkeindeksen og installerer alle oppdateringer. Tjenester kan starte på nytt underveis.",
+      "done": "Alle pakker er oppdatert."
+    },
+    "install": {
+      "label": "Installer",
+      "confirm": "Installer {{names}}?",
+      "desc": "Installerer {{names}} og alt det trenger.",
+      "done": "Installerte {{names}}."
+    },
+    "remove": {
+      "label": "Fjern",
+      "confirm": "Fjern {{names}}?",
+      "desc": "Fjerner {{names}} fra denne verten. Programmer som er avhengig av det, kan slutte å fungere.",
+      "done": "Fjernet {{names}}."
+    },
+    "hold": {
+      "label": "Hold på denne versjonen",
+      "confirm": "Hold {{names}}?",
+      "desc": "Oppdateringer vil hoppe over {{names}} til du slipper den.",
+      "done": "{{names}} er holdt tilbake."
+    },
+    "unhold": {
+      "label": "Slipp tilbakeholdelse",
+      "confirm": "Slippe tilbakeholdelse for {{names}}?",
+      "desc": "{{names}} får oppdateringer igjen.",
+      "done": "{{names}} får oppdateringer igjen."
+    }
+  },
+  "updates": {
+    "search": "Filtrer oppdateringer",
+    "count_one": "{{count}} oppdatering",
+    "count_other": "{{count}} oppdateringer",
+    "countSecurity_one": "{{count}} oppdatering, {{security}} for sikkerhet",
+    "countSecurity_other": "{{count}} oppdateringer, {{security}} for sikkerhet",
+    "updatePicked_one": "Oppdater {{count}} pakke",
+    "updatePicked_other": "Oppdater {{count}} pakker",
+    "updateOne": "Oppdater",
+    "pick": "Velg {{name}}",
+    "security": "Sikkerhet",
+    "empty": "Alt er oppdatert.",
+    "noMatch": "Ingen oppdateringer matcher.",
+    "loadFailed": "Kunne ikke lese oppdateringene."
+  },
+  "installed": {
+    "search": "Filtrer installerte pakker",
+    "all": "Alle",
+    "held": "Holdt tilbake",
+    "heldBadge": "Holdt tilbake",
+    "empty": "Ingen pakker matcher.",
+    "loadFailed": "Kunne ikke lese de installerte pakkene."
+  },
+  "search": {
+    "placeholder": "Søk etter pakker",
+    "button": "Søk",
+    "hint": "Søk i vertsens pakkelager for en pakke å installere.",
+    "empty": "Ingenting funnet.",
+    "installed": "Installert",
+    "failed": "Søket mislyktes."
+  },
+  "history": {
+    "empty": "Ingen pakkehistorikk ble funnet.",
+    "loadFailed": "Kunne ikke lese pakkehistorikken."
+  },
+  "repos": {
+    "hint": "De pakkelager denne verten installerer fra. Endre dem på selve verten.",
+    "empty": "Ingen pakkelager ble funnet.",
+    "off": "Av",
+    "loadFailed": "Kunne ikke lese pakkelagerne."
+  },
+  "card": {
+    "title": "Pakkeoppdateringer",
+    "loading": "Sjekker vertene...",
+    "summary_one": "{{count}} oppdatering på {{hosts}} vert(er)",
+    "summary_other": "{{count}} oppdateringer på {{hosts}} vert(er)",
+    "refresh": "Sjekk igjen",
+    "empty": "Aktiver Pakker for en vert for å se oppdateringene her.",
+    "security_one": "{{count}} sikkerhets",
+    "security_other": "{{count}} sikkerhets",
+    "reboot": "Omstart kreves",
+    "updates_one": "{{count}} oppdatering",
+    "updates_other": "{{count}} oppdateringer",
+    "upToDate": "Oppdatert"
+  },
+  "manager": {
+    "title": "Pakker",
+    "disabled": "Aktiver Pakker for denne verten i innstillingene for å se oppdateringer her."
+  },
+  "operations": {
+    "list": {
+      "title": "List oppdateringer for pakker"
+    },
+    "updates": {
+      "title": "Ventende oppdateringer",
+      "resource": "Ventende oppdateringer"
+    },
+    "upgradeAll": {
+      "title": "Oppgrader alle pakker"
+    },
+    "install": {
+      "title": "Installer pakker"
+    },
+    "remove": {
+      "title": "Fjern pakker"
+    },
+    "package": "Pakker",
+    "packageHint": "Én eller flere pakkenavn, atskilt med mellomrom.",
+    "resource": {
+      "current": "Installert",
+      "available": "Tilgjengelig",
+      "repo": "Oppbevaring"
+    }
+  },
+  "nav": {
+    "togglePanel": "Vis/skjul oppdateringspanel"
+  }
+}

@@ -1,0 +1,299 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "צפה, משיכה, commit ו-push של מאגרי Git במארחים שלך, ושמור אותם מעודכנים עם משיכה אוטומטית."
+  },
+  "common": {
+    "save": "שמירה",
+    "cancel": "ביטול",
+    "back": "חזרה",
+    "loading": "טוען..."
+  },
+  "permissions": {
+    "use": {
+      "title": "שימוש ב-Git",
+      "description": "צפה במאגרי Git במארחים שאתה יכול להגיע אליהם, ושנה אותם במארחים שאתה יכול לערוך."
+    },
+    "runCommands": {
+      "title": "הרץ פקודות לאחר משיכה אוטומטית",
+      "description": "הגדר פקודה שתרוץ במארח לאחר משיכה אוטומטית שמביאה קומיטים חדשים."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "נהל מאגרי Git במארח זה מהלשונית Git."
+      },
+      "repoRoots": {
+        "label": "סריקת תיקיות",
+        "description": "התיקיות שייסרקו למאגרים בעת סריקת מארח זה. הפרד ביניהם בפסיקים. ברירת המחדל היא התיקייה הביתית.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "השתמש ב-sudo",
+        "description": "הפעל את git כ-root באמצעות sudo. רק למאגרים שהמשתמש המחובר לא יכול להשתמש בהם."
+      },
+      "readOnly": {
+        "label": "לקריאה בלבד",
+        "description": "הצג מאגרים אך לעולם אל תשנה אותם במארח זה."
+      },
+      "showPanel": {
+        "label": "לוח ליד הטרמינל",
+        "description": "הצג את לוח ה-Git בלשוניות הטרמינל של מארח זה."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "פתח את הלוח יחד עם הטרמינל",
+        "description": "הצג את לוח ה-Git כאשר נפתח טרמינל במארח התומך בכך."
+      },
+      "companionSide": {
+        "label": "צד הלוח",
+        "description": "מיקום הלוח ביחס לטרמינל.",
+        "right": "ימין",
+        "left": "שמאל",
+        "bottom": "מטה"
+      },
+      "companionSize": {
+        "label": "גודל הלוח",
+        "description": "רוחב הלוח, או גובהו כאשר הוא ממוקם למטה, בפיקסלים."
+      },
+      "companionEdgeButton": {
+        "label": "כפתור שוליים",
+        "description": "הצג כפתור קטן בשולי הטרמינל לפתיחת הפאנל."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "פתח Git מארח.",
+    "error": "לא ניתן לטעון את Git מארח זה.",
+    "disabled": "Git כבוי עבור ארח זה. הפעל אותו בהגדרות הארח.",
+    "sudo": "פעולה זו דורשת התחברות כ-root, sudo ללא סיסמה או סיסמת Sudo שמורה.",
+    "refresh": "רענן",
+    "readOnly": "לקריאה בלבד",
+    "notInstalled": "git לא מותקן",
+    "notInstalledTitle": "git לא מותקן במארח זה",
+    "notInstalledHint": "התקן את git באמצעות מנהל החבילות של המארח, ואז רענן."
+  },
+  "actions": {
+    "ok": "בוצע",
+    "failed": "נכשל",
+    "noOutput": "אין פלט."
+  },
+  "repos": {
+    "add": "הוסף מאגר",
+    "search": "חפש מאגרים",
+    "empty": "אין מאגרים עדיין. הוסף אחד כדי להתחיל.",
+    "noMatch": "אין מאגרים תואמים.",
+    "viewOnly": "לא נוספו מאגרים למארח זה.",
+    "detached": "מנותק",
+    "changes_one": "שינוי אחד",
+    "changes_two": "שני שינויים",
+    "changes_other": "{{count}} שינויים",
+    "conflicts": "סכסוכים",
+    "auto": "משיכה אוטומטית",
+    "autoFailing": "המשיכה נכשלת",
+    "remove": "הסר מהרשימה",
+    "removeTitle": "להסיר את {{name}}?",
+    "removeBody": "המאגר נשכח רק כאן. כלום לא נמחק מהמארח.",
+    "removed": "{{name}} הוסר",
+    "error": {
+      "missing": "התיקייה חסרה",
+      "notrepo": "לא מאגר Git",
+      "unreadable": "לא ניתן לקרוא"
+    }
+  },
+  "add": {
+    "title": "הוספת מאגרים",
+    "modeScan": "סריקה",
+    "modePath": "תיקייה",
+    "modeClone": "שיבוט",
+    "scanHint": "מחפש מאגרי Git ב-{{roots}}. ניתן לשנות את התיקיות בהגדרות המארח.",
+    "rescan": "סריקה מחדש",
+    "noneFound": "לא נמצאו מאגרים חדשים.",
+    "picked": "נבחרו",
+    "addPicked_one": "הוספת {{count}} מאגר",
+    "addPicked_two": "הוספת {{count}} מאגרים",
+    "addPicked_other": "הוספת {{count}} מאגרים",
+    "addAll": "הוספת הכל",
+    "folder": "תיקייה במארח",
+    "folderHint": "נתיב מלא, או התחל עם ~ לתיקיית הבית. חייב להיות כבר מאגר Git.",
+    "addRepo": "הוספת מאגר",
+    "url": "כתובת",
+    "urlHint": "משתמש במפתחות ובגדרות Git של משתמש ההתחברות במארח.",
+    "dest": "שיבוט ל-",
+    "destHint": "התיקייה לא צריכה להתקיים עדיין.",
+    "clone": "שיבוט",
+    "cloned": "שויבט",
+    "added_one": "{{count}} מאגר נוסף",
+    "added_two": "{{count}} מאגרים נוספו",
+    "added_other": "{{count}} מאגרים נוספו",
+    "failed": "לא ניתן להוסיף את המאגר",
+    "scanFailed": "לא ניתן לסרוק את המארח"
+  },
+  "repo": {
+    "ahead": "{{count}} קדימה",
+    "behind": "{{count}} אחורה",
+    "fetch": "איסוף",
+    "fetched": "אויספו",
+    "pull": "משיכה",
+    "pulled": "נמשו",
+    "push": "דחיפה",
+    "pushed": "נדחפו",
+    "viewChanges": "שינויים",
+    "viewBranches": "ענפים",
+    "viewHistory": "היסטוריה",
+    "viewStash": "אחסון זמני",
+    "viewAuto": "משיכה אוטומטית"
+  },
+  "changes": {
+    "loadFailed": "לא ניתן לקרוא את השינויים.",
+    "clean": "אין מה להגדיר. עץ העבודה נקי.",
+    "stagedTitle": "מוכן להגדרה ({{count}})",
+    "unstagedTitle": "שינויים ({{count}})",
+    "stage": "הכנה להגדרה",
+    "staged": "מוכן להגדרה",
+    "unstage": "ביטול הכנה",
+    "unstaged": "לא מוכן להגדרה",
+    "stageAll": "הכנת הכל",
+    "renamed": "שונה שם",
+    "discard": "ביטול",
+    "discardTitle": "לבטל את השינויים ב-{{name}}?",
+    "discardBody": "השינויים בקובץ זה יימחקו ולא ניתן יהיה לשחזר אותם.",
+    "discarded": "השינויים בוטלו",
+    "message": "הודעת הגדרה",
+    "messagePlaceholder": "מה השתנה",
+    "commit": "הגדרה",
+    "commitAll": "הגדרת כל השינויים",
+    "commitStaged_one": "הגדרת {{count}} קובץ מוכן",
+    "commitStaged_two": "הגדרת {{count}} קבצים מוכנים",
+    "commitStaged_other": "הגדרת {{count}} קבצים מוכנים",
+    "committed": "הוגדר",
+    "noDiff": "אין שינויים להצגה.",
+    "truncated": "ההבדל ארוך, ולכן מוצג רק התחילתו."
+  },
+  "branches": {
+    "loadFailed": "לא ניתן לקרוא את הענפים.",
+    "empty": "אין ענאים עדיין.",
+    "current": "נוכחי",
+    "remote": "מרוחק",
+    "gone": "הענף המרוחק אינו קיים עוד",
+    "newName": "ענף חדש",
+    "create": "צור ענף",
+    "created": "הענף {{name}} נוצר",
+    "switch": "החלף",
+    "switched": "הוחלף ל-{{name}}",
+    "merge": "מזג לענף הנוכחי",
+    "mergeTitle": "למזג את {{name}} לתוך {{into}}?",
+    "mergeBody": "מיזוג עם קונפליקטים יבוטל מיד.",
+    "merged": "{{name}} מזוג",
+    "delete": "מחק ענף",
+    "deleteTitle": "למחוק את {{name}}?",
+    "deleteBody": "Git יסרב אם לענף יש התחייבויות שלא מזוגות.",
+    "deleted": "{{name}} נמחק",
+    "forceTitle": "למחוק בכוח את {{name}}?",
+    "forceBody": "לענף זה יש התחייבויות שלא מזוגות. הן יאבדו אם תמחק אותו.",
+    "forceDelete": "מחק בכוח"
+  },
+  "history": {
+    "loadFailed": "לא ניתן לקרוא את ההיסטוריה.",
+    "empty": "אין התחייבויות עדיין.",
+    "branch": "ענף זה",
+    "all": "כל הענפים",
+    "more": "טען עוד"
+  },
+  "stash": {
+    "loadFailed": "לא ניתן לקרוא את המאגרים הזמניים.",
+    "title": "מאגרים זמניים",
+    "empty": "אין מאגרים זמניים.",
+    "message": "הודעה",
+    "messagePlaceholder": "אופציונלי",
+    "untracked": "כלול קבצים לא מעוקבים",
+    "push": "אחסן שינויים",
+    "pushDone": "השינויים אוחסנו",
+    "apply": "החל",
+    "applyDone": "המאגר הזמני הוחל",
+    "pop": "החל והסר",
+    "popDone": "המאגר הזמני הוחל והוסר",
+    "drop": "הסר",
+    "dropDone": "המאגר הזמני הוסר",
+    "dropTitle": "להסיר את {{name}}?",
+    "dropBody": "המאגר הזמני יימחק ולא ניתן יהיה לשחזר אותו.",
+    "remotes": "מרחקים",
+    "noRemotes": "אין מרחקים."
+  },
+  "auto": {
+    "intro": "משיכת עדכונים לפי לוח זמנים עם התקדמות מהירה בלבד. זה לעולם לא ממזג, ודולג על המאגר אם יש בו שינויים שלא התחייבו או אם הוא התפצל מהענף המרוחק שלו.",
+    "noUpstream": "לענף זה אין ענף מרוחק עדיין, ולכן משיכה אוטומטית תדלג עליו.",
+    "enable": "משיכה אוטומטית",
+    "enableHint": "רץ בשמך, עם הגישה שלך למארח זה.",
+    "interval": "כל (דקות)",
+    "intervalHint": "כמה זמן להמתין בין משיכות.",
+    "post": "פקודה לאחר משיכה",
+    "postHint": "רץ בתיקיית המאגר לאחר שהתחייבויות חדשות מגיעות. דורש הרשאת הרצת פקודות.",
+    "saved": "משיכה אוטומטית נשמרה",
+    "saveFailed": "לא ניתן לשמור את המשיכה האוטומטית",
+    "runNow": "הפעל עכשיו",
+    "next": "משיכה הבאה {{when}}",
+    "runs": "הרצות אחרונות",
+    "noRuns": "אין הרצות עדיין.",
+    "outcome": {
+      "pulled": "נמשך",
+      "uptodate": "עדכני",
+      "skipped": "דולג",
+      "failed": "נכשל"
+    }
+  },
+  "card": {
+    "title": "מאגרי Git",
+    "loading": "טוען...",
+    "refresh": "רענון",
+    "empty": "אין מאגרי Git באף מארח כרגע.",
+    "allClean": "כל המאגרים נקיים ועדכניים.",
+    "summary_one": "{{count}} מאגר | {{attention}} דורש תשומת לב",
+    "summary_two": "{{count}} מאגרים | {{attention}} דורשים תשומת לב",
+    "summary_other": "{{count}} מאגרים | {{attention}} דורשים תשומת לב"
+  },
+  "companion": {
+    "toggle": "לוח Git",
+    "openTab": "פתיחת Git",
+    "here": "מאגר של תיקיה זו",
+    "all": "כל המאגרים"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "הצגת מאגרי Git"
+    },
+    "fetch": {
+      "title": "איסוף מאגר"
+    },
+    "pull": {
+      "title": "משיכת מאגר"
+    },
+    "push": {
+      "title": "דחיפת מאגר"
+    },
+    "checkout": {
+      "title": "החלפת ענף",
+      "branch": "ענף"
+    },
+    "reset-hard": {
+      "title": "איפוס מאגר באופן קשיח",
+      "ref": "איפוס ל"
+    },
+    "repos": {
+      "title": "מאגרי Git",
+      "branch": "ענף",
+      "ahead": "קדימה",
+      "behind": "אחורה",
+      "changed": "שינויים"
+    },
+    "signals": {
+      "behind": "מאגרים מאחור",
+      "dirty": "מאגרים עם שינויים",
+      "pull-failing": "משיכה אוטומטית נכשלת"
+    }
+  }
+}

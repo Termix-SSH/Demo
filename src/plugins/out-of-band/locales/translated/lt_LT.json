@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Maitinimo, jutiklių, įvykių žurnalų ir konsolių valdymas serverių BMC per Redfish, IPMI ir Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Kraunama"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "Peržiūrėti BMC",
+      "description": "Atidaryti „Out-of-band“ skirtuką ir peržiūrėti maitinimo, būklės, jutiklių ir žurnalų informaciją."
+    },
+    "power": {
+      "title": "Valdyti maitinimą ir paleidimą",
+      "description": "Įjungti ir išjungti įrenginius, atlikti maitinimo ciklą ir pasirinkti kitą paleidimo įrenginį."
+    },
+    "console": {
+      "title": "Naudoti serijinę konsolę",
+      "description": "Atidaryti kompiuterio serijinę per tinklą (SoL) konsolę."
+    },
+    "media": {
+      "title": "Naudoti virtualiąją laikmeną",
+      "description": "Prijungti ir atjungti ISO vaizdus kompiuteryje."
+    },
+    "manage": {
+      "title": "Tvarkyti BMC",
+      "description": "Pridėti, keisti ir šalinti BMC bei išvalyti jų įvykių žurnalus."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Vykdyti ipmitool Termix serveryje",
+        "description": "Jei išjungta, IPMI BMC turi naudoti tarpinį serverį. Redfish ir AMT įtakai neturi."
+      }
+    }
+  },
+  "description": "Pridėkite savo serverių valdymo valdiklius (BMC), kad galėtumėte juos įjungti ir išjungti, stebėti jutiklius ir skaityti įvykių žurnalus. Prisijungimo duomenys saugomi šifruoti ir niekada nebedaromi matomi.",
+  "summary": "{{count}} BMC, {{attention}} reikia dėmesio",
+  "empty": "BMC dar nėra.",
+  "add": "Pridėti BMC",
+  "edit": "Redaguoti",
+  "delete": "Pašalinti",
+  "back": "Atgal",
+  "saved": "Išsaugota",
+  "deleteConfirm": "Pašalinti „{{name}}“?",
+  "status": {
+    "unknown": "Dar neperskaityta",
+    "up": "Pasiekiama",
+    "down": "Nepasiekiama"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI per LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Vartotojo vardas",
+    "password": "Slaptažodis"
+  },
+  "power": {
+    "on": "Įjungta",
+    "off": "Išjungta",
+    "unknown": "Nežinoma",
+    "sent": "Prašyta „{{name}}“ pakeisti maitinimo būseną",
+    "action": {
+      "on": "Įjungti",
+      "off": "Išjungti maitinimą",
+      "graceful-shutdown": "Užbaigti darbą",
+      "cycle": "Perkrauti maitinimą",
+      "reset": "Nustatyti iš naujo"
+    },
+    "confirm": {
+      "on": "Įjungti {{name}}?",
+      "off": "Atjungti {{name}} maitinimą? Sistema nebus tinkamai išjungta.",
+      "graceful-shutdown": "Prašyti {{name}} užbaigti darbą?",
+      "cycle": "Perkrauti {{name}} maitinimą? Sistema nebus tinkamai išjungta.",
+      "reset": "Nustatyti {{name}} iš naujo? Sistema bus nedelsiant perkrauta."
+    }
+  },
+  "health": {
+    "ok": "Veikia tinkamai",
+    "warning": "Įspėjimas",
+    "critical": "Kritinė",
+    "unknown": "Nežinoma"
+  },
+  "kind": {
+    "temperature": "Temperatūra",
+    "fan": "Ventiliatorius",
+    "voltage": "Įtampa",
+    "power": "Galia",
+    "psu": "Maitinimo blokas",
+    "other": "Kita"
+  },
+  "form": {
+    "addTitle": "Pridėti BMC",
+    "editTitle": "Redaguoti BMC",
+    "device": "BMC",
+    "access": "Prieiga",
+    "type": "Tipas",
+    "name": "Pavadinimas",
+    "address": "Adresas",
+    "port": "Prievadas",
+    "host": "Termix serveris",
+    "hostHint": "Susiekite BMC su serveriu, kuriam jis priklauso. Tada jis paveldės to serverio bendrinimo nustatymus ir bus rodomas jo serverio meniu.",
+    "noHost": "Nėra",
+    "poll": "Klausyti kas (sekundės)",
+    "pollHint": "Mažiausiai 30 sekundžių, arba 60, jei naudojamas tarpinis serveris.",
+    "scheme": "Ryšio tipas",
+    "relay": "Tarpinis serveris",
+    "relayHint": "Vykdyti ipmitool šiame serveryje, o ne Termix serveryje. Reikia serijiniam konsolės jungimuisi.",
+    "noRelay": "Termix serveris",
+    "cipher": "Šifravimo rinkinys",
+    "cipherHint": "Keiskite tik tuo atveju, jei BMC atmeta prisijungimą. Dažniausiai naudojamas 3, naujesniems BMC – 17.",
+    "ca": "CA sertifikatas",
+    "caHint": "Įklijuokite BMC sertifikato išdavėjo PEM failo turinį. Palikite tuščią, jei sertifikatas jau pasitikimas.",
+    "caSet": "Įdiegta CA. Įklijuokite naują, kad pakeistumėte.",
+    "keepLogin": "Palikite tuščią, kad išsaugotumėte prisijungimo duomenis",
+    "test": "Patikrinti ryšį",
+    "testOk": "BMC atsakė. Maitinimas: {{power}}.",
+    "testNeedsLogin": "Įveskite prisijungimo duomenis iš naujo, kad patikrintumėte.",
+    "save": "Išsaugoti",
+    "add": "Pridėti"
+  },
+  "view": {
+    "overview": "Apžvalga",
+    "sensors": "Jutikliai",
+    "log": "Įvykių žurnalas",
+    "boot": "Įjungti",
+    "media": "Virtuali laikmena",
+    "console": "Konsolė",
+    "refresh": "Perskaityti dabar",
+    "type": "Tipas",
+    "address": "Adresas",
+    "power": "Maitinimas",
+    "health": "Būsena",
+    "manufacturer": "Gamintojas",
+    "model": "Modelis",
+    "serial": "Serijinis numeris",
+    "bios": "BIOS",
+    "bmc": "BMC įrenginio programinė įranga",
+    "status": "BMC",
+    "viaRelay": "Pasiekta per tarpinį serverį.",
+    "noSensors": "Šis BMC nepraneša apie jokių jutiklių.",
+    "sensor": "Jutiklis",
+    "reading": "Rodmenys",
+    "state": "Būsena"
+  },
+  "log": {
+    "time": "Laikas",
+    "severity": "Lygis",
+    "message": "Įvykis",
+    "empty": "Įvykių žurnalas tuščias.",
+    "clear": "Išvalyti žurnalą",
+    "clearConfirm": "Išvalyti {{name}} įvykių žurnalą? Šio veiksmo negalima atšaukti.",
+    "cleared": "Žurnalas išvalytas",
+    "level": {
+      "info": "Informacija",
+      "warning": "Įspėjimas",
+      "critical": "Kritinė"
+    }
+  },
+  "boot": {
+    "hint": "Kompiuteris paleidžiamas iš šio įrenginio vieną kartą, tada grįžta į įprastą paleidimo tvarką. Pritaikykite tai prieš perkrovimą.",
+    "device": "Įkelti iš",
+    "mode": "Režimas",
+    "uefi": "UEFI",
+    "legacy": "Senas BIOS",
+    "apply": "Nustatyti kitam įkėlimui",
+    "done": "Kitą kartą {{name}} bus įkeliamas iš pasirinkto įrenginio",
+    "pxe": "Tinklas (PXE)",
+    "disk": "Kietasis diskas",
+    "cd": "CD arba virtuali laikmena",
+    "usb": "USB",
+    "bios": "BIOS nustatymai",
+    "none": "Standartinė eilė"
+  },
+  "media": {
+    "url": "Vaizdo adresas",
+    "empty": "Šis BMC neturi virtualaus CD lizdo.",
+    "mounted": "Prijungta",
+    "free": "Tuščia",
+    "mount": "Prijungti",
+    "eject": "Išimti",
+    "mountedDone": "Vaizdas prijungtas",
+    "ejected": "Vaizdas išimtas"
+  },
+  "console": {
+    "hint": "Norėdami išeiti iš konsolės, įveskite ~.",
+    "connecting": "Jungiamasi",
+    "ended": "Konsolė uždaryta.",
+    "failed": "Nepavyko atidaryti konsolės.",
+    "needsRelay": "Serijinei konsolei reikia tarpinio serverio su ipmitool. Pasirinkite vieną BMC nustatymuose."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Įkelti iš",
+    "uefi": "UEFI režimas",
+    "list": {
+      "title": "Rodyti BMC sąrašą"
+    },
+    "poll": {
+      "title": "Dabar perskaityti BMC"
+    },
+    "powerState": {
+      "title": "Gauti maitinimo būseną"
+    },
+    "power-on": {
+      "title": "Įjungti"
+    },
+    "graceful-shutdown": {
+      "title": "Išjungti"
+    },
+    "power-off": {
+      "title": "Atjungti maitinimą"
+    },
+    "power-cycle": {
+      "title": "Perkrauti maitinimą"
+    },
+    "reset": {
+      "title": "Perkrauti"
+    },
+    "setBootOnce": {
+      "title": "Įkelti vieną kartą iš įrenginio"
+    },
+    "clearLog": {
+      "title": "Išvalyti įvykių žurnalą"
+    },
+    "health": {
+      "title": "BMC būklė"
+    }
+  },
+  "widget": {
+    "name": "Tiesioginis valdymas",
+    "description": "Jūsų serverių BMC maitinimo ir būklės stebėjimas.",
+    "summary": "{{up}} iš {{total}} veikia"
+  }
+}

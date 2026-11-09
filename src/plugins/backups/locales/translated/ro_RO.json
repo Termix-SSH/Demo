@@ -1,0 +1,461 @@
+{
+  "plugin": {
+    "name": "Backup-uri",
+    "description": "Creați backup-uri pentru foldere, baze de date și date Docker pe hosturile dvs. cu restic, apoi navigați, descărcați și restaurați."
+  },
+  "common": {
+    "save": "Salvează",
+    "cancel": "Anulează",
+    "back": "Înapoi",
+    "delete": "Șterge",
+    "done": "Gata",
+    "loading": "Se încarcă...",
+    "refresh": "Reîmprospătează",
+    "retry": "Încearcă din nou"
+  },
+  "permissions": {
+    "use": {
+      "title": "Folosește Backup-uri",
+      "description": "Configurează joburi și repository-uri de backup, rulează backup-uri și navighează, descarcă și restaurează snapshot-uri pe hosturile pe care le poate edita."
+    }
+  },
+  "tab": {
+    "title": "Backup-uri",
+    "viewJobs": "Joburi",
+    "viewRepos": "Repository-uri",
+    "viewHistory": "Istoric"
+  },
+  "hostTab": {
+    "title": "Backup-uri",
+    "noHost": "Deschide Backup-urile dintr-un host.",
+    "viewJobs": "Joburi",
+    "viewSnapshots": "Snapshot-uri",
+    "viewHistory": "Istoric",
+    "restic": "restic {{version}}",
+    "noRestic": "restic nu este instalat",
+    "sudo": "Termix trebuie să se autentifice ca root sau ca un utilizator cu sudo fără parolă pentru a rula backup-uri pe acest host.",
+    "statusFailed": "Nu s-a putut citi acest host"
+  },
+  "install": {
+    "missing": "restic nu este instalat pe acest host",
+    "tooOld": "restic de pe acest host este mai vechi decât 0.17",
+    "hint": "Backup-urile folosesc restic. Instalează-l cu managerul de pachete sau de pe release-ul restic de pe GitHub când pachetul este prea vechi.",
+    "button": "Instalează restic",
+    "working": "Se instalează...",
+    "title": "Instalezi restic?",
+    "desc": "Aceasta instalează restic pe host ca root.",
+    "confirm": "Instalează",
+    "done": "restic {{version}} este instalat",
+    "failed": "Nu s-a putut instala restic"
+  },
+  "status": {
+    "never": "Niciodată rulat",
+    "running": "Se execută",
+    "success": "Finalizat",
+    "warning": "Avertismente",
+    "failed": "Eșuat",
+    "canceled": "Oprit"
+  },
+  "time": {
+    "justNow": "acum",
+    "soon": "într-un moment",
+    "ago": {
+      "minutes_one": "acum {{count}} minut",
+      "minutes_few": "acum {{count}} minute",
+      "minutes_other": "acum {{count}} minute",
+      "hours_one": "acum {{count}} oră",
+      "hours_few": "acum {{count}} ore",
+      "hours_other": "acum {{count}} ore",
+      "days_one": "acum {{count}} zi",
+      "days_few": "acum {{count}} zile",
+      "days_other": "acum {{count}} zile"
+    },
+    "in": {
+      "minutes_one": "în {{count}} minut",
+      "minutes_few": "în {{count}} minute",
+      "minutes_other": "în {{count}} minute",
+      "hours_one": "în {{count}} oră",
+      "hours_few": "în {{count}} ore",
+      "hours_other": "în {{count}} ore",
+      "days_one": "în {{count}} zi",
+      "days_few": "în {{count}} zile",
+      "days_other": "în {{count}} zile"
+    }
+  },
+  "jobs": {
+    "add": "Adaugă job",
+    "empty": "Niciun job de backup încă",
+    "emptyHint": "Adaugă un job pentru a crea backup-uri pentru foldere, baze de date sau date Docker.",
+    "emptyNoRepo": "Adaugă mai întâi un repository, ca backup-urile să aibă unde să meargă.",
+    "loadFailed": "Nu s-au putut încărca joburile de backup",
+    "lastGood": "Ultimul backup {{when}}",
+    "noGood": "Niciun backup încă",
+    "next": "Următorul {{when}}",
+    "paused": "Pauză",
+    "run": "Rulează acum",
+    "stop": "Oprește",
+    "edit": "Editează",
+    "snapshots": "Instantanee",
+    "started": "{{name}} a pornit",
+    "runFailed": "Nu s-a putut porni backup-ul"
+  },
+  "editor": {
+    "newTitle": "Sarcină de backup nouă",
+    "general": "Sarcină",
+    "host": "Gazdă",
+    "pickHost": "Alege o gazdă",
+    "name": "Nume",
+    "namePlaceholder": "Backup zilnic",
+    "repository": "Depozit",
+    "pickRepository": "Alege un depozit",
+    "noRepos": "Nu ai niciun depozit pe care această gazdă să îl poată folosi. Adaugă unul mai întâi în fila Backups.",
+    "repoLocked": "Doar proprietarul acestui depozit îl poate modifica.",
+    "enabled": "Rulează conform programului",
+    "enabledHint": "Dezactivează pentru a întrerupe programul. Opțiunea „Rulează acum” funcționează în continuare.",
+    "oneFileSystem": "Rămâi pe un singur sistem de fișiere",
+    "oneFileSystemHint": "Omite alte discuri și puncte de montare găsite în interiorul folderelor selectate.",
+    "saved": "Sarcină salvată",
+    "saveFailed": "Nu s-a putut salva sarcina",
+    "deleteTitle": "Ștergi {{name}}?",
+    "deleteDesc": "Sarcina este eliminată din Termix. Instantaneele sale rămân în depozit.",
+    "deleted": "Sarcină ștearsă",
+    "deleteFailed": "Nu s-a putut șterge sarcina"
+  },
+  "sources": {
+    "add": "Adaugă la backup",
+    "addPaths": "Foldere",
+    "addDatabase": "Bază de date",
+    "addDocker": "Docker",
+    "remove": "Elimină",
+    "paths": "Foldere și fișiere",
+    "folders": "Căi",
+    "foldersHint": "O cale completă pe linie.",
+    "excludes": "Omite",
+    "excludesHint": "Un șablon restic pe linie, de exemplu *.log.",
+    "database": "Bază de date",
+    "engine": "Tip",
+    "engines": {
+      "mysql": "MySQL sau MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Autentificare",
+    "ownLogin": "Introdu o autentificare aici",
+    "noDatabasesPlugin": "Activează pluginul Baze de date pentru a alege o autentificare salvată.",
+    "address": "Adresă",
+    "addressPlaceholder": "Gol pentru socket-ul local",
+    "port": "Port",
+    "username": "Utilizator",
+    "password": "Parolă",
+    "passwordSaved": "Salvată, lasă gol pentru a o păstra",
+    "runAs": "Rulează ca",
+    "runAsHint": "Un utilizator Linux pentru a rula dump-ul, de exemplu postgres. Dacă este gol, se rulează ca root.",
+    "databases": "Baze de date",
+    "databasesHint": "Un nume pe linie. Lasă gol pentru a face backup la toate.",
+    "sqliteFiles": "Fișiere de bază de date",
+    "sqliteFilesHint": "O cale completă pe linie. Fiecare fișier este copiat în siguranță în timp ce este în uz.",
+    "docker": "Docker",
+    "stacks": "Stive",
+    "volumes": "Volumuri",
+    "noStacks": "Nu s-au găsit stive compose",
+    "noVolumes": "Nu s-au găsit volumuri",
+    "dockerFailed": "Nu s-a putut lista Docker pe această gazdă",
+    "stop": "Oprește stivele în timpul backup-ului",
+    "stopHint": "Stivele selectate sunt oprite mai întâi și repornite ulterior, astfel încât fișierele lor să nu se modifice în timp ce sunt citite."
+  },
+  "schedule": {
+    "title": "Programare",
+    "manual": "Manual",
+    "daily": "Zilnic",
+    "weekly": "Săptămânal",
+    "custom": "Personalizat",
+    "day": "Zi",
+    "time": "Oră",
+    "cron": "Cron",
+    "cronHint": "Minut, oră, zi a lunii, lună, zi a săptămânii.",
+    "cronInvalid": "Acest cron nu este valid",
+    "timezone": "Fus orar",
+    "serverTime": "Timpul serverului",
+    "manualHint": "Această sarcină se execută doar când apeși pe Execută acum.",
+    "manualOnly": "Manual",
+    "next": "Următoarea execuție {{time}}",
+    "noNext": "Acest program nu se execută niciodată",
+    "dailyAt": "Zilnic la {{time}}",
+    "weeklyAt": "{{day}} la {{time}}",
+    "days": {
+      "0": "Duminică",
+      "1": "Luni",
+      "2": "Marți",
+      "3": "Miercuri",
+      "4": "Joi",
+      "5": "Vineri",
+      "6": "Sâmbătă"
+    }
+  },
+  "keep": {
+    "title": "Păstrează",
+    "last": "Ultimele",
+    "daily": "Zilnic",
+    "weekly": "Săptămânal",
+    "monthly": "Lunar",
+    "yearly": "Anual",
+    "hint": "După fiecare backup, snapshot-urile mai vechi ale acestei sarcini sunt șterse, astfel încât doar acestea sunt păstrate. 0 păstrează totul."
+  },
+  "hooks": {
+    "title": "Comenzi",
+    "pre": "Înainte",
+    "preHint": "Se execută ca root înainte de backup. Dacă eșuează, backup-ul se oprește.",
+    "post": "După",
+    "postHint": "Se execută ca root după backup, chiar și în caz de eșec. TERMIX_BACKUP_STATUS conține rezultatul."
+  },
+  "alerts": {
+    "title": "Alerte",
+    "onFailure": "Alertă când un backup eșuează",
+    "onFailureHint": "Alertează și la avertismente, și o dată când funcționează din nou.",
+    "staleDays": "Zile fără backup",
+    "staleDaysHint": "Alertă când nu a funcționat niciun backup timp de atâtea zile. 0 dezactivează această funcție."
+  },
+  "repos": {
+    "add": "Adaugă depozit",
+    "empty": "Încă nu există depozite",
+    "emptyHint": "Un depozit este locul unde sunt stocate backup-urile, cum ar fi un bucket S3 sau un folder.",
+    "loadFailed": "Nu s-au putut încărca depozitele",
+    "jobCount_one": "{{count}} sarcină",
+    "jobCount_few": "{{count}} sarcini",
+    "jobCount_other": "{{count}} sarcini",
+    "newTitle": "Depozit nou",
+    "storage": "Stocare",
+    "name": "Nume",
+    "namePlaceholder": "S3 Offsite",
+    "kind": "Tip",
+    "kinds": {
+      "s3": "Compatibil S3",
+      "rest": "Server REST",
+      "rclone": "rclone",
+      "local": "Folder pe un host"
+    },
+    "endpoint": "Endpoint",
+    "endpointHint": "Gol pentru AWS. Pentru MinIO, R2, B2 sau Wasabi, adresa lor S3.",
+    "region": "Regiune",
+    "bucket": "Bucket",
+    "prefix": "Dosar în bucket",
+    "prefixHint": "Opțional.",
+    "accessKeyId": "ID cheie de acces",
+    "secretKey": "Cheie de acces secretă",
+    "secretSaved": "Salvată, lăsați gol pentru a o păstra",
+    "url": "Adresa serverului",
+    "username": "Utilizator",
+    "usernameHint": "Lăsați gol dacă serverul nu necesită autentificare.",
+    "restPassword": "Parolă",
+    "remote": "Nume remote",
+    "remoteHint": "Doare litere, cifre și _.",
+    "path": "Cale",
+    "rcloneConfig": "Configurare rclone",
+    "rcloneHint": "Liniile remote din rclone.conf. Rulați rclone config pe calculatorul dvs. pentru a le crea. rclone trebuie instalat pe gazde.",
+    "rcloneSaved": "Salvat, lăsați gol pentru a păstra",
+    "host": "Gazdă",
+    "pickHost": "Alegeți o gazdă",
+    "folder": "Dosar",
+    "folderHint": "Doar job-urile de pe acest host îl pot folosi. Un disc montat este recomandat.",
+    "password": "Criptare",
+    "resticPassword": "Parola repository-ului",
+    "passwordHint": "Lasă gol și Termix va genera una puternică. Păstrează o copie într-un loc sigur: fără ea, backup-urile nu pot fi citite.",
+    "passwordKeep": "Salvat, lasă gol pentru a păstra parola existentă",
+    "passwordChangeHint": "Aceasta modifică doar ce trimite Termix. Nu schimbă parola unui repository existent.",
+    "reveal": "Afișează parola",
+    "revealTitle": "Dorești să afișezi parola repository-ului?",
+    "revealDesc": "Oricine o are pe aceasta și cheile de stocare poate citi fiecare backup din acest repository. Aceasta este înregistrată în jurnalul de audit.",
+    "revealFailed": "Nu s-a putut citi parola",
+    "copy": "Copiază",
+    "copied": "Copiat",
+    "check": "Verifică",
+    "checkFrom": "Verifică de pe",
+    "checkFromHint": "Gazda care deschide depozitul. Este nevoie de restic.",
+    "checkButton": "Verifică",
+    "initButton": "Verifică și configurează",
+    "installRclone": "Instalează rclone pe această gazdă",
+    "rcloneInstalled": "rclone {{version}} este instalat.",
+    "rcloneFailed": "Nu s-a putut instala rclone",
+    "checking": "Se verifică...",
+    "opened": "Depozitul s-a deschis corect.",
+    "created": "Depozitul a fost configurat și este gata de utilizare.",
+    "checkFailed": "Nu s-a putut deschide depozitul",
+    "checkNext": "Salvat. Verifică-l de pe un gazdă pentru a-l configura.",
+    "saved": "Depozitul a fost salvat",
+    "saveFailed": "Nu s-a putut salva depozitul",
+    "deleteTitle": "Ștergi {{name}}?",
+    "deleteDesc": "Este eliminat doar din Termix. Copiile de rezervă rămân în stocare.",
+    "deleted": "Depozitul a fost șters",
+    "deleteFailed": "Nu s-a putut șterge depozitul"
+  },
+  "snapshots": {
+    "noJobs": "Adăugați mai întâi o sarcină de backup.",
+    "job": "Sarcină",
+    "titleFor": "Instantanee ale {{name}}",
+    "empty": "Încă nu există instantanee",
+    "loadFailed": "Nu s-au putut citi instantaneele",
+    "latest": "Cel mai recent",
+    "files_one": "{{count}} fișier",
+    "files_few": "{{count}} fișiere",
+    "files_other": "{{count}} fișiere",
+    "browse": "Răsfoire",
+    "delete": "Ștergere",
+    "deleteTitle": "Ștergeți acest snapshot?",
+    "deleteDesc": "Snapshot-ul din {{time}} va fi eliminat definitiv din depozit.",
+    "deleted": "Snapshot șters",
+    "deleteFailed": "Nu s-a putut șterge snapshot-ul",
+    "browseTitle": "Snapshot {{time}}",
+    "root": "Rădăcină",
+    "emptyFolder": "Această folder este golă",
+    "filesFailed": "Nu s-a putut lista conținutul acestei foldere",
+    "pick": "Selectează",
+    "download": "Descarcă",
+    "downloadZip": "Descarcă ca zip",
+    "downloadFailed": "Nu s-a putut descărca",
+    "restoreAll": "Restaurează tot",
+    "restorePicked_one": "Restaurează {{count}} element",
+    "restorePicked_few": "Restaurează {{count}} elemente",
+    "restorePicked_other": "Restaurează {{count}} elemente"
+  },
+  "restore": {
+    "title": "Restaurare",
+    "what": "Ce",
+    "everything": "Totul din snapshot.",
+    "more_one": "și încă {{count}}",
+    "more_few": "și încă {{count}}",
+    "more_other": "și încă {{count}}",
+    "where": "Unde",
+    "host": "Gazdă",
+    "hostHint": "Orice gazdă pe care o poți edita și care poate accesa depozitul.",
+    "localOnly": "Acest depozit este o folder pe gazda sa, așa că poate fi restaurat doar acolo.",
+    "toFolder": "Într-o folder",
+    "toOriginal": "Unde era",
+    "folder": "Folder",
+    "folderHint": "Fișierele își păstrează calea completă în interiorul acestei foldere.",
+    "originalWarning": "Fișierele sunt scrise înapoi unde erau și pot înlocui ceea ce se află acolo acum.",
+    "overwrite": "Fișierele care există deja",
+    "overwriteOptions": {
+      "if-changed": "Înlocuiește când s-au modificat",
+      "always": "Înlocuiește mereu",
+      "if-newer": "Înlocuiește când backup-ul este mai nou",
+      "never": "Nu înlocui niciodată"
+    },
+    "start": "Restaurează",
+    "started": "Restaurarea a început",
+    "failed": "Nu s-a putut începe restaurarea"
+  },
+  "run": {
+    "title": "Execută",
+    "backupTitle": "Backup pentru {{name}}",
+    "restoreTitle": "Restaurare pentru {{name}}",
+    "loadFailed": "Nu s-a putut încărca execuția",
+    "progress": "Progres",
+    "preparing": "Se pregătește...",
+    "progressLine": "{{percent}}% | {{files}} din {{totalFiles}} fișiere | {{bytes}} din {{totalBytes}}",
+    "left": "{{time}} rămas",
+    "details": "Detalii",
+    "started": "Început",
+    "finished": "Finalizat",
+    "trigger": "Pornit de",
+    "triggers": {
+      "manual": "Execută acum",
+      "schedule": "Programare",
+      "operation": "Acțiune Termix"
+    },
+    "snapshot": "Snapshot",
+    "target": "Restaurat în",
+    "files": "Fișiere",
+    "filesLine": "{{total}} fișiere, {{added}} noi, {{changed}} modificate",
+    "size": "Dimensiune",
+    "added": "Adăugat în depozit",
+    "took": "Durată",
+    "log": "Jurnal",
+    "noLog": "Încă nu există jurnal.",
+    "stopTitle": "Oprești această execuție?",
+    "stopDesc": "O copie de rezervă oprită nu salvează nicio instantanee. O restaurare oprită lasă fișierele restaurate până în acel moment.",
+    "stopSent": "Se oprește",
+    "stopFailed": "Nu s-a putut opri execuția"
+  },
+  "history": {
+    "empty": "Nu s-a executat nimic încă",
+    "loadFailed": "Nu s-a putut încărca istoricul",
+    "status": "Stare",
+    "job": "Sarcină",
+    "host": "Gazdă",
+    "kind": "Tip",
+    "kinds": {
+      "backup": "Copie de rezervă",
+      "restore": "Restaurare"
+    },
+    "started": "Început",
+    "took": "Durată",
+    "size": "Dimensiune"
+  },
+  "card": {
+    "title": "Copii de rezervă",
+    "all": "Toate sarcinile de copie de rezervă",
+    "oneJob": "O sarcină de copie de rezervă",
+    "empty": "Nicio sarcină de copie de rezervă încă.",
+    "gone": "Această sarcină de copie de rezervă a fost ștearsă.",
+    "open": "Deschide"
+  },
+  "operations": {
+    "list": {
+      "title": "Listează sarcinile de copie de rezervă"
+    },
+    "failed": {
+      "title": "Copii de rezervă eșuate"
+    },
+    "run": {
+      "title": "Execută copia de rezervă"
+    },
+    "cancel": {
+      "title": "Oprește copia de rezervă"
+    },
+    "snapshots": {
+      "title": "Listează instantaneele"
+    },
+    "events": {
+      "finished": "Copia de rezervă s-a încheiat",
+      "failed": "Copia de rezervă a eșuat"
+    },
+    "jobs": {
+      "title": "Sarcini de copie de rezervă",
+      "lastSuccess": "Ultima copie de rezervă",
+      "nextRun": "Următoarea execuție",
+      "size": "Dimensiune"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Afișează panoul de copii de rezervă în terminale",
+        "description": "Permite panoului de copii de rezervă să se deschidă lângă terminalul SSH al acestei gazde."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Deschide panoul de copii de rezervă cu terminalele noi",
+        "description": "Afișează panoul de copii de rezervă lângă fiecare terminal SSH care are această opțiune activată. Îl poți deschide și închide în continuare din butonul de pe marginea dreaptă."
+      },
+      "companionSide": {
+        "label": "Poziția panoului de copii de rezervă",
+        "description": "Unde se află panoul de copii de rezervă lângă un terminal.",
+        "right": "Dreapta",
+        "left": "Stânga",
+        "bottom": "Jos"
+      },
+      "companionSize": {
+        "label": "Dimensiunea panoului de copii de rezervă",
+        "description": "Lățimea în pixeli, sau înălțimea când este jos. Poți trage și de marginea sa."
+      },
+      "companionEdgeButton": {
+        "label": "Afișează butonul panoului",
+        "description": "Afișează un buton mic pe marginea dreaptă a unui terminal care deschide panoul de copii de rezervă."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Comută panoul de copii de rezervă"
+  }
+}

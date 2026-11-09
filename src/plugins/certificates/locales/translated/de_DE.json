@@ -1,0 +1,235 @@
+{
+  "plugin": {
+    "name": "Zertifikate",
+    "description": "TLS-Zertifikate auf Ihren Hosts mit certbot und acme.sh anzeigen, ausstellen und erneuern sowie eine Warnung erhalten, bevor sie ablaufen."
+  },
+  "common": {
+    "cancel": "Abbrechen",
+    "back": "Zurück"
+  },
+  "permissions": {
+    "use": {
+      "title": "Zertifikate verwenden",
+      "description": "Zertifikate auf Hosts anzeigen, auf die Sie Zugriff haben, und auf Hosts ändern, die Sie bearbeiten dürfen."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Zertifikate",
+        "description": "TLS-Zertifikate auf diesem Host über den Tab „Zertifikate“ verwalten."
+      },
+      "useSudo": {
+        "label": "sudo verwenden",
+        "description": "sudo zum Lesen und Ändern von Zertifikaten verwenden. Deaktivieren, wenn Sie als root angemeldet sind."
+      },
+      "readOnly": {
+        "label": "Schreibgeschützt",
+        "description": "Zertifikate anzeigen, aber auf diesem Host niemals ändern."
+      },
+      "expiryWarnDays": {
+        "label": "Vor Ablauf warnen",
+        "description": "Zertifikate mit dieser Anzahl verbleibender Tage oder weniger werden als auslaufend markiert und lösen eine Warnung aus."
+      },
+      "showPanel": {
+        "label": "Zertifikate-Panel in Terminals anzeigen",
+        "description": "Das Zertifikate-Panel neben dem SSH-Terminal dieses Hosts öffnen lassen."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Zertifikate-Panel mit neuen Terminals öffnen",
+        "description": "Das Zertifikate-Panel neben jedem SSH-Terminal anzeigen, bei dem Zertifikate aktiviert sind. Du kannst es weiterhin über die Schaltfläche am rechten Rand öffnen und schließen."
+      },
+      "companionSide": {
+        "label": "Position des Zertifikate-Panels",
+        "description": "Wo das Zertifikate-Panel neben einem Terminal angezeigt wird.",
+        "right": "Rechts",
+        "left": "Links",
+        "bottom": "Unten"
+      },
+      "companionSize": {
+        "label": "Größe des Zertifikate-panels",
+        "description": "Breite in Pixeln oder Höhe, wenn es unten angezeigt wird. Du kannst auch den Rand ziehen."
+      },
+      "companionEdgeButton": {
+        "label": "Panel-Schaltfläche anzeigen",
+        "description": "Zeigt eine kleine Schaltfläche am rechten Rand eines Terminals an, die das Zertifikate-Panel öffnet."
+      }
+    }
+  },
+  "tab": {
+    "title": "Zertifikate",
+    "noHost": "Öffne Zertifikate von einem Host.",
+    "error": "Zertifikate konnten von diesem Host nicht geladen werden.",
+    "disabled": "Zertifikate sind für diesen Host deaktiviert. Aktivieren Sie sie in den Host-Einstellungen.",
+    "sudo": "Änderungen erfordern einen Root-Login, ein passwortloses sudo oder ein gespeichertes Sudo-Passwort auf diesem Host.",
+    "refresh": "Aktualisieren",
+    "readOnly": "Schreibgeschützt",
+    "noClient": "Kein certbot oder acme.sh gefunden",
+    "viewCertificates": "Zertifikate",
+    "viewInspect": "Prüfen",
+    "viewRenewal": "Verlängerung"
+  },
+  "actions": {
+    "working": "Wird verarbeitet. Dies kann einige Minuten dauern.",
+    "ok": "Fertig",
+    "failed": "Der Befehl ist fehlgeschlagen.",
+    "noOutput": "Keine Ausgabe."
+  },
+  "install": {
+    "title": "certbot und acme.sh sind auf diesem Host nicht installiert",
+    "hint": "Installieren Sie certbot, um Zertifikate von Let's Encrypt zu erhalten und zu erneuern.",
+    "noManager": "Es wurde kein unterstützter Paketmanager gefunden. Installieren Sie certbot manuell.",
+    "button": "certbot installieren",
+    "confirm": "certbot installieren?",
+    "desc": "Dadurch wird certbot mit dem Paketmanager des Hosts installiert.",
+    "working": "Wird installiert...",
+    "done": "certbot ist installiert."
+  },
+  "certs": {
+    "search": "Zertifikate suchen",
+    "empty": "Noch keine Zertifikate.",
+    "noMatch": "Keine passenden Zertifikate.",
+    "loadFailed": "Zertifikate konnten nicht gelesen werden.",
+    "expires": "Läuft am {{date}} ab",
+    "staging": "Staging",
+    "details": "Zertifikat",
+    "manage": "Verwalten",
+    "client": "Client",
+    "path": "Datei",
+    "authority": "Autorität",
+    "renew": "Erneuern",
+    "renewDone": "{{name}} wurde erneuert.",
+    "renewAll": "Alle erneuern",
+    "renewAllDone": "Die fälligen Zertifikate wurden erneuert.",
+    "forceRenew": "Trotzdem jetzt erneuern",
+    "dryRun": "Testlauf",
+    "dryRunDone": "Der Testlauf war erfolgreich.",
+    "revoke": "Widerrufen",
+    "revokeTitle": "{{name}} widerrufen?",
+    "revokeDesc": "Die Zertifizierungsstelle markiert es als ungültig und es wird von diesem Host entfernt. Alles, was es noch verwendet, funktioniert nicht mehr.",
+    "revokeDone": "{{name}} wurde widerrufen.",
+    "delete": "Verwaltung beenden",
+    "deleteTitle": "Verwaltung von {{name}} beenden?",
+    "deleteDesc": "Es bleibt gültig, wird aber nicht mehr erneuert. certbot löscht auch die Dateien, acme.sh behält sie.",
+    "deleteDone": "{{name}} wird nicht mehr verwaltet."
+  },
+  "expiry": {
+    "expired": "Abgelaufen",
+    "unknown": "Unbekannt",
+    "days_one": "{{count}} Tag verbleibend",
+    "days_other": "{{count}} Tage verbleibend"
+  },
+  "issue": {
+    "add": "Zertifikat ausstellen",
+    "title": "Neues Zertifikat",
+    "save": "Ausstellen",
+    "done": "Das Zertifikat wurde ausgestellt.",
+    "working": "Anfrage an die Zertifizierungsstelle. Dies kann einige Minuten dauern.",
+    "client": "Client",
+    "domains": "Domänen",
+    "domainsPlaceholder": "Domäne eingeben und Enter drücken",
+    "domainsHint": "Die erste benennt das Zertifikat.",
+    "challenge": "Challenge",
+    "standalone": "Standalone",
+    "standaloneHint": "Startet einen kleinen Webserver auf Port 80, sodass dieser Port nicht von anderen Diensten verwendet werden darf.",
+    "webroot": "Webroot",
+    "webrootHint": "Legt eine Datei im Verzeichnis Ihres Webservers ab. Der Webserver läuft weiter.",
+    "dns": "DNS",
+    "dnsHint": "Fügt über die API Ihres Anbieters einen DNS-Eintrag hinzu. Erforderlich für Wildcards.",
+    "webrootPath": "Webroot-Verzeichnis",
+    "webrootPathHint": "Muss sich in /var/www, /srv oder /usr/share/nginx befinden.",
+    "dnsProvider": "DNS-Anbieter",
+    "dnsProviderCertbot": "Der Name eines installierten certbot-DNS-Plugins, z. B. cloudflare.",
+    "dnsProviderAcme": "Ein acme.sh-DNS-Name ohne dns_, z. B. cf. Sein API-Token muss bereits auf dem Host konfiguriert sein.",
+    "credentials": "Anmeldedatendatei",
+    "credentialsHint": "Die Datei auf dem Host mit Ihrem API-Token. Sie wird niemals von Termix gelesen.",
+    "email": "E-Mail",
+    "emailHint": "Optional. Die Autorität nutzt sie für Ablaufbenachrichtigungen.",
+    "keyType": "Schlüsseltyp",
+    "staging": "Staging-Server verwenden",
+    "stagingHint": "Zum Testen. Das Zertifikat ist nicht vertrauenswürdig, und die Ratenbegrenzungen sind deutlich höher."
+  },
+  "inspect": {
+    "server": "Server",
+    "file": "Datei",
+    "address": "Adresse",
+    "addressPlaceholder": "example.com",
+    "port": "Port",
+    "path": "Dateipfad",
+    "check": "Prüfen",
+    "hint": "Prüfen Sie, was ein Server über TLS sendet, wie von diesem Host aus gesehen, oder lesen Sie eine Zertifikatsdatei darauf.",
+    "failed": "Das Zertifikat konnte nicht gelesen werden.",
+    "noOpenssl": "openssl ist auf diesem Host nicht installiert.",
+    "trusted": "Vertrauenswürdig",
+    "notTrusted": "Nicht vertrauenswürdig",
+    "leaf": "Zertifikat",
+    "intermediate": "Kette {{index}}",
+    "selfSigned": "Selbstsigniert",
+    "name": "Name",
+    "issuer": "Aussteller",
+    "domains": "Domänen",
+    "validFrom": "Gültig ab",
+    "validTo": "Gültig bis",
+    "keyType": "Schlüssel",
+    "serial": "Seriennummer",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Wie dieser Host Zertifikate automatisch erneuert. Dies wird auf dem Host konfiguriert.",
+    "on": "An",
+    "off": "Aus",
+    "timer": "systemd-Timer",
+    "next": "Nächster Lauf {{time}}",
+    "cron": "Cron-Datei /etc/cron.d/certbot",
+    "certbotOff": "Kein Timer oder Cron-Job gefunden, daher werden Zertifikate nicht automatisch erneuert.",
+    "acmeCron": "Cron-Job in der Crontab",
+    "acmeOff": "Kein Cron-Job gefunden, daher werden Zertifikate nicht automatisch erneuert."
+  },
+  "watch": {
+    "start": "Benachrichtige mich, bevor Zertifikate auf diesem Host ablaufen",
+    "stop": "Benachrichtigungen für diesen Host stoppen",
+    "on": "Du erhältst eine Benachrichtigung, bevor Zertifikate hier ablaufen.",
+    "off": "Benachrichtigungen für diesen Host sind deaktiviert.",
+    "failed": "Benachrichtigung konnte nicht geändert werden."
+  },
+  "card": {
+    "title": "Zertifikate",
+    "loading": "Hosts werden überprüft...",
+    "summary_one": "{{count}} Zertifikat, {{expiring}} läuft ab",
+    "summary_other": "{{count}} Zertifikate, {{expiring}} laufen ab",
+    "refresh": "Erneut überprüfen",
+    "empty": "Aktiviere Zertifikate für einen Host, um sie hier anzuzeigen."
+  },
+  "manager": {
+    "title": "Zertifikate",
+    "disabled": "Aktiviere Zertifikate für diesen Host in den Einstellungen, um sie hier anzuzeigen."
+  },
+  "operations": {
+    "list": {
+      "title": "Zertifikate auflisten"
+    },
+    "expiring": {
+      "title": "Zertifikate, die ablaufen"
+    },
+    "renew": {
+      "title": "Zertifikat erneuern"
+    },
+    "renewAll": {
+      "title": "Alle Zertifikate erneuern"
+    },
+    "revoke": {
+      "title": "Zertifikat widerrufen"
+    },
+    "certificates": {
+      "title": "Zertifikate",
+      "client": "Client",
+      "domains": "Domänen",
+      "daysLeft": "Verbleibende Tage"
+    }
+  },
+  "nav": {
+    "togglePanel": "Zertifikate-Panel umschalten"
+  }
+}

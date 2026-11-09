@@ -1,0 +1,143 @@
+{
+  "plugin": {
+    "name": "Privilegierter Zugriff",
+    "description": "Fordern Sie vor jeder Verbindung zu einem privilegierten Host eine Genehmigung an. Der Zugriff endet automatisch und wird vollständig protokolliert."
+  },
+  "tab": {
+    "title": "Zugriff"
+  },
+  "tabs": {
+    "request": "Zugriff anfordern",
+    "mine": "Meine Anfragen",
+    "pending": "Zur Entscheidung",
+    "active": "Aktiver Zugriff",
+    "history": "Verlauf"
+  },
+  "status": {
+    "pending": "Wartend",
+    "approved": "Beendet",
+    "active": "Aktiv",
+    "denied": "Abgelehnt",
+    "expired": "Abgelaufen",
+    "revoked": "Widerrufen",
+    "cancelled": "Storniert"
+  },
+  "request": {
+    "host": "Host",
+    "hostWithAccess": "{{host}} (Zugriff bis {{until}})",
+    "hours": "Stunden",
+    "hoursHint": "Dieser Host erlaubt bis zu {{max}} Stunden.",
+    "reason": "Grund für den Zugriff",
+    "reasonOptional": "Grund für den Zugriff (optional)",
+    "ticket": "Ticket",
+    "ticketOptional": "Ticket (optional)",
+    "send": "Zugriff anfordern",
+    "sent": "Anfrage gesendet. Sie erhalten eine Benachrichtigung, sobald eine Entscheidung getroffen wurde.",
+    "failed": "Anfrage konnte nicht gesendet werden",
+    "noHosts": "Keine privilegierten Hosts",
+    "noHostsHint": "Hosts, die ein Administrator als privilegiert markiert hat, werden hier angezeigt."
+  },
+  "list": {
+    "none": "Hier ist nichts",
+    "loadError": "Anfragen konnten nicht geladen werden",
+    "actionFailed": "Das hat nicht funktioniert",
+    "hours_one": "{{count}} Stunde",
+    "hours_other": "{{count}} Stunden",
+    "until": "bis {{time}}",
+    "decidedBy": "von {{name}}",
+    "approve": "Genehmigen",
+    "deny": "Ablehnen",
+    "cancel": "Abbrechen",
+    "endNow": "Jetzt beenden",
+    "export": "CSV exportieren",
+    "approveConfirm_one": "{{user}} für {{count}} Stunde Zugriff auf {{host}} gewähren?",
+    "approveConfirm_other": "{{user}} für {{count}} Stunden Zugriff auf {{host}} gewähren?",
+    "denyConfirm": "Diese Anfrage ablehnen?",
+    "cancelConfirm": "Diese Anfrage stornieren?",
+    "endConfirm": "Diesen Zugriff jetzt beenden? Offene Sitzungen auf dem Host werden geschlossen.",
+    "approved": "Zugriff genehmigt",
+    "denied": "Anfrage abgelehnt",
+    "ended": "Fertig"
+  },
+  "card": {
+    "title": "Privilegierter Zugriff",
+    "waiting": "warten auf Sie",
+    "empty": "Keine ausstehenden Anfragen",
+    "emptyHint": "Ihr genehmigter Zugriff wird hier angezeigt."
+  },
+  "permissions": {
+    "request": {
+      "title": "Privilegierten Zugriff anfordern",
+      "description": "Zeitlich begrenzten Zugriff auf privilegierte Hosts anfordern."
+    },
+    "approve": {
+      "title": "Privilegierten Zugriff genehmigen",
+      "description": "Zugriffsanfragen anderer Personen entscheiden, Zugriff vorzeitig beenden und den Bericht lesen."
+    },
+    "bypass": {
+      "title": "Notfallzugriff",
+      "description": "Ohne Anfrage mit privilegierten Hosts verbinden. Jede Nutzung wird protokolliert und gemeldet."
+    },
+    "configure": {
+      "title": "Privilegierte Hosts konfigurieren",
+      "description": "Hosts als privilegiert markieren und festlegen, wer den Zugriff darauf genehmigt."
+    }
+  },
+  "settings": {
+    "admin": {
+      "pendingHours": {
+        "label": "Anfrage-Lebensdauer (Stunden)",
+        "description": "Eine Anfrage, die in dieser Zeit nicht entschieden wird, läuft ab."
+      },
+      "alertBypass": {
+        "label": "Benachrichtigung bei Notfallzugriff",
+        "description": "Benachrichtigt Genehmiger, wenn sich jemand mit Notfallzugriff verbindet."
+      }
+    },
+    "host": {
+      "enable": {
+        "label": "Privilegierter Host",
+        "description": "SSH- und Remotedesktop-Sitzungen zu diesem Host benötigen eine genehmigte Zugriffsberechtigung."
+      },
+      "approverRoles": {
+        "label": "Genehmiger-Rollen",
+        "description": "Rollenbezeichnungen, durch Kommas getrennt, deren Mitglieder genehmigen dürfen. Wenn leer, kann jeder mit der Genehmigungsberechtigung entscheiden."
+      },
+      "maxHours": {
+        "label": "Maximale Zugriffszeit (Stunden)",
+        "description": "Die maximale Anzahl an Stunden, die eine Anfrage stellen kann."
+      },
+      "requireReason": {
+        "label": "Grund erfragen",
+        "description": "Eine Anfrage muss angeben, warum der Zugriff benötigt wird."
+      },
+      "requireTicket": {
+        "label": "Ticketnummer erfragen",
+        "description": "Eine Anfrage muss eine Ticketnummer angeben."
+      },
+      "allowBackground": {
+        "label": "Hintergrundprozesse zulassen",
+        "description": "Abfragen und andere nicht-interaktive Plugin-Verbindungen umgehen die Genehmigung. Deaktivieren, um jede Sitzung ohne Zugriff zu blockieren."
+      }
+    }
+  },
+  "operations": {
+    "request": {
+      "title": "Um privilegierten Zugriff bitten",
+      "hours": "Stunden",
+      "reason": "Grund",
+      "ticket": "Ticket"
+    },
+    "pending": {
+      "title": "Zugriffsanfragen zur Entscheidung"
+    },
+    "status": {
+      "title": "Privilegierter Zugriff"
+    },
+    "events": {
+      "requested": "Jemand hat um Zugriff gebeten",
+      "approved": "Zugriff wurde genehmigt",
+      "bypassed": "Notfallzugriff wurde verwendet"
+    }
+  }
+}

@@ -1,0 +1,233 @@
+{
+  "plugin": {
+    "name": "证书",
+    "description": "使用 certbot 和 acme.sh 查看、颁发和续期主机上的 TLS 证书，并在证书过期前收到提醒。"
+  },
+  "common": {
+    "cancel": "取消",
+    "back": "返回"
+  },
+  "permissions": {
+    "use": {
+      "title": "使用证书",
+      "description": "查看可访问主机上的证书，并修改可编辑主机上的证书。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "证书",
+        "description": "在“证书”选项卡中管理此主机上的 TLS 证书。"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "使用 sudo 读取和修改证书。如果登录用户是 root，请关闭此选项。"
+      },
+      "readOnly": {
+        "label": "只读",
+        "description": "仅显示证书，不在此主机上进行任何修改。"
+      },
+      "expiryWarnDays": {
+        "label": "过期前提醒",
+        "description": "剩余天数小于或等于此值的证书将标记为即将过期，并发送提醒。"
+      },
+      "showPanel": {
+        "label": "在终端中显示证书面板",
+        "description": "允许在此主机的 SSH 终端旁打开证书面板。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "新终端自动打开证书面板",
+        "description": "在启用“证书”功能的每个 SSH 终端旁显示证书面板。您仍可通过右侧边缘的按钮打开或关闭它。"
+      },
+      "companionSide": {
+        "label": "证书面板位置",
+        "description": "证书面板相对于终端的位置。",
+        "right": "右侧",
+        "left": "左侧",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "证书面板大小",
+        "description": "宽度（像素），位于底部时为高度。您也可以拖动边缘调整大小。"
+      },
+      "companionEdgeButton": {
+        "label": "显示面板按钮",
+        "description": "在终端右侧边缘显示一个小按钮，用于打开证书面板。"
+      }
+    }
+  },
+  "tab": {
+    "title": "证书",
+    "noHost": "从主机打开证书。",
+    "error": "无法从此主机加载证书。",
+    "disabled": "此主机已禁用证书功能。请在主机设置中启用它。",
+    "sudo": "修改需要 root 登录、免密码 sudo 或在此主机上保存的 Sudo 密码。",
+    "refresh": "刷新",
+    "readOnly": "只读",
+    "noClient": "未安装 certbot 或 acme.sh",
+    "viewCertificates": "证书",
+    "viewInspect": "检查",
+    "viewRenewal": "续期"
+  },
+  "actions": {
+    "working": "处理中。这可能需要几分钟。",
+    "ok": "完成",
+    "failed": "命令执行失败。",
+    "noOutput": "无输出。"
+  },
+  "install": {
+    "title": "此主机未安装 certbot 和 acme.sh",
+    "hint": "安装 certbot 以从 Let's Encrypt 获取和续期证书。",
+    "noManager": "未找到受支持的包管理器。请手动安装 certbot。",
+    "button": "安装 certbot",
+    "confirm": "安装 certbot？",
+    "desc": "这将使用主机的包管理器安装 certbot。",
+    "working": "正在安装...",
+    "done": "certbot 已安装。"
+  },
+  "certs": {
+    "search": "搜索证书",
+    "empty": "暂无证书。",
+    "noMatch": "没有匹配的证书。",
+    "loadFailed": "无法读取证书。",
+    "expires": "将于 {{date}} 过期",
+    "staging": "测试环境",
+    "details": "证书",
+    "manage": "管理",
+    "client": "客户端",
+    "path": "文件",
+    "authority": "颁发机构",
+    "renew": "续期",
+    "renewDone": "已续期 {{name}}。",
+    "renewAll": "全部续期",
+    "renewAllDone": "已续期所有即将过期的证书。",
+    "forceRenew": "立即强制续期",
+    "dryRun": "试运行",
+    "dryRunDone": "试运行成功。",
+    "revoke": "吊销",
+    "revokeTitle": "确定要吊销 {{name}} 吗？",
+    "revokeDesc": "证书颁发机构会将其标记为无效，并从该主机中移除。任何仍在使用该证书的服务都将停止工作。",
+    "revokeDone": "已吊销 {{name}}。",
+    "delete": "停止管理",
+    "deleteTitle": "确定停止管理 {{name}} 吗？",
+    "deleteDesc": "证书仍然有效，但不再自动续期。certbot 会删除相关文件，而 acme.sh 会保留它们。",
+    "deleteDone": "{{name}} 不再受管理。"
+  },
+  "expiry": {
+    "expired": "已过期",
+    "unknown": "未知",
+    "days_other": "剩余 {{count}} 天"
+  },
+  "issue": {
+    "add": "颁发证书",
+    "title": "新证书",
+    "save": "颁发",
+    "done": "证书已颁发。",
+    "working": "正在向证书颁发机构请求。这可能需要几分钟。",
+    "client": "客户端",
+    "domains": "域名",
+    "domainsPlaceholder": "输入域名并按回车",
+    "domainsHint": "第一个域名将作为证书名称。",
+    "challenge": "验证方式",
+    "standalone": "独立模式",
+    "standaloneHint": "在 80 端口运行小型 Web 服务器，因此该端口不能被其他服务占用。",
+    "webroot": "Web 根目录",
+    "webrootHint": "将文件放入 Web 服务器的目录中。Web 服务器将继续运行。",
+    "dns": "DNS",
+    "dnsHint": "通过提供商的 API 添加 DNS 记录。通配符证书需要此方式。",
+    "webrootPath": "Web 根目录",
+    "webrootPathHint": "必须位于 /var/www、/srv 或 /usr/share/nginx 内。",
+    "dnsProvider": "DNS 提供商",
+    "dnsProviderCertbot": "已安装的 certbot DNS 插件名称，例如 cloudflare。",
+    "dnsProviderAcme": "不带 dns_ 前缀的 acme.sh DNS 名称，例如 cf。其 API 令牌必须已在主机上设置。",
+    "credentials": "凭据文件",
+    "credentialsHint": "主机上包含您 API 令牌的凭据文件。Termix 不会读取该文件。",
+    "email": "电子邮件",
+    "emailHint": "可选。颁发机构会用它发送过期通知。",
+    "keyType": "密钥类型",
+    "staging": "使用测试服务器",
+    "stagingHint": "用于测试。证书不受信任，且速率限制宽松得多。"
+  },
+  "inspect": {
+    "server": "服务器",
+    "file": "文件",
+    "address": "地址",
+    "addressPlaceholder": "example.com",
+    "port": "端口",
+    "path": "文件路径",
+    "check": "检查",
+    "hint": "检查服务器通过 TLS 发送的内容（从该主机视角），或读取其上的证书文件。",
+    "failed": "无法读取证书。",
+    "noOpenssl": "此主机未安装 openssl。",
+    "trusted": "受信任",
+    "notTrusted": "不受信任",
+    "leaf": "证书",
+    "intermediate": "链 {{index}}",
+    "selfSigned": "自签名",
+    "name": "名称",
+    "issuer": "颁发者",
+    "domains": "域名",
+    "validFrom": "生效日期",
+    "validTo": "过期日期",
+    "keyType": "密钥",
+    "serial": "序列号",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "此主机如何自动续期证书。请在主机上更改设置。",
+    "on": "已开启",
+    "off": "已关闭",
+    "timer": "systemd 定时器",
+    "next": "下次运行 {{time}}",
+    "cron": "Cron 文件 /etc/cron.d/certbot",
+    "certbotOff": "未找到定时器或 Cron 任务，因此证书不会自动续期。",
+    "acmeCron": "crontab 中的 Cron 任务",
+    "acmeOff": "未找到 Cron 任务，因此证书不会自动续期。"
+  },
+  "watch": {
+    "start": "在此主机的证书过期前提醒我",
+    "stop": "停止此主机的告警",
+    "on": "此处证书即将过期时，您将收到告警。",
+    "off": "此主机的告警已关闭。",
+    "failed": "无法更改告警设置。"
+  },
+  "card": {
+    "title": "证书",
+    "loading": "正在检查主机...",
+    "summary_other": "{{count}} 个证书，{{expiring}} 个即将过期",
+    "refresh": "再次检查",
+    "empty": "为主机启用证书功能，即可在此查看其证书。"
+  },
+  "manager": {
+    "title": "证书",
+    "disabled": "请在该主机的设置中启用证书功能，以便在此处查看。"
+  },
+  "operations": {
+    "list": {
+      "title": "列出证书"
+    },
+    "expiring": {
+      "title": "即将过期的证书"
+    },
+    "renew": {
+      "title": "续期证书"
+    },
+    "renewAll": {
+      "title": "续期所有证书"
+    },
+    "revoke": {
+      "title": "吊销证书"
+    },
+    "certificates": {
+      "title": "证书",
+      "client": "客户端",
+      "domains": "域名",
+      "daysLeft": "剩余天数"
+    }
+  },
+  "nav": {
+    "togglePanel": "切换证书面板"
+  }
+}

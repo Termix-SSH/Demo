@@ -1,0 +1,233 @@
+{
+  "plugin": {
+    "name": "Sertifikat",
+    "description": "Lihat, terbitkan, dan perbarui sertifikat TLS di host Anda dengan certbot dan acme.sh, serta dapatkan peringatan sebelum masa berlakunya habis."
+  },
+  "common": {
+    "cancel": "Batal",
+    "back": "Kembali"
+  },
+  "permissions": {
+    "use": {
+      "title": "Gunakan Sertifikat",
+      "description": "Lihat sertifikat di host yang dapat dijangkau, dan ubah sertifikat di host yang dapat diedit."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Sertifikat",
+        "description": "Kelola sertifikat TLS di host ini dari tab Sertifikat."
+      },
+      "useSudo": {
+        "label": "Gunakan sudo",
+        "description": "Gunakan sudo untuk membaca dan mengubah sertifikat. Matikan jika login sebagai root."
+      },
+      "readOnly": {
+        "label": "Hanya baca",
+        "description": "Tampilkan sertifikat tetapi jangan pernah mengubahnya di host ini."
+      },
+      "expiryWarnDays": {
+        "label": "Peringatan sebelum kedaluwarsa",
+        "description": "Sertifikat dengan sisa waktu sebanyak ini atau lebih sedikit akan ditampilkan sebagai kedaluwarsa dan mengirim peringatan."
+      },
+      "showPanel": {
+        "label": "Tampilkan panel sertifikat di terminal",
+        "description": "Izinkan panel sertifikat terbuka di sebelah terminal SSH host ini."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Buka panel sertifikat bersama terminal baru",
+        "description": "Tampilkan panel sertifikat di sebelah setiap terminal SSH yang mengaktifkan Sertifikat. Anda masih dapat membuka dan menutupnya dari tombol di tepi kanan."
+      },
+      "companionSide": {
+        "label": "Posisi panel sertifikat",
+        "description": "Di mana panel sertifikat berada di sebelah terminal.",
+        "right": "Kanan",
+        "left": "Kiri",
+        "bottom": "Bawah"
+      },
+      "companionSize": {
+        "label": "Ukuran panel sertifikat",
+        "description": "Lebar dalam piksel, atau tinggi saat berada di bawah. Anda juga dapat menyeret tepinya."
+      },
+      "companionEdgeButton": {
+        "label": "Tampilkan tombol panel",
+        "description": "Tampilkan tombol kecil di tepi kanan terminal yang membuka panel sertifikat."
+      }
+    }
+  },
+  "tab": {
+    "title": "Sertifikat",
+    "noHost": "Buka Sertifikat dari host.",
+    "error": "Tidak dapat memuat sertifikat dari host ini.",
+    "disabled": "Sertifikat dimatikan untuk host ini. Aktifkan di pengaturan host.",
+    "sudo": "Perubahan memerlukan login root, sudo tanpa kata sandi, atau Kata Sandi Sudo yang disimpan di host ini.",
+    "refresh": "Segarkan",
+    "readOnly": "Hanya baca",
+    "noClient": "Tidak ada certbot atau acme.sh",
+    "viewCertificates": "Sertifikat",
+    "viewInspect": "Periksa",
+    "viewRenewal": "Perpanjangan"
+  },
+  "actions": {
+    "working": "Sedang bekerja. Ini bisa memakan waktu beberapa menit.",
+    "ok": "Selesai",
+    "failed": "Perintah gagal.",
+    "noOutput": "Tidak ada keluaran."
+  },
+  "install": {
+    "title": "certbot dan acme.sh tidak terinstal di host ini",
+    "hint": "Instal certbot untuk mendapatkan dan memperbarui sertifikat dari Let's Encrypt.",
+    "noManager": "Tidak ditemukan manajer paket yang didukung. Instal certbot secara manual.",
+    "button": "Instal certbot",
+    "confirm": "Instal certbot?",
+    "desc": "Ini menginstal certbot dengan manajer paket host.",
+    "working": "Menginstal...",
+    "done": "certbot telah terinstal."
+  },
+  "certs": {
+    "search": "Cari sertifikat",
+    "empty": "Belum ada sertifikat.",
+    "noMatch": "Tidak ada sertifikat yang cocok.",
+    "loadFailed": "Tidak dapat membaca sertifikat.",
+    "expires": "Kedaluwarsa {{date}}",
+    "staging": "Staging",
+    "details": "Sertifikat",
+    "manage": "Kelola",
+    "client": "Klien",
+    "path": "File",
+    "authority": "Otoritas",
+    "renew": "Perpanjang",
+    "renewDone": "{{name}} telah diperpanjang.",
+    "renewAll": "Perpanjang semua",
+    "renewAllDone": "Sertifikat yang mendekati masa berlaku telah diperpanjang.",
+    "forceRenew": "Perpanjang sekarang juga",
+    "dryRun": "Coba tanpa menyimpan",
+    "dryRunDone": "Pencobaan berhasil.",
+    "revoke": "Cabut",
+    "revokeTitle": "Cabut {{name}}?",
+    "revokeDesc": "Otoritas akan menandainya sebagai tidak valid dan sertifikatnya akan dihapus dari host ini. Segala sesuatu yang masih menggunakannya akan berhenti berfungsi.",
+    "revokeDone": "{{name}} telah dicabut.",
+    "delete": "Berhenti kelola",
+    "deleteTitle": "Berhenti kelola {{name}}?",
+    "deleteDesc": "Sertifikat tetap valid tetapi tidak akan diperpanjang lagi. certbot juga akan menghapus filenya, sedangkan acme.sh akan menyimpannya.",
+    "deleteDone": "{{name}} tidak lagi dikelola."
+  },
+  "expiry": {
+    "expired": "Kadaluarsa",
+    "unknown": "Tidak diketahui",
+    "days_other": "{{count}} hari tersisa"
+  },
+  "issue": {
+    "add": "Terbitkan sertifikat",
+    "title": "Sertifikat baru",
+    "save": "Terbitkan",
+    "done": "Sertifikat telah diterbitkan.",
+    "working": "Meminta otoritas. Ini bisa memakan waktu beberapa menit.",
+    "client": "Klien",
+    "domains": "Domain",
+    "domainsPlaceholder": "Ketik domain dan tekan Enter",
+    "domainsHint": "Domain pertama akan menjadi nama sertifikat.",
+    "challenge": "Tantangan",
+    "standalone": "Standalone",
+    "standaloneHint": "Menjalankan web server kecil di port 80, sehingga tidak ada layanan lain yang boleh menggunakan port tersebut.",
+    "webroot": "Akar web",
+    "webrootHint": "Menempatkan file di folder web server Anda. Web server tetap berjalan.",
+    "dns": "DNS",
+    "dnsHint": "Menambahkan catatan DNS melalui API penyedia Anda. Diperlukan untuk wildcard.",
+    "webrootPath": "Folder akar web",
+    "webrootPathHint": "Harus berada di dalam /var/www, /srv, atau /usr/share/nginx.",
+    "dnsProvider": "Penyedia DNS",
+    "dnsProviderCertbot": "Nama plugin DNS certbot yang terinstal, seperti cloudflare.",
+    "dnsProviderAcme": "Nama DNS acme.sh tanpa awalan dns_, seperti cf. Token API-nya harus sudah diatur di host.",
+    "credentials": "File kredensial",
+    "credentialsHint": "File di host yang berisi token API Anda. File ini tidak pernah dibaca oleh Termix.",
+    "email": "Email",
+    "emailHint": "Opsional. Otoritas menggunakannya untuk pemberitahuan kedaluwarsa.",
+    "keyType": "Tipe kunci",
+    "staging": "Gunakan server staging",
+    "stagingHint": "Untuk pengujian. Sertifikat tidak dipercaya, dan batas laju jauh lebih tinggi."
+  },
+  "inspect": {
+    "server": "Server",
+    "file": "File",
+    "address": "Alamat",
+    "addressPlaceholder": "contoh.com",
+    "port": "Port",
+    "path": "Path file",
+    "check": "Periksa",
+    "hint": "Periksa apa yang dikirim server melalui TLS, dilihat dari host ini, atau baca file sertifikat di atasnya.",
+    "failed": "Tidak dapat membaca sertifikat.",
+    "noOpenssl": "openssl tidak terinstal di host ini.",
+    "trusted": "Dipercaya",
+    "notTrusted": "Tidak dipercaya",
+    "leaf": "Sertifikat",
+    "intermediate": "Rantai {{index}}",
+    "selfSigned": "Tertanda tangan sendiri",
+    "name": "Nama",
+    "issuer": "Penerbit",
+    "domains": "Domain",
+    "validFrom": "Berlaku mulai",
+    "validTo": "Berlaku hingga",
+    "keyType": "Kunci",
+    "serial": "Serial",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Bagaimana host ini memperbarui sertifikat secara otomatis. Ubah pengaturan di host.",
+    "on": "Aktif",
+    "off": "Nonaktif",
+    "timer": "timer systemd",
+    "next": "Jalankan berikutnya {{time}}",
+    "cron": "File Cron /etc/cron.d/certbot",
+    "certbotOff": "Tidak ditemukan timer atau tugas cron, sehingga sertifikat tidak akan diperbarui secara otomatis.",
+    "acmeCron": "Tugas cron di crontab",
+    "acmeOff": "Tidak ditemukan tugas cron, sehingga sertifikat tidak akan diperbarui secara otomatis."
+  },
+  "watch": {
+    "start": "Beritahu saya sebelum sertifikat di host ini kedaluwarsa",
+    "stop": "Hentikan peringatan untuk host ini",
+    "on": "Anda akan menerima peringatan sebelum sertifikat di sini kedaluwarsa.",
+    "off": "Peringatan untuk host ini dinonaktifkan.",
+    "failed": "Gagal mengubah peringatan."
+  },
+  "card": {
+    "title": "Sertifikat",
+    "loading": "Memeriksa host...",
+    "summary_other": "{{count}} sertifikat, {{expiring}} akan kedaluwarsa",
+    "refresh": "Periksa lagi",
+    "empty": "Aktifkan Sertifikat untuk host agar sertifikatnya muncul di sini."
+  },
+  "manager": {
+    "title": "Sertifikat",
+    "disabled": "Aktifkan Sertifikat untuk host ini di pengaturannya agar muncul di sini."
+  },
+  "operations": {
+    "list": {
+      "title": "Daftar sertifikat"
+    },
+    "expiring": {
+      "title": "Sertifikat akan kedaluwarsa"
+    },
+    "renew": {
+      "title": "Perbarui sertifikat"
+    },
+    "renewAll": {
+      "title": "Perbarui semua sertifikat"
+    },
+    "revoke": {
+      "title": "Cabut sertifikat"
+    },
+    "certificates": {
+      "title": "Sertifikat",
+      "client": "Klien",
+      "domains": "Domain",
+      "daysLeft": "Hari tersisa"
+    }
+  },
+  "nav": {
+    "togglePanel": "Alihkan panel sertifikat"
+  }
+}

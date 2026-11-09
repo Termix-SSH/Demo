@@ -1,0 +1,299 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Consultez, récupérez, validez et publiez des dépôts Git sur vos hôtes, et gardez-les à jour avec la récupération automatique."
+  },
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "back": "Retour",
+    "loading": "Chargement..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Utiliser Git",
+      "description": "Consultez les dépôts Git sur les hôtes auxquels vous pouvez accéder, et modifiez-les sur les hôtes que vous pouvez éditer."
+    },
+    "runCommands": {
+      "title": "Exécuter des commandes après la récupération automatique",
+      "description": "Définissez une commande qui s'exécute sur l'hôte après qu'une récupération automatique ait intégré de nouveaux commits."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Gérez les dépôts Git sur cet hôte depuis l'onglet Git."
+      },
+      "repoRoots": {
+        "label": "Dossiers à analyser",
+        "description": "Dossiers recherchés pour les dépôts lors de l'analyse de cet hôte. Séparez-les par des virgules. Par défaut, c'est le dossier personnel.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Utiliser sudo",
+        "description": "Exécutez git en tant que root avec sudo. Uniquement pour les dépôts que l'utilisateur connecté ne peut pas utiliser."
+      },
+      "readOnly": {
+        "label": "Lecture seule",
+        "description": "Affiche les dépôts mais ne les modifie jamais sur cet hôte."
+      },
+      "showPanel": {
+        "label": "Panneau à côté du terminal",
+        "description": "Propose le panneau Git sur les onglets du terminal de cet hôte."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Ouvrir le panneau avec le terminal",
+        "description": "Affiche le panneau Git lorsqu'un terminal s'ouvre sur un hôte qui le possède."
+      },
+      "companionSide": {
+        "label": "Position du panneau",
+        "description": "Emplacement du panneau par rapport au terminal.",
+        "right": "Droite",
+        "left": "Gauche",
+        "bottom": "Bas"
+      },
+      "companionSize": {
+        "label": "Taille du panneau",
+        "description": "Largeur du panneau, ou sa hauteur s'il est en bas, en pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Bouton latéral",
+        "description": "Affiche un petit bouton sur le bord du terminal pour ouvrir le panneau."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Ouvrez Git depuis un hôte.",
+    "error": "Impossible de charger git depuis cet hôte.",
+    "disabled": "Git est désactivé pour cet hôte. Activez-le dans les paramètres de l'hôte.",
+    "sudo": "Cela nécessite une connexion root, un sudo sans mot de passe ou un mot de passe Sudo enregistré.",
+    "refresh": "Actualiser",
+    "readOnly": "Lecture seule",
+    "notInstalled": "git non installé",
+    "notInstalledTitle": "git n'est pas installé sur cet hôte",
+    "notInstalledHint": "Installez git avec le gestionnaire de paquets de l'hôte, puis actualisez."
+  },
+  "actions": {
+    "ok": "Terminé",
+    "failed": "Échoué",
+    "noOutput": "Aucune sortie."
+  },
+  "repos": {
+    "add": "Ajouter un dépôt",
+    "search": "Rechercher des dépôts",
+    "empty": "Aucun dépôt pour le moment. Ajoutez-en un pour commencer.",
+    "noMatch": "Aucun dépôt ne correspond.",
+    "viewOnly": "Aucun dépôt n'a été ajouté à cet hôte.",
+    "detached": "détaché",
+    "changes_one": "{{count}} modification",
+    "changes_many": "{{count}} modifications",
+    "changes_other": "{{count}} modifications",
+    "conflicts": "Conflits",
+    "auto": "Récupération automatique",
+    "autoFailing": "Échec de la récupération",
+    "remove": "Retirer de la liste",
+    "removeTitle": "Retirer {{name}} ?",
+    "removeBody": "Le dépôt est simplement oublié ici. Rien n'est supprimé sur l'hôte.",
+    "removed": "{{name}} retiré",
+    "error": {
+      "missing": "Dossier manquant",
+      "notrepo": "Ce n'est pas un dépôt Git",
+      "unreadable": "Impossible de lire"
+    }
+  },
+  "add": {
+    "title": "Ajouter des dépôts",
+    "modeScan": "Analyser",
+    "modePath": "Dossier",
+    "modeClone": "Cloner",
+    "scanHint": "Recherche des dépôts Git dans {{roots}}. Modifiez les dossiers dans les paramètres de l'hôte.",
+    "rescan": "Relancer l'analyse",
+    "noneFound": "Aucun nouveau dépôt trouvé.",
+    "picked": "Sélectionné",
+    "addPicked_one": "Ajouter {{count}} dépôt",
+    "addPicked_many": "Ajouter {{count}} dépôts",
+    "addPicked_other": "Ajouter {{count}} dépôts",
+    "addAll": "Tout ajouter",
+    "folder": "Dossier sur l'hôte",
+    "folderHint": "Chemin complet, ou commencez par ~ pour le dossier personnel. Il doit déjà s'agir d'un dépôt Git.",
+    "addRepo": "Ajouter un dépôt",
+    "url": "Adresse",
+    "urlHint": "Utilise les clés et les paramètres Git de l'utilisateur connecté à l'hôte.",
+    "dest": "Cloner dans",
+    "destHint": "Le dossier ne doit pas encore exister.",
+    "clone": "Cloner",
+    "cloned": "Cloné",
+    "added_one": "{{count}} dépôt ajouté",
+    "added_many": "{{count}} dépôts ajoutés",
+    "added_other": "{{count}} dépôts ajoutés",
+    "failed": "Impossible d'ajouter le dépôt",
+    "scanFailed": "Impossible d'analyser l'hôte"
+  },
+  "repo": {
+    "ahead": "{{count}} en avance",
+    "behind": "{{count}} en retard",
+    "fetch": "Récupérer",
+    "fetched": "Récupéré",
+    "pull": "Tirer",
+    "pulled": "Tiré",
+    "push": "Pousser",
+    "pushed": "Poussé",
+    "viewChanges": "Modifications",
+    "viewBranches": "Branches",
+    "viewHistory": "Historique",
+    "viewStash": "Mise en attente",
+    "viewAuto": "Tirer automatique"
+  },
+  "changes": {
+    "loadFailed": "Impossible de lire les modifications.",
+    "clean": "Rien à valider. L'arborescence de travail est propre.",
+    "stagedTitle": "Préparés ({{count}})",
+    "unstagedTitle": "Modifications ({{count}})",
+    "stage": "Préparer",
+    "staged": "Préparé",
+    "unstage": "Annuler la préparation",
+    "unstaged": "Non préparé",
+    "stageAll": "Tout préparer",
+    "renamed": "Renommé",
+    "discard": "Ignorer",
+    "discardTitle": "Ignorer les modifications de {{name}} ?",
+    "discardBody": "Les modifications de ce fichier sont supprimées et ne peuvent pas être récupérées.",
+    "discarded": "Modifications ignorées",
+    "message": "Message de validation",
+    "messagePlaceholder": "Qu'a-t-on modifié",
+    "commit": "Valider",
+    "commitAll": "Valider toutes les modifications",
+    "commitStaged_one": "Valider {{count}} fichier préparé",
+    "commitStaged_many": "Valider {{count}} fichiers préparés",
+    "commitStaged_other": "Valider {{count}} fichiers préparés",
+    "committed": "Validé",
+    "noDiff": "Aucune modification à afficher.",
+    "truncated": "Le diff est long, seul le début est affiché."
+  },
+  "branches": {
+    "loadFailed": "Impossible de lire les branches.",
+    "empty": "Aucune branche pour le moment.",
+    "current": "Actuelle",
+    "remote": "Distant",
+    "gone": "Amont supprimé",
+    "newName": "Nouvelle branche",
+    "create": "Créer une branche",
+    "created": "Branche {{name}} créée",
+    "switch": "Changer",
+    "switched": "Passé à {{name}}",
+    "merge": "Fusionner dans la branche actuelle",
+    "mergeTitle": "Fusionner {{name}} dans {{into}} ?",
+    "mergeBody": "Une fusion avec des conflits est annulée immédiatement.",
+    "merged": "{{name}} fusionné",
+    "delete": "Supprimer la branche",
+    "deleteTitle": "Supprimer {{name}} ?",
+    "deleteBody": "Git refuse si la branche contient des commits non fusionnés.",
+    "deleted": "{{name}} supprimé",
+    "forceTitle": "Supprimer {{name}} de force ?",
+    "forceBody": "Cette branche contient des commits non fusionnés. Ils seront perdus si vous la supprimez.",
+    "forceDelete": "Supprimer de force"
+  },
+  "history": {
+    "loadFailed": "Impossible de lire l'historique.",
+    "empty": "Aucun commit pour le moment.",
+    "branch": "Cette branche",
+    "all": "Toutes les branches",
+    "more": "Charger plus"
+  },
+  "stash": {
+    "loadFailed": "Impossible de lire la zone de stockage.",
+    "title": "Stockages",
+    "empty": "Aucun stockage.",
+    "message": "Message",
+    "messagePlaceholder": "Facultatif",
+    "untracked": "Inclure les fichiers non suivis",
+    "push": "Stocker les modifications",
+    "pushDone": "Modifications stockées",
+    "apply": "Appliquer",
+    "applyDone": "Stockage appliqué",
+    "pop": "Extraire",
+    "popDone": "Stockage appliqué et supprimé",
+    "drop": "Supprimer",
+    "dropDone": "Stockage supprimé",
+    "dropTitle": "Supprimer {{name}} ?",
+    "dropBody": "Le stockage est supprimé et ne peut pas être restauré.",
+    "remotes": "Distants",
+    "noRemotes": "Aucun distant."
+  },
+  "auto": {
+    "intro": "Tirages programmés avec uniquement le fast-forward. Cela ne fusionne jamais et ignore le dépôt s'il contient des modifications non validées ou s'il a divergé de son amont.",
+    "noUpstream": "Cette branche n'a pas encore d'amont, le tirage automatique l'ignorer donc.",
+    "enable": "Tirage automatique",
+    "enableHint": "S'exécute en votre nom, avec votre accès à cet hôte.",
+    "interval": "Toutes les (minutes)",
+    "intervalHint": "Délai d'attente entre les tirages.",
+    "post": "Commande après un tirage",
+    "postHint": "S'exécute dans le dossier du dépôt après l'arrivée de nouveaux commits. Nécessite la permission d'exécuter des commandes.",
+    "saved": "Tirage automatique enregistré",
+    "saveFailed": "Impossible d'enregistrer le tirage automatique",
+    "runNow": "Exécuter maintenant",
+    "next": "Prochain tirage {{when}}",
+    "runs": "Exécutions récentes",
+    "noRuns": "Aucune exécution pour le moment.",
+    "outcome": {
+      "pulled": "Tiré",
+      "uptodate": "À jour",
+      "skipped": "Ignoré",
+      "failed": "Échoué"
+    }
+  },
+  "card": {
+    "title": "Dépôts Git",
+    "loading": "Chargement...",
+    "refresh": "Actualiser",
+    "empty": "Aucun hôte n'a encore de dépôts Git.",
+    "allClean": "Tous les dépôts sont propres et à jour.",
+    "summary_one": "{{count}} dépôt | {{attention}} nécessite une attention",
+    "summary_many": "{{count}} dépôts | {{attention}} nécessitent une attention",
+    "summary_other": "{{count}} dépôts | {{attention}} nécessitent une attention"
+  },
+  "companion": {
+    "toggle": "Panneau Git",
+    "openTab": "Ouvrir Git",
+    "here": "Dépôt de ce dossier",
+    "all": "Tous les dépôts"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Lister les dépôts Git"
+    },
+    "fetch": {
+      "title": "Récupérer un dépôt"
+    },
+    "pull": {
+      "title": "Tirer un dépôt"
+    },
+    "push": {
+      "title": "Pousser un dépôt"
+    },
+    "checkout": {
+      "title": "Changer de branche",
+      "branch": "Branche"
+    },
+    "reset-hard": {
+      "title": "Réinitialiser un dépôt en dur",
+      "ref": "Réinitialiser vers"
+    },
+    "repos": {
+      "title": "Dépôts Git",
+      "branch": "Branche",
+      "ahead": "En avance",
+      "behind": "En retard",
+      "changed": "Modifications"
+    },
+    "signals": {
+      "behind": "Dépôts en retard",
+      "dirty": "Dépôts avec modifications",
+      "pull-failing": "Échec de la récupération automatique"
+    }
+  }
+}

@@ -1,0 +1,206 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "Näytä, lisää ja suorita cron-tehtäviä palvelimillasi aikataulun esikatselun ja järjestelmän cron-tiedostojen avulla."
+  },
+  "common": {
+    "save": "Tallenna",
+    "cancel": "Peruuta",
+    "back": "Takaisin",
+    "delete": "Poista"
+  },
+  "permissions": {
+    "use": {
+      "title": "Käytä Cronia",
+      "description": "Näytä cron-tehtävät palvelimilla, joihin pääset, ja muokkaa niitä palvelimilla, joissa sinulla on muokkausoikeudet."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Hallinnoi cron-tehtäviä tässä palvelimessa Cron-välilehdellä."
+      },
+      "useSudo": {
+        "label": "Käytä sudoa",
+        "description": "Käytä sudoa muiden käyttäjien crontab-tiedostojen ja /etc/cron.d:n kanssa. Ota pois käytöstä, jos kirjautuminen tapahtuu root-käyttäjänä."
+      },
+      "readOnly": {
+        "label": "Vain luku",
+        "description": "Näytä cron-tehtävät, mutta älä koskaan muokkaa niitä tässä isäntäpalvelimessa."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "Avaa Cron isäntäpalvelimesta.",
+    "error": "Cronia ei voitu ladata tästä isäntäpalvelimesta.",
+    "disabled": "Cron on poistettu käytöstä tässä isäntäpalvelimessa. Ota se käyttöön isäntäpalvelimen asetuksista.",
+    "sudo": "Tämä vaatii root-kirjautumisen, salasanasuodattimen tai tallennetun Sudo-salasanan.",
+    "refresh": "Päivitä",
+    "running": "Cron käynnissä",
+    "stopped": "Cron pysäytetty",
+    "readOnly": "Vain lukuoikeus",
+    "notInstalled": "Ei asennettu",
+    "notInstalledTitle": "Cronia ei ole asennettu tähän isäntään",
+    "notInstalledHint": "Asenna cron tai cronie isännän pakkahallinnalla ja päivitä sitten.",
+    "notRunning": "Cron-palvelu ei ole käynnissä, joten tehtäviä ei suoriteta.",
+    "viewJobs": "Tehtävät",
+    "viewSystem": "Järjestelmä",
+    "viewLogs": "Lokit"
+  },
+  "jobs": {
+    "add": "Lisää työ",
+    "user": "Käyttäjän crontab",
+    "ownUser": "{{user}} (kirjautuminen)",
+    "search": "Hae töitä",
+    "editText": "Muokkaa tekstinä",
+    "empty": "Ei vielä cron-tehtäviä.",
+    "noMatch": "Ei vastaavia töitä.",
+    "off": "Pois päältä",
+    "next": "seuraava {{time}}",
+    "run": "Suorita nyt",
+    "runTitle": "Ajetaanko tämä työ nyt?",
+    "runDesc": "Tämä suorittaa {{command}}-komentoon kerran crontab-käyttäjänä. Se pysähtyy 2 minuutin kuluttua.",
+    "runFailed": "Työtä ei voitu suorittaa.",
+    "turnOn": "Käynnistä",
+    "turnOff": "Sammuta",
+    "deleteTitle": "Poistetaanko tämä työ?",
+    "loadFailed": "Crontabia ei voitu lukea.",
+    "saveFailed": "Crontabia ei voitu tallentaa.",
+    "outputTitle": "Työn tuloste",
+    "exitOk": "Valmis",
+    "exitCode": "Poistumisarvo {{code}}",
+    "noOutput": "Tehtävä ei tuottanut mitään tulostetta."
+  },
+  "form": {
+    "addTitle": "Uusi tehtävä",
+    "editTitle": "Muokkaa tehtävää",
+    "forUser": "Käyttäjän {{user}} crontab",
+    "label": "Nimi",
+    "labelHint": "Tallennetaan kommenttina tehtävän yläpuolelle.",
+    "labelPlaceholder": "Yövarmuuskopio",
+    "command": "Komento",
+    "commandHint": "Suoritetaan sh-komentotulkilla käyttäjän kotihakemistossa. %-merkki aloittaa cronin lähettämän syötteen, kirjoita \\% saadaksesi oikean %:n.",
+    "schedule": "Aikataulu",
+    "scheduleHint": "Minuutti, tunti, kuukauden päivä, kuukausi ja viikonpäivä tai sana kuten @daily.",
+    "scheduleInvalid": "Tämä ei ole kelvollinen aikataulu.",
+    "nextRuns": "Seuraavat suoritukset ({{zone}}):",
+    "enabled": "Päällä",
+    "enabledHint": "Pois päältä oleva tehtävä pysyy crontabissa kommenttina.",
+    "saved": "Tallennettu."
+  },
+  "presets": {
+    "everyMinute": "Joka minuutti",
+    "every5": "Joka 5. min",
+    "every15": "Joka 15. min",
+    "hourly": "Tunnittain",
+    "daily": "Päivittäin",
+    "weekly": "Viikoittain",
+    "monthly": "Kuukausittain",
+    "reboot": "Käynnistyksen yhteydessä"
+  },
+  "schedule": {
+    "reboot": "Käynnistyksen yhteydessä",
+    "everyMinute": "Jokainen minuutti",
+    "everyNMinutes": "Jokainen {{n}}. minuutti",
+    "hourlyAt": "Jokainen tunti minuutilla {{minute}}",
+    "everyNHours": "Jokainen {{n}}. tunti minuutilla {{minute}}",
+    "dailyAt": "Joka päivä kello {{time}}",
+    "weekdaysAt": "Maanantaista perjantaihin kello {{time}}",
+    "weeklyAt": "Joka {{day}} kello {{time}}",
+    "monthlyAt": "Joka kuukauden {{day}}. päivä kello {{time}}",
+    "custom": "Mukautettu aikataulu",
+    "invalid": "Virheellinen aikataulu"
+  },
+  "days": {
+    "0": "Sunnuntai",
+    "1": "Maanantai",
+    "2": "Tiistai",
+    "3": "Keskiviikko",
+    "4": "Torstai",
+    "5": "Perjantai",
+    "6": "Lauantai"
+  },
+  "raw": {
+    "title": "Crontab tekstinä",
+    "hint": "Yksi tehtävä per rivi. Isäntä tarkistaa tekstin ja säilyttää vanhan crontabin, jos siinä on virheitä."
+  },
+  "system": {
+    "add": "Uusi tiedosto",
+    "addTitle": "Uusi tiedosto hakemistossa /etc/cron.d",
+    "edit": "Muokkaa",
+    "name": "Tiedostonimi",
+    "nameHint": "Tallennetaan nimellä /etc/cron.d/<nimi>. Cron ohittaa pisteitä sisältävät nimet.",
+    "nameInvalid": "Käytä vain kirjaimia, numeroita, - ja _.",
+    "content": "Tiedoston sisältö",
+    "fileHint": "Jokainen työ määrittää käyttäjän, jonka nimellä se suoritetaan: minuutti tunti päivä kuukausi viikonpäivä käyttäjä komento. Jokainen rivi tarkistetaan ennen tallentamista.",
+    "noJobs": "Tässä tiedostossa ei ole töitä.",
+    "readHint": "Jotkin tiedostot voivat olla piilotettuja ilman root-oikeuksia. Muutokset vaativat root-tilin, salasanasuoran sudo-oikeuden tai tallennetun Sudo-salasanan.",
+    "timers_one": "Tässä isäntäpalvelimessa on myös {{count}} systemd-ajastin. Palvelut-lisäosa hallinnoi sitä.",
+    "timers_other": "Tässä isäntäpalvelimessa on myös {{count}} systemd-ajastinta. Palvelut-lisäosa hallinnoi niitä.",
+    "deleteTitle": "Haluatko poistaa /etc/cron.d/{{name}}?",
+    "deleteDesc": "Kopio säilytetään kansiossa /var/lib/termix-cron/backup.",
+    "deleted": "Poistettu {{name}}.",
+    "saved": "Tallennettu {{name}}.",
+    "loadFailed": "Järjestelmän cron-tiedostoja ei voitu lukea.",
+    "saveFailed": "Tiedostoa ei voitu tallentaa.",
+    "period": {
+      "hourly": "Suorittaa joka tunti",
+      "daily": "Suorittaa joka päivä",
+      "weekly": "Suorittaa joka viikko",
+      "monthly": "Suorittaa joka kuukausi"
+    }
+  },
+  "logs": {
+    "lines": "Rivit",
+    "lineCount_one": "{{count}} rivi",
+    "lineCount_other": "{{count}} riviä",
+    "source": "Lähde: {{source}}",
+    "noSource": "Tältä isäntäpalvelimelta ei löytynyt cron-lokia.",
+    "empty": "Ei lokirivejä.",
+    "failed": "Cron-lokia ei voitu lukea."
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "Ota Cron käyttöön tämän isäntäpalvelimen asetuksista nähdäksesi sen tehtävät tässä."
+  },
+  "operations": {
+    "list": {
+      "title": "Listaa cron-tehtävät"
+    },
+    "enable": {
+      "title": "Ota cron-tehtävä käyttöön"
+    },
+    "disable": {
+      "title": "Poista cron-tehtävä käytöstä"
+    },
+    "run": {
+      "title": "Suorita cron-tehtävä nyt"
+    },
+    "delete": {
+      "title": "Poista cron-tehtävä"
+    },
+    "jobs": {
+      "title": "Cron-tehtävät",
+      "schedule": "Aikataulu",
+      "command": "Komento"
+    },
+    "status": {
+      "title": "Cronin tila"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "Tarkistetaan isäntäpalvelimia...",
+    "summary_one": "{{count}} tehtävä {{hosts}} isäntäpalvelimella",
+    "summary_other": "{{count}} tehtävää {{hosts}} isäntäpalvelimella",
+    "refresh": "Tarkista uudelleen",
+    "empty": "Ota Cron käyttöön isäntäpalvelimelle nähdäksesi sen tässä.",
+    "stopped": "Ei käynnissä",
+    "missing": "Ei asennettu",
+    "jobs_one": "{{count}} tehtävä",
+    "jobs_other": "{{count}} tehtävää",
+    "off": "{{count}} pois päältä"
+  }
+}

@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Quản lý bản ghi DNS và tên miền trên Cloudflare, Route 53, Namecheap và các nhà cung cấp khác."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Tên miền",
+    "loading": "Đang tải",
+    "empty": "Chưa có tên miền nào. Mở DNS để thêm thông tin đăng nhập.",
+    "ok": "{{domains}} tên miền, không có cái nào sắp hết hạn",
+    "accounts": "{{count}} thông tin đăng nhập",
+    "failingLinks": "{{count}} bản ghi liên kết đang lỗi"
+  },
+  "permissions": {
+    "view": {
+      "title": "Xem DNS",
+      "description": "Mở tab DNS và xem các vùng, bản ghi, tên miền và kiểm tra tình trạng."
+    },
+    "edit": {
+      "title": "Thay đổi bản ghi DNS",
+      "description": "Thêm, sửa và xóa bản ghi, nhập tệp vùng và làm mới tên miền."
+    },
+    "manage": {
+      "title": "Quản lý thông tin đăng nhập DNS",
+      "description": "Thêm thông tin đăng nhập nhà cung cấp, liên kết bản ghi với máy chủ, theo dõi tên miền và khôi phục bản sao vùng."
+    }
+  },
+  "operations": {
+    "zone": "Vùng",
+    "type": "Loại",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Tên",
+    "content": "Giá trị",
+    "contentOptional": "Giá trị (để trống để khớp với mọi giá trị)",
+    "ttl": "TTL (giây)",
+    "label": "Nhãn",
+    "zones": {
+      "title": "Liệt kê vùng DNS"
+    },
+    "records": {
+      "title": "Liệt kê bản ghi DNS"
+    },
+    "domains": {
+      "title": "Liệt kê tên miền và ngày hết hạn"
+    },
+    "check": {
+      "title": "Kiểm tra một vùng"
+    },
+    "upsert": {
+      "title": "Đặt một bản ghi DNS"
+    },
+    "delete": {
+      "title": "Xóa một bản ghi DNS"
+    },
+    "snapshot": {
+      "title": "Lưu bản sao của một vùng"
+    },
+    "links": {
+      "title": "Cập nhật bản ghi liên kết"
+    },
+    "expiry": {
+      "title": "Hết hạn tên miền"
+    }
+  },
+  "description": "Thêm thông tin đăng nhập DNS và nhà đăng ký để quản lý bản ghi và theo dõi tên miền tại một nơi. Các khóa được lưu trữ dưới dạng mã hóa và không bao giờ được hiển thị lại.",
+  "summary": "{{zones}} vùng, {{domains}} tên miền",
+  "saved": "Đã lưu",
+  "delete": "Xóa",
+  "edit": "Sửa",
+  "back": "Quay lại",
+  "refresh": "Làm mới",
+  "section": {
+    "zones": "Vùng",
+    "domains": "Tên miền",
+    "links": "Liên kết",
+    "accounts": "Thông tin đăng nhập"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "Mã thông báo API",
+    "accessKeyId": "ID khóa truy cập",
+    "secretAccessKey": "Khóa truy cập bí mật",
+    "sessionToken": "Mã thông báo phiên (tùy chọn)",
+    "apiUser": "Người dùng API",
+    "apiKey": "Khóa API",
+    "userName": "Tên người dùng (nếu khác với người dùng API)",
+    "clientIp": "Địa chỉ IP được phép",
+    "apiSecret": "Bí mật API",
+    "environment": "Môi trường",
+    "environment_production": "Sản xuất",
+    "environment_ote": "Kiểm thử (OTE)",
+    "secretApiKey": "Khóa API bí mật",
+    "token": "Mã thông báo truy cập cá nhân"
+  },
+  "zones": {
+    "empty": "Chưa có vùng nào.",
+    "emptyHint": "Thêm một đăng nhập nhà cung cấp trong mục Đăng nhập để xem các vùng của nó."
+  },
+  "zone": {
+    "records": "Bản ghi",
+    "health": "Trạng thái",
+    "copies": "Bản sao",
+    "files": "Tệp",
+    "filter": "Lọc bản ghi",
+    "empty": "Không có bản ghi nào."
+  },
+  "record": {
+    "section": "Bản ghi",
+    "addTitle": "Thêm bản ghi",
+    "editTitle": "Chỉnh sửa bản ghi",
+    "add": "Thêm bản ghi",
+    "save": "Lưu",
+    "type": "Loại",
+    "name": "Tên",
+    "nameHint": "Dùng @ cho chính {{zone}}",
+    "value": "Giá trị",
+    "priority": "Độ ưu tiên",
+    "ttl": "TTL (giây)",
+    "ttlHint": "Thời gian bộ giải quyết lưu trữ câu trả lời. 300 là 5 phút.",
+    "ttlAuto": "1 nghĩa là tự động.",
+    "proxied": "Được proxy",
+    "proxiedHint": "Chuyển lưu lượng qua Cloudflare.",
+    "proxiedBadge": "Được proxy",
+    "comment": "Ghi chú",
+    "readOnly": "Được quản lý bởi nhà cung cấp",
+    "deleteConfirm": "Xóa bản ghi {{type}} {{name}}?"
+  },
+  "account": {
+    "add": "Thêm đăng nhập",
+    "addTitle": "Thêm đăng nhập DNS",
+    "editTitle": "Chỉnh sửa đăng nhập DNS",
+    "save": "Lưu",
+    "login": "Đăng nhập",
+    "provider": "Nhà cung cấp",
+    "name": "Tên",
+    "namePlaceholder": "Cloudflare chính",
+    "keep": "Để trống để giữ giá trị đã lưu",
+    "registrar": "Nhà cung cấp này cũng là một nhà đăng ký, vì vậy các tên miền của nó sẽ hiển thị trong mục Tên miền.",
+    "options": "Tùy chọn",
+    "autoBackup": "Giữ bản sao của các vùng",
+    "autoBackupHint": "Lưu một bản sao trước mỗi thay đổi và khi một vùng thay đổi bên ngoài Termix.",
+    "checkHealth": "Kiểm tra các vùng mỗi ngày",
+    "checkHealthHint": "Chạy các kiểm tra trạng thái hàng ngày và cảnh báo khi có vấn đề mới.",
+    "test": "Kiểm tra",
+    "testOk": "Hoạt động. Tìm thấy {{zones}} vùng và {{domains}} tên miền.",
+    "deleteConfirm": "Xóa {{name}}? Các bản sao và liên kết của nó sẽ bị xóa theo. Không có gì thay đổi ở nhà cung cấp.",
+    "empty": "Chưa có đăng nhập nào.",
+    "emptyHint": "Thêm một đăng nhập Cloudflare, Route 53, Namecheap hoặc khác để bắt đầu.",
+    "lastSync": "Kiểm tra lần cuối {{date}}",
+    "never": "Chưa kiểm tra",
+    "failed": "Đăng nhập thất bại"
+  },
+  "domains": {
+    "empty": "Chưa có tên miền nào.",
+    "emptyHint": "Các đăng nhập nhà đăng ký sẽ liệt kê tên miền của họ ở đây. Bạn cũng có thể theo dõi bất kỳ tên miền nào theo tên.",
+    "watchPlaceholder": "example.com",
+    "watch": "Theo dõi tên miền",
+    "unwatch": "Dừng theo dõi",
+    "watched": "Đang theo dõi",
+    "noRenew": "Tự động gia hạn tắt",
+    "unlocked": "Chưa khóa",
+    "unknown": "Nhà đăng ký không xác định",
+    "expires": "Hết hạn {{date}}",
+    "expired": "Đã hết hạn",
+    "days": "Còn {{count}} ngày",
+    "refreshFailed": "{{count}} lần tra cứu thất bại"
+  },
+  "link": {
+    "add": "Thêm liên kết",
+    "addTitle": "Thêm liên kết",
+    "editTitle": "Chỉnh sửa liên kết",
+    "save": "Lưu",
+    "record": "Hạ mục",
+    "address": "Địa chỉ",
+    "zone": "Vùng",
+    "pickZone": "Chọn một vùng",
+    "source": "Trỏ đến",
+    "sourceHost": "Một máy chủ",
+    "sourcePublic4": "Địa chỉ IPv4 công của máy chủ này",
+    "sourcePublic6": "Địa chỉ IPv6 công của máy chủ này",
+    "source_host": "Máy chủ",
+    "source_public4": "IPv4 công",
+    "source_public6": "IPv6 công",
+    "host": "Máy chủ",
+    "pickHost": "Chọn một máy chủ",
+    "hostHint": "Hạ mục sẽ theo địa chỉ của máy chủ. Nó sẽ được cập nhật khi máy chủ thay đổi.",
+    "publicHint": "Termix sẽ tra cứu địa chỉ công của nó và giữ cho hạ mục đồng bộ, giống như DNS động.",
+    "enabled": "Giữ cho hạ mục này được cập nhật",
+    "empty": "Chưa có liên kết nào.",
+    "emptyHint": "Một liên kết giữ cho một hạ mục trỏ đến một máy chủ hoặc đến địa chỉ công của máy chủ này.",
+    "off": "Tắt",
+    "hostGone": "Không tìm thấy máy chủ",
+    "lastSync": "Kiểm tra lúc {{date}}",
+    "never": "Chưa kiểm tra",
+    "syncNow": "Cập nhật ngay",
+    "updated": "Hạ mục đã được cập nhật",
+    "unchanged": "Hạ mục đã chính xác",
+    "deleteConfirm": "Xóa liên kết cho {{name}}? Hạ mục sẽ giữ nguyên vị trí hiện tại."
+  },
+  "diff": {
+    "none": "Không có gì thay đổi.",
+    "add": "Thêm",
+    "change": "Thay đổi",
+    "remove": "Xóa"
+  },
+  "copies": {
+    "hint": "Bản sao được lưu trước mỗi thay đổi và một lần mỗi ngày khi vùng bị thay đổi bên ngoài Termix.",
+    "save": "Lưu bản sao",
+    "saved": "Đã lưu bản sao",
+    "manualLabel": "Bản sao thủ công",
+    "empty": "Chưa có bản sao nào.",
+    "count": "{{count}} hạ mục",
+    "compare": "So sánh với hiện tại",
+    "restore": "Khôi phục",
+    "restoreConfirm": "Khôi phục bản sao này? {{count}} thay đổi sẽ được thực hiện tại nhà cung cấp. Một bản sao của các hạ mục hiện tại sẽ được lưu trước.",
+    "restored": "Đã khôi phục. {{count}} thay đổi đã thực hiện.",
+    "source": {
+      "manual": "Thủ công",
+      "auto": "Hàng ngày",
+      "before": "Trước thay đổi"
+    }
+  },
+  "files": {
+    "export": "Tải xuống tệp vùng",
+    "exportHint": "Tải xuống các hạ mục dưới dạng tệp vùng BIND.",
+    "import": "Nhập tệp vùng",
+    "placeholder": "Dán tệp vùng BIND vào đây",
+    "replace": "Xóa các bản ghi không có trong tệp",
+    "replaceHint": "Tắt, việc nhập chỉ thêm và thay đổi bản ghi.",
+    "preview": "Xem trước",
+    "apply": "Áp dụng",
+    "applied": "Đã nhập. Đã thực hiện {{count}} thay đổi.",
+    "skipped": "Đã bỏ qua:"
+  },
+  "health": {
+    "run": "Chạy kiểm tra",
+    "running": "Đang chạy",
+    "propagation": "Kiểm tra bộ phân giải",
+    "propagationTitle": "Bộ phân giải công cộng",
+    "lastRun": "Lần chạy cuối {{date}}",
+    "empty": "Chưa có kiểm tra nào được chạy cho vùng này.",
+    "record": "Bản ghi",
+    "resolver": "Bộ phân giải",
+    "answer": "Kết quả trả về",
+    "noAnswer": "Không có kết quả trả về",
+    "delegation": {
+      "error": "Không thể tra cứu máy chủ tên.",
+      "none": "Vùng này không có máy chủ tên trên internet. Miền có thể không trỏ đến nhà cung cấp này.",
+      "mismatch": "Miền đang sử dụng máy chủ tên khác với nhà cung cấp: {{found}}.",
+      "ok": "Miền trỏ đến {{count}} máy chủ tên."
+    },
+    "soa": {
+      "differ": "Các máy chủ tên không thống nhất về phiên bản vùng ({{count}} phiên bản). Một thay đổi có thể vẫn đang lan truyền.",
+      "same": "{{count}} máy chủ tên thống nhất về phiên bản vùng."
+    },
+    "dnssec": {
+      "unknown": "Không thể kiểm tra DNSSEC.",
+      "off": "DNSSEC chưa được bật.",
+      "valid": "DNSSEC đã bật và hợp lệ.",
+      "broken": "DNSSEC đã được cấu hình tại nhà đăng ký nhưng không xác thực được. Các bộ phân giải kiểm tra nó sẽ thất bại."
+    },
+    "cname": {
+      "conflict": "{{name}} có cả CNAME và các bản ghi khác. Điều này không được phép.",
+      "apex": "Gốc vùng không thể là CNAME.",
+      "dangling": "{{name}} trỏ đến {{target}}, nhưng không thể phân giải được.",
+      "ok": "Mọi đích của CNAME đều phân giải được."
+    },
+    "spf": {
+      "missing": "Miền nhận thư nhưng không có bản ghi SPF.",
+      "multiple": "Có nhiều hơn một bản ghi SPF. Máy chủ thư sẽ từ chối tất cả.",
+      "lookups": "Bản ghi SPF thực hiện {{count}} lần tra cứu. Giới hạn là 10.",
+      "ok": "SPF đã được đặt ({{count}} lần tra cứu)."
+    },
+    "dmarc": {
+      "missing": "Không có bản ghi DMARC.",
+      "none": "DMARC được đặt ở chế độ chỉ giám sát.",
+      "ok": "DMARC đã được đặt."
+    },
+    "dkim": {
+      "none": "Không tìm thấy khóa DKIM nào trong vùng này.",
+      "found": "Tìm thấy {{count}} khóa DKIM."
+    },
+    "mx": {
+      "unresolved": "Máy chủ thư {{host}} không thể phân giải được."
+    },
+    "mail": {
+      "none": "Miền không có bản ghi thư."
+    },
+    "caa": {
+      "ok": "Bản ghi CAA hạn chế ai có thể cấp chứng chỉ.",
+      "none": "Không có bản ghi CAA. Bất kỳ tổ chức cấp chứng chỉ nào cũng có thể cấp chứng chỉ."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Miền, miền sắp hết hạn và bản ghi lỗi.",
+    "domains": "Miền",
+    "expiring": "Sắp hết hạn",
+    "failingLinks": "Liên kết lỗi",
+    "failingAccounts": "Đăng nhập lỗi"
+  }
+}

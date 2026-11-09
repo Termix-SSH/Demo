@@ -60,19 +60,23 @@ export function AdminAuditLogSection({
   const [filterEndDate, setFilterEndDate] = useState("");
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Only the newest request fills the list, so a slow old one never wins.
+  const requestRef = useRef(0);
 
   const fetchLogs = useCallback(
     async (filters: AuditLogFilters, pg: number) => {
+      const request = ++requestRef.current;
       setLoading(true);
       try {
         const result = await getAuditLogs({ ...filters, page: pg, limit: 50 });
+        if (request !== requestRef.current) return;
         setLogs(result.logs);
         setTotal(result.total);
         setTotalPages(result.totalPages);
       } catch {
         // non-fatal
       } finally {
-        setLoading(false);
+        if (request === requestRef.current) setLoading(false);
       }
     },
     [],
@@ -96,14 +100,14 @@ export function AdminAuditLogSection({
     filterEndDate,
   ]);
 
+  // The logs themselves load in the debounced effect below, which also runs
+  // on open. Fetching here too sent two requests per filter change.
   useEffect(() => {
     if (!open) return;
     getAuditLogActions()
       .then((r) => setActions(r.actions))
       .catch(() => {});
-    fetchLogs(buildFilters(), 1);
-    setPage(1);
-  }, [open, buildFilters, fetchLogs]);
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -297,6 +301,8 @@ export function AdminAuditLogSection({
               className="size-6 text-muted-foreground hover:text-foreground"
               onClick={() => fetchLogs(buildFilters(), page)}
               disabled={loading}
+              title={t("common.refresh")}
+              aria-label={t("common.refresh")}
             >
               <RefreshCw
                 className={`size-3 ${loading ? "animate-spin" : ""}`}
@@ -315,10 +321,18 @@ export function AdminAuditLogSection({
             {logs.map((log) => (
               <div
                 key={log.id}
+                role="button"
+                tabIndex={0}
+                aria-expanded={expandedId === log.id}
                 className="border-b border-border last:border-0 cursor-pointer hover:bg-muted/20 transition-colors"
                 onClick={() =>
                   setExpandedId(expandedId === log.id ? null : log.id)
                 }
+                onKeyDown={(e) => {
+                  if (e.key !== "Enter" && e.key !== " ") return;
+                  e.preventDefault();
+                  setExpandedId(expandedId === log.id ? null : log.id);
+                }}
               >
                 <div className="flex items-start gap-2 py-2">
                   <span
@@ -398,6 +412,8 @@ export function AdminAuditLogSection({
               className="size-6"
               disabled={page <= 1 || loading}
               onClick={() => handlePageChange(page - 1)}
+              title={t("common.previous")}
+              aria-label={t("common.previous")}
             >
               <ChevronLeft className="size-3" />
             </Button>
@@ -410,6 +426,8 @@ export function AdminAuditLogSection({
               className="size-6"
               disabled={page >= totalPages || loading}
               onClick={() => handlePageChange(page + 1)}
+              title={t("common.next")}
+              aria-label={t("common.next")}
             >
               <ChevronRight className="size-3" />
             </Button>

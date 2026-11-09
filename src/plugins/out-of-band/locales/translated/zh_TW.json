@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "透過 Redfish、IPMI 和 Intel AMT 管理伺服器 BMC 的電源、感測器、事件記錄與控制台。"
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "載入中"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "查看 BMC",
+      "description": "開啟 Out-of-band 分頁，查看電源、健康狀態、感測器與記錄。"
+    },
+    "power": {
+      "title": "控制電源與開機",
+      "description": "開啟與關閉機器電源、循環電源，並選擇下一個開機裝置。"
+    },
+    "console": {
+      "title": "使用序列控制台",
+      "description": "開啟機器的 Serial over LAN 控制台。"
+    },
+    "media": {
+      "title": "使用虛擬媒體",
+      "description": "在機器上掛載與卸除 ISO 映像檔。"
+    },
+    "manage": {
+      "title": "管理 BMC",
+      "description": "新增、修改與移除 BMC，並清除其事件記錄。"
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "在 Termix 伺服器上執行 ipmitool",
+        "description": "關閉時，IPMI BMC 必須使用中繼主機。Redfish 和 AMT 不受影響。"
+      }
+    }
+  },
+  "description": "將伺服器的管理控制器（BMC）加入，以控制電源開關、監控感測器並讀取事件記錄。登入資訊會加密儲存，且不會再次顯示。",
+  "summary": "{{count}} 個 BMC，{{attention}} 需要關注",
+  "empty": "尚無 BMC。",
+  "add": "新增 BMC",
+  "edit": "編輯",
+  "delete": "刪除",
+  "back": "返回",
+  "saved": "已儲存",
+  "deleteConfirm": "刪除 {{name}}？",
+  "status": {
+    "unknown": "尚未讀取",
+    "up": "可連線",
+    "down": "無法連線"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI over LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "使用者名稱",
+    "password": "密碼"
+  },
+  "power": {
+    "on": "開啟",
+    "off": "關閉",
+    "unknown": "未知",
+    "sent": "已要求 {{name}} 變更電源狀態",
+    "action": {
+      "on": "開啟電源",
+      "off": "關閉電源",
+      "graceful-shutdown": "關機",
+      "cycle": "循環電源",
+      "reset": "重設"
+    },
+    "confirm": {
+      "on": "開啟 {{name}} 的電源？",
+      "off": "切斷 {{name}} 的電源？系統不會正常關機。",
+      "graceful-shutdown": "要求 {{name}} 關機？",
+      "cycle": "循環 {{name}} 的電源？系統不會正常關機。",
+      "reset": "重設 {{name}}？系統將立即重新啟動。"
+    }
+  },
+  "health": {
+    "ok": "正常",
+    "warning": "警告",
+    "critical": "嚴重",
+    "unknown": "未知"
+  },
+  "kind": {
+    "temperature": "溫度",
+    "fan": "風扇",
+    "voltage": "電壓",
+    "power": "電源",
+    "psu": "電源供應器",
+    "other": "其他"
+  },
+  "form": {
+    "addTitle": "新增 BMC",
+    "editTitle": "編輯 BMC",
+    "device": "BMC",
+    "access": "存取",
+    "type": "類型",
+    "name": "名稱",
+    "address": "位址",
+    "port": "連接埠",
+    "host": "Termix 主機",
+    "hostHint": "將 BMC 連結至其所属的主機。它將遵循該主機的共用設定，並顯示在其主機選單中。",
+    "noHost": "無",
+    "poll": "讀取間隔（秒）",
+    "pollHint": "至少 30 秒，若使用中繼主機則為 60 秒。",
+    "scheme": "連線",
+    "relay": "中繼主機",
+    "relayHint": "在此主機上執行 ipmitool，而非 Termix 伺服器。序列控制台需要此設定。",
+    "noRelay": "Termix 伺服器",
+    "cipher": "加密套件",
+    "cipherHint": "僅在 BMC 拒絕登入時更改此設定。通常使用 3，較新的 BMC 使用 17。",
+    "ca": "CA 憑證",
+    "caHint": "貼上 BMC 憑證授權中心的 PEM。若為受信任的憑證則留空。",
+    "caSet": "已儲存 CA。貼上新的 CA 以取代它。",
+    "keepLogin": "留空以保留已儲存的登入資訊",
+    "test": "測試連線",
+    "testOk": "BMC 已回應。電源狀態為 {{power}}。",
+    "testNeedsLogin": "請重新輸入登入資訊以進行測試。",
+    "save": "儲存",
+    "add": "新增"
+  },
+  "view": {
+    "overview": "總覽",
+    "sensors": "感測器",
+    "log": "事件日誌",
+    "boot": "開機",
+    "media": "虛擬媒體",
+    "console": "控制台",
+    "refresh": "立即讀取",
+    "type": "類型",
+    "address": "位址",
+    "power": "電源",
+    "health": "健康狀態",
+    "manufacturer": "製造商",
+    "model": "型號",
+    "serial": "序號",
+    "bios": "BIOS",
+    "bmc": "BMC 韌體",
+    "status": "BMC",
+    "viaRelay": "透過中繼主機連線。",
+    "noSensors": "此 BMC 未回報任何感測器。",
+    "sensor": "感測器",
+    "reading": "讀數",
+    "state": "狀態"
+  },
+  "log": {
+    "time": "時間",
+    "severity": "等級",
+    "message": "事件",
+    "empty": "事件日誌為空。",
+    "clear": "清除日誌",
+    "clearConfirm": "要清除 {{name}} 的事件日誌嗎？此操作無法復原。",
+    "cleared": "日誌已清除",
+    "level": {
+      "info": "資訊",
+      "warning": "警告",
+      "critical": "嚴重"
+    }
+  },
+  "boot": {
+    "hint": "機器將從此裝置開機一次，然後恢復正常的開機順序。請在重新啟動前套用此設定。",
+    "device": "從以下項目開機",
+    "mode": "模式",
+    "uefi": "UEFI",
+    "legacy": "傳統 BIOS",
+    "apply": "設定為下次開機",
+    "done": "{{name}} 下次將從選定的裝置開機",
+    "pxe": "網路 (PXE)",
+    "disk": "硬碟",
+    "cd": "光碟或虛擬媒體",
+    "usb": "USB",
+    "bios": "BIOS 設定",
+    "none": "正常順序"
+  },
+  "media": {
+    "url": "映像檔位址",
+    "empty": "此 BMC 沒有虛擬光碟機槽。",
+    "mounted": "已掛載",
+    "free": "空閒",
+    "mount": "掛載",
+    "eject": "卸除",
+    "mountedDone": "映像檔已掛載",
+    "ejected": "映像檔已卸除"
+  },
+  "console": {
+    "hint": "輸入 ~. 離開主控台。",
+    "connecting": "連線中",
+    "ended": "主控台已關閉。",
+    "failed": "無法開啟主控台。",
+    "needsRelay": "序列主控台需要一台安裝 ipmitool 的中繼主機。請在 BMC 設定中選擇一台。"
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "從以下項目開機",
+    "uefi": "UEFI 模式",
+    "list": {
+      "title": "列出 BMC"
+    },
+    "poll": {
+      "title": "立即讀取 BMC"
+    },
+    "powerState": {
+      "title": "取得電源狀態"
+    },
+    "power-on": {
+      "title": "開機"
+    },
+    "graceful-shutdown": {
+      "title": "關機"
+    },
+    "power-off": {
+      "title": "切斷電源"
+    },
+    "power-cycle": {
+      "title": "電源循環"
+    },
+    "reset": {
+      "title": "重設"
+    },
+    "setBootOnce": {
+      "title": "從裝置開機一次"
+    },
+    "clearLog": {
+      "title": "清除事件日誌"
+    },
+    "health": {
+      "title": "BMC 健康狀態"
+    }
+  },
+  "widget": {
+    "name": "帶外管理",
+    "description": "伺服器 BMC 的電源與健康狀態。",
+    "summary": "{{up}} / {{total}} 線上"
+  }
+}

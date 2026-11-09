@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Gestiona els registres DNS i els dominis a Cloudflare, Route 53, Namecheap i altres proveïdors."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Dominis",
+    "loading": "S'està carregant",
+    "empty": "Encara no hi ha dominis. Obre DNS per afegir un inici de sessió.",
+    "ok": "{{domains}} dominis, cap caduca aviat",
+    "accounts": "{{count}} inits de sessió",
+    "failingLinks": "{{count}} registres vinculats fallits"
+  },
+  "permissions": {
+    "view": {
+      "title": "Veure DNS",
+      "description": "Obre la pestanya DNS i visualitza les zones, els registres, els dominis i les comprovacions d'estat."
+    },
+    "edit": {
+      "title": "Modificar registres DNS",
+      "description": "Afegeix, modifica i elimina registres, importa fitxers de zona i actualitza els dominis."
+    },
+    "manage": {
+      "title": "Gestionar inits de sessió DNS",
+      "description": "Afegeix inits de sessió de proveïdors, vincula registres a amfitrions, supervisa dominis i restaura còpies de zona."
+    }
+  },
+  "operations": {
+    "zone": "Zona",
+    "type": "Tipus",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Nom",
+    "content": "Valor",
+    "contentOptional": "Valor (deixa-ho buit per coincidir amb qualsevol)",
+    "ttl": "TTL en segons",
+    "label": "Etiqueta",
+    "zones": {
+      "title": "Llista les zones DNS"
+    },
+    "records": {
+      "title": "Llista els registres DNS"
+    },
+    "domains": {
+      "title": "Llista els dominis i les dates de caducitat"
+    },
+    "check": {
+      "title": "Comprova una zona"
+    },
+    "upsert": {
+      "title": "Estableix un registre DNS"
+    },
+    "delete": {
+      "title": "Elimina un registre DNS"
+    },
+    "snapshot": {
+      "title": "Desa una còpia d'una zona"
+    },
+    "links": {
+      "title": "Actualitza els registres vinculats"
+    },
+    "expiry": {
+      "title": "Caducitat del domini"
+    }
+  },
+  "description": "Afegeix els teus inits de sessió de DNS i registrars per gestionar registres i supervisar dominis en un sol lloc. Les claus s'emmagatzemen xifrades i mai es tornen a mostrar.",
+  "summary": "{{zones}} zones, {{domains}} dominis",
+  "saved": "Desat",
+  "delete": "Elimina",
+  "edit": "Edita",
+  "back": "Enrere",
+  "refresh": "Actualitza",
+  "section": {
+    "zones": "Zones",
+    "domains": "Dominis",
+    "links": "Enllaços",
+    "accounts": "Inits de sessió"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "Token d'API",
+    "accessKeyId": "ID de clau d'accés",
+    "secretAccessKey": "Clau d'accés secreta",
+    "sessionToken": "Token de sessió (opcional)",
+    "apiUser": "Usuari d'API",
+    "apiKey": "Clau d'API",
+    "userName": "Nom d'usuari (si és diferent de l'usuari de l'API)",
+    "clientIp": "Adreça IP permesa",
+    "apiSecret": "Secret de l'API",
+    "environment": "Entorn",
+    "environment_production": "Producció",
+    "environment_ote": "Proves (OTE)",
+    "secretApiKey": "Clau secreta de l'API",
+    "token": "Token d'accés personal"
+  },
+  "zones": {
+    "empty": "Encara no hi ha zones.",
+    "emptyHint": "Afegeix un inici de sessió del proveïdor a Inicis de sessió per veure'n les zones."
+  },
+  "zone": {
+    "records": "Registres",
+    "health": "Estat de salut",
+    "copies": "Còpies",
+    "files": "Fitxers",
+    "filter": "Filtra registres",
+    "empty": "No hi ha registres."
+  },
+  "record": {
+    "section": "Registre",
+    "addTitle": "Afegeix un registre",
+    "editTitle": "Edita el registre",
+    "add": "Afegeix un registre",
+    "save": "Desa",
+    "type": "Tipus",
+    "name": "Nom",
+    "nameHint": "Utilitza @ per a la mateixa {{zone}}",
+    "value": "Valor",
+    "priority": "Prioritat",
+    "ttl": "TTL (segons)",
+    "ttlHint": "Quant de temps els resoladors conserven la resposta. 300 són 5 minuts.",
+    "ttlAuto": "1 significa automàtic.",
+    "proxied": "Proxificat",
+    "proxiedHint": "Envia el trànsit a través de Cloudflare.",
+    "proxiedBadge": "Proxificat",
+    "comment": "Nota",
+    "readOnly": "Gestionat pel proveïdor",
+    "deleteConfirm": "Vols eliminar el registre {{type}} {{name}}?"
+  },
+  "account": {
+    "add": "Afegeix un inici de sessió",
+    "addTitle": "Afegeix un inici de sessió DNS",
+    "editTitle": "Edita l'inici de sessió DNS",
+    "save": "Desa",
+    "login": "Inici de sessió",
+    "provider": "Proveïdor",
+    "name": "Nom",
+    "namePlaceholder": "Cloudflare principal",
+    "keep": "Deixa-ho buit per mantenir el valor desat",
+    "registrar": "Aquest proveïdor també és un registrador, per la qual cosa els seus dominis apareixen a Dominis.",
+    "options": "Opcions",
+    "autoBackup": "Conserva còpies de les zones",
+    "autoBackupHint": "Desa una còpia abans de cada canvi i quan una zona canvia fora de Termix.",
+    "checkHealth": "Comprova les zones cada dia",
+    "checkHealthHint": "Executa les comprovacions de salut diàriament i alerta sobre nous problemes.",
+    "test": "Prova",
+    "testOk": "Funciona. S'han trobat {{zones}} zones i {{domains}} dominis.",
+    "deleteConfirm": "Vols eliminar {{name}}? Les seves còpies i enllaços s'eliminaran també. No es modifica res al proveïdor.",
+    "empty": "Encara no hi ha inicis de sessió.",
+    "emptyHint": "Afegeix un inici de sessió de Cloudflare, Route 53, Namecheap o un altre per començar.",
+    "lastSync": "Última comprovació: {{date}}",
+    "never": "Encara no s'ha comprovat",
+    "failed": "L'inici de sessió ha fallat"
+  },
+  "domains": {
+    "empty": "Encara no hi ha dominis.",
+    "emptyHint": "Els inicis de sessió dels registradors llisten els seus dominis aquí. També pots supervisar qualsevol domini pel nom.",
+    "watchPlaceholder": "example.com",
+    "watch": "Vigilar domini",
+    "unwatch": "Deixar de vigilar",
+    "watched": "Vigilat",
+    "noRenew": "Renovació automàtica desactivada",
+    "unlocked": "No bloquejat",
+    "unknown": "Registral desconegut",
+    "expires": "Caduca el {{date}}",
+    "expired": "Caducat",
+    "days": "Queden {{count}} dies",
+    "refreshFailed": "{{count}} consultes han fallat"
+  },
+  "link": {
+    "add": "Afegir enllaç",
+    "addTitle": "Afegir enllaç",
+    "editTitle": "Editar enllaç",
+    "save": "Desar",
+    "record": "Registre",
+    "address": "Adreça",
+    "zone": "Zona",
+    "pickZone": "Tria una zona",
+    "source": "Apunta a",
+    "sourceHost": "Un host",
+    "sourcePublic4": "L'adreça IPv4 pública d'aquest servidor",
+    "sourcePublic6": "L'adreça IPv6 pública d'aquest servidor",
+    "source_host": "Host",
+    "source_public4": "IPv4 pública",
+    "source_public6": "IPv6 pública",
+    "host": "Host",
+    "pickHost": "Tria un host",
+    "hostHint": "El registre segueix l'adreça de l'host. S'actualitza quan l'host canvia.",
+    "publicHint": "Termix consulta la seva adreça pública i manté el registre sincronitzat, com un DNS dinàmic.",
+    "enabled": "Mantenir aquest registre actualitzat",
+    "empty": "Encara no hi ha enllaços.",
+    "emptyHint": "Un enllaç manté un registre apuntant a un host o a l'adreça pública d'aquest servidor.",
+    "off": "Desactivat",
+    "hostGone": "Host no trobat",
+    "lastSync": "Comprovat el {{date}}",
+    "never": "Encara no s'ha comprovat",
+    "syncNow": "Actualitzar ara",
+    "updated": "El registre s'ha actualitzat",
+    "unchanged": "El registre ja era correcte",
+    "deleteConfirm": "Vols eliminar l'enllaç de {{name}}? El registre es manté on és."
+  },
+  "diff": {
+    "none": "Res canviaria.",
+    "add": "Afegir",
+    "change": "Canviar",
+    "remove": "Eliminar"
+  },
+  "copies": {
+    "hint": "Les còpies es desen abans de cada canvi i un cop al dia quan una zona ha canviat fora de Termix.",
+    "save": "Desar còpia",
+    "saved": "Còpia desada",
+    "manualLabel": "Còpia manual",
+    "empty": "Encara no hi ha còpies.",
+    "count": "{{count}} registres",
+    "compare": "Comparar amb l'actual",
+    "restore": "Restaurar",
+    "restoreConfirm": "Vols restaurar aquesta còpia? Es faran {{count}} canvis al proveïdor. Primer es desa una còpia dels registres actuals.",
+    "restored": "Restaurat. S'han fet {{count}} canvis.",
+    "source": {
+      "manual": "Manual",
+      "auto": "Diari",
+      "before": "Abans del canvi"
+    }
+  },
+  "files": {
+    "export": "Descarregar fitxer de zona",
+    "exportHint": "Descarrega els registres com a fitxer de zona BIND.",
+    "import": "Importa un fitxer de zona",
+    "placeholder": "Enganxa aquí un fitxer de zona BIND",
+    "replace": "Elimina els registres que no hi són al fitxer",
+    "replaceHint": "Desactivat, la importació només afegeix i modifica registres.",
+    "preview": "Vista prèvia",
+    "apply": "Aplica",
+    "applied": "Importat. S'han fet {{count}} canvis.",
+    "skipped": "Omesos:"
+  },
+  "health": {
+    "run": "Executa les comprovacions",
+    "running": "S'està executant",
+    "propagation": "Comprova els resoludors",
+    "propagationTitle": "Resoludors públics",
+    "lastRun": "Última execució {{date}}",
+    "empty": "Encara no s'han executat comprovacions per a aquesta zona.",
+    "record": "Registre",
+    "resolver": "Resolutor",
+    "answer": "Resposta",
+    "noAnswer": "Sense resposta",
+    "delegation": {
+      "error": "No s'han pogut cercar els servidors de noms.",
+      "none": "La zona no té servidors de noms a Internet. És possible que el domini no apunti a aquest proveïdor.",
+      "mismatch": "El domini utilitza servidors de noms diferents dels del proveïdor: {{found}}.",
+      "ok": "El domini apunta a {{count}} servidors de noms."
+    },
+    "soa": {
+      "differ": "Els servidors de noms no coincideixen en la versió de la zona ({{count}} versions). És possible que un canvi encara s'estigui propagant.",
+      "same": "{{count}} servidors de noms coincideixen en la versió de la zona."
+    },
+    "dnssec": {
+      "unknown": "No s'ha pogut comprovar DNSSEC.",
+      "off": "DNSSEC no està activat.",
+      "valid": "DNSSEC està activat i és vàlid.",
+      "broken": "DNSSEC està configurat al registrador, però no es valida. Els resoludors que el verifiquin fallaran."
+    },
+    "cname": {
+      "conflict": "{{name}} té un CNAME i altres registres. Això no està permès.",
+      "apex": "L'arrel de la zona no pot ser un CNAME.",
+      "dangling": "{{name}} apunta a {{target}}, que no es resol.",
+      "ok": "Tots els objectius CNAME es resolen."
+    },
+    "spf": {
+      "missing": "El domini rep correu electrònic, però no té cap registre SPF.",
+      "multiple": "Hi ha més d'un registre SPF. Els servidors de correu rebutjaran tots.",
+      "lookups": "El registre SPF realitza {{count}} consultes. El límit és 10.",
+      "ok": "SPF està configurat ({{count}} consultes)."
+    },
+    "dmarc": {
+      "missing": "No hi ha cap registre DMARC.",
+      "none": "DMARC està configurat només per a monitoratge.",
+      "ok": "DMARC està configurat."
+    },
+    "dkim": {
+      "none": "No s'han trobat claus DKIM en aquesta zona.",
+      "found": "S'han trobat {{count}} claus DKIM."
+    },
+    "mx": {
+      "unresolved": "El servidor de correu {{host}} no es resol."
+    },
+    "mail": {
+      "none": "El domini no té registres de correu."
+    },
+    "caa": {
+      "ok": "Els registres CAA limiten qui pot emetre certificats.",
+      "none": "No hi ha registres CAA. Qualsevol autoritat de certificació pot emetre certificats."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Dominis, dominis a punt de caducar i registres fallits.",
+    "domains": "Dominis",
+    "expiring": "Caduquen aviat",
+    "failingLinks": "Enllaços fallits",
+    "failingAccounts": "Inicis de sessió fallits"
+  }
+}

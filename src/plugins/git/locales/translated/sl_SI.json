@@ -1,0 +1,304 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Oglejte si, povlecite, zabeležite in pošljite Git repozitorije na svojih gostiteljih ter jih z avtomatskim vlečenjem obdržite posodobljene."
+  },
+  "common": {
+    "save": "Shrani",
+    "cancel": "Prekliči",
+    "back": "Nazaj",
+    "loading": "Nalaganje..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Uporaba Gita",
+      "description": "Oglejte si Git repozitorije na gostiteljih, do katerih lahko dostopate, in jih spreminjajte na gostiteljih, ki jih lahko urejate."
+    },
+    "runCommands": {
+      "title": "Izvajanje ukazov po avtomatskem vlečenju",
+      "description": "Nastavite ukaz, ki se na gostitelju izvede po avtomatskem vlečenju novih zabeležb."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Upravljajte git repozitorije na tem gostitelju prek zavihka Git."
+      },
+      "repoRoots": {
+        "label": "Mapa za iskanje",
+        "description": "Mape, ki se preiščejo za repozitorije ob skeniranju tega gostitelja. Ločite jih z vejicami. Privzeto je to domača mapa.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Uporaba sudo",
+        "description": "Zaženite git kot root z ukazom sudo. Samo za repozitorije, ki jih prijavljeni uporabnik ne more uporabljati."
+      },
+      "readOnly": {
+        "label": "Samo za branje",
+        "description": "Prikažite repozitorije, jih na tem gostitelju pa nikoli ne spreminjajte."
+      },
+      "showPanel": {
+        "label": "Plošča ob terminalu",
+        "description": "Omogoči Git ploščo na zavihkih terminala tega gostitelja."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Odpri ploščo skupaj s terminalom",
+        "description": "Prikaži Git ploščo, ko se terminal odpre na gostitelju, ki jo podpira."
+      },
+      "companionSide": {
+        "label": "Stran plošče",
+        "description": "Kje se plošča nahaja ob terminalu.",
+        "right": "Desno",
+        "left": "Levo",
+        "bottom": "Spodaj"
+      },
+      "companionSize": {
+        "label": "Velikost plošče",
+        "description": "Širina plošče ali njena višina, če je spodaj, v slikovnih točkah."
+      },
+      "companionEdgeButton": {
+        "label": "Gumb na robu",
+        "description": "Prikaži majhen gumb na robu terminala za odpiranje plošče."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Odprite Git iz gostitelja.",
+    "error": "Git ni bilo mogoče naložiti iz tega gostitelja.",
+    "disabled": "Git je za tega gostitelja izklopljen. Vklopite ga v nastavitvah gostitelja.",
+    "sudo": "To zahteva prijavo kot root, sudo brez gesla ali shranjeno sudo geslo.",
+    "refresh": "Osveži",
+    "readOnly": "Samo za branje",
+    "notInstalled": "git ni nameščen",
+    "notInstalledTitle": "git ni nameščen na tem gostitelju",
+    "notInstalledHint": "Namestite git z upraviteljem paketov gostitelja, nato osvežite."
+  },
+  "actions": {
+    "ok": "Končano",
+    "failed": "Neuspešno",
+    "noOutput": "Brez izpisa."
+  },
+  "repos": {
+    "add": "Dodaj repozitorij",
+    "search": "Išči repozitorije",
+    "empty": "Še ni repozitorijev. Dodajte enega, da začnete.",
+    "noMatch": "Ni ujemajočih se repozitorijev.",
+    "viewOnly": "Na ta gostitelj še niso bili dodani nobeni repozitoriji.",
+    "detached": "odklopljeno",
+    "changes_one": "{{count}} sprememba",
+    "changes_two": "{{count}} spremembi",
+    "changes_few": "{{count}} spremembe",
+    "changes_other": "{{count}} sprememb",
+    "conflicts": "Konflikti",
+    "auto": "Samodejno vlečenje",
+    "autoFailing": "Vlečenje ne uspeva",
+    "remove": "Odstrani iz seznama",
+    "removeTitle": "Odstraniti {{name}}?",
+    "removeBody": "Repozitorij je pozabljen le tukaj. Na gostitelju se nič ne izbriše.",
+    "removed": "{{name}} odstranjeno",
+    "error": {
+      "missing": "Manjkajoča mapa",
+      "notrepo": "Ni git repozitorij",
+      "unreadable": "Ni mogoče prebrati"
+    }
+  },
+  "add": {
+    "title": "Dodaj repozitorije",
+    "modeScan": "Skeniraj",
+    "modePath": "Mapa",
+    "modeClone": "Kloniraj",
+    "scanHint": "Išče git repozitorije v {{roots}}. Mape lahko spremenite v nastavitvah gostitelja.",
+    "rescan": "Skeniraj znova",
+    "noneFound": "Ni bilo najdenih novih repozitorijev.",
+    "picked": "Izbrano",
+    "addPicked_one": "Dodaj {{count}} repozitorij",
+    "addPicked_two": "Dodaj {{count}} repozitorija",
+    "addPicked_few": "Dodaj {{count}} repozitorije",
+    "addPicked_other": "Dodaj {{count}} repozitorijev",
+    "addAll": "Dodaj vse",
+    "folder": "Mapa na gostitelju",
+    "folderHint": "Polna pot ali začnite z ~ za domačo mapo. Mapa mora že biti git repozitorij.",
+    "addRepo": "Dodaj repozitorij",
+    "url": "Naslov",
+    "urlHint": "Uporablja ključe in git nastavitve uporabnika, ki je prijavljen na gostitelju.",
+    "dest": "Kloniraj v",
+    "destHint": "Mapa še ne sme obstajati.",
+    "clone": "Kloniraj",
+    "cloned": "Klonirano",
+    "added_one": "Dodan {{count}} repozitorij",
+    "added_two": "Dodana {{count}} repozitorija",
+    "added_few": "Dodani {{count}} repozitoriji",
+    "added_other": "Dodanih {{count}} repozitorijev",
+    "failed": "Repozitorija ni bilo mogoče dodati",
+    "scanFailed": "Gostitelja ni bilo mogoče skenirati"
+  },
+  "repo": {
+    "ahead": "{{count}} naprej",
+    "behind": "{{count}} za",
+    "fetch": "Pridobi",
+    "fetched": "Pridobljeno",
+    "pull": "Povleci",
+    "pulled": "Povlečeno",
+    "push": "Pošlji",
+    "pushed": "Poslano",
+    "viewChanges": "Spremembe",
+    "viewBranches": "Veje",
+    "viewHistory": "Zgodovina",
+    "viewStash": "Začasno shranjeno",
+    "viewAuto": "Samodejno potegni"
+  },
+  "changes": {
+    "loadFailed": "Sprememb ni bilo mogoče prebrati.",
+    "clean": "Ničesar za zabeležitev. Delovno drevo je čisto.",
+    "stagedTitle": "Pripravljeno ({{count}})",
+    "unstagedTitle": "Spremembe ({{count}})",
+    "stage": "Pripravi",
+    "staged": "Pripravljeno",
+    "unstage": "Razveljavi pripravo",
+    "unstaged": "Nepripravljeno",
+    "stageAll": "Pripravi vse",
+    "renamed": "Preimenovano",
+    "discard": "Zavrzi",
+    "discardTitle": "Zavrzete spremembe v {{name}}?",
+    "discardBody": "Spremembe v tej datoteki bodo izbrisane in jih ne bo mogoče obnoviti.",
+    "discarded": "Spremembe zavrnjene",
+    "message": "Sporočilo zaveze",
+    "messagePlaceholder": "Kaj se je spremenilo",
+    "commit": "Zaveži",
+    "commitAll": "Zaveži vse spremembe",
+    "commitStaged_one": "Zaveži {{count}} pripravljeno datoteko",
+    "commitStaged_two": "Zaveži {{count}} pripravljeni datoteki",
+    "commitStaged_few": "Zaveži {{count}} pripravljene datoteke",
+    "commitStaged_other": "Zaveži {{count}} pripravljenih datotek",
+    "committed": "Zavezano",
+    "noDiff": "Ni sprememb za prikaz.",
+    "truncated": "Razlika je dolga, zato je prikazan le začetek."
+  },
+  "branches": {
+    "loadFailed": "Vejev ni bilo mogoče prebrati.",
+    "empty": "Še ni vej.",
+    "current": "Trenutna",
+    "remote": "Oddaljena",
+    "gone": "Zgornji tok je izginil",
+    "newName": "Nova veja",
+    "create": "Ustvari vejo",
+    "created": "Veja {{name}} je ustvarjena",
+    "switch": "Preklopi",
+    "switched": "Preklopljeno na {{name}}",
+    "merge": "Združi v trenutno",
+    "mergeTitle": "Združi {{name}} v {{into}}?",
+    "mergeBody": "Združevanje s konflikti se takoj razveljavi.",
+    "merged": "{{name}} združeno",
+    "delete": "Izbriši vejo",
+    "deleteTitle": "Izbriši {{name}}?",
+    "deleteBody": "Git zavrne, če veja vsebuje zaveze, ki niso združene.",
+    "deleted": "{{name}} izbrisano",
+    "forceTitle": "Prisilno izbriši {{name}}?",
+    "forceBody": "Ta veja vsebuje zaveze, ki niso združene. Če jo izbrišete, bodo izgubljene.",
+    "forceDelete": "Prisilno izbriši"
+  },
+  "history": {
+    "loadFailed": "Zgodovine ni bilo mogoče prebrati.",
+    "empty": "Še ni zabeleženih sprememb.",
+    "branch": "Ta veja",
+    "all": "Vse veje",
+    "more": "Naloži več"
+  },
+  "stash": {
+    "loadFailed": "Shrambe ni bilo mogoče prebrati.",
+    "title": "Shrambe",
+    "empty": "Ni shramb.",
+    "message": "Sporočilo",
+    "messagePlaceholder": "Neobvezno",
+    "untracked": "Vključi nesledene datoteke",
+    "push": "Shrani spremembe",
+    "pushDone": "Spremembe shranjene",
+    "apply": "Uporabi",
+    "applyDone": "Spremembe uporabljene",
+    "pop": "Uveljavi in odstrani",
+    "popDone": "Spremembe uporabljene in odstranjene",
+    "drop": "Odstrani",
+    "dropDone": "Spremembe odstranjene",
+    "dropTitle": "Odstraniti {{name}}?",
+    "dropBody": "Stash je izbrisan in ga ni mogoče obnoviti.",
+    "remotes": "Oddaljeni repozitoriji",
+    "noRemotes": "Ni oddaljenih repozitorijev."
+  },
+  "auto": {
+    "intro": "Povleče spremembe po urniku, le z možnostjo hitrega posodobitve (fast-forward). Nikoli ne združuje in preskoči repozitorij, če ima neshranjene spremembe ali se je razšel z zgornjim repozitorijem.",
+    "noUpstream": "Ta veja še nima zgornjega repozitorija, zato bo samodejno vlečenje preskočilo to vejo.",
+    "enable": "Samodejno vlečenje",
+    "enableHint": "Izvede se kot vi, z vašimi dostopi do tega gostitelja.",
+    "interval": "Vsakih (minut)",
+    "intervalHint": "Koliko časa počakati med vlečenji.",
+    "post": "Ukaz po vlečenju",
+    "postHint": "Izvede se v mapi repozitorija po prihodu novih zavez. Zahteva dovoljenje za izvajanje ukazov.",
+    "saved": "Samodejno vlečenje shranjeno",
+    "saveFailed": "Samodejnega vlečenja ni bilo mogoče shraniti",
+    "runNow": "Izvedi zdaj",
+    "next": "Naslednje vlečenje {{when}}",
+    "runs": "Nedavna izvedba",
+    "noRuns": "Še ni izvedb.",
+    "outcome": {
+      "pulled": "Vlečeno",
+      "uptodate": "Posodobljeno",
+      "skipped": "Preskočeno",
+      "failed": "Neuspešno"
+    }
+  },
+  "card": {
+    "title": "Git repozitoriji",
+    "loading": "Nalaganje...",
+    "refresh": "Osveži",
+    "empty": "Noben gostitelj še nima Git repozitorijev.",
+    "allClean": "Vsi repozitoriji so čisti in posodobljeni.",
+    "summary_one": "{{count}} repozitorij | {{attention}} potrebuje pregled",
+    "summary_two": "{{count}} repozitorija | {{attention}} potrebujeta pregled",
+    "summary_few": "{{count}} repozitoriji | {{attention}} potrebujejo pregled",
+    "summary_other": "{{count}} repozitorijev | {{attention}} potrebujejo pregled"
+  },
+  "companion": {
+    "toggle": "Git plošča",
+    "openTab": "Odpri Git",
+    "here": "Repozitorij te mape",
+    "all": "Vsi repozitoriji"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Seznam Git repozitorijev"
+    },
+    "fetch": {
+      "title": "Pridobi repozitorij"
+    },
+    "pull": {
+      "title": "Povleci repozitorij"
+    },
+    "push": {
+      "title": "Potisni repozitorij"
+    },
+    "checkout": {
+      "title": "Preklopi vejo",
+      "branch": "Veja"
+    },
+    "reset-hard": {
+      "title": "Trdo ponastavi repozitorij",
+      "ref": "Ponastavi na"
+    },
+    "repos": {
+      "title": "Git repozitoriji",
+      "branch": "Veja",
+      "ahead": "Naprej",
+      "behind": "Zadaj",
+      "changed": "Spremembe"
+    },
+    "signals": {
+      "behind": "Repozitoriji zadaj",
+      "dirty": "Repozitoriji s spremembami",
+      "pull-failing": "Samodejno vlečenje ne uspeva"
+    }
+  }
+}

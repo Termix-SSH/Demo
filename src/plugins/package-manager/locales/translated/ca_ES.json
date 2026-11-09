@@ -1,0 +1,223 @@
+{
+  "plugin": {
+    "name": "Paquets",
+    "description": "Visualitza i instal·la actualitzacions als teus amfitrions, cerca, instal·la i elimina paquets, i consulta l'historial de paquets."
+  },
+  "common": {
+    "cancel": "Cancel·la",
+    "back": "Enrere"
+  },
+  "permissions": {
+    "use": {
+      "title": "Utilitzar Paquets",
+      "description": "Visualitza paquets i actualitzacions als amfitrions a què pots accedir, i modifica'ls als amfitrions que pots editar."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Paquets",
+        "description": "Gestiona paquets i actualitzacions en aquest amfitrió des de la pestanya Paquets."
+      },
+      "useSudo": {
+        "label": "Utilitzar sudo",
+        "description": "Utilitza sudo per instal·lar, actualitzar i eliminar paquets. Desactiva-ho si l'usuari d'inici de sessió és root."
+      },
+      "readOnly": {
+        "label": "Només lectura",
+        "description": "Mostra els paquets i les actualitzacions, però mai no els modifiquis en aquest amfitrió."
+      },
+      "showPanel": {
+        "label": "Mostra el panell d'actualitzacions als terminals",
+        "description": "Permet que el panell d'actualitzacions s'obri al costat del terminal SSH d'aquest amfitrió."
+      },
+      "alertUpdates": {
+        "label": "Avís sobre actualitzacions de seguretat",
+        "description": "Envia una alerta quan aquest amfitrió tingui actualitzacions de seguretat o necessiti un reinici. Es comprova quan es llegeixen les actualitzacions, aproximadament cada hora."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Obre el panell d'actualitzacions amb els terminals nous",
+        "description": "Mostra el panell d'actualitzacions al costat de cada terminal SSH que tingui activats els Paquets. Sempre el pots obrir i tancar des del botó del costat dret."
+      },
+      "companionSide": {
+        "label": "Costat del panell d'actualitzacions",
+        "description": "On es troba el panell d'actualitzacions al costat d'un terminal.",
+        "right": "Dreta",
+        "left": "Esquerra",
+        "bottom": "Inferior"
+      },
+      "companionSize": {
+        "label": "Mida del panell d'actualitzacions",
+        "description": "Amplada en píxels, o alçada quan està a la part inferior. També podeu arrossegar-ne el vora."
+      },
+      "companionEdgeButton": {
+        "label": "Mostra el botó del panell",
+        "description": "Mostra un petit botó al vora dret d'un terminal que obre el panell d'actualitzacions."
+      }
+    }
+  },
+  "tab": {
+    "title": "Paquets",
+    "noHost": "Obre Paquets des d'un host.",
+    "error": "No s'han pogut carregar els paquets d'aquest host.",
+    "disabled": "El paquetatge està desactivat per a aquest amfitrió. Activeu-lo a la configuració de l'amfitrió.",
+    "sudo": "Els canvis requereixen un inici de sessió com a arrel, un sudo sense contrasenya o una contrasenya de sudo desada en aquest amfitrió.",
+    "refresh": "Actualitza",
+    "readOnly": "Només lectura",
+    "noManager": "Sense gestor de paquets",
+    "noManagerTitle": "No s'ha trobat cap gestor de paquets compatible",
+    "noManagerHint": "Paquets funciona amb apt, dnf, yum, zypper, pacman i apk.",
+    "indexAge": "L'índex s'ha actualitzat fa {{ago}}",
+    "reboot": "Aquest amfitrió necessita reiniciar-se per finalitzar una actualització.",
+    "viewUpdates": "Actualitzacions",
+    "viewInstalled": "Instal·lats",
+    "viewSearch": "Cerca",
+    "viewHistory": "Historial",
+    "viewRepos": "Repositoris"
+  },
+  "actions": {
+    "working": "{{action}} s'està executant. Això pot trigar uns minuts.",
+    "ok": "Fet",
+    "failed": "El gestor de paquets ha fallat.",
+    "noOutput": "Sense sortida.",
+    "refresh": {
+      "label": "Actualitza l'índex",
+      "confirm": "Vols actualitzar l'índex de paquets?",
+      "desc": "Descarrega les llistes de paquets més recents.",
+      "done": "L'índex de paquets està actualitzat."
+    },
+    "update": {
+      "label": "Actualitza",
+      "confirm_one": "Vols actualitzar {{names}}?",
+      "confirm_many": "Vols actualitzar {{count}} paquets?",
+      "confirm_other": "Vols actualitzar {{count}} paquets?",
+      "desc": "Instal·la la versió més recent de {{names}}.",
+      "done": "S'han actualitzat {{names}}."
+    },
+    "upgrade-all": {
+      "label": "Actualitza-ho tot",
+      "confirm": "Vols actualitzar tots els paquets?",
+      "desc": "Actualitza l'índex de paquets i instal·la totes les actualitzacions. És possible que alguns serveis es reinicin durant el procés.",
+      "done": "Tots els paquets estan actualitzats."
+    },
+    "install": {
+      "label": "Instal·la",
+      "confirm": "Vols instal·lar {{names}}?",
+      "desc": "Instal·la {{names}} i tot el que necessiti.",
+      "done": "S'ha instal·lat {{names}}."
+    },
+    "remove": {
+      "label": "Suprimeix",
+      "confirm": "Vols suprimir {{names}}?",
+      "desc": "Suprimeix {{names}} d'aquest amfitrió. És possible que els programes que en depenguin deixin de funcionar.",
+      "done": "S'ha suprimit {{names}}."
+    },
+    "hold": {
+      "label": "Mantén aquesta versió",
+      "confirm": "Vols mantenir {{names}}?",
+      "desc": "Les actualitzacions ignoraran {{names}} fins que alliberis el botó.",
+      "done": "{{names}} està retenció."
+    },
+    "unhold": {
+      "label": "Alliberar retenció",
+      "confirm": "Vols alliberar {{names}}?",
+      "desc": "{{names}} tornarà a rebre actualitzacions.",
+      "done": "{{names}} tornarà a rebre actualitzacions."
+    }
+  },
+  "updates": {
+    "search": "Filtra actualitzacions",
+    "count_one": "{{count}} actualització",
+    "count_many": "{{count}} actualitzacions",
+    "count_other": "{{count}} actualitzacions",
+    "countSecurity_one": "{{count}} actualització, {{security}} de seguretat",
+    "countSecurity_many": "{{count}} actualitzacions, {{security}} de seguretat",
+    "countSecurity_other": "{{count}} actualitzacions, {{security}} de seguretat",
+    "updatePicked_one": "Actualitza {{count}} paquet",
+    "updatePicked_many": "Actualitza {{count}} paquets",
+    "updatePicked_other": "Actualitza {{count}} paquets",
+    "updateOne": "Actualitza",
+    "pick": "Tria {{name}}",
+    "security": "Seguretat",
+    "empty": "Tot està actualitzat.",
+    "noMatch": "Cap actualització coincideix.",
+    "loadFailed": "No s'han pogut llegir les actualitzacions."
+  },
+  "installed": {
+    "search": "Filtra els paquets instal·lats",
+    "all": "Tots",
+    "held": "Retingut",
+    "heldBadge": "Retingut",
+    "empty": "Cap paquet no coincideix.",
+    "loadFailed": "No s'han pogut llegir els paquets instal·lats."
+  },
+  "search": {
+    "placeholder": "Cerca paquets",
+    "button": "Cerca",
+    "hint": "Cerca als repositoris de l'amfitrió un paquet per instal·lar.",
+    "empty": "No s'ha trobat res.",
+    "installed": "Instal·lat",
+    "failed": "La cerca ha fallat."
+  },
+  "history": {
+    "empty": "No s'ha trobat cap historial de paquets.",
+    "loadFailed": "No s'ha pogut llegir l'historial de paquets."
+  },
+  "repos": {
+    "hint": "Els repositoris d'aquest host. Canvia'ls directament a l'host.",
+    "empty": "No s'han trobat repositoris.",
+    "off": "Desactivat",
+    "loadFailed": "No s'han pogut llegir els repositoris."
+  },
+  "card": {
+    "title": "Actualitzacions de paquets",
+    "loading": "Comprovant els hosts...",
+    "summary_one": "{{count}} actualització a {{hosts}} hosts",
+    "summary_many": "{{count}} actualitzacions a {{hosts}} hosts",
+    "summary_other": "{{count}} actualitzacions a {{hosts}} hosts",
+    "refresh": "Torna a comprovar",
+    "empty": "Activa els Paquets per a un host per veure'n les actualitzacions aquí.",
+    "security_one": "{{count}} de seguretat",
+    "security_many": "{{count}} de seguretat",
+    "security_other": "{{count}} de seguretat",
+    "reboot": "Cal reiniciar",
+    "updates_one": "{{count}} actualització",
+    "updates_many": "{{count}} actualitzacions",
+    "updates_other": "{{count}} actualitzacions",
+    "upToDate": "Actualitzat"
+  },
+  "manager": {
+    "title": "Paquets",
+    "disabled": "Activa els Paquets per a aquest amfitrió a la seva configuració per veure'n les actualitzacions aquí."
+  },
+  "operations": {
+    "list": {
+      "title": "Llista les actualitzacions de paquets"
+    },
+    "updates": {
+      "title": "Actualitzacions pendents",
+      "resource": "Actualitzacions pendents"
+    },
+    "upgradeAll": {
+      "title": "Actualitza tots els paquets"
+    },
+    "install": {
+      "title": "Instal·la paquets"
+    },
+    "remove": {
+      "title": "Remove packages"
+    },
+    "package": "Paquets",
+    "packageHint": "Un o més noms de paquets, separats per espais.",
+    "resource": {
+      "current": "Instal·lat",
+      "available": "Disponible",
+      "repo": "Repositori"
+    }
+  },
+  "nav": {
+    "togglePanel": "Mostra/amaga el panell d'actualitzacions"
+  }
+}

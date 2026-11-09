@@ -1,0 +1,209 @@
+{
+  "plugin": {
+    "name": "软件包",
+    "description": "查看并安装主机上的更新，搜索、安装和卸载软件包，以及查看软件包历史记录。"
+  },
+  "common": {
+    "cancel": "取消",
+    "back": "返回"
+  },
+  "permissions": {
+    "use": {
+      "title": "使用软件包",
+      "description": "查看可访问主机上的软件包和更新，并在可编辑的主机上更改它们。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "软件包",
+        "description": "从“软件包”选项卡管理此主机上的软件包和更新。"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "使用 sudo 安装、更新和卸载软件包。如果登录用户是 root，请关闭此选项。"
+      },
+      "readOnly": {
+        "label": "只读",
+        "description": "显示软件包和更新，但永不在此主机上更改它们。"
+      },
+      "showPanel": {
+        "label": "在终端中显示更新面板",
+        "description": "允许更新面板在此主机的 SSH 终端旁边打开。"
+      },
+      "alertUpdates": {
+        "label": "安全更新提醒",
+        "description": "当此主机有安全更新或需要重启时发送提醒。在读取更新时检查，大约每小时一次。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "新终端打开更新面板",
+        "description": "在启用“软件包”的每个 SSH 终端旁边显示更新面板。您仍然可以从右侧边缘的按钮打开和关闭它。"
+      },
+      "companionSide": {
+        "label": "更新面板位置",
+        "description": "更新面板相对于终端的位置。",
+        "right": "右侧",
+        "left": "左侧",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "更新面板大小",
+        "description": "宽度（像素），或在底部时的高度。您也可以拖动其边缘。"
+      },
+      "companionEdgeButton": {
+        "label": "显示面板按钮",
+        "description": "在终端右侧边缘显示一个小按钮，用于打开更新面板。"
+      }
+    }
+  },
+  "tab": {
+    "title": "软件包",
+    "noHost": "从主机打开软件包。",
+    "error": "无法从此主机加载软件包。",
+    "disabled": "此主机已关闭软件包功能。请在主机设置中开启它。",
+    "sudo": "更改需要 root 登录、免密 sudo 或此主机上保存的 Sudo 密码。",
+    "refresh": "刷新",
+    "readOnly": "只读",
+    "noManager": "无软件包管理器",
+    "noManagerTitle": "未找到受支持的软件包管理器",
+    "noManagerHint": "软件包支持 apt、dnf、yum、zypper、pacman 和 apk。",
+    "indexAge": "索引于 {{ago}} 前刷新",
+    "reboot": "此主机需要重启以完成更新。",
+    "viewUpdates": "更新",
+    "viewInstalled": "已安装",
+    "viewSearch": "搜索",
+    "viewHistory": "历史",
+    "viewRepos": "仓库"
+  },
+  "actions": {
+    "working": "{{action}} 正在运行。这可能需要几分钟。",
+    "ok": "完成",
+    "failed": "软件包管理器失败。",
+    "noOutput": "无输出。",
+    "refresh": {
+      "label": "刷新索引",
+      "confirm": "刷新软件包索引？",
+      "desc": "下载最新的软件包列表。",
+      "done": "软件包索引已是最新。"
+    },
+    "update": {
+      "label": "更新",
+      "confirm_other": "更新 {{count}} 个软件包？",
+      "desc": "安装 {{names}} 的最新版本。",
+      "done": "已更新 {{names}}。"
+    },
+    "upgrade-all": {
+      "label": "全部升级",
+      "confirm": "升级所有软件包？",
+      "desc": "刷新软件包索引并安装所有更新。运行期间服务可能会重启。",
+      "done": "所有软件包已是最新。"
+    },
+    "install": {
+      "label": "安装",
+      "confirm": "安装 {{names}}？",
+      "desc": "安装 {{names}} 及其依赖项。",
+      "done": "已安装 {{names}}。"
+    },
+    "remove": {
+      "label": "移除",
+      "confirm": "移除 {{names}}？",
+      "desc": "从此主机移除 {{names}}。依赖它的程序可能无法正常工作。",
+      "done": "已移除 {{names}}。"
+    },
+    "hold": {
+      "label": "锁定当前版本",
+      "confirm": "锁定 {{names}}？",
+      "desc": "在您解除锁定之前，更新将跳过 {{names}}。",
+      "done": "{{names}} 已锁定。"
+    },
+    "unhold": {
+      "label": "解除锁定",
+      "confirm": "解除 {{names}} 的锁定？",
+      "desc": "{{names}} 将再次接收更新。",
+      "done": "{{names}} 将再次接收更新。"
+    }
+  },
+  "updates": {
+    "search": "筛选更新",
+    "count_other": "{{count}} 个更新",
+    "countSecurity_other": "{{count}} 个更新，其中 {{security}} 个为安全更新",
+    "updatePicked_other": "更新 {{count}} 个软件包",
+    "updateOne": "更新",
+    "pick": "选择 {{name}}",
+    "security": "安全",
+    "empty": "所有软件包均为最新版本。",
+    "noMatch": "没有匹配的更新。",
+    "loadFailed": "无法读取更新列表。"
+  },
+  "installed": {
+    "search": "筛选已安装的软件包",
+    "all": "全部",
+    "held": "已锁定",
+    "heldBadge": "已锁定",
+    "empty": "没有匹配的软件包。",
+    "loadFailed": "无法读取已安装的软件包列表。"
+  },
+  "search": {
+    "placeholder": "搜索软件包",
+    "button": "搜索",
+    "hint": "在主机仓库中搜索要安装的软件包。",
+    "empty": "未找到结果。",
+    "installed": "已安装",
+    "failed": "搜索失败。"
+  },
+  "history": {
+    "empty": "未找到软件包历史记录。",
+    "loadFailed": "无法读取软件包历史记录。"
+  },
+  "repos": {
+    "hint": "此主机安装软件包的仓库。请在主机本身上修改它们。",
+    "empty": "未找到仓库。",
+    "off": "已关闭",
+    "loadFailed": "无法读取仓库列表。"
+  },
+  "card": {
+    "title": "软件包更新",
+    "loading": "正在检查主机...",
+    "summary_other": "{{hosts}} 台主机上有 {{count}} 个更新",
+    "refresh": "再次检查",
+    "empty": "为主机启用“软件包”功能，即可在此处查看其更新。",
+    "security_other": "{{count}} 个安全更新",
+    "reboot": "需要重启",
+    "updates_other": "{{count}} 个更新",
+    "upToDate": "已是最新"
+  },
+  "manager": {
+    "title": "软件包",
+    "disabled": "在此主机的设置中启用“软件包”功能，即可在此处查看其更新。"
+  },
+  "operations": {
+    "list": {
+      "title": "列出软件包更新"
+    },
+    "updates": {
+      "title": "待处理更新",
+      "resource": "待处理更新"
+    },
+    "upgradeAll": {
+      "title": "升级所有软件包"
+    },
+    "install": {
+      "title": "安装软件包"
+    },
+    "remove": {
+      "title": "移除软件包"
+    },
+    "package": "软件包",
+    "packageHint": "一个或多个软件包名称，以空格分隔。",
+    "resource": {
+      "current": "已安装",
+      "available": "可用",
+      "repo": "软件源"
+    }
+  },
+  "nav": {
+    "togglePanel": "切换更新面板"
+  }
+}

@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Redfish, IPMI 및 Intel AMT를 통해 서버 BMC의 전원, 센서, 이벤트 로그 및 콘솔을 관리합니다."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "로딩 중"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "BMC 보기",
+      "description": "Out-of-band 탭을 열어 전원, 상태, 센서 및 로그를 확인합니다."
+    },
+    "power": {
+      "title": "전원 및 부팅 제어",
+      "description": "기기를 켜고 끄고, 전원을 재시작하며, 다음 부팅 장치를 선택합니다."
+    },
+    "console": {
+      "title": "시리얼 콘솔 사용",
+      "description": "기기의 Serial over LAN 콘솔을 엽니다."
+    },
+    "media": {
+      "title": "가상 미디어 사용",
+      "description": "기기에 ISO 이미지를 마운트하고 분리합니다."
+    },
+    "manage": {
+      "title": "BMC 관리",
+      "description": "BMC를 추가, 수정 및 제거하고 이벤트 로그를 지웁니다."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Termix 서버에서 ipmitool 실행",
+        "description": "비활성화 시 IPMI BMC는 릴레이 호스트를 사용해야 합니다. Redfish 및 AMT에는 영향을 주지 않습니다."
+      }
+    }
+  },
+  "description": "서버의 관리 컨트롤러(BMC)를 추가하여 전원을 켜고 끄고, 센서를 모니터링하며 이벤트 로그를 읽습니다. 로그인 정보는 암호화되어 저장되며 다시 표시되지 않습니다.",
+  "summary": "{{count}}개 BMC, {{attention}}개 주의 필요",
+  "empty": "아직 BMC가 없습니다.",
+  "add": "BMC 추가",
+  "edit": "수정",
+  "delete": "삭제",
+  "back": "뒤로",
+  "saved": "저장됨",
+  "deleteConfirm": "{{name}}을(를) 삭제하시겠습니까?",
+  "status": {
+    "unknown": "아직 읽지 않음",
+    "up": "연결 가능",
+    "down": "연결 불가"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "LAN을 통한 IPMI",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "사용자 이름",
+    "password": "비밀번호"
+  },
+  "power": {
+    "on": "켜짐",
+    "off": "꺼짐",
+    "unknown": "알 수 없음",
+    "sent": "{{name}}에 전원 변경 요청",
+    "action": {
+      "on": "전원 켜기",
+      "off": "전원 끄기",
+      "graceful-shutdown": "종료",
+      "cycle": "전원 재시작",
+      "reset": "재설정"
+    },
+    "confirm": {
+      "on": "{{name}}의 전원을 켜시겠습니까?",
+      "off": "{{name}}의 전원을 차단하시겠습니까? 시스템이 정상적으로 종료되지 않습니다.",
+      "graceful-shutdown": "{{name}}에 종료를 요청하시겠습니까?",
+      "cycle": "{{name}}의 전원을 재시작하시겠습니까? 시스템이 정상적으로 종료되지 않습니다.",
+      "reset": "{{name}}을(를) 재설정하시겠습니까? 시스템이 즉시 재시작됩니다."
+    }
+  },
+  "health": {
+    "ok": "정상",
+    "warning": "경고",
+    "critical": "심각",
+    "unknown": "알 수 없음"
+  },
+  "kind": {
+    "temperature": "온도",
+    "fan": "팬",
+    "voltage": "전압",
+    "power": "전원",
+    "psu": "전원 공급 장치",
+    "other": "기타"
+  },
+  "form": {
+    "addTitle": "BMC 추가",
+    "editTitle": "BMC 편집",
+    "device": "BMC",
+    "access": "액세스",
+    "type": "유형",
+    "name": "이름",
+    "address": "주소",
+    "port": "포트",
+    "host": "Termix 호스트",
+    "hostHint": "BMC를 속한 호스트에 연결합니다. 그러면 해당 호스트의 공유 설정을 따르고 호스트 메뉴에 표시됩니다.",
+    "noHost": "없음",
+    "poll": "읽기 주기 (초)",
+    "pollHint": "최소 30초 이상이어야 합니다. 릴레이 호스트를 사용하는 경우 60초 이상이어야 합니다.",
+    "scheme": "연결",
+    "relay": "릴레이 호스트",
+    "relayHint": "Termix 서버 대신 이 호스트에서 ipmitool을 실행합니다. 시리얼 콘솔에 필요합니다.",
+    "noRelay": "Termix 서버",
+    "cipher": "암호 스위트",
+    "cipherHint": "BMC에서 로그인을 거부하는 경우에만 변경하세요. 일반적으로 3을 사용하며, 최신 BMC는 17을 사용합니다.",
+    "ca": "CA 인증서",
+    "caHint": "BMC의 인증 기관 CA PEM을 붙여넣으세요. 신뢰할 수 있는 인증서인 경우 비워두세요.",
+    "caSet": "CA가 저장되어 있습니다. 새 CA를 붙여넣어 교체하세요.",
+    "keepLogin": "저장된 로그인을 유지하려면 비워 두세요.",
+    "test": "연결 테스트",
+    "testOk": "BMC가 응답했습니다. 전원 상태는 {{power}}입니다.",
+    "testNeedsLogin": "테스트하려면 로그인을 다시 입력하세요.",
+    "save": "저장",
+    "add": "추가"
+  },
+  "view": {
+    "overview": "개요",
+    "sensors": "센서",
+    "log": "이벤트 로그",
+    "boot": "부팅",
+    "media": "가상 미디어",
+    "console": "콘솔",
+    "refresh": "지금 읽기",
+    "type": "유형",
+    "address": "주소",
+    "power": "전원",
+    "health": "상태",
+    "manufacturer": "제조사",
+    "model": "모델",
+    "serial": "시리얼 번호",
+    "bios": "BIOS",
+    "bmc": "BMC 펌웨어",
+    "status": "BMC",
+    "viaRelay": "릴레이 호스트를 통해 연결되었습니다.",
+    "noSensors": "이 BMC는 센서를 보고하지 않습니다.",
+    "sensor": "센서",
+    "reading": "측정값",
+    "state": "상태"
+  },
+  "log": {
+    "time": "시간",
+    "severity": "레벨",
+    "message": "이벤트",
+    "empty": "이벤트 로그가 비어 있습니다.",
+    "clear": "로그 지우기",
+    "clearConfirm": "{{name}}의 이벤트 로그를 지우시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+    "cleared": "로그가 지워졌습니다",
+    "level": {
+      "info": "정보",
+      "warning": "경고",
+      "critical": "심각"
+    }
+  },
+  "boot": {
+    "hint": "이 장치를 한 번 부팅한 후 정상 부팅 순서로 돌아갑니다. 재시작 전에 적용하세요.",
+    "device": "부트 장치",
+    "mode": "모드",
+    "uefi": "UEFI",
+    "legacy": "레거시 BIOS",
+    "apply": "다음 부팅 시 적용",
+    "done": "{{name}}이(가) 다음 부팅 시 선택한 장치에서 부팅합니다",
+    "pxe": "네트워크 (PXE)",
+    "disk": "하드 디스크",
+    "cd": "CD 또는 가상 미디어",
+    "usb": "USB",
+    "bios": "BIOS 설정",
+    "none": "기본 순서"
+  },
+  "media": {
+    "url": "이미지 주소",
+    "empty": "이 BMC에는 가상 CD 슬롯이 없습니다.",
+    "mounted": "마운트됨",
+    "free": "비어 있음",
+    "mount": "마운트",
+    "eject": "꺼내기",
+    "mountedDone": "이미지 마운트 완료",
+    "ejected": "이미지 꺼내기 완료"
+  },
+  "console": {
+    "hint": "콘솔을 종료하려면 ~.를 입력하세요.",
+    "connecting": "연결 중",
+    "ended": "콘솔이 닫혔습니다.",
+    "failed": "콘솔을 열 수 없습니다.",
+    "needsRelay": "시리얼 콘솔에는 ipmitool이 설치된 릴레이 호스트가 필요합니다. BMC 설정에서 하나 선택하세요."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "부트 장치",
+    "uefi": "UEFI 모드",
+    "list": {
+      "title": "BMC 목록"
+    },
+    "poll": {
+      "title": "BMC 상태 즉시 읽기"
+    },
+    "powerState": {
+      "title": "전원 상태 확인"
+    },
+    "power-on": {
+      "title": "전원 켜기"
+    },
+    "graceful-shutdown": {
+      "title": "시스템 종료"
+    },
+    "power-off": {
+      "title": "전원 끄기"
+    },
+    "power-cycle": {
+      "title": "전원 순환"
+    },
+    "reset": {
+      "title": "재시작"
+    },
+    "setBootOnce": {
+      "title": "장치에서 한 번만 부팅"
+    },
+    "clearLog": {
+      "title": "이벤트 로그 지우기"
+    },
+    "health": {
+      "title": "BMC 상태"
+    }
+  },
+  "widget": {
+    "name": "아웃 오브 밴드",
+    "description": "서버 BMC의 전원 및 상태 정보.",
+    "summary": "{{total}}개 중 {{up}}개 가동 중"
+  }
+}

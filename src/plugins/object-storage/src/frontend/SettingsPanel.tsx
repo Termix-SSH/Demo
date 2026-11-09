@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { Settings2 } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
@@ -7,6 +13,7 @@ import {
   FieldPair,
   LoadingState,
   NumberField,
+  PanelShell,
   Repeater,
   SectionCard,
   TileColumn,
@@ -35,28 +42,17 @@ const split = (value: string) =>
 function Block({
   title,
   supported,
-  saving,
-  onSave,
   children,
 }: {
   title: string;
   supported: boolean;
-  saving: boolean;
-  onSave: () => void;
   children: ReactNode;
 }) {
   const { t } = useTranslation();
   return (
     <SectionCard title={title} icon={<Settings2 />}>
       {supported ? (
-        <>
-          {children}
-          <div>
-            <Button size="sm" disabled={saving} onClick={onSave}>
-              {t("settings.save")}
-            </Button>
-          </div>
-        </>
+        children
       ) : (
         <p className="text-xs text-muted-foreground">
           {t("settings.unsupported")}
@@ -65,6 +61,36 @@ function Block({
     </SectionCard>
   );
 }
+
+/** The part of the settings each save call sends. */
+function bodyOf(kind: SettingKind, data: BucketSettings): unknown {
+  switch (kind) {
+    case "versioning":
+      return { status: data.versioning.status };
+    case "lifecycle":
+      return { rules: data.lifecycle.rules };
+    case "cors":
+      return { rules: data.cors.rules };
+    case "policy":
+      return { text: data.policy.text };
+    case "tags":
+      return { tags: data.tags.tags };
+    case "encryption":
+      return { enabled: data.encryption.enabled };
+    default:
+      return { block: data.publicAccess.block };
+  }
+}
+
+const KINDS: SettingKind[] = [
+  "versioning",
+  "lifecycle",
+  "cors",
+  "policy",
+  "tags",
+  "encryption",
+  "publicAccess",
+];
 
 export function SettingsPanel({
   api,
@@ -81,13 +107,16 @@ export function SettingsPanel({
 }) {
   const { t } = useTranslation();
   const [data, setData] = useState<BucketSettings | null>(null);
-  const [saving, setSaving] = useState<string | null>(null);
+  const [loaded, setLoaded] = useState<BucketSettings | null>(null);
+  const [saving, setSaving] = useState(false);
   const [limitGb, setLimitGb] = useState(0);
   const [limitObjects, setLimitObjects] = useState(0);
 
   const load = useCallback(async () => {
     try {
-      setData(await api.settings(accountId, bucket));
+      const fresh = await api.settings(accountId, bucket);
+      setData(fresh);
+      setLoaded(structuredClone(fresh));
     } catch (error) {
       toast.error(errorMessage(error));
     }
@@ -102,32 +131,47 @@ export function SettingsPanel({
     setLimitObjects(row?.maxObjects ?? 0);
   }, [row?.maxBytes, row?.maxObjects]);
 
-  async function save(kind: SettingKind, body: unknown) {
-    setSaving(kind);
+  const savedGb = row?.maxBytes
+    ? Math.round((row.maxBytes / GB) * 100) / 100
+    : 0;
+  const savedObjects = row?.maxObjects ?? 0;
+  const limitChanged = limitGb !== savedGb || limitObjects !== savedObjects;
+
+  const changed = useMemo(
+    () =>
+      data && loaded
+        ? KINDS.filter(
+            (kind) =>
+              data[kind].supported &&
+              JSON.stringify(bodyOf(kind, data)) !==
+                JSON.stringify(bodyOf(kind, loaded)),
+          )
+        : [],
+    [data, loaded],
+  );
+  const dirty = changed.length > 0 || limitChanged;
+
+  async function saveAll() {
+    if (!data) return;
+    setSaving(true);
     try {
-      await api.saveSetting(accountId, bucket, kind, body);
+      for (const kind of changed) {
+        await api.saveSetting(accountId, bucket, kind, bodyOf(kind, data));
+      }
+      if (limitChanged) {
+        await api.setLimit(accountId, bucket, {
+          maxBytes: limitGb > 0 ? Math.round(limitGb * GB) : null,
+          maxObjects: limitObjects > 0 ? limitObjects : null,
+        });
+      }
       toast.success(t("saved"));
       await load();
+      if (limitChanged) onLimit();
     } catch (error) {
       toast.error(errorMessage(error));
+      await load();
     } finally {
-      setSaving(null);
-    }
-  }
-
-  async function saveLimit() {
-    setSaving("limit");
-    try {
-      await api.setLimit(accountId, bucket, {
-        maxBytes: limitGb > 0 ? Math.round(limitGb * GB) : null,
-        maxObjects: limitObjects > 0 ? limitObjects : null,
-      });
-      toast.success(t("saved"));
-      onLimit();
-    } catch (error) {
-      toast.error(errorMessage(error));
-    } finally {
-      setSaving(null);
+      setSaving(false);
     }
   }
 
@@ -136,7 +180,18 @@ export function SettingsPanel({
     setData((current) => (current ? { ...current, ...patch } : current));
 
   return (
-    <div className="min-h-0 flex-1 overflow-auto">
+    <PanelShell
+      chrome={false}
+      footer={
+        <Button
+          size="sm"
+          disabled={saving || !dirty}
+          onClick={() => void saveAll()}
+        >
+          {t("settings.save")}
+        </Button>
+      }
+    >
       <TileColumn>
         <SectionCard title={t("settings.limits")} icon={<Settings2 />}>
           <div className="flex flex-col gap-3 py-2">
@@ -155,25 +210,12 @@ export function SettingsPanel({
                 onChange={setLimitObjects}
               />
             </FieldPair>
-            <div>
-              <Button
-                size="sm"
-                disabled={saving === "limit"}
-                onClick={() => void saveLimit()}
-              >
-                {t("settings.save")}
-              </Button>
-            </div>
           </div>
         </SectionCard>
 
         <Block
           title={t("settings.versioning")}
           supported={data.versioning.supported}
-          saving={saving === "versioning"}
-          onSave={() =>
-            void save("versioning", { status: data.versioning.status })
-          }
         >
           <SwitchRow
             label={t("settings.versioningOn")}
@@ -193,8 +235,6 @@ export function SettingsPanel({
         <Block
           title={t("settings.lifecycle")}
           supported={data.lifecycle.supported}
-          saving={saving === "lifecycle"}
-          onSave={() => void save("lifecycle", { rules: data.lifecycle.rules })}
         >
           <Repeater<LifecycleRule>
             label={t("settings.rules")}
@@ -261,12 +301,7 @@ export function SettingsPanel({
           />
         </Block>
 
-        <Block
-          title={t("settings.cors")}
-          supported={data.cors.supported}
-          saving={saving === "cors"}
-          onSave={() => void save("cors", { rules: data.cors.rules })}
-        >
+        <Block title={t("settings.cors")} supported={data.cors.supported}>
           <Repeater<CorsRule>
             label={t("settings.rules")}
             items={data.cors.rules}
@@ -305,12 +340,7 @@ export function SettingsPanel({
           />
         </Block>
 
-        <Block
-          title={t("settings.policy")}
-          supported={data.policy.supported}
-          saving={saving === "policy"}
-          onSave={() => void save("policy", { text: data.policy.text })}
-        >
+        <Block title={t("settings.policy")} supported={data.policy.supported}>
           <TextAreaField
             label={t("settings.policyJson")}
             hint={t("settings.policyHint")}
@@ -321,12 +351,7 @@ export function SettingsPanel({
           />
         </Block>
 
-        <Block
-          title={t("settings.tags")}
-          supported={data.tags.supported}
-          saving={saving === "tags"}
-          onSave={() => void save("tags", { tags: data.tags.tags })}
-        >
+        <Block title={t("settings.tags")} supported={data.tags.supported}>
           <Repeater<{ key: string; value: string }>
             label={t("settings.tags")}
             items={data.tags.tags}
@@ -354,10 +379,6 @@ export function SettingsPanel({
         <Block
           title={t("settings.encryption")}
           supported={data.encryption.supported}
-          saving={saving === "encryption"}
-          onSave={() =>
-            void save("encryption", { enabled: data.encryption.enabled })
-          }
         >
           <SwitchRow
             label={t("settings.encryptionOn")}
@@ -372,10 +393,6 @@ export function SettingsPanel({
         <Block
           title={t("settings.publicAccess")}
           supported={data.publicAccess.supported}
-          saving={saving === "publicAccess"}
-          onSave={() =>
-            void save("publicAccess", { block: data.publicAccess.block })
-          }
         >
           {(
             [
@@ -401,6 +418,6 @@ export function SettingsPanel({
           ))}
         </Block>
       </TileColumn>
-    </div>
+    </PanelShell>
   );
 }

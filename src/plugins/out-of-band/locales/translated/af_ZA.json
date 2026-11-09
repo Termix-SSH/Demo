@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Krag, sensore, gebeurtenislogboeke en konsoles vir bediener-BMC's oor Redfish, IPMI en Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Laai"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "Sien BMC's",
+      "description": "Open die Out-of-band-oortjie en sien krag, gesondheid, sensore en logboeke."
+    },
+    "power": {
+      "title": "Beheer krag en opstart",
+      "description": "Skakel masjiene aan en af, herlaai die krag en kies die volgende opstartapparaat."
+    },
+    "console": {
+      "title": "Gebruik die reekskonsole",
+      "description": "Open die reeks-oor-LAN-konsole van 'n masjien."
+    },
+    "media": {
+      "title": "Gebruik virtuele media",
+      "description": "Monteer en gooi ISO-beelde uit op 'n masjien."
+    },
+    "manage": {
+      "title": "Bestuur BMC's",
+      "description": "Voeg BMC's by, verander en verwyder hulle, en vee hul gebeurtenislogboeke uit."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Voer ipmitool op die Termix-bediener uit",
+        "description": "Wanneer af, moet IPMI-BMC's 'n relaisbediener gebruik. Redfish en AMT word nie beïnvloed nie."
+      }
+    }
+  },
+  "description": "Voeg die bestuurskontroleurs (BMC's) van jou bedieners by om hulle aan en af te skakel, hul sensore te monitor en hul gebeurtenislogboeke te lees. Aanmeldings word versleutel gestoor en nooit weer vertoon nie.",
+  "summary": "{{count}} BMC's, {{attention}} benodig aandag",
+  "empty": "Nog geen BMC's nie.",
+  "add": "Voeg BMC by",
+  "edit": "Wysig",
+  "delete": "Verwyder",
+  "back": "Terug",
+  "saved": "Stoor",
+  "deleteConfirm": "Verwyder {{name}}?",
+  "status": {
+    "unknown": "Nog nie gelees nie",
+    "up": "Bereikbaar",
+    "down": "Onbereikbaar"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI oor LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Gebruikersnaam",
+    "password": "Wagwoord"
+  },
+  "power": {
+    "on": "Aan",
+    "off": "Af",
+    "unknown": "Onbekend",
+    "sent": "Het {{name}} gevra om krag te verander",
+    "action": {
+      "on": "Skakel aan",
+      "off": "Skakel af",
+      "graceful-shutdown": "Sluit af",
+      "cycle": "Kragherlaai",
+      "reset": "Herstel"
+    },
+    "confirm": {
+      "on": "Skakel {{name}} aan?",
+      "off": "Skakel die krag van {{name}} af? Die stelsel sluit nie netjies af nie.",
+      "graceful-shutdown": "Vra {{name}} om af te sluit?",
+      "cycle": "Herlaai die krag van {{name}}? Die stelsel sluit nie netjies af nie.",
+      "reset": "Herstel {{name}}? Die stelsel herbegin onmiddellik."
+    }
+  },
+  "health": {
+    "ok": "Gesond",
+    "warning": "Waarskuwing",
+    "critical": "Krities",
+    "unknown": "Onbekend"
+  },
+  "kind": {
+    "temperature": "Temperatuur",
+    "fan": "Waaiers",
+    "voltage": "Spanning",
+    "power": "Krag",
+    "psu": "Kragvoorsiening",
+    "other": "Ander"
+  },
+  "form": {
+    "addTitle": "Voeg BMC by",
+    "editTitle": "Redigeer BMC",
+    "device": "BMC",
+    "access": "Toegang",
+    "type": "Tipe",
+    "name": "Naam",
+    "address": "Adres",
+    "port": "Poort",
+    "host": "Termix-gasheer",
+    "hostHint": "Koppel die BMC aan die gasheer waartoe dit behoort. Dit volg dan die gasheer se deelinstellings en verskyn in die gasheer se kieslys.",
+    "noHost": "Geen",
+    "poll": "Lees elke (sekondes)",
+    "pollHint": "Ten minste 30 sekondes, of 60 wanneer 'n relaisgasheer gebruik word.",
+    "scheme": "Verbinding",
+    "relay": "Relaisgasheer",
+    "relayHint": "Voer ipmitool op hierdie gasheer uit in plaas van die Termix-bedienaar. Noodsaaklik vir die reeks-konsol.",
+    "noRelay": "Termix-bedienaar",
+    "cipher": "Chifferstel",
+    "cipherHint": "Verander slegs dit as die BMC die aanmelding weier. 3 is die gewone een, 17 vir nuwer BMC's.",
+    "ca": "CA-sertifikaat",
+    "caHint": "Plak die PEM van die BMC se sertifikaatowerheid. Laat leeg vir 'n vertroude sertifikaat.",
+    "caSet": "'n CA is gestoor. Plak 'n nuwe een om dit te vervang.",
+    "keepLogin": "Laat leeg om die gestoorde aanmelding te behou",
+    "test": "Toets verbinding",
+    "testOk": "Die BMC het geantwoord. Krag is {{power}}.",
+    "testNeedsLogin": "Voer die aanmelding weer in om te toets.",
+    "save": "Stoor",
+    "add": "Voeg by"
+  },
+  "view": {
+    "overview": "Oorsig",
+    "sensors": "Sensors",
+    "log": "Gebeurtenislogboek",
+    "boot": "Opstart",
+    "media": "Virtuele media",
+    "console": "Konsol",
+    "refresh": "Lees nou",
+    "type": "Tipe",
+    "address": "Adres",
+    "power": "Krag",
+    "health": "Gesondheid",
+    "manufacturer": "Vervaardiger",
+    "model": "Model",
+    "serial": "Serienommer",
+    "bios": "BIOS",
+    "bmc": "BMC-vastesagware",
+    "status": "BMC",
+    "viaRelay": "Bereik deur 'n relaisgasheer.",
+    "noSensors": "Hierdie BMC rapporteer geen sensors nie.",
+    "sensor": "Sensor",
+    "reading": "Lesing",
+    "state": "Toestand"
+  },
+  "log": {
+    "time": "Tyd",
+    "severity": "Vlak",
+    "message": "Gebeurtenis",
+    "empty": "Die gebeurtenislogboek is leeg.",
+    "clear": "Vee logboek uit",
+    "clearConfirm": "Vee die gebeurtenislogboek van {{name}} uit? Dit kan nie ongedaan gemaak word nie.",
+    "cleared": "Logboek uitgevee",
+    "level": {
+      "info": "Inligting",
+      "warning": "Waarskuwing",
+      "critical": "Krities"
+    }
+  },
+  "boot": {
+    "hint": "Die masjien start een keer vanaf hierdie toestel op, en gaan dan terug na sy normale volgorde. Pas dit voor 'n herstart toe.",
+    "device": "Laai vanaf",
+    "mode": "Modus",
+    "uefi": "UEFI",
+    "legacy": "Legacy BIOS",
+    "apply": "Stel vir volgende laai",
+    "done": "{{name}} laai die volgende keer vanaf die gekose toestel",
+    "pxe": "Netwerk (PXE)",
+    "disk": "Hardeskyf",
+    "cd": "CD of virtuele media",
+    "usb": "USB",
+    "bios": "BIOS-instellings",
+    "none": "Normale volgorde"
+  },
+  "media": {
+    "url": "Beeldadres",
+    "empty": "Hierdie BMC het geen virtuele CD-sleuf nie.",
+    "mounted": "Gemonteer",
+    "free": "Leeg",
+    "mount": "Monteer",
+    "eject": "Eject",
+    "mountedDone": "Beeld gemonteer",
+    "ejected": "Beeld uitgewerp"
+  },
+  "console": {
+    "hint": "Tik ~. om die konsole te verlaat.",
+    "connecting": "Koppel tans",
+    "ended": "Die konsole is gesluit.",
+    "failed": "Kon nie die konsole oopmaak nie.",
+    "needsRelay": "Die reekskonsole benodig 'n relay-host met ipmitool. Kies een in die BMC-instellings."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Laai vanaf",
+    "uefi": "UEFI-modus",
+    "list": {
+      "title": "Lys BMC's"
+    },
+    "poll": {
+      "title": "Lees 'n BMC nou"
+    },
+    "powerState": {
+      "title": "Kry kragtoestand"
+    },
+    "power-on": {
+      "title": "Skakel aan"
+    },
+    "graceful-shutdown": {
+      "title": "Skakel af"
+    },
+    "power-off": {
+      "title": "Skakel krag af"
+    },
+    "power-cycle": {
+      "title": "Krag siklus"
+    },
+    "reset": {
+      "title": "Herstel"
+    },
+    "setBootOnce": {
+      "title": "Laai een keer vanaf 'n toestel"
+    },
+    "clearLog": {
+      "title": "Vee gebeurtenislogboek uit"
+    },
+    "health": {
+      "title": "BMC-gesondheid"
+    }
+  },
+  "widget": {
+    "name": "Out-of-band",
+    "description": "Krag en gesondheid van jou bediener-BMC's.",
+    "summary": "{{up}} van {{total}} aan"
+  }
+}

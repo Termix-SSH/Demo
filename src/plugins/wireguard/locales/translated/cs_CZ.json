@@ -1,0 +1,241 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Nainstalujte WireGuard na své hostitele a spravujte rozhraní, klienty a konfigurace z jednoho panelu."
+  },
+  "common": {
+    "save": "Uložit",
+    "cancel": "Zrušit",
+    "back": "Zpět",
+    "delete": "Smazat",
+    "loading": "Načítání..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Používat WireGuard",
+      "description": "Spravovat rozhraní a klienty WireGuard na hostitelích, které můžete upravovat."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Otevřete WireGuard z hostitele.",
+    "error": "Nelze načíst WireGuard z tohoto hostitele.",
+    "sudo": "Tento hostitel vyžaduje přihlášení jako root nebo sudo bez hesla pro správu WireGuardu.",
+    "installed": "Nainstalováno",
+    "notInstalled": "Není nainstalováno",
+    "refresh": "Obnovit",
+    "viewInterfaces": "Rozhraní",
+    "viewLogs": "Protokoly"
+  },
+  "install": {
+    "title": "Nainstalovat WireGuard",
+    "desc": "Tím se nainstalují nástroje WireGuard a iptables pomocí správce balíčků hostitele.",
+    "confirm": "Nainstalovat",
+    "done": "WireGuard je nainstalován.",
+    "failed": "Nelze nainstalovat WireGuard.",
+    "empty": "WireGuard není na tomto hostiteli nainstalován",
+    "noManager": "Nebyl nalezen žádný podporovaný správce balíčků. Nainstalujte WireGuard ručně.",
+    "hint": "Nainstalujte jej na {{os}} pro spuštění VPN z tohoto hostitele.",
+    "thisHost": "tento hostitel",
+    "button": "Nainstalovat WireGuard",
+    "working": "Instalace..."
+  },
+  "interfaces": {
+    "add": "Přidat rozhraní",
+    "empty": "Zatím žádná rozhraní. Přidejte jedno pro spuštění VPN.",
+    "loadFailed": "Nelze načíst rozhraní.",
+    "up": "Aktivní",
+    "down": "Neaktivní",
+    "clients": "{{count}} klientů",
+    "nat": "NAT",
+    "boot": "Spouští se při startu"
+  },
+  "create": {
+    "title": "Přidat rozhraní",
+    "name": "Název",
+    "address": "Adresa",
+    "addressHint": "Adresa serveru a podsíť. Klienti získají další volné adresy.",
+    "port": "UDP port",
+    "nat": "Sdílet internet hostitele (NAT)",
+    "natDesc": "Klienti mohou přes tohoto hostitele dosáhnout internetu i sítě hostitele.",
+    "natMissing": "NAT vyžaduje iptables, které nejsou na tomto hostiteli nainstalovány.",
+    "forwarding": "Zapnout přeposílání IP",
+    "forwardingDesc": "Umožní hostiteli přeposílat provoz mezi klienty a sítí. Nastavení se uloží pro restarty.",
+    "firewall": "Otevřít port ve firewallu",
+    "firewallDesc": "Přidá UDP port do ufw nebo firewalld, pokud je spuštěn.",
+    "start": "Spustit nyní a při startu",
+    "startDesc": "Aktivuje rozhraní a ponechá jej aktivní i po restartu.",
+    "save": "Vytvořit",
+    "done": "Rozhraní je připraveno.",
+    "failed": "Nelze vytvořit rozhraní."
+  },
+  "detail": {
+    "clients": "Klienti",
+    "settings": "Nastavení",
+    "config": "Konfigurace",
+    "service": "Služba",
+    "gone": "Toto rozhraní na hostiteli již neexistuje."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Zobrazit kartu WireGuard pro tohoto hostitele v jeho nabídce."
+      },
+      "showPanel": {
+        "label": "Zobrazit panel WireGuard v terminálech",
+        "description": "Povolit otevření panelu WireGuard vedle SSH terminálu tohoto hostitele."
+      },
+      "alertDown": {
+        "label": "Upozornit, když je rozhraní vypnuté",
+        "description": "Poslat upozornění, když není aktivní rozhraní, které by mělo běžet od spuštění. Kontrola se provádí při čtení stavu WireGuard."
+      }
+    },
+    "publicKey": "Veřejný klíč",
+    "port": "UDP port",
+    "endpoint": "Koncový bod serveru",
+    "endpointHint": "Veřejná adresa, ke které se připojují klienti, např. vpn.priklad.cz:51820.",
+    "dns": "DNS pro klienty",
+    "dnsHint": "Volitelné. Oddělte servery čárkami.",
+    "allowed": "Provoz přes VPN",
+    "allowedHint": "Rozsahy, které klienti posílají přes VPN. 0.0.0.0/0, ::/0 posílá vše.",
+    "keepalive": "Keepalive (sekundy)",
+    "keepaliveHint": "Udržuje klienty za NAT dostupné. Použijte 0 pro vypnutí.",
+    "saved": "Nastavení uloženo.",
+    "saveFailed": "Nastavení se nepodařilo uložit.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otevřít panel WireGuard s novými terminály",
+        "description": "Zobrazit panel WireGuard vedle každého SSH terminálu, který má WireGuard zapnuté. Stále jej můžete otevírat a zavírat pomocí tlačítka na pravém okraji."
+      },
+      "companionSide": {
+        "label": "Poloha panelu WireGuard",
+        "description": "Kde se panel WireGuard nachází vedle terminálu.",
+        "right": "Vpravo",
+        "left": "Vlevo",
+        "bottom": "Dole"
+      },
+      "companionSize": {
+        "label": "Velikost panelu WireGuard",
+        "description": "Šířka v pixelech, nebo výška, když je panel dole. Můžete také přetáhnout jeho okraj."
+      },
+      "companionEdgeButton": {
+        "label": "Zobrazit tlačítko panelu",
+        "description": "Zobrazit malé tlačítko na pravém okraji terminálu, které otevře panel WireGuard."
+      }
+    }
+  },
+  "clients": {
+    "add": "Přidat klienta",
+    "empty": "Zatím žádní klienti.",
+    "loadFailed": "Klienti se nepodařilo načíst.",
+    "name": "Název",
+    "nameHint": "Písmena, číslice, tečky, pomlčky a podtržítka.",
+    "allowed": "Provoz přes VPN",
+    "allowedHint": "Ponechte prázdné pro použití výchozího nastavení rozhraní: {{value}}",
+    "create": "Vytvořit klienta",
+    "addFailed": "Klienta se nepodařilo přidat.",
+    "needEndpoint": "Nejprve nastavte koncový bod serveru v nastavení rozhraní.",
+    "connected": "Připojeno",
+    "off": "Vypnuto",
+    "external": "Vytvořeno ručně",
+    "handshake": "handshake před {{ago}}",
+    "showConfig": "Zobrazit konfiguraci a QR kód",
+    "configFailed": "Konfiguraci klienta se nepodařilo přečíst.",
+    "rotate": "Nové klíče",
+    "rotateTitle": "Vytvořit nové klíče pro {{name}}?",
+    "rotateDesc": "Stará konfigurace přestane fungovat. Poté poskytněte klientovi novou konfiguraci.",
+    "turnOff": "Vypnout",
+    "turnOn": "Zapnout",
+    "saveFailed": "Klienta se nepodařilo změnit.",
+    "deleteTitle": "Smazat {{name}}?",
+    "deleteDesc": "Klient bude odstraněn a již se nebude moci připojit.",
+    "deleteFailed": "Klienta se nepodařilo smazat."
+  },
+  "clientConfig": {
+    "note": "Tato konfigurace obsahuje soukromý klíč klienta. Sdílejte ji pouze s osobou nebo zařízením, které ji bude používat.",
+    "qr": "QR kód pro konfiguraci klienta",
+    "copy": "Kopírovat",
+    "copied": "Konfigurace zkopírována.",
+    "copyFailed": "Konfiguraci se nepodařilo zkopírovat.",
+    "download": "Stáhnout .conf"
+  },
+  "config": {
+    "title": "Konfigurační soubor",
+    "hint": "Soukromé a předem sdílené klíče jsou skryty. Nechte zástupný text, pokud chcete klíč zachovat. Konfigurace je před uložením ověřena a je vytvořena záloha. Změny adres vyžadují restart.",
+    "loadFailed": "Konfiguraci se nepodařilo načíst.",
+    "saved": "Konfigurace uložena.",
+    "saveFailed": "Konfiguraci se nepodařilo uložit."
+  },
+  "logs": {
+    "loadFailed": "Logy se nepodařilo načíst.",
+    "lines": "{{count}} řádků",
+    "empty": "Žádné řádky v logu."
+  },
+  "service": {
+    "failed": "Akce služby selhala.",
+    "start": "Spustit",
+    "stop": "Zastavit",
+    "restart": "Restartovat",
+    "autostart": "Spustit při startu",
+    "autostartDesc": "Spustit toto rozhraní při startu hostitele.",
+    "needsSystemd": "Automatické spuštění při startu vyžaduje na tomto hostiteli systemd.",
+    "noForward": "Přeposílání IP je na tomto hostiteli vypnuto, takže klienti se nemohou přes NAT dostat do sítě.",
+    "delete": "Smazat rozhraní",
+    "deleteTitle": "Smazat {{name}}?",
+    "deleteDesc": "Rozhraní je zastaveno a jeho konfigurace, klíče a uložené soubory klientů jsou z hostitele odstraněny.",
+    "deleteFailed": "Rozhraní se nepodařilo smazat."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Pro použití této karty zapněte WireGuard v nastavení tohoto hostitele.",
+    "start": "Povolit",
+    "stop": "Zakázat",
+    "done": "{{name}} aktualizováno"
+  },
+  "operations": {
+    "list": {
+      "title": "Vypsat rozhraní WireGuard"
+    },
+    "down": {
+      "title": "Rozhraní WireGuard vypnuta"
+    },
+    "start": {
+      "title": "Spustit rozhraní WireGuard"
+    },
+    "stop": {
+      "title": "Zastavit rozhraní WireGuard"
+    },
+    "restart": {
+      "title": "Restartovat rozhraní WireGuard"
+    },
+    "interfaces": {
+      "title": "Rozhraní WireGuard",
+      "address": "Adresa",
+      "port": "Port",
+      "clients": "Klienti"
+    }
+  },
+  "nav": {
+    "togglePanel": "Přepnout panel WireGuard"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Kontrola hostitelů...",
+    "summary_one": "{{count}} klient na {{hosts}} hostitelích",
+    "summary_few": "{{count}} klienti na {{hosts}} hostitelích",
+    "summary_many": "{{count}} klientů na {{hosts}} hostitelích",
+    "summary_other": "{{count}} klientů na {{hosts}} hostitelích",
+    "refresh": "Zkontrolovat znovu",
+    "empty": "Zapněte WireGuard pro hostitele, abyste ho viděli zde.",
+    "missing": "Není nainstalováno",
+    "down_one": "{{count}} vypnuto",
+    "down_few": "{{count}} vypnuta",
+    "down_many": "{{count}} vypnutých",
+    "down_other": "{{count}} vypnutých",
+    "interfaces_one": "{{count}} rozhraní, {{clients}} klient",
+    "interfaces_few": "{{count}} rozhraní, {{clients}} klienti",
+    "interfaces_many": "{{count}} rozhraní, {{clients}} klientů",
+    "interfaces_other": "{{count}} rozhraní, {{clients}} klientů"
+  }
+}

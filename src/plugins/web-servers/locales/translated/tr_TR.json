@@ -1,0 +1,287 @@
+{
+  "plugin": {
+    "name": "Web Sunucuları",
+    "description": "Ana bilgisayarlarınızdaki nginx, Apache ve Caddy'yi yönetin: siteler, yapılandırma, günlükler ve HTTPS; her değişiklik önce test edilir."
+  },
+  "common": {
+    "cancel": "İptal",
+    "back": "Geri",
+    "loading": "Yükleniyor..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Web Sunucularını Kullan",
+      "description": "Erişebildiğiniz ana bilgisayarlardaki web sunucularını ve siteleri görüntüleyin, düzenleyebildiğiniz ana bilgisayarlarda değişiklikler yapın."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Web Sunucuları",
+        "description": "Bu ana bilgisayardaki nginx, Apache ve Caddy'yi Web Sunucuları sekmesinden yönetin."
+      },
+      "useSudo": {
+        "label": "sudo kullan",
+        "description": "Web sunucusunu okumak ve değiştirmek için sudo kullanın. Giriş root ise kapatın."
+      },
+      "readOnly": {
+        "label": "Salt okunur",
+        "description": "Siteleri, yapılandırmayı ve günlükleri göster ancak bu ana bilgisayarda asla değiştirmeme."
+      },
+      "showPanel": {
+        "label": "Terminalin yanında panel",
+        "description": "Bu ana bilgisayarın terminal sekmelerinde Web Sunucuları panelini sun."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Paneli terminalle birlikte aç",
+        "description": "Terminal, bu özelliğe sahip bir ana bilgisayarda açıldığında Web Sunucuları panelini göster."
+      },
+      "companionSide": {
+        "label": "Panel konumu",
+        "description": "Panelin terminalin yanında nerede duracağı.",
+        "right": "Sağ",
+        "left": "Sol",
+        "bottom": "Alt"
+      },
+      "companionSize": {
+        "label": "Panel boyutu",
+        "description": "Panelin genişliği veya altta iken yüksekliği (piksel cinsinden)."
+      },
+      "companionEdgeButton": {
+        "label": "Kenar düğmesi",
+        "description": "Paneli açmak için terminal kenarında küçük bir düğme göster."
+      }
+    }
+  },
+  "tab": {
+    "title": "Web Sunucuları",
+    "noHost": "Web Sunucularını bir ana bilgisayardan açın.",
+    "error": "Bu ana bilgisayardaki web sunucuları yüklenemedi.",
+    "disabled": "Web Sunucuları bu ana bilgisayar için kapalı. Ana bilgisayar ayarlarından açın.",
+    "sudo": "Değişiklikler için root girişi, şifresiz sudo veya bu ana bilgisayarda kayıtlı bir Sudo Şifresi gerekir.",
+    "refresh": "Yenile",
+    "readOnly": "Salt okunur",
+    "noServer": "Web sunucusu yüklü değil",
+    "noServerHint": "Sunucu sayfasından nginx, Apache veya Caddy'yi yükleyin.",
+    "openServer": "Sunucuyu Aç",
+    "viewSites": "Siteler",
+    "viewConfig": "Yapılandırma",
+    "viewLogs": "Günlükler",
+    "viewServer": "Sunucu"
+  },
+  "actions": {
+    "ok": "Tamam",
+    "failed": "Başarısız",
+    "noOutput": "Çıktı yok."
+  },
+  "watch": {
+    "start": "Bir web sunucusu durduğunda beni uyar",
+    "stop": "Bu ana bilgisayar için uyarıları durdur",
+    "on": "Bu ana bilgisayardaki bir web sunucusu durduğunda uyarı alacaksınız",
+    "off": "Bu ana bilgisayar için uyarılar kapalı",
+    "failed": "Uyarılar değiştirilemedi"
+  },
+  "sites": {
+    "add": "Site ekle",
+    "search": "Sitelerde ara",
+    "empty": "Henüz site yok.",
+    "loadFailed": "Siteler yüklenemedi.",
+    "off": "Kapalı",
+    "anyName": "herhangi bir isim",
+    "form": "Form",
+    "certDays_one": "{{count}} gün kaldı",
+    "certDays_other": "{{count}} gün kaldı",
+    "certExpired": "Sertifika süresi doldu",
+    "enable": "Aç",
+    "disable": "Kapat",
+    "enabled": "{{name}} açık",
+    "disabled": "{{name}} kapalı",
+    "delete": "Sil",
+    "deleteTitle": "{{name}} silinsin mi?",
+    "deleteBody": "Dosya kaldırılır ve sunucu yeniden başlatılır. Bir kopya ana makinede /var/lib/termix-web-servers/backups dizininde saklanır.",
+    "deleted": "{{name}} silindi"
+  },
+  "site": {
+    "addTitle": "Yeni site",
+    "editTitle": "{{name}} kaydet",
+    "add": "Site ekle",
+    "save": "Kaydet",
+    "added": "{{name}} eklendi",
+    "saved": "{{name}} kaydedildi",
+    "server": "Web sunucusu",
+    "name": "Site adı",
+    "nameHint": "Dosya adı ve günlük dosyaları için kullanılır, örneğin example.",
+    "modeForm": "Form",
+    "modeText": "Metin",
+    "text": "Yapılandırma",
+    "textHint": "Metni kaydetmek, bu site için formu kapatır, böylece kendi değişiklikleriniz korunur.",
+    "type": "Tür",
+    "typeStatic": "Statik dosyalar",
+    "typeProxy": "Ters proxy",
+    "typePhp": "PHP",
+    "typeRedirect": "Yönlendirme",
+    "staticHint": "Bir dizinden dosya sunar.",
+    "proxyHint": "İstekleri bu ana makinede veya başka birinde çalışan bir uygulamaya iletir.",
+    "phpHint": "Bir dizinden dosya sunar ve .php dosyalarını php-fpm ile çalıştırır.",
+    "redirectHint": "Tüm ziyaretçileri başka bir adrese yönlendirir.",
+    "domains": "Alan adları",
+    "domainsHint": "Her birinin ardından Enter'a basın. Nginx'te herhangi bir ada yanıt vermek için _ kullanın.",
+    "port": "HTTP bağlantı noktası",
+    "root": "Web kökü",
+    "rootHint": "/var/www, /srv, /usr/share/nginx, /opt veya /home içinde bir dizin.",
+    "index": "Dizin dosyaları",
+    "spa": "Tek sayfa uygulaması",
+    "spaHint": "Dosya olmayan yolları /index.html'e yönlendir.",
+    "upstream": "Uygulama adresi",
+    "upstreamHint": "Uygulamanın dinlediği yer, örneğin http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Ziyaretçileri şuraya yönlendir",
+    "keepPath": "Yolu koru",
+    "keepPathHint": "/page yolunu yeni adresteki aynı sayfaya yönlendir.",
+    "phpSocket": "php-fpm soketi",
+    "phpSocketHint": "php-fpm soketi bulunamadı. php-fpm'i yükleyin veya ana makine:bayrak girin.",
+    "https": "HTTPS",
+    "httpsHint": "Bir sertifika gerektirir. Önce siteyi kaydedin, ardından aşağıda Sertifika al'a basın.",
+    "httpsCaddy": "Caddy, sertifikayı kendisi alır ve yeniler.",
+    "httpsPort": "HTTPS bağlantı noktası",
+    "certPath": "Sertifika dosyası",
+    "keyPath": "Anahtar dosyası",
+    "forceHttps": "HTTP'yi HTTPS'e yönlendir",
+    "gzip": "Yanıtları sıkıştır",
+    "accessLog": "Erişim günlüğü",
+    "maxBody": "MB cinsinden yükleme sınırı",
+    "maxBodyHint": "0, sunucu varsayılanını korur.",
+    "preview": "Önizleme",
+    "previewFailed": "Yapılandırma oluşturulamadı."
+  },
+  "tls": {
+    "title": "HTTPS sertifikası",
+    "hintManaged": "certbot, bu sitenin alan adları için Let's Encrypt sertifikası alır, ardından site HTTPS'ye geçer. certbot sertifikayı yeniler ve sunucuyu yeniden yükler.",
+    "hintText": "certbot, bu sitenin alan adları için Let's Encrypt sertifikası alır. Sertifikayı sitenize kendiniz ekleyin. certbot sertifikayı yeniler ve sunucuyu yeniden yükler.",
+    "needCertbot": "Önce Sunucu sayfasından bu sunucu için certbot'u ve eklentisini yükleyin.",
+    "email": "E-posta",
+    "emailHint": "Let's Encrypt sorunları buraya yazar. İsteğe bağlı.",
+    "staging": "Test sertifikası",
+    "stagingHint": "Let's Encrypt test sunucusunu kullanın. Tarayıcılar buna güvenmez.",
+    "issue": "Sertifika al",
+    "done": "Sertifika kaydedildi"
+  },
+  "config": {
+    "search": "Dosyaları ara",
+    "empty": "Dosya yok.",
+    "loadFailed": "Dosya yüklenemedi.",
+    "test": "Yapılandırmayı test et",
+    "testOk": "Yapılandırma doğru",
+    "testFailed": "Yapılandırmada hatalar var",
+    "content": "İçerik",
+    "save": "Kaydet",
+    "saveHint": "Sunucu yeniden yüklenmeden önce tüm yapılandırma test edilir. Bozuk bir dosya yerine konur.",
+    "saved": "Kaydedildi ve yeniden yüklendi",
+    "backups_one": "{{count}} yedekleme",
+    "backups_other": "{{count}} yedekleme",
+    "restore": "Geri yükle",
+    "restoreTitle": "Bu yedekleme geri yüklensin mi?",
+    "restoreBody": "Dosya {{time}} anındaki haline döner. Mevcut metin de bir yedekleme olarak saklanır.",
+    "restored": "Yedekleme geri yüklendi"
+  },
+  "logs": {
+    "source": "Günlük",
+    "lines": "Satırlar",
+    "journal": "{{server}} günlüğü",
+    "follow": "Takip et",
+    "stop": "Durdur",
+    "connecting": "Bağlanıyor...",
+    "ended": "Takip durduruldu.",
+    "followFailed": "Bu günlük takip edilemedi.",
+    "empty": "Satır yok.",
+    "loadFailed": "Günlük okunamadı.",
+    "requests": "İstekler",
+    "topPaths": "En çok istenen yollar",
+    "topClients": "En çok istemci"
+  },
+  "server": {
+    "unknown": "bilinmiyor",
+    "atBoot": "Başlangıçta başlat",
+    "notInstalled": "Yüklü değil",
+    "start": "Başlat",
+    "stop": "Durdur",
+    "restart": "Yeniden başlat",
+    "reload": "Yeniden yükle",
+    "enable": "Başlangıçta başlat",
+    "disable": "Başlangıçta başlatma",
+    "boot": "Başlangıçta başlat",
+    "noBoot": "Başlangıçta başlatma",
+    "done": "{{server}} tamamlandı",
+    "stopTitle": "{{server}} durdurulsun mu?",
+    "stopBody": "Üzerindeki tüm siteler, tekrar başlatana kadar çevrimdışı olur.",
+    "install": "Yükle",
+    "installTitle": "{{server}} yüklensin mi?",
+    "installBody": "Sunucunun paket yöneticisi ile yüklenir ve hemen başlar. 80. portta çalışan başka bir web sunucusu başlamasını engeller.",
+    "installed": "{{server}} yüklendi",
+    "installCertbot": "certbot'u yükle",
+    "certbotInstalled": "certbot yüklendi",
+    "certbotPlugins": "Eklentiler: {{plugins}}",
+    "certbotNoPlugins": "nginx veya Apache eklentisi yok",
+    "certbotHint": "nginx ve Apache siteleri için Let's Encrypt sertifikaları alır"
+  },
+  "card": {
+    "title": "Web sunucuları",
+    "loading": "Yükleniyor...",
+    "refresh": "Yenile",
+    "empty": "Hiçbir sunucuda Web Sunucuları özelliği etkin değil.",
+    "summary_one": "{{count}} sunucu | {{down}} kontrol edilmeli",
+    "summary_other": "{{count}} sunucu | {{down}} kontrol edilmeli",
+    "sites_one": "{{count}} site",
+    "sites_other": "{{count}} site"
+  },
+  "companion": {
+    "toggle": "Web Sunucuları paneli",
+    "openTab": "Web Sunucularını Aç",
+    "reload": "{{server}} sunucusunu yeniden yükle"
+  },
+  "manager": {
+    "title": "Web Sunucuları",
+    "disabled": "Bu sunucunun sitelerini burada görmek için Web Sunucuları özelliğini etkinleştirin."
+  },
+  "operations": {
+    "status": {
+      "title": "Web sunucusu durumu"
+    },
+    "listSites": {
+      "title": "Siteleri listele"
+    },
+    "test": {
+      "title": "Web sunucusu yapılandırmasını test et"
+    },
+    "reload": {
+      "title": "Web sunucusunu yeniden yükle"
+    },
+    "restart": {
+      "title": "Web sunucusunu yeniden başlat"
+    },
+    "enableSite": {
+      "title": "Siteyi etkinleştir"
+    },
+    "disableSite": {
+      "title": "Siteyi devre dışı bırak"
+    },
+    "deleteSite": {
+      "title": "Siteyi sil"
+    },
+    "server": "Sunucu",
+    "allServers": "Hepsi",
+    "sites": {
+      "title": "Siteler",
+      "server": "Sunucu",
+      "domains": "Alan Adları",
+      "https": "HTTPS"
+    }
+  }
+}

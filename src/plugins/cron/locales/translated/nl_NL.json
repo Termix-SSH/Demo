@@ -1,0 +1,206 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "Bekijk, voeg toe en voer cron-taken uit op je hosts, met een schema-overzicht en de systeem-cronbestanden."
+  },
+  "common": {
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "back": "Terug",
+    "delete": "Verwijderen"
+  },
+  "permissions": {
+    "use": {
+      "title": "Cron gebruiken",
+      "description": "Bekijk cron-taken op hosts die je kunt bereiken, en wijzig ze op hosts die je kunt bewerken."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Beheer cron-taken op deze host via het tabblad Cron."
+      },
+      "useSudo": {
+        "label": "Sudo gebruiken",
+        "description": "Gebruik sudo voor de crontab's van andere gebruikers en /etc/cron.d. Zet dit uit als je ingelogd bent als root."
+      },
+      "readOnly": {
+        "label": "Alleen-lezen",
+        "description": "Toon cron-taken, maar wijzig ze nooit op deze host."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "Open Cron vanaf een host.",
+    "error": "Kon cron niet laden van deze host.",
+    "disabled": "Cron is uitgeschakeld voor deze host. Schakel het in via de host-instellingen.",
+    "sudo": "Dit vereist een root-login, sudo zonder wachtwoord of een opgeslagen Sudo-wachtwoord.",
+    "refresh": "Vernieuwen",
+    "running": "Cron actief",
+    "stopped": "Cron gestopt",
+    "readOnly": "Alleen-lezen",
+    "notInstalled": "Niet geïnstalleerd",
+    "notInstalledTitle": "Cron is niet geïnstalleerd op deze host",
+    "notInstalledHint": "Installeer cron of cronie met het pakketbeheer van de host en vernieuw daarna.",
+    "notRunning": "De cron-service draait niet, dus er worden geen taken uitgevoerd.",
+    "viewJobs": "Taken",
+    "viewSystem": "Systeem",
+    "viewLogs": "Logs"
+  },
+  "jobs": {
+    "add": "Taak toevoegen",
+    "user": "Crontab van",
+    "ownUser": "{{user}} (login)",
+    "search": "Zoek taken",
+    "editText": "Bewerken als tekst",
+    "empty": "Nog geen cron-taken.",
+    "noMatch": "Geen taken gevonden.",
+    "off": "Uit",
+    "next": "over {{time}}",
+    "run": "Nu uitvoeren",
+    "runTitle": "Deze taak nu uitvoeren?",
+    "runDesc": "Dit voert {{command}} één keer uit als de gebruiker van de crontab. Het stopt na 2 minuten.",
+    "runFailed": "Kon de taak niet uitvoeren.",
+    "turnOn": "Inschakelen",
+    "turnOff": "Uitschakelen",
+    "deleteTitle": "Deze taak verwijderen?",
+    "loadFailed": "Kon de crontab niet lezen.",
+    "saveFailed": "Kon de crontab niet opslaan.",
+    "outputTitle": "Uitvoer van taak",
+    "exitOk": "Afgerond",
+    "exitCode": "Exitcode {{code}}",
+    "noOutput": "De taak gaf geen uitvoer."
+  },
+  "form": {
+    "addTitle": "Nieuwe taak",
+    "editTitle": "Taak bewerken",
+    "forUser": "Crontab van {{user}}",
+    "label": "Label",
+    "labelHint": "Opgeslagen als een commentaar boven de taak.",
+    "labelPlaceholder": "Nachtelijke back-up",
+    "command": "Opdracht",
+    "commandHint": "Wordt uitgevoerd met sh in de home-map van de gebruiker. Een % start de invoer die cron verzendt, gebruik \\% voor een echte percentteken.",
+    "schedule": "Schema",
+    "scheduleHint": "Minuut, uur, dag van de maand, maand en dag van de week, of een woord zoals @daily.",
+    "scheduleInvalid": "Dit is geen geldig schema.",
+    "nextRuns": "Volgende uitvoeringen ({{zone}}):",
+    "enabled": "Aan",
+    "enabledHint": "Een uitgeschakelde taak blijft in de crontab staan als opmerking.",
+    "saved": "Opgeslagen."
+  },
+  "presets": {
+    "everyMinute": "Elke minuut",
+    "every5": "Elke 5 min",
+    "every15": "Elke 15 min",
+    "hourly": "Uurlijks",
+    "daily": "Dagelijks",
+    "weekly": "Wekelijks",
+    "monthly": "Maandelijks",
+    "reboot": "Bij opstarten"
+  },
+  "schedule": {
+    "reboot": "Bij opstarten",
+    "everyMinute": "Elke minuut",
+    "everyNMinutes": "Elke {{n}} minuten",
+    "hourlyAt": "Elk uur op minuut {{minute}}",
+    "everyNHours": "Elke {{n}} uur op minuut {{minute}}",
+    "dailyAt": "Elke dag om {{time}}",
+    "weekdaysAt": "Maandag tot vrijdag om {{time}}",
+    "weeklyAt": "Elke {{day}} om {{time}}",
+    "monthlyAt": "Op dag {{day}} van elke maand om {{time}}",
+    "custom": "Aangepast schema",
+    "invalid": "Geen geldig schema"
+  },
+  "days": {
+    "0": "Zondag",
+    "1": "Maandag",
+    "2": "Dinsdag",
+    "3": "Woensdag",
+    "4": "donderdag",
+    "5": "vrijdag",
+    "6": "zaterdag"
+  },
+  "raw": {
+    "title": "Crontab als tekst",
+    "hint": "Eén taak per regel. De host controleert de tekst en behoudt de oude crontab als er fouten zijn."
+  },
+  "system": {
+    "add": "Nieuw bestand",
+    "addTitle": "Nieuw bestand in /etc/cron.d",
+    "edit": "Bewerken",
+    "name": "Bestandsnaam",
+    "nameHint": "Opgeslagen als /etc/cron.d/<name>. Cron negeert namen met punten.",
+    "nameInvalid": "Gebruik alleen letters, cijfers, - en _.",
+    "content": "Bestandsinhoud",
+    "fileHint": "Elke taak vermeldt de gebruiker die deze uitvoert: minuut uur dag maand werkdag gebruiker opdracht. Elke regel wordt gecontroleerd voordat deze wordt opgeslagen.",
+    "noJobs": "Geen taken in dit bestand.",
+    "readHint": "Sommige bestanden kunnen verborgen zijn zonder root-toegang. Wijzigingen hier vereisen een root-inlog, sudo zonder wachtwoord of een opgeslagen Sudo-wachtwoord.",
+    "timers_one": "Deze host heeft ook {{count}} systemd-timer. De Services-plugin beheert deze.",
+    "timers_other": "Deze host heeft ook {{count}} systemd-timers. De Services-plugin beheert deze.",
+    "deleteTitle": "/etc/cron.d/{{name}} verwijderen?",
+    "deleteDesc": "Een kopie wordt bewaard in /var/lib/termix-cron/backup.",
+    "deleted": "{{name}} verwijderd.",
+    "saved": "{{name}} opgeslagen.",
+    "loadFailed": "Kan de systeemcronbestanden niet lezen.",
+    "saveFailed": "Kan het bestand niet opslaan.",
+    "period": {
+      "hourly": "Wordt elk uur uitgevoerd",
+      "daily": "Wordt elke dag uitgevoerd",
+      "weekly": "Wordt elke week uitgevoerd",
+      "monthly": "Wordt elke maand uitgevoerd"
+    }
+  },
+  "logs": {
+    "lines": "Regels",
+    "lineCount_one": "{{count}} regel",
+    "lineCount_other": "{{count}} regels",
+    "source": "Van {{source}}",
+    "noSource": "Er is geen cronlogboek gevonden op deze host.",
+    "empty": "Geen logregels.",
+    "failed": "Kan het cron-logboek niet lezen."
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "Schakel Cron in voor deze host in de instellingen om de taken hier te zien."
+  },
+  "operations": {
+    "list": {
+      "title": "Crontaken weergeven"
+    },
+    "enable": {
+      "title": "Crontaak inschakelen"
+    },
+    "disable": {
+      "title": "Crontaak uitschakelen"
+    },
+    "run": {
+      "title": "Crontaak nu uitvoeren"
+    },
+    "delete": {
+      "title": "Crontaak verwijderen"
+    },
+    "jobs": {
+      "title": "Crontaken",
+      "schedule": "Schema",
+      "command": "Opdracht"
+    },
+    "status": {
+      "title": "Cron-status"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "Hosts controleren...",
+    "summary_one": "{{count}} taak op {{hosts}} hosts",
+    "summary_other": "{{count}} taken op {{hosts}} hosts",
+    "refresh": "Opnieuw controleren",
+    "empty": "Schakel Cron in voor een host om deze hier te zien.",
+    "stopped": "Niet actief",
+    "missing": "Niet geïnstalleerd",
+    "jobs_one": "{{count}} taak",
+    "jobs_other": "{{count}} taken",
+    "off": "{{count}} uitgeschakeld"
+  }
+}

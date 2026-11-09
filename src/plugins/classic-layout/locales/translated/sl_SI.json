@@ -16,7 +16,9 @@
     "more": "Več",
     "logout": "Odjava",
     "next": "Naprej",
-    "previous": "Prejšnji"
+    "previous": "Prejšnji",
+    "showPassword": "Prikaži geslo",
+    "hidePassword": "Skrij geslo"
   },
   "desktopUpdates": {
     "title": "Namizna aplikacija",
@@ -67,7 +69,10 @@
     "resetRailOrder": "Ponastavi vrstni red",
     "hideFromRail": "Skrij iz stranske vrstice",
     "openSettings": "Odpri nastavitve",
-    "mobileNavigation": "Navigacija"
+    "mobileNavigation": "Navigacija",
+    "allTabs": "Vsi zavihki",
+    "hideTabBar": "Skrij vrstico zavihkov",
+    "showTabBar": "Prikaži vrstico zavihkov"
   },
   "commandPalette": {
     "searchPlaceholder": "Išči gostitelje, ukaze ali nastavitve...",
@@ -110,7 +115,8 @@
     "noSearchResults": "Ni povezav, ki bi ustrezale iskanju",
     "rename": "Preimenuj sejo",
     "forgetConfirm": "Želite končati sejo v ozadju za {{name}}?",
-    "forget": "Končaj sejo"
+    "forget": "Končaj sejo",
+    "expiringNow": "Končuje se zdaj"
   },
   "placeholders": {
     "apiKeyName": "npr. CI cevovod",
@@ -158,16 +164,14 @@
     "commandPalette": "Paleta ukazov",
     "done": "Končano",
     "clear": "Počisti",
-    "dragToResizeColumns": "Povlecite za spremembo velikosti stolpcev",
     "hostsAvailable": "Razpoložljivi gostitelji",
-    "removeSection": "Odstrani razdelek",
-    "addSection": "Dodaj razdelek",
-    "allSectionsShown": "Vse je že na nadzorni plošči.",
+    "addSection": "Dodaj ploščice",
     "fromPlugins": "Iz vtičnikov",
-    "dropHere": "Spustite razdelek sem",
-    "dragToReorder": "Povlecite razdelke za spremembo vrstnega reda",
+    "dropHere": "Še ni ploščic. Dodajte jih iz seznama.",
+    "dragToReorder": "Povlecite ploščice za premikanje in robove za spreminjanje velikosti",
     "clearActivityConfirm": "Želite počistiti nedavno aktivnost?",
-    "resetConfirm": "Želite ponastaviti nadzorno ploščo na privzto razporeditev?"
+    "resetConfirm": "Želite ponastaviti nadzorno ploščo na privzto razporeditev?",
+    "clearFailed": "Ni bilo mogoče počistiti nedavnih aktivnosti"
   },
   "admin": {
     "sectionGeneral": "Splošno",
@@ -230,6 +234,9 @@
     "allowPasswordLoginDesc": "Prijava z uporabniškim imenom in geslom",
     "externalAutoProvision": "Samodejno ustvari zunanje račune",
     "externalAutoProvisionDesc": "Ustvari račun ob prvi prijavi prek zunanje metode, kot sta SSO ali LDAP. Če je izklopljeno, se lahko na ta način prijavijo le uporabniki, ki že imajo račun.",
+    "credentialStorage": "Dovoli shranjevanje gesel in ključev",
+    "credentialStorageOff": "Shranjevanje gesel in ključev je na tem strežniku onemogočeno. Pustite jih prazna in Termix vas bo ob povezovanju vprašal za njih.",
+    "credentialStorageDesc": "Ko je onemogočeno, nihče ne more shraniti gesla ali zasebnega ključa na gostitelju ali v poverilnico, Termix pa vas ob povezovanju vpraša za njih. Že shranjene prijave ostanejo, dokler jih ne odstranite.",
     "secondFactorAfterExternalLogin": "Zahtevaj drugi dejavnik po zunanjih prijavah (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Če je izklopljeno, se za vpisan drugi dejavnik vpraša le po prijavi z geslom in drugih lokalnih prijavah, kot prej. Če je vklopljeno, se zahteva po vsaki metodi prijave, vključno s SSO in LDAP.",
     "allowPasswordReset": "Dovoli ponastavitev gesla",
@@ -284,6 +291,13 @@
     "apiKeyName": "Ime",
     "apiKeyUser": "Uporabnik",
     "apiKeySelectUser": "Izberite uporabnika...",
+    "apiKeyScope": "Dostop",
+    "apiKeyScopeFull": "Vse, kar lahko naredi uporabnik",
+    "apiKeyScopeRead": "Samo za branje",
+    "apiKeyScopeRun": "Izvajanje dejanj",
+    "apiKeyScopeHint": "Ključ za dejanja dostopa le do dejanj Termix in strežnika MCP, ne do ničesar drugega.",
+    "apiKeyScopeActionsRead": "Dejanja, samo za branje",
+    "apiKeyScopeActionsRun": "Dejanja",
     "apiKeyExpiresAt": "Potekne",
     "createKey": "Ustvari ključ",
     "apiKeyNoExpiry": "Brez poteka",
@@ -323,6 +337,10 @@
     "deleteUserFailed": "Izbris uporabnika ni uspel",
     "deleteUserSuccess": "Uporabnik \"{{username}}\" je izbrisan",
     "deleteRoleSuccess": "Vloga \"{{name}}\" je izbrisana",
+    "deleteRoleFailed": "Vloge ni bilo mogoče izbrisati",
+    "roleNamePlaceholder": "developer",
+    "roleDisplayNamePlaceholder": "Razvijalec",
+    "unknownError": "Neznana napaka",
     "revokeKeySuccess": "Ključ \"{{name}}\" je preklican",
     "revokeKeyFailed": "Preklic ključa ni uspel",
     "copiedToClipboard": "Kopirano v odložišče",
@@ -365,6 +383,7 @@
     "unlinkAccountFailed": "Prekinitev povezave z zunanjo prijavo ni uspela",
     "updateRegistrationFailed": "Posodabljanje nastavitve registracije ni uspelo",
     "updatePasswordLoginFailed": "Posodabljanje nastavitve prijave z geslom ni uspelo",
+    "updateCredentialStorageFailed": "Posodabljanje nastavitve shranjevanja poverilnic ni uspelo",
     "updateSecondFactorAfterExternalLoginFailed": "Posodabljanje nastavitve drugega dejavnika ni uspelo",
     "updatePasswordResetFailed": "Posodabljanje nastavitve ponastavitve gesla ni uspelo",
     "sessionTimeoutRange2": "Časovna omejitev seje mora biti med 1 in 720 urami",
@@ -689,7 +708,8 @@
         "tryBetaTitle": "Preizkusite nove funkcije zgodaj",
         "tryBetaDescription": "Pridružite se beta programu v posodobitvah.",
         "sendBetaFeedback": "Pošlji povratne informacije za beta različico",
-        "openUpdates": "Posodobitve"
+        "openUpdates": "Posodobitve",
+        "hexLabel": "hex"
       }
     }
   },
@@ -775,6 +795,11 @@
       "allPluginsBeta": "Uporabi bete za vse vtičnike",
       "allPluginsStable": "Vsi vtičniki nazaj na stabilno",
       "saveFailed": "Shranjevanje spremembe ni uspelo"
+    },
+    "user": {
+      "hostRows": {
+        "label": "Število vrstic gostiteljev"
+      }
     }
   },
   "hostDefaults": {
@@ -801,6 +826,15 @@
   "sharing": {
     "revokeConfirm": "Odstraniti dostop za {{name}}?",
     "revoke": "Odstrani dostop",
+    "deviceLogin": {
+      "label": "Prijava samo na tej napravi",
+      "none": "Brez",
+      "hint": "Ostane na tej napravi in se nikoli ne pošlje na strežnik. Uporabi se kot prva, povezave pa se začnejo iz te naprave.",
+      "noCredentials": "Dodajte poverilnico z možnostjo Shrani samo na tej napravi, da jo uporabite tukaj.",
+      "saved": "Prijava naprave shranjena",
+      "keepOnDevice": "Shrani samo na tej napravi",
+      "keepOnDeviceDesc": "Geslo ali ključ se nikoli ne sinhronizirata s strežnikom. Uporabite ga kot prijavo naprave na skupnih gostiteljih."
+    },
     "folderLogin": {
       "action": "Nastavi osebno prijavo za skupne gostitelje",
       "title": "Osebna prijava za to mapo",
@@ -842,7 +876,10 @@
     "pickHost": "Izberite gostitelja za urejanje",
     "pickCredential": "Izberite poverilnico za urejanje",
     "pickDefaults": "Izberite raven privzetih nastavitev za urejanje",
-    "pickHint": "Vse o povezavi je tukaj, razvrščeno, da jo lahko najdete."
+    "pickHint": "Vse o povezavi je tukaj, razvrščeno, da jo lahko najdete.",
+    "clearChoice": "Počisti",
+    "proxyPathTarget": "cilj",
+    "hostCopyName": "{{name}} (kopija)"
   },
   "permissions": {
     "branding": {
@@ -855,6 +892,33 @@
     "presetIntro": "Izberite, koliko vsebine se prikaže na zaslonu.",
     "presetChangeLater": "Prednastavitve lahko spremenite ali prilagodite posamezne nastavitve kasneje v Nastavilih, pod razdelkom Vmesnik.",
     "appearanceTitle": "Prilagodite ga sebi",
-    "appearanceIntro": "Izberite temo, poudarjeno barvo, pisavo in jezik. Spremembe se prikažejo takoj, kasneje pa jih lahko spremenite v Nastavilih."
+    "appearanceIntro": "Izberite temo, poudarjeno barvo, pisavo in jezik. Spremembe se prikažejo takoj, kasneje pa jih lahko spremenite v Nastavilih.",
+    "hostRows": {
+      "title": "Kako naj delujejo vrstice gostiteljev?",
+      "intro": "Ko je vklopljenih veliko vtičnikov, lahko vsaka vrstica gostitelja dobi veliko gumbov. Izberite, kako želite dostopati do orodij gostitelja.",
+      "buttons": "Gumbi za povezavo",
+      "buttonsDesc": "Gumb za vsako orodje na vsaki vrstici gostitelja, kot prej. Stran gostitelja ostane v meniju gostitelja.",
+      "both": "Gumbi in gumb za stran gostitelja",
+      "bothDesc": "Obdržite gumbe in dodajte enega za stran gostitelja. Orodja se odprejo znotraj strani gostitelja.",
+      "page": "Samo stran gostitelja",
+      "pageDesc": "Na vrsticah ni gumbov. Klik na gostitelja odpre njegovo stran, kjer so vsa orodja na enem zavihku.",
+      "clickOpensPage": "Klik odpre stran gostitelja",
+      "changeLater": "To lahko kasneje spremenite v Prilagodi stransko vrstico."
+    },
+    "accentHex": "hex"
+  },
+  "hostTools": {
+    "mode": "Orodja gostitelja odpre v",
+    "modeDesc": "Kje se odprejo gumbi za Docker, Datoteke in druga orodja. Stran gostitelja hrani vsa orodja za gostitelja na enem zavihku. Pri možnosti Samo stran gostitelja vrstice gostitelja nimajo gumbov za povezavo, klik pa odpre stran gostitelja.",
+    "modeTab": "Lasten zavihek",
+    "modePage": "Stran gostitelja",
+    "rowButtons": "Gumbi na vrsticah gostiteljev",
+    "modeOnly": "Samo stran gostitelja",
+    "clickOpens": "Klik odpre",
+    "clickOpensDesc": "Kaj se izvede ob kliku na gostitelja. Za posameznega gostitelja lahko izberete drugo možnost iz njegovega menija.",
+    "clickAuto": "Prvi način povezave",
+    "useDefaultNamed": "Privzeto ({{name}})",
+    "useDefaultButtons": "Uporabi privzete gumbe",
+    "perHostHint": "Če jih želite spremeniti za posameznega gostitelja, uporabite možnost Gumbi na vrsticah gostiteljev v njegovem meniju."
   }
 }

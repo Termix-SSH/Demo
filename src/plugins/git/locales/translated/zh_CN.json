@@ -1,0 +1,289 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "查看、拉取、提交和推送主机上的 Git 仓库，并通过自动拉取保持它们最新。"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "back": "返回",
+    "loading": "加载中..."
+  },
+  "permissions": {
+    "use": {
+      "title": "使用 Git",
+      "description": "查看您可访问主机上的 Git 仓库，并修改您可编辑主机上的仓库。"
+    },
+    "runCommands": {
+      "title": "自动拉取后运行命令",
+      "description": "设置一个在自动拉取引入新提交后在主机上运行的命令。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "从 Git 选项卡管理此主机上的 Git 仓库。"
+      },
+      "repoRoots": {
+        "label": "扫描文件夹",
+        "description": "扫描此主机时搜索仓库的文件夹。用逗号分隔。默认为主文件夹。",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "使用 sudo 以 root 身份运行 git。仅适用于登录用户无法使用的仓库。"
+      },
+      "readOnly": {
+        "label": "只读",
+        "description": "显示仓库但从不在此主机上修改它们。"
+      },
+      "showPanel": {
+        "label": "终端旁边的面板",
+        "description": "在此主机的终端选项卡上提供 Git 面板。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "随终端打开面板",
+        "description": "当在启用了该功能的主机上打开终端时，显示 Git 面板。"
+      },
+      "companionSide": {
+        "label": "面板位置",
+        "description": "面板相对于终端的位置。",
+        "right": "右侧",
+        "left": "左侧",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "面板大小",
+        "description": "面板的宽度，或位于底部时的高度，单位为像素。"
+      },
+      "companionEdgeButton": {
+        "label": "边缘按钮",
+        "description": "在终端边缘显示一个小按钮以打开面板。"
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "从主机打开 Git。",
+    "error": "无法从此主机加载 git。",
+    "disabled": "此主机已禁用 Git。请在主机设置中启用它。",
+    "sudo": "这需要 root 登录、免密码 sudo 或已保存的 Sudo 密码。",
+    "refresh": "刷新",
+    "readOnly": "只读",
+    "notInstalled": "未安装 git",
+    "notInstalledTitle": "此主机未安装 git",
+    "notInstalledHint": "使用主机的包管理器安装 git，然后刷新。"
+  },
+  "actions": {
+    "ok": "完成",
+    "failed": "失败",
+    "noOutput": "无输出。"
+  },
+  "repos": {
+    "add": "添加仓库",
+    "search": "搜索仓库",
+    "empty": "暂无仓库。添加一个以开始使用。",
+    "noMatch": "没有匹配的仓库。",
+    "viewOnly": "此主机尚未添加任何仓库。",
+    "detached": "已分离",
+    "changes_other": "{{count}} 处更改",
+    "conflicts": "冲突",
+    "auto": "自动拉取",
+    "autoFailing": "拉取失败",
+    "remove": "从列表中移除",
+    "removeTitle": "移除 {{name}}？",
+    "removeBody": "仅在此处忘记该仓库。主机上不会删除任何内容。",
+    "removed": "已移除 {{name}}",
+    "error": {
+      "missing": "文件夹缺失",
+      "notrepo": "不是 Git 仓库",
+      "unreadable": "无法读取"
+    }
+  },
+  "add": {
+    "title": "添加仓库",
+    "modeScan": "扫描",
+    "modePath": "文件夹",
+    "modeClone": "克隆",
+    "scanHint": "在 {{roots}} 中查找 Git 仓库。可在主机设置中更改文件夹。",
+    "rescan": "重新扫描",
+    "noneFound": "未找到新仓库。",
+    "picked": "已选择",
+    "addPicked_other": "添加 {{count}} 个仓库",
+    "addAll": "全部添加",
+    "folder": "主机上的文件夹",
+    "folderHint": "完整路径，或以 ~ 开头表示主文件夹。该文件夹必须已是 Git 仓库。",
+    "addRepo": "添加仓库",
+    "url": "地址",
+    "urlHint": "使用主机登录用户的密钥和 Git 设置。",
+    "dest": "克隆到",
+    "destHint": "该文件夹尚不存在。",
+    "clone": "克隆",
+    "cloned": "已克隆",
+    "added_other": "已添加 {{count}} 个仓库",
+    "failed": "无法添加仓库",
+    "scanFailed": "无法扫描主机"
+  },
+  "repo": {
+    "ahead": "领先 {{count}} 个提交",
+    "behind": "落后 {{count}} 个提交",
+    "fetch": "获取",
+    "fetched": "已获取",
+    "pull": "拉取",
+    "pulled": "已拉取",
+    "push": "推送",
+    "pushed": "已推送",
+    "viewChanges": "更改",
+    "viewBranches": "分支",
+    "viewHistory": "历史记录",
+    "viewStash": "暂存区",
+    "viewAuto": "自动拉取"
+  },
+  "changes": {
+    "loadFailed": "无法读取更改。",
+    "clean": "无内容可提交。工作树是干净的。",
+    "stagedTitle": "已暂存 ({{count}})",
+    "unstagedTitle": "更改 ({{count}})",
+    "stage": "暂存",
+    "staged": "已暂存",
+    "unstage": "取消暂存",
+    "unstaged": "未暂存",
+    "stageAll": "全部暂存",
+    "renamed": "已重命名",
+    "discard": "放弃",
+    "discardTitle": "放弃对 {{name}} 的更改？",
+    "discardBody": "此文件中的更改将被删除，且无法恢复。",
+    "discarded": "已放弃更改",
+    "message": "提交信息",
+    "messagePlaceholder": "更改内容",
+    "commit": "提交",
+    "commitAll": "提交所有更改",
+    "commitStaged_other": "提交 {{count}} 个已暂存的文件",
+    "committed": "已提交",
+    "noDiff": "无更改可显示。",
+    "truncated": "差异内容较长，仅显示开头部分。"
+  },
+  "branches": {
+    "loadFailed": "无法读取分支。",
+    "empty": "暂无分支。",
+    "current": "当前",
+    "remote": "远程",
+    "gone": "上游已消失",
+    "newName": "新分支",
+    "create": "创建分支",
+    "created": "分支 {{name}} 已创建",
+    "switch": "切换",
+    "switched": "已切换到 {{name}}",
+    "merge": "合并到当前分支",
+    "mergeTitle": "将 {{name}} 合并到 {{into}}？",
+    "mergeBody": "如果合并产生冲突，将立即撤销。",
+    "merged": "{{name}} 已合并",
+    "delete": "删除分支",
+    "deleteTitle": "删除 {{name}}？",
+    "deleteBody": "如果分支包含未合并的提交，Git 将拒绝删除。",
+    "deleted": "{{name}} 已删除",
+    "forceTitle": "强制删除 {{name}}？",
+    "forceBody": "此分支包含未合并的提交。如果删除，这些提交将丢失。",
+    "forceDelete": "强制删除"
+  },
+  "history": {
+    "loadFailed": "无法读取历史记录。",
+    "empty": "暂无提交。",
+    "branch": "此分支",
+    "all": "所有分支",
+    "more": "加载更多"
+  },
+  "stash": {
+    "loadFailed": "无法读取暂存区。",
+    "title": "暂存区",
+    "empty": "暂无暂存。",
+    "message": "消息",
+    "messagePlaceholder": "可选",
+    "untracked": "包含未跟踪的文件",
+    "push": "暂存更改",
+    "pushDone": "更改已暂存",
+    "apply": "应用",
+    "applyDone": "暂存已应用",
+    "pop": "弹出",
+    "popDone": "暂存已应用并移除",
+    "drop": "丢弃",
+    "dropDone": "暂存已丢弃",
+    "dropTitle": "丢弃 {{name}}？",
+    "dropBody": "暂存将被删除，且无法恢复。",
+    "remotes": "远程仓库",
+    "noRemotes": "暂无远程仓库。"
+  },
+  "auto": {
+    "intro": "按计划执行拉取，仅允许快进合并。它永远不会合并，并且当仓库存在未提交的更改或与上游分歧时会跳过该仓库。",
+    "noUpstream": "此分支尚未设置上游，因此自动拉取将跳过它。",
+    "enable": "自动拉取",
+    "enableHint": "以您的身份运行，使用您对主机的访问权限。",
+    "interval": "每（分钟）",
+    "intervalHint": "两次拉取之间的等待时间。",
+    "post": "拉取后执行的命令",
+    "postHint": "在新提交到达后在仓库目录中运行。需要“运行命令”权限。",
+    "saved": "自动拉取设置已保存",
+    "saveFailed": "无法保存自动拉取设置",
+    "runNow": "立即运行",
+    "next": "下次拉取 {{when}}",
+    "runs": "最近运行记录",
+    "noRuns": "暂无运行记录。",
+    "outcome": {
+      "pulled": "已拉取",
+      "uptodate": "已是最新",
+      "skipped": "已跳过",
+      "failed": "失败"
+    }
+  },
+  "card": {
+    "title": "Git 仓库",
+    "loading": "加载中...",
+    "refresh": "刷新",
+    "empty": "暂无主机包含 Git 仓库。",
+    "allClean": "所有仓库均处于干净且最新的状态。",
+    "summary_other": "{{count}} 个仓库 | {{attention}} 需要关注"
+  },
+  "companion": {
+    "toggle": "Git 面板",
+    "openTab": "打开 Git",
+    "here": "当前文件夹的仓库",
+    "all": "所有仓库"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "列出 Git 仓库"
+    },
+    "fetch": {
+      "title": "拉取远程更新"
+    },
+    "pull": {
+      "title": "拉取仓库"
+    },
+    "push": {
+      "title": "推送仓库"
+    },
+    "checkout": {
+      "title": "切换分支",
+      "branch": "分支"
+    },
+    "reset-hard": {
+      "title": "强制重置仓库",
+      "ref": "重置到"
+    },
+    "repos": {
+      "title": "Git 仓库",
+      "branch": "分支",
+      "ahead": "领先",
+      "behind": "落后",
+      "changed": "更改"
+    },
+    "signals": {
+      "behind": "落后的仓库",
+      "dirty": "有更改的仓库",
+      "pull-failing": "自动拉取失败"
+    }
+  }
+}

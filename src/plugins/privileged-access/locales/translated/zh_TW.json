@@ -1,0 +1,141 @@
+{
+  "plugin": {
+    "name": "特權存取",
+    "description": "在任何人連線至特權主機前要求核准，存取權限會自動過期，並保留完整的稽核記錄。"
+  },
+  "tab": {
+    "title": "存取"
+  },
+  "tabs": {
+    "request": "申請存取",
+    "mine": "我的申請",
+    "pending": "待處理",
+    "active": "使用中存取",
+    "history": "歷史記錄"
+  },
+  "status": {
+    "pending": "等待中",
+    "approved": "已結束",
+    "active": "使用中",
+    "denied": "已拒絕",
+    "expired": "已過期",
+    "revoked": "已撤銷",
+    "cancelled": "已取消"
+  },
+  "request": {
+    "host": "主機",
+    "hostWithAccess": "{{host}}（存取至 {{until}}）",
+    "hours": "小時",
+    "hoursHint": "此主機最多允許 {{max}} 小時。",
+    "reason": "申請存取的原因",
+    "reasonOptional": "申請存取的原因（選填）",
+    "ticket": "工單",
+    "ticketOptional": "工單（選填）",
+    "send": "申請存取",
+    "sent": "申請已送出。有人處理時，您會收到通知。",
+    "failed": "無法送出申請",
+    "noHosts": "沒有特權主機",
+    "noHostsHint": "管理員標記為特權的主機會顯示在此。"
+  },
+  "list": {
+    "none": "這裡什麼都沒有",
+    "loadError": "無法載入申請",
+    "actionFailed": "操作失敗",
+    "hours_other": "{{count}} 小時",
+    "until": "至 {{time}}",
+    "decidedBy": "由 {{name}}",
+    "approve": "核准",
+    "deny": "拒絕",
+    "cancel": "取消",
+    "endNow": "立即結束",
+    "export": "匯出 CSV",
+    "approveConfirm_other": "要授予 {{user}} 對 {{host}} 的存取權限 {{count}} 小時嗎？",
+    "denyConfirm": "要拒絕此申請嗎？",
+    "cancelConfirm": "要取消此申請嗎？",
+    "endConfirm": "要立即結束此存取嗎？主機上的開放工作階段將關閉。",
+    "approved": "存取已核准",
+    "denied": "申請已拒絕",
+    "ended": "已完成"
+  },
+  "card": {
+    "title": "特權存取",
+    "waiting": "等待您處理",
+    "empty": "沒有等待中的申請",
+    "emptyHint": "您已核准的存取會顯示在此。"
+  },
+  "permissions": {
+    "request": {
+      "title": "申請特權存取",
+      "description": "申請對特權主機的限時存取。"
+    },
+    "approve": {
+      "title": "核准特權存取",
+      "description": "決定其他人的存取申請、提前結束存取並查看報告。"
+    },
+    "bypass": {
+      "title": "緊急存取",
+      "description": "無需申請即可連線至特權主機。每次使用都會被稽核並發出通知。"
+    },
+    "configure": {
+      "title": "設定特權主機",
+      "description": "將主機標記為特權，並變更誰可以核准對它們的存取"
+    }
+  },
+  "settings": {
+    "admin": {
+      "pendingHours": {
+        "label": "申請有效期（小時）",
+        "description": "在此時間內無人處理的申請將過期。"
+      },
+      "alertBypass": {
+        "label": "在緊急存取時發出警示",
+        "description": "當有人使用緊急存取連線時，通知核准者。"
+      }
+    },
+    "host": {
+      "enable": {
+        "label": "特權主機",
+        "description": "連線至此主機的 SSH 與遠端桌面工作階段需要經過核准。"
+      },
+      "approverRoles": {
+        "label": "核准者角色",
+        "description": "以逗號分隔的角色名稱，其成員可進行核准。留空則允許任何擁有核准權限的使用者決定。"
+      },
+      "maxHours": {
+        "label": "最長存取時間（小時）",
+        "description": "單一請求可申請的最長小時數。"
+      },
+      "requireReason": {
+        "label": "要求提供原因",
+        "description": "請求必須說明需要存取的原因。"
+      },
+      "requireTicket": {
+        "label": "要求提供工單",
+        "description": "請求必須提供工單編號。"
+      },
+      "allowBackground": {
+        "label": "允許背景工作通過",
+        "description": "輪詢與其他非互動式外掛連線將跳過核准流程。若關閉此選項，則會阻斷所有未經授權的工作階段。"
+      }
+    }
+  },
+  "operations": {
+    "request": {
+      "title": "申請特權存取",
+      "hours": "小時",
+      "reason": "原因",
+      "ticket": "工單"
+    },
+    "pending": {
+      "title": "待決定的存取請求"
+    },
+    "status": {
+      "title": "特權存取"
+    },
+    "events": {
+      "requested": "有人申請了存取權限",
+      "approved": "存取權限已核准",
+      "bypassed": "已使用緊急存取"
+    }
+  }
+}

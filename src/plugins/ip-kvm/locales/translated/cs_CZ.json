@@ -1,0 +1,226 @@
+{
+  "plugin": {
+    "name": "IP-KVM",
+    "description": "Zobrazujte a ovládejte stroje prostřednictvím zařízení PiKVM, NanoKVM a JetKVM."
+  },
+  "tab": {
+    "title": "KVM"
+  },
+  "card": {
+    "title": "KVM",
+    "loading": "Načítání"
+  },
+  "host": {
+    "open": "KVM"
+  },
+  "permissions": {
+    "view": {
+      "title": "Zobrazit KVM",
+      "description": "Otevřete kartu KVM a zobrazte, které KVM jsou online a jaký stav napájení hlásí."
+    },
+    "power": {
+      "title": "Ovládat napájení",
+      "description": "Zapínejte a vypínejte stroje a resetujte je prostřednictvím jejich KVM, nebo je probouzejte pomocí Wake-on-LAN."
+    },
+    "console": {
+      "title": "Používat obrazovku",
+      "description": "Zobrazte obrazovku stroje a používejte jeho klávesnici a myš."
+    },
+    "media": {
+      "title": "Používat virtuální média",
+      "description": "Připojujte a odpojujte ISO obrazy na stroji."
+    },
+    "manage": {
+      "title": "Spravovat KVM",
+      "description": "Přidávejte, měňte a odebírejte KVM."
+    }
+  },
+  "settings": {
+    "admin": {
+      "maxSessionMinutes": {
+        "label": "Maximální délka relace obrazovky (minuty)",
+        "description": "Relace obrazovky skončí po této době. Pro žádné omezení použijte 0."
+      }
+    }
+  },
+  "description": "Přidejte své IP-KVM, abyste mohli zobrazovat a ovládat stroje za nimi. Termix se připojuje k KVM, takže obrazovka funguje i tehdy, když se k ní váš prohlížeč nedostane. Přihlašovací údaje jsou uloženy šifrovaně a nikdy se nezobrazí znovu.",
+  "summary": "{{count}} KVM, {{attention}} offline",
+  "empty": "Zatím žádné KVM.",
+  "add": "Přidat KVM",
+  "edit": "Upravit",
+  "delete": "Smazat",
+  "back": "Zpět",
+  "saved": "Uloženo",
+  "deleteConfirm": "Smazat {{name}}?",
+  "status": {
+    "unknown": "Ještě nečteno",
+    "up": "Online",
+    "down": "Offline"
+  },
+  "drivers": {
+    "pikvm": "PiKVM",
+    "glkvm": "GL.iNet Comet (GLKVM)",
+    "nanokvm": "NanoKVM",
+    "jetkvm": "JetKVM"
+  },
+  "fields": {
+    "username": "Uživatelské jméno",
+    "password": "Heslo"
+  },
+  "power": {
+    "on": "Zapnuto",
+    "off": "Vypnuto",
+    "unknown": "Neznámý",
+    "state": "Stroj je {{state}}.",
+    "sent": "Požádáno {{name}} o změnu napájení",
+    "sentShort": "Příkaz napájení odeslán",
+    "wake": "Wake on LAN",
+    "woke": "Probuzovací paket odeslán",
+    "action": {
+      "on": "Zapnout",
+      "off": "Vypnout",
+      "graceful-shutdown": "Vypnout",
+      "reset": "Resetovat"
+    },
+    "confirm": {
+      "on": "Zapnout {{name}}?",
+      "off": "Odpojit napájení {{name}}? Systém se neukončí čistě.",
+      "graceful-shutdown": "Požádat {{name}} o vypnutí?",
+      "reset": "Resetovat {{name}}? Systém se okamžitě restartuje."
+    }
+  },
+  "form": {
+    "addTitle": "Přidat KVM",
+    "editTitle": "Upravit KVM",
+    "device": "KVM",
+    "access": "Přístup",
+    "machine": "Stroj za KVM",
+    "type": "Typ",
+    "name": "Název",
+    "address": "Adresa",
+    "port": "Port",
+    "host": "Termix host",
+    "hostHint": "Propojte KVM s hostitelem, ke kterému patří. Bude se pak řídit sdílením tohoto hostitele a zobrazovat se v jeho nabídce.",
+    "noHost": "Žádný",
+    "poll": "Kontrola každých (sekund)",
+    "pollHint": "Minimálně 30 sekund.",
+    "scheme": "Připojení",
+    "ca": "Certifikát",
+    "caHint": "Vložte PEM soukromé certifikační autority, nebo použijte Důvěřovat tomuto certifikátu pro KVM s vlastním self-signed certifikátem. Nechte prázdné pro důvěryhodný certifikát.",
+    "caSet": "Certifikát je uložen. Vložte nový pro nahrazení.",
+    "keepLogin": "Nechte prázdné pro zachování uloženého přihlášení",
+    "test": "Otestovat připojení",
+    "testOk": "KVM odpověděl ({{model}}).",
+    "testNeedsLogin": "Zadejte přihlášení znovu pro otestování.",
+    "mac": "MAC adresa",
+    "macHint": "Síťová karta stroje pro Wake-on-LAN.",
+    "broadcast": "Broadcast adresa",
+    "broadcastHint": "Kam má jít wake packet. Nechte prázdné pro 255.255.255.255.",
+    "save": "Uložit",
+    "add": "Přidat",
+    "trust": "Důvěřovat tomuto certifikátu",
+    "trustTitle": "Důvěřovat certifikátu tohoto KVM?",
+    "trustHint": "Termix bude komunikovat pouze s tímto KVM, pokud ukazuje přesně tento certifikát. Zkontrolujte, že otisk odpovídá tomu na zařízení.",
+    "certName": "Název: {{name}}",
+    "certValid": "platný do {{date}}",
+    "certExpired": "vypršel {{date}}",
+    "pinned": "Důvěryhodný certifikát",
+    "unpin": "Odstranit"
+  },
+  "view": {
+    "screen": "Obrazovka",
+    "power": "Napájení",
+    "media": "Virtuální média",
+    "info": "Informace",
+    "refresh": "Načíst nyní",
+    "type": "Typ",
+    "address": "Adresa",
+    "model": "Model",
+    "version": "Software",
+    "hostname": "Název",
+    "video": "Video",
+    "noSignal": "Žádný signál",
+    "status": "KVM",
+    "jetHint": "Video z JetKVM jde přímo z JetKVM do vašeho prohlížeče, takže váš prohlížeč musí mít přístup k němu v síti."
+  },
+  "screen": {
+    "connecting": "Připojování",
+    "failed": "Nelze otevřít obrazovku.",
+    "ended": "Relace obrazovky skončila.",
+    "hint": "Klikněte na obrazovku pro psaní.",
+    "shortcuts": "Zkratky",
+    "shortcut": {
+      "ctrl-alt-del": "Ctrl+Alt+Del",
+      "alt-tab": "Alt+Tab",
+      "alt-f4": "Alt+F4",
+      "ctrl-esc": "Ctrl+Esc",
+      "win-l": "Win+L",
+      "win-d": "Win+D",
+      "ctrl-alt-f1": "Ctrl+Alt+F1",
+      "ctrl-alt-f2": "Ctrl+Alt+F2",
+      "ctrl-alt-f7": "Ctrl+Alt+F7",
+      "print-screen": "Print Screen"
+    },
+    "paste": "Vložit text",
+    "pasteLabel": "Text pro zadání na stroji",
+    "type": "Zadat",
+    "snapshot": "Snímek obrazovky",
+    "fullscreen": "Celá obrazovka",
+    "exitFullscreen": "Ukončit režim celé obrazovky",
+    "reconnect": "Znovu připojit"
+  },
+  "media": {
+    "none": "Žádný obrazový soubor není připojen.",
+    "mountedNow": "Připojeno: {{name}}",
+    "as": "Zobrazit jako",
+    "cd": "CD mechanika",
+    "usb": "USB disk",
+    "empty": "Na tomto KVM nejsou žádné obrazové soubory.",
+    "mount": "Připojit",
+    "eject": "Vysunout",
+    "mountedDone": "Obrazový soubor připojen",
+    "ejected": "Obrazový soubor vysunut",
+    "url": "Stáhnout obrazový soubor z",
+    "name": "Uložit jako",
+    "fetch": "Stáhnout na KVM",
+    "fetched": "Obrazový soubor stažen"
+  },
+  "operations": {
+    "device": "KVM",
+    "list-devices": {
+      "title": "Seznam KVM"
+    },
+    "poll": {
+      "title": "Přečíst KVM nyní"
+    },
+    "power-state": {
+      "title": "Získat stav napájení"
+    },
+    "power-on": {
+      "title": "Zapnout"
+    },
+    "graceful-shutdown": {
+      "title": "Vypnout"
+    },
+    "power-off": {
+      "title": "Vypnout napájení"
+    },
+    "reset": {
+      "title": "Resetovat"
+    },
+    "wake": {
+      "title": "Wake-on-LAN"
+    },
+    "eject-media": {
+      "title": "Vysunout obrazový soubor"
+    },
+    "health": {
+      "title": "Stav KVM"
+    }
+  },
+  "widget": {
+    "name": "KVM zařízení",
+    "description": "Která z vašich IP-KVM jsou spuštěná.",
+    "summary": "{{up}} z {{total}} spuštěných"
+  }
+}

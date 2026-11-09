@@ -1,0 +1,316 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Halda DNS-i kirjeid ja domeene Cloudflare'is, Route 53-s, Namecheapis ja teistes teenustes."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domeenid",
+    "loading": "Laadimine",
+    "empty": "Domeene pole veel. Ava DNS, et lisada sisselogimisandmed.",
+    "ok": "{{domains}} domeeni, ühtegi ei aegune peagi",
+    "failingLinks": "Vigaseisundis on {{count}} seotud kirjet"
+  },
+  "permissions": {
+    "view": {
+      "title": "Vaata DNS-i",
+      "description": "Ava DNS-vahekaart ja vaata tsoone, kirjeid, domeene ja tervisekontrolli."
+    },
+    "edit": {
+      "title": "Muuda DNS-kirjeid",
+      "description": "Lisa, muuda ja kustuta kirjeid, impordi tsoonifaile ja värskenda domeene."
+    },
+    "manage": {
+      "title": "Halda DNS-sisselogimisi",
+      "description": "Lisa pakkujate sisselogimised, seosta kirjed hostidega, jälgige domeene ja taasta tsoonide koopiad."
+    }
+  },
+  "operations": {
+    "zone": "Tsoon",
+    "type": "Tüüp",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Nimi",
+    "content": "Väärtus",
+    "contentOptional": "Väärtus (jätta tühjaks, et sobida kõigiga)",
+    "ttl": "TTL sekundites",
+    "label": "Silt",
+    "zones": {
+      "title": "DNS-tsoonide loendamine"
+    },
+    "records": {
+      "title": "DNS-kannete loendamine"
+    },
+    "domains": {
+      "title": "Domeenide ja aegumiskuupäevade loendamine"
+    },
+    "check": {
+      "title": "Tsooni kontrollimine"
+    },
+    "upsert": {
+      "title": "Lisa DNS-i kirje"
+    },
+    "delete": {
+      "title": "Kustuta DNS-i kirje"
+    },
+    "snapshot": {
+      "title": "Salvesta tsooni koopia"
+    },
+    "links": {
+      "title": "Uuenda seotud kirjeid"
+    },
+    "expiry": {
+      "title": "Domeeni aegumine"
+    }
+  },
+  "description": "Lisa oma DNS-i ja domeeniregistri sisselogimisandmed, et hallata kirjeid ja jälgida domeene ühest kohast. Võtit hoitakse krüpteeritult ja neid ei kuvata kunagi uuesti.",
+  "summary": "{{zones}} tsooni, {{domains}} domeeni",
+  "saved": "Salvestatud",
+  "delete": "Kustuta",
+  "edit": "Muuda",
+  "back": "Tagasi",
+  "refresh": "Värskenda",
+  "section": {
+    "zones": "Tsoonid",
+    "domains": "Domeenid",
+    "links": "Lingid",
+    "accounts": "Sisselogimised"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "API-võti",
+    "accessKeyId": "Juurdepääsupiirde ID",
+    "secretAccessKey": "Salajane juurdepääsupiirde võti",
+    "sessionToken": "Sessiooni võti (valikuline)",
+    "apiUser": "API-kasutaja",
+    "apiKey": "API-võti",
+    "userName": "Kasutajanimi (kui erineb API-kasutajast)",
+    "clientIp": "Lubatud IP-aadress",
+    "apiSecret": "API saladus",
+    "environment": "Keskkond",
+    "environment_production": "Tootmine",
+    "environment_ote": "Test (OTE)",
+    "secretApiKey": "Salajane API- võti",
+    "token": "Isiklik ligipääsetoken"
+  },
+  "zones": {
+    "empty": "Tsoone pole veel lisatud.",
+    "emptyHint": "Lisa Logides pakkuja sisselogimisandmed, et näha selle tsoone."
+  },
+  "zone": {
+    "records": "Kirjed",
+    "health": "Tervisekontroll",
+    "copies": "Koopiaid",
+    "files": "Failid",
+    "filter": "Filtreeri kirjeid",
+    "empty": "Kirjeid pole."
+  },
+  "record": {
+    "section": "Kirje",
+    "addTitle": "Lisa kirje",
+    "editTitle": "Muuda kirjet",
+    "add": "Lisa kirje",
+    "save": "Salvesta",
+    "type": "Tüüp",
+    "name": "Nimi",
+    "nameHint": "Kasuta @ tsooni {{zone}} enda tähistamiseks",
+    "value": "Väärtus",
+    "priority": "Prioriteet",
+    "ttl": "TTL (sekundites)",
+    "ttlHint": "Kui kaua lahendajad vastust salvestavad. 300 on 5 minutit.",
+    "ttlAuto": "1 tähendab automaatset.",
+    "proxied": "Proksitud",
+    "proxiedHint": "Suuna liiklus läbi Cloudflare'i.",
+    "proxiedBadge": "Proksitud",
+    "comment": "Märkus",
+    "readOnly": "Pakkuja hallatav",
+    "deleteConfirm": "Kas kustutada {{type}} kirje {{name}}?"
+  },
+  "account": {
+    "add": "Lisa sisselogimine",
+    "addTitle": "Lisa DNS-i sisselogimine",
+    "editTitle": "Muuda DNS-i sisselogimist",
+    "save": "Salvesta",
+    "login": "Sisselogimine",
+    "provider": "Pakkuja",
+    "name": "Nimi",
+    "namePlaceholder": "Põhiline Cloudflare",
+    "keep": "Jäta tühjaks, et säilitada salvestatud väärtus",
+    "registrar": "See pakkuja on ka domeeniregistraar, seega tema domeenid kuvatakse Domeenides.",
+    "options": "Valikud",
+    "autoBackup": "Hoia tsoonide koopiaid",
+    "autoBackupHint": "Salvesta koopia enne iga muudatust ja kui tsoon muutub Termixi väljaspool.",
+    "checkHealth": "Kontrolli tsoone igal päeval",
+    "checkHealthHint": "Käivita tervisekontrollid igapäevaselt ja teata uuesti probleemidest.",
+    "test": "Testi",
+    "testOk": "Töötab. Leiti {{zones}} tsooni ja {{domains}} domeeni.",
+    "deleteConfirm": "Kas kustutada {{name}}? Selle koopiad ja lingid kustutatakse samuti. Pakujal midagi ei muutu.",
+    "empty": "Sisselogimisi pole veel lisatud.",
+    "emptyHint": "Alusta Cloudflare'i, Route 53, Namecheap või muu pakkuja sisselogimise lisamisega.",
+    "lastSync": "Viimati kontrollitud {{date}}",
+    "never": "Pole veel kontrollitud",
+    "failed": "Sisselogimine ebaõnnestus"
+  },
+  "domains": {
+    "empty": "Domeene pole veel lisatud.",
+    "emptyHint": "Registraari sisselogimised loetlevad oma domeenid siin. Saad jälgida ka suvalist domeeni nime järgi.",
+    "watchPlaceholder": "example.com",
+    "watch": "Jälgi domeeni",
+    "unwatch": "Peata jälgimine",
+    "watched": "Jälgitavad",
+    "noRenew": "Automaatne uuendamine väljas",
+    "unlocked": "Pole lukustatud",
+    "unknown": "Registraar on tundmatu",
+    "expires": "Aegub {{date}}",
+    "expired": "Aegunud",
+    "days": "{{count}} päeva jäänud",
+    "refreshFailed": "{{count}} päringut ebaõnnestus"
+  },
+  "link": {
+    "add": "Lisa link",
+    "addTitle": "Lisa link",
+    "editTitle": "Muuda linki",
+    "save": "Salvesta",
+    "record": "Kirje",
+    "address": "Aadress",
+    "zone": "Tsoon",
+    "pickZone": "Vali tsoon",
+    "source": "Suuna see",
+    "sourceHost": "Hostile",
+    "sourcePublic4": "Selle serveri avalikule IPv4-aadressile",
+    "sourcePublic6": "Selle serveri avalikule IPv6-aadressile",
+    "source_host": "Host",
+    "source_public4": "Avalik IPv4",
+    "source_public6": "Avalik IPv6",
+    "host": "Host",
+    "pickHost": "Vali host",
+    "hostHint": "Kirje järgib hosti aadressi. See uueneb, kui hosti aadress muutub.",
+    "publicHint": "Termix otsib üles oma avaliku aadressi ja hoiab kirjet sünkroonis, nagu dünaamiline DNS.",
+    "enabled": "Hoia see kirje uuendatuna",
+    "empty": "Linke pole veel.",
+    "emptyHint": "Link hoiab kirjet suunatud kas hostile või selle serveri avalikule aadressile.",
+    "off": "Väljas",
+    "hostGone": "Hosti ei leitud",
+    "lastSync": "Kontrollitud {{date}}",
+    "never": "Pole veel kontrollitud",
+    "syncNow": "Uuenda nüüd",
+    "updated": "Kirje uuendati",
+    "unchanged": "Kirje oli juba õige",
+    "deleteConfirm": "Kas eemaldada link domeenile {{name}}? Kirje jääb oma praegusele asukohale."
+  },
+  "diff": {
+    "none": "Midagi ei muutuks.",
+    "add": "Lisa",
+    "change": "Muuda",
+    "remove": "Eemalda"
+  },
+  "copies": {
+    "hint": "Koopiaid salvestatakse enne iga muudatust ja kord päevas, kui tsoon muutus Termixi väljaspool.",
+    "save": "Salvesta koopia",
+    "saved": "Koopia salvestatud",
+    "manualLabel": "Manuaalne koopia",
+    "empty": "Koopiaid pole veel.",
+    "count": "{{count}} kirjet",
+    "compare": "Võrdle praegusega",
+    "restore": "Taasta",
+    "restoreConfirm": "Kas taastada see koopia? Pakujal tehakse {{count}} muudatust. Praeguste kirjete koopia salvestatakse esmalt.",
+    "restored": "Taastatud. Tehtud {{count}} muudatust.",
+    "source": {
+      "manual": "Manuaalne",
+      "auto": "Igapäevane",
+      "before": "Enne muudatust"
+    }
+  },
+  "files": {
+    "export": "Laadi alla tsoonifail",
+    "exportHint": "Laadi kirjed alla BINDi tsoonifailina.",
+    "import": "Impordi tsoonifail",
+    "placeholder": "Kleepige siia BINDi tsoonifail",
+    "replace": "Eemalda failis puuduvad kirjed",
+    "replaceHint": "Mitteseadistatud: import lisab ja muudab ainult kirjeid.",
+    "preview": "Eelvaade",
+    "apply": "Rakenda",
+    "applied": "Imporditud. Tehtud {{count}} muudatust.",
+    "skipped": "Jäetud vahele:"
+  },
+  "health": {
+    "run": "Käivita kontrollid",
+    "running": "Töötamine",
+    "propagation": "Kontrolli lahendajaid",
+    "propagationTitle": "Avalikud lahendajad",
+    "lastRun": "Viimati käivitatud {{date}}",
+    "empty": "Selle tsooni jaoks ei ole ühtegi kontrolli veel käivitatud.",
+    "record": "Kirje",
+    "resolver": "Lahendaja",
+    "answer": "Vastus",
+    "noAnswer": "Vastust ei ole",
+    "delegation": {
+      "error": "Nimeservereid ei õnnestunud otsida.",
+      "none": "Tsoonil pole internetis nimeservereid. Domeen võib viidata teisele teenusepakkujale.",
+      "mismatch": "Domeen kasutab teisi nimeservereid kui teenusepakkuja: {{found}}.",
+      "ok": "Domeen viitab {{count}} nimeserverile."
+    },
+    "soa": {
+      "differ": "Nimeserverid ei nõustu tsooni versiooniga ({{count}} versiooni). Muudatus võib veel levimas olla.",
+      "same": "{{count}} nimeserverit nõustub tsooni versiooniga."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC-i ei õnnestunud kontrollida.",
+      "off": "DNSSEC ei ole sisse lülitatud.",
+      "valid": "DNSSEC on sisse lülitatud ja kehtiv.",
+      "broken": "DNSSEC on registreerija juures seadistatud, kuid ei kehti. Lahendajad, mis seda kontrollivad, ebaõnnestuvad."
+    },
+    "cname": {
+      "conflict": "{{name}}-l on CNAME ja teisi kirjeid. See ei ole lubatud.",
+      "apex": "Tsooni juurest ei saa olla CNAME.",
+      "dangling": "{{name}} viitab {{target}}-ile, mida ei lahendata.",
+      "ok": "Iga CNAME-i sihtmärk lahendatakse."
+    },
+    "spf": {
+      "missing": "Domeen saab postkasti, kuid SPF-kirjet pole.",
+      "multiple": "SPF-kirjeid on rohkem kui üks. Postiserverid keelduvad kõigist neist.",
+      "lookups": "SPF-kirje teeb {{count}} otsingut. Piir on 10.",
+      "ok": "SPF on seadistatud ({{count}} otsingut)."
+    },
+    "dmarc": {
+      "missing": "DMARC-kirjet pole.",
+      "none": "DMARC on seadistatud ainult jälgimiseks.",
+      "ok": "DMARC on seadistatud."
+    },
+    "dkim": {
+      "none": "Selles tsoonis ei leitud ühtegi DKIM-võtit.",
+      "found": "Leiti {{count}} DKIM-võtit."
+    },
+    "mx": {
+      "unresolved": "Postiserverit {{host}} ei lahendata."
+    },
+    "mail": {
+      "none": "Domeenil pole postikirjeid."
+    },
+    "caa": {
+      "ok": "CAA-kirjed piiravad, kes võib sertifikaate välja anda.",
+      "none": "CAA-kirjeid pole. Iga sertifikaadi väljastaja võib sertifikaate välja anda."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domeenid, aeguvad domeenid ja ebaõnnestunud kirjed.",
+    "domains": "Domeenid",
+    "expiring": "Peagi aeguv",
+    "failingLinks": "Ebaõnnestunud lingid",
+    "failingAccounts": "Ebaõnnestunud sisselogimised"
+  }
+}

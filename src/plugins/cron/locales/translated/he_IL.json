@@ -1,0 +1,210 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "צפה, הוסף והפעל משימות cron במארחים שלך, עם תצוגה מקדימה של לוח הזמנים וקבצי ה-cron של המערכת."
+  },
+  "common": {
+    "save": "שמירה",
+    "cancel": "ביטול",
+    "back": "חזרה",
+    "delete": "מחיקה"
+  },
+  "permissions": {
+    "use": {
+      "title": "שימוש ב-Cron",
+      "description": "צפה במשימות cron במארחים שבהם ניתן לגשת, ושנה אותם במארחים שבהם יש לך הרשאות עריכה."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "נהל משימות cron במארח זה דרך הלשונית Cron."
+      },
+      "useSudo": {
+        "label": "השתמש ב-sudo",
+        "description": "השתמש ב-sudo עבור קבצי crontab של משתמשים אחרים ו-/etc/cron.d. כבה אם ההתחברות היא כ-root."
+      },
+      "readOnly": {
+        "label": "לקריאה בלבד",
+        "description": "הצג משימות cron אך לעולם אל תשנה אותן במארח זה."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "פתח את Cron ממארח.",
+    "error": "לא ניתן היה לטעון את cron מהמארח הזה.",
+    "disabled": "Cron כבוי עבור מארח זה. הפעל אותו בהגדרות המארח.",
+    "sudo": "נדרשת התחברות כ-root, sudo ללא סיסמה או סיסמת Sudo שמורה.",
+    "refresh": "רענן",
+    "running": "Cron פועל",
+    "stopped": "Cron הופסק",
+    "readOnly": "קריאה בלבד",
+    "notInstalled": "לא מותקן",
+    "notInstalledTitle": "Cron אינו מותקן במארח זה",
+    "notInstalledHint": "התקן את cron או cronie באמצעות מנהל החבילות של המארח, ולאחר מכן רענן.",
+    "notRunning": "שירות ה-cron אינו פועל, ולכן לא יבוצעו משימות.",
+    "viewJobs": "משימות",
+    "viewSystem": "מערכת",
+    "viewLogs": "יומנים"
+  },
+  "jobs": {
+    "add": "הוסף משימה",
+    "user": "Crontab של",
+    "ownUser": "{{user}} (התחברות)",
+    "search": "חפש משימות",
+    "editText": "ערוך כטקסט",
+    "empty": "אין עדיין משימות cron.",
+    "noMatch": "לא נמצאו משימות תואמות.",
+    "off": "כבוי",
+    "next": "בעוד {{time}}",
+    "run": "הפעל עכשיו",
+    "runTitle": "להריץ את המשימה הזו עכשיו?",
+    "runDesc": "זה יריץ את {{command}} פעם אחת כמשתמש של crontab. זה ייפסק אחרי 2 דקות.",
+    "runFailed": "לא ניתן להריץ את המשימה.",
+    "turnOn": "להפעיל",
+    "turnOff": "לכבות",
+    "deleteTitle": "למחוק את המשימה הזו?",
+    "loadFailed": "לא ניתן לקרוא את crontab.",
+    "saveFailed": "לא ניתן לשמור את crontab.",
+    "outputTitle": "פלט משימה",
+    "exitOk": "הסתיים",
+    "exitCode": "קוד יציאה {{code}}",
+    "noOutput": "המשימה לא הדפיסה כלום."
+  },
+  "form": {
+    "addTitle": "משימה חדשה",
+    "editTitle": "עריכת משימה",
+    "forUser": "קובץ crontab של {{user}}",
+    "label": "תווית",
+    "labelHint": "נשמר כהערה מעל המשימה.",
+    "labelPlaceholder": "גיבוי לילי",
+    "command": "פקודה",
+    "commandHint": "מבוצע עם sh בתיקיית הבית של המשתמש. % מתחיל את הקלט ש-cron שולח, כתוב \\% עבור אחת אמיתית.",
+    "schedule": "לוח זמנים",
+    "scheduleHint": "דקה, שעה, יום בחודש, חודש ויום בשבוע, או מילה כמו @daily.",
+    "scheduleInvalid": "זהו לוח זמנים לא תקין.",
+    "nextRuns": "הפעלות הבאות ({{zone}}):",
+    "enabled": "פעיל",
+    "enabledHint": "משימה כבויה נשארת בקובץ crontab כהערה.",
+    "saved": "נשמר."
+  },
+  "presets": {
+    "everyMinute": "כל דקה",
+    "every5": "כל 5 דקות",
+    "every15": "כל 15 דקות",
+    "hourly": "שעתי",
+    "daily": "יומי",
+    "weekly": "שבועי",
+    "monthly": "חודשי",
+    "reboot": "בהפעלה"
+  },
+  "schedule": {
+    "reboot": "בהפעלה",
+    "everyMinute": "כל דקה",
+    "everyNMinutes": "כל {{n}} דקות",
+    "hourlyAt": "כל שעה בדקה {{minute}}",
+    "everyNHours": "כל {{n}} שעות בדקה {{minute}}",
+    "dailyAt": "כל יום ב-{{time}}",
+    "weekdaysAt": "בימים א'-ה' ב-{{time}}",
+    "weeklyAt": "כל {{day}} ב-{{time}}",
+    "monthlyAt": "ביום {{day}} של כל חודש ב-{{time}}",
+    "custom": "לוח זמנים מותאם אישית",
+    "invalid": "לוח זמנים לא תקין"
+  },
+  "days": {
+    "0": "ראשון",
+    "1": "שני",
+    "2": "שלישי",
+    "3": "רביעי",
+    "4": "יום חמישי",
+    "5": "יום שישי",
+    "6": "יום שבת"
+  },
+  "raw": {
+    "title": "Crontab כטקסט",
+    "hint": "משימה אחת בשורה. המארח בודק את הטקסט ושומר את קובץ ה-crontab הישן אם יש שגיאות."
+  },
+  "system": {
+    "add": "קובץ חדש",
+    "addTitle": "קובץ חדש ב-/etc/cron.d",
+    "edit": "עריכה",
+    "name": "שם הקובץ",
+    "nameHint": "נשמר כ-/etc/cron.d/<name>. Cron דולג על שמות עם נקודות.",
+    "nameInvalid": "השתמש רק באותיות, מספרים, - ו-_.",
+    "content": "תוכן הקובץ",
+    "fileHint": "כל משימה כוללת את שם המשתמש שברירת המחדל שלו: דקה שעה יום חודש יום בשבוע משתמש פקודה. כל שורה נבדקת לפני השמירה.",
+    "noJobs": "אין משימות בקובץ זה.",
+    "readHint": "חלק מהקבצים עשויים להיות מוסתרים ללא הרשאות root. שינויים כאן דורשים התחברות כ-root, sudo ללא סיסמה או סיסמת Sudo ששמורה.",
+    "timers_one": "למארח זה יש גם {{count}} תזמון systemd. תוסף השירותים מנהל אותו.",
+    "timers_two": "למארח זה יש גם {{count}} תזמוני systemd. תוסף השירותים מנהל אותם.",
+    "timers_other": "למארח זה יש גם {{count}} תזמוני systemd. תוסף השירותים מנהל אותם.",
+    "deleteTitle": "למחוק את /etc/cron.d/{{name}}?",
+    "deleteDesc": "עותק נשמר ב-/var/lib/termix-cron/backup.",
+    "deleted": "נמחק {{name}}.",
+    "saved": "נשמר {{name}}.",
+    "loadFailed": "לא ניתן לקרוא את קבצי ה-cron של המערכת.",
+    "saveFailed": "לא ניתן לשמור את הקובץ.",
+    "period": {
+      "hourly": "מריץ כל שעה",
+      "daily": "מריץ כל יום",
+      "weekly": "מריץ כל שבוע",
+      "monthly": "מריץ כל חודש"
+    }
+  },
+  "logs": {
+    "lines": "שורות",
+    "lineCount_one": "{{count}} שורה",
+    "lineCount_two": "{{count}} שורות",
+    "lineCount_other": "{{count}} שורות",
+    "source": "מ-{{source}}",
+    "noSource": "לא נמצא יומן cron במארח זה.",
+    "empty": "אין שורות יומן.",
+    "failed": "לא ניתן לקרוא את יומן ה-Cron."
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "הפעל את Cron עבור מארח זה בהגדרותיו כדי להציג את המשימות שלו כאן."
+  },
+  "operations": {
+    "list": {
+      "title": "הצגת משימות Cron"
+    },
+    "enable": {
+      "title": "הפעלת משימת Cron"
+    },
+    "disable": {
+      "title": "כיבוי משימת Cron"
+    },
+    "run": {
+      "title": "הפעלת משימת Cron עכשיו"
+    },
+    "delete": {
+      "title": "מחיקת משימת Cron"
+    },
+    "jobs": {
+      "title": "משימות Cron",
+      "schedule": "לוח זמנים",
+      "command": "פקודה"
+    },
+    "status": {
+      "title": "מצב Cron"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "בדיקת מארחים...",
+    "summary_one": "{{count}} משימה ב-{{hosts}} מארחים",
+    "summary_two": "{{count}} משימות ב-{{hosts}} מארחים",
+    "summary_other": "{{count}} משימות ב-{{hosts}} מארחים",
+    "refresh": "בדיקה שוב",
+    "empty": "הפעל את Cron עבור מארח כדי להציג אותו כאן.",
+    "stopped": "לא פעיל",
+    "missing": "לא מותקן",
+    "jobs_one": "{{count}} משימה",
+    "jobs_two": "{{count}} משימות",
+    "jobs_other": "{{count}} משימות",
+    "off": "{{count}} כבויים"
+  }
+}

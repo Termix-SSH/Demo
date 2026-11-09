@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Barošanas, sensoru, notikumu žurnālu un konsoles pārvaldība serveru BMC ierīcēm, izmantojot Redfish, IPMI un Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Ielādē"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "Apskatīt BMC ierīces",
+      "description": "Atveriet Out-of-band cilni un apskatiet barošanas, veselības stāvokļa, sensoru un žurnālu informāciju."
+    },
+    "power": {
+      "title": "Pārvaldīt barošanu un ielādi",
+      "description": "Ieslēdziet un izslēdziet ierīces, veiciet barošanas ciklu un izvēlieties nākamo ielādes ierīci."
+    },
+    "console": {
+      "title": "Izmantot seriālo kon soli",
+      "description": "Atvērt ierīces seriālo LAN kon soli."
+    },
+    "media": {
+      "title": "Izmantot virtuālo mediju",
+      "description": "Pievienot un izņemt ISO attēlus ierīcē."
+    },
+    "manage": {
+      "title": "Pārvaldīt BMC",
+      "description": "Pievienot, mainīt un noņemt BMC, kā arī notīrīt to notikumu žurnālus."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Palaist ipmitool Termix serverī",
+        "description": "Ja ir izslēgts, IPMI BMC ir jāizmanto starpniekserveris. Redfish un AMT netiek ietekmēti."
+      }
+    }
+  },
+  "description": "Pievienojiet sava servera pārvaldības kontrolierus (BMC), lai tos ieslēgtu un izslēgtu, uzraudzītu to sensorus un lasītu notikumu žurnālus. Pieteikšanās dati tiek glabāti šifrētā veidā un vairs netiek rādīti.",
+  "summary": "{{count}} BMC, {{attention}} prasa uzmanību",
+  "empty": "Vēl nav BMC.",
+  "add": "Pievienot BMC",
+  "edit": "Rediģēt",
+  "delete": "Dzēst",
+  "back": "Atpakaļ",
+  "saved": "Saglabāts",
+  "deleteConfirm": "Dzēst {{name}}?",
+  "status": {
+    "unknown": "Vēl nav izlasīts",
+    "up": "Sasniedzams",
+    "down": "Nesasniedzams"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI pār LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Lietotājvārds",
+    "password": "Parole"
+  },
+  "power": {
+    "on": "Ieslēgts",
+    "off": "Izslēgts",
+    "unknown": "Nezināms",
+    "sent": "Lūgts {{name}} mainīt barošanas stāvokli",
+    "action": {
+      "on": "Ieslēgt",
+      "off": "Izslēgt",
+      "graceful-shutdown": "Izslēgt",
+      "cycle": "Pārlādēt",
+      "reset": "Atiestatīt"
+    },
+    "confirm": {
+      "on": "Ieslēgt {{name}}?",
+      "off": "Izslēgt barošanu ierīcei {{name}}? Sistēma netiks pareizi izslēgta.",
+      "graceful-shutdown": "Lūgt ierīcei {{name}} izslēgties?",
+      "cycle": "Pārlādēt ierīci {{name}}? Sistēma netiks pareizi izslēgta.",
+      "reset": "Atiestatīt ierīci {{name}}? Sistēma tiks nekavējoties restartēta."
+    }
+  },
+  "health": {
+    "ok": "Darbojas pareizi",
+    "warning": "Brīdinājums",
+    "critical": "Kritiski",
+    "unknown": "Nezināms"
+  },
+  "kind": {
+    "temperature": "Temperatūra",
+    "fan": "Ventilators",
+    "voltage": "Spriegums",
+    "power": "Jauda",
+    "psu": "Barošanas bloks",
+    "other": "Cits"
+  },
+  "form": {
+    "addTitle": "Pievienot BMC",
+    "editTitle": "Rediģēt BMC",
+    "device": "BMC",
+    "access": "Piekļuve",
+    "type": "Tips",
+    "name": "Nosaukums",
+    "address": "Adrese",
+    "port": "Ports",
+    "host": "Termix mezgls",
+    "hostHint": "Sasaistiet BMC ar to mezglu, kuram tas pieder. Tas tad sekos šī mezgla koplietošanas iestatījumiem un parādīsies tā mezgla izvēlnē.",
+    "noHost": "Nav",
+    "poll": "Lasīt ik pēc (sekundes)",
+    "pollHint": "Vismaz 30 sekundes, vai 60, ja tiek izmantots starpniekserveris.",
+    "scheme": "Savienojums",
+    "relay": "Starpniekserveris",
+    "relayHint": "Izpildiet ipmitool šajā serverī, nevis Termix serverī. Nepieciešams sērijveida konsolei.",
+    "noRelay": "Termix serveris",
+    "cipher": "Šifrēšanas komplekts",
+    "cipherHint": "Mainiet to tikai tad, ja BMC noraida pieteikšanos. Parasti tiek izmantots 3, jaunākiem BMC – 17.",
+    "ca": "CA sertifikāts",
+    "caHint": "Ielīmējiet BMC sertifikātu izdevēja PEM. Atstājiet tukšu, ja sertifikāts ir uzticams.",
+    "caSet": "CA ir saglabāta. Ielīmējiet jaunu, lai to aizvietotu.",
+    "keepLogin": "Atstājiet tukšu, lai saglabātu esošos pieteikšanās datus",
+    "test": "Testēt savienojumu",
+    "testOk": "BMC atbildēja. Barošana ir {{power}}.",
+    "testNeedsLogin": "Lūdzu, ievadiet pieteikšanās datus vēlreiz, lai veiktu testu.",
+    "save": "Saglabāt",
+    "add": "Pievienot"
+  },
+  "view": {
+    "overview": "Aplūks",
+    "sensors": "Sensori",
+    "log": "Notikumu žurnāls",
+    "boot": "Palaist",
+    "media": "Virtuālie datu nesēji",
+    "console": "Konsole",
+    "refresh": "Lasīt tagad",
+    "type": "Tips",
+    "address": "Adrese",
+    "power": "Barošana",
+    "health": "Stāvoklis",
+    "manufacturer": "Ražotājs",
+    "model": "Modelis",
+    "serial": "Sērijas numurs",
+    "bios": "BIOS",
+    "bmc": "BMC programnodrošinājums",
+    "status": "BMC",
+    "viaRelay": "Sasniegts caur starpniekserveri.",
+    "noSensors": "Šis BMC nesniedz sensoru datus.",
+    "sensor": "Sensors",
+    "reading": "Lasījums",
+    "state": "Stāvoklis"
+  },
+  "log": {
+    "time": "Laiks",
+    "severity": "Līmenis",
+    "message": "Notikums",
+    "empty": "Notikumu žurnāls ir tukšs.",
+    "clear": "Notīrīt žurnālu",
+    "clearConfirm": "Vai notīrīt {{name}} notikumu žurnālu? Šo darbību nevar atsaukt.",
+    "cleared": "Žurnāls notīrīts",
+    "level": {
+      "info": "Informācija",
+      "warning": "Brīdinājums",
+      "critical": "Kritisks"
+    }
+  },
+  "boot": {
+    "hint": "Dators no šīs ierīces tiks palaists tikai vienu reizi, pēc tam atgriezīsies pie parastās palaišanas secības. Pielietojiet pirms restartēšanas.",
+    "device": "Ielādēt no",
+    "mode": "Režīms",
+    "uefi": "UEFI",
+    "legacy": "Vecā stila BIOS",
+    "apply": "Iestatīt nākamajai ielādei",
+    "done": "Nākamajā reizē {{name}} tiks ielādēts no izvēlētās ierīces",
+    "pxe": "Tīkls (PXE)",
+    "disk": "Cietais disks",
+    "cd": "CD vai virtuālie nesēji",
+    "usb": "USB",
+    "bios": "BIOS iestatījumi",
+    "none": "Parastā secība"
+  },
+  "media": {
+    "url": "Attēla adrese",
+    "empty": "Šim BMC nav virtuālā CD slotas.",
+    "mounted": "Pievienots",
+    "free": "Tukšs",
+    "mount": "Pievienot",
+    "eject": "Izņemt",
+    "mountedDone": "Attēls pievienots",
+    "ejected": "Attēls izņemts"
+  },
+  "console": {
+    "hint": "Lai izietu no konsoles, ierakstiet ~.",
+    "connecting": "Notiek savienojuma izveide",
+    "ended": "Konsole tika aizvērta.",
+    "failed": "Neizdevās atvērt konsole.",
+    "needsRelay": "Seriālajai konsolei nepieciešams starpniekmezgls ar ipmitool. Izvēlieties to BMC iestatījumos."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Ielādēt no",
+    "uefi": "UEFI režīms",
+    "list": {
+      "title": "BMC saraksts"
+    },
+    "poll": {
+      "title": "Nolasīt BMC tagad"
+    },
+    "powerState": {
+      "title": "Iegūt barošanas stāvokli"
+    },
+    "power-on": {
+      "title": "Ieslēgt"
+    },
+    "graceful-shutdown": {
+      "title": "Izslēgt"
+    },
+    "power-off": {
+      "title": "Atslēgt barošanu"
+    },
+    "power-cycle": {
+      "title": "Pārstartēt barošanu"
+    },
+    "reset": {
+      "title": "Atiestatīt"
+    },
+    "setBootOnce": {
+      "title": "Ielādēt vienu reizi no ierīces"
+    },
+    "clearLog": {
+      "title": "Notīrīt notikumu žurnālu"
+    },
+    "health": {
+      "title": "BMC stāvoklis"
+    }
+  },
+  "widget": {
+    "name": "Ārpus joslas",
+    "description": "Jūsu serveru BMC barošanas un stāvokļa informācija.",
+    "summary": "Darbojas {{up}} no {{total}}"
+  }
+}

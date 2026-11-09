@@ -1,0 +1,237 @@
+{
+  "plugin": {
+    "name": "תעודות",
+    "description": "צפה, הנפק וחידש תעודות TLS על המארחים שלך באמצעות certbot ו-acme.sh, וקבל התראה לפני תפוגתן."
+  },
+  "common": {
+    "cancel": "ביטול",
+    "back": "חזרה"
+  },
+  "permissions": {
+    "use": {
+      "title": "שימוש בתעודות",
+      "description": "צפה בתעודות על מארחים שניתן להגיע אליהם, ושנה אותם על מארחים שיש לך הרשאת עריכה."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "תעודות",
+        "description": "נהל תעודות TLS על מארח זה מהלשונית תעודות."
+      },
+      "useSudo": {
+        "label": "השתמש ב-sudo",
+        "description": "השתמש ב-sudo לקריאה ושינוי תעודות. כבה אם ההתחברות היא כ-root."
+      },
+      "readOnly": {
+        "label": "קריאה בלבד",
+        "description": "הצג תעודות אך לעולם אל תשנה אותן במארח זה."
+      },
+      "expiryWarnDays": {
+        "label": "התרע לפני תפוגה",
+        "description": "תעודות עם מספר ימים זה או פחות שנותרו יוצגו כמתפוגגות וישלחו התראה."
+      },
+      "showPanel": {
+        "label": "הצג לוח תעודות בטרמינלים",
+        "description": "אפשר לפתוח את לוח התעודות ליד הטרמינל של SSH של מארח זה."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "פתח את לוח התעודות עם טרמינלים חדשים",
+        "description": "הצג את לוח התעודות ליד כל טרמינל SSH שיש לו תעודות מופעלות. עדיין ניתן לפתוח ולסגור אותו מהכפתור בקצה הימני."
+      },
+      "companionSide": {
+        "label": "צד לוח התעודות",
+        "description": "איפה לוח התעודות ממוקם ליד טרמינל.",
+        "right": "ימין",
+        "left": "שמאל",
+        "bottom": "תחתון"
+      },
+      "companionSize": {
+        "label": "גודל לוח האישורים",
+        "description": "רוחב בפיקסלים, או גובה כשהלוח ממוקם בתחתית. ניתן גם לגרור את שפת הלוח."
+      },
+      "companionEdgeButton": {
+        "label": "הצג את כפתור הלוח",
+        "description": "הצג כפתור קטן בשפת המסוף הימנית לפתיחת לוח האישורים."
+      }
+    }
+  },
+  "tab": {
+    "title": "אישורים",
+    "noHost": "פתח אישורים מארח.",
+    "error": "לא ניתן היה לטעון אישורים מארח זה.",
+    "disabled": "תעודות כבויות עבור מארח זה. הפעל אותן בהגדרות המארח.",
+    "sudo": "השינויים דורשים התחברות כ-root, sudo ללא סיסמה או סיסמת Sudo שמורה במארח זה.",
+    "refresh": "רענון",
+    "readOnly": "לקריאה בלבד",
+    "noClient": "לא נמצא certbot או acme.sh",
+    "viewCertificates": "תעודות",
+    "viewInspect": "בדיקה",
+    "viewRenewal": "חידוש"
+  },
+  "actions": {
+    "working": "מתבצע. זה עשוי לקחת מספר דקות.",
+    "ok": "הושלם",
+    "failed": "הפקודה נכשלה.",
+    "noOutput": "אין פלט."
+  },
+  "install": {
+    "title": "certbot ו-acme.sh לא מותקנים במארח זה",
+    "hint": "התקן את certbot כדי להשיג ולהחזיר תוקף לאתחולים מ-Let's Encrypt.",
+    "noManager": "לא נמצא מנהל חבילות נתמך. התקן את certbot ידנית.",
+    "button": "התקן את certbot",
+    "confirm": "להתקין את certbot?",
+    "desc": "פעולה זו מתקינה את certbot באמצעות מנהל החבילות של המארח.",
+    "working": "מתקין...",
+    "done": "certbot מותקן."
+  },
+  "certs": {
+    "search": "חיפוש תעודות",
+    "empty": "אין תעודות עדיין.",
+    "noMatch": "לא נמצאו תעודות תואמות.",
+    "loadFailed": "לא ניתן לקרוא את התעודות.",
+    "expires": "פג תוקף ב-{{date}}",
+    "staging": "סביבת בדיקות",
+    "details": "תעודה",
+    "manage": "ניהול",
+    "client": "לקוח",
+    "path": "קובץ",
+    "authority": "רשות",
+    "renew": "חידוש",
+    "renewDone": "התחדש {{name}}.",
+    "renewAll": "חדש הכל",
+    "renewAllDone": "התחדשו התעודות שהגיעו למועדן.",
+    "forceRenew": "חדש עכשיו בכל אופן",
+    "dryRun": "ריצת בדיקה",
+    "dryRunDone": "ריצת הבדיקה הצליחה.",
+    "revoke": "ביטול",
+    "revokeTitle": "לבטל את {{name}}?",
+    "revokeDesc": "הרשות מסמנת אותו כלא תקף והוא מוסר מהמארח הזה. כל דבר שעדיין משתמש בו יפסיק לעבוד.",
+    "revokeDone": "{{name}} נבטל.",
+    "delete": "הפסק ניהול",
+    "deleteTitle": "להפסיק לנהל את {{name}}?",
+    "deleteDesc": "התעודה תישאר תקפה אך לא תתחדש יותר. certbot גם ימחק את הקבצים שלה, בעוד acme.sh ישאיר אותם.",
+    "deleteDone": "{{name}} אינו מנוהל עוד."
+  },
+  "expiry": {
+    "expired": "פג תוקף",
+    "unknown": "לא ידוע",
+    "days_one": "נותר יום אחד",
+    "days_two": "נותרו {{count}} ימים",
+    "days_other": "נותרו {{count}} ימים"
+  },
+  "issue": {
+    "add": "הנפק תעודה",
+    "title": "תעודה חדשה",
+    "save": "הנפקה",
+    "done": "התעודה הונפקה.",
+    "working": "מבקש מהרשות המנפיקה. זה עשוי לקחת מספר דקות.",
+    "client": "לקוח",
+    "domains": "דומיינים",
+    "domainsPlaceholder": "הקלד דומיין ולחץ Enter",
+    "domainsHint": "הראשון מהם משמש כשם התעודה.",
+    "challenge": "אתגר",
+    "standalone": "עצמאי",
+    "standaloneHint": "מפעיל שרת אינטרנט קטן על פורט 80, כך שאף יישום אחר לא יכול להשתמש בפורט זה.",
+    "webroot": "שורש אתר",
+    "webrootHint": "מציב קובץ בתיקיית השרת שלך. שרת האינטרנט ממשיך לפעול.",
+    "dns": "DNS",
+    "dnsHint": "מוסיף רשומת DNS באמצעות ה-API של ספק השירות. נדרש עבור תעודות כוכבית (wildcard).",
+    "webrootPath": "תיקיית שורש אתר",
+    "webrootPathHint": "חייבת להיות בתוך /var/www, /srv או /usr/share/nginx.",
+    "dnsProvider": "ספק DNS",
+    "dnsProviderCertbot": "שם של תוסף DNS מותקן של certbot, כמו cloudflare.",
+    "dnsProviderAcme": "שם DNS של acme.sh ללא הקידומת dns_, כמו cf. אסימון ה-API שלו חייב להיות כבר מוגדר במארח.",
+    "credentials": "קובץ אישורים",
+    "credentialsHint": "הקובץ במארח המכיל את אסימון ה-API שלך. Termix לעולם לא קורא אותו.",
+    "email": "דוא״ל",
+    "emailHint": "אופציונלי. הרשות משתמשת בו להודעות על פקיעת תוקף.",
+    "keyType": "סוג מפתח",
+    "staging": "השתמש בשרת הניסויים",
+    "stagingHint": "למטרות בדיקה. התעודה אינה מאומתת, ומגבלות השימוש גבוהות משמעותית."
+  },
+  "inspect": {
+    "server": "שרת",
+    "file": "קובץ",
+    "address": "כתובת",
+    "addressPlaceholder": "example.com",
+    "port": "פורט",
+    "path": "נתיב קובץ",
+    "check": "בדיקה",
+    "hint": "בדוק מה שרת שולח דרך TLS, כפי שנתפס מהמארח הזה, או קרא קובץ תעודה עליו.",
+    "failed": "לא ניתן לקרוא את התעודה.",
+    "noOpenssl": "openssl לא מותקן במארח הזה.",
+    "trusted": "מוסמך",
+    "notTrusted": "לא מוסמך",
+    "leaf": "תעודה",
+    "intermediate": "שרשרת {{index}}",
+    "selfSigned": "חתימה עצמית",
+    "name": "שם",
+    "issuer": "מנפיק",
+    "domains": "דומיינים",
+    "validFrom": "תוקף מ",
+    "validTo": "תוקף עד",
+    "keyType": "מפתח",
+    "serial": "סידורי",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "כך המארח מתחדש באופן עצמאי. שנה זאת על המארח.",
+    "on": "פעיל",
+    "off": "כבוי",
+    "timer": "טיימר systemd",
+    "next": "הרצה הבאה {{time}}",
+    "cron": "קובץ Cron /etc/cron.d/certbot",
+    "certbotOff": "לא נמצא טיימר או משימת cron, ולכן התעודות לא יתחדשו באופן עצמאי.",
+    "acmeCron": "משימת cron ב-crontab",
+    "acmeOff": "לא נמצאה משימת cron, ולכן התעודות לא יתחדשו באופן עצמאי."
+  },
+  "watch": {
+    "start": "התרע אותי לפני שתעודות במארח זה פגות",
+    "stop": "עצור התראות עבור מארח זה",
+    "on": "תקבל התראה לפני שתעודות כאן פגות.",
+    "off": "התראות עבור מארח זה כבויות.",
+    "failed": "לא ניתן לשנות את ההתראה."
+  },
+  "card": {
+    "title": "תעודות",
+    "loading": "בודק מארחים...",
+    "summary_one": "{{count}} תעודה, {{expiring}} פגה",
+    "summary_two": "{{count}} תעודות, {{expiring}} פגות",
+    "summary_other": "{{count}} תעודות, {{expiring}} פגות",
+    "refresh": "בדוק שוב",
+    "empty": "הפעל תעודות עבור מארח כדי לראות את תעודותיו כאן."
+  },
+  "manager": {
+    "title": "תעודות",
+    "disabled": "הפעל תעודות עבור מארח זה בהגדרותיו כדי לראות אותן כאן."
+  },
+  "operations": {
+    "list": {
+      "title": "רשימת תעודות"
+    },
+    "expiring": {
+      "title": "תעודות פגות"
+    },
+    "renew": {
+      "title": "חדש תעודה"
+    },
+    "renewAll": {
+      "title": "חדש את כל התעודות"
+    },
+    "revoke": {
+      "title": "בטל תעודה"
+    },
+    "certificates": {
+      "title": "תעודות",
+      "client": "לקוח",
+      "domains": "דומיינים",
+      "daysLeft": "ימים שנותרו"
+    }
+  },
+  "nav": {
+    "togglePanel": "הצג/הסתר לוח תעודות"
+  }
+}

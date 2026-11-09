@@ -1,0 +1,287 @@
+{
+  "plugin": {
+    "name": "Webservere",
+    "description": "Administrer nginx, Apache og Caddy på dine værter: websteder, konfiguration, logfiler og HTTPS, hvor hver ændring testes først."
+  },
+  "common": {
+    "cancel": "Annuller",
+    "back": "Tilbage",
+    "loading": "Indlæser..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Brug Webservere",
+      "description": "Se webservere og websteder på værter, du kan nå, og ændre dem på værter, du kan redigere."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Webservere",
+        "description": "Administrer nginx, Apache og Caddy på denne vært fra fanen Webservere."
+      },
+      "useSudo": {
+        "label": "Brug sudo",
+        "description": "Brug sudo til at læse og ændre webserveren. Slå fra, hvis login er root."
+      },
+      "readOnly": {
+        "label": "Skrivebeskyttet",
+        "description": "Vis websteder, konfiguration og logfiler, men ændr aldrig dem på denne vært."
+      },
+      "showPanel": {
+        "label": "Panel ved siden af terminalen",
+        "description": "Vis panelet Webservere på terminalfanerne for denne vært."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Åbn panelet sammen med terminalen",
+        "description": "Vis panelet Webservere, når en terminal åbnes på en vært, der har det."
+      },
+      "companionSide": {
+        "label": "Panelplacering",
+        "description": "Hvor panelet sidder ved siden af terminalen.",
+        "right": "Højre",
+        "left": "Venstre",
+        "bottom": "Nederst"
+      },
+      "companionSize": {
+        "label": "Panelstørrelse",
+        "description": "Bredde af panelet, eller højden nederst, i pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Knap i kanten",
+        "description": "Vis en lille knap i terminalens kant for at åbne panelet."
+      }
+    }
+  },
+  "tab": {
+    "title": "Webservere",
+    "noHost": "Åbn Webservere fra en vært.",
+    "error": "Kunne ikke indlæse webserverne på denne vært.",
+    "disabled": "Webservere er slået fra for denne vært. Slå det til i værtens indstillinger.",
+    "sudo": "Ændringer kræver root-login, sudo uden adgangskode eller en gemt sudo-adgangskode på denne vært.",
+    "refresh": "Opdater",
+    "readOnly": "Skrivebeskyttet",
+    "noServer": "Ingen webserver installeret",
+    "noServerHint": "Installer nginx, Apache eller Caddy fra siden Server.",
+    "openServer": "Åbn Server",
+    "viewSites": "Websteder",
+    "viewConfig": "Konfiguration",
+    "viewLogs": "Logfiler",
+    "viewServer": "Server"
+  },
+  "actions": {
+    "ok": "Udført",
+    "failed": "Mislykkedes",
+    "noOutput": "Ingen output."
+  },
+  "watch": {
+    "start": "Giv mig besked, når en webserver stopper",
+    "stop": "Stop advarsler for denne vært",
+    "on": "Du får en advarsel, når en webserver på denne vært stopper",
+    "off": "Advarsler for denne vært er slået fra",
+    "failed": "Kunne ikke ændre advarsler"
+  },
+  "sites": {
+    "add": "Tilføj websted",
+    "search": "Søg i websteder",
+    "empty": "Ingen websteder endnu.",
+    "loadFailed": "Kunne ikke indlæse webstederne.",
+    "off": "Fra",
+    "anyName": "ethvert navn",
+    "form": "Formular",
+    "certDays_one": "{{count}} dag tilbage",
+    "certDays_other": "{{count}} dage tilbage",
+    "certExpired": "Certifikat udløbet",
+    "enable": "Tænd",
+    "disable": "Sluk",
+    "enabled": "{{name}} er tændt",
+    "disabled": "{{name}} er slukket",
+    "delete": "Slet",
+    "deleteTitle": "Slet {{name}}?",
+    "deleteBody": "Filen fjernes, og serveren genindlæses. En kopi gemmes i /var/lib/termix-web-servers/backups på værten.",
+    "deleted": "{{name}} blev slettet"
+  },
+  "site": {
+    "addTitle": "Ny side",
+    "editTitle": "Gem {{name}}",
+    "add": "Tilføj side",
+    "save": "Gem",
+    "added": "{{name}} blev tilføjet",
+    "saved": "{{name}} blev gemt",
+    "server": "Webserver",
+    "name": "Sidens navn",
+    "nameHint": "Bruges til filnavnet og logfilerne, f.eks. example.",
+    "modeForm": "Formular",
+    "modeText": "Tekst",
+    "text": "Konfiguration",
+    "textHint": "Når du gemmer teksten, slukkes formularen for denne side, så dine egne ændringer bevares.",
+    "type": "Type",
+    "typeStatic": "Statiske filer",
+    "typeProxy": "Omvendt proxy",
+    "typePhp": "PHP",
+    "typeRedirect": "Omdirigering",
+    "staticHint": "Serverer filer fra en mappe.",
+    "proxyHint": "Sender forespørgsler til en app, der kører på denne vært eller en anden.",
+    "phpHint": "Serverer filer fra en mappe og kører .php-filer med php-fpm.",
+    "redirectHint": "Sender alle besøgende til en anden adresse.",
+    "domains": "Domæner",
+    "domainsHint": "Tryk Enter efter hvert domæne. Brug _ i nginx til at svare på ethvert navn.",
+    "port": "HTTP-port",
+    "root": "Webrod",
+    "rootHint": "En mappe inde i /var/www, /srv, /usr/share/nginx, /opt eller /home.",
+    "index": "Indexfiler",
+    "spa": "Single page app",
+    "spaHint": "Send stier, der ikke er filer, til /index.html.",
+    "upstream": "App-adresse",
+    "upstreamHint": "Hvor appen lytter, f.eks. http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Send besøgende til",
+    "keepPath": "Behold stien",
+    "keepPathHint": "Send /page til samme side på den nye adresse.",
+    "phpSocket": "php-fpm-socket",
+    "phpSocketHint": "Der blev ikke fundet nogen php-fpm-socket. Installer php-fpm eller indtast vært:port.",
+    "https": "HTTPS",
+    "httpsHint": "Kræver et certifikat. Gem siden først, og tryk derefter på Hent certifikat nedenfor.",
+    "httpsCaddy": "Caddy henter og forny certifikatet automatisk.",
+    "httpsPort": "HTTPS-port",
+    "certPath": "Certifikatfil",
+    "keyPath": "Nøglefil",
+    "forceHttps": "Send HTTP til HTTPS",
+    "gzip": "Komprimer svar",
+    "accessLog": "Adgangslog",
+    "maxBody": "Uploadgrænse i MB",
+    "maxBodyHint": "0 beholder serverens standardværdi.",
+    "preview": "Forhåndsvisning",
+    "previewFailed": "Kunne ikke opbygge konfigurationen."
+  },
+  "tls": {
+    "title": "HTTPS-certifikat",
+    "hintManaged": "certbot henter et Let's Encrypt-certifikat for domænerne på dette site, og derefter skifter site'et til HTTPS. certbot fornyer certifikatet og genindlæser serveren.",
+    "hintText": "certbot henter et Let's Encrypt-certifikat for domænerne på dette site. Tilføj certifikatet til site'et selv bagefter. certbot fornyer det og genindlæser serveren.",
+    "needCertbot": "Installer certbot med dens plugin til denne server fra Server-siden først.",
+    "email": "E-mail",
+    "emailHint": "Let's Encrypt skriver her om problemer. Valgfrit.",
+    "staging": "Testcertifikat",
+    "stagingHint": "Brug Let's Encrypts testserver. Browsere vil ikke stole på det.",
+    "issue": "Hent certifikat",
+    "done": "Certifikat gemt"
+  },
+  "config": {
+    "search": "Søg i filer",
+    "empty": "Ingen filer.",
+    "loadFailed": "Kunne ikke indlæse filen.",
+    "test": "Test konfiguration",
+    "testOk": "Konfigurationen er i orden",
+    "testFailed": "Konfigurationen har fejl",
+    "content": "Indhold",
+    "save": "Gem",
+    "saveHint": "Hele konfigurationen testes, før serveren genindlæses. En ødelagt fil gendannes.",
+    "saved": "Gemt og genindlæst",
+    "backups_one": "{{count}} backup",
+    "backups_other": "{{count}} backups",
+    "restore": "Gendan",
+    "restoreTitle": "Gendan denne backup?",
+    "restoreBody": "Filen går tilbage til, hvordan den var ved {{time}}. Det aktuelle tekstindhold bliver også til en backup.",
+    "restored": "Backup gendannet"
+  },
+  "logs": {
+    "source": "Log",
+    "lines": "Linjer",
+    "journal": "{{server}} journal",
+    "follow": "Følg med",
+    "stop": "Stop",
+    "connecting": "Forbinder...",
+    "ended": "Har stoppet at følge med.",
+    "followFailed": "Kunne ikke følge med i denne log.",
+    "empty": "Ingen linjer.",
+    "loadFailed": "Kunne ikke læse loggen.",
+    "requests": "Anmodninger",
+    "topPaths": "Top-stier",
+    "topClients": "Top-klienter"
+  },
+  "server": {
+    "unknown": "ukendt",
+    "atBoot": "Startes ved opstart",
+    "notInstalled": "Ikke installeret",
+    "start": "Start",
+    "stop": "Stop",
+    "restart": "Genstart",
+    "reload": "Genindlæs",
+    "enable": "Start ved opstart",
+    "disable": "Start ikke ved opstart",
+    "boot": "Start ved opstart",
+    "noBoot": "Start ikke ved opstart",
+    "done": "{{server}} er færdig",
+    "stopTitle": "Stop {{server}}?",
+    "stopBody": "Alle site'er på den går offline, indtil du starter den igen.",
+    "install": "Installer",
+    "installTitle": "Installer {{server}}?",
+    "installBody": "Den installeres med værtens pakkehåndtering og starter med det samme. En anden webserver på port 80 vil forhindre den i at starte.",
+    "installed": "{{server}} blev installeret",
+    "installCertbot": "Installer certbot",
+    "certbotInstalled": "certbot blev installeret",
+    "certbotPlugins": "Plugins: {{plugins}}",
+    "certbotNoPlugins": "Ingen nginx- eller Apache-plugin",
+    "certbotHint": "Henter Let's Encrypt-certifikater til nginx- og Apache-site'er"
+  },
+  "card": {
+    "title": "Webservere",
+    "loading": "Indlæser...",
+    "refresh": "Opdater",
+    "empty": "Ingen vært har Webservere slået til.",
+    "summary_one": "{{count}} vært | {{down}} skal tjekkes",
+    "summary_other": "{{count}} værter | {{down}} skal tjekkes",
+    "sites_one": "{{count}} site",
+    "sites_other": "{{count}} sites"
+  },
+  "companion": {
+    "toggle": "Webservere-panel",
+    "openTab": "Åbn Webservere",
+    "reload": "Genindlæs {{server}}"
+  },
+  "manager": {
+    "title": "Webservere",
+    "disabled": "Slå Webservere til for denne vært for at se dens sites her."
+  },
+  "operations": {
+    "status": {
+      "title": "Status for webserver"
+    },
+    "listSites": {
+      "title": "Liste over sites"
+    },
+    "test": {
+      "title": "Test webserver-konfiguration"
+    },
+    "reload": {
+      "title": "Genindlæs webserver"
+    },
+    "restart": {
+      "title": "Genstart webserver"
+    },
+    "enableSite": {
+      "title": "Slå site til"
+    },
+    "disableSite": {
+      "title": "Slå site fra"
+    },
+    "deleteSite": {
+      "title": "Slet site"
+    },
+    "server": "Server",
+    "allServers": "Alle",
+    "sites": {
+      "title": "Sites",
+      "server": "Server",
+      "domains": "Domæner",
+      "https": "HTTPS"
+    }
+  }
+}

@@ -1,0 +1,230 @@
+{
+  "plugin": {
+    "name": "Pakiety",
+    "description": "Przeglądaj i instaluj aktualizacje na swoich hostach, wyszukuj, instaluj i usuwaj pakiety oraz przeglądaj historię pakietów."
+  },
+  "common": {
+    "cancel": "Anuluj",
+    "back": "Wstecz"
+  },
+  "permissions": {
+    "use": {
+      "title": "Użyj pakietów",
+      "description": "Przeglądaj pakiety i aktualizacje na hostach, do których masz dostęp, oraz zarządzaj nimi na hostach, które możesz edytować."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Pakiety",
+        "description": "Zarządzaj pakietami i aktualizacjami na tym hoście z karty Pakiety."
+      },
+      "useSudo": {
+        "label": "Używaj sudo",
+        "description": "Używaj sudo do instalacji, aktualizacji i usuwania pakietów. Wyłącz, jeśli zalogowany użytkownik to root."
+      },
+      "readOnly": {
+        "label": "Tylko do odczytu",
+        "description": "Wyświetlaj pakiety i aktualizacje, ale nigdy ich nie modyfikuj na tym hoście."
+      },
+      "showPanel": {
+        "label": "Pokaż panel aktualizacji w terminalach",
+        "description": "Pozwól, aby panel aktualizacji otwierał się obok terminala SSH tego hosta."
+      },
+      "alertUpdates": {
+        "label": "Powiadamiaj o aktualizacjach bezpieczeństwa",
+        "description": "Wyślij powiadomienie, gdy ten host ma aktualizacje bezpieczeństwa lub wymaga ponownego uruchomienia. Sprawdzane przy odczycie aktualizacji, około raz na godzinę."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otwieraj panel aktualizacji z nowymi terminalami",
+        "description": "Wyświetlaj panel aktualizacji obok każdego terminala SSH, który ma włączone pakiety. Możesz go nadal otwierać i zamykać za pomocą przycisku na prawej krawędzi."
+      },
+      "companionSide": {
+        "label": "Strona panelu aktualizacji",
+        "description": "Gdzie panel aktualizacji znajduje się obok terminala.",
+        "right": "Prawa",
+        "left": "Lewa",
+        "bottom": "Dolna"
+      },
+      "companionSize": {
+        "label": "Rozmiar panelu aktualizacji",
+        "description": "Szerokość w pikselach lub wysokość, gdy panel jest u dołu. Możesz też przeciągnąć jego krawędź."
+      },
+      "companionEdgeButton": {
+        "label": "Pokaż przycisk panelu",
+        "description": "Wyświetl mały przycisk na prawej krawędzi terminala, który otwiera panel aktualizacji."
+      }
+    }
+  },
+  "tab": {
+    "title": "Pakiety",
+    "noHost": "Otwórz Pakiety z hosta.",
+    "error": "Nie udało się załadować pakietów z tego hosta.",
+    "disabled": "Pakiety są wyłączone dla tego hosta. Włącz je w ustawieniach hosta.",
+    "sudo": "Zmiany wymagają logowania jako root, sudo bez hasła lub zapisanego hasła sudo na tym hoście.",
+    "refresh": "Odśwież",
+    "readOnly": "Tylko do odczytu",
+    "noManager": "Brak menedżera pakietów",
+    "noManagerTitle": "Nie znaleziono obsługiwanego menedżera pakietów",
+    "noManagerHint": "Pakiety działają z apt, dnf, yum, zypper, pacman i apk.",
+    "indexAge": "Indeks odświeżono {{ago}} temu",
+    "reboot": "Ten host wymaga restartu, aby zakończyć aktualizację.",
+    "viewUpdates": "Aktualizacje",
+    "viewInstalled": "Zainstalowane",
+    "viewSearch": "Szukaj",
+    "viewHistory": "Historia",
+    "viewRepos": "Repozytoria"
+  },
+  "actions": {
+    "working": "Akcja {{action}} jest w toku. Może to zająć kilka minut.",
+    "ok": "Gotowe",
+    "failed": "Menedżer pakietów nie powiódł się.",
+    "noOutput": "Brak wyników.",
+    "refresh": {
+      "label": "Odśwież indeks",
+      "confirm": "Odświeżyć indeks pakietów?",
+      "desc": "Pobiera najnowsze listy pakietów.",
+      "done": "Indeks pakietów jest aktualny."
+    },
+    "update": {
+      "label": "Aktualizuj",
+      "confirm_one": "Aktualizować {{names}}?",
+      "confirm_few": "Aktualizować {{count}} pakiety?",
+      "confirm_many": "Aktualizować {{count}} pakietów?",
+      "confirm_other": "Aktualizować {{count}} pakietów?",
+      "desc": "Instaluje najnowszą wersję {{names}}.",
+      "done": "Zaktualizowano {{names}}."
+    },
+    "upgrade-all": {
+      "label": "Aktualizuj wszystkie",
+      "confirm": "Aktualizować wszystkie pakiety?",
+      "desc": "Odświeża indeks pakietów i instaluje wszystkie aktualizacje. Usługi mogą zostać uruchomione ponownie podczas procesu.",
+      "done": "Wszystkie pakiety są aktualne."
+    },
+    "install": {
+      "label": "Zainstaluj",
+      "confirm": "Zainstalować {{names}}?",
+      "desc": "Instaluje {{names}} oraz wszystkie wymagane zależności.",
+      "done": "Zainstalowano {{names}}."
+    },
+    "remove": {
+      "label": "Usuń",
+      "confirm": "Usunąć {{names}}?",
+      "desc": "Usuwa {{names}} z tego hosta. Programy zależne od niego mogą przestać działać.",
+      "done": "Usunięto {{names}}."
+    },
+    "hold": {
+      "label": "Zablokuj tę wersję",
+      "confirm": "Zablokować {{names}}?",
+      "desc": "Aktualizacje będą pomijane dla {{names}}, dopóki nie zwolnisz.",
+      "done": "{{names}} jest wstrzymany."
+    },
+    "unhold": {
+      "label": "Zwolnij wstrzymanie",
+      "confirm": "Zwolnić {{names}}?",
+      "desc": "{{names}} będzie ponownie otrzymywać aktualizacje.",
+      "done": "{{names}} będzie ponownie otrzymywać aktualizacje."
+    }
+  },
+  "updates": {
+    "search": "Filtruj aktualizacje",
+    "count_one": "{{count}} aktualizacja",
+    "count_few": "{{count}} aktualizacje",
+    "count_many": "{{count}} aktualizacji",
+    "count_other": "{{count}} aktualizacji",
+    "countSecurity_one": "{{count}} aktualizacja, {{security}} dotycząca bezpieczeństwa",
+    "countSecurity_few": "{{count}} aktualizacje, {{security}} dotyczące bezpieczeństwa",
+    "countSecurity_many": "{{count}} aktualizacji, {{security}} dotyczących bezpieczeństwa",
+    "countSecurity_other": "{{count}} aktualizacji, {{security}} dotyczących bezpieczeństwa",
+    "updatePicked_one": "Aktualizuj {{count}} pakiet",
+    "updatePicked_few": "Aktualizuj {{count}} pakiety",
+    "updatePicked_many": "Aktualizuj {{count}} pakietów",
+    "updatePicked_other": "Aktualizuj {{count}} pakietów",
+    "updateOne": "Aktualizuj",
+    "pick": "Wybierz {{name}}",
+    "security": "Bezpieczeństwo",
+    "empty": "Wszystko jest aktualne.",
+    "noMatch": "Brak pasujących aktualizacji.",
+    "loadFailed": "Nie udało się wczytać aktualizacji."
+  },
+  "installed": {
+    "search": "Filtruj zainstalowane pakiety",
+    "all": "Wszystkie",
+    "held": "Zablokowane",
+    "heldBadge": "Zablokowane",
+    "empty": "Brak pasujących pakietów.",
+    "loadFailed": "Nie udało się odczytać zainstalowanych pakietów."
+  },
+  "search": {
+    "placeholder": "Szukaj pakietów",
+    "button": "Szukaj",
+    "hint": "Przeszukaj repozytoria hosta w poszukiwaniu pakietu do zainstalowania.",
+    "empty": "Nic nie znaleziono.",
+    "installed": "Zainstalowane",
+    "failed": "Wyszukiwanie nie powiodło się."
+  },
+  "history": {
+    "empty": "Nie znaleziono historii pakietów.",
+    "loadFailed": "Nie udało się odczytać historii pakietów."
+  },
+  "repos": {
+    "hint": "Repozytoria, z których ten host instaluje pakiety. Zmień je bezpośrednio na hoście.",
+    "empty": "Nie znaleziono żadnych repozytoriów.",
+    "off": "Wyłączone",
+    "loadFailed": "Nie udało się odczytać repozytoriów."
+  },
+  "card": {
+    "title": "Aktualizacje pakietów",
+    "loading": "Sprawdzanie hostów...",
+    "summary_one": "{{count}} aktualizacja na {{hosts}} hostach",
+    "summary_few": "{{count}} aktualizacje na {{hosts}} hostach",
+    "summary_many": "{{count}} aktualizacji na {{hosts}} hostach",
+    "summary_other": "{{count}} aktualizacji na {{hosts}} hostach",
+    "refresh": "Sprawdź ponownie",
+    "empty": "Włącz Pakiety dla hosta, aby zobaczyć jego aktualizacje tutaj.",
+    "security_one": "{{count}} aktualizacja bezpieczeństwa",
+    "security_few": "{{count}} aktualizacje bezpieczeństwa",
+    "security_many": "{{count}} aktualizacji bezpieczeństwa",
+    "security_other": "{{count}} aktualizacji bezpieczeństwa",
+    "reboot": "Wymagane ponowne uruchomienie",
+    "updates_one": "{{count}} aktualizacja",
+    "updates_few": "{{count}} aktualizacje",
+    "updates_many": "{{count}} aktualizacji",
+    "updates_other": "{{count}} aktualizacji",
+    "upToDate": "Aktualne"
+  },
+  "manager": {
+    "title": "Pakiety",
+    "disabled": "Włącz pakiety dla tego hosta w ustawieniach, aby zobaczyć jego aktualizacje tutaj."
+  },
+  "operations": {
+    "list": {
+      "title": "Wyświetl aktualizacje pakietów"
+    },
+    "updates": {
+      "title": "Oczekujące aktualizacje",
+      "resource": "Oczekujące aktualizacje"
+    },
+    "upgradeAll": {
+      "title": "Aktualizuj wszystkie pakiety"
+    },
+    "install": {
+      "title": "Zainstaluj pakiety"
+    },
+    "remove": {
+      "title": "Usuń pakiety"
+    },
+    "package": "Pakiety",
+    "packageHint": "Jedna lub więcej nazw pakietów, oddzielonych spacjami.",
+    "resource": {
+      "current": "Zainstalowane",
+      "available": "Dostępne",
+      "repo": "Repozytorium"
+    }
+  },
+  "nav": {
+    "togglePanel": "Przełącz panel aktualizacji"
+  }
+}

@@ -9,7 +9,8 @@
   "settings": {
     "group": {
       "sessions": "Sitzungen",
-      "secondFactor": "Zweiter Faktor"
+      "secondFactor": "Zweiter Faktor",
+      "connect": "Verbindung zu Hosts"
     },
     "admin": {
       "idleTimeoutMinutes": {
@@ -34,8 +35,34 @@
       "applyToExternal": {
         "label": "Auch für Single Sign-On",
         "description": "Fordern Sie auch nach SSO- und LDAP-Anmeldungen den zweiten Faktor an. Deaktivieren Sie diese Option, wenn Ihr Identitätsanbieter bereits nach einem zweiten Faktor fragt."
+      },
+      "connectFactor": {
+        "label": "Vor der Verbindung nach einem zweiten Faktor fragen",
+        "description": "Benutzer geben ihren zweiten Faktor ein, wenn sie ein Terminal, einen Remotedesktop oder einen Dateimanager auf einem Host öffnen. Metriken, Tunnel und andere Hintergrundaufgaben erfordern dies nicht.",
+        "off": "Aus",
+        "marked": "Nur markierte Hosts",
+        "all": "Alle Hosts"
+      },
+      "connectFactorMinutes": {
+        "label": "Minuten bis zur nächsten Abfrage",
+        "description": "Nach der Eingabe kann sich eine Person für diese Dauer mit jedem Host verbinden. Das Abmelden beendet dies vorzeitig."
+      }
+    },
+    "host": {
+      "requireConnectFactor": {
+        "label": "Vor der Verbindung nach einem zweiten Faktor fragen",
+        "description": "Wird verwendet, wenn die Anmeldeicherheit so eingestellt ist, dass nur bei markierten Hosts nach einem zweiten Faktor gefragt wird."
       }
     }
+  },
+  "verify": {
+    "title": "Zweiten Faktor überprüfen",
+    "intro": "Geben Sie Ihren zweiten Faktor ein, um eine Verbindung zu diesem Host herzustellen.",
+    "done": "Überprüft",
+    "retry": "Gehen Sie zurück zum Host und stellen Sie erneut eine Verbindung her.",
+    "failed": "Das hat nicht funktioniert. Versuchen Sie es erneut.",
+    "noFactor": "Kein zweiter Faktor eingerichtet",
+    "noFactorHint": "Richten Sie einen in den Einstellungen unter Sicherheit ein und stellen Sie dann erneut eine Verbindung her."
   },
   "status": {
     "factors": "Verfügbare zweite Faktoren: {{factors}}",

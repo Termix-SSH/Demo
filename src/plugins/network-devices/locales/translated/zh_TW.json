@@ -1,0 +1,180 @@
+{
+  "plugin": {
+    "name": "網路設備",
+    "description": "透過 SNMP 與路由器 API 查看及管理路由器、交換器與存取點。"
+  },
+  "tab": {
+    "title": "網路"
+  },
+  "card": {
+    "title": "網路設備",
+    "loading": "載入中",
+    "uptime": "已上線 {{time}}"
+  },
+  "permissions": {
+    "view": {
+      "title": "查看網路設備",
+      "description": "開啟「網路」分頁，查看設備、埠口與用戶端。"
+    },
+    "manage": {
+      "title": "管理網路設備",
+      "description": "新增設備、開啟或關閉埠口、重啟 PoE 電源以及重新啟動設備。"
+    }
+  },
+  "description": "新增路由器、交換器與存取點以監控其埠口與用戶端。金鑰會加密儲存，且不會再次顯示。",
+  "summary": "{{count}} 個設備，{{down}} 個離線",
+  "ports": "{{up}} / {{total}} 個埠口已上線",
+  "empty": "尚無網路設備。",
+  "add": "新增設備",
+  "edit": "編輯",
+  "delete": "刪除",
+  "back": "返回",
+  "saved": "已儲存",
+  "deleteConfirm": "刪除 {{name}}？",
+  "status": {
+    "unknown": "尚未讀取",
+    "up": "上線",
+    "down": "離線"
+  },
+  "drivers": {
+    "snmp": "SNMP 設備",
+    "routeros": "MikroTik RouterOS",
+    "opnsense": "OPNsense",
+    "openwrt": "OpenWrt"
+  },
+  "fields": {
+    "community": "社群字串",
+    "writeCommunity": "寫入社群字串（選填）",
+    "username": "使用者名稱",
+    "password": "密碼",
+    "authProtocol": "驗證",
+    "authKey": "驗證金鑰",
+    "privProtocol": "隱私",
+    "privKey": "隱私金鑰",
+    "apiKey": "API 金鑰",
+    "apiSecret": "API 密鑰"
+  },
+  "form": {
+    "addTitle": "新增設備",
+    "editTitle": "編輯設備",
+    "device": "設備",
+    "access": "存取",
+    "type": "類型",
+    "name": "名稱",
+    "address": "位址",
+    "port": "埠口",
+    "poll": "讀取間隔（秒）",
+    "pollHint": "介於 15 至 3600 之間。",
+    "snmpVersion": "SNMP 版本",
+    "scheme": "網頁位址開頭",
+    "ca": "憑證授權單位（選填）",
+    "caHint": "貼上 CA 或設備憑證的 PEM 內容（若使用私有憑證）。",
+    "caSet": "已儲存憑證。貼上新憑證以取代現有憑證。",
+    "keepKeys": "留空以保留已儲存的金鑰",
+    "test": "測試",
+    "testNeedsKeys": "輸入金鑰以進行測試。",
+    "testOk": "已連線至 {{name}}。",
+    "save": "儲存",
+    "add": "新增"
+  },
+  "discover": {
+    "title": "尋找設備",
+    "hint": "在位址範圍內搜尋 SNMP 設備，最多 256 個位址。伺服器必須能夠存取該範圍。",
+    "range": "位址範圍",
+    "scan": "掃描",
+    "scanning": "掃描中",
+    "none": "沒有裝置回應。",
+    "added": "已新增"
+  },
+  "view": {
+    "refresh": "立即讀取",
+    "reboot": "重新啟動",
+    "rebootConfirm": "要重新啟動 {{name}} 嗎？它將暫時離線。",
+    "rebooting": "{{name}} 正在重新啟動。",
+    "ports": "埠",
+    "clients": "用戶端",
+    "neighbors": "鄰近裝置",
+    "type": "類型",
+    "address": "位址",
+    "model": "型號",
+    "version": "版本",
+    "uptime": "運行時間",
+    "cpu": "CPU",
+    "memory": "記憶體",
+    "traffic": "流量",
+    "noTraffic": "流量需兩次讀取後才會顯示。",
+    "noPorts": "尚無埠資訊。請讀取裝置以填入資料。",
+    "port": "埠",
+    "speed": "速率",
+    "vlan": "VLAN",
+    "rx": "接收",
+    "tx": "傳送",
+    "errors": "錯誤",
+    "poe": "PoE",
+    "poeOn": "供電中",
+    "poeIdle": "開啟",
+    "poeOff": "關閉",
+    "linkUp": "連線正常",
+    "linkDown": "無連線",
+    "disabled": "關閉",
+    "watch": "此埠變更時發出警示",
+    "unwatch": "停止此埠的警示",
+    "turnOff": "關閉埠",
+    "turnOn": "開啟埠",
+    "portOffConfirm": "要關閉埠 {{name}} 嗎？連接在上面的裝置將中斷連線。",
+    "portOff": "埠 {{name}} 已關閉。",
+    "portOn": "埠 {{name}} 已開啟。",
+    "poeCycle": "PoE 電源循環",
+    "poeConfirm": "要切斷埠 {{name}} 的電源幾秒鐘嗎？",
+    "poeDone": "{{name}} 的 PoE 已完成電源循環。",
+    "filter": "搜尋用戶端",
+    "noClients": "找不到用戶端。",
+    "client": "名稱",
+    "ip": "IP 位址",
+    "mac": "MAC 位址",
+    "on": "開啟",
+    "source": "發現於",
+    "kind": {
+      "dhcp": "DHCP",
+      "arp": "ARP",
+      "wifi": "Wi-Fi",
+      "table": "MAC 表"
+    },
+    "noNeighbors": "找不到鄰近裝置。",
+    "neighbor": "鄰近裝置",
+    "remotePort": "對方埠"
+  },
+  "operations": {
+    "device": "裝置",
+    "port": "Port",
+    "state": "狀態",
+    "stateUp": "開啟",
+    "stateDown": "關閉",
+    "list": {
+      "title": "列出網路裝置"
+    },
+    "ports": {
+      "title": "列出裝置的埠"
+    },
+    "poll": {
+      "title": "讀取網路裝置"
+    },
+    "setPort": {
+      "title": "開啟或關閉埠"
+    },
+    "poe": {
+      "title": "重啟埠上的 PoE 供電"
+    },
+    "reboot": {
+      "title": "重新啟動網路裝置"
+    },
+    "health": {
+      "title": "網路裝置"
+    }
+  },
+  "widget": {
+    "name": "網路裝置",
+    "description": "您的路由器、交換器和存取點哪些正在運作。",
+    "summary": "{{up}} / {{total}} 正在運作"
+  }
+}

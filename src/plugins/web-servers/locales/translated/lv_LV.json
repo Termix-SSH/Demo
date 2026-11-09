@@ -1,0 +1,291 @@
+{
+  "plugin": {
+    "name": "Tīmekļa serveri",
+    "description": "Pārvaldiet nginx, Apache un Caddy savos serveros: vietnes, konfigurācija, žurnāli un HTTPS, katru izmaiņu vispirms pārbaudot."
+  },
+  "common": {
+    "cancel": "Atcelt",
+    "back": "Atpakaļ",
+    "loading": "Ielādē..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Izmantot Tīmekļa serverus",
+      "description": "Skatīt tīmekļa serverus un vietnes serveros, pie kuriem varat piekļūt, un mainīt tos serveros, kurus varat rediģēt."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Tīmekļa serveri",
+        "description": "Pārvaldiet nginx, Apache un Caddy šajā serverī no cilnes Tīmekļa serveri."
+      },
+      "useSudo": {
+        "label": "Izmantot sudo",
+        "description": "Izmantot sudo, lai lasītu un mainītu tīmekļa serveri. Izslēdziet, ja pieteikšanās notiek kā root."
+      },
+      "readOnly": {
+        "label": "Tikai lasīšanai",
+        "description": "Rādīt vietnes, konfigurāciju un žurnālus, bet šajā serverī tos nekad nemainīt."
+      },
+      "showPanel": {
+        "label": "Panelis blakus terminālim",
+        "description": "Piedāvāt Tīmekļa serveru paneli šī servera termināļa cilnēs."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Atvērt paneli kopā ar termināli",
+        "description": "Rādīt Tīmekļa serveru paneli, kad atveras terminālis serverī, kuram tas ir pieejams."
+      },
+      "companionSide": {
+        "label": "Paneļa puse",
+        "description": "Kur panelis atrodas blakus terminālim.",
+        "right": "Labajā pusē",
+        "left": "Kreisajā pusē",
+        "bottom": "Apakšā"
+      },
+      "companionSize": {
+        "label": "Paneļa izmērs",
+        "description": "Paneļa platums vai tā augstums apakšā pikseļos."
+      },
+      "companionEdgeButton": {
+        "label": "Malas poga",
+        "description": "Rādīt mazu pogu termināļa malā, lai atvērtu paneli."
+      }
+    }
+  },
+  "tab": {
+    "title": "Tīmekļa serveri",
+    "noHost": "Atveriet Tīmekļa serverus no servera.",
+    "error": "Neizdevās ielādēt tīmekļa serverus šajā serverī.",
+    "disabled": "Tīmekļa serveri ir izslēgti šim serverim. Ieslēdziet to servera iestatījumos.",
+    "sudo": "Izmaiņām nepieciešama root pieteikšanās, sudo bez paroles vai saglabāta Sudo parole šajā serverī.",
+    "refresh": "Atsvaidzināt",
+    "readOnly": "Tikai lasīšanai",
+    "noServer": "Nav instalēts tīmekļa servers",
+    "noServerHint": "Instalējiet nginx, Apache vai Caddy no lapas Serveris.",
+    "openServer": "Atvērt Serveri",
+    "viewSites": "Vietnes",
+    "viewConfig": "Konfigurācija",
+    "viewLogs": "Žurnāli",
+    "viewServer": "Serveris"
+  },
+  "actions": {
+    "ok": "Gatavs",
+    "failed": "Neizdevās",
+    "noOutput": "Nav izvades."
+  },
+  "watch": {
+    "start": "Brīdināt mani, kad tīmekļa servers apstājas",
+    "stop": "Apturēt brīdinājumus šim serverim",
+    "on": "Saņemsiet brīdinājumu, kad šī servera tīmekļa servers apstājas",
+    "off": "Brīdinājumi šim serverim ir izslēgti",
+    "failed": "Neizdevās mainīt brīdinājumus"
+  },
+  "sites": {
+    "add": "Pievienot vietni",
+    "search": "Meklēt vietnes",
+    "empty": "Vēl nav vietņu.",
+    "loadFailed": "Neizdevās ielādēt vietnes.",
+    "off": "Izslēgts",
+    "anyName": "jebkurš vārds",
+    "form": "Forma",
+    "certDays_zero": "Atlikušas {{count}} dienas",
+    "certDays_one": "Atlikusi {{count}} diena",
+    "certDays_other": "Atlikušas {{count}} dienas",
+    "certExpired": "Sertifikāts ir beidzies",
+    "enable": "Ieslēgt",
+    "disable": "Izslēgt",
+    "enabled": "{{name}} ir ieslēgts",
+    "disabled": "{{name}} ir izslēgts",
+    "delete": "Dzēst",
+    "deleteTitle": "Dzēst {{name}}?",
+    "deleteBody": "Fails tiek dzēsts un serveris tiek pārlādēts. Kopija tiek saglabāta mapē /var/lib/termix-web-servers/backups uz servera.",
+    "deleted": "{{name}} tika dzēsts"
+  },
+  "site": {
+    "addTitle": "Jauns vietnes ieraksts",
+    "editTitle": "Saglabāt {{name}}",
+    "add": "Pievienot vietni",
+    "save": "Saglabāt",
+    "added": "{{name}} tika pievienots",
+    "saved": "{{name}} tika saglabāts",
+    "server": "Tīmekļa serveris",
+    "name": "Vietnes nosaukums",
+    "nameHint": "Izmantojams faila nosaukumam un žurnāla failiem, piemēram, example.",
+    "modeForm": "Forma",
+    "modeText": "Teksts",
+    "text": "Konfigurācija",
+    "textHint": "Teksta saglabāšana izslēdz šīs vietnes formu, lai jūsu izmaiņas tiktu saglabātas.",
+    "type": "Tips",
+    "typeStatic": "Statiski faili",
+    "typeProxy": "Apgrieztais starpniekserveris",
+    "typePhp": "PHP",
+    "typeRedirect": "Pāradresācija",
+    "staticHint": "Piedāvā failus no mapes.",
+    "proxyHint": "Nosūta pieprasījumus lietotnei, kas darbojas šajā vai citā serverī.",
+    "phpHint": "Piedāvā failus no mapes un izpilda .php failus ar php-fpm.",
+    "redirectHint": "Nosūta katru apmeklētāju uz citu adresi.",
+    "domains": "Domēni",
+    "domainsHint": "Nospiediet Enter pēc katras ievades. Nginx gadījumā izmantojiet _, lai atbildētu uz jebkuru nosaukumu.",
+    "port": "HTTP ports",
+    "root": "Tīmekļa sakne",
+    "rootHint": "Mapes iekšpusē /var/www, /srv, /usr/share/nginx, /opt vai /home.",
+    "index": "Indeksa faili",
+    "spa": "Vienas lapas lietotne",
+    "spaHint": "Nosūtīt ceļus, kas nav faili, uz /index.html.",
+    "upstream": "Lietotnes adrese",
+    "upstreamHint": "Kur lietotne klausās, piemēram, http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Nosūtīt apmeklētājus uz",
+    "keepPath": "Saglabāt ceļu",
+    "keepPathHint": "Nosūtīt /page uz to pašu lapu jaunajā adresē.",
+    "phpSocket": "php-fpm ligzda",
+    "phpSocketHint": "php-fpm ligzda netika atrasta. Instalējiet php-fpm vai ievadiet host:port.",
+    "https": "HTTPS",
+    "httpsHint": "Nepieciešams sertifikāts. Vispirms saglabājiet vietni, tad zemāk nospiediet Iegūt sertifikātu.",
+    "httpsCaddy": "Caddy pats iegūst un atjauno sertifikātu.",
+    "httpsPort": "HTTPS ports",
+    "certPath": "Sertifikāta fails",
+    "keyPath": "Atslēgas fails",
+    "forceHttps": "Pāradresēt HTTP uz HTTPS",
+    "gzip": "Saspiež atbildes",
+    "accessLog": "Piekļuves žurnāls",
+    "maxBody": "Augšupielādes ierobežojums MB",
+    "maxBodyHint": "0 saglabā servera noklusējumu.",
+    "preview": "Priekšskatījums",
+    "previewFailed": "Neizdevās izveidot konfigurāciju."
+  },
+  "tls": {
+    "title": "HTTPS sertifikāts",
+    "hintManaged": "certbot iegūst Let's Encrypt sertifikātu šīs vietnes domēniem, pēc tam vietne pārslēdzas uz HTTPS. certbot to atjauno un pārlādē serveri.",
+    "hintText": "certbot iegūst Let's Encrypt sertifikātu šīs vietnes domēniem. Pēc tam sertifikātu pievienojiet vietnei pats. certbot to atjauno un pārlādē serveri.",
+    "needCertbot": "Vispirms no Servera lapas instalējiet certbot ar tā spraudni šim serverim.",
+    "email": "E-pasts",
+    "emailHint": "Let's Encrypt šeit raksta par problēmām. Neobligāti.",
+    "staging": "Testa sertifikāts",
+    "stagingHint": "Izmantojiet Let's Encrypt testēšanas serveri. Pārlūkprogrammas tam neticēs.",
+    "issue": "Iegūt sertifikātu",
+    "done": "Sertifikāts saglabāts"
+  },
+  "config": {
+    "search": "Meklēt failus",
+    "empty": "Nav failu.",
+    "loadFailed": "Neizdevās ielādēt failu.",
+    "test": "Testēt konfigurāciju",
+    "testOk": "Konfigurācija ir kārtībā",
+    "testFailed": "Konfigurācijā ir kļūdas",
+    "content": "Saturs",
+    "save": "Saglabāt",
+    "saveHint": "Pirms servera pārlādes tiek pārbaudīta visa konfigurācija. Bojāts fails tiek atjaunots.",
+    "saved": "Saglabāts un pārlādēts",
+    "backups_zero": "0 rezerves kopijas",
+    "backups_one": "{{count}} rezerves kopija",
+    "backups_other": "{{count}} rezerves kopijas",
+    "restore": "Atjaunot",
+    "restoreTitle": "Atjaunot šo rezerves kopiju?",
+    "restoreBody": "Fails tiek atgriezts tādos datos, kādos tas bija plkst. {{time}}. Pašreizējais teksts kļūst arī par rezerves kopiju.",
+    "restored": "Rezerves kopija atjaunota"
+  },
+  "logs": {
+    "source": "Žurnāls",
+    "lines": "Rindas",
+    "journal": "{{server}} žurnāls",
+    "follow": "Sekot",
+    "stop": "Apturēt",
+    "connecting": "Notiek savienojums...",
+    "ended": "Sekojšana apturēta.",
+    "followFailed": "Neizdevās sekot šim žurnālam.",
+    "empty": "Nav rindu.",
+    "loadFailed": "Neizdevās izlasīt žurnālu.",
+    "requests": "Pieprasījumi",
+    "topPaths": "Populārākie ceļi",
+    "topClients": "Populārākie klienti"
+  },
+  "server": {
+    "unknown": "nezināms",
+    "atBoot": "Palaiž startējot",
+    "notInstalled": "Nav instalēts",
+    "start": "Palaikt",
+    "stop": "Apturēt",
+    "restart": "Restartēt",
+    "reload": "Pārlādēt",
+    "enable": "Palaikt startējot",
+    "disable": "Nepalaikt startējot",
+    "boot": "Palaikt startējot",
+    "noBoot": "Nepalaikt startējot",
+    "done": "{{server}} ir pabeigts",
+    "stopTitle": "Apturēt {{server}}?",
+    "stopBody": "Visas tā vietnes kļūs nepieejamas, līdz to atkal palaidsiet.",
+    "install": "Instalēt",
+    "installTitle": "Instalēt {{server}}?",
+    "installBody": "Tas tiek instalēts ar hosta pakotņu pārvaldnieku un tiek palaists uzreiz. Cits tīmekļa servers 80. portā traucēs tā palaišanai.",
+    "installed": "{{server}} tika instalēts",
+    "installCertbot": "Instalēt certbot",
+    "certbotInstalled": "certbot tika instalēts",
+    "certbotPlugins": "Spraudņi: {{plugins}}",
+    "certbotNoPlugins": "Nav nginx vai Apache spraudņa",
+    "certbotHint": "Iegūst Let's Encrypt sertifikātus nginx un Apache vietnēm"
+  },
+  "card": {
+    "title": "Tīmekļa serveri",
+    "loading": "Ielādē...",
+    "refresh": "Atsvaidzināt",
+    "empty": "Nevienam resursam nav ieslēgti tīmekļa serveri.",
+    "summary_zero": "0 resursi | 0 vajag apskatīt",
+    "summary_one": "{{count}} resurss | {{down}} vajag apskatīt",
+    "summary_other": "{{count}} resursi | {{down}} vajag apskatīt",
+    "sites_zero": "0 vietnes",
+    "sites_one": "{{count}} vietne",
+    "sites_other": "{{count}} vietnes"
+  },
+  "companion": {
+    "toggle": "Tīmekļa serveru panelis",
+    "openTab": "Atvērt tīmekļa serverus",
+    "reload": "Pārlādēt {{server}}"
+  },
+  "manager": {
+    "title": "Tīmekļa serveri",
+    "disabled": "Ieslēdziet tīmekļa serverus šim resursam, lai šeit redzētu tā vietnes."
+  },
+  "operations": {
+    "status": {
+      "title": "Tīmekļa servera statuss"
+    },
+    "listSites": {
+      "title": "Vietņu saraksts"
+    },
+    "test": {
+      "title": "Testēt tīmekļa servera konfigurāciju"
+    },
+    "reload": {
+      "title": "Pārlādēt tīmekļa serveri"
+    },
+    "restart": {
+      "title": "Restartēt tīmekļa serveri"
+    },
+    "enableSite": {
+      "title": "Ieslēgt vietni"
+    },
+    "disableSite": {
+      "title": "Izslēgt vietni"
+    },
+    "deleteSite": {
+      "title": "Dzēst vietni"
+    },
+    "server": "Serveris",
+    "allServers": "Visi",
+    "sites": {
+      "title": "Vietnes",
+      "server": "Serveris",
+      "domains": "Domēni",
+      "https": "HTTPS"
+    }
+  }
+}

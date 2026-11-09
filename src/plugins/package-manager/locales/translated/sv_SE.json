@@ -1,0 +1,216 @@
+{
+  "plugin": {
+    "name": "Paket",
+    "description": "Visa och installera uppdateringar på dina värdar, sök, installera och ta bort paket samt läs pakethistoriken."
+  },
+  "common": {
+    "cancel": "Avbryt",
+    "back": "Tillbaka"
+  },
+  "permissions": {
+    "use": {
+      "title": "Använd Paket",
+      "description": "Visa paket och uppdateringar på värdar du kan nå, och ändra dem på värdar du kan redigera."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Paket",
+        "description": "Hantera paket och uppdateringar på denna värd från fliken Paket."
+      },
+      "useSudo": {
+        "label": "Använd sudo",
+        "description": "Använd sudo för att installera, uppdatera och ta bort paket. Stäng av om inloggningen är root."
+      },
+      "readOnly": {
+        "label": "Skrivskyddad",
+        "description": "Visa paket och uppdateringar men ändra aldrig dem på denna värd."
+      },
+      "showPanel": {
+        "label": "Visa uppdateringspanelen i terminaler",
+        "description": "Låt uppdateringspanelen öppnas bredvid SSH-terminalen för denna värd."
+      },
+      "alertUpdates": {
+        "label": "Alertera vid säkerhetsuppdateringar",
+        "description": "Skicka en varning när denna värd har säkerhetsuppdateringar eller behöver startas om. Kontrolleras när uppdateringar läses, ungefär en gång i timmen."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Öppna uppdateringspanelen med nya terminaler",
+        "description": "Visa uppdateringspanelen bredvid varje SSH-terminal som har Paket påslaget. Du kan fortfarande öppna och stänga den från knappen på höger kant."
+      },
+      "companionSide": {
+        "label": "Uppdateringspanelens sida",
+        "description": "Var uppdateringspanelen placeras bredvid en terminal.",
+        "right": "Höger",
+        "left": "Vänster",
+        "bottom": "Botten"
+      },
+      "companionSize": {
+        "label": "Uppdateringspanelens storlek",
+        "description": "Bredd i pixlar, eller höjd när den är längst ner. Du kan också dra i kanten."
+      },
+      "companionEdgeButton": {
+        "label": "Visa panelknappen",
+        "description": "Visa en liten knapp på höger kant av en terminal som öppnar uppdateringspanelen."
+      }
+    }
+  },
+  "tab": {
+    "title": "Paket",
+    "noHost": "Öppna Paket från en värd.",
+    "error": "Kunde inte ladda paket från denna värd.",
+    "disabled": "Paket är avstängt för denna värd. Stäng på det i värdinställningarna.",
+    "sudo": "Ändringar kräver root-inloggning, lösenordsfritt sudo eller ett sparade Sudo-lösenord på denna värd.",
+    "refresh": "Uppdatera",
+    "readOnly": "Skrivskyddad",
+    "noManager": "Ingen pakethanterare",
+    "noManagerTitle": "Ingen stödd pakethanterare hittades",
+    "noManagerHint": "Paket fungerar med apt, dnf, yum, zypper, pacman och apk.",
+    "indexAge": "Index uppdaterades {{ago}} sedan",
+    "reboot": "Denna värd behöver startas om för att slutföra en uppdatering.",
+    "viewUpdates": "Uppdateringar",
+    "viewInstalled": "Installerade",
+    "viewSearch": "Sök",
+    "viewHistory": "Historik",
+    "viewRepos": "Förråd"
+  },
+  "actions": {
+    "working": "{{action}} körs. Detta kan ta några minuter.",
+    "ok": "Klar",
+    "failed": "Pakethanteraren misslyckades.",
+    "noOutput": "Ingen utdata.",
+    "refresh": {
+      "label": "Uppdatera index",
+      "confirm": "Uppdatera paketindexet?",
+      "desc": "Laddar ner de senaste paketslistorna.",
+      "done": "Paketindexet är uppdaterat."
+    },
+    "update": {
+      "label": "Uppdatera",
+      "confirm_one": "Uppdatera {{names}}?",
+      "confirm_other": "Uppdatera {{count}} paket?",
+      "desc": "Installerar den senaste versionen av {{names}}.",
+      "done": "Uppdaterade {{names}}."
+    },
+    "upgrade-all": {
+      "label": "Uppgradera alla",
+      "confirm": "Uppgradera alla paket?",
+      "desc": "Uppdaterar paketindexet och installerar alla uppdateringar. Tjänster kan startas om medan det körs.",
+      "done": "Alla paket är uppdaterade."
+    },
+    "install": {
+      "label": "Installera",
+      "confirm": "Installera {{names}}?",
+      "desc": "Installerar {{names}} och allt som krävs.",
+      "done": "{{names}} har installerats."
+    },
+    "remove": {
+      "label": "Ta bort",
+      "confirm": "Ta bort {{names}}?",
+      "desc": "Tar bort {{names}} från denna värd. Program som behöver det kan sluta fungera.",
+      "done": "{{names}} har tagits bort."
+    },
+    "hold": {
+      "label": "Håll vid denna version",
+      "confirm": "Håll {{names}}?",
+      "desc": "Uppdateringar kommer att hoppa över {{names}} tills du släpper den.",
+      "done": "{{names}} hålls."
+    },
+    "unhold": {
+      "label": "Släpp hållning",
+      "confirm": "Släpp {{names}}?",
+      "desc": "{{names}} får uppdateringar igen.",
+      "done": "{{names}} får uppdateringar igen."
+    }
+  },
+  "updates": {
+    "search": "Filtrera uppdateringar",
+    "count_one": "{{count}} uppdatering",
+    "count_other": "{{count}} uppdateringar",
+    "countSecurity_one": "{{count}} uppdatering, {{security}} för säkerhet",
+    "countSecurity_other": "{{count}} uppdateringar, {{security}} för säkerhet",
+    "updatePicked_one": "Uppdatera {{count}} paket",
+    "updatePicked_other": "Uppdatera {{count}} paket",
+    "updateOne": "Uppdatera",
+    "pick": "Välj {{name}}",
+    "security": "Säkerhet",
+    "empty": "Allt är uppdaterat.",
+    "noMatch": "Inga uppdateringar matchar.",
+    "loadFailed": "Kunde inte läsa uppdateringarna."
+  },
+  "installed": {
+    "search": "Filtrera installerade paket",
+    "all": "Alla",
+    "held": "Hållna",
+    "heldBadge": "Hållen",
+    "empty": "Inga paket matchar.",
+    "loadFailed": "Kunde inte läsa de installerade paketen."
+  },
+  "search": {
+    "placeholder": "Sök paket",
+    "button": "Sök",
+    "hint": "Sök i värdens arkiv efter ett paket att installera.",
+    "empty": "Inget hittades.",
+    "installed": "Installerad",
+    "failed": "Sökningen misslyckades."
+  },
+  "history": {
+    "empty": "Ingen paket historik hittades.",
+    "loadFailed": "Kunde inte läsa paket historiken."
+  },
+  "repos": {
+    "hint": "De arkiv som denna värd installerar från. Ändra dem på värdens själva.",
+    "empty": "Inga arkiv hittades.",
+    "off": "Av",
+    "loadFailed": "Kunde inte läsa arkiven."
+  },
+  "card": {
+    "title": "Paketuppdateringar",
+    "loading": "Kontrollerar värdar...",
+    "summary_one": "{{count}} uppdatering på {{hosts}} värdar",
+    "summary_other": "{{count}} uppdateringar på {{hosts}} värdar",
+    "refresh": "Kontrollera igen",
+    "empty": "Aktivera Paket för en värd för att se dess uppdateringar här.",
+    "security_one": "{{count}} säkerhet",
+    "security_other": "{{count}} säkerhet",
+    "reboot": "Omstart krävs",
+    "updates_one": "{{count}} uppdatering",
+    "updates_other": "{{count}} uppdateringar",
+    "upToDate": "Uppdaterad"
+  },
+  "manager": {
+    "title": "Paket",
+    "disabled": "Aktivera Paket för denna värd i dess inställningar för att se dess uppdateringar här."
+  },
+  "operations": {
+    "list": {
+      "title": "Lista paketuppdateringar"
+    },
+    "updates": {
+      "title": "Väntande uppdateringar",
+      "resource": "Väntande uppdateringar"
+    },
+    "upgradeAll": {
+      "title": "Uppgradera alla paket"
+    },
+    "install": {
+      "title": "Installera paket"
+    },
+    "remove": {
+      "title": "Ta bort paket"
+    },
+    "package": "Paket",
+    "packageHint": "Ett eller flera paketnamn, separerade med mellanslag.",
+    "resource": {
+      "current": "Installerad",
+      "available": "Tillgänglig",
+      "repo": "Repository"
+    }
+  },
+  "nav": {
+    "togglePanel": "Visa/dölj uppdateringspanelen"
+  }
+}

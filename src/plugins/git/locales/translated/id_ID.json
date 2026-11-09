@@ -1,0 +1,289 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Lihat, tarik, commit, dan dorong repositori Git di host Anda, dan pertahankan agar tetap terkini dengan auto pull."
+  },
+  "common": {
+    "save": "Simpan",
+    "cancel": "Batal",
+    "back": "Kembali",
+    "loading": "Memuat..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Gunakan Git",
+      "description": "Lihat repositori Git di host yang dapat Anda jangkau, dan ubah di host yang dapat Anda edit."
+    },
+    "runCommands": {
+      "title": "Jalankan perintah setelah auto pull",
+      "description": "Atur perintah yang dijalankan di host setelah auto pull membawa commit baru."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Kelola repositori Git di host ini dari tab Git."
+      },
+      "repoRoots": {
+        "label": "Pindai folder",
+        "description": "Folder yang dicari untuk repositori saat Anda memindai host ini. Pisahkan dengan koma. Default adalah folder home.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Gunakan sudo",
+        "description": "Jalankan git sebagai root dengan sudo. Hanya untuk repositori yang tidak dapat digunakan oleh pengguna login."
+      },
+      "readOnly": {
+        "label": "Hanya baca",
+        "description": "Tampilkan repositori tetapi jangan pernah mengubahnya di host ini."
+      },
+      "showPanel": {
+        "label": "Panel di samping terminal",
+        "description": "Tawarkan panel Git di tab terminal host ini."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Buka panel bersama terminal",
+        "description": "Tampilkan panel Git saat terminal terbuka di host yang memilikinya."
+      },
+      "companionSide": {
+        "label": "Sisi panel",
+        "description": "Di mana panel berada di samping terminal.",
+        "right": "Kanan",
+        "left": "Kiri",
+        "bottom": "Bawah"
+      },
+      "companionSize": {
+        "label": "Ukuran panel",
+        "description": "Lebar panel, atau tingginya di bagian bawah, dalam piksel."
+      },
+      "companionEdgeButton": {
+        "label": "Tombol tepi",
+        "description": "Tampilkan tombol kecil di tepi terminal untuk membuka panel."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Buka Git dari host.",
+    "error": "Tidak dapat memuat git dari host ini.",
+    "disabled": "Git dimatikan untuk host ini. Nyalakan di pengaturan host.",
+    "sudo": "Ini memerlukan login root, sudo tanpa kata sandi, atau Sudo Password yang disimpan.",
+    "refresh": "Segarkan",
+    "readOnly": "Hanya baca",
+    "notInstalled": "git tidak terinstal",
+    "notInstalledTitle": "git tidak terinstal di host ini",
+    "notInstalledHint": "Instal git dengan manajer paket host, lalu segarkan."
+  },
+  "actions": {
+    "ok": "Selesai",
+    "failed": "Gagal",
+    "noOutput": "Tidak ada output."
+  },
+  "repos": {
+    "add": "Tambah repositori",
+    "search": "Cari repositori",
+    "empty": "Belum ada repositori. Tambahkan satu untuk memulai.",
+    "noMatch": "Tidak ada repositori yang cocok.",
+    "viewOnly": "Tidak ada repositori yang telah ditambahkan ke host ini.",
+    "detached": "terlepas",
+    "changes_other": "{{count}} perubahan",
+    "conflicts": "Konflik",
+    "auto": "Auto pull",
+    "autoFailing": "Pull gagal",
+    "remove": "Hapus dari daftar",
+    "removeTitle": "Hapus {{name}}?",
+    "removeBody": "Repositori hanya dilupakan di sini. Tidak ada yang dihapus di host.",
+    "removed": "{{name}} dihapus",
+    "error": {
+      "missing": "Folder hilang",
+      "notrepo": "Bukan repositori git",
+      "unreadable": "Tidak dapat dibaca"
+    }
+  },
+  "add": {
+    "title": "Tambah repositori",
+    "modeScan": "Pindai",
+    "modePath": "Folder",
+    "modeClone": "Kloning",
+    "scanHint": "Mencari repositori git di {{roots}}. Ubah folder di pengaturan host.",
+    "rescan": "Pindai ulang",
+    "noneFound": "Tidak ada repositori baru ditemukan.",
+    "picked": "Dipilih",
+    "addPicked_other": "Tambah {{count}} repositori",
+    "addAll": "Tambah semua",
+    "folder": "Folder di host",
+    "folderHint": "Path lengkap, atau mulai dengan ~ untuk folder home. Harus sudah menjadi repositori git.",
+    "addRepo": "Tambah repositori",
+    "url": "Alamat",
+    "urlHint": "Menggunakan kunci dan pengaturan git dari pengguna login host.",
+    "dest": "Kloning ke",
+    "destHint": "Folder tersebut belum boleh ada.",
+    "clone": "Kloning",
+    "cloned": "Berhasil dikloning",
+    "added_other": "{{count}} repositori ditambahkan",
+    "failed": "Tidak dapat menambahkan repositori",
+    "scanFailed": "Tidak dapat memindai host"
+  },
+  "repo": {
+    "ahead": "{{count}} di depan",
+    "behind": "{{count}} di belakang",
+    "fetch": "Ambil",
+    "fetched": "Berhasil diambil",
+    "pull": "Tarik",
+    "pulled": "Berhasil ditarik",
+    "push": "Dorong",
+    "pushed": "Berhasil didorong",
+    "viewChanges": "Perubahan",
+    "viewBranches": "Cabang",
+    "viewHistory": "Riwayat",
+    "viewStash": "Simpan sementara",
+    "viewAuto": "Tarik otomatis"
+  },
+  "changes": {
+    "loadFailed": "Tidak dapat membaca perubahan.",
+    "clean": "Tidak ada yang perlu dikomit. Pohon kerja bersih.",
+    "stagedTitle": "Disiapkan ({{count}})",
+    "unstagedTitle": "Perubahan ({{count}})",
+    "stage": "Siapkan",
+    "staged": "Disiapkan",
+    "unstage": "Batalkan persiapan",
+    "unstaged": "Belum disiapkan",
+    "stageAll": "Siapkan semua",
+    "renamed": "Diubah nama",
+    "discard": "Buang",
+    "discardTitle": "Buang perubahan pada {{name}}?",
+    "discardBody": "Perubahan di file ini akan dihapus dan tidak dapat dikembalikan.",
+    "discarded": "Perubahan dibuang",
+    "message": "Pesan komit",
+    "messagePlaceholder": "Apa yang berubah",
+    "commit": "Komit",
+    "commitAll": "Komit semua perubahan",
+    "commitStaged_other": "Komit {{count}} file yang disiapkan",
+    "committed": "Berhasil dikomit",
+    "noDiff": "Tidak ada perubahan untuk ditampilkan.",
+    "truncated": "Diff terlalu panjang, hanya bagian awal yang ditampilkan."
+  },
+  "branches": {
+    "loadFailed": "Tidak dapat membaca cabang.",
+    "empty": "Belum ada cabang.",
+    "current": "Saat ini",
+    "remote": "Remote",
+    "gone": "Upstream hilang",
+    "newName": "Cabang baru",
+    "create": "Buat cabang",
+    "created": "Cabang {{name}} dibuat",
+    "switch": "Beralih",
+    "switched": "Beralih ke {{name}}",
+    "merge": "Gabungkan ke cabang saat ini",
+    "mergeTitle": "Gabungkan {{name}} ke {{into}}?",
+    "mergeBody": "Penggabungan dengan konflik akan dibatalkan segera.",
+    "merged": "{{name}} digabungkan",
+    "delete": "Hapus cabang",
+    "deleteTitle": "Hapus {{name}}?",
+    "deleteBody": "Git akan menolak jika cabang memiliki commit yang belum digabungkan.",
+    "deleted": "{{name}} dihapus",
+    "forceTitle": "Paksa hapus {{name}}?",
+    "forceBody": "Cabang ini memiliki commit yang belum digabungkan. Commit tersebut akan hilang jika Anda menghapusnya.",
+    "forceDelete": "Paksa hapus"
+  },
+  "history": {
+    "loadFailed": "Tidak dapat membaca riwayat.",
+    "empty": "Belum ada commit.",
+    "branch": "Cabang ini",
+    "all": "Semua cabang",
+    "more": "Muat lebih banyak"
+  },
+  "stash": {
+    "loadFailed": "Tidak dapat membaca stash.",
+    "title": "Stash",
+    "empty": "Tidak ada stash.",
+    "message": "Pesan",
+    "messagePlaceholder": "Opsional",
+    "untracked": "Sertakan file yang tidak dilacak",
+    "push": "Simpan perubahan ke stash",
+    "pushDone": "Perubahan disimpan ke stash",
+    "apply": "Terapkan",
+    "applyDone": "Stash diterapkan",
+    "pop": "Ambil",
+    "popDone": "Stash diterapkan dan dihapus",
+    "drop": "Buang",
+    "dropDone": "Stash dibuang",
+    "dropTitle": "Buang {{name}}?",
+    "dropBody": "Stash akan dihapus dan tidak dapat dikembalikan.",
+    "remotes": "Remote",
+    "noRemotes": "Tidak ada remote."
+  },
+  "auto": {
+    "intro": "Melakukan pull secara terjadwal dengan fast-forward saja. Tidak pernah melakukan merge, dan melewatkan repositori jika ada perubahan yang belum di-commit atau telah menyimpang dari upstream.",
+    "noUpstream": "Cabang ini belum memiliki upstream, sehingga auto pull akan melewatinya.",
+    "enable": "Auto pull",
+    "enableHint": "Berjalan sebagai Anda, dengan akses Anda ke host ini.",
+    "interval": "Setiap (menit)",
+    "intervalHint": "Lama waktu tunggu antar pull.",
+    "post": "Perintah setelah pull",
+    "postHint": "Berjalan di folder repositori setelah commit baru tiba. Memerlukan izin menjalankan perintah.",
+    "saved": "Auto pull disimpan",
+    "saveFailed": "Tidak dapat menyimpan auto pull",
+    "runNow": "Jalankan sekarang",
+    "next": "Pull berikutnya {{when}}",
+    "runs": "Eksekusi terbaru",
+    "noRuns": "Belum ada eksekusi.",
+    "outcome": {
+      "pulled": "Ditarik",
+      "uptodate": "Sudah terbaru",
+      "skipped": "Dilewati",
+      "failed": "Gagal"
+    }
+  },
+  "card": {
+    "title": "Repo Git",
+    "loading": "Memuat...",
+    "refresh": "Muat ulang",
+    "empty": "Belum ada host dengan repo Git.",
+    "allClean": "Semua repo bersih dan terbaru.",
+    "summary_other": "{{count}} repo | {{attention}} perlu diperiksa"
+  },
+  "companion": {
+    "toggle": "Panel Git",
+    "openTab": "Buka Git",
+    "here": "Repo dari folder ini",
+    "all": "Semua repo"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Daftar repo Git"
+    },
+    "fetch": {
+      "title": "Ambil repo"
+    },
+    "pull": {
+      "title": "Tarik repo"
+    },
+    "push": {
+      "title": "Dorong repo"
+    },
+    "checkout": {
+      "title": "Ganti cabang",
+      "branch": "Cabang"
+    },
+    "reset-hard": {
+      "title": "Setel ulang repo secara paksa",
+      "ref": "Setel ulang ke"
+    },
+    "repos": {
+      "title": "Repo Git",
+      "branch": "Cabang",
+      "ahead": "Di depan",
+      "behind": "Di belakang",
+      "changed": "Perubahan"
+    },
+    "signals": {
+      "behind": "Repo tertinggal",
+      "dirty": "Repo dengan perubahan",
+      "pull-failing": "Penarikan otomatis gagal"
+    }
+  }
+}

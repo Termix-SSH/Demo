@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Voer Ansible-playbooks en ad-hoc-commando's uit vanaf een control host, met een inventory die is gemaakt op basis van je Termix-hosts."
+  },
+  "common": {
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "back": "Terug",
+    "delete": "Verwijderen"
+  },
+  "permissions": {
+    "use": {
+      "title": "Ansible gebruiken",
+      "description": "Bekijk playbooks en uitvoeringen op control hosts die je kunt bereiken. Bewerk bestanden en voer Ansible uit op hosts die je kunt bewerken."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Gebruik deze host als Ansible-control host. Ansible moet erop geïnstalleerd zijn."
+      },
+      "projectDir": {
+        "label": "Projectmap",
+        "description": "De map op deze host met je playbooks, rollen en ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Vault-wachtwoordbestand",
+        "description": "Een bestand op deze host met het Ansible Vault-wachtwoord. Laat leeg als je Vault niet gebruikt.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Alleen-lezen",
+        "description": "Toon playbooks en uitvoeringen, maar bewerk nooit bestanden of start geen uitvoeringen op deze host."
+      },
+      "alertRuns": {
+        "label": "Waarschuwen bij mislukte uitvoering",
+        "description": "Stuur een waarschuwing als een uitvoering op deze host mislukt of verloren raakt. Wordt gecontroleerd wanneer de uitvoeringsstatus wordt gelezen."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Open Ansible vanaf een host.",
+    "error": "Kon Ansible niet laden vanaf deze host.",
+    "disabled": "Ansible is uitgeschakeld voor deze host. Schakel het in via de host-instellingen.",
+    "refresh": "Vernieuwen",
+    "readOnly": "Alleen-lezen",
+    "notInstalled": "Ansible niet geïnstalleerd",
+    "notInstalledTitle": "Ansible is niet geïnstalleerd op deze host",
+    "notInstalledHint": "Installeer ansible-core op deze host, bijvoorbeeld met pipx of je pakketbeheerder, en vernieuw daarna.",
+    "noSshpass": "sshpass is niet geïnstalleerd op deze host. Hosts die inloggen met een wachtwoord zullen falen.",
+    "viewPlaybooks": "Playbooks",
+    "viewRuns": "Uitvoeringen",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Feiten"
+  },
+  "files": {
+    "add": "Nieuw bestand",
+    "search": "Bestanden zoeken",
+    "empty": "Nog geen bestanden in de projectmap.",
+    "noMatch": "Geen bestanden gevonden.",
+    "noProject": "De map {{dir}} bestaat niet op deze host. Maak deze aan of stel een andere projectmap in via de host-instellingen.",
+    "listFailed": "Kon de projectbestanden niet weergeven.",
+    "loadFailed": "Kon dat bestand niet lezen.",
+    "saved": "Bestand opgeslagen",
+    "saveFailed": "Kon dat bestand niet opslaan.",
+    "playbook": "Playbook",
+    "run": "Uitvoeren",
+    "newTitle": "Nieuw bestand",
+    "name": "Bestandsnaam",
+    "nameHint": "Een pad binnen de projectmap, zoals site.yml of roles/web/tasks/main.yml.",
+    "hint": "Een playbook wordt op syntaxis gecontroleerd voordat hij wordt opgeslagen. Het oude bestand blijft behouden als de controle faalt.",
+    "text": "Bestandstekst",
+    "deleteTitle": "Dit bestand verwijderen?"
+  },
+  "targets": {
+    "search": "Hosts zoeken",
+    "addShown": "Getoonde toevoegen",
+    "clear": "Wissen",
+    "empty": "Geen hosts gevonden.",
+    "count": "{{count}} geselecteerd",
+    "failed": "Kon je hosts niet laden."
+  },
+  "run": {
+    "title": "Voer {{playbook}} uit",
+    "start": "Uitvoeren",
+    "startCheck": "Uitvoeren in check-modus",
+    "startFailed": "Kan de uitvoering niet starten.",
+    "source": "Hosts",
+    "sourceProject": "Projectinventaris",
+    "sourceTermix": "Termix-hosts",
+    "sourceProjectHint": "Gebruik de inventaris uit ansible.cfg of een bestand in het project.",
+    "sourceTermixHint": "Kies hosts uit Termix. Mappen worden folder_ groepen en tags worden tag_ groepen. Ze zitten allemaal in de termix-groep.",
+    "inventory": "Inventarisbestand",
+    "inventoryHint": "Een pad binnen de projectmap. Laat leeg om ansible.cfg te gebruiken.",
+    "check": "Controlemodus",
+    "checkHint": "Toon wat er zou veranderen zonder iets te wijzigen.",
+    "diff": "Toon verschillen",
+    "diffHint": "Toon de wijzigingen in bestanden.",
+    "become": "Uitvoeren als root",
+    "becomeHint": "Gebruik sudo op de hosts. Een opgeslagen sudo-wachtwoord wordt gebruikt voor Termix-hosts.",
+    "limit": "Beperken tot",
+    "limitHint": "Alleen uitvoeren op deze hosts of groepen.",
+    "verbosity": "Uitvoerdetail",
+    "verbosityOff": "Normaal",
+    "tags": "Tags",
+    "skipTags": "Tags overslaan",
+    "extraVars": "Extra variabelen",
+    "extraVarsHint": "Eén sleutel=waarde per regel."
+  },
+  "runs": {
+    "title": "Uitvoeren",
+    "empty": "Nog geen uitvoeringen.",
+    "loadFailed": "Kan de uitvoeringen niet laden.",
+    "stop": "Stoppen",
+    "stopFailed": "Kan de uitvoering niet stoppen.",
+    "deleteTitle": "Deze uitvoering verwijderen?",
+    "deleteFailed": "Kan de uitvoering niet verwijderen.",
+    "checkMode": "Controleren",
+    "truncated": "Toont het einde van een lange uitvoer.",
+    "noOutput": "Nog geen uitvoer.",
+    "state": {
+      "running": "Bezig",
+      "ok": "Klaar",
+      "failed": "Mislukt",
+      "cancelled": "Gestopt",
+      "lost": "Verloren"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Feiten"
+    },
+    "recap": {
+      "host": "Host",
+      "ok": "OK",
+      "changed": "Gewijzigd",
+      "unreachable": "Onbereikbaar",
+      "failed": "Mislukt",
+      "skipped": "Overgeslagen"
+    }
+  },
+  "adhoc": {
+    "hint": "Voer één module uit op hosts, zoals ansible all -m ping.",
+    "pattern": "Hostpatroon",
+    "patternHint": "Een host, een groep of all.",
+    "module": "Module",
+    "moduleHint": "Bijvoorbeeld ping, command, shell, apt of systemd.",
+    "args": "Argumenten",
+    "argsHint": "Voor command en shell is dit het commando. Voor andere modules zijn het sleutel=waarde paren.",
+    "run": "Uitvoeren"
+  },
+  "facts": {
+    "hint": "Verzamel feiten van hosts met de setup-module. Vereist Termix-hosts zodat elk een inlog heeft.",
+    "gather": "Feiten verzamelen",
+    "gathering": "Bezig met verzamelen...",
+    "failed": "Kan geen feiten verzamelen.",
+    "failedHost": "Mislukt",
+    "none": "Er kwamen geen feiten terug. Open de uitvoering om te zien waarom.",
+    "col": {
+      "host": "Host",
+      "os": "Systeem",
+      "kernel": "Kernel",
+      "cpu": "CPUs",
+      "memory": "Geheugen",
+      "address": "Adres",
+      "uptime": "Uptime"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Playbooks tonen"
+    },
+    "run": {
+      "title": "Playbook uitvoeren",
+      "playbook": "Playbook",
+      "limit": "Beperken tot",
+      "tags": "Labels",
+      "check": "Controlemodus"
+    },
+    "runs": {
+      "title": "Uitvoeringen tonen",
+      "resource": "Uitvoeringen",
+      "started": "Gestart",
+      "check": "Controlemodus"
+    },
+    "failed": {
+      "title": "Mislukte uitvoeringen"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Hosts controleren...",
+    "summary_one": "{{count}} mislukte uitvoering op {{hosts}} hosts",
+    "summary_other": "{{count}} mislukte uitvoeringen op {{hosts}} hosts",
+    "refresh": "Opnieuw controleren",
+    "empty": "Schakel Ansible in voor een host om de uitvoeringen hier te zien.",
+    "failed_one": "{{count}} mislukt",
+    "failed_other": "{{count}} mislukt",
+    "running_one": "{{count}} actief",
+    "running_other": "{{count}} actief",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Nog geen uitvoeringen"
+  }
+}

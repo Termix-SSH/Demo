@@ -1,0 +1,232 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Instal WireGuard pada host Anda dan kelola antarmuka, klien, serta konfigurasi dari satu tab."
+  },
+  "common": {
+    "save": "Simpan",
+    "cancel": "Batal",
+    "back": "Kembali",
+    "delete": "Hapus",
+    "loading": "Memuat..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Gunakan WireGuard",
+      "description": "Kelola antarmuka dan klien WireGuard pada host yang dapat Anda edit."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Buka WireGuard dari sebuah host.",
+    "error": "Gagal memuat WireGuard dari host ini.",
+    "sudo": "Host ini memerlukan login root atau sudo tanpa kata sandi untuk mengelola WireGuard.",
+    "installed": "Terinstal",
+    "notInstalled": "Belum terinstal",
+    "refresh": "Muat ulang",
+    "viewInterfaces": "Antarmuka",
+    "viewLogs": "Log"
+  },
+  "install": {
+    "title": "Instal WireGuard",
+    "desc": "Ini akan menginstal alat WireGuard dan iptables menggunakan manajer paket host.",
+    "confirm": "Instal",
+    "done": "WireGuard telah terinstal.",
+    "failed": "Gagal menginstal WireGuard.",
+    "empty": "WireGuard belum terinstal pada host ini",
+    "noManager": "Tidak ditemukan manajer paket yang didukung. Instal WireGuard secara manual.",
+    "hint": "Instal pada {{os}} untuk menjalankan VPN dari host ini.",
+    "thisHost": "host ini",
+    "button": "Instal WireGuard",
+    "working": "Menginstal..."
+  },
+  "interfaces": {
+    "add": "Tambah antarmuka",
+    "empty": "Belum ada antarmuka. Tambahkan satu untuk memulai VPN.",
+    "loadFailed": "Gagal memuat antarmuka.",
+    "up": "Aktif",
+    "down": "Nonaktif",
+    "clients": "other: {{count}} klien",
+    "nat": "NAT",
+    "boot": "Mulai saat boot"
+  },
+  "create": {
+    "title": "Tambah antarmuka",
+    "name": "Nama",
+    "address": "Alamat",
+    "addressHint": "Alamat server dan subnet. Klien akan mendapatkan alamat bebas berikutnya.",
+    "port": "Port UDP",
+    "nat": "Bagikan internet host (NAT)",
+    "natDesc": "Klien dapat mengakses internet dan jaringan host melalui host ini.",
+    "natMissing": "NAT memerlukan iptables, yang belum terinstal pada host ini.",
+    "forwarding": "Aktifkan forwarding IP",
+    "forwardingDesc": "Memungkinkan host meneruskan lalu lintas antara klien dan jaringan. Disimpan untuk boot ulang.",
+    "firewall": "Buka port di firewall",
+    "firewallDesc": "Menambahkan port UDP ke ufw atau firewalld jika salah satunya berjalan.",
+    "start": "Mulai sekarang dan saat boot",
+    "startDesc": "Mengaktifkan antarmuka dan menjaganya tetap aktif setelah boot ulang.",
+    "save": "Buat",
+    "done": "Antarmuka siap.",
+    "failed": "Gagal membuat antarmuka."
+  },
+  "detail": {
+    "clients": "Klien",
+    "settings": "Pengaturan",
+    "config": "Konfigurasi",
+    "service": "Layanan",
+    "gone": "Antarmuka ini tidak lagi ada pada host."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Tampilkan tab WireGuard untuk host ini di menunya."
+      },
+      "showPanel": {
+        "label": "Tampilkan panel WireGuard di terminal",
+        "description": "Biarkan panel WireGuard terbuka di sebelah terminal SSH host ini."
+      },
+      "alertDown": {
+        "label": "Peringatan saat antarmuka tidak aktif",
+        "description": "Kirim peringatan saat antarmuka yang seharusnya aktif saat boot tidak aktif. Diperiksa saat status WireGuard dibaca."
+      }
+    },
+    "publicKey": "Kunci publik",
+    "port": "Port UDP",
+    "endpoint": "Titik akhir server",
+    "endpointHint": "Alamat publik tempat klien terhubung, seperti vpn.example.com:51820.",
+    "dns": "DNS untuk klien",
+    "dnsHint": "Opsional. Pisahkan server dengan koma.",
+    "allowed": "Lalu lintas melalui VPN",
+    "allowedHint": "Rentang alamat yang dikirim klien melalui VPN. 0.0.0.0/0, ::/0 mengirim semua lalu lintas.",
+    "keepalive": "Keepalive (detik)",
+    "keepaliveHint": "Menjaga klien di balik NAT tetap dapat dijangkau. Gunakan 0 untuk menonaktifkannya.",
+    "saved": "Pengaturan disimpan.",
+    "saveFailed": "Gagal menyimpan pengaturan.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Buka panel WireGuard bersama terminal baru",
+        "description": "Tampilkan panel WireGuard di sebelah setiap terminal SSH yang memiliki WireGuard. Anda masih bisa membukanya dan menutupnya dari tombol di tepi kanan."
+      },
+      "companionSide": {
+        "label": "Posisi panel WireGuard",
+        "description": "Di mana panel WireGuard berada di sebelah terminal.",
+        "right": "Kanan",
+        "left": "Kiri",
+        "bottom": "Bawah"
+      },
+      "companionSize": {
+        "label": "Ukuran panel WireGuard",
+        "description": "Lebar dalam piksel, atau tinggi saat berada di bawah. Anda juga bisa menyeret tepinya."
+      },
+      "companionEdgeButton": {
+        "label": "Tampilkan tombol panel",
+        "description": "Tampilkan tombol kecil di tepi kanan terminal yang membuka panel WireGuard."
+      }
+    }
+  },
+  "clients": {
+    "add": "Tambah klien",
+    "empty": "Belum ada klien.",
+    "loadFailed": "Gagal memuat klien.",
+    "name": "Nama",
+    "nameHint": "Huruf, angka, titik, tanda hubung, dan garis bawah.",
+    "allowed": "Lalu lintas melalui VPN",
+    "allowedHint": "Kosongkan untuk menggunakan default antarmuka: {{value}}",
+    "create": "Buat klien",
+    "addFailed": "Gagal menambahkan klien.",
+    "needEndpoint": "Atur titik akhir server di pengaturan antarmuka terlebih dahulu.",
+    "connected": "Terhubung",
+    "off": "Mati",
+    "external": "Dibuat manual",
+    "handshake": "handshake {{ago}} yang lalu",
+    "showConfig": "Tampilkan konfigurasi dan kode QR",
+    "configFailed": "Gagal membaca konfigurasi klien.",
+    "rotate": "Kunci baru",
+    "rotateTitle": "Buat kunci baru untuk {{name}}?",
+    "rotateDesc": "Konfigurasi lama akan berhenti bekerja. Berikan konfigurasi baru ke klien setelahnya.",
+    "turnOff": "Matikan",
+    "turnOn": "Nyalakan",
+    "saveFailed": "Gagal mengubah klien.",
+    "deleteTitle": "Hapus {{name}}?",
+    "deleteDesc": "Klien akan dihapus dan tidak dapat terhubung lagi.",
+    "deleteFailed": "Gagal menghapus klien."
+  },
+  "clientConfig": {
+    "note": "Konfigurasi ini berisi kunci privat klien. Bagikan hanya kepada orang atau perangkat yang akan menggunakannya.",
+    "qr": "Kode QR untuk konfigurasi klien",
+    "copy": "Salin",
+    "copied": "Konfigurasi disalin.",
+    "copyFailed": "Gagal menyalin konfigurasi.",
+    "download": "Unduh .conf"
+  },
+  "config": {
+    "title": "File konfigurasi",
+    "hint": "Kunci privat dan preshared disembunyikan. Biarkan placeholder untuk mempertahankan kunci. Konfigurasi diperiksa sebelum disimpan dan cadangan dibuat. Perubahan alamat memerlukan restart.",
+    "loadFailed": "Tidak dapat membaca konfigurasi.",
+    "saved": "Konfigurasi disimpan.",
+    "saveFailed": "Tidak dapat menyimpan konfigurasi."
+  },
+  "logs": {
+    "loadFailed": "Tidak dapat membaca log.",
+    "lines": "{{count}} baris",
+    "empty": "Tidak ada baris log."
+  },
+  "service": {
+    "failed": "Tindakan layanan gagal.",
+    "start": "Mulai",
+    "stop": "Berhenti",
+    "restart": "Mulai ulang",
+    "autostart": "Mulai saat boot",
+    "autostartDesc": "Mulai antarmuka ini saat host dimulai.",
+    "needsSystemd": "Memulai saat boot memerlukan systemd di host ini.",
+    "noForward": "Penerusan IP dimatikan di host ini, sehingga klien tidak dapat mencapai jaringan melalui NAT.",
+    "delete": "Hapus antarmuka",
+    "deleteTitle": "Hapus {{name}}?",
+    "deleteDesc": "Antarmuka dihentikan dan konfigurasi, kunci, serta file klien yang disimpan dihapus dari host.",
+    "deleteFailed": "Tidak dapat menghapus antarmuka."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Aktifkan WireGuard di pengaturan host ini untuk menggunakan kartu ini.",
+    "start": "Aktifkan",
+    "stop": "Nonaktifkan",
+    "done": "{{name}} diperbarui"
+  },
+  "operations": {
+    "list": {
+      "title": "Daftar antarmuka WireGuard"
+    },
+    "down": {
+      "title": "Antarmuka WireGuard nonaktif"
+    },
+    "start": {
+      "title": "Mulai antarmuka WireGuard"
+    },
+    "stop": {
+      "title": "Hentikan antarmuka WireGuard"
+    },
+    "restart": {
+      "title": "Mulai ulang antarmuka WireGuard"
+    },
+    "interfaces": {
+      "title": "Antarmuka WireGuard",
+      "address": "Alamat",
+      "port": "Port",
+      "clients": "Klien"
+    }
+  },
+  "nav": {
+    "togglePanel": "Alihkan panel WireGuard"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Memeriksa host...",
+    "summary_other": "{{count}} klien di {{hosts}} host",
+    "refresh": "Periksa lagi",
+    "empty": "Aktifkan WireGuard untuk host agar muncul di sini.",
+    "missing": "Tidak terinstal",
+    "down_other": "{{count}} nonaktif",
+    "interfaces_other": "{{count}} antarmuka, {{clients}} klien"
+  }
+}

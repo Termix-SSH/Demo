@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Gestionează înregistrările DNS și domeniile pe Cloudflare, Route 53, Namecheap și alți furnizori."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domenii",
+    "loading": "Se încarcă",
+    "empty": "Încă nu există domenii. Deschideți DNS pentru a adăuga o autentificare.",
+    "ok": "{{domains}} domenii, niciunul nu expiră în curând",
+    "accounts": "{{count}} autentificări",
+    "failingLinks": "{{count}} înregistrări legate cu erori"
+  },
+  "permissions": {
+    "view": {
+      "title": "Vizualizare DNS",
+      "description": "Deschideți fila DNS și vizualizați zonele, înregistrările, domeniile și verificările de stare."
+    },
+    "edit": {
+      "title": "Modificare înregistrări DNS",
+      "description": "Adăugați, modificați și ștergeți înregistrări, importați fișiere de zonă și reîmprospătați domeniile."
+    },
+    "manage": {
+      "title": "Gestionare autentificări DNS",
+      "description": "Adăugați autentificări pentru furnizori, legați înregistrările de gazde, monitorizați domeniile și restaurați copii de zonă."
+    }
+  },
+  "operations": {
+    "zone": "Zonă",
+    "type": "Tip",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Nume",
+    "content": "Valoare",
+    "contentOptional": "Valoare (lăsați gol pentru a se potrivi cu orice)",
+    "ttl": "TTL în secunde",
+    "label": "Etichetă",
+    "zones": {
+      "title": "Listare zone DNS"
+    },
+    "records": {
+      "title": "Listare înregistrări DNS"
+    },
+    "domains": {
+      "title": "Listare domenii și date de expirare"
+    },
+    "check": {
+      "title": "Verificare zonă"
+    },
+    "upsert": {
+      "title": "Setare înregistrare DNS"
+    },
+    "delete": {
+      "title": "Ștergere înregistrare DNS"
+    },
+    "snapshot": {
+      "title": "Salvare copie de zonă"
+    },
+    "links": {
+      "title": "Actualizare înregistrări legate"
+    },
+    "expiry": {
+      "title": "Expirare domeniu"
+    }
+  },
+  "description": "Adăugați autentificările DNS și de registrar pentru a gestiona înregistrările și a monitoriza domeniile într-un singur loc. Cheile sunt stocate criptate și nu sunt afișate niciodată.",
+  "summary": "{{zones}} zone, {{domains}} domenii",
+  "saved": "Salvat",
+  "delete": "Ștergere",
+  "edit": "Editare",
+  "back": "Înapoi",
+  "refresh": "Reîmprospătare",
+  "section": {
+    "zones": "Zone",
+    "domains": "Domenii",
+    "links": "Legături",
+    "accounts": "Autentificări"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "Token API",
+    "accessKeyId": "ID cheie de acces",
+    "secretAccessKey": "Cheie de acces secretă",
+    "sessionToken": "Token de sesiune (opțional)",
+    "apiUser": "Utilizator API",
+    "apiKey": "Cheie API",
+    "userName": "Nume de utilizator (dacă diferă de utilizatorul API)",
+    "clientIp": "Adresă IP permisă",
+    "apiSecret": "Secret API",
+    "environment": "Mediu",
+    "environment_production": "Producție",
+    "environment_ote": "Test (OTE)",
+    "secretApiKey": "Cheie API secretă",
+    "token": "Token de acces personal"
+  },
+  "zones": {
+    "empty": "Încă nu există zone.",
+    "emptyHint": "Adăugați o autentificare de furnizor în Autentificări pentru a vedea zonele acestuia."
+  },
+  "zone": {
+    "records": "Înregistrări",
+    "health": "Stare",
+    "copies": "Copii",
+    "files": "Fișiere",
+    "filter": "Filtrează înregistrările",
+    "empty": "Nicio înregistrare."
+  },
+  "record": {
+    "section": "Înregistrare",
+    "addTitle": "Adaugă înregistrare",
+    "editTitle": "Editează înregistrare",
+    "add": "Adaugă înregistrare",
+    "save": "Salvează",
+    "type": "Tip",
+    "name": "Nume",
+    "nameHint": "Folosește @ pentru {{zone}} însuși",
+    "value": "Valoare",
+    "priority": "Prioritate",
+    "ttl": "TTL (secunde)",
+    "ttlHint": "Cât timp rezolvatorii păstrează răspunsul. 300 este 5 minute.",
+    "ttlAuto": "1 înseamnă automat.",
+    "proxied": "Proxiat",
+    "proxiedHint": "Trimite traficul prin Cloudflare.",
+    "proxiedBadge": "Proxiat",
+    "comment": "Notă",
+    "readOnly": "Gestionat de furnizor",
+    "deleteConfirm": "Șterge înregistrarea {{type}} {{name}}?"
+  },
+  "account": {
+    "add": "Adaugă autentificare",
+    "addTitle": "Adaugă autentificare DNS",
+    "editTitle": "Editează autentificare DNS",
+    "save": "Salvează",
+    "login": "Autentificare",
+    "provider": "Furnizor",
+    "name": "Nume",
+    "namePlaceholder": "Cloudflare principal",
+    "keep": "Lasă gol pentru a păstra valoarea salvată",
+    "registrar": "Acest furnizor este și un registrar, așa că domeniile sale apar în Domenii.",
+    "options": "Opțiuni",
+    "autoBackup": "Păstrează copii ale zonelor",
+    "autoBackupHint": "Salvează o copie înainte de fiecare modificare și când o zonă se schimbă în afara Termix.",
+    "checkHealth": "Verifică zonele zilnic",
+    "checkHealthHint": "Rulează verificările de stare zilnic și alertează la probleme noi.",
+    "test": "Testează",
+    "testOk": "Funcționează. Am găsit {{zones}} zone și {{domains}} domenii.",
+    "deleteConfirm": "Șterge {{name}}? Copiile și legăturile sale sunt șterse împreună. Nimic nu se schimbă la furnizor.",
+    "empty": "Încă nu există autentificări.",
+    "emptyHint": "Adăugați o autentificare Cloudflare, Route 53, Namecheap sau altă autentificare pentru a începe.",
+    "lastSync": "Ultima verificare {{date}}",
+    "never": "Încă nu a fost verificat",
+    "failed": "Autentificarea a eșuat"
+  },
+  "domains": {
+    "empty": "Încă nu există domenii.",
+    "emptyHint": "Autentificările de registrar își listează domeniile aici. Poți monitoriza și orice domeniu după nume.",
+    "watchPlaceholder": "example.com",
+    "watch": "Monitorază domeniul",
+    "unwatch": "Oprește monitorizarea",
+    "watched": "Monitorizat",
+    "noRenew": "Reînnoire automată dezactivată",
+    "unlocked": "Deblocat",
+    "unknown": "Registrar necunoscut",
+    "expires": "Expiră la {{date}}",
+    "expired": "Expirat",
+    "days": "mai sunt {{count}} zile",
+    "refreshFailed": "{{count}} căutări au eșuat"
+  },
+  "link": {
+    "add": "Adaugă legătură",
+    "addTitle": "Adaugă legătură",
+    "editTitle": "Editează legătura",
+    "save": "Salvează",
+    "record": "Înregistrare",
+    "address": "Adresă",
+    "zone": "Zonă",
+    "pickZone": "Alege o zonă",
+    "source": "Indică către",
+    "sourceHost": "Un gazdă",
+    "sourcePublic4": "Adresa IPv4 publică a acestui server",
+    "sourcePublic6": "Adresa IPv6 publică a acestui server",
+    "source_host": "Gazdă",
+    "source_public4": "IPv4 public",
+    "source_public6": "IPv6 public",
+    "host": "Gazdă",
+    "pickHost": "Alege o gazdă",
+    "hostHint": "Înregistrarea urmărește adresa gazdei. Se actualizează când gazda se schimbă.",
+    "publicHint": "Termix verifică adresa sa publică și menține înregistrarea sincronizată, ca un DNS dinamic.",
+    "enabled": "Menține această înregistrare actualizată",
+    "empty": "Nicio legătură încă.",
+    "emptyHint": "O legătură menține o înregistrare indicând către o gazdă sau către adresa publică a acestui server.",
+    "off": "Dezactivat",
+    "hostGone": "Gazda nu a fost găsită",
+    "lastSync": "Verificat la {{date}}",
+    "never": "Nu a fost verificat încă",
+    "syncNow": "Actualizează acum",
+    "updated": "Înregistrarea a fost actualizată",
+    "unchanged": "Înregistrarea era deja corectă",
+    "deleteConfirm": "Elimini legătura pentru {{name}}? Înregistrarea rămâne așa cum este."
+  },
+  "diff": {
+    "none": "Nimic nu s-ar schimba.",
+    "add": "Adaugă",
+    "change": "Schimbă",
+    "remove": "Elimină"
+  },
+  "copies": {
+    "hint": "Copiile sunt salvate înainte de fiecare modificare și o dată pe zi când o zonă s-a schimbat în afara Termix.",
+    "save": "Salvează copia",
+    "saved": "Copie salvată",
+    "manualLabel": "Copie manuală",
+    "empty": "Nicio copie încă.",
+    "count": "{{count}} înregistrări",
+    "compare": "Compară cu acum",
+    "restore": "Restaurează",
+    "restoreConfirm": "Restaurezi această copie? Vor fi făcute {{count}} modificări la furnizor. O copie a înregistrărilor curente este salvată mai întâi.",
+    "restored": "Restaurat. {{count}} modificări făcute.",
+    "source": {
+      "manual": "Manual",
+      "auto": "Zilnic",
+      "before": "Înainte de modificare"
+    }
+  },
+  "files": {
+    "export": "Descarcă fișierul de zonă",
+    "exportHint": "Descarcă înregistrările ca un fișier de zonă BIND.",
+    "import": "Importă un fișier de zonă",
+    "placeholder": "Lipește aici un fișier de zonă BIND",
+    "replace": "Elimină înregistrările care nu se află în fișier",
+    "replaceHint": "Oprit, importul adaugă și modifică doar înregistrări.",
+    "preview": "Previzualizare",
+    "apply": "Aplică",
+    "applied": "Importat. {{count}} modificări efectuate.",
+    "skipped": "Omitere:"
+  },
+  "health": {
+    "run": "Execută verificările",
+    "running": "Se execută",
+    "propagation": "Verifică rezolvatorii",
+    "propagationTitle": "Rezolvatori publici",
+    "lastRun": "Ultima execuție {{date}}",
+    "empty": "Nu s-au executat încă verificări pentru această zonă.",
+    "record": "Înregistrare",
+    "resolver": "Rezolvator",
+    "answer": "Răspuns",
+    "noAnswer": "Fără răspuns",
+    "delegation": {
+      "error": "Serverele de nume nu au putut fi căutate.",
+      "none": "Zona nu are servere de nume pe internet. Domeniul poate să nu indice către acest furnizor.",
+      "mismatch": "Domeniul folosește servere de nume diferite de cele ale furnizorului: {{found}}.",
+      "ok": "Domeniul indică către {{count}} servere de nume."
+    },
+    "soa": {
+      "differ": "Serverele de nume nu sunt de acord privind versiunea zonei ({{count}} versiuni). O modificare se poate fi încă în propagare.",
+      "same": "{{count}} servere de nume sunt de acord privind versiunea zonei."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC nu a putut fi verificat.",
+      "off": "DNSSEC nu este activat.",
+      "valid": "DNSSEC este activ și valid.",
+      "broken": "DNSSEC este configurat la registrar, dar nu se validează. Rezolvatorii care îl verifică vor eșua."
+    },
+    "cname": {
+      "conflict": "{{name}} are un CNAME și alte înregistrări. Acest lucru nu este permis.",
+      "apex": "Rădăcina zonei nu poate fi un CNAME.",
+      "dangling": "{{name}} indică către {{target}}, care nu se rezolvă.",
+      "ok": "Toate țintele CNAME se rezolvă."
+    },
+    "spf": {
+      "missing": "Domeniul primește e-mailuri, dar nu are o înregistrare SPF.",
+      "multiple": "Există mai mult de o înregistrare SPF. Serverele de e-mail vor respinge toate acestea.",
+      "lookups": "Înregistrarea SPF efectuează {{count}} căutări. Limita este de 10.",
+      "ok": "SPF este configurat ({{count}} căutări)."
+    },
+    "dmarc": {
+      "missing": "Nu există o înregistrare DMARC.",
+      "none": "DMARC este setat doar pentru monitorizare.",
+      "ok": "DMARC este configurat."
+    },
+    "dkim": {
+      "none": "Nu s-au găsit chei DKIM în această zonă.",
+      "found": "{{count}} chei DKIM găsite."
+    },
+    "mx": {
+      "unresolved": "Serverul de e-mail {{host}} nu se rezolvă."
+    },
+    "mail": {
+      "none": "Domeniul nu are înregistrări de e-mail."
+    },
+    "caa": {
+      "ok": "Înregistrările CAA limitează cine poate emite certificate.",
+      "none": "Nu există înregistrări CAA. Orice autoritate de certificare poate emite certificate."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domenii, domenii care expiră și înregistrări cu erori.",
+    "domains": "Domenii",
+    "expiring": "Expiră curând",
+    "failingLinks": "Legături cu erori",
+    "failingAccounts": "Autentificări cu erori"
+  }
+}

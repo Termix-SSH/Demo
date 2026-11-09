@@ -1,0 +1,235 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Paigalda WireGuard oma hostidele ja haldage liideseid, kliente ja konfiguratsioone ühest vahelehinnast."
+  },
+  "common": {
+    "save": "Salvesta",
+    "cancel": "Tühista",
+    "back": "Tagasi",
+    "delete": "Kustuta",
+    "loading": "Laadimine..."
+  },
+  "permissions": {
+    "use": {
+      "title": "WireGuardi kasutamine",
+      "description": "Haldage WireGuardi liideseid ja kliente hostidel, mida saate muuta."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Ava WireGuard hostist.",
+    "error": "WireGuardi ei õnnestunud sellelt hostilt laadida.",
+    "sudo": "Selle hosti WireGuardi haldamiseks on vaja root-õigusi või paroolita sudo-d.",
+    "installed": "Paigaldatud",
+    "notInstalled": "Pole paigaldatud",
+    "refresh": "Värskenda",
+    "viewInterfaces": "Liidesed",
+    "viewLogs": "Logid"
+  },
+  "install": {
+    "title": "Paigalda WireGuard",
+    "desc": "See paigaldab WireGuardi tööriistad ja iptables'i hosti pakkemanageri abil.",
+    "confirm": "Paigalda",
+    "done": "WireGuard on paigaldatud.",
+    "failed": "WireGuardi paigaldamine ebaõnnestus.",
+    "empty": "WireGuard ei ole sellel hostil paigaldatud",
+    "noManager": "Toetatud pakkemanagerit ei leitud. Paigalda WireGuard käsitsi.",
+    "hint": "Paigalda see {{os}}-ile, et käivitada VPN sellelt hostilt.",
+    "thisHost": "sellel hostil",
+    "button": "Paigalda WireGuard",
+    "working": "Paigaldamine..."
+  },
+  "interfaces": {
+    "add": "Lisa liides",
+    "empty": "Liideseid veel ei ole. Lisa üks, et alustada VPN-i.",
+    "loadFailed": "Liideste laadimine ebaõnnestus.",
+    "up": "Üles",
+    "down": "Alla",
+    "clients": "one: {{count}} klient",
+    "nat": "NAT",
+    "boot": "Käivitub taaskäivitamisel"
+  },
+  "create": {
+    "title": "Lisa liides",
+    "name": "Nimi",
+    "address": "Aadress",
+    "addressHint": "Serveri aadress ja alamvõrk. Kliendid saavad järgmised vabad aadressid.",
+    "port": "UDP port",
+    "nat": "Jaga hosti internetiühendust (NAT)",
+    "natDesc": "Kliendid saavad selle hosti kaudu ligi internetile ja hosti võrgule.",
+    "natMissing": "NAT vajab iptables'i, mida sellel hostil ei ole paigaldatud.",
+    "forwarding": "Luba IP edastamine",
+    "forwardingDesc": "Lubab hostil edastada liiklust klientide ja võrgu vahel. Salvestatakse taaskäivituste jaoks.",
+    "firewall": "Ava port tulemüüris",
+    "firewallDesc": "Lisab UDP porti ufw-le või firewalld-le, kui üks neist töötab.",
+    "start": "Käivita kohe ja taaskäivitamisel",
+    "startDesc": "Lülitab liidese sisse ja hoiab seda taaskäivituse järel sisse lülitatuna.",
+    "save": "Loo",
+    "done": "Liides on valmis.",
+    "failed": "Liidese loomine ebaõnnestus."
+  },
+  "detail": {
+    "clients": "Kliendid",
+    "settings": "Seaded",
+    "config": "Konfiguratsioon",
+    "service": "Teenus",
+    "gone": "Seda liidest ei eksisteeri enam hostil."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Kuva selle hosti menüüs WireGuardi vaheleht."
+      },
+      "showPanel": {
+        "label": "Kuva terminalides WireGuardi paneel",
+        "description": "Luba WireGuardi paneel avada selle hosti SSH-terminali kõrval."
+      },
+      "alertDown": {
+        "label": "Teavita, kui liides on väljas",
+        "description": "Saada teavitus, kui käivitamisel aktiveeritav liides pole aktiivne. Kontrollitakse WireGuardi oleku lugemisel."
+      }
+    },
+    "publicKey": "Avalik võti",
+    "port": "UDP-port",
+    "endpoint": "Serveri lõpp-punkt",
+    "endpointHint": "Avalik aadress, millele kliendid ühenduvad, näiteks vpn.example.com:51820.",
+    "dns": "DNS klientidele",
+    "dnsHint": "Valikuline. Eralda serverid koma abil.",
+    "allowed": "Liiklus VPN-i kaudu",
+    "allowedHint": "Vahemikud, mille kaudu kliendid saadavad liiklust VPN-i kaudu. 0.0.0.0/0, ::/0 saadab kõik.",
+    "keepalive": "Keepalive (sekundites)",
+    "keepaliveHint": "Hoiab NAT-i taga olevad kliendid saadaval. Kasuta 0, et see välja lülitada.",
+    "saved": "Seaded salvestatud.",
+    "saveFailed": "Seadeid ei õnnestunud salvestada.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Ava WireGuardi paneel koos uute terminalidega",
+        "description": "Kuva WireGuardi paneel kõigi SSH-terminalide kõrval, millel on WireGuard sisse lülitatud. Saad selle ikka avada ja sulgeda nupust paremal serval."
+      },
+      "companionSide": {
+        "label": "WireGuardi paneeli asukoht",
+        "description": "Kus WireGuardi paneel terminali kõrval asub.",
+        "right": "Parem",
+        "left": "Vasak",
+        "bottom": "Alumine"
+      },
+      "companionSize": {
+        "label": "WireGuardi paneeli suurus",
+        "description": "Laius pikslites või kõrgus, kui see on allpool. Saad selle serva ka lohistada."
+      },
+      "companionEdgeButton": {
+        "label": "Kuva paneeli nupp",
+        "description": "Kuva terminali paremal serval väike nupp, mis avab WireGuardi paneeli."
+      }
+    }
+  },
+  "clients": {
+    "add": "Lisa klient",
+    "empty": "Kliente pole veel.",
+    "loadFailed": "Kliente ei õnnestunud laadida.",
+    "name": "Nimi",
+    "nameHint": "Tähed, numbrid, punktid, kriipsud ja alakriipsud.",
+    "allowed": "Liiklus VPN-i kaudu",
+    "allowedHint": "Jäta tühjaks, et kasutada liidese vaikeväärtust: {{value}}",
+    "create": "Loo klient",
+    "addFailed": "Klienti ei õnnestunud lisada.",
+    "needEndpoint": "Määra kõigepealt serveri lõpp-punkt liidese seadetes.",
+    "connected": "Ühendatud",
+    "off": "Väljas",
+    "external": "Käsitsi loodud",
+    "handshake": "käepigistus {{ago}} tagasi",
+    "showConfig": "Kuva konfiguratsioon ja QR-kood",
+    "configFailed": "Kliendi konfiguratsiooni ei õnnestunud lugeda.",
+    "rotate": "Uued võtmed",
+    "rotateTitle": "Kas luua {{name}} jaoks uued võtmed?",
+    "rotateDesc": "Vana konfiguratsioon lakkab töötamast. Anna klient uue konfiguratsiooni pärast seda.",
+    "turnOff": "Lülita välja",
+    "turnOn": "Lülita sisse",
+    "saveFailed": "Klienti ei õnnestunud muuta.",
+    "deleteTitle": "Kas kustutada {{name}}?",
+    "deleteDesc": "Klient eemaldatakse ja ei saa enam ühendust luua.",
+    "deleteFailed": "Klienti ei õnnestunud kustutada."
+  },
+  "clientConfig": {
+    "note": "See konfiguratsioon sisaldab kliendi privaatset võtit. Jagage seda ainult selle inimese või seadmega, kes seda kasutab.",
+    "qr": "QR-kood kliendi konfiguratsioonile",
+    "copy": "Kopeeri",
+    "copied": "Konfiguratsioon kopeeritud.",
+    "copyFailed": "Konfiguratsiooni ei õnnestunud kopeerida.",
+    "download": "Laadi alla .conf"
+  },
+  "config": {
+    "title": "Konfiguratsioonifail",
+    "hint": "Privaat- ja eel jagatud võtmed on peidetud. Jäta hoiukoht tühjaks, et võtit säilitada. Konfiguratsiooni kontrollitakse enne salvestamist ja varukoopia tehakse. Aadressimuutused nõuavad taaskäivitamist.",
+    "loadFailed": "Konfiguratsiooni lugemine ebaõnnestus.",
+    "saved": "Konfiguratsioon salvestatud.",
+    "saveFailed": "Konfiguratsiooni salvestamine ebaõnnestus."
+  },
+  "logs": {
+    "loadFailed": "Logide lugemine ebaõnnestus.",
+    "lines": "{{count}} rida",
+    "empty": "Logiridu pole."
+  },
+  "service": {
+    "failed": "Teenus toimingu tegemine ebaõnnestus.",
+    "start": "Käivita",
+    "stop": "Peata",
+    "restart": "Käivita uuesti",
+    "autostart": "Käivita süsteemi käivitamisel",
+    "autostartDesc": "Käivita see liides, kui host käivitub.",
+    "needsSystemd": "Süsteemi käivitamisel käivitamine nõuab sellel hostil systemd-i.",
+    "noForward": "IP edastamine on sellel hostil välja lülitatud, seega ei saa kliendid NAT-i kaudu võrguni jõuda.",
+    "delete": "Kustuta liides",
+    "deleteTitle": "Kustuta {{name}}?",
+    "deleteDesc": "Liides peatatakse ja selle konfiguratsioon, võtmed ning salvestatud kliendifailid eemaldatakse hostilt.",
+    "deleteFailed": "Liidese kustutamine ebaõnnestus."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Lülita WireGuard sisse selle hosti seadetes, et seda kaarti kasutada.",
+    "start": "Käivita",
+    "stop": "Peata",
+    "done": "{{name}} uuendatud"
+  },
+  "operations": {
+    "list": {
+      "title": "Loetle WireGuard liidesed"
+    },
+    "down": {
+      "title": "WireGuard liidesed peatatud"
+    },
+    "start": {
+      "title": "Käivita WireGuard liides"
+    },
+    "stop": {
+      "title": "Peata WireGuard liides"
+    },
+    "restart": {
+      "title": "Käivita WireGuard liides uuesti"
+    },
+    "interfaces": {
+      "title": "WireGuard liidesed",
+      "address": "Aadress",
+      "port": "Port",
+      "clients": "Kliendid"
+    }
+  },
+  "nav": {
+    "togglePanel": "Lülita WireGuard paneel"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Hostide kontrollimine...",
+    "summary_one": "{{count}} klient {{hosts}} hostil",
+    "summary_other": "{{count}} klienti {{hosts}} hostil",
+    "refresh": "Kontrolli uuesti",
+    "empty": "Lülita WireGuard hosti jaoks sisse, et näha seda siin.",
+    "missing": "Pole paigaldatud",
+    "down_one": "{{count}} peatatud",
+    "down_other": "{{count}} peatatud",
+    "interfaces_one": "{{count}} liides, {{clients}} klient",
+    "interfaces_other": "{{count}} liidest, {{clients}} klienti"
+  }
+}

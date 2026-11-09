@@ -1,0 +1,424 @@
+{
+  "tab": {
+    "title": "Virtuaalikoneet",
+    "noHost": "Avaa virtuaalikoneet isäntäkonetta.",
+    "refresh": "Päivitä",
+    "open": "Avaa koko näkymä",
+    "error": "Virtuaalikoneita ei voitu lukea tältä isäntäkonelta.",
+    "disabled": "Virtuaalikoneet on poistettu käytöstä tällä isäntäkonetta. Ota se käyttöön isäntäkonetta asetukset.",
+    "sudo": "Tämä isäntäkonetta vaatii root-kirjautumisen, salasanasuon sudo tai tallennetun Sudo-salasanan.",
+    "vms": "Virtuaalikoneet",
+    "storage": "Tallennustila",
+    "networks": "Verkko",
+    "jobs": "Tehtävät",
+    "runningCount": "{{running}}/{{total}} käynnissä",
+    "nodeLine": "{{cpus}} CPU:ta, {{memory}}",
+    "noKvm": "ei KVM:ää, virtuaalikoneet ovat hitaita"
+  },
+  "common": {
+    "loading": "Ladataan...",
+    "save": "Tallenna",
+    "cancel": "Peruuta",
+    "delete": "Poista",
+    "failed": "Tuo ei onnistunut."
+  },
+  "state": {
+    "running": "Käynnissä",
+    "blocked": "Estetty",
+    "paused": "Keskeytetty",
+    "shutdown": "Sammutetaan",
+    "shutoff": "Pois päältä",
+    "crashed": "Kaatumis",
+    "pmsuspended": "Keskeytetty",
+    "unknown": "Tuntematon"
+  },
+  "power": {
+    "start": "Käynnistä",
+    "shutdown": "Sammuta",
+    "reboot": "Käynnistä uudelleen",
+    "stop": "Pakota pysäytys",
+    "suspend": "Keskeytä",
+    "resume": "Jatka",
+    "shutdownTitle": "Sammutetaanko {{name}}?",
+    "shutdownText": "Tämä pyytää vierasjärjestelmää sammuttamaan. Se voi kestää minuutin, ja vierasjärjestelmä, jolla ei ole ACPI-tukea, voi jättää sen huomiotta.",
+    "stopTitle": "Pakotetaanko {{name}} pysäytys?",
+    "stopText": "Tämä katkaisee virran välittömästi. Kaikki vierasjärjestelmän tallentamaton tieto menetetään."
+  },
+  "setup": {
+    "missing": "Libvirtia ei ole asennettu",
+    "missingText": "Termix voi asentaa QEMU:n ja libvirtin tälle isäntäkonetta. Se vaatii root-oikeudet, salasanasuon sudo tai tallennetun Sudo-salasanan.",
+    "noConnect": "Termix ei voi tavoittaa libvirtia tältä isäntäkonelta",
+    "noConnectText": "Tarkista, että libvirt-palvelu on käynnissä ja että SSH-käyttäjä voi käyttää sitä.",
+    "noKvm": "Tällä isäntäkonetta ei ole /dev/kvm:ää, joten virtuaalikoneet toimisivat ilman laitteistotukea. Ota virtualisointi käyttöön BIOS:ssa tai tälle virtuaalikoneelle.",
+    "install": "Asenna",
+    "installing": "Asennetaan...",
+    "installTitle": "Asennetaanko libvirt tälle isäntäkonetta?",
+    "installText": "Tämä asentaa QEMU:n, libvirtin ja niiden työkalut isäntäkonetta paketinhallinnan avulla, käynnistää palvelun ja määrittää oletusverkon ja tallennustilan.",
+    "installed": "Libvirt on asennettu"
+  },
+  "vm": {
+    "new": "Uusi virtuaalikone",
+    "none": "Ei vielä virtuaalikoneita tällä isäntäkonetta",
+    "noneHint": "Paina Uusi virtuaalikone luodaksesi yhden.",
+    "name": "Nimi",
+    "state": "Tila",
+    "size": "Koko",
+    "ip": "IP-osoite",
+    "noIp": "Ei osoitetta vielä",
+    "cpus_one": "{{count}} CPU",
+    "cpus_other": "{{count}} CPU:ta",
+    "back": "Takaisin listaan",
+    "overview": "Yleiskatsaus",
+    "console": "Konsoli",
+    "snapshots": "Hetkikuvat",
+    "hardware": "Laitteisto",
+    "xml": "XML",
+    "cpu": "CPU",
+    "memory": "Muisti",
+    "memoryUsed": "{{used}} käytetty",
+    "ofHost": "Isäntäpalvelimella on {{memory}}",
+    "diskIo": "Levy",
+    "diskUsed": "{{size}} levy, {{used}} isäntäpalvelimella",
+    "netIo": "Verkko",
+    "uuid": "UUID",
+    "machine": "Kone",
+    "firmware": "Laiteohjelmisto",
+    "bios": "BIOS",
+    "uefi": "UEFI",
+    "cpuMode": "CPU-tila",
+    "guestAgent": "Vierasagentti",
+    "yes": "Kyllä",
+    "no": "Ei",
+    "autostart": "Automaattikäynnistys",
+    "autostartHint": "Käynnistä tämä virtuaalikone, kun isäntäpalvelin käynnistyy.",
+    "clone": "Kloonaa",
+    "cloneStopped": "Sammuta virtuaalikone kloonataksesi sen",
+    "cloneName": "Kopion nimi",
+    "cloneStarted": "Kloonaus aloitettu. Seuraa edistystä Tehtävät-osiosta.",
+    "delete": "Poista",
+    "deleteTitle": "Poistetaanko {{name}}?",
+    "deleteDisks": "Poista myös sen levyt",
+    "deleteDisksHint": "Poistaa levyt, joita mikään muu virtuaalikone ei käytä. Toimintoa ei voi peruuttaa. ISO-tiedostot ja peruskuvat säilyvät.",
+    "deleted": "Virtuaalikone poistettu"
+  },
+  "watch": {
+    "start": "Ilmoita minulle, kun tämä virtuaalikone sammuu",
+    "stop": "Lopeta ilmoitukset tälle virtuaalikoneelle"
+  },
+  "console": {
+    "graphical": "Graafinen",
+    "serial": "Sarjaportti",
+    "notRunning": "Käynnistä virtuaalikone käyttääksesi sen konsolia.",
+    "connecting": "Yhdistetään...",
+    "failed": "Konsolia ei voitu avata.",
+    "retry": "Yritä uudelleen",
+    "ended": "Konsoli suljettiin.",
+    "serialHint": "Paina Enter-näppäintä, jos näyttö pysyy tyhjänä. Vieraskoneen on suoritettava getty-sarjaportissaan.",
+    "noRemoteDesktop": "Ota Etätyöpöytä käyttöön nähdäksesi tämän virtuaalikoneen näytön. Sarjaporttikonsoli toimii edelleen.",
+    "useVnc": "Vaihda VNC:hen",
+    "vncSaved": "Tallennettu. Sammuta virtuaalikone ja käynnistä se käyttääksesi VNC:tä."
+  },
+  "hardware": {
+    "cpuMemory": "CPU ja muisti",
+    "vcpus": "CPU:t",
+    "memory": "Muisti (MiB)",
+    "nextStart": "Muutokset astuvat voimaan, kun virtuaalikone käynnistetään seuraavan kerran.",
+    "saved": "Tallennettu",
+    "disks": "Levyt",
+    "detach": "Irrota",
+    "detachTitle": "Irrotetaanko {{name}}?",
+    "detachText": "Tila säilyy tallennustilassaan.",
+    "pool": "Tallennustila",
+    "sizeGib": "Koko (GiB)",
+    "addDisk": "Lisää levy",
+    "cdrom": "CD-asema",
+    "noMedia": "Tyhjä",
+    "iso": "ISO",
+    "pickIso": "Valitse ISO",
+    "insert": "Aseta",
+    "eject": "Poista",
+    "nics": "Verkkokortit",
+    "removeNic": "Poista",
+    "nicType": "Yhdistä",
+    "virtualNetwork": "Virtuaaliverkko",
+    "hostBridge": "Isäntäsilta",
+    "network": "Verkko",
+    "bridge": "Silta",
+    "addNic": "Lisää kortti"
+  },
+  "snapshot": {
+    "name": "Hetkikuvan nimi",
+    "description": "Kuvaus",
+    "take": "Ota hetkikuva",
+    "taking": "Käsitellään...",
+    "taken": "Hetkikuva otettu",
+    "none": "Ei hetkikuvia",
+    "noneHint": "Hetkikuva tallentaa levyt ja käynnissä olevan virtuaalikoneen muistin.",
+    "current": "Nykyinen",
+    "revert": "Palauta",
+    "revertTitle": "Palataanko hetkikuvaan {{name}}?",
+    "revertText": "Kaikki tämän hetkikuvan jälkeiset muutokset katoavat.",
+    "reverted": "Virtuaalikone palautettu",
+    "delete": "Poista",
+    "deleteTitle": "Poistetaanko hetkikuva {{name}}?",
+    "deleteText": "Virtuaalikone pysyy nykyisessä tilassaan."
+  },
+  "xml": {
+    "hint": "Edistynyt. Isäntä tarkistaa XML:n ennen tallennusta ja säilyttää vanhan kopion hakemistossa /var/lib/termix-vms/backups.",
+    "saveTitle": "Tallennetaanko tämä XML?",
+    "saveText": "Se otetaan käyttöön seuraavan kerran, kun virtuaalikone käynnistetään.",
+    "saved": "Tallennettu"
+  },
+  "new": {
+    "title": "Uusi virtuaalikone",
+    "basics": "Perustiedot",
+    "install": "Asennus",
+    "name": "Nimi",
+    "source": "Asenna lähteestä",
+    "sourceCloud": "Pilvikuvake",
+    "sourceIso": "ISO",
+    "sourceBlank": "Tyhjä levy",
+    "noIso": "Tässä säilössä ei ole ISO-tiedostoja. Lataa yksi Säilytys-osiossa.",
+    "image": "Kuvake",
+    "customImage": "Muu URL-osoite",
+    "imageUrl": "Kuvakkeen URL-osoite",
+    "username": "Kirjautumisnimi",
+    "password": "Salasana",
+    "sshKey": "SSH-julkainen avain",
+    "sshKeyHint": "Anna salasana, avain tai molemmat. Salasana tallennetaan vain hash-arvona.",
+    "start": "Käynnistä valmiina",
+    "create": "Luo virtuaalikone",
+    "started": "Virtuaalikoneen luominen. Seuraa edistystä Tehtävät-osiossa.",
+    "noUefi": "Tähän isäntään ei ole asennettu UEFI-laitteistoa.",
+    "uefiHint": "UEFI-virtuaalikoneesta voidaan ottaa hetkikuvia vain, kun se on sammutettu.",
+    "missingTools": "Tästä isännästä puuttuu {{tools}}, jota pilvikuvakkeet tarvitsevat."
+  },
+  "storage": {
+    "pools": "Säilöt",
+    "none": "Ei säilöjä",
+    "noneHint": "Lisää hakemisto virtuaalikoneiden levyjen säilyttämistä varten.",
+    "active": "Aktiivinen",
+    "inactive": "Epäaktiivinen",
+    "used": "{{used}} / {{size}} käytettyä ({{percent}} %)",
+    "start": "Käynnistä",
+    "stop": "Pysäytä",
+    "forget": "Unohda",
+    "forgetTitle": "Unohdetaanko säilö {{name}}?",
+    "forgetText": "Libvirt lopettaa tämän säilön käytön. Tiedostot säilön hakemistossa pysyvät levyllä.",
+    "poolName": "Poolin nimi",
+    "poolPath": "Kansio",
+    "addPool": "Lisää pooli",
+    "volumes": "Poolin {{pool}} levyt",
+    "noVolumes": "Tässä poolissa ei ole levyjä",
+    "allocated": "{{size}} levyllä",
+    "deleteVolume": "Poista {{name}}?",
+    "deleteVolumeText": "Tämä poistaa tiedoston. Toimintoa ei voi peruuttaa.",
+    "volumeName": "Levyn nimi",
+    "addVolume": "Lisää levy",
+    "downloadUrl": "Lataa tiedosto tähän pooliin",
+    "downloadHint": "Isäntä lataa tiedoston, joten lataus jatkuu vaikka Termix suljetaan.",
+    "download": "Lataa",
+    "downloadStarted": "Lataus aloitettu"
+  },
+  "network": {
+    "title": "Virtuaaliverkot",
+    "none": "Ei virtuaaliverkkoja",
+    "name": "Nimi",
+    "kind": "Tyyppi",
+    "nat": "NAT",
+    "isolated": "Eristetty",
+    "bridge": "Isännän silta",
+    "subnet": "Osoite",
+    "add": "Lisää verkko",
+    "stopTitle": "Pysäytä verkko {{name}}?",
+    "stopText": "Tällä verkolla olevat virtuaalikoneet menettävät yhteyden, kunnes verkko on takaisin ja ne muodostavat yhteyden uudelleen.",
+    "deleteTitle": "Poista verkko {{name}}?",
+    "leases": "DHCP-varaukset verkossa {{name}}",
+    "noLeases": "Ei varauksia"
+  },
+  "jobs": {
+    "none": "Ei tehtäviä vielä",
+    "noneHint": "Uudet virtuaalikoneet, kloonat, hetkikuvat ja lataukset näkyvät täällä.",
+    "cancel": "Pysäytä",
+    "status": {
+      "running": "Käynnissä",
+      "success": "Valmis",
+      "failed": "Epäonnistui",
+      "cancelled": "Pysäytetty"
+    },
+    "kind": {
+      "create": "Uusi virtuaalikone",
+      "clone": "Kloonaa",
+      "download": "Lataus",
+      "snapshot": "Hetkikuva"
+    },
+    "phase": {
+      "download": "Ladataan",
+      "disk": "Levyä luodaan",
+      "seed": "Cloud-init kirjoitetaan",
+      "define": "Virtuaalikonea tallennetaan",
+      "start": "Käynnistetään",
+      "clone": "Levyjä kopioidaan"
+    }
+  },
+  "all": {
+    "title": "Kaikki virtuaalikoneet",
+    "search": "Hae",
+    "host": "Isäntä",
+    "hostCount_one": "{{count}} isäntä",
+    "hostCount_other": "{{count}} isäntää",
+    "noHosts": "Yksikään isäntä ei ole ottanut virtuaalikoneita käyttöön",
+    "noHostsHint": "Avaa isäntä Hallinnoi-osiosta ja ota virtuaalikoneet käyttöön."
+  },
+  "card": {
+    "title": "Virtuaalikoneet",
+    "unreachable": "Saavuttamaton",
+    "crashed_one": "{{count}} kaatunut",
+    "crashed_other": "{{count}} kaatunutta"
+  },
+  "widget": {
+    "running": "Virtuaalikoneita käynnissä"
+  },
+  "companion": {
+    "toggle": "Näytä/piilota virtuaalikoneiden paneeli"
+  },
+  "permissions": {
+    "use": {
+      "title": "Käytä virtuaalikoneita",
+      "description": "Näe virtuaalikoneet isännissä, joihin voit muodostaa yhteyden, ja muokkaa niitä isännissä, joissa sinulla on muokkausoikeudet."
+    },
+    "console": {
+      "title": "Avaa virtuaalikoneiden konsolit",
+      "description": "Avaa virtuaalikoneen graafinen ja sarjakonsoli isännissä, joissa sinulla on muokkausoikeudet."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ota virtuaalikoneet käyttöön",
+        "description": "Hallitse KVM-virtuaalikoneita tässä isäntäpalvelimessa libvirtin avulla."
+      },
+      "useSudo": {
+        "label": "Käytä sudoa",
+        "description": "Suorita libvirt-komennot sudo-komentona. Ota pois käytöstä, jos kirjaudut sisään root-käyttäjänä."
+      },
+      "readOnly": {
+        "label": "Vain lukuoikeus",
+        "description": "Näytä virtuaalikoneet, mutta estä Termixiltä kaikki muutokset."
+      },
+      "connectUri": {
+        "label": "Libvirt-yhteys",
+        "description": "Käytettävä libvirt-URI. Useimmat isäntäpalvelimet käyttävät qemu:///system."
+      },
+      "showPanel": {
+        "label": "Näytä virtuaalikonepaneeli terminaalin vieressä",
+        "description": "Lisää virtuaalikoneiden luettelon tämän isäntäpalvelimen terminaalin välilehdille."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Avaa virtuaalikonepaneeli itsenäisenä",
+        "description": "Avaa paneeli, kun terminaali avataan."
+      },
+      "companionSide": {
+        "label": "Virtuaalikonepaneelin sijainti",
+        "description": "Missä paneeli sijaitsee terminaalin vieressä.",
+        "right": "Oikealla",
+        "left": "Vasemmalla",
+        "bottom": "Alareunassa"
+      },
+      "companionSize": {
+        "label": "Virtuaalikonepaneelin koko",
+        "description": "Leveys tai korkeus pikseleinä."
+      },
+      "companionEdgeButton": {
+        "label": "Näytä reunapainike",
+        "description": "Pieni painike terminaalin reunassa avaa paneelin."
+      }
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Listaa virtuaalikoneet"
+    },
+    "state": {
+      "title": "Virtuaalikoneen tila"
+    },
+    "running": {
+      "title": "Käynnissä olevat virtuaalikoneet"
+    },
+    "crashed": {
+      "title": "Kaatanneet virtuaalikoneet"
+    },
+    "pools": {
+      "title": "Tallennustilan käyttö"
+    },
+    "snapshots": {
+      "title": "Virtuaalikoneen hetkennäkymät"
+    },
+    "listPools": {
+      "title": "Listaa tallennustilat"
+    },
+    "listNetworks": {
+      "title": "Listaa virtuaaliverkot"
+    },
+    "start": {
+      "title": "Käynnistä virtuaalikone"
+    },
+    "reboot": {
+      "title": "Käynnistä virtuaalikone uudelleen"
+    },
+    "suspend": {
+      "title": "Keskeytä virtuaalikone"
+    },
+    "resume": {
+      "title": "Jatka virtuaalikoneen toimintaa"
+    },
+    "autostart": {
+      "title": "Aseta virtuaalikoneen automaattinen käynnistys",
+      "enabled": "Käynnistä isäntäpalvelimen mukana"
+    },
+    "snapshot": {
+      "title": "Ota virtuaalikoneen hetkennäkymä",
+      "name": "Hetkennäkymän nimi",
+      "description": "Kuvaus"
+    },
+    "clone": {
+      "title": "Kloonaa virtuaalikone",
+      "name": "Kopion nimi"
+    },
+    "shutdown": {
+      "title": "Sammuta virtuaalikone"
+    },
+    "forceStop": {
+      "title": "Pakota virtuaalikoneen pysäytys"
+    },
+    "delete": {
+      "title": "Poista virtuaalikone",
+      "disks": "Poista myös sen levyt"
+    },
+    "revert": {
+      "title": "Palauta hetkennäkymään"
+    },
+    "deleteSnapshot": {
+      "title": "Poista hetkennäkymä"
+    },
+    "vms": {
+      "title": "Virtuaalikoneet"
+    },
+    "column": {
+      "cpus": "Suorittimet",
+      "memory": "Muisti (MiB)",
+      "ip": "IP-osoite",
+      "autostart": "Automaattinen käynnistys",
+      "vm": "Virtuaalikone",
+      "created": "Luotu"
+    },
+    "events": {
+      "started": "Virtuaalikone käynnistyi",
+      "stopped": "Virtuaalikone pysähtyi",
+      "crashed": "Virtuaalikone kaatui",
+      "job": "Virtuaalikoneen tehtävä valmistui"
+    }
+  }
+}

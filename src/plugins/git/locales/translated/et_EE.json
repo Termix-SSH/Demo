@@ -1,0 +1,294 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Vaata, tõmba, kommiti ja lükka git-repositooriume oma hostidel ning hoia neid ajakohastena automaatse tõmbega."
+  },
+  "common": {
+    "save": "Salvesta",
+    "cancel": "Tühista",
+    "back": "Tagasi",
+    "loading": "Laadimine..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Kasuta Git'i",
+      "description": "Vaata git-repositooriume hostidel, millele pääsed, ja muuda neid hostidel, mida saad redigeerida."
+    },
+    "runCommands": {
+      "title": "Käivita käsud pärast automaatset tõmmet",
+      "description": "Määra käsk, mis käivitub hostil pärast automaatset tõmmet, kui uued kommid saabuvad."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Halda selle hosti git-repositooriumeid Git'i vahelehelt."
+      },
+      "repoRoots": {
+        "label": "Kataloogide skaneerimine",
+        "description": "Kataloogid, mida otsitakse repositooriumite järele selle hosti skaneerimisel. Eralda need komadega. Vaikimisi on see kodukataloog.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Kasuta sudo'd",
+        "description": "Käivita git root-ina sudo abil. Ainult nende repositooriumite jaoks, mida sisseloginud kasutaja ei saa kasutada."
+      },
+      "readOnly": {
+        "label": "Ainult lugemiseks",
+        "description": "Kuva repositooriumid, kuid ära kunagi muuda neid sellel hostil."
+      },
+      "showPanel": {
+        "label": "Paneel terminali kõrval",
+        "description": "Paku Git'i paneeli selle hosti terminali vahekaartidel."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Ava paneel koos terminaliga",
+        "description": "Kuva Git'i paneel, kui terminal avatakse hostil, kus see on lubatud."
+      },
+      "companionSide": {
+        "label": "Paneeli asukoht",
+        "description": "Kus paneel asub terminali kõrval.",
+        "right": "Parem",
+        "left": "Vasak",
+        "bottom": "Alumine"
+      },
+      "companionSize": {
+        "label": "Paneeli suurus",
+        "description": "Paneeli laius või selle kõrgus alumisel asukohal pikslites."
+      },
+      "companionEdgeButton": {
+        "label": "Servanupp",
+        "description": "Kuva väike nupp terminali serval paneeli avamiseks."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Ava Git hostilt.",
+    "error": "Git'i ei õnnestunud sellelt hostilt laadida.",
+    "disabled": "Git on sellel hostil väljalülitatud. Lülita see sisse hosti seadistustes.",
+    "sudo": "Selleks on vaja root-sisselogimist, paroolita sudo'd või salvestatud Sudo parooli.",
+    "refresh": "Värskenda",
+    "readOnly": "Ainult lugemiseks",
+    "notInstalled": "git pole paigaldatud",
+    "notInstalledTitle": "git pole sellel hostil paigaldatud",
+    "notInstalledHint": "Paigalda git hosti pakkemanageriga ja värskenda seejärel."
+  },
+  "actions": {
+    "ok": "Valmis",
+    "failed": "Ebaõnnestus",
+    "noOutput": "Väljundit pole."
+  },
+  "repos": {
+    "add": "Lisa repositoorium",
+    "search": "Otsi repositooriumeid",
+    "empty": "Repositooriume pole veel. Lisa üks, et alustada.",
+    "noMatch": "Ühtegi repositooriumit ei leitud.",
+    "viewOnly": "Ühtegi repositooriumit pole sellele hostile lisatud.",
+    "detached": "lahkunemata",
+    "changes_one": "{{count}} muudatus",
+    "changes_other": "{{count}} muudatust",
+    "conflicts": "Konfliktid",
+    "auto": "Automaatne tõmme",
+    "autoFailing": "Tõmme ebaõnnestub",
+    "remove": "Eemalda nimekirjast",
+    "removeTitle": "Kas eemaldada {{name}}?",
+    "removeBody": "Repositoorium unustatakse ainult siin. Midagi ei kustuta hostilt.",
+    "removed": "{{name}} eemaldatud",
+    "error": {
+      "missing": "Kataloog puudub",
+      "notrepo": "Ei ole git-i hoidlat",
+      "unreadable": "Pole võimalik lugeda"
+    }
+  },
+  "add": {
+    "title": "Lisa hoidlad",
+    "modeScan": "Skaneeri",
+    "modePath": "Kaust",
+    "modeClone": "Kloonimine",
+    "scanHint": "Otsib git-i hoidlaid asukohtadest {{roots}}. Muuda kaustu hosti seadetes.",
+    "rescan": "Skaneeri uuesti",
+    "noneFound": "Uusi hoidlaid ei leitud.",
+    "picked": "Valitud",
+    "addPicked_one": "Lisa {{count}} hoidla",
+    "addPicked_other": "Lisa {{count}} hoidlat",
+    "addAll": "Lisa kõik",
+    "folder": "Kaust hostil",
+    "folderHint": "Täielik tee või alusta ~-ga kodukausta jaoks. See peab juba olema git-i hoidla.",
+    "addRepo": "Lisa hoidla",
+    "url": "Aadress",
+    "urlHint": "Kasutab hosti sisseloginud kasutaja võtmeid ja git-i seadeid.",
+    "dest": "Kloonimise sihtkoht",
+    "destHint": "Kaust ei tohi veel eksisteerida.",
+    "clone": "Kloonimine",
+    "cloned": "Kloonitud",
+    "added_one": "{{count}} hoidla lisatud",
+    "added_other": "{{count}} hoidlat lisatud",
+    "failed": "Hoidla lisamine ei õnnestunud",
+    "scanFailed": "Hosti skaneerimine ei õnnestunud"
+  },
+  "repo": {
+    "ahead": "{{count}} edasi",
+    "behind": "{{count}} tagasi",
+    "fetch": "Hanki",
+    "fetched": "Hankitud",
+    "pull": "Tõmba",
+    "pulled": "Tõmmatud",
+    "push": "Lükka",
+    "pushed": "Lükatud",
+    "viewChanges": "Muudatused",
+    "viewBranches": "Harud",
+    "viewHistory": "Ajalugu",
+    "viewStash": "Salvestus",
+    "viewAuto": "Automaatne tõmbamine"
+  },
+  "changes": {
+    "loadFailed": "Muudatuste lugemine ei õnnestunud.",
+    "clean": "Midagi fikseerimiseks pole. Tööpuu on puhas.",
+    "stagedTitle": "Valmistatud ({{count}})",
+    "unstagedTitle": "Muudatused ({{count}})",
+    "stage": "Valmista",
+    "staged": "Valmistatud",
+    "unstage": "Tühista valmimine",
+    "unstaged": "Valmistamata",
+    "stageAll": "Valmista kõik",
+    "renamed": "Ümber nimetatud",
+    "discard": "Loobu",
+    "discardTitle": "Kas loobuda faili {{name}} muudatustest?",
+    "discardBody": "Selle faili muudatused kustutatakse ja neid ei saa tagasi tuua.",
+    "discarded": "Muudatustest loobuti",
+    "message": "Fikseerimise sõnum",
+    "messagePlaceholder": "Mis muutus",
+    "commit": "Fikseeri",
+    "commitAll": "Fikseeri kõik muudatused",
+    "commitStaged_one": "Fikseeri {{count}} valmistatud fail",
+    "commitStaged_other": "Fikseeri {{count}} valmistatud faili",
+    "committed": "Fikseeritud",
+    "noDiff": "Muudatusi kuvamiseks pole.",
+    "truncated": "Erinevus on pikk, seega kuvatakse ainult algus."
+  },
+  "branches": {
+    "loadFailed": "Harude lugemine ei õnnestunud.",
+    "empty": "Olevalt haru veel ei ole.",
+    "current": "Praegune",
+    "remote": "Kaugharu",
+    "gone": "Ülesvool on kadunud",
+    "newName": "Uus haru",
+    "create": "Loo haru",
+    "created": "Haru {{name}} loodud",
+    "switch": "Lülita",
+    "switched": "Lülituti harule {{name}}",
+    "merge": "Liida praegusega",
+    "mergeTitle": "Kas liida haru {{name}} haruga {{into}}?",
+    "mergeBody": "Konfliktidega liitmine tühistatakse kohe.",
+    "merged": "Haru {{name}} liidetud",
+    "delete": "Kustuta haru",
+    "deleteTitle": "Kas kustutada haru {{name}}?",
+    "deleteBody": "Git keeldub, kui harul on liitmata kommitid.",
+    "deleted": "Haru {{name}} kustutatud",
+    "forceTitle": "Kas sundkustutada haru {{name}}?",
+    "forceBody": "Sellel harul on liitmata kommitid. Need kaovad, kui haru kustutad.",
+    "forceDelete": "Sundkustuta"
+  },
+  "history": {
+    "loadFailed": "Ajalugu ei õnnestunud lugeda.",
+    "empty": "Kommitte veel ei ole.",
+    "branch": "See haru",
+    "all": "Kõik harud",
+    "more": "Laadi rohkem"
+  },
+  "stash": {
+    "loadFailed": "Stashit ei õnnestunud lugeda.",
+    "title": "Stashid",
+    "empty": "Stashisid pole.",
+    "message": "Sõnum",
+    "messagePlaceholder": "Valikuline",
+    "untracked": "Kaasa jälgimata failid",
+    "push": "Salvesta muudatused stashisse",
+    "pushDone": "Muudatused stashitud",
+    "apply": "Rakenda",
+    "applyDone": "Stash rakendatud",
+    "pop": "Pop",
+    "popDone": "Stash rakendatud ja eemaldatud",
+    "drop": "Kustuta",
+    "dropDone": "Stash kustutatud",
+    "dropTitle": "Kas kustutada stash {{name}}?",
+    "dropBody": "Stash kustutatakse ja seda ei saa taastada.",
+    "remotes": "Kaugasemed",
+    "noRemotes": "Kaugasemeid pole."
+  },
+  "auto": {
+    "intro": "Tehab ajakava alusel pulli ainult kiire edasiviimisega. See ei liida kunagi ja jätab hoidla vahele, kui seal on salvestamata muudatusi või kui see on ülesvoolest eraldunud.",
+    "noUpstream": "Sellel harul pole veel ülesvoolu, seega auto-pull jätab selle vahele.",
+    "enable": "Auto-pull",
+    "enableHint": "Töötab sinu kasutajana, sinu ligipääsuga sellele hostile.",
+    "interval": "Iga (minut)",
+    "intervalHint": "Kui kaua oodata pullide vahel.",
+    "post": "Käsk pärast pulli",
+    "postHint": "Töötab hoidla kaustas pärast uute kommittide saabumist. Nõuab käskude käivitamise õigust.",
+    "saved": "Auto-pull salvestatud",
+    "saveFailed": "Auto-pulli ei õnnestunud salvestada",
+    "runNow": "Käivita nüüd",
+    "next": "Järgmine pull {{when}}",
+    "runs": "Viimased käivitused",
+    "noRuns": "Käivitusi veel ei ole.",
+    "outcome": {
+      "pulled": "Pullitud",
+      "uptodate": "Uuendatud",
+      "skipped": "Jäetud vahele",
+      "failed": "Ebaõnnestus"
+    }
+  },
+  "card": {
+    "title": "Git'i hoidlad",
+    "loading": "Laadimine...",
+    "refresh": "Värskenda",
+    "empty": "Ühelgi hostil pole veel Git'i hoidlaid.",
+    "allClean": "Kõik hoidlad on puhtad ja ajakohased.",
+    "summary_one": "{{count}} hoidla | {{attention}} vajavad tähelepanu",
+    "summary_other": "{{count}} hoidlat | {{attention}} vajavad tähelepanu"
+  },
+  "companion": {
+    "toggle": "Git'i paneel",
+    "openTab": "Ava Git",
+    "here": "Selle kausta hoidla",
+    "all": "Kõik hoidlad"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Loetle Git'i hoidlad"
+    },
+    "fetch": {
+      "title": "Hanki hoidla"
+    },
+    "pull": {
+      "title": "Tõmba hoidla"
+    },
+    "push": {
+      "title": "Lükka hoidla"
+    },
+    "checkout": {
+      "title": "Lülita haru",
+      "branch": "Haru"
+    },
+    "reset-hard": {
+      "title": "Lähtesta hoidla jõuliselt",
+      "ref": "Lähtesta olekusse"
+    },
+    "repos": {
+      "title": "Git'i hoidlad",
+      "branch": "Haru",
+      "ahead": "Ees",
+      "behind": "Taga",
+      "changed": "Muudatused"
+    },
+    "signals": {
+      "behind": "Hoidlad on taga",
+      "dirty": "Hoidlad muudatustega",
+      "pull-failing": "Automaatne tõmbamine ebaõnnestub"
+    }
+  }
+}

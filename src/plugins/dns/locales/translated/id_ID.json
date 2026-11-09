@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Kelola catatan dan domain DNS di Cloudflare, Route 53, Namecheap, dan penyedia lainnya."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domain",
+    "loading": "Memuat",
+    "empty": "Belum ada domain. Buka DNS untuk menambahkan login.",
+    "ok": "{{domains}} domain, tidak ada yang akan kedaluwarsa",
+    "accounts": "{{count}} login",
+    "failingLinks": "{{count}} catatan tertaut gagal"
+  },
+  "permissions": {
+    "view": {
+      "title": "Lihat DNS",
+      "description": "Buka tab DNS dan lihat zona, catatan, domain, dan pemeriksaan kesehatan."
+    },
+    "edit": {
+      "title": "Ubah catatan DNS",
+      "description": "Tambah, ubah, dan hapus catatan, impor file zona, dan muat ulang domain."
+    },
+    "manage": {
+      "title": "Kelola login DNS",
+      "description": "Tambahkan login penyedia, tautkan catatan ke host, pantau domain, dan pulihkan salinan zona."
+    }
+  },
+  "operations": {
+    "zone": "Zona",
+    "type": "Tipe",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Nama",
+    "content": "Nilai",
+    "contentOptional": "Nilai (kosongkan untuk cocok dengan semua)",
+    "ttl": "TTL dalam detik",
+    "label": "Label",
+    "zones": {
+      "title": "Daftar zona DNS"
+    },
+    "records": {
+      "title": "Daftar catatan DNS"
+    },
+    "domains": {
+      "title": "Daftar domain dan tanggal kedaluwarsa"
+    },
+    "check": {
+      "title": "Periksa zona"
+    },
+    "upsert": {
+      "title": "Atur catatan DNS"
+    },
+    "delete": {
+      "title": "Hapus catatan DNS"
+    },
+    "snapshot": {
+      "title": "Simpan salinan zona"
+    },
+    "links": {
+      "title": "Perbarui catatan tertaut"
+    },
+    "expiry": {
+      "title": "Kedaluwarsa domain"
+    }
+  },
+  "description": "Tambahkan login DNS dan registrar Anda untuk mengelola catatan dan memantau domain di satu tempat. Kunci disimpan dalam bentuk terenkripsi dan tidak akan pernah ditampilkan lagi.",
+  "summary": "{{zones}} zona, {{domains}} domain",
+  "saved": "Tersimpan",
+  "delete": "Hapus",
+  "edit": "Edit",
+  "back": "Kembali",
+  "refresh": "Muat ulang",
+  "section": {
+    "zones": "Zona",
+    "domains": "Domain",
+    "links": "Tautan",
+    "accounts": "Login"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "Token API",
+    "accessKeyId": "ID kunci akses",
+    "secretAccessKey": "Kunci akses rahasia",
+    "sessionToken": "Token sesi (opsional)",
+    "apiUser": "Pengguna API",
+    "apiKey": "Kunci API",
+    "userName": "Nama pengguna (jika berbeda dari pengguna API)",
+    "clientIp": "Alamat IP yang diizinkan",
+    "apiSecret": "Rahasia API",
+    "environment": "Lingkungan",
+    "environment_production": "Produksi",
+    "environment_ote": "Uji (OTE)",
+    "secretApiKey": "Kunci API rahasia",
+    "token": "Token akses pribadi"
+  },
+  "zones": {
+    "empty": "Belum ada zona.",
+    "emptyHint": "Tambahkan login penyedia di Login untuk melihat zona-nya."
+  },
+  "zone": {
+    "records": "Rekaman",
+    "health": "Kesehatan",
+    "copies": "Salinan",
+    "files": "File",
+    "filter": "Saring rekaman",
+    "empty": "Tidak ada rekaman."
+  },
+  "record": {
+    "section": "Rekaman",
+    "addTitle": "Tambah rekaman",
+    "editTitle": "Edit rekaman",
+    "add": "Tambah rekaman",
+    "save": "Simpan",
+    "type": "Tipe",
+    "name": "Nama",
+    "nameHint": "Gunakan @ untuk {{zone}} itu sendiri",
+    "value": "Nilai",
+    "priority": "Prioritas",
+    "ttl": "TTL (detik)",
+    "ttlHint": "Seberapa lama resolver menyimpan jawaban. 300 adalah 5 menit.",
+    "ttlAuto": "1 berarti otomatis.",
+    "proxied": "Diproksikan",
+    "proxiedHint": "Arahkan lalu lintas melalui Cloudflare.",
+    "proxiedBadge": "Diproksikan",
+    "comment": "Catatan",
+    "readOnly": "Dikelola oleh penyedia",
+    "deleteConfirm": "Hapus rekaman {{type}} {{name}}?"
+  },
+  "account": {
+    "add": "Tambah login",
+    "addTitle": "Tambah login DNS",
+    "editTitle": "Edit login DNS",
+    "save": "Simpan",
+    "login": "Login",
+    "provider": "Penyedia",
+    "name": "Nama",
+    "namePlaceholder": "Cloudflare Utama",
+    "keep": "Biarkan kosong untuk mempertahankan nilai yang disimpan",
+    "registrar": "Penyedia ini juga merupakan registrar, sehingga domainnya muncul di Domain.",
+    "options": "Opsi",
+    "autoBackup": "Simpan salinan zona",
+    "autoBackupHint": "Simpan salinan sebelum setiap perubahan dan ketika zona berubah di luar Termix.",
+    "checkHealth": "Periksa zona setiap hari",
+    "checkHealthHint": "Jalankan pemeriksaan kesehatan setiap hari dan beri peringatan jika ada masalah baru.",
+    "test": "Uji",
+    "testOk": "Berhasil. Ditemukan {{zones}} zona dan {{domains}} domain.",
+    "deleteConfirm": "Hapus {{name}}? Salinan dan tautannya akan ikut dihapus. Tidak ada perubahan di penyedia.",
+    "empty": "Belum ada login.",
+    "emptyHint": "Tambahkan login Cloudflare, Route 53, Namecheap, atau lainnya untuk memulai.",
+    "lastSync": "Terakhir diperiksa {{date}}",
+    "never": "Belum diperiksa",
+    "failed": "Login gagal"
+  },
+  "domains": {
+    "empty": "Belum ada domain.",
+    "emptyHint": "Login registrar mencantumkan domainnya di sini. Anda juga dapat memantau domain apa pun berdasarkan nama.",
+    "watchPlaceholder": "example.com",
+    "watch": "Pantau domain",
+    "unwatch": "Hentikan pemantauan",
+    "watched": "Dipantau",
+    "noRenew": "Perpanjangan otomatis mati",
+    "unlocked": "Tidak dikunci",
+    "unknown": "Registrar tidak diketahui",
+    "expires": "Kadaluarsa {{date}}",
+    "expired": "Kadaluarsa",
+    "days": "Sisa {{count}} hari",
+    "refreshFailed": "{{count}} pencarian gagal"
+  },
+  "link": {
+    "add": "Tambahkan tautan",
+    "addTitle": "Tambahkan tautan",
+    "editTitle": "Sunting tautan",
+    "save": "Simpan",
+    "record": "Rekaman",
+    "address": "Alamat",
+    "zone": "Zona",
+    "pickZone": "Pilih zona",
+    "source": "Arahkan ke",
+    "sourceHost": "Sebuah host",
+    "sourcePublic4": "Alamat IPv4 publik server ini",
+    "sourcePublic6": "Alamat IPv6 publik server ini",
+    "source_host": "Host",
+    "source_public4": "IPv4 Publik",
+    "source_public6": "IPv6 Publik",
+    "host": "Host",
+    "pickHost": "Pilih host",
+    "hostHint": "Rekaman mengikuti alamat host. Rekaman ini diperbarui saat host berubah.",
+    "publicHint": "Termix mencari alamat publiknya dan menjaga rekaman tetap sinkron, seperti DNS dinamis.",
+    "enabled": "Jaga rekaman ini tetap diperbarui",
+    "empty": "Belum ada tautan.",
+    "emptyHint": "Tautan menjaga rekaman tetap mengarah ke host atau ke alamat publik server ini.",
+    "off": "Mati",
+    "hostGone": "Host tidak ditemukan",
+    "lastSync": "Diperiksa {{date}}",
+    "never": "Belum diperiksa",
+    "syncNow": "Perbarui sekarang",
+    "updated": "Rekaman telah diperbarui",
+    "unchanged": "Rekaman sudah benar",
+    "deleteConfirm": "Hapus tautan untuk {{name}}? Rekaman tetap di tempatnya."
+  },
+  "diff": {
+    "none": "Tidak ada yang akan berubah.",
+    "add": "Tambahkan",
+    "change": "Ubah",
+    "remove": "Hapus"
+  },
+  "copies": {
+    "hint": "Salinan disimpan sebelum setiap perubahan dan sekali sehari jika zona berubah di luar Termix.",
+    "save": "Simpan salinan",
+    "saved": "Salinan disimpan",
+    "manualLabel": "Salinan manual",
+    "empty": "Belum ada salinan.",
+    "count": "{{count}} rekaman",
+    "compare": "Bandingkan dengan sekarang",
+    "restore": "Pulihkan",
+    "restoreConfirm": "Pulihkan salinan ini? {{count}} perubahan akan dilakukan di penyedia. Salinan rekaman saat ini disimpan terlebih dahulu.",
+    "restored": "Dipulihkan. {{count}} perubahan dilakukan.",
+    "source": {
+      "manual": "Manual",
+      "auto": "Harian",
+      "before": "Sebelum perubahan"
+    }
+  },
+  "files": {
+    "export": "Unduh file zona",
+    "exportHint": "Unduh rekaman sebagai file zona BIND.",
+    "import": "Impor file zona",
+    "placeholder": "Tempel file zona BIND di sini",
+    "replace": "Hapus rekaman yang tidak ada dalam file",
+    "replaceHint": "Nonaktif, impor hanya menambahkan dan mengubah rekaman.",
+    "preview": "Pratinjau",
+    "apply": "Terapkan",
+    "applied": "Diimpor. {{count}} perubahan dilakukan.",
+    "skipped": "Dilewati:"
+  },
+  "health": {
+    "run": "Jalankan pemeriksaan",
+    "running": "Sedang berjalan",
+    "propagation": "Periksa resolver",
+    "propagationTitle": "Resolver publik",
+    "lastRun": "Terakhir dijalankan {{date}}",
+    "empty": "Belum ada pemeriksaan yang dijalankan untuk zona ini.",
+    "record": "Rekaman",
+    "resolver": "Resolver",
+    "answer": "Jawaban",
+    "noAnswer": "Tidak ada jawaban",
+    "delegation": {
+      "error": "Nama server tidak dapat dicari.",
+      "none": "Zona ini tidak memiliki nama server di internet. Domain mungkin tidak mengarah ke penyedia ini.",
+      "mismatch": "Domain menggunakan nama server yang berbeda dari penyedia: {{found}}.",
+      "ok": "Domain mengarah ke {{count}} nama server."
+    },
+    "soa": {
+      "differ": "Nama server tidak sepakat tentang versi zona ({{count}} versi). Perubahan mungkin masih sedang menyebar.",
+      "same": "{{count}} nama server sepakat tentang versi zona."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC tidak dapat diperiksa.",
+      "off": "DNSSEC tidak diaktifkan.",
+      "valid": "DNSSEC aktif dan valid.",
+      "broken": "DNSSEC diatur di registrar tetapi tidak valid. Resolver yang memeriksanya akan gagal."
+    },
+    "cname": {
+      "conflict": "{{name}} memiliki CNAME dan rekaman lain. Hal ini tidak diizinkan.",
+      "apex": "Akar zona tidak dapat berupa CNAME.",
+      "dangling": "{{name}} mengarah ke {{target}}, yang tidak dapat diselesaikan.",
+      "ok": "Setiap target CNAME dapat diselesaikan."
+    },
+    "spf": {
+      "missing": "Domain menerima email tetapi tidak memiliki rekaman SPF.",
+      "multiple": "Ada lebih dari satu rekaman SPF. Server email akan menolak semuanya.",
+      "lookups": "Rekaman SPF melakukan {{count}} pencarian. Batasnya adalah 10.",
+      "ok": "SPF diatur ({{count}} pencarian)."
+    },
+    "dmarc": {
+      "missing": "Tidak ada rekaman DMARC.",
+      "none": "DMARC diatur hanya untuk pemantauan.",
+      "ok": "DMARC diatur."
+    },
+    "dkim": {
+      "none": "Tidak ada kunci DKIM yang ditemukan di zona ini.",
+      "found": "{{count}} kunci DKIM ditemukan."
+    },
+    "mx": {
+      "unresolved": "Server email {{host}} tidak dapat diselesaikan."
+    },
+    "mail": {
+      "none": "Domain tidak memiliki rekaman email."
+    },
+    "caa": {
+      "ok": "Rekaman CAA membatasi siapa yang dapat menerbitkan sertifikat.",
+      "none": "Tidak ada rekaman CAA. Otoritas sertifikat mana pun dapat menerbitkan sertifikat."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domain, domain yang akan kedaluwarsa, dan rekaman yang gagal.",
+    "domains": "Domain",
+    "expiring": "Akan kedaluwarsa",
+    "failingLinks": "Tautan yang gagal",
+    "failingAccounts": "Login yang gagal"
+  }
+}

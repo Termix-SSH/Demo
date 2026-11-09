@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Ström, sensorer, händelselogg och konsoler för server-BMC:er via Redfish, IPMI och Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Laddar"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "Visa BMC:er",
+      "description": "Öppna fliken Out-of-band och visa ström, hälsa, sensorer och loggar."
+    },
+    "power": {
+      "title": "Kontrollera ström och start",
+      "description": "Starta och stäng av maskiner, utför strömcykel och välj nästa startenhet."
+    },
+    "console": {
+      "title": "Använd serielkonsolen",
+      "description": "Öppna den seriella LAN-konsolen för en maskin."
+    },
+    "media": {
+      "title": "Använd virtuell media",
+      "description": "Montera och lossa ISO-bilder på en maskin."
+    },
+    "manage": {
+      "title": "Hantera BMC:er",
+      "description": "Lägg till, ändra och ta bort BMC:er och rensa deras händelselogg."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Kör ipmitool på Termix-servern",
+        "description": "När detta är inaktiverat måste IPMI-BMC:er använda en reläserver. Redfish och AMT påverkas inte."
+      }
+    }
+  },
+  "description": "Lägg till styrkontrollerna (BMC:er) för dina servrar för att starta och stänga av dem, övervaka deras sensorer och läsa deras händelselogg. Inloggningsuppgifter lagras krypterade och visas aldrig igen.",
+  "summary": "{{count}} BMC:er, {{attention}} behöver uppmärksamhet",
+  "empty": "Inga BMC:er ännu.",
+  "add": "Lägg till BMC",
+  "edit": "Redigera",
+  "delete": "Ta bort",
+  "back": "Tillbaka",
+  "saved": "Sparad",
+  "deleteConfirm": "Ta bort {{name}}?",
+  "status": {
+    "unknown": "Inte läst än",
+    "up": "Nåbar",
+    "down": "Oåtkomlig"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI över LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Användarnamn",
+    "password": "Lösenord"
+  },
+  "power": {
+    "on": "På",
+    "off": "Av",
+    "unknown": "Okänd",
+    "sent": "Badade {{name}} att ändra ström",
+    "action": {
+      "on": "Starta",
+      "off": "Stäng av",
+      "graceful-shutdown": "Stäng av",
+      "cycle": "Strömcykel",
+      "reset": "Återställ"
+    },
+    "confirm": {
+      "on": "Starta {{name}}?",
+      "off": "Koppla bort strömmen till {{name}}? Systemet stängs inte av korrekt.",
+      "graceful-shutdown": "Be {{name}} stänga av?",
+      "cycle": "Utför strömcykel på {{name}}? Systemet stängs inte av korrekt.",
+      "reset": "Återställ {{name}}? Systemet startar om omedelbart."
+    }
+  },
+  "health": {
+    "ok": "Frisk",
+    "warning": "Varning",
+    "critical": "Kritisk",
+    "unknown": "Okänd"
+  },
+  "kind": {
+    "temperature": "Temperatur",
+    "fan": "Fläkt",
+    "voltage": "Spänning",
+    "power": "Ström",
+    "psu": "Strömförsörjning",
+    "other": "Övrigt"
+  },
+  "form": {
+    "addTitle": "Lägg till BMC",
+    "editTitle": "Redigera BMC",
+    "device": "BMC",
+    "access": "Åtkomst",
+    "type": "Typ",
+    "name": "Namn",
+    "address": "Adress",
+    "port": "Port",
+    "host": "Termix-värd",
+    "hostHint": "Länka BMC:n till den värd den tillhör. Den följer då värdens delningsinställningar och visas i värdens meny.",
+    "noHost": "Ingen",
+    "poll": "Läs var (sekunder)",
+    "pollHint": "Minst 30 sekunder, eller 60 när en relay-värd används.",
+    "scheme": "Anslutning",
+    "relay": "Relay-värd",
+    "relayHint": "Kör ipmitool på denna värd istället för Termix-servern. Krävs för den seriella konsolen.",
+    "noRelay": "Termix-server",
+    "cipher": "Chiffersvit",
+    "cipherHint": "Ändra detta endast om BMC:n vägrar inloggningen. 3 är den vanliga, 17 för nyare BMC:er.",
+    "ca": "CA-certifikat",
+    "caHint": "Klistra in PEM för BMC:s certifikatutfärdare. Lämna tomt för ett betrodd certifikat.",
+    "caSet": "En CA är sparad. Klistra in en ny för att ersätta den.",
+    "keepLogin": "Lämna tomt för att behålla den sparade inloggningen",
+    "test": "Testa anslutning",
+    "testOk": "BMC:n svarade. Strömläget är {{power}}.",
+    "testNeedsLogin": "Ange inloggningen igen för att testa.",
+    "save": "Spara",
+    "add": "Lägg till"
+  },
+  "view": {
+    "overview": "Översikt",
+    "sensors": "Sensorer",
+    "log": "Händelselogg",
+    "boot": "Start",
+    "media": "Virtuell media",
+    "console": "Konsol",
+    "refresh": "Läs nu",
+    "type": "Typ",
+    "address": "Adress",
+    "power": "Ström",
+    "health": "Status",
+    "manufacturer": "Tillverkare",
+    "model": "Modell",
+    "serial": "Serienummer",
+    "bios": "BIOS",
+    "bmc": "BMC- firmware",
+    "status": "BMC",
+    "viaRelay": "Nådd via en relay-värd.",
+    "noSensors": "Denna BMC rapporterar inga sensorer.",
+    "sensor": "Sensor",
+    "reading": "Värde",
+    "state": "Tillstånd"
+  },
+  "log": {
+    "time": "Tid",
+    "severity": "Nivå",
+    "message": "Händelse",
+    "empty": "Händelseloggen är tom.",
+    "clear": "Rensa logg",
+    "clearConfirm": "Rensa händelseloggen för {{name}}? Detta kan inte ångras.",
+    "cleared": "Loggen rensad",
+    "level": {
+      "info": "Info",
+      "warning": "Varning",
+      "critical": "Kritisk"
+    }
+  },
+  "boot": {
+    "hint": "Maskinen startar från denna enhet en gång och återgår sedan till sin normala startordning. Tillämpa det innan en omstart.",
+    "device": "Starta från",
+    "mode": "Läge",
+    "uefi": "UEFI",
+    "legacy": "Legacy BIOS",
+    "apply": "Använd vid nästa start",
+    "done": "{{name}} startar från det valda enheten nästa gång",
+    "pxe": "Nätverk (PXE)",
+    "disk": "Hårddisk",
+    "cd": "CD eller virtuell media",
+    "usb": "USB",
+    "bios": "BIOS-inställningar",
+    "none": "Normal ordning"
+  },
+  "media": {
+    "url": "Bildadress",
+    "empty": "Den här BMC:n har inget virtuellt CD-låda.",
+    "mounted": "Monterad",
+    "free": "Tom",
+    "mount": "Montera",
+    "eject": "Kasta ut",
+    "mountedDone": "Bilden är monterad",
+    "ejected": "Bilden är kastad ut"
+  },
+  "console": {
+    "hint": "Skriv ~. för att lämna konsolen.",
+    "connecting": "Ansluter",
+    "ended": "Konsolen stängdes.",
+    "failed": "Kunde inte öppna konsolen.",
+    "needsRelay": "Den seriella konsolen kräver en relay-värd med ipmitool. Välj en i BMC-inställningarna."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Starta från",
+    "uefi": "UEFI-läge",
+    "list": {
+      "title": "Lista BMC:er"
+    },
+    "poll": {
+      "title": "Läs en BMC nu"
+    },
+    "powerState": {
+      "title": "Hämta strömläge"
+    },
+    "power-on": {
+      "title": "Starta"
+    },
+    "graceful-shutdown": {
+      "title": "Stäng av"
+    },
+    "power-off": {
+      "title": "Stäng av strömmen"
+    },
+    "power-cycle": {
+      "title": "Strömcykel"
+    },
+    "reset": {
+      "title": "Återställ"
+    },
+    "setBootOnce": {
+      "title": "Starta en gång från en enhet"
+    },
+    "clearLog": {
+      "title": "Rensa händelseloggen"
+    },
+    "health": {
+      "title": "BMC-hälsa"
+    }
+  },
+  "widget": {
+    "name": "Out-of-band",
+    "description": "Ström och hälsa för dina server-BMC:er.",
+    "summary": "{{up}} av {{total}} uppe"
+  }
+}

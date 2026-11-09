@@ -1,0 +1,372 @@
+{
+  "tab": {
+    "title": "Firewall",
+    "noHost": "Otvorte firewall z hostiteľa.",
+    "refresh": "Obnoviť",
+    "error": "Nepodarilo sa prečítať firewall na tomto hostiteľovi.",
+    "disabled": "Firewall je pre tohto hostiteľa vypnutý. Zapnite ho v nastaveniach hostiteľa.",
+    "sudo": "Tento hostiteľ vyžaduje sudo bez hesla alebo prihlásenie ako root na čítanie a zmenu firewallu.",
+    "noFirewall": "Žiadny firewall",
+    "on": "zapnutý",
+    "off": "vypnutý",
+    "readOnly": "iba na čítanie",
+    "ruleCount_one": "{{count}} pravidlo",
+    "ruleCount_few": "{{count}} pravidlá",
+    "ruleCount_many": "{{count}} pravidiel",
+    "ruleCount_other": "{{count}} pravidiel",
+    "viewRules": "Pravidlá",
+    "viewDefaults": "Predvolené hodnoty",
+    "viewZones": "Zóny",
+    "viewFail2ban": "Fail2ban",
+    "viewRaw": "Surové"
+  },
+  "common": {
+    "loading": "Načítava sa...",
+    "save": "Uložiť",
+    "cancel": "Zrušiť",
+    "delete": "Odstrániť",
+    "edit": "Upraviť",
+    "done": "Hotovo",
+    "failed": "To nefungovalo."
+  },
+  "actions": {
+    "allow": "Povoliť",
+    "deny": "Zakázať",
+    "reject": "Odmietnuť",
+    "limit": "Obmedziť"
+  },
+  "policies": {
+    "allow": "Povoliť",
+    "deny": "Zakázať (zahodiť)",
+    "reject": "Odmietnuť"
+  },
+  "rule": {
+    "action": "Akcia",
+    "direction": "Smer",
+    "in": "Prichádzajúci",
+    "out": "Odchádzajúci",
+    "protocol": "Protokol",
+    "anyProtocol": "TCP a UDP",
+    "port": "Port",
+    "portPlaceholder": "22, 80,443 alebo 8000-8100",
+    "portHint": "Nechajte prázdne pre každý port. Zoznamy a rozsahy vyžadujú TCP alebo UDP.",
+    "anyPort": "akýkoľvek port",
+    "source": "Zdroj",
+    "destination": "Cieľ",
+    "anywhere": "Kdekoľvek",
+    "addressHint": "Adresa alebo rozsah, napr. 10.0.0.0/8.",
+    "family": "Verzia IP",
+    "bothFamilies": "IPv4 a IPv6",
+    "iface": "Rozhranie",
+    "anyIface": "Akékoľvek rozhranie",
+    "service": "Služba",
+    "serviceHint": "Názov služby firewalld namiesto portu.",
+    "comment": "Komentár",
+    "commentPlaceholder": "Na čo slúži toto pravidlo",
+    "zoneLabel": "Zóna",
+    "from": "z {{address}}",
+    "to": "do {{address}}",
+    "on": "na {{iface}}",
+    "zone": "zóna {{zone}}"
+  },
+  "presets": {
+    "ssh": "SSH",
+    "http": "HTTP",
+    "https": "HTTPS",
+    "web": "Web",
+    "dns": "DNS",
+    "smtp": "Pošta",
+    "mysql": "MySQL",
+    "postgres": "PostgreSQL",
+    "redis": "Redis",
+    "samba": "Samba",
+    "wireguard": "WireGuard",
+    "minecraft": "Minecraft"
+  },
+  "rules": {
+    "add": "Pridať pravidlo",
+    "addTitle": "Nové pravidlo",
+    "editTitle": "Upraviť pravidlo",
+    "added": "Pravidlo pridané",
+    "saved": "Pravidlo uložené",
+    "deleted": "Pravidlo odstránené",
+    "confirmDelete": "Odstrániť toto pravidlo?",
+    "search": "Hľadať porty, adresy a komentáre",
+    "empty": "Zatiaľ žiadne pravidlá.",
+    "noMatch": "Žiadne pravidlá nevyhovujú.",
+    "readOnly": "Iba na čítanie",
+    "deleteOnly": "Iba na odstránenie",
+    "stale": "Pravidlá sa na hostiteľovi zmenili. Obnovte a skúste to znova.",
+    "filters": {
+      "all": "Všetky",
+      "in": "Prichádzajúce",
+      "out": "Odchádzajúce",
+      "readOnly": "Iba na čítanie"
+    }
+  },
+  "defaults": {
+    "hint": "Čo sa stane s prevádzkou, ktorá nevyhovuje žiadnemu pravidlu.",
+    "incoming": "Prichádzajúce",
+    "outgoing": "Odchádzajúce",
+    "routed": "Presmerované",
+    "saved": "Predvolené hodnoty uložené"
+  },
+  "zones": {
+    "hint": "firewalld umiestňuje každé sieťové rozhranie a zdroj do zóny. Cieľ zóny určuje, čo sa stane s prevádzkou, ktorá nevyhovuje jej pravidlám.",
+    "defaultZone": "Predvolená zóna",
+    "default": "Predvolené",
+    "active": "Aktívne",
+    "target": "Cieľ",
+    "interfaces": "rozhrania {{list}}",
+    "sources": "zdroje {{list}}",
+    "saved": "Zóna uložená",
+    "targets": {
+      "default": "Predvolené (odmietnuť)",
+      "ACCEPT": "Prijať",
+      "DROP": "Zahodiť",
+      "REJECT": "Odmietnuť"
+    }
+  },
+  "enable": {
+    "off": "Firewall je vypnutý, takže žiadne z týchto pravidiel sa momentálne nepoužívajú.",
+    "allowSsh": "Najprv povoľte SSH na porte {{ports}}",
+    "allowSshHint": "Umožňuje, aby Termix a vaše vlastné SSH prihlásenia fungovali.",
+    "button": "Zapnúť",
+    "done": "Firewall zapnutý",
+    "timerHint": "Zapnutím sa spustí časovač. Ak nestlačíte Udržať včas, hostiteľ ho sám opäť vypne."
+  },
+  "disable": {
+    "button": "Vypnúť",
+    "title": "Vypnúť firewall?",
+    "description": "Každé pravidlo prestane platiť, kým ho znova nezapnete.",
+    "done": "Firewall vypnutý"
+  },
+  "install": {
+    "none": "Tento hostiteľ zatiaľ nemá firewall.",
+    "hint": "Nainštalujte jeden, aby ste mohli začať. Nič sa nezapne, kým to nevyžadujete.",
+    "button": "Nainštalovať {{name}}",
+    "working": "Inštaluje sa...",
+    "done": "{{name}} nainštalované",
+    "noPackageManager": "Termix na tomto hostiteľovi nenašiel žiadny známy správca balíkov."
+  },
+  "lockout": {
+    "title": "Toto môže Termix zamknúť",
+    "description": "{{reason}}. Ak sa Termix po zmene nepripojí, hostiteľ zmenu automaticky vráti, keď uplynie časový limit. Pokračovať?",
+    "confirm": "Pokračovať"
+  },
+  "pending": {
+    "started": "Zmena bola aplikovaná. Stlačte Zachovať, aby zostala trvalá.",
+    "left": "Zmena sa vráti za {{seconds}} s, pokiaľ nestlačíte Zachovať",
+    "expired": "Časový limit uplynul, hostiteľ vracia zmenu späť",
+    "reachable": "Termix sa stále dokázal pripojiť",
+    "unreachable": "Termix sa po zmene nepodarilo pripojiť",
+    "unknown": "Kontroluje sa pripojenie",
+    "keep": "Zachovať",
+    "undo": "Vrátiť späť",
+    "kept": "Zmena bola zachovaná",
+    "undone": "Zmena bola vrátená späť",
+    "gone": "Časový limit uplynul a hostiteľ už zmenu vrátil späť.",
+    "first": "Najprv zachovajte alebo vráťte späť poslednú zmenu.",
+    "kinds": {
+      "add": "Nové pravidlo",
+      "update": "Zmenené pravidlo",
+      "remove": "Vymazané pravidlo",
+      "defaults": "Nové predvolené hodnoty",
+      "enable": "Firewall zapnutý",
+      "disable": "Firewall vypnutý",
+      "zoneTarget": "Nový cieľ zóny",
+      "defaultZone": "Nová predvolená zóna",
+      "ruleset": "Sada pravidiel bola aplikovaná"
+    }
+  },
+  "fail2ban": {
+    "loadFailed": "Nepodarilo sa načítať Fail2ban.",
+    "notInstalled": "Fail2ban nie je nainštalovaný. Zakazuje adresy, ktoré sa príliš často nedarí prihlásiť.",
+    "stopped": "Fail2ban je nainštalovaný, ale nie je spustený.",
+    "start": "Spustiť Fail2ban",
+    "started": "Fail2ban bol spustený",
+    "noJails": "Žiadne väzby nie sú zapnuté.",
+    "none": "Nič nie je zakázané.",
+    "bannedCount_one": "{{count}} zakázaný",
+    "bannedCount_few": "{{count}} zakázané",
+    "bannedCount_many": "{{count}} zakázaných",
+    "bannedCount_other": "{{count}} zakázaných",
+    "counts": "{{failed}} zlyhaní práve teraz | {{totalFailed}} celkom zlyhaní | {{totalBanned}} celkom zakázaných",
+    "ban": "Zakázať",
+    "unban": "Odzakázať",
+    "banAddress": "Zakázať adresu",
+    "banned": "{{ip}} zakázaná",
+    "unbanned": "{{ip}} odzakázaná",
+    "selfTitle": "Zakázať adresu Termixu?",
+    "selfDescription": "Termix sa pripája z tejto adresy. Jej zakázanie preruší pripojenie Termixu k tomuto hostiteľovi."
+  },
+  "raw": {
+    "empty": "Nie je čo zobraziť."
+  },
+  "watch": {
+    "start": "Upozorni ma, keď sa tento firewall zmení",
+    "stop": "Zastaviť upozornenia pre tento firewall"
+  },
+  "companion": {
+    "openTab": "Otvoriť kartu Firewall",
+    "toggle": "Panel firewallu",
+    "allowPort": "Povoliť TCP port"
+  },
+  "card": {
+    "title": "Firewally",
+    "empty": "Žiadny hostiteľ nemá zapnutý Firewall.",
+    "banned_one": "{{count}} zakázaný",
+    "banned_few": "{{count}} zakázané",
+    "banned_many": "{{count}} zakázaných",
+    "banned_other": "{{count}} zakázaných",
+    "pending": "Čaká sa"
+  },
+  "rulesets": {
+    "title": "Sady pravidiel firewallu",
+    "hint": "Uložte zoznam pravidiel a pridajte ho naraz na viacerých hostiteľoch. Aplikovanie pridá iba chýbajúce pravidlá, nikdy ich neodstráni.",
+    "add": "Nová sada pravidiel",
+    "addTitle": "Nová sada pravidiel",
+    "editTitle": "Upraviť sadu pravidiel",
+    "loadFailed": "Nepodarilo sa načítať vaše sady pravidiel.",
+    "empty": "Zatiaľ žiadne sady pravidiel.",
+    "name": "Názov",
+    "namePlaceholder": "Webový server",
+    "description": "Popis",
+    "rules": "Pravidlá",
+    "noRules": "V tejto sade zatiaľ nie sú žiadne pravidlá.",
+    "hosts": "Hostitelia",
+    "noHosts": "Žiadny hostiteľ nemá zapnutý firewall.",
+    "saved": "Sada pravidiel bola uložená",
+    "deleted": "Sada pravidiel bola odstránená",
+    "confirmDelete": "Odstrániť {{name}}?",
+    "deleteHint": "Pravidlá, ktoré sú už pridané k hostiteľom, zostanú.",
+    "ruleCount_one": "{{count}} pravidlo",
+    "ruleCount_few": "{{count}} pravidlá",
+    "ruleCount_many": "{{count}} pravidiel",
+    "ruleCount_other": "{{count}} pravidiel",
+    "hostCount_one": "{{count}} hostiteľ",
+    "hostCount_few": "{{count}} hostitelia",
+    "hostCount_many": "{{count}} hostiteľov",
+    "hostCount_other": "{{count}} hostiteľov",
+    "check": "Skontrolovať hostiteľov",
+    "apply": "Použiť",
+    "applyTitle": "Použiť {{name}}?",
+    "applyDescription": "Chýbajúce pravidlá sa pridajú na každý hostiteľ. Každý hostiteľ dostane kontrolu SSH uzamknutia a ak Termix hostiteľa po zmene nedosiahne, zmena sa sama vráti späť.",
+    "applied": "Sada pravidiel bola použitá",
+    "applyErrors_one": "{{count}} hostiteľ mal problém",
+    "applyErrors_few": "{{count}} hostitelia mali problém",
+    "applyErrors_many": "{{count}} hostiteľov malo problém",
+    "applyErrors_other": "{{count}} hostiteľov malo problém",
+    "applyResult": "Použité {{name}}",
+    "driftTitle": "{{name}} na každom hostiteľovi",
+    "inSync": "Má všetky pravidlá",
+    "ok": "Synchronizované",
+    "missing_one": "{{count}} chýba",
+    "missing_few": "{{count}} chýbajú",
+    "missing_many": "{{count}} chýba",
+    "missing_other": "{{count}} chýba",
+    "nothingMissing": "Už boli pridané všetky pravidlá",
+    "added_one": "Pridané {{count}} pravidlo",
+    "added_few": "Pridané {{count}} pravidlá",
+    "added_many": "Pridaných {{count}} pravidiel",
+    "added_other": "Pridaných {{count}} pravidiel",
+    "waiting": "Pridané, ale Termix sa neskôr nepodarilo pripojiť. Hostiteľ to zruší.",
+    "fleet": "Flotila",
+    "applyFleet": "Použiť na flotilu"
+  },
+  "permissions": {
+    "use": {
+      "title": "Používanie firewallu",
+      "description": "Otvorte kartu Firewall na hostiteľoch, ku ktorým máte prístup. Zmeny si vyžadujú aj oprávnenie na úpravu hostiteľa."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Firewall",
+        "description": "Zobraziť kartu Firewall pre tento hostiteľ na správu jeho firewallu cez SSH."
+      },
+      "useSudo": {
+        "label": "Použiť sudo",
+        "description": "Spúšťať príkazy firewallu pomocou sudo bez hesla, ak nie je prihlásený používateľ root."
+      },
+      "readOnly": {
+        "label": "Iba na čítanie",
+        "description": "Zobraziť firewall, ale zablokovať všetky zmeny z Termixu."
+      },
+      "sshGuard": {
+        "label": "Kontrola uzamknutia SSH",
+        "description": "Zastaviť a opýtať sa pred zmenou, ktorá by mohla zablokovať prístup SSH z Termixu."
+      },
+      "rollbackSeconds": {
+        "label": "Časovač na vrátenie späť",
+        "description": "Počet sekúnd, ktoré máte na stlačenie Udržať po rizikovej zmene, než ju hostiteľ vráti späť."
+      },
+      "confirmAll": {
+        "label": "Časovač pri každej zmene",
+        "description": "Použiť časovač na vrátenie späť pri každej zmene, nielen pri rizikových."
+      },
+      "showPanel": {
+        "label": "Panel firewallu",
+        "description": "Nabídnite panel firewallu vedľa SSH terminálov pre tento host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otvoriť panel firewallu s terminálom",
+        "description": "Zobraziť panel firewallu pri otvorení terminálu na hostovi, ktorý ho má."
+      },
+      "companionSide": {
+        "label": "Poloha panelu firewallu",
+        "description": "Kde sa panel nachádza vedľa terminálu.",
+        "right": "Vpravo",
+        "left": "Vľavo",
+        "bottom": "Dole"
+      },
+      "companionSize": {
+        "label": "Veľkosť panelu firewallu",
+        "description": "Šírka, alebo výška dole, v pixeloch."
+      },
+      "companionEdgeButton": {
+        "label": "Tlačidlo panela firewallu na okraji",
+        "description": "Zobraziť malé tlačidlo na okraji terminálu na otvorenie panela."
+      }
+    }
+  },
+  "manager": {
+    "title": "Firewall",
+    "disabled": "Pre správu firewallu tohto hostiteľa sem ho najprv zapnite v nastaveniach hostiteľa."
+  },
+  "operations": {
+    "list": {
+      "title": "Zoznam pravidiel firewallu"
+    },
+    "status": {
+      "title": "Firewall"
+    },
+    "portAllowed": {
+      "title": "Port je povolený",
+      "description": "Zistí, či pre tento port existuje pravidlo povolenia. Použite ho na sledovanie zmien na hostiteľoch."
+    },
+    "allow": {
+      "title": "Povoliť port"
+    },
+    "remove": {
+      "title": "Odstrániť povolený port"
+    },
+    "delete": {
+      "title": "Odstrániť pravidlo firewallu"
+    },
+    "rules": {
+      "title": "Pravidlá firewallu"
+    },
+    "port": "Port",
+    "protocol": "Protokol",
+    "tcp": "TCP",
+    "udp": "UDP",
+    "any": "Ľubovoľný",
+    "source": "Zdroj",
+    "sourceHint": "Adresa alebo rozsah. Ak je prázdne, znamená to odkiaľkoľvek.",
+    "direction": "Smer"
+  }
+}

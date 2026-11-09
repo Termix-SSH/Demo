@@ -1,0 +1,214 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Vykdykite Ansible scenarijus ir ad-hoc komandas iš valdymo serverio, naudojant inventorių, sukurtą iš jūsų Termix serverių."
+  },
+  "common": {
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti",
+    "back": "Atgal",
+    "delete": "Ištrinti"
+  },
+  "permissions": {
+    "use": {
+      "title": "Naudoti Ansible",
+      "description": "Peržiūrėti scenarijus ir vykdymus valdymo serveriuose, kuriuos galite pasiekti. Redaguoti failus ir vykdyti Ansible komandas serveriuose, kuriuos galite redaguoti."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Naudoti šį serverį kaip Ansible valdymo serverį. Jame turi būti įdiegtas Ansible."
+      },
+      "projectDir": {
+        "label": "Projekto aplankas",
+        "description": "Aplankas šiame serveryje, kuriame yra jūsų scenarijai, vaidmenys ir ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Vault slaptažodžio failas",
+        "description": "Failas šiame serveryje su Ansible Vault slaptažodžiu. Palikite tuščią, jei nenaudojate Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Tik skaitymui",
+        "description": "Rodyti scenarijus ir vykdymus, bet niekada neredaguoti failų ar paleisti vykdymų šiame serveryje."
+      },
+      "alertRuns": {
+        "label": "Pranešti, kai vykdymas nepavyksta",
+        "description": "Siųsti pranešimą, kai vykdymas šiame serveryje baigiasi klaida arba prarandamas. Tikrinama, kai skaitomas vykdymo būsena."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Atidarykite Ansible iš serverio.",
+    "error": "Nepavyko įkelti Ansible iš šio serverio.",
+    "disabled": "Ansible išjungtas šiame serveryje. Įjunkite jį serverio nustatymuose.",
+    "refresh": "Atnaujinti",
+    "readOnly": "Tik skaitymui",
+    "notInstalled": "Ansible neįdiegtas",
+    "notInstalledTitle": "Ansible neįdiegtas šiame serveryje",
+    "notInstalledHint": "Įdiekite ansible-core šiame serveryje, pavyzdžiui, naudodami pipx arba paketų tvarkytuvę, tada atnaujinkite.",
+    "noSshpass": "sshpass neįdiegtas šiame serveryje. Serveriai, prisijungiantys su slaptažodžiu, nepavyks.",
+    "viewPlaybooks": "Scenarijai",
+    "viewRuns": "Vykdymai",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Faktai"
+  },
+  "files": {
+    "add": "Naujas failas",
+    "search": "Ieškoti failų",
+    "empty": "Projekto aplanke dar nėra failų.",
+    "noMatch": "Nėra atitinkančių failų.",
+    "noProject": "Aplankas {{dir}} šiame serveryje neegzistuoja. Sukurkite jį arba nustatykite kitą projekto aplanką serverio nustatymuose.",
+    "listFailed": "Nepavyko išvardinti projekto failų.",
+    "loadFailed": "Nepavyko perskaityti šio failo.",
+    "saved": "Failas išsaugotas",
+    "saveFailed": "Nepavyko išsaugoti šio failo.",
+    "playbook": "Scenarijus",
+    "run": "Vykdyti",
+    "newTitle": "Naujas failas",
+    "name": "Failo pavadinimas",
+    "nameHint": "Kelias projekto aplanke, pvz., site.yml arba roles/web/tasks/main.yml.",
+    "hint": "Prieš išsaugant, tikrinama scenarijaus sintaksė. Jei tikrinimas nepavyksta, lieka senas failas.",
+    "text": "Failo turinys",
+    "deleteTitle": "Ištrinti šį failą?"
+  },
+  "targets": {
+    "search": "Ieškoti serverių",
+    "addShown": "Pridėti rodomus",
+    "clear": "Išvalyti",
+    "empty": "Serverių nerasta.",
+    "count": "Pasirinkta: {{count}}",
+    "failed": "Nepavyko įkelti jūsų serverių."
+  },
+  "run": {
+    "title": "Vykdyti {{playbook}}",
+    "start": "Vykdyti",
+    "startCheck": "Vykdyti tikrinimo režimu",
+    "startFailed": "Nepavyko paleisti vykdymo.",
+    "source": "Serveriai",
+    "sourceProject": "Projekto inventorius",
+    "sourceTermix": "Termix serveriai",
+    "sourceProjectHint": "Naudokite inventorius iš ansible.cfg arba failą projekte.",
+    "sourceTermixHint": "Pasirinkite serverius iš Termix. Aplanakai tampa folder_ grupėmis, o žymos – tag_ grupėmis. Visos jos yra termix grupėje.",
+    "inventory": "Inventoriaus failas",
+    "inventoryHint": "Kelias projekto aplankui. Palikite tuščią, jei norite naudoti ansible.cfg.",
+    "check": "Patikrinimo režimas",
+    "checkHint": "Rodyti, kas būtų pakeista, nieko nekeičiant.",
+    "diff": "Rodyti skirtumus",
+    "diffHint": "Rodyti atliktus failų pakeitimus.",
+    "become": "Vykdyti kaip root",
+    "becomeHint": "Naudoti sudo serveriuose. Termix serveriams naudojamas išsaugotas Sudo slaptažodis.",
+    "limit": "Apribojimas",
+    "limitHint": "Vykdyti tik šiems serveriams arba grupėms.",
+    "verbosity": "Išvesties detalumas",
+    "verbosityOff": "Normalus",
+    "tags": "Žymos",
+    "skipTags": "Praleisti žymas",
+    "extraVars": "Papildomi kintamieji",
+    "extraVarsHint": "Viena raktas=reikšmė eilutėje."
+  },
+  "runs": {
+    "title": "Vykdyti",
+    "empty": "Dar nėra vykdymų.",
+    "loadFailed": "Nepavyko įkelti vykdymų.",
+    "stop": "Sustabdyti",
+    "stopFailed": "Nepavyko sustabdyti vykdymo.",
+    "deleteTitle": "Ištrinti šį vykdymą?",
+    "deleteFailed": "Nepavyko ištrinti vykdymo.",
+    "checkMode": "Patikrinti",
+    "truncated": "Rodomas ilgos išvesties pabaigos fragmentas.",
+    "noOutput": "Dar nėra išvesties.",
+    "state": {
+      "running": "Vykdoma",
+      "ok": "Atlikta",
+      "failed": "Nepavyko",
+      "cancelled": "Sustabdyta",
+      "lost": "Prarasta"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Faktai"
+    },
+    "recap": {
+      "host": "Serveris",
+      "ok": "Gerai",
+      "changed": "Pakeista",
+      "unreachable": "Nepasiekiamas",
+      "failed": "Nepavyko",
+      "skipped": "Praleista"
+    }
+  },
+  "adhoc": {
+    "hint": "Vykdyti vieną modulį serveriuose, pvz., ansible all -m ping.",
+    "pattern": "Serverių šablonas",
+    "patternHint": "Serveris, grupė arba all.",
+    "module": "Modulis",
+    "moduleHint": "Pavyzdžiui, ping, command, shell, apt arba systemd.",
+    "args": "Argumentai",
+    "argsHint": "Komandų ir shell moduliams tai yra komanda. Kitiems moduliams – raktas=reikšmės poros.",
+    "run": "Vykdyti"
+  },
+  "facts": {
+    "hint": "Rinkti faktus iš serverių naudojant setup modulį. Reikia Termix serverių, kad kiekvienas turėtų prisijungimo duomenis.",
+    "gather": "Rinkti faktus",
+    "gathering": "Rinkiami...",
+    "failed": "Nepavyko surinkti faktų.",
+    "failedHost": "Nepavyko",
+    "none": "Faktų negauta. Atidarykite vykdymą, kad sužinotumėte kodėl.",
+    "col": {
+      "host": "Hostas",
+      "os": "Sistema",
+      "kernel": "Branduolys",
+      "cpu": "Procesoriai",
+      "memory": "Atmintis",
+      "address": "Adresas",
+      "uptime": "Veikimo laikas"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Rodyti scenarijų sąrašą"
+    },
+    "run": {
+      "title": "Vykdyti scenarijų",
+      "playbook": "Scenarijus",
+      "limit": "Riboti",
+      "tags": "Žymos",
+      "check": "Patikrinimo režimas"
+    },
+    "runs": {
+      "title": "Rodyti vykdymų sąrašą",
+      "resource": "Vykdymai",
+      "started": "Pradėta",
+      "check": "Patikrinimo režimas"
+    },
+    "failed": {
+      "title": "Nesėkmingi vykdymai"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Tikrinami hostai...",
+    "summary_one": "{{count}} nesėkmingas vykdymas {{hosts}} hostuose",
+    "summary_few": "{{count}} nesėkmingi vykdymai {{hosts}} hostuose",
+    "summary_many": "{{count}} nesėkmingų vykdymų {{hosts}} hostuose",
+    "summary_other": "{{count}} nesėkmingų vykdymų {{hosts}} hostuose",
+    "refresh": "Patikrinti dar kartą",
+    "empty": "Įjunkite Ansible hostui, kad čia matytumėte jo vykdymus.",
+    "failed_one": "{{count}} nesėkmingas",
+    "failed_few": "{{count}} nesėkmingi",
+    "failed_many": "{{count}} nesėkmingų",
+    "failed_other": "{{count}} nesėkmingų",
+    "running_one": "{{count}} vykdomas",
+    "running_few": "{{count}} vykdomi",
+    "running_many": "{{count}} vykdomų",
+    "running_other": "{{count}} vykdomų",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Dar nėra vykdymų"
+  }
+}

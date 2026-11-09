@@ -26,6 +26,31 @@ export function SshAuthProviderFields({
   const [values, setValues] = useState<Record<string, unknown>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Every field changed since the last save, so a quick edit to a second
+  // field does not drop the first one.
+  const pending = useRef<Record<string, unknown>>({});
+
+  const flush = (targetPlugin: string, targetHost: number) => {
+    if (saveTimer.current) clearTimeout(saveTimer.current);
+    saveTimer.current = null;
+    const changes = pending.current;
+    pending.current = {};
+    const keys = Object.keys(changes);
+    if (keys.length === 0) return;
+    updatePluginHostSettings(targetPlugin, targetHost, changes)
+      .then(() =>
+        setErrors((prev) => {
+          const next = { ...prev };
+          for (const key of keys) next[key] = "";
+          return next;
+        }),
+      )
+      .catch((error) => {
+        if (error instanceof PluginSettingsValidationError) {
+          setErrors((prev) => ({ ...prev, ...error.errors }));
+        }
+      });
+  };
 
   useEffect(() => {
     if (!hostId) return;
@@ -37,8 +62,10 @@ export function SshAuthProviderFields({
       .catch(() => {});
     return () => {
       cancelled = true;
-      if (saveTimer.current) clearTimeout(saveTimer.current);
+      // Saves what was typed before the editor closed or switched host.
+      flush(pluginId, hostId);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pluginId, hostId]);
 
   if (!hostId) {
@@ -52,16 +79,9 @@ export function SshAuthProviderFields({
   const setValue = (key: string, value: unknown) => {
     const next = { ...values, [key]: value };
     setValues(next);
+    pending.current = { ...pending.current, [key]: value };
     if (saveTimer.current) clearTimeout(saveTimer.current);
-    saveTimer.current = setTimeout(() => {
-      updatePluginHostSettings(pluginId, hostId, { [key]: value })
-        .then(() => setErrors((prev) => ({ ...prev, [key]: "" })))
-        .catch((error) => {
-          if (error instanceof PluginSettingsValidationError) {
-            setErrors((prev) => ({ ...prev, ...error.errors }));
-          }
-        });
-    }, 400);
+    saveTimer.current = setTimeout(() => flush(pluginId, hostId), 400);
   };
 
   return (

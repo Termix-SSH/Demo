@@ -1,0 +1,216 @@
+{
+  "plugin": {
+    "name": "Paketid",
+    "description": "Vaata ja paigalda uuendusi oma hostidele, otsi, paigalda ja eemalda pakette ning vaata pakettide ajalugu."
+  },
+  "common": {
+    "cancel": "Tühista",
+    "back": "Tagasi"
+  },
+  "permissions": {
+    "use": {
+      "title": "Pakettide kasutamine",
+      "description": "Vaata pakette ja uuendusi hostidel, millele saad ligi, ning muuda neid hostidel, mida saad redigeerida."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Paketid",
+        "description": "Halda selle hosti pakette ja uuendusi Pakettide vahekaardilt."
+      },
+      "useSudo": {
+        "label": "Kasuta sudo",
+        "description": "Kasuta sudo pakettide paigaldamiseks, uuendamiseks ja eemaldamiseks. Lülita välja, kui sisselogimine toimub root-ina."
+      },
+      "readOnly": {
+        "label": "Käsitlemiseks ainult lugemiseks",
+        "description": "Kuva paketid ja uuendused, kuid ära kunagi muuda neid sellel hostil."
+      },
+      "showPanel": {
+        "label": "Kuva uuenduste paneel terminaalides",
+        "description": "Luba uuenduste paneel avada selle hosti SSH terminali kõrval."
+      },
+      "alertUpdates": {
+        "label": "Teavita turvauuendustest",
+        "description": "Saada teavitus, kui sellel hostil on turvauuendusi või on vaja taaskäivitada. Kontrollitakse, kui uuendusi loetakse, umbes kord tunnis."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Ava uuenduste paneel koos uute terminaalidega",
+        "description": "Kuva uuenduste paneel kõigi SSH terminaalide kõrval, millel on Paketid sisse lülitatud. Saate seda ikka avada ja sulgeda paremal serval olevast nupust."
+      },
+      "companionSide": {
+        "label": "Uuenduste paneeli külg",
+        "description": "Kus uuenduste paneel asub terminali kõrval.",
+        "right": "Parem",
+        "left": "Vasak",
+        "bottom": "Alumine"
+      },
+      "companionSize": {
+        "label": "Uuenduste paneeli suurus",
+        "description": "Laius pikslites või kõrgus, kui paneel on all. Saad selle serva ka lohisedades muuta."
+      },
+      "companionEdgeButton": {
+        "label": "Kuva paneeli nupp",
+        "description": "Kuva terminali paremal serval väike nupp, mis avab uuenduste paneeli."
+      }
+    }
+  },
+  "tab": {
+    "title": "Paketid",
+    "noHost": "Ava Paketid hostist.",
+    "error": "Pakette ei õnnestunud sellelt hostilt laadida.",
+    "disabled": "Paketid on sellel hostil välja lülitatud. Lülita see sisse hosti seadetes.",
+    "sudo": "Muudatuste tegemiseks on sellel hostil vaja root-õigusi, paroolita sudo või salvestatud sudo parooli.",
+    "refresh": "Värskenda",
+    "readOnly": "Ainult lugemiseks",
+    "noManager": "Pakihaldajat pole",
+    "noManagerTitle": "Toetatud pakihaldajat ei leitud",
+    "noManagerHint": "Paketid töötab koos apt, dnf, yum, zypper, pacman ja apk-ga.",
+    "indexAge": "Indeks värskendati {{ago}} tagasi",
+    "reboot": "Selle hosti uuenduse lõpuleviimiseks on vaja taaskäivitust.",
+    "viewUpdates": "Uuendused",
+    "viewInstalled": "Installitud",
+    "viewSearch": "Otsi",
+    "viewHistory": "Ajalugu",
+    "viewRepos": "Hoidlad"
+  },
+  "actions": {
+    "working": "{{action}} käivitub. See võib võtta mõne minuti.",
+    "ok": "Valmis",
+    "failed": "Pakihaldur ebaõnnestus.",
+    "noOutput": "Väljundit ei ole.",
+    "refresh": {
+      "label": "Värskenda indeksit",
+      "confirm": "Kas värskendada pakihalduri indeksit?",
+      "desc": "Laeb alla uusimad pakkide nimekirjad.",
+      "done": "Pakkide indeks on ajakohane."
+    },
+    "update": {
+      "label": "Uuenda",
+      "confirm_one": "Kas uuendada {{names}}?",
+      "confirm_other": "Kas uuendada {{count}} pakki?",
+      "desc": "Paigaldab {{names}} uusima versiooni.",
+      "done": "Uuendatud {{names}}."
+    },
+    "upgrade-all": {
+      "label": "Uuenda kõiki",
+      "confirm": "Kas uuendada kõiki pakke?",
+      "desc": "Värskendab pakkide indeksi ja paigaldab kõik uuendused. Teenused võivad selle käigus taaskäivituda.",
+      "done": "Kõik paketid on ajakohased."
+    },
+    "install": {
+      "label": "Install",
+      "confirm": "Installida {{names}}?",
+      "desc": "Installeerib {{names}} ja kõik selle sõltuvused.",
+      "done": "{{names}} on installitud."
+    },
+    "remove": {
+      "label": "Eemalda",
+      "confirm": "Eemaldada {{names}}?",
+      "desc": "Eemaldab {{names}} sellelt hostilt. Sõltuvad programmid võivad lakkada töötamast.",
+      "done": "{{names}} on eemaldatud."
+    },
+    "hold": {
+      "label": "Hoida sellel versioonil",
+      "confirm": "Kinnitada {{names}}?",
+      "desc": "Uuendused jätkavad {{names}} vahele jätmist, kuni vabastad selle.",
+      "done": "{{names}} on peatatud."
+    },
+    "unhold": {
+      "label": "Vabasta peatamine",
+      "confirm": "Kas vabastada {{names}}?",
+      "desc": "{{names}} saab taas uuendusi.",
+      "done": "{{names}} saab taas uuendusi."
+    }
+  },
+  "updates": {
+    "search": "Filtreeri uuendused",
+    "count_one": "{{count}} uuendus",
+    "count_other": "{{count}} uuendust",
+    "countSecurity_one": "{{count}} uuendus, {{security}} turvalisuseks",
+    "countSecurity_other": "{{count}} uuendust, {{security}} turvalisuseks",
+    "updatePicked_one": "Uuenda {{count}} paketti",
+    "updatePicked_other": "Uuenda {{count}} paketti",
+    "updateOne": "Uuenda",
+    "pick": "Vali {{name}}",
+    "security": "Turvalisus",
+    "empty": "Kõik on ajakohane.",
+    "noMatch": "Ühtegi uuendust ei leitud.",
+    "loadFailed": "Uuenduste lugemine ebaõnnestus."
+  },
+  "installed": {
+    "search": "Filterda paigaldatud paketid",
+    "all": "Kõik",
+    "held": "Peatatud",
+    "heldBadge": "Peatatud",
+    "empty": "Ühtegi paketti ei leitud.",
+    "loadFailed": "Paigaldatud pakettide loetelu lugemine ebaõnnestus."
+  },
+  "search": {
+    "placeholder": "Otsi pakette",
+    "button": "Otsi",
+    "hint": "Otsi hosti hoidlatest paigaldamiseks paketti.",
+    "empty": "Mingit tulemust ei leitud.",
+    "installed": "Paigaldatud",
+    "failed": "Otsing ebaõnnestus."
+  },
+  "history": {
+    "empty": "Pakettide ajalugu puudub.",
+    "loadFailed": "Pakettide ajaloo lugemine ebaõnnestus."
+  },
+  "repos": {
+    "hint": "Pakkohoidlad, millelt see host installib. Muuda neid hostil ise.",
+    "empty": "Pakkohoidlaid ei leitud.",
+    "off": "Väljas",
+    "loadFailed": "Pakkohoidlaid ei õnnestunud lugeda."
+  },
+  "card": {
+    "title": "Pakivärskendused",
+    "loading": "Hostide kontrollimine...",
+    "summary_one": "{{count}} värskendus {{hosts}} hostil",
+    "summary_other": "{{count}} värskendust {{hosts}} hostil",
+    "refresh": "Kontrolli uuesti",
+    "empty": "Lülita hostil sisse Paketid, et näha selle värskendusi siin.",
+    "security_one": "{{count}} turvavärskendus",
+    "security_other": "{{count}} turvavärskendust",
+    "reboot": "Taaskäivitamine vajalik",
+    "updates_one": "{{count}} uuendus",
+    "updates_other": "{{count}} uuendust",
+    "upToDate": "Uuendused paigaldatud"
+  },
+  "manager": {
+    "title": "Paketid",
+    "disabled": "Selle hosti seadetest lülita paketihaldus sisse, et näha siin selle uuendusi."
+  },
+  "operations": {
+    "list": {
+      "title": "Loetle pakettide uuendused"
+    },
+    "updates": {
+      "title": "Ootel olevad uuendused",
+      "resource": "Ootel olevad uuendused"
+    },
+    "upgradeAll": {
+      "title": "Uuenda kõiki pakette"
+    },
+    "install": {
+      "title": "Paigalda paketid"
+    },
+    "remove": {
+      "title": "Eemalda paketid"
+    },
+    "package": "Paketid",
+    "packageHint": "Üks või mitu paketi nime, eraldatud tühikutega.",
+    "resource": {
+      "current": "Paigaldatud",
+      "available": "Saadaval",
+      "repo": "Hoidla"
+    }
+  },
+  "nav": {
+    "togglePanel": "Lülita uuenduste paneel"
+  }
+}

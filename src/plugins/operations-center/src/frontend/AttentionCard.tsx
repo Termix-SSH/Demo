@@ -65,9 +65,17 @@ export function AttentionCard({ isVisible, shell }: DashboardCardProps) {
         if (read.state !== "ok" || (status !== "warn" && status !== "fail"))
           continue;
         const host = hostOf(read.hostId);
+        const name = declared?.title ?? signal.id;
+        // Label first, then a plain value, and no colon when there is neither.
+        const shown =
+          read.value?.label ??
+          (typeof read.value?.value === "number" ||
+          typeof read.value?.value === "string"
+            ? String(read.value.value)
+            : "");
         next.push({
           id: `${signal.id}|${read.hostId}`,
-          title: `${declared?.title ?? signal.id}: ${read.value?.label ?? ""}`,
+          title: shown ? `${name}: ${shown}` : name,
           meta: host ? hostLabel(host) : undefined,
           tone: status,
           open: () =>

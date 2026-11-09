@@ -13,7 +13,3 @@
 - See how automatic renewal is set up
 - Get an alert before a certificate expires
 - A dashboard card with the certificates that expire next and a Certificates card in Host Metrics
-
-### Changed
-
-- Needs Termix 26.11.1 or newer

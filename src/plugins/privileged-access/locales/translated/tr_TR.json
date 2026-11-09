@@ -1,0 +1,143 @@
+{
+  "plugin": {
+    "name": "Ayrıcalıklı Erişim",
+    "description": "Herkes ayrıcalıklı bir ana bilgisayara bağlanmadan önce onay isteyin, erişim kendi kendine sona erer ve tam bir denetim izi tutulur."
+  },
+  "tab": {
+    "title": "Erişim"
+  },
+  "tabs": {
+    "request": "Erişim iste",
+    "mine": "İsteklerim",
+    "pending": "Karar verilecek",
+    "active": "Aktif erişim",
+    "history": "Geçmiş"
+  },
+  "status": {
+    "pending": "Beklemede",
+    "approved": "Sonlandırıldı",
+    "active": "Aktif",
+    "denied": "Reddedildi",
+    "expired": "Süresi doldu",
+    "revoked": "İptal edildi",
+    "cancelled": "İptal edildi"
+  },
+  "request": {
+    "host": "Ana bilgisayar",
+    "hostWithAccess": "{{host}} (erişim {{until}} tarihine kadar)",
+    "hours": "Saat",
+    "hoursHint": "Bu ana bilgisayar en fazla {{max}} saat izin verir.",
+    "reason": "Erişime ihtiyacınız olan neden",
+    "reasonOptional": "Erişim neden gerekiyor (isteğe bağlı)",
+    "ticket": "Bilet",
+    "ticketOptional": "Bilet (isteğe bağlı)",
+    "send": "Erişim iste",
+    "sent": "İstek gönderildi. Bir karar verildiğinde bildirim alırsınız.",
+    "failed": "İstek gönderilemedi",
+    "noHosts": "Ayrıcalıklı sunucu yok",
+    "noHostsHint": "Yöneticiler tarafından ayrıcalıklı olarak işaretlenen sunucular burada görünür."
+  },
+  "list": {
+    "none": "Burada bir şey yok",
+    "loadError": "İstekler yüklenemedi",
+    "actionFailed": "Bu işlem başarısız oldu",
+    "hours_one": "{{count}} saat",
+    "hours_other": "{{count}} saat",
+    "until": "{{time}}'e kadar",
+    "decidedBy": "{{name}} tarafından",
+    "approve": "Onayla",
+    "deny": "Reddet",
+    "cancel": "İptal",
+    "endNow": "Şimdi sonlandır",
+    "export": "CSV olarak dışa aktar",
+    "approveConfirm_one": "{{user}} kullanıcısına {{host}} sunucusuna {{count}} saatlik erişim verilsin mi?",
+    "approveConfirm_other": "{{user}} kullanıcısına {{host}} sunucusuna {{count}} saatlik erişim verilsin mi?",
+    "denyConfirm": "Bu istek reddedilsin mi?",
+    "cancelConfirm": "Bu istek iptal edilsin mi?",
+    "endConfirm": "Bu erişim şimdi sonlandırılacak mı? Sunucudaki açık oturumlar kapatılacak.",
+    "approved": "Erişim onaylandı",
+    "denied": "İstek reddedildi",
+    "ended": "Tamamlandı"
+  },
+  "card": {
+    "title": "Ayrıcalıklı erişim",
+    "waiting": "sizin onayınızı bekliyor",
+    "empty": "Bekleyen istek yok",
+    "emptyHint": "Onayladığınız erişimler burada gösterilir."
+  },
+  "permissions": {
+    "request": {
+      "title": "Ayrıcalıklı erişim iste",
+      "description": "Ayrıcalıklı ana makinelere sınırlı süreli erişim iste."
+    },
+    "approve": {
+      "title": "Ayrıcalıklı erişimi onayla",
+      "description": "Diğer kullanıcıların erişim isteklerine karar ver, erişimi erken sonlandır ve raporu oku."
+    },
+    "bypass": {
+      "title": "Acil durum erişimi",
+      "description": "Herhangi bir istek olmadan ayrıcalıklı ana makinelere bağlan. Her kullanım denetlenir ve uyarı gönderilir."
+    },
+    "configure": {
+      "title": "Ayrıcalıklı ana makineleri yapılandır",
+      "description": "Ana makineleri ayrıcalıklı olarak işaretle ve erişimi onaylayan kişileri değiştir"
+    }
+  },
+  "settings": {
+    "admin": {
+      "pendingHours": {
+        "label": "İstek geçerlilik süresi (saat)",
+        "description": "Bu süre içinde kimse tarafından karara bağlanmayan bir istek süresi dolmuş sayılır."
+      },
+      "alertBypass": {
+        "label": "Acil erişim durumunda uyarı ver",
+        "description": "Birisi acil erişim ile bağlandığında onaylayıcılara bildirim gönder."
+      }
+    },
+    "host": {
+      "enable": {
+        "label": "Ayrıcalıklı sunucu",
+        "description": "Bu sunucuya yapılan SSH ve uzak masaüstü oturumları için onaylı erişim gerekir."
+      },
+      "approverRoles": {
+        "label": "Onaylayıcı rolleri",
+        "description": "Virgülle ayrılmış rol adları; bu rollerin üyeleri onaylayabilir. Boş bırakılırsa, onay izni olan herkes karar verebilir."
+      },
+      "maxHours": {
+        "label": "Maksimum erişim süresi (saat)",
+        "description": "Tek bir isteğin talep edebileceği en fazla saat sayısı."
+      },
+      "requireReason": {
+        "label": "Sebep iste",
+        "description": "Bir istekte erişimin neden gerekli olduğu belirtilmelidir."
+      },
+      "requireTicket": {
+        "label": "Bilet numarası iste",
+        "description": "Bir istekte bir bilet numarası belirtilmelidir."
+      },
+      "allowBackground": {
+        "label": "Arka plan işlemlerine izin ver",
+        "description": "Polling ve diğer etkileşimsiz eklenti bağlantıları onayı atlar. Her erişimsiz oturumu engellemek için bu seçeneği kapatın."
+      }
+    }
+  },
+  "operations": {
+    "request": {
+      "title": "Ayrıcalıklı erişim iste",
+      "hours": "Saat",
+      "reason": "Sebep",
+      "ticket": "Bilet"
+    },
+    "pending": {
+      "title": "Karar verilmesi gereken erişim istekleri"
+    },
+    "status": {
+      "title": "Ayrıcalıklı erişim"
+    },
+    "events": {
+      "requested": "Birisi erişim istedi",
+      "approved": "Erişim onaylandı",
+      "bypassed": "Acil erişim kullanıldı"
+    }
+  }
+}

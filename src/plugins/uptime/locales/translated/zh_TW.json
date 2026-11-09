@@ -1,0 +1,386 @@
+{
+  "tab": {
+    "title": "正常運作時間",
+    "error": "無法載入監控項目。",
+    "monitors": "監控項目",
+    "incidents": "事件",
+    "maintenance": "維護",
+    "pages": "狀態頁面"
+  },
+  "common": {
+    "refresh": "重新整理",
+    "loading": "載入中",
+    "delete": "刪除",
+    "edit": "編輯",
+    "save": "儲存",
+    "cancel": "取消",
+    "done": "完成"
+  },
+  "status": {
+    "up": "正常",
+    "down": "離線",
+    "pending": "重試中",
+    "maintenance": "維護中",
+    "paused": "已暫停",
+    "unknown": "等待中"
+  },
+  "types": {
+    "http": "網站 (HTTP)",
+    "tcp": "TCP 埠",
+    "ping": "Ping",
+    "dns": "DNS 記錄",
+    "tls": "TLS 憑證",
+    "push": "Push",
+    "host": "Termix 主機",
+    "docker": "Docker 容器",
+    "systemd": "systemd 單元",
+    "command": "指令"
+  },
+  "typeHints": {
+    "http": "呼叫 URL 並檢查狀態碼，若設定關鍵字也會檢查該關鍵字。",
+    "tcp": "檢查埠是否接受連線。",
+    "ping": "從 Termix 伺服器或下方選取的主機發送 Ping。",
+    "dns": "查詢記錄並可檢查其值。",
+    "tls": "檢查憑證是否受信任且即將過期。",
+    "push": "提供一個 URL 供 cron 工作或腳本呼叫。若呼叫停止則顯示離線。",
+    "host": "以與主機狀態圓點相同的方式檢查主機的埠。不會登入。",
+    "docker": "透過 SSH 登入主機，並檢查容器是否正在執行且健康。",
+    "systemd": "透過 SSH 登入主機，並檢查單元是否處於活動狀態。",
+    "command": "透過 SSH 登入主機並執行指令。若退出碼為 0 則顯示正常。"
+  },
+  "stats": {
+    "up": "正常",
+    "down": "問題",
+    "paused": "已暫停或維護中",
+    "month": "30 天正常運作時間"
+  },
+  "filter": {
+    "all": "全部",
+    "problems": "問題",
+    "paused": "已暫停"
+  },
+  "list": {
+    "name": "名稱",
+    "target": "目標",
+    "checks": "上次檢查",
+    "uptime": "24 小時",
+    "uptimeDay": "24 小時：{{value}}",
+    "latency": "回應",
+    "search": "搜尋",
+    "add": "新增監控項目",
+    "addHosts": "從主機新增",
+    "empty": "尚無監控項目",
+    "emptyHint": "新增監控項目以開始監控網站、埠或主機。",
+    "noMatch": "沒有符合的結果"
+  },
+  "range": {
+    "day": "24 小時",
+    "week": "7 天",
+    "month": "30 天",
+    "quarter": "90 天"
+  },
+  "detail": {
+    "failed": "操作失敗。",
+    "deleteTitle": "刪除 {{name}}？",
+    "deleteHint": "其歷史記錄與事件將一併刪除。",
+    "newUrl": "新的推送 URL",
+    "newUrlTitle": "建立新的推送 URL？",
+    "newUrlHint": "舊的 URL 將立即失效。",
+    "type": "類型",
+    "target": "目標",
+    "lastCheck": "上次檢查",
+    "message": "結果",
+    "every": "檢查頻率",
+    "seconds_other": "{{count}} 秒",
+    "group": "群組",
+    "tags": "標籤",
+    "cert": "憑證",
+    "certValue": "剩餘 {{days}} 天 | 發行者：{{issuer}}",
+    "noChart": "檢查次數不足，尚無法繪製圖表。",
+    "alertsOn": "開啟警示",
+    "alertsOff": "關閉警示",
+    "runNow": "立即檢查",
+    "pause": "暫停",
+    "resume": "恢復",
+    "share": "分享",
+    "now": "目前回應",
+    "recent": "最近檢查",
+    "response": "回應時間",
+    "about": "關於",
+    "incidents": "事件",
+    "noIncidents": "無事件。"
+  },
+  "editor": {
+    "addTitle": "新增監控",
+    "editTitle": "編輯監控",
+    "saveFailed": "儲存失敗。",
+    "testFailed": "無法執行測試。",
+    "test": "測試",
+    "testing": "測試中",
+    "testOk": "正常",
+    "testBad": "離線",
+    "what": "監控對象",
+    "name": "名稱",
+    "type": "類型",
+    "host": "主機",
+    "noHost": "選擇主機",
+    "pushOnce": "請立即複製此 URL，它僅顯示一次。",
+    "from": "檢查來源",
+    "fromHost": "從以下位置執行檢查",
+    "fromServer": "Termix 伺服器",
+    "fromHint": "選擇一台主機以存取僅該主機可見的資源。檢查將透過 SSH 在該主機上執行。",
+    "timing": "時間與警示",
+    "interval": "檢查頻率（秒）",
+    "timeout": "逾時時間（秒）",
+    "grace": "額外等待時間（秒）",
+    "retries": "重試次數",
+    "retriesHint": "連續失敗多少次後視為離線。",
+    "retryInterval": "重試間隔（秒）",
+    "resend": "每（分鐘）提醒一次",
+    "resendHint": "在服務離線期間重複發送。設為 0 則僅發送一次警示。",
+    "more": "群組與標籤",
+    "group": "群組",
+    "tags": "標籤",
+    "tagsHint": "以逗號分隔。",
+    "target": "位址",
+    "port": "連接埠",
+    "portOptional": "連接埠",
+    "portOptionalHint": "留空則使用主機預設連接埠。",
+    "url": "URL",
+    "method": "方法",
+    "body": "主體",
+    "accepted": "接受的状态碼",
+    "acceptedHint": "例如 200-299,301",
+    "keyword": "關鍵字",
+    "keywordHint": "選填。回應中必須包含的文字。",
+    "keywordAbsent": "找到關鍵字時判定為失敗",
+    "auth": "登入",
+    "authNone": "無",
+    "authBasic": "基本驗證",
+    "authBearer": "Bearer 權杖",
+    "username": "使用者名稱",
+    "password": "密碼",
+    "token": "權杖",
+    "keepSecret": "留空則保留已儲存的值。",
+    "headers": "標頭",
+    "headersHint": "每行一筆，格式如 Name: value。會加密儲存。",
+    "follow": "跟隨重新導向",
+    "ignoreTls": "接受任何憑證",
+    "certDays": "憑證到期前警告（天數）",
+    "certDaysHint": "設為 0 則關閉警告。",
+    "record": "記錄類型",
+    "dnsServer": "DNS 伺服器",
+    "dnsServerHint": "選填 IP 位址。留空則使用伺服器預設。",
+    "expected": "預期值",
+    "expectedHint": "選填。任一記錄必須包含的文字。",
+    "container": "容器名稱",
+    "unit": "單元名稱",
+    "command": "指令",
+    "commandHint": "每次檢查時，以您登入該主機的帳號執行。"
+  },
+  "hosts": {
+    "add_other": "新增 {{count}} 個監控項目"
+  },
+  "shares": {
+    "loadFailed": "無法載入共用項目。",
+    "saveFailed": "無法儲存共用項目。",
+    "pick": "選擇使用者或角色",
+    "user": "使用者：{{name}}",
+    "role": "角色：{{name}}",
+    "with": "共用對象",
+    "add": "新增",
+    "none": "只有您能查看此監控項目。",
+    "view": "可查看",
+    "edit": "可編輯"
+  },
+  "incidents": {
+    "none": "無事件",
+    "ongoing": "進行中",
+    "seen": "已查看",
+    "ack": "標記為已查看",
+    "note": "備註"
+  },
+  "maintenance": {
+    "none": "無維護時段",
+    "noneHint": "新增一個時段，以便在您進行作業時暫停警示。",
+    "add": "新增時段",
+    "edit": "編輯時段",
+    "active": "目前啟用",
+    "when": "時間",
+    "once": "一次性",
+    "weekly": "每週",
+    "start": "開始",
+    "end": "結束",
+    "days": "日期",
+    "time": "開始時間",
+    "length": "持續時間（分鐘）",
+    "timezone": "時區",
+    "covers": "涵蓋範圍",
+    "coversAll": "所有我的監控項目",
+    "coversSome": "選定的監控項目",
+    "coversTag": "帶有標籤的監控項目",
+    "deleteTitle": "刪除 {{name}}？",
+    "day0": "日",
+    "day1": "一",
+    "day2": "二",
+    "day3": "三",
+    "day4": "四",
+    "day5": "五",
+    "day6": "六"
+  },
+  "pages": {
+    "none": "沒有狀態頁面",
+    "noneHint": "狀態頁面可讓他人無需登入即可查看您的服務狀況。",
+    "add": "新增頁面",
+    "edit": "編輯頁面",
+    "about": "頁面",
+    "title": "標題",
+    "slug": "網址路徑",
+    "slugHint": "僅限小寫字母、數字和連字號。這是連結的最後一部分。",
+    "description": "描述",
+    "published": "已發布",
+    "publishedHint": "任何擁有連結的人都可以查看名稱、狀態和正常運行時間。不會顯示地址或錯誤訊息。",
+    "showLatency": "顯示回應時間",
+    "group": "第 {{number}} 組",
+    "groupName": "群組名稱",
+    "addGroup": "新增群組",
+    "notes": "備註",
+    "noteTitle": "標題",
+    "noteBody": "內容",
+    "noteLevel": "等級",
+    "levelInfo": "資訊",
+    "levelWarning": "警告",
+    "levelCritical": "嚴重",
+    "post": "發布",
+    "resolve": "解決",
+    "resolved": "已解決",
+    "live": "已發布",
+    "draft": "草稿",
+    "open": "開啟頁面",
+    "deleteTitle": "刪除 {{name}}？",
+    "offTitle": "已關閉公開頁面",
+    "offHint": "管理員已在外掛設定中關閉此功能，因此這些連結不會顯示任何內容。"
+  },
+  "widget": {
+    "name": "正常運行時間",
+    "description": "顯示有多少監控項目處於正常或離線狀態。",
+    "up": "正常",
+    "down": "離線"
+  },
+  "card": {
+    "title": "正常運行時間",
+    "overview": "所有監控項目",
+    "attention": "有問題的監控項目",
+    "monitors": "監控項目",
+    "allGood": "一切正常。",
+    "gone": "此監控項目已不存在。",
+    "loading": "載入中...",
+    "month": "30 天：{{value}}"
+  },
+  "host": {
+    "none": "此主機沒有監控項目。",
+    "add": "新增監控項目",
+    "down_other": "{{count}} 個監控項目離線"
+  },
+  "permissions": {
+    "view": {
+      "title": "查看監控項目",
+      "description": "查看監控項目、歷史記錄與事件。"
+    },
+    "manage": {
+      "title": "管理監控項目",
+      "description": "新增與修改監控項目及維護時段。"
+    },
+    "privateTargets": {
+      "title": "檢查私人位址",
+      "description": "將監控項目指向 Termix 伺服器可連線的區域網路、Tailscale 及其他私人位址。"
+    },
+    "runCommands": {
+      "title": "執行命令",
+      "description": "新增透過 SSH 在主機上執行命令的監控項目。"
+    },
+    "publish": {
+      "title": "發布狀態頁面",
+      "description": "建立任何擁有連結的人都能查看的狀態頁面。"
+    }
+  },
+  "settings": {
+    "admin": {
+      "minIntervalSeconds": {
+        "label": "最短檢查間隔",
+        "description": "以秒為單位。透過 SSH 登入的監控項目不會低於 60 秒。"
+      },
+      "defaultIntervalSeconds": {
+        "label": "預設檢查間隔",
+        "description": "以秒為單位，適用於新增的監控項目。"
+      },
+      "historyDays": {
+        "label": "保留歷史記錄",
+        "description": "每日正常運作時間與事件的記錄天數。"
+      },
+      "publicPages": {
+        "label": "允許公開狀態頁面",
+        "description": "關閉以隱藏所有狀態頁面。推送 URL 仍可正常運作。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "開啟終端機時同時開啟面板",
+        "description": "開啟終端機時顯示正常運作時間面板。"
+      },
+      "companionSide": {
+        "label": "面板位置",
+        "description": "正常運作時間面板開啟的位置。",
+        "right": "右側",
+        "left": "左側",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "面板大小",
+        "description": "面板的寬度或高度（以像素為單位）。"
+      },
+      "companionEdgeButton": {
+        "label": "顯示邊緣按鈕",
+        "description": "位於終端機邊緣的按鈕，用於開啟面板。"
+      }
+    }
+  },
+  "operations": {
+    "monitor": "監控項目",
+    "summary": {
+      "title": "正常運作時間摘要"
+    },
+    "monitors": {
+      "title": "列出監控項目"
+    },
+    "hostMonitors": {
+      "title": "此主機的監控項目"
+    },
+    "hostHealth": {
+      "title": "正常運作時間"
+    },
+    "run": {
+      "title": "立即檢查監控項目"
+    },
+    "pause": {
+      "title": "暫停監控項目"
+    },
+    "resume": {
+      "title": "恢復監控項目"
+    },
+    "addHost": {
+      "title": "新增正常運作時間監控項目"
+    },
+    "events": {
+      "down": "監控項目離線",
+      "up": "監控項目恢復連線",
+      "cert": "憑證即將到期"
+    },
+    "resource": {
+      "title": "監控項目",
+      "type": "類型",
+      "status": "狀態",
+      "uptime": "30 天正常運作時間"
+    }
+  }
+}

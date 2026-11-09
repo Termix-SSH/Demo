@@ -1,0 +1,246 @@
+{
+  "tab": {
+    "title": "UPS",
+    "noHost": "Öppna UPS från en värd.",
+    "error": "Kunde inte läsa UPS på denna värd.",
+    "disabled": "UPS Manager är inaktiverad för denna värd. Aktivera den i värdinställningarna.",
+    "viewOverview": "Översikt",
+    "viewHistory": "Historik",
+    "viewEvents": "Händelser",
+    "viewCommands": "Kommandon",
+    "viewSources": "Enheter"
+  },
+  "common": {
+    "loading": "Laddar...",
+    "save": "Spara",
+    "cancel": "Avbryt",
+    "delete": "Ta bort",
+    "edit": "Redigera",
+    "failed": "Det fungerade inte."
+  },
+  "state": {
+    "online": "Ansluten till elnätet",
+    "battery": "På batteri",
+    "bypass": "Bypass",
+    "off": "Av",
+    "unknown": "Okänd"
+  },
+  "flag": {
+    "low-battery": "Lågt batteri",
+    "replace-battery": "Byt batteri",
+    "overload": "Överbelastad",
+    "charging": "Laddar",
+    "calibrating": "Kalibrerar",
+    "alarm": "Larm",
+    "boost": "Ökar effekt",
+    "trim": "Minskar effekt"
+  },
+  "backend": {
+    "nut": "NUT",
+    "apcupsd": "apcupsd",
+    "snmp": "SNMP-kort"
+  },
+  "overview": {
+    "noData": "Inga mätvärden ännu.",
+    "stale": "Senaste avläsningen misslyckades: {{error}}",
+    "power": "Ström",
+    "charge": "Batteriladdning",
+    "runtime": "Kvarvarande drifttid",
+    "load": "Belastning",
+    "nominal": "{{watts}} W nominell",
+    "input": "Ingångsspänning",
+    "output": "Utgångsspänning",
+    "batteryVolts": "Batterispänning",
+    "temp": "Temperatur",
+    "model": "Modell",
+    "serial": "Serienummer",
+    "status": "Status",
+    "lastTest": "Senaste självtestet",
+    "readAt": "Senast läst",
+    "ago": "{{time}} sedan"
+  },
+  "history": {
+    "error": "Kunde inte läsa historiken.",
+    "24h": "24 timmar",
+    "7d": "7 dagar",
+    "30d": "30 dagar",
+    "empty": "Inte tillräckligt många mätningar ännu. Termix läser av UPS:en var 30:e sekund.",
+    "charge": "Batteriladdning",
+    "load": "Belastning",
+    "runtime": "Kvarvarande drifttid",
+    "voltage": "Spänning"
+  },
+  "events": {
+    "error": "Kunde inte ladda händelserna.",
+    "empty": "Inga strömrelaterade händelser ännu.",
+    "type": {
+      "on-battery": "På batteri",
+      "on-battery-cleared": "Strömförsörjning återställd",
+      "low-battery": "Låg batterinivå",
+      "low-battery-cleared": "Batterinivå normal",
+      "replace-battery": "Byt batteri",
+      "replace-battery-cleared": "Batterinivå normal",
+      "overload": "Överbelastning",
+      "overload-cleared": "Belastning normal",
+      "low-charge": "Låg laddning",
+      "low-charge-cleared": "Laddning normal",
+      "low-runtime": "Kort drifttid kvar",
+      "low-runtime-cleared": "Körtid okej",
+      "unreachable": "Oåtkomlig",
+      "unreachable-cleared": "Åtkomlig",
+      "test-failed": "Testfel",
+      "test-failed-cleared": "Test okej",
+      "test": "Självtest",
+      "command": "Kommando"
+    }
+  },
+  "commands": {
+    "unsupported": "Endast NUT-enheter accepterar kommandon.",
+    "error": "Kunde inte lista kommandon.",
+    "confirmTitle": "Kör {{name}}?",
+    "confirmText": "Detta kan strömma avbrytas eller ändra hur {{name}} beter sig.",
+    "run": "Kör",
+    "done": "Skickade {{name}}.",
+    "needLogin": "Lägg till en NUT-användare och lösenord på denna enhet för att skicka kommandon.",
+    "empty": "Denna UPS har inga omedelbara kommandon.",
+    "risky": "Kan avbryta strömmen"
+  },
+  "sources": {
+    "add": "Lägg till UPS",
+    "empty": "Ingen UPS är konfigurerad på denna värd.",
+    "emptyHint": "Lägg till en NUT- eller apcupsd-enhet på denna värd, eller ett SNMP-kort som denna värd kan nå.",
+    "off": "av",
+    "unreachable": "oanvändbar",
+    "saved": "Sparad.",
+    "deleteTitle": "Ta bort {{name}}?",
+    "deleteText": "Historiken och händelserna raderas också."
+  },
+  "editor": {
+    "addTitle": "Lägg till UPS",
+    "editTitle": "Redigera UPS",
+    "add": "Lägg till",
+    "backend": "Hur den läses",
+    "label": "Namn",
+    "labelPlaceholder": "Rack-UPS",
+    "target": {
+      "nut": "NUT-enhet",
+      "apcupsd": "apcupsd-adress",
+      "snmp": "Kortadress"
+    },
+    "targetPlaceholder": {
+      "nut": "ups eller ups@192.168.1.5:3493",
+      "apcupsd": "Lämna tomt för denna värd",
+      "snmp": "192.168.1.20"
+    },
+    "nutFound": "Hittat på denna värd: {{names}}",
+    "nutMissing": "upsc är inte installerat på denna värd. Installera NUT-klienten först.",
+    "nutHint": "Namnet från upsc -l, eller namn@värd:port för en fjärransluten NUT-server.",
+    "apcMissing": "apcaccess är inte installerat på denna värd. Installera apcupsd först.",
+    "apcHint": "Lämna tomt för att läsa från daemonen på denna värd, eller använd värd:3551.",
+    "snmpMissing": "snmpwalk är inte installerat på denna värd. Installera net-snmp-verktygen först.",
+    "snmpHint": "Termix frågar kortet från denna värd med snmpwalk.",
+    "nutUser": "NUT-användare",
+    "nutPassword": "NUT-lösenord",
+    "nutLoginHint": "Endast nödvändigt för att skicka kommandon. Läsning kräver det aldrig.",
+    "saved": "Sparad",
+    "snmpVersion": "SNMP-version",
+    "community": "Community",
+    "v3User": "SNMP-användare",
+    "v3Level": "Säkerhetsnivå",
+    "v3": {
+      "noAuth": "Ingen autentisering",
+      "auth": "Autentisering",
+      "authPriv": "Autentisering och sekretess"
+    },
+    "v3AuthProto": "Autentiseringstyp",
+    "v3AuthPass": "Autentiseringslösenord",
+    "v3PrivProto": "Sekretessnivå",
+    "v3PrivPass": "Sekretesslösenord",
+    "clearSecrets": "Ta bort sparad inloggning",
+    "clearSecretsHint": "Raderar den sparade NUT- eller SNMP-inloggningen för denna enhet.",
+    "lowCharge": "Varning för låg batterinivå (%)",
+    "lowChargeHint": "Varna när batterinivån är på eller under detta värde när enheten drivs av batteri.",
+    "lowRuntime": "Varning för kort återstående driftstid (minuter)",
+    "lowRuntimeHint": "Varna när den återstående driftstiden är på eller under detta värde när enheten drivs av batteri. 0 stänger av varningen.",
+    "alerts": "Skicka varningar",
+    "alertsHint": "Strömavbrott, lågt batteri, överbelastning och testproblem.",
+    "enabled": "Läs från denna UPS",
+    "enabledHint": "Stäng av för att sluta läsa data men behålla historiken.",
+    "test": "Testa",
+    "testing": "Testar...",
+    "testOk": "Fungerar: {{state}}, {{charge}}% laddning, {{runtime}} kvar.",
+    "testFailed": "Kunde inte läsa av UPS-enheten."
+  },
+  "card": {
+    "title": "UPS",
+    "empty": "Ingen UPS är konfigurerad. Aktivera UPS Manager för en värd och lägg till en enhet.",
+    "runtime": "{{time}} kvar",
+    "load": "{{value}}% belastning"
+  },
+  "manager": {
+    "title": "UPS",
+    "disabled": "UPS Manager är inaktiverad för denna värd."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "UPS Manager",
+        "description": "Läs in UPS-enheter från denna värd och visa en UPS-flik."
+      },
+      "readOnly": {
+        "label": "UPS skrivskyddad",
+        "description": "Blockera ändringar och kommandon på denna värdens UPS-enheter."
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "Använd UPS Manager",
+      "description": "Visa UPS-status och, med redigeringsåtkomst till en värd, ändra enheter och skicka kommandon."
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Lista UPS-enheter"
+    },
+    "status": {
+      "title": "Strömstatus"
+    },
+    "charge": {
+      "title": "Batteriladdning"
+    },
+    "runtime": {
+      "title": "Kvarvarande drifttid"
+    },
+    "source": "UPS",
+    "sourceHint": "UPS-ID. Lämna tomt för den första på värden.",
+    "selfTest": {
+      "title": "Starta batteriets självtest",
+      "kind": "Typ",
+      "quick": "Snabb",
+      "deep": "Djup"
+    },
+    "beeper": {
+      "title": "Ställ in UPS-larmet",
+      "mode": "Larm",
+      "mute": "Tysta",
+      "disable": "Stäng av",
+      "enable": "Slå på"
+    },
+    "calibrate": {
+      "title": "Kalibrera driftstid",
+      "description": "Urladdar batteriet för att mäta dess drifttid. Värdar på denna UPS förlorar skyddet medan den körs."
+    },
+    "devices": {
+      "title": "UPS-enheter",
+      "state": "Status",
+      "charge": "Laddning",
+      "load": "Belastning",
+      "backend": "Läs med"
+    },
+    "events": {
+      "onBattery": "UPS på batteri",
+      "powerRestored": "Strömmen till UPS återställd"
+    }
+  }
+}

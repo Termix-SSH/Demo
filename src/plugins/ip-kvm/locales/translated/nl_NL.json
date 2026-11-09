@@ -1,0 +1,226 @@
+{
+  "plugin": {
+    "name": "IP-KVM",
+    "description": "Bekijk en beheer machines via PiKVM-, NanoKVM- en JetKVM-apparaten."
+  },
+  "tab": {
+    "title": "KVM"
+  },
+  "card": {
+    "title": "KVM",
+    "loading": "Laden"
+  },
+  "host": {
+    "open": "KVM"
+  },
+  "permissions": {
+    "view": {
+      "title": "KVM's bekijken",
+      "description": "Open het KVM-tabblad en zie welke KVM's online zijn en welke voedingstoestand ze rapporteren."
+    },
+    "power": {
+      "title": "Voeding beheren",
+      "description": "Zet machines aan en uit of herstart ze via hun KVM, of wek ze op met Wake-on-LAN."
+    },
+    "console": {
+      "title": "Gebruik het scherm",
+      "description": "Bekijk het scherm van een machine en gebruik het toetsenbord en de muis."
+    },
+    "media": {
+      "title": "Gebruik virtuele media",
+      "description": "Koppel en verwijder ISO-beelden op een machine."
+    },
+    "manage": {
+      "title": "Beheer KVM's",
+      "description": "KVM's toevoegen, wijzigen en verwijderen."
+    }
+  },
+  "settings": {
+    "admin": {
+      "maxSessionMinutes": {
+        "label": "Maximale sessieduur (minuten)",
+        "description": "Een schermsessie eindigt na deze duur. Gebruik 0 voor geen limiet."
+      }
+    }
+  },
+  "description": "Voeg je IP-KVM's toe om de machines achter hen te bekijken en te besturen. Termix maakt verbinding met de KVM, dus het scherm werkt zelfs als je browser er geen directe verbinding mee kan maken. Inloggegevens worden versleuteld opgeslagen en nooit meer getoond.",
+  "summary": "{{count}} KVM's, {{attention}} offline",
+  "empty": "Nog geen KVM's.",
+  "add": "KVM toevoegen",
+  "edit": "Bewerken",
+  "delete": "Verwijderen",
+  "back": "Terug",
+  "saved": "Opgeslagen",
+  "deleteConfirm": "{{name}} verwijderen?",
+  "status": {
+    "unknown": "Nog niet gelezen",
+    "up": "Online",
+    "down": "Offline"
+  },
+  "drivers": {
+    "pikvm": "PiKVM",
+    "glkvm": "GL.iNet Comet (GLKVM)",
+    "nanokvm": "NanoKVM",
+    "jetkvm": "JetKVM"
+  },
+  "fields": {
+    "username": "Gebruikersnaam",
+    "password": "Wachtwoord"
+  },
+  "power": {
+    "on": "Aan",
+    "off": "Uit",
+    "unknown": "Onbekend",
+    "state": "De machine is {{state}}.",
+    "sent": "Aan {{name}} gevraagd om de voeding te wijzigen",
+    "sentShort": "Voedingsopdracht verzonden",
+    "wake": "Wake-on-LAN",
+    "woke": "Wake-packet verzonden",
+    "action": {
+      "on": "Inschakelen",
+      "off": "Uitschakelen",
+      "graceful-shutdown": "Afsluiten",
+      "reset": "Herstarten"
+    },
+    "confirm": {
+      "on": "{{name}} inschakelen?",
+      "off": "De stroom van {{name}} onderbreken? Het systeem wordt niet netjes afgesloten.",
+      "graceful-shutdown": "Vraag {{name}} om af te sluiten?",
+      "reset": "{{name}} opnieuw opstarten? Het systeem start direct opnieuw op."
+    }
+  },
+  "form": {
+    "addTitle": "KVM toevoegen",
+    "editTitle": "KVM bewerken",
+    "device": "KVM",
+    "access": "Toegang",
+    "machine": "Machine achter de KVM",
+    "type": "Type",
+    "name": "Naam",
+    "address": "Adres",
+    "port": "Poort",
+    "host": "Termix-host",
+    "hostHint": "Koppel de KVM aan de host waartoe hij behoort. Hij volgt dan het deelbeleid van die host en verschijnt in het hostmenu.",
+    "noHost": "Geen",
+    "poll": "Controleer elke (seconden)",
+    "pollHint": "Minimaal 30 seconden.",
+    "scheme": "Verbinding",
+    "ca": "Certificaat",
+    "caHint": "Plak de PEM van een private certificeringsinstantie, of gebruik 'Dit certificaat vertrouwen' voor een KVM met een eigen zelfondertekend certificaat. Laat leeg voor een vertrouwd certificaat.",
+    "caSet": "Er is een certificaat opgeslagen. Plak een nieuw certificaat om het te vervangen.",
+    "keepLogin": "Laat leeg om de opgeslagen inloggegevens te behouden",
+    "test": "Verbinding testen",
+    "testOk": "De KVM heeft geantwoord ({{model}}).",
+    "testNeedsLogin": "Voer de inloggegevens opnieuw in om te testen.",
+    "mac": "MAC-adres",
+    "macHint": "Het netwerkadapteradres van de machine, voor Wake-on-LAN.",
+    "broadcast": "Broadcastadres",
+    "broadcastHint": "Waar het wake-pakket naartoe gaat. Laat leeg voor 255.255.255.255.",
+    "save": "Opslaan",
+    "add": "Toevoegen",
+    "trust": "Vertrouw dit certificaat",
+    "trustTitle": "Vertrouw het certificaat van deze KVM?",
+    "trustHint": "Termix communiceert alleen met deze KVM zolang dit exacte certificaat wordt getoond. Controleer of de vingerafdruk overeenkomt met die op het apparaat.",
+    "certName": "Naam: {{name}}",
+    "certValid": "geldig tot {{date}}",
+    "certExpired": "verlopen op {{date}}",
+    "pinned": "Vertrouwd certificaat",
+    "unpin": "Verwijderen"
+  },
+  "view": {
+    "screen": "Scherm",
+    "power": "Vermogen",
+    "media": "Virtueel media",
+    "info": "Informatie",
+    "refresh": "Nu lezen",
+    "type": "Type",
+    "address": "Adres",
+    "model": "Model",
+    "version": "Software",
+    "hostname": "Naam",
+    "video": "Video",
+    "noSignal": "Geen signaal",
+    "status": "KVM",
+    "jetHint": "De JetKVM-video gaat rechtstreeks van de JetKVM naar je browser, dus je browser moet deze op het netwerk kunnen bereiken."
+  },
+  "screen": {
+    "connecting": "Verbinden",
+    "failed": "Het scherm kon niet worden geopend.",
+    "ended": "De sessie is beëindigd.",
+    "hint": "Klik op het scherm om te typen.",
+    "shortcuts": "Sneltoetsen",
+    "shortcut": {
+      "ctrl-alt-del": "Ctrl+Alt+Del",
+      "alt-tab": "Alt+Tab",
+      "alt-f4": "Alt+F4",
+      "ctrl-esc": "Ctrl+Esc",
+      "win-l": "Win+L",
+      "win-d": "Win+D",
+      "ctrl-alt-f1": "Ctrl+Alt+F1",
+      "ctrl-alt-f2": "Ctrl+Alt+F2",
+      "ctrl-alt-f7": "Ctrl+Alt+F7",
+      "print-screen": "Afdrukken"
+    },
+    "paste": "Tekst plakken",
+    "pasteLabel": "Tekst om op de machine in te voeren",
+    "type": "Typen",
+    "snapshot": "Schermafbeelding",
+    "fullscreen": "Volledig scherm",
+    "exitFullscreen": "Volledig scherm verlaten",
+    "reconnect": "Opnieuw verbinden"
+  },
+  "media": {
+    "none": "Er is geen beeld gemonteerd.",
+    "mountedNow": "Gemonteerd: {{name}}",
+    "as": "Weergeven als",
+    "cd": "CD-station",
+    "usb": "USB-station",
+    "empty": "Er zijn geen beelden op deze KVM.",
+    "mount": "Monteren",
+    "eject": "Uitwerpen",
+    "mountedDone": "Beeld gemonteerd",
+    "ejected": "Beeld uitgeworpen",
+    "url": "Een beeld downloaden van",
+    "name": "Opslaan als",
+    "fetch": "Downloaden naar de KVM",
+    "fetched": "Beeld gedownload"
+  },
+  "operations": {
+    "device": "KVM",
+    "list-devices": {
+      "title": "KVM's weergeven"
+    },
+    "poll": {
+      "title": "KVM nu lezen"
+    },
+    "power-state": {
+      "title": "Voedingsstatus ophalen"
+    },
+    "power-on": {
+      "title": "Inschakelen"
+    },
+    "graceful-shutdown": {
+      "title": "Afsluiten"
+    },
+    "power-off": {
+      "title": "Uitschakelen"
+    },
+    "reset": {
+      "title": "Herstellen"
+    },
+    "wake": {
+      "title": "Wake on LAN"
+    },
+    "eject-media": {
+      "title": "Beeld uitwerpen"
+    },
+    "health": {
+      "title": "KVM-status"
+    }
+  },
+  "widget": {
+    "name": "KVM-apparaten",
+    "description": "Welke van uw IP-KVM's actief zijn.",
+    "summary": "{{up}} van {{total}} actief"
+  }
+}

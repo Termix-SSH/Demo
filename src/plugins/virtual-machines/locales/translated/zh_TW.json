@@ -1,0 +1,421 @@
+{
+  "tab": {
+    "title": "虛擬機器",
+    "noHost": "從主機開啟虛擬機器。",
+    "refresh": "重新整理",
+    "open": "開啟完整檢視",
+    "error": "無法讀取此主機上的虛擬機器。",
+    "disabled": "此主機已關閉虛擬機器功能。請前往主機設定中開啟。",
+    "sudo": "此主機需要 root 登入、免密碼 sudo 或已儲存的 Sudo 密碼。",
+    "vms": "虛擬機器",
+    "storage": "儲存空間",
+    "networks": "網路",
+    "jobs": "工作",
+    "runningCount": "{{running}} / {{total}} 個執行中",
+    "nodeLine": "{{cpus}} 個 CPU，{{memory}}",
+    "noKvm": "無 KVM，虛擬機器執行速度會較慢"
+  },
+  "common": {
+    "loading": "載入中...",
+    "save": "儲存",
+    "cancel": "取消",
+    "delete": "刪除",
+    "failed": "操作失敗。"
+  },
+  "state": {
+    "running": "執行中",
+    "blocked": "已封鎖",
+    "paused": "已暫停",
+    "shutdown": "正在關閉",
+    "shutoff": "已關閉",
+    "crashed": "已當機",
+    "pmsuspended": "已暫停",
+    "unknown": "未知"
+  },
+  "power": {
+    "start": "啟動",
+    "shutdown": "關閉",
+    "reboot": "重新啟動",
+    "stop": "強制停止",
+    "suspend": "暫停",
+    "resume": "恢復",
+    "shutdownTitle": "要關閉 {{name}} 嗎？",
+    "shutdownText": "這會要求客端系統關閉。可能需要一分鐘，且若客端系統不支援 ACPI，可能會忽略此請求。",
+    "stopTitle": "要強制停止 {{name}} 嗎？",
+    "stopText": "這會立即切斷電源。客端系統中未儲存的資料將會遺失。"
+  },
+  "setup": {
+    "missing": "未安裝 Libvirt",
+    "missingText": "Termix 可以在此主機上安裝 QEMU 和 libvirt。這需要 root 權限、免密碼 sudo 或已儲存的 Sudo 密碼。",
+    "noConnect": "Termix 無法連線到此主機上的 libvirt",
+    "noConnectText": "請確認 libvirt 服務正在執行，且 SSH 使用者有權限使用它。",
+    "noKvm": "此主機沒有 /dev/kvm，因此虛擬機器將無法使用硬體加速。請在 BIOS 或此虛擬機器中開啟虛擬化功能。",
+    "install": "安裝",
+    "installing": "安裝中...",
+    "installTitle": "要在此主機上安裝 libvirt 嗎？",
+    "installText": "這會使用主機的套件管理器安裝 QEMU、libvirt 及其工具，啟動服務，並設定預設的網路和儲存空間。",
+    "installed": "Libvirt 已安裝"
+  },
+  "vm": {
+    "new": "新增虛擬機器",
+    "none": "此主機上尚無虛擬機器",
+    "noneHint": "按下「新增虛擬機器」來建立一個。",
+    "name": "名稱",
+    "state": "狀態",
+    "size": "大小",
+    "ip": "IP 位址",
+    "noIp": "尚無位址",
+    "cpus_other": "{{count}} 個 CPU",
+    "back": "返回列表",
+    "overview": "總覽",
+    "console": "主控台",
+    "snapshots": "快照",
+    "hardware": "硬體",
+    "xml": "XML",
+    "cpu": "CPU",
+    "memory": "記憶體",
+    "memoryUsed": "已使用 {{used}}",
+    "ofHost": "主機擁有 {{memory}}",
+    "diskIo": "磁碟",
+    "diskUsed": "{{size}} 磁碟，主機上 {{used}}",
+    "netIo": "網路",
+    "uuid": "UUID",
+    "machine": "機器",
+    "firmware": "韌體",
+    "bios": "BIOS",
+    "uefi": "UEFI",
+    "cpuMode": "CPU 模式",
+    "guestAgent": "Guest agent",
+    "yes": "是",
+    "no": "否",
+    "autostart": "自動啟動",
+    "autostartHint": "當主機開機時啟動此 VM。",
+    "clone": "複製",
+    "cloneStopped": "關閉 VM 以進行複製",
+    "cloneName": "副本名稱",
+    "cloneStarted": "複製已開始。請查看 Jobs 以了解進度。",
+    "delete": "刪除",
+    "deleteTitle": "刪除 {{name}}？",
+    "deleteDisks": "同時刪除其磁碟",
+    "deleteDisksHint": "移除其他 VM 未使用的磁碟。此操作無法復原。ISO 和基礎映像檔將保留。",
+    "deleted": "VM 已刪除"
+  },
+  "watch": {
+    "start": "當此 VM 停止時通知我",
+    "stop": "停止此 VM 的警示"
+  },
+  "console": {
+    "graphical": "圖形介面",
+    "serial": "序列埠",
+    "notRunning": "啟動 VM 以使用其主控台。",
+    "connecting": "連線中...",
+    "failed": "無法開啟主控台。",
+    "retry": "重試",
+    "ended": "主控台已關閉。",
+    "serialHint": "如果畫面保持空白，請按 Enter。Guest 必須在其序列埠上執行 getty。",
+    "noRemoteDesktop": "開啟 Remote Desktop 以查看此 VM 的畫面。序列埠主控台仍可正常使用。",
+    "useVnc": "切換至 VNC",
+    "vncSaved": "已儲存。關閉 VM 並重新啟動以使用 VNC。"
+  },
+  "hardware": {
+    "cpuMemory": "CPU 與記憶體",
+    "vcpus": "CPU",
+    "memory": "記憶體 (MiB)",
+    "nextStart": "變更將於下次 VM 啟動時生效。",
+    "saved": "已儲存",
+    "disks": "磁碟",
+    "detach": "卸除",
+    "detachTitle": "卸除 {{name}}？",
+    "detachText": "該儲存卷將保留在其儲存池中。",
+    "pool": "儲存池",
+    "sizeGib": "大小 (GiB)",
+    "addDisk": "新增磁碟",
+    "cdrom": "CD 光碟機",
+    "noMedia": "空白",
+    "iso": "ISO",
+    "pickIso": "選擇 ISO",
+    "insert": "插入",
+    "eject": "退出",
+    "nics": "網路卡",
+    "removeNic": "移除",
+    "nicType": "連線至",
+    "virtualNetwork": "虛擬網路",
+    "hostBridge": "主機橋接器",
+    "network": "網路",
+    "bridge": "橋接器",
+    "addNic": "新增網卡"
+  },
+  "snapshot": {
+    "name": "快照名稱",
+    "description": "描述",
+    "take": "建立快照",
+    "taking": "處理中...",
+    "taken": "快照已建立",
+    "none": "沒有快照",
+    "noneHint": "快照會儲存虛擬機器的磁碟與記憶體狀態。",
+    "current": "目前",
+    "revert": "還原",
+    "revertTitle": "要還原至 {{name}} 嗎？",
+    "revertText": "此快照之後的所有變更都會遺失。",
+    "reverted": "虛擬機器已還原",
+    "delete": "刪除",
+    "deleteTitle": "要刪除快照 {{name}} 嗎？",
+    "deleteText": "虛擬機器將保持目前狀態。"
+  },
+  "xml": {
+    "hint": "進階設定。主機在儲存前會檢查 XML，並將舊版備份至 /var/lib/termix-vms/backups。",
+    "saveTitle": "要儲存此 XML 嗎？",
+    "saveText": "設定將於虛擬機器下次啟動時生效。",
+    "saved": "已儲存"
+  },
+  "new": {
+    "title": "新增虛擬機器",
+    "basics": "基本設定",
+    "install": "安裝",
+    "name": "名稱",
+    "source": "安裝來源",
+    "sourceCloud": "雲端映像",
+    "sourceIso": "ISO",
+    "sourceBlank": "空白磁碟",
+    "noIso": "此儲存集區中沒有 ISO。請前往「儲存」下載。",
+    "image": "映像",
+    "customImage": "其他網址",
+    "imageUrl": "映像網址",
+    "username": "登入帳號",
+    "password": "密碼",
+    "sshKey": "SSH 公鑰",
+    "sshKeyHint": "請提供密碼、金鑰，或兩者皆提供。密碼僅以雜湊形式儲存。",
+    "start": "準備就緒後啟動",
+    "create": "建立虛擬機器",
+    "started": "正在建立虛擬機器。請查看「工作」以了解進度。",
+    "noUefi": "此主機未安裝 UEFI 韌體。",
+    "uefiHint": "UEFI 虛擬機器僅能在關機時建立快照。",
+    "missingTools": "此主機缺少雲端映像所需的 {{tools}}。"
+  },
+  "storage": {
+    "pools": "儲存集區",
+    "none": "沒有儲存集區",
+    "noneHint": "新增資料夾以存放虛擬機器磁碟。",
+    "active": "使用中",
+    "inactive": "未使用",
+    "used": "已使用 {{used}} / {{size}} ({{percent}}%)",
+    "start": "啟動",
+    "stop": "停止",
+    "forget": "遺忘",
+    "forgetTitle": "要遺忘集區 {{name}} 嗎？",
+    "forgetText": "Libvirt 將停止使用此集區。資料夾中的檔案仍會保留在磁碟上。",
+    "poolName": "儲存池名稱",
+    "poolPath": "資料夾",
+    "addPool": "新增儲存池",
+    "volumes": "{{pool}} 中的磁碟區",
+    "noVolumes": "此儲存池中沒有磁碟區",
+    "allocated": "磁碟上使用 {{size}}",
+    "deleteVolume": "刪除 {{name}}？",
+    "deleteVolumeText": "這將移除該檔案，且無法復原。",
+    "volumeName": "磁碟區名稱",
+    "addVolume": "新增磁碟區",
+    "downloadUrl": "下載檔案至此儲存池",
+    "downloadHint": "由主機執行下載，因此即使關閉 Termix 也會繼續進行。",
+    "download": "下載",
+    "downloadStarted": "下載已開始"
+  },
+  "network": {
+    "title": "虛擬網路",
+    "none": "沒有虛擬網路",
+    "name": "名稱",
+    "kind": "類型",
+    "nat": "NAT",
+    "isolated": "隔離",
+    "bridge": "主機橋接",
+    "subnet": "位址",
+    "add": "新增網路",
+    "stopTitle": "停止網路 {{name}}？",
+    "stopText": "此網路上的虛擬機器將失去連線，直到網路恢復並重新連線為止。",
+    "deleteTitle": "刪除網路 {{name}}？",
+    "leases": "{{name}} 上的 DHCP 租約",
+    "noLeases": "沒有租約"
+  },
+  "jobs": {
+    "none": "尚無工作",
+    "noneHint": "新增的虛擬機器、複製品、快照與下載會顯示在此處。",
+    "cancel": "停止",
+    "status": {
+      "running": "執行中",
+      "success": "已完成",
+      "failed": "失敗",
+      "cancelled": "已停止"
+    },
+    "kind": {
+      "create": "新增虛擬機器",
+      "clone": "複製",
+      "download": "下載",
+      "snapshot": "快照"
+    },
+    "phase": {
+      "download": "下載中",
+      "disk": "建立磁碟",
+      "seed": "寫入 cloud-init",
+      "define": "儲存虛擬機器",
+      "start": "啟動中",
+      "clone": "複製磁碟"
+    }
+  },
+  "all": {
+    "title": "所有虛擬機器",
+    "search": "搜尋",
+    "host": "主機",
+    "hostCount_other": "{{count}} 台主機",
+    "noHosts": "沒有主機啟用虛擬機器功能",
+    "noHostsHint": "在「管理」中開啟主機並啟用虛擬機器功能。"
+  },
+  "card": {
+    "title": "虛擬機器",
+    "unreachable": "無法連線",
+    "crashed_other": "{{count}} 個當機"
+  },
+  "widget": {
+    "running": "執行中的虛擬機器"
+  },
+  "companion": {
+    "toggle": "切換虛擬機器面板"
+  },
+  "permissions": {
+    "use": {
+      "title": "使用虛擬機器",
+      "description": "查看可連線主機上的虛擬機器，並修改可編輯主機上的設定。"
+    },
+    "console": {
+      "title": "開啟虛擬機器主控台",
+      "description": "在可編輯的主機上開啟虛擬機器的圖形與序列主控台。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "啟用虛擬機器",
+        "description": "使用 libvirt 在此主機上管理 KVM 虛擬機器。"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "使用 sudo 執行 libvirt 指令。若以 root 登入則請關閉。"
+      },
+      "readOnly": {
+        "label": "唯讀",
+        "description": "顯示虛擬機器，但阻止 Termix 進行任何變更。"
+      },
+      "connectUri": {
+        "label": "Libvirt 連線",
+        "description": "要使用的 libvirt URI。大多數主機應使用 qemu:///system。"
+      },
+      "showPanel": {
+        "label": "在終端機旁顯示 VM 面板",
+        "description": "在此主機的終端機分頁中加入虛擬機器清單。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "單獨開啟 VM 面板",
+        "description": "當終端機開啟時自動開啟面板。"
+      },
+      "companionSide": {
+        "label": "VM 面板位置",
+        "description": "面板相對於終端機的位置。",
+        "right": "右側",
+        "left": "左側",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "VM 面板大小",
+        "description": "寬度或高度（像素）。"
+      },
+      "companionEdgeButton": {
+        "label": "顯示邊緣按鈕",
+        "description": "終端機邊緣的小按鈕可開啟面板。"
+      }
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "列出虛擬機器"
+    },
+    "state": {
+      "title": "虛擬機器狀態"
+    },
+    "running": {
+      "title": "執行中的虛擬機器"
+    },
+    "crashed": {
+      "title": "當機的虛擬機器"
+    },
+    "pools": {
+      "title": "儲存集區使用量"
+    },
+    "snapshots": {
+      "title": "虛擬機器快照"
+    },
+    "listPools": {
+      "title": "列出儲存集區"
+    },
+    "listNetworks": {
+      "title": "列出虛擬網路"
+    },
+    "start": {
+      "title": "啟動虛擬機器"
+    },
+    "reboot": {
+      "title": "重新啟動虛擬機器"
+    },
+    "suspend": {
+      "title": "暫停虛擬機器"
+    },
+    "resume": {
+      "title": "恢復虛擬機器"
+    },
+    "autostart": {
+      "title": "設定虛擬機器自動啟動",
+      "enabled": "隨主機啟動"
+    },
+    "snapshot": {
+      "title": "建立虛擬機器快照",
+      "name": "快照名稱",
+      "description": "描述"
+    },
+    "clone": {
+      "title": "複製虛擬機器",
+      "name": "副本名稱"
+    },
+    "shutdown": {
+      "title": "關閉虛擬機器"
+    },
+    "forceStop": {
+      "title": "強制停止虛擬機器"
+    },
+    "delete": {
+      "title": "刪除虛擬機器",
+      "disks": "同時刪除其磁碟"
+    },
+    "revert": {
+      "title": "還原至快照"
+    },
+    "deleteSnapshot": {
+      "title": "刪除快照"
+    },
+    "vms": {
+      "title": "虛擬機器"
+    },
+    "column": {
+      "cpus": "CPU",
+      "memory": "記憶體 (MiB)",
+      "ip": "IP 位址",
+      "autostart": "自動啟動",
+      "vm": "虛擬機器",
+      "created": "建立時間"
+    },
+    "events": {
+      "started": "虛擬機器已啟動",
+      "stopped": "虛擬機器已停止",
+      "crashed": "虛擬機器已當機",
+      "job": "虛擬機器作業已完成"
+    }
+  }
+}

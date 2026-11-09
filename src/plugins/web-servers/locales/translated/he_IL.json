@@ -1,0 +1,291 @@
+{
+  "plugin": {
+    "name": "שרתי אינטרנט",
+    "description": "נהל את nginx, Apache ו-Caddy במארחים שלך: אתרים, תצורה, יומנים ו-HTTPS, עם בדיקה של כל שינוי לפני ההפעלה."
+  },
+  "common": {
+    "cancel": "ביטול",
+    "back": "חזרה",
+    "loading": "טוען..."
+  },
+  "permissions": {
+    "use": {
+      "title": "השתמש בשרתי אינטרנט",
+      "description": "הצג שרתי אינטרנט ואתרים במארחים שניתן להגיע אליהם, ושנה אותם במארחים שניתן לערוך."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "שרתי אינטרנט",
+        "description": "נהל את nginx, Apache ו-Caddy במארח זה מתוך הלשונית שרתי אינטרנט."
+      },
+      "useSudo": {
+        "label": "השתמש ב-sudo",
+        "description": "השתמש ב-sudo לקריאה ושינוי של שרת האינטרנט. כבה אם ההתחברות היא כ-root."
+      },
+      "readOnly": {
+        "label": "קריאה בלבד",
+        "description": "הצג אתרים, תצורה ויומנים אך לעולם אל תשנה אותם במארח זה."
+      },
+      "showPanel": {
+        "label": "לוח ליד הטרמינל",
+        "description": "הצג את לוח שרתי האינטרנט בלשוניות הטרמינל של מארח זה."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "פתח את הלוח עם הטרמינל",
+        "description": "הצג את לוח שרתי האינטרנט כאשר נפתח טרמינל במארח שיש לו את התוסף."
+      },
+      "companionSide": {
+        "label": "צד הלוח",
+        "description": "איפה הלוח ממוקם ליד הטרמינל.",
+        "right": "ימין",
+        "left": "שמאל",
+        "bottom": "תחתון"
+      },
+      "companionSize": {
+        "label": "גודל הלוח",
+        "description": "רוחב הלוח, או גובהו כאשר הוא בתחתית, בפיקסלים."
+      },
+      "companionEdgeButton": {
+        "label": "כפתור שפה",
+        "description": "הצג כפתור קטן בשפת הטרמינל לפתיחת הלוח."
+      }
+    }
+  },
+  "tab": {
+    "title": "שרתי אינטרנט",
+    "noHost": "פתח שרתי אינטרנט ממארח.",
+    "error": "לא ניתן לטעון את שרתי האינטרנט במארח זה.",
+    "disabled": "שרתי אינטרנט כבוי עבור מארח זה. הפעל אותו בהגדרות המארח.",
+    "sudo": "שינויים דורשים התחברות כ-root, sudo ללא סיסמה או סיסמת Sudo שמורה במארח זה.",
+    "refresh": "רענון",
+    "readOnly": "קריאה בלבד",
+    "noServer": "לא מותקן שרת אינטרנט",
+    "noServerHint": "התקן את nginx, Apache או Caddy מדף השרת.",
+    "openServer": "פתח שרת",
+    "viewSites": "אתרים",
+    "viewConfig": "תצורה",
+    "viewLogs": "יומנים",
+    "viewServer": "שרת"
+  },
+  "actions": {
+    "ok": "בוצע",
+    "failed": "נכשל",
+    "noOutput": "אין פלט."
+  },
+  "watch": {
+    "start": "התראה לי כאשר שרת אינטרנט נעצר",
+    "stop": "עצור התראות עבור מארח זה",
+    "on": "תקבל התראה כאשר שרת אינטרנט במארח זה ייפסק",
+    "off": "התראות עבור מארח זה כבויות",
+    "failed": "לא ניתן לשנות התראות"
+  },
+  "sites": {
+    "add": "הוסף אתר",
+    "search": "חפש אתרים",
+    "empty": "אין אתרים עדיין.",
+    "loadFailed": "לא ניתן לטעון את האתרים.",
+    "off": "כבוי",
+    "anyName": "כל שם",
+    "form": "טופס",
+    "certDays_one": "נשאר יום אחד",
+    "certDays_two": "נשארו {{count}} ימים",
+    "certDays_other": "נשארו {{count}} ימים",
+    "certExpired": "התעודה פגה",
+    "enable": "הפעל",
+    "disable": "כבה",
+    "enabled": "{{name}} מופעל",
+    "disabled": "{{name}} כבוי",
+    "delete": "מחק",
+    "deleteTitle": "למחוק את {{name}}?",
+    "deleteBody": "הקובץ יימחק והשרת יטען מחדש. עותק יישמר ב-/var/lib/termix-web-servers/backups על המארח.",
+    "deleted": "{{name}} נמחק"
+  },
+  "site": {
+    "addTitle": "אתר חדש",
+    "editTitle": "שמור את {{name}}",
+    "add": "הוסף אתר",
+    "save": "שמור",
+    "added": "{{name}} נוסף",
+    "saved": "{{name}} נשמר",
+    "server": "שרת אינטרנט",
+    "name": "שם האתר",
+    "nameHint": "משמש לשם הקובץ ולקבצי היומן, כמו example.",
+    "modeForm": "טופס",
+    "modeText": "טקסט",
+    "text": "הגדרות",
+    "textHint": "שמירת הטקסט מכבה את הטופס עבור אתר זה, כך שהשינויים שלך יישמרו.",
+    "type": "סוג",
+    "typeStatic": "קבצים סטטיים",
+    "typeProxy": "פרוקסי הפוך",
+    "typePhp": "PHP",
+    "typeRedirect": "הפניה",
+    "staticHint": "מגיש קבצים מתוך תיקייה.",
+    "proxyHint": "שולח בקשות לאפליקציה הפועלת על מארח זה או אחר.",
+    "phpHint": "מגיש קבצים מתוך תיקייה ומריץ קבצי .php באמצעות php-fpm.",
+    "redirectHint": "שולח כל מבקר לכתובת אחרת.",
+    "domains": "דומיינים",
+    "domainsHint": "לחץ Enter אחרי כל אחד. השתמש ב-_ ב-nginx כדי להגיב לכל שם.",
+    "port": "פורט HTTP",
+    "root": "שורש האינטרנט",
+    "rootHint": "תיקייה בתוך /var/www, /srv, /usr/share/nginx, /opt או /home.",
+    "index": "קבצי אינדקס",
+    "spa": "אפליקציית דף יחיד",
+    "spaHint": "שלח נתיבים שאינם קבצים ל-/index.html.",
+    "upstream": "כתובת האפליקציה",
+    "upstreamHint": "איפה האפליקציה מקשיבה, כמו http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "שלח מבקרים ל",
+    "keepPath": "שמור על הנתיב",
+    "keepPathHint": "שלח /page לאותו דף בכתובת החדשה.",
+    "phpSocket": "Socket של php-fpm",
+    "phpSocketHint": "לא נמצא socket של php-fpm. התקן php-fpm או הזן host:port.",
+    "https": "HTTPS",
+    "httpsHint": "דורש תעודה. שמור את האתר קודם, ואז לחץ על קבל תעודה למטה.",
+    "httpsCaddy": "Caddy מקבל ומחדש את התעודה לבד.",
+    "httpsPort": "פורט HTTPS",
+    "certPath": "קובץ תעודה",
+    "keyPath": "קובץ מפתח",
+    "forceHttps": "הפוך HTTP ל-HTTPS",
+    "gzip": "דחוס תגובות",
+    "accessLog": "יומן גישה",
+    "maxBody": "מגבלת העלאה במגה-בייט",
+    "maxBodyHint": "0 שומר על ברירת המחדל של השרת.",
+    "preview": "תצוגה מקדימה",
+    "previewFailed": "לא ניתן לבנות את ההגדרות."
+  },
+  "tls": {
+    "title": "תעודת HTTPS",
+    "hintManaged": "certbot משיג תעודת Let's Encrypt עבור התחומים של האתר הזה, ואז האתר עובר ל-HTTPS. certbot מתחדש ומטען מחדש את השרת.",
+    "hintText": "certbot משיג תעודת Let's Encrypt עבור התחומים של האתר הזה. הוסף את התעודה לאתר בעצמך לאחר מכן. certbot מתחדש ומטען מחדש את השרת.",
+    "needCertbot": "התקן קודם את certbot עם התוסף שלו לשרת הזה מדף השרת.",
+    "email": "דוא״ל",
+    "emailHint": "Let's Encrypt כותב כאן על בעיות. אופציונלי.",
+    "staging": "תעודת בדיקה",
+    "stagingHint": "השתמש בשרת הבדיקה של Let's Encrypt. דפדפנים לא יאמינו לו.",
+    "issue": "קבל תעודה",
+    "done": "התעודה נשמרה"
+  },
+  "config": {
+    "search": "חפש קבצים",
+    "empty": "אין קבצים.",
+    "loadFailed": "לא ניתן היה לטעון את הקובץ.",
+    "test": "בדוק תצורה",
+    "testOk": "התצורה תקינה",
+    "testFailed": "לתצורה יש שגיאות",
+    "content": "תוכן",
+    "save": "שמור",
+    "saveHint": "כל התצורה נבדקת לפני שהשרט נטען מחדש. קובץ שבור מוחזר.",
+    "saved": "נשמר ונטען מחדש",
+    "backups_one": "{{count}} גיבוי",
+    "backups_two": "{{count}} גיבויים",
+    "backups_other": "{{count}} גיבויים",
+    "restore": "שחזר",
+    "restoreTitle": "לשחזר את הגיבוי הזה?",
+    "restoreBody": "הקובץ חוזר למצבו ב-{{time}}. הטקסט הנוכחי הופך לגיבוי גם כן.",
+    "restored": "הגיבוי שוחזר"
+  },
+  "logs": {
+    "source": "יומן",
+    "lines": "שורות",
+    "journal": "יומן {{server}}",
+    "follow": "עקוב",
+    "stop": "עצור",
+    "connecting": "מתחבר...",
+    "ended": "העקיבה הופסקה.",
+    "followFailed": "לא ניתן היה לעקוב אחר היומן הזה.",
+    "empty": "אין שורות.",
+    "loadFailed": "לא ניתן היה לקרוא את היומן.",
+    "requests": "בקשות",
+    "topPaths": "הנתיבים הנפוצים ביותר",
+    "topClients": "הלקוחות הנפוצים ביותר"
+  },
+  "server": {
+    "unknown": "לא ידוע",
+    "atBoot": "מתחיל בהפעלה",
+    "notInstalled": "לא מותקן",
+    "start": "הפעל",
+    "stop": "עצור",
+    "restart": "הפעל מחדש",
+    "reload": "טען מחדש",
+    "enable": "הפעל בהפעלה",
+    "disable": "אל תפעיל בהפעלה",
+    "boot": "הפעל בהפעלה",
+    "noBoot": "אל תפעיל בהפעלה",
+    "done": "{{server}} הסתיים",
+    "stopTitle": "לעצור את {{server}}?",
+    "stopBody": "כל האתרים עליו ייכנסו למצב לא מקוון עד שתפעיל אותם שוב.",
+    "install": "התקן",
+    "installTitle": "להתקין את {{server}}?",
+    "installBody": "הוא מותקן עם מנהל החבילות של המארח ומתחיל מיד. שרת אינטרנט אחר על פורט 80 ימנע ממנו להתחיל.",
+    "installed": "{{server}} הותקן",
+    "installCertbot": "התקן certbot",
+    "certbotInstalled": "certbot הותקן",
+    "certbotPlugins": "תוספים: {{plugins}}",
+    "certbotNoPlugins": "אין תוסף ל-nginx או Apache",
+    "certbotHint": "משיג תעודות Let's Encrypt לאתרי nginx ו-Apache"
+  },
+  "card": {
+    "title": "שרתי אינטרנט",
+    "loading": "טוען...",
+    "refresh": "רענון",
+    "empty": "לא מוגדר שרת אינטרנט באף מארח.",
+    "summary_one": "{{count}} מארח | {{down}} דורש בדיקה",
+    "summary_two": "{{count}} מארחים | {{down}} דורשים בדיקה",
+    "summary_other": "{{count}} מארחים | {{down}} דורשים בדיקה",
+    "sites_one": "{{count}} אתר",
+    "sites_two": "{{count}} אתרים",
+    "sites_other": "{{count}} אתרים"
+  },
+  "companion": {
+    "toggle": "לוח שרתי אינטרנט",
+    "openTab": "פתיחת שרתי אינטרנט",
+    "reload": "טעינה מחדש של {{server}}"
+  },
+  "manager": {
+    "title": "שרתי אינטרנט",
+    "disabled": "הפעל שרתי אינטרנט עבור מארח זה כדי להציג את האתרים שלו כאן."
+  },
+  "operations": {
+    "status": {
+      "title": "מצב שרת האינטרנט"
+    },
+    "listSites": {
+      "title": "רשימת אתרים"
+    },
+    "test": {
+      "title": "בדיקת תצורת שרת האינטרנט"
+    },
+    "reload": {
+      "title": "טעינה מחדש של שרת האינטרנט"
+    },
+    "restart": {
+      "title": "הפעלה מחדש של שרת האינטרנט"
+    },
+    "enableSite": {
+      "title": "הפעלת אתר"
+    },
+    "disableSite": {
+      "title": "כיבוי אתר"
+    },
+    "deleteSite": {
+      "title": "מחיקת אתר"
+    },
+    "server": "שרת",
+    "allServers": "הכל",
+    "sites": {
+      "title": "אתרים",
+      "server": "שרת",
+      "domains": "דומיינים",
+      "https": "HTTPS"
+    }
+  }
+}

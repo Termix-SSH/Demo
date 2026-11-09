@@ -1,0 +1,246 @@
+{
+  "tab": {
+    "title": "UPS",
+    "noHost": "ホストから UPS を開きます。",
+    "error": "このホストの UPS を読み取れませんでした。",
+    "disabled": "このホストでは UPS マネージャーが無効化されています。ホスト設定で有効にしてください。",
+    "viewOverview": "概要",
+    "viewHistory": "履歴",
+    "viewEvents": "イベント",
+    "viewCommands": "コマンド",
+    "viewSources": "デバイス"
+  },
+  "common": {
+    "loading": "読み込み中...",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "edit": "編集",
+    "failed": "操作に失敗しました。"
+  },
+  "state": {
+    "online": "商用電源供給中",
+    "battery": "バッテリー供給中",
+    "bypass": "バイパス",
+    "off": "オフ",
+    "unknown": "不明"
+  },
+  "flag": {
+    "low-battery": "バッテリー残量少",
+    "replace-battery": "バッテリー交換",
+    "overload": "過負荷",
+    "charging": "充電中",
+    "calibrating": "キャリブレーション中",
+    "alarm": "アラーム",
+    "boost": "ブースト中",
+    "trim": "トリミング中"
+  },
+  "backend": {
+    "nut": "NUT",
+    "apcupsd": "apcupsd",
+    "snmp": "SNMP カード"
+  },
+  "overview": {
+    "noData": "まだデータがありません。",
+    "stale": "最終読み取りに失敗しました: {{error}}",
+    "power": "電力",
+    "charge": "バッテリー残量",
+    "runtime": "残り稼働時間",
+    "load": "負荷",
+    "nominal": "{{watts}} W 定格",
+    "input": "入力電圧",
+    "output": "出力電圧",
+    "batteryVolts": "バッテリー電圧",
+    "temp": "温度",
+    "model": "モデル",
+    "serial": "シリアル番号",
+    "status": "ステータス",
+    "lastTest": "最終自己テスト",
+    "readAt": "最終読み取り",
+    "ago": "{{time}} 前"
+  },
+  "history": {
+    "error": "履歴を読み込めませんでした。",
+    "24h": "24 時間",
+    "7d": "7 日間",
+    "30d": "30 日間",
+    "empty": "まだデータが不足しています。Termix は 30 秒ごとに UPS を読み取ります。",
+    "charge": "バッテリー残量",
+    "load": "負荷",
+    "runtime": "残り稼働時間",
+    "voltage": "電圧"
+  },
+  "events": {
+    "error": "イベントを読み込めませんでした。",
+    "empty": "まだ電源イベントはありません。",
+    "type": {
+      "on-battery": "バッテリー供給中",
+      "on-battery-cleared": "電源復帰",
+      "low-battery": "バッテリー残量少",
+      "low-battery-cleared": "バッテリー正常",
+      "replace-battery": "バッテリー交換",
+      "replace-battery-cleared": "バッテリー正常",
+      "overload": "過負荷",
+      "overload-cleared": "負荷正常",
+      "low-charge": "充電率低",
+      "low-charge-cleared": "充電率正常",
+      "low-runtime": "稼働時間短",
+      "low-runtime-cleared": "ランタイム正常",
+      "unreachable": "到達不可",
+      "unreachable-cleared": "到達可能",
+      "test-failed": "テストエラー",
+      "test-failed-cleared": "テスト正常",
+      "test": "自己テスト",
+      "command": "コマンド"
+    }
+  },
+  "commands": {
+    "unsupported": "コマンドは NUT デバイスでのみ使用可能です。",
+    "error": "コマンド一覧を取得できませんでした。",
+    "confirmTitle": "{{name}} を実行しますか？",
+    "confirmText": "これにより、電源が切られたり、{{name}} の動作が変更されたりする可能性があります。",
+    "run": "実行",
+    "done": "{{name}} を送信しました。",
+    "needLogin": "コマンドを送信するには、このデバイスに NUT ユーザーとパスワードを追加してください。",
+    "empty": "この UPS には即時コマンドがありません。",
+    "risky": "電源を切れる可能性があります"
+  },
+  "sources": {
+    "add": "UPS を追加",
+    "empty": "このホストには UPS が設定されていません。",
+    "emptyHint": "このホストに NUT または apcupsd デバイスを追加するか、このホストから到達可能な SNMP カードを追加してください。",
+    "off": "オフ",
+    "unreachable": "到達不可",
+    "saved": "保存しました。",
+    "deleteTitle": "{{name}} を削除しますか？",
+    "deleteText": "履歴とイベントも削除されます。"
+  },
+  "editor": {
+    "addTitle": "UPS を追加",
+    "editTitle": "UPS を編集",
+    "add": "追加",
+    "backend": "読み取り方法",
+    "label": "名前",
+    "labelPlaceholder": "ラック UPS",
+    "target": {
+      "nut": "NUT デバイス",
+      "apcupsd": "apcupsd アドレス",
+      "snmp": "カードアドレス"
+    },
+    "targetPlaceholder": {
+      "nut": "ups または ups@192.168.1.5:3493",
+      "apcupsd": "このホストの場合は空のままにしてください",
+      "snmp": "192.168.1.20"
+    },
+    "nutFound": "このホストで検出: {{names}}",
+    "nutMissing": "upsc がこのホストにインストールされていません。まず NUT クライアントをインストールしてください。",
+    "nutHint": "upsc -l の出力にある名前、またはリモート NUT サーバーの場合は name@host:port を指定します。",
+    "apcMissing": "apcaccess がこのホストにインストールされていません。まず apcupsd をインストールしてください。",
+    "apcHint": "このホスト上のデーモンを読み取る場合は空白のままにしてください。または host:3551 の形式を使用します。",
+    "snmpMissing": "このホストには snmpwalk がインストールされていません。まず net-snmp ツールをインストールしてください。",
+    "snmpHint": "Termix はこのホストから snmpwalk を使用してカードをポーリングします。",
+    "nutUser": "NUT ユーザー",
+    "nutPassword": "NUT パスワード",
+    "nutLoginHint": "コマンドを送信する場合のみ必要です。読み取り操作では不要です。",
+    "saved": "保存済み",
+    "snmpVersion": "SNMP バージョン",
+    "community": "コミュニティ",
+    "v3User": "SNMP ユーザー",
+    "v3Level": "セキュリティレベル",
+    "v3": {
+      "noAuth": "認証なし",
+      "auth": "認証",
+      "authPriv": "認証とプライバシー"
+    },
+    "v3AuthProto": "認証タイプ",
+    "v3AuthPass": "認証パスワード",
+    "v3PrivProto": "プライバシータイプ",
+    "v3PrivPass": "プライバシーパスワード",
+    "clearSecrets": "保存されたログイン情報を削除",
+    "clearSecretsHint": "このデバイスの保存された NUT または SNMP ログイン情報を削除します。",
+    "lowCharge": "低バッテリー警告 (%)",
+    "lowChargeHint": "バッテリー駆動中に残量がこの値以下になった場合に警告します。",
+    "lowRuntime": "低稼働時間警告 (分)",
+    "lowRuntimeHint": "バッテリー駆動中に残り稼働時間がこの値以下になった場合に警告します。0 に設定すると無効になります。",
+    "alerts": "警告を送信",
+    "alertsHint": "停電、バッテリー残量不足、過負荷、およびテストの問題。",
+    "enabled": "この UPS を読み取る",
+    "enabledHint": "読み取りを停止し、履歴を保持するにはオフにします。",
+    "test": "テスト",
+    "testing": "テスト中...",
+    "testOk": "正常動作中: {{state}}、バッテリー {{charge}}%、残り {{runtime}}",
+    "testFailed": "UPS の読み取りに失敗しました。"
+  },
+  "card": {
+    "title": "UPS",
+    "empty": "UPS が設定されていません。ホストで UPS マネージャーを有効にし、デバイスを追加してください。",
+    "runtime": "残り {{time}}",
+    "load": "負荷 {{value}}%"
+  },
+  "manager": {
+    "title": "UPS",
+    "disabled": "このホストでは UPS マネージャーが無効化されています。"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "UPS マネージャー",
+        "description": "このホストから UPS デバイスの情報を取得し、UPS タブを表示します。"
+      },
+      "readOnly": {
+        "label": "UPS の読み取り専用",
+        "description": "このホストの UPS デバイスに対する変更とコマンドをブロックします。"
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "UPS マネージャーの使用",
+      "description": "UPS のステータスを表示し、ホストへの編集アクセスがある場合はデバイスの変更やコマンドの送信を行います。"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "UPS デバイスの一覧"
+    },
+    "status": {
+      "title": "電源ステータス"
+    },
+    "charge": {
+      "title": "バッテリー残量"
+    },
+    "runtime": {
+      "title": "残り稼働時間"
+    },
+    "source": "UPS",
+    "sourceHint": "UPS の ID。ホスト上の最初の UPS を使用する場合は空のままにしてください。",
+    "selfTest": {
+      "title": "バッテリー自己テストを開始",
+      "kind": "種類",
+      "quick": "クイック",
+      "deep": "ディープ"
+    },
+    "beeper": {
+      "title": "UPS ビーパの設定",
+      "mode": "ビーパ",
+      "mute": "ミュート",
+      "disable": "オフ",
+      "enable": "オン"
+    },
+    "calibrate": {
+      "title": "稼働時間のキャリブレーション",
+      "description": "バッテリーを放電して稼働時間を測定します。実行中は、この UPS に接続されているホストの保護が解除されます。"
+    },
+    "devices": {
+      "title": "UPS デバイス",
+      "state": "状態",
+      "charge": "充電率",
+      "load": "負荷",
+      "backend": "読み取り方法"
+    },
+    "events": {
+      "onBattery": "UPS がバッテリー駆動中",
+      "powerRestored": "UPS の電源が復旧しました"
+    }
+  }
+}

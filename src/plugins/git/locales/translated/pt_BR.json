@@ -1,0 +1,299 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Veja, faça pull, commit e push de repositórios Git nos seus hosts e mantenha-os atualizados com o pull automático."
+  },
+  "common": {
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "back": "Voltar",
+    "loading": "Carregando..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Usar Git",
+      "description": "Veja repositórios Git nos hosts aos quais você tem acesso e altere-os nos hosts que você pode editar."
+    },
+    "runCommands": {
+      "title": "Executar comandos após o pull automático",
+      "description": "Defina um comando que seja executado no host após um pull automático trazer novos commits."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Gerencie repositórios Git neste host pela aba Git."
+      },
+      "repoRoots": {
+        "label": "Pastas para varredura",
+        "description": "Pastas pesquisadas por repositórios ao varrer este host. Separe-as com vírgulas. O padrão é a pasta home.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Usar sudo",
+        "description": "Execute o git como root com sudo. Apenas para repositórios que o usuário de login não pode usar."
+      },
+      "readOnly": {
+        "label": "Somente leitura",
+        "description": "Exiba os repositórios, mas nunca os altere neste host."
+      },
+      "showPanel": {
+        "label": "Painel ao lado do terminal",
+        "description": "Exibir o painel do Git nas abas do terminal deste host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Abrir o painel junto com o terminal",
+        "description": "Exibir o painel do Git quando um terminal for aberto em um host que o possui."
+      },
+      "companionSide": {
+        "label": "Lado do painel",
+        "description": "Onde o painel fica posicionado ao lado do terminal.",
+        "right": "Direita",
+        "left": "Esquerda",
+        "bottom": "Inferior"
+      },
+      "companionSize": {
+        "label": "Tamanho do painel",
+        "description": "Largura do painel, ou sua altura quando na parte inferior, em pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Botão lateral",
+        "description": "Exibir um pequeno botão na borda do terminal para abrir o painel."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Abra o Git a partir de um host.",
+    "error": "Não foi possível carregar o git deste host.",
+    "disabled": "O Git está desativado para este host. Ative-o nas configurações do host.",
+    "sudo": "Isso requer login como root, sudo sem senha ou uma Senha Sudo salva.",
+    "refresh": "Atualizar",
+    "readOnly": "Somente leitura",
+    "notInstalled": "git não instalado",
+    "notInstalledTitle": "git não está instalado neste host",
+    "notInstalledHint": "Instale o git com o gerenciador de pacotes do host e, em seguida, atualize."
+  },
+  "actions": {
+    "ok": "Concluído",
+    "failed": "Falhou",
+    "noOutput": "Nenhuma saída."
+  },
+  "repos": {
+    "add": "Adicionar repositório",
+    "search": "Pesquisar repositórios",
+    "empty": "Nenhum repositório ainda. Adicione um para começar.",
+    "noMatch": "Nenhum repositório corresponde.",
+    "viewOnly": "Nenhum repositório foi adicionado a este host.",
+    "detached": "desanexado",
+    "changes_one": "{{count}} alteração",
+    "changes_many": "{{count}} alterações",
+    "changes_other": "{{count}} alterações",
+    "conflicts": "Conflitos",
+    "auto": "Puxar automaticamente",
+    "autoFailing": "Falha ao puxar",
+    "remove": "Remover da lista",
+    "removeTitle": "Remover {{name}}?",
+    "removeBody": "O repositório é apenas esquecido aqui. Nada é excluído no host.",
+    "removed": "{{name}} removido",
+    "error": {
+      "missing": "Pasta ausente",
+      "notrepo": "Não é um repositório git",
+      "unreadable": "Não é possível ler"
+    }
+  },
+  "add": {
+    "title": "Adicionar repositórios",
+    "modeScan": "Escanear",
+    "modePath": "Pasta",
+    "modeClone": "Clonar",
+    "scanHint": "Procura repositórios git em {{roots}}. Altere as pastas nas configurações do host.",
+    "rescan": "Escanear novamente",
+    "noneFound": "Nenhum novo repositório encontrado.",
+    "picked": "Selecionado",
+    "addPicked_one": "Adicionar {{count}} repositório",
+    "addPicked_many": "Adicionar {{count}} repositórios",
+    "addPicked_other": "Adicionar {{count}} repositórios",
+    "addAll": "Adicionar todos",
+    "folder": "Pasta no host",
+    "folderHint": "Caminho completo ou comece com ~ para a pasta home. Deve ser um repositório git existente.",
+    "addRepo": "Adicionar repositório",
+    "url": "Endereço",
+    "urlHint": "Usa as chaves e configurações do git do usuário de login do host.",
+    "dest": "Clonar em",
+    "destHint": "A pasta ainda não deve existir.",
+    "clone": "Clonar",
+    "cloned": "Clonado",
+    "added_one": "{{count}} repositório adicionado",
+    "added_many": "{{count}} repositórios adicionados",
+    "added_other": "{{count}} repositórios adicionados",
+    "failed": "Não foi possível adicionar o repositório",
+    "scanFailed": "Não foi possível escanear o host"
+  },
+  "repo": {
+    "ahead": "{{count}} à frente",
+    "behind": "{{count}} atrás",
+    "fetch": "Buscar",
+    "fetched": "Buscado",
+    "pull": "Puxar",
+    "pulled": "Puxado",
+    "push": "Enviar",
+    "pushed": "Enviado",
+    "viewChanges": "Alterações",
+    "viewBranches": "Branches",
+    "viewHistory": "Histórico",
+    "viewStash": "Stash",
+    "viewAuto": "Auto pull"
+  },
+  "changes": {
+    "loadFailed": "Não foi possível ler as alterações.",
+    "clean": "Nada para commitar. A árvore de trabalho está limpa.",
+    "stagedTitle": "Preparados ({{count}})",
+    "unstagedTitle": "Alterações ({{count}})",
+    "stage": "Adicionar ao stage",
+    "staged": "No stage",
+    "unstage": "Remover do stage",
+    "unstaged": "Fora do stage",
+    "stageAll": "Adicionar tudo ao stage",
+    "renamed": "Renomeado",
+    "discard": "Descartar",
+    "discardTitle": "Descartar alterações em {{name}}?",
+    "discardBody": "As alterações neste arquivo serão excluídas e não poderão ser recuperadas.",
+    "discarded": "Alterações descartadas",
+    "message": "Mensagem de commit",
+    "messagePlaceholder": "O que mudou",
+    "commit": "Commit",
+    "commitAll": "Fazer commit de todas as alterações",
+    "commitStaged_one": "Fazer commit de {{count}} arquivo preparado",
+    "commitStaged_many": "Fazer commit de {{count}} arquivos preparados",
+    "commitStaged_other": "Fazer commit de {{count}} arquivos preparados",
+    "committed": "Commit realizado",
+    "noDiff": "Nenhuma alteração para exibir.",
+    "truncated": "O diff é longo, então apenas o início é exibido."
+  },
+  "branches": {
+    "loadFailed": "Não foi possível ler os branches.",
+    "empty": "Nenhuma branch ainda.",
+    "current": "Atual",
+    "remote": "Remota",
+    "gone": "Upstream removido",
+    "newName": "Nova branch",
+    "create": "Criar branch",
+    "created": "Branch {{name}} criada",
+    "switch": "Trocar",
+    "switched": "Trocou para {{name}}",
+    "merge": "Mesclar na atual",
+    "mergeTitle": "Mesclar {{name}} em {{into}}?",
+    "mergeBody": "Uma mesclagem com conflitos é desfeita imediatamente.",
+    "merged": "{{name}} mesclada",
+    "delete": "Excluir branch",
+    "deleteTitle": "Excluir {{name}}?",
+    "deleteBody": "O Git recusa se a branch tiver commits que não foram mesclados.",
+    "deleted": "{{name}} excluída",
+    "forceTitle": "Forçar exclusão de {{name}}?",
+    "forceBody": "Esta branch tem commits que não foram mesclados. Eles serão perdidos se você excluí-la.",
+    "forceDelete": "Forçar exclusão"
+  },
+  "history": {
+    "loadFailed": "Não foi possível ler o histórico.",
+    "empty": "Nenhum commit ainda.",
+    "branch": "Esta branch",
+    "all": "Todas as branches",
+    "more": "Carregar mais"
+  },
+  "stash": {
+    "loadFailed": "Não foi possível ler o stash.",
+    "title": "Stashes",
+    "empty": "Nenhum stash.",
+    "message": "Mensagem",
+    "messagePlaceholder": "Opcional",
+    "untracked": "Incluir arquivos não rastreados",
+    "push": "Guardar alterações",
+    "pushDone": "Alterações guardadas",
+    "apply": "Aplicar",
+    "applyDone": "Stash aplicado",
+    "pop": "Pop",
+    "popDone": "Stash aplicado e removido",
+    "drop": "Remover",
+    "dropDone": "Stash removido",
+    "dropTitle": "Remover {{name}}?",
+    "dropBody": "O stash será excluído e não poderá ser recuperado.",
+    "remotes": "Remotos",
+    "noRemotes": "Nenhum remoto."
+  },
+  "auto": {
+    "intro": "Executa pulls em um agendamento com fast-forward apenas. Nunca mescla e ignora o repositório quando há alterações não commitadas ou quando divergiu do upstream.",
+    "noUpstream": "Esta branch ainda não tem upstream, então o auto pull irá ignorá-la.",
+    "enable": "Auto pull",
+    "enableHint": "Executa como você, com seu acesso a este host.",
+    "interval": "A cada (minutos)",
+    "intervalHint": "Quanto tempo esperar entre os pulls.",
+    "post": "Comando após um pull",
+    "postHint": "Executa na pasta do repositório após a chegada de novos commits. Precisa da permissão para executar comandos.",
+    "saved": "Auto pull salvo",
+    "saveFailed": "Não foi possível salvar o auto pull",
+    "runNow": "Executar agora",
+    "next": "Próximo pull {{when}}",
+    "runs": "Execuções recentes",
+    "noRuns": "Nenhuma execução ainda.",
+    "outcome": {
+      "pulled": "Puxado",
+      "uptodate": "Em dia",
+      "skipped": "Ignorado",
+      "failed": "Falhou"
+    }
+  },
+  "card": {
+    "title": "Repositórios Git",
+    "loading": "Carregando...",
+    "refresh": "Atualizar",
+    "empty": "Nenhum host possui repositórios Git ainda.",
+    "allClean": "Todos os repositórios estão limpos e atualizados.",
+    "summary_one": "{{count}} repositório | {{attention}} precisa de atenção",
+    "summary_many": "{{count}} repositórios | {{attention}} precisam de atenção",
+    "summary_other": "{{count}} repositórios | {{attention}} precisam de atenção"
+  },
+  "companion": {
+    "toggle": "Painel Git",
+    "openTab": "Abrir Git",
+    "here": "Repositório desta pasta",
+    "all": "Todos os repositórios"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Listar repositórios Git"
+    },
+    "fetch": {
+      "title": "Buscar um repositório"
+    },
+    "pull": {
+      "title": "Puxar um repositório"
+    },
+    "push": {
+      "title": "Enviar um repositório"
+    },
+    "checkout": {
+      "title": "Trocar de branch",
+      "branch": "Branch"
+    },
+    "reset-hard": {
+      "title": "Resetar um repositório (hard)",
+      "ref": "Resetar para"
+    },
+    "repos": {
+      "title": "Repositórios Git",
+      "branch": "Branch",
+      "ahead": "À frente",
+      "behind": "Atrás",
+      "changed": "Alterações"
+    },
+    "signals": {
+      "behind": "Repositórios atrás",
+      "dirty": "Repositórios com alterações",
+      "pull-failing": "Falha no pull automático"
+    }
+  }
+}

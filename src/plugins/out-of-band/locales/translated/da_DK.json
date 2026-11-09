@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Strøm, sensorer, hændelseslogfiler og konsoller til server-BMC'er via Redfish, IPMI og Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Indlæser"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "Se BMC'er",
+      "description": "Åbn fanen Out-of-band og se strøm, sundhed, sensorer og logfiler."
+    },
+    "power": {
+      "title": "Kontrollér strøm og opstart",
+      "description": "Tænd og sluk maskiner, genstart dem og vælg den næste opstartsenhed."
+    },
+    "console": {
+      "title": "Brug den serielle konsol",
+      "description": "Åbn den serielle LAN-konsol for en maskine."
+    },
+    "media": {
+      "title": "Brug virtuel medie",
+      "description": "Monter og udskiv ISO-billeder på en maskine."
+    },
+    "manage": {
+      "title": "Administrer BMC'er",
+      "description": "Tilføj, ændr og fjern BMC'er, og ryd deres hændelseslogge."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Kør ipmitool på Termix-serveren",
+        "description": "Når den er slået fra, skal IPMI-BMC'er bruge en relay-vært. Redfish og AMT påvirkes ikke."
+      }
+    }
+  },
+  "description": "Tilføj styringskontrollerne (BMC'er) på dine servere for at tænde og slukke dem, overvåge deres sensorer og læse deres hændelseslogge. Login-oplysninger gemmes krypteret og vises aldrig igen.",
+  "summary": "{{count}} BMC'er, {{attention}} kræver opmærksomhed",
+  "empty": "Ingen BMC'er endnu.",
+  "add": "Tilføj BMC",
+  "edit": "Rediger",
+  "delete": "Slet",
+  "back": "Tilbage",
+  "saved": "Gemt",
+  "deleteConfirm": "Slet {{name}}?",
+  "status": {
+    "unknown": "Ikke læst endnu",
+    "up": "Nåbar",
+    "down": "Ikke nåbar"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI over LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Brugernavn",
+    "password": "Adgangskode"
+  },
+  "power": {
+    "on": "Tændt",
+    "off": "Slukket",
+    "unknown": "Ukendt",
+    "sent": "Bad {{name}} om at ændre strømtilstand",
+    "action": {
+      "on": "Tænd",
+      "off": "Sluk",
+      "graceful-shutdown": "Luk ned",
+      "cycle": "Genstart strømmen",
+      "reset": "Nulstil"
+    },
+    "confirm": {
+      "on": "Tænd for {{name}}?",
+      "off": "Afbryd strømmen til {{name}}? Systemet lukkes ikke ned korrekt.",
+      "graceful-shutdown": "Bed {{name}} om at lukke ned?",
+      "cycle": "Genstart strømmen til {{name}}? Systemet lukkes ikke ned korrekt.",
+      "reset": "Nulstil {{name}}? Systemet genstarter med det samme."
+    }
+  },
+  "health": {
+    "ok": "Sund",
+    "warning": "Advarsel",
+    "critical": "Kritisk",
+    "unknown": "Ukendt"
+  },
+  "kind": {
+    "temperature": "Temperatur",
+    "fan": "Køler",
+    "voltage": "Spænding",
+    "power": "Strøm",
+    "psu": "Strømforsyning",
+    "other": "Andet"
+  },
+  "form": {
+    "addTitle": "Tilføj BMC",
+    "editTitle": "Rediger BMC",
+    "device": "BMC",
+    "access": "Adgang",
+    "type": "Type",
+    "name": "Navn",
+    "address": "Adresse",
+    "port": "Port",
+    "host": "Termix-vært",
+    "hostHint": "Kobl BMC'en til den vært, den tilhører. Den følger så værtens deling og vises i værtens menu.",
+    "noHost": "Ingen",
+    "poll": "Læs hver (sekunder)",
+    "pollHint": "Mindst 30 sekunder, eller 60 når en relay-vært bruges.",
+    "scheme": "Forbindelse",
+    "relay": "Relay-vært",
+    "relayHint": "Kør ipmitool på denne vært i stedet for Termix-serveren. Nødvendigt for den serielle konsol.",
+    "noRelay": "Termix-server",
+    "cipher": "Chiffresuite",
+    "cipherHint": "Ændr kun dette, hvis BMC'en afviser login. 3 er den almindelige, 17 til nyere BMC'er.",
+    "ca": "CA-certifikat",
+    "caHint": "Indsæt PEM for BMC'ens certifikatautoritet. Lad være tom for et betroet certifikat.",
+    "caSet": "En CA er gemt. Indsæt en ny for at erstatte den.",
+    "keepLogin": "Lad være tom for at beholde det gemte login",
+    "test": "Test forbindelse",
+    "testOk": "BMC'et svarede. Strøm er {{power}}.",
+    "testNeedsLogin": "Indtast login igen for at teste.",
+    "save": "Gem",
+    "add": "Tilføj"
+  },
+  "view": {
+    "overview": "Oversigt",
+    "sensors": "Sensorer",
+    "log": "Hændelseslog",
+    "boot": "Opstart",
+    "media": "Virtuel medie",
+    "console": "Konsol",
+    "refresh": "Læs nu",
+    "type": "Type",
+    "address": "Adresse",
+    "power": "Strøm",
+    "health": "Status",
+    "manufacturer": "Producent",
+    "model": "Model",
+    "serial": "Serienummer",
+    "bios": "BIOS",
+    "bmc": "BMC-firmware",
+    "status": "BMC",
+    "viaRelay": "Nået via en relay-vært.",
+    "noSensors": "Denne BMC rapporterer ingen sensorer.",
+    "sensor": "Sensor",
+    "reading": "Værdi",
+    "state": "Tilstand"
+  },
+  "log": {
+    "time": "Tid",
+    "severity": "Niveau",
+    "message": "Hændelse",
+    "empty": "Hændelsesloggen er tom.",
+    "clear": "Ryd log",
+    "clearConfirm": "Ryd hændelsesloggen for {{name}}? Dette kan ikke fortrydes.",
+    "cleared": "Log ryddet",
+    "level": {
+      "info": "Info",
+      "warning": "Advarsel",
+      "critical": "Kritisk"
+    }
+  },
+  "boot": {
+    "hint": "Maskinen starter fra denne enhed én gang, og vender derefter tilbage til sin normale rækkefølge. Anvend det før en genstart.",
+    "device": "Start fra",
+    "mode": "Tilstand",
+    "uefi": "UEFI",
+    "legacy": "Legacy BIOS",
+    "apply": "Indstil til næste opstart",
+    "done": "{{name}} starter fra det valgte enhed næste gang",
+    "pxe": "Netværk (PXE)",
+    "disk": "Harddisk",
+    "cd": "CD eller virtuel medie",
+    "usb": "USB",
+    "bios": "BIOS-indstillinger",
+    "none": "Normal rækkefølge"
+  },
+  "media": {
+    "url": "Billedadresse",
+    "empty": "Denne BMC har ingen virtuel CD-plads.",
+    "mounted": "Monteret",
+    "free": "Tom",
+    "mount": "Montér",
+    "eject": "Udskud",
+    "mountedDone": "Billede monteret",
+    "ejected": "Billede udskudt"
+  },
+  "console": {
+    "hint": "Skriv ~. for at forlade konsollen.",
+    "connecting": "Forbinder",
+    "ended": "Konsollen er lukket.",
+    "failed": "Kunne ikke åbne konsollen.",
+    "needsRelay": "Den serielle konsol kræver en relay-vært med ipmitool. Vælg en i BMC-indstillingerne."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Start fra",
+    "uefi": "UEFI-tilstand",
+    "list": {
+      "title": "Liste over BMC'er"
+    },
+    "poll": {
+      "title": "Læs en BMC nu"
+    },
+    "powerState": {
+      "title": "Hent strømtilstand"
+    },
+    "power-on": {
+      "title": "Tænd"
+    },
+    "graceful-shutdown": {
+      "title": "Sluk"
+    },
+    "power-off": {
+      "title": "Sluk for strøm"
+    },
+    "power-cycle": {
+      "title": "Strømkreds"
+    },
+    "reset": {
+      "title": "Nulstil"
+    },
+    "setBootOnce": {
+      "title": "Start én gang fra en enhed"
+    },
+    "clearLog": {
+      "title": "Ryd hændelseslog"
+    },
+    "health": {
+      "title": "BMC-sundhed"
+    }
+  },
+  "widget": {
+    "name": "Out-of-band",
+    "description": "Strøm og sundhed for dine server-BMC'er.",
+    "summary": "{{up}} af {{total}} oppe"
+  }
+}

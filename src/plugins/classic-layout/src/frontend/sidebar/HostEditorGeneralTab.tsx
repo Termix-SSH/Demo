@@ -1,3 +1,4 @@
+import type { ComponentProps, ComponentType } from "react";
 import React from "react";
 import {
   getHostTags,
@@ -26,6 +27,11 @@ import { HostParentPicker } from "./HostParentPicker";
 import { connectionOriginAppliesTo } from "./HostEditorData";
 import type { HostEditorForm, HostProtocols } from "./HostEditorData";
 import type { HostFormErrors } from "../manage/host-validation";
+
+// Older SDK types do not list aria-label yet; core 26.11.1 reads it.
+const NamedSwitch = FakeSwitch as ComponentType<
+  ComponentProps<typeof FakeSwitch> & { "aria-label"?: string }
+>;
 
 type HostEditorSetField = <K extends keyof HostEditorForm>(
   key: K,
@@ -195,7 +201,8 @@ export function HostEditorGeneralTab({
                       {desc}
                     </span>
                   </div>
-                  <FakeSwitch
+                  <NamedSwitch
+                    aria-label={label}
                     checked={enabled}
                     onChange={(v: boolean) => handleProtocolToggle(proto, v)}
                   />
@@ -311,6 +318,8 @@ export function HostEditorGeneralTab({
                     {tag}
                     <button
                       type="button"
+                      title={t("common.remove")}
+                      aria-label={t("common.remove")}
                       onClick={() =>
                         setField(
                           "tags",
@@ -372,7 +381,7 @@ export function HostEditorGeneralTab({
               <textarea
                 rows={3}
                 placeholder={t("hosts.privateNotesPlaceholder")}
-                className="w-full px-3 py-2 text-xs bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring"
+                className="w-full px-3 py-2 text-xs bg-popover border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring"
                 value={form.notes}
                 onChange={(e) => setField("notes", e.target.value)}
               />
@@ -495,6 +504,9 @@ export function HostEditorGeneralTab({
                   />
                 </div>
                 <button
+                  type="button"
+                  title={t("common.remove")}
+                  aria-label={t("common.remove")}
                   className="text-destructive p-1 mb-0.5"
                   onClick={() =>
                     setField(
@@ -609,6 +621,8 @@ export function HostEditorGeneralTab({
                         </span>
                         <button
                           type="button"
+                          title={t("common.remove")}
+                          aria-label={t("common.remove")}
                           className="text-destructive"
                           onClick={() =>
                             setField(
@@ -783,7 +797,7 @@ export function HostEditorGeneralTab({
                     })}
                   <span className="text-muted-foreground">→</span>
                   <span className="px-2 py-0.5 bg-accent-brand/10 border border-accent-brand/30 text-accent-brand font-mono">
-                    {form.ip || "target"}:{form.sshPort}
+                    {form.ip || t("manage.proxyPathTarget")}:{form.sshPort}
                   </span>
                 </div>
               ) : null}
@@ -880,6 +894,8 @@ export function HostEditorGeneralTab({
                     <Button
                       variant="ghost"
                       size="icon"
+                      title={t("common.remove")}
+                      aria-label={t("common.remove")}
                       className="size-7 text-destructive"
                       onClick={() =>
                         setField(

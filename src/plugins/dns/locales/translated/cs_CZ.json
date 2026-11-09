@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Spravujte DNS záznamy a domény přes Cloudflare, Route 53, Namecheap a další poskytovatele."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domény",
+    "loading": "Načítání",
+    "empty": "Zatím žádné domény. Otevřete DNS a přidejte přihlašovací údaje.",
+    "ok": "{{domains}} domén, žádná nevyprší brzy",
+    "accounts": "{{count}} přihlášení",
+    "failingLinks": "{{count}} propojených záznamů selhává"
+  },
+  "permissions": {
+    "view": {
+      "title": "Zobrazit DNS",
+      "description": "Otevřete kartu DNS a zobrazujte zóny, záznamy, domény a kontroly stavu."
+    },
+    "edit": {
+      "title": "Změnit DNS záznamy",
+      "description": "Přidávejte, měňte a mažte záznamy, importujte soubory zón a obnovujte domény."
+    },
+    "manage": {
+      "title": "Spravovat přihlášení do DNS",
+      "description": "Přidávejte přihlášení poskytovatelů, propojujte záznamy s hostiteli, sledujte domény a obnovujte kopie zón."
+    }
+  },
+  "operations": {
+    "zone": "Zóna",
+    "type": "Typ",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Název",
+    "content": "Hodnota",
+    "contentOptional": "Hodnota (nechte prázdné pro shodu s libovolnou)",
+    "ttl": "TTL ve vteřinách",
+    "label": "Štítek",
+    "zones": {
+      "title": "Seznam DNS zón"
+    },
+    "records": {
+      "title": "Seznam DNS záznamů"
+    },
+    "domains": {
+      "title": "Seznam domén a dat vypršení platnosti"
+    },
+    "check": {
+      "title": "Zkontrolovat zónu"
+    },
+    "upsert": {
+      "title": "Nastavit DNS záznam"
+    },
+    "delete": {
+      "title": "Smazat DNS záznam"
+    },
+    "snapshot": {
+      "title": "Uložit kopii zóny"
+    },
+    "links": {
+      "title": "Aktualizovat propojené záznamy"
+    },
+    "expiry": {
+      "title": "Vypršení platnosti domény"
+    }
+  },
+  "description": "Přidejte přihlašovací údaje k DNS a registrátorům pro správu záznamů a sledování domén na jednom místě. Klíče jsou uloženy šifrovaně a znovu se nezobrazí.",
+  "summary": "{{zones}} zón, {{domains}} domén",
+  "saved": "Uloženo",
+  "delete": "Smazat",
+  "edit": "Upravit",
+  "back": "Zpět",
+  "refresh": "Obnovit",
+  "section": {
+    "zones": "Zóny",
+    "domains": "Domény",
+    "links": "Propojení",
+    "accounts": "Přihlášení"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "API token",
+    "accessKeyId": "ID přístupového klíče",
+    "secretAccessKey": "Tajný přístupový klíč",
+    "sessionToken": "Session token (volitelné)",
+    "apiUser": "API uživatel",
+    "apiKey": "API klíč",
+    "userName": "Uživatelské jméno (pokud se liší od uživatele API)",
+    "clientIp": "Povolená IP adresa",
+    "apiSecret": "Tajný klíč API",
+    "environment": "Prostředí",
+    "environment_production": "Produkční",
+    "environment_ote": "Testovací (OTE)",
+    "secretApiKey": "Tajný klíč API",
+    "token": "Osobní přístupový token"
+  },
+  "zones": {
+    "empty": "Zatím žádné zóny.",
+    "emptyHint": "Přidejte přihlašovací údaje poskytovatele v sekci Přihlášení, abyste viděli jeho zóny."
+  },
+  "zone": {
+    "records": "Záznamy",
+    "health": "Stav",
+    "copies": "Kopie",
+    "files": "Soubory",
+    "filter": "Filtrovat záznamy",
+    "empty": "Žádné záznamy."
+  },
+  "record": {
+    "section": "Záznam",
+    "addTitle": "Přidat záznam",
+    "editTitle": "Upravit záznam",
+    "add": "Přidat záznam",
+    "save": "Uložit",
+    "type": "Typ",
+    "name": "Název",
+    "nameHint": "Použijte @ pro samotnou {{zone}}",
+    "value": "Hodnota",
+    "priority": "Priorita",
+    "ttl": "TTL (sekundy)",
+    "ttlHint": "Jak dlouho si resolvéry pamatují odpověď. 300 je 5 minut.",
+    "ttlAuto": "1 znamená automaticky.",
+    "proxied": "Proxováno",
+    "proxiedHint": "Posílat provoz přes Cloudflare.",
+    "proxiedBadge": "Proxováno",
+    "comment": "Poznámka",
+    "readOnly": "Spravováno poskytovatelem",
+    "deleteConfirm": "Smazat záznam typu {{type}} {{name}}?"
+  },
+  "account": {
+    "add": "Přidat přihlášení",
+    "addTitle": "Přidat přihlášení k DNS",
+    "editTitle": "Upravit přihlášení k DNS",
+    "save": "Uložit",
+    "login": "Přihlášení",
+    "provider": "Poskytovatel",
+    "name": "Název",
+    "namePlaceholder": "Hlavní Cloudflare",
+    "keep": "Nechte prázdné pro zachování uložené hodnoty",
+    "registrar": "Tento poskytovatel je také registrátorem, takže jeho domény se zobrazují v sekci Domény.",
+    "options": "Možnosti",
+    "autoBackup": "Ukládat kopie zón",
+    "autoBackupHint": "Uložit kopii před každou změnou a když se zóna změní mimo Termix.",
+    "checkHealth": "Kontrolovat zóny každý den",
+    "checkHealthHint": "Spouštět kontroly stavu denně a upozorňovat na nové problémy.",
+    "test": "Test",
+    "testOk": "Funguje. Načteno {{zones}} zón a {{domains}} domén.",
+    "deleteConfirm": "Smazat {{name}}? Jeho kopie a odkazy budou také smazány. U poskytovatele se nic nezmění.",
+    "empty": "Zatím žádná přihlášení.",
+    "emptyHint": "Začněte přidáním přihlášení k Cloudflare, Route 53, Namecheap nebo jinému poskytovateli.",
+    "lastSync": "Naposledy kontrolováno {{date}}",
+    "never": "Ještě nekontrolováno",
+    "failed": "Přihlášení selhalo"
+  },
+  "domains": {
+    "empty": "Zatím žádné domény.",
+    "emptyHint": "Registrátoři zobrazují své domény zde. Můžete také sledovat libovolnou doménu podle názvu.",
+    "watchPlaceholder": "example.com",
+    "watch": "Sledovat doménu",
+    "unwatch": "Přestat sledovat",
+    "watched": "Sledované",
+    "noRenew": "Automatické prodloužení vypnuto",
+    "unlocked": "Není zamčeno",
+    "unknown": "Registrátor neznámý",
+    "expires": "Vyprší {{date}}",
+    "expired": "Vypršela platnost",
+    "days": "Zbývá {{count}} dní",
+    "refreshFailed": "Selhala {{count}} dotazů"
+  },
+  "link": {
+    "add": "Přidat odkaz",
+    "addTitle": "Přidat odkaz",
+    "editTitle": "Upravit odkaz",
+    "save": "Uložit",
+    "record": "Záznam",
+    "address": "Adresa",
+    "zone": "Zóna",
+    "pickZone": "Vyberte zónu",
+    "source": "Směrovat na",
+    "sourceHost": "Host",
+    "sourcePublic4": "Veřejná IPv4 adresa tohoto serveru",
+    "sourcePublic6": "Veřejná IPv6 adresa tohoto serveru",
+    "source_host": "Host",
+    "source_public4": "Veřejná IPv4",
+    "source_public6": "Veřejná IPv6",
+    "host": "Host",
+    "pickHost": "Vyberte hosta",
+    "hostHint": "Záznam sleduje adresu hosta. Aktualizuje se, když se host změní.",
+    "publicHint": "Termix zjistí svou veřejnou adresu a udržuje záznam synchronizovaný, podobně jako dynamická DNS.",
+    "enabled": "Udržovat tuto záznam aktuální",
+    "empty": "Zatím žádné odkazy.",
+    "emptyHint": "Odkaz udržuje záznam směřující na hostitele nebo na veřejnou adresu tohoto serveru.",
+    "off": "Vypnuto",
+    "hostGone": "Hostitel nebyl nalezen",
+    "lastSync": "Zkontrolováno {{date}}",
+    "never": "Zatím nekontrolováno",
+    "syncNow": "Aktualizovat nyní",
+    "updated": "Záznam byl aktualizován",
+    "unchanged": "Záznam byl již správný",
+    "deleteConfirm": "Odebrat odkaz pro {{name}}? Záznam zůstane na svém místě."
+  },
+  "diff": {
+    "none": "Nic se nezmění.",
+    "add": "Přidat",
+    "change": "Změnit",
+    "remove": "Odebrat"
+  },
+  "copies": {
+    "hint": "Kopie se ukládají před každou změnou a jednou denně, pokud se zóna změnila mimo Termix.",
+    "save": "Uložit kopii",
+    "saved": "Kopie uložena",
+    "manualLabel": "Manuální kopie",
+    "empty": "Zatím žádné kopie.",
+    "count": "{{count}} záznamů",
+    "compare": "Porovnat s aktuálním stavem",
+    "restore": "Obnovit",
+    "restoreConfirm": "Obnovit tuto kopii? U provedení změn u poskytovatele dojde k {{count}} úpravám. Nejprve se uloží kopie aktuálních záznamů.",
+    "restored": "Obnovení dokončeno. Provedeno {{count}} změn.",
+    "source": {
+      "manual": "Manuální",
+      "auto": "Denní",
+      "before": "Před změnou"
+    }
+  },
+  "files": {
+    "export": "Stáhnout zónový soubor",
+    "exportHint": "Stáhnout záznamy jako BIND zónový soubor.",
+    "import": "Importovat zónový soubor",
+    "placeholder": "Sem vložte BIND zónový soubor",
+    "replace": "Odstranit záznamy, které nejsou v souboru",
+    "replaceHint": "Vypnuto, import pouze přidává a mění záznamy.",
+    "preview": "Náhled",
+    "apply": "Použít",
+    "applied": "Importováno. Provedeno {{count}} změn.",
+    "skipped": "Přeskočeno:"
+  },
+  "health": {
+    "run": "Spustit kontroly",
+    "running": "Běží",
+    "propagation": "Zkontrolovat resolvery",
+    "propagationTitle": "Veřejné resolvery",
+    "lastRun": "Poslední spuštění {{date}}",
+    "empty": "Pro tuto zónu zatím nebyly spuštěny žádné kontroly.",
+    "record": "Záznam",
+    "resolver": "Resolver",
+    "answer": "Odpověď",
+    "noAnswer": "Žádná odpověď",
+    "delegation": {
+      "error": "Nepodařilo se vyhledat jmenné servery.",
+      "none": "Zóna nemá na internetu žádné jmenné servery. Doména může neukazovat na tohoto poskytovatele.",
+      "mismatch": "Doména používá jiné jmenné servery než poskytovatel: {{found}}.",
+      "ok": "Doména ukazuje na {{count}} jmenných serverů."
+    },
+    "soa": {
+      "differ": "Jmenné servery se neshodují na verzi zóny ({{count}} verzí). Změna se může stále šířit.",
+      "same": "{{count}} jmenných serverů se shoduje na verzi zóny."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC nebylo možné zkontrolovat.",
+      "off": "DNSSEC není zapnuto.",
+      "valid": "DNSSEC je zapnuto a platné.",
+      "broken": "DNSSEC je nastaveno u registrátora, ale neplatí. Resolvery, které ho kontrolují, selžou."
+    },
+    "cname": {
+      "conflict": "{{name}} má CNAME a další záznamy. To není povoleno.",
+      "apex": "Kořen zóny nemůže být CNAME.",
+      "dangling": "{{name}} ukazuje na {{target}}, který se nevyřeší.",
+      "ok": "Všechny cíle CNAME se vyřeší."
+    },
+    "spf": {
+      "missing": "Doména přijímá poštu, ale nemá SPF záznam.",
+      "multiple": "Existuje více než jeden SPF záznam. Poštovní servery je všechny odmítnou.",
+      "lookups": "SPF záznam provádí {{count}} vyhledávání. Limit je 10.",
+      "ok": "SPF je nastaveno ({{count}} vyhledávání)."
+    },
+    "dmarc": {
+      "missing": "Neexistuje žádný DMARC záznam.",
+      "none": "DMARC je nastaveno pouze na monitorování.",
+      "ok": "DMARC je nastaveno."
+    },
+    "dkim": {
+      "none": "V této zóně nebyly nalezeny žádné DKIM klíče.",
+      "found": "Nalezeno {{count}} DKIM klíčů."
+    },
+    "mx": {
+      "unresolved": "Poštovní server {{host}} se nevyřeší."
+    },
+    "mail": {
+      "none": "Doména nemá žádné poštovní záznamy."
+    },
+    "caa": {
+      "ok": "Záznamy CAA omezují, kdo může vydávat certifikáty.",
+      "none": "Neexistují žádné záznamy CAA. Jakákoliv certifikační autorita může vydávat certifikáty."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domény, vypršající domény a selhávající záznamy.",
+    "domains": "Domény",
+    "expiring": "Vyprší brzy",
+    "failingLinks": "Selhávající odkazy",
+    "failingAccounts": "Selhávající přihlášení"
+  }
+}

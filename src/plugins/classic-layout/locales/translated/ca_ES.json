@@ -16,7 +16,9 @@
     "more": "Més",
     "logout": "Tanca sessió",
     "next": "Següent",
-    "previous": "Anterior"
+    "previous": "Anterior",
+    "showPassword": "Mostra la contrasenya",
+    "hidePassword": "Amaga la contrasenya"
   },
   "desktopUpdates": {
     "title": "Aplicació d'escriptori",
@@ -67,7 +69,10 @@
     "resetRailOrder": "Restablir l'ordre",
     "hideFromRail": "Ocultar de la barra lateral",
     "openSettings": "Obrir la configuració",
-    "mobileNavigation": "Navegació"
+    "mobileNavigation": "Navegació",
+    "allTabs": "Totes les pestanyes",
+    "hideTabBar": "Amaga la barra de pestanyes",
+    "showTabBar": "Mostra la barra de pestanyes"
   },
   "commandPalette": {
     "searchPlaceholder": "Cercar hosts, ordres o configuracions...",
@@ -110,7 +115,8 @@
     "noSearchResults": "Cap connexió no coincideix amb la cerca",
     "rename": "Canvia el nom de la sessió",
     "forgetConfirm": "Vols finalitzar la sessió en segon pla de {{name}}?",
-    "forget": "Finalitza la sessió"
+    "forget": "Finalitza la sessió",
+    "expiringNow": "S'està acabant ara"
   },
   "placeholders": {
     "apiKeyName": "p. ex., Pipeline CI",
@@ -158,16 +164,14 @@
     "commandPalette": "Paleta de comandes",
     "done": "Fet",
     "clear": "Esborra",
-    "dragToResizeColumns": "Arrossega per canviar la mida de les columnes",
     "hostsAvailable": "Hosts disponibles",
-    "removeSection": "Elimina la secció",
-    "addSection": "Afegeix una secció",
-    "allSectionsShown": "Tot ja es mostra al tauler.",
+    "addSection": "Afegeix mosaics",
     "fromPlugins": "Dels connectors",
-    "dropHere": "Deixa anar una secció aquí",
-    "dragToReorder": "Arrossega les seccions per reordenar-les",
+    "dropHere": "Encara no hi ha mosaics. Afegeix-ne alguns de la llista.",
+    "dragToReorder": "Arrossega els mosaics per moure'ls i les vores per redimensionar-los",
     "clearActivityConfirm": "Vols esborrar l'activitat recent?",
-    "resetConfirm": "Vols restablir el tauler al disseny predeterminat?"
+    "resetConfirm": "Vols restablir el tauler al disseny predeterminat?",
+    "clearFailed": "No s'ha pogut esborrar l'activitat recent"
   },
   "admin": {
     "sectionGeneral": "General",
@@ -230,6 +234,9 @@
     "allowPasswordLoginDesc": "Inici de sessió amb nom d'usuari i contrasenya",
     "externalAutoProvision": "Crear comptes externs automàticament",
     "externalAutoProvisionDesc": "Crear un compte la primera vegada que algú s'hi connecta a través d'un inici de sessió extern com SSO o LDAP. Si està desactivat, només les persones que ja tenen un compte poden iniciar sessió d'aquesta manera",
+    "credentialStorage": "Permet desar contrasenyes i claus",
+    "credentialStorageOff": "L'emmagatzematge de contrasenyes i claus està desactivat en aquest servidor. Deixeu-los buits i Termix us demanarà les credencials en connectar-vos.",
+    "credentialStorageDesc": "Desactivat: ningú pot desar una contrasenya o una clau privada en un amfitrió o credencial, i Termix us les demanarà en connectar-vos. Les connexions ja desades es mantindran fins que es suprimeixin.",
     "secondFactorAfterExternalLogin": "Sol·licitar un segon factor després d'inicis de sessió externs (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Si està desactivat, només es demana un segon factor registrat després d'inicis de sessió amb contrasenya i altres inicis de sessió locals, com abans. Si està activat, es demana després de cada mètode d'inici de sessió, incloent-hi SSO i LDAP.",
     "allowPasswordReset": "Permetre la recuperació de contrasenya",
@@ -281,6 +288,13 @@
     "apiKeyName": "Nom",
     "apiKeyUser": "Usuari",
     "apiKeySelectUser": "Selecciona un usuari...",
+    "apiKeyScope": "Accés",
+    "apiKeyScopeFull": "Tot el que pot fer l'usuari",
+    "apiKeyScopeRead": "Accions de només lectura",
+    "apiKeyScopeRun": "Executar accions",
+    "apiKeyScopeHint": "Les claus d'acció només tenen accés a les accions de Termix i al servidor MCP, res més.",
+    "apiKeyScopeActionsRead": "Accions, només lectura",
+    "apiKeyScopeActionsRun": "Accions",
     "apiKeyExpiresAt": "Caduca el",
     "createKey": "Crea clau",
     "apiKeyNoExpiry": "Sense caducitat",
@@ -319,6 +333,10 @@
     "deleteUserFailed": "No s'ha pogut eliminar l'usuari",
     "deleteUserSuccess": "Usuari «{{username}}» eliminat",
     "deleteRoleSuccess": "Rol «{{name}}» eliminat",
+    "deleteRoleFailed": "No s'ha pogut eliminar el rol",
+    "roleNamePlaceholder": "desenvolupador",
+    "roleDisplayNamePlaceholder": "Desenvolupador",
+    "unknownError": "Error desconegut",
     "revokeKeySuccess": "Clau «{{name}}» revocada",
     "revokeKeyFailed": "No s'ha pogut revocar la clau",
     "copiedToClipboard": "Copiat al porta-retalls",
@@ -361,6 +379,7 @@
     "unlinkAccountFailed": "No s'ha pogut desenllaçar l'inici de sessió extern",
     "updateRegistrationFailed": "No s'ha pogut actualitzar la configuració de registre",
     "updatePasswordLoginFailed": "No s'ha pogut actualitzar la configuració d'inici de sessió amb contrasenya",
+    "updateCredentialStorageFailed": "No s'ha pogut actualitzar la configuració d'emmagatzematge de credencials",
     "updateSecondFactorAfterExternalLoginFailed": "No s'ha pogut actualitzar la configuració del segon factor",
     "updatePasswordResetFailed": "No s'ha pogut actualitzar la configuració de restabliment de contrasenya",
     "sessionTimeoutRange2": "El temps d'expiració de la sessió ha de ser entre 1 i 720 hores",
@@ -683,7 +702,8 @@
         "tryBetaTitle": "Proveu les noves funcions abans que ningú",
         "tryBetaDescription": "Uniu-vos al programa beta a Actualitzacions.",
         "sendBetaFeedback": "Enviar comentaris sobre la beta",
-        "openUpdates": "Actualitzacions"
+        "openUpdates": "Actualitzacions",
+        "hexLabel": "hex"
       }
     }
   },
@@ -769,6 +789,11 @@
       "allPluginsBeta": "Utilitza versions beta per a tots els connectors",
       "allPluginsStable": "Tots els connectors tornen a la versió estable",
       "saveFailed": "No s'ha pogut desar el canvi"
+    },
+    "user": {
+      "hostRows": {
+        "label": "Opcions de files d'amfitrions"
+      }
     }
   },
   "hostDefaults": {
@@ -795,6 +820,15 @@
   "sharing": {
     "revokeConfirm": "Vols eliminar l'accés de {{name}}?",
     "revoke": "Elimina l'accés",
+    "deviceLogin": {
+      "label": "Iniciar sessió només en aquest dispositiu",
+      "none": "Cap",
+      "hint": "Es manté en aquest dispositiu i mai no s'envia al servidor. S'utilitza en primer lloc i les connexions comencen des d'aquest dispositiu.",
+      "noCredentials": "Afegeix una credencial amb l'opció «Només en aquest dispositiu» per utilitzar-la aquí.",
+      "saved": "Inici de sessió del dispositiu desat",
+      "keepOnDevice": "Només en aquest dispositiu",
+      "keepOnDeviceDesc": "La contrasenya o la clau mai no es sincronitzen amb el servidor. Utilitza-la com a inici de sessió del dispositiu en amfitrions compartits."
+    },
     "folderLogin": {
       "action": "Estableix l'inici de sessió personal per als amfitrions compartits",
       "title": "Inici de sessió personal per a aquesta carpeta",
@@ -836,7 +870,10 @@
     "pickHost": "Tria un host per editar",
     "pickCredential": "Tria una credencial per editar",
     "pickDefaults": "Tria un nivell de valors predeterminats per editar",
-    "pickHint": "Tot el que fa referència a una connexió es troba aquí, agrupat perquè puguis trobar-ho fàcilment."
+    "pickHint": "Tot el que fa referència a una connexió es troba aquí, agrupat perquè puguis trobar-ho fàcilment.",
+    "clearChoice": "Esborra",
+    "proxyPathTarget": "objectiu",
+    "hostCopyName": "{{name}} (còpia)"
   },
   "permissions": {
     "branding": {
@@ -849,6 +886,33 @@
     "presetIntro": "Tria quants elements es mostren a la pantalla.",
     "presetChangeLater": "Pots canviar els presets o qualsevol configuració individual més tard a Configuració, sota Interfície.",
     "appearanceTitle": "Fes-lo teu",
-    "appearanceIntro": "Tria un tema, un color d'accentuació, una tipografia i la teva llengua. Els canvis es mostren immediatament i els pots modificar més tard a Configuració."
+    "appearanceIntro": "Tria un tema, un color d'accentuació, una tipografia i la teva llengua. Els canvis es mostren immediatament i els pots modificar més tard a Configuració.",
+    "hostRows": {
+      "title": "Com han de funcionar les files d'amfitrions?",
+      "intro": "Amb molts complements activats, cada fila d'amfitrió pot tenir molts botons. Tria com vols accedir a les eines d'un amfitrió.",
+      "buttons": "Botons de connexió",
+      "buttonsDesc": "Un botó per eina a cada fila d'amfitrió, com abans. La pàgina de l'amfitrió es manté al menú de l'amfitrió.",
+      "both": "Botons i un botó de pàgina d'amfitrió",
+      "bothDesc": "Mantén els botons i afegeix-ne un per a la pàgina de l'amfitrió. Les eines s'obren dins de la pàgina de l'amfitrió.",
+      "page": "Només pàgina d'amfitrió",
+      "pageDesc": "Sense botons a les files. Fer clic en un amfitrió obre la seva pàgina, amb totes les eines en una sola pestanya.",
+      "clickOpensPage": "Fer clic obre la pàgina de l'amfitrió",
+      "changeLater": "Pots canviar-ho més tard a Personalitza la barra lateral."
+    },
+    "accentHex": "hex"
+  },
+  "hostTools": {
+    "mode": "Obre les eines de l'amfitrió a",
+    "modeDesc": "On s'obren els botons de Docker, Fitxers i altres eines. La pàgina de l'amfitrió manté totes les eines d'un amfitrió en una sola pestanya. Amb Només la pàgina de l'amfitrió, les files d'amfitrió no tenen botons de connexió i un clic obre la pàgina de l'amfitrió.",
+    "modeTab": "La seva pròpia pestanya",
+    "modePage": "La pàgina de l'amfitrió",
+    "rowButtons": "Botons a les files d'amfitrions",
+    "modeOnly": "Només la pàgina de l'amfitrió",
+    "clickOpens": "El clic obre",
+    "clickOpensDesc": "Què executa un clic en un amfitrió. Trieu alguna altra opció per a un amfitrió des del seu menú.",
+    "clickAuto": "La primera manera de connectar-se",
+    "useDefaultNamed": "Predeterminat ({{name}})",
+    "useDefaultButtons": "Utilitza els botons predeterminats",
+    "perHostHint": "Per canviar-los per a un amfitrió, utilitzeu Botons a les files d'amfitrions al seu menú."
   }
 }

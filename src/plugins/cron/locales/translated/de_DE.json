@@ -1,0 +1,206 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "Cron-Jobs auf Ihren Hosts anzeigen, hinzufügen und ausführen, mit einer Vorschau des Zeitplans und den System-Cron-Dateien."
+  },
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück",
+    "delete": "Löschen"
+  },
+  "permissions": {
+    "use": {
+      "title": "Cron verwenden",
+      "description": "Cron-Jobs auf Hosts anzeigen, auf die Sie zugreifen können, und auf Hosts ändern, die Sie bearbeiten dürfen."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Cron-Jobs auf diesem Host über die Cron-Registerkarte verwalten."
+      },
+      "useSudo": {
+        "label": "Sudo verwenden",
+        "description": "Sudo für Crontabs anderer Benutzer und /etc/cron.d verwenden. Deaktivieren, wenn die Anmeldung als Root erfolgt."
+      },
+      "readOnly": {
+        "label": "Schreibgeschützt",
+        "description": "Cron-Jobs anzeigen, aber auf diesem Host nie ändern."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "Öffnen Sie Cron von einem Host aus.",
+    "error": "Cron konnte von diesem Host nicht geladen werden.",
+    "disabled": "Cron ist für diesen Host deaktiviert. Aktivieren Sie es in den Host-Einstellungen.",
+    "sudo": "Dafür ist eine Root-Anmeldung, sudo ohne Passwort oder ein gespeichertes Sudo-Passwort erforderlich.",
+    "refresh": "Aktualisieren",
+    "running": "Cron läuft",
+    "stopped": "Cron gestoppt",
+    "readOnly": "Schreibgeschützt",
+    "notInstalled": "Nicht installiert",
+    "notInstalledTitle": "Cron ist auf diesem Host nicht installiert",
+    "notInstalledHint": "Installieren Sie cron oder cronie mit dem Paketmanager des Hosts und aktualisieren Sie dann.",
+    "notRunning": "Der Cron-Dienst läuft nicht, daher werden keine Jobs ausgeführt.",
+    "viewJobs": "Jobs",
+    "viewSystem": "System",
+    "viewLogs": "Protokolle"
+  },
+  "jobs": {
+    "add": "Job hinzufügen",
+    "user": "Crontab von",
+    "ownUser": "{{user}} (Anmeldung)",
+    "search": "Jobs durchsuchen",
+    "editText": "Als Text bearbeiten",
+    "empty": "Noch keine Cron-Jobs.",
+    "noMatch": "Keine passenden Jobs.",
+    "off": "Aus",
+    "next": "nächste {{time}}",
+    "run": "Jetzt ausführen",
+    "runTitle": "Diesen Job jetzt ausführen?",
+    "runDesc": "Dies führt {{command}} einmal als Benutzer der Crontab aus. Es wird nach 2 Minuten beendet.",
+    "runFailed": "Der Job konnte nicht ausgeführt werden.",
+    "turnOn": "Einschalten",
+    "turnOff": "Ausschalten",
+    "deleteTitle": "Diesen Job löschen?",
+    "loadFailed": "Die Crontab konnte nicht gelesen werden.",
+    "saveFailed": "Die Crontab konnte nicht gespeichert werden.",
+    "outputTitle": "Job-Ausgabe",
+    "exitOk": "Fertig",
+    "exitCode": "Exit-Code {{code}}",
+    "noOutput": "Der Job hat nichts ausgegeben."
+  },
+  "form": {
+    "addTitle": "Neuer Job",
+    "editTitle": "Job bearbeiten",
+    "forUser": "Crontab von {{user}}",
+    "label": "Bezeichnung",
+    "labelHint": "Wird als Kommentar über dem Job gespeichert.",
+    "labelPlaceholder": "Tägliches Backup",
+    "command": "Befehl",
+    "commandHint": "Wird mit sh im Home-Verzeichnis des Benutzers ausgeführt. Ein % startet die Eingabe, die Cron sendet; schreiben Sie \\% für ein echtes Prozentzeichen.",
+    "schedule": "Zeitplan",
+    "scheduleHint": "Minute, Stunde, Tag des Monats, Monat und Wochentag oder ein Schlüsselwort wie @daily.",
+    "scheduleInvalid": "Dies ist kein gültiger Zeitplan.",
+    "nextRuns": "Nächste Ausführungen ({{zone}}):",
+    "enabled": "Ein",
+    "enabledHint": "Ein deaktivierter Job bleibt als Kommentar in der Crontab erhalten.",
+    "saved": "Gespeichert."
+  },
+  "presets": {
+    "everyMinute": "Jede Minute",
+    "every5": "Alle 5 Min.",
+    "every15": "Alle 15 Min.",
+    "hourly": "Stündlich",
+    "daily": "Täglich",
+    "weekly": "Wöchentlich",
+    "monthly": "Monatlich",
+    "reboot": "Beim Start"
+  },
+  "schedule": {
+    "reboot": "Beim Start",
+    "everyMinute": "Jede Minute",
+    "everyNMinutes": "Alle {{n}} Minuten",
+    "hourlyAt": "Jede Stunde zur Minute {{minute}}",
+    "everyNHours": "Alle {{n}} Stunden zur Minute {{minute}}",
+    "dailyAt": "Jeden Tag um {{time}}",
+    "weekdaysAt": "Montag bis Freitag um {{time}}",
+    "weeklyAt": "Jeden {{day}} um {{time}}",
+    "monthlyAt": "Am {{day}}. Tag jedes Monats um {{time}}",
+    "custom": "Benutzerdefinierter Zeitplan",
+    "invalid": "Kein gültiger Zeitplan"
+  },
+  "days": {
+    "0": "Sonntag",
+    "1": "Montag",
+    "2": "Dienstag",
+    "3": "Mittwoch",
+    "4": "Donnerstag",
+    "5": "Freitag",
+    "6": "Samstag"
+  },
+  "raw": {
+    "title": "Crontab als Text",
+    "hint": "Ein Job pro Zeile. Der Host prüft den Text und behält die alte Crontab bei, wenn Fehler auftreten."
+  },
+  "system": {
+    "add": "Neue Datei",
+    "addTitle": "Neue Datei in /etc/cron.d",
+    "edit": "Bearbeiten",
+    "name": "Dateiname",
+    "nameHint": "Gespeichert als /etc/cron.d/<name>. Cron überspringt Namen mit Punkten.",
+    "nameInvalid": "Verwenden Sie nur Buchstaben, Zahlen, - und _.",
+    "content": "Dateiinhalte",
+    "fileHint": "Jeder Job gibt den Benutzer an, unter dem er ausgeführt wird: Minute Stunde Tag Monat Wochentag Benutzer Befehl. Jede Zeile wird vor dem Speichern geprüft.",
+    "noJobs": "Keine Jobs in dieser Datei.",
+    "readHint": "Einige Dateien sind ohne Root-Rechte möglicherweise ausgeblendet. Änderungen hier erfordern eine Root-Anmeldung, ein passwortloses sudo oder ein gespeichertes Sudo-Passwort.",
+    "timers_one": "Dieser Host hat auch {{count}} systemd-Timer. Das Services-Plugin verwaltet ihn.",
+    "timers_other": "Dieser Host hat auch {{count}} systemd-Timer. Das Services-Plugin verwaltet sie.",
+    "deleteTitle": "/etc/cron.d/{{name}} löschen?",
+    "deleteDesc": "Eine Kopie wird in /var/lib/termix-cron/backup aufbewahrt.",
+    "deleted": "{{name}} gelöscht.",
+    "saved": "{{name}} gespeichert.",
+    "loadFailed": "Die System-Cron-Dateien konnten nicht gelesen werden.",
+    "saveFailed": "Die Datei konnte nicht gespeichert werden.",
+    "period": {
+      "hourly": "Wird jede Stunde ausgeführt",
+      "daily": "Wird jeden Tag ausgeführt",
+      "weekly": "Wird jede Woche ausgeführt",
+      "monthly": "Wird jeden Monat ausgeführt"
+    }
+  },
+  "logs": {
+    "lines": "Zeilen",
+    "lineCount_one": "{{count}} Zeile",
+    "lineCount_other": "{{count}} Zeilen",
+    "source": "Von {{source}}",
+    "noSource": "Auf diesem Host wurde kein Cron-Protokoll gefunden.",
+    "empty": "Keine Logeinträge.",
+    "failed": "Das Cron-Log konnte nicht gelesen werden."
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "Aktiviere Cron in den Einstellungen dieses Hosts, um seine Jobs hier zu sehen."
+  },
+  "operations": {
+    "list": {
+      "title": "Cron-Jobs auflisten"
+    },
+    "enable": {
+      "title": "Cron-Job aktivieren"
+    },
+    "disable": {
+      "title": "Cron-Job deaktivieren"
+    },
+    "run": {
+      "title": "Cron-Job jetzt ausführen"
+    },
+    "delete": {
+      "title": "Cron-Job löschen"
+    },
+    "jobs": {
+      "title": "Cron-Jobs",
+      "schedule": "Zeitplan",
+      "command": "Befehl"
+    },
+    "status": {
+      "title": "Cron-Status"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "Hosts werden überprüft...",
+    "summary_one": "{{count}} Job auf {{hosts}} Hosts",
+    "summary_other": "{{count}} Jobs auf {{hosts}} Hosts",
+    "refresh": "Erneut überprüfen",
+    "empty": "Aktiviere Cron für einen Host, um ihn hier zu sehen.",
+    "stopped": "Nicht aktiv",
+    "missing": "Nicht installiert",
+    "jobs_one": "{{count}} Job",
+    "jobs_other": "{{count}} Jobs",
+    "off": "{{count}} deaktiviert"
+  }
+}

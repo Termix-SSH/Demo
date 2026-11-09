@@ -1,0 +1,294 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Tekintse, húzza le, kövesse el és tolja fel a git tárolókat a gazdagépeken, és tartsa őket naprakészen az automatikus letöltéssel."
+  },
+  "common": {
+    "save": "Mentés",
+    "cancel": "Mégse",
+    "back": "Vissza",
+    "loading": "Betöltés..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Git használata",
+      "description": "Tekintse meg a git tárolókat az elérhető gazdagépeken, és módosítsa őket azokon a gépeken, ahol szerkeszthet."
+    },
+    "runCommands": {
+      "title": "Parancsok futtatása az automatikus letöltés után",
+      "description": "Állítson be egy parancsot, amely a gazdagépen fut le, miután az automatikus letöltés új elköteleződéseket hozott."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Kezelje a git tárolókat ezen a gazdagépen a Git fülön."
+      },
+      "repoRoots": {
+        "label": "Mappák keresése",
+        "description": "Mappák, amelyekben tárolókat keres, amikor ezt a gazdagépet szkenneli. Vesszővel elválasztva. Az alapértelmezett a home mappa.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "sudo használata",
+        "description": "Futtassa a git-et rootként sudo-val. Csak olyan tárolókhoz, amelyeket a bejelentkezett felhasználó nem használhat."
+      },
+      "readOnly": {
+        "label": "Csak olvasható",
+        "description": "Mutasd a tárolókat, de soha ne módosítsd őket ezen a gazdagépen."
+      },
+      "showPanel": {
+        "label": "Panel a terminál mellett",
+        "description": "Ajánlja a Git panelt ezen a gazdagépen a terminál fülein."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Panel megnyitása a terminállal együtt",
+        "description": "Mutasd a Git panelt, amikor egy terminál megnyílik egy olyan gazdagépen, amely rendelkezik vele."
+      },
+      "companionSide": {
+        "label": "Panel oldala",
+        "description": "Ahol a panel a terminál mellett helyezkedik el.",
+        "right": "Jobb",
+        "left": "Bal",
+        "bottom": "Alsó"
+      },
+      "companionSize": {
+        "label": "Panel mérete",
+        "description": "A panel szélessége, vagy az alsó helyzetben magassága, pixelben."
+      },
+      "companionEdgeButton": {
+        "label": "Szélgomb",
+        "description": "Mutasd a kis gombot a terminál szélén a panel megnyitásához."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Nyissa meg a Git-et egy gazdagépről.",
+    "error": "Nem sikerült betölteni a git-et erről a gazdagépről.",
+    "disabled": "A Git kikapcsolva van ezen a gazdagépen. Kapcsolja be a gazdagép beállításaiban.",
+    "sudo": "Ehhez root bejelentkezés, jelszó nélküli sudo vagy mentett Sudo Jelszó szükséges.",
+    "refresh": "Frissítés",
+    "readOnly": "Csak olvasható",
+    "notInstalled": "git nincs telepítve",
+    "notInstalledTitle": "A git nincs telepítve ezen a gazdagépen",
+    "notInstalledHint": "Telepítse a git-et a gazdagép csomagkezelőjével, majd frissítsen."
+  },
+  "actions": {
+    "ok": "Kész",
+    "failed": "Sikertelen",
+    "noOutput": "Nincs kimenet."
+  },
+  "repos": {
+    "add": "Tároló hozzáadása",
+    "search": "Tárolók keresése",
+    "empty": "Még nincsenek tárolók. Adjon hozzá egyet a kezdéshez.",
+    "noMatch": "Nincs egyező tároló.",
+    "viewOnly": "Nincsenek tárolók hozzáadva ehhez a gazdagéphez.",
+    "detached": "leválasztott",
+    "changes_one": "{{count}} módosítás",
+    "changes_other": "{{count}} módosítás",
+    "conflicts": "Konfliktusok",
+    "auto": "Automatikus letöltés",
+    "autoFailing": "Letöltés sikertelen",
+    "remove": "Eltávolítás a listából",
+    "removeTitle": "Eltávolítja a(z) {{name}}-t?",
+    "removeBody": "A tároló csak itt felejtődik el. Semmi nem törlődik a gazdagépen.",
+    "removed": "{{name}} eltávolítva",
+    "error": {
+      "missing": "Mappa hiányzik",
+      "notrepo": "Nem git tároló",
+      "unreadable": "Nem olvasható"
+    }
+  },
+  "add": {
+    "title": "Tárolók hozzáadása",
+    "modeScan": "Keresés",
+    "modePath": "Mappa",
+    "modeClone": "Klónozás",
+    "scanHint": "Git tárolókat keres a(z) {{roots}} mappákban. A mappák a gazdagép beállításaiban módosíthatók.",
+    "rescan": "Újra keresés",
+    "noneFound": "Nem található új tároló.",
+    "picked": "Kijelölve",
+    "addPicked_one": "{{count}} tároló hozzáadása",
+    "addPicked_other": "{{count}} tároló hozzáadása",
+    "addAll": "Összes hozzáadása",
+    "folder": "Mappa a gazdagépen",
+    "folderHint": "Teljes elérési út, vagy ~ a kezdőmappa megadásához. A mappának már git tárolónak kell lennie.",
+    "addRepo": "Tároló hozzáadása",
+    "url": "Cím",
+    "urlHint": "A gazdagép bejelentkezett felhasználójának kulcsait és git beállításait használja.",
+    "dest": "Klónozás ide",
+    "destHint": "A mappának még nem létezhet.",
+    "clone": "Klónozás",
+    "cloned": "Klónozva",
+    "added_one": "{{count}} tároló hozzáadva",
+    "added_other": "{{count}} tároló hozzáadva",
+    "failed": "A tároló nem adható hozzá",
+    "scanFailed": "A gazdagép nem kereshető be"
+  },
+  "repo": {
+    "ahead": "{{count}} előrébb",
+    "behind": "{{count}} hátrébb",
+    "fetch": "Frissítés",
+    "fetched": "Frissítve",
+    "pull": "Letöltés",
+    "pulled": "Letöltve",
+    "push": "Feltöltés",
+    "pushed": "Feltöltve",
+    "viewChanges": "Változások",
+    "viewBranches": "Ágak",
+    "viewHistory": "Előzmények",
+    "viewStash": "Előzmények mentése",
+    "viewAuto": "Automatikus letöltés"
+  },
+  "changes": {
+    "loadFailed": "A változások nem olvashatók.",
+    "clean": "Nincs elkövetni való. A munkakönyzet tiszta.",
+    "stagedTitle": "Előkészítve ({{count}})",
+    "unstagedTitle": "Változások ({{count}})",
+    "stage": "Előkészítés",
+    "staged": "Előkészítve",
+    "unstage": "Előkészítés megszüntetése",
+    "unstaged": "Nincs előkészítve",
+    "stageAll": "Összes előkészítése",
+    "renamed": "Átnevezve",
+    "discard": "Elvetés",
+    "discardTitle": "Elveti a(z) {{name}} változásait?",
+    "discardBody": "A fájl változásai törlődnek, és nem állíthatók vissza.",
+    "discarded": "Változások elvetve",
+    "message": "Közlési üzenet",
+    "messagePlaceholder": "Mi változott",
+    "commit": "Közlés",
+    "commitAll": "Összes változás közlése",
+    "commitStaged_one": "{{count}} előkészített fájl közlése",
+    "commitStaged_other": "{{count}} előkészített fájl közlése",
+    "committed": "Közölve",
+    "noDiff": "Nincs megjeleníthető változás.",
+    "truncated": "A különbség hosszú, ezért csak az eleje látható."
+  },
+  "branches": {
+    "loadFailed": "Az ágak nem olvashatók.",
+    "empty": "Még nincsenek ágak.",
+    "current": "Jelenlegi",
+    "remote": "Távoli",
+    "gone": "A távoli ága már nem létezik",
+    "newName": "Új ág",
+    "create": "Ág létrehozása",
+    "created": "A(z) {{name}} ág létrehozva",
+    "switch": "Váltás",
+    "switched": "Váltás a(z) {{name}} ágra",
+    "merge": "Összevonás a jelenlegi ágba",
+    "mergeTitle": "A(z) {{name}} összevonása a(z) {{into}} ágba?",
+    "mergeBody": "Az ütközéssel járó összevonás azonnal visszavonásra kerül.",
+    "merged": "A(z) {{name}} ág összevonva",
+    "delete": "Ág törlése",
+    "deleteTitle": "A(z) {{name}} törlése?",
+    "deleteBody": "A Git megtagadja a törlést, ha az ágon vannak nem összevont commitok.",
+    "deleted": "A(z) {{name}} ág törölve",
+    "forceTitle": "A(z) {{name}} erőltetett törlése?",
+    "forceBody": "Ennek az ágnak vannak nem összevont commitjai. Ezek elvesznek, ha törli az ágot.",
+    "forceDelete": "Eröltetett törlés"
+  },
+  "history": {
+    "loadFailed": "Nem sikerült beolvasni az előzményeket.",
+    "empty": "Még nincsenek commitok.",
+    "branch": "Ez az ág",
+    "all": "Minden ág",
+    "more": "Továbbiak betöltése"
+  },
+  "stash": {
+    "loadFailed": "Nem sikerült beolvasni a stash tartalmát.",
+    "title": "Stash elemek",
+    "empty": "Nincsenek stash elemek.",
+    "message": "Üzenet",
+    "messagePlaceholder": "Opcionális",
+    "untracked": "Nyomkövetetlen fájlok belefoglalása",
+    "push": "Változtatások stash-elése",
+    "pushDone": "Változtatások stash-elve",
+    "apply": "Alkalmazás",
+    "applyDone": "Stash alkalmazva",
+    "pop": "Pop",
+    "popDone": "Stash alkalmazva és eltávolítva",
+    "drop": "Eldobás",
+    "dropDone": "Stash eldobva",
+    "dropTitle": "A(z) {{name}} eldobása?",
+    "dropBody": "A stash törölve lesz, és nem állítható vissza.",
+    "remotes": "Távoli tárolók",
+    "noRemotes": "Nincsenek távoli tárolók."
+  },
+  "auto": {
+    "intro": "Időzített pull műveletek, csak fast-forward módban. Soha nem hajt végre merge-t, és kihagyja a tárolót, ha az tartalmaz el nem commitolt változtatásokat, vagy eltér a távoli ágtól.",
+    "noUpstream": "Ennek az ágnak még nincs távoli ága, így az automatikus pull kihagyja.",
+    "enable": "Automatikus pull",
+    "enableHint": "Az Ön nevében fut, az Ön hozzáférésével ehhez a hosthoz.",
+    "interval": "Minden (perc)",
+    "intervalHint": "Mennyi időt várjon a pull műveletek között.",
+    "post": "Parancs a pull után",
+    "postHint": "A tároló mappájában fut, miután új commitok érkeznek. Szükséges a parancsok futtatásához való jogosultság.",
+    "saved": "Automatikus pull mentve",
+    "saveFailed": "Nem sikerült menteni az automatikus pull beállításokat",
+    "runNow": "Futtatás most",
+    "next": "Következő pull: {{when}}",
+    "runs": "Legutóbbi futtatások",
+    "noRuns": "Még nincsenek futtatások.",
+    "outcome": {
+      "pulled": "Pull-elva",
+      "uptodate": "Naposítva",
+      "skipped": "Kihagyva",
+      "failed": "Sikertelen"
+    }
+  },
+  "card": {
+    "title": "Git tárolók",
+    "loading": "Betöltés...",
+    "refresh": "Frissítés",
+    "empty": "Még nincs Git tároló egyetlen hoszton sem.",
+    "allClean": "Minden tároló tiszta és naprakész.",
+    "summary_one": "{{count}} tároló | {{attention}} igényel figyelmet",
+    "summary_other": "{{count}} tároló | {{attention}} igényel figyelmet"
+  },
+  "companion": {
+    "toggle": "Git panel",
+    "openTab": "Git megnyitása",
+    "here": "Ez a mappa egy tároló",
+    "all": "Minden tároló"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Git tárolók listázása"
+    },
+    "fetch": {
+      "title": "Tároló lekérése"
+    },
+    "pull": {
+      "title": "Tároló behúzása"
+    },
+    "push": {
+      "title": "Tároló feltöltése"
+    },
+    "checkout": {
+      "title": "Ágak váltása",
+      "branch": "Ág"
+    },
+    "reset-hard": {
+      "title": "Tároló kemény visszaállítása",
+      "ref": "Visszaállítás erre"
+    },
+    "repos": {
+      "title": "Git tárolók",
+      "branch": "Ág",
+      "ahead": "Előrébb",
+      "behind": "Hátrébb",
+      "changed": "Változások"
+    },
+    "signals": {
+      "behind": "Hátrébb lévő tárolók",
+      "dirty": "Változásokat tartalmazó tárolók",
+      "pull-failing": "Automatikus behúzás sikertelen"
+    }
+  }
+}

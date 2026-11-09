@@ -139,6 +139,8 @@ export function AdminUsersSection({
               size="icon"
               className="size-6 text-muted-foreground hover:text-foreground"
               onClick={loadUsers}
+              title={t("common.refresh")}
+              aria-label={t("common.refresh")}
             >
               <RefreshCw className="size-3" />
             </Button>
@@ -207,6 +209,8 @@ export function AdminUsersSection({
                   variant="ghost"
                   size="icon"
                   className="size-6 text-muted-foreground hover:text-foreground"
+                  title={t("common.edit")}
+                  aria-label={t("common.edit")}
                   onClick={() => {
                     setEditUserTarget(user);
                     setEditUserOpen(true);
@@ -253,6 +257,8 @@ export function AdminUsersSection({
                   size="icon"
                   className="size-6 text-muted-foreground hover:text-destructive"
                   disabled={user.isAdmin}
+                  title={t("common.delete")}
+                  aria-label={t("common.delete")}
                   onClick={async () => {
                     const ok = await confirm({
                       title: t("admin.deleteUserConfirm", {
@@ -352,6 +358,8 @@ export function AdminSessionsSection({
             size="icon"
             className="size-6 text-muted-foreground hover:text-foreground"
             onClick={loadSessions}
+            title={t("common.refresh")}
+            aria-label={t("common.refresh")}
           >
             <RefreshCw className="size-3" />
           </Button>
@@ -412,6 +420,8 @@ export function AdminSessionsSection({
                 variant="ghost"
                 size="icon"
                 className="size-6 text-muted-foreground hover:text-destructive"
+                title={t("admin.revokeSession")}
+                aria-label={t("admin.revokeSession")}
                 onClick={async () => {
                   const ok = await confirm({
                     title: t("admin.revokeSessionConfirm"),
@@ -570,7 +580,7 @@ export function AdminRolesSection({
                 <span className="text-accent-brand">*</span>
               </label>
               <Input
-                placeholder="developer"
+                placeholder={t("admin.roleNamePlaceholder")}
                 value={newRoleName}
                 onChange={(e) => setNewRoleName(e.target.value)}
                 className="text-xs"
@@ -582,7 +592,7 @@ export function AdminRolesSection({
                 <span className="text-accent-brand">*</span>
               </label>
               <Input
-                placeholder="Developer"
+                placeholder={t("admin.roleDisplayNamePlaceholder")}
                 value={newRoleDisplayName}
                 onChange={(e) => setNewRoleDisplayName(e.target.value)}
                 className="text-xs"
@@ -597,7 +607,7 @@ export function AdminRolesSection({
                 placeholder={t("common.optional")}
                 value={newRoleDescription}
                 onChange={(e) => setNewRoleDescription(e.target.value)}
-                className="w-full px-2 py-1.5 text-xs bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring"
+                className="w-full px-2 py-1.5 text-xs bg-popover border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring"
               />
             </div>
             <div className="flex justify-end gap-2">
@@ -677,6 +687,8 @@ export function AdminRolesSection({
                       variant="ghost"
                       size="icon"
                       className="size-6 text-muted-foreground hover:text-destructive"
+                      title={t("common.delete")}
+                      aria-label={t("common.delete")}
                       onClick={async () => {
                         const ok = await confirm({
                           title: t("admin.deleteRoleConfirm", {
@@ -684,15 +696,21 @@ export function AdminRolesSection({
                           }),
                         });
                         if (!ok) return;
-                        await deleteRole(role.id);
-                        setRoles((prev) =>
-                          prev.filter((r) => r.id !== role.id),
-                        );
-                        toast.success(
-                          t("admin.deleteRoleSuccess", {
-                            name: role.displayName,
-                          }),
-                        );
+                        try {
+                          await deleteRole(role.id);
+                          setRoles((prev) =>
+                            prev.filter((r) => r.id !== role.id),
+                          );
+                          toast.success(
+                            t("admin.deleteRoleSuccess", {
+                              name: role.displayName,
+                            }),
+                          );
+                        } catch (e: unknown) {
+                          toast.error(
+                            apiErrorMessage(e, t("admin.deleteRoleFailed")),
+                          );
+                        }
                       }}
                     >
                       <Trash2 className="size-3" />

@@ -1,0 +1,364 @@
+{
+  "tab": {
+    "title": "Zid de protecție",
+    "noHost": "Deschideți zidul de protecție de pe un gazdă.",
+    "refresh": "Reîmprospătare",
+    "error": "Nu s-a putut citi zidul de protecție de pe această gazdă.",
+    "disabled": "Zidul de protecție este dezactivat pentru această gazdă. Activați-l în setările gazdei.",
+    "sudo": "Această gazdă necesită sudo fără parolă sau o conexiune root pentru a citi și modifica zidul de protecție.",
+    "noFirewall": "Fără zid de protecție",
+    "on": "activat",
+    "off": "dezactivat",
+    "readOnly": "doar citire",
+    "ruleCount_one": "{{count}} regulă",
+    "ruleCount_few": "{{count}} reguli",
+    "ruleCount_other": "{{count}} reguli",
+    "viewRules": "Reguli",
+    "viewDefaults": "Implicit",
+    "viewZones": "Zone",
+    "viewFail2ban": "Fail2ban",
+    "viewRaw": "Neratat"
+  },
+  "common": {
+    "loading": "Se încarcă...",
+    "save": "Salvare",
+    "cancel": "Anulare",
+    "delete": "Ștergere",
+    "edit": "Editare",
+    "done": "Gata",
+    "failed": "Nu a funcționat."
+  },
+  "actions": {
+    "allow": "Permite",
+    "deny": "Refuză",
+    "reject": "Respinge",
+    "limit": "Limitează"
+  },
+  "policies": {
+    "allow": "Permite",
+    "deny": "Refuză (drop)",
+    "reject": "Respinge"
+  },
+  "rule": {
+    "action": "Acțiune",
+    "direction": "Direcție",
+    "in": "Intrare",
+    "out": "Ieșire",
+    "protocol": "Protocol",
+    "anyProtocol": "TCP și UDP",
+    "port": "Port",
+    "portPlaceholder": "22, 80,443 sau 8000-8100",
+    "portHint": "Lăsați gol pentru toate porturile. Listele și intervalele necesită TCP sau UDP.",
+    "anyPort": "orice port",
+    "source": "De la",
+    "destination": "Către",
+    "anywhere": "Peste tot",
+    "addressHint": "O adresă sau un interval, de exemplu 10.0.0.0/8.",
+    "family": "Versiune IP",
+    "bothFamilies": "IPv4 și IPv6",
+    "iface": "Interfață",
+    "anyIface": "Orice interfață",
+    "service": "Serviciu",
+    "serviceHint": "Un nume de serviciu firewalld, în loc de un port.",
+    "comment": "Comentariu",
+    "commentPlaceholder": "La ce servește această regulă",
+    "zoneLabel": "Zonă",
+    "from": "de la {{address}}",
+    "to": "către {{address}}",
+    "on": "pe {{iface}}",
+    "zone": "zona {{zone}}"
+  },
+  "presets": {
+    "ssh": "SSH",
+    "http": "HTTP",
+    "https": "HTTPS",
+    "web": "Web",
+    "dns": "DNS",
+    "smtp": "Mail",
+    "mysql": "MySQL",
+    "postgres": "PostgreSQL",
+    "redis": "Redis",
+    "samba": "Samba",
+    "wireguard": "WireGuard",
+    "minecraft": "Minecraft"
+  },
+  "rules": {
+    "add": "Adaugă regulă",
+    "addTitle": "Regulă nouă",
+    "editTitle": "Editează regula",
+    "added": "Regulă adăugată",
+    "saved": "Regulă salvată",
+    "deleted": "Regulă ștearsă",
+    "confirmDelete": "Șterge această regulă?",
+    "search": "Caută porturi, adrese și comentarii",
+    "empty": "Încă nu există reguli.",
+    "noMatch": "Nicio regulă nu se potrivește.",
+    "readOnly": "Doar citire",
+    "deleteOnly": "Doar ștergere",
+    "stale": "Regulile s-au schimbat pe gazdă. Reîmprospătează și încearcă din nou.",
+    "filters": {
+      "all": "Toate",
+      "in": "Intrare",
+      "out": "Ieșire",
+      "readOnly": "Doar citire"
+    }
+  },
+  "defaults": {
+    "hint": "Ce se întâmplă cu traficul care nu se potrivește cu nicio regulă.",
+    "incoming": "Intrare",
+    "outgoing": "Ieșire",
+    "routed": "Rutat",
+    "saved": "Setările implicite au fost salvate"
+  },
+  "zones": {
+    "hint": "firewalld plasează fiecare interfață de rețea și sursă într-o zonă. Ținta unei zone este ceea ce face cu traficul care nu se potrivește cu regulile sale.",
+    "defaultZone": "Zona implicită",
+    "default": "Implicit",
+    "active": "Activă",
+    "target": "Țintă",
+    "interfaces": "interfețe {{list}}",
+    "sources": "surse {{list}}",
+    "saved": "Zona a fost salvată",
+    "targets": {
+      "default": "Implicit (respingere)",
+      "ACCEPT": "Acceptă",
+      "DROP": "Respinge",
+      "REJECT": "Respinge"
+    }
+  },
+  "enable": {
+    "off": "Zidul de protecție este oprit, așa că nicio regulă nu se aplică în acest moment.",
+    "allowSsh": "Permite SSH pe portul {{ports}} mai întâi",
+    "allowSshHint": "Menține Termix și conexiunile SSH funcționale.",
+    "button": "Activează",
+    "done": "Zidul de protecție a fost activat",
+    "timerHint": "Activarea pornește un cronometru. Dacă nu apeși Păstrează la timp, gazda îl va opri din nou automat."
+  },
+  "disable": {
+    "button": "Dezactivează",
+    "title": "Dezactivezi zidul de protecție?",
+    "description": "Toate regulile încetează să se aplice până când îl activezi din nou.",
+    "done": "Zidul de protecție a fost dezactivat"
+  },
+  "install": {
+    "none": "Această gazdă nu are încă un zid de protecție.",
+    "hint": "Instalează unul pentru a începe. Nimic nu se activează până nu spui tu.",
+    "button": "Instalează {{name}}",
+    "working": "Se instalează...",
+    "done": "{{name}} instalat",
+    "noPackageManager": "Termix nu a putut găsi un manager de pachete cunoscut pe această gazdă."
+  },
+  "lockout": {
+    "title": "Acest lucru ar putea bloca accesul Termix",
+    "description": "{{reason}}. Dacă Termix nu se poate conecta după modificare, gazda o anulează automat când expiră timerul. Vrei să continui?",
+    "confirm": "Continuă"
+  },
+  "pending": {
+    "started": "Modificare aplicată. Apasă Păstrează pentru a o face permanentă.",
+    "left": "Se va anula în {{seconds}} s, dacă nu apeși Păstrează",
+    "expired": "Timpul a expirat, gazda anulează modificarea",
+    "reachable": "Termix s-a putut conecta încă",
+    "unreachable": "Termix nu s-a putut conecta după modificare",
+    "unknown": "Se verifică conexiunea",
+    "keep": "Păstrează",
+    "undo": "Anulează acum",
+    "kept": "Modificarea a fost păstrată",
+    "undone": "Modificarea a fost anulată",
+    "gone": "Timpul a expirat și gazda a anulat deja modificarea.",
+    "first": "Păstrați sau anulați mai întâi ultima modificare.",
+    "kinds": {
+      "add": "Regulă nouă",
+      "update": "Regulă modificată",
+      "remove": "Regulă ștearsă",
+      "defaults": "Setări implicite noi",
+      "enable": "Zidul de protecție a fost activat",
+      "disable": "Zidul de protecție a fost dezactivat",
+      "zoneTarget": "Noua țintă de zonă",
+      "defaultZone": "Noua zonă implicită",
+      "ruleset": "Set de reguli aplicat"
+    }
+  },
+  "fail2ban": {
+    "loadFailed": "Nu s-a putut citi Fail2ban.",
+    "notInstalled": "Fail2ban nu este instalat. Blochează adresele care eșuează prea des la autentificare.",
+    "stopped": "Fail2ban este instalat, dar nu rulează.",
+    "start": "Pornește Fail2ban",
+    "started": "Fail2ban a fost pornit",
+    "noJails": "Nicio închisoare nu este activată.",
+    "none": "Nimic blocat.",
+    "bannedCount_one": "{{count}} interzis",
+    "bannedCount_few": "{{count}} interzise",
+    "bannedCount_other": "{{count}} interzise",
+    "counts": "{{failed}} eșecuri acum | {{totalFailed}} eșecuri | {{totalBanned}} interzise în total",
+    "ban": "Interzice",
+    "unban": "Dezinterzice",
+    "banAddress": "Interzice o adresă",
+    "banned": "{{ip}} interzisă",
+    "unbanned": "{{ip}} dezinterzisă",
+    "selfTitle": "Interzici adresa Termix?",
+    "selfDescription": "Termix se conectează de la această adresă. Interzicerea ei va întrerupe conexiunea Termix cu acest gazdă."
+  },
+  "raw": {
+    "empty": "Nu există nimic de afișat."
+  },
+  "watch": {
+    "start": "Notifică-mă când acest firewall se modifică",
+    "stop": "Oprește notificările pentru acest firewall"
+  },
+  "companion": {
+    "openTab": "Deschide fila Firewall",
+    "toggle": "Panoul Firewall",
+    "allowPort": "Permite un port TCP"
+  },
+  "card": {
+    "title": "Firewall-uri",
+    "empty": "Niciun host nu are activat Firewall-ul.",
+    "banned_one": "{{count}} interzis",
+    "banned_few": "{{count}} interzise",
+    "banned_other": "{{count}} interzise",
+    "pending": "În așteptare"
+  },
+  "rulesets": {
+    "title": "Seturi de reguli pentru firewall",
+    "hint": "Salvează o listă de reguli și adaug-o la mai multe gazde simultan. Aplicarea adaugă doar regulile lipsă, nu șterge niciodată reguli existente.",
+    "add": "Set nou de reguli",
+    "addTitle": "Set nou de reguli",
+    "editTitle": "Editare set de reguli",
+    "loadFailed": "Nu s-au putut încărca seturile tale de reguli.",
+    "empty": "Încă nu există seturi de reguli.",
+    "name": "Nume",
+    "namePlaceholder": "Server web",
+    "description": "Descriere",
+    "rules": "Reguli",
+    "noRules": "Încă nu există reguli în acest set.",
+    "hosts": "Gazde",
+    "noHosts": "Nicio gazdă nu are Firewall activat.",
+    "saved": "Setul de reguli a fost salvat",
+    "deleted": "Setul de reguli a fost șters",
+    "confirmDelete": "Ștergeți {{name}}?",
+    "deleteHint": "Regulile deja adăugate la gazde rămân.",
+    "ruleCount_one": "{{count}} regulă",
+    "ruleCount_few": "{{count}} reguli",
+    "ruleCount_other": "{{count}} reguli",
+    "hostCount_one": "{{count}} gazdă",
+    "hostCount_few": "{{count}} gazde",
+    "hostCount_other": "{{count}} gazde",
+    "check": "Verifică gazdele",
+    "apply": "Aplică",
+    "applyTitle": "Aplică {{name}}?",
+    "applyDescription": "Regulile lipsă sunt adăugate pe fiecare gazdă. Fiecare gazdă primește verificarea de blocare SSH, iar o gazdă pe care Termix nu o mai poate atinge ulterior anulează automat modificarea.",
+    "applied": "Setul de reguli a fost aplicat",
+    "applyErrors_one": "{{count}} gazdă a avut o problemă",
+    "applyErrors_few": "{{count}} gazde au avut o problemă",
+    "applyErrors_other": "{{count}} gazde au avut o problemă",
+    "applyResult": "Aplicat {{name}}",
+    "driftTitle": "{{name}} pe fiecare gazdă",
+    "inSync": "Are fiecare regulă",
+    "ok": "Sincronizat",
+    "missing_one": "{{count}} lipsă",
+    "missing_few": "{{count}} lipsă",
+    "missing_other": "{{count}} lipsă",
+    "nothingMissing": "Deja aveai fiecare regulă",
+    "added_one": "Adăugată {{count}} regulă",
+    "added_few": "Adăugate {{count}} reguli",
+    "added_other": "Adăugate {{count}} reguli",
+    "waiting": "Adăugat, dar Termix nu s-a putut conecta ulterior. Gazda va anula modificarea.",
+    "fleet": "Flotă",
+    "applyFleet": "Aplică la flotă"
+  },
+  "permissions": {
+    "use": {
+      "title": "Folosește firewall-ul",
+      "description": "Deschide fila Firewall pe gazdele pe care le poți atinge. Modificările necesită, de asemenea, acces de editare la gazdă."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Firewall",
+        "description": "Afișează fila Firewall pentru această gazdă pentru a-ți gestiona firewall-ul prin SSH."
+      },
+      "useSudo": {
+        "label": "Folosește sudo",
+        "description": "Execută comenzile firewall cu sudo fără parolă când autentificarea nu este root."
+      },
+      "readOnly": {
+        "label": "Doar citire",
+        "description": "Afișează firewall-ul, dar blochează orice modificare din Termix."
+      },
+      "sshGuard": {
+        "label": "Verificare blocare SSH",
+        "description": "Oprește și întreabă înainte de o modificare care ar putea bloca SSH din Termix."
+      },
+      "rollbackSeconds": {
+        "label": "Timp de anulare",
+        "description": "Secunde pe care le ai la dispoziție pentru a apăsa Păstrează după o modificare riscantă, înainte ca gazda să o anuleze."
+      },
+      "confirmAll": {
+        "label": "Timpor pentru fiecare modificare",
+        "description": "Folosește temporul de anulare pentru fiecare modificare, nu doar pentru cele riscante."
+      },
+      "showPanel": {
+        "label": "Panou firewall",
+        "description": "Afișează panoul de firewall lângă terminalele SSH pentru acest gazdă."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Deschide panoul de firewall împreună cu un terminal",
+        "description": "Afișează panoul de firewall când se deschide un terminal pe o gazdă care îl are configurat."
+      },
+      "companionSide": {
+        "label": "Poziția panoului de firewall",
+        "description": "Unde este poziționat panoul față de terminal.",
+        "right": "Dreapta",
+        "left": "Stânga",
+        "bottom": "Jos"
+      },
+      "companionSize": {
+        "label": "Dimensiunea panoului de firewall",
+        "description": "Lățimea, sau înălțimea dacă este jos, în pixeli."
+      },
+      "companionEdgeButton": {
+        "label": "Buton de margine pentru panoul de firewall",
+        "description": "Afișează un buton mic pe marginea terminalului pentru a deschide panoul."
+      }
+    }
+  },
+  "manager": {
+    "title": "Firewall",
+    "disabled": "Activează firewall-ul în setările acestui gazdă pentru a-l gestiona aici."
+  },
+  "operations": {
+    "list": {
+      "title": "Listează regulile de firewall"
+    },
+    "status": {
+      "title": "Firewall"
+    },
+    "portAllowed": {
+      "title": "Portul este permis",
+      "description": "Indică dacă există o regulă de permisiune pentru acest port. Folosește-l pentru a monitoriza gazdele pentru modificări neautorizate."
+    },
+    "allow": {
+      "title": "Permite un port"
+    },
+    "remove": {
+      "title": "Elimină un port permis"
+    },
+    "delete": {
+      "title": "Șterge regula firewall"
+    },
+    "rules": {
+      "title": "Reguli firewall"
+    },
+    "port": "Port",
+    "protocol": "Protocol",
+    "tcp": "TCP",
+    "udp": "UDP",
+    "any": "Oricare",
+    "source": "De la",
+    "sourceHint": "O adresă sau o gamă. Gol înseamnă de oriunde.",
+    "direction": "Direcție"
+  }
+}

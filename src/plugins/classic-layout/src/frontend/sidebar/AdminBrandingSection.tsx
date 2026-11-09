@@ -7,6 +7,7 @@ import {
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { PaintbrushIcon } from "lucide-react";
+import { toast } from "sonner";
 import { AccordionSection } from "./AdminSettingsShared";
 import {
   BRANDING_LOGO_ACCEPT,
@@ -38,7 +39,7 @@ export function AdminBrandingSection({
     event.target.value = "";
     if (!file || !settings) return;
     if (!isAcceptedBrandingLogoFile(file)) {
-      alert(t("admin.brandingLogoInvalid"));
+      toast.error(t("admin.brandingLogoInvalid"));
       return;
     }
     const reader = new FileReader();

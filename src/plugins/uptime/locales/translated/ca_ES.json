@@ -1,0 +1,392 @@
+{
+  "tab": {
+    "title": "Temps de funcionament",
+    "error": "No s'han pogut carregar els monitors.",
+    "monitors": "Monitors",
+    "incidents": "Incidents",
+    "maintenance": "Manteniment",
+    "pages": "Pàgines d'estat"
+  },
+  "common": {
+    "refresh": "Actualitza",
+    "loading": "S'està carregant",
+    "delete": "Suprimeix",
+    "edit": "Edita",
+    "save": "Desa",
+    "cancel": "Cancel·la",
+    "done": "Fet"
+  },
+  "status": {
+    "up": "En funcionament",
+    "down": "Fora de servei",
+    "pending": "S'està tornant a intentar",
+    "maintenance": "Manteniment",
+    "paused": "En pausa",
+    "unknown": "S'està esperant"
+  },
+  "types": {
+    "http": "Lloc web (HTTP)",
+    "tcp": "Port TCP",
+    "ping": "Ping",
+    "dns": "Registre DNS",
+    "tls": "Certificat TLS",
+    "push": "Push",
+    "host": "Amfitrió de Termix",
+    "docker": "Contenidor Docker",
+    "systemd": "Unitat systemd",
+    "command": "Comanda"
+  },
+  "typeHints": {
+    "http": "Crida una URL i comprova el codi d'estat, i una paraula clau si en configureu una.",
+    "tcp": "Comprova que un port accepta connexions.",
+    "ping": "Envia un ping des del servidor de Termix o des d'un amfitrió que seleccioneu a continuació.",
+    "dns": "Consulta un registre i pot comprovar-ne el valor.",
+    "tls": "Comprova que un certificat és de confiança i que no està a punt de caducar.",
+    "push": "Us proporciona una URL per cridar des d'una tasca cron o un script. Passa a fora de servei quan deixen d'arribar les crides.",
+    "host": "Comprova el port d'un amfitrió de la mateixa manera que el punt d'estat de l'amfitrió. Mai no inicia sessió.",
+    "docker": "Inicia sessió a l'amfitrió a través d'SSH i comprova que un contenidor s'està executant i que està sa.",
+    "systemd": "Inicia sessió a l'amfitrió a través d'SSH i comprova que una unitat està activa.",
+    "command": "Inicia sessió a l'amfitrió a través d'SSH i executa una comanda. Està en funcionament quan el codi de sortida és 0."
+  },
+  "stats": {
+    "up": "En funcionament",
+    "down": "Problemes",
+    "paused": "En pausa o en manteniment",
+    "month": "Temps de funcionament de 30 dies"
+  },
+  "filter": {
+    "all": "Tots",
+    "problems": "Problemes",
+    "paused": "En pausa"
+  },
+  "list": {
+    "name": "Nom",
+    "target": "Objectiu",
+    "checks": "Últimes comprovacions",
+    "uptime": "24 h",
+    "uptimeDay": "24 h: {{value}}",
+    "latency": "Resposta",
+    "search": "Cerca",
+    "add": "Afegeix un monitor",
+    "addHosts": "Afegeix des dels amfitrions",
+    "empty": "Encara no hi ha monitors",
+    "emptyHint": "Afegeix un monitor per començar a supervisar un lloc web, un port o un amfitrió.",
+    "noMatch": "Res no coincideix"
+  },
+  "range": {
+    "day": "24 h",
+    "week": "7 dies",
+    "month": "30 dies",
+    "quarter": "90 dies"
+  },
+  "detail": {
+    "failed": "No ha funcionat.",
+    "deleteTitle": "Vols suprimir {{name}}?",
+    "deleteHint": "El seu historial i incidents s'eliminaran també.",
+    "newUrl": "Nova URL de push",
+    "newUrlTitle": "Vols crear una nova URL de push?",
+    "newUrlHint": "L'URL antiga deixarà de funcionar immediatament.",
+    "type": "Tipus",
+    "target": "Objectiu",
+    "lastCheck": "Última comprovació",
+    "message": "Resultat",
+    "every": "Comprova cada",
+    "seconds_one": "{{count}} segon",
+    "seconds_many": "{{count}} segons",
+    "seconds_other": "{{count}} segons",
+    "group": "Grup",
+    "tags": "Etiquetes",
+    "cert": "Certificat",
+    "certValue": "{{days}} dies restants | {{issuer}}",
+    "noChart": "Encara no hi ha prou comprovacions per generar un gràfic.",
+    "alertsOn": "Activa les alertes",
+    "alertsOff": "Desactiva les alertes",
+    "runNow": "Comprova ara",
+    "pause": "Pausa",
+    "resume": "Reprèn",
+    "share": "Comparteix",
+    "now": "Resposta actual",
+    "recent": "Últimes comprovacions",
+    "response": "Temps de resposta",
+    "about": "Quant a",
+    "incidents": "Incidents",
+    "noIncidents": "Cap incident."
+  },
+  "editor": {
+    "addTitle": "Afegeix monitor",
+    "editTitle": "Edita monitor",
+    "saveFailed": "No s'ha pogut desar.",
+    "testFailed": "No s'ha pogut executar la prova.",
+    "test": "Prova",
+    "testing": "Provant",
+    "testOk": "Actiu",
+    "testBad": "Inactiu",
+    "what": "Què supervisar",
+    "name": "Nom",
+    "type": "Tipus",
+    "host": "Amfitrió",
+    "noHost": "Tria un amfitrió",
+    "pushOnce": "Copia aquesta URL ara. Només es mostra una vegada.",
+    "from": "Comprova des de",
+    "fromHost": "Executa la comprovació des de",
+    "fromServer": "El servidor Termix",
+    "fromHint": "Tria un amfitrió per accedir a recursos que només ell pot veure. La comprovació s'executarà allà a través d'SSH.",
+    "timing": "Interval i alertes",
+    "interval": "Comprova cada (segons)",
+    "timeout": "Temps d'espera (segons)",
+    "grace": "Espera addicional (segons)",
+    "retries": "Reintents",
+    "retriesHint": "Comprovacions fallides consecutives abans de considerar-lo inactiu.",
+    "retryInterval": "Temps entre reintents (segons)",
+    "resend": "Recorda'm cada (minuts)",
+    "resendHint": "Mentre continuï inactiu. 0 envia una sola alerta.",
+    "more": "Grup i etiquetes",
+    "group": "Grup",
+    "tags": "Etiquetes",
+    "tagsHint": "Separeu-les amb comes.",
+    "target": "Adreça",
+    "port": "Port",
+    "portOptional": "Port",
+    "portOptionalHint": "Deixeu-ho buit per utilitzar el port del servidor.",
+    "url": "URL",
+    "method": "Mètode",
+    "body": "Cos",
+    "accepted": "Códigos d'estat acceptats",
+    "acceptedHint": "Com 200-299,301",
+    "keyword": "Paraula clau",
+    "keywordHint": "Opcional. Text que ha d'aparèixer a la resposta.",
+    "keywordAbsent": "Fallar quan es trobi la paraula clau",
+    "auth": "Inici de sessió",
+    "authNone": "Cap",
+    "authBasic": "Bàsic",
+    "authBearer": "Token Bearer",
+    "username": "Nom d'usuari",
+    "password": "Contrasenya",
+    "token": "Token",
+    "keepSecret": "Deixeu-ho buit per mantenir el valor desat.",
+    "headers": "Capçaleres",
+    "headersHint": "Una per línia, com Nom: valor. S'emmagatzemen xifrades.",
+    "follow": "Seguir redireccions",
+    "ignoreTls": "Acceptar qualsevol certificat",
+    "certDays": "Avís abans que caduqui el certificat (dies)",
+    "certDaysHint": "0 desactiva l'avís.",
+    "record": "Tipus de registre",
+    "dnsServer": "Servidor DNS",
+    "dnsServerHint": "Adreça IP opcional. Si està buit, s'utilitza la del servidor.",
+    "expected": "Valor esperat",
+    "expectedHint": "Opcional. Text que ha de contenir un registre.",
+    "container": "Nom del contenidor",
+    "unit": "Nom de la unitat",
+    "command": "Comanda",
+    "commandHint": "S'executa amb el vostre usuari en aquest servidor en cada comprovació."
+  },
+  "hosts": {
+    "add_one": "Afegir {{count}} monitor",
+    "add_many": "Afegir {{count}} monitors",
+    "add_other": "Afegir {{count}} monitors"
+  },
+  "shares": {
+    "loadFailed": "No s'han pogut carregar els recursos compartits.",
+    "saveFailed": "No s'han pogut desar els recursos compartits.",
+    "pick": "Trieu un usuari o un rol",
+    "user": "Usuari: {{name}}",
+    "role": "Rol: {{name}}",
+    "with": "Compartir amb",
+    "add": "Afegir",
+    "none": "Només vosaltres podeu veure aquest monitor.",
+    "view": "Pot veure",
+    "edit": "Pot editar"
+  },
+  "incidents": {
+    "none": "Cap incident",
+    "ongoing": "En curs",
+    "seen": "Vist",
+    "ack": "Marcar com a vist",
+    "note": "Nota"
+  },
+  "maintenance": {
+    "none": "Cap finestra de manteniment",
+    "noneHint": "Afegiu-ne una per aturar les alertes mentre treballeu en alguna cosa.",
+    "add": "Afegir finestra",
+    "edit": "Editar finestra",
+    "active": "Activa ara",
+    "when": "Quan",
+    "once": "Una sola vegada",
+    "weekly": "Cada setmana",
+    "start": "Inici",
+    "end": "Fi",
+    "days": "Dies",
+    "time": "Hora d'inici",
+    "length": "Durada (minuts)",
+    "timezone": "Zona horària",
+    "covers": "Cobreix",
+    "coversAll": "Tots els meus monitors",
+    "coversSome": "Monitors seleccionats",
+    "coversTag": "Monitors amb una etiqueta",
+    "deleteTitle": "Vols suprimir {{name}}?",
+    "day0": "Dg",
+    "day1": "Dl",
+    "day2": "Dt",
+    "day3": "Dc",
+    "day4": "Dj",
+    "day5": "Dv",
+    "day6": "Ds"
+  },
+  "pages": {
+    "none": "No hi ha pàgines d'estat",
+    "noneHint": "Una pàgina d'estat mostra a la gent com van els teus serveis, sense necessitat d'iniciar sessió.",
+    "add": "Afegeix pàgina",
+    "edit": "Edita la pàgina",
+    "about": "Pàgina",
+    "title": "Títol",
+    "slug": "Adreça",
+    "slugHint": "Lletra minúscules, números i guions. Aquesta és la part final de l'enllaç.",
+    "description": "Descripció",
+    "published": "Publicada",
+    "publishedHint": "Qualsevol persona amb l'enllaç pot veure els noms, els estats i el temps de funcionament. Mai les adreces ni els errors.",
+    "showLatency": "Mostra els temps de resposta",
+    "group": "Grup {{number}}",
+    "groupName": "Nom del grup",
+    "addGroup": "Afegeix grup",
+    "notes": "Notes",
+    "noteTitle": "Títol",
+    "noteBody": "Text",
+    "noteLevel": "Nivell",
+    "levelInfo": "Informació",
+    "levelWarning": "Avís",
+    "levelCritical": "Crític",
+    "post": "Publica",
+    "resolve": "Resol",
+    "resolved": "Resolt",
+    "live": "Publicada",
+    "draft": "Esborrany",
+    "open": "Obre la pàgina",
+    "deleteTitle": "Vols suprimir {{name}}?",
+    "offTitle": "Les pàgines públiques estan desactivades",
+    "offHint": "Un administrador les ha desactivat a la configuració del complement, per la qual cosa aquests enllaços no mostren res."
+  },
+  "widget": {
+    "name": "Temps de funcionament",
+    "description": "Quants monitors estan en funcionament o aturats.",
+    "up": "En funcionament",
+    "down": "Aturat"
+  },
+  "card": {
+    "title": "Temps de funcionament",
+    "overview": "Tots els monitors",
+    "attention": "Monitors amb problemes",
+    "monitors": "Monitors",
+    "allGood": "Tot funciona correctament.",
+    "gone": "Aquest monitor ha desaparegut.",
+    "loading": "Carregant...",
+    "month": "30 dies: {{value}}"
+  },
+  "host": {
+    "none": "No hi ha monitors per a aquest host.",
+    "add": "Afegeix un monitor",
+    "down_one": "{{count}} monitor inactiu",
+    "down_many": "{{count}} monitors inactius",
+    "down_other": "{{count}} monitors inactius"
+  },
+  "permissions": {
+    "view": {
+      "title": "Veure monitors",
+      "description": "Veure monitors, historial i incidents."
+    },
+    "manage": {
+      "title": "Gestionar monitors",
+      "description": "Afegeix i modifica monitors i finestres de manteniment."
+    },
+    "privateTargets": {
+      "title": "Comprovar adreces privades",
+      "description": "Apunta els monitors a adreces privades de LAN, Tailscale i altres que el servidor Termix pugui arribar."
+    },
+    "runCommands": {
+      "title": "Executar comandes",
+      "description": "Afegeix monitors que executin una comanda en un host a través d'SSH."
+    },
+    "publish": {
+      "title": "Publicar pàgines d'estat",
+      "description": "Fes que les pàgines d'estat siguin visibles per a qualsevol persona que tingui l'enllaç."
+    }
+  },
+  "settings": {
+    "admin": {
+      "minIntervalSeconds": {
+        "label": "Interval de comprovació mínim",
+        "description": "En segons. Els monitors que s'hi connecten a través d'SSH mai no baixen de 60."
+      },
+      "defaultIntervalSeconds": {
+        "label": "Interval de comprovació predeterminat",
+        "description": "En segons, per als monitors nous."
+      },
+      "historyDays": {
+        "label": "Conservar l'historial durant",
+        "description": "Dies de xifres d'activitat diària i incidents."
+      },
+      "publicPages": {
+        "label": "Permetre pàgines d'estat públiques",
+        "description": "Desactiva-ho per amagar totes les pàgines d'estat. Les URL de notificacions continuen funcionant."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Obrir el panell amb cada terminal",
+        "description": "Mostra el panell d'activitat quan s'obre una terminal."
+      },
+      "companionSide": {
+        "label": "Costat del panell",
+        "description": "On s'obre el panell d'activitat.",
+        "right": "Dreta",
+        "left": "Esquerra",
+        "bottom": "Inferior"
+      },
+      "companionSize": {
+        "label": "Mida del panell",
+        "description": "Amplada o alçada del panell en píxels."
+      },
+      "companionEdgeButton": {
+        "label": "Mostrar el botó del costat",
+        "description": "Un botó al costat de la terminal que obre el panell."
+      }
+    }
+  },
+  "operations": {
+    "monitor": "Monitor",
+    "summary": {
+      "title": "Resum d'activitat"
+    },
+    "monitors": {
+      "title": "Llista de monitors"
+    },
+    "hostMonitors": {
+      "title": "Monitors d'aquest host"
+    },
+    "hostHealth": {
+      "title": "Activitat"
+    },
+    "run": {
+      "title": "Comprovar un monitor ara"
+    },
+    "pause": {
+      "title": "Pausar un monitor"
+    },
+    "resume": {
+      "title": "Reprendre un monitor"
+    },
+    "addHost": {
+      "title": "Afegeix un monitor d'activitat"
+    },
+    "events": {
+      "down": "Un monitor ha quedat inactiu",
+      "up": "Un monitor ha tornat a estar actiu",
+      "cert": "Un certificat està a punt de caducar"
+    },
+    "resource": {
+      "title": "Monitors",
+      "type": "Tipus",
+      "status": "Estat",
+      "uptime": "Activitat de 30 dies"
+    }
+  }
+}

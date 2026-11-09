@@ -1,0 +1,226 @@
+{
+  "plugin": {
+    "name": "IP-KVM",
+    "description": "Visualizza e controlla le macchine tramite dispositivi PiKVM, NanoKVM e JetKVM."
+  },
+  "tab": {
+    "title": "KVM"
+  },
+  "card": {
+    "title": "KVM",
+    "loading": "Caricamento"
+  },
+  "host": {
+    "open": "KVM"
+  },
+  "permissions": {
+    "view": {
+      "title": "Visualizza KVM",
+      "description": "Apri la scheda KVM e vedi quali KVM sono online e quale stato di alimentazione riportano."
+    },
+    "power": {
+      "title": "Controlla l'alimentazione",
+      "description": "Accendi e spegni le macchine e riavviale tramite il loro KVM, oppure svegliale con Wake-on-LAN."
+    },
+    "console": {
+      "title": "Usa lo schermo",
+      "description": "Visualizza lo schermo di una macchina e usa la sua tastiera e il suo mouse."
+    },
+    "media": {
+      "title": "Usa i supporti virtuali",
+      "description": "Monta ed espelli immagini ISO su una macchina."
+    },
+    "manage": {
+      "title": "Gestisci KVM",
+      "description": "Aggiungi, modifica e rimuovi KVM."
+    }
+  },
+  "settings": {
+    "admin": {
+      "maxSessionMinutes": {
+        "label": "Sessione schermo massima (minuti)",
+        "description": "Una sessione schermo termina dopo questo tempo. Usa 0 per nessun limite."
+      }
+    }
+  },
+  "description": "Aggiungi i tuoi IP-KVM per visualizzare e controllare le macchine dietro di essi. Termix si connette al KVM, quindi lo schermo funziona anche quando il tuo browser non può raggiungerlo. Le credenziali di accesso sono memorizzate in modo crittografato e non vengono mai mostrate di nuovo.",
+  "summary": "{{count}} KVM, {{attention}} offline",
+  "empty": "Nessun KVM ancora.",
+  "add": "Aggiungi KVM",
+  "edit": "Modifica",
+  "delete": "Elimina",
+  "back": "Indietro",
+  "saved": "Salvato",
+  "deleteConfirm": "Eliminare {{name}}?",
+  "status": {
+    "unknown": "Non ancora letto",
+    "up": "Online",
+    "down": "Offline"
+  },
+  "drivers": {
+    "pikvm": "PiKVM",
+    "glkvm": "GL.iNet Comet (GLKVM)",
+    "nanokvm": "NanoKVM",
+    "jetkvm": "JetKVM"
+  },
+  "fields": {
+    "username": "Nome utente",
+    "password": "Password"
+  },
+  "power": {
+    "on": "Acceso",
+    "off": "Spento",
+    "unknown": "Sconosciuto",
+    "state": "La macchina è {{state}}.",
+    "sent": "Richiesta a {{name}} di cambiare alimentazione",
+    "sentShort": "Comando di alimentazione inviato",
+    "wake": "Wake on LAN",
+    "woke": "Pacchetto di risveglio inviato",
+    "action": {
+      "on": "Accendi",
+      "off": "Spegni",
+      "graceful-shutdown": "Spegnimento",
+      "reset": "Riavvia"
+    },
+    "confirm": {
+      "on": "Accendere {{name}}?",
+      "off": "Spegnere {{name}}? Il sistema non si spegne in modo pulito.",
+      "graceful-shutdown": "Chiedere a {{name}} di spegnersi?",
+      "reset": "Riavviare {{name}}? Il sistema si riavvia immediatamente."
+    }
+  },
+  "form": {
+    "addTitle": "Aggiungi KVM",
+    "editTitle": "Modifica KVM",
+    "device": "KVM",
+    "access": "Accesso",
+    "machine": "Macchina dietro il KVM",
+    "type": "Tipo",
+    "name": "Nome",
+    "address": "Indirizzo",
+    "port": "Porta",
+    "host": "Host Termix",
+    "hostHint": "Collega il KVM all'host a cui appartiene. In questo modo seguirà le impostazioni di condivisione di quell'host e apparirà nel relativo menu.",
+    "noHost": "Nessuno",
+    "poll": "Controlla ogni (secondi)",
+    "pollHint": "Almeno 30 secondi.",
+    "scheme": "Connessione",
+    "ca": "Certificato",
+    "caHint": "Incolla il PEM di un'autorità di certificazione privata, oppure usa \"Fidati di questo certificato\" per un KVM con un certificato autofirmato. Lascia vuoto per un certificato già attendibile.",
+    "caSet": "Un certificato è salvato. Incollane uno nuovo per sostituirlo.",
+    "keepLogin": "Lascia vuoto per mantenere le credenziali salvate",
+    "test": "Testa la connessione",
+    "testOk": "Il KVM ha risposto ({{model}}).",
+    "testNeedsLogin": "Inserisci nuovamente le credenziali per eseguire il test.",
+    "mac": "Indirizzo MAC",
+    "macHint": "L'indirizzo della scheda di rete della macchina, per Wake-on-LAN.",
+    "broadcast": "Indirizzo di broadcast",
+    "broadcastHint": "Destinazione del pacchetto di risveglio. Lascia vuoto per 255.255.255.255.",
+    "save": "Salva",
+    "add": "Aggiungi",
+    "trust": "Fidati di questo certificato",
+    "trustTitle": "Fidarti del certificato di questa KVM?",
+    "trustHint": "Termix comunicherà con questa KVM solo se presenta esattamente questo certificato. Verifica che l'impronta digitale corrisponda a quella sul dispositivo.",
+    "certName": "Nome: {{name}}",
+    "certValid": "valido fino al {{date}}",
+    "certExpired": "scaduto il {{date}}",
+    "pinned": "Certificato attendibile",
+    "unpin": "Rimuovi"
+  },
+  "view": {
+    "screen": "Schermo",
+    "power": "Alimentazione",
+    "media": "Media virtuali",
+    "info": "Info",
+    "refresh": "Leggi ora",
+    "type": "Tipo",
+    "address": "Indirizzo",
+    "model": "Modello",
+    "version": "Software",
+    "hostname": "Nome",
+    "video": "Video",
+    "noSignal": "Nessun segnale",
+    "status": "KVM",
+    "jetHint": "Il video di JetKVM va direttamente dal dispositivo JetKVM al tuo browser, quindi il browser deve poterlo raggiungere sulla rete."
+  },
+  "screen": {
+    "connecting": "Connessione in corso",
+    "failed": "Impossibile aprire la schermata.",
+    "ended": "La sessione della schermata è terminata.",
+    "hint": "Clicca sulla schermata per digitare.",
+    "shortcuts": "Scorciatoie",
+    "shortcut": {
+      "ctrl-alt-del": "Ctrl+Alt+Canc",
+      "alt-tab": "Alt+Tab",
+      "alt-f4": "Alt+F4",
+      "ctrl-esc": "Ctrl+Esc",
+      "win-l": "Win+L",
+      "win-d": "Win+D",
+      "ctrl-alt-f1": "Ctrl+Alt+F1",
+      "ctrl-alt-f2": "Ctrl+Alt+F2",
+      "ctrl-alt-f7": "Ctrl+Alt+F7",
+      "print-screen": "Stamp"
+    },
+    "paste": "Incolla testo",
+    "pasteLabel": "Testo da digitare sulla macchina",
+    "type": "Digita",
+    "snapshot": "Screenshot",
+    "fullscreen": "Schermo intero",
+    "exitFullscreen": "Esci dalla modalità schermo intero",
+    "reconnect": "Riconnetti"
+  },
+  "media": {
+    "none": "Nessuna immagine è montata.",
+    "mountedNow": "Montata: {{name}}",
+    "as": "Mostrala come",
+    "cd": "Unità CD",
+    "usb": "Unità USB",
+    "empty": "Non ci sono immagini su questo KVM.",
+    "mount": "Monta",
+    "eject": "Espelli",
+    "mountedDone": "Immagine montata",
+    "ejected": "Immagine espulsa",
+    "url": "Scarica un'immagine da",
+    "name": "Salvala come",
+    "fetch": "Scarica sul KVM",
+    "fetched": "Immagine scaricata"
+  },
+  "operations": {
+    "device": "KVM",
+    "list-devices": {
+      "title": "Elenca KVM"
+    },
+    "poll": {
+      "title": "Leggi un KVM ora"
+    },
+    "power-state": {
+      "title": "Ottieni stato di alimentazione"
+    },
+    "power-on": {
+      "title": "Accendi"
+    },
+    "graceful-shutdown": {
+      "title": "Spegni"
+    },
+    "power-off": {
+      "title": "Spegni forzatamente"
+    },
+    "reset": {
+      "title": "Riavvia"
+    },
+    "wake": {
+      "title": "Wake on LAN"
+    },
+    "eject-media": {
+      "title": "Espelli immagine"
+    },
+    "health": {
+      "title": "Stato KVM"
+    }
+  },
+  "widget": {
+    "name": "Dispositivi KVM",
+    "description": "Quali dei tuoi IP-KVM sono attivi.",
+    "summary": "{{up}} di {{total}} attivi"
+  }
+}

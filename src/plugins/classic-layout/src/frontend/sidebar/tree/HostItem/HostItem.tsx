@@ -133,7 +133,7 @@ export function buildStatusTooltip(
 }
 
 async function writeClipboardText(value: string): Promise<void> {
-  await copyToClipboard(value);
+  if (!(await copyToClipboard(value))) throw new Error("copy failed");
 }
 
 function canCopyHostPassword(host: Host): boolean {
@@ -387,19 +387,27 @@ export function HostItem({
     field: "password" | "sudoPassword",
   ) {
     e.stopPropagation();
-    const password = await getHostPassword(Number(host.id), field);
-    if (!password) {
-      toast.error(t("nav.failedToCopyPassword"));
-      return;
-    }
-
     try {
+      const password = await getHostPassword(Number(host.id), field);
+      if (!password) {
+        toast.error(t("nav.failedToCopyPassword"));
+        return;
+      }
       await writeClipboardText(password);
       toast.success(t("nav.passwordCopied"));
     } catch {
       toast.error(t("nav.failedToCopyPassword"));
     }
   }
+
+  function copyText(value: string) {
+    writeClipboardText(value).then(
+      () => toast.success(t("hosts.copiedToClipboard")),
+      () => toast.error(t("common.copyFailed")),
+    );
+  }
+
+  const copyLinkActions = pluginActions.filter((action) => action.copyUrlView);
 
   if (query && !hostMatchesQuery(host, query)) return null;
 
@@ -956,13 +964,12 @@ export function HostItem({
           <DropdownMenuItem
             onClick={(e) => {
               e.stopPropagation();
-              writeClipboardText(
+              copyText(
                 formatHostAddress(host, {
                   showUsername: true,
                   showPort: false,
                 }),
               );
-              toast.success(t("hosts.copiedToClipboard"));
             }}
           >
             <Copy className="size-3.5 mr-2" />
@@ -998,25 +1005,23 @@ export function HostItem({
               {t("nav.copySudoPassword")}
             </DropdownMenuItem>
           )}
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>
-              <Link className="size-3.5 mr-2" />
-              {t("hosts.copyLink")}
-            </DropdownMenuSubTrigger>
-            <DropdownMenuSubContent>
-              {pluginActions
-                .filter((action) => action.copyUrlView)
-                .map((action) => {
+          {copyLinkActions.length > 0 && (
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <Link className="size-3.5 mr-2" />
+                {t("hosts.copyLink")}
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent>
+                {copyLinkActions.map((action) => {
                   const Icon = action.icon;
                   return (
                     <DropdownMenuItem
                       key={action.id}
                       onClick={(e) => {
                         e.stopPropagation();
-                        writeClipboardText(
+                        copyText(
                           `${window.location.origin}?view=${encodeURIComponent(action.copyUrlView!)}&hostId=${host.id}`,
                         );
-                        toast.success(t("hosts.copiedToClipboard"));
                       }}
                     >
                       <Icon className="size-3.5 mr-2" />
@@ -1026,8 +1031,9 @@ export function HostItem({
                     </DropdownMenuItem>
                   );
                 })}
-            </DropdownMenuSubContent>
-          </DropdownMenuSub>
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+          )}
           {allowDelete && (
             <>
               <DropdownMenuSeparator />

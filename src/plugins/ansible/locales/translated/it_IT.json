@@ -1,0 +1,211 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Esegui playbook e comandi ad-hoc di Ansible da un host di controllo, con un inventario creato dai tuoi host Termix."
+  },
+  "common": {
+    "save": "Salva",
+    "cancel": "Annulla",
+    "back": "Indietro",
+    "delete": "Elimina"
+  },
+  "permissions": {
+    "use": {
+      "title": "Usa Ansible",
+      "description": "Visualizza playbook ed esecuzioni sugli host di controllo a cui puoi accedere. Modifica file ed esegui Ansible sugli host che puoi modificare."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Usa questo host come host di controllo Ansible. Ansible deve essere installato su di esso."
+      },
+      "projectDir": {
+        "label": "Cartella progetto",
+        "description": "La cartella su questo host contenente i tuoi playbook, ruoli e ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "File password Vault",
+        "description": "Un file su questo host contenente la password di Ansible Vault. Lascia vuoto se non usi Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Sola lettura",
+        "description": "Mostra playbook ed esecuzioni, ma non modificare mai file o avviare esecuzioni su questo host."
+      },
+      "alertRuns": {
+        "label": "Avvisa in caso di errore nell'esecuzione",
+        "description": "Invia un avviso quando un'esecuzione su questo host termina con errore o viene persa. Controllato quando viene letta lo stato dell'esecuzione."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Apri Ansible da un host.",
+    "error": "Impossibile caricare Ansible da questo host.",
+    "disabled": "Ansible è disabilitato per questo host. Attivalo nelle impostazioni dell'host.",
+    "refresh": "Aggiorna",
+    "readOnly": "Sola lettura",
+    "notInstalled": "Ansible non installato",
+    "notInstalledTitle": "Ansible non è installato su questo host",
+    "notInstalledHint": "Installa ansible-core su questo host, ad esempio con pipx o il tuo gestore pacchetti, quindi aggiorna.",
+    "noSshpass": "sshpass non è installato su questo host. Gli host che accedono con una password falliranno.",
+    "viewPlaybooks": "Playbook",
+    "viewRuns": "Esecuzioni",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Fatti"
+  },
+  "files": {
+    "add": "Nuovo file",
+    "search": "Cerca file",
+    "empty": "Nessun file nella cartella del progetto.",
+    "noMatch": "Nessun file corrisponde.",
+    "noProject": "La cartella {{dir}} non esiste su questo host. Creala o imposta un'altra cartella Progetto nelle impostazioni dell'host.",
+    "listFailed": "Impossibile elencare i file del progetto.",
+    "loadFailed": "Impossibile leggere quel file.",
+    "saved": "File salvato",
+    "saveFailed": "Impossibile salvare quel file.",
+    "playbook": "Playbook",
+    "run": "Esegui",
+    "newTitle": "Nuovo file",
+    "name": "Nome file",
+    "nameHint": "Un percorso all'interno della cartella del progetto, come site.yml o roles/web/tasks/main.yml.",
+    "hint": "Un playbook viene verificato per la sintassi prima del salvataggio. Il file vecchio rimane se la verifica fallisce.",
+    "text": "Testo del file",
+    "deleteTitle": "Eliminare questo file?"
+  },
+  "targets": {
+    "search": "Cerca host",
+    "addShown": "Aggiungi visualizzati",
+    "clear": "Cancella",
+    "empty": "Nessun host trovato.",
+    "count": "{{count}} selezionati",
+    "failed": "Impossibile caricare i tuoi host."
+  },
+  "run": {
+    "title": "Esegui {{playbook}}",
+    "start": "Esegui",
+    "startCheck": "Esegui in modalità check",
+    "startFailed": "Impossibile avviare l'esecuzione.",
+    "source": "Host",
+    "sourceProject": "Inventario del progetto",
+    "sourceTermix": "Host di Termix",
+    "sourceProjectHint": "Usa l'inventario da ansible.cfg o un file nel progetto.",
+    "sourceTermixHint": "Seleziona gli host da Termix. Le cartelle diventano gruppi folder_ e i tag diventano gruppi tag_. Tutti fanno parte del gruppo termix.",
+    "inventory": "File di inventario",
+    "inventoryHint": "Un percorso all'interno della cartella del progetto. Lascia vuoto per usare ansible.cfg.",
+    "check": "Modalità di controllo",
+    "checkHint": "Mostra cosa verrebbe modificato senza apportare alcuna modifica.",
+    "diff": "Mostra differenze",
+    "diffHint": "Mostra le modifiche apportate ai file.",
+    "become": "Esegui come root",
+    "becomeHint": "Usa sudo sugli host. Per gli host di Termix viene usata una password Sudo salvata.",
+    "limit": "Limite",
+    "limitHint": "Esegui solo su questi host o gruppi.",
+    "verbosity": "Livello di dettaglio",
+    "verbosityOff": "Normale",
+    "tags": "Tag",
+    "skipTags": "Ignora tag",
+    "extraVars": "Variabili extra",
+    "extraVarsHint": "Una chiave=valore per riga."
+  },
+  "runs": {
+    "title": "Esecuzione",
+    "empty": "Nessuna esecuzione ancora.",
+    "loadFailed": "Impossibile caricare le esecuzioni.",
+    "stop": "Interrompi",
+    "stopFailed": "Impossibile interrompere l'esecuzione.",
+    "deleteTitle": "Eliminare questa esecuzione?",
+    "deleteFailed": "Impossibile eliminare l'esecuzione.",
+    "checkMode": "Controllo",
+    "truncated": "Visualizzazione della fine di un output lungo.",
+    "noOutput": "Nessun output ancora.",
+    "state": {
+      "running": "In esecuzione",
+      "ok": "Completato",
+      "failed": "Fallito",
+      "cancelled": "Interrotto",
+      "lost": "Perso"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Fatti"
+    },
+    "recap": {
+      "host": "Host",
+      "ok": "OK",
+      "changed": "Modificato",
+      "unreachable": "Inaccessibile",
+      "failed": "Fallito",
+      "skipped": "Saltato"
+    }
+  },
+  "adhoc": {
+    "hint": "Esegui un modulo sugli host, come ansible all -m ping.",
+    "pattern": "Modello host",
+    "patternHint": "Un host, un gruppo o all.",
+    "module": "Modulo",
+    "moduleHint": "Ad esempio ping, command, shell, apt o systemd.",
+    "args": "Argomenti",
+    "argsHint": "Per command e shell questo è il comando. Per altri moduli sono coppie chiave=valore.",
+    "run": "Esegui"
+  },
+  "facts": {
+    "hint": "Raccogli i fatti dagli host con il modulo setup. Richiede host di Termix in modo che ciascuno abbia un accesso.",
+    "gather": "Raccogli fatti",
+    "gathering": "Raccolta in corso...",
+    "failed": "Impossibile raccogliere i fatti.",
+    "failedHost": "Fallito",
+    "none": "Nessun fatto è stato restituito. Apri l'esecuzione per vedere il motivo.",
+    "col": {
+      "host": "Host",
+      "os": "Sistema",
+      "kernel": "Kernel",
+      "cpu": "CPU",
+      "memory": "Memoria",
+      "address": "Indirizzo",
+      "uptime": "Tempo di attività"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Elenca playbook"
+    },
+    "run": {
+      "title": "Esegui playbook",
+      "playbook": "Playbook",
+      "limit": "Limite",
+      "tags": "Tag",
+      "check": "Modalità di controllo"
+    },
+    "runs": {
+      "title": "Elenca esecuzioni",
+      "resource": "Esecuzioni",
+      "started": "Avviato",
+      "check": "Modalità di controllo"
+    },
+    "failed": {
+      "title": "Esecuzioni fallite"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Verifica degli host in corso...",
+    "summary_one": "{{count}} esecuzione fallita su {{hosts}} host",
+    "summary_many": "{{count}} esecuzioni fallite su {{hosts}} host",
+    "summary_other": "{{count}} esecuzioni fallite su {{hosts}} host",
+    "refresh": "Verifica di nuovo",
+    "empty": "Abilita Ansible per un host per visualizzarne le esecuzioni qui.",
+    "failed_one": "{{count}} fallito",
+    "failed_many": "{{count}} falliti",
+    "failed_other": "{{count}} falliti",
+    "running_one": "{{count}} in esecuzione",
+    "running_many": "{{count}} in esecuzione",
+    "running_other": "{{count}} in esecuzione",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Nessuna esecuzione ancora"
+  }
+}

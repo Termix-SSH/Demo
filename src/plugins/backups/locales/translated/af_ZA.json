@@ -1,0 +1,451 @@
+{
+  "plugin": {
+    "name": "Back-ups",
+    "description": "Maak back-ups van vouers, databasisse en Docker-data op jou gasheer met restic, en blaai dan, laai af en herstel."
+  },
+  "common": {
+    "save": "Stoor",
+    "cancel": "Kanselleer",
+    "back": "Terug",
+    "delete": "Vee uit",
+    "done": "Klaar",
+    "loading": "Laai tans...",
+    "refresh": "Verfris",
+    "retry": "Probeer weer"
+  },
+  "permissions": {
+    "use": {
+      "title": "Gebruik Back-ups",
+      "description": "Stel back-up-take en -magasine op, voer back-ups uit, en blaai, laai af en herstel oomblikke op gasheer wat hulle kan redigeer."
+    }
+  },
+  "tab": {
+    "title": "Back-ups",
+    "viewJobs": "Take",
+    "viewRepos": "Magasine",
+    "viewHistory": "Geskiedenis"
+  },
+  "hostTab": {
+    "title": "Back-ups",
+    "noHost": "Maak Back-ups oop vanaf 'n gasheer.",
+    "viewJobs": "Take",
+    "viewSnapshots": "Oomblikke",
+    "viewHistory": "Geskiedenis",
+    "restic": "restic {{version}}",
+    "noRestic": "restic nie geïnstalleer nie",
+    "sudo": "Termix moet as root, of as 'n gebruiker met wagwoordlose sudo, aanmeld om back-ups op hierdie gasheer uit te voer.",
+    "statusFailed": "Kon nie hierdie gasheer lees nie"
+  },
+  "install": {
+    "missing": "restic is nie op hierdie gasheer geïnstalleer nie",
+    "tooOld": "restic op hierdie gasheer is ouer as 0.17",
+    "hint": "Back-ups gebruik restic. Installeer dit met die pakkethandhaerder, of van die restic-uitgawe op GitHub as die pakket te oud is.",
+    "button": "Installeer restic",
+    "working": "Installeer tans...",
+    "title": "Installeer restic?",
+    "desc": "Dit installeer restic op die gasheer as root.",
+    "confirm": "Installeer",
+    "done": "restic {{version}} is geïnstalleer",
+    "failed": "Kon nie restic installeer nie"
+  },
+  "status": {
+    "never": "Nooit uitgevoer nie",
+    "running": "Loop tans",
+    "success": "Klaar",
+    "warning": "Waarskuwings",
+    "failed": "Misluk",
+    "canceled": "Gestop"
+  },
+  "time": {
+    "justNow": "net nou",
+    "soon": "binne 'n oomblik",
+    "ago": {
+      "minutes_one": "{{count}} minuut gelede",
+      "minutes_other": "{{count}} minute gelede",
+      "hours_one": "{{count}} uur gelede",
+      "hours_other": "{{count}} uur gelede",
+      "days_one": "{{count}} dag gelede",
+      "days_other": "{{count}} dae gelede"
+    },
+    "in": {
+      "minutes_one": "binne {{count}} minuut",
+      "minutes_other": "binne {{count}} minute",
+      "hours_one": "binne {{count}} uur",
+      "hours_other": "binne {{count}} uur",
+      "days_one": "binne {{count}} dag",
+      "days_other": "binne {{count}} dae"
+    }
+  },
+  "jobs": {
+    "add": "Voeg taak by",
+    "empty": "Nog geen back-up-take nie",
+    "emptyHint": "Voeg 'n taak by om vouers, databasisse of Docker-data te back-up.",
+    "emptyNoRepo": "Voeg eers 'n magasyn by, sodat back-ups 'n plek het om te gaan.",
+    "loadFailed": "Kon nie die back-up-take laai nie",
+    "lastGood": "Laaste back-up {{when}}",
+    "noGood": "Nog geen back-up nie",
+    "next": "Volgende {{when}}",
+    "paused": "Gepouseer",
+    "run": "Voer nou uit",
+    "stop": "Stop",
+    "edit": "Redigeer",
+    "snapshots": "Oomblikke",
+    "started": "{{name}} begin",
+    "runFailed": "Kon nie die rugsteun begin nie"
+  },
+  "editor": {
+    "newTitle": "Nuwe rugsteuntaak",
+    "general": "Taak",
+    "host": "Gasheer",
+    "pickHost": "Kies 'n gasheer",
+    "name": "Naam",
+    "namePlaceholder": "Nagtelike rugsteun",
+    "repository": "Magasyn",
+    "pickRepository": "Kies 'n magasyn",
+    "noRepos": "Jy het geen magasyn wat hierdie gasheer kan gebruik nie. Voeg eers een by in die Rugsteune-oortjie.",
+    "repoLocked": "Slegs die eienaar van hierdie magasyn kan dit verander.",
+    "enabled": "Voer uit volgens skedule",
+    "enabledHint": "Skakel af om die skedule te pauseer. \"Voer nou uit\" werk steeds.",
+    "oneFileSystem": "Bly op een lêerstelsel",
+    "oneFileSystemHint": "Slaan ander skywe en aanhegtings oor wat binne die gekose vouers gevind word.",
+    "saved": "Taak gestoor",
+    "saveFailed": "Kon nie die taak stoor nie",
+    "deleteTitle": "Verwyder {{name}}?",
+    "deleteDesc": "Die taak word uit Termix verwyder. Sy oomblikke bly in die magasyn.",
+    "deleted": "Taak verwyder",
+    "deleteFailed": "Kon nie die taak verwyder nie"
+  },
+  "sources": {
+    "add": "Voeg by rugsteun",
+    "addPaths": "Vouers",
+    "addDatabase": "Databasis",
+    "addDocker": "Docker",
+    "remove": "Verwyder",
+    "paths": "Vouers en lêers",
+    "folders": "Paaie",
+    "foldersHint": "Een volledige pad per lyn.",
+    "excludes": "Slaan oor",
+    "excludesHint": "Een restic-patroon per lyn, soos *.log.",
+    "database": "Databasis",
+    "engine": "Tipe",
+    "engines": {
+      "mysql": "MySQL of MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Aanmelding",
+    "ownLogin": "Tik 'n aanmelding hier",
+    "noDatabasesPlugin": "Skakel die Databases-plug-in aan om 'n gestoorde aanmelding te kies.",
+    "address": "Adres",
+    "addressPlaceholder": "Leeg vir die plaaslike sokkel",
+    "port": "Hawe",
+    "username": "Gebruiker",
+    "password": "Wagwoord",
+    "passwordSaved": "Gestoor, laat leeg om dit te behou",
+    "runAs": "Voer uit as",
+    "runAsHint": "'n Linux-gebruiker om die dump as uit te voer, soos postgres. Leeg voer dit uit as root.",
+    "databases": "Databasisse",
+    "databasesHint": "Een naam per lyn. Laat leeg om almal te rugsteun.",
+    "sqliteFiles": "Databasislêers",
+    "sqliteFilesHint": "Een volledige pad per lyn. Elke lêer word veilig gekopieer terwyl dit in gebruik is.",
+    "docker": "Docker",
+    "stacks": "Stappe",
+    "volumes": "Volums",
+    "noStacks": "Geen compose-stappe gevind nie",
+    "noVolumes": "Geen volums gevind nie",
+    "dockerFailed": "Kon nie Docker op hierdie gasheer lys nie",
+    "stop": "Stop stapels tydens die rugsteun",
+    "stopHint": "Gekose stapels word eers gestop en daarna weer gestart, sodat hul lêers nie verander terwyl hulle gelees word nie."
+  },
+  "schedule": {
+    "title": "Skedule",
+    "manual": "Handmatig",
+    "daily": "Daagliks",
+    "weekly": "Weekliks",
+    "custom": "Aangepas",
+    "day": "Dag",
+    "time": "Tyd",
+    "cron": "Cron",
+    "cronHint": "Minute, uur, dag van die maand, maand, dag van die week.",
+    "cronInvalid": "Hierdie cron is nie geldig nie",
+    "timezone": "Tydsone",
+    "serverTime": "Bedienertyd",
+    "manualHint": "Hierdie taak loop slegs wanneer jy op Nou loop druk.",
+    "manualOnly": "Handmatig",
+    "next": "Volgende loop {{time}}",
+    "noNext": "Hierdie skedule loop nooit",
+    "dailyAt": "Daagliks om {{time}}",
+    "weeklyAt": "{{day}} om {{time}}",
+    "days": {
+      "0": "Sondag",
+      "1": "Maandag",
+      "2": "Dinsdag",
+      "3": "Woensdag",
+      "4": "Donderdag",
+      "5": "Vrydag",
+      "6": "Saterdag"
+    }
+  },
+  "keep": {
+    "title": "Behou",
+    "last": "Laaste",
+    "daily": "Daagliks",
+    "weekly": "Weekliks",
+    "monthly": "Maandeliks",
+    "yearly": "Jaarliks",
+    "hint": "Na elke rugsteun word ouer skietplekke van hierdie taak verwyder, sodat slegs hierdie behou word. Alle 0 behou alles."
+  },
+  "hooks": {
+    "title": "Opdragte",
+    "pre": "Voor",
+    "preHint": "Loop as root voor die rugsteun. As dit misluk, stop die rugsteun.",
+    "post": "Na",
+    "postHint": "Loop as root na die rugsteun, selfs wanneer dit misluk het. TERMIX_BACKUP_STATUS hou die resultaat."
+  },
+  "alerts": {
+    "title": "Waarskuwings",
+    "onFailure": "Waarskuwing wanneer 'n rugsteun misluk",
+    "onFailureHint": "Waarskuwings ook oor waarskuwings, en een keer wanneer dit weer werk.",
+    "staleDays": "Dae sonder 'n rugsteun",
+    "staleDaysHint": "Waarskuwing wanneer geen rugsteun vir hierdie aantal dae gewerk het nie. 0 skakel dit af."
+  },
+  "repos": {
+    "add": "Voeg bergplek by",
+    "empty": "Nog geen bergplekke nie",
+    "emptyHint": "'n Bergplek is waar rugsteuns gestoor word, soos 'n S3-bak of 'n gids.",
+    "loadFailed": "Kon nie die bergplekke laai nie",
+    "jobCount_one": "{{count}} taak",
+    "jobCount_other": "{{count}} take",
+    "newTitle": "Nuwe bergplek",
+    "storage": "Berging",
+    "name": "Naam",
+    "namePlaceholder": "Eksterne S3",
+    "kind": "Tipe",
+    "kinds": {
+      "s3": "S3-kompatibel",
+      "rest": "REST-bediener",
+      "rclone": "rclone",
+      "local": "Gids op 'n gasheer"
+    },
+    "endpoint": "Eindpunt",
+    "endpointHint": "Leeg vir AWS. Vir MinIO, R2, B2 of Wasabi, hul S3-adres.",
+    "region": "Streek",
+    "bucket": "Bak",
+    "prefix": "Map in die bak",
+    "prefixHint": "Opsioneel.",
+    "accessKeyId": "Toegangssleutel-ID",
+    "secretKey": "Geheime toegangssleutel",
+    "secretSaved": "Stoor, laat leeg om dit te behou",
+    "url": "Bedieneradres",
+    "username": "Gebruiker",
+    "usernameHint": "Leeg wanneer die bediener geen aanmelding het nie.",
+    "restPassword": "Wagwoord",
+    "remote": "Afstandse naam",
+    "remoteHint": "Slegs letters, syfers en _.",
+    "path": "Pad",
+    "rcloneConfig": "rclone-konfigurasie",
+    "rcloneHint": "Die reëls van die afstandse eenheid uit rclone.conf. Voer rclone config op jou rekenaar uit om hulle te skep. rclone moet op die gasheerbedieners geïnstalleer wees.",
+    "rcloneSaved": "Stoor, laat leeg om dit te behou",
+    "host": "Gasheerbediener",
+    "pickHost": "Kies 'n gasheerbediener",
+    "folder": "Map",
+    "folderHint": "Slegs take op hierdie gasheerbediener kan dit gebruik. 'n Gemonteerde skyf is die beste.",
+    "password": "Versleuteling",
+    "resticPassword": "Magasynwagwoord",
+    "passwordHint": "Laat leeg en Termix skep 'n sterk een. Hou 'n kopie ergens veilig: sonder dit kan die rugsteunings nie gelees word nie.",
+    "passwordKeep": "Stoor, laat leeg om dit te behou",
+    "passwordChangeHint": "Dit verander slegs wat Termix stuur. Dit verander nie die wagwoord van 'n bestaande magasyn nie.",
+    "reveal": "Wys wagwoord",
+    "revealTitle": "Wys die magasynwagwoord?",
+    "revealDesc": "Enigeen wat dit en die stoorpleksleutels het, kan elke rugsteuning in hierdie magasyn lees. Dit word in die ouditeringlogboek geskryf.",
+    "revealFailed": "Kon nie die wagwoord lees nie",
+    "copy": "Kopieer",
+    "copied": "Gekopieer",
+    "check": "Toets",
+    "checkFrom": "Toets vanaf",
+    "checkFromHint": "Die gasheerbediener wat die magasyn oopmaak. Dit benodig restic.",
+    "checkButton": "Toets",
+    "initButton": "Toets en stel op",
+    "installRclone": "Installeer rclone op hierdie gasheerbediener",
+    "rcloneInstalled": "rclone {{version}} is geïnstalleer.",
+    "rcloneFailed": "Kon nie rclone installeer nie",
+    "checking": "Toets...",
+    "opened": "Die magasyn het goed oopgemaak.",
+    "created": "Die magasyn is opgestel en gereed.",
+    "checkFailed": "Kon nie die magasyn oopmaak nie",
+    "checkNext": "Stoor. Toets dit vanaf 'n gasheerbediener om dit op te stel.",
+    "saved": "Magasyn gestoor",
+    "saveFailed": "Kon nie die magasyn stoor nie",
+    "deleteTitle": "Vee {{name}} uit?",
+    "deleteDesc": "Dit word slegs uit Termix verwyder. Die rugsteunings bly in die stoorplek.",
+    "deleted": "Magasyn uitgevee",
+    "deleteFailed": "Kon nie die magasyn uitvee nie"
+  },
+  "snapshots": {
+    "noJobs": "Voeg eers 'n rugsteuntaak by.",
+    "job": "Taak",
+    "titleFor": "Oomblikke van {{name}}",
+    "empty": "Nog geen oomblikke nie",
+    "loadFailed": "Kon nie die oomblikke lees nie",
+    "latest": "Nuutste",
+    "files_one": "{{count}} lêer",
+    "files_other": "{{count}} lêers",
+    "browse": "Blader",
+    "delete": "Vee uit",
+    "deleteTitle": "Vee hierdie oomblikopname uit?",
+    "deleteDesc": "Die oomblikopname van {{time}} word permanent uit die bergplek verwyder.",
+    "deleted": "Oomblikopname uitgevee",
+    "deleteFailed": "Kon nie die oomblikopname uitvee nie",
+    "browseTitle": "Oomblikopname {{time}}",
+    "root": "Wortel",
+    "emptyFolder": "Hierdie gids is leeg",
+    "filesFailed": "Kon nie hierdie gids lys nie",
+    "pick": "Kies",
+    "download": "Laai af",
+    "downloadZip": "Laai af as zip",
+    "downloadFailed": "Kon nie aflaai nie",
+    "restoreAll": "Herstel alles",
+    "restorePicked_one": "Herstel {{count}} item",
+    "restorePicked_other": "Herstel {{count}} items"
+  },
+  "restore": {
+    "title": "Herstel",
+    "what": "Wat",
+    "everything": "Alles in die oomblikopname.",
+    "more_one": "en {{count}} meer",
+    "more_other": "en {{count}} meer",
+    "where": "Waar",
+    "host": "Gasheer",
+    "hostHint": "Enige gasheer wat jy kan redigeer en wat toegang tot die bergplek het.",
+    "localOnly": "Hierdie bergplek is 'n gids op sy gasheer, dus kan dit slegs daar herstel word.",
+    "toFolder": "Na 'n gids",
+    "toOriginal": "Waar dit was",
+    "folder": "Gids",
+    "folderHint": "Lêers behou hul volledige pad binne hierdie gids.",
+    "originalWarning": "Lêers word terug na hul oorspronklike plek geskryf en kan wat daar nou is vervang.",
+    "overwrite": "Lêers wat reeds bestaan",
+    "overwriteOptions": {
+      "if-changed": "Vervang wanneer verander",
+      "always": "Altyd vervang",
+      "if-newer": "Vervang wanneer die rugsteun nuwer is",
+      "never": "Nooit vervang nie"
+    },
+    "start": "Herstel",
+    "started": "Herstel begin",
+    "failed": "Kon nie die herstel begin nie"
+  },
+  "run": {
+    "title": "Voer uit",
+    "backupTitle": "Rugsteun van {{name}}",
+    "restoreTitle": "Herstel van {{name}}",
+    "loadFailed": "Kon nie die uitvoering laai nie",
+    "progress": "Vordering",
+    "preparing": "Maak gereed...",
+    "progressLine": "{{percent}}% | {{files}} van {{totalFiles}} lêers | {{bytes}} van {{totalBytes}}",
+    "left": "{{time}} oor",
+    "details": "Besonderhede",
+    "started": "Begin",
+    "finished": "Klaar",
+    "trigger": "Begin deur",
+    "triggers": {
+      "manual": "Voer nou uit",
+      "schedule": "Skedule",
+      "operation": "Termix-aksie"
+    },
+    "snapshot": "Oomblikopname",
+    "target": "Herstel na",
+    "files": "Lêers",
+    "filesLine": "{{total}} lêers, {{added}} nuut, {{changed}} verander",
+    "size": "Grootte",
+    "added": "Bygevoeg tot die bergplek",
+    "took": "Het geduur",
+    "log": "Logboek",
+    "noLog": "Nog geen logboek nie.",
+    "stopTitle": "Stop hierdie uitvoering?",
+    "stopDesc": "A 'n gestopte rugsteuning word geen oomblikopname gestoor nie. 'n Gestopte herstel laat die lêers wat tot dusver herstel is, soos hulle is.",
+    "stopSent": "Stop",
+    "stopFailed": "Kon nie die uitvoer stop nie"
+  },
+  "history": {
+    "empty": "Nog niks is uitgevoer nie",
+    "loadFailed": "Kon nie die geskiedenis laai nie",
+    "status": "Status",
+    "job": "Taak",
+    "host": "Gasheer",
+    "kind": "Tipe",
+    "kinds": {
+      "backup": "Rugsteuning",
+      "restore": "Herstel"
+    },
+    "started": "Begin",
+    "took": "Het geduur",
+    "size": "Grootte"
+  },
+  "card": {
+    "title": "Rugsteunings",
+    "all": "Alle rugsteuningstake",
+    "oneJob": "Een rugsteuningstaak",
+    "empty": "Nog geen rugsteuningstake nie.",
+    "gone": "Hierdie rugsteuningstaak is verwyder.",
+    "open": "Maak oop"
+  },
+  "operations": {
+    "list": {
+      "title": "Lys rugsteuningstake"
+    },
+    "failed": {
+      "title": "Mislukte rugsteunings"
+    },
+    "run": {
+      "title": "Voer rugsteuning uit"
+    },
+    "cancel": {
+      "title": "Stop rugsteuning"
+    },
+    "snapshots": {
+      "title": "Lys oomblikopnames"
+    },
+    "events": {
+      "finished": "Rugsteuning voltooi",
+      "failed": "Rugsteuning het misluk"
+    },
+    "jobs": {
+      "title": "Rugsteuningstake",
+      "lastSuccess": "Laaste rugsteuning",
+      "nextRun": "Volgende uitvoering",
+      "size": "Grootte"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Wys rugsteuningspaneel in terminale",
+        "description": "Laat die rugsteuningspaneel oopmaak langs hierdie gasheer se SSH-terminal."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Maak die rugsteuningspaneel oop met nuwe terminale",
+        "description": "Wys die rugsteuningspaneel langs elke SSH-terminal wat dit ingeskakel het. Jy kan dit steeds oopmaak en sluit vanaf die knoppie aan die regterkant."
+      },
+      "companionSide": {
+        "label": "Rugsteuningspaneel se kant",
+        "description": "Waar die rugsteuningspaneel langs 'n terminal sit.",
+        "right": "Regs",
+        "left": "Links",
+        "bottom": "Onder"
+      },
+      "companionSize": {
+        "label": "Rugsteuningspaneel se grootte",
+        "description": "Wyde in pixels, of hoogte wanneer dit onder is. Jy kan ook die rand sleep."
+      },
+      "companionEdgeButton": {
+        "label": "Wys die paneelknoppie",
+        "description": "Wys 'n klein knoppie aan die regterrand van 'n terminal wat die rugsteuningspaneel oopmaak."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Wissel rugsteuningspaneel"
+  }
+}

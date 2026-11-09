@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Administrer DNS-optegnelser og domæner på tværs af Cloudflare, Route 53, Namecheap og andre udbydere."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domæner",
+    "loading": "Indlæser",
+    "empty": "Ingen domæner endnu. Åbn DNS for at tilføje en login.",
+    "ok": "{{domains}} domæner, ingen udløber snart",
+    "accounts": "{{count}} logins",
+    "failingLinks": "{{count}} linkede optegnelser fejler"
+  },
+  "permissions": {
+    "view": {
+      "title": "Se DNS",
+      "description": "Åbn DNS-fanen og se zoner, optegnelser, domæner og sundhedstjek."
+    },
+    "edit": {
+      "title": "Ændre DNS-optegnelser",
+      "description": "Tilføj, ændr og slet optegnelser, importer zonefiler og opdater domæner."
+    },
+    "manage": {
+      "title": "Administrer DNS-logins",
+      "description": "Tilføj udbyder-logins, link optegnelser til værter, overvåg domæner og gendan zonekopier."
+    }
+  },
+  "operations": {
+    "zone": "Zone",
+    "type": "Type",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Navn",
+    "content": "Værdi",
+    "contentOptional": "Værdi (lad være tom for at matche alle)",
+    "ttl": "TTL i sekunder",
+    "label": "Etiket",
+    "zones": {
+      "title": "Liste over DNS-zoner"
+    },
+    "records": {
+      "title": "Liste over DNS-optegnelser"
+    },
+    "domains": {
+      "title": "Liste over domæner og udløbsdatoer"
+    },
+    "check": {
+      "title": "Tjek en zone"
+    },
+    "upsert": {
+      "title": "Sæt en DNS-optegnelse"
+    },
+    "delete": {
+      "title": "Slet en DNS-optegnelse"
+    },
+    "snapshot": {
+      "title": "Gem en kopi af en zone"
+    },
+    "links": {
+      "title": "Opdater linkede optegnelser"
+    },
+    "expiry": {
+      "title": "Domæneudløb"
+    }
+  },
+  "description": "Tilføj dine DNS- og registrar-logins for at administrere optegnelser og overvåge domæner på ét sted. Nøgler gemmes krypteret og vises aldrig igen.",
+  "summary": "{{zones}} zoner, {{domains}} domæner",
+  "saved": "Gemt",
+  "delete": "Slet",
+  "edit": "Rediger",
+  "back": "Tilbage",
+  "refresh": "Opdater",
+  "section": {
+    "zones": "Zoner",
+    "domains": "Domæner",
+    "links": "Links",
+    "accounts": "Logins"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "API-token",
+    "accessKeyId": "Adgangsnøgle-ID",
+    "secretAccessKey": "Hemmelig adgangsnøgle",
+    "sessionToken": "Sessionstoken (valgfrit)",
+    "apiUser": "API-bruger",
+    "apiKey": "API-nøgle",
+    "userName": "Brugernavn (hvis forskelligt fra API-brugeren)",
+    "clientIp": "Tilladt IP-adresse",
+    "apiSecret": "API-hemmelighed",
+    "environment": "Miljø",
+    "environment_production": "Produktion",
+    "environment_ote": "Test (OTE)",
+    "secretApiKey": "Hemmelig API-nøgle",
+    "token": "Personlig adgangstoken"
+  },
+  "zones": {
+    "empty": "Ingen zoner endnu.",
+    "emptyHint": "Tilføj en provider-login under Logins for at se dens zoner."
+  },
+  "zone": {
+    "records": "Poster",
+    "health": "Sundhed",
+    "copies": "Kopier",
+    "files": "Filer",
+    "filter": "Filtrer poster",
+    "empty": "Ingen poster."
+  },
+  "record": {
+    "section": "Post",
+    "addTitle": "Tilføj post",
+    "editTitle": "Rediger post",
+    "add": "Tilføj post",
+    "save": "Gem",
+    "type": "Type",
+    "name": "Navn",
+    "nameHint": "Brug @ for {{zone}} selv",
+    "value": "Værdi",
+    "priority": "Prioritet",
+    "ttl": "TTL (sekunder)",
+    "ttlHint": "Hvor længe resolvers gemmer svaret. 300 er 5 minutter.",
+    "ttlAuto": "1 betyder automatisk.",
+    "proxied": "Proxied",
+    "proxiedHint": "Send trafik gennem Cloudflare.",
+    "proxiedBadge": "Proxied",
+    "comment": "Bemærkning",
+    "readOnly": "Håndteres af provideren",
+    "deleteConfirm": "Slet {{type}}-posten {{name}}?"
+  },
+  "account": {
+    "add": "Tilføj login",
+    "addTitle": "Tilføj DNS-login",
+    "editTitle": "Rediger DNS-login",
+    "save": "Gem",
+    "login": "Login",
+    "provider": "Provider",
+    "name": "Navn",
+    "namePlaceholder": "Hoved Cloudflare",
+    "keep": "Lad være tom for at beholde den gemte værdi",
+    "registrar": "Denne provider er også en registrar, så dens domæner vises under Domæner.",
+    "options": "Indstillinger",
+    "autoBackup": "Gem kopier af zoner",
+    "autoBackupHint": "Gem en kopi før hver ændring og når en zone ændres uden for Termix.",
+    "checkHealth": "Tjek zoner hver dag",
+    "checkHealthHint": "Kør sundhedstjek dagligt og varsler om nye problemer.",
+    "test": "Test",
+    "testOk": "Fungerer. Fundet {{zones}} zoner og {{domains}} domæner.",
+    "deleteConfirm": "Slet {{name}}? Dens kopier og links slettes også. Intet ændres hos provideren.",
+    "empty": "Ingen logins endnu.",
+    "emptyHint": "Tilføj et Cloudflare-, Route 53-, Namecheap- eller andet login for at komme i gang.",
+    "lastSync": "Sidst tjekket {{date}}",
+    "never": "Ikke tjekket endnu",
+    "failed": "Login mislykkedes"
+  },
+  "domains": {
+    "empty": "Ingen domæner endnu.",
+    "emptyHint": "Registrar-logins viser deres domæner her. Du kan også overvåge ethvert domæne ved navn.",
+    "watchPlaceholder": "example.com",
+    "watch": "Overvåg domæne",
+    "unwatch": "Stop overvågning",
+    "watched": "Overvåget",
+    "noRenew": "Automatisk fornyelse slået fra",
+    "unlocked": "Ikke låst",
+    "unknown": "Registrant ukendt",
+    "expires": "Udløber {{date}}",
+    "expired": "Udløbet",
+    "days": "Dage tilbage: {{count}}",
+    "refreshFailed": "{{count}} opslag mislykkedes"
+  },
+  "link": {
+    "add": "Tilføj link",
+    "addTitle": "Tilføj link",
+    "editTitle": "Rediger link",
+    "save": "Gem",
+    "record": "Post",
+    "address": "Adresse",
+    "zone": "Zone",
+    "pickZone": "Vælg en zone",
+    "source": "Peg den på",
+    "sourceHost": "En vært",
+    "sourcePublic4": "Denne servers offentlige IPv4-adresse",
+    "sourcePublic6": "Denne servers offentlige IPv6-adresse",
+    "source_host": "Vært",
+    "source_public4": "Offentlig IPv4",
+    "source_public6": "Offentlig IPv6",
+    "host": "Vært",
+    "pickHost": "Vælg en vært",
+    "hostHint": "Posten følger værtens adresse. Den opdateres, når værten ændres.",
+    "publicHint": "Termix slår sin offentlige adresse op og holder posten synkroniseret, ligesom dynamisk DNS.",
+    "enabled": "Hold denne post opdateret",
+    "empty": "Ingen links endnu.",
+    "emptyHint": "Et link holder en post peget på en vært eller på denne servers offentlige adresse.",
+    "off": "Fra",
+    "hostGone": "Vært ikke fundet",
+    "lastSync": "Tjekket {{date}}",
+    "never": "Ikke tjekket endnu",
+    "syncNow": "Opdater nu",
+    "updated": "Posten blev opdateret",
+    "unchanged": "Posten var allerede korrekt",
+    "deleteConfirm": "Fjern linket for {{name}}? Posten forbliver, hvor den er."
+  },
+  "diff": {
+    "none": "Intet ville ændre sig.",
+    "add": "Tilføj",
+    "change": "Ændr",
+    "remove": "Fjern"
+  },
+  "copies": {
+    "hint": "Kopier gemmes før hver ændring og én gang om dagen, når en zone er ændret uden for Termix.",
+    "save": "Gem kopi",
+    "saved": "Kopi gemt",
+    "manualLabel": "Manuel kopi",
+    "empty": "Ingen kopier endnu.",
+    "count": "{{count}} poster",
+    "compare": "Sammenlign med nu",
+    "restore": "Gendan",
+    "restoreConfirm": "Gendan denne kopi? {{count}} ændringer vil blive foretaget hos udbyderen. En kopi af de aktuelle poster gemmes først.",
+    "restored": "Gendannet. {{count}} ændringer foretaget.",
+    "source": {
+      "manual": "Manuel",
+      "auto": "Daglig",
+      "before": "Før ændring"
+    }
+  },
+  "files": {
+    "export": "Download zonefil",
+    "exportHint": "Download posterne som en BIND-zonefil.",
+    "import": "Importer en zonefil",
+    "placeholder": "Indsæt en BIND-zonefil her",
+    "replace": "Fjern poster, der ikke er i filen",
+    "replaceHint": "Slukket: Importen tilføjer og ændrer kun poster.",
+    "preview": "Forhåndsvisning",
+    "apply": "Anvend",
+    "applied": "Importeret. {{count}} ændringer foretaget.",
+    "skipped": "Udeladt:"
+  },
+  "health": {
+    "run": "Kør tjek",
+    "running": "Kører",
+    "propagation": "Tjek resolvers",
+    "propagationTitle": "Offentlige resolvers",
+    "lastRun": "Sidst kørt {{date}}",
+    "empty": "Der er endnu ikke kørt nogen tjek for denne zone.",
+    "record": "Post",
+    "resolver": "Resolver",
+    "answer": "Svar",
+    "noAnswer": "Intet svar",
+    "delegation": {
+      "error": "Navneserverne kunne ikke slås op.",
+      "none": "Zonen har ingen navneservere på internettet. Domænet peger måske ikke på denne udbyder.",
+      "mismatch": "Domænet bruger andre navneservere end udbyderen: {{found}}.",
+      "ok": "Domænet peger på {{count}} navneservere."
+    },
+    "soa": {
+      "differ": "Navneserverne er uenige om zoneversionen ({{count}} versioner). En ændring spreder sig muligvis stadig.",
+      "same": "{{count}} navneservere er enige om zoneversionen."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC kunne ikke tjekkes.",
+      "off": "DNSSEC er ikke slået til.",
+      "valid": "DNSSEC er slået til og gyldigt.",
+      "broken": "DNSSEC er konfigureret hos registraren, men valideres ikke. Resolvers, der tjekker det, vil fejle."
+    },
+    "cname": {
+      "conflict": "{{name}} har en CNAME og andre poster. Det er ikke tilladt.",
+      "apex": "Zonens rod kan ikke være en CNAME.",
+      "dangling": "{{name}} peger på {{target}}, som ikke kan opløses.",
+      "ok": "Alle CNAME-mål kan opløses."
+    },
+    "spf": {
+      "missing": "Domænet modtager e-mail, men har ingen SPF-post.",
+      "multiple": "Der er mere end én SPF-post. E-mailservere vil afvise dem alle.",
+      "lookups": "SPF-posten udfører {{count}} opslag. Grænsen er 10.",
+      "ok": "SPF er indstillet ({{count}} opslag)."
+    },
+    "dmarc": {
+      "missing": "Der er ingen DMARC-post.",
+      "none": "DMARC er indstillet til kun overvågning.",
+      "ok": "DMARC er indstillet."
+    },
+    "dkim": {
+      "none": "Der blev ikke fundet nogen DKIM-nøgler i denne zone.",
+      "found": "{{count}} DKIM-nøgler fundet."
+    },
+    "mx": {
+      "unresolved": "Mailserveren {{host}} kan ikke opløses."
+    },
+    "mail": {
+      "none": "Domænet har ingen mailposter."
+    },
+    "caa": {
+      "ok": "CAA-poster begrænser, hvem der kan udstede certifikater.",
+      "none": "Der er ingen CAA-poster. Enhver certifikatautoritet kan udstede certifikater."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domæner, udløbende domæner og fejlslagne poster.",
+    "domains": "Domæner",
+    "expiring": "Udløber snart",
+    "failingLinks": "Fejlslagne links",
+    "failingAccounts": "Fejlslagne logins"
+  }
+}

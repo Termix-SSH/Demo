@@ -1,0 +1,386 @@
+{
+  "tab": {
+    "title": "正常运行时间",
+    "error": "无法加载监控项。",
+    "monitors": "监控项",
+    "incidents": "事件",
+    "maintenance": "维护",
+    "pages": "状态页"
+  },
+  "common": {
+    "refresh": "刷新",
+    "loading": "加载中",
+    "delete": "删除",
+    "edit": "编辑",
+    "save": "保存",
+    "cancel": "取消",
+    "done": "完成"
+  },
+  "status": {
+    "up": "正常",
+    "down": "异常",
+    "pending": "重试中",
+    "maintenance": "维护中",
+    "paused": "已暂停",
+    "unknown": "等待中"
+  },
+  "types": {
+    "http": "网站 (HTTP)",
+    "tcp": "TCP 端口",
+    "ping": "Ping",
+    "dns": "DNS 记录",
+    "tls": "TLS 证书",
+    "push": "推送",
+    "host": "Termix 主机",
+    "docker": "Docker 容器",
+    "systemd": "systemd 单元",
+    "command": "命令"
+  },
+  "typeHints": {
+    "http": "调用 URL 并检查状态码，如果设置了关键词，还会检查关键词。",
+    "tcp": "检查端口是否接受连接。",
+    "ping": "从 Termix 服务器或下方选择的主机发送 Ping 请求。",
+    "dns": "查找记录并可以检查其值。",
+    "tls": "检查证书是否受信任且即将过期。",
+    "push": "提供一个 URL，供 cron 作业或脚本调用。当调用停止时，状态变为异常。",
+    "host": "以与主机状态点相同的方式检查主机的端口。不会登录。",
+    "docker": "通过 SSH 登录主机，并检查容器是否正在运行且健康。",
+    "systemd": "通过 SSH 登录主机，并检查单元是否处于活动状态。",
+    "command": "通过 SSH 登录主机并运行命令。退出码为 0 时状态为正常。"
+  },
+  "stats": {
+    "up": "正常",
+    "down": "问题",
+    "paused": "已暂停或维护中",
+    "month": "30 天正常运行时间"
+  },
+  "filter": {
+    "all": "全部",
+    "problems": "问题",
+    "paused": "已暂停"
+  },
+  "list": {
+    "name": "名称",
+    "target": "目标",
+    "checks": "最近检查",
+    "uptime": "24 小时",
+    "uptimeDay": "24 小时: {{value}}",
+    "latency": "响应",
+    "search": "搜索",
+    "add": "添加监控项",
+    "addHosts": "从主机添加",
+    "empty": "暂无监控项",
+    "emptyHint": "添加监控项以开始监控网站、端口或主机。",
+    "noMatch": "无匹配结果"
+  },
+  "range": {
+    "day": "24 小时",
+    "week": "7 天",
+    "month": "30 天",
+    "quarter": "90 天"
+  },
+  "detail": {
+    "failed": "操作失败。",
+    "deleteTitle": "删除 {{name}}？",
+    "deleteHint": "其历史记录和事件也将一并删除。",
+    "newUrl": "新的推送 URL",
+    "newUrlTitle": "生成新的推送 URL？",
+    "newUrlHint": "旧 URL 将立即失效。",
+    "type": "类型",
+    "target": "目标",
+    "lastCheck": "上次检查",
+    "message": "结果",
+    "every": "检查频率",
+    "seconds_other": "{{count}} 秒",
+    "group": "分组",
+    "tags": "标签",
+    "cert": "证书",
+    "certValue": "剩余 {{days}} 天 | 颁发者：{{issuer}}",
+    "noChart": "检查次数不足，无法生成图表。",
+    "alertsOn": "开启告警",
+    "alertsOff": "关闭告警",
+    "runNow": "立即检查",
+    "pause": "暂停",
+    "resume": "恢复",
+    "share": "分享",
+    "now": "当前响应",
+    "recent": "最近检查",
+    "response": "响应时间",
+    "about": "关于",
+    "incidents": "事件",
+    "noIncidents": "无事件。"
+  },
+  "editor": {
+    "addTitle": "添加监控",
+    "editTitle": "编辑监控",
+    "saveFailed": "保存失败。",
+    "testFailed": "无法运行测试。",
+    "test": "测试",
+    "testing": "测试中",
+    "testOk": "正常",
+    "testBad": "异常",
+    "what": "监控对象",
+    "name": "名称",
+    "type": "类型",
+    "host": "主机",
+    "noHost": "选择主机",
+    "pushOnce": "请现在复制此 URL。它仅显示一次。",
+    "from": "检查来源",
+    "fromHost": "从以下位置运行检查",
+    "fromServer": "Termix 服务器",
+    "fromHint": "选择一台主机以访问仅该主机可见的资源。检查将通过 SSH 在该主机上运行。",
+    "timing": "时间与告警",
+    "interval": "检查间隔（秒）",
+    "timeout": "超时时间（秒）",
+    "grace": "额外等待时间（秒）",
+    "retries": "重试次数",
+    "retriesHint": "连续失败多少次后判定为异常。",
+    "retryInterval": "重试间隔（秒）",
+    "resend": "提醒间隔（分钟）",
+    "resendHint": "在持续异常期间。0 表示仅发送一次告警。",
+    "more": "分组与标签",
+    "group": "分组",
+    "tags": "标签",
+    "tagsHint": "用逗号分隔。",
+    "target": "地址",
+    "port": "端口",
+    "portOptional": "端口",
+    "portOptionalHint": "留空则使用主机自身的端口。",
+    "url": "URL",
+    "method": "方法",
+    "body": "请求体",
+    "accepted": "接受的状态码",
+    "acceptedHint": "例如 200-299,301",
+    "keyword": "关键词",
+    "keywordHint": "可选。响应中必须包含的文本。",
+    "keywordAbsent": "找到关键词时判定为失败",
+    "auth": "登录",
+    "authNone": "无",
+    "authBasic": "基本认证",
+    "authBearer": "Bearer 令牌",
+    "username": "用户名",
+    "password": "密码",
+    "token": "令牌",
+    "keepSecret": "留空以保留已保存的值。",
+    "headers": "请求头",
+    "headersHint": "每行一个，格式如 Name: value。已加密存储。",
+    "follow": "跟随重定向",
+    "ignoreTls": "接受任何证书",
+    "certDays": "证书过期前提醒（天数）",
+    "certDaysHint": "设为 0 可关闭提醒。",
+    "record": "记录类型",
+    "dnsServer": "DNS 服务器",
+    "dnsServerHint": "可选的 IP 地址。留空则使用服务器自身的。",
+    "expected": "预期值",
+    "expectedHint": "可选。某条记录必须包含的文本。",
+    "container": "容器名称",
+    "unit": "单元名称",
+    "command": "命令",
+    "commandHint": "每次检查时以您在该主机上的登录身份运行。"
+  },
+  "hosts": {
+    "add_other": "添加 {{count}} 个监控"
+  },
+  "shares": {
+    "loadFailed": "无法加载共享设置。",
+    "saveFailed": "无法保存共享设置。",
+    "pick": "选择用户或角色",
+    "user": "用户：{{name}}",
+    "role": "角色：{{name}}",
+    "with": "共享给",
+    "add": "添加",
+    "none": "只有您可以查看此监控。",
+    "view": "可查看",
+    "edit": "可编辑"
+  },
+  "incidents": {
+    "none": "无事件",
+    "ongoing": "进行中",
+    "seen": "已查看",
+    "ack": "标记为已查看",
+    "note": "备注"
+  },
+  "maintenance": {
+    "none": "无维护窗口",
+    "noneHint": "添加一个以在维护期间停止警报。",
+    "add": "添加窗口",
+    "edit": "编辑窗口",
+    "active": "当前生效",
+    "when": "时间",
+    "once": "一次性",
+    "weekly": "每周",
+    "start": "开始",
+    "end": "结束",
+    "days": "星期",
+    "time": "开始时间",
+    "length": "时长（分钟）",
+    "timezone": "时区",
+    "covers": "适用范围",
+    "coversAll": "所有监控项",
+    "coversSome": "指定监控项",
+    "coversTag": "带有标签的监控项",
+    "deleteTitle": "删除 {{name}}？",
+    "day0": "周日",
+    "day1": "周一",
+    "day2": "周二",
+    "day3": "周三",
+    "day4": "周四",
+    "day5": "周五",
+    "day6": "周六"
+  },
+  "pages": {
+    "none": "暂无状态页",
+    "noneHint": "状态页无需登录即可向他人展示您的服务运行状况。",
+    "add": "添加页面",
+    "edit": "编辑页面",
+    "about": "页面",
+    "title": "标题",
+    "slug": "地址",
+    "slugHint": "仅包含小写字母、数字和连字符。这是链接的末尾部分。",
+    "description": "描述",
+    "published": "已发布",
+    "publishedHint": "任何拥有链接的人都可以查看名称、状态和正常运行时间。绝不会显示地址或错误信息。",
+    "showLatency": "显示响应时间",
+    "group": "第 {{number}} 组",
+    "groupName": "组名称",
+    "addGroup": "添加组",
+    "notes": "备注",
+    "noteTitle": "标题",
+    "noteBody": "正文",
+    "noteLevel": "级别",
+    "levelInfo": "信息",
+    "levelWarning": "警告",
+    "levelCritical": "严重",
+    "post": "发布",
+    "resolve": "解决",
+    "resolved": "已解决",
+    "live": "已发布",
+    "draft": "草稿",
+    "open": "打开页面",
+    "deleteTitle": "删除 {{name}}？",
+    "offTitle": "公共页面已关闭",
+    "offHint": "管理员已在插件设置中关闭了公共页面，因此这些链接不会显示任何内容。"
+  },
+  "widget": {
+    "name": "正常运行时间",
+    "description": "显示有多少监控项处于在线或离线状态。",
+    "up": "在线",
+    "down": "离线"
+  },
+  "card": {
+    "title": "正常运行时间",
+    "overview": "所有监控项",
+    "attention": "存在问题的监控项",
+    "monitors": "监控项",
+    "allGood": "一切正常。",
+    "gone": "此监控项已不存在。",
+    "loading": "加载中...",
+    "month": "30 天：{{value}}"
+  },
+  "host": {
+    "none": "此主机没有监控项。",
+    "add": "添加监控项",
+    "down_other": "{{count}} 个监控项已离线"
+  },
+  "permissions": {
+    "view": {
+      "title": "查看监控项",
+      "description": "查看监控项、历史记录和事件。"
+    },
+    "manage": {
+      "title": "管理监控项",
+      "description": "添加和修改监控项以及维护窗口。"
+    },
+    "privateTargets": {
+      "title": "检查私有地址",
+      "description": "将监控项指向 Termix 服务器可访问的局域网、Tailscale 和其他私有地址。"
+    },
+    "runCommands": {
+      "title": "运行命令",
+      "description": "添加通过 SSH 在主机上运行命令的监控项。"
+    },
+    "publish": {
+      "title": "发布状态页",
+      "description": "创建任何拥有链接的人都可以查看的状态页。"
+    }
+  },
+  "settings": {
+    "admin": {
+      "minIntervalSeconds": {
+        "label": "最短检查间隔",
+        "description": "以秒为单位。通过 SSH 登录的监控项不会低于 60 秒。"
+      },
+      "defaultIntervalSeconds": {
+        "label": "默认检查间隔",
+        "description": "以秒为单位，适用于新监控项。"
+      },
+      "historyDays": {
+        "label": "保留历史记录",
+        "description": "每日正常运行时间数据和事件的天数。"
+      },
+      "publicPages": {
+        "label": "允许公开状态页",
+        "description": "关闭以隐藏所有状态页。推送 URL 仍将继续工作。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "随终端打开面板",
+        "description": "打开终端时显示正常运行时间面板。"
+      },
+      "companionSide": {
+        "label": "面板位置",
+        "description": "正常运行时间面板打开的位置。",
+        "right": "右侧",
+        "left": "左侧",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "面板大小",
+        "description": "面板的宽度或高度（像素）。"
+      },
+      "companionEdgeButton": {
+        "label": "显示边缘按钮",
+        "description": "终端边缘上的一个按钮，用于打开面板。"
+      }
+    }
+  },
+  "operations": {
+    "monitor": "监控项",
+    "summary": {
+      "title": "正常运行时间摘要"
+    },
+    "monitors": {
+      "title": "监控项列表"
+    },
+    "hostMonitors": {
+      "title": "此主机上的监控项"
+    },
+    "hostHealth": {
+      "title": "正常运行时间"
+    },
+    "run": {
+      "title": "立即检查监控项"
+    },
+    "pause": {
+      "title": "暂停监控项"
+    },
+    "resume": {
+      "title": "恢复监控项"
+    },
+    "addHost": {
+      "title": "添加正常运行时间监控项"
+    },
+    "events": {
+      "down": "监控项已离线",
+      "up": "监控项已恢复",
+      "cert": "证书即将过期"
+    },
+    "resource": {
+      "title": "监控项",
+      "type": "类型",
+      "status": "状态",
+      "uptime": "30 天正常运行时间"
+    }
+  }
+}

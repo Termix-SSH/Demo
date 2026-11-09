@@ -1,0 +1,241 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Zainstaluj WireGuard na swoich hostach i zarządzaj interfejsami, klientami oraz konfiguracjami z jednej karty."
+  },
+  "common": {
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "back": "Wróć",
+    "delete": "Usuń",
+    "loading": "Ładowanie..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Użyj WireGuard",
+      "description": "Zarządzaj interfejsami i klientami WireGuard na hostach, które możesz edytować."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Otwórz WireGuard z hosta.",
+    "error": "Nie udało się załadować WireGuard z tego hosta.",
+    "sudo": "Ten host wymaga logowania jako root lub sudo bez hasła, aby zarządzać WireGuard.",
+    "installed": "Zainstalowany",
+    "notInstalled": "Nie zainstalowany",
+    "refresh": "Odśwież",
+    "viewInterfaces": "Interfejsy",
+    "viewLogs": "Dzienniki"
+  },
+  "install": {
+    "title": "Zainstaluj WireGuard",
+    "desc": "Instaluje narzędzia WireGuard oraz iptables za pomocą menedżera pakietów hosta.",
+    "confirm": "Zainstaluj",
+    "done": "WireGuard został zainstalowany.",
+    "failed": "Nie udało się zainstalować WireGuard.",
+    "empty": "WireGuard nie jest zainstalowany na tym hoście",
+    "noManager": "Nie znaleziono obsługiwanego menedżera pakietów. Zainstaluj WireGuard ręcznie.",
+    "hint": "Zainstaluj go na {{os}}, aby uruchomić VPN z tego hosta.",
+    "thisHost": "tego hosta",
+    "button": "Zainstaluj WireGuard",
+    "working": "Instalowanie..."
+  },
+  "interfaces": {
+    "add": "Dodaj interfejs",
+    "empty": "Brak interfejsów. Dodaj jeden, aby uruchomić VPN.",
+    "loadFailed": "Nie udało się załadować interfejsów.",
+    "up": "Aktywny",
+    "down": "Nieaktywny",
+    "clients": "Klienci: {{count}}",
+    "nat": "NAT",
+    "boot": "Uruchamiany przy starcie"
+  },
+  "create": {
+    "title": "Dodaj interfejs",
+    "name": "Nazwa",
+    "address": "Adres",
+    "addressHint": "Adres serwera i podsieć. Klienci otrzymują kolejne wolne adresy.",
+    "port": "Port UDP",
+    "nat": "Udostępnij internet hosta (NAT)",
+    "natDesc": "Klienci mogą uzyskiwać dostęp do internetu i sieci hosta przez ten host.",
+    "natMissing": "NAT wymaga iptables, które nie są zainstalowane na tym hoście.",
+    "forwarding": "Włącz przekazywanie pakietów IP",
+    "forwardingDesc": "Pozwala hostowi przekazywać ruch między klientami a siecią. Ustawienie przetrwa restart.",
+    "firewall": "Otwórz port w zaporze sieciowej",
+    "firewallDesc": "Dodaje port UDP do ufw lub firewalld, jeśli któryś z nich jest uruchomiony.",
+    "start": "Uruchom teraz i przy starcie",
+    "startDesc": "Włącza interfejs i utrzymuje go włączonym po restarcie.",
+    "save": "Utwórz",
+    "done": "Interfejs jest gotowy.",
+    "failed": "Nie udało się utworzyć interfejsu."
+  },
+  "detail": {
+    "clients": "Klienci",
+    "settings": "Ustawienia",
+    "config": "Konfiguracja",
+    "service": "Usługa",
+    "gone": "Ten interfejs nie istnieje już na hoście."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Pokaż zakładkę WireGuard dla tego hosta w jego menu."
+      },
+      "showPanel": {
+        "label": "Pokaż panel WireGuard w terminalach",
+        "description": "Pozwól, aby panel WireGuard otwierał się obok terminala SSH tego hosta."
+      },
+      "alertDown": {
+        "label": "Powiadom, gdy interfejs jest wyłączony",
+        "description": "Wyślij powiadomienie, gdy interfejs uruchamiany przy starcie systemu nie jest aktywny. Sprawdzane podczas odczytu statusu WireGuard."
+      }
+    },
+    "publicKey": "Klucz publiczny",
+    "port": "Port UDP",
+    "endpoint": "Punkt końcowy serwera",
+    "endpointHint": "Adres publiczny, do którego łączą się klienci, np. vpn.example.com:51820.",
+    "dns": "DNS dla klientów",
+    "dnsHint": "Opcjonalnie. Oddziel serwery przecinkami.",
+    "allowed": "Ruch przez VPN",
+    "allowedHint": "Zakresy, które klienci wysyłają przez VPN. 0.0.0.0/0, ::/0 wysyła wszystko.",
+    "keepalive": "Keepalive (sekundy)",
+    "keepaliveHint": "Utrzymuje osiągalność klientów za NAT. Użyj 0, aby wyłączyć.",
+    "saved": "Ustawienia zapisane.",
+    "saveFailed": "Nie udało się zapisać ustawień.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otwieraj panel WireGuard z nowymi terminalami",
+        "description": "Pokazuj panel WireGuard obok każdego terminala SSH, który ma włączone WireGuard. Możesz go nadal otwierać i zamykać za pomocą przycisku na prawym brzegu."
+      },
+      "companionSide": {
+        "label": "Położenie panelu WireGuard",
+        "description": "Gdzie panel WireGuard znajduje się obok terminala.",
+        "right": "Prawa",
+        "left": "Lewa",
+        "bottom": "Dolna"
+      },
+      "companionSize": {
+        "label": "Rozmiar panelu WireGuard",
+        "description": "Szerokość w pikselach lub wysokość, gdy jest na dole. Możesz też przeciągnąć jego krawędź."
+      },
+      "companionEdgeButton": {
+        "label": "Pokaż przycisk panelu",
+        "description": "Pokazuj mały przycisk na prawym brzegu terminala, który otwiera panel WireGuard."
+      }
+    }
+  },
+  "clients": {
+    "add": "Dodaj klienta",
+    "empty": "Brak klientów.",
+    "loadFailed": "Nie udało się załadować klientów.",
+    "name": "Nazwa",
+    "nameHint": "Litery, cyfry, kropki, myślniki i podkreślenia.",
+    "allowed": "Ruch przez VPN",
+    "allowedHint": "Pozostaw puste, aby użyć domyślnego ustawienia interfejsu: {{value}}",
+    "create": "Utwórz klienta",
+    "addFailed": "Nie udało się dodać klienta.",
+    "needEndpoint": "Najpierw ustaw punkt końcowy serwera w ustawieniach interfejsu.",
+    "connected": "Połączony",
+    "off": "Wyłączony",
+    "external": "Stworzony ręcznie",
+    "handshake": "handshake {{ago}} temu",
+    "showConfig": "Pokaż konfigurację i kod QR",
+    "configFailed": "Nie udało się odczytać konfiguracji klienta.",
+    "rotate": "Nowe klucze",
+    "rotateTitle": "Wygenerować nowe klucze dla {{name}}?",
+    "rotateDesc": "Stara konfiguracja przestanie działać. Następnie udostępnij klientowi nową konfigurację.",
+    "turnOff": "Wyłącz",
+    "turnOn": "Włącz",
+    "saveFailed": "Nie udało się zmienić klienta.",
+    "deleteTitle": "Usunąć {{name}}?",
+    "deleteDesc": "Klient zostanie usunięty i nie będzie mógł się już łączyć.",
+    "deleteFailed": "Nie udało się usunąć klienta."
+  },
+  "clientConfig": {
+    "note": "Ta konfiguracja zawiera prywatny klucz klienta. Udostępnij ją tylko osobie lub urządzeniu, które jej użyje.",
+    "qr": "Kod QR dla konfiguracji klienta",
+    "copy": "Kopiuj",
+    "copied": "Konfiguracja skopiowana.",
+    "copyFailed": "Nie udało się skopiować konfiguracji.",
+    "download": "Pobierz .conf"
+  },
+  "config": {
+    "title": "Plik konfiguracyjny",
+    "hint": "Klucze prywatne i wstępnie udostępnione są ukryte. Pozostaw placeholder, aby zachować klucz. Konfiguracja jest sprawdzana przed zapisaniem, a jej kopia zapasowa jest przechowywana. Zmiany adresów wymagają ponownego uruchomienia.",
+    "loadFailed": "Nie udało się odczytać konfiguracji.",
+    "saved": "Konfiguracja zapisana.",
+    "saveFailed": "Nie udało się zapisać konfiguracji."
+  },
+  "logs": {
+    "loadFailed": "Nie udało się odczytać logów.",
+    "lines": "{{count}} wierszy",
+    "empty": "Brak wierszy logów."
+  },
+  "service": {
+    "failed": "Akcja usługi nie powiodła się.",
+    "start": "Uruchom",
+    "stop": "Zatrzymaj",
+    "restart": "Uruchom ponownie",
+    "autostart": "Uruchamiaj przy starcie",
+    "autostartDesc": "Uruchamiaj ten interfejs przy starcie hosta.",
+    "needsSystemd": "Uruchamianie przy starcie wymaga systemd na tym hoście.",
+    "noForward": "Przekazywanie IP jest wyłączone na tym hoście, więc klienci nie mogą uzyskać dostępu do sieci przez NAT.",
+    "delete": "Usuń interfejs",
+    "deleteTitle": "Usunąć {{name}}?",
+    "deleteDesc": "Interfejs zostanie zatrzymany, a jego konfiguracja, klucze i zapisane pliki klientów zostaną usunięte z hosta.",
+    "deleteFailed": "Nie udało się usunąć interfejsu."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Włącz WireGuard w ustawieniach tego hosta, aby korzystać z tej karty.",
+    "start": "Aktywuj",
+    "stop": "Dezaktywuj",
+    "done": "{{name}} zaktualizowany"
+  },
+  "operations": {
+    "list": {
+      "title": "Wyświetl interfejsy WireGuard"
+    },
+    "down": {
+      "title": "Interfejsy WireGuard wyłączone"
+    },
+    "start": {
+      "title": "Uruchom interfejs WireGuard"
+    },
+    "stop": {
+      "title": "Zatrzymaj interfejs WireGuard"
+    },
+    "restart": {
+      "title": "Uruchom ponownie interfejs WireGuard"
+    },
+    "interfaces": {
+      "title": "Interfejsy WireGuard",
+      "address": "Adres",
+      "port": "Port",
+      "clients": "Klienci"
+    }
+  },
+  "nav": {
+    "togglePanel": "Przełącz panel WireGuard"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Sprawdzanie hostów...",
+    "summary_one": "{{count}} klient na {{hosts}} hostach",
+    "summary_few": "{{count}} klientów na {{hosts}} hostach",
+    "summary_many": "{{count}} klientów na {{hosts}} hostach",
+    "summary_other": "{{count}} klientów na {{hosts}} hostach",
+    "refresh": "Sprawdź ponownie",
+    "empty": "Włącz WireGuard dla hosta, aby zobaczyć go tutaj.",
+    "missing": "Nie zainstalowano",
+    "down_one": "{{count}} wyłączony",
+    "down_few": "{{count}} wyłączone",
+    "down_many": "{{count}} wyłączonych",
+    "down_other": "{{count}} wyłączonych",
+    "interfaces_one": "{{count}} interfejs, {{clients}} klientów",
+    "interfaces_few": "{{count}} interfejsy, {{clients}} klientów",
+    "interfaces_many": "{{count}} interfejsów, {{clients}} klientów",
+    "interfaces_other": "{{count}} interfejsów, {{clients}} klientów"
+  }
+}

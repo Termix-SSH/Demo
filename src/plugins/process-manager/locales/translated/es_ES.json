@@ -1,0 +1,358 @@
+{
+  "tab": {
+    "title": "Procesos",
+    "noHost": "Abre Procesos desde un host.",
+    "loading": "Cargando...",
+    "refresh": "Actualizar",
+    "error": "No se ha podido leer este host.",
+    "sudo": "Este inicio de sesión no es root. Los procesos de otros usuarios requieren sudo sin contraseña o una Contraseña de Sudo guardada.",
+    "disabled": "El Administrador de procesos está desactivado para este host.",
+    "readOnly": "Solo lectura",
+    "viewProcesses": "Procesos",
+    "viewApps": "Aplicaciones",
+    "viewLogs": "Registros",
+    "viewWatches": "Vigilancia"
+  },
+  "manager": {
+    "disabled": "Activa el Administrador de procesos para este host para ver sus procesos."
+  },
+  "card": {
+    "title": "Vigilancia de procesos",
+    "metricsTitle": "Procesos",
+    "empty": "Aún no hay vigilancia. Añade una desde la pestaña Procesos de un host.",
+    "unknown": "Desconocido"
+  },
+  "companion": {
+    "toggle": "Procesos",
+    "open": "Abrir pestaña",
+    "close": "Cerrar"
+  },
+  "list": {
+    "processes": "Procesos",
+    "cpu": "CPU",
+    "load": "Carga",
+    "zombies": "Zombies",
+    "mem": "mem",
+    "search": "Filtrar por nombre, usuario o pid",
+    "sort": "Ordenar por",
+    "sortCpu": "CPU",
+    "sortMem": "Memoria",
+    "sortPid": "Pid",
+    "sortAge": "Más recientes",
+    "tree": "Árbol",
+    "empty": "Ningún proceso coincide.",
+    "loadFailed": "No se han podido listar los procesos.",
+    "noPs": "El comando ps de este host es demasiado básico. Instala procps para ver los procesos."
+  },
+  "state": {
+    "running": "En ejecución",
+    "sleeping": "Dormido",
+    "zombie": "Zombie",
+    "stopped": "Detenido",
+    "waiting": "Esperando al disco"
+  },
+  "detail": {
+    "gone": "Ese proceso ha desaparecido.",
+    "cmdline": "Línea de comandos",
+    "cwd": "Directorio de trabajo",
+    "exe": "Programa",
+    "unit": "Servicio",
+    "state": "Estado",
+    "threads": "Hilos",
+    "rss": "Memoria en uso",
+    "vsize": "Memoria virtual",
+    "age": "En ejecución durante",
+    "fds": "Archivos abiertos",
+    "ports": "Puertos de escucha",
+    "env": "Variables de entorno",
+    "nice": "Prioridad",
+    "apply": "Aplicar",
+    "niceDone": "Prioridad cambiada.",
+    "niceFailed": "No se ha podido cambiar la prioridad.",
+    "readLog": "Leer",
+    "pickLog": "Selecciona un registro de arriba para leerlo.",
+    "logUnit": "Registro del servicio: {{unit}}",
+    "logPid": "Registro del sistema para este pid"
+  },
+  "signal": {
+    "TERM": "Detener (TERM)",
+    "KILL": "Matar",
+    "sent": "Se envió {{signal}} a {{pid}}.",
+    "failed": "No se pudo enviar la señal.",
+    "confirmDesc": "{{name}} podría perder trabajo sin guardar.",
+    "confirm": {
+      "TERM": "¿Detener el proceso {{pid}}?",
+      "KILL": "¿Matar el proceso {{pid}}?"
+    },
+    "hint": {
+      "TERM": "Pedirle que se detenga",
+      "KILL": "Detenerlo de inmediato",
+      "HUP": "Recargar su configuración",
+      "INT": "Interrumpir, como Ctrl+C",
+      "STOP": "Pausarlo",
+      "CONT": "Reanudar un proceso pausado",
+      "USR1": "Señal de usuario 1",
+      "USR2": "Señal de usuario 2"
+    }
+  },
+  "apps": {
+    "none": "No se encontró pm2 ni supervisor en este host.",
+    "empty": "No hay aplicaciones que mostrar.",
+    "loadFailed": "No se pudieron leer las aplicaciones.",
+    "failed": "Eso no funcionó.",
+    "done": "{{action}}: {{name}}",
+    "refreshed": "Supervisor volvió a leer su configuración.",
+    "reread": "Volver a leer la configuración",
+    "supervisorError": "supervisorctl dijo: {{message}}",
+    "restarts": "reinicios: {{count}}",
+    "logs": "Registros",
+    "start": "Iniciar",
+    "stop": "Detener",
+    "restart": "Reiniciar",
+    "reload": "Recargar",
+    "delete": "Eliminar",
+    "flush": "Borrar registros",
+    "confirm": {
+      "stop": "¿Detener {{name}}?",
+      "delete": "¿Eliminar {{name}}?"
+    },
+    "confirmDesc": {
+      "stop": "La aplicación se detiene hasta que la vuelvas a iniciar.",
+      "delete": "pm2 olvida esta aplicación. Sus archivos permanecen."
+    }
+  },
+  "logs": {
+    "empty": "No hay líneas de registro.",
+    "failed": "No se pudo leer el registro.",
+    "pick": "Selecciona una fuente de registro arriba.",
+    "filter": "Filtrar líneas",
+    "lines": "Líneas",
+    "linesCount": "{{count}} líneas",
+    "follow": "Seguir",
+    "following": "Siguiendo",
+    "pause": "Pausar",
+    "resume": "Reanudar",
+    "clear": "Borrar",
+    "download": "Descargar",
+    "source": "Fuente",
+    "sourceJournal": "Registro del servicio",
+    "sourcePid": "Registro del pid",
+    "sourcePm2": "Aplicación pm2",
+    "sourceSupervisor": "Proceso de Supervisor",
+    "target": "Nombre o pid",
+    "stream": "Transmisión",
+    "open": "Abrir",
+    "placeholder": {
+      "journal": "nginx.service",
+      "journal-pid": "1234",
+      "pm2": "Id. o nombre de la aplicación",
+      "supervisor": "Nombre del proceso"
+    }
+  },
+  "watch": {
+    "kind": {
+      "process": "Proceso",
+      "pm2": "Aplicación pm2",
+      "supervisor": "Aplicación Supervisor"
+    },
+    "rule": {
+      "down": "Se detiene",
+      "restarts": "Se reinicia con demasiada frecuencia",
+      "cpu": "CPU superior a",
+      "mem": "Memoria superior a"
+    }
+  },
+  "watches": {
+    "kind": "Tipo",
+    "target": "Nombre",
+    "targetPlaceholder": "Nombre del proceso o aplicación",
+    "rule": "Alertar cuando",
+    "threshold": "Límite",
+    "thresholdHint": {
+      "cpu": {
+        "process": "Porcentaje de CPU, todos los procesos coincidentes juntos",
+        "app": "Porcentaje de CPU"
+      },
+      "mem": {
+        "process": "Porcentaje de memoria, todos los procesos coincidentes juntos",
+        "app": "Memoria en MB"
+      },
+      "restarts": {
+        "process": "Reinicios en 10 minutos",
+        "app": "Reinicios en 10 minutos"
+      }
+    },
+    "autoRestart": "Reiniciarlo por mí",
+    "add": "Añadir monitorización",
+    "added": "Monitorización añadida.",
+    "addFailed": "No se ha podido añadir la monitorización.",
+    "remove": "Eliminar monitorización",
+    "removeFailed": "No se ha podido eliminar la monitorización.",
+    "loadFailed": "No se han podido cargar las monitorizaciones.",
+    "empty": "No hay monitorizaciones en este host. Añade una arriba o pulsa la campana junto a una aplicación.",
+    "watchThis": "Monitorizar esto",
+    "broken": "Roto",
+    "fine": "Correcto",
+    "auto": "Reinicio automático"
+  },
+  "permissions": {
+    "use": {
+      "title": "Usar el gestor de procesos",
+      "description": "Ver procesos y registros en los hosts a los que tienes acceso. Para modificar cosas también se necesita acceso de edición al host."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Gestor de procesos",
+        "description": "Mostrar los procesos, las aplicaciones pm2 y Supervisor y los registros de este host."
+      },
+      "useSudo": {
+        "label": "Usar sudo",
+        "description": "Usar root o sudo cuando el usuario de inicio de sesión no sea root. Necesario para ver y detener los procesos de otros usuarios."
+      },
+      "readOnly": {
+        "label": "Solo lectura",
+        "description": "Solo ver, sin cambiar nada."
+      },
+      "pm2User": {
+        "label": "Ejecutar pm2 como",
+        "description": "El usuario que posee las aplicaciones pm2. Déjalo vacío para usar el usuario de inicio de sesión. Necesita root o sudo.",
+        "placeholder": "deploy"
+      },
+      "showPanel": {
+        "label": "Mostrar el panel lateral",
+        "description": "Mostrar el panel de Procesos junto a las terminales en este host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Abrir el panel de Procesos con las terminales",
+        "description": "Abrir el panel automáticamente en los hosts que lo tengan."
+      },
+      "companionSide": {
+        "label": "Lado del panel",
+        "description": "Dónde se abre el panel de Procesos junto a una terminal.",
+        "right": "Derecha",
+        "left": "Izquierda",
+        "bottom": "Abajo"
+      },
+      "companionSize": {
+        "label": "Tamaño del panel",
+        "description": "Ancho o alto del panel en píxeles."
+      },
+      "companionEdgeButton": {
+        "label": "Mostrar el botón del borde",
+        "description": "Mostrar un pequeño botón en el borde de la terminal para abrir el panel."
+      }
+    }
+  },
+  "operations": {
+    "expectedCommand": "Nombre de comando esperado",
+    "list-processes": {
+      "title": "Listar procesos"
+    },
+    "list-apps": {
+      "title": "Listar aplicaciones pm2 y Supervisor"
+    },
+    "signal-process": {
+      "title": "Enviar una señal"
+    },
+    "kill-process": {
+      "title": "Matar proceso"
+    },
+    "renice": {
+      "title": "Cambiar prioridad",
+      "nice": "Prioridad (-20 a 19)"
+    },
+    "app-start": {
+      "title": "Iniciar aplicación"
+    },
+    "app-stop": {
+      "title": "Detener aplicación"
+    },
+    "app-restart": {
+      "title": "Reiniciar aplicación"
+    },
+    "app-reload": {
+      "title": "Recargar aplicación"
+    },
+    "app-delete": {
+      "title": "Eliminar aplicación"
+    },
+    "app-flush-logs": {
+      "title": "Borrar registros de la aplicación"
+    },
+    "tail-logs": {
+      "title": "Leer registros"
+    },
+    "add-watch": {
+      "title": "Añadir una vigilancia"
+    },
+    "remove-watch": {
+      "title": "Eliminar una vigilancia"
+    },
+    "signal": {
+      "label": "Señal",
+      "TERM": "Detener (TERM)",
+      "HUP": "Recargar (HUP)",
+      "INT": "Interrumpir (INT)",
+      "STOP": "Pausar (STOP)",
+      "CONT": "Reanudar (CONT)",
+      "USR1": "Señal de usuario 1",
+      "USR2": "Señal de usuario 2"
+    },
+    "logs": {
+      "sourceLabel": "Origen",
+      "source": {
+        "journal": "Registro del servicio",
+        "journal-pid": "Registro del PID",
+        "pm2": "Aplicación pm2",
+        "supervisor": "Proceso de Supervisor",
+        "file": "Abrir archivo de un proceso"
+      },
+      "target": "Servicio, PID o aplicación",
+      "fd": "Número de archivo (para archivos abiertos)",
+      "stream": "Flujo",
+      "stdout": "Salida",
+      "stderr": "Errores",
+      "lines": "Líneas",
+      "grep": "Solo líneas que contengan",
+      "text": "Registro"
+    },
+    "watch": {
+      "kind": "Tipo",
+      "target": "Nombre",
+      "rule": "Alertar cuando",
+      "threshold": "Límite",
+      "autoRestart": "Reiniciar automáticamente",
+      "id": "ID de vigilancia"
+    },
+    "processes": {
+      "title": "Procesos",
+      "user": "Usuario",
+      "cpu": "CPU",
+      "mem": "Memoria",
+      "rss": "Memoria en uso"
+    },
+    "apps": {
+      "resource": "Aplicaciones",
+      "manager": "Gestor",
+      "restarts": "Reinicios",
+      "mem": "Memoria"
+    },
+    "signals": {
+      "zombies": "Procesos zombie",
+      "busy": "Procesos ocupados",
+      "top-cpu": "Proceso más ocupado",
+      "top-processes": "Principales procesos",
+      "apps-down": "Aplicaciones detenidas",
+      "managers": "Gestores de procesos"
+    },
+    "events": {
+      "processDown": "Un proceso vigilado se ha detenido",
+      "appCrashed": "Una aplicación vigilada se ha detenido",
+      "restartLoop": "Una aplicación sigue reiniciándose"
+    }
+  }
+}

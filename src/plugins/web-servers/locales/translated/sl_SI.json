@@ -1,0 +1,295 @@
+{
+  "plugin": {
+    "name": "Spletni strežniki",
+    "description": "Upravljajte nginx, Apache in Caddy na svojih strežnikih: spletna mesta, konfiguracija, dnevniki in HTTPS, pri čemer se vsaka sprememba najprej preveri."
+  },
+  "common": {
+    "cancel": "Prekliči",
+    "back": "Nazaj",
+    "loading": "Nalaganje..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Uporaba spletnih strežnikov",
+      "description": "Prikaz spletnih strežnikov in spletnih mest na dosegljivih strežnikih ter njihovo urejanje na strežnikih, ki jih lahko urejate."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Spletni strežniki",
+        "description": "Upravljajte nginx, Apache in Caddy na tem strežniku prek zavihka Spletni strežniki."
+      },
+      "useSudo": {
+        "label": "Uporaba sudo",
+        "description": "Za branje in spreminjanje spletnega strežnika uporabite sudo. Izklopite, če ste prijavljeni kot root."
+      },
+      "readOnly": {
+        "label": "Samo za branje",
+        "description": "Prikaži spletna mesta, konfiguracijo in dnevnike, vendar jih na tem strežniku nikoli ne spreminjaj."
+      },
+      "showPanel": {
+        "label": "Plošča ob terminalu",
+        "description": "Ponudi ploščo Spletni strežniki na zavihkih terminala tega strežnika."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Odpri ploščo skupaj s terminalom",
+        "description": "Prikaži ploščo Spletni strežniki, ko se terminal odpre na strežniku, ki ga podpira."
+      },
+      "companionSide": {
+        "label": "Stran plošče",
+        "description": "Kje se plošča nahaja ob terminalu.",
+        "right": "Desno",
+        "left": "Levo",
+        "bottom": "Spodaj"
+      },
+      "companionSize": {
+        "label": "Velikost plošče",
+        "description": "Širina plošče ali njena višina, če je spodaj, v pixelih."
+      },
+      "companionEdgeButton": {
+        "label": "Gumb na robu",
+        "description": "Prikaži majhen gumb na robu terminala za odpiranje plošče."
+      }
+    }
+  },
+  "tab": {
+    "title": "Spletni strežniki",
+    "noHost": "Odprite Spletne strežnike iz strežnika.",
+    "error": "Spletnih strežnikov na tem strežniku ni bilo mogoče naložiti.",
+    "disabled": "Spletni strežniki so za ta strežnik izklopljeni. Vklopite jih v nastavitvah strežnika.",
+    "sudo": "Spremembe zahtevajo prijavo kot root, sudo brez gesla ali shranjeno sudo geslo na tem strežniku.",
+    "refresh": "Osveži",
+    "readOnly": "Samo za branje",
+    "noServer": "Ni nameščenega spletnega strežnika",
+    "noServerHint": "Namestite nginx, Apache ali Caddy iz strani Strežnik.",
+    "openServer": "Odpri strežnik",
+    "viewSites": "Spletna mesta",
+    "viewConfig": "Konfiguracija",
+    "viewLogs": "Dnevniki",
+    "viewServer": "Strežnik"
+  },
+  "actions": {
+    "ok": "Končano",
+    "failed": "Napaka",
+    "noOutput": "Ni izpisa."
+  },
+  "watch": {
+    "start": "Opozori me, ko spletni strežnik preneha delovati",
+    "stop": "Ustavi opozorila za ta strežnik",
+    "on": "Prejeli boste opozorilo, ko spletni strežnik na tem strežniku preneha delovati",
+    "off": "Opozorila za ta strežnik so izklopljena",
+    "failed": "Opozoril ni bilo mogoče spremeniti"
+  },
+  "sites": {
+    "add": "Dodaj spletno mesto",
+    "search": "Išči spletna mesta",
+    "empty": "Še ni spletnih mest.",
+    "loadFailed": "Spletnih mest ni bilo mogoče naložiti.",
+    "off": "Izklopljeno",
+    "anyName": "poljubno ime",
+    "form": "Obrazec",
+    "certDays_one": "Preostanek {{count}} dan",
+    "certDays_two": "Preostanek {{count}} dneva",
+    "certDays_few": "Preostanek {{count}} dni",
+    "certDays_other": "Preostanek {{count}} dni",
+    "certExpired": "Potrdilo je poteklo",
+    "enable": "Vklopi",
+    "disable": "Izklopi",
+    "enabled": "{{name}} je vklopljen",
+    "disabled": "{{name}} je izklopljen",
+    "delete": "Izbriši",
+    "deleteTitle": "Izbrišem {{name}}?",
+    "deleteBody": "Datoteka bo odstranjena in strežnik se bo ponovno naložil. Kopija ostane v /var/lib/termix-web-servers/backups na gostitelju.",
+    "deleted": "{{name}} je bil izbrisan"
+  },
+  "site": {
+    "addTitle": "Nova spletna stran",
+    "editTitle": "Shrani {{name}}",
+    "add": "Dodaj spletno stran",
+    "save": "Shrani",
+    "added": "{{name}} je bil dodan",
+    "saved": "{{name}} je bil shranjen",
+    "server": "Spletni strežnik",
+    "name": "Ime spletne strani",
+    "nameHint": "Uporablja se za ime datoteke in dnevniške datoteke, na primer example.",
+    "modeForm": "Obrazec",
+    "modeText": "Besedilo",
+    "text": "Konfiguracija",
+    "textHint": "Shranjevanje besedila izklopi obrazec za to spletno stran, da se ohranijo vaše lastne spremembe.",
+    "type": "Vrsta",
+    "typeStatic": "Statične datoteke",
+    "typeProxy": "Obratni proxy",
+    "typePhp": "PHP",
+    "typeRedirect": "Preusmeritev",
+    "staticHint": "Posluje datoteke iz mape.",
+    "proxyHint": "Pošilja zahteve aplikaciji, ki teče na tem ali drugem gostitelju.",
+    "phpHint": "Posluje datoteke iz mape in izvaja datoteke .php z php-fpm.",
+    "redirectHint": "Vsakega obiskovalca pošlje na drug naslov.",
+    "domains": "Domena",
+    "domainsHint": "Po vsaki pritisnite Enter. V nginx uporabite _ za odgovor na poljubno ime.",
+    "port": "HTTP vrat",
+    "root": "Koren spleta",
+    "rootHint": "Mapa znotraj /var/www, /srv, /usr/share/nginx, /opt ali /home.",
+    "index": "Indeksne datoteke",
+    "spa": "Enostranska aplikacija",
+    "spaHint": "Pošlji poti, ki niso datoteke, na /index.html.",
+    "upstream": "Naslov aplikacije",
+    "upstreamHint": "Kje aplikacija posluša, na primer http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Pošlji obiskovalce na",
+    "keepPath": "Ohrani pot",
+    "keepPathHint": "Pošlji /page na isto stran na novem naslovu.",
+    "phpSocket": "php-fpm vtičnica",
+    "phpSocketHint": "Vtičnice php-fpm ni bilo mogoče najti. Namestite php-fpm ali vnesite gostitelj:vrat.",
+    "https": "HTTPS",
+    "httpsHint": "Potrebno je certifikat. Najprej shranite spletno stran, nato pa spodaj pritisnite Pridobi certifikat.",
+    "httpsCaddy": "Caddy samodejno pridobi in podaljša certifikat.",
+    "httpsPort": "HTTPS vrat",
+    "certPath": "Datoteka certifikata",
+    "keyPath": "Datoteka ključa",
+    "forceHttps": "Preusmeri HTTP na HTTPS",
+    "gzip": "Stisni odzive",
+    "accessLog": "Dnevnik dostopa",
+    "maxBody": "Omejitev nalaganja v MB",
+    "maxBodyHint": "0 ohrani privzeto vrednost strežnika.",
+    "preview": "Predogled",
+    "previewFailed": "Konfiguracije ni bilo mogoče sestaviti."
+  },
+  "tls": {
+    "title": "HTTPS certifikat",
+    "hintManaged": "certbot pridobi Let's Encrypt certifikat za domene te strani, nato se stran preklopi na HTTPS. certbot ga podaljša in ponovno naloži strežnik.",
+    "hintText": "certbot pridobi Let's Encrypt certifikat za domene te strani. Certifikat nato ročno dodajte strani. certbot ga podaljša in ponovno naloži strežnik.",
+    "needCertbot": "Najprej namestite certbot z njegovim vtičnikom za ta strežnik na strani Strežnik.",
+    "email": "E-pošta",
+    "emailHint": "Let's Encrypt sem piše o težavah. Neobvezno.",
+    "staging": "Testni certifikat",
+    "stagingHint": "Uporabi testni strežnik Let's Encrypt. Brskalniki mu ne bodo zaupali.",
+    "issue": "Pridobi certifikat",
+    "done": "Certifikat shranjen"
+  },
+  "config": {
+    "search": "Išči datoteke",
+    "empty": "Ni datotek.",
+    "loadFailed": "Datoteke ni bilo mogoče naložiti.",
+    "test": "Preveri konfiguracijo",
+    "testOk": "Konfiguracija je pravilna",
+    "testFailed": "Konfiguracija vsebuje napake",
+    "content": "Vsebina",
+    "save": "Shrani",
+    "saveHint": "Pred ponovnim nalaganjem strežnika se preveri celotna konfiguracija. Poškodovana datoteka se vrne v prejšnje stanje.",
+    "saved": "Shranjeno in ponovno naloženo",
+    "backups_one": "{{count}} varnostna kopija",
+    "backups_two": "{{count}} varnostni kopiji",
+    "backups_few": "{{count}} varnostne kopije",
+    "backups_other": "{{count}} varnostnih kopij",
+    "restore": "Obnovi",
+    "restoreTitle": "Obnoviti to varnostno kopijo?",
+    "restoreBody": "Datoteka se vrne v stanje, kot je bilo ob {{time}}. Trenutni besedilni zapis postane tudi varnostna kopija.",
+    "restored": "Varnostna kopija obnovljena"
+  },
+  "logs": {
+    "source": "Dnevnik",
+    "lines": "Vrstice",
+    "journal": "Dnevnik {{server}}",
+    "follow": "Sledi",
+    "stop": "Ustavi",
+    "connecting": "Povezovanje ...",
+    "ended": "Sledenje ustavljeno.",
+    "followFailed": "Tega dnevnika ni bilo mogoče slediti.",
+    "empty": "Ni vrstic.",
+    "loadFailed": "Dnevnika ni bilo mogoče prebrati.",
+    "requests": "Zahteve",
+    "topPaths": "Najpogostejše poti",
+    "topClients": "Najpogostejši odjemalci"
+  },
+  "server": {
+    "unknown": "neznano",
+    "atBoot": "Zažene se ob zagonu",
+    "notInstalled": "Ni nameščeno",
+    "start": "Zaženi",
+    "stop": "Ustavi",
+    "restart": "Ponovno zaženi",
+    "reload": "Ponovno naloži",
+    "enable": "Zaženi ob zagonu",
+    "disable": "Ne zaženi ob zagonu",
+    "boot": "Zaženi ob zagonu",
+    "noBoot": "Ne zaženi ob zagonu",
+    "done": "{{server}} je končal",
+    "stopTitle": "Ustaviti {{server}}?",
+    "stopBody": "Vse strani na njem bodo izklopljene, dokler jih ponovno ne zaženete.",
+    "install": "Namesti",
+    "installTitle": "Namestiti {{server}}?",
+    "installBody": "Namešča se z upraviteljem paketov gostitelja in se takoj zažene. Drugi spletni strežnik na vratih 80 bo preprečil njegov zagon.",
+    "installed": "{{server}} je bil nameščen",
+    "installCertbot": "Namesti certbot",
+    "certbotInstalled": "certbot je bil nameščen",
+    "certbotPlugins": "Vtičniki: {{plugins}}",
+    "certbotNoPlugins": "Ni vtičnika za nginx ali Apache",
+    "certbotHint": "Pridobi Let's Encrypt certifikate za strani nginx in Apache"
+  },
+  "card": {
+    "title": "Spletni strežniki",
+    "loading": "Nalaganje...",
+    "refresh": "Osveži",
+    "empty": "Noben gostitelj nima vklopljenih spletnih strežnikov.",
+    "summary_one": "{{count}} gostitelj | {{down}} potrebuje pregled",
+    "summary_two": "{{count}} gostitelja | {{down}} potrebujeta pregled",
+    "summary_few": "{{count}} gostitelji | {{down}} potrebujejo pregled",
+    "summary_other": "{{count}} gostiteljev | {{down}} potrebujejo pregled",
+    "sites_one": "{{count}} spletna stran",
+    "sites_two": "{{count}} spletni strani",
+    "sites_few": "{{count}} spletne strani",
+    "sites_other": "{{count}} spletnih strani"
+  },
+  "companion": {
+    "toggle": "Plošča spletnih strežnikov",
+    "openTab": "Odpri spletne strežnike",
+    "reload": "Ponovno naloži {{server}}"
+  },
+  "manager": {
+    "title": "Spletni strežniki",
+    "disabled": "Vklopite spletne strežnike za tega gostitelja, da boste tukaj videli njegove spletne strani."
+  },
+  "operations": {
+    "status": {
+      "title": "Stanje spletnega strežnika"
+    },
+    "listSites": {
+      "title": "Seznam spletnih strani"
+    },
+    "test": {
+      "title": "Preveri konfiguracijo spletnega strežnika"
+    },
+    "reload": {
+      "title": "Ponovno naloži spletni strežnik"
+    },
+    "restart": {
+      "title": "Ponovno zaženi spletni strežnik"
+    },
+    "enableSite": {
+      "title": "Vklopi spletno stran"
+    },
+    "disableSite": {
+      "title": "Izklopi spletno stran"
+    },
+    "deleteSite": {
+      "title": "Izbriši spletno stran"
+    },
+    "server": "Strežnik",
+    "allServers": "Vsi",
+    "sites": {
+      "title": "Spletne strani",
+      "server": "Strežnik",
+      "domains": "Domena",
+      "https": "HTTPS"
+    }
+  }
+}

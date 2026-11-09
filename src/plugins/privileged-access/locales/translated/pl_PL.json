@@ -1,0 +1,147 @@
+{
+  "plugin": {
+    "name": "Dostęp uprzywilejowany",
+    "description": "Wymagaj zatwierdzenia przed połączeniem z hostem uprzywilejowanym. Dostęp wygasa automatycznie, a wszystkie działania są rejestrowane."
+  },
+  "tab": {
+    "title": "Dostęp"
+  },
+  "tabs": {
+    "request": "Poproś o dostęp",
+    "mine": "Moje żądania",
+    "pending": "Do rozstrzygnięcia",
+    "active": "Aktywny dostęp",
+    "history": "Historia"
+  },
+  "status": {
+    "pending": "Oczekiwanie",
+    "approved": "Zakończony",
+    "active": "Aktywny",
+    "denied": "Odrzucony",
+    "expired": "Wygasały",
+    "revoked": "Unieważniony",
+    "cancelled": "Anulowany"
+  },
+  "request": {
+    "host": "Host",
+    "hostWithAccess": "{{host}} (dostęp do {{until}})",
+    "hours": "Godziny",
+    "hoursHint": "Ten host pozwala na maksymalnie {{max}} godzin.",
+    "reason": "Dlaczego potrzebujesz dostępu",
+    "reasonOptional": "Dlaczego potrzebujesz dostępu (opcjonalnie)",
+    "ticket": "Zgłoszenie",
+    "ticketOptional": "Zgłoszenie (opcjonalnie)",
+    "send": "Poproś o dostęp",
+    "sent": "Żądanie wysłane. Otrzymasz powiadomienie, gdy ktoś podejmie decyzję.",
+    "failed": "Nie udało się wysłać żądania",
+    "noHosts": "Brak hostów uprzywilejowanych",
+    "noHostsHint": "Hosty oznaczone przez administratora jako uprzywilejowane pojawią się tutaj."
+  },
+  "list": {
+    "none": "Brak elementów",
+    "loadError": "Nie udało się załadować żądań",
+    "actionFailed": "Operacja nie powiodła się",
+    "hours_one": "{{count}} godzina",
+    "hours_few": "{{count}} godziny",
+    "hours_many": "{{count}} godzin",
+    "hours_other": "{{count}} godzin",
+    "until": "do {{time}}",
+    "decidedBy": "przez {{name}}",
+    "approve": "Zatwierdź",
+    "deny": "Odrzuć",
+    "cancel": "Anuluj",
+    "endNow": "Zakończ teraz",
+    "export": "Eksportuj CSV",
+    "approveConfirm_one": "Przyznać użytkownikowi {{user}} dostęp do {{host}} na {{count}} godzinę?",
+    "approveConfirm_few": "Przyznać użytkownikowi {{user}} dostęp do {{host}} na {{count}} godziny?",
+    "approveConfirm_many": "Przyznać użytkownikowi {{user}} dostęp do {{host}} na {{count}} godzin?",
+    "approveConfirm_other": "Przyznać użytkownikowi {{user}} dostęp do {{host}} na {{count}} godzin?",
+    "denyConfirm": "Odrzucić to żądanie?",
+    "cancelConfirm": "Anulować to żądanie?",
+    "endConfirm": "Zakończyć ten dostęp teraz? Otwarte sesje na hoście zostaną zamknięte.",
+    "approved": "Dostęp zatwierdzony",
+    "denied": "Żądanie odrzucone",
+    "ended": "Gotowe"
+  },
+  "card": {
+    "title": "Dostęp uprzywilejowany",
+    "waiting": "oczekiwanie na Ciebie",
+    "empty": "Brak oczekujących żądań",
+    "emptyHint": "Twój zatwierdzony dostęp pojawi się tutaj."
+  },
+  "permissions": {
+    "request": {
+      "title": "Prośba o dostęp uprzywilejowany",
+      "description": "Prośba o czasowo ograniczony dostęp do hostów uprzywilejowanych."
+    },
+    "approve": {
+      "title": "Zatwierdzanie dostępu uprzywilejowanego",
+      "description": "Decydowanie o żądaniach dostępu innych osób, wcześniejsze zakończenie dostępu i przeglądanie raportów."
+    },
+    "bypass": {
+      "title": "Dostęp awaryjny",
+      "description": "Łączenie się z hostami uprzywilejowanymi bez składania żądania. Każde użycie jest rejestrowane i zgłaszane."
+    },
+    "configure": {
+      "title": "Konfigurowanie hostów uprzywilejowanych",
+      "description": "Oznaczanie hostów jako uprzywilejowanych i zmiana osób zatwierdzających do nich dostęp"
+    }
+  },
+  "settings": {
+    "admin": {
+      "pendingHours": {
+        "label": "Czas życia żądania (godziny)",
+        "description": "Żądanie, którego nikt nie rozstrzygnie w tym czasie, wygasa."
+      },
+      "alertBypass": {
+        "label": "Powiadom o dostępie awaryjnym",
+        "description": "Powiadamiaj zatwierdzających, gdy ktoś łączy się z dostępem awaryjnym."
+      }
+    },
+    "host": {
+      "enable": {
+        "label": "Host uprzywilejowany",
+        "description": "Sesje SSH i pulpitu zdalnego z tym hostem wymagają zatwierdzonego dostępu."
+      },
+      "approverRoles": {
+        "label": "Role zatwierdzających",
+        "description": "Nazwy ról oddzielone przecinkami, których członkowie mogą zatwierdzać. Puste pole pozwala każdemu z uprawnieniem zatwierdzania podejmować decyzje."
+      },
+      "maxHours": {
+        "label": "Maksymalny czas dostępu (godziny)",
+        "description": "Maksymalna liczba godzin, o którą można poprosić w jednym wniosku."
+      },
+      "requireReason": {
+        "label": "Wymagaj podania powodu",
+        "description": "Wniosek musi zawierać informację, dlaczego potrzebny jest dostęp."
+      },
+      "requireTicket": {
+        "label": "Wymagaj podania numeru zgłoszenia",
+        "description": "Wniosek musi zawierać numer zgłoszenia."
+      },
+      "allowBackground": {
+        "label": "Zezwól na działanie w tle",
+        "description": "Połączenia pluginów nieinteraktywnych, takie jak polling, omijają zatwierdzenie. Wyłącz, aby blokować każdą sesję bez dostępu."
+      }
+    }
+  },
+  "operations": {
+    "request": {
+      "title": "Poproś o dostęp uprzywilejowany",
+      "hours": "Godziny",
+      "reason": "Powód",
+      "ticket": "Zgłoszenie"
+    },
+    "pending": {
+      "title": "Wnioski o dostęp do zatwierdzenia"
+    },
+    "status": {
+      "title": "Dostęp uprzywilejowany"
+    },
+    "events": {
+      "requested": "Ktoś poprosił o dostęp",
+      "approved": "Dostęp został zatwierdzony",
+      "bypassed": "Użyto dostępu awaryjnego"
+    }
+  }
+}

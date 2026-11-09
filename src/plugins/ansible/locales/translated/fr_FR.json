@@ -1,0 +1,211 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Exécutez des playbooks Ansible et des commandes ad hoc depuis un hôte de contrôle, avec un inventaire généré à partir de vos hôtes Termix."
+  },
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "back": "Retour",
+    "delete": "Supprimer"
+  },
+  "permissions": {
+    "use": {
+      "title": "Utiliser Ansible",
+      "description": "Affiche les playbooks et les exécutions sur les hôtes de contrôle accessibles. Permet de modifier des fichiers et d'exécuter Ansible sur les hôtes modifiables."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Utiliser cet hôte comme hôte de contrôle Ansible. Ansible doit être installé dessus."
+      },
+      "projectDir": {
+        "label": "Dossier du projet",
+        "description": "Le dossier sur cet hôte contenant vos playbooks, rôles et ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Fichier de mot de passe Vault",
+        "description": "Un fichier sur cet hôte contenant le mot de passe Ansible Vault. Laissez vide si vous n'utilisez pas Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Lecture seule",
+        "description": "Affiche les playbooks et les exécutions, mais n'autorise jamais la modification de fichiers ou le lancement d'exécutions sur cet hôte."
+      },
+      "alertRuns": {
+        "label": "Alerter en cas d'échec d'exécution",
+        "description": "Envoyer une alerte lorsqu'une exécution sur cet hôte se termine par un échec ou est perdue. Vérifié lors de la lecture de l'état de l'exécution."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Ouvrez Ansible depuis un hôte.",
+    "error": "Impossible de charger Ansible depuis cet hôte.",
+    "disabled": "Ansible est désactivé pour cet hôte. Activez-le dans les paramètres de l'hôte.",
+    "refresh": "Actualiser",
+    "readOnly": "Lecture seule",
+    "notInstalled": "Ansible non installé",
+    "notInstalledTitle": "Ansible n'est pas installé sur cet hôte",
+    "notInstalledHint": "Installez ansible-core sur cet hôte, par exemple avec pipx ou votre gestionnaire de paquets, puis actualisez.",
+    "noSshpass": "sshpass n'est pas installé sur cet hôte. Les hôtes se connectant avec un mot de passe échoueront.",
+    "viewPlaybooks": "Playbooks",
+    "viewRuns": "Exécutions",
+    "viewAdhoc": "Ad hoc",
+    "viewFacts": "Faits"
+  },
+  "files": {
+    "add": "Nouveau fichier",
+    "search": "Rechercher des fichiers",
+    "empty": "Aucun fichier dans le dossier du projet pour le moment.",
+    "noMatch": "Aucun fichier ne correspond.",
+    "noProject": "Le dossier {{dir}} n'existe pas sur cet hôte. Créez-le ou définissez un autre dossier de projet dans les paramètres de l'hôte.",
+    "listFailed": "Impossible de lister les fichiers du projet.",
+    "loadFailed": "Impossible de lire ce fichier.",
+    "saved": "Fichier enregistré",
+    "saveFailed": "Impossible d'enregistrer ce fichier.",
+    "playbook": "Playbook",
+    "run": "Exécuter",
+    "newTitle": "Nouveau fichier",
+    "name": "Nom du fichier",
+    "nameHint": "Un chemin à l'intérieur du dossier du projet, comme site.yml ou roles/web/tasks/main.yml.",
+    "hint": "La syntaxe d'un playbook est vérifiée avant sa sauvegarde. L'ancien fichier est conservé si la vérification échoue.",
+    "text": "Contenu du fichier",
+    "deleteTitle": "Supprimer ce fichier ?"
+  },
+  "targets": {
+    "search": "Rechercher des hôtes",
+    "addShown": "Ajouter les affichés",
+    "clear": "Effacer",
+    "empty": "Aucun hôte trouvé.",
+    "count": "{{count}} sélectionné(s)",
+    "failed": "Impossible de charger vos hôtes."
+  },
+  "run": {
+    "title": "Exécuter {{playbook}}",
+    "start": "Exécuter",
+    "startCheck": "Exécuter en mode vérification",
+    "startFailed": "Impossible de démarrer l'exécution.",
+    "source": "Hôtes",
+    "sourceProject": "Inventaire du projet",
+    "sourceTermix": "Hôtes Termix",
+    "sourceProjectHint": "Utilisez l'inventaire depuis ansible.cfg ou un fichier dans le projet.",
+    "sourceTermixHint": "Sélectionnez des hôtes depuis Termix. Les dossiers deviennent des groupes folder_ et les balises deviennent des groupes tag_. Tous font partie du groupe termix.",
+    "inventory": "Fichier d'inventaire",
+    "inventoryHint": "Un chemin à l'intérieur du dossier du projet. Laissez vide pour utiliser ansible.cfg.",
+    "check": "Mode vérification",
+    "checkHint": "Affiche ce qui changerait sans rien modifier.",
+    "diff": "Afficher les différences",
+    "diffHint": "Affiche les modifications apportées aux fichiers.",
+    "become": "Exécuter en tant que root",
+    "becomeHint": "Utilise sudo sur les hôtes. Un mot de passe Sudo enregistré est utilisé pour les hôtes Termix.",
+    "limit": "Limite",
+    "limitHint": "Exécuter uniquement sur ces hôtes ou groupes.",
+    "verbosity": "Détail de la sortie",
+    "verbosityOff": "Normal",
+    "tags": "Balises",
+    "skipTags": "Ignorer les balises",
+    "extraVars": "Variables supplémentaires",
+    "extraVarsHint": "Une clé=valeur par ligne."
+  },
+  "runs": {
+    "title": "Exécution",
+    "empty": "Aucune exécution pour le moment.",
+    "loadFailed": "Impossible de charger les exécutions.",
+    "stop": "Arrêter",
+    "stopFailed": "Impossible d'arrêter l'exécution.",
+    "deleteTitle": "Supprimer cette exécution ?",
+    "deleteFailed": "Impossible de supprimer l'exécution.",
+    "checkMode": "Vérification",
+    "truncated": "Affichage de la fin d'une sortie longue.",
+    "noOutput": "Aucune sortie pour le moment.",
+    "state": {
+      "running": "En cours",
+      "ok": "Terminé",
+      "failed": "Échoué",
+      "cancelled": "Arrêté",
+      "lost": "Perdu"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Faits"
+    },
+    "recap": {
+      "host": "Hôte",
+      "ok": "OK",
+      "changed": "Modifié",
+      "unreachable": "Inaccessible",
+      "failed": "Échoué",
+      "skipped": "Ignoré"
+    }
+  },
+  "adhoc": {
+    "hint": "Exécutez un module sur les hôtes, comme ansible all -m ping.",
+    "pattern": "Motif d'hôtes",
+    "patternHint": "Un hôte, un groupe ou all.",
+    "module": "Module",
+    "moduleHint": "Par exemple ping, command, shell, apt ou systemd.",
+    "args": "Arguments",
+    "argsHint": "Pour command et shell, il s'agit de la commande. Pour les autres modules, ce sont des paires clé=valeur.",
+    "run": "Exécuter"
+  },
+  "facts": {
+    "hint": "Collecte les faits des hôtes avec le module setup. Nécessite des hôtes Termix pour que chacun ait une connexion.",
+    "gather": "Collecter les faits",
+    "gathering": "Collecte en cours...",
+    "failed": "Impossible de collecter les faits.",
+    "failedHost": "Échoué",
+    "none": "Aucun fait n'a été retourné. Ouvrez l'exécution pour voir pourquoi.",
+    "col": {
+      "host": "Hôte",
+      "os": "Système",
+      "kernel": "Noyau",
+      "cpu": "CPU",
+      "memory": "Mémoire",
+      "address": "Adresse",
+      "uptime": "Temps de fonctionnement"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Lister les playbooks"
+    },
+    "run": {
+      "title": "Exécuter un playbook",
+      "playbook": "Playbook",
+      "limit": "Limite",
+      "tags": "Étiquettes",
+      "check": "Mode vérification"
+    },
+    "runs": {
+      "title": "Lister les exécutions",
+      "resource": "Exécutions",
+      "started": "Démarré",
+      "check": "Mode vérification"
+    },
+    "failed": {
+      "title": "Exécutions échouées"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Vérification des hôtes...",
+    "summary_one": "{{count}} exécution échouée sur {{hosts}} hôtes",
+    "summary_many": "{{count}} exécutions échouées sur {{hosts}} hôtes",
+    "summary_other": "{{count}} exécutions échouées sur {{hosts}} hôtes",
+    "refresh": "Vérifier à nouveau",
+    "empty": "Activez Ansible pour un hôte afin de voir ses exécutions ici.",
+    "failed_one": "{{count}} échoué",
+    "failed_many": "{{count}} échoués",
+    "failed_other": "{{count}} échoués",
+    "running_one": "{{count}} en cours",
+    "running_many": "{{count}} en cours",
+    "running_other": "{{count}} en cours",
+    "last": "{{title}} : {{state}}",
+    "noRuns": "Aucune exécution pour le moment"
+  }
+}

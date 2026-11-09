@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Ansible playbookok és ad-hoc parancsok futtatása egy vezérlő hostról, a Termix hostjaidból generált inventoryval."
+  },
+  "common": {
+    "save": "Mentés",
+    "cancel": "Mégse",
+    "back": "Vissza",
+    "delete": "Törlés"
+  },
+  "permissions": {
+    "use": {
+      "title": "Ansible használata",
+      "description": "Playbookok és futtatások megtekintése az elérhető vezérlő hostokon. Fájlok szerkesztése és Ansible futtatása azokon a hostokon, amelyeket szerkeszthetsz."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Ez a host legyen Ansible vezérlő host. Az Ansible-nak telepítve kell lennie rajta."
+      },
+      "projectDir": {
+        "label": "Projekt mappa",
+        "description": "A mappa ezen a hoston, amely tartalmazza a playbookokat, szerepeket és az ansible.cfg fájlt.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Vault jelszó fájl",
+        "description": "Egy fájl ezen a hoston, amely tartalmazza az Ansible Vault jelszavát. Hagyd üresen, ha nem használod a Vault-ot.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Csak olvasható",
+        "description": "Playbookok és futtatások megjelenítése, de soha ne szerkesszen fájlokat vagy indítson futtatásokat ezen a hoston."
+      },
+      "alertRuns": {
+        "label": "Értesítés futtatás sikertelenségekor",
+        "description": "Értesítés küldése, ha egy futtatás ezen a hoston sikertelenül vagy elveszett állapotban végződik. Ellenőrzés történik, amikor a futtatás állapota beolvasható."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Nyisd meg az Ansible-t egy hostból.",
+    "error": "Nem sikerült betölteni az Ansible-t erről a hostról.",
+    "disabled": "Az Ansible kikapcsolva van ezen a hoston. Kapcsold be a host beállításaiban.",
+    "refresh": "Frissítés",
+    "readOnly": "Csak olvasható",
+    "notInstalled": "Az Ansible nincs telepítve",
+    "notInstalledTitle": "Az Ansible nincs telepítve ezen a hoston",
+    "notInstalledHint": "Telepítsd az ansible-core-t erre a hostra, például pipx-szel vagy a csomagkezelőddel, majd frissíts.",
+    "noSshpass": "Az sshpass nincs telepítve ezen a hoston. A jelszóval belépő hostok sikertelenek lesznek.",
+    "viewPlaybooks": "Playbookok",
+    "viewRuns": "Futtatások",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Tények"
+  },
+  "files": {
+    "add": "Új fájl",
+    "search": "Fájlok keresése",
+    "empty": "Még nincsenek fájlok a projekt mappában.",
+    "noMatch": "Nincs találat.",
+    "noProject": "A(z) {{dir}} mappa nem létezik ezen a hoston. Hozd létre, vagy állíts be egy másik Projekt mappát a host beállításaiban.",
+    "listFailed": "Nem sikerült listázni a projekt fájlokat.",
+    "loadFailed": "Nem sikerült beolvasni ezt a fájlt.",
+    "saved": "Fájl mentve",
+    "saveFailed": "Nem sikerült menteni ezt a fájlt.",
+    "playbook": "Playbook",
+    "run": "Futtatás",
+    "newTitle": "Új fájl",
+    "name": "Fájlnév",
+    "nameHint": "Egy elérési út a projekt mappán belül, például site.yml vagy roles/web/tasks/main.yml.",
+    "hint": "A playbook szintaxisát ellenőrzik mentés előtt. Ha az ellenőrzés sikertelen, a régi fájl marad.",
+    "text": "Fájl szövege",
+    "deleteTitle": "Törli ezt a fájlt?"
+  },
+  "targets": {
+    "search": "Hostok keresése",
+    "addShown": "Megjelenítettek hozzáadása",
+    "clear": "Törlés",
+    "empty": "Nem található host.",
+    "count": "{{count}} kiválasztva",
+    "failed": "Nem sikerült betölteni a hostjaidat."
+  },
+  "run": {
+    "title": "{{playbook}} futtatása",
+    "start": "Futtatás",
+    "startCheck": "Futtatás ellenőrzési módban",
+    "startFailed": "Nem sikerült elindítani a futtatást.",
+    "source": "Gazdagépek",
+    "sourceProject": "Projekt inventory",
+    "sourceTermix": "Termix gazdagépek",
+    "sourceProjectHint": "Használja az ansible.cfg inventory-ját, vagy egy projektben lévő fájlt.",
+    "sourceTermixHint": "Válasszon gazdagépeket a Termixből. A mappák folder_ csoportokká, a címkék tag_ csoportokká válnak. Mindegyik a termix csoportban van.",
+    "inventory": "Inventory fájl",
+    "inventoryHint": "Útvonal a projekt mappáján belül. Hagyja üresen az ansible.cfg használatához.",
+    "check": "Ellenőrző mód",
+    "checkHint": "Megjeleníti, mi változna, anélkül, hogy bármit is módosítana.",
+    "diff": "Különbségek megjelenítése",
+    "diffHint": "Megjeleníti a fájlokban végrehajtott változtatásokat.",
+    "become": "Futtatás rootként",
+    "becomeHint": "Sudo használata a gazdagépeken. A Termix gazdagépeknél a mentett Sudo jelszó kerül felhasználásra.",
+    "limit": "Korlátozás",
+    "limitHint": "Csak ezeken a gazdagépeken vagy csoportokon futtassa.",
+    "verbosity": "Kimeneti részletesség",
+    "verbosityOff": "Normál",
+    "tags": "Címkék",
+    "skipTags": "Címkék kihagyása",
+    "extraVars": "További változók",
+    "extraVarsHint": "Egy key=value soronként."
+  },
+  "runs": {
+    "title": "Futtatás",
+    "empty": "Még nincsenek futtatások.",
+    "loadFailed": "Nem sikerült betölteni a futtatásokat.",
+    "stop": "Megállítás",
+    "stopFailed": "Nem sikerült leállítani a futtatást.",
+    "deleteTitle": "Törli ezt a futtatást?",
+    "deleteFailed": "Nem sikerült törölni a futtatást.",
+    "checkMode": "Ellenőrzés",
+    "truncated": "Egy hosszú kimenet végének megjelenítése.",
+    "noOutput": "Még nincs kimenet.",
+    "state": {
+      "running": "Fut",
+      "ok": "Kész",
+      "failed": "Sikertelen",
+      "cancelled": "Megállítva",
+      "lost": "Elveszett"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Tények"
+    },
+    "recap": {
+      "host": "Gazdagép",
+      "ok": "OK",
+      "changed": "Módosult",
+      "unreachable": "Elérhetetlen",
+      "failed": "Sikertelen",
+      "skipped": "Kihagyva"
+    }
+  },
+  "adhoc": {
+    "hint": "Futtasson egy modult a gazdagépeken, például ansible all -m ping.",
+    "pattern": "Gazdagép minta",
+    "patternHint": "Egy gazdagép, egy csoport vagy all.",
+    "module": "Modul",
+    "moduleHint": "Például ping, command, shell, apt vagy systemd.",
+    "args": "Argumentumok",
+    "argsHint": "A command és shell esetén ez maga a parancs. Egyéb moduloknál key=value párok.",
+    "run": "Futtatás"
+  },
+  "facts": {
+    "hint": "Tények gyűjtése a gazdagépekről a setup modul segítségével. Termix gazdagépek szükségesek, hogy mindegyiknek legyen belépési adata.",
+    "gather": "Tények gyűjtése",
+    "gathering": "Gyűjtés...",
+    "failed": "Nem sikerült összegyűjteni a tényeket.",
+    "failedHost": "Sikertelen",
+    "none": "Nem érkeztek vissza tények. Nyissa meg a futtatást a hiba okának megtekintéséhez.",
+    "col": {
+      "host": "Host",
+      "os": "Rendszer",
+      "kernel": "Mag",
+      "cpu": "Processzorok",
+      "memory": "Memória",
+      "address": "Cím",
+      "uptime": "Futtatási idő"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Playbookok listázása"
+    },
+    "run": {
+      "title": "Playbook futtatása",
+      "playbook": "Playbook",
+      "limit": "Korlátozás",
+      "tags": "Címkék",
+      "check": "Ellenőrzési mód"
+    },
+    "runs": {
+      "title": "Futtatások listázása",
+      "resource": "Futtatások",
+      "started": "Indítva",
+      "check": "Ellenőrzési mód"
+    },
+    "failed": {
+      "title": "Sikertelen futtatások"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Hostok ellenőrzése...",
+    "summary_one": "{{count}} sikertelen futtatás {{hosts}} hoston",
+    "summary_other": "{{count}} sikertelen futtatás {{hosts}} hoston",
+    "refresh": "Újraellenőrzés",
+    "empty": "Kapcsold be az Ansiblet egy hoston, hogy itt lásd a futtatásait.",
+    "failed_one": "{{count}} sikertelen",
+    "failed_other": "{{count}} sikertelen",
+    "running_one": "{{count}} fut",
+    "running_other": "{{count}} fut",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Még nincsenek futtatások"
+  }
+}

@@ -1,6 +1,6 @@
 import { rem } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   ChevronRight,
   Folder,
@@ -55,6 +55,8 @@ export function CredentialFolderItem({
 }) {
   const { t } = useTranslation();
   const [dragOver, setDragOver] = useState(false);
+  // Escape and the X end renaming without saving, even if a blur follows.
+  const cancelRename = useRef(false);
   const isRenaming = editingFolderName === folder.name;
   const canManage = folder.name !== UNCATEGORIZED;
   const actionButtonClass =
@@ -104,6 +106,7 @@ export function CredentialFolderItem({
               value={editingFolderValue}
               onChange={(e) => onEditingFolderValueChange(e.target.value)}
               onBlur={async () => {
+                if (cancelRename.current) return;
                 const newName = editingFolderValue.trim();
                 onEditingFolderNameChange(null);
                 if (newName && newName !== folder.name) {
@@ -112,14 +115,24 @@ export function CredentialFolderItem({
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") e.currentTarget.blur();
-                if (e.key === "Escape") onEditingFolderNameChange(null);
+                if (e.key === "Escape") {
+                  cancelRename.current = true;
+                  onEditingFolderNameChange(null);
+                }
               }}
               onClick={(e) => e.stopPropagation()}
               className="text-[13px] font-bold bg-background border border-accent-brand/60 px-1 outline-none text-foreground min-w-0 flex-1"
             />
             <button
+              type="button"
+              title={t("common.cancel")}
+              aria-label={t("common.cancel")}
+              onPointerDown={() => {
+                cancelRename.current = true;
+              }}
               onClick={(e) => {
                 e.stopPropagation();
+                cancelRename.current = true;
                 onEditingFolderNameChange(null);
               }}
               className="text-muted-foreground hover:text-foreground shrink-0"
@@ -145,6 +158,7 @@ export function CredentialFolderItem({
                   className={actionButtonClass}
                   onClick={(e) => {
                     e.stopPropagation();
+                    cancelRename.current = false;
                     onEditingFolderNameChange(folder.name);
                     onEditingFolderValueChange(folder.name);
                   }}

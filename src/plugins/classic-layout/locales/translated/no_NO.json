@@ -16,7 +16,9 @@
     "more": "Mer",
     "logout": "Logg ut",
     "next": "Neste",
-    "previous": "Forrige"
+    "previous": "Forrige",
+    "showPassword": "Vis passord",
+    "hidePassword": "Skjul passord"
   },
   "desktopUpdates": {
     "title": "Skrivebordsapp",
@@ -67,7 +69,10 @@
     "resetRailOrder": "Tilbakestill rekkefølge",
     "hideFromRail": "Skjul fra sidefeltet",
     "openSettings": "Åpne innstillinger",
-    "mobileNavigation": "Navigasjon"
+    "mobileNavigation": "Navigasjon",
+    "allTabs": "Alle faner",
+    "hideTabBar": "Skjul fanefelt",
+    "showTabBar": "Vis fanefelt"
   },
   "commandPalette": {
     "searchPlaceholder": "Søk etter vertene, kommandoer eller innstillinger...",
@@ -110,7 +115,8 @@
     "noSearchResults": "Ingen tilkoblinger matcher søket ditt",
     "rename": "Gi økten nytt navn",
     "forgetConfirm": "Vil du avslutte bakgrunnsøkten for {{name}}?",
-    "forget": "Avslutt økt"
+    "forget": "Avslutt økt",
+    "expiringNow": "Slutter nå"
   },
   "placeholders": {
     "apiKeyName": "f.eks. CI Pipeline",
@@ -158,16 +164,14 @@
     "commandPalette": "Kommandopalette",
     "done": "Ferdig",
     "clear": "Tøm",
-    "dragToResizeColumns": "Dra for å endre kolonnens bredde",
     "hostsAvailable": "Tilgjengelige vertsmaskiner",
-    "removeSection": "Fjern seksjon",
-    "addSection": "Legg til en seksjon",
-    "allSectionsShown": "Alt er allerede på dashbordet.",
+    "addSection": "Legg til fliser",
     "fromPlugins": "Fra plugins",
-    "dropHere": "Slipp en seksjon her",
-    "dragToReorder": "Dra seksjoner for å endre rekkefølgen",
+    "dropHere": "Ingen fliser ennå. Legg til noen fra listen.",
+    "dragToReorder": "Dra i flisene for å flytte dem, og dra i kantene for å endre størrelse",
     "clearActivityConfirm": "Vil du tømme nylig aktivitet?",
-    "resetConfirm": "Vil du tilbakestille dashbordet til standardoppsettet?"
+    "resetConfirm": "Vil du tilbakestille dashbordet til standardoppsettet?",
+    "clearFailed": "Kunne ikke tømme nylig aktivitet"
   },
   "admin": {
     "sectionGeneral": "Generelt",
@@ -230,6 +234,9 @@
     "allowPasswordLoginDesc": "Innlogging med brukernavn og passord",
     "externalAutoProvision": "Opprett eksterne kontoer automatisk",
     "externalAutoProvisionDesc": "Opprett en konto første gang noen logger inn via ekstern innlogging som SSO eller LDAP. Når dette er avskrudd, kan bare personer som allerede har en konto logge inn på denne måten",
+    "credentialStorage": "Tillat lagring av passord og nøkler",
+    "credentialStorageOff": "Lagring av passord og nøkler er slått av på denne serveren. La dem være tomme, så ber Termix om dem når du kobler til.",
+    "credentialStorageDesc": "Når dette er slått av, kan ingen lagre passord eller private nøkler på en vert eller legitimasjon, og Termix ber om dem ved tilkobling. Allerede lagrede påloggingsdetaljer forblir inntil de fjernes.",
     "secondFactorAfterExternalLogin": "Be om en annen faktor etter ekstern innlogging (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Når avskrudd, blir en registrert annen faktor bare bedt om etter passord og annen lokal innlogging, som før. Når påskrudd, blir den bedt om etter alle innloggingsmetoder, inkludert SSO og LDAP.",
     "allowPasswordReset": "Tillat tilbakestilling av passord",
@@ -278,6 +285,13 @@
     "apiKeyName": "Navn",
     "apiKeyUser": "Bruker",
     "apiKeySelectUser": "Velg en bruker...",
+    "apiKeyScope": "Tilgang",
+    "apiKeyScopeFull": "Alt brukeren kan gjøre",
+    "apiKeyScopeRead": "Kun lesetilgang",
+    "apiKeyScopeRun": "Utfør handlinger",
+    "apiKeyScopeHint": "Handlingssnøkler har kun tilgang til Termix-handlinger og MCP-serveren, ikke noe annet.",
+    "apiKeyScopeActionsRead": "Handlinger, kun lesetilgang",
+    "apiKeyScopeActionsRun": "Handlinger",
     "apiKeyExpiresAt": "Utløper",
     "createKey": "Opprett nøkkel",
     "apiKeyNoExpiry": "Ingen utløp",
@@ -315,6 +329,10 @@
     "deleteUserFailed": "Kunne ikke slette brukeren",
     "deleteUserSuccess": "Brukeren «{{username}}» er slettet",
     "deleteRoleSuccess": "Rollen «{{name}}» er slettet",
+    "deleteRoleFailed": "Kunne ikke slette rollen",
+    "roleNamePlaceholder": "utvikler",
+    "roleDisplayNamePlaceholder": "Utvikler",
+    "unknownError": "Ukjent feil",
     "revokeKeySuccess": "Nøkkelen «{{name}}» er opphøyd",
     "revokeKeyFailed": "Kunne ikke opphøye nøkkelen",
     "copiedToClipboard": "Kopiert til utklippstavlen",
@@ -357,6 +375,7 @@
     "unlinkAccountFailed": "Kunne ikke fjerne ekstern pålogging",
     "updateRegistrationFailed": "Kunne ikke oppdatere innstillingen for registrering",
     "updatePasswordLoginFailed": "Kunne ikke oppdatere innstillingen for passordbasert pålogging",
+    "updateCredentialStorageFailed": "Kunne ikke oppdatere innstillingen for lagring av legitimasjon",
     "updateSecondFactorAfterExternalLoginFailed": "Kunne ikke oppdatere innstillingen for andre faktor",
     "updatePasswordResetFailed": "Kunne ikke oppdatere innstillingen for tilbakestilling av passord",
     "sessionTimeoutRange2": "Øktstiden må være mellom 1 og 720 timer",
@@ -677,7 +696,8 @@
         "tryBetaTitle": "Prøv nye funksjoner tidlig",
         "tryBetaDescription": "Bli med i betaprogrammet under Oppdateringer.",
         "sendBetaFeedback": "Send tilbakemelding om beta",
-        "openUpdates": "Oppdateringer"
+        "openUpdates": "Oppdateringer",
+        "hexLabel": "hex"
       }
     }
   },
@@ -763,6 +783,11 @@
       "allPluginsBeta": "Bruk beta for alle plugins",
       "allPluginsStable": "Alle plugins tilbake til stabil",
       "saveFailed": "Kunne ikke lagre endringen"
+    },
+    "user": {
+      "hostRows": {
+        "label": "Valg for antall rader med vertsnavn"
+      }
     }
   },
   "hostDefaults": {
@@ -789,6 +814,15 @@
   "sharing": {
     "revokeConfirm": "Fjerne tilgang for {{name}}?",
     "revoke": "Fjern tilgang",
+    "deviceLogin": {
+      "label": "Bare pålogget på denne enheten",
+      "none": "Ingen",
+      "hint": "Forblir på denne enheten og sendes aldri til serveren. Den brukes først, og tilkoblinger starter fra denne enheten.",
+      "noCredentials": "Legg til en legitimasjon med «Behold kun på denne enheten» for å bruke den her.",
+      "saved": "Enhetsinnlogging lagret",
+      "keepOnDevice": "Behold kun på denne enheten",
+      "keepOnDeviceDesc": "Passordet eller nøkkelen synkroniseres aldri til serveren. Bruk den som enhetsinnlogging på delte vertsmaskiner."
+    },
     "folderLogin": {
       "action": "Sett opp personlig pålogging for delte vertsmaskiner",
       "title": "Personlig pålogging for denne mappen",
@@ -830,7 +864,10 @@
     "pickHost": "Velg en vert å redigere",
     "pickCredential": "Velg en legitimasjon å redigere",
     "pickDefaults": "Velg et nivå av standardverdier å redigere",
-    "pickHint": "Alt om en tilkobling finnes her, gruppert slik at du kan finne det."
+    "pickHint": "Alt om en tilkobling finnes her, gruppert slik at du kan finne det.",
+    "clearChoice": "Tøm",
+    "proxyPathTarget": "mål",
+    "hostCopyName": "{{name}} (kopie)"
   },
   "permissions": {
     "branding": {
@@ -843,6 +880,33 @@
     "presetIntro": "Velg hvor mye som skal vises på skjermen.",
     "presetChangeLater": "Du kan bytte forhåndsinnstillinger eller endre enkeltinnstillinger senere i Innstillinger, under Grensesnitt.",
     "appearanceTitle": "Gjør den din egen",
-    "appearanceIntro": "Velg et tema, en aksentfarge, en skrifttype og språket ditt. Endringene vises med en gang, og du kan endre dem senere i Innstillinger."
+    "appearanceIntro": "Velg et tema, en aksentfarge, en skrifttype og språket ditt. Endringene vises med en gang, og du kan endre dem senere i Innstillinger.",
+    "hostRows": {
+      "title": "Hvordan skal vertsradene fungere?",
+      "intro": "Med mange plugins aktivert, kan hver vertsrad få mange knapper. Velg hvordan du vil få tilgang til verktøyene for en vertsmaskin.",
+      "buttons": "Tilkoblingsknapper",
+      "buttonsDesc": "En knapp per verktøy på hver vertsrad, som før. Vertssiden forblir i vertsmenyen.",
+      "both": "Knapper og en vertsside-knapp",
+      "bothDesc": "Behold knappene og legg til en for vertssiden. Verktøy åpnes inne på vertssiden.",
+      "page": "Kun vertsside",
+      "pageDesc": "Ingen knapper på radene. Å klikke på en vert åpner sidens, med alle verktøy i én fane.",
+      "clickOpensPage": "Klikk åpner vertssiden",
+      "changeLater": "Du kan endre dette senere i Tilpass sidestolpe."
+    },
+    "accentHex": "hex"
+  },
+  "hostTools": {
+    "mode": "Åpne verktøy for vert i",
+    "modeDesc": "Hvor Docker, Filer og andre verktøyknapper åpnes. Vertssiden holder alle verktøy for en vert i én fane. Med Kun vertsside har vertsradene ingen tilkoblingsknapper, og et klikk åpner vertens side.",
+    "modeTab": "Eget faneblad",
+    "modePage": "Vertsiden",
+    "rowButtons": "Knapper på vertsradene",
+    "modeOnly": "Kun vertsiden",
+    "clickOpens": "Klikk åpner",
+    "clickOpensDesc": "Hva et klikk på en vert utfører. Velg noe annet for én vert fra menyen.",
+    "clickAuto": "Den første tilkoblingsmetoden",
+    "useDefaultNamed": "Standard ({{name}})",
+    "useDefaultButtons": "Bruk standardknappene",
+    "perHostHint": "For å endre dem for én vert, bruk Knapper på vertsradene i menyen."
   }
 }

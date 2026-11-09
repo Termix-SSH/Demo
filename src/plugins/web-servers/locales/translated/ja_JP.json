@@ -1,0 +1,283 @@
+{
+  "plugin": {
+    "name": "Web Servers",
+    "description": "ホスト上の nginx、Apache、Caddy を管理します。サイト、設定、ログ、HTTPS を扱い、変更はすべて事前にテストされます。"
+  },
+  "common": {
+    "cancel": "キャンセル",
+    "back": "戻る",
+    "loading": "読み込み中..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Web Servers の使用",
+      "description": "アクセス可能なホスト上の Web サーバーとサイトを表示し、編集可能なホスト上でそれらを変更します。"
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Web Servers",
+        "description": "Web Servers タブから、このホスト上の nginx、Apache、Caddy を管理します。"
+      },
+      "useSudo": {
+        "label": "sudo を使用する",
+        "description": "Web サーバーの読み取りと変更のために sudo を使用します。ログインが root の場合はオフにしてください。"
+      },
+      "readOnly": {
+        "label": "読み取り専用",
+        "description": "サイト、設定、ログを表示しますが、このホスト上では変更を行いません。"
+      },
+      "showPanel": {
+        "label": "ターミナル横のパネル",
+        "description": "このホストのターミナルタブで Web Servers パネルを表示するオプションを提供します。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "ターミナルと同時にパネルを開く",
+        "description": "Web Servers を備えたホストでターミナルが開いたとき、Web Servers パネルを表示します。"
+      },
+      "companionSide": {
+        "label": "パネルの位置",
+        "description": "ターミナルの横にパネルを表示する位置です。",
+        "right": "右",
+        "left": "左",
+        "bottom": "下"
+      },
+      "companionSize": {
+        "label": "パネルのサイズ",
+        "description": "パネルの幅、または下部にある場合は高さをピクセル単位で指定します。"
+      },
+      "companionEdgeButton": {
+        "label": "エッジボタン",
+        "description": "パネルを開くための小さなボタンをターミナルの端に表示します。"
+      }
+    }
+  },
+  "tab": {
+    "title": "Web Servers",
+    "noHost": "ホストから Web Servers を開いてください。",
+    "error": "このホスト上の Web サーバーを読み込めませんでした。",
+    "disabled": "このホストでは Web Servers が無効になっています。ホスト設定で有効にしてください。",
+    "sudo": "変更には、root ログイン、パスワードなしの sudo、またはこのホストに保存された Sudo パスワードが必要です。",
+    "refresh": "更新",
+    "readOnly": "読み取り専用",
+    "noServer": "Web サーバーがインストールされていません",
+    "noServerHint": "サーバーページから nginx、Apache、または Caddy をインストールしてください。",
+    "openServer": "サーバーを開く",
+    "viewSites": "サイト",
+    "viewConfig": "設定",
+    "viewLogs": "ログ",
+    "viewServer": "サーバー"
+  },
+  "actions": {
+    "ok": "完了",
+    "failed": "失敗",
+    "noOutput": "出力はありません。"
+  },
+  "watch": {
+    "start": "Web サーバーが停止したときに通知する",
+    "stop": "このホストの通知を停止する",
+    "on": "このホスト上の Web サーバーが停止したときに通知が届きます",
+    "off": "このホストの通知はオフです",
+    "failed": "通知を変更できませんでした"
+  },
+  "sites": {
+    "add": "サイトを追加",
+    "search": "サイトを検索",
+    "empty": "まだサイトがありません。",
+    "loadFailed": "サイトを読み込めませんでした。",
+    "off": "オフ",
+    "anyName": "任意の名前",
+    "form": "フォーム",
+    "certDays_other": "{{count}} 日残り",
+    "certExpired": "証明書が期限切れです",
+    "enable": "有効化",
+    "disable": "無効化",
+    "enabled": "{{name}} が有効です",
+    "disabled": "{{name}} が無効です",
+    "delete": "削除",
+    "deleteTitle": "{{name}} を削除しますか？",
+    "deleteBody": "ファイルが削除され、サーバーがリロードされます。ホストの /var/lib/termix-web-servers/backups にコピーが保持されます。",
+    "deleted": "{{name}} が削除されました"
+  },
+  "site": {
+    "addTitle": "新しいサイト",
+    "editTitle": "{{name}} を保存",
+    "add": "サイトを追加",
+    "save": "保存",
+    "added": "{{name}} が追加されました",
+    "saved": "{{name}} が保存されました",
+    "server": "Web サーバー",
+    "name": "サイト名",
+    "nameHint": "ファイル名やログファイルに使用されます。例：example",
+    "modeForm": "フォーム",
+    "modeText": "テキスト",
+    "text": "設定",
+    "textHint": "テキストを保存すると、このサイトのフォームが無効化され、独自の設定が保持されます。",
+    "type": "タイプ",
+    "typeStatic": "静的ファイル",
+    "typeProxy": "リバースプロキシ",
+    "typePhp": "PHP",
+    "typeRedirect": "リダイレクト",
+    "staticHint": "フォルダ内のファイルを配信します。",
+    "proxyHint": "リクエストを、このホストまたは別のホストで実行されているアプリに送信します。",
+    "phpHint": "フォルダ内のファイルを配信し、php-fpm で .php ファイルを実行します。",
+    "redirectHint": "すべての訪問者を別のアドレスに送信します。",
+    "domains": "ドメイン",
+    "domainsHint": "各ドメインの後に Enter キーを押します。nginx で任意の名前に応答するには _ を使用します。",
+    "port": "HTTP ポート",
+    "root": "Web ルート",
+    "rootHint": "/var/www、/srv、/usr/share/nginx、/opt、または /home 内のフォルダです。",
+    "index": "インデックスファイル",
+    "spa": "シングルページアプリ",
+    "spaHint": "ファイルではないパスを /index.html に送信します。",
+    "upstream": "アプリのアドレス",
+    "upstreamHint": "アプリがリッスンしている場所。例：http://127.0.0.1:3000",
+    "websockets": "WebSockets",
+    "redirectTo": "訪問者を以下に送信",
+    "keepPath": "パスを保持",
+    "keepPathHint": "/page を新しいアドレスの同じページに送信します。",
+    "phpSocket": "php-fpm ソケット",
+    "phpSocketHint": "php-fpm ソケットが見つかりませんでした。php-fpm をインストールするか、host:port を入力してください。",
+    "https": "HTTPS",
+    "httpsHint": "証明書が必要です。まずサイトを保存し、下の「証明書を取得」を押してください。",
+    "httpsCaddy": "Caddy は証明書の取得と更新を自動で行います。",
+    "httpsPort": "HTTPS ポート",
+    "certPath": "証明書ファイル",
+    "keyPath": "鍵ファイル",
+    "forceHttps": "HTTP を HTTPS にリダイレクト",
+    "gzip": "レスポンスを圧縮",
+    "accessLog": "アクセスログ",
+    "maxBody": "アップロード制限（MB）",
+    "maxBodyHint": "0 はサーバーのデフォルト値を使用します。",
+    "preview": "プレビュー",
+    "previewFailed": "設定をビルドできませんでした。"
+  },
+  "tls": {
+    "title": "HTTPS 証明書",
+    "hintManaged": "certbot がこのサイトのドメインに対して Let's Encrypt 証明書を取得し、サイトは HTTPS に切り替わります。certbot は証明書の更新とサーバーのリロードを行います。",
+    "hintText": "certbot がこのサイトのドメインに対して Let's Encrypt 証明書を取得します。その後、手動で証明書をサイトに追加してください。certbot は証明書の更新とサーバーのリロードを行います。",
+    "needCertbot": "まず、サーバーページから certbot とそのプラグインをこのサーバーにインストールしてください。",
+    "email": "メールアドレス",
+    "emailHint": "Let's Encrypt から問題発生時に連絡が届きます。任意です。",
+    "staging": "テスト証明書",
+    "stagingHint": "Let's Encrypt のステージングサーバーを使用します。ブラウザはこれを信頼しません。",
+    "issue": "証明書の取得",
+    "done": "証明書が保存されました"
+  },
+  "config": {
+    "search": "ファイルを検索",
+    "empty": "ファイルがありません。",
+    "loadFailed": "ファイルを読み込めませんでした。",
+    "test": "設定のテスト",
+    "testOk": "設定に問題ありません",
+    "testFailed": "設定にエラーがあります",
+    "content": "内容",
+    "save": "保存",
+    "saveHint": "サーバーのリロード前に、設定全体がテストされます。壊れたファイルは元に戻されます。",
+    "saved": "保存してリロードしました",
+    "backups_other": "{{count}} 件のバックアップ",
+    "restore": "復元",
+    "restoreTitle": "このバックアップを復元しますか？",
+    "restoreBody": "ファイルは {{time}} の状態に戻ります。現在のテキストもバックアップとして保存されます。",
+    "restored": "バックアップが復元されました"
+  },
+  "logs": {
+    "source": "ログ",
+    "lines": "行数",
+    "journal": "{{server}} のジャーナル",
+    "follow": "追従",
+    "stop": "停止",
+    "connecting": "接続中...",
+    "ended": "追従を停止しました。",
+    "followFailed": "このログを追従できませんでした。",
+    "empty": "行がありません。",
+    "loadFailed": "ログを読み取れませんでした。",
+    "requests": "リクエスト",
+    "topPaths": "上位パス",
+    "topClients": "上位クライアント"
+  },
+  "server": {
+    "unknown": "不明",
+    "atBoot": "起動時に開始",
+    "notInstalled": "インストールされていません",
+    "start": "開始",
+    "stop": "停止",
+    "restart": "再起動",
+    "reload": "リロード",
+    "enable": "起動時に開始",
+    "disable": "起動時に開始しない",
+    "boot": "起動時に開始",
+    "noBoot": "起動時に開始しない",
+    "done": "{{server}} が完了しました",
+    "stopTitle": "{{server}} を停止しますか？",
+    "stopBody": "これにより、すべてのサイトがオフラインになります。再度開始するまで復旧しません。",
+    "install": "インストール",
+    "installTitle": "{{server}} をインストールしますか？",
+    "installBody": "ホストのパッケージマネージャーを使用してインストールされ、すぐに開始されます。ポート 80 で動作している別の Web サーバーがある場合、開始が妨げられる可能性があります。",
+    "installed": "{{server}} がインストールされました",
+    "installCertbot": "certbot をインストール",
+    "certbotInstalled": "certbot がインストールされました",
+    "certbotPlugins": "プラグイン: {{plugins}}",
+    "certbotNoPlugins": "nginx または Apache のプラグインがありません",
+    "certbotHint": "nginx および Apache サイトの Let's Encrypt 証明書を取得します"
+  },
+  "card": {
+    "title": "Webサーバー",
+    "loading": "読み込み中...",
+    "refresh": "更新",
+    "empty": "Webサーバーが有効になっているホストがありません。",
+    "summary_other": "{{count}} 台のホスト | {{down}} 台が確認が必要です",
+    "sites_other": "{{count}} 件のサイト"
+  },
+  "companion": {
+    "toggle": "Webサーバーパネル",
+    "openTab": "Webサーバーを開く",
+    "reload": "{{server}} を再読み込み"
+  },
+  "manager": {
+    "title": "Webサーバー",
+    "disabled": "このホストのWebサーバーを有効にすると、ここにサイトが表示されます。"
+  },
+  "operations": {
+    "status": {
+      "title": "Webサーバーのステータス"
+    },
+    "listSites": {
+      "title": "サイトのリスト"
+    },
+    "test": {
+      "title": "Webサーバーの設定をテスト"
+    },
+    "reload": {
+      "title": "Webサーバーを再読み込み"
+    },
+    "restart": {
+      "title": "Webサーバーを再起動"
+    },
+    "enableSite": {
+      "title": "サイトを有効化"
+    },
+    "disableSite": {
+      "title": "サイトを無効化"
+    },
+    "deleteSite": {
+      "title": "サイトを削除"
+    },
+    "server": "サーバー",
+    "allServers": "すべて",
+    "sites": {
+      "title": "サイト",
+      "server": "サーバー",
+      "domains": "ドメイン",
+      "https": "HTTPS"
+    }
+  }
+}

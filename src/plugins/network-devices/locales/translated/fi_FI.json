@@ -1,0 +1,180 @@
+{
+  "plugin": {
+    "name": "Verkkolaitteet",
+    "description": "Hallitse reitittimiä, kytkimiä ja päätepisteitä SNMP:n ja reitittimen APIen kautta."
+  },
+  "tab": {
+    "title": "Verkko"
+  },
+  "card": {
+    "title": "Verkkolaitteet",
+    "loading": "Ladataan",
+    "uptime": "Käytössä {{time}}"
+  },
+  "permissions": {
+    "view": {
+      "title": "Näe verkkolaitteet",
+      "description": "Avaa Verkkovälilehti ja näe laitteet, portit ja asiakkaat."
+    },
+    "manage": {
+      "title": "Hallitse verkkolaitteita",
+      "description": "Lisää laitteita, kytke portit päälle ja pois, käynnistä PoE uudelleen ja käynnistä laitteet uudelleen."
+    }
+  },
+  "description": "Lisää reitittimiä, kytkimiä ja päätepisteitä seuratakseen niiden portteja ja asiakkaita. Avaimet tallennetaan salattuina eivätkä niitä näytetä uudelleen.",
+  "summary": "{{count}} laitetta, {{down}} poissa päältä",
+  "ports": "{{up}}/{{total}} porttia käytössä",
+  "empty": "Ei verkkolaitteita vielä.",
+  "add": "Lisää laite",
+  "edit": "Muokkaa",
+  "delete": "Poista",
+  "back": "Takaisin",
+  "saved": "Tallennettu",
+  "deleteConfirm": "Poista {{name}}?",
+  "status": {
+    "unknown": "Ei vielä luettu",
+    "up": "Käytössä",
+    "down": "Poissa päältä"
+  },
+  "drivers": {
+    "snmp": "SNMP-laite",
+    "routeros": "MikroTik RouterOS",
+    "opnsense": "OPNsense",
+    "openwrt": "OpenWrt"
+  },
+  "fields": {
+    "community": "Yhteisö",
+    "writeCommunity": "Kirjoitusyhteisö (valinnainen)",
+    "username": "Käyttäjänimi",
+    "password": "Salasana",
+    "authProtocol": "Todennus",
+    "authKey": "Todennusavain",
+    "privProtocol": "Yksityisyys",
+    "privKey": "Yksityisyysavain",
+    "apiKey": "API-avain",
+    "apiSecret": "API-salaisuus"
+  },
+  "form": {
+    "addTitle": "Lisää laite",
+    "editTitle": "Muokkaa laitetta",
+    "device": "Laite",
+    "access": "Pääsy",
+    "type": "Tyyppi",
+    "name": "Nimi",
+    "address": "Osoite",
+    "port": "Portti",
+    "poll": "Lue joka (sekuntia)",
+    "pollHint": "Välillä 15–3600.",
+    "snmpVersion": "SNMP-versio",
+    "scheme": "Verkkosoite alkaa",
+    "ca": "Varmennusviranomainen (valinnainen)",
+    "caHint": "Liitä CA:n tai laitteen varmenne PEM-muodossa, jos se käyttää yksityistä varmennetta.",
+    "caSet": "Varmenne on tallennettu. Liitä uusi varmenne korvataksesi sen.",
+    "keepKeys": "Jätä tyhjäksi säilyttääksesi tallennetut avaimet",
+    "test": "Testaa",
+    "testNeedsKeys": "Syötä avaimet testaaksesi.",
+    "testOk": "Yhdistetty {{name}}:ään.",
+    "save": "Tallenna",
+    "add": "Lisää"
+  },
+  "discover": {
+    "title": "Etsi laitteita",
+    "hint": "Etsii SNMP-laitteita osoitealueelta, enintään 256 osoitetta. Palvelimen on pystyttävä tavoittamaan alueen.",
+    "range": "Osoitealue",
+    "scan": "Skannaa",
+    "scanning": "Skannataan",
+    "none": "Yksikään laite ei vastannut.",
+    "added": "Lisätty"
+  },
+  "view": {
+    "refresh": "Lue nyt",
+    "reboot": "Käynnistä uudelleen",
+    "rebootConfirm": "Käynnistetäänkö {{name}} uudelleen? Se on poissa käytöstä hetken.",
+    "rebooting": "{{name}} käynnistyy uudelleen.",
+    "ports": "Portit",
+    "clients": "Asiakkaat",
+    "neighbors": "Naapurit",
+    "type": "Tyyppi",
+    "address": "Osoite",
+    "model": "Malli",
+    "version": "Versio",
+    "uptime": "Käyttöaika",
+    "cpu": "CPU",
+    "memory": "Muisti",
+    "traffic": "Liikenne",
+    "noTraffic": "Liikenne näkyy kahden lukeman jälkeen.",
+    "noPorts": "Ei portteja vielä. Lue laite täyttääksesi tämän.",
+    "port": "Portti",
+    "speed": "Nopeus",
+    "vlan": "VLAN",
+    "rx": "Saapuva",
+    "tx": "Lähtevä",
+    "errors": "Virheet",
+    "poe": "PoE",
+    "poeOn": "Virtaa annossa",
+    "poeIdle": "Päällä",
+    "poeOff": "Pois päältä",
+    "linkUp": "Yhteys yllä",
+    "linkDown": "Ei yhteystä",
+    "disabled": "Pois päältä",
+    "watch": "Ilmoita, kun tämä portti muuttuu",
+    "unwatch": "Lopeta ilmoitukset tälle portille",
+    "turnOff": "Sammuta portti",
+    "turnOn": "Kytke portti päälle",
+    "portOffConfirm": "Sammutetaanko portti {{name}}? Kaikki siihen liitetty menettää yhteyden.",
+    "portOff": "Portti {{name}} on sammutettu.",
+    "portOn": "Portti {{name}} on päällä.",
+    "poeCycle": "PoE:n virtasylkitys",
+    "poeConfirm": "Katkaisetaanko portin {{name}} virta muutamaksi sekunniksi?",
+    "poeDone": "PoE:n virtasylkitys suoritettu portissa {{name}}.",
+    "filter": "Hae asiakkaita",
+    "noClients": "Asiakkaita ei löytynyt.",
+    "client": "Nimi",
+    "ip": "IP-osoite",
+    "mac": "MAC-osoite",
+    "on": "Päällä",
+    "source": "Nähty",
+    "kind": {
+      "dhcp": "DHCP",
+      "arp": "ARP",
+      "wifi": "Wi-Fi",
+      "table": "MAC-taulukko"
+    },
+    "noNeighbors": "Naapureita ei löytynyt.",
+    "neighbor": "Naapuri",
+    "remotePort": "Heidän porttinsa"
+  },
+  "operations": {
+    "device": "Laite",
+    "port": "Portti",
+    "state": "Tila",
+    "stateUp": "Päällä",
+    "stateDown": "Pois päältä",
+    "list": {
+      "title": "Listaa verkkolaitteet"
+    },
+    "ports": {
+      "title": "Listaa laitteen portit"
+    },
+    "poll": {
+      "title": "Lue verkkolaitetta"
+    },
+    "setPort": {
+      "title": "Kytke portti päälle tai pois päältä"
+    },
+    "poe": {
+      "title": "Käynnistä PoE-portti uudelleen"
+    },
+    "reboot": {
+      "title": "Käynnistä verkkolaitte uudelleen"
+    },
+    "health": {
+      "title": "Verkkolaitteet"
+    }
+  },
+  "widget": {
+    "name": "Verkkolaitteet",
+    "description": "Mitkä reitittimistä, kytkimistä ja langattomista päätepisteistä ovat päällä.",
+    "summary": "{{up}}/{{total}} päällä"
+  }
+}

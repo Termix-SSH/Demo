@@ -1,0 +1,246 @@
+{
+  "tab": {
+    "title": "UPS",
+    "noHost": "从主机打开 UPS。",
+    "error": "无法读取此主机上的 UPS。",
+    "disabled": "此主机已关闭 UPS 管理器。请在主机设置中将其开启。",
+    "viewOverview": "概览",
+    "viewHistory": "历史记录",
+    "viewEvents": "事件",
+    "viewCommands": "命令",
+    "viewSources": "设备"
+  },
+  "common": {
+    "loading": "加载中...",
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "failed": "操作失败。"
+  },
+  "state": {
+    "online": "市电供电",
+    "battery": "电池供电",
+    "bypass": "旁路",
+    "off": "关闭",
+    "unknown": "未知"
+  },
+  "flag": {
+    "low-battery": "电池电量低",
+    "replace-battery": "更换电池",
+    "overload": "过载",
+    "charging": "充电中",
+    "calibrating": "校准中",
+    "alarm": "警报",
+    "boost": "升压中",
+    "trim": "降压中"
+  },
+  "backend": {
+    "nut": "NUT",
+    "apcupsd": "apcupsd",
+    "snmp": "SNMP 卡"
+  },
+  "overview": {
+    "noData": "暂无读数。",
+    "stale": "上次读取失败：{{error}}",
+    "power": "电源",
+    "charge": "电池电量",
+    "runtime": "剩余运行时间",
+    "load": "负载",
+    "nominal": "额定 {{watts}} W",
+    "input": "输入电压",
+    "output": "输出电压",
+    "batteryVolts": "电池电压",
+    "temp": "温度",
+    "model": "型号",
+    "serial": "序列号",
+    "status": "状态",
+    "lastTest": "上次自检",
+    "readAt": "上次读取",
+    "ago": "{{time}} 前"
+  },
+  "history": {
+    "error": "无法加载历史记录。",
+    "24h": "24 小时",
+    "7d": "7 天",
+    "30d": "30 天",
+    "empty": "读数不足。Termix 每 30 秒读取一次 UPS。",
+    "charge": "电池电量",
+    "load": "负载",
+    "runtime": "剩余运行时间",
+    "voltage": "电压"
+  },
+  "events": {
+    "error": "无法加载事件。",
+    "empty": "暂无电源事件。",
+    "type": {
+      "on-battery": "电池供电",
+      "on-battery-cleared": "电源恢复",
+      "low-battery": "电池电量低",
+      "low-battery-cleared": "电池正常",
+      "replace-battery": "更换电池",
+      "replace-battery-cleared": "电池正常",
+      "overload": "过载",
+      "overload-cleared": "负载正常",
+      "low-charge": "充电不足",
+      "low-charge-cleared": "充电正常",
+      "low-runtime": "运行时间不足",
+      "low-runtime-cleared": "运行时间正常",
+      "unreachable": "无法连接",
+      "unreachable-cleared": "可连接",
+      "test-failed": "测试异常",
+      "test-failed-cleared": "测试正常",
+      "test": "自检",
+      "command": "命令"
+    }
+  },
+  "commands": {
+    "unsupported": "仅 NUT 设备支持命令。",
+    "error": "无法列出命令。",
+    "confirmTitle": "运行 {{name}}？",
+    "confirmText": "此操作可能会切断电源或更改 {{name}} 的行为。",
+    "run": "运行",
+    "done": "已发送 {{name}}。",
+    "needLogin": "请为此设备添加 NUT 用户名和密码以发送命令。",
+    "empty": "此 UPS 没有即时命令。",
+    "risky": "可能切断电源"
+  },
+  "sources": {
+    "add": "添加 UPS",
+    "empty": "此主机上未设置 UPS。",
+    "emptyHint": "在此主机上添加 NUT 或 apcupsd 设备，或添加此主机可访问的 SNMP 卡。",
+    "off": "关闭",
+    "unreachable": "无法连接",
+    "saved": "已保存。",
+    "deleteTitle": "移除 {{name}}？",
+    "deleteText": "其历史记录和事件也将被删除。"
+  },
+  "editor": {
+    "addTitle": "添加 UPS",
+    "editTitle": "编辑 UPS",
+    "add": "添加",
+    "backend": "读取方式",
+    "label": "名称",
+    "labelPlaceholder": "机架式 UPS",
+    "target": {
+      "nut": "NUT 设备",
+      "apcupsd": "apcupsd 地址",
+      "snmp": "卡地址"
+    },
+    "targetPlaceholder": {
+      "nut": "ups 或 ups@192.168.1.5:3493",
+      "apcupsd": "留空表示使用此主机",
+      "snmp": "192.168.1.20"
+    },
+    "nutFound": "在此主机上找到：{{names}}",
+    "nutMissing": "此主机未安装 upsc。请先安装 NUT 客户端。",
+    "nutHint": "upsc -l 中的名称，或远程 NUT 服务器的 name@host:port。",
+    "apcMissing": "此主机未安装 apcaccess。请先安装 apcupsd。",
+    "apcHint": "留空表示读取此主机上的守护进程，或使用 host:3551。",
+    "snmpMissing": "此主机未安装 snmpwalk。请先安装 net-snmp 工具。",
+    "snmpHint": "Termix 使用 snmpwalk 从此主机轮询该卡。",
+    "nutUser": "NUT 用户名",
+    "nutPassword": "NUT 密码",
+    "nutLoginHint": "仅发送命令时需要。读取数据不需要。",
+    "saved": "已保存",
+    "snmpVersion": "SNMP 版本",
+    "community": "社区字符串",
+    "v3User": "SNMP 用户名",
+    "v3Level": "安全级别",
+    "v3": {
+      "noAuth": "无身份验证",
+      "auth": "身份验证",
+      "authPriv": "身份验证与隐私"
+    },
+    "v3AuthProto": "身份验证类型",
+    "v3AuthPass": "身份验证密码",
+    "v3PrivProto": "隐私类型",
+    "v3PrivPass": "隐私密码",
+    "clearSecrets": "移除已保存的登录信息",
+    "clearSecretsHint": "删除此设备已保存的 NUT 或 SNMP 登录信息。",
+    "lowCharge": "低电量警报（%）",
+    "lowChargeHint": "当使用电池供电且电量低于或等于此值时发出警报。",
+    "lowRuntime": "低运行时间警报（分钟）",
+    "lowRuntimeHint": "当使用电池供电且剩余运行时间低于或等于此值时发出警报。设为 0 可关闭此功能。",
+    "alerts": "发送警报",
+    "alertsHint": "断电、低电量、过载和测试问题。",
+    "enabled": "读取此 UPS",
+    "enabledHint": "关闭以停止读取并保留历史记录。",
+    "test": "测试",
+    "testing": "正在测试...",
+    "testOk": "正常：{{state}}，电量 {{charge}}%，剩余 {{runtime}}。",
+    "testFailed": "无法读取 UPS。"
+  },
+  "card": {
+    "title": "UPS",
+    "empty": "未设置 UPS。请为主机启用 UPS 管理器并添加设备。",
+    "runtime": "剩余 {{time}}",
+    "load": "负载 {{value}}%"
+  },
+  "manager": {
+    "title": "UPS",
+    "disabled": "此主机的 UPS 管理器已关闭。"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "UPS 管理器",
+        "description": "从此主机读取 UPS 设备并显示 UPS 选项卡。"
+      },
+      "readOnly": {
+        "label": "UPS 只读",
+        "description": "阻止对此主机 UPS 设备的更改和命令。"
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "使用 UPS 管理器",
+      "description": "查看 UPS 状态，并在拥有主机编辑权限时更改设备和发送命令。"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "列出 UPS 设备"
+    },
+    "status": {
+      "title": "电源状态"
+    },
+    "charge": {
+      "title": "电池电量"
+    },
+    "runtime": {
+      "title": "剩余运行时间"
+    },
+    "source": "UPS",
+    "sourceHint": "UPS ID。留空表示使用主机上的第一个 UPS。",
+    "selfTest": {
+      "title": "开始电池自检",
+      "kind": "类型",
+      "quick": "快速",
+      "deep": "深度"
+    },
+    "beeper": {
+      "title": "设置 UPS 蜂鸣器",
+      "mode": "蜂鸣器",
+      "mute": "静音",
+      "disable": "关闭",
+      "enable": "开启"
+    },
+    "calibrate": {
+      "title": "校准运行时间",
+      "description": "耗尽电池以测量其运行时间。运行期间，连接到此 UPS 的主机将失去保护。"
+    },
+    "devices": {
+      "title": "UPS 设备",
+      "state": "状态",
+      "charge": "电量",
+      "load": "负载",
+      "backend": "读取方式"
+    },
+    "events": {
+      "onBattery": "UPS 使用电池供电",
+      "powerRestored": "UPS 电源恢复"
+    }
+  }
+}

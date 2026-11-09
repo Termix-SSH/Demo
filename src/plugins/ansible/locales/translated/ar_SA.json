@@ -1,0 +1,220 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "تشغيل ملفات تشغيل Ansible والأوامر العفوية من مضيف تحكم، باستخدام قائمة جرد مُستخلصة من مضيفي Termix الخاصين بك."
+  },
+  "common": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع",
+    "delete": "حذف"
+  },
+  "permissions": {
+    "use": {
+      "title": "استخدام Ansible",
+      "description": "عرض ملفات التشغيل والتشغيلات على مضيفي التحكم الذين يمكنك الوصول إليهم. تعديل الملفات وتشغيل Ansible على المضيفين الذين يمكنك تعديلهم."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "استخدام هذا المضيف كمضيف تحكم لـ Ansible. يجب تثبيت Ansible عليه."
+      },
+      "projectDir": {
+        "label": "مجلد المشروع",
+        "description": "المجلد على هذا المضيف الذي يحتوي على ملفات التشغيل، الأدوار، وملف ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "ملف كلمة مرور Vault",
+        "description": "ملف على هذا المضيف يحتوي على كلمة مرور Ansible Vault. اتركه فارغاً إذا لم تكن تستخدم Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "للقراءة فقط",
+        "description": "عرض ملفات التشغيل والتشغيلات ولكن دون تعديل الملفات أو بدء تشغيلات على هذا المضيف."
+      },
+      "alertRuns": {
+        "label": "تنبيه عند فشل التشغيل",
+        "description": "إرسال تنبيه عند انتهاء تشغيل على هذا المضيف بالفشل أو الضياع. يتم التحقق عند قراءة حالة التشغيل."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "افتح Ansible من مضيف.",
+    "error": "تعذر تحميل Ansible من هذا المضيف.",
+    "disabled": "Ansible معطل لهذا المضيف. فعّله في إعدادات المضيف.",
+    "refresh": "تحديث",
+    "readOnly": "للقراءة فقط",
+    "notInstalled": "Ansible غير مثبت",
+    "notInstalledTitle": "Ansible غير مثبت على هذا المضيف",
+    "notInstalledHint": "قم بتثبيت ansible-core على هذا المضيف، على سبيل المثال باستخدام pipx أو مدير الحزم الخاص بك، ثم قم بالتحديث.",
+    "noSshpass": "sshpass غير مثبت على هذا المضيف. ستفشل المضيفات التي تسجل الدخول بكلمة مرور.",
+    "viewPlaybooks": "ملفات التشغيل",
+    "viewRuns": "التشغيلات",
+    "viewAdhoc": "عفوي",
+    "viewFacts": "الحقائق"
+  },
+  "files": {
+    "add": "ملف جديد",
+    "search": "البحث في الملفات",
+    "empty": "لا توجد ملفات في مجلد المشروع بعد.",
+    "noMatch": "لا توجد ملفات مطابقة.",
+    "noProject": "المجلد {{dir}} غير موجود على هذا المضيف. أنشئه، أو حدد مجلد مشروع آخر في إعدادات المضيف.",
+    "listFailed": "تعذر سرد ملفات المشروع.",
+    "loadFailed": "تعذر قراءة هذا الملف.",
+    "saved": "تم حفظ الملف",
+    "saveFailed": "تعذر حفظ هذا الملف.",
+    "playbook": "ملف تشغيل",
+    "run": "تشغيل",
+    "newTitle": "ملف جديد",
+    "name": "اسم الملف",
+    "nameHint": "مسار داخل مجلد المشروع، مثل site.yml أو roles/web/tasks/main.yml.",
+    "hint": "يتم فحص ملف التشغيل من حيث الصيغة قبل حفظه. يبقى الملف القديم إذا فشل الفحص.",
+    "text": "نص الملف",
+    "deleteTitle": "هل تريد حذف هذا الملف؟"
+  },
+  "targets": {
+    "search": "البحث في المضيفين",
+    "addShown": "إضافة المعروض",
+    "clear": "مسح",
+    "empty": "لم يتم العثور على مضيفين.",
+    "count": "{{count}} مُحدّد",
+    "failed": "تعذر تحميل مضيفيك."
+  },
+  "run": {
+    "title": "تشغيل {{playbook}}",
+    "start": "تشغيل",
+    "startCheck": "تشغيل في وضع الفحص",
+    "startFailed": "تعذر بدء التشغيل.",
+    "source": "المضيفين",
+    "sourceProject": "قائمة جرد المشروع",
+    "sourceTermix": "مضيفي Termix",
+    "sourceProjectHint": "استخدم قائمة الجرد من ملف ansible.cfg، أو ملفاً داخل المشروع.",
+    "sourceTermixHint": "اختر المضيفين من Termix. تتحول المجلدات إلى مجموعات folder_ والوسوم إلى مجموعات tag_. جميعها موجودة ضمن مجموعة termix.",
+    "inventory": "ملف الجرد",
+    "inventoryHint": "مسار داخل مجلد المشروع. اتركه فارغاً لاستخدام ansible.cfg.",
+    "check": "وضع التحقق",
+    "checkHint": "اعرض ما سيتغير دون إجراء أي تغييرات فعلية.",
+    "diff": "إظهار الاختلافات",
+    "diffHint": "اعرض التغييرات التي أُجريت على الملفات.",
+    "become": "التشغيل بصلاحيات root",
+    "becomeHint": "استخدم sudo على المضيفين. تُستخدم كلمة مرور Sudo المحفوظة لمضيفي Termix.",
+    "limit": "تقييد",
+    "limitHint": "التشغيل فقط على هذه المضيفين أو المجموعات.",
+    "verbosity": "تفاصيل المخرجات",
+    "verbosityOff": "عادي",
+    "tags": "الوسوم",
+    "skipTags": "تخطي الوسوم",
+    "extraVars": "متغيرات إضافية",
+    "extraVarsHint": "مفتاح=قيمة واحد في كل سطر."
+  },
+  "runs": {
+    "title": "تشغيل",
+    "empty": "لا توجد عمليات تشغيل بعد.",
+    "loadFailed": "تعذر تحميل عمليات التشغيل.",
+    "stop": "إيقاف",
+    "stopFailed": "تعذر إيقاف التشغيل.",
+    "deleteTitle": "حذف هذا التشغيل؟",
+    "deleteFailed": "تعذر حذف التشغيل.",
+    "checkMode": "تحقق",
+    "truncated": "يتم عرض نهاية مخرجات طويلة.",
+    "noOutput": "لا توجد مخرجات بعد.",
+    "state": {
+      "running": "جارٍ التشغيل",
+      "ok": "تم",
+      "failed": "فشل",
+      "cancelled": "تم الإيقاف",
+      "lost": "مفقود"
+    },
+    "kind": {
+      "playbook": "كتاب التشغيل",
+      "adhoc": "مهمة مؤقتة",
+      "facts": "حقائق"
+    },
+    "recap": {
+      "host": "المضيف",
+      "ok": "نجاح",
+      "changed": "تغير",
+      "unreachable": "غير متاح",
+      "failed": "فشل",
+      "skipped": "تم التخطي"
+    }
+  },
+  "adhoc": {
+    "hint": "شغّل وحدة واحدة على المضيفين، مثل ansible all -m ping.",
+    "pattern": "نمط المضيفين",
+    "patternHint": "مضيف، مجموعة، أو الكل.",
+    "module": "الوحدة",
+    "moduleHint": "على سبيل المثال ping، command، shell، apt أو systemd.",
+    "args": "الوسائط",
+    "argsHint": "بالنسبة لـ command و shell، هذه هي الأمر. للوحدات الأخرى، هي أزواج مفتاح=قيمة.",
+    "run": "تشغيل"
+  },
+  "facts": {
+    "hint": "اجمع الحقائق من المضيفين باستخدام وحدة setup. يتطلب مضيفي Termix ليتم تسجيل الدخول لكل واحد منهم.",
+    "gather": "جمع الحقائق",
+    "gathering": "جارٍ الجمع...",
+    "failed": "تعذر جمع الحقائق.",
+    "failedHost": "فشل",
+    "none": "لم تُرجع أي حقائق. افتح التشغيل لمعرفة السبب.",
+    "col": {
+      "host": "المضيف",
+      "os": "النظام",
+      "kernel": "النواة",
+      "cpu": "وحدات المعالجة المركزية",
+      "memory": "الذاكرة",
+      "address": "العنوان",
+      "uptime": "وقت التشغيل"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "قائمة كتب التشغيل"
+    },
+    "run": {
+      "title": "تشغيل كتاب التشغيل",
+      "playbook": "كتاب التشغيل",
+      "limit": "الحد",
+      "tags": "العلامات",
+      "check": "وضع التحقق"
+    },
+    "runs": {
+      "title": "قائمة عمليات التشغيل",
+      "resource": "عمليات التشغيل",
+      "started": "بدأت",
+      "check": "وضع التحقق"
+    },
+    "failed": {
+      "title": "عمليات التشغيل الفاشلة"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "جارٍ التحقق من المضيفين...",
+    "summary_zero": "لا توجد عمليات تشغيل فاشلة على {{hosts}} مضيف",
+    "summary_one": "عملية تشغيل واحدة فاشلة على {{hosts}} مضيف",
+    "summary_two": "عمليتا تشغيل فاشلتان على {{hosts}} مضيف",
+    "summary_few": "{{count}} عمليات تشغيل فاشلة على {{hosts}} مضيف",
+    "summary_many": "{{count}} عملية تشغيل فاشلة على {{hosts}} مضيف",
+    "summary_other": "{{count}} عملية تشغيل فاشلة على {{hosts}} مضيف",
+    "refresh": "التحقق مرة أخرى",
+    "empty": "فعّل Ansible لمضيف لعرض عمليات تشغيله هنا.",
+    "failed_zero": "لا يوجد فشل",
+    "failed_one": "فشل واحد",
+    "failed_two": "فشلان",
+    "failed_few": "{{count}} فشل",
+    "failed_many": "{{count}} فشل",
+    "failed_other": "{{count}} فشل",
+    "running_zero": "لا يوجد قيد التشغيل",
+    "running_one": "واحد قيد التشغيل",
+    "running_two": "اثنان قيد التشغيل",
+    "running_few": "{{count}} قيد التشغيل",
+    "running_many": "{{count}} قيد التشغيل",
+    "running_other": "{{count}} قيد التشغيل",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "لا توجد عمليات تشغيل بعد"
+  }
+}

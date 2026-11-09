@@ -1,0 +1,240 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Įdiekite WireGuard savo serveriuose ir valdykite sąsajas, klientus bei konfigūracijas iš vienos kortelės."
+  },
+  "common": {
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti",
+    "back": "Atgal",
+    "delete": "Pašalinti",
+    "loading": "Įkeliama..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Naudoti WireGuard",
+      "description": "Valdyti WireGuard sąsajas ir klientus serveriuose, kuriuos galite redaguoti."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Atidarykite WireGuard iš serverio.",
+    "error": "Nepavyko įkelti WireGuard iš šio serverio.",
+    "sudo": "Šiam serveriui reikia root prisijungimo arba slaptažodžio nereikalaujančio sudo, kad būtų galima valdyti WireGuard.",
+    "installed": "Įdiegta",
+    "notInstalled": "Neįdiegta",
+    "refresh": "Atnaujinti",
+    "viewInterfaces": "Sąsajos",
+    "viewLogs": "Žurnalai"
+  },
+  "install": {
+    "title": "Įdiegti WireGuard",
+    "desc": "Tai įdiegia WireGuard įrankius ir iptables naudojant serverio paketų valdytoją.",
+    "confirm": "Įdiegti",
+    "done": "WireGuard įdiegta.",
+    "failed": "Nepavyko įdiegti WireGuard.",
+    "empty": "WireGuard nėra įdiegta šiame serveryje",
+    "noManager": "Nerastas palaikomas paketų valdytojas. Įdiekite WireGuard rankiniu būdu.",
+    "hint": "Įdiekite jį {{os}}, kad galėtumėte paleisti VPN iš šio serverio.",
+    "thisHost": "šis serveris",
+    "button": "Įdiegti WireGuard",
+    "working": "Įdiegiama..."
+  },
+  "interfaces": {
+    "add": "Pridėti sąsają",
+    "empty": "Dar nėra sąsajų. Pridėkite vieną, kad pradėtumėte VPN.",
+    "loadFailed": "Nepavyko įkelti sąsajų.",
+    "up": "Aktyvi",
+    "down": "Neaktyvi",
+    "nat": "NAT",
+    "boot": "Paleidžiama paleidus sistemą"
+  },
+  "create": {
+    "title": "Pridėti sąsają",
+    "name": "Pavadinimas",
+    "address": "Adresas",
+    "addressHint": "Serverio adresas ir po tinklas. Klientai gauna kitus laisvus adresus.",
+    "port": "UDP prievadas",
+    "nat": "Dalintis serverio internetu (NAT)",
+    "natDesc": "Klientai gali pasiekti internetą ir serverio tinklą per šį serverį.",
+    "natMissing": "NAT reikalauja iptables, kuris nėra įdiegtas šiame serveryje.",
+    "forwarding": "Įjungti IP perdavimą",
+    "forwardingDesc": "Leidžia serveriui perduoti srautą tarp klientų ir tinklo. Išsaugoma perkrovimams.",
+    "firewall": "Atidaryti prievadą ugniasienėje",
+    "firewallDesc": "Prideda UDP prievadą prie ufw arba firewalld, kai vienas iš jų veikia.",
+    "start": "Paleisti dabar ir paleidus sistemą",
+    "startDesc": "Įjungia sąsają ir išlaiko ją įjungtą po perkrovimo.",
+    "save": "Sukurti",
+    "done": "Sąsaja paruošta.",
+    "failed": "Nepavyko sukurti sąsajos."
+  },
+  "detail": {
+    "clients": "Klientai",
+    "settings": "Nustatymai",
+    "config": "Konfigūracija",
+    "service": "Paslauga",
+    "gone": "Šios sąsajos nebėra serveryje."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Rodyti šio hosto meniu WireGuard skirtuką."
+      },
+      "showPanel": {
+        "label": "Rodyti WireGuard skydelį terminaluose",
+        "description": "Leisti WireGuard skydeliui atsiverti šalia šio hosto SSH terminalo."
+      },
+      "alertDown": {
+        "label": "Įspėti, kai sąsaja neveikia",
+        "description": "Siųsti įspėjimą, kai sąsaja, kuri turėtų būti aktyvi paleidimo metu, nėra aktyvi. Tikrinama skaitant WireGuard būseną."
+      }
+    },
+    "publicKey": "Viešasis raktas",
+    "port": "UDP prievadas",
+    "endpoint": "Serverio galinis taškas",
+    "endpointHint": "Viešasis adresas, prie kurio prisijungia klientai, pvz., vpn.example.com:51820.",
+    "dns": "DNS klientams",
+    "dnsHint": "Pasirenkama. Serverius atskirkite kableliais.",
+    "allowed": "Srautas per VPN",
+    "allowedHint": "Rangos, kurias klientai siunčia per VPN. 0.0.0.0/0, ::/0 siunčia viską.",
+    "keepalive": "Keepalive (sekundės)",
+    "keepaliveHint": "Laiko klientus už NAT pasiekiamus. Naudokite 0, kad išjungtumėte.",
+    "saved": "Nustatymai išsaugoti.",
+    "saveFailed": "Nepavyko išsaugoti nustatymų.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Atidaryti WireGuard skydelį su naujais terminalais",
+        "description": "Rodyti WireGuard skydelį šalia kiekvieno SSH terminalo, kuriame įjungtas WireGuard. Jį visada galite atidaryti ir uždaryti mygtuku dešiniajame krašte."
+      },
+      "companionSide": {
+        "label": "WireGuard skydelio pusė",
+        "description": "Kur WireGuard skydelis yra šalia terminalo.",
+        "right": "Dešinėje",
+        "left": "Kairėje",
+        "bottom": "Apačioje"
+      },
+      "companionSize": {
+        "label": "WireGuard skydelio dydis",
+        "description": "Plotis pikseliais arba aukštis, kai jis yra apačioje. Taip pat galite vilkti jo kraštą."
+      },
+      "companionEdgeButton": {
+        "label": "Rodyti skydelio mygtuką",
+        "description": "Rodyti mažą mygtuką terminalo dešiniajame krašte, kuris atidaro WireGuard skydelį."
+      }
+    }
+  },
+  "clients": {
+    "add": "Pridėti klientą",
+    "empty": "Dar nėra klientų.",
+    "loadFailed": "Nepavyko įkelti klientų.",
+    "name": "Pavadinimas",
+    "nameHint": "Rašmenys, skaičiai, taškai, brūkšneliai ir pabraukimai.",
+    "allowed": "Srautas per VPN",
+    "allowedHint": "Palikite tuščią, kad naudotumėte sąsajos numatytąją reikšmę: {{value}}",
+    "create": "Sukurti klientą",
+    "addFailed": "Nepavyko pridėti kliento.",
+    "needEndpoint": "Pirmiausia nustatykite serverio galinį tašką sąsajos nustatymuose.",
+    "connected": "Prisijungęs",
+    "off": "Išjungta",
+    "external": "Sukurta rankiniu būdu",
+    "handshake": "rankšoka prieš {{ago}}",
+    "showConfig": "Rodyti konfigūraciją ir QR kodą",
+    "configFailed": "Nepavyko perskaityti kliento konfigūracijos.",
+    "rotate": "Nauji raktai",
+    "rotateTitle": "Sukurti naujus raktus klientui {{name}}?",
+    "rotateDesc": "Senoji konfigūracija nustos veikti. Vėliau klientui pateikite naują konfigūraciją.",
+    "turnOff": "Išjungti",
+    "turnOn": "Įjungti",
+    "saveFailed": "Nepavyko pakeisti kliento.",
+    "deleteTitle": "Ištrinti {{name}}?",
+    "deleteDesc": "Klientas bus pašalintas ir nebegalės prisijungti.",
+    "deleteFailed": "Nepavyko ištrinti kliento."
+  },
+  "clientConfig": {
+    "note": "Šioje konfigūracijoje saugomas kliento privatusis raktas. Dalinkitės ja tik su asmeniu ar įrenginiu, kuris ja naudos.",
+    "qr": "QR kodas kliento konfigūracijai",
+    "copy": "Kopijuoti",
+    "copied": "Konfigūracija nukopijuota.",
+    "copyFailed": "Nepavyko nukopijuoti konfigūracijos.",
+    "download": "Atsisiųsti .conf"
+  },
+  "config": {
+    "title": "Konfigūracijos failas",
+    "hint": "Privatūs ir iš anksto sutartys raktai yra paslėpti. Palikite užklotą, kad išsaugotumėte raktą. Konfigūracija tikrinama prieš išsaugojimą, ir yra kuriamas atsarginis kopija. Adreso pakeitimai reikalauja paleisti iš naujo.",
+    "loadFailed": "Nepavyko perskaityti konfigūracijos.",
+    "saved": "Konfigūracija išsaugota.",
+    "saveFailed": "Nepavyko išsaugoti konfigūracijos."
+  },
+  "logs": {
+    "loadFailed": "Nepavyko perskaityti žurnalų.",
+    "lines": "{{count}} eilutės",
+    "empty": "Nėra žurnalo eilučių."
+  },
+  "service": {
+    "failed": "Paslaugos veiksmas nepavyko.",
+    "start": "Paleisti",
+    "stop": "Sustabdyti",
+    "restart": "Paleisti iš naujo",
+    "autostart": "Paleisti paleidus",
+    "autostartDesc": "Paleisti šią sąsają, kai paleidžiama talpinimo sistema.",
+    "needsSystemd": "Paleidimui paleidus reikia, kad šioje talpinimo sistemoje būtų įdiegtas systemd.",
+    "noForward": "Šioje talpinimo sistemoje išjungtas IP perdavimas, todėl klientai negali pasiekti tinklo per NAT.",
+    "delete": "Ištrinti sąsają",
+    "deleteTitle": "Ištrinti {{name}}?",
+    "deleteDesc": "Sąsaja sustabdoma, o jos konfigūracija, raktai ir išsaugoti klientų failai pašalinami iš talpinimo sistemos.",
+    "deleteFailed": "Nepavyko ištrinti sąsajos."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Įjunkite WireGuard šioje talpinimo sistemos nustatymuose, kad galėtumėte naudoti šią kortelę.",
+    "start": "Aktyvuoti",
+    "stop": "Deaktyvuoti",
+    "done": "{{name}} atnaujinta"
+  },
+  "operations": {
+    "list": {
+      "title": "Išvardinti WireGuard sąsajas"
+    },
+    "down": {
+      "title": "WireGuard sąsajos išjungtos"
+    },
+    "start": {
+      "title": "Paleisti WireGuard sąsają"
+    },
+    "stop": {
+      "title": "Sustabdyti WireGuard sąsają"
+    },
+    "restart": {
+      "title": "Paleisti WireGuard sąsają iš naujo"
+    },
+    "interfaces": {
+      "title": "WireGuard sąsajos",
+      "address": "Adresas",
+      "port": "Prievadas",
+      "clients": "Klientai"
+    }
+  },
+  "nav": {
+    "togglePanel": "Perjungti WireGuard skydelį"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Tikrinamos talpinimo sistemos...",
+    "summary_one": "{{count}} klientas {{hosts}} talpinimo sistemose",
+    "summary_few": "{{count}} klientai {{hosts}} talpinimo sistemose",
+    "summary_many": "{{count}} klientų {{hosts}} talpinimo sistemose",
+    "summary_other": "{{count}} klientų {{hosts}} talpinimo sistemose",
+    "refresh": "Patikrinti dar kartą",
+    "empty": "Įjunkite WireGuard talpinimo sistemai, kad ją matytumėte čia.",
+    "missing": "Neįdiegta",
+    "down_one": "{{count}} išjungta",
+    "down_few": "{{count}} išjungtos",
+    "down_many": "{{count}} išjungtų",
+    "down_other": "{{count}} išjungtų",
+    "interfaces_one": "{{count}} sąsaja, {{clients}} klientai",
+    "interfaces_few": "{{count}} sąsajos, {{clients}} klientai",
+    "interfaces_many": "{{count}} sąsajų, {{clients}} klientų",
+    "interfaces_other": "{{count}} sąsajų, {{clients}} klientų"
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Felhasználók",
+    "description": "Kezelje a felhasználói fiókokat, csoportokat, jelszavakat és SSH-kulcsokat a gazdagépein."
+  },
+  "common": {
+    "save": "Mentés",
+    "cancel": "Mégse",
+    "back": "Vissza",
+    "delete": "Törlés",
+    "loading": "Betöltés..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Felhasználók használata",
+      "description": "Tekintse meg a elérhető gazdagépeken lévő fiókokat, és módosítsa azokat azokon a gépeken, ahol szerkeszthet."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Felhasználók",
+        "description": "Kezelje a felhasználói fiókokat és csoportokat ezen a hoszton a Felhasználók fülön."
+      },
+      "useSudo": {
+        "label": "Sudo használata",
+        "description": "A sudo használata fiókok olvasásához és módosításához. Kapcsolja ki, ha rootként jelentkezett be."
+      },
+      "readOnly": {
+        "label": "Csak olvasható",
+        "description": "Fiókok megjelenítése, de soha nem módosítása ezen a hoszton."
+      }
+    }
+  },
+  "tab": {
+    "title": "Felhasználók",
+    "noHost": "Nyissa meg a Felhasználókat egy hosztról.",
+    "error": "Nem sikerült betölteni a fiókokat erről a hosztról.",
+    "disabled": "A Felhasználók funkció kikapcsolva van ezen a hoszton. Kapcsolja be a hoszt beállításaiban.",
+    "sudo": "A módosítások és jelszóállapotok root bejelentkezést, jelszómentes sudót vagy mentett Sudo jelszót igényelnek ezen a hoszton.",
+    "noTools": "A useradd nincs telepítve ezen a hoszon. Alpine rendszeren telepítse a shadow csomagot.",
+    "refresh": "Frissítés",
+    "readOnly": "Csak olvasható",
+    "counts_one": "{{count}} felhasználó",
+    "counts_other": "{{count}} felhasználó",
+    "viewUsers": "Felhasználók",
+    "viewGroups": "Csoportok",
+    "viewSessions": "Munkamenetek"
+  },
+  "users": {
+    "add": "Felhasználó hozzáadása",
+    "search": "Felhasználók keresése",
+    "people": "Személyek",
+    "systemFilter": "Rendszer",
+    "all": "Összes",
+    "empty": "Nincs egyező felhasználó.",
+    "you": "Ön",
+    "sudo": "Sudo",
+    "locked": "Zárolt",
+    "emptyPassword": "Nincs jelszó",
+    "system": "Rendszer",
+    "loadFailed": "Nem sikerült beolvasni a fiókokat."
+  },
+  "password": {
+    "set": "Beállítás",
+    "locked": "Zárolva",
+    "none": "Nincs beállítva, jelszavas bejelentkezés nem lehetséges",
+    "empty": "Üres, bárki bejelentkezhet",
+    "unknown": "Root jogosultság szükséges az ellenőrzéshez"
+  },
+  "detail": {
+    "info": "Fiók",
+    "account": "Részletek",
+    "fullName": "Teljes név",
+    "uid": "Felhasználó és csoport azonosító",
+    "mainGroup": "Fő csoport",
+    "home": "Otthoni mappa",
+    "shell": "Shell",
+    "groups": "Csoportok",
+    "groupsPlaceholder": "Írj be egy csoportot, majd nyomj Entert",
+    "unknownGroups": "Ezek a csoportok nem léteznek: {{groups}}",
+    "none": "Egyik sem",
+    "password": "Jelszó",
+    "passwordChanged": "Jelszó megváltoztatva",
+    "lastLogin": "Utolsó bejelentkezés",
+    "never": "Soha",
+    "unknown": "Ismeretlen",
+    "saved": "Mentve.",
+    "failed": "A módosítás sikertelen volt.",
+    "loadFailed": "Nem sikerült beolvasni a felhasználó kulcsait és az utolsó bejelentkezést.",
+    "passwordSection": "Jelszó",
+    "newPassword": "Új jelszó",
+    "newPasswordHint": "SSH-n keresztül kerül elküldésre a host-ra, és a chpasswd paranccsal állítják be. Soha nem tárolja a Termix.",
+    "setPassword": "Jelszó beállítása",
+    "passwordSet": "Jelszó beállítva.",
+    "expirePassword": "Új jelszó kérése a következő bejelentkezéskor",
+    "expired": "A következő bejelentkezéskor új jelszót választanak.",
+    "access": "Hozzáférés",
+    "sudo": "Sudo",
+    "sudoHint": "Parancsok futtatása rootként a {{group}} csoporton keresztül.",
+    "sudoProtected": "Nem vonhatod el a sudo jogosultságot a root felhasználótól vagy attól a felhasználótól, aként a Termix bejelentkezik.",
+    "sudoTitle": "Megadod a sudo jogosultságot a(z) {{name}} felhasználónak?",
+    "sudoDesc": "Hozzáadja a felhasználót a {{group}} csoporthoz, így bármilyen parancsot futtathat rootként.",
+    "sudoGrant": "Sudo megadása",
+    "sudoOn": "Sudo jogosultság megadva.",
+    "sudoOff": "Sudo jogosultság elvéve.",
+    "lock": "Fiók zárolása",
+    "unlock": "Fiók feloldása",
+    "lockTitle": "Letiltjuk a(z) {{name}} fiókot?",
+    "lockDesc": "Addig nem tudnak bejelentkezni jelszóval vagy SSH-kulccsal, amíg fel nem oldod a fiókot.",
+    "lockHint": "Megakadályozza a jelszavas és SSH-kulcsos bejelentkezést.",
+    "protected": "A root felhasználó és az a felhasználó, aként a Termix bejelentkezik, nem tiltható le és nem törölhető.",
+    "locked": "A fiók letiltva.",
+    "unlocked": "A fiók feloldva.",
+    "danger": "Törlés",
+    "removeHome": "A home mappa is törlődjön",
+    "removeHomeHint": "A(z) {{home}} mappa és annak minden tartalma törlésre kerül.",
+    "delete": "Felhasználó törlése",
+    "deleteTitle": "Törli a(z) {{name}} felhasználót?",
+    "deleteDesc": "A fiók törlésre kerül. A home mappája megmarad a hoston.",
+    "deleteDescHome": "A fiók és a(z) {{home}} mappa törlésre kerül. Ez nem vonható vissza.",
+    "deleted": "A(z) {{name}} felhasználó törölve."
+  },
+  "keys": {
+    "title": "SSH kulcsok",
+    "empty": "Nincsenek SSH kulcsok.",
+    "denied": "A kulcsok olvasása root jogosultság nélkül nem lehetséges.",
+    "options": "Beállítások",
+    "remove": "Kulcs eltávolítása",
+    "removeTitle": "Törli ezt a kulcsot?",
+    "removed": "A kulcs törölve.",
+    "add": "Kulcs hozzáadása",
+    "addHint": "Illesszen be egy nyilvános kulcsot, például az id_ed25519.pub tartalmát.",
+    "addButton": "Kulcs hozzáadása",
+    "added": "A kulcs hozzáadva."
+  },
+  "create": {
+    "title": "Új felhasználó",
+    "name": "Felhasználónév",
+    "nameHint": "Kisbetűk, számok, - és _.",
+    "nameInvalid": "Betűvel kezdje, és csak a-z, 0-9, - és _ karaktereket használjon.",
+    "home": "Otthoni mappa",
+    "homeHint": "Hagyja üresen, ha /home/{{name}}.",
+    "createHome": "Otthoni mappa létrehozása",
+    "password": "Jelszó",
+    "passwordHint": "Opcionális. Jelszó nélkül a felhasználó csak SSH-kulccsal tud bejelentkezni.",
+    "again": "Jelszó újra",
+    "mismatch": "A jelszavak nem egyeznek.",
+    "save": "Felhasználó létrehozása",
+    "done": "{{name}} létrehozva.",
+    "failed": "Nem sikerült létrehozni a felhasználót."
+  },
+  "groups": {
+    "add": "Csoport hozzáadása",
+    "name": "Csoport neve",
+    "namePlaceholder": "Új csoport neve",
+    "create": "Létrehozás",
+    "created": "A(z) {{name}} létrehozva.",
+    "search": "Csoportok keresése",
+    "empty": "Nincs találat.",
+    "noMembers": "Nincsenek tagok.",
+    "failed": "A módosítás sikertelen volt.",
+    "addMember": "Tag hozzáadása",
+    "pickUser": "Válasszon felhasználót",
+    "removeMember": "Eltávolítás a csoportból",
+    "memberAdded": "A(z) {{name}} hozzáadva a(z) {{group}} csoporthoz.",
+    "memberRemoved": "A(z) {{name}} eltávolítva a(z) {{group}} csoportból.",
+    "mainGroup": "Főcsoport",
+    "mainGroupHint": "Ez a főcsoportja, így mindig tagja marad.",
+    "deleteTitle": "Törli a(z) {{name}} csoportot?",
+    "deleteDesc": "A csoport törlésre kerül. A hozzá tartozó fájlok megtartják a régi azonosítójukat.",
+    "deleted": "A(z) {{name}} törölve."
+  },
+  "sessions": {
+    "now": "Jelenleg bejelentkezve",
+    "none": "Senki nincs bejelentkezve.",
+    "recent": "Legutóbbi bejelentkezések",
+    "noRecent": "Nem található bejelentkezési előzmény.",
+    "loadFailed": "A munkamenetek nem olvashatók."
+  },
+  "manager": {
+    "title": "Felhasználók",
+    "disabled": "Kapcsolja be a Felhasználók funkciót a gép beállításaiban, hogy itt lássa a fiókokat."
+  },
+  "operations": {
+    "list": {
+      "title": "Felhasználók listázása"
+    },
+    "emptyPasswords": {
+      "title": "Jelszó nélküli fiókok"
+    },
+    "lock": {
+      "title": "Felhasználó zárolása"
+    },
+    "unlock": {
+      "title": "Felhasználó feloldása"
+    },
+    "delete": {
+      "title": "Felhasználó törlése"
+    },
+    "users": {
+      "title": "Felhasználók",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "Csoportok"
+    }
+  }
+}

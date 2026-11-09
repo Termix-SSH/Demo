@@ -1,0 +1,283 @@
+{
+  "plugin": {
+    "name": "Web 伺服器",
+    "description": "管理主機上的 nginx、Apache 和 Caddy：網站、設定、日誌與 HTTPS，每次變更都會先進行測試。"
+  },
+  "common": {
+    "cancel": "取消",
+    "back": "返回",
+    "loading": "載入中..."
+  },
+  "permissions": {
+    "use": {
+      "title": "使用 Web 伺服器",
+      "description": "查看可連線主機上的 Web 伺服器與網站，並修改可編輯主機上的設定。"
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Web 伺服器",
+        "description": "從「Web 伺服器」分頁管理此主機上的 nginx、Apache 和 Caddy。"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "使用 sudo 讀取與修改 Web 伺服器。若登入使用者為 root，請關閉此選項。"
+      },
+      "readOnly": {
+        "label": "唯讀",
+        "description": "顯示網站、設定與日誌，但永不修改此主機上的內容。"
+      },
+      "showPanel": {
+        "label": "終端機旁的面板",
+        "description": "在此主機的終端機分頁中提供 Web 伺服器面板。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "開啟終端機時自動開啟面板",
+        "description": "當終端機在支援的主機上開啟時，顯示 Web 伺服器面板。"
+      },
+      "companionSide": {
+        "label": "面板位置",
+        "description": "面板相對於終端機的位置。",
+        "right": "右側",
+        "left": "左側",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "面板大小",
+        "description": "面板的寬度，或位於底部時的高度，單位為像素。"
+      },
+      "companionEdgeButton": {
+        "label": "邊緣按鈕",
+        "description": "在終端機邊緣顯示一個小按鈕，用於開啟面板。"
+      }
+    }
+  },
+  "tab": {
+    "title": "Web 伺服器",
+    "noHost": "從主機開啟 Web 伺服器。",
+    "error": "無法載入此主機上的 Web 伺服器。",
+    "disabled": "此主機已關閉 Web 伺服器功能。請前往主機設定中開啟。",
+    "sudo": "進行變更需要 root 登入、免密碼 sudo，或在此主機上儲存 Sudo 密碼。",
+    "refresh": "重新整理",
+    "readOnly": "唯讀",
+    "noServer": "未安裝 Web 伺服器",
+    "noServerHint": "請從「伺服器」頁面安裝 nginx、Apache 或 Caddy。",
+    "openServer": "開啟伺服器",
+    "viewSites": "網站",
+    "viewConfig": "設定",
+    "viewLogs": "日誌",
+    "viewServer": "伺服器"
+  },
+  "actions": {
+    "ok": "完成",
+    "failed": "失敗",
+    "noOutput": "無輸出。"
+  },
+  "watch": {
+    "start": "當 Web 伺服器停止時通知我",
+    "stop": "停止此主機的警示",
+    "on": "當此主機上的 Web 伺服器停止時，您將收到警示",
+    "off": "此主機的警示已關閉",
+    "failed": "無法修改警示設定"
+  },
+  "sites": {
+    "add": "新增網站",
+    "search": "搜尋網站",
+    "empty": "尚無網站。",
+    "loadFailed": "無法載入網站。",
+    "off": "關閉",
+    "anyName": "任意名稱",
+    "form": "表單",
+    "certDays_other": "剩餘 {{count}} 天",
+    "certExpired": "憑證已過期",
+    "enable": "開啟",
+    "disable": "關閉",
+    "enabled": "{{name}} 已開啟",
+    "disabled": "{{name}} 已關閉",
+    "delete": "刪除",
+    "deleteTitle": "刪除 {{name}}？",
+    "deleteBody": "檔案將被移除，伺服器會重新載入。備份副本會保留在 host 上的 /var/lib/termix-web-servers/backups 目錄中。",
+    "deleted": "{{name}} 已刪除"
+  },
+  "site": {
+    "addTitle": "新增站台",
+    "editTitle": "儲存 {{name}}",
+    "add": "新增站台",
+    "save": "儲存",
+    "added": "{{name}} 已新增",
+    "saved": "{{name}} 已儲存",
+    "server": "網頁伺服器",
+    "name": "站台名稱",
+    "nameHint": "用於檔案名稱與日誌檔案，例如 example。",
+    "modeForm": "表單",
+    "modeText": "文字",
+    "text": "設定",
+    "textHint": "儲存文字後，此站台的表單模式將關閉，以保留您的自訂修改。",
+    "type": "類型",
+    "typeStatic": "靜態檔案",
+    "typeProxy": "反向代理",
+    "typePhp": "PHP",
+    "typeRedirect": "重新導向",
+    "staticHint": "從資料夾提供檔案。",
+    "proxyHint": "將請求轉送至在此 host 或其他 host 上執行的應用程式。",
+    "phpHint": "從資料夾提供檔案，並使用 php-fpm 執行 .php 檔案。",
+    "redirectHint": "將所有訪客導向另一個位址。",
+    "domains": "網域",
+    "domainsHint": "每輸入一個後請按 Enter。在 nginx 中使用 _ 可回應任何名稱。",
+    "port": "HTTP 連接埠",
+    "root": "網頁根目錄",
+    "rootHint": "/var/www、/srv、/usr/share/nginx、/opt 或 /home 內的資料夾。",
+    "index": "索引檔案",
+    "spa": "單頁應用程式",
+    "spaHint": "將非檔案的路徑轉送至 /index.html。",
+    "upstream": "應用程式位址",
+    "upstreamHint": "應用程式監聽的位置，例如 http://127.0.0.1:3000。",
+    "websockets": "WebSockets",
+    "redirectTo": "將訪客導向",
+    "keepPath": "保留路徑",
+    "keepPathHint": "將 /page 導向新位址的相同頁面。",
+    "phpSocket": "php-fpm 通訊端",
+    "phpSocketHint": "未找到 php-fpm 通訊端。請安裝 php-fpm 或輸入 host:port。",
+    "https": "HTTPS",
+    "httpsHint": "需要憑證。請先儲存站台，然後按下下方的「取得憑證」。",
+    "httpsCaddy": "Caddy 會自動取得並更新憑證。",
+    "httpsPort": "HTTPS 連接埠",
+    "certPath": "憑證檔案",
+    "keyPath": "金鑰檔案",
+    "forceHttps": "將 HTTP 轉送至 HTTPS",
+    "gzip": "壓縮回應",
+    "accessLog": "存取日誌",
+    "maxBody": "上傳限制（MB）",
+    "maxBodyHint": "0 表示使用伺服器預設值。",
+    "preview": "預覽",
+    "previewFailed": "無法建立設定。"
+  },
+  "tls": {
+    "title": "HTTPS 憑證",
+    "hintManaged": "certbot 會為這個站網的網域取得 Let's Encrypt 憑證，然後站網會切換到 HTTPS。certbot 會更新憑證並重新載入伺服器。",
+    "hintText": "certbot 會為這個站網的網域取得 Let's Encrypt 憑證。之後請手動將憑證新增到站網。certbot 會更新憑證並重新載入伺服器。",
+    "needCertbot": "請先在伺服器頁面安裝 certbot 及其對應此伺服器的外掛。",
+    "email": "電子郵件",
+    "emailHint": "Let's Encrypt 會在此通知問題。選填。",
+    "staging": "測試憑證",
+    "stagingHint": "使用 Let's Encrypt 測試伺服器。瀏覽器不會信任此憑證。",
+    "issue": "取得憑證",
+    "done": "憑證已儲存"
+  },
+  "config": {
+    "search": "搜尋檔案",
+    "empty": "沒有檔案。",
+    "loadFailed": "無法載入檔案。",
+    "test": "測試設定",
+    "testOk": "設定正常",
+    "testFailed": "設定有錯誤",
+    "content": "內容",
+    "save": "儲存",
+    "saveHint": "伺服器重新載入前會先測試整個設定。如果檔案有問題，會恢復原狀。",
+    "saved": "已儲存並重新載入",
+    "backups_other": "{{count}} 個備份",
+    "restore": "還原",
+    "restoreTitle": "要還原這個備份嗎？",
+    "restoreBody": "檔案會恢復到 {{time}} 的狀態。目前的文字也會成為備份。",
+    "restored": "備份已還原"
+  },
+  "logs": {
+    "source": "日誌",
+    "lines": "行數",
+    "journal": "{{server}} 日誌",
+    "follow": "追蹤",
+    "stop": "停止",
+    "connecting": "連線中...",
+    "ended": "已停止追蹤。",
+    "followFailed": "無法追蹤此日誌。",
+    "empty": "沒有內容。",
+    "loadFailed": "無法讀取日誌。",
+    "requests": "請求",
+    "topPaths": "熱門路徑",
+    "topClients": "熱門用戶端"
+  },
+  "server": {
+    "unknown": "未知",
+    "atBoot": "開機時啟動",
+    "notInstalled": "未安裝",
+    "start": "啟動",
+    "stop": "停止",
+    "restart": "重新啟動",
+    "reload": "重新載入",
+    "enable": "開機時啟動",
+    "disable": "開機時不啟動",
+    "boot": "開機時啟動",
+    "noBoot": "開機時不啟動",
+    "done": "{{server}} 已完成",
+    "stopTitle": "要停止 {{server}} 嗎？",
+    "stopBody": "上面的所有站網都會離線，直到您再次啟動它。",
+    "install": "安裝",
+    "installTitle": "要安裝 {{server}} 嗎？",
+    "installBody": "它會使用主機套件管理器安裝並立即啟動。如果 80 埠已有其他網頁伺服器，將無法啟動。",
+    "installed": "{{server}} 已安裝",
+    "installCertbot": "安裝 certbot",
+    "certbotInstalled": "certbot 已安裝",
+    "certbotPlugins": "外掛：{{plugins}}",
+    "certbotNoPlugins": "沒有 nginx 或 Apache 外掛",
+    "certbotHint": "為 nginx 和 Apache 站網取得 Let's Encrypt 憑證"
+  },
+  "card": {
+    "title": "Web 伺服器",
+    "loading": "載入中...",
+    "refresh": "重新整理",
+    "empty": "沒有主機啟用 Web 伺服器。",
+    "summary_other": "{{count}} 台主機｜{{down}} 台需要檢查",
+    "sites_other": "{{count}} 個網站"
+  },
+  "companion": {
+    "toggle": "Web 伺服器面板",
+    "openTab": "開啟 Web 伺服器",
+    "reload": "重新載入 {{server}}"
+  },
+  "manager": {
+    "title": "Web 伺服器",
+    "disabled": "為此主機啟用 Web 伺服器，即可在此查看其網站。"
+  },
+  "operations": {
+    "status": {
+      "title": "Web 伺服器狀態"
+    },
+    "listSites": {
+      "title": "列出網站"
+    },
+    "test": {
+      "title": "測試 Web 伺服器設定"
+    },
+    "reload": {
+      "title": "重新載入 Web 伺服器"
+    },
+    "restart": {
+      "title": "重新啟動 Web 伺服器"
+    },
+    "enableSite": {
+      "title": "啟用網站"
+    },
+    "disableSite": {
+      "title": "停用網站"
+    },
+    "deleteSite": {
+      "title": "刪除網站"
+    },
+    "server": "伺服器",
+    "allServers": "全部",
+    "sites": {
+      "title": "網站",
+      "server": "伺服器",
+      "domains": "網域",
+      "https": "HTTPS"
+    }
+  }
+}

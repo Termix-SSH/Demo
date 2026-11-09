@@ -9,7 +9,7 @@ export function registerRoutes(
 ): void {
   /**
    * @openapi
-   * /policy:
+   * /plugin-api/login-security/policy:
    *   get:
    *     summary: Idle timeout for the signed in user
    *     description: The idle timeout in minutes, 0 when off. The app uses it to sign out after a time without activity.
@@ -25,7 +25,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /activity:
+   * /plugin-api/login-security/activity:
    *   post:
    *     summary: Mark the session as active
    *     description: Sent while someone works in a terminal or another view that makes no other requests, so the server does not end the session as idle.
@@ -41,7 +41,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /status:
+   * /plugin-api/login-security/status:
    *   get:
    *     summary: Second factors available
    *     description: Admin only. The second factors installed plugins provide, so the settings page can warn when a second factor is required but none is installed.

@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Termix ana bilgisayarlarınızdan oluşturulan bir envanterle, bir kontrol ana bilgisayarından Ansible playbook'larını ve ad-hoc komutlarını çalıştırın."
+  },
+  "common": {
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri",
+    "delete": "Sil"
+  },
+  "permissions": {
+    "use": {
+      "title": "Ansible'ı Kullan",
+      "description": "Erişebildiğiniz kontrol ana bilgisayarlarındaki playbook'ları ve çalıştırmaları görüntüleyin. Düzenleyebildiğiniz ana bilgisayarlarda dosyaları düzenleyin ve Ansible çalıştırın."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Bu ana bilgisayarı Ansible kontrol ana bilgisayarı olarak kullanın. Üzerinde Ansible yüklü olmalıdır."
+      },
+      "projectDir": {
+        "label": "Proje klasörü",
+        "description": "Bu ana makinedeki playbook, rol ve ansible.cfg dosyalarınızın bulunduğu klasör.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Vault parola dosyası",
+        "description": "Bu ana makinedeki Ansible Vault parolasını içeren dosya. Vault kullanmıyorsanız boş bırakın.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Salt okunur",
+        "description": "Playbook'ları ve çalıştırmaları göster ancak bu ana makinede dosyaları düzenleme veya çalıştırmaları başlatma."
+      },
+      "alertRuns": {
+        "label": "Bir çalıştırma başarısız olduğunda uyar",
+        "description": "Bu ana makinedeki bir çalıştırma başarısız veya kayıp olarak sonlandığında bir uyarı gönder. Çalıştırma durumu okunduğunda kontrol edilir."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Ansible'ı bir ana bilgisayardan açın.",
+    "error": "Bu ana bilgisayardan Ansible yüklenemedi.",
+    "disabled": "Bu ana bilgisayar için Ansible kapalı. Ana bilgisayar ayarlarından açın.",
+    "refresh": "Yenile",
+    "readOnly": "Salt okunur",
+    "notInstalled": "Ansible yüklü değil",
+    "notInstalledTitle": "Ansible bu ana bilgisayara yüklü değil",
+    "notInstalledHint": "Bu ana bilgisayara ansible-core'ı pipx veya paket yöneticinizle yükleyin, ardından sayfayı yenileyin.",
+    "noSshpass": "sshpass bu ana bilgisayara yüklü değil. Şifre ile giriş yapan ana bilgisayarlar başarısız olacak.",
+    "viewPlaybooks": "Playbooklar",
+    "viewRuns": "Çalışmalar",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Gerçekler"
+  },
+  "files": {
+    "add": "Yeni dosya",
+    "search": "Dosyaları ara",
+    "empty": "Proje klasöründe henüz dosya yok.",
+    "noMatch": "Eşleşen dosya bulunamadı.",
+    "noProject": "{{dir}} klasörü bu ana bilgisayarda mevcut değil. Oluşturun veya ana bilgisayar ayarlarında farklı bir Proje klasörü belirleyin.",
+    "listFailed": "Proje dosyaları listelenemedi.",
+    "loadFailed": "Bu dosya okunamadı.",
+    "saved": "Dosya kaydedildi",
+    "saveFailed": "Bu dosya kaydedilemedi.",
+    "playbook": "Otomasyon Senaryosu",
+    "run": "Çalıştır",
+    "newTitle": "Yeni dosya",
+    "name": "Dosya adı",
+    "nameHint": "Proje klasöründeki bir yol, örneğin site.yml veya roles/web/tasks/main.yml.",
+    "hint": "Bir otomasyon senaryosu kaydedilmeden önce sözdizimi açısından kontrol edilir. Kontrol başarısız olursa eski dosya korunur.",
+    "text": "Dosya içeriği",
+    "deleteTitle": "Bu dosya silinsin mi?"
+  },
+  "targets": {
+    "search": "Sunucuları ara",
+    "addShown": "Görünenleri ekle",
+    "clear": "Temizle",
+    "empty": "Sunucu bulunamadı.",
+    "count": "{{count}} seçildi",
+    "failed": "Sunucularınız yüklenemedi."
+  },
+  "run": {
+    "title": "{{playbook}} çalıştır",
+    "start": "Çalıştır",
+    "startCheck": "Denetim modunda çalıştır",
+    "startFailed": "Çalıştırma başlatılamadı.",
+    "source": "Ana Bilgisayarlar",
+    "sourceProject": "Proje envanteri",
+    "sourceTermix": "Termix ana bilgisayarları",
+    "sourceProjectHint": "ansible.cfg dosyasındaki veya proje içindeki bir dosyadaki envanteri kullanın.",
+    "sourceTermixHint": "Termix'ten ana bilgisayarları seçin. Klasörler folder_ gruplarına, etiketler ise tag_ gruplarına dönüşür. Hepsi termix grubundadır.",
+    "inventory": "Envanter dosyası",
+    "inventoryHint": "Proje klasörü içindeki bir yol. ansible.cfg kullanmak için boş bırakın.",
+    "check": "Denetim modu",
+    "checkHint": "Hiçbir değişiklik yapmadan, nelerin değişeceğini göster.",
+    "diff": "Farkları göster",
+    "diffHint": "Dosyalara yapılan değişiklikleri göster.",
+    "become": "Root olarak çalıştır",
+    "becomeHint": "Ana bilgisayarlarda sudo kullanın. Termix ana bilgisayarları için kaydedilmiş bir Sudo Şifresi kullanılır.",
+    "limit": "Limit",
+    "limitHint": "Sadece bu ana bilgisayarlarda veya gruplarda çalıştır.",
+    "verbosity": "Çıktı detayı",
+    "verbosityOff": "Normal",
+    "tags": "Etiketler",
+    "skipTags": "Etiketleri atla",
+    "extraVars": "Ek değişkenler",
+    "extraVarsHint": "Her satırda bir anahtar=değer."
+  },
+  "runs": {
+    "title": "Çalıştır",
+    "empty": "Henüz çalıştırma yok.",
+    "loadFailed": "Çalıştırmalar yüklenemedi.",
+    "stop": "Durdur",
+    "stopFailed": "Çalıştırma durdurulamadı.",
+    "deleteTitle": "Bu çalıştırma silinsin mi?",
+    "deleteFailed": "Çalıştırma silinemedi.",
+    "checkMode": "Kontrol",
+    "truncated": "Uzun bir çıktının sonu gösteriliyor.",
+    "noOutput": "Henüz çıktı yok.",
+    "state": {
+      "running": "Çalışıyor",
+      "ok": "Tamamlandı",
+      "failed": "Başarısız",
+      "cancelled": "Durduruldu",
+      "lost": "Kayıp"
+    },
+    "kind": {
+      "playbook": "Oyun Kitabı",
+      "adhoc": "Ad-hoc",
+      "facts": "Gerçekler"
+    },
+    "recap": {
+      "host": "Ana Bilgisayar",
+      "ok": "Tamam",
+      "changed": "Değiştirildi",
+      "unreachable": "Ulaşılamıyor",
+      "failed": "Başarısız",
+      "skipped": "Atlandı"
+    }
+  },
+  "adhoc": {
+    "hint": "Ansible all -m ping gibi, ana bilgisayarlarda tek bir modül çalıştırın.",
+    "pattern": "Ana bilgisayar deseni",
+    "patternHint": "Bir ana bilgisayar, bir grup veya tümü.",
+    "module": "Modül",
+    "moduleHint": "Örneğin ping, command, shell, apt veya systemd.",
+    "args": "Bağımsız Değişkenler",
+    "argsHint": "Command ve shell modülleri için bu, çalıştırılacak komuttur. Diğer modüller için anahtar=değer çiftleridir.",
+    "run": "Çalıştır"
+  },
+  "facts": {
+    "hint": "Setup modülü ile sunuculardan bilgileri toplayın. Her birinin giriş bilgisi olması için Termix sunucuları gerekir.",
+    "gather": "Bilgileri topla",
+    "gathering": "Toplanıyor...",
+    "failed": "Bilgiler toplanamadı.",
+    "failedHost": "Başarısız",
+    "none": "Hiç bilgi dönmedi. Nedenini görmek için çalıştırmayı açın.",
+    "col": {
+      "host": "Ana Bilgisayar",
+      "os": "Sistem",
+      "kernel": "Çekirdek",
+      "cpu": "İşlemciler",
+      "memory": "Bellek",
+      "address": "Adres",
+      "uptime": "Çalışma Süresi"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Otomasyon senaryolarını listele"
+    },
+    "run": {
+      "title": "Otomasyon senaryosunu çalıştır",
+      "playbook": "Otomasyon Senaryosu",
+      "limit": "Kısıtlama",
+      "tags": "Etiketler",
+      "check": "Denetim modu"
+    },
+    "runs": {
+      "title": "Çalıştırmaları listele",
+      "resource": "Çalıştırmalar",
+      "started": "Başlatıldı",
+      "check": "Denetim modu"
+    },
+    "failed": {
+      "title": "Başarısız çalıştırmalar"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Ana bilgisayarlar kontrol ediliyor...",
+    "summary_one": "{{hosts}} ana bilgisayarda {{count}} başarısız çalıştırma",
+    "summary_other": "{{hosts}} ana bilgisayarda {{count}} başarısız çalıştırma",
+    "refresh": "Tekrar kontrol et",
+    "empty": "Çalıştırmalarını burada görmek için bir ana bilgisayarda Ansible'ı etkinleştirin.",
+    "failed_one": "{{count}} başarısız",
+    "failed_other": "{{count}} başarısız",
+    "running_one": "{{count}} çalışıyor",
+    "running_other": "{{count}} çalışıyor",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Henüz çalıştırma yok"
+  }
+}

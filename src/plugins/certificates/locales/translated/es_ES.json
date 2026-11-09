@@ -1,0 +1,237 @@
+{
+  "plugin": {
+    "name": "Certificados",
+    "description": "Consulta, emite y renueva certificados TLS en tus hosts con certbot y acme.sh, y recibe una alerta antes de que caduquen."
+  },
+  "common": {
+    "cancel": "Cancelar",
+    "back": "Atrás"
+  },
+  "permissions": {
+    "use": {
+      "title": "Usar Certificados",
+      "description": "Consulta los certificados en los hosts a los que puedes acceder y modifícalos en los hosts que puedes editar."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Certificados",
+        "description": "Gestiona los certificados TLS de este host desde la pestaña Certificados."
+      },
+      "useSudo": {
+        "label": "Usar sudo",
+        "description": "Usa sudo para leer y modificar certificados. Desactívalo si el inicio de sesión es como root."
+      },
+      "readOnly": {
+        "label": "Solo lectura",
+        "description": "Muestra los certificados pero nunca los modifica en este host."
+      },
+      "expiryWarnDays": {
+        "label": "Advertir antes de la caducidad",
+        "description": "Los certificados con este número de días o menos restantes se muestran como próximos a caducar y envían una alerta."
+      },
+      "showPanel": {
+        "label": "Mostrar panel de certificados en terminales",
+        "description": "Permite que el panel de certificados se abra junto al terminal SSH de este host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Abrir el panel de certificados con nuevas terminales",
+        "description": "Muestra el panel de certificados junto a cada terminal SSH que tenga Certificados activado. Puedes abrirlo y cerrarlo desde el botón en el borde derecho."
+      },
+      "companionSide": {
+        "label": "Lado del panel de certificados",
+        "description": "Dónde se sitúa el panel de certificados junto a un terminal.",
+        "right": "Derecha",
+        "left": "Izquierda",
+        "bottom": "Abajo"
+      },
+      "companionSize": {
+        "label": "Tamaño del panel de certificados",
+        "description": "Ancho en píxeles, o altura cuando está en la parte inferior. También puedes arrastrar su borde."
+      },
+      "companionEdgeButton": {
+        "label": "Mostrar el botón del panel",
+        "description": "Muestra un pequeño botón en el borde derecho de un terminal que abre el panel de certificados."
+      }
+    }
+  },
+  "tab": {
+    "title": "Certificados",
+    "noHost": "Abre Certificados desde un host.",
+    "error": "No se han podido cargar los certificados de este host.",
+    "disabled": "Certificados está desactivado para este host. Actívalo en la configuración del host.",
+    "sudo": "Los cambios requieren un inicio de sesión como root, sudo sin contraseña o una Contraseña de Sudo guardada en este host.",
+    "refresh": "Actualizar",
+    "readOnly": "Solo lectura",
+    "noClient": "No hay certbot ni acme.sh",
+    "viewCertificates": "Certificados",
+    "viewInspect": "Inspeccionar",
+    "viewRenewal": "Renovación"
+  },
+  "actions": {
+    "working": "Trabajando. Esto puede tardar unos minutos.",
+    "ok": "Hecho",
+    "failed": "El comando ha fallado.",
+    "noOutput": "Sin salida."
+  },
+  "install": {
+    "title": "certbot y acme.sh no están instalados en este host",
+    "hint": "Instala certbot para obtener y renovar certificados de Let's Encrypt.",
+    "noManager": "No se encontró ningún gestor de paquetes compatible. Instala certbot manualmente.",
+    "button": "Instalar certbot",
+    "confirm": "¿Instalar certbot?",
+    "desc": "Esto instala certbot con el gestor de paquetes del host.",
+    "working": "Instalando...",
+    "done": "certbot está instalado."
+  },
+  "certs": {
+    "search": "Buscar certificados",
+    "empty": "Aún no hay certificados.",
+    "noMatch": "Ningún certificado coincide.",
+    "loadFailed": "No se han podido leer los certificados.",
+    "expires": "Caduca el {{date}}",
+    "staging": "Pruebas",
+    "details": "Certificado",
+    "manage": "Gestionar",
+    "client": "Cliente",
+    "path": "Archivo",
+    "authority": "Autoridad",
+    "renew": "Renovar",
+    "renewDone": "Se ha renovado {{name}}.",
+    "renewAll": "Renovar todo",
+    "renewAllDone": "Se han renovado los certificados que estaban pendientes.",
+    "forceRenew": "Renovar ahora de todos modos",
+    "dryRun": "Prueba sin cambios",
+    "dryRunDone": "La prueba sin cambios se ha completado correctamente.",
+    "revoke": "Revocar",
+    "revokeTitle": "¿Revocar {{name}}?",
+    "revokeDesc": "La autoridad lo marcará como no válido y se eliminará de este host. Cualquier cosa que aún lo esté usando dejará de funcionar.",
+    "revokeDone": "Se ha revocado {{name}}.",
+    "delete": "Dejar de gestionar",
+    "deleteTitle": "¿Dejar de gestionar {{name}}?",
+    "deleteDesc": "Seguirá siendo válido, pero ya no se renovará. certbot también eliminará sus archivos, mientras que acme.sh los conservará.",
+    "deleteDone": "{{name}} ya no se gestiona."
+  },
+  "expiry": {
+    "expired": "Caducado",
+    "unknown": "Desconocido",
+    "days_one": "Queda {{count}} día",
+    "days_many": "Quedan {{count}} días",
+    "days_other": "Quedan {{count}} días"
+  },
+  "issue": {
+    "add": "Emitir certificado",
+    "title": "Nuevo certificado",
+    "save": "Emitir",
+    "done": "Se ha emitido el certificado.",
+    "working": "Consultando a la autoridad. Esto puede tardar unos minutos.",
+    "client": "Cliente",
+    "domains": "Dominios",
+    "domainsPlaceholder": "Escribe un dominio y pulsa Intro",
+    "domainsHint": "El primero nombra al certificado.",
+    "challenge": "Desafío",
+    "standalone": "Independiente",
+    "standaloneHint": "Ejecuta un pequeño servidor web en el puerto 80, por lo que nada más puede usar ese puerto.",
+    "webroot": "Raíz web",
+    "webrootHint": "Coloca un archivo en la carpeta de tu servidor web. El servidor web sigue funcionando.",
+    "dns": "DNS",
+    "dnsHint": "Añade un registro DNS a través de la API de tu proveedor. Necesario para comodines.",
+    "webrootPath": "Carpeta raíz web",
+    "webrootPathHint": "Debe estar dentro de /var/www, /srv o /usr/share/nginx.",
+    "dnsProvider": "Proveedor DNS",
+    "dnsProviderCertbot": "El nombre de un plugin DNS de certbot instalado, como cloudflare.",
+    "dnsProviderAcme": "Un nombre DNS de acme.sh sin dns_, como cf. Su token API ya debe estar configurado en el host.",
+    "credentials": "Archivo de credenciales",
+    "credentialsHint": "El archivo en el host con tu token API. Termix nunca lo lee.",
+    "email": "Correo electrónico",
+    "emailHint": "Opcional. La autoridad lo usa para avisos de caducidad.",
+    "keyType": "Tipo de clave",
+    "staging": "Usar el servidor de pruebas",
+    "stagingHint": "Para pruebas. El certificado no es de confianza y los límites de tasa son mucho más altos."
+  },
+  "inspect": {
+    "server": "Servidor",
+    "file": "Archivo",
+    "address": "Dirección",
+    "addressPlaceholder": "example.com",
+    "port": "Puerto",
+    "path": "Ruta del archivo",
+    "check": "Comprobar",
+    "hint": "Comprueba lo que envía un servidor a través de TLS, visto desde este host, o lee un archivo de certificado en él.",
+    "failed": "No se ha podido leer el certificado.",
+    "noOpenssl": "openssl no está instalado en este host.",
+    "trusted": "De confianza",
+    "notTrusted": "No es de confianza",
+    "leaf": "Certificado",
+    "intermediate": "Cadena {{index}}",
+    "selfSigned": "Autofirmado",
+    "name": "Nombre",
+    "issuer": "Emisor",
+    "domains": "Dominios",
+    "validFrom": "Válido desde",
+    "validTo": "Válido hasta",
+    "keyType": "Clave",
+    "serial": "Número de serie",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Cómo este host renueva sus certificados automáticamente. Cámbialo en el host.",
+    "on": "Activado",
+    "off": "Desactivado",
+    "timer": "Temporizador de systemd",
+    "next": "Próxima ejecución {{time}}",
+    "cron": "Archivo Cron /etc/cron.d/certbot",
+    "certbotOff": "No se encontró ningún temporizador ni trabajo cron, por lo que los certificados no se renovarán automáticamente.",
+    "acmeCron": "Trabajo cron en la crontab",
+    "acmeOff": "No se encontró ningún trabajo cron, por lo que los certificados no se renovarán automáticamente."
+  },
+  "watch": {
+    "start": "Avísame antes de que los certificados de este host caduquen",
+    "stop": "Detener alertas para este host",
+    "on": "Recibirás una alerta antes de que los certificados de este host caduquen.",
+    "off": "Las alertas para este host están desactivadas.",
+    "failed": "No se ha podido cambiar la alerta."
+  },
+  "card": {
+    "title": "Certificados",
+    "loading": "Comprobando hosts...",
+    "summary_one": "{{count}} certificado, {{expiring}} caducando",
+    "summary_many": "{{count}} certificados, {{expiring}} caducando",
+    "summary_other": "{{count}} certificados, {{expiring}} caducando",
+    "refresh": "Comprobar de nuevo",
+    "empty": "Activa Certificados para un host para ver sus certificados aquí."
+  },
+  "manager": {
+    "title": "Certificados",
+    "disabled": "Activa Certificados para este host en su configuración para verlos aquí."
+  },
+  "operations": {
+    "list": {
+      "title": "Listar certificados"
+    },
+    "expiring": {
+      "title": "Certificados caducando"
+    },
+    "renew": {
+      "title": "Renovar certificado"
+    },
+    "renewAll": {
+      "title": "Renovar todos los certificados"
+    },
+    "revoke": {
+      "title": "Revocar certificado"
+    },
+    "certificates": {
+      "title": "Certificados",
+      "client": "Cliente",
+      "domains": "Dominios",
+      "daysLeft": "Días restantes"
+    }
+  },
+  "nav": {
+    "togglePanel": "Mostrar/ocultar panel de certificados"
+  }
+}

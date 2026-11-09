@@ -1,0 +1,461 @@
+{
+  "plugin": {
+    "name": "Rezerves kopijas",
+    "description": "Veidojiet mapju, datubāzu un Docker datu rezerves kopijas savos serveros, izmantojot restic, un pēc tam pārlūkojiet, lejupielādējiet un atjaunojiet tās."
+  },
+  "common": {
+    "save": "Saglabāt",
+    "cancel": "Atcelt",
+    "back": "Atpakaļ",
+    "delete": "Dzēst",
+    "done": "Gatavs",
+    "loading": "Ielādē...",
+    "refresh": "Atsvaidzināt",
+    "retry": "Mēģināt vēlreiz"
+  },
+  "permissions": {
+    "use": {
+      "title": "Izmantot rezerves kopijas",
+      "description": "Iestatiet rezerves kopiju uzdevumus un repozitorijus, veiciet rezerves kopijas, kā arī pārlūkojiet, lejupielādējiet un atjaunojiet momentuzņēmumus serveros, kurus varat rediģēt."
+    }
+  },
+  "tab": {
+    "title": "Rezerves kopijas",
+    "viewJobs": "Uzdevumi",
+    "viewRepos": "Repozitoriji",
+    "viewHistory": "Vēsture"
+  },
+  "hostTab": {
+    "title": "Rezerves kopijas",
+    "noHost": "Atveriet rezerves kopijas no servera.",
+    "viewJobs": "Uzdevumi",
+    "viewSnapshots": "Momentuzņēmumi",
+    "viewHistory": "Vēsture",
+    "restic": "restic {{version}}",
+    "noRestic": "restic nav instalēts",
+    "sudo": "Lai šajā serverī veiktu rezerves kopijas, Termix ir jāpieslēdzas kā root lietotājs vai kā lietotājs ar sudo, kam nav nepieciešama parole.",
+    "statusFailed": "Neizdevās izlasīt šo serveri"
+  },
+  "install": {
+    "missing": "Šajā serverī nav instalēts restic",
+    "tooOld": "Šajā serverī instalētais restic ir vecāks par 0.17",
+    "hint": "Rezerves kopijas izmanto restic. Instalējiet to, izmantojot pakotņu pārvaldnieku, vai lejupielādējiet no restic izlaiduma GitHub, ja pakotne ir pārāk veca.",
+    "button": "Instalēt restic",
+    "working": "Instalē...",
+    "title": "Instalēt restic?",
+    "desc": "Tas instalēs restic serverī kā root lietotājs.",
+    "confirm": "Instalēt",
+    "done": "restic {{version}} ir instalēts",
+    "failed": "Neizdevās instalēt restic"
+  },
+  "status": {
+    "never": "Nekad nav palaists",
+    "running": "Notiek",
+    "success": "Pabeigts",
+    "warning": "Brīdinājumi",
+    "failed": "Neizdevās",
+    "canceled": "Apturēts"
+  },
+  "time": {
+    "justNow": "tikko",
+    "soon": "drīz",
+    "ago": {
+      "minutes_zero": "pirms {{count}} minūtēm",
+      "minutes_one": "pirms {{count}} minūtes",
+      "minutes_other": "pirms {{count}} minūtēm",
+      "hours_zero": "pirms {{count}} stundām",
+      "hours_one": "pirms {{count}} stundas",
+      "hours_other": "pirms {{count}} stundām",
+      "days_zero": "pirms {{count}} dienām",
+      "days_one": "pirms {{count}} dienas",
+      "days_other": "pirms {{count}} dienām"
+    },
+    "in": {
+      "minutes_zero": "pēc {{count}} minūtēm",
+      "minutes_one": "pēc {{count}} minūtes",
+      "minutes_other": "pēc {{count}} minūtēm",
+      "hours_zero": "pēc {{count}} stundām",
+      "hours_one": "pēc {{count}} stundas",
+      "hours_other": "pēc {{count}} stundām",
+      "days_zero": "pēc {{count}} dienām",
+      "days_one": "pēc {{count}} dienas",
+      "days_other": "pēc {{count}} dienām"
+    }
+  },
+  "jobs": {
+    "add": "Pievienot uzdevumu",
+    "empty": "Vēl nav rezerves kopiju uzdevumu",
+    "emptyHint": "Pievienojiet uzdevumu, lai veiktu mapju, datubāzu vai Docker datu rezerves kopijas.",
+    "emptyNoRepo": "Vispirms pievienojiet repozitoriju, lai rezerves kopijām būtu kur glabāties.",
+    "loadFailed": "Neizdevās ielādēt rezerves kopiju uzdevumus",
+    "lastGood": "Pēdējā rezerves kopija {{when}}",
+    "noGood": "Vēl nav rezerves kopijas",
+    "next": "Nākamais {{when}}",
+    "paused": "Pauzēts",
+    "run": "Palaidiet tagad",
+    "stop": "Apturēt",
+    "edit": "Rediģēt",
+    "snapshots": "Spraudeņi",
+    "started": "{{name}} uzsākts",
+    "runFailed": "Neizdevās uzsākt dublējumu"
+  },
+  "editor": {
+    "newTitle": "Jauns dublēšanas darbs",
+    "general": "Darbs",
+    "host": "Resursdators",
+    "pickHost": "Izvēlieties resursdatoru",
+    "name": "Nosaukums",
+    "namePlaceholder": "Nakts dublējums",
+    "repository": "Depo",
+    "pickRepository": "Izvēlieties depo",
+    "noRepos": "Šim resursdatoram nav pieejamu depo. Vispirms pievienojiet vienu cilnē Dublējumi.",
+    "repoLocked": "Šo depo var mainīt tikai tā īpašnieks.",
+    "enabled": "Izpildīt pēc grafika",
+    "enabledHint": "Izslēdziet, lai apturētu grafiku. Izpildīt tagad joprojām strādā.",
+    "oneFileSystem": "Palikt vienā failu sistēmā",
+    "oneFileSystemHint": "Izlaist citus diskus un pievienojumus, kas atrasti izvēlētajos mapēs.",
+    "saved": "Darbs saglabāts",
+    "saveFailed": "Neizdevās saglabāt darbu",
+    "deleteTitle": "Dzēst {{name}}?",
+    "deleteDesc": "Darbs tiks noņemts no Termix. Tā spraudeņi paliks depo.",
+    "deleted": "Darbs dzēsts",
+    "deleteFailed": "Neizdevās dzēst darbu"
+  },
+  "sources": {
+    "add": "Pievienot dublējumam",
+    "addPaths": "Mapes",
+    "addDatabase": "Datubāze",
+    "addDocker": "Docker",
+    "remove": "Noņemt",
+    "paths": "Mapes un faili",
+    "folders": "Ceļi",
+    "foldersHint": "Viens pilns ceļš katrā rindā.",
+    "excludes": "Izlaist",
+    "excludesHint": "Viens restic raksts katrā rindā, piemēram, *.log.",
+    "database": "Datubāze",
+    "engine": "Tips",
+    "engines": {
+      "mysql": "MySQL vai MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Pieteikšanās",
+    "ownLogin": "Ievadiet pieteikšanās datus šeit",
+    "noDatabasesPlugin": "Ieslēdziet Datubāzu spraudni, lai izvēlētos saglabātus pieteikšanās datus.",
+    "address": "Adrese",
+    "addressPlaceholder": "Tukšs lokālajai ligzdai",
+    "port": "Ports",
+    "username": "Lietotājs",
+    "password": "Parole",
+    "passwordSaved": "Saglabāts, atstājiet tukšu, lai to saglabātu",
+    "runAs": "Izpildīt kā",
+    "runAsHint": "Linux lietotājs, kā izpildīt izlasi, piemēram, postgres. Tukšs izpilda kā root.",
+    "databases": "Datubāzes",
+    "databasesHint": "Viens nosaukums katrā rindā. Atstājiet tukšu, lai dublētu visas.",
+    "sqliteFiles": "Datubāzes faili",
+    "sqliteFilesHint": "Viens pilns ceļš katrā rindā. Katrs fails tiek droši kopēts, kamēr tas tiek izmantots.",
+    "docker": "Docker",
+    "stacks": "Stekļi",
+    "volumes": "Skaņas",
+    "noStacks": "Nav atrasts neviens compose steks",
+    "noVolumes": "Nav atrasts neviens skaņas",
+    "dockerFailed": "Neizdevās uzskaitīt Docker šajā resursdatorā",
+    "stop": "Apturēt stekus rezerves kopijas veidošanas laikā",
+    "stopHint": "Izvēlētie steki vispirms tiek apturēti un pēc tam atkal palaisti, lai to faili nemainītos, kamēr tie tiek lasīti."
+  },
+  "schedule": {
+    "title": "Grafiks",
+    "manual": "Manuāli",
+    "daily": "Katru dienu",
+    "weekly": "Katru nedēļu",
+    "custom": "Pielāgots",
+    "day": "Diena",
+    "time": "Laiks",
+    "cron": "Cron",
+    "cronHint": "Minūte, stunda, mēneša diena, mēnesis, nedēļas diena.",
+    "cronInvalid": "Šis cron izteiksmes formāts nav derīgs",
+    "timezone": "Laika josla",
+    "serverTime": "Servera laiks",
+    "manualHint": "Šis uzdevums tiek palaists tikai, kad nospiedat Palaist tagad.",
+    "manualOnly": "Manuāli",
+    "next": "Nākamais palaišanas laiks {{time}}",
+    "noNext": "Šis grafiks nekad netiek palaists",
+    "dailyAt": "Katru dienu plkst. {{time}}",
+    "weeklyAt": "{{day}} plkst. {{time}}",
+    "days": {
+      "0": "Svētdiena",
+      "1": "Pirmdiena",
+      "2": "Otrdiena",
+      "3": "Trešdiena",
+      "4": "Ceturtdiena",
+      "5": "Piektdiena",
+      "6": "Sestdiena"
+    }
+  },
+  "keep": {
+    "title": "Saglabāt",
+    "last": "Pēdējie",
+    "daily": "Katru dienu",
+    "weekly": "Katru nedēļu",
+    "monthly": "Katru mēnesi",
+    "yearly": "Katru gadu",
+    "hint": "Pēc katras rezerves kopijas vecākas šī uzdevuma momentuzņēmumi tiek dzēsti, lai tiktu saglabāti tikai šie. 0 nozīmē saglabāt visu."
+  },
+  "hooks": {
+    "title": "Komandas",
+    "pre": "Pirms",
+    "preHint": "Tiek palaists kā root pirms rezerves kopijas veidošanas. Ja tas neizdodas, rezerves kopijas veidošana tiek apturēta.",
+    "post": "Pēc",
+    "postHint": "Tiek palaists kā root pēc rezerves kopijas veidošanas, pat ja tā neizdevās. TERMIX_BACKUP_STATUS satur rezultātu."
+  },
+  "alerts": {
+    "title": "Brīdinājumi",
+    "onFailure": "Brīdināt, ja rezerves kopija neizdodas",
+    "onFailureHint": "Tiek brīdināts arī par brīdinājumiem un vienreiz, kad darbība atkal kļūst veiksmīga.",
+    "staleDays": "Dienas bez rezerves kopijas",
+    "staleDaysHint": "Brīdināt, ja šādu dienu skaitu nav veiksmīgas rezerves kopijas. 0 izslēdz šo funkciju."
+  },
+  "repos": {
+    "add": "Pievienot repozitoriju",
+    "empty": "Vēl nav repozitoriju",
+    "emptyHint": "Repozitorijs ir vieta, kur tiek glabātas rezerves kopijas, piemēram, S3 grozs vai mape.",
+    "loadFailed": "Neizdevās ielādēt repozitorijus",
+    "jobCount_zero": "0 uzdevumi",
+    "jobCount_one": "{{count}} uzdevums",
+    "jobCount_other": "{{count}} uzdevumi",
+    "newTitle": "Jauns repozitorijs",
+    "storage": "Krātuve",
+    "name": "Nosaukums",
+    "namePlaceholder": "Ārējais S3",
+    "kind": "Tips",
+    "kinds": {
+      "s3": "S3 saderīgs",
+      "rest": "REST serveris",
+      "rclone": "rclone",
+      "local": "Mape uz hosta"
+    },
+    "endpoint": "Bezpunkts",
+    "endpointHint": "Atstāj tukšu AWS gadījumā. MinIO, R2, B2 vai Wasabi gadījumā norādiet to S3 adresi.",
+    "region": "Reģions",
+    "bucket": "Baksts",
+    "prefix": "Mapē bakstā",
+    "prefixHint": "Neobligāti.",
+    "accessKeyId": "Piekļuves atslēgas ID",
+    "secretKey": "Slēptā piekļuves atslēga",
+    "secretSaved": "Saglabāts, atstājiet tukšu, lai saglabātu",
+    "url": "Servera adrese",
+    "username": "Lietotājs",
+    "usernameHint": "Atstājiet tukšu, ja serverim nav pieteikšanās.",
+    "restPassword": "Parole",
+    "remote": "Tālvadības nosaukums",
+    "remoteHint": "Tikai burti, cipari un _.",
+    "path": "Ceļš",
+    "rcloneConfig": "rclone konfigurācija",
+    "rcloneHint": "Tālvadības rindas no rclone.conf. Palaidiet rclone config savā datorā, lai tās izveidotu. rclone ir jābūt instalētam uz hostiem.",
+    "rcloneSaved": "Saglabāts, atstājiet tukšu, lai saglabātu",
+    "host": "Hosts",
+    "pickHost": "Izvēlieties hostu",
+    "folder": "Mapē",
+    "folderHint": "To var izmantot tikai šī hosta darbi. Labāk ir pievienots disks.",
+    "password": "Šifrēšana",
+    "resticPassword": "Depozitorija parole",
+    "passwordHint": "Atstājiet tukšu, un Termix izveidos spēcīgu paroli. Saglabājiet kopiju drošā vietā: bez tās rezerves kopijas nevarēs tikt lasītas.",
+    "passwordKeep": "Saglabāts, atstājiet tukšu, lai saglabātu",
+    "passwordChangeHint": "Tas maina tikai to, ko Termix nosūta. Tas nemaina esošā depozitorija paroli.",
+    "reveal": "Rādīt paroli",
+    "revealTitle": "Rādīt depozitorija paroli?",
+    "revealDesc": "Jebkurš, kam ir tā un glabāšanas atslēgas, var lasīt visas rezerves kopijas šajā depozitorijā. Tas tiek ierakstīts revīzijas žurnālā.",
+    "revealFailed": "Neizdevās izlasīt paroli",
+    "copy": "Kopēt",
+    "copied": "Kopēts",
+    "check": "Pārbaudīt",
+    "checkFrom": "Pārbaudīt no",
+    "checkFromHint": "Hosts, kas atver depozitoriju. Tam ir nepieciešams restic.",
+    "checkButton": "Pārbaudīt",
+    "initButton": "Pārbaudīt un iestatīt",
+    "installRclone": "Instalēt rclone šajā hostā",
+    "rcloneInstalled": "rclone {{version}} ir instalēts.",
+    "rcloneFailed": "Neizdevās instalēt rclone",
+    "checking": "Pārbauda...",
+    "opened": "Depozitorijs tika atvērts veiksmīgi.",
+    "created": "Depozitorijs tika iestatīts un ir gatavs.",
+    "checkFailed": "Neizdevās atvērt depozitoriju",
+    "checkNext": "Saglabāts. Pārbaudiet to no hosta, lai to iestatītu.",
+    "saved": "Depozitorijs saglabāts",
+    "saveFailed": "Neizdevās saglabāt depozitoriju",
+    "deleteTitle": "Dzēst {{name}}?",
+    "deleteDesc": "Tas tiek noņemts tikai no Termix. Rezerves kopijas paliek glabāšanā.",
+    "deleted": "Depozitorijs dzēsts",
+    "deleteFailed": "Neizdevās dzēst depozitoriju"
+  },
+  "snapshots": {
+    "noJobs": "Vispirms pievienojiet rezerves kopijas darbu.",
+    "job": "Darbs",
+    "titleFor": "{{name}} momentuzņēmumi",
+    "empty": "Vēl nav momentuzņēmumu",
+    "loadFailed": "Neizdevās izlasīt momentuzņēmumus",
+    "latest": "Jaunākais",
+    "files_zero": "{{count}} faili",
+    "files_one": "{{count}} fails",
+    "files_other": "{{count}} faili",
+    "browse": "Pārlūkot",
+    "delete": "Dzēst",
+    "deleteTitle": "Dzēst šo momentuzņēmumu?",
+    "deleteDesc": "Momentuzņēmums no {{time}} tiks neatgriezeniski noņemts no krātuves.",
+    "deleted": "Momentuzņēmums izdzēsts",
+    "deleteFailed": "Neizdevās izdzēst momentuzņēmumu",
+    "browseTitle": "Momentuzņēmums {{time}}",
+    "root": "Sakne",
+    "emptyFolder": "Šī mape ir tukša",
+    "filesFailed": "Neizdevās uzskaitīt šo mapi",
+    "pick": "Izvēlēties",
+    "download": "Lejupielādēt",
+    "downloadZip": "Lejupielādēt kā zip",
+    "downloadFailed": "Neizdevās lejupielādēt",
+    "restoreAll": "Atjaunot visu",
+    "restorePicked_zero": "Atjaunot {{count}} vienumus",
+    "restorePicked_one": "Atjaunot {{count}} vienumu",
+    "restorePicked_other": "Atjaunot {{count}} vienumus"
+  },
+  "restore": {
+    "title": "Atjaunot",
+    "what": "Ko",
+    "everything": "Viss, kas ir momentuzņēmumā.",
+    "more_zero": "un {{count}} citi",
+    "more_one": "un {{count}} cits",
+    "more_other": "un {{count}} citi",
+    "where": "Kur",
+    "host": "Resursdators",
+    "hostHint": "Jebkurš resursdators, kuru varat rediģēt un kas var piekļūt krātuvē.",
+    "localOnly": "Šī krātuve ir mape uz tās resursdatora, tāpēc to var atjaunot tikai tur.",
+    "toFolder": "Uz mapi",
+    "toOriginal": "Tur, kur tas bija",
+    "folder": "Mape",
+    "folderHint": "Faili saglabā savu pilno ceļu šīs mapes ietvaros.",
+    "originalWarning": "Faili tiek rakstīti atpakaļ tur, kur tie bija, un var aizstāt to, kas tur pašlaik atrodas.",
+    "overwrite": "Faili, kas jau eksistē",
+    "overwriteOptions": {
+      "if-changed": "Aizstāt, ja mainīts",
+      "always": "Vienmēr aizstāt",
+      "if-newer": "Aizstāt, ja rezerves kopija ir jaunāka",
+      "never": "Nekad neaizstāt"
+    },
+    "start": "Atjaunot",
+    "started": "Atjaunošana uzsākta",
+    "failed": "Neizdevās uzsākt atjaunošanu"
+  },
+  "run": {
+    "title": "Palaist",
+    "backupTitle": "{{name}} rezerves kopija",
+    "restoreTitle": "{{name}} atjaunošana",
+    "loadFailed": "Neizdevās ielādēt darbību",
+    "progress": "Gaita",
+    "preparing": "Sagatavošanās...",
+    "progressLine": "{{percent}}% | {{files}} no {{totalFiles}} failiem | {{bytes}} no {{totalBytes}}",
+    "left": "Atlicis {{time}}",
+    "details": "Detalizēti",
+    "started": "Uzsākts",
+    "finished": "Pabeigts",
+    "trigger": "Uzsāka",
+    "triggers": {
+      "manual": "Palaist tagad",
+      "schedule": "Grafiks",
+      "operation": "Termix darbība"
+    },
+    "snapshot": "Momentuzņēmums",
+    "target": "Atjaunots uz",
+    "files": "Faili",
+    "filesLine": "{{total}} faili, {{added}} jauni, {{changed}} mainīti",
+    "size": "Izmērs",
+    "added": "Pievienots krātuvē",
+    "took": "Paņēma",
+    "log": "Žurnāls",
+    "noLog": "Vēl nav žurnāla.",
+    "stopTitle": "Apturēt šo darbību?",
+    "stopDesc": "Apturēts dublējums nesaglabā momentuzņēmumu. Apturēts atjaunošanas process atstāj līdz šim atjaunotos failus.",
+    "stopSent": "Apturēšana",
+    "stopFailed": "Neizdevās apturēt izpildi"
+  },
+  "history": {
+    "empty": "Vēl nekas nav izpildīts",
+    "loadFailed": "Neizdevās ielādēt vēsturi",
+    "status": "Statuss",
+    "job": "Uzdevums",
+    "host": "Resursdators",
+    "kind": "Tips",
+    "kinds": {
+      "backup": "Dublēšana",
+      "restore": "Atjaunošana"
+    },
+    "started": "Sākts",
+    "took": "Paņēma",
+    "size": "Izmērs"
+  },
+  "card": {
+    "title": "Dublējumi",
+    "all": "Visi dublēšanas uzdevumi",
+    "oneJob": "Viens dublēšanas uzdevums",
+    "empty": "Vēl nav dublēšanas uzdevumu.",
+    "gone": "Šis dublēšanas uzdevums tika dzēsts.",
+    "open": "Atvērt"
+  },
+  "operations": {
+    "list": {
+      "title": "Dublēšanas uzdevumu saraksts"
+    },
+    "failed": {
+      "title": "Neizdevušies dublējumi"
+    },
+    "run": {
+      "title": "Izpildīt dublēšanu"
+    },
+    "cancel": {
+      "title": "Apturēt dublēšanu"
+    },
+    "snapshots": {
+      "title": "Momentuzņēmumu saraksts"
+    },
+    "events": {
+      "finished": "Dublēšana pabeigta",
+      "failed": "Dublēšana neizdevās"
+    },
+    "jobs": {
+      "title": "Dublēšanas uzdevumi",
+      "lastSuccess": "Pēdējais dublēšana",
+      "nextRun": "Nākamā izpilde",
+      "size": "Izmērs"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Rādīt dublējumu paneli termināļos",
+        "description": "Ļauj dublējumu panelim atvērties blakus šī resursdatora SSH terminālim."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Atvērt dublējumu paneli kopā ar jauniem termināļiem",
+        "description": "Rādīt dublējumu paneli blakus katram SSH terminālim, kurā tas ir ieslēgts. To joprojām varat atvērt un aizvērt, izmantojot pogu labajā malā."
+      },
+      "companionSide": {
+        "label": "Dublējumu paneļa puse",
+        "description": "Kur atrodas dublējumu panels blakus terminālim.",
+        "right": "Labajā pusē",
+        "left": "Kreisajā pusē",
+        "bottom": "Apakšā"
+      },
+      "companionSize": {
+        "label": "Dublējumu paneļa izmērs",
+        "description": "Platums pikseļos vai augstums, ja tas atrodas apakšā. Varat arī vilkt tā malu."
+      },
+      "companionEdgeButton": {
+        "label": "Rādīt paneļa pogu",
+        "description": "Rādīt mazu pogu termināļa labajā malā, kas atver dublējumu paneli."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Pārslēgt dublējumu paneli"
+  }
+}

@@ -1,0 +1,304 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Prohlížejte, stahujte, commitujte a pushujte git repozitáře na svých hostech a udržujte je aktuální pomocí automatického stahování."
+  },
+  "common": {
+    "save": "Uložit",
+    "cancel": "Zrušit",
+    "back": "Zpět",
+    "loading": "Načítání..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Používat Git",
+      "description": "Prohlížejte git repozitáře na hostech, ke kterým máte přístup, a upravujte je na hostech, které můžete editovat."
+    },
+    "runCommands": {
+      "title": "Spouštět příkazy po automatickém stahování",
+      "description": "Nastavte příkaz, který se na hostovi spustí po automatickém stažení nových commitů."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Spravujte git repozitáře na tomto hostovi z karty Git."
+      },
+      "repoRoots": {
+        "label": "Skenované složky",
+        "description": "Složky, ve kterých se při skenování tohoto hosta hledají repozitáře. Oddělte je čárkami. Výchozí je domovská složka.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Používat sudo",
+        "description": "Spouštějte git jako root pomocí sudo. Pouze pro repozitáře, které přihlášený uživatel nemůže používat."
+      },
+      "readOnly": {
+        "label": "Pouze pro čtení",
+        "description": "Zobrazujte repozitáře, ale na tomto hostovi je nikdy neupravujte."
+      },
+      "showPanel": {
+        "label": "Panel vedle terminálu",
+        "description": "Nabídněte panel Git na kartách terminálu tohoto hosta."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otevřít panel s terminálem",
+        "description": "Zobrazte panel Git, když se otevře terminál na hostovi, který ho má."
+      },
+      "companionSide": {
+        "label": "Strana panelu",
+        "description": "Kde se panel nachází vedle terminálu.",
+        "right": "Vpravo",
+        "left": "Vlevo",
+        "bottom": "Dole"
+      },
+      "companionSize": {
+        "label": "Velikost panelu",
+        "description": "Šířka panelu, nebo jeho výška dole, v pixelech."
+      },
+      "companionEdgeButton": {
+        "label": "Tlačítko na okraji",
+        "description": "Zobrazte malé tlačítko na okraji terminálu pro otevření panelu."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Otevřete Git z hosta.",
+    "error": "Nelze načíst git z tohoto hosta.",
+    "disabled": "Git je pro tohoto hosta vypnutý. Zapněte ho v nastavení hosta.",
+    "sudo": "To vyžaduje přihlášení jako root, sudo bez hesla nebo uložené Sudo Password.",
+    "refresh": "Obnovit",
+    "readOnly": "Pouze pro čtení",
+    "notInstalled": "git není nainstalován",
+    "notInstalledTitle": "git není na tomto hostovi nainstalován",
+    "notInstalledHint": "Nainstalujte git pomocí správce balíčků hosta a poté obnovte."
+  },
+  "actions": {
+    "ok": "Hotovo",
+    "failed": "Selhalo",
+    "noOutput": "Žádný výstup."
+  },
+  "repos": {
+    "add": "Přidat repozitář",
+    "search": "Hledat repozitáře",
+    "empty": "Zatím žádné repozitáře. Přidejte jeden pro začátek.",
+    "noMatch": "Žádné shodné repozitáře.",
+    "viewOnly": "Žádné repozitáře nebyly přidány k tomuto hostovi.",
+    "detached": "odpojeno",
+    "changes_one": "{{count}} změna",
+    "changes_few": "{{count}} změny",
+    "changes_many": "{{count}} změn",
+    "changes_other": "{{count}} změn",
+    "conflicts": "Konflikty",
+    "auto": "Automatické stahování",
+    "autoFailing": "Stahování selhává",
+    "remove": "Odebrat ze seznamu",
+    "removeTitle": "Odebrat {{name}}?",
+    "removeBody": "Repozitář je pouze zapomenut zde. Na hostovi nic není smazáno.",
+    "removed": "{{name}} odebráno",
+    "error": {
+      "missing": "Chybějící složka",
+      "notrepo": "Není git repozitář",
+      "unreadable": "Nelze číst"
+    }
+  },
+  "add": {
+    "title": "Přidat repozitáře",
+    "modeScan": "Skenovat",
+    "modePath": "Složka",
+    "modeClone": "Klonovat",
+    "scanHint": "Vyhledává git repozitáře v {{roots}}. Složky můžete změnit v nastavení hostitele.",
+    "rescan": "Skenovat znovu",
+    "noneFound": "Nebyly nalezeny žádné nové repozitáře.",
+    "picked": "Vybrané",
+    "addPicked_one": "Přidat {{count}} repozitář",
+    "addPicked_few": "Přidat {{count}} repozitáře",
+    "addPicked_many": "Přidat {{count}} repozitářů",
+    "addPicked_other": "Přidat {{count}} repozitářů",
+    "addAll": "Přidat vše",
+    "folder": "Složka na hostiteli",
+    "folderHint": "Plná cesta, nebo začněte ~ pro domovskou složku. Musí již být git repozitářem.",
+    "addRepo": "Přidat repozitář",
+    "url": "Adresa",
+    "urlHint": "Používá klíče a nastavení gitu přihlášeného uživatele hostitele.",
+    "dest": "Klonovat do",
+    "destHint": "Složka ještě nesmí existovat.",
+    "clone": "Klonovat",
+    "cloned": "Skonováno",
+    "added_one": "{{count}} repozitář přidán",
+    "added_few": "{{count}} repozitáře přidány",
+    "added_many": "{{count}} repozitářů přidáno",
+    "added_other": "{{count}} repozitářů přidáno",
+    "failed": "Nelze přidat repozitář",
+    "scanFailed": "Nelze prohledat hostitele"
+  },
+  "repo": {
+    "ahead": "{{count}} před",
+    "behind": "{{count}} za",
+    "fetch": "Načíst",
+    "fetched": "Načteno",
+    "pull": "Stáhnout",
+    "pulled": "Staženo",
+    "push": "Odeslat",
+    "pushed": "Odesláno",
+    "viewChanges": "Změny",
+    "viewBranches": "Větvě",
+    "viewHistory": "Historie",
+    "viewStash": "Stash",
+    "viewAuto": "Automatické stahování"
+  },
+  "changes": {
+    "loadFailed": "Nelze načíst změny.",
+    "clean": "Nic k commitu. Pracovní strom je čistý.",
+    "stagedTitle": "Připraveno ({{count}})",
+    "unstagedTitle": "Změny ({{count}})",
+    "stage": "Připravit",
+    "staged": "Připraveno",
+    "unstage": "Zrušit přípravu",
+    "unstaged": "Nepřipraveno",
+    "stageAll": "Připravit vše",
+    "renamed": "Přejmenováno",
+    "discard": "Zahodit",
+    "discardTitle": "Zahodit změny v {{name}}?",
+    "discardBody": "Změny v tomto souboru budou smazány a nelze je obnovit.",
+    "discarded": "Změny zahazeny",
+    "message": "Zpráva k commitu",
+    "messagePlaceholder": "Co se změnilo",
+    "commit": "Commit",
+    "commitAll": "Commit všech změn",
+    "commitStaged_one": "Commit {{count}} připraveného souboru",
+    "commitStaged_few": "Commit {{count}} připravených souborů",
+    "commitStaged_many": "Commit {{count}} připravených souborů",
+    "commitStaged_other": "Commit {{count}} připravených souborů",
+    "committed": "Commitnuté",
+    "noDiff": "Žádné změny k zobrazení.",
+    "truncated": "Diff je dlouhý, zobrazuje se pouze začátek."
+  },
+  "branches": {
+    "loadFailed": "Nelze načíst větve.",
+    "empty": "Zatím žádné větve.",
+    "current": "Aktuální",
+    "remote": "Vzdálená",
+    "gone": "Vzdálená větev neexistuje",
+    "newName": "Nová větev",
+    "create": "Vytvořit větev",
+    "created": "Větev {{name}} vytvořena",
+    "switch": "Přepnout",
+    "switched": "Přepnuto na {{name}}",
+    "merge": "Sloučit do aktuální",
+    "mergeTitle": "Sloučit {{name}} do {{into}}?",
+    "mergeBody": "Sloučení s konflikty je okamžitě vráceno.",
+    "merged": "{{name}} sloučeno",
+    "delete": "Smazat větev",
+    "deleteTitle": "Smazat {{name}}?",
+    "deleteBody": "Git odmítne smazání, pokud větev obsahuje nesloučené commity.",
+    "deleted": "{{name}} smazáno",
+    "forceTitle": "Vynutit smazání {{name}}?",
+    "forceBody": "Tato větev obsahuje nesloučené commity. Pokud ji smažete, budou ztraceny.",
+    "forceDelete": "Vynutit smazání"
+  },
+  "history": {
+    "loadFailed": "Nelze načíst historii.",
+    "empty": "Zatím žádné commity.",
+    "branch": "Tato větev",
+    "all": "Všechny větve",
+    "more": "Načíst více"
+  },
+  "stash": {
+    "loadFailed": "Nelze načíst stash.",
+    "title": "Stash",
+    "empty": "Žádné stash.",
+    "message": "Zpráva",
+    "messagePlaceholder": "Volitelné",
+    "untracked": "Zahrnout nesledované soubory",
+    "push": "Uložit změny do stash",
+    "pushDone": "Změny uloženy do stash",
+    "apply": "Použít",
+    "applyDone": "Stash použit",
+    "pop": "Použít a odstranit",
+    "popDone": "Stash použit a odstraněn",
+    "drop": "Odstranit",
+    "dropDone": "Stash odstraněn",
+    "dropTitle": "Odstranit {{name}}?",
+    "dropBody": "Stash bude smazán a nelze jej obnovit.",
+    "remotes": "Vzdálené úložiště",
+    "noRemotes": "Žádná vzdálená úložiště."
+  },
+  "auto": {
+    "intro": "Stahování podle plánu pouze pomocí fast-forward. Nikdy neslučuje a přeskočí úložiště, pokud má neuložené změny nebo se odchýlilo od vzdálené větve.",
+    "noUpstream": "Tato větev zatím nemá nastavenou vzdálenou větev, takže automatické stahování ji přeskočí.",
+    "enable": "Automatické stahování",
+    "enableHint": "Běží pod vaším účtem s vaším přístupem k tomuto hostiteli.",
+    "interval": "Každých (minut)",
+    "intervalHint": "Jak dlouho čekat mezi stahováními.",
+    "post": "Příkaz po stahování",
+    "postHint": "Spustí se ve složce úložiště po příjmu nových commitů. Vyžaduje oprávnění ke spuštění příkazů.",
+    "saved": "Automatické stahování uloženo",
+    "saveFailed": "Nelze uložit automatické stahování",
+    "runNow": "Spustit nyní",
+    "next": "Další stahování {{when}}",
+    "runs": "Nedávné spuštění",
+    "noRuns": "Zatím žádné spuštění.",
+    "outcome": {
+      "pulled": "Staženo",
+      "uptodate": "Aktuální",
+      "skipped": "Přeskočeno",
+      "failed": "Nepovedlo se"
+    }
+  },
+  "card": {
+    "title": "Git repozitáře",
+    "loading": "Načítání...",
+    "refresh": "Obnovit",
+    "empty": "Žádný hostitel zatím nemá Git repozitáře.",
+    "allClean": "Všechny repozitáře jsou čisté a aktuální.",
+    "summary_one": "{{count}} repozitář | {{attention}} vyžaduje pozornost",
+    "summary_few": "{{count}} repozitáře | {{attention}} vyžadují pozornost",
+    "summary_many": "{{count}} repozitářů | {{attention}} vyžaduje pozornost",
+    "summary_other": "{{count}} repozitářů | {{attention}} vyžaduje pozornost"
+  },
+  "companion": {
+    "toggle": "Panel Git",
+    "openTab": "Otevřít Git",
+    "here": "Repozitář této složky",
+    "all": "Všechny repozitáře"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Vypsat Git repozitáře"
+    },
+    "fetch": {
+      "title": "Načíst repozitář"
+    },
+    "pull": {
+      "title": "Stáhnout změny z repozitáře"
+    },
+    "push": {
+      "title": "Odeslat změny do repozitáře"
+    },
+    "checkout": {
+      "title": "Přepnout větev",
+      "branch": "Větev"
+    },
+    "reset-hard": {
+      "title": "Tvrdý reset repozitáře",
+      "ref": "Resetovat na"
+    },
+    "repos": {
+      "title": "Git repozitáře",
+      "branch": "Větev",
+      "ahead": "Vpředu",
+      "behind": "Vzadu",
+      "changed": "Změny"
+    },
+    "signals": {
+      "behind": "Repozitáře vzadu",
+      "dirty": "Repozitáře se změnami",
+      "pull-failing": "Automatické stahování selhává"
+    }
+  }
+}

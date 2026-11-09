@@ -1,0 +1,283 @@
+{
+  "plugin": {
+    "name": "Máy chủ Web",
+    "description": "Quản lý nginx, Apache và Caddy trên các máy chủ của bạn: trang web, cấu hình, nhật ký và HTTPS, với mọi thay đổi được kiểm tra trước khi áp dụng."
+  },
+  "common": {
+    "cancel": "Hủy",
+    "back": "Quay lại",
+    "loading": "Đang tải..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Sử dụng Máy chủ Web",
+      "description": "Xem các máy chủ web và trang web trên các máy chủ bạn có thể truy cập, và thay đổi chúng trên các máy chủ bạn có quyền chỉnh sửa."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Máy chủ Web",
+        "description": "Quản lý nginx, Apache và Caddy trên máy chủ này từ tab Máy chủ Web."
+      },
+      "useSudo": {
+        "label": "Sử dụng sudo",
+        "description": "Sử dụng sudo để đọc và thay đổi máy chủ web. Tắt nếu đăng nhập bằng root."
+      },
+      "readOnly": {
+        "label": "Chỉ đọc",
+        "description": "Hiển thị trang web, cấu hình và nhật ký nhưng không bao giờ thay đổi chúng trên máy chủ này."
+      },
+      "showPanel": {
+        "label": "Bảng bên cạnh terminal",
+        "description": "Hiển thị bảng Máy chủ Web trên các tab terminal của máy chủ này."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Mở bảng cùng với terminal",
+        "description": "Hiển thị bảng Máy chủ Web khi mở terminal trên máy chủ có tính năng này."
+      },
+      "companionSide": {
+        "label": "Vị trí bảng",
+        "description": "Vị trí của bảng so với terminal.",
+        "right": "Phải",
+        "left": "Trái",
+        "bottom": "Dưới"
+      },
+      "companionSize": {
+        "label": "Kích thước bảng",
+        "description": "Chiều rộng của bảng, hoặc chiều cao nếu ở dưới cùng, tính bằng pixel."
+      },
+      "companionEdgeButton": {
+        "label": "Nút cạnh",
+        "description": "Hiển thị một nút nhỏ trên cạnh terminal để mở bảng."
+      }
+    }
+  },
+  "tab": {
+    "title": "Máy chủ Web",
+    "noHost": "Mở Máy chủ Web từ một máy chủ.",
+    "error": "Không thể tải các máy chủ web trên máy chủ này.",
+    "disabled": "Máy chủ Web đã bị tắt cho máy chủ này. Bật nó trong cài đặt máy chủ.",
+    "sudo": "Các thay đổi cần đăng nhập root, sudo không mật khẩu hoặc Mật khẩu Sudo đã lưu trên máy chủ này.",
+    "refresh": "Làm mới",
+    "readOnly": "Chỉ đọc",
+    "noServer": "Chưa cài đặt máy chủ web",
+    "noServerHint": "Cài đặt nginx, Apache hoặc Caddy từ trang Máy chủ.",
+    "openServer": "Mở Máy chủ",
+    "viewSites": "Trang web",
+    "viewConfig": "Cấu hình",
+    "viewLogs": "Nhật ký",
+    "viewServer": "Máy chủ"
+  },
+  "actions": {
+    "ok": "Xong",
+    "failed": "Thất bại",
+    "noOutput": "Không có kết quả."
+  },
+  "watch": {
+    "start": "Báo cho tôi khi máy chủ web dừng hoạt động",
+    "stop": "Dừng cảnh báo cho máy chủ này",
+    "on": "Bạn sẽ nhận được cảnh báo khi máy chủ web trên máy chủ này dừng hoạt động",
+    "off": "Cảnh báo cho máy chủ này đã tắt",
+    "failed": "Không thể thay đổi cảnh báo"
+  },
+  "sites": {
+    "add": "Thêm trang web",
+    "search": "Tìm kiếm trang web",
+    "empty": "Chưa có trang web nào.",
+    "loadFailed": "Không thể tải các trang web.",
+    "off": "Tắt",
+    "anyName": "bất kỳ tên nào",
+    "form": "Mẫu",
+    "certDays_other": "{{count}} ngày còn lại",
+    "certExpired": "Chứng chỉ đã hết hạn",
+    "enable": "Bật",
+    "disable": "Tắt",
+    "enabled": "{{name}} đang bật",
+    "disabled": "{{name}} đang tắt",
+    "delete": "Xóa",
+    "deleteTitle": "Xóa {{name}}?",
+    "deleteBody": "Tệp sẽ bị xóa và máy chủ sẽ tải lại. Một bản sao sẽ được lưu trong /var/lib/termix-web-servers/backups trên máy chủ.",
+    "deleted": "{{name}} đã bị xóa"
+  },
+  "site": {
+    "addTitle": "Trang web mới",
+    "editTitle": "Lưu {{name}}",
+    "add": "Thêm trang web",
+    "save": "Lưu",
+    "added": "{{name}} đã được thêm",
+    "saved": "{{name}} đã được lưu",
+    "server": "Máy chủ web",
+    "name": "Tên trang web",
+    "nameHint": "Dùng cho tên tệp và tệp nhật ký, ví dụ: example.",
+    "modeForm": "Mẫu",
+    "modeText": "Văn bản",
+    "text": "Cấu hình",
+    "textHint": "Lưu văn bản sẽ tắt chế độ mẫu cho trang web này, giúp giữ lại các thay đổi của bạn.",
+    "type": "Loại",
+    "typeStatic": "Tệp tĩnh",
+    "typeProxy": "Proxy ngược",
+    "typePhp": "PHP",
+    "typeRedirect": "Chuyển hướng",
+    "staticHint": "Phục vụ tệp từ một thư mục.",
+    "proxyHint": "Chuyển yêu cầu đến ứng dụng đang chạy trên máy chủ này hoặc máy chủ khác.",
+    "phpHint": "Phục vụ tệp từ một thư mục và chạy các tệp .php bằng php-fpm.",
+    "redirectHint": "Chuyển mọi người dùng đến một địa chỉ khác.",
+    "domains": "Tên miền",
+    "domainsHint": "Nhấn Enter sau mỗi tên miền. Dùng _ trong nginx để phản hồi mọi tên.",
+    "port": "Cổng HTTP",
+    "root": "Thư mục gốc web",
+    "rootHint": "Một thư mục bên trong /var/www, /srv, /usr/share/nginx, /opt hoặc /home.",
+    "index": "Tệp chỉ mục",
+    "spa": "Ứng dụng trang đơn",
+    "spaHint": "Chuyển các đường dẫn không phải là tệp đến /index.html.",
+    "upstream": "Địa chỉ ứng dụng",
+    "upstreamHint": "Nơi ứng dụng lắng nghe, ví dụ: http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Chuyển người dùng đến",
+    "keepPath": "Giữ nguyên đường dẫn",
+    "keepPathHint": "Chuyển /page đến cùng trang trên địa chỉ mới.",
+    "phpSocket": "Socket php-fpm",
+    "phpSocketHint": "Không tìm thấy socket php-fpm. Hãy cài đặt php-fpm hoặc nhập host:port.",
+    "https": "HTTPS",
+    "httpsHint": "Cần có chứng chỉ. Hãy lưu trang web trước, sau đó nhấn Lấy chứng chỉ bên dưới.",
+    "httpsCaddy": "Caddy tự động lấy và gia hạn chứng chỉ.",
+    "httpsPort": "Cổng HTTPS",
+    "certPath": "Tệp chứng chỉ",
+    "keyPath": "Tệp khóa",
+    "forceHttps": "Chuyển HTTP sang HTTPS",
+    "gzip": "Nén phản hồi",
+    "accessLog": "Nhật ký truy cập",
+    "maxBody": "Giới hạn tải lên (MB)",
+    "maxBodyHint": "0 giữ nguyên mặc định của máy chủ.",
+    "preview": "Xem trước",
+    "previewFailed": "Không thể xây dựng cấu hình."
+  },
+  "tls": {
+    "title": "Chứng chỉ HTTPS",
+    "hintManaged": "certbot sẽ lấy chứng chỉ Let's Encrypt cho các tên miền của trang web này, sau đó trang web sẽ chuyển sang HTTPS. certbot sẽ gia hạn chứng chỉ và tải lại máy chủ.",
+    "hintText": "certbot sẽ lấy chứng chỉ Let's Encrypt cho các tên miền của trang web này. Bạn cần tự thêm chứng chỉ vào trang web sau đó. certbot sẽ gia hạn chứng chỉ và tải lại máy chủ.",
+    "needCertbot": "Hãy cài đặt certbot cùng với plugin dành cho máy chủ này từ trang Máy chủ trước.",
+    "email": "Email",
+    "emailHint": "Let's Encrypt sẽ gửi thông báo về các vấn đề đến địa chỉ này. Không bắt buộc.",
+    "staging": "Chứng chỉ thử nghiệm",
+    "stagingHint": "Sử dụng máy chủ staging của Let's Encrypt. Trình duyệt sẽ không tin cậy chứng chỉ này.",
+    "issue": "Lấy chứng chỉ",
+    "done": "Đã lưu chứng chỉ"
+  },
+  "config": {
+    "search": "Tìm kiếm tệp",
+    "empty": "Không có tệp nào.",
+    "loadFailed": "Không thể tải tệp.",
+    "test": "Kiểm tra cấu hình",
+    "testOk": "Cấu hình hợp lệ",
+    "testFailed": "Cấu hình có lỗi",
+    "content": "Nội dung",
+    "save": "Lưu",
+    "saveHint": "Toàn bộ cấu hình sẽ được kiểm tra trước khi máy chủ tải lại. Nếu tệp bị lỗi, nó sẽ được khôi phục về trạng thái cũ.",
+    "saved": "Đã lưu và tải lại",
+    "backups_other": "{{count}} bản sao lưu",
+    "restore": "Khôi phục",
+    "restoreTitle": "Khôi phục bản sao lưu này?",
+    "restoreBody": "Tệp sẽ quay lại trạng thái như lúc {{time}}. Văn bản hiện tại cũng sẽ được lưu thành bản sao lưu.",
+    "restored": "Đã khôi phục bản sao lưu"
+  },
+  "logs": {
+    "source": "Nhật ký",
+    "lines": "Dòng",
+    "journal": "Nhật ký {{server}}",
+    "follow": "Theo dõi",
+    "stop": "Dừng",
+    "connecting": "Đang kết nối...",
+    "ended": "Đã dừng theo dõi.",
+    "followFailed": "Không thể theo dõi nhật ký này.",
+    "empty": "Không có dòng nào.",
+    "loadFailed": "Không thể đọc nhật ký.",
+    "requests": "Yêu cầu",
+    "topPaths": "Đường dẫn phổ biến nhất",
+    "topClients": "Khách hàng phổ biến nhất"
+  },
+  "server": {
+    "unknown": "không xác định",
+    "atBoot": "Khởi động cùng hệ thống",
+    "notInstalled": "Chưa cài đặt",
+    "start": "Khởi động",
+    "stop": "Dừng",
+    "restart": "Khởi động lại",
+    "reload": "Tải lại",
+    "enable": "Khởi động cùng hệ thống",
+    "disable": "Không khởi động cùng hệ thống",
+    "boot": "Khởi động cùng hệ thống",
+    "noBoot": "Không khởi động cùng hệ thống",
+    "done": "{{server}} đã hoàn tất",
+    "stopTitle": "Dừng {{server}}?",
+    "stopBody": "Tất cả các trang web trên đó sẽ ngừng hoạt động cho đến khi bạn khởi động lại.",
+    "install": "Cài đặt",
+    "installTitle": "Cài đặt {{server}}?",
+    "installBody": "Nó sẽ được cài đặt bằng trình quản lý gói của máy chủ và khởi động ngay lập tức. Một máy chủ web khác đang chạy trên cổng 80 sẽ ngăn nó khởi động.",
+    "installed": "{{server}} đã được cài đặt",
+    "installCertbot": "Cài đặt certbot",
+    "certbotInstalled": "certbot đã được cài đặt",
+    "certbotPlugins": "Plugin: {{plugins}}",
+    "certbotNoPlugins": "Không có plugin cho nginx hoặc Apache",
+    "certbotHint": "Lấy chứng chỉ Let's Encrypt cho các trang web nginx và Apache"
+  },
+  "card": {
+    "title": "Máy chủ web",
+    "loading": "Đang tải...",
+    "refresh": "Làm mới",
+    "empty": "Không có máy chủ nào bật tính năng Máy chủ web.",
+    "summary_other": "{{count}} máy chủ | {{down}} cần kiểm tra",
+    "sites_other": "{{count}} trang web"
+  },
+  "companion": {
+    "toggle": "Bảng điều khiển Máy chủ web",
+    "openTab": "Mở Máy chủ web",
+    "reload": "Tải lại {{server}}"
+  },
+  "manager": {
+    "title": "Máy chủ web",
+    "disabled": "Bật Máy chủ web cho máy chủ này để xem các trang web của nó ở đây."
+  },
+  "operations": {
+    "status": {
+      "title": "Trạng thái máy chủ web"
+    },
+    "listSites": {
+      "title": "Danh sách trang web"
+    },
+    "test": {
+      "title": "Kiểm tra cấu hình máy chủ web"
+    },
+    "reload": {
+      "title": "Tải lại máy chủ web"
+    },
+    "restart": {
+      "title": "Khởi động lại máy chủ web"
+    },
+    "enableSite": {
+      "title": "Bật trang web"
+    },
+    "disableSite": {
+      "title": "Tắt trang web"
+    },
+    "deleteSite": {
+      "title": "Xóa trang web"
+    },
+    "server": "Máy chủ",
+    "allServers": "Tất cả",
+    "sites": {
+      "title": "Trang web",
+      "server": "Máy chủ",
+      "domains": "Tên miền",
+      "https": "HTTPS"
+    }
+  }
+}

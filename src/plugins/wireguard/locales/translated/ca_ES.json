@@ -1,0 +1,238 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Instal·la WireGuard als teus amfitrions i gestiona les interfícies, els clients i les configuracions des d'una sola pestanya."
+  },
+  "common": {
+    "save": "Desa",
+    "cancel": "Cancel·la",
+    "back": "Enrere",
+    "delete": "Suprimeix",
+    "loading": "S'està carregant..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Utilitza WireGuard",
+      "description": "Gestiona les interfícies i els clients de WireGuard als amfitrions que pots editar."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Obre WireGuard des d'un amfitrió.",
+    "error": "No s'ha pogut carregar WireGuard d'aquest amfitrió.",
+    "sudo": "Aquest amfitrió necessita un inici de sessió com a arrel o un sudo sense contrasenya per gestionar WireGuard.",
+    "installed": "Instal·lat",
+    "notInstalled": "No instal·lat",
+    "refresh": "Actualitza",
+    "viewInterfaces": "Interfícies",
+    "viewLogs": "Registres"
+  },
+  "install": {
+    "title": "Instal·la WireGuard",
+    "desc": "Això instal·la les eines de WireGuard i iptables amb el gestor de paquets de l'amfitrió.",
+    "confirm": "Instal·la",
+    "done": "WireGuard està instal·lat.",
+    "failed": "No s'ha pogut instal·lar WireGuard.",
+    "empty": "WireGuard no està instal·lat en aquest amfitrió",
+    "noManager": "No s'ha trobat cap gestor de paquets compatible. Instal·la WireGuard manualment.",
+    "hint": "Instal·la'l a {{os}} per executar una VPN des d'aquest amfitrió.",
+    "thisHost": "aquest amfitrió",
+    "button": "Instal·la WireGuard",
+    "working": "S'està instal·lant..."
+  },
+  "interfaces": {
+    "add": "Afegeix interfície",
+    "empty": "Encara no hi ha interfícies. Afegeix-ne una per iniciar una VPN.",
+    "loadFailed": "No s'han pogut carregar les interfícies.",
+    "up": "Activa",
+    "down": "Desactiva",
+    "clients": "{{count}} clients",
+    "nat": "NAT",
+    "boot": "S'inicia en arrencar"
+  },
+  "create": {
+    "title": "Afegeix interfície",
+    "name": "Nom",
+    "address": "Adreça",
+    "addressHint": "L'adreça del servidor i la subxarxa. Els clients rebran les properes adreces lliures.",
+    "port": "Port UDP",
+    "nat": "Comparteix la connexió a Internet de l'amfitrió (NAT)",
+    "natDesc": "Els clients poden accedir a Internet i a la xarxa de l'amfitrió a través d'aquest amfitrió.",
+    "natMissing": "El NAT necessita iptables, que no està instal·lat en aquest amfitrió.",
+    "forwarding": "Activa la retransmissió d'IP",
+    "forwardingDesc": "Permet que l'amfitrió passi el trànsit entre els clients i la xarxa. Es desa per a les reinicis.",
+    "firewall": "Obre el port al tallafocs",
+    "firewallDesc": "Afegeix el port UDP a ufw o firewalld quan n'hi ha un en execució.",
+    "start": "Inicia ara i en arrencar",
+    "startDesc": "Activa la interfície i la manté activa després d'un reinici.",
+    "save": "Crea",
+    "done": "La interfície està llesta.",
+    "failed": "No s'ha pogut crear la interfície."
+  },
+  "detail": {
+    "clients": "Clients",
+    "settings": "Configuració",
+    "config": "Configuració",
+    "service": "Servei",
+    "gone": "Aquesta interfície ja no existeix a l'amfitrió."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Mostra la pestanya de WireGuard per a aquest amfitrió al seu menú."
+      },
+      "showPanel": {
+        "label": "Mostra el panell de WireGuard als terminals",
+        "description": "Permet que el panell de WireGuard s'obri al costat del terminal SSH d'aquest amfitrió."
+      },
+      "alertDown": {
+        "label": "Avís quan una interfície està inactiva",
+        "description": "Envia un avís quan una interfície que s'ha d'activar en l'arrencada no està activa. Es comprova en llegir l'estat de WireGuard."
+      }
+    },
+    "publicKey": "Clau pública",
+    "port": "Port UDP",
+    "endpoint": "Punt final del servidor",
+    "endpointHint": "L'adreça pública a la qual es connecten els clients, com ara vpn.example.com:51820.",
+    "dns": "DNS per als clients",
+    "dnsHint": "Opcional. Separa els servidors amb comes.",
+    "allowed": "Trànsit a través de la VPN",
+    "allowedHint": "Els rangs que els clients envien a través de la VPN. 0.0.0.0/0, ::/0 envia tot.",
+    "keepalive": "Keepalive (segons)",
+    "keepaliveHint": "Manté els clients darrere de NAT accessibles. Utilitza 0 per desactivar-ho.",
+    "saved": "Configuració desada.",
+    "saveFailed": "No s'han pogut desar la configuració.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Obre el panell de WireGuard amb els nous terminals",
+        "description": "Mostra el panell de WireGuard al costat de cada terminal SSH que tingui WireGuard activat. Encara pots obrir-lo i tancar-lo des del botó del costat dret."
+      },
+      "companionSide": {
+        "label": "Costat del panell de WireGuard",
+        "description": "On es troba el panell de WireGuard al costat d'un terminal.",
+        "right": "Dreta",
+        "left": "Esquerra",
+        "bottom": "Inferior"
+      },
+      "companionSize": {
+        "label": "Mida del panell de WireGuard",
+        "description": "Amplada en píxels, o alçada quan està a la part inferior. També pots arrossegar-ne el vora."
+      },
+      "companionEdgeButton": {
+        "label": "Mostra el botó del panell",
+        "description": "Mostra un petit botó al costat dret d'un terminal que obre el panell de WireGuard."
+      }
+    }
+  },
+  "clients": {
+    "add": "Afegeix client",
+    "empty": "Encara no hi ha clients.",
+    "loadFailed": "No s'han pogut carregar els clients.",
+    "name": "Nom",
+    "nameHint": "Lletres, números, punts, guions i guions baixos.",
+    "allowed": "Trànsit a través de la VPN",
+    "allowedHint": "Deixa-ho buit per utilitzar el valor predeterminat de la interfície: {{value}}",
+    "create": "Crea client",
+    "addFailed": "No s'ha pogut afegir el client.",
+    "needEndpoint": "Estableix primer el punt final del servidor a la configuració de la interfície.",
+    "connected": "Connectat",
+    "off": "Desactivat",
+    "external": "Creat manualment",
+    "handshake": "intercanvi de claus fa {{ago}}",
+    "showConfig": "Mostra la configuració i el codi QR",
+    "configFailed": "No s'ha pogut llegir la configuració del client.",
+    "rotate": "Claus noves",
+    "rotateTitle": "Vols generar claus noves per a {{name}}?",
+    "rotateDesc": "La configuració antiga deixarà de funcionar. Proporciona la nova configuració al client després.",
+    "turnOff": "Desactiva",
+    "turnOn": "Activa",
+    "saveFailed": "No s'ha pogut modificar el client.",
+    "deleteTitle": "Vols suprimir {{name}}?",
+    "deleteDesc": "El client s'eliminarà i ja no podrà connectar-se.",
+    "deleteFailed": "No s'ha pogut suprimir el client."
+  },
+  "clientConfig": {
+    "note": "Aquesta configuració conté la clau privada del client. Comparteix-la només amb la persona o el dispositiu que la farà servir.",
+    "qr": "Codi QR per a la configuració del client",
+    "copy": "Copia",
+    "copied": "Configuració copiada.",
+    "copyFailed": "No s'ha pogut copiar la configuració.",
+    "download": "Descarrega .conf"
+  },
+  "config": {
+    "title": "Fitxer de configuració",
+    "hint": "Les claus privades i precompartides estan ocultes. Deixa el marcador de posició per mantenir una clau. La configuració es comprova abans de desar-se i es conserva una còpia de seguretat. Els canvis d'adreça requereixen un reinici.",
+    "loadFailed": "No s'ha pogut llegir la configuració.",
+    "saved": "Configuració desada.",
+    "saveFailed": "No s'ha pogut desar la configuració."
+  },
+  "logs": {
+    "loadFailed": "No s'han pogut llegir els registres.",
+    "lines": "{{count}} línies",
+    "empty": "No hi ha línies de registre."
+  },
+  "service": {
+    "failed": "L'acció del servei ha fallat.",
+    "start": "Inicia",
+    "stop": "Atura",
+    "restart": "Reinicia",
+    "autostart": "Inicia en arrencar",
+    "autostartDesc": "Inicia aquesta interfície quan s'arrenqui l'amfitrió.",
+    "needsSystemd": "Per iniciar en arrencar cal systemd en aquest amfitrió.",
+    "noForward": "La retransmissió d'IP està desactivada en aquest amfitrió, per la qual cosa els clients no poden accedir a la xarxa a través de NAT.",
+    "delete": "Suprimeix la interfície",
+    "deleteTitle": "Vols suprimir {{name}}?",
+    "deleteDesc": "La interfície s'atura i la seva configuració, claus i fitxers de clients desats s'eliminen de l'amfitrió.",
+    "deleteFailed": "No s'ha pogut suprimir la interfície."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Activa WireGuard a la configuració d'aquest amfitrió per utilitzar aquesta targeta.",
+    "start": "Activa",
+    "stop": "Desactiva",
+    "done": "{{name}} actualitzat"
+  },
+  "operations": {
+    "list": {
+      "title": "Llista les interfícies de WireGuard"
+    },
+    "down": {
+      "title": "Interfícies de WireGuard inactives"
+    },
+    "start": {
+      "title": "Inicia la interfície de WireGuard"
+    },
+    "stop": {
+      "title": "Atura la interfície de WireGuard"
+    },
+    "restart": {
+      "title": "Reinicia la interfície de WireGuard"
+    },
+    "interfaces": {
+      "title": "Interfícies de WireGuard",
+      "address": "Adreça",
+      "port": "Port",
+      "clients": "Clients"
+    }
+  },
+  "nav": {
+    "togglePanel": "Alterna el panell de WireGuard"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "S'estan comprovant els amfitrions...",
+    "summary_one": "{{count}} client en {{hosts}} amfitrions",
+    "summary_many": "{{count}} clients en {{hosts}} amfitrions",
+    "summary_other": "{{count}} clients en {{hosts}} amfitrions",
+    "refresh": "Comprova-ho de nou",
+    "empty": "Activa WireGuard per a un amfitrió per veure'l aquí.",
+    "missing": "No instal·lat",
+    "down_one": "{{count}} inactiu",
+    "down_many": "{{count}} inactius",
+    "down_other": "{{count}} inactius",
+    "interfaces_one": "{{count}} interfície, {{clients}} clients",
+    "interfaces_many": "{{count}} interfícies, {{clients}} clients",
+    "interfaces_other": "{{count}} interfícies, {{clients}} clients"
+  }
+}

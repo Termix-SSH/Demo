@@ -1,0 +1,471 @@
+{
+  "plugin": {
+    "name": "Zálohy",
+    "description": "Zálohujte priečinky, databázy a dáta Dockeru na vašich hostoch pomocou restic, potom ich prehliadajte, sťahujte a obnovujte."
+  },
+  "common": {
+    "save": "Uložiť",
+    "cancel": "Zrušiť",
+    "back": "Späť",
+    "delete": "Odstrániť",
+    "done": "Hotovo",
+    "loading": "Načítava sa...",
+    "refresh": "Obnoviť",
+    "retry": "Skúsiť znova"
+  },
+  "permissions": {
+    "use": {
+      "title": "Používať zálohy",
+      "description": "Nastavte úlohy a úložiská záloh, spúšťajte zálohy a prehliadajte, sťahujte a obnovujte snímky na hostiteľoch, ktoré môžu upravovať."
+    }
+  },
+  "tab": {
+    "title": "Zálohy",
+    "viewJobs": "Úlohy",
+    "viewRepos": "Úložiská",
+    "viewHistory": "História"
+  },
+  "hostTab": {
+    "title": "Zálohy",
+    "noHost": "Otvorte zálohy z hostiteľa.",
+    "viewJobs": "Úlohy",
+    "viewSnapshots": "Snímky",
+    "viewHistory": "História",
+    "restic": "restic {{version}}",
+    "noRestic": "restic nie je nainštalovaný",
+    "sudo": "Termix sa musí prihlásiť ako root alebo ako používateľ s bezheselným sudo, aby mohol spúšťať zálohy na tomto hostiteľovi.",
+    "statusFailed": "Nepodarilo sa prečítať tento hostiteľ"
+  },
+  "install": {
+    "missing": "restic nie je na tomto hostiteľovi nainštalovaný",
+    "tooOld": "Verzia restic na tomto hostiteľovi je staršia ako 0.17",
+    "hint": "Zálohy používajú restic. Nainštalujte ho cez balíčkový manažér alebo z vydania na GitHub, ak je balík príliš starý.",
+    "button": "Nainštalovať restic",
+    "working": "Inštalácia...",
+    "title": "Nainštalovať restic?",
+    "desc": "Tým sa nainštaluje restic na hostiteľský server ako root.",
+    "confirm": "Nainštalovať",
+    "done": "restic {{version}} je nainštalovaný",
+    "failed": "Nepodarilo sa nainštalovať restic"
+  },
+  "status": {
+    "never": "Nikdy spustené",
+    "running": "Beží",
+    "success": "Hotovo",
+    "warning": "Varovania",
+    "failed": "Zlyhalo",
+    "canceled": "Zastavené"
+  },
+  "time": {
+    "justNow": "práve teraz",
+    "soon": "za chvíľu",
+    "ago": {
+      "minutes_one": "pred {{count}} minútou",
+      "minutes_few": "pred {{count}} minútami",
+      "minutes_many": "pred {{count}} minútami",
+      "minutes_other": "pred {{count}} minútami",
+      "hours_one": "pred {{count}} hodinou",
+      "hours_few": "pred {{count}} hodinami",
+      "hours_many": "pred {{count}} hodinami",
+      "hours_other": "pred {{count}} hodinami",
+      "days_one": "pred {{count}} dňom",
+      "days_few": "pred {{count}} dňami",
+      "days_many": "pred {{count}} dňami",
+      "days_other": "pred {{count}} dňami"
+    },
+    "in": {
+      "minutes_one": "za {{count}} minútu",
+      "minutes_few": "za {{count}} minúty",
+      "minutes_many": "za {{count}} minút",
+      "minutes_other": "za {{count}} minúty",
+      "hours_one": "za {{count}} hodinu",
+      "hours_few": "za {{count}} hodiny",
+      "hours_many": "za {{count}} hodín",
+      "hours_other": "za {{count}} hodiny",
+      "days_one": "za {{count}} deň",
+      "days_few": "za {{count}} dni",
+      "days_many": "za {{count}} dní",
+      "days_other": "za {{count}} dni"
+    }
+  },
+  "jobs": {
+    "add": "Pridať úlohu",
+    "empty": "Zatiaľ žiadne úlohy zálohovania",
+    "emptyHint": "Pridajte úlohu na zálohovanie priečinkov, databáz alebo dát Dockeru.",
+    "emptyNoRepo": "Najprv pridajte repozitár, aby mali zálohy kam uložiť.",
+    "loadFailed": "Nepodarilo sa načítať úlohy zálohovania",
+    "lastGood": "Posledná záloha {{when}}",
+    "noGood": "Zatiaľ žiadna záloha",
+    "next": "Ďalšia {{when}}",
+    "paused": "Pozastavené",
+    "run": "Spustiť teraz",
+    "stop": "Zastaviť",
+    "edit": "Upraviť",
+    "snapshots": "Snímky",
+    "started": "{{name}} spustené",
+    "runFailed": "Zálohu sa nepodarilo spustiť"
+  },
+  "editor": {
+    "newTitle": "Nová úloha zálohy",
+    "general": "Úloha",
+    "host": "Hostiteľ",
+    "pickHost": "Vyberte hostiteľa",
+    "name": "Názov",
+    "namePlaceholder": "Nočná záloha",
+    "repository": "Úložisko",
+    "pickRepository": "Vyberte úložisko",
+    "noRepos": "Tento hostiteľ nemá k dispozícii žiadne úložisko. Najprv si pridajte jedno na karte Zálohy.",
+    "repoLocked": "Zmeniť ho môže iba vlastník tohto úložiska.",
+    "enabled": "Spúšťať podľa plánu",
+    "enabledHint": "Vypnutím pozastavíte plán. Ručné spustenie bude stále fungovať.",
+    "oneFileSystem": "Zostať v rámci jedného súborového systému",
+    "oneFileSystemHint": "Preskočiť ostatné disky a pripojenia nájdené vo vybraných priečinkoch.",
+    "saved": "Úloha uložená",
+    "saveFailed": "Úlohu sa nepodarilo uložiť",
+    "deleteTitle": "Odstrániť {{name}}?",
+    "deleteDesc": "Úloha sa odstráni z Termixu. Jej snímky zostanú v úložisku.",
+    "deleted": "Úloha odstránená",
+    "deleteFailed": "Úlohu sa nepodarilo odstrániť"
+  },
+  "sources": {
+    "add": "Pridať do zálohy",
+    "addPaths": "Priečinky",
+    "addDatabase": "Databáza",
+    "addDocker": "Docker",
+    "remove": "Odstrániť",
+    "paths": "Priečinky a súbory",
+    "folders": "Cesty",
+    "foldersHint": "Jedna úplná cesta na riadok.",
+    "excludes": "Preskočiť",
+    "excludesHint": "Jeden vzor restic na riadok, napr. *.log.",
+    "database": "Databáza",
+    "engine": "Typ",
+    "engines": {
+      "mysql": "MySQL alebo MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Prihlásenie",
+    "ownLogin": "Zadajte prihlasovacie údaje",
+    "noDatabasesPlugin": "Pre výber uloženého prihlásenia zapnite plugin Databázy.",
+    "address": "Adresa",
+    "addressPlaceholder": "Prázdne pre lokálny socket",
+    "port": "Port",
+    "username": "Používateľ",
+    "password": "Heslo",
+    "passwordSaved": "Uložené, nechajte prázdne pre zachovanie",
+    "runAs": "Spustiť ako",
+    "runAsHint": "Linuxový používateľ, pod ktorým sa dump spustí, napr. postgres. Ak je prázdne, spustí sa ako root.",
+    "databases": "Databázy",
+    "databasesHint": "Jedno meno na riadok. Nechajte prázdne pre zálohu všetkých.",
+    "sqliteFiles": "Súbory databázy",
+    "sqliteFilesHint": "Jedna úplná cesta na riadok. Každý súbor sa bezpečne skopíruje aj počas používania.",
+    "docker": "Docker",
+    "stacks": "Stohy",
+    "volumes": "Zväzky",
+    "noStacks": "Nenašli sa žiadne compose stohy",
+    "noVolumes": "Nenašli sa žiadne zväzky",
+    "dockerFailed": "Na tomto hostiteľovi sa nepodarilo zobraziť Docker",
+    "stop": "Zastaviť zásobníky počas zálohy",
+    "stopHint": "Vybrané zásobníky sa najprv zastavia a po zálohe sa znova spustia, aby sa ich súbory nemenili počas čítania."
+  },
+  "schedule": {
+    "title": "Rozvrh",
+    "manual": "Manuálne",
+    "daily": "Denný",
+    "weekly": "Týždenný",
+    "custom": "Vlastný",
+    "day": "Deň",
+    "time": "Čas",
+    "cron": "Cron",
+    "cronHint": "Minúta, hodina, deň v mesiaci, mesiac, deň v týždni.",
+    "cronInvalid": "Tento cron nie je platný",
+    "timezone": "Časové pásmo",
+    "serverTime": "Čas servera",
+    "manualHint": "Tento úloha sa spustí len po kliknutí na Spustiť teraz.",
+    "manualOnly": "Manuálne",
+    "next": "Ďalší spustenie {{time}}",
+    "noNext": "Tento rozvrh sa nikdy nespustí",
+    "dailyAt": "Denne o {{time}}",
+    "weeklyAt": "{{day}} o {{time}}",
+    "days": {
+      "0": "Nedeľa",
+      "1": "Pondelok",
+      "2": "Utorok",
+      "3": "Streda",
+      "4": "Štvrtok",
+      "5": "Piatok",
+      "6": "Sobota"
+    }
+  },
+  "keep": {
+    "title": "Zachovať",
+    "last": "Posledné",
+    "daily": "Denné",
+    "weekly": "Týždenné",
+    "monthly": "Mesačné",
+    "yearly": "Ročné",
+    "hint": "Po každej zálohe sa staršie snímky tejto úlohy odstránia, takže sa zachovajú len tieto. Hodnota 0 zachová všetko."
+  },
+  "hooks": {
+    "title": "Príkazy",
+    "pre": "Pred",
+    "preHint": "Spustí sa ako root pred zálohou. Ak zlyhá, záloha sa zastaví.",
+    "post": "Po",
+    "postHint": "Spustí sa ako root po zálohe, aj keď zlyhala. TERMIX_BACKUP_STATUS obsahuje výsledok."
+  },
+  "alerts": {
+    "title": "Upozornenia",
+    "onFailure": "Upozorniť pri zlyhaní zálohy",
+    "onFailureHint": "Upozorní aj na varovania a raz, keď opäť funguje.",
+    "staleDays": "Dni bez zálohy",
+    "staleDaysHint": "Upozorniť, ak sa nepodarila žiadna záloha po dobu tohto počtu dní. Hodnota 0 túto funkciu vypne."
+  },
+  "repos": {
+    "add": "Pridať úložisko",
+    "empty": "Zatiaľ žiadne úložiská",
+    "emptyHint": "Úložisko je miesto, kde sa zálohy ukladajú, napríklad S3 bucket alebo priečinok.",
+    "loadFailed": "Nepodarilo sa načítať úložiská",
+    "jobCount_one": "{{count}} úloha",
+    "jobCount_few": "{{count}} úlohy",
+    "jobCount_many": "{{count}} úloh",
+    "jobCount_other": "{{count}} úloh",
+    "newTitle": "Nové úložisko",
+    "storage": "Úložisko",
+    "name": "Názov",
+    "namePlaceholder": "Offsite S3",
+    "kind": "Typ",
+    "kinds": {
+      "s3": "Kompatibilné s S3",
+      "rest": "REST server",
+      "rclone": "rclone",
+      "local": "Priečinok na hostiteľovi"
+    },
+    "endpoint": "Koncový bod",
+    "endpointHint": "Pre AWS nechajte prázdne. Pre MinIO, R2, B2 alebo Wasabi zadajte ich S3 adresu.",
+    "region": "Región",
+    "bucket": "Bucket",
+    "prefix": "Priečinok v buckete",
+    "prefixHint": "Voliteľné.",
+    "accessKeyId": "ID prístupového kľúča",
+    "secretKey": "Tajný prístupový kľúč",
+    "secretSaved": "Uložené, nechajte prázdne pre zachovanie",
+    "url": "Adresa servera",
+    "username": "Používateľ",
+    "usernameHint": "Prázdne, ak server nemá prihlasovanie.",
+    "restPassword": "Heslo",
+    "remote": "Názov vzdialeného úložiska",
+    "remoteHint": "Len písmená, číslice a _.",
+    "path": "Cesta",
+    "rcloneConfig": "Konfigurácia rclone",
+    "rcloneHint": "Riadky vzdialeného úložiska z rclone.conf. Spustite rclone config na svojom počítači pre ich vytvorenie. rclone musí byť nainštalovaný na hostoch.",
+    "rcloneSaved": "Uložené, nechajte prázdne pre zachovanie",
+    "host": "Host",
+    "pickHost": "Vyberte hosta",
+    "folder": "Priečinok",
+    "folderHint": "Použiť ho môžu len úlohy na tomto hostovi. Najlepšie je pripojený disk.",
+    "password": "Šifrovanie",
+    "resticPassword": "Heslo úložiska",
+    "passwordHint": "Nechajte prázdne a Termix vygeneruje silné heslo. Uchovajte kópiu na bezpečnom mieste: bez neho sa zálohy nedajú čítať.",
+    "passwordKeep": "Uložené, nechajte prázdne pre zachovanie",
+    "passwordChangeHint": "Toto mení len heslo, ktoré posiela Termix. Nemení heslo existujúceho úložiska.",
+    "reveal": "Zobraziť heslo",
+    "revealTitle": "Zobraziť heslo úložiska?",
+    "revealDesc": "Ktokoľvek, kto má toto heslo a kľúče úložiska, môže čítať všetky zálohy v tomto úložisku. Toto sa zapíše do auditného logu.",
+    "revealFailed": "Nepodarilo sa prečítať heslo",
+    "copy": "Kopírovať",
+    "copied": "Skopírované",
+    "check": "Skontrolovať",
+    "checkFrom": "Skontrolovať z",
+    "checkFromHint": "Host, ktorý otvorí úložisko. Potrebujete restic.",
+    "checkButton": "Skontrolovať",
+    "initButton": "Skontrolovať a nastaviť",
+    "installRclone": "Nainštalovať rclone na tomto hostovi",
+    "rcloneInstalled": "rclone {{version}} je nainštalovaný.",
+    "rcloneFailed": "Nepodarilo sa nainštalovať rclone",
+    "checking": "Kontrolujem...",
+    "opened": "Úložisko sa otvorilo správne.",
+    "created": "Úložisko bolo nastavené a je pripravené.",
+    "checkFailed": "Nepodarilo sa otvoriť úložisko",
+    "checkNext": "Uložené. Skontrolujte ho z hosta pre nastavenie.",
+    "saved": "Úložisko uložené",
+    "saveFailed": "Nepodarilo sa uložiť úložisko",
+    "deleteTitle": "Odstrániť {{name}}?",
+    "deleteDesc": "Odstráni sa len z Termixu. Zálohy zostanú v úložisku.",
+    "deleted": "Úložisko odstránené",
+    "deleteFailed": "Nepodarilo sa odstrániť úložisko"
+  },
+  "snapshots": {
+    "noJobs": "Najprv pridajte zálohovaciu úlohu.",
+    "job": "Úloha",
+    "titleFor": "Snapshoty {{name}}",
+    "empty": "Zatiaľ žiadne snapshoty",
+    "loadFailed": "Nepodarilo sa prečítať snapshoty",
+    "latest": "Najnovší",
+    "files_one": "{{count}} súbor",
+    "files_few": "{{count}} súbory",
+    "files_many": "{{count}} súborov",
+    "files_other": "{{count}} súborov",
+    "browse": "Prezerať",
+    "delete": "Odstrániť",
+    "deleteTitle": "Odstrániť tento snímok?",
+    "deleteDesc": "Snímok z {{time}} bude trvalo odstránený z repozitára.",
+    "deleted": "Snímok bol odstránený",
+    "deleteFailed": "Nepodarilo sa odstrániť snímok",
+    "browseTitle": "Snímok {{time}}",
+    "root": "Koreň",
+    "emptyFolder": "Tento priečinok je prázdny",
+    "filesFailed": "Nepodarilo sa zobraziť tento priečinok",
+    "pick": "Vybrať",
+    "download": "Stiahnuť",
+    "downloadZip": "Stiahnuť ako zip",
+    "downloadFailed": "Nepodarilo sa stiahnuť",
+    "restoreAll": "Obnoviť všetko",
+    "restorePicked_one": "Obnoviť {{count}} položku",
+    "restorePicked_few": "Obnoviť {{count}} položky",
+    "restorePicked_many": "Obnoviť {{count}} položiek",
+    "restorePicked_other": "Obnoviť {{count}} položiek"
+  },
+  "restore": {
+    "title": "Obnoviť",
+    "what": "Čo",
+    "everything": "Všetko zo snímku.",
+    "more_one": "a {{count}} ďalší",
+    "more_few": "a {{count}} ďalšie",
+    "more_many": "a {{count}} ďalších",
+    "more_other": "a {{count}} ďalších",
+    "where": "Kam",
+    "host": "Hostiteľ",
+    "hostHint": "Akýkoľvek hostiteľ, ktorý môžete upravovať a ktorý má prístup k repozitáru.",
+    "localOnly": "Tento repozitár je priečinok na hostiteľovi, takže ho možno obnoviť len tam.",
+    "toFolder": "Do priečinka",
+    "toOriginal": "Tam, kde to bolo",
+    "folder": "Priečinok",
+    "folderHint": "Súbory si zachovajú svoju úplnú cestu v rámci tohto priečinka.",
+    "originalWarning": "Súbory sa zapíšu späť na pôvodné miesto a môžu nahradiť aktuálne súbory.",
+    "overwrite": "Súbory, ktoré už existujú",
+    "overwriteOptions": {
+      "if-changed": "Nahradiť pri zmene",
+      "always": "Vždy nahradiť",
+      "if-newer": "Nahradiť, ak je záloha novšia",
+      "never": "Nikdy nenahradiť"
+    },
+    "start": "Obnoviť",
+    "started": "Obnova bola spustená",
+    "failed": "Nepodarilo sa spustiť obnovu"
+  },
+  "run": {
+    "title": "Spustiť",
+    "backupTitle": "Záloha {{name}}",
+    "restoreTitle": "Obnova {{name}}",
+    "loadFailed": "Nepodarilo sa načítať beh",
+    "progress": "Priebeh",
+    "preparing": "Príprava...",
+    "progressLine": "{{percent}}% | {{files}} z {{totalFiles}} súborov | {{bytes}} z {{totalBytes}}",
+    "left": "Zostáva {{time}}",
+    "details": "Podrobnosti",
+    "started": "Spustené",
+    "finished": "Dokončené",
+    "trigger": "Spustené",
+    "triggers": {
+      "manual": "Spustiť teraz",
+      "schedule": "Rozvrh",
+      "operation": "Akcia Termix"
+    },
+    "snapshot": "Snímok",
+    "target": "Obnovené do",
+    "files": "Súbory",
+    "filesLine": "{{total}} súborov, {{added}} nových, {{changed}} zmenených",
+    "size": "Veľkosť",
+    "added": "Pridané do repozitára",
+    "took": "Trvalo",
+    "log": "Protokol",
+    "noLog": "Zatiaľ žiadny protokol.",
+    "stopTitle": "Zastaviť tento beh?",
+    "stopDesc": "Zastavená záloha nevytvorí žiadny snapshot. Zastavená obnova ponechá súbory, ktoré boli doteraz obnovené.",
+    "stopSent": "Zastavuje sa",
+    "stopFailed": "Spustenie sa nepodarilo zastaviť"
+  },
+  "history": {
+    "empty": "Zatiaľ sa nič nespustilo",
+    "loadFailed": "Históriu sa nepodarilo načítať",
+    "status": "Stav",
+    "job": "Úloha",
+    "host": "Hostiteľ",
+    "kind": "Typ",
+    "kinds": {
+      "backup": "Záloha",
+      "restore": "Obnova"
+    },
+    "started": "Spustené",
+    "took": "Trvalo",
+    "size": "Veľkosť"
+  },
+  "card": {
+    "title": "Zálohy",
+    "all": "Všetky záložné úlohy",
+    "oneJob": "Jedna záložná úloha",
+    "empty": "Zatiaľ žiadne záložné úlohy.",
+    "gone": "Táto záložná úloha bola odstránená.",
+    "open": "Otvoriť"
+  },
+  "operations": {
+    "list": {
+      "title": "Zoznam záložných úloh"
+    },
+    "failed": {
+      "title": "Nepodarilo sa zálohovať"
+    },
+    "run": {
+      "title": "Spustiť zálohu"
+    },
+    "cancel": {
+      "title": "Zastaviť zálohu"
+    },
+    "snapshots": {
+      "title": "Zoznam snapshotov"
+    },
+    "events": {
+      "finished": "Záloha dokončená",
+      "failed": "Záloha zlyhala"
+    },
+    "jobs": {
+      "title": "Záložné úlohy",
+      "lastSuccess": "Posledná záloha",
+      "nextRun": "Ďalšie spustenie",
+      "size": "Veľkosť"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Zobraziť panel záloh v termináloch",
+        "description": "Nechajte panel záloh otvorený vedľa SSH terminálu tohto hostiteľa."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otvoriť panel záloh s novými terminálmi",
+        "description": "Zobraziť panel záloh vedľa každého SSH terminálu, ktorý má túto funkciu zapnutú. Stále ho môžete otvárať a zatvárať pomocou tlačidla na pravom okraji."
+      },
+      "companionSide": {
+        "label": "Poloha panela záloh",
+        "description": "Kde sa nachádza panel záloh vedľa terminálu.",
+        "right": "Vpravo",
+        "left": "Vľavo",
+        "bottom": "Dole"
+      },
+      "companionSize": {
+        "label": "Veľkosť panela záloh",
+        "description": "Šírka v pixeloch, alebo výška, keď je umiestnený dole. Môžete tiež presúvať jeho okraj."
+      },
+      "companionEdgeButton": {
+        "label": "Zobraziť tlačidlo panela",
+        "description": "Zobraziť malé tlačidlo na pravom okraji terminálu, ktoré otvorí panel záloh."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Prepnúť panel záloh"
+  }
+}

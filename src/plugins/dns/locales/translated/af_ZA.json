@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Bestuur DNS-rekords en domeine oor Cloudflare, Route 53, Namecheap en ander verskaffers."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domeine",
+    "loading": "Laai",
+    "empty": "Nog geen domeine nie. Maak DNS oop om 'n aanmelding by te voeg.",
+    "ok": "{{domains}} domeine, geen verval spoedig nie",
+    "accounts": "{{count}} aanmeldings",
+    "failingLinks": "{{count}} gekoppelde rekords misluk"
+  },
+  "permissions": {
+    "view": {
+      "title": "Sien DNS",
+      "description": "Maak die DNS-oortjie oop en sien sones, rekords, domeine en gesondheidskontroles."
+    },
+    "edit": {
+      "title": "Verander DNS-rekords",
+      "description": "Voeg rekords by, verander en verwyder hulle, voer sone-lêers in en verfris domeine."
+    },
+    "manage": {
+      "title": "Bestuur DNS-aanmeldings",
+      "description": "Voeg verskaffer-aanmeldings by, koppel rekords aan gasheer, monitor domeine en herstel sone-kopieë."
+    }
+  },
+  "operations": {
+    "zone": "Sone",
+    "type": "Tipe",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Naam",
+    "content": "Waarde",
+    "contentOptional": "Waarde (laat leeg om enige te pas)",
+    "ttl": "TTL in sekondes",
+    "label": "Etiket",
+    "zones": {
+      "title": "Lys DNS-sones"
+    },
+    "records": {
+      "title": "Lys DNS-rekords"
+    },
+    "domains": {
+      "title": "Lys domeine en vervaldatums"
+    },
+    "check": {
+      "title": "Kontroleer 'n sone"
+    },
+    "upsert": {
+      "title": "Stel 'n DNS-rekord"
+    },
+    "delete": {
+      "title": "Verwyder 'n DNS-rekord"
+    },
+    "snapshot": {
+      "title": "Stoor 'n kopie van 'n sone"
+    },
+    "links": {
+      "title": "Dateer gekoppelde rekords op"
+    },
+    "expiry": {
+      "title": "Domeinverval"
+    }
+  },
+  "description": "Voeg jou DNS- en registrar-aanmeldings by om rekords te bestuur en domeine op een plek te monitor. Sleutels word versleutel gestoor en nooit weer vertoon nie.",
+  "summary": "{{zones}} sones, {{domains}} domeine",
+  "saved": "Stoor",
+  "delete": "Verwyder",
+  "edit": "Wysig",
+  "back": "Terug",
+  "refresh": "Verfris",
+  "section": {
+    "zones": "Sones",
+    "domains": "Domeine",
+    "links": "Skakels",
+    "accounts": "Aanmeldings"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "API-token",
+    "accessKeyId": "Toegangssleutel-ID",
+    "secretAccessKey": "Geheime toegangssleutel",
+    "sessionToken": "Sessie-token (opsioneel)",
+    "apiUser": "API-gebruiker",
+    "apiKey": "API-sleutel",
+    "userName": "Gebruikersnaam (as dit verskil van die API-gebruiker)",
+    "clientIp": "Toegelaat IP-adres",
+    "apiSecret": "API-geheim",
+    "environment": "Omgewing",
+    "environment_production": "Produksie",
+    "environment_ote": "Toets (OTE)",
+    "secretApiKey": "Geheime API-sleutel",
+    "token": "Persoonlike toegangsteken"
+  },
+  "zones": {
+    "empty": "Nog geen sones nie.",
+    "emptyHint": "Voeg 'n verskaffer-inlog by in Inlogge om sy sones te sien."
+  },
+  "zone": {
+    "records": "Rekorde",
+    "health": "Gesondheid",
+    "copies": "Kopieë",
+    "files": "Lêers",
+    "filter": "Filter rekords",
+    "empty": "Geen rekords nie."
+  },
+  "record": {
+    "section": "Rekord",
+    "addTitle": "Voeg rekord by",
+    "editTitle": "Wysig rekord",
+    "add": "Voeg rekord by",
+    "save": "Stoor",
+    "type": "Tipe",
+    "name": "Naam",
+    "nameHint": "Gebruik @ vir {{zone}} self",
+    "value": "Waarde",
+    "priority": "Prioriteit",
+    "ttl": "TTL (sekondes)",
+    "ttlHint": "Hoe lank oploskers die antwoord hou. 300 is 5 minute.",
+    "ttlAuto": "1 beteken outomaties.",
+    "proxied": "Geprokseer",
+    "proxiedHint": "Stuur verkeer deur Cloudflare.",
+    "proxiedBadge": "Geprokseer",
+    "comment": "Nota",
+    "readOnly": "Bestuur deur die verskaffer",
+    "deleteConfirm": "Vee die {{type}} rekord {{name}} uit?"
+  },
+  "account": {
+    "add": "Voeg inlog by",
+    "addTitle": "Voeg DNS-inlog by",
+    "editTitle": "Wysig DNS-inlog",
+    "save": "Stoor",
+    "login": "Inlog",
+    "provider": "Verskaffer",
+    "name": "Naam",
+    "namePlaceholder": "Hoof Cloudflare",
+    "keep": "Laat leeg om die gestoorde waarde te behou",
+    "registrar": "Hierdie verskaffer is ook 'n registrar, so sy domeine verskyn in Domeine.",
+    "options": "Opsies",
+    "autoBackup": "Hou kopieë van sones",
+    "autoBackupHint": "Stoor 'n kopie voor elke verandering en wanneer 'n son buite Termix verander.",
+    "checkHealth": "Kontroleer sones elke dag",
+    "checkHealthHint": "Voer die gesondheidskontroles daagliks uit en waarsku oor nuwe probleme.",
+    "test": "Toets",
+    "testOk": "Werk. Het {{zones}} sones en {{domains}} domeine gevind.",
+    "deleteConfirm": "Vee {{name}} uit? Sy kopieë en skakels gaan saam. Niks verander by die verskaffer nie.",
+    "empty": "Nog geen inlogge nie.",
+    "emptyHint": "Voeg 'n Cloudflare, Route 53, Namecheap of ander inlog by om te begin.",
+    "lastSync": "Laas gecontroleer {{date}}",
+    "never": "Nog nie gecontroleer nie",
+    "failed": "Die inlog het misluk"
+  },
+  "domains": {
+    "empty": "Nog geen domeine nie.",
+    "emptyHint": "Registrar-inlogge lys hul domeine hier. Jy kan ook enige domein by naam monitor.",
+    "watchPlaceholder": "example.com",
+    "watch": "Monitor domein",
+    "unwatch": "Stop monitor",
+    "watched": "Gemonitor",
+    "noRenew": "Outomatiese hernieuwing af",
+    "unlocked": "Nie vasgemaak nie",
+    "unknown": "Registrars onbekend",
+    "expires": "Verval op {{date}}",
+    "expired": "Verstryk",
+    "days": "{{count}} dae oor",
+    "refreshFailed": "{{count}} opsoekings het misluk"
+  },
+  "link": {
+    "add": "Voeg skakel by",
+    "addTitle": "Voeg skakel by",
+    "editTitle": "Wysig skakel",
+    "save": "Stoor",
+    "record": "Rekord",
+    "address": "Adres",
+    "zone": "Sone",
+    "pickZone": "Kies 'n sone",
+    "source": "Wys dit na",
+    "sourceHost": "'n Gasheer",
+    "sourcePublic4": "Hierdie bediener se openbare IPv4-adres",
+    "sourcePublic6": "Hierdie bediener se openbare IPv6-adres",
+    "source_host": "Gasheer",
+    "source_public4": "Openbare IPv4",
+    "source_public6": "Openbare IPv6",
+    "host": "Gasheer",
+    "pickHost": "Kies 'n gasheer",
+    "hostHint": "Die rekord volg die gasheer se adres. Dit word opgedateer wanneer die gasheer verander.",
+    "publicHint": "Termix soek sy openbare adres op en hou die rekord op datum, soos dinamiese DNS.",
+    "enabled": "Hou hierdie rekord opgedateer",
+    "empty": "Nog geen skakels nie.",
+    "emptyHint": "'n Skakel hou 'n rekord wat na 'n gasheer of na hierdie bediener se openbare adres wys.",
+    "off": "Af",
+    "hostGone": "Gasheer nie gevind nie",
+    "lastSync": "Gekontroleer op {{date}}",
+    "never": "Nog nie gecontroleer nie",
+    "syncNow": "Dateer nou op",
+    "updated": "Die rekord is opgedateer",
+    "unchanged": "Die rekord was reeds korrek",
+    "deleteConfirm": "Verwyder die skakel vir {{name}}? Die rekord bly waar dit is."
+  },
+  "diff": {
+    "none": "Niets sal verander nie.",
+    "add": "Voeg by",
+    "change": "Verander",
+    "remove": "Verwyder"
+  },
+  "copies": {
+    "hint": "Kopieë word voor elke verandering en een keer per dag gestoor wanneer 'n sone buite Termix verander is.",
+    "save": "Stoor kopie",
+    "saved": "Kopie gestoor",
+    "manualLabel": "Handmatige kopie",
+    "empty": "Nog geen kopieë nie.",
+    "count": "{{count}} rekords",
+    "compare": "Vergelyk met nou",
+    "restore": "Herstel",
+    "restoreConfirm": "Herstel hierdie kopie? {{count}} veranderinge sal by die verskaffer gemaak word. 'n Kopie van die huidige rekords word eers gestoor.",
+    "restored": "Herstel. {{count}} veranderinge gemaak.",
+    "source": {
+      "manual": "Handmatig",
+      "auto": "Daagliks",
+      "before": "Voor verandering"
+    }
+  },
+  "files": {
+    "export": "Laai soneleer af",
+    "exportHint": "Laai die rekords af as 'n BIND-soneler.",
+    "import": "Voer 'n sone-lêer in",
+    "placeholder": "Plak 'n BIND-sonelêer hier",
+    "replace": "Verwyder rekords wat nie in die lêer is nie",
+    "replaceHint": "Af, die invoeging voeg slegs rekords by en verander hulle.",
+    "preview": "Voorskou",
+    "apply": "Pas toe",
+    "applied": "Ingevoer. {{count}} veranderinge gemaak.",
+    "skipped": "Oorgeslaan:"
+  },
+  "health": {
+    "run": "Voer kontroles uit",
+    "running": "Besig om uit te voer",
+    "propagation": "Kontroleer oplosse",
+    "propagationTitle": "Openbare oplosse",
+    "lastRun": "Laaste keer uitgevoer {{date}}",
+    "empty": "Geen kontroles is nog vir hierdie sone uitgevoer nie.",
+    "record": "Rekord",
+    "resolver": "Oplosser",
+    "answer": "Antwoord",
+    "noAnswer": "Geen antwoord nie",
+    "delegation": {
+      "error": "Die naambedieners kon nie opgespoor word nie.",
+      "none": "Die sone het geen naambedieners op die internet nie. Die domein dui dalk nie na hierdie verskaffer nie.",
+      "mismatch": "Die domein gebruik ander naambedieners as die verskaffer: {{found}}.",
+      "ok": "Die domein dui na {{count}} naambedieners."
+    },
+    "soa": {
+      "differ": "Die naambedieners is nie eens oor die sone-weergawe nie ({{count}} weergawes). 'n Verandering versprei dalk nog.",
+      "same": "{{count}} naambedieners is eens oor die sone-weergawe."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC kon nie gecontroleer word nie.",
+      "off": "DNSSEC is nie aangeskakel nie.",
+      "valid": "DNSSEC is aan en geldig.",
+      "broken": "DNSSEC is by die registrar ingestel, maar valideer nie. Oplosse wat dit kontroleer, sal misluk."
+    },
+    "cname": {
+      "conflict": "{{name}} het 'n CNAME en ander rekords. Dit is nie toegelaat nie.",
+      "apex": "Die sone-wortel kan nie 'n CNAME wees nie.",
+      "dangling": "{{name}} dui na {{target}}, wat nie oplos nie.",
+      "ok": "Elke CNAME-teiken oplos."
+    },
+    "spf": {
+      "missing": "Die domein ontvang e-pos, maar het geen SPF-rekord nie.",
+      "multiple": "Daar is meer as een SPF-rekord. E-posbedieners sal almal verwerp.",
+      "lookups": "Die SPF-rekord maak {{count}} opsoekte. Die limiet is 10.",
+      "ok": "SPF is ingestel ({{count}} opsoekte)."
+    },
+    "dmarc": {
+      "missing": "Daar is geen DMARC-rekord nie.",
+      "none": "DMARC is slegs vir monitering ingestel.",
+      "ok": "DMARC is ingestel."
+    },
+    "dkim": {
+      "none": "Geen DKIM-sleutels is in hierdie sone gevind nie.",
+      "found": "{{count}} DKIM-sleutels gevind."
+    },
+    "mx": {
+      "unresolved": "Die e-posbediener {{host}} oplos nie."
+    },
+    "mail": {
+      "none": "Die domein het geen e-posrekords nie."
+    },
+    "caa": {
+      "ok": "CAA-rekords beperk wie sertifikate kan uitreik.",
+      "none": "Daar is geen CAA-rekords nie. Enige sertifikaatowerheid kan sertifikate uitreik."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domeine, domeine wat verval en rekords wat misluk.",
+    "domains": "Domeine",
+    "expiring": "Verval binnekort",
+    "failingLinks": "Mislukkende skakels",
+    "failingAccounts": "Mislukkende aanmeldings"
+  }
+}

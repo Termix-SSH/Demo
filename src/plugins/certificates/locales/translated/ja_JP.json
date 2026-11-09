@@ -1,0 +1,233 @@
+{
+  "plugin": {
+    "name": "証明書",
+    "description": "certbot および acme.sh を使用して、ホスト上の TLS 証明書を表示、発行、更新し、期限切れ前にアラートを受け取ります。"
+  },
+  "common": {
+    "cancel": "キャンセル",
+    "back": "戻る"
+  },
+  "permissions": {
+    "use": {
+      "title": "証明書の使用",
+      "description": "アクセス可能なホスト上の証明書を表示し、編集可能なホスト上の証明書を変更します。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "証明書",
+        "description": "証明書タブから、このホスト上の TLS 証明書を管理します。"
+      },
+      "useSudo": {
+        "label": "sudo を使用する",
+        "description": "証明書の読み取りと変更のために sudo を使用します。ログインユーザーが root の場合はオフにしてください。"
+      },
+      "readOnly": {
+        "label": "読み取り専用",
+        "description": "このホストでは証明書の表示のみを行い、変更は行いません。"
+      },
+      "expiryWarnDays": {
+        "label": "期限切れ前に警告",
+        "description": "残り日数がこの日数以下の証明書は、期限切れとして表示され、アラートを送信します。"
+      },
+      "showPanel": {
+        "label": "ターミナルに証明書パネルを表示",
+        "description": "このホストの SSH ターミナルの横に証明書パネルを開くことを許可します。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "新しいターミナルで証明書パネルを開く",
+        "description": "証明書が有効なすべての SSH ターミナルの横に証明書パネルを表示します。右端のボタンからいつでも開閉できます。"
+      },
+      "companionSide": {
+        "label": "証明書パネルの位置",
+        "description": "ターミナルの横に証明書パネルを表示する位置です。",
+        "right": "右",
+        "left": "左",
+        "bottom": "下"
+      },
+      "companionSize": {
+        "label": "証明書パネルのサイズ",
+        "description": "ピクセル単位の幅、または下部に配置する場合の高さです。端をドラッグして調整することもできます。"
+      },
+      "companionEdgeButton": {
+        "label": "パネルボタンを表示",
+        "description": "ターミナルの右端に、証明書パネルを開く小さなボタンを表示します。"
+      }
+    }
+  },
+  "tab": {
+    "title": "証明書",
+    "noHost": "ホストから証明書を開いてください。",
+    "error": "このホストから証明書をロードできませんでした。",
+    "disabled": "このホストでは証明書が無効になっています。ホスト設定で有効にしてください。",
+    "sudo": "変更には、root ログイン、パスワード不要の sudo、またはこのホストに保存された Sudo パスワードが必要です。",
+    "refresh": "更新",
+    "readOnly": "読み取り専用",
+    "noClient": "certbot または acme.sh がインストールされていません",
+    "viewCertificates": "証明書",
+    "viewInspect": "詳細",
+    "viewRenewal": "更新"
+  },
+  "actions": {
+    "working": "処理中。数分かかる場合があります。",
+    "ok": "完了",
+    "failed": "コマンドが失敗しました。",
+    "noOutput": "出力がありません。"
+  },
+  "install": {
+    "title": "このホストには certbot および acme.sh がインストールされていません",
+    "hint": "Let's Encrypt から証明書の取得と更新を行うには、certbot をインストールしてください。",
+    "noManager": "サポートされているパッケージマネージャーが見つかりませんでした。certbot を手動でインストールしてください。",
+    "button": "certbot をインストール",
+    "confirm": "certbot をインストールしますか？",
+    "desc": "ホストのパッケージマネージャーを使用して certbot をインストールします。",
+    "working": "インストール中...",
+    "done": "certbot がインストールされました。"
+  },
+  "certs": {
+    "search": "証明書を検索",
+    "empty": "証明書はまだありません。",
+    "noMatch": "一致する証明書がありません。",
+    "loadFailed": "証明書を読み取れませんでした。",
+    "expires": "{{date}} に期限切れ",
+    "staging": "ステージング",
+    "details": "証明書",
+    "manage": "管理",
+    "client": "クライアント",
+    "path": "ファイル",
+    "authority": "認証局",
+    "renew": "更新",
+    "renewDone": "{{name}} を更新しました。",
+    "renewAll": "すべて更新",
+    "renewAllDone": "期限切れの証明書を更新しました。",
+    "forceRenew": "今すぐ更新する",
+    "dryRun": "テスト実行",
+    "dryRunDone": "テスト実行が成功しました。",
+    "revoke": "失効",
+    "revokeTitle": "{{name}} を失効しますか？",
+    "revokeDesc": "認証局が無効としてマークし、このホストから削除されます。これを使用しているサービスはすべて停止します。",
+    "revokeDone": "{{name}} を失効しました。",
+    "delete": "管理を停止",
+    "deleteTitle": "{{name}} の管理を停止しますか？",
+    "deleteDesc": "証明書は有効なままですが、これ以上更新されません。certbot はファイルを削除しますが、acme.sh は保持します。",
+    "deleteDone": "{{name}} の管理は停止されました。"
+  },
+  "expiry": {
+    "expired": "期限切れ",
+    "unknown": "不明",
+    "days_other": "{{count}} 日残っています"
+  },
+  "issue": {
+    "add": "証明書の発行",
+    "title": "新しい証明書",
+    "save": "発行",
+    "done": "証明書が発行されました。",
+    "working": "認証局にリクエストを送信中です。数分かかる場合があります。",
+    "client": "クライアント",
+    "domains": "ドメイン",
+    "domainsPlaceholder": "ドメインを入力して Enter キーを押してください",
+    "domainsHint": "最初のドメインが証明書の名前になります。",
+    "challenge": "チャレンジ",
+    "standalone": "スタンドアロン",
+    "standaloneHint": "ポート 80 で小さな Web サーバーを実行するため、他のサービスはそのポートを使用できません。",
+    "webroot": "Web ルート",
+    "webrootHint": "Web サーバーのフォルダにファイルを配置します。Web サーバーは実行されたままです。",
+    "dns": "DNS",
+    "dnsHint": "プロバイダーの API を通じて DNS レコードを追加します。ワイルドカードには必須です。",
+    "webrootPath": "Web ルートフォルダ",
+    "webrootPathHint": "/var/www、/srv、または /usr/share/nginx の内部である必要があります。",
+    "dnsProvider": "DNS プロバイダー",
+    "dnsProviderCertbot": "インストールされている certbot DNS プラグインの名前（例：cloudflare）。",
+    "dnsProviderAcme": "dns_ を除いた acme.sh DNS 名（例：cf）。その API トークンはホストで既に設定されている必要があります。",
+    "credentials": "認証情報ファイル",
+    "credentialsHint": "API トークンが記載されたホスト上のファイルです。Termix によって読み取られることはありません。",
+    "email": "メール",
+    "emailHint": "オプション。認証局は期限切れ通知に使用します。",
+    "keyType": "キータイプ",
+    "staging": "ステージングサーバーを使用",
+    "stagingHint": "テスト用です。証明書は信頼されず、レート制限は大幅に緩和されます。"
+  },
+  "inspect": {
+    "server": "サーバー",
+    "file": "ファイル",
+    "address": "アドレス",
+    "addressPlaceholder": "example.com",
+    "port": "ポート",
+    "path": "ファイルパス",
+    "check": "確認",
+    "hint": "このホストから見たサーバーの TLS 送信内容を確認するか、ホスト上の証明書ファイルを読み取ります。",
+    "failed": "証明書を読み取れませんでした。",
+    "noOpenssl": "このホストには openssl がインストールされていません。",
+    "trusted": "信頼済み",
+    "notTrusted": "信頼されていない",
+    "leaf": "証明書",
+    "intermediate": "チェーン {{index}}",
+    "selfSigned": "自己署名",
+    "name": "名前",
+    "issuer": "発行者",
+    "domains": "ドメイン",
+    "validFrom": "有効期間開始",
+    "validTo": "有効期間終了",
+    "keyType": "鍵",
+    "serial": "シリアル番号",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "このホストが証明書を自動的に更新する方法です。変更はホスト側で行ってください。",
+    "on": "オン",
+    "off": "オフ",
+    "timer": "systemd タイマー",
+    "next": "次回実行 {{time}}",
+    "cron": "Cron ファイル /etc/cron.d/certbot",
+    "certbotOff": "タイマーや cron ジョブが見つからないため、証明書は自動的に更新されません。",
+    "acmeCron": "crontab 内の cron ジョブ",
+    "acmeOff": "cron ジョブが見つからないため、証明書は自動的に更新されません。"
+  },
+  "watch": {
+    "start": "このホストの証明書が期限切れになる前に通知する",
+    "stop": "このホストの通知を停止する",
+    "on": "このホストの証明書が期限切れになる前に通知が届きます。",
+    "off": "このホストの通知はオフになっています。",
+    "failed": "通知の設定を変更できませんでした。"
+  },
+  "card": {
+    "title": "証明書",
+    "loading": "ホストを確認中...",
+    "summary_other": "{{count}} 件の証明書、{{expiring}} 件が期限切れ間近",
+    "refresh": "再確認",
+    "empty": "ホストで証明書の機能をオンにすると、ここで証明書を表示できます。"
+  },
+  "manager": {
+    "title": "証明書",
+    "disabled": "ここで証明書を表示するには、このホストの設定で証明書の機能をオンにしてください。"
+  },
+  "operations": {
+    "list": {
+      "title": "証明書のリスト"
+    },
+    "expiring": {
+      "title": "期限切れ間近の証明書"
+    },
+    "renew": {
+      "title": "証明書の更新"
+    },
+    "renewAll": {
+      "title": "すべての証明書を更新"
+    },
+    "revoke": {
+      "title": "証明書の失効"
+    },
+    "certificates": {
+      "title": "証明書",
+      "client": "クライアント",
+      "domains": "ドメイン",
+      "daysLeft": "残り日数"
+    }
+  },
+  "nav": {
+    "togglePanel": "証明書パネルの表示/非表示"
+  }
+}

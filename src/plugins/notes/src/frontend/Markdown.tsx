@@ -104,7 +104,7 @@ export function NoteMarkdown({
           pre: ({ children }) => (
             <CodeBlock onSend={onSend}>{children}</CodeBlock>
           ),
-          code: ({ className: cls, children, ...rest }) => (
+          code: ({ className: cls, children, node: _node, ...rest }) => (
             <code
               {...rest}
               className={cn(
@@ -142,7 +142,10 @@ export function NoteMarkdown({
           td: ({ children }) => (
             <td className="border border-border px-2 py-1">{children}</td>
           ),
-          input: (props: ComponentProps<"input">) => {
+          input: ({
+            node: _node,
+            ...props
+          }: ComponentProps<"input"> & { node?: unknown }) => {
             if (props.type !== "checkbox") return <input {...props} />;
             const index = taskIndex.current++;
             return (

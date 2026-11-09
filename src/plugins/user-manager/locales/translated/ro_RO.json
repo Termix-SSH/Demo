@@ -1,0 +1,209 @@
+{
+  "plugin": {
+    "name": "Utilizatori",
+    "description": "Gestionați conturile de utilizator, grupurile, parolele și cheile SSH de pe gazdele dvs."
+  },
+  "common": {
+    "save": "Salvează",
+    "cancel": "Anulează",
+    "back": "Înapoi",
+    "delete": "Șterge",
+    "loading": "Se încarcă..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Folosește Utilizatori",
+      "description": "Vedeți conturile de pe gazdele la care aveți acces și modificați-le pe cele pe care le puteți edita."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Utilizatori",
+        "description": "Gestionați conturile de utilizator și grupurile de pe această gazdă din fila Utilizatori."
+      },
+      "useSudo": {
+        "label": "Folosește sudo",
+        "description": "Folosește sudo pentru a citi și modifica conturile. Dezactivează dacă autentificarea se face cu root."
+      },
+      "readOnly": {
+        "label": "Doar citire",
+        "description": "Afișează conturile, dar nu le modifica niciodată pe această gazdă."
+      }
+    }
+  },
+  "tab": {
+    "title": "Utilizatori",
+    "noHost": "Deschideți Utilizatori dintr-o gazdă.",
+    "error": "Nu s-au putut încărca conturile de pe această gazdă.",
+    "disabled": "Utilizatori este dezactivat pentru această gazdă. Activează-l în setările gazdei.",
+    "sudo": "Modificările și stările parolelor necesită autentificare root, sudo fără parolă sau o Parolă Sudo salvată pe această gazdă.",
+    "noTools": "useradd nu este instalat pe această gazdă. Pe Alpine, instalează pachetul shadow.",
+    "refresh": "Reîmprospătează",
+    "readOnly": "Doar citire",
+    "counts_one": "{{count}} utilizator",
+    "counts_few": "{{count}} utilizatori",
+    "counts_other": "{{count}} utilizatori",
+    "viewUsers": "Utilizatori",
+    "viewGroups": "Grupuri",
+    "viewSessions": "Sesiuni"
+  },
+  "users": {
+    "add": "Adaugă utilizator",
+    "search": "Caută utilizatori",
+    "people": "Persoane",
+    "systemFilter": "Sistem",
+    "all": "Toți",
+    "empty": "Niciun utilizator nu se potrivește.",
+    "you": "Tu",
+    "sudo": "Sudo",
+    "locked": "Blocat",
+    "emptyPassword": "Fără parolă",
+    "system": "Sistem",
+    "loadFailed": "Nu s-au putut citi conturile."
+  },
+  "password": {
+    "set": "Setează",
+    "locked": "Blocat",
+    "none": "Nesetată, fără autentificare cu parolă",
+    "empty": "Golă, oricine se poate autentifica",
+    "unknown": "Necesită root pentru a verifica"
+  },
+  "detail": {
+    "info": "Cont",
+    "account": "Detalii",
+    "fullName": "Nume complet",
+    "uid": "ID utilizator și grup",
+    "mainGroup": "Grup principal",
+    "home": "Dosar home",
+    "shell": "Shell",
+    "groups": "Grupuri",
+    "groupsPlaceholder": "Scrie un grup și apasă Enter",
+    "unknownGroups": "Aceste grupuri nu există: {{groups}}",
+    "none": "Niciunul",
+    "password": "Parolă",
+    "passwordChanged": "Parola a fost modificată",
+    "lastLogin": "Ultima autentificare",
+    "never": "Niciodată",
+    "unknown": "Necunoscut",
+    "saved": "Salvat.",
+    "failed": "Modificarea a eșuat.",
+    "loadFailed": "Nu s-au putut citi cheile și ultima autentificare a acestui utilizator.",
+    "passwordSection": "Parolă",
+    "newPassword": "Parolă nouă",
+    "newPasswordHint": "Este trimisă pe gazdă prin SSH și setată cu chpasswd. Nu este niciodată stocată în Termix.",
+    "setPassword": "Setează parola",
+    "passwordSet": "Parola a fost setată.",
+    "expirePassword": "Solicită o parolă nouă la următoarea autentificare",
+    "expired": "Vor alege o parolă nouă la următoarea autentificare.",
+    "access": "Acces",
+    "sudo": "Sudo",
+    "sudoHint": "Execută comenzi ca root prin grupul {{group}}.",
+    "sudoProtected": "Nu poți revoca sudo de la root sau de la utilizatorul cu care se autentifică Termix.",
+    "sudoTitle": "Acordă sudo lui {{name}}?",
+    "sudoDesc": "Îl adaugă în grupul {{group}}, astfel încât să poată executa orice comandă ca root.",
+    "sudoGrant": "Acordă sudo",
+    "sudoOn": "Sudo acordat.",
+    "sudoOff": "Sudo revocat.",
+    "lock": "Blochează contul",
+    "unlock": "Deblochează contul",
+    "lockTitle": "Blochezi contul lui {{name}}?",
+    "lockDesc": "Nu se pot autentifica cu parolă sau cu o cheie SSH până deblochezi contul.",
+    "lockHint": "Blochează autentificările cu parolă și cheie SSH.",
+    "protected": "Root și utilizatorul cu care se autentifică Termix nu pot fi blocați sau șterși.",
+    "locked": "Cont blocat.",
+    "unlocked": "Cont deblocat.",
+    "danger": "Ștergere",
+    "removeHome": "Șterge și dosarul home",
+    "removeHomeHint": "Șterge {{home}} și tot conținutul său.",
+    "delete": "Șterge utilizatorul",
+    "deleteTitle": "Ștergi contul lui {{name}}?",
+    "deleteDesc": "Contul este eliminat. Dosarul său home rămâne pe gazdă.",
+    "deleteDescHome": "Contul și {{home}} sunt eliminate. Aceasta nu poate fi anulată.",
+    "deleted": "{{name}} a fost șters."
+  },
+  "keys": {
+    "title": "Chei SSH",
+    "empty": "Nicio cheie SSH.",
+    "denied": "Cheile nu pot fi citite fără drepturi de root.",
+    "options": "Opțiuni",
+    "remove": "Elimină cheia",
+    "removeTitle": "Elimini această cheie?",
+    "removed": "Cheia a fost eliminată.",
+    "add": "Adaugă o cheie",
+    "addHint": "Lipește o singură cheie publică, de exemplu conținutul fișierului id_ed25519.pub.",
+    "addButton": "Adaugă cheia",
+    "added": "Cheia a fost adăugată."
+  },
+  "create": {
+    "title": "Utilizator nou",
+    "name": "Nume utilizator",
+    "nameHint": "Litere mici, cifre, - și _.",
+    "nameInvalid": "Începe cu o literă și folosește doar a-z, 0-9, - și _.",
+    "home": "Dosar home",
+    "homeHint": "Lasă gol pentru /home/{{name}}.",
+    "createHome": "Creează dosarul home",
+    "password": "Parolă",
+    "passwordHint": "Opțional. Fără parolă, utilizatorul se poate autentifica doar cu o cheie SSH.",
+    "again": "Parola din nou",
+    "mismatch": "Parolele nu coincid.",
+    "save": "Creează utilizatorul",
+    "done": "{{name}} a fost creat.",
+    "failed": "Nu s-a putut crea utilizatorul."
+  },
+  "groups": {
+    "add": "Adaugă grup",
+    "name": "Numele grupului",
+    "namePlaceholder": "Numele noului grup",
+    "create": "Creează",
+    "created": "A fost creat {{name}}.",
+    "search": "Caută în grupuri",
+    "empty": "Niciun grup nu corespunde.",
+    "noMembers": "Niciun membru.",
+    "failed": "Modificarea a eșuat.",
+    "addMember": "Adaugă membru",
+    "pickUser": "Alege un utilizator",
+    "removeMember": "Elimină din grup",
+    "memberAdded": "A fost adăugat {{name}} în {{group}}.",
+    "memberRemoved": "A fost eliminat {{name}} din {{group}}.",
+    "mainGroup": "Grup principal",
+    "mainGroupHint": "Acesta este grupul lor principal, așa că fac parte întotdeauna din el.",
+    "deleteTitle": "Ștergi {{name}}?",
+    "deleteDesc": "Grupul este eliminat. Fișierele deținute de el își păstrează vechiul id.",
+    "deleted": "A fost șters {{name}}."
+  },
+  "sessions": {
+    "now": "Conectat acum",
+    "none": "Nimeni nu este conectat.",
+    "recent": "Conectări recente",
+    "noRecent": "Nu s-a găsit istoricul conectărilor.",
+    "loadFailed": "Nu s-au putut citi sesiunile."
+  },
+  "manager": {
+    "title": "Utilizatori",
+    "disabled": "Activează Utilizatori pentru acest gazdă în setările sale pentru a-ți vedea conturile aici."
+  },
+  "operations": {
+    "list": {
+      "title": "Listează utilizatorii"
+    },
+    "emptyPasswords": {
+      "title": "Conturi fără parolă"
+    },
+    "lock": {
+      "title": "Blochează utilizatorul"
+    },
+    "unlock": {
+      "title": "Deblochează utilizatorul"
+    },
+    "delete": {
+      "title": "Șterge utilizatorul"
+    },
+    "users": {
+      "title": "Utilizatori",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "Grupuri"
+    }
+  }
+}

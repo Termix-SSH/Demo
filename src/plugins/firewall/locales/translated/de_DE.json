@@ -1,0 +1,356 @@
+{
+  "tab": {
+    "title": "Firewall",
+    "noHost": "Öffnen Sie den Firewall von einem Host aus.",
+    "refresh": "Aktualisieren",
+    "error": "Der Firewall auf diesem Host konnte nicht gelesen werden.",
+    "disabled": "Der Firewall ist für diesen Host deaktiviert. Aktivieren Sie ihn in den Host-Einstellungen.",
+    "sudo": "Dieser Host benötigt ein passwortloses sudo oder eine Root-Anmeldung, um den Firewall zu lesen und zu ändern.",
+    "noFirewall": "Kein Firewall",
+    "on": "aktiv",
+    "off": "deaktiviert",
+    "readOnly": "schreibgeschützt",
+    "ruleCount_one": "{{count}} Regel",
+    "ruleCount_other": "{{count}} Regeln",
+    "viewRules": "Regeln",
+    "viewDefaults": "Standardeinstellungen",
+    "viewZones": "Zonen",
+    "viewFail2ban": "Fail2ban",
+    "viewRaw": "Rohdaten"
+  },
+  "common": {
+    "loading": "Wird geladen...",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "done": "Fertig",
+    "failed": "Das hat nicht funktioniert."
+  },
+  "actions": {
+    "allow": "Erlauben",
+    "deny": "Verweigern",
+    "reject": "Ablehnen",
+    "limit": "Begrenzen"
+  },
+  "policies": {
+    "allow": "Erlauben",
+    "deny": "Verweigern (drop)",
+    "reject": "Ablehnen"
+  },
+  "rule": {
+    "action": "Aktion",
+    "direction": "Richtung",
+    "in": "Eingehend",
+    "out": "Ausgehend",
+    "protocol": "Protokoll",
+    "anyProtocol": "TCP und UDP",
+    "port": "Port",
+    "portPlaceholder": "22, 80,443 oder 8000-8100",
+    "portHint": "Leer lassen für jeden Port. Listen und Bereiche benötigen TCP oder UDP.",
+    "anyPort": "jeder Port",
+    "source": "Von",
+    "destination": "An",
+    "anywhere": "Überall",
+    "addressHint": "Eine Adresse oder ein Bereich wie 10.0.0.0/8.",
+    "family": "IP-Version",
+    "bothFamilies": "IPv4 und IPv6",
+    "iface": "Schnittstelle",
+    "anyIface": "Jede Schnittstelle",
+    "service": "Dienst",
+    "serviceHint": "Ein firewalld-Dienstname, anstatt eines Ports.",
+    "comment": "Kommentar",
+    "commentPlaceholder": "Wofür diese Regel dient",
+    "zoneLabel": "Zone",
+    "from": "von {{address}}",
+    "to": "an {{address}}",
+    "on": "auf {{iface}}",
+    "zone": "Zone {{zone}}"
+  },
+  "presets": {
+    "ssh": "SSH",
+    "http": "HTTP",
+    "https": "HTTPS",
+    "web": "Web",
+    "dns": "DNS",
+    "smtp": "E-Mail",
+    "mysql": "MySQL",
+    "postgres": "PostgreSQL",
+    "redis": "Redis",
+    "samba": "Samba",
+    "wireguard": "WireGuard",
+    "minecraft": "Minecraft"
+  },
+  "rules": {
+    "add": "Regel hinzufügen",
+    "addTitle": "Neue Regel",
+    "editTitle": "Regel bearbeiten",
+    "added": "Regel hinzugefügt",
+    "saved": "Regel gespeichert",
+    "deleted": "Regel gelöscht",
+    "confirmDelete": "Diese Regel löschen?",
+    "search": "Nach Ports, Adressen und Kommentaren suchen",
+    "empty": "Noch keine Regeln.",
+    "noMatch": "Keine passenden Regeln.",
+    "readOnly": "Schreibgeschützt",
+    "deleteOnly": "Nur löschen",
+    "stale": "Die Regeln auf dem Host wurden geändert. Aktualisieren Sie die Seite und versuchen Sie es erneut.",
+    "filters": {
+      "all": "Alle",
+      "in": "Eingehend",
+      "out": "Ausgehend",
+      "readOnly": "Schreibgeschützt"
+    }
+  },
+  "defaults": {
+    "hint": "Was mit Datenverkehr passiert, der keine Regel erfüllt.",
+    "incoming": "Eingehend",
+    "outgoing": "Ausgehend",
+    "routed": "Geroutet",
+    "saved": "Standardeinstellungen gespeichert"
+  },
+  "zones": {
+    "hint": "firewalld ordnet jede Netzwerkschnittstelle und jede Quelle einer Zone zu. Das Ziel einer Zone bestimmt, was mit Datenverkehr passiert, der keine der Regeln der Zone erfüllt.",
+    "defaultZone": "Standardzone",
+    "default": "Standard",
+    "active": "Aktiv",
+    "target": "Ziel",
+    "interfaces": "Schnittstellen {{list}}",
+    "sources": "Quellen {{list}}",
+    "saved": "Zone gespeichert",
+    "targets": {
+      "default": "Standard (ablehnen)",
+      "ACCEPT": "Akzeptieren",
+      "DROP": "Verwerfen",
+      "REJECT": "Ablehnen"
+    }
+  },
+  "enable": {
+    "off": "Die Firewall ist deaktiviert, daher gelten diese Regeln derzeit nicht.",
+    "allowSsh": "Zuerst SSH an Port {{ports}} erlauben",
+    "allowSshHint": "Damit Termix und Ihre eigenen SSH-Anmeldungen weiterhin funktionieren.",
+    "button": "Einschalten",
+    "done": "Firewall eingeschaltet",
+    "timerHint": "Beim Einschalten wird ein Timer gestartet. Wenn Sie nicht rechtzeitig auf Behalten drücken, schaltet der Host die Firewall automatisch wieder aus."
+  },
+  "disable": {
+    "button": "Ausschalten",
+    "title": "Firewall ausschalten?",
+    "description": "Alle Regeln werden aufgehoben, bis Sie die Firewall wieder einschalten.",
+    "done": "Firewall ausgeschaltet"
+  },
+  "install": {
+    "none": "Dieser Host hat noch keine Firewall.",
+    "hint": "Installieren Sie eine, um loszulegen. Sie wird erst aktiviert, wenn Sie es wünschen.",
+    "button": "{{name}} installieren",
+    "working": "Wird installiert...",
+    "done": "{{name}} installiert",
+    "noPackageManager": "Termix konnte auf diesem Host keinen bekannten Paketmanager finden."
+  },
+  "lockout": {
+    "title": "Dies könnte Termix aussperren",
+    "description": "„{{reason}}“. Falls Termix nach der Änderung keine Verbindung herstellen kann, wird die Änderung vom Host automatisch rückgängig gemacht, wenn die Zeit abläuft. Trotzdem fortfahren?",
+    "confirm": "Fortfahren"
+  },
+  "pending": {
+    "started": "Änderung angewendet. Drücke Behalten, um sie dauerhaft zu speichern.",
+    "left": "Wird in {{seconds}} s rückgängig gemacht, es sei denn, du drückst Behalten",
+    "expired": "Die Zeit ist abgelaufen, der Host macht die Änderung rückgängig",
+    "reachable": "Termix konnte sich weiterhin verbinden",
+    "unreachable": "Termix konnte sich nach der Änderung nicht verbinden",
+    "unknown": "Verbindung wird geprüft",
+    "keep": "Behalten",
+    "undo": "Jetzt rückgängig machen",
+    "kept": "Änderung beibehalten",
+    "undone": "Änderung rückgängig gemacht",
+    "gone": "Die Zeit ist abgelaufen und der Host hat die Änderung bereits rückgängig gemacht.",
+    "first": "Behalte oder mache zuerst die letzte Änderung rückgängig.",
+    "kinds": {
+      "add": "Neue Regel",
+      "update": "Geänderte Regel",
+      "remove": "Gelöschte Regel",
+      "defaults": "Neue Standardwerte",
+      "enable": "Firewall aktiviert",
+      "disable": "Firewall deaktiviert",
+      "zoneTarget": "Neues Zonenziel",
+      "defaultZone": "Neue Standardzone",
+      "ruleset": "Regelsatz angewendet"
+    }
+  },
+  "fail2ban": {
+    "loadFailed": "Fail2ban konnte nicht gelesen werden.",
+    "notInstalled": "Fail2ban ist nicht installiert. Es sperrt Adressen, die sich zu oft falsch anmelden.",
+    "stopped": "Fail2ban ist installiert, aber nicht aktiv.",
+    "start": "Fail2ban starten",
+    "started": "Fail2ban gestartet",
+    "noJails": "Keine Gefängnisse sind aktiviert.",
+    "none": "Nichts gesperrt.",
+    "bannedCount_one": "{{count}} gesperrt",
+    "bannedCount_other": "{{count}} gesperrt",
+    "counts": "{{failed}} aktuell fehlgeschlagen | {{totalFailed}} gesamt fehlgeschlagen | {{totalBanned}} gesamt gesperrt",
+    "ban": "Sperren",
+    "unban": "Freigeben",
+    "banAddress": "Eine Adresse sperren",
+    "banned": "{{ip}} gesperrt",
+    "unbanned": "{{ip}} freigegeben",
+    "selfTitle": "Termix-Adresse sperren?",
+    "selfDescription": "Termix verbindet sich von dieser Adresse. Wenn du sie sperrst, wird Termix von diesem Host getrennt."
+  },
+  "raw": {
+    "empty": "Nichts anzuzeigen."
+  },
+  "watch": {
+    "start": "Benachrichtige mich, wenn sich diese Firewall ändert",
+    "stop": "Benachrichtigungen für diese Firewall stoppen"
+  },
+  "companion": {
+    "openTab": "Firewall-Tab öffnen",
+    "toggle": "Firewall-Panel",
+    "allowPort": "Einen TCP-Port zulassen"
+  },
+  "card": {
+    "title": "Firewalls",
+    "empty": "Keine Hosts haben die Firewall aktiviert.",
+    "banned_one": "{{count}} gesperrt",
+    "banned_other": "{{count}} gesperrt",
+    "pending": "Warten"
+  },
+  "rulesets": {
+    "title": "Firewall-Regelsätze",
+    "hint": "Speichere eine Liste von Regeln und wende sie auf viele Hosts auf einmal an. Beim Anwenden werden nur fehlende Regeln hinzugefügt, niemals welche entfernt.",
+    "add": "Neuer Regelsatz",
+    "addTitle": "Neuer Regelsatz",
+    "editTitle": "Regelsatz bearbeiten",
+    "loadFailed": "Deine Regelsätze konnten nicht geladen werden.",
+    "empty": "Noch keine Regelsätze.",
+    "name": "Name",
+    "namePlaceholder": "Webserver",
+    "description": "Beschreibung",
+    "rules": "Regeln",
+    "noRules": "Noch keine Regeln in dieser Gruppe.",
+    "hosts": "Hosts",
+    "noHosts": "Bei keinem Host ist die Firewall aktiviert.",
+    "saved": "Regelgruppe gespeichert",
+    "deleted": "Regelgruppe gelöscht",
+    "confirmDelete": "{{name}} löschen?",
+    "deleteHint": "Bereits auf Hosts hinzugefügte Regeln bleiben erhalten.",
+    "ruleCount_one": "{{count}} Regel",
+    "ruleCount_other": "{{count}} Regeln",
+    "hostCount_one": "{{count}} Host",
+    "hostCount_other": "{{count}} Hosts",
+    "check": "Hosts prüfen",
+    "apply": "Anwenden",
+    "applyTitle": "{{name}} anwenden?",
+    "applyDescription": "Fehlende Regeln werden auf jedem Host hinzugefügt. Jeder Host erhält die SSH-Sperrprüfung, und wenn Termix einen Host danach nicht mehr erreichen kann, wird die Änderung automatisch rückgängig gemacht.",
+    "applied": "Regelgruppe angewendet",
+    "applyErrors_one": "{{count}} Host hatte ein Problem",
+    "applyErrors_other": "{{count}} Hosts hatten ein Problem",
+    "applyResult": "{{name}} angewendet",
+    "driftTitle": "{{name}} auf jedem Host",
+    "inSync": "Hat alle Regeln",
+    "ok": "Synchronisiert",
+    "missing_one": "{{count}} fehlt",
+    "missing_other": "{{count}} fehlen",
+    "nothingMissing": "Hat bereits alle Regeln",
+    "added_one": "{{count}} Regel hinzugefügt",
+    "added_other": "{{count}} Regeln hinzugefügt",
+    "waiting": "Hinzugefügt, aber Termix konnte danach keine Verbindung herstellen. Der Host wird dies rückgängig machen.",
+    "fleet": "Flotte",
+    "applyFleet": "Auf die Flotte anwenden"
+  },
+  "permissions": {
+    "use": {
+      "title": "Firewall verwenden",
+      "description": "Den Firewall-Tab auf Hosts öffnen, die erreichbar sind. Für Änderungen ist außerdem Schreibzugriff auf den Host erforderlich."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Firewall",
+        "description": "Den Firewall-Tab für diesen Host anzeigen, um die Firewall über SSH zu verwalten."
+      },
+      "useSudo": {
+        "label": "Sudo verwenden",
+        "description": "Firewall-Befehle mit passwortlosem sudo ausführen, wenn die Anmeldung nicht als root erfolgt."
+      },
+      "readOnly": {
+        "label": "Schreibgeschützt",
+        "description": "Die Firewall anzeigen, aber alle Änderungen aus Termix blockieren."
+      },
+      "sshGuard": {
+        "label": "SSH-Sperrprüfung",
+        "description": "Vor einer Änderung, die SSH von Termix blockieren könnte, anhalten und nachfragen."
+      },
+      "rollbackSeconds": {
+        "label": "Rückgängig-Timer",
+        "description": "Sekunden, die du hast, um nach einer riskanten Änderung auf Behalten zu klicken, bevor der Host sie rückgängig macht."
+      },
+      "confirmAll": {
+        "label": "Timer bei jeder Änderung",
+        "description": "Den Rückgängig-Timer für jede Änderung verwenden, nicht nur für riskante."
+      },
+      "showPanel": {
+        "label": "Firewall-Panel",
+        "description": "Das Firewall-Panel neben SSH-Terminals für diesen Host anbieten."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Firewall-Panel mit Terminal öffnen",
+        "description": "Das Firewall-Panel anzeigen, wenn ein Terminal auf einem Host mit aktivierter Firewall geöffnet wird."
+      },
+      "companionSide": {
+        "label": "Position des Firewall-Panels",
+        "description": "Wo das Panel neben dem Terminal platziert wird.",
+        "right": "Rechts",
+        "left": "Links",
+        "bottom": "Unten"
+      },
+      "companionSize": {
+        "label": "Größe des Firewall-Panels",
+        "description": "Breite oder Höhe (unten) in Pixeln."
+      },
+      "companionEdgeButton": {
+        "label": "Kante-Button des Firewall-Panels",
+        "description": "Einen kleinen Button am Terminalrand anzeigen, um das Panel zu öffnen."
+      }
+    }
+  },
+  "manager": {
+    "title": "Firewall",
+    "disabled": "Aktiviere die Firewall in den Einstellungen dieses Hosts, um sie hier zu verwalten."
+  },
+  "operations": {
+    "list": {
+      "title": "Firewall-Regeln auflisten"
+    },
+    "status": {
+      "title": "Firewall"
+    },
+    "portAllowed": {
+      "title": "Port ist erlaubt",
+      "description": "Ob eine Erlaubnisregel für diesen Port existiert. Verwende dies, um Hosts auf Abweichungen zu überwachen."
+    },
+    "allow": {
+      "title": "Port erlauben"
+    },
+    "remove": {
+      "title": "Erlaubten Port entfernen"
+    },
+    "delete": {
+      "title": "Feuerwallregel löschen"
+    },
+    "rules": {
+      "title": "Firewall-Regeln"
+    },
+    "port": "Port",
+    "protocol": "Protokoll",
+    "tcp": "TCP",
+    "udp": "UDP",
+    "any": "Alle",
+    "source": "Von",
+    "sourceHint": "Eine Adresse oder ein Bereich. Leer bedeutet überall.",
+    "direction": "Richtung"
+  }
+}

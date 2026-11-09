@@ -1,0 +1,237 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Instalirajte WireGuard na svoje hostove i upravljajte sučeljima, klijentima i konfiguracijama s jedne kartice."
+  },
+  "common": {
+    "save": "Spremi",
+    "cancel": "Otkaži",
+    "back": "Natrag",
+    "delete": "Izbriši",
+    "loading": "Učitavanje..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Koristi WireGuard",
+      "description": "Upravljaj WireGuard sučeljima i klijentima na hostovima koje možeš uređivati."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Otvori WireGuard s hosta.",
+    "error": "Nije moguće učitati WireGuard s ovog hosta.",
+    "sudo": "Ovaj host zahtijeva root prijavu ili sudo bez lozinke za upravljanje WireGuardom.",
+    "installed": "Instalirano",
+    "notInstalled": "Nije instalirano",
+    "refresh": "Osvježi",
+    "viewInterfaces": "Sučelja",
+    "viewLogs": "Zapisnici"
+  },
+  "install": {
+    "title": "Instaliraj WireGuard",
+    "desc": "Ovo instalira WireGuard alate i iptables pomoću upravitelja paketa hosta.",
+    "confirm": "Instaliraj",
+    "done": "WireGuard je instaliran.",
+    "failed": "Nije moguće instalirati WireGuard.",
+    "empty": "WireGuard nije instaliran na ovom hostu",
+    "noManager": "Nije pronađen podržani upravitelj paketa. Instaliraj WireGuard ručno.",
+    "hint": "Instaliraj ga na {{os}} za pokretanje VPN-a s ovog hosta.",
+    "thisHost": "ovaj host",
+    "button": "Instaliraj WireGuard",
+    "working": "Instaliranje..."
+  },
+  "interfaces": {
+    "add": "Dodaj sučelje",
+    "empty": "Još nema sučelja. Dodaj jedno za pokretanje VPN-a.",
+    "loadFailed": "Nije moguće učitati sučelja.",
+    "up": "Aktivno",
+    "down": "Neaktivno",
+    "nat": "NAT",
+    "boot": "Pokreće se pri pokretanju sustava"
+  },
+  "create": {
+    "title": "Dodaj sučelje",
+    "name": "Naziv",
+    "address": "Adresa",
+    "addressHint": "Adresa poslužitelja i podsustav. Klijenti dobivaju sljedeće slobodne adrese.",
+    "port": "UDP port",
+    "nat": "Dijeli internet hosta (NAT)",
+    "natDesc": "Klijenti mogu pristupiti internetu i mreži hosta kroz ovaj host.",
+    "natMissing": "NAT zahtijeva iptables, koji nije instaliran na ovom hostu.",
+    "forwarding": "Uključi IP forwardiranje",
+    "forwardingDesc": "Omogućuje hostu proslijeđivanje prometa između klijenata i mreže. Sprema se za ponovna pokretanja.",
+    "firewall": "Otvori port u firewallu",
+    "firewallDesc": "Dodaje UDP port u ufw ili firewalld kada je jedan od njih aktivan.",
+    "start": "Pokreni odmah i pri pokretanju sustava",
+    "startDesc": "Uključuje sučelje i održava ga aktivnim nakon ponovnog pokretanja.",
+    "save": "Stvori",
+    "done": "Sučelje je spremno.",
+    "failed": "Nije moguće stvoriti sučelje."
+  },
+  "detail": {
+    "clients": "Klijenti",
+    "settings": "Postavke",
+    "config": "Konfiguracija",
+    "service": "Usluga",
+    "gone": "Ovo sučelje više ne postoji na hostu."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Prikaži karticu WireGuard za ovog hosta u njegovom izborniku."
+      },
+      "showPanel": {
+        "label": "Prikaži WireGuard ploču u terminalima",
+        "description": "Dopusti da se WireGuard ploča otvori pored SSH terminala ovog hosta."
+      },
+      "alertDown": {
+        "label": "Upozori kada je sučelje isključeno",
+        "description": "Pošalji upozorenje kada sučelje koje se pokreće pri bootu nije aktivno. Provjerava se pri čitanju WireGuard statusa."
+      }
+    },
+    "publicKey": "Javni ključ",
+    "port": "UDP port",
+    "endpoint": "Krajnja točka poslužitelja",
+    "endpointHint": "Javna adresa na koju se klijenti povezuju, npr. vpn.example.com:51820.",
+    "dns": "DNS za klijente",
+    "dnsHint": "Opcionalno. Odvojite poslužitelje zarezima.",
+    "allowed": "Promet kroz VPN",
+    "allowedHint": "Rasponi koje klijenti šalju kroz VPN. 0.0.0.0/0, ::/0 šalje sve.",
+    "keepalive": "Keepalive (sekunde)",
+    "keepaliveHint": "Održava klijente iza NAT-a dostupnima. Koristite 0 za isključivanje.",
+    "saved": "Postavke su spremljene.",
+    "saveFailed": "Postavke se nisu mogle spremiti.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otvori WireGuard ploču s novim terminalima",
+        "description": "Prikaži WireGuard ploču pored svakog SSH terminala koji ima uključen WireGuard. I dalje je možete otvoriti i zatvoriti pomoću gumba na desnoj rubnoj liniji."
+      },
+      "companionSide": {
+        "label": "Strana WireGuard ploče",
+        "description": "Gdje se WireGuard ploča nalazi pored terminala.",
+        "right": "Desno",
+        "left": "Lijevo",
+        "bottom": "Dolje"
+      },
+      "companionSize": {
+        "label": "Veličina WireGuard ploče",
+        "description": "Širina u pikselima, ili visina kada je na dnu. Također možete povući njezin rub."
+      },
+      "companionEdgeButton": {
+        "label": "Prikaži gumb ploče",
+        "description": "Prikaži mali gumb na desnom rubu terminala koji otvara WireGuard ploču."
+      }
+    }
+  },
+  "clients": {
+    "add": "Dodaj klijenta",
+    "empty": "Još nema klijenata.",
+    "loadFailed": "Klijenti se nisu mogli učitati.",
+    "name": "Naziv",
+    "nameHint": "Slova, brojevi, točke, crtice i donje crte.",
+    "allowed": "Promet kroz VPN",
+    "allowedHint": "Ostavite prazno za korištenje zadanih postavki sučelja: {{value}}",
+    "create": "Stvori klijenta",
+    "addFailed": "Klijent se nije mogao dodati.",
+    "needEndpoint": "Prvo postavite krajnju točku poslužitelja u postavkama sučelja.",
+    "connected": "Povezano",
+    "off": "Isključeno",
+    "external": "Ručno izrađeno",
+    "handshake": "rukovanje {{ago}}",
+    "showConfig": "Prikaži konfiguraciju i QR kod",
+    "configFailed": "Konfiguracija klijenta se nije mogla pročitati.",
+    "rotate": "Novi ključevi",
+    "rotateTitle": "Stvoriti nove ključeve za {{name}}?",
+    "rotateDesc": "Stara konfiguracija prestaje raditi. Nakon toga dajte klijentu novu konfiguraciju.",
+    "turnOff": "Isključi",
+    "turnOn": "Uključi",
+    "saveFailed": "Klijent se nije mogao promijeniti.",
+    "deleteTitle": "Izbrisati {{name}}?",
+    "deleteDesc": "Klijent se uklanja i više se ne može povezati.",
+    "deleteFailed": "Klijent se nije mogao izbrisati."
+  },
+  "clientConfig": {
+    "note": "Ova konfiguracija sadrži privatni ključ klijenta. Dijelite je samo s osobom ili uređajem koji će je koristiti.",
+    "qr": "QR kod za konfiguraciju klijenta",
+    "copy": "Kopiraj",
+    "copied": "Konfiguracija je kopirana.",
+    "copyFailed": "Konfiguracija se nije mogla kopirati.",
+    "download": "Preuzmi .conf"
+  },
+  "config": {
+    "title": "Datoteka konfiguracije",
+    "hint": "Privatni i unaprijed dijeljeni ključevi su skriveni. Ostavite placeholder da zadržite ključ. Konfiguracija se provjerava prije spremanja i čuva se sigurnosna kopija. Promjene adrese zahtijevaju ponovno pokretanje.",
+    "loadFailed": "Nije moguće pročitati konfiguraciju.",
+    "saved": "Konfiguracija spremljena.",
+    "saveFailed": "Nije moguće spremiti konfiguraciju."
+  },
+  "logs": {
+    "loadFailed": "Nije moguće pročitati dnevnike.",
+    "lines": "{{count}} redaka",
+    "empty": "Nema zapisa u dnevniku."
+  },
+  "service": {
+    "failed": "Akcija usluge nije uspjela.",
+    "start": "Pokreni",
+    "stop": "Zaustavi",
+    "restart": "Ponovno pokreni",
+    "autostart": "Pokreni pri pokretanju sustava",
+    "autostartDesc": "Pokreni ovaj sučelje kada se host pokrene.",
+    "needsSystemd": "Pokretanje pri startu sustava zahtijeva systemd na ovom hostu.",
+    "noForward": "Usmjeravanje IP adresa je isključeno na ovom hostu, stoga klijenti ne mogu pristupiti mreži putem NAT-a.",
+    "delete": "Izbriši sučelje",
+    "deleteTitle": "Izbrisati {{name}}?",
+    "deleteDesc": "Sučelje je zaustavljeno, a njegova konfiguracija, ključevi i spremljene datoteke klijenata uklanjaju se s hosta.",
+    "deleteFailed": "Nije moguće izbrisati sučelje."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Uključite WireGuard u postavkama ovog hosta da biste koristili ovu karticu.",
+    "start": "Aktiviraj",
+    "stop": "Deaktiviraj",
+    "done": "{{name}} ažurirano"
+  },
+  "operations": {
+    "list": {
+      "title": "Popis WireGuard sučelja"
+    },
+    "down": {
+      "title": "WireGuard sučelja deaktivirana"
+    },
+    "start": {
+      "title": "Pokreni WireGuard sučelje"
+    },
+    "stop": {
+      "title": "Zaustavi WireGuard sučelje"
+    },
+    "restart": {
+      "title": "Ponovno pokreni WireGuard sučelje"
+    },
+    "interfaces": {
+      "title": "WireGuard sučelja",
+      "address": "Adresa",
+      "port": "Port",
+      "clients": "Klijenti"
+    }
+  },
+  "nav": {
+    "togglePanel": "Prikaži/sakrij WireGuard panel"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Provjera hostova...",
+    "summary_one": "{{count}} klijent na {{hosts}} hostu",
+    "summary_few": "{{count}} klijenta na {{hosts}} hosta",
+    "summary_other": "{{count}} klijenata na {{hosts}} hostova",
+    "refresh": "Provjeri ponovno",
+    "empty": "Uključite WireGuard za host da biste ga vidjeli ovdje.",
+    "missing": "Nije instalirano",
+    "down_one": "{{count}} deaktivirano",
+    "down_few": "{{count}} deaktivirana",
+    "down_other": "{{count}} deaktivirano",
+    "interfaces_one": "{{count}} sučelje, {{clients}} klijent",
+    "interfaces_few": "{{count}} sučelja, {{clients}} klijenta",
+    "interfaces_other": "{{count}} sučelja, {{clients}} klijenata"
+  }
+}

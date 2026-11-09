@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Suorita Ansible-pelikirjoja ja ad-hoc-komentoja ohjauspalvelimelta käyttäen Termix-palvelimistasi koottua inventaaria."
+  },
+  "common": {
+    "save": "Tallenna",
+    "cancel": "Peruuta",
+    "back": "Takaisin",
+    "delete": "Poista"
+  },
+  "permissions": {
+    "use": {
+      "title": "Käytä Ansiblea",
+      "description": "Näe pelikirjat ja suoritukset ohjauspalvelimilla, joihin pääset käsiksi. Muokkaa tiedostoja ja suorita Ansiblea palvelimilla, joita voit muokata."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Käytä tätä palvelinta Ansible-ohjauspalvelimena. Ansiblen on oltava asennettuna siihen."
+      },
+      "projectDir": {
+        "label": "Projektikansio",
+        "description": "Kansio tässä palvelimessa, jossa ovat pelikirjasi, roolisi ja ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Vault-salasanasarake",
+        "description": "Tiedosto tässä palvelimessa, jossa on Ansible Vaultin salasana. Jätä tyhjäksi, jos et käytä Vaultia.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Vain luku",
+        "description": "Näytä pelikirjat ja suoritukset, mutta älä koskaan muokkaa tiedostoja tai käynnistä suorituksia tässä palvelimessa."
+      },
+      "alertRuns": {
+        "label": "Ilmoita, kun suoritus epäonnistuu",
+        "description": "Lähetä ilmoitus, kun suoritus tässä palvelimessa päättyy epäonnistumiseen tai katkeaa. Tarkistetaan, kun suorituksen tilaa luetaan."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Avaa Ansible palvelimesta.",
+    "error": "Ansiblea ei voitu ladata tästä palvelimesta.",
+    "disabled": "Ansible on poistettu käytöstä tässä palvelimessa. Ota se käyttöön palvelimen asetuksista.",
+    "refresh": "Päivitä",
+    "readOnly": "Vain luku",
+    "notInstalled": "Ansiblea ei ole asennettu",
+    "notInstalledTitle": "Ansiblea ei ole asennettu tähän palvelimeen",
+    "notInstalledHint": "Asenna ansible-core tähän palvelimeen esimerkiksi pipx:llä tai paketinhallinnalla ja päivitä sitten.",
+    "noSshpass": "sshpassia ei ole asennettu tähän palvelimeen. Salasanalla kirjautuvat palvelimet epäonnistuvat.",
+    "viewPlaybooks": "Pelikirjat",
+    "viewRuns": "Suoritukset",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Tiedot"
+  },
+  "files": {
+    "add": "Uusi tiedosto",
+    "search": "Hae tiedostoja",
+    "empty": "Projektikansiossa ei vielä ole tiedostoja.",
+    "noMatch": "Ei vastaavia tiedostoja.",
+    "noProject": "Kansiota {{dir}} ei ole olemassa tässä palvelimessa. Luo se tai aseta toinen projektikansio palvelimen asetuksista.",
+    "listFailed": "Projektin tiedostoja ei voitu luetella.",
+    "loadFailed": "Tiedostoa ei voitu lukea.",
+    "saved": "Tiedosto tallennettu",
+    "saveFailed": "Tiedostoa ei voitu tallentaa.",
+    "playbook": "Pelikirja",
+    "run": "Suorita",
+    "newTitle": "Uusi tiedosto",
+    "name": "Tiedostonimi",
+    "nameHint": "Polku projektikansion sisällä, kuten site.yml tai roles/web/tasks/main.yml.",
+    "hint": "Pelikirjan syntaksi tarkistetaan ennen tallennusta. Vanha tiedosto säilyy, jos tarkistus epäonnistuu.",
+    "text": "Tiedoston sisältö",
+    "deleteTitle": "Poistetaanko tämä tiedosto?"
+  },
+  "targets": {
+    "search": "Hae palvelimia",
+    "addShown": "Lisää näkyvissä olevat",
+    "clear": "Tyhjennä",
+    "empty": "Palvelimia ei löytynyt.",
+    "count": "{{count}} valittu",
+    "failed": "Palvelimiiasi ei voitu ladata."
+  },
+  "run": {
+    "title": "Suorita {{playbook}}",
+    "start": "Suorita",
+    "startCheck": "Suorita tarkistustilassa",
+    "startFailed": "Suoritusta ei voitu aloittaa.",
+    "source": "Isäntä",
+    "sourceProject": "Projektin inventaario",
+    "sourceTermix": "Termix-isännät",
+    "sourceProjectHint": "Käytä inventaariota ansible.cfg-tiedostosta tai projektin tiedostosta.",
+    "sourceTermixHint": "Valitse isäntiä Termixistä. Kansiosta tulee folder_-ryhmiä ja tageista tulee tag_-ryhmiä. Kaikki ovat termix-ryhmässä.",
+    "inventory": "Inventaariotiedosto",
+    "inventoryHint": "Polku projektikansion sisällä. Jätä tyhjäksi käyttääksesi ansible.cfg:tä.",
+    "check": "Tarkistus-tila",
+    "checkHint": "Näytä, mitä muutoksia tapahtuisi, ilman että mitään muutetaan.",
+    "diff": "Näytä erot",
+    "diffHint": "Näytä tiedostoihin tehdyt muutokset.",
+    "become": "Suorita root-käyttäjänä",
+    "becomeHint": "Käytä sudoa isännillä. Tallennettua Sudo-salasanaa käytetään Termix-isännille.",
+    "limit": "Rajoitus",
+    "limitHint": "Suorita vain näillä isännillä tai ryhmissä.",
+    "verbosity": "Lokin yksityiskohtaisuus",
+    "verbosityOff": "Normaali",
+    "tags": "Tagit",
+    "skipTags": "Ohita tagit",
+    "extraVars": "Lisämuuttujat",
+    "extraVarsHint": "Yksi avain=arvo per rivi."
+  },
+  "runs": {
+    "title": "Suoritus",
+    "empty": "Ei suorituksia vielä.",
+    "loadFailed": "Suorituksia ei voitu ladata.",
+    "stop": "Pysäytä",
+    "stopFailed": "Suoritusta ei voitu pysäyttää.",
+    "deleteTitle": "Haluatko poistaa tämän suorituksen?",
+    "deleteFailed": "Suoritusta ei voitu poistaa.",
+    "checkMode": "Tarkistus",
+    "truncated": "Näytetään pitkän tulosteen loppuosa.",
+    "noOutput": "Ei tulostetta vielä.",
+    "state": {
+      "running": "Käynnissä",
+      "ok": "Valmis",
+      "failed": "Epäonnistui",
+      "cancelled": "Pysäytetty",
+      "lost": "Kadonnut"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Faktat"
+    },
+    "recap": {
+      "host": "Isäntä",
+      "ok": "OK",
+      "changed": "Muutettu",
+      "unreachable": "Saavuttamaton",
+      "failed": "Epäonnistui",
+      "skipped": "Ohitettu"
+    }
+  },
+  "adhoc": {
+    "hint": "Suorita yksi moduuli isännillä, kuten ansible all -m ping.",
+    "pattern": "Isäntien kuvio",
+    "patternHint": "Isäntä, ryhmä tai all.",
+    "module": "Moduuli",
+    "moduleHint": "Esimerkiksi ping, command, shell, apt tai systemd.",
+    "args": "Argumentit",
+    "argsHint": "Command- ja shell-moduuleille tämä on komento. Muille moduuleille se on avain=arvo -pareja.",
+    "run": "Suorita"
+  },
+  "facts": {
+    "hint": "Kerää faktat isännistä setup-moduulilla. Vaatii Termix-isännät, jotta jokaisella on kirjautumistiedot.",
+    "gather": "Kerää faktat",
+    "gathering": "Kerätään...",
+    "failed": "Fakteja ei voitu kerätä.",
+    "failedHost": "Epäonnistui",
+    "none": "Fakteja ei tullut takaisin. Avaa suoritus nähdäksesi syyn.",
+    "col": {
+      "host": "Isäntä",
+      "os": "Järjestelmä",
+      "kernel": "Ydin",
+      "cpu": "Suorittimet",
+      "memory": "Muisti",
+      "address": "Osoite",
+      "uptime": "Käyttöaika"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Listaa playbookit"
+    },
+    "run": {
+      "title": "Suorita playbook",
+      "playbook": "Playbook",
+      "limit": "Rajoitus",
+      "tags": "Tunnisteet",
+      "check": "Tarkistustila"
+    },
+    "runs": {
+      "title": "Listaa suoritukset",
+      "resource": "Suoritukset",
+      "started": "Aloitettu",
+      "check": "Tarkistustila"
+    },
+    "failed": {
+      "title": "Epäonnistuneet suoritukset"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Tarkistetaan isäntiä...",
+    "summary_one": "{{count}} epäonnistunut suoritus {{hosts}} isännällä",
+    "summary_other": "{{count}} epäonnistunutta suoritusta {{hosts}} isännällä",
+    "refresh": "Tarkista uudelleen",
+    "empty": "Ota Ansible käyttöön isännällä nähdäksesi sen suoritukset tässä.",
+    "failed_one": "{{count}} epäonnistunut",
+    "failed_other": "{{count}} epäonnistunutta",
+    "running_one": "{{count}} käynnissä",
+    "running_other": "{{count}} käynnissä",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Ei suorituksia vielä"
+  }
+}

@@ -1,0 +1,451 @@
+{
+  "plugin": {
+    "name": "Mentések",
+    "description": "Mappák, adatbázisok és Docker-adatok biztonsági mentése a hostokon a restic segítségével, majd böngészés, letöltés és visszaállítás."
+  },
+  "common": {
+    "save": "Mentés",
+    "cancel": "Mégse",
+    "back": "Vissza",
+    "delete": "Törlés",
+    "done": "Kész",
+    "loading": "Betöltés...",
+    "refresh": "Frissítés",
+    "retry": "Újrapróbálkozás"
+  },
+  "permissions": {
+    "use": {
+      "title": "Mentések használata",
+      "description": "Mentési feladatok és tárolók beállítása, mentések futtatása, valamint pillanatképek böngészése, letöltése és visszaállítása azokon a hostokon, amelyeket szerkeszthetnek."
+    }
+  },
+  "tab": {
+    "title": "Mentések",
+    "viewJobs": "Feladatok",
+    "viewRepos": "Tárolók",
+    "viewHistory": "Előzmények"
+  },
+  "hostTab": {
+    "title": "Mentések",
+    "noHost": "Nyissa meg a Mentéseket egy hoston.",
+    "viewJobs": "Feladatok",
+    "viewSnapshots": "Pillanatképek",
+    "viewHistory": "Előzmények",
+    "restic": "restic {{version}}",
+    "noRestic": "restic nincs telepítve",
+    "sudo": "A Termicnek rootként, vagy jelszó nélküli sudo jogosultsággal rendelkező felhasználóként kell bejelentkeznie a mentések futtatásához ezen a hoston.",
+    "statusFailed": "Nem sikerült beolvasni ezt a hostot"
+  },
+  "install": {
+    "missing": "A restic nincs telepítve ezen a hoston",
+    "tooOld": "A restic ezen a hoston régebbi, mint a 0.17-es verzió",
+    "hint": "A mentések a restic programot használják. Telepítse a csomagkezelővel, vagy a GitHubon elérhető restic kiadásból, ha a csomag túl régi.",
+    "button": "restic telepítése",
+    "working": "Telepítés...",
+    "title": "Telepítse a restic programot?",
+    "desc": "Ez root jogosultsággal telepíti a restic programot a hoston.",
+    "confirm": "Telepítés",
+    "done": "A restic {{version}} telepítve",
+    "failed": "Nem sikerült telepíteni a restic programot"
+  },
+  "status": {
+    "never": "Soha nem futott",
+    "running": "Fut",
+    "success": "Kész",
+    "warning": "Figyelmeztetések",
+    "failed": "Sikertelen",
+    "canceled": "Megállítva"
+  },
+  "time": {
+    "justNow": "éppen most",
+    "soon": "egy pillanat múlva",
+    "ago": {
+      "minutes_one": "{{count}} perce",
+      "minutes_other": "{{count}} perce",
+      "hours_one": "{{count}} órája",
+      "hours_other": "{{count}} órája",
+      "days_one": "{{count}} napja",
+      "days_other": "{{count}} napja"
+    },
+    "in": {
+      "minutes_one": "{{count}} perc múlva",
+      "minutes_other": "{{count}} perc múlva",
+      "hours_one": "{{count}} óra múlva",
+      "hours_other": "{{count}} óra múlva",
+      "days_one": "{{count}} nap múlva",
+      "days_other": "{{count}} nap múlva"
+    }
+  },
+  "jobs": {
+    "add": "Feladat hozzáadása",
+    "empty": "Még nincsenek mentési feladatok",
+    "emptyHint": "Adjon hozzá egy feladatot mappák, adatbázisok vagy Docker-adatok mentéséhez.",
+    "emptyNoRepo": "Először adjon hozzá egy tárolót, hogy legyen hová menteni az adatokat.",
+    "loadFailed": "Nem sikerült betölteni a mentési feladatokat",
+    "lastGood": "Utolsó mentés: {{when}}",
+    "noGood": "Még nincs mentés",
+    "next": "Következő: {{when}}",
+    "paused": "Szüneteltetve",
+    "run": "Futtatás most",
+    "stop": "Megállítás",
+    "edit": "Szerkesztés",
+    "snapshots": "Pillanatképek",
+    "started": "A(z) {{name}} elindult",
+    "runFailed": "A biztonsági mentés nem indítható el"
+  },
+  "editor": {
+    "newTitle": "Új biztonsági mentési feladat",
+    "general": "Feladat",
+    "host": "Host",
+    "pickHost": "Válassz egy hostot",
+    "name": "Név",
+    "namePlaceholder": "Éjszakai biztonsági mentés",
+    "repository": "Tároló",
+    "pickRepository": "Válassz egy tárolót",
+    "noRepos": "Nincs olyan tárolód, amelyet ez a host használhatna. Adj hozzá először a Biztonsági mentések fülön.",
+    "repoLocked": "Csak a tároló tulajdonosa módosíthatja.",
+    "enabled": "Ütemezett futtatás",
+    "enabledHint": "Kapcsold ki az ütemezés szüneteltetéséhez. A most futtatás továbbra is működik.",
+    "oneFileSystem": "Egy fájlrendszeren belül maradás",
+    "oneFileSystemHint": "Kihagyja a kiválasztott mappákban található egyéb lemezeket és csatolási pontokat.",
+    "saved": "Feladat mentve",
+    "saveFailed": "A feladat nem menthető",
+    "deleteTitle": "Törli a(z) {{name}} feladatot?",
+    "deleteDesc": "A feladat eltávolításra kerül a Termixből. A pillanatképek megmaradnak a tárolóban.",
+    "deleted": "Feladat törölve",
+    "deleteFailed": "A feladat nem törölhető"
+  },
+  "sources": {
+    "add": "Hozzáadás a biztonsági mentéshez",
+    "addPaths": "Mappák",
+    "addDatabase": "Adatbázis",
+    "addDocker": "Docker",
+    "remove": "Eltávolítás",
+    "paths": "Mappák és fájlok",
+    "folders": "Útvonalak",
+    "foldersHint": "Sorban egy teljes útvonal.",
+    "excludes": "Kihagyás",
+    "excludesHint": "Sorban egy restic minta, például *.log.",
+    "database": "Adatbázis",
+    "engine": "Típus",
+    "engines": {
+      "mysql": "MySQL vagy MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Bejelentkezés",
+    "ownLogin": "Írd be ide a bejelentkezési adatot",
+    "noDatabasesPlugin": "Kapcsold be az Adatbázisok bővítményt a mentett bejelentkezési adat kiválasztásához.",
+    "address": "Cím",
+    "addressPlaceholder": "Üres a helyi socket esetén",
+    "port": "Port",
+    "username": "Felhasználó",
+    "password": "Jelszó",
+    "passwordSaved": "Mentve, hagyd üresen a megtartáshoz",
+    "runAs": "Futtatás mint",
+    "runAsHint": "Egy Linux felhasználó, akinek a nevében a dump fut, például postgres. Üresen hagyva rootként fut.",
+    "databases": "Adatbázisok",
+    "databasesHint": "Sorban egy név. Hagyd üresen az összes mentéséhez.",
+    "sqliteFiles": "Adatbázis-fájlok",
+    "sqliteFilesHint": "Sorban egy teljes útvonal. Minden fájl biztonságosan másolódik használat közben.",
+    "docker": "Docker",
+    "stacks": "Stackek",
+    "volumes": "Kötetek",
+    "noStacks": "Nem található compose stack",
+    "noVolumes": "Nem található kötet",
+    "dockerFailed": "A Docker nem listázható ezen a hoston",
+    "stop": "Megszakítja a stackek futtatását a mentés során",
+    "stopHint": "A kiválasztott stackek először leállnak, majd a mentés után újra elindulnak, így a fájlaik nem változnak az olvasás közben."
+  },
+  "schedule": {
+    "title": "Ütemezés",
+    "manual": "Manuálisan",
+    "daily": "Napi",
+    "weekly": "Heti",
+    "custom": "Egyedi",
+    "day": "Nap",
+    "time": "Időpont",
+    "cron": "Cron",
+    "cronHint": "Perc, óra, hónap napja, hónap, hét napja.",
+    "cronInvalid": "Ez a cron kifejezés érvénytelen",
+    "timezone": "Időzóna",
+    "serverTime": "Szerver idő",
+    "manualHint": "Ez a feladat csak akkor fut le, ha megnyomja a Most futtatása gombot.",
+    "manualOnly": "Manuálisan",
+    "next": "Következő futtatás: {{time}}",
+    "noNext": "Ez az ütemezés soha nem fut le",
+    "dailyAt": "Napi {{time}}-kor",
+    "weeklyAt": "{{day}}, {{time}}-kor",
+    "days": {
+      "0": "Vasárnap",
+      "1": "Hétfő",
+      "2": "Kedd",
+      "3": "Szerda",
+      "4": "Csütörtök",
+      "5": "Péntek",
+      "6": "Szombat"
+    }
+  },
+  "keep": {
+    "title": "Megőrzés",
+    "last": "Utolsó",
+    "daily": "Napi",
+    "weekly": "Heti",
+    "monthly": "Havi",
+    "yearly": "Éves",
+    "hint": "Minden mentés után a feladat régebbi pillanatképei törlődnek, így csak ezek maradnak meg. A 0 érték mindent megőriz."
+  },
+  "hooks": {
+    "title": "Parancsok",
+    "pre": "Előtte",
+    "preHint": "Root felhasználóként fut a mentés előtt. Ha hiba történik, a mentés leáll.",
+    "post": "Utána",
+    "postHint": "Root felhasználóként fut a mentés után, még akkor is, ha az sikertelen volt. A TERMIX_BACKUP_STATUS változó tartalmazza az eredményt."
+  },
+  "alerts": {
+    "title": "Riasztások",
+    "onFailure": "Riasztás mentési hiba esetén",
+    "onFailureHint": "Figyelmeztet figyelmeztetéseknél is, és egyszer, amikor újra működik.",
+    "staleDays": "Napok mentés nélkül",
+    "staleDaysHint": "Riasztás, ha ennyi napig nem sikerült a mentés. A 0 érték kikapcsolja."
+  },
+  "repos": {
+    "add": "Tároló hozzáadása",
+    "empty": "Még nincsenek tárolók",
+    "emptyHint": "A tároló az a hely, ahol a mentések tárolódnak, például egy S3 bucket vagy egy mappa.",
+    "loadFailed": "Nem sikerült betölteni a tárolókat",
+    "jobCount_one": "{{count}} feladat",
+    "jobCount_other": "{{count}} feladat",
+    "newTitle": "Új tároló",
+    "storage": "Tárhely",
+    "name": "Név",
+    "namePlaceholder": "Offsite S3",
+    "kind": "Típus",
+    "kinds": {
+      "s3": "S3 kompatibilis",
+      "rest": "REST szerver",
+      "rclone": "rclone",
+      "local": "Mappa egy hoszton"
+    },
+    "endpoint": "Végpont",
+    "endpointHint": "AWS esetén üresen hagyandó. MinIO, R2, B2 vagy Wasabi esetén az S3 címük.",
+    "region": "Régió",
+    "bucket": "Bucket",
+    "prefix": "Mappa a bucketben",
+    "prefixHint": "Opcionális.",
+    "accessKeyId": "Hozzáférési kulcs azonosítója",
+    "secretKey": "Titkos hozzáférési kulcs",
+    "secretSaved": "Mentve, hagyja üresen a megtartáshoz",
+    "url": "Szerver címe",
+    "username": "Felhasználó",
+    "usernameHint": "Üres, ha a szervernek nincs belépési adata.",
+    "restPassword": "Jelszó",
+    "remote": "Távoli név",
+    "remoteHint": "Csak betűk, számok és _.",
+    "path": "Útvonal",
+    "rcloneConfig": "rclone konfiguráció",
+    "rcloneHint": "A távoli bejegyzés sorai az rclone.conf-ból. Futtassa az rclone config parancsot a számítógépén a létrehozásukhoz. Az rclone-nak telepítve kell lennie a hostokon.",
+    "rcloneSaved": "Mentve, hagyja üresen a megtartáshoz",
+    "host": "Host",
+    "pickHost": "Válasszon egy hostot",
+    "folder": "Mappa",
+    "folderHint": "Csak ezen a hoston futó feladatok használhatják. Egy csatolt lemez a legjobb.",
+    "password": "Titkosítás",
+    "resticPassword": "Tároló jelszava",
+    "passwordHint": "Hagyja üresen, és a Termix generál egy erős jelszót. Tartsa meg egy példányt biztonságos helyen: nélküle a mentések nem olvashatók.",
+    "passwordKeep": "Mentve, hagyja üresen a megtartáshoz",
+    "passwordChangeHint": "Ez csak azt változtatja meg, amit a Termix küld. Nem változtatja meg egy meglévő tároló jelszavát.",
+    "reveal": "Jelszó megjelenítése",
+    "revealTitle": "Megjeleníti a tároló jelszavát?",
+    "revealDesc": "Bárki, aki rendelkezik vele és a tárolási kulcsokkal, elolvashatja a mentéseket ebben a tárolóban. Ez rögzítésre kerül az ellenőrzési naplóban.",
+    "revealFailed": "Nem sikerült beolvasni a jelszót",
+    "copy": "Másolás",
+    "copied": "Másolva",
+    "check": "Ellenőrzés",
+    "checkFrom": "Ellenőrzés innen",
+    "checkFromHint": "A host, amely megnyitja a tárolót. Szükséges rá a restic.",
+    "checkButton": "Ellenőrzés",
+    "initButton": "Ellenőrzés és beállítás",
+    "installRclone": "rclone telepítése erre a hostra",
+    "rcloneInstalled": "Az rclone {{version}} telepítve van.",
+    "rcloneFailed": "Nem sikerült telepíteni az rclone-t",
+    "checking": "Ellenőrzés...",
+    "opened": "A tároló rendben megnyílt.",
+    "created": "A tároló beállítva és készen áll.",
+    "checkFailed": "Nem sikerült megnyitni a tárolót",
+    "checkNext": "Mentve. Ellenőrizze egy hostról a beállításhoz.",
+    "saved": "Tároló mentve",
+    "saveFailed": "Nem sikerült menteni a tárolót",
+    "deleteTitle": "Törli a(z) {{name}}-t?",
+    "deleteDesc": "Csak a Termixből kerül törlésre. A mentések a tárolóban maradnak.",
+    "deleted": "Tároló törölve",
+    "deleteFailed": "Nem sikerült törölni a tárolót"
+  },
+  "snapshots": {
+    "noJobs": "Először adjon hozzá egy mentési feladatot.",
+    "job": "Feladat",
+    "titleFor": "A(z) {{name}} pillanatképei",
+    "empty": "Még nincsenek pillanatképek",
+    "loadFailed": "Nem sikerült beolvasni a pillanatképeket",
+    "latest": "Legújabb",
+    "files_one": "{{count}} fájl",
+    "files_other": "{{count}} fájl",
+    "browse": "Böngészés",
+    "delete": "Törlés",
+    "deleteTitle": "Törli ezt a pillanatképet?",
+    "deleteDesc": "A(z) {{time}} időpontbeli pillanatkép véglegesen eltávolításra kerül a tárolóból.",
+    "deleted": "Pillanatkép törölve",
+    "deleteFailed": "Nem sikerült törölni a pillanatképet",
+    "browseTitle": "Pillanatkép: {{time}}",
+    "root": "Gyökér",
+    "emptyFolder": "Ez a mappa üres",
+    "filesFailed": "Nem sikerült listázni ezt a mappát",
+    "pick": "Kijelölés",
+    "download": "Letöltés",
+    "downloadZip": "Letöltés zip formátumban",
+    "downloadFailed": "Nem sikerült letölteni",
+    "restoreAll": "Összes visszaállítása",
+    "restorePicked_one": "{{count}} elem visszaállítása",
+    "restorePicked_other": "{{count}} elem visszaállítása"
+  },
+  "restore": {
+    "title": "Visszaállítás",
+    "what": "Mi",
+    "everything": "A pillanatkép teljes tartalma.",
+    "more_one": "és {{count}} további",
+    "more_other": "és {{count}} további",
+    "where": "Hova",
+    "host": "Host",
+    "hostHint": "Bármely olyan host, amelyet szerkeszthetsz, és amely elérheti a tárolót.",
+    "localOnly": "Ez a tároló egy mappa a saját hostján, így csak oda állítható vissza.",
+    "toFolder": "Egy mappába",
+    "toOriginal": "A eredeti helyére",
+    "folder": "Mappa",
+    "folderHint": "A fájlok megtartják a teljes elérési útjukat ezen a mappán belül.",
+    "originalWarning": "A fájlok visszaírásra kerülnek az eredeti helyükre, és felülírhatják az ott lévő jelenlegi fájlokat.",
+    "overwrite": "Már létező fájlok",
+    "overwriteOptions": {
+      "if-changed": "Csere módosulás esetén",
+      "always": "Mindig felülír",
+      "if-newer": "Csere, ha a biztonsági mentés újabb",
+      "never": "Soha ne írja felül"
+    },
+    "start": "Visszaállítás",
+    "started": "A visszaállítás elindult",
+    "failed": "Nem sikerült elindítani a visszaállítást"
+  },
+  "run": {
+    "title": "Futtatás",
+    "backupTitle": "{{name}} biztonsági mentése",
+    "restoreTitle": "{{name}} visszaállítása",
+    "loadFailed": "Nem sikerült betölteni a futtatást",
+    "progress": "Haladás",
+    "preparing": "Felkészülés...",
+    "progressLine": "{{percent}}% | {{files}} / {{totalFiles}} fájl | {{bytes}} / {{totalBytes}}",
+    "left": "{{time}} van hátra",
+    "details": "Részletek",
+    "started": "Kezdés",
+    "finished": "Befejezés",
+    "trigger": "Indította",
+    "triggers": {
+      "manual": "Futtatás most",
+      "schedule": "Ütemezés",
+      "operation": "Termix művelet"
+    },
+    "snapshot": "Pillanatkép",
+    "target": "Visszaállítva ide",
+    "files": "Fájlok",
+    "filesLine": "{{total}} fájl, {{added}} új, {{changed}} módosult",
+    "size": "Méret",
+    "added": "Hozzáadva a tárolóhoz",
+    "took": "Időtartam",
+    "log": "Napló",
+    "noLog": "Még nincs napló.",
+    "stopTitle": "Megállítja ezt a futtatást?",
+    "stopDesc": "Egy leállított mentés nem készít pillanatképet. Egy leállított visszaállítás a már visszaállított fájlokat meghagyja.",
+    "stopSent": "Leállítás",
+    "stopFailed": "Nem sikerült leállítani a futtatást"
+  },
+  "history": {
+    "empty": "Még nem futott semmi",
+    "loadFailed": "Nem sikerült betölteni az előzményeket",
+    "status": "Állapot",
+    "job": "Feladat",
+    "host": "Host",
+    "kind": "Típus",
+    "kinds": {
+      "backup": "Mentés",
+      "restore": "Visszaállítás"
+    },
+    "started": "Indítás",
+    "took": "Időtartam",
+    "size": "Méret"
+  },
+  "card": {
+    "title": "Mentések",
+    "all": "Összes mentési feladat",
+    "oneJob": "Egy mentési feladat",
+    "empty": "Még nincsenek mentési feladatok.",
+    "gone": "Ezt a mentési feladatot törölték.",
+    "open": "Megnyitás"
+  },
+  "operations": {
+    "list": {
+      "title": "Mentési feladatok listázása"
+    },
+    "failed": {
+      "title": "Sikertelen mentések"
+    },
+    "run": {
+      "title": "Mentés futtatása"
+    },
+    "cancel": {
+      "title": "Mentés leállítása"
+    },
+    "snapshots": {
+      "title": "Pillanatképek listázása"
+    },
+    "events": {
+      "finished": "A mentés befejeződött",
+      "failed": "A mentés sikertelen"
+    },
+    "jobs": {
+      "title": "Mentési feladatok",
+      "lastSuccess": "Utolsó mentés",
+      "nextRun": "Következő futtatás",
+      "size": "Méret"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Mentések panel megjelenítése a terminálokban",
+        "description": "A mentések panel nyitva marad ezen a hoston az SSH terminál mellett."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Mentések panel megnyitása az új terminálokkal",
+        "description": "A mentések panel megjelenítése minden olyan SSH terminál mellett, ahol be van kapcsolva. A jobb szélen található gombbal továbbra is megnyithatod és bezárhatod."
+      },
+      "companionSide": {
+        "label": "Mentések panel oldala",
+        "description": "Ahol a mentések panel a terminál mellett helyezkedik el.",
+        "right": "Jobb",
+        "left": "Bal",
+        "bottom": "Alsó"
+      },
+      "companionSize": {
+        "label": "Mentések panel mérete",
+        "description": "Szélesség pixelben, vagy magasság, ha alul van. A szélét húzva is átméretezheted."
+      },
+      "companionEdgeButton": {
+        "label": "Panel gomb megjelenítése",
+        "description": "Egy kis gomb megjelenítése a terminál jobb szélén, amely megnyitja a mentések panelt."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Mentések panel be/ki"
+  }
+}

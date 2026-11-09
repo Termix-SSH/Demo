@@ -80,6 +80,9 @@ export function AdminGeneralSettingsSection({
             {t("admin.notificationPrivateEndpointsDesc")}
           </span>
           <Input
+            // The list loads after the first render; remount so the box shows
+            // it instead of staying empty and saving "" on blur.
+            key={notificationPrivateEndpoints.join(",")}
             className="rounded-none"
             defaultValue={notificationPrivateEndpoints.join(", ")}
             placeholder="ntfy.internal, 192.168.1.20"
@@ -465,7 +468,7 @@ export function AdminSSLSection({
             onChange={(e) => setManualCertDraft(e.target.value)}
             placeholder={t("admin.sslManualCertPlaceholder")}
             spellCheck={false}
-            className="w-full px-2 py-1.5 text-[10px] font-mono bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring"
+            className="w-full px-2 py-1.5 text-[10px] font-mono bg-popover border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring"
           />
         </div>
 
@@ -479,7 +482,7 @@ export function AdminSSLSection({
             onChange={(e) => setManualKeyDraft(e.target.value)}
             placeholder={t("admin.sslManualKeyPlaceholder")}
             spellCheck={false}
-            className="w-full px-2 py-1.5 text-[10px] font-mono bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring"
+            className="w-full px-2 py-1.5 text-[10px] font-mono bg-popover border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring"
           />
           <span className="text-[10px] text-muted-foreground">
             {t("admin.sslManualDesc")}

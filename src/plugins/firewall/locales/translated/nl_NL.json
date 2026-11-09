@@ -1,0 +1,356 @@
+{
+  "tab": {
+    "title": "Firewall",
+    "noHost": "Open de firewall vanaf een host.",
+    "refresh": "Vernieuwen",
+    "error": "De firewall op deze host kan niet worden gelezen.",
+    "disabled": "De firewall is uitgeschakeld voor deze host. Schakel deze in via de hostinstellingen.",
+    "sudo": "Deze host vereist wachtelloos sudo of een root-login om de firewall te lezen en te wijzigen.",
+    "noFirewall": "Geen firewall",
+    "on": "aan",
+    "off": "uit",
+    "readOnly": "alleen-lezen",
+    "ruleCount_one": "{{count}} regel",
+    "ruleCount_other": "{{count}} regels",
+    "viewRules": "Regels",
+    "viewDefaults": "Standaardwaarden",
+    "viewZones": "Zones",
+    "viewFail2ban": "Fail2ban",
+    "viewRaw": "Ruw"
+  },
+  "common": {
+    "loading": "Laden...",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "delete": "Verwijderen",
+    "edit": "Bewerken",
+    "done": "Klaar",
+    "failed": "Dat is niet gelukt."
+  },
+  "actions": {
+    "allow": "Toestaan",
+    "deny": "Weigeren",
+    "reject": "Afwijzen",
+    "limit": "Beperken"
+  },
+  "policies": {
+    "allow": "Toestaan",
+    "deny": "Weigeren (droppen)",
+    "reject": "Afwijzen"
+  },
+  "rule": {
+    "action": "Actie",
+    "direction": "Richting",
+    "in": "Inkomend",
+    "out": "Uitgaand",
+    "protocol": "Protocol",
+    "anyProtocol": "TCP en UDP",
+    "port": "Poort",
+    "portPlaceholder": "22, 80,443 of 8000-8100",
+    "portHint": "Laat leeg voor elke poort. Lijsten en bereiken vereisen TCP of UDP.",
+    "anyPort": "elke poort",
+    "source": "Van",
+    "destination": "Naar",
+    "anywhere": "Overal",
+    "addressHint": "Een adres of een bereik zoals 10.0.0.0/8.",
+    "family": "IP-versie",
+    "bothFamilies": "IPv4 en IPv6",
+    "iface": "Interface",
+    "anyIface": "Elke interface",
+    "service": "Service",
+    "serviceHint": "Een firewalld-servicenaam, in plaats van een poort.",
+    "comment": "Opmerking",
+    "commentPlaceholder": "Waar deze regel voor dient",
+    "zoneLabel": "Zone",
+    "from": "van {{address}}",
+    "to": "naar {{address}}",
+    "on": "op {{iface}}",
+    "zone": "zone {{zone}}"
+  },
+  "presets": {
+    "ssh": "SSH",
+    "http": "HTTP",
+    "https": "HTTPS",
+    "web": "Web",
+    "dns": "DNS",
+    "smtp": "Mail",
+    "mysql": "MySQL",
+    "postgres": "PostgreSQL",
+    "redis": "Redis",
+    "samba": "Samba",
+    "wireguard": "WireGuard",
+    "minecraft": "Minecraft"
+  },
+  "rules": {
+    "add": "Regel toevoegen",
+    "addTitle": "Nieuwe regel",
+    "editTitle": "Regel bewerken",
+    "added": "Regel toegevoegd",
+    "saved": "Regel opgeslagen",
+    "deleted": "Regel verwijderd",
+    "confirmDelete": "Deze regel verwijderen?",
+    "search": "Zoeken in poorten, adressen en opmerkingen",
+    "empty": "Nog geen regels.",
+    "noMatch": "Geen regels gevonden.",
+    "readOnly": "Alleen-lezen",
+    "deleteOnly": "Alleen verwijderen",
+    "stale": "De regels zijn op de host gewijzigd. Vernieuw en probeer het opnieuw.",
+    "filters": {
+      "all": "Alles",
+      "in": "Inkomend",
+      "out": "Uitgaand",
+      "readOnly": "Alleen-lezen"
+    }
+  },
+  "defaults": {
+    "hint": "Wat er gebeurt met verkeer dat niet door een regel wordt gedekt.",
+    "incoming": "Inkomend",
+    "outgoing": "Uitgaand",
+    "routed": "Gerooteerd",
+    "saved": "Standaardwaarden opgeslagen"
+  },
+  "zones": {
+    "hint": "Firewalld plaatst elk netwerkinterface en bron in een zone. Het doel van een zone bepaalt wat er gebeurt met verkeer dat niet door de regels van die zone wordt gedekt.",
+    "defaultZone": "Standaardzone",
+    "default": "Standaard",
+    "active": "Actief",
+    "target": "Doel",
+    "interfaces": "interfaces {{list}}",
+    "sources": "bronnen {{list}}",
+    "saved": "Zone opgeslagen",
+    "targets": {
+      "default": "Standaard (afwijzen)",
+      "ACCEPT": "Accepteren",
+      "DROP": "Verwijderen",
+      "REJECT": "Afwijzen"
+    }
+  },
+  "enable": {
+    "off": "De firewall is uitgeschakeld, dus op dit moment zijn geen van deze regels van toepassing.",
+    "allowSsh": "Sta eerst SSH toe op poort {{ports}}",
+    "allowSshHint": "Zorgt ervoor dat Termix en je eigen SSH-aanmeldingen blijven werken.",
+    "button": "Inschakelen",
+    "done": "Firewall ingeschakeld",
+    "timerHint": "Bij het inschakelen start een timer. Als je niet op tijd op Behouden drukt, schakelt de host de firewall automatisch weer uit."
+  },
+  "disable": {
+    "button": "Uitschakelen",
+    "title": "Firewall uitschakelen?",
+    "description": "Alle regels worden niet langer toegepast totdat je de firewall weer inschakelt.",
+    "done": "Firewall uitgeschakeld"
+  },
+  "install": {
+    "none": "Deze host heeft nog geen firewall.",
+    "hint": "Installeer er een om te beginnen. Er wordt niets ingeschakeld totdat jij dat doet.",
+    "button": "{{name}} installeren",
+    "working": "Installeren...",
+    "done": "{{name}} geïnstalleerd",
+    "noPackageManager": "Termix kon geen bekende pakketbeheerder vinden op deze host."
+  },
+  "lockout": {
+    "title": "Dit kan Termix buitensluiten",
+    "description": "Dutch: {{reason}}. Als Termix na de wijziging niet meer kan verbinden, ongedaan de host dit automatisch als de timer afloopt. Toch doorgaan?",
+    "confirm": "Dutch: Toch doorgaan"
+  },
+  "pending": {
+    "started": "Dutch: Wijziging toegepast. Druk op Behouden om het permanent te maken.",
+    "left": "Dutch: Ongedaan gemaakt over {{seconds}} s, tenzij je op Behouden drukt",
+    "expired": "Dutch: Tijd verstreken, de host maakt de wijziging ongedaan",
+    "reachable": "Dutch: Termix kon nog steeds verbinden",
+    "unreachable": "Dutch: Termix kon niet verbinden na de wijziging",
+    "unknown": "Dutch: Verbinding controleren",
+    "keep": "Dutch: Behouden",
+    "undo": "Dutch: Nu ongedaan maken",
+    "kept": "Dutch: Wijziging behouden",
+    "undone": "Dutch: Wijziging ongedaan gemaakt",
+    "gone": "Dutch: Tijd verstreken en de host heeft de wijziging al ongedaan gemaakt.",
+    "first": "Dutch: Behoud of maak eerst de laatste wijziging ongedaan.",
+    "kinds": {
+      "add": "Dutch: Nieuwe regel",
+      "update": "Dutch: Gewijzigde regel",
+      "remove": "Dutch: Verwijderde regel",
+      "defaults": "Dutch: Nieuwe standaardwaarden",
+      "enable": "Dutch: Firewall ingeschakeld",
+      "disable": "Dutch: Firewall uitgeschakeld",
+      "zoneTarget": "Dutch: Nieuw zone-doel",
+      "defaultZone": "Dutch: Nieuwe standaardzone",
+      "ruleset": "Dutch: Regelset toegepast"
+    }
+  },
+  "fail2ban": {
+    "loadFailed": "Dutch: Fail2ban kon niet worden gelezen.",
+    "notInstalled": "Dutch: Fail2ban is niet geïnstalleerd. Het blokkeert adressen die te vaak mislukte inlogpogingen doen.",
+    "stopped": "Dutch: Fail2ban is geïnstalleerd maar draait niet.",
+    "start": "Dutch: Fail2ban starten",
+    "started": "Dutch: Fail2ban gestart",
+    "noJails": "Dutch: Geen gevangenissen zijn ingeschakeld.",
+    "none": "Dutch: Niets geblokkeerd.",
+    "bannedCount_one": "{{count}} geblokkeerd",
+    "bannedCount_other": "{{count}} geblokkeerd",
+    "counts": "Dutch: {{failed}} nu mislukt | {{totalFailed}} mislukt | {{totalBanned}} totaal geblokkeerd",
+    "ban": "Dutch: Blokkeren",
+    "unban": "Dutch: Deblokkeren",
+    "banAddress": "Dutch: Een adres blokkeren",
+    "banned": "Dutch: {{ip}} geblokkeerd",
+    "unbanned": "Dutch: {{ip}} gedeblokkeerd",
+    "selfTitle": "Dutch: Het Termix-adres blokkeren?",
+    "selfDescription": "Dutch: Termix verbindt vanaf dit adres. Het blokkeren ervan onderbreekt de verbinding van Termix met deze host."
+  },
+  "raw": {
+    "empty": "Dutch: Niets te tonen."
+  },
+  "watch": {
+    "start": "Dutch: Waarschuw me als deze firewall verandert",
+    "stop": "Dutch: Waarschuwingen voor deze firewall stoppen"
+  },
+  "companion": {
+    "openTab": "Dutch: Het tabblad Firewall openen",
+    "toggle": "Dutch: Firewallpaneel",
+    "allowPort": "Dutch: Een TCP-poort toestaan"
+  },
+  "card": {
+    "title": "Dutch: Firewalls",
+    "empty": "Dutch: Geen hosts hebben Firewall ingeschakeld.",
+    "banned_one": "{{count}} geblokkeerd",
+    "banned_other": "{{count}} geblokkeerd",
+    "pending": "Dutch: In afwachting"
+  },
+  "rulesets": {
+    "title": "Dutch: Firewallregelsets",
+    "hint": "Dutch: Sla een lijst met regels op en voeg deze in één keer toe aan veel hosts. Toepassen voegt alleen ontbrekende regels toe, het verwijdert er nooit.",
+    "add": "Dutch: Nieuwe regelset",
+    "addTitle": "Dutch: Nieuwe regelset",
+    "editTitle": "Dutch: Regelset bewerken",
+    "loadFailed": "Dutch: Uw regelsets konden niet worden geladen.",
+    "empty": "Dutch: Nog geen regelsets.",
+    "name": "Dutch: Naam",
+    "namePlaceholder": "Dutch: Webserver",
+    "description": "Dutch: Beschrijving",
+    "rules": "Dutch: Regels",
+    "noRules": "Nog geen regels in deze set.",
+    "hosts": "Hosts",
+    "noHosts": "Geen hosts hebben Firewall ingeschakeld.",
+    "saved": "Regelset opgeslagen",
+    "deleted": "Regelset verwijderd",
+    "confirmDelete": "{{name}} verwijderen?",
+    "deleteHint": "Regels die al aan hosts zijn toegevoegd, blijven behouden.",
+    "ruleCount_one": "{{count}} regel",
+    "ruleCount_other": "{{count}} regels",
+    "hostCount_one": "{{count}} host",
+    "hostCount_other": "{{count}} hosts",
+    "check": "Hosts controleren",
+    "apply": "Toepassen",
+    "applyTitle": "{{name}} toepassen?",
+    "applyDescription": "Ontbrekende regels worden op elke host toegevoegd. Elke host krijgt de SSH-lockoutcontrole, en als Termix een host daarna niet meer kan bereiken, wordt de wijziging automatisch ongedaan gemaakt.",
+    "applied": "Regelset toegepast",
+    "applyErrors_one": "{{count}} host had een probleem",
+    "applyErrors_other": "{{count}} hosts hadden een probleem",
+    "applyResult": "{{name}} toegepast",
+    "driftTitle": "{{name}} op elke host",
+    "inSync": "Bevat alle regels",
+    "ok": "Gesynchroniseerd",
+    "missing_one": "{{count}} ontbreekt",
+    "missing_other": "{{count}} ontbreken",
+    "nothingMissing": "Alle regels waren al aanwezig",
+    "added_one": "{{count}} regel toegevoegd",
+    "added_other": "{{count}} regels toegevoegd",
+    "waiting": "Toegevoegd, maar Termix kon daarna geen verbinding maken. De host zal dit ongedaan maken.",
+    "fleet": "Fleet",
+    "applyFleet": "Toepassen op de fleet"
+  },
+  "permissions": {
+    "use": {
+      "title": "Firewall gebruiken",
+      "description": "Open het tabblad Firewall op hosts die je kunt bereiken. Voor wijzigingen is ook schrijftoegang tot de host nodig."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Firewall",
+        "description": "Toon het tabblad Firewall voor deze host om de firewall via SSH te beheren."
+      },
+      "useSudo": {
+        "label": "Sudo gebruiken",
+        "description": "Voer firewallcommando's uit met sudo zonder wachtwoord als de inlog niet root is."
+      },
+      "readOnly": {
+        "label": "Alleen-lezen",
+        "description": "Toon de firewall, maar blokkeer alle wijzigingen vanuit Termix."
+      },
+      "sshGuard": {
+        "label": "SSH-lockoutcontrole",
+        "description": "Stop en vraag om bevestiging voordat een wijziging wordt doorgevoerd die SSH-toegang vanuit Termix zou kunnen blokkeren."
+      },
+      "rollbackSeconds": {
+        "label": "Ongedaan-maaktimer",
+        "description": "Aantal seconden dat je hebt om op Bewaren te drukken na een risicovolle wijziging, voordat de host deze ongedaan maakt."
+      },
+      "confirmAll": {
+        "label": "Timer bij elke wijziging",
+        "description": "Gebruik de ongedaan-maaktimer voor elke wijziging, niet alleen voor de risicovolle."
+      },
+      "showPanel": {
+        "label": "Firewallpaneel",
+        "description": "Toon het firewallpaneel naast SSH-terminalen voor deze host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Open het firewallpaneel met een terminal",
+        "description": "Toon het firewallpaneel wanneer een terminal opent op een host die dit heeft."
+      },
+      "companionSide": {
+        "label": "Positie firewallpaneel",
+        "description": "Waar het paneel naast de terminal staat.",
+        "right": "Rechts",
+        "left": "Links",
+        "bottom": "Onder"
+      },
+      "companionSize": {
+        "label": "Grootte firewallpaneel",
+        "description": "Breedte, of hoogte onderaan, in pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Firewall paneel knop aan de rand",
+        "description": "Toon een kleine knop aan de rand van het terminalvenster om het paneel te openen."
+      }
+    }
+  },
+  "manager": {
+    "title": "Firewall",
+    "disabled": "Schakel de firewall in de instellingen van deze host in om deze hier te beheren."
+  },
+  "operations": {
+    "list": {
+      "title": "Firewallregels weergeven"
+    },
+    "status": {
+      "title": "Firewall"
+    },
+    "portAllowed": {
+      "title": "Poort is toegestaan",
+      "description": "Of er een toelatingsregel voor deze poort bestaat. Gebruik dit om hosts te controleren op afwijkingen."
+    },
+    "allow": {
+      "title": "Poort toestaan"
+    },
+    "remove": {
+      "title": "Toegestane poort verwijderen"
+    },
+    "delete": {
+      "title": "Firewallregel verwijderen"
+    },
+    "rules": {
+      "title": "Firewallregels"
+    },
+    "port": "Poort",
+    "protocol": "Protocol",
+    "tcp": "TCP",
+    "udp": "UDP",
+    "any": "Alle",
+    "source": "Van",
+    "sourceHint": "Een adres of bereik. Leeg betekent overal.",
+    "direction": "Richting"
+  }
+}

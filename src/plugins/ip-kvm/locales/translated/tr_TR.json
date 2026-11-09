@@ -1,0 +1,226 @@
+{
+  "plugin": {
+    "name": "IP-KVM",
+    "description": "PiKVM, NanoKVM ve JetKVM cihazları aracılığıyla makineleri görüntüleyin ve kontrol edin."
+  },
+  "tab": {
+    "title": "KVM"
+  },
+  "card": {
+    "title": "KVM",
+    "loading": "Yükleniyor"
+  },
+  "host": {
+    "open": "KVM"
+  },
+  "permissions": {
+    "view": {
+      "title": "KVM'leri görüntüle",
+      "description": "KVM sekmesini açın, hangi KVM'lerin çevrimiçi olduğunu ve hangi güç durumlarını bildirdiğini görün."
+    },
+    "power": {
+      "title": "Gücü kontrol et",
+      "description": "Makineleri KVM üzerinden açın, kapatın ve yeniden başlatın veya Wake-on-LAN ile uyarın."
+    },
+    "console": {
+      "title": "Ekranı kullan",
+      "description": "Bir makinenin ekranını görüntüleyin ve klavye ile fareyi kullanın."
+    },
+    "media": {
+      "title": "Sanal medyayı kullan",
+      "description": "Bir makineye ISO görüntüleri bağlayın ve çıkarın."
+    },
+    "manage": {
+      "title": "KVM'leri yönet",
+      "description": "KVM ekleyin, düzenleyin ve kaldırın."
+    }
+  },
+  "settings": {
+    "admin": {
+      "maxSessionMinutes": {
+        "label": "En uzun ekran oturumu (dakika)",
+        "description": "Bir ekran oturumu bu süre sonunda sona erer. Sınırsız kullanım için 0 kullanın."
+      }
+    }
+  },
+  "description": "IP-KVM'lerinizi ekleyerek arkalarındaki makineleri görüntüleyin ve kontrol edin. Termix KVM'ye bağlanır, böylece tarayıcınız erişemediğinde bile ekran çalışır. Giriş bilgileri şifreli olarak saklanır ve bir daha gösterilmez.",
+  "summary": "{{count}} KVM, {{attention}} çevrimdışı",
+  "empty": "Henüz KVM yok.",
+  "add": "KVM Ekle",
+  "edit": "Düzenle",
+  "delete": "Sil",
+  "back": "Geri",
+  "saved": "Kaydedildi",
+  "deleteConfirm": "{{name}} silinsin mi?",
+  "status": {
+    "unknown": "Henüz okunmadı",
+    "up": "Çevrimiçi",
+    "down": "Çevrimdışı"
+  },
+  "drivers": {
+    "pikvm": "PiKVM",
+    "glkvm": "GL.iNet Comet (GLKVM)",
+    "nanokvm": "NanoKVM",
+    "jetkvm": "JetKVM"
+  },
+  "fields": {
+    "username": "Kullanıcı adı",
+    "password": "Şifre"
+  },
+  "power": {
+    "on": "Açık",
+    "off": "Kapalı",
+    "unknown": "Bilinmiyor",
+    "state": "Makine {{state}} durumda.",
+    "sent": "{{name}}'e güç değişikliği istendi",
+    "sentShort": "Güç komutu gönderildi",
+    "wake": "Wake on LAN",
+    "woke": "Uyandırma paketi gönderildi",
+    "action": {
+      "on": "Aç",
+      "off": "Kapat",
+      "graceful-shutdown": "Kapat",
+      "reset": "Yeniden başlat"
+    },
+    "confirm": {
+      "on": "{{name}} açılsın mı?",
+      "off": "{{name}}'in gücü kesilsin mi? Sistem düzgün kapanmaz.",
+      "graceful-shutdown": "{{name}}'e kapatma istenir mi?",
+      "reset": "{{name}} yeniden başlatılsın mı? Sistem hemen yeniden başlar."
+    }
+  },
+  "form": {
+    "addTitle": "KVM Ekle",
+    "editTitle": "KVM Düzenle",
+    "device": "KVM",
+    "access": "Erişim",
+    "machine": "KVM'nin arkasındaki makine",
+    "type": "Tür",
+    "name": "Ad",
+    "address": "Adres",
+    "port": "Port",
+    "host": "Termix sunucusu",
+    "hostHint": "KVM'yi ait olduğu sunucuya bağlayın. Böylece o sunucunun paylaşım ayarlarını devralır ve sunucu menüsünde görünür.",
+    "noHost": "Yok",
+    "poll": "Kontrol sıklığı (saniye)",
+    "pollHint": "En az 30 saniye.",
+    "scheme": "Bağlantı türü",
+    "ca": "Sertifika",
+    "caHint": "Özel bir sertifika yetkilisinin PEM dosyasını yapıştırın veya kendi imzalı sertifikasına sahip bir KVM için Bu sertifikaya güven seçeneğini kullanın. Güvenilir bir sertifika için boş bırakın.",
+    "caSet": "Bir sertifika kaydedildi. Değiştirmek için yeni birini yapıştırın.",
+    "keepLogin": "Kayıtlı oturumu korumak için boş bırakın",
+    "test": "Bağlantıyı test et",
+    "testOk": "KVM yanıt verdi ({{model}}).",
+    "testNeedsLogin": "Test etmek için oturum bilgilerini tekrar girin.",
+    "mac": "MAC adresi",
+    "macHint": "Wake-on-LAN için makinenin ağ kartı.",
+    "broadcast": "Yayın adresi",
+    "broadcastHint": "Uyandırma paketinin gideceği yer. 255.255.255.255 için boş bırakın.",
+    "save": "Kaydet",
+    "add": "Ekle",
+    "trust": "Bu sertifikaya güven",
+    "trustTitle": "Bu KVM'nin sertifikasına güvenilsin mi?",
+    "trustHint": "Termix, bu KVM tam olarak bu sertifikayı gösterdiği sürece yalnızca onunla iletişim kuracaktır. Parmak izinin cihazdakiyle eşleştiğini kontrol edin.",
+    "certName": "Ad: {{name}}",
+    "certValid": "{{date}} tarihine kadar geçerli",
+    "certExpired": "{{date}} tarihinde süresi doldu",
+    "pinned": "Güvenilir sertifika",
+    "unpin": "Kaldır"
+  },
+  "view": {
+    "screen": "Ekran",
+    "power": "Güç",
+    "media": "Sanal medya",
+    "info": "Bilgi",
+    "refresh": "Şimdi oku",
+    "type": "Tür",
+    "address": "Adres",
+    "model": "Model",
+    "version": "Yazılım",
+    "hostname": "Ad",
+    "video": "Video",
+    "noSignal": "Sinyal yok",
+    "status": "KVM",
+    "jetHint": "JetKVM videosu doğrudan JetKVM'den tarayıcınıza gelir, bu nedenle tarayıcınızın ağ üzerinden ona ulaşabilmesi gerekir."
+  },
+  "screen": {
+    "connecting": "Bağlanıyor",
+    "failed": "Ekran açılamadı.",
+    "ended": "Ekran oturumu sona erdi.",
+    "hint": "Yazmak için ekrana tıklayın.",
+    "shortcuts": "Kısayollar",
+    "shortcut": {
+      "ctrl-alt-del": "Ctrl+Alt+Del",
+      "alt-tab": "Alt+Tab",
+      "alt-f4": "Alt+F4",
+      "ctrl-esc": "Ctrl+Esc",
+      "win-l": "Win+L",
+      "win-d": "Win+D",
+      "ctrl-alt-f1": "Ctrl+Alt+F1",
+      "ctrl-alt-f2": "Ctrl+Alt+F2",
+      "ctrl-alt-f7": "Ctrl+Alt+F7",
+      "print-screen": "Print Screen"
+    },
+    "paste": "Metni yapıştır",
+    "pasteLabel": "Makinede yazılacak metin",
+    "type": "Yazın",
+    "snapshot": "Ekran görüntüsü",
+    "fullscreen": "Tam ekran",
+    "exitFullscreen": "Tam ekrandan çık",
+    "reconnect": "Yeniden bağlan"
+  },
+  "media": {
+    "none": "Hiçbir görüntü dosyası takılı değil.",
+    "mountedNow": "Takılı: {{name}}",
+    "as": "Şu şekilde göster",
+    "cd": "CD sürücüsü",
+    "usb": "USB sürücü",
+    "empty": "Bu KVM'de görüntü dosyası yok.",
+    "mount": "Tak",
+    "eject": "Çıkar",
+    "mountedDone": "Görüntü dosyası takıldı",
+    "ejected": "Görüntü dosyası çıkarıldı",
+    "url": "Bir görüntü dosyasını şuradan indir",
+    "name": "Şu adla kaydet",
+    "fetch": "KVM'ye indir",
+    "fetched": "Görüntü dosyası indirildi"
+  },
+  "operations": {
+    "device": "KVM",
+    "list-devices": {
+      "title": "KVM'leri listele"
+    },
+    "poll": {
+      "title": "Bir KVM'yi şimdi oku"
+    },
+    "power-state": {
+      "title": "Güç durumunu al"
+    },
+    "power-on": {
+      "title": "Aç"
+    },
+    "graceful-shutdown": {
+      "title": "Kapat"
+    },
+    "power-off": {
+      "title": "Gücü kapat"
+    },
+    "reset": {
+      "title": "Sıfırla"
+    },
+    "wake": {
+      "title": "Wake-on-LAN"
+    },
+    "eject-media": {
+      "title": "Görüntü dosyasını çıkar"
+    },
+    "health": {
+      "title": "KVM durumu"
+    }
+  },
+  "widget": {
+    "name": "KVM cihazları",
+    "description": "IP-KVM'lerinizin hangilerinin açık olduğunu gösterir.",
+    "summary": "{{total}}'den {{up}}'ü açık"
+  }
+}

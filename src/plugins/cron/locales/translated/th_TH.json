@@ -1,0 +1,202 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "ดู เพิ่ม และเรียกใช้ cron jobs บนโฮสต์ของคุณ พร้อมแสดงตัวอย่างตารางเวลาและไฟล์ cron ของระบบ"
+  },
+  "common": {
+    "save": "บันทึก",
+    "cancel": "ยกเลิก",
+    "back": "ย้อนกลับ",
+    "delete": "ลบ"
+  },
+  "permissions": {
+    "use": {
+      "title": "ใช้ Cron",
+      "description": "ดู cron jobs บนโฮสต์ที่คุณเข้าถึงได้ และแก้ไขบนโฮสต์ที่คุณมีสิทธิ์แก้ไข"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "จัดการ cron jobs บนโฮสต์นี้จากแท็บ Cron"
+      },
+      "useSudo": {
+        "label": "ใช้ sudo",
+        "description": "ใช้ sudo สำหรับ crontab ของผู้ใช้รายอื่นและ /etc/cron.d ปิดหากเข้าสู่ระบบด้วย root"
+      },
+      "readOnly": {
+        "label": "อ่านอย่างเดียว",
+        "description": "แสดง cron jobs แต่ไม่แก้ไขบนโฮสต์นี้"
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "เปิด Cron จากโฮสต์",
+    "error": "ไม่สามารถโหลด cron จากโฮสต์นี้ได้",
+    "disabled": "Cron ถูกปิดใช้งานสำหรับโฮสต์นี้ เปิดใช้งานในตั้งค่าโฮสต์",
+    "sudo": "จำเป็นต้องเข้าสู่ระบบด้วย root, sudo ที่ไม่ต้องใส่รหัสผ่าน หรือบันทึก Sudo Password ไว้",
+    "refresh": "รีเฟรช",
+    "running": "Cron กำลังทำงาน",
+    "stopped": "Cron หยุดทำงาน",
+    "readOnly": "อ่านอย่างเดียว",
+    "notInstalled": "ไม่ได้ติดตั้ง",
+    "notInstalledTitle": "ไม่ได้ติดตั้ง Cron บนโฮสต์นี้",
+    "notInstalledHint": "ติดตั้ง cron หรือ cronie ด้วยตัวจัดการแพ็กเกจของโฮสต์ แล้วรีเฟรช",
+    "notRunning": "บริการ cron ไม่ได้ทำงาน ดังนั้นไม่มี job ใดจะทำงาน",
+    "viewJobs": "Jobs",
+    "viewSystem": "ระบบ",
+    "viewLogs": "Logs"
+  },
+  "jobs": {
+    "add": "เพิ่ม job",
+    "user": "Crontab ของ",
+    "ownUser": "{{user}} (เข้าสู่ระบบ)",
+    "search": "ค้นหา jobs",
+    "editText": "แก้ไขเป็นข้อความ",
+    "empty": "ยังไม่มี cron jobs",
+    "noMatch": "ไม่มี job ที่ตรงกัน",
+    "off": "ปิด",
+    "next": "ถัดไป {{time}}",
+    "run": "เรียกใช้ตอนนี้",
+    "runTitle": "เรียกใช้ job นี้ตอนนี้?",
+    "runDesc": "นี้จะเรียกใช้ {{command}} หนึ่งครั้งในฐานะผู้ใช้ของ crontab จะหยุดหลังจาก 2 นาที",
+    "runFailed": "ไม่สามารถเรียกใช้ job ได้",
+    "turnOn": "เปิดใช้งาน",
+    "turnOff": "ปิดใช้งาน",
+    "deleteTitle": "ลบ job นี้?",
+    "loadFailed": "ไม่สามารถอ่าน crontab ได้",
+    "saveFailed": "ไม่สามารถบันทึก crontab ได้",
+    "outputTitle": "ผลลัพธ์ของ Job",
+    "exitOk": "เสร็จสิ้น",
+    "exitCode": "Exit code {{code}}",
+    "noOutput": "Job ไม่ได้พิมพ์อะไรออกมา"
+  },
+  "form": {
+    "addTitle": "Job ใหม่",
+    "editTitle": "แก้ไข job",
+    "forUser": "Crontab ของ {{user}}",
+    "label": "ป้ายชื่อ",
+    "labelHint": "บันทึกเป็นความคิดเห็นเหนือ job",
+    "labelPlaceholder": "สำรองข้อมูลรายคืน",
+    "command": "คำสั่ง",
+    "commandHint": "ทำงานด้วย sh ใน home ของผู้ใช้ % เริ่มต้นข้อมูลนำเข้าที่ cron ส่ง ใช้ \\% สำหรับเครื่องหมายเปอร์เซ็นต์จริง",
+    "schedule": "กำหนดเวลา",
+    "scheduleHint": "นาที, ชั่วโมง, วันที่ของเดือน, เดือน และวันของสัปดาห์ หรือคำเช่น @daily",
+    "scheduleInvalid": "นี่ไม่ใช่กำหนดเวลาที่ถูกต้อง",
+    "nextRuns": "การรันถัดไป ({{zone}}):",
+    "enabled": "เปิด",
+    "enabledHint": "งานที่ปิดจะยังคงอยู่ใน crontab เป็นข้อคิดเห็น",
+    "saved": "บันทึกแล้ว"
+  },
+  "presets": {
+    "everyMinute": "ทุกนาที",
+    "every5": "ทุก 5 นาที",
+    "every15": "ทุก 15 นาที",
+    "hourly": "ทุกชั่วโมง",
+    "daily": "ทุกวัน",
+    "weekly": "ทุกสัปดาห์",
+    "monthly": "ทุกเดือน",
+    "reboot": "เมื่อเริ่มต้นระบบ"
+  },
+  "schedule": {
+    "reboot": "เมื่อเริ่มต้นระบบ",
+    "everyMinute": "ทุกนาที",
+    "everyNMinutes": "ทุก {{n}} นาที",
+    "hourlyAt": "ทุกชั่วโมงที่นาทีที่ {{minute}}",
+    "everyNHours": "ทุก {{n}} ชั่วโมงที่นาทีที่ {{minute}}",
+    "dailyAt": "ทุกวันเวลา {{time}}",
+    "weekdaysAt": "จันทร์ถึงศุกร์เวลา {{time}}",
+    "weeklyAt": "ทุกวัน {{day}} เวลา {{time}}",
+    "monthlyAt": "วันที่ {{day}} ของทุกเดือนเวลา {{time}}",
+    "custom": "กำหนดเวลาแบบกำหนดเอง",
+    "invalid": "ไม่ใช่กำหนดเวลาที่ถูกต้อง"
+  },
+  "days": {
+    "0": "อาทิตย์",
+    "1": "จันทร์",
+    "2": "อังคาร",
+    "3": "พุธ",
+    "4": "พฤหัสบดี",
+    "5": "ศุกร์",
+    "6": "เสาร์"
+  },
+  "raw": {
+    "title": "Crontab เป็นข้อความ",
+    "hint": "หนึ่งงานต่อหนึ่งบรรทัด โฮสต์จะตรวจสอบข้อความและเก็บ crontab เก่าไว้หากมีข้อผิดพลาด"
+  },
+  "system": {
+    "add": "ไฟล์ใหม่",
+    "addTitle": "ไฟล์ใหม่ใน /etc/cron.d",
+    "edit": "แก้ไข",
+    "name": "ชื่อไฟล์",
+    "nameHint": "บันทึกเป็น /etc/cron.d/<name> Cron จะข้ามชื่อที่มีจุด",
+    "nameInvalid": "ใช้เฉพาะตัวอักษร ตัวเลข - และ _",
+    "content": "เนื้อหาไฟล์",
+    "fileHint": "แต่ละงานระบุผู้ใช้ที่รัน: นาที ชั่วโมง วัน เดือน วันของสัปดาห์ ผู้ใช้ คำสั่ง ทุกบรรทัดจะถูกตรวจสอบก่อนบันทึก",
+    "noJobs": "ไม่มีงานในไฟล์นี้",
+    "readHint": "ไฟล์บางไฟล์อาจถูกซ่อนหากไม่ใช่ root การเปลี่ยนแปลงที่นี่ต้องการการเข้าสู่ระบบ root, sudo ที่ไม่ต้องใช้รหัสผ่าน หรือรหัสผ่าน Sudo ที่บันทึกไว้",
+    "timers_other": "โฮสต์นี้ยังมี systemd timer {{count}} ตัว ปลั๊กอิน Services จัดการมัน",
+    "deleteTitle": "ลบ /etc/cron.d/{{name}} หรือไม่?",
+    "deleteDesc": "สำเนาจะถูกเก็บไว้ใน /var/lib/termix-cron/backup",
+    "deleted": "ลบ {{name}} แล้ว",
+    "saved": "บันทึก {{name}} แล้ว",
+    "loadFailed": "ไม่สามารถอ่านไฟล์ cron ของระบบได้",
+    "saveFailed": "ไม่สามารถบันทึกไฟล์ได้",
+    "period": {
+      "hourly": "รันทุกชั่วโมง",
+      "daily": "รันทุกวัน",
+      "weekly": "รันทุกสัปดาห์",
+      "monthly": "รันทุกเดือน"
+    }
+  },
+  "logs": {
+    "lines": "บรรทัด",
+    "lineCount_other": "{{count}} บรรทัด",
+    "source": "จาก {{source}}",
+    "noSource": "ไม่พบบันทึก cron บนโฮสต์นี้",
+    "empty": "ไม่มีบรรทัดในบันทึก",
+    "failed": "ไม่สามารถอ่านบันทึกของ cron ได้"
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "เปิดใช้งาน Cron สำหรับโฮสต์นี้ในตั้งค่าเพื่อดูงานที่นี่"
+  },
+  "operations": {
+    "list": {
+      "title": "แสดงรายการงาน cron"
+    },
+    "enable": {
+      "title": "เปิดใช้งานงาน cron"
+    },
+    "disable": {
+      "title": "ปิดใช้งานงาน cron"
+    },
+    "run": {
+      "title": "เรียกใช้งาน cron ตอนนี้"
+    },
+    "delete": {
+      "title": "ลบงาน cron"
+    },
+    "jobs": {
+      "title": "งาน Cron",
+      "schedule": "กำหนดเวลา",
+      "command": "คำสั่ง"
+    },
+    "status": {
+      "title": "สถานะ Cron"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "กำลังตรวจสอบโฮสต์...",
+    "summary_other": "{{count}} งานบนโฮสต์ {{hosts}}",
+    "refresh": "ตรวจสอบอีกครั้ง",
+    "empty": "เปิดใช้งาน Cron สำหรับโฮสต์เพื่อดูที่นี่",
+    "stopped": "ไม่ได้ทำงาน",
+    "missing": "ไม่ได้ติดตั้ง",
+    "jobs_other": "{{count}} งาน",
+    "off": "{{count}} ปิดใช้งาน"
+  }
+}

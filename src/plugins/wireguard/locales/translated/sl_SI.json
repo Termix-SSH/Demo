@@ -1,0 +1,240 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Namestite WireGuard na svoje gostitelje in upravljajte vmesnike, odjemalce in konfiguracije iz ene zavihka."
+  },
+  "common": {
+    "save": "Shrani",
+    "cancel": "Prekliči",
+    "back": "Nazaj",
+    "delete": "Izbriši",
+    "loading": "Nalaganje..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Uporaba WireGuarda",
+      "description": "Upravljanje vmesnikov in odjemalcev WireGuarda na gostiteljih, ki jih lahko urejate."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Odprite WireGuard iz gostitelja.",
+    "error": "WireGuarda ni bilo mogoče naložiti s tega gostitelja.",
+    "sudo": "Ta gostitelj zahteva prijavo kot root ali sudo brez gesla za upravljanje WireGuarda.",
+    "installed": "Nameščeno",
+    "notInstalled": "Ni nameščeno",
+    "refresh": "Osveži",
+    "viewInterfaces": "Vmesniki",
+    "viewLogs": "Dnevniki"
+  },
+  "install": {
+    "title": "Namesti WireGuard",
+    "desc": "To namesti orodja WireGuard in iptables z upraviteljem paketov gostitelja.",
+    "confirm": "Namesti",
+    "done": "WireGuard je nameščen.",
+    "failed": "WireGuarda ni bilo mogoče namestiti.",
+    "empty": "WireGuard ni nameščen na tem gostitelju",
+    "noManager": "Ni bilo mogoče najti podprtega upravitelja paketov. Namestite WireGuard ročno.",
+    "hint": "Namestite ga na {{os}}, da boste lahko zagnali VPN s tega gostitelja.",
+    "thisHost": "ta gostitelj",
+    "button": "Namesti WireGuard",
+    "working": "Nameščanje..."
+  },
+  "interfaces": {
+    "add": "Dodaj vmesnik",
+    "empty": "Še ni vmesnikov. Dodajte enega, da začnete z VPN.",
+    "loadFailed": "Vmesnikov ni bilo mogoče naložiti.",
+    "up": "Vklopljen",
+    "down": "Izklopljen",
+    "nat": "NAT",
+    "boot": "Zažene se ob zagonu"
+  },
+  "create": {
+    "title": "Dodaj vmesnik",
+    "name": "Ime",
+    "address": "Naslov",
+    "addressHint": "Naslov strežnika in podomrežje. Odjemalci prejmejo naslednje proste naslove.",
+    "port": "UDP vrata",
+    "nat": "Deli internet gostitelja (NAT)",
+    "natDesc": "Odjemalci lahko dostopajo do interneta in omrežja gostitelja prek tega gostitelja.",
+    "natMissing": "NAT zahteva iptables, ki ni nameščen na tem gostitelju.",
+    "forwarding": "Vklopi posredovanje IP",
+    "forwardingDesc": "Omogoči gostitelju preusmerjanje prometa med odjemalci in omrežjem. Shranjeno za ponovne zagoni.",
+    "firewall": "Odpri vrata v požarnem zidu",
+    "firewallDesc": "Dodaja UDP vrata v ufw ali firewalld, ko eden od njiju teče.",
+    "start": "Zaženi zdaj in ob zagonu",
+    "startDesc": "Vklopi vmesnik in ga obdržite vklopljenega po ponovnem zagonu.",
+    "save": "Ustvari",
+    "done": "Vmesnik je pripravljen.",
+    "failed": "Vmesnika ni bilo mogoče ustvariti."
+  },
+  "detail": {
+    "clients": "Odjemalci",
+    "settings": "Nastavitve",
+    "config": "Konfiguracija",
+    "service": "Storitev",
+    "gone": "Ta vmesnik na gostitelju ne obstaja več."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Prikaži zavihek WireGuard za tega gostitelja v njegovem meniju."
+      },
+      "showPanel": {
+        "label": "Prikaži ploščo WireGuard v terminalih",
+        "description": "Dovoli odpiranje plošče WireGuard ob SSH terminalu tega gostitelja."
+      },
+      "alertDown": {
+        "label": "Opozori, ko je vmesnik izklopljen",
+        "description": "Pošlje opozorilo, ko vmesnik, ki se zažene ob zagonu, ni aktiven. Preveri se ob branju stanja WireGuard."
+      }
+    },
+    "publicKey": "Javni ključ",
+    "port": "UDP vratnica",
+    "endpoint": "Končna točka strežnika",
+    "endpointHint": "Javni naslov, na katerega se povezujejo odjemalci, npr. vpn.example.com:51820.",
+    "dns": "DNS za odjemalce",
+    "dnsHint": "Neobvezno. Strežnike ločite z vejicami.",
+    "allowed": "Promet skozi VPN",
+    "allowedHint": "Območja, ki jih odjemalci pošiljajo skozi VPN. 0.0.0.0/0, ::/0 pošlje vse.",
+    "keepalive": "Ohranjanje povezave (sekunde)",
+    "keepaliveHint": "Ohranja dosegljivost odjemalcev za NAT. Uporabite 0 za izklop.",
+    "saved": "Nastavitve so shranjene.",
+    "saveFailed": "Nastavitev ni bilo mogoče shraniti.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Odpri ploščo WireGuard z novimi terminali",
+        "description": "Prikaži ploščo WireGuard ob vsakem SSH terminalu, ki ima vklopljen WireGuard. Ploščo lahko še vedno odprete in zaprete s gumbom na desnem robu."
+      },
+      "companionSide": {
+        "label": "Stran plošče WireGuard",
+        "description": "Kje se nahaja plošča WireGuard ob terminalu.",
+        "right": "Desno",
+        "left": "Levo",
+        "bottom": "Spodaj"
+      },
+      "companionSize": {
+        "label": "Velikost plošče WireGuard",
+        "description": "Širina v slikovnih točkah ali višina, ko je na dnu. Rob lahko tudi povlečete."
+      },
+      "companionEdgeButton": {
+        "label": "Prikaži gumb za ploščo",
+        "description": "Prikaži majhen gumb na desnem robu terminala, ki odpre ploščo WireGuard."
+      }
+    }
+  },
+  "clients": {
+    "add": "Dodaj odjemalca",
+    "empty": "Še ni odjemalcev.",
+    "loadFailed": "Odjemalcev ni bilo mogoče naložiti.",
+    "name": "Ime",
+    "nameHint": "Črke, številke, pike, pomišljaji in podčrtaji.",
+    "allowed": "Promet skozi VPN",
+    "allowedHint": "Pustite prazno za uporabo privzete vrednosti vmesnika: {{value}}",
+    "create": "Ustvari odjemalca",
+    "addFailed": "Odjemalca ni bilo mogoče dodati.",
+    "needEndpoint": "Najprej nastavite končno točko strežnika v nastavitvah vmesnika.",
+    "connected": "Povezano",
+    "off": "Izklopljeno",
+    "external": "Ročno ustvarjeno",
+    "handshake": "rokooprijem pred {{ago}}",
+    "showConfig": "Prikaži konfiguracijo in QR kodo",
+    "configFailed": "Konfiguracije odjemalca ni bilo mogoče prebrati.",
+    "rotate": "Novi ključi",
+    "rotateTitle": "Ustvariti nove ključe za {{name}}?",
+    "rotateDesc": "Stara konfiguracija preneha delovati. Odjemalcu nato posredujte novo konfiguracijo.",
+    "turnOff": "Izklopi",
+    "turnOn": "Vklopi",
+    "saveFailed": "Odjemalca ni bilo mogoče spremeniti.",
+    "deleteTitle": "Izbrisati {{name}}?",
+    "deleteDesc": "Odjemalec bo odstranjen in se ne bo več mogel povezati.",
+    "deleteFailed": "Odjemalca ni bilo mogoče izbrisati."
+  },
+  "clientConfig": {
+    "note": "Ta konfiguracija vsebuje zasebni ključ odjemalca. Delite jo le z osebo ali napravo, ki jo bo uporabljala.",
+    "qr": "QR koda za konfiguracijo odjemalca",
+    "copy": "Kopiraj",
+    "copied": "Konfiguracija je kopirana.",
+    "copyFailed": "Konfiguracije ni bilo mogoče kopirati.",
+    "download": "Prenesi .conf"
+  },
+  "config": {
+    "title": "Konfiguracijska datoteka",
+    "hint": "Zasebni in vnaprej deljeni ključi so skriti. Pustite placeholder, da ohranite ključ. Konfiguracija se preveri pred shranjevanjem in se shrani varnostna kopija. Spremembe naslova zahtevajo ponovni zagon.",
+    "loadFailed": "Konfiguracije ni bilo mogoče prebrati.",
+    "saved": "Konfiguracija shranjena.",
+    "saveFailed": "Konfiguracije ni bilo mogoče shraniti."
+  },
+  "logs": {
+    "loadFailed": "Dnevnikov ni bilo mogoče prebrati.",
+    "lines": "{{count}} vrstic",
+    "empty": "Ni vrstic dnevnika."
+  },
+  "service": {
+    "failed": "Dejanje storitve ni uspelo.",
+    "start": "Zaženi",
+    "stop": "Ustavi",
+    "restart": "Ponovno zaženi",
+    "autostart": "Zaženi ob zagonu",
+    "autostartDesc": "Zaženi ta vmesnik ob zagonu gostitelja.",
+    "needsSystemd": "Zagon ob zagonu zahteva systemd na tem gostitelju.",
+    "noForward": "Posredovanje IP je izklopljeno na tem gostitelju, zato odjemalci ne morejo doseči omrežja prek NAT.",
+    "delete": "Izbriši vmesnik",
+    "deleteTitle": "Izbriši {{name}}?",
+    "deleteDesc": "Vmesnik je ustavljen, njegova konfiguracija, ključi in shranjene datoteke odjemalcev pa so odstranjene iz gostitelja.",
+    "deleteFailed": "Vmesnika ni bilo mogoče izbrisati."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Vklopite WireGuard v nastavitvah tega gostitelja, da uporabite to kartico.",
+    "start": "Aktiviraj",
+    "stop": "Deaktiviraj",
+    "done": "{{name}} posodobljeno"
+  },
+  "operations": {
+    "list": {
+      "title": "Seznam WireGuard vmesnikov"
+    },
+    "down": {
+      "title": "WireGuard vmesniki deaktivirani"
+    },
+    "start": {
+      "title": "Zaženi WireGuard vmesnik"
+    },
+    "stop": {
+      "title": "Ustavi WireGuard vmesnik"
+    },
+    "restart": {
+      "title": "Ponovno zaženi WireGuard vmesnik"
+    },
+    "interfaces": {
+      "title": "WireGuard vmesniki",
+      "address": "Naslov",
+      "port": "Vrata",
+      "clients": "Odjemalci"
+    }
+  },
+  "nav": {
+    "togglePanel": "Preklopi ploščo WireGuard"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Preverjanje gostiteljev...",
+    "summary_one": "{{count}} odjemalec na {{hosts}} gostiteljih",
+    "summary_two": "{{count}} odjemalca na {{hosts}} gostiteljih",
+    "summary_few": "{{count}} odjemalci na {{hosts}} gostiteljih",
+    "summary_other": "{{count}} odjemalcev na {{hosts}} gostiteljih",
+    "refresh": "Preveri znova",
+    "empty": "Vklopite WireGuard za gostitelja, da ga vidite tukaj.",
+    "missing": "Ni nameščeno",
+    "down_one": "{{count}} izklopljen",
+    "down_two": "{{count}} izklopljena",
+    "down_few": "{{count}} izklopljeni",
+    "down_other": "{{count}} izklopljenih",
+    "interfaces_one": "{{count}} vmesnik, {{clients}} odjemalec",
+    "interfaces_two": "{{count}} vmesnika, {{clients}} odjemalca",
+    "interfaces_few": "{{count}} vmesniki, {{clients}} odjemalci",
+    "interfaces_other": "{{count}} vmesnikov, {{clients}} odjemalcev"
+  }
+}

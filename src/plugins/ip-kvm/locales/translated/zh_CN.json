@@ -1,0 +1,226 @@
+{
+  "plugin": {
+    "name": "IP-KVM",
+    "description": "通过 PiKVM、NanoKVM 和 JetKVM 设备查看和控制机器。"
+  },
+  "tab": {
+    "title": "KVM"
+  },
+  "card": {
+    "title": "KVM",
+    "loading": "加载中"
+  },
+  "host": {
+    "open": "KVM"
+  },
+  "permissions": {
+    "view": {
+      "title": "查看 KVM",
+      "description": "打开 KVM 标签页，查看哪些 KVM 在线以及它们报告的电源状态。"
+    },
+    "power": {
+      "title": "控制电源",
+      "description": "通过 KVM 开启、关闭和重置机器，或使用 Wake-on-LAN 唤醒它们。"
+    },
+    "console": {
+      "title": "使用屏幕",
+      "description": "查看机器的屏幕并使用其键盘和鼠标。"
+    },
+    "media": {
+      "title": "使用虚拟介质",
+      "description": "在机器上挂载和弹出 ISO 镜像。"
+    },
+    "manage": {
+      "title": "管理 KVM",
+      "description": "添加、修改和删除 KVM。"
+    }
+  },
+  "settings": {
+    "admin": {
+      "maxSessionMinutes": {
+        "label": "最长屏幕会话时长（分钟）",
+        "description": "屏幕会话在此时长后结束。设置为 0 表示无限制。"
+      }
+    }
+  },
+  "description": "添加您的 IP-KVM 以查看和控制其背后的机器。Termix 连接到 KVM，因此即使浏览器无法直接访问，屏幕也能正常工作。登录凭据经过加密存储，且不会再次显示。",
+  "summary": "{{count}} 个 KVM，{{attention}} 个离线",
+  "empty": "暂无 KVM。",
+  "add": "添加 KVM",
+  "edit": "编辑",
+  "delete": "删除",
+  "back": "返回",
+  "saved": "已保存",
+  "deleteConfirm": "删除 {{name}}？",
+  "status": {
+    "unknown": "尚未读取",
+    "up": "在线",
+    "down": "离线"
+  },
+  "drivers": {
+    "pikvm": "PiKVM",
+    "glkvm": "GL.iNet Comet (GLKVM)",
+    "nanokvm": "NanoKVM",
+    "jetkvm": "JetKVM"
+  },
+  "fields": {
+    "username": "用户名",
+    "password": "密码"
+  },
+  "power": {
+    "on": "开启",
+    "off": "关闭",
+    "unknown": "未知",
+    "state": "机器处于 {{state}} 状态。",
+    "sent": "已请求 {{name}} 更改电源状态",
+    "sentShort": "电源命令已发送",
+    "wake": "网络唤醒",
+    "woke": "唤醒包已发送",
+    "action": {
+      "on": "开机",
+      "off": "关机",
+      "graceful-shutdown": "关机",
+      "reset": "重置"
+    },
+    "confirm": {
+      "on": "开启 {{name}}？",
+      "off": "切断 {{name}} 的电源？系统将不会正常关机。",
+      "graceful-shutdown": "请求 {{name}} 关机？",
+      "reset": "重置 {{name}}？系统将立即重启。"
+    }
+  },
+  "form": {
+    "addTitle": "添加 KVM",
+    "editTitle": "编辑 KVM",
+    "device": "KVM",
+    "access": "访问",
+    "machine": "KVM 背后的机器",
+    "type": "类型",
+    "name": "名称",
+    "address": "地址",
+    "port": "端口",
+    "host": "Termix 主机",
+    "hostHint": "将 KVM 链接到其所属的主机。它将遵循该主机的共享设置，并显示在其主机菜单中。",
+    "noHost": "无",
+    "poll": "检查间隔（秒）",
+    "pollHint": "至少 30 秒。",
+    "scheme": "连接方式",
+    "ca": "证书",
+    "caHint": "粘贴私有证书颁发机构的 PEM 内容，或者对于使用自签名证书的 KVM，选择“信任此证书”。如果证书受信任，请留空。",
+    "caSet": "已保存证书。粘贴新证书以替换它。",
+    "keepLogin": "留空以保留已保存的登录信息",
+    "test": "测试连接",
+    "testOk": "KVM 已响应（{{model}}）。",
+    "testNeedsLogin": "重新输入登录信息以进行测试。",
+    "mac": "MAC 地址",
+    "macHint": "机器的网卡地址，用于 Wake-on-LAN。",
+    "broadcast": "广播地址",
+    "broadcastHint": "唤醒数据包发送的目标地址。留空则默认为 255.255.255.255。",
+    "save": "保存",
+    "add": "添加",
+    "trust": "信任此证书",
+    "trustTitle": "信任此 KVM 的证书？",
+    "trustHint": "Termix 仅在此 KVM 显示完全相同的证书时与其通信。请检查指纹是否与设备上的指纹匹配。",
+    "certName": "名称：{{name}}",
+    "certValid": "有效期至 {{date}}",
+    "certExpired": "已于 {{date}} 过期",
+    "pinned": "受信任的证书",
+    "unpin": "移除"
+  },
+  "view": {
+    "screen": "屏幕",
+    "power": "电源",
+    "media": "虚拟介质",
+    "info": "信息",
+    "refresh": "立即读取",
+    "type": "类型",
+    "address": "地址",
+    "model": "型号",
+    "version": "软件",
+    "hostname": "名称",
+    "video": "视频",
+    "noSignal": "无信号",
+    "status": "KVM",
+    "jetHint": "JetKVM 的视频直接从 JetKVM 传输到您的浏览器，因此您的浏览器必须在网络上能够访问它。"
+  },
+  "screen": {
+    "connecting": "正在连接",
+    "failed": "无法打开屏幕。",
+    "ended": "屏幕会话已结束。",
+    "hint": "点击屏幕以输入。",
+    "shortcuts": "快捷键",
+    "shortcut": {
+      "ctrl-alt-del": "Ctrl+Alt+Del",
+      "alt-tab": "Alt+Tab",
+      "alt-f4": "Alt+F4",
+      "ctrl-esc": "Ctrl+Esc",
+      "win-l": "Win+L",
+      "win-d": "Win+D",
+      "ctrl-alt-f1": "Ctrl+Alt+F1",
+      "ctrl-alt-f2": "Ctrl+Alt+F2",
+      "ctrl-alt-f7": "Ctrl+Alt+F7",
+      "print-screen": "Print Screen"
+    },
+    "paste": "粘贴文本",
+    "pasteLabel": "要在机器上输入的文本",
+    "type": "输入",
+    "snapshot": "截图",
+    "fullscreen": "全屏",
+    "exitFullscreen": "退出全屏",
+    "reconnect": "重新连接"
+  },
+  "media": {
+    "none": "未挂载任何镜像。",
+    "mountedNow": "已挂载：{{name}}",
+    "as": "显示为",
+    "cd": "光驱",
+    "usb": "USB 驱动器",
+    "empty": "此 KVM 上没有任何镜像。",
+    "mount": "挂载",
+    "eject": "弹出",
+    "mountedDone": "镜像已挂载",
+    "ejected": "镜像已弹出",
+    "url": "从以下地址下载镜像",
+    "name": "另存为",
+    "fetch": "下载到 KVM",
+    "fetched": "镜像已下载"
+  },
+  "operations": {
+    "device": "KVM",
+    "list-devices": {
+      "title": "列出 KVM"
+    },
+    "poll": {
+      "title": "立即读取 KVM"
+    },
+    "power-state": {
+      "title": "获取电源状态"
+    },
+    "power-on": {
+      "title": "开机"
+    },
+    "graceful-shutdown": {
+      "title": "关机"
+    },
+    "power-off": {
+      "title": "断电"
+    },
+    "reset": {
+      "title": "重置"
+    },
+    "wake": {
+      "title": "网络唤醒"
+    },
+    "eject-media": {
+      "title": "弹出镜像"
+    },
+    "health": {
+      "title": "KVM 状态"
+    }
+  },
+  "widget": {
+    "name": "KVM 设备",
+    "description": "您的 IP-KVM 哪些处于在线状态。",
+    "summary": "{{up}} / {{total}} 在线"
+  }
+}

@@ -252,6 +252,7 @@ function TunnelCard({
             size="icon"
             className="h-8 w-8 text-muted-foreground hover:text-foreground"
             title={t("tunnels.edit")}
+            aria-label={t("tunnels.edit")}
             onClick={onEdit}
           >
             <Pencil className="size-3.5" />
@@ -261,6 +262,9 @@ function TunnelCard({
             size="icon"
             className={`h-8 w-8 ${showSettings ? "bg-accent-brand/10 text-accent-brand" : "text-muted-foreground hover:text-foreground"}`}
             onClick={() => setShowSettings((s) => !s)}
+            title={t("hosts.tunnelSettings")}
+            aria-label={t("hosts.tunnelSettings")}
+            aria-pressed={showSettings}
           >
             <Settings className="size-3.5" />
           </Button>

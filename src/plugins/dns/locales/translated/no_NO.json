@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Administrer DNS-opposter og domener hos Cloudflare, Route 53, Namecheap og andre leverandører."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domener",
+    "loading": "Laster inn",
+    "empty": "Ingen domener ennå. Åpne DNS for å legge til en pålogging.",
+    "ok": "{{domains}} domener, ingen utløper snart",
+    "accounts": "{{count}} pålogginger",
+    "failingLinks": "{{count}} lenkede oppposter feiler"
+  },
+  "permissions": {
+    "view": {
+      "title": "Se DNS",
+      "description": "Åpne DNS-fanen og se soner, oppposter, domener og helsekontroller."
+    },
+    "edit": {
+      "title": "Endre DNS-opposter",
+      "description": "Legg til, endre og slett oppposter, importer sonefiler og oppdater domener."
+    },
+    "manage": {
+      "title": "Administrer DNS-pålogginger",
+      "description": "Legg til pålogginger for leverandører, lenk oppposter til vertsmaskiner, overvåk domener og gjenopprett sonekopier."
+    }
+  },
+  "operations": {
+    "zone": "Sone",
+    "type": "Type",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Navn",
+    "content": "Verdi",
+    "contentOptional": "Verdi (la stå tom for å matche alle)",
+    "ttl": "TTL i sekunder",
+    "label": "Merkelapp",
+    "zones": {
+      "title": "Liste over DNS-soner"
+    },
+    "records": {
+      "title": "Liste over DNS-opposter"
+    },
+    "domains": {
+      "title": "Liste over domener og utløpsdatoer"
+    },
+    "check": {
+      "title": "Sjekk en sone"
+    },
+    "upsert": {
+      "title": "Sett en DNS-oppost"
+    },
+    "delete": {
+      "title": "Slett en DNS-oppost"
+    },
+    "snapshot": {
+      "title": "Lagre en kopi av en sone"
+    },
+    "links": {
+      "title": "Oppdater lenkede oppposter"
+    },
+    "expiry": {
+      "title": "Domeneutløp"
+    }
+  },
+  "description": "Legg til dine DNS- og registratorens pålogginger for å administrere oppposter og overvåke domener på ett sted. Nøkler lagres kryptert og vises aldri igjen.",
+  "summary": "{{zones}} soner, {{domains}} domener",
+  "saved": "Lagret",
+  "delete": "Slett",
+  "edit": "Rediger",
+  "back": "Tilbake",
+  "refresh": "Oppdater",
+  "section": {
+    "zones": "Soner",
+    "domains": "Domener",
+    "links": "Lenker",
+    "accounts": "Pålogginger"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "API-token",
+    "accessKeyId": "Tilgangs-ID",
+    "secretAccessKey": "Hemmelig tilgangsnøkkel",
+    "sessionToken": "Sesjonstoken (valgfritt)",
+    "apiUser": "API-bruker",
+    "apiKey": "API-nøkkel",
+    "userName": "Brukernavn (hvis forskjellig fra API-brukeren)",
+    "clientIp": "Tillatt IP-adresse",
+    "apiSecret": "API-hemmelighet",
+    "environment": "Miljø",
+    "environment_production": "Produksjon",
+    "environment_ote": "Test (OTE)",
+    "secretApiKey": "Hemmelig API-nøkkel",
+    "token": "Personlig tilgangstoken"
+  },
+  "zones": {
+    "empty": "Ingen soner ennå.",
+    "emptyHint": "Legg til en leverandøropplagging i Pålogginger for å se dens soner."
+  },
+  "zone": {
+    "records": "Poster",
+    "health": "Helse",
+    "copies": "Kopier",
+    "files": "Filer",
+    "filter": "Filtrer poster",
+    "empty": "Ingen poster."
+  },
+  "record": {
+    "section": "Post",
+    "addTitle": "Legg til post",
+    "editTitle": "Rediger post",
+    "add": "Legg til post",
+    "save": "Lagre",
+    "type": "Type",
+    "name": "Navn",
+    "nameHint": "Bruk @ for {{zone}} selv",
+    "value": "Verdi",
+    "priority": "Prioritet",
+    "ttl": "TTL (sekunder)",
+    "ttlHint": "Hvor lenge løsere beholder svaret. 300 er 5 minutter.",
+    "ttlAuto": "1 betyr automatisk.",
+    "proxied": "Proksiert",
+    "proxiedHint": "Send trafikk gjennom Cloudflare.",
+    "proxiedBadge": "Proksiert",
+    "comment": "Merknad",
+    "readOnly": "Styres av leverandøren",
+    "deleteConfirm": "Slette {{type}}-posten {{name}}?"
+  },
+  "account": {
+    "add": "Legg til pålogging",
+    "addTitle": "Legg til DNS-pålogging",
+    "editTitle": "Rediger DNS-pålogging",
+    "save": "Lagre",
+    "login": "Pålogging",
+    "provider": "Leverandør",
+    "name": "Navn",
+    "namePlaceholder": "Hoved Cloudflare",
+    "keep": "La stå tomt for å beholde den lagrede verdien",
+    "registrar": "Denne leverandøren er også en registrar, så dens domener vises i Domener.",
+    "options": "Alternativer",
+    "autoBackup": "Behold kopier av soner",
+    "autoBackupHint": "Lagre en kopi før hver endring og når en sone endres utenfor Termix.",
+    "checkHealth": "Sjekk soner hver dag",
+    "checkHealthHint": "Kjør helsekontroller daglig og varsle om nye problemer.",
+    "test": "Test",
+    "testOk": "Fungerer. Fant {{zones}} soner og {{domains}} domener.",
+    "deleteConfirm": "Slette {{name}}? Dens kopier og lenker slettes også. Ingenting endres hos leverandøren.",
+    "empty": "Ingen pålogginger ennå.",
+    "emptyHint": "Legg til en Cloudflare, Route 53, Namecheap eller annen pålogging for å komme i gang.",
+    "lastSync": "Sist sjekket {{date}}",
+    "never": "Ikke sjekket ennå",
+    "failed": "Påloggingen mislyktes"
+  },
+  "domains": {
+    "empty": "Ingen domener ennå.",
+    "emptyHint": "Registrar-pålogginger viser sine domener her. Du kan også overvåke ethvert domene etter navn.",
+    "watchPlaceholder": "example.com",
+    "watch": "Overvåk domene",
+    "unwatch": "Slutt å overvåke",
+    "watched": "Overvåket",
+    "noRenew": "Automatisk fornying av",
+    "unlocked": "Ikke låst",
+    "unknown": "Registrator ukjent",
+    "expires": "Utløper {{date}}",
+    "expired": "Utløpt",
+    "days": "{{count}} dager igjen",
+    "refreshFailed": "{{count}} oppslag mislyktes"
+  },
+  "link": {
+    "add": "Legg til lenke",
+    "addTitle": "Legg til lenke",
+    "editTitle": "Rediger lenke",
+    "save": "Lagre",
+    "record": "Post",
+    "address": "Adresse",
+    "zone": "Sone",
+    "pickZone": "Velg en sone",
+    "source": "Pek den mot",
+    "sourceHost": "En vert",
+    "sourcePublic4": "Denne serverens offentlige IPv4-adresse",
+    "sourcePublic6": "Denne serverens offentlige IPv6-adresse",
+    "source_host": "Vert",
+    "source_public4": "Offentlig IPv4",
+    "source_public6": "Offentlig IPv6",
+    "host": "Vert",
+    "pickHost": "Velg en vert",
+    "hostHint": "Posten følger vertens adresse. Den oppdateres når verten endres.",
+    "publicHint": "Termix ser opp sin offentlige adresse og holder posten synkronisert, som dynamisk DNS.",
+    "enabled": "Hold denne posten oppdatert",
+    "empty": "Ingen lenker ennå.",
+    "emptyHint": "En lenke holder en post pekt mot en vert eller mot denne serverens offentlige adresse.",
+    "off": "Av",
+    "hostGone": "Verten ble ikke funnet",
+    "lastSync": "Sjekket {{date}}",
+    "never": "Ikke sjekket ennå",
+    "syncNow": "Oppdater nå",
+    "updated": "Posten ble oppdatert",
+    "unchanged": "Posten var allerede korrekt",
+    "deleteConfirm": "Fjerne lenken for {{name}}? Posten forblir der den er."
+  },
+  "diff": {
+    "none": "Ingenting vil endre seg.",
+    "add": "Legg til",
+    "change": "Endre",
+    "remove": "Fjern"
+  },
+  "copies": {
+    "hint": "Kopier lagres før hver endring og én gang daglig når en sone er endret utenfor Termix.",
+    "save": "Lagre kopi",
+    "saved": "Kopi lagret",
+    "manualLabel": "Manuell kopi",
+    "empty": "Ingen kopier ennå.",
+    "count": "{{count}} poster",
+    "compare": "Sammenlign med nå",
+    "restore": "Gjenopprett",
+    "restoreConfirm": "Gjenopprette denne kopien? {{count}} endringer vil bli gjort hos leverandøren. En kopi av de nåværende postene lagres først.",
+    "restored": "Gjenopprettet. {{count}} endringer gjort.",
+    "source": {
+      "manual": "Manuell",
+      "auto": "Daglig",
+      "before": "Før endring"
+    }
+  },
+  "files": {
+    "export": "Last ned sonefil",
+    "exportHint": "Last ned postene som en BIND-sonefil.",
+    "import": "Importer en sonefil",
+    "placeholder": "Lim inn en BIND-sonefil her",
+    "replace": "Fjern poster som ikke finnes i filen",
+    "replaceHint": "Av: Importen legger kun til og endrer poster.",
+    "preview": "Forhåndsvisning",
+    "apply": "Bruk",
+    "applied": "Importert. {{count}} endringer utført.",
+    "skipped": "Hoppet over:"
+  },
+  "health": {
+    "run": "Kjør sjekker",
+    "running": "Kjører",
+    "propagation": "Sjekk opplosere",
+    "propagationTitle": "Offentlige opplosere",
+    "lastRun": "Sist kjørt {{date}}",
+    "empty": "Ingen sjekker er kjørt for denne sonen ennå.",
+    "record": "Post",
+    "resolver": "Opploser",
+    "answer": "Svar",
+    "noAnswer": "Ingen svar",
+    "delegation": {
+      "error": "Navnetjenerne kunne ikke oppslås.",
+      "none": "Sonen har ingen navnetjenere på internett. Domenet peker kanskje ikke mot denne leverandøren.",
+      "mismatch": "Domenet bruker andre navnetjenere enn leverandøren: {{found}}.",
+      "ok": "Domenet peker mot {{count}} navnetjenere."
+    },
+    "soa": {
+      "differ": "Navnetjenerne er uenige om soneversjonen ({{count}} versjoner). En endring kan fortsatt spre seg.",
+      "same": "{{count}} navnetjenere er enige om soneversjonen."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC kunne ikke sjekkes.",
+      "off": "DNSSEC er ikke aktivert.",
+      "valid": "DNSSEC er aktivert og gyldig.",
+      "broken": "DNSSEC er konfigurert hos registraren, men valideres ikke. Opplosere som sjekker det, vil feile."
+    },
+    "cname": {
+      "conflict": "{{name}} har en CNAME og andre poster. Det er ikke tillatt.",
+      "apex": "Soneroten kan ikke være en CNAME.",
+      "dangling": "{{name}} peker mot {{target}}, som ikke løses opp.",
+      "ok": "Alle CNAME-mål løses opp."
+    },
+    "spf": {
+      "missing": "Domenet mottar e-post, men har ingen SPF-post.",
+      "multiple": "Det finnes mer enn én SPF-post. E-posttjenere vil avvise alle.",
+      "lookups": "SPF-posten utfører {{count}} oppslag. Grensen er 10.",
+      "ok": "SPF er konfigurert ({{count}} oppslag)."
+    },
+    "dmarc": {
+      "missing": "Det finnes ingen DMARC-post.",
+      "none": "DMARC er satt til kun overvåking.",
+      "ok": "DMARC er konfigurert."
+    },
+    "dkim": {
+      "none": "Ingen DKIM-nøkler ble funnet i denne sonen.",
+      "found": "{{count}} DKIM-nøkler funnet."
+    },
+    "mx": {
+      "unresolved": "E-posttjeneren {{host}} løses ikke opp."
+    },
+    "mail": {
+      "none": "Domenet har ingen e-postposter."
+    },
+    "caa": {
+      "ok": "CAA-poster begrenser hvem som kan utfärde sertifikater.",
+      "none": "Det finnes ingen CAA-poster. Enhver sertifikatmyndighet kan utfärde sertifikater."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domener, domener som utløper og poster som feiler.",
+    "domains": "Domener",
+    "expiring": "Utløper snart",
+    "failingLinks": "Lenker som feiler",
+    "failingAccounts": "Innlogginger som feiler"
+  }
+}

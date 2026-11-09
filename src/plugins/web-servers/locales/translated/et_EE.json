@@ -1,0 +1,287 @@
+{
+  "plugin": {
+    "name": "Veebiserverid",
+    "description": "Halda oma hostidel nginxit, Apache'i ja Caddyt: saidid, konfiguratsioon, logid ja HTTPS, kusjuures iga muudatus testitakse enne rakendamist."
+  },
+  "common": {
+    "cancel": "Tühista",
+    "back": "Tagasi",
+    "loading": "Laadimine..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Veebiserverite kasutamine",
+      "description": "Vaata veebiservereid ja saidisid hostidel, kuhu saad ligi pääseda, ning muuda neid hostidel, mida saad redigeerida."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Veebiserverid",
+        "description": "Halda sellel hostil nginxit, Apache'i ja Caddyt Veebiserverite vahekaardilt."
+      },
+      "useSudo": {
+        "label": "Kasuta sudo",
+        "description": "Kasuta sudo veebiserveri lugemiseks ja muutmiseks. Lülita välja, kui sisselogimine toimub root-ina."
+      },
+      "readOnly": {
+        "label": "Ainult lugemiseks",
+        "description": "Kuva saidid, konfiguratsioon ja logid, kuid ära kunagi muuda neid sellel hostil."
+      },
+      "showPanel": {
+        "label": "Paneel terminali kõrval",
+        "description": "Paku selle hosti terminali vahekaartidel Veebiserverite paneeli."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Ava paneel koos terminaliga",
+        "description": "Kuva Veebiserverite paneel, kui avatakse terminal hostil, kus see on saadaval."
+      },
+      "companionSide": {
+        "label": "Paneeli asukoht",
+        "description": "Kus paneel asub terminali kõrval.",
+        "right": "Parem",
+        "left": "Vasak",
+        "bottom": "Alumine"
+      },
+      "companionSize": {
+        "label": "Paneeli suurus",
+        "description": "Paneeli laius või selle kõrgus alumisel asukohal pikslites."
+      },
+      "companionEdgeButton": {
+        "label": "Nupp servas",
+        "description": "Kuva terminali serval väike nupp paneeli avamiseks."
+      }
+    }
+  },
+  "tab": {
+    "title": "Veebiserverid",
+    "noHost": "Ava Veebiserverid hostilt.",
+    "error": "Selle hosti veebiservereid ei õnnestunud laadida.",
+    "disabled": "Veebiserverid on sellel hostil välja lülitatud. Lülita see sisse hosti seadistustes.",
+    "sudo": "Muudatuste tegemiseks on vaja root-iga sisselogimist, paroolita sudo või sellel hostil salvestatud Sudo parooli.",
+    "refresh": "Värskenda",
+    "readOnly": "Ainult lugemiseks",
+    "noServer": "Veebiserverit ei ole paigaldatud",
+    "noServerHint": "Paigalda nginx, Apache või Caddy Serveri lehelt.",
+    "openServer": "Ava Server",
+    "viewSites": "Saidid",
+    "viewConfig": "Konfiguratsioon",
+    "viewLogs": "Logid",
+    "viewServer": "Server"
+  },
+  "actions": {
+    "ok": "Valmis",
+    "failed": "Ebaõnnestus",
+    "noOutput": "Väljundit ei ole."
+  },
+  "watch": {
+    "start": "Teavita mind, kui veebiserver peatub",
+    "stop": "Peata selle hosti teavitused",
+    "on": "Saad teavituse, kui selle hosti veebiserver peatub",
+    "off": "Selle hosti teavitused on välja lülitatud",
+    "failed": "Teavitusi ei õnnestunud muuta"
+  },
+  "sites": {
+    "add": "Lisa sait",
+    "search": "Otsi saidid",
+    "empty": "Saidid puuduvad.",
+    "loadFailed": "Saidisid ei õnnestunud laadida.",
+    "off": "Väljas",
+    "anyName": "suvaline nimi",
+    "form": "Vorm",
+    "certDays_one": "{{count}} päev jäänud",
+    "certDays_other": "{{count}} päeva jäänud",
+    "certExpired": "Sertifikaat on aegunud",
+    "enable": "Lülita sisse",
+    "disable": "Lülita välja",
+    "enabled": "{{name}} on sisse lülitatud",
+    "disabled": "{{name}} on välja lülitatud",
+    "delete": "Kustuta",
+    "deleteTitle": "Kas kustutada {{name}}?",
+    "deleteBody": "Fail eemaldatakse ja server taaskäivitub. Koopia jääb hostil asuvasse kausta /var/lib/termix-web-servers/backups.",
+    "deleted": "{{name}} kustutati"
+  },
+  "site": {
+    "addTitle": "Uus sait",
+    "editTitle": "Salvesta {{name}}",
+    "add": "Lisa sait",
+    "save": "Salvesta",
+    "added": "{{name}} lisati",
+    "saved": "{{name}} salvestati",
+    "server": "Veebiserver",
+    "name": "Saidi nimi",
+    "nameHint": "Kasutatakse failinime ja logifailide jaoks, näiteks example.",
+    "modeForm": "Vorm",
+    "modeText": "Tekst",
+    "text": "Konfiguratsioon",
+    "textHint": "Teksti salvestamine lülitab selle saidi jaoks vormi välja, et sinu muudatused säiliksid.",
+    "type": "Tüüp",
+    "typeStatic": "Staatilised failid",
+    "typeProxy": "Pöördproksü",
+    "typePhp": "PHP",
+    "typeRedirect": "Ümbersuunamine",
+    "staticHint": "Serveerib faile kaustast.",
+    "proxyHint": "Saadab päringud rakendusele, mis töötab sellel või teisel hostil.",
+    "phpHint": "Serveerib faile kaustast ja käivitab .php faile php-fpm abil.",
+    "redirectHint": "Suunab kõik külastajad teise aadressile.",
+    "domains": "Domeenid",
+    "domainsHint": "Vajuta igaühe järel Enter. Kasuta nginx-is _, et vastata igale nimele.",
+    "port": "HTTP port",
+    "root": "Veebiserveri juur",
+    "rootHint": "Kaust kaustas /var/www, /srv, /usr/share/nginx, /opt või /home.",
+    "index": "Indekseerimisfailid",
+    "spa": "Ühe lehe rakendus",
+    "spaHint": "Saada teed, mis ei ole failid, aadressile /index.html.",
+    "upstream": "Rakenduse aadress",
+    "upstreamHint": "Kus rakendus kuulab, näiteks http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Suuna külastajad aadressile",
+    "keepPath": "Hoia tee",
+    "keepPathHint": "Saada /page uuele aadressile samale lehele.",
+    "phpSocket": "php-fpm sokkel",
+    "phpSocketHint": "php-fpm soklit ei leitud. Paigalda php-fpm või sisesta host:port.",
+    "https": "HTTPS",
+    "httpsHint": "Vajab sertifikaati. Salvesta sait esmalt, seejärel vajuta allolevat nuppu Sertifikaadi hankimine.",
+    "httpsCaddy": "Caddy hankib ja uuendab sertifikaadi automaatselt.",
+    "httpsPort": "HTTPS port",
+    "certPath": "Sertifikaadi fail",
+    "keyPath": "Võtme fail",
+    "forceHttps": "Suuna HTTP HTTPS-ile",
+    "gzip": "Tihenda vastused",
+    "accessLog": "Juurdepääsulogi",
+    "maxBody": "Üleslaadimise piirang MB-des",
+    "maxBodyHint": "0 jätab serveri vaikeväärtuse.",
+    "preview": "Eelvaade",
+    "previewFailed": "Konfiguratsiooni ei õnnestunud luua."
+  },
+  "tls": {
+    "title": "HTTPS sertifikaat",
+    "hintManaged": "certbot hankib selle saidi domeenidele Let's Encrypti sertifikaadi, seejärel lülitub sait HTTPS-ile. certbot uuendab seda ja laeb serveri uuesti.",
+    "hintText": "certbot hankib selle saidi domeenidele Let's Encrypti sertifikaadi. Lisage sertifikaat saidile seejärel ise. certbot uuendab seda ja laeb serveri uuesti.",
+    "needCertbot": "Installige certbot koos selle serveri pluginaga esmalt Serveri lehelt.",
+    "email": "E-post",
+    "emailHint": "Let's Encrypt teavitab siia probleemidest. Valikuline.",
+    "staging": "Testsertifikaat",
+    "stagingHint": "Kasuta Let's Encrypti testserverit. Brauserid ei usalda seda.",
+    "issue": "Hanki sertifikaat",
+    "done": "Sertifikaat salvestatud"
+  },
+  "config": {
+    "search": "Otsi faile",
+    "empty": "Faile pole.",
+    "loadFailed": "Faili ei õnnestunud laadida.",
+    "test": "Testi konfiguratsiooni",
+    "testOk": "Konfiguratsioon on korras",
+    "testFailed": "Konfiguratsioonis on vigu",
+    "content": "Sisu",
+    "save": "Salvesta",
+    "saveHint": "Enne serveri uuesti laadimist testitakse kogu konfiguratsiooni. Katki fail taastatakse.",
+    "saved": "Salvestatud ja uuesti laaditud",
+    "backups_one": "{{count}} varukoopia",
+    "backups_other": "{{count}} varukoopiat",
+    "restore": "Taasta",
+    "restoreTitle": "Kas taastada see varukoopia?",
+    "restoreBody": "Fail naaseb olekusse, mis oli ajahetkel {{time}}. Praegune tekst muutub samuti varukoopiaks.",
+    "restored": "Varukoopia taastatud"
+  },
+  "logs": {
+    "source": "Logi",
+    "lines": "Read",
+    "journal": "{{server}} logi",
+    "follow": "Jälgi",
+    "stop": "Peata",
+    "connecting": "Ühenduse loomine...",
+    "ended": "Jälgimine peatatud.",
+    "followFailed": "Selle logi jälgimine ei õnnestunud.",
+    "empty": "Rea pole.",
+    "loadFailed": "Logi lugemine ei õnnestunud.",
+    "requests": "Päringud",
+    "topPaths": "Kõige sagedasemad teed",
+    "topClients": "Kõige sagedasemad kliendid"
+  },
+  "server": {
+    "unknown": "tundmatu",
+    "atBoot": "Käivitub süsteemi käivitamisel",
+    "notInstalled": "Pole installitud",
+    "start": "Käivita",
+    "stop": "Peata",
+    "restart": "Taaskäivita",
+    "reload": "Laadi uuesti",
+    "enable": "Käivita süsteemi käivitamisel",
+    "disable": "Ära käivita süsteemi käivitamisel",
+    "boot": "Käivita süsteemi käivitamisel",
+    "noBoot": "Ära käivita süsteemi käivitamisel",
+    "done": "{{server}} on valmis",
+    "stopTitle": "Kas peatada {{server}}?",
+    "stopBody": "Kõik sellel asuvad saidid lähevad offline'i, kuni käivitad selle uuesti.",
+    "install": "Installi",
+    "installTitle": "Kas installida {{server}}?",
+    "installBody": "See installitakse hosti pakkemanageri abil ja käivitub kohe. Teine veebiserver, mis kasutab porti 80, takistab selle käivitumist.",
+    "installed": "{{server}} installiti",
+    "installCertbot": "Installi certbot",
+    "certbotInstalled": "certbot installiti",
+    "certbotPlugins": "Pluginad: {{plugins}}",
+    "certbotNoPlugins": "Puudub nginx või Apache plugin",
+    "certbotHint": "Hankib Let's Encrypti sertifikaate nginx ja Apache saitidele"
+  },
+  "card": {
+    "title": "Veebiserverid",
+    "loading": "Laadimine...",
+    "refresh": "Värskenda",
+    "empty": "Ühelgi peremehel ei ole veebiservereid sisse lülitatud.",
+    "summary_one": "{{count}} peremees | {{down}} vajavad tähelepanu",
+    "summary_other": "{{count}} peremeest | {{down}} vajavad tähelepanu",
+    "sites_one": "{{count}} sait",
+    "sites_other": "{{count}} saiti"
+  },
+  "companion": {
+    "toggle": "Veebiserverite paneel",
+    "openTab": "Ava veebiserverid",
+    "reload": "Laadi {{server}} uuesti"
+  },
+  "manager": {
+    "title": "Veebiserverid",
+    "disabled": "Lülita selle peremehe veebiserverid sisse, et näha siin tema saite."
+  },
+  "operations": {
+    "status": {
+      "title": "Veebiserveri olek"
+    },
+    "listSites": {
+      "title": "Loetle saidid"
+    },
+    "test": {
+      "title": "Testi veebiserveri seadistust"
+    },
+    "reload": {
+      "title": "Laadi veebiserver uuesti"
+    },
+    "restart": {
+      "title": "Taaskäivita veebiserver"
+    },
+    "enableSite": {
+      "title": "Lülita sait sisse"
+    },
+    "disableSite": {
+      "title": "Lülita sait välja"
+    },
+    "deleteSite": {
+      "title": "Kustuta sait"
+    },
+    "server": "Server",
+    "allServers": "Kõik",
+    "sites": {
+      "title": "Saidid",
+      "server": "Server",
+      "domains": "Domeenid",
+      "https": "HTTPS"
+    }
+  }
+}

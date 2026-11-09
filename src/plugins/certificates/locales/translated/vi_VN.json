@@ -1,0 +1,233 @@
+{
+  "plugin": {
+    "name": "Chứng chỉ",
+    "description": "Xem, cấp mới và gia hạn chứng chỉ TLS trên các máy chủ của bạn bằng certbot và acme.sh, đồng thời nhận cảnh báo trước khi chúng hết hạn."
+  },
+  "common": {
+    "cancel": "Hủy",
+    "back": "Quay lại"
+  },
+  "permissions": {
+    "use": {
+      "title": "Sử dụng Chứng chỉ",
+      "description": "Xem chứng chỉ trên các máy chủ bạn có thể truy cập, và thay đổi chúng trên các máy chủ bạn có quyền chỉnh sửa."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Chứng chỉ",
+        "description": "Quản lý chứng chỉ TLS trên máy chủ này từ tab Chứng chỉ."
+      },
+      "useSudo": {
+        "label": "Sử dụng sudo",
+        "description": "Sử dụng sudo để đọc và thay đổi chứng chỉ. Tắt tùy chọn này nếu đăng nhập bằng root."
+      },
+      "readOnly": {
+        "label": "Chỉ đọc",
+        "description": "Hiển thị chứng chỉ nhưng không bao giờ thay đổi chúng trên máy chủ này."
+      },
+      "expiryWarnDays": {
+        "label": "Cảnh báo trước khi hết hạn",
+        "description": "Các chứng chỉ còn số ngày này hoặc ít hơn sẽ hiển thị trạng thái sắp hết hạn và gửi cảnh báo."
+      },
+      "showPanel": {
+        "label": "Hiển thị bảng chứng chỉ trong terminal",
+        "description": "Cho phép bảng chứng chỉ mở bên cạnh terminal SSH của máy chủ này."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Mở bảng chứng chỉ cùng với terminal mới",
+        "description": "Hiển thị bảng chứng chỉ bên cạnh mọi terminal SSH có bật Chứng chỉ. Bạn vẫn có thể mở và đóng nó từ nút ở cạnh phải."
+      },
+      "companionSide": {
+        "label": "Vị trí bảng chứng chỉ",
+        "description": "Nơi bảng chứng chỉ nằm cạnh terminal.",
+        "right": "Phải",
+        "left": "Trái",
+        "bottom": "Dưới"
+      },
+      "companionSize": {
+        "label": "Kích thước bảng chứng chỉ",
+        "description": "Chiều rộng tính bằng pixel, hoặc chiều cao khi nó nằm ở dưới cùng. Bạn cũng có thể kéo cạnh của nó."
+      },
+      "companionEdgeButton": {
+        "label": "Hiển thị nút bảng",
+        "description": "Hiển thị một nút nhỏ ở cạnh phải của terminal để mở bảng chứng chỉ."
+      }
+    }
+  },
+  "tab": {
+    "title": "Chứng chỉ",
+    "noHost": "Mở Chứng chỉ từ một máy chủ.",
+    "error": "Không thể tải chứng chỉ từ máy chủ này.",
+    "disabled": "Chứng chỉ đã bị tắt cho máy chủ này. Hãy bật nó trong cài đặt máy chủ.",
+    "sudo": "Các thay đổi cần đăng nhập root, sudo không mật khẩu hoặc Mật khẩu Sudo đã lưu trên máy chủ này.",
+    "refresh": "Làm mới",
+    "readOnly": "Chỉ đọc",
+    "noClient": "Không có certbot hoặc acme.sh",
+    "viewCertificates": "Chứng chỉ",
+    "viewInspect": "Kiểm tra",
+    "viewRenewal": "Gia hạn"
+  },
+  "actions": {
+    "working": "Đang xử lý. Quá trình này có thể mất vài phút.",
+    "ok": "Hoàn tất",
+    "failed": "Lệnh đã thất bại.",
+    "noOutput": "Không có đầu ra."
+  },
+  "install": {
+    "title": "certbot và acme.sh chưa được cài đặt trên máy chủ này",
+    "hint": "Cài đặt certbot để lấy và gia hạn chứng chỉ từ Let's Encrypt.",
+    "noManager": "Không tìm thấy trình quản lý gói nào được hỗ trợ. Hãy cài đặt certbot thủ công.",
+    "button": "Cài đặt certbot",
+    "confirm": "Cài đặt certbot?",
+    "desc": "Hành động này sẽ cài đặt certbot bằng trình quản lý gói của máy chủ.",
+    "working": "Đang cài đặt...",
+    "done": "certbot đã được cài đặt."
+  },
+  "certs": {
+    "search": "Tìm kiếm chứng chỉ",
+    "empty": "Chưa có chứng chỉ nào.",
+    "noMatch": "Không có chứng chỉ nào khớp.",
+    "loadFailed": "Không thể đọc chứng chỉ.",
+    "expires": "Hết hạn {{date}}",
+    "staging": "Staging",
+    "details": "Chứng chỉ",
+    "manage": "Quản lý",
+    "client": "Client",
+    "path": "Tệp",
+    "authority": "Cơ quan cấp chứng chỉ",
+    "renew": "Gia hạn",
+    "renewDone": "Đã gia hạn {{name}}.",
+    "renewAll": "Gia hạn tất cả",
+    "renewAllDone": "Đã gia hạn các chứng chỉ sắp hết hạn.",
+    "forceRenew": "Vẫn gia hạn ngay bây giờ",
+    "dryRun": "Chạy thử",
+    "dryRunDone": "Chạy thử thành công.",
+    "revoke": "Thu hồi",
+    "revokeTitle": "Thu hồi {{name}}?",
+    "revokeDesc": "Cơ quan cấp chứng chỉ sẽ đánh dấu nó là không hợp lệ và nó sẽ bị xóa khỏi máy chủ này. Bất kỳ thứ gì vẫn đang sử dụng nó sẽ ngừng hoạt động.",
+    "revokeDone": "Đã thu hồi {{name}}.",
+    "delete": "Ngừng quản lý",
+    "deleteTitle": "Ngừng quản lý {{name}}?",
+    "deleteDesc": "Nó vẫn hợp lệ nhưng sẽ không được gia hạn nữa. certbot cũng sẽ xóa các tệp của nó, trong khi acme.sh sẽ giữ lại chúng.",
+    "deleteDone": "{{name}} không còn được quản lý nữa."
+  },
+  "expiry": {
+    "expired": "Đã hết hạn",
+    "unknown": "Không xác định",
+    "days_other": "Còn {{count}} ngày"
+  },
+  "issue": {
+    "add": "Cấp chứng chỉ",
+    "title": "Chứng chỉ mới",
+    "save": "Cấp",
+    "done": "Chứng chỉ đã được cấp.",
+    "working": "Đang yêu cầu cơ quan cấp chứng chỉ. Quá trình này có thể mất vài phút.",
+    "client": "Khách hàng",
+    "domains": "Tên miền",
+    "domainsPlaceholder": "Nhập tên miền và nhấn Enter",
+    "domainsHint": "Tên miền đầu tiên sẽ đặt tên cho chứng chỉ.",
+    "challenge": "Thách thức",
+    "standalone": "Độc lập",
+    "standaloneHint": "Chạy một máy chủ web nhỏ trên cổng 80, vì vậy không có dịch vụ nào khác được sử dụng cổng đó.",
+    "webroot": "Thư mục gốc web",
+    "webrootHint": "Đặt một tệp vào thư mục của máy chủ web của bạn. Máy chủ web tiếp tục chạy.",
+    "dns": "DNS",
+    "dnsHint": "Thêm một bản ghi DNS thông qua API của nhà cung cấp. Cần thiết cho chứng chỉ wildcard.",
+    "webrootPath": "Thư mục gốc web",
+    "webrootPathHint": "Phải nằm trong /var/www, /srv hoặc /usr/share/nginx.",
+    "dnsProvider": "Nhà cung cấp DNS",
+    "dnsProviderCertbot": "Tên của plugin DNS certbot đã cài đặt, ví dụ: cloudflare.",
+    "dnsProviderAcme": "Tên DNS của acme.sh không có tiền tố dns_, ví dụ: cf. Token API của nó phải đã được cấu hình trên máy chủ.",
+    "credentials": "Tệp thông tin đăng nhập",
+    "credentialsHint": "Tệp trên máy chủ chứa token API của bạn. Termix không bao giờ đọc tệp này.",
+    "email": "Email",
+    "emailHint": "Tùy chọn. Cơ quan cấp chứng chỉ sử dụng nó để gửi thông báo hết hạn.",
+    "keyType": "Loại khóa",
+    "staging": "Sử dụng máy chủ staging",
+    "stagingHint": "Dùng để kiểm tra. Chứng chỉ không được tin cậy và giới hạn tốc độ cao hơn nhiều."
+  },
+  "inspect": {
+    "server": "Máy chủ",
+    "file": "Tệp",
+    "address": "Địa chỉ",
+    "addressPlaceholder": "example.com",
+    "port": "Cổng",
+    "path": "Đường dẫn tệp",
+    "check": "Kiểm tra",
+    "hint": "Kiểm tra những gì máy chủ gửi qua TLS, nhìn từ máy chủ này, hoặc đọc một tệp chứng chỉ trên đó.",
+    "failed": "Không thể đọc chứng chỉ.",
+    "noOpenssl": "openssl chưa được cài đặt trên máy chủ này.",
+    "trusted": "Được tin cậy",
+    "notTrusted": "Không được tin cậy",
+    "leaf": "Chứng chỉ",
+    "intermediate": "Chuỗi {{index}}",
+    "selfSigned": "Tự ký",
+    "name": "Tên",
+    "issuer": "Cơ quan cấp",
+    "domains": "Tên miền",
+    "validFrom": "Có hiệu lực từ",
+    "validTo": "Có hiệu lực đến",
+    "keyType": "Khóa",
+    "serial": "Số sê-ri",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Cách máy chủ này tự gia hạn chứng chỉ. Thay đổi cài đặt trên máy chủ.",
+    "on": "Bật",
+    "off": "Tắt",
+    "timer": "bộ hẹn giờ systemd",
+    "next": "Chạy tiếp theo {{time}}",
+    "cron": "Tệp Cron /etc/cron.d/certbot",
+    "certbotOff": "Không tìm thấy bộ hẹn giờ hoặc tác vụ cron, do đó chứng chỉ sẽ không tự động gia hạn.",
+    "acmeCron": "Tác vụ cron trong crontab",
+    "acmeOff": "Không tìm thấy tác vụ cron, do đó chứng chỉ sẽ không tự động gia hạn."
+  },
+  "watch": {
+    "start": "Báo cho tôi trước khi chứng chỉ trên máy chủ này hết hạn",
+    "stop": "Dừng cảnh báo cho máy chủ này",
+    "on": "Bạn sẽ nhận được cảnh báo trước khi chứng chỉ ở đây hết hạn.",
+    "off": "Cảnh báo cho máy chủ này đã tắt.",
+    "failed": "Không thể thay đổi cảnh báo."
+  },
+  "card": {
+    "title": "Chứng chỉ",
+    "loading": "Đang kiểm tra máy chủ...",
+    "summary_other": "{{count}} chứng chỉ, {{expiring}} sắp hết hạn",
+    "refresh": "Kiểm tra lại",
+    "empty": "Bật Chứng chỉ cho một máy chủ để xem chứng chỉ của nó ở đây."
+  },
+  "manager": {
+    "title": "Chứng chỉ",
+    "disabled": "Bật Chứng chỉ cho máy chủ này trong cài đặt của nó để xem ở đây."
+  },
+  "operations": {
+    "list": {
+      "title": "Liệt kê chứng chỉ"
+    },
+    "expiring": {
+      "title": "Chứng chỉ sắp hết hạn"
+    },
+    "renew": {
+      "title": "Gia hạn chứng chỉ"
+    },
+    "renewAll": {
+      "title": "Gia hạn tất cả chứng chỉ"
+    },
+    "revoke": {
+      "title": "Thu hồi chứng chỉ"
+    },
+    "certificates": {
+      "title": "Chứng chỉ",
+      "client": "Khách hàng",
+      "domains": "Tên miền",
+      "daysLeft": "Số ngày còn lại"
+    }
+  },
+  "nav": {
+    "togglePanel": "Bật/tắt bảng chứng chỉ"
+  }
+}

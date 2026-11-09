@@ -100,7 +100,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /summary:
+   * /plugin-api/storage-health/summary:
    *   get:
    *     summary: Health of every host the user can see
    *     description: Uses the readings the background timer already took, so it never opens an SSH connection.
@@ -177,7 +177,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}:
+   * /plugin-api/storage-health/{hostId}:
    *   get:
    *     summary: Drives, pools, arrays and volumes on a host
    *     parameters:
@@ -199,7 +199,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/refresh:
+   * /plugin-api/storage-health/{hostId}/refresh:
    *   post:
    *     summary: Read the host now
    *     parameters:
@@ -221,7 +221,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/config:
+   * /plugin-api/storage-health/{hostId}/config:
    *   put:
    *     summary: Change alerts, interval and thresholds for a host
    *     parameters:
@@ -248,7 +248,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/history:
+   * /plugin-api/storage-health/{hostId}/history:
    *   get:
    *     summary: Temperature, wear and hours for one drive over time
    *     parameters:
@@ -284,7 +284,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/events:
+   * /plugin-api/storage-health/{hostId}/events:
    *   get:
    *     summary: Problems found and cleared, self tests and scrubs
    *     parameters:
@@ -308,7 +308,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/selftest:
+   * /plugin-api/storage-health/{hostId}/selftest:
    *   post:
    *     summary: Start or stop a SMART self test
    *     parameters:
@@ -353,7 +353,7 @@ export function registerRoutes(
 
   /**
    * @openapi
-   * /{hostId}/scrub:
+   * /plugin-api/storage-health/{hostId}/scrub:
    *   post:
    *     summary: Start or stop a scrub, or an array check
    *     parameters:

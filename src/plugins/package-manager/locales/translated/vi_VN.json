@@ -1,0 +1,209 @@
+{
+  "plugin": {
+    "name": "Gói phần mềm",
+    "description": "Xem và cài đặt các bản cập nhật trên các host của bạn, tìm kiếm, cài đặt và gỡ bỏ gói phần mềm, cũng như xem lịch sử gói."
+  },
+  "common": {
+    "cancel": "Hủy",
+    "back": "Quay lại"
+  },
+  "permissions": {
+    "use": {
+      "title": "Sử dụng Gói phần mềm",
+      "description": "Xem các gói và bản cập nhật trên các host bạn có thể truy cập, và thay đổi chúng trên các host bạn có quyền chỉnh sửa."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Gói phần mềm",
+        "description": "Quản lý gói và bản cập nhật trên host này từ tab Gói phần mềm."
+      },
+      "useSudo": {
+        "label": "Sử dụng sudo",
+        "description": "Sử dụng sudo để cài đặt, cập nhật và gỡ bỏ gói. Tắt tính năng này nếu đăng nhập bằng root."
+      },
+      "readOnly": {
+        "label": "Chỉ đọc",
+        "description": "Hiển thị các gói và bản cập nhật nhưng không bao giờ thay đổi chúng trên host này."
+      },
+      "showPanel": {
+        "label": "Hiển thị bảng cập nhật trong terminal",
+        "description": "Cho phép bảng cập nhật mở bên cạnh terminal SSH của host này."
+      },
+      "alertUpdates": {
+        "label": "Cảnh báo khi có bản cập nhật bảo mật",
+        "description": "Gửi cảnh báo khi host này có bản cập nhật bảo mật hoặc cần khởi động lại. Kiểm tra khi đọc bản cập nhật, khoảng một lần mỗi giờ."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Mở bảng cập nhật cùng với terminal mới",
+        "description": "Hiển thị bảng cập nhật bên cạnh mọi terminal SSH có bật Gói phần mềm. Bạn vẫn có thể mở và đóng nó từ nút ở cạnh phải."
+      },
+      "companionSide": {
+        "label": "Vị trí bảng cập nhật",
+        "description": "Nơi bảng cập nhật nằm cạnh terminal.",
+        "right": "Phải",
+        "left": "Trái",
+        "bottom": "Dưới"
+      },
+      "companionSize": {
+        "label": "Kích thước bảng cập nhật",
+        "description": "Chiều rộng tính bằng pixel, hoặc chiều cao khi nó nằm ở dưới. Bạn cũng có thể kéo cạnh của nó."
+      },
+      "companionEdgeButton": {
+        "label": "Hiển thị nút bảng",
+        "description": "Hiển thị một nút nhỏ ở cạnh phải của terminal để mở bảng cập nhật."
+      }
+    }
+  },
+  "tab": {
+    "title": "Gói phần mềm",
+    "noHost": "Mở Gói phần mềm từ một host.",
+    "error": "Không thể tải các gói từ host này.",
+    "disabled": "Gói phần mềm đã bị tắt cho host này. Hãy bật nó trong cài đặt host.",
+    "sudo": "Các thay đổi cần đăng nhập root, sudo không mật khẩu hoặc Mật khẩu Sudo đã lưu trên host này.",
+    "refresh": "Làm mới",
+    "readOnly": "Chỉ đọc",
+    "noManager": "Không có trình quản lý gói",
+    "noManagerTitle": "Không tìm thấy trình quản lý gói nào được hỗ trợ",
+    "noManagerHint": "Gói phần mềm hoạt động với apt, dnf, yum, zypper, pacman và apk.",
+    "indexAge": "Chỉ mục được làm mới {{ago}} trước",
+    "reboot": "Host này cần khởi động lại để hoàn tất bản cập nhật.",
+    "viewUpdates": "Bản cập nhật",
+    "viewInstalled": "Đã cài đặt",
+    "viewSearch": "Tìm kiếm",
+    "viewHistory": "Lịch sử",
+    "viewRepos": "Kho lưu trữ"
+  },
+  "actions": {
+    "working": "{{action}} đang chạy. Điều này có thể mất vài phút.",
+    "ok": "Hoàn tất",
+    "failed": "Trình quản lý gói đã thất bại.",
+    "noOutput": "Không có đầu ra.",
+    "refresh": {
+      "label": "Làm mới chỉ mục",
+      "confirm": "Làm mới chỉ mục gói?",
+      "desc": "Tải xuống các danh sách gói mới nhất.",
+      "done": "Chỉ mục gói đã được cập nhật."
+    },
+    "update": {
+      "label": "Cập nhật",
+      "confirm_other": "Cập nhật {{count}} gói?",
+      "desc": "Cài đặt phiên bản mới nhất của {{names}}.",
+      "done": "Đã cập nhật {{names}}."
+    },
+    "upgrade-all": {
+      "label": "Nâng cấp tất cả",
+      "confirm": "Nâng cấp mọi gói?",
+      "desc": "Làm mới chỉ mục gói và cài đặt mọi bản cập nhật. Các dịch vụ có thể khởi động lại trong khi chạy.",
+      "done": "Tất cả các gói đã được cập nhật."
+    },
+    "install": {
+      "label": "Cài đặt",
+      "confirm": "Cài đặt {{names}}?",
+      "desc": "Cài đặt {{names}} và các thành phần phụ thuộc cần thiết.",
+      "done": "Đã cài đặt {{names}}."
+    },
+    "remove": {
+      "label": "Gỡ bỏ",
+      "confirm": "Gỡ bỏ {{names}}?",
+      "desc": "Gỡ bỏ {{names}} khỏi máy chủ này. Các chương trình phụ thuộc vào nó có thể ngừng hoạt động.",
+      "done": "Đã gỡ bỏ {{names}}."
+    },
+    "hold": {
+      "label": "Giữ nguyên phiên bản này",
+      "confirm": "Giữ nguyên {{names}}?",
+      "desc": "Các bản cập nhật sẽ bỏ qua {{names}} cho đến khi bạn thả khóa.",
+      "done": "{{names}} đã được giữ nguyên."
+    },
+    "unhold": {
+      "label": "Thả khóa",
+      "confirm": "Thả khóa {{names}}?",
+      "desc": "{{names}} sẽ nhận cập nhật trở lại.",
+      "done": "{{names}} sẽ nhận cập nhật trở lại."
+    }
+  },
+  "updates": {
+    "search": "Lọc bản cập nhật",
+    "count_other": "{{count}} bản cập nhật",
+    "countSecurity_other": "{{count}} bản cập nhật, {{security}} cho bảo mật",
+    "updatePicked_other": "Cập nhật {{count}} gói",
+    "updateOne": "Cập nhật",
+    "pick": "Chọn {{name}}",
+    "security": "Bảo mật",
+    "empty": "Tất cả đã cập nhật.",
+    "noMatch": "Không có bản cập nhật nào khớp.",
+    "loadFailed": "Không thể đọc danh sách bản cập nhật."
+  },
+  "installed": {
+    "search": "Lọc gói đã cài đặt",
+    "all": "Tất cả",
+    "held": "Đã giữ",
+    "heldBadge": "Đã giữ",
+    "empty": "Không có gói nào khớp.",
+    "loadFailed": "Không thể đọc danh sách gói đã cài đặt."
+  },
+  "search": {
+    "placeholder": "Tìm kiếm gói",
+    "button": "Tìm kiếm",
+    "hint": "Tìm kiếm trong kho của máy chủ để tìm gói cần cài đặt.",
+    "empty": "Không tìm thấy kết quả.",
+    "installed": "Đã cài đặt",
+    "failed": "Tìm kiếm thất bại."
+  },
+  "history": {
+    "empty": "Không tìm thấy lịch sử gói.",
+    "loadFailed": "Không thể đọc lịch sử gói."
+  },
+  "repos": {
+    "hint": "Các kho mà máy chủ này cài đặt từ đó. Thay đổi chúng trực tiếp trên máy chủ.",
+    "empty": "Không tìm thấy kho nào.",
+    "off": "Tắt",
+    "loadFailed": "Không thể đọc danh sách kho."
+  },
+  "card": {
+    "title": "Cập nhật gói",
+    "loading": "Đang kiểm tra máy chủ...",
+    "summary_other": "{{count}} bản cập nhật trên {{hosts}} máy chủ",
+    "refresh": "Kiểm tra lại",
+    "empty": "Bật Gói cho một máy chủ để xem bản cập nhật của nó ở đây.",
+    "security_other": "{{count}} bảo mật",
+    "reboot": "Cần khởi động lại",
+    "updates_other": "{{count}} bản cập nhật",
+    "upToDate": "Đã cập nhật"
+  },
+  "manager": {
+    "title": "Gói",
+    "disabled": "Bật Gói cho máy chủ này trong cài đặt của nó để xem bản cập nhật ở đây."
+  },
+  "operations": {
+    "list": {
+      "title": "Liệt kê bản cập nhật gói"
+    },
+    "updates": {
+      "title": "Bản cập nhật đang chờ xử lý",
+      "resource": "Bản cập nhật đang chờ xử lý"
+    },
+    "upgradeAll": {
+      "title": "Nâng cấp tất cả gói"
+    },
+    "install": {
+      "title": "Cài đặt gói"
+    },
+    "remove": {
+      "title": "Gỡ bỏ gói"
+    },
+    "package": "Gói",
+    "packageHint": "Một hoặc nhiều tên gói, cách nhau bằng dấu cách.",
+    "resource": {
+      "current": "Đã cài đặt",
+      "available": "Có sẵn",
+      "repo": "Kho"
+    }
+  },
+  "nav": {
+    "togglePanel": "Bật/tắt bảng cập nhật"
+  }
+}

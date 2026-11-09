@@ -1,0 +1,441 @@
+{
+  "plugin": {
+    "name": "備份",
+    "description": "使用 restic 備份主機上的資料夾、資料庫與 Docker 資料，然後瀏覽、下載與還原。"
+  },
+  "common": {
+    "save": "儲存",
+    "cancel": "取消",
+    "back": "返回",
+    "delete": "刪除",
+    "done": "完成",
+    "loading": "載入中...",
+    "refresh": "重新整理",
+    "retry": "重試"
+  },
+  "permissions": {
+    "use": {
+      "title": "使用備份",
+      "description": "設定備份工作與存放庫、執行備份，以及在可編輯的主機上瀏覽、下載與還原快照。"
+    }
+  },
+  "tab": {
+    "title": "備份",
+    "viewJobs": "工作",
+    "viewRepos": "存放庫",
+    "viewHistory": "歷史記錄"
+  },
+  "hostTab": {
+    "title": "備份",
+    "noHost": "從主機開啟備份。",
+    "viewJobs": "工作",
+    "viewSnapshots": "快照",
+    "viewHistory": "歷史記錄",
+    "restic": "restic {{version}}",
+    "noRestic": "未安裝 restic",
+    "sudo": "Termix 需要以 root 身分登入，或以擁有免密碼 sudo 權限的使用者登入，才能在此主機上執行備份。",
+    "statusFailed": "無法讀取此主機"
+  },
+  "install": {
+    "missing": "此主機未安裝 restic",
+    "tooOld": "此主機上的 restic 版本低於 0.17",
+    "hint": "備份功能使用 restic。請透過套件管理員安裝，若套件版本過舊，可從 GitHub 上的 restic 發行版安裝。",
+    "button": "安裝 restic",
+    "working": "安裝中...",
+    "title": "要安裝 restic 嗎？",
+    "desc": "這會以 root 身分在主機上安裝 restic。",
+    "confirm": "安裝",
+    "done": "restic {{version}} 已安裝",
+    "failed": "無法安裝 restic"
+  },
+  "status": {
+    "never": "從未執行",
+    "running": "執行中",
+    "success": "已完成",
+    "warning": "警告",
+    "failed": "失敗",
+    "canceled": "已停止"
+  },
+  "time": {
+    "justNow": "剛剛",
+    "soon": "即將開始",
+    "ago": {
+      "minutes_other": "{{count}} 分鐘前",
+      "hours_other": "{{count}} 小時前",
+      "days_other": "{{count}} 天前"
+    },
+    "in": {
+      "minutes_other": "{{count}} 分鐘後",
+      "hours_other": "{{count}} 小時後",
+      "days_other": "{{count}} 天後"
+    }
+  },
+  "jobs": {
+    "add": "新增工作",
+    "empty": "尚無備份工作",
+    "emptyHint": "新增工作以備份資料夾、資料庫或 Docker 資料。",
+    "emptyNoRepo": "請先新增儲存庫，讓備份資料有地方存放。",
+    "loadFailed": "無法載入備份工作",
+    "lastGood": "上次備份：{{when}}",
+    "noGood": "尚無備份",
+    "next": "下次執行：{{when}}",
+    "paused": "已暫停",
+    "run": "立即執行",
+    "stop": "停止",
+    "edit": "編輯",
+    "snapshots": "快照",
+    "started": "{{name}} 已啟動",
+    "runFailed": "無法啟動備份"
+  },
+  "editor": {
+    "newTitle": "新增備份工作",
+    "general": "工作",
+    "host": "主機",
+    "pickHost": "選擇主機",
+    "name": "名稱",
+    "namePlaceholder": "每日備份",
+    "repository": "儲存庫",
+    "pickRepository": "選擇儲存庫",
+    "noRepos": "此主機沒有可用的儲存庫。請先在「備份」分頁中新增一個。",
+    "repoLocked": "只有此儲存庫的所有者才能修改它。",
+    "enabled": "依排程執行",
+    "enabledHint": "關閉以暫停排程。「立即執行」仍可正常使用。",
+    "oneFileSystem": "限制在同一檔案系統",
+    "oneFileSystemHint": "跳過所選資料夾內的其他磁碟與掛載點。",
+    "saved": "工作已儲存",
+    "saveFailed": "無法儲存工作",
+    "deleteTitle": "刪除 {{name}}？",
+    "deleteDesc": "此工作將從 Termix 移除，但其快照會保留在儲存庫中。",
+    "deleted": "工作已刪除",
+    "deleteFailed": "無法刪除工作"
+  },
+  "sources": {
+    "add": "加入備份",
+    "addPaths": "資料夾",
+    "addDatabase": "資料庫",
+    "addDocker": "Docker",
+    "remove": "移除",
+    "paths": "資料夾與檔案",
+    "folders": "路徑",
+    "foldersHint": "每行輸入一個完整路徑。",
+    "excludes": "排除",
+    "excludesHint": "每行輸入一個 restic 模式，例如 *.log。",
+    "database": "資料庫",
+    "engine": "類型",
+    "engines": {
+      "mysql": "MySQL 或 MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "登入資訊",
+    "ownLogin": "在此輸入登入資訊",
+    "noDatabasesPlugin": "啟用「資料庫」外掛程式以選擇已儲存的登入資訊。",
+    "address": "位址",
+    "addressPlaceholder": "留空表示使用本機 socket",
+    "port": "連接埠",
+    "username": "使用者",
+    "password": "密碼",
+    "passwordSaved": "已儲存，留空則保持不變",
+    "runAs": "執行身分",
+    "runAsHint": "用於執行匯出的 Linux 使用者，例如 postgres。留空則以 root 身分執行。",
+    "databases": "資料庫",
+    "databasesHint": "每行輸入一個名稱。留空則備份所有資料庫。",
+    "sqliteFiles": "資料庫檔案",
+    "sqliteFilesHint": "每行輸入一個完整路徑。每個檔案會在被使用時安全地複製。",
+    "docker": "Docker",
+    "stacks": "堆疊",
+    "volumes": "資料卷",
+    "noStacks": "未找到 compose 堆疊",
+    "noVolumes": "未找到資料卷",
+    "dockerFailed": "無法列出此主機上的 Docker",
+    "stop": "備份期間停止堆疊",
+    "stopHint": "選定的堆疊會先停止，備份完成後再重新啟動，以確保讀取檔案時內容不會變更。"
+  },
+  "schedule": {
+    "title": "排程",
+    "manual": "手動",
+    "daily": "每天",
+    "weekly": "每週",
+    "custom": "自訂",
+    "day": "日期",
+    "time": "時間",
+    "cron": "Cron",
+    "cronHint": "分鐘、小時、幾號、月份、星期幾。",
+    "cronInvalid": "此 Cron 格式無效",
+    "timezone": "時區",
+    "serverTime": "伺服器時間",
+    "manualHint": "此工作僅在您按下「立即執行」時才會運行。",
+    "manualOnly": "手動",
+    "next": "下次執行時間：{{time}}",
+    "noNext": "此排程不會執行",
+    "dailyAt": "每天 {{time}}",
+    "weeklyAt": "{{day}} {{time}}",
+    "days": {
+      "0": "星期日",
+      "1": "星期一",
+      "2": "星期二",
+      "3": "星期三",
+      "4": "星期四",
+      "5": "星期五",
+      "6": "星期六"
+    }
+  },
+  "keep": {
+    "title": "保留",
+    "last": "最近",
+    "daily": "每天",
+    "weekly": "每週",
+    "monthly": "每月",
+    "yearly": "每年",
+    "hint": "每次備份後，此工作較舊的快照會被移除，僅保留指定的數量。設為 0 則保留所有快照。"
+  },
+  "hooks": {
+    "title": "指令",
+    "pre": "備份前",
+    "preHint": "以 root 身分在備份前執行。若執行失敗，備份將中止。",
+    "post": "備份後",
+    "postHint": "以 root 身分在備份後執行，即使備份失敗也會執行。TERMIX_BACKUP_STATUS 變數會儲存執行結果。"
+  },
+  "alerts": {
+    "title": "警示",
+    "onFailure": "備份失敗時發出警示",
+    "onFailureHint": "也會在出現警告時發出警示，並在恢復正常後通知一次。",
+    "staleDays": "未備份天數",
+    "staleDaysHint": "若連續這麼多天沒有成功備份，則發出警示。設為 0 則停用此功能。"
+  },
+  "repos": {
+    "add": "新增儲存庫",
+    "empty": "尚無儲存庫",
+    "emptyHint": "儲存庫是用來存放備份的位置，例如 S3 儲存桶或資料夾。",
+    "loadFailed": "無法載入儲存庫",
+    "jobCount_other": "{{count}} 個工作",
+    "newTitle": "新增儲存庫",
+    "storage": "儲存空間",
+    "name": "名稱",
+    "namePlaceholder": "離站 S3",
+    "kind": "類型",
+    "kinds": {
+      "s3": "相容 S3",
+      "rest": "REST 伺服器",
+      "rclone": "rclone",
+      "local": "主機上的資料夾"
+    },
+    "endpoint": "端點",
+    "endpointHint": "AWS 請留空。MinIO、R2、B2 或 Wasabi 請填寫其 S3 位址。",
+    "region": "地區",
+    "bucket": "儲存桶",
+    "prefix": "儲存桶中的資料夾",
+    "prefixHint": "選填。",
+    "accessKeyId": "存取金鑰 ID",
+    "secretKey": "秘密存取金鑰",
+    "secretSaved": "已儲存，留空即可保留現有設定",
+    "url": "伺服器位址",
+    "username": "使用者",
+    "usernameHint": "若伺服器無需登入，請留空。",
+    "restPassword": "密碼",
+    "remote": "遠端名稱",
+    "remoteHint": "僅限字母、數字和底線。",
+    "path": "路徑",
+    "rcloneConfig": "rclone 設定",
+    "rcloneHint": "rclone.conf 中該遠端的設定行。請在您的電腦上執行 rclone config 來建立這些設定。主機必須已安裝 rclone。",
+    "rcloneSaved": "已儲存，留空則保留現有設定",
+    "host": "主機",
+    "pickHost": "選擇一台主機",
+    "folder": "資料夾",
+    "folderHint": "只有此主機上的工作才能使用它。建議使用掛載的磁碟。",
+    "password": "加密",
+    "resticPassword": "儲存庫密碼",
+    "passwordHint": "留空則由 Termix 產生強密碼。請妥善保管副本：若遺失，備份將無法讀取。",
+    "passwordKeep": "已儲存，留空以保留現有密碼",
+    "passwordChangeHint": "這只會變更 Termix 傳送的密碼，並不會變更現有儲存庫的密碼。",
+    "reveal": "顯示密碼",
+    "revealTitle": "要顯示儲存庫密碼嗎？",
+    "revealDesc": "任何擁有此密碼與儲存金鑰的人，都能讀取此儲存庫中的所有備份。此操作將記錄於稽核日誌中。",
+    "revealFailed": "無法讀取密碼",
+    "copy": "複製",
+    "copied": "已複製",
+    "check": "檢查",
+    "checkFrom": "檢查來源",
+    "checkFromHint": "開啟存放庫的主機。該主機需要安裝 restic。",
+    "checkButton": "檢查",
+    "initButton": "檢查並設定",
+    "installRclone": "在此主機上安裝 rclone",
+    "rcloneInstalled": "已安裝 rclone {{version}}。",
+    "rcloneFailed": "無法安裝 rclone",
+    "checking": "檢查中...",
+    "opened": "存放庫開啟正常。",
+    "created": "存放庫已設定完成，準備就緒。",
+    "checkFailed": "無法開啟存放庫",
+    "checkNext": "已儲存。請從主機檢查以完成設定。",
+    "saved": "存放庫已儲存",
+    "saveFailed": "無法儲存存放庫",
+    "deleteTitle": "刪除 {{name}}？",
+    "deleteDesc": "此操作僅從 Termix 中移除。備份資料仍保留在儲存空間中。",
+    "deleted": "存放庫已刪除",
+    "deleteFailed": "無法刪除儲存庫"
+  },
+  "snapshots": {
+    "noJobs": "請先新增備份工作。",
+    "job": "工作",
+    "titleFor": "{{name}} 的快照",
+    "empty": "尚無快照",
+    "loadFailed": "無法讀取快照",
+    "latest": "最新",
+    "files_other": "{{count}} 個檔案",
+    "browse": "瀏覽",
+    "delete": "刪除",
+    "deleteTitle": "刪除這個快照？",
+    "deleteDesc": "來自 {{time}} 的快照將從儲存庫中永久移除。",
+    "deleted": "快照已刪除",
+    "deleteFailed": "無法刪除快照",
+    "browseTitle": "快照 {{time}}",
+    "root": "根目錄",
+    "emptyFolder": "此資料夾為空",
+    "filesFailed": "無法列出此資料夾",
+    "pick": "選取",
+    "download": "下載",
+    "downloadZip": "下載為 zip",
+    "downloadFailed": "無法下載",
+    "restoreAll": "全部還原",
+    "restorePicked_other": "還原 {{count}} 個項目"
+  },
+  "restore": {
+    "title": "還原",
+    "what": "內容",
+    "everything": "快照中的所有內容。",
+    "more_other": "及其他 {{count}} 個",
+    "where": "位置",
+    "host": "主機",
+    "hostHint": "任何您可以編輯且能存取儲存庫的主機。",
+    "localOnly": "此儲存庫位於其主機上的資料夾中，因此只能在那裡還原。",
+    "toFolder": "還原至資料夾",
+    "toOriginal": "原位置",
+    "folder": "資料夾",
+    "folderHint": "檔案將保留其在此資料夾內的完整路徑。",
+    "originalWarning": "檔案將寫回原位置，可能會取代目前的檔案。",
+    "overwrite": "已存在的檔案",
+    "overwriteOptions": {
+      "if-changed": "變更時取代",
+      "always": "一律取代",
+      "if-newer": "備份較新時取代",
+      "never": "永不取代"
+    },
+    "start": "還原",
+    "started": "還原已開始",
+    "failed": "無法啟動還原"
+  },
+  "run": {
+    "title": "執行",
+    "backupTitle": "{{name}} 的備份",
+    "restoreTitle": "{{name}} 的還原",
+    "loadFailed": "無法載入執行記錄",
+    "progress": "進度",
+    "preparing": "準備中...",
+    "progressLine": "{{percent}}% | {{files}} / {{totalFiles}} 個檔案 | {{bytes}} / {{totalBytes}}",
+    "left": "剩餘 {{time}}",
+    "details": "詳細資訊",
+    "started": "開始時間",
+    "finished": "完成時間",
+    "trigger": "啟動方式",
+    "triggers": {
+      "manual": "立即執行",
+      "schedule": "排程",
+      "operation": "Termix 動作"
+    },
+    "snapshot": "快照",
+    "target": "還原至",
+    "files": "檔案",
+    "filesLine": "{{total}} 個檔案，{{added}} 個新增，{{changed}} 個變更",
+    "size": "大小",
+    "added": "新增至儲存庫",
+    "took": "耗時",
+    "log": "日誌",
+    "noLog": "尚無日誌。",
+    "stopTitle": "停止此執行？",
+    "stopDesc": "已停止的備份不會儲存快照。已停止的還原將保留目前已還原的檔案。",
+    "stopSent": "正在停止",
+    "stopFailed": "無法停止執行"
+  },
+  "history": {
+    "empty": "尚無執行記錄",
+    "loadFailed": "無法載入歷史記錄",
+    "status": "狀態",
+    "job": "工作",
+    "host": "主機",
+    "kind": "類型",
+    "kinds": {
+      "backup": "備份",
+      "restore": "還原"
+    },
+    "started": "開始時間",
+    "took": "耗時",
+    "size": "大小"
+  },
+  "card": {
+    "title": "備份",
+    "all": "所有備份工作",
+    "oneJob": "一項備份工作",
+    "empty": "尚無備份工作。",
+    "gone": "此備份工作已刪除。",
+    "open": "開啟"
+  },
+  "operations": {
+    "list": {
+      "title": "列出備份工作"
+    },
+    "failed": {
+      "title": "失敗的備份"
+    },
+    "run": {
+      "title": "執行備份"
+    },
+    "cancel": {
+      "title": "停止備份"
+    },
+    "snapshots": {
+      "title": "列出快照"
+    },
+    "events": {
+      "finished": "備份已完成",
+      "failed": "備份失敗"
+    },
+    "jobs": {
+      "title": "備份工作",
+      "lastSuccess": "上次備份",
+      "nextRun": "下次執行",
+      "size": "大小"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "在終端機中顯示備份面板",
+        "description": "讓備份面板在此主機的 SSH 終端機旁開啟。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "在新終端機中開啟備份面板",
+        "description": "在每個已啟用此功能的 SSH 終端機旁顯示備份面板。您仍可以從右側邊緣的按鈕開啟或關閉它。"
+      },
+      "companionSide": {
+        "label": "備份面板位置",
+        "description": "備份面板相對於終端機的位置。",
+        "right": "右側",
+        "left": "左側",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "備份面板大小",
+        "description": "以像素為單位的寬度，或位於底部時的高度。您也可以拖曳其邊緣來調整。"
+      },
+      "companionEdgeButton": {
+        "label": "顯示面板按鈕",
+        "description": "在終端機的右側邊緣顯示一個小按鈕，用於開啟備份面板。"
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "切換備份面板"
+  }
+}

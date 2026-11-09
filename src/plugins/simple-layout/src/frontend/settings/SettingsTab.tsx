@@ -142,6 +142,7 @@ export function SettingsTab({ section }: { section?: string }) {
             <>
               {hasVisibleFields(plugin.contributes?.settings?.user ?? []) && (
                 <PluginSettingsForm
+                  key={`user:${plugin.id}`}
                   plugin={plugin}
                   scope="user"
                   fields={plugin.contributes?.settings?.user ?? []}
@@ -154,6 +155,7 @@ export function SettingsTab({ section }: { section?: string }) {
                       {t("settings.forAdmins")}
                     </h2>
                     <PluginSettingsForm
+                      key={`admin:${plugin.id}`}
                       plugin={plugin}
                       scope="admin"
                       fields={plugin.contributes?.settings?.admin ?? []}

@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Kuasa, sensor, log peristiwa dan konsol untuk BMC pelayan melalui Redfish, IPMI dan Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Memuatkan"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "Lihat BMC",
+      "description": "Buka tab Out-of-band dan lihat kuasa, kesihatan, sensor dan log."
+    },
+    "power": {
+      "title": "Kawal kuasa dan boot",
+      "description": "Hidupkan dan matikan mesin, kitar kuasa mereka dan pilih peranti boot seterusnya."
+    },
+    "console": {
+      "title": "Gunakan konsol siri",
+      "description": "Buka konsol siri melalui LAN bagi sebuah mesin."
+    },
+    "media": {
+      "title": "Gunakan media maya",
+      "description": "Pasang dan keluarkan imej ISO pada sebuah mesin."
+    },
+    "manage": {
+      "title": "Urus BMC",
+      "description": "Tambah, ubah dan buang BMC, serta bersihkan log peristiwa mereka."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Jalankan ipmitool pada pelayan Termix",
+        "description": "Apabila dimatikan, BMC IPMI mesti menggunakan hos perantara. Redfish dan AMT tidak terjejas."
+      }
+    }
+  },
+  "description": "Tambah pengawal pengurusan (BMC) pelayan anda untuk menghidupkan dan mematikannya, memantau sensor mereka dan membaca log peristiwa. Log masuk disimpan dalam bentuk tersulit dan tidak akan dipaparkan semula.",
+  "summary": "{{count}} BMC, {{attention}} memerlukan perhatian",
+  "empty": "Tiada BMC lagi.",
+  "add": "Tambah BMC",
+  "edit": "Sunting",
+  "delete": "Buang",
+  "back": "Kembali",
+  "saved": "Disimpan",
+  "deleteConfirm": "Buang {{name}}?",
+  "status": {
+    "unknown": "Belum dibaca",
+    "up": "Boleh dicapai",
+    "down": "Tidak boleh dicapai"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI melalui LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Nama pengguna",
+    "password": "Kata laluan"
+  },
+  "power": {
+    "on": "Hidup",
+    "off": "Mati",
+    "unknown": "Tidak diketahui",
+    "sent": "Meminta {{name}} untuk mengubah kuasa",
+    "action": {
+      "on": "Hidupkan kuasa",
+      "off": "Matikan kuasa",
+      "graceful-shutdown": "Tutup",
+      "cycle": "Kitar kuasa",
+      "reset": "Set semula"
+    },
+    "confirm": {
+      "on": "Hidupkan kuasa {{name}}?",
+      "off": "Putuskan kuasa {{name}}? Sistem tidak ditutup dengan kemas.",
+      "graceful-shutdown": "Minta {{name}} untuk menutup?",
+      "cycle": "Kitar kuasa {{name}}? Sistem tidak ditutup dengan kemas.",
+      "reset": "Set semula {{name}}? Sistem akan mula semula serta-merta."
+    }
+  },
+  "health": {
+    "ok": "Sihat",
+    "warning": "Amaran",
+    "critical": "Kritikal",
+    "unknown": "Tidak diketahui"
+  },
+  "kind": {
+    "temperature": "Suhu",
+    "fan": "Kipas",
+    "voltage": "Voltan",
+    "power": "Kuasa",
+    "psu": "Bekalan kuasa",
+    "other": "Lain-lain"
+  },
+  "form": {
+    "addTitle": "Tambah BMC",
+    "editTitle": "Edit BMC",
+    "device": "BMC",
+    "access": "Akses",
+    "type": "Jenis",
+    "name": "Nama",
+    "address": "Alamat",
+    "port": "Port",
+    "host": "Hos Termix",
+    "hostHint": "Pautkan BMC kepada hos yang dimilikinya. Ia akan mengikuti perkongsian hos tersebut dan muncul dalam menu hosnya.",
+    "noHost": "Tiada",
+    "poll": "Baca setiap (saat)",
+    "pollHint": "Sekurang-kurangnya 30 saat, atau 60 apabila hos relay digunakan.",
+    "scheme": "Sambungan",
+    "relay": "Hos relay",
+    "relayHint": "Jalankan ipmitool pada hos ini bukannya pada pelayan Termix. Diperlukan untuk konsol siri.",
+    "noRelay": "Pelayan Termix",
+    "cipher": "Suir kriptografi",
+    "cipherHint": "Ubah ini hanya jika BMC menolak log masuk. 3 adalah yang biasa, 17 untuk BMC yang lebih baru.",
+    "ca": "Sijil CA",
+    "caHint": "Tampal PEM bagi pihak berkuasa sijil BMC. Kosongkan untuk sijil yang dipercayai.",
+    "caSet": "CA telah disimpan. Tampal yang baru untuk menggantikannya.",
+    "keepLogin": "Kosongkan untuk mengekalkan log masuk yang disimpan",
+    "test": "Uji sambungan",
+    "testOk": "BMC telah menjawab. Kuasa adalah {{power}}.",
+    "testNeedsLogin": "Masukkan log masuk sekali lagi untuk menguji.",
+    "save": "Simpan",
+    "add": "Tambah"
+  },
+  "view": {
+    "overview": "Gambaran keseluruhan",
+    "sensors": "Sensor",
+    "log": "Log peristiwa",
+    "boot": "But",
+    "media": "Media maya",
+    "console": "Konsol",
+    "refresh": "Baca sekarang",
+    "type": "Jenis",
+    "address": "Alamat",
+    "power": "Kuasa",
+    "health": "Kesihatan",
+    "manufacturer": "Pembuat",
+    "model": "Model",
+    "serial": "Nombor siri",
+    "bios": "BIOS",
+    "bmc": "Perisian keras BMC",
+    "status": "BMC",
+    "viaRelay": "Dicapai melalui hos relay.",
+    "noSensors": "BMC ini tidak melaporkan sebarang sensor.",
+    "sensor": "Sensor",
+    "reading": "Bacaan",
+    "state": "Keadaan"
+  },
+  "log": {
+    "time": "Masa",
+    "severity": "Tahap",
+    "message": "Peristiwa",
+    "empty": "Log peristiwa adalah kosong.",
+    "clear": "Kosongkan log",
+    "clearConfirm": "Kosongkan log peristiwa {{name}}? Ini tidak boleh dibatalkan.",
+    "cleared": "Log dikosongkan",
+    "level": {
+      "info": "Maklumat",
+      "warning": "Amaran",
+      "critical": "Kritikal"
+    }
+  },
+  "boot": {
+    "hint": "Mesin ini akan but dari peranti ini sekali, kemudian kembali kepada susunan normalnya. Terapkan sebelum mulakan semula.",
+    "device": "But dari",
+    "mode": "Mod",
+    "uefi": "UEFI",
+    "legacy": "BIOS Warisan",
+    "apply": "Tetapkan untuk but seterusnya",
+    "done": "{{name}} akan but dari peranti yang dipilih pada kali seterusnya",
+    "pxe": "Rangkaian (PXE)",
+    "disk": "Cakera keras",
+    "cd": "CD atau media maya",
+    "usb": "USB",
+    "bios": "Tetapan BIOS",
+    "none": "Susunan biasa"
+  },
+  "media": {
+    "url": "Alamat imej",
+    "empty": "BMC ini tidak mempunyai slot CD maya.",
+    "mounted": "Dipasang",
+    "free": "Kosong",
+    "mount": "Pasang",
+    "eject": "Keluarkan",
+    "mountedDone": "Imej dipasang",
+    "ejected": "Imej dikeluarkan"
+  },
+  "console": {
+    "hint": "Taip ~. untuk meninggalkan konsol.",
+    "connecting": "Menyambung",
+    "ended": "Konsol telah ditutup.",
+    "failed": "Tidak dapat membuka konsol.",
+    "needsRelay": "Konsol siri memerlukan hos relay dengan ipmitool. Pilih satu dalam tetapan BMC."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "But dari",
+    "uefi": "Mod UEFI",
+    "list": {
+      "title": "Senaraikan BMC"
+    },
+    "poll": {
+      "title": "Baca BMC sekarang"
+    },
+    "powerState": {
+      "title": "Dapatkan keadaan kuasa"
+    },
+    "power-on": {
+      "title": "Hidupkan kuasa"
+    },
+    "graceful-shutdown": {
+      "title": "Matikan"
+    },
+    "power-off": {
+      "title": "Matikan kuasa"
+    },
+    "power-cycle": {
+      "title": "Kitaran kuasa"
+    },
+    "reset": {
+      "title": "Set semula"
+    },
+    "setBootOnce": {
+      "title": "But sekali dari peranti"
+    },
+    "clearLog": {
+      "title": "Kosongkan log peristiwa"
+    },
+    "health": {
+      "title": "Kesihatan BMC"
+    }
+  },
+  "widget": {
+    "name": "Di luar jalur",
+    "description": "Kuasa dan kesihatan BMC pelayan anda.",
+    "summary": "{{up}} daripada {{total}} hidup"
+  }
+}

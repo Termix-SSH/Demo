@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Benutzer",
+    "description": "Verwalten Sie Benutzerkonten, Gruppen, Passwörter und SSH-Schlüssel auf Ihren Hosts."
+  },
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück",
+    "delete": "Löschen",
+    "loading": "Wird geladen..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Benutzer verwenden",
+      "description": "Konten auf erreichbaren Hosts anzeigen und auf bearbeitbaren Hosts ändern."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Benutzer",
+        "description": "Verwalten Sie Benutzerkonten und Gruppen auf diesem Host über den Tab Benutzer."
+      },
+      "useSudo": {
+        "label": "Sudo verwenden",
+        "description": "Verwenden Sie sudo, um Konten zu lesen und zu ändern. Deaktivieren, wenn mit root angemeldet."
+      },
+      "readOnly": {
+        "label": "Schreibgeschützt",
+        "description": "Konten anzeigen, aber auf diesem Host nie ändern."
+      }
+    }
+  },
+  "tab": {
+    "title": "Benutzer",
+    "noHost": "Öffnen Sie Benutzer von einem Host aus.",
+    "error": "Konten von diesem Host konnten nicht geladen werden.",
+    "disabled": "Benutzer ist für diesen Host deaktiviert. Aktivieren Sie es in den Host-Einstellungen.",
+    "sudo": "Änderungen und Passwortstatus erfordern eine root-Anmeldung, passwortloses sudo oder ein gespeichertes Sudo-Passwort auf diesem Host.",
+    "noTools": "useradd ist auf diesem Host nicht installiert. Installieren Sie auf Alpine das shadow-Paket.",
+    "refresh": "Aktualisieren",
+    "readOnly": "Schreibgeschützt",
+    "counts_one": "{{count}} Benutzer",
+    "counts_other": "{{count}} Benutzer",
+    "viewUsers": "Benutzer",
+    "viewGroups": "Gruppen",
+    "viewSessions": "Sitzungen"
+  },
+  "users": {
+    "add": "Benutzer hinzufügen",
+    "search": "Benutzer suchen",
+    "people": "Personen",
+    "systemFilter": "System",
+    "all": "Alle",
+    "empty": "Keine passenden Benutzer.",
+    "you": "Sie",
+    "sudo": "Sudo",
+    "locked": "Gesperrt",
+    "emptyPassword": "Kein Passwort",
+    "system": "System",
+    "loadFailed": "Konten konnten nicht gelesen werden."
+  },
+  "password": {
+    "set": "Setzen",
+    "locked": "Gesperrt",
+    "none": "Nicht gesetzt, keine Passwortanmeldung",
+    "empty": "Leer, jeder kann sich anmelden",
+    "unknown": "Erfordert root zur Bestimmung"
+  },
+  "detail": {
+    "info": "Konto",
+    "account": "Details",
+    "fullName": "Vollständiger Name",
+    "uid": "Benutzer- und Gruppen-ID",
+    "mainGroup": "Hauptgruppe",
+    "home": "Home-Verzeichnis",
+    "shell": "Shell",
+    "groups": "Gruppen",
+    "groupsPlaceholder": "Gruppe eingeben und Enter drücken",
+    "unknownGroups": "Diese Gruppen existieren nicht: {{groups}}",
+    "none": "Keine",
+    "password": "Passwort",
+    "passwordChanged": "Passwort geändert",
+    "lastLogin": "Letzte Anmeldung",
+    "never": "Nie",
+    "unknown": "Unbekannt",
+    "saved": "Gespeichert.",
+    "failed": "Die Änderung ist fehlgeschlagen.",
+    "loadFailed": "Die Schlüssel und die letzte Anmeldung dieses Benutzers konnten nicht gelesen werden.",
+    "passwordSection": "Passwort",
+    "newPassword": "Neues Passwort",
+    "newPasswordHint": "Wird über SSH an den Host gesendet und mit chpasswd gesetzt. Es wird niemals in Termix gespeichert.",
+    "setPassword": "Passwort setzen",
+    "passwordSet": "Passwort gesetzt.",
+    "expirePassword": "Beim nächsten Login nach einem neuen fragen",
+    "expired": "Sie wählen beim nächsten Login ein neues Passwort.",
+    "access": "Zugriff",
+    "sudo": "Sudo",
+    "sudoHint": "Befehle als root über die Gruppe {{group}} ausführen.",
+    "sudoProtected": "Du kannst root oder dem Benutzer, mit dem Termix sich anmeldet, keine Sudo-Rechte entziehen.",
+    "sudoTitle": "{{name}} Sudo-Rechte geben?",
+    "sudoDesc": "Fügt sie zur Gruppe {{group}} hinzu, sodass sie jeden Befehl als root ausführen können.",
+    "sudoGrant": "Sudo-Rechte geben",
+    "sudoOn": "Sudo-Rechte erteilt.",
+    "sudoOff": "Sudo-Rechte entzogen.",
+    "lock": "Konto sperren",
+    "unlock": "Konto entsperren",
+    "lockTitle": "{{name}} sperren?",
+    "lockDesc": "Sie können sich nicht mit einem Passwort oder einem SSH-Schlüssel anmelden, bis du das Konto entsperrst.",
+    "lockHint": "Blockiert Anmeldeversuche mit Passwort und SSH-Schlüssel.",
+    "protected": "Root und der Benutzer, mit dem Termix sich anmeldet, können nicht gesperrt oder gelöscht werden.",
+    "locked": "Konto gesperrt.",
+    "unlocked": "Konto entsperrt.",
+    "danger": "Löschen",
+    "removeHome": "Auch das Home-Verzeichnis löschen",
+    "removeHomeHint": "Löscht {{home}} und alles darin.",
+    "delete": "Benutzer löschen",
+    "deleteTitle": "{{name}} löschen?",
+    "deleteDesc": "Das Konto wird entfernt. Das Home-Verzeichnis bleibt auf dem Host erhalten.",
+    "deleteDescHome": "Das Konto und {{home}} werden entfernt. Dies kann nicht rückgängig gemacht werden.",
+    "deleted": "{{name}} gelöscht."
+  },
+  "keys": {
+    "title": "SSH-Schlüssel",
+    "empty": "Keine SSH-Schlüssel.",
+    "denied": "Die Schlüssel können ohne root-Rechte nicht gelesen werden.",
+    "options": "Optionen",
+    "remove": "Schlüssel entfernen",
+    "removeTitle": "Diesen Schlüssel entfernen?",
+    "removed": "Schlüssel entfernt.",
+    "add": "Schlüssel hinzufügen",
+    "addHint": "Füge einen öffentlichen Schlüssel ein, z. B. den Inhalt von id_ed25519.pub.",
+    "addButton": "Schlüssel hinzufügen",
+    "added": "Schlüssel hinzugefügt."
+  },
+  "create": {
+    "title": "Neuer Benutzer",
+    "name": "Benutzername",
+    "nameHint": "Kleinbuchstaben, Zahlen, - und _.",
+    "nameInvalid": "Beginne mit einem Buchstaben und verwende nur a-z, 0-9, - und _.",
+    "home": "Home-Verzeichnis",
+    "homeHint": "Leer lassen für /home/{{name}}.",
+    "createHome": "Home-Verzeichnis erstellen",
+    "password": "Passwort",
+    "passwordHint": "Optional. Ohne Passwort kann sich der Benutzer nur mit einem SSH-Schlüssel anmelden.",
+    "again": "Passwort wiederholen",
+    "mismatch": "Die Passwörter stimmen nicht überein.",
+    "save": "Benutzer erstellen",
+    "done": "{{name}} erstellt.",
+    "failed": "Der Benutzer konnte nicht erstellt werden."
+  },
+  "groups": {
+    "add": "Gruppe hinzufügen",
+    "name": "Gruppenname",
+    "namePlaceholder": "Neuer Gruppenname",
+    "create": "Erstellen",
+    "created": "{{name}} wurde erstellt.",
+    "search": "Gruppen durchsuchen",
+    "empty": "Keine passenden Gruppen.",
+    "noMembers": "Keine Mitglieder.",
+    "failed": "Die Änderung ist fehlgeschlagen.",
+    "addMember": "Mitglied hinzufügen",
+    "pickUser": "Benutzer auswählen",
+    "removeMember": "Aus Gruppe entfernen",
+    "memberAdded": "{{name}} wurde zu {{group}} hinzugefügt.",
+    "memberRemoved": "{{name}} wurde aus {{group}} entfernt.",
+    "mainGroup": "Hauptgruppe",
+    "mainGroupHint": "Dies ist ihre Hauptgruppe, daher gehören sie immer dazu.",
+    "deleteTitle": "{{name}} löschen?",
+    "deleteDesc": "Die Gruppe wird entfernt. Dateien, die ihr gehörten, behalten ihre alte ID.",
+    "deleted": "{{name}} wurde gelöscht."
+  },
+  "sessions": {
+    "now": "Aktuell angemeldet",
+    "none": "Niemand ist angemeldet.",
+    "recent": "Letzte Anmeldeungen",
+    "noRecent": "Kein Anmeldeverlauf gefunden.",
+    "loadFailed": "Die Sitzungen konnten nicht gelesen werden."
+  },
+  "manager": {
+    "title": "Benutzer",
+    "disabled": "Aktiviere Benutzer für diesen Host in den Einstellungen, um die Konten hier anzuzeigen."
+  },
+  "operations": {
+    "list": {
+      "title": "Benutzer auflisten"
+    },
+    "emptyPasswords": {
+      "title": "Konten ohne Passwort"
+    },
+    "lock": {
+      "title": "Benutzer sperren"
+    },
+    "unlock": {
+      "title": "Benutzer entsperren"
+    },
+    "delete": {
+      "title": "Benutzer löschen"
+    },
+    "users": {
+      "title": "Benutzer",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "Gruppen"
+    }
+  }
+}

@@ -16,7 +16,9 @@
     "more": "Mai multe",
     "logout": "Deconectare",
     "next": "Înainte",
-    "previous": "Înapoi"
+    "previous": "Înapoi",
+    "showPassword": "Afișează parola",
+    "hidePassword": "Ascunde parola"
   },
   "desktopUpdates": {
     "title": "Aplicație desktop",
@@ -67,7 +69,10 @@
     "resetRailOrder": "Resetează ordinea",
     "hideFromRail": "Ascunde din bara laterală",
     "openSettings": "Deschide setările",
-    "mobileNavigation": "Navigare"
+    "mobileNavigation": "Navigare",
+    "allTabs": "Toate filele",
+    "hideTabBar": "Ascunde bara de file",
+    "showTabBar": "Afișează bara de file"
   },
   "commandPalette": {
     "searchPlaceholder": "Caută gazde, comenzi sau setări...",
@@ -110,7 +115,8 @@
     "noSearchResults": "Nicio conexiune nu se potrivește cu căutarea",
     "rename": "Redenumește sesiunea",
     "forgetConfirm": "Închei sesiunea de fundal pentru {{name}}?",
-    "forget": "Încheie sesiunea"
+    "forget": "Încheie sesiunea",
+    "expiringNow": "Se încheie acum"
   },
   "placeholders": {
     "apiKeyName": "de ex., CI Pipeline",
@@ -158,16 +164,14 @@
     "commandPalette": "Paletă de comenzi",
     "done": "Gata",
     "clear": "Șterge",
-    "dragToResizeColumns": "Trage pentru a redimensiona coloanele",
     "hostsAvailable": "Gazde disponibile",
-    "removeSection": "Elimină secțiunea",
-    "addSection": "Adaugă o secțiune",
-    "allSectionsShown": "Totul este deja pe tabloul de bord.",
+    "addSection": "Adaugă plăcuțe",
     "fromPlugins": "Din plugin-uri",
-    "dropHere": "Plasează o secțiune aici",
-    "dragToReorder": "Trage secțiunile pentru a le rearanja",
+    "dropHere": "Încă nu există plăcuțe. Adaugă unele din listă.",
+    "dragToReorder": "Trage plăcuțele pentru a le muta și marginile pentru a le redimensiona",
     "clearActivityConfirm": "Ștergi activitatea recentă?",
-    "resetConfirm": "Resetezi tabloul de bord la aspectul implicit?"
+    "resetConfirm": "Resetezi tabloul de bord la aspectul implicit?",
+    "clearFailed": "Nu s-a putut șterge activitatea recentă"
   },
   "admin": {
     "sectionGeneral": "General",
@@ -230,6 +234,9 @@
     "allowPasswordLoginDesc": "Autentificare cu nume de utilizator și parolă",
     "externalAutoProvision": "Creează automat conturi externe",
     "externalAutoProvisionDesc": "Creează un cont la prima autentificare prin o metodă externă, cum ar fi SSO sau LDAP. Dacă este dezactivat, doar persoanele care au deja un cont se pot autentifica în acest mod",
+    "credentialStorage": "Permite salvarea parolelor și cheilor",
+    "credentialStorageOff": "Salvarea parolelor și cheilor este dezactivată pe acest server. Lăsați-le goale și Termix va cere detalii la conectare.",
+    "credentialStorageDesc": "Dacă este dezactivat, nimeni nu poate salva o parolă sau o cheie privată pe un gazdă sau o credencială, iar Termix le va cere la conectare. Datele de autentificare deja salvate rămân până sunt șterse.",
     "secondFactorAfterExternalLogin": "Solicită un al doilea factor după autentificările externe (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Dacă este dezactivat, un al doilea factor înregistrat este solicitat doar după autentificările cu parolă și alte metode locale, ca înainte. Dacă este activat, este solicitat după fiecare metodă de autentificare, inclusiv SSO și LDAP.",
     "allowPasswordReset": "Permite resetarea parolei",
@@ -281,6 +288,13 @@
     "apiKeyName": "Nume",
     "apiKeyUser": "Utilizator",
     "apiKeySelectUser": "Selectați un utilizator...",
+    "apiKeyScope": "Acces",
+    "apiKeyScopeFull": "Tot ce poate face utilizatorul",
+    "apiKeyScopeRead": "Doar acțiuni de citire",
+    "apiKeyScopeRun": "Execută acțiuni",
+    "apiKeyScopeHint": "Cheile pentru acțiuni au acces doar la acțiunile Termix și la serverul MCP, nu la nimic altceva.",
+    "apiKeyScopeActionsRead": "Acțiuni, doar citire",
+    "apiKeyScopeActionsRun": "Acțiuni",
     "apiKeyExpiresAt": "Expiră la",
     "createKey": "Creează cheie",
     "apiKeyNoExpiry": "Fără expirare",
@@ -319,6 +333,10 @@
     "deleteUserFailed": "Nu s-a putut șterge utilizatorul",
     "deleteUserSuccess": "Utilizatorul „{{username}}” a fost șters",
     "deleteRoleSuccess": "Rolul „{{name}}” a fost șters",
+    "deleteRoleFailed": "Nu s-a putut șterge rolul",
+    "roleNamePlaceholder": "developer",
+    "roleDisplayNamePlaceholder": "Developer",
+    "unknownError": "Eroare necunoscută",
     "revokeKeySuccess": "Cheia „{{name}}” a fost revocată",
     "revokeKeyFailed": "Nu s-a putut revoca cheia",
     "copiedToClipboard": "Copiat în clipboard",
@@ -361,6 +379,7 @@
     "unlinkAccountFailed": "Eșec la dezlegarea autentificării externe",
     "updateRegistrationFailed": "Eșec la actualizarea setării de înregistrare",
     "updatePasswordLoginFailed": "Eșec la actualizarea setării de autentificare cu parolă",
+    "updateCredentialStorageFailed": "Actualizarea setării de stocare a acreditărilor a eșuat",
     "updateSecondFactorAfterExternalLoginFailed": "Eșec la actualizarea setării factorului secundar",
     "updatePasswordResetFailed": "Eșec la actualizarea setării de resetare a parolei",
     "sessionTimeoutRange2": "Timpul de expirare al sesiunii trebuie să fie între 1 și 720 de ore",
@@ -683,7 +702,8 @@
         "tryBetaTitle": "Testează funcțiile noi în avans",
         "tryBetaDescription": "Alătură-te programului beta în Actualizări.",
         "sendBetaFeedback": "Trimite feedback pentru beta",
-        "openUpdates": "Actualizări"
+        "openUpdates": "Actualizări",
+        "hexLabel": "hex"
       }
     }
   },
@@ -769,6 +789,11 @@
       "allPluginsBeta": "Folosește versiuni beta pentru toate plugin-urile",
       "allPluginsStable": "Toate plugin-urile înapoi la versiunea stabilă",
       "saveFailed": "Nu s-a putut salva modificarea"
+    },
+    "user": {
+      "hostRows": {
+        "label": "Opțiuni pentru rândurile de gazde"
+      }
     }
   },
   "hostDefaults": {
@@ -795,6 +820,15 @@
   "sharing": {
     "revokeConfirm": "Elimin accesul pentru {{name}}?",
     "revoke": "Elimină accesul",
+    "deviceLogin": {
+      "label": "Autentificare doar pe acest dispozitiv",
+      "none": "Niciuna",
+      "hint": "Rămâne pe acest dispozitiv și nu este niciodată trimisă către server. Este folosită prima dată, iar conexiunile pornesc de pe acest dispozitiv.",
+      "noCredentials": "Adăugați o acreditare cu opțiunea „Păstrează doar pe acest dispozitiv” pentru a o utiliza aici.",
+      "saved": "Autentificarea dispozitivului salvată",
+      "keepOnDevice": "Păstrează doar pe acest dispozitiv",
+      "keepOnDeviceDesc": "Parola sau cheia nu se sincronizează niciodată cu serverul. Utilizați-o ca autentificare pe dispozitiv pentru gazde partajate."
+    },
     "folderLogin": {
       "action": "Setează autentificarea personală pentru gazdele partajate",
       "title": "Autentificare personală pentru acest dosar",
@@ -836,7 +870,10 @@
     "pickHost": "Alege o gazdă de editat",
     "pickCredential": "Alege un credențial de editat",
     "pickDefaults": "Alege un nivel de valori implicite de editat",
-    "pickHint": "Tot ce ține de o conexiune se află aici, grupat pentru a fi ușor de găsit."
+    "pickHint": "Tot ce ține de o conexiune se află aici, grupat pentru a fi ușor de găsit.",
+    "clearChoice": "Șterge",
+    "proxyPathTarget": "țintă",
+    "hostCopyName": "{{name}} (copie)"
   },
   "permissions": {
     "branding": {
@@ -849,6 +886,33 @@
     "presetIntro": "Alege cât de mult să apară pe ecran.",
     "presetChangeLater": "Poți schimba presetările sau orice setare individuală mai târziu în Setări, la secțiunea Interfață.",
     "appearanceTitle": "Personalizează-l",
-    "appearanceIntro": "Alege o temă, o culoare de accent, un font și limba ta. Modificările apar imediat și le poți schimba mai târziu în Setări."
+    "appearanceIntro": "Alege o temă, o culoare de accent, un font și limba ta. Modificările apar imediat și le poți schimba mai târziu în Setări.",
+    "hostRows": {
+      "title": "Cum ar trebui să funcționeze rândurile de gazde?",
+      "intro": "Cu multe pluginuri activate, fiecare rând de gazdă poate avea multe butoane. Alegeți cum doriți să accesați instrumentele unei gazde.",
+      "buttons": "Butoane de conectare",
+      "buttonsDesc": "Un buton pentru fiecare instrument pe fiecare rând de gazdă, ca înainte. Pagina gazdei rămâne în meniul gazdei.",
+      "both": "Butoane și un buton pentru pagina gazdei",
+      "bothDesc": "Păstrează butoanele și adaugă unul pentru pagina gazdei. Instrumentele se deschid în interiorul paginii gazdei.",
+      "page": "Doar pagina gazdei",
+      "pageDesc": "Fără butoane pe rânduri. Clicul pe o gazdă deschide pagina acesteia, cu toate instrumentele într-un singur tab.",
+      "clickOpensPage": "Clicul deschide pagina gazdei",
+      "changeLater": "Poți modifica acest lucru ulterior în Personalizare bara laterală."
+    },
+    "accentHex": "hex"
+  },
+  "hostTools": {
+    "mode": "Deschide instrumentele gazdei în",
+    "modeDesc": "Unde se deschid butoanele pentru Docker, Fișiere și alte instrumente. Pagina gazdei păstrează toate instrumentele pentru o gazdă într-un singur tab. Cu Doar pagina gazdei, rândurile gazdelor nu au butoane de conectare, iar un clic deschide pagina gazdei.",
+    "modeTab": "Propriul tab",
+    "modePage": "Pagina gazdei",
+    "rowButtons": "Butoane pe rândurile gazdelor",
+    "modeOnly": "Doar pagina gazdei",
+    "clickOpens": "Deschiderea la clic",
+    "clickOpensDesc": "Ce se execută la un clic pe o gazdă. Alegeți altceva pentru o singură gazdă din meniul acesteia.",
+    "clickAuto": "Prima metodă de conectare",
+    "useDefaultNamed": "Implicit ({{name}})",
+    "useDefaultButtons": "Folosește butoanele implicite",
+    "perHostHint": "Pentru a le modifica pentru o singură gazdă, folosiți Butoane pe rândurile gazdelor din meniul acesteia."
   }
 }

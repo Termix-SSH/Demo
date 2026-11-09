@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Alimentare, senzori, jurnale de evenimente și console pentru BMC-urile serverelor prin Redfish, IPMI și Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Se încarcă"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "Vizualizare BMC-uri",
+      "description": "Deschideți fila Out-of-band și vizualizați starea de alimentare, sănătatea sistemului, senzorii și jurnalele."
+    },
+    "power": {
+      "title": "Controlul alimentării și al pornirii",
+      "description": "Porniți și opriți mașinile, efectuați un ciclu de alimentare și alegeți următorul dispozitiv de boot."
+    },
+    "console": {
+      "title": "Utilizarea consolei seriale",
+      "description": "Deschideți consola serial over LAN a unei mașini."
+    },
+    "media": {
+      "title": "Utilizarea mediilor virtuale",
+      "description": "Montați și ejectați imagini ISO pe o mașină."
+    },
+    "manage": {
+      "title": "Administrarea BMC-urilor",
+      "description": "Adăugați, modificați și eliminați BMC-uri și ștergeți jurnalele lor de evenimente."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Executarea ipmitool pe serverul Termix",
+        "description": "Când este dezactivat, BMC-urile IPMI trebuie să folosească un host intermediar. Redfish și AMT nu sunt afectate."
+      }
+    }
+  },
+  "description": "Adăugați controlerele de management (BMC-uri) ale serverelor dvs. pentru a le porni și opri, a monitoriza senzorii și a citi jurnalele de evenimente. Datele de autentificare sunt stocate criptate și nu sunt afișate niciodată.",
+  "summary": "{{count}} BMC-uri, {{attention}} necesită atenție",
+  "empty": "Încă nu există BMC-uri.",
+  "add": "Adăugare BMC",
+  "edit": "Editare",
+  "delete": "Ștergere",
+  "back": "Înapoi",
+  "saved": "Salvat",
+  "deleteConfirm": "Ștergere {{name}}?",
+  "status": {
+    "unknown": "Nu a fost citit încă",
+    "up": "Disponibil",
+    "down": "Indisponibil"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI prin LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Nume utilizator",
+    "password": "Parolă"
+  },
+  "power": {
+    "on": "Pornit",
+    "off": "Oprit",
+    "unknown": "Necunoscut",
+    "sent": "S-a cerut lui {{name}} să schimbe starea de alimentare",
+    "action": {
+      "on": "Pornire",
+      "off": "Oprire",
+      "graceful-shutdown": "Oprire corectă",
+      "cycle": "Ciclu de alimentare",
+      "reset": "Resetare"
+    },
+    "confirm": {
+      "on": "Pornire {{name}}?",
+      "off": "Tăierea alimentării pentru {{name}}? Sistemul nu se oprește corect.",
+      "graceful-shutdown": "Solicitare oprire corectă pentru {{name}}?",
+      "cycle": "Ciclu de alimentare pentru {{name}}? Sistemul nu se oprește corect.",
+      "reset": "Resetare {{name}}? Sistemul se repornește imediat."
+    }
+  },
+  "health": {
+    "ok": "Sănătos",
+    "warning": "Avertisment",
+    "critical": "Critic",
+    "unknown": "Necunoscut"
+  },
+  "kind": {
+    "temperature": "Temperatură",
+    "fan": "Ventilator",
+    "voltage": "Tensiune",
+    "power": "Alimentare",
+    "psu": "Sursă de alimentare",
+    "other": "Altele"
+  },
+  "form": {
+    "addTitle": "Adăugare BMC",
+    "editTitle": "Editează BMC",
+    "device": "BMC",
+    "access": "Acces",
+    "type": "Tip",
+    "name": "Nume",
+    "address": "Adresă",
+    "port": "Port",
+    "host": "Gazdă Termix",
+    "hostHint": "Asociază BMC-ul cu gazda căreia îi aparține. Va prelua setările de partajare ale acesteia și va apărea în meniul gazdei.",
+    "noHost": "Niciuna",
+    "poll": "Citește la fiecare (secunde)",
+    "pollHint": "Minim 30 de secunde, sau 60 când se folosește o gazdă de retransmisie.",
+    "scheme": "Conexiune",
+    "relay": "Gazdă de retransmisie",
+    "relayHint": "Rulează ipmitool pe această gazdă în loc de pe serverul Termix. Necesare pentru consola serială.",
+    "noRelay": "Server Termix",
+    "cipher": "Suită de cifrare",
+    "cipherHint": "Schimbă acest lucru doar dacă BMC-ul refuză autentificarea. 3 este cel uzual, 17 pentru BMC-uri mai noi.",
+    "ca": "Certificat CA",
+    "caHint": "Lipește formatul PEM al autorității de certificare a BMC-ului. Lasă gol pentru un certificat de încredere.",
+    "caSet": "Un CA este salvat. Lipește unul nou pentru a-l înlocui.",
+    "keepLogin": "Lasă gol pentru a păstra datele de autentificare salvate",
+    "test": "Testează conexiunea",
+    "testOk": "BMC-ul a răspuns. Starea de alimentare este {{power}}.",
+    "testNeedsLogin": "Introdu din nou datele de autentificare pentru a testa.",
+    "save": "Salvează",
+    "add": "Adaugă"
+  },
+  "view": {
+    "overview": "Prezentare generală",
+    "sensors": "Senzori",
+    "log": "Jurnal de evenimente",
+    "boot": "Pornire",
+    "media": "Medii virtuale",
+    "console": "Consolă",
+    "refresh": "Citește acum",
+    "type": "Tip",
+    "address": "Adresă",
+    "power": "Alimentare",
+    "health": "Stare",
+    "manufacturer": "Producător",
+    "model": "Model",
+    "serial": "Număr de serie",
+    "bios": "BIOS",
+    "bmc": "Firmware BMC",
+    "status": "BMC",
+    "viaRelay": "Atins prin intermediul unei gazde de retransmisie.",
+    "noSensors": "Acest BMC nu raportează senzori.",
+    "sensor": "Senzor",
+    "reading": "Valoare",
+    "state": "Stare"
+  },
+  "log": {
+    "time": "Oră",
+    "severity": "Nivel",
+    "message": "Eveniment",
+    "empty": "Jurnalul de evenimente este gol.",
+    "clear": "Șterge jurnalul",
+    "clearConfirm": "Ștergi jurnalul de evenimente al {{name}}? Această acțiune nu poate fi anulată.",
+    "cleared": "Jurnal șters",
+    "level": {
+      "info": "Informații",
+      "warning": "Avertisment",
+      "critical": "Critic"
+    }
+  },
+  "boot": {
+    "hint": "Mașina va porni de pe acest dispozitiv o singură dată, apoi revine la ordinea normală. Aplică înainte de repornire.",
+    "device": "Pornare de la",
+    "mode": "Mod",
+    "uefi": "UEFI",
+    "legacy": "BIOS Legacy",
+    "apply": "Setează pentru următoarea pornire",
+    "done": "{{name}} va porni de pe dispozitivul ales data viitoare",
+    "pxe": "Rețea (PXE)",
+    "disk": "Disc dur",
+    "cd": "CD sau mediu virtual",
+    "usb": "USB",
+    "bios": "Configurare BIOS",
+    "none": "Ordinea normală"
+  },
+  "media": {
+    "url": "Adresa imaginii",
+    "empty": "Acest BMC nu are un slot CD virtual.",
+    "mounted": "Montat",
+    "free": "Gol",
+    "mount": "Montează",
+    "eject": "Ejectează",
+    "mountedDone": "Imagine montată",
+    "ejected": "Imagine ejectată"
+  },
+  "console": {
+    "hint": "Tastați ~. pentru a părăsi consola.",
+    "connecting": "Se conectează",
+    "ended": "Consola s-a închis.",
+    "failed": "Nu s-a putut deschide consola.",
+    "needsRelay": "Consola serială necesită un gazdă relay cu ipmitool. Alegeți una în setările BMC."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Pornare de la",
+    "uefi": "Mod UEFI",
+    "list": {
+      "title": "Listă BMC-uri"
+    },
+    "poll": {
+      "title": "Citește un BMC acum"
+    },
+    "powerState": {
+      "title": "Obține starea de alimentare"
+    },
+    "power-on": {
+      "title": "Pornește"
+    },
+    "graceful-shutdown": {
+      "title": "Oprește"
+    },
+    "power-off": {
+      "title": "Oprește alimentarea"
+    },
+    "power-cycle": {
+      "title": "Ciclare alimentare"
+    },
+    "reset": {
+      "title": "Resetează"
+    },
+    "setBootOnce": {
+      "title": "Pornește o dată de pe un dispozitiv"
+    },
+    "clearLog": {
+      "title": "Șterge jurnalul de evenimente"
+    },
+    "health": {
+      "title": "Starea de sănătate a BMC-ului"
+    }
+  },
+  "widget": {
+    "name": "Out-of-band",
+    "description": "Alimentarea și starea de sănătate a BMC-urilor serverelor dvs.",
+    "summary": "{{up}} din {{total}} active"
+  }
+}

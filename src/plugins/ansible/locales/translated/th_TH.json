@@ -1,0 +1,205 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "เรียกใช้ Ansible playbooks และคำสั่ง ad-hoc จาก control host โดยใช้ inventory ที่สร้างจาก hosts ของ Termix ของคุณ"
+  },
+  "common": {
+    "save": "บันทึก",
+    "cancel": "ยกเลิก",
+    "back": "ย้อนกลับ",
+    "delete": "ลบ"
+  },
+  "permissions": {
+    "use": {
+      "title": "ใช้ Ansible",
+      "description": "ดู playbooks และประวัติการเรียกใช้บน control hosts ที่คุณเข้าถึงได้ แก้ไขไฟล์และเรียกใช้ Ansible บน hosts ที่คุณมีสิทธิ์แก้ไข"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "ใช้ host นี้เป็น Ansible control host ต้องติดตั้ง Ansible ไว้บน host นี้"
+      },
+      "projectDir": {
+        "label": "โฟลเดอร์โปรเจกต์",
+        "description": "โฟลเดอร์บนโฮสต์นี้ที่มี playbooks, roles และไฟล์ ansible.cfg ของคุณ",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "ไฟล์รหัสผ่าน Vault",
+        "description": "ไฟล์บนโฮสต์นี้ที่มีรหัสผ่าน Ansible Vault ทิ้งว่างไว้หากคุณไม่ได้ใช้ Vault",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "อ่านอย่างเดียว",
+        "description": "แสดง playbooks และประวัติการรัน แต่ห้ามแก้ไขไฟล์หรือเริ่มการรันบนโฮสต์นี้"
+      },
+      "alertRuns": {
+        "label": "แจ้งเตือนเมื่อการรันล้มเหลว",
+        "description": "ส่งการแจ้งเตือนเมื่อการรันบนโฮสต์นี้สิ้นสุดลงด้วยสถานะล้มเหลวหรือสูญหาย ตรวจสอบเมื่ออ่านสถานะการรัน"
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "เปิด Ansible จากโฮสต์",
+    "error": "ไม่สามารถโหลด Ansible จากโฮสต์นี้ได้",
+    "disabled": "Ansible ถูกปิดใช้งานสำหรับโฮสต์นี้ เปิดใช้งานในตั้งค่าโฮสต์",
+    "refresh": "รีเฟรช",
+    "readOnly": "อ่านอย่างเดียว",
+    "notInstalled": "ไม่ได้ติดตั้ง Ansible",
+    "notInstalledTitle": "Ansible ไม่ได้ติดตั้งบนโฮสต์นี้",
+    "notInstalledHint": "ติดตั้ง ansible-core บนโฮสต์นี้ เช่น ด้วย pipx หรือตัวจัดการแพ็กเกจ แล้วรีเฟรช",
+    "noSshpass": "sshpass ไม่ได้ติดตั้งบนโฮสต์นี้ โฮสต์ที่เข้าสู่ระบบด้วยรหัสผ่านจะล้มเหลว",
+    "viewPlaybooks": "Playbooks",
+    "viewRuns": "Runs",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Facts"
+  },
+  "files": {
+    "add": "ไฟล์ใหม่",
+    "search": "ค้นหาไฟล์",
+    "empty": "ยังไม่มีไฟล์ในโฟลเดอร์โปรเจกต์",
+    "noMatch": "ไม่พบไฟล์ที่ตรงกัน",
+    "noProject": "โฟลเดอร์ {{dir}} ไม่ได้อยู่บนโฮสต์นี้ โปรดสร้างโฟลเดอร์ หรือกำหนดโฟลเดอร์โปรเจกต์อื่นในตั้งค่าโฮสต์",
+    "listFailed": "ไม่สามารถแสดงรายการไฟล์โปรเจกต์ได้",
+    "loadFailed": "ไม่สามารถอ่านไฟล์นี้ได้",
+    "saved": "บันทึกไฟล์แล้ว",
+    "saveFailed": "ไม่สามารถบันทึกไฟล์นี้ได้",
+    "playbook": "Playbook",
+    "run": "เรียกใช้",
+    "newTitle": "ไฟล์ใหม่",
+    "name": "ชื่อไฟล์",
+    "nameHint": "เส้นทางภายในโฟลเดอร์โปรเจกต์ เช่น site.yml หรือ roles/web/tasks/main.yml",
+    "hint": "Playbook จะถูกตรวจสอบไวยากรณ์ก่อนบันทึก หากการตรวจสอบล้มเหลว ไฟล์เดิมจะยังคงอยู่",
+    "text": "ข้อความในไฟล์",
+    "deleteTitle": "ลบไฟล์นี้หรือไม่?"
+  },
+  "targets": {
+    "search": "ค้นหาโฮสต์",
+    "addShown": "เพิ่มที่แสดง",
+    "clear": "ล้าง",
+    "empty": "ไม่พบโฮสต์",
+    "count": "เลือก {{count}} รายการ",
+    "failed": "ไม่สามารถโหลดโฮสต์ของคุณได้"
+  },
+  "run": {
+    "title": "เรียกใช้ {{playbook}}",
+    "start": "เรียกใช้",
+    "startCheck": "เรียกใช้ในโหมดตรวจสอบ",
+    "startFailed": "ไม่สามารถเริ่มการรันได้",
+    "source": "โฮสต์",
+    "sourceProject": "รายการสินค้าคงคลังของโปรเจกต์",
+    "sourceTermix": "โฮสต์ Termix",
+    "sourceProjectHint": "ใช้รายการสินค้าคงคลังจาก ansible.cfg หรือไฟล์ในโปรเจกต์",
+    "sourceTermixHint": "เลือกโฮสต์จาก Termix โฟลเดอร์จะกลายเป็นกลุ่ม folder_ และแท็กจะกลายเป็นกลุ่ม tag_ ทั้งหมดอยู่ในกลุ่ม termix",
+    "inventory": "ไฟล์รายการสินค้าคงคลัง",
+    "inventoryHint": "เส้นทางภายในโฟลเดอร์โปรเจกต์ ทิ้งว่างไว้เพื่อใช้ ansible.cfg",
+    "check": "โหมดตรวจสอบ",
+    "checkHint": "แสดงสิ่งที่เปลี่ยนแปลงโดยไม่ทำการเปลี่ยนแปลงใดๆ",
+    "diff": "แสดงส่วนที่แตกต่าง",
+    "diffHint": "แสดงการเปลี่ยนแปลงที่ทำกับไฟล์",
+    "become": "ทำงานในฐานะ root",
+    "becomeHint": "ใช้ sudo บนโฮสต์ รหัสผ่าน Sudo ที่บันทึกไว้จะถูกใช้สำหรับโฮสต์ Termix",
+    "limit": "จำกัด",
+    "limitHint": "ทำงานเฉพาะบนโฮสต์หรือกลุ่มเหล่านี้เท่านั้น",
+    "verbosity": "รายละเอียดผลลัพธ์",
+    "verbosityOff": "ปกติ",
+    "tags": "แท็ก",
+    "skipTags": "ข้ามแท็ก",
+    "extraVars": "ตัวแปรเพิ่มเติม",
+    "extraVarsHint": "หนึ่ง key=value ต่อหนึ่งบรรทัด"
+  },
+  "runs": {
+    "title": "การรัน",
+    "empty": "ยังไม่มีรายการการรัน",
+    "loadFailed": "ไม่สามารถโหลดรายการการรันได้",
+    "stop": "หยุด",
+    "stopFailed": "ไม่สามารถหยุดการรันได้",
+    "deleteTitle": "ต้องการลบการรันนี้หรือไม่?",
+    "deleteFailed": "ไม่สามารถลบการรันได้",
+    "checkMode": "ตรวจสอบ",
+    "truncated": "แสดงส่วนท้ายของผลลัพธ์ที่ยาว",
+    "noOutput": "ยังไม่มีผลลัพธ์",
+    "state": {
+      "running": "กำลังทำงาน",
+      "ok": "เสร็จสิ้น",
+      "failed": "ล้มเหลว",
+      "cancelled": "หยุดทำงาน",
+      "lost": "สูญหาย"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Facts"
+    },
+    "recap": {
+      "host": "โฮสต์",
+      "ok": "สำเร็จ",
+      "changed": "มีการเปลี่ยนแปลง",
+      "unreachable": "ไม่สามารถเข้าถึงได้",
+      "failed": "ล้มเหลว",
+      "skipped": "ข้าม"
+    }
+  },
+  "adhoc": {
+    "hint": "เรียกใช้โมดูลเดียวบนโฮสต์ เช่น ansible all -m ping",
+    "pattern": "รูปแบบโฮสต์",
+    "patternHint": "โฮสต์ กลุ่ม หรือทั้งหมด",
+    "module": "โมดูล",
+    "moduleHint": "เช่น ping, command, shell, apt หรือ systemd",
+    "args": "อาร์กิวเมนต์",
+    "argsHint": "สำหรับ command และ shell นี่คือคำสั่ง สำหรับโมดูลอื่น ๆ จะเป็นคู่ key=value",
+    "run": "เรียกใช้"
+  },
+  "facts": {
+    "hint": "รวบรวมข้อมูลจากโฮสต์ด้วยโมดูล setup ต้องมีโฮสต์ Termix เพื่อให้แต่ละตัวมีการเข้าสู่ระบบ",
+    "gather": "รวบรวมข้อมูล",
+    "gathering": "กำลังรวบรวม...",
+    "failed": "ไม่สามารถรวบรวมข้อมูลได้",
+    "failedHost": "ล้มเหลว",
+    "none": "ไม่มีข้อมูลใด ๆ กลับมา เปิดการเรียกใช้เพื่อดูสาเหตุ",
+    "col": {
+      "host": "โฮสต์",
+      "os": "ระบบ",
+      "kernel": "เคอร์เนล",
+      "cpu": "ซีพียู",
+      "memory": "หน่วยความจำ",
+      "address": "ที่อยู่",
+      "uptime": "เวลาทำงาน"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "แสดงรายการเพลย์บุ๊ก"
+    },
+    "run": {
+      "title": "เรียกใช้เพลย์บุ๊ก",
+      "playbook": "เพลย์บุ๊ก",
+      "limit": "จำกัด",
+      "tags": "แท็ก",
+      "check": "โหมดตรวจสอบ"
+    },
+    "runs": {
+      "title": "แสดงรายการการรัน",
+      "resource": "การรัน",
+      "started": "เริ่มต้นแล้ว",
+      "check": "โหมดตรวจสอบ"
+    },
+    "failed": {
+      "title": "การรันที่ล้มเหลว"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "กำลังตรวจสอบโฮสต์...",
+    "summary_other": "{{count}} การรันที่ล้มเหลวบนโฮสต์ {{hosts}}",
+    "refresh": "ตรวจสอบอีกครั้ง",
+    "empty": "เปิดใช้งาน Ansible สำหรับโฮสต์เพื่อดูการรันที่นี่",
+    "failed_other": "{{count}} ล้มเหลว",
+    "running_other": "{{count}} กำลังทำงาน",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "ยังไม่มีรายการ"
+  }
+}

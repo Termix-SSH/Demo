@@ -620,7 +620,7 @@ export function SidebarTree({
   async function handleDuplicateHost(host: Host) {
     try {
       const duplicateHost: SSHHostData = {
-        name: `${host.name} (copy)`,
+        name: t("manage.hostCopyName", { name: host.name }),
         ip: host.ip,
         port: host.port,
         username: host.username,
@@ -1331,18 +1331,9 @@ export function SidebarTree({
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="text-xs">
                 <DropdownMenuItem
-                  onClick={async () => {
-                    const ids = Array.from(selectedHostIds).map(Number);
-                    try {
-                      await bulkUpdateSSHHosts(ids, { folder: "" });
-                      window.dispatchEvent(
-                        new CustomEvent("termix:hosts-changed"),
-                      );
-                      toast.success(t("hosts.movedToRoot"));
-                    } catch {
-                      toast.error(t("hosts.failedToMoveHosts"));
-                    }
-                  }}
+                  onClick={() =>
+                    handleMoveHostsToFolder(Array.from(selectedHostIds), "")
+                  }
                 >
                   <FolderOpen className="size-3.5 mr-2" />
                   {t("hosts.noFolderOption")}
@@ -1350,18 +1341,9 @@ export function SidebarTree({
                 {allFolderPaths.map((f) => (
                   <DropdownMenuItem
                     key={f}
-                    onClick={async () => {
-                      const ids = Array.from(selectedHostIds).map(Number);
-                      try {
-                        await bulkUpdateSSHHosts(ids, { folder: f });
-                        window.dispatchEvent(
-                          new CustomEvent("termix:hosts-changed"),
-                        );
-                        toast.success(t("hosts.movedToFolder", { folder: f }));
-                      } catch {
-                        toast.error(t("hosts.failedToMoveHosts"));
-                      }
-                    }}
+                    onClick={() =>
+                      handleMoveHostsToFolder(Array.from(selectedHostIds), f)
+                    }
                   >
                     <FolderOpen className="size-3.5 mr-2" />
                     {f}

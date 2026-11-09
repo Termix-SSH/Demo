@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "管理 Cloudflare、Route 53、Namecheap 及其他服務商的 DNS 記錄與網域。"
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "網域",
+    "loading": "載入中",
+    "empty": "尚無網域。請開啟 DNS 以新增登入資訊。",
+    "ok": "{{domains}} 個網域，近期無到期",
+    "accounts": "{{count}} 個登入",
+    "failingLinks": "{{count}} 個連結記錄失敗"
+  },
+  "permissions": {
+    "view": {
+      "title": "查看 DNS",
+      "description": "開啟 DNS 分頁，查看區域、記錄、網域與健康檢查。"
+    },
+    "edit": {
+      "title": "修改 DNS 記錄",
+      "description": "新增、修改與刪除記錄，匯入區域檔案，以及重新整理網域。"
+    },
+    "manage": {
+      "title": "管理 DNS 登入",
+      "description": "新增服務商登入、將記錄連結至主機、監控網域，以及還原區域備份。"
+    }
+  },
+  "operations": {
+    "zone": "區域",
+    "type": "類型",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "名稱",
+    "content": "值",
+    "contentOptional": "值（留空以匹配任何值）",
+    "ttl": "TTL（秒）",
+    "label": "標籤",
+    "zones": {
+      "title": "列出 DNS 區域"
+    },
+    "records": {
+      "title": "列出 DNS 記錄"
+    },
+    "domains": {
+      "title": "列出網域與到期日"
+    },
+    "check": {
+      "title": "檢查區域"
+    },
+    "upsert": {
+      "title": "設定 DNS 記錄"
+    },
+    "delete": {
+      "title": "刪除 DNS 記錄"
+    },
+    "snapshot": {
+      "title": "儲存區域副本"
+    },
+    "links": {
+      "title": "更新連結記錄"
+    },
+    "expiry": {
+      "title": "網域到期"
+    }
+  },
+  "description": "新增您的 DNS 與註冊商登入資訊，以便在單一位置管理記錄並監控網域。金鑰會以加密方式儲存，且不會再次顯示。",
+  "summary": "{{zones}} 個區域，{{domains}} 個網域",
+  "saved": "已儲存",
+  "delete": "刪除",
+  "edit": "編輯",
+  "back": "返回",
+  "refresh": "重新整理",
+  "section": {
+    "zones": "區域",
+    "domains": "網域",
+    "links": "連結",
+    "accounts": "登入"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "API 權杖",
+    "accessKeyId": "存取金鑰 ID",
+    "secretAccessKey": "秘密存取金鑰",
+    "sessionToken": "工作階段權杖（選填）",
+    "apiUser": "API 使用者",
+    "apiKey": "API 金鑰",
+    "userName": "使用者名稱（若與 API 使用者不同）",
+    "clientIp": "允許的 IP 位址",
+    "apiSecret": "API 金鑰",
+    "environment": "環境",
+    "environment_production": "生產環境",
+    "environment_ote": "測試環境 (OTE)",
+    "secretApiKey": "機密 API 金鑰",
+    "token": "個人存取權杖"
+  },
+  "zones": {
+    "empty": "尚無區域。",
+    "emptyHint": "在「登入」中新增提供者帳號，即可查看其區域。"
+  },
+  "zone": {
+    "records": "記錄",
+    "health": "健康狀態",
+    "copies": "副本",
+    "files": "檔案",
+    "filter": "篩選記錄",
+    "empty": "尚無記錄。"
+  },
+  "record": {
+    "section": "記錄",
+    "addTitle": "新增記錄",
+    "editTitle": "編輯記錄",
+    "add": "新增記錄",
+    "save": "儲存",
+    "type": "類型",
+    "name": "名稱",
+    "nameHint": "使用 @ 代表 {{zone}} 本身",
+    "value": "值",
+    "priority": "優先順序",
+    "ttl": "TTL（秒）",
+    "ttlHint": "解析器保留答案的時間長度。300 代表 5 分鐘。",
+    "ttlAuto": "1 代表自動。",
+    "proxied": "已啟用 Proxy",
+    "proxiedHint": "將流量導向 Cloudflare。",
+    "proxiedBadge": "已啟用 Proxy",
+    "comment": "備註",
+    "readOnly": "由提供者管理",
+    "deleteConfirm": "確定要刪除 {{type}} 記錄 {{name}} 嗎？"
+  },
+  "account": {
+    "add": "新增登入",
+    "addTitle": "新增 DNS 登入",
+    "editTitle": "編輯 DNS 登入",
+    "save": "儲存",
+    "login": "登入",
+    "provider": "提供者",
+    "name": "名稱",
+    "namePlaceholder": "主要 Cloudflare",
+    "keep": "留空以保留已儲存的值",
+    "registrar": "此提供者也是註冊商，因此其網域會顯示在「網域」中。",
+    "options": "選項",
+    "autoBackup": "保留區域副本",
+    "autoBackupHint": "在每次變更前，以及當區域在 Termix 外部發生變更時，儲存一份副本。",
+    "checkHealth": "每天檢查區域",
+    "checkHealthHint": "每天執行健康檢查，並在新問題出現時發出警示。",
+    "test": "測試",
+    "testOk": "測試成功。找到 {{zones}} 個區域和 {{domains}} 個網域。",
+    "deleteConfirm": "確定要刪除 {{name}} 嗎？其副本與連結將一併刪除。提供者端不會有任何變更。",
+    "empty": "尚無登入帳號。",
+    "emptyHint": "新增 Cloudflare、Route 53、Namecheap 或其他登入帳號以開始使用。",
+    "lastSync": "上次檢查時間：{{date}}",
+    "never": "尚未檢查",
+    "failed": "登入失敗"
+  },
+  "domains": {
+    "empty": "尚無網域。",
+    "emptyHint": "註冊商登入帳號會在此列出其網域。您也可以透過名稱監控任何網域。",
+    "watchPlaceholder": "example.com",
+    "watch": "監控網域",
+    "unwatch": "停止監控",
+    "watched": "已監控",
+    "noRenew": "已關閉自動續約",
+    "unlocked": "未鎖定",
+    "unknown": "註冊商未知",
+    "expires": "於 {{date}} 到期",
+    "expired": "已過期",
+    "days": "剩餘 {{count}} 天",
+    "refreshFailed": "{{count}} 筆查詢失敗"
+  },
+  "link": {
+    "add": "新增連結",
+    "addTitle": "新增連結",
+    "editTitle": "編輯連結",
+    "save": "儲存",
+    "record": "記錄",
+    "address": "位址",
+    "zone": "區域",
+    "pickZone": "選擇一個區域",
+    "source": "指向",
+    "sourceHost": "主機",
+    "sourcePublic4": "此伺服器的公開 IPv4 位址",
+    "sourcePublic6": "此伺服器的公開 IPv6 位址",
+    "source_host": "主機",
+    "source_public4": "公開 IPv4",
+    "source_public6": "公開 IPv6",
+    "host": "主機",
+    "pickHost": "選擇一台主機",
+    "hostHint": "記錄會跟隨主機的位址。當主機位址變更時，記錄也會自動更新。",
+    "publicHint": "Termix 會查詢其公開位址並保持記錄同步，類似動態 DNS。",
+    "enabled": "持續更新此記錄",
+    "empty": "尚無連結。",
+    "emptyHint": "連結會將 DNS 記錄指向某台主機或此伺服器的公開位址。",
+    "off": "關閉",
+    "hostGone": "找不到主機",
+    "lastSync": "上次檢查於 {{date}}",
+    "never": "尚未檢查",
+    "syncNow": "立即更新",
+    "updated": "記錄已更新",
+    "unchanged": "記錄已正確無誤",
+    "deleteConfirm": "要移除 {{name}} 的連結嗎？DNS 記錄將維持不變。"
+  },
+  "diff": {
+    "none": "不會有任何變更。",
+    "add": "新增",
+    "change": "變更",
+    "remove": "移除"
+  },
+  "copies": {
+    "hint": "系統會在每次變更前儲存副本，若區域在 Termix 外部被修改，則每天儲存一次。",
+    "save": "儲存副本",
+    "saved": "副本已儲存",
+    "manualLabel": "手動副本",
+    "empty": "尚無副本。",
+    "count": "{{count}} 筆記錄",
+    "compare": "與目前狀態比較",
+    "restore": "還原",
+    "restoreConfirm": "要還原此副本嗎？將在供應商端進行 {{count}} 項變更。系統會先儲存目前記錄的副本。",
+    "restored": "已還原。共進行 {{count}} 項變更。",
+    "source": {
+      "manual": "手動",
+      "auto": "每日",
+      "before": "變更前"
+    }
+  },
+  "files": {
+    "export": "下載區域檔案",
+    "exportHint": "將記錄下載為 BIND 區域檔案。",
+    "import": "匯入區域檔案",
+    "placeholder": "在此貼上 BIND 區域檔案",
+    "replace": "移除檔案中不存在的記錄",
+    "replaceHint": "關閉時，匯入僅會新增和修改記錄。",
+    "preview": "預覽",
+    "apply": "套用",
+    "applied": "已匯入。共 {{count}} 項變更。",
+    "skipped": "已跳過："
+  },
+  "health": {
+    "run": "執行檢查",
+    "running": "執行中",
+    "propagation": "檢查解析器",
+    "propagationTitle": "公開解析器",
+    "lastRun": "上次執行時間 {{date}}",
+    "empty": "此區域尚未執行任何檢查。",
+    "record": "記錄",
+    "resolver": "解析器",
+    "answer": "回應",
+    "noAnswer": "無回應",
+    "delegation": {
+      "error": "無法查詢名稱伺服器。",
+      "none": "此區域在網際網路上沒有名稱伺服器。該網域可能未指向此服務供應商。",
+      "mismatch": "該網域使用的名稱伺服器與服務供應商不同：{{found}}。",
+      "ok": "該網域指向 {{count}} 個名稱伺服器。"
+    },
+    "soa": {
+      "differ": "名稱伺服器對於區域版本不一致（{{count}} 個版本）。變更可能仍在傳播中。",
+      "same": "{{count}} 個名稱伺服器對於區域版本一致。"
+    },
+    "dnssec": {
+      "unknown": "無法檢查 DNSSEC。",
+      "off": "DNSSEC 未啟用。",
+      "valid": "DNSSEC 已啟用且有效。",
+      "broken": "DNSSEC 已在註冊商處設定，但驗證失敗。檢查 DNSSEC 的解析器將無法解析。"
+    },
+    "cname": {
+      "conflict": "{{name}} 同時擁有 CNAME 和其他記錄，這是不允許的。",
+      "apex": "區域根節點不能是 CNAME。",
+      "dangling": "{{name}} 指向 {{target}}，但該目標無法解析。",
+      "ok": "所有 CNAME 目標均可解析。"
+    },
+    "spf": {
+      "missing": "該網域接收郵件，但沒有 SPF 記錄。",
+      "multiple": "存在多個 SPF 記錄。郵件伺服器將拒絕所有記錄。",
+      "lookups": "SPF 記錄執行了 {{count}} 次查詢。上限為 10 次。",
+      "ok": "SPF 已設定（{{count}} 次查詢）。"
+    },
+    "dmarc": {
+      "missing": "沒有 DMARC 記錄。",
+      "none": "DMARC 設定為僅監控模式。",
+      "ok": "DMARC 已設定。"
+    },
+    "dkim": {
+      "none": "此區域中未找到 DKIM 金鑰。",
+      "found": "找到 {{count}} 個 DKIM 金鑰。"
+    },
+    "mx": {
+      "unresolved": "郵件伺服器 {{host}} 無法解析。"
+    },
+    "mail": {
+      "none": "該網域沒有郵件記錄。"
+    },
+    "caa": {
+      "ok": "CAA 記錄限制了哪些機構可以頒發憑證。",
+      "none": "沒有 CAA 記錄。任何憑證授權機構都可以頒發憑證。"
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "網域、即將過期的網域與失敗的記錄。",
+    "domains": "網域",
+    "expiring": "即將到期",
+    "failingLinks": "失敗的連結",
+    "failingAccounts": "失敗的登入"
+  }
+}

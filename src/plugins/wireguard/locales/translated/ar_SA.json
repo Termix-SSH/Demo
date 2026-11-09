@@ -1,0 +1,247 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "ثبّت WireGuard على مضيفيك وأدِر الواجهات والعملاء وملفات الإعدادات من علامة تبويب واحدة."
+  },
+  "common": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع",
+    "delete": "حذف",
+    "loading": "جارٍ التحميل..."
+  },
+  "permissions": {
+    "use": {
+      "title": "استخدام WireGuard",
+      "description": "إدارة واجهات وعملاء WireGuard على المضيفين الذين يمكنك تعديلهم."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "افتح WireGuard من مضيف.",
+    "error": "تعذر تحميل WireGuard من هذا المضيف.",
+    "sudo": "يحتاج هذا المضيف إلى تسجيل دخول بصلاحيات root أو sudo بدون كلمة مرور لإدارة WireGuard.",
+    "installed": "مثبّت",
+    "notInstalled": "غير مثبّت",
+    "refresh": "تحديث",
+    "viewInterfaces": "الواجهات",
+    "viewLogs": "السجلات"
+  },
+  "install": {
+    "title": "تثبيت WireGuard",
+    "desc": "سيتم تثبيت أدوات WireGuard و iptables باستخدام مدير الحزم الخاص بالمضيف.",
+    "confirm": "تثبيت",
+    "done": "تم تثبيت WireGuard.",
+    "failed": "تعذر تثبيت WireGuard.",
+    "empty": "WireGuard غير مثبّت على هذا المضيف",
+    "noManager": "لم يتم العثور على مدير حزم مدعوم. ثبّت WireGuard يدويًا.",
+    "hint": "ثبّته على {{os}} لتشغيل شبكة VPN من هذا المضيف.",
+    "thisHost": "هذا المضيف",
+    "button": "تثبيت WireGuard",
+    "working": "جارٍ التثبيت..."
+  },
+  "interfaces": {
+    "add": "إضافة واجهة",
+    "empty": "لا توجد واجهات بعد. أضف واحدة لبدء شبكة VPN.",
+    "loadFailed": "تعذر تحميل الواجهات.",
+    "up": "مفعّلة",
+    "down": "معطّلة",
+    "clients": "عميل {{count}}",
+    "nat": "NAT",
+    "boot": "تبدأ عند الإقلاع"
+  },
+  "create": {
+    "title": "إضافة واجهة",
+    "name": "الاسم",
+    "address": "العنوان",
+    "addressHint": "عنوان الخادم والشبكة الفرعية. يحصل العملاء على العناوين الحرة التالية.",
+    "port": "منفذ UDP",
+    "nat": "مشاركة إنترنت المضيف (NAT)",
+    "natDesc": "يمكن للعملاء الوصول إلى الإنترنت وشبكة المضيف من خلال هذا المضيف.",
+    "natMissing": "يتطلب NAT وجود iptables، وهو غير مثبّت على هذا المضيف.",
+    "forwarding": "تفعيل إعادة توجيه IP",
+    "forwardingDesc": "يسمح للمضيف بتمرير الحركة بين العملاء والشبكة. يتم حفظ الإعداد عند إعادة التشغيل.",
+    "firewall": "فتح المنفذ في جدار الحماية",
+    "firewallDesc": "يضيف منفذ UDP إلى ufw أو firewalld عند تشغيل أحدهما.",
+    "start": "ابدأ الآن وعند الإقلاع",
+    "startDesc": "يُفعّل الواجهة ويحافظ على تشغيلها بعد إعادة التشغيل.",
+    "save": "إنشاء",
+    "done": "الواجهة جاهزة.",
+    "failed": "تعذر إنشاء الواجهة."
+  },
+  "detail": {
+    "clients": "العملاء",
+    "settings": "الإعدادات",
+    "config": "الإعداد",
+    "service": "الخدمة",
+    "gone": "هذه الواجهة لم تعد موجودة على المضيف."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "إظهار علامة تبويب WireGuard لهذا المضيف في قائمته."
+      },
+      "showPanel": {
+        "label": "إظهار لوحة WireGuard في المحطات الطرفية",
+        "description": "السماح بفتح لوحة WireGuard بجانب محطة SSH الخاصة بهذا المضيف."
+      },
+      "alertDown": {
+        "label": "تنبيه عند توقف واجهة",
+        "description": "إرسال تنبيه عندما لا تكون واجهة تبدأ عند التشغيل نشطة. يتم التحقق عند قراءة حالة WireGuard."
+      }
+    },
+    "publicKey": "المفتاح العام",
+    "port": "منفذ UDP",
+    "endpoint": "نقطة نهاية الخادم",
+    "endpointHint": "العنوان العام الذي تتصل به العملاء، مثل vpn.example.com:51820.",
+    "dns": "DNS للعملاء",
+    "dnsHint": "اختياري. افصل بين الخوادم بفواصل.",
+    "allowed": "حركة المرور عبر الشبكة الافتراضية الخاصة",
+    "allowedHint": "النطاقات التي ترسلها العملاء عبر الشبكة الافتراضية الخاصة. 0.0.0.0/0، ::/0 ترسل كل شيء.",
+    "keepalive": "الحفاظ على الاتصال (بالثواني)",
+    "keepaliveHint": "يحتفظ بالعملاء خلف NAT قابلين للوصول. استخدم 0 لإيقافه.",
+    "saved": "تم حفظ الإعدادات.",
+    "saveFailed": "تعذر حفظ الإعدادات.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "فتح لوحة WireGuard مع المحطات الطرفية الجديدة",
+        "description": "إظهار لوحة WireGuard بجانب كل محطة SSH تحتوي على WireGuard. يمكنك ما زلت فتحها وإغلاقها من الزر على الحافة اليمنى."
+      },
+      "companionSide": {
+        "label": "جهة لوحة WireGuard",
+        "description": "مكان لوحة WireGuard بجانب المحطة الطرفية.",
+        "right": "يمين",
+        "left": "يسار",
+        "bottom": "أسفل"
+      },
+      "companionSize": {
+        "label": "حجم لوحة WireGuard",
+        "description": "العرض بالبكسل، أو الارتفاع عندما تكون في الأسفل. يمكنك أيضًا سحب حافتها."
+      },
+      "companionEdgeButton": {
+        "label": "إظهار زر اللوحة",
+        "description": "إظهار زر صغير على الحافة اليمنى للمحطة الطرفية يفتح لوحة WireGuard."
+      }
+    }
+  },
+  "clients": {
+    "add": "إضافة عميل",
+    "empty": "لا يوجد عملاء بعد.",
+    "loadFailed": "تعذر تحميل العملاء.",
+    "name": "الاسم",
+    "nameHint": "حروف، أرقام، نقاط، شرطات وشرطات سفلية.",
+    "allowed": "حركة المرور عبر الشبكة الافتراضية الخاصة",
+    "allowedHint": "اتركه فارغًا لاستخدام الإعداد الافتراضي للواجهة: {{value}}",
+    "create": "إنشاء عميل",
+    "addFailed": "تعذر إضافة العميل.",
+    "needEndpoint": "قم بتعيين نقطة نهاية الخادم في إعدادات الواجهة أولاً.",
+    "connected": "متصل",
+    "off": "إيقاف",
+    "external": "صنع يدويًا",
+    "handshake": "مصافحة منذ {{ago}}",
+    "showConfig": "إظهار التكوين ورمز QR",
+    "configFailed": "تعذر قراءة تكوين العميل.",
+    "rotate": "مفاتيح جديدة",
+    "rotateTitle": "إنشاء مفاتيح جديدة لـ {{name}}؟",
+    "rotateDesc": "التكوين القديم يتوقف عن العمل. امنح العميل التكوين الجديد بعد ذلك.",
+    "turnOff": "إيقاف التشغيل",
+    "turnOn": "تشغيل",
+    "saveFailed": "تعذر تغيير العميل.",
+    "deleteTitle": "حذف {{name}}؟",
+    "deleteDesc": "يتم إزالة العميل ولا يمكنه الاتصال بعد الآن.",
+    "deleteFailed": "تعذر حذف العميل."
+  },
+  "clientConfig": {
+    "note": "يحتوي هذا التكوين على المفتاح الخاص للعميل. شاركه فقط مع الشخص أو الجهاز الذي سيستخدمه.",
+    "qr": "رمز QR لتكوين العميل",
+    "copy": "نسخ",
+    "copied": "تم نسخ التكوين.",
+    "copyFailed": "تعذر نسخ التكوين.",
+    "download": "تحميل .conf"
+  },
+  "config": {
+    "title": "ملف التكوين",
+    "hint": "المفاتيح الخاصة والمُشارَكة مسبقاً مخفية. اترك النص المؤقت للحفاظ على مفتاح. يتم التحقق من الإعدادات قبل حفظها ويتم الاحتفاظ بنسخة احتياطية. تتطلب تغييرات العنونة إعادة تشغيل.",
+    "loadFailed": "تعذر قراءة الإعدادات.",
+    "saved": "تم حفظ الإعدادات.",
+    "saveFailed": "تعذر حفظ الإعدادات."
+  },
+  "logs": {
+    "loadFailed": "تعذر قراءة السجلات.",
+    "lines": "{{count}} سطر",
+    "empty": "لا توجد أسطر في السجلات."
+  },
+  "service": {
+    "failed": "فشلت عملية الخدمة.",
+    "start": "بدء",
+    "stop": "إيقاف",
+    "restart": "إعادة تشغيل",
+    "autostart": "بدء عند الإقلاع",
+    "autostartDesc": "بدء هذه الواجهة عند تشغيل المضيف.",
+    "needsSystemd": "يتطلب البدء عند الإقلاع وجود systemd على هذا المضيف.",
+    "noForward": "إعادة توجيه IP معطلة على هذا المضيف، لذا لا يمكن للعملاء الوصول إلى الشبكة عبر NAT.",
+    "delete": "حذف الواجهة",
+    "deleteTitle": "حذف {{name}}؟",
+    "deleteDesc": "تم إيقاف الواجهة، وتمت إزالة إعداداتها ومفاتيحها وملفات العملاء المحفوظة من المضيف.",
+    "deleteFailed": "تعذر حذف الواجهة."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "قم بتفعيل WireGuard في إعدادات هذا المضيف لاستخدام هذه البطاقة.",
+    "start": "تفعيل",
+    "stop": "تعطيل",
+    "done": "تم تحديث {{name}}"
+  },
+  "operations": {
+    "list": {
+      "title": "قائمة واجهات WireGuard"
+    },
+    "down": {
+      "title": "إيقاف واجهات WireGuard"
+    },
+    "start": {
+      "title": "بدء واجهة WireGuard"
+    },
+    "stop": {
+      "title": "إيقاف واجهة WireGuard"
+    },
+    "restart": {
+      "title": "إعادة تشغيل واجهة WireGuard"
+    },
+    "interfaces": {
+      "title": "واجهات WireGuard",
+      "address": "العنوان",
+      "port": "المنفذ",
+      "clients": "العملاء"
+    }
+  },
+  "nav": {
+    "togglePanel": "تبديل لوحة WireGuard"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "جارٍ التحقق من المضيفين...",
+    "summary_zero": "لا يوجد عملاء على {{hosts}} مضيف",
+    "summary_one": "عميل واحد على {{hosts}} مضيف",
+    "summary_two": "عميلان على {{hosts}} مضيف",
+    "summary_few": "{{count}} عملاء على {{hosts}} مضيف",
+    "summary_many": "{{count}} عميل على {{hosts}} مضيف",
+    "summary_other": "{{count}} عميل على {{hosts}} مضيف",
+    "refresh": "تحقق مرة أخرى",
+    "empty": "قم بتفعيل WireGuard لمضيف لعرضه هنا.",
+    "missing": "غير مثبت",
+    "down_zero": "لا شيء متوقف",
+    "down_one": "واحد متوقف",
+    "down_two": "اثنان متوقفان",
+    "down_few": "{{count}} متوقف",
+    "down_many": "{{count}} متوقف",
+    "down_other": "{{count}} متوقف",
+    "interfaces_zero": "لا توجد واجهات، لا يوجد عملاء",
+    "interfaces_one": "واجهة واحدة، {{clients}} عميل",
+    "interfaces_two": "واجهتان، {{clients}} عميل",
+    "interfaces_few": "{{count}} واجهات، {{clients}} عميل",
+    "interfaces_many": "{{count}} واجهة، {{clients}} عميل",
+    "interfaces_other": "{{count}} واجهة، {{clients}} عميل"
+  }
+}

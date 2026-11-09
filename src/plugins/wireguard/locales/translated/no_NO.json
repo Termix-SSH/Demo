@@ -1,0 +1,234 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Installer WireGuard på vertene dine og administrer grensesnitt, klienter og konfigurasjoner fra én fane."
+  },
+  "common": {
+    "save": "Lagre",
+    "cancel": "Avbryt",
+    "back": "Tilbake",
+    "delete": "Slett",
+    "loading": "Laster..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Bruk WireGuard",
+      "description": "Administrer WireGuard-grensesnitt og klienter på vertene du kan redigere."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Åpne WireGuard fra en vert.",
+    "error": "Kunne ikke laste WireGuard fra denne verten.",
+    "sudo": "Denne verten trenger root-innlogging eller passordløs sudo for å administrere WireGuard.",
+    "installed": "Installert",
+    "notInstalled": "Ikke installert",
+    "refresh": "Oppdater",
+    "viewInterfaces": "Grensesnitt",
+    "viewLogs": "Logger"
+  },
+  "install": {
+    "title": "Installer WireGuard",
+    "desc": "Dette installerer WireGuard-verktøyene og iptables med vertens pakkehåndterer.",
+    "confirm": "Installer",
+    "done": "WireGuard er installert.",
+    "failed": "Kunne ikke installere WireGuard.",
+    "empty": "WireGuard er ikke installert på denne verten",
+    "noManager": "Fant ingen støttet pakkehåndterer. Installer WireGuard manuelt.",
+    "hint": "Installer det på {{os}} for å kjøre en VPN fra denne verten.",
+    "thisHost": "denne verten",
+    "button": "Installer WireGuard",
+    "working": "Installerer..."
+  },
+  "interfaces": {
+    "add": "Legg til grensesnitt",
+    "empty": "Ingen grensesnitt ennå. Legg til ett for å starte en VPN.",
+    "loadFailed": "Kunne ikke laste grensesnittene.",
+    "up": "Opp",
+    "down": "Ned",
+    "nat": "NAT",
+    "boot": "Startes ved oppstart"
+  },
+  "create": {
+    "title": "Legg til grensesnitt",
+    "name": "Navn",
+    "address": "Adresse",
+    "addressHint": "Serveradressen og subnettet. Klienter får de neste ledige adressene.",
+    "port": "UDP-port",
+    "nat": "Del vertens internett (NAT)",
+    "natDesc": "Klienter kan nå internett og vertens nettverk gjennom denne verten.",
+    "natMissing": "NAT krever iptables, som ikke er installert på denne verten.",
+    "forwarding": "Skru på IP-videresending",
+    "forwardingDesc": "Lar verten videresende trafikk mellom klienter og nettverket. Lagres for oppstarter.",
+    "firewall": "Åpne porten i brannmuren",
+    "firewallDesc": "Legger til UDP-porten i ufw eller firewalld når en av dem kjører.",
+    "start": "Start nå og ved oppstart",
+    "startDesc": "Skruer på grensesnittet og holder det på etter en omstart.",
+    "save": "Opprett",
+    "done": "Grensesnittet er klart.",
+    "failed": "Kunne ikke opprette grensesnittet."
+  },
+  "detail": {
+    "clients": "Klienter",
+    "settings": "Innstillinger",
+    "config": "Konfigurasjon",
+    "service": "Tjeneste",
+    "gone": "Dette grensesnittet finnes ikke lenger på verten."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Vis WireGuard-fanen for denne verten i menyen."
+      },
+      "showPanel": {
+        "label": "Vis WireGuard-panelet i terminaler",
+        "description": "La WireGuard-panelet åpnes ved siden av SSH-terminalen for denne verten."
+      },
+      "alertDown": {
+        "label": "Varsle når en grensesnitt er nede",
+        "description": "Send et varsel når et grensesnitt som starter ved oppstart, ikke er aktivt. Sjekk når WireGuard-statusen leses."
+      }
+    },
+    "publicKey": "Offentlig nøkkel",
+    "port": "UDP-port",
+    "endpoint": "Server-endepunkt",
+    "endpointHint": "Den offentlige adressen klienter kobler til, som vpn.example.com:51820.",
+    "dns": "DNS for klienter",
+    "dnsHint": "Valgfritt. Skill servere med kommaer.",
+    "allowed": "Trafikk gjennom VPN-en",
+    "allowedHint": "Områdene klienter sender gjennom VPN-en. 0.0.0.0/0, ::/0 sender alt.",
+    "keepalive": "Keepalive (sekunder)",
+    "keepaliveHint": "Holder klienter bak NAT tilgjengelige. Bruk 0 for å slå det av.",
+    "saved": "Innstillinger lagret.",
+    "saveFailed": "Kunne ikke lagre innstillingene.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "Åpne WireGuard-panelet med nye terminaler",
+        "description": "Vis WireGuard-panelet ved siden av hver SSH-terminal som har WireGuard på. Du kan fortsatt åpne og lukke det fra knappen på høyre kant."
+      },
+      "companionSide": {
+        "label": "WireGuard-panelets side",
+        "description": "Hvor WireGuard-panelet sitter ved siden av en terminal.",
+        "right": "Høyre",
+        "left": "Venstre",
+        "bottom": "Bunn"
+      },
+      "companionSize": {
+        "label": "WireGuard-panelets størrelse",
+        "description": "Bredde i piksler, eller høyde når det er på bunnen. Du kan også dra i kanten."
+      },
+      "companionEdgeButton": {
+        "label": "Vis panelet-knappen",
+        "description": "Vis en liten knapp på høyre kant av en terminal som åpner WireGuard-panelet."
+      }
+    }
+  },
+  "clients": {
+    "add": "Legg til klient",
+    "empty": "Ingen klienter ennå.",
+    "loadFailed": "Kunne ikke laste inn klientene.",
+    "name": "Navn",
+    "nameHint": "Bokstaver, tall, punktum, bindestreker og understreker.",
+    "allowed": "Trafikk gjennom VPN-en",
+    "allowedHint": "La være tom for å bruke standardverdien for grensesnittet: {{value}}",
+    "create": "Opprett klient",
+    "addFailed": "Kunne ikke legge til klienten.",
+    "needEndpoint": "Sett server-endepunktet i grensesnittinnstillingene først.",
+    "connected": "Tilkoblet",
+    "off": "Av",
+    "external": "Laget manuelt",
+    "handshake": "håndtrykk {{ago}} siden",
+    "showConfig": "Vis konfigurasjon og QR-kode",
+    "configFailed": "Kunne ikke lese klientkonfigurasjonen.",
+    "rotate": "Nye nøkler",
+    "rotateTitle": "Lage nye nøkler for {{name}}?",
+    "rotateDesc": "Den gamle konfigurasjonen slutter å fungere. Gi klienten den nye konfigurasjonen etterpå.",
+    "turnOff": "Slå av",
+    "turnOn": "Slå på",
+    "saveFailed": "Kunne ikke endre klienten.",
+    "deleteTitle": "Slette {{name}}?",
+    "deleteDesc": "Klienten fjernes og kan ikke lenger koble til.",
+    "deleteFailed": "Kunne ikke slette klienten."
+  },
+  "clientConfig": {
+    "note": "Denne konfigurasjonen inneholder klientens private nøkkel. Del den bare med personen eller enheten som skal bruke den.",
+    "qr": "QR-kode for klientkonfigurasjonen",
+    "copy": "Kopier",
+    "copied": "Konfigurasjon kopiert.",
+    "copyFailed": "Kunne ikke kopiere konfigurasjonen.",
+    "download": "Last ned .conf"
+  },
+  "config": {
+    "title": "Konfigurasjonsfil",
+    "hint": "Private og forhåndsdelte nøkler er skjult. La plassholderen være for å beholde en nøkkel. Konfigurasjonen sjekkes før den lagres, og en sikkerhetskopi beholdes. Endringer i adresse krever omstart.",
+    "loadFailed": "Kunne ikke lese konfigurasjonen.",
+    "saved": "Konfigurasjonen er lagret.",
+    "saveFailed": "Kunne ikke lagre konfigurasjonen."
+  },
+  "logs": {
+    "loadFailed": "Kunne ikke lese loggene.",
+    "lines": "{{count}} linjer",
+    "empty": "Ingen logglinjer."
+  },
+  "service": {
+    "failed": "Tjenestens handling mislyktes.",
+    "start": "Start",
+    "stop": "Stopp",
+    "restart": "Start på nytt",
+    "autostart": "Start ved oppstart",
+    "autostartDesc": "Start denne grensesnittet når verten starter.",
+    "needsSystemd": "Start ved oppstart krever systemd på denne verten.",
+    "noForward": "IP-videresending er slått av på denne verten, så klienter kan ikke nå nettverket gjennom NAT.",
+    "delete": "Slett grensesnitt",
+    "deleteTitle": "Slett {{name}}?",
+    "deleteDesc": "Grensesnittet stoppes, og konfigurasjonen, nøklene og de lagrede klientfilene fjernes fra verten.",
+    "deleteFailed": "Kunne ikke slette grensesnittet."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Slå på WireGuard i innstillingene for denne verten for å bruke dette kortet.",
+    "start": "Aktiver",
+    "stop": "Deaktiver",
+    "done": "{{name}} oppdatert"
+  },
+  "operations": {
+    "list": {
+      "title": "List opp WireGuard-grensesnitt"
+    },
+    "down": {
+      "title": "WireGuard-grensesnitt deaktivert"
+    },
+    "start": {
+      "title": "Start WireGuard-grensesnitt"
+    },
+    "stop": {
+      "title": "Stopp WireGuard-grensesnitt"
+    },
+    "restart": {
+      "title": "Start WireGuard-grensesnitt på nytt"
+    },
+    "interfaces": {
+      "title": "WireGuard-grensesnitt",
+      "address": "Adresse",
+      "port": "Port",
+      "clients": "Klienter"
+    }
+  },
+  "nav": {
+    "togglePanel": "Vis/skjul WireGuard-panelet"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Sjekker verter...",
+    "summary_one": "{{count}} klient på {{hosts}} verter",
+    "summary_other": "{{count}} klienter på {{hosts}} verter",
+    "refresh": "Sjekk igjen",
+    "empty": "Slå på WireGuard for en vert for å se den her.",
+    "missing": "Ikke installert",
+    "down_one": "{{count}} deaktivert",
+    "down_other": "{{count}} deaktivert",
+    "interfaces_one": "{{count}} grensesnitt, {{clients}} klienter",
+    "interfaces_other": "{{count}} grensesnitt, {{clients}} klienter"
+  }
+}

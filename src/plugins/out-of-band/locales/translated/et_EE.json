@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Väljaspool kanalit",
+    "description": "Toide, andurid, sündmuslogid ja konsoolid serverite BMC-de jaoks Redfishi, IPMI ja Intel AMT kaudu."
+  },
+  "tab": {
+    "title": "Väljaspool kanalit"
+  },
+  "card": {
+    "title": "Väljaspool kanalit",
+    "loading": "Laadimine"
+  },
+  "host": {
+    "open": "Väljaspool kanalit"
+  },
+  "permissions": {
+    "view": {
+      "title": "BMC-de vaatamine",
+      "description": "Ava väljaspool kanalit vaheleht ja vaata toidet, tervist, andureid ja logisid."
+    },
+    "power": {
+      "title": "Toite ja laadimise juhtimine",
+      "description": "Lülita masinad sisse ja välja, taaskäivita toide ning vali järgmine laadimisseade."
+    },
+    "console": {
+      "title": "Kasuta seeria-konsooli",
+      "description": "Ava masina võrgu kaudu seeria-konsool."
+    },
+    "media": {
+      "title": "Kasuta virtuaalmeediat",
+      "description": "Kinnita ja eemalda masinal ISO-pilte."
+    },
+    "manage": {
+      "title": "Halda BMC-sid",
+      "description": "Lisa, muuda ja eemalda BMC-sid ning tühjenda nende sündmuslogisid."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Käivita ipmitool Termix serveris",
+        "description": "Kui see on väljas, peavad IPMI BMC-d kasutama vaheserverit. Redfish ja AMT ei ole mõjutatud."
+      }
+    }
+  },
+  "description": "Lisa oma serverite halduskontrollerid (BMC-d), et neid sisse ja välja lülitada, jälgida nende andureid ja lugeda sündmuslogisid. Sisselogimisandmed salvestatakse krüpteeritult ja ei kuvata kunagi uuesti.",
+  "summary": "{{count}} BMC-d, {{attention}} vajab tähelepanu",
+  "empty": "BMC-sid ei ole veel.",
+  "add": "Lisa BMC",
+  "edit": "Muuda",
+  "delete": "Kustuta",
+  "back": "Tagasi",
+  "saved": "Salvestatud",
+  "deleteConfirm": "Kas kustutada {{name}}?",
+  "status": {
+    "unknown": "Pole veel loetud",
+    "up": "Saadaval",
+    "down": "Pole saadaval"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI üle LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Kasutajanimi",
+    "password": "Parool"
+  },
+  "power": {
+    "on": "Sees",
+    "off": "Väljas",
+    "unknown": "Tundmatu",
+    "sent": "Paluti seadmel {{name}} toidet muuta",
+    "action": {
+      "on": "Lülita sisse",
+      "off": "Lülita välja",
+      "graceful-shutdown": "Sulge süsteem",
+      "cycle": "Taaskäivita toiteallikas",
+      "reset": "Lähtesta"
+    },
+    "confirm": {
+      "on": "Kas lülitate {{name}} sisse?",
+      "off": "Kas katkestate {{name}} toite? Süsteem ei sulgu korrektselt.",
+      "graceful-shutdown": "Kas palute {{name}} süsteemi sulgeda?",
+      "cycle": "Kas taaskäivitate {{name}} toiteallika? Süsteem ei sulgu korrektselt.",
+      "reset": "Kas lähtestate {{name}}? Süsteem käivitub kohe uuesti."
+    }
+  },
+  "health": {
+    "ok": "Töökorras",
+    "warning": "Hoiatus",
+    "critical": "Kriitiline",
+    "unknown": "Tundmatu"
+  },
+  "kind": {
+    "temperature": "Temperatuur",
+    "fan": "Ventilaator",
+    "voltage": "Pinge",
+    "power": "Võimsus",
+    "psu": "Toiteallikas",
+    "other": "Muu"
+  },
+  "form": {
+    "addTitle": "Lisa BMC",
+    "editTitle": "Muuda BMC-d",
+    "device": "BMC",
+    "access": "Juurdepääs",
+    "type": "Tüüp",
+    "name": "Nimi",
+    "address": "Aadress",
+    "port": "Port",
+    "host": "Termix peremeesmasin",
+    "hostHint": "Seosta BMC selle peremeesmasinaga, millele see kuulub. Seejärel järgib see peremeesmasina jagamisseadeid ja kuvab selle peremeesmasina menüüs.",
+    "noHost": "Puudub",
+    "poll": "Loe iga (sekund) tagant",
+    "pollHint": "Vähemalt 30 sekundit või 60, kui kasutatakse edasiandmise hosti.",
+    "scheme": "Ühendus",
+    "relay": "Edasiandmise host",
+    "relayHint": "Käivita ipmitool sellel hostil, mitte Termix serveris. Vajalik seeria konsooli jaoks.",
+    "noRelay": "Termix server",
+    "cipher": "Šifrite komplekt",
+    "cipherHint": "Muuda seda ainult siis, kui BMC keeldub sisselogimisest. Tavaliselt on 3, uuemate BMC-de puhul 17.",
+    "ca": "CA sertifikaat",
+    "caHint": "Kleebi siia BMC sertifikaadi väljastaja PEM. Jäta tühjaks, kui sertifikaat on usaldusväärne.",
+    "caSet": "CA on salvestatud. Kleepige uus selle asendamiseks.",
+    "keepLogin": "Jäta tühjaks, et säilitada salvestatud sisselogimisandmed",
+    "test": "Testi ühendust",
+    "testOk": "BMC vastas. Toide on {{power}}.",
+    "testNeedsLogin": "Sisesta sisselogimisandmed uuesti testimiseks.",
+    "save": "Salvesta",
+    "add": "Lisa"
+  },
+  "view": {
+    "overview": "Ülevaade",
+    "sensors": "Andurid",
+    "log": "Sündmuse logi",
+    "boot": "Käivita",
+    "media": "Virtuaalne meedia",
+    "console": "Konsool",
+    "refresh": "Loe kohe",
+    "type": "Tüüp",
+    "address": "Aadress",
+    "power": "Toide",
+    "health": "Tervis",
+    "manufacturer": "Tootja",
+    "model": "Mudel",
+    "serial": "Seerianumber",
+    "bios": "BIOS",
+    "bmc": "BMC-i püsivara",
+    "status": "BMC",
+    "viaRelay": "Ühendatud läbi vahepealse hosti.",
+    "noSensors": "See BMC ei raporteeri ühtegi andurit.",
+    "sensor": "Andur",
+    "reading": "Näit",
+    "state": "Olek"
+  },
+  "log": {
+    "time": "Aeg",
+    "severity": "Tase",
+    "message": "Sündmus",
+    "empty": "Sündmuslogi on tühi.",
+    "clear": "Puhasta logi",
+    "clearConfirm": "Kas kustutada {{name}} sündmuslogi? Seda tegevust ei saa tagasi võtta.",
+    "cleared": "Logi puhastatud",
+    "level": {
+      "info": "Info",
+      "warning": "Hoiatus",
+      "critical": "Kriitiline"
+    }
+  },
+  "boot": {
+    "hint": "Masin laadib selle seadmest ühe korra, seejärel naaseb ta tavapärasele laadimisjärjekorrale. Rakenda see enne taaskäivitamist.",
+    "device": "Laadi seadmelt",
+    "mode": "Režiim",
+    "uefi": "UEFI",
+    "legacy": "Legacy BIOS",
+    "apply": "Määra järgmiseks käivituseks",
+    "done": "{{name}} laeb järgmine kord valitud seadmelt",
+    "pxe": "Võrk (PXE)",
+    "disk": "Kõvaketas",
+    "cd": "CD või virtuaalne meedium",
+    "usb": "USB",
+    "bios": "BIOS-i seadistamine",
+    "none": "Tavaline järjekord"
+  },
+  "media": {
+    "url": "Pildi aadress",
+    "empty": "Sellel BMC-l pole virtuaalset CD-salvet.",
+    "mounted": "Mäntud",
+    "free": "Tühi",
+    "mount": "Mänti",
+    "eject": "Eemalda",
+    "mountedDone": "Pilt on mäntud",
+    "ejected": "Pilt on eemaldatud"
+  },
+  "console": {
+    "hint": "Kirjuta ~. konsoolist väljumiseks.",
+    "connecting": "Ühenduse loomine",
+    "ended": "Konsool sulgus.",
+    "failed": "Konsooli ei õnnestunud avada.",
+    "needsRelay": "Jada konsool vajab ipmitooliga vaheserverit. Vali see välja halduskaardi seadetest."
+  },
+  "operations": {
+    "device": "Halduskaart",
+    "boot": "Laadi süsteem",
+    "uefi": "UEFI-režiim",
+    "list": {
+      "title": "Loetle halduskaardid"
+    },
+    "poll": {
+      "title": "Loe halduskaardi andmed kohe"
+    },
+    "powerState": {
+      "title": "Küsi toiteolekut"
+    },
+    "power-on": {
+      "title": "Lülita sisse"
+    },
+    "graceful-shutdown": {
+      "title": "Sulge süsteem"
+    },
+    "power-off": {
+      "title": "Lülita välja"
+    },
+    "power-cycle": {
+      "title": "Taaskäivita toide"
+    },
+    "reset": {
+      "title": "Lähtesta"
+    },
+    "setBootOnce": {
+      "title": "Käivita üks kord seadmest"
+    },
+    "clearLog": {
+      "title": "Tühjenda sündmusepäevik"
+    },
+    "health": {
+      "title": "BMC tervis"
+    }
+  },
+  "widget": {
+    "name": "Võlvväljas",
+    "description": "Teie serverite BMC-de toide ja seisund.",
+    "summary": "{{up}}/{{total}} töökorras"
+  }
+}

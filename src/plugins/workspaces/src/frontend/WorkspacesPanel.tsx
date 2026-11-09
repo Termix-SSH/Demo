@@ -86,6 +86,8 @@ function WorkspaceSaveDialog({
     try {
       await onSave(name.trim(), color);
       onClose();
+    } catch {
+      // onSave already showed the error, keep the form open
     } finally {
       setSaving(false);
     }
@@ -118,7 +120,7 @@ function WorkspaceSaveDialog({
             placeholder={t("newUi.sidebar.workspaces.namePlaceholder")}
             autoFocus
             onKeyDown={(e) => {
-              if (e.key === "Enter") handleSave();
+              if (e.key === "Enter") void handleSave();
             }}
           />
         </div>
@@ -214,7 +216,7 @@ function WorkspaceRenameDialog({
             onChange={(e) => setName(e.target.value)}
             autoFocus
             onKeyDown={(e) => {
-              if (e.key === "Enter") handleSave();
+              if (e.key === "Enter") void handleSave();
             }}
           />
         </div>

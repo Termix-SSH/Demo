@@ -16,7 +16,9 @@
     "more": "Mer",
     "logout": "Logga ut",
     "next": "Nästa",
-    "previous": "Föregående"
+    "previous": "Föregående",
+    "showPassword": "Visa lösenord",
+    "hidePassword": "Dölj lösenord"
   },
   "desktopUpdates": {
     "title": "Skrivbordsapp",
@@ -67,7 +69,10 @@
     "resetRailOrder": "Återställ ordning",
     "hideFromRail": "Dölj från sidofältet",
     "openSettings": "Öppna inställningar",
-    "mobileNavigation": "Navigation"
+    "mobileNavigation": "Navigation",
+    "allTabs": "Alla flikar",
+    "hideTabBar": "Dölj flikfältet",
+    "showTabBar": "Visa flikfältet"
   },
   "commandPalette": {
     "searchPlaceholder": "Sök bland värdar, kommandon eller inställningar...",
@@ -110,7 +115,8 @@
     "noSearchResults": "Inga anslutningar matchar din sökning",
     "rename": "Byt namn på session",
     "forgetConfirm": "Avsluta bakgrundssessionen för {{name}}?",
-    "forget": "Avsluta session"
+    "forget": "Avsluta session",
+    "expiringNow": "Avslutas nu"
   },
   "placeholders": {
     "apiKeyName": "t.ex. CI Pipeline",
@@ -158,16 +164,14 @@
     "commandPalette": "Kommandopalette",
     "done": "Klar",
     "clear": "Rensa",
-    "dragToResizeColumns": "Dra för att ändra kolumnbredd",
     "hostsAvailable": "Tillgängliga värdar",
-    "removeSection": "Ta bort sektion",
-    "addSection": "Lägg till en sektion",
-    "allSectionsShown": "Allt finns redan på instrumentpanelen.",
+    "addSection": "Lägg till kakel",
     "fromPlugins": "Från plugins",
-    "dropHere": "Släpp en sektion här",
-    "dragToReorder": "Dra sektionerna för att ändra ordningen",
+    "dropHere": "Inga kakel ännu. Lägg till några från listan.",
+    "dragToReorder": "Dra i kakel för att flytta dem och i kanterna för att ändra storlek",
     "clearActivityConfirm": "Vill du rensa din senaste aktivitet?",
-    "resetConfirm": "Vill du återställa instrumentpanelen till standardlayouten?"
+    "resetConfirm": "Vill du återställa instrumentpanelen till standardlayouten?",
+    "clearFailed": "Kunde inte rensa senaste aktivitet"
   },
   "admin": {
     "sectionGeneral": "Allmänt",
@@ -230,6 +234,9 @@
     "allowPasswordLoginDesc": "Inloggning med användarnamn och lösenord",
     "externalAutoProvision": "Skapa externa konton automatiskt",
     "externalAutoProvisionDesc": "Skapa ett konto första gången någon loggar in via en extern inloggningsmetod som SSO eller LDAP. När det är inaktiverat kan endast personer som redan har ett konto logga in på det sättet.",
+    "credentialStorage": "Tillåt sparande av lösenord och nycklar",
+    "credentialStorageOff": "Sparande av lösenord och nycklar är inaktiverat på denna server. Lämna dem tomma så ber Termix om dem när du ansluter.",
+    "credentialStorageDesc": "När det är inaktiverat kan ingen spara lösenord eller privata nycklar på en värd eller ett inloggningsuppgift, och Termix ber om dem vid anslutning. Redan sparade inloggningsuppgifter finns kvar tills de tas bort.",
     "secondFactorAfterExternalLogin": "Be om en andra faktor efter extern inloggning (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "När det är inaktiverat begärs en registrerad andra faktor endast efter inloggning med lösenord och andra lokala metoder, som tidigare. När det är aktiverat begärs den efter varje inloggningsmetod, inklusive SSO och LDAP.",
     "allowPasswordReset": "Tillåt återställning av lösenord",
@@ -278,6 +285,13 @@
     "apiKeyName": "Namn",
     "apiKeyUser": "Användare",
     "apiKeySelectUser": "Välj en användare...",
+    "apiKeyScope": "Åtkomst",
+    "apiKeyScopeFull": "Allt som användaren kan göra",
+    "apiKeyScopeRead": "Endast läslägen",
+    "apiKeyScopeRun": "Kör åtgärder",
+    "apiKeyScopeHint": "Åtgärdsnycklar når endast Termix-åtgärder och MCP-servern, inget annat.",
+    "apiKeyScopeActionsRead": "Åtgärder, endast läs",
+    "apiKeyScopeActionsRun": "Åtgärder",
     "apiKeyExpiresAt": "Utlöper",
     "createKey": "Skapa nyckel",
     "apiKeyNoExpiry": "Inget utgångsdatum",
@@ -315,6 +329,10 @@
     "deleteUserFailed": "Kunde inte ta bort användare",
     "deleteUserSuccess": "Användaren \"{{username}}\" har tagits bort",
     "deleteRoleSuccess": "Rollen \"{{name}}\" har tagits bort",
+    "deleteRoleFailed": "Kunde inte ta bort rollen",
+    "roleNamePlaceholder": "utvecklare",
+    "roleDisplayNamePlaceholder": "Utvecklare",
+    "unknownError": "Okänt fel",
     "revokeKeySuccess": "Nyckeln \"{{name}}\" har återkallats",
     "revokeKeyFailed": "Kunde inte återkalla nyckel",
     "copiedToClipboard": "Kopierat till urklipp",
@@ -357,6 +375,7 @@
     "unlinkAccountFailed": "Misslyckades med att koppla bort extern inloggning",
     "updateRegistrationFailed": "Misslyckades med att uppdatera registreringsinställningen",
     "updatePasswordLoginFailed": "Misslyckades med att uppdatera inställningen för inloggning med lösenord",
+    "updateCredentialStorageFailed": "Misslyckades med att uppdatera inställningen för lagring av inloggningsuppgifter",
     "updateSecondFactorAfterExternalLoginFailed": "Misslyckades med att uppdatera inställningen för andra faktor",
     "updatePasswordResetFailed": "Misslyckades med att uppdatera inställningen för återställning av lösenord",
     "sessionTimeoutRange2": "Sessionstiden måste vara mellan 1 och 720 timmar",
@@ -677,7 +696,8 @@
         "tryBetaTitle": "Testa nya funktioner i förväg",
         "tryBetaDescription": "Gå med i betaprogrammet under Uppdateringar.",
         "sendBetaFeedback": "Skicka feedback om betan",
-        "openUpdates": "Uppdateringar"
+        "openUpdates": "Uppdateringar",
+        "hexLabel": "hex"
       }
     }
   },
@@ -763,6 +783,11 @@
       "allPluginsBeta": "Använd beta-versioner för alla plugins",
       "allPluginsStable": "Alla plugins tillbaka till stabil version",
       "saveFailed": "Kunde inte spara ändringen"
+    },
+    "user": {
+      "hostRows": {
+        "label": "Alternativ för värdrad"
+      }
     }
   },
   "hostDefaults": {
@@ -789,6 +814,15 @@
   "sharing": {
     "revokeConfirm": "Ta bort åtkomst för {{name}}?",
     "revoke": "Ta bort åtkomst",
+    "deviceLogin": {
+      "label": "Logga in endast på denna enhet",
+      "none": "Ingen",
+      "hint": "Förblir på denna enhet och skickas aldrig till servern. Den används först, och anslutningar startar från denna enhet.",
+      "noCredentials": "Lägg till en inloggningsuppgift med \"Behåll endast på denna enhet\" för att använda den här.",
+      "saved": "Enhetsinloggning sparad",
+      "keepOnDevice": "Behåll endast på denna enhet",
+      "keepOnDeviceDesc": "Lösenordet eller nyckeln synkroniseras aldrig med servern. Använd den som en enhetsinloggning på delade värdar."
+    },
     "folderLogin": {
       "action": "Ställ in personlig inloggning för delade värdar",
       "title": "Personlig inloggning för denna mapp",
@@ -830,7 +864,10 @@
     "pickHost": "Välj en värd att redigera",
     "pickCredential": "Välj en inloggningsuppgift att redigera",
     "pickDefaults": "Välj en nivå av standardvärden att redigera",
-    "pickHint": "Allt om en anslutning finns här, grupperat så att du lätt hittar det."
+    "pickHint": "Allt om en anslutning finns här, grupperat så att du lätt hittar det.",
+    "clearChoice": "Rensa",
+    "proxyPathTarget": "mål",
+    "hostCopyName": "{{name}} (kopia)"
   },
   "permissions": {
     "branding": {
@@ -843,6 +880,33 @@
     "presetIntro": "Välj hur mycket som visas på skärmen.",
     "presetChangeLater": "Du kan byta förinställningar eller ändra enskilda inställningar senare under Gränssnitt i Inställningar.",
     "appearanceTitle": "Gör den din egen",
-    "appearanceIntro": "Välj ett tema, en accentfärg, ett typsnitt och ditt språk. Ändringarna syns direkt och du kan ändra dem senare i Inställningar."
+    "appearanceIntro": "Välj ett tema, en accentfärg, ett typsnitt och ditt språk. Ändringarna syns direkt och du kan ändra dem senare i Inställningar.",
+    "hostRows": {
+      "title": "Hur ska värdraderna fungera?",
+      "intro": "Med många plugins aktiverade kan varje värdrad få många knappar. Välj hur du vill komma åt verktygen för en värd.",
+      "buttons": "Anslutningsknappar",
+      "buttonsDesc": "En knapp per verktyg på varje värdrad, som tidigare. Värdensida finns kvar i värdmenyn.",
+      "both": "Knappar och en knapp för värdensida",
+      "bothDesc": "Behåll knapparna och lägg till en för värdensidan. Verktygen öppnas inuti värdensidan.",
+      "page": "Endast värdensida",
+      "pageDesc": "Inga knappar på raderna. Klicka på en värd för att öppna dess sida, med alla verktyg i en flik.",
+      "clickOpensPage": "Klick öppnar värdensidan",
+      "changeLater": "Du kan ändra detta senare i Anpassa sidofält."
+    },
+    "accentHex": "hex"
+  },
+  "hostTools": {
+    "mode": "Öppna värdverktyg i",
+    "modeDesc": "Var Docker, Filer och andra verktygsknappar öppnas. Värdensidan håller alla verktyg för en värd i en flik. Med Endast värdensida har värdar inga anslutningsknappar och ett klick öppnar värdens sida.",
+    "modeTab": "Egen flik",
+    "modePage": "Värdens sida",
+    "rowButtons": "Knappar på värdens rader",
+    "modeOnly": "Endast värdens sida",
+    "clickOpens": "Klick öppnar",
+    "clickOpensDesc": "Vad ett klick på en värd gör. Välj något annat för en specifik värd från dess meny.",
+    "clickAuto": "Första sättet att ansluta",
+    "useDefaultNamed": "Standard ({{name}})",
+    "useDefaultButtons": "Använd standardknapparna",
+    "perHostHint": "För att ändra dem för en specifik värd, använd Knappar på värdens rader i dess meny."
   }
 }

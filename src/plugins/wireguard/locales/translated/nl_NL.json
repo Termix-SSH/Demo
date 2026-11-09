@@ -1,0 +1,234 @@
+{
+  "plugin": {
+    "name": "WireGuard",
+    "description": "Installeer WireGuard op uw hosts en beheer interfaces, clients en configuraties vanuit één tabblad."
+  },
+  "common": {
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "back": "Terug",
+    "delete": "Verwijderen",
+    "loading": "Laden..."
+  },
+  "permissions": {
+    "use": {
+      "title": "WireGuard gebruiken",
+      "description": "Beheer WireGuard-interface en clients op hosts die u kunt bewerken."
+    }
+  },
+  "tab": {
+    "title": "WireGuard",
+    "noHost": "Open WireGuard vanuit een host.",
+    "error": "WireGuard kon niet worden geladen vanaf deze host.",
+    "sudo": "Deze host vereist een root-inlog of sudo zonder wachtwoord om WireGuard te beheren.",
+    "installed": "Geïnstalleerd",
+    "notInstalled": "Niet geïnstalleerd",
+    "refresh": "Vernieuwen",
+    "viewInterfaces": "Interfaces",
+    "viewLogs": "Logs"
+  },
+  "install": {
+    "title": "WireGuard installeren",
+    "desc": "Hiermee worden de WireGuard-tools en iptables geïnstalleerd met de pakketbeheerder van de host.",
+    "confirm": "Installeren",
+    "done": "WireGuard is geïnstalleerd.",
+    "failed": "WireGuard kon niet worden geïnstalleerd.",
+    "empty": "WireGuard is niet geïnstalleerd op deze host",
+    "noManager": "Er is geen ondersteunde pakketbeheerder gevonden. Installeer WireGuard handmatig.",
+    "hint": "Installeer het op {{os}} om een VPN vanaf deze host uit te voeren.",
+    "thisHost": "deze host",
+    "button": "WireGuard installeren",
+    "working": "Installeren..."
+  },
+  "interfaces": {
+    "add": "Interface toevoegen",
+    "empty": "Nog geen interfaces. Voeg er een toe om een VPN te starten.",
+    "loadFailed": "De interfaces konden niet worden geladen.",
+    "up": "Actief",
+    "down": "Inactief",
+    "nat": "NAT",
+    "boot": "Start bij opstarten"
+  },
+  "create": {
+    "title": "Interface toevoegen",
+    "name": "Naam",
+    "address": "Adres",
+    "addressHint": "Het serveradres en subnet. Clients krijgen de volgende vrije adressen.",
+    "port": "UDP-poort",
+    "nat": "Internet van de host delen (NAT)",
+    "natDesc": "Clients kunnen via deze host toegang krijgen tot internet en het netwerk van de host.",
+    "natMissing": "NAT vereist iptables, wat niet is geïnstalleerd op deze host.",
+    "forwarding": "IP-forwarding inschakelen",
+    "forwardingDesc": "Hiermee kan de host verkeer doorsturen tussen clients en het netwerk. Wordt opgeslagen voor herstarts.",
+    "firewall": "Poort openen in de firewall",
+    "firewallDesc": "Voegt de UDP-poort toe aan ufw of firewalld als een van deze actief is.",
+    "start": "Nu starten en bij opstarten",
+    "startDesc": "Schakelt de interface in en houdt deze aan na een herstart.",
+    "save": "Maken",
+    "done": "De interface is klaar.",
+    "failed": "De interface kon niet worden aangemaakt."
+  },
+  "detail": {
+    "clients": "Clients",
+    "settings": "Instellingen",
+    "config": "Configuratie",
+    "service": "Service",
+    "gone": "Deze interface bestaat niet meer op de host."
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "WireGuard",
+        "description": "Toon het WireGuard-tabblad voor deze host in het menu."
+      },
+      "showPanel": {
+        "label": "WireGuard-paneel tonen in terminals",
+        "description": "Laat het WireGuard-paneel openen naast de SSH-terminal van deze host."
+      },
+      "alertDown": {
+        "label": "Waarschuwen wanneer een interface offline is",
+        "description": "Stuur een waarschuwing wanneer een interface die bij het opstarten moet starten, niet actief is. Dit wordt gecontroleerd wanneer de WireGuard-status wordt opgehaald."
+      }
+    },
+    "publicKey": "Openbare sleutel",
+    "port": "UDP-poort",
+    "endpoint": "Server-eindpunt",
+    "endpointHint": "Het openbare adres waar clients verbinding mee maken, zoals vpn.example.com:51820.",
+    "dns": "DNS voor clients",
+    "dnsHint": "Optioneel. Scheid servers door komma's.",
+    "allowed": "Verkeer via het VPN",
+    "allowedHint": "De bereiken die clients via het VPN sturen. 0.0.0.0/0, ::/0 stuurt alles.",
+    "keepalive": "Keepalive (seconden)",
+    "keepaliveHint": "Houdt clients achter NAT bereikbaar. Gebruik 0 om dit uit te schakelen.",
+    "saved": "Instellingen opgeslagen.",
+    "saveFailed": "De instellingen konden niet worden opgeslagen.",
+    "user": {
+      "companionAutoOpen": {
+        "label": "WireGuard-paneel openen met nieuwe terminals",
+        "description": "Toon het WireGuard-paneel naast elke SSH-terminal die WireGuard heeft ingeschakeld. Je kunt het paneel nog steeds openen en sluiten via de knop aan de rechterkant."
+      },
+      "companionSide": {
+        "label": "Positie WireGuard-paneel",
+        "description": "Waar het WireGuard-paneel naast een terminal wordt weergegeven.",
+        "right": "Rechts",
+        "left": "Links",
+        "bottom": "Onder"
+      },
+      "companionSize": {
+        "label": "Grootte WireGuard-paneel",
+        "description": "Breedte in pixels, of hoogte wanneer het onderaan staat. Je kunt de rand ook verslepen."
+      },
+      "companionEdgeButton": {
+        "label": "Paneelknop tonen",
+        "description": "Toon een kleine knop aan de rechterkant van een terminal die het WireGuard-paneel opent."
+      }
+    }
+  },
+  "clients": {
+    "add": "Client toevoegen",
+    "empty": "Nog geen clients.",
+    "loadFailed": "De clients konden niet worden geladen.",
+    "name": "Naam",
+    "nameHint": "Letters, cijfers, punten, koppeltekens en underscores.",
+    "allowed": "Verkeer via het VPN",
+    "allowedHint": "Laat leeg om de standaardwaarde van de interface te gebruiken: {{value}}",
+    "create": "Client maken",
+    "addFailed": "De client kon niet worden toegevoegd.",
+    "needEndpoint": "Stel eerst het server-eindpunt in de interface-instellingen in.",
+    "connected": "Verbonden",
+    "off": "Uit",
+    "external": "Handmatig aangemaakt",
+    "handshake": "handshake {{ago}} geleden",
+    "showConfig": "Configuratie en QR-code tonen",
+    "configFailed": "De clientconfiguratie kon niet worden gelezen.",
+    "rotate": "Nieuwe sleutels",
+    "rotateTitle": "Nieuwe sleutels maken voor {{name}}?",
+    "rotateDesc": "De oude configuratie stopt met werken. Geef de client daarna de nieuwe configuratie.",
+    "turnOff": "Uitschakelen",
+    "turnOn": "Inschakelen",
+    "saveFailed": "De client kon niet worden gewijzigd.",
+    "deleteTitle": "{{name}} verwijderen?",
+    "deleteDesc": "De client wordt verwijderd en kan geen verbinding meer maken.",
+    "deleteFailed": "De client kon niet worden verwijderd."
+  },
+  "clientConfig": {
+    "note": "Deze configuratie bevat de privésleutel van de client. Deel deze alleen met de persoon of het apparaat die deze zal gebruiken.",
+    "qr": "QR-code voor de clientconfiguratie",
+    "copy": "Kopiëren",
+    "copied": "Configuratie gekopieerd.",
+    "copyFailed": "De configuratie kon niet worden gekopieerd.",
+    "download": ".conf downloaden"
+  },
+  "config": {
+    "title": "Configuratiebestand",
+    "hint": "Privésleutels en gedeelde sleutels zijn verborgen. Laat de placeholder staan om een sleutel te behouden. De configuratie wordt gecontroleerd voordat deze wordt opgeslagen en er wordt een back-up gemaakt. Wijzigingen in het adres vereisen een herstart.",
+    "loadFailed": "De configuratie kon niet worden gelezen.",
+    "saved": "Configuratie opgeslagen.",
+    "saveFailed": "De configuratie kon niet worden opgeslagen."
+  },
+  "logs": {
+    "loadFailed": "De logs konden niet worden gelezen.",
+    "lines": "{{count}} regels",
+    "empty": "Geen logregels."
+  },
+  "service": {
+    "failed": "De service-actie is mislukt.",
+    "start": "Starten",
+    "stop": "Stoppen",
+    "restart": "Herstarten",
+    "autostart": "Starten bij opstarten",
+    "autostartDesc": "Start deze interface wanneer de host opstart.",
+    "needsSystemd": "Om bij het opstarten te starten, is systemd op deze host vereist.",
+    "noForward": "IP-forwarding is uitgeschakeld op deze host, dus clients kunnen het netwerk niet bereiken via NAT.",
+    "delete": "Interface verwijderen",
+    "deleteTitle": "{{name}} verwijderen?",
+    "deleteDesc": "De interface wordt gestopt en de configuratie, sleutels en opgeslagen clientbestanden worden van de host verwijderd.",
+    "deleteFailed": "De interface kon niet worden verwijderd."
+  },
+  "manager": {
+    "title": "WireGuard",
+    "disabled": "Schakel WireGuard in de instellingen van deze host in om deze kaart te gebruiken.",
+    "start": "Activeren",
+    "stop": "Deactiveren",
+    "done": "{{name}} bijgewerkt"
+  },
+  "operations": {
+    "list": {
+      "title": "WireGuard-interfaces weergeven"
+    },
+    "down": {
+      "title": "WireGuard-interfaces deactiveren"
+    },
+    "start": {
+      "title": "WireGuard-interface starten"
+    },
+    "stop": {
+      "title": "WireGuard-interface stoppen"
+    },
+    "restart": {
+      "title": "WireGuard-interface herstarten"
+    },
+    "interfaces": {
+      "title": "WireGuard-interfaces",
+      "address": "Adres",
+      "port": "Poort",
+      "clients": "Clients"
+    }
+  },
+  "nav": {
+    "togglePanel": "WireGuard-paneel in-/uitschakelen"
+  },
+  "card": {
+    "title": "WireGuard",
+    "loading": "Hosts controleren...",
+    "summary_one": "{{count}} client op {{hosts}} hosts",
+    "summary_other": "{{count}} clients op {{hosts}} hosts",
+    "refresh": "Opnieuw controleren",
+    "empty": "Schakel WireGuard in voor een host om deze hier te zien.",
+    "missing": "Niet geïnstalleerd",
+    "down_one": "{{count}} offline",
+    "down_other": "{{count}} offline",
+    "interfaces_one": "{{count}} interface, {{clients}} clients",
+    "interfaces_other": "{{count}} interfaces, {{clients}} clients"
+  }
+}

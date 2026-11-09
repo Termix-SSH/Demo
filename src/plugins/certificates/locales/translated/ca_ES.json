@@ -1,0 +1,237 @@
+{
+  "plugin": {
+    "name": "Certificats",
+    "description": "Visualitza, emet i renova certificats TLS als teus amfitrions amb certbot i acme.sh, i rep una alerta abans que caduquin."
+  },
+  "common": {
+    "cancel": "Cancel·la",
+    "back": "Enrere"
+  },
+  "permissions": {
+    "use": {
+      "title": "Utilitza certificats",
+      "description": "Visualitza certificats als amfitrions a què pots accedir i modifica'ls als amfitrions que pots editar."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Certificats",
+        "description": "Gestiona els certificats TLS d'aquest amfitrió des de la pestanya Certificats."
+      },
+      "useSudo": {
+        "label": "Utilitza sudo",
+        "description": "Utilitza sudo per llegir i modificar certificats. Desactiva-ho si l'usuari d'inici de sessió és root."
+      },
+      "readOnly": {
+        "label": "Només lectura",
+        "description": "Mostra els certificats, però mai no els modifiquis en aquest host."
+      },
+      "expiryWarnDays": {
+        "label": "Avisa abans de la caducitat",
+        "description": "Els certificats amb aquest nombre de dies o menys restants es mostren com a caducs i envien una alerta."
+      },
+      "showPanel": {
+        "label": "Mostra el panell de certificats als terminals",
+        "description": "Permet que el panell de certificats s'obri al costat del terminal SSH d'aquest host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Obre el panell de certificats amb els terminals nous",
+        "description": "Mostra el panell de certificats al costat de cada terminal SSH que tingui els certificats activats. Encara pots obrir-lo i tancar-lo des del botó del costat dret."
+      },
+      "companionSide": {
+        "label": "Costat del panell de certificats",
+        "description": "On es troba el panell de certificats al costat d'un terminal.",
+        "right": "Dreta",
+        "left": "Esquerra",
+        "bottom": "Inferior"
+      },
+      "companionSize": {
+        "label": "Mida del panell de certificats",
+        "description": "Amplada en píxels, o alçada quan està a la part inferior. També podeu arrossegar-ne el vora."
+      },
+      "companionEdgeButton": {
+        "label": "Mostra el botó del panell",
+        "description": "Mostra un botó petit al costat dret d'un terminal que obre el panell de certificats."
+      }
+    }
+  },
+  "tab": {
+    "title": "Certificats",
+    "noHost": "Obre Certificats des d'un host.",
+    "error": "No s'han pogut carregar els certificats d'aquest host.",
+    "disabled": "Els certificats estan desactivats per a aquest amfitrió. Activeu-los a la configuració de l'amfitrió.",
+    "sudo": "Els canvis requereixen un inici de sessió com a arrel, un sudo sense contrasenya o una contrasenya de sudo desada en aquest amfitrió.",
+    "refresh": "Actualitza",
+    "readOnly": "Només lectura",
+    "noClient": "No s'ha trobat certbot ni acme.sh",
+    "viewCertificates": "Certificats",
+    "viewInspect": "Inspecciona",
+    "viewRenewal": "Renovació"
+  },
+  "actions": {
+    "working": "S'està processant. Això pot trigar uns minuts.",
+    "ok": "Fet",
+    "failed": "L'ordre ha fallat.",
+    "noOutput": "Sense sortida."
+  },
+  "install": {
+    "title": "certbot i acme.sh no estan instal·lats en aquest host",
+    "hint": "Instal·leu certbot per obtenir i renovar certificats de Let's Encrypt.",
+    "noManager": "No s'ha trobat cap gestor de paquets compatible. Instal·leu certbot manualment.",
+    "button": "Instal·la certbot",
+    "confirm": "Voleu instal·lar certbot?",
+    "desc": "Això instal·la certbot amb el gestor de paquets de l'host.",
+    "working": "S'està instal·lant...",
+    "done": "certbot està instal·lat."
+  },
+  "certs": {
+    "search": "Cerca certificats",
+    "empty": "Encara no hi ha certificats.",
+    "noMatch": "Cap certificat no coincideix.",
+    "loadFailed": "No s'han pogut llegir els certificats.",
+    "expires": "Caduca el {{date}}",
+    "staging": "Entorn de proves",
+    "details": "Certificat",
+    "manage": "Gestiona",
+    "client": "Client",
+    "path": "Fitxer",
+    "authority": "Autoritat",
+    "renew": "Renovar",
+    "renewDone": "S'ha renovat {{name}}.",
+    "renewAll": "Renovar-ho tot",
+    "renewAllDone": "S'han renovat els certificats que havien de renovar-se.",
+    "forceRenew": "Renovar ara de totes maneres",
+    "dryRun": "Execució de prova",
+    "dryRunDone": "L'execució de prova ha funcionat.",
+    "revoke": "Revocar",
+    "revokeTitle": "Vols revocar {{name}}?",
+    "revokeDesc": "L'autoritat el marca com a no vàlid i s'elimina d'aquest host. Tot el que encara l'estigui utilitzant deixarà de funcionar.",
+    "revokeDone": "S'ha revocat {{name}}.",
+    "delete": "Deixar de gestionar",
+    "deleteTitle": "Vols deixar de gestionar {{name}}?",
+    "deleteDesc": "Es manté vàlid, però ja no es renovarà. El certbot també elimina els seus fitxers, mentre que l'acme.sh els conserva.",
+    "deleteDone": "{{name}} ja no es gestiona."
+  },
+  "expiry": {
+    "expired": "Caducat",
+    "unknown": "Desconegut",
+    "days_one": "{{count}} dia restant",
+    "days_many": "{{count}} dies restants",
+    "days_other": "{{count}} dies restants"
+  },
+  "issue": {
+    "add": "Emetre certificat",
+    "title": "Certificat nou",
+    "save": "Emetre",
+    "done": "S'ha emès el certificat.",
+    "working": "S'està consultant l'autoritat. Això pot trigar uns minuts.",
+    "client": "Client",
+    "domains": "Domanis",
+    "domainsPlaceholder": "Escriu un domini i prem Retorn",
+    "domainsHint": "El primer dona nom al certificat.",
+    "challenge": "Repte",
+    "standalone": "Independent",
+    "standaloneHint": "Executa un petit servidor web al port 80, de manera que res més pot utilitzar aquest port.",
+    "webroot": "Arrel web",
+    "webrootHint": "Col·loca un fitxer a la carpeta del teu servidor web. El servidor web continua funcionant.",
+    "dns": "DNS",
+    "dnsHint": "Afegeix un registre DNS a través de l'API del teu proveïdor. Necessari per als comodins.",
+    "webrootPath": "Carpeta d'arrel web",
+    "webrootPathHint": "Ha d'estar dins de /var/www, /srv o /usr/share/nginx.",
+    "dnsProvider": "Proveïdor DNS",
+    "dnsProviderCertbot": "El nom d'un complement DNS de certbot instal·lat, com cloudflare.",
+    "dnsProviderAcme": "Un nom DNS d'acme.sh sense dns_, com cf. El seu testimoni API ja ha d'estar configurat a l'host.",
+    "credentials": "Fitxer de credencials",
+    "credentialsHint": "El fitxer a l'host amb el teu testimoni API. Termix mai el llegeix.",
+    "email": "Correu electrònic",
+    "emailHint": "Opcional. L'autoritat l'utilitza per a avisos de caducitat.",
+    "keyType": "Tipus de clau",
+    "staging": "Utilitzar el servidor de proves",
+    "stagingHint": "Per a proves. El certificat no és de confiança i els límits de taxa són molt més alts."
+  },
+  "inspect": {
+    "server": "Servidor",
+    "file": "Fitxer",
+    "address": "Adreça",
+    "addressPlaceholder": "example.com",
+    "port": "Port",
+    "path": "Camí del fitxer",
+    "check": "Comprovar",
+    "hint": "Comprova què envia un servidor a través de TLS, vist des d'aquest host, o llegeix un fitxer de certificat en ell.",
+    "failed": "No s'ha pogut llegir el certificat.",
+    "noOpenssl": "openssl no està instal·lat en aquest host.",
+    "trusted": "De confiança",
+    "notTrusted": "No és de confiança",
+    "leaf": "Certificat",
+    "intermediate": "Cadena {{index}}",
+    "selfSigned": "Autofirmat",
+    "name": "Nom",
+    "issuer": "Emissor",
+    "domains": "Domanis",
+    "validFrom": "Vàlid des de",
+    "validTo": "Vàlid fins a",
+    "keyType": "Clau",
+    "serial": "Sèrie",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Com aquest host renova els certificats automàticament. Canvia-ho a l'host.",
+    "on": "Activat",
+    "off": "Desactivat",
+    "timer": "Temporitzador systemd",
+    "next": "Propera execució {{time}}",
+    "cron": "Fitxer Cron /etc/cron.d/certbot",
+    "certbotOff": "No s'ha trobat cap temporitzador ni tasca cron, per tant, els certificats no es renovaran automàticament.",
+    "acmeCron": "Tasca cron a la crontab",
+    "acmeOff": "No s'ha trobat cap tasca cron, per tant, els certificats no es renovaran automàticament."
+  },
+  "watch": {
+    "start": "Avisa'm abans que els certificats d'aquest host caduquin",
+    "stop": "Atura les alertes per a aquest host",
+    "on": "Rebràs una alerta abans que els certificats d'aquí caduquin.",
+    "off": "Les alertes per a aquest host estan desactivades.",
+    "failed": "No s'ha pogut canviar l'alerta."
+  },
+  "card": {
+    "title": "Certificats",
+    "loading": "Comprovant hosts...",
+    "summary_one": "{{count}} certificat, {{expiring}} caducant",
+    "summary_many": "{{count}} certificats, {{expiring}} caducant",
+    "summary_other": "{{count}} certificats, {{expiring}} caducant",
+    "refresh": "Comprovar de nou",
+    "empty": "Activa els Certificats per a un host per veure'ls aquí."
+  },
+  "manager": {
+    "title": "Certificats",
+    "disabled": "Activa els Certificats per a aquest host a la seva configuració per veure'ls aquí."
+  },
+  "operations": {
+    "list": {
+      "title": "Llista certificats"
+    },
+    "expiring": {
+      "title": "Certificats caducant"
+    },
+    "renew": {
+      "title": "Renovar certificat"
+    },
+    "renewAll": {
+      "title": "Renovar tots els certificats"
+    },
+    "revoke": {
+      "title": "Revocar certificat"
+    },
+    "certificates": {
+      "title": "Certificats",
+      "client": "Client",
+      "domains": "Domanis",
+      "daysLeft": "Dies restants"
+    }
+  },
+  "nav": {
+    "togglePanel": "Mostra/amaga el panell de certificats"
+  }
+}

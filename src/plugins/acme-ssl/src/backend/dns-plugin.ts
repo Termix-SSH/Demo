@@ -11,9 +11,20 @@ interface DnsRecords {
   removeRecord: (handle: unknown) => Promise<void>;
 }
 
+/** The user whose DNS access scheduled renewals use. */
+export const DNS_USER_KEY = "dnsUser";
+
+type DnsCtx = Pick<PluginContext, "services" | "kv" | "currentActor">;
+
+/** Remembers who asked, so a renewal with no request behind it can act as them. */
+export async function rememberDnsUser(ctx: DnsCtx): Promise<void> {
+  const actor = ctx.currentActor?.();
+  if (actor) await ctx.kv.set(DNS_USER_KEY, actor);
+}
+
 /** Creates the TXT record through the DNS plugin and returns how to remove it. */
 export async function createTxtRecordWithDnsPlugin(
-  ctx: Pick<PluginContext, "services">,
+  ctx: DnsCtx,
   name: string,
   content: string,
 ): Promise<() => Promise<void>> {
@@ -22,7 +33,17 @@ export async function createTxtRecordWithDnsPlugin(
       "The DNS plugin is not running. Turn it on or pick another challenge type.",
     );
   }
-  const dns = ctx.services.get<DnsRecords>("dns.records");
+  let options: { userId: string } | undefined;
+  if (!ctx.currentActor?.()) {
+    const stored = await ctx.kv.get(DNS_USER_KEY);
+    if (typeof stored !== "string" || !stored) {
+      throw new Error(
+        "Request a certificate once by hand so renewals know whose DNS access to use.",
+      );
+    }
+    options = { userId: stored };
+  }
+  const dns = ctx.services.get<DnsRecords>("dns.records", options);
   const handle = await dns.setRecord({ name, type: "TXT", content, ttl: 120 });
   return () => dns.removeRecord(handle);
 }

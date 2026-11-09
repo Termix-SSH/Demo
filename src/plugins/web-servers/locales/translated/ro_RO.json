@@ -1,0 +1,291 @@
+{
+  "plugin": {
+    "name": "Servere Web",
+    "description": "Gestionează nginx, Apache și Caddy pe host-urile tale: site-uri, configurare, jurnale și HTTPS, fiecare modificare fiind testată înainte."
+  },
+  "common": {
+    "cancel": "Anulează",
+    "back": "Înapoi",
+    "loading": "Se încarcă..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Folosește Servere Web",
+      "description": "Vizualizează serverele web și site-urile pe host-urile la care ai acces și modifică-le pe cele pe care le poți edita."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Servere Web",
+        "description": "Gestionează nginx, Apache și Caddy pe acest host din fila Servere Web."
+      },
+      "useSudo": {
+        "label": "Folosește sudo",
+        "description": "Folosește sudo pentru a citi și modifica serverul web. Dezactivează dacă autentificarea este ca root."
+      },
+      "readOnly": {
+        "label": "Doar citire",
+        "description": "Afișează site-urile, configurația și jurnalele, dar nu le modifica niciodată pe acest host."
+      },
+      "showPanel": {
+        "label": "Panou lângă terminal",
+        "description": "Oferă panoul Servere Web pe filele terminalului acestui host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Deschide panoul împreună cu terminalul",
+        "description": "Afișează panoul Servere Web când se deschide un terminal pe un host care îl are activat."
+      },
+      "companionSide": {
+        "label": "Poziția panoului",
+        "description": "Unde se află panoul lângă terminal.",
+        "right": "Dreapta",
+        "left": "Stânga",
+        "bottom": "Jos"
+      },
+      "companionSize": {
+        "label": "Dimensiunea panoului",
+        "description": "Lățimea panoului, sau înălțimea sa când este jos, în pixeli."
+      },
+      "companionEdgeButton": {
+        "label": "Buton pe margine",
+        "description": "Afișează un buton mic pe marginea terminalului pentru a deschide panoul."
+      }
+    }
+  },
+  "tab": {
+    "title": "Servere Web",
+    "noHost": "Deschide Servere Web dintr-un host.",
+    "error": "Nu s-au putut încărca serverele web de pe acest host.",
+    "disabled": "Servere Web este dezactivat pentru acest host. Activează-l în setările host-ului.",
+    "sudo": "Modificările necesită autentificare root, sudo fără parolă sau o Parolă Sudo salvată pe acest host.",
+    "refresh": "Reîmprospătează",
+    "readOnly": "Doar citire",
+    "noServer": "Niciun server web instalat",
+    "noServerHint": "Instalează nginx, Apache sau Caddy din pagina Server.",
+    "openServer": "Deschide Server",
+    "viewSites": "Site-uri",
+    "viewConfig": "Configurare",
+    "viewLogs": "Jurnale",
+    "viewServer": "Server"
+  },
+  "actions": {
+    "ok": "Gata",
+    "failed": "Eșuat",
+    "noOutput": "Niciun rezultat."
+  },
+  "watch": {
+    "start": "Notifică-mă când un server web se oprește",
+    "stop": "Oprește notificările pentru acest host",
+    "on": "Vei primi o notificare când un server web de pe acest host se oprește",
+    "off": "Notificările pentru acest host sunt oprite",
+    "failed": "Nu s-au putut modifica notificările"
+  },
+  "sites": {
+    "add": "Adaugă site",
+    "search": "Caută site-uri",
+    "empty": "Încă nu există site-uri.",
+    "loadFailed": "Nu s-au putut încărca site-urile.",
+    "off": "Oprit",
+    "anyName": "orice nume",
+    "form": "Formular",
+    "certDays_one": "{{count}} zi rămasă",
+    "certDays_few": "{{count}} zile rămase",
+    "certDays_other": "{{count}} zile rămase",
+    "certExpired": "Certificatul a expirat",
+    "enable": "Activează",
+    "disable": "Dezactivează",
+    "enabled": "{{name}} este activat",
+    "disabled": "{{name}} este dezactivat",
+    "delete": "Șterge",
+    "deleteTitle": "Ștergi {{name}}?",
+    "deleteBody": "Fișierul este eliminat și serverul se reîncarcă. O copie rămâne în /var/lib/termix-web-servers/backups pe gazdă.",
+    "deleted": "{{name}} a fost șters"
+  },
+  "site": {
+    "addTitle": "Site nou",
+    "editTitle": "Salvează {{name}}",
+    "add": "Adaugă site",
+    "save": "Salvează",
+    "added": "{{name}} a fost adăugat",
+    "saved": "{{name}} a fost salvat",
+    "server": "Server web",
+    "name": "Numele site-ului",
+    "nameHint": "Folosit pentru numele fișierului și fișierele de jurnal, de exemplu example.",
+    "modeForm": "Formular",
+    "modeText": "Text",
+    "text": "Configurație",
+    "textHint": "Salvarea textului dezactivează formularul pentru acest site, astfel încât modificările tale să fie păstrate.",
+    "type": "Tip",
+    "typeStatic": "Fișiere statice",
+    "typeProxy": "Proxy invers",
+    "typePhp": "PHP",
+    "typeRedirect": "Redirecționare",
+    "staticHint": "Servește fișiere dintr-un dosar.",
+    "proxyHint": "Trimite cererile către o aplicație care rulează pe această gazdă sau pe alta.",
+    "phpHint": "Servește fișiere dintr-un dosar și execută fișierele .php cu php-fpm.",
+    "redirectHint": "Redirecționează fiecare vizitator către o altă adresă.",
+    "domains": "Domenii",
+    "domainsHint": "Apasă Enter după fiecare. Folosește _ în nginx pentru a răspunde la orice nume.",
+    "port": "Port HTTP",
+    "root": "Rădăcină web",
+    "rootHint": "Un dosar din /var/www, /srv, /usr/share/nginx, /opt sau /home.",
+    "index": "Fișiere index",
+    "spa": "Aplicație single-page",
+    "spaHint": "Trimite căile care nu sunt fișiere către /index.html.",
+    "upstream": "Adresa aplicației",
+    "upstreamHint": "Unde ascultă aplicația, de exemplu http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Redirecționează vizitatorii către",
+    "keepPath": "Păstrează calea",
+    "keepPathHint": "Trimite /page către aceeași pagină de la noua adresă.",
+    "phpSocket": "Socket php-fpm",
+    "phpSocketHint": "Nu s-a găsit niciun socket php-fpm. Instalează php-fpm sau introdu gazdă:port.",
+    "https": "HTTPS",
+    "httpsHint": "Necesită un certificat. Salvează mai întâi site-ul, apoi apasă Obține certificat mai jos.",
+    "httpsCaddy": "Caddy obține și reînnoiește singur certificatul.",
+    "httpsPort": "Port HTTPS",
+    "certPath": "Fișier certificat",
+    "keyPath": "Fișier cheie",
+    "forceHttps": "Redirecționează HTTP către HTTPS",
+    "gzip": "Comprimă răspunsurile",
+    "accessLog": "Jurnal acces",
+    "maxBody": "Limită încărcare în MB",
+    "maxBodyHint": "0 păstrează valoarea implicită a serverului.",
+    "preview": "Previzualizare",
+    "previewFailed": "Nu s-a putut genera configurația."
+  },
+  "tls": {
+    "title": "Certificat HTTPS",
+    "hintManaged": "certbot obține un certificat Let's Encrypt pentru domeniile acestui site, apoi site-ul comută la HTTPS. certbot îl reînnoiește și reîncarcă serverul.",
+    "hintText": "certbot obține un certificat Let's Encrypt pentru domeniile acestui site. Adaugă manual certificatul la site ulterior. certbot îl reînnoiește și reîncarcă serverul.",
+    "needCertbot": "Instalează mai întâi certbot cu pluginul său pentru acest server din pagina Server.",
+    "email": "Email",
+    "emailHint": "Let's Encrypt scrie aici despre probleme. Opțional.",
+    "staging": "Certificat de test",
+    "stagingHint": "Folosește serverul de staging al Let's Encrypt. Navigatoarele nu îl vor considera de încredere.",
+    "issue": "Obține certificat",
+    "done": "Certificat salvat"
+  },
+  "config": {
+    "search": "Caută fișiere",
+    "empty": "Niciun fișier.",
+    "loadFailed": "Nu s-a putut încărca fișierul.",
+    "test": "Testează configurația",
+    "testOk": "Configurația este corectă",
+    "testFailed": "Configurația conține erori",
+    "content": "Conținut",
+    "save": "Salvează",
+    "saveHint": "Întreaga configurație este testată înainte de reîncărcarea serverului. Un fișier defect este restaurat.",
+    "saved": "Salvat și reîncărcat",
+    "backups_one": "{{count}} copie de rezervă",
+    "backups_few": "{{count}} copii de rezervă",
+    "backups_other": "{{count}} copii de rezervă",
+    "restore": "Restaurează",
+    "restoreTitle": "Restaurezi această copie de rezervă?",
+    "restoreBody": "Fișierul revine la starea din {{time}}. Textul curent devine și el o copie de rezervă.",
+    "restored": "Copie de rezervă restaurată"
+  },
+  "logs": {
+    "source": "Jurnal",
+    "lines": "Linii",
+    "journal": "Jurnalul {{server}}",
+    "follow": "Urmărește",
+    "stop": "Oprește",
+    "connecting": "Se conectează...",
+    "ended": "Urmărirea a fost oprită.",
+    "followFailed": "Nu s-a putut urmări acest jurnal.",
+    "empty": "Nicio linie.",
+    "loadFailed": "Nu s-a putut citi jurnalul.",
+    "requests": "Cereri",
+    "topPaths": "Cele mai accesate căi",
+    "topClients": "Clienții principali"
+  },
+  "server": {
+    "unknown": "necunoscut",
+    "atBoot": "Se pornește la pornirea sistemului",
+    "notInstalled": "Nu este instalat",
+    "start": "Pornește",
+    "stop": "Oprește",
+    "restart": "Repornire",
+    "reload": "Reîncarcă",
+    "enable": "Pornește la pornirea sistemului",
+    "disable": "Nu porni la pornirea sistemului",
+    "boot": "Pornește la pornirea sistemului",
+    "noBoot": "Nu porni la pornirea sistemului",
+    "done": "{{server}} a terminat",
+    "stopTitle": "Oprești {{server}}?",
+    "stopBody": "Toate site-urile de pe el devin indisponibile până le pornești din nou.",
+    "install": "Instalează",
+    "installTitle": "Instalezi {{server}}?",
+    "installBody": "Este instalat cu managerul de pachete al gazdei și se pornește imediat. Un alt server web pe portul 80 îi va împiedica pornirea.",
+    "installed": "{{server}} a fost instalat",
+    "installCertbot": "Instalează certbot",
+    "certbotInstalled": "certbot a fost instalat",
+    "certbotPlugins": "Pluginuri: {{plugins}}",
+    "certbotNoPlugins": "Niciun plugin nginx sau Apache",
+    "certbotHint": "Obține certificate Let's Encrypt pentru site-urile nginx și Apache"
+  },
+  "card": {
+    "title": "Servere web",
+    "loading": "Se încarcă...",
+    "refresh": "Reîmprospătare",
+    "empty": "Niciun host nu are serverele web activate.",
+    "summary_one": "{{count}} host | {{down}} necesită atenție",
+    "summary_few": "{{count}} hosturi | {{down}} necesită atenție",
+    "summary_other": "{{count}} hosturi | {{down}} necesită atenție",
+    "sites_one": "{{count}} site",
+    "sites_few": "{{count}} site-uri",
+    "sites_other": "{{count}} site-uri"
+  },
+  "companion": {
+    "toggle": "Panoul Servere web",
+    "openTab": "Deschide Servere web",
+    "reload": "Reîncarcă {{server}}"
+  },
+  "manager": {
+    "title": "Servere web",
+    "disabled": "Activează Servere web pentru acest host pentru a-ți vedea site-urile aici."
+  },
+  "operations": {
+    "status": {
+      "title": "Starea serverului web"
+    },
+    "listSites": {
+      "title": "Listează site-urile"
+    },
+    "test": {
+      "title": "Testează configurația serverului web"
+    },
+    "reload": {
+      "title": "Reîncarcă serverul web"
+    },
+    "restart": {
+      "title": "Redenemare server web"
+    },
+    "enableSite": {
+      "title": "Activează site-ul"
+    },
+    "disableSite": {
+      "title": "Dezactivează site-ul"
+    },
+    "deleteSite": {
+      "title": "Șterge site-ul"
+    },
+    "server": "Server",
+    "allServers": "Toate",
+    "sites": {
+      "title": "Site-uri",
+      "server": "Server",
+      "domains": "Domenii",
+      "https": "HTTPS"
+    }
+  }
+}

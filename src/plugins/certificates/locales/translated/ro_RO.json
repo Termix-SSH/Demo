@@ -1,0 +1,237 @@
+{
+  "plugin": {
+    "name": "Certificat",
+    "description": "Vizualizați, emiteți și reînnoiți certificatele TLS pe gazdele dvs. cu certbot și acme.sh, și primiți o alertă înainte de expirarea lor."
+  },
+  "common": {
+    "cancel": "Anulează",
+    "back": "Înapoi"
+  },
+  "permissions": {
+    "use": {
+      "title": "Folosește Certificate",
+      "description": "Vizualizați certificatele pe gazdele la care aveți acces și modificați-le pe cele pe care le puteți edita."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Certificate",
+        "description": "Gestionați certificatele TLS pe această gazdă din fila Certificate."
+      },
+      "useSudo": {
+        "label": "Folosește sudo",
+        "description": "Folosește sudo pentru a citi și modifica certificatele. Dezactivează dacă autentificarea este ca root."
+      },
+      "readOnly": {
+        "label": "Doar citire",
+        "description": "Afișează certificatele, dar nu le modifica niciodată pe această gazdă."
+      },
+      "expiryWarnDays": {
+        "label": "Avertizează înainte de expirare",
+        "description": "Certificatele cu acest număr de zile sau mai puține rămase sunt afișate ca expirate și trimit o alertă."
+      },
+      "showPanel": {
+        "label": "Afișează panoul de certificate în terminale",
+        "description": "Permite panoului de certificate să se deschidă lângă terminalul SSH al acestei gazde."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Deschide panoul de certificate cu terminalele noi",
+        "description": "Afișează panoul de certificate lângă fiecare terminal SSH care are Certificate activat. Îl poți deschide și închide în continuare din butonul de pe marginea dreaptă."
+      },
+      "companionSide": {
+        "label": "Poziția panoului de certificate",
+        "description": "Unde se află panoul de certificate lângă un terminal.",
+        "right": "Dreapta",
+        "left": "Stânga",
+        "bottom": "Jos"
+      },
+      "companionSize": {
+        "label": "Dimensiunea panoului de certificate",
+        "description": "Lățimea în pixeli, sau înălțimea când este jos. Poți trage și de marginea sa."
+      },
+      "companionEdgeButton": {
+        "label": "Afișează butonul panoului",
+        "description": "Afișează un buton mic pe marginea dreaptă a unui terminal care deschide panoul de certificate."
+      }
+    }
+  },
+  "tab": {
+    "title": "Certificate",
+    "noHost": "Deschide Certificate dintr-o gazdă.",
+    "error": "Nu s-au putut încărca certificatele de pe această gazdă.",
+    "disabled": "Certificate este dezactivat pentru această gazdă. Activează-l în setările gazdei.",
+    "sudo": "Modificările necesită autentificare root, sudo fără parolă sau o Parolă Sudo salvată pe această gazdă.",
+    "refresh": "Reîmprospătează",
+    "readOnly": "Doar citire",
+    "noClient": "Nici certbot, nici acme.sh",
+    "viewCertificates": "Certificate",
+    "viewInspect": "Inspectează",
+    "viewRenewal": "Reînnoire"
+  },
+  "actions": {
+    "working": "Se procesează. Acest lucru poate dura câteva minute.",
+    "ok": "Finalizat",
+    "failed": "Comanda a eșuat.",
+    "noOutput": "Niciun rezultat."
+  },
+  "install": {
+    "title": "certbot și acme.sh nu sunt instalate pe această gazdă",
+    "hint": "Instalează certbot pentru a obține și reînnoi certificate de la Let's Encrypt.",
+    "noManager": "Nu s-a găsit niciun manager de pachete suportat. Instalează certbot manual.",
+    "button": "Instalează certbot",
+    "confirm": "Instalezi certbot?",
+    "desc": "Aceasta instalează certbot cu managerul de pachete al gazdei.",
+    "working": "Se instalează...",
+    "done": "certbot este instalat."
+  },
+  "certs": {
+    "search": "Caută certificate",
+    "empty": "Niciun certificat încă.",
+    "noMatch": "Niciun certificat nu se potrivește.",
+    "loadFailed": "Nu s-au putut citi certificatele.",
+    "expires": "Expiră {{date}}",
+    "staging": "Staging",
+    "details": "Certificat",
+    "manage": "Gestionează",
+    "client": "Client",
+    "path": "Fișier",
+    "authority": "Autoritate",
+    "renew": "Înnoirește",
+    "renewDone": "A fost înnoit {{name}}.",
+    "renewAll": "Înnoiește toate",
+    "renewAllDone": "Au fost înnoite certificatele care erau la termen.",
+    "forceRenew": "Înnoiește acum oricum",
+    "dryRun": "Testare uscată",
+    "dryRunDone": "Testarea uscată a funcționat.",
+    "revoke": "Revocă",
+    "revokeTitle": "Revoci {{name}}?",
+    "revokeDesc": "Autoritatea îl marchează ca nevalid și este eliminat de pe acest gazdă. Orice îl folosește încă va înceta să funcționeze.",
+    "revokeDone": "A fost revocat {{name}}.",
+    "delete": "Oprește gestionarea",
+    "deleteTitle": "Oprești gestionarea lui {{name}}?",
+    "deleteDesc": "Rămâne valid, dar nu se va mai înnoi. certbot șterge și fișierele sale, acme.sh le păstrează.",
+    "deleteDone": "{{name}} nu mai este gestionat."
+  },
+  "expiry": {
+    "expired": "Expirat",
+    "unknown": "Necunoscut",
+    "days_one": "{{count}} zi rămasă",
+    "days_few": "{{count}} zile rămase",
+    "days_other": "{{count}} zile rămase"
+  },
+  "issue": {
+    "add": "Emitere certificat",
+    "title": "Certificat nou",
+    "save": "Emitere",
+    "done": "Certificatul a fost emis.",
+    "working": "Se solicită autorității. Acest lucru poate dura câteva minute.",
+    "client": "Client",
+    "domains": "Domenii",
+    "domainsPlaceholder": "Tastează un domeniu și apasă Enter",
+    "domainsHint": "Primul numește certificatul.",
+    "challenge": "Provocare",
+    "standalone": "Independent",
+    "standaloneHint": "Rulează un mic server web pe portul 80, deci nimic altceva nu poate folosi acel port.",
+    "webroot": "Rădăcină web",
+    "webrootHint": "Plasează un fișier în folderul serverului tău web. Serverul web continuă să ruleze.",
+    "dns": "DNS",
+    "dnsHint": "Adaugă un înregistrare DNS prin API-ul furnizorului tău. Necesare pentru wildcard-uri.",
+    "webrootPath": "Folder rădăcină web",
+    "webrootPathHint": "Trebuie să fie în interiorul /var/www, /srv sau /usr/share/nginx.",
+    "dnsProvider": "Furnizor DNS",
+    "dnsProviderCertbot": "Numele unui plugin DNS certbot instalat, cum ar fi cloudflare.",
+    "dnsProviderAcme": "Un nume DNS acme.sh fără dns_, cum ar fi cf. Token-ul său API trebuie să fie deja setat pe gazdă.",
+    "credentials": "Fișier de credențiale",
+    "credentialsHint": "Fișierul de pe gazdă cu token-ul tău API. Nu este niciodată citit de Termix.",
+    "email": "Email",
+    "emailHint": "Opțional. Autoritatea îl folosește pentru notificări de expirare.",
+    "keyType": "Tip cheie",
+    "staging": "Folosește serverul de testare",
+    "stagingHint": "Pentru testare. Certificatul nu este de încredere, iar limitele de rată sunt mult mai mari."
+  },
+  "inspect": {
+    "server": "Server",
+    "file": "Fișier",
+    "address": "Adresă",
+    "addressPlaceholder": "example.com",
+    "port": "Port",
+    "path": "Calea fișierului",
+    "check": "Verifică",
+    "hint": "Verifică ce trimite un server peste TLS, așa cum este văzut de pe această gazdă, sau citește un fișier de certificat de pe el.",
+    "failed": "Nu s-a putut citi certificatul.",
+    "noOpenssl": "openssl nu este instalat pe această gazdă.",
+    "trusted": "De încredere",
+    "notTrusted": "Nu este de încredere",
+    "leaf": "Certificat",
+    "intermediate": "Lanț {{index}}",
+    "selfSigned": "Semnat de sine",
+    "name": "Nume",
+    "issuer": "Emitent",
+    "domains": "Domenii",
+    "validFrom": "Valabil de la",
+    "validTo": "Valabil până la",
+    "keyType": "Cheie",
+    "serial": "Serial",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Cum își reînnoiește acest gazdă certificatele automat. Modifică setarea pe gazdă.",
+    "on": "Activat",
+    "off": "Dezactivat",
+    "timer": "timer systemd",
+    "next": "Următoarea execuție {{time}}",
+    "cron": "Fișier Cron /etc/cron.d/certbot",
+    "certbotOff": "Nu s-a găsit niciun timer sau job cron, așa că certificatele nu se vor reînnoi automat.",
+    "acmeCron": "Job cron în crontab",
+    "acmeOff": "Nu s-a găsit niciun job cron, așa că certificatele nu se vor reînnoi automat."
+  },
+  "watch": {
+    "start": "Notifică-mă înainte ca certificatele de pe această gazdă să expire",
+    "stop": "Oprește notificările pentru această gazdă",
+    "on": "Vei primi o notificare înainte ca certificatele de aici să expire.",
+    "off": "Notificările pentru această gazdă sunt dezactivate.",
+    "failed": "Nu s-a putut modifica notificarea."
+  },
+  "card": {
+    "title": "Certificate",
+    "loading": "Se verifică gazdele...",
+    "summary_one": "{{count}} certificat, {{expiring}} expirând",
+    "summary_few": "{{count}} certificate, {{expiring}} expirând",
+    "summary_other": "{{count}} certificate, {{expiring}} expirând",
+    "refresh": "Verifică din nou",
+    "empty": "Activează Certificate pentru o gazdă pentru a-ți vedea certificatele aici."
+  },
+  "manager": {
+    "title": "Certificate",
+    "disabled": "Activează Certificate pentru această gazdă în setările sale pentru a le vedea aici."
+  },
+  "operations": {
+    "list": {
+      "title": "Listează certificatele"
+    },
+    "expiring": {
+      "title": "Certificate expirând"
+    },
+    "renew": {
+      "title": "Reînnoiește certificatul"
+    },
+    "renewAll": {
+      "title": "Reînnoiește toate certificatele"
+    },
+    "revoke": {
+      "title": "Revocă certificatul"
+    },
+    "certificates": {
+      "title": "Certificate",
+      "client": "Client",
+      "domains": "Domenii",
+      "daysLeft": "Zile rămase"
+    }
+  },
+  "nav": {
+    "togglePanel": "Comută panoul de certificate"
+  }
+}

@@ -52,6 +52,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { canOpenHostEditor } from "../sidebar/host-permissions";
+import { usePaletteDismiss } from "./use-palette-dismiss";
 
 interface CommandPaletteProps {
   /** Opens settings, optionally at one section. */
@@ -124,19 +125,7 @@ export function CommandPalette({
     };
   }, [isOpen, paletteGroups]);
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsOpen(false);
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown, true);
-    return () => window.removeEventListener("keydown", handleKeyDown, true);
-  }, [isOpen, setIsOpen]);
+  const handleAction = usePaletteDismiss(isOpen, setIsOpen);
 
   const query = search.trim().toLowerCase();
   const searching = query.length > 0;
@@ -179,11 +168,6 @@ export function CommandPalette({
 
   const activeTargetTab =
     terminalTabs.find((tab) => tab.id === activeTabId) ?? terminalTabs[0];
-
-  const handleAction = (action: () => void) => {
-    action();
-    setIsOpen(false);
-  };
 
   const matches = (...texts: (string | undefined)[]) =>
     !searching || texts.some((text) => text?.toLowerCase().includes(query));
@@ -576,7 +560,9 @@ export function CommandPalette({
                     <CommandItem
                       key={link.id}
                       value={link.id}
-                      onSelect={() => window.open(link.url, "_blank")}
+                      onSelect={() =>
+                        window.open(link.url, "_blank", "noopener,noreferrer")
+                      }
                       className={rowClass}
                     >
                       <Icon className={iconClass} />

@@ -1,0 +1,202 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "호스트의 cron 작업을 보고, 추가하고 실행할 수 있습니다. 스케줄 미리보기와 시스템 cron 파일을 지원합니다."
+  },
+  "common": {
+    "save": "저장",
+    "cancel": "취소",
+    "back": "뒤로",
+    "delete": "삭제"
+  },
+  "permissions": {
+    "use": {
+      "title": "Cron 사용",
+      "description": "접근 가능한 호스트의 cron 작업을 보고, 수정 가능한 호스트에서 작업을 변경합니다."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Cron 탭에서 이 호스트의 cron 작업을 관리합니다."
+      },
+      "useSudo": {
+        "label": "sudo 사용",
+        "description": "다른 사용자의 crontab과 /etc/cron.d에 sudo를 사용합니다. 로그인 계정이 root라면 끄세요."
+      },
+      "readOnly": {
+        "label": "읽기 전용",
+        "description": "이 호스트에서 cron 작업은 표시하지만 변경하지 않습니다."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "호스트에서 Cron을 엽니다.",
+    "error": "이 호스트에서 cron을 로드할 수 없습니다.",
+    "disabled": "이 호스트에서 Cron이 꺼져 있습니다. 호스트 설정에서 켜세요.",
+    "sudo": "root 로그인, 비밀번호 없는 sudo 또는 저장된 Sudo 비밀번호가 필요합니다.",
+    "refresh": "새로고침",
+    "running": "Cron 실행 중",
+    "stopped": "Cron 중지됨",
+    "readOnly": "읽기 전용",
+    "notInstalled": "설치 안 됨",
+    "notInstalledTitle": "이 호스트에 Cron이 설치되어 있지 않습니다",
+    "notInstalledHint": "호스트의 패키지 관리자로 cron 또는 cronie를 설치한 후 새로고침하세요.",
+    "notRunning": "cron 서비스가 실행 중이 아니므로 작업이 실행되지 않습니다.",
+    "viewJobs": "작업",
+    "viewSystem": "시스템",
+    "viewLogs": "로그"
+  },
+  "jobs": {
+    "add": "작업 추가",
+    "user": "사용자 crontab",
+    "ownUser": "{{user}} (로그인)",
+    "search": "작업 검색",
+    "editText": "텍스트로 편집",
+    "empty": "아직 cron 작업이 없습니다.",
+    "noMatch": "일치하는 작업이 없습니다.",
+    "off": "꺼짐",
+    "next": "{{time}} 후",
+    "run": "지금 실행",
+    "runTitle": "이 작업을 지금 실행하시겠습니까?",
+    "runDesc": "crontab 사용자의 권한으로 {{command}}를 한 번 실행합니다. 2분 후 중지됩니다.",
+    "runFailed": "작업을 실행할 수 없습니다.",
+    "turnOn": "켜기",
+    "turnOff": "끄기",
+    "deleteTitle": "이 작업을 삭제하시겠습니까?",
+    "loadFailed": "crontab을 읽을 수 없습니다.",
+    "saveFailed": "crontab을 저장할 수 없습니다.",
+    "outputTitle": "작업 출력",
+    "exitOk": "완료",
+    "exitCode": "종료 코드 {{code}}",
+    "noOutput": "작업이 아무것도 출력하지 않았습니다."
+  },
+  "form": {
+    "addTitle": "새 작업",
+    "editTitle": "작업 편집",
+    "forUser": "{{user}}의 crontab",
+    "label": "라벨",
+    "labelHint": "작업 위의 주석으로 저장됩니다.",
+    "labelPlaceholder": "야간 백업",
+    "command": "명령어",
+    "commandHint": "사용자의 홈 디렉토리에서 sh로 실행됩니다. %는 cron이 보내는 입력을 나타내며, 실제 %를 사용하려면 \\%를 작성하세요.",
+    "schedule": "일정",
+    "scheduleHint": "분, 시간, 월일, 월, 요일 또는 @daily와 같은 키워드를 입력하세요.",
+    "scheduleInvalid": "유효한 일정이 아닙니다.",
+    "nextRuns": "다음 실행 시간 ({{zone}}):",
+    "enabled": "활성화",
+    "enabledHint": "비활성화된 작업은 crontab에 주석으로 유지됩니다.",
+    "saved": "저장되었습니다."
+  },
+  "presets": {
+    "everyMinute": "매분",
+    "every5": "5분마다",
+    "every15": "15분마다",
+    "hourly": "매시간",
+    "daily": "매일",
+    "weekly": "매주",
+    "monthly": "매월",
+    "reboot": "부팅 시"
+  },
+  "schedule": {
+    "reboot": "부팅 시",
+    "everyMinute": "매분",
+    "everyNMinutes": "{{n}}분마다",
+    "hourlyAt": "매시간 {{minute}}분에",
+    "everyNHours": "{{n}}시간마다 {{minute}}분에",
+    "dailyAt": "매일 {{time}}에",
+    "weekdaysAt": "월요일~금요일 {{time}}에",
+    "weeklyAt": "매주 {{day}} {{time}}에",
+    "monthlyAt": "매월 {{day}}일 {{time}}에",
+    "custom": "사용자 정의 일정",
+    "invalid": "유효한 일정이 아님"
+  },
+  "days": {
+    "0": "일요일",
+    "1": "월요일",
+    "2": "화요일",
+    "3": "수요일",
+    "4": "목요일",
+    "5": "금요일",
+    "6": "토요일"
+  },
+  "raw": {
+    "title": "Crontab 텍스트 보기",
+    "hint": "한 줄에 하나의 작업입니다. 호스트는 텍스트를 확인하고 오류가 있으면 이전 crontab을 유지합니다."
+  },
+  "system": {
+    "add": "새 파일",
+    "addTitle": "/etc/cron.d에 새 파일 만들기",
+    "edit": "편집",
+    "name": "파일 이름",
+    "nameHint": "/etc/cron.d/<name>으로 저장됩니다. Cron은 마침표가 포함된 이름을 건너뜁니다.",
+    "nameInvalid": "글자, 숫자, - 및 _만 사용하세요.",
+    "content": "파일 내용",
+    "fileHint": "각 작업은 실행할 사용자를 명시합니다: 분 시간 일 월 요일 사용자 명령어. 저장 전에 각 줄이 확인됩니다.",
+    "noJobs": "이 파일에는 작업이 없습니다.",
+    "readHint": "루트 권한이 없으면 일부 파일이 숨겨질 수 있습니다. 여기서 변경하려면 루트 로그인, 비밀번호 없는 sudo 또는 저장된 Sudo 비밀번호가 필요합니다.",
+    "timers_other": "이 호스트에는 systemd 타이머 {{count}}개도 있습니다. Services 플러그인에서 관리합니다.",
+    "deleteTitle": "/etc/cron.d/{{name}}을(를) 삭제하시겠습니까?",
+    "deleteDesc": "복사본은 /var/lib/termix-cron/backup에 유지됩니다.",
+    "deleted": "{{name}}이(가) 삭제되었습니다.",
+    "saved": "{{name}}이(가) 저장되었습니다.",
+    "loadFailed": "시스템 cron 파일을 읽을 수 없습니다.",
+    "saveFailed": "파일을 저장할 수 없습니다.",
+    "period": {
+      "hourly": "매시간 실행",
+      "daily": "매일 실행",
+      "weekly": "매주 실행",
+      "monthly": "매월 실행"
+    }
+  },
+  "logs": {
+    "lines": "줄 수",
+    "lineCount_other": "{{count}}줄",
+    "source": "{{source}}에서",
+    "noSource": "이 호스트에서 cron 로그를 찾을 수 없습니다.",
+    "empty": "로그 줄이 없습니다.",
+    "failed": "크론 로그를 읽을 수 없습니다."
+  },
+  "manager": {
+    "title": "크론",
+    "disabled": "여기서 작업을 보려면 해당 호스트의 설정에서 크론을 켜세요."
+  },
+  "operations": {
+    "list": {
+      "title": "크론 작업 목록"
+    },
+    "enable": {
+      "title": "크론 작업 켜기"
+    },
+    "disable": {
+      "title": "크론 작업 끄기"
+    },
+    "run": {
+      "title": "크론 작업 지금 실행"
+    },
+    "delete": {
+      "title": "크론 작업 삭제"
+    },
+    "jobs": {
+      "title": "크론 작업",
+      "schedule": "일정",
+      "command": "명령어"
+    },
+    "status": {
+      "title": "크론 상태"
+    }
+  },
+  "card": {
+    "title": "크론",
+    "loading": "호스트 확인 중...",
+    "summary_other": "{{hosts}}개 호스트에 {{count}}개 작업",
+    "refresh": "다시 확인",
+    "empty": "여기서 보려면 호스트에서 크론을 켜세요.",
+    "stopped": "실행 중 아님",
+    "missing": "설치되지 않음",
+    "jobs_other": "{{count}}개 작업",
+    "off": "{{count}}개 꺼짐"
+  }
+}

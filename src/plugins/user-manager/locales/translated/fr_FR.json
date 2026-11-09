@@ -1,0 +1,209 @@
+{
+  "plugin": {
+    "name": "Utilisateurs",
+    "description": "Gérez les comptes utilisateurs, les groupes, les mots de passe et les clés SSH sur vos hôtes."
+  },
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "back": "Retour",
+    "delete": "Supprimer",
+    "loading": "Chargement..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Utiliser Utilisateurs",
+      "description": "Affichez les comptes sur les hôtes accessibles et modifiez-les sur les hôtes éditables."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Utilisateurs",
+        "description": "Gérez les comptes utilisateurs et les groupes sur cet hôte depuis l'onglet Utilisateurs."
+      },
+      "useSudo": {
+        "label": "Utiliser sudo",
+        "description": "Utilisez sudo pour lire et modifier les comptes. Désactivez si la connexion est root."
+      },
+      "readOnly": {
+        "label": "Lecture seule",
+        "description": "Affiche les comptes mais ne les modifie jamais sur cet hôte."
+      }
+    }
+  },
+  "tab": {
+    "title": "Utilisateurs",
+    "noHost": "Ouvrez Utilisateurs depuis un hôte.",
+    "error": "Impossible de charger les comptes depuis cet hôte.",
+    "disabled": "Utilisateurs est désactivé pour cet hôte. Activez-le dans les paramètres de l'hôte.",
+    "sudo": "Les modifications et les états des mots de passe nécessitent une connexion root, un sudo sans mot de passe ou un mot de passe sudo enregistré sur cet hôte.",
+    "noTools": "useradd n'est pas installé sur cet hôte. Sur Alpine, installez le paquet shadow.",
+    "refresh": "Actualiser",
+    "readOnly": "Lecture seule",
+    "counts_one": "{{count}} utilisateur",
+    "counts_many": "{{count}} utilisateurs",
+    "counts_other": "{{count}} utilisateurs",
+    "viewUsers": "Utilisateurs",
+    "viewGroups": "Groupes",
+    "viewSessions": "Sessions"
+  },
+  "users": {
+    "add": "Ajouter un utilisateur",
+    "search": "Rechercher des utilisateurs",
+    "people": "Personnes",
+    "systemFilter": "Système",
+    "all": "Tous",
+    "empty": "Aucun utilisateur ne correspond.",
+    "you": "Vous",
+    "sudo": "Sudo",
+    "locked": "Verrouillé",
+    "emptyPassword": "Pas de mot de passe",
+    "system": "Système",
+    "loadFailed": "Impossible de lire les comptes."
+  },
+  "password": {
+    "set": "Définir",
+    "locked": "Verrouillé",
+    "none": "Non défini, pas de connexion par mot de passe",
+    "empty": "Vide, quiconque peut se connecter",
+    "unknown": "Nécessite root pour déterminer"
+  },
+  "detail": {
+    "info": "Compte",
+    "account": "Détails",
+    "fullName": "Nom complet",
+    "uid": "ID utilisateur et groupe",
+    "mainGroup": "Groupe principal",
+    "home": "Dossier personnel",
+    "shell": "Shell",
+    "groups": "Groupes",
+    "groupsPlaceholder": "Tapez un groupe et appuyez sur Entrée",
+    "unknownGroups": "Ces groupes n'existent pas : {{groups}}",
+    "none": "Aucun",
+    "password": "Mot de passe",
+    "passwordChanged": "Mot de passe modifié",
+    "lastLogin": "Dernière connexion",
+    "never": "Jamais",
+    "unknown": "Inconnu",
+    "saved": "Enregistré.",
+    "failed": "La modification a échoué.",
+    "loadFailed": "Impossible de lire les clés et la dernière connexion de cet utilisateur.",
+    "passwordSection": "Mot de passe",
+    "newPassword": "Nouveau mot de passe",
+    "newPasswordHint": "Envoyé à l'hôte via SSH et défini avec chpasswd. Il n'est jamais stocké dans Termix.",
+    "setPassword": "Définir le mot de passe",
+    "passwordSet": "Mot de passe défini.",
+    "expirePassword": "Demander un nouveau mot de passe à la prochaine connexion",
+    "expired": "L'utilisateur devra choisir un nouveau mot de passe à la prochaine connexion.",
+    "access": "Accès",
+    "sudo": "Sudo",
+    "sudoHint": "Exécuter des commandes en tant que root via le groupe {{group}}.",
+    "sudoProtected": "Vous ne pouvez pas retirer les privilèges sudo à root ou à l'utilisateur avec lequel Termix se connecte.",
+    "sudoTitle": "Accorder sudo à {{name}} ?",
+    "sudoDesc": "Ajoute l'utilisateur au groupe {{group}}, lui permettant d'exécuter n'importe quelle commande en tant que root.",
+    "sudoGrant": "Accorder sudo",
+    "sudoOn": "Sudo accordé.",
+    "sudoOff": "Sudo retiré.",
+    "lock": "Verrouiller le compte",
+    "unlock": "Déverrouiller le compte",
+    "lockTitle": "Verrouiller {{name}} ?",
+    "lockDesc": "L'utilisateur ne pourra pas se connecter avec un mot de passe ou une clé SSH tant que vous n'aurez pas déverrouillé le compte.",
+    "lockHint": "Bloque les connexions par mot de passe et par clé SSH.",
+    "protected": "Root et l'utilisateur avec lequel Termix se connecte ne peuvent pas être verrouillés ou supprimés.",
+    "locked": "Compte verrouillé.",
+    "unlocked": "Compte déverrouillé.",
+    "danger": "Supprimer",
+    "removeHome": "Supprimer également le dossier personnel",
+    "removeHomeHint": "Supprime {{home}} et tout son contenu.",
+    "delete": "Supprimer l'utilisateur",
+    "deleteTitle": "Supprimer {{name}} ?",
+    "deleteDesc": "Le compte est supprimé. Son dossier personnel reste sur l'hôte.",
+    "deleteDescHome": "Le compte et {{home}} sont supprimés. Cette action est irréversible.",
+    "deleted": "{{name}} supprimé."
+  },
+  "keys": {
+    "title": "Clés SSH",
+    "empty": "Aucune clé SSH.",
+    "denied": "Les clés ne peuvent pas être lues sans les droits root.",
+    "options": "Options",
+    "remove": "Supprimer la clé",
+    "removeTitle": "Supprimer cette clé ?",
+    "removed": "Clé supprimée.",
+    "add": "Ajouter une clé",
+    "addHint": "Collez une clé publique, comme le contenu de id_ed25519.pub.",
+    "addButton": "Ajouter la clé",
+    "added": "Clé ajoutée."
+  },
+  "create": {
+    "title": "Nouvel utilisateur",
+    "name": "Nom d'utilisateur",
+    "nameHint": "Lettres minuscules, chiffres, - et _.",
+    "nameInvalid": "Commencez par une lettre et utilisez uniquement a-z, 0-9, - et _.",
+    "home": "Dossier personnel",
+    "homeHint": "Laissez vide pour /home/{{name}}.",
+    "createHome": "Créer le dossier personnel",
+    "password": "Mot de passe",
+    "passwordHint": "Facultatif. Sans mot de passe, l'utilisateur ne peut se connecter qu'avec une clé SSH.",
+    "again": "Confirmer le mot de passe",
+    "mismatch": "Les mots de passe ne correspondent pas.",
+    "save": "Créer l'utilisateur",
+    "done": "{{name}} créé.",
+    "failed": "Impossible de créer l'utilisateur."
+  },
+  "groups": {
+    "add": "Ajouter un groupe",
+    "name": "Nom du groupe",
+    "namePlaceholder": "Nouveau nom de groupe",
+    "create": "Créer",
+    "created": "{{name}} créé.",
+    "search": "Rechercher des groupes",
+    "empty": "Aucun groupe ne correspond.",
+    "noMembers": "Aucun membre.",
+    "failed": "La modification a échoué.",
+    "addMember": "Ajouter un membre",
+    "pickUser": "Choisir un utilisateur",
+    "removeMember": "Retirer du groupe",
+    "memberAdded": "{{name}} ajouté à {{group}}.",
+    "memberRemoved": "{{name}} retiré de {{group}}.",
+    "mainGroup": "Groupe principal",
+    "mainGroupHint": "C'est leur groupe principal, ils en font donc toujours partie.",
+    "deleteTitle": "Supprimer {{name}} ?",
+    "deleteDesc": "Le groupe est supprimé. Les fichiers qui lui appartenaient conservent son ancien identifiant.",
+    "deleted": "{{name}} supprimé."
+  },
+  "sessions": {
+    "now": "Connecté actuellement",
+    "none": "Personne n'est connecté.",
+    "recent": "Connexions récentes",
+    "noRecent": "Aucun historique de connexion trouvé.",
+    "loadFailed": "Impossible de lire les sessions."
+  },
+  "manager": {
+    "title": "Utilisateurs",
+    "disabled": "Activez la gestion des utilisateurs pour cet hôte dans ses paramètres pour afficher ses comptes ici."
+  },
+  "operations": {
+    "list": {
+      "title": "Lister les utilisateurs"
+    },
+    "emptyPasswords": {
+      "title": "Comptes sans mot de passe"
+    },
+    "lock": {
+      "title": "Verrouiller l'utilisateur"
+    },
+    "unlock": {
+      "title": "Déverrouiller l'utilisateur"
+    },
+    "delete": {
+      "title": "Supprimer l'utilisateur"
+    },
+    "users": {
+      "title": "Utilisateurs",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "Groupes"
+    }
+  }
+}

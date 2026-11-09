@@ -1,0 +1,424 @@
+{
+  "tab": {
+    "title": "Virtuella maskiner",
+    "noHost": "Öppna virtuella maskiner från en värd.",
+    "refresh": "Uppdatera",
+    "open": "Öppna fullständig vy",
+    "error": "Kunde inte läsa VM:erna på denna värd.",
+    "disabled": "Virtuella maskiner är inaktiverat för denna värd. Aktivera det i värdinställningarna.",
+    "sudo": "Denna värd kräver root-inloggning, lösenordsfritt sudo eller ett sparade Sudo-lösenord.",
+    "vms": "VM:er",
+    "storage": "Lagring",
+    "networks": "Nätverk",
+    "jobs": "Jobb",
+    "runningCount": "{{running}} av {{total}} körs",
+    "nodeLine": "{{cpus}} CPU:er, {{memory}}",
+    "noKvm": "ingen KVM, VM:erna kommer att vara långsamma"
+  },
+  "common": {
+    "loading": "Laddar...",
+    "save": "Spara",
+    "cancel": "Avbryt",
+    "delete": "Ta bort",
+    "failed": "Det fungerade inte."
+  },
+  "state": {
+    "running": "Kör",
+    "blocked": "Blockerad",
+    "paused": "Pausad",
+    "shutdown": "Stänger av",
+    "shutoff": "Av",
+    "crashed": "Kraschat",
+    "pmsuspended": "Viloläge",
+    "unknown": "Okänd"
+  },
+  "power": {
+    "start": "Starta",
+    "shutdown": "Stäng av",
+    "reboot": "Starta om",
+    "stop": "Tvinga stopp",
+    "suspend": "Pausa",
+    "resume": "Återuppta",
+    "shutdownTitle": "Stäng av {{name}}?",
+    "shutdownText": "Detta ber gästen att stänga av. Det kan ta en minut, och en gäst utan ACPI-stöd kan ignorera det.",
+    "stopTitle": "Tvinga stopp på {{name}}?",
+    "stopText": "Detta strömbryter omedelbart. Allt som gästen inte har sparat går förlorat."
+  },
+  "setup": {
+    "missing": "Libvirt är inte installerat",
+    "missingText": "Termix kan installera QEMU och libvirt på denna värd. Det kräver root, lösenordsfritt sudo eller ett sparade Sudo-lösenord.",
+    "noConnect": "Termix kan inte nå libvirt på denna värd",
+    "noConnectText": "Kontrollera att libvirt-tjänsten körs och att SSH-användaren kan använda den.",
+    "noKvm": "Denna värd har inget /dev/kvm, så VM:erna skulle köras utan hårdvaruacceleration. Aktivera virtualisering i BIOS eller för denna VM.",
+    "install": "Installera",
+    "installing": "Installerar...",
+    "installTitle": "Installera libvirt på denna värd?",
+    "installText": "Detta installerar QEMU, libvirt och deras verktyg med värdens pakethanterare, startar tjänsten och konfigurerar standardnätverket och lagringspoolen.",
+    "installed": "Libvirt är installerat"
+  },
+  "vm": {
+    "new": "Ny VM",
+    "none": "Inga VM:er på denna värd ännu",
+    "noneHint": "Tryck på Ny VM för att skapa en.",
+    "name": "Namn",
+    "state": "Status",
+    "size": "Storlek",
+    "ip": "IP-adress",
+    "noIp": "Ingen adress ännu",
+    "cpus_one": "{{count}} CPU",
+    "cpus_other": "{{count}} CPU:er",
+    "back": "Tillbaka till listan",
+    "overview": "Översikt",
+    "console": "Konsol",
+    "snapshots": "Ögonblicksbilder",
+    "hardware": "Hårdvara",
+    "xml": "XML",
+    "cpu": "CPU",
+    "memory": "Minne",
+    "memoryUsed": "{{used}} använt",
+    "ofHost": "Värd har {{memory}}",
+    "diskIo": "Disk",
+    "diskUsed": "{{size}} disk, {{used}} på värden",
+    "netIo": "Nätverk",
+    "uuid": "UUID",
+    "machine": "Maskin",
+    "firmware": "Fast programvara",
+    "bios": "BIOS",
+    "uefi": "UEFI",
+    "cpuMode": "CPU-läge",
+    "guestAgent": "Gästagent",
+    "yes": "Ja",
+    "no": "Nej",
+    "autostart": "Autostart",
+    "autostartHint": "Starta den här virtuella maskinen när värden startar.",
+    "clone": "Klon",
+    "cloneStopped": "Stäng av den virtuella maskinen för att klona den",
+    "cloneName": "Namn på kopian",
+    "cloneStarted": "Kloning startad. Se Jobb för framsteg.",
+    "delete": "Ta bort",
+    "deleteTitle": "Ta bort {{name}}?",
+    "deleteDisks": "Ta även bort dess diskar",
+    "deleteDisksHint": "Tar bort diskar som ingen annan virtuell maskin använder. Detta kan inte ångras. ISO-filer och basbilder behålls.",
+    "deleted": "Virtuell maskin borttagen"
+  },
+  "watch": {
+    "start": "Alertera mig när den här virtuella maskinen stannar",
+    "stop": "Stoppa aviseringar för den här virtuella maskinen"
+  },
+  "console": {
+    "graphical": "Grafiskt",
+    "serial": "Serial",
+    "notRunning": "Starta den virtuella maskinen för att använda dess konsol.",
+    "connecting": "Ansluter...",
+    "failed": "Kunde inte öppna konsolen.",
+    "retry": "Försök igen",
+    "ended": "Konsolen stängdes.",
+    "serialHint": "Tryck på Enter om skärmen förblir tom. Gästen måste köra en getty på sin seriella port.",
+    "noRemoteDesktop": "Aktivera fjärrskrivbord för att se den här virtuella maskinens skärm. Den seriella konsolen fungerar fortfarande.",
+    "useVnc": "Byt till VNC",
+    "vncSaved": "Sparat. Stäng av den virtuella maskinen och starta den för att använda VNC."
+  },
+  "hardware": {
+    "cpuMemory": "CPU och minne",
+    "vcpus": "CPUs",
+    "memory": "Minne (MiB)",
+    "nextStart": "Ändringar träder i kraft nästa gång den virtuella maskinen startar.",
+    "saved": "Sparat",
+    "disks": "Diskar",
+    "detach": "Koppla bort",
+    "detachTitle": "Koppla bort {{name}}?",
+    "detachText": "Volymen behålls i sin pool.",
+    "pool": "Lagringspool",
+    "sizeGib": "Storlek (GiB)",
+    "addDisk": "Lägg till disk",
+    "cdrom": "CD-läsare",
+    "noMedia": "Tom",
+    "iso": "ISO",
+    "pickIso": "Välj en ISO",
+    "insert": "Infoga",
+    "eject": "Kasta ut",
+    "nics": "Nätverkskort",
+    "removeNic": "Ta bort",
+    "nicType": "Anslut till",
+    "virtualNetwork": "Virtuellt nätverk",
+    "hostBridge": "Värdens bridge",
+    "network": "Nätverk",
+    "bridge": "Bridge",
+    "addNic": "Lägg till kort"
+  },
+  "snapshot": {
+    "name": "Namn på ögonblicksbild",
+    "description": "Beskrivning",
+    "take": "Ta ögonblicksbild",
+    "taking": "Arbetar...",
+    "taken": "Ögonblicksbild tagen",
+    "none": "Inga ögonblicksbilder",
+    "noneHint": "En ögonblicksbild sparar diskarna och minnet för en körande VM.",
+    "current": "Aktuell",
+    "revert": "Återställ",
+    "revertTitle": "Gå tillbaka till {{name}}?",
+    "revertText": "Allt sedan denna ögonblicksbild förloras.",
+    "reverted": "VM återställd",
+    "delete": "Ta bort",
+    "deleteTitle": "Ta bort ögonblicksbilden {{name}}?",
+    "deleteText": "VM:en förblir som den är nu."
+  },
+  "xml": {
+    "hint": "Avancerat. Värdmaskinen kontrollerar XML innan den sparas och behåller en kopia av den gamla i /var/lib/termix-vms/backups.",
+    "saveTitle": "Spara denna XML?",
+    "saveText": "Den tillämpas nästa gång VM:en startar.",
+    "saved": "Sparad"
+  },
+  "new": {
+    "title": "Ny VM",
+    "basics": "Grundläggande",
+    "install": "Installera",
+    "name": "Namn",
+    "source": "Installera från",
+    "sourceCloud": "Molnbild",
+    "sourceIso": "ISO",
+    "sourceBlank": "Tom disk",
+    "noIso": "Inga ISO-filer i denna pool. Ladda ner en under Lagring.",
+    "image": "Bild",
+    "customImage": "Annat URL",
+    "imageUrl": "Bild-URL",
+    "username": "Inloggningsnamn",
+    "password": "Lösenord",
+    "sshKey": "SSH-offentlig nyckel",
+    "sshKeyHint": "Ange ett lösenord, en nyckel eller båda. Lösenordet sparas endast som en hash.",
+    "start": "Starta när klar",
+    "create": "Skapa VM",
+    "started": "Skapar VM:en. Se Jobb för framsteg.",
+    "noUefi": "Denna värdmaskin har ingen UEFI- firmware installerad.",
+    "uefiHint": "En UEFI-VM kan bara ta ögonblicksbilder när den är avstängd.",
+    "missingTools": "Denna värdmaskin saknar {{tools}}, som molnbilder behöver."
+  },
+  "storage": {
+    "pools": "Lagringspooler",
+    "none": "Inga lagringspooler",
+    "noneHint": "Lägg till en mapp för att lagra VM-diskar i.",
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "used": "{{used}} av {{size}} använt ({{percent}}%)",
+    "start": "Starta",
+    "stop": "Stoppa",
+    "forget": "Glöm",
+    "forgetTitle": "Glöm poolen {{name}}?",
+    "forgetText": "Libvirt slutar använda denna pool. Filer i dess mapp finns kvar på disken.",
+    "poolName": "Poolnamn",
+    "poolPath": "Mapp",
+    "addPool": "Lägg till pool",
+    "volumes": "Volymerna i {{pool}}",
+    "noVolumes": "Inga volymer i denna pool",
+    "allocated": "{{size}} på disk",
+    "deleteVolume": "Ta bort {{name}}?",
+    "deleteVolumeText": "Detta tar bort filen. Det går inte att ångra.",
+    "volumeName": "Volymnamn",
+    "addVolume": "Lägg till volym",
+    "downloadUrl": "Ladda ner en fil till denna pool",
+    "downloadHint": "Värdmaskinen laddar ner den, så den fortsätter även om Termix stängs.",
+    "download": "Ladda ner",
+    "downloadStarted": "Nedladdning startad"
+  },
+  "network": {
+    "title": "Virtuella nätverk",
+    "none": "Inga virtuella nätverk",
+    "name": "Namn",
+    "kind": "Typ",
+    "nat": "NAT",
+    "isolated": "Isolerad",
+    "bridge": "Värdbridge",
+    "subnet": "Adress",
+    "add": "Lägg till nätverk",
+    "stopTitle": "Stoppa nätverket {{name}}?",
+    "stopText": "VM:ar på detta nätverk förlorar sin anslutning tills det är tillbaka och de ansluter igen.",
+    "deleteTitle": "Ta bort nätverket {{name}}?",
+    "leases": "DHCP-lejer på {{name}}",
+    "noLeases": "Inga lejer"
+  },
+  "jobs": {
+    "none": "Inga jobb ännu",
+    "noneHint": "Nya VM:ar, kloningar, ögonblicksbilder och nedladdningar visas här.",
+    "cancel": "Stoppa",
+    "status": {
+      "running": "Kör",
+      "success": "Klar",
+      "failed": "Misslyckades",
+      "cancelled": "Stoppad"
+    },
+    "kind": {
+      "create": "Ny VM",
+      "clone": "Klon",
+      "download": "Nedladdning",
+      "snapshot": "Ögonblicksbild"
+    },
+    "phase": {
+      "download": "Laddar ner",
+      "disk": "Skapar disken",
+      "seed": "Skriver cloud-init",
+      "define": "Sparar VM:en",
+      "start": "Startar",
+      "clone": "Kopierar diskar"
+    }
+  },
+  "all": {
+    "title": "Alla VM:ar",
+    "search": "Sök",
+    "host": "Värd",
+    "hostCount_one": "{{count}} värd",
+    "hostCount_other": "{{count}} värdar",
+    "noHosts": "Inga värdar har virtuella maskiner aktiverade",
+    "noHostsHint": "Öppna en värd i Hantera och aktivera virtuella maskiner."
+  },
+  "card": {
+    "title": "Virtuella maskiner",
+    "unreachable": "Oåtkomlig",
+    "crashed_one": "{{count}} kraschat",
+    "crashed_other": "{{count}} kraschade"
+  },
+  "widget": {
+    "running": "VM:ar som körs"
+  },
+  "companion": {
+    "toggle": "Växla VM-panel"
+  },
+  "permissions": {
+    "use": {
+      "title": "Använd virtuella maskiner",
+      "description": "Se VM:ar på värdar du kan ansluta till, och ändra dem på värdar du kan redigera."
+    },
+    "console": {
+      "title": "Öppna VM-konsoler",
+      "description": "Öppna den grafiska och seriella konsolen för en VM på värdar du kan redigera."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Aktivera virtuella maskiner",
+        "description": "Hantera KVM-virtuella maskiner på denna värd med libvirt."
+      },
+      "useSudo": {
+        "label": "Använd sudo",
+        "description": "Kör libvirt-kommandon med sudo. Stäng av för root-inloggning."
+      },
+      "readOnly": {
+        "label": "Skrivskyddad",
+        "description": "Visa virtuella maskiner men blockera alla ändringar från Termix."
+      },
+      "connectUri": {
+        "label": "Libvirt-anslutning",
+        "description": "Den libvirt-URI som ska användas. De flesta värdar använder qemu:///system."
+      },
+      "showPanel": {
+        "label": "Visa panelen för virtuella maskiner bredvid terminalerna",
+        "description": "Lägger till en lista över virtuella maskiner i terminalflikarna för denna värd."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Öppna panelen för virtuella maskiner automatiskt",
+        "description": "Öppna panelen när en terminal öppnas."
+      },
+      "companionSide": {
+        "label": "Placering för panelen för virtuella maskiner",
+        "description": "Var panelen placeras bredvid en terminal.",
+        "right": "Höger",
+        "left": "Vänster",
+        "bottom": "Nere"
+      },
+      "companionSize": {
+        "label": "Storlek på panelen för virtuella maskiner",
+        "description": "Bredd eller höjd i pixlar."
+      },
+      "companionEdgeButton": {
+        "label": "Visa kantknappen",
+        "description": "En liten knapp på terminalens kant öppnar panelen."
+      }
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Lista över virtuella maskiner"
+    },
+    "state": {
+      "title": "Status för virtuell maskin"
+    },
+    "running": {
+      "title": "Aktiva virtuella maskiner"
+    },
+    "crashed": {
+      "title": "Kraschade virtuella maskiner"
+    },
+    "pools": {
+      "title": "Användning av lagringspooler"
+    },
+    "snapshots": {
+      "title": "Ögonblicksbilder av virtuella maskiner"
+    },
+    "listPools": {
+      "title": "Lista över lagringspooler"
+    },
+    "listNetworks": {
+      "title": "Lista över virtuella nätverk"
+    },
+    "start": {
+      "title": "Starta virtuell maskin"
+    },
+    "reboot": {
+      "title": "Starta om virtuell maskin"
+    },
+    "suspend": {
+      "title": "Pausa virtuell maskin"
+    },
+    "resume": {
+      "title": "Återuppta virtuell maskin"
+    },
+    "autostart": {
+      "title": "Ställ in autostart för virtuell maskin",
+      "enabled": "Starta med värdmaskinen"
+    },
+    "snapshot": {
+      "title": "Ta ögonblicksbild av virtuell maskin",
+      "name": "Namn på ögonblicksbild",
+      "description": "Beskrivning"
+    },
+    "clone": {
+      "title": "Klona virtuell maskin",
+      "name": "Namn på kopian"
+    },
+    "shutdown": {
+      "title": "Stäng av virtuell maskin"
+    },
+    "forceStop": {
+      "title": "Tvinga stopp av virtuell maskin"
+    },
+    "delete": {
+      "title": "Ta bort virtuell maskin",
+      "disks": "Ta även bort dess diskar"
+    },
+    "revert": {
+      "title": "Återställ till ögonblicksbild"
+    },
+    "deleteSnapshot": {
+      "title": "Ta bort ögonblicksbild"
+    },
+    "vms": {
+      "title": "Virtuella maskiner"
+    },
+    "column": {
+      "cpus": "CPU:er",
+      "memory": "Minne (MiB)",
+      "ip": "IP-adress",
+      "autostart": "Autostart",
+      "vm": "Virtuell maskin",
+      "created": "Skapad"
+    },
+    "events": {
+      "started": "Virtuell maskin startad",
+      "stopped": "Virtuell maskin stoppad",
+      "crashed": "Virtuell maskin kraschade",
+      "job": "Jobb för virtuell maskin slutfört"
+    }
+  }
+}

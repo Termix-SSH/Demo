@@ -15,7 +15,10 @@ import TmuxMonitorApp from "./TmuxMonitorApp";
 const VIEW_ID = "tmux_monitor";
 
 function TmuxMonitorTab({ tab, isVisible }: TabProps) {
-  const hostId = (tab.data?.hostId as number | undefined) ?? undefined;
+  // A host page embeds this tab with its host and no data.
+  const hostId =
+    (tab.data?.hostId as number | undefined) ??
+    (tab.host ? Number(tab.host.id) : undefined);
   return (
     <TmuxMonitor
       initialHostId={hostId}
@@ -59,6 +62,7 @@ export function activate(app: TermixApp): void {
     titleKey: "nav.tmuxMonitor",
     icon: Layers,
     kind: "open",
+    tabType: VIEW_ID,
     order: 70,
     copyUrlView: VIEW_ID,
     when: (host) => !!host.enableSsh && tmuxMonitorEnabled(host),

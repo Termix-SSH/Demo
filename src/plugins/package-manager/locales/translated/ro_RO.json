@@ -1,0 +1,223 @@
+{
+  "plugin": {
+    "name": "Pachete",
+    "description": "Vizualizați și instalați actualizări pe gazdele dvs., căutați, instalați și eliminați pachete, și citiți istoricul pachetelor."
+  },
+  "common": {
+    "cancel": "Anulează",
+    "back": "Înapoi"
+  },
+  "permissions": {
+    "use": {
+      "title": "Folosește Pachete",
+      "description": "Vizualizați pachetele și actualizările pe gazdele la care aveți acces, și modificați-le pe gazdele pe care le puteți edita."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Pachete",
+        "description": "Gestionați pachetele și actualizările pe această gazdă din fila Pachete."
+      },
+      "useSudo": {
+        "label": "Folosește sudo",
+        "description": "Folosește sudo pentru a instala, actualiza și elimina pachete. Dezactivează dacă autentificarea este ca root."
+      },
+      "readOnly": {
+        "label": "Doar citire",
+        "description": "Afișează pachetele și actualizările, dar nu le modifica niciodată pe acest gazdă."
+      },
+      "showPanel": {
+        "label": "Afișează panoul de actualizări în terminale",
+        "description": "Permite deschiderea panoului de actualizări lângă terminalul SSH al acestei gazde."
+      },
+      "alertUpdates": {
+        "label": "Alertă la actualizări de securitate",
+        "description": "Trimite o alertă când această gazdă are actualizări de securitate sau necesită o repornire. Verificat când se citesc actualizările, aproximativ o dată pe oră."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Deschide panoul de actualizări cu terminalele noi",
+        "description": "Afișează panoul de actualizări lângă fiecare terminal SSH care are Pachete activat. Îl poți deschide și închide în continuare din butonul de pe marginea dreaptă."
+      },
+      "companionSide": {
+        "label": "Poziția panoului de actualizări",
+        "description": "Unde se află panoul de actualizări lângă un terminal.",
+        "right": "Dreapta",
+        "left": "Stânga",
+        "bottom": "Jos"
+      },
+      "companionSize": {
+        "label": "Dimensiunea panoului de actualizări",
+        "description": "Lățimea în pixeli, sau înălțimea când este poziționat jos. Poți trage și de marginea sa."
+      },
+      "companionEdgeButton": {
+        "label": "Afișează butonul panoului",
+        "description": "Afișează un buton mic pe marginea dreaptă a terminalului care deschide panoul de actualizări."
+      }
+    }
+  },
+  "tab": {
+    "title": "Pachete",
+    "noHost": "Deschide Pachetele de pe un host.",
+    "error": "Nu s-au putut încărca pachetele de pe acest host.",
+    "disabled": "Pachetele sunt dezactivate pentru acest gazdă. Activați-le în setările gazdei.",
+    "sudo": "Modificările necesită o autentificare root, sudo fără parolă sau o parolă Sudo salvată pe această gazdă.",
+    "refresh": "Reîmprospătare",
+    "readOnly": "Doar citire",
+    "noManager": "Niciun manager de pachete",
+    "noManagerTitle": "Nu s-a găsit niciun manager de pachete suportat",
+    "noManagerHint": "Pachetele funcționează cu apt, dnf, yum, zypper, pacman și apk.",
+    "indexAge": "Index reîmprospătat acum {{ago}}",
+    "reboot": "Această gazdă necesită un restart pentru a finaliza o actualizare.",
+    "viewUpdates": "Actualizări",
+    "viewInstalled": "Instalate",
+    "viewSearch": "Căutare",
+    "viewHistory": "Istoric",
+    "viewRepos": "Depozite"
+  },
+  "actions": {
+    "working": "{{action}} este în curs de execuție. Acest lucru poate dura câteva minute.",
+    "ok": "Finalizat",
+    "failed": "Managerul de pachete a eșuat.",
+    "noOutput": "Niciun rezultat.",
+    "refresh": {
+      "label": "Reîmprospătează indexul",
+      "confirm": "Reîmprospătezi indexul de pachete?",
+      "desc": "Descarcă cele mai recente liste de pachete.",
+      "done": "Indexul de pachete este actualizat."
+    },
+    "update": {
+      "label": "Actualizare",
+      "confirm_one": "Se actualizează {{names}}?",
+      "confirm_few": "Se actualizează {{count}} pachete?",
+      "confirm_other": "Se actualizează {{count}} pachete?",
+      "desc": "Instalează cea mai recentă versiune a {{names}}.",
+      "done": "{{names}} actualizat(e)."
+    },
+    "upgrade-all": {
+      "label": "Actualizează tot",
+      "confirm": "Se actualizează toate pachetele?",
+      "desc": "Reîmprospătează indexul de pachete și instalează toate actualizările. Serviciile se pot reporni în timpul execuției.",
+      "done": "Toate pachetele sunt actualizate."
+    },
+    "install": {
+      "label": "Instalează",
+      "confirm": "Instalezi {{names}}?",
+      "desc": "Instalează {{names}} și tot ce are nevoie.",
+      "done": "{{names}} a fost instalat."
+    },
+    "remove": {
+      "label": "Elimină",
+      "confirm": "Elimini {{names}}?",
+      "desc": "Elimină {{names}} de pe acest gazdă. Programele care depind de el s-ar putea să nu mai funcționeze.",
+      "done": "{{names}} a fost eliminat."
+    },
+    "hold": {
+      "label": "Blochează la această versiune",
+      "confirm": "Blochezi {{names}}?",
+      "desc": "Actualizările vor ignora {{names}} până îl deblochezi.",
+      "done": "{{names}} este blocat."
+    },
+    "unhold": {
+      "label": "Deblochează",
+      "confirm": "Deblochezi {{names}}?",
+      "desc": "{{names}} va primi din nou actualizări.",
+      "done": "{{names}} va primi din nou actualizări."
+    }
+  },
+  "updates": {
+    "search": "Filtrează actualizările",
+    "count_one": "{{count}} actualizare",
+    "count_few": "{{count}} actualizări",
+    "count_other": "{{count}} actualizări",
+    "countSecurity_one": "{{count}} actualizare, {{security}} pentru securitate",
+    "countSecurity_few": "{{count}} actualizări, {{security}} pentru securitate",
+    "countSecurity_other": "{{count}} actualizări, {{security}} pentru securitate",
+    "updatePicked_one": "Actualizează {{count}} pachet",
+    "updatePicked_few": "Actualizează {{count}} pachete",
+    "updatePicked_other": "Actualizează {{count}} pachete",
+    "updateOne": "Actualizează",
+    "pick": "Selectează {{name}}",
+    "security": "Securitate",
+    "empty": "Totul este la zi.",
+    "noMatch": "Nicio actualizare nu se potrivește.",
+    "loadFailed": "Nu s-au putut citi actualizările."
+  },
+  "installed": {
+    "search": "Filtrează pachetele instalate",
+    "all": "Toate",
+    "held": "Blocate",
+    "heldBadge": "Blocat",
+    "empty": "Niciun pachet nu se potrivește.",
+    "loadFailed": "Nu s-au putut citi pachetele instalate."
+  },
+  "search": {
+    "placeholder": "Caută pachete",
+    "button": "Caută",
+    "hint": "Caută în depozitele gazdei un pachet de instalat.",
+    "empty": "Nu s-a găsit nimic.",
+    "installed": "Instalat",
+    "failed": "Căutarea a eșuat."
+  },
+  "history": {
+    "empty": "Nu s-a găsit nicio istoric de pachete.",
+    "loadFailed": "Nu s-a putut citi istoricul pachetelor."
+  },
+  "repos": {
+    "hint": "Depozitele de unde instalează această gazdă. Modifică-le direct pe gazdă.",
+    "empty": "Nu s-au găsit depozite.",
+    "off": "Oprit",
+    "loadFailed": "Nu s-au putut citi depozitele."
+  },
+  "card": {
+    "title": "Actualizări pachete",
+    "loading": "Se verifică gazdele...",
+    "summary_one": "{{count}} actualizare pe {{hosts}} gazde",
+    "summary_few": "{{count}} actualizări pe {{hosts}} gazde",
+    "summary_other": "{{count}} actualizări pe {{hosts}} gazde",
+    "refresh": "Verifică din nou",
+    "empty": "Activează Pachete pentru o gazdă pentru a-ți vedea actualizările aici.",
+    "security_one": "{{count}} securitate",
+    "security_few": "{{count}} securitate",
+    "security_other": "{{count}} securitate",
+    "reboot": "Este necesar restartul",
+    "updates_one": "{{count}} actualizare",
+    "updates_few": "{{count}} actualizări",
+    "updates_other": "{{count}} actualizări",
+    "upToDate": "La zi"
+  },
+  "manager": {
+    "title": "Pachete",
+    "disabled": "Activează Pachete pentru această gazdă în setările ei pentru a-ți vedea actualizările aici."
+  },
+  "operations": {
+    "list": {
+      "title": "Listează actualizările pachetelor"
+    },
+    "updates": {
+      "title": "Actualizări în așteptare",
+      "resource": "Actualizări în așteptare"
+    },
+    "upgradeAll": {
+      "title": "Actualizează toate pachetele"
+    },
+    "install": {
+      "title": "Instalează pachete"
+    },
+    "remove": {
+      "title": "Elimină pachete"
+    },
+    "package": "Pachete",
+    "packageHint": "Unul sau mai multe nume de pachete, separate prin spații.",
+    "resource": {
+      "current": "Instalat",
+      "available": "Disponibil",
+      "repo": "Depozit"
+    }
+  },
+  "nav": {
+    "togglePanel": "Comută panoul de actualizări"
+  }
+}

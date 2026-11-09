@@ -1,0 +1,364 @@
+{
+  "tab": {
+    "title": "Firewall",
+    "noHost": "Abra o firewall a partir de um host.",
+    "refresh": "Atualizar",
+    "error": "Não foi possível ler o firewall neste host.",
+    "disabled": "O firewall está desativado para este host. Ative-o nas definições do host.",
+    "sudo": "Este host precisa de sudo sem palavra-passe ou de login como root para ler e alterar o firewall.",
+    "noFirewall": "Sem firewall",
+    "on": "ligado",
+    "off": "desligado",
+    "readOnly": "somente leitura",
+    "ruleCount_one": "{{count}} regra",
+    "ruleCount_many": "{{count}} regras",
+    "ruleCount_other": "{{count}} regras",
+    "viewRules": "Regras",
+    "viewDefaults": "Predefinições",
+    "viewZones": "Zonas",
+    "viewFail2ban": "Fail2ban",
+    "viewRaw": "Cru"
+  },
+  "common": {
+    "loading": "A carregar...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "done": "Concluído",
+    "failed": "Isto não funcionou."
+  },
+  "actions": {
+    "allow": "Permitir",
+    "deny": "Negar",
+    "reject": "Rejeitar",
+    "limit": "Limitar"
+  },
+  "policies": {
+    "allow": "Permitir",
+    "deny": "Negar (descartar)",
+    "reject": "Rejeitar"
+  },
+  "rule": {
+    "action": "Ação",
+    "direction": "Direção",
+    "in": "Entrada",
+    "out": "Saída",
+    "protocol": "Protocolo",
+    "anyProtocol": "TCP e UDP",
+    "port": "Porta",
+    "portPlaceholder": "22, 80,443 ou 8000-8100",
+    "portHint": "Deixe vazio para todas as portas. Listas e intervalos precisam de TCP ou UDP.",
+    "anyPort": "qualquer porta",
+    "source": "De",
+    "destination": "Para",
+    "anywhere": "Em qualquer lugar",
+    "addressHint": "Um endereço ou um intervalo como 10.0.0.0/8.",
+    "family": "Versão IP",
+    "bothFamilies": "IPv4 e IPv6",
+    "iface": "Interface",
+    "anyIface": "Qualquer interface",
+    "service": "Serviço",
+    "serviceHint": "Um nome de serviço do firewalld, em vez de uma porta.",
+    "comment": "Comentário",
+    "commentPlaceholder": "Para que serve esta regra",
+    "zoneLabel": "Zona",
+    "from": "de {{address}}",
+    "to": "para {{address}}",
+    "on": "em {{iface}}",
+    "zone": "zona {{zone}}"
+  },
+  "presets": {
+    "ssh": "SSH",
+    "http": "HTTP",
+    "https": "HTTPS",
+    "web": "Web",
+    "dns": "DNS",
+    "smtp": "Correio",
+    "mysql": "MySQL",
+    "postgres": "PostgreSQL",
+    "redis": "Redis",
+    "samba": "Samba",
+    "wireguard": "WireGuard",
+    "minecraft": "Minecraft"
+  },
+  "rules": {
+    "add": "Adicionar regra",
+    "addTitle": "Nova regra",
+    "editTitle": "Editar regra",
+    "added": "Regra adicionada",
+    "saved": "Regra guardada",
+    "deleted": "Regra eliminada",
+    "confirmDelete": "Eliminar esta regra?",
+    "search": "Pesquisar portas, endereços e comentários",
+    "empty": "Ainda não há regras.",
+    "noMatch": "Nenhuma regra corresponde.",
+    "readOnly": "Apenas leitura",
+    "deleteOnly": "Apenas eliminação",
+    "stale": "As regras foram alteradas no servidor. Atualize e tente novamente.",
+    "filters": {
+      "all": "Todas",
+      "in": "Entrada",
+      "out": "Saída",
+      "readOnly": "Apenas leitura"
+    }
+  },
+  "defaults": {
+    "hint": "O que acontece ao tráfego que não corresponde a nenhuma regra.",
+    "incoming": "Entrada",
+    "outgoing": "Saída",
+    "routed": "Encaminhado",
+    "saved": "Definições padrão guardadas"
+  },
+  "zones": {
+    "hint": "O firewalld coloca cada interface de rede e origem numa zona. O alvo de uma zona define o que fazer com o tráfego que não corresponde às suas regras.",
+    "defaultZone": "Zona padrão",
+    "default": "Padrão",
+    "active": "Ativa",
+    "target": "Alvo",
+    "interfaces": "interfaces {{list}}",
+    "sources": "origens {{list}}",
+    "saved": "Zona guardada",
+    "targets": {
+      "default": "Padrão (rejeitar)",
+      "ACCEPT": "Aceitar",
+      "DROP": "Descartar",
+      "REJECT": "Rejeitar"
+    }
+  },
+  "enable": {
+    "off": "O firewall está desativado, pelo que nenhuma destas regras se aplica de momento.",
+    "allowSsh": "Permitir SSH na porta {{ports}} primeiro",
+    "allowSshHint": "Mantém o Termix e as suas próprias ligações SSH a funcionar.",
+    "button": "Ativar",
+    "done": "Firewall ativado",
+    "timerHint": "Ao ativar, inicia-se um temporizador. Se não pressionar Manter a tempo, o servidor desativa-o novamente automaticamente."
+  },
+  "disable": {
+    "button": "Desativar",
+    "title": "Desativar o firewall?",
+    "description": "Todas as regras deixam de se aplicar até o ativar novamente.",
+    "done": "Firewall desativado"
+  },
+  "install": {
+    "none": "Este servidor ainda não tem firewall.",
+    "hint": "Instale um para começar. Nada fica ativado até que o decida.",
+    "button": "Instalar {{name}}",
+    "working": "A instalar...",
+    "done": "{{name}} instalado",
+    "noPackageManager": "O Termix não conseguiu encontrar um gestor de pacotes conhecido neste servidor."
+  },
+  "lockout": {
+    "title": "Isto pode bloquear o acesso do Termix",
+    "description": "{{reason}}. Se o Termix não conseguir conectar após a alteração, o host desfaz a mudança automaticamente quando o tempo expirar. Continuar mesmo assim?",
+    "confirm": "Continuar"
+  },
+  "pending": {
+    "started": "Alteração aplicada. Prima Manter para que fique permanente.",
+    "left": "Desfeito em {{seconds}} s, a menos que prima Manter",
+    "expired": "O tempo expirou, o host está a desfazer a alteração",
+    "reachable": "O Termix ainda conseguiu conectar",
+    "unreachable": "O Termix não conseguiu conectar após a alteração",
+    "unknown": "A verificar a ligação",
+    "keep": "Manter",
+    "undo": "Desfazer agora",
+    "kept": "Alteração mantida",
+    "undone": "Alteração desfeita",
+    "gone": "O tempo expirou e o host já desfez a alteração.",
+    "first": "Mantenha ou desfaça a última alteração primeiro.",
+    "kinds": {
+      "add": "Nova regra",
+      "update": "Regra alterada",
+      "remove": "Regra eliminada",
+      "defaults": "Novos predefinições",
+      "enable": "Firewall ativado",
+      "disable": "Firewall desativado",
+      "zoneTarget": "Novo alvo de zona",
+      "defaultZone": "Nova zona predefinida",
+      "ruleset": "Conjunto de regras aplicado"
+    }
+  },
+  "fail2ban": {
+    "loadFailed": "Não foi possível ler o Fail2ban.",
+    "notInstalled": "O Fail2ban não está instalado. Ele bloqueia endereços que falham na autenticação com muita frequência.",
+    "stopped": "O Fail2ban está instalado, mas não está em execução.",
+    "start": "Iniciar Fail2ban",
+    "started": "Fail2ban iniciado",
+    "noJails": "Nenhuma prisão está ativada.",
+    "none": "Nada bloqueado.",
+    "bannedCount_one": "{{count}} bloqueado",
+    "bannedCount_many": "{{count}} bloqueados",
+    "bannedCount_other": "{{count}} bloqueados",
+    "counts": "{{failed}} a falhar agora | {{totalFailed}} falharam | {{totalBanned}} bloqueados no total",
+    "ban": "Bloquear",
+    "unban": "Desbloquear",
+    "banAddress": "Bloquear um endereço",
+    "banned": "{{ip}} bloqueado",
+    "unbanned": "{{ip}} desbloqueado",
+    "selfTitle": "Bloquear o endereço do Termix?",
+    "selfDescription": "O Termix conecta-se a partir deste endereço. Bloqueá-lo corta a ligação do Termix a este host."
+  },
+  "raw": {
+    "empty": "Nada para mostrar."
+  },
+  "watch": {
+    "start": "Avisar-me quando este firewall mudar",
+    "stop": "Parar avisos para este firewall"
+  },
+  "companion": {
+    "openTab": "Abrir a aba Firewall",
+    "toggle": "Painel de Firewall",
+    "allowPort": "Permitir uma porta TCP"
+  },
+  "card": {
+    "title": "Firewalls",
+    "empty": "Nenhum host tem o Firewall ativado.",
+    "banned_one": "{{count}} bloqueado",
+    "banned_many": "{{count}} bloqueados",
+    "banned_other": "{{count}} bloqueados",
+    "pending": "A aguardar"
+  },
+  "rulesets": {
+    "title": "Conjuntos de regras de firewall",
+    "hint": "Guarde uma lista de regras e adicione-a a vários hosts de uma só vez. A aplicação apenas adiciona regras em falta, nunca as remove.",
+    "add": "Novo conjunto de regras",
+    "addTitle": "Novo conjunto de regras",
+    "editTitle": "Editar conjunto de regras",
+    "loadFailed": "Não foi possível carregar os seus conjuntos de regras.",
+    "empty": "Ainda não há conjuntos de regras.",
+    "name": "Nome",
+    "namePlaceholder": "Servidor web",
+    "description": "Descrição",
+    "rules": "Regras",
+    "noRules": "Ainda não há regras neste conjunto.",
+    "hosts": "Hosts",
+    "noHosts": "Nenhum host tem o Firewall ativado.",
+    "saved": "Conjunto de regras guardado",
+    "deleted": "Conjunto de regras eliminado",
+    "confirmDelete": "Eliminar {{name}}?",
+    "deleteHint": "As regras já adicionadas aos hosts permanecem.",
+    "ruleCount_one": "{{count}} regra",
+    "ruleCount_many": "{{count}} regras",
+    "ruleCount_other": "{{count}} regras",
+    "hostCount_one": "{{count}} host",
+    "hostCount_many": "{{count}} hosts",
+    "hostCount_other": "{{count}} hosts",
+    "check": "Verificar hosts",
+    "apply": "Aplicar",
+    "applyTitle": "Aplicar {{name}}?",
+    "applyDescription": "As regras em falta são adicionadas a cada host. Cada host recebe a verificação de bloqueio SSH, e se o Termix não conseguir aceder ao host depois, a alteração é revertida automaticamente.",
+    "applied": "Conjunto de regras aplicado",
+    "applyErrors_one": "{{count}} host teve um problema",
+    "applyErrors_many": "{{count}} hosts tiveram um problema",
+    "applyErrors_other": "{{count}} hosts tiveram um problema",
+    "applyResult": "Aplicado {{name}}",
+    "driftTitle": "{{name}} em cada host",
+    "inSync": "Tem todas as regras",
+    "ok": "Sincronizado",
+    "missing_one": "{{count}} em falta",
+    "missing_many": "{{count}} em falta",
+    "missing_other": "{{count}} em falta",
+    "nothingMissing": "Já tinha todas as regras",
+    "added_one": "Adicionada {{count}} regra",
+    "added_many": "Adicionadas {{count}} regras",
+    "added_other": "Adicionadas {{count}} regras",
+    "waiting": "Adicionado, mas o Termix não conseguiu conectar-se depois. O host vai reverter a alteração.",
+    "fleet": "Frota",
+    "applyFleet": "Aplicar à frota"
+  },
+  "permissions": {
+    "use": {
+      "title": "Usar Firewall",
+      "description": "Abrir a aba Firewall nos hosts a que consegue aceder. As alterações também requerem acesso de edição ao host."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Firewall",
+        "description": "Mostrar a aba Firewall para este host para gerir o seu firewall via SSH."
+      },
+      "useSudo": {
+        "label": "Usar sudo",
+        "description": "Executar comandos de firewall com sudo sem senha quando o login não é root."
+      },
+      "readOnly": {
+        "label": "Apenas leitura",
+        "description": "Mostrar o firewall mas bloquear todas as alterações do Termix."
+      },
+      "sshGuard": {
+        "label": "Verificação de bloqueio SSH",
+        "description": "Parar e pedir confirmação antes de uma alteração que pareça bloquear o SSH do Termix."
+      },
+      "rollbackSeconds": {
+        "label": "Temporizador de reversão",
+        "description": "Segundos que tem para premir Manter após uma alteração arriscada antes do host a reverter."
+      },
+      "confirmAll": {
+        "label": "Temporizador em cada alteração",
+        "description": "Usar o temporizador de reversão para todas as alterações, não apenas as arriscadas."
+      },
+      "showPanel": {
+        "label": "Painel do Firewall",
+        "description": "Oferecer o painel do firewall ao lado dos terminais SSH para este host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Abrir o painel do firewall com um terminal",
+        "description": "Mostrar o painel do firewall quando um terminal abre num host que o tenha."
+      },
+      "companionSide": {
+        "label": "Lado do painel do Firewall",
+        "description": "Onde o painel fica ao lado do terminal.",
+        "right": "Direita",
+        "left": "Esquerda",
+        "bottom": "Inferior"
+      },
+      "companionSize": {
+        "label": "Tamanho do painel do Firewall",
+        "description": "Largura, ou altura na parte inferior, em pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Botão lateral do painel do Firewall",
+        "description": "Mostrar um pequeno botão na borda do terminal para abrir o painel."
+      }
+    }
+  },
+  "manager": {
+    "title": "Firewall",
+    "disabled": "Ative o Firewall nas definições deste host para gerir o seu firewall aqui."
+  },
+  "operations": {
+    "list": {
+      "title": "Listar regras do firewall"
+    },
+    "status": {
+      "title": "Firewall"
+    },
+    "portAllowed": {
+      "title": "Porta permitida",
+      "description": "Se existe uma regra de permissão para esta porta. Use-a para monitorizar hosts quanto a desvios."
+    },
+    "allow": {
+      "title": "Permitir uma porta"
+    },
+    "remove": {
+      "title": "Remover uma porta permitida"
+    },
+    "delete": {
+      "title": "Eliminar regra do firewall"
+    },
+    "rules": {
+      "title": "Regras do firewall"
+    },
+    "port": "Porta",
+    "protocol": "Protocolo",
+    "tcp": "TCP",
+    "udp": "UDP",
+    "any": "Qualquer",
+    "source": "De",
+    "sourceHint": "Um endereço ou intervalo. Vazio significa qualquer lugar.",
+    "direction": "Direção"
+  }
+}

@@ -9,7 +9,8 @@
   "settings": {
     "group": {
       "sessions": "Istunnot",
-      "secondFactor": "Toinen tekijä"
+      "secondFactor": "Toinen tekijä",
+      "connect": "Yhteyden muodostaminen isäntiin"
     },
     "admin": {
       "idleTimeoutMinutes": {
@@ -34,8 +35,34 @@
       "applyToExternal": {
         "label": "Myös yksittäiselle kirjautumiselle",
         "description": "Pyydä toista todennustapaa myös SSO- ja LDAP-kirjautumisten jälkeen. Jätä pois päältä, jos identiteettipalveluntarjoajasi pyytää sitä jo."
+      },
+      "connectFactor": {
+        "label": "Pyydä toinen todennustapa ennen yhteyden muodostamista",
+        "description": "Käyttäjät syöttävät toisen todennustapansa, kun he avaavat terminaalin, etätyöpöydän tai tiedostonhallinnan isännässä. Metriikoita, tunnelointeja ja muita taustatehtäviä ei kysytä.",
+        "off": "Pois päältä",
+        "marked": "Isännät, joille se on merkitty",
+        "all": "Jokainen isäntä"
+      },
+      "connectFactorMinutes": {
+        "label": "Minuutteja ennen seuraavaa kyselyä",
+        "description": "Syöttämisen jälkeen käyttäjä voi muodostaa yhteyden mihin tahansa isäntään tämän ajan. Kirjautuminen ulos lopettaa sen ennenaikaisesti."
+      }
+    },
+    "host": {
+      "requireConnectFactor": {
+        "label": "Pyydä toinen todennustapa ennen yhteyden muodostamista",
+        "description": "Käytetään, kun Kirjautumisturvallisuus on asetettu pyytämään isänniltä, joille se on merkitty."
       }
     }
+  },
+  "verify": {
+    "title": "Vahvista toinen todennustapa",
+    "intro": "Syötä toinen todennustapasi muodostaaksesi yhteyden tähän isäntään.",
+    "done": "Vahvistettu",
+    "retry": "Palaa isäntään ja muodosta yhteys uudelleen.",
+    "failed": "Se ei toiminut. Yritä uudelleen.",
+    "noFactor": "Toista todennustapaa ei ole määritetty",
+    "noFactorHint": "Määritä yksi Asetukset, Turvallisuus -kohdasta ja muodosta yhteys uudelleen."
   },
   "status": {
     "factors": "Käytettävissä olevat toiset todennustavat: {{factors}}",

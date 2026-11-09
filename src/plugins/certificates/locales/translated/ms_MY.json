@@ -1,0 +1,233 @@
+{
+  "plugin": {
+    "name": "Sijil",
+    "description": "Lihat, terbitkan dan perbaharui sijil TLS pada hos anda dengan certbot dan acme.sh, dan terima amaran sebelum ia tamat tempoh."
+  },
+  "common": {
+    "cancel": "Batal",
+    "back": "Kembali"
+  },
+  "permissions": {
+    "use": {
+      "title": "Gunakan Sijil",
+      "description": "Lihat sijil pada hos yang boleh anda capai, dan ubah sijil pada hos yang boleh anda sunting."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Sijil",
+        "description": "Urus sijil TLS pada hos ini dari tab Sijil."
+      },
+      "useSudo": {
+        "label": "Gunakan sudo",
+        "description": "Gunakan sudo untuk membaca dan mengubah sijil. Matikan jika log masuk adalah root."
+      },
+      "readOnly": {
+        "label": "Baca sahaja",
+        "description": "Paparkan sijil tetapi jangan ubah sijil pada hos ini."
+      },
+      "expiryWarnDays": {
+        "label": "Amaran sebelum tamat tempoh",
+        "description": "Sijil dengan baki hari sebanyak ini atau kurang akan dipaparkan sebagai hampir tamat tempoh dan menghantar amaran."
+      },
+      "showPanel": {
+        "label": "Paparkan panel sijil dalam terminal",
+        "description": "Benarkan panel sijil dibuka di sebelah terminal SSH hos ini."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Buka panel sijil dengan terminal baru",
+        "description": "Paparkan panel sijil di sebelah setiap terminal SSH yang mempunyai Sijil dihidupkan. Anda masih boleh membukanya dan menutupnya dari butang di tepi kanan."
+      },
+      "companionSide": {
+        "label": "Sisi panel sijil",
+        "description": "Di mana panel sijil diletakkan di sebelah terminal.",
+        "right": "Kanan",
+        "left": "Kiri",
+        "bottom": "Bawah"
+      },
+      "companionSize": {
+        "label": "Saiz panel sijil",
+        "description": "Lebar dalam piksel, atau tinggi apabila ia di bahagian bawah. Anda juga boleh menyeret tepinya."
+      },
+      "companionEdgeButton": {
+        "label": "Paparkan butang panel",
+        "description": "Paparkan butang kecil di tepi kanan terminal yang membuka panel sijil."
+      }
+    }
+  },
+  "tab": {
+    "title": "Sijil",
+    "noHost": "Buka Sijil dari hos.",
+    "error": "Tidak dapat memuatkan sijil dari hos ini.",
+    "disabled": "Sijil dimatikan untuk hos ini. Hidupkannya dalam tetapan hos.",
+    "sudo": "Perubahan memerlukan log masuk root, sudo tanpa kata laluan atau Kata Laluan Sudo yang disimpan pada hos ini.",
+    "refresh": "Segarkan",
+    "readOnly": "Baca sahaja",
+    "noClient": "Tiada certbot atau acme.sh",
+    "viewCertificates": "Sijil",
+    "viewInspect": "Periksa",
+    "viewRenewal": "Perbaharuan"
+  },
+  "actions": {
+    "working": "Sedang bekerja. Ini mungkin mengambil beberapa minit.",
+    "ok": "Selesai",
+    "failed": "Arahan gagal.",
+    "noOutput": "Tiada output."
+  },
+  "install": {
+    "title": "certbot dan acme.sh tidak dipasang pada hos ini",
+    "hint": "Pasang certbot untuk mendapatkan dan memperbaharui sijil dari Let's Encrypt.",
+    "noManager": "Tiada pengurus pakej yang disokong ditemui. Pasang certbot secara manual.",
+    "button": "Pasang certbot",
+    "confirm": "Pasang certbot?",
+    "desc": "Ini memasang certbot dengan pengurus pakej hos.",
+    "working": "Memasang...",
+    "done": "certbot telah dipasang."
+  },
+  "certs": {
+    "search": "Cari sijil",
+    "empty": "Tiada sijil lagi.",
+    "noMatch": "Tiada sijil sepadan.",
+    "loadFailed": "Tidak dapat membaca sijil.",
+    "expires": "Tamat tempoh {{date}}",
+    "staging": "Pentas",
+    "details": "Sijil",
+    "manage": "Urus",
+    "client": "Pelanggan",
+    "path": "Fail",
+    "authority": "Pihak Berkuasa",
+    "renew": "Perbaharui",
+    "renewDone": "Telah memperbaharui {{name}}.",
+    "renewAll": "Perbaharui semua",
+    "renewAllDone": "Telah memperbaharui sijil yang telah tamat tempoh.",
+    "forceRenew": "Perbaharui sekarang juga",
+    "dryRun": "Larian kering",
+    "dryRunDone": "Larian kering berjaya.",
+    "revoke": "Cabut",
+    "revokeTitle": "Cabut {{name}}?",
+    "revokeDesc": "Pihak berkuasa menandainya sebagai tidak sah dan ia akan dialih keluar dari hos ini. Apa jua yang masih menggunakannya akan berhenti berfungsi.",
+    "revokeDone": "Telah mencabut {{name}}.",
+    "delete": "Hentikan pengurusan",
+    "deleteTitle": "Hentikan pengurusan {{name}}?",
+    "deleteDesc": "Ia kekal sah tetapi tidak akan diperbaharui lagi. certbot juga memadam failnya, acme.sh mengekalkannya.",
+    "deleteDone": "{{name}} tidak lagi diuruskan."
+  },
+  "expiry": {
+    "expired": "Tamat tempoh",
+    "unknown": "Tidak diketahui",
+    "days_other": "{{count}} hari lagi"
+  },
+  "issue": {
+    "add": "Terbitkan sijil",
+    "title": "Sijil baharu",
+    "save": "Terbitkan",
+    "done": "Sijil telah diterbitkan.",
+    "working": "Meminta pihak berkuasa. Ini mungkin mengambil beberapa minit.",
+    "client": "Pelanggan",
+    "domains": "Domain",
+    "domainsPlaceholder": "Taip domain dan tekan Enter",
+    "domainsHint": "Yang pertama menamakan sijil tersebut.",
+    "challenge": "Cabaran",
+    "standalone": "Berdiri sendiri",
+    "standaloneHint": "Menjalankan pelayan web kecil pada port 80, jadi tiada aplikasi lain boleh menggunakan port tersebut.",
+    "webroot": "Akar web",
+    "webrootHint": "Menempatkan fail dalam folder pelayan web anda. Pelayan web terus berjalan.",
+    "dns": "DNS",
+    "dnsHint": "Menambah rekod DNS melalui API penyedia anda. Diperlukan untuk wildcard.",
+    "webrootPath": "Folder akar web",
+    "webrootPathHint": "Mesti berada di dalam /var/www, /srv atau /usr/share/nginx.",
+    "dnsProvider": "Penyedia DNS",
+    "dnsProviderCertbot": "Nama plugin DNS certbot yang dipasang, seperti cloudflare.",
+    "dnsProviderAcme": "Nama DNS acme.sh tanpa dns_, seperti cf. Token APInya mesti sudah ditetapkan pada hos.",
+    "credentials": "Fail kelayakan",
+    "credentialsHint": "Fail pada hos yang mengandungi token API anda. Ia tidak pernah dibaca oleh Termix.",
+    "email": "E-mel",
+    "emailHint": "Pilihan. Pihak berkuasa menggunakannya untuk notis tamat tempoh.",
+    "keyType": "Jenis kunci",
+    "staging": "Gunakan pelayan peringkat",
+    "stagingHint": "Untuk ujian. Sijil ini tidak dipercayai, dan had kadar adalah jauh lebih tinggi."
+  },
+  "inspect": {
+    "server": "Pelayan",
+    "file": "Fail",
+    "address": "Alamat",
+    "addressPlaceholder": "contoh.com",
+    "port": "Port",
+    "path": "Laluan fail",
+    "check": "Semak",
+    "hint": "Semak apa yang dihantar oleh pelayan melalui TLS, seperti yang dilihat dari hos ini, atau baca fail sijil padanya.",
+    "failed": "Tidak dapat membaca sijil.",
+    "noOpenssl": "openssl tidak dipasang pada hos ini.",
+    "trusted": "Dipercayai",
+    "notTrusted": "Tidak dipercayai",
+    "leaf": "Sijil",
+    "intermediate": "Rantai {{index}}",
+    "selfSigned": "Tandatangan sendiri",
+    "name": "Nama",
+    "issuer": "Penerbit",
+    "domains": "Domain",
+    "validFrom": "Sah dari",
+    "validTo": "Sah hingga",
+    "keyType": "Kunci",
+    "serial": "Siri",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Bagaimana hos ini memperbaharui sijil secara automatik. Ubah tetapan ini pada hos.",
+    "on": "Hidup",
+    "off": "Mati",
+    "timer": "pemasa systemd",
+    "next": "Jalankan seterusnya {{time}}",
+    "cron": "Fail Cron /etc/cron.d/certbot",
+    "certbotOff": "Tiada pemasa atau tugas cron ditemui, jadi sijil tidak akan diperbaharui secara automatik.",
+    "acmeCron": "Tugas cron dalam crontab",
+    "acmeOff": "Tiada tugas cron ditemui, jadi sijil tidak akan diperbaharui secara automatik."
+  },
+  "watch": {
+    "start": "Beritahu saya sebelum sijil pada hos ini tamat tempoh",
+    "stop": "Hentikan amaran untuk hos ini",
+    "on": "Anda akan menerima amaran sebelum sijil di sini tamat tempoh.",
+    "off": "Amaran untuk hos ini dimatikan.",
+    "failed": "Gagal mengubah amaran."
+  },
+  "card": {
+    "title": "Sijil",
+    "loading": "Memeriksa hos...",
+    "summary_other": "{{count}} sijil, {{expiring}} hampir tamat",
+    "refresh": "Semak semula",
+    "empty": "Hidupkan Sijil untuk hos untuk melihat sijilnya di sini."
+  },
+  "manager": {
+    "title": "Sijil",
+    "disabled": "Hidupkan Sijil untuk hos ini dalam tetapannya untuk melihatnya di sini."
+  },
+  "operations": {
+    "list": {
+      "title": "Senaraikan sijil"
+    },
+    "expiring": {
+      "title": "Sijil hampir tamat"
+    },
+    "renew": {
+      "title": "Perbaharui sijil"
+    },
+    "renewAll": {
+      "title": "Perbaharui semua sijil"
+    },
+    "revoke": {
+      "title": "Batalkan sijil"
+    },
+    "certificates": {
+      "title": "Sijil",
+      "client": "Pelanggan",
+      "domains": "Domain",
+      "daysLeft": "Hari baki"
+    }
+  },
+  "nav": {
+    "togglePanel": "Togol panel sijil"
+  }
+}

@@ -1,0 +1,214 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Zaženite Ansible playbook-e in ad-hoc ukaze s kontrolnega gostitelja, z inventarjem, sestavljenim iz vaših Termix gostiteljev."
+  },
+  "common": {
+    "save": "Shrani",
+    "cancel": "Prekliči",
+    "back": "Nazaj",
+    "delete": "Izbriši"
+  },
+  "permissions": {
+    "use": {
+      "title": "Uporaba Ansible",
+      "description": "Oglejte si playbook-e in izvedbe na kontrolnih gostiteljih, do katerih lahko dostopate. Uredite datoteke in zaženite Ansible na gostiteljih, ki jih lahko urejate."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Uporabite ta gostitelj kot Ansible kontrolni gostitelj. Ansible mora biti nameščen nanj."
+      },
+      "projectDir": {
+        "label": "Mapa projekta",
+        "description": "Mapa na tem gostitelju, ki vsebuje vaše playbook-e, vloge in ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Datoteka gesla za Vault",
+        "description": "Datoteka na tem gostitelju z geslom za Ansible Vault. Pustite prazno, če Vault ne uporabljate.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Samo za branje",
+        "description": "Prikaži playbook-e in izvedbe, vendar nikoli ne urejaj datotek ali začenjaj izvedb na tem gostitelju."
+      },
+      "alertRuns": {
+        "label": "Opozori ob neuspešni izvedbi",
+        "description": "Pošlji opozorilo, ko izvedba na tem gostitelju konča z napako ali je izgubljena. Preveri se ob branju stanja izvedbe."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Odprite Ansible iz gostitelja.",
+    "error": "Ansible ni bilo mogoče naložiti iz tega gostitelja.",
+    "disabled": "Ansible je za tega gostitelja onemogočen. Omogočite ga v nastavitvah gostitelja.",
+    "refresh": "Osveži",
+    "readOnly": "Samo za branje",
+    "notInstalled": "Ansible ni nameščen",
+    "notInstalledTitle": "Ansible ni nameščen na tem gostitelju",
+    "notInstalledHint": "Namestite ansible-core na tega gostitelja, na primer s pipx ali vašim upraviteljem paketov, nato osvežite.",
+    "noSshpass": "sshpass ni nameščen na tem gostitelju. Gostitelji, ki se prijavijo z geslom, ne bodo delovali.",
+    "viewPlaybooks": "Playbooks",
+    "viewRuns": "Izvedbe",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Fakta"
+  },
+  "files": {
+    "add": "Nova datoteka",
+    "search": "Išči datoteke",
+    "empty": "V mapi projekta še ni datotek.",
+    "noMatch": "Ni ujemajočih se datotek.",
+    "noProject": "Mapa {{dir}} na tem gostitelju ne obstaja. Ustvarite jo ali v nastavitvah gostitelja določite drugo mapo projekta.",
+    "listFailed": "Ni bilo mogoče navedi datotek projekta.",
+    "loadFailed": "Datoteke ni bilo mogoče prebrati.",
+    "saved": "Datoteka shranjena",
+    "saveFailed": "Datoteke ni bilo mogoče shraniti.",
+    "playbook": "Playbook",
+    "run": "Izvedi",
+    "newTitle": "Nova datoteka",
+    "name": "Ime datoteke",
+    "nameHint": "Pot znotraj mape projekta, na primer site.yml ali roles/web/tasks/main.yml.",
+    "hint": "Pred shranjevanjem se playbook preveri glede na sintakso. Če preveritev ne uspe, ostane stara datoteka.",
+    "text": "Besedilo datoteke",
+    "deleteTitle": "Izbrišem to datoteko?"
+  },
+  "targets": {
+    "search": "Išči gostitelje",
+    "addShown": "Prikaži dodane",
+    "clear": "Počisti",
+    "empty": "Ni najdenih gostiteljev.",
+    "count": "{{count}} izbranih",
+    "failed": "Gostiteljev ni bilo mogoče naložiti."
+  },
+  "run": {
+    "title": "Zaženi {{playbook}}",
+    "start": "Zaženi",
+    "startCheck": "Zaženi v preverbalnem načinu",
+    "startFailed": "Zagona izvajanja ni bilo mogoče začeti.",
+    "source": "Gostitelji",
+    "sourceProject": "Seznam virov projekta",
+    "sourceTermix": "Gostitelji Termix",
+    "sourceProjectHint": "Uporabite seznam virov iz ansible.cfg ali datoteko v projektu.",
+    "sourceTermixHint": "Izberite gostitelje iz Termix. Mape postanejo skupine folder_, oznake pa skupine tag_. Vse so v skupini termix.",
+    "inventory": "Datoteka seznama virov",
+    "inventoryHint": "Pot znotraj mape projekta. Pustite prazno za uporabo ansible.cfg.",
+    "check": "Način preverjanja",
+    "checkHint": "Pokažite, kaj bi se spremenilo, ne da bi kaj dejansko spremenili.",
+    "diff": "Prikaži razlike",
+    "diffHint": "Prikaži spremembe, narejene v datotekah.",
+    "become": "Zaženi kot root",
+    "becomeHint": "Uporabi sudo na gostiteljih. Za gostitelje Termixa se uporabi shranjeno sudo geslo.",
+    "limit": "Omejitev",
+    "limitHint": "Zaženi le na teh gostiteljih ali skupinah.",
+    "verbosity": "Podrobnosti izpisa",
+    "verbosityOff": "Navadno",
+    "tags": "Oznake",
+    "skipTags": "Preskoči oznake",
+    "extraVars": "Dodatne spremenljivke",
+    "extraVarsHint": "Po en ključ=vrednost na vrstico."
+  },
+  "runs": {
+    "title": "Izvedi",
+    "empty": "Še ni izvedb.",
+    "loadFailed": "Izvedb ni bilo mogoče naložiti.",
+    "stop": "Ustavi",
+    "stopFailed": "Izvedbe ni bilo mogoče ustaviti.",
+    "deleteTitle": "Izbrišete to izvedbo?",
+    "deleteFailed": "Izvedbe ni bilo mogoče izbrisati.",
+    "checkMode": "Preveri",
+    "truncated": "Prikazujem konec dolgega izpisa.",
+    "noOutput": "Še ni izpisa.",
+    "state": {
+      "running": "V teku",
+      "ok": "Končano",
+      "failed": "Neuspešno",
+      "cancelled": "Ustavljeno",
+      "lost": "Izgubljeno"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Facts"
+    },
+    "recap": {
+      "host": "Gostitelj",
+      "ok": "V redu",
+      "changed": "Spremenjeno",
+      "unreachable": "Nedosegljiv",
+      "failed": "Neuspešno",
+      "skipped": "Preskočeno"
+    }
+  },
+  "adhoc": {
+    "hint": "Izvedite en modul na gostiteljih, kot je ansible all -m ping.",
+    "pattern": "Vzorec gostiteljev",
+    "patternHint": "Gostitelj, skupina ali vsi.",
+    "module": "Modul",
+    "moduleHint": "Na primer ping, command, shell, apt ali systemd.",
+    "args": "Argumenti",
+    "argsHint": "Za command in shell je to ukaz. Za druge module so to pari ključ=vrednost.",
+    "run": "Izvedi"
+  },
+  "facts": {
+    "hint": "Zberite dejstva s strežnikov z modulom setup. Potrebni so Termix strežniki, da ima vsak prijavne podatke.",
+    "gather": "Zberi dejstva",
+    "gathering": "Zbiranje...",
+    "failed": "Dejstev ni bilo mogoče zbrati.",
+    "failedHost": "Neuspešno",
+    "none": "Dejstva niso bila vrnjena. Odprite izvajanje, da vidite zakaj.",
+    "col": {
+      "host": "Gostitelj",
+      "os": "Sistem",
+      "kernel": "Jedro",
+      "cpu": "Orodja CPU",
+      "memory": "Pomnilnik",
+      "address": "Naslov",
+      "uptime": "Čas delovanja"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Seznam playbookov"
+    },
+    "run": {
+      "title": "Zaženi playbook",
+      "playbook": "Playbook",
+      "limit": "Omejitev",
+      "tags": "Oznake",
+      "check": "Način preverjanja"
+    },
+    "runs": {
+      "title": "Seznam zagonov",
+      "resource": "Zagoni",
+      "started": "Začetek",
+      "check": "Način preverjanja"
+    },
+    "failed": {
+      "title": "Neuspešni zagoni"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Preverjanje gostiteljev...",
+    "summary_one": "{{count}} neuspešen zagon na {{hosts}} gostiteljih",
+    "summary_two": "{{count}} neuspešna zagona na {{hosts}} gostiteljih",
+    "summary_few": "{{count}} neuspešni zagoni na {{hosts}} gostiteljih",
+    "summary_other": "{{count}} neuspešnih zagonov na {{hosts}} gostiteljih",
+    "refresh": "Preveri znova",
+    "empty": "Vklopite Ansible za gostitelja, da boste tukaj videli njegove zagoni.",
+    "failed_one": "{{count}} neuspešen",
+    "failed_two": "{{count}} neuspešna",
+    "failed_few": "{{count}} neuspešni",
+    "failed_other": "{{count}} neuspešnih",
+    "running_one": "{{count}} teče",
+    "running_two": "{{count}} tečeta",
+    "running_few": "{{count}} tečejo",
+    "running_other": "{{count}} teče",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Še ni zagonov"
+  }
+}

@@ -167,7 +167,7 @@ export function NoteEditor({
             variant="ghost"
             size="icon"
             onClick={() => {
-              void onSave({ pinned: !note.pinned });
+              onSave({ pinned: !note.pinned }).catch(() => setState("error"));
             }}
             title={note.pinned ? t("editor.unpin") : t("editor.pin")}
             aria-label={note.pinned ? t("editor.unpin") : t("editor.pin")}

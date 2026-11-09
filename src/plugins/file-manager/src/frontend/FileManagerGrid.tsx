@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import { createPortal } from "react-dom";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { cn } from "@termix-ssh/plugin-sdk/ui";
+import { cn, LoadingState } from "@termix-ssh/plugin-sdk/ui";
 import {
   Folder,
   File,
@@ -28,7 +28,6 @@ import {
   FileSymlink,
   Move,
   GitCompare,
-  Loader2,
 } from "lucide-react";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import type { FileItem } from "./host-types";
@@ -88,6 +87,8 @@ interface FileManagerGridProps {
   files: FileItem[];
   /** Show a spinner instead of the empty-folder text while a listing is in flight. */
   isLoading?: boolean;
+  /** Active name filter; when it leaves nothing to show, the empty state names it. */
+  searchQuery?: string;
   selectedFiles: FileItem[];
   /** Paths being moved to the trash: shown dimmed and not interactive. */
   deletingPaths?: ReadonlySet<string>;
@@ -233,6 +234,7 @@ const getFileIcon = (
 export function FileManagerGrid({
   files,
   isLoading,
+  searchQuery,
   selectedFiles,
   deletingPaths,
   onFileOpen,
@@ -604,6 +606,33 @@ export function FileManagerGrid({
     [dragState.type],
   );
 
+  // A cancelled drag (Escape, drop elsewhere) can skip dragleave and leave the overlay up.
+  const outsideDragActive =
+    dragState.type === "external" || dragState.type === "local";
+  useEffect(() => {
+    if (!outsideDragActive) return;
+    const reset = () => setDragState({ type: "none", files: [], counter: 0 });
+    let idle = setTimeout(reset, 1500);
+    const alive = () => {
+      clearTimeout(idle);
+      idle = setTimeout(reset, 1500);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") reset();
+    };
+    window.addEventListener("dragover", alive, true);
+    window.addEventListener("dragend", reset, true);
+    window.addEventListener("drop", reset, true);
+    window.addEventListener("keydown", onKey, true);
+    return () => {
+      clearTimeout(idle);
+      window.removeEventListener("dragover", alive, true);
+      window.removeEventListener("dragend", reset, true);
+      window.removeEventListener("drop", reset, true);
+      window.removeEventListener("keydown", onKey, true);
+    };
+  }, [outsideDragActive]);
+
   const handleDragLeave = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
@@ -929,6 +958,16 @@ export function FileManagerGrid({
     [onUpload, onUploadItems, onLocalFilesDrop, dragState],
   );
 
+  const sortKeyDown = (
+    e: React.KeyboardEvent,
+    field: "name" | "modified" | "size",
+  ) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    e.preventDefault();
+    e.stopPropagation();
+    onSortChange?.(field);
+  };
+
   const handleFileClick = (file: FileItem, event: React.MouseEvent) => {
     event.stopPropagation();
 
@@ -1131,6 +1170,14 @@ export function FileManagerGrid({
     onCut,
     onPaste,
     onUndo,
+    onDownload,
+    onNewFile,
+    onNewFolder,
+    onUpload,
+    onStartEdit,
+    onFileOpen,
+    hasClipboard,
+    deletingPaths,
   ]);
 
   // Pinned ".." entry (Termius-style). Behaves as a directory drop target
@@ -1239,12 +1286,18 @@ export function FileManagerGrid({
               {viewMode === "grid" ? parentGridStrip : parentListRow}
               <div className="flex-1 flex flex-col items-center justify-center gap-2 text-muted-foreground select-none pointer-events-none">
                 {isLoading ? (
-                  <Loader2 className="size-6 animate-spin text-muted-foreground/60" />
+                  <LoadingState label={t("common.loading")} />
                 ) : (
                   <>
                     <Folder className="size-8 text-muted-foreground/30" />
                     <span className="text-xs">
-                      {t("fileManager.emptyFolder")}
+                      {searchQuery
+                        ? t("fileManager.noSearchResults", {
+                            query: searchQuery,
+                            // React already escapes the text.
+                            interpolation: { escapeValue: false },
+                          })
+                        : t("fileManager.emptyFolder")}
                     </span>
                   </>
                 )}
@@ -1405,7 +1458,10 @@ export function FileManagerGrid({
               >
                 <div
                   className="flex items-center gap-1 cursor-pointer hover:text-accent-brand transition-colors min-w-0"
+                  role="button"
+                  tabIndex={0}
                   onClick={() => onSortChange?.("name")}
+                  onKeyDown={(e) => sortKeyDown(e, "name")}
                 >
                   {t("fileManager.name")}
                   {sortBy === "name" &&
@@ -1418,7 +1474,10 @@ export function FileManagerGrid({
                 {listColumns.isVisible("modified") && (
                   <div
                     className="relative flex items-center gap-1 cursor-pointer hover:text-accent-brand transition-colors min-w-0"
+                    role="button"
+                    tabIndex={0}
                     onClick={() => onSortChange?.("modified")}
+                    onKeyDown={(e) => sortKeyDown(e, "modified")}
                   >
                     <ColumnResizeHandle
                       {...listColumns.getHandleProps("modified")}
@@ -1445,7 +1504,10 @@ export function FileManagerGrid({
                 {listColumns.isVisible("size") && (
                   <div
                     className="relative flex items-center gap-1 cursor-pointer hover:text-accent-brand transition-colors justify-end min-w-0"
+                    role="button"
+                    tabIndex={0}
                     onClick={() => onSortChange?.("size")}
+                    onKeyDown={(e) => sortKeyDown(e, "size")}
                   >
                     <ColumnResizeHandle
                       {...listColumns.getHandleProps("size")}

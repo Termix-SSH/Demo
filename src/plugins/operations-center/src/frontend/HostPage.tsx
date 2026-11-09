@@ -26,6 +26,7 @@ import {
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   Check,
+  ExternalLink,
   LayoutDashboard,
   LayoutGrid,
   Pencil,
@@ -36,6 +37,7 @@ import { appliesTo, hostLabel, splitTags } from "./hosts";
 import { HostGrid } from "./tiles/HostGrid";
 import { EmbedSlot, useEmbedNodes } from "./tiles/embeds";
 import { FRESH_MS, useSectionRequest } from "./host-page-nav";
+import { launchersFor } from "./host-launchers";
 
 type HostAction = ReturnType<typeof useHostActions>[number];
 
@@ -93,6 +95,11 @@ export function HostPage({ host, tab, isVisible, shell }: TabProps) {
     (action: HostAction) =>
       action.kind === "open" && !!action.tabType && action.tabType !== PAGE_TAB,
   );
+  // Tools with no tab to embed still get an entry, which opens them as usual.
+  const launchers = useMemo(
+    () => (host ? launchersFor(actions as never, host, t) : []),
+    [actions, host, t],
+  );
   const cards = useMemo(
     () => (host ? hostSectionsFor(sections, host as never) : []),
     [sections, host],
@@ -112,6 +119,11 @@ export function HostPage({ host, tab, isVisible, shell }: TabProps) {
   }
 
   const open = (id: string) => {
+    const launcher = launchers.find((entry) => entry.id === id);
+    if (launcher) {
+      launcher.run(shell);
+      return;
+    }
     setSection(id);
     if (id !== "overview") setEditMode(false);
   };
@@ -214,6 +226,13 @@ export function HostPage({ host, tab, isVisible, shell }: TabProps) {
               onPopOut: () => popOut(tool.tabType!),
               popOutLabel: t("host.popOut"),
               divider: index === 0 && sessions.length > 0,
+            })),
+            ...launchers.map((launcher, index) => ({
+              id: launcher.id,
+              icon: launcher.icon,
+              label: launcher.label,
+              badge: <ExternalLink className="size-3" />,
+              divider: index === 0 && (tools.length > 0 || sessions.length > 0),
             })),
           ]}
         />

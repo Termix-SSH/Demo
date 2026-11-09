@@ -96,6 +96,17 @@ export function AdminCreateUserDialog({
               className="pr-9"
             />
             <button
+              type="button"
+              title={
+                showNewPassword
+                  ? t("common.hidePassword")
+                  : t("common.showPassword")
+              }
+              aria-label={
+                showNewPassword
+                  ? t("common.hidePassword")
+                  : t("common.showPassword")
+              }
               onClick={() => setShowNewPassword((o) => !o)}
               className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
             >
@@ -248,6 +259,9 @@ export function AdminEditUserDialog({
                           {roleLabel(t, ur.roleDisplayName)}
                           {!isSystem && (
                             <button
+                              type="button"
+                              title={t("common.remove")}
+                              aria-label={t("common.remove")}
                               onClick={async () => {
                                 try {
                                   await removeRoleFromUser(

@@ -1,0 +1,180 @@
+{
+  "plugin": {
+    "name": "ネットワークデバイス",
+    "description": "SNMPおよびルーターAPI経由で、ルーター、スイッチ、アクセスポイントを確認・管理します。"
+  },
+  "tab": {
+    "title": "ネットワーク"
+  },
+  "card": {
+    "title": "ネットワークデバイス",
+    "loading": "読み込み中",
+    "uptime": "{{time}}稼働中"
+  },
+  "permissions": {
+    "view": {
+      "title": "ネットワークデバイスの表示",
+      "description": "ネットワークタブを開き、デバイス、ポート、クライアントを表示します。"
+    },
+    "manage": {
+      "title": "ネットワークデバイスの管理",
+      "description": "デバイスの追加、ポートのオン/オフ、PoEの電源サイクル、デバイスの再起動を行います。"
+    }
+  },
+  "description": "ルーター、スイッチ、アクセスポイントを追加して、ポートとクライアントを監視します。キーは暗号化して保存され、二度と表示されません。",
+  "summary": "{{count}}台のデバイス、{{down}}台がダウン",
+  "ports": "{{total}}ポート中{{up}}ポートが稼働中",
+  "empty": "ネットワークデバイスがまだありません。",
+  "add": "デバイスの追加",
+  "edit": "編集",
+  "delete": "削除",
+  "back": "戻る",
+  "saved": "保存しました",
+  "deleteConfirm": "{{name}}を削除しますか？",
+  "status": {
+    "unknown": "まだ読み込んでいません",
+    "up": "稼働中",
+    "down": "ダウン"
+  },
+  "drivers": {
+    "snmp": "SNMPデバイス",
+    "routeros": "MikroTik RouterOS",
+    "opnsense": "OPNsense",
+    "openwrt": "OpenWrt"
+  },
+  "fields": {
+    "community": "コミュニティ",
+    "writeCommunity": "書き込みコミュニティ（オプション）",
+    "username": "ユーザー名",
+    "password": "パスワード",
+    "authProtocol": "認証",
+    "authKey": "認証キー",
+    "privProtocol": "プライバシー",
+    "privKey": "プライバシーキー",
+    "apiKey": "APIキー",
+    "apiSecret": "APIシークレット"
+  },
+  "form": {
+    "addTitle": "デバイスの追加",
+    "editTitle": "デバイスの編集",
+    "device": "デバイス",
+    "access": "アクセス",
+    "type": "種類",
+    "name": "名前",
+    "address": "アドレス",
+    "port": "ポート",
+    "poll": "読み取り間隔（秒）",
+    "pollHint": "15〜3600の範囲で指定します。",
+    "snmpVersion": "SNMPバージョン",
+    "scheme": "Webアドレスのプレフィックス",
+    "ca": "証明書発行機関（オプション）",
+    "caHint": "プライベート証明書を使用している場合は、CAまたはデバイス証明書のPEMを貼り付けてください。",
+    "caSet": "証明書が保存されています。新しいものを貼り付けて上書きします。",
+    "keepKeys": "保存されたキーを維持する場合は空のままにしてください",
+    "test": "テスト",
+    "testNeedsKeys": "テストするにはキーを入力してください。",
+    "testOk": "{{name}}に接続しました。",
+    "save": "保存",
+    "add": "追加"
+  },
+  "discover": {
+    "title": "デバイスの検索",
+    "hint": "アドレス範囲内のSNMPデバイスを検索します。最大256アドレスまで対応します。サーバーからその範囲に到達可能である必要があります。",
+    "range": "アドレス範囲",
+    "scan": "スキャン",
+    "scanning": "スキャン中",
+    "none": "応答したデバイスがありません。",
+    "added": "追加済み"
+  },
+  "view": {
+    "refresh": "今すぐ読み取り",
+    "reboot": "再起動",
+    "rebootConfirm": "{{name}} を再起動しますか？一時的にオフラインになります。",
+    "rebooting": "{{name}} が再起動しています。",
+    "ports": "ポート",
+    "clients": "クライアント",
+    "neighbors": "隣接デバイス",
+    "type": "種類",
+    "address": "アドレス",
+    "model": "モデル",
+    "version": "バージョン",
+    "uptime": "稼働時間",
+    "cpu": "CPU",
+    "memory": "メモリ",
+    "traffic": "トラフィック",
+    "noTraffic": "トラフィックは2回の読み取り後に表示されます。",
+    "noPorts": "ポートがありません。デバイスをスキャンして情報を取得してください。",
+    "port": "ポート",
+    "speed": "速度",
+    "vlan": "VLAN",
+    "rx": "受信",
+    "tx": "送信",
+    "errors": "エラー",
+    "poe": "PoE",
+    "poeOn": "給電中",
+    "poeIdle": "オン",
+    "poeOff": "オフ",
+    "linkUp": "リンク確立",
+    "linkDown": "リンクなし",
+    "disabled": "オフ",
+    "watch": "このポートの変更時に通知する",
+    "unwatch": "このポートの通知を停止する",
+    "turnOff": "ポートをオフにする",
+    "turnOn": "ポートをオンにする",
+    "portOffConfirm": "ポート {{name}} をオフにしますか？接続中のデバイスは切断されます。",
+    "portOff": "ポート {{name}} がオフになりました。",
+    "portOn": "ポート {{name}} がオンになりました。",
+    "poeCycle": "PoE の電源サイクル",
+    "poeConfirm": "ポート {{name}} の電源を数秒間切断しますか？",
+    "poeDone": "{{name}} の PoE をサイクルしました。",
+    "filter": "クライアントを検索",
+    "noClients": "クライアントが見つかりません。",
+    "client": "名前",
+    "ip": "IP アドレス",
+    "mac": "MAC アドレス",
+    "on": "オン",
+    "source": "検出元",
+    "kind": {
+      "dhcp": "DHCP",
+      "arp": "ARP",
+      "wifi": "Wi-Fi",
+      "table": "MAC テーブル"
+    },
+    "noNeighbors": "隣接デバイスが見つかりません。",
+    "neighbor": "隣接デバイス",
+    "remotePort": "相手のポート"
+  },
+  "operations": {
+    "device": "デバイス",
+    "port": "ポート",
+    "state": "状態",
+    "stateUp": "オン",
+    "stateDown": "オフ",
+    "list": {
+      "title": "ネットワークデバイスの一覧"
+    },
+    "ports": {
+      "title": "デバイスのポート一覧"
+    },
+    "poll": {
+      "title": "ネットワークデバイスの読み取り"
+    },
+    "setPort": {
+      "title": "ポートのオン/オフ"
+    },
+    "poe": {
+      "title": "ポートのPoE電源サイクル"
+    },
+    "reboot": {
+      "title": "ネットワークデバイスの再起動"
+    },
+    "health": {
+      "title": "ネットワークデバイス"
+    }
+  },
+  "widget": {
+    "name": "ネットワークデバイス",
+    "description": "ルーター、スイッチ、アクセスポイントの稼働状況を確認します。",
+    "summary": "{{total}} 件中 {{up}} 件稼働中"
+  }
+}

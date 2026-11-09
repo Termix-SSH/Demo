@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Alimentazione, sensori, registri eventi e console per i BMC dei server tramite Redfish, IPMI e Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Caricamento in corso"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "Visualizza i BMC",
+      "description": "Apri la scheda Out-of-band e visualizza alimentazione, stato di salute, sensori e registri."
+    },
+    "power": {
+      "title": "Controlla alimentazione e avvio",
+      "description": "Accendi e spegni le macchine, esegui il riavvio dell'alimentazione e scegli il dispositivo di avvio successivo."
+    },
+    "console": {
+      "title": "Usa la console seriale",
+      "description": "Apri la console seriale over LAN di una macchina."
+    },
+    "media": {
+      "title": "Usa i supporti virtuali",
+      "description": "Monta ed espelli immagini ISO su una macchina."
+    },
+    "manage": {
+      "title": "Gestisci i BMC",
+      "description": "Aggiungi, modifica e rimuovi i BMC e cancella i loro registri eventi."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Esegui ipmitool sul server Termix",
+        "description": "Se disattivato, i BMC IPMI devono usare un host relay. Redfish e AMT non sono interessati."
+      }
+    }
+  },
+  "description": "Aggiungi i controller di gestione (BMC) dei tuoi server per accenderli e spegnerli, monitorare i sensori e leggere i registri eventi. Le credenziali di accesso sono memorizzate in modo crittografato e non vengono mai mostrate nuovamente.",
+  "summary": "{{count}} BMC, {{attention}} richiedono attenzione",
+  "empty": "Nessun BMC ancora.",
+  "add": "Aggiungi BMC",
+  "edit": "Modifica",
+  "delete": "Elimina",
+  "back": "Indietro",
+  "saved": "Salvato",
+  "deleteConfirm": "Eliminare {{name}}?",
+  "status": {
+    "unknown": "Non ancora letto",
+    "up": "Raggiungibile",
+    "down": "Non raggiungibile"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI over LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Nome utente",
+    "password": "Password"
+  },
+  "power": {
+    "on": "Acceso",
+    "off": "Spento",
+    "unknown": "Sconosciuto",
+    "sent": "Richiesta a {{name}} di cambiare lo stato di alimentazione",
+    "action": {
+      "on": "Accendi",
+      "off": "Spegni",
+      "graceful-shutdown": "Arresta",
+      "cycle": "Ciclo di alimentazione",
+      "reset": "Riavvia"
+    },
+    "confirm": {
+      "on": "Accendere {{name}}?",
+      "off": "Spegnere l'alimentazione di {{name}}? Il sistema non si arresta in modo pulito.",
+      "graceful-shutdown": "Chiedere a {{name}} di arrestarsi?",
+      "cycle": "Eseguire il ciclo di alimentazione di {{name}}? Il sistema non si arresta in modo pulito.",
+      "reset": "Riavviare {{name}}? Il sistema si riavvia immediatamente."
+    }
+  },
+  "health": {
+    "ok": "Stato OK",
+    "warning": "Avviso",
+    "critical": "Critico",
+    "unknown": "Sconosciuto"
+  },
+  "kind": {
+    "temperature": "Temperatura",
+    "fan": "Ventola",
+    "voltage": "Tensione",
+    "power": "Alimentazione",
+    "psu": "Alimentatore",
+    "other": "Altro"
+  },
+  "form": {
+    "addTitle": "Aggiungi BMC",
+    "editTitle": "Modifica BMC",
+    "device": "BMC",
+    "access": "Accesso",
+    "type": "Tipo",
+    "name": "Nome",
+    "address": "Indirizzo",
+    "port": "Porta",
+    "host": "Host Termix",
+    "hostHint": "Collega il BMC all'host a cui appartiene. In questo modo seguirà le impostazioni di condivisione dell'host e apparirà nel suo menu.",
+    "noHost": "Nessuno",
+    "poll": "Lettura ogni (secondi)",
+    "pollHint": "Almeno 30 secondi, o 60 se viene utilizzato un host relay.",
+    "scheme": "Connessione",
+    "relay": "Host relay",
+    "relayHint": "Esegui ipmitool su questo host invece che sul server Termix. Necessario per la console seriale.",
+    "noRelay": "Server Termix",
+    "cipher": "Suite di cifratura",
+    "cipherHint": "Modifica solo se il BMC rifiuta l'accesso. 3 è il valore standard, 17 per i BMC più recenti.",
+    "ca": "Certificato CA",
+    "caHint": "Incolla il PEM dell'autorità di certificazione del BMC. Lascia vuoto per un certificato attendibile.",
+    "caSet": "È stata salvata una CA. Incollane una nuova per sostituirla.",
+    "keepLogin": "Lascia vuoto per mantenere l'accesso salvato",
+    "test": "Testa la connessione",
+    "testOk": "Il BMC ha risposto. L'alimentazione è {{power}}.",
+    "testNeedsLogin": "Inserisci nuovamente le credenziali per eseguire il test.",
+    "save": "Salva",
+    "add": "Aggiungi"
+  },
+  "view": {
+    "overview": "Panoramica",
+    "sensors": "Sensori",
+    "log": "Registro eventi",
+    "boot": "Avvio",
+    "media": "Media virtuali",
+    "console": "Console",
+    "refresh": "Leggi ora",
+    "type": "Tipo",
+    "address": "Indirizzo",
+    "power": "Alimentazione",
+    "health": "Stato di salute",
+    "manufacturer": "Produttore",
+    "model": "Modello",
+    "serial": "Numero di serie",
+    "bios": "BIOS",
+    "bmc": "Firmware BMC",
+    "status": "BMC",
+    "viaRelay": "Raggiunto tramite un host relay.",
+    "noSensors": "Questo BMC non segnala sensori.",
+    "sensor": "Sensore",
+    "reading": "Valore",
+    "state": "Stato"
+  },
+  "log": {
+    "time": "Ora",
+    "severity": "Livello",
+    "message": "Evento",
+    "empty": "Il registro eventi è vuoto.",
+    "clear": "Cancella registro",
+    "clearConfirm": "Cancellare il registro eventi di {{name}}? Questa operazione non può essere annullata.",
+    "cleared": "Registro cancellato",
+    "level": {
+      "info": "Info",
+      "warning": "Avviso",
+      "critical": "Critico"
+    }
+  },
+  "boot": {
+    "hint": "La macchina avvierà da questo dispositivo una sola volta, per poi tornare alla sequenza di avvio normale. Applicare questa impostazione prima di un riavvio.",
+    "device": "Avvia da",
+    "mode": "Modalità",
+    "uefi": "UEFI",
+    "legacy": "Legacy BIOS",
+    "apply": "Imposta per il prossimo avvio",
+    "done": "{{name}} avvierà dal dispositivo scelto la prossima volta",
+    "pxe": "Rete (PXE)",
+    "disk": "Disco rigido",
+    "cd": "CD o media virtuale",
+    "usb": "USB",
+    "bios": "Configurazione BIOS",
+    "none": "Ordine normale"
+  },
+  "media": {
+    "url": "Indirizzo immagine",
+    "empty": "Questo BMC non ha uno slot per CD virtuale.",
+    "mounted": "Montato",
+    "free": "Vuoto",
+    "mount": "Monta",
+    "eject": "Espelli",
+    "mountedDone": "Immagine montata",
+    "ejected": "Immagine espulsa"
+  },
+  "console": {
+    "hint": "Digita ~. per uscire dalla console.",
+    "connecting": "Connessione in corso",
+    "ended": "La console è stata chiusa.",
+    "failed": "Impossibile aprire la console.",
+    "needsRelay": "La console seriale richiede un host relay con ipmitool. Selezionalo nelle impostazioni del BMC."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Avvia da",
+    "uefi": "Modalità UEFI",
+    "list": {
+      "title": "Elenca BMC"
+    },
+    "poll": {
+      "title": "Leggi un BMC ora"
+    },
+    "powerState": {
+      "title": "Ottieni stato alimentazione"
+    },
+    "power-on": {
+      "title": "Accendi"
+    },
+    "graceful-shutdown": {
+      "title": "Spegni"
+    },
+    "power-off": {
+      "title": "Spegni alimentazione"
+    },
+    "power-cycle": {
+      "title": "Ciclo di alimentazione"
+    },
+    "reset": {
+      "title": "Riavvia"
+    },
+    "setBootOnce": {
+      "title": "Avvia una volta da un dispositivo"
+    },
+    "clearLog": {
+      "title": "Cancella registro eventi"
+    },
+    "health": {
+      "title": "Stato salute BMC"
+    }
+  },
+  "widget": {
+    "name": "Out-of-band",
+    "description": "Alimentazione e stato salute dei tuoi server BMC.",
+    "summary": "{{up}} di {{total}} attivi"
+  }
+}

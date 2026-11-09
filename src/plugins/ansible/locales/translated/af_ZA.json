@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Voer Ansible-playbooks en ad-hoc-opdragte uit vanaf 'n beheerhost, met 'n voorraadlys wat uit jou Termix-hosts gemaak is."
+  },
+  "common": {
+    "save": "Stoor",
+    "cancel": "Kanselleer",
+    "back": "Terug",
+    "delete": "Vee uit"
+  },
+  "permissions": {
+    "use": {
+      "title": "Gebruik Ansible",
+      "description": "Sien playbooks en uitvoerings op beheerhosts wat jy kan bereik. Redigeer lêers en voer Ansible uit op hosts wat jy kan redigeer."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Gebruik hierdie host as 'n Ansible-beheerhost. Ansible moet daarop geïnstalleer wees."
+      },
+      "projectDir": {
+        "label": "Projekmap",
+        "description": "Die map op hierdie host met jou playbooks, rolle en ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Vault-wagwoordlêer",
+        "description": "'n Lêer op hierdie host met die Ansible Vault-wagwoord. Laat leeg as jy nie Vault gebruik nie.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Slegs lees",
+        "description": "Wys playbooks en uitvoerings, maar redigeer nooit lêers of begin uitvoerings op hierdie host nie."
+      },
+      "alertRuns": {
+        "label": "Waarskuwing wanneer 'n uitvoering misluk",
+        "description": "Stuur 'n waarskuwing wanneer 'n uitvoering op hierdie host misluk of verlore gaan. Gecontroleer wanneer die uitvoeringsstatus gelees word."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Maak Ansible oop vanaf 'n host.",
+    "error": "Kon nie Ansible vanaf hierdie host laai nie.",
+    "disabled": "Ansible is vir hierdie host afgeskakel. Skakel dit aan in die host-instellings.",
+    "refresh": "Verfris",
+    "readOnly": "Slegs lees",
+    "notInstalled": "Ansible nie geïnstalleer nie",
+    "notInstalledTitle": "Ansible is nie op hierdie host geïnstalleer nie",
+    "notInstalledHint": "Installeer ansible-core op hierdie host, byvoorbeeld met pipx of jou pakkethandhaerder, en verfris dan.",
+    "noSshpass": "sshpass is nie op hierdie host geïnstalleer nie. Hosts wat met 'n wagwoord aanmeld, sal misluk.",
+    "viewPlaybooks": "Playbooks",
+    "viewRuns": "Uitvoerings",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Faktes"
+  },
+  "files": {
+    "add": "Nuwe lêer",
+    "search": "Soek lêers",
+    "empty": "Nog geen lêers in die projekmap nie.",
+    "noMatch": "Geen lêers pas by nie.",
+    "noProject": "Die map {{dir}} bestaan nie op hierdie host nie. Skep dit, of stel 'n ander Projekmap in die host-instellings.",
+    "listFailed": "Kon nie die projeklêers lys nie.",
+    "loadFailed": "Kon nie daardie lêer lees nie.",
+    "saved": "Lêer gestoor",
+    "saveFailed": "Kon nie daardie lêer stoor nie.",
+    "playbook": "Playbook",
+    "run": "Voer uit",
+    "newTitle": "Nuwe lêer",
+    "name": "Lêernaam",
+    "nameHint": "'n Pad binne die projekmap, soos site.yml of roles/web/tasks/main.yml.",
+    "hint": "'n Playbook word vir sintaksis gecontroleer voordat dit gestoor word. Die ou lêer bly as die kontrole misluk.",
+    "text": "Lêerinhoud",
+    "deleteTitle": "Vee hierdie lêer uit?"
+  },
+  "targets": {
+    "search": "Soek hosts",
+    "addShown": "Voeg getoonde by",
+    "clear": "Vee uit",
+    "empty": "Geen hosts gevind nie.",
+    "count": "{{count}} gekies",
+    "failed": "Kon nie jou hosts laai nie."
+  },
+  "run": {
+    "title": "Voer {{playbook}} uit",
+    "start": "Voer uit",
+    "startCheck": "Voer uit in kontrolemodus",
+    "startFailed": "Kon die uitvoering nie begin nie.",
+    "source": "Gashere",
+    "sourceProject": "Projek-inventaris",
+    "sourceTermix": "Termix-gashere",
+    "sourceProjectHint": "Gebruik die inventaris uit ansible.cfg, of 'n lêer in die projek.",
+    "sourceTermixHint": "Kies gashere uit Termix. Vouders word folder_ groepe en merkers word tag_ groepe. Almal is in die termix groep.",
+    "inventory": "Inventaris-lêer",
+    "inventoryHint": "'n Pad binne die projekvolder. Laat leeg om ansible.cfg te gebruik.",
+    "check": "Kontrole-modus",
+    "checkHint": "Wys wat sou verander sonder om iets te verander.",
+    "diff": "Wys verskille",
+    "diffHint": "Wys die veranderinge aan lêers.",
+    "become": "Voer uit as root",
+    "becomeHint": "Gebruik sudo op die gashere. 'n Opgestoorde Sudo-wagwoord word vir Termix-gashere gebruik.",
+    "limit": "Beperk",
+    "limitHint": "Voer slegs uit op hierdie gashere of groepe.",
+    "verbosity": "Uitvoer-detail",
+    "verbosityOff": "Normaal",
+    "tags": "Merkers",
+    "skipTags": "Slaan merkers oor",
+    "extraVars": "Ekstra veranderlikes",
+    "extraVarsHint": "Een sleutel=waarde per lyn."
+  },
+  "runs": {
+    "title": "Uitvoering",
+    "empty": "Nog geen uitvoerings nie.",
+    "loadFailed": "Kon die uitvoerings nie laai nie.",
+    "stop": "Stop",
+    "stopFailed": "Kon die uitvoering nie stop nie.",
+    "deleteTitle": "Vee hierdie uitvoering uit?",
+    "deleteFailed": "Kon die uitvoering nie uitvee nie.",
+    "checkMode": "Kontrole",
+    "truncated": "Wys die einde van 'n lang uitvoer.",
+    "noOutput": "Nog geen uitvoer nie.",
+    "state": {
+      "running": "Besig",
+      "ok": "Klaar",
+      "failed": "Misluk",
+      "cancelled": "Gestop",
+      "lost": "Verlore"
+    },
+    "kind": {
+      "playbook": "Speelboek",
+      "adhoc": "Ad-hoc",
+      "facts": "Feite"
+    },
+    "recap": {
+      "host": "Gasheer",
+      "ok": "OK",
+      "changed": "Verander",
+      "unreachable": "Onbereikbaar",
+      "failed": "Misluk",
+      "skipped": "Oorgeslaan"
+    }
+  },
+  "adhoc": {
+    "hint": "Voer een module op gashere uit, soos ansible all -m ping.",
+    "pattern": "Gasheerpatroon",
+    "patternHint": "'n Gasheer, 'n groep of all.",
+    "module": "Module",
+    "moduleHint": "Byvoorbeeld ping, command, shell, apt of systemd.",
+    "args": "Argumente",
+    "argsHint": "Vir command en shell is dit die opdrag. Vir ander modules is dit sleutel=waarde pare.",
+    "run": "Voer uit"
+  },
+  "facts": {
+    "hint": "Versamel feite van gashere met die setup-module. Benodig Termix-gashere sodat elkeen 'n aanmelding het.",
+    "gather": "Versamel feite",
+    "gathering": "Besig om te versamel...",
+    "failed": "Kon nie feite versamel nie.",
+    "failedHost": "Misluk",
+    "none": "Geen feite het teruggekom nie. Maak die uitvoering oop om te sien waarom.",
+    "col": {
+      "host": "Gasheer",
+      "os": "Stelsel",
+      "kernel": "Kern",
+      "cpu": "CPU's",
+      "memory": "Geheue",
+      "address": "Adres",
+      "uptime": "Bedryfstyd"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Lys van playbook"
+    },
+    "run": {
+      "title": "Voer playbook uit",
+      "playbook": "Playbook",
+      "limit": "Beperk",
+      "tags": "Etikette",
+      "check": "Toetsmodus"
+    },
+    "runs": {
+      "title": "Lys van uitvoerings",
+      "resource": "Uitvoerings",
+      "started": "Begin",
+      "check": "Toetsmodus"
+    },
+    "failed": {
+      "title": "Mislukte uitvoerings"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Kontroleer gasheer...",
+    "summary_one": "{{count}} mislukte uitvoering op {{hosts}} gasheer",
+    "summary_other": "{{count}} mislukte uitvoerings op {{hosts}} gasheer",
+    "refresh": "Kontroleer weer",
+    "empty": "Skakel Ansible vir 'n gasheer aan om die uitvoerings hier te sien.",
+    "failed_one": "{{count}} misluk",
+    "failed_other": "{{count}} misluk",
+    "running_one": "{{count}} word uitgevoer",
+    "running_other": "{{count}} word uitgevoer",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Nog geen uitvoerings nie"
+  }
+}

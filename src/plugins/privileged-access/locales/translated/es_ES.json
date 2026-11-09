@@ -1,0 +1,145 @@
+{
+  "plugin": {
+    "name": "Acceso privilegiado",
+    "description": "Solicita aprobación antes de que alguien se conecte a un host privilegiado, con acceso que caduca automáticamente y un registro de auditoría completo."
+  },
+  "tab": {
+    "title": "Acceso"
+  },
+  "tabs": {
+    "request": "Solicitar acceso",
+    "mine": "Mis solicitudes",
+    "pending": "Por decidir",
+    "active": "Accesos activos",
+    "history": "Historial"
+  },
+  "status": {
+    "pending": "Pendiente",
+    "approved": "Finalizado",
+    "active": "Activo",
+    "denied": "Denegado",
+    "expired": "Caducado",
+    "revoked": "Revocado",
+    "cancelled": "Cancelado"
+  },
+  "request": {
+    "host": "Host",
+    "hostWithAccess": "{{host}} (acceso hasta {{until}})",
+    "hours": "Horas",
+    "hoursHint": "Este host permite hasta {{max}} horas.",
+    "reason": "Motivo de la solicitud",
+    "reasonOptional": "Motivo de la solicitud (opcional)",
+    "ticket": "Ticket",
+    "ticketOptional": "Ticket (opcional)",
+    "send": "Solicitar acceso",
+    "sent": "Solicitud enviada. Recibirás una notificación cuando se tome una decisión.",
+    "failed": "No se ha podido enviar la solicitud",
+    "noHosts": "No hay hosts privilegiados",
+    "noHostsHint": "Aquí aparecen los hosts que un administrador haya marcado como privilegiados."
+  },
+  "list": {
+    "none": "No hay nada aquí",
+    "loadError": "No se han podido cargar las solicitudes",
+    "actionFailed": "La acción no se ha podido completar",
+    "hours_one": "{{count}} hora",
+    "hours_many": "{{count}} horas",
+    "hours_other": "{{count}} horas",
+    "until": "hasta {{time}}",
+    "decidedBy": "por {{name}}",
+    "approve": "Aprobar",
+    "deny": "Denegar",
+    "cancel": "Cancelar",
+    "endNow": "Finalizar ahora",
+    "export": "Exportar CSV",
+    "approveConfirm_one": "¿Conceder acceso a {{user}} en {{host}} durante {{count}} hora?",
+    "approveConfirm_many": "¿Conceder acceso a {{user}} en {{host}} durante {{count}} horas?",
+    "approveConfirm_other": "¿Conceder acceso a {{user}} en {{host}} durante {{count}} horas?",
+    "denyConfirm": "¿Denegar esta solicitud?",
+    "cancelConfirm": "¿Cancelar esta solicitud?",
+    "endConfirm": "¿Finalizar este acceso ahora? Se cerrarán las sesiones abiertas en el host.",
+    "approved": "Acceso aprobado",
+    "denied": "Solicitud denegada",
+    "ended": "Finalizado"
+  },
+  "card": {
+    "title": "Acceso privilegiado",
+    "waiting": "pendiente de tu decisión",
+    "empty": "No hay solicitudes pendientes",
+    "emptyHint": "Aquí aparecerán tus accesos aprobados."
+  },
+  "permissions": {
+    "request": {
+      "title": "Solicitar acceso privilegiado",
+      "description": "Solicita acceso con límite de tiempo a hosts privilegiados."
+    },
+    "approve": {
+      "title": "Aprobar acceso privilegiado",
+      "description": "Decide sobre las solicitudes de acceso de otros usuarios, finaliza accesos antes de tiempo y consulta el informe."
+    },
+    "bypass": {
+      "title": "Acceso de emergencia",
+      "description": "Conéctate a hosts privilegiados sin necesidad de solicitar acceso. Cada uso queda registrado y genera una alerta."
+    },
+    "configure": {
+      "title": "Configurar hosts privilegiados",
+      "description": "Marca hosts como privilegiados y define quién debe aprobar el acceso a ellos."
+    }
+  },
+  "settings": {
+    "admin": {
+      "pendingHours": {
+        "label": "Duración de la solicitud (horas)",
+        "description": "Una solicitud que no se decida en este tiempo caducará."
+      },
+      "alertBypass": {
+        "label": "Avisar al acceder con acceso de emergencia",
+        "description": "Avisar a los aprobadores cuando alguien se conecte con acceso de emergencia."
+      }
+    },
+    "host": {
+      "enable": {
+        "label": "Host privilegiado",
+        "description": "Las sesiones SSH y de escritorio remoto a este host requieren acceso aprobado."
+      },
+      "approverRoles": {
+        "label": "Roles de aprobador",
+        "description": "Nombres de roles, separados por comas, cuyos miembros pueden aprobar. Si se deja vacío, cualquiera con permiso de aprobación puede decidir."
+      },
+      "maxHours": {
+        "label": "Duración máxima (horas)",
+        "description": "El número máximo de horas que puede solicitar una solicitud."
+      },
+      "requireReason": {
+        "label": "Solicitar motivo",
+        "description": "La solicitud debe indicar por qué se necesita el acceso."
+      },
+      "requireTicket": {
+        "label": "Solicitar ticket",
+        "description": "La solicitud debe indicar un número de ticket."
+      },
+      "allowBackground": {
+        "label": "Permitir trabajo en segundo plano",
+        "description": "Las conexiones de plugins no interactivas, como la sondeo, omiten la aprobación. Desactívalo para bloquear todas las sesiones sin acceso."
+      }
+    }
+  },
+  "operations": {
+    "request": {
+      "title": "Solicitar acceso privilegiado",
+      "hours": "Horas",
+      "reason": "Motivo",
+      "ticket": "Ticket"
+    },
+    "pending": {
+      "title": "Solicitudes de acceso pendientes"
+    },
+    "status": {
+      "title": "Acceso privilegiado"
+    },
+    "events": {
+      "requested": "Alguien ha solicitado acceso",
+      "approved": "Acceso aprobado",
+      "bypassed": "Se ha utilizado el acceso de emergencia"
+    }
+  }
+}

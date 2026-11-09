@@ -1,0 +1,202 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "查看、添加和运行主机上的 cron 任务，支持计划预览和系统 cron 文件。"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "back": "返回",
+    "delete": "删除"
+  },
+  "permissions": {
+    "use": {
+      "title": "使用 Cron",
+      "description": "查看可访问主机上的 cron 任务，并修改可编辑主机上的任务。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "从 Cron 选项卡管理此主机上的 cron 任务。"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "对其他用户的 crontab 和 /etc/cron.d 使用 sudo。如果登录用户是 root，请关闭此选项。"
+      },
+      "readOnly": {
+        "label": "只读",
+        "description": "显示 cron 任务，但永不修改此主机上的任务。"
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "从主机打开 Cron。",
+    "error": "无法从此主机加载 cron。",
+    "disabled": "此主机已关闭 Cron。请在主机设置中开启。",
+    "sudo": "这需要 root 登录、免密码 sudo 或已保存的 Sudo 密码。",
+    "refresh": "刷新",
+    "running": "Cron 运行中",
+    "stopped": "Cron 已停止",
+    "readOnly": "只读",
+    "notInstalled": "未安装",
+    "notInstalledTitle": "此主机未安装 Cron",
+    "notInstalledHint": "使用主机的包管理器安装 cron 或 cronie，然后刷新。",
+    "notRunning": "cron 服务未运行，因此不会执行任何任务。",
+    "viewJobs": "任务",
+    "viewSystem": "系统",
+    "viewLogs": "日志"
+  },
+  "jobs": {
+    "add": "添加任务",
+    "user": "用户的 Crontab",
+    "ownUser": "{{user}}（登录用户）",
+    "search": "搜索任务",
+    "editText": "以文本方式编辑",
+    "empty": "暂无 cron 任务。",
+    "noMatch": "没有匹配的任务。",
+    "off": "已关闭",
+    "next": "{{time}} 后运行",
+    "run": "立即运行",
+    "runTitle": "立即运行此任务？",
+    "runDesc": "这将以 crontab 所属用户身份运行一次 {{command}}。2 分钟后自动停止。",
+    "runFailed": "无法运行任务。",
+    "turnOn": "开启",
+    "turnOff": "关闭",
+    "deleteTitle": "删除此任务？",
+    "loadFailed": "无法读取 crontab。",
+    "saveFailed": "无法保存 crontab。",
+    "outputTitle": "任务输出",
+    "exitOk": "已完成",
+    "exitCode": "退出代码 {{code}}",
+    "noOutput": "任务未输出任何内容。"
+  },
+  "form": {
+    "addTitle": "新建任务",
+    "editTitle": "编辑任务",
+    "forUser": "{{user}} 的 Crontab",
+    "label": "标签",
+    "labelHint": "将作为注释保存在任务上方。",
+    "labelPlaceholder": "每日备份",
+    "command": "命令",
+    "commandHint": "在用户主目录下以 sh 运行。% 表示 cron 发送的输入，如需字面量 % 请写 \\%。",
+    "schedule": "计划",
+    "scheduleHint": "分钟、小时、日期、月份和星期几，或类似 @daily 的关键词。",
+    "scheduleInvalid": "这不是有效的计划。",
+    "nextRuns": "下次运行时间（{{zone}}）：",
+    "enabled": "启用",
+    "enabledHint": "禁用的任务会作为注释保留在 crontab 中。",
+    "saved": "已保存。"
+  },
+  "presets": {
+    "everyMinute": "每分钟",
+    "every5": "每 5 分钟",
+    "every15": "每 15 分钟",
+    "hourly": "每小时",
+    "daily": "每天",
+    "weekly": "每周",
+    "monthly": "每月",
+    "reboot": "启动时"
+  },
+  "schedule": {
+    "reboot": "启动时",
+    "everyMinute": "每分钟",
+    "everyNMinutes": "每 {{n}} 分钟",
+    "hourlyAt": "每小时第 {{minute}} 分钟",
+    "everyNHours": "每 {{n}} 小时第 {{minute}} 分钟",
+    "dailyAt": "每天 {{time}}",
+    "weekdaysAt": "周一至周五 {{time}}",
+    "weeklyAt": "每周 {{day}} {{time}}",
+    "monthlyAt": "每月 {{day}} 日 {{time}}",
+    "custom": "自定义计划",
+    "invalid": "无效的计划"
+  },
+  "days": {
+    "0": "星期日",
+    "1": "星期一",
+    "2": "星期二",
+    "3": "星期三",
+    "4": "星期四",
+    "5": "星期五",
+    "6": "星期六"
+  },
+  "raw": {
+    "title": "Crontab 文本",
+    "hint": "每行一个任务。主机将检查文本，如果存在错误则保留旧的 crontab。"
+  },
+  "system": {
+    "add": "新建文件",
+    "addTitle": "在 /etc/cron.d 中新建文件",
+    "edit": "编辑",
+    "name": "文件名",
+    "nameHint": "保存为 /etc/cron.d/<name>。Cron 会跳过包含点号的名称。",
+    "nameInvalid": "仅使用字母、数字、- 和 _。",
+    "content": "文件内容",
+    "fileHint": "每个任务需指定运行用户：分钟 小时 日期 月份 星期几 用户 命令。保存前会检查每一行。",
+    "noJobs": "此文件中没有任务。",
+    "readHint": "某些文件可能需要 root 权限才能查看。在此处修改需要 root 登录、免密 sudo 或已保存的 Sudo 密码。",
+    "timers_other": "此主机还有 {{count}} 个 systemd 定时器。由 Services 插件管理。",
+    "deleteTitle": "删除 /etc/cron.d/{{name}}？",
+    "deleteDesc": "副本将保留在 /var/lib/termix-cron/backup 中。",
+    "deleted": "已删除 {{name}}。",
+    "saved": "已保存 {{name}}。",
+    "loadFailed": "无法读取系统 cron 文件。",
+    "saveFailed": "无法保存文件。",
+    "period": {
+      "hourly": "每小时运行",
+      "daily": "每天运行",
+      "weekly": "每周运行",
+      "monthly": "每月运行"
+    }
+  },
+  "logs": {
+    "lines": "行数",
+    "lineCount_other": "{{count}} 行",
+    "source": "来自 {{source}}",
+    "noSource": "在此主机上未找到 cron 日志。",
+    "empty": "无日志条目。",
+    "failed": "无法读取 cron 日志。"
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "请在该主机的设置中启用 Cron，以在此处查看其任务。"
+  },
+  "operations": {
+    "list": {
+      "title": "列出 cron 任务"
+    },
+    "enable": {
+      "title": "启用 cron 任务"
+    },
+    "disable": {
+      "title": "禁用 cron 任务"
+    },
+    "run": {
+      "title": "立即运行 cron 任务"
+    },
+    "delete": {
+      "title": "删除 cron 任务"
+    },
+    "jobs": {
+      "title": "Cron 任务",
+      "schedule": "计划",
+      "command": "命令"
+    },
+    "status": {
+      "title": "Cron 状态"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "正在检查主机...",
+    "summary_other": "{{hosts}} 台主机上的 {{count}} 个任务",
+    "refresh": "再次检查",
+    "empty": "请为某台主机启用 Cron，以在此处查看。",
+    "stopped": "未运行",
+    "missing": "未安装",
+    "jobs_other": "{{count}} 个任务",
+    "off": "{{count}} 个已禁用"
+  }
+}

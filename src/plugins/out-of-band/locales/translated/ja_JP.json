@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Redfish、IPMI、Intel AMT を介したサーバー BMC の電源、センサー、イベントログ、コンソールを管理します。"
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "読み込み中"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "BMC を表示",
+      "description": "Out-of-band タブを開き、電源、健全性、センサー、ログを表示します。"
+    },
+    "power": {
+      "title": "電源とブートの制御",
+      "description": "マシンの電源のオン/オフ、電源サイクル、次回のブートデバイスの選択を行います。"
+    },
+    "console": {
+      "title": "シリアルコンソールを使用する",
+      "description": "マシンのシリアルオーバーLANコンソールを開きます。"
+    },
+    "media": {
+      "title": "仮想メディアを使用する",
+      "description": "マシンにISOイメージをマウントおよび取り外します。"
+    },
+    "manage": {
+      "title": "BMCを管理する",
+      "description": "BMCの追加、変更、削除、およびイベントログのクリアを行います。"
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Termixサーバーでipmitoolを実行する",
+        "description": "オフの場合、IPMI BMCはリレーホストを使用する必要があります。RedfishおよびAMTには影響しません。"
+      }
+    }
+  },
+  "description": "サーバーの管理コントローラー（BMC）を追加して、電源のオン/オフ、センサーの監視、イベントログの読み取りを行います。ログイン情報は暗号化して保存され、二度と表示されません。",
+  "summary": "{{count}}個のBMC、{{attention}}個が注意が必要です",
+  "empty": "まだBMCがありません。",
+  "add": "BMCを追加",
+  "edit": "編集",
+  "delete": "削除",
+  "back": "戻る",
+  "saved": "保存しました",
+  "deleteConfirm": "{{name}}を削除しますか？",
+  "status": {
+    "unknown": "まだ読み込んでいません",
+    "up": "到達可能",
+    "down": "到達不可"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI over LAN",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "ユーザー名",
+    "password": "パスワード"
+  },
+  "power": {
+    "on": "オン",
+    "off": "オフ",
+    "unknown": "不明",
+    "sent": "{{name}} に電源変更をリクエストしました",
+    "action": {
+      "on": "電源オン",
+      "off": "電源オフ",
+      "graceful-shutdown": "シャットダウン",
+      "cycle": "電源サイクル",
+      "reset": "リセット"
+    },
+    "confirm": {
+      "on": "{{name}} の電源をオンにしますか？",
+      "off": "{{name}} の電源を強制切断しますか？システムはクリーンにシャットダウンされません。",
+      "graceful-shutdown": "{{name}} にシャットダウンを依頼しますか？",
+      "cycle": "{{name}} の電源サイクルを実行しますか？システムはクリーンにシャットダウンされません。",
+      "reset": "{{name}} をリセットしますか？システムはすぐに再起動します。"
+    }
+  },
+  "health": {
+    "ok": "正常",
+    "warning": "警告",
+    "critical": "重大",
+    "unknown": "不明"
+  },
+  "kind": {
+    "temperature": "温度",
+    "fan": "ファン",
+    "voltage": "電圧",
+    "power": "電力",
+    "psu": "電源装置",
+    "other": "その他"
+  },
+  "form": {
+    "addTitle": "BMC を追加",
+    "editTitle": "BMC を編集",
+    "device": "BMC",
+    "access": "アクセス",
+    "type": "タイプ",
+    "name": "名前",
+    "address": "アドレス",
+    "port": "ポート",
+    "host": "Termix ホスト",
+    "hostHint": "BMC を所属するホストにリンクします。リンクすると、そのホストの共有設定に従い、ホストメニューに表示されます。",
+    "noHost": "なし",
+    "poll": "読み取り間隔（秒）",
+    "pollHint": "最低 30 秒、リレーホストを使用する場合は 60 秒以上。",
+    "scheme": "接続",
+    "relay": "リレーホスト",
+    "relayHint": "Termix サーバーではなく、このホストで ipmitool を実行します。シリアルコンソールに必要です。",
+    "noRelay": "Termix サーバー",
+    "cipher": "暗号スイート",
+    "cipherHint": "BMC がログインを拒否する場合のみ変更してください。通常は 3、新しい BMC では 17 を使用します。",
+    "ca": "CA 証明書",
+    "caHint": "BMC の認証局の PEM を貼り付けます。信頼された証明書の場合は空のままにします。",
+    "caSet": "CA が保存されています。新しいものを貼り付けて上書きしてください。",
+    "keepLogin": "保存されたログインを維持する場合は空のままにします",
+    "test": "接続テスト",
+    "testOk": "BMC から応答がありました。電源は {{power}} です。",
+    "testNeedsLogin": "テストするにはログイン情報を再入力してください。",
+    "save": "保存",
+    "add": "追加"
+  },
+  "view": {
+    "overview": "概要",
+    "sensors": "センサー",
+    "log": "イベントログ",
+    "boot": "ブート",
+    "media": "仮想メディア",
+    "console": "コンソール",
+    "refresh": "今すぐ読み取り",
+    "type": "タイプ",
+    "address": "アドレス",
+    "power": "電源",
+    "health": "状態",
+    "manufacturer": "メーカー",
+    "model": "モデル",
+    "serial": "シリアル番号",
+    "bios": "BIOS",
+    "bmc": "BMC ファームウェア",
+    "status": "BMC",
+    "viaRelay": "リレーホスト経由で接続しています。",
+    "noSensors": "この BMC はセンサーを報告していません。",
+    "sensor": "センサー",
+    "reading": "値",
+    "state": "状態"
+  },
+  "log": {
+    "time": "時刻",
+    "severity": "レベル",
+    "message": "イベント",
+    "empty": "イベントログは空です。",
+    "clear": "ログをクリア",
+    "clearConfirm": "{{name}} のイベントログをクリアしますか？この操作は元に戻せません。",
+    "cleared": "ログをクリアしました",
+    "level": {
+      "info": "情報",
+      "warning": "警告",
+      "critical": "重大"
+    }
+  },
+  "boot": {
+    "hint": "マシンはこのデバイスから一度だけブートし、その後通常の順序に戻ります。再起動前に適用してください。",
+    "device": "起動デバイス",
+    "mode": "モード",
+    "uefi": "UEFI",
+    "legacy": "レガシー BIOS",
+    "apply": "次回起動時に適用",
+    "done": "{{name}} は次回起動時に選択したデバイスから起動します",
+    "pxe": "ネットワーク (PXE)",
+    "disk": "ハードディスク",
+    "cd": "CD または仮想メディア",
+    "usb": "USB",
+    "bios": "BIOS セットアップ",
+    "none": "通常順序"
+  },
+  "media": {
+    "url": "イメージのアドレス",
+    "empty": "この BMC には仮想 CD スロットがありません。",
+    "mounted": "マウント済み",
+    "free": "空",
+    "mount": "マウント",
+    "eject": "取り出し",
+    "mountedDone": "イメージがマウントされました",
+    "ejected": "イメージが取り出されました"
+  },
+  "console": {
+    "hint": "コンソールを終了するには ~. と入力してください。",
+    "connecting": "接続中",
+    "ended": "コンソールが閉じられました。",
+    "failed": "コンソールを開けませんでした。",
+    "needsRelay": "シリアルコンソールには ipmitool に対応したリレーホストが必要です。BMC 設定で選択してください。"
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "起動デバイス",
+    "uefi": "UEFI モード",
+    "list": {
+      "title": "BMC リスト"
+    },
+    "poll": {
+      "title": "BMC を今すぐ読み取る"
+    },
+    "powerState": {
+      "title": "電源状態を取得"
+    },
+    "power-on": {
+      "title": "電源オン"
+    },
+    "graceful-shutdown": {
+      "title": "シャットダウン"
+    },
+    "power-off": {
+      "title": "電源オフ"
+    },
+    "power-cycle": {
+      "title": "電源サイクル"
+    },
+    "reset": {
+      "title": "リセット"
+    },
+    "setBootOnce": {
+      "title": "デバイスから一度だけ起動"
+    },
+    "clearLog": {
+      "title": "イベントログをクリア"
+    },
+    "health": {
+      "title": "BMC の健全性"
+    }
+  },
+  "widget": {
+    "name": "アウトオブバンド",
+    "description": "サーバーの BMC の電源と健全性。",
+    "summary": "{{total}} 台中 {{up}} 台稼働中"
+  }
+}

@@ -1,0 +1,235 @@
+{
+  "plugin": {
+    "name": "Sertifikaadid",
+    "description": "Vaadake, väljastage ja uuendage oma hostide TLS-sertifikaate certboti ja acme.sh abil ning saage hoiatus enne nende aegumist."
+  },
+  "common": {
+    "cancel": "Tühista",
+    "back": "Tagasi"
+  },
+  "permissions": {
+    "use": {
+      "title": "Sertifikaatide kasutamine",
+      "description": "Vaadake sertifikaate hostidel, millele pääsete ligi, ja muutke neid hostidel, mida saate redigeerida."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Sertifikaadid",
+        "description": "Halda selle hosti TLS-sertifikaate Sertifikaatide vahekaardilt."
+      },
+      "useSudo": {
+        "label": "Kasuta sudo",
+        "description": "Kasuta sudo sertifikaatide lugemiseks ja muutmiseks. Lülita välja, kui sisselogimine toimub root-ina."
+      },
+      "readOnly": {
+        "label": "Käsitlemiseks ainult lugemiseks",
+        "description": "Kuvab sertifikaate, kuid ei muuda neid kunagi sellel hostil."
+      },
+      "expiryWarnDays": {
+        "label": "Hoiata enne aegumist",
+        "description": "Sertifikaadid, millel on alles nii palju päevi või vähem, kuvatakse aeguvate ja saadavad teavituse."
+      },
+      "showPanel": {
+        "label": "Kuva sertifikaatide paneel terminaalides",
+        "description": "Luba sertifikaatide paneeli avamine selle hosti SSH terminali kõrval."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Ava sertifikaatide paneel koos uute terminalidega",
+        "description": "Kuva sertifikaatide paneel kõigi SSH terminalide kõrval, millel on Sertifikaadid sisse lülitatud. Saate seda ikka avada ja sulgeda paremal serval olevast nupust."
+      },
+      "companionSide": {
+        "label": "Sertifikaatide paneeli külg",
+        "description": "Kus sertifikaatide paneel terminali kõrval asub.",
+        "right": "Parem",
+        "left": "Vasak",
+        "bottom": "Alumine"
+      },
+      "companionSize": {
+        "label": "Sertifikaatide paneeli suurus",
+        "description": "Laius pikslites või kõrgus, kui paneel on all. Saad selle serva ka lohisedades muuta."
+      },
+      "companionEdgeButton": {
+        "label": "Kuva paneeli nupp",
+        "description": "Kuva terminali paremal serval väike nupp, mis avab sertifikaatide paneeli."
+      }
+    }
+  },
+  "tab": {
+    "title": "Sertifikaadid",
+    "noHost": "Ava sertifikaadid hostist.",
+    "error": "Selle hosti sertifikaate ei õnnestunud laadida.",
+    "disabled": "Sertifikaadid on selle hosti jaoks välja lülitatud. Lülita see sisse hosti seadetes.",
+    "sudo": "Muudatuste tegemiseks on sellel hostil vaja root-õigusi, paroolita sudo või salvestatud sudo parooli.",
+    "refresh": "Värskenda",
+    "readOnly": "Ainult lugemiseks",
+    "noClient": "Certbot ega acme.sh ei ole paigaldatud",
+    "viewCertificates": "Sertifikaadid",
+    "viewInspect": "Uurimine",
+    "viewRenewal": "Uuendamine"
+  },
+  "actions": {
+    "working": "Töötlemas. See võib võtta mõne minuti.",
+    "ok": "Valmis",
+    "failed": "Käsk ebaõnnestus.",
+    "noOutput": "Väljundit pole."
+  },
+  "install": {
+    "title": "Sellel hostil ei ole certbot ega acme.sh paigaldatud",
+    "hint": "Paigalda certbot, et saada ja uuendada sertifikaate Let's Encryptist.",
+    "noManager": "Ühtki toetatud pakkemanagerit ei leitud. Paigalda certbot käsitsi.",
+    "button": "Paigalda certbot",
+    "confirm": "Kas paigaldada certbot?",
+    "desc": "See paigaldab certboti hosti pakkemanageri abil.",
+    "working": "Paigaldatakse...",
+    "done": "certbot on paigaldatud."
+  },
+  "certs": {
+    "search": "Otsi sertifikaate",
+    "empty": "Sertifikaate pole veel.",
+    "noMatch": "Ükski sertifikaat ei vasta.",
+    "loadFailed": "Sertifikaate ei õnnestunud lugeda.",
+    "expires": "Aegub {{date}}",
+    "staging": "Testkeskkond",
+    "details": "Sertifikaat",
+    "manage": "Halda",
+    "client": "Klient",
+    "path": "Fail",
+    "authority": "Asutus",
+    "renew": "Uuenda",
+    "renewDone": "Sertifikaat {{name}} on uuendatud.",
+    "renewAll": "Uuenda kõik",
+    "renewAllDone": "Aegunud sertifikaadid on uuendatud.",
+    "forceRenew": "Uuenda siiski kohe",
+    "dryRun": "Testkäik",
+    "dryRunDone": "Testkäik õnnestus.",
+    "revoke": "Keelta",
+    "revokeTitle": "Keelata {{name}}?",
+    "revokeDesc": "Volikohus märgib selle kehtetuks ja see eemaldatakse sellest hostist. Kõik, mis seda veel kasutab, lakkab töötamast.",
+    "revokeDone": "Tühistanud {{name}}.",
+    "delete": "Lõpeta haldamine",
+    "deleteTitle": "Kas lõpetada {{name}} haldamine?",
+    "deleteDesc": "See jääb kehtivaks, kuid seda ei uuendata enam. certbot kustutab ka selle failid, acme.sh säilitab need.",
+    "deleteDone": "{{name}} ei ole enam haldatav."
+  },
+  "expiry": {
+    "expired": "Aegunud",
+    "unknown": "Tundmatu",
+    "days_one": "{{count}} päev jäänud",
+    "days_other": "{{count}} päeva jäänud"
+  },
+  "issue": {
+    "add": "Tee sertifikaat",
+    "title": "Uus sertifikaat",
+    "save": "Taotle",
+    "done": "Sertifikaat on taotletud.",
+    "working": "Pöördume sertifitseerimisasutuse poole. See võib võtta mõne minuti.",
+    "client": "Klient",
+    "domains": "Domeenid",
+    "domainsPlaceholder": "Kirjutage domeen ja vajutage Enter",
+    "domainsHint": "Esimene domeen määrab sertifikaadi nime.",
+    "challenge": "Väljakutse",
+    "standalone": "Iseseisev",
+    "standaloneHint": "Käivitab väikese veebiserveri pordil 80, seega ei tohi seda porti kasutada midagi muud.",
+    "webroot": "Veebiserveri juur",
+    "webrootHint": "Paigutab faili veebiserveri kausta. Veebiserver jätkab tööd.",
+    "dns": "DNS",
+    "dnsHint": "Lisab DNS-i kirje läbi teie pakkuja API. Vajalik jätkumärkide jaoks.",
+    "webrootPath": "Veebiserveri juurkaust",
+    "webrootPathHint": "Peab asuma kaustas /var/www, /srv või /usr/share/nginx.",
+    "dnsProvider": "DNS-i pakkuja",
+    "dnsProviderCertbot": "Paigaldatud certboti DNS-i pluginama nimi, näiteks cloudflare.",
+    "dnsProviderAcme": "acme.sh DNS-i nimi ilma eesliite dns_ ilma, näiteks cf. Selle API token peab olema hostil juba seadistatud.",
+    "credentials": "Autimisfail",
+    "credentialsHint": "Fail hostil, mis sisaldab teie API-võtet. Termix seda kunagi ei loe.",
+    "email": "E-post",
+    "emailHint": "Valikuline. Autoriteet kasutab seda aegumise teavituste saatmiseks.",
+    "keyType": "Võtme tüüp",
+    "staging": "Kasuta testimisserverit",
+    "stagingHint": "Testimiseks. Sertifikaati ei usaldata ja kiiruspiirangud on palju kõrgemad."
+  },
+  "inspect": {
+    "server": "Server",
+    "file": "Fail",
+    "address": "Aadress",
+    "addressPlaceholder": "example.com",
+    "port": "Port",
+    "path": "Faili asukoht",
+    "check": "Kontrolli",
+    "hint": "Kontrolli, mida server TLS-i kaudu edastab, vaadatuna sellest hostist, või loe sellel asuvat sertifikaadifaili.",
+    "failed": "Sertifikaati ei õnnestunud lugeda.",
+    "noOpenssl": "openssl ei ole sellel hostil paigaldatud.",
+    "trusted": "Usaldatud",
+    "notTrusted": "Mitte usaldatud",
+    "leaf": "Sertifikaat",
+    "intermediate": "Ahel {{index}}",
+    "selfSigned": "Isesertifitseeritud",
+    "name": "Nimi",
+    "issuer": "Väljaandja",
+    "domains": "Domeenid",
+    "validFrom": "Kehtiv alates",
+    "validTo": "Kehtiv kuni",
+    "keyType": "Võti",
+    "serial": "Seerianumber",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Kuidas see host uuendab sertifikaate iseseisvalt. Muuda seda hostil.",
+    "on": "Sees",
+    "off": "Väljas",
+    "timer": "systemd aegur",
+    "next": "Järgmine käivitamine {{time}}",
+    "cron": "Croni fail /etc/cron.d/certbot",
+    "certbotOff": "Aegurit ega croni ülesannet ei leitud, seega sertifikaadid ei uuendu iseseisvalt.",
+    "acmeCron": "Croni ülesanne crontab'is",
+    "acmeOff": "Croni ülesannet ei leitud, seega sertifikaadid ei uuendu iseseisvalt."
+  },
+  "watch": {
+    "start": "Teavita mind enne selle hosti sertifikaatide aegumist",
+    "stop": "Peata selle hosti hoiatused",
+    "on": "Saad hoiatuse enne, kui siin olevad sertifikaadid aeguvad.",
+    "off": "Selle hosti hoiatused on väljas lülitatud.",
+    "failed": "Hoiatuse muutmise ebaõnnestus."
+  },
+  "card": {
+    "title": "Sertifikaadid",
+    "loading": "Hostide kontrollimine...",
+    "summary_one": "{{count}} sertifikaat, {{expiring}} aegumas",
+    "summary_other": "{{count}} sertifikaati, {{expiring}} aegumas",
+    "refresh": "Kontrolli uuesti",
+    "empty": "Lülita hosti sertifikaadid sisse, et näha selle sertifikaate siin."
+  },
+  "manager": {
+    "title": "Sertifikaadid",
+    "disabled": "Sisestage selle hosti seaded, et näha siin sertifikaate."
+  },
+  "operations": {
+    "list": {
+      "title": "Sertifikaatide loend"
+    },
+    "expiring": {
+      "title": "Aeguvad sertifikaadid"
+    },
+    "renew": {
+      "title": "Sertifikaadi uuendamine"
+    },
+    "renewAll": {
+      "title": "Kõikide sertifikaatide uuendamine"
+    },
+    "revoke": {
+      "title": "Sertifikaadi tühistamine"
+    },
+    "certificates": {
+      "title": "Sertifikaadid",
+      "client": "Klient",
+      "domains": "Domeenid",
+      "daysLeft": "Päevi jäänud"
+    }
+  },
+  "nav": {
+    "togglePanel": "Lülita sertifikaatide paneel sisse/välja"
+  }
+}

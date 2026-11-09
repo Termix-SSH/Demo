@@ -1,0 +1,141 @@
+{
+  "plugin": {
+    "name": "特权访问",
+    "description": "在任何人连接特权主机前请求批准，访问权限会自动过期，并保留完整的审计记录。"
+  },
+  "tab": {
+    "title": "访问"
+  },
+  "tabs": {
+    "request": "申请访问",
+    "mine": "我的申请",
+    "pending": "待处理",
+    "active": "活跃访问",
+    "history": "历史记录"
+  },
+  "status": {
+    "pending": "等待中",
+    "approved": "已结束",
+    "active": "活跃",
+    "denied": "已拒绝",
+    "expired": "已过期",
+    "revoked": "已撤销",
+    "cancelled": "已取消"
+  },
+  "request": {
+    "host": "主机",
+    "hostWithAccess": "{{host}}（访问有效期至 {{until}}）",
+    "hours": "小时",
+    "hoursHint": "此主机最多允许 {{max}} 小时。",
+    "reason": "申请访问的原因",
+    "reasonOptional": "申请访问的原因（选填）",
+    "ticket": "工单",
+    "ticketOptional": "工单（选填）",
+    "send": "申请访问",
+    "sent": "申请已发送。有人处理时，你会收到通知。",
+    "failed": "无法发送申请",
+    "noHosts": "无特权主机",
+    "noHostsHint": "管理员标记为特权的主机会显示在这里。"
+  },
+  "list": {
+    "none": "暂无内容",
+    "loadError": "无法加载申请",
+    "actionFailed": "操作失败",
+    "hours_other": "{{count}} 小时",
+    "until": "至 {{time}}",
+    "decidedBy": "由 {{name}}",
+    "approve": "批准",
+    "deny": "拒绝",
+    "cancel": "取消",
+    "endNow": "立即结束",
+    "export": "导出 CSV",
+    "approveConfirm_other": "是否授予 {{user}} 对 {{host}} 的访问权限，时长 {{count}} 小时？",
+    "denyConfirm": "是否拒绝此申请？",
+    "cancelConfirm": "是否取消此申请？",
+    "endConfirm": "是否立即结束此访问？主机上的开放会话将关闭。",
+    "approved": "访问已批准",
+    "denied": "申请已拒绝",
+    "ended": "已完成"
+  },
+  "card": {
+    "title": "特权访问",
+    "waiting": "等待你处理",
+    "empty": "暂无待处理申请",
+    "emptyHint": "你已批准的访问会显示在这里。"
+  },
+  "permissions": {
+    "request": {
+      "title": "申请特权访问",
+      "description": "申请对特权主机的限时访问权限。"
+    },
+    "approve": {
+      "title": "批准特权访问",
+      "description": "决定他人的访问申请，提前结束访问并查看报告。"
+    },
+    "bypass": {
+      "title": "紧急访问",
+      "description": "无需申请即可连接特权主机。每次使用都会记录审计日志并发送警报。"
+    },
+    "configure": {
+      "title": "配置特权主机",
+      "description": "将主机标记为特权，并更改谁有权批准对其的访问"
+    }
+  },
+  "settings": {
+    "admin": {
+      "pendingHours": {
+        "label": "申请有效期（小时）",
+        "description": "在此时间内无人处理的申请将过期。"
+      },
+      "alertBypass": {
+        "label": "紧急访问时发送警报",
+        "description": "当有人使用紧急访问权限连接时，通知审批人。"
+      }
+    },
+    "host": {
+      "enable": {
+        "label": "特权主机",
+        "description": "与此主机的 SSH 和远程桌面会话需要获得批准的访问权限。"
+      },
+      "approverRoles": {
+        "label": "审批人角色",
+        "description": "以逗号分隔的角色名称，其成员可以进行审批。留空则允许任何拥有审批权限的用户决定。"
+      },
+      "maxHours": {
+        "label": "最长访问时长（小时）",
+        "description": "单个请求可申请的最多小时数。"
+      },
+      "requireReason": {
+        "label": "要求提供理由",
+        "description": "请求必须说明需要访问的原因。"
+      },
+      "requireTicket": {
+        "label": "要求提供工单",
+        "description": "请求必须指定工单编号。"
+      },
+      "allowBackground": {
+        "label": "允许后台任务通过",
+        "description": "轮询和其他非交互式插件连接将跳过审批。关闭此选项将阻止所有未获授权的会话。"
+      }
+    }
+  },
+  "operations": {
+    "request": {
+      "title": "申请特权访问",
+      "hours": "小时",
+      "reason": "理由",
+      "ticket": "工单"
+    },
+    "pending": {
+      "title": "待处理的访问请求"
+    },
+    "status": {
+      "title": "特权访问"
+    },
+    "events": {
+      "requested": "有人申请了访问权限",
+      "approved": "访问已获批准",
+      "bypassed": "已使用紧急访问权限"
+    }
+  }
+}

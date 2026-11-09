@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Brukere",
+    "description": "Administrer brukerkontoer, grupper, passord og SSH-nøkler på vertene dine."
+  },
+  "common": {
+    "save": "Lagre",
+    "cancel": "Avbryt",
+    "back": "Tilbake",
+    "delete": "Slett",
+    "loading": "Laster..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Bruk Brukere",
+      "description": "Se kontoer på vertene du kan nå, og endre dem på vertene du har skriveadgang til."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Brukere",
+        "description": "Administrer brukerkontoer og grupper på denne verten fra fanen Brukere."
+      },
+      "useSudo": {
+        "label": "Bruk sudo",
+        "description": "Bruk sudo for å lese og endre kontoer. Slå av hvis innloggingen er som root."
+      },
+      "readOnly": {
+        "label": "Skrivebeskyttet",
+        "description": "Vis kontoer, men endre aldri dem på denne verten."
+      }
+    }
+  },
+  "tab": {
+    "title": "Brukere",
+    "noHost": "Åpne Brukere fra en vert.",
+    "error": "Kunne ikke laste kontoene fra denne verten.",
+    "disabled": "Brukere er slått av for denne verten. Slå det på i vertsinnstillingene.",
+    "sudo": "Endringer og passordtilstander krever root-innlogging, passordløs sudo eller et lagret Sudo-passord på denne verten.",
+    "noTools": "useradd er ikke installert på denne verten. På Alpine, installer shadow-pakken.",
+    "refresh": "Oppdater",
+    "readOnly": "Skrivebeskyttet",
+    "counts_one": "{{count}} bruker",
+    "counts_other": "{{count}} brukere",
+    "viewUsers": "Brukere",
+    "viewGroups": "Grupper",
+    "viewSessions": "Økter"
+  },
+  "users": {
+    "add": "Legg til bruker",
+    "search": "Søk etter brukere",
+    "people": "Personer",
+    "systemFilter": "System",
+    "all": "Alle",
+    "empty": "Ingen brukere matcher.",
+    "you": "Deg",
+    "sudo": "Sudo",
+    "locked": "Låst",
+    "emptyPassword": "Ingen passord",
+    "system": "System",
+    "loadFailed": "Kunne ikke lese kontoene."
+  },
+  "password": {
+    "set": "Angi",
+    "locked": "Låst",
+    "none": "Ikke angitt, ingen passordinnlogging",
+    "empty": "Tom, alle kan logge inn",
+    "unknown": "Krever root for å fortelle"
+  },
+  "detail": {
+    "info": "Konto",
+    "account": "Detaljer",
+    "fullName": "Fullt navn",
+    "uid": "Bruker- og gruppe-ID",
+    "mainGroup": "Hovedgruppe",
+    "home": "Hjemmemappe",
+    "shell": "Skall",
+    "groups": "Grupper",
+    "groupsPlaceholder": "Skriv inn en gruppe og trykk Enter",
+    "unknownGroups": "Disse gruppene finnes ikke: {{groups}}",
+    "none": "Ingen",
+    "password": "Passord",
+    "passwordChanged": "Passord endret",
+    "lastLogin": "Sist innlogget",
+    "never": "Aldri",
+    "unknown": "Ukjent",
+    "saved": "Lagret.",
+    "failed": "Endringen mislyktes.",
+    "loadFailed": "Kunne ikke lese denne brukerens nøkler og siste pålogging.",
+    "passwordSection": "Passord",
+    "newPassword": "Nytt passord",
+    "newPasswordHint": "Sendes til verten over SSH og settes med chpasswd. Det lagres aldri i Termix.",
+    "setPassword": "Sett passord",
+    "passwordSet": "Passord er satt.",
+    "expirePassword": "Be om nytt passord ved neste pålogging",
+    "expired": "De må velge nytt passord ved neste pålogging.",
+    "access": "Tilgang",
+    "sudo": "Sudo",
+    "sudoHint": "Kjør kommandoer som root gjennom {{group}}-gruppen.",
+    "sudoProtected": "Du kan ikke fjerne sudo fra root eller brukeren Termix logger inn som.",
+    "sudoTitle": "Gi {{name}} sudo?",
+    "sudoDesc": "Legger dem til i {{group}}-gruppen, slik at de kan kjøre alle kommandoer som root.",
+    "sudoGrant": "Gi sudo",
+    "sudoOn": "Sudo gitt.",
+    "sudoOff": "Sudo fjernet.",
+    "lock": "Lås konto",
+    "unlock": "Lås opp konto",
+    "lockTitle": "Lås {{name}}?",
+    "lockDesc": "De kan ikke logge inn med passord eller SSH-nøkkel før du låser opp kontoen.",
+    "lockHint": "Blokkerer pålogging med passord og SSH-nøkkel.",
+    "protected": "Root og brukeren Termix logger inn som kan ikke låses eller slettes.",
+    "locked": "Kontoen er låst.",
+    "unlocked": "Kontoen er låst opp.",
+    "danger": "Slett",
+    "removeHome": "Slett også hjemmemappen",
+    "removeHomeHint": "Sletter {{home}} og alt innholdet i den.",
+    "delete": "Slett bruker",
+    "deleteTitle": "Slett {{name}}?",
+    "deleteDesc": "Kontoen fjernes. Hjemmemappen blir igjen på verten.",
+    "deleteDescHome": "Kontoen og {{home}} fjernes. Dette kan ikke angres.",
+    "deleted": "Slettet {{name}}."
+  },
+  "keys": {
+    "title": "SSH-nøkler",
+    "empty": "Ingen SSH-nøkler.",
+    "denied": "Nøklene kan ikke leses uten root.",
+    "options": "Alternativer",
+    "remove": "Fjern nøkkel",
+    "removeTitle": "Fjern denne nøkkelen?",
+    "removed": "Nøkkelen er fjernet.",
+    "add": "Legg til en nøkkel",
+    "addHint": "Lim inn én offentlig nøkkel, for eksempel innholdet i id_ed25519.pub.",
+    "addButton": "Legg til nøkkel",
+    "added": "Nøkkelen er lagt til."
+  },
+  "create": {
+    "title": "Ny bruker",
+    "name": "Brukernavn",
+    "nameHint": "Små bokstaver, tall, - og _.",
+    "nameInvalid": "Start med en bokstav og bruk bare a-z, 0-9, - og _.",
+    "home": "Hjemmemappe",
+    "homeHint": "La stå tomt for /home/{{name}}.",
+    "createHome": "Opprett hjemmemappen",
+    "password": "Passord",
+    "passwordHint": "Valgfritt. Uten passord kan brukeren bare logge inn med SSH-nøkkel.",
+    "again": "Passord på nytt",
+    "mismatch": "Passordene stemmer ikke overens.",
+    "save": "Opprett bruker",
+    "done": "Opprettet {{name}}.",
+    "failed": "Kunne ikke opprette brukeren."
+  },
+  "groups": {
+    "add": "Legg til gruppe",
+    "name": "Gruppenavn",
+    "namePlaceholder": "Nytt gruppenavn",
+    "create": "Opprett",
+    "created": "Opprettet {{name}}.",
+    "search": "Søk i grupper",
+    "empty": "Ingen grupper matcher.",
+    "noMembers": "Ingen medlemmer.",
+    "failed": "Endringen mislyktes.",
+    "addMember": "Legg til medlem",
+    "pickUser": "Velg en bruker",
+    "removeMember": "Fjern fra gruppe",
+    "memberAdded": "La til {{name}} i {{group}}.",
+    "memberRemoved": "Fjernet {{name}} fra {{group}}.",
+    "mainGroup": "Hovedgruppe",
+    "mainGroupHint": "Dette er hovedgruppen deres, så de tilhører den alltid.",
+    "deleteTitle": "Slett {{name}}?",
+    "deleteDesc": "Gruppen er fjernet. Filer den eide beholder den gamle ID-en.",
+    "deleted": "Slettet {{name}}."
+  },
+  "sessions": {
+    "now": "Logget inn nå",
+    "none": "Ingen er logget inn.",
+    "recent": "Siste innlogginger",
+    "noRecent": "Fant ingen innloggingshistorikk.",
+    "loadFailed": "Kunne ikke lese øktene."
+  },
+  "manager": {
+    "title": "Brukere",
+    "disabled": "Aktiver Brukere for denne verten i innstillingene for å se kontoene her."
+  },
+  "operations": {
+    "list": {
+      "title": "List opp brukere"
+    },
+    "emptyPasswords": {
+      "title": "Kontoer uten passord"
+    },
+    "lock": {
+      "title": "Lås bruker"
+    },
+    "unlock": {
+      "title": "Lås opp bruker"
+    },
+    "delete": {
+      "title": "Slett bruker"
+    },
+    "users": {
+      "title": "Brukere",
+      "uid": "UID",
+      "sudo": "Sudo",
+      "groups": "Grupper"
+    }
+  }
+}

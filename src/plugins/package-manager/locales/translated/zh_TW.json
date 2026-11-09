@@ -1,0 +1,209 @@
+{
+  "plugin": {
+    "name": "套件",
+    "description": "查看並安裝主機上的更新，搜尋、安裝與移除套件，以及查看套件歷史記錄。"
+  },
+  "common": {
+    "cancel": "取消",
+    "back": "返回"
+  },
+  "permissions": {
+    "use": {
+      "title": "使用套件",
+      "description": "查看可連線主機上的套件與更新，並修改可編輯主機上的套件。"
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "套件",
+        "description": "從「套件」分頁管理此主機的套件與更新。"
+      },
+      "useSudo": {
+        "label": "使用 sudo",
+        "description": "使用 sudo 來安裝、更新與移除套件。若登入帳號為 root，請關閉此選項。"
+      },
+      "readOnly": {
+        "label": "唯讀",
+        "description": "顯示套件與更新，但永不修改此主機上的套件。"
+      },
+      "showPanel": {
+        "label": "在終端機中顯示更新面板",
+        "description": "允許更新面板在此主機的 SSH 終端機旁開啟。"
+      },
+      "alertUpdates": {
+        "label": "安全更新警示",
+        "description": "當此主機有安全更新或需要重新啟動時，發送警示。在讀取更新時檢查，約每小時一次。"
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "開啟新終端機時自動開啟更新面板",
+        "description": "在每個啟用「套件」的 SSH 終端機旁顯示更新面板。您仍可以從右側邊緣的按鈕開啟或關閉它。"
+      },
+      "companionSide": {
+        "label": "更新面板位置",
+        "description": "更新面板相對於終端機的位置。",
+        "right": "右側",
+        "left": "左側",
+        "bottom": "底部"
+      },
+      "companionSize": {
+        "label": "更新面板大小",
+        "description": "寬度（像素），若位於底部則為高度。您也可以拖曳其邊緣調整大小。"
+      },
+      "companionEdgeButton": {
+        "label": "顯示面板按鈕",
+        "description": "在終端機右側邊緣顯示一個小按鈕，用於開啟更新面板。"
+      }
+    }
+  },
+  "tab": {
+    "title": "套件",
+    "noHost": "從主機開啟套件。",
+    "error": "無法從此主機載入套件。",
+    "disabled": "此主機已關閉套件功能。請在主机設定中開啟。",
+    "sudo": "修改需要 root 登入、免密碼 sudo 或此主機上已儲存的 Sudo 密碼。",
+    "refresh": "重新整理",
+    "readOnly": "唯讀",
+    "noManager": "無套件管理器",
+    "noManagerTitle": "未找到支援的套件管理器",
+    "noManagerHint": "套件支援 apt、dnf、yum、zypper、pacman 和 apk。",
+    "indexAge": "索引於 {{ago}} 前重新整理",
+    "reboot": "此主機需要重新啟動以完成更新。",
+    "viewUpdates": "更新",
+    "viewInstalled": "已安裝",
+    "viewSearch": "搜尋",
+    "viewHistory": "歷史記錄",
+    "viewRepos": "套件來源"
+  },
+  "actions": {
+    "working": "{{action}} 正在執行中。這可能需要幾分鐘。",
+    "ok": "完成",
+    "failed": "套件管理器失敗。",
+    "noOutput": "無輸出。",
+    "refresh": {
+      "label": "重新整理索引",
+      "confirm": "要重新整理套件索引嗎？",
+      "desc": "下載最新的套件清單。",
+      "done": "套件索引已是最新。"
+    },
+    "update": {
+      "label": "更新",
+      "confirm_other": "要更新 {{count}} 個套件嗎？",
+      "desc": "安裝 {{names}} 的最新版本。",
+      "done": "已更新 {{names}}。"
+    },
+    "upgrade-all": {
+      "label": "全部升級",
+      "confirm": "要升級所有套件嗎？",
+      "desc": "重新整理套件索引並安裝所有更新。執行期間服務可能會重新啟動。",
+      "done": "所有套件已是最新。"
+    },
+    "install": {
+      "label": "安裝",
+      "confirm": "要安裝 {{names}} 嗎？",
+      "desc": "將安裝 {{names}} 及其所需的依賴項目。",
+      "done": "已安裝 {{names}}。"
+    },
+    "remove": {
+      "label": "移除",
+      "confirm": "要移除 {{names}} 嗎？",
+      "desc": "將從此主機移除 {{names}}。依賴它的程式可能會停止運作。",
+      "done": "已移除 {{names}}。"
+    },
+    "hold": {
+      "label": "鎖定此版本",
+      "confirm": "要鎖定 {{names}} 嗎？",
+      "desc": "在您解除鎖定之前，更新將跳過 {{names}}。",
+      "done": "{{names}} 已鎖定。"
+    },
+    "unhold": {
+      "label": "解除鎖定",
+      "confirm": "要解除鎖定 {{names}} 嗎？",
+      "desc": "{{names}} 將再次接收更新。",
+      "done": "{{names}} 將再次接收更新。"
+    }
+  },
+  "updates": {
+    "search": "篩選更新",
+    "count_other": "{{count}} 個更新",
+    "countSecurity_other": "{{count}} 個更新，其中 {{security}} 個為安全性更新",
+    "updatePicked_other": "更新 {{count}} 個套件",
+    "updateOne": "更新",
+    "pick": "選擇 {{name}}",
+    "security": "安全性",
+    "empty": "所有項目皆為最新版本。",
+    "noMatch": "沒有符合的更新。",
+    "loadFailed": "無法讀取更新。"
+  },
+  "installed": {
+    "search": "篩選已安裝的套件",
+    "all": "全部",
+    "held": "已鎖定",
+    "heldBadge": "已鎖定",
+    "empty": "沒有符合的套件。",
+    "loadFailed": "無法讀取已安裝的套件。"
+  },
+  "search": {
+    "placeholder": "搜尋套件",
+    "button": "搜尋",
+    "hint": "搜尋主機的套件存放庫，以安裝套件。",
+    "empty": "找不到任何項目。",
+    "installed": "已安裝",
+    "failed": "搜尋失敗。"
+  },
+  "history": {
+    "empty": "找不到套件歷史記錄。",
+    "loadFailed": "無法讀取套件歷史記錄。"
+  },
+  "repos": {
+    "hint": "此主機安裝套件的存放庫。請在主機本身上變更它們。",
+    "empty": "找不到任何存放庫。",
+    "off": "關閉",
+    "loadFailed": "無法讀取存放庫。"
+  },
+  "card": {
+    "title": "套件更新",
+    "loading": "正在檢查主機...",
+    "summary_other": "{{hosts}} 個主機上有 {{count}} 個更新",
+    "refresh": "再次檢查",
+    "empty": "為主機開啟「套件」功能，即可在此查看其更新。",
+    "security_other": "{{count}} 個安全性更新",
+    "reboot": "需要重新啟動",
+    "updates_other": "{{count}} 個更新",
+    "upToDate": "已是最新版本"
+  },
+  "manager": {
+    "title": "套件",
+    "disabled": "請在此主機的設定中開啟「套件」功能，即可在此查看其更新。"
+  },
+  "operations": {
+    "list": {
+      "title": "列出套件更新"
+    },
+    "updates": {
+      "title": "待處理的更新",
+      "resource": "待處理的更新"
+    },
+    "upgradeAll": {
+      "title": "升級所有套件"
+    },
+    "install": {
+      "title": "安裝套件"
+    },
+    "remove": {
+      "title": "移除套件"
+    },
+    "package": "套件",
+    "packageHint": "一個或多個套件名稱，以空格分隔。",
+    "resource": {
+      "current": "已安裝",
+      "available": "可用",
+      "repo": "套件庫"
+    }
+  },
+  "nav": {
+    "togglePanel": "切換更新面板"
+  }
+}

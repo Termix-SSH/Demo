@@ -1,0 +1,222 @@
+{
+  "tab": {
+    "title": "Stocare",
+    "noHost": "Deschideți Stocarea dintr-un gazdă.",
+    "disabled": "Sănătatea stocării este dezactivată pentru această gazdă. Activați-o în setările gazdei.",
+    "error": "Nu s-a putut încărca sănătatea stocării",
+    "viewDrives": "Unități",
+    "viewPools": "Pools și matrice",
+    "viewEvents": "Evenimente",
+    "viewSettings": "Setări",
+    "readAgo": "Citit acum {{time}}",
+    "stale": "Nu s-a putut citi gazda, se afișează ultima citire. {{error}}"
+  },
+  "common": {
+    "loading": "Se încarcă...",
+    "failed": "Nu a funcționat",
+    "save": "Salvează",
+    "refresh": "Citește acum",
+    "back": "Înapoi"
+  },
+  "card": {
+    "title": "Sănătatea stocării",
+    "empty": "Încă nu sunt monitorizate gazde. Activați Sănătatea stocării în setările unei gazde.",
+    "drives_one": "{{count}} unitate",
+    "drives_few": "{{count}} unități",
+    "drives_other": "{{count}} unități",
+    "problems_one": "{{count}} problemă deschisă",
+    "problems_few": "{{count}} probleme deschise",
+    "problems_other": "{{count}} probleme deschise"
+  },
+  "manager": {
+    "title": "Sănătatea stocării",
+    "disabled": "Sănătatea stocării este dezactivată pentru această gazdă."
+  },
+  "health": {
+    "ok": "Sănătoasă",
+    "warn": "Necesită atenție",
+    "fail": "Defecțiune",
+    "unknown": "Necunoscut"
+  },
+  "kind": {
+    "hdd": "Disc dur",
+    "ssd": "SSD",
+    "nvme": "NVMe",
+    "unknown": "Unitate"
+  },
+  "drives": {
+    "empty": "Nu s-au găsit unități pe această gazdă",
+    "noRoot": "Verificările au fost executate fără drepturi de root, așa că unele unități pot să nu afișeze date. Permiteți sudo fără parolă pentru această autentificare.",
+    "noTool": "smartctl nu este instalat pe această gazdă. Instalați smartmontools pentru a citi sănătatea unităților.",
+    "noData": "Încă nu s-a citit nimic",
+    "wear": "{{value}}% uzură",
+    "testing": "Testare"
+  },
+  "detail": {
+    "stop": "Oprește testul",
+    "short": "Test scurt",
+    "long": "Test lung",
+    "health": "Sănătate",
+    "temp": "Temperatură",
+    "wear": "Uzură",
+    "hours": "Timp de funcționare",
+    "model": "Model",
+    "serial": "Serial",
+    "kind": "Tip",
+    "size": "Dimensiune",
+    "reallocated": "Sector realocați",
+    "pending": "Sector în așteptare",
+    "uncorrectable": "Sector necorectabil",
+    "mediaErrors": "Erori de mediu",
+    "selfTest": "Ultimul test de sine",
+    "attributes": "Atribute SMART",
+    "attrMeta": "Valoare {{value}} | Brut {{raw}}"
+  },
+  "history": {
+    "24h": "24 de ore",
+    "7d": "7 zile",
+    "30d": "30 de zile",
+    "temp": "Temperatură",
+    "wear": "Uzură",
+    "bad": "Sector defect",
+    "empty": "Istoricul se construiește pe măsură ce gazda este citită. Verificați din nou mai târziu."
+  },
+  "pools": {
+    "empty": "Nu s-au găsit pool-uri ZFS, matrice RAID, sisteme de fișiere btrfs sau pool-uri LVM thin",
+    "startTitle": "Pornire pe {{name}}?",
+    "startText": "Aceasta citește fiecare bloc și poate încetini discurile timp de ore.",
+    "start": "Pornește",
+    "stop": "Oprește",
+    "scrub": "Scrub",
+    "thinMeta": "{{data}}% date | {{meta}}% metadate | {{free}} liber în grup"
+  },
+  "events": {
+    "error": "Nu s-au putut încărca evenimentele",
+    "empty": "Încă nu există evenimente",
+    "type": {
+      "smart-failing": "Defecțiune",
+      "smart-attention": "Avertisment SMART",
+      "nvme-critical": "Critic",
+      "wear-high": "Uzit",
+      "wear-critical": "Aproape epuizat",
+      "temp-high": "Calduros",
+      "temp-critical": "Prea cald",
+      "pool-degraded": "Pool degradat",
+      "pool-errors": "Erori pool",
+      "raid-degraded": "Matrice degradată",
+      "raid-rebuilding": "Reconstrucție",
+      "btrfs-errors": "Erori btrfs",
+      "thin-full": "Pool thin se umple",
+      "thin-critical": "Pool thin plin",
+      "unreachable": "Inaccesibil",
+      "test": "Testare automată",
+      "scrub": "Scrub",
+      "command": "Comandă"
+    }
+  },
+  "settings": {
+    "saved": "Salvat",
+    "alerts": "Trimite alerte",
+    "alertsHint": "Notifică persoana care a configurat acest lucru când apare o problemă sau când o defecțiune este remediată.",
+    "interval": "Citește la fiecare (minute)",
+    "intervalHint": "Citirile SMART sunt lente, așa că 15 minute este un punct de plecare bun.",
+    "tempWarn": "Avertizează peste (°C)",
+    "tempCrit": "Critic peste (°C)",
+    "tempHint": "0 folosește valoarea implicită pentru tipul de disc.",
+    "wear": "Avertizează când este uzat (%)",
+    "wearHint": "Critic la 95%.",
+    "thin": "Avertizează când un pool thin este plin (%)",
+    "thinHint": "Critic la 95%.",
+    "host": {
+      "enable": {
+        "label": "Starea stocării",
+        "description": "Monitorizează discurile, pool-urile și matricele de pe acest gazdă."
+      },
+      "useSudo": {
+        "label": "Folosește sudo",
+        "description": "Rulează verificările cu sudo fără parolă. SMART necesită root."
+      },
+      "readOnly": {
+        "label": "Doar citire",
+        "description": "Blochează testele automate și scrub-urile din Termix."
+      },
+      "showPanel": {
+        "label": "Afișează panoul lateral",
+        "description": "Oferă panoul Starea stocării lângă terminalele de pe acest gazdă."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Deschide panoul Starea stocării împreună cu terminalele",
+        "description": "Deschide panoul automat pe gazdele care îl au."
+      },
+      "companionSide": {
+        "label": "Poziția panoului",
+        "description": "Unde se deschide panoul Starea stocării lângă un terminal.",
+        "right": "Dreapta",
+        "left": "Stânga",
+        "bottom": "Jos"
+      },
+      "companionSize": {
+        "label": "Dimensiunea panoului",
+        "description": "Lățimea sau înălțimea panoului în pixeli."
+      },
+      "companionEdgeButton": {
+        "label": "Afișează butonul de margine",
+        "description": "Afișează un buton mic pe marginea terminalului pentru a deschide panoul."
+      }
+    }
+  },
+  "permissions": {
+    "use": {
+      "title": "Folosește Starea stocării",
+      "description": "Vedeți starea discurilor și matricelor pe gazdele la care aveți acces."
+    },
+    "runTests": {
+      "title": "Execută teste și scrub-uri",
+      "description": "Pornește teste SMART și scrub-uri. Necesită, de asemenea, acces de editare la gazdă."
+    }
+  },
+  "operations": {
+    "devices": {
+      "title": "Discuri",
+      "health": "Stare",
+      "kind": "Tip",
+      "temp": "Temperatură",
+      "wear": "Uzură"
+    },
+    "pools": {
+      "title": "Pools și array-uri",
+      "state": "Stare"
+    },
+    "status": {
+      "title": "Starea stocării"
+    },
+    "temperature": {
+      "title": "Cel mai cald disc"
+    },
+    "selftest": {
+      "title": "Test SMART",
+      "device": "Disc",
+      "action": "Acțiune",
+      "short": "Test scurt",
+      "long": "Test lung",
+      "abort": "Oprește testul în curs"
+    },
+    "scrub": {
+      "title": "Scrub",
+      "target": "Pool, sistem de fișiere sau array",
+      "targetHint": "Un ID din lista de pools, cum ar fi zfs:tank, btrfs:/mnt/data sau md:md0",
+      "stop": "Oprește în loc să pornești"
+    },
+    "events": {
+      "degraded": "Problemă de stocare detectată",
+      "recovered": "Problemă de stocare rezolvată",
+      "smartFailing": "Discul eșuează verificarea SMART",
+      "raidDegraded": "Pool sau array degradat"
+    }
+  },
+  "companion": {
+    "toggle": "Panou starea stocării"
+  }
+}

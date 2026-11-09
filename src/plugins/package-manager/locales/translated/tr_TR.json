@@ -1,0 +1,216 @@
+{
+  "plugin": {
+    "name": "Paketler",
+    "description": "Ana bilgisayarlarınızdaki güncellemeleri görüntüleyin ve yükleyin, paketleri arayın, yükleyin ve kaldırın, paket geçmişini okuyun."
+  },
+  "common": {
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "permissions": {
+    "use": {
+      "title": "Paketleri Kullan",
+      "description": "Erişebildiğiniz ana bilgisayarlardaki paketleri ve güncellemeleri görüntüleyin, düzenleyebildiğiniz ana bilgisayarlarda değişiklik yapın."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Paketler",
+        "description": "Bu ana bilgisayar üzerindeki paketleri ve güncellemeleri Paketler sekmesinden yönetin."
+      },
+      "useSudo": {
+        "label": "sudo kullan",
+        "description": "Paketleri yüklemek, güncellemek ve kaldırmak için sudo kullanın. Giriş root ise kapatın."
+      },
+      "readOnly": {
+        "label": "Salt okunur",
+        "description": "Paketleri ve güncellemeleri göster ancak bu ana bilgisayarda asla değişiklik yapma."
+      },
+      "showPanel": {
+        "label": "Terminalde güncellemeler panelini göster",
+        "description": "Güncellemeler panelinin bu ana bilgisayarın SSH terminalinin yanında açılmasına izin ver."
+      },
+      "alertUpdates": {
+        "label": "Güvenlik güncellemelerinde uyar",
+        "description": "Bu ana bilgisayarda güvenlik güncellemeleri varsa veya yeniden başlatma gerekiyorsa bir uyarı gönder. Güncellemeler okunduğunda kontrol edilir, yaklaşık saatte bir."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Yeni terminallerle güncellemeler panelini aç",
+        "description": "Paketler özelliği açık olan her SSH terminalinin yanında güncellemeler panelini göster. Sağ kenardaki düğmeden açıp kapatabilirsiniz."
+      },
+      "companionSide": {
+        "label": "Güncellemeler paneli konumu",
+        "description": "Güncellemeler panelinin terminalin yanında nerede duracağı.",
+        "right": "Sağ",
+        "left": "Sol",
+        "bottom": "Alt"
+      },
+      "companionSize": {
+        "label": "Güncellemeler paneli boyutu",
+        "description": "Piksel cinsinden genişlik veya altta olduğunda yükseklik. Kenarını sürükleyerek de ayarlayabilirsiniz."
+      },
+      "companionEdgeButton": {
+        "label": "Panel düğmesini göster",
+        "description": "Güncellemeler panelini açan küçük bir düğmeyi terminalin sağ kenarında göster."
+      }
+    }
+  },
+  "tab": {
+    "title": "Paketler",
+    "noHost": "Paketleri bir ana bilgisayardan açın.",
+    "error": "Bu ana bilgisayardan paketler yüklenemedi.",
+    "disabled": "Bu ana bilgisayar için Paketler kapatıldı. Ana bilgisayar ayarlarından açın.",
+    "sudo": "Değişiklikler için bu ana bilgisayarda root girişi, şifresiz sudo veya kayıtlı Sudo Şifresi gerekir.",
+    "refresh": "Yenile",
+    "readOnly": "Salt okunur",
+    "noManager": "Paket yöneticisi yok",
+    "noManagerTitle": "Desteklenen bir paket yöneticisi bulunamadı",
+    "noManagerHint": "Paketler apt, dnf, yum, zypper, pacman ve apk ile çalışır.",
+    "indexAge": "Dizin {{ago}} önce yenilendi",
+    "reboot": "Bu ana bilgisayarın bir güncellemeyi tamamlaması için yeniden başlatılması gerekiyor.",
+    "viewUpdates": "Güncellemeler",
+    "viewInstalled": "Yüklü",
+    "viewSearch": "Ara",
+    "viewHistory": "Geçmiş",
+    "viewRepos": "Depolar"
+  },
+  "actions": {
+    "working": "{{action}} çalışıyor. Bu birkaç dakika sürebilir.",
+    "ok": "Tamamlandı",
+    "failed": "Paket yöneticisi başarısız oldu.",
+    "noOutput": "Çıktı yok.",
+    "refresh": {
+      "label": "Dizini yenile",
+      "confirm": "Paket dizini yenilensin mi?",
+      "desc": "En yeni paket listelerini indirir.",
+      "done": "Paket dizini güncel."
+    },
+    "update": {
+      "label": "Güncelle",
+      "confirm_one": "{{names}} güncellensin mi?",
+      "confirm_other": "{{count}} paket güncellensin mi?",
+      "desc": "{{names}} paketinin en yeni sürümünü yükler.",
+      "done": "{{names}} güncellendi."
+    },
+    "upgrade-all": {
+      "label": "Tümünü yükselt",
+      "confirm": "Her paket yükseltilecek mi?",
+      "desc": "Paket dizinini yeniler ve her güncellemeyi yükler. Çalışırken hizmetler yeniden başlayabilir.",
+      "done": "Tüm paketler güncel."
+    },
+    "install": {
+      "label": "Yükle",
+      "confirm": "{{names}} yüklensin mi?",
+      "desc": "{{names}} ve bağımlılıkları yüklenir.",
+      "done": "{{names}} yüklendi."
+    },
+    "remove": {
+      "label": "Kaldır",
+      "confirm": "{{names}} kaldırılsın mı?",
+      "desc": "{{names}} bu sunucudan kaldırılır. Ona bağımlı programlar çalışmayı bırakabilir.",
+      "done": "{{names}} kaldırıldı."
+    },
+    "hold": {
+      "label": "Bu sürümde tut",
+      "confirm": "{{names}} tutulsun mu?",
+      "desc": "Serbest bırakana kadar güncellemeler {{names}}'i atlar.",
+      "done": "{{names}} tutuluyor."
+    },
+    "unhold": {
+      "label": "Tutmayı bırak",
+      "confirm": "{{names}} serbest bırakılsın mı?",
+      "desc": "{{names}} tekrar güncellenir.",
+      "done": "{{names}} tekrar güncellenir."
+    }
+  },
+  "updates": {
+    "search": "Güncellemeleri filtrele",
+    "count_one": "{{count}} güncelleme",
+    "count_other": "{{count}} güncelleme",
+    "countSecurity_one": "{{count}} güncelleme, {{security}}'i güvenlik için",
+    "countSecurity_other": "{{count}} güncelleme, {{security}}'i güvenlik için",
+    "updatePicked_one": "{{count}} paketi güncelle",
+    "updatePicked_other": "{{count}} paketi güncelle",
+    "updateOne": "Güncelle",
+    "pick": "{{name}} seç",
+    "security": "Güvenlik",
+    "empty": "Her şey güncel.",
+    "noMatch": "Eşleşen güncelleme yok.",
+    "loadFailed": "Güncellemeler okunamadı."
+  },
+  "installed": {
+    "search": "Yüklü paketleri filtrele",
+    "all": "Tümü",
+    "held": "Tutulanlar",
+    "heldBadge": "Tutulan",
+    "empty": "Eşleşen paket yok.",
+    "loadFailed": "Yüklü paketler okunamadı."
+  },
+  "search": {
+    "placeholder": "Paket ara",
+    "button": "Ara",
+    "hint": "Yüklemek için sunucunun depolarında paket arayın.",
+    "empty": "Hiçbir şey bulunamadı.",
+    "installed": "Yüklü",
+    "failed": "Arama başarısız oldu."
+  },
+  "history": {
+    "empty": "Paket geçmişi bulunamadı.",
+    "loadFailed": "Paket geçmişi okunamadı."
+  },
+  "repos": {
+    "hint": "Bu sunucunun paketleri yüklediği depolar. Bunları sunucunun kendisinde değiştirin.",
+    "empty": "Depo bulunamadı.",
+    "off": "Kapalı",
+    "loadFailed": "Depolar okunamadı."
+  },
+  "card": {
+    "title": "Paket güncellemeleri",
+    "loading": "Sunucular kontrol ediliyor...",
+    "summary_one": "{{hosts}} sunucuda {{count}} güncelleme",
+    "summary_other": "{{hosts}} sunucuda {{count}} güncelleme",
+    "refresh": "Tekrar kontrol et",
+    "empty": "Güncellemelerini burada görmek için bir sunucuda Paketleri açın.",
+    "security_one": "{{count}} güvenlik",
+    "security_other": "{{count}} güvenlik",
+    "reboot": "Yeniden başlatma gerekli",
+    "updates_one": "{{count}} güncelleme",
+    "updates_other": "{{count}} güncelleme",
+    "upToDate": "Güncel"
+  },
+  "manager": {
+    "title": "Paketler",
+    "disabled": "Güncellemelerini burada görmek için bu sunucunun ayarlarında Paketleri açın."
+  },
+  "operations": {
+    "list": {
+      "title": "Paket güncellemelerini listele"
+    },
+    "updates": {
+      "title": "Bekleyen güncellemeler",
+      "resource": "Bekleyen güncellemeler"
+    },
+    "upgradeAll": {
+      "title": "Tüm paketleri yükselt"
+    },
+    "install": {
+      "title": "Paketleri yükle"
+    },
+    "remove": {
+      "title": "Paketleri kaldır"
+    },
+    "package": "Paketler",
+    "packageHint": "Bir veya daha fazla paket adı, boşluklarla ayrılmış.",
+    "resource": {
+      "current": "Yüklü",
+      "available": "Mevcut",
+      "repo": "Depo"
+    }
+  },
+  "nav": {
+    "togglePanel": "Güncellemeler panelini aç/kapat"
+  }
+}

@@ -29,6 +29,31 @@ export function registerPasskeyRoutes(
   passkeys: PasskeyService,
   factor: FactorState,
 ): void {
+  /**
+   * While the security key step is on, turning it off or removing a key needs
+   * a fresh tap of one of the keys, like TOTP asks for a code. Otherwise a
+   * stolen session could take the second factor away.
+   */
+  async function proveFactor(
+    req: Request,
+    res: Response,
+    userId: string,
+  ): Promise<boolean> {
+    if (!(await factor.isOn(userId))) return true;
+    const body = (req.body ?? {}) as Record<string, unknown>;
+    if (!body.response) {
+      res
+        .status(400)
+        .json({ error: "Tap a security key first", code: "proof-required" });
+      return false;
+    }
+    if (!(await passkeys.verifyFactor(userId, body))) {
+      res.status(401).json({ error: "The security key check failed" });
+      return false;
+    }
+    return true;
+  }
+
   async function findUser(
     column: "id" | "username",
     value: string,
@@ -212,6 +237,7 @@ export function registerPasskeyRoutes(
     "/credentials/:credentialId",
     async (req: Request, res: Response) => {
       const userId = ctx.currentActor()!;
+      if (!(await proveFactor(req, res, userId))) return;
       await repository.deleteForUser(userId, String(req.params.credentialId));
       // Without a key left the step could never pass, so it turns off.
       const left = await repository.listByUserId(userId);
@@ -278,17 +304,41 @@ export function registerPasskeyRoutes(
    * /plugin-api/webauthn/second-factor/disable:
    *   post:
    *     summary: Stop asking for a security key after the password
+   *     description: Needs a security key assertion from proof-options in the body.
    *     tags:
    *       - Passkeys
    *     responses:
    *       200:
    *         description: Turned off.
+   *       400:
+   *         description: No security key assertion was sent.
+   *       401:
+   *         description: The security key check failed.
+   */
+  router.post("/second-factor/disable", async (req: Request, res: Response) => {
+    const userId = ctx.currentActor()!;
+    if (!(await proveFactor(req, res, userId))) return;
+    await factor.turnOff(userId);
+    res.json({ enabled: false });
+  });
+
+  /**
+   * @openapi
+   * /plugin-api/webauthn/second-factor/proof-options:
+   *   post:
+   *     summary: Options for tapping a security key before turning the step off or removing a key
+   *     tags:
+   *       - Passkeys
+   *     responses:
+   *       200:
+   *         description: Options for the browser, or null when no proof is needed.
    */
   router.post(
-    "/second-factor/disable",
+    "/second-factor/proof-options",
     async (_req: Request, res: Response) => {
-      await factor.turnOff(ctx.currentActor()!);
-      res.json({ enabled: false });
+      const userId = ctx.currentActor()!;
+      if (!(await factor.isOn(userId))) return res.json({ options: null });
+      res.json({ options: await passkeys.factorOptions(userId) });
     },
   );
 }

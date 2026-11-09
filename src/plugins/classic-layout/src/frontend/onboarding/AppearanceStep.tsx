@@ -249,6 +249,7 @@ function AccentPicker({
           className="size-5 shrink-0 cursor-pointer border border-border/60"
           style={{ background: value }}
           title={t("newUi.sidebar.userProfile.colorPickerTooltip")}
+          aria-label={t("newUi.sidebar.userProfile.colorPickerTooltip")}
         />
         <input
           ref={colorInputRef}
@@ -267,9 +268,12 @@ function AccentPicker({
             if (e.key === "Enter") commit();
           }}
           placeholder="#f97316"
+          aria-label={t("newUi.sidebar.userProfile.accentColorLabel")}
           className="h-6 min-w-0 flex-1 border-0 bg-transparent p-0 font-mono text-[11px] focus-visible:ring-0"
         />
-        <span className="shrink-0 text-[10px] text-muted-foreground">hex</span>
+        <span className="shrink-0 text-[10px] text-muted-foreground">
+          {t("onboarding.accentHex")}
+        </span>
       </div>
     </div>
   );

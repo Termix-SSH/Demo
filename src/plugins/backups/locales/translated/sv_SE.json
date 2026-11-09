@@ -1,0 +1,451 @@
+{
+  "plugin": {
+    "name": "Backupar",
+    "description": "Säkerhetskopiera mappar, databaser och Docker-data på dina värdar med restic, och bläddra, ladda ner och återställ sedan."
+  },
+  "common": {
+    "save": "Spara",
+    "cancel": "Avbryt",
+    "back": "Tillbaka",
+    "delete": "Ta bort",
+    "done": "Klar",
+    "loading": "Laddar...",
+    "refresh": "Uppdatera",
+    "retry": "Försök igen"
+  },
+  "permissions": {
+    "use": {
+      "title": "Använd Backupar",
+      "description": "Ställ in säkerhetskopieringsjobb och arkiv, kör säkerhetskopior och bläddra, ladda ner och återställ ögonblicksbilder på värdar de kan redigera."
+    }
+  },
+  "tab": {
+    "title": "Backupar",
+    "viewJobs": "Jobb",
+    "viewRepos": "Arkiv",
+    "viewHistory": "Historik"
+  },
+  "hostTab": {
+    "title": "Backupar",
+    "noHost": "Öppna Backupar från en värd.",
+    "viewJobs": "Jobb",
+    "viewSnapshots": "Ögonblicksbilder",
+    "viewHistory": "Historik",
+    "restic": "restic {{version}}",
+    "noRestic": "restic är inte installerat",
+    "sudo": "Termix måste logga in som root, eller som en användare med lösenordsfritt sudo, för att köra säkerhetskopior på denna värd.",
+    "statusFailed": "Kunde inte läsa denna värd"
+  },
+  "install": {
+    "missing": "restic är inte installerat på denna värd",
+    "tooOld": "restic på denna värd är äldre än 0.17",
+    "hint": "Backupar använder restic. Installera det med pakethanteraren, eller från restic-release på GitHub när paketet är för gammalt.",
+    "button": "Installera restic",
+    "working": "Installerar...",
+    "title": "Installera restic?",
+    "desc": "Detta installerar restic på värdens som root.",
+    "confirm": "Installera",
+    "done": "restic {{version}} är installerat",
+    "failed": "Kunde inte installera restic"
+  },
+  "status": {
+    "never": "Aldrig kört",
+    "running": "Körs",
+    "success": "Klar",
+    "warning": "Varningar",
+    "failed": "Misslyckades",
+    "canceled": "Stoppad"
+  },
+  "time": {
+    "justNow": "just nu",
+    "soon": "om en stund",
+    "ago": {
+      "minutes_one": "{{count}} minut sedan",
+      "minutes_other": "{{count}} minuter sedan",
+      "hours_one": "{{count}} timme sedan",
+      "hours_other": "{{count}} timmar sedan",
+      "days_one": "{{count}} dag sedan",
+      "days_other": "{{count}} dagar sedan"
+    },
+    "in": {
+      "minutes_one": "om {{count}} minut",
+      "minutes_other": "om {{count}} minuter",
+      "hours_one": "om {{count}} timme",
+      "hours_other": "om {{count}} timmar",
+      "days_one": "om {{count}} dag",
+      "days_other": "om {{count}} dagar"
+    }
+  },
+  "jobs": {
+    "add": "Lägg till jobb",
+    "empty": "Inga säkerhetskopieringsjobb ännu",
+    "emptyHint": "Lägg till ett jobb för att säkerhetskopiera mappar, databaser eller Docker-data.",
+    "emptyNoRepo": "Lägg till ett arkiv först, så har säkerhets kopiorna någonstans att lagras.",
+    "loadFailed": "Kunde inte ladda säkerhetskopieringsjobben",
+    "lastGood": "Senaste säkerhetskopian {{when}}",
+    "noGood": "Ingen säkerhetskopia ännu",
+    "next": "Nästa {{when}}",
+    "paused": "Pausad",
+    "run": "Kör nu",
+    "stop": "Stoppa",
+    "edit": "Redigera",
+    "snapshots": "Ögonblicksbilder",
+    "started": "{{name}} startad",
+    "runFailed": "Kunde inte starta säkerhetskopieringen"
+  },
+  "editor": {
+    "newTitle": "Ny säkerhetskopieringsjobb",
+    "general": "Jobb",
+    "host": "Värd",
+    "pickHost": "Välj en värd",
+    "name": "Namn",
+    "namePlaceholder": "Nattlig säkerhetskopia",
+    "repository": "Repository",
+    "pickRepository": "Välj ett repository",
+    "noRepos": "Du har inget repository som denna värd kan använda. Lägg till ett i fliken Säkerhetskopior först.",
+    "repoLocked": "Endast ägaren av detta repository kan ändra det.",
+    "enabled": "Kör enligt schema",
+    "enabledHint": "Stäng av för att pausa schemat. Kör nu fungerar fortfarande.",
+    "oneFileSystem": "Stanna på ett filsystem",
+    "oneFileSystemHint": "Hoppa över andra diskar och monteringar som finns i de valda mapparna.",
+    "saved": "Jobb sparat",
+    "saveFailed": "Kunde inte spara jobbet",
+    "deleteTitle": "Ta bort {{name}}?",
+    "deleteDesc": "Jobbet tas bort från Termix. Dess ögonblicksbilder finns kvar i repositoryt.",
+    "deleted": "Jobb borttaget",
+    "deleteFailed": "Kunde inte ta bort jobbet"
+  },
+  "sources": {
+    "add": "Lägg till i säkerhetskopia",
+    "addPaths": "Mappar",
+    "addDatabase": "Databas",
+    "addDocker": "Docker",
+    "remove": "Ta bort",
+    "paths": "Mappar och filer",
+    "folders": "Sökvägar",
+    "foldersHint": "En fullständig sökväg per rad.",
+    "excludes": "Hoppa över",
+    "excludesHint": "Ett restic-mönster per rad, t.ex. *.log.",
+    "database": "Databas",
+    "engine": "Typ",
+    "engines": {
+      "mysql": "MySQL eller MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Inloggning",
+    "ownLogin": "Skriv in en inloggning här",
+    "noDatabasesPlugin": "Aktivera Databases-tillägget för att välja en sparad inloggning.",
+    "address": "Adress",
+    "addressPlaceholder": "Tom för lokal socket",
+    "port": "Port",
+    "username": "Användare",
+    "password": "Lösenord",
+    "passwordSaved": "Sparat, lämna tomt för att behålla det",
+    "runAs": "Kör som",
+    "runAsHint": "En Linux-användare att köra dumpen som, t.ex. postgres. Tomt kör den som root.",
+    "databases": "Databaser",
+    "databasesHint": "Ett namn per rad. Lämna tomt för att säkerhetskopiera alla.",
+    "sqliteFiles": "Databasfiler",
+    "sqliteFilesHint": "En fullständig sökväg per rad. Varje fil kopieras säkert medan den används.",
+    "docker": "Docker",
+    "stacks": "Stackar",
+    "volumes": "Volymerna",
+    "noStacks": "Inga compose-stackar hittades",
+    "noVolumes": "Inga volymer hittades",
+    "dockerFailed": "Kunde inte lista Docker på denna värd",
+    "stop": "Stoppa stackar under säkerhetskopieringen",
+    "stopHint": "Valda stackar stoppas först och startas igen efteråt, så att deras filer inte ändras medan de läses."
+  },
+  "schedule": {
+    "title": "Schema",
+    "manual": "Manuellt",
+    "daily": "Dagligen",
+    "weekly": "Varje vecka",
+    "custom": "Anpassat",
+    "day": "Dag",
+    "time": "Tid",
+    "cron": "Cron",
+    "cronHint": "Minut, timme, dag i månaden, månad, dag i veckan.",
+    "cronInvalid": "Detta cron-uttryck är ogiltigt",
+    "timezone": "Tidszon",
+    "serverTime": "Servertid",
+    "manualHint": "Detta jobb körs endast när du trycker på Kör nu.",
+    "manualOnly": "Manuellt",
+    "next": "Nästa körning {{time}}",
+    "noNext": "Detta schema körs aldrig",
+    "dailyAt": "Dagligen kl. {{time}}",
+    "weeklyAt": "{{day}} kl. {{time}}",
+    "days": {
+      "0": "Söndag",
+      "1": "Måndag",
+      "2": "Tisdag",
+      "3": "Onsdag",
+      "4": "Torsdag",
+      "5": "Fredag",
+      "6": "Lördag"
+    }
+  },
+  "keep": {
+    "title": "Behåll",
+    "last": "Senaste",
+    "daily": "Dagliga",
+    "weekly": "Veckovisa",
+    "monthly": "Månadsvisa",
+    "yearly": "Årsvisa",
+    "hint": "Efter varje säkerhetskopiering tas äldre ögonblicksbilder för detta jobb bort, så att endast dessa behålls. Alla 0 behåller allt."
+  },
+  "hooks": {
+    "title": "Kommandon",
+    "pre": "Före",
+    "preHint": "Körs som root innan säkerhetskopieringen. Om det misslyckas stoppas säkerhetskopieringen.",
+    "post": "Efter",
+    "postHint": "Körs som root efter säkerhetskopieringen, även om den misslyckades. TERMIX_BACKUP_STATUS innehåller resultatet."
+  },
+  "alerts": {
+    "title": "Varningar",
+    "onFailure": "Varna när en säkerhetskopiering misslyckas",
+    "onFailureHint": "Varnar även vid varningar, och en gång när det fungerar igen.",
+    "staleDays": "Dagar utan säkerhetskopiering",
+    "staleDaysHint": "Varna om ingen säkerhetskopiering har lyckats under så många dagar. 0 stänger av det."
+  },
+  "repos": {
+    "add": "Lägg till arkiv",
+    "empty": "Inga arkiv ännu",
+    "emptyHint": "Ett arkiv är där säkerhetskopior lagras, till exempel en S3-bucket eller en mapp.",
+    "loadFailed": "Kunde inte ladda arkiven",
+    "jobCount_one": "{{count}} jobb",
+    "jobCount_other": "{{count}} jobb",
+    "newTitle": "Nytt arkiv",
+    "storage": "Lagring",
+    "name": "Namn",
+    "namePlaceholder": "Extern S3",
+    "kind": "Typ",
+    "kinds": {
+      "s3": "S3-kompatibel",
+      "rest": "REST-server",
+      "rclone": "rclone",
+      "local": "Mapp på en värd"
+    },
+    "endpoint": "Slutpunkt",
+    "endpointHint": "Tom för AWS. För MinIO, R2, B2 eller Wasabi, deras S3-adress.",
+    "region": "Region",
+    "bucket": "Bucket",
+    "prefix": "Mappning i bucketen",
+    "prefixHint": "Valfritt.",
+    "accessKeyId": "Access key-id",
+    "secretKey": "Hemlig access key",
+    "secretSaved": "Sparad, lämna tom för att behålla den",
+    "url": "Serveradress",
+    "username": "Användare",
+    "usernameHint": "Lämna tom om servern inte har inloggning.",
+    "restPassword": "Lösenord",
+    "remote": "Remote-namn",
+    "remoteHint": "Endast bokstäver, siffror och _.",
+    "path": "Sökväg",
+    "rcloneConfig": "rclone-konfiguration",
+    "rcloneHint": "Raderna för remote från rclone.conf. Kör rclone config på din dator för att skapa dem. rclone måste vara installerat på värdarna.",
+    "rcloneSaved": "Sparad, lämna tom för att behålla den",
+    "host": "Värd",
+    "pickHost": "Välj en värd",
+    "folder": "Mapp",
+    "folderHint": "Endast jobb på denna värd kan använda den. En monterad disk är bäst.",
+    "password": "Kryptering",
+    "resticPassword": "Lösenord för arkivet",
+    "passwordHint": "Lämna tom så skapar Termix ett starkt lösenord. Spara en kopia på en säker plats: utan det kan backuper inte läsas.",
+    "passwordKeep": "Sparad, lämna tom för att behålla den",
+    "passwordChangeHint": "Detta ändrar bara vad Termix skickar. Det ändrar inte lösenordet för ett befintligt arkiv.",
+    "reveal": "Visa lösenord",
+    "revealTitle": "Vill du visa arkivets lösenord?",
+    "revealDesc": "Vem som helst som har det och lagringsnycklarna kan läsa alla backuper i detta arkiv. Detta skrivs till granskningsloggen.",
+    "revealFailed": "Kunde inte läsa lösenordet",
+    "copy": "Kopiera",
+    "copied": "Kopierad",
+    "check": "Kontrollera",
+    "checkFrom": "Kontrollera från",
+    "checkFromHint": "Värden som öppnar arkivet. Den behöver restic.",
+    "checkButton": "Kontrollera",
+    "initButton": "Kontrollera och konfigurera",
+    "installRclone": "Installera rclone på denna värd",
+    "rcloneInstalled": "rclone {{version}} är installerad.",
+    "rcloneFailed": "Kunde inte installera rclone",
+    "checking": "Kontrollerar...",
+    "opened": "Arkivet öppnade utan problem.",
+    "created": "Arkivet har konfigurerats och är redo.",
+    "checkFailed": "Kunde inte öppna arkivet",
+    "checkNext": "Sparad. Kontrollera den från en värd för att konfigurera den.",
+    "saved": "Arkivet har sparats",
+    "saveFailed": "Kunde inte spara arkivet",
+    "deleteTitle": "Vill du ta bort {{name}}?",
+    "deleteDesc": "Den tas bort från Termix endast. Backuper finns kvar i lagringen.",
+    "deleted": "Arkivet har tagits bort",
+    "deleteFailed": "Kunde inte ta bort arkivet"
+  },
+  "snapshots": {
+    "noJobs": "Lägg till ett backupjobb först.",
+    "job": "Jobb",
+    "titleFor": "Ögonblicksbilder av {{name}}",
+    "empty": "Inga ögonblicksbilder ännu",
+    "loadFailed": "Kunde inte läsa ögonblicksbilderna",
+    "latest": "Senaste",
+    "files_one": "{{count}} fil",
+    "files_other": "{{count}} filer",
+    "browse": "Bläddra",
+    "delete": "Ta bort",
+    "deleteTitle": "Ta bort den här ögonblicksbilden?",
+    "deleteDesc": "Ögonblicksbilden från {{time}} tas bort permanent från arkivet.",
+    "deleted": "Ögonblicksbild borttagen",
+    "deleteFailed": "Kunde inte ta bort ögonblicksbilden",
+    "browseTitle": "Ögonblicksbild {{time}}",
+    "root": "Rot",
+    "emptyFolder": "Den här mappen är tom",
+    "filesFailed": "Kunde inte lista mappen",
+    "pick": "Välj",
+    "download": "Ladda ner",
+    "downloadZip": "Ladda ner som zip",
+    "downloadFailed": "Kunde inte ladda ner",
+    "restoreAll": "Återställ allt",
+    "restorePicked_one": "Återställ {{count}} objekt",
+    "restorePicked_other": "Återställ {{count}} objekt"
+  },
+  "restore": {
+    "title": "Återställ",
+    "what": "Vad",
+    "everything": "Allt i ögonblicksbilden.",
+    "more_one": "och {{count}} till",
+    "more_other": "och {{count}} till",
+    "where": "Var",
+    "host": "Värd",
+    "hostHint": "En valfri värd du kan redigera som kan nå arkivet.",
+    "localOnly": "Detta arkiv är en mapp på sin värd, så det kan bara återställas där.",
+    "toFolder": "Till en mapp",
+    "toOriginal": "Där det var",
+    "folder": "Mapp",
+    "folderHint": "Filer behåller sin fullständiga sökväg inuti den här mappen.",
+    "originalWarning": "Filer skrivs tillbaka till där de var och kan ersätta det som finns där nu.",
+    "overwrite": "Filer som redan finns",
+    "overwriteOptions": {
+      "if-changed": "Ersätt vid ändring",
+      "always": "Ersätt alltid",
+      "if-newer": "Ersätt när säkerhetskopian är nyare",
+      "never": "Ersätt aldrig"
+    },
+    "start": "Återställ",
+    "started": "Återställning startad",
+    "failed": "Kunde inte starta återställningen"
+  },
+  "run": {
+    "title": "Kör",
+    "backupTitle": "Säkerhetskopia av {{name}}",
+    "restoreTitle": "Återställning av {{name}}",
+    "loadFailed": "Kunde inte ladda körningen",
+    "progress": "Förlopp",
+    "preparing": "Förbereder...",
+    "progressLine": "{{percent}}% | {{files}} av {{totalFiles}} filer | {{bytes}} av {{totalBytes}}",
+    "left": "{{time}} kvar",
+    "details": "Detaljer",
+    "started": "Startad",
+    "finished": "Avslutad",
+    "trigger": "Startad av",
+    "triggers": {
+      "manual": "Kör nu",
+      "schedule": "Schema",
+      "operation": "Termix-åtgärd"
+    },
+    "snapshot": "Ögonblicksbild",
+    "target": "Återställd till",
+    "files": "Filer",
+    "filesLine": "{{total}} filer, {{added}} nya, {{changed}} ändrade",
+    "size": "Storlek",
+    "added": "Lagt till i arkivet",
+    "took": "Tog",
+    "log": "Logg",
+    "noLog": "Ingen logg ännu.",
+    "stopTitle": "Stoppa den här körningen?",
+    "stopDesc": "En stoppad säkerhetskopia sparar inget ögonblicksbild. En stoppad återställning lämnar de filer som har återställts hittills.",
+    "stopSent": "Stannar",
+    "stopFailed": "Kunde inte stoppa körningen"
+  },
+  "history": {
+    "empty": "Inget har körts ännu",
+    "loadFailed": "Kunde inte läsa in historiken",
+    "status": "Status",
+    "job": "Jobb",
+    "host": "Värd",
+    "kind": "Typ",
+    "kinds": {
+      "backup": "Säkerhetskopia",
+      "restore": "Återställning"
+    },
+    "started": "Startad",
+    "took": "Tog",
+    "size": "Storlek"
+  },
+  "card": {
+    "title": "Säkerhetskopior",
+    "all": "Alla säkerhetskopieringsjobb",
+    "oneJob": "Ett säkerhetskopieringsjobb",
+    "empty": "Inga säkerhetskopieringsjobb ännu.",
+    "gone": "Detta säkerhetskopieringsjobb har raderats.",
+    "open": "Öppna"
+  },
+  "operations": {
+    "list": {
+      "title": "Lista säkerhetskopieringsjobb"
+    },
+    "failed": {
+      "title": "Misslyckade säkerhetskopior"
+    },
+    "run": {
+      "title": "Kör säkerhetskopia"
+    },
+    "cancel": {
+      "title": "Stoppa säkerhetskopia"
+    },
+    "snapshots": {
+      "title": "Lista ögonblicksbilder"
+    },
+    "events": {
+      "finished": "Säkerhetskopian slutförd",
+      "failed": "Säkerhetskopian misslyckades"
+    },
+    "jobs": {
+      "title": "Säkerhetskopieringsjobb",
+      "lastSuccess": "Senaste säkerhetskopian",
+      "nextRun": "Nästa körning",
+      "size": "Storlek"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Visa panelen för säkerhetskopior i terminaler",
+        "description": "Låt panelen för säkerhetskopior öppnas bredvid SSH-terminalen för denna värd."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Öppna panelen för säkerhetskopior med nya terminaler",
+        "description": "Visa panelen för säkerhetskopior bredvid varje SSH-terminal som har det aktiverat. Du kan fortfarande öppna och stänga den från knappen på höger kant."
+      },
+      "companionSide": {
+        "label": "Placering för panelen för säkerhetskopior",
+        "description": "Var panelen för säkerhetskopior placeras bredvid en terminal.",
+        "right": "Höger",
+        "left": "Vänster",
+        "bottom": "Botten"
+      },
+      "companionSize": {
+        "label": "Storlek på panelen för säkerhetskopior",
+        "description": "Bredd i pixlar, eller höjd när den är längst ner. Du kan också dra i kanten."
+      },
+      "companionEdgeButton": {
+        "label": "Visa panelknappen",
+        "description": "Visa en liten knapp på höger kant av en terminal som öppnar panelen för säkerhetskopior."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Växla panelen för säkerhetskopior"
+  }
+}

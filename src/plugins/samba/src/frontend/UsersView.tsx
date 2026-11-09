@@ -207,7 +207,15 @@ export function UsersView({ hostId }: { hostId: number }) {
     const group = data.groups.find((g) => g.name === mode.name);
     const free = data.system.filter((u) => !group?.members.includes(u));
     return (
-      <div className="flex flex-col">
+      <PanelShell
+        chrome={false}
+        footer={
+          <FormFooter
+            onCancel={() => go({ kind: "list" })}
+            cancelLabel={t("common.back")}
+          />
+        }
+      >
         <p className="px-3 pb-1.5 pt-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
           {mode.name}
         </p>
@@ -264,13 +272,7 @@ export function UsersView({ hostId }: { hostId: number }) {
             </Button>
           </div>
         )}
-        <div className="p-3">
-          <FormFooter
-            onCancel={() => go({ kind: "list" })}
-            cancelLabel={t("common.back")}
-          />
-        </div>
-      </div>
+      </PanelShell>
     );
   }
 

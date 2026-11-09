@@ -1,0 +1,229 @@
+{
+  "plugin": {
+    "name": "オブジェクトストレージ",
+    "description": "S3 互換のオブジェクトストレージバケットとファイルを閲覧・管理します。"
+  },
+  "tab": {
+    "title": "バケット"
+  },
+  "saved": "保存済み",
+  "delete": "削除",
+  "edit": "編集",
+  "cancel": "キャンセル",
+  "ok": "OK",
+  "back": "戻る",
+  "card": {
+    "title": "オブジェクトストレージ",
+    "loading": "読み込み中",
+    "empty": "ストレージのログイン情報はまだありません。バケットを開いて追加してください。",
+    "percent": "上限の {{percent}}%",
+    "total": "{{count}} バケットに {{size}}",
+    "failing": "{{count}} 件のログインに失敗",
+    "logins": "{{count}} 件のログイン"
+  },
+  "permissions": {
+    "view": {
+      "title": "オブジェクトストレージを表示",
+      "description": "バケットタブを開き、オブジェクトを閲覧してダウンロードします。"
+    },
+    "edit": {
+      "title": "オブジェクトを変更",
+      "description": "オブジェクトのアップロード、コピー、移動、名前変更、削除、および一時リンクの作成を行います。"
+    },
+    "manage": {
+      "title": "バケットの管理",
+      "description": "ストレージのログイン情報を追加し、バケットの作成・削除や設定の変更を行います。"
+    }
+  },
+  "operations": {
+    "account": "ログイン",
+    "bucket": "バケット",
+    "bucketName": "新しいバケット名",
+    "prefix": "フォルダ",
+    "key": "オブジェクト名",
+    "seconds": "リンクの有効期限（秒）",
+    "accounts": {
+      "title": "ストレージのログイン一覧"
+    },
+    "buckets": {
+      "title": "バケット一覧"
+    },
+    "usage": {
+      "title": "バケットの制限を確認"
+    },
+    "objects": {
+      "title": "オブジェクトの一覧表示"
+    },
+    "create": {
+      "title": "バケットを作成"
+    },
+    "delete": {
+      "title": "オブジェクトを削除"
+    },
+    "share": {
+      "title": "一時的なリンクを作成"
+    }
+  },
+  "status": {
+    "failing": "{{count}} 件のログインに失敗",
+    "buckets": "{{count}} 個のバケット"
+  },
+  "section": {
+    "buckets": "バケット",
+    "accounts": "ログイン"
+  },
+  "view": {
+    "objects": "オブジェクト",
+    "usage": "使用状況",
+    "settings": "設定"
+  },
+  "providers": {
+    "aws": "Amazon S3",
+    "minio": "MinIO",
+    "r2": "Cloudflare R2",
+    "b2": "Backblaze B2",
+    "wasabi": "Wasabi",
+    "spaces": "DigitalOcean Spaces",
+    "hetzner": "Hetzner Object Storage",
+    "other": "その他の S3 互換"
+  },
+  "accounts": {
+    "empty": "ストレージのログイン情報はまだありません",
+    "emptyHint": "S3 互換サービスのアクセスキーを使用してログイン情報を追加してください。"
+  },
+  "account": {
+    "add": "ログインを追加",
+    "addTitle": "ストレージのログインを追加",
+    "editTitle": "ストレージのログインを編集",
+    "save": "保存",
+    "service": "サービス",
+    "provider": "プロバイダー",
+    "name": "名前",
+    "namePlaceholder": "バックアップ",
+    "endpoint": "エンドポイント",
+    "accountIdHint": "{accountId} を Cloudflare アカウント ID に置き換えてください。",
+    "region": "リージョン",
+    "pathStyle": "パススタイルアドレス",
+    "pathStyleHint": "bucket.endpoint の代わりに endpoint/bucket を使用します。MinIO やほとんどのセルフホスト型サービスでは有効にしてください。",
+    "ca": "カスタム CA 証明書",
+    "caHint": "サービスがプライベート証明書を使用している場合にのみ必要です。PEM を貼り付けてください。",
+    "keep": "保存された値を維持する場合は空のままにしてください",
+    "keys": "アクセスキー",
+    "accessKeyId": "アクセスキー ID",
+    "secretAccessKey": "シークレットアクセスキー",
+    "sessionToken": "セッショントークン",
+    "sessionTokenHint": "一時的なキーの場合のみ入力してください。",
+    "test": "ログインテスト",
+    "testOk": "ログインに成功しました。{{count}} 個のバケットが見つかりました",
+    "deleteConfirm": "ログイン「{{name}}」を削除しますか？",
+    "status": {
+      "pending": "未確認",
+      "ok": "正常",
+      "error": "エラー"
+    }
+  },
+  "buckets": {
+    "add": "新しいバケット",
+    "create": "作成",
+    "empty": "バケットがありません",
+    "emptyHint": "バケットを作成して、ファイルの保存を開始してください。",
+    "notScanned": "サイズはまだ計算されていません",
+    "delete": "バケットを削除",
+    "deleteConfirm": "バケット {{name}} を削除しますか？",
+    "deleteHint": "バケットは空である必要があります。",
+    "nameHint": "小文字の英字、数字、ドット、ダッシュを使用してください。",
+    "namePlaceholder": "my-bucket",
+    "name": "バケット名"
+  },
+  "objects": {
+    "filter": "このフォルダをフィルタ",
+    "newFolder": "新しいフォルダ",
+    "folderHint": "フォルダは /{{prefix}} に作成されます",
+    "pathHint": "バケット内の完全な名前を入力してください。",
+    "upload": "アップロード",
+    "uploadFolder": "フォルダをアップロード",
+    "dismiss": "閉じる",
+    "close": "閉じる",
+    "size": "サイズ",
+    "type": "種類",
+    "modified": "更新日時",
+    "download": "ダウンロード",
+    "copy": "コピー",
+    "rename": "名前の変更または移動",
+    "more": "さらに読み込む",
+    "empty": "このフォルダは空です",
+    "emptyHint": "ここにファイルをドロップするか、アップロードを使用してください。",
+    "deleteObject": "{{name}} を削除しますか？",
+    "deleteFolder": "フォルダ {{name}} を削除しますか？",
+    "deleteFolderHint": "中身もすべて削除されます。",
+    "deleteFailed": "{{count}} 件のオブジェクトを削除できませんでした"
+  },
+  "share": {
+    "title": "一時的なリンク",
+    "hint": "リンクを知っている人は誰でも、期限が切れるまでオブジェクトをダウンロードできます。リンクはクリップボードにコピーされました。",
+    "make": "リンクをコピー",
+    "copied": "リンクをコピーしました",
+    "hour": "1 時間",
+    "day": "1 日",
+    "week": "7 日"
+  },
+  "usage": {
+    "objects": "{{count}} 件のオブジェクト",
+    "none": "サイズはまだ計算されていません",
+    "partial": "部分的なカウント",
+    "ofLimit": "制限の {{percent}}%",
+    "scan": "今すぐカウント",
+    "scanning": "カウント中",
+    "last": "最終カウント: {{when}}"
+  },
+  "settings": {
+    "save": "保存",
+    "unsupported": "このサービスはこの設定をサポートしていません。",
+    "limits": "アラート制限",
+    "limitGb": "サイズ制限（GB）",
+    "limitObjects": "オブジェクト制限",
+    "limitHint": "0 は制限なしを意味します。バケットが制限を超えるとアラートが表示されます。",
+    "versioning": "バージョニング",
+    "versioningOn": "オブジェクトの古いバージョンを保持する",
+    "versioningHint": "バージョニングを有効にすると、一時停止は可能ですが、完全に無効化することはできません。",
+    "lifecycle": "ライフサイクルルール",
+    "rules": "ルール",
+    "noRules": "ルールなし",
+    "addRule": "ルールを追加",
+    "ruleName": "ルール名",
+    "rulePrefix": "フォルダプレフィックス",
+    "expireDays": "日数経過後に削除",
+    "noncurrentDays": "日数経過後に旧バージョンを削除",
+    "abortDays": "日数経過後に未完了のアップロードをキャンセル",
+    "ruleOn": "ルールが有効",
+    "cors": "CORS",
+    "origins": "許可されたオリジン",
+    "methods": "許可されたメソッド",
+    "methodsHint": "例: GET, PUT, POST, DELETE",
+    "headers": "許可されたヘッダー",
+    "policy": "バケットポリシー",
+    "policyJson": "ポリシー JSON",
+    "policyHint": "ポリシーを削除するには空のままにしてください。",
+    "tags": "タグ",
+    "noTags": "タグなし",
+    "addTag": "タグを追加",
+    "tagKey": "キー",
+    "tagValue": "値",
+    "encryption": "暗号化",
+    "encryptionOn": "サーバー上の新しいオブジェクトを暗号化する",
+    "encryptionHint": "サービス独自のキー（AES-256）を使用します。",
+    "publicAccess": "公開アクセス",
+    "blockPublicAcls": "新しい公開 ACL をブロック",
+    "ignorePublicAcls": "公開 ACL を無視",
+    "blockPublicPolicy": "公開バケットポリシーをブロック",
+    "restrictPublicBuckets": "公開バケットへのアクセスを制限"
+  },
+  "widget": {
+    "name": "オブジェクトストレージ",
+    "description": "バケット、保存サイズ、および失敗したログイン。",
+    "buckets": "バケット",
+    "size": "保存済み",
+    "overQuota": "制限に近づいています",
+    "failing": "ログイン失敗"
+  }
+}

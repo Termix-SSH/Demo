@@ -1,0 +1,147 @@
+{
+  "plugin": {
+    "name": "Přístup s oprávněním",
+    "description": "Vyžaduje schválení před připojením k hostiteli s oprávněním, s automatickým ukončením přístupu a kompletním auditním záznamem."
+  },
+  "tab": {
+    "title": "Přístup"
+  },
+  "tabs": {
+    "request": "Požádat o přístup",
+    "mine": "Moje žádosti",
+    "pending": "Ke schválení",
+    "active": "Aktivní přístup",
+    "history": "Historie"
+  },
+  "status": {
+    "pending": "Čeká na schválení",
+    "approved": "Ukončeno",
+    "active": "Aktivní",
+    "denied": "Odmítnuto",
+    "expired": "Vypršelo",
+    "revoked": "Zrušeno",
+    "cancelled": "Storno"
+  },
+  "request": {
+    "host": "Hostitel",
+    "hostWithAccess": "{{host}} (přístup do {{until}})",
+    "hours": "Hodiny",
+    "hoursHint": "Tento hostitel umožňuje až {{max}} hodin.",
+    "reason": "Proč potřebujete přístup",
+    "reasonOptional": "Proč potřebujete přístup (volitelné)",
+    "ticket": "Ticket",
+    "ticketOptional": "Ticket (volitelné)",
+    "send": "Požádat o přístup",
+    "sent": "Žádost odeslána. Dostanete upozornění, jakmile někdo rozhodne.",
+    "failed": "Nelze odeslat žádost",
+    "noHosts": "Žádní hostitelé s oprávněním",
+    "noHostsHint": "Zde se zobrazují hostitelé, které správce označil jako s oprávněním."
+  },
+  "list": {
+    "none": "Nic zde není",
+    "loadError": "Nelze načíst žádosti",
+    "actionFailed": "To nefungovalo",
+    "hours_one": "{{count}} hodina",
+    "hours_few": "{{count}} hodiny",
+    "hours_many": "{{count}} hodin",
+    "hours_other": "{{count}} hodin",
+    "until": "do {{time}}",
+    "decidedBy": "od {{name}}",
+    "approve": "Schválit",
+    "deny": "Odmítnout",
+    "cancel": "Zrušit",
+    "endNow": "Ukončit nyní",
+    "export": "Exportovat CSV",
+    "approveConfirm_one": "Udělit uživateli {{user}} přístup k {{host}} na {{count}} hodinu?",
+    "approveConfirm_few": "Udělit uživateli {{user}} přístup k {{host}} na {{count}} hodiny?",
+    "approveConfirm_many": "Udělit uživateli {{user}} přístup k {{host}} na {{count}} hodin?",
+    "approveConfirm_other": "Udělit uživateli {{user}} přístup k {{host}} na {{count}} hodin?",
+    "denyConfirm": "Odmítnout tuto žádost?",
+    "cancelConfirm": "Zrušit tuto žádost?",
+    "endConfirm": "Ukončit tento přístup nyní? Otevřené relace na hostiteli se uzavřou.",
+    "approved": "Přístup schválen",
+    "denied": "Žádost odmítnuta",
+    "ended": "Hotovo"
+  },
+  "card": {
+    "title": "Přístup s oprávněním",
+    "waiting": "čeká na vás",
+    "empty": "Žádné čekající žádosti",
+    "emptyHint": "Zde se zobrazuje váš schválený přístup."
+  },
+  "permissions": {
+    "request": {
+      "title": "Požádat o přístup s oprávněním",
+      "description": "Požádat o časově omezený přístup k hostitelům s oprávněním."
+    },
+    "approve": {
+      "title": "Schvalovat přístup s oprávněním",
+      "description": "Rozhodovat o žádostech o přístup ostatních, předčasně ukončovat přístup a číst zprávy."
+    },
+    "bypass": {
+      "title": "Přístup v nouzi",
+      "description": "Připojovat se k hostitelům s oprávněním bez žádosti. Každé použití je auditováno a upozorněno."
+    },
+    "configure": {
+      "title": "Konfigurovat hostitele s oprávněním",
+      "description": "Označovat hostitele jako s oprávněním a měnit, kdo schvaluje přístup k nim"
+    }
+  },
+  "settings": {
+    "admin": {
+      "pendingHours": {
+        "label": "Životnost žádosti (hodiny)",
+        "description": "Žádost, kterou nikdo nerozhodne v tomto čase, vyprší."
+      },
+      "alertBypass": {
+        "label": "Upozornit na nouzový přístup",
+        "description": "Upozornit schvalovatele, když se někdo připojí pomocí nouzového přístupu."
+      }
+    },
+    "host": {
+      "enable": {
+        "label": "Host s oprávněním",
+        "description": "SSH a vzdálené plošné relace k tomuto hostiteli vyžadují schválený přístup."
+      },
+      "approverRoles": {
+        "label": "Role schvalovatelů",
+        "description": "Názvy rolí oddělené čárkami, jejichž členové mohou schvalovat. Prázdné pole umožňuje rozhodovat každému s oprávněním ke schvalování."
+      },
+      "maxHours": {
+        "label": "Maximální délka přístupu (hodiny)",
+        "description": "Nejvyšší počet hodin, který lze v jedné žádosti požadovat."
+      },
+      "requireReason": {
+        "label": "Vyžadovat důvod",
+        "description": "Žádost musí uvádět důvod, proč je přístup potřebný."
+      },
+      "requireTicket": {
+        "label": "Vyžadovat ticket",
+        "description": "Žádost musí uvádět číslo ticketu."
+      },
+      "allowBackground": {
+        "label": "Povolit pozadí",
+        "description": "Polling a další neinteraktivní připojení pluginů přeskočí schvalování. Pokud je toto vypnuto, blokuje se každá relace bez přístupu."
+      }
+    }
+  },
+  "operations": {
+    "request": {
+      "title": "Požádat o přístup s oprávněním",
+      "hours": "Hodiny",
+      "reason": "Důvod",
+      "ticket": "Ticket"
+    },
+    "pending": {
+      "title": "Žádosti o přístup k rozhodnutí"
+    },
+    "status": {
+      "title": "Přístup s oprávněním"
+    },
+    "events": {
+      "requested": "Někdo požádal o přístup",
+      "approved": "Přístup byl schválen",
+      "bypassed": "Byl použit nouzový přístup"
+    }
+  }
+}

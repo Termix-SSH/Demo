@@ -1,0 +1,209 @@
+{
+  "plugin": {
+    "name": "패키지",
+    "description": "호스트의 업데이트를 확인하고 설치하며, 패키지를 검색, 설치 및 제거하고 패키지 기록을 읽을 수 있습니다."
+  },
+  "common": {
+    "cancel": "취소",
+    "back": "뒤로"
+  },
+  "permissions": {
+    "use": {
+      "title": "패키지 사용",
+      "description": "접근 가능한 호스트의 패키지와 업데이트를 확인하고, 수정 가능한 호스트에서 이를 변경할 수 있습니다."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "패키지",
+        "description": "패키지 탭에서 이 호스트의 패키지와 업데이트를 관리합니다."
+      },
+      "useSudo": {
+        "label": "sudo 사용",
+        "description": "패키지 설치, 업데이트 및 제거에 sudo를 사용합니다. 로그인 계정이 root인 경우 이 옵션을 끄세요."
+      },
+      "readOnly": {
+        "label": "읽기 전용",
+        "description": "이 호스트의 패키지와 업데이트는 표시하지만 절대 변경하지 않습니다."
+      },
+      "showPanel": {
+        "label": "터미널에서 업데이트 패널 표시",
+        "description": "이 호스트의 SSH 터미널 옆에 업데이트 패널을 열 수 있게 합니다."
+      },
+      "alertUpdates": {
+        "label": "보안 업데이트 알림",
+        "description": "이 호스트에 보안 업데이트가 있거나 재부팅이 필요할 때 알림을 보냅니다. 업데이트가 읽힐 때 확인되며, 약 1시간마다 발생합니다."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "새 터미널과 함께 업데이트 패널 열기",
+        "description": "패키지가 켜져 있는 모든 SSH 터미널 옆에 업데이트 패널을 표시합니다. 오른쪽 가장자리의 버튼에서 여전히 열거나 닫을 수 있습니다."
+      },
+      "companionSide": {
+        "label": "업데이트 패널 위치",
+        "description": "터미널 옆에 업데이트 패널이 표시되는 위치입니다.",
+        "right": "오른쪽",
+        "left": "왼쪽",
+        "bottom": "아래쪽"
+      },
+      "companionSize": {
+        "label": "업데이트 패널 크기",
+        "description": "픽셀 단위의 너비입니다. 아래쪽에 있을 때는 높이를 의미합니다. 가장자리를 드래그하여 조정할 수도 있습니다."
+      },
+      "companionEdgeButton": {
+        "label": "패널 버튼 표시",
+        "description": "터미널 오른쪽 가장자리에 업데이트 패널을 여는 작은 버튼을 표시합니다."
+      }
+    }
+  },
+  "tab": {
+    "title": "패키지",
+    "noHost": "호스트에서 패키지를 엽니다.",
+    "error": "이 호스트에서 패키지를 로드할 수 없습니다.",
+    "disabled": "이 호스트에서 패키지가 비활성화되어 있습니다. 호스트 설정에서 활성화하세요.",
+    "sudo": "변경 사항을 적용하려면 루트 로그인, 비밀번호 없는 sudo 또는 이 호스트에 저장된 Sudo 비밀번호가 필요합니다.",
+    "refresh": "새로고침",
+    "readOnly": "읽기 전용",
+    "noManager": "패키지 관리자가 없습니다",
+    "noManagerTitle": "지원되는 패키지 관리자를 찾을 수 없습니다",
+    "noManagerHint": "패키지는 apt, dnf, yum, zypper, pacman 및 apk와 함께 작동합니다.",
+    "indexAge": "인덱스가 {{ago}} 전에 새로고침되었습니다",
+    "reboot": "업데이트를 완료하려면 이 호스트를 재부팅해야 합니다.",
+    "viewUpdates": "업데이트",
+    "viewInstalled": "설치됨",
+    "viewSearch": "검색",
+    "viewHistory": "기록",
+    "viewRepos": "저장소"
+  },
+  "actions": {
+    "working": "{{action}}이(가) 실행 중입니다. 몇 분 정도 걸릴 수 있습니다.",
+    "ok": "완료",
+    "failed": "패키지 관리자가 실패했습니다.",
+    "noOutput": "출력 없음.",
+    "refresh": {
+      "label": "인덱스 새로고침",
+      "confirm": "패키지 인덱스를 새로고침하시겠습니까?",
+      "desc": "최신 패키지 목록을 다운로드합니다.",
+      "done": "패키지 인덱스가 최신 상태입니다."
+    },
+    "update": {
+      "label": "업데이트",
+      "confirm_other": "{{count}}개 패키지 업데이트할까요?",
+      "desc": "{{names}}의 최신 버전을 설치합니다.",
+      "done": "{{names}} 업데이트 완료."
+    },
+    "upgrade-all": {
+      "label": "모두 업그레이드",
+      "confirm": "모든 패키지를 업그레이드할까요?",
+      "desc": "패키지 인덱스를 새로고침하고 모든 업데이트를 설치합니다. 실행 중 서비스 재시작이 발생할 수 있습니다.",
+      "done": "모든 패키지가 최신 상태입니다."
+    },
+    "install": {
+      "label": "설치",
+      "confirm": "{{names}}을(를) 설치하시겠습니까?",
+      "desc": "{{names}} 및 필요한 종속 항목을 설치합니다.",
+      "done": "{{names}}이(가) 설치되었습니다."
+    },
+    "remove": {
+      "label": "제거",
+      "confirm": "{{names}}을(를) 제거하시겠습니까?",
+      "desc": "이 호스트에서 {{names}}을(를) 제거합니다. 이를 필요로 하는 프로그램이 작동하지 않을 수 있습니다.",
+      "done": "{{names}}이(가) 제거되었습니다."
+    },
+    "hold": {
+      "label": "현재 버전 유지",
+      "confirm": "{{names}}을(를) 유지하시겠습니까?",
+      "desc": "유지 해제할 때까지 업데이트에서 {{names}}을(를) 건너뜁니다.",
+      "done": "{{names}}이(가) 유지 설정되었습니다."
+    },
+    "unhold": {
+      "label": "유지 해제",
+      "confirm": "{{names}} 유지를 해제하시겠습니까?",
+      "desc": "{{names}}에 다시 업데이트가 적용됩니다.",
+      "done": "{{names}}에 다시 업데이트가 적용됩니다."
+    }
+  },
+  "updates": {
+    "search": "업데이트 필터링",
+    "count_other": "{{count}}개 업데이트",
+    "countSecurity_other": "{{count}}개 업데이트, 보안 관련 {{security}}개",
+    "updatePicked_other": "{{count}}개 패키지 업데이트",
+    "updateOne": "업데이트",
+    "pick": "{{name}} 선택",
+    "security": "보안",
+    "empty": "모든 항목이 최신 상태입니다.",
+    "noMatch": "일치하는 업데이트가 없습니다.",
+    "loadFailed": "업데이트를 읽을 수 없습니다."
+  },
+  "installed": {
+    "search": "설치된 패키지 필터링",
+    "all": "전체",
+    "held": "유지 중",
+    "heldBadge": "유지 중",
+    "empty": "일치하는 패키지가 없습니다.",
+    "loadFailed": "설치된 패키지를 읽을 수 없습니다."
+  },
+  "search": {
+    "placeholder": "패키지 검색",
+    "button": "검색",
+    "hint": "설치할 패키지를 호스트의 저장소에서 검색합니다.",
+    "empty": "결과가 없습니다.",
+    "installed": "설치됨",
+    "failed": "검색에 실패했습니다."
+  },
+  "history": {
+    "empty": "패키지 기록을 찾을 수 없습니다.",
+    "loadFailed": "패키지 기록을 읽을 수 없습니다."
+  },
+  "repos": {
+    "hint": "이 호스트가 설치하는 저장소입니다. 호스트 자체에서 변경하세요.",
+    "empty": "저장소를 찾을 수 없습니다.",
+    "off": "끔",
+    "loadFailed": "저장소를 읽을 수 없습니다."
+  },
+  "card": {
+    "title": "패키지 업데이트",
+    "loading": "호스트 확인 중...",
+    "summary_other": "{{hosts}}개 호스트에서 {{count}}개 업데이트",
+    "refresh": "다시 확인",
+    "empty": "여기에 업데이트를 보려면 호스트에서 패키지를 켜세요.",
+    "security_other": "보안 {{count}}개",
+    "reboot": "재부팅 필요",
+    "updates_other": "{{count}}개 업데이트",
+    "upToDate": "최신 상태"
+  },
+  "manager": {
+    "title": "패키지",
+    "disabled": "여기에 업데이트를 보려면 호스트 설정에서 패키지를 켜세요."
+  },
+  "operations": {
+    "list": {
+      "title": "패키지 업데이트 목록"
+    },
+    "updates": {
+      "title": "대기 중인 업데이트",
+      "resource": "대기 중인 업데이트"
+    },
+    "upgradeAll": {
+      "title": "모든 패키지 업그레이드"
+    },
+    "install": {
+      "title": "패키지 설치"
+    },
+    "remove": {
+      "title": "패키지 제거"
+    },
+    "package": "패키지",
+    "packageHint": "공백으로 구분된 하나 이상의 패키지 이름.",
+    "resource": {
+      "current": "설치됨",
+      "available": "사용 가능",
+      "repo": "레포지토리"
+    }
+  },
+  "nav": {
+    "togglePanel": "업데이트 패널 토글"
+  }
+}

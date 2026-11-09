@@ -1,0 +1,451 @@
+{
+  "plugin": {
+    "name": "Yedeklemeler",
+    "description": "Hostlarınızda restic kullanarak klasörleri, veritabanlarını ve Docker verilerini yedekleyin, ardından anlık görüntüleri görüntüleyin, indirin ve geri yükleyin."
+  },
+  "common": {
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri",
+    "delete": "Sil",
+    "done": "Tamam",
+    "loading": "Yükleniyor...",
+    "refresh": "Yenile",
+    "retry": "Tekrar dene"
+  },
+  "permissions": {
+    "use": {
+      "title": "Yedeklemeleri Kullan",
+      "description": "Yedekleme görevleri ve depoları yapılandırın, yedeklemeleri çalıştırın ve düzenleyebildikleri hostlarda anlık görüntüleri görüntüleyin, indirin ve geri yükleyin."
+    }
+  },
+  "tab": {
+    "title": "Yedeklemeler",
+    "viewJobs": "Görevler",
+    "viewRepos": "Depolar",
+    "viewHistory": "Geçmiş"
+  },
+  "hostTab": {
+    "title": "Yedeklemeler",
+    "noHost": "Bir hosttan Yedeklemeleri açın.",
+    "viewJobs": "Görevler",
+    "viewSnapshots": "Anlık Görüntüler",
+    "viewHistory": "Geçmiş",
+    "restic": "restic {{version}}",
+    "noRestic": "restic yüklü değil",
+    "sudo": "Termix, bu hostta yedeklemeleri çalıştırmak için root olarak veya şifresiz sudo yetkisine sahip bir kullanıcı olarak giriş yapmalıdır.",
+    "statusFailed": "Bu host okunamadı"
+  },
+  "install": {
+    "missing": "restic bu hostta yüklü değil",
+    "tooOld": "Bu hosttaki restic sürümü 0.17'den eski",
+    "hint": "Yedeklemeler restic kullanır. Paket yöneticisi ile veya paket çok eskiyse GitHub'daki restic sürümünden yükleyin.",
+    "button": "restic'i yükle",
+    "working": "Yükleniyor...",
+    "title": "restic yüklensin mi?",
+    "desc": "Bu işlem restic'i hostta root olarak yükler.",
+    "confirm": "Yükle",
+    "done": "restic {{version}} yüklü",
+    "failed": "restic yüklenemedi"
+  },
+  "status": {
+    "never": "Hiç çalıştırılmadı",
+    "running": "Çalışıyor",
+    "success": "Tamamlandı",
+    "warning": "Uyarılar",
+    "failed": "Başarısız",
+    "canceled": "Durduruldu"
+  },
+  "time": {
+    "justNow": "az önce",
+    "soon": "bir an içinde",
+    "ago": {
+      "minutes_one": "{{count}} dakika önce",
+      "minutes_other": "{{count}} dakika önce",
+      "hours_one": "{{count}} saat önce",
+      "hours_other": "{{count}} saat önce",
+      "days_one": "{{count}} gün önce",
+      "days_other": "{{count}} gün önce"
+    },
+    "in": {
+      "minutes_one": "{{count}} dakika içinde",
+      "minutes_other": "{{count}} dakika içinde",
+      "hours_one": "{{count}} saat içinde",
+      "hours_other": "{{count}} saat içinde",
+      "days_one": "{{count}} gün içinde",
+      "days_other": "{{count}} gün içinde"
+    }
+  },
+  "jobs": {
+    "add": "Görev ekle",
+    "empty": "Henüz yedekleme görevi yok",
+    "emptyHint": "Klasörleri, veritabanlarını veya Docker verilerini yedeklemek için bir görev ekleyin.",
+    "emptyNoRepo": "Önce bir depo ekleyin, böylece yedeklemelerin bir yeri olsun.",
+    "loadFailed": "Yedekleme görevleri yüklenemedi",
+    "lastGood": "Son yedekleme {{when}}",
+    "noGood": "Henüz yedekleme yok",
+    "next": "Sonraki {{when}}",
+    "paused": "Duraklatıldı",
+    "run": "Şimdi çalıştır",
+    "stop": "Durdur",
+    "edit": "Düzenle",
+    "snapshots": "Anlık Görüntüler",
+    "started": "{{name}} başlatıldı",
+    "runFailed": "Yedekleme başlatılamadı"
+  },
+  "editor": {
+    "newTitle": "Yeni yedekleme görevi",
+    "general": "Görev",
+    "host": "Sunucu",
+    "pickHost": "Bir sunucu seçin",
+    "name": "Ad",
+    "namePlaceholder": "Gece yedeklemesi",
+    "repository": "Depo",
+    "pickRepository": "Bir depo seçin",
+    "noRepos": "Bu sunucunun kullanabileceği bir depoyu yok. Önce Yedeklemeler sekmesinden bir tane ekleyin.",
+    "repoLocked": "Bu depoyu yalnızca sahibi değiştirebilir.",
+    "enabled": "Zamanlamaya göre çalıştır",
+    "enabledHint": "Zamanlamayı duraklatmak için kapatın. Şimdi çalıştırma yine çalışır.",
+    "oneFileSystem": "Tek bir dosya sisteminde kal",
+    "oneFileSystemHint": "Seçilen klasörlerin içinde bulunan diğer diskleri ve birimleri atla.",
+    "saved": "Görev kaydedildi",
+    "saveFailed": "Görev kaydedilemedi",
+    "deleteTitle": "{{name}} silinsin mi?",
+    "deleteDesc": "Görev Termix'ten kaldırılır. Anlık görüntüleri depoda kalır.",
+    "deleted": "Görev silindi",
+    "deleteFailed": "Görev silinemedi"
+  },
+  "sources": {
+    "add": "Yedeklemeye ekle",
+    "addPaths": "Klasörler",
+    "addDatabase": "Veritabanı",
+    "addDocker": "Docker",
+    "remove": "Kaldır",
+    "paths": "Klasörler ve dosyalar",
+    "folders": "Yollar",
+    "foldersHint": "Satır başına bir tam yol.",
+    "excludes": "Atla",
+    "excludesHint": "Satır başına bir restic deseni, örneğin *.log.",
+    "database": "Veritabanı",
+    "engine": "Tür",
+    "engines": {
+      "mysql": "MySQL veya MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Oturum Açma",
+    "ownLogin": "Buraya bir oturum açma bilgisi yazın",
+    "noDatabasesPlugin": "Kayıtlı bir oturum açma bilgisi seçmek için Veritabanları eklentisini açın.",
+    "address": "Adres",
+    "addressPlaceholder": "Yerel soket için boş bırakın",
+    "port": "Bağlantı Noktası",
+    "username": "Kullanıcı",
+    "password": "Şifre",
+    "passwordSaved": "Kaydedildi, korumak için boş bırakın",
+    "runAs": "Şu kullanıcı olarak çalıştır",
+    "runAsHint": "Dökümü çalıştırmak için bir Linux kullanıcısı, örneğin postgres. Boş bırakılırsa root olarak çalıştırılır.",
+    "databases": "Veritabanları",
+    "databasesHint": "Satır başına bir ad. Hepsini yedeklemek için boş bırakın.",
+    "sqliteFiles": "Veritabanı dosyaları",
+    "sqliteFilesHint": "Satır başına bir tam yol. Her dosya kullanımdayken güvenli bir şekilde kopyalanır.",
+    "docker": "Docker",
+    "stacks": "Yığınlar",
+    "volumes": "Hacimler",
+    "noStacks": "Compose yığını bulunamadı",
+    "noVolumes": "Hacim bulunamadı",
+    "dockerFailed": "Bu sunucudaki Docker listelenemedi",
+    "stop": "Yedekleme sırasında yığınları durdur",
+    "stopHint": "Seçilen yığınlar önce durdurulur, yedekleme tamamlandıktan sonra tekrar başlatılır. Böylece dosyalar okunurken değişmez."
+  },
+  "schedule": {
+    "title": "Zamanlama",
+    "manual": "Manuel",
+    "daily": "Günlük",
+    "weekly": "Haftalık",
+    "custom": "Özel",
+    "day": "Gün",
+    "time": "Saat",
+    "cron": "Cron",
+    "cronHint": "Dakika, saat, ayın günü, ay, haftanın günü.",
+    "cronInvalid": "Bu cron ifadesi geçersiz",
+    "timezone": "Saat dilimi",
+    "serverTime": "Sunucu saati",
+    "manualHint": "Bu görev yalnızca \"Şimdi Çalıştır\" düğmesine bastığınızda çalışır.",
+    "manualOnly": "Manuel",
+    "next": "Sonraki çalışma {{time}}",
+    "noNext": "Bu zamanlama hiç çalışmaz",
+    "dailyAt": "Günlük {{time}} saatinde",
+    "weeklyAt": "{{day}} {{time}} saatinde",
+    "days": {
+      "0": "Pazar",
+      "1": "Pazartesi",
+      "2": "Salı",
+      "3": "Çarşamba",
+      "4": "Perşembe",
+      "5": "Cuma",
+      "6": "Cumartesi"
+    }
+  },
+  "keep": {
+    "title": "Tut",
+    "last": "Son",
+    "daily": "Günlük",
+    "weekly": "Haftalık",
+    "monthly": "Aylık",
+    "yearly": "Yıllık",
+    "hint": "Her yedeklemeden sonra, bu görevin daha eski anlık görüntüleri silinir ve yalnızca bunlar korunur. 0, hepsini korur."
+  },
+  "hooks": {
+    "title": "Komutlar",
+    "pre": "Önce",
+    "preHint": "Yedeklemeden önce root olarak çalışır. Başarısız olursa yedekleme durur.",
+    "post": "Sonra",
+    "postHint": "Yedeklemeden sonra, başarısız olsa bile root olarak çalışır. TERMIX_BACKUP_STATUS sonucu içerir."
+  },
+  "alerts": {
+    "title": "Uyarılar",
+    "onFailure": "Yedekleme başarısız olduğunda uyar",
+    "onFailureHint": "Uyarıları da bildirir ve tekrar çalışmaya başladığında bir kez uyarır.",
+    "staleDays": "Yedekleme olmayan gün sayısı",
+    "staleDaysHint": "Bu kadar gün boyunca yedekleme çalışmadığında uyar. 0, bu özelliği kapatır."
+  },
+  "repos": {
+    "add": "Depo ekle",
+    "empty": "Henüz depo yok",
+    "emptyHint": "Bir depo, yedeklemelerin saklandığı yerdir; örneğin bir S3 kovası veya bir klasör.",
+    "loadFailed": "Depolar yüklenemedi",
+    "jobCount_one": "{{count}} görev",
+    "jobCount_other": "{{count}} görev",
+    "newTitle": "Yeni depo",
+    "storage": "Depolama",
+    "name": "Ad",
+    "namePlaceholder": "Uzak S3",
+    "kind": "Tür",
+    "kinds": {
+      "s3": "S3 uyumlu",
+      "rest": "REST sunucusu",
+      "rclone": "rclone",
+      "local": "Bir sunucudaki klasör"
+    },
+    "endpoint": "Uç nokta",
+    "endpointHint": "AWS için boş bırakın. MinIO, R2, B2 veya Wasabi için S3 adreslerini girin.",
+    "region": "Bölge",
+    "bucket": "Bucket",
+    "prefix": "Bucket içindeki klasör",
+    "prefixHint": "İsteğe bağlı.",
+    "accessKeyId": "Erişim anahtarı kimliği",
+    "secretKey": "Gizli erişim anahtarı",
+    "secretSaved": "Kaydedildi, korumak için boş bırakın",
+    "url": "Sunucu adresi",
+    "username": "Kullanıcı",
+    "usernameHint": "Sunucuda giriş yoksa boş bırakın.",
+    "restPassword": "Şifre",
+    "remote": "Uzak ad",
+    "remoteHint": "Sadece harf, rakam ve _.",
+    "path": "Yol",
+    "rcloneConfig": "rclone yapılandırması",
+    "rcloneHint": "rclone.conf dosyasındaki uzak yapılandırma satırları. Bunları oluşturmak için bilgisayarınızda rclone config komutunu çalıştırın. rclone, sunucularda yüklü olmalıdır.",
+    "rcloneSaved": "Kaydedildi, korumak için boş bırakın",
+    "host": "Sunucu",
+    "pickHost": "Bir sunucu seçin",
+    "folder": "Klasör",
+    "folderHint": "Sadece bu sunucudaki işler bunu kullanabilir. Bağlı bir disk en iyisidir.",
+    "password": "Şifreleme",
+    "resticPassword": "Depo şifresi",
+    "passwordHint": "Boş bırakın, Termix güçlü bir şifre oluşturur. Güvende bir yerde yedek tutun: olmadan yedekler okunamaz.",
+    "passwordKeep": "Kaydedildi, korumak için boş bırakın",
+    "passwordChangeHint": "Bu sadece Termix'in gönderdiği şifreyi değiştirir. Mevcut bir depolama şifresini değiştirmez.",
+    "reveal": "Şifreyi göster",
+    "revealTitle": "Depo şifresi gösterilsin mi?",
+    "revealDesc": "Buna ve depolama anahtarlarına sahip olan herkes bu depodaki tüm yedekleri okuyabilir. Bu işlem denetim günlüğüne kaydedilir.",
+    "revealFailed": "Şifre okunamadı",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı",
+    "check": "Kontrol et",
+    "checkFrom": "Kontrol edilecek sunucu",
+    "checkFromHint": "Depoyu açan sunucu. restic gerektirir.",
+    "checkButton": "Kontrol et",
+    "initButton": "Kontrol et ve kur",
+    "installRclone": "Bu sunucuya rclone kur",
+    "rcloneInstalled": "rclone {{version}} yüklü.",
+    "rcloneFailed": "rclone kurulamadı",
+    "checking": "Kontrol ediliyor...",
+    "opened": "Depo başarıyla açıldı.",
+    "created": "Depo kuruldu ve hazır.",
+    "checkFailed": "Depo açılamadı",
+    "checkNext": "Kaydedildi. Kurmak için bir sunucudan kontrol edin.",
+    "saved": "Depo kaydedildi",
+    "saveFailed": "Depo kaydedilemedi",
+    "deleteTitle": "{{name}} silinsin mi?",
+    "deleteDesc": "Sadece Termix'ten kaldırılır. Yedekler depolamada kalır.",
+    "deleted": "Depo silindi",
+    "deleteFailed": "Depo silinemedi"
+  },
+  "snapshots": {
+    "noJobs": "Önce bir yedekleme işi ekleyin.",
+    "job": "İş",
+    "titleFor": "{{name}} anlık görüntüleri",
+    "empty": "Henüz anlık görüntü yok",
+    "loadFailed": "Anlık görüntüler okunamadı",
+    "latest": "En son",
+    "files_one": "{{count}} dosya",
+    "files_other": "{{count}} dosya",
+    "browse": "Göz at",
+    "delete": "Sil",
+    "deleteTitle": "Bu anlık görüntü silinsin mi?",
+    "deleteDesc": "{{time}} tarihli anlık görüntü depodan kalıcı olarak kaldırılacak.",
+    "deleted": "Anlık görüntü silindi",
+    "deleteFailed": "Anlık görüntü silinemedi",
+    "browseTitle": "Anlık Görüntü {{time}}",
+    "root": "Kök",
+    "emptyFolder": "Bu klasör boş",
+    "filesFailed": "Bu klasör listelenemedi",
+    "pick": "Seç",
+    "download": "İndir",
+    "downloadZip": "Zip olarak indir",
+    "downloadFailed": "İndirilemedi",
+    "restoreAll": "Tümünü geri yükle",
+    "restorePicked_one": "{{count}} öğeyi geri yükle",
+    "restorePicked_other": "{{count}} öğeyi geri yükle"
+  },
+  "restore": {
+    "title": "Geri Yükle",
+    "what": "Ne",
+    "everything": "Anlık görüntüdeki her şey.",
+    "more_one": "ve {{count}} daha fazla",
+    "more_other": "ve {{count}} daha fazla",
+    "where": "Nereye",
+    "host": "Ana Bilgisayar",
+    "hostHint": "Depoya erişebilen ve düzenleyebildiğiniz herhangi bir ana bilgisayar.",
+    "localOnly": "Bu depo, ana bilgisayarında bir klasör olduğu için yalnızca orada geri yüklenebilir.",
+    "toFolder": "Bir klasöre",
+    "toOriginal": "Orijinal konumuna",
+    "folder": "Klasör",
+    "folderHint": "Dosyalar bu klasör içinde tam yollarını korur.",
+    "originalWarning": "Dosyalar orijinal konumlarına yazılır ve mevcut dosyaların yerini alabilir.",
+    "overwrite": "Zaten var olan dosyalar",
+    "overwriteOptions": {
+      "if-changed": "Değiştiğinde değiştir",
+      "always": "Her zaman değiştir",
+      "if-newer": "Yedek daha yeni olduğunda değiştir",
+      "never": "Asla değiştirme"
+    },
+    "start": "Geri Yükle",
+    "started": "Geri yükleme başlatıldı",
+    "failed": "Geri yükleme başlatılamadı"
+  },
+  "run": {
+    "title": "Çalıştır",
+    "backupTitle": "{{name}} yedeği",
+    "restoreTitle": "{{name}} geri yüklemesi",
+    "loadFailed": "İşlem yüklenemedi",
+    "progress": "İlerleme",
+    "preparing": "Hazırlanıyor...",
+    "progressLine": "%{{percent}} | {{totalFiles}} dosyadan {{files}} | {{totalBytes}}'den {{bytes}}",
+    "left": "{{time}} kaldı",
+    "details": "Ayrıntılar",
+    "started": "Başlatıldı",
+    "finished": "Tamamlandı",
+    "trigger": "Tarafından başlatıldı",
+    "triggers": {
+      "manual": "Şimdi çalıştır",
+      "schedule": "Zamanlama",
+      "operation": "Termix işlemi"
+    },
+    "snapshot": "Anlık Görüntü",
+    "target": "Şuraya geri yüklendi",
+    "files": "Dosyalar",
+    "filesLine": "{{total}} dosya, {{added}} yeni, {{changed}} değiştirildi",
+    "size": "Boyut",
+    "added": "Depoya eklendi",
+    "took": "Süre",
+    "log": "Günlük",
+    "noLog": "Henüz günlük yok.",
+    "stopTitle": "Bu işlem durdurulsun mu?",
+    "stopDesc": "Durdurulmuş bir yedekleme işlemi anlık görüntü kaydetmez. Durdurulmuş bir geri yükleme işlemi, o ana kadar geri yüklenen dosyaları olduğu gibi bırakır.",
+    "stopSent": "Durduruluyor",
+    "stopFailed": "İşlem durdurulamadı"
+  },
+  "history": {
+    "empty": "Henüz hiçbir işlem çalıştırılmadı",
+    "loadFailed": "Geçmiş yüklenemedi",
+    "status": "Durum",
+    "job": "İşlem",
+    "host": "Sunucu",
+    "kind": "Tür",
+    "kinds": {
+      "backup": "Yedekleme",
+      "restore": "Geri Yükleme"
+    },
+    "started": "Başlangıç",
+    "took": "Süre",
+    "size": "Boyut"
+  },
+  "card": {
+    "title": "Yedeklemeler",
+    "all": "Tüm yedekleme işlemleri",
+    "oneJob": "Bir yedekleme işlemi",
+    "empty": "Henüz yedekleme işlemi yok.",
+    "gone": "Bu yedekleme işlemi silindi.",
+    "open": "Aç"
+  },
+  "operations": {
+    "list": {
+      "title": "Yedekleme işlemlerini listele"
+    },
+    "failed": {
+      "title": "Başarısız yedeklemeler"
+    },
+    "run": {
+      "title": "Yedekleme çalıştır"
+    },
+    "cancel": {
+      "title": "Yedeklemeyi durdur"
+    },
+    "snapshots": {
+      "title": "Anlık görüntüleri listele"
+    },
+    "events": {
+      "finished": "Yedekleme tamamlandı",
+      "failed": "Yedekleme başarısız oldu"
+    },
+    "jobs": {
+      "title": "Yedekleme işlemleri",
+      "lastSuccess": "Son yedekleme",
+      "nextRun": "Sonraki çalışma",
+      "size": "Boyut"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Terminalde yedekleme panelini göster",
+        "description": "Yedekleme panelinin, bu sunucunun SSH terminalinin yanında açılmasına izin ver."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Yeni terminallerle yedekleme panelini aç",
+        "description": "Yedekleme paneli etkin olan her SSH terminalinin yanında yedekleme panelini göster. Sağ kenardaki düğmeden paneli açıp kapatabilirsiniz."
+      },
+      "companionSide": {
+        "label": "Yedekleme paneli konumu",
+        "description": "Yedekleme panelinin terminalin yanında nerede duracağı.",
+        "right": "Sağ",
+        "left": "Sol",
+        "bottom": "Alt"
+      },
+      "companionSize": {
+        "label": "Yedekleme paneli boyutu",
+        "description": "Piksel cinsinden genişlik veya altta olduğunda yükseklik. Kenarını sürükleyerek de ayarlayabilirsiniz."
+      },
+      "companionEdgeButton": {
+        "label": "Panel düğmesini göster",
+        "description": "Yedekleme panelini açan küçük bir düğmeyi terminalin sağ kenarında göster."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Yedekleme panelini aç/kapat"
+  }
+}

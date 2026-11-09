@@ -1,0 +1,291 @@
+{
+  "plugin": {
+    "name": "Servidors web",
+    "description": "Gestiona nginx, Apache i Caddy als teus servidors: llocs, configuració, registres i HTTPS, amb cada canvi provat primer."
+  },
+  "common": {
+    "cancel": "Cancel·la",
+    "back": "Enrere",
+    "loading": "S'està carregant..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Utilitza Servidors web",
+      "description": "Visualitza els servidors web i els llocs als servidors a què pots accedir, i modifica'ls als servidors que pots editar."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Servidors web",
+        "description": "Gestiona nginx, Apache i Caddy en aquest servidor des de la pestanya Servidors web."
+      },
+      "useSudo": {
+        "label": "Utilitza sudo",
+        "description": "Utilitza sudo per llegir i modificar el servidor web. Desactiva-ho si l'usuari d'inici de sessió és root."
+      },
+      "readOnly": {
+        "label": "Només lectura",
+        "description": "Mostra els llocs, la configuració i els registres, però mai no els modifiquis en aquest servidor."
+      },
+      "showPanel": {
+        "label": "Panell al costat del terminal",
+        "description": "Mostra el panell de Servidors web a les pestanyes del terminal d'aquest servidor."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Obre el panell amb el terminal",
+        "description": "Mostra el panell de Servidors web quan s'obre un terminal en un servidor que el tingui."
+      },
+      "companionSide": {
+        "label": "Costat del panell",
+        "description": "On es troba el panell al costat del terminal.",
+        "right": "Dreta",
+        "left": "Esquerra",
+        "bottom": "Inferior"
+      },
+      "companionSize": {
+        "label": "Mida del panell",
+        "description": "Amplada del panell, o la seva alçada a la part inferior, en píxels."
+      },
+      "companionEdgeButton": {
+        "label": "Botó del costat",
+        "description": "Mostra un botó petit al costat del terminal per obrir el panell."
+      }
+    }
+  },
+  "tab": {
+    "title": "Servidors web",
+    "noHost": "Obre Servidors web des d'un servidor.",
+    "error": "No s'han pogut carregar els servidors web d'aquest servidor.",
+    "disabled": "Servidors web està desactivat per a aquest servidor. Activa'l a la configuració del servidor.",
+    "sudo": "Els canvis requereixen un inici de sessió com a root, sudo sense contrasenya o una contrasenya de sudo desada en aquest servidor.",
+    "refresh": "Actualitza",
+    "readOnly": "Només lectura",
+    "noServer": "Cap servidor web instal·lat",
+    "noServerHint": "Instal·la nginx, Apache o Caddy des de la pàgina Servidor.",
+    "openServer": "Obre Servidor",
+    "viewSites": "Llocs",
+    "viewConfig": "Configuració",
+    "viewLogs": "Registres",
+    "viewServer": "Servidor"
+  },
+  "actions": {
+    "ok": "Fet",
+    "failed": "Ha fallat",
+    "noOutput": "Cap sortida."
+  },
+  "watch": {
+    "start": "Avisa'm quan un servidor web s'aturi",
+    "stop": "Atura les alertes per a aquest servidor",
+    "on": "Rebràs una alerta quan un servidor web d'aquest servidor s'aturi",
+    "off": "Les alertes per a aquest servidor estan desactivades",
+    "failed": "No s'han pogut modificar les alertes"
+  },
+  "sites": {
+    "add": "Afegeix lloc",
+    "search": "Cerca llocs",
+    "empty": "Encara no hi ha llocs.",
+    "loadFailed": "No s'han pogut carregar els llocs.",
+    "off": "Desactivat",
+    "anyName": "qualsevol nom",
+    "form": "Formulari",
+    "certDays_one": "{{count}} dia restant",
+    "certDays_many": "{{count}} dies restants",
+    "certDays_other": "{{count}} dies restants",
+    "certExpired": "Certificat caducat",
+    "enable": "Activar",
+    "disable": "Desactivar",
+    "enabled": "{{name}} està activat",
+    "disabled": "{{name}} està desactivat",
+    "delete": "Suprimir",
+    "deleteTitle": "Vols suprimir {{name}}?",
+    "deleteBody": "El fitxer s'elimina i el servidor es reinicia. Es conserva una còpia a /var/lib/termix-web-servers/backups a l'amfitrió.",
+    "deleted": "{{name}} s'ha suprimit"
+  },
+  "site": {
+    "addTitle": "Lloc nou",
+    "editTitle": "Desa {{name}}",
+    "add": "Afegeix un lloc",
+    "save": "Desa",
+    "added": "{{name}} s'ha afegit",
+    "saved": "{{name}} s'ha desat",
+    "server": "Servidor web",
+    "name": "Nom del lloc",
+    "nameHint": "S'utilitza per al nom del fitxer i els fitxers de registre, com ara example.",
+    "modeForm": "Formulari",
+    "modeText": "Text",
+    "text": "Configuració",
+    "textHint": "En desar el text, el formulari d'aquest lloc es desactiva per conservar els teus canvis.",
+    "type": "Tipus",
+    "typeStatic": "Fitxers estàtics",
+    "typeProxy": "Proxy invers",
+    "typePhp": "PHP",
+    "typeRedirect": "Redirecció",
+    "staticHint": "Serveix fitxers des d'una carpeta.",
+    "proxyHint": "Envia les sol·licituds a una aplicació que s'executa en aquest amfitrió o en un altre.",
+    "phpHint": "Serveix fitxers des d'una carpeta i executa fitxers .php amb php-fpm.",
+    "redirectHint": "Envia tots els visitants a una altra adreça.",
+    "domains": "Dominis",
+    "domainsHint": "Prem Retorn després de cada un. Utilitza _ a nginx per respondre a qualsevol nom.",
+    "port": "Port HTTP",
+    "root": "Arrel web",
+    "rootHint": "Una carpeta dins de /var/www, /srv, /usr/share/nginx, /opt o /home.",
+    "index": "Fitxers d'índex",
+    "spa": "Aplicació de pàgina única",
+    "spaHint": "Envia les rutes que no són fitxers a /index.html.",
+    "upstream": "Adreça de l'aplicació",
+    "upstreamHint": "On escolta l'aplicació, com ara http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Envia els visitants a",
+    "keepPath": "Conserva la ruta",
+    "keepPathHint": "Envia /page a la mateixa pàgina de la nova adreça.",
+    "phpSocket": "Socket php-fpm",
+    "phpSocketHint": "No s'ha trobat cap socket php-fpm. Instal·la php-fpm o introdueix amfitrió:port.",
+    "https": "HTTPS",
+    "httpsHint": "Cal un certificat. Desa primer el lloc i després prem Obtenir certificat a continuació.",
+    "httpsCaddy": "Caddy obté i renova el certificat automàticament.",
+    "httpsPort": "Port HTTPS",
+    "certPath": "Fitxer de certificat",
+    "keyPath": "Fitxer de clau",
+    "forceHttps": "Redirigeix HTTP a HTTPS",
+    "gzip": "Comprimeix les respostes",
+    "accessLog": "Registre d'accés",
+    "maxBody": "Límit de càrrega en MB",
+    "maxBodyHint": "0 manté el valor predeterminat del servidor.",
+    "preview": "Vista prèvia",
+    "previewFailed": "No s'ha pogut generar la configuració."
+  },
+  "tls": {
+    "title": "Certificat HTTPS",
+    "hintManaged": "certbot obté un certificat de Let's Encrypt per als dominis d'aquest lloc i, a continuació, el lloc passa a HTTPS. certbot el renova i recarrega el servidor.",
+    "hintText": "certbot obté un certificat de Let's Encrypt per als dominis d'aquest lloc. Afegeix el certificat al lloc tu mateix després. certbot el renova i recarrega el servidor.",
+    "needCertbot": "Instal·la certbot amb el seu complement per a aquest servidor des de la pàgina del servidor primer.",
+    "email": "Correu electrònic",
+    "emailHint": "Let's Encrypt hi escriu sobre problemes. Opcional.",
+    "staging": "Certificat de prova",
+    "stagingHint": "Utilitza el servidor de proves de Let's Encrypt. Els navegadors no el consideraran fiable.",
+    "issue": "Obtenir certificat",
+    "done": "Certificat desat"
+  },
+  "config": {
+    "search": "Cercar fitxers",
+    "empty": "No hi ha fitxers.",
+    "loadFailed": "No s'ha pogut carregar el fitxer.",
+    "test": "Provar la configuració",
+    "testOk": "La configuració és correcta",
+    "testFailed": "La configuració té errors",
+    "content": "Contingut",
+    "save": "Desa",
+    "saveHint": "Tota la configuració es prova abans que el servidor es recarregui. Un fitxer trencat es restaura.",
+    "saved": "Desat i recarregat",
+    "backups_one": "{{count}} còpia de seguretat",
+    "backups_many": "{{count}} còpies de seguretat",
+    "backups_other": "{{count}} còpies de seguretat",
+    "restore": "Restaura",
+    "restoreTitle": "Vols restaurar aquesta còpia de seguretat?",
+    "restoreBody": "El fitxer torna a com era a {{time}}. El text actual també es converteix en una còpia de seguretat.",
+    "restored": "Còpia de seguretat restaurada"
+  },
+  "logs": {
+    "source": "Registre",
+    "lines": "Línies",
+    "journal": "Registre de {{server}}",
+    "follow": "Segueix",
+    "stop": "Atura",
+    "connecting": "Connectant...",
+    "ended": "S'ha deixat de seguir.",
+    "followFailed": "No s'ha pogut seguir aquest registre.",
+    "empty": "No hi ha línies.",
+    "loadFailed": "No s'ha pogut llegir el registre.",
+    "requests": "Sol·licituds",
+    "topPaths": "Rutes principals",
+    "topClients": "Clients principals"
+  },
+  "server": {
+    "unknown": "desconegut",
+    "atBoot": "S'inicia en arrencar",
+    "notInstalled": "No instal·lat",
+    "start": "Inicia",
+    "stop": "Atura",
+    "restart": "Reinicia",
+    "reload": "Recarrega",
+    "enable": "Inicia en arrencar",
+    "disable": "No iniciïs en arrencar",
+    "boot": "Inicia en arrencar",
+    "noBoot": "No iniciïs en arrencar",
+    "done": "{{server}} ha acabat",
+    "stopTitle": "Vols aturar {{server}}?",
+    "stopBody": "Tots els llocs que hi ha queden fora de línia fins que els tornis a iniciar.",
+    "install": "Instal·la",
+    "installTitle": "Vols instal·lar {{server}}?",
+    "installBody": "S'instal·la amb el gestor de paquets de l'amfitrió i s'inicia immediatament. Un altre servidor web al port 80 li impedirà iniciar-se.",
+    "installed": "{{server}} s'ha instal·lat",
+    "installCertbot": "Instal·la certbot",
+    "certbotInstalled": "certbot s'ha instal·lat",
+    "certbotPlugins": "Complements: {{plugins}}",
+    "certbotNoPlugins": "No hi ha cap complement per a nginx o Apache",
+    "certbotHint": "Obté certificats de Let's Encrypt per a llocs de nginx i Apache"
+  },
+  "card": {
+    "title": "Servidors web",
+    "loading": "S'està carregant...",
+    "refresh": "Actualitza",
+    "empty": "Cap amfitrió té els servidors web activats.",
+    "summary_one": "{{count}} amfitrió | {{down}} necessita una mirada",
+    "summary_many": "{{count}} amfitrions | {{down}} necessiten una mirada",
+    "summary_other": "{{count}} amfitrions | {{down}} necessiten una mirada",
+    "sites_one": "{{count}} lloc web",
+    "sites_many": "{{count}} llocs web",
+    "sites_other": "{{count}} llocs web"
+  },
+  "companion": {
+    "toggle": "Panell de servidors web",
+    "openTab": "Obre servidors web",
+    "reload": "Recarrega {{server}}"
+  },
+  "manager": {
+    "title": "Servidors web",
+    "disabled": "Activa els servidors web per a aquest amfitrió per veure'n els llocs web aquí."
+  },
+  "operations": {
+    "status": {
+      "title": "Estat del servidor web"
+    },
+    "listSites": {
+      "title": "Llista de llocs web"
+    },
+    "test": {
+      "title": "Prova la configuració del servidor web"
+    },
+    "reload": {
+      "title": "Recarrega el servidor web"
+    },
+    "restart": {
+      "title": "Reinicia el servidor web"
+    },
+    "enableSite": {
+      "title": "Activa el lloc web"
+    },
+    "disableSite": {
+      "title": "Desactiva el lloc web"
+    },
+    "deleteSite": {
+      "title": "Suprimeix el lloc web"
+    },
+    "server": "Servidor",
+    "allServers": "Tots",
+    "sites": {
+      "title": "Llocs web",
+      "server": "Servidor",
+      "domains": "Dominis",
+      "https": "HTTPS"
+    }
+  }
+}

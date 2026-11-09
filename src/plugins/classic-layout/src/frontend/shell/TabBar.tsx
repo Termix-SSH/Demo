@@ -491,7 +491,9 @@ export function TabBar({
                           e.stopPropagation();
                           onRefreshTab(tab.id);
                         }}
+                        type="button"
                         title={t("nav.refreshTab")}
+                        aria-label={t("nav.refreshTab")}
                         className="flex items-center justify-center size-5 md:size-4 rounded-sm transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
                       >
                         <RefreshCw className="size-3" />
@@ -509,7 +511,9 @@ export function TabBar({
                             e.stopPropagation();
                             invoke();
                           }}
+                          type="button"
                           title={t(contribution.titleKey)}
+                          aria-label={t(contribution.titleKey)}
                           className="flex items-center justify-center size-5 md:size-4 rounded-sm transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
                         >
                           {contribution.icon && (
@@ -519,11 +523,14 @@ export function TabBar({
                       )}
                     />
                     <button
+                      type="button"
                       onPointerDown={(e) => e.stopPropagation()}
                       onClick={(e) => {
                         e.stopPropagation();
                         onCloseTab(tab.id);
                       }}
+                      title={t("nav.close")}
+                      aria-label={t("nav.close")}
                       className="flex items-center justify-center size-5 md:size-4 rounded-sm transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
                     >
                       <X className="size-3" />
@@ -582,6 +589,8 @@ export function TabBar({
                 variant="ghost"
                 size="icon"
                 className="h-full w-12.5 rounded-none text-muted-foreground hover:text-foreground"
+                title={t("nav.allTabs")}
+                aria-label={t("nav.allTabs")}
               >
                 <ChevronDown className="size-4" />
               </Button>
@@ -614,10 +623,13 @@ export function TabBar({
                   </div>
                   {tab.type !== "dashboard" && (
                     <button
+                      type="button"
                       onClick={(e) => {
                         e.stopPropagation();
                         onCloseTab(tab.id);
                       }}
+                      title={t("nav.close")}
+                      aria-label={t("nav.close")}
                       className="shrink-0 ml-2 text-muted-foreground hover:text-foreground"
                     >
                       <X className="size-3" />
@@ -691,6 +703,8 @@ export function TabBar({
             size="icon"
             className="h-full w-12.5 rounded-none text-muted-foreground hover:text-foreground"
             onClick={() => setOpen((o) => !o)}
+            title={t("nav.hideTabBar")}
+            aria-label={t("nav.hideTabBar")}
           >
             <ChevronUp
               className={`size-4 transition-transform ${open ? "" : "rotate-180"}`}
@@ -700,8 +714,11 @@ export function TabBar({
       </div>
       {!open && (
         <button
+          type="button"
           onClick={() => setOpen(true)}
-          className="flex  items-center justify-center w-full h-6 bg-sidebar border-b border-border text-muted-foreground hover:text-accent-brand hover:bg-accent-brand/5 transition-colors shrink-0"
+          title={t("nav.showTabBar")}
+          aria-label={t("nav.showTabBar")}
+          className="flex items-center justify-center w-full h-6 bg-sidebar border-b border-border text-muted-foreground hover:text-accent-brand hover:bg-accent-brand/5 transition-colors shrink-0"
         >
           <ChevronDown className="size-3.5" />
         </button>

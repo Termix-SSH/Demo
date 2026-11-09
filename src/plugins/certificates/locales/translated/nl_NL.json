@@ -1,0 +1,235 @@
+{
+  "plugin": {
+    "name": "Certificaten",
+    "description": "Bekijk, vraag aan en vernieuw TLS-certificaten op je hosts met certbot en acme.sh, en ontvang een waarschuwing voordat ze verlopen."
+  },
+  "common": {
+    "cancel": "Annuleren",
+    "back": "Terug"
+  },
+  "permissions": {
+    "use": {
+      "title": "Certificaten gebruiken",
+      "description": "Bekijk certificaten op hosts die je kunt bereiken, en pas ze aan op hosts die je kunt bewerken."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Certificaten",
+        "description": "Beheer TLS-certificaten op deze host via het tabblad Certificaten."
+      },
+      "useSudo": {
+        "label": "Sudo gebruiken",
+        "description": "Gebruik sudo om certificaten te lezen en aan te passen. Zet dit uit als je inlogt als root."
+      },
+      "readOnly": {
+        "label": "Alleen-lezen",
+        "description": "Toon certificaten, maar wijzig ze nooit op deze host."
+      },
+      "expiryWarnDays": {
+        "label": "Waarschuwen vóór vervaldatum",
+        "description": "Certificaten met deze hoeveelheid dagen of minder resterend worden gemarkeerd als verlopend en sturen een melding."
+      },
+      "showPanel": {
+        "label": "Certificatenpaneel tonen in terminals",
+        "description": "Sta toe dat het certificatenpaneel naast de SSH-terminal van deze host wordt geopend."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Certificatenpaneel openen bij nieuwe terminals",
+        "description": "Toon het certificatenpaneel naast elke SSH-terminal die Certificaten heeft ingeschakeld. Je kunt het paneel nog steeds openen en sluiten via de knop aan de rechterkant."
+      },
+      "companionSide": {
+        "label": "Positie certificatenpaneel",
+        "description": "Waar het certificatenpaneel naast een terminal wordt weergegeven.",
+        "right": "Rechts",
+        "left": "Links",
+        "bottom": "Onder"
+      },
+      "companionSize": {
+        "label": "Grootte certificatenpaneel",
+        "description": "Breedte in pixels, of hoogte wanneer het paneel onderaan staat. Je kunt ook de rand verslepen."
+      },
+      "companionEdgeButton": {
+        "label": "Toon paneelknop",
+        "description": "Toon een kleine knop aan de rechterkant van een terminal die het certificatenpaneel opent."
+      }
+    }
+  },
+  "tab": {
+    "title": "Certificaten",
+    "noHost": "Open Certificaten vanaf een host.",
+    "error": "Kon certificaten van deze host niet laden.",
+    "disabled": "Certificaten zijn uitgeschakeld voor deze host. Schakel ze in via de host-instellingen.",
+    "sudo": "Wijzigingen vereisen een root-login, wachtelloos sudo of een opgeslagen sudo-wachtwoord op deze host.",
+    "refresh": "Vernieuwen",
+    "readOnly": "Alleen-lezen",
+    "noClient": "Geen certbot of acme.sh gevonden",
+    "viewCertificates": "Certificaten",
+    "viewInspect": "Inspecteren",
+    "viewRenewal": "Vernieuwing"
+  },
+  "actions": {
+    "working": "Bezig. Dit kan enkele minuten duren.",
+    "ok": "Klaar",
+    "failed": "De opdracht is mislukt.",
+    "noOutput": "Geen uitvoer."
+  },
+  "install": {
+    "title": "certbot en acme.sh zijn niet geïnstalleerd op deze host",
+    "hint": "Installeer certbot om certificaten van Let's Encrypt op te halen en te vernieuwen.",
+    "noManager": "Er is geen ondersteunde pakketbeheerder gevonden. Installeer certbot handmatig.",
+    "button": "certbot installeren",
+    "confirm": "certbot installeren?",
+    "desc": "Hiermee wordt certbot geïnstalleerd met de pakketbeheerder van de host.",
+    "working": "Installeren...",
+    "done": "certbot is geïnstalleerd."
+  },
+  "certs": {
+    "search": "Certificaten zoeken",
+    "empty": "Nog geen certificaten.",
+    "noMatch": "Geen overeenkomende certificaten.",
+    "loadFailed": "Kon de certificaten niet lezen.",
+    "expires": "Verloopt op {{date}}",
+    "staging": "Testomgeving",
+    "details": "Certificaat",
+    "manage": "Beheren",
+    "client": "Client",
+    "path": "Bestand",
+    "authority": "Autoriteit",
+    "renew": "Vernieuwen",
+    "renewDone": "{{name}} is vernieuwd.",
+    "renewAll": "Alles vernieuwen",
+    "renewAllDone": "De certificaten die verlopen dreigden, zijn vernieuwd.",
+    "forceRenew": "Nu toch vernieuwen",
+    "dryRun": "Proefdraaien",
+    "dryRunDone": "De proefdraai is geslaagd.",
+    "revoke": "Intrekken",
+    "revokeTitle": "{{name}} intrekken?",
+    "revokeDesc": "De autoriteit markeert het als ongeldig en het wordt van deze host verwijderd. Alles dat het nog gebruikt, stopt met werken.",
+    "revokeDone": "{{name}} ingetrokken.",
+    "delete": "Beheer stoppen",
+    "deleteTitle": "Beheer van {{name}} stoppen?",
+    "deleteDesc": "Het blijft geldig, maar wordt niet meer vernieuwd. certbot verwijdert ook de bestanden, acme.sh behoudt ze.",
+    "deleteDone": "{{name}} wordt niet langer beheerd."
+  },
+  "expiry": {
+    "expired": "Verlopen",
+    "unknown": "Onbekend",
+    "days_one": "{{count}} dag resterend",
+    "days_other": "{{count}} dagen resterend"
+  },
+  "issue": {
+    "add": "Certificaat aanvragen",
+    "title": "Nieuw certificaat",
+    "save": "Aanvragen",
+    "done": "Het certificaat is aangevraagd.",
+    "working": "Verzoek wordt verwerkt door de autoriteit. Dit kan enkele minuten duren.",
+    "client": "Client",
+    "domains": "Domeinen",
+    "domainsPlaceholder": "Typ een domein en druk op Enter",
+    "domainsHint": "De eerste naam het certificaat.",
+    "challenge": "Uitdaging",
+    "standalone": "Standalone",
+    "standaloneHint": "Start een kleine webserver op poort 80, dus niets anders mag die poort gebruiken.",
+    "webroot": "Webroot",
+    "webrootHint": "Plaatst een bestand in de map van je webserver. De webserver blijft draaien.",
+    "dns": "DNS",
+    "dnsHint": "Voegt een DNS-record toe via de API van je provider. Vereist voor wildcard-certificaten.",
+    "webrootPath": "Webrootmap",
+    "webrootPathHint": "Moet zich binnen /var/www, /srv of /usr/share/nginx bevinden.",
+    "dnsProvider": "DNS-provider",
+    "dnsProviderCertbot": "De naam van een geïnstalleerd certbot DNS-plug-in, zoals cloudflare.",
+    "dnsProviderAcme": "Een acme.sh DNS-naam zonder dns_, zoals cf. Het API-token moet al op de host zijn ingesteld.",
+    "credentials": "Aanmeldgegevensbestand",
+    "credentialsHint": "Het bestand op de host met uw API-token. Dit wordt nooit door Termix gelezen.",
+    "email": "E-mailadres",
+    "emailHint": "Optioneel. De autoriteit gebruikt dit voor meldingen over vervaldatum.",
+    "keyType": "Sleuteltype",
+    "staging": "Staging-server gebruiken",
+    "stagingHint": "Voor testdoeleinden. Het certificaat is niet vertrouwd en de snelheidslimieten zijn veel hoger."
+  },
+  "inspect": {
+    "server": "Server",
+    "file": "Bestand",
+    "address": "Adres",
+    "addressPlaceholder": "example.com",
+    "port": "Poort",
+    "path": "Bestandspad",
+    "check": "Controleren",
+    "hint": "Controleer wat een server via TLS verzendt, zoals gezien vanaf deze host, of lees een certificaatbestand erop.",
+    "failed": "Het certificaat kon niet worden gelezen.",
+    "noOpenssl": "openssl is niet geïnstalleerd op deze host.",
+    "trusted": "Vertrouwd",
+    "notTrusted": "Niet vertrouwd",
+    "leaf": "Certificaat",
+    "intermediate": "Ketel {{index}}",
+    "selfSigned": "Zelfondertekend",
+    "name": "Naam",
+    "issuer": "Uitgever",
+    "domains": "Domeinen",
+    "validFrom": "Geldig vanaf",
+    "validTo": "Geldig tot",
+    "keyType": "Sleutel",
+    "serial": "Serienummer",
+    "fingerprint": "SHA-256"
+  },
+  "renewal": {
+    "hint": "Hoe deze host certificaten automatisch vernieuwt. Pas dit aan op de host.",
+    "on": "Aan",
+    "off": "Uit",
+    "timer": "systemd timer",
+    "next": "Volgende uitvoering {{time}}",
+    "cron": "Cron-bestand /etc/cron.d/certbot",
+    "certbotOff": "Er is geen timer of cronjob gevonden, dus certificaten worden niet automatisch vernieuwd.",
+    "acmeCron": "Cronjob in de crontab",
+    "acmeOff": "Er is geen cronjob gevonden, dus certificaten worden niet automatisch vernieuwd."
+  },
+  "watch": {
+    "start": "Waarschuw me voordat certificaten op deze host verlopen",
+    "stop": "Stop meldingen voor deze host",
+    "on": "Je ontvangt een melding voordat certificaten hier verlopen.",
+    "off": "Meldingen voor deze host zijn uitgeschakeld.",
+    "failed": "De melding kon niet worden gewijzigd."
+  },
+  "card": {
+    "title": "Certificaten",
+    "loading": "Hosts controleren...",
+    "summary_one": "{{count}} certificaat, {{expiring}} verlopend",
+    "summary_other": "{{count}} certificaten, {{expiring}} verlopend",
+    "refresh": "Opnieuw controleren",
+    "empty": "Schakel Certificaten in voor een host om de certificaten hier te zien."
+  },
+  "manager": {
+    "title": "Certificaten",
+    "disabled": "Schakel certificaten in voor deze host in de instellingen om ze hier te zien."
+  },
+  "operations": {
+    "list": {
+      "title": "Certificaten weergeven"
+    },
+    "expiring": {
+      "title": "Certificaten die verlopen"
+    },
+    "renew": {
+      "title": "Certificaat vernieuwen"
+    },
+    "renewAll": {
+      "title": "Alle certificaten vernieuwen"
+    },
+    "revoke": {
+      "title": "Certificaat intrekken"
+    },
+    "certificates": {
+      "title": "Certificaten",
+      "client": "Client",
+      "domains": "Domeinen",
+      "daysLeft": "Dagen resterend"
+    }
+  },
+  "nav": {
+    "togglePanel": "Certificatenpaneel in-/uitschakelen"
+  }
+}

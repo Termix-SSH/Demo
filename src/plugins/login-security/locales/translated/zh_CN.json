@@ -9,7 +9,8 @@
   "settings": {
     "group": {
       "sessions": "会话",
-      "secondFactor": "第二因素"
+      "secondFactor": "第二因素",
+      "connect": "连接到主机"
     },
     "admin": {
       "idleTimeoutMinutes": {
@@ -34,8 +35,34 @@
       "applyToExternal": {
         "label": "同样适用于单点登录",
         "description": "在 SSO 和 LDAP 登录后也要求验证第二因素。如果您的身份提供商已经要求验证，请保持关闭。"
+      },
+      "connectFactor": {
+        "label": "连接前要求二次验证",
+        "description": "当用户打开主机的终端、远程桌面或文件管理器时，需要输入二次验证。指标、隧道和其他后台任务不会触发此要求。",
+        "off": "关闭",
+        "marked": "仅标记的主机",
+        "all": "所有主机"
+      },
+      "connectFactorMinutes": {
+        "label": "再次要求前的分钟数",
+        "description": "输入后，用户可以在这段时间内连接任何主机。注销会提前结束此状态。"
+      }
+    },
+    "host": {
+      "requireConnectFactor": {
+        "label": "连接前要求二次验证",
+        "description": "当登录安全设置为“仅标记的主机”时使用。"
       }
     }
+  },
+  "verify": {
+    "title": "验证二次验证",
+    "intro": "输入您的二次验证以连接到此主机。",
+    "done": "已验证",
+    "retry": "返回主机并重新连接。",
+    "failed": "验证失败，请重试。",
+    "noFactor": "未设置二次验证",
+    "noFactorHint": "请在设置 > 安全中设置，然后重新连接。"
   },
   "status": {
     "factors": "用户可使用的第二因素：{{factors}}",

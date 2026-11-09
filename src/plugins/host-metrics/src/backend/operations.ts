@@ -42,12 +42,17 @@ export function registerOperations(
           data: { status: "unknown", label: "No checks" },
         };
       }
+      // Name the checks that are not passing, so the tile says what is wrong.
+      const bad = health.checks.filter((check) => check.level !== "ok");
+      const label = bad.length
+        ? bad.map((check) => check.name).join(", ")
+        : "All passing";
       return {
-        summary: health.level,
+        summary: label,
         data: {
           value: health.level,
           status: health.level === "crit" ? "fail" : health.level,
-          label: health.level,
+          label,
         },
       };
     },

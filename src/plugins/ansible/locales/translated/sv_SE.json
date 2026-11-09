@@ -1,0 +1,208 @@
+{
+  "plugin": {
+    "name": "Ansible",
+    "description": "Kör Ansible-playbooks och ad-hoc-kommandon från en kontrollvärd, med ett inventory som skapas från dina Termix-värdar."
+  },
+  "common": {
+    "save": "Spara",
+    "cancel": "Avbryt",
+    "back": "Tillbaka",
+    "delete": "Ta bort"
+  },
+  "permissions": {
+    "use": {
+      "title": "Använd Ansible",
+      "description": "Visa playbooks och körningar på kontrollvärdar du kan nå. Redigera filer och kör Ansible på värdar du har behörighet att redigera."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Ansible",
+        "description": "Använd denna värd som Ansible-kontrollvärd. Ansible måste vara installerat på den."
+      },
+      "projectDir": {
+        "label": "Projektmappe",
+        "description": "Mappen på denna värd som innehåller dina playbookar, roller och ansible.cfg.",
+        "placeholder": "~/ansible"
+      },
+      "vaultPasswordFile": {
+        "label": "Vault-lösenordsfil",
+        "description": "En fil på denna värd med Ansible Vault-lösenordet. Lämna tomt om du inte använder Vault.",
+        "placeholder": "~/.vault-pass"
+      },
+      "readOnly": {
+        "label": "Skrivskyddad",
+        "description": "Visa playbookar och körningar men redigera aldrig filer eller starta körningar på denna värd."
+      },
+      "alertRuns": {
+        "label": "Avisera vid misslyckad körning",
+        "description": "Skicka en avisering när en körning på denna värd slutar med fel eller förloras. Kontrolleras när körningens status läses."
+      }
+    }
+  },
+  "tab": {
+    "title": "Ansible",
+    "noHost": "Öppna Ansible från en värd.",
+    "error": "Kunde inte ladda Ansible från denna värd.",
+    "disabled": "Ansible är inaktiverat för denna värd. Aktivera det i värdens inställningar.",
+    "refresh": "Uppdatera",
+    "readOnly": "Skrivskyddad",
+    "notInstalled": "Ansible är inte installerat",
+    "notInstalledTitle": "Ansible är inte installerat på denna värd",
+    "notInstalledHint": "Installera ansible-core på denna värd, till exempel med pipx eller ditt paketverktyg, och uppdatera sedan.",
+    "noSshpass": "sshpass är inte installerat på denna värd. Värden som loggar in med lösenord kommer att misslyckas.",
+    "viewPlaybooks": "Playbooks",
+    "viewRuns": "Körningar",
+    "viewAdhoc": "Ad-hoc",
+    "viewFacts": "Fakta"
+  },
+  "files": {
+    "add": "Ny fil",
+    "search": "Sök efter filer",
+    "empty": "Det finns inga filer i projektmappen ännu.",
+    "noMatch": "Inga filer matchar.",
+    "noProject": "Mappen {{dir}} finns inte på denna värd. Skapa den, eller ange en annan projektmapp i värdinställningarna.",
+    "listFailed": "Kunde inte lista projektfilerna.",
+    "loadFailed": "Kunde inte läsa den filen.",
+    "saved": "Filen sparades",
+    "saveFailed": "Kunde inte spara den filen.",
+    "playbook": "Playbook",
+    "run": "Kör",
+    "newTitle": "Ny fil",
+    "name": "Filnamn",
+    "nameHint": "En sökväg inuti projektmappen, till exempel site.yml eller roles/web/tasks/main.yml.",
+    "hint": "En playbook kontrolleras för syntax innan den sparas. Den gamla filen behålls om kontrollen misslyckas.",
+    "text": "Filtext",
+    "deleteTitle": "Vill du ta bort den här filen?"
+  },
+  "targets": {
+    "search": "Sök bland värdar",
+    "addShown": "Lägg till visade",
+    "clear": "Rensa",
+    "empty": "Inga värdar hittades.",
+    "count": "{{count}} valda",
+    "failed": "Det gick inte att läsa in dina värdar."
+  },
+  "run": {
+    "title": "Kör {{playbook}}",
+    "start": "Kör",
+    "startCheck": "Kör i kontrollläge",
+    "startFailed": "Kunde inte starta körningen.",
+    "source": "Värdar",
+    "sourceProject": "Projektinventering",
+    "sourceTermix": "Termix-värdar",
+    "sourceProjectHint": "Använd inventeringen från ansible.cfg eller en fil i projektet.",
+    "sourceTermixHint": "Välj värdar från Termix. Mappar blir folder_-grupper och taggar blir tag_-grupper. Alla finns i termix-gruppen.",
+    "inventory": "Inventeringsfil",
+    "inventoryHint": "En sökväg inuti projektmappen. Lämna tomt för att använda ansible.cfg.",
+    "check": "Kontrollläge",
+    "checkHint": "Visa vad som skulle ändras utan att göra några ändringar.",
+    "diff": "Visa skillnader",
+    "diffHint": "Visa de ändringar som gjorts i filer.",
+    "become": "Kör som root",
+    "becomeHint": "Använd sudo på värdarna. Ett sparade Sudo-lösenord används för Termix-värdar.",
+    "limit": "Begränsning",
+    "limitHint": "Kör endast på dessa värdar eller grupper.",
+    "verbosity": "Utdata detaljnivå",
+    "verbosityOff": "Normal",
+    "tags": "Taggar",
+    "skipTags": "Hoppa över taggar",
+    "extraVars": "Extra variabler",
+    "extraVarsHint": "Ett nyckel=värde per rad."
+  },
+  "runs": {
+    "title": "Körning",
+    "empty": "Inga körningar än.",
+    "loadFailed": "Kunde inte ladda körningarna.",
+    "stop": "Stoppa",
+    "stopFailed": "Kunde inte stoppa körningen.",
+    "deleteTitle": "Vill du ta bort denna körning?",
+    "deleteFailed": "Kunde inte ta bort körningen.",
+    "checkMode": "Kontroll",
+    "truncated": "Visar slutet av en lång utdata.",
+    "noOutput": "Ingen utdata än.",
+    "state": {
+      "running": "Kör",
+      "ok": "Klar",
+      "failed": "Misslyckades",
+      "cancelled": "Stoppad",
+      "lost": "Förlorad"
+    },
+    "kind": {
+      "playbook": "Playbook",
+      "adhoc": "Ad-hoc",
+      "facts": "Fakta"
+    },
+    "recap": {
+      "host": "Värd",
+      "ok": "OK",
+      "changed": "Ändrad",
+      "unreachable": "Oåtkomlig",
+      "failed": "Misslyckades",
+      "skipped": "Hoppad över"
+    }
+  },
+  "adhoc": {
+    "hint": "Kör ett modul på värdar, som ansible all -m ping.",
+    "pattern": "Värdmönster",
+    "patternHint": "En värd, en grupp eller all.",
+    "module": "Modul",
+    "moduleHint": "Till exempel ping, command, shell, apt eller systemd.",
+    "args": "Argument",
+    "argsHint": "För command och shell är detta kommandot. För andra moduler är det nyckel=värde-par.",
+    "run": "Kör"
+  },
+  "facts": {
+    "hint": "Samla in fakta från värdar med setup-modulen. Kräver Termix-värdar så att varje värd har en inloggning.",
+    "gather": "Samla in fakta",
+    "gathering": "Samlar in...",
+    "failed": "Kunde inte samla in fakta.",
+    "failedHost": "Misslyckades",
+    "none": "Ingen fakta returnerades. Öppna körningen för att se varför.",
+    "col": {
+      "host": "Värd",
+      "os": "System",
+      "kernel": "Kärna",
+      "cpu": "CPU:er",
+      "memory": "Minne",
+      "address": "Adress",
+      "uptime": "Upptid"
+    }
+  },
+  "operations": {
+    "list": {
+      "title": "Lista playbookar"
+    },
+    "run": {
+      "title": "Kör playbook",
+      "playbook": "Playbook",
+      "limit": "Begränsning",
+      "tags": "Taggar",
+      "check": "Kontrollläge"
+    },
+    "runs": {
+      "title": "Lista körningar",
+      "resource": "Körningar",
+      "started": "Startad",
+      "check": "Kontrollläge"
+    },
+    "failed": {
+      "title": "Misslyckade körningar"
+    }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Kontrollerar värdar...",
+    "summary_one": "{{count}} misslyckad körning på {{hosts}} värdar",
+    "summary_other": "{{count}} misslyckade körningar på {{hosts}} värdar",
+    "refresh": "Kontrollera igen",
+    "empty": "Aktivera Ansible för en värd för att se dess körningar här.",
+    "failed_one": "{{count}} misslyckad",
+    "failed_other": "{{count}} misslyckade",
+    "running_one": "{{count}} körs",
+    "running_other": "{{count}} körs",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "Inga körningar ännu"
+  }
+}

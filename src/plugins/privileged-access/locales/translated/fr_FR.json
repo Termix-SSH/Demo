@@ -1,0 +1,145 @@
+{
+  "plugin": {
+    "name": "Accès privilégié",
+    "description": "Demandez une approbation avant que quiconque ne se connecte à un hôte privilégié, avec un accès qui se termine automatiquement et une traçabilité complète."
+  },
+  "tab": {
+    "title": "Accès"
+  },
+  "tabs": {
+    "request": "Demander un accès",
+    "mine": "Mes demandes",
+    "pending": "À décider",
+    "active": "Accès actifs",
+    "history": "Historique"
+  },
+  "status": {
+    "pending": "En attente",
+    "approved": "Terminé",
+    "active": "Actif",
+    "denied": "Refusé",
+    "expired": "Expiré",
+    "revoked": "Révoqué",
+    "cancelled": "Annulé"
+  },
+  "request": {
+    "host": "Hôte",
+    "hostWithAccess": "{{host}} (accès jusqu'à {{until}})",
+    "hours": "Heures",
+    "hoursHint": "Cet hôte autorise jusqu'à {{max}} heures.",
+    "reason": "Pourquoi vous avez besoin d'un accès",
+    "reasonOptional": "Pourquoi vous avez besoin d'un accès (facultatif)",
+    "ticket": "Ticket",
+    "ticketOptional": "Ticket (facultatif)",
+    "send": "Demander un accès",
+    "sent": "Demande envoyée. Vous recevrez une alerte lorsque quelqu'un aura pris une décision.",
+    "failed": "Impossible d'envoyer la demande",
+    "noHosts": "Aucun hôte privilégié",
+    "noHostsHint": "Les hôtes marqués comme privilégiés par un administrateur s'affichent ici."
+  },
+  "list": {
+    "none": "Rien ici",
+    "loadError": "Impossible de charger les demandes",
+    "actionFailed": "Cela n'a pas fonctionné",
+    "hours_one": "{{count}} heure",
+    "hours_many": "{{count}} heures",
+    "hours_other": "{{count}} heures",
+    "until": "jusqu'à {{time}}",
+    "decidedBy": "par {{name}}",
+    "approve": "Approuver",
+    "deny": "Refuser",
+    "cancel": "Annuler",
+    "endNow": "Terminer maintenant",
+    "export": "Exporter en CSV",
+    "approveConfirm_one": "Donner accès à {{user}} à {{host}} pour {{count}} heure ?",
+    "approveConfirm_many": "Donner accès à {{user}} à {{host}} pour {{count}} heures ?",
+    "approveConfirm_other": "Donner accès à {{user}} à {{host}} pour {{count}} heures ?",
+    "denyConfirm": "Refuser cette demande ?",
+    "cancelConfirm": "Annuler cette demande ?",
+    "endConfirm": "Terminer cet accès maintenant ? Les sessions ouvertes sur l'hôte seront fermées.",
+    "approved": "Accès approuvé",
+    "denied": "Demande refusée",
+    "ended": "Terminé"
+  },
+  "card": {
+    "title": "Accès privilégié",
+    "waiting": "en attente de vous",
+    "empty": "Aucune demande en attente",
+    "emptyHint": "Vos accès approuvés s'affichent ici."
+  },
+  "permissions": {
+    "request": {
+      "title": "Demander un accès privilégié",
+      "description": "Demander un accès limité dans le temps aux hôtes privilégiés."
+    },
+    "approve": {
+      "title": "Approuver l'accès privilégié",
+      "description": "Décider des demandes d'accès des autres, mettre fin à un accès prématurément et consulter le rapport."
+    },
+    "bypass": {
+      "title": "Accès d'urgence",
+      "description": "Se connecter aux hôtes privilégiés sans demande. Chaque utilisation est auditée et signalée."
+    },
+    "configure": {
+      "title": "Configurer les hôtes privilégiés",
+      "description": "Marquer les hôtes comme privilégiés et modifier qui approuve l'accès à ceux-ci"
+    }
+  },
+  "settings": {
+    "admin": {
+      "pendingHours": {
+        "label": "Durée de vie de la demande (heures)",
+        "description": "Une demande non traitée dans ce délai expire."
+      },
+      "alertBypass": {
+        "label": "Alerter en cas d'accès d'urgence",
+        "description": "Avertir les approbateurs lorsqu'un utilisateur se connecte avec un accès d'urgence."
+      }
+    },
+    "host": {
+      "enable": {
+        "label": "Hôte privilégié",
+        "description": "Les sessions SSH et bureau à distance vers cet hôte nécessitent une autorisation."
+      },
+      "approverRoles": {
+        "label": "Rôles d'approbateur",
+        "description": "Noms de rôles, séparés par des virgules, dont les membres peuvent approuver. Laisser vide permet à toute personne disposant de la permission d'approbation de décider."
+      },
+      "maxHours": {
+        "label": "Durée maximale d'accès (heures)",
+        "description": "Le nombre maximum d'heures qu'une demande peut solliciter."
+      },
+      "requireReason": {
+        "label": "Demander une raison",
+        "description": "Une demande doit indiquer pourquoi l'accès est nécessaire."
+      },
+      "requireTicket": {
+        "label": "Demander un ticket",
+        "description": "Une demande doit préciser un numéro de ticket."
+      },
+      "allowBackground": {
+        "label": "Autoriser les tâches en arrière-plan",
+        "description": "Le sondage et autres connexions de plugins non interactifs contournent l'approbation. Désactiver pour bloquer chaque session sans accès."
+      }
+    }
+  },
+  "operations": {
+    "request": {
+      "title": "Demander un accès privilégié",
+      "hours": "Heures",
+      "reason": "Raison",
+      "ticket": "Ticket"
+    },
+    "pending": {
+      "title": "Demandes d'accès en attente de décision"
+    },
+    "status": {
+      "title": "Accès privilégié"
+    },
+    "events": {
+      "requested": "Quelqu'un a demandé l'accès",
+      "approved": "L'accès a été approuvé",
+      "bypassed": "Un accès d'urgence a été utilisé"
+    }
+  }
+}

@@ -1,0 +1,246 @@
+{
+  "plugin": {
+    "name": "Out-of-band",
+    "description": "Quản lý nguồn, cảm biến, nhật ký sự kiện và bảng điều khiển cho BMC máy chủ qua Redfish, IPMI và Intel AMT."
+  },
+  "tab": {
+    "title": "Out-of-band"
+  },
+  "card": {
+    "title": "Out-of-band",
+    "loading": "Đang tải"
+  },
+  "host": {
+    "open": "Out-of-band"
+  },
+  "permissions": {
+    "view": {
+      "title": "Xem BMC",
+      "description": "Mở tab Out-of-band và xem thông tin nguồn, tình trạng sức khỏe, cảm biến và nhật ký."
+    },
+    "power": {
+      "title": "Điều khiển nguồn và khởi động",
+      "description": "Bật và tắt máy, khởi động lại nguồn và chọn thiết bị khởi động tiếp theo."
+    },
+    "console": {
+      "title": "Sử dụng bảng điều khiển nối tiếp",
+      "description": "Mở bảng điều khiển nối tiếp qua mạng (serial over LAN) của máy."
+    },
+    "media": {
+      "title": "Sử dụng phương tiện ảo",
+      "description": "Gắn và tháo ảnh ISO trên máy."
+    },
+    "manage": {
+      "title": "Quản lý BMC",
+      "description": "Thêm, sửa và xóa BMC, cũng như xóa nhật ký sự kiện của chúng."
+    }
+  },
+  "settings": {
+    "admin": {
+      "allowServerIpmitool": {
+        "label": "Chạy ipmitool trên máy chủ Termix",
+        "description": "Khi tắt, BMC IPMI phải sử dụng máy chủ trung gian. Redfish và AMT không bị ảnh hưởng."
+      }
+    }
+  },
+  "description": "Thêm bộ điều khiển quản lý (BMC) của máy chủ để bật/tắt nguồn, theo dõi cảm biến và đọc nhật ký sự kiện. Thông tin đăng nhập được lưu mã hóa và không bao giờ hiển thị lại.",
+  "summary": "{{count}} BMC, {{attention}} cần chú ý",
+  "empty": "Chưa có BMC nào.",
+  "add": "Thêm BMC",
+  "edit": "Sửa",
+  "delete": "Xóa",
+  "back": "Quay lại",
+  "saved": "Đã lưu",
+  "deleteConfirm": "Xóa {{name}}?",
+  "status": {
+    "unknown": "Chưa đọc",
+    "up": "Đạt được",
+    "down": "Không đạt được"
+  },
+  "drivers": {
+    "redfish": "Redfish (iDRAC, iLO, Supermicro, OpenBMC)",
+    "ipmi": "IPMI qua mạng",
+    "amt": "Intel AMT"
+  },
+  "fields": {
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu"
+  },
+  "power": {
+    "on": "Bật",
+    "off": "Tắt",
+    "unknown": "Không xác định",
+    "sent": "Đã yêu cầu {{name}} thay đổi nguồn",
+    "action": {
+      "on": "Bật nguồn",
+      "off": "Tắt nguồn",
+      "graceful-shutdown": "Tắt máy",
+      "cycle": "Khởi động lại nguồn",
+      "reset": "Đặt lại"
+    },
+    "confirm": {
+      "on": "Bật nguồn {{name}}?",
+      "off": "Cắt nguồn của {{name}}? Hệ thống sẽ không tắt máy sạch sẽ.",
+      "graceful-shutdown": "Yêu cầu {{name}} tắt máy?",
+      "cycle": "Khởi động lại nguồn {{name}}? Hệ thống sẽ không tắt máy sạch sẽ.",
+      "reset": "Đặt lại {{name}}? Hệ thống sẽ khởi động lại ngay lập tức."
+    }
+  },
+  "health": {
+    "ok": "Bình thường",
+    "warning": "Cảnh báo",
+    "critical": "Nghiêm trọng",
+    "unknown": "Không xác định"
+  },
+  "kind": {
+    "temperature": "Nhiệt độ",
+    "fan": "Quạt",
+    "voltage": "Điện áp",
+    "power": "Nguồn",
+    "psu": "Nguồn điện",
+    "other": "Khác"
+  },
+  "form": {
+    "addTitle": "Thêm BMC",
+    "editTitle": "Chỉnh sửa BMC",
+    "device": "BMC",
+    "access": "Truy cập",
+    "type": "Loại",
+    "name": "Tên",
+    "address": "Địa chỉ",
+    "port": "Cổng",
+    "host": "Máy chủ Termix",
+    "hostHint": "Liên kết BMC với máy chủ mà nó thuộc về. Khi đó, nó sẽ tuân theo cài đặt chia sẻ của máy chủ đó và hiển thị trong menu của máy chủ.",
+    "noHost": "Không có",
+    "poll": "Đọc mỗi (giây)",
+    "pollHint": "Ít nhất 30 giây, hoặc 60 giây khi sử dụng máy chủ trung gian.",
+    "scheme": "Kết nối",
+    "relay": "Máy chủ trung gian",
+    "relayHint": "Chạy ipmitool trên máy chủ này thay vì máy chủ Termix. Cần thiết cho bảng điều khiển nối tiếp.",
+    "noRelay": "Máy chủ Termix",
+    "cipher": "Bộ mã hóa",
+    "cipherHint": "Chỉ thay đổi điều này nếu BMC từ chối đăng nhập. 3 là thông thường, 17 cho các BMC mới hơn.",
+    "ca": "Chứng chỉ CA",
+    "caHint": "Dán PEM của cơ quan cấp chứng chỉ của BMC. Để trống nếu chứng chỉ đã được tin cậy.",
+    "caSet": "Đã lưu một CA. Dán một CA mới để thay thế.",
+    "keepLogin": "Để trống để giữ thông tin đăng nhập đã lưu",
+    "test": "Kiểm tra kết nối",
+    "testOk": "BMC đã phản hồi. Nguồn điện là {{power}}.",
+    "testNeedsLogin": "Nhập lại thông tin đăng nhập để kiểm tra.",
+    "save": "Lưu",
+    "add": "Thêm"
+  },
+  "view": {
+    "overview": "Tổng quan",
+    "sensors": "Cảm biến",
+    "log": "Nhật ký sự kiện",
+    "boot": "Khởi động",
+    "media": "Phương tiện ảo",
+    "console": "Bảng điều khiển",
+    "refresh": "Đọc ngay",
+    "type": "Loại",
+    "address": "Địa chỉ",
+    "power": "Nguồn điện",
+    "health": "Tình trạng sức khỏe",
+    "manufacturer": "Nhà sản xuất",
+    "model": "Mẫu",
+    "serial": "Số seri",
+    "bios": "BIOS",
+    "bmc": "Phần mềm BMC",
+    "status": "BMC",
+    "viaRelay": "Đã tiếp cận thông qua máy chủ trung gian.",
+    "noSensors": "BMC này không báo cáo cảm biến nào.",
+    "sensor": "Cảm biến",
+    "reading": "Giá trị đọc",
+    "state": "Trạng thái"
+  },
+  "log": {
+    "time": "Thời gian",
+    "severity": "Mức độ",
+    "message": "Sự kiện",
+    "empty": "Nhật ký sự kiện trống.",
+    "clear": "Xóa nhật ký",
+    "clearConfirm": "Xóa nhật ký sự kiện của {{name}}? Hành động này không thể hoàn tác.",
+    "cleared": "Đã xóa nhật ký",
+    "level": {
+      "info": "Thông tin",
+      "warning": "Cảnh báo",
+      "critical": "Nghiêm trọng"
+    }
+  },
+  "boot": {
+    "hint": "Máy sẽ khởi động từ thiết bị này một lần, sau đó quay lại thứ tự bình thường. Áp dụng trước khi khởi động lại.",
+    "device": "Khởi động từ",
+    "mode": "Chế độ",
+    "uefi": "UEFI",
+    "legacy": "Legacy BIOS",
+    "apply": "Đặt cho lần khởi động tiếp theo",
+    "done": "{{name}} sẽ khởi động từ thiết bị đã chọn vào lần tới",
+    "pxe": "Mạng (PXE)",
+    "disk": "Đĩa cứng",
+    "cd": "CD hoặc phương tiện ảo",
+    "usb": "USB",
+    "bios": "Cài đặt BIOS",
+    "none": "Thứ tự mặc định"
+  },
+  "media": {
+    "url": "Địa chỉ hình ảnh",
+    "empty": "BMC này không có khe CD ảo.",
+    "mounted": "Đã gắn",
+    "free": "Trống",
+    "mount": "Gắn",
+    "eject": "Bỏ ra",
+    "mountedDone": "Đã gắn hình ảnh",
+    "ejected": "Đã bỏ hình ảnh"
+  },
+  "console": {
+    "hint": "Nhập ~. để thoát khỏi bảng điều khiển.",
+    "connecting": "Đang kết nối",
+    "ended": "Bảng điều khiển đã đóng.",
+    "failed": "Không thể mở bảng điều khiển.",
+    "needsRelay": "Bảng điều khiển nối tiếp cần một máy chủ trung gian có ipmitool. Hãy chọn một trong cài đặt BMC."
+  },
+  "operations": {
+    "device": "BMC",
+    "boot": "Khởi động từ",
+    "uefi": "Chế độ UEFI",
+    "list": {
+      "title": "Danh sách BMC"
+    },
+    "poll": {
+      "title": "Đọc BMC ngay bây giờ"
+    },
+    "powerState": {
+      "title": "Lấy trạng thái nguồn"
+    },
+    "power-on": {
+      "title": "Bật nguồn"
+    },
+    "graceful-shutdown": {
+      "title": "Tắt máy"
+    },
+    "power-off": {
+      "title": "Tắt nguồn"
+    },
+    "power-cycle": {
+      "title": "Khởi động lại nguồn"
+    },
+    "reset": {
+      "title": "Đặt lại"
+    },
+    "setBootOnce": {
+      "title": "Khởi động một lần từ thiết bị"
+    },
+    "clearLog": {
+      "title": "Xóa nhật ký sự kiện"
+    },
+    "health": {
+      "title": "Tình trạng sức khỏe BMC"
+    }
+  },
+  "widget": {
+    "name": "Ngoài băng thông",
+    "description": "Nguồn và tình trạng sức khỏe của các BMC máy chủ của bạn.",
+    "summary": "{{up}} trong số {{total}} đang hoạt động"
+  }
+}

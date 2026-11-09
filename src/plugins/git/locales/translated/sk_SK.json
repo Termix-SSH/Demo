@@ -1,0 +1,304 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Zobrazujte, stiahnite, commitujte a pushujte git repozitáre na vašich hostoch a udržiavajte ich aktuálne pomocou automatického pullu."
+  },
+  "common": {
+    "save": "Uložiť",
+    "cancel": "Zrušiť",
+    "back": "Späť",
+    "loading": "Načítava sa..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Používať Git",
+      "description": "Zobrazujte git repozitáre na hostoch, ku ktorým máte prístup, a upravujte ich na hostoch, ktoré môžete editovať."
+    },
+    "runCommands": {
+      "title": "Spúšťať príkazy po automatickom pullu",
+      "description": "Nastavte príkaz, ktorý sa spustí na hostovi po tom, čo automatický pull stiahne nové commity."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Spravujte git repozitáre na tomto hostiteľovi z karty Git."
+      },
+      "repoRoots": {
+        "label": "Skenovať priečinky",
+        "description": "Priečinky, v ktorých sa pri skenovaní tohto hostiteľa vyhľadávajú repozitáre. Oddelte ich čiarkami. Predvolenou hodnotou je domovský priečinok.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Použiť sudo",
+        "description": "Spúšťať git ako root pomocou sudo. Iba pre repozitáre, ktoré prihlásený používateľ nemôže používať."
+      },
+      "readOnly": {
+        "label": "Iba na čítanie",
+        "description": "Zobraziť repozitáre, ale na tomto hostiteľovi ich nikdy nemeniť."
+      },
+      "showPanel": {
+        "label": "Panel vedľa terminálu",
+        "description": "Nabídnuť panel Gitu na záložkách terminálu tohto hostiteľa."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Otvoriť panel spolu s terminálom",
+        "description": "Zobraziť panel Gitu pri otvorení terminálu na hostiteľovi, ktorý ho má."
+      },
+      "companionSide": {
+        "label": "Poloha panelu",
+        "description": "Kde sa panel zobrazuje vedľa terminálu.",
+        "right": "Vpravo",
+        "left": "Vľavo",
+        "bottom": "Dole"
+      },
+      "companionSize": {
+        "label": "Veľkosť panelu",
+        "description": "Šírka panelu, alebo jeho výška pri umiestnení dole, v pixeloch."
+      },
+      "companionEdgeButton": {
+        "label": "Tlačidlo na okraji",
+        "description": "Zobraziť malé tlačidlo na okraji terminálu na otvorenie panela."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Otvorte Git z hostiteľa.",
+    "error": "Nepodarilo sa načítať Git z tohto hostiteľa.",
+    "disabled": "Git je pre tento hostiteľ vypnutý. Zapnite ho v nastaveniach hostiteľa.",
+    "sudo": "Toto vyžaduje prihlásenie ako root, sudo bez hesla alebo uložené heslo pre sudo.",
+    "refresh": "Obnoviť",
+    "readOnly": "Len na čítanie",
+    "notInstalled": "git nie je nainštalovaný",
+    "notInstalledTitle": "git nie je na tomto hostiteľovi nainštalovaný",
+    "notInstalledHint": "Nainštalujte git pomocou balíčkového manažéra hostiteľa a potom obnovte."
+  },
+  "actions": {
+    "ok": "Hotovo",
+    "failed": "Zlyhalo",
+    "noOutput": "Žiadny výstup."
+  },
+  "repos": {
+    "add": "Pridať repozitár",
+    "search": "Hľadať repozitáre",
+    "empty": "Zatiaľ žiadne repozitáre. Pridajte jeden na začatie práce.",
+    "noMatch": "Žiadne repozitáre nevyhovujú.",
+    "viewOnly": "Na tento hostiteľ neboli pridané žiadne repozitáre.",
+    "detached": "odpojený",
+    "changes_one": "{{count}} zmena",
+    "changes_few": "{{count}} zmeny",
+    "changes_many": "{{count}} zmien",
+    "changes_other": "{{count}} zmien",
+    "conflicts": "Konflikty",
+    "auto": "Automatické stiahnutie",
+    "autoFailing": "Stiahnutie zlyhalo",
+    "remove": "Odstrániť zo zoznamu",
+    "removeTitle": "Odstrániť {{name}}?",
+    "removeBody": "Repozitár sa iba zabudne tu. Na hostiteľovi sa nič nimaže.",
+    "removed": "{{name}} odstránené",
+    "error": {
+      "missing": "Chýba priečinok",
+      "notrepo": "Nie je to git repozitár",
+      "unreadable": "Nemožno čítať"
+    }
+  },
+  "add": {
+    "title": "Pridať repozitáre",
+    "modeScan": "Skenovať",
+    "modePath": "Adresár",
+    "modeClone": "Klonovať",
+    "scanHint": "Hľadá git repozitáre v {{roots}}. Zmeňte adresáre v nastaveniach hostiteľa.",
+    "rescan": "Skenovať znova",
+    "noneFound": "Nenašli sa žiadne nové repozitáre.",
+    "picked": "Vybrané",
+    "addPicked_one": "Pridať {{count}} repozitár",
+    "addPicked_few": "Pridať {{count}} repozitáre",
+    "addPicked_many": "Pridať {{count}} repozitárov",
+    "addPicked_other": "Pridať {{count}} repozitárov",
+    "addAll": "Pridať všetko",
+    "folder": "Adresár na hostiteľovi",
+    "folderHint": "Plná cesta, alebo začnite ~ pre domovský adresár. Musí už byť git repozitár.",
+    "addRepo": "Pridať repozitár",
+    "url": "Adresa",
+    "urlHint": "Používa kľúče a nastavenia gitu prihláseného používateľa hostiteľa.",
+    "dest": "Klonovať do",
+    "destHint": "Adresár ešte nesmie existovať.",
+    "clone": "Klonovať",
+    "cloned": "Klonované",
+    "added_one": "{{count}} repozitár pridaný",
+    "added_few": "{{count}} repozitáre pridané",
+    "added_many": "{{count}} repozitárov pridaných",
+    "added_other": "{{count}} repozitárov pridaných",
+    "failed": "Nepodarilo sa pridať repozitár",
+    "scanFailed": "Nepodarilo sa skenovať hostiteľa"
+  },
+  "repo": {
+    "ahead": "{{count}} vpred",
+    "behind": "{{count}} vzad",
+    "fetch": "Načítať",
+    "fetched": "Načítané",
+    "pull": "Stiahnuť",
+    "pulled": "Stiahnuté",
+    "push": "Push",
+    "pushed": "Pushnuté",
+    "viewChanges": "Zmeny",
+    "viewBranches": "Vetvy",
+    "viewHistory": "História",
+    "viewStash": "Stash",
+    "viewAuto": "Automatické ťahanie"
+  },
+  "changes": {
+    "loadFailed": "Zmeny sa nepodarilo načítať.",
+    "clean": "Nie je čo commitnúť. Pracovný strom je čistý.",
+    "stagedTitle": "Pripravené ({{count}})",
+    "unstagedTitle": "Zmeny ({{count}})",
+    "stage": "Pridať do indexu",
+    "staged": "Pridané do indexu",
+    "unstage": "Odobrať z indexu",
+    "unstaged": "Nepripravené",
+    "stageAll": "Pridať všetko do indexu",
+    "renamed": "Premenované",
+    "discard": "Zahodiť",
+    "discardTitle": "Zahodiť zmeny v {{name}}?",
+    "discardBody": "Zmeny v tomto súbore budú trvalo odstránené a nemožno ich obnoviť.",
+    "discarded": "Zmeny boli zrušené",
+    "message": "Správa commitu",
+    "messagePlaceholder": "Čo sa zmenilo",
+    "commit": "Commit",
+    "commitAll": "Commit všetkých zmien",
+    "commitStaged_one": "Commit {{count}} pripraveného súboru",
+    "commitStaged_few": "Commit {{count}} pripravených súborov",
+    "commitStaged_many": "Commit {{count}} pripravených súborov",
+    "commitStaged_other": "Commit {{count}} pripravených súborov",
+    "committed": "Commitnuté",
+    "noDiff": "Žiadne zmeny na zobrazenie.",
+    "truncated": "Diff je dlhý, preto sa zobrazuje len jeho začiatok."
+  },
+  "branches": {
+    "loadFailed": "Nepodarilo sa načítať vetvy.",
+    "empty": "Zatiaľ žiadne vetvy.",
+    "current": "Aktuálna",
+    "remote": "Vzdialená",
+    "gone": "Horná vetva neexistuje",
+    "newName": "Nová vetva",
+    "create": "Vytvoriť vetvu",
+    "created": "Vetva {{name}} vytvorená",
+    "switch": "Prepnúť",
+    "switched": "Prepnuté na {{name}}",
+    "merge": "Zlúčiť do aktuálnej",
+    "mergeTitle": "Zlúčiť {{name}} do {{into}}?",
+    "mergeBody": "Zlučovanie s konfliktmi sa okamžite vráti späť.",
+    "merged": "{{name}} zlúčené",
+    "delete": "Odstrániť vetvu",
+    "deleteTitle": "Odstrániť {{name}}?",
+    "deleteBody": "Git odmietne odstránenie, ak vetva obsahuje zábery, ktoré nie sú zlúčené.",
+    "deleted": "{{name}} odstránené",
+    "forceTitle": "Vynútiť odstránenie {{name}}?",
+    "forceBody": "Táto vetva obsahuje zábery, ktoré nie sú zlúčené. Ak ju odstránite, budú stratené.",
+    "forceDelete": "Vynútiť odstránenie"
+  },
+  "history": {
+    "loadFailed": "Nepodarilo sa načítať históriu.",
+    "empty": "Zatiaľ žiadne zábery.",
+    "branch": "Táto vetva",
+    "all": "Všetky vetvy",
+    "more": "Načítať viac"
+  },
+  "stash": {
+    "loadFailed": "Nepodarilo sa načítať stash.",
+    "title": "Stash",
+    "empty": "Žiadne stashi.",
+    "message": "Správa",
+    "messagePlaceholder": "Voliteľné",
+    "untracked": "Zahrnúť nesledované súbory",
+    "push": "Uložiť zmeny do stashu",
+    "pushDone": "Zmeny uložené do stashu",
+    "apply": "Aplikovať",
+    "applyDone": "Stash aplikovaný",
+    "pop": "Aplikovať a odstrániť",
+    "popDone": "Stash aplikovaný a odstránený",
+    "drop": "Odstrániť",
+    "dropDone": "Stash odstránený",
+    "dropTitle": "Odstrániť {{name}}?",
+    "dropBody": "Stash bude trvalo odstránený a nemožno ho obnoviť.",
+    "remotes": "Vzdialené repozitáre",
+    "noRemotes": "Žiadne vzdialené repozitáre."
+  },
+  "auto": {
+    "intro": "Stiahnutie podľa plánu s použitím iba fast-forward. Nikdy nezlučuje a preskočí repozitár, ak má neukladané zmeny alebo sa odlišuje od horného repozitára.",
+    "noUpstream": "Táto vetva zatiaľ nemá horný repozitár, takže automatické stiahnutie ju preskočí.",
+    "enable": "Automatické stiahnutie",
+    "enableHint": "Spúšťa sa ako vy, s vaším prístupom k tomuto hostiteľovi.",
+    "interval": "Každých (minút)",
+    "intervalHint": "Ako dlho čakať medzi stiahnutiami.",
+    "post": "Príkaz po stiahnutí",
+    "postHint": "Spustí sa v priečinku repozitára po príchode nových záberov. Vyžaduje povolenie na spúšťanie príkazov.",
+    "saved": "Automatické stiahnutie uložené",
+    "saveFailed": "Nepodarilo sa uložiť automatické stiahnutie",
+    "runNow": "Spustiť teraz",
+    "next": "Ďalšie stiahnutie {{when}}",
+    "runs": "Nedávne spustenia",
+    "noRuns": "Zatiaľ žiadne spustenia.",
+    "outcome": {
+      "pulled": "Stiahnuté",
+      "uptodate": "Aktuálne",
+      "skipped": "Preskočené",
+      "failed": "Zlyhalo"
+    }
+  },
+  "card": {
+    "title": "Git repozitáre",
+    "loading": "Načítava sa...",
+    "refresh": "Obnoviť",
+    "empty": "Žiadny hostiteľ zatiaľ nemá Git repozitáre.",
+    "allClean": "Všetky repozitáre sú čisté a aktuálne.",
+    "summary_one": "{{count}} repozitár | {{attention}} vyžaduje pozornosť",
+    "summary_few": "{{count}} repozitáre | {{attention}} vyžadujú pozornosť",
+    "summary_many": "{{count}} repozitárov | {{attention}} vyžaduje pozornosť",
+    "summary_other": "{{count}} repozitárov | {{attention}} vyžaduje pozornosť"
+  },
+  "companion": {
+    "toggle": "Panel Git",
+    "openTab": "Otvoriť Git",
+    "here": "Repozitár tohto priečinka",
+    "all": "Všetky repozitáre"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Zoznam Git repozitárov"
+    },
+    "fetch": {
+      "title": "Stiahnuť repozitár"
+    },
+    "pull": {
+      "title": "Aktualizovať repozitár"
+    },
+    "push": {
+      "title": "Odoslať repozitár"
+    },
+    "checkout": {
+      "title": "Prepnúť vetvu",
+      "branch": "Vetva"
+    },
+    "reset-hard": {
+      "title": "Tvrdý reset repozitára",
+      "ref": "Resetovať na"
+    },
+    "repos": {
+      "title": "Git repozitáre",
+      "branch": "Vetva",
+      "ahead": "Vpred",
+      "behind": "Vzad",
+      "changed": "Zmeny"
+    },
+    "signals": {
+      "behind": "Repozitáre vzad",
+      "dirty": "Repozitáre so zmenami",
+      "pull-failing": "Automatické stiahnutie zlyhalo"
+    }
+  }
+}

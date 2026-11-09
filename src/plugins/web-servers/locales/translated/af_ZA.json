@@ -1,0 +1,287 @@
+{
+  "plugin": {
+    "name": "Webbedieners",
+    "description": "Bestuur nginx, Apache en Caddy op jou gasheer: webwerwe, konfigurasie, logboeke en HTTPS, met elke verandering eers getoets."
+  },
+  "common": {
+    "cancel": "Kanselleer",
+    "back": "Terug",
+    "loading": "Laai tans..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Gebruik Webbedieners",
+      "description": "Sien webbedieners en webwerwe op gasheer wat jy kan bereik, en verander hulle op gasheer wat jy kan redigeer."
+    }
+  },
+  "servers": {
+    "nginx": "nginx",
+    "apache": "Apache",
+    "caddy": "Caddy"
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Webbedieners",
+        "description": "Bestuur nginx, Apache en Caddy op hierdie gasheer vanaf die Webbedieners-oortjie."
+      },
+      "useSudo": {
+        "label": "Gebruik sudo",
+        "description": "Gebruik sudo om die webbediener te lees en te verander. Skakel dit af as die aanmelding root is."
+      },
+      "readOnly": {
+        "label": "Slegs lees",
+        "description": "Wys webwerwe, konfigurasie en logboeke, maar verander hulle nooit op hierdie gasheer nie."
+      },
+      "showPanel": {
+        "label": "Paneel langs die terminaal",
+        "description": "Bied die Webbedieners-paneel op hierdie gasheer se terminaal-oortjies."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Maak die paneel oop saam met die terminaal",
+        "description": "Wys die Webbedieners-paneel wanneer 'n terminaal oopmaak op 'n gasheer wat dit het."
+      },
+      "companionSide": {
+        "label": "Paneel se kant",
+        "description": "Waar die paneel langs die terminaal sit.",
+        "right": "Regs",
+        "left": "Links",
+        "bottom": "Onder"
+      },
+      "companionSize": {
+        "label": "Paneel se grootte",
+        "description": "Die breedte van die paneel, of sy hoogte onderaan, in pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Randknoppie",
+        "description": "Wys 'n klein knoppie op die terminaal se rand om die paneel oop te maak."
+      }
+    }
+  },
+  "tab": {
+    "title": "Webbedieners",
+    "noHost": "Maak Webbedieners oop vanaf 'n gasheer.",
+    "error": "Kon nie die webbedieners op hierdie gasheer laai nie.",
+    "disabled": "Webbedieners is afgeskakel vir hierdie gasheer. Skakel dit aan in die gasheer-instellings.",
+    "sudo": "Veranderinge benodig 'n root-aanmelding, wagwoordlose sudo of 'n gestoorde Sudo-wagwoord op hierdie gasheer.",
+    "refresh": "Verfris",
+    "readOnly": "Slegs lees",
+    "noServer": "Geen webbediener geïnstalleer nie",
+    "noServerHint": "Installeer nginx, Apache of Caddy vanaf die Bediener-bladsy.",
+    "openServer": "Maak Bediener oop",
+    "viewSites": "Webwerwe",
+    "viewConfig": "Konfigurasie",
+    "viewLogs": "Logboeke",
+    "viewServer": "Bediener"
+  },
+  "actions": {
+    "ok": "Klaar",
+    "failed": "Misluk",
+    "noOutput": "Geen uitset nie."
+  },
+  "watch": {
+    "start": "Waarsku my wanneer 'n webbediener stop",
+    "stop": "Stop waarskuwings vir hierdie gasheer",
+    "on": "Jy sal 'n waarskuwing kry wanneer 'n webbediener op hierdie gasheer stop",
+    "off": "Waarskuwings vir hierdie gasheer is af",
+    "failed": "Kon nie waarskuwings verander nie"
+  },
+  "sites": {
+    "add": "Voeg webwerf by",
+    "search": "Soek webwerwe",
+    "empty": "Nog geen webwerwe nie.",
+    "loadFailed": "Kon nie die webwerwe laai nie.",
+    "off": "Af",
+    "anyName": "enige naam",
+    "form": "Vorm",
+    "certDays_one": "{{count}} dag oor",
+    "certDays_other": "{{count}} dae oor",
+    "certExpired": "Sertifikaat het verval",
+    "enable": "Skakel aan",
+    "disable": "Skakel af",
+    "enabled": "{{name}} is aan",
+    "disabled": "{{name}} is af",
+    "delete": "Vee uit",
+    "deleteTitle": "Vee {{name}} uit?",
+    "deleteBody": "Die lêer word verwyder en die bediener laai her. 'n Kopie bly in /var/lib/termix-web-servers/backups op die gasheer.",
+    "deleted": "{{name}} is uitgevee"
+  },
+  "site": {
+    "addTitle": "Nuwe webwerf",
+    "editTitle": "Stoor {{name}}",
+    "add": "Voeg webwerf by",
+    "save": "Stoor",
+    "added": "{{name}} is bygevoeg",
+    "saved": "{{name}} is gestoor",
+    "server": "Webbediener",
+    "name": "Webwerfnaam",
+    "nameHint": "Word gebruik vir die lêernaam en die loglêers, soos voorbeeld.",
+    "modeForm": "Formulier",
+    "modeText": "Teks",
+    "text": "Konfigurasie",
+    "textHint": "As jy die teks stoor, word die formulier vir hierdie webwerf afgeskakel, sodat jou eie veranderinge behou word.",
+    "type": "Tipe",
+    "typeStatic": "Statische lêers",
+    "typeProxy": "Omgekeerde proxy",
+    "typePhp": "PHP",
+    "typeRedirect": "Herlei",
+    "staticHint": "Bedien lêers uit 'n gids.",
+    "proxyHint": "Stuur versoekies na 'n app wat op hierdie gasheer of 'n ander een loop.",
+    "phpHint": "Bedien lêers uit 'n gids en voer .php-lêers uit met php-fpm.",
+    "redirectHint": "Stuur elke besoeker na 'n ander adres.",
+    "domains": "Domeine",
+    "domainsHint": "Druk Enter na elkeen. Gebruik _ in nginx om enige naam te beantwoord.",
+    "port": "HTTP-poort",
+    "root": "Webwortel",
+    "rootHint": "'n Gids binne /var/www, /srv, /usr/share/nginx, /opt of /home.",
+    "index": "Indeksleiers",
+    "spa": "Enkelblad-toepassing",
+    "spaHint": "Stuur paaie wat nie lêers is nie na /index.html.",
+    "upstream": "App-adres",
+    "upstreamHint": "Waar die app luister, soos http://127.0.0.1:3000.",
+    "websockets": "WebSockets",
+    "redirectTo": "Stuur besoekers na",
+    "keepPath": "Behou die pad",
+    "keepPathHint": "Stuur /blad na dieselfde blad op die nuwe adres.",
+    "phpSocket": "php-fpm-sok",
+    "phpSocketHint": "Geen php-fpm-sok is gevind nie. Installeer php-fpm of voer gasheer:poort in.",
+    "https": "HTTPS",
+    "httpsHint": "Benodig 'n sertifikaat. Stoor eers die webwerf, druk dan Sertifikaat kry hieronder.",
+    "httpsCaddy": "Caddy kry en vernuwe die sertifikaat self.",
+    "httpsPort": "HTTPS-poort",
+    "certPath": "Sertifikaatlêer",
+    "keyPath": "Sleutellêer",
+    "forceHttps": "Stuur HTTP na HTTPS",
+    "gzip": "Verdicht antwoorde",
+    "accessLog": "Toeganglogboek",
+    "maxBody": "Opleglimiet in MB",
+    "maxBodyHint": "0 behou die bedienerstandaard.",
+    "preview": "Voorskou",
+    "previewFailed": "Kon nie die konfigurasie bou nie."
+  },
+  "tls": {
+    "title": "HTTPS-sertifikaat",
+    "hintManaged": "certbot kry 'n Let's Encrypt-sertifikaat vir hierdie webwerf se domeine, en die webwerf skakel dan oor na HTTPS. certbot vernuwe dit en laai die bediener her.",
+    "hintText": "certbot kry 'n Let's Encrypt-sertifikaat vir hierdie webwerf se domeine. Voeg die sertifikaat self by die webwerf daarna. certbot vernuwe dit en laai die bediener her.",
+    "needCertbot": "Installeer eers certbot met sy invoegprogram vir hierdie bediener vanaf die Bediener-bladsy.",
+    "email": "E-pos",
+    "emailHint": "Let's Encrypt skryf hier oor probleme. Opsioneel.",
+    "staging": "Toetsertifikaat",
+    "stagingHint": "Gebruik die Let's Encrypt-toetsbediener. Blaaiers vertrou dit nie.",
+    "issue": "Kry sertifikaat",
+    "done": "Sertifikaat gestoor"
+  },
+  "config": {
+    "search": "Soek lêers",
+    "empty": "Geen lêers nie.",
+    "loadFailed": "Kon nie die lêer laai nie.",
+    "test": "Toets konfigurasie",
+    "testOk": "Die konfigurasie is in orde",
+    "testFailed": "Die konfigurasie het foute",
+    "content": "Inhoud",
+    "save": "Stoor",
+    "saveHint": "Die hele konfigurasie word getoets voordat die bediener herlaai word. 'n Gebreekte lêer word teruggeplaas.",
+    "saved": "Gestoor en herlaai",
+    "backups_one": "{{count}} rugsteun",
+    "backups_other": "{{count}} rugsteune",
+    "restore": "Herstel",
+    "restoreTitle": "Herstel hierdie rugsteun?",
+    "restoreBody": "Die lêer gaan terug na hoe dit was op {{time}}. Die huidige teks word ook 'n rugsteun.",
+    "restored": "Rugsteun herstel"
+  },
+  "logs": {
+    "source": "Logboek",
+    "lines": "Rye",
+    "journal": "{{server}}-joernaal",
+    "follow": "Volg",
+    "stop": "Stop",
+    "connecting": "Maak verbinding...",
+    "ended": "Het ophou volg.",
+    "followFailed": "Kon nie hierdie logboek volg nie.",
+    "empty": "Geen rye nie.",
+    "loadFailed": "Kon nie die logboek lees nie.",
+    "requests": "Versoeke",
+    "topPaths": "Boonste paaie",
+    "topClients": "Boonste kliënte"
+  },
+  "server": {
+    "unknown": "onbekend",
+    "atBoot": "Begin by opstart",
+    "notInstalled": "Nie geïnstalleer nie",
+    "start": "Begin",
+    "stop": "Stop",
+    "restart": "Herbegin",
+    "reload": "Herlaai",
+    "enable": "Begin by opstart",
+    "disable": "Begin nie by opstart nie",
+    "boot": "Begin by opstart",
+    "noBoot": "Begin nie by opstart nie",
+    "done": "{{server}} is klaar",
+    "stopTitle": "Stop {{server}}?",
+    "stopBody": "Elke webwerf daarop gaan aflyn tot jy dit weer begin.",
+    "install": "Installeer",
+    "installTitle": "Installeer {{server}}?",
+    "installBody": "Dit word geïnstalleer met die gasheer se pakkethandhaerder en begin dadelik. 'n Ander webbediener op poort 80 sal dit verhinder om te begin.",
+    "installed": "{{server}} is geïnstalleer",
+    "installCertbot": "Installeer certbot",
+    "certbotInstalled": "certbot is geïnstalleer",
+    "certbotPlugins": "Invoegprogramme: {{plugins}}",
+    "certbotNoPlugins": "Geen nginx- of Apache-invoegprogram nie",
+    "certbotHint": "Kry Let's Encrypt-sertifikate vir nginx- en Apache-webwerwe"
+  },
+  "card": {
+    "title": "Webbedieners",
+    "loading": "Laai tans...",
+    "refresh": "Verfris",
+    "empty": "Geen gasheer het Webbedieners aangeskakel nie.",
+    "summary_one": "{{count}} gasheer | {{down}} benodig aandag",
+    "summary_other": "{{count}} gasheer | {{down}} benodig aandag",
+    "sites_one": "{{count}} webwerf",
+    "sites_other": "{{count}} webwerwe"
+  },
+  "companion": {
+    "toggle": "Webbedieners-paneel",
+    "openTab": "Maak Webbedieners oop",
+    "reload": "Laai {{server}} her"
+  },
+  "manager": {
+    "title": "Webbedieners",
+    "disabled": "Skakel Webbedieners vir hierdie gasheer aan om sy webwerwe hier te sien."
+  },
+  "operations": {
+    "status": {
+      "title": "Webbediener-status"
+    },
+    "listSites": {
+      "title": "Lys webwerwe"
+    },
+    "test": {
+      "title": "Toets webbediener-konfigurasie"
+    },
+    "reload": {
+      "title": "Laai webbediener her"
+    },
+    "restart": {
+      "title": "Herbegin webbediener"
+    },
+    "enableSite": {
+      "title": "Skakel webwerf aan"
+    },
+    "disableSite": {
+      "title": "Skakel webwerf af"
+    },
+    "deleteSite": {
+      "title": "Verwyder webwerf"
+    },
+    "server": "Bediener",
+    "allServers": "Almal",
+    "sites": {
+      "title": "Webwerwe",
+      "server": "Bediener",
+      "domains": "Domeine",
+      "https": "HTTPS"
+    }
+  }
+}

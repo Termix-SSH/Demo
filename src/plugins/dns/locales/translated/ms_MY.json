@@ -1,0 +1,317 @@
+{
+  "plugin": {
+    "name": "DNS",
+    "description": "Urus rekod dan domain DNS merentasi Cloudflare, Route 53, Namecheap dan penyedia lain."
+  },
+  "tab": {
+    "title": "DNS"
+  },
+  "card": {
+    "title": "Domain",
+    "loading": "Memuatkan",
+    "empty": "Tiada domain lagi. Buka DNS untuk menambah log masuk.",
+    "ok": "{{domains}} domain, tiada yang akan tamat tempoh tidak lama lagi",
+    "accounts": "{{count}} log masuk",
+    "failingLinks": "{{count}} rekod yang dipaut gagal"
+  },
+  "permissions": {
+    "view": {
+      "title": "Lihat DNS",
+      "description": "Buka tab DNS dan lihat zon, rekod, domain dan pemeriksaan kesihatan."
+    },
+    "edit": {
+      "title": "Tukar rekod DNS",
+      "description": "Tambah, ubah dan padam rekod, import fail zon dan segar semula domain."
+    },
+    "manage": {
+      "title": "Urus log masuk DNS",
+      "description": "Tambah log masuk penyedia, paut rekod kepada hos, pantau domain dan pulihkan salinan zon."
+    }
+  },
+  "operations": {
+    "zone": "Zon",
+    "type": "Jenis",
+    "typeA": "A",
+    "typeAAAA": "AAAA",
+    "typeCNAME": "CNAME",
+    "typeTXT": "TXT",
+    "name": "Nama",
+    "content": "Nilai",
+    "contentOptional": "Nilai (biarkan kosong untuk sepadan mana-mana)",
+    "ttl": "TTL dalam saat",
+    "label": "Label",
+    "zones": {
+      "title": "Senaraikan zon DNS"
+    },
+    "records": {
+      "title": "Senaraikan rekod DNS"
+    },
+    "domains": {
+      "title": "Senaraikan domain dan tarikh tamat tempoh"
+    },
+    "check": {
+      "title": "Semak zon"
+    },
+    "upsert": {
+      "title": "Tetapkan rekod DNS"
+    },
+    "delete": {
+      "title": "Padam rekod DNS"
+    },
+    "snapshot": {
+      "title": "Simpan salinan zon"
+    },
+    "links": {
+      "title": "Kemas kini rekod yang dipaut"
+    },
+    "expiry": {
+      "title": "Tamat tempoh domain"
+    }
+  },
+  "description": "Tambah log masuk DNS dan pendaftar anda untuk menguruskan rekod dan memantau domain di satu tempat. Kunci disimpan dalam keadaan tersulit dan tidak akan dipaparkan lagi.",
+  "summary": "{{zones}} zon, {{domains}} domain",
+  "saved": "Disimpan",
+  "delete": "Padam",
+  "edit": "Sunting",
+  "back": "Kembali",
+  "refresh": "Segar semula",
+  "section": {
+    "zones": "Zon",
+    "domains": "Domain",
+    "links": "Pautan",
+    "accounts": "Log masuk"
+  },
+  "providers": {
+    "cloudflare": "Cloudflare",
+    "route53": "Amazon Route 53",
+    "digitalocean": "DigitalOcean",
+    "hetzner": "Hetzner",
+    "namecheap": "Namecheap",
+    "godaddy": "GoDaddy",
+    "porkbun": "Porkbun",
+    "gandi": "Gandi"
+  },
+  "fields": {
+    "apiToken": "Token API",
+    "accessKeyId": "ID kunci akses",
+    "secretAccessKey": "Kunci akses rahsia",
+    "sessionToken": "Token sesi (pilihan)",
+    "apiUser": "Pengguna API",
+    "apiKey": "Kunci API",
+    "userName": "Nama pengguna (jika berbeza daripada pengguna API)",
+    "clientIp": "Alamat IP yang dibenarkan",
+    "apiSecret": "Rahsia API",
+    "environment": "Persekitaran",
+    "environment_production": "Pengeluaran",
+    "environment_ote": "Ujian (OTE)",
+    "secretApiKey": "Kunci API rahsia",
+    "token": "Token akses peribadi"
+  },
+  "zones": {
+    "empty": "Tiada zon lagi.",
+    "emptyHint": "Tambahkan log masuk penyedia dalam Log Masuk untuk melihat zonnya."
+  },
+  "zone": {
+    "records": "Rekod",
+    "health": "Kesihatan",
+    "copies": "Salinan",
+    "files": "Fail",
+    "filter": "Tapis rekod",
+    "empty": "Tiada rekod."
+  },
+  "record": {
+    "section": "Rekod",
+    "addTitle": "Tambah rekod",
+    "editTitle": "Sunting rekod",
+    "add": "Tambah rekod",
+    "save": "Simpan",
+    "type": "Jenis",
+    "name": "Nama",
+    "nameHint": "Gunakan @ untuk {{zone}} itu sendiri",
+    "value": "Nilai",
+    "priority": "Keutamaan",
+    "ttl": "TTL (saat)",
+    "ttlHint": "Lama penyelesai menyimpan jawapan. 300 ialah 5 minit.",
+    "ttlAuto": "1 bermaksud automatik.",
+    "proxied": "Diproksi",
+    "proxiedHint": "Hantar trafik melalui Cloudflare.",
+    "proxiedBadge": "Diproksi",
+    "comment": "Nota",
+    "readOnly": "Dikelola oleh penyedia",
+    "deleteConfirm": "Padam rekod {{type}} {{name}}?"
+  },
+  "account": {
+    "add": "Tambah log masuk",
+    "addTitle": "Tambah log masuk DNS",
+    "editTitle": "Sunting log masuk DNS",
+    "save": "Simpan",
+    "login": "Log masuk",
+    "provider": "Penyedia",
+    "name": "Nama",
+    "namePlaceholder": "Cloudflare Utama",
+    "keep": "Biarkan kosong untuk mengekalkan nilai yang disimpan",
+    "registrar": "Penyedia ini juga merupakan pendaftar, jadi domainnya muncul dalam Domain.",
+    "options": "Pilihan",
+    "autoBackup": "Simpan salinan zon",
+    "autoBackupHint": "Simpan salinan sebelum setiap perubahan dan apabila zon berubah di luar Termix.",
+    "checkHealth": "Semak zon setiap hari",
+    "checkHealthHint": "Jalankan pemeriksaan kesihatan setiap hari dan beri amaran tentang masalah baru.",
+    "test": "Uji",
+    "testOk": "Berfungsi. Ditemui {{zones}} zon dan {{domains}} domain.",
+    "deleteConfirm": "Padam {{name}}? Salinan dan pautannya akan dipadam bersama. Tiada perubahan pada penyedia.",
+    "empty": "Tiada log masuk lagi.",
+    "emptyHint": "Tambahkan log masuk Cloudflare, Route 53, Namecheap atau lain-lain untuk mula.",
+    "lastSync": "Terakhir disemak {{date}}",
+    "never": "Belum disemak",
+    "failed": "Log masuk gagal"
+  },
+  "domains": {
+    "empty": "Tiada domain lagi.",
+    "emptyHint": "Log masuk pendaftar menyenaraikan domainnya di sini. Anda juga boleh memantau mana-mana domain mengikut nama.",
+    "watchPlaceholder": "example.com",
+    "watch": "Pantau domain",
+    "unwatch": "Henti memantau",
+    "watched": "Dipantau",
+    "noRenew": "Baran semula automatik dimatikan",
+    "unlocked": "Tidak dikunci",
+    "unknown": "Pendaftar tidak diketahui",
+    "expires": "Tamat tempoh {{date}}",
+    "expired": "Tamat tempoh",
+    "days": "{{count}} hari lagi",
+    "refreshFailed": "{{count}} carian gagal"
+  },
+  "link": {
+    "add": "Tambah pautan",
+    "addTitle": "Tambah pautan",
+    "editTitle": "Sunting pautan",
+    "save": "Simpan",
+    "record": "Rekod",
+    "address": "Alamat",
+    "zone": "Zon",
+    "pickZone": "Pilih zon",
+    "source": "Arahkan ke",
+    "sourceHost": "Sebuah hos",
+    "sourcePublic4": "Alamat IPv4 awam pelayan ini",
+    "sourcePublic6": "Alamat IPv6 awam pelayan ini",
+    "source_host": "Hos",
+    "source_public4": "IPv4 awam",
+    "source_public6": "IPv6 awam",
+    "host": "Hos",
+    "pickHost": "Pilih hos",
+    "hostHint": "Rekod ini mengikuti alamat hos. Ia dikemas kini apabila hos berubah.",
+    "publicHint": "Termix mencari alamat awamnya dan mengekalkan rekod selaras, seperti DNS dinamik.",
+    "enabled": "Kekalkan rekod ini dikemas kini",
+    "empty": "Tiada pautan lagi.",
+    "emptyHint": "Pautan mengekalkan rekod yang diarahkan ke hos atau ke alamat awam pelayan ini.",
+    "off": "Mati",
+    "hostGone": "Hos tidak dijumpai",
+    "lastSync": "Disemak {{date}}",
+    "never": "Belum disemak",
+    "syncNow": "Kemas kini sekarang",
+    "updated": "Rekod telah dikemas kini",
+    "unchanged": "Rekod sudah betul",
+    "deleteConfirm": "Buang pautan untuk {{name}}? Rekod kekal di tempatnya."
+  },
+  "diff": {
+    "none": "Tiada perubahan akan berlaku.",
+    "add": "Tambah",
+    "change": "Tukar",
+    "remove": "Buang"
+  },
+  "copies": {
+    "hint": "Salinan disimpan sebelum setiap perubahan dan sekali sehari apabila zon berubah di luar Termix.",
+    "save": "Simpan salinan",
+    "saved": "Salinan disimpan",
+    "manualLabel": "Salinan manual",
+    "empty": "Tiada salinan lagi.",
+    "count": "{{count}} rekod",
+    "compare": "Bandingkan dengan sekarang",
+    "restore": "Pulihkan",
+    "restoreConfirm": "Pulihkan salinan ini? {{count}} perubahan akan dibuat pada penyedia. Salinan rekod semasa disimpan terlebih dahulu.",
+    "restored": "Dipulihkan. {{count}} perubahan dibuat.",
+    "source": {
+      "manual": "Manual",
+      "auto": "Harian",
+      "before": "Sebelum perubahan"
+    }
+  },
+  "files": {
+    "export": "Muat turun fail zon",
+    "exportHint": "Muat turun rekod sebagai fail zon BIND.",
+    "import": "Import fail zon",
+    "placeholder": "Tampal fail zon BIND di sini",
+    "replace": "Buang rekod yang tidak terdapat dalam fail",
+    "replaceHint": "Mati, import hanya menambah dan mengubah rekod.",
+    "preview": "Pratonton",
+    "apply": "Terapkan",
+    "applied": "Diimport. {{count}} perubahan dibuat.",
+    "skipped": "Dilangkau:"
+  },
+  "health": {
+    "run": "Jalankan pemeriksaan",
+    "running": "Sedang berjalan",
+    "propagation": "Periksa resolver",
+    "propagationTitle": "Resolver awam",
+    "lastRun": "Terakhir dijalankan {{date}}",
+    "empty": "Tiada pemeriksaan telah dijalankan untuk zon ini lagi.",
+    "record": "Rekod",
+    "resolver": "Resolver",
+    "answer": "Jawapan",
+    "noAnswer": "Tiada jawapan",
+    "delegation": {
+      "error": "Pelayan nama tidak dapat dicari.",
+      "none": "Zon ini tidak mempunyai pelayan nama di internet. Domain mungkin tidak menunjuk ke penyedia ini.",
+      "mismatch": "Domain menggunakan pelayan nama yang berbeza daripada penyedia: {{found}}.",
+      "ok": "Domain menunjuk ke {{count}} pelayan nama."
+    },
+    "soa": {
+      "differ": "Pelayan nama tidak bersetuju mengenai versi zon ({{count}} versi). Perubahan mungkin masih sedang tersebar.",
+      "same": "{{count}} pelayan nama bersetuju mengenai versi zon."
+    },
+    "dnssec": {
+      "unknown": "DNSSEC tidak dapat diperiksa.",
+      "off": "DNSSEC tidak dihidupkan.",
+      "valid": "DNSSEC dihidupkan dan sah.",
+      "broken": "DNSSEC ditetapkan di pendaftar tetapi tidak sah. Resolver yang memeriksanya akan gagal."
+    },
+    "cname": {
+      "conflict": "{{name}} mempunyai CNAME dan rekod lain. Ini tidak dibenarkan.",
+      "apex": "Akar zon tidak boleh menjadi CNAME.",
+      "dangling": "{{name}} menunjuk ke {{target}}, yang tidak dapat diselesaikan.",
+      "ok": "Setiap sasaran CNAME dapat diselesaikan."
+    },
+    "spf": {
+      "missing": "Domain menerima e-mel tetapi tidak mempunyai rekod SPF.",
+      "multiple": "Terdapat lebih daripada satu rekod SPF. Pelayan e-mel akan menolak kesemuanya.",
+      "lookups": "Rekod SPF membuat {{count}} carian. Hadnya ialah 10.",
+      "ok": "SPF ditetapkan ({{count}} carian)."
+    },
+    "dmarc": {
+      "missing": "Tiada rekod DMARC.",
+      "none": "DMARC ditetapkan untuk pemantauan sahaja.",
+      "ok": "DMARC ditetapkan."
+    },
+    "dkim": {
+      "none": "Tiada kunci DKIM ditemui dalam zon ini.",
+      "found": "{{count}} kunci DKIM ditemui."
+    },
+    "mx": {
+      "unresolved": "Pelayan e-mel {{host}} tidak dapat diselesaikan."
+    },
+    "mail": {
+      "none": "Domain ini tidak mempunyai rekod e-mel."
+    },
+    "caa": {
+      "ok": "Rekod CAA membatasi siapa yang boleh mengeluarkan sijil.",
+      "none": "Tiada rekod CAA. Mana-mana pihak berkuasa sijil boleh mengeluarkan sijil."
+    }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domain, domain yang akan tamat tempoh dan rekod yang gagal.",
+    "domains": "Domain",
+    "expiring": "Akan tamat tempoh",
+    "failingLinks": "Pautan yang gagal",
+    "failingAccounts": "Log masuk yang gagal"
+  }
+}

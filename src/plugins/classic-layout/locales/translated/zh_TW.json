@@ -16,7 +16,9 @@
     "more": "更多",
     "logout": "登出",
     "next": "下一步",
-    "previous": "上一步"
+    "previous": "上一步",
+    "showPassword": "顯示密碼",
+    "hidePassword": "隱藏密碼"
   },
   "desktopUpdates": {
     "title": "桌面應用程式",
@@ -67,7 +69,10 @@
     "resetRailOrder": "重設順序",
     "hideFromRail": "從側邊欄隱藏",
     "openSettings": "開啟設定",
-    "mobileNavigation": "導覽"
+    "mobileNavigation": "導覽",
+    "allTabs": "所有分頁",
+    "hideTabBar": "隱藏分頁列",
+    "showTabBar": "顯示分頁列"
   },
   "commandPalette": {
     "searchPlaceholder": "搜尋主機、命令或設定...",
@@ -110,7 +115,8 @@
     "noSearchResults": "沒有符合搜尋條件的連線",
     "rename": "重新命名工作階段",
     "forgetConfirm": "要結束 {{name}} 的背景工作階段嗎？",
-    "forget": "結束工作階段"
+    "forget": "結束工作階段",
+    "expiringNow": "即將結束"
   },
   "placeholders": {
     "apiKeyName": "例如：CI Pipeline",
@@ -158,16 +164,14 @@
     "commandPalette": "命令面板",
     "done": "完成",
     "clear": "清除",
-    "dragToResizeColumns": "拖曳以調整欄位寬度",
     "hostsAvailable": "可用主機",
-    "removeSection": "移除區塊",
-    "addSection": "新增區塊",
-    "allSectionsShown": "所有內容已顯示於儀表板上。",
+    "addSection": "新增小工具",
     "fromPlugins": "來自外掛",
-    "dropHere": "將區塊拖曳至此",
-    "dragToReorder": "拖曳區塊以重新排序",
+    "dropHere": "尚無小工具。請從清單中新增一些。",
+    "dragToReorder": "拖曳小工具以移動，拖曳邊緣以調整大小",
     "clearActivityConfirm": "清除您的近期活動？",
-    "resetConfirm": "將儀表板重設為預設版面配置？"
+    "resetConfirm": "將儀表板重設為預設版面配置？",
+    "clearFailed": "無法清除近期活動"
   },
   "admin": {
     "sectionGeneral": "一般",
@@ -230,6 +234,9 @@
     "allowPasswordLoginDesc": "使用者名稱/密碼登入",
     "externalAutoProvision": "自動建立外部帳戶",
     "externalAutoProvisionDesc": "當使用者首次透過外部登入（如 SSO 或 LDAP）時建立帳戶。關閉時，僅限已擁有帳戶的使用者才能以此方式登入",
+    "credentialStorage": "允許儲存密碼與金鑰",
+    "credentialStorageOff": "此伺服器已關閉密碼與金鑰儲存功能。請留空，Termix 會在連線時詢問。",
+    "credentialStorageDesc": "關閉後，任何人都無法在主機或憑證上儲存密碼或私密金鑰，Termix 會在連線時詢問。已儲存的登入資訊將保留，直到被移除為止。",
     "secondFactorAfterExternalLogin": "外部登入（SSO、GitHub、Google、LDAP）後要求第二因素驗證",
     "secondFactorAfterExternalLoginDesc": "關閉時，僅在密碼及其他本機登入後要求已註冊的第二因素驗證，與以往相同。開啟時，所有登入方式（包括 SSO 和 LDAP）後皆會要求第二因素驗證",
     "allowPasswordReset": "允許密碼重設",
@@ -275,6 +282,13 @@
     "apiKeyName": "名稱",
     "apiKeyUser": "使用者",
     "apiKeySelectUser": "選擇使用者...",
+    "apiKeyScope": "存取權限",
+    "apiKeyScopeFull": "使用者可執行的所有操作",
+    "apiKeyScopeRead": "唯讀操作",
+    "apiKeyScopeRun": "執行操作",
+    "apiKeyScopeHint": "操作金鑰僅能存取 Termix 操作與 MCP 伺服器，無法存取其他內容。",
+    "apiKeyScopeActionsRead": "操作，唯讀",
+    "apiKeyScopeActionsRun": "操作",
     "apiKeyExpiresAt": "過期時間",
     "createKey": "建立金鑰",
     "apiKeyNoExpiry": "永不過期",
@@ -311,6 +325,10 @@
     "deleteUserFailed": "刪除使用者失敗",
     "deleteUserSuccess": "使用者「{{username}}」已刪除",
     "deleteRoleSuccess": "角色「{{name}}」已刪除",
+    "deleteRoleFailed": "無法刪除角色",
+    "roleNamePlaceholder": "developer",
+    "roleDisplayNamePlaceholder": "開發人員",
+    "unknownError": "未知錯誤",
     "revokeKeySuccess": "金鑰「{{name}}」已撤銷",
     "revokeKeyFailed": "撤銷金鑰失敗",
     "copiedToClipboard": "已複製到剪貼簿",
@@ -353,6 +371,7 @@
     "unlinkAccountFailed": "解除外部登入連結失敗",
     "updateRegistrationFailed": "更新註冊設定失敗",
     "updatePasswordLoginFailed": "更新密碼登入設定失敗",
+    "updateCredentialStorageFailed": "更新憑證儲存設定失敗",
     "updateSecondFactorAfterExternalLoginFailed": "更新第二因素驗證設定失敗",
     "updatePasswordResetFailed": "更新密碼重設設定失敗",
     "sessionTimeoutRange2": "工作階段逾時時間必須介於 1 到 720 小時之間",
@@ -671,7 +690,8 @@
         "tryBetaTitle": "搶先體驗新功能",
         "tryBetaDescription": "在「更新」中參加測試計畫。",
         "sendBetaFeedback": "傳送測試版意見回饋",
-        "openUpdates": "更新"
+        "openUpdates": "更新",
+        "hexLabel": "十六進位"
       }
     }
   },
@@ -757,6 +777,11 @@
       "allPluginsBeta": "所有外掛使用測試版",
       "allPluginsStable": "所有外掛回到穩定版",
       "saveFailed": "無法儲存變更"
+    },
+    "user": {
+      "hostRows": {
+        "label": "主機列選項"
+      }
     }
   },
   "hostDefaults": {
@@ -783,6 +808,15 @@
   "sharing": {
     "revokeConfirm": "要移除 {{name}} 的存取權限嗎？",
     "revoke": "移除存取權限",
+    "deviceLogin": {
+      "label": "僅在此裝置登入",
+      "none": "無",
+      "hint": "僅保留在此裝置，不會傳送至伺服器。優先使用此憑證，且連線由此裝置發起。",
+      "noCredentials": "新增一個「僅保留在此裝置」的憑證以在此使用。",
+      "saved": "裝置登入已儲存",
+      "keepOnDevice": "僅保留在此裝置",
+      "keepOnDeviceDesc": "密碼或金鑰不會同步至伺服器。可將其用於共用主機的裝置登入。"
+    },
     "folderLogin": {
       "action": "為共用主機設定個人登入資訊",
       "title": "此資料夾的個人登入資訊",
@@ -824,7 +858,10 @@
     "pickHost": "選取要編輯的主機",
     "pickCredential": "選取要編輯的憑證",
     "pickDefaults": "選取要編輯的預設值層級",
-    "pickHint": "連線的所有設定都位於此處，並分組以便查找。"
+    "pickHint": "連線的所有設定都位於此處，並分組以便查找。",
+    "clearChoice": "清除",
+    "proxyPathTarget": "目標",
+    "hostCopyName": "{{name}} (副本)"
   },
   "permissions": {
     "branding": {
@@ -837,6 +874,33 @@
     "presetIntro": "選擇要在畫面上顯示的內容量。",
     "presetChangeLater": "您之後可以在「設定」中的「介面」部分，切換預設方案或調整任何單一設定。",
     "appearanceTitle": "打造專屬風格",
-    "appearanceIntro": "選擇主題、強調色、字型與語言。變更會立即生效，您之後也可以在「設定」中隨時調整。"
+    "appearanceIntro": "選擇主題、強調色、字型與語言。變更會立即生效，您之後也可以在「設定」中隨時調整。",
+    "hostRows": {
+      "title": "主機列應如何運作？",
+      "intro": "啟用多個外掛時，每個主機列可能會出現許多按鈕。請選擇您希望如何存取主機的各項工具。",
+      "buttons": "連線按鈕",
+      "buttonsDesc": "每個主機列上每個工具各有一個按鈕，與以往相同。主機頁面仍位於主機選單中。",
+      "both": "按鈕與主機頁面按鈕",
+      "bothDesc": "保留按鈕，並新增一個主機頁面按鈕。工具會在主機頁面內開啟。",
+      "page": "僅主機頁面",
+      "pageDesc": "列上無按鈕。點擊主機會開啟其頁面，所有工具整合在一個分頁中。",
+      "clickOpensPage": "點擊開啟主機頁面",
+      "changeLater": "您稍後可在「自訂側邊欄」中變更此設定。"
+    },
+    "accentHex": "十六進位"
+  },
+  "hostTools": {
+    "mode": "開啟主機工具的位置",
+    "modeDesc": "Docker、檔案管理員等其他工具按鈕的開啟位置。主機頁面將單一主機的各項工具整合在一個分頁中。若選擇「僅主機頁面」，主機列將無連線按鈕，點擊主機會開啟其頁面。",
+    "modeTab": "獨立分頁",
+    "modePage": "主機頁面",
+    "rowButtons": "主機列上的按鈕",
+    "modeOnly": "僅主機頁面",
+    "clickOpens": "點擊開啟",
+    "clickOpensDesc": "點擊主機時執行的動作。可從單一主機的選單中為該主機選擇其他動作。",
+    "clickAuto": "第一種連線方式",
+    "useDefaultNamed": "預設 ({{name}})",
+    "useDefaultButtons": "使用預設按鈕",
+    "perHostHint": "若要為單一主機變更，請在其選單中使用「主機列上的按鈕」。"
   }
 }

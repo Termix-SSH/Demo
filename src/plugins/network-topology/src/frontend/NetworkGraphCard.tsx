@@ -1348,6 +1348,8 @@ export const NetworkGraphCard = React.memo(function NetworkGraphCard({
               size="sm"
               onClick={() => void handleRemoveSelected()}
               disabled={!selectedNodeId && !selectedEdgeId}
+              aria-label={t("networkGraph.removeSelected")}
+              title={t("networkGraph.removeSelected")}
               className="h-7 px-2 text-xs gap-1.5 text-destructive hover:text-destructive disabled:opacity-30"
             >
               <Trash2 className="size-3" />

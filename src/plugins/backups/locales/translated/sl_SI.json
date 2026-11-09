@@ -1,0 +1,471 @@
+{
+  "plugin": {
+    "name": "Varnostne kopije",
+    "description": "Ustvarjajte varnostne kopije map, podatkovnih baz in Docker podatkov na vaših gostiteljih z orodjem restic, nato jih brskajte, prenašajte in obnovite."
+  },
+  "common": {
+    "save": "Shrani",
+    "cancel": "Prekliči",
+    "back": "Nazaj",
+    "delete": "Izbriši",
+    "done": "Končano",
+    "loading": "Nalaganje...",
+    "refresh": "Osveži",
+    "retry": "Poskusi znova"
+  },
+  "permissions": {
+    "use": {
+      "title": "Uporaba varnostnih kopij",
+      "description": "Nastavite opravila in repozitorije za varnostne kopije, zaženite varnostne kopije ter brskajte po posnetkih, jih prenašajte in obnovite na gostiteljih, ki jih lahko urejate."
+    }
+  },
+  "tab": {
+    "title": "Varnostne kopije",
+    "viewJobs": "Opravila",
+    "viewRepos": "Repozitoriji",
+    "viewHistory": "Zgodovina"
+  },
+  "hostTab": {
+    "title": "Varnostne kopije",
+    "noHost": "Odprite varnostne kopije iz gostitelja.",
+    "viewJobs": "Opravila",
+    "viewSnapshots": "Posnetki",
+    "viewHistory": "Zgodovina",
+    "restic": "restic {{version}}",
+    "noRestic": "restic ni nameščen",
+    "sudo": "Termix se mora prijaviti kot root ali kot uporabnik z sudo brez gesla, da lahko izvaja varnostne kopije na tem gostitelju.",
+    "statusFailed": "Ni bilo mogoče prebrati tega gostitelja"
+  },
+  "install": {
+    "missing": "restic ni nameščen na tem gostitelju",
+    "tooOld": "restic na tem gostitelju je starejši od 0.17",
+    "hint": "Varnostne kopije uporabljajo restic. Namestite ga z upraviteljem paketov ali iz izdaje restic na GitHubu, če je paket prestar.",
+    "button": "Namesti restic",
+    "working": "Nameščanje...",
+    "title": "Namestiti restic?",
+    "desc": "To namesti restic na gostitelja kot root.",
+    "confirm": "Namesti",
+    "done": "restic {{version}} je nameščen",
+    "failed": "Restic ni bilo mogoče namestiti"
+  },
+  "status": {
+    "never": "Nikoli zagnano",
+    "running": "Zaganja se",
+    "success": "Končano",
+    "warning": "Opozorila",
+    "failed": "Neuspešno",
+    "canceled": "Ustavljeno"
+  },
+  "time": {
+    "justNow": "pravkar",
+    "soon": "čez trenutek",
+    "ago": {
+      "minutes_one": "pred {{count}} minuto",
+      "minutes_two": "pred {{count}} minutama",
+      "minutes_few": "pred {{count}} minutami",
+      "minutes_other": "pred {{count}} minutami",
+      "hours_one": "pred {{count}} uro",
+      "hours_two": "pred {{count}} urama",
+      "hours_few": "pred {{count}} urami",
+      "hours_other": "pred {{count}} urami",
+      "days_one": "pred {{count}} dnem",
+      "days_two": "pred {{count}} dnevoma",
+      "days_few": "pred {{count}} dnevi",
+      "days_other": "pred {{count}} dnevi"
+    },
+    "in": {
+      "minutes_one": "čez {{count}} minuto",
+      "minutes_two": "čez {{count}} minuti",
+      "minutes_few": "čez {{count}} minute",
+      "minutes_other": "čez {{count}} minut",
+      "hours_one": "čez {{count}} uro",
+      "hours_two": "čez {{count}} uri",
+      "hours_few": "čez {{count}} ure",
+      "hours_other": "čez {{count}} ur",
+      "days_one": "čez {{count}} dan",
+      "days_two": "čez {{count}} dneva",
+      "days_few": "čez {{count}} dni",
+      "days_other": "čez {{count}} dni"
+    }
+  },
+  "jobs": {
+    "add": "Dodaj opravilo",
+    "empty": "Še ni nalog za varnostno kopiranje",
+    "emptyHint": "Dodajte nalogo za varnostno kopiranje map, podatkovnih baz ali podatkov Docker.",
+    "emptyNoRepo": "Najprej dodajte repozitorij, da bodo varnostne kopije imele kam shraniti.",
+    "loadFailed": "Nalog za varnostno kopiranje ni bilo mogoče naložiti",
+    "lastGood": "Zadnja varnostna kopija {{when}}",
+    "noGood": "Še ni varnostne kopije",
+    "next": "Naslednja {{when}}",
+    "paused": "Začasno ustavljeno",
+    "run": "Zaženi zdaj",
+    "stop": "Ustavi",
+    "edit": "Uredi",
+    "snapshots": "Slikovni posnetki",
+    "started": "{{name}} je bil zagnan",
+    "runFailed": "Varnostne kopije ni bilo mogoče začeti"
+  },
+  "editor": {
+    "newTitle": "Novo opravilo varnostne kopije",
+    "general": "Opravilo",
+    "host": "Gostitelj",
+    "pickHost": "Izberite gostitelja",
+    "name": "Ime",
+    "namePlaceholder": "Nočna varnostna kopija",
+    "repository": "Skladišče",
+    "pickRepository": "Izberite skladišče",
+    "noRepos": "Ta strežnik nima na voljo nobenega skladišča. Najprej dodajte skladišče na zavihku Varnostne kopije.",
+    "repoLocked": "Spremeniti ga lahko le lastnik tega skladišča.",
+    "enabled": "Zaženi po urniku",
+    "enabledHint": "Izklopite za začasno ustavitev urnika. Možnost »Zaženi zdaj« bo še vedno delovala.",
+    "oneFileSystem": "Ostani v enem datotečnem sistemu",
+    "oneFileSystemHint": "Preskoči druge diske in priklopite, ki so znotraj izbranih map.",
+    "saved": "Naloga shranjena",
+    "saveFailed": "Naloge ni bilo mogoče shraniti",
+    "deleteTitle": "Izbrišem {{name}}?",
+    "deleteDesc": "Delo bo odstranjeno iz Termixa. Njegovi posnetki bodo ostali v repozitoriju.",
+    "deleted": "Delo izbrisano",
+    "deleteFailed": "Delo ni bilo mogoče izbrisati"
+  },
+  "sources": {
+    "add": "Dodaj v varnostno kopijo",
+    "addPaths": "Mape",
+    "addDatabase": "Baza podatkov",
+    "addDocker": "Docker",
+    "remove": "Odstrani",
+    "paths": "Mape in datoteke",
+    "folders": "Poti",
+    "foldersHint": "Po eno polno pot na vrstico.",
+    "excludes": "Preskoči",
+    "excludesHint": "Po en vzorec restic na vrstico, npr. *.log.",
+    "database": "Baza podatkov",
+    "engine": "Vrsta",
+    "engines": {
+      "mysql": "MySQL ali MariaDB",
+      "postgres": "PostgreSQL",
+      "sqlite": "SQLite"
+    },
+    "login": "Prijava",
+    "ownLogin": "Vnesite prijavne podatke",
+    "noDatabasesPlugin": "Vklopite vtičnik Baze podatkov, da izberete shranjene prijave.",
+    "address": "Naslov",
+    "addressPlaceholder": "Pustite prazno za lokalni vtič",
+    "port": "Vrata",
+    "username": "Uporabnik",
+    "password": "Geslo",
+    "passwordSaved": "Shranjeno, pustite prazno za ohranitev",
+    "runAs": "Izvedi kot",
+    "runAsHint": "Linux uporabnik za izvedbo izpisa, npr. postgres. Prazno pomeni izvedbo kot root.",
+    "databases": "Baze podatkov",
+    "databasesHint": "Po eno ime na vrstico. Pustite prazno za varnostno kopiranje vseh.",
+    "sqliteFiles": "Datoteke baz podatkov",
+    "sqliteFilesHint": "Po ena polna pot na vrstico. Vsaka datoteka se varno kopira, medtem ko je v uporabi.",
+    "docker": "Docker",
+    "stacks": "Stacki",
+    "volumes": "Zviti",
+    "noStacks": "Ni najdenih compose stackov",
+    "noVolumes": "Ni najdenih zvitih",
+    "dockerFailed": "Na tem gostitelju ni bilo mogoče našteti Docker",
+    "stop": "Ustavi sklade med varnostnim kopiranjem",
+    "stopHint": "Izbrane sklade se najprej ustavijo in po končanem kopiranju znova zaženejo, da se njihove datoteke med branjem ne spremenijo."
+  },
+  "schedule": {
+    "title": "Razpored",
+    "manual": "Ročno",
+    "daily": "Dnevno",
+    "weekly": "Tedensko",
+    "custom": "Po meri",
+    "day": "Dan",
+    "time": "Čas",
+    "cron": "Cron",
+    "cronHint": "Minuta, ura, dan v mesecu, mesec, dan v tednu.",
+    "cronInvalid": "Ta cron izraz ni veljaven",
+    "timezone": "Časovni pas",
+    "serverTime": "Čas strežnika",
+    "manualHint": "To opravilo se izvede le, ko pritisnete Izvedi zdaj.",
+    "manualOnly": "Ročno",
+    "next": "Naslednji zagon {{time}}",
+    "noNext": "Ta urnik se nikoli ne izvede",
+    "dailyAt": "Dnevno ob {{time}}",
+    "weeklyAt": "{{day}} ob {{time}}",
+    "days": {
+      "0": "Nedelja",
+      "1": "Ponedeljek",
+      "2": "Torek",
+      "3": "Sreda",
+      "4": "Četrtek",
+      "5": "Petek",
+      "6": "Sobota"
+    }
+  },
+  "keep": {
+    "title": "Ohrani",
+    "last": "Zadnji",
+    "daily": "Dnevno",
+    "weekly": "Tedensko",
+    "monthly": "Mesečno",
+    "yearly": "Letno",
+    "hint": "Po vsakem varnostnem kopiranju se starejši posnetki tega opravila odstranijo, tako da se ohranijo le ti. Vrednost 0 ohrani vse."
+  },
+  "hooks": {
+    "title": "Ukazi",
+    "pre": "Pred",
+    "preHint": "Izvede se kot root pred varnostnim kopiranjem. Če spodleti, se varnostno kopiranje ustavi.",
+    "post": "Po",
+    "postHint": "Izvede se kot root po varnostnem kopiranju, tudi če je spodletelo. TERMIX_BACKUP_STATUS vsebuje rezultat."
+  },
+  "alerts": {
+    "title": "Opozorila",
+    "onFailure": "Obvesti, ko varnostna kopija ne uspe",
+    "onFailureHint": "Obvešča tudi o opozorilih in enkrat, ko spet deluje.",
+    "staleDays": "Dni brez varnostne kopije",
+    "staleDaysHint": "Obvesti, ko varnostna kopija ni uspela toliko dni. 0 to izklopi."
+  },
+  "repos": {
+    "add": "Dodaj skladišče",
+    "empty": "Še ni skladišč",
+    "emptyHint": "Skladišče je mesto, kjer so shranjene varnostne kopije, na primer S3 vedro ali mapa.",
+    "loadFailed": "Skladišč ni bilo mogoče naložiti",
+    "jobCount_one": "{{count}} naloga",
+    "jobCount_two": "{{count}} nalogi",
+    "jobCount_few": "{{count}} naloge",
+    "jobCount_other": "{{count}} nalog",
+    "newTitle": "Novo skladišče",
+    "storage": "Shramba",
+    "name": "Ime",
+    "namePlaceholder": "Offsite S3",
+    "kind": "Vrsta",
+    "kinds": {
+      "s3": "S3 združljivo",
+      "rest": "REST strežnik",
+      "rclone": "rclone",
+      "local": "Mapa na strežniku"
+    },
+    "endpoint": "Končna točka",
+    "endpointHint": "Pustite prazno za AWS. Za MinIO, R2, B2 ali Wasabi vnesite njihovo S3 naslov.",
+    "region": "Regija",
+    "bucket": "Skošek",
+    "prefix": "Mapa v skoku",
+    "prefixHint": "Neobvezno.",
+    "accessKeyId": "ID dostopnega ključa",
+    "secretKey": "Zasebni dostopni ključ",
+    "secretSaved": "Shranjeno, pustite prazno za ohranitev",
+    "url": "Naslov strežnika",
+    "username": "Uporabnik",
+    "usernameHint": "Prazno, če strežnik nima prijave.",
+    "restPassword": "Geslo",
+    "remote": "Ime oddaljenega strežnika",
+    "remoteHint": "Samo črke, števila in podčrtaji.",
+    "path": "Pot",
+    "rcloneConfig": "Konfiguracija rclone",
+    "rcloneHint": "Vrstice oddaljenega strežnika iz datoteke rclone.conf. Za njihovo ustvarjanje na računalniku izvedite ukaz rclone config. Na strežnikih mora biti rclone nameščen.",
+    "rcloneSaved": "Shranjeno, pustite prazno za ohranitev",
+    "host": "Strežnik",
+    "pickHost": "Izberite strežnik",
+    "folder": "Mapa",
+    "folderHint": "Uporabljajo ga lahko le opravila na tem gostitelju. Najbolje je uporabiti priklopljen disk.",
+    "password": "Šifriranje",
+    "resticPassword": "Geslo repozitorija",
+    "passwordHint": "Pustite prazno in Termix bo ustvaril močno geslo. Shranite kopijo na varno mesto: brez njega varnostnih kopij ni mogoče prebrati.",
+    "passwordKeep": "Shranjeno, pustite prazno za ohranitev",
+    "passwordChangeHint": "To spremeni le geslo, ki ga pošilja Termix. Ne spremeni gesla obstoječega repozitorija.",
+    "reveal": "Prikaži geslo",
+    "revealTitle": "Prikažem geslo repozitorija?",
+    "revealDesc": "Vsakdo, ki ima dostop do tega gesla in ključev shrambe, lahko prebere vse varnostne kopije v tem repozitoriju. To bo zabeleženo v revizijskem dnevniku.",
+    "revealFailed": "Gesla ni bilo mogoče prebrati",
+    "copy": "Kopiraj",
+    "copied": "Kopirano",
+    "check": "Preveri",
+    "checkFrom": "Preveri iz",
+    "checkFromHint": "Gostitelj, ki odpre skladišče. Potrebuje restic.",
+    "checkButton": "Preveri",
+    "initButton": "Preveri in nastavi",
+    "installRclone": "Namesti rclone na tega gostitelja",
+    "rcloneInstalled": "Nameščena je različica rclone {{version}}.",
+    "rcloneFailed": "Namestitve rclone ni bilo mogoče izvesti",
+    "checking": "Preverjanje...",
+    "opened": "Skladišče je bilo uspešno odprto.",
+    "created": "Skladišče je bilo nastavljeno in je pripravljeno.",
+    "checkFailed": "Skladišča ni bilo mogoče odpreti",
+    "checkNext": "Shranjeno. Preverite ga iz gostitelja, da ga nastavite.",
+    "saved": "Skladišče shranjeno",
+    "saveFailed": "Skladišča ni bilo mogoče shraniti",
+    "deleteTitle": "Izbrišem {{name}}?",
+    "deleteDesc": "Odstranjen je le iz Termixa. Varnostne kopije ostanejo v shrambi.",
+    "deleted": "Skladišče izbrisano",
+    "deleteFailed": "Shrambe ni bilo mogoče izbrisati"
+  },
+  "snapshots": {
+    "noJobs": "Najprej dodajte nalogo za varnostno kopiranje.",
+    "job": "Naloga",
+    "titleFor": "Posnetki stanja za {{name}}",
+    "empty": "Še ni posnetkov stanja",
+    "loadFailed": "Posnetkov stanja ni bilo mogoče prebrati",
+    "latest": "Najnovejši",
+    "files_one": "{{count}} datoteka",
+    "files_two": "{{count}} datoteki",
+    "files_few": "{{count}} datoteke",
+    "files_other": "{{count}} datotek",
+    "browse": "Brskaj",
+    "delete": "Izbriši",
+    "deleteTitle": "Izbrišem ta posnetek?",
+    "deleteDesc": "Posnetek iz časa {{time}} bo trajno odstranjen iz skladišča.",
+    "deleted": "Posnetek izbrisan",
+    "deleteFailed": "Posnetka ni bilo mogoče izbrisati",
+    "browseTitle": "Posnetek {{time}}",
+    "root": "Koren",
+    "emptyFolder": "Ta mapa je prazna",
+    "filesFailed": "Te mape ni bilo mogoče navedeti",
+    "pick": "Izberi",
+    "download": "Prenesi",
+    "downloadZip": "Prenesi kot zip",
+    "downloadFailed": "Prenos ni uspel",
+    "restoreAll": "Obnovi vse",
+    "restorePicked_one": "Obnovi {{count}} element",
+    "restorePicked_two": "Obnovi {{count}} elementa",
+    "restorePicked_few": "Obnovi {{count}} elementi",
+    "restorePicked_other": "Obnovi {{count}} elementov"
+  },
+  "restore": {
+    "title": "Obnovi",
+    "what": "Kaj",
+    "everything": "Vse v posnetku.",
+    "more_one": "in {{count}} več",
+    "more_two": "in {{count}} več",
+    "more_few": "in {{count}} več",
+    "more_other": "in {{count}} več",
+    "where": "Kam",
+    "host": "Gostitelj",
+    "hostHint": "Kateri koli gostitelj, ki ga lahko urejate in ki lahko doseže skladišče.",
+    "localOnly": "To skladišče je mapa na gostitelju, zato ga lahko obnovite le tam.",
+    "toFolder": "V mapo",
+    "toOriginal": "Kjer je bilo",
+    "folder": "Mapa",
+    "folderHint": "Datoteke ohranijo svojo polno pot znotraj te mape.",
+    "originalWarning": "Datoteke se zapišejo nazaj na prvotno mesto in lahko nadomestijo trenutne vsebine.",
+    "overwrite": "Datoteke, ki že obstajajo",
+    "overwriteOptions": {
+      "if-changed": "Zamenjaj, ko se spremeni",
+      "always": "Vedno zamenjaj",
+      "if-newer": "Zamenjaj, ko je varnostna kopija novejša",
+      "never": "Nikoli ne zamenjaj"
+    },
+    "start": "Obnovi",
+    "started": "Obnovitev je začeta",
+    "failed": "Obnovitve ni bilo mogoče začeti"
+  },
+  "run": {
+    "title": "Izvedi",
+    "backupTitle": "Varnostna kopija {{name}}",
+    "restoreTitle": "Obnovitev {{name}}",
+    "loadFailed": "Težave pri nalaganju izvajanja",
+    "progress": "Napredek",
+    "preparing": "Pripravljam...",
+    "progressLine": "{{percent}}% | {{files}} od {{totalFiles}} datotek | {{bytes}} od {{totalBytes}}",
+    "left": "Preostalo časa: {{time}}",
+    "details": "Podrobnosti",
+    "started": "Začeto",
+    "finished": "Končano",
+    "trigger": "Začel",
+    "triggers": {
+      "manual": "Izvedi zdaj",
+      "schedule": "Razpored",
+      "operation": "Termix dejanje"
+    },
+    "snapshot": "Posnetek",
+    "target": "Obnovljeno v",
+    "files": "Datoteke",
+    "filesLine": "{{total}} datotek, {{added}} novih, {{changed}} spremenjenih",
+    "size": "Velikost",
+    "added": "Dodano v skladišče",
+    "took": "Trajalo",
+    "log": "Dnevnik",
+    "noLog": "Dnevnika še ni.",
+    "stopTitle": "Ustavim to izvajanje?",
+    "stopDesc": "Ustavljen varnostni kopiji ne shrani posnetka. Ustavljeno obnavljanje pusti datoteke, ki so bile do takrat obnovljene.",
+    "stopSent": "Ustavljanje",
+    "stopFailed": "Zahtevka ni bilo mogoče ustaviti"
+  },
+  "history": {
+    "empty": "Še ni bilo izvedenih nobenih dejanj",
+    "loadFailed": "Zgodovine ni bilo mogoče naložiti",
+    "status": "Stanje",
+    "job": "Naloga",
+    "host": "Gostitelj",
+    "kind": "Vrsta",
+    "kinds": {
+      "backup": "Varnostna kopija",
+      "restore": "Obnovitev"
+    },
+    "started": "Začeto",
+    "took": "Trajanje",
+    "size": "Velikost"
+  },
+  "card": {
+    "title": "Varnostne kopije",
+    "all": "Vse naloge varnostnih kopij",
+    "oneJob": "Ena naloga varnostne kopije",
+    "empty": "Še ni nobenih nalog varnostnih kopij.",
+    "gone": "Ta naloga varnostne kopije je bila izbrisana.",
+    "open": "Odpri"
+  },
+  "operations": {
+    "list": {
+      "title": "Seznam nalog varnostnih kopij"
+    },
+    "failed": {
+      "title": "Neuspešne varnostne kopije"
+    },
+    "run": {
+      "title": "Izvedi varnostno kopijo"
+    },
+    "cancel": {
+      "title": "Ustavi varnostno kopijo"
+    },
+    "snapshots": {
+      "title": "Seznam posnetkov"
+    },
+    "events": {
+      "finished": "Varnostna kopija je končana",
+      "failed": "Varnostna kopija je spodletela"
+    },
+    "jobs": {
+      "title": "Naloge varnostnih kopij",
+      "lastSuccess": "Zadnja varnostna kopija",
+      "nextRun": "Naslednji zagon",
+      "size": "Velikost"
+    }
+  },
+  "settings": {
+    "host": {
+      "showPanel": {
+        "label": "Prikaži ploščo varnostnih kopij v terminalih",
+        "description": "Omogoči odpiranje plošče varnostnih kopij ob SSH terminalu tega gostitelja."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Odpri ploščo varnostnih kopij z novimi terminali",
+        "description": "Prikaži ploščo varnostnih kopij ob vsakem SSH terminalu, ki ima to funkcijo vklopljeno. Ploščo lahko še vedno odprete in zaprete s tipko na desnem robu."
+      },
+      "companionSide": {
+        "label": "Stran plošče varnostnih kopij",
+        "description": "Kje se plošča varnostnih kopij nahaja ob terminalu.",
+        "right": "Desno",
+        "left": "Levo",
+        "bottom": "Spodaj"
+      },
+      "companionSize": {
+        "label": "Velikost plošče varnostnih kopij",
+        "description": "Širina v slikovnih točkah ali višina, ko je na dnu. Rob lahko tudi povlečete."
+      },
+      "companionEdgeButton": {
+        "label": "Prikaži tipko za ploščo",
+        "description": "Prikaži majhno tipko na desnem robu terminala, ki odpre ploščo varnostnih kopij."
+      }
+    }
+  },
+  "nav": {
+    "togglePanel": "Preklopi ploščo varnostnih kopij"
+  }
+}

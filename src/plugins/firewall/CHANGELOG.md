@@ -15,7 +15,3 @@
 - Fail2ban jails, banned addresses, ban and unban
 - Alerts when a firewall turns off or its rules change outside Termix
 - A firewall panel beside SSH terminals and a dashboard card for every host
-
-### Changed
-
-- Needs Termix 26.11.1 or newer

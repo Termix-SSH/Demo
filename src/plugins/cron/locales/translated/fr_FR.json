@@ -1,0 +1,210 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "Affichez, ajoutez et exécutez des tâches cron sur vos hôtes, avec un aperçu du planning et les fichiers cron système."
+  },
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "back": "Retour",
+    "delete": "Supprimer"
+  },
+  "permissions": {
+    "use": {
+      "title": "Utiliser Cron",
+      "description": "Affiche les tâches cron sur les hôtes accessibles et les modifie sur les hôtes éditables."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "Gérez les tâches cron de cet hôte depuis l'onglet Cron."
+      },
+      "useSudo": {
+        "label": "Utiliser sudo",
+        "description": "Utilise sudo pour les crontabs des autres utilisateurs et /etc/cron.d. Désactivez si la connexion est root."
+      },
+      "readOnly": {
+        "label": "Lecture seule",
+        "description": "Affiche les tâches cron mais ne les modifie jamais sur cet hôte."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "Ouvrez Cron depuis un hôte.",
+    "error": "Impossible de charger cron depuis cet hôte.",
+    "disabled": "Cron est désactivé pour cet hôte. Activez-le dans les paramètres de l'hôte.",
+    "sudo": "Cela nécessite une connexion root, un sudo sans mot de passe ou un mot de passe Sudo enregistré.",
+    "refresh": "Actualiser",
+    "running": "Cron en cours d'exécution",
+    "stopped": "Cron arrêté",
+    "readOnly": "Lecture seule",
+    "notInstalled": "Non installé",
+    "notInstalledTitle": "Cron n'est pas installé sur cet hôte",
+    "notInstalledHint": "Installez cron ou cronie avec le gestionnaire de paquets de l'hôte, puis actualisez.",
+    "notRunning": "Le service cron n'est pas en cours d'exécution, aucune tâche ne s'exécutera.",
+    "viewJobs": "Tâches",
+    "viewSystem": "Système",
+    "viewLogs": "Journaux"
+  },
+  "jobs": {
+    "add": "Ajouter une tâche",
+    "user": "Crontab de",
+    "ownUser": "{{user}} (connexion)",
+    "search": "Rechercher des tâches",
+    "editText": "Modifier en texte",
+    "empty": "Aucune tâche cron pour le moment.",
+    "noMatch": "Aucune tâche correspondante.",
+    "off": "Désactivé",
+    "next": "dans {{time}}",
+    "run": "Exécuter maintenant",
+    "runTitle": "Exécuter cette tâche maintenant ?",
+    "runDesc": "Cela exécute {{command}} une seule fois en tant qu'utilisateur du crontab. L'exécution s'arrête après 2 minutes.",
+    "runFailed": "Impossible d'exécuter la tâche.",
+    "turnOn": "Activer",
+    "turnOff": "Désactiver",
+    "deleteTitle": "Supprimer cette tâche ?",
+    "loadFailed": "Impossible de lire le crontab.",
+    "saveFailed": "Impossible d'enregistrer le crontab.",
+    "outputTitle": "Sortie de la tâche",
+    "exitOk": "Terminé",
+    "exitCode": "Code de sortie {{code}}",
+    "noOutput": "La tâche n'a rien affiché."
+  },
+  "form": {
+    "addTitle": "Nouvelle tâche",
+    "editTitle": "Modifier la tâche",
+    "forUser": "Crontab de {{user}}",
+    "label": "Étiquette",
+    "labelHint": "Enregistré en tant que commentaire au-dessus de la tâche.",
+    "labelPlaceholder": "Sauvegarde nocturne",
+    "command": "Commande",
+    "commandHint": "S'exécute avec sh dans le répertoire personnel de l'utilisateur. Un % démarre l'entrée envoyée par cron, écrivez \\% pour un vrai pourcentage.",
+    "schedule": "Planification",
+    "scheduleHint": "Minute, heure, jour du mois, mois et jour de la semaine, ou un mot comme @daily.",
+    "scheduleInvalid": "Cette planification n'est pas valide.",
+    "nextRuns": "Prochaines exécutions ({{zone}}) :",
+    "enabled": "Activé",
+    "enabledHint": "Une tâche désactivée reste dans le crontab en tant que commentaire.",
+    "saved": "Enregistré."
+  },
+  "presets": {
+    "everyMinute": "Toutes les minutes",
+    "every5": "Toutes les 5 min",
+    "every15": "Toutes les 15 min",
+    "hourly": "Toutes les heures",
+    "daily": "Tous les jours",
+    "weekly": "Toutes les semaines",
+    "monthly": "Tous les mois",
+    "reboot": "Au démarrage"
+  },
+  "schedule": {
+    "reboot": "Au démarrage",
+    "everyMinute": "Toutes les minutes",
+    "everyNMinutes": "Toutes les {{n}} minutes",
+    "hourlyAt": "Toutes les heures à la minute {{minute}}",
+    "everyNHours": "Toutes les {{n}} heures à la minute {{minute}}",
+    "dailyAt": "Tous les jours à {{time}}",
+    "weekdaysAt": "Du lundi au vendredi à {{time}}",
+    "weeklyAt": "Tous les {{day}} à {{time}}",
+    "monthlyAt": "Le {{day}} de chaque mois à {{time}}",
+    "custom": "Planification personnalisée",
+    "invalid": "Planification non valide"
+  },
+  "days": {
+    "0": "Dimanche",
+    "1": "Lundi",
+    "2": "Mardi",
+    "3": "Mercredi",
+    "4": "Jeudi",
+    "5": "Vendredi",
+    "6": "Samedi"
+  },
+  "raw": {
+    "title": "Crontab en texte brut",
+    "hint": "Une tâche par ligne. L'hôte vérifie le texte et conserve l'ancien crontab s'il contient des erreurs."
+  },
+  "system": {
+    "add": "Nouveau fichier",
+    "addTitle": "Nouveau fichier dans /etc/cron.d",
+    "edit": "Modifier",
+    "name": "Nom du fichier",
+    "nameHint": "Enregistré sous /etc/cron.d/<name>. Cron ignore les noms contenant des points.",
+    "nameInvalid": "Utilisez uniquement des lettres, des chiffres, - et _.",
+    "content": "Contenu du fichier",
+    "fileHint": "Chaque tâche indique l'utilisateur sous lequel elle s'exécute : minute heure jour mois jour_semaine utilisateur commande. Chaque ligne est vérifiée avant l'enregistrement.",
+    "noJobs": "Aucune tâche dans ce fichier.",
+    "readHint": "Certains fichiers peuvent être masqués sans les droits root. Les modifications ici nécessitent une connexion root, un sudo sans mot de passe ou un mot de passe Sudo enregistré.",
+    "timers_one": "Cet hôte possède également {{count}} minuteur systemd. Le plugin Services le gère.",
+    "timers_many": "Cet hôte possède également {{count}} minuteurs systemd. Le plugin Services les gère.",
+    "timers_other": "Cet hôte possède également {{count}} minuteurs systemd. Le plugin Services les gère.",
+    "deleteTitle": "Supprimer /etc/cron.d/{{name}} ?",
+    "deleteDesc": "Une copie est conservée dans /var/lib/termix-cron/backup.",
+    "deleted": "{{name}} supprimé.",
+    "saved": "{{name}} enregistré.",
+    "loadFailed": "Impossible de lire les fichiers cron système.",
+    "saveFailed": "Impossible d'enregistrer le fichier.",
+    "period": {
+      "hourly": "S'exécute toutes les heures",
+      "daily": "S'exécute tous les jours",
+      "weekly": "S'exécute toutes les semaines",
+      "monthly": "S'exécute tous les mois"
+    }
+  },
+  "logs": {
+    "lines": "Lignes",
+    "lineCount_one": "{{count}} ligne",
+    "lineCount_many": "{{count}} lignes",
+    "lineCount_other": "{{count}} lignes",
+    "source": "Depuis {{source}}",
+    "noSource": "Aucun journal cron n'a été trouvé sur cet hôte.",
+    "empty": "Aucune ligne de journal.",
+    "failed": "Impossible de lire le journal cron."
+  },
+  "manager": {
+    "title": "Cron",
+    "disabled": "Activez Cron pour cet hôte dans ses paramètres pour voir ses tâches ici."
+  },
+  "operations": {
+    "list": {
+      "title": "Lister les tâches cron"
+    },
+    "enable": {
+      "title": "Activer la tâche cron"
+    },
+    "disable": {
+      "title": "Désactiver la tâche cron"
+    },
+    "run": {
+      "title": "Exécuter la tâche cron maintenant"
+    },
+    "delete": {
+      "title": "Supprimer la tâche cron"
+    },
+    "jobs": {
+      "title": "Tâches cron",
+      "schedule": "Planification",
+      "command": "Commande"
+    },
+    "status": {
+      "title": "État de Cron"
+    }
+  },
+  "card": {
+    "title": "Cron",
+    "loading": "Vérification des hôtes...",
+    "summary_one": "{{count}} tâche sur {{hosts}} hôtes",
+    "summary_many": "{{count}} tâches sur {{hosts}} hôtes",
+    "summary_other": "{{count}} tâches sur {{hosts}} hôtes",
+    "refresh": "Vérifier à nouveau",
+    "empty": "Activez Cron pour un hôte pour le voir ici.",
+    "stopped": "Non démarré",
+    "missing": "Non installé",
+    "jobs_one": "{{count}} tâche",
+    "jobs_many": "{{count}} tâches",
+    "jobs_other": "{{count}} tâches",
+    "off": "{{count}} désactivé"
+  }
+}

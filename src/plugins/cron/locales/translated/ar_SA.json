@@ -1,0 +1,222 @@
+{
+  "plugin": {
+    "name": "Cron",
+    "description": "عرض وإضافة وتشغيل مهام cron على مضيفيك، مع معاينة الجدول الزمني وملفات cron النظام."
+  },
+  "common": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع",
+    "delete": "حذف"
+  },
+  "permissions": {
+    "use": {
+      "title": "استخدام Cron",
+      "description": "عرض مهام cron على المضيفين الذين يمكنك الوصول إليهم، وتعديلها على المضيفين الذين يمكنك تحريرهم."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Cron",
+        "description": "إدارة مهام cron على هذا المضيف من علامة تبويب Cron."
+      },
+      "useSudo": {
+        "label": "استخدام sudo",
+        "description": "استخدام sudo لملفات crontab الخاصة بالمستخدمين الآخرين و/etc/cron.d. قم بإيقاف التشغيل إذا كان تسجيل الدخول باسم root."
+      },
+      "readOnly": {
+        "label": "للقراءة فقط",
+        "description": "عرض مهام cron ولكن عدم تغييرها أبداً على هذا المضيف."
+      }
+    }
+  },
+  "tab": {
+    "title": "Cron",
+    "noHost": "افتح Cron من مضيف.",
+    "error": "تعذر تحميل cron من هذا المضيف.",
+    "disabled": "تم إيقاف Cron لهذا المضيف. قم بتفعيله في إعدادات المضيف.",
+    "sudo": "يتطلب هذا تسجيل دخول باسم root، أو sudo بدون كلمة مرور، أو كلمة مرور Sudo محفوظة.",
+    "refresh": "تحديث",
+    "running": "Cron قيد التشغيل",
+    "stopped": "تم إيقاف Cron",
+    "readOnly": "للقراءة فقط",
+    "notInstalled": "غير مثبت",
+    "notInstalledTitle": "لم يتم تثبيت Cron على هذا المضيف",
+    "notInstalledHint": "قم بتثبيت cron أو cronie باستخدام مدير حزم المضيف، ثم قم بالتحديث.",
+    "notRunning": "خدمة cron لا تعمل، لذا لن يتم تشغيل أي مهام.",
+    "viewJobs": "المهام",
+    "viewSystem": "النظام",
+    "viewLogs": "السجلات"
+  },
+  "jobs": {
+    "add": "إضافة مهمة",
+    "user": "ملف crontab الخاص بـ",
+    "ownUser": "{{user}} (تسجيل الدخول)",
+    "search": "البحث في المهام",
+    "editText": "تحرير كنص",
+    "empty": "لا توجد مهام cron بعد.",
+    "noMatch": "لا توجد مهام مطابقة.",
+    "off": "إيقاف",
+    "next": "بعد {{time}}",
+    "run": "تشغيل الآن",
+    "runTitle": "تشغيل هذه المهمة الآن؟",
+    "runDesc": "سيتم تشغيل {{command}} مرة واحدة باسم مستخدم crontab. يتوقف بعد دقيقتين.",
+    "runFailed": "تعذر تشغيل المهمة.",
+    "turnOn": "تفعيل",
+    "turnOff": "إيقاف",
+    "deleteTitle": "حذف هذه المهمة؟",
+    "loadFailed": "تعذر قراءة ملف crontab.",
+    "saveFailed": "تعذر حفظ ملف crontab.",
+    "outputTitle": "مخرجات المهمة",
+    "exitOk": "اكتمل",
+    "exitCode": "رمز الخروج {{code}}",
+    "noOutput": "لم تطبع المهمة أي شيء."
+  },
+  "form": {
+    "addTitle": "مهمة جديدة",
+    "editTitle": "تحرير المهمة",
+    "forUser": "ملف crontab الخاص بـ {{user}}",
+    "label": "تسمية",
+    "labelHint": "يتم حفظه كتعليق فوق المهمة.",
+    "labelPlaceholder": "نسخة احتياطية ليلية",
+    "command": "الأمر",
+    "commandHint": "يتم التشغيل باستخدام sh في دليل المستخدم الرئيسي. يبدأ % إدخال cron المرسل، اكتب \\% للحصول على واحد حقيقي.",
+    "schedule": "الجدول الزمني",
+    "scheduleHint": "الدقيقة، الساعة، يوم الشهر، الشهر ويوم الأسبوع، أو كلمة مثل @daily.",
+    "scheduleInvalid": "هذا ليس جدولاً زمنياً صالحاً.",
+    "nextRuns": "التشغيلات القادمة ({{zone}}):",
+    "enabled": "مفعّل",
+    "enabledHint": "يبقى المهمة المعطلة في crontab كتعليق.",
+    "saved": "تم الحفظ."
+  },
+  "presets": {
+    "everyMinute": "كل دقيقة",
+    "every5": "كل 5 دقائق",
+    "every15": "كل 15 دقيقة",
+    "hourly": "كل ساعة",
+    "daily": "يومياً",
+    "weekly": "أسبوعياً",
+    "monthly": "شهرياً",
+    "reboot": "عند الإقلاع"
+  },
+  "schedule": {
+    "reboot": "عند الإقلاع",
+    "everyMinute": "كل دقيقة",
+    "everyNMinutes": "كل {{n}} دقائق",
+    "hourlyAt": "كل ساعة عند الدقيقة {{minute}}",
+    "everyNHours": "كل {{n}} ساعات عند الدقيقة {{minute}}",
+    "dailyAt": "كل يوم عند {{time}}",
+    "weekdaysAt": "من الاثنين إلى الجمعة عند {{time}}",
+    "weeklyAt": "كل {{day}} عند {{time}}",
+    "monthlyAt": "في اليوم {{day}} من كل شهر عند {{time}}",
+    "custom": "جدول زمني مخصص",
+    "invalid": "ليس جدولاً زمنياً صالحاً"
+  },
+  "days": {
+    "0": "الأحد",
+    "1": "الاثنين",
+    "2": "الثلاثاء",
+    "3": "الأربعاء",
+    "4": "الخميس",
+    "5": "الجمعة",
+    "6": "السبت"
+  },
+  "raw": {
+    "title": "ملف Crontab كنص",
+    "hint": "مهمة واحدة في كل سطر. يتحقق المضيف من النص ويحتفظ بملف crontab القديم إذا وُجدت أخطاء."
+  },
+  "system": {
+    "add": "ملف جديد",
+    "addTitle": "ملف جديد في /etc/cron.d",
+    "edit": "تعديل",
+    "name": "اسم الملف",
+    "nameHint": "يتم حفظه كـ /etc/cron.d/<name>. يتخطى Cron الأسماء التي تحتوي على نقاط.",
+    "nameInvalid": "استخدم الأحرف والأرقام و - و _ فقط.",
+    "content": "محتوى الملف",
+    "fileHint": "تحدد كل مهمة المستخدم الذي تعمل باسمه: دقيقة ساعة يوم شهر يوم_الأسبوع مستخدم أمر. يتم التحقق من كل سطر قبل الحفظ.",
+    "noJobs": "لا توجد مهام في هذا الملف.",
+    "readHint": "قد تكون بعض الملفات مخفية بدون صلاحيات root. تتطلب التغييرات هنا تسجيل دخول root، أو sudo بدون كلمة مرور، أو كلمة مرور Sudo محفوظة.",
+    "timers_zero": "لا توجد مؤقتات systemd على هذا المضيف.",
+    "timers_one": "يحتوي هذا المضيف أيضاً على مؤقت systemd واحد. يديره إضافة الخدمات.",
+    "timers_two": "يحتوي هذا المضيف أيضاً على مؤقتين systemd. تديرهما إضافة الخدمات.",
+    "timers_few": "يحتوي هذا المضيف أيضاً على {{count}} مؤقتات systemd. تديرها إضافة الخدمات.",
+    "timers_many": "يحتوي هذا المضيف أيضاً على {{count}} مؤقت systemd. تديرها إضافة الخدمات.",
+    "timers_other": "يحتوي هذا المضيف أيضاً على {{count}} مؤقت systemd. تديرها إضافة الخدمات.",
+    "deleteTitle": "حذف /etc/cron.d/{{name}}؟",
+    "deleteDesc": "يتم الاحتفاظ بنسخة في /var/lib/termix-cron/backup.",
+    "deleted": "تم حذف {{name}}.",
+    "saved": "تم حفظ {{name}}.",
+    "loadFailed": "تعذر قراءة ملفات cron النظام.",
+    "saveFailed": "تعذر حفظ الملف.",
+    "period": {
+      "hourly": "تعمل كل ساعة",
+      "daily": "تعمل كل يوم",
+      "weekly": "تعمل كل أسبوع",
+      "monthly": "تعمل كل شهر"
+    }
+  },
+  "logs": {
+    "lines": "الأسطر",
+    "lineCount_zero": "لا توجد أسطر",
+    "lineCount_one": "سطر واحد",
+    "lineCount_two": "سطران",
+    "lineCount_few": "{{count}} أسطر",
+    "lineCount_many": "{{count}} سطراً",
+    "lineCount_other": "{{count}} سطر",
+    "source": "من {{source}}",
+    "noSource": "لم يتم العثور على سجل cron على هذا المضيف.",
+    "empty": "لا توجد أسطر سجل.",
+    "failed": "تعذر قراءة سجل كرون."
+  },
+  "manager": {
+    "title": "كرون",
+    "disabled": "فعّل كرون لهذا المضيف في إعداداته لعرض مهامه هنا."
+  },
+  "operations": {
+    "list": {
+      "title": "قائمة مهام كرون"
+    },
+    "enable": {
+      "title": "تفعيل مهمة كرون"
+    },
+    "disable": {
+      "title": "تعطيل مهمة كرون"
+    },
+    "run": {
+      "title": "تشغيل مهمة كرون الآن"
+    },
+    "delete": {
+      "title": "حذف مهمة كرون"
+    },
+    "jobs": {
+      "title": "مهام كرون",
+      "schedule": "الجدول الزمني",
+      "command": "الأمر"
+    },
+    "status": {
+      "title": "حالة كرون"
+    }
+  },
+  "card": {
+    "title": "كرون",
+    "loading": "جارٍ التحقق من المضيفين...",
+    "summary_zero": "لا توجد مهام على {{hosts}} مضيف",
+    "summary_one": "مهمة واحدة على {{hosts}} مضيف",
+    "summary_two": "مهمتان على {{hosts}} مضيف",
+    "summary_few": "{{count}} مهام على {{hosts}} مضيف",
+    "summary_many": "{{count}} مهمة على {{hosts}} مضيف",
+    "summary_other": "{{count}} مهمة على {{hosts}} مضيف",
+    "refresh": "تحقق مرة أخرى",
+    "empty": "فعّل كرون لمضيف لعرضه هنا.",
+    "stopped": "غير نشط",
+    "missing": "غير مثبت",
+    "jobs_zero": "لا توجد مهام",
+    "jobs_one": "مهمة واحدة",
+    "jobs_two": "مهمتان",
+    "jobs_few": "{{count}} مهام",
+    "jobs_many": "{{count}} مهمة",
+    "jobs_other": "{{count}} مهمة",
+    "off": "{{count}} معطّل"
+  }
+}

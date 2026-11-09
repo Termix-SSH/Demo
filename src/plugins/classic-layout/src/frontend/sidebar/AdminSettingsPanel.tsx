@@ -46,7 +46,7 @@ import {
   getDatabaseTransferUrl,
 } from "@termix-ssh/plugin-sdk/ui";
 import { usePluginApi, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   FeatureSettingsSection,
   featureSectionId,
@@ -189,6 +189,7 @@ export function AdminSettingsPanel({
   const [userSearch, setUserSearch] = useState("");
   const [userPage, setUserPage] = useState(0);
   const [userTotal, setUserTotal] = useState(0);
+  const usersRequestRef = useRef(0);
   const [sessions, setSessions] = useState<AdminSession[]>([]);
   const [roles, setRoles] = useState<Role[]>([]);
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
@@ -236,12 +237,15 @@ export function AdminSettingsPanel({
   function loadUsers() {
     // Paged server-side so an install with thousands of accounts does not
     // ship the whole directory to render one screen of it.
+    const request = ++usersRequestRef.current;
     getUserList({
       search: userSearch.trim() || undefined,
       limit: USERS_PAGE_SIZE,
       offset: userPage * USERS_PAGE_SIZE,
     })
       .then(({ users: u, total }) => {
+        // A slower answer for an older search must not replace a newer one.
+        if (request !== usersRequestRef.current) return;
         setUsers(
           u.map((user) => ({
             id: user.userId,
@@ -737,7 +741,8 @@ export function AdminSettingsPanel({
         } else {
           toast.error(
             t("admin.importFailed", {
-              error: result.summary?.errors?.join(", ") || "Unknown error",
+              error:
+                result.summary?.errors?.join(", ") || t("admin.unknownError"),
             }),
           );
         }

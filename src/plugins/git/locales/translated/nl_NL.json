@@ -1,0 +1,294 @@
+{
+  "plugin": {
+    "name": "Git",
+    "description": "Bekijk, pull, commit en push git-repos op je hosts, en houd ze up-to-date met auto pull."
+  },
+  "common": {
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "back": "Terug",
+    "loading": "Laden..."
+  },
+  "permissions": {
+    "use": {
+      "title": "Git gebruiken",
+      "description": "Bekijk git-repos op hosts die je kunt bereiken, en pas ze aan op hosts die je kunt bewerken."
+    },
+    "runCommands": {
+      "title": "Opdrachten uitvoeren na auto pull",
+      "description": "Stel een opdracht in die op de host wordt uitgevoerd nadat een auto pull nieuwe commits heeft opgehaald."
+    }
+  },
+  "settings": {
+    "host": {
+      "enable": {
+        "label": "Git",
+        "description": "Beheer git-repos op deze host via het tabblad Git."
+      },
+      "repoRoots": {
+        "label": "Mappen scannen",
+        "description": "Mappen die worden doorzocht naar repos wanneer je deze host scant. Scheid ze met komma's. Standaard is de home-map.",
+        "placeholder": "~/projects, /opt"
+      },
+      "useSudo": {
+        "label": "Sudo gebruiken",
+        "description": "Voer git uit als root met sudo. Alleen voor repos die de inloggebruiker niet kan gebruiken."
+      },
+      "readOnly": {
+        "label": "Alleen-lezen",
+        "description": "Toon repos, maar pas ze nooit aan op deze host."
+      },
+      "showPanel": {
+        "label": "Paneel naast de terminal",
+        "description": "Bied het Git-paneel aan op de terminaltabbladen van deze host."
+      }
+    },
+    "user": {
+      "companionAutoOpen": {
+        "label": "Paneel openen met de terminal",
+        "description": "Toon het Git-paneel wanneer een terminal opent op een host die dit heeft."
+      },
+      "companionSide": {
+        "label": "Paneelzijde",
+        "description": "Waar het paneel naast de terminal staat.",
+        "right": "Rechts",
+        "left": "Links",
+        "bottom": "Onder"
+      },
+      "companionSize": {
+        "label": "Paneelgrootte",
+        "description": "Breedte van het paneel, of de hoogte onderaan, in pixels."
+      },
+      "companionEdgeButton": {
+        "label": "Knop aan de rand",
+        "description": "Toon een kleine knop aan de rand van de terminal om het paneel te openen."
+      }
+    }
+  },
+  "tab": {
+    "title": "Git",
+    "noHost": "Open Git vanaf een host.",
+    "error": "Kon git niet laden van deze host.",
+    "disabled": "Git is uitgeschakeld voor deze host. Schakel het in via de host-instellingen.",
+    "sudo": "Dit vereist een root-inlog, sudo zonder wachtwoord of een opgeslagen Sudo-wachtwoord.",
+    "refresh": "Vernieuwen",
+    "readOnly": "Alleen-lezen",
+    "notInstalled": "git niet geïnstalleerd",
+    "notInstalledTitle": "git is niet geïnstalleerd op deze host",
+    "notInstalledHint": "Installeer git met de pakketbeheerder van de host en vernieuw daarna."
+  },
+  "actions": {
+    "ok": "Klaar",
+    "failed": "Mislukt",
+    "noOutput": "Geen uitvoer."
+  },
+  "repos": {
+    "add": "Repo toevoegen",
+    "search": "Repos zoeken",
+    "empty": "Nog geen repos. Voeg er een toe om te beginnen.",
+    "noMatch": "Geen repos gevonden.",
+    "viewOnly": "Er zijn geen repos aan deze host toegevoegd.",
+    "detached": "gedetacheerd",
+    "changes_one": "{{count}} wijziging",
+    "changes_other": "{{count}} wijzigingen",
+    "conflicts": "Conflicten",
+    "auto": "Auto pull",
+    "autoFailing": "Pull mislukt",
+    "remove": "Verwijderen uit lijst",
+    "removeTitle": "{{name}} verwijderen?",
+    "removeBody": "De repo wordt alleen hier vergeten. Er wordt niets verwijderd op de host.",
+    "removed": "{{name}} verwijderd",
+    "error": {
+      "missing": "Map ontbreekt",
+      "notrepo": "Geen git-repo",
+      "unreadable": "Kan niet lezen"
+    }
+  },
+  "add": {
+    "title": "Repos toevoegen",
+    "modeScan": "Scannen",
+    "modePath": "Map",
+    "modeClone": "Klonen",
+    "scanHint": "Zoekt naar git-repos in {{roots}}. Pas de mappen aan in de host-instellingen.",
+    "rescan": "Opnieuw scannen",
+    "noneFound": "Geen nieuwe repos gevonden.",
+    "picked": "Geselecteerd",
+    "addPicked_one": "{{count}} repo toevoegen",
+    "addPicked_other": "{{count}} repos toevoegen",
+    "addAll": "Alles toevoegen",
+    "folder": "Map op de host",
+    "folderHint": "Volledig pad, of begin met ~ voor de home-map. Het moet al een git-repo zijn.",
+    "addRepo": "Repo toevoegen",
+    "url": "Adres",
+    "urlHint": "Gebruikt de sleutels en git-instellingen van de ingelogde gebruiker van de host.",
+    "dest": "Klonen naar",
+    "destHint": "De map mag nog niet bestaan.",
+    "clone": "Klonen",
+    "cloned": "Gekloond",
+    "added_one": "{{count}} repo toegevoegd",
+    "added_other": "{{count}} repos toegevoegd",
+    "failed": "Kon de repo niet toevoegen",
+    "scanFailed": "Kon de host niet scannen"
+  },
+  "repo": {
+    "ahead": "{{count}} voor",
+    "behind": "{{count}} achter",
+    "fetch": "Ophalen",
+    "fetched": "Opgehaald",
+    "pull": "Ophalen",
+    "pulled": "Opgehaald",
+    "push": "Pushen",
+    "pushed": "Ge-pushd",
+    "viewChanges": "Wijzigingen",
+    "viewBranches": "Takken",
+    "viewHistory": "Geschiedenis",
+    "viewStash": "Stash",
+    "viewAuto": "Automatisch ophalen"
+  },
+  "changes": {
+    "loadFailed": "Kon de wijzigingen niet lezen.",
+    "clean": "Niets om te committen. De werkmap is schoon.",
+    "stagedTitle": "Voorbereid ({{count}})",
+    "unstagedTitle": "Wijzigingen ({{count}})",
+    "stage": "Voorbereiden",
+    "staged": "Voorbereid",
+    "unstage": "Voorbereiding ongedaan maken",
+    "unstaged": "Niet voorbereid",
+    "stageAll": "Alles voorbereiden",
+    "renamed": "Hernoemd",
+    "discard": "Weggooien",
+    "discardTitle": "Wijzigingen in {{name}} weggooien?",
+    "discardBody": "De wijzigingen in dit bestand worden verwijderd en kunnen niet meer hersteld worden.",
+    "discarded": "Wijzigingen weggegooid",
+    "message": "Commit-bericht",
+    "messagePlaceholder": "Wat is er veranderd",
+    "commit": "Committen",
+    "commitAll": "Alle wijzigingen committen",
+    "commitStaged_one": "{{count}} voorbereid bestand committen",
+    "commitStaged_other": "{{count}} voorbereide bestanden committen",
+    "committed": "Gecommit",
+    "noDiff": "Geen wijzigingen om te tonen.",
+    "truncated": "Het verschil is lang, dus alleen het begin wordt getoond."
+  },
+  "branches": {
+    "loadFailed": "Kon de takken niet lezen.",
+    "empty": "Nog geen branches.",
+    "current": "Huidig",
+    "remote": "Extern",
+    "gone": "Upstream verwijderd",
+    "newName": "Nieuwe branch",
+    "create": "Branch aanmaken",
+    "created": "Branch {{name}} aangemaakt",
+    "switch": "Wisselen",
+    "switched": "Gewisseld naar {{name}}",
+    "merge": "Samenvoegen in huidige",
+    "mergeTitle": "{{name}} samenvoegen in {{into}}?",
+    "mergeBody": "Een samenvoeging met conflicten wordt onmiddellijk ongedaan gemaakt.",
+    "merged": "{{name}} samengevoegd",
+    "delete": "Branch verwijderen",
+    "deleteTitle": "{{name}} verwijderen?",
+    "deleteBody": "Git weigert als de branch commits bevat die niet zijn samengevoegd.",
+    "deleted": "{{name}} verwijderd",
+    "forceTitle": "{{name}} geforceerd verwijderen?",
+    "forceBody": "Deze branch heeft commits die niet zijn samengevoegd. Deze gaan verloren als je de branch verwijdert.",
+    "forceDelete": "Geforceerd verwijderen"
+  },
+  "history": {
+    "loadFailed": "Kon de geschiedenis niet lezen.",
+    "empty": "Nog geen commits.",
+    "branch": "Deze branch",
+    "all": "Alle branches",
+    "more": "Meer laden"
+  },
+  "stash": {
+    "loadFailed": "Kon de stash niet lezen.",
+    "title": "Stashes",
+    "empty": "Geen stashes.",
+    "message": "Bericht",
+    "messagePlaceholder": "Optioneel",
+    "untracked": "Ongesorteerde bestanden opnemen",
+    "push": "Wijzigingen stash-en",
+    "pushDone": "Wijzigingen gestashed",
+    "apply": "Toepassen",
+    "applyDone": "Stash toegepast",
+    "pop": "Poppen",
+    "popDone": "Stash toegepast en verwijderd",
+    "drop": "Verwijderen",
+    "dropDone": "Stash verwijderd",
+    "dropTitle": "{{name}} verwijderen?",
+    "dropBody": "De stash wordt verwijderd en kan niet meer worden hersteld.",
+    "remotes": "Externes",
+    "noRemotes": "Geen externs."
+  },
+  "auto": {
+    "intro": "Haalt op schema op met alleen fast-forward. Het voegt nooit samen en slaat de repo over als er niet-committede wijzigingen zijn of als deze is afgeweken van de upstream.",
+    "noUpstream": "Deze branch heeft nog geen upstream, dus auto pull slaat deze over.",
+    "enable": "Auto pull",
+    "enableHint": "Wordt uitgevoerd als jij, met jouw toegang tot deze host.",
+    "interval": "Elke (minuten)",
+    "intervalHint": "Hoe lang te wachten tussen pulls.",
+    "post": "Opdracht na een pull",
+    "postHint": "Wordt uitgevoerd in de repo-map nadat nieuwe commits zijn aangekomen. Vereist de machtiging voor het uitvoeren van opdrachten.",
+    "saved": "Auto pull opgeslagen",
+    "saveFailed": "Kon auto pull niet opslaan",
+    "runNow": "Nu uitvoeren",
+    "next": "Volgende pull {{when}}",
+    "runs": "Recente uitvoeringen",
+    "noRuns": "Nog geen uitvoeringen.",
+    "outcome": {
+      "pulled": "Getrokken",
+      "uptodate": "Actueel",
+      "skipped": "Overgeslagen",
+      "failed": "Mislukt"
+    }
+  },
+  "card": {
+    "title": "Git-repositories",
+    "loading": "Laden...",
+    "refresh": "Vernieuwen",
+    "empty": "Er zijn nog geen Git-repositories op een host.",
+    "allClean": "Alle repositories zijn schoon en up-to-date.",
+    "summary_one": "{{count}} repository | {{attention}} heeft aandacht nodig",
+    "summary_other": "{{count}} repositories | {{attention}} hebben aandacht nodig"
+  },
+  "companion": {
+    "toggle": "Git-paneel",
+    "openTab": "Git openen",
+    "here": "Repository van deze map",
+    "all": "Alle repositories"
+  },
+  "operations": {
+    "list-repos": {
+      "title": "Git-repositories weergeven"
+    },
+    "fetch": {
+      "title": "Repository ophalen"
+    },
+    "pull": {
+      "title": "Repository ophalen (pull)"
+    },
+    "push": {
+      "title": "Repository pushen"
+    },
+    "checkout": {
+      "title": "Van tak wisselen",
+      "branch": "Tak"
+    },
+    "reset-hard": {
+      "title": "Repository hard resetten",
+      "ref": "Resetten naar"
+    },
+    "repos": {
+      "title": "Git-repositories",
+      "branch": "Tak",
+      "ahead": "Voor",
+      "behind": "Achter",
+      "changed": "Wijzigingen"
+    },
+    "signals": {
+      "behind": "Repositories achter",
+      "dirty": "Repositories met wijzigingen",
+      "pull-failing": "Automatisch ophalen mislukt"
+    }
+  }
+}
