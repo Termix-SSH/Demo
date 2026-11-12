@@ -54,7 +54,12 @@ jobs:
 
       - run: npm run sync
 
-      - run: npm ci
+      - name: Lockfile lint
+        uses: Termix-SSH/Termix-Registry/.github/actions/supply-chain@main
+        with:
+          osv: "false"
+
+      - run: npm ci --ignore-scripts
         env:
           HUSKY: 0
 
