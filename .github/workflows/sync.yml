@@ -5,8 +5,8 @@ on:
     - cron: "0 6 * * *"
   workflow_dispatch:
 
-permissions:
-  contents: write
+# The push goes through the App token, the job token only reads.
+permissions: {}
 
 concurrency:
   group: sync
@@ -16,10 +16,12 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     environment: ci
+    permissions:
+      contents: read
     steps:
       - name: App token
         id: app
-        uses: actions/create-github-app-token@v3
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           client-id: ${{ vars.CI_APP_CLIENT_ID }}
           private-key: ${{ secrets.CI_APP_PRIVATE_KEY }}
@@ -27,11 +29,13 @@ jobs:
           repositories: Demo
           permission-contents: write
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           token: ${{ steps.app.outputs.token }}
+          # The commit step pushes with it.
+          persist-credentials: true
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: .nvmrc
 
