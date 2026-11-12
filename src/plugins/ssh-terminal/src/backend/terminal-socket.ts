@@ -3232,6 +3232,9 @@ export function createTerminalSocket(deps: TerminalSocketDeps) {
     // SSH-level keepalive is configured via connectConfig (keepaliveInterval,
     // keepaliveCountMax, tcpKeepAlive), which handles connection health monitoring
     // without producing visible output on the terminal.
+    //
+    // See: https://github.com/Termix-SSH/Support/issues/232
+    // See: https://github.com/Termix-SSH/Support/issues/309
   }
 
   return { handleConnection, closeAll };
