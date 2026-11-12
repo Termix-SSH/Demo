@@ -15,10 +15,21 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    environment: ci
     steps:
+      - name: App token
+        id: app
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.CI_APP_CLIENT_ID }}
+          private-key: ${{ secrets.CI_APP_PRIVATE_KEY }}
+          owner: Termix-SSH
+          repositories: Demo
+          permission-contents: write
+
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.TERMIX_PAT }}
+          token: ${{ steps.app.outputs.token }}
 
       - uses: actions/setup-node@v4
         with:
