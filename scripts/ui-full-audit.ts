@@ -9,11 +9,16 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { chromium, firefox, webkit, type Page } from "playwright";
-
-function arg(name: string): string | undefined {
-  const index = process.argv.indexOf(`--${name}`);
-  return index > 0 ? process.argv[index + 1] : undefined;
-}
+import {
+  arg,
+  DESTRUCTIVE,
+  login as signIn,
+  openPalette,
+  paletteItems,
+  settle,
+  SKIP,
+  slug,
+} from "./audit-lib";
 
 const outDir =
   process.argv[2] && !process.argv[2].startsWith("--")
@@ -37,61 +42,12 @@ const SIZES = (
 )
   .split(",")
   .map((s) => s.split("x").map(Number) as [number, number]);
-const SKIP =
-  /^(Reconnect|Split|GitHub|Discord|Report a bug|Documentation|Sign out|Log out|Lock|Restart|Shut ?down|Reboot|Delete|Remove|Disconnect)|\d+\/\d+\/\d+|@/i;
-const DESTRUCTIVE =
-  /delete|remove|reboot|restart|shut|power|stop|kill|wipe|reset|revoke|uninstall|disable|turn off|sign out|log ?out|lock|drop|purge|vacuum|format|rotate|apply|deploy|run|start|wake|sleep|kick|end session/i;
+const login = (page: Page) => signIn(page, URL_BASE, USER, PASS);
 
 const CHECKS = [
   readFileSync(join(import.meta.dirname, "ui-audit-check.js"), "utf8"),
   readFileSync(join(import.meta.dirname, "ui-audit-extra.js"), "utf8"),
 ];
-
-async function settle(page: Page, ms = 800) {
-  await page.waitForTimeout(ms);
-}
-
-async function login(page: Page) {
-  await page.goto(URL_BASE);
-  await settle(page, 2500);
-  const user = page.locator("#login-user");
-  if (await user.count()) {
-    await user.first().fill(USER);
-    await page.locator("#login-pass").fill(PASS);
-    await page.keyboard.press("Enter");
-  }
-  await page
-    .locator('[data-slot="tab-stage"], main, #root > *')
-    .first()
-    .waitFor({ timeout: 30000 });
-  await settle(page, 4000);
-}
-
-async function openPalette(page: Page) {
-  const input = page.locator("[cmdk-input]").first();
-  await page.keyboard.press("Escape");
-  await page.keyboard.press("Control+k");
-  try {
-    await input.waitFor({ timeout: 2500 });
-  } catch {
-    await page.mouse.click(5, 5);
-    await page.keyboard.press("Control+k");
-    await input.waitFor({ timeout: 5000 });
-  }
-  await settle(page, 300);
-}
-
-async function paletteItems(page: Page) {
-  await openPalette(page);
-  await settle(page, 800);
-  const items = await page
-    .locator("[cmdk-item]")
-    .evaluateAll((nodes) =>
-      nodes.map((node) => (node.textContent ?? "").trim().replace(/\s+/g, " ")),
-    );
-  await page.keyboard.press("Escape");
-  return items;
-}
 
 async function check(page: Page): Promise<string[]> {
   const out: string[] = [];
@@ -142,8 +98,6 @@ function drain(noise: Noise) {
   noise.failed.length = 0;
   return out;
 }
-
-const slug = (s: string) => s.replace(/[^a-z0-9]+/gi, "-").slice(0, 50);
 
 async function shoot(page: Page, dir: string, name: string, noise: Noise) {
   await page.screenshot({ path: join(dir, `${name}.png`) });
