@@ -7,6 +7,7 @@
  *
  *   npx tsx scripts/frame-audit.ts <outDir> [--url http://localhost:5173]
  *     [--host 9] [--host-name Testing] [--only <text>] [--no-click]
+ *     [--sections dashboard,rail,palette,host-tools,host-editor]
  *
  * The refused, ready and read lines come from the shell's dev-only logs, so
  * point it at `npm run dev`, never a production build.
@@ -38,6 +39,7 @@ const HOST = arg("host") ?? "9";
 const HOST_NAME = arg("host-name") ?? "Testing";
 const ONLY = arg("only")?.toLowerCase().split(",");
 const CLICK = !process.argv.includes("--no-click");
+const SECTIONS = arg("sections")?.split(",");
 const SUB_LIMIT = 30;
 
 /** Ctrl+K, else the rail's search button (focus may sit inside a frame). */
@@ -406,7 +408,13 @@ async function subViews(
 
 async function home(page: Page) {
   await page.goto(URL_BASE);
-  await settle(page, 5000);
+  // The shell can take a while when every plugin starts.
+  await page
+    .locator("[data-rail-item]")
+    .first()
+    .waitFor({ timeout: 60_000 })
+    .catch(() => {});
+  await settle(page, 3000);
 }
 
 async function walkDashboard(page: Page, noise: Noise) {
@@ -482,7 +490,7 @@ async function hostRow(page: Page): Promise<Locator | null> {
   await settle(page, 1000);
   const row = page.locator(`[data-host-id="${HOST}"]`).first();
   for (let i = 0; i < 4 && !(await row.count()); i++) {
-    const folders = page.locator('svg[class*="lucide-folder"]:visible');
+    const folders = page.locator("svg.lucide-folder:visible");
     const n = await folders.count();
     for (let f = 0; f < n && !(await row.count()); f++) {
       await folders
@@ -614,6 +622,7 @@ async function main() {
     ["host-tools", walkHostTools],
     ["host-editor", walkHostEditor],
   ] as const) {
+    if (SECTIONS && !SECTIONS.includes(name)) continue;
     try {
       await walk(page, noise);
     } catch (error) {
