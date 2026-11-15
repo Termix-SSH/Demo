@@ -8,13 +8,23 @@
  *   npx tsx scripts/frame-audit.ts <outDir> [--url http://localhost:5173]
  *     [--host 9] [--host-name Testing] [--only <text>] [--no-click]
  *     [--sections dashboard,rail,palette,host-tools,host-editor]
+ *     [--browser chromium|firefox|webkit] [--viewport 390x844]
+ *     [--electron <Termix.exe> --data-dir <throwaway folder>]
  *
  * The refused, ready and read lines come from the shell's dev-only logs, so
  * point it at `npm run dev`, never a production build.
  */
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
-import { chromium, type Frame, type Locator, type Page } from "playwright";
+import {
+  _electron,
+  chromium,
+  firefox,
+  webkit,
+  type Frame,
+  type Locator,
+  type Page,
+} from "playwright";
 import {
   arg,
   DESTRUCTIVE,
@@ -34,13 +44,19 @@ if (!outDir) {
   console.error("Usage: tsx scripts/frame-audit.ts <outDir>");
   process.exit(1);
 }
-const URL_BASE = arg("url") ?? "http://localhost:5173/";
+let URL_BASE = arg("url") ?? "http://localhost:5173/";
+// A packaged desktop app to walk instead of a browser, and its data folder.
+const ELECTRON = arg("electron");
+const DATA_DIR = arg("data-dir");
 const HOST = arg("host") ?? "9";
 const HOST_NAME = arg("host-name") ?? "Testing";
 const ONLY = arg("only")?.toLowerCase().split(",");
 const CLICK = !process.argv.includes("--no-click");
 const SECTIONS = arg("sections")?.split(",");
 const SUB_LIMIT = 30;
+const BROWSER = (arg("browser") ?? "chromium") as
+  "chromium" | "firefox" | "webkit";
+const VIEWPORT = arg("viewport") ?? "1920x1080";
 
 /** Ctrl+K, else the rail's search button (focus may sit inside a frame). */
 async function openPalette(page: Page) {
@@ -606,15 +622,49 @@ async function walkHostEditor(page: Page, noise: Noise) {
 
 async function main() {
   mkdirSync(join(outDir!, "shots"), { recursive: true });
-  const browser = await chromium.launch();
-  const context = await browser.newContext({
-    viewport: { width: 1920, height: 1080 },
-  });
-  const page = await context.newPage();
+  let close: () => Promise<void>;
+  let page: Page;
+  let noise: Noise;
+  if (ELECTRON) {
+    if (!DATA_DIR) throw new Error("--electron needs --data-dir");
+    const app = await _electron.launch({
+      executablePath: ELECTRON,
+      env: { ...process.env, TERMIX_DATA_DIR: DATA_DIR } as Record<
+        string,
+        string
+      >,
+    });
+    close = () => app.close();
+    page = await app.firstWindow();
+    noise = watch(page);
+    await page.setViewportSize({ width: 1600, height: 1000 }).catch(() => {});
+    // The local backend signs in on its own.
+    await page
+      .locator('[data-slot="tab-stage"]')
+      .first()
+      .waitFor({ timeout: 120000 });
+    await settle(page, 6000);
+    URL_BASE = page.url();
+  } else {
+    const engine = { chromium, firefox, webkit }[BROWSER];
+    if (!engine) throw new Error(`unknown browser ${BROWSER}`);
+    const browser = await engine.launch();
+    close = () => browser.close();
+    const [width, height] = VIEWPORT.split("x").map(Number);
+    const phone = width < 768;
+    const context = await browser.newContext({
+      viewport: { width, height },
+      // Firefox has no mobile emulation, so it only gets the narrow window.
+      ...(phone && BROWSER !== "firefox"
+        ? { isMobile: true, hasTouch: true }
+        : {}),
+    });
+    page = await context.newPage();
+    noise = watch(page);
+    await login(page, URL_BASE);
+  }
   page.setDefaultTimeout(8000);
   page.on("dialog", (dialog) => void dialog.dismiss().catch(() => {}));
-  const noise = watch(page);
-  await login(page, URL_BASE);
   for (const [name, walk] of [
     ["dashboard", walkDashboard],
     ["rail", walkRail],
@@ -630,7 +680,7 @@ async function main() {
     }
   }
   save();
-  await browser.close();
+  await close();
 }
 
 void main();
