@@ -6,6 +6,7 @@
  *   TERMIX_API_KEY=tmx_... npx tsx scripts/frame-audit-matrix.ts <outDir>
  *     [--api http://localhost:30001] [--only acme-ssl,ai]
  *     [--sections dashboard,rail,host-tools] [--from <id>]
+ *     [--host 9] [--host-name Testing] [--url http://localhost:5173]
  *
  * Point it at `npm run dev` with every plugin on.
  */
@@ -33,14 +34,31 @@ interface PluginRow {
   state: string;
 }
 
-async function api(path: string, init: RequestInit = {}) {
-  const response = await fetch(`${API}${path}`, {
-    ...init,
-    headers: {
-      authorization: `Bearer ${KEY}`,
-      "content-type": "application/json",
-    },
-  });
+// Passed on to each frame-audit run.
+const PASS = ["host", "host-name", "url"].flatMap((name) => {
+  const value = arg(name);
+  return value ? [`--${name}`, value] : [];
+});
+
+async function api(path: string, init: RequestInit = {}, tries = 3) {
+  const send = () =>
+    fetch(`${API}${path}`, {
+      ...init,
+      headers: {
+        authorization: `Bearer ${KEY}`,
+        "content-type": "application/json",
+        // A walk blocks this process for minutes, so a kept socket is dead by then.
+        connection: "close",
+      },
+    });
+  let response: Response;
+  try {
+    response = await send();
+  } catch (error) {
+    if (tries <= 1) throw error;
+    await new Promise((r) => setTimeout(r, 1000));
+    return api(path, init, tries - 1);
+  }
   if (!response.ok) {
     throw new Error(`${init.method ?? "GET"} ${path} ${response.status}`);
   }
@@ -135,6 +153,7 @@ async function main() {
             "--no-click",
             "--sections",
             SECTIONS,
+            ...PASS,
           ],
           { stdio: "inherit", shell: true, timeout: 20 * 60_000 },
         );
