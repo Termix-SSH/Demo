@@ -157,15 +157,22 @@ const installed = new Set([
   ...Object.keys(pkg.devDependencies ?? {}),
 ]);
 const missing = new Map();
-const IMPORT = /(?:from|import\(|@import)\s*["']([^"'.][^"']*)["']/g;
+const IMPORT = /(?:from|import\(|@import)\s*["']([^"'.\s][^"'\s]*)["']/g;
 function scan(dir, skipBackend) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       if (skipBackend && entry.name === "backend") continue;
       scan(full, skipBackend);
-    } else if (/\.(tsx?|mjs|css)$/.test(entry.name)) {
-      for (const [, spec] of fs.readFileSync(full, "utf8").matchAll(IMPORT)) {
+    } else if (
+      /\.(tsx?|mjs|css)$/.test(entry.name) &&
+      !entry.name.startsWith("testing-")
+    ) {
+      // Type-only imports vanish at build time.
+      const code = fs
+        .readFileSync(full, "utf8")
+        .replace(/import\s+type\s[^;]*;/g, "");
+      for (const [, spec] of code.matchAll(IMPORT)) {
         if (spec.startsWith("@/") || spec.startsWith("@termix-ssh/")) continue;
         const name = spec.startsWith("@")
           ? spec.split("/").slice(0, 2).join("/")
