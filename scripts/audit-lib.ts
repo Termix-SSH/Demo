@@ -36,6 +36,17 @@ export async function login(
     .first()
     .waitFor({ timeout: 30000 });
   await settle(page, 4000);
+  await skipSetup(page);
+}
+
+/** A fresh server opens the first run setup over the shell: skip it. */
+export async function skipSetup(page: Page) {
+  const skip = page.getByRole("button", { name: /^(Skip setup|Not now)$/ });
+  for (let i = 0; i < 3; i++) {
+    if (!(await skip.count())) return;
+    await skip.first().click();
+    await settle(page, 2500);
+  }
 }
 
 export async function openPalette(page: Page) {

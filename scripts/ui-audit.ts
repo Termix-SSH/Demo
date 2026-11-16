@@ -10,6 +10,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { chromium, type Page } from "playwright";
+import { skipSetup } from "./audit-lib";
 
 function arg(name: string): string | undefined {
   const index = process.argv.indexOf(`--${name}`);
@@ -48,6 +49,7 @@ async function login(page: Page) {
     .first()
     .waitFor();
   await settle(page, 4000);
+  await skipSetup(page);
 }
 
 async function openPalette(page: Page) {
