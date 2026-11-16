@@ -122,7 +122,9 @@ function watch(page: Page): Noise {
       noise.ready.push(text);
     } else if (
       msg.type() === "error" &&
-      !text.startsWith("Failed to load resource")
+      !text.startsWith("Failed to load resource") &&
+      // The walk never clicks inside a frame, so the browser refuses its autofocus.
+      !text.includes("focus-without-user-activation")
     ) {
       noise.errors.push(text);
     }
