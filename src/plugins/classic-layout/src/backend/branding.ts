@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import sharp from "sharp";
+import jpeg from "jpeg-js";
+import { PNG } from "pngjs";
 
 export interface BrandingSettings {
   appName: string;
@@ -14,7 +15,8 @@ const TAGLINE_MAX_LENGTH = 160;
 
 /** Cap on the stored (re-encoded PNG) logo. */
 export const BRANDING_LOGO_MAX_BYTES = 750 * 1024;
-const BRANDING_LOGO_MAX_INPUT_PIXELS = 20_000_000;
+/** Big enough for any logo, small enough to decode in the plugin process. */
+const BRANDING_LOGO_MAX_INPUT_PIXELS = 8_000_000;
 
 /** The keys a 26.10.2 and older server kept this under. */
 export const LEGACY_BRANDING_KEYS = {
@@ -38,9 +40,50 @@ export function parseBrandingTagline(value: unknown): string | null {
   return trimmed;
 }
 
+/** Width and height from a PNG's IHDR, read before decoding anything. */
+function pngSize(buffer: Buffer): { width: number; height: number } | null {
+  const signature = "89504e470d0a1a0a";
+  if (buffer.length < 24 || buffer.subarray(0, 8).toString("hex") !== signature)
+    return null;
+  if (buffer.subarray(12, 16).toString("latin1") !== "IHDR") return null;
+  return { width: buffer.readUInt32BE(16), height: buffer.readUInt32BE(20) };
+}
+
+function decodeLogo(
+  kind: "png" | "jpeg",
+  buffer: Buffer,
+): { width: number; height: number; data: Buffer } | null {
+  if (kind === "png") {
+    const size = pngSize(buffer);
+    if (
+      !size ||
+      size.width === 0 ||
+      size.height === 0 ||
+      size.width * size.height > BRANDING_LOGO_MAX_INPUT_PIXELS
+    ) {
+      return null;
+    }
+    const png = PNG.sync.read(buffer, { checkCRC: true });
+    return { width: png.width, height: png.height, data: png.data };
+  }
+  if (buffer[0] !== 0xff || buffer[1] !== 0xd8) return null;
+  const image = jpeg.decode(buffer, {
+    useTArray: true,
+    formatAsRGBA: true,
+    maxResolutionInMP: BRANDING_LOGO_MAX_INPUT_PIXELS / 1_000_000,
+    maxMemoryUsageInMB: 128,
+  });
+  return {
+    width: image.width,
+    height: image.height,
+    data: Buffer.from(image.data),
+  };
+}
+
 /**
- * Accepts a PNG, JPEG or WebP data URL and returns it re-encoded as a PNG, so
- * what is stored and served is always an image we made (no SVG, no metadata).
+ * Accepts a PNG or JPEG data URL and returns it re-encoded as a PNG, so what
+ * is stored and served is always an image we made (no SVG, no metadata). The
+ * settings page turns other images into a PNG before sending.
  */
 export async function parseBrandingLogoDataUrl(
   value: unknown,
@@ -48,7 +91,7 @@ export async function parseBrandingLogoDataUrl(
 ): Promise<string | null> {
   if (typeof value !== "string") return null;
   const match = value.match(
-    /^data:image\/(png|jpe?g|webp);base64,([a-zA-Z0-9+/]+=*)$/,
+    /^data:image\/(png|jpe?g);base64,([a-zA-Z0-9+/]+=*)$/,
   );
   if (!match) return null;
 
@@ -59,18 +102,11 @@ export async function parseBrandingLogoDataUrl(
   }
 
   try {
-    const source = sharp(buffer, {
-      failOn: "error",
-      limitInputPixels: BRANDING_LOGO_MAX_INPUT_PIXELS,
-    });
-    const metadata = await source.metadata();
-    if (
-      !metadata.format ||
-      !["png", "jpeg", "webp"].includes(metadata.format)
-    ) {
-      return null;
-    }
-    const normalized = await source.rotate().png().toBuffer();
+    const decoded = decodeLogo(match[1] === "png" ? "png" : "jpeg", buffer);
+    if (!decoded) return null;
+    const out = new PNG({ width: decoded.width, height: decoded.height });
+    decoded.data.copy(out.data);
+    const normalized = PNG.sync.write(out);
     if (normalized.length > BRANDING_LOGO_MAX_BYTES) return null;
     return `data:image/png;base64,${normalized.toString("base64")}`;
   } catch (error) {

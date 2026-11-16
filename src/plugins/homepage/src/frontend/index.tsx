@@ -56,6 +56,13 @@ function HomepageStandalone(_props: StandaloneViewProps) {
 export function activate(app: TermixApp): void {
   setHomepageApi(app.api);
   app.onDispose(() => setHomepageApi(null));
+  // Host status widgets show other plugins' numbers as plain values.
+  app.declareActionSlot({
+    id: "homepage.hostMetrics",
+    accepts: ["data"],
+    shapes: ["bars", "stat", "text"],
+    rows: "host",
+  });
 
   for (const widget of drainQueuedWidgets()) {
     app.registerExtension(WIDGET_POINT, toExtension(widget));

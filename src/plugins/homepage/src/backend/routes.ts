@@ -245,6 +245,69 @@ export function registerHomepageRoutes(
    *       500:
    *         description: Failed to fetch homepage layout.
    */
+  /**
+   * @openapi
+   * /plugin-api/homepage/items/{id}/view:
+   *   post:
+   *     summary: Open an embedded page widget
+   *     description: Gives back a grant for the address saved in the caller's own embed widget. Termix draws the page from the grant; the widget never picks the address itself.
+   *     tags:
+   *       - Homepage
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: "{ grant }"
+   *       400:
+   *         description: Not an embed widget, or it has no address.
+   *       404:
+   *         description: No such widget of the caller's.
+   *       501:
+   *         description: This Termix can't draw embedded pages.
+   */
+  router.post("/items/:id/view", async (req: Request, res: Response) => {
+    const userId = actor(ctx);
+    const id = parseId(req.params.id);
+    if (id === null) return res.status(404).json({ error: "Not found" });
+    const grantView = (
+      ctx.desktop as {
+        grantView?: (request: {
+          url: string;
+        }) => Promise<{ grant: string; expiresAt: number }>;
+      }
+    ).grantView;
+    if (typeof grantView !== "function") {
+      return res.status(501).json({ error: "Not available" });
+    }
+    try {
+      const item = await repo.findItemById(userId, id);
+      if (!item) return res.status(404).json({ error: "Not found" });
+      let url: unknown;
+      try {
+        url = (JSON.parse(item.config || "{}") as { url?: unknown }).url;
+      } catch {
+        url = null;
+      }
+      if (item.typeId !== "iframe_embed" || !isNonEmptyString(url)) {
+        return res.status(400).json({ error: "Not an embedded page" });
+      }
+      const { grant } = await grantView.call(ctx.desktop, { url });
+      res.json({ grant });
+    } catch (err) {
+      logError(
+        ctx,
+        "Failed to open an embedded page",
+        err,
+        "homepage_view_failed",
+      );
+      res.status(502).json({ error: "Failed to open the page" });
+    }
+  });
+
   router.get("/layout", async (req: Request, res: Response) => {
     const userId = actor(ctx);
     try {
@@ -280,6 +343,8 @@ export function registerHomepageRoutes(
    *             properties:
    *               entries:
    *                 type: array
+   *                 items:
+   *                   type: object
    *               version:
    *                 type: number
    *     responses:

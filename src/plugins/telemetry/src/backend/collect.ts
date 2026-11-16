@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import { randomUUID } from "node:crypto";
 import { sql } from "drizzle-orm";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
@@ -57,12 +56,14 @@ async function ensureInstanceId(ctx: PluginContext): Promise<string> {
   return id;
 }
 
-export function detectDeployment(
-  env: Env = process.env,
-  exists: (path: string) => boolean = fs.existsSync,
-): "desktop" | "docker" | "server" {
+const DEPLOYMENTS = ["desktop", "docker", "server"] as const;
+type Deployment = (typeof DEPLOYMENTS)[number];
+
+/** Termix tells a plugin process where it runs, since the process can't look. */
+export function detectDeployment(env: Env = process.env): Deployment {
+  const told = env.TERMIX_DEPLOYMENT as Deployment | undefined;
+  if (told && DEPLOYMENTS.includes(told)) return told;
   if (env.ELECTRON_EMBEDDED === "true") return "desktop";
-  if (exists("/.dockerenv")) return "docker";
   return "server";
 }
 

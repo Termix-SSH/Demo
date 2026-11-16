@@ -19,6 +19,7 @@ export interface LoginSecuritySettings {
   applyToExternal: boolean;
   connectFactor: ConnectFactorRule;
   connectFactorMinutes: number;
+  newDeviceNotice: boolean;
 }
 
 export const DEFAULT_SETTINGS: LoginSecuritySettings = {
@@ -29,6 +30,7 @@ export const DEFAULT_SETTINGS: LoginSecuritySettings = {
   applyToExternal: false,
   connectFactor: "off",
   connectFactorMinutes: 60,
+  newDeviceNotice: true,
 };
 
 function wholeNumber(value: unknown): number {
@@ -52,6 +54,7 @@ export function readSettings(
     connectFactorMinutes:
       wholeNumber(values.connectFactorMinutes) ||
       DEFAULT_SETTINGS.connectFactorMinutes,
+    newDeviceNotice: values.newDeviceNotice !== false,
   };
 }
 

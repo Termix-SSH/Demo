@@ -12,6 +12,7 @@ import {
   revokeAllUserSessions,
   createRole,
   adminCreateUser,
+  isAdminHoldTicket,
   makeUserAdmin,
   removeAdminStatus,
   getRegistrationAllowed,
@@ -171,7 +172,7 @@ export function AdminSettingsPanel({
   const [newKeyName, setNewKeyName] = useState("");
   const [newKeyUserId, setNewKeyUserId] = useState("");
   const [newKeyExpiry, setNewKeyExpiry] = useState("");
-  const [newKeyScope, setNewKeyScope] = useState("");
+  const [newKeyScope, setNewKeyScope] = useState("read");
   const [newKeyLoading, setNewKeyLoading] = useState(false);
   const [createdKeyToken, setCreatedKeyToken] = useState<string | null>(null);
 
@@ -364,7 +365,11 @@ export function AdminSettingsPanel({
     const newVal = !allowPasswordLogin;
     setAllowPasswordLogin(newVal);
     try {
-      await updatePasswordLoginAllowed(newVal);
+      const answer: unknown = await updatePasswordLoginAllowed(newVal);
+      if (isAdminHoldTicket(answer)) {
+        setAllowPasswordLogin(!newVal);
+        toast.info(t("admin.changeHeld", { minutes: answer.minutes }));
+      }
     } catch (e) {
       setAllowPasswordLogin(!newVal);
       const msg = (e as ApiErrorLike).response?.data?.error;
@@ -555,7 +560,11 @@ export function AdminSettingsPanel({
           prev.map((u) => (u.id === user.id ? { ...u, isAdmin: false } : u)),
         );
       } else {
-        await makeUserAdmin(user.id);
+        const answer = await makeUserAdmin(user.id);
+        if (isAdminHoldTicket(answer)) {
+          toast.info(t("admin.changeHeld", { minutes: answer.minutes }));
+          return;
+        }
         setEditUserTarget((prev) => (prev ? { ...prev, isAdmin: true } : prev));
         setUsers((prev) =>
           prev.map((u) => (u.id === user.id ? { ...u, isAdmin: true } : u)),
@@ -643,15 +652,20 @@ export function AdminSettingsPanel({
       const created: CreatedApiKey = await createApiKey(
         newKeyName.trim(),
         newKeyUserId.trim(),
-        newKeyExpiry ? new Date(newKeyExpiry).toISOString() : undefined,
-        newKeyScope ? [newKeyScope] : null,
+        // Blank keeps the server's 90 days.
+        newKeyExpiry === "never"
+          ? null
+          : newKeyExpiry
+            ? new Date(newKeyExpiry).toISOString()
+            : undefined,
+        [newKeyScope || "read"],
       );
       setApiKeys((prev) => [{ ...created, isActive: true }, ...prev]);
       setCreatedKeyToken(created.token);
       setNewKeyName("");
       setNewKeyUserId("");
       setNewKeyExpiry("");
-      setNewKeyScope("");
+      setNewKeyScope("read");
       toast.success(t("admin.apiKeyCreatedSuccess", { name: created.name }));
     } catch (e: unknown) {
       toast.error(apiErrorMessage(e, t("admin.apiKeyCreateFailed")));

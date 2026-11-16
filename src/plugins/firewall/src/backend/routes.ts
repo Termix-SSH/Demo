@@ -348,7 +348,7 @@ export function registerRoutes(
       if (Number.isInteger(n) && n > 0) ids.add(n);
     }
     if (input.fleetId !== undefined) {
-      const fleets = fleetsAccess();
+      const fleets = await fleetsAccess();
       if (!fleets) throw new FirewallError("The Fleets plugin is not running");
       for (const member of await fleets.members(Number(input.fleetId)))
         ids.add(member.id);
@@ -357,10 +357,10 @@ export function registerRoutes(
     return [...ids];
   }
 
-  function fleetsAccess(): FleetsAccess | null {
-    if (!ctx.services.providers("fleets.access").length) return null;
+  async function fleetsAccess(): Promise<FleetsAccess | null> {
+    if (!(await ctx.services.providers("fleets.access")).length) return null;
     try {
-      return ctx.services.get<FleetsAccess>("fleets.access");
+      return await ctx.services.get<FleetsAccess>("fleets.access");
     } catch {
       return null;
     }
@@ -513,7 +513,7 @@ export function registerRoutes(
    */
   router.get("/fleets", async (_req, res) => {
     try {
-      const fleets = fleetsAccess();
+      const fleets = await fleetsAccess();
       res.json(
         fleets
           ? (await fleets.list()).map((f) => ({ id: f.id, name: f.name }))

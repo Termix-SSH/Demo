@@ -184,15 +184,18 @@ export function AdminApiKeysSection({
                     onChange={(e) => setNewKeyScope(e.target.value)}
                     className="text-xs"
                   >
-                    <option value="">{t("admin.apiKeyScopeFull")}</option>
+                    <option value="read">
+                      {t("admin.apiKeyScopeReadAll")}
+                    </option>
                     <option value="operations:read">
                       {t("admin.apiKeyScopeRead")}
                     </option>
                     <option value="operations:run">
                       {t("admin.apiKeyScopeRun")}
                     </option>
+                    <option value="full">{t("admin.apiKeyScopeFull")}</option>
                   </Select2>
-                  {newKeyScope && (
+                  {newKeyScope.startsWith("operations:") && (
                     <p className="text-[10px] text-muted-foreground">
                       {t("admin.apiKeyScopeHint")}
                     </p>
@@ -204,10 +207,24 @@ export function AdminApiKeysSection({
                   </label>
                   <Input
                     type="date"
-                    value={newKeyExpiry}
+                    value={newKeyExpiry === "never" ? "" : newKeyExpiry}
+                    disabled={newKeyExpiry === "never"}
                     onChange={(e) => setNewKeyExpiry(e.target.value)}
                     className="text-xs"
                   />
+                  <label className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                    <input
+                      type="checkbox"
+                      checked={newKeyExpiry === "never"}
+                      onChange={(e) =>
+                        setNewKeyExpiry(e.target.checked ? "never" : "")
+                      }
+                    />
+                    {t("admin.apiKeyNeverExpires")}
+                  </label>
+                  <p className="text-[10px] text-muted-foreground">
+                    {t("admin.apiKeyExpiryHint")}
+                  </p>
                 </div>
                 <div className="flex justify-end gap-2">
                   <Button

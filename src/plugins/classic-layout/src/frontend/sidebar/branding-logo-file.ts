@@ -16,3 +16,36 @@ export function isAcceptedBrandingLogoFile(file: {
     file.size <= BRANDING_LOGO_MAX_BYTES
   );
 }
+
+function readDataUrl(file: Blob): Promise<string | null> {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () =>
+      resolve(typeof reader.result === "string" ? reader.result : null);
+    reader.onerror = () => resolve(null);
+    reader.readAsDataURL(file);
+  });
+}
+
+/**
+ * The server only takes PNG and JPEG, so anything else is drawn to a canvas
+ * first. JPEG goes this way too, so photo rotation is applied.
+ */
+export async function brandingLogoDataUrl(file: File): Promise<string | null> {
+  if (file.type === "image/png") return readDataUrl(file);
+  try {
+    const bitmap = await createImageBitmap(file, {
+      imageOrientation: "from-image",
+    });
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    const context = canvas.getContext("2d");
+    if (!context) return null;
+    context.drawImage(bitmap, 0, 0);
+    bitmap.close();
+    return canvas.toDataURL("image/png");
+  } catch {
+    return null;
+  }
+}

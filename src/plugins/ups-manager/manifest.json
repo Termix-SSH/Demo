@@ -1,7 +1,7 @@
 {
   "id": "ups-manager",
   "name": "UPS Manager",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Watch your UPS devices over NUT, apcupsd or SNMP, with history, alerts and self tests.",
   "author": {
     "name": "Termix"
@@ -23,8 +23,8 @@
   ],
   "env": [],
   "engine": {
-    "termix": ">=26.11.1-0",
-    "api": "^1.15"
+    "termix": ">=26.11.2-0",
+    "api": "^2.0.0"
   },
   "capabilities": [
     "hosts:read",
@@ -40,6 +40,18 @@
     "ui:surface",
     "operations:provide"
   ],
+  "sandbox": {
+    "schedules": [
+      {
+        "id": "tick",
+        "every": 30000
+      },
+      {
+        "id": "flush",
+        "every": 300000
+      }
+    ]
+  },
   "contributes": {
     "tabs": [
       {

@@ -1,6 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import type { HostState } from "./backends/types.js";
+import { keepAwake } from "./keep-awake.js";
 import { readHostSettings } from "./host-settings.js";
 import { hashId } from "./shell.js";
 import { specKey } from "./validate.js";
@@ -112,7 +113,9 @@ export class WatchChecker {
   ) {}
 
   start(): void {
+    keepAwake(this.ctx, "watches", true);
     this.stop = this.ctx.schedule.every(WATCH_TICK_MS, () => this.tick(), {
+      id: "watches",
       jitterMs: 30_000,
     });
   }
@@ -137,6 +140,8 @@ export class WatchChecker {
       this.ctx.log.warn(`Could not load firewall watches: ${String(error)}`);
       return;
     }
+    // No watches: nothing keeps the process running.
+    keepAwake(this.ctx, "watches", rows.length > 0);
     const seen = new Set(rows.map((r) => `${r.userId}:${r.hostId}`));
     for (const key of [...this.last.keys()])
       if (!seen.has(key)) this.last.delete(key);

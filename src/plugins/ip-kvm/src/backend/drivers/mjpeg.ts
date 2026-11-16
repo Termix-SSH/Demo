@@ -70,6 +70,7 @@ export async function openMjpeg(
   const response = await send(target, io, url, {
     headers,
     signal: controller.signal,
+    stream: true,
   });
   if (!response.ok || !response.body) {
     throw new DriverError(`The KVM video stream answered ${response.status}`);

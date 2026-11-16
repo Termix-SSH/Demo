@@ -8,7 +8,7 @@ import {
   statusAccepted,
   type CheckResult,
 } from "../../shared/types.js";
-import { resolveTarget } from "../target-guard.js";
+import { resolveTarget } from "../targets.js";
 import {
   errorText,
   failed,

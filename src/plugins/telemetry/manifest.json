@@ -1,7 +1,7 @@
 {
   "id": "telemetry",
   "name": "Usage Statistics",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Sends a small anonymous daily report so we can see how Termix is used.",
   "author": {
     "name": "Termix"
@@ -33,8 +33,8 @@
     }
   ],
   "engine": {
-    "termix": ">=26.10.0",
-    "api": "^1.2"
+    "termix": ">=26.11.2-0",
+    "api": "^2.0.0"
   },
   "capabilities": [
     "db:core-refs",
@@ -46,6 +46,15 @@
     "plugins:read",
     "ui:surface"
   ],
+  "sandbox": {
+    "schedules": [
+      {
+        "id": "check",
+        "every": 3600000
+      }
+    ],
+    "events": ["host.login", "host.session.status"]
+  },
   "contributes": {
     "permissions": [
       {

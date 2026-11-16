@@ -1042,14 +1042,16 @@ export function registerRoutes(
     "/hosts/:hostId/vms/:uuid/console",
     ctx.rbac.require("console") as never,
     write("console", async (target, req) => {
-      if (!ctx.services.providers("remote-desktop.console").includes("")) {
+      if (
+        !(await ctx.services.providers("remote-desktop.console")).includes("")
+      ) {
         throw new VmError(
           "Turn on Remote Desktop 1.4.0 or later to see this VM's display",
           409,
           { code: "no-remote-desktop" },
         );
       }
-      const service = ctx.services.get<Partial<RemoteConsole>>(
+      const service = await ctx.services.get<Partial<RemoteConsole>>(
         "remote-desktop.console",
       );
       if (typeof service.open !== "function") {

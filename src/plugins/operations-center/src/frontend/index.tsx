@@ -144,7 +144,11 @@ export function activate(app: TermixApp): void {
     host: PluginHostRecord;
   }) =>
     canUse ? (
-      <HostMenuActions host={props.host} shell={app.tabs} />
+      <HostMenuActions
+        host={props.host}
+        shell={app.tabs}
+        framed={Boolean(app.frame)}
+      />
     ) : null) as unknown as ComponentType<Record<string, unknown>>);
 
   app.registerDashboardCard({
@@ -177,7 +181,11 @@ export function activate(app: TermixApp): void {
   });
 
   // Other plugins add their own tiles to the host page here.
-  app.declareActionSlot({ id: HOST_TILES_SLOT, accepts: ["component"] });
+  app.declareActionSlot({
+    id: HOST_TILES_SLOT,
+    accepts: ["component"],
+    fit: "fill",
+  });
 
   app.registerPaletteEntry({
     id: "open",

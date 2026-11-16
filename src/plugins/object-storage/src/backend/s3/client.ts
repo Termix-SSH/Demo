@@ -41,6 +41,7 @@ export interface RequestOptions {
   query?: Record<string, string>;
   headers?: Record<string, string>;
   body?: Buffer | string;
+  /** Checked before the request. A signal can't cross to core, so it is not sent. */
   signal?: AbortSignal;
 }
 
@@ -98,6 +99,7 @@ export class S3Client {
       sessionToken: this.cfg.sessionToken,
     });
     delete headers.host;
+    options.signal?.throwIfAborted();
     let response: Response;
     try {
       response = await this.fetchFn(url, {
@@ -107,7 +109,6 @@ export class S3Client {
         body: body as never,
         allowPrivateHosts: this.privateHosts(options.bucket),
         timeoutMs: 60_000,
-        signal: options.signal,
         ...(this.cfg.ca ? { tls: { ca: this.cfg.ca } } : {}),
       });
     } catch (error) {

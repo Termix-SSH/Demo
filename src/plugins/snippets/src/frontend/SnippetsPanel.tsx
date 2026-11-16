@@ -44,8 +44,7 @@ import {
 } from "./TargetTerminals";
 import { SnippetShareView, type ShareTarget } from "./SnippetShareView";
 import { SnippetEditor, type SnippetFormValues } from "./SnippetEditor";
-import { SnippetSettings } from "./SnippetSettings";
-import { readSnippetSettings } from "./settings";
+import { readSnippetSettings, useOpenSettingsPage } from "./settings";
 import {
   SnippetFolderDialog,
   type FolderFormValues,
@@ -64,7 +63,6 @@ const DOCS_URL = docsUrl();
 type View =
   | { kind: "list" }
   | { kind: "edit"; snippet: Snippet | null; folder?: string }
-  | { kind: "settings" }
   | { kind: "share"; target: ShareTarget };
 
 interface FolderGroup {
@@ -91,6 +89,7 @@ export function SnippetsPanel({ targetTab }: PanelProps) {
   const canDelete = usePermission("delete");
   const canShare = usePermission("share");
   const settings = useSettings("user");
+  const openSettingsPage = useOpenSettingsPage();
   const display = readSnippetSettings(settings.values);
   const {
     runSnippet,
@@ -532,11 +531,6 @@ export function SnippetsPanel({ targetTab }: PanelProps) {
           client={client}
           onBack={() => setView({ kind: "list" })}
         />
-      ) : view.kind === "settings" ? (
-        <SnippetSettings
-          settings={settings}
-          onBack={() => setView({ kind: "list" })}
-        />
       ) : null;
 
     const renderSnippet = (snippet: Snippet, index: number) => (
@@ -655,7 +649,7 @@ export function SnippetsPanel({ targetTab }: PanelProps) {
                   {t("exportSnippets")}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => setView({ kind: "settings" })}>
+                <DropdownMenuItem onClick={openSettingsPage}>
                   <SlidersHorizontal className="mr-2 size-3.5" />
                   {t("settingsTitle")}
                 </DropdownMenuItem>

@@ -9,6 +9,7 @@ import type {
 } from "../types.js";
 import { GRID_SIZE } from "../types.js";
 import { WidgetTitle } from "@termix-ssh/plugin-sdk/ui";
+import { useRemoteImage } from "./remote-image";
 
 function getAccentColor(): string {
   return (
@@ -49,15 +50,16 @@ function ServiceTile({
 
   const accent = item.accentColor || getAccentColor();
   const imageUrl = item.imageUrl || (item.url ? getFaviconUrl(item.url) : null);
+  const imageSrc = useRemoteImage(imageUrl);
 
   const content = (
     <div
       className="group flex flex-col items-center justify-center gap-1 p-1.5 w-full h-full border border-border/40 border-t-2 hover:bg-muted/40 transition-colors overflow-hidden"
       style={{ borderTopColor: `${accent}60`, background: "var(--color-card)" }}
     >
-      {imageUrl && !imgFailed ? (
+      {imageSrc && !imgFailed ? (
         <img
-          src={imageUrl}
+          src={imageSrc}
           alt=""
           style={{ width: iconSize, height: iconSize }}
           className="object-contain shrink-0"

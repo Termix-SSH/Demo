@@ -37,7 +37,7 @@ import { createWorkspacesApi, type WorkspacesApi } from "./workspaces-api";
 import { errorMessage, type Workspace } from "./types";
 import { docsUrl } from "./docs";
 import {
-  WorkspaceSettings,
+  useOpenSettingsPage,
   readWorkspaceSettings,
   rowActionProps,
 } from "./WorkspaceSettings";
@@ -374,7 +374,7 @@ export function WorkspacesPanel({
   const [renameTarget, setRenameTarget] = useState<Workspace | null>(null);
   const confirm = useConfirm();
   const [query, setQuery] = useState("");
-  const [settingsOpen, setSettingsOpen] = useState(false);
+  const openSettingsPage = useOpenSettingsPage();
   const settings = useSettings("user");
   const { alwaysShowActions } = readWorkspaceSettings(settings.values);
   const hasLoadedRef = useRef(false);
@@ -496,15 +496,6 @@ export function WorkspacesPanel({
     : allManual;
   const lastSession = workspaces.find((w) => w.kind === "last_session");
 
-  if (settingsOpen) {
-    return (
-      <WorkspaceSettings
-        settings={settings}
-        onBack={() => setSettingsOpen(false)}
-      />
-    );
-  }
-
   return (
     <div className="flex flex-col flex-1 min-h-0">
       <div
@@ -525,7 +516,7 @@ export function WorkspacesPanel({
           <Button
             variant="outline"
             size="icon"
-            onClick={() => setSettingsOpen(true)}
+            onClick={() => openSettingsPage()}
             title={t("newUi.sidebar.workspaces.settingsTitle")}
             aria-label={t("newUi.sidebar.workspaces.settingsTitle")}
           >

@@ -51,6 +51,10 @@ export interface ChannelSummary {
 
 export interface ChannelDetail extends ChannelSummary {
   config: Record<string, unknown>;
+  /** Secret fields with a saved value. The browser never gets the value. */
+  saved?: string[];
+  /** Safe hints for saved fields, like a saved URL's origin. */
+  hints?: Record<string, string>;
 }
 
 export interface AlertRule {

@@ -8,6 +8,7 @@ import {
   readSettings,
 } from "./policy.js";
 import { registerRoutes } from "./routes.js";
+import { noteLogin, type LoginEventDetails } from "./new-device.js";
 
 const KEYS = Object.keys(DEFAULT_SETTINGS);
 
@@ -45,6 +46,22 @@ export async function activate(ctx: PluginContext) {
       }
       return VERIFY_DECISION;
     },
+  });
+
+  ctx.events.on("internal.event", (payload) => {
+    const event = payload as {
+      event?: string;
+      userId?: string;
+      details?: LoginEventDetails;
+    };
+    if (event?.event !== "user_login" || !event.userId) return;
+    noteLogin(ctx, event.userId, event.details ?? {}, {
+      enabled: settings.newDeviceNotice,
+    }).catch((error) =>
+      ctx.log.warn(
+        `Could not check the sign in device: ${error instanceof Error ? error.message : String(error)}`,
+      ),
+    );
   });
 
   registerRoutes(ctx.http.router<Router>(), ctx, () => settings);

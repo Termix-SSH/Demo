@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.1.3
+
+### Added
+
+- Desktop app: a Close to tray switch in Settings, Interface. Turn it off to quit Termix when you close the window
+- Admin settings, General: a switch to trust new host keys without a prompt, for plugins and schedules that connect with nobody to ask
+- New API keys: pick read only, actions, run actions or full access, and an expiry or never. Left as is, a key is read only and works for 90 days
+- Making someone an admin or turning off password login says when the change waits for the other admins
+
+### Changed
+
+- Host list and credential list settings moved to their own pages in Settings. The settings button next to Add host now opens that page
+- Runs in its own process on Termix 26.11.2 and later, with no access to the server beyond what Termix allows it
+- The branding API takes a PNG or JPEG logo. The settings page turns a WebP into a PNG before sending, so WebP logos still work there
+- Needs Termix 26.11.2 or newer
+- Usage bars and health badges other plugins add to dashboard host rows are drawn from plain values, with no frame per host, so a long host list loads faster (needs Termix 26.11.2)
+
+### Fixed
+
+- Host rows show status dots other plugins add, like the site status of a host mirrored from another Termix
+
 ## 1.1.2
 
 ### Added

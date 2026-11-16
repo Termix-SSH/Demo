@@ -1,5 +1,5 @@
 import { Resolver } from "node:dns/promises";
-import { isIP } from "node:net";
+import { isIP } from "./ip.js";
 import type { PluginFetch } from "@termix-ssh/plugin-sdk/backend";
 import type {
   DnsRecord,

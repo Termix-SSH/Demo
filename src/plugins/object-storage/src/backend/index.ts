@@ -1,6 +1,7 @@
 import type { Router } from "express";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import { accounts, limits, usage } from "./tables.js";
+import { keepAwake } from "./keep-awake.js";
 import { registerOperations } from "./operations.js";
 import { registerRoutes } from "./routes.js";
 import { createService } from "./service.js";
@@ -29,7 +30,8 @@ export async function activate(ctx: PluginContext) {
         ),
       );
   ctx.schedule.after(FIRST_RUN_MS, work);
-  ctx.schedule.every(TICK_MS, work, { jitterMs: 5_000 });
+  keepAwake(ctx, "tick", true);
+  ctx.schedule.every(TICK_MS, work, { id: "tick", jitterMs: 5_000 });
 }
 
 export async function deactivate() {

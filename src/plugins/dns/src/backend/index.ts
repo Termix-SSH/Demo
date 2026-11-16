@@ -1,6 +1,7 @@
 import type { Router } from "express";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import { accounts, domains, links, snapshots } from "./tables.js";
+import { keepAwake } from "./keep-awake.js";
 import { registerRoutes } from "./routes.js";
 import { registerOperations } from "./operations.js";
 import { registerServices } from "./services.js";
@@ -34,9 +35,12 @@ export async function activate(ctx: PluginContext) {
   const work = async () => {
     await service.runLinks().catch(logTo(ctx));
     await service.runDaily().catch(logTo(ctx));
+    // Nothing to look after: nothing keeps the process running.
+    keepAwake(ctx, "work", await service.hasWork().catch(() => true));
   };
+  keepAwake(ctx, "work", true);
   ctx.schedule.after(FIRST_RUN_MS, work);
-  ctx.schedule.every(TICK_MS, work, { jitterMs: 5_000 });
+  ctx.schedule.every(TICK_MS, work, { id: "work", jitterMs: 5_000 });
 }
 
 function logTo(ctx: PluginContext) {

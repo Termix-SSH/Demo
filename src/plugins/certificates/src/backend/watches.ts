@@ -123,5 +123,8 @@ export function startWatchChecker(
     }
     await ctx.kv.set(SENT, sent).catch(() => undefined);
   };
-  return ctx.schedule.every(CHECK_MS, check, { jitterMs: 60_000 });
+  return ctx.schedule.every(CHECK_MS, check, {
+    id: "expiry-check",
+    jitterMs: 60_000,
+  });
 }

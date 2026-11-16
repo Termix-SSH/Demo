@@ -74,14 +74,18 @@ export async function activate(ctx: PluginContext) {
     );
   };
   ctx.schedule.after(60_000, prune);
-  ctx.schedule.every(PRUNE_MS, prune);
+  ctx.schedule.every(PRUNE_MS, prune, { id: "prune" });
 
   // Users with the app open get a new announcement without reloading.
-  ctx.schedule.every(REFRESH_MS, async () => {
-    if ((await ctx.settings.get<boolean>("announcements")) === false) return;
-    await announcements.refresh();
-    for (const userId of stream.users()) await announcements.sync(userId);
-  });
+  ctx.schedule.every(
+    REFRESH_MS,
+    async () => {
+      if ((await ctx.settings.get<boolean>("announcements")) === false) return;
+      await announcements.refresh();
+      for (const userId of stream.users()) await announcements.sync(userId);
+    },
+    { id: "announcements" },
+  );
 }
 
 export async function deactivate() {}

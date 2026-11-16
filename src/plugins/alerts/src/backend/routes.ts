@@ -10,7 +10,16 @@ import type { Announcements } from "./announcements.js";
 import { deliverToChannels } from "./hub.js";
 import type { AlertsRepository } from "./repository.js";
 import { validateChannelConfig, type SenderDeps } from "./senders.js";
+import { maskConfig, mergeConfig } from "./channel-secrets.js";
+import type { ChannelDetail } from "../types.js";
+
 import type { AlertStream } from "./stream.js";
+
+function forBrowser(channel: ChannelDetail | null) {
+  if (!channel) return channel;
+  const { config, saved, hints } = maskConfig(channel.type, channel.config);
+  return { ...channel, config, saved, hints };
+}
 
 interface RouteDeps {
   ctx: PluginContext;
@@ -312,7 +321,7 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
     const id = positiveInt(req.params.id);
     const channel = id ? await repository.getChannel(actor(ctx), id) : null;
     if (!channel) return res.status(404).json({ error: "Channel not found" });
-    res.json(channel);
+    res.json(forBrowser(channel));
   });
 
   const readChannel = (
@@ -402,7 +411,7 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
       config: input.config!,
       enabled: input.enabled,
     });
-    res.status(201).json(await repository.getChannel(userId, id));
+    res.status(201).json(forBrowser(await repository.getChannel(userId, id)));
   });
 
   /**
@@ -454,6 +463,14 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
     );
     if ("error" in input) return res.status(400).json(input);
     const type = input.type ?? existing.type;
+    if (input.config !== undefined) {
+      input.config = mergeConfig(
+        type,
+        input.config,
+        existing.type,
+        existing.config,
+      );
+    }
     if (input.config !== undefined || input.type !== undefined) {
       const problem = validateChannelConfig(
         type,
@@ -462,7 +479,7 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
       if (problem) return res.status(400).json({ error: problem });
     }
     await repository.updateChannel(userId, id, input);
-    res.json(await repository.getChannel(userId, id));
+    res.json(forBrowser(await repository.getChannel(userId, id)));
   });
 
   /**

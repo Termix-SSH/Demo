@@ -1,7 +1,7 @@
 {
   "id": "privileged-access",
   "name": "Privileged Access",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Ask for approval before anyone connects to a privileged host, with access that ends on its own and a full audit trail.",
   "author": {
     "name": "Termix"
@@ -22,15 +22,14 @@
   ],
   "env": [],
   "engine": {
-    "termix": ">=26.11.1-0",
-    "api": "^1.17"
+    "termix": ">=26.11.2-0",
+    "api": "^2.0.0"
   },
   "capabilities": [
     "hosts:read",
     "hosts:connect-policy",
     "db:own",
     "db:core-refs",
-    "kv:own",
     "network:serve",
     "ui:surface",
     "notify:send",
@@ -38,6 +37,9 @@
     "users:impersonate",
     "events:core"
   ],
+  "sandbox": {
+    "events": ["host.updated"]
+  },
   "provides": [
     {
       "service": "privileged-access.hosts",

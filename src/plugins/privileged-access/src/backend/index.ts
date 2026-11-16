@@ -26,9 +26,13 @@ export async function activate(ctx: PluginContext) {
       (await access.hostSettings(hostId)).privileged,
   });
 
-  ctx.http
-    .router<Router>()
-    .use(registerRoutes({ ctx, store, access, workflow }));
+  registerRoutes({
+    router: ctx.http.router<Router>(),
+    ctx,
+    store,
+    access,
+    workflow,
+  });
   registerOperations(ctx, store, access, workflow);
 
   ctx.events.on("host.updated", (payload) => {

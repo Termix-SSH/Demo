@@ -1,6 +1,7 @@
 import { toBase64 } from "@termix-ssh/plugin-sdk/host-scripts";
 import type { RepoKind, RepoLocation } from "../shared/types.js";
 import { BackupsError } from "./errors.js";
+import { trimEnd } from "./trim.js";
 
 export interface RepoSecrets {
   /** The restic password. */
@@ -17,9 +18,7 @@ const ENV_NAME = /^[A-Z_][A-Z0-9_]*$/;
 export function repoString(kind: RepoKind, location: RepoLocation): string {
   switch (kind) {
     case "s3": {
-      const endpoint = (
-        location.endpoint || "https://s3.amazonaws.com"
-      ).replace(/\/+$/, "");
+      const endpoint = trimEnd(location.endpoint || "https://s3.amazonaws.com");
       const parts = [endpoint, location.bucket, location.prefix].filter(
         Boolean,
       );

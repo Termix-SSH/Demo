@@ -16,9 +16,31 @@ const CHECK_MS = 15_000;
 const HEARTBEAT_MS = 60_000;
 const SETUP_POLL_MS = 5_000;
 
-async function signOut() {
+/** app.session from Termix 26.11.2: this overlay runs in a frame. */
+interface SessionControl {
+  signOut: () => Promise<void>;
+  reload: () => Promise<boolean>;
+}
+
+function sessionOf(app: TermixApp): SessionControl | null {
+  return (app as { session?: SessionControl }).session ?? null;
+}
+
+async function signOut(app: TermixApp) {
+  const session = sessionOf(app);
+  if (session) {
+    await session.signOut();
+    return;
+  }
   await logoutUser().catch(() => {});
   window.location.reload();
+}
+
+/** Starts the app again, so the lifted restriction takes effect. */
+function reloadApp(app: TermixApp) {
+  const session = sessionOf(app);
+  if (session) void session.reload().catch(() => {});
+  else window.location.reload();
 }
 
 async function needsSetup(): Promise<boolean> {
@@ -50,7 +72,7 @@ function useIdleSignOut(app: TermixApp, idleMinutes: number) {
       const now = Date.now();
       const lastActive = readLastActive(last.current);
       if (now - lastActive > limit) {
-        void signOut();
+        void signOut(app);
         return;
       }
       // A terminal makes no HTTP requests, so tell the server we are here.
@@ -78,17 +100,17 @@ function useIdleSignOut(app: TermixApp, idleMinutes: number) {
   }, [app, idleMinutes]);
 }
 
-function SetupGate() {
+function SetupGate({ app }: { app: TermixApp }) {
   const { t } = useTranslation();
   useEffect(() => {
     // Setting up a factor lifts the restriction on the server.
     const timer = window.setInterval(() => {
       void needsSetup().then((still) => {
-        if (!still) window.location.reload();
+        if (!still) reloadApp(app);
       });
     }, SETUP_POLL_MS);
     return () => window.clearInterval(timer);
-  }, []);
+  }, [app]);
 
   return (
     <div
@@ -105,7 +127,7 @@ function SetupGate() {
         <AuthEnrollmentSections factorsOnly />
         <p className="text-xs text-muted-foreground">{t("setup.none")}</p>
         <div className="flex justify-end">
-          <Button variant="outline" onClick={() => void signOut()}>
+          <Button variant="outline" onClick={() => void signOut(app)}>
             {t("setup.signOut")}
           </Button>
         </div>
@@ -136,6 +158,6 @@ export function createSecurityOverlay(app: TermixApp) {
     }, []);
 
     useIdleSignOut(app, idleMinutes);
-    return setup ? <SetupGate /> : null;
+    return setup ? <SetupGate app={app} /> : null;
   };
 }

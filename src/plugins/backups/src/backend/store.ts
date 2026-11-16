@@ -404,6 +404,18 @@ export function createStore(db: PluginDatabase, t: Tables) {
       return rows.map(toJob);
     },
 
+    /** Whether any enabled job runs on a schedule. */
+    async hasScheduledJobs(): Promise<boolean> {
+      const rows = await (
+        await client()
+      )
+        .select({ id: t.jobs.id })
+        .from(t.jobs)
+        .where(and(eq(t.jobs.enabled, true), ne(t.jobs.cron, "")))
+        .limit(1);
+      return rows.length > 0;
+    },
+
     // Runs
 
     async createRun(fields: {

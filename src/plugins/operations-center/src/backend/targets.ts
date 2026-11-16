@@ -64,7 +64,7 @@ export async function resolveTargets(
   }
   if (spec.fleetIds?.length) {
     try {
-      const fleets = ctx.services.get<FleetsService>("fleets.access");
+      const fleets = await ctx.services.get<FleetsService>("fleets.access");
       for (const fleetId of spec.fleetIds) {
         for (const member of await fleets.members(fleetId)) {
           if (byId.has(member.id)) picked.add(member.id);

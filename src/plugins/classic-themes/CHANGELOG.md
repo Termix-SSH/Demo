@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0
+
+### Changed
+
+- Built for plugin API 2, so it no longer needs Run without isolation turned on
+- Needs Termix 26.11.2 or newer
+
 ## 1.0.1
 
 ### Changed

@@ -5,6 +5,7 @@ import { registerWidget } from "./WidgetRegistry";
 import type { ImageWidgetConfig, WidgetComponentProps } from "../types.js";
 import { GRID_SIZE } from "../types.js";
 import { WidgetTitle } from "@termix-ssh/plugin-sdk/ui";
+import { useRemoteImage } from "./remote-image";
 
 const FIT_MAP = {
   contain: "object-contain",
@@ -20,6 +21,7 @@ function ImageWidget({
   const { t } = useTranslation();
   const { imageUrl, fit, alt, linkUrl } = config;
   const [failed, setFailed] = useState(false);
+  const src = useRemoteImage(imageUrl);
   const mouseDownRef = useRef<{ x: number; y: number } | null>(null);
 
   const titleBar = widget.title ? (
@@ -30,9 +32,9 @@ function ImageWidget({
     <div className="flex flex-col w-full h-full overflow-hidden">
       {titleBar}
       <div className="flex-1 flex items-center justify-center overflow-hidden">
-        {imageUrl && !failed ? (
+        {src && !failed ? (
           <img
-            src={imageUrl}
+            src={src}
             alt={alt ?? ""}
             className={`w-full h-full ${FIT_MAP[fit]}`}
             onError={() => setFailed(true)}

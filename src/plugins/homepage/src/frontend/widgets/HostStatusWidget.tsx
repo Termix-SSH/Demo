@@ -5,7 +5,7 @@ import {
   useHostStatus,
 } from "@termix-ssh/plugin-sdk/frontend";
 
-import { ComponentSlot, WidgetTitle } from "@termix-ssh/plugin-sdk/ui";
+import { DataSlot, WidgetTitle } from "@termix-ssh/plugin-sdk/ui";
 import { registerWidget } from "./WidgetRegistry";
 import type {
   HostStatusConfig,
@@ -32,7 +32,7 @@ function migrateConfig(config: HostStatusConfig): HostMetricKey[] {
   return metrics;
 }
 
-function HostStatusWidget({
+export function HostStatusWidget({
   widget,
   config,
 }: WidgetComponentProps<HostStatusConfig>) {
@@ -94,9 +94,11 @@ function HostStatusWidget({
 
         {/* Plugins such as host metrics fill in the live numbers. */}
         {needsMetrics && (
-          <ComponentSlot
+          <DataSlot
             slotId="homepage.hostMetrics"
-            props={{ hostId, shownMetrics, online }}
+            rowKey={hostId}
+            context={{ hostId, shownMetrics, online }}
+            layout="stack"
           />
         )}
       </div>

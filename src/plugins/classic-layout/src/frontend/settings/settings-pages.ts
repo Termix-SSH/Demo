@@ -105,6 +105,18 @@ export const CORE_SETTINGS_PAGES: SettingsPage[] = [
     profileSection: "interface",
   }),
   core({
+    id: "host-list",
+    band: "app",
+    labelKey: "settings.hostList",
+    icon: Server,
+  }),
+  core({
+    id: "credential-list",
+    band: "app",
+    labelKey: "settings.credentialList",
+    icon: KeyRound,
+  }),
+  core({
     id: "appearance",
     docs: "appearance",
     band: "app",

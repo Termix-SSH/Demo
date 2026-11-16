@@ -14,7 +14,13 @@ export function HostsTabType() {
 /** Which page opens comes from the tab's data. */
 export function SettingsTabType({ tab }: TabProps) {
   const section = tab.data?.section;
+  const at = tab.data?.revealAt;
   return (
-    <SettingsTab section={typeof section === "string" ? section : undefined} />
+    <SettingsTab
+      section={typeof section === "string" ? section : undefined}
+      sectionAt={
+        typeof at === "number" || typeof at === "string" ? at : undefined
+      }
+    />
   );
 }

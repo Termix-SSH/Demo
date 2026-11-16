@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { AccordionSection } from "./AdminSettingsShared";
 import {
   BRANDING_LOGO_ACCEPT,
+  brandingLogoDataUrl,
   isAcceptedBrandingLogoFile,
 } from "./branding-logo-file";
 
@@ -42,13 +43,10 @@ export function AdminBrandingSection({
       toast.error(t("admin.brandingLogoInvalid"));
       return;
     }
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === "string") {
-        setSettings({ ...settings, logo: reader.result });
-      }
-    };
-    reader.readAsDataURL(file);
+    void brandingLogoDataUrl(file).then((logo) => {
+      if (logo) setSettings({ ...settings, logo });
+      else toast.error(t("admin.brandingLogoInvalid"));
+    });
   }
 
   return (

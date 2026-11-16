@@ -214,17 +214,20 @@ export async function getRun(id: string): Promise<Run> {
   return data;
 }
 
+// Cancel and undo go through our own routes, like approvals, so the frame
+// never posts to core's run routes itself.
 export async function cancelRun(id: string): Promise<boolean> {
-  const { data } = await operationsApi.post<{ cancelled: boolean }>(
-    `/runs/${id}/cancel`,
+  const { data } = await plugin().post<{ cancelled: boolean }>(
+    `/runs/${encodeURIComponent(id)}/cancel`,
   );
   return data.cancelled;
 }
 
 export async function undoRun(id: string): Promise<Outcome> {
-  const { data } = await operationsApi.post<Outcome>(`/runs/${id}/undo`, {
-    confirmed: true,
-  });
+  const { data } = await plugin().post<Outcome>(
+    `/runs/${encodeURIComponent(id)}/undo`,
+    { confirmed: true },
+  );
   return data;
 }
 
@@ -240,10 +243,11 @@ export async function decideApproval(
   approve: boolean,
   comment?: string,
 ): Promise<Outcome> {
-  const { data } = await operationsApi.post<Outcome>(`/approvals/${id}`, {
-    approve,
-    comment,
-  });
+  // Decided through our own route, so the frame never decides it itself.
+  const { data } = await plugin().post<Outcome>(
+    `/approvals/${encodeURIComponent(id)}`,
+    { approve, comment },
+  );
   return data;
 }
 

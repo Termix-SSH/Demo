@@ -59,7 +59,7 @@ import {
 import { toast } from "sonner";
 import { SidebarTree, isFolder } from "./SidebarTree";
 import { HostShareModal } from "./HostShareModal";
-import { CustomizeSidebarPanel } from "./CustomizeSidebarPanel";
+import { useOpenSettingsPage } from "../settings/open-settings";
 import { sortHostTree, type SortKey } from "./host-sort";
 import { withLiveStatus } from "./live-host-status";
 import { useHostSidebarPreferences } from "./tree/hooks/useHostSidebarPreferences";
@@ -247,7 +247,7 @@ export function HostsPanel({
   const hostProtocols = useHostProtocols();
   const sshAuthProviders = useSshAuthProviders();
   const [hostSearch, setHostSearch] = useState("");
-  const [customizePanelOpen, setCustomizePanelOpen] = useState(false);
+  const openSettingsPage = useOpenSettingsPage();
   const [selectionMode, setSelectionMode] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [rawHosts, setRawHosts] = useState<SSHHostWithStatus[]>([]);
@@ -804,8 +804,9 @@ export function HostsPanel({
             </div>
             <div className="flex items-center border border-border shrink-0">
               <button
-                onClick={() => setCustomizePanelOpen(true)}
-                title={t("hosts.customizeSidebar")}
+                onClick={() => openSettingsPage("host-list")}
+                title={t("settings.openHostList")}
+                aria-label={t("settings.openHostList")}
                 className="flex items-center justify-center size-7 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors shrink-0"
               >
                 <SlidersHorizontal className="size-3.5" />
@@ -830,12 +831,6 @@ export function HostsPanel({
           </div>
         </div>
       }
-      <CustomizeSidebarPanel
-        open={customizePanelOpen}
-        onOpenChange={setCustomizePanelOpen}
-        preferences={sidebarPrefs}
-        update={updateSidebarPrefs}
-      />
 
       {active && (
         <div className="flex flex-col flex-1 min-h-0">

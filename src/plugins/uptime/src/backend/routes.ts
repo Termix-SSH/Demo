@@ -27,7 +27,7 @@ import type { PageRow, Repository } from "./repository.js";
 import { DAY_MS, type RollupStore } from "./rollups.js";
 import { AccessError, type MonitorService } from "./service.js";
 import { buildPublicPage, pageCsp, renderStatusPage } from "./status-page.js";
-import { BlockedTargetError } from "./target-guard.js";
+import { BlockedTargetError } from "./targets.js";
 import { InputError, cleanText, parseMonitor, parseSlug } from "./validate.js";
 import { accessReader } from "./views.js";
 

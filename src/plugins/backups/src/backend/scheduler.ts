@@ -1,6 +1,7 @@
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import { nextRun, type Engine } from "./engine.js";
 import type { Store } from "./store.js";
+import { keepAwake } from "./keep-awake.js";
 
 export const SCHEDULE_TICK_MS = 30_000;
 export const POLL_TICK_MS = 10_000;
@@ -46,6 +47,8 @@ export function createScheduler(
           );
         }
       }
+      // A scheduled job keeps the process up so it starts on time.
+      keepAwake(ctx, "schedule", await store.hasScheduledJobs());
       if (now.getTime() - lastStale > STALE_TICK_MS) {
         lastStale = now.getTime();
         await checkStale();
@@ -60,6 +63,7 @@ export function createScheduler(
     if (polling) return;
     polling = true;
     try {
+      keepAwake(ctx, "runs", (await store.running()).length > 0);
       await engine.poll();
     } catch (error) {
       ctx.log.warn(
@@ -74,8 +78,15 @@ export function createScheduler(
     tick,
     poll,
     start() {
-      ctx.schedule.every(SCHEDULE_TICK_MS, () => tick(), { jitterMs: 5_000 });
-      ctx.schedule.every(POLL_TICK_MS, () => poll(), { runNow: true });
+      keepAwake(ctx, "schedule", true);
+      ctx.schedule.every(SCHEDULE_TICK_MS, () => tick(), {
+        id: "schedule",
+        jitterMs: 5_000,
+      });
+      ctx.schedule.every(POLL_TICK_MS, () => poll(), {
+        id: "poll",
+        runNow: true,
+      });
     },
   };
 }

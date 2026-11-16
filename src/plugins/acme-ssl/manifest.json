@@ -1,7 +1,7 @@
 {
   "id": "acme-ssl",
   "name": "ACME Certificates",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Gets the Termix HTTPS certificate from Let's Encrypt or any ACME provider and renews it for you.",
   "author": {
     "name": "Termix"
@@ -20,8 +20,8 @@
     "A dashboard card that shows when the certificate expires"
   ],
   "engine": {
-    "termix": ">=26.11.1-0",
-    "api": "^1.15"
+    "termix": ">=26.11.2-0",
+    "api": "^2.0.0"
   },
   "requires": [
     {
@@ -41,6 +41,14 @@
     "operations:provide",
     "users:impersonate"
   ],
+  "sandbox": {
+    "schedules": [
+      {
+        "id": "check",
+        "every": 43200000
+      }
+    ]
+  },
   "contributes": {
     "permissions": [
       {

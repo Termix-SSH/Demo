@@ -54,17 +54,38 @@ export function ChannelDialog({
 }) {
   const { t } = useTranslation();
   const [draft, setDraft] = useState<Draft>(EMPTY);
+  const [saved, setSaved] = useState<{ fields: string[]; urlHint: string }>({
+    fields: [],
+    urlHint: "",
+  });
+  const [savedType, setSavedType] = useState<ChannelType | null>(null);
   const [saving, setSaving] = useState(false);
+  // Saved secrets never come back from the server; empty keeps them.
+  const keep = (field: string, fallback: string) =>
+    saved.fields.includes(field) && draft.type === savedType
+      ? field === "url" && saved.urlHint
+        ? t("channels.savedUrl", { origin: saved.urlHint })
+        : t("channels.savedKeep")
+      : fallback;
 
   useEffect(() => {
     if (!open) return;
     if (channelId === null) {
       setDraft(EMPTY);
+      setSaved({ fields: [], urlHint: "" });
+      setSavedType(null);
       return;
     }
     api
       .channel(channelId)
-      .then((channel) => setDraft(draftFrom(channel)))
+      .then((channel) => {
+        setDraft(draftFrom(channel));
+        setSaved({
+          fields: channel.saved ?? [],
+          urlHint: channel.hints?.url ?? "",
+        });
+        setSavedType(channel.type);
+      })
       .catch((error) =>
         toast.error(error instanceof Error ? error.message : String(error)),
       );
@@ -172,7 +193,7 @@ export function ChannelDialog({
               <Input
                 value={draft.url}
                 onChange={(event) => set("url", event.target.value)}
-                placeholder="https://example.com/webhook"
+                placeholder={keep("url", "https://example.com/webhook")}
                 className="text-sm font-mono"
               />
             </Field>
@@ -231,7 +252,7 @@ export function ChannelDialog({
               <PasswordInput
                 value={draft.token}
                 onChange={(event) => set("token", event.target.value)}
-                placeholder="123456:ABC..."
+                placeholder={keep("token", "123456:ABC...")}
                 className="h-8 pr-8 text-sm font-mono"
               />
             </Field>
@@ -271,7 +292,7 @@ export function ChannelDialog({
               <PasswordInput
                 value={draft.token}
                 onChange={(event) => set("token", event.target.value)}
-                placeholder="tk_..."
+                placeholder={keep("token", "tk_...")}
                 className="h-8 pr-8 text-sm font-mono"
               />
             </Field>
@@ -287,7 +308,10 @@ export function ChannelDialog({
               <Input
                 value={draft.url}
                 onChange={(event) => set("url", event.target.value)}
-                placeholder="https://discord.com/api/webhooks/..."
+                placeholder={keep(
+                  "url",
+                  "https://discord.com/api/webhooks/...",
+                )}
                 className="text-sm font-mono"
               />
             </Field>

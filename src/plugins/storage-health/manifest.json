@@ -1,7 +1,7 @@
 {
   "id": "storage-health",
   "name": "Storage Health",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Watch drive and array health over SSH: SMART, NVMe, ZFS, mdadm, btrfs and LVM, with history, alerts and self tests.",
   "author": {
     "name": "Termix"
@@ -23,8 +23,8 @@
   ],
   "env": [],
   "engine": {
-    "termix": ">=26.11.1-0",
-    "api": "^1.15"
+    "termix": ">=26.11.2-0",
+    "api": "^2.0.0"
   },
   "capabilities": [
     "hosts:read",
@@ -39,6 +39,18 @@
     "ui:surface",
     "operations:provide"
   ],
+  "sandbox": {
+    "schedules": [
+      {
+        "id": "tick",
+        "every": 60000
+      },
+      {
+        "id": "flush",
+        "every": 300000
+      }
+    ]
+  },
   "provides": [
     {
       "service": "storage-health.access",

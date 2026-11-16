@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0
+
+### Changed
+
+- Runs in its own process on Termix 26.11.2 and later, with no access to the server beyond what Termix allows it
+- The VM console draws in Remote Desktop's own frame (needs Termix 26.11.2)
+- Its process stops when it has nothing to watch or run, and Termix starts it again when there is work, which saves memory on Termix 26.11.2 and later
+
 ## 1.0.0
 
 ### Added

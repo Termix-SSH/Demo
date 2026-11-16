@@ -1,4 +1,4 @@
-import express, { type Router } from "express";
+import express, { type Express, type Router } from "express";
 import cookieParser from "cookie-parser";
 import { Client as SSHClient } from "ssh2";
 import type {
@@ -19,6 +19,7 @@ import {
   hostAddressMismatch,
   HostAddressMismatchError,
   HostNotOnThisServerError,
+  HostLoginRequiredError,
   resolveServerHostId,
   type ConnectionStage,
   type FileLogger,
@@ -54,6 +55,11 @@ import { createFilesService } from "./service.js";
 import { registerOperations } from "./operations.js";
 import { tables } from "./tables.js";
 import { registerLocalDesktop } from "./local-desktop.js";
+import {
+  hostKeyRefusalReason,
+  hostKeyRefusalText,
+  isHostKeyRefusal,
+} from "./host-key-refusal.js";
 
 const TRANSFER_PROFILES_KEY = "transfer-profiles";
 
@@ -85,10 +91,11 @@ function hasSocks5Config(host: PluginSshHost): boolean {
 function assertResolvedHost(
   clientIp: unknown,
   hostSyncId: string | null | undefined,
-  resolvedHost: { ip?: string } | null | undefined,
+  resolvedHost: { ip?: string; loginRequired?: boolean } | null | undefined,
   hostId: number,
   userId: string,
 ): void {
+  if (resolvedHost?.loginRequired === true) throw new HostLoginRequiredError();
   if (hostSyncId) {
     if (resolvedHost) return;
     fileLogger.error(
@@ -169,8 +176,10 @@ export async function activate(ctx: PluginContext) {
     })();
   });
 
-  const sshSessions: Record<string, SSHSession> = {};
-  const pendingTOTPSessions: Record<string, PendingTOTPSession> = {};
+  // No prototype, so an id like "__proto__" is only ever a missing key.
+  const sshSessions: Record<string, SSHSession> = Object.create(null);
+  const pendingTOTPSessions: Record<string, PendingTOTPSession> =
+    Object.create(null);
 
   function cleanupSession(sessionId: string) {
     const session = sshSessions[sessionId];
@@ -377,7 +386,11 @@ export async function activate(ctx: PluginContext) {
     delete sshSessions[sessionId];
   }
 
-  const app = express();
+  // Routes go straight on ctx's router: in a plugin process core only
+  // serves routes added to it, not ones on a mounted app.
+  const app = ctx.http.router<Router>({
+    bodyLimit: "1gb",
+  }) as unknown as Express;
   app.use(ctx.rbac.require("use") as never);
   app.use(cookieParser());
   // uploadFileChunk takes a raw octet-stream body. The browser sends 8 MiB
@@ -474,6 +487,8 @@ export async function activate(ctx: PluginContext) {
    *                 type: string
    *               socks5ProxyChain:
    *                 type: array
+   *                 items:
+   *                   type: object
    *     responses:
    *       200:
    *         description: SSH connection established, or requires TOTP or a browser sign-in.
@@ -613,7 +628,9 @@ export async function activate(ctx: PluginContext) {
     const resolveFrom = async () => {
       const resolvedHost = (await ctx.ssh.resolveHost(hostId, {
         syncId: hostSyncId,
-      })) as LooseHost | null;
+        // Newer than the SDK types; older cores ignore it.
+        allowMissingLogin: true,
+      } as { syncId?: string | null })) as LooseHost | null;
       assertResolvedHost(ip, hostSyncId, resolvedHost, hostId, userId);
       if (!resolvedHost) return;
       resolvedIp = resolvedHost.ip;
@@ -703,7 +720,9 @@ export async function activate(ctx: PluginContext) {
     if (hostSyncId && userId) {
       const resolvedHost = await ctx.ssh.resolveHost(hostId, {
         syncId: hostSyncId,
-      });
+        // Newer than the SDK types; older cores ignore it.
+        allowMissingLogin: true,
+      } as { syncId?: string | null });
       assertResolvedHost(ip, hostSyncId, resolvedHost, hostId, userId);
       serverHostId = resolveServerHostId(hostId, resolvedHost) ?? hostId;
     }
@@ -951,13 +970,13 @@ export async function activate(ctx: PluginContext) {
             `Authentication failed: ${err.message}`,
           ),
         );
-      } else if (err.message.includes("verification failed")) {
+      } else if (isHostKeyRefusal(err.message)) {
         errorStage = "handshake";
         connectionLogs.push(
           createConnectionLog(
             "error",
             errorStage,
-            "SSH host key has changed. For security, please open a Terminal connection to this host first to verify and accept the new key fingerprint.",
+            hostKeyRefusalText(err.message),
           ),
         );
       } else {
@@ -975,10 +994,11 @@ export async function activate(ctx: PluginContext) {
         err.message.includes("no passphrase")
       ) {
         res.json({ status: "passphrase_required", connectionLogs });
-      } else if (err.message.includes("verification failed")) {
+      } else if (isHostKeyRefusal(err.message)) {
         // Trying again gets the same answer until someone accepts the new key.
         res.status(409).json({
           status: "host_key_changed",
+          reason: hostKeyRefusalReason(err.message),
           message: err.message,
           connectionLogs,
         });
@@ -1042,16 +1062,19 @@ export async function activate(ctx: PluginContext) {
 
     client.on(
       "keyboard-interactive",
-      (
+      async (
         name: string,
         instructions: string,
         _instructionsLang: string,
         prompts: Array<{ prompt: string; echo: boolean }>,
         finish: (responses: string[]) => void,
       ) => {
-        const decision = ssh.classifyKeyboardInteractive(
-          { name, instructions, prompts },
-          connectTarget,
+        // A handler in a plugin process answers with a Promise.
+        const decision = await Promise.resolve(
+          ssh.classifyKeyboardInteractive(
+            { name, instructions, prompts },
+            connectTarget,
+          ),
         );
         const autoFinish = () =>
           finish(ssh.autoResponses(prompts, resolvedCredentials.password));
@@ -2409,8 +2432,6 @@ export async function activate(ctx: PluginContext) {
   });
 
   registerLocalDesktop(app, ctx);
-
-  ctx.http.router<Router>({ bodyLimit: "1gb" }).use(app);
 
   const service = createFilesService(ctx);
   ctx.services.provide("files.sftp", service);

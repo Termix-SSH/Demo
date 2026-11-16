@@ -40,9 +40,12 @@ import {
   hostActionsFor,
   hostBadgesFor,
   hostMenuItemsFor,
+  hostStatusIndicatorsFor,
   useHostActions,
   useHostBadges,
   useHostContextMenuItems,
+  useHostStatusIndicators,
+  HostDataItems,
   type HostActionDef,
   shell,
   type TabShellCallbacks,
@@ -308,6 +311,10 @@ export function HostItem({
     clickAction?: string;
   }>();
   const badges = hostBadgesFor(useHostBadges(), host);
+  const statusIndicators = hostStatusIndicatorsFor(
+    useHostStatusIndicators(),
+    host,
+  );
   const pluginMenuItems = hostMenuItemsFor(useHostContextMenuItems(), host);
   const splitTargets = useSplitTargets();
   const statusScheme = useStatusColorScheme();
@@ -1092,11 +1099,12 @@ export function HostItem({
 
   const hostBadges = (
     <>
-      {rowFields.showBadges &&
-        badges.map((badge) => {
-          const Badge = badge.component;
-          return Badge ? <Badge key={badge.id} host={host} /> : null;
-        })}
+      {statusIndicators.length > 0 && (
+        <HostDataItems host={host} items={statusIndicators} className="gap-1" />
+      )}
+      {rowFields.showBadges && (
+        <HostDataItems host={host} items={badges} className="gap-1" />
+      )}
       {rowFields.showBadges && <HostDotGroup host={host} badges={badges} />}
       {rowFields.showSharedBadge && host.isShared && (
         <TooltipProvider delayDuration={300}>

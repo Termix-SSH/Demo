@@ -11,6 +11,7 @@ import {
   openVulns,
   type Change,
 } from "./conditions.js";
+import { keepAwake } from "./keep-awake.js";
 import { readAdminSettings, readHostSettings } from "./host-settings.js";
 import { applyKnown, type KnownKeys } from "./known.js";
 import { Osv, ecosystemOf } from "./osv.js";
@@ -91,9 +92,15 @@ export class Engine {
   ) {}
 
   start(): void {
+    keepAwake(this.ctx, "scan", true);
     this.stops.push(
-      this.ctx.schedule.every(TICK_MS, () => this.tick(), { jitterMs: 5_000 }),
-      this.ctx.schedule.every(FLUSH_MS, () => this.osv.flush()),
+      this.ctx.schedule.every(TICK_MS, () => this.tick(), {
+        id: "scan",
+        jitterMs: 5_000,
+      }),
+      this.ctx.schedule.every(FLUSH_MS, () => this.osv.flush(), {
+        id: "osv-flush",
+      }),
     );
   }
 
@@ -125,6 +132,8 @@ export class Engine {
       this.ctx.log.warn(`Could not load watched hosts: ${message(error)}`);
       return;
     }
+    // Nothing watched: nothing keeps the process running.
+    keepAwake(this.ctx, "scan", rows.length > 0);
     const ids = new Set(rows.map((row) => row.hostId));
     for (const id of [...this.states.keys()]) {
       if (!ids.has(id)) this.states.delete(id);

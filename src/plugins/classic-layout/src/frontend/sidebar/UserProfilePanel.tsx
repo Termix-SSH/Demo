@@ -77,6 +77,7 @@ import {
 } from "lucide-react";
 import { NavigationVisibilityToggles } from "./NavigationVisibilityToggles";
 import { InterfacePresetSettings } from "./InterfacePresetSettings";
+import { DesktopAppSettings } from "./DesktopAppSettings";
 import { useSettingsEmbedded } from "../settings/settings-embed";
 import { toast } from "sonner";
 import {
@@ -1409,6 +1410,7 @@ export function UserProfilePanel({
               window.dispatchEvent(new Event("termix:open-onboarding"))
             }
           />
+          <DesktopAppSettings />
         </div>
       </AccordionSection>
 

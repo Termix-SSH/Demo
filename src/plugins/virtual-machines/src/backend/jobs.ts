@@ -4,6 +4,7 @@ import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import { shellQuote as q, toBase64 } from "@termix-ssh/plugin-sdk/host-scripts";
 import type { JobKind, JobRow, JobStatus } from "../shared/types.js";
 import { VmError } from "./errors.js";
+import { keepAwake } from "./keep-awake.js";
 import { readHostSettings } from "./host-settings.js";
 import type { JobPlan, Target } from "./provider.js";
 import type { Remote } from "./remote.js";
@@ -297,6 +298,8 @@ export function createJobs(
       .select()
       .from(table)
       .where(eq(table.status, "running"))) as StoredJob[];
+    // Jobs run on the host; this process only follows them while they last.
+    keepAwake(ctx, "jobs", running.length > 0);
     const groups = new Map<string, StoredJob[]>();
     for (const row of running) {
       const key = `${row.userId}:${row.hostId}`;
@@ -402,7 +405,7 @@ export function createJobs(
     startPolling() {
       if (polling) return;
       polling = true;
-      ctx.schedule.every(POLL_MS, () => tick(), { runNow: true });
+      ctx.schedule.every(POLL_MS, () => tick(), { id: "jobs", runNow: true });
     },
   };
 }

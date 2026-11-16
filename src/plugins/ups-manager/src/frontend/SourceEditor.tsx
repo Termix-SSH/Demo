@@ -132,7 +132,6 @@ export function SourceEditor({ hostId, source, onClose, onSave, busy }: Props) {
           saveLabel={source ? t("common.save") : t("editor.add")}
           extra={
             <Button
-              size="sm"
               variant="outline"
               disabled={testing}
               onClick={() => void test()}

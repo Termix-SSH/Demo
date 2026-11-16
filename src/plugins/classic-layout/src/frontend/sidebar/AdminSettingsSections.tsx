@@ -9,6 +9,7 @@ import {
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { Database, Lock, RefreshCw, Server, Settings } from "lucide-react";
 import { AccordionSection, AdminToggle } from "./AdminSettingsShared";
+import { AdminHostKeySetting } from "./AdminHostKeySetting";
 import { AdminHostTags } from "./AdminHostTags";
 import { AdminPluginDeveloperMode } from "./AdminPluginDeveloperMode";
 import { AdminHttpsSetting } from "./AdminHttpsSetting";
@@ -148,6 +149,7 @@ export function AdminGeneralSettingsSection({
             onToggle={handleToggleCredentialStorage}
           />
         </SettingRow>
+        <AdminHostKeySetting />
         <SettingRow
           label={t("admin.allowPasswordReset")}
           description={t("admin.allowPasswordResetDesc")}

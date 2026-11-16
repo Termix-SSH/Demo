@@ -1,7 +1,7 @@
 {
   "id": "login-security",
   "name": "Login Security",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Sign people out when idle, limit session length, turn off remember me and require a second factor at login.",
   "author": {
     "name": "Termix"
@@ -19,26 +19,47 @@
     "Require a second factor at every login or on a new device",
     "Works with any installed second factor, like an authenticator app or a security key",
     "People without a second factor are asked to set one up before they can use Termix",
-    "Ask for a second factor before connecting to a host, for every host or only marked ones"
+    "Ask for a second factor before connecting to a host, for every host or only marked ones",
+    "See your own sessions and API keys with when they were last used, and end them",
+    "Admins can sign everyone out at once",
+    "Get an alert when someone signs in to your account from a new device",
+    "Optional admin wait: with two or more admins, dangerous changes wait so the others can cancel them"
   ],
   "env": [],
   "engine": {
-    "termix": ">=26.11.1-0",
-    "api": "^1.16"
+    "termix": ">=26.11.2-0",
+    "api": "^2.0.0"
   },
   "capabilities": [
     "auth:policy",
     "hosts:connect-policy",
-    "hosts:read",
     "network:serve",
-    "ui:surface"
+    "ui:surface",
+    "kv:own",
+    "notify:send",
+    "events:core"
   ],
+  "sandbox": {
+    "events": ["internal.event"]
+  },
   "contributes": {
     "tabs": [
       {
         "id": "connect-verify",
         "titleKey": "verify.title",
         "icon": "ShieldCheck",
+        "openFrom": ["palette"]
+      },
+      {
+        "id": "sessions",
+        "titleKey": "sessions.title",
+        "icon": "MonitorSmartphone",
+        "openFrom": ["palette"]
+      },
+      {
+        "id": "admin-waits",
+        "titleKey": "waits.title",
+        "icon": "Hourglass",
         "openFrom": ["palette"]
       }
     ],
@@ -81,6 +102,14 @@
           "default": true
         },
         {
+          "key": "newDeviceNotice",
+          "type": "boolean",
+          "group": "settings.group.sessions",
+          "labelKey": "settings.admin.newDeviceNotice.label",
+          "descriptionKey": "settings.admin.newDeviceNotice.description",
+          "default": true
+        },
+        {
           "key": "secondFactor",
           "type": "select",
           "group": "settings.group.secondFactor",
@@ -88,7 +117,10 @@
           "descriptionKey": "settings.admin.secondFactor.description",
           "default": "off",
           "options": [
-            { "value": "off", "labelKey": "settings.admin.secondFactor.off" },
+            {
+              "value": "off",
+              "labelKey": "settings.admin.secondFactor.off"
+            },
             {
               "value": "new-device",
               "labelKey": "settings.admin.secondFactor.newDevice"
@@ -121,12 +153,18 @@
           "descriptionKey": "settings.admin.connectFactor.description",
           "default": "off",
           "options": [
-            { "value": "off", "labelKey": "settings.admin.connectFactor.off" },
+            {
+              "value": "off",
+              "labelKey": "settings.admin.connectFactor.off"
+            },
             {
               "value": "marked",
               "labelKey": "settings.admin.connectFactor.marked"
             },
-            { "value": "all", "labelKey": "settings.admin.connectFactor.all" }
+            {
+              "value": "all",
+              "labelKey": "settings.admin.connectFactor.all"
+            }
           ]
         },
         {
@@ -147,8 +185,18 @@
         "enableLabelKey": "settings.host.requireConnectFactor.label",
         "enableDescriptionKey": "settings.host.requireConnectFactor.description",
         "fields": []
-      }
-    }
+      },
+      "user": [
+        {
+          "key": "newDeviceNotice",
+          "type": "boolean",
+          "labelKey": "settings.user.newDeviceNotice.label",
+          "descriptionKey": "settings.user.newDeviceNotice.description",
+          "default": true
+        }
+      ]
+    },
+    "uses": ["auth.enrollment"]
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"],

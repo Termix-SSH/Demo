@@ -223,6 +223,8 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
    *         description: The host needs a sign-in step first.
    *       404:
    *         description: Host not found.
+   *       409:
+   *         description: The host key is not trusted yet or has changed.
    *       500:
    *         description: Failed to start metrics collection.
    */
@@ -432,7 +434,7 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
       if (!host) return skipped("host_not_found");
       const hasSession = () =>
         !!sessions.get(sessionKey(hostId, userId))?.isConnected;
-      if (!supportsMetrics(host, ctx.ssh, hasSession))
+      if (!(await supportsMetrics(host, ctx.ssh, hasSession)))
         return skipped("metrics_unsupported");
       if (!(await poller.settingsFor(hostId)).metricsEnabled) {
         return skipped("metrics_disabled");
@@ -663,6 +665,8 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
    *             properties:
    *               slots:
    *                 type: array
+   *                 items:
+   *                   type: object
    *               columns:
    *                 type: integer
    *     responses:

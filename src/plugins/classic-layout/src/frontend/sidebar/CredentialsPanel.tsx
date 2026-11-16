@@ -28,7 +28,7 @@ import { toast } from "sonner";
 import { CredentialList } from "./CredentialList";
 import { useCredentialSidebarPreferences } from "./credential-tree/hooks/useCredentialSidebarPreferences";
 import { useArrangeLock } from "./use-arrange-lock";
-import { CustomizeCredentialsSidebarPanel } from "./CustomizeCredentialsSidebarPanel";
+import { useOpenSettingsPage } from "../settings/open-settings";
 
 export function CredentialsPanel({
   active: _active = true,
@@ -42,7 +42,7 @@ export function CredentialsPanel({
     useCredentialSidebarPreferences();
   const [search, setSearch] = useState("");
   const [allTags, setAllTags] = useState<string[]>([]);
-  const [customizePanelOpen, setCustomizePanelOpen] = useState(false);
+  const openSettingsPage = useOpenSettingsPage();
 
   const sortKey = sidebarPrefs.sort.key;
   const { arrangeLocked, toggleArrangeLock } = useArrangeLock(
@@ -276,8 +276,9 @@ export function CredentialsPanel({
             </div>
             <div className="flex items-center border border-border shrink-0">
               <button
-                onClick={() => setCustomizePanelOpen(true)}
-                title={t("credentials.customizeSidebar")}
+                onClick={() => openSettingsPage("credential-list")}
+                title={t("settings.openCredentialList")}
+                aria-label={t("settings.openCredentialList")}
                 className="flex items-center justify-center size-7 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors shrink-0"
               >
                 <SlidersHorizontal className="size-3.5" />
@@ -314,13 +315,6 @@ export function CredentialsPanel({
           onTagsChange={setAllTags}
         />
       </div>
-
-      <CustomizeCredentialsSidebarPanel
-        open={customizePanelOpen}
-        onOpenChange={setCustomizePanelOpen}
-        preferences={sidebarPrefs}
-        update={updateSidebarPrefs}
-      />
     </div>
   );
 }

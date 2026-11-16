@@ -244,7 +244,6 @@ export function MonitorEditor({
         form.type !== "push" ? (
           <Button
             variant="outline"
-            size="sm"
             disabled={testing}
             onClick={() => void test()}
           >

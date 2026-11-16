@@ -15,7 +15,7 @@ import {
   BlockedTargetError,
   isPrivateAddress,
   resolveTarget,
-} from "./target-guard.js";
+} from "./targets.js";
 import {
   InputError,
   MAX_MONITORS_PER_USER,

@@ -2,6 +2,7 @@ import { and, eq } from "drizzle-orm";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import type { Inventory } from "../shared/types.js";
 import { readHostSettings } from "./host-settings.js";
+import { keepAwake } from "./keep-awake.js";
 import { isUp, type InventoryStore, type Transition } from "./inventory.js";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -125,7 +126,9 @@ export class WatchChecker {
   ) {}
 
   start(): void {
+    keepAwake(this.ctx, "watches", true);
     this.stopTimer = this.ctx.schedule.every(WATCH_TICK_MS, () => this.tick(), {
+      id: "watches",
       jitterMs: 5_000,
     });
   }
@@ -137,7 +140,14 @@ export class WatchChecker {
 
   async tick(): Promise<void> {
     if (this.disposed) return;
-    const rows = await this.store.listAll().catch(() => [] as WatchRow[]);
+    let rows: WatchRow[];
+    try {
+      rows = await this.store.listAll();
+    } catch {
+      return;
+    }
+    // No watches: nothing keeps the process running.
+    keepAwake(this.ctx, "watches", rows.length > 0);
     const hosts = new Map<number, string>();
     for (const row of rows) hosts.set(row.hostId, row.userId);
     await Promise.all(

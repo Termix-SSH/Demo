@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.2.1
+
+### Changed
+
+- Runs in its own process with only the access it needs (plugin API 2, needs Termix 26.11.2)
+- Warpgate sign-in prompts still show when that plugin runs in its own process (needs Termix 26.11.2)
+- In the desktop app, the copy of a file you open in your external editor is kept in the plugin's own folder and the app starts the editor, so the plugin now asks for files:own (needs Termix 26.11.2)
+- The terminal beside the file list draws in its own frame (needs Termix 26.11.2)
+
+### Fixed
+
+- Says to open a terminal and trust the host when its key is not trusted yet, instead of a plain error (Termix 26.11.2)
+- Comparing two files works again. The diff view now ships with the plugin instead of loading code from a CDN, which the Termix server blocks
+- A file session id that matches a built in object name is treated as unknown instead of reaching shared objects on the server
+- An upload that stops partway answers with an error instead of leaving an error unhandled on the server
+- Very long file paths no longer keep the server busy for a long time
+- The API docs list every route, including FTP and desktop file routes, with their answers
+- Opening files on a shared host you have no login for says so, instead of saying the host is not on the sync server (needs Termix 26.11.2)
+
 ## 1.2.0
 
 ### Added

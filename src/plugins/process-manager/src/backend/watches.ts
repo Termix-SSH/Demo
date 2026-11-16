@@ -9,6 +9,7 @@ import type {
   WatchRule,
 } from "../shared/types.js";
 import { readHostSettings } from "./host-settings.js";
+import { keepAwake } from "./keep-awake.js";
 import type { ProcessService } from "./service.js";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -236,7 +237,9 @@ export class WatchChecker {
   ) {}
 
   start(): void {
+    keepAwake(this.ctx, "watches", true);
     this.stop = this.ctx.schedule.every(WATCH_TICK_MS, () => this.tick(), {
+      id: "watches",
       jitterMs: 5_000,
     });
   }
@@ -264,6 +267,8 @@ export class WatchChecker {
       this.ctx.log.warn(`Could not load watches: ${String(error)}`);
       return;
     }
+    // No watches: nothing keeps the process running.
+    keepAwake(this.ctx, "watches", rows.length > 0);
     const groups = new Map<string, WatchRow[]>();
     for (const row of rows) {
       const key = `${row.userId}:${row.hostId}`;

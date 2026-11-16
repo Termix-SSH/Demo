@@ -380,7 +380,7 @@ export function registerRoutes(
     "/hosts/:hostId/database-logins",
     handle(async (req) => {
       await gate(hostParam(req), "connect");
-      const service = engine.databaseLogins();
+      const service = await engine.databaseLogins();
       if (!service) return { available: false, logins: [] };
       return { available: true, logins: await service.list(hostParam(req)) };
     }),

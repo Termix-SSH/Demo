@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.1
+
+### Changed
+
+- Runs in its own process on Termix 26.11.2 and later, with no access to the server beyond what Termix allows it
+- Its process stops when it has nothing to watch or run, and Termix starts it again when there is work, which saves memory on Termix 26.11.2 and later
+
+### Fixed
+
+- Refuses private addresses written in IPv4-compatible (`::10.0.0.1`) or NAT64 (`64:ff9b::10.0.0.1`) form
+- Monitor editor Test button now matches the Save button size
+
 ## 1.0.0
 
 ### Added

@@ -10,6 +10,7 @@ import {
   type MonitorSecrets,
 } from "../shared/types.js";
 import type { AlertSender } from "./alerts.js";
+import { keepAwake } from "./keep-awake.js";
 import type { BeatStore } from "./beats.js";
 import { checkDns } from "./checks/dns.js";
 import { checkHttp } from "./checks/http.js";
@@ -108,14 +109,14 @@ export class UptimeEngine {
     await beats.load(await ctx.files.dataDir());
     rollups.load(await repo.listRollups());
     await this.reload();
-    const every = (ms: number, work: () => Promise<void>) => {
+    const every = (id: string, ms: number, work: () => Promise<void>) => {
       this.stops.push(
-        ctx.schedule.every(ms, () => this.guard(work), { jitterMs: 0 }),
+        ctx.schedule.every(ms, () => this.guard(work), { id, jitterMs: 0 }),
       );
     };
-    every(TICK_MS, () => this.tick());
-    every(RELOAD_MS, () => this.reload());
-    every(FLUSH_MS, () => this.flush());
+    every("tick", TICK_MS, () => this.tick());
+    every("reload", RELOAD_MS, () => this.reload());
+    every("flush", FLUSH_MS, () => this.flush());
   }
 
   /** A timer that throws counts against the plugin's error budget. */
@@ -158,6 +159,12 @@ export class UptimeEngine {
   async reload(): Promise<void> {
     const { repo, beats } = this.deps;
     const rows = await repo.listMonitors();
+    // No monitor running: nothing keeps the process up.
+    keepAwake(
+      this.deps.ctx,
+      "monitors",
+      rows.some((row) => row.enabled),
+    );
     const open = await repo.openCauses();
     const seen = new Set<number>();
     for (const row of rows) {

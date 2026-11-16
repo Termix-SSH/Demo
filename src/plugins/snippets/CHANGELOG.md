@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.4.0
+
+### Changed
+
+- Runs in its own process on Termix 26.11.2 and later, with no access to the server beyond what Termix allows it
+- The Settings item in the Snippets menu opens the Snippets page in Settings. Saved secrets are managed there too
+
+### Fixed
+
+- Says to open a terminal and trust the host when its key is not trusted yet, instead of a plain error (Termix 26.11.2)
+- The API docs describe the bulk import body
+
 ## 1.3.0
 
 ### Added

@@ -15,6 +15,7 @@ import {
   type RestoreTarget,
 } from "../shared/types.js";
 import { BackupsError } from "./errors.js";
+import { trimEnd, trimStart } from "./trim.js";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -259,12 +260,12 @@ function httpUrl(value: unknown, what: string): string {
   if (url.username || url.password) {
     throw bad("Put the user and password in their own fields");
   }
-  return text.replace(/\/+$/, "");
+  return trimEnd(text);
 }
 
 function relPath(value: unknown, what: string): string {
   const text =
-    typeof value === "string" ? value.trim().replace(/^\/+|\/+$/g, "") : "";
+    typeof value === "string" ? trimStart(trimEnd(value.trim())) : "";
   if (text.length > 1024 || CONTROL.test(text) || /\s/.test(text)) {
     throw bad(`${what} is not valid`);
   }

@@ -28,7 +28,7 @@ export async function createTxtRecordWithDnsPlugin(
   name: string,
   content: string,
 ): Promise<() => Promise<void>> {
-  if (!ctx.services.providers("dns.records").includes("")) {
+  if (!(await ctx.services.providers("dns.records")).includes("")) {
     throw new Error(
       "The DNS plugin is not running. Turn it on or pick another challenge type.",
     );
@@ -43,7 +43,7 @@ export async function createTxtRecordWithDnsPlugin(
     }
     options = { userId: stored };
   }
-  const dns = ctx.services.get<DnsRecords>("dns.records", options);
+  const dns = await ctx.services.get<DnsRecords>("dns.records", options);
   const handle = await dns.setRecord({ name, type: "TXT", content, ttl: 120 });
   return () => dns.removeRecord(handle);
 }

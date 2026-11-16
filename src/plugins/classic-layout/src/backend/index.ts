@@ -54,8 +54,8 @@ export async function activate(ctx: PluginContext): Promise<void> {
    *   patch:
    *     summary: Update branding
    *     description: >
-   *       Changes the app name, tagline or logo. The logo is a PNG, JPEG or
-   *       WebP data URL, stored as a PNG up to 750 KB. Send null to remove it.
+   *       Changes the app name, tagline or logo. The logo is a PNG or JPEG
+   *       data URL, stored as a PNG up to 750 KB. Send null to remove it.
    *       Admin only.
    *     tags:
    *       - Branding

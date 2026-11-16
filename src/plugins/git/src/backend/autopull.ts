@@ -1,5 +1,6 @@
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import { readHostSettings } from "./host-settings.js";
+import { keepAwake } from "./keep-awake.js";
 import type { GitService } from "./service.js";
 import type { RepoStore, SavedRepo } from "./store.js";
 
@@ -73,13 +74,17 @@ export function startAutoPull(
     try {
       const due: Array<{ hostId: number; repo: SavedRepo }> = [];
       const now = Date.now();
+      let auto = 0;
       for (const hostId of await store.autoHosts()) {
         for (const repo of await store.list(hostId)) {
           if (!repo.auto?.enabled) continue;
+          auto++;
           const at = repo.auto.nextAt ? Date.parse(repo.auto.nextAt) : 0;
           if (!at || at <= now) due.push({ hostId, repo });
         }
       }
+      // No repo pulls on its own: nothing keeps the process running.
+      keepAwake(ctx, "auto-pull", auto > 0);
       let next = 0;
       const worker = async () => {
         while (next < due.length) {
@@ -100,5 +105,9 @@ export function startAutoPull(
       running = false;
     }
   };
-  return ctx.schedule.every(TICK_MS, tick, { jitterMs: 5_000 });
+  keepAwake(ctx, "auto-pull", true);
+  return ctx.schedule.every(TICK_MS, tick, {
+    id: "auto-pull",
+    jitterMs: 5_000,
+  });
 }

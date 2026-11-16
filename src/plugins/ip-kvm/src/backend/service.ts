@@ -7,8 +7,10 @@ import {
   PinnedAgent,
   pinnedFetch,
   readCertificate,
+  streamFetch,
   type PeerCertificate,
 } from "./pinned.js";
+import { keepAwake } from "./keep-awake.js";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import type {
   Device,
@@ -123,6 +125,7 @@ function defaultIo(ctx: PluginContext): DriverIo {
   return {
     fetch: ctx.fetch,
     fetchPinned: pinnedFetch,
+    fetchStream: streamFetch,
     connect: (url, options) =>
       new WebSocket(url, {
         headers: options.headers,
@@ -587,7 +590,10 @@ export function createService(
 
     async runDue() {
       const now = Date.now();
-      const due = (await rows()).filter((item) => {
+      const all = await rows();
+      // No devices: nothing keeps the process running.
+      keepAwake(ctx, "poll", all.length > 0);
+      const due = all.filter((item) => {
         const state = stateOf(item);
         return (
           !state.polling && now - state.lastPolled >= item.pollSeconds * 1000

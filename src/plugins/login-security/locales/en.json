@@ -46,6 +46,10 @@
       "connectFactorMinutes": {
         "label": "Minutes before asking again",
         "description": "After entering it, a person can connect to any host for this long. Signing out ends it early."
+      },
+      "newDeviceNotice": {
+        "label": "Alert on a new device",
+        "description": "Send people an alert when someone signs in to their account from a device it has not seen before. Each person can turn it off for themselves."
       }
     },
     "host": {
@@ -53,11 +57,18 @@
         "label": "Ask for a second factor before connecting",
         "description": "Used when Login Security is set to ask on hosts marked for it."
       }
+    },
+    "user": {
+      "newDeviceNotice": {
+        "label": "Alert me on a new device",
+        "description": "Get an alert when someone signs in to your account from a device not seen before."
+      }
     }
   },
   "verify": {
     "title": "Verify second factor",
     "intro": "Enter your second factor to connect to this host.",
+    "start": "Verify",
     "done": "Verified",
     "retry": "Go back to the host and connect again.",
     "failed": "That did not work. Try again.",
@@ -74,5 +85,69 @@
     "body": "Your admin requires a second factor to sign in. Set one up below to keep using Termix.",
     "none": "Nothing to set up here? Ask your admin to install a second factor plugin.",
     "signOut": "Sign out"
+  },
+  "never": "never",
+  "sessions": {
+    "title": "Sessions and keys",
+    "tab": "Sessions",
+    "current": "This session",
+    "meta": "{{type}} | last active {{lastActive}} | signed in {{created}}",
+    "none": "No sessions",
+    "end": "Sign out",
+    "ended": "Signed out",
+    "endOthers": "Sign out other sessions",
+    "endOthersConfirm": "Sign out your {{count}} other sessions?",
+    "endedOthers": "Your other sessions are signed out",
+    "everyone": "Sign everyone out",
+    "everyoneConfirm": "Sign out every user on this server?",
+    "everyoneDescription": "Everyone but you has to sign in again. Desktop apps linked to this server have to link again.",
+    "everyoneKeysConfirm": "Also revoke every API key on this server?",
+    "everyoneKeys": "Revoke keys too",
+    "everyoneKeysNo": "Keep keys",
+    "everyoneDone": "Everyone is signed out",
+    "failed": "That did not work. Try again.",
+    "loadFailed": "Could not load your sessions and keys."
+  },
+  "keys": {
+    "tab": "API keys",
+    "none": "You have no API keys",
+    "full": "full access",
+    "noExpiry": "never",
+    "meta": "{{prefix}} | last used {{lastUsed}} | expires {{expires}}",
+    "revoke": "Revoke",
+    "revoked": "Key revoked",
+    "revokeAll": "Revoke all keys",
+    "revokeAllConfirm": "Revoke your {{count}} API keys? Scripts using them stop working.",
+    "revokedAll": "Your API keys are revoked"
+  },
+  "waits": {
+    "title": "Admin wait",
+    "intro": "With two or more admins, a new admin, turning off password login, turning off a sign in plugin or turning on a plugin with dangerous access waits this long. The other admins get an alert and can cancel it. Turning this off or shortening it waits too.",
+    "adminOnly": "Only admins can see this.",
+    "loadFailed": "Could not load the admin wait.",
+    "active": "On, changes wait {{minutes}} minutes",
+    "onOneAdmin": "On, but this server has one admin, so nothing waits",
+    "off": "Off",
+    "admins": "{{count}} admins",
+    "forced": "Set on the server with {{name}}.",
+    "minutes": "Minutes",
+    "turnOn": "Turn on",
+    "change": "Save",
+    "turnOff": "Turn off",
+    "saved": "Saved",
+    "savedHeld": "Saved. It waits for the other admins first.",
+    "failed": "That did not work. Try again.",
+    "none": "No admin changes have waited yet",
+    "meta": "Asked by {{who}} | applies {{runsAt}}",
+    "cancel": "Cancel",
+    "cancelConfirm": "Cancel this change?",
+    "cancelled": "Cancelled",
+    "status": {
+      "pending": "Waiting",
+      "applying": "Applying",
+      "applied": "Applied",
+      "cancelled": "Cancelled",
+      "failed": "Failed"
+    }
   }
 }

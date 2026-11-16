@@ -1,6 +1,6 @@
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import type { CheckResult } from "../../shared/types.js";
-import { resolveTarget } from "../target-guard.js";
+import { resolveTarget } from "../targets.js";
 import { errorText, failed, passed, round, type CheckTarget } from "./types.js";
 
 export const PING_UNAVAILABLE =

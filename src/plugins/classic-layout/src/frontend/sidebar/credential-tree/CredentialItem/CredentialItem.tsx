@@ -1,7 +1,8 @@
 import {
   rem,
   copyToClipboard,
-  ComponentSlot,
+  ActionSlot,
+  DataSlot,
   type Credential,
   defaultCredentialRowFields,
   type CredentialDensity,
@@ -126,13 +127,15 @@ export function CredentialItem({
 
   const connectionButtons = isKey ? (
     <>
-      <ComponentSlot
-        slotId="credentials.rowActions"
-        props={{
-          credential: { id: cred.id, name: cred.name },
-          buttonClassName: trayButtonClass,
-        }}
-      />
+      {/* Plugin buttons; the row itself must not get their clicks. */}
+      <span className="contents" onClick={(e) => e.stopPropagation()}>
+        <ActionSlot
+          slotId="credentials.rowActions"
+          context={() => [{ id: cred.id, name: cred.name }]}
+          className={trayButtonClass}
+          hideLabels
+        />
+      </span>
       <button
         title={t("credentials.copyDeployCommand")}
         onClick={async (e) => {
@@ -304,9 +307,10 @@ export function CredentialItem({
                 : t("credentials.passwordBadge")}
             </span>
           )}
-          <ComponentSlot
+          <DataSlot
             slotId="credentials.badges"
-            props={{ credentialId: Number(cred.id) }}
+            rowKey={cred.id}
+            context={{ credentialId: Number(cred.id) }}
           />
           {rowFields.showPinIcon && cred.pin && (
             <Pin className="size-2.5 text-accent-brand/50 shrink-0" />

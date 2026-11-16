@@ -3,6 +3,7 @@ import { ExternalLink } from "lucide-react";
 import { registerWidget } from "./WidgetRegistry";
 import type { ServiceLinkConfig, WidgetComponentProps } from "../types.js";
 import { GRID_SIZE } from "../types.js";
+import { useRemoteImage } from "./remote-image";
 
 function getAccentColor(): string {
   return (
@@ -32,6 +33,7 @@ function ServiceLinkWidget({
     : null;
   const mouseDownPosRef = useRef<{ x: number; y: number } | null>(null);
   const [imgFailed, setImgFailed] = useState(false);
+  const imageSrc = useRemoteImage(resolvedImageUrl);
 
   useEffect(() => {
     setImgFailed(false);
@@ -54,9 +56,9 @@ function ServiceLinkWidget({
       className="group flex flex-col items-center justify-center gap-1.5 w-full h-full p-2 select-none border-t-2 relative overflow-hidden"
       style={{ borderTopColor: `${accentBorder}80` }}
     >
-      {resolvedImageUrl && !imgFailed ? (
+      {imageSrc && !imgFailed ? (
         <img
-          src={resolvedImageUrl}
+          src={imageSrc}
           alt=""
           className="shrink-0 transition-transform duration-150 group-hover:scale-110 object-contain"
           style={{ width: imgSize, height: imgSize }}

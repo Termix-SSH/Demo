@@ -1,7 +1,7 @@
 {
   "id": "backups",
   "name": "Backups",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Back up folders, databases and Docker data on your hosts with restic, then browse, download and restore.",
   "author": {
     "name": "Termix"
@@ -26,8 +26,8 @@
   ],
   "env": [],
   "engine": {
-    "termix": ">=26.11.1-0",
-    "api": "^1.15"
+    "termix": ">=26.11.2-0",
+    "api": "^2.0.0"
   },
   "capabilities": [
     "hosts:read",
@@ -41,6 +41,18 @@
     "ui:surface",
     "operations:provide"
   ],
+  "sandbox": {
+    "schedules": [
+      {
+        "id": "schedule",
+        "every": 30000
+      },
+      {
+        "id": "poll",
+        "every": 10000
+      }
+    ]
+  },
   "optionalDependencies": {
     "databases": "^1.2.0"
   },

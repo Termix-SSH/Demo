@@ -33,7 +33,7 @@ export async function activateWith(ctx: PluginContext, issue: IssueFn) {
       await runner.syncRenewer();
       await runner.check();
     },
-    { jitterMs: 60_000 },
+    { id: "check", jitterMs: 60_000 },
   );
 
   registerRoutes(ctx, ctx.http.router<Router>(), runner);

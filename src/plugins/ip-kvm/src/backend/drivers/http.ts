@@ -32,12 +32,24 @@ export async function send(
     body?: string;
     timeoutMs?: number;
     signal?: AbortSignal;
+    /** A body that never ends, like a video stream. */
+    stream?: boolean;
   } = {},
 ): Promise<Response> {
   try {
+    const { stream, ...rest } = init;
     const pin = target.options.pin;
     if (pin && url.startsWith("https:") && io.fetchPinned) {
-      return await io.fetchPinned(url, pin, init);
+      return await io.fetchPinned(url, pin, rest);
+    }
+    const address = target.address.replace(/^\[|\]$/g, "");
+    if (stream && io.fetchStream) {
+      return await io.fetchStream(url, {
+        ...rest,
+        timeoutMs: rest.timeoutMs ?? TIMEOUT_MS,
+        ca: target.ca,
+        allowPrivateHosts: [address],
+      });
     }
     return await io.fetch(url, {
       method: init.method ?? "GET",
@@ -45,7 +57,7 @@ export async function send(
       body: init.body,
       timeoutMs: init.timeoutMs ?? TIMEOUT_MS,
       signal: init.signal,
-      allowPrivateHosts: [target.address.replace(/^\[|\]$/g, "")],
+      allowPrivateHosts: [address],
       tls: target.ca ? { ca: target.ca } : undefined,
     });
   } catch (error) {

@@ -83,7 +83,7 @@ interface CommandVariables {
       name?: string;
     } | null,
     inputValues?: Record<string, string>,
-  ) => string;
+  ) => string | Promise<string>;
 }
 
 /**
@@ -91,15 +91,18 @@ interface CommandVariables {
  * the snippets plugin, which owns the syntax. Without it the command runs as
  * typed.
  */
-export function resolveCommandVariables(
+export async function resolveCommandVariables(
   ctx: Pick<PluginContext, "registry">,
   command: string,
   host: Parameters<CommandVariables["resolve"]>[1],
   inputValues: Record<string, string> = {},
-): string {
+): Promise<string> {
+  // Awaited: Snippets may answer from its own process.
   const variables =
-    ctx.registry.consume<CommandVariables>("snippets.variables");
-  return variables ? variables.resolve(command, host, inputValues) : command;
+    await ctx.registry.consume<CommandVariables>("snippets.variables");
+  return variables
+    ? await variables.resolve(command, host, inputValues)
+    : command;
 }
 
 function actor(ctx: PluginContext): string {
@@ -1012,7 +1015,7 @@ export function registerFleetRoutes(
               return { success: false, error: "Host not found" };
             }
 
-            const resolvedCommand = resolveCommandVariables(
+            const resolvedCommand = await resolveCommandVariables(
               ctx,
               command,
               {

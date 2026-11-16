@@ -1,7 +1,7 @@
 import { Resolver } from "node:dns/promises";
 import { isIP } from "node:net";
 import type { CheckResult } from "../../shared/types.js";
-import { BlockedTargetError, isPrivateAddress } from "../target-guard.js";
+import { BlockedTargetError, isPrivateAddress } from "../targets.js";
 import {
   errorText,
   failed,

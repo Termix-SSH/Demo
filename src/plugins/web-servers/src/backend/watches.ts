@@ -1,6 +1,7 @@
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import type { ServerKind } from "../shared/types.js";
 import { readHostSettings } from "./host-settings.js";
+import { keepAwake } from "./keep-awake.js";
 import { label } from "./servers.js";
 import type { WebService } from "./service.js";
 
@@ -61,7 +62,10 @@ export function startWatchChecker(
     if (running) return;
     running = true;
     try {
-      const watches = await store.list().catch(() => [] as Watch[]);
+      const listed = await store.list().catch(() => null);
+      // No watches: nothing keeps the process running.
+      if (listed) keepAwake(ctx, "watches", listed.length > 0);
+      const watches: Watch[] = listed ?? [];
       const lastValue = await ctx.kv.get(LAST).catch(() => null);
       const last: Record<string, boolean> =
         lastValue && typeof lastValue === "object"
@@ -128,5 +132,9 @@ export function startWatchChecker(
       context: { hostId, hostName },
     });
 
-  return ctx.schedule.every(CHECK_MS, check, { jitterMs: 10_000 });
+  keepAwake(ctx, "watches", true);
+  return ctx.schedule.every(CHECK_MS, check, {
+    id: "watches",
+    jitterMs: 10_000,
+  });
 }

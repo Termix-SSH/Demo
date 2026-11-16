@@ -41,6 +41,9 @@ import {
   useSshAuthEditors,
   useSshAuthProviders,
   PluginComponent,
+  HostDataItems,
+  hostEditorToolbarItemsFor,
+  useHostEditorToolbarItems,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -142,6 +145,9 @@ export function HostEditor({
   onDefaultsSaved?: () => void;
 }) {
   const { t } = useTranslation();
+  const allToolbarItems = useHostEditorToolbarItems();
+  const toolbarItems =
+    host && host.id ? hostEditorToolbarItemsFor(allToolbarItems, host) : [];
   const hostPolicy = useHostPolicy();
   const confirm = useConfirm();
   // Re-render when a plugin adds or removes a section.
@@ -814,6 +820,11 @@ export function HostEditor({
         }
         footer={
           <>
+            {host && toolbarItems.length > 0 && (
+              <div className="mr-auto flex min-w-0 items-center gap-2">
+                <HostDataItems host={host} items={toolbarItems} />
+              </div>
+            )}
             <Button
               variant="ghost"
               size="sm"

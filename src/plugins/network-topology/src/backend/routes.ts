@@ -56,9 +56,13 @@ export function registerGraphRoutes(
    *               properties:
    *                 nodes:
    *                   type: array
+   *                   items:
+   *                     type: object
    *                   description: Array of graph nodes (hosts and groups)
    *                 edges:
    *                   type: array
+   *                   items:
+   *                     type: object
    *                   description: Array of graph edges (connections)
    */
   router.get("/", async (req: Request, res: Response) => {

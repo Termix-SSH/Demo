@@ -17,12 +17,15 @@ import {
   defaultConnectAction,
   hostActionsFor,
   hostBadgesFor,
+  HostDataItems,
   HostDotGroup,
+  hostStatusIndicatorsFor,
   requestManage,
   runHostAction,
   useHostActions,
   useHostBadges,
   useHostStatus,
+  useHostStatusIndicators,
   useShellController,
   type Host,
   TileWall,
@@ -123,6 +126,7 @@ function HostCard({ host }: { host: Host }) {
   const shell = useShellController();
   const actions = useHostActions();
   const badges = hostBadgesFor(useHostBadges(), host);
+  const indicators = hostStatusIndicatorsFor(useHostStatusIndicators(), host);
   const status = useHostStatus(Number(host.id), host.statusCheckEnabled);
 
   const connect = defaultConnectAction(actions, host);
@@ -156,10 +160,8 @@ function HostCard({ host }: { host: Host }) {
             <span className="truncate text-sm font-medium">
               {host.name || host.ip}
             </span>
-            {badges.map((badge) => {
-              const Badge = badge.component;
-              return Badge ? <Badge key={badge.id} host={host} /> : null;
-            })}
+            <HostDataItems host={host} items={indicators} className="gap-1" />
+            <HostDataItems host={host} items={badges} className="gap-1" />
             <HostDotGroup host={host} badges={badges} />
           </div>
           <div className="truncate font-mono text-[11px] text-muted-foreground">

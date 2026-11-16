@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.1
+
+### Changed
+
+- Runs in its own process on Termix 26.11.2 and later, with no access to the server beyond what Termix allows it
+
+### Fixed
+
+- Updated node-forge and follow-redirects to releases with security fixes
+
 ## 1.2.0
 
 ### Added

@@ -1,7 +1,7 @@
 {
   "id": "process-manager",
   "name": "Process Manager",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "See and control running processes, pm2 and supervisor apps on your hosts, read their logs and get alerts when they fail.",
   "author": {
     "name": "Termix"
@@ -24,8 +24,8 @@
   ],
   "env": [],
   "engine": {
-    "termix": ">=26.11.1-0",
-    "api": "^1.15"
+    "termix": ">=26.11.2-0",
+    "api": "^2.0.0"
   },
   "capabilities": [
     "hosts:read",
@@ -39,6 +39,14 @@
     "ui:surface",
     "operations:provide"
   ],
+  "sandbox": {
+    "schedules": [
+      {
+        "id": "watches",
+        "every": 30000
+      }
+    ]
+  },
   "contributes": {
     "tabs": [
       {

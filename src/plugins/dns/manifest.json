@@ -1,7 +1,7 @@
 {
   "id": "dns",
   "name": "DNS",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Manage DNS records and domains across Cloudflare, Route 53, Namecheap and other providers.",
   "author": {
     "name": "Termix"
@@ -24,8 +24,8 @@
   ],
   "env": [],
   "engine": {
-    "termix": ">=26.11.1-0",
-    "api": "^1.15"
+    "termix": ">=26.11.2-0",
+    "api": "^2.0.0"
   },
   "capabilities": [
     "db:own",
@@ -41,6 +41,15 @@
     "notify:send",
     "operations:provide"
   ],
+  "sandbox": {
+    "schedules": [
+      {
+        "id": "work",
+        "every": 60000
+      }
+    ],
+    "events": ["host.deleted", "host.updated"]
+  },
   "provides": [
     {
       "service": "dns.records",

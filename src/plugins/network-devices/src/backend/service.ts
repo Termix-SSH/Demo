@@ -21,6 +21,7 @@ import {
   type DriverIo,
   type Target,
 } from "./drivers/index.js";
+import { keepAwake } from "./keep-awake.js";
 import { createSnmpClient } from "./drivers/snmp-client.js";
 
 const TRAFFIC_POINTS = 120;
@@ -603,7 +604,10 @@ export function createService(
 
     async runDue() {
       const now = Date.now();
-      const due = (await rows()).filter((item) => {
+      const all = await rows();
+      // No devices: nothing keeps the process running.
+      keepAwake(ctx, "poll", all.length > 0);
+      const due = all.filter((item) => {
         const state = stateOf(item);
         return (
           !state.polling && now - state.lastPolled >= item.pollSeconds * 1000

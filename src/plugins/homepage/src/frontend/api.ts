@@ -55,3 +55,9 @@ export async function saveHomepageLayout(
   const res = await client().put<HomepageLayoutRow>("/layout", layout);
   return res.data;
 }
+
+/** A grant for the page saved in one of the user's embed widgets. */
+export async function openEmbeddedPage(id: number): Promise<string> {
+  const res = await client().post<{ grant: string }>(`/items/${id}/view`);
+  return res.data.grant;
+}

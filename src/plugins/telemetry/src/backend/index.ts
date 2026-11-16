@@ -23,7 +23,7 @@ export async function activateWith(ctx: PluginContext, env: Env) {
     }
   };
   ctx.schedule.after(FIRST_CHECK_DELAY_MS, check);
-  ctx.schedule.every(CHECK_INTERVAL_MS, check);
+  ctx.schedule.every(CHECK_INTERVAL_MS, check, { id: "check" });
 
   const countEvent = (feature: string) => async () => {
     const settings = await readSettings(ctx);

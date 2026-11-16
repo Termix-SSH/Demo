@@ -24,7 +24,7 @@ export type HostAuthType = Host["authType"];
  * Whether the Connection Origin control is meaningful for a host.
  *
  * Every protocol Termix can dial from either backend belongs here, plugin
- * protocols included (Termix-SSH/Support#1240); before that the control was
+ * protocols included; before that the control was
  * gated on SSH alone, so a host enabling only remote desktop could never
  * reach the setting.
  */

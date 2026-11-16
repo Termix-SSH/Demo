@@ -8,6 +8,7 @@ import type {
   SnapshotView,
 } from "../shared/types.js";
 import { MARK } from "./scripts.js";
+import { trimEnd } from "./trim.js";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -198,7 +199,7 @@ function parentOf(path: string): string {
 
 /** The direct children of `dir` from `restic ls --json`. */
 export function parseLs(output: string, dir: string): SnapshotEntry[] {
-  const want = dir === "/" ? "/" : dir.replace(/\/+$/, "");
+  const want = dir === "/" ? "/" : trimEnd(dir);
   const out: SnapshotEntry[] = [];
   for (const line of output.split("\n")) {
     const raw = json(line);

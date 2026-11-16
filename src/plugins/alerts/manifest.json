@@ -1,7 +1,7 @@
 {
   "id": "alerts",
   "name": "Alerts",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "One inbox for every alert in Termix, with delivery to webhooks, ntfy, Discord and email.",
   "author": {
     "name": "Termix"
@@ -21,8 +21,8 @@
     "An alerts inbox card for the dashboard"
   ],
   "engine": {
-    "termix": ">=26.11.1-0",
-    "api": "^1.15"
+    "termix": ">=26.11.2-0",
+    "api": "^2.0.0"
   },
   "capabilities": [
     "db:core-refs",
@@ -35,8 +35,22 @@
     "settings:read-core",
     "ui:surface",
     "operations:provide",
-    "notify:send"
+    "notify:send",
+    "network:sockets"
   ],
+  "sandbox": {
+    "schedules": [
+      {
+        "id": "prune",
+        "every": 21600000
+      },
+      {
+        "id": "announcements",
+        "every": 1800000
+      }
+    ],
+    "events": ["user.data_wiped"]
+  },
   "contributes": {
     "tabs": [
       {

@@ -1,4 +1,4 @@
-import express, { type Request, type Response, type Router } from "express";
+import type { Request, Response, Router } from "express";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import type { AccessRequest, RequestStore } from "./store.js";
 import { APPROVE_PERMISSION, type AccessService } from "./access.js";
@@ -34,14 +34,15 @@ function idParam(req: Request): number | null {
   return Number.isSafeInteger(id) && id > 0 ? id : null;
 }
 
+/** Routes go on ctx's own router: a plugin process serves no sub-router. */
 export function registerRoutes(deps: {
+  router: Router;
   ctx: PluginContext;
   store: RequestStore;
   access: AccessService;
   workflow: Workflow;
 }): Router {
-  const { ctx, store, access, workflow } = deps;
-  const router = express.Router();
+  const { router, ctx, store, access, workflow } = deps;
   router.use(ctx.rbac.require("request") as never);
 
   const actor = (res: Response): string | null => {
@@ -167,6 +168,12 @@ export function registerRoutes(deps: {
    * @openapi
    * /plugin-api/privileged-access/requests/{id}/approve:
    *   post:
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: integer
    *     summary: Approve an access request
    *     description: Needs privileged-access.approve and, when the host names approver roles, one of them. Nobody approves their own request.
    *     tags:
@@ -196,6 +203,12 @@ export function registerRoutes(deps: {
    * @openapi
    * /plugin-api/privileged-access/requests/{id}/deny:
    *   post:
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: integer
    *     summary: Deny an access request
    *     tags:
    *       - Privileged Access
@@ -222,6 +235,12 @@ export function registerRoutes(deps: {
    * @openapi
    * /plugin-api/privileged-access/requests/{id}/end:
    *   post:
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: integer
    *     summary: Withdraw a request or end access early
    *     description: The requester, or someone who may approve it. Ending approved access closes the user's open sessions on the host.
    *     tags:

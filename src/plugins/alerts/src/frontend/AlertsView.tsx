@@ -1,12 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Bell, Radio, Route, SlidersHorizontal } from "lucide-react";
-import {
-  usePluginApi,
-  useSettings,
-  useTranslation,
-} from "@termix-ssh/plugin-sdk/frontend";
+import { usePluginApi, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { Button, TabStrip } from "@termix-ssh/plugin-sdk/ui";
-import { AlertSettings } from "./AlertSettings";
+import { useOpenSettingsPage } from "./AlertSettings";
 import { createAlertsApi } from "./api";
 import { ChannelsView } from "./ChannelsView";
 import { InboxView } from "./InboxView";
@@ -34,8 +30,7 @@ export function AlertsView({
   const [section, setSection] = useState<Section>(
     () => sections.take() ?? "inbox",
   );
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const settings = useSettings("user");
+  const openSettingsPage = useOpenSettingsPage();
 
   useEffect(
     () =>
@@ -63,7 +58,7 @@ export function AlertsView({
               size="icon-xs"
               title={t("alertSettings.title")}
               aria-label={t("alertSettings.title")}
-              onClick={() => setSettingsOpen(true)}
+              onClick={() => openSettingsPage()}
             >
               <SlidersHorizontal />
             </Button>
@@ -75,12 +70,6 @@ export function AlertsView({
         {section === "channels" && <ChannelsView api={api} />}
         {section === "rules" && <RulesView api={api} />}
       </div>
-      {settingsOpen && (
-        <AlertSettings
-          settings={settings}
-          onBack={() => setSettingsOpen(false)}
-        />
-      )}
     </div>
   );
 }

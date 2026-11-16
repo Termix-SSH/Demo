@@ -220,11 +220,12 @@ export function createAccessService(ctx: PluginContext, store: RequestStore) {
     reason: string,
   ): Promise<number> {
     let ended = 0;
+    const providers = await ctx.services.providers("sessions.live");
     for (const protocol of LIVE_PROVIDERS) {
-      if (!ctx.services.providers("sessions.live").includes(protocol)) continue;
+      if (!providers.includes(protocol)) continue;
       try {
         ended += await ctx.asUser(userId, async () => {
-          const live = ctx.services.get<LiveProvider>("sessions.live", {
+          const live = await ctx.services.get<LiveProvider>("sessions.live", {
             provider: protocol,
           });
           if (!live.listForUser || !live.ownerEndSession) return 0;

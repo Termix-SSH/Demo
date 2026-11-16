@@ -1,7 +1,7 @@
 {
   "id": "notes",
   "name": "Notes",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Write markdown notes for each host, folder or yourself, with commands you can copy or send to the terminal.",
   "author": {
     "name": "Termix"
@@ -21,8 +21,8 @@
   ],
   "env": [],
   "engine": {
-    "termix": ">=26.11.1-0",
-    "api": "^1.15"
+    "termix": ">=26.11.2-0",
+    "api": "^2.0.0"
   },
   "capabilities": [
     "hosts:read",
@@ -32,6 +32,9 @@
     "db:own",
     "operations:provide"
   ],
+  "sandbox": {
+    "events": ["host.deleted", "user.data_wiped"]
+  },
   "contributes": {
     "tabs": [
       {

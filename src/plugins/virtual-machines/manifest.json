@@ -1,7 +1,7 @@
 {
   "id": "virtual-machines",
   "name": "Virtual Machines",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Create and manage KVM virtual machines on your Linux hosts over SSH with libvirt.",
   "author": {
     "name": "Termix"
@@ -26,8 +26,8 @@
   ],
   "env": [],
   "engine": {
-    "termix": ">=26.11.1-0",
-    "api": "^1.15"
+    "termix": ">=26.11.2-0",
+    "api": "^2.7.0"
   },
   "capabilities": [
     "hosts:read",
@@ -41,6 +41,18 @@
     "ui:surface",
     "operations:provide"
   ],
+  "sandbox": {
+    "schedules": [
+      {
+        "id": "jobs",
+        "every": 10000
+      },
+      {
+        "id": "watches",
+        "every": 60000
+      }
+    ]
+  },
   "optionalDependencies": {
     "remote-desktop": "^1.4.0"
   },
@@ -674,7 +686,8 @@
           "scope": "host"
         }
       ]
-    }
+    },
+    "uses": ["session.remoteDisplay"]
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"]

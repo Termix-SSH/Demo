@@ -142,10 +142,11 @@ export function createEngine(
     }
   }
 
-  function databaseLogins(): DatabaseLoginsV1 | null {
+  async function databaseLogins(): Promise<DatabaseLoginsV1 | null> {
     try {
-      if (ctx.services.providers("databases.logins").length === 0) return null;
-      return ctx.services.get<DatabaseLoginsV1>("databases.logins");
+      const providers = await ctx.services.providers("databases.logins");
+      if (providers.length === 0) return null;
+      return await ctx.services.get<DatabaseLoginsV1>("databases.logins");
     } catch {
       return null;
     }
@@ -230,7 +231,7 @@ export function createEngine(
         runAs: source.runAs,
       };
       if (source.loginId > 0) {
-        const service = databaseLogins();
+        const service = await databaseLogins();
         if (!service) {
           throw new BackupsError(
             "This job uses a Databases plugin login, but the Databases plugin is off",

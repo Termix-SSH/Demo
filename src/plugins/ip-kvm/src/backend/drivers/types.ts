@@ -40,6 +40,18 @@ export interface DriverIo {
       signal?: AbortSignal;
     },
   ) => Promise<Response>;
+  /** Like fetch, but the body streams as it arrives. Used for video. */
+  fetchStream?: (
+    url: string,
+    init: {
+      method?: string;
+      headers?: Record<string, string>;
+      timeoutMs?: number;
+      signal?: AbortSignal;
+      ca?: string;
+      allowPrivateHosts: string[];
+    },
+  ) => Promise<Response>;
   /** Opens a WebSocket to the KVM. Only called with the saved device's address. */
   connect: (
     url: string,

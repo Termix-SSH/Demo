@@ -67,7 +67,7 @@ import type {
   ShareTarget,
 } from "./fleets-api.js";
 import { docsUrl } from "./docs";
-import { FleetSettings, readFleetSettings } from "./FleetSettings";
+import { useOpenSettingsPage, readFleetSettings } from "./FleetSettings";
 
 const SHARE_PERMISSION_LEVELS: SharePermissionLevel[] = [
   "connect",
@@ -1429,7 +1429,7 @@ export function FleetsPanel({
   const [editingFleet, setEditingFleet] = useState<FleetRow | null>(null);
   const confirm = useConfirm();
   const [shareTarget, setShareTarget] = useState<FleetRow | null>(null);
-  const [settingsOpen, setSettingsOpen] = useState(false);
+  const openSettingsPage = useOpenSettingsPage();
   const settings = useSettings("user");
   const { alwaysShowActions } = readFleetSettings(settings.values);
   const hasLoadedRef = useRef(false);
@@ -1483,15 +1483,6 @@ export function FleetsPanel({
     f.name.toLowerCase().includes(search.trim().toLowerCase()),
   );
 
-  if (settingsOpen) {
-    return (
-      <FleetSettings
-        settings={settings}
-        onBack={() => setSettingsOpen(false)}
-      />
-    );
-  }
-
   if (selectedFleet) {
     return (
       <FleetDetail
@@ -1528,7 +1519,7 @@ export function FleetsPanel({
           <Button
             variant="outline"
             size="icon"
-            onClick={() => setSettingsOpen(true)}
+            onClick={() => openSettingsPage()}
             title={t("newUi.sidebar.fleets.settingsTitle")}
             aria-label={t("newUi.sidebar.fleets.settingsTitle")}
           >

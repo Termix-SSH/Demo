@@ -29,12 +29,12 @@ export function createAlerts(ctx: PluginContext) {
   /** The latest storage health of a host, or null when Storage Health is not there. */
   async function storageOf(hostId: number) {
     try {
-      if (ctx.services.providers("storage-health.access").length === 0) {
-        return null;
-      }
-      return await ctx.services
-        .get<StorageAccessV1>("storage-health.access")
-        .check(hostId);
+      const providers = await ctx.services.providers("storage-health.access");
+      if (providers.length === 0) return null;
+      const access = await ctx.services.get<StorageAccessV1>(
+        "storage-health.access",
+      );
+      return await access.check(hostId);
     } catch {
       return null;
     }

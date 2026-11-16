@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   Input,
   PasswordInput,
@@ -123,7 +123,27 @@ export function QuickConnectPanel({ onConnect }: QuickConnectPanelProps) {
       defaultPluginSettings,
     );
 
-  const targets = quickConnectTargets(allActions, buildHost());
+  // One host object per set of inputs: a framed plugin's answer for it is
+  // kept, where a new object every render would be asked again forever.
+  const previewHost = useMemo(
+    buildHost,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      host,
+      port,
+      username,
+      authType,
+      password,
+      privateKey,
+      credentialId,
+      protocol,
+      selected,
+      domain,
+      authFields,
+      defaultPluginSettings,
+    ],
+  );
+  const targets = quickConnectTargets(allActions, previewHost);
 
   const connect = (action?: HostActionDef) => {
     if (!host.trim()) return;

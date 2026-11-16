@@ -1,7 +1,7 @@
 {
   "id": "network-devices",
   "name": "Network Devices",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "See and manage routers, switches and access points over SNMP and router APIs.",
   "author": {
     "name": "Termix"
@@ -22,19 +22,27 @@
   ],
   "env": [],
   "engine": {
-    "termix": ">=26.11.1-0",
-    "api": "^1.15"
+    "termix": ">=26.11.2-0",
+    "api": "^2.0.0"
   },
   "capabilities": [
     "db:own",
     "secrets:own",
     "network:outbound",
-    "network:probe",
+    "network:sockets",
     "network:serve",
     "ui:surface",
     "notify:send",
     "operations:provide"
   ],
+  "sandbox": {
+    "schedules": [
+      {
+        "id": "poll",
+        "every": 15000
+      }
+    ]
+  },
   "contributes": {
     "tabs": [
       {

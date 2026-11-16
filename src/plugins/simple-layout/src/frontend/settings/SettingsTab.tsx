@@ -39,8 +39,22 @@ function usePluginPages(isAdmin: boolean): PluginSummary[] {
   );
 }
 
+/** Plugins link to their page as plugin:<id>, the Classic Layout name. */
+export function pageId(section: string | undefined): string | undefined {
+  return section?.startsWith("plugin:")
+    ? `feature:${section.slice("plugin:".length)}`
+    : section;
+}
+
 /** Settings with only what most people need: look, account, and plugin settings. */
-export function SettingsTab({ section }: { section?: string }) {
+export function SettingsTab({
+  section,
+  sectionAt,
+}: {
+  section?: string;
+  /** Changes on every open request, so asking for the same page again still goes there. */
+  sectionAt?: string | number;
+}) {
   const { t } = useTranslation();
   const shell = useShellController();
   const pluginPages = usePluginPages(shell.isAdmin);
@@ -63,10 +77,10 @@ export function SettingsTab({ section }: { section?: string }) {
     })),
   ];
 
-  const [active, setActive] = useState(section ?? "appearance");
+  const [active, setActive] = useState(pageId(section) ?? "appearance");
   useEffect(() => {
-    if (section) setActive(section);
-  }, [section]);
+    if (section) setActive(pageId(section)!);
+  }, [section, sectionAt]);
 
   // A link to a page this layout does not have lands on Appearance.
   const current = pages.find((page) => page.id === active) ?? pages[0];

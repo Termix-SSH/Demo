@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.3.1
+
+### Changed
+
+- Runs in its own process on Termix 26.11.2 and later, with no access to the server beyond what Termix allows it
+- Other plugins can add their own settings to the Proxmox host settings, drawn in their own frames (needs Termix 26.11.2)
+- Its process stops when it has nothing to watch or run, and Termix starts it again when there is work, which saves memory on Termix 26.11.2 and later
+
+### Fixed
+
+- Stopping the stats view checks that you can see the host and only stops your own view
+- Discovering guests on a host you can't reach answers not found, and server errors no longer show their details
+
 ## 1.3.0
 
 ### Added

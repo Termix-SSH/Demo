@@ -1,7 +1,7 @@
 {
   "id": "ip-kvm",
   "name": "IP-KVM",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "See and control machines through PiKVM, NanoKVM and JetKVM devices.",
   "author": {
     "name": "Termix"
@@ -24,14 +24,14 @@
   ],
   "env": [],
   "engine": {
-    "termix": ">=26.11.1-0",
-    "api": "^1.15"
+    "termix": ">=26.11.2-0",
+    "api": "^2.0.0"
   },
   "capabilities": [
     "db:own",
     "events:core",
     "hosts:read",
-    "network:broadcast",
+    "network:sockets",
     "network:outbound",
     "network:serve",
     "notify:send",
@@ -40,6 +40,15 @@
     "ui:surface",
     "users:impersonate"
   ],
+  "sandbox": {
+    "schedules": [
+      {
+        "id": "poll",
+        "every": 15000
+      }
+    ],
+    "events": ["host.deleted"]
+  },
   "provides": [
     {
       "service": "ip-kvm.power",

@@ -9,6 +9,7 @@ import type {
 } from "../types.js";
 import { GRID_SIZE } from "../types.js";
 import { WidgetTitle, LoadingState } from "@termix-ssh/plugin-sdk/ui";
+import { useRemoteImage } from "./remote-image";
 
 function getFaviconUrl(url: string): string {
   try {
@@ -31,13 +32,14 @@ function LinkTile({
   const [imgFailed, setImgFailed] = useState(false);
   const mouseDownRef = useRef<{ x: number; y: number } | null>(null);
   const faviconUrl = showIcons ? getFaviconUrl(link.url) : null;
+  const faviconSrc = useRemoteImage(faviconUrl);
 
   const content = (
     <div className="group flex items-center gap-2 px-2 py-1.5 hover:bg-muted/40 transition-colors overflow-hidden border-b border-border/30">
       {showIcons &&
-        (faviconUrl && !imgFailed ? (
+        (faviconSrc && !imgFailed ? (
           <img
-            src={faviconUrl}
+            src={faviconSrc}
             alt=""
             className="w-4 h-4 shrink-0 object-contain"
             onError={() => setImgFailed(true)}

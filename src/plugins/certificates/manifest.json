@@ -1,7 +1,7 @@
 {
   "id": "certificates",
   "name": "Certificates",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "See, issue and renew TLS certificates on your hosts with certbot and acme.sh, and get an alert before they expire.",
   "author": {
     "name": "Termix"
@@ -25,8 +25,8 @@
   ],
   "env": [],
   "engine": {
-    "termix": ">=26.11.1-0",
-    "api": "^1.15"
+    "termix": ">=26.11.2-0",
+    "api": "^2.0.0"
   },
   "capabilities": [
     "hosts:read",
@@ -40,6 +40,14 @@
     "kv:own",
     "notify:send"
   ],
+  "sandbox": {
+    "schedules": [
+      {
+        "id": "expiry-check",
+        "every": 21600000
+      }
+    ]
+  },
   "contributes": {
     "tabs": [
       {

@@ -1,7 +1,7 @@
 {
   "id": "object-storage",
   "name": "Object Storage",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Browse and manage S3-compatible object storage buckets and files.",
   "author": {
     "name": "Termix"
@@ -22,8 +22,8 @@
   ],
   "env": [],
   "engine": {
-    "termix": ">=26.11.1-0",
-    "api": "^1.15"
+    "termix": ">=26.11.2-0",
+    "api": "^2.0.0"
   },
   "capabilities": [
     "db:own",
@@ -35,6 +35,14 @@
     "notify:send",
     "operations:provide"
   ],
+  "sandbox": {
+    "schedules": [
+      {
+        "id": "tick",
+        "every": 60000
+      }
+    ]
+  },
   "contributes": {
     "tabs": [
       {

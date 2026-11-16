@@ -35,6 +35,8 @@ import {
 } from "./FeatureSettingsSections";
 import { KeybindingsSettings } from "./KeybindingsSettings";
 import { UpdatesSettings } from "./UpdatesSettings";
+import { HostListSettings } from "./HostListSettings";
+import { CredentialListSettings } from "./CredentialListSettings";
 import { SettingsEmbedContext } from "./settings-embed";
 import { useSettingsPageFilter } from "./page-filter";
 import {
@@ -383,6 +385,8 @@ export function SettingsTab({
                 </SettingsEmbedContext.Provider>
                 {page.id === "keybindings" && <KeybindingsSettings />}
                 {page.id === "updates" && <UpdatesSettings isAdmin={isAdmin} />}
+                {page.id === "host-list" && <HostListSettings />}
+                {page.id === "credential-list" && <CredentialListSettings />}
                 {pluginFeature && (
                   <>
                     {pluginFeature.user && (

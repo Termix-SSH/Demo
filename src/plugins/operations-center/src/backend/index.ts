@@ -39,7 +39,10 @@ export async function activate(ctx: PluginContext) {
     drift,
   });
 
-  ctx.schedule.every(DRIFT_TICK_MS, () => drift.tick(), { jitterMs: 5000 });
+  ctx.schedule.every(DRIFT_TICK_MS, () => drift.tick(), {
+    id: "drift",
+    jitterMs: 5000,
+  });
   ctx.log.info("Operations Center mounted at /plugin-api/operations-center");
 }
 

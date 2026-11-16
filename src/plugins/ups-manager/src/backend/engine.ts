@@ -8,6 +8,7 @@ import {
   messageFor,
   type Condition,
 } from "./conditions.js";
+import { keepAwake } from "./keep-awake.js";
 import { readHostSettings } from "./host-settings.js";
 import type { History } from "./history.js";
 import { readTarget } from "./reader.js";
@@ -63,9 +64,15 @@ export class Engine {
   ) {}
 
   start(): void {
+    keepAwake(this.ctx, "tick", true);
     this.stops.push(
-      this.ctx.schedule.every(TICK_MS, () => this.tick(), { jitterMs: 5_000 }),
-      this.ctx.schedule.every(FLUSH_MS, () => this.history.flush()),
+      this.ctx.schedule.every(TICK_MS, () => this.tick(), {
+        id: "tick",
+        jitterMs: 5_000,
+      }),
+      this.ctx.schedule.every(FLUSH_MS, () => this.history.flush(), {
+        id: "flush",
+      }),
     );
   }
 
@@ -95,6 +102,8 @@ export class Engine {
       this.ctx.log.warn(`Could not load UPS sources: ${message(error)}`);
       return;
     }
+    // Nothing watched: nothing keeps the process running.
+    keepAwake(this.ctx, "tick", rows.length > 0);
     const ids = new Set(rows.map((row) => row.id));
     for (const id of [...this.states.keys()])
       if (!ids.has(id)) this.states.delete(id);

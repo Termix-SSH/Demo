@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, type ComponentType } from "react";
 import {
+  useHost,
   useHostStatus,
   useSettings,
   useShell,
@@ -121,9 +122,11 @@ export function byPlugin(
 export function HostMenuActions({
   host,
   shell,
+  framed = false,
 }: {
   host: PluginHostRecord;
   shell: Opener;
+  framed?: boolean;
 }) {
   const { t } = useTranslation();
   const toast = useToast();
@@ -131,6 +134,22 @@ export function HostMenuActions({
   const actions = useMemo(() => hostActionsOf(catalog, host), [catalog, host]);
   const groups = useMemo(() => byPlugin(actions), [actions]);
   if (actions.length === 0) return null;
+
+  // A frame has no parent menu for a submenu, so it opens the host page instead.
+  if (framed)
+    return (
+      <button
+        type="button"
+        className="flex w-full items-center rounded-sm px-2 py-1.5 text-left text-sm hover:bg-accent hover:text-accent-foreground"
+        onClick={(event) => {
+          event.stopPropagation();
+          openHostPage(shell, host);
+        }}
+      >
+        <Zap className="size-3.5 mr-2" />
+        {t("host.actions")}
+      </button>
+    );
 
   const openForm = (action: CatalogAction) =>
     shell.openSingletonTab(OPS_TAB, {
@@ -212,8 +231,13 @@ export function TabBarHostPageButton({
   const { t } = useTranslation();
   const live = useShell();
   const active = live?.tabs.list.find((tab) => tab.id === live.tabs.activeId);
-  const host =
-    active?.host && active.type !== HOST_TAB ? active.host : targetTab?.host;
+  // In a frame a tab carries its host id, not the host.
+  const activeHost = useHost(
+    active && active.type !== HOST_TAB
+      ? (active.host?.id ?? (active as { hostId?: string | number }).hostId)
+      : undefined,
+  );
+  const host = activeHost ?? targetTab?.host;
   const label = host
     ? t("host.openFor", { name: hostLabel(host) })
     : t("host.open");

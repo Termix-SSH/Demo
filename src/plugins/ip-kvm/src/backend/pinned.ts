@@ -1,5 +1,8 @@
+import http from "node:http";
 import https from "node:https";
 import tls from "node:tls";
+import type { LookupFunction } from "node:net";
+import { resolveTarget } from "@termix-ssh/plugin-sdk/net-guard";
 import { Readable } from "node:stream";
 import type { PeerCertificate } from "../shared/types.js";
 
@@ -42,25 +45,66 @@ export class PinnedAgent extends https.Agent {
   }
 }
 
+export interface NodeFetchInit {
+  method?: string;
+  headers?: Record<string, string>;
+  body?: string;
+  timeoutMs?: number;
+  signal?: AbortSignal;
+}
+
 /** A fetch over the pinned agent, returning a web Response like ctx.fetch. */
 export function pinnedFetch(
   url: string,
   pin: string,
-  init: {
-    method?: string;
-    headers?: Record<string, string>;
-    body?: string;
-    timeoutMs?: number;
-    signal?: AbortSignal;
-  },
+  init: NodeFetchInit,
 ): Promise<Response> {
+  return nodeFetch(url, init, { agent: new PinnedAgent(pin) });
+}
+
+/**
+ * A fetch whose body streams as it arrives, for video. ctx.fetch hands the
+ * body over only once it ends, which a stream never does. Only reaches the
+ * saved device: a private address is refused unless it is that device's.
+ * Redirects are not followed.
+ */
+export async function streamFetch(
+  url: string,
+  init: NodeFetchInit & { ca?: string; allowPrivateHosts: string[] },
+): Promise<Response> {
+  const parsed = new URL(url);
+  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+    throw new Error("Only http and https are allowed");
+  }
+  const { address, family } = await resolveTarget(parsed.hostname, {
+    allowPrivateHosts: init.allowPrivateHosts,
+  });
+  const lookup = ((_host, options, done) => {
+    if (typeof options === "object" && options?.all) {
+      done(null, [{ address, family }]);
+    } else {
+      done(null, address, family);
+    }
+  }) as LookupFunction;
+  return nodeFetch(url, init, {
+    lookup,
+    ...(parsed.protocol === "https:" && init.ca ? { ca: init.ca } : {}),
+  });
+}
+
+function nodeFetch(
+  url: string,
+  init: NodeFetchInit,
+  options: https.RequestOptions,
+): Promise<Response> {
+  const client = url.startsWith("https:") ? https : http;
   return new Promise((resolve, reject) => {
-    const request = https.request(
+    const request = client.request(
       url,
       {
+        ...options,
         method: init.method ?? "GET",
         headers: init.headers,
-        agent: new PinnedAgent(pin),
         timeout: init.timeoutMs,
       },
       (response) => {

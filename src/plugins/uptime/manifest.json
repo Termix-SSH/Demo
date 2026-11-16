@@ -1,7 +1,7 @@
 {
   "id": "uptime",
   "name": "Uptime",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Watch websites, ports, hosts and services, get alerts when they go down, and publish status pages.",
   "author": {
     "name": "Termix"
@@ -26,8 +26,8 @@
   ],
   "env": [],
   "engine": {
-    "termix": ">=26.11.1-0",
-    "api": "^1.15"
+    "termix": ">=26.11.2-0",
+    "api": "^2.0.0"
   },
   "capabilities": [
     "hosts:read",
@@ -35,7 +35,6 @@
     "credentials:use",
     "ssh:connect",
     "network:serve",
-    "network:outbound",
     "network:probe",
     "process:spawn",
     "db:own",
@@ -46,8 +45,26 @@
     "users:impersonate",
     "events:core",
     "ui:surface",
-    "operations:provide"
+    "operations:provide",
+    "network:sockets"
   ],
+  "sandbox": {
+    "schedules": [
+      {
+        "id": "tick",
+        "every": 5000
+      },
+      {
+        "id": "reload",
+        "every": 60000
+      },
+      {
+        "id": "flush",
+        "every": 300000
+      }
+    ],
+    "events": ["host.deleted"]
+  },
   "provides": [
     {
       "service": "uptime.access",

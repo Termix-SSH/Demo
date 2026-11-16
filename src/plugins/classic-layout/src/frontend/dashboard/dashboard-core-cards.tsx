@@ -1,6 +1,7 @@
 import {
   useIsMobile,
   ComponentSlot,
+  DataSlot,
   VersionBadge,
   Facts,
   enabledHostProtocols,
@@ -16,7 +17,6 @@ import {
   type Host,
   type TabType,
   parseServerTime,
-  useActionSlot,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
@@ -301,11 +301,6 @@ export function HostStatusList({
   const scheme = useStatusColorScheme();
   // A phone has no room for the metric bars next to the host name.
   const isMobile = useIsMobile();
-  // A plugin can draw the status badge, falling back to ours.
-  const RowBadge = useActionSlot("dashboard.hostRowBadge").find(
-    (contribution) =>
-      contribution.kind === "component" && contribution.component,
-  )?.component;
   const openHost = (host: Host) => {
     // An overview action (a metrics view) wins over connecting.
     const actions = hostActionsFor(listHostActions(), host);
@@ -359,9 +354,10 @@ export function HostStatusList({
             </span>
             {/* Plugins add live details to a host row here. */}
             {!isMobile && (
-              <ComponentSlot
+              <DataSlot
                 slotId="dashboard.hostRow"
-                props={{
+                rowKey={host.id}
+                context={{
                   hostId: Number(host.id),
                   host,
                   online: availability === "online",
@@ -380,15 +376,20 @@ export function HostStatusList({
                       : t("hosts.status.offline")}
                 </span>
               );
-              return RowBadge && !statusLoading ? (
-                <RowBadge
-                  hostId={Number(host.id)}
-                  host={host}
-                  online={availability === "online"}
+              // A plugin can replace the status badge, falling back to ours.
+              return statusLoading ? (
+                badge
+              ) : (
+                <DataSlot
+                  slotId="dashboard.hostRowBadge"
+                  rowKey={host.id}
+                  context={{
+                    hostId: Number(host.id),
+                    host,
+                    online: availability === "online",
+                  }}
                   fallback={badge}
                 />
-              ) : (
-                badge
               );
             })()}
             <ExternalLink className="size-2.5 shrink-0 text-muted-foreground/0 transition-colors group-hover/row:text-muted-foreground/60" />

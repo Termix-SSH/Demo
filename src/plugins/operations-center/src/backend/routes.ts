@@ -528,4 +528,160 @@ export function registerRoutes(
   router.get("/mcp", (_req, res) => {
     res.status(405).set("Allow", "POST").end();
   });
+
+  /**
+   * @openapi
+   * /plugin-api/operations-center/approvals/{id}:
+   *   post:
+   *     summary: Approve or reject a waiting action
+   *     description: Core decides as the signed in person, with their own rights. What runs is the sealed request, never anything sent here. API keys are refused.
+   *     tags:
+   *       - Operations Center
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: string
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             required: [approve]
+   *             properties:
+   *               approve:
+   *                 type: boolean
+   *               comment:
+   *                 type: string
+   *     responses:
+   *       200:
+   *         description: The run's outcome.
+   *       403:
+   *         description: The caller may not decide this.
+   *       409:
+   *         description: Already decided, expired, or the host changed.
+   */
+  router.post("/approvals/:id", async (req, res) => {
+    if (!actor(ctx, res)) return;
+    const body = (req.body ?? {}) as { approve?: unknown; comment?: unknown };
+    if (typeof body.approve !== "boolean") {
+      res.status(400).json({ error: "approve must be true or false" });
+      return;
+    }
+    try {
+      res.json(
+        await ctx.operations.approvals.decide({
+          approvalId: String(req.params.id),
+          approve: body.approve,
+          comment: typeof body.comment === "string" ? body.comment : undefined,
+        }),
+      );
+    } catch (error) {
+      sendCoreError(res, error);
+    }
+  });
+
+  // Core added these in plugin API 2.6; an older core has no runs here.
+  type Runs = {
+    cancel: (input: { runId: string }) => Promise<{ cancelled: boolean }>;
+    undo: (input: { runId: string; confirmed?: boolean }) => Promise<unknown>;
+  };
+  const coreRuns = (res: Response): Runs | null => {
+    const runs = (ctx.operations as { runs?: Runs }).runs;
+    if (!runs) {
+      res.status(501).json({ error: "This Termix version can't do that" });
+      return null;
+    }
+    return runs;
+  };
+
+  /**
+   * @openapi
+   * /plugin-api/operations-center/runs/{id}/cancel:
+   *   post:
+   *     summary: Cancel a run
+   *     description: Core cancels as the signed in person, with their own rights. API keys are refused.
+   *     tags:
+   *       - Operations Center
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: string
+   *     responses:
+   *       200:
+   *         description: Whether anything was cancelled.
+   *       404:
+   *         description: Not found, or not visible to the caller.
+   */
+  router.post("/runs/:id/cancel", async (req, res) => {
+    if (!actor(ctx, res)) return;
+    const runs = coreRuns(res);
+    if (!runs) return;
+    try {
+      res.json(await runs.cancel({ runId: String(req.params.id) }));
+    } catch (error) {
+      sendCoreError(res, error);
+    }
+  });
+
+  /**
+   * @openapi
+   * /plugin-api/operations-center/runs/{id}/undo:
+   *   post:
+   *     summary: Undo a run
+   *     description: Core runs the action's undo as the signed in person, through the same checks as any run. API keys are refused.
+   *     tags:
+   *       - Operations Center
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: string
+   *     requestBody:
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               confirmed:
+   *                 type: boolean
+   *     responses:
+   *       200:
+   *         description: The new run.
+   *       404:
+   *         description: Not found, or nothing to undo.
+   */
+  router.post("/runs/:id/undo", async (req, res) => {
+    if (!actor(ctx, res)) return;
+    const runs = coreRuns(res);
+    if (!runs) return;
+    try {
+      res.json(
+        await runs.undo({
+          runId: String(req.params.id),
+          confirmed: (req.body as { confirmed?: unknown })?.confirmed === true,
+        }),
+      );
+    } catch (error) {
+      sendCoreError(res, error);
+    }
+  });
+}
+
+/** Passes on core's 4xx with its message; anything else is a plain 500. */
+function sendCoreError(res: Response, error: unknown): void {
+  const status = (error as { status?: unknown }).status;
+  const client = typeof status === "number" && status >= 400 && status < 500;
+  res.status(client ? status : 500).json({
+    error: client
+      ? error instanceof Error
+        ? error.message
+        : String(error)
+      : "Request failed",
+  });
 }
