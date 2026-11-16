@@ -34,6 +34,7 @@ import {
   settle,
   SKIP,
   slug,
+  skipSetup,
 } from "./audit-lib";
 
 const outDir =
@@ -430,6 +431,7 @@ async function home(page: Page) {
     .first()
     .waitFor({ timeout: 60_000 })
     .catch(() => {});
+  await skipSetup(page, 15_000);
   await settle(page, 3000);
 }
 

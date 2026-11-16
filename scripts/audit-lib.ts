@@ -39,13 +39,28 @@ export async function login(
   await skipSetup(page);
 }
 
-/** A fresh server opens the first run setup over the shell: skip it. */
-export async function skipSetup(page: Page) {
+/**
+ * A fresh server opens the first run setup over the shell, and on a slow
+ * machine it can show up a while after login. Waits for the shell or the
+ * setup, and skips the setup.
+ */
+export async function skipSetup(page: Page, waitMs = 90_000) {
   const skip = page.getByRole("button", { name: /^(Skip setup|Not now)$/ });
-  for (let i = 0; i < 3; i++) {
-    if (!(await skip.count())) return;
-    await skip.first().click();
-    await settle(page, 2500);
+  const rail = page.locator("[data-rail-item]").first();
+  const end = Date.now() + waitMs;
+  while (Date.now() < end) {
+    if (await skip.count()) {
+      await skip.first().click();
+      await settle(page, 2500);
+      continue;
+    }
+    if (await rail.count()) {
+      // The setup can open just after the shell draws.
+      await settle(page, 3000);
+      if (!(await skip.count())) return;
+      continue;
+    }
+    await settle(page, 1000);
   }
 }
 
