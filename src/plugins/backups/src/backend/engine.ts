@@ -38,9 +38,11 @@ import {
   restoreRunScript,
   snapshotsScript,
   testRepoScript,
+  unlockRepoScript,
   type DumpPlan,
 } from "./scripts.js";
 import type { JobRow, RepoRow, RunRow, Store } from "./store.js";
+import { backupOptionArgs } from "./validate.js";
 
 /** What the Databases plugin's databases.logins service gives back. */
 export interface DatabaseLoginsV1 {
@@ -355,6 +357,12 @@ export function createEngine(
       };
     },
 
+    async unlockRepo(repo: RepoRow, hostId: number): Promise<void> {
+      await remote.root(hostId, unlockRepoScript(await envFor(repo, hostId)), {
+        timeoutMs: 120_000,
+      });
+    },
+
     async startBackup(
       job: JobRow,
       trigger: RunTrigger,
@@ -406,6 +414,7 @@ export function createEngine(
             dumps: plan.dumps,
             stopStacks: plan.stopStacks,
             oneFileSystem: job.oneFileSystem,
+            options: backupOptionArgs(job.backupOptions),
             keep: job.keep,
             pre: job.hooks.pre,
             post: job.hooks.post,

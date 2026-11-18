@@ -36,6 +36,7 @@
     "checkNow": "Tjek nu"
   },
   "nav": {
+    "theme": "Tema",
     "copyPassword": "Kopiér adgangskode",
     "copySudoPassword": "Kopiér sudo-adgangskode",
     "passwordCopied": "Adgangskode kopieret til udklipsholderen",
@@ -72,7 +73,15 @@
     "mobileNavigation": "Navigation",
     "allTabs": "Alle faner",
     "hideTabBar": "Skjul fanelinje",
-    "showTabBar": "Vis fanelinje"
+    "showTabBar": "Vis fanelinje",
+    "allApps": "Alle apps",
+    "findApp": "Find en app",
+    "pinToRail": "Fastgør til sidebjælken",
+    "unpinFromRail": "Frigør fra sidebjælken",
+    "appSettings": "App-indstillinger",
+    "allAppsHint": "Fastgør dem, du bruger. Højreklik på en app for at åbne dens indstillinger.",
+    "allAppsLockedHint": "Din administrator vælger de apps, der vises på din sidebjælke.",
+    "viewMenu": "Vis"
   },
   "commandPalette": {
     "searchPlaceholder": "Søg i værter, kommandoer eller indstillinger...",
@@ -171,7 +180,8 @@
     "dragToReorder": "Træk i fliserne for at flytte dem, og træk i kanterne for at ændre størrelse",
     "clearActivityConfirm": "Ryd din seneste aktivitet?",
     "resetConfirm": "Nulstil dashboardet til standardlayoutet?",
-    "clearFailed": "Kunne ikke rydde seneste aktivitet"
+    "clearFailed": "Kunne ikke rydde seneste aktivitet",
+    "help": "Hjælp"
   },
   "admin": {
     "sectionGeneral": "Generelt",
@@ -237,6 +247,9 @@
     "credentialStorage": "Tillad gemning af adgangskoder og nøgler",
     "credentialStorageOff": "Gemning af adgangskoder og nøgler er slået fra på denne server. Lad dem være tomme, og Termix beder om dem, når du opretter forbindelse.",
     "credentialStorageDesc": "Slået fra: Ingen kan gemme en adgangskode eller en privat nøgle på en vært eller et legitimationsoplysning, og Termix beder om dem ved oprettelse af forbindelse. Allerede gemte logins forbliver, indtil de fjernes.",
+    "hostKeyTrust": "Stol på nye vært-nøgler uden forespørgsel",
+    "hostKeyTrustDesc": "Når et plugin, en planlagt opgave eller API'en opretter forbindelse til en vært, hvis nøgle aldrig er blevet kontrolleret, gemes nøglen, og forbindelsen oprettes. Hvis denne indstilling er slået fra, afvises disse forbindelser, indtil nogen åbner en terminal til værten og stoler på dens nøgle.",
+    "hostKeyTrustFailed": "Kunne ikke opdatere indstillingen for vært-nøgler",
     "secondFactorAfterExternalLogin": "Bed om en anden faktor efter eksterne logins (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Når den er slået fra, bedes der kun om en anden faktor efter login med adgangskode og andre lokale logins, som før. Når den er slået til, bedes der om den efter hver loginmetode, herunder SSO og LDAP.",
     "allowPasswordReset": "Tillad nulstilling af adgangskode",
@@ -487,7 +500,91 @@
     "revokeSession": "Log ud",
     "deleteRoleConfirm": "Slet rollen {{name}}?",
     "revokeKeyConfirm": "Ophæv API-nøglen {{name}}?",
-    "revokeKey": "Ophæv"
+    "revokeKey": "Ophæv",
+    "apiKeyScopeReadAll": "Skrivebeskyttet, alt hvad brugeren kan se",
+    "apiKeyNeverExpires": "Udløber aldrig",
+    "apiKeyExpiryHint": "Hvis feltet er tomt, gælder nøglen i 90 dage.",
+    "changeHeld": "Denne ændring ventes i {{minutes}} minutter, så de andre administratorer kan se den.",
+    "userStatusFilter": "Kontostatus",
+    "userStatusAll": "Alle konti",
+    "userStatusActive": "Aktiv",
+    "userStatusDisabled": "Slukket",
+    "userStatusPending": "Venter på godkendelse",
+    "disabledBadge": "Slukket",
+    "pendingBadge": "Afventer",
+    "accountStatusTitle": "Kontostatus",
+    "accountStatusActive": "Denne konto kan logge ind.",
+    "accountStatusDisabled": "Denne konto er slukket. Den kan ikke logge ind, og dens API-nøgler fungerer ikke.",
+    "accountStatusPending": "Denne konto venter på godkendelse og kan endnu ikke logge ind.",
+    "lastLogin": "Seneste login {{time}}",
+    "disableUser": "Sluk konto",
+    "enableUser": "Aktivér konto",
+    "approveUser": "Godkend",
+    "disableUserConfirm": "Deaktiver {{username}}? Brugeren logges ud overalt og kan ikke logge ind, før du aktiverer kontoen igen.",
+    "userDisabled": "{{username}} er deaktiveret",
+    "userEnabled": "{{username}} er aktiveret",
+    "userApproved": "{{username}} er godkendt",
+    "userStatusFailed": "Kunne ikke ændre kontoen",
+    "profileTitle": "Navn og e-mail",
+    "displayName": "Visningsnavn",
+    "displayNamePlaceholder": "Visningsnavn",
+    "email": "E-mail",
+    "emailPlaceholder": "E-mail",
+    "profileSaved": "Gemt",
+    "profileSaveFailed": "Kunne ikke gemme",
+    "manageTabAccess": "Adgang",
+    "sectionInvites": "Invitationslinks",
+    "invitesDescription": "Links, der gør det muligt for nogen at oprette en konto, selvom tilmelding er deaktiveret.",
+    "invitesEmpty": "Ingen invitationslinks endnu",
+    "inviteCreate": "Ny invitation",
+    "inviteCreateFailed": "Kunne ikke oprette invitationen",
+    "inviteCreatedNotice": "Kopiér dette link nu. Det vises ikke igen.",
+    "inviteCopy": "Kopiér link",
+    "inviteCopied": "Link kopieret",
+    "inviteNotePlaceholder": "Bemærkning, f.eks. hvem det er til",
+    "inviteRole": "Rolle",
+    "inviteNoRole": "Ingen ekstra rolle",
+    "inviteExpires": "Udløber",
+    "inviteExpiresIn_one": "Udløber om {{count}} dag",
+    "inviteExpiresIn_other": "Udløber om {{count}} dage",
+    "inviteUses": "Brug",
+    "inviteMakeAdmin": "Gør dem til administrator",
+    "inviteUntitled": "Inviter",
+    "inviteUsesOf": "{{uses}} af {{max}} brugt",
+    "inviteState_active": "Aktiv",
+    "inviteState_revoked": "Ophævet",
+    "inviteState_expired": "Udløbet",
+    "inviteState_used": "Brugt op",
+    "inviteRevoke": "Ophæv",
+    "inviteRevokeConfirm": "Vil du ophæve denne invitationslink?",
+    "inviteRevokeFailed": "Kunne ikke ophæve invitationen",
+    "sectionAccess": "Adgangsoversigt",
+    "accessCount_one": "{{count}} deling",
+    "accessCount_other": "{{count}} delinger",
+    "accessExport": "Eksporter CSV",
+    "accessExportFailed": "Kunne ikke eksportere",
+    "accessKind": "Type",
+    "accessKindAll": "Alt",
+    "accessKind_host": "Vært",
+    "accessKind_folder": "Mappe",
+    "accessKind_credential": "Legitimationsoplysninger",
+    "accessUser": "Bruger",
+    "accessAnyUser": "Enhver bruger",
+    "accessRole": "Rolle",
+    "accessAnyRole": "Enhver rolle",
+    "accessToUser": "til {{name}}",
+    "accessToRole": "til rollen {{name}}",
+    "accessOwner": "ejer {{name}}",
+    "accessGrantedBy": "delt af {{name}}",
+    "accessExpires": "ophører {{date}}",
+    "accessLastUsed": "sidst brugt {{date}}",
+    "accessEmpty": "Intet er delt",
+    "sectionAccountSettings": "Konti og adgang",
+    "adminHostBypass": "Administratorer kan åbne alle brugeres værter",
+    "adminHostBypassDesc": "Når den er slået fra, kan administratorer kun se værter, der er delt med dem, og kan ikke åbne andre brugeres data fra brugerens side. Hvis den slås til, ventes der på administratorens afkølingstid, hvis der er indstillet en.",
+    "signupApproval": "Godkend nye SSO-konti",
+    "signupApprovalDesc": "Når nogen logger ind via SSO eller LDAP for første gang, skal en administrator godkende kontoen, før den kan bruges.",
+    "updateSettingFailed": "Kunne ikke gemme indstillingen"
   },
   "newUi": {
     "sidebar": {
@@ -510,7 +607,8 @@
         "domainPlaceholder": "valgfrit",
         "connectToAction": "Forbind til {{name}}",
         "sshProtocol": "SSH",
-        "noTarget": "Intet installeret kan forbinde til denne type vært"
+        "noTarget": "Intet installeret kan forbinde til denne type vært",
+        "loadingTargets": "Indlæser forbindelsesmuligheder..."
       },
       "keybindings": {
         "description": "Tilknyt taster til handlinger i terminalen og appen, eller ændr de indbyggede genveje.",
@@ -564,6 +662,9 @@
         "desktopProfileDescription": "Denne profil findes kun på denne enhed og logger sig selv ind. Link den til en Termix-server for at bruge de samme værter og indstillinger på alle enheder.",
         "sectionInterface": "Grænseflade",
         "interfacePresetDesc": "Hvor mange detaljer Termix viser. Alle funktioner forbliver tilgængelige.",
+        "closeToTray": "Luk til systembakke",
+        "closeToTrayDesc": "Når du lukker vinduet, kører Termix videre i systembakken, så dine forbindelser forbliver åbne. Slå det fra for at afslutte programmet, når du lukker vinduet.",
+        "closeToTraySaveFailed": "Kunne ikke gemme indstillingen",
         "presetClearOverrides": "Nulstil alle",
         "presetOverridesTitle": "Tilpasset",
         "presetRevertArea": "Fortryd",
@@ -697,7 +798,11 @@
         "tryBetaDescription": "Deltag i beta-programmet under Opdateringer.",
         "sendBetaFeedback": "Send beta-feedback",
         "openUpdates": "Opdateringer",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "Visningsnavn",
+        "emailLabel": "E-mail",
+        "profileSaved": "Gemt",
+        "profileSaveFailed": "Kunne ikke gemme"
       }
     }
   },
@@ -729,6 +834,10 @@
     "apiKeys": "API-nøgler",
     "data": "Data og synkronisering",
     "interface": "Grænseflade",
+    "hostList": "Værtsliste",
+    "credentialList": "Legitimationsliste",
+    "openHostList": "Indstillinger for værtsliste",
+    "openCredentialList": "Indstillinger for legitimationsliste",
     "appearance": "Udseende",
     "keybindings": "Tastaturgenveje",
     "adminGeneral": "Generelt",
@@ -788,6 +897,36 @@
       "hostRows": {
         "label": "Valgmuligheder for værtsrækker"
       }
+    },
+    "adminAccess": "Adgangsoversigt",
+    "yourApps": "Dine apps",
+    "otherApps": "Andre apps",
+    "hostForm": {
+      "label": "Skema til tilføjelse af vært",
+      "description": "Enkel viser adresse, login, mappe og tags. Fuld viser alle muligheder. Du kan også skifte inde i selve skemaet.",
+      "simple": "Enkel",
+      "full": "Fuld"
+    },
+    "interfaceDefaults": {
+      "title": "Standardindstillinger for grænseflade",
+      "intro": "Vælg, hvad folk ser, når de logger ind for første gang. De kan stadig ændre deres egen visning, medmindre du låser den.",
+      "setFor": "Indstil for",
+      "everyone": "Alle",
+      "inherits": "Bruger Alle, indtil du ændrer noget",
+      "useEveryone": "Brug Alle",
+      "look": "Startudseende",
+      "lookHint": "Enkelt viser det mindste. Avanceret viser alle knapper.",
+      "simple": "Enkelt",
+      "balanced": "Balanceret",
+      "advanced": "Avanceret",
+      "lock": "Lås",
+      "lockHint": "Personer med denne rolle kan ikke ændre deres udseende eller appene på deres rail.",
+      "apps": "Appene på railen",
+      "appsHint": "De øvrige forbliver i Alle apps og søgning.",
+      "appsAdvanced": "Avanceret viser alle apps på railen.",
+      "saved": "Grænseflade-standarder gemt",
+      "saveFailed": "Kunne ikke gemme grænseflade-standarder",
+      "lockedNote": "Din administrator har valgt dit udseende, så det kan ikke ændres her."
     }
   },
   "hostDefaults": {
@@ -867,12 +1006,19 @@
     "pickHint": "Alt om en forbindelse findes her, grupperet så du kan finde det.",
     "clearChoice": "Ryd",
     "proxyPathTarget": "mål",
-    "hostCopyName": "{{name}} (kopie)"
+    "hostCopyName": "{{name}} (kopie)",
+    "moreOptions": "Flere indstillinger",
+    "moreOptionsHint": "Proxy, jump hosts, port knocking, keepalive, statuskontroller og tænd/sluk-knappen for hver app. De fleste hosts har ikke brug for dem.",
+    "folderAndTags": "Mappe, tags og noter"
   },
   "permissions": {
     "branding": {
       "title": "Skift branding",
       "description": "Indstil app-navn, slogan og logo, der vises for alle."
+    },
+    "interfaceDefaults": {
+      "title": "Indstil grænseflade-standarder",
+      "description": "Vælg det udseende og de rail-apps, folk starter med, for alle eller for hver rolle."
     }
   },
   "onboarding": {
@@ -907,6 +1053,8 @@
     "clickAuto": "Den første måde at oprette forbindelse på",
     "useDefaultNamed": "Standard ({{name}})",
     "useDefaultButtons": "Brug standardknapperne",
-    "perHostHint": "For at ændre dem for én enkelt vært, skal du bruge 'Knapper på værtsrækker' i dens menu."
+    "perHostHint": "For at ændre dem for én enkelt vært, skal du bruge 'Knapper på værtsrækker' i dens menu.",
+    "moreTools": "Flere værktøjer",
+    "more": "Mere"
   }
 }

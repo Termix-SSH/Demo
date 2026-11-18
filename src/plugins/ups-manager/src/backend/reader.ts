@@ -17,12 +17,15 @@ import {
 import { parseSnmp, readScript as snmpScript } from "./backends/snmp.js";
 import { UpsError } from "./errors.js";
 import type { Remote } from "./remote.js";
+import { applyDcPower } from "./power.js";
 
 export interface Target {
   hostId: number;
   backend: Backend;
   target: string;
   snmpVersion: "1" | "2c" | "3";
+  inputDc?: boolean;
+  outputDc?: boolean;
 }
 
 /** One reading from a UPS, whatever it speaks. */
@@ -32,7 +35,10 @@ export async function readTarget(
   secrets: SourceSecrets,
 ): Promise<Reading> {
   if (target.backend === "nut") {
-    return parseNut(await remote.run(target.hostId, nutScript(target.target)));
+    return applyDcPower(
+      parseNut(await remote.run(target.hostId, nutScript(target.target))),
+      target,
+    );
   }
   if (target.backend === "apcupsd") {
     return parseApcupsd(

@@ -27,7 +27,7 @@ import { DeviceForm } from "./DeviceForm";
 import { DeviceView } from "./DeviceView";
 import { statusTone } from "./format";
 import { KvmCard } from "./KvmCard";
-import { deviceForHost, remember, startWatching, stopWatching } from "./store";
+import { deviceForHost, reloadKnown, remember, resetStore } from "./store";
 
 const TAB_ID = "ip-kvm";
 const REFRESH_MS = 20_000;
@@ -250,9 +250,8 @@ const ROW_TONE = {
   idle: "muted",
 } as const;
 
-export function activate(app: TermixApp): void {
+export async function activate(app: TermixApp): Promise<void> {
   initApi(app.api);
-  startWatching();
 
   app.registerRailItem({
     id: TAB_ID,
@@ -277,7 +276,6 @@ export function activate(app: TermixApp): void {
     frame: "framed",
     component: KvmCard,
   });
-  // The list fills in shortly after start, so the button appears a moment later
   app.registerHostAction({
     id: "ip-kvm",
     titleKey: "host.open",
@@ -292,8 +290,13 @@ export function activate(app: TermixApp): void {
       }
     },
   });
+  // Which hosts have a device, before the shell asks the button above.
+  await Promise.race([
+    reloadKnown(),
+    new Promise((resolve) => setTimeout(resolve, 3_000)),
+  ]);
 }
 
 export function deactivate(): void {
-  stopWatching();
+  resetStore();
 }

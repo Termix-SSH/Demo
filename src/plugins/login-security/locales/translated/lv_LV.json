@@ -46,6 +46,10 @@
       "connectFactorMinutes": {
         "label": "Minūtes pirms nākamās pieprasīšanas",
         "description": "Pēc ievadīšanas lietotājs var izveidot savienojumu ar jebkuru resursdatoru šajā laikā. Izrakstoties, šis periods beidzas agrāk."
+      },
+      "newDeviceNotice": {
+        "label": "Brīdinājums par jaunu ierīci",
+        "description": "Nosūtīt lietotājiem brīdinājumu, kad kāds pieslēdzas viņu kontam no ierīces, kuru sistēma iepriekš nav redzējusi. Katrs lietotājs var šo funkciju izslēgt sev."
       }
     },
     "host": {
@@ -53,11 +57,18 @@
         "label": "Pirms savienojuma izveides prasīt otro autentifikācijas faktoru",
         "description": "Izmanto, ja Pieteikšanās drošība ir iestatīta uz prasīšanu tikai atzīmētajiem resursdatoriem."
       }
+    },
+    "user": {
+      "newDeviceNotice": {
+        "label": "Brīdināt mani par jaunu ierīci",
+        "description": "Saņemt brīdinājumu, kad kāds pieslēdzas jūsu kontam no ierīces, kuru sistēma iepriekš nav redzējusi."
+      }
     }
   },
   "verify": {
     "title": "Apstiprināt otro autentifikācijas faktoru",
     "intro": "Ievadiet otro autentifikācijas faktoru, lai izveidotu savienojumu ar šo resursdatoru.",
+    "start": "Verificēt",
     "done": "Apstiprināts",
     "retry": "Atgriezieties pie resursdatora un mēģiniet izveidot savienojumu vēlreiz.",
     "failed": "Tas nestrādāja. Mēģiniet vēlreiz.",
@@ -74,5 +85,69 @@
     "body": "Jūsu administrators prasa izmantot otro autentifikācijas faktoru, lai pieteiktos. Iestatiet to zemāk, lai turpinātu izmantot Termix.",
     "none": "Šeit nav ko iestatīt? Lūdziet administratoru instalēt otrās pakāpes autentifikācijas spraudni.",
     "signOut": "Izrakstīties"
+  },
+  "never": "nekad",
+  "sessions": {
+    "title": "Sesijas un atslēgas",
+    "tab": "Sesijas",
+    "current": "Šī sesija",
+    "meta": "{{type}} | pēdējā aktivitāte {{lastActive}} | pieslēdzās {{created}}",
+    "none": "Nav sesiju",
+    "end": "Izrakstīties",
+    "ended": "Izrakstījāties",
+    "endOthers": "Izrakstīties no pārējām sesijām",
+    "endOthersConfirm": "Izrakstīt no pārējām {{count}} sesijām?",
+    "endedOthers": "Jūsu pārējās sesijas ir izrakstītas",
+    "everyone": "Izrakstīt visus",
+    "everyoneConfirm": "Izrakstīt visus lietotājus no šī servera?",
+    "everyoneDescription": "Visiem, izņemot jums, būs jāielogojas vēlreiz. Darbvirsmas lietotnes, kas ir saistītas ar šo serveri, būs jāsaista vēlreiz.",
+    "everyoneKeysConfirm": "Vai arī atcelt visu API atslēgu derīgumu šajā serverī?",
+    "everyoneKeys": "Atsaukt arī atslēgas",
+    "everyoneKeysNo": "Atstāt atslēgas",
+    "everyoneDone": "Visi ir izrakstījušies",
+    "failed": "Tas nestrādāja. Mēģiniet vēlreiz.",
+    "loadFailed": "Neizdevās ielādēt jūsu sesijas un atslēgas."
+  },
+  "keys": {
+    "tab": "API atslēgas",
+    "none": "Jums nav API atslēgu",
+    "full": "pilnīga piekļuve",
+    "noExpiry": "nekad",
+    "meta": "{{prefix}} | pēdējā reize izmantota {{lastUsed}} | derīga līdz {{expires}}",
+    "revoke": "Atsaukt",
+    "revoked": "Atslēga atsaukta",
+    "revokeAll": "Atsaukt visas atslēgas",
+    "revokeAllConfirm": "Vai atsaukt jūsu {{count}} API atslēgas? Skripti, kas tās izmanto, vairs nestrādās.",
+    "revokedAll": "Jūsu API atslēgas ir atsauktas"
+  },
+  "waits": {
+    "title": "Administrācijas gaidīšanas periods",
+    "intro": "Ja ir divi vai vairāk administratori, ja tiek pievienots jauns administrators, izslēgta paroles pieteikšanās, izslēgts pieteikšanās spraudnis vai ieslēgts spraudnis ar bīstamām piekļuves tiesībām, izmaiņas stājas spēkā pēc šī gaidīšanas perioda. Pārējie administratori saņem brīdinājumu un var atcelt izmaiņas. Šī perioda izslēgšana vai saīsināšana arī prasa gaidīšanas periodu.",
+    "adminOnly": "To var redzēt tikai administratori.",
+    "loadFailed": "Neizdevās ielādēt administrācijas gaidīšanas periodu.",
+    "active": "Ieslēgts, izmaiņas gaida {{minutes}} minūtes",
+    "onOneAdmin": "Ieslēgts, bet šim serverim ir tikai viens administrators, tāpēc nav ko gaidīt",
+    "off": "Izslēgts",
+    "admins": "zero: \"0 administratori\", one: \"1 administrators\", other: \"{{count}} administratori\"",
+    "forced": "Iestatīts serverī ar {{name}}.",
+    "minutes": "Minūtes",
+    "turnOn": "Ieslēgt",
+    "change": "Saglabāt",
+    "turnOff": "Izslēgt",
+    "saved": "Saglabāts",
+    "savedHeld": "Saglabāts. Vispirms tiek gaidīti pārējie administratori.",
+    "failed": "Tas nestrādāja. Mēģiniet vēlreiz.",
+    "none": "Pārvaldnieka izmaiņas vēl nav gaidītas",
+    "meta": "Lūgums no {{who}} | attiecas {{runsAt}}",
+    "cancel": "Atcelt",
+    "cancelConfirm": "Vai atcelt šo izmaiņu?",
+    "cancelled": "Atcelts",
+    "status": {
+      "pending": "Gaida",
+      "applying": "Lieto",
+      "applied": "Lietots",
+      "cancelled": "Atcelts",
+      "failed": "Neizdevās"
+    }
   }
 }

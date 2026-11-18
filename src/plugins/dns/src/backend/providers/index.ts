@@ -7,6 +7,7 @@ import { hetzner } from "./hetzner.js";
 import { namecheap } from "./namecheap.js";
 import { porkbun } from "./porkbun.js";
 import { route53 } from "./route53.js";
+import { spaceship } from "./spaceship.js";
 import type { DnsProvider } from "./types.js";
 
 export const providers: DnsProvider[] = [
@@ -18,6 +19,7 @@ export const providers: DnsProvider[] = [
   godaddy,
   porkbun,
   gandi,
+  spaceship,
 ];
 
 export function getProvider(id: string): DnsProvider | undefined {

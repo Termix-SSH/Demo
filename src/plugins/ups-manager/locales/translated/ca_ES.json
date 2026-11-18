@@ -8,7 +8,10 @@
     "viewHistory": "Historial",
     "viewEvents": "Esdeveniments",
     "viewCommands": "Comandes",
-    "viewSources": "Dispositius"
+    "viewSources": "Dispositius",
+    "refresh": "Actualització en temps real",
+    "refreshSeconds": "{{seconds}} segons",
+    "refreshHint": "S'actualitza només mentre la vista General és visible. El SAI pot actualitzar-se més lentament. La consulta en segon pla i les mostres emmagatzemades es mantenen a 30 segons."
   },
   "common": {
     "loading": "S'està carregant...",
@@ -47,6 +50,8 @@
     "charge": "Càrrega de la bateria",
     "runtime": "Temps restant",
     "load": "Càrrega",
+    "estimatedLoad": "Càrrega estimada del SAI",
+    "estimatedLoadHint": "Watts de sortida / {{watts}} W de potència nominal. {{method}}. La precisió del sensor no està verificada; no és l'ús de la CPU ni el consum de la xarxa elèctrica.",
     "nominal": "{{watts}} W de potència nominal",
     "input": "Voltatge d'entrada",
     "output": "Voltatge de sortida",
@@ -59,6 +64,60 @@
     "readAt": "Última lectura",
     "ago": "Fa {{time}}"
   },
+  "electrical": {
+    "inputDc": "L'entrada és CC",
+    "outputDc": "La sortida és CC",
+    "dcHint": "Confirmeu el domini elèctric abans de calcular els watts a partir del voltatge i el corrent. Això no modifica cap configuració del SAI. La precisió del sensor s'ha de verificar independentment.",
+    "inputCurrent": "Corrent d'entrada",
+    "outputCurrent": "Corrent de sortida",
+    "batteryCurrent": "Corrent de la bateria",
+    "inputPower": "Potència d'entrada",
+    "outputPower": "Potència de sortida",
+    "reported": "Potència real informada",
+    "calculated": "Potència CC calculada: precisió del sensor no verificada",
+    "batteryType": "Química de la bateria",
+    "chargeLow": "Llindar de càrrega baixa",
+    "chargeWarning": "Llindar d'advertència de càrrega",
+    "manufactured": "Data de fabricació de la bateria",
+    "driver": "Controlador",
+    "driverVersion": "Versió del controlador",
+    "subdriver": "Subcontrolador HID",
+    "driverState": "Estat del controlador",
+    "usb": "Venedor/producte USB",
+    "raw": "Variables avançades de NUT",
+    "search": "Filtra noms o valors de variables",
+    "noVariables": "No s'han trobat variables coincidents.",
+    "dcDisclaimer": "L'estimació de la potència de sortida CC calcula la càrrega del SAI, no el consum de la paret CA. No és necessàriament el consum d'un sol host. Valideu les lectures de corrent abans de confiar en les estimacions de potència o energia."
+  },
+  "energy": {
+    "period": "Energia de sortida observada (període seleccionat)",
+    "lifetime": "Energia de sortida observada (època actual)",
+    "estimated": "Estimat a partir de mostres programades; no és un comptador de maquinari",
+    "coverage": "Cobertura mesurada",
+    "covered": "Temps integrat",
+    "incomplete": "Dades incompletes; el temps que falta no s'estima",
+    "complete": "Cobertura mesurada completa",
+    "average": "Potència de sortida mitjana (temps cobert)",
+    "peak": "Pic de sortida mostrat",
+    "sampledRange": "Interval de potència mostrat",
+    "scope": "Sortida del SAI, no energia de la paret CA. Els totals del període abasten les èpoques de seguiment llistades; no considereu diferents èpoques com un sol comptador físic.",
+    "resolution": "Segment nominal del gràfic: {{seconds}} segons; els buits es mantenen separats. Passeu el cursor sobre els punts per veure l'hora absoluta i la zona horària.",
+    "empty": "El seguiment d'energia necessita dues lectures de potència programades vàlides. Els watts desconeguts continuen estant no disponibles, no zero.",
+    "error": "No s'ha pogut llegir l'historial d'energia.",
+    "bucket": "Energia de sortida observada per segment",
+    "samples": "Mostres accessibles i energia observada acumulada",
+    "tableHelp": "Només es suma l'energia observada. Els intervals que falten no es completen. Els valors acumulats abasten les èpoques llistades.",
+    "time": "Inici del segment (zona horària local)",
+    "cumulative": "Wh acumulats en el període seleccionat",
+    "cumulativeChart": "Energia de sortida observada acumulada (període seleccionat)",
+    "epochTotal": "Energia observada en aquesta època",
+    "unavailable": "Potència de sortida no disponible",
+    "epochs": "Èpoques de seguiment separades",
+    "started": "Seguiment iniciat",
+    "method": "Mètode de potència",
+    "chartHelp": "Dades proporcionals al temps. Els intervals que falten i els canvis d'època de seguiment no estan connectats. Els pics mostrejats no són mesures de pic del maquinari. Després dels gràfics hi ha una taula de dades accessible.",
+    "correlationBlocked": "La correlació CPU/memòria no està disponible: Host Metrics necessita un servei de captures públic i autoritzat amb marques de temps de les mesures. No s'ha habilitat cap recollida addicional de l'amfitrió."
+  },
   "history": {
     "error": "No s'ha pogut carregar l'historial.",
     "24h": "24 hores",
@@ -66,7 +125,7 @@
     "30d": "30 dies",
     "empty": "Encara no hi ha prou lectures. Termix llegeix l'UPS cada 30 segons.",
     "charge": "Càrrega de la bateria",
-    "load": "Càrrega",
+    "load": "Càrrega (només informada pel dispositiu)",
     "runtime": "Temps restant",
     "voltage": "Voltatge"
   },
@@ -113,7 +172,7 @@
     "unreachable": "inaccessible",
     "saved": "Desat.",
     "deleteTitle": "Eliminar {{name}}?",
-    "deleteText": "També s'eliminaran el seu historial i els seus esdeveniments."
+    "deleteText": "També s'eliminaran el seu historial, els totals d'energia, les èpoques de seguiment i els esdeveniments."
   },
   "editor": {
     "addTitle": "Afegir SAI",
@@ -172,6 +231,8 @@
     "testFailed": "No s'ha pogut llegir el SAI."
   },
   "card": {
+    "estimatedLoad": "{{value}}% de càrrega estimada del SAI",
+    "dc": "CC calculada, no verificada",
     "title": "SAI",
     "empty": "No hi ha cap SAI configurat. Activa el gestor de SAI per a un host i afegeix un dispositiu.",
     "runtime": "{{time}} restant",

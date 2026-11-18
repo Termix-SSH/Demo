@@ -69,6 +69,8 @@ export function useScrollSpy(
   const idsKey = ids.join("|");
   // A jump scrolls past every section between; the spy waits it out.
   const lockUntil = useRef(0);
+  // A smooth scroll down a long form is slow and hard to follow.
+  const behavior: ScrollBehavior = "auto";
 
   useEffect(() => {
     const container = containerRef.current;
@@ -122,7 +124,7 @@ export function useScrollSpy(
         8;
       let lastTop = target();
       let lastHeight = area.scrollHeight;
-      area.scrollTo?.({ top: lastTop, behavior: "smooth" });
+      area.scrollTo?.({ top: lastTop, behavior });
       // Sections above can still be mounting, which moves the target or
       // cuts the scroll short. Follow it until the scroll lands and the
       // layout stops changing, unless the user scrolls first.
@@ -150,7 +152,7 @@ export function useScrollSpy(
           lastTop = top;
           lastHeight = area.scrollHeight;
           changedAt = now;
-          area.scrollTo?.({ top, behavior: "smooth" });
+          area.scrollTo?.({ top, behavior });
         }
         const reachable = Math.min(
           lastTop,

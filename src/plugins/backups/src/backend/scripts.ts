@@ -171,6 +171,14 @@ export function forgetSnapshotScript(env: Env, snapshot: string): string {
   );
 }
 
+/** Removes locks left by restic runs that died. Live locks stay. */
+export function unlockRepoScript(env: Env): string {
+  return withRepo(
+    env,
+    `restic unlock 2>&1 || { ${errLine("Could not remove the stale locks")}; exit 1; }`,
+  );
+}
+
 /** Opens the repository, or makes it when `init` is set and it does not exist. */
 export function testRepoScript(env: Env, init: boolean): string {
   return withRepo(
@@ -228,6 +236,8 @@ export interface BackupPlan {
   dumps: DumpPlan[];
   stopStacks: string[];
   oneFileSystem: boolean;
+  /** Extra restic backup flags, each quoted on its own. */
+  options?: string[];
   keep: KeepPolicy;
   pre: string;
   post: string;
@@ -405,7 +415,7 @@ docker compose -p ${q(s)} stop >> "$D/log" 2>&1 || fail ${q(`Could not stop stac
   .join("\n")}
 open_repo
 log "Backing up"
-restic backup --json --tag termix --tag ${q(tag)}${plan.oneFileSystem ? " --one-file-system" : ""}${plan.excludes.length ? ` --exclude-file "$D/excludes"` : ""} --files-from-verbatim "$D/paths" 2>> "$D/log" | restic_json
+restic backup --json --tag termix --tag ${q(tag)}${plan.oneFileSystem ? " --one-file-system" : ""}${(plan.options ?? []).map((arg) => ` ${q(arg)}`).join("")}${plan.excludes.length ? ` --exclude-file "$D/excludes"` : ""} --files-from-verbatim "$D/paths" 2>> "$D/log" | restic_json
 CODE=\${PIPESTATUS[0]}
 case "$CODE" in
   0)

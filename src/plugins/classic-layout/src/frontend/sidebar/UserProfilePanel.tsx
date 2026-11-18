@@ -51,6 +51,7 @@ import {
   docsUrl,
   roleLabel,
 } from "@termix-ssh/plugin-sdk/ui";
+import { ProfileDetailsForm } from "./ProfileDetailsForm";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { useState, useRef, useEffect } from "react";
 import { readRailPreference, setRailPreference } from "./rail-preferences";
@@ -1232,6 +1233,7 @@ export function UserProfilePanel({
               </Button>
             </div>
           )}
+          {!isElectron() && <ProfileDetailsForm />}
           {(!isElectron() || isLinked) && (
             <div className="grid grid-cols-2 gap-x-4 gap-y-0">
               <div className="flex flex-col py-2">
@@ -1430,7 +1432,7 @@ export function UserProfilePanel({
             <Select2
               value={language}
               onChange={(e) => handleLanguageChange(e.target.value)}
-              className="px-2.5 py-1.5 text-xs bg-background border border-border text-foreground outline-none focus:ring-1 focus:ring-ring w-full"
+              className="px-2.5 py-1.5 text-xs bg-(--field) border border-border text-foreground outline-none focus:ring-1 focus:ring-ring w-full"
             >
               {LANGUAGES.map((lang) => (
                 <option key={lang.code} value={lang.code}>
@@ -1448,7 +1450,7 @@ export function UserProfilePanel({
               <Select2
                 value={theme}
                 onChange={(e) => handleThemeChange(e.target.value as ThemeId)}
-                className="w-full px-2.5 py-1.5 text-xs bg-background border border-border text-foreground outline-none focus:ring-1 focus:ring-ring appearance-none pr-7"
+                className="w-full px-2.5 py-1.5 text-xs bg-(--field) border border-border text-foreground outline-none focus:ring-1 focus:ring-ring appearance-none pr-7"
               >
                 {themeOptions.map((th) => (
                   <option key={th.id} value={th.id}>
@@ -1493,7 +1495,7 @@ export function UserProfilePanel({
               onChange={(event) =>
                 handleUiFontChange(event.target.value as UiFontId)
               }
-              className="px-2.5 py-1.5 text-xs bg-background border border-border text-foreground outline-none focus:ring-1 focus:ring-ring w-full"
+              className="px-2.5 py-1.5 text-xs bg-(--field) border border-border text-foreground outline-none focus:ring-1 focus:ring-ring w-full"
             >
               {UI_FONTS.map((font) => (
                 <option key={font.id} value={font.id}>

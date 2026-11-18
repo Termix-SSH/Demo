@@ -36,6 +36,7 @@
     "checkNow": "Pārbaudīt tagad"
   },
   "nav": {
+    "theme": "Tēma",
     "copyPassword": "Kopēt paroli",
     "copySudoPassword": "Kopēt sudo paroli",
     "passwordCopied": "Parole nokopēta starpliktuvē",
@@ -72,7 +73,15 @@
     "mobileNavigation": "Navigācija",
     "allTabs": "Visas cilnes",
     "hideTabBar": "Paslēpt cilņu joslu",
-    "showTabBar": "Rādīt cilņu joslu"
+    "showTabBar": "Rādīt cilņu joslu",
+    "allApps": "Visas lietotnes",
+    "findApp": "Atrast lietotni",
+    "pinToRail": "Piespraust pie joslas",
+    "unpinFromRail": "Atspraust no joslas",
+    "appSettings": "Lietotnes iestatījumi",
+    "allAppsHint": "Piespraudiet tās, kuras izmantojat. Noklikšķiniet ar peles labo pogu uz lietotnes, lai atvērtu tās iestatījumus.",
+    "allAppsLockedHint": "Jūsu administrators izvēlas lietotnes jūsu joslā.",
+    "viewMenu": "Skats"
   },
   "commandPalette": {
     "searchPlaceholder": "Meklēt hostus, komandas vai iestatījumus...",
@@ -171,7 +180,8 @@
     "dragToReorder": "Velciet flīzes, lai pārvietotu tās, un to malas, lai mainītu izmēru",
     "clearActivityConfirm": "Vai notīrīt jūsu nesenā darbība?",
     "resetConfirm": "Vai atiestatīt informācijas paneli uz noklusējuma izkārtojumu?",
-    "clearFailed": "Neizdevās notīrīt nesenā aktivitāte"
+    "clearFailed": "Neizdevās notīrīt nesenā aktivitāte",
+    "help": "Palīdzība"
   },
   "admin": {
     "sectionGeneral": "Vispārīgi",
@@ -237,6 +247,9 @@
     "credentialStorage": "Atļaut saglabāt paroles un atslēgas",
     "credentialStorageOff": "Šajā serverī paroles un atslēgu saglabāšana ir atspējota. Atstājiet tos tukšus, un Termix prasīs tos, kad izveidosiet savienojumu.",
     "credentialStorageDesc": "Ja ir atspējots, neviens nevar saglabāt paroli vai privāto atslēgu uz hosta vai akreditācijas datiem, un Termix tos prasīs, izveidojot savienojumu. Jau saglabātie pieteikšanās dati paliks, līdz tie tiks noņemti.",
+    "hostKeyTrust": "Uzticēties jaunām servera atslēgām bez apstiprinājuma",
+    "hostKeyTrustDesc": "Kad spraudnis, grafiks vai API savienojas ar serveri, kura atslēga nav pārbaudīta, saglabājiet šo atslēgu un izveidojiet savienojumu. Ja ir izslēgts, šie savienojumi tiek noraidīti, līdz kāds atver termināli uz šo serveri un uzticas tā atslēgai.",
+    "hostKeyTrustFailed": "Neizdevās atjaunināt servera atslēgas iestatījumu",
     "secondFactorAfterExternalLogin": "Pēc ārējas pieteikšanās (SSO, GitHub, Google, LDAP) prasīt otro autentifikācijas faktoru",
     "secondFactorAfterExternalLoginDesc": "Ja ir izslēgts, reģistrēts otrais faktors tiek prasīts tikai pēc pieteikšanās ar paroli un citām lokālām metodēm, kā iepriekš. Ja ir ieslēgts, tas tiek prasīts pēc katras pieteikšanās metodes, tostarp SSO un LDAP",
     "allowPasswordReset": "Atļaut paroles atiestatīšanu",
@@ -492,7 +505,93 @@
     "revokeSession": "Izrakstīties",
     "deleteRoleConfirm": "Dzēst lomu {{name}}?",
     "revokeKeyConfirm": "Atcelt API atslēgas {{name}} derīgumu?",
-    "revokeKey": "Atcelt derīgumu"
+    "revokeKey": "Atcelt derīgumu",
+    "apiKeyScopeReadAll": "Tikai lasīšanai, viss, ko lietotājs var redzēt",
+    "apiKeyNeverExpires": "Nekad nebeidz derēt",
+    "apiKeyExpiryHint": "Ja atstāts tukšs, atslēga der 90 dienas.",
+    "changeHeld": "Šī izmaiņa gaida {{minutes}} minūtes, lai pārējie administratori to varētu redzēt.",
+    "userStatusFilter": "Konta stāvoklis",
+    "userStatusAll": "Visi konti",
+    "userStatusActive": "Aktīvs",
+    "userStatusDisabled": "Izslēgts",
+    "userStatusPending": "Gaida apstiprinājumu",
+    "disabledBadge": "Izslēgts",
+    "pendingBadge": "Gaida",
+    "accountStatusTitle": "Konta statuss",
+    "accountStatusActive": "Šis konts var pieteikties.",
+    "accountStatusDisabled": "Šis konts ir izslēgts. Tas nevar pieteikties, un tā API atslēgas nestrādā.",
+    "accountStatusPending": "Šis konts gaida apstiprinājumu un pagaidām nevar pieteikties.",
+    "lastLogin": "Pēdējā pieteikšanās {{time}}",
+    "disableUser": "Izslēgt kontu",
+    "enableUser": "Ieslēgt kontu",
+    "approveUser": "Apstiprināt",
+    "disableUserConfirm": "Vai izslēgt {{username}}? Lietotājs tiks izrakstīts visur un nevarēs pieteikties, kamēr kontu atkal neieslēgsiet.",
+    "userDisabled": "{{username}} ir izslēgts",
+    "userEnabled": "{{username}} ir ieslēgts",
+    "userApproved": "{{username}} ir apstiprināts",
+    "userStatusFailed": "Neizdevās mainīt kontu",
+    "profileTitle": "Vārds un e-pasts",
+    "displayName": "Rādāmais vārds",
+    "displayNamePlaceholder": "Rādāmais vārds",
+    "email": "E-pasts",
+    "emailPlaceholder": "E-pasts",
+    "profileSaved": "Saglabāts",
+    "profileSaveFailed": "Neizdevās saglabāt",
+    "manageTabAccess": "Piekļuve",
+    "sectionInvites": "Aicinājuma saites",
+    "invitesDescription": "Saites, kas ļauj kādam izveidot kontu, pat ja reģistrācija ir atspējota.",
+    "invitesEmpty": "Vēl nav aicinājuma saišu",
+    "inviteCreate": "Jauns aicinājums",
+    "inviteCreateFailed": "Neizdevās izveidot aicinājumu",
+    "inviteCreatedNotice": "Nokopējiet šo saiti tagad. Tā vairs netiks rādīta.",
+    "inviteCopy": "Kopēt saiti",
+    "inviteCopied": "Saite nokopēta",
+    "inviteNotePlaceholder": "Piezīme, piemēram, kam tā ir domāta",
+    "inviteRole": "Loma",
+    "inviteNoRole": "Nav papildu lomas",
+    "inviteExpires": "Beidz derēt",
+    "inviteExpiresIn_zero": "Beidz derēt pēc {{count}} dienām",
+    "inviteExpiresIn_one": "Beidz derēt pēc {{count}} dienas",
+    "inviteExpiresIn_other": "Beidz derēt pēc {{count}} dienām",
+    "inviteUses": "Izmantojumi",
+    "inviteMakeAdmin": "Padarīt par administratoru",
+    "inviteUntitled": "Aicināt",
+    "inviteUsesOf": "Izmantoti {{uses}} no {{max}}",
+    "inviteState_active": "Aktīvs",
+    "inviteState_revoked": "Atcelts",
+    "inviteState_expired": "Beidzies derīgums",
+    "inviteState_used": "Izsmēlēts",
+    "inviteRevoke": "Atcelt",
+    "inviteRevokeConfirm": "Vai atcelt šo aicinājuma saiti?",
+    "inviteRevokeFailed": "Neizdevās atcelt aicinājumu",
+    "sectionAccess": "Piekļuves pārskats",
+    "accessCount_zero": "0 koplietojumi",
+    "accessCount_one": "{{count}} koplietojums",
+    "accessCount_other": "{{count}} koplietojumi",
+    "accessExport": "Eksportēt CSV",
+    "accessExportFailed": "Neizdevās eksportēt",
+    "accessKind": "Veids",
+    "accessKindAll": "Viss",
+    "accessKind_host": "Resursdators",
+    "accessKind_folder": "Mapes",
+    "accessKind_credential": "Pieteikšanās dati",
+    "accessUser": "Lietotājs",
+    "accessAnyUser": "Jebkurš lietotājs",
+    "accessRole": "Loma",
+    "accessAnyRole": "Jebkura loma",
+    "accessToUser": "lietotājam {{name}}",
+    "accessToRole": "lomai {{name}}",
+    "accessOwner": "īpašnieks {{name}}",
+    "accessGrantedBy": "koplietots no {{name}}",
+    "accessExpires": "beidzas {{date}}",
+    "accessLastUsed": "pēdējo reizi lietots {{date}}",
+    "accessEmpty": "Nekas nav koplietots",
+    "sectionAccountSettings": "Konti un piekļuve",
+    "adminHostBypass": "Administratori var atvērt visu lietotāju hostus",
+    "adminHostBypassDesc": "Ja šī opcija ir izslēgta, administratori redz tikai tos hostus, kas ir ar viņiem kopīgoti, un nevar atvērt citu lietotāju datus no lietotāja lapas. Ieslēdzot to, tiks gaidīts administratora atpūtas laiks, ja tas ir iestatīts.",
+    "signupApproval": "Apstiprināt jaunus SSO kontus",
+    "signupApprovalDesc": "Kad kāds pirmo reizi pieslēdzas caur SSO vai LDAP, viņš gaida, līdz administrators apstiprina kontu.",
+    "updateSettingFailed": "Neizdevās saglabāt iestatījumu"
   },
   "newUi": {
     "sidebar": {
@@ -515,7 +614,8 @@
         "domainPlaceholder": "neobligāti",
         "connectToAction": "Savienoties ar {{name}}",
         "sshProtocol": "SSH",
-        "noTarget": "Nav instalēta neviena programma, kas varētu izveidot savienojumu ar šāda veida serveri"
+        "noTarget": "Nav instalēta neviena programma, kas varētu izveidot savienojumu ar šāda veida serveri",
+        "loadingTargets": "Ielādē savienojuma veidus..."
       },
       "keybindings": {
         "description": "Piešķiriet taustiņus darbībām terminālī un lietotnē vai mainiet iebūvētās saīsinājuma kombinācijas.",
@@ -569,6 +669,9 @@
         "desktopProfileDescription": "Šis profils atrodas tikai šajā ierīcē un pats pieteicas. Savienojiet to ar Termix serveri, lai izmantotu tos pašus hostus un iestatījumus visās ierīcēs.",
         "sectionInterface": "Saskarne",
         "interfacePresetDesc": "Cik daudz detaļu Termix rāda. Katra funkcija paliek pieejama.",
+        "closeToTray": "Aizvērt uz sistēmas joslu",
+        "closeToTrayDesc": "Aizverot logu, Termix turpina darboties sistēmas joslā, lai jūsu savienojumi paliktu atvērti. Izslēdziet šo opciju, lai programma aizvērtos, aizverot logu.",
+        "closeToTraySaveFailed": "Neizdevās saglabāt iestatījumu",
         "presetClearOverrides": "Atjaunot visus",
         "presetOverridesTitle": "Pielāgots",
         "presetRevertArea": "Atgriezties",
@@ -703,7 +806,11 @@
         "tryBetaDescription": "Pievienojieties beta programmai sadaļā Atjauninājumi.",
         "sendBetaFeedback": "Nosūtīt beta atsauksmes",
         "openUpdates": "Atjauninājumi",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "Attēlojamais vārds",
+        "emailLabel": "E-pasts",
+        "profileSaved": "Saglabāts",
+        "profileSaveFailed": "Neizdevās saglabāt"
       }
     }
   },
@@ -735,6 +842,10 @@
     "apiKeys": "API atslēgas",
     "data": "Dati un sinhronizācija",
     "interface": "Saskarne",
+    "hostList": "Resursu saraksts",
+    "credentialList": "Pieteikšanās datu saraksts",
+    "openHostList": "Resursu saraksta iestatījumi",
+    "openCredentialList": "Pieteikšanās datu saraksta iestatījumi",
     "appearance": "Izskata",
     "keybindings": "Atmiņas taustiņu saīsinājumi",
     "adminGeneral": "Vispārīgi",
@@ -794,6 +905,36 @@
       "hostRows": {
         "label": "Resoru rindu izvēles"
       }
+    },
+    "adminAccess": "Piekļuves pārskats",
+    "yourApps": "Jūsu lietotnes",
+    "otherApps": "Citas lietotnes",
+    "hostForm": {
+      "label": "Pievienot resursdatora veiduli",
+      "description": "Vienkāršais režīms rāda tikai adresi, pieteikšanās datus, mapi un birkas. Pilnais režīms rāda visas opcijas. Varat pārslēgties arī paša veidulī.",
+      "simple": "Vienkāršais",
+      "full": "Pilnais"
+    },
+    "interfaceDefaults": {
+      "title": "Saskarnes noklusējuma iestatījumi",
+      "intro": "Izvēlieties, ko lietotāji redz, pirmo reizi pieslēdzoties. Viņi joprojām var mainīt savu skatu, ja vien to neesat bloķējis.",
+      "setFor": "Iestatīt priekš",
+      "everyone": "Visiem",
+      "inherits": "Izmanto Visiem, līdz kaut ko mainīsiet",
+      "useEveryone": "Izmot Visiem",
+      "look": "Sākotnējais izskats",
+      "lookHint": "Vienkāršais režīms rāda vismazāko. Paplašinātais režīms rāda visas pogas.",
+      "simple": "Vienkāršs",
+      "balanced": "Līdzsvarots",
+      "advanced": "Paplašināts",
+      "lock": "Bloķēt",
+      "lockHint": "Lietotājiem ar šo lomu nav iespējams mainīt savu izskatu vai lietotnes savā joslā.",
+      "apps": "Lietotnes joslā",
+      "appsHint": "Pārējās paliek sadaļā „Visas lietotnes” un meklēšanā.",
+      "appsAdvanced": "Paplašinātais režīms rāda visas lietotnes joslā.",
+      "saved": "Saskarnes noklusējuma iestatījumi saglabāti",
+      "saveFailed": "Neizdevās saglabāt saskarnes noklusējuma iestatījumus",
+      "lockedNote": "Jūsu administrators ir izvēlējies jūsu izskatu, tāpēc to šeit nevar mainīt."
     }
   },
   "hostDefaults": {
@@ -873,12 +1014,19 @@
     "pickHint": "Visa informācija par savienojumu atrodas šeit, grupēta, lai to būtu viegli atrast.",
     "clearChoice": "Notīrīt",
     "proxyPathTarget": "mērķis",
-    "hostCopyName": "{{name}} (kopija)"
+    "hostCopyName": "{{name}} (kopija)",
+    "moreOptions": "Vairāk opciju",
+    "moreOptionsHint": "Proxy, starpniekmezgli, port knocking, keepalive, statusa pārbaudes un ieslēgšanas/izslēgšanas slēdzis katram lietotnei. Lielākajai daļai mezglu tās nav nepieciešamas.",
+    "folderAndTags": "Mapes, tagi un piezīmes"
   },
   "permissions": {
     "branding": {
       "title": "Mainīt zīmolu identitāti",
       "description": "Iestatiet lietotnes nosaukumu, saukli un logotipu, kas tiek rādīts visiem."
+    },
+    "interfaceDefaults": {
+      "title": "Iestatīt saskarnes noklusējuma vērtības",
+      "description": "Izvēlieties izskatu un joslas lietotnes, ar kurām lietotāji sāk, visiem vai katram lomai."
     }
   },
   "onboarding": {
@@ -913,6 +1061,8 @@
     "clickAuto": "Pirmā savienošanās metode",
     "useDefaultNamed": "Noklusējums ({{name}})",
     "useDefaultButtons": "Izmantot noklusējuma pogas",
-    "perHostHint": "Lai tās mainītu konkrētai mārzīmei, izmantojiet opciju Pogas mārzīmes rindās tās izvēlnē."
+    "perHostHint": "Lai tās mainītu konkrētai mārzīmei, izmantojiet opciju Pogas mārzīmes rindās tās izvēlnē.",
+    "moreTools": "Vairāk rīku",
+    "more": "Vairāk"
   }
 }

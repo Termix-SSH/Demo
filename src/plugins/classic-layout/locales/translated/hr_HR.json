@@ -36,6 +36,7 @@
     "checkNow": "Provjeri sada"
   },
   "nav": {
+    "theme": "Tema",
     "copyPassword": "Kopiraj lozinku",
     "copySudoPassword": "Kopiraj sudo lozinku",
     "passwordCopied": "Lozinka kopirana u međuspremnik",
@@ -72,7 +73,15 @@
     "mobileNavigation": "Navigacija",
     "allTabs": "Sve kartice",
     "hideTabBar": "Sakrij traku kartica",
-    "showTabBar": "Prikaži traku kartica"
+    "showTabBar": "Prikaži traku kartica",
+    "allApps": "Sve aplikacije",
+    "findApp": "Pronađi aplikaciju",
+    "pinToRail": "Prikvači na bočnu traku",
+    "unpinFromRail": "Otkvači s bočne trake",
+    "appSettings": "Postavke aplikacije",
+    "allAppsHint": "Prikvači one koje koristiš. Desni klik na aplikaciju za postavke.",
+    "allAppsLockedHint": "Tvoj administrator bira aplikacije na tvojoj bočnoj traci.",
+    "viewMenu": "Prikaz"
   },
   "commandPalette": {
     "searchPlaceholder": "Pretraži hostove, naredbe ili postavke...",
@@ -171,7 +180,8 @@
     "dragToReorder": "Povucite pločice za pomicanje, a rubove za promjenu veličine",
     "clearActivityConfirm": "Očistiti nedavnu aktivnost?",
     "resetConfirm": "Vratiti nadzornu ploču na zadani raspored?",
-    "clearFailed": "Nije moguće obrisati nedavnu aktivnost"
+    "clearFailed": "Nije moguće obrisati nedavnu aktivnost",
+    "help": "Pomoć"
   },
   "admin": {
     "sectionGeneral": "Općenito",
@@ -237,6 +247,9 @@
     "credentialStorage": "Dopusti spremanje lozinki i ključeva",
     "credentialStorageOff": "Spremanje lozinki i ključeva je isključeno na ovom poslužitelju. Ostavite ih praznima, a Termix će vas pitati za njih pri povezivanju.",
     "credentialStorageDesc": "Kada je isključeno, nitko ne može spremiti lozinku ili privatni ključ na domaćinu ili vjerodajnici, a Termix će vas tražiti za njih pri povezivanju. Već spremljene prijave ostaju do njihova uklanjanja.",
+    "hostKeyTrust": "Povjeri nove ključeve domaćina bez upita",
+    "hostKeyTrustDesc": "Kada se plugin, raspored ili API poveže na domaćina čiji ključ nikada nije provjeren, spremi taj ključ i poveži se. Ako je isključeno, te se veze odbijaju dok netko ne otvori terminal na domaćina i povjeri njegov ključ.",
+    "hostKeyTrustFailed": "Neuspješno ažuriranje postavke ključa domaćina",
     "secondFactorAfterExternalLogin": "Zatraži drugi faktor nakon vanjskih prijava (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Kada je isključeno, drugi faktor se traži samo nakon prijave lozinkom i drugih lokalnih prijava, kao i prije. Kada je uključeno, traži se nakon svake metode prijave, uključujući SSO i LDAP.",
     "allowPasswordReset": "Dopusti resetiranje lozinke",
@@ -492,7 +505,93 @@
     "revokeSession": "Odjava",
     "deleteRoleConfirm": "Izbrisati ulogu {{name}}?",
     "revokeKeyConfirm": "Ponistiti API ključ {{name}}?",
-    "revokeKey": "Poništi"
+    "revokeKey": "Poništi",
+    "apiKeyScopeReadAll": "Samo za čitanje, sve što korisnik može vidjeti",
+    "apiKeyNeverExpires": "Nikad ne istječe",
+    "apiKeyExpiryHint": "Ako je ostavljeno prazno, ključ vrijedi 90 dana.",
+    "changeHeld": "Ova promjena čeka {{minutes}} minuta kako bi je drugi administratori mogli vidjeti.",
+    "userStatusFilter": "Stanje računa",
+    "userStatusAll": "Svi računi",
+    "userStatusActive": "Aktivan",
+    "userStatusDisabled": "Isključeno",
+    "userStatusPending": "Čeka odobrenje",
+    "disabledBadge": "Isključeno",
+    "pendingBadge": "Čeka",
+    "accountStatusTitle": "Status računa",
+    "accountStatusActive": "Ovaj račun se može prijaviti.",
+    "accountStatusDisabled": "Ovaj račun je isključen. Ne može se prijaviti, a njegovi API ključevi ne rade.",
+    "accountStatusPending": "Ovaj račun čeka odobrenje i još se ne može prijaviti.",
+    "lastLogin": "Zadnja prijava {{time}}",
+    "disableUser": "Isključi račun",
+    "enableUser": "Uključi račun",
+    "approveUser": "Odobri",
+    "disableUserConfirm": "Isključiti {{username}}? Korisnik će biti odjavljen na svim uređajima i neće moći prijaviti se dok ponovno ne uključite račun.",
+    "userDisabled": "{{username}} je isključen",
+    "userEnabled": "{{username}} je uključen",
+    "userApproved": "{{username}} je odobren",
+    "userStatusFailed": "Nije moguće promijeniti račun",
+    "profileTitle": "Ime i e-mail",
+    "displayName": "Prikazano ime",
+    "displayNamePlaceholder": "Prikazano ime",
+    "email": "E-pošta",
+    "emailPlaceholder": "E-pošta",
+    "profileSaved": "Spremljeno",
+    "profileSaveFailed": "Nije moguće spremiti",
+    "manageTabAccess": "Pristup",
+    "sectionInvites": "Poveznice za poziv",
+    "invitesDescription": "Poveznice koje omogućuju nekome da stvori račun, čak i kada je registracija onemogućena.",
+    "invitesEmpty": "Još nema poveznica za poziv",
+    "inviteCreate": "Nova poveznica za poziv",
+    "inviteCreateFailed": "Nije moguće stvoriti poveznicu za poziv",
+    "inviteCreatedNotice": "Kopirajte ovu poveznicu sada. Ona se više neće prikazivati.",
+    "inviteCopy": "Kopiraj poveznicu",
+    "inviteCopied": "Poveznica kopirana",
+    "inviteNotePlaceholder": "Bilješka, npr. za koga je",
+    "inviteRole": "Uloga",
+    "inviteNoRole": "Bez dodatne uloge",
+    "inviteExpires": "Istječe",
+    "inviteExpiresIn_one": "Istječe za {{count}} dan",
+    "inviteExpiresIn_few": "Istječe za {{count}} dana",
+    "inviteExpiresIn_other": "Istječe za {{count}} dana",
+    "inviteUses": "Korištenja",
+    "inviteMakeAdmin": "Napravi ih administratorom",
+    "inviteUntitled": "Pozovi",
+    "inviteUsesOf": "{{uses}} od {{max}} iskorišteno",
+    "inviteState_active": "Aktivno",
+    "inviteState_revoked": "Opozvano",
+    "inviteState_expired": "Isteklo",
+    "inviteState_used": "Potrošeno",
+    "inviteRevoke": "Opozovi",
+    "inviteRevokeConfirm": "Opozvati ovaj pozivni link?",
+    "inviteRevokeFailed": "Poziv se nije mogao opozvati",
+    "sectionAccess": "Pregled pristupa",
+    "accessCount_one": "{{count}} dijeljenje",
+    "accessCount_few": "{{count}} dijeljenja",
+    "accessCount_other": "{{count}} dijeljenja",
+    "accessExport": "Izvoz u CSV",
+    "accessExportFailed": "Izvoz nije uspio",
+    "accessKind": "Vrsta",
+    "accessKindAll": "Sve",
+    "accessKind_host": "Poslužitelj",
+    "accessKind_folder": "Mapa",
+    "accessKind_credential": "Prijavni podaci",
+    "accessUser": "Korisnik",
+    "accessAnyUser": "Bilo koji korisnik",
+    "accessRole": "Uloga",
+    "accessAnyRole": "Bilo koja uloga",
+    "accessToUser": "korisniku {{name}}",
+    "accessToRole": "ulogi {{name}}",
+    "accessOwner": "vlasnik {{name}}",
+    "accessGrantedBy": "podijelio korisnik {{name}}",
+    "accessExpires": "istječe {{date}}",
+    "accessLastUsed": "zadnje korišteno {{date}}",
+    "accessEmpty": "Ništa nije podijeljeno",
+    "sectionAccountSettings": "Računi i pristup",
+    "adminHostBypass": "Administratori mogu otvoriti hostove svih korisnika",
+    "adminHostBypassDesc": "Kada je isključeno, administratori vide samo hostove koji su s njima podijeljeni i ne mogu pristupiti podacima drugih korisnika s korisničke stranice. Ako je uključeno, sustav čeka vrijeme hlađenja administratora ako je postavljeno.",
+    "signupApproval": "Odobri nove SSO račune",
+    "signupApprovalDesc": "Osoba koja se prvi put prijavljuje putem SSO-a ili LDAP-a mora čekati dok administrator ne odobri račun.",
+    "updateSettingFailed": "Postavka se nije mogla spremiti"
   },
   "newUi": {
     "sidebar": {
@@ -515,7 +614,8 @@
         "domainPlaceholder": "opcionalno",
         "connectToAction": "Poveži se s {{name}}",
         "sshProtocol": "SSH",
-        "noTarget": "Ništa instalirano ne može se povezati s ovim tipom domaćina"
+        "noTarget": "Ništa instalirano ne može se povezati s ovim tipom domaćina",
+        "loadingTargets": "Učitavanje načina povezivanja..."
       },
       "keybindings": {
         "description": "Povežite tipke s akcijama u terminalu i aplikaciji ili promijenite ugrađene prečace.",
@@ -569,6 +669,9 @@
         "desktopProfileDescription": "Ovaj profil postoji samo na ovom uređaju i samostalno se prijavljuje. Povežite ga s Termix poslužiteljem kako biste koristili iste hostove i postavke na svakom uređaju.",
         "sectionInterface": "Sučelje",
         "interfacePresetDesc": "Koliko detalja Termix prikazuje. Sve značajke ostaju dostupne.",
+        "closeToTray": "Zatvori u zaslon za obavijesti",
+        "closeToTrayDesc": "Zatvaranje prozora zadržava Termix u zaslonu za obavijesti kako bi se vaša povezivanja zadržala otvorenima. Isključite ovu opciju ako želite da se aplikacija zatvori kada zatvorite prozor.",
+        "closeToTraySaveFailed": "Postavka se nije mogla spremiti",
         "presetClearOverrides": "Vrati sve",
         "presetOverridesTitle": "Prilagođeno",
         "presetRevertArea": "Poništi",
@@ -703,7 +806,11 @@
         "tryBetaDescription": "Pridružite se beta programu u Ažuriranjima.",
         "sendBetaFeedback": "Pošaljite povratne informacije o beta verziji",
         "openUpdates": "Ažuriranja",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "Prikazano ime",
+        "emailLabel": "E-pošta",
+        "profileSaved": "Spremljeno",
+        "profileSaveFailed": "Nije moguće spremiti"
       }
     }
   },
@@ -735,6 +842,10 @@
     "apiKeys": "API ključevi",
     "data": "Podaci i sinkronizacija",
     "interface": "Sučelje",
+    "hostList": "Popis hostova",
+    "credentialList": "Popis vjerodajnica",
+    "openHostList": "Postavke popisa hostova",
+    "openCredentialList": "Postavke popisa vjerodajnica",
     "appearance": "Izgled",
     "keybindings": "Prečace",
     "adminGeneral": "Općenito",
@@ -794,6 +905,36 @@
       "hostRows": {
         "label": "Broj redaka za hostove"
       }
+    },
+    "adminAccess": "Pregled pristupa",
+    "yourApps": "Vaše aplikacije",
+    "otherApps": "Ostale aplikacije",
+    "hostForm": {
+      "label": "Obrazac za dodavanje hosta",
+      "description": "Opcija Jednostavno prikazuje adresu, prijavu, mapu i oznake. Opcija Potpuno prikazuje sve postavke. Možete prebacivati između njih i unutar samog obrasca.",
+      "simple": "Jednostavno",
+      "full": "Potpuno"
+    },
+    "interfaceDefaults": {
+      "title": "Zadane postavke sučelja",
+      "intro": "Odaberite što korisnici vide pri prvom prijavi. Mogu i dalje prilagoditi svoj prikaz, osim ako ga ne zaključate.",
+      "setFor": "Postavi za",
+      "everyone": "Sve korisnike",
+      "inherits": "Koristi postavke za Sve korisnike dok nešto ne promijenite",
+      "useEveryone": "Koristi postavke za Sve korisnike",
+      "look": "Početni izgled",
+      "lookHint": "Opcija Jednostavno prikazuje najmanje elemenata. Opcija Napredno prikazuje sve gumbe.",
+      "simple": "Jednostavno",
+      "balanced": "Uravnoteženo",
+      "advanced": "Napredno",
+      "lock": "Zaključaj",
+      "lockHint": "Osobe s ovom ulogom ne mogu mijenjati izgled niti aplikacije na traci.",
+      "apps": "Aplikacije na traci",
+      "appsHint": "Ostale aplikacije ostaju u odjeljku Sve aplikacije i pretraživanju.",
+      "appsAdvanced": "Opcija Napredno prikazuje sve aplikacije na traci.",
+      "saved": "Zadane postavke sučelja su spremljene",
+      "saveFailed": "Nije moguće spremiti zadane postavke sučelja",
+      "lockedNote": "Vaš administrator je odredio vaš izgled, pa ga se ovdje ne može mijenjati."
     }
   },
   "hostDefaults": {
@@ -873,12 +1014,19 @@
     "pickHint": "Sve o vezi nalazi se ovdje, grupirano radi lakšeg pronalaženja.",
     "clearChoice": "Izbriši",
     "proxyPathTarget": "cilj",
-    "hostCopyName": "{{name}} (kopija)"
+    "hostCopyName": "{{name}} (kopija)",
+    "moreOptions": "Više opcija",
+    "moreOptionsHint": "Proxy, posrednički hostovi, port knocking, keepalive, provjere statusa i prekidač za uključivanje ili isključivanje svake aplikacije. Većina hostova ih ne treba.",
+    "folderAndTags": "Mapa, oznake i bilješke"
   },
   "permissions": {
     "branding": {
       "title": "Promijeni brendiranje",
       "description": "Postavite naziv aplikacije, slogan i logo koji se prikazuju svima."
+    },
+    "interfaceDefaults": {
+      "title": "Postavi zadane postavke sučelja",
+      "description": "Odaberite izgled i aplikacije na traci s kojima korisnici počinju, za sve ili za svaku ulogu zasebno."
     }
   },
   "onboarding": {
@@ -913,6 +1061,8 @@
     "clickAuto": "Prvi način povezivanja",
     "useDefaultNamed": "Zadano ({{name}})",
     "useDefaultButtons": "Koristi zadane gumbe",
-    "perHostHint": "Da ih promijenite za pojedini host, koristite opciju Gumbi na redovima hostova u njegovom izborniku."
+    "perHostHint": "Da ih promijenite za pojedini host, koristite opciju Gumbi na redovima hostova u njegovom izborniku.",
+    "moreTools": "Više alata",
+    "more": "Više"
   }
 }

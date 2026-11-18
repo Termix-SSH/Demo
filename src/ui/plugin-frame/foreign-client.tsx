@@ -34,10 +34,11 @@ import { decodeIcon, decodeIconValue } from "./frame-icons";
 import { ForeignPlacer, scrollTarget, type PlaceBatch } from "./foreign-placer";
 import { propsSignature, useStableProps } from "./stable-props";
 import { tabbables } from "./frame-edges";
+import { useInSeamlessTile } from "@/components/tile-grid/context";
 
 type Call = (method: string, ...args: unknown[]) => Promise<unknown>;
 type Emit = (name: string, data?: unknown) => void;
-type Kind = "slot" | "extension" | "component";
+type Kind = "slot" | "extension" | "component" | "tab";
 type AnyComponent = ComponentType<Record<string, unknown>>;
 
 interface ListState {
@@ -69,6 +70,7 @@ let nextView = 1;
 
 interface ViewHandlers {
   size: (size: { width: number; height: number }) => void;
+  shown: () => void;
   focusOut: (dir: "next" | "prev") => void;
   wheel: (dx: number, dy: number) => void;
 }
@@ -168,7 +170,7 @@ function decodeItems(list: ListState): unknown[] {
 }
 
 /** The other plugins' strings this frame needs, under their own keys. */
-function addStrings(strings: unknown) {
+export function addStrings(strings: unknown) {
   if (!strings || typeof strings !== "object") return;
   const language = i18n.language || "en";
   const separator = (i18n.options?.nsSeparator as string | false) ?? ":";
@@ -357,11 +359,22 @@ function Placeholder({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [target.listId, target.itemKey, target.web],
   );
-  const stable = useStableProps(props);
+  // A tile around the placeholder draws the border, so the part drops its
+  // own. The shell can't see this frame's tiles, so it goes with the props.
+  const seamless = useInSeamlessTile();
+  const seamlessRef = useRef(seamless);
+  seamlessRef.current = seamless;
+  const placedProps = useMemo(
+    () => (seamless ? { ...props, __place: { seamless: true } } : props),
+    [props, seamless],
+  );
+  const stable = useStableProps(placedProps);
   const stableRef = useRef(stable);
   stableRef.current = stable;
   const lastSent = useRef<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  // The part painted, so a page can wait for its parts before showing.
+  const [shown, setShown] = useState(false);
   const liveRef = useRef(live);
   liveRef.current = live;
 
@@ -371,6 +384,7 @@ function Placeholder({
     let alive = true;
     views.set(id, {
       size: (next) => setSize(next),
+      shown: () => setShown(true),
       focusOut: (dir) => focusPast(node, dir),
       wheel: (dx, dy) => scrollTarget(node).scrollBy(dx, dy),
     });
@@ -388,7 +402,7 @@ function Placeholder({
     )
       .then((ok) => {
         if (!alive || ok !== true) return;
-        placer?.add(id, node, liveRef.current);
+        placer?.add(id, node, liveRef.current, seamlessRef.current);
         setMounted(true);
       })
       .catch(() => {});
@@ -398,6 +412,7 @@ function Placeholder({
       placer?.remove(id);
       emit?.("foreign.dispose", { id });
       setMounted(false);
+      setShown(false);
     };
   }, [id, target.listId, target.itemKey, target.web]);
 
@@ -419,6 +434,7 @@ function Placeholder({
       ref={element}
       data-foreign-slot={target.itemKey}
       data-foreign-id={id}
+      data-foreign-shown={shown ? "" : undefined}
       tabIndex={focusable ? 0 : -1}
       className={className}
       style={{ ...fitStyle(target.fit, size), ...style }}
@@ -487,6 +503,9 @@ export function createForeignRuntime(options: {
     getExtension,
     useComponent: (id) =>
       (useList("component", id)[0] as AnyComponent | undefined) ?? undefined,
+    useTab: (type, hostId) =>
+      (useList("tab", type, { hostId })[0] as AnyComponent | undefined) ??
+      undefined,
     invoke: (actionId, args) => options.call("invokeAction", actionId, ...args),
     Placeholder,
     addOccluder: (element) => placer?.addOccluder(element) ?? (() => {}),
@@ -517,6 +536,8 @@ export function receiveForeignEvent(name: string, data: unknown): boolean {
     if (typeof size?.width === "number" && typeof size.height === "number") {
       view.size({ width: size.width, height: size.height });
     }
+  } else if (name === "foreign.shown") {
+    view.shown();
   } else if (name === "foreign.focusOut") {
     view.focusOut(entry.dir === "prev" ? "prev" : "next");
   } else if (name === "foreign.wheel") {

@@ -16,6 +16,8 @@ import {
   useSshAuthProviders,
   useSshAuthEditors,
   useHostActions,
+  usePluginStore,
+  LoadingState,
   type HostActionDef,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
@@ -31,7 +33,7 @@ const INLINE_AUTH_TYPES = new Set(["password", "key", "credential"]);
 const LABEL_CLASS =
   "text-[10px] font-semibold uppercase tracking-widest text-muted-foreground";
 const SELECT_CLASS =
-  "flex h-8 w-full border border-border bg-background px-2.5 py-1 text-xs outline-none focus:ring-1 focus:ring-ring";
+  "flex h-8 w-full border border-border bg-(--field) px-2.5 py-1 text-xs outline-none focus:ring-1 focus:ring-ring";
 
 interface QuickConnectPanelProps {
   onConnect: (host: Host, type: string) => void;
@@ -45,6 +47,9 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
     </div>
   );
 }
+
+/** How long an empty list of ways to connect counts as still loading. */
+const TARGET_WAIT_MS = 4_000;
 
 export function QuickConnectPanel({ onConnect }: QuickConnectPanelProps) {
   const { t } = useTranslation();
@@ -144,6 +149,25 @@ export function QuickConnectPanel({ onConnect }: QuickConnectPanelProps) {
     ],
   );
   const targets = quickConnectTargets(allActions, previewHost);
+
+  // Plugins answer which of them can connect a moment after they start, so
+  // an empty list means "still asking" until a short wait passes.
+  const { settled: pluginsSettled } = usePluginStore();
+  const [waitedForTargets, setWaitedForTargets] = useState(false);
+  const hasConnectActions = allActions.some(
+    (action) => action.kind === "connect",
+  );
+  useEffect(() => {
+    if (targets.length > 0 || !pluginsSettled) {
+      setWaitedForTargets(false);
+      return;
+    }
+    const timer = setTimeout(() => setWaitedForTargets(true), TARGET_WAIT_MS);
+    return () => clearTimeout(timer);
+  }, [targets.length, pluginsSettled]);
+  const targetsLoading =
+    targets.length === 0 &&
+    (!pluginsSettled || (hasConnectActions && !waitedForTargets));
 
   const connect = (action?: HostActionDef) => {
     if (!host.trim()) return;
@@ -307,7 +331,12 @@ export function QuickConnectPanel({ onConnect }: QuickConnectPanelProps) {
           />
         )}
         <div className="flex flex-col gap-1.5 pt-2">
-          {targets.length === 0 ? (
+          {targetsLoading ? (
+            <LoadingState
+              compact
+              label={t("newUi.sidebar.quickConnect.loadingTargets")}
+            />
+          ) : targets.length === 0 ? (
             <p className="text-xs text-muted-foreground">
               {t("newUi.sidebar.quickConnect.noTarget")}
             </p>

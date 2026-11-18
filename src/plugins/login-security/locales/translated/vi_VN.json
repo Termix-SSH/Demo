@@ -46,6 +46,10 @@
       "connectFactorMinutes": {
         "label": "Số phút trước khi yêu cầu lại",
         "description": "Sau khi nhập, người dùng có thể kết nối đến bất kỳ máy chủ nào trong khoảng thời gian này. Đăng xuất sẽ làm hết hạn sớm."
+      },
+      "newDeviceNotice": {
+        "label": "Cảnh báo khi có thiết bị mới",
+        "description": "Gửi cảnh báo cho người dùng khi ai đó đăng nhập vào tài khoản của họ từ một thiết bị chưa từng được ghi nhận trước đó. Mỗi người dùng có thể tự tắt tính năng này."
       }
     },
     "host": {
@@ -53,11 +57,18 @@
         "label": "Yêu cầu xác thực hai yếu tố trước khi kết nối",
         "description": "Áp dụng khi Bảo mật đăng nhập được đặt thành yêu cầu trên các máy chủ được đánh dấu."
       }
+    },
+    "user": {
+      "newDeviceNotice": {
+        "label": "Cảnh báo tôi khi có thiết bị mới",
+        "description": "Nhận cảnh báo khi ai đó đăng nhập vào tài khoản của bạn từ một thiết bị chưa từng được ghi nhận trước đó."
+      }
     }
   },
   "verify": {
     "title": "Xác thực yếu tố thứ hai",
     "intro": "Nhập yếu tố xác thực thứ hai để kết nối đến máy chủ này.",
+    "start": "Xác minh",
     "done": "Đã xác thực",
     "retry": "Quay lại máy chủ và kết nối lại.",
     "failed": "Không thành công. Vui lòng thử lại.",
@@ -74,5 +85,69 @@
     "body": "Quản trị viên yêu cầu yếu tố xác thực thứ hai để đăng nhập. Hãy thiết lập bên dưới để tiếp tục sử dụng Termix.",
     "none": "Không có gì để thiết lập? Hãy yêu cầu quản trị viên cài đặt plugin yếu tố xác thực thứ hai.",
     "signOut": "Đăng xuất"
+  },
+  "never": "không bao giờ",
+  "sessions": {
+    "title": "Phiên làm việc và khóa",
+    "tab": "Phiên làm việc",
+    "current": "Phiên hiện tại",
+    "meta": "{{type}} | hoạt động lần cuối {{lastActive}} | đăng nhập {{created}}",
+    "none": "Không có phiên làm việc",
+    "end": "Đăng xuất",
+    "ended": "Đã đăng xuất",
+    "endOthers": "Đăng xuất các phiên làm việc khác",
+    "endOthersConfirm": "Đăng xuất {{count}} phiên làm việc khác của bạn?",
+    "endedOthers": "Các phiên làm việc khác của bạn đã được đăng xuất",
+    "everyone": "Đăng xuất tất cả người dùng",
+    "everyoneConfirm": "Đăng xuất mọi người dùng trên máy chủ này?",
+    "everyoneDescription": "Tất cả mọi người trừ bạn sẽ phải đăng nhập lại. Các ứng dụng máy tính để bàn được liên kết với máy chủ này sẽ phải liên kết lại.",
+    "everyoneKeysConfirm": "Đồng thời thu hồi mọi khóa API trên máy chủ này?",
+    "everyoneKeys": "Vô hiệu hóa cả khóa",
+    "everyoneKeysNo": "Giữ lại khóa",
+    "everyoneDone": "Tất cả đã đăng xuất",
+    "failed": "Thao tác không thành công. Vui lòng thử lại.",
+    "loadFailed": "Không thể tải phiên và khóa của bạn."
+  },
+  "keys": {
+    "tab": "Khóa API",
+    "none": "Bạn chưa có khóa API nào",
+    "full": "quyền truy cập đầy đủ",
+    "noExpiry": "không bao giờ",
+    "meta": "{{prefix}} | lần cuối sử dụng {{lastUsed}} | hết hạn {{expires}}",
+    "revoke": "Thu hồi",
+    "revoked": "Đã thu hồi khóa",
+    "revokeAll": "Thu hồi tất cả khóa",
+    "revokeAllConfirm": "Thu hồi {{count}} khóa API của bạn? Các tập lệnh sử dụng chúng sẽ ngừng hoạt động.",
+    "revokedAll": "Các khóa API của bạn đã bị thu hồi"
+  },
+  "waits": {
+    "title": "Chờ phê duyệt quản trị viên",
+    "intro": "Khi có hai hoặc nhiều quản trị viên, các thay đổi như thêm quản trị viên mới, tắt đăng nhập bằng mật khẩu, tắt plugin đăng nhập hoặc bật plugin có quyền truy cập nhạy cảm sẽ bị giữ lại trong khoảng thời gian này. Các quản trị viên khác sẽ nhận được cảnh báo và có thể hủy bỏ. Việc tắt tính năng này hoặc rút ngắn thời gian chờ cũng sẽ kích hoạt cơ chế chờ.",
+    "adminOnly": "Chỉ quản trị viên mới có thể xem mục này.",
+    "loadFailed": "Không thể tải thông tin chờ phê duyệt quản trị viên.",
+    "active": "Đang bật, thay đổi sẽ chờ {{minutes}} phút",
+    "onOneAdmin": "Bật, nhưng máy chủ này chỉ có một quản trị viên nên không cần chờ",
+    "off": "Tắt",
+    "admins": "{{count}} quản trị viên",
+    "forced": "Đã đặt trên máy chủ với {{name}}.",
+    "minutes": "Phút",
+    "turnOn": "Bật",
+    "change": "Lưu",
+    "turnOff": "Tắt",
+    "saved": "Đã lưu",
+    "savedHeld": "Đã lưu. Đang chờ các quản trị viên khác xác nhận trước.",
+    "failed": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "none": "Chưa có thay đổi quản trị nào đang chờ xử lý",
+    "meta": "Yêu cầu bởi {{who}} | áp dụng vào {{runsAt}}",
+    "cancel": "Hủy",
+    "cancelConfirm": "Hủy thay đổi này?",
+    "cancelled": "Đã hủy",
+    "status": {
+      "pending": "Đang chờ",
+      "applying": "Đang áp dụng",
+      "applied": "Đã áp dụng",
+      "cancelled": "Đã hủy",
+      "failed": "Thất bại"
+    }
   }
 }

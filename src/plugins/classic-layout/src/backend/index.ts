@@ -7,6 +7,10 @@ import {
   parseBrandingTagline,
   type BrandingSettings,
 } from "./branding.js";
+import {
+  createInterfaceDefaultsStore,
+  parseDefaults,
+} from "./interface-defaults.js";
 
 const PATCHABLE_FIELDS = ["appName", "tagline", "logo"] as const;
 
@@ -19,8 +23,11 @@ export async function activate(ctx: PluginContext): Promise<void> {
   // Core serves the public GET /users/branding from this.
   ctx.registry.provide("classic-layout.brandingProvider", () => store.get());
 
+  const defaults = createInterfaceDefaultsStore(() => ctx.files.dataDir());
+
   const router = ctx.http.router<Router>();
-  router.use(ctx.rbac.require("branding") as never);
+  const canBrand = ctx.rbac.require("branding") as never;
+  const canSetDefaults = ctx.rbac.require("interface-defaults") as never;
 
   /**
    * @openapi
@@ -36,7 +43,7 @@ export async function activate(ctx: PluginContext): Promise<void> {
    *       403:
    *         description: Not authorized.
    */
-  router.get("/branding", async (_req: Request, res: Response) => {
+  router.get("/branding", canBrand, async (_req: Request, res: Response) => {
     try {
       res.json(await store.get());
     } catch (error) {
@@ -76,7 +83,7 @@ export async function activate(ctx: PluginContext): Promise<void> {
    *       403:
    *         description: Not authorized.
    */
-  router.patch("/branding", async (req: Request, res: Response) => {
+  router.patch("/branding", canBrand, async (req: Request, res: Response) => {
     const body = req.body as unknown;
     const invalid = (field: string) =>
       res.status(400).json({
@@ -140,6 +147,85 @@ export async function activate(ctx: PluginContext): Promise<void> {
       res.status(500).json({ error: "Failed to save branding" });
     }
   });
+
+  /**
+   * @openapi
+   * /plugin-api/classic-layout/interface-defaults:
+   *   get:
+   *     summary: Get interface defaults
+   *     description: >
+   *       The look, rail apps and lock an admin picked for everyone and for
+   *       each role. Every signed in user reads it to set up their own view.
+   *     tags:
+   *       - Interface defaults
+   *     responses:
+   *       200:
+   *         description: The saved defaults.
+   */
+  router.get("/interface-defaults", async (_req: Request, res: Response) => {
+    try {
+      res.json(await defaults.get());
+    } catch (error) {
+      ctx.log.error(
+        "Failed to load interface defaults",
+        error instanceof Error ? error : new Error(String(error)),
+      );
+      res.status(500).json({ error: "Failed to load interface defaults" });
+    }
+  });
+
+  /**
+   * @openapi
+   * /plugin-api/classic-layout/interface-defaults:
+   *   put:
+   *     summary: Set interface defaults
+   *     description: >
+   *       Replaces the defaults. Each template has a preset (simple, balanced
+   *       or advanced), the rail item ids to show and whether it is locked.
+   *       Roles are keyed by role name.
+   *     tags:
+   *       - Interface defaults
+   *     requestBody:
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               everyone:
+   *                 type: object
+   *                 nullable: true
+   *               roles:
+   *                 type: object
+   *     responses:
+   *       200:
+   *         description: The saved defaults.
+   *       400:
+   *         description: The body is invalid.
+   *       403:
+   *         description: Not authorized.
+   */
+  router.put(
+    "/interface-defaults",
+    canSetDefaults,
+    async (req: Request, res: Response) => {
+      const parsed = parseDefaults(req.body);
+      if (!parsed) {
+        return res.status(400).json({
+          error: "Invalid interface defaults",
+          code: "INTERFACE_DEFAULTS_INVALID",
+        });
+      }
+      try {
+        res.json(await defaults.save(parsed));
+      } catch (error) {
+        ctx.log.error(
+          "Failed to save interface defaults",
+          error instanceof Error ? error : new Error(String(error)),
+        );
+        res.status(500).json({ error: "Failed to save interface defaults" });
+      }
+    },
+  );
 
   ctx.log.info("Classic layout ready");
 }

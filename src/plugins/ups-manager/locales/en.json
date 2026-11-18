@@ -8,7 +8,10 @@
     "viewHistory": "History",
     "viewEvents": "Events",
     "viewCommands": "Commands",
-    "viewSources": "Devices"
+    "viewSources": "Devices",
+    "refresh": "Live refresh",
+    "refreshSeconds": "{{seconds}} seconds",
+    "refreshHint": "Refreshes only while Overview is visible. The UPS may update more slowly. Background polling and stored samples remain at 30 seconds."
   },
   "common": {
     "loading": "Loading...",
@@ -47,6 +50,8 @@
     "charge": "Battery charge",
     "runtime": "Runtime left",
     "load": "Load",
+    "estimatedLoad": "Estimated UPS load",
+    "estimatedLoadHint": "Output watts / {{watts}} W rated. {{method}}. Sensor accuracy unverified; not CPU utilization or AC wall consumption.",
     "nominal": "{{watts}} W rated",
     "input": "Input voltage",
     "output": "Output voltage",
@@ -59,6 +64,60 @@
     "readAt": "Last read",
     "ago": "{{time}} ago"
   },
+  "electrical": {
+    "inputDc": "Input is DC",
+    "outputDc": "Output is DC",
+    "dcHint": "Confirm the electrical domain before calculating watts from voltage and current. This does not change any UPS setting. Sensor accuracy must be checked independently.",
+    "inputCurrent": "Input current",
+    "outputCurrent": "Output current",
+    "batteryCurrent": "Battery current",
+    "inputPower": "Input power",
+    "outputPower": "Output power",
+    "reported": "Reported real power",
+    "calculated": "Calculated DC power - sensor accuracy unverified",
+    "batteryType": "Battery chemistry",
+    "chargeLow": "Low-charge threshold",
+    "chargeWarning": "Charge warning threshold",
+    "manufactured": "Battery manufacturing date",
+    "driver": "Driver",
+    "driverVersion": "Driver version",
+    "subdriver": "HID subdriver",
+    "driverState": "Driver state",
+    "usb": "USB vendor / product",
+    "raw": "Advanced NUT variables",
+    "search": "Filter variable names or values",
+    "noVariables": "No matching variables.",
+    "dcDisclaimer": "Calculated DC output power estimates the UPS load, not AC wall consumption. It is not necessarily one host's consumption. Validate current readings before relying on power or energy estimates."
+  },
+  "energy": {
+    "period": "Observed output energy (selected period)",
+    "lifetime": "Observed output energy (current epoch)",
+    "estimated": "Estimated from scheduled samples; not a hardware meter",
+    "coverage": "Measured coverage",
+    "covered": "Integrated time",
+    "incomplete": "Incomplete data; missing time is not estimated",
+    "complete": "Complete measured coverage",
+    "average": "Average output power (covered time)",
+    "peak": "Sampled output peak",
+    "sampledRange": "Sampled power range",
+    "scope": "UPS output, not AC wall energy. Period totals span the listed tracking epochs; do not treat different epochs as one physical meter.",
+    "resolution": "Nominal chart segment: {{seconds}} seconds; gaps remain separate. Hover points for absolute time and timezone.",
+    "empty": "Energy tracking needs two valid scheduled power readings. Unknown watts remain unavailable, not zero.",
+    "error": "Could not read energy history.",
+    "bucket": "Observed output energy per segment",
+    "samples": "Accessible samples and cumulative observed energy",
+    "tableHelp": "Only observed energy is summed. Missing intervals are not filled. Cumulative values span the listed epochs.",
+    "time": "Segment start (local timezone)",
+    "cumulative": "Cumulative Wh in selected period",
+    "cumulativeChart": "Cumulative observed output energy (selected period)",
+    "epochTotal": "Observed energy in this epoch",
+    "unavailable": "Output power unavailable",
+    "epochs": "Separate tracking epochs",
+    "started": "Tracking started",
+    "method": "Power method",
+    "chartHelp": "Time-proportional data. Missing intervals and changes of tracking epoch are not connected. Sampled peaks are not hardware peak measurements. An accessible data table follows the charts.",
+    "correlationBlocked": "CPU/memory correlation is unavailable: Host Metrics needs a public, authorized snapshot service with measurement timestamps. No additional host collection is enabled."
+  },
   "history": {
     "error": "Could not load the history.",
     "24h": "24 hours",
@@ -66,7 +125,7 @@
     "30d": "30 days",
     "empty": "Not enough readings yet. Termix reads the UPS every 30 seconds.",
     "charge": "Battery charge",
-    "load": "Load",
+    "load": "Load (device-reported only)",
     "runtime": "Runtime left",
     "voltage": "Voltage"
   },
@@ -113,7 +172,7 @@
     "unreachable": "unreachable",
     "saved": "Saved.",
     "deleteTitle": "Remove {{name}}?",
-    "deleteText": "Its history and events are deleted too."
+    "deleteText": "Its history, energy totals, tracking epochs and events are deleted too."
   },
   "editor": {
     "addTitle": "Add UPS",
@@ -172,6 +231,8 @@
     "testFailed": "Could not read the UPS."
   },
   "card": {
+    "estimatedLoad": "{{value}}% estimated UPS load",
+    "dc": "calculated DC, unverified",
     "title": "UPS",
     "empty": "No UPS set up. Turn UPS Manager on for a host and add a device.",
     "runtime": "{{time}} left",

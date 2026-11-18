@@ -8,7 +8,10 @@
     "viewHistory": "Istoric",
     "viewEvents": "Evenimente",
     "viewCommands": "Comenzi",
-    "viewSources": "Dispozitive"
+    "viewSources": "Dispozitive",
+    "refresh": "Reîmprospătare în timp real",
+    "refreshSeconds": "{{seconds}} secunde",
+    "refreshHint": "Se reîmprospătează doar când Panoul general este vizibil. UPS-ul poate actualiza mai lent. Interogarea în fundal și eșantioanele stocate rămân la 30 de secunde."
   },
   "common": {
     "loading": "Se încarcă...",
@@ -47,6 +50,8 @@
     "charge": "Încărcare baterie",
     "runtime": "Timp rămas",
     "load": "Sarcină",
+    "estimatedLoad": "Încărcarea estimată a UPS-ului",
+    "estimatedLoadHint": "Wati de ieșire / {{watts}} W nominali. {{method}}. Precizia senzorului nu este verificată; nu reprezintă utilizarea CPU sau consumul de la priză.",
     "nominal": "{{watts}} W nominal",
     "input": "Tensiune de intrare",
     "output": "Tensiune de ieșire",
@@ -59,6 +64,60 @@
     "readAt": "Ultima citire",
     "ago": "acum {{time}}"
   },
+  "electrical": {
+    "inputDc": "Intrarea este DC",
+    "outputDc": "Ieșirea este DC",
+    "dcHint": "Confirmați domeniul electric înainte de a calcula wati din tensiune și curent. Acest lucru nu modifică nicio setare a UPS-ului. Precizia senzorului trebuie verificată independent.",
+    "inputCurrent": "Curent de intrare",
+    "outputCurrent": "Curent de ieșire",
+    "batteryCurrent": "Curent baterie",
+    "inputPower": "Putere de intrare",
+    "outputPower": "Putere de ieșire",
+    "reported": "Putere reală raportată",
+    "calculated": "Putere DC calculată - acuratețea senzorului neverificată",
+    "batteryType": "Chimie baterie",
+    "chargeLow": "Prag sarcină scăzută",
+    "chargeWarning": "Prag avertisment sarcină",
+    "manufactured": "Data fabricației bateriei",
+    "driver": "Driver",
+    "driverVersion": "Versiunea driverului",
+    "subdriver": "Subdriver HID",
+    "driverState": "Starea driverului",
+    "usb": "Vendor / produs USB",
+    "raw": "Variabile NUT avansate",
+    "search": "Filtrează numele sau valorile variabilelor",
+    "noVariables": "Nicio variabilă corespunzătoare.",
+    "dcDisclaimer": "Puterea de ieșire DC calculată estimează încărcarea UPS-ului, nu consumul de la priză (AC). Nu reprezintă neapărat consumul unui singur host. Verifică citirile de curent înainte de a te baza pe estimările de putere sau energie."
+  },
+  "energy": {
+    "period": "Energia de ieșire observată (perioada selectată)",
+    "lifetime": "Energia de ieșire observată (epocă curentă)",
+    "estimated": "Estimat din probele programate; nu este un contor hardware",
+    "coverage": "Acoperire măsurată",
+    "covered": "Timp integrat",
+    "incomplete": "Date incomplete; timpul lipsă nu este estimat",
+    "complete": "Acoperire măsurată completă",
+    "average": "Putere medie de ieșire (timp acoperit)",
+    "peak": "Vârf de putere de ieșire eșantionat",
+    "sampledRange": "Interval de putere eșantionat",
+    "scope": "Ieșire UPS, nu energie de la priză. Totalurile pe perioadă acoperă epocile de monitorizare listate; nu tratați epoci diferite ca un singur contor fizic.",
+    "resolution": "Segment nominal al graficului: {{seconds}} secunde; golurile rămân separate. Treceti cu mouse-ul peste puncte pentru ora absolută și fusul orar.",
+    "empty": "Urmărirea energiei necesită două citiri programate valide ale puterii. Watti necunoscuți rămân indisponibili, nu zero.",
+    "error": "Nu s-a putut citi istoricul energiei.",
+    "bucket": "Energia de ieșire observată pe segment",
+    "samples": "Eșantioane accesibile și energie observată cumulativă",
+    "tableHelp": "Doar energia observată este sumată. Intervalele lipsă nu sunt completate. Valorile cumulative acoperă epocile listate.",
+    "time": "Începutul segmentului (fus orar local)",
+    "cumulative": "Wh cumulativ în perioada selectată",
+    "cumulativeChart": "Energie de ieșire observată cumulativă (perioada selectată)",
+    "epochTotal": "Energie observată în această epocă",
+    "unavailable": "Puterea de ieșire indisponibilă",
+    "epochs": "Epoci de monitorizare separate",
+    "started": "Monitorizarea a început",
+    "method": "Metoda de putere",
+    "chartHelp": "Date proporționale cu timpul. Intervalele lipsă și schimbările de epocă de monitorizare nu sunt conectate. Vârfurile eșantionate nu sunt măsurători hardware ale vârfurilor. O tabelă de date accesibilă urmează graficelor.",
+    "correlationBlocked": "Corelația CPU/memorie nu este disponibilă: Host Metrics necesită un serviciu de snapshot public și autorizat cu timpi de măsurare. Nu este activată nicio colectare suplimentară de pe gazdă."
+  },
   "history": {
     "error": "Nu s-a putut încărca istoricul.",
     "24h": "24 de ore",
@@ -66,7 +125,7 @@
     "30d": "30 de zile",
     "empty": "Nu sunt suficiente citiri încă. Termix citește UPS-ul la fiecare 30 de secunde.",
     "charge": "Încărcare baterie",
-    "load": "Sarcină",
+    "load": "Încărcare (doar raportată de dispozitiv)",
     "runtime": "Timp rămas",
     "voltage": "Tensiune"
   },
@@ -113,7 +172,7 @@
     "unreachable": "inaccesibil",
     "saved": "Salvat.",
     "deleteTitle": "Ștergeți {{name}}?",
-    "deleteText": "Istoricul și evenimentele asociate vor fi, de asemenea, șterse."
+    "deleteText": "Istoricul, totalurile de energie, epocile de monitorizare și evenimentele sunt, de asemenea, șterse."
   },
   "editor": {
     "addTitle": "Adaugă UPS",
@@ -172,6 +231,8 @@
     "testFailed": "Nu s-a putut citi UPS-ul."
   },
   "card": {
+    "estimatedLoad": "{{value}}% încărcare UPS estimată",
+    "dc": "DC calculat, neverificat",
     "title": "UPS",
     "empty": "Niciun UPS configurat. Activează Managerul UPS pentru un gazdă și adaugă un dispozitiv.",
     "runtime": "{{time}} rămas",

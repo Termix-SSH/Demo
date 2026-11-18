@@ -89,7 +89,7 @@ export function HostForm({
 }: Props) {
   const { t } = useTranslation();
   // Re-render when a plugin adds or removes a section.
-  useHostEditorSections();
+  const sectionList = useHostEditorSections();
   const defaultKeys = useEditorDefaultKeys();
   const trackedKeys = useRef<string[]>([]);
   trackedKeys.current = [...defaultKeys.keys()];
@@ -215,7 +215,7 @@ export function HostForm({
           all.findIndex((other) => other.id === tab.id) === index,
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [t, JSON.stringify(flags)],
+    [t, JSON.stringify(flags), sectionList],
   );
   const activeMore = moreTabs.find((tab) => tab.id === moreTab) ?? moreTabs[0];
 

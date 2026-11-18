@@ -18,11 +18,16 @@ import {
   useMemo,
   useRef,
   useSyncExternalStore,
+  type ComponentType,
 } from "react";
 import { createPortal } from "react-dom";
 import { useActionSlot } from "@/hooks/use-action-slot";
 import { useExtensions } from "../extension-registry";
 import { usePluginComponent } from "../component-registry";
+import { shell, shellHost } from "../shell-bridge";
+import { HostTabEmbed } from "@/shell/HostTabEmbed";
+import { getTabType } from "@/shell/tab-registry";
+import { hostActionsFor, listHostActions } from "@/sidebar/host-contributions";
 
 import { getSharedState, hostsFor } from "./frame-state";
 import { frameRowContext } from "./data-rows";
@@ -42,10 +47,16 @@ import {
   type FrameFit,
 } from "./PluginFrameView";
 import { frameMetaOf } from "./frame-meta";
+import {
+  foreignAnchorOf,
+  shellScrollBoxOf,
+  subscribeForeignAnchors,
+} from "./foreign-anchors";
 import { GrantedWebView, type WebPlace } from "./granted-web-view";
 import { resolveSlotFit } from "./slot-fit";
 import {
   componentItems,
+  tabItems,
   extensionItems,
   slotItems,
   type BuiltList,
@@ -100,6 +111,8 @@ interface Consumer {
   views: Map<string, ForeignView>;
   dragging: boolean;
   layer: HTMLDivElement | null;
+  /** The layer sits next to the iframe and moves with it (foreign-anchors). */
+  anchored: boolean;
   frame: Rect;
   box: Rect;
   shown: boolean;
@@ -123,6 +136,9 @@ function subscribe(listener: () => void) {
     listeners.delete(listener);
   };
 }
+
+// A layer's anchor coming or going redraws where the layers sit.
+subscribeForeignAnchors(emitChange);
 
 function validId(value: unknown): value is string {
   return (
@@ -181,6 +197,8 @@ function getConsumer(
       views: new Map(),
       dragging: false,
       layer: null,
+      // Fixed for the consumer's life, so its layer never has to move.
+      anchored: !!foreignAnchorOf(iframe),
       frame: EMPTY_RECT,
       box: EMPTY_RECT,
       shown: false,
@@ -189,6 +207,8 @@ function getConsumer(
       dirty: true,
     };
     consumers.set(owner, consumer);
+    watchForMoves();
+    frameSizes?.observe(iframe);
   }
   return consumer;
 }
@@ -414,7 +434,11 @@ export function focusForeignView(owner: string, id: unknown, edge: unknown) {
 
 /** A consumer frame closed or reloaded. */
 export function dropForeignConsumer(owner: string): void {
-  if (consumers.delete(owner)) emitChange();
+  const consumer = consumers.get(owner);
+  if (!consumer) return;
+  frameSizes?.unobserve(consumer.iframe);
+  consumers.delete(owner);
+  emitChange();
 }
 
 /** Test seam. */
@@ -520,6 +544,13 @@ function applyLayer(consumer: Consumer): void {
   const layer = consumer.layer;
   if (!layer) return;
   const { box } = consumer;
+  if (consumer.anchored) {
+    // Sized by its anchor and clipped by the boxes around the frame itself.
+    layer.style.display = consumer.shown ? "block" : "none";
+    layer.style.pointerEvents = "none";
+    layer.dataset.dragging = consumer.dragging ? "1" : "";
+    return;
+  }
   layer.style.left = `${box.x}px`;
   layer.style.top = `${box.y}px`;
   layer.style.width = `${box.width}px`;
@@ -538,29 +569,71 @@ function applyView(consumer: Consumer, view: ForeignView): void {
   const fit = view.web
     ? "fill"
     : consumer.lists.get(view.listId)?.items.get(view.itemKey)?.fit;
-  const out = placeView({
+  const input = {
     frame: consumer.frame,
     box: consumer.box,
     frameShown: consumer.shown,
     placement: view.placement,
     occluders: view.covers,
     drawn: view.drawn,
-  });
+  };
+  // An anchored layer is the frame's own box, so frame coords are layer
+  // coords and the browser clips it with the frame.
+  const local: Rect = {
+    x: 0,
+    y: 0,
+    width: consumer.frame.width,
+    height: consumer.frame.height,
+  };
+  const out = placeView(
+    consumer.anchored ? { ...input, frame: local, box: local } : input,
+  );
   el.style.left = `${out.left}px`;
   el.style.top = `${out.top}px`;
-  el.style.width = fit === "inline" ? "" : `${out.width}px`;
+  el.style.width = fit === "inline" || fit === "bar" ? "" : `${out.width}px`;
   el.style.height =
-    fit === "fill" || fit === "overlay" ? `${out.height}px` : "";
+    fit === "fill" || fit === "overlay" || fit === "bar"
+      ? `${out.height}px`
+      : "";
   el.style.clipPath = out.clipPath;
   el.style.visibility = out.hidden ? "hidden" : "visible";
   el.style.zIndex = String(view.z);
   el.style.pointerEvents =
     out.hidden || !view.interactive || consumer.dragging ? "none" : "auto";
   el.dataset.foreignHidden = out.hidden ? "1" : "";
-  if (view.web) view.place = { rect: out.shownInPage, hidden: out.hidden };
+  if (view.web) {
+    // A native view needs where it shows in the page, whatever the layer.
+    const page = consumer.anchored ? placeView(input) : out;
+    view.place = { rect: page.shownInPage, hidden: page.hidden };
+  }
 }
 
 let loop = 0;
+/**
+ * Measuring a frame forces layout, which is cheap in Chromium but costly in
+ * Firefox, where frames share the page's thread. So it runs every frame only
+ * for a moment after something changed, then checks a few times a second.
+ */
+const SETTLE_MS = 500;
+const POLL_MS = 400;
+let settleUntil = 0;
+let slowTimer: ReturnType<typeof setTimeout> | null = null;
+let watching = false;
+let frameSizes: ResizeObserver | null = null;
+
+function watchForMoves(): void {
+  if (watching || typeof window === "undefined") return;
+  watching = true;
+  const kick = () => startLoop();
+  window.addEventListener("resize", kick);
+  window.addEventListener("scroll", kick, true);
+  window.addEventListener("transitionrun", kick, true);
+  window.addEventListener("transitionend", kick, true);
+  window.addEventListener("pointerup", kick, true);
+  window.addEventListener("keyup", kick, true);
+  frameSizes =
+    typeof ResizeObserver === "undefined" ? null : new ResizeObserver(kick);
+}
 
 function tick() {
   loop = 0;
@@ -576,10 +649,24 @@ function tick() {
       for (const view of consumer.views.values()) applyView(consumer, view);
     }
   }
-  if (any) startLoop();
+  if (!any) return;
+  if (performance.now() < settleUntil) {
+    loop = requestAnimationFrame(tick);
+  } else if (!slowTimer) {
+    slowTimer = setTimeout(() => {
+      slowTimer = null;
+      if (!loop) loop = requestAnimationFrame(tick);
+    }, POLL_MS);
+  }
 }
 
 function startLoop() {
+  settleUntil = performance.now() + SETTLE_MS;
+  watchForMoves();
+  if (slowTimer) {
+    clearTimeout(slowTimer);
+    slowTimer = null;
+  }
   if (loop || typeof requestAnimationFrame === "undefined") return;
   loop = requestAnimationFrame(tick);
 }
@@ -677,6 +764,57 @@ const ComponentRunner = memo(function ComponentRunner({
   return null;
 });
 
+const embeddedTabs = new Map<string, ComponentType<Record<string, unknown>>>();
+
+/**
+ * A host's tab drawn in the shell for a frame that embeds it (a host page),
+ * only while one of the host's actions opens that tab type.
+ */
+function embeddedTab(
+  type: string,
+  hostId: unknown,
+): ComponentType<Record<string, unknown>> {
+  const key = `${type}\u0000${String(hostId)}`;
+  let component = embeddedTabs.get(key);
+  if (!component) {
+    const Embedded = ({ isVisible }: Record<string, unknown>) => {
+      const host = shellHost(hostId as string | number | undefined);
+      if (!host) return null;
+      const allowed = hostActionsFor(listHostActions(), host).some(
+        (action) => action.tabType === type,
+      );
+      if (!allowed) return null;
+      return (
+        <HostTabEmbed
+          host={host}
+          type={type}
+          isVisible={isVisible !== false}
+          shell={shell}
+        />
+      );
+    };
+    Embedded.displayName = `EmbeddedTab(${type})`;
+    component = Embedded;
+    embeddedTabs.set(key, component);
+  }
+  return component;
+}
+
+const TabRunner = memo(function TabRunner({
+  consumer,
+  list,
+}: {
+  consumer: Consumer;
+  list: ForeignList;
+}) {
+  const hostId = list.context.hostId;
+  useEffect(() => {
+    const owner = getTabType(list.id)?.pluginId ?? "";
+    sendItems(consumer, list, tabItems(owner, embeddedTab(list.id, hostId)));
+  }, [consumer, list, hostId]);
+  return null;
+});
+
 // The layer.
 
 function container(): HTMLElement {
@@ -696,6 +834,12 @@ function ForeignViewBox({
   consumer: Consumer;
   view: ForeignView;
 }) {
+  // A framed part says when it painted; anything else is ready once mounted.
+  const item = consumer.lists.get(view.listId)?.items.get(view.itemKey);
+  const readyOnMount = !!view.web || (!!item && !frameMetaOf(item.component));
+  useEffect(() => {
+    if (readyOnMount) consumer.emit("foreign.shown", { id: view.id });
+  }, [consumer, view.id, readyOnMount]);
   if (view.web) return <WebViewBox consumer={consumer} view={view} />;
   return <PartViewBox consumer={consumer} view={view} />;
 }
@@ -721,7 +865,12 @@ function WebViewBox({
       ref={box}
       data-foreign-view={consumer.pluginId}
       data-foreign-id={view.id}
-      style={{ position: "absolute", visibility: "hidden", display: "flex" }}
+      style={{
+        position: "absolute",
+        visibility: "hidden",
+        display: "flex",
+        overflow: "hidden",
+      }}
     >
       <GrantedWebView
         pluginId={consumer.pluginId}
@@ -761,6 +910,8 @@ function PartViewBox({
   const onFrameEvent = (name: string, data: unknown) => {
     if (name === "size") {
       consumer.emit("foreign.size", { id: view.id, size: data });
+    } else if (name === "shown") {
+      consumer.emit("foreign.shown", { id: view.id });
     } else if (name === "drawn") {
       view.drawn = (data as { drawn?: unknown } | null)?.drawn === true;
       applyView(consumer, view);
@@ -774,6 +925,12 @@ function PartViewBox({
       const { dx, dy } = (data ?? {}) as { dx?: unknown; dy?: unknown };
       if (typeof dx !== "number" || typeof dy !== "number") return;
       const clamp = (n: number) => Math.max(-5000, Math.min(5000, n));
+      // The shell scrolls this page, so the shell takes the wheel too.
+      const scroller = shellScrollBoxOf(consumer.iframe);
+      if (scroller) {
+        scroller.scrollBy({ left: clamp(dx), top: clamp(dy) });
+        return;
+      }
       consumer.emit("foreign.wheel", {
         id: view.id,
         dx: clamp(dx),
@@ -787,7 +944,12 @@ function PartViewBox({
       ref={box}
       data-foreign-view={item.pluginId}
       data-foreign-id={view.id}
-      style={{ position: "absolute", visibility: "hidden", display: "flex" }}
+      style={{
+        position: "absolute",
+        visibility: "hidden",
+        display: "flex",
+        overflow: "hidden",
+      }}
     >
       {meta ? (
         <PluginFrameView
@@ -828,7 +990,17 @@ function Layer({ consumer }: { consumer: Consumer }) {
     <div
       ref={ref}
       data-foreign-layer={consumer.pluginId}
-      style={{ position: "fixed", overflow: "hidden", display: "none" }}
+      style={
+        consumer.anchored
+          ? {
+              position: "absolute",
+              inset: 0,
+              overflow: "hidden",
+              display: "none",
+              zIndex: 1,
+            }
+          : { position: "fixed", overflow: "hidden", display: "none" }
+      }
     >
       {[...consumer.views.values()].map((view) => (
         <ForeignViewBox
@@ -865,18 +1037,33 @@ export function ForeignViewHost() {
               <ExtensionRunner key={key} consumer={consumer} list={entry} />
             );
           }
+          if (entry.kind === "tab") {
+            return <TabRunner key={key} consumer={consumer} list={entry} />;
+          }
           return <ComponentRunner key={key} consumer={consumer} list={entry} />;
         }),
       )}
-      {list.some((consumer) => consumer.views.size > 0) &&
+      {list.some((consumer) => consumer.views.size > 0 && !consumer.anchored) &&
         createPortal(
           list
-            .filter((consumer) => consumer.views.size > 0)
+            .filter((consumer) => consumer.views.size > 0 && !consumer.anchored)
             .map((consumer) => (
               <Layer key={consumer.owner} consumer={consumer} />
             )),
           container(),
         )}
+      {list
+        .filter((consumer) => consumer.views.size > 0 && consumer.anchored)
+        .map((consumer) => {
+          const anchor = foreignAnchorOf(consumer.iframe);
+          return anchor
+            ? createPortal(
+                <Layer key={consumer.owner} consumer={consumer} />,
+                anchor,
+                consumer.owner,
+              )
+            : null;
+        })}
     </>
   );
 }

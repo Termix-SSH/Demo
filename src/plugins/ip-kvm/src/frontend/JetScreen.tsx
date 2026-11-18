@@ -116,7 +116,10 @@ export function JetScreen({
         btoa(JSON.stringify(peer.localDescription)),
       );
       if (closed) return;
-      await peer.setRemoteDescription(JSON.parse(atob(answer)));
+      await peer.setRemoteDescription(JSON.parse(atob(answer.sd)));
+      for (const candidate of answer.candidates ?? []) {
+        await peer.addIceCandidate(candidate).catch(() => {});
+      }
     })().catch((error: unknown) => {
       if (!closed) setNote(errorMessage(error) || t("screen.failed"));
     });

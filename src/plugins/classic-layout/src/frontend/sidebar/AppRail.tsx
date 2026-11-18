@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import {
   ComponentSlot,
   type TabType,
@@ -11,14 +12,28 @@ import {
   type RailItemDef,
   useUiPreferencesContext,
   rem,
+  PanelSearch,
   isElectron,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+  useChooseTheme,
+  useTheme,
+  useThemeOptions,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
   Check,
   Eye,
   EyeOff,
+  LayoutGrid,
+  PinOff,
+  Settings2,
   LogOut,
+  Palette,
   PanelRight,
   Pin,
   Search,
@@ -26,6 +41,8 @@ import {
   SquareArrowOutUpRight,
 } from "lucide-react";
 import { readRailPreference, setRailPreference } from "./rail-preferences";
+import { useRailPins } from "../rail-pins";
+import { useFeatureSettings } from "../settings/FeatureSettingsSections";
 import { toggleHiddenRailTab, useHiddenRailTabs } from "./hidden-rail-tabs";
 import { RailBadge, RailStatus, type RailStatusTone } from "./RailBadge";
 
@@ -89,6 +106,46 @@ function RailIcon({
   );
 }
 
+/** Picks a theme from the rail, without opening Settings. */
+export function ThemeMenu({ expanded }: { expanded: boolean }) {
+  const { t } = useTranslation();
+  const { theme } = useTheme();
+  const chooseTheme = useChooseTheme();
+  const options = useThemeOptions();
+  if (options.length < 2) return null;
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          type="button"
+          style={btnStyle}
+          title={t("nav.theme")}
+          aria-label={t("nav.theme")}
+          className={`${btnBase} ${idle}`}
+        >
+          <RailIcon>
+            <Palette size={16} />
+          </RailIcon>
+          <RailLabel expanded={expanded}>{t("nav.theme")}</RailLabel>
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent side="right" align="end" className="w-48">
+        <DropdownMenuLabel>{t("nav.theme")}</DropdownMenuLabel>
+        <DropdownMenuRadioGroup
+          value={theme}
+          onValueChange={(id) => chooseTheme(id as typeof theme)}
+        >
+          {options.map((option) => (
+            <DropdownMenuRadioItem key={option.id} value={option.id}>
+              {option.label}
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 function Rule({ expanded }: { expanded: boolean }) {
   return (
     <div
@@ -144,6 +201,7 @@ export function AppRail({
   onOpenInRightDock,
   onOpenSettings,
   onOpenNavigationSettings,
+  onOpenAppSettings,
   onOpenPalette,
   onLogout,
 }: {
@@ -159,11 +217,27 @@ export function AppRail({
   onOpenSettings: () => void;
   /** The rail menu's own entry, which jumps to the navigation settings. */
   onOpenNavigationSettings: () => void;
+  /** Opens a plugin's page in Settings. */
+  onOpenAppSettings?: (pluginId: string) => void;
   onOpenPalette?: () => void;
   onLogout: (options?: { manual?: boolean }) => void;
 }) {
   const { t } = useTranslation();
   const [hovered, setHovered] = useState(false);
+  // Native events, since React counts the All apps portal as inside the rail.
+  const railRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = railRef.current;
+    if (!el) return;
+    const enter = () => setHovered(true);
+    const leave = () => setHovered(false);
+    el.addEventListener("mouseenter", enter);
+    el.addEventListener("mouseleave", leave);
+    return () => {
+      el.removeEventListener("mouseenter", enter);
+      el.removeEventListener("mouseleave", leave);
+    };
+  }, []);
   const [pinned, setPinned] = useState(() => readRailPreference("pinAppRail"));
   const [expandOnHover, setExpandOnHover] = useState(() =>
     readRailPreference("expandAppRailOnHover"),
@@ -178,6 +252,27 @@ export function AppRail({
   const [menuTarget, setMenuTarget] = useState<MenuTarget | null>(null);
   const [managing, setManaging] = useState(false);
   const hiddenTabs = useHiddenRailTabs();
+  const railPins = useRailPins();
+  const [appsOpen, setAppsOpen] = useState(false);
+  const [appsQuery, setAppsQuery] = useState("");
+  const closeApps = () => setAppsOpen(false);
+  useEffect(() => {
+    if (!appsOpen) return;
+    const onDown = (e: MouseEvent) => {
+      const el = e.target as HTMLElement;
+      if (!el.closest("[data-all-apps]") && !el.closest("[data-all-apps-btn]"))
+        closeApps();
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeApps();
+    };
+    window.addEventListener("mousedown", onDown);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("mousedown", onDown);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [appsOpen]);
 
   useEffect(() => {
     const pinHandler = () => setPinned(readRailPreference("pinAppRail"));
@@ -232,12 +327,38 @@ export function AppRail({
   const [dragId, setDragId] = useState<string | null>(null);
   const [dropBefore, setDropBefore] = useState<string | null>(null);
 
-  const railExpanded = pinned || (expandOnHover && hovered) || managing;
+  const railExpanded =
+    pinned || (expandOnHover && (hovered || appsOpen)) || managing;
   const mainItems = railItems.filter((item) => item.placement !== "footer");
-  const bands = useMemo(
-    () => groupRailItems(mainItems.filter((item) => !hiddenTabs.has(item.id))),
-    [mainItems, hiddenTabs],
+  const isPinned = railPins.isPinned;
+  const menuItem = menuTarget
+    ? mainItems.find((entry) => entry.id === menuTarget.id)
+    : undefined;
+  const menuPluginId = menuItem?.pluginId;
+  const menuItemPinned = !!menuItem && isPinned(menuItem);
+  const userFeatures = useFeatureSettings("user");
+  const adminFeatures = useFeatureSettings("admin");
+  const settingsPluginIds = new Set(
+    [...userFeatures, ...(isAdmin ? adminFeatures : [])].map((p) => p.id),
   );
+  const togglePin = (id: string) => {
+    const item = mainItems.find((entry) => entry.id === id);
+    if (item) railPins.toggle(item, mainItems);
+  };
+  const bands = groupRailItems(
+    mainItems.filter((item) => !hiddenTabs.has(item.id) && isPinned(item)),
+  );
+  // Everything not on the rail, so an app is never out of reach.
+  const overflowItems = mainItems.filter(
+    (item) => item.pluginId && !hiddenTabs.has(item.id) && !isPinned(item),
+  );
+  const openItem = (item: RailItemDef, newTab = false) => {
+    if (item.kind === "tab" || (item.promotable && newTab)) {
+      onOpenTab?.(item.id as TabType);
+      return;
+    }
+    onRailClick(item.id as RailView);
+  };
   const hiddenItems = mainItems.filter((item) => hiddenTabs.has(item.id));
   const footerItems = railItems.filter(
     (item) => item.placement === "footer" && !hiddenTabs.has(item.id),
@@ -348,8 +469,7 @@ export function AppRail({
       <div
         className="absolute inset-y-0 left-0 z-[60] flex flex-col items-stretch bg-sidebar border-r border-border overflow-hidden pt-2 gap-1 transition-[width] duration-200 min-h-0"
         style={{ width: rem(railExpanded ? 172 : 40) }}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+        ref={railRef}
         onContextMenu={(e) => {
           e.preventDefault();
           // Keep the menu on screen when right-clicking near the viewport edges
@@ -402,6 +522,28 @@ export function AppRail({
                   {band.items.map(renderItem)}
                 </div>
               ))}
+
+          {pluginsSettled && overflowItems.length > 0 && (
+            <>
+              <Rule expanded={railExpanded} />
+              <button
+                type="button"
+                data-all-apps-btn=""
+                onClick={() => setAppsOpen((v) => !v)}
+                aria-expanded={appsOpen}
+                title={t("nav.allApps")}
+                style={btnStyle}
+                className={`${btnBase} ${appsOpen ? activeClass : idle}`}
+              >
+                <RailIcon>
+                  <LayoutGrid size={16} />
+                </RailIcon>
+                <RailLabel expanded={railExpanded}>
+                  {t("nav.allApps")}
+                </RailLabel>
+              </button>
+            </>
+          )}
 
           {pluginsSettled && hiddenItems.length > 0 && (
             <>
@@ -475,6 +617,7 @@ export function AppRail({
           {footerItems.length > 0 && !isElectron() && (
             <Rule expanded={railExpanded} />
           )}
+          <ThemeMenu expanded={railExpanded} />
           {/* The desktop signs in to its own local profile by itself. */}
           {!isElectron() && (
             <button
@@ -533,6 +676,105 @@ export function AppRail({
           </div>
         </div>
 
+        {appsOpen &&
+          createPortal(
+            <div
+              data-all-apps=""
+              role="dialog"
+              aria-label={t("nav.allApps")}
+              className="fixed inset-y-0 z-[70] flex flex-col border-r border-border bg-sidebar shadow-xl transition-[left] duration-200"
+              style={{ left: rem(railExpanded ? 172 : 40), width: rem(300) }}
+            >
+              <div className="flex h-10 shrink-0 items-center gap-2 border-b border-border px-3">
+                <LayoutGrid className="size-3.5 text-muted-foreground" />
+                <span className="text-xs font-semibold">
+                  {t("nav.allApps")}
+                </span>
+                <span className="ml-auto text-[10px] tabular-nums text-muted-foreground">
+                  {overflowItems.length}
+                </span>
+              </div>
+              <div className="shrink-0 border-b border-border px-2 py-1.5">
+                <PanelSearch
+                  value={appsQuery}
+                  onChange={setAppsQuery}
+                  placeholder={t("nav.findApp")}
+                  autoFocus
+                  fill
+                />
+              </div>
+              <div className="thin-scrollbar flex-1 overflow-y-auto p-1">
+                {overflowItems
+                  .filter((item) =>
+                    t(item.labelKey)
+                      .toLowerCase()
+                      .includes(appsQuery.trim().toLowerCase()),
+                  )
+                  .sort((a, b) => t(a.labelKey).localeCompare(t(b.labelKey)))
+                  .map((item) => {
+                    const Icon = item.icon;
+                    const title = t(item.labelKey);
+                    return (
+                      <div
+                        key={`app-${item.id}`}
+                        role="button"
+                        tabIndex={0}
+                        data-rail-item=""
+                        className="group flex h-8 cursor-pointer items-center gap-2.5 px-2 text-muted-foreground hover:bg-muted/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        onClick={(e) => {
+                          openItem(item, e.ctrlKey || e.metaKey);
+                          closeApps();
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key !== "Enter") return;
+                          openItem(item);
+                          closeApps();
+                        }}
+                        onContextMenu={() =>
+                          setMenuTarget({
+                            id: item.id,
+                            title,
+                            promotable: item.promotable,
+                            rightDockable: item.rightDockable,
+                            hideable:
+                              !item.alwaysVisible && item.hideable !== false,
+                          })
+                        }
+                      >
+                        <RailIcon
+                          useBadge={item.useBadge}
+                          useStatus={statusHook(item)}
+                        >
+                          <Icon size={16} />
+                        </RailIcon>
+                        <span className="truncate text-xs">{title}</span>
+                        {!railPins.locked && (
+                          <button
+                            type="button"
+                            title={t("nav.pinToRail")}
+                            aria-label={t("nav.pinToRail")}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              togglePin(item.id);
+                            }}
+                            className="ml-auto p-1 opacity-0 hover:text-accent-brand focus-visible:opacity-100 group-hover:opacity-100"
+                          >
+                            <Pin className="size-3" />
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+              </div>
+              <div className="shrink-0 border-t border-border px-3 py-2 text-[10px] text-muted-foreground">
+                {railPins.locked
+                  ? t("nav.allAppsLockedHint")
+                  : t("nav.allAppsHint")}
+              </div>
+            </div>,
+            document.body,
+          )}
+
         {menuPos && (
           <div
             data-rail-context-menu
@@ -564,17 +806,50 @@ export function AppRail({
                     {t("nav.openInRightDock")}
                   </MenuItem>
                 )}
-                {menuTarget.hideable && (
+                {menuPluginId &&
+                  onOpenAppSettings &&
+                  settingsPluginIds.has(menuPluginId) && (
+                    <MenuItem
+                      icon={<Settings2 className="size-3" />}
+                      onClick={() => {
+                        onOpenAppSettings?.(menuPluginId);
+                        setMenuPos(null);
+                      }}
+                    >
+                      {t("nav.appSettings")}
+                    </MenuItem>
+                  )}
+                {menuPluginId && railPins.appsMenu && !railPins.locked && (
                   <MenuItem
-                    icon={<EyeOff className="size-3" />}
+                    icon={
+                      menuItemPinned ? (
+                        <PinOff className="size-3" />
+                      ) : (
+                        <Pin className="size-3" />
+                      )
+                    }
                     onClick={() => {
-                      void toggleHiddenRailTab(menuTarget.id);
+                      togglePin(menuTarget.id);
                       setMenuPos(null);
                     }}
                   >
-                    {t("nav.hideFromRail")}
+                    {menuItemPinned
+                      ? t("nav.unpinFromRail")
+                      : t("nav.pinToRail")}
                   </MenuItem>
                 )}
+                {menuTarget.hideable &&
+                  !(menuPluginId && railPins.appsMenu) && (
+                    <MenuItem
+                      icon={<EyeOff className="size-3" />}
+                      onClick={() => {
+                        void toggleHiddenRailTab(menuTarget.id);
+                        setMenuPos(null);
+                      }}
+                    >
+                      {t("nav.hideFromRail")}
+                    </MenuItem>
+                  )}
                 <div className="h-px bg-border my-1" />
               </>
             )}

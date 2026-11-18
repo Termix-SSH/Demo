@@ -8,7 +8,10 @@
     "viewHistory": "Lịch sử",
     "viewEvents": "Sự kiện",
     "viewCommands": "Lệnh",
-    "viewSources": "Thiết bị"
+    "viewSources": "Thiết bị",
+    "refresh": "Tự động làm mới",
+    "refreshSeconds": "{{seconds}} giây",
+    "refreshHint": "Chỉ làm mới khi trang Tổng quan đang hiển thị. UPS có thể cập nhật chậm hơn. Việc lấy dữ liệu nền và lưu mẫu vẫn giữ nguyên ở 30 giây."
   },
   "common": {
     "loading": "Đang tải...",
@@ -47,6 +50,8 @@
     "charge": "Dung lượng pin",
     "runtime": "Thời gian còn lại",
     "load": "Tải",
+    "estimatedLoad": "Tải UPS ước tính",
+    "estimatedLoadHint": "Công suất đầu ra / {{watts}} W định mức. {{method}}. Độ chính xác của cảm biến chưa được xác minh; không phải là mức sử dụng CPU hoặc mức tiêu thụ điện từ lưới AC.",
     "nominal": "{{watts}} W định mức",
     "input": "Điện áp đầu vào",
     "output": "Điện áp đầu ra",
@@ -59,6 +64,60 @@
     "readAt": "Lần đọc cuối",
     "ago": "{{time}} trước"
   },
+  "electrical": {
+    "inputDc": "Đầu vào là DC",
+    "outputDc": "Đầu ra là DC",
+    "dcHint": "Xác nhận miền điện trước khi tính công suất từ điện áp và dòng điện. Thao tác này không thay đổi bất kỳ cài đặt nào của UPS. Độ chính xác của cảm biến cần được kiểm tra độc lập.",
+    "inputCurrent": "Dòng điện đầu vào",
+    "outputCurrent": "Dòng điện đầu ra",
+    "batteryCurrent": "Dòng điện pin",
+    "inputPower": "Công suất đầu vào",
+    "outputPower": "Công suất đầu ra",
+    "reported": "Công suất thực tế được báo cáo",
+    "calculated": "Công suất DC tính toán - độ chính xác cảm biến chưa được xác minh",
+    "batteryType": "Hóa học pin",
+    "chargeLow": "Ngưỡng sạc thấp",
+    "chargeWarning": "Ngưỡng cảnh báo sạc",
+    "manufactured": "Ngày sản xuất pin",
+    "driver": "Trình điều khiển",
+    "driverVersion": "Phiên bản trình điều khiển",
+    "subdriver": "Trình điều khiển phụ HID",
+    "driverState": "Trạng thái trình điều khiển",
+    "usb": "Nhà cung cấp / sản phẩm USB",
+    "raw": "Biến NUT nâng cao",
+    "search": "Lọc tên hoặc giá trị biến",
+    "noVariables": "Không có biến phù hợp.",
+    "dcDisclaimer": "Công suất đầu ra DC được tính toán ước lượng tải UPS, không phải mức tiêu thụ điện xoay chiều từ ổ cắm. Nó không nhất thiết phản ánh mức tiêu thụ của một máy chủ duy nhất. Hãy xác minh các đọc dòng điện trước khi dựa vào các ước lượng công suất hoặc năng lượng."
+  },
+  "energy": {
+    "period": "Năng lượng đầu ra quan sát được (giai đoạn đã chọn)",
+    "lifetime": "Năng lượng đầu ra quan sát được (chu kỳ hiện tại)",
+    "estimated": "Ước tính từ các mẫu theo lịch trình; không phải là đồng hồ đo phần cứng",
+    "coverage": "Phạm vi đo lường",
+    "covered": "Thời gian tích hợp",
+    "incomplete": "Dữ liệu không đầy đủ; thời gian thiếu không được ước tính",
+    "complete": "Phạm vi đo lường đầy đủ",
+    "average": "Công suất đầu ra trung bình (thời gian được đo)",
+    "peak": "Đỉnh công suất đầu ra được lấy mẫu",
+    "sampledRange": "Dải công suất được lấy mẫu",
+    "scope": "Đầu ra của UPS, không phải năng lượng từ ổ điện xoay chiều. Tổng theo chu kỳ bao gồm các mốc thời gian theo dõi được liệt kê; không coi các mốc thời gian khác nhau là một đồng hồ đo vật lý duy nhất.",
+    "resolution": "Đoạn biểu đồ danh nghĩa: {{seconds}} giây; khoảng trống vẫn được tách riêng. Di chuột qua các điểm để xem thời gian tuyệt đối và múi giờ.",
+    "empty": "Theo dõi năng lượng cần hai lần đọc công suất theo lịch trình hợp lệ. Watts chưa xác định sẽ hiển thị là không khả dụng, không phải bằng không.",
+    "error": "Không thể đọc lịch sử năng lượng.",
+    "bucket": "Năng lượng đầu ra quan sát được trên mỗi phân đoạn",
+    "samples": "Các mẫu có thể truy cập và năng lượng quan sát được tích lũy",
+    "tableHelp": "Chỉ năng lượng quan sát được mới được cộng dồn. Các khoảng thời gian bị thiếu không được điền. Giá trị tích lũy bao phủ các mốc thời gian được liệt kê.",
+    "time": "Thời điểm bắt đầu phân đoạn (múi giờ địa phương)",
+    "cumulative": "Wh tích lũy trong khoảng thời gian đã chọn",
+    "cumulativeChart": "Năng lượng đầu ra quan sát được tích lũy (khoảng thời gian đã chọn)",
+    "epochTotal": "Năng lượng quan sát được trong mốc thời gian này",
+    "unavailable": "Công suất đầu ra không khả dụng",
+    "epochs": "Các giai đoạn theo dõi riêng biệt",
+    "started": "Đã bắt đầu theo dõi",
+    "method": "Phương pháp đo công suất",
+    "chartHelp": "Dữ liệu tỷ lệ theo thời gian. Các khoảng thời gian bị thiếu và thay đổi giai đoạn theo dõi không được nối liền. Các đỉnh lấy mẫu không phải là phép đo đỉnh phần cứng. Bảng dữ liệu có thể truy cập được nằm sau các biểu đồ.",
+    "correlationBlocked": "Tương quan CPU/bộ nhớ không khả dụng: Host Metrics cần một dịch vụ chụp ảnh công khai, được ủy quyền với dấu thời gian đo lường. Không có thu thập dữ liệu máy chủ bổ sung nào được bật."
+  },
   "history": {
     "error": "Không thể tải lịch sử.",
     "24h": "24 giờ",
@@ -66,7 +125,7 @@
     "30d": "30 ngày",
     "empty": "Chưa đủ dữ liệu. Termix đọc UPS mỗi 30 giây.",
     "charge": "Dung lượng pin",
-    "load": "Tải",
+    "load": "Tải (chỉ báo cáo từ thiết bị)",
     "runtime": "Thời gian còn lại",
     "voltage": "Điện áp"
   },
@@ -113,7 +172,7 @@
     "unreachable": "không thể kết nối",
     "saved": "Đã lưu.",
     "deleteTitle": "Xóa {{name}}?",
-    "deleteText": "Lịch sử và sự kiện của nó cũng sẽ bị xóa."
+    "deleteText": "Lịch sử, tổng năng lượng, các giai đoạn theo dõi và sự kiện của nó cũng sẽ bị xóa."
   },
   "editor": {
     "addTitle": "Thêm UPS",
@@ -172,6 +231,8 @@
     "testFailed": "Không thể đọc UPS."
   },
   "card": {
+    "estimatedLoad": "{{value}}% tải UPS ước tính",
+    "dc": "DC tính toán, chưa xác minh",
     "title": "UPS",
     "empty": "Chưa thiết lập UPS. Bật Quản lý UPS cho một host và thêm thiết bị.",
     "runtime": "Còn {{time}}",

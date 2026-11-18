@@ -91,7 +91,11 @@ export interface TerminalInputAccess {
 export interface TerminalOverlayProps {
   host: Host | undefined;
   backgroundColor?: string;
-  /** Server messages for this session, plus a local "session_closed". */
+  /**
+   * Server messages for this session, plus a local "session_closed". A late
+   * subscriber first gets what it missed of the connect in progress. Each
+   * message has a rising `seq`; skip any you have already handled.
+   */
   subscribe: (
     listener: (message: TerminalSessionMessage) => void,
   ) => () => void;

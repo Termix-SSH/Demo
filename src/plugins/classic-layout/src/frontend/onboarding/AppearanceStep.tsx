@@ -308,7 +308,7 @@ function FontSizePicker({
 }
 
 const SELECT_CLASS =
-  "w-full border border-border bg-background px-2.5 py-1.5 text-xs text-foreground outline-none focus:ring-1 focus:ring-ring";
+  "w-full border border-border bg-(--field) px-2.5 py-1.5 text-xs text-foreground outline-none focus:ring-1 focus:ring-ring";
 
 function UiFontSelect({
   value,

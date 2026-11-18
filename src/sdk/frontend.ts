@@ -572,6 +572,12 @@ export interface HostEditorSectionProps {
    * shown in that mode.
    */
   mode?: "host" | "defaults";
+  /**
+   * False in the simple host editor. Show only the settings most hosts
+   * change then, and the rest once it is true. Undefined on cores before
+   * 26.11.2, which have no simple editor: treat that as true.
+   */
+  advanced?: boolean;
 }
 
 export interface HostEditorSectionContribution {
@@ -594,6 +600,12 @@ export interface HostEditorSectionContribution {
    * defaults editor and never for a host.
    */
   defaults?: boolean | "only";
+  /**
+   * Also shown in the simple host editor, for settings most hosts change.
+   * Off by default, so the section waits for Advanced. The component gets
+   * `advanced: false` there and can hold back its rarer fields.
+   */
+  simple?: boolean;
   component: ComponentType<HostEditorSectionProps>;
 }
 
@@ -1037,12 +1049,13 @@ export interface ActionSlotDefinition {
   rows?: "host" | "tab" | "credential";
   /**
    * How a component from a framed plugin sizes itself in this slot: "inline"
-   * as wide and tall as its content (row items, badges), "content" full
+   * as wide and tall as its content (row items, badges), "bar" as wide as its content and as
+   * tall as the bar it sits in (tab bar buttons), "content" full
    * width, "fill" the whole box, "overlay" the whole box, see-through and
    * only clickable while the part draws something (prompts over a terminal).
    * Left out, the shell guesses from the id.
    */
-  fit?: "inline" | "content" | "fill" | "overlay";
+  fit?: "inline" | "bar" | "content" | "fill" | "overlay";
 }
 
 export interface SlotContribution {
@@ -1629,6 +1642,8 @@ export interface PluginHostBridge {
   useCurrentUser: () => CurrentUser | null;
   useTheme: () => { theme: "light" | "dark" };
   useShell: () => ShellController | null;
+  /** Hosts without it leave scrolling to the view. */
+  useShellScroll?: (on: boolean) => void;
   toast: ToastApi;
   getApi: (pluginId: string) => PluginApiClient;
   getApiFor: (pluginId: string, origin: unknown) => PluginApiClient;
@@ -1888,6 +1903,18 @@ export function useTheme(): { theme: "light" | "dark" } {
  */
 export function useShell(): ShellController | null {
   return requireHost().useShell();
+}
+
+/**
+ * Lets Termix scroll this tab instead of the view's own scroll box, while
+ * `on` is true. The view then lays out at its full height, and parts from
+ * other plugins on it move with the page instead of trailing behind it.
+ * Turn it off while something needs a fixed height (a full size session, a
+ * drag). Only tab views in a frame use it; elsewhere it does nothing. Needs
+ * plugin API 2.9.
+ */
+export function useShellScroll(on: boolean): void {
+  requireHost().useShellScroll?.(on);
 }
 
 export function useToast(): ToastApi {

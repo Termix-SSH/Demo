@@ -36,6 +36,7 @@
     "checkNow": "Verifică acum"
   },
   "nav": {
+    "theme": "Temă",
     "copyPassword": "Copiază parola",
     "copySudoPassword": "Copiază parola sudo",
     "passwordCopied": "Parola a fost copiată în clipboard",
@@ -72,7 +73,15 @@
     "mobileNavigation": "Navigare",
     "allTabs": "Toate filele",
     "hideTabBar": "Ascunde bara de file",
-    "showTabBar": "Afișează bara de file"
+    "showTabBar": "Afișează bara de file",
+    "allApps": "Toate aplicațiile",
+    "findApp": "Caută o aplicație",
+    "pinToRail": "Fixează în bara laterală",
+    "unpinFromRail": "Anulează fixarea din bara laterală",
+    "appSettings": "Setări aplicație",
+    "allAppsHint": "Fixează-le pe cele pe care le folosești. Apasă cu butonul drept pe o aplicație pentru setările ei.",
+    "allAppsLockedHint": "Administratorul tău alege aplicațiile din bara laterală.",
+    "viewMenu": "Vizualizare"
   },
   "commandPalette": {
     "searchPlaceholder": "Caută gazde, comenzi sau setări...",
@@ -171,7 +180,8 @@
     "dragToReorder": "Trage plăcuțele pentru a le muta și marginile pentru a le redimensiona",
     "clearActivityConfirm": "Ștergi activitatea recentă?",
     "resetConfirm": "Resetezi tabloul de bord la aspectul implicit?",
-    "clearFailed": "Nu s-a putut șterge activitatea recentă"
+    "clearFailed": "Nu s-a putut șterge activitatea recentă",
+    "help": "Ajutor"
   },
   "admin": {
     "sectionGeneral": "General",
@@ -237,6 +247,9 @@
     "credentialStorage": "Permite salvarea parolelor și cheilor",
     "credentialStorageOff": "Salvarea parolelor și cheilor este dezactivată pe acest server. Lăsați-le goale și Termix va cere detalii la conectare.",
     "credentialStorageDesc": "Dacă este dezactivat, nimeni nu poate salva o parolă sau o cheie privată pe un gazdă sau o credencială, iar Termix le va cere la conectare. Datele de autentificare deja salvate rămân până sunt șterse.",
+    "hostKeyTrust": "Încredere în cheile noi de gazdă fără solicitare",
+    "hostKeyTrustDesc": "Când un plugin, un program sau API-ul se conectează la o gazdă a cărei cheie nu a fost verificată niciodată, salvează acea cheie și conectează-te. Dacă este dezactivat, aceste conexiuni sunt refuzate până când cineva deschide un terminal către gazdă și își exprimă încrederea în cheia acesteia.",
+    "hostKeyTrustFailed": "Actualizarea setării cheii de gazdă a eșuat",
     "secondFactorAfterExternalLogin": "Solicită un al doilea factor după autentificările externe (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Dacă este dezactivat, un al doilea factor înregistrat este solicitat doar după autentificările cu parolă și alte metode locale, ca înainte. Dacă este activat, este solicitat după fiecare metodă de autentificare, inclusiv SSO și LDAP.",
     "allowPasswordReset": "Permite resetarea parolei",
@@ -492,7 +505,93 @@
     "revokeSession": "Deconectare",
     "deleteRoleConfirm": "Ștergi rolul {{name}}?",
     "revokeKeyConfirm": "Revoci cheia API {{name}}?",
-    "revokeKey": "Revocare"
+    "revokeKey": "Revocare",
+    "apiKeyScopeReadAll": "Doar citire, orice poate vedea utilizatorul",
+    "apiKeyNeverExpires": "Nu expiră niciodată",
+    "apiKeyExpiryHint": "Dacă este lăsat necompletat, cheia funcționează timp de 90 de zile.",
+    "changeHeld": "Această modificare așteaptă {{minutes}} minute ca ceilalți administratori să o poată vedea.",
+    "userStatusFilter": "Starea contului",
+    "userStatusAll": "Toate conturile",
+    "userStatusActive": "Activ",
+    "userStatusDisabled": "Dezactivat",
+    "userStatusPending": "În așteptarea aprobării",
+    "disabledBadge": "Oprit",
+    "pendingBadge": "În așteptare",
+    "accountStatusTitle": "Starea contului",
+    "accountStatusActive": "Acest cont se poate autentifica.",
+    "accountStatusDisabled": "Acest cont este dezactivat. Nu se poate autentifica și cheile API nu funcționează.",
+    "accountStatusPending": "Acest cont este în așteptarea aprobării și nu se poate autentifica încă.",
+    "lastLogin": "Ultima autentificare {{time}}",
+    "disableUser": "Dezactivează contul",
+    "enableUser": "Activează contul",
+    "approveUser": "Aprobă",
+    "disableUserConfirm": "Dezactivezi {{username}}? Utilizatorul va fi deconectat peste tot și nu se va putea autentifica până când reactivezi contul.",
+    "userDisabled": "{{username}} este dezactivat",
+    "userEnabled": "{{username}} este activat",
+    "userApproved": "{{username}} este aprobat",
+    "userStatusFailed": "Nu s-a putut modifica contul",
+    "profileTitle": "Nume și email",
+    "displayName": "Nume afișat",
+    "displayNamePlaceholder": "Nume afișat",
+    "email": "Email",
+    "emailPlaceholder": "Email",
+    "profileSaved": "Salvat",
+    "profileSaveFailed": "Nu s-a putut salva",
+    "manageTabAccess": "Acces",
+    "sectionInvites": "Link-uri de invitație",
+    "invitesDescription": "Link-uri care permit cuiva să creeze un cont, chiar și cu înscrierea dezactivată.",
+    "invitesEmpty": "Încă nu există link-uri de invitație",
+    "inviteCreate": "Invitație nouă",
+    "inviteCreateFailed": "Nu s-a putut crea invitația",
+    "inviteCreatedNotice": "Copiază acest link acum. Nu va mai fi afișat.",
+    "inviteCopy": "Copiază link-ul",
+    "inviteCopied": "Link copiat",
+    "inviteNotePlaceholder": "Notă, de exemplu pentru cine este",
+    "inviteRole": "Rol",
+    "inviteNoRole": "Fără rol suplimentar",
+    "inviteExpires": "Expiră",
+    "inviteExpiresIn_one": "Expiră în {{count}} zi",
+    "inviteExpiresIn_few": "Expiră în {{count}} zile",
+    "inviteExpiresIn_other": "Expiră în {{count}} zile",
+    "inviteUses": "Utilizări",
+    "inviteMakeAdmin": "Fă-l administrator",
+    "inviteUntitled": "Invită",
+    "inviteUsesOf": "{{uses}} din {{max}} utilizate",
+    "inviteState_active": "Activ",
+    "inviteState_revoked": "Revocat",
+    "inviteState_expired": "Expirat",
+    "inviteState_used": "Epuzat",
+    "inviteRevoke": "Revocă",
+    "inviteRevokeConfirm": "Revoci acest link de invitație?",
+    "inviteRevokeFailed": "Nu s-a putut revoca invitația",
+    "sectionAccess": "Revizuire acces",
+    "accessCount_one": "{{count}} partajare",
+    "accessCount_few": "{{count}} partajări",
+    "accessCount_other": "{{count}} partajări",
+    "accessExport": "Exportă CSV",
+    "accessExportFailed": "Nu s-a putut exporta",
+    "accessKind": "Tip",
+    "accessKindAll": "Totul",
+    "accessKind_host": "Gazdă",
+    "accessKind_folder": "Dosar",
+    "accessKind_credential": "Credencială",
+    "accessUser": "Utilizator",
+    "accessAnyUser": "Orice utilizator",
+    "accessRole": "Rol",
+    "accessAnyRole": "Orice rol",
+    "accessToUser": "pentru {{name}}",
+    "accessToRole": "pentru rolul {{name}}",
+    "accessOwner": "proprietar {{name}}",
+    "accessGrantedBy": "partajat de {{name}}",
+    "accessExpires": "se termină {{date}}",
+    "accessLastUsed": "ultima utilizare {{date}}",
+    "accessEmpty": "Nimic nu este partajat",
+    "sectionAccountSettings": "Conturi și acces",
+    "adminHostBypass": "Administratorii pot deschide toate gazdele utilizatorilor",
+    "adminHostBypassDesc": "Când este dezactivat, administratorii văd doar gazdele partajate cu ei și nu pot accesa datele altor utilizatori din pagina de utilizator. Activarea acestei opțiuni respectă perioada de așteptare pentru administratori, dacă este configurată.",
+    "signupApproval": "Aprobă noile conturi SSO",
+    "signupApprovalDesc": "Cineva care se autentifică prin SSO sau LDAP pentru prima dată va aștepta până când un administrator aprobă contul.",
+    "updateSettingFailed": "Nu s-a putut salva setarea"
   },
   "newUi": {
     "sidebar": {
@@ -515,7 +614,8 @@
         "domainPlaceholder": "opțional",
         "connectToAction": "Conectează-te la {{name}}",
         "sshProtocol": "SSH",
-        "noTarget": "Nimic instalat nu se poate conecta la acest tip de host"
+        "noTarget": "Nimic instalat nu se poate conecta la acest tip de host",
+        "loadingTargets": "Se încarcă metodele de conectare..."
       },
       "keybindings": {
         "description": "Asociază tastele cu acțiuni în terminal și aplicație, sau modifică scurtăturile integrate.",
@@ -569,6 +669,9 @@
         "desktopProfileDescription": "Acest profil există doar pe acest dispozitiv și se autentifică independent. Conectați-l la un server Termix pentru a utiliza aceleași gazde și setări pe fiecare dispozitiv.",
         "sectionInterface": "Interfață",
         "interfacePresetDesc": "Cât de multe detalii afișează Termix. Fiecare funcție rămâne disponibilă.",
+        "closeToTray": "Închide în bara de sistem",
+        "closeToTrayDesc": "Închiderea ferestrei păstrează Termix în execuție în bara de sistem, astfel încât conexiunile tale rămân deschise. Dezactivează această opțiune pentru a închide aplicația când închizi fereastra.",
+        "closeToTraySaveFailed": "Nu s-a putut salva setarea",
         "presetClearOverrides": "Resetează totul",
         "presetOverridesTitle": "Personalizat",
         "presetRevertArea": "Revino",
@@ -703,7 +806,11 @@
         "tryBetaDescription": "Alătură-te programului beta în Actualizări.",
         "sendBetaFeedback": "Trimite feedback pentru beta",
         "openUpdates": "Actualizări",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "Nume afișat",
+        "emailLabel": "Email",
+        "profileSaved": "Salvat",
+        "profileSaveFailed": "Nu s-a putut salva"
       }
     }
   },
@@ -735,6 +842,10 @@
     "apiKeys": "Chei API",
     "data": "Date și sincronizare",
     "interface": "Interfață",
+    "hostList": "Listă de gazde",
+    "credentialList": "Listă de credentiale",
+    "openHostList": "Setări listă de gazde",
+    "openCredentialList": "Setări listă de credentiale",
     "appearance": "Aspect",
     "keybindings": "Scurtături de tastatură",
     "adminGeneral": "General",
@@ -794,6 +905,36 @@
       "hostRows": {
         "label": "Opțiuni pentru rândurile de gazde"
       }
+    },
+    "adminAccess": "Revizuire acces",
+    "yourApps": "Aplicațiile tale",
+    "otherApps": "Alte aplicații",
+    "hostForm": {
+      "label": "Formular adăugare gazdă",
+      "description": "Simplu afișează adresa, datele de autentificare, dosarul și etichetele. Complet afișează toate opțiunile. Poți comuta și din interiorul formularului.",
+      "simple": "Simplu",
+      "full": "Complet"
+    },
+    "interfaceDefaults": {
+      "title": "Setări implicite interfață",
+      "intro": "Alege ce văd utilizatorii la prima autentificare. Își pot modifica propria vizualizare, decât dacă o blochezi.",
+      "setFor": "Setat pentru",
+      "everyone": "Toți",
+      "inherits": "Folosește setările pentru Toți până modifici ceva",
+      "useEveryone": "Folosește setările pentru Toți",
+      "look": "Aspect vizual inițial",
+      "lookHint": "Simplu afișează cele mai puține elemente. Avansat afișează fiecare buton.",
+      "simple": "Simplu",
+      "balanced": "Echilibrat",
+      "advanced": "Avansat",
+      "lock": "Blocare",
+      "lockHint": "Utilizatorii cu acest rol nu își pot schimba aspectul vizual sau aplicațiile din bara laterală.",
+      "apps": "Aplicații în bara laterală",
+      "appsHint": "Celelalte rămân în Toate aplicațiile și căutare.",
+      "appsAdvanced": "Avansat afișează fiecare aplicație în bara laterală.",
+      "saved": "Setările interfeței au fost salvate",
+      "saveFailed": "Nu s-au putut salva setările interfeței",
+      "lockedNote": "Administratorul a ales aspectul vizual, așa că nu poate fi modificat aici."
     }
   },
   "hostDefaults": {
@@ -873,12 +1014,19 @@
     "pickHint": "Tot ce ține de o conexiune se află aici, grupat pentru a fi ușor de găsit.",
     "clearChoice": "Șterge",
     "proxyPathTarget": "țintă",
-    "hostCopyName": "{{name}} (copie)"
+    "hostCopyName": "{{name}} (copie)",
+    "moreOptions": "Mai multe opțiuni",
+    "moreOptionsHint": "Proxy, jump hosts, port knocking, keepalive, verificări de stare și comutatorul de pornire/oprire pentru fiecare aplicație. Majoritatea host-urilor nu au nevoie de ele.",
+    "folderAndTags": "Dosar, etichete și note"
   },
   "permissions": {
     "branding": {
       "title": "Modifică branding-ul",
       "description": "Setează numele aplicației, sloganul și logo-ul afișate tuturor."
+    },
+    "interfaceDefaults": {
+      "title": "Setează valorile implicite ale interfeței",
+      "description": "Alege aspectul vizual și aplicațiile din bara laterală cu care încep utilizatorii, pentru toată lumea sau pentru fiecare rol."
     }
   },
   "onboarding": {
@@ -913,6 +1061,8 @@
     "clickAuto": "Prima metodă de conectare",
     "useDefaultNamed": "Implicit ({{name}})",
     "useDefaultButtons": "Folosește butoanele implicite",
-    "perHostHint": "Pentru a le modifica pentru o singură gazdă, folosiți Butoane pe rândurile gazdelor din meniul acesteia."
+    "perHostHint": "Pentru a le modifica pentru o singură gazdă, folosiți Butoane pe rândurile gazdelor din meniul acesteia.",
+    "moreTools": "Mai multe instrumente",
+    "more": "Mai multe"
   }
 }

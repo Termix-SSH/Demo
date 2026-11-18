@@ -38,6 +38,7 @@ import {
   useActionSlot,
   docsUrl,
   roleLabel,
+  usePermissions,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { useEffect, useState } from "react";
@@ -58,6 +59,8 @@ import { CredentialEditorView } from "./CredentialEditorView";
 import { AdminSecondFactorsSection } from "./AdminSecondFactorsSection";
 import { HostEditor } from "./HostEditor";
 import type { AdminSession, AdminUser } from "./AdminManagementSections";
+import { AdminAccessReviewSection } from "./AdminAccessReviewSection";
+import { hasUserAdminApi, requireUserAdminApi } from "./user-admin-api";
 
 type ApiErrorLike = {
   response?: {
@@ -92,6 +95,7 @@ export function AdminUserManagePanel({
   onOpenHostTab,
   onUserDeleted,
   onSecondFactorsReset,
+  onUserChanged,
 }: {
   user: AdminUser;
   roles: Role[];
@@ -99,12 +103,26 @@ export function AdminUserManagePanel({
   onOpenHostTab?: (host: Host) => void;
   onUserDeleted: () => void;
   onSecondFactorsReset: () => void;
+  onUserChanged?: (changes: Partial<AdminUser>) => void;
 }) {
   const { t } = useTranslation();
+  const { isAdmin } = usePermissions();
+  const accountApi = hasUserAdminApi(
+    "disableUser",
+    "enableUser",
+    "adminUpdateUserProfile",
+  );
   const [activeTab, setActiveTab] = useState<ManageTabId>("account");
   // Who inherits the hosts and credentials when this account goes:
-  // the deleting admin by default, another user, or nobody.
-  const [successor, setSuccessor] = useState<"me" | "none" | string>("me");
+  // the deleting admin by default, another user, or nobody. Only an admin
+  // may take them over.
+  const [successor, setSuccessor] = useState<"me" | "none" | string>(
+    isAdmin ? "me" : "none",
+  );
+  const [displayName, setDisplayName] = useState(user.displayName ?? "");
+  const [email, setEmail] = useState(user.email ?? "");
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [statusSaving, setStatusSaving] = useState(false);
   const [successorOptions, setSuccessorOptions] = useState<
     Array<{ id: string; username: string }>
   >([]);
@@ -217,15 +235,67 @@ export function AdminUserManagePanel({
   );
   const manageTabs: { id: ManageTabId; label: string }[] = [
     { id: "account", label: t("admin.manageTabAccount") },
-    { id: "hosts", label: t("admin.manageTabHosts") },
-    { id: "credentials", label: t("admin.manageTabCredentials") },
-    ...pluginTabs.map((contribution) => ({
-      id: `plugin:${contribution.actionId}`,
-      label: t(contribution.titleKey),
-    })),
+    // Opening someone's data is for admins only.
+    ...(isAdmin
+      ? [
+          { id: "hosts", label: t("admin.manageTabHosts") },
+          { id: "credentials", label: t("admin.manageTabCredentials") },
+          ...pluginTabs.map((contribution) => ({
+            id: `plugin:${contribution.actionId}`,
+            label: t(contribution.titleKey),
+          })),
+        ]
+      : []),
+    ...(hasUserAdminApi("getAccessReview")
+      ? [{ id: "access", label: t("admin.manageTabAccess") }]
+      : []),
     { id: "sessions", label: t("admin.manageTabSessions") },
     { id: "danger", label: t("admin.manageTabDanger") },
   ];
+
+  async function handleSaveProfile() {
+    setProfileSaving(true);
+    try {
+      await requireUserAdminApi().adminUpdateUserProfile(user.id, {
+        displayName: displayName.trim() || null,
+        email: email.trim() || null,
+      });
+      onUserChanged?.({
+        displayName: displayName.trim() || null,
+        email: email.trim().toLowerCase() || null,
+      });
+      toast.success(t("admin.profileSaved"));
+    } catch (e) {
+      toast.error(apiErrorMessage(e, t("admin.profileSaveFailed")));
+    } finally {
+      setProfileSaving(false);
+    }
+  }
+
+  async function handleSetDisabled(disabled: boolean) {
+    setStatusSaving(true);
+    try {
+      const api = requireUserAdminApi();
+      if (disabled) await api.disableUser(user.id);
+      else await api.enableUser(user.id);
+      onUserChanged?.({
+        disabled,
+        disabledReason: disabled ? "admin" : null,
+      });
+      if (disabled) setSessions([]);
+      toast.success(
+        disabled
+          ? t("admin.userDisabled", { username: user.username })
+          : user.disabledReason === "pending_approval"
+            ? t("admin.userApproved", { username: user.username })
+            : t("admin.userEnabled", { username: user.username }),
+      );
+    } catch (e) {
+      toast.error(apiErrorMessage(e, t("admin.userStatusFailed")));
+    } finally {
+      setStatusSaving(false);
+    }
+  }
 
   async function handleResetPassword(confirmDataWipe = false) {
     if (resetPassword.length < 6) {
@@ -410,6 +480,13 @@ export function AdminUserManagePanel({
                 {t("admin.adminBadge")}
               </span>
             )}
+            {user.disabled && (
+              <span className="text-[9px] font-semibold px-1 py-px border border-destructive/40 text-destructive">
+                {user.disabledReason === "pending_approval"
+                  ? t("admin.pendingBadge")
+                  : t("admin.disabledBadge")}
+              </span>
+            )}
             {!dataUnlocked && (
               <span className="flex items-center gap-0.5 text-[9px] font-semibold px-1 py-px border border-border text-muted-foreground">
                 <Lock className="size-2.5" />
@@ -428,6 +505,87 @@ export function AdminUserManagePanel({
       <div className="flex-1 min-h-0 overflow-y-auto px-3 py-3 flex flex-col gap-4">
         {activeTab === "account" && (
           <>
+            {accountApi && (
+              <div className="flex flex-col gap-2">
+                {sectionHeading(t("admin.accountStatusTitle"))}
+                <span className="text-xs text-muted-foreground">
+                  {user.disabled
+                    ? user.disabledReason === "pending_approval"
+                      ? t("admin.accountStatusPending")
+                      : t("admin.accountStatusDisabled")
+                    : t("admin.accountStatusActive")}
+                  {user.lastLoginAt &&
+                    ` | ${t("admin.lastLogin", {
+                      time: new Date(user.lastLoginAt).toLocaleString(),
+                    })}`}
+                </span>
+                <div className="flex items-center gap-2">
+                  {user.disabled ? (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-8 text-xs border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
+                      disabled={statusSaving || (user.isAdmin && !isAdmin)}
+                      onClick={() => void handleSetDisabled(false)}
+                    >
+                      {user.disabledReason === "pending_approval"
+                        ? t("admin.approveUser")
+                        : t("admin.enableUser")}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-8 text-xs border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      disabled={statusSaving || (user.isAdmin && !isAdmin)}
+                      onClick={() =>
+                        setConfirmDialog({
+                          message: t("admin.disableUserConfirm", {
+                            username: user.username,
+                          }),
+                          onConfirm: () => handleSetDisabled(true),
+                        })
+                      }
+                    >
+                      {t("admin.disableUser")}
+                    </Button>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {accountApi && (
+              <div className="flex flex-col gap-2">
+                {sectionHeading(t("admin.profileTitle"))}
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <Input
+                    className="h-8 text-xs flex-1"
+                    placeholder={t("admin.displayNamePlaceholder")}
+                    aria-label={t("admin.displayName")}
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                  />
+                  <Input
+                    className="h-8 text-xs flex-1"
+                    type="email"
+                    placeholder={t("admin.emailPlaceholder")}
+                    aria-label={t("admin.email")}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 text-xs shrink-0"
+                    disabled={profileSaving || (user.isAdmin && !isAdmin)}
+                    onClick={() => void handleSaveProfile()}
+                  >
+                    {t("common.save")}
+                  </Button>
+                </div>
+              </div>
+            )}
+
             {/* Password reset */}
             <div className="flex flex-col gap-2">
               {sectionHeading(t("admin.resetPasswordTitle"))}
@@ -954,6 +1112,15 @@ export function AdminUserManagePanel({
           </div>
         )}
 
+        {activeTab === "access" && (
+          <AdminAccessReviewSection
+            open
+            onToggle={() => {}}
+            roles={roles}
+            initialUserId={user.id}
+          />
+        )}
+
         {activeTab === "danger" && (
           <div className="flex flex-col gap-3">
             <div className="flex items-start gap-2.5 border border-destructive/30 bg-destructive/5 px-3 py-2.5">
@@ -969,9 +1136,11 @@ export function AdminUserManagePanel({
                   <Select2
                     value={successor}
                     onChange={(e) => setSuccessor(e.target.value)}
-                    className="h-7 border border-border bg-background px-2 text-xs text-foreground outline-none"
+                    className="h-7 border border-border bg-(--field) px-2 text-xs text-foreground outline-none"
                   >
-                    <option value="me">{t("admin.deleteSuccessorMe")}</option>
+                    {isAdmin && (
+                      <option value="me">{t("admin.deleteSuccessorMe")}</option>
+                    )}
                     {successorOptions.map((u) => (
                       <option key={u.id} value={u.id}>
                         {u.username}

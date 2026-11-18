@@ -46,6 +46,10 @@
       "connectFactorMinutes": {
         "label": "Minuten bis zur nächsten Abfrage",
         "description": "Nach der Eingabe kann sich eine Person für diese Dauer mit jedem Host verbinden. Das Abmelden beendet dies vorzeitig."
+      },
+      "newDeviceNotice": {
+        "label": "Benachrichtigung bei neuer Geräteanmeldung",
+        "description": "Benachrichtige Benutzer, wenn sich jemand mit ihrem Konto von einem bisher unbekannten Gerät anmeldet. Jeder Benutzer kann diese Funktion individuell deaktivieren."
       }
     },
     "host": {
@@ -53,11 +57,18 @@
         "label": "Vor der Verbindung nach einem zweiten Faktor fragen",
         "description": "Wird verwendet, wenn die Anmeldeicherheit so eingestellt ist, dass nur bei markierten Hosts nach einem zweiten Faktor gefragt wird."
       }
+    },
+    "user": {
+      "newDeviceNotice": {
+        "label": "Benachrichtige mich bei neuer Geräteanmeldung",
+        "description": "Erhalte eine Benachrichtigung, wenn sich jemand mit deinem Konto von einem bisher unbekannten Gerät anmeldet."
+      }
     }
   },
   "verify": {
     "title": "Zweiten Faktor überprüfen",
     "intro": "Geben Sie Ihren zweiten Faktor ein, um eine Verbindung zu diesem Host herzustellen.",
+    "start": "Verifizieren",
     "done": "Überprüft",
     "retry": "Gehen Sie zurück zum Host und stellen Sie erneut eine Verbindung her.",
     "failed": "Das hat nicht funktioniert. Versuchen Sie es erneut.",
@@ -74,5 +85,69 @@
     "body": "Ihr Administrator verlangt einen zweiten Faktor für die Anmeldung. Richten Sie unten einen ein, um Termix weiterhin nutzen zu können.",
     "none": "Hier nichts einzurichten? Bitten Sie Ihren Administrator, ein Plugin für den zweiten Faktor zu installieren.",
     "signOut": "Abmelden"
+  },
+  "never": "nie",
+  "sessions": {
+    "title": "Sitzungen und Schlüssel",
+    "tab": "Sitzungen",
+    "current": "Diese Sitzung",
+    "meta": "{{type}} | zuletzt aktiv {{lastActive}} | angemeldet {{created}}",
+    "none": "Keine Sitzungen",
+    "end": "Abmelden",
+    "ended": "Abgemeldet",
+    "endOthers": "Andere Sitzungen abmelden",
+    "endOthersConfirm": "Möchten Sie Ihre {{count}} anderen Sitzungen beenden?",
+    "endedOthers": "Andere Sitzungen wurden abgemeldet",
+    "everyone": "Alle abmelden",
+    "everyoneConfirm": "Alle Benutzer auf diesem Server abmelden?",
+    "everyoneDescription": "Alle außer dir müssen sich erneut anmelden. Desktop-Apps, die mit diesem Server verknüpft sind, müssen erneut verknüpft werden.",
+    "everyoneKeysConfirm": "Auch alle API-Schlüssel auf diesem Server widerrufen?",
+    "everyoneKeys": "Schlüssel ebenfalls widerrufen",
+    "everyoneKeysNo": "Schlüssel behalten",
+    "everyoneDone": "Alle sind abgemeldet",
+    "failed": "Das hat nicht funktioniert. Bitte versuchen Sie es erneut.",
+    "loadFailed": "Ihre Sitzungen und Schlüssel konnten nicht geladen werden."
+  },
+  "keys": {
+    "tab": "API-Schlüssel",
+    "none": "Sie haben keine API-Schlüssel",
+    "full": "Vollzugriff",
+    "noExpiry": "nie",
+    "meta": "{{prefix}} | zuletzt verwendet {{lastUsed}} | läuft ab {{expires}}",
+    "revoke": "Widerrufen",
+    "revoked": "Schlüssel widerrufen",
+    "revokeAll": "Alle Schlüssel widerrufen",
+    "revokeAllConfirm": "Möchten Sie Ihre {{count}} API-Schlüssel widerrufen? Skripte, die diese verwenden, funktionieren nicht mehr.",
+    "revokedAll": "Ihre API-Schlüssel wurden widerrufen"
+  },
+  "waits": {
+    "title": "Admin-Wartezeit",
+    "intro": "Bei zwei oder mehr Administratoren wartet das System diese Zeit, bevor ein neuer Administrator hinzugefügt, die Passwortanmeldung deaktiviert, ein Anmelde-Plugin deaktiviert oder ein Plugin mit gefährlichem Zugriff aktiviert wird. Die anderen Administratoren erhalten eine Benachrichtigung und können die Aktion abbrechen. Das Deaktivieren oder Kürzen dieser Wartezeit erfordert ebenfalls eine Bestätigungsfrist.",
+    "adminOnly": "Nur Administratoren können dies sehen.",
+    "loadFailed": "Die Admin-Wartezeit konnte nicht geladen werden.",
+    "active": "Aktiv, Änderungen warten {{minutes}} Minuten",
+    "onOneAdmin": "Aktiv, aber dieser Server hat nur einen Admin, daher wird nicht gewartet",
+    "off": "Aus",
+    "admins": "Admins: {{count}}",
+    "forced": "Auf dem Server mit {{name}} festgelegt.",
+    "minutes": "Minuten",
+    "turnOn": "Einschalten",
+    "change": "Speichern",
+    "turnOff": "Ausschalten",
+    "saved": "Gespeichert",
+    "savedHeld": "Gespeichert. Es wartet zunächst auf die anderen Admins.",
+    "failed": "Das hat nicht funktioniert. Bitte versuchen Sie es erneut.",
+    "none": "Es warten noch keine Admin-Änderungen",
+    "meta": "Angefragt von {{who}} | wird angewendet {{runsAt}}",
+    "cancel": "Abbrechen",
+    "cancelConfirm": "Diese Änderung abbrechen?",
+    "cancelled": "Abgebrochen",
+    "status": {
+      "pending": "Warten",
+      "applying": "Wird angewendet",
+      "applied": "Angewendet",
+      "cancelled": "Abgebrochen",
+      "failed": "Fehlgeschlagen"
+    }
   }
 }

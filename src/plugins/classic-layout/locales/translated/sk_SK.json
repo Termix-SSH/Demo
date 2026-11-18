@@ -36,6 +36,7 @@
     "checkNow": "Skontrolovať teraz"
   },
   "nav": {
+    "theme": "Téma",
     "copyPassword": "Kopírovať heslo",
     "copySudoPassword": "Kopírovať sudo heslo",
     "passwordCopied": "Heslo skopírované do schránky",
@@ -72,7 +73,15 @@
     "mobileNavigation": "Navigácia",
     "allTabs": "Všetky karty",
     "hideTabBar": "Skryť panel kariet",
-    "showTabBar": "Zobraziť panel kariet"
+    "showTabBar": "Zobraziť panel kariet",
+    "allApps": "Všetky aplikácie",
+    "findApp": "Nájsť aplikáciu",
+    "pinToRail": "Pripnúť na lištu",
+    "unpinFromRail": "Odopnúť z lišty",
+    "appSettings": "Nastavenia aplikácie",
+    "allAppsHint": "Pripnite tie, ktoré používate. Kliknutím pravým tlačidlom na aplikáciu otvoríte jej nastavenia.",
+    "allAppsLockedHint": "Administrátor vyberá aplikácie na vašej lište.",
+    "viewMenu": "Zobrazenie"
   },
   "commandPalette": {
     "searchPlaceholder": "Hľadať hostiteľov, príkazy alebo nastavenia...",
@@ -171,7 +180,8 @@
     "dragToReorder": "Ťahajte dlaždice na ich presunutie a okraje na zmenu veľkosti",
     "clearActivityConfirm": "Vymazať vašu nedávnu aktivitu?",
     "resetConfirm": "Obnoviť dashboard na predvolaný rozloženie?",
-    "clearFailed": "Nepodarilo sa vymazať nedávnu aktivitu"
+    "clearFailed": "Nepodarilo sa vymazať nedávnu aktivitu",
+    "help": "Pomoc"
   },
   "admin": {
     "sectionGeneral": "Všeobecné",
@@ -237,6 +247,9 @@
     "credentialStorage": "Povoliť ukladanie hesiel a kľúčov",
     "credentialStorageOff": "Ukladanie hesiel a kľúčov je na tomto serveri vypnuté. Nechajte ich prázdne a Termix sa opýta pri pripájaní.",
     "credentialStorageDesc": "Vypnuté: nikto nemôže uložiť heslo ani súkromný kľúč na hostiteľovi ani v poverení a Termix sa po ne opýta pri pripájaní. Už uložené prihlásenia zostávajú, kým sa neodstránia.",
+    "hostKeyTrust": "Dôverovať novým kľúčom hostiteľa bez výzvy",
+    "hostKeyTrustDesc": "Keď sa plugin, plánovač alebo API pripojí k hostiteľovi, ktorého kľúč sa nikdy neoveril, uloží sa tento kľúč a prebehne pripojenie. Ak je vypnuté, tieto pripojenia sa odmietnu, kým niekto neotvorí terminál k hostiteľovi a nedôverí jeho kľúču.",
+    "hostKeyTrustFailed": "Nepodarilo sa aktualizovať nastavenie kľúča hostiteľa",
     "secondFactorAfterExternalLogin": "Vyžiadať druhý faktor po externom prihlásení (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Ak je vypnuté, o druhý faktor sa požiada iba po prihlásení heslom a iných lokálnych prihláseniach, ako doteraz. Ak je zapnuté, vyžaduje sa po každej metóde prihlásenia, vrátane SSO a LDAP.",
     "allowPasswordReset": "Povoliť obnovenie hesla",
@@ -497,7 +510,95 @@
     "revokeSession": "Odhlásiť",
     "deleteRoleConfirm": "Odstrániť rolu {{name}}?",
     "revokeKeyConfirm": "Zrušiť API kľúč {{name}}?",
-    "revokeKey": "Zrušiť"
+    "revokeKey": "Zrušiť",
+    "apiKeyScopeReadAll": "Iba na čítanie, všetko, čo môže používateľ vidieť",
+    "apiKeyNeverExpires": "Nikdy nevyprší",
+    "apiKeyExpiryHint": "Ak je pole prázdne, kľúč platí 90 dní.",
+    "changeHeld": "Táto zmena čaká {{minutes}} minút, aby ju videli aj ostatní administrátori.",
+    "userStatusFilter": "Stav účtu",
+    "userStatusAll": "Všetky účty",
+    "userStatusActive": "Aktívny",
+    "userStatusDisabled": "Vypnutý",
+    "userStatusPending": "Čaká na schválenie",
+    "disabledBadge": "Vypnutý",
+    "pendingBadge": "Čaká",
+    "accountStatusTitle": "Stav účtu",
+    "accountStatusActive": "Tento účet sa môže prihlásiť.",
+    "accountStatusDisabled": "Tento účet je vypnutý. Nemôže sa prihlásiť a jeho API kľúče nefungujú.",
+    "accountStatusPending": "Tento účet čaká na schválenie a zatiaľ sa nemôže prihlásiť.",
+    "lastLogin": "Posledné prihlásenie {{time}}",
+    "disableUser": "Vypnúť účet",
+    "enableUser": "Zapnúť účet",
+    "approveUser": "Schváliť",
+    "disableUserConfirm": "Vypnúť {{username}}? Používateľ bude odhlásený všade a nemôže sa prihlásiť, kým účet znova nezapnete.",
+    "userDisabled": "{{username}} je vypnutý",
+    "userEnabled": "{{username}} je zapnutý",
+    "userApproved": "{{username}} je schválený",
+    "userStatusFailed": "Nepodarilo sa zmeniť účet",
+    "profileTitle": "Meno a e-mail",
+    "displayName": "Zobrazované meno",
+    "displayNamePlaceholder": "Zobrazované meno",
+    "email": "E-mail",
+    "emailPlaceholder": "E-mail",
+    "profileSaved": "Uložené",
+    "profileSaveFailed": "Nepodarilo sa uložiť",
+    "manageTabAccess": "Prístup",
+    "sectionInvites": "Odkazy na pozvanie",
+    "invitesDescription": "Odkazy, ktoré umožňujú niekomu vytvoriť účet, aj keď je registrácia vypnutá.",
+    "invitesEmpty": "Zatiaľ žiadne odkazy na pozvanie",
+    "inviteCreate": "Nové pozvanie",
+    "inviteCreateFailed": "Nepodarilo sa vytvoriť pozvanie",
+    "inviteCreatedNotice": "Tento odkaz skopírujte teraz. Už sa nezobrazí znova.",
+    "inviteCopy": "Kopírovať odkaz",
+    "inviteCopied": "Odkaz skopírovaný",
+    "inviteNotePlaceholder": "Poznámka, napr. komu je určené",
+    "inviteRole": "Rola",
+    "inviteNoRole": "Žiadna ďalšia rola",
+    "inviteExpires": "Vyprší",
+    "inviteExpiresIn_one": "Vyprší o {{count}} deň",
+    "inviteExpiresIn_few": "Vyprší o {{count}} dni",
+    "inviteExpiresIn_many": "Vyprší o {{count}} dní",
+    "inviteExpiresIn_other": "Vyprší o {{count}} dní",
+    "inviteUses": "Použitia",
+    "inviteMakeAdmin": "Urobiť z neho administrátora",
+    "inviteUntitled": "Pozvať",
+    "inviteUsesOf": "Použité: {{uses}} z {{max}}",
+    "inviteState_active": "Aktívne",
+    "inviteState_revoked": "Zrušené",
+    "inviteState_expired": "Vypršalo",
+    "inviteState_used": "Využité",
+    "inviteRevoke": "Zrušiť",
+    "inviteRevokeConfirm": "Zrušiť tento pozvánkový odkaz?",
+    "inviteRevokeFailed": "Pozvánku sa nepodarilo zrušiť",
+    "sectionAccess": "Prehľad prístupu",
+    "accessCount_one": "{{count}} zdieľanie",
+    "accessCount_few": "{{count}} zdieľania",
+    "accessCount_many": "{{count}} zdieľaní",
+    "accessCount_other": "{{count}} zdieľaní",
+    "accessExport": "Exportovať CSV",
+    "accessExportFailed": "Export sa nepodaril",
+    "accessKind": "Typ",
+    "accessKindAll": "Všetko",
+    "accessKind_host": "Hostiteľ",
+    "accessKind_folder": "Priečinok",
+    "accessKind_credential": "Poverenie",
+    "accessUser": "Používateľ",
+    "accessAnyUser": "Akýkoľvek používateľ",
+    "accessRole": "Rola",
+    "accessAnyRole": "Akákoľvek rola",
+    "accessToUser": "pre {{name}}",
+    "accessToRole": "pre rolu {{name}}",
+    "accessOwner": "vlastník {{name}}",
+    "accessGrantedBy": "zdieľané používateľom {{name}}",
+    "accessExpires": "končí {{date}}",
+    "accessLastUsed": "posledné použitie {{date}}",
+    "accessEmpty": "Nič nie je zdieľané",
+    "sectionAccountSettings": "Účty a prístup",
+    "adminHostBypass": "Administrátori môžu otvárať hostiteľov všetkých používateľov",
+    "adminHostBypassDesc": "Ak je vypnuté, administrátori vidia iba hostiteľov, ktorí sú s nimi zdieľaní, a nemôžu otvárať údaje iných používateľov zo stránky používateľa. Ak je zapnuté, čaká sa na dobu ochladenia administrátora, ak je nastavená.",
+    "signupApproval": "Schvaľovať nové účty SSO",
+    "signupApprovalDesc": "Používateľ, ktorý sa prvýkrát prihlási cez SSO alebo LDAP, čaká, kým administrátor účet schváli.",
+    "updateSettingFailed": "Nastavenie sa nepodarilo uložiť"
   },
   "newUi": {
     "sidebar": {
@@ -520,7 +621,8 @@
         "domainPlaceholder": "voliteľné",
         "connectToAction": "Pripojiť sa k {{name}}",
         "sshProtocol": "SSH",
-        "noTarget": "Nič nainštalované sa nedokáže pripojiť k tomuto typu hostiteľa"
+        "noTarget": "Nič nainštalované sa nedokáže pripojiť k tomuto typu hostiteľa",
+        "loadingTargets": "Načítavajú sa spôsoby pripojenia..."
       },
       "keybindings": {
         "description": "Priradiť klávesy k akciám v termináli a aplikácii alebo zmeniť vstavané skratky.",
@@ -574,6 +676,9 @@
         "desktopProfileDescription": "Tento profil existuje len na tomto zariadení a prihlasuje sa samostatne. Prepojte ho so serverom Termix, aby ste mohli používať rovnaké hostov a nastavenia na všetkých zariadeniach.",
         "sectionInterface": "Rozhranie",
         "interfacePresetDesc": "Koľko detailov Termix zobrazuje. Všetky funkcie zostávajú dostupné.",
+        "closeToTray": "Minimalizovať do lišty",
+        "closeToTrayDesc": "Zatvorením okna zostane Termix bežať v lište, aby zostali pripojenia otvorené. Vypnutím tejto možnosti sa aplikácia pri zatvorení okna ukončí.",
+        "closeToTraySaveFailed": "Nastavenie sa nepodarilo uložiť",
         "presetClearOverrides": "Obnoviť všetky",
         "presetOverridesTitle": "Prispôsobené",
         "presetRevertArea": "Vrátiť späť",
@@ -709,7 +814,11 @@
         "tryBetaDescription": "Pripojte sa k beta programu v Aktualizáciách.",
         "sendBetaFeedback": "Poslať spätnú väzbu k beta verzii",
         "openUpdates": "Aktualizácie",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "Zobrazované meno",
+        "emailLabel": "E-mail",
+        "profileSaved": "Uložené",
+        "profileSaveFailed": "Uloženie sa nepodarilo"
       }
     }
   },
@@ -741,6 +850,10 @@
     "apiKeys": "API kľúče",
     "data": "Údaje a synchronizácia",
     "interface": "Rozhranie",
+    "hostList": "Zoznam hostiteľov",
+    "credentialList": "Zoznam poverení",
+    "openHostList": "Nastavenia zoznamu hostiteľov",
+    "openCredentialList": "Nastavenia zoznamu poverení",
     "appearance": "Vzhľad",
     "keybindings": "Klávesové skratky",
     "adminGeneral": "Všeobecné",
@@ -800,6 +913,36 @@
       "hostRows": {
         "label": "Počet stĺpcov hostiteľov"
       }
+    },
+    "adminAccess": "Prehľad prístupu",
+    "yourApps": "Vaše aplikácie",
+    "otherApps": "Iné aplikácie",
+    "hostForm": {
+      "label": "Formulár na pridanie hostiteľa",
+      "description": "Jednoduchý zobrazuje adresu, prihlasovacie údaje, priečinok a značky. Plný zobrazuje všetky možnosti. Prepínať môžete aj priamo vo formulári.",
+      "simple": "Jednoduchý",
+      "full": "Plný"
+    },
+    "interfaceDefaults": {
+      "title": "Predvolené nastavenia rozhrania",
+      "intro": "Vyberte, čo uvidia ľudia pri prvom prihlásení. Môžu si stále zmeniť vlastný pohľad, pokiaľ ho nezamknete.",
+      "setFor": "Nastaviť pre",
+      "everyone": "Všetkých",
+      "inherits": "Používa nastavenie pre všetkých, kým niečo nezmeníte",
+      "useEveryone": "Použiť nastavenie pre všetkých",
+      "look": "Počiatočný vzhľad",
+      "lookHint": "Jednoduchý zobrazuje minimum. Pokročilý zobrazuje všetky tlačidlá.",
+      "simple": "Jednoduchý",
+      "balanced": "Vyvážený",
+      "advanced": "Pokročilý",
+      "lock": "Uzamknúť",
+      "lockHint": "Používatelia s touto rolou nemôžu zmeniť svoj vzhľad ani aplikácie na lište.",
+      "apps": "Aplikácie na lište",
+      "appsHint": "Zvyšné zostávajú v sekcii Všetky aplikácie a vo vyhľadávaní.",
+      "appsAdvanced": "Pokročilý režim zobrazuje všetky aplikácie na lište.",
+      "saved": "Predvolené nastavenia rozhrania boli uložené",
+      "saveFailed": "Nepodarilo sa uložiť predvolené nastavenia rozhrania",
+      "lockedNote": "Váš správca určil váš vzhľad, preto ho tu nemôžete zmeniť."
     }
   },
   "hostDefaults": {
@@ -879,12 +1022,19 @@
     "pickHint": "Všetko o pripojení je tu, zoradené do skupín pre jednoduché nájdenie.",
     "clearChoice": "Vymazať",
     "proxyPathTarget": "cieľ",
-    "hostCopyName": "{{name}} (kópia)"
+    "hostCopyName": "{{name}} (kópia)",
+    "moreOptions": "Viac možností",
+    "moreOptionsHint": "Proxy, preskočové hostiteľské servery, port knocking, keepalive, kontroly stavu a prepínač zapnúť/vypnúť pre každú aplikáciu. Väčšina hostiteľských serverov ich nepotrebuje.",
+    "folderAndTags": "Priečinok, značky a poznámky"
   },
   "permissions": {
     "branding": {
       "title": "Zmeniť značkovanie",
       "description": "Nastavte názov aplikácie, slogan a logo, ktoré vidia všetci."
+    },
+    "interfaceDefaults": {
+      "title": "Nastaviť predvolené hodnoty rozhrania",
+      "description": "Vyberte vzhľad a aplikácie na lište, s ktorými začínajú používatelia, pre všetkých alebo pre jednotlivé role."
     }
   },
   "onboarding": {
@@ -919,6 +1069,8 @@
     "clickAuto": "Prvý spôsob pripojenia",
     "useDefaultNamed": "Predvolené ({{name}})",
     "useDefaultButtons": "Použiť predvolené tlačidlá",
-    "perHostHint": "Ak ich chcete zmeniť pre jeden hostiteľ, použite možnosť Tlačidlá v riadkoch hostiteľov v jeho ponuke."
+    "perHostHint": "Ak ich chcete zmeniť pre jeden hostiteľ, použite možnosť Tlačidlá v riadkoch hostiteľov v jeho ponuke.",
+    "moreTools": "Viac nástrojov",
+    "more": "Viac"
   }
 }

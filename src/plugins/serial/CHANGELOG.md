@@ -8,6 +8,10 @@
 - Its screens run in a sandboxed frame. In the browser, Termix asks for the serial port and the plugin only gets the port you pick
 - In the browser, the serial tab waits for you to click Reconnect before the port picker opens
 
+### Fixed
+
+- Copy and paste in the serial terminal with Ctrl+Shift+C and Ctrl+Shift+V, or Cmd on macOS
+
 ## 1.0.2
 
 ### Changed

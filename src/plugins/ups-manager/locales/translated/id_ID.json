@@ -8,7 +8,10 @@
     "viewHistory": "Riwayat",
     "viewEvents": "Peristiwa",
     "viewCommands": "Perintah",
-    "viewSources": "Perangkat"
+    "viewSources": "Perangkat",
+    "refresh": "Segarkan secara langsung",
+    "refreshSeconds": "{{seconds}} detik",
+    "refreshHint": "Hanya menyegarkan saat Overview terlihat. UPS mungkin memperbarui lebih lambat. Polling latar belakang dan sampel yang disimpan tetap pada 30 detik."
   },
   "common": {
     "loading": "Memuat...",
@@ -47,6 +50,8 @@
     "charge": "Muatan baterai",
     "runtime": "Sisa waktu operasi",
     "load": "Beban",
+    "estimatedLoad": "Estimasi beban UPS",
+    "estimatedLoadHint": "Watt keluaran / {{watts}} W terukur. {{method}}. Akuritas sensor belum diverifikasi; bukan utilisasi CPU atau konsumsi dinding AC.",
     "nominal": "Dinilai {{watts}} W",
     "input": "Tegangan masuk",
     "output": "Tegangan keluar",
@@ -59,6 +64,60 @@
     "readAt": "Pembacaan terakhir",
     "ago": "{{time}} yang lalu"
   },
+  "electrical": {
+    "inputDc": "Masukan adalah DC",
+    "outputDc": "Keluaran adalah DC",
+    "dcHint": "Konfirmasi domain listrik sebelum menghitung watt dari tegangan dan arus. Ini tidak mengubah pengaturan UPS apa pun. Akuritas sensor harus diperiksa secara independen.",
+    "inputCurrent": "Arus masukan",
+    "outputCurrent": "Arus keluaran",
+    "batteryCurrent": "Arus baterai",
+    "inputPower": "Daya masuk",
+    "outputPower": "Daya keluar",
+    "reported": "Daya riil yang dilaporkan",
+    "calculated": "Daya DC yang dihitung - akurasi sensor belum diverifikasi",
+    "batteryType": "Kimia baterai",
+    "chargeLow": "Batas ambang daya rendah",
+    "chargeWarning": "Batas ambang peringatan daya",
+    "manufactured": "Tanggal pembuatan baterai",
+    "driver": "Driver",
+    "driverVersion": "Versi driver",
+    "subdriver": "Subdriver HID",
+    "driverState": "Status driver",
+    "usb": "Vendor / produk USB",
+    "raw": "Variabel NUT tingkat lanjut",
+    "search": "Saring nama atau nilai variabel",
+    "noVariables": "Tidak ada variabel yang cocok.",
+    "dcDisclaimer": "Estimasi daya keluaran DC memperkirakan beban UPS, bukan konsumsi dinding AC. Ini belum tentu merupakan konsumsi satu host. Validasi pembacaan arus sebelum mengandalkan estimasi daya atau energi."
+  },
+  "energy": {
+    "period": "Energi keluaran yang diamati (periode yang dipilih)",
+    "lifetime": "Energi keluaran yang diamati (epoch saat ini)",
+    "estimated": "Diperkirakan dari sampel terjadwal; bukan pengukur perangkat keras",
+    "coverage": "Cakupan terukur",
+    "covered": "Waktu terintegrasi",
+    "incomplete": "Data tidak lengkap; waktu yang hilang tidak diperkirakan",
+    "complete": "Cakupan terukur lengkap",
+    "average": "Daya keluaran rata-rata (waktu yang dicakup)",
+    "peak": "Puncak keluaran yang disampel",
+    "sampledRange": "Rentang daya yang disampel",
+    "scope": "Keluaran UPS, bukan energi dinding AC. Total periode mencakup epoch pelacakan yang tercantum; jangan anggap epoch berbeda sebagai satu pengukur fisik.",
+    "resolution": "Segmen grafik nominal: {{seconds}} detik; celah tetap terpisah. Arahkan kursor ke titik untuk waktu absolut dan zona waktu.",
+    "empty": "Pelacakan energi memerlukan dua pembacaan daya terjadwal yang valid. Watt yang tidak diketahui tetap tidak tersedia, bukan nol.",
+    "error": "Tidak dapat membaca riwayat energi.",
+    "bucket": "Energi keluaran yang diamati per segmen",
+    "samples": "Sampel yang dapat diakses dan energi diamati kumulatif",
+    "tableHelp": "Hanya energi yang diamati yang dijumlahkan. Interval yang hilang tidak diisi. Nilai kumulatif mencakup epoch yang tercantum.",
+    "time": "Mulai segmen (zona waktu lokal)",
+    "cumulative": "Wh kumulatif dalam periode yang dipilih",
+    "cumulativeChart": "Energi keluaran diamati kumulatif (periode yang dipilih)",
+    "epochTotal": "Energi yang diamati dalam epoch ini",
+    "unavailable": "Daya keluaran tidak tersedia",
+    "epochs": "Epoq pelacakan terpisah",
+    "started": "Pelacakan dimulai",
+    "method": "Metode daya",
+    "chartHelp": "Data proporsional terhadap waktu. Interval yang hilang dan perubahan epoq pelacakan tidak dihubungkan. Puncak yang disampling bukan merupakan pengukuran puncak perangkat keras. Tabel data yang dapat diakses mengikuti grafik.",
+    "correlationBlocked": "Korelasi CPU/memori tidak tersedia: Host Metrics memerlukan layanan snapshot publik yang terotorisasi dengan cap waktu pengukuran. Tidak ada pengumpulan host tambahan yang diaktifkan."
+  },
   "history": {
     "error": "Tidak dapat memuat riwayat.",
     "24h": "24 jam",
@@ -66,7 +125,7 @@
     "30d": "30 hari",
     "empty": "Pembacaan belum cukup. Termix membaca UPS setiap 30 detik.",
     "charge": "Muatan baterai",
-    "load": "Beban",
+    "load": "Beban (hanya dilaporkan perangkat)",
     "runtime": "Sisa waktu operasi",
     "voltage": "Tegangan"
   },
@@ -113,7 +172,7 @@
     "unreachable": "tidak terjangkau",
     "saved": "Tersimpan.",
     "deleteTitle": "Hapus {{name}}?",
-    "deleteText": "Riwayat dan peristiwanya juga akan dihapus."
+    "deleteText": "Riwayat, total energi, epoq pelacakan, dan peristiwanya juga akan dihapus."
   },
   "editor": {
     "addTitle": "Tambah UPS",
@@ -172,6 +231,8 @@
     "testFailed": "Tidak dapat membaca UPS."
   },
   "card": {
+    "estimatedLoad": "{{value}}% beban UPS perkiraan",
+    "dc": "DC dihitung, belum diverifikasi",
     "title": "UPS",
     "empty": "Belum ada UPS yang diatur. Nyalakan UPS Manager untuk host dan tambahkan perangkat.",
     "runtime": "Sisa {{time}}",

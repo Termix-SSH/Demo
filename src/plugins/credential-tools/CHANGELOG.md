@@ -5,6 +5,7 @@
 ### Changed
 
 - Runs in its own process on Termix 26.11.2 and later, with no access to the server beyond what Termix allows it
+- Form fields use the same background as the rest of Termix
 
 ## 1.1.0
 

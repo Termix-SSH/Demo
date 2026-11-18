@@ -11,6 +11,7 @@ import {
   Server,
   Settings,
   Shield,
+  ShieldCheck,
   SlidersHorizontal,
   User,
   Users,
@@ -37,6 +38,8 @@ export interface SettingsPage {
   icon: LucideIcon;
   /** Only for admins. */
   admin?: boolean;
+  /** Also shown to anyone holding this permission. */
+  permission?: string;
   /** Also shown to non-admins in the desktop app. */
   desktopToo?: boolean;
   /** Left out of the desktop app. */
@@ -157,7 +160,18 @@ export const CORE_SETTINGS_PAGES: SettingsPage[] = [
     labelKey: "settings.adminUsers",
     icon: Users,
     admin: true,
+    permission: "admin.users.view",
     adminSection: "users",
+  }),
+  core({
+    id: "admin-access",
+    docs: "users",
+    band: "instance",
+    labelKey: "settings.adminAccess",
+    icon: ShieldCheck,
+    admin: true,
+    permission: "admin.users.view",
+    adminSection: "access" as AdminSection,
   }),
   core({
     id: "admin-sessions",
@@ -166,6 +180,7 @@ export const CORE_SETTINGS_PAGES: SettingsPage[] = [
     labelKey: "settings.adminSessions",
     icon: Monitor,
     admin: true,
+    permission: "admin.sessions.manage",
     adminSection: "sessions",
   }),
   core({
@@ -229,6 +244,7 @@ export const CORE_SETTINGS_PAGES: SettingsPage[] = [
     labelKey: "settings.adminAuditLog",
     icon: FileText,
     admin: true,
+    permission: "admin.audit.view",
     adminSection: "audit-log",
   }),
 ];
@@ -236,11 +252,22 @@ export const CORE_SETTINGS_PAGES: SettingsPage[] = [
 /** The pages this user can reach, in nav order. */
 export function visibleSettingsPages(
   pages: SettingsPage[],
-  { isAdmin, isElectron }: { isAdmin: boolean; isElectron: boolean },
+  {
+    isAdmin,
+    isElectron,
+    has = () => false,
+  }: {
+    isAdmin: boolean;
+    isElectron: boolean;
+    has?: (permission: string) => boolean;
+  },
 ): SettingsPage[] {
   return pages.filter(
     (page) =>
-      (!page.admin || isAdmin || (page.desktopToo && isElectron)) &&
+      (!page.admin ||
+        isAdmin ||
+        (page.desktopToo && isElectron) ||
+        (!!page.permission && has(page.permission))) &&
       (!page.browserOnly || !isElectron),
   );
 }

@@ -42,6 +42,8 @@ export function SourceEditor({ hostId, source, onClose, onSave, busy }: Props) {
   const [lowRuntime, setLowRuntime] = useState(source?.lowRuntimeMin ?? 5);
   const [alerts, setAlerts] = useState(source?.alerts ?? true);
   const [enabled, setEnabled] = useState(source?.enabled ?? true);
+  const [inputDc, setInputDc] = useState(source?.inputDc ?? false);
+  const [outputDc, setOutputDc] = useState(source?.outputDc ?? false);
   const [secrets, setSecrets] = useState<SourceSecrets>({});
   const [clear, setClear] = useState(false);
   const [detect, setDetect] = useState<Detect | null>(null);
@@ -72,6 +74,8 @@ export function SourceEditor({ hostId, source, onClose, onSave, busy }: Props) {
     alerts,
     enabled,
     secrets,
+    inputDc: backend === "nut" && inputDc,
+    outputDc: backend === "nut" && outputDc,
   });
 
   const test = async () => {
@@ -175,6 +179,18 @@ export function SourceEditor({ hostId, source, onClose, onSave, busy }: Props) {
 
         {backend === "nut" && (
           <>
+            <SwitchRow
+              label={t("electrical.inputDc")}
+              description={t("electrical.dcHint")}
+              checked={inputDc}
+              onChange={setInputDc}
+            />
+            <SwitchRow
+              label={t("electrical.outputDc")}
+              description={t("electrical.dcHint")}
+              checked={outputDc}
+              onChange={setOutputDc}
+            />
             <TextField
               label={t("editor.nutUser")}
               value={secrets.nutUser ?? ""}

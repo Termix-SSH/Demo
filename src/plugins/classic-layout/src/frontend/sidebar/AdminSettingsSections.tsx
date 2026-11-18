@@ -470,7 +470,7 @@ export function AdminSSLSection({
             onChange={(e) => setManualCertDraft(e.target.value)}
             placeholder={t("admin.sslManualCertPlaceholder")}
             spellCheck={false}
-            className="w-full px-2 py-1.5 text-[10px] font-mono bg-popover border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring"
+            className="w-full px-2 py-1.5 text-[10px] font-mono bg-(--field) border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring"
           />
         </div>
 
@@ -484,7 +484,7 @@ export function AdminSSLSection({
             onChange={(e) => setManualKeyDraft(e.target.value)}
             placeholder={t("admin.sslManualKeyPlaceholder")}
             spellCheck={false}
-            className="w-full px-2 py-1.5 text-[10px] font-mono bg-popover border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring"
+            className="w-full px-2 py-1.5 text-[10px] font-mono bg-(--field) border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring"
           />
           <span className="text-[10px] text-muted-foreground">
             {t("admin.sslManualDesc")}

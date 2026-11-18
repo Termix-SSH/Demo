@@ -36,6 +36,7 @@
     "checkNow": "Sjekk nå"
   },
   "nav": {
+    "theme": "Tema",
     "copyPassword": "Kopier passord",
     "copySudoPassword": "Kopier sudo-passord",
     "passwordCopied": "Passord kopiert til utklippstavlen",
@@ -72,7 +73,15 @@
     "mobileNavigation": "Navigasjon",
     "allTabs": "Alle faner",
     "hideTabBar": "Skjul fanefelt",
-    "showTabBar": "Vis fanefelt"
+    "showTabBar": "Vis fanefelt",
+    "allApps": "Alle apper",
+    "findApp": "Finn en app",
+    "pinToRail": "Fest til sidefelt",
+    "unpinFromRail": "Løsne fra sidefelt",
+    "appSettings": "Appinnstillinger",
+    "allAppsHint": "Fest de du bruker. Høyreklikk på en app for å åpne innstillingene.",
+    "allAppsLockedHint": "Administratoren din velger hvilke apper som vises i sidefeltet ditt.",
+    "viewMenu": "Vis"
   },
   "commandPalette": {
     "searchPlaceholder": "Søk etter vertene, kommandoer eller innstillinger...",
@@ -171,7 +180,8 @@
     "dragToReorder": "Dra i flisene for å flytte dem, og dra i kantene for å endre størrelse",
     "clearActivityConfirm": "Vil du tømme nylig aktivitet?",
     "resetConfirm": "Vil du tilbakestille dashbordet til standardoppsettet?",
-    "clearFailed": "Kunne ikke tømme nylig aktivitet"
+    "clearFailed": "Kunne ikke tømme nylig aktivitet",
+    "help": "Hjelp"
   },
   "admin": {
     "sectionGeneral": "Generelt",
@@ -237,6 +247,9 @@
     "credentialStorage": "Tillat lagring av passord og nøkler",
     "credentialStorageOff": "Lagring av passord og nøkler er slått av på denne serveren. La dem være tomme, så ber Termix om dem når du kobler til.",
     "credentialStorageDesc": "Når dette er slått av, kan ingen lagre passord eller private nøkler på en vert eller legitimasjon, og Termix ber om dem ved tilkobling. Allerede lagrede påloggingsdetaljer forblir inntil de fjernes.",
+    "hostKeyTrust": "Still tillit til nye vertsnykler uten spørsmål",
+    "hostKeyTrustDesc": "Når en plugin, en planlagt oppgave eller API-et kobler til en vert hvis nøkkel aldri har blitt sjekket, lagres nøkkelen og tilkoblingen opprettes. Hvis dette er slått av, avslås slike tilkoblinger inntil noen åpner en terminal til verten og stiller tillit til nøkkelen.",
+    "hostKeyTrustFailed": "Kunne ikke oppdatere innstillingen for vertsnykler",
     "secondFactorAfterExternalLogin": "Be om en annen faktor etter ekstern innlogging (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Når avskrudd, blir en registrert annen faktor bare bedt om etter passord og annen lokal innlogging, som før. Når påskrudd, blir den bedt om etter alle innloggingsmetoder, inkludert SSO og LDAP.",
     "allowPasswordReset": "Tillat tilbakestilling av passord",
@@ -487,7 +500,91 @@
     "revokeSession": "Logg ut",
     "deleteRoleConfirm": "Slett rollen {{name}}?",
     "revokeKeyConfirm": "Opphev API-nøkkelen {{name}}?",
-    "revokeKey": "Opphev"
+    "revokeKey": "Opphev",
+    "apiKeyScopeReadAll": "Skrivebeskyttet, alt brukeren kan se",
+    "apiKeyNeverExpires": "Utløper aldri",
+    "apiKeyExpiryHint": "Hvis feltet er tomt, er nøkkelen gyldig i 90 dager.",
+    "changeHeld": "Denne endringen venter {{minutes}} minutter slik at andre administratorer kan se den.",
+    "userStatusFilter": "Kontostatus",
+    "userStatusAll": "Alle kontoer",
+    "userStatusActive": "Aktiv",
+    "userStatusDisabled": "Deaktivert",
+    "userStatusPending": "Venter på godkjenning",
+    "disabledBadge": "Av",
+    "pendingBadge": "Venter",
+    "accountStatusTitle": "Kontostatus",
+    "accountStatusActive": "Denne kontoen kan logge inn.",
+    "accountStatusDisabled": "Denne kontoen er deaktivert. Den kan ikke logge inn, og API-nøklene fungerer ikke.",
+    "accountStatusPending": "Denne kontoen venter på godkjenning og kan ikke logge inn ennå.",
+    "lastLogin": "Sist innlogget {{time}}",
+    "disableUser": "Deaktiver konto",
+    "enableUser": "Aktiver konto",
+    "approveUser": "Godkjenn",
+    "disableUserConfirm": "Deaktiver {{username}}? Personen blir logget ut overalt og kan ikke logge inn igjen før du aktiverer kontoen.",
+    "userDisabled": "{{username}} er deaktivert",
+    "userEnabled": "{{username}} er aktivert",
+    "userApproved": "{{username}} er godkjent",
+    "userStatusFailed": "Kunne ikke endre kontoen",
+    "profileTitle": "Navn og e-post",
+    "displayName": "Visningsnavn",
+    "displayNamePlaceholder": "Visningsnavn",
+    "email": "E-post",
+    "emailPlaceholder": "E-post",
+    "profileSaved": "Lagret",
+    "profileSaveFailed": "Kunne ikke lagre",
+    "manageTabAccess": "Tilgang",
+    "sectionInvites": "Invitasjonslenker",
+    "invitesDescription": "Lenker som lar noen opprette en konto, selv når registrering er slått av.",
+    "invitesEmpty": "Ingen invitasjonslenker ennå",
+    "inviteCreate": "Ny invitasjon",
+    "inviteCreateFailed": "Kunne ikke opprette invitasjonen",
+    "inviteCreatedNotice": "Kopier denne lenken nå. Den vises ikke igjen.",
+    "inviteCopy": "Kopier lenke",
+    "inviteCopied": "Lenke kopiert",
+    "inviteNotePlaceholder": "Notat, for eksempel hvem den er ment for",
+    "inviteRole": "Rolle",
+    "inviteNoRole": "Ingen ekstra rolle",
+    "inviteExpires": "Utløper",
+    "inviteExpiresIn_one": "Utløper om {{count}} dag",
+    "inviteExpiresIn_other": "Utløper om {{count}} dager",
+    "inviteUses": "Bruker",
+    "inviteMakeAdmin": "Gjør dem til administrator",
+    "inviteUntitled": "Inviter",
+    "inviteUsesOf": "{{uses}} av {{max}} brukt",
+    "inviteState_active": "Aktiv",
+    "inviteState_revoked": "Inndratt",
+    "inviteState_expired": "Utløpt",
+    "inviteState_used": "Brukt opp",
+    "inviteRevoke": "Inndra",
+    "inviteRevokeConfirm": "Vil du inndra denne invitasjonslenken?",
+    "inviteRevokeFailed": "Kunne ikke inndra invitasjonen",
+    "sectionAccess": "Tilgangsoversikt",
+    "accessCount_one": "{{count}} deling",
+    "accessCount_other": "{{count}} delinger",
+    "accessExport": "Eksporter CSV",
+    "accessExportFailed": "Kunne ikke eksportere",
+    "accessKind": "Type",
+    "accessKindAll": "Alt",
+    "accessKind_host": "Vert",
+    "accessKind_folder": "Mappe",
+    "accessKind_credential": "Legitimasjon",
+    "accessUser": "Bruker",
+    "accessAnyUser": "Alle brukere",
+    "accessRole": "Rolle",
+    "accessAnyRole": "Alle roller",
+    "accessToUser": "til {{name}}",
+    "accessToRole": "til rollen {{name}}",
+    "accessOwner": "eier {{name}}",
+    "accessGrantedBy": "delt av {{name}}",
+    "accessExpires": "slutter {{date}}",
+    "accessLastUsed": "sist brukt {{date}}",
+    "accessEmpty": "Ingenting er delt",
+    "sectionAccountSettings": "Kontoer og tilgang",
+    "adminHostBypass": "Administratorer kan åpne alle brukeres verter",
+    "adminHostBypassDesc": "Når denne er avskrudd, ser administratorer kun verter som er delt med dem, og kan ikke åpne andre brukeres data fra brukersiden. Hvis du skrur den på, ventes det på nedkjølningstiden for administratorer hvis en er satt.",
+    "signupApproval": "Godkjenn nye SSO-kontoer",
+    "signupApprovalDesc": "Når noen logger inn via SSO eller LDAP for første gang, må de vente til en administrator godkjenner kontoen.",
+    "updateSettingFailed": "Kunne ikke lagre innstillingen"
   },
   "newUi": {
     "sidebar": {
@@ -510,7 +607,8 @@
         "domainPlaceholder": "valgfritt",
         "connectToAction": "Koble til {{name}}",
         "sshProtocol": "SSH",
-        "noTarget": "Ingenten installert kan koble til denne vertstypen"
+        "noTarget": "Ingenten installert kan koble til denne vertstypen",
+        "loadingTargets": "Laster inn tilkoblingsmetoder..."
       },
       "keybindings": {
         "description": "Tilknytt tastaturkombinasjoner til handlinger i terminalen og appen, eller endre de innebygde snarveiene.",
@@ -564,6 +662,9 @@
         "desktopProfileDescription": "Denne profilen finnes kun på denne enheten og logger seg på selvstendig. Koble den til en Termix-server for å bruke de samme vertene og innstillingene på alle enheter.",
         "sectionInterface": "Grensesnitt",
         "interfacePresetDesc": "Hvor mye detaljer Termix viser. Alle funksjoner forblir tilgjengelige.",
+        "closeToTray": "Lukk til systemstatusfeltet",
+        "closeToTrayDesc": "Når du lukker vinduet, kjører Termix videre i systemstatusfeltet slik at tilkoblingene dine forblir åpne. Skru av for å avslutte programmet når du lukker vinduet.",
+        "closeToTraySaveFailed": "Kunne ikke lagre innstillingen",
         "presetClearOverrides": "Tilbakestill alle",
         "presetOverridesTitle": "Tilpasset",
         "presetRevertArea": "Angre",
@@ -697,7 +798,11 @@
         "tryBetaDescription": "Bli med i betaprogrammet under Oppdateringer.",
         "sendBetaFeedback": "Send tilbakemelding om beta",
         "openUpdates": "Oppdateringer",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "Visningsnavn",
+        "emailLabel": "E-post",
+        "profileSaved": "Lagret",
+        "profileSaveFailed": "Kunne ikke lagre"
       }
     }
   },
@@ -729,6 +834,10 @@
     "apiKeys": "API-nøkler",
     "data": "Data og synkronisering",
     "interface": "Grensesnitt",
+    "hostList": "Vertliste",
+    "credentialList": "Legitimasjonsliste",
+    "openHostList": "Innstillinger for vertliste",
+    "openCredentialList": "Innstillinger for legitimasjonsliste",
     "appearance": "Utseende",
     "keybindings": "Tastatursnarveier",
     "adminGeneral": "Generelt",
@@ -788,6 +897,36 @@
       "hostRows": {
         "label": "Valg for antall rader med vertsnavn"
       }
+    },
+    "adminAccess": "Tilgangsoversikt",
+    "yourApps": "Dine apper",
+    "otherApps": "Andre apper",
+    "hostForm": {
+      "label": "Skjema for å legge til vert",
+      "description": "Enkel viser adresse, pålogging, mappe og tagger. Full viser alle alternativer. Du kan også bytte inne i skjemaet.",
+      "simple": "Enkel",
+      "full": "Full"
+    },
+    "interfaceDefaults": {
+      "title": "Grunninnstillinger for grensesnitt",
+      "intro": "Velg hva brukere ser når de logger inn for første gang. De kan fortsatt endre visningen sin med mindre du låser den.",
+      "setFor": "Sett for",
+      "everyone": "Alle",
+      "inherits": "Bruker «Alle» til du endrer noe",
+      "useEveryone": "Bruk «Alle»",
+      "look": "Startutseende",
+      "lookHint": "Enkelt viser minst. Avansert viser alle knapper.",
+      "simple": "Enkelt",
+      "balanced": "Balansert",
+      "advanced": "Avansert",
+      "lock": "Lås",
+      "lockHint": "Personer med denne rollen kan ikke endre utseende eller appene i verktøylinjen.",
+      "apps": "Apper i verktøylinjen",
+      "appsHint": "De øvrige appene finnes i Alle apper og i søket.",
+      "appsAdvanced": "Avansert viser alle apper i verktøylinjen.",
+      "saved": "Grunninnstillinger for grensesnitt er lagret",
+      "saveFailed": "Kunne ikke lagre grunninnstillinger for grensesnitt",
+      "lockedNote": "Administratoren har valgt utseendet ditt, så det kan ikke endres her."
     }
   },
   "hostDefaults": {
@@ -867,12 +1006,19 @@
     "pickHint": "Alt om en tilkobling finnes her, gruppert slik at du kan finne det.",
     "clearChoice": "Tøm",
     "proxyPathTarget": "mål",
-    "hostCopyName": "{{name}} (kopie)"
+    "hostCopyName": "{{name}} (kopie)",
+    "moreOptions": "Flere alternativer",
+    "moreOptionsHint": "Proxy, hoppservere, port knocking, keepalive, statuskontroller og av/på-knappen for hver app. De fleste servere trenger ikke disse.",
+    "folderAndTags": "Mappe, tagger og notater"
   },
   "permissions": {
     "branding": {
       "title": "Endre merkevare",
       "description": "Angi appnavn, slagord og logo som vises for alle."
+    },
+    "interfaceDefaults": {
+      "title": "Sett grunninnstillinger for grensesnitt",
+      "description": "Velg utseende og apper i verktøylinjen som brukere starter med, for alle eller for hver rolle."
     }
   },
   "onboarding": {
@@ -907,6 +1053,8 @@
     "clickAuto": "Den første tilkoblingsmetoden",
     "useDefaultNamed": "Standard ({{name}})",
     "useDefaultButtons": "Bruk standardknappene",
-    "perHostHint": "For å endre dem for én vert, bruk Knapper på vertsradene i menyen."
+    "perHostHint": "For å endre dem for én vert, bruk Knapper på vertsradene i menyen.",
+    "moreTools": "Flere verktøy",
+    "more": "Mer"
   }
 }

@@ -23,6 +23,7 @@ import {
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { MobileBar } from "../shell/MobileBar";
 import { AppRail } from "../sidebar/AppRail";
+import { InterfaceDefaultsSync } from "../InterfaceDefaultsSync";
 import { DockPanel, DockReopenStrip } from "../shell/DockPanel";
 import { TabBar } from "../shell/TabBar";
 import { ClassicPalette } from "./ClassicPalette";
@@ -241,6 +242,7 @@ export function ClassicLayout() {
     >
       {/* Isolated so the expanded rail covers inline views and prompts in the
           docks and tabs, while dialogs on the body still cover the rail. */}
+      <InterfaceDefaultsSync />
       <div className="isolate flex flex-1 min-h-0">
         {/* Skinny icon rail, desktop only */}
         <AppRail
@@ -258,6 +260,11 @@ export function ClassicLayout() {
               section: "appearance",
               reveal: "settings-navigation",
               revealAt: Date.now(),
+            })
+          }
+          onOpenAppSettings={(pluginId) =>
+            tabs.openSingleton("settings", undefined, undefined, {
+              section: `plugin:${pluginId}`,
             })
           }
           onOpenPalette={shell.palette.open}
@@ -333,6 +340,8 @@ export function ClassicLayout() {
                 onReorderTabs={tabs.reorder}
                 onSplitAction={shell.split.handleAction}
                 onRenameTab={tabs.rename}
+                hosts={hosts.list}
+                onEditHost={hosts.edit}
                 isAppFullscreen={shell.fullscreen.active}
                 onToggleAppFullscreen={shell.fullscreen.toggle}
                 rightDockOpen={right.view !== null}

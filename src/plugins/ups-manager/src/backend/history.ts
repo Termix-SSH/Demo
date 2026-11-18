@@ -32,7 +32,7 @@ function valuesOf(reading: Reading): Values {
   return [
     reading.chargePct,
     reading.runtimeSec,
-    reading.loadPct,
+    reading.loadOrigin === "estimated" ? null : reading.loadPct,
     reading.inputV,
     reading.outputV,
   ];
@@ -50,8 +50,14 @@ function average(sum: number, count: number): number | null {
 export class History {
   private readonly series = new Map<number, Series>();
   private dirty = false;
+  private loadFailed = false;
+  private writing: Promise<void> = Promise.resolve();
+  error = "";
 
-  constructor(private readonly dir: string | null) {}
+  constructor(
+    private readonly dir: string | null,
+    private readonly log: { warn: (message: string) => void } = console,
+  ) {}
 
   private file(): string | null {
     return this.dir ? path.join(this.dir, "history.json") : null;
@@ -64,19 +70,62 @@ export class History {
       const data = JSON.parse(await readFile(file, "utf8")) as {
         sources?: Record<string, Series>;
       };
-      for (const [id, s] of Object.entries(data.sources ?? {})) {
-        if (Array.isArray(s?.raw) && Array.isArray(s?.hours)) {
-          this.series.set(Number(id), s);
-        }
+      if (
+        !data.sources ||
+        typeof data.sources !== "object" ||
+        Array.isArray(data.sources)
+      )
+        throw new Error("Missing history sources");
+      for (const [id, s] of Object.entries(data.sources)) {
+        if (
+          !Number.isSafeInteger(Number(id)) ||
+          Number(id) < 1 ||
+          !Array.isArray(s?.raw) ||
+          !Array.isArray(s?.hours) ||
+          !s.raw.every(
+            (p) =>
+              Number.isFinite(p?.t) &&
+              ["c", "r", "l", "i", "o"].every((key) => {
+                const value = p[key as keyof HistoryPoint];
+                return (
+                  value === null ||
+                  (typeof value === "number" && Number.isFinite(value))
+                );
+              }),
+          ) ||
+          !s.hours.every(
+            (b) =>
+              Number.isFinite(b?.t) &&
+              Array.isArray(b.sums) &&
+              Array.isArray(b.counts) &&
+              b.sums.length === FIELDS &&
+              b.counts.length === FIELDS &&
+              b.sums.every(Number.isFinite) &&
+              b.counts.every((n) => Number.isSafeInteger(n) && n >= 0),
+          )
+        )
+          throw new Error("Invalid history series");
+        this.series.set(Number(id), s);
       }
-    } catch {
-      // No file yet, or it is damaged. Start empty.
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === "ENOENT") return;
+      this.series.clear();
+      this.loadFailed = true;
+      this.error =
+        "UPS history could not be loaded. Restore a backup before saving history.";
+      this.log.warn(`${this.error} ${String(error)}`);
     }
   }
 
   async flush(): Promise<void> {
+    const result = this.writing.then(() => this.write());
+    this.writing = result.catch(() => undefined);
+    return result;
+  }
+
+  private async write(): Promise<void> {
     const file = this.file();
-    if (!file || !this.dirty) return;
+    if (!file || !this.dirty || this.loadFailed) return;
     this.dirty = false;
     const sources: Record<string, Series> = {};
     for (const [id, s] of this.series) sources[String(id)] = s;
@@ -85,18 +134,27 @@ export class History {
       const temp = `${file}.tmp`;
       await writeFile(temp, JSON.stringify({ v: 1, sources }));
       await rename(temp, file);
-    } catch {
+      this.error = "";
+    } catch (error) {
       this.dirty = true;
+      this.error = "UPS history could not be saved. Check server storage.";
+      this.log.warn(`${this.error} ${String(error)}`);
+      throw error;
     }
   }
 
   add(sourceId: number, atSec: number, reading: Reading): void {
+    if (this.loadFailed) return;
     let s = this.series.get(sourceId);
     if (!s) {
       s = { raw: [], hours: [] };
       this.series.set(sourceId, s);
     }
+    const previous = s.raw[s.raw.length - 1];
+    if (previous && atSec - previous.t < 30) return;
     const values = valuesOf(reading);
+    s.raw = s.raw.filter((p) => p.t >= atSec - 24 * HOUR);
+    s.hours = s.hours.filter((b) => b.t + HOUR > atSec - 30 * 24 * HOUR);
     s.raw.push(pointOf(atSec, values));
     if (s.raw.length > RAW_LIMIT) s.raw.splice(0, s.raw.length - RAW_LIMIT);
 

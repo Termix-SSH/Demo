@@ -36,6 +36,7 @@
     "checkNow": "Kontrollera nu"
   },
   "nav": {
+    "theme": "Tema",
     "copyPassword": "Kopiera lösenord",
     "copySudoPassword": "Kopiera sudo-lösenord",
     "passwordCopied": "Lösenordet har kopierats till urklipp",
@@ -72,7 +73,15 @@
     "mobileNavigation": "Navigation",
     "allTabs": "Alla flikar",
     "hideTabBar": "Dölj flikfältet",
-    "showTabBar": "Visa flikfältet"
+    "showTabBar": "Visa flikfältet",
+    "allApps": "Alla appar",
+    "findApp": "Hitta en app",
+    "pinToRail": "Fäst till sidofältet",
+    "unpinFromRail": "Lossa från sidofältet",
+    "appSettings": "Appinställningar",
+    "allAppsHint": "Fäst de du använder. Högerklicka på en app för dess inställningar.",
+    "allAppsLockedHint": "Din administratör väljer vilka appar som finns i ditt sidofält.",
+    "viewMenu": "Visa"
   },
   "commandPalette": {
     "searchPlaceholder": "Sök bland värdar, kommandon eller inställningar...",
@@ -171,7 +180,8 @@
     "dragToReorder": "Dra i kakel för att flytta dem och i kanterna för att ändra storlek",
     "clearActivityConfirm": "Vill du rensa din senaste aktivitet?",
     "resetConfirm": "Vill du återställa instrumentpanelen till standardlayouten?",
-    "clearFailed": "Kunde inte rensa senaste aktivitet"
+    "clearFailed": "Kunde inte rensa senaste aktivitet",
+    "help": "Hjälp"
   },
   "admin": {
     "sectionGeneral": "Allmänt",
@@ -237,6 +247,9 @@
     "credentialStorage": "Tillåt sparande av lösenord och nycklar",
     "credentialStorageOff": "Sparande av lösenord och nycklar är inaktiverat på denna server. Lämna dem tomma så ber Termix om dem när du ansluter.",
     "credentialStorageDesc": "När det är inaktiverat kan ingen spara lösenord eller privata nycklar på en värd eller ett inloggningsuppgift, och Termix ber om dem vid anslutning. Redan sparade inloggningsuppgifter finns kvar tills de tas bort.",
+    "hostKeyTrust": "Lita på nya värdnycklar utan bekräftelse",
+    "hostKeyTrustDesc": "När ett plugin, schema eller API ansluter till en värd vars nyckel aldrig har kontrollerats, sparas nyckeln och anslutningen görs. Om detta är inaktiverat vägras dessa anslutningar tills någon öppnar en terminal till värden och litar på dess nyckel.",
+    "hostKeyTrustFailed": "Kunde inte uppdatera inställningen för värdnyckel",
     "secondFactorAfterExternalLogin": "Be om en andra faktor efter extern inloggning (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "När det är inaktiverat begärs en registrerad andra faktor endast efter inloggning med lösenord och andra lokala metoder, som tidigare. När det är aktiverat begärs den efter varje inloggningsmetod, inklusive SSO och LDAP.",
     "allowPasswordReset": "Tillåt återställning av lösenord",
@@ -487,7 +500,91 @@
     "revokeSession": "Logga ut",
     "deleteRoleConfirm": "Ta bort rollen {{name}}?",
     "revokeKeyConfirm": "Återkalla API-nyckeln {{name}}?",
-    "revokeKey": "Återkalla"
+    "revokeKey": "Återkalla",
+    "apiKeyScopeReadAll": "Skrivskyddat, allt som användaren kan se",
+    "apiKeyNeverExpires": "Utgår aldrig",
+    "apiKeyExpiryHint": "Om tomt fungerar nyckeln i 90 dagar.",
+    "changeHeld": "Denna ändring väntar {{minutes}} minuter så att andra administratörer kan se den.",
+    "userStatusFilter": "Kontostatus",
+    "userStatusAll": "Alla konton",
+    "userStatusActive": "Aktiv",
+    "userStatusDisabled": "Inaktiverad",
+    "userStatusPending": "Väntar på godkännande",
+    "disabledBadge": "Av",
+    "pendingBadge": "Väntar",
+    "accountStatusTitle": "Kontostatus",
+    "accountStatusActive": "Detta konto kan logga in.",
+    "accountStatusDisabled": "Detta konto är inaktiverat. Det kan inte logga in och dess API-nycklar fungerar inte.",
+    "accountStatusPending": "Detta konto väntar på godkännande och kan inte logga in än.",
+    "lastLogin": "Senaste inloggning {{time}}",
+    "disableUser": "Inaktivera konto",
+    "enableUser": "Aktivera konto",
+    "approveUser": "Godkänn",
+    "disableUserConfirm": "Vill du inaktivera {{username}}? Personen loggas ut överallt och kan inte logga in igen förrän du aktiverar kontot.",
+    "userDisabled": "{{username}} är inaktiverad",
+    "userEnabled": "{{username}} är aktiverad",
+    "userApproved": "{{username}} är godkänd",
+    "userStatusFailed": "Kunde inte ändra kontot",
+    "profileTitle": "Namn och e-post",
+    "displayName": "Visningsnamn",
+    "displayNamePlaceholder": "Visningsnamn",
+    "email": "E-post",
+    "emailPlaceholder": "E-post",
+    "profileSaved": "Sparad",
+    "profileSaveFailed": "Kunde inte spara",
+    "manageTabAccess": "Åtkomst",
+    "sectionInvites": "Inbjudningslänkar",
+    "invitesDescription": "Länkar som låter någon skapa ett konto, även om registrering är inaktiverad.",
+    "invitesEmpty": "Inga inbjudningslänkar ännu",
+    "inviteCreate": "Ny inbjudan",
+    "inviteCreateFailed": "Kunde inte skapa inbjudan",
+    "inviteCreatedNotice": "Kopiera denna länk nu. Den visas inte igen.",
+    "inviteCopy": "Kopiera länk",
+    "inviteCopied": "Länk kopierad",
+    "inviteNotePlaceholder": "Anteckning, t.ex. vem den är till för",
+    "inviteRole": "Roll",
+    "inviteNoRole": "Ingen extra roll",
+    "inviteExpires": "Utgångsdatum",
+    "inviteExpiresIn_one": "Utgår om {{count}} dag",
+    "inviteExpiresIn_other": "Utgår om {{count}} dagar",
+    "inviteUses": "Användningar",
+    "inviteMakeAdmin": "Gör personen till administratör",
+    "inviteUntitled": "Bjud in",
+    "inviteUsesOf": "{{uses}} av {{max}} använda",
+    "inviteState_active": "Aktiv",
+    "inviteState_revoked": "Återkallad",
+    "inviteState_expired": "Utgången",
+    "inviteState_used": "Använd upp",
+    "inviteRevoke": "Återkalla",
+    "inviteRevokeConfirm": "Vill du återkalla denna inbjudningslänk?",
+    "inviteRevokeFailed": "Kunde inte återkalla inbjudan",
+    "sectionAccess": "Åtkomstgranskning",
+    "accessCount_one": "{{count}} delning",
+    "accessCount_other": "{{count}} delningar",
+    "accessExport": "Exportera CSV",
+    "accessExportFailed": "Kunde inte exportera",
+    "accessKind": "Typ",
+    "accessKindAll": "Allt",
+    "accessKind_host": "Värd",
+    "accessKind_folder": "Mapp",
+    "accessKind_credential": "Inloggningsuppgift",
+    "accessUser": "Användare",
+    "accessAnyUser": "Valfri användare",
+    "accessRole": "Roll",
+    "accessAnyRole": "Valfri roll",
+    "accessToUser": "till {{name}}",
+    "accessToRole": "till rollen {{name}}",
+    "accessOwner": "ägare {{name}}",
+    "accessGrantedBy": "delad av {{name}}",
+    "accessExpires": "upphör {{date}}",
+    "accessLastUsed": "senast använd {{date}}",
+    "accessEmpty": "Inget är delat",
+    "sectionAccountSettings": "Konton och åtkomst",
+    "adminHostBypass": "Administratörer kan öppna alla användares värdar",
+    "adminHostBypassDesc": "När detta är inaktiverat ser administratörer endast värdar som är delade med dem och kan inte öppna andra användares data från användarsidan. Om du aktiverar detta väntar systemet på administratörens avkylningsperiod om sådan är inställd.",
+    "signupApproval": "Godkänn nya SSO-konton",
+    "signupApprovalDesc": "När någon loggar in via SSO eller LDAP för första gången måste en administratör godkänna kontot innan det kan användas.",
+    "updateSettingFailed": "Kunde inte spara inställningen"
   },
   "newUi": {
     "sidebar": {
@@ -510,7 +607,8 @@
         "domainPlaceholder": "valfritt",
         "connectToAction": "Anslut till {{name}}",
         "sshProtocol": "SSH",
-        "noTarget": "Inget installerat kan ansluta till denna värdtyp"
+        "noTarget": "Inget installerat kan ansluta till denna värdtyp",
+        "loadingTargets": "Laddar anslutningsmetoder..."
       },
       "keybindings": {
         "description": "Bind tangenter till åtgärder i terminalen och appen, eller ändra de inbyggda genvägarna.",
@@ -564,6 +662,9 @@
         "desktopProfileDescription": "Denna profil finns på denna enhet och loggar in självständigt. Länka den till en Termix-server för att använda samma värdar och inställningar på alla enheter.",
         "sectionInterface": "Gränssnitt",
         "interfacePresetDesc": "Hur mycket detaljer Termix visar. Alla funktioner förblir tillgängliga.",
+        "closeToTray": "Stäng till aktivitetsfältet",
+        "closeToTrayDesc": "När du stänger fönstret fortsätter Termix att köras i aktivitetsfältet så att dina anslutningar förblir öppna. Inaktivera detta om du vill att programmet ska avslutas när du stänger fönstret.",
+        "closeToTraySaveFailed": "Kunde inte spara inställningen",
         "presetClearOverrides": "Återställ alla",
         "presetOverridesTitle": "Anpassad",
         "presetRevertArea": "Återgå",
@@ -697,7 +798,11 @@
         "tryBetaDescription": "Gå med i betaprogrammet under Uppdateringar.",
         "sendBetaFeedback": "Skicka feedback om betan",
         "openUpdates": "Uppdateringar",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "Visningsnamn",
+        "emailLabel": "E-postadress",
+        "profileSaved": "Sparad",
+        "profileSaveFailed": "Kunde inte spara"
       }
     }
   },
@@ -729,6 +834,10 @@
     "apiKeys": "API-nycklar",
     "data": "Data och synkronisering",
     "interface": "Gränssnitt",
+    "hostList": "Värdlista",
+    "credentialList": "Lista över inloggningsuppgifter",
+    "openHostList": "Inställningar för värdlista",
+    "openCredentialList": "Inställningar för lista över inloggningsuppgifter",
     "appearance": "Utseende",
     "keybindings": "Tangentbindningar",
     "adminGeneral": "Allmänt",
@@ -788,6 +897,36 @@
       "hostRows": {
         "label": "Alternativ för värdrad"
       }
+    },
+    "adminAccess": "Åtkomstgranskning",
+    "yourApps": "Dina appar",
+    "otherApps": "Andra appar",
+    "hostForm": {
+      "label": "Formulär för att lägga till värd",
+      "description": "Enkel visar adress, inloggning, mapp och taggar. Fullständig visar alla alternativ. Du kan också växla mellan lägena i formuläret.",
+      "simple": "Enkel",
+      "full": "Fullständig"
+    },
+    "interfaceDefaults": {
+      "title": "Gränssnittets standardinställningar",
+      "intro": "Välj vad användare ser när de loggar in för första gången. De kan fortfarande ändra sin egen vy om du inte låser den.",
+      "setFor": "Ställ in för",
+      "everyone": "Alla",
+      "inherits": "Använder Alla tills du ändrar något",
+      "useEveryone": "Använd Alla",
+      "look": "Startvy",
+      "lookHint": "Enkel visar minst. Avancerad visar alla knappar.",
+      "simple": "Enkel",
+      "balanced": "Balanserad",
+      "advanced": "Avancerad",
+      "lock": "Lås",
+      "lockHint": "Personer med denna roll kan inte ändra sitt utseende eller apparna på deras fäst.",
+      "apps": "Appar på fästet",
+      "appsHint": "Övriga finns kvar i Alla appar och sökning.",
+      "appsAdvanced": "Avancerad visar alla appar på fästet.",
+      "saved": "Gränssnittets standardvärden sparade",
+      "saveFailed": "Kunde inte spara gränssnittets standardvärden",
+      "lockedNote": "Din administratör har valt ditt utseende, så det kan inte ändras här."
     }
   },
   "hostDefaults": {
@@ -867,12 +1006,19 @@
     "pickHint": "Allt om en anslutning finns här, grupperat så att du lätt hittar det.",
     "clearChoice": "Rensa",
     "proxyPathTarget": "mål",
-    "hostCopyName": "{{name}} (kopia)"
+    "hostCopyName": "{{name}} (kopia)",
+    "moreOptions": "Fler alternativ",
+    "moreOptionsHint": "Proxy, hoppvärdar, port knocking, keepalive, statuskontroller och på/av-knappen för varje app. De flesta värdar behöver dem inte.",
+    "folderAndTags": "Mapp, taggar och anteckningar"
   },
   "permissions": {
     "branding": {
       "title": "Ändra varumärkesanpassning",
       "description": "Ställ in appnamn, slogan och logotyp som visas för alla."
+    },
+    "interfaceDefaults": {
+      "title": "Ställ in gränssnittets standardvärden",
+      "description": "Välj utseende och appar på fästet som användare startar med, för alla eller för varje roll."
     }
   },
   "onboarding": {
@@ -907,6 +1053,8 @@
     "clickAuto": "Första sättet att ansluta",
     "useDefaultNamed": "Standard ({{name}})",
     "useDefaultButtons": "Använd standardknapparna",
-    "perHostHint": "För att ändra dem för en specifik värd, använd Knappar på värdens rader i dess meny."
+    "perHostHint": "För att ändra dem för en specifik värd, använd Knappar på värdens rader i dess meny.",
+    "moreTools": "Fler verktyg",
+    "more": "Fler"
   }
 }

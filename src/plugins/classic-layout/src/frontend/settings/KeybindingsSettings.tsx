@@ -471,7 +471,7 @@ export function KeybindingsSettings() {
             <Select2
               value={draft.type}
               onChange={(e) => setDraft({ type: e.target.value })}
-              className="h-8 border border-border bg-background px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
+              className="h-8 border border-border bg-(--field) px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
             >
               {!draftDef && draft.type && (
                 <option value={draft.type}>{actionLabel(draft.type)}</option>

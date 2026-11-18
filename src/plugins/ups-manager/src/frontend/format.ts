@@ -22,6 +22,12 @@ export function formatNumber(value: number | null, digits = 0): string {
   return value === null ? "-" : value.toFixed(digits);
 }
 
+export function formatEnergy(wh: number): { value: string; unit: string } {
+  return wh >= 1000
+    ? { value: formatNumber(wh / 1000, 3), unit: "kWh" }
+    : { value: formatNumber(wh, 3), unit: "Wh" };
+}
+
 export type Tone = "default" | "ok" | "warn" | "bad";
 
 /** How a reading should look. Low battery and overload are bad, battery power is a warning. */

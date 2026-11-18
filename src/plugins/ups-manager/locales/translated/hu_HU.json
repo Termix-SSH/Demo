@@ -8,7 +8,10 @@
     "viewHistory": "Előzmények",
     "viewEvents": "Események",
     "viewCommands": "Parancsok",
-    "viewSources": "Eszközök"
+    "viewSources": "Eszközök",
+    "refresh": "Élő frissítés",
+    "refreshSeconds": "{{seconds}} másodperc",
+    "refreshHint": "Csak akkor frissül, ha az Áttekintés látható. A tápegység adatai lassabban frissülhetnek. A háttérben történő lekérdezés és a tárolt mintavételek továbbra is 30 másodpercenként történnek."
   },
   "common": {
     "loading": "Betöltés...",
@@ -47,6 +50,8 @@
     "charge": "Akkumulátor töltöttsége",
     "runtime": "Hátralévő üzemidő",
     "load": "Terhelés",
+    "estimatedLoad": "Becsült tápegység-terhelés",
+    "estimatedLoadHint": "Kimeneti watt / {{watts}} W névleges. {{method}}. Az érzékelő pontossága nem ellenőrzött; ez nem a CPU-használatot vagy a hálózati fogyasztást jelenti.",
     "nominal": "{{watts}} W névleges",
     "input": "Bemeneti feszültség",
     "output": "Kimeneti feszültség",
@@ -59,6 +64,60 @@
     "readAt": "Utolsó beolvasás",
     "ago": "{{time}} ezelőtt"
   },
+  "electrical": {
+    "inputDc": "Bemenet egyenáramú",
+    "outputDc": "Kimenet egyenáramú",
+    "dcHint": "Erősítse meg az elektromos tartományt, mielőtt a feszültségből és áramerősségből kiszámítaná a wattot. Ez nem módosítja a tápegység beállításait. Az érzékelő pontosságát külön kell ellenőrizni.",
+    "inputCurrent": "Bemeneti áramerősség",
+    "outputCurrent": "Kimeneti áramerősség",
+    "batteryCurrent": "Akkumulátor áramerősség",
+    "inputPower": "Bemeneti teljesítmény",
+    "outputPower": "Kimeneti teljesítmény",
+    "reported": "Jelentett valós teljesítmény",
+    "calculated": "Számított egyenáramú teljesítmény – az érzékelő pontossága nem ellenőrzött",
+    "batteryType": "Akkumulátor kémiai összetétele",
+    "chargeLow": "Alacsony töltöttségi küszöbérték",
+    "chargeWarning": "Töltöttségi figyelmeztetési küszöbérték",
+    "manufactured": "Akkumulátor gyártási dátuma",
+    "driver": "Illesztőprogram",
+    "driverVersion": "Illesztőprogram verziója",
+    "subdriver": "HID alillesztőprogram",
+    "driverState": "Illesztőprogram állapota",
+    "usb": "USB gyártó / termék",
+    "raw": "Haladó NUT változók",
+    "search": "Változónév vagy érték szűrése",
+    "noVariables": "Nincs egyező változó.",
+    "dcDisclaimer": "A kiszámított DC kimeneti teljesítmény a tápegység terhelését becsli meg, nem az AC hálózati fogyasztást. Nem feltétlenül egyetlen gép fogyasztását jelenti. Ellenőrizze az áramértékeket, mielőtt a teljesítmény- vagy energia becslésekre támaszkodna."
+  },
+  "energy": {
+    "period": "Megfigyelt kimeneti energia (kiválasztott időszak)",
+    "lifetime": "Megfigyelt kimeneti energia (jelenlegi időszak)",
+    "estimated": "Becsült az ütemezett minták alapján; nem hardveres mérő",
+    "coverage": "Mért lefedettség",
+    "covered": "Integrált idő",
+    "incomplete": "Hiányos adatok; a hiányzó időt nem becsüljük meg",
+    "complete": "Teljes mért lefedettség",
+    "average": "Átlagos kimeneti teljesítmény (lefedett idő)",
+    "peak": "Mintavételezett kimeneti csúcs",
+    "sampledRange": "Mintavételezett teljesítménytartomány",
+    "scope": "UPS kimenet, nem AC hálózati energia. Az időszak-összesítések a felsorolt nyomon követési időszakokat fedik le; ne kezelje a különböző időszakokat egyetlen fizikai mérőként.",
+    "resolution": "Nominális diagramszakasz: {{seconds}} másodperc; a hiányok külön maradnak. Vigye az egeret a pontokra az abszolút idő és időzóna megtekintéséhez.",
+    "empty": "Az energiafigyeléshez két érvényes, ütemezett áramfelvétel-mérés szükséges. A nem ismert wattértékek nem elérhetők, nem pedig nullának számítanak.",
+    "error": "Nem sikerült beolvasni az energiafelhasználás előzményeit.",
+    "bucket": "Megfigyelt kimeneti energia szegmensenként",
+    "samples": "Elérhető minták és a megfigyelt energia összesített értéke",
+    "tableHelp": "Csak a megfigyelt energia kerül összegzésre. A hiányzó időközök nem kerülnek kitöltésre. Az összesített értékek a felsorolt időpontokat (epoch-okat) ölelik fel.",
+    "time": "Szegmens kezdete (helyi időzóna)",
+    "cumulative": "Összesített Wh a kiválasztott időszakban",
+    "cumulativeChart": "Összesített megfigyelt kimeneti energia (kiválasztott időszak)",
+    "epochTotal": "Megfigyelt energia ebben az időszakban",
+    "unavailable": "A kimeneti teljesítmény nem elérhető",
+    "epochs": "Különálló nyomon követési időszakok",
+    "started": "A nyomon követés elindult",
+    "method": "Teljesítmény-módszer",
+    "chartHelp": "Időarányos adatok. A hiányzó időintervallumok és az időszakváltások nem kapcsolódnak össze. A mintavételezett csúcsértékek nem hardveres csúcmérések. A diagramokat egy hozzáférhető adattábla követi.",
+    "correlationBlocked": "A CPU/memória korreláció nem elérhető: A Host Metrics-höz nyilvános, engedélyezett pillanatkép-szolgáltatás szükséges mérési időbélyegekkel. Nincs engedélyezve további host-adatgyűjtés."
+  },
   "history": {
     "error": "Nem sikerült betölteni az előzményeket.",
     "24h": "24 óra",
@@ -66,7 +125,7 @@
     "30d": "30 nap",
     "empty": "Még nincs elég mérés. A Termix 30 másodpercenként olvassa be az UPS adatait.",
     "charge": "Akkumulátor töltöttsége",
-    "load": "Terhelés",
+    "load": "Terhelés (csak eszköz által jelentett)",
     "runtime": "Hátralévő üzemidő",
     "voltage": "Feszültség"
   },
@@ -113,7 +172,7 @@
     "unreachable": "elérhetetlen",
     "saved": "Mentve.",
     "deleteTitle": "Törlés: {{name}}?",
-    "deleteText": "Az előzményei és eseményei is törlődnek."
+    "deleteText": "A története, az energiaösszesítései, a nyomon követési időszakai és az eseményei is törlődnek."
   },
   "editor": {
     "addTitle": "UPS hozzáadása",
@@ -172,6 +231,8 @@
     "testFailed": "Az UPS nem olvasható."
   },
   "card": {
+    "estimatedLoad": "{{value}}% becsült UPS-terhelés",
+    "dc": "számított egyenáram, ellenőrizetlen",
     "title": "UPS",
     "empty": "Nincs beállított UPS. Kapcsold be az UPS kezelőt egy gazdagépen, és adj hozzá egy eszközt.",
     "runtime": "{{time}} hátralévő idő",

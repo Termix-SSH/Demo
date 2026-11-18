@@ -5,9 +5,13 @@ import {
   useIsMobile,
   usePluginStore,
   Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  pluginKey,
   Skeleton,
   Kbd,
-  Facts,
   PanelShell,
   Segmented,
   useConfirm,
@@ -63,6 +67,7 @@ import {
 import {
   Activity,
   Check,
+  CircleHelp,
   Database,
   LayoutGrid,
   Pencil,
@@ -557,7 +562,7 @@ export function DashboardTab({
                   /* ignore */
                 }
               }}
-              className="h-6 border border-border bg-background px-1.5 text-[10px] outline-none focus:ring-1 focus:ring-ring"
+              className="h-6 border border-border bg-(--field) px-1.5 text-[10px] outline-none focus:ring-1 focus:ring-ring"
             >
               {HOST_STATUS_SORTS.map((key) => (
                 <option key={key} value={key}>
@@ -734,7 +739,12 @@ export function DashboardTab({
       out.push({
         id: card.id,
         title: t(card.titleKey),
-        group: fromPlugins,
+        // One group per app, so the picker reads as a list of apps.
+        group: card.pluginId
+          ? t(pluginKey(card.pluginId, "plugin.name"), {
+              defaultValue: fromPlugins,
+            })
+          : fromPlugins,
         kind: "card",
         placed: placedIds.has(card.id),
       });
@@ -818,7 +828,6 @@ export function DashboardTab({
     );
   };
 
-  const online = hosts.filter((h) => h.status === "online").length;
   const links = [
     {
       href: "https://github.com/Termix-SSH/Termix",
@@ -859,41 +868,32 @@ export function DashboardTab({
       docs={docsUrl("dashboard")}
       actions={
         <>
-          {isDashboardView && !viewPending && (
-            <>
-              {!editMode && (
-                <Facts className="hidden px-1.5 text-[11px] text-muted-foreground md:flex">
-                  <span>
-                    {t("dashboardTab.onlineCount", { count: online })}
-                  </span>
-                  <span>
-                    {t("dashboardTab.hostCount", { count: hosts.length })}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    {t("dashboardTab.commandPalette")}
-                    <Kbd className="h-4">⇧⇧</Kbd>
-                  </span>
-                </Facts>
-              )}
-              <span
-                aria-hidden
-                className="hidden h-4 w-px bg-border xl:block"
-              />
-            </>
-          )}
-          <span className="hidden items-center gap-0.5 xl:flex">
-            {links.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
-                className="px-1.5 py-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                title={t("dashboardTab.help")}
+                aria-label={t("dashboardTab.help")}
               >
-                {link.label}
-              </a>
-            ))}
-          </span>
+                <CircleHelp className="size-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="text-xs min-w-44">
+              {links.map((link) => (
+                <DropdownMenuItem
+                  key={link.href}
+                  onClick={() => window.open(link.href, "_blank", "noreferrer")}
+                >
+                  {link.label}
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuItem disabled>
+                {t("dashboardTab.commandPalette")}
+                <Kbd className="ml-auto h-4">⇧⇧</Kbd>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           {isDashboardView && (
             <Button
               variant="ghost"

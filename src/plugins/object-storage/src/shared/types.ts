@@ -15,6 +15,8 @@ export interface Account {
   region: string;
   pathStyle: boolean;
   hasCa: boolean;
+  /** Buckets added by hand, for logins whose ListBuckets leaves them out. */
+  extraBuckets: string[];
   status: string;
   lastError: string | null;
   lastCheckAt: string | null;
@@ -27,6 +29,7 @@ export interface AccountInput {
   region: string;
   pathStyle: boolean;
   ca?: string;
+  extraBuckets?: string[];
   accessKeyId?: string;
   secretAccessKey?: string;
   sessionToken?: string;

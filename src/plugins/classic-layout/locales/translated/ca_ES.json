@@ -36,6 +36,7 @@
     "checkNow": "Comprova ara"
   },
   "nav": {
+    "theme": "Tema",
     "copyPassword": "Copia la contrasenya",
     "copySudoPassword": "Copia la contrasenya de sudo",
     "passwordCopied": "Contrasenya copiada al porta-retalls",
@@ -72,7 +73,15 @@
     "mobileNavigation": "Navegació",
     "allTabs": "Totes les pestanyes",
     "hideTabBar": "Amaga la barra de pestanyes",
-    "showTabBar": "Mostra la barra de pestanyes"
+    "showTabBar": "Mostra la barra de pestanyes",
+    "allApps": "Totes les aplicacions",
+    "findApp": "Cerca una aplicació",
+    "pinToRail": "Fixar a la barra lateral",
+    "unpinFromRail": "Desfixar de la barra lateral",
+    "appSettings": "Configuració de l'aplicació",
+    "allAppsHint": "Fixa les que utilitzis. Fes clic dret en una aplicació per veure'n la configuració.",
+    "allAppsLockedHint": "L'administrador tria les aplicacions de la teva barra lateral.",
+    "viewMenu": "Visualitza"
   },
   "commandPalette": {
     "searchPlaceholder": "Cercar hosts, ordres o configuracions...",
@@ -171,7 +180,8 @@
     "dragToReorder": "Arrossega els mosaics per moure'ls i les vores per redimensionar-los",
     "clearActivityConfirm": "Vols esborrar l'activitat recent?",
     "resetConfirm": "Vols restablir el tauler al disseny predeterminat?",
-    "clearFailed": "No s'ha pogut esborrar l'activitat recent"
+    "clearFailed": "No s'ha pogut esborrar l'activitat recent",
+    "help": "Ajuda"
   },
   "admin": {
     "sectionGeneral": "General",
@@ -237,6 +247,9 @@
     "credentialStorage": "Permet desar contrasenyes i claus",
     "credentialStorageOff": "L'emmagatzematge de contrasenyes i claus està desactivat en aquest servidor. Deixeu-los buits i Termix us demanarà les credencials en connectar-vos.",
     "credentialStorageDesc": "Desactivat: ningú pot desar una contrasenya o una clau privada en un amfitrió o credencial, i Termix us les demanarà en connectar-vos. Les connexions ja desades es mantindran fins que es suprimeixin.",
+    "hostKeyTrust": "Confia en les claus de nou host sense demanar confirmació",
+    "hostKeyTrustDesc": "Quan un complement, un programari o l'API es connecta a un host la clau del qual no s'ha verificat mai, desa aquesta clau i connecta. Si està desactivat, aquestes connexions es rebutgen fins que algú obri un terminal a l'host i confiï en la seva clau.",
+    "hostKeyTrustFailed": "No s'ha pogut actualitzar la configuració de la clau de l'host",
     "secondFactorAfterExternalLogin": "Sol·licitar un segon factor després d'inicis de sessió externs (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Si està desactivat, només es demana un segon factor registrat després d'inicis de sessió amb contrasenya i altres inicis de sessió locals, com abans. Si està activat, es demana després de cada mètode d'inici de sessió, incloent-hi SSO i LDAP.",
     "allowPasswordReset": "Permetre la recuperació de contrasenya",
@@ -492,7 +505,93 @@
     "revokeSession": "Tancar sessió",
     "deleteRoleConfirm": "Voleu suprimir el rol {{name}}?",
     "revokeKeyConfirm": "Voleu revocar la clau API {{name}}?",
-    "revokeKey": "Revocar"
+    "revokeKey": "Revocar",
+    "apiKeyScopeReadAll": "Només lectura, tot el que l'usuari pot veure",
+    "apiKeyNeverExpires": "Mai no caduca",
+    "apiKeyExpiryHint": "Si es deixa en blanc, la clau funciona durant 90 dies.",
+    "changeHeld": "Aquest canvi espera {{minutes}} minuts perquè els altres administradors el puguin veure.",
+    "userStatusFilter": "Estat del compte",
+    "userStatusAll": "Tots els comptes",
+    "userStatusActive": "Actiu",
+    "userStatusDisabled": "Desactivat",
+    "userStatusPending": "Pendent d'aprovació",
+    "disabledBadge": "Desactivat",
+    "pendingBadge": "Pendent",
+    "accountStatusTitle": "Estat del compte",
+    "accountStatusActive": "Aquest compte pot iniciar sessió.",
+    "accountStatusDisabled": "Aquest compte està desactivat. No pot iniciar sessió i les seves claus API no funcionen.",
+    "accountStatusPending": "Aquest compte està pendent d'aprovació i encara no pot iniciar sessió.",
+    "lastLogin": "Última sessió iniciada {{time}}",
+    "disableUser": "Desactiva el compte",
+    "enableUser": "Activa el compte",
+    "approveUser": "Aprova",
+    "disableUserConfirm": "Vols desactivar {{username}}? Se'ls tancarà la sessió a tot arreu i no podran iniciar sessió fins que tornis a activar el compte.",
+    "userDisabled": "{{username}} està desactivat",
+    "userEnabled": "{{username}} està activat",
+    "userApproved": "{{username}} està aprovat",
+    "userStatusFailed": "No s'ha pogut canviar el compte",
+    "profileTitle": "Nom i correu electrònic",
+    "displayName": "Nom per mostrar",
+    "displayNamePlaceholder": "Nom per mostrar",
+    "email": "Correu electrònic",
+    "emailPlaceholder": "Correu electrònic",
+    "profileSaved": "Desat",
+    "profileSaveFailed": "No s'ha pogut desar",
+    "manageTabAccess": "Accés",
+    "sectionInvites": "Enllaços d'invitació",
+    "invitesDescription": "Enllaços que permeten a algú crear un compte, fins i tot amb el registre desactivat.",
+    "invitesEmpty": "Encara no hi ha enllaços d'invitació",
+    "inviteCreate": "Nova invitació",
+    "inviteCreateFailed": "No s'ha pogut crear la invitació",
+    "inviteCreatedNotice": "Copia aquest enllaç ara. No es tornarà a mostrar.",
+    "inviteCopy": "Copia l'enllaç",
+    "inviteCopied": "Enllaç copiat",
+    "inviteNotePlaceholder": "Nota, com ara per a qui és",
+    "inviteRole": "Rol",
+    "inviteNoRole": "Sense rol addicional",
+    "inviteExpires": "Caduca",
+    "inviteExpiresIn_one": "Caduca en {{count}} dia",
+    "inviteExpiresIn_many": "Caduca en {{count}} dies",
+    "inviteExpiresIn_other": "Caduca en {{count}} dies",
+    "inviteUses": "Ús",
+    "inviteMakeAdmin": "Fes-ne un administrador",
+    "inviteUntitled": "Convida",
+    "inviteUsesOf": "{{uses}} de {{max}} utilitzats",
+    "inviteState_active": "Actiu",
+    "inviteState_revoked": "Revocat",
+    "inviteState_expired": "Caducat",
+    "inviteState_used": "Esgotat",
+    "inviteRevoke": "Revoca",
+    "inviteRevokeConfirm": "Vols revocar aquest enllaç d'invitació?",
+    "inviteRevokeFailed": "No s'ha pogut revocar la invitació",
+    "sectionAccess": "Revisió d'accés",
+    "accessCount_one": "{{count}} compartició",
+    "accessCount_many": "{{count}} comparticions",
+    "accessCount_other": "{{count}} comparticions",
+    "accessExport": "Exportar CSV",
+    "accessExportFailed": "No s'ha pogut exportar",
+    "accessKind": "Tipus",
+    "accessKindAll": "Tot",
+    "accessKind_host": "Amfitrió",
+    "accessKind_folder": "Carpeta",
+    "accessKind_credential": "Credencial",
+    "accessUser": "Usuari",
+    "accessAnyUser": "Qualsevol usuari",
+    "accessRole": "Rol",
+    "accessAnyRole": "Qualsevol rol",
+    "accessToUser": "a {{name}}",
+    "accessToRole": "al rol {{name}}",
+    "accessOwner": "propietari {{name}}",
+    "accessGrantedBy": "compartit per {{name}}",
+    "accessExpires": "finalitza {{date}}",
+    "accessLastUsed": "últim ús {{date}}",
+    "accessEmpty": "No hi ha res compartit",
+    "sectionAccountSettings": "Comptes i accés",
+    "adminHostBypass": "Els administradors poden obrir els amfitrions de tots els usuaris",
+    "adminHostBypassDesc": "Quan està desactivat, els administradors només veuen els amfitrions que s'han compartit amb ells i no poden obrir les dades d'altres usuaris des de la pàgina d'usuari. Si s'activa, s'espera el temps de refrigeració de l'administrador si n'hi ha un configurat.",
+    "signupApproval": "Aprovar els nous comptes SSO",
+    "signupApprovalDesc": "Quan algú s'identifica per primera vegada mitjançant SSO o LDAP, ha d'esperar que un administrador aprovi el compte.",
+    "updateSettingFailed": "No s'ha pogut desar la configuració"
   },
   "newUi": {
     "sidebar": {
@@ -515,7 +614,8 @@
         "domainPlaceholder": "opcional",
         "connectToAction": "Connectar a {{name}}",
         "sshProtocol": "SSH",
-        "noTarget": "Cap programa instal·lat pot connectar-se a aquest tipus de host"
+        "noTarget": "Cap programa instal·lat pot connectar-se a aquest tipus de host",
+        "loadingTargets": "S'estan carregant les maneres de connectar-se..."
       },
       "keybindings": {
         "description": "Associeu tecles a accions al terminal i a l'aplicació, o canvieu els dreceres integrades.",
@@ -569,6 +669,9 @@
         "desktopProfileDescription": "Aquest perfil es troba en aquest dispositiu i s'hi connecta de manera independent. Enllaçeu-lo a un servidor Termix per utilitzar els mateixos amfitrions i la mateixa configuració en tots els dispositius.",
         "sectionInterface": "Interfície",
         "interfacePresetDesc": "Quant de detall mostra Termix. Totes les funcions continuen estant disponibles.",
+        "closeToTray": "Tancar a la safata",
+        "closeToTrayDesc": "En tancar la finestra, Termix continua executant-se a la safata perquè les connexions es mantinguin obertes. Desactiveu-lo per sortir quan tanqueu la finestra.",
+        "closeToTraySaveFailed": "No s'ha pogut desar la configuració",
         "presetClearOverrides": "Restableix-ho tot",
         "presetOverridesTitle": "Personalitzat",
         "presetRevertArea": "Desfés",
@@ -703,7 +806,11 @@
         "tryBetaDescription": "Uniu-vos al programa beta a Actualitzacions.",
         "sendBetaFeedback": "Enviar comentaris sobre la beta",
         "openUpdates": "Actualitzacions",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "Nom per mostrar",
+        "emailLabel": "Correu electrònic",
+        "profileSaved": "Desat",
+        "profileSaveFailed": "No s'ha pogut desar"
       }
     }
   },
@@ -735,6 +842,10 @@
     "apiKeys": "Claus API",
     "data": "Dades i sincronització",
     "interface": "Interfície",
+    "hostList": "Llista d'amfitrions",
+    "credentialList": "Llista de credencials",
+    "openHostList": "Configuració de la llista d'amfitrions",
+    "openCredentialList": "Configuració de la llista de credencials",
     "appearance": "Aparença",
     "keybindings": "Dreceres de teclat",
     "adminGeneral": "General",
@@ -794,6 +905,36 @@
       "hostRows": {
         "label": "Opcions de files d'amfitrions"
       }
+    },
+    "adminAccess": "Revisió d'accés",
+    "yourApps": "Les teves aplicacions",
+    "otherApps": "Altres aplicacions",
+    "hostForm": {
+      "label": "Formulari per afegir amfitrió",
+      "description": "L'opció Simple mostra l'adreça, l'usuari, la carpeta i les etiquetes. L'opció Completa mostra totes les opcions. També pots canviar dins del formulari.",
+      "simple": "Simple",
+      "full": "Completa"
+    },
+    "interfaceDefaults": {
+      "title": "Valors predeterminats de la interfície",
+      "intro": "Tria què veuran les persones quan iniciïn sessió per primera vegada. Podran canviar la seva pròpia vista a menys que la bloquegis.",
+      "setFor": "Establir per a",
+      "everyone": "Tothom",
+      "inherits": "Utilitza Tothom fins que canviïs alguna cosa",
+      "useEveryone": "Utilitzar Tothom",
+      "look": "Aparença inicial",
+      "lookHint": "Simple mostra el mínim. Avançat mostra tots els botons.",
+      "simple": "Simple",
+      "balanced": "Equilibrat",
+      "advanced": "Avançat",
+      "lock": "Bloquejar",
+      "lockHint": "Les persones amb aquest rol no poden canviar la seva aparença ni les aplicacions de la seva barra.",
+      "apps": "Aplicacions a la barra",
+      "appsHint": "La resta es mantenen a Totes les aplicacions i a la cerca.",
+      "appsAdvanced": "Avançat mostra totes les aplicacions a la barra.",
+      "saved": "Preferències d'interfície desades",
+      "saveFailed": "No s'han pogut desar les preferències d'interfície",
+      "lockedNote": "L'administrador ha triat la vostra aparença, per la qual cosa no es pot canviar aquí."
     }
   },
   "hostDefaults": {
@@ -873,12 +1014,19 @@
     "pickHint": "Tot el que fa referència a una connexió es troba aquí, agrupat perquè puguis trobar-ho fàcilment.",
     "clearChoice": "Esborra",
     "proxyPathTarget": "objectiu",
-    "hostCopyName": "{{name}} (còpia)"
+    "hostCopyName": "{{name}} (còpia)",
+    "moreOptions": "Més opcions",
+    "moreOptionsHint": "Proxy, hosts de salt, port knocking, keepalive, comprovacions d'estat i l'opció d'activar o desactivar cada aplicació. La majoria d'hosts no en necessiten.",
+    "folderAndTags": "Carpeta, etiquetes i notes"
   },
   "permissions": {
     "branding": {
       "title": "Canviar la marca",
       "description": "Estableix el nom de l'aplicació, l'eslògan i el logotip que es mostren a tothom."
+    },
+    "interfaceDefaults": {
+      "title": "Establir preferències d'interfície",
+      "description": "Trieu l'aparença i les aplicacions de la barra amb què comencen les persones, per a tothom o per a cada rol."
     }
   },
   "onboarding": {
@@ -913,6 +1061,8 @@
     "clickAuto": "La primera manera de connectar-se",
     "useDefaultNamed": "Predeterminat ({{name}})",
     "useDefaultButtons": "Utilitza els botons predeterminats",
-    "perHostHint": "Per canviar-los per a un amfitrió, utilitzeu Botons a les files d'amfitrions al seu menú."
+    "perHostHint": "Per canviar-los per a un amfitrió, utilitzeu Botons a les files d'amfitrions al seu menú.",
+    "moreTools": "Més eines",
+    "more": "Més"
   }
 }

@@ -47,6 +47,7 @@ export function jobView(
     keep: job.keep,
     alerts: job.alerts,
     oneFileSystem: job.oneFileSystem,
+    backupOptions: job.backupOptions,
     lastStatus: job.lastStatus,
     lastRunAt: job.lastRunAt,
     lastSuccessAt: job.lastSuccessAt,

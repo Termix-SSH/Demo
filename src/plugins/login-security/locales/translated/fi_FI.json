@@ -46,6 +46,10 @@
       "connectFactorMinutes": {
         "label": "Minuutteja ennen seuraavaa kyselyä",
         "description": "Syöttämisen jälkeen käyttäjä voi muodostaa yhteyden mihin tahansa isäntään tämän ajan. Kirjautuminen ulos lopettaa sen ennenaikaisesti."
+      },
+      "newDeviceNotice": {
+        "label": "Ilmoitus uudesta laitteesta",
+        "description": "Lähetä käyttäjille ilmoitus, kun joku kirjautuu heidän tililleen laitteelta, jota järjestelmä ei ole aiemmin nähnyt. Kukin käyttäjä voi sammuttaa tämän ilmoituksen itselleen."
       }
     },
     "host": {
@@ -53,11 +57,18 @@
         "label": "Pyydä toinen todennustapa ennen yhteyden muodostamista",
         "description": "Käytetään, kun Kirjautumisturvallisuus on asetettu pyytämään isänniltä, joille se on merkitty."
       }
+    },
+    "user": {
+      "newDeviceNotice": {
+        "label": "Ilmoita minulle uudesta laitteesta",
+        "description": "Saat ilmoituksen, kun joku kirjautuu tilillesi laitteelta, jota järjestelmä ei ole aiemmin nähnyt."
+      }
     }
   },
   "verify": {
     "title": "Vahvista toinen todennustapa",
     "intro": "Syötä toinen todennustapasi muodostaaksesi yhteyden tähän isäntään.",
+    "start": "Vahvista",
     "done": "Vahvistettu",
     "retry": "Palaa isäntään ja muodosta yhteys uudelleen.",
     "failed": "Se ei toiminut. Yritä uudelleen.",
@@ -74,5 +85,68 @@
     "body": "Ylläpitäjän vaatima toinen todennustapa puuttuu. Määritä se alla jatkaaksesi Termixin käyttöä.",
     "none": "Ei mitään määritettävää? Pyydä ylläpitäjää asentamaan toisen todennustavan lisäosa.",
     "signOut": "Kirjaudu ulos"
+  },
+  "never": "ei koskaan",
+  "sessions": {
+    "title": "Istunnot ja avaimet",
+    "tab": "Istunnot",
+    "current": "Tämä istunto",
+    "meta": "{{type}} | viimeksi aktiivinen {{lastActive}} | kirjautunut sisään {{created}}",
+    "none": "Ei istuntoja",
+    "end": "Kirjaudu ulos",
+    "ended": "Kirjautunut ulos",
+    "endOthers": "Kirjaudu ulos muista istunnoista",
+    "endOthersConfirm": "Kirjaudu ulos muista {{count}} istunnosta?",
+    "endedOthers": "Muut istunnot on kirjattu ulos",
+    "everyone": "Kirjaudu kaikki ulos",
+    "everyoneConfirm": "Kirjaudu kaikki käyttäjät tältä palvelimelta ulos?",
+    "everyoneDescription": "Kaikkien paitsi sinun on kirjauduttava sisään uudelleen. Tähän palvelimeen yhdistetyt työpöytäsovellukset on yhdistettävä uudelleen.",
+    "everyoneKeysConfirm": "Peruutetaanko myös kaikki tämän palvelimen API-avaimet?",
+    "everyoneKeys": "Peruuta myös avaimet",
+    "everyoneKeysNo": "Säilytä avaimet",
+    "everyoneDone": "Kaikki on kirjautunut ulos",
+    "failed": "Toiminto epäonnistui. Yritä uudelleen.",
+    "loadFailed": "Istuntojasi ja avaimiasi ei voitu ladata."
+  },
+  "keys": {
+    "tab": "API-avaimet",
+    "none": "Sinulla ei ole API-avaimia",
+    "full": "täysi pääsy",
+    "noExpiry": "ei koskaan",
+    "meta": "{{prefix}} | viimeksi käytetty {{lastUsed}} | vanhenee {{expires}}",
+    "revoke": "Kumoa",
+    "revoked": "Avain kumottu",
+    "revokeAll": "Kumoa kaikki avaimet",
+    "revokeAllConfirm": "Kumotaanko {{count}} API-avaintasi? Skriptit, jotka käyttävät niitä, lakkaavat toimimasta.",
+    "revokedAll": "API-avaimesi on kumottu"
+  },
+  "waits": {
+    "title": "Ylläpitäjän odotusaika",
+    "intro": "Kun ylläpitäjiä on kaksi tai enemmän, uuden ylläpitäjän lisääminen, salasanasisäännön poistaminen käytöstä, kirjautumisliitännäisen poistaminen käytöstä tai vaarallisen pääsyn omaavan liitännäisen ottaminen käyttöön vaatii tämän odotusajan. Muut ylläpitäjät saavat ilmoituksen ja voivat peruuttaa muutoksen. Myös tämän asetuksen poistaminen käytöstä tai lyhentäminen vaatii odotusajan.",
+    "adminOnly": "Vain ylläpitäjät näkevät tämän.",
+    "loadFailed": "Ylläpitäjän odotusajan lataaminen epäonnistui.",
+    "active": "Päällä, muutokset odottavat {{minutes}} minuuttia",
+    "onOneAdmin": "Päällä, mutta palvelimella on vain yksi ylläpitäjä, joten ei odoteta",
+    "off": "Pois päältä",
+    "forced": "Määritetty palvelimella nimellä {{name}}.",
+    "minutes": "Minuutteja",
+    "turnOn": "Ota käyttöön",
+    "change": "Tallenna",
+    "turnOff": "Ota pois käytöstä",
+    "saved": "Tallennettu",
+    "savedHeld": "Tallennettu. Odotetaan ensin muita ylläpitäjiä.",
+    "failed": "Tuo ei onnistunut. Yritä uudelleen.",
+    "none": "Yhdenkään ylläpitomuutoksen ei ole vielä odotettu",
+    "meta": "Pyytäjä: {{who}} | voimaan {{runsAt}}",
+    "cancel": "Peruuta",
+    "cancelConfirm": "Peruutetaanko tämä muutos?",
+    "cancelled": "Peruutettu",
+    "status": {
+      "pending": "Odottaa",
+      "applying": "Käsitellään",
+      "applied": "Käytössä",
+      "cancelled": "Peruutettu",
+      "failed": "Epäonnistui"
+    }
   }
 }

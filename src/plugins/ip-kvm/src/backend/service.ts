@@ -30,7 +30,7 @@ import {
   type ScreenSession,
   type Target,
 } from "./drivers/index.js";
-import { relaySession } from "./drivers/jetkvm.js";
+import { relaySession, type RelayAnswer } from "./drivers/jetkvm.js";
 
 const PERSIST_EVERY_MS = 5 * 60_000;
 const DOWN_AFTER_FAILURES = 2;
@@ -104,7 +104,7 @@ export interface Service {
   wake: (id: number) => Promise<void>;
   openScreen: (id: number, handlers: ScreenHandlers) => Promise<ScreenSession>;
   /** The JetKVM answer to a browser's WebRTC offer. */
-  relay: (id: number, offer: string) => Promise<string>;
+  relay: (id: number, offer: string) => Promise<RelayAnswer>;
   mediaList: (id: number) => Promise<MediaState>;
   mediaMount: (id: number, imageId: string, cdrom: boolean) => Promise<void>;
   mediaEject: (id: number) => Promise<void>;

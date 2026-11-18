@@ -16,6 +16,8 @@ import {
 } from "./protocol";
 
 const MAX_DEPTH = 24;
+/** Set on a wrapper component (like the icon error boundary) to the icon it draws. */
+export const WRAPPED_ICON = "__wrappedIcon";
 const ICON_NAME = /^[A-Z][A-Za-z0-9]{0,63}$/;
 
 const REACT_ELEMENT = new Set([
@@ -50,6 +52,8 @@ export function isComponentObject(value: unknown): boolean {
  */
 export function lucideName(component: unknown): string | null {
   if (!component) return null;
+  const wrapped = (component as { [WRAPPED_ICON]?: unknown })[WRAPPED_ICON];
+  if (wrapped && wrapped !== component) return lucideName(wrapped);
   if (!isComponentObject(component) && typeof component !== "function") {
     return null;
   }
@@ -57,21 +61,58 @@ export function lucideName(component: unknown): string | null {
   return typeof name === "string" && ICON_NAME.test(name) ? name : null;
 }
 
+/**
+ * The shapes a Lucide icon draws. lucide-react keeps them out of reach, but
+ * its render function hands them to the inner Icon as a prop. Sent along with
+ * the name so a frame can draw the icon without loading every Lucide icon.
+ */
+function iconNode(component: unknown): unknown[] | undefined {
+  const wrapped = (component as { [WRAPPED_ICON]?: unknown } | null)?.[
+    WRAPPED_ICON
+  ];
+  if (wrapped && wrapped !== component) return iconNode(wrapped);
+  if (typeTag(component) !== FORWARD_REF) return undefined;
+  const render = (component as { render?: unknown }).render;
+  if (typeof render !== "function") return undefined;
+  try {
+    const element = render({}, null) as {
+      props?: { icon?: { node?: unknown } };
+    } | null;
+    const node = element?.props?.icon?.node;
+    // A copy: lucide shares one array per icon, and encode drops an object it
+    // already saw, so a second use of the same icon would lose its shapes.
+    return Array.isArray(node)
+      ? (JSON.parse(JSON.stringify(node)) as unknown[])
+      : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 /** An icon component or an icon element (<Play />) as a wire icon. */
 export function iconToWire(value: unknown): WireIcon | undefined {
   if (!value) return undefined;
   if (isReactElement(value)) {
-    const name = lucideName((value as { type?: unknown }).type);
+    const type = (value as { type?: unknown }).type;
+    const name = lucideName(type);
     if (!name) return undefined;
+    const node = iconNode(type);
     const size = (value as { props?: { size?: unknown } }).props?.size;
-    return Number.isInteger(size) &&
+    return {
+      $icon: name,
+      element: true,
+      ...(Number.isInteger(size) &&
       (size as number) > 0 &&
       (size as number) <= 256
-      ? { $icon: name, element: true, size: size as number }
-      : { $icon: name, element: true };
+        ? { size: size as number }
+        : {}),
+      ...(node ? { node } : {}),
+    };
   }
   const name = lucideName(value);
-  return name ? { $icon: name } : undefined;
+  if (!name) return undefined;
+  const node = iconNode(value);
+  return node ? { $icon: name, node } : { $icon: name };
 }
 
 function isPlainObject(value: object): boolean {
@@ -117,12 +158,10 @@ export function encode(value: unknown, options: EncodeOptions): unknown {
     const object = input as object;
     if (isReactElement(object)) return iconToWire(object);
     if (isComponentObject(object)) return iconToWire(object);
+    // Only a loop back to an object still being walked is cut: the same
+    // object in two places (a shared list, an icon's shapes) goes both times.
     if (depth > MAX_DEPTH || seen.has(object)) return undefined;
     if (passesThrough(object)) return object;
-    seen.add(object);
-    if (Array.isArray(object)) {
-      return object.map((item) => walk(item, depth + 1));
-    }
     if (typeof Node !== "undefined" && object instanceof Node) return undefined;
     if (typeof Window !== "undefined" && object instanceof Window) {
       return undefined;
@@ -130,12 +169,20 @@ export function encode(value: unknown, options: EncodeOptions): unknown {
     if (!isPlainObject(object) && object instanceof Error) {
       return { name: object.name, message: object.message };
     }
-    const out: Record<string, unknown> = {};
-    for (const [key, item] of Object.entries(object)) {
-      const encoded = walk(item, depth + 1);
-      if (encoded !== undefined) out[key] = encoded;
+    seen.add(object);
+    try {
+      if (Array.isArray(object)) {
+        return object.map((item) => walk(item, depth + 1));
+      }
+      const out: Record<string, unknown> = {};
+      for (const [key, item] of Object.entries(object)) {
+        const encoded = walk(item, depth + 1);
+        if (encoded !== undefined) out[key] = encoded;
+      }
+      return out;
+    } finally {
+      seen.delete(object);
     }
-    return out;
   };
   return walk(value, 0);
 }

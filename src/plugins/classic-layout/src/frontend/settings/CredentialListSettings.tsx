@@ -44,7 +44,7 @@ export function CredentialListSettings() {
                 },
               }))
             }
-            className="h-8 border border-border bg-background px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
+            className="h-8 border border-border bg-(--field) px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
           >
             <option value="comfortable">
               {t("credentials.displayDensityComfortable")}
@@ -120,7 +120,7 @@ export function CredentialListSettings() {
                 },
               }))
             }
-            className="h-8 w-full border border-border bg-background px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
+            className="h-8 w-full border border-border bg-(--field) px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
           >
             <option value="always">{t("credentials.actionsAlways")}</option>
             <option value="actionsOnly">{t("credentials.actionsOnly")}</option>

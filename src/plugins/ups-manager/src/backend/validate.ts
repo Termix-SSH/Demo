@@ -86,6 +86,8 @@ export interface ParsedSource {
   alerts: boolean;
   enabled: boolean;
   secrets: SourceSecrets;
+  inputDc: boolean;
+  outputDc: boolean;
 }
 
 /** Checks a source from a request. Throws UpsError with a plain message. */
@@ -111,6 +113,14 @@ export function parseSource(body: Record<string, unknown>): ParsedSource {
   if (version !== "1" && version !== "2c" && version !== "3") {
     throw new UpsError("SNMP version must be 1, 2c or 3");
   }
+  for (const key of ["inputDc", "outputDc"] as const) {
+    if (input[key] !== undefined && typeof input[key] !== "boolean") {
+      throw new UpsError("DC confirmation must be true or false");
+    }
+    if (input[key] && backend !== "nut") {
+      throw new UpsError("Calculated DC power currently requires NUT");
+    }
+  }
   return {
     backend,
     label,
@@ -121,5 +131,7 @@ export function parseSource(body: Record<string, unknown>): ParsedSource {
     alerts: input.alerts !== false,
     enabled: input.enabled !== false,
     secrets: parseSecrets(input.secrets),
+    inputDc: input.inputDc === true,
+    outputDc: input.outputDc === true,
   };
 }

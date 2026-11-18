@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   useHosts,
   useTranslation,
@@ -12,6 +12,9 @@ import {
   getSignals,
   listApprovals,
   listRuns,
+  WARMING_POLL_MS,
+  type Catalog,
+  type SignalRead,
 } from "./api";
 import { hostLabel } from "./hosts";
 
@@ -24,6 +27,15 @@ interface Item {
 }
 
 const SINCE_MS = 24 * 60 * 60 * 1000;
+const POLL_MS = 30_000;
+
+interface Sources {
+  catalog?: Catalog | null;
+  signals?: SignalRead[];
+  approvals?: Awaited<ReturnType<typeof listApprovals>>;
+  runs?: Awaited<ReturnType<typeof listRuns>>;
+  own?: Awaited<ReturnType<typeof getAttention>> | null;
+}
 
 /**
  * Needs attention: failing tiles, waiting approvals, failed runs, drifted hosts
@@ -32,25 +44,64 @@ const SINCE_MS = 24 * 60 * 60 * 1000;
 export function AttentionCard({ isVisible, shell }: DashboardCardProps) {
   const { t, language } = useTranslation();
   const { hosts } = useHosts();
-  const [items, setItems] = useState<Item[] | null>(null);
+  const [data, setData] = useState<Sources>({});
+  const shellRef = useRef(shell);
+  shellRef.current = shell;
 
-  const load = useCallback(async () => {
+  // Each source shows as soon as it answers; the slow ones fill in after.
+  const load = useCallback(() => {
+    const take =
+      <K extends keyof Sources>(key: K) =>
+      (value: Sources[K]) =>
+        setData((prev) => ({ ...prev, [key]: value }));
+    return Promise.all([
+      getCatalog(language)
+        .catch(() => null)
+        .then(take("catalog")),
+      getSignals()
+        .catch(() => [])
+        .then(take("signals")),
+      listApprovals()
+        .catch(() => [])
+        .then(take("approvals")),
+      listRuns({ status: "failed", limit: 20 })
+        .catch(() => [])
+        .then(take("runs")),
+      getAttention()
+        .catch(() => null)
+        .then(take("own")),
+    ]);
+  }, [language]);
+
+  const warming = !!data.signals?.some((signal) =>
+    signal.hosts.some((read) => read.state === "loading"),
+  );
+
+  useEffect(() => {
+    if (!isVisible) return;
+    void load();
+  }, [isVisible, load]);
+  useEffect(() => {
+    if (!isVisible) return;
+    const timer = setInterval(
+      () => void load(),
+      warming ? WARMING_POLL_MS : POLL_MS,
+    );
+    return () => clearInterval(timer);
+  }, [isVisible, load, warming]);
+
+  const items = useMemo(() => {
     const openOps =
-      (view: string, data: Record<string, unknown> = {}) =>
+      (view: string, extra: Record<string, unknown> = {}) =>
       () =>
-        shell.openSingletonTab("operations", { data: { view, ...data } });
+        shellRef.current.openSingletonTab("operations", {
+          data: { view, ...extra },
+        });
     const hostOf = (id: number) => hosts.find((host) => Number(host.id) === id);
     const next: Item[] = [];
+    const { catalog, signals, approvals, runs, own } = data;
 
-    const [catalog, signals, approvals, runs, own] = await Promise.all([
-      getCatalog(language).catch(() => null),
-      getSignals().catch(() => []),
-      listApprovals().catch(() => []),
-      listRuns({ status: "failed", limit: 20 }).catch(() => []),
-      getAttention().catch(() => null),
-    ]);
-
-    if (approvals.length > 0) {
+    if (approvals && approvals.length > 0) {
       next.push({
         id: "approvals",
         title: t("attention.approvals", { count: approvals.length }),
@@ -58,7 +109,7 @@ export function AttentionCard({ isVisible, shell }: DashboardCardProps) {
         open: openOps("approvals"),
       });
     }
-    for (const signal of signals) {
+    for (const signal of signals ?? []) {
       const declared = catalog?.signals.find((entry) => entry.id === signal.id);
       for (const read of signal.hosts) {
         const status = read.value?.status;
@@ -79,11 +130,13 @@ export function AttentionCard({ isVisible, shell }: DashboardCardProps) {
           meta: host ? hostLabel(host) : undefined,
           tone: status,
           open: () =>
-            host ? shell.openTab(host as never, "host") : openOps("allHosts")(),
+            host
+              ? shellRef.current.openTab(host as never, "host")
+              : openOps("allHosts")(),
         });
       }
     }
-    const recent = runs.filter(
+    const recent = (runs ?? []).filter(
       (run) => Date.now() - Date.parse(run.createdAt) < SINCE_MS,
     );
     if (recent.length > 0) {
@@ -111,17 +164,17 @@ export function AttentionCard({ isVisible, shell }: DashboardCardProps) {
         open: openOps("rollouts"),
       });
     }
-    setItems(next);
-  }, [hosts, language, shell, t]);
+    return next;
+  }, [data, hosts, t]);
 
-  useEffect(() => {
-    if (!isVisible) return;
-    void load();
-    const timer = setInterval(() => void load(), 30000);
-    return () => clearInterval(timer);
-  }, [isVisible, load]);
+  const done =
+    "catalog" in data &&
+    "signals" in data &&
+    "approvals" in data &&
+    "runs" in data &&
+    "own" in data;
 
-  if (items === null) {
+  if (items.length === 0 && (!done || warming)) {
     return <LoadingState compact label={t("attention.loading")} />;
   }
   if (items.length === 0) {

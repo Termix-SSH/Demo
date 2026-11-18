@@ -1,4 +1,6 @@
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
+import { Button } from "@termix-ssh/plugin-sdk/ui";
 
 export interface EmbedNodes {
   nodeFor: (type: string) => HTMLDivElement;
@@ -74,4 +76,30 @@ export function EmbedSlot({
     };
   }, [type, nodeFor, park, show]);
   return <div ref={ref} className="flex h-full min-h-0 w-full flex-col" />;
+}
+
+/**
+ * A session tile on the overview waits for a click, so opening the page
+ * starts nothing. A session already running, say from its full section,
+ * shows right away.
+ */
+export function SessionSlot({
+  type,
+  embed,
+}: {
+  type: string;
+  embed: EmbedNodes;
+}) {
+  const { t } = useTranslation();
+  const [started, setStarted] = useState(false);
+  if (started || embed.wanted.has(type)) {
+    return <EmbedSlot type={type} embed={embed} />;
+  }
+  return (
+    <div className="flex flex-1 items-center justify-center">
+      <Button size="sm" variant="outline" onClick={() => setStarted(true)}>
+        {t("tiles.connect")}
+      </Button>
+    </div>
+  );
 }

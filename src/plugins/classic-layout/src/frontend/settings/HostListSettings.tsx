@@ -1,5 +1,7 @@
 import {
   Select2,
+  useUiPreference,
+  useUiPreferencesContext,
   actionOrder,
   useHostActions,
   SectionCard,
@@ -36,6 +38,8 @@ const ROW_FIELDS: { key: keyof HostRowFields; dependsOnAddress?: boolean }[] = [
 export function HostListSettings() {
   const { t } = useTranslation();
   const { preferences, update } = useHostSidebarPreferences();
+  const ui = useUiPreferencesContext();
+  const hostForm = useUiPreference("hostEditor", "mode");
   const actions = [...useHostActions()].sort(
     (a, b) => actionOrder(a) - actionOrder(b) || a.id.localeCompare(b.id),
   );
@@ -73,6 +77,25 @@ export function HostListSettings() {
         icon={<Rows3 className="size-3.5" />}
       >
         <SettingRow
+          label={t("settings.hostForm.label")}
+          description={t("settings.hostForm.description")}
+        >
+          <Select2
+            value={hostForm}
+            onChange={(e) =>
+              ui?.setOverride(
+                "hostEditor",
+                "mode",
+                e.target.value as "simple" | "full",
+              )
+            }
+            className="h-8 border border-border bg-(--field) px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
+          >
+            <option value="simple">{t("settings.hostForm.simple")}</option>
+            <option value="full">{t("settings.hostForm.full")}</option>
+          </Select2>
+        </SettingRow>
+        <SettingRow
           label={t("hosts.customizeDensityTitle")}
           description={
             preferences.display.density === "comfortable"
@@ -91,7 +114,7 @@ export function HostListSettings() {
                 },
               }))
             }
-            className="h-8 border border-border bg-background px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
+            className="h-8 border border-border bg-(--field) px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
           >
             <option value="comfortable">
               {t("hosts.displayDensityComfortable")}
@@ -194,7 +217,7 @@ export function HostListSettings() {
                 },
               }))
             }
-            className="h-8 w-full border border-border bg-background px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
+            className="h-8 w-full border border-border bg-(--field) px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
           >
             <option value="always">{t("hosts.actionsAlways")}</option>
             <option value="actionsOnly">{t("hosts.actionsOnly")}</option>
@@ -223,7 +246,7 @@ export function HostListSettings() {
                 },
               }))
             }
-            className="h-8 w-full border border-border bg-background px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
+            className="h-8 w-full border border-border bg-(--field) px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
           >
             <option value="newTab">{t("hosts.hostClickNewTab")}</option>
             <option value="focusExisting">
@@ -259,7 +282,7 @@ export function HostListSettings() {
                   }));
                 }
               }}
-              className="h-8 w-full border border-border bg-background px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
+              className="h-8 w-full border border-border bg-(--field) px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
             >
               <option value="">{t("hostTools.clickAuto")}</option>
               {actions.map((action) => (
@@ -286,7 +309,7 @@ export function HostListSettings() {
                 const mode = hostToolsMode(e.target.value);
                 layoutPrefs.set("hostTools", mode === "tab" ? null : mode);
               }}
-              className="h-8 w-full border border-border bg-background px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
+              className="h-8 w-full border border-border bg-(--field) px-2 text-xs outline-none focus:ring-1 focus:ring-ring"
             >
               <option value="tab">{t("hostTools.modeTab")}</option>
               <option value="page">{t("hostTools.modePage")}</option>

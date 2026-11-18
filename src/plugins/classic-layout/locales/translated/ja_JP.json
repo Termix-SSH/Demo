@@ -36,6 +36,7 @@
     "checkNow": "今すぐ確認"
   },
   "nav": {
+    "theme": "テーマ",
     "copyPassword": "パスワードをコピー",
     "copySudoPassword": "Sudo パスワードをコピー",
     "passwordCopied": "パスワードがクリップボードにコピーされました",
@@ -72,7 +73,15 @@
     "mobileNavigation": "ナビゲーション",
     "allTabs": "すべてのタブ",
     "hideTabBar": "タブバーを非表示",
-    "showTabBar": "タブバーを表示"
+    "showTabBar": "タブバーを表示",
+    "allApps": "すべてのアプリ",
+    "findApp": "アプリを検索",
+    "pinToRail": "サイドバーにピン留め",
+    "unpinFromRail": "サイドバーのピン留めを解除",
+    "appSettings": "アプリ設定",
+    "allAppsHint": "よく使うアプリをピン留めしてください。アプリを右クリックすると設定が開きます。",
+    "allAppsLockedHint": "管理者がサイドバーに表示するアプリを選択しています。",
+    "viewMenu": "表示"
   },
   "commandPalette": {
     "searchPlaceholder": "ホスト、コマンド、または設定を検索...",
@@ -171,7 +180,8 @@
     "dragToReorder": "タイルをドラッグして移動し、端をドラッグしてサイズを変更します",
     "clearActivityConfirm": "最近のアクティビティをクリアしますか？",
     "resetConfirm": "ダッシュボードをデフォルトのレイアウトにリセットしますか？",
-    "clearFailed": "最近のアクティビティをクリアできませんでした"
+    "clearFailed": "最近のアクティビティをクリアできませんでした",
+    "help": "ヘルプ"
   },
   "admin": {
     "sectionGeneral": "一般",
@@ -237,6 +247,9 @@
     "credentialStorage": "パスワードとキーの保存を許可",
     "credentialStorageOff": "このサーバーではパスワードとキーの保存が無効になっています。空のままにすると、接続時にTermixが求めます。",
     "credentialStorageDesc": "オフにすると、誰もホストや認証情報にパスワードや秘密鍵を保存できず、接続時にTermixが求めます。すでに保存されているログイン情報は、削除されるまで残ります。",
+    "hostKeyTrust": "プロンプトを表示せずに新しいホストキーを信頼する",
+    "hostKeyTrustDesc": "プラグイン、スケジュール、または API が、まだ確認されていないキーを持つホストに接続する際、そのキーを保存して接続します。オフにすると、誰かがそのホストへのターミナルを開いてキーを信頼するまで、接続は拒否されます。",
+    "hostKeyTrustFailed": "ホストキー設定の更新に失敗しました",
     "secondFactorAfterExternalLogin": "外部ログイン（SSO、GitHub、Google、LDAP）後に二段階認証を要求する",
     "secondFactorAfterExternalLoginDesc": "オフの場合、登録済みの二段階認証はパスワードやその他のローカルログイン時のみ要求されます（従来通り）。オンにすると、SSO や LDAP を含むすべてのログイン方法で要求されます",
     "allowPasswordReset": "パスワードリセットを許可する",
@@ -482,7 +495,89 @@
     "revokeSession": "サインアウト",
     "deleteRoleConfirm": "{{name}} ロールを削除しますか？",
     "revokeKeyConfirm": "API キー {{name}} を失効させますか？",
-    "revokeKey": "失効"
+    "revokeKey": "失効",
+    "apiKeyScopeReadAll": "読み取り専用、ユーザーが閲覧できるすべてのデータ",
+    "apiKeyNeverExpires": "期限なし",
+    "apiKeyExpiryHint": "空白の場合、キーは90日間有効です。",
+    "changeHeld": "この変更は {{minutes}} 分間保留され、他の管理者が確認できるようになります。",
+    "userStatusFilter": "アカウント状態",
+    "userStatusAll": "すべてのアカウント",
+    "userStatusActive": "アクティブ",
+    "userStatusDisabled": "無効化済み",
+    "userStatusPending": "承認待ち",
+    "disabledBadge": "無効",
+    "pendingBadge": "保留中",
+    "accountStatusTitle": "アカウントの状態",
+    "accountStatusActive": "このアカウントはサインイン可能です。",
+    "accountStatusDisabled": "このアカウントは無効化されています。サインインできず、API キーも機能しません。",
+    "accountStatusPending": "このアカウントは承認待ちのため、まだサインインできません。",
+    "lastLogin": "最終サインイン: {{time}}",
+    "disableUser": "アカウントを無効化",
+    "enableUser": "アカウントを有効にする",
+    "approveUser": "承認する",
+    "disableUserConfirm": "{{username}} のアカウントを無効にしますか？すべてのデバイスからサインアウトされ、アカウントを再度有効にするまでサインインできなくなります。",
+    "userDisabled": "{{username}} のアカウントは無効です",
+    "userEnabled": "{{username}} のアカウントは有効です",
+    "userApproved": "{{username}} は承認済みです",
+    "userStatusFailed": "アカウントを変更できませんでした",
+    "profileTitle": "名前とメールアドレス",
+    "displayName": "表示名",
+    "displayNamePlaceholder": "表示名",
+    "email": "メール",
+    "emailPlaceholder": "メール",
+    "profileSaved": "保存しました",
+    "profileSaveFailed": "保存できませんでした",
+    "manageTabAccess": "アクセス",
+    "sectionInvites": "招待リンク",
+    "invitesDescription": "サインアップを無効にしている場合でも、アカウント作成を許可するリンクです。",
+    "invitesEmpty": "招待リンクはまだありません",
+    "inviteCreate": "新しい招待",
+    "inviteCreateFailed": "招待を作成できませんでした",
+    "inviteCreatedNotice": "このリンクは今すぐコピーしてください。再度表示されることはありません。",
+    "inviteCopy": "リンクをコピー",
+    "inviteCopied": "リンクをコピーしました",
+    "inviteNotePlaceholder": "メモ（例：宛先の名前）",
+    "inviteRole": "役割",
+    "inviteNoRole": "追加の役割なし",
+    "inviteExpires": "有効期限",
+    "inviteExpiresIn_other": "{{count}}日後に期限切れ",
+    "inviteUses": "使用回数",
+    "inviteMakeAdmin": "管理者にする",
+    "inviteUntitled": "招待",
+    "inviteUsesOf": "{{uses}} / {{max}} 使用済み",
+    "inviteState_active": "有効",
+    "inviteState_revoked": "取り消し済み",
+    "inviteState_expired": "期限切れ",
+    "inviteState_used": "使用済み",
+    "inviteRevoke": "取り消す",
+    "inviteRevokeConfirm": "この招待リンクを取り消しますか？",
+    "inviteRevokeFailed": "招待を取り消せませんでした",
+    "sectionAccess": "アクセス確認",
+    "accessCount_other": "{{count}} 件の共有",
+    "accessExport": "CSV をエクスポート",
+    "accessExportFailed": "エクスポートに失敗しました",
+    "accessKind": "種類",
+    "accessKindAll": "すべて",
+    "accessKind_host": "ホスト",
+    "accessKind_folder": "フォルダ",
+    "accessKind_credential": "認証情報",
+    "accessUser": "ユーザー",
+    "accessAnyUser": "すべてのユーザー",
+    "accessRole": "ロール",
+    "accessAnyRole": "すべてのロール",
+    "accessToUser": "{{name}} に",
+    "accessToRole": "ロール {{name}} に",
+    "accessOwner": "所有者 {{name}}",
+    "accessGrantedBy": "{{name}} によって共有",
+    "accessExpires": "{{date}} に終了",
+    "accessLastUsed": "最終使用日 {{date}}",
+    "accessEmpty": "共有されているアイテムはありません",
+    "sectionAccountSettings": "アカウントとアクセス",
+    "adminHostBypass": "管理者はすべてのユーザーのホストを開くことができます",
+    "adminHostBypassDesc": "オフにすると、管理者は共有されたホストのみを表示し、ユーザーページから他のユーザーのデータを開くことはできません。オンにすると、クールダウン時間が設定されている場合はその時間待機します。",
+    "signupApproval": "新しい SSO アカウントを承認する",
+    "signupApprovalDesc": "SSO または LDAP を介して初めてサインインしたユーザーは、管理者がアカウントを承認するまで待機します。",
+    "updateSettingFailed": "設定を保存できませんでした"
   },
   "newUi": {
     "sidebar": {
@@ -505,7 +600,8 @@
         "domainPlaceholder": "任意",
         "connectToAction": "{{name}} に接続",
         "sshProtocol": "SSH",
-        "noTarget": "このホストタイプに接続できるものがインストールされていません"
+        "noTarget": "このホストタイプに接続できるものがインストールされていません",
+        "loadingTargets": "接続方法を読み込み中..."
       },
       "keybindings": {
         "description": "ターミナルやアプリ内のアクションにキーを割り当てるか、組み込みのショートカットを変更します。",
@@ -559,6 +655,9 @@
         "desktopProfileDescription": "このプロファイルはこのデバイス上に存在し、個別にサインインします。すべてのデバイスで同じホストと設定を使用するには、Termix サーバーにリンクしてください。",
         "sectionInterface": "インターフェース",
         "interfacePresetDesc": "Termix が表示する詳細レベルです。すべての機能は引き続き利用可能です。",
+        "closeToTray": "トレイに最小化して閉じる",
+        "closeToTrayDesc": "ウィンドウを閉じても Termix はトレイで実行され続け、接続は維持されます。オフにすると、ウィンドウを閉じたときにアプリが終了します。",
+        "closeToTraySaveFailed": "設定を保存できませんでした",
         "presetClearOverrides": "すべてリセット",
         "presetOverridesTitle": "カスタマイズ済み",
         "presetRevertArea": "元に戻す",
@@ -691,7 +790,11 @@
         "tryBetaDescription": "「更新」でベータプログラムに参加します。",
         "sendBetaFeedback": "ベータ版のフィードバックを送信",
         "openUpdates": "更新",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "表示名",
+        "emailLabel": "メール",
+        "profileSaved": "保存しました",
+        "profileSaveFailed": "保存できませんでした"
       }
     }
   },
@@ -723,6 +826,10 @@
     "apiKeys": "API キー",
     "data": "データと同期",
     "interface": "インターフェース",
+    "hostList": "ホスト一覧",
+    "credentialList": "認証情報一覧",
+    "openHostList": "ホスト一覧の設定",
+    "openCredentialList": "認証情報一覧の設定",
     "appearance": "外観",
     "keybindings": "キーバインド",
     "adminGeneral": "全般",
@@ -782,6 +889,36 @@
       "hostRows": {
         "label": "ホスト行の選択肢"
       }
+    },
+    "adminAccess": "アクセスレビュー",
+    "yourApps": "あなたのアプリ",
+    "otherApps": "その他のアプリ",
+    "hostForm": {
+      "label": "ホスト追加フォーム",
+      "description": "シンプルはアドレス、ログイン情報、フォルダ、タグのみを表示します。フルはすべてのオプションを表示します。フォーム内でも切り替えることができます。",
+      "simple": "シンプル",
+      "full": "フル"
+    },
+    "interfaceDefaults": {
+      "title": "インターフェースのデフォルト設定",
+      "intro": "ユーザーが最初にサインインした際に表示する内容を選択します。ロックしない限り、ユーザーは各自の表示設定を変更できます。",
+      "setFor": "適用対象",
+      "everyone": "全員",
+      "inherits": "変更するまで「全員」の設定を使用します",
+      "useEveryone": "「全員」の設定を使用",
+      "look": "初期の見た目",
+      "lookHint": "シンプルは最小限の表示、アドバンストはすべてのボタンを表示します。",
+      "simple": "シンプル",
+      "balanced": "バランス",
+      "advanced": "アドバンスト",
+      "lock": "ロック",
+      "lockHint": "このロールを持つユーザーは、自分の見た目やレール上のアプリを変更できません。",
+      "apps": "レール上のアプリ",
+      "appsHint": "残りのアプリは「すべてのアプリ」と検索に残ります。",
+      "appsAdvanced": "アドバンストでは、すべてのアプリがレール上に表示されます。",
+      "saved": "インターフェースのデフォルトが保存されました",
+      "saveFailed": "インターフェースのデフォルトを保存できませんでした",
+      "lockedNote": "管理者があなたの見た目を選択しているため、ここでは変更できません。"
     }
   },
   "hostDefaults": {
@@ -861,12 +998,19 @@
     "pickHint": "接続に関するすべての設定は、見つけやすいようグループ化されてここにあります。",
     "clearChoice": "クリア",
     "proxyPathTarget": "ターゲット",
-    "hostCopyName": "{{name}} (コピー)"
+    "hostCopyName": "{{name}} (コピー)",
+    "moreOptions": "その他のオプション",
+    "moreOptionsHint": "プロキシ、ジャンプホスト、ポートノッキング、キープアライブ、ステータスチェック、および各アプリのオン/オフスイッチ。ほとんどのホストでは必要ありません。",
+    "folderAndTags": "フォルダ、タグ、メモ"
   },
   "permissions": {
     "branding": {
       "title": "ブランディングの変更",
       "description": "すべてのユーザーに表示されるアプリ名、キャッチフレーズ、ロゴを設定します。"
+    },
+    "interfaceDefaults": {
+      "title": "インターフェースのデフォルトを設定",
+      "description": "すべてのユーザーまたは各ロールに対して、初期の見た目とレール上のアプリを選択します。"
     }
   },
   "onboarding": {
@@ -901,6 +1045,8 @@
     "clickAuto": "最初の接続方法",
     "useDefaultNamed": "デフォルト ({{name}})",
     "useDefaultButtons": "デフォルトのボタンを使用",
-    "perHostHint": "1つのホストについて変更するには、そのメニューの「ホスト行のボタン」を使用してください。"
+    "perHostHint": "1つのホストについて変更するには、そのメニューの「ホスト行のボタン」を使用してください。",
+    "moreTools": "その他のツール",
+    "more": "もっと"
   }
 }

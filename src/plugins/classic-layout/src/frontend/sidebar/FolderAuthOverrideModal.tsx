@@ -192,7 +192,7 @@ export function FolderAuthOverrideModal({
               id={`folder-login-${folder}`}
               value={selectedId}
               onChange={(event) => setSelectedId(event.target.value)}
-              className="flex h-9 w-full border border-border bg-background px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring"
+              className="flex h-8 w-full border border-border bg-(--field) px-3 py-1 text-xs outline-none focus:ring-1 focus:ring-ring"
             >
               <option value="">{t("sharing.folderLogin.none")}</option>
               {credentials.map((credential) => (

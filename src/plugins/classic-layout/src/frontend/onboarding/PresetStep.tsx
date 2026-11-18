@@ -1,4 +1,5 @@
 import { Gauge, Sparkles, Wrench } from "lucide-react";
+import { useInterfaceLocked } from "../InterfaceDefaultsSync";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
   PRESETS,
@@ -57,11 +58,14 @@ export function PresetStep() {
   const { t } = useTranslation();
   const ctx = useUiPreferencesContext();
   const selected = ctx?.preferences.preset ?? "balanced";
+  const locked = useInterfaceLocked();
 
   return (
     <div className="flex flex-col gap-3">
       <p className="text-xs text-muted-foreground">
-        {t("onboarding.presetIntro")}
+        {locked
+          ? t("settings.interfaceDefaults.lockedNote")
+          : t("onboarding.presetIntro")}
       </p>
 
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
@@ -73,6 +77,7 @@ export function PresetStep() {
               key={preset}
               type="button"
               aria-pressed={active}
+              disabled={locked}
               onClick={() => {
                 ctx?.setPreset(preset);
                 ctx?.clearAllOverrides();

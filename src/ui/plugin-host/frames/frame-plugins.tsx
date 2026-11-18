@@ -25,7 +25,8 @@ import {
   type WireComponent,
 } from "@/plugin-frame/protocol";
 import { decode } from "@/plugin-frame/wire";
-import { decodeIconValue } from "@/plugin-frame/frame-icons";
+import { decodeHostIconValue } from "./host-icons";
+import { answerAsked, answerDone } from "./answer-pending";
 import { getUserInfo } from "@/main-axios";
 import { loadMyPermissions } from "@/hooks/use-permissions";
 import { createPluginApp, type PluginAppHandle } from "../app";
@@ -36,6 +37,7 @@ import {
   type FrameConnection,
 } from "./frame-connection";
 import { SANDBOX, type FrameFit } from "./PluginFrameView";
+import { FRAME_ALLOW } from "./frame-allow";
 import { FramedView, SlotFramedView } from "./framed-view";
 import { clearFrameValues, setFrameValue, useFrameValue } from "./frame-values";
 import { toPluginHostRecord } from "../bridge";
@@ -48,6 +50,7 @@ import {
   trimAnswers,
   writeCachedPlugin,
 } from "./registration-cache";
+import { trackColdBoot } from "./cold-boot";
 
 import { extensionFit } from "./slot-fit";
 import { hasUserActivation } from "./user-activation";
@@ -91,9 +94,18 @@ function rowTableValue(pluginId: string, key: string, useNeed: UseNeed) {
 
 const START_TIMEOUT_MS = 20_000;
 const MEMO_LIMIT = 500;
-/** A background frame with no live value stops after this long unused. */
-export const FRAME_IDLE_MS = 3 * 60_000;
-const IDLE_CHECK_MS = 30_000;
+/** How long a failed answer counts as the fallback before it is asked again. */
+const ANSWER_RETRY_MS = 5_000;
+/**
+ * A background frame with no live work, nothing on screen needing it and no
+ * calls of its own stops after this long unused. Its answers stay cached.
+ */
+export const FRAME_IDLE_MS = 15_000;
+const IDLE_CHECK_MS = 5_000;
+/** A frame that called the shell this recently is still working. */
+export const FRAME_BUSY_MS = 3_000;
+/** Idle background frames kept at once; the least recently used stop first. */
+export const MAX_IDLE_FRAMES = 4;
 /** Registrations a fresh frame did not report again by then are dropped. */
 const STALE_GRACE_MS = 1_500;
 /**
@@ -105,6 +117,11 @@ export const REFRESH_LIMIT = 20;
 export interface FramedPlugin {
   handle: PluginAppHandle;
   dispose: () => void;
+  /**
+   * Settles once a frame started at boot reported. The app does not wait
+   * for it; a rejection means the plugin could not start.
+   */
+  ready: Promise<void>;
 }
 
 type AsyncFn = (...args: unknown[]) => Promise<unknown>;
@@ -161,11 +178,52 @@ const ASKING_KINDS = new Set([
 ]);
 export const OVERLAY_ASK_MS = 10_000;
 
+/**
+ * Host fields that change all the time and would make every answer new, which
+ * boots every plugin's frame again. Answers are not redone when these change.
+ */
+const LIVE_HOST_FIELDS = new Set([
+  "cpu",
+  "ram",
+  "lastAccess",
+  "status",
+  "online",
+  "childHosts",
+  "sortOrder",
+]);
+
+/**
+ * An answer key with each host cut down to its id, so a host whose fields
+ * changed finds its last answer. Null when the key holds no host.
+ */
+function hostSlot(key: string): string | null {
+  try {
+    const args = JSON.parse(key) as unknown;
+    if (!Array.isArray(args)) return null;
+    let found = false;
+    const slot = args.map((arg) => {
+      if (arg && typeof arg === "object" && "id" in arg && "ip" in arg) {
+        found = true;
+        return { host: String((arg as { id: unknown }).id) };
+      }
+      return arg;
+    });
+    return found ? JSON.stringify(slot) : null;
+  } catch {
+    return null;
+  }
+}
+
 function stableKey(args: unknown[]): string {
   try {
-    return JSON.stringify(args, (_key, value) =>
-      typeof value === "function" ? undefined : value,
-    );
+    return JSON.stringify(args, function (this: unknown, key, value) {
+      if (typeof value === "function") return undefined;
+      const holder = this as Record<string, unknown>;
+      if (LIVE_HOST_FIELDS.has(key) && "id" in holder && "ip" in holder) {
+        return undefined;
+      }
+      return value;
+    });
   } catch {
     return String(Math.random());
   }
@@ -275,6 +333,7 @@ function framed(
                 pluginId={pluginId}
                 frameKey={key}
                 how={fit}
+                transparent={variant === "panel"}
                 adapt={adapt}
                 props={props}
               />
@@ -369,6 +428,95 @@ function manifestFor(summary: PluginSummary): PluginManifest {
   };
 }
 
+/** Background frames that may boot at once; the rest wait their turn. */
+export const MAX_STARTING_FRAMES = 3;
+/** A frame booted only to learn what its plugin registers stops this soon. */
+export const COLD_LINGER_MS = 1_000;
+/** Longest a cold frame keeps its slot while it still answers calls. */
+const COLD_ANSWER_MS = 5_000;
+
+interface SlotTicket {
+  urgent: boolean;
+  go: () => void;
+}
+
+let startingFrames = 0;
+const slotQueue: SlotTicket[] = [];
+
+interface RunningFrame {
+  lastUse: () => number;
+  /** Up, with nothing that needs it running. */
+  idle: () => boolean;
+  stop: () => void;
+}
+const runningFrames = new Map<string, RunningFrame>();
+
+/** Stops the least recently used idle frames past MAX_IDLE_FRAMES. */
+function trimIdleFrames(): void {
+  const idle = [...runningFrames.values()]
+    .filter((entry) => entry.idle())
+    .sort((a, b) => a.lastUse() - b.lastUse());
+  for (const entry of idle.slice(
+    0,
+    Math.max(0, idle.length - MAX_IDLE_FRAMES),
+  )) {
+    entry.stop();
+  }
+}
+
+function nextSlot(): void {
+  for (;;) {
+    // Frames something on screen needs get a lane of their own on top.
+    const index = slotQueue.findIndex((ticket) => ticket.urgent);
+    const urgent = index >= 0;
+    const limit = urgent ? MAX_STARTING_FRAMES * 2 : MAX_STARTING_FRAMES;
+    if (slotQueue.length === 0 || startingFrames >= limit) return;
+    const [ticket] = slotQueue.splice(urgent ? index : 0, 1);
+    startingFrames++;
+    ticket.go();
+  }
+}
+
+/**
+ * Waits for a boot slot. Frames something on screen needs go before frames
+ * that only report registrations. Call the result once the frame is up.
+ */
+function takeFrameSlot(ticket: Omit<SlotTicket, "go">): {
+  ready: Promise<() => void>;
+  promote: () => void;
+} {
+  let entry: SlotTicket | null = null;
+  const ready = new Promise<() => void>((resolve) => {
+    entry = {
+      ...ticket,
+      go: () => {
+        let released = false;
+        resolve(() => {
+          if (released) return;
+          released = true;
+          startingFrames--;
+          nextSlot();
+        });
+      },
+    };
+    slotQueue.push(entry);
+    nextSlot();
+  });
+  return {
+    ready,
+    promote: () => {
+      if (entry) entry.urgent = true;
+    },
+  };
+}
+
+/** Test seam. */
+export function resetFrameSlots(): void {
+  startingFrames = 0;
+  slotQueue.length = 0;
+  runningFrames.clear();
+}
+
 /**
  * Starts a framed plugin. Resolves once its registrations are in place:
  * from the cache right away, else once the background frame finished
@@ -402,6 +550,8 @@ export async function startFramedPlugin(
   /** When the user last asked this plugin for something. */
   let askedAt = 0;
   let lastUse = Date.now();
+  /** When the frame last called the shell (an API call, a toast, ...). */
+  let lastFrameCall = 0;
   let idleTimer: ReturnType<typeof setInterval> | null = null;
   const answers: Record<string, unknown> = {};
   const values: Record<string, unknown> = {};
@@ -430,6 +580,19 @@ export async function startFramedPlugin(
     plainTab(args[0]),
     plainHost(args[1]),
   ];
+  // Every tab has a new id, so answers are kept per tab type and host.
+  const tabKey = (args: unknown[]) => {
+    const tab = args[0] as Record<string, unknown> | null | undefined;
+    return [
+      tab && typeof tab === "object"
+        ? {
+            type: tab.type,
+            embedded: String(tab.id ?? "").startsWith("embed-"),
+          }
+        : tab,
+      ...args.slice(1),
+    ];
+  };
   const hostFirst = (args: unknown[]) => [plainHost(args[0]), ...args.slice(1)];
   // A slot owner's context may carry a host with every plugin's settings.
   const scopedContext = (context: unknown) => {
@@ -464,6 +627,13 @@ export async function startFramedPlugin(
   };
 
   const isLive = () => live.length > 0;
+  const isIdle = () =>
+    !!frame?.ready &&
+    !isLive() &&
+    needs === 0 &&
+    pending === 0 &&
+    !overlay &&
+    Date.now() - lastFrameCall >= FRAME_BUSY_MS;
 
   const teardown = (current: LiveFrame) => {
     current.connection?.close();
@@ -471,8 +641,12 @@ export async function startFramedPlugin(
   };
 
   const stopFrame = () => {
+    releaseHeld();
     const current = frame;
     if (!current) return;
+    if (runningFrames.get(pluginId)?.stop === stopIdle) {
+      runningFrames.delete(pluginId);
+    }
     frame = null;
     overlay = false;
     teardown(current);
@@ -480,23 +654,75 @@ export async function startFramedPlugin(
     idleTimer = null;
   };
 
-  const checkIdle = () => {
-    if (!frame?.ready || isLive() || !userKey) return;
-    if (needs > 0 || pending > 0 || overlay) return;
-    if (Date.now() - lastUse < FRAME_IDLE_MS) return;
+  /** Stops the frame with its answers saved, so the next ask is instant. */
+  const stopIdle = () => {
+    if (!isIdle()) return;
+    if (import.meta.env.DEV) console.debug(`[frame] stop ${pluginId}: idle`);
+    writeNow();
     stopFrame();
   };
 
+  const checkIdle = () => {
+    if (!userKey || !isIdle()) return;
+    if (Date.now() - lastUse < FRAME_IDLE_MS) return;
+    stopIdle();
+  };
+
+  let promoteSlot: (() => void) | null = null;
+  /** Ends a boot still under way, which frees its slot. */
+  let abortBoot: ((error?: Error) => void) | null = null;
+
+  /** A cold boot's slot, kept until it stops so few cold frames live at once. */
+  let heldSlot: (() => void) | null = null;
+  const releaseHeld = () => {
+    const release = heldSlot;
+    heldSlot = null;
+    release?.();
+  };
+
   /** Starts the background frame if it is not running. */
-  const ensureFrame = (): Promise<void> => {
+  const ensureFrame = (
+    reason: string,
+    urgent = true,
+    hold = false,
+  ): Promise<void> => {
     if (disposed) return Promise.reject(new Error("Plugin stopped"));
     if (frame?.ready) return Promise.resolve();
-    if (starting) return starting;
-    starting = new Promise<void>((resolve, reject) => {
+    if (starting) {
+      if (urgent) promoteSlot?.();
+      return starting;
+    }
+    if (import.meta.env.DEV)
+      console.debug(`[frame] boot ${pluginId}: ${reason}`);
+    const slot = takeFrameSlot({ urgent });
+    promoteSlot = slot.promote;
+    starting = slot.ready.then((release) => {
+      promoteSlot = null;
+      if (disposed) {
+        release();
+        starting = null;
+        throw new Error("Plugin stopped");
+      }
+      return bootFrame().then(
+        () => {
+          if (hold) heldSlot = release;
+          else release();
+        },
+        (error: unknown) => {
+          release();
+          throw error;
+        },
+      );
+    });
+    return starting;
+  };
+
+  const bootFrame = (): Promise<void> =>
+    new Promise<void>((resolve, reject) => {
       const iframe = document.createElement("iframe");
       iframe.setAttribute("sandbox", SANDBOX);
       iframe.setAttribute("referrerpolicy", "no-referrer");
-      iframe.setAttribute("allow", "clipboard-write");
+      if (FRAME_ALLOW) iframe.setAttribute("allow", FRAME_ALLOW);
       iframe.setAttribute("title", pluginId);
       iframe.setAttribute("aria-hidden", "true");
       iframe.dataset.pluginFrame = pluginId;
@@ -512,6 +738,7 @@ export async function startFramedPlugin(
       const finish = (error?: Error) => {
         if (settled) return;
         settled = true;
+        abortBoot = null;
         clearTimeout(timer);
         starting = null;
         if (error) {
@@ -524,6 +751,12 @@ export async function startFramedPlugin(
         lastUse = Date.now();
         resolve();
         if (!idleTimer) idleTimer = setInterval(checkIdle, IDLE_CHECK_MS);
+        runningFrames.set(pluginId, {
+          lastUse: () => lastUse,
+          idle: () => !!userKey && isIdle(),
+          stop: stopIdle,
+        });
+        trimIdleFrames();
         // Cached registrations the new frame no longer makes go away.
         setTimeout(() => {
           if (frame !== current || disposed) return;
@@ -533,6 +766,7 @@ export async function startFramedPlugin(
           persist();
         }, STALE_GRACE_MS);
       };
+      abortBoot = finish;
       current.connection = connectFrame(
         iframe,
         pluginId,
@@ -541,6 +775,9 @@ export async function startFramedPlugin(
         {
           onReady: () => finish(),
           onFailed: (message) => finish(new Error(message)),
+          onCall: () => {
+            lastFrameCall = Date.now();
+          },
           onRaw: (name, data) => {
             if (name !== "register") return false;
             register(data, current);
@@ -588,7 +825,6 @@ export async function startFramedPlugin(
               const next = Array.isArray(reasons)
                 ? reasons.filter((r): r is string => typeof r === "string")
                 : [];
-              if (hasOverlayPart()) next.push("overlay");
               live = [...new Set(next)].sort();
               persist();
             }
@@ -611,14 +847,12 @@ export async function startFramedPlugin(
       });
       container().appendChild(iframe);
     });
-    return starting;
-  };
 
   /** Something needs the frame's live values while it is mounted. */
   const acquire = (): (() => void) => {
     needs++;
     lastUse = Date.now();
-    void ensureFrame().catch(() => {});
+    void ensureFrame("a mounted part needs its values").catch(() => {});
     let released = false;
     return () => {
       if (released) return;
@@ -629,6 +863,10 @@ export async function startFramedPlugin(
   };
   const useNeed: UseNeed = () => {
     useEffect(() => acquire(), []);
+  };
+  /** Holds the frame only while the value is not known yet. */
+  const useNeedUntil = (known: boolean) => {
+    useEffect(() => (known ? undefined : acquire()), [known]);
   };
 
   /** Calls a function the frame registered, starting the frame first. */
@@ -644,7 +882,7 @@ export async function startFramedPlugin(
       askedAt = Date.now();
     }
     try {
-      await ensureFrame();
+      await ensureFrame(`call ${kind ?? rid} ${path}`);
       const current = frame;
       const ref = current?.raw.has(rid)
         ? atPath(current.raw.get(rid), JSON.parse(path) as string[])
@@ -665,7 +903,7 @@ export async function startFramedPlugin(
         (ref) =>
         (...args: unknown[]) =>
           callFn(rid, ref.$fn, args),
-      icon: (ref) => decodeIconValue(ref),
+      icon: (ref) => decodeHostIconValue(ref),
       component: (ref: WireComponent) => ref,
     }) as Record<string, unknown>;
 
@@ -675,43 +913,85 @@ export async function startFramedPlugin(
     fn: unknown,
     fallback: unknown,
     mapArgs: (args: unknown[]) => unknown[] = (args) => args,
+    keyOf: (args: unknown[]) => unknown[] = (args) => args,
   ): ((...args: unknown[]) => unknown) | undefined => {
     if (typeof fn !== "function") return undefined;
     const existing = record.memos.get(field);
     if (existing) return existing;
     const cache = new Map<string, unknown>();
     const inflight = new Set<string>();
+    /** Keys whose answer failed, and when, so they are asked again. */
+    const failedAt = new Map<string, number>();
     // Answers taken from the stored cache, not asked of a live frame yet.
     const stale = new Set<string>();
+    // The last answer per host, shown while a changed host is asked again.
+    const prefix = `${record.rid}\u0000${field}\u0000`;
+    const lastForHost = new Map<string, unknown>();
+    for (const [stored, value] of Object.entries(answers)) {
+      if (!stored.startsWith(prefix)) continue;
+      const slot = hostSlot(stored.slice(prefix.length));
+      if (slot !== null) lastForHost.set(slot, value);
+    }
     const ask = (key: string, args: unknown[], stored: string) => {
       if (inflight.has(key)) return;
       inflight.add(key);
+      answerAsked();
       (fn as AsyncFn)(...args)
         .then(
           (value) => {
             cache.set(key, value);
+            failedAt.delete(key);
+            const slot = hostSlot(key);
+            if (slot !== null) lastForHost.set(slot, value);
             if (isPlainValue(value)) answers[stored] = value;
             else delete answers[stored];
             persist();
           },
           () => {
-            if (!cache.has(key)) cache.set(key, fallback);
+            // A frame that stopped or timed out mid answer is asked again
+            // later, not taken as a no for good.
+            if (!cache.has(key)) {
+              cache.set(key, fallback);
+              failedAt.set(key, Date.now());
+              // Redraw once the wait is over, so the next read asks again.
+              setTimeout(() => scheduleRefresh(record), ANSWER_RETRY_MS + 100);
+            }
           },
         )
         .finally(() => {
           inflight.delete(key);
+          answerDone();
           while (cache.size > MEMO_LIMIT) {
             cache.delete(cache.keys().next().value as string);
           }
           scheduleRefresh(record);
         });
     };
-    const sync = (...raw: unknown[]) => {
+    // A host row asks every plugin's `when` on each render, so the key is
+    // worked out once per host object instead of every time.
+    const keys = new WeakMap<object, { key: string; args: unknown[] }>();
+    const keyFor = (raw: unknown[]) => {
+      const one =
+        raw.length === 1 && raw[0] !== null && typeof raw[0] === "object"
+          ? (raw[0] as object)
+          : null;
+      const hit = one ? keys.get(one) : undefined;
+      if (hit) return hit;
       const args = mapArgs(raw);
-      const key = stableKey(args);
+      const made = { key: stableKey(keyOf(args)), args };
+      if (one) keys.set(one, made);
+      return made;
+    };
+    const sync = (...raw: unknown[]) => {
+      const { key, args } = keyFor(raw);
       const stored = `${record.rid}\u0000${field}\u0000${key}`;
       if (stale.has(key) && frame?.ready) {
         stale.delete(key);
+        ask(key, args, stored);
+      }
+      const failed = failedAt.get(key);
+      if (failed !== undefined && Date.now() - failed > ANSWER_RETRY_MS) {
+        failedAt.delete(key);
         ask(key, args, stored);
       }
       if (cache.has(key)) return cache.get(key);
@@ -722,7 +1002,10 @@ export async function startFramedPlugin(
         return answers[stored];
       }
       ask(key, args, stored);
-      return fallback;
+      const slot = hostSlot(key);
+      return slot !== null && lastForHost.has(slot)
+        ? lastForHost.get(slot)
+        : fallback;
     };
     record.memos.set(field, sync);
     return sync;
@@ -764,7 +1047,8 @@ export async function startFramedPlugin(
       field: string,
       fallback: unknown,
       mapArgs?: (args: unknown[]) => unknown[],
-    ) => memo(record, field, data[field], fallback, mapArgs);
+      keyOf?: (args: unknown[]) => unknown[],
+    ) => memo(record, field, data[field], fallback, mapArgs, keyOf);
     switch (record.kind) {
       case "railItem":
         return app.registerRailItem({
@@ -786,7 +1070,7 @@ export async function startFramedPlugin(
       case "panel":
         return app.registerPanel(
           data.id,
-          fit(data.component, "fill", plainProps),
+          fit(data.component, "fill", plainProps, "panel"),
           { keepMounted: data.keepMounted },
         );
       case "tab":
@@ -808,14 +1092,17 @@ export async function startFramedPlugin(
           {
             ...data,
             component: undefined,
-            when: m("when", false, tabAndHost),
+            when: m("when", false, tabAndHost, tabKey),
             useDefaults: data.defaultsKey
               ? () => {
-                  useNeed();
-                  return (
-                    (useFrameValue(pluginId, String(data.defaultsKey)) as
-                      Record<string, unknown> | undefined) ?? {}
-                  );
+                  const value = useFrameValue(
+                    pluginId,
+                    String(data.defaultsKey),
+                  ) as Record<string, unknown> | undefined;
+                  // Defaults change only with settings, which start the
+                  // frame anyway, so a known value needs no frame.
+                  useNeedUntil(value !== undefined);
+                  return value ?? {};
                 }
               : undefined,
           },
@@ -828,7 +1115,9 @@ export async function startFramedPlugin(
       case "hostEditorSection":
         return app.registerHostEditorSection({
           ...data,
-          visible: m("visible", true),
+          // Hidden until the frame answers, so a section for a protocol that
+          // is off never flashes in.
+          visible: m("visible", false),
           component: fit(
             data.component,
             "content",
@@ -978,13 +1267,6 @@ export async function startFramedPlugin(
     }
   };
 
-  const hasOverlayPart = () =>
-    [...registrations.values()].some(
-      (record) =>
-        record.kind === "slotContribution" &&
-        record.data.slotId === "shell.overlay",
-    );
-
   /** A registration from the live frame (source) or from the cache. */
   const register = (payload: unknown, source: LiveFrame | null) => {
     const entry = payload as {
@@ -1049,7 +1331,7 @@ export async function startFramedPlugin(
     const detail = (event as CustomEvent).detail as { pluginId?: string };
     if (detail?.pluginId !== pluginId || frame || disposed) return;
     lastUse = Date.now();
-    void ensureFrame().catch(() => {});
+    void ensureFrame("settings changed").catch(() => {});
   };
 
   const dispose = () => {
@@ -1058,6 +1340,7 @@ export async function startFramedPlugin(
     if (persistTimer) clearTimeout(persistTimer);
     window.removeEventListener("termix:plugin-settings-changed", onSettings);
     setFrameDemand(pluginId, null);
+    abortBoot?.(new Error("Plugin stopped"));
     stopFrame();
     for (const record of registrations.values()) {
       if (record.refreshTimer) clearTimeout(record.refreshTimer);
@@ -1075,7 +1358,8 @@ export async function startFramedPlugin(
   window.addEventListener("termix:plugin-settings-changed", onSettings);
   setFrameDemand(pluginId, acquire);
 
-  if (cached && cached.live.length === 0) {
+  // What it registered last time shows at once, frame or not.
+  if (cached) {
     Object.assign(answers, cached.answers);
     Object.assign(values, cached.values);
     for (const [key, value] of Object.entries(values)) {
@@ -1084,14 +1368,43 @@ export async function startFramedPlugin(
     for (const entry of cached.registrations) {
       register({ rid: entry.rid, kind: entry.kind, data: entry.raw }, null);
     }
-    return { handle, dispose };
+    if (cached.live.length === 0) {
+      return { handle, dispose, ready: Promise.resolve() };
+    }
   }
 
-  try {
-    await ensureFrame();
-  } catch (error) {
-    dispose();
-    throw error;
-  }
-  return { handle, dispose };
+  // Never cached (cold) or keeps working on its own (live): the frame boots
+  // in the background and its parts appear as it reports them.
+  const cold = !cached;
+  const bootedAt = Date.now();
+  // Booted only to learn the registrations: stop once they are stored and
+  // the calls asked meanwhile are answered, unless something needs it.
+  const settleCold = () => {
+    if (disposed || !frame?.ready) return releaseHeld();
+    if (isLive() || overlay || needs > 0) return releaseHeld();
+    if (pending > 0 && Date.now() - bootedAt < COLD_ANSWER_MS) {
+      setTimeout(settleCold, 250);
+      return;
+    }
+    if (pending > 0) return releaseHeld();
+    // Still finishing work it started in activate (polling, saving, ...).
+    if (Date.now() - lastFrameCall < FRAME_BUSY_MS) {
+      releaseHeld();
+      return;
+    }
+    writeNow();
+    stopFrame();
+  };
+  const ready = ensureFrame(cold ? "cold" : "live", !cold, cold).then(
+    () => {
+      if (cold) setTimeout(settleCold, COLD_LINGER_MS);
+    },
+    (error: unknown) => {
+      dispose();
+      throw error;
+    },
+  );
+  ready.catch(() => {});
+  if (cold) trackColdBoot(ready);
+  return { handle, dispose, ready };
 }

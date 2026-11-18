@@ -6,7 +6,8 @@ export type ProviderId =
   | "namecheap"
   | "godaddy"
   | "porkbun"
-  | "gandi";
+  | "gandi"
+  | "spaceship";
 
 export const RECORD_TYPES = [
   "A",

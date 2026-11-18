@@ -400,7 +400,7 @@ export function CredentialShareModal({
               onChange={(e) =>
                 setPermissionLevel(e.target.value as CredentialPermissionLevel)
               }
-              className="h-8 w-full px-2.5 text-xs border border-border bg-background hover:bg-muted/40 transition-colors"
+              className="h-8 w-full px-2.5 text-xs border border-border bg-(--field) hover:bg-muted/40 transition-colors"
             >
               {PERMISSION_LEVELS.map((level) => (
                 <option key={level} value={level}>

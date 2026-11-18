@@ -16,7 +16,6 @@ import {
   Workflow,
 } from "lucide-react";
 import {
-  AddButton,
   Button,
   EmptyState,
   Facts,
@@ -26,14 +25,13 @@ import {
   ListRow,
   ListRowAction,
   PanelList,
-  PanelSearch,
   TabStrip,
   type ListRowTone,
   getBasePath,
   useConfirm,
   LoadingState,
-  TOOLBAR_FIT,
 } from "@termix-ssh/plugin-sdk/ui";
+import { Toolbar } from "./panel-toolbar";
 import {
   useAutomationsApi,
   type AutomationRow,
@@ -392,21 +390,13 @@ export function AutomationsPanel({ active = true }: { active?: boolean }) {
 
       {tab === "automations" && (
         <>
-          <div
-            className={`flex shrink-0 flex-col gap-2 border-b border-border px-3 py-2 ${TOOLBAR_FIT}`}
-          >
-            <PanelSearch
-              value={query}
-              onChange={setQuery}
-              placeholder={t(`${base}.search`)}
-              fill
-            />
-            <AddButton
-              label={t(`${base}.createAutomation`)}
-              onClick={openCreate}
-              className="w-full"
-            />
-          </div>
+          <Toolbar
+            search={query}
+            onSearchChange={setQuery}
+            searchPlaceholder={t(`${base}.search`)}
+            onAdd={openCreate}
+            addLabel={t(`${base}.createAutomation`)}
+          />
           <PanelList
             empty={
               loading && automations.length === 0 ? (

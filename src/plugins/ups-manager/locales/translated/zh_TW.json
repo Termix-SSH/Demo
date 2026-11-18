@@ -8,7 +8,10 @@
     "viewHistory": "歷史記錄",
     "viewEvents": "事件",
     "viewCommands": "指令",
-    "viewSources": "裝置"
+    "viewSources": "裝置",
+    "refresh": "即時更新",
+    "refreshSeconds": "{{seconds}} 秒",
+    "refreshHint": "僅在「總覽」可見時更新。UPS 的更新速度可能較慢。背景輪詢與儲存的樣本仍維持 30 秒。"
   },
   "common": {
     "loading": "載入中...",
@@ -47,6 +50,8 @@
     "charge": "電池電量",
     "runtime": "剩餘運行時間",
     "load": "負載",
+    "estimatedLoad": "UPS 預估負載",
+    "estimatedLoadHint": "輸出瓦數 / {{watts}} W 額定。{{method}}。感測器準確性未經驗證；非 CPU 使用率或交流牆面耗電量。",
     "nominal": "額定 {{watts}} W",
     "input": "輸入電壓",
     "output": "輸出電壓",
@@ -59,6 +64,60 @@
     "readAt": "上次讀取",
     "ago": "{{time}} 前"
   },
+  "electrical": {
+    "inputDc": "輸入為直流電",
+    "outputDc": "輸出為直流電",
+    "dcHint": "在根據電壓與電流計算瓦數前，請確認電氣領域。此操作不會變更任何 UPS 設定。感測器準確性需獨立檢查。",
+    "inputCurrent": "輸入電流",
+    "outputCurrent": "輸出電流",
+    "batteryCurrent": "電池電流",
+    "inputPower": "輸入功率",
+    "outputPower": "輸出功率",
+    "reported": "報告的實際功率",
+    "calculated": "計算的直流功率 - 感測器準確度未經驗證",
+    "batteryType": "電池化學成分",
+    "chargeLow": "低電量閾值",
+    "chargeWarning": "充電警告閾值",
+    "manufactured": "電池製造日期",
+    "driver": "驅動程式",
+    "driverVersion": "驅動程式版本",
+    "subdriver": "HID 子驅動程式",
+    "driverState": "驅動程式狀態",
+    "usb": "USB 供應商 / 產品",
+    "raw": "進階 NUT 變數",
+    "search": "篩選變數名稱或值",
+    "noVariables": "沒有相符的變數。",
+    "dcDisclaimer": "計算出的 DC 輸出功率是用來預估 UPS 負載，而非 AC 牆壁插座耗電量。這不一定代表單一主機的耗電量。在依賴功率或能源預估之前，請先驗證電流讀數。"
+  },
+  "energy": {
+    "period": "觀測到的輸出能源（選定期間）",
+    "lifetime": "觀測到的輸出能源（目前週期）",
+    "estimated": "根據排程取樣估算；非硬體計量器",
+    "coverage": "測量覆蓋率",
+    "covered": "累計時間",
+    "incomplete": "資料不完整；遺漏時間不予估算",
+    "complete": "完整的測量覆蓋率",
+    "average": "平均輸出功率（累計時間）",
+    "peak": "取樣輸出峰值",
+    "sampledRange": "取樣功率範圍",
+    "scope": "UPS 輸出，非交流牆插用電。期間總計涵蓋所列的追蹤時間點；請勿將不同時間點視為同一個實體計量器。",
+    "resolution": "圖表區段標準間隔：{{seconds}} 秒；間隔保持獨立。懸停於數據點可查看絕對時間與時區。",
+    "empty": "能源追蹤需要兩筆有效的排程電力讀數。未知的瓦特數將顯示為不可用，而非零。",
+    "error": "無法讀取能源歷史記錄。",
+    "bucket": "每段區間的觀測輸出能源",
+    "samples": "可取得的樣本與累計觀測能源",
+    "tableHelp": "僅加總觀測到的能源。遺漏的區間不會補填。累計值涵蓋所列的時段。",
+    "time": "區間開始時間（當地時區）",
+    "cumulative": "選定期間內的累計瓦時（Wh）",
+    "cumulativeChart": "累計觀測輸出能源（選定期間）",
+    "epochTotal": "此時段的觀測能源",
+    "unavailable": "輸出功率不可用",
+    "epochs": "獨立的追蹤週期",
+    "started": "追蹤已啟動",
+    "method": "功率測量方法",
+    "chartHelp": "數據與時間成正比。遺漏的區間與追蹤週期的變更不會連線。採樣峰值並非硬體峰值測量。圖表後附有可存取的数据表格。",
+    "correlationBlocked": "CPU/記憶體相關性不可用：Host Metrics 需要具備測量時間戳記的公開且已授權的快照服務。未啟用任何額外的主機資料收集。"
+  },
   "history": {
     "error": "無法載入歷史記錄。",
     "24h": "24 小時",
@@ -66,7 +125,7 @@
     "30d": "30 天",
     "empty": "讀數尚不足。Termix 每 30 秒讀取一次 UPS。",
     "charge": "電池電量",
-    "load": "負載",
+    "load": "負載（僅限裝置回報）",
     "runtime": "剩餘運行時間",
     "voltage": "電壓"
   },
@@ -113,7 +172,7 @@
     "unreachable": "無法連線",
     "saved": "已儲存。",
     "deleteTitle": "移除 {{name}}？",
-    "deleteText": "其歷史記錄與事件也會一併刪除。"
+    "deleteText": "其歷史記錄、能源總計、追蹤週期與事件也會一併刪除。"
   },
   "editor": {
     "addTitle": "新增 UPS",
@@ -172,6 +231,8 @@
     "testFailed": "無法讀取 UPS。"
   },
   "card": {
+    "estimatedLoad": "{{value}}% 預估 UPS 負載",
+    "dc": "計算得出的直流電，未經驗證",
     "title": "UPS",
     "empty": "尚未設定 UPS。請為主機啟用 UPS 管理員並新增裝置。",
     "runtime": "剩餘 {{time}}",

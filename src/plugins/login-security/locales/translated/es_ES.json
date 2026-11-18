@@ -46,6 +46,10 @@
       "connectFactorMinutes": {
         "label": "Minutos antes de volver a solicitarlo",
         "description": "Tras introducirlo, el usuario puede conectarse a cualquier host durante este tiempo. Cerrar sesión lo finaliza antes."
+      },
+      "newDeviceNotice": {
+        "label": "Avisar al iniciar sesión desde un nuevo dispositivo",
+        "description": "Envía una notificación a los usuarios cuando alguien inicie sesión en su cuenta desde un dispositivo que no se ha utilizado antes. Cada usuario puede desactivar esta opción por sí mismo."
       }
     },
     "host": {
@@ -53,11 +57,18 @@
         "label": "Solicitar un segundo factor antes de conectar",
         "description": "Se aplica cuando la Seguridad de inicio de sesión está configurada para solicitarlo en hosts marcados."
       }
+    },
+    "user": {
+      "newDeviceNotice": {
+        "label": "Avisarme al iniciar sesión desde un nuevo dispositivo",
+        "description": "Recibe una notificación cuando alguien inicie sesión en tu cuenta desde un dispositivo que no se ha utilizado antes."
+      }
     }
   },
   "verify": {
     "title": "Verificar segundo factor",
     "intro": "Introduce tu segundo factor para conectarte a este host.",
+    "start": "Verificar",
     "done": "Verificado",
     "retry": "Vuelve al host y conéctate de nuevo.",
     "failed": "Eso no ha funcionado. Inténtalo de nuevo.",
@@ -74,5 +85,68 @@
     "body": "Tu administrador requiere un segundo factor para iniciar sesión. Configura uno a continuación para seguir usando Termix.",
     "none": "¿No hay nada que configurar aquí? Pide a tu administrador que instale un complemento de segundo factor.",
     "signOut": "Cerrar sesión"
+  },
+  "never": "nunca",
+  "sessions": {
+    "title": "Sesiones y claves",
+    "tab": "Sesiones",
+    "current": "Esta sesión",
+    "meta": "{{type}} | última actividad {{lastActive}} | inicio de sesión {{created}}",
+    "none": "No hay sesiones",
+    "end": "Cerrar sesión",
+    "ended": "Sesión cerrada",
+    "endOthers": "Cerrar sesión en otras sesiones",
+    "endOthersConfirm": "¿Cerrar sesión en tus {{count}} otras sesiones?",
+    "endedOthers": "Tus otras sesiones han cerrado sesión",
+    "everyone": "Cerrar sesión de todos",
+    "everyoneConfirm": "¿Cerrar sesión de todos los usuarios en este servidor?",
+    "everyoneDescription": "Todos, excepto tú, tendrán que iniciar sesión de nuevo. Las aplicaciones de escritorio vinculadas a este servidor tendrán que volver a vincularse.",
+    "everyoneKeysConfirm": "¿Revocar también todas las claves API en este servidor?",
+    "everyoneKeys": "Revocar claves también",
+    "everyoneKeysNo": "Conservar claves",
+    "everyoneDone": "Todos los usuarios han cerrado sesión",
+    "failed": "Eso no ha funcionado. Inténtalo de nuevo.",
+    "loadFailed": "No se han podido cargar tus sesiones y claves."
+  },
+  "keys": {
+    "tab": "Claves API",
+    "none": "No tienes claves API",
+    "full": "acceso total",
+    "noExpiry": "nunca",
+    "meta": "{{prefix}} | última vez usada {{lastUsed}} | caduca {{expires}}",
+    "revoke": "Revocar",
+    "revoked": "Clave revocada",
+    "revokeAll": "Revocar todas las claves",
+    "revokeAllConfirm": "¿Revocar tus {{count}} claves API? Los scripts que las usen dejarán de funcionar.",
+    "revokedAll": "Tus claves API han sido revocadas"
+  },
+  "waits": {
+    "title": "Espera de administrador",
+    "intro": "Con dos o más administradores, la creación de un nuevo administrador, la desactivación del inicio de sesión con contraseña, la desactivación de un complemento de inicio de sesión o la activación de un complemento con acceso peligroso esperará este tiempo. Los demás administradores recibirán una alerta y podrán cancelarlo. Desactivar esta función o acortar el tiempo también requiere espera.",
+    "adminOnly": "Solo los administradores pueden ver esto.",
+    "loadFailed": "No se ha podido cargar la espera de administrador.",
+    "active": "Activado, los cambios esperan {{minutes}} minutos",
+    "onOneAdmin": "Activado, pero este servidor tiene un solo administrador, por lo que no hay espera",
+    "off": "Desactivado",
+    "forced": "Establecido en el servidor con {{name}}.",
+    "minutes": "Minutos",
+    "turnOn": "Activar",
+    "change": "Guardar",
+    "turnOff": "Desactivar",
+    "saved": "Guardado",
+    "savedHeld": "Guardado. Espera a los demás administradores primero.",
+    "failed": "Eso no ha funcionado. Inténtalo de nuevo.",
+    "none": "No hay cambios administrativos pendientes aún",
+    "meta": "Solicitado por {{who}} | se aplica {{runsAt}}",
+    "cancel": "Cancelar",
+    "cancelConfirm": "¿Cancelar este cambio?",
+    "cancelled": "Cancelado",
+    "status": {
+      "pending": "Pendiente",
+      "applying": "Aplicando",
+      "applied": "Aplicado",
+      "cancelled": "Cancelado",
+      "failed": "Error"
+    }
   }
 }

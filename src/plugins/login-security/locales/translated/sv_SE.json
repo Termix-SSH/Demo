@@ -46,6 +46,10 @@
       "connectFactorMinutes": {
         "label": "Minuter innan fråga igen",
         "description": "Efter att ha angivit den kan en person ansluta till vilken värd som helst under denna tid. Utloggning avslutar det tidigare."
+      },
+      "newDeviceNotice": {
+        "label": "Varna vid ny enhet",
+        "description": "Skicka en varning till användare när någon loggar in på deras konto från en enhet som inte har setts tidigare. Varje användare kan stänga av detta för sig själv."
       }
     },
     "host": {
@@ -53,11 +57,18 @@
         "label": "Be om en andra faktor innan anslutning",
         "description": "Används när Inloggnings säkerhet är inställd att fråga på värdar markerade för detta."
       }
+    },
+    "user": {
+      "newDeviceNotice": {
+        "label": "Varna mig vid ny enhet",
+        "description": "Få en varning när någon loggar in på ditt konto från en enhet som inte har setts tidigare."
+      }
     }
   },
   "verify": {
     "title": "Verifiera andra faktor",
     "intro": "Ange din andra faktor för att ansluta till denna värd.",
+    "start": "Verifiera",
     "done": "Verifierad",
     "retry": "Gå tillbaka till värdens sida och försök ansluta igen.",
     "failed": "Det fungerade inte. Försök igen.",
@@ -74,5 +85,68 @@
     "body": "Din administratör kräver andra faktorn för inloggning. Konfigurera en nedan för att fortsätta använda Termix.",
     "none": "Inget att konfigurera här? Be din administratör installera ett tillägg för andra faktorn.",
     "signOut": "Logga ut"
+  },
+  "never": "aldrig",
+  "sessions": {
+    "title": "Sessioner och nycklar",
+    "tab": "Sessioner",
+    "current": "Denna session",
+    "meta": "{{type}} | senast aktiv {{lastActive}} | inloggad {{created}}",
+    "none": "Inga sessioner",
+    "end": "Logga ut",
+    "ended": "Utloggad",
+    "endOthers": "Logga ut andra sessioner",
+    "endOthersConfirm": "Vill du logga ut dina {{count}} andra sessioner?",
+    "endedOthers": "Dina andra sessioner är utloggade",
+    "everyone": "Logga ut alla",
+    "everyoneConfirm": "Vill du logga ut alla användare på denna server?",
+    "everyoneDescription": "Alla utom du måste logga in igen. Skrivbordsappar som är kopplade till denna server måste kopplas upp igen.",
+    "everyoneKeysConfirm": "Vill du också återkalla alla API-nycklar på denna server?",
+    "everyoneKeys": "Återkalla nycklar också",
+    "everyoneKeysNo": "Behåll nycklar",
+    "everyoneDone": "Alla är utloggade",
+    "failed": "Det fungerade inte. Försök igen.",
+    "loadFailed": "Kunde inte ladda dina sessioner och nycklar."
+  },
+  "keys": {
+    "tab": "API-nycklar",
+    "none": "Du har inga API-nycklar",
+    "full": "full åtkomst",
+    "noExpiry": "aldrig",
+    "meta": "{{prefix}} | senast använd {{lastUsed}} | löper ut {{expires}}",
+    "revoke": "Återkalla",
+    "revoked": "Nyckel återkallad",
+    "revokeAll": "Återkalla alla nycklar",
+    "revokeAllConfirm": "Vill du återkalla dina {{count}} API-nycklar? Skript som använder dem slutar fungera.",
+    "revokedAll": "Dina API-nycklar har återkallats"
+  },
+  "waits": {
+    "title": "Adminväntan",
+    "intro": "När det finns två eller fler administratörer väntar ändringar som att lägga till en ny administratör, stänga av inloggning med lösenord, stänga av en inloggningsplugin eller aktivera en plugin med farlig åtkomst i den här tiden. De andra administratörerna får en varning och kan avbryta väntan. Att stänga av eller förkorta väntan kräver också väntetid.",
+    "adminOnly": "Endast administratörer kan se detta.",
+    "loadFailed": "Kunde inte läsa in adminväntan.",
+    "active": "På, ändringar väntar {{minutes}} minuter",
+    "onOneAdmin": "På, men den här servern har endast en administratör, så inget väntar",
+    "off": "Av",
+    "forced": "Inställt på servern med {{name}}.",
+    "minutes": "Minuter",
+    "turnOn": "Aktivera",
+    "change": "Spara",
+    "turnOff": "Inaktivera",
+    "saved": "Sparat",
+    "savedHeld": "Sparat. Väntar på de andra administratörerna först.",
+    "failed": "Det fungerade inte. Försök igen.",
+    "none": "Inga adminändringar har väntat ännu",
+    "meta": "Begärd av {{who}} | gäller {{runsAt}}",
+    "cancel": "Avbryt",
+    "cancelConfirm": "Vill du avbryta denna ändring?",
+    "cancelled": "Avbruten",
+    "status": {
+      "pending": "Väntar",
+      "applying": "Tillämpar",
+      "applied": "Tillämpad",
+      "cancelled": "Avbruten",
+      "failed": "Misslyckades"
+    }
   }
 }

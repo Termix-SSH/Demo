@@ -206,6 +206,13 @@ export async function revealPassword(id: number): Promise<string> {
   ).data.password;
 }
 
+export async function unlockRepository(
+  id: number,
+  hostId: number,
+): Promise<void> {
+  await api().post(`/repositories/${id}/unlock`, { hostId });
+}
+
 export async function testRepository(
   id: number,
   hostId: number,

@@ -44,6 +44,9 @@ export function AccountForm({
     account?.pathStyle ?? first?.pathStyle ?? true,
   );
   const [ca, setCa] = useState("");
+  const [extraBuckets, setExtraBuckets] = useState(
+    (account?.extraBuckets ?? []).join("\n"),
+  );
   const [accessKeyId, setAccessKeyId] = useState("");
   const [secretAccessKey, setSecretAccessKey] = useState("");
   const [sessionToken, setSessionToken] = useState("");
@@ -84,6 +87,10 @@ export function AccountForm({
         region: region.trim(),
         pathStyle,
         ca: ca.trim() || undefined,
+        extraBuckets: extraBuckets
+          .split(/[\s,]+/)
+          .map((name) => name.trim())
+          .filter(Boolean),
         accessKeyId,
         secretAccessKey,
         sessionToken,
@@ -160,6 +167,15 @@ export function AccountForm({
             onChange={setCa}
             placeholder={account?.hasCa ? t("account.keep") : undefined}
             rows={3}
+            mono
+          />
+          <TextAreaField
+            label={t("account.extraBuckets")}
+            hint={t("account.extraBucketsHint")}
+            value={extraBuckets}
+            onChange={setExtraBuckets}
+            placeholder="example-bucket"
+            rows={2}
             mono
           />
         </div>

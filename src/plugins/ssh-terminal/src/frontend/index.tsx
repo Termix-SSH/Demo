@@ -109,7 +109,13 @@ function TerminalStandalone({ hostId, params }: StandaloneViewProps) {
 }
 
 /** The desktop app's own shell, one tab per open. */
-function LocalTerminalTab({ tab, isVisible, isFocusedPane, label }: TabProps) {
+function LocalTerminalTab({
+  tab,
+  isVisible,
+  isFocusedPane,
+  label,
+  shell,
+}: TabProps) {
   return (
     <Suspense fallback={null}>
       <LocalTerminal
@@ -118,6 +124,7 @@ function LocalTerminalTab({ tab, isVisible, isFocusedPane, label }: TabProps) {
         sessionId={tab.id}
         isFocusedPane={isFocusedPane}
         label={label}
+        onClose={() => shell.closeTab(tab.id)}
       />
     </Suspense>
   );
@@ -245,6 +252,8 @@ export function activate(app: TermixApp): void {
     icon: SquareTerminal,
     order: 10,
     defaults: true,
+    // Shown in the simple host editor (SDK 2.10.0).
+    ...{ simple: true },
     component: HostTerminalSection,
   });
 

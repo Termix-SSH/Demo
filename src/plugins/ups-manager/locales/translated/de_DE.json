@@ -8,7 +8,10 @@
     "viewHistory": "Verlauf",
     "viewEvents": "Ereignisse",
     "viewCommands": "Befehle",
-    "viewSources": "Geräte"
+    "viewSources": "Geräte",
+    "refresh": "Live-Aktualisierung",
+    "refreshSeconds": "{{seconds}} Sekunden",
+    "refreshHint": "Wird nur aktualisiert, wenn der Überblick sichtbar ist. Der UPS kann sich langsamer aktualisieren. Hintergrundabfragen und gespeicherte Messwerte bleiben bei 30 Sekunden."
   },
   "common": {
     "loading": "Wird geladen...",
@@ -47,6 +50,8 @@
     "charge": "Akkuladung",
     "runtime": "Verbleibende Laufzeit",
     "load": "Last",
+    "estimatedLoad": "Geschätzte UPS-Last",
+    "estimatedLoadHint": "Ausgangsleistung in Watt / {{watts}} W Nennleistung. {{method}}. Sensorgenaugkeit nicht verifiziert; keine CPU-Auslastung oder Wechselstromverbrauch an der Steckdose.",
     "nominal": "{{watts}} W Nennleistung",
     "input": "Eingangsspannung",
     "output": "Ausgangsspannung",
@@ -59,6 +64,60 @@
     "readAt": "Letzter Lesevorgang",
     "ago": "Vor {{time}}"
   },
+  "electrical": {
+    "inputDc": "Eingang ist Gleichstrom",
+    "outputDc": "Ausgang ist Gleichstrom",
+    "dcHint": "Bestätigen Sie den elektrischen Bereich, bevor Sie die Leistung aus Spannung und Strom berechnen. Dies ändert keine UPS-Einstellung. Die Sensorgenaugkeit muss unabhängig überprüft werden.",
+    "inputCurrent": "Eingangsstrom",
+    "outputCurrent": "Ausgangsstrom",
+    "batteryCurrent": "Batteriestrom",
+    "inputPower": "Eingangsleistung",
+    "outputPower": "Ausgangsleistung",
+    "reported": "Gemeldete Wirkleistung",
+    "calculated": "Berechnete Gleichstromleistung – Sensorgenauigkeit nicht verifiziert",
+    "batteryType": "Batteriechemie",
+    "chargeLow": "Schwellenwert für niedrigen Ladezustand",
+    "chargeWarning": "Schwellenwert für Ladezustandswarnung",
+    "manufactured": "Herstellungsdatum der Batterie",
+    "driver": "Treiber",
+    "driverVersion": "Treiber-Version",
+    "subdriver": "HID-Subtreiber",
+    "driverState": "Treiberstatus",
+    "usb": "USB-Hersteller / Produkt",
+    "raw": "Erweiterte NUT-Variablen",
+    "search": "Variablennamen oder -werte filtern",
+    "noVariables": "Keine passenden Variablen.",
+    "dcDisclaimer": "Die berechnete DC-Ausgangsleistung schätzt die USV-Last, nicht den AC-Netzverbrauch. Sie entspricht nicht unbedingt dem Verbrauch eines einzelnen Hosts. Überprüfen Sie die Strommessungen, bevor Sie sich auf Leistungs- oder Energieabschätzungen verlassen."
+  },
+  "energy": {
+    "period": "Gemessene Ausgangsenergie (ausgewählter Zeitraum)",
+    "lifetime": "Gemessene Ausgangsenergie (aktuelle Epoche)",
+    "estimated": "Geschätzt auf Basis geplanter Stichproben; kein Hardware-Messgerät",
+    "coverage": "Gemessene Abdeckung",
+    "covered": "Integrierte Zeit",
+    "incomplete": "Unvollständige Daten; fehlende Zeit wird nicht geschätzt",
+    "complete": "Vollständige gemessene Abdeckung",
+    "average": "Durchschnittliche Ausgangsleistung (abgedeckte Zeit)",
+    "peak": "Gemessener Leistungsspitzenwert",
+    "sampledRange": "Gemessener Leistungsbereich",
+    "scope": "USV-Ausgang, nicht die Wechselstromnetzenergie. Periodensummen erstrecken sich über die aufgeführten Erfassungszeiträume; behandeln Sie verschiedene Zeiträume nicht als ein einziges physikalisches Messgerät.",
+    "resolution": "Nominale Diagrammsegmentlänge: {{seconds}} Sekunden; Lücken bleiben getrennt. Halten Sie den Mauszeiger über Punkte, um die absolute Zeit und die Zeitzone anzuzeigen.",
+    "empty": "Die Energieverfolgung benötigt zwei gültige, geplante Strommesswerte. Unbekannte Wattwerte bleiben unzugänglich und werden nicht als Null behandelt.",
+    "error": "Der Energieverlauf konnte nicht gelesen werden.",
+    "bucket": "Beobachtete Ausgangsenergie pro Segment",
+    "samples": "Verfügbare Messwerte und kumulierte beobachtete Energie",
+    "tableHelp": "Nur beobachtete Energie wird summiert. Fehlende Intervalle werden nicht aufgefüllt. Kumulierte Werte erstrecken sich über die aufgeführten Epochen.",
+    "time": "Segmentstart (lokale Zeitzone)",
+    "cumulative": "Kumulierte Wh im ausgewählten Zeitraum",
+    "cumulativeChart": "Kumulierte beobachtete Ausgangsenergie (ausgewählter Zeitraum)",
+    "epochTotal": "Beobachtete Energie in dieser Epoche",
+    "unavailable": "Ausgangsleistung nicht verfügbar",
+    "epochs": "Getrennte Erfassungsperioden",
+    "started": "Erfassung gestartet",
+    "method": "Leistungsmethode",
+    "chartHelp": "Zeitproportionale Daten. Fehlende Intervalle und Änderungen der Erfassungsperiode werden nicht verbunden. Abgetastete Spitzenwerte sind keine Hardware-Spitzenmessungen. Eine zugängliche Datentabelle folgt den Diagrammen.",
+    "correlationBlocked": "CPU-/Speicherkorrelation nicht verfügbar: Host-Metriken benötigen einen öffentlichen, autorisierten Snapshot-Dienst mit Messzeitstempeln. Keine zusätzliche Host-Erfassung ist aktiviert."
+  },
   "history": {
     "error": "Der Verlauf konnte nicht geladen werden.",
     "24h": "24 Stunden",
@@ -66,7 +125,7 @@
     "30d": "30 Tage",
     "empty": "Noch nicht genug Messwerte. Termix liest den UPS alle 30 Sekunden aus.",
     "charge": "Akkuladung",
-    "load": "Last",
+    "load": "Auslastung (nur gerätemeldete Werte)",
     "runtime": "Verbleibende Laufzeit",
     "voltage": "Spannung"
   },
@@ -113,7 +172,7 @@
     "unreachable": "nicht erreichbar",
     "saved": "Gespeichert.",
     "deleteTitle": "{{name}} entfernen?",
-    "deleteText": "Auch der Verlauf und die Ereignisse werden gelöscht."
+    "deleteText": "Auch Verlauf, Energiegesamtwerte, Erfassungsperioden und Ereignisse werden gelöscht."
   },
   "editor": {
     "addTitle": "USV hinzufügen",
@@ -172,6 +231,8 @@
     "testFailed": "UPS konnte nicht gelesen werden."
   },
   "card": {
+    "estimatedLoad": "{{value}} % geschätzte USV-Auslastung",
+    "dc": "berechneter Gleichstrom, nicht verifiziert",
     "title": "USV",
     "empty": "Keine USV eingerichtet. Aktivieren Sie den USV-Manager für einen Host und fügen Sie ein Gerät hinzu.",
     "runtime": "noch {{time}} übrig",

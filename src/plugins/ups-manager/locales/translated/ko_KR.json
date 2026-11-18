@@ -8,7 +8,10 @@
     "viewHistory": "기록",
     "viewEvents": "이벤트",
     "viewCommands": "명령어",
-    "viewSources": "장치"
+    "viewSources": "장치",
+    "refresh": "실시간 새로고침",
+    "refreshSeconds": "{{seconds}}초",
+    "refreshHint": "개요 탭이 표시될 때만 새로고침됩니다. UPS 업데이트 속도가 느릴 수 있습니다. 백그라운드 폴링 및 저장된 샘플은 여전히 30초 간격으로 유지됩니다."
   },
   "common": {
     "loading": "로딩 중...",
@@ -47,6 +50,8 @@
     "charge": "배터리 충전량",
     "runtime": "남은 사용 시간",
     "load": "부하",
+    "estimatedLoad": "예상 UPS 부하",
+    "estimatedLoadHint": "출력 와트 / 정격 {{watts}}W. {{method}}. 센서 정확도는 검증되지 않았으며, CPU 사용률이나 AC 벽면 소비량이 아닙니다.",
     "nominal": "{{watts}}W 정격",
     "input": "입력 전압",
     "output": "출력 전압",
@@ -59,6 +64,60 @@
     "readAt": "마지막 읽기",
     "ago": "{{time}} 전"
   },
+  "electrical": {
+    "inputDc": "입력이 DC입니다",
+    "outputDc": "출력이 DC입니다",
+    "dcHint": "전압과 전류로부터 와트를 계산하기 전에 전기 도메인을 확인하세요. 이는 UPS 설정을 변경하지 않습니다. 센서 정확도는 별도로 확인해야 합니다.",
+    "inputCurrent": "입력 전류",
+    "outputCurrent": "출력 전류",
+    "batteryCurrent": "배터리 전류",
+    "inputPower": "입력 전력",
+    "outputPower": "출력 전력",
+    "reported": "보고된 실제 전력",
+    "calculated": "계산된 DC 전력 - 센서 정확도 미검증",
+    "batteryType": "배터리 화학 구성",
+    "chargeLow": "저전력 임계값",
+    "chargeWarning": "충전 경고 임계값",
+    "manufactured": "배터리 제조일",
+    "driver": "드라이버",
+    "driverVersion": "드라이버 버전",
+    "subdriver": "HID 서브드라이버",
+    "driverState": "드라이버 상태",
+    "usb": "USB 공급업체 / 제품",
+    "raw": "고급 NUT 변수",
+    "search": "변수 이름 또는 값 필터링",
+    "noVariables": "일치하는 변수가 없습니다.",
+    "dcDisclaimer": "계산된 DC 출력 전력은 벽면 AC 소비량이 아닌 UPS 부하를 추정합니다. 이는 반드시 단일 호스트의 소비량을 의미하지 않습니다. 전력 또는 에너지 추정에 의존하기 전에 전류 측정값을 확인하십시오."
+  },
+  "energy": {
+    "period": "관측된 출력 에너지 (선택된 기간)",
+    "lifetime": "관측된 출력 에너지 (현재 에포크)",
+    "estimated": "예약된 샘플에서 추정된 값이며, 하드웨어 계측기가 아닙니다",
+    "coverage": "측정된 범위",
+    "covered": "누적 시간",
+    "incomplete": "불완전한 데이터; 누락된 시간은 추정되지 않습니다",
+    "complete": "완전한 측정 범위",
+    "average": "평균 출력 전력 (측정된 시간 기준)",
+    "peak": "샘플링된 출력 피크",
+    "sampledRange": "샘플링된 전력 범위",
+    "scope": "UPS 출력을 나타내며, AC 벽면 전력은 아닙니다. 기간 합계는 나열된 추적 시점을 포함하며, 서로 다른 시점을 하나의 물리적 계측기로 간주하지 마십시오.",
+    "resolution": "명목 차트 세그먼트: {{seconds}}초; 간격은 별도로 유지됩니다. 절대 시간과 시간대를 확인하려면 지점을 마우스로 가리키십시오.",
+    "empty": "에너지 추적에는 두 개의 유효한 예약 전력 읽기가 필요합니다. 알 수 없는 와트는 사용 불가 상태로 유지되며, 0으로 처리되지 않습니다.",
+    "error": "에너지 기록을 읽을 수 없습니다.",
+    "bucket": "세그먼트별 관측 출력 에너지",
+    "samples": "접근 가능한 샘플 및 누적 관측 에너지",
+    "tableHelp": "관측된 에너지만 합산됩니다. 누락된 간격은 채워지지 않습니다. 누적 값은 나열된 에포크 기간을 포함합니다.",
+    "time": "세그먼트 시작 (현지 시간대)",
+    "cumulative": "선택된 기간의 누적 Wh",
+    "cumulativeChart": "누적 관측 출력 에너지 (선택된 기간)",
+    "epochTotal": "이 에포크의 관측 에너지",
+    "unavailable": "출력 전력 사용 불가",
+    "epochs": "추적 에포크 구분",
+    "started": "추적 시작됨",
+    "method": "전력 측정 방식",
+    "chartHelp": "시간 비례 데이터. 누락된 간격과 추적 에포크 변경은 연결되지 않습니다. 샘플링된 피크는 하드웨어 피크 측정값이 아닙니다. 차트 뒤에 접근 가능한 데이터 테이블이 있습니다.",
+    "correlationBlocked": "CPU/메모리 상관관계 사용 불가: 호스트 메트릭스는 측정 타임스탬프가 있는 공개된 인증 스냅샷 서비스가 필요합니다. 추가 호스트 수집이 활성화되지 않았습니다."
+  },
   "history": {
     "error": "기록을 로드할 수 없습니다.",
     "24h": "24시간",
@@ -66,7 +125,7 @@
     "30d": "30일",
     "empty": "아직 측정값이 충분하지 않습니다. Termix는 30초마다 UPS를 읽습니다.",
     "charge": "배터리 충전량",
-    "load": "부하",
+    "load": "부하 (장치 보고만 포함)",
     "runtime": "남은 사용 시간",
     "voltage": "전압"
   },
@@ -113,7 +172,7 @@
     "unreachable": "연결 불가",
     "saved": "저장 완료.",
     "deleteTitle": "{{name}}을(를) 제거하시겠습니까?",
-    "deleteText": "이력 및 이벤트도 함께 삭제됩니다."
+    "deleteText": "이력, 에너지 총계, 추적 에포크 및 이벤트도 함께 삭제됩니다."
   },
   "editor": {
     "addTitle": "UPS 추가",
@@ -172,6 +231,8 @@
     "testFailed": "UPS를 읽을 수 없습니다."
   },
   "card": {
+    "estimatedLoad": "{{value}}% 추정 UPS 부하",
+    "dc": "계산된 DC, 미검증",
     "title": "UPS",
     "empty": "UPS가 설정되지 않았습니다. 호스트에서 UPS 관리자를 켜고 장치를 추가하세요.",
     "runtime": "잔여 시간 {{time}}",

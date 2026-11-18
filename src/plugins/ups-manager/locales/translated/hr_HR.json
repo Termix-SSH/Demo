@@ -8,7 +8,10 @@
     "viewHistory": "Povijest",
     "viewEvents": "Događaji",
     "viewCommands": "Naredbe",
-    "viewSources": "Uređaji"
+    "viewSources": "Uređaji",
+    "refresh": "Živo osvježavanje",
+    "refreshSeconds": "{{seconds}} sekundi",
+    "refreshHint": "Osvježava se samo dok je Pregled vidljiv. UPS se može ažurirati sporije. Pozadinsko upitivanje i pohranjeni uzorci ostaju na 30 sekundi."
   },
   "common": {
     "loading": "Učitavanje...",
@@ -47,6 +50,8 @@
     "charge": "Napunjenost baterije",
     "runtime": "Preostalo vrijeme rada",
     "load": "Opterećenje",
+    "estimatedLoad": "Procijenjeno opterećenje UPS-a",
+    "estimatedLoadHint": "Izlazne vati / {{watts}} W nazivno. {{method}}. Točnost senzora nije provjerena; nije iskorištenost CPU-a niti potrošnja iz zidne utičnice.",
     "nominal": "{{watts}} W nazivno",
     "input": "Ulazni napon",
     "output": "Izlazni napon",
@@ -59,6 +64,60 @@
     "readAt": "Posljednje čitanje",
     "ago": "Prije {{time}}"
   },
+  "electrical": {
+    "inputDc": "Ulaz je istosmjerni (DC)",
+    "outputDc": "Izlaz je istosmjerni (DC)",
+    "dcHint": "Potvrdite električno područje prije izračuna vata iz napona i struje. Ovo ne mijenja nijednu postavku UPS-a. Točnost senzora mora se provjeriti neovisno.",
+    "inputCurrent": "Ulazna struja",
+    "outputCurrent": "Izlazna struja",
+    "batteryCurrent": "Struja baterije",
+    "inputPower": "Ulazna snaga",
+    "outputPower": "Izlazna snaga",
+    "reported": "Prijavljena stvarna snaga",
+    "calculated": "Izračunata DC snaga - točnost senzora nije provjerena",
+    "batteryType": "Kemija baterije",
+    "chargeLow": "Prag niske razine punjenja",
+    "chargeWarning": "Prag upozorenja o punjenju",
+    "manufactured": "Datum proizvodnje baterije",
+    "driver": "Programski upravljač",
+    "driverVersion": "Verzija drajvera",
+    "subdriver": "HID pod-drajver",
+    "driverState": "Stanje drajvera",
+    "usb": "USB proizvođač / proizvod",
+    "raw": "Napredne NUT varijable",
+    "search": "Filtriraj nazive ili vrijednosti varijabli",
+    "noVariables": "Nema odgovarajućih varijabli.",
+    "dcDisclaimer": "Izračunata DC izlazna snaga procjenjuje opterećenje UPS-a, a ne AC potrošnju iz zida. Ne nužno odražava potrošnju jednog hosta. Provjerite očitanja struje prije oslanjanja na procjene snage ili energije."
+  },
+  "energy": {
+    "period": "Promatrana izlazna energija (odabrano razdoblje)",
+    "lifetime": "Promatrana izlazna energija (trenutni epoch)",
+    "estimated": "Procijenjeno na temelju planiranih uzoraka; nije mjerač hardvera",
+    "coverage": "Izmjerena pokrivenost",
+    "covered": "Integrirano vrijeme",
+    "incomplete": "Nepotpuni podaci; nedostajuće vrijeme nije procijenjeno",
+    "complete": "Potpuna izmjerena pokrivenost",
+    "average": "Prosječna izlazna snaga (pokriveno vrijeme)",
+    "peak": "Vrhunac izlazne snage iz uzoraka",
+    "sampledRange": "Raspon snage iz uzoraka",
+    "scope": "Izlaz UPS-a, a ne energija iz zidne utičnice. Ukupni iznosi za razdoblje obuhvaćaju navedene epoh praćenja; različite epohe ne smatrajte jednim fizičkim mjeračem.",
+    "resolution": "Nominalni segment grafikona: {{seconds}} sekundi; praznine ostaju odvojene. Zadržite kursor na točkama za apsolutno vrijeme i vremensku zonu.",
+    "empty": "Praćenje energije zahtijeva dvije valjane zakazane mjere snage. Nepoznate vatne snage ostaju nedostupne, a ne nula.",
+    "error": "Povijest energije se ne može pročitati.",
+    "bucket": "Promatrana izlazna energija po segmentu",
+    "samples": "Dostupni uzorci i kumulativna promatrana energija",
+    "tableHelp": "Samo promatrana energija se zbraja. Nedostajući intervali se ne popunjavaju. Kumulativne vrijednosti obuhvaćaju navedene epohe.",
+    "time": "Početak segmenta (lokalno vremensko područje)",
+    "cumulative": "Kumulativni Wh u odabranom razdoblju",
+    "cumulativeChart": "Kumulativna promatrana izlazna energija (odabrano razdoblje)",
+    "epochTotal": "Promatrana energija u ovoj epohi",
+    "unavailable": "Izlazna snaga nije dostupna",
+    "epochs": "Razdvojene epoh praćenja",
+    "started": "Praćenje je započeto",
+    "method": "Metoda snage",
+    "chartHelp": "Podaci proporcionalni vremenu. Nedostajući intervali i promjene epohi praćenja nisu povezani. Uzorkovani vrhovi nisu mjerenja hardverskih vrhova. Pristupačna tablica s podacima slijedi nakon grafikona.",
+    "correlationBlocked": "Korelacija CPU-a i memorije nije dostupna: Host Metrics zahtijeva javnu, ovlaštenu uslugu snimki s vremenskim žigovima mjerenja. Nije omogućeno dodatno prikupljanje podataka s hosta."
+  },
   "history": {
     "error": "Nije moguće učitati povijest.",
     "24h": "24 sata",
@@ -66,7 +125,7 @@
     "30d": "30 dana",
     "empty": "Još nema dovoljno očitanja. Termix čita UPS svakih 30 sekundi.",
     "charge": "Napunjenost baterije",
-    "load": "Opterećenje",
+    "load": "Opterećenje (samo prijavljeno od uređaja)",
     "runtime": "Preostalo vrijeme rada",
     "voltage": "Napon"
   },
@@ -113,7 +172,7 @@
     "unreachable": "nedostupno",
     "saved": "Spremljeno.",
     "deleteTitle": "Ukloniti {{name}}?",
-    "deleteText": "Također će biti obrisana povijest i događaji."
+    "deleteText": "Također se brišu povijest, ukupna potrošnja energije, epohi praćenja i događaji."
   },
   "editor": {
     "addTitle": "Dodaj UPS",
@@ -172,6 +231,8 @@
     "testFailed": "Nije moguće pročitati UPS."
   },
   "card": {
+    "estimatedLoad": "{{value}}% procijenjeno opterećenje UPS-a",
+    "dc": "izračunati DC, neprovjereno",
     "title": "UPS",
     "empty": "Nema konfiguriranog UPS-a. Uključite UPS Manager za host i dodajte uređaj.",
     "runtime": "Preostalo {{time}}",

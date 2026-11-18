@@ -36,6 +36,7 @@
     "checkNow": "Kontrolli nüüd"
   },
   "nav": {
+    "theme": "Teema",
     "copyPassword": "Kopeeri parool",
     "copySudoPassword": "Kopeeri sudo parool",
     "passwordCopied": "Parool kopeeritud lõikelauale",
@@ -72,7 +73,15 @@
     "mobileNavigation": "Navigatsioon",
     "allTabs": "Kõik vahekaardid",
     "hideTabBar": "Peida vahekaartide riba",
-    "showTabBar": "Näita vahekaartide riba"
+    "showTabBar": "Näita vahekaartide riba",
+    "allApps": "Kõik rakendused",
+    "findApp": "Otsi rakendust",
+    "pinToRail": "Kinnita ribale",
+    "unpinFromRail": "Eemalda kinnitamine ribalt",
+    "appSettings": "Rakenduse seaded",
+    "allAppsHint": "Kinnita need, mida kasutad. Rakenduse seadete avamiseks klõpsa sellel hiire parema nupuga.",
+    "allAppsLockedHint": "Sinu ribal olevad rakendused valib administraator.",
+    "viewMenu": "Vaade"
   },
   "commandPalette": {
     "searchPlaceholder": "Otsi hoste, käske või seadeid...",
@@ -171,7 +180,8 @@
     "dragToReorder": "Lohista plaate, et neid liigutada, ja servu, et suurust muuta",
     "clearActivityConfirm": "Kas tühjendada hiljutine tegevus?",
     "resetConfirm": "Kas taastada töölaud vaikepaigutusele?",
-    "clearFailed": "Viimast tegevust ei õnnestunud kustutada"
+    "clearFailed": "Viimast tegevust ei õnnestunud kustutada",
+    "help": "Abi"
   },
   "admin": {
     "sectionGeneral": "Üldine",
@@ -237,6 +247,9 @@
     "credentialStorage": "Luba paroolide ja võtmete salvestamine",
     "credentialStorageOff": "Sellel serveril on paroolide ja võtmete salvestamine väljalülitatud. Jäta need tühjaks ja Termix küsib need ühenduse loomisel.",
     "credentialStorageDesc": "Kui see on väljalülitatud, ei saa keegi salvestada parooli ega privaatvõtit hostile ega usaldusandmetele ning Termix küsib need ühenduse loomisel. Juba salvestatud sisselogimisandmed jäävad alles, kuni need eemaldatakse.",
+    "hostKeyTrust": "Usalda uusi hosti võtmeid ilma küsimata",
+    "hostKeyTrustDesc": "Kui plugin, ajakava või API ühendub hostiga, kelle võtit ei ole varem kontrollitud, salvesta see võti ja loo ühendus. Kui see on välja lülitatud, keeldutakse nendest ühendustest, kuni keegi avab hostiga terminali ja usaldab selle võtit.",
+    "hostKeyTrustFailed": "Hosti võtme seadete uuendamine ebaõnnestus",
     "secondFactorAfterExternalLogin": "Küsi teist autentimisetappi pärast väliseid sisselogimisi (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Kui välja lülitatud, küsitakse registreeritud teist autentimisetappi ainult parooli ja muude kohalike sisselogimiste järel, nagu varemgi. Kui sisse lülitatud, küsitakse seda iga sisselogimismeetodi järel, sealhulgas SSO ja LDAP puhul.",
     "allowPasswordReset": "Luba parooli lähtestamine",
@@ -487,7 +500,91 @@
     "revokeSession": "Väljalogi",
     "deleteRoleConfirm": "Kas rolli {{name}} kustutamine?",
     "revokeKeyConfirm": "Kas API võtit {{name}} keelatakse?",
-    "revokeKey": "Keela"
+    "revokeKey": "Keela",
+    "apiKeyScopeReadAll": "Ainult lugemiseks, kõik, mida kasutaja näha saab",
+    "apiKeyNeverExpires": "Aegumata",
+    "apiKeyExpiryHint": "Jätta tühjaks, siis kehtib võti 90 päeva.",
+    "changeHeld": "See muudatus ootab {{minutes}} minutit, et teised administraatorid saaksid seda näha.",
+    "userStatusFilter": "Konto olek",
+    "userStatusAll": "Kõik kontod",
+    "userStatusActive": "Aktiivne",
+    "userStatusDisabled": "Keelatud",
+    "userStatusPending": "Ootel kinnitust",
+    "disabledBadge": "Keelatud",
+    "pendingBadge": "Ootel",
+    "accountStatusTitle": "Konto olek",
+    "accountStatusActive": "Selle kontoga saab sisse logida.",
+    "accountStatusDisabled": "See konto on keelatud. Sisselogimine ei ole võimalik ja API- võtmed ei tööta.",
+    "accountStatusPending": "See konto ootab kinnitust ja sisselogimine ei ole veel võimalik.",
+    "lastLogin": "Viimane sisselogimine {{time}}",
+    "disableUser": "Keela konto",
+    "enableUser": "Lülita konto sisse",
+    "approveUser": "Kinnita",
+    "disableUserConfirm": "Kas lülitate {{username}} konto välja? Kasutaja logitakse kõikjalt välja ja ei saa sisse logida, enne kui konto uuesti sisse lülitate.",
+    "userDisabled": "{{username}} konto on välja lülitatud",
+    "userEnabled": "{{username}} konto on sisse lülitatud",
+    "userApproved": "{{username}} on kinnitatud",
+    "userStatusFailed": "Kontot ei õnnestunud muuta",
+    "profileTitle": "Nimi ja e-post",
+    "displayName": "Kuvatav nimi",
+    "displayNamePlaceholder": "Kuvatav nimi",
+    "email": "E-post",
+    "emailPlaceholder": "E-post",
+    "profileSaved": "Salvestatud",
+    "profileSaveFailed": "Salvestamine ebaõnnestus",
+    "manageTabAccess": "Juurdepääs",
+    "sectionInvites": "Kutselingid",
+    "invitesDescription": "Lingid, mis võimaldavad kasutajal konto luua, isegi kui registreerimine on keelatud.",
+    "invitesEmpty": "Kutselingid puuduvad",
+    "inviteCreate": "Uus kutse",
+    "inviteCreateFailed": "Kutse loomine ebaõnnestus",
+    "inviteCreatedNotice": "Kopeeri see link nüüd. Seda ei kuvata enam.",
+    "inviteCopy": "Kopeeri link",
+    "inviteCopied": "Link kopeeritud",
+    "inviteNotePlaceholder": "Märkus, näiteks kellele see on mõeldud",
+    "inviteRole": "Roll",
+    "inviteNoRole": "Ilma lisarollita",
+    "inviteExpires": "Aegumine",
+    "inviteExpiresIn_one": "Aegub {{count}} päeva pärast",
+    "inviteExpiresIn_other": "Aegub {{count}} päeva pärast",
+    "inviteUses": "Kasutused",
+    "inviteMakeAdmin": "Tee temast administraator",
+    "inviteUntitled": "Kutse",
+    "inviteUsesOf": "{{uses}}/{{max}} kasutatud",
+    "inviteState_active": "Aktiivne",
+    "inviteState_revoked": "Tühistatud",
+    "inviteState_expired": "Aegunud",
+    "inviteState_used": "Kasutatud ära",
+    "inviteRevoke": "Tühista",
+    "inviteRevokeConfirm": "Kas tühistada see kutselink?",
+    "inviteRevokeFailed": "Kutse tühistamine ei õnnestunud",
+    "sectionAccess": "Juurdepääsu ülevaatus",
+    "accessCount_one": "{{count}} jagamine",
+    "accessCount_other": "{{count}} jagamist",
+    "accessExport": "Ekspordi CSV-na",
+    "accessExportFailed": "Eksportimine ebaõnnestus",
+    "accessKind": "Liik",
+    "accessKindAll": "Kõik",
+    "accessKind_host": "Host",
+    "accessKind_folder": "Kaust",
+    "accessKind_credential": "Logimisandmed",
+    "accessUser": "Kasutaja",
+    "accessAnyUser": "Suvaline kasutaja",
+    "accessRole": "Rool",
+    "accessAnyRole": "Suvaline roll",
+    "accessToUser": "kasutajale {{name}}",
+    "accessToRole": "rollile {{name}}",
+    "accessOwner": "omanik {{name}}",
+    "accessGrantedBy": "jaganud {{name}}",
+    "accessExpires": "aegub {{date}}",
+    "accessLastUsed": "viimati kasutatud {{date}}",
+    "accessEmpty": "Midagi ei ole jagatud",
+    "sectionAccountSettings": "Kontod ja ligipääs",
+    "adminHostBypass": "Haldurid saavad avada kõigi kasutajate hoste",
+    "adminHostBypassDesc": "Kui see on välja lülitatud, näevad haldurid ainult neile jagatud hoste ja ei saa kasutaja lehelt teiste kasutajate andmeid avada. Sisselülitamisel oodatakse halduri puhkeaja lõppu, kui see on määratud.",
+    "signupApproval": "Kinnita uued SSO-kontod",
+    "signupApprovalDesc": "Kui keegi logib esimest korda sisse SSO või LDAP kaudu, peab haldur konto kinnitama.",
+    "updateSettingFailed": "Seadistuse salvestamine ebaõnnestus"
   },
   "newUi": {
     "sidebar": {
@@ -510,7 +607,8 @@
         "domainPlaceholder": "valikuline",
         "connectToAction": "Ühendu {{name}}-ga",
         "sshProtocol": "SSH",
-        "noTarget": "Ühtegi paigaldatud teenust ei saa selle peremeesarvuti tüübiga ühenduda"
+        "noTarget": "Ühtegi paigaldatud teenust ei saa selle peremeesarvuti tüübiga ühenduda",
+        "loadingTargets": "Ühendusviiside laadimine..."
       },
       "keybindings": {
         "description": "Seosta klahvid tegevustega terminaalil ja rakenduses või muuda sisseehitatud otseteid.",
@@ -564,6 +662,9 @@
         "desktopProfileDescription": "See profiil asub ainult sellel seadmel ja teeb sisselogimise iseseisvalt. Lingi see Termix serveriga, et kasutada samu hoste ja seadeid igal seadmel.",
         "sectionInterface": "Liides",
         "interfacePresetDesc": "Kui palju detaile Termix kuvab. Kõik funktsioonid jäävad saadavaks.",
+        "closeToTray": "Sule tegevusribale",
+        "closeToTrayDesc": "Akna sulgemisel jätkab Termix tööd tegevusribal, et sinu ühendused püsiksid avatuna. Lülita see välja, kui soovid, et rakendus akna sulgemisel täielikult sulguks.",
+        "closeToTraySaveFailed": "Seadistuse salvestamine ebaõnnestus",
         "presetClearOverrides": "Taasta kõik",
         "presetOverridesTitle": "Kohandatud",
         "presetRevertArea": "Taasta",
@@ -697,7 +798,11 @@
         "tryBetaDescription": "Liitu beetaversiooni programmiga jaotises Uuendused.",
         "sendBetaFeedback": "Saada beetaversiooni tagasiside",
         "openUpdates": "Uuendused",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "Kuvamine nimi",
+        "emailLabel": "E-post",
+        "profileSaved": "Salvestatud",
+        "profileSaveFailed": "Salvestamine ebaõnnestus"
       }
     }
   },
@@ -729,6 +834,10 @@
     "apiKeys": "API-võtmed",
     "data": "Andmed ja sünkroonimine",
     "interface": "Liides",
+    "hostList": "Peremeesmasinate nimekiri",
+    "credentialList": "Logimisandmete nimekiri",
+    "openHostList": "Peremeesmasinate nimekirja seaded",
+    "openCredentialList": "Logimisandmete nimekirja seaded",
     "appearance": "Välimus",
     "keybindings": "Klahvikombinatsioonid",
     "adminGeneral": "Üldine",
@@ -788,6 +897,36 @@
       "hostRows": {
         "label": "Peremeesarvuti rea valikud"
       }
+    },
+    "adminAccess": "Juurdepääsu ülevaatus",
+    "yourApps": "Sinu rakendused",
+    "otherApps": "Muud rakendused",
+    "hostForm": {
+      "label": "Lisa peremeesmasina vorm",
+      "description": "Lihtne kuvab aadressi, sisselogimise, kausta ja sildid. Täis kuvab kõik valikud. Saate vahetada ka vormi sees.",
+      "simple": "Lihtne",
+      "full": "Täis"
+    },
+    "interfaceDefaults": {
+      "title": "Liidese vaikeväärtused",
+      "intro": "Valige, mida inimesed näevad esimesel sisselogimisel. Nad saavad ikka oma vaadet muuta, kui te seda ei lukusta.",
+      "setFor": "Määra",
+      "everyone": "Kõigile",
+      "inherits": "Kasutab kõigi seadeid, kuni midagi muudate",
+      "useEveryone": "Kasuta kõigi seadeid",
+      "look": "Algne välimus",
+      "lookHint": "Lihtne näitab kõige vähem. Täiustatud näitab iga nuppu.",
+      "simple": "Lihtne",
+      "balanced": "Tasakaalustatud",
+      "advanced": "Täiustatud",
+      "lock": "Lukusta",
+      "lockHint": "Selle rolliga kasutajad ei saa muuta oma välimust ega rööpa rakendusi.",
+      "apps": "Rööpa rakendused",
+      "appsHint": "Ülejäänud jäävad Kõik rakendused ja otsingusse.",
+      "appsAdvanced": "Täiustatud näitab rööpal iga rakendust.",
+      "saved": "Liidese vaikeväärtused salvestatud",
+      "saveFailed": "Liidese vaikeväärtuste salvestamine ebaõnnestus",
+      "lockedNote": "Teie administraator on valinud teie välimuse, seega ei saa seda siin muuta."
     }
   },
   "hostDefaults": {
@@ -867,12 +1006,19 @@
     "pickHint": "Kõik ühenduse seaded asuvad siin, gruppidesse jaotatult, et neid oleks lihtne leida.",
     "clearChoice": "Tühjenda",
     "proxyPathTarget": "sihtmärk",
-    "hostCopyName": "{{name}} (koopia)"
+    "hostCopyName": "{{name}} (koopia)",
+    "moreOptions": "Rohkem valikuid",
+    "moreOptionsHint": "Proksid, hüppemasinad, porti koputamine, ühenduse hoidmine, olekukontrollid ja iga rakenduse sisse- või väljalülitus. Enamik masinaid neid ei vaja.",
+    "folderAndTags": "Kaust, sildid ja märkmed"
   },
   "permissions": {
     "branding": {
       "title": "Brändingu muutmine",
       "description": "Määra rakenduse nimi, slogan ja logo, mida näidatakse kõigile."
+    },
+    "interfaceDefaults": {
+      "title": "Määra liidese vaikeväärtused",
+      "description": "Vali välimus ja rööpa rakendused, millega kasutajad alustavad, kõigile või igale rollile eraldi."
     }
   },
   "onboarding": {
@@ -907,6 +1053,8 @@
     "clickAuto": "Esimene ühenduse loomise viis",
     "useDefaultNamed": "Vaikimisi ({{name}})",
     "useDefaultButtons": "Kasuta vaikimisi nuppe",
-    "perHostHint": "Ühe peremeesmasina jaoks muutmiseks kasutage selle menüüs valikut Nupud peremeesmasina ridadel."
+    "perHostHint": "Ühe peremeesmasina jaoks muutmiseks kasutage selle menüüs valikut Nupud peremeesmasina ridadel.",
+    "moreTools": "Rohkem tööriistu",
+    "more": "Rohkem"
   }
 }

@@ -183,7 +183,7 @@ export function AdminAuditLogSection({
               {t("admin.auditLogFilterUser")}
             </label>
             <Select2
-              className="px-2 py-1 text-[10px] bg-background border border-border text-foreground outline-none"
+              className="px-2 py-1 text-[10px] bg-(--field) border border-border text-foreground outline-none"
               value={filterUserId}
               onChange={(e) => setFilterUserId(e.target.value)}
             >
@@ -201,7 +201,7 @@ export function AdminAuditLogSection({
               {t("admin.auditLogFilterAction")}
             </label>
             <Select2
-              className="px-2 py-1 text-[10px] bg-background border border-border text-foreground outline-none"
+              className="px-2 py-1 text-[10px] bg-(--field) border border-border text-foreground outline-none"
               value={filterAction}
               onChange={(e) => setFilterAction(e.target.value)}
             >
@@ -219,7 +219,7 @@ export function AdminAuditLogSection({
               {t("admin.auditLogFilterResourceType")}
             </label>
             <Select2
-              className="px-2 py-1 text-[10px] bg-background border border-border text-foreground outline-none"
+              className="px-2 py-1 text-[10px] bg-(--field) border border-border text-foreground outline-none"
               value={filterResourceType}
               onChange={(e) => setFilterResourceType(e.target.value)}
             >
@@ -237,7 +237,7 @@ export function AdminAuditLogSection({
               {t("admin.auditLogFilterStatus")}
             </label>
             <Select2
-              className="px-2 py-1 text-[10px] bg-background border border-border text-foreground outline-none"
+              className="px-2 py-1 text-[10px] bg-(--field) border border-border text-foreground outline-none"
               value={filterSuccess}
               onChange={(e) =>
                 setFilterSuccess(e.target.value as "" | "true" | "false")

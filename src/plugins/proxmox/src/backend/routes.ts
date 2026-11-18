@@ -13,6 +13,7 @@ import { resolveProxmoxImportAuth } from "./proxmox-import-auth.js";
 import { parseProxmoxJumpHosts } from "./proxmox-jump-hosts.js";
 import { ProxmoxError, errorCodeOf, isSafeNodeName } from "./proxmox-shared.js";
 import {
+  acquireWriteLock,
   indexImportedGuests,
   parseJsonObject,
   guestFolder,
@@ -560,9 +561,11 @@ async function syncProxmoxHost(
     errors: [],
   };
   const startedAt = new Date().toISOString();
+  let releaseWrites: (() => void) | undefined;
 
   try {
     const discovery = await discoverProxmoxGuestsForHost(userId, sourceHostId);
+    releaseWrites = await acquireWriteLock(userId);
     const sourceHostName = String(discovery.host.name || "Proxmox");
     const defaultCredentialId =
       discovery.config.defaultCredentialId ?? discovery.credentialId ?? null;
@@ -737,6 +740,7 @@ async function syncProxmoxHost(
     });
     throw error;
   } finally {
+    releaseWrites?.();
     runningSyncs.delete(lockKey);
   }
 }

@@ -4,6 +4,7 @@
 
 ### Changed
 
+- Device fields are a shade darker than the page, like every other field
 - Runs in its own process on Termix 26.11.2 and later, with no access to the server beyond what Termix allows it
 - Its process stops when it has nothing to watch or run, and Termix starts it again when there is work, which saves memory on Termix 26.11.2 and later
 

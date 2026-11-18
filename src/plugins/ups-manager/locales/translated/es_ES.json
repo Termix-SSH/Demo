@@ -8,7 +8,10 @@
     "viewHistory": "Historial",
     "viewEvents": "Eventos",
     "viewCommands": "Comandos",
-    "viewSources": "Dispositivos"
+    "viewSources": "Dispositivos",
+    "refresh": "Actualización en vivo",
+    "refreshSeconds": "{{seconds}} segundos",
+    "refreshHint": "Solo se actualiza mientras la Vista general está visible. El SAI puede actualizarse más lentamente. La consulta en segundo plano y las muestras almacenadas se mantienen en 30 segundos."
   },
   "common": {
     "loading": "Cargando...",
@@ -47,6 +50,8 @@
     "charge": "Carga de la batería",
     "runtime": "Tiempo restante",
     "load": "Carga",
+    "estimatedLoad": "Carga estimada del SAI",
+    "estimatedLoadHint": "Vatios de salida / {{watts}} W nominales. {{method}}. La precisión del sensor no está verificada; no es el uso de la CPU ni el consumo de la red eléctrica.",
     "nominal": "{{watts}} W nominales",
     "input": "Voltaje de entrada",
     "output": "Voltaje de salida",
@@ -59,6 +64,60 @@
     "readAt": "Última lectura",
     "ago": "Hace {{time}}"
   },
+  "electrical": {
+    "inputDc": "La entrada es CC",
+    "outputDc": "La salida es CC",
+    "dcHint": "Confirma el dominio eléctrico antes de calcular los vatios a partir del voltaje y la corriente. Esto no cambia ninguna configuración del SAI. La precisión del sensor debe verificarse de forma independiente.",
+    "inputCurrent": "Corriente de entrada",
+    "outputCurrent": "Corriente de salida",
+    "batteryCurrent": "Corriente de la batería",
+    "inputPower": "Potencia de entrada",
+    "outputPower": "Potencia de salida",
+    "reported": "Potencia real informada",
+    "calculated": "Potencia DC calculada: precisión del sensor no verificada",
+    "batteryType": "Química de la batería",
+    "chargeLow": "Umbral de carga baja",
+    "chargeWarning": "Umbral de advertencia de carga",
+    "manufactured": "Fecha de fabricación de la batería",
+    "driver": "Controlador",
+    "driverVersion": "Versión del controlador",
+    "subdriver": "Subcontrolador HID",
+    "driverState": "Estado del controlador",
+    "usb": "Fabricante/producto USB",
+    "raw": "Variables avanzadas de NUT",
+    "search": "Filtrar nombres o valores de variables",
+    "noVariables": "No hay variables coincidentes.",
+    "dcDisclaimer": "La potencia de salida CC calculada estima la carga del SAI, no el consumo de la toma de corriente CA. No corresponde necesariamente al consumo de un solo host. Valide las lecturas de corriente antes de confiar en las estimaciones de potencia o energía."
+  },
+  "energy": {
+    "period": "Energía de salida observada (periodo seleccionado)",
+    "lifetime": "Energía de salida observada (época actual)",
+    "estimated": "Estimado a partir de muestras programadas; no es un medidor de hardware",
+    "coverage": "Cobertura medida",
+    "covered": "Tiempo integrado",
+    "incomplete": "Datos incompletos; el tiempo faltante no se estima",
+    "complete": "Cobertura medida completa",
+    "average": "Potencia de salida media (tiempo cubierto)",
+    "peak": "Pico de salida muestreado",
+    "sampledRange": "Rango de potencia muestreado",
+    "scope": "Salida del SAI, no energía de la red CA. Los totales del período abarcan las épocas de seguimiento indicadas; no se deben tratar diferentes épocas como un único medidor físico.",
+    "resolution": "Segmento nominal del gráfico: {{seconds}} segundos; los huecos se mantienen separados. Pasa el cursor sobre los puntos para ver la hora absoluta y la zona horaria.",
+    "empty": "El seguimiento de energía requiere dos lecturas de potencia programadas válidas. Los vatios desconocidos permanecen no disponibles, no cero.",
+    "error": "No se pudo leer el historial de energía.",
+    "bucket": "Energía de salida observada por segmento",
+    "samples": "Muestras accesibles y energía observada acumulada",
+    "tableHelp": "Solo se suma la energía observada. Los intervalos faltantes no se rellenan. Los valores acumulados abarcan las épocas listadas.",
+    "time": "Inicio del segmento (zona horaria local)",
+    "cumulative": "Wh acumulados en el período seleccionado",
+    "cumulativeChart": "Energía de salida observada acumulada (período seleccionado)",
+    "epochTotal": "Energía observada en esta época",
+    "unavailable": "Potencia de salida no disponible",
+    "epochs": "Separar épocas de seguimiento",
+    "started": "Seguimiento iniciado",
+    "method": "Método de potencia",
+    "chartHelp": "Datos proporcionales al tiempo. Los intervalos omitidos y los cambios de época de seguimiento no se conectan. Los picos muestreados no son mediciones de pico del hardware. Una tabla de datos accesible sigue a los gráficos.",
+    "correlationBlocked": "La correlación de CPU/memoria no está disponible: Host Metrics necesita un servicio de instantáneas autorizado y público con marcas de tiempo de medición. No se ha habilitado ninguna recopilación adicional del host."
+  },
   "history": {
     "error": "No se ha podido cargar el historial.",
     "24h": "24 horas",
@@ -66,7 +125,7 @@
     "30d": "30 días",
     "empty": "Aún no hay suficientes lecturas. Termix lee el UPS cada 30 segundos.",
     "charge": "Carga de la batería",
-    "load": "Carga",
+    "load": "Carga (solo informada por el dispositivo)",
     "runtime": "Tiempo restante",
     "voltage": "Voltaje"
   },
@@ -113,7 +172,7 @@
     "unreachable": "inalcanable",
     "saved": "Guardado.",
     "deleteTitle": "¿Eliminar {{name}}?",
-    "deleteText": "Su historial y eventos también se eliminarán."
+    "deleteText": "También se eliminarán su historial, totales de energía, épocas de seguimiento y eventos."
   },
   "editor": {
     "addTitle": "Añadir UPS",
@@ -172,6 +231,8 @@
     "testFailed": "No se ha podido leer el SAI."
   },
   "card": {
+    "estimatedLoad": "{{value}}% de carga estimada del SAI",
+    "dc": "CC calculada, no verificada",
     "title": "SAI",
     "empty": "No hay ningún SAI configurado. Activa el Gestor de SAI para un host y añade un dispositivo.",
     "runtime": "{{time}} restantes",

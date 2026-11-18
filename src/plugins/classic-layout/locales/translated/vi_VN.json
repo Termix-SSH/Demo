@@ -36,6 +36,7 @@
     "checkNow": "Kiểm tra ngay"
   },
   "nav": {
+    "theme": "Giao diện",
     "copyPassword": "Sao chép mật khẩu",
     "copySudoPassword": "Sao chép mật khẩu Sudo",
     "passwordCopied": "Đã sao chép mật khẩu vào clipboard",
@@ -72,7 +73,15 @@
     "mobileNavigation": "Điều hướng",
     "allTabs": "Tất cả các tab",
     "hideTabBar": "Ẩn thanh tab",
-    "showTabBar": "Hiển thị thanh tab"
+    "showTabBar": "Hiển thị thanh tab",
+    "allApps": "Tất cả ứng dụng",
+    "findApp": "Tìm ứng dụng",
+    "pinToRail": "Ghim vào thanh bên",
+    "unpinFromRail": "Bỏ ghim khỏi thanh bên",
+    "appSettings": "Cài đặt ứng dụng",
+    "allAppsHint": "Ghim những ứng dụng bạn hay dùng. Nhấp chuột phải vào ứng dụng để xem cài đặt.",
+    "allAppsLockedHint": "Quản trị viên sẽ chọn các ứng dụng hiển thị trên thanh bên của bạn.",
+    "viewMenu": "Xem"
   },
   "commandPalette": {
     "searchPlaceholder": "Tìm kiếm máy chủ, lệnh hoặc cài đặt...",
@@ -171,7 +180,8 @@
     "dragToReorder": "Kéo thả ô để di chuyển, kéo cạnh để thay đổi kích thước",
     "clearActivityConfirm": "Xóa hoạt động gần đây của bạn?",
     "resetConfirm": "Đặt lại bảng điều khiển về bố cục mặc định?",
-    "clearFailed": "Không thể xóa hoạt động gần đây"
+    "clearFailed": "Không thể xóa hoạt động gần đây",
+    "help": "Trợ giúp"
   },
   "admin": {
     "sectionGeneral": "Chung",
@@ -237,6 +247,9 @@
     "credentialStorage": "Cho phép lưu mật khẩu và khóa",
     "credentialStorageOff": "Tính năng lưu mật khẩu và khóa đã bị tắt trên máy chủ này. Hãy để trống các trường này, Termix sẽ yêu cầu nhập lại khi bạn kết nối.",
     "credentialStorageDesc": "Khi tắt, không ai có thể lưu mật khẩu hoặc khóa riêng tư trên máy chủ hoặc thông tin đăng nhập, và Termix sẽ yêu cầu nhập chúng khi kết nối. Các thông tin đăng nhập đã được lưu trước đó sẽ vẫn còn cho đến khi bị xóa.",
+    "hostKeyTrust": "Tin tưởng các khóa máy chủ mới mà không cần xác nhận",
+    "hostKeyTrustDesc": "Khi một plugin, lịch trình hoặc API kết nối đến máy chủ có khóa chưa từng được kiểm tra, hãy lưu khóa đó và kết nối. Nếu tắt, các kết nối này sẽ bị từ chối cho đến khi ai đó mở terminal đến máy chủ và tin tưởng khóa của nó.",
+    "hostKeyTrustFailed": "Không thể cập nhật cài đặt khóa máy chủ",
     "secondFactorAfterExternalLogin": "Yêu cầu xác thực hai yếu tố sau khi đăng nhập bên ngoài (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Khi tắt, xác thực hai yếu tố chỉ được yêu cầu sau khi đăng nhập bằng mật khẩu và các phương thức nội bộ khác, giống như trước đây. Khi bật, nó sẽ được yêu cầu sau mọi phương thức đăng nhập, bao gồm cả SSO và LDAP.",
     "allowPasswordReset": "Cho phép đặt lại mật khẩu",
@@ -482,7 +495,89 @@
     "revokeSession": "Đăng xuất",
     "deleteRoleConfirm": "Xóa vai trò {{name}}?",
     "revokeKeyConfirm": "Thu hồi khóa API {{name}}?",
-    "revokeKey": "Thu hồi"
+    "revokeKey": "Thu hồi",
+    "apiKeyScopeReadAll": "Chỉ đọc, mọi thứ người dùng có thể xem",
+    "apiKeyNeverExpires": "Không bao giờ hết hạn",
+    "apiKeyExpiryHint": "Nếu để trống, khóa sẽ có hiệu lực trong 90 ngày.",
+    "changeHeld": "Thay đổi này sẽ chờ {{minutes}} phút để các quản trị viên khác có thể xem.",
+    "userStatusFilter": "Trạng thái tài khoản",
+    "userStatusAll": "Tất cả tài khoản",
+    "userStatusActive": "Hoạt động",
+    "userStatusDisabled": "Đã tắt",
+    "userStatusPending": "Đang chờ phê duyệt",
+    "disabledBadge": "Tắt",
+    "pendingBadge": "Đang chờ",
+    "accountStatusTitle": "Trạng thái tài khoản",
+    "accountStatusActive": "Tài khoản này có thể đăng nhập.",
+    "accountStatusDisabled": "Tài khoản này đã bị tắt. Không thể đăng nhập và các khóa API không hoạt động.",
+    "accountStatusPending": "Tài khoản này đang chờ phê duyệt và chưa thể đăng nhập.",
+    "lastLogin": "Đăng nhập lần cuối {{time}}",
+    "disableUser": "Tắt tài khoản",
+    "enableUser": "Bật tài khoản",
+    "approveUser": "Phê duyệt",
+    "disableUserConfirm": "Tắt {{username}}? Họ sẽ bị đăng xuất ở mọi nơi và không thể đăng nhập cho đến khi bạn bật lại tài khoản.",
+    "userDisabled": "{{username}} đã bị tắt",
+    "userEnabled": "{{username}} đã được bật",
+    "userApproved": "{{username}} đã được phê duyệt",
+    "userStatusFailed": "Không thể thay đổi tài khoản",
+    "profileTitle": "Tên và email",
+    "displayName": "Tên hiển thị",
+    "displayNamePlaceholder": "Tên hiển thị",
+    "email": "Email",
+    "emailPlaceholder": "Email",
+    "profileSaved": "Đã lưu",
+    "profileSaveFailed": "Không thể lưu",
+    "manageTabAccess": "Quyền truy cập",
+    "sectionInvites": "Liên kết mời",
+    "invitesDescription": "Các liên kết cho phép người khác tạo tài khoản, ngay cả khi chức năng đăng ký bị tắt.",
+    "invitesEmpty": "Chưa có liên kết mời nào",
+    "inviteCreate": "Mời mới",
+    "inviteCreateFailed": "Không thể tạo lời mời",
+    "inviteCreatedNotice": "Sao chép liên kết này ngay. Nó sẽ không hiển thị lại.",
+    "inviteCopy": "Sao chép liên kết",
+    "inviteCopied": "Đã sao chép liên kết",
+    "inviteNotePlaceholder": "Ghi chú, ví dụ như dành cho ai",
+    "inviteRole": "Vai trò",
+    "inviteNoRole": "Không có vai trò bổ sung",
+    "inviteExpires": "Hết hạn",
+    "inviteExpiresIn_other": "Hết hạn sau {{count}} ngày",
+    "inviteUses": "Lượt dùng",
+    "inviteMakeAdmin": "Phân quyền quản trị viên",
+    "inviteUntitled": "Mời",
+    "inviteUsesOf": "Đã dùng {{uses}} trong {{max}}",
+    "inviteState_active": "Hoạt động",
+    "inviteState_revoked": "Đã thu hồi",
+    "inviteState_expired": "Đã hết hạn",
+    "inviteState_used": "Đã dùng hết",
+    "inviteRevoke": "Thu hồi",
+    "inviteRevokeConfirm": "Thu hồi liên kết mời này?",
+    "inviteRevokeFailed": "Không thể thu hồi lời mời",
+    "sectionAccess": "Kiểm tra quyền truy cập",
+    "accessCount_other": "{{count}} lượt chia sẻ",
+    "accessExport": "Xuất CSV",
+    "accessExportFailed": "Không thể xuất",
+    "accessKind": "Loại",
+    "accessKindAll": "Tất cả",
+    "accessKind_host": "Máy chủ",
+    "accessKind_folder": "Thư mục",
+    "accessKind_credential": "Thông tin đăng nhập",
+    "accessUser": "Người dùng",
+    "accessAnyUser": "Bất kỳ người dùng nào",
+    "accessRole": "Vai trò",
+    "accessAnyRole": "Bất kỳ vai trò nào",
+    "accessToUser": "cho {{name}}",
+    "accessToRole": "cho vai trò {{name}}",
+    "accessOwner": "chủ sở hữu {{name}}",
+    "accessGrantedBy": "được chia sẻ bởi {{name}}",
+    "accessExpires": "kết thúc {{date}}",
+    "accessLastUsed": "lần cuối dùng {{date}}",
+    "accessEmpty": "Không có gì được chia sẻ",
+    "sectionAccountSettings": "Tài khoản và quyền truy cập",
+    "adminHostBypass": "Quản trị viên có thể mở máy chủ của mọi người dùng",
+    "adminHostBypassDesc": "Khi tắt, quản trị viên chỉ thấy các máy chủ được chia sẻ với họ và không thể mở dữ liệu của người dùng khác từ trang người dùng. Khi bật, hệ thống sẽ chờ thời gian làm mát của quản trị viên nếu có cài đặt.",
+    "signupApproval": "Phê duyệt tài khoản SSO mới",
+    "signupApprovalDesc": "Người dùng đăng nhập qua SSO hoặc LDAP lần đầu sẽ phải chờ quản trị viên phê duyệt tài khoản.",
+    "updateSettingFailed": "Không thể lưu cài đặt"
   },
   "newUi": {
     "sidebar": {
@@ -505,7 +600,8 @@
         "domainPlaceholder": "tùy chọn",
         "connectToAction": "Kết nối đến {{name}}",
         "sshProtocol": "SSH",
-        "noTarget": "Không có thành phần nào được cài đặt có thể kết nối với loại máy chủ này"
+        "noTarget": "Không có thành phần nào được cài đặt có thể kết nối với loại máy chủ này",
+        "loadingTargets": "Đang tải cách kết nối..."
       },
       "keybindings": {
         "description": "Gán phím cho các hành động trong terminal và ứng dụng, hoặc thay đổi phím tắt có sẵn.",
@@ -559,6 +655,9 @@
         "desktopProfileDescription": "Hồ sơ này chỉ tồn tại trên thiết bị này và tự đăng nhập. Liên kết nó với máy chủ Termix để sử dụng cùng các host và cài đặt trên mọi thiết bị.",
         "sectionInterface": "Giao diện",
         "interfacePresetDesc": "Mức độ chi tiết Termix hiển thị. Mọi tính năng vẫn khả dụng.",
+        "closeToTray": "Thu nhỏ xuống khay hệ thống",
+        "closeToTrayDesc": "Đóng cửa sổ sẽ giữ Termix chạy ở khay hệ thống để các kết nối của bạn vẫn mở. Tắt tính năng này để thoát hoàn toàn khi đóng cửa sổ.",
+        "closeToTraySaveFailed": "Không thể lưu cài đặt",
         "presetClearOverrides": "Khôi phục tất cả",
         "presetOverridesTitle": "Đã tùy chỉnh",
         "presetRevertArea": "Hoàn tác",
@@ -691,7 +790,11 @@
         "tryBetaDescription": "Tham gia chương trình beta trong mục Cập nhật.",
         "sendBetaFeedback": "Gửi phản hồi về phiên bản beta",
         "openUpdates": "Cập nhật",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "Tên hiển thị",
+        "emailLabel": "Email",
+        "profileSaved": "Đã lưu",
+        "profileSaveFailed": "Không thể lưu"
       }
     }
   },
@@ -723,6 +826,10 @@
     "apiKeys": "Khóa API",
     "data": "Dữ liệu và đồng bộ",
     "interface": "Giao diện",
+    "hostList": "Danh sách máy chủ",
+    "credentialList": "Danh sách thông tin đăng nhập",
+    "openHostList": "Cài đặt danh sách máy chủ",
+    "openCredentialList": "Cài đặt danh sách thông tin đăng nhập",
     "appearance": "Giao diện",
     "keybindings": "Phím tắt",
     "adminGeneral": "Chung",
@@ -782,6 +889,36 @@
       "hostRows": {
         "label": "Số hàng hiển thị máy chủ"
       }
+    },
+    "adminAccess": "Kiểm tra quyền truy cập",
+    "yourApps": "Ứng dụng của bạn",
+    "otherApps": "Ứng dụng khác",
+    "hostForm": {
+      "label": "Biểu mẫu thêm máy chủ",
+      "description": "Đơn giản hiển thị địa chỉ, đăng nhập, thư mục và thẻ. Đầy đủ hiển thị mọi tùy chọn. Bạn cũng có thể chuyển đổi bên trong biểu mẫu.",
+      "simple": "Đơn giản",
+      "full": "Đầy đủ"
+    },
+    "interfaceDefaults": {
+      "title": "Mặc định giao diện",
+      "intro": "Chọn những gì người dùng thấy khi đăng nhập lần đầu. Họ vẫn có thể thay đổi giao diện của riêng mình trừ khi bạn khóa nó.",
+      "setFor": "Đặt cho",
+      "everyone": "Mọi người",
+      "inherits": "Sử dụng Mọi người cho đến khi bạn thay đổi",
+      "useEveryone": "Sử dụng Mọi người",
+      "look": "Giao diện mặc định",
+      "lookHint": "Đơn giản hiển thị ít nhất. Nâng cao hiển thị mọi nút.",
+      "simple": "Đơn giản",
+      "balanced": "Cân bằng",
+      "advanced": "Nâng cao",
+      "lock": "Khóa",
+      "lockHint": "Người dùng với vai trò này không thể thay đổi giao diện hoặc các ứng dụng trên thanh công cụ của họ.",
+      "apps": "Ứng dụng trên thanh công cụ",
+      "appsHint": "Các ứng dụng còn lại sẽ nằm trong Tất cả ứng dụng và tìm kiếm.",
+      "appsAdvanced": "Nâng cao hiển thị mọi ứng dụng trên thanh công cụ.",
+      "saved": "Đã lưu cài đặt giao diện mặc định",
+      "saveFailed": "Không thể lưu cài đặt giao diện mặc định",
+      "lockedNote": "Quản trị viên đã chọn giao diện cho bạn, nên không thể thay đổi ở đây."
     }
   },
   "hostDefaults": {
@@ -861,12 +998,19 @@
     "pickHint": "Mọi thứ về một kết nối đều nằm ở đây, được nhóm lại để bạn dễ tìm.",
     "clearChoice": "Xóa",
     "proxyPathTarget": "đích",
-    "hostCopyName": "{{name}} (bản sao)"
+    "hostCopyName": "{{name}} (bản sao)",
+    "moreOptions": "Tùy chọn khác",
+    "moreOptionsHint": "Proxy, máy chủ trung gian, port knocking, keepalive, kiểm tra trạng thái và công tắc bật/tắt cho từng ứng dụng. Hầu hết máy chủ không cần những tùy chọn này.",
+    "folderAndTags": "Thư mục, thẻ và ghi chú"
   },
   "permissions": {
     "branding": {
       "title": "Thay đổi thương hiệu",
       "description": "Đặt tên ứng dụng, khẩu hiệu và logo hiển thị cho mọi người."
+    },
+    "interfaceDefaults": {
+      "title": "Đặt cài đặt giao diện mặc định",
+      "description": "Chọn giao diện và ứng dụng trên thanh công cụ mà người dùng bắt đầu với, cho mọi người hoặc cho từng vai trò."
     }
   },
   "onboarding": {
@@ -901,6 +1045,8 @@
     "clickAuto": "Cách kết nối đầu tiên",
     "useDefaultNamed": "Mặc định ({{name}})",
     "useDefaultButtons": "Sử dụng các nút mặc định",
-    "perHostHint": "Để thay đổi cho một host cụ thể, hãy sử dụng tùy chọn Nút trên dòng host trong menu của nó."
+    "perHostHint": "Để thay đổi cho một host cụ thể, hãy sử dụng tùy chọn Nút trên dòng host trong menu của nó.",
+    "moreTools": "Công cụ khác",
+    "more": "Thêm"
   }
 }

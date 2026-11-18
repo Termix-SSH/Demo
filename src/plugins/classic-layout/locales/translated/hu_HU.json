@@ -36,6 +36,7 @@
     "checkNow": "Ellenőrzés most"
   },
   "nav": {
+    "theme": "Téma",
     "copyPassword": "Jelszó másolása",
     "copySudoPassword": "Sudo jelszó másolása",
     "passwordCopied": "Jelszó vágólapra másolva",
@@ -72,7 +73,15 @@
     "mobileNavigation": "Navigáció",
     "allTabs": "Összes lap",
     "hideTabBar": "Lapsáv elrejtése",
-    "showTabBar": "Lapsáv megjelenítése"
+    "showTabBar": "Lapsáv megjelenítése",
+    "allApps": "Összes alkalmazás",
+    "findApp": "Alkalmazás keresése",
+    "pinToRail": "Rögzítés az oldalsávhoz",
+    "unpinFromRail": "Rögzítés feloldása az oldalsávról",
+    "appSettings": "Alkalmazásbeállítások",
+    "allAppsHint": "Rögzítse azokat, amelyeket használ. Kattintson jobb gombbal egy alkalmazásra a beállításaihoz.",
+    "allAppsLockedHint": "A rendszergazdája választja ki az oldalsávon megjelenő alkalmazásokat.",
+    "viewMenu": "Nézet"
   },
   "commandPalette": {
     "searchPlaceholder": "Hosztok, parancsok vagy beállítások keresése...",
@@ -171,7 +180,8 @@
     "dragToReorder": "Húzza a kockákat az áthelyezéshez, a széleket pedig a méretezéshez",
     "clearActivityConfirm": "Törli a legutóbbi tevékenységeit?",
     "resetConfirm": "Visszaállítja a vezérlőpultot az alapértelmezett elrendezésre?",
-    "clearFailed": "Nem sikerült törölni a legutóbbi tevékenységet"
+    "clearFailed": "Nem sikerült törölni a legutóbbi tevékenységet",
+    "help": "Súgó"
   },
   "admin": {
     "sectionGeneral": "Általános",
@@ -237,6 +247,9 @@
     "credentialStorage": "Jelszavak és kulcsok mentésének engedélyezése",
     "credentialStorageOff": "A jelszavak és kulcsok mentése letiltva ezen a szerveren. Hagyja üresen, és a Termix csatlakozáskor kérdezi meg őket.",
     "credentialStorageDesc": "Letiltva: senki nem menthet jelszót vagy privát kulcsot egy gazdagéphez vagy hitelesítő adatahoz, és a Termix csatlakozáskor kérdezi meg őket. A már mentett bejelentkezési adatok addig megmaradnak, amíg ki nem törli őket.",
+    "hostKeyTrust": "Új hosztkulcsok elfogadása felugró ablak nélkül",
+    "hostKeyTrustDesc": "Ha egy bővítmény, ütemezett feladat vagy az API csatlakozik egy olyan hoszthoz, amelynek kulcsát még nem ellenőrizték, mentse el a kulcsot és létesítse a kapcsolatot. Ha ez a beállítás ki van kapcsolva, ezek a kapcsolatok elutasításra kerülnek, amíg valaki nem nyit egy terminált a hoszthoz, és el nem fogadja annak kulcsát.",
+    "hostKeyTrustFailed": "Nem sikerült frissíteni a hosztkulcs-beállítást",
     "secondFactorAfterExternalLogin": "Második hitelesítési tényező kérése külső bejelentkezések után (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Ha ki van kapcsolva, a regisztrált második hitelesítési tényezőt csak jelszavas és egyéb helyi bejelentkezések után kérdezi, mint eddig. Ha be van kapcsolva, minden bejelentkezési módszer után kérdezi, beleértve az SSO-t és az LDAP-ot is.",
     "allowPasswordReset": "Jelszóvisszaállítás engedélyezése",
@@ -487,7 +500,91 @@
     "revokeSession": "Kijelentkezés",
     "deleteRoleConfirm": "Töröljük a(z) {{name}} szerepkört?",
     "revokeKeyConfirm": "Megvonjuk a(z) {{name}} API-kulcsot?",
-    "revokeKey": "Megvonás"
+    "revokeKey": "Megvonás",
+    "apiKeyScopeReadAll": "Csak olvasható, minden, amit a felhasználó láthat",
+    "apiKeyNeverExpires": "Soha nem jár le",
+    "apiKeyExpiryHint": "Ha üresen hagyja, a kulcs 90 napig érvényes.",
+    "changeHeld": "Ez a módosítás {{minutes}} percig várakozik, hogy a többi adminisztrátor is láthassa.",
+    "userStatusFilter": "Fiók állapota",
+    "userStatusAll": "Minden fiók",
+    "userStatusActive": "Aktív",
+    "userStatusDisabled": "Kikapcsolva",
+    "userStatusPending": "Jóváhagyásra vár",
+    "disabledBadge": "Ki",
+    "pendingBadge": "Várakozás",
+    "accountStatusTitle": "Fiók állapota",
+    "accountStatusActive": "Ez a fiók bejelentkezhet.",
+    "accountStatusDisabled": "Ez a fiók kikapcsolva van. Nem lehet vele bejelentkezni, és az API-kulcsok sem működnek.",
+    "accountStatusPending": "Ez a fiók jóváhagyásra vár, és még nem lehet vele bejelentkezni.",
+    "lastLogin": "Utolsó bejelentkezés: {{time}}",
+    "disableUser": "Fiók kikapcsolása",
+    "enableUser": "Fiók bekapcsolása",
+    "approveUser": "Jóváhagyás",
+    "disableUserConfirm": "Letiltod {{username}} fiókját? Mindenhol kijelentkezik, és nem tud bejelentkezni, amíg vissza nem állítod a fiókot.",
+    "userDisabled": "{{username}} fiókja letiltva",
+    "userEnabled": "{{username}} fiókja engedélyezve",
+    "userApproved": "{{username}} jóváhagyva",
+    "userStatusFailed": "A fiók módosítása sikertelen",
+    "profileTitle": "Név és e-mail",
+    "displayName": "Megjelenített név",
+    "displayNamePlaceholder": "Megjelenített név",
+    "email": "E-mail",
+    "emailPlaceholder": "E-mail",
+    "profileSaved": "Mentve",
+    "profileSaveFailed": "Nem sikerült menteni",
+    "manageTabAccess": "Hozzáférés",
+    "sectionInvites": "Meghívó linkek",
+    "invitesDescription": "Linkek, amelyek lehetővé teszik mások számára, hogy fiókot hozzanak létre, még akkor is, ha a regisztráció le van tiltva.",
+    "invitesEmpty": "Még nincsenek meghívó linkek",
+    "inviteCreate": "Új meghívó",
+    "inviteCreateFailed": "Nem sikerült létrehozni a meghívót",
+    "inviteCreatedNotice": "Másold le ezt a linket most. Nem jelenik meg újra.",
+    "inviteCopy": "Link másolása",
+    "inviteCopied": "Link másolva",
+    "inviteNotePlaceholder": "Megjegyzés, például hogy kinek szól",
+    "inviteRole": "Szerepkör",
+    "inviteNoRole": "Nincs extra szerepkör",
+    "inviteExpires": "Lejárat",
+    "inviteExpiresIn_one": "{{count}} nap múlva jár le",
+    "inviteExpiresIn_other": "{{count}} nap múlva jár le",
+    "inviteUses": "Használatok",
+    "inviteMakeAdmin": "Adminisztrátorrá léptetés",
+    "inviteUntitled": "Meghívás",
+    "inviteUsesOf": "{{uses}}/{{max}} használat",
+    "inviteState_active": "Aktív",
+    "inviteState_revoked": "Visszavonva",
+    "inviteState_expired": "Lejárt",
+    "inviteState_used": "Kimerült",
+    "inviteRevoke": "Visszavonás",
+    "inviteRevokeConfirm": "Visszavonja ezt a meghívó linket?",
+    "inviteRevokeFailed": "Nem sikerült visszavonni a meghívót",
+    "sectionAccess": "Hozzáférés-áttekintés",
+    "accessCount_one": "{{count}} megosztás",
+    "accessCount_other": "{{count}} megosztás",
+    "accessExport": "CSV exportálása",
+    "accessExportFailed": "Nem sikerült exportálni",
+    "accessKind": "Típus",
+    "accessKindAll": "Minden",
+    "accessKind_host": "Host",
+    "accessKind_folder": "Mappa",
+    "accessKind_credential": "Hitelesítő adat",
+    "accessUser": "Felhasználó",
+    "accessAnyUser": "Bármely felhasználó",
+    "accessRole": "Szerepkör",
+    "accessAnyRole": "Bármely szerepkör",
+    "accessToUser": "a(z) {{name}} számára",
+    "accessToRole": "a(z) {{name}} szerepkörhöz",
+    "accessOwner": "tulajdonos: {{name}}",
+    "accessGrantedBy": "megosztotta: {{name}}",
+    "accessExpires": "lejárat: {{date}}",
+    "accessLastUsed": "utoljára használva: {{date}}",
+    "accessEmpty": "Nincs megosztott elem",
+    "sectionAccountSettings": "Fiókok és hozzáférés",
+    "adminHostBypass": "A rendszergazdák megnyithatják minden felhasználó hostjait",
+    "adminHostBypassDesc": "Ha ez a beállítás ki van kapcsolva, a rendszergazdák csak azokat a hostokat látják, amelyeket megosztottak velük, és nem férhetnek hozzá más felhasználók adataihoz a felhasználói oldalon. Ha bekapcsolják, a rendszergazdának meg kell várnia a hűtési időt, ha az be van állítva.",
+    "signupApproval": "Új SSO-fiókok jóváhagyása",
+    "signupApprovalDesc": "Azok, akik először jelentkeznek be SSO vagy LDAP segítségével, addig várnak, amíg egy rendszergazda jóvá nem hagyja a fiókot.",
+    "updateSettingFailed": "Nem sikerült menteni a beállítást"
   },
   "newUi": {
     "sidebar": {
@@ -510,7 +607,8 @@
         "domainPlaceholder": "opcionális",
         "connectToAction": "Csatlakozás a(z) {{name}}-hez",
         "sshProtocol": "SSH",
-        "noTarget": "Nincs telepítve olyan, ami csatlakozhatna ehhez a gazdagéptípushoz"
+        "noTarget": "Nincs telepítve olyan, ami csatlakozhatna ehhez a gazdagéptípushoz",
+        "loadingTargets": "Csatlakozási módok betöltése..."
       },
       "keybindings": {
         "description": "Billentyűkombinációk rendelése a terminálban és az alkalmazásban végzett műveletekhez, vagy a beépített gyorsbillentyűk módosítása.",
@@ -564,6 +662,9 @@
         "desktopProfileDescription": "Ez a profil ezen az eszközön él, és önállóan jelentkez be. Csatlakoztasd egy Termix-szerverhez, hogy ugyanazokat a hosztokat és beállításokat használd minden eszközön.",
         "sectionInterface": "Felület",
         "interfacePresetDesc": "Hány részletet jelenít meg a Termix. Minden funkció továbbra is elérhető marad.",
+        "closeToTray": "Bezárás az értesítési területre",
+        "closeToTrayDesc": "Az ablak bezárása után a Termix továbbra is fut az értesítési területen, így a kapcsolatai nyitva maradnak. Ha ki szeretné kapcsolni, az ablak bezárásakor kilép az alkalmazásból.",
+        "closeToTraySaveFailed": "Nem sikerült menteni a beállítást",
         "presetClearOverrides": "Összes visszaállítása",
         "presetOverridesTitle": "Testreszabott",
         "presetRevertArea": "Visszavonás",
@@ -697,7 +798,11 @@
         "tryBetaDescription": "Csatlakozz a béta programhoz a Frissítések menüpontban.",
         "sendBetaFeedback": "Béta visszajelzés küldése",
         "openUpdates": "Frissítések",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "Megjelenített név",
+        "emailLabel": "E-mail",
+        "profileSaved": "Mentve",
+        "profileSaveFailed": "Nem sikerült menteni"
       }
     }
   },
@@ -729,6 +834,10 @@
     "apiKeys": "API-kulcsok",
     "data": "Adatok és szinkronizálás",
     "interface": "Felület",
+    "hostList": "Hostlista",
+    "credentialList": "Hitelesítési adatok listája",
+    "openHostList": "Hostlista beállításai",
+    "openCredentialList": "Hitelesítési adatok listájának beállításai",
     "appearance": "Megjelenés",
     "keybindings": "Billentyűkombinációk",
     "adminGeneral": "Általános",
@@ -788,6 +897,36 @@
       "hostRows": {
         "label": "Gépsor-választások"
       }
+    },
+    "adminAccess": "Hozzáférés-vizsgálat",
+    "yourApps": "Az Ön alkalmazásai",
+    "otherApps": "Egyéb alkalmazások",
+    "hostForm": {
+      "label": "Gazda hozzáadása űrlap",
+      "description": "Az Egyszerű nézet csak a címet, a belépési adatokat, a mappát és a címkéket mutatja. A Teljes nézet minden beállítást megjelenít. Az űrlapon belül is váltogathatsz.",
+      "simple": "Egyszerű",
+      "full": "Teljes"
+    },
+    "interfaceDefaults": {
+      "title": "Felület alapértelmezései",
+      "intro": "Válaszd ki, mit látnak az emberek az első bejelentkezéskor. Később is módosíthatják a saját nézetüket, hacsak nem zárolod.",
+      "setFor": "Beállítás",
+      "everyone": "Mindenki",
+      "inherits": "A Mindenki beállításait használja, amíg nem módosítod",
+      "useEveryone": "Mindenki használata",
+      "look": "Kezdő megjelenés",
+      "lookHint": "Az Egyszerű a legkevesebbet mutatja. A Haladó minden gombot megjelenít.",
+      "simple": "Egyszerű",
+      "balanced": "Kiegyensúlyozott",
+      "advanced": "Haladó",
+      "lock": "Zárolás",
+      "lockHint": "Ezzel a szereppel rendelkező felhasználók nem módosíthatják a megjelenést vagy a sín alkalmazásait.",
+      "apps": "Alkalmazások a sínben",
+      "appsHint": "A többi az Összes alkalmazás és a keresés között marad.",
+      "appsAdvanced": "A Haladó minden alkalmazást megjelenít a sínben.",
+      "saved": "A felület alapértelmezései mentve",
+      "saveFailed": "A felület alapértelmezései nem menthetők",
+      "lockedNote": "A rendszergazgád választotta a megjelenést, így itt nem módosítható."
     }
   },
   "hostDefaults": {
@@ -867,12 +1006,19 @@
     "pickHint": "A csatlakozással kapcsolatos minden itt található, csoportosítva a könnyebb megtalálhatóság érdekében.",
     "clearChoice": "Törlés",
     "proxyPathTarget": "cél",
-    "hostCopyName": "{{name}} (másolat)"
+    "hostCopyName": "{{name}} (másolat)",
+    "moreOptions": "További beállítások",
+    "moreOptionsHint": "Proxy, átugró hosztok, port knocking, keepalive, állapotellenőrzések és az egyes alkalmazások be- vagy kikapcsolója. A legtöbb hosztnak nincs szükségük ezekre.",
+    "folderAndTags": "Mappa, címkék és jegyzetek"
   },
   "permissions": {
     "branding": {
       "title": "Márka módosítása",
       "description": "Állítsd be az alkalmazás nevét, alfejezetét és logóját, amelyet mindenki látni fog."
+    },
+    "interfaceDefaults": {
+      "title": "Felület alapértelmezéseinek beállítása",
+      "description": "Válaszd ki a megjelenést és a sín alkalmazásait, amikkel a felhasználók kezdhetnek, mindenkinek vagy szerepkörönként."
     }
   },
   "onboarding": {
@@ -907,6 +1053,8 @@
     "clickAuto": "Az első kapcsolódási mód",
     "useDefaultNamed": "Alapértelmezett ({{name}})",
     "useDefaultButtons": "Az alapértelmezett gombok használata",
-    "perHostHint": "Ha egy adott hostnál módosítani szeretnéd, használd a Gombok a host sorokban beállítást a menüjében."
+    "perHostHint": "Ha egy adott hostnál módosítani szeretnéd, használd a Gombok a host sorokban beállítást a menüjében.",
+    "moreTools": "További eszközök",
+    "more": "További"
   }
 }

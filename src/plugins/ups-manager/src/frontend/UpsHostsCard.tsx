@@ -15,12 +15,13 @@ import {
 } from "@termix-ssh/plugin-sdk/ui";
 import type { HostSummary } from "../shared/types";
 import { errorMessage, getSummary } from "./api";
-import { formatRuntime } from "./format";
+import { formatEnergy, formatNumber, formatRuntime } from "./format";
 
 const POLL_MS = 60_000;
 
 function rank(row: HostSummary): number {
-  if (row.error || row.flags.includes("low-battery")) return 0;
+  if (row.error || row.energyError || row.flags.includes("low-battery"))
+    return 0;
   if (row.state === "battery" || row.flags.length) return 1;
   return 2;
 }
@@ -81,11 +82,28 @@ export function UpsHostsCard({ isVisible }: DashboardCardProps) {
                 : row.runtimeSec !== null
                   ? t("card.runtime", { time: formatRuntime(row.runtimeSec) })
                   : "",
+              row.energyError,
             ]
               .filter(Boolean)
               .join(" | ")}
             badges={
               <>
+                {row.outputPowerW !== null &&
+                  row.outputPowerW !== undefined && (
+                    <ListBadge tone="muted">
+                      {formatNumber(row.outputPowerW, 2)} W
+                      {row.outputPowerOrigin === "calculated-dc"
+                        ? ` (${t("card.dc")})`
+                        : ""}
+                    </ListBadge>
+                  )}
+                {row.observedOutputWh !== null &&
+                  row.observedOutputWh !== undefined && (
+                    <ListBadge tone="muted">
+                      {formatEnergy(row.observedOutputWh).value}{" "}
+                      {formatEnergy(row.observedOutputWh).unit}
+                    </ListBadge>
+                  )}
                 <ListBadge
                   tone={
                     level === 0
@@ -104,7 +122,12 @@ export function UpsHostsCard({ isVisible }: DashboardCardProps) {
                 )}
                 {row.loadPct !== null && (
                   <ListBadge tone="muted">
-                    {t("card.load", { value: Math.round(row.loadPct) })}
+                    {t(
+                      row.loadOrigin === "estimated"
+                        ? "card.estimatedLoad"
+                        : "card.load",
+                      { value: Math.round(row.loadPct) },
+                    )}
                   </ListBadge>
                 )}
               </>

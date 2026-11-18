@@ -20,7 +20,6 @@ import {
   Upload,
 } from "lucide-react";
 import {
-  AddButton,
   Button,
   DropdownMenu,
   DropdownMenuContent,
@@ -29,12 +28,11 @@ import {
   DropdownMenuTrigger,
   EmptyState,
   PanelList,
-  PanelSearch,
   copyToClipboard,
   useConfirm,
   LoadingState,
-  TOOLBAR_FIT,
 } from "@termix-ssh/plugin-sdk/ui";
+import { Toolbar } from "./panel-toolbar";
 import { createSnippetsApi } from "./snippets-api";
 import { useSnippetRunner, type TargetHost } from "./use-snippet-runner";
 import {
@@ -581,106 +579,102 @@ export function SnippetsPanel({ targetTab }: PanelProps) {
 
     return (
       <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
-        <div
-          className={`flex shrink-0 flex-col gap-2 border-b border-border px-3 py-2 ${TOOLBAR_FIT}`}
-        >
-          <PanelSearch
-            value={search}
-            onChange={setSearch}
-            placeholder={t("searchPlaceholder")}
-            fill
-          />
-          <div className="flex items-center justify-end gap-2">
-            {canCreate && (
-              <AddButton
-                label={t("newSnippet")}
-                onClick={() => setView({ kind: "edit", snippet: null })}
-                className="flex-1"
+        <Toolbar
+          search={search}
+          onSearchChange={setSearch}
+          searchPlaceholder={t("searchPlaceholder")}
+          onAdd={
+            canCreate
+              ? () => setView({ kind: "edit", snippet: null })
+              : undefined
+          }
+          addLabel={t("newSnippet")}
+          below={
+            <>
+              <TargetTerminals
+                terminals={openTerminals}
+                selected={selectedTerminals}
+                onChange={setSelectedTerminals}
               />
-            )}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  title={t("moreActions")}
-                  aria-label={t("moreActions")}
-                >
-                  <MoreHorizontal className="size-3.5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="min-w-48 text-xs">
-                {canCreate && (
-                  <DropdownMenuItem
-                    onClick={() =>
-                      setFolderDialog({ folder: null, editName: null })
-                    }
-                  >
-                    <FolderPlus className="mr-2 size-3.5" />
-                    {t("newFolder")}
-                  </DropdownMenuItem>
-                )}
-                <DropdownMenuItem onClick={() => setAllFolders(true)}>
-                  <ChevronsUpDown className="mr-2 size-3.5" />
-                  {t("expandAll")}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setAllFolders(false)}>
-                  <ChevronsDownUp className="mr-2 size-3.5" />
-                  {t("collapseAll")}
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                {canCreate && (
-                  <>
-                    <DropdownMenuItem onClick={() => startImport(false)}>
-                      <Upload className="mr-2 size-3.5" />
-                      {t("importSkipExisting")}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => startImport(true)}>
-                      <Upload className="mr-2 size-3.5" />
-                      {t("importOverwrite")}
-                    </DropdownMenuItem>
-                  </>
-                )}
+
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".json,application/json"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  e.target.value = "";
+                  if (file) void handleImport(file);
+                }}
+              />
+            </>
+          }
+        >
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                title={t("moreActions")}
+                aria-label={t("moreActions")}
+              >
+                <MoreHorizontal className="size-3.5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="min-w-48 text-xs">
+              {canCreate && (
                 <DropdownMenuItem
-                  onClick={() => void handleExport()}
-                  disabled={snippets.length === 0}
+                  onClick={() =>
+                    setFolderDialog({ folder: null, editName: null })
+                  }
                 >
-                  <Download className="mr-2 size-3.5" />
-                  {t("exportSnippets")}
+                  <FolderPlus className="mr-2 size-3.5" />
+                  {t("newFolder")}
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={openSettingsPage}>
-                  <SlidersHorizontal className="mr-2 size-3.5" />
-                  {t("settingsTitle")}
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <a href={DOCS_URL} target="_blank" rel="noreferrer">
-                    <ExternalLink className="mr-2 size-3.5" />
-                    {t("docsLink")}
-                  </a>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          <TargetTerminals
-            terminals={openTerminals}
-            selected={selectedTerminals}
-            onChange={setSelectedTerminals}
-          />
-
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".json,application/json"
-            className="hidden"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              e.target.value = "";
-              if (file) void handleImport(file);
-            }}
-          />
-        </div>
+              )}
+              <DropdownMenuItem onClick={() => setAllFolders(true)}>
+                <ChevronsUpDown className="mr-2 size-3.5" />
+                {t("expandAll")}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setAllFolders(false)}>
+                <ChevronsDownUp className="mr-2 size-3.5" />
+                {t("collapseAll")}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              {canCreate && (
+                <>
+                  <DropdownMenuItem onClick={() => startImport(false)}>
+                    <Upload className="mr-2 size-3.5" />
+                    {t("importSkipExisting")}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => startImport(true)}>
+                    <Upload className="mr-2 size-3.5" />
+                    {t("importOverwrite")}
+                  </DropdownMenuItem>
+                </>
+              )}
+              <DropdownMenuItem
+                onClick={() => void handleExport()}
+                disabled={snippets.length === 0}
+              >
+                <Download className="mr-2 size-3.5" />
+                {t("exportSnippets")}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={openSettingsPage}>
+                <SlidersHorizontal className="mr-2 size-3.5" />
+                {t("settingsTitle")}
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <a href={DOCS_URL} target="_blank" rel="noreferrer">
+                  <ExternalLink className="mr-2 size-3.5" />
+                  {t("docsLink")}
+                </a>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </Toolbar>
 
         <PanelList>
           {loading ? (

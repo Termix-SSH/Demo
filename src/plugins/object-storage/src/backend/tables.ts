@@ -26,6 +26,8 @@ export const accounts = defineTable(
     credentials: text().notNull(),
     // A pasted PEM for a private CA
     ca: text(),
+    // Bucket names typed by hand, one per line, for logins that can't list them
+    extraBuckets: text(),
     status: varchar(8).notNull(),
     lastError: text(),
     lastCheckAt: timestamp(),

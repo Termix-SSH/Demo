@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -18,6 +19,7 @@ import {
   HostTabEmbed,
   hostActionsFor,
   hostSectionsFor,
+  LoadingState,
   runHostAction,
   SideNav,
   useHostActions,
@@ -37,6 +39,7 @@ import { appliesTo, hostLabel, splitTags } from "./hosts";
 import { HostGrid } from "./tiles/HostGrid";
 import { EmbedSlot, useEmbedNodes } from "./tiles/embeds";
 import { FRESH_MS, useSectionRequest } from "./host-page-nav";
+import { useShellScroll } from "./shell-scroll";
 import { launchersFor } from "./host-launchers";
 
 type HostAction = ReturnType<typeof useHostActions>[number];
@@ -58,8 +61,18 @@ export function HostPage({ host, tab, isVisible, shell }: TabProps) {
   const wanted = (tab.data as { section?: string } | undefined)?.section;
   const [section, setSection] = useState<string>(wanted ?? "overview");
   const [editMode, setEditMode] = useState(false);
+  // The overview stays behind one spinner until its tiles have loaded.
+  const [settled, setSettled] = useState(section !== "overview");
+  const settle = useCallback(() => setSettled(true), []);
+  useEffect(() => {
+    if (section !== "overview") setSettled(true);
+  }, [section]);
   // Tools and sessions stay alive once opened, so switching back keeps their state.
   const embed = useEmbedNodes();
+  // Termix scrolls the overview, so the tiles from other plugins move with
+  // it. A full size section or a drag needs the tab's own height.
+  const shellScroll = section === "overview" && !editMode;
+  useShellScroll(shellScroll);
 
   useEffect(() => {
     if (wanted) setSection(wanted);
@@ -131,10 +144,29 @@ export function HostPage({ host, tab, isVisible, shell }: TabProps) {
   const popOut = (type: string) =>
     shell.openTab(host as never, type, { forceNewTab: true });
   const tags = splitTags(host.tags);
+  // Hidden, not removed: tiles keep loading, and parts from other plugins
+  // hide with their placeholders.
+  const hide = settled ? "" : "invisible";
 
   return (
-    <div className="flex h-full min-h-0 w-full flex-col overflow-hidden">
-      <header className="flex shrink-0 flex-wrap items-center gap-3 border-b border-border px-4 py-3">
+    <div
+      className="relative flex h-full min-h-0 w-full flex-col overflow-hidden"
+      // The shell scrolls the page, so h-full has nothing to fill.
+      style={
+        shellScroll
+          ? { minHeight: "var(--shell-viewport-height, 0px)" }
+          : undefined
+      }
+    >
+      {!settled && (
+        <LoadingState
+          label={t("state.loading")}
+          className="absolute inset-x-0 top-0 z-10 h-[var(--shell-viewport-height,100%)] bg-background"
+        />
+      )}
+      <header
+        className={`flex shrink-0 flex-wrap items-center gap-3 border-b border-border px-4 py-3 ${hide}`}
+      >
         <Server className="size-5 text-accent-brand" />
         <div className="min-w-0">
           <div className="flex items-center gap-2">
@@ -201,7 +233,7 @@ export function HostPage({ host, tab, isVisible, shell }: TabProps) {
         </div>
       </header>
 
-      <div className="flex min-h-0 flex-1 flex-col md:flex-row">
+      <div className={`flex min-h-0 flex-1 flex-col md:flex-row ${hide}`}>
         <SideNav
           label={t("host.sections")}
           active={section}
@@ -251,6 +283,7 @@ export function HostPage({ host, tab, isVisible, shell }: TabProps) {
               onEditMode={setEditMode}
               onOpenTool={open}
               embed={embed}
+              onSettled={settled ? undefined : settle}
             />
           ) : (
             <div key={section} className="absolute inset-0 flex flex-col">

@@ -36,6 +36,7 @@
     "checkNow": "Tarkista nyt"
   },
   "nav": {
+    "theme": "Teema",
     "copyPassword": "Kopioi salasana",
     "copySudoPassword": "Kopioi sudo-salasana",
     "passwordCopied": "Salasana kopioitu leikepöydälle",
@@ -72,7 +73,15 @@
     "mobileNavigation": "Navigointi",
     "allTabs": "Kaikki välilehdet",
     "hideTabBar": "Piilota välilehtipalkki",
-    "showTabBar": "Näytä välilehtipalkki"
+    "showTabBar": "Näytä välilehtipalkki",
+    "allApps": "Kaikki sovellukset",
+    "findApp": "Etsi sovellusta",
+    "pinToRail": "Kiinnitä sivupalkkiin",
+    "unpinFromRail": "Irrota sivupalkista",
+    "appSettings": "Sovelluksen asetukset",
+    "allAppsHint": "Kiinnitä käyttämäsi sovellukset. Avaa sovelluksen asetukset napsauttamalla sitä hiiren oikealla painikkeella.",
+    "allAppsLockedHint": "Järjestelmänvalitsija määrittää sivupalkissa näkyvät sovellukset.",
+    "viewMenu": "Näytä"
   },
   "commandPalette": {
     "searchPlaceholder": "Hae isäntäkoneita, komentoja tai asetuksia...",
@@ -171,7 +180,8 @@
     "dragToReorder": "Vedä laattoja siirtääksesi niitä ja reunoja muuttaaksesi kokoa",
     "clearActivityConfirm": "Haluatko tyhjentää viimeisimmän toimintasi?",
     "resetConfirm": "Haluatko palauttaa kojelaudan oletusasetteluun?",
-    "clearFailed": "Viimeisintä toimintaa ei voitu tyhjentää"
+    "clearFailed": "Viimeisintä toimintaa ei voitu tyhjentää",
+    "help": "Ohje"
   },
   "admin": {
     "sectionGeneral": "Yleiset",
@@ -237,6 +247,9 @@
     "credentialStorage": "Salli salasanoiden ja avainten tallentaminen",
     "credentialStorageOff": "Salasanoiden ja avainten tallentaminen on poistettu käytöstä tässä palvelimessa. Jätä ne tyhjiksi, niin Termix pyytää niitä yhdistettäessä.",
     "credentialStorageDesc": "Kun toiminto on poissa käytöstä, kukaan ei voi tallentaa salasanaa tai yksityistä avainta isäntään tai tunnuksiin, ja Termix pyytää niitä yhdistettäessä. Jo tallennetut kirjautumistiedot pysyvät voimassa, kunnes ne poistetaan.",
+    "hostKeyTrust": "Luota uusiin isäntäavaimiin ilman kyselyä",
+    "hostKeyTrustDesc": "Kun lisäosa, aikataulu tai API yhdistyy isäntään, jonka avainta ei ole aiemmin tarkistettu, tallenna avain ja muodosta yhteys. Jos tämä on pois päältä, yhteydet hylätään, kunnes joku avaa isäntään terminaalin ja luottaa sen avaimeseen.",
+    "hostKeyTrustFailed": "Isäntäavainasetuksen päivittäminen epäonnistui",
     "secondFactorAfterExternalLogin": "Pyydä toista todennustekijää ulkoisen kirjautumisen jälkeen (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Kun tämä on pois päältä, rekisteröityä toista todennustekijää pyydetään vain salasanan ja muiden paikallisten kirjautumistapojen jälkeen kuten ennenkin. Kun tämä on päällä, sitä pyydetään jokaisen kirjautumistavan jälkeen, mukaan lukien SSO ja LDAP.",
     "allowPasswordReset": "Salli salasanan nollaus",
@@ -487,7 +500,91 @@
     "revokeSession": "Kirjaudu ulos",
     "deleteRoleConfirm": "Poista rooli {{name}}?",
     "revokeKeyConfirm": "Peruuta API-avain {{name}}?",
-    "revokeKey": "Peruuta"
+    "revokeKey": "Peruuta",
+    "apiKeyScopeReadAll": "Vain lukuoikeus, kaikki mitä käyttäjä näkee",
+    "apiKeyNeverExpires": "Ei koskaan vanhene",
+    "apiKeyExpiryHint": "Jätetään tyhjäksi, avain toimii 90 päivää.",
+    "changeHeld": "Tämä muutos odottaa {{minutes}} minuuttia, jotta muut ylläpitäjät näkevät sen.",
+    "userStatusFilter": "Tilin tila",
+    "userStatusAll": "Kaikki tilit",
+    "userStatusActive": "Aktiivinen",
+    "userStatusDisabled": "Poistettu käytöstä",
+    "userStatusPending": "Odottaa hyväksyntää",
+    "disabledBadge": "Pois käytöstä",
+    "pendingBadge": "Odottaa",
+    "accountStatusTitle": "Tilin tila",
+    "accountStatusActive": "Tällä tilillä voi kirjautua sisään.",
+    "accountStatusDisabled": "Tämä tili on poistettu käytöstä. Sillä ei voi kirjautua sisään, eikä sen API-avaimet toimi.",
+    "accountStatusPending": "Tämä tili odottaa hyväksyntää, eikä sillä voi vielä kirjautua sisään.",
+    "lastLogin": "Viimeisin kirjautuminen {{time}}",
+    "disableUser": "Poista tili käytöstä",
+    "enableUser": "Ota tili käyttöön",
+    "approveUser": "Hyväksy",
+    "disableUserConfirm": "Haluatko poistaa {{username}} -tilin käytöstä? Käyttäjä kirjautuu ulos kaikista laitteista eikä voi kirjautua sisään ennen kuin otat tilin uudelleen käyttöön.",
+    "userDisabled": "{{username}} on poistettu käytöstä",
+    "userEnabled": "{{username}} on otettu käyttöön",
+    "userApproved": "{{username}} on hyväksytty",
+    "userStatusFailed": "Tilin muuttaminen epäonnistui",
+    "profileTitle": "Nimi ja sähköposti",
+    "displayName": "Näyttönimi",
+    "displayNamePlaceholder": "Näyttönimi",
+    "email": "Sähköposti",
+    "emailPlaceholder": "Sähköposti",
+    "profileSaved": "Tallennettu",
+    "profileSaveFailed": "Tallentaminen epäonnistui",
+    "manageTabAccess": "Pääsy",
+    "sectionInvites": "Kutsulinkit",
+    "invitesDescription": "Linkit, jotka mahdollistavat tilin luomisen vaikka rekisteröityminen on poissa käytöstä.",
+    "invitesEmpty": "Kutsulinkkejä ei vielä ole",
+    "inviteCreate": "Uusi kutsu",
+    "inviteCreateFailed": "Kutsun luominen epäonnistui",
+    "inviteCreatedNotice": "Kopioi tämä linkki nyt. Sitä ei näytetä uudelleen.",
+    "inviteCopy": "Kopioi linkki",
+    "inviteCopied": "Linkki kopioitu",
+    "inviteNotePlaceholder": "Huomautus, kuten kenelle se on",
+    "inviteRole": "Rooli",
+    "inviteNoRole": "Ei ylimääräistä roolia",
+    "inviteExpires": "Vanhenee",
+    "inviteExpiresIn_one": "Vanhenee {{count}} päivän kuluttua",
+    "inviteExpiresIn_other": "Vanhenee {{count}} päivän kuluttua",
+    "inviteUses": "Käytöt",
+    "inviteMakeAdmin": "Tee heistä ylläpitäjä",
+    "inviteUntitled": "Kutsu",
+    "inviteUsesOf": "{{uses}} / {{max}} käytetty",
+    "inviteState_active": "Aktiivinen",
+    "inviteState_revoked": "Peruutettu",
+    "inviteState_expired": "Vanhentunut",
+    "inviteState_used": "Käytetty loppuun",
+    "inviteRevoke": "Peruuta",
+    "inviteRevokeConfirm": "Peruutetaanko tämä kutsulinkki?",
+    "inviteRevokeFailed": "Kutsun peruuttaminen epäonnistui",
+    "sectionAccess": "Käyttöoikeuksien tarkistus",
+    "accessCount_one": "{{count}} jakaminen",
+    "accessCount_other": "{{count}} jakamista",
+    "accessExport": "Vie CSV-tiedostona",
+    "accessExportFailed": "Vienti epäonnistui",
+    "accessKind": "Tyyppi",
+    "accessKindAll": "Kaikki",
+    "accessKind_host": "Isäntä",
+    "accessKind_folder": "Kansio",
+    "accessKind_credential": "Kirjautumistiedot",
+    "accessUser": "Käyttäjä",
+    "accessAnyUser": "Mikä tahansa käyttäjä",
+    "accessRole": "Rooli",
+    "accessAnyRole": "Mikä tahansa rooli",
+    "accessToUser": "käyttäjälle {{name}}",
+    "accessToRole": "roolille {{name}}",
+    "accessOwner": "omistaja {{name}}",
+    "accessGrantedBy": "jakanut {{name}}",
+    "accessExpires": "päättyy {{date}}",
+    "accessLastUsed": "viimeksi käytetty {{date}}",
+    "accessEmpty": "Mitään ei ole jaettu",
+    "sectionAccountSettings": "Tilit ja pääsy",
+    "adminHostBypass": "Ylläpitäjät voivat avata kaikkien käyttäjien isäntien",
+    "adminHostBypassDesc": "Kun tämä on pois päältä, ylläpitäjät näkevät vain heille jaetut isännät eivätkä voi avata muiden käyttäjien tietoja käyttäjä sivulta. Kun tämä on päällä, odotetaan ylläpitäjän viileytysaikaa, jos sellainen on määritetty.",
+    "signupApproval": "Hyväksy uudet SSO-tilit",
+    "signupApprovalDesc": "Kun joku kirjautuu ensimmäistä kertaa SSO:n tai LDAP:n kautta, hän odottaa, kunnes ylläpitäjä hyväksyy tilin.",
+    "updateSettingFailed": "Asetusta ei voitu tallentaa"
   },
   "newUi": {
     "sidebar": {
@@ -510,7 +607,8 @@
         "domainPlaceholder": "valinnainen",
         "connectToAction": "Yhdistä kohteeseen {{name}}",
         "sshProtocol": "SSH",
-        "noTarget": "Mitään asennettua ei voi yhdistää tähän isäntätyyppiin"
+        "noTarget": "Mitään asennettua ei voi yhdistää tähän isäntätyyppiin",
+        "loadingTargets": "Ladataan yhteystapoja..."
       },
       "keybindings": {
         "description": "Määritä näppäimet toiminnille terminaali- ja sovellusnäkymässä tai muuta sisäänrakennettuja pikanäppäimiä.",
@@ -564,6 +662,9 @@
         "desktopProfileDescription": "Tämä profiili on tällä laitteella ja kirjautuu sisään itsenäisesti. Linkitä se Termix-palvelimeen käyttääksesi samoja isäntiä ja asetuksia kaikilla laitteilla.",
         "sectionInterface": "Käyttöliittymä",
         "interfacePresetDesc": "Kuinka paljon yksityiskohtia Termix näyttää. Kaikki ominaisuudet pysyvät käytettävissä.",
+        "closeToTray": "Sulje ilmoitusalueelle",
+        "closeToTrayDesc": "Ikkunan sulkeminen pitää Termixin käynnissä ilmoitusalueella, jotta yhteydet pysyvät auki. Ota pois päältä, jos haluat lopettaa ohjelman ikkunan sulkemisen yhteydessä.",
+        "closeToTraySaveFailed": "Asetusta ei voitu tallentaa",
         "presetClearOverrides": "Palauta kaikki",
         "presetOverridesTitle": "Mukautettu",
         "presetRevertArea": "Palauta",
@@ -697,7 +798,11 @@
         "tryBetaDescription": "Liity beta-ohjelmaan Päivitykset-asetuksista.",
         "sendBetaFeedback": "Lähetä palautetta beta-versiosta",
         "openUpdates": "Päivitykset",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "Näyttönimi",
+        "emailLabel": "Sähköposti",
+        "profileSaved": "Tallennettu",
+        "profileSaveFailed": "Tallennus epäonnistui"
       }
     }
   },
@@ -729,6 +834,10 @@
     "apiKeys": "API-avaimet",
     "data": "Tiedot ja synkronointi",
     "interface": "Käyttöliittymä",
+    "hostList": "Isäntäluettelo",
+    "credentialList": "Tunnusluettelo",
+    "openHostList": "Isäntäluettelon asetukset",
+    "openCredentialList": "Tunnusluettelon asetukset",
     "appearance": "Ulkoasu",
     "keybindings": "Pikanäppäimet",
     "adminGeneral": "Yleiset",
@@ -788,6 +897,36 @@
       "hostRows": {
         "label": "Isäntärivivalinnat"
       }
+    },
+    "adminAccess": "Käyttöoikeuksien tarkastus",
+    "yourApps": "Sovelluksesi",
+    "otherApps": "Muut sovellukset",
+    "hostForm": {
+      "label": "Lisää isäntä-lomake",
+      "description": "Yksinkertainen näyttää osoitteen, kirjautumistiedot, kansion ja tunnisteet. Täysi näyttää kaikki vaihtoehdot. Voit vaihtaa näkymää myös lomakkeen sisällä.",
+      "simple": "Yksinkertainen",
+      "full": "Täysi"
+    },
+    "interfaceDefaults": {
+      "title": "Käyttöliittymän oletukset",
+      "intro": "Valitse, mitä ihmiset näkevät kirjautuessaan ensimmäisen kerran. He voivat silti muuttaa omaa näkymäänsä, ellei sitä ole lukittu.",
+      "setFor": "Aseta kohderyhmälle",
+      "everyone": "Kaikki",
+      "inherits": "Käyttää Kaikki-asetuksia, kunnes muutat jotakin",
+      "useEveryone": "Käytä Kaikki-asetuksia",
+      "look": "Alkutilanne",
+      "lookHint": "Yksinkertainen näyttää vähiten. Edistynyt näyttää kaikki painikkeet.",
+      "simple": "Yksinkertainen",
+      "balanced": "Tasapainoinen",
+      "advanced": "Edistynyt",
+      "lock": "Lukitse",
+      "lockHint": "Tämän roolin käyttäjät eivät voi muuttaa ulkoasuaan tai kiskolla olevia sovelluksia.",
+      "apps": "Sovellukset kiskolla",
+      "appsHint": "Muut pysyvät Kaikki sovellukset -osiossa ja hakutuloksissa.",
+      "appsAdvanced": "Edistynyt näyttää kaikki sovellukset kiskolla.",
+      "saved": "Käyttöliittymän oletukset tallennettu",
+      "saveFailed": "Käyttöliittymän oletusten tallennus epäonnistui",
+      "lockedNote": "Ylläpitäjäsi on valinnut ulkoasusi, joten sitä ei voi muuttaa täällä."
     }
   },
   "hostDefaults": {
@@ -867,12 +1006,19 @@
     "pickHint": "Kaikki yhteysasetukset löytyvät täältä ryhmiteltynä, jotta ne on helppo löytää.",
     "clearChoice": "Tyhjennä",
     "proxyPathTarget": "kohde",
-    "hostCopyName": "{{name}} (kopio)"
+    "hostCopyName": "{{name}} (kopio)",
+    "moreOptions": "Lisää vaihtoehtoja",
+    "moreOptionsHint": "Välityspalvelin, välittäjänä toimivat isäntäkonemiehet, port knocking, keepalive, tilan tarkistukset ja kytkin jokaiselle sovellukselle. Useimmat isäntäkonemiehet eivät tarvitse näitä.",
+    "folderAndTags": "Kansio, tunnisteet ja muistiinpanot"
   },
   "permissions": {
     "branding": {
       "title": "Muuta brändäystä",
       "description": "Määritä sovelluksen nimi, tagline ja logo, jotka näkyvät kaikille."
+    },
+    "interfaceDefaults": {
+      "title": "Aseta käyttöliittymän oletukset",
+      "description": "Valitse ulkoasu ja kiskolla olevat sovellukset, joilla käyttäjät aloittavat, kaikille tai rooleittain."
     }
   },
   "onboarding": {
@@ -907,6 +1053,8 @@
     "clickAuto": "Ensimmäinen yhteysmenetelmä",
     "useDefaultNamed": "Oletus ({{name}})",
     "useDefaultButtons": "Käytä oletuspainikkeita",
-    "perHostHint": "Muuta niitä yhdelle isännälle käyttämällä Isäntäriveiden painikkeet -asetusta sen valikosta."
+    "perHostHint": "Muuta niitä yhdelle isännälle käyttämällä Isäntäriveiden painikkeet -asetusta sen valikosta.",
+    "moreTools": "Lisää työkaluja",
+    "more": "Lisää"
   }
 }

@@ -51,6 +51,7 @@ export const jobs = defineTable(
     keep: text().notNull(),
     alerts: text().notNull(),
     oneFileSystem: boolean().notNull().default(false),
+    backupOptions: text().notNull().default(""),
     lastStatus: varchar(12),
     lastRunAt: timestamp(),
     lastSuccessAt: timestamp(),

@@ -8,7 +8,10 @@
     "viewHistory": "Vēsture",
     "viewEvents": "Notikumi",
     "viewCommands": "Komandas",
-    "viewSources": "Ierīces"
+    "viewSources": "Ierīces",
+    "refresh": "Tiešraides atjaunināšana",
+    "refreshSeconds": "{{seconds}} sekundes",
+    "refreshHint": "Atjaunina tikai tad, kad ir redzams Pārskats. UPS var atjaunināties lēnāk. Fona vaicājumi un saglabātie paraugi joprojām ir 30 sekunžu intervālos."
   },
   "common": {
     "loading": "Ielādē...",
@@ -47,6 +50,8 @@
     "charge": "Akumulatora lādiņš",
     "runtime": "Atlikušais darbības laiks",
     "load": "Slodze",
+    "estimatedLoad": "Aptuvens UPS slodzes līmenis",
+    "estimatedLoadHint": "Izejas vati / {{watts}} W nomināli. {{method}}. Sensora precizitāte nav verificēta; tas nav CPU izmantojums vai AC tīkla patēriņš.",
     "nominal": "{{watts}} W nominālā",
     "input": "Ieejas spriegums",
     "output": "Izejas spriegums",
@@ -59,6 +64,60 @@
     "readAt": "Pēdējā lasīšana",
     "ago": "pirms {{time}}"
   },
+  "electrical": {
+    "inputDc": "Ieeja ir DC",
+    "outputDc": "Izeja ir DC",
+    "dcHint": "Pirms vatu aprēķināšanas no sprieguma un strāvas pārliecinieties par elektrisko režīmu. Tas nemaina nevienu UPS iestatījumu. Sensora precizitāte ir jāpārbauda neatkarīgi.",
+    "inputCurrent": "Ieejas strāva",
+    "outputCurrent": "Izejas strāva",
+    "batteryCurrent": "Akumulatora strāva",
+    "inputPower": "Ieejas jauda",
+    "outputPower": "Izejas jauda",
+    "reported": "Reģistrētā reālā jauda",
+    "calculated": "Aprēķinātā līdzstrāvas jauda – sensora precizitāte nav verificēta",
+    "batteryType": "Akumulatora ķīmija",
+    "chargeLow": "Zema lādiņa slieksnis",
+    "chargeWarning": "Lādiņa brīdinājuma slieksnis",
+    "manufactured": "Akumulatora ražošanas datums",
+    "driver": "Draiveris",
+    "driverVersion": "Šķītāja versija",
+    "subdriver": "HID apakššūts",
+    "driverState": "Šķītāja stāvoklis",
+    "usb": "USB ražotājs / produkts",
+    "raw": "Papildu NUT mainīgie",
+    "search": "Filtrēt mainīgo nosaukumus vai vērtības",
+    "noVariables": "Nav atbilstošu mainīgo.",
+    "dcDisclaimer": "Aprēķinātā DC izejas jauda novērtē UPS slodzi, nevis AC tīkla patēriņu. Tas nav obligāti viena servera patēriņš. Pirms uzticēties jaudas vai enerģijas novērtējumiem, pārbaudiet strāvas mērījumus."
+  },
+  "energy": {
+    "period": "Novērotā izejas enerģija (izvēlētais periods)",
+    "lifetime": "Novērotā izejas enerģija (pašreizējais periods)",
+    "estimated": "Aptuvēts pēc plānotiem paraugiem; nav aparatūras skaitītājs",
+    "coverage": "Mērītais pārklājums",
+    "covered": "Integrētais laiks",
+    "incomplete": "Nepilnīgi dati; trūkstošais laiks nav aptuvēts",
+    "complete": "Pilnīgs mērītais pārklājums",
+    "average": "Vidējā izejas jauda (pārklātais laiks)",
+    "peak": "Izejas virsotne pēc paraugiem",
+    "sampledRange": "Jaudas diapazons pēc paraugiem",
+    "scope": "UPS izeja, nevis AC tīkla enerģija. Perioda kopsummas aptver uzskaitītos izsekošanas periodus; dažādus periodus neuztveriet kā vienu fizisku skaitītāju.",
+    "resolution": "Nominālais diagrammas segments: {{seconds}} sekundes; atstarpes paliek atsevišķas. Uzvediet peli pār punktiem, lai redzētu absolūto laiku un laika joslu.",
+    "empty": "Enerģijas izsekošanai nepieciešami divi derīgi plānoti enerģijas patēriņa mērījumi. Nezināmie vati paliek nepieejami, nevis nulle.",
+    "error": "Neizdevās izlasīt enerģijas vēsturi.",
+    "bucket": "Novērotā izplūdes enerģija segmentā",
+    "samples": "Pieejamie paraugi un kumulatīvā novērotā enerģija",
+    "tableHelp": "Tiek summēta tikai novērotā enerģija. Trūkstošie intervāli netiek aizpildīti. Kumulatīvās vērtības aptver norādītos laikposmus.",
+    "time": "Segmenta sākums (vietējā laika josla)",
+    "cumulative": "Kumulatīvie Wh izvēlētajā periodā",
+    "cumulativeChart": "Kumulatīvā novērotā izplūdes enerģija (izvēlētais periods)",
+    "epochTotal": "Novērotā enerģija šajā laikposmā",
+    "unavailable": "Izplūdes jauda nav pieejama",
+    "epochs": "Atsevišķas izsekošanas ēras",
+    "started": "Izsekošana uzsākta",
+    "method": "Jaudas metode",
+    "chartHelp": "Laikam proporcionāli dati. Trūkstošie intervāli un izsekošanas ēras maiņa nav savienoti. Paraugu virsotnes nav aparatūras virsotņu mērījumi. Pēc diagrammām seko pieejama datu tabula.",
+    "correlationBlocked": "CPU/atmiņas korelācija nav pieejama: Host Metrics nepieciešama publiska, autorizēta momentuzņēmumu pakalpojuma ar mērījumu laika zīmēm. Nav iespējota papildu hosta datu vākšana."
+  },
   "history": {
     "error": "Neizdevās ielādēt vēsturi.",
     "24h": "24 stundas",
@@ -66,7 +125,7 @@
     "30d": "30 dienas",
     "empty": "Vēl nav pietiekami daudz mērījumu. Termix lasa UPS katras 30 sekundes.",
     "charge": "Akumulatora lādiņš",
-    "load": "Slodze",
+    "load": "Aplāde (tikai ierīces ziņotā)",
     "runtime": "Atlikušais darbības laiks",
     "voltage": "Spriegums"
   },
@@ -113,7 +172,7 @@
     "unreachable": "nesasniedzams",
     "saved": "Saglabāts.",
     "deleteTitle": "Vai noņemt {{name}}?",
-    "deleteText": "Tā vēsture un notikumi tiks dzēsti arī."
+    "deleteText": "Tās vēsture, enerģijas kopsummas, izsekošanas ēras un notikumi tiks dzēsti arī."
   },
   "editor": {
     "addTitle": "Pievienot UPS",
@@ -172,6 +231,8 @@
     "testFailed": "Neizdevās izlasīt UPS."
   },
   "card": {
+    "estimatedLoad": "{{value}}% aptuvenā UPS slodze",
+    "dc": "aprēķināts DC, nepārbaudīts",
     "title": "UPS",
     "empty": "Nav iestatīts neviens UPS. Ieslēdziet UPS pārvaldnieku hostam un pievienojiet ierīci.",
     "runtime": "{{time}} atlicis",

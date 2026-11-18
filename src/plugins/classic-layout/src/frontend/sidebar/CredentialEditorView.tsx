@@ -305,7 +305,7 @@ export function CredentialEditorView({
               <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                 {t("hosts.tags")}
               </label>
-              <div className="flex flex-wrap items-center gap-1 min-h-9 px-2 py-1 border border-border bg-background focus-within:ring-1 focus-within:ring-ring">
+              <div className="flex flex-wrap items-center gap-1 min-h-8 px-2 py-1 border border-border bg-(--field) focus-within:ring-1 focus-within:ring-ring">
                 {credForm.tags.map((tag) => (
                   <span
                     key={tag}
@@ -449,7 +449,7 @@ export function CredentialEditorView({
                     credForm.value === "existing_key" ? "" : credForm.value
                   }
                   onChange={(e) => setCredField("value", e.target.value)}
-                  className="w-full px-3 py-2 text-[10px] bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"
+                  className="w-full px-3 py-2 text-[10px] bg-(--field) border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -476,34 +476,37 @@ export function CredentialEditorView({
                   <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                     {t("hosts.sshPublicKeyOptional")}
                   </label>
-                  <PluginComponent
-                    id="credentials.publicKeyDeriver"
-                    privateKey={credForm.value}
-                    passphrase={credForm.passphrase}
-                    onDerived={(publicKey: string) =>
-                      setCredField("publicKey", publicKey)
-                    }
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="h-6 text-[10px] px-2"
-                    disabled={!credForm.publicKey}
-                    onClick={() => {
-                      copyToClipboard(credForm.publicKey ?? "");
-                      toast.success(t("hosts.publicKeyCopied"));
-                    }}
-                  >
-                    <Copy className="size-3 mr-1" /> {t("common.copy")}
-                  </Button>
+                  <div className="flex items-center gap-1.5">
+                    <PluginComponent
+                      id="credentials.publicKeyDeriver"
+                      frameFit="inline"
+                      privateKey={credForm.value}
+                      passphrase={credForm.passphrase}
+                      onDerived={(publicKey: string) =>
+                        setCredField("publicKey", publicKey)
+                      }
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="h-6 text-[10px] px-2"
+                      disabled={!credForm.publicKey}
+                      onClick={() => {
+                        copyToClipboard(credForm.publicKey ?? "");
+                        toast.success(t("hosts.publicKeyCopied"));
+                      }}
+                    >
+                      <Copy className="size-3 mr-1" /> {t("common.copy")}
+                    </Button>
+                  </div>
                 </div>
                 <textarea
                   placeholder="ssh-rsa AAAAB3Nza..."
                   rows={3}
                   value={credForm.publicKey}
                   onChange={(e) => setCredField("publicKey", e.target.value)}
-                  className="w-full px-3 py-2 text-[10px] bg-popover border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"
+                  className="w-full px-3 py-2 text-[10px] bg-(--field) border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"
                 />
               </div>
               <div className="flex flex-col gap-1.5 p-3 border border-border bg-muted/20">
@@ -552,7 +555,7 @@ export function CredentialEditorView({
                   onChange={(e) =>
                     setCredField("certPublicKey", e.target.value)
                   }
-                  className="w-full px-3 py-2 text-[10px] bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"
+                  className="w-full px-3 py-2 text-[10px] bg-(--field) border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring font-mono"
                 />
               </div>
             </div>

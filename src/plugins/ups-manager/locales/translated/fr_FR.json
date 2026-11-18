@@ -8,7 +8,10 @@
     "viewHistory": "Historique",
     "viewEvents": "Événements",
     "viewCommands": "Commandes",
-    "viewSources": "Appareils"
+    "viewSources": "Appareils",
+    "refresh": "Actualisation en direct",
+    "refreshSeconds": "{{seconds}} secondes",
+    "refreshHint": "L'actualisation s'effectue uniquement lorsque la vue d'ensemble est visible. Les mises à jour de l'onduleur peuvent être plus lentes. L'interrogation en arrière-plan et les échantillons stockés restent à 30 secondes."
   },
   "common": {
     "loading": "Chargement...",
@@ -47,6 +50,8 @@
     "charge": "Charge de la batterie",
     "runtime": "Autonomie restante",
     "load": "Charge",
+    "estimatedLoad": "Charge estimée de l'onduleur",
+    "estimatedLoadHint": "Watts de sortie / {{watts}} W nominaux. {{method}}. La précision des capteurs n'est pas vérifiée ; il ne s'agit ni de l'utilisation du CPU ni de la consommation du secteur.",
     "nominal": "{{watts}} W nominal",
     "input": "Tension d'entrée",
     "output": "Tension de sortie",
@@ -59,6 +64,60 @@
     "readAt": "Dernière lecture",
     "ago": "Il y a {{time}}"
   },
+  "electrical": {
+    "inputDc": "L'entrée est en courant continu",
+    "outputDc": "La sortie est en courant continu",
+    "dcHint": "Vérifiez le domaine électrique avant de calculer les watts à partir de la tension et du courant. Cela ne modifie aucun paramètre de l'onduleur. La précision des capteurs doit être vérifiée indépendamment.",
+    "inputCurrent": "Courant d'entrée",
+    "outputCurrent": "Courant de sortie",
+    "batteryCurrent": "Courant de la batterie",
+    "inputPower": "Puissance d'entrée",
+    "outputPower": "Puissance de sortie",
+    "reported": "Puissance réelle signalée",
+    "calculated": "Puissance CC calculée - précision du capteur non vérifiée",
+    "batteryType": "Chimie de la batterie",
+    "chargeLow": "Seuil de faible charge",
+    "chargeWarning": "Seuil d'avertissement de charge",
+    "manufactured": "Date de fabrication de la batterie",
+    "driver": "Pilote",
+    "driverVersion": "Version du pilote",
+    "subdriver": "Sous-pilote HID",
+    "driverState": "État du pilote",
+    "usb": "Fabricant / produit USB",
+    "raw": "Variables NUT avancées",
+    "search": "Filtrer les noms ou valeurs des variables",
+    "noVariables": "Aucune variable correspondante.",
+    "dcDisclaimer": "La puissance de sortie CC calculée estime la charge de l'onduleur, et non la consommation AC sur le secteur. Elle ne correspond pas nécessairement à la consommation d'un seul hôte. Validez les mesures de courant avant de vous fier aux estimations de puissance ou d'énergie."
+  },
+  "energy": {
+    "period": "Énergie de sortie observée (période sélectionnée)",
+    "lifetime": "Énergie de sortie observée (époque actuelle)",
+    "estimated": "Estimé à partir d'échantillons planifiés ; ne provient pas d'un compteur matériel",
+    "coverage": "Couverture mesurée",
+    "covered": "Temps intégré",
+    "incomplete": "Données incomplètes ; le temps manquant n'est pas estimé",
+    "complete": "Couverture mesurée complète",
+    "average": "Puissance de sortie moyenne (temps couvert)",
+    "peak": "Pic de sortie échantillonné",
+    "sampledRange": "Plage de puissance échantillonnée",
+    "scope": "Sortie de l'onduleur, pas l'énergie du secteur. Les totaux par période couvrent les époques de suivi listées ; ne pas considérer différentes époques comme un seul compteur physique.",
+    "resolution": "Segment nominal du graphique : {{seconds}} secondes ; les lacunes restent distinctes. Survolez les points pour voir l'heure absolue et le fuseau horaire.",
+    "empty": "Le suivi de l'énergie nécessite deux relevés de puissance programmés valides. Les watts inconnus restent indisponibles, et non nuls.",
+    "error": "Impossible de lire l'historique de l'énergie.",
+    "bucket": "Énergie de sortie observée par segment",
+    "samples": "Échantillons accessibles et énergie observée cumulative",
+    "tableHelp": "Seule l'énergie observée est additionnée. Les intervalles manquants ne sont pas comblés. Les valeurs cumulatives couvrent les époques répertoriées.",
+    "time": "Début du segment (fuseau horaire local)",
+    "cumulative": "Wh cumulés sur la période sélectionnée",
+    "cumulativeChart": "Énergie de sortie observée cumulative (période sélectionnée)",
+    "epochTotal": "Énergie observée dans cette époque",
+    "unavailable": "Puissance de sortie indisponible",
+    "epochs": "Époques de suivi distinctes",
+    "started": "Suivi démarré",
+    "method": "Méthode de puissance",
+    "chartHelp": "Données proportionnelles au temps. Les intervalles manquants et les changements d'époque de suivi ne sont pas reliés. Les pics échantillonnés ne sont pas des mesures matérielles de pointe. Un tableau de données accessible suit les graphiques.",
+    "correlationBlocked": "La corrélation CPU/mémoire n'est pas disponible : Host Metrics nécessite un service de snapshot public et autorisé avec des horodatages de mesure. Aucune collecte supplémentaire d'hôte n'est activée."
+  },
   "history": {
     "error": "Impossible de charger l'historique.",
     "24h": "24 heures",
@@ -66,7 +125,7 @@
     "30d": "30 jours",
     "empty": "Pas assez de données. Termix lit l'UPS toutes les 30 secondes.",
     "charge": "Charge de la batterie",
-    "load": "Charge",
+    "load": "Charge (uniquement signalée par l'appareil)",
     "runtime": "Autonomie restante",
     "voltage": "Tension"
   },
@@ -113,7 +172,7 @@
     "unreachable": "inaccessible",
     "saved": "Enregistré.",
     "deleteTitle": "Supprimer {{name}} ?",
-    "deleteText": "Son historique et ses événements seront également supprimés."
+    "deleteText": "Son historique, ses totaux d'énergie, ses époques de suivi et ses événements sont également supprimés."
   },
   "editor": {
     "addTitle": "Ajouter un onduiseur",
@@ -172,6 +231,8 @@
     "testFailed": "Impossible de lire l'onduleur."
   },
   "card": {
+    "estimatedLoad": "{{value}}% de charge estimée de l'onduleur",
+    "dc": "DC calculé, non vérifié",
     "title": "Onduleur",
     "empty": "Aucun onduleur configuré. Activez le gestionnaire d'onduleurs pour un hôte et ajoutez un appareil.",
     "runtime": "{{time}} restants",

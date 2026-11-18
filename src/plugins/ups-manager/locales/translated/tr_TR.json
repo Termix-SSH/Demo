@@ -8,7 +8,10 @@
     "viewHistory": "Geçmiş",
     "viewEvents": "Olaylar",
     "viewCommands": "Komutlar",
-    "viewSources": "Cihazlar"
+    "viewSources": "Cihazlar",
+    "refresh": "Canlı yenileme",
+    "refreshSeconds": "{{seconds}} saniye",
+    "refreshHint": "Yenileme yalnızca Genel Bakış görünürken çalışır. UPS daha yavaş güncellenebilir. Arka plan sorgulamaları ve kayıtlı örnekler 30 saniyede bir devam eder."
   },
   "common": {
     "loading": "Yükleniyor...",
@@ -47,6 +50,8 @@
     "charge": "Batarya şarjı",
     "runtime": "Kalan çalışma süresi",
     "load": "Yük",
+    "estimatedLoad": "Tahmini UPS yükü",
+    "estimatedLoadHint": "Çıkış watt / {{watts}} W nominal. {{method}}. Sensör doğruluğu doğrulanmamıştır; CPU kullanımı veya AC duvar tüketimi değildir.",
     "nominal": "{{watts}} W nominal",
     "input": "Giriş voltajı",
     "output": "Çıkış voltajı",
@@ -59,6 +64,60 @@
     "readAt": "Son okuma",
     "ago": "{{time}} önce"
   },
+  "electrical": {
+    "inputDc": "Giriş DC'dir",
+    "outputDc": "Çıkış DC'dir",
+    "dcHint": "Voltaj ve akımdan watt hesaplamadan önce elektriksel alanı doğrulayın. Bu, herhangi bir UPS ayarını değiştirmez. Sensör doğruluğu bağımsız olarak kontrol edilmelidir.",
+    "inputCurrent": "Giriş akımı",
+    "outputCurrent": "Çıkış akımı",
+    "batteryCurrent": "Pil akımı",
+    "inputPower": "Giriş gücü",
+    "outputPower": "Çıkış gücü",
+    "reported": "Bildirim edilen gerçek güç",
+    "calculated": "Hesaplanan DC gücü - sensör doğruluğu doğrulanmamış",
+    "batteryType": "Pil kimyası",
+    "chargeLow": "Düşük şarj eşiği",
+    "chargeWarning": "Şarj uyarı eşiği",
+    "manufactured": "Pil üretim tarihi",
+    "driver": "Sürücü",
+    "driverVersion": "Sürücü sürümü",
+    "subdriver": "HID alt sürücüsü",
+    "driverState": "Sürücü durumu",
+    "usb": "USB üreticisi / ürünü",
+    "raw": "Gelişmiş NUT değişkenleri",
+    "search": "Değişken adlarını veya değerlerini filtrele",
+    "noVariables": "Eşleşen değişken yok.",
+    "dcDisclaimer": "Hesaplanan DC çıkış gücü, UPS yükünü tahmin eder, AC duvar tüketimini değil. Bu, mutlaka tek bir sunucunun tüketimi değildir. Güç veya enerji tahminlerine güvenmeden önce akım okumalarını doğrulayın."
+  },
+  "energy": {
+    "period": "Gözlemlenen çıkış enerjisi (seçili dönem)",
+    "lifetime": "Gözlemlenen çıkış enerjisi (geçen dönem)",
+    "estimated": "Planlı örneklerden tahmin edilmiştir; donanım sayacı değildir",
+    "coverage": "Ölçülen kapsama",
+    "covered": "Entegre süre",
+    "incomplete": "Eksik veriler; eksik süre tahmin edilmez",
+    "complete": "Tam ölçülen kapsama",
+    "average": "Ortalama çıkış gücü (kapsanan süre)",
+    "peak": "Örneklenen çıkış zirvesi",
+    "sampledRange": "Örneklenen güç aralığı",
+    "scope": "UPS çıkışı, AC duvar enerjisi değil. Dönem toplamları listelenen izleme dönemlerini kapsar; farklı dönemleri tek bir fiziksel sayaç olarak değerlendirmeyin.",
+    "resolution": "Nominal grafik segmenti: {{seconds}} saniye; boşluklar ayrı kalır. Mutlak zaman ve saat dilimi için noktalara gelin.",
+    "empty": "Enerji izleme için iki geçerli planlı güç okuması gerekir. Bilinmeyen watt değerleri sıfır değil, kullanılamaz olarak kalır.",
+    "error": "Enerji geçmişi okunamadı.",
+    "bucket": "Bölüm başına gözlemlenen çıkış enerjisi",
+    "samples": "Erişilebilir örnekler ve kümülatif gözlemlenen enerji",
+    "tableHelp": "Sadece gözlemlenen enerji toplanır. Eksik aralıklar doldurulmaz. Kümülatif değerler listelenen zaman damgalarını kapsar.",
+    "time": "Bölüm başlangıcı (yerel saat dilimi)",
+    "cumulative": "Seçili dönemde kümülatif Wh",
+    "cumulativeChart": "Kümülatif gözlemlenen çıkış enerjisi (seçili dönem)",
+    "epochTotal": "Bu zaman diliminde gözlemlenen enerji",
+    "unavailable": "Çıkış gücü kullanılamıyor",
+    "epochs": "Ayrı izleme dönemleri",
+    "started": "İzleme başladı",
+    "method": "Güç yöntemi",
+    "chartHelp": "Zamanla orantılı veriler. Eksik aralıklar ve izleme dönemi değişiklikleri birbirine bağlanmaz. Örneklenen zirveler donanım zirve ölçümleri değildir. Grafiklerin ardından erişilebilir bir veri tablosu yer alır.",
+    "correlationBlocked": "CPU/bellek korelasyonu kullanılamıyor: Host Metrics, ölçüm zaman damgalarına sahip kamuya açık, yetkilendirilmiş bir anlık görüntü hizmeti gerektirir. Ek ana bilgisayar toplama etkin değil."
+  },
   "history": {
     "error": "Geçmiş yüklenemedi.",
     "24h": "24 saat",
@@ -66,7 +125,7 @@
     "30d": "30 gün",
     "empty": "Henüz yeterli okuma yok. Termix UPS'i her 30 saniyede bir okur.",
     "charge": "Batarya şarjı",
-    "load": "Yük",
+    "load": "Yük (yalnızca cihaz tarafından bildirilen)",
     "runtime": "Kalan çalışma süresi",
     "voltage": "Voltaj"
   },
@@ -113,7 +172,7 @@
     "unreachable": "ulaşılamıyor",
     "saved": "Kaydedildi.",
     "deleteTitle": "{{name}} kaldırılsın mı?",
-    "deleteText": "Geçmişi ve olayları da silinecek."
+    "deleteText": "Geçmişi, enerji toplamları, izleme dönemleri ve olayları da silinir."
   },
   "editor": {
     "addTitle": "UPS Ekle",
@@ -172,6 +231,8 @@
     "testFailed": "UPS okunamadı."
   },
   "card": {
+    "estimatedLoad": "{{value}}% tahmini UPS yükü",
+    "dc": "hesaplanan DC, doğrulanmamış",
     "title": "UPS",
     "empty": "UPS yapılandırılmadı. Bir ana bilgisayar için UPS Yöneticisini açın ve bir cihaz ekleyin.",
     "runtime": "{{time}} kaldı",

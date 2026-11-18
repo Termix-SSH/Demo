@@ -36,6 +36,7 @@
     "checkNow": "Verificar agora"
   },
   "nav": {
+    "theme": "Tema",
     "copyPassword": "Copiar palavra-passe",
     "copySudoPassword": "Copiar palavra-passe sudo",
     "passwordCopied": "Palavra-passe copiada para a área de transferência",
@@ -72,7 +73,15 @@
     "mobileNavigation": "Navegação",
     "allTabs": "Todas as separadores",
     "hideTabBar": "Ocultar barra de separadores",
-    "showTabBar": "Mostrar barra de separadores"
+    "showTabBar": "Mostrar barra de separadores",
+    "allApps": "Todas as aplicações",
+    "findApp": "Procurar uma aplicação",
+    "pinToRail": "Fixar na barra lateral",
+    "unpinFromRail": "Desafixar da barra lateral",
+    "appSettings": "Definições da aplicação",
+    "allAppsHint": "Fixe as que utiliza. Clique com o botão direito numa aplicação para aceder às suas definições.",
+    "allAppsLockedHint": "O administrador escolhe as aplicações na sua barra lateral.",
+    "viewMenu": "Ver"
   },
   "commandPalette": {
     "searchPlaceholder": "Pesquisar hosts, comandos ou definições...",
@@ -171,7 +180,8 @@
     "dragToReorder": "Arraste os blocos para os mover e as bordas para redimensionar",
     "clearActivityConfirm": "Limpar a sua atividade recente?",
     "resetConfirm": "Repor o painel para o layout predefinido?",
-    "clearFailed": "Não foi possível limpar a atividade recente"
+    "clearFailed": "Não foi possível limpar a atividade recente",
+    "help": "Ajuda"
   },
   "admin": {
     "sectionGeneral": "Geral",
@@ -237,6 +247,9 @@
     "credentialStorage": "Permitir guardar palavras-passe e chaves",
     "credentialStorageOff": "O armazenamento de palavras-passe e chaves está desativado neste servidor. Deixe-os em branco e o Termix pedirá-as quando se ligar.",
     "credentialStorageDesc": "Desativado: ninguém pode guardar uma palavra-passe ou chave privada num host ou credencial, e o Termix pedirá-as ao ligar. As ligações já guardadas permanecem até serem removidas.",
+    "hostKeyTrust": "Confiar em novas chaves de host sem confirmação",
+    "hostKeyTrustDesc": "Quando um plugin, agendamento ou a API se liga a um host cuja chave nunca foi verificada, guarde essa chave e ligue. Se desativado, essas ligações são recusadas até que alguém abra um terminal para o host e confie na sua chave.",
+    "hostKeyTrustFailed": "Falha ao atualizar a definição da chave de host",
     "secondFactorAfterExternalLogin": "Pedir um segundo fator após inícios de sessão externos (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Desativado: um segundo fator registado é apenas pedido após inícios de sessão com palavra-passe e outros métodos locais, como antes. Ativado: é pedido após todos os métodos de início de sessão, incluindo SSO e LDAP.",
     "allowPasswordReset": "Permitir Redefinição de Palavra-passe",
@@ -492,7 +505,93 @@
     "revokeSession": "Terminar sessão",
     "deleteRoleConfirm": "Eliminar a função {{name}}?",
     "revokeKeyConfirm": "Revogar a chave de API {{name}}?",
-    "revokeKey": "Revogar"
+    "revokeKey": "Revogar",
+    "apiKeyScopeReadAll": "Apenas leitura, tudo o que o utilizador pode ver",
+    "apiKeyNeverExpires": "Nunca expira",
+    "apiKeyExpiryHint": "Se deixar em branco, a chave funciona durante 90 dias.",
+    "changeHeld": "Esta alteração fica pendente por {{minutes}} minutos para que os outros administradores a possam ver.",
+    "userStatusFilter": "Estado da conta",
+    "userStatusAll": "Todas as contas",
+    "userStatusActive": "Ativa",
+    "userStatusDisabled": "Desativada",
+    "userStatusPending": "À espera de aprovação",
+    "disabledBadge": "Desativada",
+    "pendingBadge": "À espera",
+    "accountStatusTitle": "Estado da conta",
+    "accountStatusActive": "Esta conta pode iniciar sessão.",
+    "accountStatusDisabled": "Esta conta está desativada. Não pode iniciar sessão e as suas chaves de API não funcionam.",
+    "accountStatusPending": "Esta conta está à espera de aprovação e ainda não pode iniciar sessão.",
+    "lastLogin": "Último início de sessão {{time}}",
+    "disableUser": "Desativar conta",
+    "enableUser": "Ativar conta",
+    "approveUser": "Aprovar",
+    "disableUserConfirm": "Desativar {{username}}? A sessão será terminada em todos os dispositivos e não poderá iniciar sessão até que a conta seja reativada.",
+    "userDisabled": "{{username}} está desativado",
+    "userEnabled": "{{username}} está ativado",
+    "userApproved": "{{username}} foi aprovado",
+    "userStatusFailed": "Não foi possível alterar a conta",
+    "profileTitle": "Nome e e-mail",
+    "displayName": "Nome de exibição",
+    "displayNamePlaceholder": "Nome de exibição",
+    "email": "E-mail",
+    "emailPlaceholder": "E-mail",
+    "profileSaved": "Guardado",
+    "profileSaveFailed": "Não foi possível guardar",
+    "manageTabAccess": "Acesso",
+    "sectionInvites": "Links de convite",
+    "invitesDescription": "Links que permitem a alguém criar uma conta, mesmo com o registo desativado.",
+    "invitesEmpty": "Ainda não há links de convite",
+    "inviteCreate": "Novo convite",
+    "inviteCreateFailed": "Não foi possível criar o convite",
+    "inviteCreatedNotice": "Copie este link agora. Não será mostrado novamente.",
+    "inviteCopy": "Copiar link",
+    "inviteCopied": "Link copiado",
+    "inviteNotePlaceholder": "Nota, como para quem é",
+    "inviteRole": "Função",
+    "inviteNoRole": "Sem função adicional",
+    "inviteExpires": "Expira",
+    "inviteExpiresIn_one": "Expira em {{count}} dia",
+    "inviteExpiresIn_many": "Expira em {{count}} dias",
+    "inviteExpiresIn_other": "Expira em {{count}} dias",
+    "inviteUses": "Utilizações",
+    "inviteMakeAdmin": "Tornar administrador",
+    "inviteUntitled": "Convidar",
+    "inviteUsesOf": "{{uses}} de {{max}} usados",
+    "inviteState_active": "Ativo",
+    "inviteState_revoked": "Revogado",
+    "inviteState_expired": "Expirado",
+    "inviteState_used": "Esgotado",
+    "inviteRevoke": "Revogar",
+    "inviteRevokeConfirm": "Revogar este link de convite?",
+    "inviteRevokeFailed": "Não foi possível revogar o convite",
+    "sectionAccess": "Revisão de acesso",
+    "accessCount_one": "{{count}} partilha",
+    "accessCount_many": "{{count}} partilhas",
+    "accessCount_other": "{{count}} partilhas",
+    "accessExport": "Exportar CSV",
+    "accessExportFailed": "Não foi possível exportar",
+    "accessKind": "Tipo",
+    "accessKindAll": "Tudo",
+    "accessKind_host": "Host",
+    "accessKind_folder": "Pasta",
+    "accessKind_credential": "Credencial",
+    "accessUser": "Utilizador",
+    "accessAnyUser": "Qualquer utilizador",
+    "accessRole": "Função",
+    "accessAnyRole": "Qualquer função",
+    "accessToUser": "para {{name}}",
+    "accessToRole": "para a função {{name}}",
+    "accessOwner": "proprietário {{name}}",
+    "accessGrantedBy": "partilhado por {{name}}",
+    "accessExpires": "termina em {{date}}",
+    "accessLastUsed": "último uso em {{date}}",
+    "accessEmpty": "Nada está partilhado",
+    "sectionAccountSettings": "Contas e acesso",
+    "adminHostBypass": "Os administradores podem abrir os hosts de todos os utilizadores",
+    "adminHostBypassDesc": "Quando desativado, os administradores só veem os hosts que lhes foram partilhados e não podem abrir dados de outros utilizadores a partir da página do utilizador. Ao ativar, aguarda o período de arrefecimento do administrador, se definido.",
+    "signupApproval": "Aprovar novas contas SSO",
+    "signupApprovalDesc": "Um utilizador que inicie sessão pela primeira vez através de SSO ou LDAP aguarda até que um administrador aprove a conta.",
+    "updateSettingFailed": "Não foi possível guardar a definição"
   },
   "newUi": {
     "sidebar": {
@@ -515,7 +614,8 @@
         "domainPlaceholder": "opcional",
         "connectToAction": "Ligar a {{name}}",
         "sshProtocol": "SSH",
-        "noTarget": "Nada instalado consegue ligar-se a este tipo de host"
+        "noTarget": "Nada instalado consegue ligar-se a este tipo de host",
+        "loadingTargets": "A carregar formas de ligação..."
       },
       "keybindings": {
         "description": "Associar teclas a ações no terminal e na aplicação, ou alterar os atalhos integrados.",
@@ -569,6 +669,9 @@
         "desktopProfileDescription": "Este perfil reside neste dispositivo e inicia sessão de forma independente. Ligue-o a um servidor Termix para usar os mesmos hosts e definições em todos os dispositivos.",
         "sectionInterface": "Interface",
         "interfacePresetDesc": "Quanto detalhe o Termix mostra. Todas as funcionalidades permanecem disponíveis.",
+        "closeToTray": "Fechar para a bandeja",
+        "closeToTrayDesc": "Fechar a janela mantém o Termix a correr na bandeja para que as suas ligações fiquem abertas. Desative para sair quando fechar a janela.",
+        "closeToTraySaveFailed": "Não foi possível guardar a definição",
         "presetClearOverrides": "Restaurar tudo",
         "presetOverridesTitle": "Personalizado",
         "presetRevertArea": "Reverter",
@@ -703,7 +806,11 @@
         "tryBetaDescription": "Junte-se ao programa beta em Atualizações.",
         "sendBetaFeedback": "Enviar feedback da beta",
         "openUpdates": "Atualizações",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "Nome de exibição",
+        "emailLabel": "E-mail",
+        "profileSaved": "Guardado",
+        "profileSaveFailed": "Não foi possível guardar"
       }
     }
   },
@@ -735,6 +842,10 @@
     "apiKeys": "Chaves API",
     "data": "Dados e sincronização",
     "interface": "Interface",
+    "hostList": "Lista de hosts",
+    "credentialList": "Lista de credenciais",
+    "openHostList": "Definições da lista de hosts",
+    "openCredentialList": "Definições da lista de credenciais",
     "appearance": "Aparência",
     "keybindings": "Atalhos de teclado",
     "adminGeneral": "Geral",
@@ -794,6 +905,36 @@
       "hostRows": {
         "label": "Opções de linhas de hosts"
       }
+    },
+    "adminAccess": "Revisão de acesso",
+    "yourApps": "As suas aplicações",
+    "otherApps": "Outras aplicações",
+    "hostForm": {
+      "label": "Formulário de adicionar host",
+      "description": "Simples mostra o endereço, login, pasta e etiquetas. Completo mostra todas as opções. Também pode alternar dentro do formulário.",
+      "simple": "Simples",
+      "full": "Completo"
+    },
+    "interfaceDefaults": {
+      "title": "Definições padrão da interface",
+      "intro": "Escolha o que as pessoas veem quando iniciam sessão pela primeira vez. Elas ainda podem alterar a sua própria visualização, a menos que a bloqueie.",
+      "setFor": "Definir para",
+      "everyone": "Todos",
+      "inherits": "Usa Todos até alterar algo",
+      "useEveryone": "Usar Todos",
+      "look": "Aparência inicial",
+      "lookHint": "Simples mostra o mínimo. Avançado mostra todos os botões.",
+      "simple": "Simples",
+      "balanced": "Equilibrado",
+      "advanced": "Avançado",
+      "lock": "Bloquear",
+      "lockHint": "As pessoas com este papel não podem alterar a sua aparência nem as aplicações na barra lateral.",
+      "apps": "Aplicações na barra lateral",
+      "appsHint": "As restantes ficam em Todas as aplicações e na pesquisa.",
+      "appsAdvanced": "Avançado mostra todas as aplicações na barra lateral.",
+      "saved": "Definições de interface guardadas",
+      "saveFailed": "Não foi possível guardar as definições de interface",
+      "lockedNote": "O seu administrador definiu a sua aparência, por isso não pode ser alterada aqui."
     }
   },
   "hostDefaults": {
@@ -873,12 +1014,19 @@
     "pickHint": "Tudo sobre uma ligação está aqui, agrupado para facilitar a pesquisa.",
     "clearChoice": "Limpar",
     "proxyPathTarget": "destino",
-    "hostCopyName": "{{name}} (cópia)"
+    "hostCopyName": "{{name}} (cópia)",
+    "moreOptions": "Mais opções",
+    "moreOptionsHint": "Proxy, hosts de salto, port knocking, keepalive, verificações de estado e o interruptor de ligar/desligar para cada aplicação. A maioria dos hosts não precisa disto.",
+    "folderAndTags": "Pasta, etiquetas e notas"
   },
   "permissions": {
     "branding": {
       "title": "Alterar marca",
       "description": "Definir o nome da aplicação, o slogan e o logótipo visíveis a todos."
+    },
+    "interfaceDefaults": {
+      "title": "Definir padrões de interface",
+      "description": "Escolha a aparência e as aplicações da barra lateral com que as pessoas começam, para todos ou para cada papel."
     }
   },
   "onboarding": {
@@ -913,6 +1061,8 @@
     "clickAuto": "A primeira forma de ligação",
     "useDefaultNamed": "Predefinição ({{name}})",
     "useDefaultButtons": "Usar os botões predefinidos",
-    "perHostHint": "Para os alterar para um host específico, use Botões nas linhas dos hosts no seu menu."
+    "perHostHint": "Para os alterar para um host específico, use Botões nas linhas dos hosts no seu menu.",
+    "moreTools": "Mais ferramentas",
+    "more": "Mais"
   }
 }

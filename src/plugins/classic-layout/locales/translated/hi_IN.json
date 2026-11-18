@@ -36,6 +36,7 @@
     "checkNow": "अभी जांचें"
   },
   "nav": {
+    "theme": "थीम",
     "copyPassword": "पासवर्ड कॉपी करें",
     "copySudoPassword": "सूडो पासवर्ड कॉपी करें",
     "passwordCopied": "पासवर्ड क्लिपबोर्ड पर कॉपी किया गया",
@@ -72,7 +73,15 @@
     "mobileNavigation": "नेविगेशन",
     "allTabs": "सभी टैब",
     "hideTabBar": "टैब बार छिपाएं",
-    "showTabBar": "टैब बार दिखाएं"
+    "showTabBar": "टैब बार दिखाएं",
+    "allApps": "सभी ऐप्स",
+    "findApp": "एक ऐप खोजें",
+    "pinToRail": "रेल पर पिन करें",
+    "unpinFromRail": "रेल से अनपिन करें",
+    "appSettings": "ऐप सेटिंग्स",
+    "allAppsHint": "जिनका उपयोग आप करते हैं, उन्हें पिन करें। सेटिंग्स के लिए ऐप पर राइट-क्लिक करें।",
+    "allAppsLockedHint": "आपका प्रशासक आपकी रेल पर ऐप्स चुनता है।",
+    "viewMenu": "व्यू"
   },
   "commandPalette": {
     "searchPlaceholder": "होस्ट, कमांड, या सेटिंग्स खोजें...",
@@ -171,7 +180,8 @@
     "dragToReorder": "टाइल्स को खींचकर उनकी स्थिति बदलें और किनारों को खींचकर आकार बदलें",
     "clearActivityConfirm": "अपनी हालिया गतिविधि साफ़ करें?",
     "resetConfirm": "डैशबोर्ड को उसके डिफ़ॉल्ट लेआउट पर रीसेट करें?",
-    "clearFailed": "हाल की गतिविधि साफ नहीं की जा सकी"
+    "clearFailed": "हाल की गतिविधि साफ नहीं की जा सकी",
+    "help": "सहायता"
   },
   "admin": {
     "sectionGeneral": "सामान्य",
@@ -237,6 +247,9 @@
     "credentialStorage": "पासवर्ड और कीज़ सेव करने की अनुमति दें",
     "credentialStorageOff": "इस सर्वर पर पासवर्ड और कीज़ सेव करना बंद कर दिया गया है। उन्हें खाली छोड़ दें और Termix कनेक्ट करते समय पूछेगा।",
     "credentialStorageDesc": "बंद, कोई भी होस्ट या क्रेडेंशियल पर पासवर्ड या प्राइवेट की सेव नहीं कर सकता, और Termix कनेक्ट करते समय उनका अनुरोध करता है। पहले से सेव लॉगिन तब तक रहते हैं जब तक उन्हें हटाया नहीं जाता।",
+    "hostKeyTrust": "बिना प्रॉम्प्ट के नए होस्ट कीज़ पर भरोसा करें",
+    "hostKeyTrustDesc": "जब कोई प्लगइन, शेड्यूल या API किसी ऐसे होस्ट से कनेक्ट करता है जिसकी कीज़ पहले कभी चेक नहीं की गई है, तो उस कीज़ को सेव करें और कनेक्ट करें। बंद होने पर, तब तक उन कनेक्शन को अस्वीकार किया जाएगा जब तक कोई उपयोगकर्ता होस्ट के लिए टर्मिनल नहीं खोलता और उसकी कीज़ पर भरोसा नहीं करता।",
+    "hostKeyTrustFailed": "होस्ट कीज़ सेटिंग अपडेट करने में विफल",
     "secondFactorAfterExternalLogin": "बाहरी लॉगिन (SSO, GitHub, Google, LDAP) के बाद दूसरे कारक के लिए पूछें",
     "secondFactorAfterExternalLoginDesc": "बंद होने पर, एनरोल किया गया दूसरा कारक केवल पासवर्ड और अन्य स्थानीय लॉगिन के बाद पूछा जाता है, जैसा कि पहले था। चालू होने पर, इसे हर लॉगिन विधि के बाद पूछा जाता है, जिसमें SSO और LDAP शामिल हैं।",
     "allowPasswordReset": "पासवर्ड रीसेट की अनुमति दें",
@@ -487,7 +500,91 @@
     "revokeSession": "साइन आउट",
     "deleteRoleConfirm": "{{name}} भूमिका हटाएं?",
     "revokeKeyConfirm": "API कुंजी {{name}} रद्द करें?",
-    "revokeKey": "रद्द करें"
+    "revokeKey": "रद्द करें",
+    "apiKeyScopeReadAll": "केवल पढ़ने के लिए, उपयोगकर्ता जो कुछ भी देख सकता है",
+    "apiKeyNeverExpires": "कभी समाप्त नहीं होता",
+    "apiKeyExpiryHint": "खाली छोड़ने पर, कीज़ 90 दिनों के लिए काम करती है।",
+    "changeHeld": "यह बदलाव {{minutes}} मिनट तक प्रतीक्षा करता है ताकि अन्य एडमिन इसे देख सकें।",
+    "userStatusFilter": "खाता स्थिति",
+    "userStatusAll": "सभी खाते",
+    "userStatusActive": "सक्रिय",
+    "userStatusDisabled": "बंद किया गया",
+    "userStatusPending": "अनुमोदन की प्रतीक्षा में",
+    "disabledBadge": "बंद",
+    "pendingBadge": "प्रतीक्षा",
+    "accountStatusTitle": "खाता स्थिति",
+    "accountStatusActive": "इस खाते से साइन इन किया जा सकता है।",
+    "accountStatusDisabled": "यह खाता बंद है। इससे साइन इन नहीं किया जा सकता और इसके API कुंजी काम नहीं करेंगी।",
+    "accountStatusPending": "यह खाता अनुमोदन की प्रतीक्षा में है और अभी साइन इन नहीं कर सकता।",
+    "lastLogin": "आखिरी साइन इन {{time}}",
+    "disableUser": "खाता बंद करें",
+    "enableUser": "खाता चालू करें",
+    "approveUser": "स्वीकृत करें",
+    "disableUserConfirm": "{{username}} को बंद करें? वे हर जगह से साइन आउट हो जाएंगे और जब तक आप खाते को वापस चालू नहीं करते, तब तक वे साइन इन नहीं कर पाएंगे।",
+    "userDisabled": "{{username}} बंद है",
+    "userEnabled": "{{username}} चालू है",
+    "userApproved": "{{username}} स्वीकृत है",
+    "userStatusFailed": "खाता बदल नहीं सका",
+    "profileTitle": "नाम और ईमेल",
+    "displayName": "प्रदर्शन नाम",
+    "displayNamePlaceholder": "प्रदर्शन नाम",
+    "email": "ईमेल",
+    "emailPlaceholder": "ईमेल",
+    "profileSaved": "सहेजा गया",
+    "profileSaveFailed": "सहेजने में विफल",
+    "manageTabAccess": "पहुंच",
+    "sectionInvites": "आमंत्रण लिंक",
+    "invitesDescription": "लिंक जो किसी को साइन-अप बंद होने के बावजूद खाता बनाने की अनुमति देते हैं।",
+    "invitesEmpty": "अभी तक कोई आमंत्रण लिंक नहीं",
+    "inviteCreate": "नया आमंत्रण",
+    "inviteCreateFailed": "आमंत्रण बनाने में विफल",
+    "inviteCreatedNotice": "इस लिंक को अभी कॉपी करें। यह फिर से नहीं दिखाया जाएगा।",
+    "inviteCopy": "लिंक कॉपी करें",
+    "inviteCopied": "लिंक कॉपी हो गया",
+    "inviteNotePlaceholder": "नोट, जैसे यह किसके लिए है",
+    "inviteRole": "भूमिका",
+    "inviteNoRole": "कोई अतिरिक्त भूमिका नहीं",
+    "inviteExpires": "समय समाप्त",
+    "inviteExpiresIn_one": "{{count}} दिन में समाप्त",
+    "inviteExpiresIn_other": "{{count}} दिनों में समाप्त",
+    "inviteUses": "उपयोग",
+    "inviteMakeAdmin": "उन्हें एडमिन बनाएं",
+    "inviteUntitled": "आमंत्रित करें",
+    "inviteUsesOf": "{{uses}} of {{max}} used",
+    "inviteState_active": "सक्रिय",
+    "inviteState_revoked": "रद्द किया गया",
+    "inviteState_expired": "समय समाप्त",
+    "inviteState_used": "संपूर्ण उपयोग",
+    "inviteRevoke": "रद्द करें",
+    "inviteRevokeConfirm": "क्या इस आमंत्रण लिंक को रद्द करना है?",
+    "inviteRevokeFailed": "आमंत्रण रद्द नहीं किया जा सका",
+    "sectionAccess": "पहुंच समीक्षा",
+    "accessCount_one": "{{count}} शेयर",
+    "accessCount_other": "{{count}} शेयर",
+    "accessExport": "CSV निर्यात करें",
+    "accessExportFailed": "निर्यात नहीं हो सका",
+    "accessKind": "प्रकार",
+    "accessKindAll": "सब कुछ",
+    "accessKind_host": "होस्ट",
+    "accessKind_folder": "फ़ोल्डर",
+    "accessKind_credential": "प्रमाणपत्र",
+    "accessUser": "उपयोगकर्ता",
+    "accessAnyUser": "कोई भी उपयोगकर्ता",
+    "accessRole": "भूमिका",
+    "accessAnyRole": "कोई भी भूमिका",
+    "accessToUser": "{{name}} को",
+    "accessToRole": "भूमिका {{name}} को",
+    "accessOwner": "मालिक {{name}}",
+    "accessGrantedBy": "{{name}} द्वारा साझा किया गया",
+    "accessExpires": "{{date}} को समाप्त होता है",
+    "accessLastUsed": "आखिरी बार {{date}} को उपयोग किया गया",
+    "accessEmpty": "कुछ भी साझा नहीं है",
+    "sectionAccountSettings": "खाते और पहुँच",
+    "adminHostBypass": "एडमिन किसी भी उपयोगकर्ता के होस्ट खोल सकते हैं",
+    "adminHostBypassDesc": "जब यह बंद हो, तो एडमिन केवल उन होस्ट को देख सकते हैं जो उनके साथ साझा किए गए हैं, और वे उपयोगकर्ता पृष्ठ से अन्य उपयोगकर्ताओं के डेटा को नहीं खोल सकते। इसे चालू करने पर, यदि सेट किया गया हो, तो एडमिन कूलिंग-ऑफ समय की प्रतीक्षा की जाती है।",
+    "signupApproval": "नए SSO खातों की अनुमोदन करें",
+    "signupApprovalDesc": "जब कोई पहली बार SSO या LDAP के माध्यम से साइन इन करता है, तो वह तब तक प्रतीक्षा करता है जब तक कि एक एडमिन खाते की अनुमोदन नहीं कर देता।",
+    "updateSettingFailed": "सेटिंग सहेजी नहीं जा सकी"
   },
   "newUi": {
     "sidebar": {
@@ -510,7 +607,8 @@
         "domainPlaceholder": "वैकल्पिक",
         "connectToAction": "{{name}} से कनेक्ट करें",
         "sshProtocol": "SSH",
-        "noTarget": "इस होस्ट प्रकार से कनेक्ट करने के लिए कुछ भी इंस्टॉल नहीं है"
+        "noTarget": "इस होस्ट प्रकार से कनेक्ट करने के लिए कुछ भी इंस्टॉल नहीं है",
+        "loadingTargets": "कनेक्ट करने के तरीके लोड हो रहे हैं..."
       },
       "keybindings": {
         "description": "टर्मिनल और ऐप में कार्यों के लिए कुंजियाँ बाइंड करें, या बिल्ट-इन शॉर्टकट बदलें।",
@@ -564,6 +662,9 @@
         "desktopProfileDescription": "यह प्रोफ़ाइल इस डिवाइस पर रहती है और स्वयं साइन इन करती है। हर डिवाइस पर एक ही होस्ट और सेटिंग्स का उपयोग करने के लिए इसे Termix सर्वर से लिंक करें।",
         "sectionInterface": "इंटरफ़ेस",
         "interfacePresetDesc": "Termix कितनी विस्तार से दिखाता है। हर फ़ीचर उपलब्ध रहता है।",
+        "closeToTray": "ट्रे में बंद करें",
+        "closeToTrayDesc": "विंडो बंद करने पर Termix ट्रे में चलता रहता है ताकि आपकी कनेक्शन खुली रहें। इसे बंद करने पर विंडो बंद करने पर Termix बंद हो जाएगा।",
+        "closeToTraySaveFailed": "सेटिंग सहेजी नहीं जा सकी",
         "presetClearOverrides": "सभी रीसेट करें",
         "presetOverridesTitle": "कस्टमाइज़्ड",
         "presetRevertArea": "वापस करें",
@@ -697,7 +798,11 @@
         "tryBetaDescription": "अपडेट में बीटा प्रोग्राम में शामिल हों।",
         "sendBetaFeedback": "बीटा फीडबैक भेजें",
         "openUpdates": "अपडेट",
-        "hexLabel": "हेक्स"
+        "hexLabel": "हेक्स",
+        "displayNameLabel": "प्रदर्शन नाम",
+        "emailLabel": "ईमेल",
+        "profileSaved": "सहेजा गया",
+        "profileSaveFailed": "सहेजने में विफल"
       }
     }
   },
@@ -729,6 +834,10 @@
     "apiKeys": "API की",
     "data": "डेटा और सिंक",
     "interface": "इंटरफ़ेस",
+    "hostList": "होस्ट सूची",
+    "credentialList": "क्रेडेंशियल सूची",
+    "openHostList": "होस्ट सूची सेटिंग्स",
+    "openCredentialList": "क्रेडेंशियल सूची सेटिंग्स",
     "appearance": "दिखावट",
     "keybindings": "कीबाइंडिंग",
     "adminGeneral": "सामान्य",
@@ -788,6 +897,36 @@
       "hostRows": {
         "label": "होस्ट पंक्ति विकल्प"
       }
+    },
+    "adminAccess": "एक्सेस समीक्षा",
+    "yourApps": "आपके ऐप्स",
+    "otherApps": "अन्य ऐप्स",
+    "hostForm": {
+      "label": "होस्ट फॉर्म जोड़ें",
+      "description": "सरल मोड में पता, लॉगिन, फोल्डर और टैग दिखाए जाते हैं। पूर्ण मोड में सभी विकल्प दिखाए जाते हैं। आप फॉर्म के अंदर से भी इसे बदल सकते हैं।",
+      "simple": "सरल",
+      "full": "पूर्ण"
+    },
+    "interfaceDefaults": {
+      "title": "इंटरफ़ेस डिफ़ॉल्ट",
+      "intro": "चुनें कि लोग पहली बार साइन इन करते समय क्या देखेंगे। जब तक आप इसे लॉक नहीं करते, वे अपनी व्यू बदल सकते हैं।",
+      "setFor": "सेट करें",
+      "everyone": "सभी के लिए",
+      "inherits": "आप कुछ न बदलें तब तक सभी के लिए सेटिंग्स का ही उपयोग करता है",
+      "useEveryone": "सभी के लिए उपयोग करें",
+      "look": "प्रारंभिक दृश्य",
+      "lookHint": "सरल सबसे कम दिखाता है। उन्नत हर बटन दिखाता है।",
+      "simple": "सरल",
+      "balanced": "संतुलित",
+      "advanced": "उन्नत",
+      "lock": "लॉक करें",
+      "lockHint": "इस भूमिका वाले लोग अपना दृश्य या अपनी रेल पर ऐप्स नहीं बदल सकते।",
+      "apps": "रेल पर ऐप्स",
+      "appsHint": "बाकी सभी 'सभी ऐप्स' और खोज में रहते हैं।",
+      "appsAdvanced": "उन्नत रेल पर हर ऐप दिखाता है।",
+      "saved": "इंटरफ़ेस डिफ़ॉल्ट सेव हो गए",
+      "saveFailed": "इंटरफ़ेस डिफ़ॉल्ट सेव नहीं हो पाए",
+      "lockedNote": "आपका एडमिन ने आपका दृश्य चुना है, इसलिए इसे यहाँ नहीं बदला जा सकता।"
     }
   },
   "hostDefaults": {
@@ -867,12 +1006,19 @@
     "pickHint": "कनेक्शन के बारे में सब कुछ यहाँ मौजूद है, ताकि आप इसे आसानी से ढूंढ सकें, समूहों में व्यवस्थित है।",
     "clearChoice": "साफ़ करें",
     "proxyPathTarget": "लक्ष्य",
-    "hostCopyName": "{{name}} (प्रतिलिपि)"
+    "hostCopyName": "{{name}} (प्रतिलिपि)",
+    "moreOptions": "अधिक विकल्प",
+    "moreOptionsHint": "प्रॉक्सी, जंप होस्ट, पोर्ट नॉकिंग, कीपअलाइव, स्टेटस चेक और हर ऐप के लिए ऑन या ऑफ स्विच। ज्यादातर होस्ट्स को इनकी ज़रूरत नहीं होती।",
+    "folderAndTags": "फ़ोल्डर, टैग और नोट्स"
   },
   "permissions": {
     "branding": {
       "title": "ब्रांडिंग बदलें",
       "description": "सभी को दिखाई देने वाले ऐप का नाम, टैगलाइन और लोगो सेट करें।"
+    },
+    "interfaceDefaults": {
+      "title": "इंटरफ़ेस डिफ़ॉल्ट सेट करें",
+      "description": "हर किसी या हर भूमिका के लिए, लोग किस दृश्य और रेल ऐप्स के साथ शुरू करते हैं, यह चुनें।"
     }
   },
   "onboarding": {
@@ -907,6 +1053,8 @@
     "clickAuto": "कनेक्ट करने का पहला तरीका",
     "useDefaultNamed": "डिफ़ॉल्ट ({{name}})",
     "useDefaultButtons": "डिफ़ॉल्ट बटन का उपयोग करें",
-    "perHostHint": "किसी एक होस्ट के लिए इन्हें बदलने के लिए, इसके मेनू में होस्ट पंक्तियों पर बटन का उपयोग करें।"
+    "perHostHint": "किसी एक होस्ट के लिए इन्हें बदलने के लिए, इसके मेनू में होस्ट पंक्तियों पर बटन का उपयोग करें।",
+    "moreTools": "अधिक टूल्स",
+    "more": "अधिक"
   }
 }

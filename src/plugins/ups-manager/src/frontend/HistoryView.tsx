@@ -3,6 +3,7 @@ import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { LineChart, Segmented } from "@termix-ssh/plugin-sdk/ui";
 import type { HistoryPoint, HistoryRange } from "../shared/types";
 import { errorMessage, getHistory } from "./api";
+import { EnergyView } from "./EnergyView";
 
 interface Props {
   hostId: number;
@@ -85,6 +86,12 @@ export function HistoryView({ hostId, sourceId, isVisible }: Props) {
         />
       </div>
       {error && <p className="px-3 py-2 text-xs text-destructive">{error}</p>}
+      <EnergyView
+        hostId={hostId}
+        sourceId={sourceId}
+        range={range}
+        isVisible={isVisible}
+      />
       {points && points.length < 2 && !error && (
         <p className="px-3 py-3 text-xs text-muted-foreground">
           {t("history.empty")}

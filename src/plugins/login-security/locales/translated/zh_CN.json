@@ -46,6 +46,10 @@
       "connectFactorMinutes": {
         "label": "再次要求前的分钟数",
         "description": "输入后，用户可以在这段时间内连接任何主机。注销会提前结束此状态。"
+      },
+      "newDeviceNotice": {
+        "label": "新设备登录提醒",
+        "description": "当有人从未见过的设备登录其账户时，向其发送提醒。每位用户可自行关闭此功能。"
       }
     },
     "host": {
@@ -53,11 +57,18 @@
         "label": "连接前要求二次验证",
         "description": "当登录安全设置为“仅标记的主机”时使用。"
       }
+    },
+    "user": {
+      "newDeviceNotice": {
+        "label": "新设备登录时提醒我",
+        "description": "当有人从未见过的设备登录您的账户时，接收提醒。"
+      }
     }
   },
   "verify": {
     "title": "验证二次验证",
     "intro": "输入您的二次验证以连接到此主机。",
+    "start": "验证",
     "done": "已验证",
     "retry": "返回主机并重新连接。",
     "failed": "验证失败，请重试。",
@@ -74,5 +85,69 @@
     "body": "您的管理员要求使用第二因素登录。请在下方设置一个，以继续使用 Termix。",
     "none": "这里没有可设置的内容？请联系您的管理员安装第二因素插件。",
     "signOut": "退出登录"
+  },
+  "never": "从不",
+  "sessions": {
+    "title": "会话与密钥",
+    "tab": "会话",
+    "current": "当前会话",
+    "meta": "{{type}} | 最后活跃于 {{lastActive}} | 登录时间 {{created}}",
+    "none": "无会话",
+    "end": "退出登录",
+    "ended": "已退出登录",
+    "endOthers": "退出其他会话",
+    "endOthersConfirm": "退出您的 {{count}} 个其他会话？",
+    "endedOthers": "您的其他会话已退出登录",
+    "everyone": "退出所有用户",
+    "everyoneConfirm": "退出此服务器上所有用户的登录？",
+    "everyoneDescription": "除您之外的所有用户都需要重新登录。与此服务器关联的桌面应用需要重新关联。",
+    "everyoneKeysConfirm": "同时撤销此服务器上的所有 API 密钥？",
+    "everyoneKeys": "同时撤销密钥",
+    "everyoneKeysNo": "保留密钥",
+    "everyoneDone": "所有用户已退出登录",
+    "failed": "操作失败，请重试。",
+    "loadFailed": "无法加载您的会话和密钥。"
+  },
+  "keys": {
+    "tab": "API 密钥",
+    "none": "您没有 API 密钥",
+    "full": "完全访问权限",
+    "noExpiry": "永不过期",
+    "meta": "{{prefix}} | 最后使用于 {{lastUsed}} | 过期时间 {{expires}}",
+    "revoke": "撤销",
+    "revoked": "密钥已撤销",
+    "revokeAll": "撤销所有密钥",
+    "revokeAllConfirm": "撤销您的 {{count}} 个 API 密钥？使用它们的脚本将停止工作。",
+    "revokedAll": "您的 API 密钥已撤销"
+  },
+  "waits": {
+    "title": "管理员等待期",
+    "intro": "当有两名或更多管理员时，新增管理员、关闭密码登录、关闭登录插件或启用具有危险访问权限的插件等操作将等待指定时长。其他管理员会收到提醒并可取消该操作。关闭此功能或缩短等待时间也会触发等待。",
+    "adminOnly": "仅管理员可见。",
+    "loadFailed": "无法加载管理员等待期设置。",
+    "active": "已开启，更改将等待 {{minutes}} 分钟",
+    "onOneAdmin": "已开启，但此服务器只有一名管理员，因此无需等待",
+    "off": "已关闭",
+    "admins": "{{count}} 名管理员",
+    "forced": "在 {{name}} 上设置的服务器。",
+    "minutes": "分钟",
+    "turnOn": "开启",
+    "change": "保存",
+    "turnOff": "关闭",
+    "saved": "已保存",
+    "savedHeld": "已保存。需先等待其他管理员确认。",
+    "failed": "操作失败，请重试。",
+    "none": "暂无等待中的管理员更改",
+    "meta": "由 {{who}} 发起 | 将于 {{runsAt}} 生效",
+    "cancel": "取消",
+    "cancelConfirm": "取消此更改？",
+    "cancelled": "已取消",
+    "status": {
+      "pending": "等待中",
+      "applying": "正在应用",
+      "applied": "已应用",
+      "cancelled": "已取消",
+      "failed": "失败"
+    }
   }
 }

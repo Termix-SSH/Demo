@@ -7,7 +7,14 @@ import {
   type PluginHostRecord,
 } from "@termix-ssh/plugin-sdk/frontend";
 import { ListRow, StatusDot, LoadingState } from "@termix-ssh/plugin-sdk/ui";
-import { getCatalog, getSignals, type Catalog, type SignalRead } from "../api";
+import {
+  getCatalog,
+  getSignal,
+  signalWarming,
+  WARMING_POLL_MS,
+  type Catalog,
+  type SignalRead,
+} from "../api";
 import { appliesTo, hostLabel } from "../hosts";
 import { Choice } from "../parts";
 import { ActionTile } from "./ActionTile";
@@ -18,6 +25,7 @@ export const SIGNAL_CARD = "ops-signal";
 export const ACTION_CARD = "ops-action";
 
 const RANK: Record<string, number> = { fail: 0, warn: 1, unknown: 2, ok: 3 };
+const POLL_MS = 30_000;
 
 /** What the dashboard's add list offers: every signal and every action. */
 export async function signalEntries(
@@ -121,24 +129,33 @@ export function SignalCard({
 }: DashboardCardProps) {
   const { t } = useTranslation();
   const catalog = useCatalog();
-  const { hosts } = useHosts();
+  const { hosts, loaded } = useHosts();
   const signalId = String(config?.signal ?? "");
   const hostId = typeof config?.hostId === "number" ? config.hostId : undefined;
   const signal = catalog?.signals.find((entry) => entry.id === signalId);
   const [read, setRead] = useState<SignalRead | null>(null);
+  const warming = signalWarming(read);
 
   const load = useCallback(async () => {
-    const list = await getSignals(
+    const next = await getSignal(
+      signalId,
       hostId !== undefined ? [hostId] : undefined,
     ).catch(() => null);
-    setRead(list?.find((entry) => entry.id === signalId) ?? null);
+    setRead(next);
   }, [hostId, signalId]);
   useEffect(() => {
     if (!isVisible) return;
     void load();
-    const timer = setInterval(() => void load(), 30000);
-    return () => clearInterval(timer);
   }, [isVisible, load]);
+  // Hosts still answering are asked again soon, the rest every 30 seconds.
+  useEffect(() => {
+    if (!isVisible) return;
+    const timer = setInterval(
+      () => void load(),
+      warming ? WARMING_POLL_MS : POLL_MS,
+    );
+    return () => clearInterval(timer);
+  }, [isVisible, load, warming]);
 
   const rows = useMemo(
     () =>
@@ -229,11 +246,14 @@ export function SignalCard({
             onClick={() => shell.openTab(host as never, "host")}
           />
         ))}
-        {rows.length === 0 && (
-          <p className="text-xs text-muted-foreground">
-            {read ? t("tiles.noHosts") : t("state.loading")}
-          </p>
-        )}
+        {rows.length === 0 &&
+          (read && loaded && !warming ? (
+            <p className="p-3 text-xs text-muted-foreground">
+              {t("tiles.noHosts")}
+            </p>
+          ) : (
+            <LoadingState compact label={t("state.loading")} />
+          ))}
       </div>
     </div>
   );

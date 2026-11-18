@@ -2,6 +2,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ComponentType,
   type ReactNode,
@@ -48,7 +49,7 @@ import {
   type SignalRead,
 } from "../api";
 import { ActionGroupTile, ActionTile, useRunner } from "./ActionTile";
-import { EmbedSlot, type EmbedNodes } from "./embeds";
+import { SessionSlot, type EmbedNodes } from "./embeds";
 import { ActionsListTile, RunsTile } from "./ListTiles";
 import {
   defaultHostTiles,
@@ -61,6 +62,7 @@ import {
 } from "./model";
 import { ResourceTile } from "./ResourceTile";
 import { SignalView, statusOf } from "./SignalView";
+import { useElapsed, useSettled } from "./settle";
 
 type HostAction = ReturnType<typeof useHostActions>[number];
 type Icon = ComponentType<{ className?: string }>;
@@ -96,6 +98,7 @@ export function HostGrid({
   onEditMode,
   onOpenTool,
   embed,
+  onSettled,
 }: {
   host: PluginHostRecord;
   shell: ShellApi;
@@ -109,6 +112,8 @@ export function HostGrid({
   onEditMode: (on: boolean) => void;
   onOpenTool: (type: string) => void;
   embed: EmbedNodes;
+  /** Called once the tiles and the parts in them have loaded. */
+  onSettled?: () => void;
 }) {
   const { t } = useTranslation();
   const confirm = useConfirm();
@@ -221,7 +226,15 @@ export function HostGrid({
     ? sanitizeTiles(perHost[String(hostId)])
     : null;
   // Until signals answer, a generated page would miss its status tiles.
-  const ready = !!catalog && signalsLoaded;
+  // Other plugins' tiles come a moment later, so wait for them too.
+  const listsGrace = useElapsed(1000);
+  const ready =
+    !!catalog &&
+    signalsLoaded &&
+    settings.loaded &&
+    (contributions.length > 0 || listsGrace);
+  const box = useRef<HTMLDivElement>(null);
+  useSettled(box, ready, onSettled);
   const generated = useMemo(() => defaultHostTiles(sources), [sources]);
   const slots = useMemo(
     () => tilesForHost(own ?? shared ?? generated, sources),
@@ -545,7 +558,7 @@ export function HostGrid({
                 {title}
               </div>
             ) : (
-              <EmbedSlot type={ref.id} embed={embed} />
+              <SessionSlot type={ref.id} embed={embed} />
             )}
           </TileFrame>
         );
@@ -627,7 +640,7 @@ export function HostGrid({
   }
 
   return (
-    <div className="flex h-full min-h-0">
+    <div ref={box} className="flex h-full min-h-0">
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
         {editMode && (
           <ToolbarBand className="gap-3 text-xs">

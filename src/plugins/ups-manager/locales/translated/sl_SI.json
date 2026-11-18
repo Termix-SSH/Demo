@@ -8,7 +8,10 @@
     "viewHistory": "Zgodovina",
     "viewEvents": "Dogodki",
     "viewCommands": "Ukazi",
-    "viewSources": "Naprave"
+    "viewSources": "Naprave",
+    "refresh": "Svežanje v živo",
+    "refreshSeconds": "{{seconds}} sekund",
+    "refreshHint": "Svežanje poteka le, ko je pregled viden. UPS se lahko posodablja počasneje. Ozadno vprašanje in shranjeni vzorci ostajajo na 30 sekundah."
   },
   "common": {
     "loading": "Nalaganje...",
@@ -47,6 +50,8 @@
     "charge": "Napolnjenost baterije",
     "runtime": "Preostali čas delovanja",
     "load": "Obremenitev",
+    "estimatedLoad": "Ocenjena obremenitev UPS",
+    "estimatedLoadHint": "Izhodni vatovi / {{watts}} W nazivno. {{method}}. Natančnost senzorja ni preverjena; ni izraba CPU ali poraba iz omrežja.",
     "nominal": "{{watts}} W nazivno",
     "input": "Vhodna napetost",
     "output": "Izhodna napetost",
@@ -59,6 +64,60 @@
     "readAt": "Zadnje branje",
     "ago": "Pred {{time}}"
   },
+  "electrical": {
+    "inputDc": "Vhod je enosmerni (DC)",
+    "outputDc": "Izhod je enosmerni (DC)",
+    "dcHint": "Potrdite električno domeno pred izračunom vatov iz napetosti in toka. To ne spremeni nobene nastavitve UPS. Natančnost senzorja je treba preveriti neodvisno.",
+    "inputCurrent": "Vhodni tok",
+    "outputCurrent": "Izhodni tok",
+    "batteryCurrent": "Tok baterije",
+    "inputPower": "Vhodna moč",
+    "outputPower": "Izhodna moč",
+    "reported": "Poročana dejanska moč",
+    "calculated": "Izračunana enosmerna moč – natančnost senzorja ni preverjena",
+    "batteryType": "Kemija baterije",
+    "chargeLow": "Prag nizke napolnjenosti",
+    "chargeWarning": "Prag opozorila o napolnjenosti",
+    "manufactured": "Datum izdelave baterije",
+    "driver": "Vodnik",
+    "driverVersion": "Različica gonilnika",
+    "subdriver": "HID podgonilnik",
+    "driverState": "Stanje gonilnika",
+    "usb": "USB proizvajalec / izdelek",
+    "raw": "Napredne NUT spremenljivke",
+    "search": "Filtriraj imena ali vrednosti spremenljivk",
+    "noVariables": "Ni ujemajočih se spremenljivk.",
+    "dcDisclaimer": "Izračunana moč DC izhoda ocenjuje obremenitev UPS, ne porabo iz stenske vtičnice. Ne nujno predstavlja porabo posameznega strežnika. Pred zaupanjem v ocene moči ali energije preverite meritve tokov."
+  },
+  "energy": {
+    "period": "Opazovana energija izhoda (izbrano obdobje)",
+    "lifetime": "Opazovana energija izhoda (trenutno obdobje)",
+    "estimated": "Ocenjeno na podlagi načrtovanih vzorcev; ni merilnik strojne opreme",
+    "coverage": "Izmerjena pokritost",
+    "covered": "Integriran čas",
+    "incomplete": "Nepopolni podatki; manjkajoči čas ni ocenjen",
+    "complete": "Popolna izmerjena pokritost",
+    "average": "Povprečna izhodna moč (pokriti čas)",
+    "peak": "Vzorčen izhodni vrh",
+    "sampledRange": "Vzorčen razpon moči",
+    "scope": "Izhod UPS, ne energija iz stenske vtičnice. Skupni zneski obdobja zajemajo navedene sledilne epoh; različnih epoh ne obravnavajte kot enega fizičnega merilnika.",
+    "resolution": "Nominalni segment grafikona: {{seconds}} sekund; vrzeli ostanejo ločene. Za absolutni čas in časovni pas premaknite kazalec miši nad točke.",
+    "empty": "Sledenje porabi energije zahteva dve veljavni načrtovani meri porabe. Neznana vrednost v vatih ostaja nedostopna, ni enaka nič.",
+    "error": "Zgodovine porabe energije ni bilo mogoče prebrati.",
+    "bucket": "Opazovana izhodna energija na segment",
+    "samples": "Dostopni vzorci in kumulativna opazovana energija",
+    "tableHelp": "Sešteje se le opazovana energija. Manjkajoči intervali se ne dopolnijo. Kumulativne vrednosti zajemajo navedene časovne obdobje.",
+    "time": "Začetek segmenta (lokalna časovna cona)",
+    "cumulative": "Kumulativni Wh v izbranem obdobju",
+    "cumulativeChart": "Kumulativna opazovana izhodna energija (izbrano obdobje)",
+    "epochTotal": "Opazovana energija v tem časovnem obdobju",
+    "unavailable": "Izhodna moč ni na voljo",
+    "epochs": "Ločena obdobja spremljanja",
+    "started": "Spremljanje je začeto",
+    "method": "Metoda merjenja porabe",
+    "chartHelp": "Časovno sorazmerni podatki. Manjkajoči intervali in spremembe obdobja spremljanja niso povezani. Vzorce vrhov ne predstavljajo merjenja strojnega vrha. Za grafikon sledi dostopna tabela podatkov.",
+    "correlationBlocked": "Korelacija med CPU in pomnilnikom ni na voljo: Host Metrics potrebuje javno, pooblaščeno storitev za posnetke s časovnimi žigi meritev. Ni omogočenega dodatnega zbiranja podatkov gostitelja."
+  },
   "history": {
     "error": "Ni bilo mogoče naložiti zgodovine.",
     "24h": "24 ur",
@@ -66,7 +125,7 @@
     "30d": "30 dni",
     "empty": "Še ni dovolj meritev. Termix bere UPS vsakih 30 sekund.",
     "charge": "Napolnjenost baterije",
-    "load": "Obremenitev",
+    "load": "Obremenitev (samo poročanje naprave)",
     "runtime": "Preostali čas delovanja",
     "voltage": "Napetost"
   },
@@ -113,7 +172,7 @@
     "unreachable": "nedosegljiv",
     "saved": "Shranjeno.",
     "deleteTitle": "Odstraniti {{name}}?",
-    "deleteText": "Tudi njena zgodovina in dogodki bodo izbrisani."
+    "deleteText": "Izbrisana bodo tudi zgodovina, skupne vrednosti energije, obdobja spremljanja in dogodki."
   },
   "editor": {
     "addTitle": "Dodaj UPS",
@@ -172,6 +231,8 @@
     "testFailed": "UPS ni mogoče prebrati."
   },
   "card": {
+    "estimatedLoad": "{{value}} % ocenjena obremenitev UPS",
+    "dc": "izračunano DC, nepreverjeno",
     "title": "UPS",
     "empty": "UPS ni nastavljen. Vklopite Upravitelja UPS za gostitelja in dodajte napravo.",
     "runtime": "{{time}} preostalo",

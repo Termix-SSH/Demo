@@ -6,6 +6,7 @@
 
 - Runs in its own process on Termix 26.11.2 and later, with no access to the server beyond what Termix allows it
 - Several Termix servers share sign in state through their shared database, so Redis is no longer needed
+- Terminals load its sign in part only for hosts that use it or go through a jump host, so they open faster and use less memory
 
 ## 1.0.3
 

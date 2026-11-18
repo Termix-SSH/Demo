@@ -8,7 +8,10 @@
     "viewHistory": "History",
     "viewEvents": "Events",
     "viewCommands": "Commands",
-    "viewSources": "Devices"
+    "viewSources": "Devices",
+    "refresh": "Live vernieuwen",
+    "refreshSeconds": "{{seconds}} seconden",
+    "refreshHint": "Vernieuwt alleen wanneer Overzicht zichtbaar is. De UPS kan langzamer worden bijgewerkt. Achtergrondpolling en opgeslagen monsters blijven op 30 seconden."
   },
   "common": {
     "loading": "Loading...",
@@ -47,6 +50,8 @@
     "charge": "Battery charge",
     "runtime": "Runtime left",
     "load": "Load",
+    "estimatedLoad": "Geschatte UPS-belasting",
+    "estimatedLoadHint": "Uitgangswattage / {{watts}} W nominale waarde. {{method}}. Sensornauwkeurigheid niet geverifieerd; geen CPU-gebruik of AC-wandverbruik.",
     "nominal": "{{watts}} W rated",
     "input": "Input voltage",
     "output": "Output voltage",
@@ -59,6 +64,60 @@
     "readAt": "Last read",
     "ago": "{{time}} ago"
   },
+  "electrical": {
+    "inputDc": "Ingang is DC",
+    "outputDc": "Uitgang is DC",
+    "dcHint": "Bevestig het elektrische domein voordat je wattage berekent op basis van spanning en stroom. Dit wijzigt geen enkele UPS-instelling. Sensornauwkeurigheid moet onafhankelijk worden gecontroleerd.",
+    "inputCurrent": "Ingangsstroom",
+    "outputCurrent": "Uitgangsstroom",
+    "batteryCurrent": "Batteriestroom",
+    "inputPower": "Ingangsvermogen",
+    "outputPower": "Uitgangsvermogen",
+    "reported": "Gerapporteerd werkelijk vermogen",
+    "calculated": "Berekend DC-vermogen - nauwkeurigheid sensor niet geverifieerd",
+    "batteryType": "Batterijchemie",
+    "chargeLow": "Drempelwaarde lage lading",
+    "chargeWarning": "Waarschuwingsdrempel lading",
+    "manufactured": "Productiedatum batterij",
+    "driver": "Stuurprogramma",
+    "driverVersion": "Stuurprogrammaversie",
+    "subdriver": "HID-substuurprogramma",
+    "driverState": "Stuurprogramma-status",
+    "usb": "USB-leverancier / product",
+    "raw": "Geavanceerde NUT-variabelen",
+    "search": "Filter variablenamen of -waarden",
+    "noVariables": "Geen overeenkomende variabelen.",
+    "dcDisclaimer": "De berekende DC-uitgangsvermogen schat de UPS-belasting, niet het AC-netverbruik. Het is niet per se het verbruik van één host. Valideer stroommetingen voordat u vertrouwt op schattingen van vermogen of energie."
+  },
+  "energy": {
+    "period": "Waargenomen uitgangsenergie (geselecteerde periode)",
+    "lifetime": "Waargenomen uitgangsenergie (huidige epoch)",
+    "estimated": "Geschat op basis van geplande monsters; geen hardwaremeter",
+    "coverage": "Gemeten dekking",
+    "covered": "Geïntegreerde tijd",
+    "incomplete": "Onvolledige gegevens; ontbrekende tijd wordt niet geschat",
+    "complete": "Volledige gemeten dekking",
+    "average": "Gemiddeld uitgangsvermogen (gedekte tijd)",
+    "peak": "Gemeten uitgangspiek",
+    "sampledRange": "Gemeten vermogensbereik",
+    "scope": "UPS-uitgang, geen AC-wandenergie. Periodetotalen omvatten de vermelde tracking-epochs; behandel verschillende epochs niet als één fysieke meter.",
+    "resolution": "Nominale grafieksegment: {{seconds}} seconden; hiaten blijven gescheiden. Beweeg de muis over punten voor absolute tijd en tijdzone.",
+    "empty": "Energiebewaking vereist twee geldige geplande vermogensmetingen. Onbekende wattage blijft onbeschikbaar, niet nul.",
+    "error": "Kan energieverloop niet lezen.",
+    "bucket": "Waargenomen energieoutput per segment",
+    "samples": "Beschikbare monsters en cumulatieve waargenomen energie",
+    "tableHelp": "Alleen waargenomen energie wordt opgeteld. Ontbrekende intervallen worden niet ingevuld. Cumulatieve waarden omvatten de vermelde periodes.",
+    "time": "Segmentstart (lokale tijdzone)",
+    "cumulative": "Cumulatieve Wh in geselecteerde periode",
+    "cumulativeChart": "Cumulatieve waargenomen energieoutput (geselecteerde periode)",
+    "epochTotal": "Waargenomen energie in deze periode",
+    "unavailable": "Outputvermogen niet beschikbaar",
+    "epochs": "Afzonderlijke meetperioden",
+    "started": "Meten gestart",
+    "method": "Vermoodmethode",
+    "chartHelp": "Tijdproportionele gegevens. Ontbrekende intervallen en wijzigingen van de meetperiode worden niet verbonden. Bemonsterde pieken zijn geen hardwarematige piekmetingen. Een toegankelijke gegevenstabel volgt na de grafieken.",
+    "correlationBlocked": "CPU/geheugen-correlatie is niet beschikbaar: Host Metrics vereist een publieke, geautoriseerde snapshot-service met meettijdstempels. Er is geen extra hostverzameling ingeschakeld."
+  },
   "history": {
     "error": "Could not load the history.",
     "24h": "24 hours",
@@ -66,7 +125,7 @@
     "30d": "30 days",
     "empty": "Not enough readings yet. Termix reads the UPS every 30 seconds.",
     "charge": "Battery charge",
-    "load": "Load",
+    "load": "Belasting (alleen door apparaat gemeld)",
     "runtime": "Runtime left",
     "voltage": "Voltage"
   },
@@ -113,7 +172,7 @@
     "unreachable": "onbereikbaar",
     "saved": "Opgeslagen.",
     "deleteTitle": "{{name}} verwijderen?",
-    "deleteText": "De geschiedenis en gebeurtenissen worden ook verwijderd."
+    "deleteText": "De geschiedenis, energietotalen, meetperioden en gebeurtenissen worden ook verwijderd."
   },
   "editor": {
     "addTitle": "UPS toevoegen",
@@ -172,6 +231,8 @@
     "testFailed": "Kon de UPS niet lezen."
   },
   "card": {
+    "estimatedLoad": "{{value}}% geschatte UPS-belasting",
+    "dc": "berekend DC, niet geverifieerd",
     "title": "UPS",
     "empty": "Geen UPS ingesteld. Schakel UPS Manager in voor een host en voeg een apparaat toe.",
     "runtime": "{{time}} resterend",

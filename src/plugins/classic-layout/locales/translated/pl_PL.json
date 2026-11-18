@@ -36,6 +36,7 @@
     "checkNow": "Sprawdź teraz"
   },
   "nav": {
+    "theme": "Motyw",
     "copyPassword": "Kopiuj hasło",
     "copySudoPassword": "Kopiuj hasło sudo",
     "passwordCopied": "Hasło skopiowane do schowka",
@@ -72,7 +73,15 @@
     "mobileNavigation": "Nawigacja",
     "allTabs": "Wszystkie karty",
     "hideTabBar": "Ukryj pasek kart",
-    "showTabBar": "Pokaż pasek kart"
+    "showTabBar": "Pokaż pasek kart",
+    "allApps": "Wszystkie aplikacje",
+    "findApp": "Znajdź aplikację",
+    "pinToRail": "Przypnij do paska",
+    "unpinFromRail": "Odepnij z paska",
+    "appSettings": "Ustawienia aplikacji",
+    "allAppsHint": "Przypnij te, których używasz. Kliknij prawym przyciskiem myszy, aby otworzyć ustawienia aplikacji.",
+    "allAppsLockedHint": "Administrator wybiera aplikacje na Twoim pasku.",
+    "viewMenu": "Widok"
   },
   "commandPalette": {
     "searchPlaceholder": "Szukaj hostów, poleceń lub ustawień...",
@@ -171,7 +180,8 @@
     "dragToReorder": "Przeciągnij kafelki, aby je przesuwać, a ich krawędzie, aby zmieniać rozmiar",
     "clearActivityConfirm": "Wyczyścić ostatnią aktywność?",
     "resetConfirm": "Zresetować układ pulpitu do ustawień domyślnych?",
-    "clearFailed": "Nie udało się wyczyścić ostatniej aktywności"
+    "clearFailed": "Nie udało się wyczyścić ostatniej aktywności",
+    "help": "Pomoc"
   },
   "admin": {
     "sectionGeneral": "Ogólne",
@@ -237,6 +247,9 @@
     "credentialStorage": "Zezwól na zapisywanie haseł i kluczy",
     "credentialStorageOff": "Zapisywanie haseł i kluczy jest wyłączone na tym serwerze. Pozostaw je puste, a Termix poprosi o nie podczas łączenia.",
     "credentialStorageDesc": "Wyłączone: nikt nie może zapisać hasła ani klucza prywatnego dla hosta ani poświadczeń, a Termix poprosi o nie podczas łączenia. Zapisane loginy pozostają, dopóki nie zostaną usunięte.",
+    "hostKeyTrust": "Ufaj nowym kluczom hosta bez pytania",
+    "hostKeyTrustDesc": "Gdy wtyczka, harmonogram lub API łączy się z hostem, którego klucz nie został wcześniej zweryfikowany, zapisz ten klucz i nawiąż połączenie. Jeśli opcja jest wyłączona, połączenia są odrzucane, dopóki ktoś nie otworzy terminala do tego hosta i nie zaufa jego kluczowi.",
+    "hostKeyTrustFailed": "Nie udało się zaktualizować ustawienia klucza hosta",
     "secondFactorAfterExternalLogin": "Wymagaj drugiego czynnika uwierzytelniającego po logowaniu zewnętrznym (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Gdy wyłączone, drugi czynnik uwierzytelniający jest wymagany tylko po logowaniu hasłem i innych lokalnych metodach logowania, tak jak wcześniej. Gdy włączone, jest wymagany po każdej metodzie logowania, w tym SSO i LDAP",
     "allowPasswordReset": "Zezwól na resetowanie hasła",
@@ -497,7 +510,95 @@
     "revokeSession": "Wyloguj",
     "deleteRoleConfirm": "Usunąć rolę {{name}}?",
     "revokeKeyConfirm": "Unieważnić klucz API {{name}}?",
-    "revokeKey": "Unieważnij"
+    "revokeKey": "Unieważnij",
+    "apiKeyScopeReadAll": "Tylko do odczytu, wszystko, co widzi użytkownik",
+    "apiKeyNeverExpires": "Nigdy nie wygasa",
+    "apiKeyExpiryHint": "Jeśli pole jest puste, klucz działa przez 90 dni.",
+    "changeHeld": "Ta zmiana zostanie opóźniona o {{minutes}} minut, aby inni administratorzy mogli ją zobaczyć.",
+    "userStatusFilter": "Stan konta",
+    "userStatusAll": "Wszystkie konta",
+    "userStatusActive": "Aktywne",
+    "userStatusDisabled": "Wyłączone",
+    "userStatusPending": "Oczekuje na zatwierdzenie",
+    "disabledBadge": "Wyłączone",
+    "pendingBadge": "Oczekuje",
+    "accountStatusTitle": "Stan konta",
+    "accountStatusActive": "To konto może się logować.",
+    "accountStatusDisabled": "To konto jest wyłączone. Nie można się nim zalogować, a klucze API nie działają.",
+    "accountStatusPending": "To konto oczekuje na zatwierdzenie i nie może się jeszcze zalogować.",
+    "lastLogin": "Ostatnie logowanie {{time}}",
+    "disableUser": "Wyłącz konto",
+    "enableUser": "Włącz konto",
+    "approveUser": "Zatwierdź",
+    "disableUserConfirm": "Wyłączyć {{username}}? Użytkownik zostanie wylogowany ze wszystkich miejsc i nie będzie mógł się zalogować, dopóki nie włączysz konta ponownie.",
+    "userDisabled": "{{username}} jest wyłączone",
+    "userEnabled": "{{username}} jest włączone",
+    "userApproved": "{{username}} zostało zatwierdzone",
+    "userStatusFailed": "Nie udało się zmienić konta",
+    "profileTitle": "Nazwa i e-mail",
+    "displayName": "Nazwa wyświetlana",
+    "displayNamePlaceholder": "Nazwa wyświetlana",
+    "email": "E-mail",
+    "emailPlaceholder": "E-mail",
+    "profileSaved": "Zapisano",
+    "profileSaveFailed": "Nie udało się zapisać",
+    "manageTabAccess": "Dostęp",
+    "sectionInvites": "Linki zaproszeń",
+    "invitesDescription": "Linki umożliwiające utworzenie konta, nawet gdy rejestracja jest wyłączona.",
+    "invitesEmpty": "Brak linków zaproszeń",
+    "inviteCreate": "Nowe zaproszenie",
+    "inviteCreateFailed": "Nie udało się utworzyć zaproszenia",
+    "inviteCreatedNotice": "Skopiuj ten link teraz. Nie zostanie on wyświetlony ponownie.",
+    "inviteCopy": "Kopiuj link",
+    "inviteCopied": "Link skopiowany",
+    "inviteNotePlaceholder": "Notatka, np. dla kogo jest",
+    "inviteRole": "Rola",
+    "inviteNoRole": "Brak dodatkowej roli",
+    "inviteExpires": "Wygasa",
+    "inviteExpiresIn_one": "Wygasa za {{count}} dzień",
+    "inviteExpiresIn_few": "Wygasa za {{count}} dni",
+    "inviteExpiresIn_many": "Wygasa za {{count}} dni",
+    "inviteExpiresIn_other": "Wygasa za {{count}} dni",
+    "inviteUses": "Użycia",
+    "inviteMakeAdmin": "Nadaj rolę administratora",
+    "inviteUntitled": "Zaproś",
+    "inviteUsesOf": "{{uses}} z {{max}} użyto",
+    "inviteState_active": "Aktywny",
+    "inviteState_revoked": "Unieważniony",
+    "inviteState_expired": "Wygasł",
+    "inviteState_used": "Wyczerpany",
+    "inviteRevoke": "Unieważnij",
+    "inviteRevokeConfirm": "Unieważnić to zaproszenie?",
+    "inviteRevokeFailed": "Nie udało się unieważnić zaproszenia",
+    "sectionAccess": "Przegląd dostępu",
+    "accessCount_one": "{{count}} udostępnienie",
+    "accessCount_few": "{{count}} udostępnienia",
+    "accessCount_many": "{{count}} udostępnień",
+    "accessCount_other": "{{count}} udostępnień",
+    "accessExport": "Eksportuj CSV",
+    "accessExportFailed": "Nie udało się wyeksportować",
+    "accessKind": "Typ",
+    "accessKindAll": "Wszystko",
+    "accessKind_host": "Host",
+    "accessKind_folder": "Katalog",
+    "accessKind_credential": "Dane logowania",
+    "accessUser": "Użytkownik",
+    "accessAnyUser": "Każdy użytkownik",
+    "accessRole": "Rola",
+    "accessAnyRole": "Każda rola",
+    "accessToUser": "dla {{name}}",
+    "accessToRole": "dla roli {{name}}",
+    "accessOwner": "właściciel {{name}}",
+    "accessGrantedBy": "udostępnione przez {{name}}",
+    "accessExpires": "koniec {{date}}",
+    "accessLastUsed": "ostatnio użyte {{date}}",
+    "accessEmpty": "Nic nie jest udostępnione",
+    "sectionAccountSettings": "Konta i dostęp",
+    "adminHostBypass": "Administratorzy mogą otwierać hosty wszystkich użytkowników",
+    "adminHostBypassDesc": "Gdy ta opcja jest wyłączona, administratorzy widzą tylko hosty udostępnione im bezpośrednio i nie mogą otwierać danych innych użytkowników ze strony użytkownika. Włączenie tej opcji powoduje oczekiwanie na czas ochłodzenia administratora, jeśli jest on ustawiony.",
+    "signupApproval": "Zatwierdzaj nowe konta SSO",
+    "signupApprovalDesc": "Osoba logująca się po raz pierwszy przez SSO lub LDAP musi czekać, aż administrator zatwierdzi jej konto.",
+    "updateSettingFailed": "Nie udało się zapisać ustawienia"
   },
   "newUi": {
     "sidebar": {
@@ -520,7 +621,8 @@
         "domainPlaceholder": "opcjonalne",
         "connectToAction": "Połącz z {{name}}",
         "sshProtocol": "SSH",
-        "noTarget": "Żadna zainstalowana aplikacja nie może połączyć się z tym typem hosta"
+        "noTarget": "Żadna zainstalowana aplikacja nie może połączyć się z tym typem hosta",
+        "loadingTargets": "Ładowanie sposobów połączenia..."
       },
       "keybindings": {
         "description": "Przypisz klawisze do akcji w terminalu i aplikacji lub zmień domyślne skróty.",
@@ -574,6 +676,9 @@
         "desktopProfileDescription": "Ten profil istnieje na tym urządzeniu i loguje się samodzielnie. Połącz go z serwerem Termix, aby korzystać z tych samych hostów i ustawień na każdym urządzeniu.",
         "sectionInterface": "Interfejs",
         "interfacePresetDesc": "Jak wiele szczegółów wyświetla Termix. Każda funkcja pozostaje dostępna.",
+        "closeToTray": "Zamykaj do zasobnika",
+        "closeToTrayDesc": "Zamknięcie okna pozostawia Termix uruchomiony w zasobniku, dzięki czemu połączenia pozostają aktywne. Wyłącz tę opcję, aby zamykać aplikację wraz z oknem.",
+        "closeToTraySaveFailed": "Nie udało się zapisać ustawienia",
         "presetClearOverrides": "Przywróć wszystkie",
         "presetOverridesTitle": "Dostosowane",
         "presetRevertArea": "Cofnij",
@@ -709,7 +814,11 @@
         "tryBetaDescription": "Dołącz do programu beta w sekcji Aktualizacje.",
         "sendBetaFeedback": "Wyślij opinię o wersji beta",
         "openUpdates": "Aktualizacje",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "Nazwa wyświetlana",
+        "emailLabel": "E-mail",
+        "profileSaved": "Zapisano",
+        "profileSaveFailed": "Nie udało się zapisać"
       }
     }
   },
@@ -741,6 +850,10 @@
     "apiKeys": "Klucze API",
     "data": "Dane i synchronizacja",
     "interface": "Interfejs",
+    "hostList": "Lista hostów",
+    "credentialList": "Lista danych logowania",
+    "openHostList": "Ustawienia listy hostów",
+    "openCredentialList": "Ustawienia listy danych logowania",
     "appearance": "Wygląd",
     "keybindings": "Skróty klawiszowe",
     "adminGeneral": "Ogólne",
@@ -800,6 +913,36 @@
       "hostRows": {
         "label": "Wybór wierszy hostów"
       }
+    },
+    "adminAccess": "Przegląd dostępu",
+    "yourApps": "Twoje aplikacje",
+    "otherApps": "Inne aplikacje",
+    "hostForm": {
+      "label": "Formularz dodawania hosta",
+      "description": "Widok prosty pokazuje adres, dane logowania, katalog i tagi. Widok pełny pokazuje wszystkie opcje. Możesz przełączać się między nimi również wewnątrz formularza.",
+      "simple": "Prosty",
+      "full": "Pełny"
+    },
+    "interfaceDefaults": {
+      "title": "Domyślne ustawienia interfejsu",
+      "intro": "Wybierz, co użytkownicy widzą przy pierwszym logowaniu. Mogą oni nadal zmieniać swój widok, chyba że go zablokujesz.",
+      "setFor": "Ustaw dla",
+      "everyone": "Wszyscy",
+      "inherits": "Używa ustawień dla wszystkich, dopóki nie zmienisz czegoś",
+      "useEveryone": "Użyj ustawień dla wszystkich",
+      "look": "Wygląd startowy",
+      "lookHint": "Opcja Prosta wyświetla najmniej elementów. Opcja Zaawansowana pokazuje wszystkie przyciski.",
+      "simple": "Prosta",
+      "balanced": "Zbalansowana",
+      "advanced": "Zaawansowana",
+      "lock": "Zablokuj",
+      "lockHint": "Użytkownicy z tą rolą nie mogą zmieniać wyglądu ani aplikacji na pasku bocznym.",
+      "apps": "Aplikacje na pasku bocznym",
+      "appsHint": "Pozostałe aplikacje są dostępne w sekcji Wszystkie aplikacje i wyszukiwarce.",
+      "appsAdvanced": "Opcja Zaawansowana wyświetla wszystkie aplikacje na pasku bocznym.",
+      "saved": "Domyślne ustawienia interfejsu zostały zapisane",
+      "saveFailed": "Nie udało się zapisać domyślnych ustawień interfejsu",
+      "lockedNote": "Administrator wybrał Twój wygląd, dlatego nie można go zmienić tutaj."
     }
   },
   "hostDefaults": {
@@ -879,12 +1022,19 @@
     "pickHint": "Wszystko dotyczące połączenia znajduje się tutaj, pogrupowane dla łatwego znalezienia.",
     "clearChoice": "Wyczyść",
     "proxyPathTarget": "cel",
-    "hostCopyName": "{{name}} (kopia)"
+    "hostCopyName": "{{name}} (kopia)",
+    "moreOptions": "Więcej opcji",
+    "moreOptionsHint": "Proxy, hosty przeskokowe, port knocking, keepalive, sprawdzanie statusu oraz przełączniki włącz/wyłącz dla każdej aplikacji. Większość hostów nie potrzebuje tych opcji.",
+    "folderAndTags": "Folder, tagi i notatki"
   },
   "permissions": {
     "branding": {
       "title": "Zmień branding",
       "description": "Ustaw nazwę aplikacji, hasło reklamowe i logo widoczne dla wszystkich."
+    },
+    "interfaceDefaults": {
+      "title": "Ustaw domyślne ustawienia interfejsu",
+      "description": "Wybierz wygląd i aplikacje na pasku bocznym, z którymi użytkownicy zaczynają pracę, dla wszystkich lub dla każdej roli."
     }
   },
   "onboarding": {
@@ -919,6 +1069,8 @@
     "clickAuto": "Pierwsza metoda połączenia",
     "useDefaultNamed": "Domyślny ({{name}})",
     "useDefaultButtons": "Użyj domyślnych przycisków",
-    "perHostHint": "Aby zmienić je dla jednego hosta, użyj opcji Przyciski w wierszach hostów w jego menu."
+    "perHostHint": "Aby zmienić je dla jednego hosta, użyj opcji Przyciski w wierszach hostów w jego menu.",
+    "moreTools": "Więcej narzędzi",
+    "more": "Więcej"
   }
 }

@@ -8,7 +8,10 @@
     "viewHistory": "Historia",
     "viewEvents": "Tapahtumat",
     "viewCommands": "Komennot",
-    "viewSources": "Laitteet"
+    "viewSources": "Laitteet",
+    "refresh": "Reaaliaikainen päivitys",
+    "refreshSeconds": "{{seconds}} sekuntia",
+    "refreshHint": "Päivittää vain, kun Yleiskatselu on näkyvissä. Jäähdytysjärjestelmän tiedot voivat päivittyä hitaammin. Taustapollaus ja tallennetut näytteet pysyvät 30 sekunnin välein."
   },
   "common": {
     "loading": "Ladataan...",
@@ -47,6 +50,8 @@
     "charge": "Akun varaustila",
     "runtime": "Jäljellä oleva käyttöaika",
     "load": "Kuorma",
+    "estimatedLoad": "Arvioitu UPS:n kuormitus",
+    "estimatedLoadHint": "Lähtöteho / {{watts}} W nimellisteho. {{method}}. Anturien tarkkuutta ei ole vahvistettu; ei ole prosessorin käyttöaste tai pistorasian kulutus.",
     "nominal": "{{watts}} W nimellisteho",
     "input": "Syöttöjännite",
     "output": "Lähtöjännite",
@@ -59,6 +64,60 @@
     "readAt": "Viimeisin lukeminen",
     "ago": "{{time}} sitten"
   },
+  "electrical": {
+    "inputDc": "Syöttö on tasavirtaa",
+    "outputDc": "Lähtö on tasavirtaa",
+    "dcHint": "Vahvista sähköinen ympäristö ennen watin laskemista jännitteestä ja virta-arvosta. Tämä ei muuta mitään UPS:n asetuksia. Anturien tarkkuus on tarkistettava erikseen.",
+    "inputCurrent": "Syöttövirta",
+    "outputCurrent": "Lähtövirta",
+    "batteryCurrent": "Akun virta",
+    "inputPower": "Syöttöteho",
+    "outputPower": "Lähtöteho",
+    "reported": "Raportoitu todellinen teho",
+    "calculated": "Laskettu tasavirtateho – anturin tarkkuus vahvistamaton",
+    "batteryType": "Akun kemiallinen tyyppi",
+    "chargeLow": "Matalan varauksen kynnysarvo",
+    "chargeWarning": "Varausvaroituksen kynnysarvo",
+    "manufactured": "Akun valmistuspäivä",
+    "driver": "Ajuri",
+    "driverVersion": "Kuljettimen versio",
+    "subdriver": "HID-alikuljettimen",
+    "driverState": "Kuljettimen tila",
+    "usb": "USB-valmistaja / tuote",
+    "raw": "Edistyneet NUT-muuttujat",
+    "search": "Suodata muuttujien nimiä tai arvoja",
+    "noVariables": "Ei vastaavia muuttujia.",
+    "dcDisclaimer": "Laskettu DC-lähtöteho arvioi UPS:n kuormitusta, ei AC-verkkokulutusta. Se ei välttämättä vastaa yhden isäntälaitteen kulutusta. Vahdista virtalukemat ennen kuin luot teho- tai energiarvioihin."
+  },
+  "energy": {
+    "period": "Havaittu lähtöenergia (valittu ajanjakso)",
+    "lifetime": "Havaittu lähtöenergia (nykyinen aikakausi)",
+    "estimated": "Arvioitu aikataulutettujen näytteiden perusteella; ei laitteistomittari",
+    "coverage": "Mittauspeitto",
+    "covered": "Integroitu aika",
+    "incomplete": "Epätäydellinen data; puuttuvaa aikaa ei arvioida",
+    "complete": "Täysi mittauspeitto",
+    "average": "Keskimääräinen lähtöteho (mitattu aika)",
+    "peak": "Näytteenotettu lähtöhuippu",
+    "sampledRange": "Näytteenotettu tehoväli",
+    "scope": "UPS:n lähtö, ei AC-seinävirtaa. Jakson yhteissummat kattavat luetellut seuranta-ajanjaksojen; älä kohtele eri jaksoja yhtenä fyysisenä mittarina.",
+    "resolution": "Nimellinen kaavion segmentti: {{seconds}} sekuntia; aukot pysyvät erillisinä. Vie hiiri pisteiden päälle nähdäksesi absoluuttisen ajan ja aikavyöhykkeen.",
+    "empty": "Energian seuranta vaatii kaksi kelvollista ajoitettua tehomittauksen lukemaa. Tuntemattomat wattiarvot pysyvät saatavilla olevina, eivät nollina.",
+    "error": "Energian historiaa ei voitu lukea.",
+    "bucket": "Havaittu tuotantoteho jaksoa kohden",
+    "samples": "Saatavilla olevat näytteet ja kumulatiivinen havaittu energia",
+    "tableHelp": "Vain havaittu energia lasketaan yhteen. Puuttuvia väliaikoja ei täytetä. Kumulatiiviset arvot kattavat luetellut aikaleimat.",
+    "time": "Jakson alku (paikallinen aikavyöhyke)",
+    "cumulative": "Kumulatiivinen Wh valitulla ajanjaksolla",
+    "cumulativeChart": "Kumulatiivinen havaittu tuotantoteho (valittu ajanjakso)",
+    "epochTotal": "Havaittu energia tässä aikaleimassa",
+    "unavailable": "Tuotantoteho ei saatavilla",
+    "epochs": "Erota seuranta-ajanjaksot",
+    "started": "Seuranta aloitettu",
+    "method": "Tehomenetelmä",
+    "chartHelp": "Aikaan suhteutettuja tietoja. Puuttuvat väliajat ja seuranta-ajanjakson muutokset eivät ole yhdistettyjä. Näytteenotetut huiput eivät ole laitteiston huippumittauksia. Kaavioiden jälkeen on saatavilla taulukko tiedoista.",
+    "correlationBlocked": "CPU-/muistikorrelaatio ei ole käytettävissä: Host Metrics vaatii julkisen, valtuutetun hetkikuvapalvelun, jossa on mittausaikaleimat. Lisäkeruuta ei ole otettu käyttöön."
+  },
   "history": {
     "error": "Historiaa ei voitu ladata.",
     "24h": "24 tuntia",
@@ -66,7 +125,7 @@
     "30d": "30 päivää",
     "empty": "Mittauksia ei vielä tarpeeksi. Termix lukee UPS:ää 30 sekunnin välein.",
     "charge": "Akun varaustila",
-    "load": "Kuorma",
+    "load": "Kuorma (vain laitteelta raportoitu)",
     "runtime": "Jäljellä oleva käyttöaika",
     "voltage": "Jännite"
   },
@@ -113,7 +172,7 @@
     "unreachable": "saavuttamaton",
     "saved": "Tallennettu.",
     "deleteTitle": "Poistetaanko {{name}}?",
-    "deleteText": "Sen historia ja tapahtumat poistetaan myös."
+    "deleteText": "Sen historia, energian yhteensä, seuranta-ajanjaksot ja tapahtumat poistetaan myös."
   },
   "editor": {
     "addTitle": "Lisää UPS",
@@ -172,6 +231,8 @@
     "testFailed": "UPS:ää ei voitu lukea."
   },
   "card": {
+    "estimatedLoad": "{{value}} % arvioitu UPS-kuorma",
+    "dc": "laskettu tasavirta, vahvistamaton",
     "title": "UPS",
     "empty": "UPS:ää ei ole määritetty. Ota UPS-hallinta käyttöön isäntäkonetta varten ja lisää laite.",
     "runtime": "{{time}} jäljellä",

@@ -267,12 +267,74 @@ export async function getResources(
   return data;
 }
 
-export async function getSignals(hostIds?: number[]): Promise<SignalRead[]> {
+export async function getSignals(
+  hostIds?: number[],
+  ids?: string[],
+): Promise<SignalRead[]> {
   const { data } = await operationsApi.get<{ signals: SignalRead[] }>(
     "/signals",
-    { params: { hostIds: hostIds?.join(",") } },
+    { params: { hostIds: hostIds?.join(","), ids: ids?.join(",") } },
   );
   return data.signals;
+}
+
+/** How long asks for single signals gather before one request goes out. */
+export const SIGNAL_BATCH_MS = 30;
+
+interface SignalBatch {
+  hostIds?: number[];
+  ids: Set<string>;
+  waiters: Array<{
+    id: string;
+    resolve: (read: SignalRead | null) => void;
+    reject: (error: unknown) => void;
+  }>;
+}
+
+const signalBatches = new Map<string, SignalBatch>();
+
+/**
+ * One signal, for a dashboard tile. Tiles asking at about the same time share
+ * one request that names only the signals they need.
+ */
+export function getSignal(
+  id: string,
+  hostIds?: number[],
+): Promise<SignalRead | null> {
+  const key = hostIds?.join(",") ?? "*";
+  let batch = signalBatches.get(key);
+  if (!batch) {
+    const created: SignalBatch = { hostIds, ids: new Set(), waiters: [] };
+    batch = created;
+    signalBatches.set(key, created);
+    setTimeout(() => {
+      signalBatches.delete(key);
+      getSignals(created.hostIds, [...created.ids]).then(
+        (list) => {
+          for (const waiter of created.waiters) {
+            waiter.resolve(
+              list.find((entry) => entry.id === waiter.id) ?? null,
+            );
+          }
+        },
+        (error) => {
+          for (const waiter of created.waiters) waiter.reject(error);
+        },
+      );
+    }, SIGNAL_BATCH_MS);
+  }
+  batch.ids.add(id);
+  return new Promise((resolve, reject) => {
+    batch.waiters.push({ id, resolve, reject });
+  });
+}
+
+/** How often a page asks again while hosts are still answering. */
+export const WARMING_POLL_MS = 2_000;
+
+/** True while some host has not answered yet, so a page asks again soon. */
+export function signalWarming(read: SignalRead | null): boolean {
+  return !!read?.hosts.some((entry) => entry.state === "loading");
 }
 
 export async function getTimeline(hostId?: number) {

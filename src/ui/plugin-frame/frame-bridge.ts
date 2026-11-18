@@ -6,7 +6,7 @@
  * call to it.
  */
 
-import { useMemo } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 import type {
   ActivityTargetInfo,
   CompanionInfo,
@@ -23,9 +23,22 @@ import {
 } from "@/plugin-host/extension-registry";
 import { usePluginScope } from "@/plugin-host/scope";
 import { decodeIcon } from "./frame-icons";
+import { addStrings } from "./foreign-client";
+
+/** Puts the titles the shell translated under their keys in this frame. */
+function addTitles(entries: Record<string, unknown>[]): void {
+  const strings: Record<string, string> = {};
+  for (const entry of entries) {
+    if (typeof entry.titleKey === "string" && typeof entry.title === "string") {
+      strings[entry.titleKey] = entry.title;
+    }
+  }
+  addStrings(strings);
+}
 import type { ForeignRuntime } from "@/components/foreign/foreign-runtime";
 import { useFrameShell } from "./frame-shell";
 import { getFrameState, useFrameState } from "./frame-store";
+import { useFrameShellScroll } from "./shell-scroll";
 
 export interface FrameBridgeHost {
   pluginId: string;
@@ -35,11 +48,69 @@ export interface FrameBridgeHost {
   foreign: ForeignRuntime;
 }
 
+const answerListeners = new Set<() => void>();
+let answerVersion = 0;
+/** How soon to ask again while the shell still waits on other plugins. */
+const HOST_ACTION_RECHECK_MS = 700;
+const HOST_ACTION_TRIES = 60;
+
+function subscribeAnswers(listener: () => void): () => void {
+  answerListeners.add(listener);
+  return () => answerListeners.delete(listener);
+}
+
+function answered(): void {
+  answerVersion++;
+  for (const listener of answerListeners) listener();
+}
+
 export function createFrameBridge(host: FrameBridgeHost): PluginHostBridge {
   const call = host.call;
   const showTab = (id: string) => void call("tabs.show", id).catch(() => {});
   const toast = (kind: string) => (message: string) =>
     void call("toast", kind, String(message)).catch(() => {});
+
+  // Which host actions apply, per host id, as the shell last said.
+  const hostVisible = new Map<string, Set<string> | null>();
+  const hostAsking = new Set<string>();
+  let seenActions: unknown = null;
+  /**
+   * The shell answers at once with what it knows and says when other
+   * plugins still have to answer; then this asks again until they have.
+   */
+  const fetchVisible = (hostId: string, tries: number) => {
+    if (hostAsking.has(hostId)) return;
+    hostAsking.add(hostId);
+    call("hostActions.when", hostId).then(
+      (answer) => {
+        hostAsking.delete(hostId);
+        const reply = answer as { pairs?: unknown; pending?: unknown } | null;
+        const pairs = Array.isArray(answer) ? answer : reply?.pairs;
+        const next = new Set(
+          (Array.isArray(pairs) ? pairs : []).map((pair) =>
+            JSON.stringify(pair),
+          ),
+        );
+        const before = hostVisible.get(hostId);
+        const same =
+          !!before &&
+          before.size === next.size &&
+          [...next].every((id) => before.has(id));
+        hostVisible.set(hostId, next);
+        if (!same) answered();
+        if (reply?.pending === true && tries < HOST_ACTION_TRIES) {
+          setTimeout(
+            () => fetchVisible(hostId, tries + 1),
+            HOST_ACTION_RECHECK_MS,
+          );
+        }
+      },
+      () => {
+        hostAsking.delete(hostId);
+        if (!hostVisible.get(hostId)) hostVisible.delete(hostId);
+      },
+    );
+  };
 
   return {
     ...pluginHostBridge,
@@ -70,6 +141,8 @@ export function createFrameBridge(host: FrameBridgeHost): PluginHostBridge {
     },
 
     useShell: () => useFrameShell(host.tabs, showTab),
+
+    useShellScroll: useFrameShellScroll,
 
     toast: {
       success: toast("success"),
@@ -130,21 +203,60 @@ export function createFrameBridge(host: FrameBridgeHost): PluginHostBridge {
 
     useHostActions() {
       const actions = useFrameState((state) => state.hostActions);
-      return useMemo(
-        () =>
-          actions.map((action) => ({
-            ...action,
-            icon: decodeIcon(action.icon),
-          })) as unknown as HostActionContribution[],
-        [actions],
+      const version = useSyncExternalStore(
+        subscribeAnswers,
+        () => answerVersion,
       );
+      return useMemo(() => {
+        void version;
+        addTitles(actions);
+        // A new list (a plugin reloaded) asks again, keeping the last answer
+        // meanwhile so the page does not flash empty.
+        if (seenActions !== actions) {
+          seenActions = actions;
+          for (const hostId of hostVisible.keys()) fetchVisible(hostId, 0);
+        }
+        const ask = (hostId: string) => {
+          if (hostVisible.has(hostId)) return;
+          hostVisible.set(hostId, null);
+          fetchVisible(hostId, 0);
+        };
+        return actions.map((action) => {
+          const id = JSON.stringify([action.pluginId ?? "", action.id]);
+          const { hasRun, ...rest } = action as typeof action & {
+            hasRun?: boolean;
+          };
+          return {
+            ...rest,
+            icon: decodeIcon(action.icon),
+            when: (record: { id?: unknown } | null | undefined) => {
+              if (record?.id === undefined || record.id === null) return false;
+              const hostId = String(record.id);
+              ask(hostId);
+              return hostVisible.get(hostId)?.has(id) ?? false;
+            },
+            // Only actions with their own run get one, so a plugin can tell
+            // a session it embeds (tab type only) from one it must launch.
+            run:
+              hasRun === false
+                ? undefined
+                : (record: { id?: unknown } | null | undefined) =>
+                    void call(
+                      "hostActions.run",
+                      action.pluginId ?? "",
+                      action.id,
+                      String(record?.id),
+                    ).catch(() => {}),
+          };
+        }) as unknown as HostActionContribution[];
+      }, [actions, version]);
     },
 
     useCompanions(tabType) {
       const companions = useFrameState((state) => state.companions);
       return useMemo(
         () =>
-          companions
+          (addTitles(companions), companions)
             .filter((entry) => {
               const types = entry.tabTypes as string[] | undefined;
               return !types?.length || types.includes(tabType);

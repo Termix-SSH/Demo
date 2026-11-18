@@ -14,7 +14,9 @@ import {
   Input,
   PanelSearch,
   roleLabel,
+  Select2,
 } from "@termix-ssh/plugin-sdk/ui";
+import type { UserStatusFilter } from "./user-admin-api";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import {
@@ -41,6 +43,12 @@ export type AdminUser = {
   passwordHash?: string;
   dataUnlocked?: boolean;
   secondFactorEnabled?: boolean;
+  displayName?: string | null;
+  email?: string | null;
+  disabled?: boolean;
+  /** "admin" or "pending_approval". */
+  disabledReason?: string | null;
+  lastLoginAt?: string | null;
 };
 
 export type AdminSession = {
@@ -92,6 +100,11 @@ type UsersSectionProps = {
   pageSize: number;
   total: number;
   onPageChange: Dispatch<SetStateAction<number>>;
+  /** Left out on a core that can't filter by state. */
+  status?: UserStatusFilter | "";
+  onStatusChange?: (status: UserStatusFilter | "") => void;
+  /** Only admins create accounts here and change admin rights. */
+  canManage?: boolean;
 };
 
 export function AdminUsersSection({
@@ -114,6 +127,9 @@ export function AdminUsersSection({
   pageSize,
   total,
   onPageChange,
+  status,
+  onStatusChange,
+  canManage = true,
 }: UsersSectionProps) {
   const { t } = useTranslation();
   const confirm = useConfirm();
@@ -144,24 +160,43 @@ export function AdminUsersSection({
             >
               <RefreshCw className="size-3" />
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-6 text-[10px] border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
-              onClick={() => setCreateUserOpen(true)}
-            >
-              <Plus className="size-3" />
-              {t("admin.createUser")}
-            </Button>
+            {canManage && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-6 text-[10px] border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
+                onClick={() => setCreateUserOpen(true)}
+              >
+                <Plus className="size-3" />
+                {t("admin.createUser")}
+              </Button>
+            )}
           </div>
         </div>
-        <div className="py-2 border-b border-border">
-          <PanelSearch
-            value={search}
-            onChange={onSearchChange}
-            placeholder={t("admin.searchUsers")}
-            fill
-          />
+        <div className="flex items-center gap-2 py-2 border-b border-border">
+          <div className="min-w-0 flex-1">
+            <PanelSearch
+              value={search}
+              onChange={onSearchChange}
+              placeholder={t("admin.searchUsers")}
+              fill
+            />
+          </div>
+          {onStatusChange && (
+            <Select2
+              value={status ?? ""}
+              onChange={(e) =>
+                onStatusChange(e.target.value as UserStatusFilter | "")
+              }
+              aria-label={t("admin.userStatusFilter")}
+              className="h-7 border border-border bg-(--field) px-2 text-xs text-foreground outline-none"
+            >
+              <option value="">{t("admin.userStatusAll")}</option>
+              <option value="active">{t("admin.userStatusActive")}</option>
+              <option value="disabled">{t("admin.userStatusDisabled")}</option>
+              <option value="pending">{t("admin.userStatusPending")}</option>
+            </Select2>
+          )}
         </div>
         {users.map((user) => {
           const authLabel =
@@ -180,13 +215,25 @@ export function AdminUsersSection({
                   {user.username[0].toUpperCase()}
                 </div>
                 <div className="flex flex-col gap-0.5 min-w-0">
-                  <span className="text-xs font-semibold truncate max-w-[120px]">
-                    {user.username}
+                  <span className="text-xs font-semibold truncate max-w-[160px]">
+                    {user.displayName || user.username}
+                    {user.displayName && (
+                      <span className="ml-1 font-normal text-muted-foreground">
+                        {user.username}
+                      </span>
+                    )}
                   </span>
                   <div className="flex items-center gap-1">
                     {user.isAdmin && (
                       <span className="text-[9px] font-semibold px-1 py-px border border-accent-brand/40 bg-accent-brand/10 text-accent-brand">
                         {t("admin.adminBadge")}
+                      </span>
+                    )}
+                    {user.disabled && (
+                      <span className="text-[9px] font-semibold px-1 py-px border border-destructive/40 text-destructive">
+                        {user.disabledReason === "pending_approval"
+                          ? t("admin.pendingBadge")
+                          : t("admin.disabledBadge")}
                       </span>
                     )}
                     <span className="text-[9px] font-semibold px-1 py-px border border-border text-muted-foreground">
@@ -205,20 +252,22 @@ export function AdminUsersSection({
                 >
                   <Settings2 className="size-3" />
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="size-6 text-muted-foreground hover:text-foreground"
-                  title={t("common.edit")}
-                  aria-label={t("common.edit")}
-                  onClick={() => {
-                    setEditUserTarget(user);
-                    setEditUserOpen(true);
-                  }}
-                >
-                  <Pencil className="size-3" />
-                </Button>
-                {user.isExternal && user.passwordHash ? (
+                {canManage && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-6 text-muted-foreground hover:text-foreground"
+                    title={t("common.edit")}
+                    aria-label={t("common.edit")}
+                    onClick={() => {
+                      setEditUserTarget(user);
+                      setEditUserOpen(true);
+                    }}
+                  >
+                    <Pencil className="size-3" />
+                  </Button>
+                )}
+                {!canManage ? null : user.isExternal && user.passwordHash ? (
                   <Button
                     variant="ghost"
                     size="icon"
@@ -252,38 +301,42 @@ export function AdminUsersSection({
                     <Share2 className="size-3" />
                   </Button>
                 )}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="size-6 text-muted-foreground hover:text-destructive"
-                  disabled={user.isAdmin}
-                  title={t("common.delete")}
-                  aria-label={t("common.delete")}
-                  onClick={async () => {
-                    const ok = await confirm({
-                      title: t("admin.deleteUserConfirm", {
-                        username: user.username,
-                      }),
-                      description: t("manage.cannotBeUndone"),
-                    });
-                    if (!ok) return;
-                    try {
-                      await deleteUser(user.username);
-                      setUsers((prev) => prev.filter((u) => u.id !== user.id));
-                      toast.success(
-                        t("admin.deleteUserSuccess", {
+                {canManage && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-6 text-muted-foreground hover:text-destructive"
+                    disabled={user.isAdmin}
+                    title={t("common.delete")}
+                    aria-label={t("common.delete")}
+                    onClick={async () => {
+                      const ok = await confirm({
+                        title: t("admin.deleteUserConfirm", {
                           username: user.username,
                         }),
-                      );
-                    } catch (e: unknown) {
-                      toast.error(
-                        apiErrorMessage(e, t("admin.deleteUserFailed")),
-                      );
-                    }
-                  }}
-                >
-                  <Trash2 className="size-3" />
-                </Button>
+                        description: t("manage.cannotBeUndone"),
+                      });
+                      if (!ok) return;
+                      try {
+                        await deleteUser(user.username);
+                        setUsers((prev) =>
+                          prev.filter((u) => u.id !== user.id),
+                        );
+                        toast.success(
+                          t("admin.deleteUserSuccess", {
+                            username: user.username,
+                          }),
+                        );
+                      } catch (e: unknown) {
+                        toast.error(
+                          apiErrorMessage(e, t("admin.deleteUserFailed")),
+                        );
+                      }
+                    }}
+                  >
+                    <Trash2 className="size-3" />
+                  </Button>
+                )}
               </div>
             </div>
           );
@@ -607,7 +660,7 @@ export function AdminRolesSection({
                 placeholder={t("common.optional")}
                 value={newRoleDescription}
                 onChange={(e) => setNewRoleDescription(e.target.value)}
-                className="w-full px-2 py-1.5 text-xs bg-popover border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring"
+                className="w-full px-2 py-1.5 text-xs bg-(--field) border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring"
               />
             </div>
             <div className="flex justify-end gap-2">
@@ -672,17 +725,19 @@ export function AdminRolesSection({
                     {role.name}
                   </span>
                 </div>
-                {!role.isSystem && (
-                  <div className="flex items-center gap-0.5 shrink-0">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className={`size-6 ${editingRoleId === role.id ? "text-accent-brand" : "text-muted-foreground hover:text-foreground"}`}
-                      title={t("admin.rolePermissions.editAction")}
-                      onClick={() => openPermissionsEditor(role)}
-                    >
-                      <KeyRound className="size-3" />
-                    </Button>
+                <div className="flex items-center gap-0.5 shrink-0">
+                  {/* The built-in roles' permissions are editable; only
+                      deleting them is not. */}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className={`size-6 ${editingRoleId === role.id ? "text-accent-brand" : "text-muted-foreground hover:text-foreground"}`}
+                    title={t("admin.rolePermissions.editAction")}
+                    onClick={() => openPermissionsEditor(role)}
+                  >
+                    <KeyRound className="size-3" />
+                  </Button>
+                  {!role.isSystem && (
                     <Button
                       variant="ghost"
                       size="icon"
@@ -715,8 +770,8 @@ export function AdminRolesSection({
                     >
                       <Trash2 className="size-3" />
                     </Button>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
               {editingRoleId === role.id && (
                 <div className="flex flex-col gap-2.5 mt-2.5 p-2.5 border border-border bg-muted/20">

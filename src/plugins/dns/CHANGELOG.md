@@ -2,6 +2,10 @@
 
 ## 1.1.0
 
+### Added
+
+- Spaceship as a provider, with DNS records and the domain list
+
 ### Changed
 
 - Runs in its own process on Termix 26.11.2 and later, with no access to the server beyond what Termix allows it

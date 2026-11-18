@@ -30,6 +30,7 @@ import {
   installRclone,
   revealPassword,
   testRepository,
+  unlockRepository,
   updateRepository,
 } from "./api";
 
@@ -154,6 +155,20 @@ export function RepoEditor({
       );
     } catch (e) {
       setCheckResult(errorMessage(e, t("repos.checkFailed")));
+    } finally {
+      setChecking(false);
+    }
+  }
+
+  async function unlock() {
+    if (!current) return;
+    setChecking(true);
+    setCheckResult("");
+    try {
+      await unlockRepository(current.id, checkHost);
+      setCheckResult(t("repos.unlocked"));
+    } catch (e) {
+      setCheckResult(errorMessage(e, t("repos.unlockFailed")));
     } finally {
       setChecking(false);
     }
@@ -439,6 +454,14 @@ export function RepoEditor({
                 onClick={() => void check(true)}
               >
                 {t("repos.initButton")}
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={checking || (!checkHost && current.kind !== "local")}
+                onClick={() => void unlock()}
+              >
+                {t("repos.unlockButton")}
               </Button>
               {current.kind === "rclone" && (
                 <Button

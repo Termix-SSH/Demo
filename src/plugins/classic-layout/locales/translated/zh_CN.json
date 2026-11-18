@@ -36,6 +36,7 @@
     "checkNow": "立即检查"
   },
   "nav": {
+    "theme": "主题",
     "copyPassword": "复制密码",
     "copySudoPassword": "复制 Sudo 密码",
     "passwordCopied": "密码已复制到剪贴板",
@@ -72,7 +73,15 @@
     "mobileNavigation": "导航",
     "allTabs": "所有标签页",
     "hideTabBar": "隐藏标签栏",
-    "showTabBar": "显示标签栏"
+    "showTabBar": "显示标签栏",
+    "allApps": "所有应用",
+    "findApp": "查找应用",
+    "pinToRail": "固定到侧边栏",
+    "unpinFromRail": "从侧边栏取消固定",
+    "appSettings": "应用设置",
+    "allAppsHint": "固定您常用的应用。右键点击应用可进入其设置。",
+    "allAppsLockedHint": "您的管理员决定了侧边栏中的应用。",
+    "viewMenu": "视图"
   },
   "commandPalette": {
     "searchPlaceholder": "搜索主机、命令或设置...",
@@ -171,7 +180,8 @@
     "dragToReorder": "拖拽小部件可移动，拖拽边缘可调整大小",
     "clearActivityConfirm": "清除您的最近活动？",
     "resetConfirm": "将仪表板重置为默认布局？",
-    "clearFailed": "无法清除最近活动"
+    "clearFailed": "无法清除最近活动",
+    "help": "帮助"
   },
   "admin": {
     "sectionGeneral": "常规",
@@ -237,6 +247,9 @@
     "credentialStorage": "允许保存密码和密钥",
     "credentialStorageOff": "此服务器已关闭密码和密钥保存功能。请留空，Termix 将在连接时提示您输入。",
     "credentialStorageDesc": "关闭后，任何人都无法在主机或凭据中保存密码或私钥，Termix 将在连接时提示输入。已保存的登录信息在删除前将继续保留。",
+    "hostKeyTrust": "无需提示即可信任新的主机密钥",
+    "hostKeyTrustDesc": "当插件、计划任务或 API 连接到从未检查过密钥的主机时，保存该密钥并建立连接。如果关闭此选项，在有人打开终端连接到该主机并信任其密钥之前，这些连接将被拒绝。",
+    "hostKeyTrustFailed": "更新主机密钥设置失败",
     "secondFactorAfterExternalLogin": "外部登录（SSO、GitHub、Google、LDAP）后要求二次验证",
     "secondFactorAfterExternalLoginDesc": "关闭时，仅在密码和其他本地登录后要求已注册的二次验证，与之前相同。开启时，所有登录方式（包括 SSO 和 LDAP）后均要求二次验证",
     "allowPasswordReset": "允许重置密码",
@@ -482,7 +495,89 @@
     "revokeSession": "退出登录",
     "deleteRoleConfirm": "删除 {{name}} 角色？",
     "revokeKeyConfirm": "撤销 API 密钥 {{name}}？",
-    "revokeKey": "撤销"
+    "revokeKey": "撤销",
+    "apiKeyScopeReadAll": "只读，可查看用户可见的所有内容",
+    "apiKeyNeverExpires": "永不过期",
+    "apiKeyExpiryHint": "留空则密钥有效期为 90 天。",
+    "changeHeld": "此更改将延迟 {{minutes}} 分钟生效，以便其他管理员可以看到。",
+    "userStatusFilter": "账户状态",
+    "userStatusAll": "所有账户",
+    "userStatusActive": "活跃",
+    "userStatusDisabled": "已禁用",
+    "userStatusPending": "等待批准",
+    "disabledBadge": "已关闭",
+    "pendingBadge": "等待中",
+    "accountStatusTitle": "账户状态",
+    "accountStatusActive": "此账户可以登录。",
+    "accountStatusDisabled": "此账户已禁用。无法登录，且其 API 密钥无效。",
+    "accountStatusPending": "此账户正在等待批准，暂时无法登录。",
+    "lastLogin": "上次登录时间 {{time}}",
+    "disableUser": "禁用账户",
+    "enableUser": "启用账户",
+    "approveUser": "批准",
+    "disableUserConfirm": "确定要禁用 {{username}} 吗？他们将在所有设备退出登录，直到您重新启用该账户才能再次登录。",
+    "userDisabled": "{{username}} 已禁用",
+    "userEnabled": "{{username}} 已启用",
+    "userApproved": "{{username}} 已批准",
+    "userStatusFailed": "无法更改账户",
+    "profileTitle": "姓名和邮箱",
+    "displayName": "显示名称",
+    "displayNamePlaceholder": "显示名称",
+    "email": "邮箱",
+    "emailPlaceholder": "邮箱",
+    "profileSaved": "已保存",
+    "profileSaveFailed": "保存失败",
+    "manageTabAccess": "访问权限",
+    "sectionInvites": "邀请链接",
+    "invitesDescription": "允许他人创建账户的链接，即使已关闭注册功能。",
+    "invitesEmpty": "暂无邀请链接",
+    "inviteCreate": "新建邀请",
+    "inviteCreateFailed": "创建邀请失败",
+    "inviteCreatedNotice": "请立即复制此链接。它不会再显示。",
+    "inviteCopy": "复制链接",
+    "inviteCopied": "链接已复制",
+    "inviteNotePlaceholder": "备注，例如说明邀请对象",
+    "inviteRole": "角色",
+    "inviteNoRole": "无额外角色",
+    "inviteExpires": "过期时间",
+    "inviteExpiresIn_other": "{{count}} 天后过期",
+    "inviteUses": "使用次数",
+    "inviteMakeAdmin": "将其设为管理员",
+    "inviteUntitled": "邀请",
+    "inviteUsesOf": "已使用 {{uses}} / {{max}}",
+    "inviteState_active": "有效",
+    "inviteState_revoked": "已撤销",
+    "inviteState_expired": "已过期",
+    "inviteState_used": "已用完",
+    "inviteRevoke": "撤销",
+    "inviteRevokeConfirm": "确定要撤销此邀请链接吗？",
+    "inviteRevokeFailed": "无法撤销邀请",
+    "sectionAccess": "访问审核",
+    "accessCount_other": "{{count}} 次共享",
+    "accessExport": "导出 CSV",
+    "accessExportFailed": "导出失败",
+    "accessKind": "类型",
+    "accessKindAll": "全部",
+    "accessKind_host": "主机",
+    "accessKind_folder": "文件夹",
+    "accessKind_credential": "凭据",
+    "accessUser": "用户",
+    "accessAnyUser": "任意用户",
+    "accessRole": "角色",
+    "accessAnyRole": "任意角色",
+    "accessToUser": "授予 {{name}}",
+    "accessToRole": "授予角色 {{name}}",
+    "accessOwner": "所有者 {{name}}",
+    "accessGrantedBy": "由 {{name}} 共享",
+    "accessExpires": "于 {{date}} 到期",
+    "accessLastUsed": "上次使用于 {{date}}",
+    "accessEmpty": "暂无共享内容",
+    "sectionAccountSettings": "账户与访问权限",
+    "adminHostBypass": "管理员可以打开所有用户的主机",
+    "adminHostBypassDesc": "关闭时，管理员只能查看与其共享的主机，并且无法从用户页面打开其他用户的数据。开启后，如果设置了管理员冷却时间，则会等待该冷却时间。",
+    "signupApproval": "审批新的 SSO 账户",
+    "signupApprovalDesc": "首次通过 SSO 或 LDAP 登录的用户需等待管理员审批其账户。",
+    "updateSettingFailed": "无法保存设置"
   },
   "newUi": {
     "sidebar": {
@@ -505,7 +600,8 @@
         "domainPlaceholder": "可选",
         "connectToAction": "连接到 {{name}}",
         "sshProtocol": "SSH",
-        "noTarget": "未安装可连接到此类型主机的组件"
+        "noTarget": "未安装可连接到此类型主机的组件",
+        "loadingTargets": "正在加载连接方式..."
       },
       "keybindings": {
         "description": "将按键绑定到终端和应用中的操作，或更改内置快捷键。",
@@ -559,6 +655,9 @@
         "desktopProfileDescription": "此配置文件仅存在于当前设备，并独立登录。将其链接到 Termix 服务器，即可在所有设备上使用相同的主机和设置。",
         "sectionInterface": "界面",
         "interfacePresetDesc": "Termix 显示详细程度的预设。所有功能均可用。",
+        "closeToTray": "最小化到托盘",
+        "closeToTrayDesc": "关闭窗口后，Termix 将继续在托盘中运行，以保持连接处于打开状态。关闭此选项可在关闭窗口时退出程序。",
+        "closeToTraySaveFailed": "无法保存设置",
         "presetClearOverrides": "全部重置",
         "presetOverridesTitle": "已自定义",
         "presetRevertArea": "还原",
@@ -691,7 +790,11 @@
         "tryBetaDescription": "在“更新”中参加测试计划。",
         "sendBetaFeedback": "发送测试版反馈",
         "openUpdates": "更新",
-        "hexLabel": "十六进制"
+        "hexLabel": "十六进制",
+        "displayNameLabel": "显示名称",
+        "emailLabel": "电子邮件",
+        "profileSaved": "已保存",
+        "profileSaveFailed": "保存失败"
       }
     }
   },
@@ -723,6 +826,10 @@
     "apiKeys": "API 密钥",
     "data": "数据与同步",
     "interface": "界面",
+    "hostList": "主机列表",
+    "credentialList": "凭据列表",
+    "openHostList": "主机列表设置",
+    "openCredentialList": "凭据列表设置",
     "appearance": "外观",
     "keybindings": "快捷键",
     "adminGeneral": "常规",
@@ -782,6 +889,36 @@
       "hostRows": {
         "label": "主机行显示选项"
       }
+    },
+    "adminAccess": "访问审核",
+    "yourApps": "您的应用",
+    "otherApps": "其他应用",
+    "hostForm": {
+      "label": "添加主机表单",
+      "description": "简洁模式仅显示地址、登录信息、文件夹和标签。完整模式显示所有选项。您也可以在表单内切换。",
+      "simple": "简洁",
+      "full": "完整"
+    },
+    "interfaceDefaults": {
+      "title": "界面默认设置",
+      "intro": "选择用户首次登录时看到的内容。除非您锁定设置，否则他们仍可以更改自己的视图。",
+      "setFor": "设置对象",
+      "everyone": "所有人",
+      "inherits": "沿用“所有人”设置，直到您进行修改",
+      "useEveryone": "使用“所有人”设置",
+      "look": "初始外观",
+      "lookHint": "简洁模式显示最少内容，高级模式显示所有按钮。",
+      "simple": "简洁",
+      "balanced": "均衡",
+      "advanced": "高级",
+      "lock": "锁定",
+      "lockHint": "拥有此角色的用户无法更改其外观或侧边栏中的应用。",
+      "apps": "侧边栏中的应用",
+      "appsHint": "其余应用保留在“所有应用”和搜索结果中。",
+      "appsAdvanced": "高级模式会在侧边栏中显示所有应用。",
+      "saved": "界面默认设置已保存",
+      "saveFailed": "无法保存界面默认设置",
+      "lockedNote": "管理员已为您选择外观，因此无法在此处更改。"
     }
   },
   "hostDefaults": {
@@ -861,12 +998,19 @@
     "pickHint": "连接的所有设置都在这里，已分组以便查找。",
     "clearChoice": "清除",
     "proxyPathTarget": "目标",
-    "hostCopyName": "{{name}} (副本)"
+    "hostCopyName": "{{name}} (副本)",
+    "moreOptions": "更多选项",
+    "moreOptionsHint": "代理、跳板机、端口敲门、保活、状态检查以及每个应用的开关。大多数主机不需要这些设置。",
+    "folderAndTags": "文件夹、标签和备注"
   },
   "permissions": {
     "branding": {
       "title": "更改品牌标识",
       "description": "设置向所有用户显示的应用名称、标语和徽标。"
+    },
+    "interfaceDefaults": {
+      "title": "设置界面默认值",
+      "description": "为所有人或每个角色选择用户初始使用的外观和侧边栏应用。"
     }
   },
   "onboarding": {
@@ -901,6 +1045,8 @@
     "clickAuto": "首选连接方式",
     "useDefaultNamed": "默认（{{name}}）",
     "useDefaultButtons": "使用默认按钮",
-    "perHostHint": "若要为单个主机更改设置，请在其菜单中使用“主机行上的按钮”。"
+    "perHostHint": "若要为单个主机更改设置，请在其菜单中使用“主机行上的按钮”。",
+    "moreTools": "更多工具",
+    "more": "更多"
   }
 }

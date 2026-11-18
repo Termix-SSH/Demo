@@ -191,40 +191,26 @@ export function sameGrid(a: GridCard[], b: GridCard[]): boolean {
  * to fill it, so the dashboard reaches the bottom of the screen.
  */
 export function defaultGrid(registered: string[], room = 0): GridCard[] {
+  // The stats bar already shows the counts, and quick actions are in the palette.
   const first = AUTO_FIRST_CARDS.filter((id) => registered.includes(id));
   const cards: GridCard[] = [
     { key: "stats_bar_0", id: "stats_bar", x: 0, y: 0, w: 12, h: 76 },
-    { key: "counters_bar_0", id: "counters_bar", x: 0, y: 76, w: 12, h: 52 },
   ];
-  let y = 128;
-  if (first.length > 0) {
-    cards.push(
-      { key: `${first[0]}_auto`, id: first[0], x: 0, y, w: 8, h: 260 },
-      { key: "quick_actions_0", id: "quick_actions", x: 8, y, w: 4, h: 260 },
-    );
-    y += 260;
-    for (const id of first.slice(1)) {
-      cards.push({ key: `${id}_auto`, id, x: 0, y, w: 12, h: 260 });
-      y += 260;
-    }
-    const h = Math.max(420, room - y);
-    cards.push(
-      { key: "host_status_0", id: "host_status", x: 0, y, w: 8, h },
-      { key: "recent_activity_0", id: "recent_activity", x: 8, y, w: 4, h },
-    );
-    return cards;
+  let y = 76;
+  for (const id of first) {
+    cards.push({ key: `${id}_auto`, id, x: 0, y, w: 8, h: 180 });
+    y += 180;
   }
   const h = Math.max(440, room - y);
   cards.push(
     { key: "host_status_0", id: "host_status", x: 0, y, w: 8, h },
-    { key: "quick_actions_0", id: "quick_actions", x: 8, y, w: 4, h: 180 },
     {
       key: "recent_activity_0",
       id: "recent_activity",
       x: 8,
-      y: y + 180,
+      y: 76,
       w: 4,
-      h: h - 180,
+      h: h + y - 76,
     },
   );
   return cards;

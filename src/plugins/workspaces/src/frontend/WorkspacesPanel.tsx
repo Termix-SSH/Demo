@@ -23,16 +23,14 @@ import {
   useConfirm,
   InlineView,
   EmptyState,
-  PanelSearch,
   FormFooter,
-  AddButton,
   ListBadge,
   ListRow,
   ListRowAction,
   PanelList,
   LoadingState,
-  TOOLBAR_FIT,
 } from "@termix-ssh/plugin-sdk/ui";
+import { Toolbar } from "./panel-toolbar";
 import { createWorkspacesApi, type WorkspacesApi } from "./workspaces-api";
 import { errorMessage, type Workspace } from "./types";
 import { docsUrl } from "./docs";
@@ -498,43 +496,34 @@ export function WorkspacesPanel({
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
-      <div
-        className={`flex shrink-0 flex-col gap-2 border-b border-border px-3 py-2 ${TOOLBAR_FIT}`}
+      <Toolbar
+        search={query}
+        onSearchChange={setQuery}
+        searchPlaceholder={t("newUi.sidebar.workspaces.search")}
+        onAdd={() => setSaveDialogOpen(true)}
+        addLabel={t("newUi.sidebar.workspaces.saveCurrent")}
       >
-        <PanelSearch
-          value={query}
-          onChange={setQuery}
-          placeholder={t("newUi.sidebar.workspaces.search")}
-          fill
-        />
-        <div className="flex items-center gap-2">
-          <AddButton
-            label={t("newUi.sidebar.workspaces.saveCurrent")}
-            onClick={() => setSaveDialogOpen(true)}
-            className="flex-1"
-          />
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => openSettingsPage()}
-            title={t("newUi.sidebar.workspaces.settingsTitle")}
-            aria-label={t("newUi.sidebar.workspaces.settingsTitle")}
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => openSettingsPage()}
+          title={t("newUi.sidebar.workspaces.settingsTitle")}
+          aria-label={t("newUi.sidebar.workspaces.settingsTitle")}
+        >
+          <SlidersHorizontal className="size-3.5" />
+        </Button>
+        <Button variant="outline" size="icon" asChild>
+          <a
+            href={docsUrl()}
+            target="_blank"
+            rel="noreferrer"
+            title={t("hosts.docsLink")}
+            aria-label={t("hosts.docsLink")}
           >
-            <SlidersHorizontal className="size-3.5" />
-          </Button>
-          <Button variant="outline" size="icon" asChild>
-            <a
-              href={docsUrl()}
-              target="_blank"
-              rel="noreferrer"
-              title={t("hosts.docsLink")}
-              aria-label={t("hosts.docsLink")}
-            >
-              <ExternalLink className="size-3.5" />
-            </a>
-          </Button>
-        </div>
-      </div>
+            <ExternalLink className="size-3.5" />
+          </a>
+        </Button>
+      </Toolbar>
 
       <PanelList
         empty={

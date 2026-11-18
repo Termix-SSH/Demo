@@ -46,6 +46,10 @@
       "connectFactorMinutes": {
         "label": "다시 요청하기 전까지의 시간(분)",
         "description": "입력 후 이 시간 동안 모든 호스트에 연결할 수 있습니다. 로그아웃하면 이 시간이 조기 종료됩니다."
+      },
+      "newDeviceNotice": {
+        "label": "새로운 기기 알림",
+        "description": "사용자가 이전에 본 적 없는 기기에서 계정에 로그인할 때 알림을 보냅니다. 각 사용자는 이 기능을 개별적으로 끌 수 있습니다."
       }
     },
     "host": {
@@ -53,11 +57,18 @@
         "label": "연결 전 두 번째 인증 요구하고",
         "description": "로그인 보안이 '대상 호스트만'으로 설정되어 있을 때 사용됩니다."
       }
+    },
+    "user": {
+      "newDeviceNotice": {
+        "label": "새로운 기기에서 로그인 시 알림 받기",
+        "description": "이전에 본 적 없는 기기에서 계정에 로그인할 때 알림을 받습니다."
+      }
     }
   },
   "verify": {
     "title": "두 번째 인증 확인",
     "intro": "이 호스트에 연결하려면 두 번째 인증을 입력하세요.",
+    "start": "확인",
     "done": "확인 완료",
     "retry": "호스트로 돌아가 다시 연결하세요.",
     "failed": "작동하지 않았습니다. 다시 시도하세요.",
@@ -74,5 +85,69 @@
     "body": "관리자가 로그인 시 2차 인증 요소를 요구합니다. 아래에서 설정하여 Termix를 계속 사용하세요.",
     "none": "설정할 항목이 없으신가요? 관리자에게 2차 인증 플러그인 설치를 요청하세요.",
     "signOut": "로그아웃"
+  },
+  "never": "사용 안함",
+  "sessions": {
+    "title": "세션 및 키",
+    "tab": "세션",
+    "current": "현재 세션",
+    "meta": "{{type}} | 마지막 활동 {{lastActive}} | 로그인 시간 {{created}}",
+    "none": "세션 없음",
+    "end": "로그아웃",
+    "ended": "로그아웃됨",
+    "endOthers": "다른 세션 로그아웃",
+    "endOthersConfirm": "다른 {{count}}개 세션을 로그아웃하시겠습니까?",
+    "endedOthers": "다른 세션이 로그아웃되었습니다",
+    "everyone": "모든 사용자 로그아웃",
+    "everyoneConfirm": "이 서버의 모든 사용자를 로그아웃하시겠습니까?",
+    "everyoneDescription": "사용자 자신을 제외한 모든 사용자가 다시 로그인해야 합니다. 이 서버에 연결된 데스크톱 앱도 다시 연결해야 합니다.",
+    "everyoneKeysConfirm": "이 서버의 모든 API 키도 무효화하시겠습니까?",
+    "everyoneKeys": "키도 함께 무효화",
+    "everyoneKeysNo": "키 유지",
+    "everyoneDone": "모든 사용자의 로그아웃이 완료되었습니다",
+    "failed": "작업이 실패했습니다. 다시 시도해 주세요.",
+    "loadFailed": "세션과 키를 불러오지 못했습니다."
+  },
+  "keys": {
+    "tab": "API 키",
+    "none": "API 키가 없습니다",
+    "full": "전체 접근 권한",
+    "noExpiry": "만료 없음",
+    "meta": "{{prefix}} | 마지막 사용 {{lastUsed}} | 만료 {{expires}}",
+    "revoke": "취소",
+    "revoked": "키가 취소되었습니다",
+    "revokeAll": "모든 키 취소",
+    "revokeAllConfirm": "{{count}}개의 API 키를 취소하시겠습니까? 이를 사용하는 스크립트는 작동하지 않게 됩니다.",
+    "revokedAll": "API 키가 취소되었습니다"
+  },
+  "waits": {
+    "title": "관리자 대기",
+    "intro": "관리자가 두 명 이상일 때, 새 관리자 추가, 비밀번호 로그인 비활성화, 로그인 플러그인 비활성화 또는 위험한 접근 권한이 있는 플러그인 활성화 시 이 시간 동안 대기합니다. 다른 관리자는 알림을 받고 이를 취소할 수 있습니다. 이 기능을 끄거나 시간을 줄이는 것도 대기를 유발합니다.",
+    "adminOnly": "관리자만 볼 수 있습니다.",
+    "loadFailed": "관리자 대기를 로드할 수 없습니다.",
+    "active": "활성화됨, 변경 사항이 {{minutes}}분 동안 대기합니다",
+    "onOneAdmin": "활성화됨, 하지만 이 서버에는 관리자가 한 명뿐이므로 대기하지 않습니다",
+    "off": "비활성화됨",
+    "admins": "{{count}}명의 관리자",
+    "forced": "{{name}} 서버에서 설정됨.",
+    "minutes": "분",
+    "turnOn": "활성화",
+    "change": "저장",
+    "turnOff": "비활성화",
+    "saved": "저장됨",
+    "savedHeld": "저장됨. 다른 관리자가 먼저 대기합니다.",
+    "failed": "작업이 실패했습니다. 다시 시도해 주세요.",
+    "none": "대기 중인 관리자 변경 사항이 없습니다.",
+    "meta": "요청자: {{who}} | 적용 시간: {{runsAt}}",
+    "cancel": "취소",
+    "cancelConfirm": "이 변경 사항을 취소하시겠습니까?",
+    "cancelled": "취소됨",
+    "status": {
+      "pending": "대기 중",
+      "applying": "적용 중",
+      "applied": "적용됨",
+      "cancelled": "취소됨",
+      "failed": "실패"
+    }
   }
 }

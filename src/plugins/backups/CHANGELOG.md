@@ -1,6 +1,11 @@
 # Changelog
 
-## 1.0.1
+## 1.1.0
+
+### Added
+
+- Extra restic options for a job, added to restic backup, like `--exclude-caches` or `--limit-upload 2048`
+- Remove stale locks from a repository with a button next to Check, when a run that died left one behind
 
 ### Changed
 

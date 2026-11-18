@@ -36,6 +36,7 @@
     "checkNow": "지금 확인"
   },
   "nav": {
+    "theme": "테마",
     "copyPassword": "비밀번호 복사",
     "copySudoPassword": "Sudo 비밀번호 복사",
     "passwordCopied": "비밀번호가 클립보드에 복사되었습니다",
@@ -72,7 +73,15 @@
     "mobileNavigation": "네비게이션",
     "allTabs": "모든 탭",
     "hideTabBar": "탭 바 숨기기",
-    "showTabBar": "탭 바 표시"
+    "showTabBar": "탭 바 표시",
+    "allApps": "모든 앱",
+    "findApp": "앱 찾기",
+    "pinToRail": "레일에 고정",
+    "unpinFromRail": "레일 고정 해제",
+    "appSettings": "앱 설정",
+    "allAppsHint": "자주 사용하는 앱을 고정하세요. 앱 설정은 앱에서 마우스 오른쪽 버튼을 클릭하세요.",
+    "allAppsLockedHint": "관리자가 레일에 표시할 앱을 선택합니다.",
+    "viewMenu": "보기"
   },
   "commandPalette": {
     "searchPlaceholder": "호스트, 명령어 또는 설정 검색...",
@@ -171,7 +180,8 @@
     "dragToReorder": "타일을 드래그하여 이동하고, 가장자리를 드래그하여 크기를 조정하세요.",
     "clearActivityConfirm": "최근 활동을 지우시겠습니까?",
     "resetConfirm": "대시보드를 기본 레이아웃으로 초기화하시겠습니까?",
-    "clearFailed": "최근 활동을 지울 수 없습니다"
+    "clearFailed": "최근 활동을 지울 수 없습니다",
+    "help": "도움말"
   },
   "admin": {
     "sectionGeneral": "일반",
@@ -237,6 +247,9 @@
     "credentialStorage": "비밀번호 및 키 저장 허용",
     "credentialStorageOff": "이 서버에서는 비밀번호 및 키 저장이 꺼져 있습니다. 비워두면 Termix가 연결할 때마다 요청합니다.",
     "credentialStorageDesc": "꺼져 있으면, 누구도 호스트나 자격 증명에 비밀번호나 개인 키를 저장할 수 없으며, Termix는 연결할 때마다 이를 요청합니다. 이미 저장된 로그인은 제거될 때까지 유지됩니다.",
+    "hostKeyTrust": "프롬프트 없이 새 호스트 키 신뢰",
+    "hostKeyTrustDesc": "플러그인, 예약 작업 또는 API가 이전에 확인되지 않은 키를 가진 호스트에 연결할 때, 해당 키를 저장하고 연결합니다. 이 설정이 꺼져 있으면, 누군가가 터미널을 통해 호스트에 연결하여 키를 신뢰할 때까지 연결이 거부됩니다.",
+    "hostKeyTrustFailed": "호스트 키 설정 업데이트 실패",
     "secondFactorAfterExternalLogin": "외부 로그인(SSO, GitHub, Google, LDAP) 후 2차 인증 요청",
     "secondFactorAfterExternalLoginDesc": "꺼짐: 등록한 2차 인증은 비밀번호 및 기타 로컬 로그인 후에만 요청됩니다(이전과 동일함). 켜짐: SSO 및 LDAP을 포함한 모든 로그인 방식 후에 요청됩니다",
     "allowPasswordReset": "비밀번호 재설정 허용",
@@ -482,7 +495,89 @@
     "revokeSession": "로그아웃",
     "deleteRoleConfirm": "{{name}} 역할을 삭제하시겠습니까?",
     "revokeKeyConfirm": "API 키 {{name}}을(를) 무효화하시겠습니까?",
-    "revokeKey": "무효화"
+    "revokeKey": "무효화",
+    "apiKeyScopeReadAll": "읽기 전용, 사용자가 볼 수 있는 모든 항목",
+    "apiKeyNeverExpires": "만료 없음",
+    "apiKeyExpiryHint": "비워두면 키가 90일 동안 유효합니다.",
+    "changeHeld": "이 변경 사항은 다른 관리자가 확인할 수 있도록 {{minutes}}분간 대기합니다.",
+    "userStatusFilter": "계정 상태",
+    "userStatusAll": "모든 계정",
+    "userStatusActive": "활성",
+    "userStatusDisabled": "비활성화됨",
+    "userStatusPending": "승인 대기 중",
+    "disabledBadge": "비활성",
+    "pendingBadge": "대기 중",
+    "accountStatusTitle": "계정 상태",
+    "accountStatusActive": "이 계정으로 로그인할 수 있습니다.",
+    "accountStatusDisabled": "이 계정은 비활성화되었습니다. 로그인이 불가능하며 API 키도 작동하지 않습니다.",
+    "accountStatusPending": "이 계정은 승인 대기 중이며 아직 로그인할 수 없습니다.",
+    "lastLogin": "마지막 로그인 {{time}}",
+    "disableUser": "계정 비활성화",
+    "enableUser": "계정 활성화",
+    "approveUser": "승인",
+    "disableUserConfirm": "{{username}}(으)로 계정을 비활성화하시겠습니까? 모든 기기에서 로그아웃되며, 계정을 다시 활성화할 때까지 로그인할 수 없습니다.",
+    "userDisabled": "{{username}}(으)로 계정이 비활성화되었습니다",
+    "userEnabled": "{{username}}(으)로 계정이 활성화되었습니다",
+    "userApproved": "{{username}}(으)로 계정이 승인되었습니다",
+    "userStatusFailed": "계정을 변경할 수 없습니다",
+    "profileTitle": "이름 및 이메일",
+    "displayName": "표시 이름",
+    "displayNamePlaceholder": "표시 이름",
+    "email": "이메일",
+    "emailPlaceholder": "이메일",
+    "profileSaved": "저장됨",
+    "profileSaveFailed": "저장할 수 없습니다",
+    "manageTabAccess": "접근 권한",
+    "sectionInvites": "초대 링크",
+    "invitesDescription": "회원가입이 비활성화되어 있더라도 계정을 만들 수 있게 해주는 링크입니다.",
+    "invitesEmpty": "아직 초대 링크가 없습니다",
+    "inviteCreate": "새 초대",
+    "inviteCreateFailed": "초대를 생성할 수 없습니다",
+    "inviteCreatedNotice": "지금 이 링크를 복사하세요. 다시 표시되지 않습니다.",
+    "inviteCopy": "링크 복사",
+    "inviteCopied": "링크가 복사되었습니다",
+    "inviteNotePlaceholder": "예: 초대 대상자 이름",
+    "inviteRole": "역할",
+    "inviteNoRole": "추가 역할 없음",
+    "inviteExpires": "만료",
+    "inviteExpiresIn_other": "{{count}}일 후 만료",
+    "inviteUses": "사용 횟수",
+    "inviteMakeAdmin": "관리자로 설정",
+    "inviteUntitled": "초대",
+    "inviteUsesOf": "{{uses}}/{{max}} 사용",
+    "inviteState_active": "활성",
+    "inviteState_revoked": "취소됨",
+    "inviteState_expired": "만료됨",
+    "inviteState_used": "사용 완료",
+    "inviteRevoke": "취소",
+    "inviteRevokeConfirm": "이 초대 링크를 취소하시겠습니까?",
+    "inviteRevokeFailed": "초대를 취소할 수 없습니다",
+    "sectionAccess": "접근 권한 검토",
+    "accessCount_other": "{{count}}개 공유",
+    "accessExport": "CSV 내보내기",
+    "accessExportFailed": "내보내기를 실패했습니다",
+    "accessKind": "종류",
+    "accessKindAll": "전체",
+    "accessKind_host": "호스트",
+    "accessKind_folder": "폴더",
+    "accessKind_credential": "자격 증명",
+    "accessUser": "사용자",
+    "accessAnyUser": "모든 사용자",
+    "accessRole": "역할",
+    "accessAnyRole": "모든 역할",
+    "accessToUser": "{{name}}에게",
+    "accessToRole": "{{name}} 역할에게",
+    "accessOwner": "소유자 {{name}}",
+    "accessGrantedBy": "{{name}}이(가) 공유함",
+    "accessExpires": "{{date}} 종료",
+    "accessLastUsed": "마지막 사용 {{date}}",
+    "accessEmpty": "공유된 항목이 없습니다",
+    "sectionAccountSettings": "계정 및 접근 권한",
+    "adminHostBypass": "관리자는 모든 사용자의 호스트를 열 수 있습니다",
+    "adminHostBypassDesc": "비활성화하면 관리자는 자신에게 공유된 호스트만 볼 수 있으며, 사용자 페이지에서 다른 사용자의 데이터에 접근할 수 없습니다. 활성화하면 설정된 경우 관리자 쿨다운 시간을 기다립니다.",
+    "signupApproval": "새 SSO 계정 승인",
+    "signupApprovalDesc": "SSO 또는 LDAP를 통해 처음 로그인하는 사용자는 관리자가 계정을 승인할 때까지 대기합니다.",
+    "updateSettingFailed": "설정을 저장할 수 없습니다"
   },
   "newUi": {
     "sidebar": {
@@ -505,7 +600,8 @@
         "domainPlaceholder": "선택 사항",
         "connectToAction": "{{name}}(으)로 연결",
         "sshProtocol": "SSH",
-        "noTarget": "이 호스트 유형에 연결할 수 있는 것이 설치되어 있지 않습니다"
+        "noTarget": "이 호스트 유형에 연결할 수 있는 것이 설치되어 있지 않습니다",
+        "loadingTargets": "연결 방법 로딩 중..."
       },
       "keybindings": {
         "description": "터미널과 앱에서 키를 작업에 바インド하거나, 기본 제공 단축키를 변경하세요.",
@@ -559,6 +655,9 @@
         "desktopProfileDescription": "이 프로필은 이 기기에만 저장되어 독립적으로 로그인합니다. 모든 기기에서 동일한 호스트와 설정을 사용하려면 Termix 서버에 연결하세요.",
         "sectionInterface": "인터페이스",
         "interfacePresetDesc": "Termix에서 표시할 정보의 양입니다. 모든 기능은 계속 사용할 수 있습니다.",
+        "closeToTray": "트레이로 최소화",
+        "closeToTrayDesc": "창을 닫아도 트레이에서 Termix가 계속 실행되어 연결이 유지됩니다. 창을 닫을 때 완전히 종료하려면 이 기능을 끄세요.",
+        "closeToTraySaveFailed": "설정을 저장할 수 없습니다",
         "presetClearOverrides": "모두 재설정",
         "presetOverridesTitle": "사용자 정의됨",
         "presetRevertArea": "되돌리기",
@@ -691,7 +790,11 @@
         "tryBetaDescription": "업데이트에서 베타 프로그램에 참여하세요.",
         "sendBetaFeedback": "베타 피드백 보내기",
         "openUpdates": "업데이트",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "표시 이름",
+        "emailLabel": "이메일",
+        "profileSaved": "저장됨",
+        "profileSaveFailed": "저장할 수 없습니다"
       }
     }
   },
@@ -723,6 +826,10 @@
     "apiKeys": "API 키",
     "data": "데이터 및 동기화",
     "interface": "인터페이스",
+    "hostList": "호스트 목록",
+    "credentialList": "자격 증명 목록",
+    "openHostList": "호스트 목록 설정",
+    "openCredentialList": "자격 증명 목록 설정",
     "appearance": "모양",
     "keybindings": "키 바인딩",
     "adminGeneral": "일반",
@@ -782,6 +889,36 @@
       "hostRows": {
         "label": "호스트 행 옵션"
       }
+    },
+    "adminAccess": "접근 권한 검토",
+    "yourApps": "내 앱",
+    "otherApps": "다른 앱",
+    "hostForm": {
+      "label": "호스트 추가 양식",
+      "description": "간단한 양식은 주소, 로그인 정보, 폴더 및 태그만 표시합니다. 전체 양식은 모든 옵션을 표시합니다. 양식 내부에서도 전환할 수 있습니다.",
+      "simple": "간단함",
+      "full": "전체"
+    },
+    "interfaceDefaults": {
+      "title": "인터페이스 기본값",
+      "intro": "사용자가 처음 로그인할 때 보이는 화면을 선택하세요. 잠기지 않은 한 사용자는 자신의 뷰를 변경할 수 있습니다.",
+      "setFor": "적용 대상",
+      "everyone": "모든 사용자",
+      "inherits": "변경할 때까지 '모든 사용자' 설정 사용",
+      "useEveryone": "'모든 사용자' 사용",
+      "look": "기본 인터페이스 스타일",
+      "lookHint": "간단한 스타일은 최소한의 요소만 표시합니다. 고급 스타일은 모든 버튼을 표시합니다.",
+      "simple": "간단함",
+      "balanced": "균형",
+      "advanced": "고급",
+      "lock": "잠금",
+      "lockHint": "이 역할의 사용자는 인터페이스 스타일이나 레일 앱 구성을 변경할 수 없습니다.",
+      "apps": "레일에 표시할 앱",
+      "appsHint": "나머지 앱은 '모든 앱' 목록과 검색 결과에만 표시됩니다.",
+      "appsAdvanced": "고급 스타일에서는 레일에 모든 앱을 표시합니다.",
+      "saved": "인터페이스 기본값이 저장되었습니다",
+      "saveFailed": "인터페이스 기본값을 저장하지 못했습니다",
+      "lockedNote": "관리자가 인터페이스 스타일을 설정했으므로 여기서 변경할 수 없습니다."
     }
   },
   "hostDefaults": {
@@ -861,12 +998,19 @@
     "pickHint": "연결과 관련된 모든 설정은 여기에서 그룹화되어 있습니다.",
     "clearChoice": "지우기",
     "proxyPathTarget": "대상",
-    "hostCopyName": "{{name}} (복사본)"
+    "hostCopyName": "{{name}} (복사본)",
+    "moreOptions": "추가 옵션",
+    "moreOptionsHint": "프록시, 점프 호스트, 포트 노킹, 연결 유지, 상태 확인 및 각 앱의 켜기/끄기 스위치 등입니다. 대부분의 호스트에서는 필요하지 않습니다.",
+    "folderAndTags": "폴더, 태그 및 메모"
   },
   "permissions": {
     "branding": {
       "title": "브랜딩 변경",
       "description": "모든 사용자에게 표시되는 앱 이름, 슬로건 및 로고를 설정합니다."
+    },
+    "interfaceDefaults": {
+      "title": "인터페이스 기본값 설정",
+      "description": "모든 사용자 또는 역할별로 시작 시 사용할 인터페이스 스타일과 레일 앱을 선택합니다."
     }
   },
   "onboarding": {
@@ -901,6 +1045,8 @@
     "clickAuto": "첫 번째 연결 방식",
     "useDefaultNamed": "기본값 ({{name}})",
     "useDefaultButtons": "기본 버튼 사용",
-    "perHostHint": "특정 호스트에 대해 변경하려면 해당 호스트 메뉴에서 '호스트 행의 버튼'을 사용하세요."
+    "perHostHint": "특정 호스트에 대해 변경하려면 해당 호스트 메뉴에서 '호스트 행의 버튼'을 사용하세요.",
+    "moreTools": "추가 도구",
+    "more": "더 보기"
   }
 }

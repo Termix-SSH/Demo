@@ -8,7 +8,10 @@
     "viewHistory": "Historik",
     "viewEvents": "Händelser",
     "viewCommands": "Kommandon",
-    "viewSources": "Enheter"
+    "viewSources": "Enheter",
+    "refresh": "Live-uppdatering",
+    "refreshSeconds": "{{seconds}} sekunder",
+    "refreshHint": "Uppdateras endast medan Översikt är synlig. UPS:en kan uppdateras långsammare. Bakgrundspolling och lagrade mätvärden förblir vid 30 sekunder."
   },
   "common": {
     "loading": "Laddar...",
@@ -47,6 +50,8 @@
     "charge": "Batteriladdning",
     "runtime": "Kvarvarande drifttid",
     "load": "Belastning",
+    "estimatedLoad": "Uppskattad UPS-belastning",
+    "estimatedLoadHint": "Utgångswatt / {{watts}} W nominell. {{method}}. Sensornoggrannhet ej verifierad; inte CPU-användning eller väggströmsförbrukning.",
     "nominal": "{{watts}} W nominell",
     "input": "Ingångsspänning",
     "output": "Utgångsspänning",
@@ -59,6 +64,60 @@
     "readAt": "Senast läst",
     "ago": "{{time}} sedan"
   },
+  "electrical": {
+    "inputDc": "Ingången är likström",
+    "outputDc": "Utgången är likström",
+    "dcHint": "Bekräfta det elektriska domänen innan watt beräknas från spänning och ström. Detta ändrar inga UPS-inställningar. Sensornoggrannheten måste kontrolleras separat.",
+    "inputCurrent": "Ingångsström",
+    "outputCurrent": "Utgångsström",
+    "batteryCurrent": "Batteriström",
+    "inputPower": "Ingångseffekt",
+    "outputPower": "Utgångseffekt",
+    "reported": "Rapporterad aktiv effekt",
+    "calculated": "Beräknad likströmseffekt – sensorprecision ej verifierad",
+    "batteryType": "Batterikemi",
+    "chargeLow": "Tröskelvärde för låg laddning",
+    "chargeWarning": "Tröskelvärde för laddningsvarning",
+    "manufactured": "Batteriets tillverkningsdatum",
+    "driver": "Drivrutin",
+    "driverVersion": "Driverversion",
+    "subdriver": "HID-underdrivrutin",
+    "driverState": "Drivrutinstatus",
+    "usb": "USB-tillverkare / produkt",
+    "raw": "Avancerade NUT-variabler",
+    "search": "Filtrera variabelnamn eller värden",
+    "noVariables": "Inga matchande variabler.",
+    "dcDisclaimer": "Beräknad DC-utgångseffekt uppskattar UPS-belastningen, inte AC-förbrukningen från vägguttaget. Det är inte nödvändigtvis en enskild värdens förbrukning. Kontrollera strömavläsningar innan du litar på effekt- eller energisuppskattningar."
+  },
+  "energy": {
+    "period": "Observerad utgångsenergi (vald period)",
+    "lifetime": "Observerad utgångsenergi (aktuell epok)",
+    "estimated": "Beräknat från schemalagda stickprov; inte en hårdvarumätare",
+    "coverage": "Mätt täckning",
+    "covered": "Integrerad tid",
+    "incomplete": "Ofullständiga data; saknad tid beräknas inte",
+    "complete": "Fullständig mätt täckning",
+    "average": "Genomsnittlig uteffekt (täcktid)",
+    "peak": "Stickprovstaget utspetsvärde",
+    "sampledRange": "Stickprovtaget effektomfång",
+    "scope": "UPS-utgång, inte väggström (AC). Periodsummor sträcker sig över de angivna spårningsepokerna; behandla inte olika epoker som en fysisk mätare.",
+    "resolution": "Nominell diagramsegment: {{seconds}} sekunder; luckor förblir separata. Håll muspekaren över punkter för absolut tid och tidszon.",
+    "empty": "Energiövervakning kräver två giltiga schemalagda effektmätningar. Okända wattvärden förblir otillgängliga, inte noll.",
+    "error": "Kunde inte läsa energihistoriken.",
+    "bucket": "Observerad utgående energi per segment",
+    "samples": "Tillgängliga mätvärden och ackumulerad observerad energi",
+    "tableHelp": "Endast observerad energi summeras. Saknade intervall fylls inte i. Ackumulerade värden omfattar de angivna tidsintervallen.",
+    "time": "Segmentstart (lokal tidszon)",
+    "cumulative": "Ackumulerad Wh under vald period",
+    "cumulativeChart": "Ackumulerad observerad utgående energi (vald period)",
+    "epochTotal": "Observerad energi under detta tidsintervall",
+    "unavailable": "Utgående effekt otillgänglig",
+    "epochs": "Separata spårningsperioder",
+    "started": "Spårning startad",
+    "method": "Effektmätmetod",
+    "chartHelp": "Tidsproportionella data. Saknade intervall och ändringar av spårningsperiod är inte anslutna. Provtagda toppar är inte hårdvarumätta toppvärden. En tillgänglig datatabell följer efter diagrammen.",
+    "correlationBlocked": "CPU/minneskorrelation är inte tillgänglig: Host Metrics kräver en offentlig, auktoriserad snapshot-tjänst med mätningstidsstämplar. Ingen ytterligare värdinsamling är aktiverad."
+  },
   "history": {
     "error": "Kunde inte läsa historiken.",
     "24h": "24 timmar",
@@ -66,7 +125,7 @@
     "30d": "30 dagar",
     "empty": "Inte tillräckligt många mätningar ännu. Termix läser av UPS:en var 30:e sekund.",
     "charge": "Batteriladdning",
-    "load": "Belastning",
+    "load": "Belastning (endast enhetsrapporterad)",
     "runtime": "Kvarvarande drifttid",
     "voltage": "Spänning"
   },
@@ -113,7 +172,7 @@
     "unreachable": "oanvändbar",
     "saved": "Sparad.",
     "deleteTitle": "Ta bort {{name}}?",
-    "deleteText": "Historiken och händelserna raderas också."
+    "deleteText": "Historik, energitotaler, spårningsperioder och händelser raderas också."
   },
   "editor": {
     "addTitle": "Lägg till UPS",
@@ -172,6 +231,8 @@
     "testFailed": "Kunde inte läsa av UPS-enheten."
   },
   "card": {
+    "estimatedLoad": "{{value}} % beräknad UPS-belastning",
+    "dc": "beräknad DC, ej verifierad",
     "title": "UPS",
     "empty": "Ingen UPS är konfigurerad. Aktivera UPS Manager för en värd och lägg till en enhet.",
     "runtime": "{{time}} kvar",

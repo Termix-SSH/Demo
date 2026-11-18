@@ -1,13 +1,14 @@
 import type { Router } from "express";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import { Engine } from "./engine.js";
+import { EnergyLedger } from "./energy-ledger.js";
 import { History } from "./history.js";
 import { registerOperations } from "./operations.js";
 import { createRemote } from "./remote.js";
 import { registerRoutes } from "./routes.js";
 import { createService } from "./service.js";
 import { createStore } from "./store.js";
-import { events, sources } from "./tables.js";
+import { energyStates, events, sources } from "./tables.js";
 
 export async function activate(ctx: PluginContext) {
   const remote = createRemote(ctx);
@@ -15,10 +16,12 @@ export async function activate(ctx: PluginContext) {
     ctx,
     await ctx.db.define(sources),
     await ctx.db.define(events),
+    await ctx.db.define(energyStates),
   );
-  const history = new History(await ctx.files.dataDir());
+  const history = new History(await ctx.files.dataDir(), ctx.log);
   await history.load();
-  const engine = new Engine(ctx, store, remote, history);
+  const energy = new EnergyLedger(store, ctx.log);
+  const engine = new Engine(ctx, store, remote, history, energy);
   engine.start();
   ctx.disposables.add(() => engine.dispose());
 

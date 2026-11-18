@@ -2,6 +2,33 @@ export type Backend = "nut" | "apcupsd" | "snmp";
 
 export type PowerState = "online" | "battery" | "bypass" | "off" | "unknown";
 
+export type PowerOrigin = "reported" | "calculated-dc" | "unavailable";
+export type LoadOrigin = "reported" | "estimated" | "unavailable";
+
+export interface ElectricalReading {
+  inputCurrentA: number | null;
+  outputCurrentA: number | null;
+  batteryCurrentA: number | null;
+  inputPowerW: number | null;
+  outputPowerW: number | null;
+  inputPowerOrigin: PowerOrigin;
+  outputPowerOrigin: PowerOrigin;
+}
+
+export interface NutDetails {
+  batteryType: string;
+  batteryChargeLow: number | null;
+  batteryChargeWarning: number | null;
+  batteryManufactured: string;
+  driver: string;
+  driverVersion: string;
+  subdriver: string;
+  driverState: string;
+  vendorId: string;
+  productId: string;
+  variables: Record<string, string>;
+}
+
 export type Flag =
   | "low-battery"
   | "replace-battery"
@@ -19,6 +46,7 @@ export interface Reading {
   chargePct: number | null;
   runtimeSec: number | null;
   loadPct: number | null;
+  loadOrigin?: LoadOrigin;
   inputV: number | null;
   outputV: number | null;
   batteryV: number | null;
@@ -30,6 +58,9 @@ export interface Reading {
   lastTest: string;
   /** The status text the UPS gave, for display. */
   rawStatus: string;
+  /** Optional for older persisted readings and backends without electrical data. */
+  electrical?: ElectricalReading;
+  nut?: NutDetails;
 }
 
 export interface SourceView {
@@ -48,6 +79,9 @@ export interface SourceView {
   reading: Reading | null;
   error: string;
   readAt: number | null;
+  inputDc?: boolean;
+  outputDc?: boolean;
+  energy?: EnergyReport;
 }
 
 export interface SourceInput {
@@ -60,6 +94,9 @@ export interface SourceInput {
   alerts?: boolean;
   enabled?: boolean;
   secrets?: SourceSecrets;
+  /** Explicit DC confirmation; never inferred from the model or voltage. */
+  inputDc?: boolean;
+  outputDc?: boolean;
 }
 
 export interface SourceSecrets {
@@ -98,6 +135,55 @@ export interface HistoryPoint {
 
 export type HistoryRange = "24h" | "7d" | "30d";
 
+export interface EnergyEpoch {
+  id: string;
+  identity: string;
+  origin: PowerOrigin;
+  startedAt: number;
+  lastAt: number;
+  observedWh: number;
+  coveredSec: number;
+}
+
+export interface EnergyPoint {
+  t: number;
+  end: number;
+  epoch: string;
+  wh: number;
+  coveredSec: number;
+  observedSec: number;
+  outputW: number | null;
+  minW: number | null;
+  maxW: number | null;
+  inputW: number | null;
+  inputA: number | null;
+  outputA: number | null;
+  batteryA: number | null;
+}
+
+export interface EnergyReport {
+  epochs: EnergyEpoch[];
+  /** Current physical identity/method only. Earlier epochs remain separate. */
+  current: EnergyEpoch | null;
+  persistenceError: string;
+  correlationStatus: "timestamped-service-required";
+}
+
+export interface EnergyHistory extends EnergyReport {
+  range: HistoryRange;
+  start: number;
+  end: number;
+  points: EnergyPoint[];
+  observedWh: number;
+  coveredSec: number;
+  eligibleSec: number;
+  coveragePct: number;
+  averageW: number | null;
+  sampledPeakW: number | null;
+  incomplete: boolean;
+  resolutionSec: number;
+}
+
 export interface UpsEvent {
   id: number;
   sourceId: number;
@@ -122,5 +208,10 @@ export interface HostSummary {
   chargePct: number | null;
   runtimeSec: number | null;
   loadPct: number | null;
+  loadOrigin?: LoadOrigin;
   error: string;
+  outputPowerW?: number | null;
+  outputPowerOrigin?: PowerOrigin;
+  observedOutputWh?: number | null;
+  energyError?: string;
 }

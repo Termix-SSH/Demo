@@ -8,7 +8,10 @@
     "viewHistory": "Histórico",
     "viewEvents": "Eventos",
     "viewCommands": "Comandos",
-    "viewSources": "Dispositivos"
+    "viewSources": "Dispositivos",
+    "refresh": "Atualização em tempo real",
+    "refreshSeconds": "{{seconds}} segundos",
+    "refreshHint": "Atualiza apenas enquanto a Visão Geral estiver visível. O UPS pode atualizar mais lentamente. A consulta em segundo plano e as amostras armazenadas permanecem em 30 segundos."
   },
   "common": {
     "loading": "Carregando...",
@@ -47,6 +50,8 @@
     "charge": "Carga da bateria",
     "runtime": "Tempo restante",
     "load": "Carga",
+    "estimatedLoad": "Carga estimada do UPS",
+    "estimatedLoadHint": "Watts de saída / {{watts}} W nominais. {{method}}. Precisão do sensor não verificada; não é utilização da CPU ou consumo da tomada CA.",
     "nominal": "{{watts}} W nominais",
     "input": "Tensão de entrada",
     "output": "Tensão de saída",
@@ -59,6 +64,60 @@
     "readAt": "Última leitura",
     "ago": "{{time}} atrás"
   },
+  "electrical": {
+    "inputDc": "Entrada é CC",
+    "outputDc": "Saída é CC",
+    "dcHint": "Confirme o domínio elétrico antes de calcular watts a partir de tensão e corrente. Isso não altera nenhuma configuração do UPS. A precisão do sensor deve ser verificada independentemente.",
+    "inputCurrent": "Corrente de entrada",
+    "outputCurrent": "Corrente de saída",
+    "batteryCurrent": "Corrente da bateria",
+    "inputPower": "Potência de entrada",
+    "outputPower": "Potência de saída",
+    "reported": "Potência real reportada",
+    "calculated": "Potência CC calculada - precisão do sensor não verificada",
+    "batteryType": "Química da bateria",
+    "chargeLow": "Limite de carga baixa",
+    "chargeWarning": "Limite de aviso de carga",
+    "manufactured": "Data de fabricação da bateria",
+    "driver": "Driver",
+    "driverVersion": "Versão do driver",
+    "subdriver": "Subdriver HID",
+    "driverState": "Estado do driver",
+    "usb": "Fornecedor/produto USB",
+    "raw": "Variáveis avançadas do NUT",
+    "search": "Filtrar nomes ou valores de variáveis",
+    "noVariables": "Nenhuma variável correspondente.",
+    "dcDisclaimer": "A potência de saída CC calculada estima a carga do UPS, não o consumo da tomada CA. Não representa necessariamente o consumo de um único host. Valide as leituras de corrente antes de confiar nas estimativas de potência ou energia."
+  },
+  "energy": {
+    "period": "Energia de saída observada (período selecionado)",
+    "lifetime": "Energia de saída observada (época atual)",
+    "estimated": "Estimado com base em amostras programadas; não é um medidor de hardware",
+    "coverage": "Cobertura medida",
+    "covered": "Tempo integrado",
+    "incomplete": "Dados incompletos; o tempo ausente não é estimado",
+    "complete": "Cobertura medida completa",
+    "average": "Potência de saída média (tempo coberto)",
+    "peak": "Pico de saída amostrado",
+    "sampledRange": "Intervalo de potência amostrado",
+    "scope": "Saída do UPS, não energia da tomada CA. Os totais do período abrangem as épocas de rastreamento listadas; não trate épocas diferentes como um único medidor físico.",
+    "resolution": "Segmento nominal do gráfico: {{seconds}} segundos; lacunas permanecem separadas. Passe o mouse sobre os pontos para ver o tempo absoluto e o fuso horário.",
+    "empty": "O rastreamento de energia requer duas leituras de potência agendadas válidas. Watts desconhecidos permanecem indisponíveis, não zero.",
+    "error": "Não foi possível ler o histórico de energia.",
+    "bucket": "Energia de saída observada por segmento",
+    "samples": "Amostras acessíveis e energia observada cumulativa",
+    "tableHelp": "Apenas a energia observada é somada. Intervalos ausentes não são preenchidos. Os valores cumulativos abrangem as épocas listadas.",
+    "time": "Início do segmento (fuso horário local)",
+    "cumulative": "Wh cumulativos no período selecionado",
+    "cumulativeChart": "Energia de saída observada cumulativa (período selecionado)",
+    "epochTotal": "Energia observada nesta época",
+    "unavailable": "Potência de saída indisponível",
+    "epochs": "Épocas de rastreamento separadas",
+    "started": "Rastreamento iniciado",
+    "method": "Método de potência",
+    "chartHelp": "Dados proporcionais ao tempo. Intervalos ausentes e mudanças de época de rastreamento não são conectados. Picos amostrados não são medições de pico de hardware. Uma tabela de dados acessível segue os gráficos.",
+    "correlationBlocked": "Correlação CPU/memória indisponível: Host Metrics precisa de um serviço de snapshot público e autorizado com carimbos de data/hora de medição. Nenhuma coleta adicional de host está habilitada."
+  },
   "history": {
     "error": "Não foi possível carregar o histórico.",
     "24h": "24 horas",
@@ -66,7 +125,7 @@
     "30d": "30 dias",
     "empty": "Leituras insuficientes ainda. O Termix lê o UPS a cada 30 segundos.",
     "charge": "Carga da bateria",
-    "load": "Carga",
+    "load": "Carga (apenas relatada pelo dispositivo)",
     "runtime": "Tempo restante",
     "voltage": "Tensão"
   },
@@ -113,7 +172,7 @@
     "unreachable": "inacessível",
     "saved": "Salvo.",
     "deleteTitle": "Remover {{name}}?",
-    "deleteText": "Seu histórico e eventos também serão excluídos."
+    "deleteText": "Seu histórico, totais de energia, épocas de rastreamento e eventos também serão excluídos."
   },
   "editor": {
     "addTitle": "Adicionar UPS",
@@ -172,6 +231,8 @@
     "testFailed": "Não foi possível ler o UPS."
   },
   "card": {
+    "estimatedLoad": "{{value}}% de carga estimada no UPS",
+    "dc": "CC calculada, não verificada",
     "title": "UPS",
     "empty": "Nenhum UPS configurado. Ative o Gerenciador de UPS para um host e adicione um dispositivo.",
     "runtime": "{{time}} restantes",

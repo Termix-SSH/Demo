@@ -8,7 +8,10 @@
     "viewHistory": "历史记录",
     "viewEvents": "事件",
     "viewCommands": "命令",
-    "viewSources": "设备"
+    "viewSources": "设备",
+    "refresh": "实时刷新",
+    "refreshSeconds": "{{seconds}} 秒",
+    "refreshHint": "仅在概览可见时刷新。UPS 更新可能较慢。后台轮询和存储的采样仍保持 30 秒。"
   },
   "common": {
     "loading": "加载中...",
@@ -47,6 +50,8 @@
     "charge": "电池电量",
     "runtime": "剩余运行时间",
     "load": "负载",
+    "estimatedLoad": "UPS 预估负载",
+    "estimatedLoadHint": "输出功率 / {{watts}} W 额定值。{{method}}。传感器精度未经核实；非 CPU 利用率或交流墙插功耗。",
     "nominal": "额定 {{watts}} W",
     "input": "输入电压",
     "output": "输出电压",
@@ -59,6 +64,60 @@
     "readAt": "上次读取",
     "ago": "{{time}} 前"
   },
+  "electrical": {
+    "inputDc": "输入为直流",
+    "outputDc": "输出为直流",
+    "dcHint": "在根据电压和电流计算瓦数前，请确认电气域。此操作不会更改任何 UPS 设置。传感器精度需独立核实。",
+    "inputCurrent": "输入电流",
+    "outputCurrent": "输出电流",
+    "batteryCurrent": "电池电流",
+    "inputPower": "输入功率",
+    "outputPower": "输出功率",
+    "reported": "报告的实际功率",
+    "calculated": "计算得出的直流功率 - 传感器精度未经验证",
+    "batteryType": "电池化学类型",
+    "chargeLow": "低电量阈值",
+    "chargeWarning": "充电警告阈值",
+    "manufactured": "电池生产日期",
+    "driver": "驱动程序",
+    "driverVersion": "驱动程序版本",
+    "subdriver": "HID 子驱动程序",
+    "driverState": "驱动程序状态",
+    "usb": "USB 厂商 / 产品",
+    "raw": "高级 NUT 变量",
+    "search": "筛选变量名称或值",
+    "noVariables": "没有匹配的变量。",
+    "dcDisclaimer": "计算得出的直流输出功率用于估算 UPS 负载，而非交流墙插功耗。它不一定代表单台主机的功耗。在依赖功率或能耗估算之前，请验证电流读数。"
+  },
+  "energy": {
+    "period": "观测到的输出能耗（所选时段）",
+    "lifetime": "观测到的输出能耗（当前纪元）",
+    "estimated": "基于计划采样估算；非硬件电表数据",
+    "coverage": "测量覆盖率",
+    "covered": "累计时长",
+    "incomplete": "数据不完整；缺失时间未进行估算",
+    "complete": "完整的测量覆盖率",
+    "average": "平均输出功率（覆盖时长内）",
+    "peak": "采样输出峰值",
+    "sampledRange": "采样功率范围",
+    "scope": "UPS 输出，非交流墙插能耗。周期总计涵盖所列跟踪时段；请勿将不同时段视为同一物理电表。",
+    "resolution": "图表分段标称值：{{seconds}} 秒；间隔保持独立。悬停查看绝对时间和时区。",
+    "empty": "能耗追踪需要两次有效的计划功率读数。未知的瓦特数将显示为不可用，而非零。",
+    "error": "无法读取能耗历史记录。",
+    "bucket": "每段观测到的输出能耗",
+    "samples": "可访问的样本及累计观测能耗",
+    "tableHelp": "仅对观测到的能耗进行求和。缺失的时间间隔不会填充。累计值涵盖所列的时间段。",
+    "time": "段开始时间（本地时区）",
+    "cumulative": "选定期间的累计瓦时（Wh）",
+    "cumulativeChart": "累计观测输出能耗（选定期间）",
+    "epochTotal": "本时段内的观测能耗",
+    "unavailable": "输出功率不可用",
+    "epochs": "独立的跟踪时段",
+    "started": "跟踪已开始",
+    "method": "功率计算方法",
+    "chartHelp": "数据按时间比例显示。缺失的时间间隔和跟踪时段的变更不会连线连接。采样峰值并非硬件峰值测量值。图表后附有可访问的数据表。",
+    "correlationBlocked": "CPU/内存相关性不可用：主机指标需要一个带有测量时间戳的公开、授权快照服务。未启用任何额外主机数据采集。"
+  },
   "history": {
     "error": "无法加载历史记录。",
     "24h": "24 小时",
@@ -66,7 +125,7 @@
     "30d": "30 天",
     "empty": "读数不足。Termix 每 30 秒读取一次 UPS。",
     "charge": "电池电量",
-    "load": "负载",
+    "load": "负载（仅设备报告）",
     "runtime": "剩余运行时间",
     "voltage": "电压"
   },
@@ -113,7 +172,7 @@
     "unreachable": "无法连接",
     "saved": "已保存。",
     "deleteTitle": "移除 {{name}}？",
-    "deleteText": "其历史记录和事件也将被删除。"
+    "deleteText": "其历史记录、能耗总计、跟踪时段和事件也将被删除。"
   },
   "editor": {
     "addTitle": "添加 UPS",
@@ -172,6 +231,8 @@
     "testFailed": "无法读取 UPS。"
   },
   "card": {
+    "estimatedLoad": "{{value}}% 预估 UPS 负载",
+    "dc": "计算得出的直流电，未经核实",
     "title": "UPS",
     "empty": "未设置 UPS。请为主机启用 UPS 管理器并添加设备。",
     "runtime": "剩余 {{time}}",

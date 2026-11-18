@@ -163,7 +163,7 @@ export function AdminApiKeysSection({
                     <span className="text-accent-brand">*</span>
                   </label>
                   <Select2
-                    className="px-2 py-1.5 text-xs bg-background border border-border text-foreground outline-none"
+                    className="px-2 py-1.5 text-xs bg-(--field) border border-border text-foreground outline-none"
                     value={newKeyUserId}
                     onChange={(e) => setNewKeyUserId(e.target.value)}
                   >

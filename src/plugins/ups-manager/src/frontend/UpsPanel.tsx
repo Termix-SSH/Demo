@@ -6,6 +6,7 @@ import {
   TabStrip,
   useConfirm,
   LoadingState,
+  SelectField,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { SourceInput, SourceView } from "../shared/types";
 import {
@@ -26,7 +27,8 @@ import { SourcesView } from "./SourcesView";
 
 type View = "overview" | "history" | "events" | "commands" | "sources";
 
-const POLL_MS = 30_000;
+const REFRESH_SECONDS = ["1", "2", "5", "10", "30"] as const;
+type RefreshSeconds = (typeof REFRESH_SECONDS)[number];
 
 /**
  * The UPS views for one host. The tab and the Host Metrics card both draw it.
@@ -51,6 +53,12 @@ export function UpsPanel({
   const [view, setView] = useState<View>("overview");
   const [editing, setEditing] = useState<SourceView | "new" | null>(null);
   const [busy, setBusy] = useState(false);
+  const [refreshSeconds, setRefreshSeconds] = useState<RefreshSeconds>("1");
+  const [pollError, setPollError] = useState("");
+  const [pageVisible, setPageVisible] = useState(
+    () => document.visibilityState !== "hidden",
+  );
+  const polling = useRef(false);
   const selectedRef = useRef<number | null>(null);
   selectedRef.current = selected;
 
@@ -79,28 +87,55 @@ export function UpsPanel({
     if (isVisible) void load();
   }, [isVisible, load]);
 
+  useEffect(() => {
+    const changed = () => setPageVisible(document.visibilityState !== "hidden");
+    document.addEventListener("visibilitychange", changed);
+    return () => document.removeEventListener("visibilitychange", changed);
+  }, []);
+
   // Fresh reading for the picked UPS, on a timer while the tab shows.
   useEffect(() => {
-    if (!isVisible || selected === null) return;
+    if (
+      !isVisible ||
+      !pageVisible ||
+      view !== "overview" ||
+      editing ||
+      selected === null
+    )
+      return;
     let live = true;
     const poll = async () => {
+      if (polling.current) return;
+      polling.current = true;
       try {
         const fresh = await getStatus(hostId, selected);
         if (!live) return;
+        setPollError("");
         setSources((all) =>
           all ? all.map((s) => (s.id === fresh.id ? fresh : s)) : all,
         );
-      } catch {
-        // The next poll tries again. The last reading stays on screen.
+      } catch (e) {
+        if (live) setPollError(errorMessage(e, t("tab.error")));
+      } finally {
+        polling.current = false;
       }
     };
     void poll();
-    const timer = setInterval(() => void poll(), POLL_MS);
+    const timer = setInterval(() => void poll(), Number(refreshSeconds) * 1000);
     return () => {
       live = false;
       clearInterval(timer);
     };
-  }, [hostId, selected, isVisible]);
+  }, [
+    hostId,
+    selected,
+    isVisible,
+    pageVisible,
+    view,
+    editing,
+    refreshSeconds,
+    t,
+  ]);
 
   const current = sources?.find((s) => s.id === selected) ?? null;
 
@@ -207,6 +242,27 @@ export function UpsPanel({
           }
         />
       </div>
+      {active === "overview" && current && (
+        <div className="shrink-0 border-b border-border px-3 py-2">
+          <SelectField<RefreshSeconds>
+            label={t("tab.refresh")}
+            value={refreshSeconds}
+            onChange={setRefreshSeconds}
+            options={REFRESH_SECONDS.map((value) => ({
+              value,
+              label: t("tab.refreshSeconds", { seconds: value }),
+            }))}
+          />
+          <p className="mt-1 text-xs text-muted-foreground">
+            {t("tab.refreshHint")}
+          </p>
+        </div>
+      )}
+      {pollError && (
+        <p role="alert" className="px-3 py-2 text-xs text-destructive">
+          {pollError}
+        </p>
+      )}
       <div className="min-h-0 flex-1 overflow-auto">
         {active === "sources" || !current ? (
           <SourcesView

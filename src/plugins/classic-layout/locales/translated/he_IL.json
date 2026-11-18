@@ -36,6 +36,7 @@
     "checkNow": "בדוק עכשיו"
   },
   "nav": {
+    "theme": "ערכת נושא",
     "copyPassword": "העתק סיסמה",
     "copySudoPassword": "העתק סיסמת Sudo",
     "passwordCopied": "הסיסמה הועתקה ללוח",
@@ -72,7 +73,15 @@
     "mobileNavigation": "ניווט",
     "allTabs": "כל הלשוניות",
     "hideTabBar": "הסתר סרגל לשוניות",
-    "showTabBar": "הצג סרגל לשוניות"
+    "showTabBar": "הצג סרגל לשוניות",
+    "allApps": "כל האפליקציות",
+    "findApp": "חפש אפליקציה",
+    "pinToRail": "הצמד לסרגל הצד",
+    "unpinFromRail": "בטל הצמדה לסרגל הצד",
+    "appSettings": "הגדרות אפליקציה",
+    "allAppsHint": "הצמד את אלו שאתה משתמש בהן. לחץ לחיצה ימנית על אפליקציה כדי לפתוח את הגדרותיה.",
+    "allAppsLockedHint": "המנהל שלך בוחר אילו אפליקציות יופיעו בסרגל הצד שלך.",
+    "viewMenu": "תצוגה"
   },
   "commandPalette": {
     "searchPlaceholder": "חפש מארחים, פקודות או הגדרות...",
@@ -171,7 +180,8 @@
     "dragToReorder": "גרור אריחים כדי להזיז אותם, וגרור את הקצוות כדי לשנות גודל",
     "clearActivityConfirm": "לנקות את הפעילות האחרונה שלך?",
     "resetConfirm": "לאפס את לוח הבקרה לפריסה המוגדרת כברירת מחדל?",
-    "clearFailed": "לא ניתן היה לנקות את הפעילות האחרונה"
+    "clearFailed": "לא ניתן היה לנקות את הפעילות האחרונה",
+    "help": "עזרה"
   },
   "admin": {
     "sectionGeneral": "כללי",
@@ -237,6 +247,9 @@
     "credentialStorage": "אפשר שמירת סיסמאות ומפתחות",
     "credentialStorageOff": "שמירת סיסמאות ומפתחות כבויה בשרת זה. השאר אותם ריקים ו־Termix תבקש אותם בעת החיבור.",
     "credentialStorageDesc": "כבוי: אף אחד לא יכול לשמור סיסמה או מפתח פרטי על מארח או אישור, ו־Termix תבקש אותם בעת החיבור. התחברויות שכבר נשמרו נשארות עד שהן מוסרות.",
+    "hostKeyTrust": "אמון מפתחות מארח חדשים ללא בקשת אישור",
+    "hostKeyTrustDesc": "כאשר תוסף, לוח זמנים או ה-API מתחברים למארח שבו מפתח לא נבדק מעולם, שמור את המפתח והתחבר. במצב כבוי, חיבורים אלו יידחו עד שמישהו יפתח מסוף למארח ויאמין במפתח שלו.",
+    "hostKeyTrustFailed": "עדכון הגדרת מפתח המארח נכשל",
     "secondFactorAfterExternalLogin": "בקש גורם שני אחרי התחברויות חיצוניות (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "כשכבוי, גורם שני רשום נדרש רק אחרי התחברות עם סיסמה והתחברויות מקומיות אחרות, כמו קודם. כשדלוק, הוא נדרש אחרי כל שיטת התחברות, כולל SSO ו-LDAP.",
     "allowPasswordReset": "אפשר איפוס סיסמה",
@@ -492,7 +505,93 @@
     "revokeSession": "התנתק",
     "deleteRoleConfirm": "למחוק את התפקיד {{name}}?",
     "revokeKeyConfirm": "לבטל את מפתח ה-API {{name}}?",
-    "revokeKey": "בטל"
+    "revokeKey": "בטל",
+    "apiKeyScopeReadAll": "קריאה בלבד, כל מה שהמשתמש יכול לראות",
+    "apiKeyNeverExpires": "לא פג תוקף",
+    "apiKeyExpiryHint": "אם השדה ריק, המפתח יעבוד למשך 90 יום.",
+    "changeHeld": "שינוי זה ממתין {{minutes}} דקות כדי שאדמינים אחרים יוכלו לראות אותו.",
+    "userStatusFilter": "מצב חשבון",
+    "userStatusAll": "כל החשבונות",
+    "userStatusActive": "פעיל",
+    "userStatusDisabled": "כבוי",
+    "userStatusPending": "ממתין לאישור",
+    "disabledBadge": "כבוי",
+    "pendingBadge": "ממתין",
+    "accountStatusTitle": "מצב חשבון",
+    "accountStatusActive": "חשבון זה יכול להתחבר.",
+    "accountStatusDisabled": "חשבון זה כבוי. אי אפשר להתחבר איתו ומפתחות ה-API שלו אינם פעילים.",
+    "accountStatusPending": "חשבון זה ממתין לאישור ואי אפשר להתחבר איתו עדיין.",
+    "lastLogin": "התחברות אחרונה {{time}}",
+    "disableUser": "כיבוי חשבון",
+    "enableUser": "הפעל חשבון",
+    "approveUser": "אשר",
+    "disableUserConfirm": "להשבית את {{username}}? המשתמש יתנתק מכל המקומות ולא יוכל להתחבר מחדש עד שתפעיל מחדש את החשבון.",
+    "userDisabled": "{{username}} מושבת",
+    "userEnabled": "{{username}} מופעל",
+    "userApproved": "{{username}} אושר",
+    "userStatusFailed": "לא ניתן לשנות את החשבון",
+    "profileTitle": "שם ודוא״ל",
+    "displayName": "שם לתצוגה",
+    "displayNamePlaceholder": "שם לתצוגה",
+    "email": "דוא״ל",
+    "emailPlaceholder": "דוא״ל",
+    "profileSaved": "נשמר",
+    "profileSaveFailed": "לא ניתן לשמור",
+    "manageTabAccess": "גישה",
+    "sectionInvites": "קישורי הזמנה",
+    "invitesDescription": "קישורים שמאפשרים למישהו ליצור חשבון, גם כשההרשמה עצמית כבויה.",
+    "invitesEmpty": "אין עדיין קישורי הזמנה",
+    "inviteCreate": "הזמנה חדשה",
+    "inviteCreateFailed": "לא ניתן ליצור את ההזמנה",
+    "inviteCreatedNotice": "העתק את הקישור הזה עכשיו. הוא לא יוצג שוב.",
+    "inviteCopy": "העתק קישור",
+    "inviteCopied": "הקישור הועתק",
+    "inviteNotePlaceholder": "הערה, למשל למי זה מיועד",
+    "inviteRole": "תפקיד",
+    "inviteNoRole": "ללא תפקיד נוסף",
+    "inviteExpires": "פג תוקף",
+    "inviteExpiresIn_one": "מסתיים בעוד יום אחד",
+    "inviteExpiresIn_two": "מסתיים בעוד יומיים",
+    "inviteExpiresIn_other": "מסתיים בעוד {{count}} ימים",
+    "inviteUses": "שימושים",
+    "inviteMakeAdmin": "הפוך אותם למנהל",
+    "inviteUntitled": "הזמן",
+    "inviteUsesOf": "{{uses}} מתוך {{max}} בשימוש",
+    "inviteState_active": "פעיל",
+    "inviteState_revoked": "בוטל",
+    "inviteState_expired": "פג תוקף",
+    "inviteState_used": "הושלם השימוש",
+    "inviteRevoke": "בטל",
+    "inviteRevokeConfirm": "לבטל את קישור ההזמנה הזה?",
+    "inviteRevokeFailed": "לא ניתן לבטל את ההזמנה",
+    "sectionAccess": "סקירת גישה",
+    "accessCount_one": "{{count}} שיתוף",
+    "accessCount_two": "{{count}} שיתופים",
+    "accessCount_other": "{{count}} שיתופים",
+    "accessExport": "ייצוא CSV",
+    "accessExportFailed": "לא ניתן לייצא",
+    "accessKind": "סוג",
+    "accessKindAll": "הכל",
+    "accessKind_host": "מארח",
+    "accessKind_folder": "תיקייה",
+    "accessKind_credential": "אישור",
+    "accessUser": "משתמש",
+    "accessAnyUser": "כל משתמש",
+    "accessRole": "תפקיד",
+    "accessAnyRole": "כל תפקיד",
+    "accessToUser": "ל-{{name}}",
+    "accessToRole": "לתפקיד {{name}}",
+    "accessOwner": "בעלים {{name}}",
+    "accessGrantedBy": "שיתוף על ידי {{name}}",
+    "accessExpires": "פג תוקף ב-{{date}}",
+    "accessLastUsed": "שימוש אחרון ב-{{date}}",
+    "accessEmpty": "אין שיתוף",
+    "sectionAccountSettings": "חשבונות וגישה",
+    "adminHostBypass": "מנהלים יכולים לפתוח את המארחים של כל המשתמשים",
+    "adminHostBypassDesc": "כשכבוי, מנהלים רואים רק מארחים ששיתפו איתם, ואינם יכולים לגשת לנתונים של משתמשים אחרים מדף המשתמש. הפעלה מחכה לזמן הקירור של המנהל אם הוגדר כזה.",
+    "signupApproval": "אישור חשבונות SSO חדשים",
+    "signupApprovalDesc": "משתמש שנכנס לראשונה באמצעות SSO או LDAP מחכה עד שמנהל מאשר את החשבון.",
+    "updateSettingFailed": "לא ניתן לשמור את ההגדרה"
   },
   "newUi": {
     "sidebar": {
@@ -515,7 +614,8 @@
         "domainPlaceholder": "אופציונלי",
         "connectToAction": "התחבר ל-{{name}}",
         "sshProtocol": "SSH",
-        "noTarget": "אין מה שמוגדר יכול להתחבר לסוג המארח הזה"
+        "noTarget": "אין מה שמוגדר יכול להתחבר לסוג המארח הזה",
+        "loadingTargets": "טוען דרכי חיבור..."
       },
       "keybindings": {
         "description": "קשר מקשים לפעולות בטרמינל ובאפליקציה, או שנה את הקיצורים המובנים.",
@@ -569,6 +669,9 @@
         "desktopProfileDescription": "פרופיל זה נמצא במכשיר זה ומתחבר באופן עצמאי. חבר אותו לשרת Termix כדי להשתמש באותם מארחים והגדרות בכל מכשיר.",
         "sectionInterface": "ממשק",
         "interfacePresetDesc": "כמה פרטים Termix מציג. כל התכונות נשארות זמינות.",
+        "closeToTray": "סגור למגש המערכת",
+        "closeToTrayDesc": "סגירת החלון משאירה את Termix פועל במגש המערכת כך שהחיבורים שלך נשארים פתוחים. כבה כדי לצאת כשאתה סוגר את החלון.",
+        "closeToTraySaveFailed": "לא ניתן לשמור את ההגדרה",
         "presetClearOverrides": "אפס הכל",
         "presetOverridesTitle": "מותאם אישית",
         "presetRevertArea": "בטל שינוי",
@@ -703,7 +806,11 @@
         "tryBetaDescription": "הצטרף לתוכנית הבטא בהעדכונים.",
         "sendBetaFeedback": "שלח משוב על הבטא",
         "openUpdates": "העדכונים",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "שם לתצוגה",
+        "emailLabel": "דוא״ל",
+        "profileSaved": "נשמר",
+        "profileSaveFailed": "לא ניתן לשמור"
       }
     }
   },
@@ -735,6 +842,10 @@
     "apiKeys": "מפתחות API",
     "data": "נתונים וסנכרון",
     "interface": "ממשק",
+    "hostList": "רשימת מארחים",
+    "credentialList": "רשימת אישורים",
+    "openHostList": "הגדרות רשימת מארחים",
+    "openCredentialList": "הגדרות רשימת אישורים",
     "appearance": "מראה",
     "keybindings": "קיצורי מקלדת",
     "adminGeneral": "כללי",
@@ -794,6 +905,36 @@
       "hostRows": {
         "label": "בחירות שורת מארח"
       }
+    },
+    "adminAccess": "סקירת גישה",
+    "yourApps": "האפליקציות שלך",
+    "otherApps": "אפליקציות אחרות",
+    "hostForm": {
+      "label": "טופוס הוספת מארח",
+      "description": "פשוט מציג את הכתובת, פרטי התחברות, תיקייה ותגיות. מלא מציג את כל האפשרויות. ניתן גם להחליף בין המצבים בתוך הטופוס עצמו.",
+      "simple": "פשוט",
+      "full": "מלא"
+    },
+    "interfaceDefaults": {
+      "title": "ברירות מחדל של ממשק",
+      "intro": "בחר מה יראו המשתמשים כשהם נכנסים לראשונה. הם עדיין יכולים לשנות את התצוגה האישית שלהם, אלא אם כן תנעל אותה.",
+      "setFor": "הגדר עבור",
+      "everyone": "כולם",
+      "inherits": "משתמש ב'כולם' עד שתשנה משהו",
+      "useEveryone": "השתמש ב'כולם'",
+      "look": "מראה התחלתי",
+      "lookHint": "פשוט מציג את המינימום. מתקדם מציג כל כפתור.",
+      "simple": "פשוט",
+      "balanced": "מאוזן",
+      "advanced": "מתקדם",
+      "lock": "נעילה",
+      "lockHint": "משתמשים עם תפקיד זה אינם יכולים לשנות את המראה או את האפליקציות ברצועה שלהם.",
+      "apps": "אפליקציות ברצועה",
+      "appsHint": "השאר נשאר ב'כל האפליקציות' ובחיפוש.",
+      "appsAdvanced": "מתקדם מציג כל אפליקציה ברצועה.",
+      "saved": "הברירות המחדל של הממשק נשמרו",
+      "saveFailed": "לא ניתן לשמור את ברירות המחדל של הממשק",
+      "lockedNote": "המנהל בחר את המראה שלך, ולכן לא ניתן לשנות אותו כאן."
     }
   },
   "hostDefaults": {
@@ -873,12 +1014,19 @@
     "pickHint": "הכל על חיבור נמצא כאן, מקובץ כך שתוכל למצוא אותו.",
     "clearChoice": "נקה",
     "proxyPathTarget": "יעד",
-    "hostCopyName": "{{name}} (עותק)"
+    "hostCopyName": "{{name}} (עותק)",
+    "moreOptions": "אפשרויות נוספות",
+    "moreOptionsHint": "פרוקסי, מארחי קפיצה, פורט נוקינג, keepalive, בדיקות סטטוס ומתג הפעלה/כיבוי לכל אפליקציה. לרוב המארחים אין צורך בהם.",
+    "folderAndTags": "תיקייה, תגיות והערות"
   },
   "permissions": {
     "branding": {
       "title": "שינוי מיתוג",
       "description": "הגדר את שם האפליקציה, הסלוגן והלוגו המוצגים לכולם."
+    },
+    "interfaceDefaults": {
+      "title": "הגדרת ברירות מחדל לממשק",
+      "description": "בחירת המראה ואפליקציות הצד המופיעות בהתחלה, עבור כולם או עבור כל תפקיד."
     }
   },
   "onboarding": {
@@ -913,6 +1061,8 @@
     "clickAuto": "אופן החיבור הראשון",
     "useDefaultNamed": "ברירת מחדל ({{name}})",
     "useDefaultButtons": "להשתמש בכפתורים המוגדרים כברירת מחדל",
-    "perHostHint": "כדי לשנות זאת עבור מארח בודד, השתמש באפשרות 'כפתורים בשורות המארחים' בתפריט שלו."
+    "perHostHint": "כדי לשנות זאת עבור מארח בודד, השתמש באפשרות 'כפתורים בשורות המארחים' בתפריט שלו.",
+    "moreTools": "כלים נוספים",
+    "more": "עוד"
   }
 }

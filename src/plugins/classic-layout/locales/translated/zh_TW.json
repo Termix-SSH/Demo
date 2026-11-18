@@ -36,6 +36,7 @@
     "checkNow": "立即檢查"
   },
   "nav": {
+    "theme": "主題",
     "copyPassword": "複製密碼",
     "copySudoPassword": "複製 Sudo 密碼",
     "passwordCopied": "密碼已複製到剪貼簿",
@@ -72,7 +73,15 @@
     "mobileNavigation": "導覽",
     "allTabs": "所有分頁",
     "hideTabBar": "隱藏分頁列",
-    "showTabBar": "顯示分頁列"
+    "showTabBar": "顯示分頁列",
+    "allApps": "所有應用程式",
+    "findApp": "尋找應用程式",
+    "pinToRail": "固定至側邊欄",
+    "unpinFromRail": "從側邊欄取消固定",
+    "appSettings": "應用程式設定",
+    "allAppsHint": "固定您常用的應用程式。右鍵點擊應用程式以開啟其設定。",
+    "allAppsLockedHint": "您的管理員會決定側邊欄中的應用程式。",
+    "viewMenu": "檢視"
   },
   "commandPalette": {
     "searchPlaceholder": "搜尋主機、命令或設定...",
@@ -171,7 +180,8 @@
     "dragToReorder": "拖曳小工具以移動，拖曳邊緣以調整大小",
     "clearActivityConfirm": "清除您的近期活動？",
     "resetConfirm": "將儀表板重設為預設版面配置？",
-    "clearFailed": "無法清除近期活動"
+    "clearFailed": "無法清除近期活動",
+    "help": "說明"
   },
   "admin": {
     "sectionGeneral": "一般",
@@ -237,6 +247,9 @@
     "credentialStorage": "允許儲存密碼與金鑰",
     "credentialStorageOff": "此伺服器已關閉密碼與金鑰儲存功能。請留空，Termix 會在連線時詢問。",
     "credentialStorageDesc": "關閉後，任何人都無法在主機或憑證上儲存密碼或私密金鑰，Termix 會在連線時詢問。已儲存的登入資訊將保留，直到被移除為止。",
+    "hostKeyTrust": "信任新的主機金鑰，無需提示",
+    "hostKeyTrustDesc": "當外掛、排程或 API 連線至從未檢查過金鑰的主機時，儲存該金鑰並進行連線。若關閉此選項，則在有人開啟終端機連線至該主機並信任其金鑰之前，這些連線都會被拒絕。",
+    "hostKeyTrustFailed": "更新主機金鑰設定失敗",
     "secondFactorAfterExternalLogin": "外部登入（SSO、GitHub、Google、LDAP）後要求第二因素驗證",
     "secondFactorAfterExternalLoginDesc": "關閉時，僅在密碼及其他本機登入後要求已註冊的第二因素驗證，與以往相同。開啟時，所有登入方式（包括 SSO 和 LDAP）後皆會要求第二因素驗證",
     "allowPasswordReset": "允許密碼重設",
@@ -482,7 +495,89 @@
     "revokeSession": "登出",
     "deleteRoleConfirm": "要刪除 {{name}} 角色嗎？",
     "revokeKeyConfirm": "要撤銷 API 金鑰 {{name}} 嗎？",
-    "revokeKey": "撤銷"
+    "revokeKey": "撤銷",
+    "apiKeyScopeReadAll": "唯讀，可存取使用者能看見的所有內容",
+    "apiKeyNeverExpires": "永不過期",
+    "apiKeyExpiryHint": "若留空，金鑰將有效 90 天。",
+    "changeHeld": "此變更將延遲 {{minutes}} 分鐘生效，以便其他管理員查看。",
+    "userStatusFilter": "帳戶狀態",
+    "userStatusAll": "所有帳戶",
+    "userStatusActive": "啟用中",
+    "userStatusDisabled": "已停用",
+    "userStatusPending": "等待審核",
+    "disabledBadge": "已停用",
+    "pendingBadge": "等待中",
+    "accountStatusTitle": "帳戶狀態",
+    "accountStatusActive": "此帳戶可以登入。",
+    "accountStatusDisabled": "此帳戶已停用。無法登入，且其 API 金鑰無效。",
+    "accountStatusPending": "此帳戶正在等待審核，目前無法登入。",
+    "lastLogin": "上次登入時間：{{time}}",
+    "disableUser": "停用帳戶",
+    "enableUser": "啟用帳戶",
+    "approveUser": "核准",
+    "disableUserConfirm": "要停用 {{username}} 嗎？他們將從所有裝置登出，且在你重新啟用帳戶前無法登入。",
+    "userDisabled": "{{username}} 已停用",
+    "userEnabled": "{{username}} 已啟用",
+    "userApproved": "{{username}} 已核准",
+    "userStatusFailed": "無法變更帳戶",
+    "profileTitle": "名稱與電子郵件",
+    "displayName": "顯示名稱",
+    "displayNamePlaceholder": "顯示名稱",
+    "email": "電子郵件",
+    "emailPlaceholder": "電子郵件",
+    "profileSaved": "已儲存",
+    "profileSaveFailed": "無法儲存",
+    "manageTabAccess": "存取權限",
+    "sectionInvites": "邀請連結",
+    "invitesDescription": "即使關閉註冊功能，這些連結也能讓使用者建立帳戶。",
+    "invitesEmpty": "尚無邀請連結",
+    "inviteCreate": "新增邀請",
+    "inviteCreateFailed": "無法建立邀請",
+    "inviteCreatedNotice": "請立即複製此連結。此連結將不會再次顯示。",
+    "inviteCopy": "複製連結",
+    "inviteCopied": "連結已複製",
+    "inviteNotePlaceholder": "備註，例如說明邀請對象",
+    "inviteRole": "角色",
+    "inviteNoRole": "無額外角色",
+    "inviteExpires": "過期時間",
+    "inviteExpiresIn_other": "剩餘 {{count}} 天過期",
+    "inviteUses": "使用次數",
+    "inviteMakeAdmin": "設為管理員",
+    "inviteUntitled": "邀請",
+    "inviteUsesOf": "已使用 {{uses}} / {{max}}",
+    "inviteState_active": "有效",
+    "inviteState_revoked": "已撤銷",
+    "inviteState_expired": "已過期",
+    "inviteState_used": "已用盡",
+    "inviteRevoke": "撤銷",
+    "inviteRevokeConfirm": "確定要撤銷此邀請連結嗎？",
+    "inviteRevokeFailed": "無法撤銷邀請",
+    "sectionAccess": "存取權限檢視",
+    "accessCount_other": "{{count}} 個分享",
+    "accessExport": "匯出 CSV",
+    "accessExportFailed": "無法匯出",
+    "accessKind": "類型",
+    "accessKindAll": "全部",
+    "accessKind_host": "主機",
+    "accessKind_folder": "資料夾",
+    "accessKind_credential": "憑證",
+    "accessUser": "使用者",
+    "accessAnyUser": "任何使用者",
+    "accessRole": "角色",
+    "accessAnyRole": "任何角色",
+    "accessToUser": "授予 {{name}}",
+    "accessToRole": "授予角色 {{name}}",
+    "accessOwner": "擁有者 {{name}}",
+    "accessGrantedBy": "由 {{name}} 分享",
+    "accessExpires": "於 {{date}} 到期",
+    "accessLastUsed": "上次使用於 {{date}}",
+    "accessEmpty": "尚未分享任何內容",
+    "sectionAccountSettings": "帳號與存取權限",
+    "adminHostBypass": "管理員可以開啟所有使用者的主機",
+    "adminHostBypassDesc": "關閉時，管理員只能看到與他們共享的主機，且無法從使用者頁面開啟其他使用者的資料。開啟時，若已設定管理員冷卻時間，則會等待該冷卻時間。",
+    "signupApproval": "核准新的 SSO 帳戶",
+    "signupApprovalDesc": "首次透過 SSO 或 LDAP 登入的使用者，需等待管理員核准帳戶後才能使用。",
+    "updateSettingFailed": "無法儲存設定"
   },
   "newUi": {
     "sidebar": {
@@ -505,7 +600,8 @@
         "domainPlaceholder": "選填",
         "connectToAction": "連線至 {{name}}",
         "sshProtocol": "SSH",
-        "noTarget": "未安裝任何可連線至此類主機的元件"
+        "noTarget": "未安裝任何可連線至此類主機的元件",
+        "loadingTargets": "正在載入連線方式..."
       },
       "keybindings": {
         "description": "將按鍵綁定至終端機與應用程式的動作，或變更內建快捷鍵。",
@@ -559,6 +655,9 @@
         "desktopProfileDescription": "此設定檔僅存在於此裝置，並獨立登入。將其連結至 Termix 伺服器，即可在所有裝置上使用相同的主機與設定。",
         "sectionInterface": "介面",
         "interfacePresetDesc": "Termix 顯示的詳細程度。所有功能仍可使用。",
+        "closeToTray": "關閉時最小化至系統匣",
+        "closeToTrayDesc": "關閉視窗時，Termix 會繼續在系統匣中執行，以保持您的連線處於開啟狀態。關閉此選項，則在關閉視窗時會結束程式。",
+        "closeToTraySaveFailed": "無法儲存設定",
         "presetClearOverrides": "全部恢復",
         "presetOverridesTitle": "已自訂",
         "presetRevertArea": "還原",
@@ -691,7 +790,11 @@
         "tryBetaDescription": "在「更新」中參加測試計畫。",
         "sendBetaFeedback": "傳送測試版意見回饋",
         "openUpdates": "更新",
-        "hexLabel": "十六進位"
+        "hexLabel": "十六進位",
+        "displayNameLabel": "顯示名稱",
+        "emailLabel": "電子郵件",
+        "profileSaved": "已儲存",
+        "profileSaveFailed": "無法儲存"
       }
     }
   },
@@ -723,6 +826,10 @@
     "apiKeys": "API 金鑰",
     "data": "資料與同步",
     "interface": "介面",
+    "hostList": "主機清單",
+    "credentialList": "憑證清單",
+    "openHostList": "主機清單設定",
+    "openCredentialList": "憑證清單設定",
     "appearance": "外觀",
     "keybindings": "鍵盤快捷鍵",
     "adminGeneral": "一般",
@@ -782,6 +889,36 @@
       "hostRows": {
         "label": "主機列選項"
       }
+    },
+    "adminAccess": "存取稽核",
+    "yourApps": "您的應用程式",
+    "otherApps": "其他應用程式",
+    "hostForm": {
+      "label": "新增主機表單",
+      "description": "簡易模式僅顯示位址、登入資訊、資料夾與標籤。完整模式則顯示所有選項。您也可以直接在表單中切換模式。",
+      "simple": "簡易",
+      "full": "完整"
+    },
+    "interfaceDefaults": {
+      "title": "介面預設值",
+      "intro": "選擇使用者首次登入時看到的介面。除非您鎖定設定，否則他們仍可自訂自己的檢視方式。",
+      "setFor": "設定對象",
+      "everyone": "所有人",
+      "inherits": "沿用「所有人」設定，直到您進行修改",
+      "useEveryone": "使用「所有人」設定",
+      "look": "初始外觀",
+      "lookHint": "簡潔模式顯示最少內容，進階模式顯示所有按鈕。",
+      "simple": "簡潔",
+      "balanced": "平衡",
+      "advanced": "進階",
+      "lock": "鎖定",
+      "lockHint": "擁有此角色的使用者無法變更其外觀或側邊欄上的應用程式。",
+      "apps": "側邊欄上的應用程式",
+      "appsHint": "其餘應用程式將保留在「所有應用程式」與搜尋功能中。",
+      "appsAdvanced": "進階模式會在側邊欄上顯示所有應用程式。",
+      "saved": "介面預設值已儲存",
+      "saveFailed": "無法儲存介面預設值",
+      "lockedNote": "您的管理員已為您設定外觀，因此無法在此處變更。"
     }
   },
   "hostDefaults": {
@@ -861,12 +998,19 @@
     "pickHint": "連線的所有設定都位於此處，並分組以便查找。",
     "clearChoice": "清除",
     "proxyPathTarget": "目標",
-    "hostCopyName": "{{name}} (副本)"
+    "hostCopyName": "{{name}} (副本)",
+    "moreOptions": "更多選項",
+    "moreOptionsHint": "包含代理伺服器、跳板主機、Port Knocking、Keepalive、狀態檢查，以及每個應用程式的開關。大多數主機不需要這些設定。",
+    "folderAndTags": "資料夾、標籤與備註"
   },
   "permissions": {
     "branding": {
       "title": "變更品牌資訊",
       "description": "設定向所有使用者顯示的應用程式名稱、標語與標誌。"
+    },
+    "interfaceDefaults": {
+      "title": "設定介面預設值",
+      "description": "為所有使用者或各角色設定初始外觀與側邊欄應用程式。"
     }
   },
   "onboarding": {
@@ -901,6 +1045,8 @@
     "clickAuto": "第一種連線方式",
     "useDefaultNamed": "預設 ({{name}})",
     "useDefaultButtons": "使用預設按鈕",
-    "perHostHint": "若要為單一主機變更，請在其選單中使用「主機列上的按鈕」。"
+    "perHostHint": "若要為單一主機變更，請在其選單中使用「主機列上的按鈕」。",
+    "moreTools": "更多工具",
+    "more": "更多"
   }
 }

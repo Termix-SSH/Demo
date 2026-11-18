@@ -57,7 +57,7 @@ export function AdminHostTags() {
       <span className="text-[10px] text-muted-foreground">
         {t("admin.hostTagsDesc")}
       </span>
-      <div className="flex flex-wrap items-center gap-1 min-h-9 px-2 py-1 border border-border bg-background focus-within:ring-1 focus-within:ring-ring">
+      <div className="flex flex-wrap items-center gap-1 min-h-8 px-2 py-1 border border-border bg-(--field) focus-within:ring-1 focus-within:ring-ring">
         {tags.map((tag) => (
           <span
             key={tag}

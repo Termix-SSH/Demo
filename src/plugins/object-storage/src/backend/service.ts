@@ -37,6 +37,17 @@ export interface Stores {
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
+/** Most buckets one login may have added by hand. */
+const MAX_EXTRA_BUCKETS = 100;
+
+/** The stored list of hand added bucket names. */
+export function splitBuckets(value: string | null | undefined): string[] {
+  return (value ?? "")
+    .split("\n")
+    .map((name) => name.trim())
+    .filter(Boolean);
+}
+
 interface AccountRow {
   id: number;
   createdBy: string;
@@ -47,6 +58,7 @@ interface AccountRow {
   pathStyle: boolean;
   credentials: string;
   ca: string | null;
+  extraBuckets?: string | null;
   status: string;
   lastError: string | null;
   lastCheckAt: Date | string | null;
@@ -125,6 +137,7 @@ export function createService(ctx: PluginContext, stores: Stores) {
       region: account.region,
       pathStyle: !!account.pathStyle,
       hasCa: !!account.ca,
+      extraBuckets: splitBuckets(account.extraBuckets),
       status: account.status,
       lastError: account.lastError,
       lastCheckAt: iso(account.lastCheckAt),
@@ -204,6 +217,40 @@ export function createService(ctx: PluginContext, stores: Stores) {
     return name;
   };
 
+  /** Bucket names typed by hand, checked, without repeats, as stored text. */
+  const cleanExtraBuckets = (value: unknown): string | null => {
+    if (!Array.isArray(value)) {
+      throw new StorageError(400, "extraBuckets must be a list of names");
+    }
+    const names = [
+      ...new Set(
+        value.map((item) => String(item ?? "").trim()).filter(Boolean),
+      ),
+    ];
+    if (names.length > MAX_EXTRA_BUCKETS) {
+      throw new StorageError(
+        400,
+        `Add at most ${MAX_EXTRA_BUCKETS} buckets by hand`,
+      );
+    }
+    return names.map(cleanBucket).join("\n") || null;
+  };
+
+  /** The login's listed buckets plus the ones added by hand. */
+  async function allBuckets(
+    accountId: number,
+    list: Array<{ name: string; createdAt: string | null }>,
+  ) {
+    const extra = splitBuckets((await row(accountId)).extraBuckets);
+    const seen = new Set(list.map((bucket) => bucket.name));
+    return [
+      ...list,
+      ...extra
+        .filter((name) => !seen.has(name))
+        .map((name) => ({ name, createdAt: null })),
+    ];
+  }
+
   const cleanKey = (value: unknown): string => {
     const key = String(value ?? "");
     if (!key || key.length > 1024 || key.includes("\0")) {
@@ -260,6 +307,10 @@ export function createService(ctx: PluginContext, stores: Stores) {
       pathStyle: input.pathStyle !== false,
       credentials: await ctx.secrets.seal(JSON.stringify(creds)),
       ca: input.ca?.trim() || null,
+      extraBuckets:
+        input.extraBuckets === undefined
+          ? null
+          : cleanExtraBuckets(input.extraBuckets),
       status: "pending",
     });
     await ctx.db.persist();
@@ -281,6 +332,9 @@ export function createService(ctx: PluginContext, stores: Stores) {
     if (typeof input.pathStyle === "boolean")
       changes.pathStyle = input.pathStyle;
     if (typeof input.ca === "string") changes.ca = input.ca.trim() || null;
+    if (input.extraBuckets !== undefined) {
+      changes.extraBuckets = cleanExtraBuckets(input.extraBuckets);
+    }
     const given =
       input.accessKeyId?.trim() ||
       input.secretAccessKey?.trim() ||
@@ -332,7 +386,7 @@ export function createService(ctx: PluginContext, stores: Stores) {
   async function testAccount(id: number): Promise<{ buckets: number }> {
     const client = await clientFor(id);
     try {
-      const list = await client.listBuckets();
+      const list = await allBuckets(id, await client.listBuckets());
       await markAccount(id, null);
       await ctx.db.persist();
       return { buckets: list.length };
@@ -368,7 +422,10 @@ export function createService(ctx: PluginContext, stores: Stores) {
   }
 
   async function buckets(accountId: number): Promise<BucketRow[]> {
-    const list = await run(accountId, (c) => c.listBuckets());
+    const list = await allBuckets(
+      accountId,
+      await run(accountId, (c) => c.listBuckets()),
+    );
     const usage = await latestUsage(accountId);
     const limits = new Map(
       ((await limitRows(accountId)) as any[]).map((l) => [l.bucket, l]),
@@ -870,7 +927,10 @@ export function createService(ctx: PluginContext, stores: Stores) {
     for (const account of await rows()) {
       let list: Array<{ name: string }> = [];
       try {
-        list = await (await clientFor(account.id)).listBuckets();
+        list = await allBuckets(
+          account.id,
+          await (await clientFor(account.id)).listBuckets(),
+        );
       } catch {
         continue;
       }

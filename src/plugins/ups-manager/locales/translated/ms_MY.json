@@ -8,7 +8,10 @@
     "viewHistory": "Sejarah",
     "viewEvents": "Peristiwa",
     "viewCommands": "Arahan",
-    "viewSources": "Peranti"
+    "viewSources": "Peranti",
+    "refresh": "Segarkan secara langsung",
+    "refreshSeconds": "{{seconds}} saat",
+    "refreshHint": "Hanya menyegarkan semasa Gambaran Keseluruhan kelihatan. UPS mungkin mengemas kini dengan lebih perlahan. Pengundian latar belakang dan sampel yang disimpan kekal pada 30 saat."
   },
   "common": {
     "loading": "Memuatkan...",
@@ -47,6 +50,8 @@
     "charge": "Cas bateri",
     "runtime": "Masa operasi tinggal",
     "load": "Beban",
+    "estimatedLoad": "Beban UPS dianggarkan",
+    "estimatedLoadHint": "Watt keluaran / {{watts}} W dinilai. {{method}}. Ketepatan sensor tidak disahkan; bukan penggunaan CPU atau penggunaan dinding AC.",
     "nominal": "{{watts}} W dinilai",
     "input": "Voltan input",
     "output": "Voltan output",
@@ -59,6 +64,60 @@
     "readAt": "Bacaan terakhir",
     "ago": "{{time}} yang lalu"
   },
+  "electrical": {
+    "inputDc": "Input adalah DC",
+    "outputDc": "Output adalah DC",
+    "dcHint": "Sahkan domain elektrik sebelum mengira watt daripada voltan dan arus. Ini tidak mengubah sebarang tetapan UPS. Ketepatan sensor mesti diperiksa secara bebas.",
+    "inputCurrent": "Arus input",
+    "outputCurrent": "Arus output",
+    "batteryCurrent": "Arus bateri",
+    "inputPower": "Kuasa input",
+    "outputPower": "Kuasa output",
+    "reported": "Kuasa sebenar yang dilaporkan",
+    "calculated": "Kuasa DC yang dikira - ketepatan sensor tidak disahkan",
+    "batteryType": "Kimia bateri",
+    "chargeLow": "Ambang cas rendah",
+    "chargeWarning": "Ambang amaran cas",
+    "manufactured": "Tarikh pembuatan bateri",
+    "driver": "Pemacu",
+    "driverVersion": "Versi pemacu",
+    "subdriver": "Pemacu bawah HID",
+    "driverState": "Keadaan pemacu",
+    "usb": "Pembekal / produk USB",
+    "raw": "Pemboleh ubah NUT lanjutan",
+    "search": "Tapis nama atau nilai pemboleh ubah",
+    "noVariables": "Tiada pemboleh ubah yang sepadan.",
+    "dcDisclaimer": "Anggaran kuasa output DC yang dikira menganggarkan beban UPS, bukan penggunaan dinding AC. Ia tidak semestinya mewakili penggunaan satu hos sahaja. Sahkan bacaan arus sebelum bergantung pada anggaran kuasa atau tenaga."
+  },
+  "energy": {
+    "period": "Tenaga output yang diperhatikan (tempoh terpilih)",
+    "lifetime": "Tenaga output yang diperhatikan (epoch semasa)",
+    "estimated": "Dianggarkan daripada sampel yang dijadualkan; bukan meter perkakasan",
+    "coverage": "Liputan yang diukur",
+    "covered": "Masa terkumpul",
+    "incomplete": "Data tidak lengkap; masa yang hilang tidak dianggarkan",
+    "complete": "Liputan pengukuran lengkap",
+    "average": "Kuasa output purata (masa yang diliputi)",
+    "peak": "Puncak output yang disampel",
+    "sampledRange": "Julat kuasa yang disampel",
+    "scope": "Output UPS, bukan tenaga dinding AC. Jumlah tempoh merangkumi era penjejakan yang disenaraikan; jangan anggap era yang berbeza sebagai satu meter fizikal.",
+    "resolution": "Segmen carta nominal: {{seconds}} saat; jurang kekal berasingan. Arahkan kursor ke titik untuk masa mutlak dan zon masa.",
+    "empty": "Penjejakan tenaga memerlukan dua bacaan kuasa yang dijadualkan dan sah. Watt yang tidak diketahui kekal tidak tersedia, bukan sifar.",
+    "error": "Tidak dapat membaca sejarah tenaga.",
+    "bucket": "Tenaga output yang diperhatikan setiap segmen",
+    "samples": "Sampel yang boleh diakses dan tenaga kumulatif yang diperhatikan",
+    "tableHelp": "Hanya tenaga yang diperhatikan yang dijumlahkan. Selang yang hilang tidak diisi. Nilai kumulatif merangkumi epok yang disenaraikan.",
+    "time": "Mula segmen (zon masa tempatan)",
+    "cumulative": "Wh kumulatif dalam tempoh yang dipilih",
+    "cumulativeChart": "Tenaga output kumulatif yang diperhatikan (tempoh yang dipilih)",
+    "epochTotal": "Tenaga yang diperhatikan dalam epok ini",
+    "unavailable": "Kuasa output tidak tersedia",
+    "epochs": "Epoq penjejakan berasingan",
+    "started": "Penjejakan dimulakan",
+    "method": "Kaedah kuasa",
+    "chartHelp": "Data berkadar masa. Selang yang hilang dan perubahan epoq penjejakan tidak disambungkan. Puncak yang disampel bukan ukuran puncak perkakasan. Jadual data boleh diakses mengikuti carta.",
+    "correlationBlocked": "Korelasi CPU/memori tidak tersedia: Host Metrics memerlukan perkhidmatan snapshot awam yang diberi kebenaran dengan cap masa pengukuran. Tiada pengumpulan hos tambahan yang didayakan."
+  },
   "history": {
     "error": "Tidak dapat memuatkan sejarah.",
     "24h": "24 jam",
@@ -66,7 +125,7 @@
     "30d": "30 hari",
     "empty": "Tiada cukup bacaan lagi. Termix membaca UPS setiap 30 saat.",
     "charge": "Cas bateri",
-    "load": "Beban",
+    "load": "Beban (laporan peranti sahaja)",
     "runtime": "Masa operasi tinggal",
     "voltage": "Voltan"
   },
@@ -113,7 +172,7 @@
     "unreachable": "tidak boleh dicapai",
     "saved": "Disimpan.",
     "deleteTitle": "Buang {{name}}?",
-    "deleteText": "Sejarah dan peristiwanya juga akan dipadam."
+    "deleteText": "Sejarah, jumlah tenaga, epoq penjejakan dan peristiwanya juga akan dipadam."
   },
   "editor": {
     "addTitle": "Tambah UPS",
@@ -172,6 +231,8 @@
     "testFailed": "Tidak dapat membaca UPS."
   },
   "card": {
+    "estimatedLoad": "{{value}}% beban UPS dianggarkan",
+    "dc": "DC dikira, tidak disahkan",
     "title": "UPS",
     "empty": "Tiada UPS ditetapkan. Hidupkan Pengurus UPS untuk hos dan tambah peranti.",
     "runtime": "{{time}} tinggal",

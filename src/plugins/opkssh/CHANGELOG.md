@@ -7,6 +7,7 @@
 - Runs in its own process on Termix 26.11.2 and later, with no access to the server beyond what Termix allows it
 - Your Termix login cookies are no longer passed to the OPKSSH sign in page
 - Its screens run in a sandboxed frame on Termix 26.11.2 and later
+- Terminals load its sign in part only for hosts that use it or go through a jump host, so they open faster and use less memory
 
 ### Fixed
 

@@ -60,6 +60,7 @@ function draftOf(job: JobView | null): JobInput {
       keep: { ...EMPTY_KEEP, daily: 7, weekly: 4, monthly: 6 },
       alerts: { onFailure: true, staleDays: 3 },
       oneFileSystem: false,
+      backupOptions: "",
     };
   }
   return {
@@ -75,6 +76,7 @@ function draftOf(job: JobView | null): JobInput {
     keep: job.keep,
     alerts: job.alerts,
     oneFileSystem: job.oneFileSystem,
+    backupOptions: job.backupOptions,
   };
 }
 
@@ -360,6 +362,15 @@ export function JobEditor({
             rows={4}
             mono
             onChange={(post) => set({ hooks: { ...draft.hooks, post } })}
+          />
+        </div>
+        <div className="pb-2">
+          <TextField
+            label={t("hooks.options")}
+            hint={t("hooks.optionsHint")}
+            value={draft.backupOptions}
+            placeholder="--exclude-caches --limit-upload 2048"
+            onChange={(backupOptions) => set({ backupOptions })}
           />
         </div>
       </SectionCard>

@@ -8,7 +8,10 @@
     "viewHistory": "Istorija",
     "viewEvents": "Įvykiai",
     "viewCommands": "Komandos",
-    "viewSources": "Įrenginiai"
+    "viewSources": "Įrenginiai",
+    "refresh": "Tiesioginis atnaujinimas",
+    "refreshSeconds": "{{seconds}} sekundžių",
+    "refreshHint": "Atnaujinama tik tada, kai matomas „Apžvalgos“ skirtukas. UPS gali atnaujinti duomenis lėčiau. Fone vykstantis užklausų ciklas ir saugomi duomenų mėginiai lieka 30 sekundžių."
   },
   "common": {
     "loading": "Kraunama...",
@@ -47,6 +50,8 @@
     "charge": "Baterijos įkrova",
     "runtime": "Liko veikimo laiko",
     "load": "Apkrova",
+    "estimatedLoad": "Numatoma UPS apkrova",
+    "estimatedLoadHint": "Išėjimo galia / {{watts}} W nominali. {{method}}. jutiklio tikslumas nepatvirtintas; tai nėra CPU naudojimas ar AC sieninės lizdo suvartojimas.",
     "nominal": "{{watts}} W nominali",
     "input": "Įėjimo įtampa",
     "output": "Išėjimo įtampa",
@@ -59,6 +64,60 @@
     "readAt": "Paskutinis skaitymas",
     "ago": "Prieš {{time}}"
   },
+  "electrical": {
+    "inputDc": "Įėjimas yra nuolatinės srovės (DC)",
+    "outputDc": "Išėjimas yra nuolatinės srovės (DC)",
+    "dcHint": "Prieš skaičiuojant vatų galią iš įtampos ir srovės, patvirtinkite elektros srovės tipą. Tai nepakeičia jokių UPS nustatymų. Jutiklio tikslumą reikia patikrinti atskirai.",
+    "inputCurrent": "Įėjimo srovė",
+    "outputCurrent": "Išėjimo srovė",
+    "batteryCurrent": "Baterijos srovė",
+    "inputPower": "Įėjimo galia",
+    "outputPower": "Išėjimo galia",
+    "reported": "Pranešta reali galia",
+    "calculated": "Apskaičiuota nuolatinės srovės galia – jutiklio tikslumas nepatvirtintas",
+    "batteryType": "Baterijos cheminė sudėtis",
+    "chargeLow": "Mažo įkrovos slenkstis",
+    "chargeWarning": "Įkrovos įspėjimo slenkstis",
+    "manufactured": "Baterijos gamybos data",
+    "driver": "Tvarkyklė",
+    "driverVersion": "Tvarkyklės versija",
+    "subdriver": "HID potvarkyklė",
+    "driverState": "Tvarkyklės būsena",
+    "usb": "USB gamintojas / produktas",
+    "raw": "Išplėstinės NUT kintamosios",
+    "search": "Filtruoti kintamųjų pavadinimus arba reikšmes",
+    "noVariables": "Atitinkančių kintamųjų nerasta.",
+    "dcDisclaimer": "Apskaičiuota nuolatinės srovės (DC) išėjimo galia įvertina UPS apkrovą, o ne kintamosios srovės (AC) energijos suvartojimą iš lizdo. Ji nebūtinai atitinka vieno serverio suvartojimą. Prieš pasikliaudami galios ar energijos įverčiais, patikrinkite srovės matavimus."
+  },
+  "energy": {
+    "period": "Stebima išėjimo energija (pasirinktas laikotarpis)",
+    "lifetime": "Stebima išėjimo energija (dabartinis laikotarpis)",
+    "estimated": "Įvertinta pagal suplanuotus mėginius; tai nėra aparatinis matuoklis",
+    "coverage": "Matuotas aprėptis",
+    "covered": "Integruotas laikas",
+    "incomplete": "Nepilni duomenys; trūkstamas laikas neįvertinamas",
+    "complete": "Pilnas matuotas aprėptis",
+    "average": "Vidutinė išėjimo galia (apimtas laikas)",
+    "peak": "Mėgintinė išėjimo viršūnė",
+    "sampledRange": "Mėgintinis galios diapazonas",
+    "scope": "UPS išėjimas, ne AC sienos energija. Periodų sumos apima išvardintus stebėjimo epochas; nevienokų epochų nelaikykite vienu fiziniu matuokliu.",
+    "resolution": "Nominalus diagramos segmentas: {{seconds}} sekundžių; tarpai lieka atskiri. Užveskite pelę ant taškų, kad pamatytumėte absoliutų laiką ir laiko juostą.",
+    "empty": "Energijos stebėjimui reikia dviejų galiojančių suplanuotų energijos suvartojimo rodiklių. Nežinomos vatų reikšmės lieka nepasiekiamos, o ne nulinės.",
+    "error": "Nepavyko perskaityti energijos istorijos.",
+    "bucket": "Stebima išėjimo energija segmentui",
+    "samples": "Pasiekiami mėginiai ir kumuliacinė stebima energija",
+    "tableHelp": "Sumuojama tik stebima energija. Trūkstami intervalai nėra papildomi. Kumuliacinės reikšmės apima nurodytus epochos laikus.",
+    "time": "Segmento pradžia (vietinė laiko juosta)",
+    "cumulative": "Kumuliacinė Wh pasirinktame laikotarpyje",
+    "cumulativeChart": "Kumuliacinė stebima išėjimo energija (pasirinktas laikotarpis)",
+    "epochTotal": "Stebima energija šioje epochoje",
+    "unavailable": "Išėjimo galia nepasiekiama",
+    "epochs": "Atskiri stebėjimo laikotarpiai",
+    "started": "Stebėjimas pradėtas",
+    "method": "Galingumo metodas",
+    "chartHelp": "Duomenys, proporcingi laikui. Trūkstami intervalai ir stebėjimo laikotarpio pokyčiai nėra sujungti. Imtinės viršūnės nėra aparatinės viršūnės matavimai. Po diagramų pateikiama prieinama duomenų lentelė.",
+    "correlationBlocked": "CPU/atsminties koreliacija nepasiekiama: „Host Metrics“ reikia viešo, įgalioto momentinės būsenos paslaugos su matavimo laiko žymomis. Papildomas hosto rinkimas neįgalintas."
+  },
   "history": {
     "error": "Nepavyko įkelti istorijos.",
     "24h": "24 valandos",
@@ -66,7 +125,7 @@
     "30d": "30 dienų",
     "empty": "Dar nepakanka duomenų. Termix skaito UPS kas 30 sekundžių.",
     "charge": "Baterijos įkrova",
-    "load": "Apkrova",
+    "load": "Krovinys (tik įrenginio pranešamas)",
     "runtime": "Liko veikimo laiko",
     "voltage": "Įtampa"
   },
@@ -113,7 +172,7 @@
     "unreachable": "nepasiekiamas",
     "saved": "Išsaugota.",
     "deleteTitle": "Pašalinti {{name}}?",
-    "deleteText": "Bus taip pat ištrinti ir jo istorija bei įvykiai."
+    "deleteText": "Taip pat bus ištrinti jos istorija, energijos sumos, stebėjimo laikotarpiai ir įvykiai."
   },
   "editor": {
     "addTitle": "Pridėti UPS",
@@ -172,6 +231,8 @@
     "testFailed": "Nepavyko perskaityti AKT duomenų."
   },
   "card": {
+    "estimatedLoad": "{{value}}% numatoma UPS apkrova",
+    "dc": "apskaičiuota nuolatinė srovė, nepatvirtinta",
     "title": "AKT",
     "empty": "Nėra sukonfigūruota AKT. Įjunkite AKT valdymą šiam serveriui ir pridėkite įrenginį.",
     "runtime": "Liko {{time}}",

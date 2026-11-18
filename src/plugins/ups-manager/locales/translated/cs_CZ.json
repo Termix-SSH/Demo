@@ -8,7 +8,10 @@
     "viewHistory": "Historie",
     "viewEvents": "Události",
     "viewCommands": "Příkazy",
-    "viewSources": "Zařízení"
+    "viewSources": "Zařízení",
+    "refresh": "Živý obnovení",
+    "refreshSeconds": "{{seconds}} sekund",
+    "refreshHint": "Obnovuje se pouze při zobrazeném Přehledu. UPS může aktualizovat pomaleji. Pozadí a uložené vzorky zůstávají na 30 sekund."
   },
   "common": {
     "loading": "Načítání...",
@@ -47,6 +50,8 @@
     "charge": "Nabití baterie",
     "runtime": "Zbývající doba",
     "load": "Zátěž",
+    "estimatedLoad": "Odhadovaná zátěž UPS",
+    "estimatedLoadHint": "Výstupní watt / {{watts}} W jmenovitý. {{method}}. Přesnost senzoru neověřena; není využití CPU ani spotřeba ze zásuvky.",
     "nominal": "{{watts}} W jmenovitý",
     "input": "Vstupní napětí",
     "output": "Výstupní napětí",
@@ -59,6 +64,60 @@
     "readAt": "Poslední čtení",
     "ago": "Před {{time}}"
   },
+  "electrical": {
+    "inputDc": "Vstup je stejnosměrný",
+    "outputDc": "Výstup je stejnosměrný",
+    "dcHint": "Před výpočtem wattů z napětí a proudu potvrďte elektrickou doménu. Toto nemění žádné nastavení UPS. Přesnost senzoru musí být nezávisle ověřena.",
+    "inputCurrent": "Vstupní proud",
+    "outputCurrent": "Výstupní proud",
+    "batteryCurrent": "Proud baterie",
+    "inputPower": "Vstupní výkon",
+    "outputPower": "Výstupní výkon",
+    "reported": "Hlášený skutečný výkon",
+    "calculated": "Vypočtený výkon DC – přesnost senzoru neověřena",
+    "batteryType": "Chemické složení baterie",
+    "chargeLow": "Prahová hodnota nízkého nabití",
+    "chargeWarning": "Prahová hodnota upozornění na nabití",
+    "manufactured": "Datum výroby baterie",
+    "driver": "Ovladač",
+    "driverVersion": "Verze ovladače",
+    "subdriver": "HID podovladač",
+    "driverState": "Stav ovladače",
+    "usb": "USB výrobce / produkt",
+    "raw": "Pokročilé proměnné NUT",
+    "search": "Filtrovat názvy nebo hodnoty proměnných",
+    "noVariables": "Žádné odpovídající proměnné.",
+    "dcDisclaimer": "Vypočtený výkon DC odhaduje zátěž UPS, ne spotřebu ze zásuvky. Neznamená to nutně spotřebu jednoho hostitele. Před spoléháním na odhady výkonu nebo energie ověřte čtení proudu."
+  },
+  "energy": {
+    "period": "Naměřená výstupní energie (vybrané období)",
+    "lifetime": "Naměřená výstupní energie (aktuální epocha)",
+    "estimated": "Odhad založený na plánovaných vzorcích; nejde o hardwarový měřič",
+    "coverage": "Měřené pokrytí",
+    "covered": "Integrovaný čas",
+    "incomplete": "Neúplná data; chybějící čas není odhadován",
+    "complete": "Úplné měřené pokrytí",
+    "average": "Průměrný výstupní výkon (pokrytý čas)",
+    "peak": "Vzorkovaný výstupní špičkový výkon",
+    "sampledRange": "Vzorkovaný rozsah výkonu",
+    "scope": "Výstup UPS, ne energie ze zásuvky. Součty období odpovídají uvedeným sledovaným epochám; různé epochy nelze považovat za jeden fyzický měřič.",
+    "resolution": "Nominální segment grafu: {{seconds}} sekund; mezery zůstávají samostatné. Najetím myší na body zobrazíte absolutní čas a časové pásmo.",
+    "empty": "Sledování spotřeby vyžaduje dvě platné naplánované měření příkonu. Neznámé hodnoty wattů zůstávají nedostupné, nikoli nulové.",
+    "error": "Nelze načíst historii spotřeby.",
+    "bucket": "Naměřená výstupní energie na segment",
+    "samples": "Dostupné vzorky a kumulativní naměřená energie",
+    "tableHelp": "Sčítá se pouze naměřená energie. Chybějící intervaly se nedoplňují. Kumulativní hodnoty pokrývají uvedené epochy.",
+    "time": "Začátek segmentu (místní časové pásmo)",
+    "cumulative": "Kumulativní Wh ve vybraném období",
+    "cumulativeChart": "Kumulativní naměřená výstupní energie (vybrané období)",
+    "epochTotal": "Naměřená energie v této epochě",
+    "unavailable": "Výstupní příkon nedostupný",
+    "epochs": "Oddělené sledovací epochy",
+    "started": "Sledování zahájeno",
+    "method": "Metoda měření spotřeby",
+    "chartHelp": "Data úměrná času. Chybějící intervaly a změny sledovací epochy nejsou propojeny. Vzorkované špičky nejsou hardwarovými měřeními špiček. Za grafy následuje přístupná tabulka s daty.",
+    "correlationBlocked": "Korelace CPU/paměti není k dispozici: Host Metrics vyžaduje veřejnou, autorizovanou službu pro snímky s časovými razítky měření. Není povoleno žádné další sbírání dat hostitele."
+  },
   "history": {
     "error": "Nelze načíst historii.",
     "24h": "24 hodin",
@@ -66,7 +125,7 @@
     "30d": "30 dní",
     "empty": "Zatím nedostatek měření. Termix čte UPS každých 30 sekund.",
     "charge": "Nabití baterie",
-    "load": "Zátěž",
+    "load": "Zátěž (pouze hlášená zařízením)",
     "runtime": "Zbývající doba",
     "voltage": "Napětí"
   },
@@ -113,7 +172,7 @@
     "unreachable": "nedostupné",
     "saved": "Uloženo.",
     "deleteTitle": "Odebrat {{name}}?",
-    "deleteText": "Její historie a události budou také smazány."
+    "deleteText": "Zároveň se smaže jeho historie, celkové hodnoty spotřeby, sledovací epochy a události."
   },
   "editor": {
     "addTitle": "Přidat UPS",
@@ -172,6 +231,8 @@
     "testFailed": "Nelze číst data z UPS."
   },
   "card": {
+    "estimatedLoad": "Odhadovaná zátěž UPS: {{value}}%",
+    "dc": "vypočtený stejnosměrný proud, neověřeno",
     "title": "UPS",
     "empty": "Žádný UPS není nastaven. Zapněte Správce UPS pro hostitele a přidejte zařízení.",
     "runtime": "Zbývá {{time}}",

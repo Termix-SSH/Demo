@@ -11,14 +11,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   type CredentialSortKey,
-  DocsLink,
+  docsUrl,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
   ArrowUpDown,
+  BookOpen,
   Check,
   Filter,
   GripVertical,
+  MoreHorizontal,
   Plus,
   Search,
   SlidersHorizontal,
@@ -96,8 +98,8 @@ export function CredentialsPanel({
   return (
     <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
       {
-        <div className="flex flex-col px-2 py-1.5 shrink-0 border-b border-border/60 gap-1.5">
-          <div className="flex items-center gap-2 px-2.5 h-7 bg-muted/60 border border-border/60 rounded-sm">
+        <div className="flex items-center px-2 py-1.5 shrink-0 border-b border-border/60 gap-1.5">
+          <div className="flex flex-1 min-w-0 items-center gap-2 px-2.5 h-7 bg-muted/60 border border-border/60 rounded-sm">
             <Search className="size-3 text-muted-foreground/60 shrink-0" />
             <input
               value={search}
@@ -118,7 +120,7 @@ export function CredentialsPanel({
             )}
           </div>
 
-          <div className="flex items-center gap-1.5 overflow-x-auto overflow-y-hidden toolbar-scrollbar">
+          <div className="flex items-center gap-1.5 shrink-0">
             <div className="flex items-center border border-border shrink-0">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -271,31 +273,52 @@ export function CredentialsPanel({
                   )}
                 </DropdownMenuContent>
               </DropdownMenu>
-              <div className="w-px self-stretch bg-border" />
-              <DocsLink core="credentials" variant="icon" />
             </div>
             <div className="flex items-center border border-border shrink-0">
-              <button
-                onClick={() => openSettingsPage("credential-list")}
-                title={t("settings.openCredentialList")}
-                aria-label={t("settings.openCredentialList")}
-                className="flex items-center justify-center size-7 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors shrink-0"
-              >
-                <SlidersHorizontal className="size-3.5" />
-              </button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-7 text-muted-foreground hover:text-foreground"
+                    title={t("hosts.moreOptions")}
+                    aria-label={t("hosts.moreOptions")}
+                  >
+                    <MoreHorizontal className="size-3.5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="text-xs">
+                  <DropdownMenuItem
+                    onClick={() => openSettingsPage("credential-list")}
+                  >
+                    <SlidersHorizontal className="size-3.5 mr-2" />
+                    {t("settings.openCredentialList")}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() =>
+                      window.open(
+                        docsUrl("credentials"),
+                        "_blank",
+                        "noopener,noreferrer",
+                      )
+                    }
+                  >
+                    <BookOpen className="size-3.5 mr-2" />
+                    {t("common.docs")}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
-            <div className="flex items-center border border-accent-brand/30 ml-auto shrink-0">
+            <div className="flex items-center border border-accent-brand/30 shrink-0">
               <button
                 onClick={() =>
                   requestManage({ kind: "credential", credentialId: null })
                 }
                 title={t("credentials.addCredential")}
-                className="flex items-center justify-center gap-1 h-7 px-2 text-[10px] font-medium text-accent-brand hover:bg-accent-brand/10 transition-colors"
+                aria-label={t("credentials.addCredential")}
+                className="flex items-center justify-center h-7 w-7 text-accent-brand hover:bg-accent-brand/10 transition-colors"
               >
-                <Plus className="size-3 shrink-0" />
-                <span className="hidden min-[280px]:inline">
-                  {t("credentials.addCredential")}
-                </span>
+                <Plus className="size-3.5 shrink-0" />
               </button>
             </div>
           </div>

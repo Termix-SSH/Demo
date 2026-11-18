@@ -1,0 +1,56 @@
+{
+  "id": "scim",
+  "name": "SCIM Provisioning",
+  "version": "1.0.0",
+  "description": "Create, update and remove Termix accounts and roles from your identity provider with SCIM.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-SCIM",
+  "docs": "https://docs.termix.site/plugins/scim",
+  "category": "Access & Security",
+  "icon": "UserCog",
+  "features": [
+    "SCIM 2.0 server for Entra ID, Okta, JumpCloud, OneLogin, Authentik and others",
+    "Create, update, turn off and remove accounts from your identity provider",
+    "Map pushed groups to Termix roles",
+    "New accounts link to their SSO or LDAP sign in by email",
+    "More than one identity provider, each with its own URL and token",
+    "Recent changes log per connection"
+  ],
+  "engine": {
+    "termix": ">=26.11.2-0",
+    "api": "^2.9.0"
+  },
+  "capabilities": [
+    "db:own",
+    "network:serve",
+    "ui:surface",
+    "users:read",
+    "users:write"
+  ],
+  "contributes": {
+    "permissions": [
+      {
+        "name": "manage",
+        "titleKey": "permissions.manage.title",
+        "descriptionKey": "permissions.manage.description",
+        "defaultRoles": ["admin"]
+      }
+    ],
+    "settings": {
+      "admin": [
+        {
+          "key": "connections",
+          "type": "custom",
+          "component": "connections",
+          "permission": "manage"
+        }
+      ]
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"],
+  "desktop": "server"
+}

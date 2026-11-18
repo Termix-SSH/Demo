@@ -1,6 +1,7 @@
 import { shellQuote } from "@termix-ssh/plugin-sdk/host-scripts";
 import type { Reading, UpsCommand } from "../../shared/types.js";
 import { UpsError } from "../errors.js";
+import { electricalNumber, emptyElectrical } from "../power.js";
 import {
   FAIL_OUT,
   addFlag,
@@ -34,6 +35,29 @@ export function parseVars(text: string): Record<string, string> {
   return vars;
 }
 
+function diagnosticVars(vars: Record<string, string>): Record<string, string> {
+  return Object.fromEntries(
+    Object.entries(vars)
+      .filter(
+        ([key]) =>
+          /^(battery|input|output|device|ups|driver)\./.test(key) &&
+          key.length <= 128 &&
+          !/(password|secret|token|credential|community)/i.test(key),
+      )
+      .slice(0, 256)
+      .map(([key, value]) => [key, value.slice(0, 512)]),
+  );
+}
+
+function manufacturingDate(value: string | undefined): string {
+  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return "";
+  const date = new Date(`${value}T00:00:00Z`);
+  return Number.isFinite(date.getTime()) &&
+    date.toISOString().slice(0, 10) === value
+    ? value
+    : "";
+}
+
 /** NUT status words: OL OB LB RB OVER CHRG DISCHRG BYPASS CAL OFF ALARM TRIM BOOST. */
 export function parseNut(text: string): Reading {
   const v = parseVars(text);
@@ -58,16 +82,47 @@ export function parseNut(text: string): Reading {
   if (words.includes("TRIM")) addFlag(reading.flags, "trim");
   reading.chargePct = num(v["battery.charge"]);
   reading.runtimeSec = num(v["battery.runtime"]);
-  reading.loadPct = num(v["ups.load"]);
+  reading.loadPct = electricalNumber(v["ups.load"]);
+  reading.loadOrigin = reading.loadPct === null ? "unavailable" : "reported";
   reading.inputV = num(v["input.voltage"]);
   reading.outputV = num(v["output.voltage"]);
   reading.batteryV = num(v["battery.voltage"]);
   reading.tempC = num(v["ups.temperature"] ?? v["battery.temperature"]);
-  reading.nominalW = num(v["ups.realpower.nominal"] ?? v["ups.power.nominal"]);
+  reading.nominalW = electricalNumber(v["ups.realpower.nominal"]);
   reading.manufacturer = v["device.mfr"] ?? v["ups.mfr"] ?? "";
   reading.model = v["device.model"] ?? v["ups.model"] ?? "";
   reading.serial = v["device.serial"] ?? v["ups.serial"] ?? "";
   reading.lastTest = v["ups.test.result"] ?? "";
+  reading.electrical = {
+    ...emptyElectrical(),
+    inputCurrentA: electricalNumber(v["input.current"]),
+    outputCurrentA: electricalNumber(v["output.current"]),
+    batteryCurrentA: electricalNumber(v["battery.current"], true),
+    inputPowerW: electricalNumber(v["input.realpower"]),
+    outputPowerW:
+      electricalNumber(v["output.realpower"]) ??
+      electricalNumber(v["ups.realpower"]),
+  };
+  reading.electrical.inputPowerOrigin =
+    reading.electrical.inputPowerW === null ? "unavailable" : "reported";
+  reading.electrical.outputPowerOrigin =
+    reading.electrical.outputPowerW === null ? "unavailable" : "reported";
+  // Use strict parsing for voltage involved in a power calculation.
+  reading.inputV = electricalNumber(v["input.voltage"]);
+  reading.outputV = electricalNumber(v["output.voltage"]);
+  reading.nut = {
+    batteryType: v["battery.type"] ?? "",
+    batteryChargeLow: electricalNumber(v["battery.charge.low"]),
+    batteryChargeWarning: electricalNumber(v["battery.charge.warning"]),
+    batteryManufactured: manufacturingDate(v["battery.mfr.date"]),
+    driver: v["driver.name"] ?? "",
+    driverVersion: v["driver.version"] ?? "",
+    subdriver: v["driver.version.data"] ?? "",
+    driverState: v["driver.state"] ?? "",
+    vendorId: v["ups.vendorid"] ?? v["driver.parameter.vendorid"] ?? "",
+    productId: v["ups.productid"] ?? v["driver.parameter.productid"] ?? "",
+    variables: diagnosticVars(v),
+  };
   return reading;
 }
 

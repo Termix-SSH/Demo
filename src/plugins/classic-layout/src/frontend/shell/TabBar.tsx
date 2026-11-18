@@ -10,10 +10,12 @@ import {
   Separator,
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
   tabIcon,
   isSessionTabType,
   isElectron,
+  type Host,
   type Tab,
   type TabType,
   ActionSlot,
@@ -31,6 +33,8 @@ import {
   moveSplitDrag,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
+import { canOpenHostEditor } from "../sidebar/host-permissions";
+import { TabBarActions } from "./TabBarActions";
 
 /** Plugins add buttons to the right of the tab bar here, beside split view. */
 export const TAB_BAR_ACTIONS_SLOT = "tabbar.actions";
@@ -43,16 +47,26 @@ import {
   X,
   Plus,
   Pencil,
+  SquarePen,
   Columns2,
   Rows2,
   Ungroup,
   Maximize2,
   Minimize2,
   PanelRight,
+  MoreHorizontal,
 } from "lucide-react";
 
 /** How far below the bar a dragged tab has to go before it drags into the view. */
 const DRAG_OUT_DISTANCE = 16;
+
+/**
+ * Caps a tab's width on narrow screens so one long hostname can't make the
+ * strip pan just to read it or reach its buttons. 100cqw is the scroll strip's
+ * visible width (it is the @container), not its scrolled content, so a percent
+ * width would not work here. Desktop tabs keep their natural width.
+ */
+const TAB_MAX_WIDTH = "max-w-[min(16rem,100cqw)] md:max-w-none";
 
 /**
  * Tabs holding a live connection that can be refreshed: the registered
@@ -74,6 +88,8 @@ export function TabBar({
   onReorderTabs,
   onSplitAction,
   onRenameTab,
+  hosts,
+  onEditHost,
   isAppFullscreen,
   onToggleAppFullscreen,
   rightDockOpen,
@@ -94,6 +110,9 @@ export function TabBar({
   onReorderTabs: (tabs: Tab[]) => void;
   onSplitAction: (action: TabSplitAction) => void;
   onRenameTab?: (tabId: string, newLabel: string) => void;
+  /** Saved hosts, so a tab offers Edit host only while its host still exists. */
+  hosts?: Host[];
+  onEditHost?: (host: Host) => void;
   isAppFullscreen: boolean;
   onToggleAppFullscreen: () => void;
   rightDockOpen?: boolean;
@@ -341,7 +360,7 @@ export function TabBar({
       >
         <div
           ref={tabBarRef}
-          className="relative flex h-full flex-1 min-w-0 overflow-x-auto scrollbar-none pl-px"
+          className="@container relative flex h-full flex-1 min-w-0 overflow-x-auto scrollbar-none pl-px"
         >
           {indicatorRect && !dragTabId && (
             <span
@@ -452,7 +471,7 @@ export function TabBar({
                 ${
                   tab.type === "dashboard"
                     ? `px-2.5 md:px-3.5 ${active ? "bg-surface text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-surface"}`
-                    : `px-2.5 md:px-4 font-medium ${active ? "bg-surface text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-surface"}`
+                    : `${TAB_MAX_WIDTH} px-2.5 md:px-4 font-medium ${active ? "bg-surface text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-surface"}`
                 }`}
               >
                 {showTabNumbers && tab.type !== "dashboard" && (
@@ -478,11 +497,16 @@ export function TabBar({
                     style={{ fontWeight: "inherit" }}
                   />
                 ) : (
-                  tab.type !== "dashboard" && tab.label
+                  tab.type !== "dashboard" && (
+                    <span className="min-w-0 truncate" title={tab.label}>
+                      {tab.label}
+                    </span>
+                  )
                 )}
                 {tab.type !== "dashboard" && renamingTabId !== tab.id && (
                   <div
-                    className={`flex items-center gap-0.5 ml-1 ${active ? "opacity-100" : "opacity-0 group-hover/tab:opacity-100"}`}
+                    // Every tab keeps the room, so tabs never change width.
+                    className={`flex shrink-0 items-center gap-0.5 ml-1 ${active ? "opacity-100" : "opacity-0 group-hover/tab:opacity-100 group-focus-within/tab:opacity-100"}`}
                   >
                     {isConnectionTab(tab.type) && (
                       <button
@@ -531,7 +555,9 @@ export function TabBar({
                       }}
                       title={t("nav.close")}
                       aria-label={t("nav.close")}
-                      className="flex items-center justify-center size-5 md:size-4 rounded-sm transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
+                      // A small mark with a bigger hover box, and a click area
+                      // that reaches into the tab's padding.
+                      className="relative flex items-center justify-center size-5 rounded-sm transition-colors text-muted-foreground hover:text-foreground hover:bg-muted before:absolute before:-inset-y-2 before:-left-0.5 before:-right-3 before:content-['']"
                     >
                       <X className="size-3" />
                     </button>
@@ -573,7 +599,9 @@ export function TabBar({
                 }`}
                 >
                   {tabIcon(tab.type)}
-                  {tab.type !== "dashboard" && tab.label}
+                  {tab.type !== "dashboard" && (
+                    <span className="min-w-0 truncate">{tab.label}</span>
+                  )}
                 </div>
               );
             })()}
@@ -640,76 +668,56 @@ export function TabBar({
             </DropdownMenuContent>
           </DropdownMenu>
           <Separator orientation="vertical" />
-          {/* Hidden while no plugin adds a button, so no stray divider shows. */}
-          {/* Each plugin button gets its own divider, like the built in ones. */}
-          <div className="flex h-full shrink-0 border-r border-border empty:hidden [&>*:not(:last-child)]:border-r [&>*:not(:last-child)]:border-r-border">
+          <TabBarActions>
             <ComponentSlot
               slotId={TAB_BAR_ACTIONS_SLOT}
               props={{ targetTab, className: TAB_BAR_BUTTON }}
             />
-          </div>
+          </TabBarActions>
           <SplitLayoutMenu
             activeIsSplit={activeIsSplit}
             canAddPane={!activeSplitFull}
             onSplit={(edge) => onSplitAction({ kind: "splitActive", edge })}
             onPreset={(presetId) => onSplitAction({ kind: "preset", presetId })}
           />
-          {onToggleRightDock && (
-            <>
-              <Separator orientation="vertical" />
-              <Button
-                variant="ghost"
-                size="icon"
-                className={`h-full w-12.5 rounded-none ${rightDockOpen ? "text-accent-brand bg-accent-brand/10" : "text-muted-foreground hover:text-foreground"}`}
-                title={t("nav.toggleRightDock")}
-                aria-label={t("nav.toggleRightDock")}
-                aria-pressed={!!rightDockOpen}
-                onClick={onToggleRightDock}
-              >
-                <PanelRight className="size-4" />
-              </Button>
-            </>
-          )}
-          {!isElectron() && (
-            <>
-              <Separator orientation="vertical" />
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-full w-12.5 rounded-none text-muted-foreground hover:text-foreground"
-                title={
-                  isAppFullscreen
-                    ? t("nav.exitFullscreen")
-                    : t("nav.enterFullscreen")
-                }
-                aria-label={
-                  isAppFullscreen
-                    ? t("nav.exitFullscreen")
-                    : t("nav.enterFullscreen")
-                }
-                onClick={onToggleAppFullscreen}
-              >
-                {isAppFullscreen ? (
-                  <Minimize2 className="size-4" />
-                ) : (
-                  <Maximize2 className="size-4" />
-                )}
-              </Button>
-            </>
-          )}
           <Separator orientation="vertical" />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-full w-12.5 rounded-none text-muted-foreground hover:text-foreground"
-            onClick={() => setOpen((o) => !o)}
-            title={t("nav.hideTabBar")}
-            aria-label={t("nav.hideTabBar")}
-          >
-            <ChevronUp
-              className={`size-4 transition-transform ${open ? "" : "rotate-180"}`}
-            />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className={`h-full w-12.5 rounded-none ${rightDockOpen ? "text-accent-brand" : "text-muted-foreground hover:text-foreground"}`}
+                title={t("nav.viewMenu")}
+                aria-label={t("nav.viewMenu")}
+              >
+                <MoreHorizontal className="size-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="text-xs min-w-48">
+              {onToggleRightDock && (
+                <DropdownMenuItem onClick={onToggleRightDock}>
+                  <PanelRight className="size-3.5 mr-2" />
+                  {t("nav.toggleRightDock")}
+                </DropdownMenuItem>
+              )}
+              {!isElectron() && (
+                <DropdownMenuItem onClick={onToggleAppFullscreen}>
+                  {isAppFullscreen ? (
+                    <Minimize2 className="size-3.5 mr-2" />
+                  ) : (
+                    <Maximize2 className="size-3.5 mr-2" />
+                  )}
+                  {isAppFullscreen
+                    ? t("nav.exitFullscreen")
+                    : t("nav.enterFullscreen")}
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem onClick={() => setOpen((o) => !o)}>
+                <ChevronUp className="size-3.5 mr-2" />
+                {t("nav.hideTabBar")}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
       {!open && (
@@ -731,6 +739,9 @@ export function TabBar({
           const ctxTab = tabs.find((t) => t.id === contextTabId);
           if (!ctxTab) return null;
           const joinable = canJoinSplit(ctxTab);
+          const savedHost = hosts?.find((h) => h.id === ctxTab.host?.id);
+          const editableHost =
+            savedHost && canOpenHostEditor(savedHost) ? savedHost : undefined;
           const itemClass =
             "flex items-center gap-2 w-full px-3 py-1.5 text-xs text-left hover:bg-accent hover:text-accent-foreground disabled:opacity-50 disabled:pointer-events-none";
           const runSplit = (action: TabSplitAction) => {
@@ -777,6 +788,18 @@ export function TabBar({
                 >
                   <RefreshCw className="size-3" />
                   {t("nav.reconnectDisconnectedTerminals")}
+                </button>
+              )}
+              {editableHost && onEditHost && (
+                <button
+                  className="flex items-center gap-2 w-full px-3 py-1.5 text-xs text-left hover:bg-accent hover:text-accent-foreground"
+                  onClick={() => {
+                    onEditHost(editableHost);
+                    setContextTabId(null);
+                  }}
+                >
+                  <SquarePen className="size-3" />
+                  {t("hosts.editHostAction")}
                 </button>
               )}
               {/* Plugins add entries here, invoked with the tab's surface handle. */}

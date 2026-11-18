@@ -54,8 +54,11 @@ export function createApi(api: PluginApiClient) {
     paste: (id: number, text: string) =>
       data(api.post(`${at(id)}/paste`, { text })),
     session: (id: number, sd: string) =>
-      data(api.post<{ sd: string }>(`${at(id)}/session`, { sd })).then(
-        (r) => r.sd,
+      data(
+        api.post<{ sd: string; candidates?: RTCIceCandidateInit[] }>(
+          `${at(id)}/session`,
+          { sd },
+        ),
       ),
     media: (id: number) =>
       data(api.get<{ media: MediaState }>(`${at(id)}/media`)).then(

@@ -383,8 +383,8 @@ export function HostsPanel({
   return (
     <div className="relative flex flex-col flex-1 min-h-0 overflow-hidden">
       {
-        <div className="flex flex-col px-2 py-1.5 shrink-0 border-b border-border/60 gap-1.5">
-          <div className="flex items-center gap-2 px-2.5 h-7 bg-muted/60 border border-border/60 rounded-none">
+        <div className="flex items-center px-2 py-1.5 shrink-0 border-b border-border/60 gap-1.5">
+          <div className="flex flex-1 min-w-0 items-center gap-2 px-2.5 h-7 bg-muted/60 border border-border/60 rounded-none">
             <Search className="size-3 text-muted-foreground/60 shrink-0" />
             <input
               value={hostSearch}
@@ -405,57 +405,19 @@ export function HostsPanel({
             )}
           </div>
 
-          <div className="flex items-center gap-1.5 overflow-x-auto overflow-y-hidden toolbar-scrollbar">
+          <div className="flex items-center gap-1.5 shrink-0">
             <div className="flex items-center border border-border shrink-0">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="size-7 text-muted-foreground hover:text-foreground"
-                title={t("hosts.refreshBtn2")}
-                onClick={handleRefresh}
-                disabled={refreshing}
-              >
-                <RefreshCw
-                  className={`size-3.5 ${refreshing ? "animate-spin" : ""}`}
-                />
-              </Button>
-              {hasImportMenu && (
-                <>
-                  <div className="w-px self-stretch bg-border" />
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="size-7 text-muted-foreground hover:text-foreground"
-                        title={t("hosts.importExportBtn")}
-                      >
-                        <Upload className="size-3.5" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" className="text-xs">
-                      <ComponentSlot
-                        slotId="hosts.importMenu"
-                        props={{ hosts: rawHosts }}
-                      />
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </>
+              {/* Selection starts from the menu; this is the way back out. */}
+              {selectionMode && (
+                <button
+                  title={t("hosts.exitSelectionTitle")}
+                  aria-label={t("hosts.exitSelectionTitle")}
+                  onClick={toggleSelectionMode}
+                  className="flex items-center justify-center size-7 shrink-0 text-accent-brand bg-accent-brand/15 transition-colors"
+                >
+                  <ListChecks className="size-3.5" />
+                </button>
               )}
-            </div>
-            <div className="flex items-center border border-border shrink-0">
-              <button
-                title={
-                  selectionMode
-                    ? t("hosts.exitSelectionTitle")
-                    : t("hosts.selectHosts")
-                }
-                onClick={toggleSelectionMode}
-                className={`flex items-center justify-center size-7 shrink-0 transition-colors ${selectionMode ? "text-accent-brand bg-accent-brand/15" : "text-muted-foreground/60 hover:text-foreground hover:bg-muted/60"}`}
-              >
-                <ListChecks className="size-3.5" />
-              </button>
-              <div className="w-px self-stretch bg-border" />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
@@ -785,6 +747,21 @@ export function HostsPanel({
                     <Settings2 className="size-3.5 mr-2" />
                     {t("hostDefaults.menuMyDefaults")}
                   </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => openSettingsPage("host-list")}
+                  >
+                    <SlidersHorizontal className="size-3.5 mr-2" />
+                    {t("settings.openHostList")}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={handleRefresh}
+                    disabled={refreshing}
+                  >
+                    <RefreshCw
+                      className={`size-3.5 mr-2 ${refreshing ? "animate-spin" : ""}`}
+                    />
+                    {t("hosts.refreshBtn2")}
+                  </DropdownMenuItem>
                   {hasImportMenu && (
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger className="flex items-center gap-2">
@@ -802,30 +779,18 @@ export function HostsPanel({
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <div className="flex items-center border border-border shrink-0">
-              <button
-                onClick={() => openSettingsPage("host-list")}
-                title={t("settings.openHostList")}
-                aria-label={t("settings.openHostList")}
-                className="flex items-center justify-center size-7 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors shrink-0"
-              >
-                <SlidersHorizontal className="size-3.5" />
-              </button>
-            </div>
             <div
-              className={`flex items-center border border-accent-brand/30 ml-auto shrink-0 ${hostPolicy.manualCreate ? "" : "hidden"}`}
+              className={`flex items-center border border-accent-brand/30 shrink-0 ${hostPolicy.manualCreate ? "" : "hidden"}`}
             >
               <button
                 onClick={() =>
                   window.dispatchEvent(new CustomEvent("host-manager:add-host"))
                 }
                 title={t("hosts.addHost")}
-                className="flex items-center justify-center gap-1 h-7 px-2 text-[10px] font-medium text-accent-brand hover:bg-accent-brand/10 transition-colors"
+                aria-label={t("hosts.addHost")}
+                className="flex items-center justify-center h-7 w-7 text-accent-brand hover:bg-accent-brand/10 transition-colors"
               >
-                <Plus className="size-3 shrink-0" />
-                <span className="hidden min-[280px]:inline">
-                  {t("hosts.addHost")}
-                </span>
+                <Plus className="size-3.5 shrink-0" />
               </button>
             </div>
           </div>

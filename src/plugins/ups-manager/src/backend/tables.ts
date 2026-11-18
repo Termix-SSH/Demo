@@ -32,6 +32,8 @@ export const sources = defineTable(
     lowRuntimeMin: integer().notNull().default(5),
     alerts: boolean().notNull().default(true),
     enabled: boolean().notNull().default(true),
+    inputDc: boolean().notNull().default(false),
+    outputDc: boolean().notNull().default(false),
     createdAt: timestamp().notNull().defaultNow(),
   },
   {
@@ -59,4 +61,10 @@ export const events = defineTable(
   },
 );
 
-export const tables = [sources, events];
+/** One atomic document per source: totals and rolling energy history commit together. */
+export const energyStates = defineTable("energy_states", {
+  sourceId: integer().primaryKey(),
+  payload: text().notNull(),
+});
+
+export const tables = [sources, events, energyStates];

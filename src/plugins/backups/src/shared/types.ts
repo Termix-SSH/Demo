@@ -135,6 +135,8 @@ export interface JobView {
   keep: KeepPolicy;
   alerts: JobAlerts;
   oneFileSystem: boolean;
+  /** Extra flags for restic backup, separated by spaces. */
+  backupOptions: string;
   lastStatus: RunStatus | null;
   lastRunAt: string | null;
   lastSuccessAt: string | null;
@@ -157,6 +159,8 @@ export interface JobInput {
   keep: KeepPolicy;
   alerts: JobAlerts;
   oneFileSystem: boolean;
+  /** Extra flags for restic backup, separated by spaces. */
+  backupOptions: string;
 }
 
 export interface RunProgress {

@@ -36,6 +36,7 @@
     "checkNow": "Jetzt prüfen"
   },
   "nav": {
+    "theme": "Design",
     "copyPassword": "Passwort kopieren",
     "copySudoPassword": "Sudo-Passwort kopieren",
     "passwordCopied": "Passwort in die Zwischenablage kopiert",
@@ -72,7 +73,15 @@
     "mobileNavigation": "Navigation",
     "allTabs": "Alle Tabs",
     "hideTabBar": "Tab-Leiste verbergen",
-    "showTabBar": "Tab-Leiste anzeigen"
+    "showTabBar": "Tab-Leiste anzeigen",
+    "allApps": "Alle Apps",
+    "findApp": "App suchen",
+    "pinToRail": "An Seitenleiste anheften",
+    "unpinFromRail": "Von Seitenleiste lösen",
+    "appSettings": "App-Einstellungen",
+    "allAppsHint": "Heften Sie die Apps an, die Sie nutzen. Klicken Sie mit der rechten Maustaste auf eine App, um deren Einstellungen zu öffnen.",
+    "allAppsLockedHint": "Ihr Administrator wählt die Apps für Ihre Seitenleiste aus.",
+    "viewMenu": "Ansicht"
   },
   "commandPalette": {
     "searchPlaceholder": "Hosts, Befehle oder Einstellungen durchsuchen...",
@@ -171,7 +180,8 @@
     "dragToReorder": "Ziehen Sie Kacheln, um sie zu verschieben, und ziehen Sie die Ränder, um die Größe zu ändern",
     "clearActivityConfirm": "Letzte Aktivitäten löschen?",
     "resetConfirm": "Dashboard auf das Standard-Layout zurücksetzen?",
-    "clearFailed": "Aktivitätsverlauf konnte nicht gelöscht werden"
+    "clearFailed": "Aktivitätsverlauf konnte nicht gelöscht werden",
+    "help": "Hilfe"
   },
   "admin": {
     "sectionGeneral": "Allgemein",
@@ -237,6 +247,9 @@
     "credentialStorage": "Passwörter und Schlüssel speichern zulassen",
     "credentialStorageOff": "Das Speichern von Passwörtern und Schlüsseln ist auf diesem Server deaktiviert. Lassen Sie die Felder leer, und Termix fragt beim Verbinden danach.",
     "credentialStorageDesc": "Deaktiviert: Niemand kann ein Passwort oder einen privaten Schlüssel auf einem Host oder einer Anmeldeinformation speichern, und Termix fragt beim Verbinden danach. Bereits gespeicherte Anmeldedaten bleiben erhalten, bis sie entfernt werden.",
+    "hostKeyTrust": "Neue Host-Schlüssel ohne Abfrage vertrauen",
+    "hostKeyTrustDesc": "Wenn ein Plugin, ein Zeitplan oder die API sich mit einem Host verbindet, dessen Schlüssel noch nicht überprüft wurde, wird dieser Schlüssel gespeichert und die Verbindung hergestellt. Ist dies deaktiviert, werden solche Verbindungen abgelehnt, bis jemand ein Terminal für diesen Host öffnet und dessen Schlüssel vertraut.",
+    "hostKeyTrustFailed": "Fehler beim Aktualisieren der Host-Schlüssel-Einstellung",
     "secondFactorAfterExternalLogin": "Nach externer Anmeldung (SSO, GitHub, Google, LDAP) nach einem zweiten Faktor fragen",
     "secondFactorAfterExternalLoginDesc": "Wenn deaktiviert, wird ein registrierter zweiter Faktor nur nach der Passwort- und anderen lokalen Anmeldungen abgefragt, wie bisher. Wenn aktiviert, wird er nach jeder Anmeldemethode, einschließlich SSO und LDAP, abgefragt.",
     "allowPasswordReset": "Passwortzurücksetzung erlauben",
@@ -487,7 +500,91 @@
     "revokeSession": "Abmelden",
     "deleteRoleConfirm": "Rolle {{name}} löschen?",
     "revokeKeyConfirm": "API-Schlüssel {{name}} widerrufen?",
-    "revokeKey": "Widerrufen"
+    "revokeKey": "Widerrufen",
+    "apiKeyScopeReadAll": "Nur lesen, alles, was der Benutzer sehen kann",
+    "apiKeyNeverExpires": "Läuft nie ab",
+    "apiKeyExpiryHint": "Wenn leer, gilt der Schlüssel für 90 Tage.",
+    "changeHeld": "Diese Änderung wird {{minutes}} Minuten zurückgehalten, damit andere Administratoren sie sehen können.",
+    "userStatusFilter": "Kontostatus",
+    "userStatusAll": "Alle Konten",
+    "userStatusActive": "Aktiv",
+    "userStatusDisabled": "Deaktiviert",
+    "userStatusPending": "Wartet auf Freigabe",
+    "disabledBadge": "Aus",
+    "pendingBadge": "Wartend",
+    "accountStatusTitle": "Kontostatus",
+    "accountStatusActive": "Dieses Konto kann sich anmelden.",
+    "accountStatusDisabled": "Dieses Konto ist deaktiviert. Es kann sich nicht anmelden und seine API-Schlüssel funktionieren nicht.",
+    "accountStatusPending": "Dieses Konto wartet auf Freigabe und kann sich noch nicht anmelden.",
+    "lastLogin": "Letzte Anmeldung {{time}}",
+    "disableUser": "Konto deaktivieren",
+    "enableUser": "Konto aktivieren",
+    "approveUser": "Freigeben",
+    "disableUserConfirm": "{{username}} deaktivieren? Der Benutzer wird überall abgemeldet und kann sich erst wieder anmelden, wenn Sie das Konto erneut aktivieren.",
+    "userDisabled": "{{username}} ist deaktiviert",
+    "userEnabled": "{{username}} ist aktiviert",
+    "userApproved": "{{username}} wurde freigegeben",
+    "userStatusFailed": "Konto konnte nicht geändert werden",
+    "profileTitle": "Name und E-Mail",
+    "displayName": "Anzeigename",
+    "displayNamePlaceholder": "Anzeigename",
+    "email": "E-Mail",
+    "emailPlaceholder": "E-Mail",
+    "profileSaved": "Gespeichert",
+    "profileSaveFailed": "Speichern fehlgeschlagen",
+    "manageTabAccess": "Zugriff",
+    "sectionInvites": "Einladungslinks",
+    "invitesDescription": "Links, mit denen jemand ein Konto erstellen kann, auch wenn die Registrierung deaktiviert ist.",
+    "invitesEmpty": "Noch keine Einladungslinks",
+    "inviteCreate": "Neue Einladung",
+    "inviteCreateFailed": "Einladung konnte nicht erstellt werden",
+    "inviteCreatedNotice": "Kopieren Sie diesen Link jetzt. Er wird nicht erneut angezeigt.",
+    "inviteCopy": "Link kopieren",
+    "inviteCopied": "Link kopiert",
+    "inviteNotePlaceholder": "Notiz, z. B. für wen er bestimmt ist",
+    "inviteRole": "Rolle",
+    "inviteNoRole": "Keine zusätzliche Rolle",
+    "inviteExpires": "Läuft ab",
+    "inviteExpiresIn_one": "Läuft in {{count}} Tag ab",
+    "inviteExpiresIn_other": "Läuft in {{count}} Tagen ab",
+    "inviteUses": "Nutzungen",
+    "inviteMakeAdmin": "Zum Administrator machen",
+    "inviteUntitled": "Einladen",
+    "inviteUsesOf": "{{uses}} von {{max}} verwendet",
+    "inviteState_active": "Aktiv",
+    "inviteState_revoked": "Widerrufen",
+    "inviteState_expired": "Abgelaufen",
+    "inviteState_used": "Aufgebraucht",
+    "inviteRevoke": "Widerrufen",
+    "inviteRevokeConfirm": "Diesen Einladungslink widerrufen?",
+    "inviteRevokeFailed": "Einladung konnte nicht widerrufen werden",
+    "sectionAccess": "Zugriffsüberprüfung",
+    "accessCount_one": "{{count}} Freigabe",
+    "accessCount_other": "{{count}} Freigaben",
+    "accessExport": "CSV exportieren",
+    "accessExportFailed": "Export fehlgeschlagen",
+    "accessKind": "Typ",
+    "accessKindAll": "Alles",
+    "accessKind_host": "Host",
+    "accessKind_folder": "Ordner",
+    "accessKind_credential": "Anmeldeinformationen",
+    "accessUser": "Benutzer",
+    "accessAnyUser": "Jeder Benutzer",
+    "accessRole": "Rolle",
+    "accessAnyRole": "Jede Rolle",
+    "accessToUser": "an {{name}}",
+    "accessToRole": "an Rolle {{name}}",
+    "accessOwner": "Besitzer {{name}}",
+    "accessGrantedBy": "geteilt von {{name}}",
+    "accessExpires": "endet am {{date}}",
+    "accessLastUsed": "zuletzt verwendet am {{date}}",
+    "accessEmpty": "Nichts ist freigegeben",
+    "sectionAccountSettings": "Konten und Zugriff",
+    "adminHostBypass": "Administratoren können die Hosts aller Benutzer öffnen",
+    "adminHostBypassDesc": "Wenn deaktiviert, sehen Administratoren nur Hosts, die mit ihnen geteilt wurden, und können keine Daten anderer Benutzer über die Benutzerseite öffnen. Wenn aktiviert, wird die Administrations-Kühlzeit abgewartet, falls eine eingestellt ist.",
+    "signupApproval": "Neue SSO-Konten genehmigen",
+    "signupApprovalDesc": "Wenn sich jemand zum ersten Mal über SSO oder LDAP anmeldet, muss das Konto zunächst von einem Administrator genehmigt werden.",
+    "updateSettingFailed": "Einstellung konnte nicht gespeichert werden"
   },
   "newUi": {
     "sidebar": {
@@ -510,7 +607,8 @@
         "domainPlaceholder": "optional",
         "connectToAction": "Mit {{name}} verbinden",
         "sshProtocol": "SSH",
-        "noTarget": "Nichts Installiertes kann mit diesem Host-Typ verbinden"
+        "noTarget": "Nichts Installiertes kann mit diesem Host-Typ verbinden",
+        "loadingTargets": "Verbindungsmöglichkeiten werden geladen..."
       },
       "keybindings": {
         "description": "Tasten an Aktionen im Terminal und in der App binden oder die integrierten Tastenkürzel ändern.",
@@ -564,6 +662,9 @@
         "desktopProfileDescription": "Dieses Profil existiert nur auf diesem Gerät und meldet sich eigenständig an. Verknüpfen Sie es mit einem Termix-Server, um dieselben Hosts und Einstellungen auf allen Geräten zu verwenden.",
         "sectionInterface": "Oberfläche",
         "interfacePresetDesc": "Wie viele Details Termix anzeigt. Alle Funktionen bleiben verfügbar.",
+        "closeToTray": "Im Tray schließen",
+        "closeToTrayDesc": "Beim Schließen des Fensters bleibt Termix im Tray aktiv, sodass Ihre Verbindungen offen bleiben. Deaktivieren Sie diese Option, um die App beim Schließen des Fensters vollständig zu beenden.",
+        "closeToTraySaveFailed": "Einstellung konnte nicht gespeichert werden",
         "presetClearOverrides": "Alle zurücksetzen",
         "presetOverridesTitle": "Angepasst",
         "presetRevertArea": "Rückgängig",
@@ -697,7 +798,11 @@
         "tryBetaDescription": "Nehmen Sie in den Einstellungen unter Updates am Beta-Programm teil.",
         "sendBetaFeedback": "Beta-Feedback senden",
         "openUpdates": "Updates",
-        "hexLabel": "hex"
+        "hexLabel": "hex",
+        "displayNameLabel": "Anzeigename",
+        "emailLabel": "E-Mail",
+        "profileSaved": "Gespeichert",
+        "profileSaveFailed": "Speichern fehlgeschlagen"
       }
     }
   },
@@ -729,6 +834,10 @@
     "apiKeys": "API-Schlüssel",
     "data": "Daten und Synchronisierung",
     "interface": "Schnittstelle",
+    "hostList": "Host-Liste",
+    "credentialList": "Liste der Anmeldeinformationen",
+    "openHostList": "Einstellungen der Host-Liste",
+    "openCredentialList": "Einstellungen der Liste der Anmeldeinformationen",
     "appearance": "Erscheinungsbild",
     "keybindings": "Tastenkombinationen",
     "adminGeneral": "Allgemein",
@@ -788,6 +897,36 @@
       "hostRows": {
         "label": "Host-Zeilen-Optionen"
       }
+    },
+    "adminAccess": "Zugriffsüberprüfung",
+    "yourApps": "Ihre Apps",
+    "otherApps": "Andere Apps",
+    "hostForm": {
+      "label": "Host hinzufügen-Formular",
+      "description": "Einfach zeigt Adresse, Anmeldung, Ordner und Tags. Vollständig zeigt alle Optionen. Sie können auch innerhalb des Formulars wechseln.",
+      "simple": "Einfach",
+      "full": "Vollständig"
+    },
+    "interfaceDefaults": {
+      "title": "Schnittstellen-Standardwerte",
+      "intro": "Legen Sie fest, was Benutzer bei der ersten Anmeldung sehen. Sie können ihre eigene Ansicht weiterhin ändern, es sei denn, Sie sperren sie.",
+      "setFor": "Einstellen für",
+      "everyone": "Alle",
+      "inherits": "Verwendet „Alle“, bis Sie etwas ändern",
+      "useEveryone": "„Alle“ verwenden",
+      "look": "Startansicht",
+      "lookHint": "Einfach zeigt das Minimum. Erweitert zeigt alle Schaltflächen.",
+      "simple": "Einfach",
+      "balanced": "Ausgewogen",
+      "advanced": "Erweitert",
+      "lock": "Sperren",
+      "lockHint": "Personen mit dieser Rolle können ihre Ansicht oder die Apps in ihrer Leiste nicht ändern.",
+      "apps": "Apps in der Leiste",
+      "appsHint": "Der Rest bleibt unter Alle Apps und in der Suche.",
+      "appsAdvanced": "Erweitert zeigt alle Apps in der Leiste.",
+      "saved": "Schnittstelleneinstellungen gespeichert",
+      "saveFailed": "Schnittstelleneinstellungen konnten nicht gespeichert werden",
+      "lockedNote": "Ihr Administrator hat Ihre Ansicht festgelegt, daher kann sie hier nicht geändert werden."
     }
   },
   "hostDefaults": {
@@ -867,12 +1006,19 @@
     "pickHint": "Alles rund um eine Verbindung befindet sich hier, gruppiert, damit Sie es leicht finden.",
     "clearChoice": "Löschen",
     "proxyPathTarget": "Ziel",
-    "hostCopyName": "{{name}} (Kopie)"
+    "hostCopyName": "{{name}} (Kopie)",
+    "moreOptions": "Weitere Optionen",
+    "moreOptionsHint": "Proxy, Jump-Hosts, Port Knocking, Keepalive, Statusprüfungen und der Ein-/Ausschalter für jede App. Die meisten Hosts benötigen diese nicht.",
+    "folderAndTags": "Ordner, Tags und Notizen"
   },
   "permissions": {
     "branding": {
       "title": "Branding ändern",
       "description": "Legen Sie den App-Namen, den Slogan und das Logo fest, die allen angezeigt werden."
+    },
+    "interfaceDefaults": {
+      "title": "Schnittstelleneinstellungen festlegen",
+      "description": "Legen Sie die Startansicht und die Apps in der Leiste für alle oder für jede Rolle fest."
     }
   },
   "onboarding": {
@@ -907,6 +1053,8 @@
     "clickAuto": "Die erste Verbindungsmethode",
     "useDefaultNamed": "Standard ({{name}})",
     "useDefaultButtons": "Standard-Schaltflächen verwenden",
-    "perHostHint": "Um sie für einen einzelnen Host zu ändern, verwenden Sie im Menü die Option „Schaltflächen in Host-Zeilen“."
+    "perHostHint": "Um sie für einen einzelnen Host zu ändern, verwenden Sie im Menü die Option „Schaltflächen in Host-Zeilen“.",
+    "moreTools": "Weitere Tools",
+    "more": "Mehr"
   }
 }

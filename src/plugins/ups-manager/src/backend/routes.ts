@@ -119,23 +119,32 @@ export function registerRoutes(
           }
         }),
       );
-      const out: HostSummary[] = rows
-        .filter((r) => allowed.get(r.hostId) && r.enabled)
-        .map((r) => {
-          const state = engine.state(r.id);
-          return {
-            hostId: r.hostId,
-            sourceId: r.id,
-            label: r.label,
-            backend: r.backend,
-            state: state?.reading?.state ?? "unknown",
-            flags: state?.reading?.flags ?? [],
-            chargePct: state?.reading?.chargePct ?? null,
-            runtimeSec: state?.reading?.runtimeSec ?? null,
-            loadPct: state?.reading?.loadPct ?? null,
-            error: state?.error ?? "",
-          };
-        });
+      const out: HostSummary[] = await Promise.all(
+        rows
+          .filter((r) => allowed.get(r.hostId) && r.enabled)
+          .map(async (r) => {
+            const state = engine.state(r.id);
+            const energy = await engine.energyReport(r.id);
+            return {
+              hostId: r.hostId,
+              sourceId: r.id,
+              label: r.label,
+              backend: r.backend,
+              state: state?.reading?.state ?? "unknown",
+              flags: state?.reading?.flags ?? [],
+              chargePct: state?.reading?.chargePct ?? null,
+              runtimeSec: state?.reading?.runtimeSec ?? null,
+              loadPct: state?.reading?.loadPct ?? null,
+              loadOrigin: state?.reading?.loadOrigin,
+              error: state?.error ?? "",
+              outputPowerW: state?.reading?.electrical?.outputPowerW ?? null,
+              outputPowerOrigin:
+                state?.reading?.electrical?.outputPowerOrigin ?? "unavailable",
+              observedOutputWh: energy.current?.observedWh ?? null,
+              energyError: energy.persistenceError,
+            };
+          }),
+      );
       res.json(out);
     } catch (error) {
       fail(ctx, res, error);
@@ -260,8 +269,25 @@ export function registerRoutes(
         hostId,
         requireId(param(req, "id"), "UPS"),
       );
-      const parsed = parseSource(body(req));
-      await store.update(row, parsed, body(req).clearSecrets === true);
+      const request = body(req);
+      const parsed = parseSource({
+        ...request,
+        inputDc: request.inputDc === undefined ? row.inputDc : request.inputDc,
+        outputDc:
+          request.outputDc === undefined ? row.outputDc : request.outputDc,
+      });
+      await engine.exclusive(row.id, async () => {
+        await store.update(row, parsed, request.clearSecrets === true);
+        if (
+          row.backend !== parsed.backend ||
+          row.target !== parsed.target ||
+          row.snmpVersion !== parsed.snmpVersion ||
+          !!row.inputDc !== parsed.inputDc ||
+          !!row.outputDc !== parsed.outputDc ||
+          row.enabled !== parsed.enabled
+        )
+          engine.breakContinuity(row.id);
+      });
       const changed = (await store.get(row.id)) ?? row;
       await engine.refresh(changed).catch(() => undefined);
       res.json(await service.view(changed));
@@ -296,8 +322,10 @@ export function registerRoutes(
         hostId,
         requireId(param(req, "id"), "UPS"),
       );
-      await store.remove(row.id);
-      engine.forget(row.id);
+      await engine.exclusive(row.id, async () => {
+        await store.remove(row.id);
+        engine.forget(row.id);
+      });
       res.json({ ok: true });
     } catch (error) {
       fail(ctx, res, error);
@@ -336,6 +364,8 @@ export function registerRoutes(
           backend: parsed.backend,
           target: parsed.target,
           snmpVersion: parsed.snmpVersion,
+          inputDc: parsed.inputDc,
+          outputDc: parsed.outputDc,
         },
         secrets,
       );
@@ -409,7 +439,48 @@ export function registerRoutes(
       );
       const asked = String(req.query.range ?? "24h") as HistoryRange;
       const range = RANGES.includes(asked) ? asked : "24h";
+      if (history.error) throw new UpsError(history.error, 503);
       res.json({ range, points: history.range(row.id, range) });
+    } catch (error) {
+      fail(ctx, res, error);
+    }
+  });
+
+  /**
+   * @openapi
+   * /plugin-api/ups-manager/{hostId}/sources/{id}/energy:
+   *   get:
+   *     summary: Observed output energy, coverage, epochs and power history
+   *     parameters:
+   *       - in: path
+   *         name: hostId
+   *         required: true
+   *         schema: { type: integer }
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema: { type: integer }
+   *       - in: query
+   *         name: range
+   *         schema: { type: string, enum: ["24h", "7d", "30d"] }
+   *     responses:
+   *       200:
+   *         description: Observed energy with explicit incomplete coverage and persistence health.
+   */
+  router.get("/:hostId/sources/:id/energy", async (req, res) => {
+    try {
+      const hostId = hostOf(req);
+      await gate(hostId, "connect");
+      const row = await service.source(
+        hostId,
+        requireId(param(req, "id"), "UPS"),
+      );
+      const asked = String(req.query.range ?? "24h") as HistoryRange;
+      if (!RANGES.includes(asked)) throw new UpsError("Invalid history range");
+      const report = await engine.energyHistory(row.id, asked);
+      if (report.persistenceError)
+        throw new UpsError(report.persistenceError, 503);
+      res.json(report);
     } catch (error) {
       fail(ctx, res, error);
     }

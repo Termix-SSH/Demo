@@ -117,8 +117,18 @@ export function ManageTab() {
   const [credentials, setCredentials] = useState<Credential[]>([]);
   const [editing, setEditing] = useState<Editing | null>(null);
   const [dirty, setDirty] = useState(false);
-  // Starts from the preset and stays where the user puts it this session.
+  // A new host opens as the user's add host form setting says, an existing
+  // one with every option. The switch in the header changes it for this host.
   const [advanced, setAdvanced] = useState(presetMode !== "simple");
+  const editingHostKey =
+    editing?.kind === "host"
+      ? `${editing.host?.id ?? "new"}:${editing.key}`
+      : "";
+  useEffect(() => {
+    if (!editingHostKey) return;
+    setAdvanced(presetMode !== "simple" || !editingHostKey.startsWith("new:"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editingHostKey]);
   // The host a credential was opened from, so Back returns to it.
   const [returnHost, setReturnHost] = useState<Host | "new" | null>(null);
 
@@ -251,7 +261,11 @@ export function ManageTab() {
     async (request: ManageRequest | null) => {
       if (!request) return;
       if (!(await confirmDiscard())) return;
-      await loaded.current;
+      // A new host or credential needs no list, so it opens right away.
+      const needsList =
+        (request.kind === "host" && !!request.hostId) ||
+        (request.kind === "credential" && !!request.credentialId);
+      if (needsList) await loaded.current;
       if (request.kind === "host") {
         const find = () =>
           hostsRef.current.find((h) => h.id === request.hostId) ?? null;
@@ -475,6 +489,7 @@ export function ManageTab() {
         host={editing.host}
         draft={editing.host ? undefined : editing.draft}
         advanced={advanced}
+        onShowAll={() => setAdvanced(true)}
         onBack={guarded(close)}
         onSave={(saved) => {
           const updated = sshHostToHost(saved as unknown as SSHHostWithStatus);

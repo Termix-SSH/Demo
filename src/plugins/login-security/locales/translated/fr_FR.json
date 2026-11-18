@@ -46,6 +46,10 @@
       "connectFactorMinutes": {
         "label": "Minutes avant de redemander",
         "description": "Après la saisie, l'utilisateur peut se connecter à n'importe quel hôte pendant cette durée. La déconnexion met fin à cette période."
+      },
+      "newDeviceNotice": {
+        "label": "Alerter en cas d'appareil inconnu",
+        "description": "Envoyer une alerte aux utilisateurs lorsqu'une connexion à leur compte est détectée depuis un appareil inconnu. Chaque utilisateur peut désactiver cette option pour son propre compte."
       }
     },
     "host": {
@@ -53,11 +57,18 @@
         "label": "Demander un deuxième facteur avant de se connecter",
         "description": "Utilisé lorsque la Sécurité de connexion est réglée sur « Hôtes marqués à cet effet »."
       }
+    },
+    "user": {
+      "newDeviceNotice": {
+        "label": "M'avertir en cas d'appareil inconnu",
+        "description": "Recevoir une alerte lorsqu'une connexion à votre compte est détectée depuis un appareil inconnu."
+      }
     }
   },
   "verify": {
     "title": "Vérifier le deuxième facteur",
     "intro": "Saisissez votre deuxième facteur pour vous connecter à cet hôte.",
+    "start": "Vérifier",
     "done": "Vérifié",
     "retry": "Retournez à l'hôte et reconnectez-vous.",
     "failed": "Cela n'a pas fonctionné. Réessayez.",
@@ -74,5 +85,68 @@
     "body": "Votre administrateur exige un facteur d'authentification secondaire pour se connecter. Configurez-en un ci-dessous pour continuer à utiliser Termix.",
     "none": "Rien à configurer ici ? Demandez à votre administrateur d'installer un plugin de facteur d'authentification secondaire.",
     "signOut": "Se déconnecter"
+  },
+  "never": "jamais",
+  "sessions": {
+    "title": "Sessions et clés",
+    "tab": "Sessions",
+    "current": "Cette session",
+    "meta": "{{type}} | dernière activité {{lastActive}} | connecté le {{created}}",
+    "none": "Aucune session",
+    "end": "Se déconnecter",
+    "ended": "Déconnecté",
+    "endOthers": "Déconnecter les autres sessions",
+    "endOthersConfirm": "Déconnecter vos {{count}} autres sessions ?",
+    "endedOthers": "Vos autres sessions sont déconnectées",
+    "everyone": "Déconnecter tout le monde",
+    "everyoneConfirm": "Déconnecter tous les utilisateurs de ce serveur ?",
+    "everyoneDescription": "Tous les utilisateurs, sauf vous, devront se reconnecter. Les applications de bureau liées à ce serveur devront être relées.",
+    "everyoneKeysConfirm": "Révoquer également toutes les clés API de ce serveur ?",
+    "everyoneKeys": "Révoquer les clés également",
+    "everyoneKeysNo": "Conserver les clés",
+    "everyoneDone": "Tous les utilisateurs sont déconnectés",
+    "failed": "Cela n'a pas fonctionné. Réessayez.",
+    "loadFailed": "Impossible de charger vos sessions et clés."
+  },
+  "keys": {
+    "tab": "Clés API",
+    "none": "Vous n'avez aucune clé API",
+    "full": "accès complet",
+    "noExpiry": "jamais",
+    "meta": "{{prefix}} | dernière utilisation {{lastUsed}} | expire {{expires}}",
+    "revoke": "Révoquer",
+    "revoked": "Clé révoquée",
+    "revokeAll": "Révoquer toutes les clés",
+    "revokeAllConfirm": "Révoquer vos {{count}} clés API ? Les scripts qui les utilisent cesseront de fonctionner.",
+    "revokedAll": "Vos clés API ont été révoquées"
+  },
+  "waits": {
+    "title": "Délai d'attente administrateur",
+    "intro": "Lorsqu'il y a deux administrateurs ou plus, l'ajout d'un nouvel administrateur, la désactivation de la connexion par mot de passe, la désactivation d'un plugin d'authentification ou l'activation d'un plugin avec un accès dangereux déclenche ce délai d'attente. Les autres administrateurs reçoivent une alerte et peuvent l'annuler. Désactiver ou réduire ce délai déclenche également une attente.",
+    "adminOnly": "Seuls les administrateurs peuvent voir ceci.",
+    "loadFailed": "Impossible de charger le délai d'attente administrateur.",
+    "active": "Activé, les modifications attendent {{minutes}} minutes",
+    "onOneAdmin": "Activé, mais ce serveur n'a qu'un seul administrateur, donc aucune attente n'est nécessaire",
+    "off": "Désactivé",
+    "forced": "Défini sur le serveur avec {{name}}.",
+    "minutes": "Minutes",
+    "turnOn": "Activer",
+    "change": "Enregistrer",
+    "turnOff": "Désactiver",
+    "saved": "Enregistré",
+    "savedHeld": "Enregistré. En attente des autres administrateurs.",
+    "failed": "Cela n'a pas fonctionné. Réessayez.",
+    "none": "Aucune modification administrative n'est en attente pour le moment",
+    "meta": "Demandé par {{who}} | s'applique {{runsAt}}",
+    "cancel": "Annuler",
+    "cancelConfirm": "Annuler cette modification ?",
+    "cancelled": "Annulé",
+    "status": {
+      "pending": "En attente",
+      "applying": "En cours d'application",
+      "applied": "Appliqué",
+      "cancelled": "Annulé",
+      "failed": "Échoué"
+    }
   }
 }

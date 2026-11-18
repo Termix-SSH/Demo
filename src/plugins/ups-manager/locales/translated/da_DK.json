@@ -8,7 +8,10 @@
     "viewHistory": "Historik",
     "viewEvents": "Hændelser",
     "viewCommands": "Kommandoer",
-    "viewSources": "Enheder"
+    "viewSources": "Enheder",
+    "refresh": "Live opdatering",
+    "refreshSeconds": "{{seconds}} sekunder",
+    "refreshHint": "Opdaterer kun, mens Oversigt er synlig. UPS'en kan opdatere langsommere. Baggrundspolling og gemte prøver forbliver på 30 sekunder."
   },
   "common": {
     "loading": "Indlæser...",
@@ -47,6 +50,8 @@
     "charge": "Batteriniveau",
     "runtime": "Køretid tilbage",
     "load": "Belastning",
+    "estimatedLoad": "Estimeret UPS-belastning",
+    "estimatedLoadHint": "Udgangswatt / {{watts}} W nominel. {{method}}. Sensorpræcision ikke verificeret; ikke CPU-udnyttelse eller AC-vægforbrug.",
     "nominal": "{{watts}} W nominel",
     "input": "Indgangsspænding",
     "output": "Udgangsspænding",
@@ -59,6 +64,60 @@
     "readAt": "Sidste læsning",
     "ago": "{{time}} siden"
   },
+  "electrical": {
+    "inputDc": "Indgang er DC",
+    "outputDc": "Udgang er DC",
+    "dcHint": "Bekræft det elektriske domæne, før du beregner watt fra spænding og strøm. Dette ændrer ikke nogen UPS-indstilling. Sensorpræcision skal kontrolleres uafhængigt.",
+    "inputCurrent": "Indgangsstrøm",
+    "outputCurrent": "Udgangsstrøm",
+    "batteryCurrent": "Batteristrøm",
+    "inputPower": "Indgangseffekt",
+    "outputPower": "Udgangseffekt",
+    "reported": "Rapporteret reel effekt",
+    "calculated": "Beregnet DC-effekt - sensorpræcision ikke verificeret",
+    "batteryType": "Batterikemi",
+    "chargeLow": "Tærskel for lavt batteriniveau",
+    "chargeWarning": "Tærskel for batteriadvarel",
+    "manufactured": "Batteriets produktionsdato",
+    "driver": "Driver",
+    "driverVersion": "Driver version",
+    "subdriver": "HID-underdriver",
+    "driverState": "Driverstatus",
+    "usb": "USB-leverandør / produkt",
+    "raw": "Avancerede NUT-variable",
+    "search": "Filtrer variablenavne eller værdier",
+    "noVariables": "Ingen matchende variable.",
+    "dcDisclaimer": "Den beregnede DC-udgangseffekt estimerer UPS-belastningen, ikke AC-forbruget fra væggen. Det er ikke nødvendigvis forbruget for én enkelt host. Valider strømmålinger, før du stoler på effekt- eller energiestimater."
+  },
+  "energy": {
+    "period": "Observeret udgangsenergi (valgt periode)",
+    "lifetime": "Observeret udgangsenergi (nuværende æra)",
+    "estimated": "Estimeret ud fra planlagte prøver; ikke en hardwaremåler",
+    "coverage": "Målt dækning",
+    "covered": "Integreret tid",
+    "incomplete": "Ufuldstændige data; manglende tid er ikke estimeret",
+    "complete": "Fuldendt målt dækning",
+    "average": "Gennemsnitlig udgangseffekt (dækket tid)",
+    "peak": "Prøvet udgangstop",
+    "sampledRange": "Prøvet effektområde",
+    "scope": "UPS-udgang, ikke AC-vægstrøm. Periodetotaler dækker de angivne sporingsepoker; behandle ikke forskellige epoker som én fysisk måler.",
+    "resolution": "Nominelt diagramsegment: {{seconds}} sekunder; huller forbliver separate. Hold musen over punkter for absolut tid og tidszone.",
+    "empty": "Energisporing kræver to gyldige planlagte effektmålinger. Ukendte watt forbliver utilgængelige, ikke nul.",
+    "error": "Kunne ikke læse energihistorik.",
+    "bucket": "Observeret udgående energi pr. segment",
+    "samples": "Tilgængelige prøver og kumulativ observeret energi",
+    "tableHelp": "Kun observeret energi summeres. Manglende intervaller udfyldes ikke. Kumulative værdier dækker de angivne epoker.",
+    "time": "Segmentstart (lokal tidszone)",
+    "cumulative": "Kumulativ Wh i valgt periode",
+    "cumulativeChart": "Kumulativ observeret udgående energi (valgt periode)",
+    "epochTotal": "Observeret energi i denne epoke",
+    "unavailable": "Udgående effekt utilgængelig",
+    "epochs": "Separate tracking periods",
+    "started": "Tracking started",
+    "method": "Power method",
+    "chartHelp": "Time-proportional data. Missing intervals and changes of tracking period are not connected. Sampled peaks are not hardware peak measurements. An accessible data table follows the charts.",
+    "correlationBlocked": "CPU/memory correlation is unavailable: Host Metrics needs a public, authorized snapshot service with measurement timestamps. No additional host collection is enabled."
+  },
   "history": {
     "error": "Kunne ikke indlæse historikken.",
     "24h": "24 timer",
@@ -66,7 +125,7 @@
     "30d": "30 dage",
     "empty": "Ikke nok målinger endnu. Termix læser UPS hver 30. sekund.",
     "charge": "Batteriniveau",
-    "load": "Belastning",
+    "load": "Load (device-reported only)",
     "runtime": "Køretid tilbage",
     "voltage": "Spænding"
   },
@@ -113,7 +172,7 @@
     "unreachable": "uopprettelig",
     "saved": "Lagret.",
     "deleteTitle": "Fjern {{name}}?",
-    "deleteText": "Historikken og hendelsene blir også slettet."
+    "deleteText": "Its history, energy totals, tracking periods and events are deleted too."
   },
   "editor": {
     "addTitle": "Legg til UPS",
@@ -172,6 +231,8 @@
     "testFailed": "Kunne ikke læse UPS'en."
   },
   "card": {
+    "estimatedLoad": "{{value}}% estimated UPS load",
+    "dc": "calculated DC, unverified",
     "title": "UPS",
     "empty": "Ingen UPS er opsat. Slå UPS Manager til for en vært og tilføj en enhed.",
     "runtime": "{{time}} tilbage",

@@ -8,7 +8,10 @@
     "viewHistory": "Ajalugu",
     "viewEvents": "Sündmused",
     "viewCommands": "Käsklused",
-    "viewSources": "Seadmed"
+    "viewSources": "Seadmed",
+    "refresh": "Reaalajas värskendamine",
+    "refreshSeconds": "{{seconds}} sekundit",
+    "refreshHint": "Värskendab ainult siis, kui Ülevaade on nähtaval. UPS võib uueneda aeglasemalt. Taustapäringud ja salvestatud näited jäävad 30-sekundise sagedusega."
   },
   "common": {
     "loading": "Laadimine...",
@@ -47,6 +50,8 @@
     "charge": "Aku laeng",
     "runtime": "Järelejäänud tööaeg",
     "load": "Koormus",
+    "estimatedLoad": "UPS-i hinnanguline koormus",
+    "estimatedLoadHint": "Väljundvõimsus / {{watts}} W nimivõimsus. {{method}}. Anduri täpsust ei ole kontrollitud; ei ole CPU kasutus ega vahelduvvoolu tarbimine seinast.",
     "nominal": "{{watts}} W nimivõimsus",
     "input": "Sispinge",
     "output": "Väljundpinge",
@@ -59,6 +64,60 @@
     "readAt": "Viimane lugemine",
     "ago": "{{time}} tagasi"
   },
+  "electrical": {
+    "inputDc": "Sisend on alalisvool",
+    "outputDc": "Väljund on alalisvool",
+    "dcHint": "Kinnitage elektriline valdkond enne voolu ja pinge põhjal võimsuse arvutamist. See ei muuda UPS-i seadeid. Anduri täpsus tuleb kontrollida eraldi.",
+    "inputCurrent": "Sisendvool",
+    "outputCurrent": "Väljundvool",
+    "batteryCurrent": "Aku vool",
+    "inputPower": "Sisendvõimsus",
+    "outputPower": "Väljundvõimsus",
+    "reported": "Teatatud tegelik võimsus",
+    "calculated": "Arvutatud alalisvoolu võimsus – anduri täpsus pole kontrollitud",
+    "batteryType": "Aku keemia",
+    "chargeLow": "Madala laengu lävi",
+    "chargeWarning": "Laenuhoiatuse lävi",
+    "manufactured": "Aku tootmisdate",
+    "driver": "Juhtprogramm",
+    "driverVersion": "Juhi versioon",
+    "subdriver": "HID-aljahi",
+    "driverState": "Juhi olek",
+    "usb": "USB tootja / toode",
+    "raw": "NUTi täpsemad muutujad",
+    "search": "Muutujate nimede või väärtuste filtreerimine",
+    "noVariables": "Ühtegi sobivat muutujat ei leitud.",
+    "dcDisclaimer": "Arvutatud alalisvoolu väljundvõimsus hindab UPS-i koormust, mitte vahelduvvoolu tarbimist seinast. See ei pruugi vastata ühe serveri tarbimisele. Enne võimsuse või energiaseadmete usaldamist kontrollige voolu lugemisi."
+  },
+  "energy": {
+    "period": "Mõõdetud väljundenergia (valitud periood)",
+    "lifetime": "Mõõdetud väljundenergia (praegune periood)",
+    "estimated": "Hinnanguline väärtus planeeritud proovide põhjal; ei ole riistvaraline mõõteriist",
+    "coverage": "Mõõdetud katvus",
+    "covered": "Integreeritud aeg",
+    "incomplete": "Ebatäielikud andmed; puuduvat aega ei hinnata",
+    "complete": "Täielik mõõdetud katvus",
+    "average": "Keskmine väljundvõimsus (kattega aeg)",
+    "peak": "Proovitud väljundtip",
+    "sampledRange": "Proovitud võimsusvahemik",
+    "scope": "UPS väljund, mitte vahelduvvoolu seinavõrgu energia. Perioodi kogused hõlmavad loetletud jälgimise ajaperioode; ei tohi käsitleda erinevaid perioode kui ühte füüsilist mõõteriista.",
+    "resolution": "Nimeline graafiku segment: {{seconds}} sekundit; lüngad jäävad eraldi. Hõljuge punktide kohal, et näha absoluutset aega ja ajavööndit.",
+    "empty": "Energia jälgimine vajab kahte kehtivat ajastatud võimsuslugemist. Teadmata väärtused jäävad saadamatuteks, mitte nullideks.",
+    "error": "Energia ajalugu ei õnnestunud lugeda.",
+    "bucket": "Vaadeldud väljundenergia segmenti kohta",
+    "samples": "Saadaval olevad proovid ja kumulatiivne vaadeldud energia",
+    "tableHelp": "Liidetakse ainult vaadeldud energia. Puuduvad intervallid ei täideta. Kumulatiivsed väärtused hõlmavad loetletud ajaperioode.",
+    "time": "Segmendi algus (kohalik ajavöönd)",
+    "cumulative": "Kumulatiivne Wh valitud perioodil",
+    "cumulativeChart": "Kumulatiivne vaadeldud väljundenergia (valitud periood)",
+    "epochTotal": "Vaadeldud energia selles perioodis",
+    "unavailable": "Väljundvõimsus pole saadaval",
+    "epochs": "Eraldi jälgimisperioodid",
+    "started": "Jälgimine alustatud",
+    "method": "Võimsuse meetod",
+    "chartHelp": "Aja suhtes proportsionaalsed andmed. Puuduvad intervallid ja jälgimisperioodi muutused ei ole ühendatud. Valendatud tipud ei ole riistvaralised tippmõõtmised. Diagrammidele järgneb ligipääsetav andmetabel.",
+    "correlationBlocked": "CPU/mälu korrelatsioon pole saadaval: Host Metrics vajab avalikku, autoriseeritud hetktõmmise teenust mõõtmiste ajatemplitega. Lisahostide kogumist ei ole lubatud."
+  },
   "history": {
     "error": "Ajalugu ei õnnestunud laadida.",
     "24h": "24 tundi",
@@ -66,7 +125,7 @@
     "30d": "30 päeva",
     "empty": "Mõõtmisi on veel liiga vähe. Termix loeb UPS-i iga 30 sekundi tagant.",
     "charge": "Aku laeng",
-    "load": "Koormus",
+    "load": "Koormus (ainult seadme poolt teatatud)",
     "runtime": "Järelejäänud tööaeg",
     "voltage": "Pinge"
   },
@@ -113,7 +172,7 @@
     "unreachable": "saavutamatu",
     "saved": "Salvestatud.",
     "deleteTitle": "Kas eemaldada {{name}}?",
-    "deleteText": "Ka selle ajalugu ja sündmused kustutatakse."
+    "deleteText": "Ka selle ajalugu, energia kogusummad, jälgimisperioodid ja sündmused kustutatakse."
   },
   "editor": {
     "addTitle": "Lisa UPS",
@@ -172,6 +231,8 @@
     "testFailed": "UPS-i andmeid ei õnnestunud lugeda."
   },
   "card": {
+    "estimatedLoad": "{{value}}% hinnanguline UPS-i koormus",
+    "dc": "arvutatud DC, kinnitamata",
     "title": "UPS",
     "empty": "UPS-eid pole seadistatud. Lülita UPS-i haldur hostis sisse ja lisa seade.",
     "runtime": "{{time}} järele",

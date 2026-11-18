@@ -18,11 +18,14 @@ import {
   type UserPreferences,
   usePluginDocsUrl,
   docsUrl,
+  useRailItems,
+  usePermissions,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
   Bug,
   ChevronDown,
+  LayoutTemplate,
   ExternalLink,
   Search,
   Settings as SettingsIcon,
@@ -38,6 +41,8 @@ import { UpdatesSettings } from "./UpdatesSettings";
 import { HostListSettings } from "./HostListSettings";
 import { CredentialListSettings } from "./CredentialListSettings";
 import { SettingsEmbedContext } from "./settings-embed";
+import { InterfaceDefaultsSettings } from "./InterfaceDefaultsSettings";
+import { useRailPins } from "../rail-pins";
 import { useSettingsPageFilter } from "./page-filter";
 import {
   CORE_SETTINGS_PAGES,
@@ -106,6 +111,12 @@ export function SettingsTab({
   onOpenHostTab,
 }: SettingsTabProps) {
   const { t } = useTranslation();
+  const { has } = usePermissions();
+  // Someone with a helpdesk or auditor role sees just those admin pages.
+  const delegatedAdmin =
+    has("admin.users.view") ||
+    has("admin.sessions.manage") ||
+    has("admin.audit.view");
   const userFeatures = useFeatureSettings("user");
   const adminFeatures = useFeatureSettings("admin");
   const [query, setQuery] = useState("");
@@ -139,13 +150,26 @@ export function SettingsTab({
     return visibleSettingsPages(
       [
         ...CORE_SETTINGS_PAGES,
+        {
+          id: "interface-defaults",
+          band: "instance" as const,
+          labelKey: "settings.interfaceDefaults.title",
+          icon: LayoutTemplate,
+          admin: true,
+          searchKeys: [
+            "settings.interfaceDefaults.intro",
+            "settings.interfaceDefaults.look",
+            "settings.interfaceDefaults.apps",
+            "settings.interfaceDefaults.lock",
+          ],
+        },
         ...[...plugins.values()].sort((a, b) =>
           (a.label ?? "").localeCompare(b.label ?? ""),
         ),
       ],
-      { isAdmin, isElectron: isElectron() },
+      { isAdmin, isElectron: isElectron(), has },
     );
-  }, [userFeatures, adminFeatures, isAdmin, t]);
+  }, [userFeatures, adminFeatures, isAdmin, has, t]);
 
   const [current, setCurrent] = useState(section ?? "account");
   useEffect(() => {
@@ -183,6 +207,15 @@ export function SettingsTab({
   const pageHasMatches = useSettingsPageFilter(pageRef, pageQuery, page.id);
   const hits = searchSettingsPages(pages, query, (key) => t(key));
   const pageLabel = (p: SettingsPage) => p.label ?? t(p.labelKey);
+
+  // Apps on the rail come first, the rest follow under their own heading.
+  const railItems = useRailItems();
+  const railPins = useRailPins();
+  const railPluginIds = new Set(
+    railItems
+      .filter((item) => item.pluginId && railPins.isPinned(item))
+      .map((item) => item.pluginId as string),
+  );
 
   const go = (id: string) => {
     setCurrent(id);
@@ -232,7 +265,15 @@ export function SettingsTab({
         </p>
       )}
       {SETTINGS_BAND_ORDER.map((band) => {
-        const items = hits.filter((hit) => hit.page.band === band);
+        const all = hits.filter((hit) => hit.page.band === band);
+        // Split only when plugin apps actually leave the rail.
+        const split = band === "plugins" && !query.trim() && railPins.appsMenu;
+        const onRail = (hit: (typeof all)[number]) =>
+          !!hit.page.pluginId && railPluginIds.has(hit.page.pluginId);
+        const items = split
+          ? [...all.filter(onRail), ...all.filter((hit) => !onRail(hit))]
+          : all;
+        const firstOther = split ? items.findIndex((hit) => !onRail(hit)) : -1;
         const reportBug =
           band === "you" &&
           (!query.trim() ||
@@ -243,13 +284,25 @@ export function SettingsTab({
         return (
           <div key={band} className="flex flex-col">
             <GroupHeading
-              title={t(BAND_LABEL[band])}
+              title={
+                split && firstOther !== 0
+                  ? t("settings.yourApps")
+                  : t(BAND_LABEL[band])
+              }
               className="px-2.5 pb-1.5"
             />
-            {items.map(({ page: item, match }) => {
+            {items.map(({ page: item, match }, index) => {
               const on = item.id === page.id;
               const Icon = item.icon;
-              return (
+              const otherHeading = index === firstOther && firstOther > 0 && (
+                <GroupHeading
+                  key="other-apps"
+                  title={t("settings.otherApps")}
+                  className="px-2.5 pb-1.5 pt-3"
+                />
+              );
+              return [
+                otherHeading,
                 <button
                   key={item.id}
                   type="button"
@@ -284,8 +337,8 @@ export function SettingsTab({
                       {match}
                     </span>
                   )}
-                </button>
-              );
+                </button>,
+              ];
             })}
             {reportBug && (
               <a
@@ -374,7 +427,7 @@ export function SettingsTab({
                       onOpenSettingsPage={go}
                     />
                   </div>
-                  {isAdmin && (
+                  {(isAdmin || delegatedAdmin) && (
                     <div className={showAdmin ? "contents" : "hidden"}>
                       <AdminSettingsPanel
                         section={page.adminSection ?? ("__none__" as never)}
@@ -383,6 +436,9 @@ export function SettingsTab({
                     </div>
                   )}
                 </SettingsEmbedContext.Provider>
+                {page.id === "interface-defaults" && (
+                  <InterfaceDefaultsSettings />
+                )}
                 {page.id === "keybindings" && <KeybindingsSettings />}
                 {page.id === "updates" && <UpdatesSettings isAdmin={isAdmin} />}
                 {page.id === "host-list" && <HostListSettings />}

@@ -36,6 +36,7 @@
     "checkNow": "Verifica ora"
   },
   "nav": {
+    "theme": "Tema",
     "copyPassword": "Copia password",
     "copySudoPassword": "Copia password sudo",
     "passwordCopied": "Password copiata negli appunti",
@@ -72,7 +73,15 @@
     "mobileNavigation": "Navigazione",
     "allTabs": "Tutte le schede",
     "hideTabBar": "Nascondi barra delle schede",
-    "showTabBar": "Mostra barra delle schede"
+    "showTabBar": "Mostra barra delle schede",
+    "allApps": "Tutte le app",
+    "findApp": "Cerca un'app",
+    "pinToRail": "Fissa alla barra laterale",
+    "unpinFromRail": "Rimuovi dalla barra laterale",
+    "appSettings": "Impostazioni app",
+    "allAppsHint": "Fissa quelle che usi. Fai clic destro su un'app per le sue impostazioni.",
+    "allAppsLockedHint": "L'amministratore sceglie le app nella tua barra laterale.",
+    "viewMenu": "Visualizza"
   },
   "commandPalette": {
     "searchPlaceholder": "Cerca host, comandi o impostazioni...",
@@ -171,7 +180,8 @@
     "dragToReorder": "Trascina i riquadri per spostarli e i bordi per ridimensionarli",
     "clearActivityConfirm": "Cancellare l'attività recente?",
     "resetConfirm": "Ripristinare la dashboard al layout predefinito?",
-    "clearFailed": "Impossibile cancellare l'attività recente"
+    "clearFailed": "Impossibile cancellare l'attività recente",
+    "help": "Aiuto"
   },
   "admin": {
     "sectionGeneral": "Generale",
@@ -237,6 +247,9 @@
     "credentialStorage": "Consenti il salvataggio di password e chiavi",
     "credentialStorageOff": "Il salvataggio di password e chiavi è disattivato su questo server. Lasciali vuoti e Termix ti chiederà i dati quando ti connetti.",
     "credentialStorageDesc": "Disattivato: nessuno può salvare una password o una chiave privata su un host o su una credenziale, e Termix li richiederà durante la connessione. Le credenziali già salvate rimangono fino a quando non vengono rimosse.",
+    "hostKeyTrust": "Fidati delle chiavi host nuove senza richiesta di conferma",
+    "hostKeyTrustDesc": "Quando un plugin, una pianificazione o l'API si connette a un host la cui chiave non è mai stata verificata, salva quella chiave e connettiti. Se disattivato, queste connessioni vengono rifiutate finché qualcuno non apre un terminale verso l'host e ne accetta la chiave.",
+    "hostKeyTrustFailed": "Impossibile aggiornare l'impostazione della chiave host",
     "secondFactorAfterExternalLogin": "Richiedi un secondo fattore dopo l'accesso esterno (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Se disattivato, il secondo fattore registrato viene richiesto solo dopo l'accesso con password e altri metodi locali, come prima. Se attivato, viene richiesto dopo ogni metodo di accesso, inclusi SSO e LDAP.",
     "allowPasswordReset": "Consenti reset password",
@@ -492,7 +505,93 @@
     "revokeSession": "Disconnetti",
     "deleteRoleConfirm": "Eliminare il ruolo {{name}}?",
     "revokeKeyConfirm": "Revocare la chiave API {{name}}?",
-    "revokeKey": "Revoca"
+    "revokeKey": "Revoca",
+    "apiKeyScopeReadAll": "Sola lettura, tutto ciò che l'utente può vedere",
+    "apiKeyNeverExpires": "Non scade mai",
+    "apiKeyExpiryHint": "Se lasciato vuoto, la chiave è valida per 90 giorni.",
+    "changeHeld": "Questa modifica viene mantenuta per {{minutes}} minuti in modo che gli altri amministratori possano vederla.",
+    "userStatusFilter": "Stato account",
+    "userStatusAll": "Tutti gli account",
+    "userStatusActive": "Attivo",
+    "userStatusDisabled": "Disattivato",
+    "userStatusPending": "In attesa di approvazione",
+    "disabledBadge": "Off",
+    "pendingBadge": "In attesa",
+    "accountStatusTitle": "Stato dell'account",
+    "accountStatusActive": "Questo account può effettuare l'accesso.",
+    "accountStatusDisabled": "Questo account è disattivato. Non può effettuare l'accesso e le sue chiavi API non funzionano.",
+    "accountStatusPending": "Questo account è in attesa di approvazione e non può ancora effettuare l'accesso.",
+    "lastLogin": "Ultimo accesso {{time}}",
+    "disableUser": "Disattiva account",
+    "enableUser": "Attiva account",
+    "approveUser": "Approva",
+    "disableUserConfirm": "Disattivare {{username}}? L'utente verrà disconnesso ovunque e non potrà accedere finché non riattiverai l'account.",
+    "userDisabled": "{{username}} è disattivato",
+    "userEnabled": "{{username}} è attivato",
+    "userApproved": "{{username}} è approvato",
+    "userStatusFailed": "Impossibile modificare l'account",
+    "profileTitle": "Nome e email",
+    "displayName": "Nome visualizzato",
+    "displayNamePlaceholder": "Nome visualizzato",
+    "email": "Email",
+    "emailPlaceholder": "Email",
+    "profileSaved": "Salvato",
+    "profileSaveFailed": "Impossibile salvare",
+    "manageTabAccess": "Accesso",
+    "sectionInvites": "Link di invito",
+    "invitesDescription": "Link che permettono a qualcuno di creare un account, anche con l'iscrizione disattivata.",
+    "invitesEmpty": "Nessun link di invito ancora",
+    "inviteCreate": "Nuovo invito",
+    "inviteCreateFailed": "Impossibile creare l'invito",
+    "inviteCreatedNotice": "Copia questo link ora. Non verrà più mostrato.",
+    "inviteCopy": "Copia link",
+    "inviteCopied": "Link copiato",
+    "inviteNotePlaceholder": "Nota, ad esempio a chi è destinato",
+    "inviteRole": "Ruolo",
+    "inviteNoRole": "Nessun ruolo aggiuntivo",
+    "inviteExpires": "Scade",
+    "inviteExpiresIn_one": "Scade tra {{count}} giorno",
+    "inviteExpiresIn_many": "Scade tra {{count}} giorni",
+    "inviteExpiresIn_other": "Scade tra {{count}} giorni",
+    "inviteUses": "Utilizzi",
+    "inviteMakeAdmin": "Rendi amministratore",
+    "inviteUntitled": "Invita",
+    "inviteUsesOf": "{{uses}} di {{max}} utilizzati",
+    "inviteState_active": "Attivo",
+    "inviteState_revoked": "Revocato",
+    "inviteState_expired": "Scaduto",
+    "inviteState_used": "Esaurito",
+    "inviteRevoke": "Revoca",
+    "inviteRevokeConfirm": "Revocare questo link di invito?",
+    "inviteRevokeFailed": "Impossibile revocare l'invito",
+    "sectionAccess": "Verifica accessi",
+    "accessCount_one": "{{count}} condivisione",
+    "accessCount_many": "{{count}} condivisioni",
+    "accessCount_other": "{{count}} condivisioni",
+    "accessExport": "Esporta CSV",
+    "accessExportFailed": "Esportazione non riuscita",
+    "accessKind": "Tipo",
+    "accessKindAll": "Tutto",
+    "accessKind_host": "Host",
+    "accessKind_folder": "Cartella",
+    "accessKind_credential": "Credenziale",
+    "accessUser": "Utente",
+    "accessAnyUser": "Qualsiasi utente",
+    "accessRole": "Ruolo",
+    "accessAnyRole": "Qualsiasi ruolo",
+    "accessToUser": "a {{name}}",
+    "accessToRole": "al ruolo {{name}}",
+    "accessOwner": "proprietario {{name}}",
+    "accessGrantedBy": "condiviso da {{name}}",
+    "accessExpires": "scade il {{date}}",
+    "accessLastUsed": "ultimo utilizzo {{date}}",
+    "accessEmpty": "Nessuna risorsa condivisa",
+    "sectionAccountSettings": "Account e accessi",
+    "adminHostBypass": "Gli amministratori possono aprire gli host di tutti gli utenti",
+    "adminHostBypassDesc": "Quando disattivata, gli amministratori vedono solo gli host condivisi con loro e non possono accedere ai dati di altri utenti dalla pagina utente. Se attivata, attende il tempo di raffreddamento dell'amministratore, se impostato.",
+    "signupApproval": "Approva nuovi account SSO",
+    "signupApprovalDesc": "Chi accede per la prima volta tramite SSO o LDAP deve attendere l'approvazione dell'amministratore per l'account.",
+    "updateSettingFailed": "Impossibile salvare l'impostazione"
   },
   "newUi": {
     "sidebar": {
@@ -515,7 +614,8 @@
         "domainPlaceholder": "opzionale",
         "connectToAction": "Connetti a {{name}}",
         "sshProtocol": "SSH",
-        "noTarget": "Nessun componente installato può connettersi a questo tipo di host"
+        "noTarget": "Nessun componente installato può connettersi a questo tipo di host",
+        "loadingTargets": "Caricamento metodi di connessione..."
       },
       "keybindings": {
         "description": "Associa tasti ad azioni nel terminale e nell'app, oppure modifica le scorciatoie predefinite.",
@@ -569,6 +669,9 @@
         "desktopProfileDescription": "Questo profilo risiede su questo dispositivo e effettua l'accesso in modo indipendente. Collegalo a un server Termix per utilizzare gli stessi host e le stesse impostazioni su ogni dispositivo.",
         "sectionInterface": "Interfaccia",
         "interfacePresetDesc": "Quanto dettaglio mostra Termix. Tutte le funzionalità rimangono disponibili.",
+        "closeToTray": "Chiudi nella barra delle applicazioni",
+        "closeToTrayDesc": "Chiudendo la finestra, Termix rimane attivo nella barra delle applicazioni, mantenendo aperte le connessioni. Disattivalo per uscire completamente quando chiudi la finestra.",
+        "closeToTraySaveFailed": "Impossibile salvare l'impostazione",
         "presetClearOverrides": "Ripristina tutto",
         "presetOverridesTitle": "Personalizzati",
         "presetRevertArea": "Annulla",
@@ -703,7 +806,11 @@
         "tryBetaDescription": "Unisciti al programma beta in Aggiornamenti.",
         "sendBetaFeedback": "Invia feedback sulla beta",
         "openUpdates": "Aggiornamenti",
-        "hexLabel": "esadecimale"
+        "hexLabel": "esadecimale",
+        "displayNameLabel": "Nome visualizzato",
+        "emailLabel": "Email",
+        "profileSaved": "Salvato",
+        "profileSaveFailed": "Impossibile salvare"
       }
     }
   },
@@ -735,6 +842,10 @@
     "apiKeys": "Chiavi API",
     "data": "Dati e sincronizzazione",
     "interface": "Interfaccia",
+    "hostList": "Elenco host",
+    "credentialList": "Elenco credenziali",
+    "openHostList": "Impostazioni elenco host",
+    "openCredentialList": "Impostazioni elenco credenziali",
     "appearance": "Aspetto",
     "keybindings": "Scorciatoie da tastiera",
     "adminGeneral": "Generali",
@@ -794,6 +905,36 @@
       "hostRows": {
         "label": "Opzioni riga host"
       }
+    },
+    "adminAccess": "Verifica accessi",
+    "yourApps": "Le tue app",
+    "otherApps": "Altre app",
+    "hostForm": {
+      "label": "Modulo di aggiunta host",
+      "description": "Semplice mostra indirizzo, accesso, cartella e tag. Completo mostra tutte le opzioni. Puoi anche cambiare modalità direttamente nel modulo.",
+      "simple": "Semplice",
+      "full": "Completo"
+    },
+    "interfaceDefaults": {
+      "title": "Impostazioni predefinite dell'interfaccia",
+      "intro": "Scegli cosa vedranno gli utenti al primo accesso. Potranno comunque modificare la propria visualizzazione, a meno che tu non la blocchi.",
+      "setFor": "Applica a",
+      "everyone": "Tutti",
+      "inherits": "Utilizza le impostazioni di Tutti finché non ne modifichi qualcuna",
+      "useEveryone": "Usa impostazioni di Tutti",
+      "look": "Aspetto iniziale",
+      "lookHint": "Semplice mostra il minimo. Avanzato mostra tutti i pulsanti.",
+      "simple": "Semplice",
+      "balanced": "Bilanciato",
+      "advanced": "Avanzato",
+      "lock": "Blocca",
+      "lockHint": "Le persone con questo ruolo non possono modificare l'aspetto o le app nella barra laterale.",
+      "apps": "App nella barra laterale",
+      "appsHint": "Le altre rimangono in Tutte le app e nella ricerca.",
+      "appsAdvanced": "Avanzato mostra tutte le app nella barra laterale.",
+      "saved": "Impostazioni predefinite dell'interfaccia salvate",
+      "saveFailed": "Impossibile salvare le impostazioni predefinite dell'interfaccia",
+      "lockedNote": "Il tuo amministratore ha scelto il tuo aspetto, quindi non può essere modificato qui."
     }
   },
   "hostDefaults": {
@@ -873,12 +1014,19 @@
     "pickHint": "Tutto ciò che riguarda una connessione si trova qui, raggruppato per facilitarne la ricerca.",
     "clearChoice": "Cancella",
     "proxyPathTarget": "destinazione",
-    "hostCopyName": "{{name}} (copia)"
+    "hostCopyName": "{{name}} (copia)",
+    "moreOptions": "Altre opzioni",
+    "moreOptionsHint": "Proxy, host di salto, port knocking, keepalive, controlli di stato e l'interruttore on/off per ogni app. La maggior parte degli host non ne ha bisogno.",
+    "folderAndTags": "Cartella, tag e note"
   },
   "permissions": {
     "branding": {
       "title": "Modifica branding",
       "description": "Imposta il nome dell'app, lo slogan e il logo visualizzati a tutti."
+    },
+    "interfaceDefaults": {
+      "title": "Imposta impostazioni predefinite dell'interfaccia",
+      "description": "Scegli l'aspetto e le app nella barra laterale con cui le persone iniziano, per tutti o per ogni ruolo."
     }
   },
   "onboarding": {
@@ -913,6 +1061,8 @@
     "clickAuto": "Il primo metodo di connessione",
     "useDefaultNamed": "Predefinito ({{name}})",
     "useDefaultButtons": "Usa i pulsanti predefiniti",
-    "perHostHint": "Per modificarli per un singolo host, usa Pulsanti sulle righe degli host nel suo menu."
+    "perHostHint": "Per modificarli per un singolo host, usa Pulsanti sulle righe degli host nel suo menu.",
+    "moreTools": "Altri strumenti",
+    "more": "Altro"
   }
 }

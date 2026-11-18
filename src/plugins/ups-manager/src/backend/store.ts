@@ -24,6 +24,8 @@ export interface SourceRow {
   lowRuntimeMin: number;
   alerts: boolean;
   enabled: boolean;
+  inputDc?: boolean;
+  outputDc?: boolean;
 }
 
 export interface Store {
@@ -44,12 +46,15 @@ export interface Store {
   openSecrets: (row: SourceRow) => Promise<SourceSecrets>;
   addEvent: (sourceId: number, type: string, text: string) => Promise<void>;
   events: (sourceId: number, limit?: number) => Promise<UpsEvent[]>;
+  readEnergy: (sourceId: number) => Promise<string | null>;
+  writeEnergy: (sourceId: number, payload: string) => Promise<void>;
 }
 
 export function createStore(
   ctx: PluginContext,
   sources: Table,
   events: Table,
+  energyStates: Table,
 ): Store {
   const db = () => ctx.db.client<Drizzle>();
 
@@ -105,6 +110,8 @@ export function createStore(
         lowRuntimeMin: source.lowRuntimeMin,
         alerts: source.alerts,
         enabled: source.enabled,
+        inputDc: source.inputDc,
+        outputDc: source.outputDc,
       });
       await ctx.db.persist();
       const rows = (await client
@@ -133,6 +140,8 @@ export function createStore(
           lowRuntimeMin: source.lowRuntimeMin,
           alerts: source.alerts,
           enabled: source.enabled,
+          inputDc: source.inputDc,
+          outputDc: source.outputDc,
         })
         .where(eq(sources.id, row.id));
       await ctx.db.persist();
@@ -141,9 +150,36 @@ export function createStore(
       const client = await db();
       await client.delete(events).where(eq(events.sourceId, id));
       await client.delete(sources).where(eq(sources.id, id));
+      await client.delete(energyStates).where(eq(energyStates.sourceId, id));
       await ctx.db.persist();
     },
     openSecrets: open,
+    async readEnergy(sourceId) {
+      const rows = (await (
+        await db()
+      )
+        .select()
+        .from(energyStates)
+        .where(eq(energyStates.sourceId, sourceId))) as Array<{
+        payload: string;
+      }>;
+      return rows[0]?.payload ?? null;
+    },
+    async writeEnergy(sourceId, payload) {
+      const client = await db();
+      const existing = await store.readEnergy(sourceId);
+      if (existing === null) {
+        await client.insert(energyStates).values({ sourceId, payload });
+      } else {
+        await client
+          .update(energyStates)
+          .set({ payload })
+          .where(eq(energyStates.sourceId, sourceId));
+      }
+      // Retrying writes the same complete document, never adds the delta twice.
+      // Lazy: this runs every 30 seconds per UPS.
+      await ctx.db.persist({ lazy: true });
+    },
     async addEvent(sourceId, type, text) {
       const client = await db();
       await client.insert(events).values({

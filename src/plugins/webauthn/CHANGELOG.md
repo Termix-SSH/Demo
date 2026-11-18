@@ -6,6 +6,7 @@
 
 - On Termix 26.11.2 and later the Passkeys button and security key step are drawn by Termix, and the settings screens run in a sandboxed frame
 - Runs in its own process on Termix 26.11.2 and later, with no access to the server beyond what Termix allows it
+- Form fields use the same background as the rest of Termix
 
 ## 1.3.0
 

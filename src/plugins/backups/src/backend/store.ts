@@ -48,6 +48,7 @@ export interface JobRow {
   keep: KeepPolicy;
   alerts: JobAlerts;
   oneFileSystem: boolean;
+  backupOptions: string;
   lastStatus: RunStatus | null;
   lastRunAt: string | null;
   lastSuccessAt: string | null;
@@ -129,6 +130,7 @@ function toJob(row: any): JobRow {
       ...parse<Partial<JobAlerts>>(row.alerts, {}),
     },
     oneFileSystem: Boolean(row.oneFileSystem),
+    backupOptions: row.backupOptions ?? "",
     lastStatus: row.lastStatus ?? null,
     lastRunAt: iso(row.lastRunAt),
     lastSuccessAt: iso(row.lastSuccessAt),

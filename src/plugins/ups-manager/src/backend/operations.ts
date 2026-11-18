@@ -99,6 +99,11 @@ export function registerOperations(
         charge: r.reading?.chargePct ?? null,
         runtime: r.reading?.runtimeSec ?? null,
         load: r.reading?.loadPct ?? null,
+        loadOrigin:
+          r.reading?.loadOrigin ??
+          (r.reading?.loadPct !== null && r.reading?.loadPct !== undefined
+            ? "reported"
+            : "unavailable"),
       }));
       return { summary: `${rows.length} UPS`, data: { rows } };
     },

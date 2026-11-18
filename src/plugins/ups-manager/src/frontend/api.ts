@@ -1,6 +1,7 @@
 import type { TermixApp } from "@termix-ssh/plugin-sdk/frontend";
 import type {
   Detect,
+  EnergyHistory,
   HistoryPoint,
   HistoryRange,
   HostSummary,
@@ -94,6 +95,18 @@ export async function getHistory(
       { params: { range } },
     )
   ).data.points;
+}
+
+export async function getEnergy(
+  host: number,
+  id: number,
+  range: HistoryRange,
+): Promise<EnergyHistory> {
+  return (
+    await api().get<EnergyHistory>(`/${host}/sources/${id}/energy`, {
+      params: { range },
+    })
+  ).data;
 }
 
 export async function getEvents(host: number, id: number): Promise<UpsEvent[]> {

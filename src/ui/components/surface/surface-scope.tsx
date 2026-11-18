@@ -150,6 +150,7 @@ export function SurfaceScope({
   return (
     <ScopeContext.Provider value={value}>
       <div
+        data-surface={kind}
         className={cn(
           "relative flex min-h-0 min-w-0 flex-1 flex-col",
           className,
@@ -178,6 +179,25 @@ export function SurfaceScope({
 /** Which kind of surface this code renders in, or null outside any. */
 export function useSurfaceKind(): SurfaceKind | null {
   return useContext(ScopeContext)?.kind ?? null;
+}
+
+/**
+ * Opens a view on the surface without drawing into it, for a plugin frame
+ * that grows over the surface itself. Null outside any surface.
+ */
+export function useSurfaceCover(): {
+  overlay: HTMLElement | null;
+  openView: (id: string, width: EditingWidth) => void;
+  closeView: (id: string) => void;
+} | null {
+  const scope = useContext(ScopeContext);
+  const overlay = scope?.overlay ?? null;
+  const openView = scope?.openView;
+  const closeView = scope?.closeView;
+  return useMemo(
+    () => (openView && closeView ? { overlay, openView, closeView } : null),
+    [overlay, openView, closeView],
+  );
 }
 
 /** Closes the surface this code renders in, or null when it can't be closed. */

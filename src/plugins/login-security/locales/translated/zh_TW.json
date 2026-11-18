@@ -46,6 +46,10 @@
       "connectFactorMinutes": {
         "label": "再次要求前的分鐘數",
         "description": "輸入後，使用者可在這段時間內連線至任何主機。登出會提前終止此狀態。"
+      },
+      "newDeviceNotice": {
+        "label": "新裝置警示",
+        "description": "當有人從未見過的裝置登入其帳戶時，向其發送警示。每位使用者可自行關閉此功能。"
       }
     },
     "host": {
@@ -53,11 +57,18 @@
         "label": "連線前要求第二重驗證",
         "description": "當「登入安全性」設定為「僅限已標記的主機」時使用。"
       }
+    },
+    "user": {
+      "newDeviceNotice": {
+        "label": "在新裝置上警示我",
+        "description": "當有人從未見過的裝置登入您的帳戶時，您將收到警示。"
+      }
     }
   },
   "verify": {
     "title": "驗證第二重驗證",
     "intro": "請輸入您的第二重驗證以連線至此主機。",
+    "start": "驗證",
     "done": "已驗證",
     "retry": "返回主機並重新連線。",
     "failed": "驗證失敗，請再試一次。",
@@ -74,5 +85,69 @@
     "body": "您的管理員要求使用第二因素驗證才能登入。請在下方完成設定，以繼續使用 Termix。",
     "none": "這裡沒有可設定的項目？請洽詢您的管理員安裝第二因素驗證外掛。",
     "signOut": "登出"
+  },
+  "never": "永不",
+  "sessions": {
+    "title": "工作階段與金鑰",
+    "tab": "工作階段",
+    "current": "目前工作階段",
+    "meta": "{{type}} | 上次活動 {{lastActive}} | 登入時間 {{created}}",
+    "none": "沒有工作階段",
+    "end": "登出",
+    "ended": "已登出",
+    "endOthers": "登出其他工作階段",
+    "endOthersConfirm": "要登出您的 {{count}} 個其他工作階段嗎？",
+    "endedOthers": "您的其他工作階段已登出",
+    "everyone": "登出所有使用者",
+    "everyoneConfirm": "要登出此伺服器上的所有使用者嗎？",
+    "everyoneDescription": "除了您之外的所有人都必須重新登入。連結到此伺服器的桌面應用程式必須重新連結。",
+    "everyoneKeysConfirm": "也要撤銷此伺服器上的所有 API 金鑰嗎？",
+    "everyoneKeys": "同時撤銷金鑰",
+    "everyoneKeysNo": "保留金鑰",
+    "everyoneDone": "所有使用者已登出",
+    "failed": "操作失敗，請再試一次。",
+    "loadFailed": "無法載入您的工作階段與金鑰。"
+  },
+  "keys": {
+    "tab": "API 金鑰",
+    "none": "您沒有任何 API 金鑰",
+    "full": "完整存取權",
+    "noExpiry": "永不",
+    "meta": "{{prefix}} | 上次使用 {{lastUsed}} | 過期時間 {{expires}}",
+    "revoke": "撤銷",
+    "revoked": "金鑰已撤銷",
+    "revokeAll": "撤銷所有金鑰",
+    "revokeAllConfirm": "要撤銷您的 {{count}} 個 API 金鑰嗎？使用這些金鑰的腳本將停止運作。",
+    "revokedAll": "您的 API 金鑰已撤銷"
+  },
+  "waits": {
+    "title": "管理員等待",
+    "intro": "當有兩位或以上管理員時，新增管理員、關閉密碼登入、關閉登入外掛程式，或開啟具有危險存取權的外掛程式，都會等待這段時間。其他管理員會收到警示並可以取消。關閉此功能或縮短等待時間也會觸發等待。",
+    "adminOnly": "僅管理員可見。",
+    "loadFailed": "無法載入管理員等待設定。",
+    "active": "已開啟，變更將等待 {{minutes}} 分鐘",
+    "onOneAdmin": "已開啟，但此伺服器只有一位管理員，因此無需等待",
+    "off": "已關閉",
+    "admins": "{{count}} 位管理員",
+    "forced": "在伺服器上以 {{name}} 設定。",
+    "minutes": "分鐘",
+    "turnOn": "開啟",
+    "change": "儲存",
+    "turnOff": "關閉",
+    "saved": "已儲存",
+    "savedHeld": "已儲存。需先等待其他管理員確認。",
+    "failed": "操作失敗，請再試一次。",
+    "none": "尚無管理員變更等待確認",
+    "meta": "由 {{who}} 提出 | 將於 {{runsAt}} 生效",
+    "cancel": "取消",
+    "cancelConfirm": "要取消此變更嗎？",
+    "cancelled": "已取消",
+    "status": {
+      "pending": "等待中",
+      "applying": "套用中",
+      "applied": "已套用",
+      "cancelled": "已取消",
+      "failed": "失敗"
+    }
   }
 }

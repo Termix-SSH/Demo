@@ -640,7 +640,7 @@ export function registerRoutes(
       const response = await axios({
         method: req.method,
         url: `http://127.0.0.1:${session.callbackPort}${targetPath}`,
-        headers: { ...req.headers, host: `127.0.0.1:${session.callbackPort}` },
+        headers: upstreamHeaders(req, session.callbackPort),
         data: req.body,
         timeout: 10000,
         validateStatus: () => true,

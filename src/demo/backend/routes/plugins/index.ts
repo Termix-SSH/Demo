@@ -17,6 +17,7 @@ import "./termix-identity";
 import "./remote-desktop";
 import "./misc";
 import "./access";
+import "./scim";
 import "./session-sharing";
 import "./ai";
 import "./ai-ops";

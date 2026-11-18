@@ -185,6 +185,7 @@ export function registerRoutes(
       keep: input.keep,
       alerts: input.alerts,
       oneFileSystem: input.oneFileSystem,
+      backupOptions: input.backupOptions,
       nextRunAt: nextRun(input),
       updatedBy: userId,
     };
@@ -1071,6 +1072,38 @@ export function registerRoutes(
           : Number(req.body?.hostId);
       await gate(hostId, "edit");
       return engine.testRepo(repo, hostId, req.body?.init === true);
+    }),
+  );
+
+  /**
+   * @openapi
+   * /plugin-api/backups/repositories/{id}/unlock:
+   *   post:
+   *     summary: Remove stale locks
+   *     description: Runs restic unlock from a host. Only locks left by runs that died are removed.
+   *     tags:
+   *       - Backups
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: The stale locks are gone.
+   */
+  router.post(
+    "/repositories/:id/unlock",
+    handle(async (req) => {
+      const repo = await ownRepo(Number(req.params.id));
+      const hostId =
+        repo.kind === "local"
+          ? repo.location.hostId!
+          : Number(req.body?.hostId);
+      await gate(hostId, "edit");
+      await engine.unlockRepo(repo, hostId);
+      return { ok: true };
     }),
   );
 }

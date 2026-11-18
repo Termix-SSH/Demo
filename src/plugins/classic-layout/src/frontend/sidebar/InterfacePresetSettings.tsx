@@ -19,6 +19,7 @@ import {
   Sparkles,
   Wrench,
 } from "lucide-react";
+import { useInterfaceLocked } from "../InterfaceDefaultsSync";
 
 const SELECTABLE_PRESETS: Exclude<UiPreset, "custom">[] = [
   "simple",
@@ -41,6 +42,7 @@ export function InterfacePresetSettings({
   const ctx = useUiPreferencesContext();
   const confirm = useConfirm();
   const [applying, setApplying] = useState(false);
+  const locked = useInterfaceLocked();
 
   // The chosen preset stays highlighted even once knobs diverge from it --
   // the customizations are listed separately below.
@@ -104,7 +106,9 @@ export function InterfacePresetSettings({
   return (
     <div className="flex flex-col gap-3">
       <p className="text-[10px] text-muted-foreground">
-        {t("newUi.sidebar.userProfile.interfacePresetDesc")}
+        {locked
+          ? t("settings.interfaceDefaults.lockedNote")
+          : t("newUi.sidebar.userProfile.interfacePresetDesc")}
       </p>
 
       {/* Stacked rather than a grid: this panel lives in the sidebar, which
@@ -117,7 +121,7 @@ export function InterfacePresetSettings({
             <button
               key={preset}
               type="button"
-              disabled={applying}
+              disabled={applying || locked}
               onClick={() => void choosePreset(preset)}
               aria-pressed={active}
               className={`flex w-full items-start gap-2 border p-2 text-left transition-colors ${

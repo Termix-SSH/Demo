@@ -16,6 +16,7 @@ import {
 import "./frame.css";
 import { createElement, type ComponentType } from "react";
 import { createRoot } from "react-dom/client";
+import { flushSync } from "react-dom";
 import axios, { type AxiosInstance } from "axios";
 import {
   __setPluginHost,
@@ -56,6 +57,12 @@ import { createForeignRuntime, receiveForeignEvent } from "./foreign-client";
 import { focusEdge, watchEdges } from "./frame-edges";
 import { withPluginScope } from "@/plugin-host/scope";
 import { FrameRoot, setFrameProps, type FrameFit } from "./frame-root";
+import { setShellScrollEmitter, setShellViewport } from "./shell-scroll";
+import { setFrameCoverEmitter } from "./frame-cover";
+import { whenFrameShown } from "./frame-paint";
+
+/** Time for overlay effects to run before the frame reports its live work. */
+const OVERLAY_SETTLE_MS = 50;
 
 interface BootParams {
   role: FrameRole;
@@ -99,11 +106,13 @@ function readParams(): BootParams {
   const params = new URLSearchParams(location.hash.slice(1));
   const role = params.get("role") === "background" ? "background" : "view";
   const fit: FrameFit =
-    params.get("inline") === "1"
-      ? "inline"
-      : params.get("fit") === "content"
-        ? "content"
-        : "fill";
+    params.get("bar") === "1"
+      ? "bar"
+      : params.get("inline") === "1"
+        ? "inline"
+        : params.get("fit") === "content"
+          ? "content"
+          : "fill";
   return {
     role,
     key: params.get("key") ?? undefined,
@@ -118,10 +127,10 @@ function applyTheme(theme: FrameTheme) {
   const root = document.documentElement;
   root.className = theme.className;
   root.setAttribute("style", theme.style);
-  let node = document.getElementById("termix-theme-css");
+  let node = document.getElementById("termix-frame-theme-css");
   if (!node) {
     node = document.createElement("style");
-    node.id = "termix-theme-css";
+    node.id = "termix-frame-theme-css";
     document.head.appendChild(node);
   }
   node.textContent = theme.css.join("\n");
@@ -140,8 +149,12 @@ async function boot() {
   const parent = window.parent;
   if (!parent || parent === window) return;
   document.documentElement.dataset.frameFit =
-    params.fit === "fill" ? "fill" : "content";
+    params.fit === "fill" || params.fit === "bar" ? params.fit : "content";
   if (params.transparent) document.documentElement.dataset.frameBg = "none";
+  // Drawn on the sidebar: fields take the sidebar's field color.
+  if (new URLSearchParams(location.hash.slice(1)).get("on") === "sidebar") {
+    document.documentElement.dataset.frameOn = "sidebar";
+  }
 
   const realFetch = window.fetch.bind(window);
   const port = new FramePort({
@@ -310,18 +323,19 @@ async function boot() {
     onReady: () => () => {},
   };
 
-  __setPluginHost(
-    createFrameBridge({
-      pluginId,
-      call,
-      getApi: (id) => {
-        ownOnly(id);
-        return api as never;
-      },
-      tabs,
-      foreign,
-    }),
-  );
+  const bridge = createFrameBridge({
+    pluginId,
+    call,
+    getApi: (id) => {
+      ownOnly(id);
+      return api as never;
+    },
+    tabs,
+    foreign,
+  });
+  __setPluginHost(bridge);
+  // The UI kit's host action hook reads the shell's list, not this frame's.
+  foreign.useHostActions = () => bridge.useHostActions();
 
   if (init.css) {
     const link = document.createElement("link");
@@ -368,19 +382,33 @@ async function boot() {
       createElement(frameComponent(key)!, { key }),
     );
   if (params.role === "background") {
-    root.render(
+    const Hooks = withPluginScope(pluginId, FrameHooks);
+    const draw = (withHooks: boolean) =>
       createElement(FrameRoot, {
         fit: "fill",
         children: [
-          createElement(withPluginScope(pluginId, FrameHooks), {
-            key: "hooks",
-            send: (key: string, value: unknown) =>
-              port.emit("value", { key, value }),
-          }),
+          ...(withHooks
+            ? [
+                createElement(Hooks, {
+                  key: "hooks",
+                  send: (key: string, value: unknown) =>
+                    port.emit("value", { key, value }),
+                }),
+              ]
+            : []),
           ...overlays(),
         ],
-      }),
-    );
+      });
+    if (overlays().length > 0) {
+      // An overlay that opens timers or sockets on mount keeps working on
+      // its own, so the frame must keep running. One that only shows what
+      // the plugin's code opens does not.
+      startLiveTracking();
+      flushSync(() => root.render(draw(false)));
+      await new Promise((resolve) => setTimeout(resolve, OVERLAY_SETTLE_MS));
+      stopLiveTracking();
+    }
+    root.render(draw(true));
     watchOverlay((active) => port.emit("overlay", { active }));
     port.emit("live", { reasons: liveWork() });
   } else {
@@ -401,7 +429,16 @@ async function boot() {
           : undefined,
       }),
     );
+    if (params.fit === "fill") {
+      setShellScrollEmitter((on) => port.emit("shellScroll", { on }));
+    } else {
+      setFrameCoverEmitter((width) => port.emit("cover", { width }));
+    }
     if (params.edge) watchEdges((name, data) => port.emit(name, data));
+    // Painted, not just started: the shell keeps its spinner until then.
+    void whenFrameShown().then(() =>
+      requestAnimationFrame(() => port.emit("shown")),
+    );
   }
   port.emit("ready");
 
@@ -474,6 +511,10 @@ async function boot() {
       setFrameProps(data as Record<string, unknown>);
       return;
     }
+    if (name === "viewport") {
+      setShellViewport(data);
+      return;
+    }
     if (name === "settingsChanged" && data && typeof data === "object") {
       window.dispatchEvent(
         new CustomEvent("termix:plugin-settings-changed", {
@@ -490,6 +531,7 @@ async function boot() {
 
 boot().catch((error) => {
   console.error("[plugin frame] failed to start", error);
+  delete document.documentElement.dataset.frameLoading;
   try {
     window.parent.postMessage(
       {

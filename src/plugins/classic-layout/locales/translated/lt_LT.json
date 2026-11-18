@@ -36,6 +36,7 @@
     "checkNow": "Patikrinti dabar"
   },
   "nav": {
+    "theme": "Tema",
     "copyPassword": "Kopijuoti slaptažodį",
     "copySudoPassword": "Kopijuoti sudo slaptažodį",
     "passwordCopied": "Slaptažodis nukopijuotas į iškarpinę",
@@ -72,7 +73,15 @@
     "mobileNavigation": "Navigacija",
     "allTabs": "Visos kortelės",
     "hideTabBar": "Slėpti kortelių juostą",
-    "showTabBar": "Rodyti kortelių juostą"
+    "showTabBar": "Rodyti kortelių juostą",
+    "allApps": "Visos programos",
+    "findApp": "Ieškoti programos",
+    "pinToRail": "Pritvirtinti prie juostos",
+    "unpinFromRail": "Atsieti nuo juostos",
+    "appSettings": "Programos nustatymai",
+    "allAppsHint": "Pritvirtinkite tas, kuriomis naudojate. Dešiniuoju pelės mygtuku spustelėkite programą, kad atidarytumėte jos nustatymus.",
+    "allAppsLockedHint": "Jūsų administratorius pasirenka programas, kurios rodomos jūsų juostoje.",
+    "viewMenu": "Rodinys"
   },
   "commandPalette": {
     "searchPlaceholder": "Ieškoti serverių, komandų arba nustatymų...",
@@ -171,7 +180,8 @@
     "dragToReorder": "Vilkite plyteles, kad jas perkeltumėte, o kraštus – kad pakeistumėte dydį",
     "clearActivityConfirm": "Išvalyti neseniai atliktus veiksmus?",
     "resetConfirm": "Atstatyti skydelį į numatytąjį išdėstymą?",
-    "clearFailed": "Nepavyko išvalyti neseniai vykdytų veiksmų"
+    "clearFailed": "Nepavyko išvalyti neseniai vykdytų veiksmų",
+    "help": "Pagalba"
   },
   "admin": {
     "sectionGeneral": "Bendra",
@@ -237,6 +247,9 @@
     "credentialStorage": "Leisti išsaugoti slaptažodžius ir raktus",
     "credentialStorageOff": "Šiame serveryje išsaugoti slaptažodžius ir raktus yra išjungta. Palikite tuščius, ir Termix paprašys jų prisijungiant.",
     "credentialStorageDesc": "Išjungta: niekas negali išsaugoti slaptažodžio ar privataus rakto prie hosto ar prisijungimo duomenų, ir Termix paprašys jų prisijungiant. Jau išsaugoti prisijungimai lieka, kol bus pašalinti.",
+    "hostKeyTrust": "Pasitikėti naujomis serverio raktų raktais be patvirtinimo",
+    "hostKeyTrustDesc": "Kai įskiepis, grafikas arba API jungiasi prie serverio, kurio raktas niekada nebuvo tikrintas, išsaugokite tą raktą ir prisijunkite. Jei išjungta, šie prisijungimai bus atmesti, kol kas nors neatidarys terminalo į tą serverį ir nepasitiks jo rakto.",
+    "hostKeyTrustFailed": "Nepavyko atnaujinti serverio rakto nustatymo",
     "secondFactorAfterExternalLogin": "Reikalauti antrojo patvirtinimo veiksnio po išorinio prisijungimo (SSO, GitHub, Google, LDAP)",
     "secondFactorAfterExternalLoginDesc": "Jei išjungta, apie antrąjį patvirtinimo veiksnį klausiama tik po prisijungimo slaptažodžiu ir kitų vietinių prisijungimų, kaip ir anksčiau. Jei įjungta, klausiama po kiekvieno prisijungimo būdo, įskaitant SSO ir LDAP.",
     "allowPasswordReset": "Leisti slaptažodžio atkūrimą",
@@ -497,7 +510,95 @@
     "revokeSession": "Atsijungti",
     "deleteRoleConfirm": "Ištrinti rolę {{name}}?",
     "revokeKeyConfirm": "Anuliuoti API raktą {{name}}?",
-    "revokeKey": "Anuliuoti"
+    "revokeKey": "Anuliuoti",
+    "apiKeyScopeReadAll": "Tik skaitymui, viską, ką vartotojas gali matyti",
+    "apiKeyNeverExpires": "Niekada nebaigia galiojimo",
+    "apiKeyExpiryHint": "Jei paliktu tuščią, raktas veiks 90 dienų.",
+    "changeHeld": "Šis pakeitimas laukia {{minutes}} min., kad kiti administratoriai galėtų jį pamatyti.",
+    "userStatusFilter": "Paskyros būsena",
+    "userStatusAll": "Visos paskyros",
+    "userStatusActive": "Aktyvi",
+    "userStatusDisabled": "Išjungta",
+    "userStatusPending": "Laukiama patvirtinimo",
+    "disabledBadge": "Išjungta",
+    "pendingBadge": "Laukiama",
+    "accountStatusTitle": "Paskyros būsena",
+    "accountStatusActive": "Ši paskyra gali prisijungti.",
+    "accountStatusDisabled": "Ši paskyra išjungta. Ji negali prisijungti, o jos API raktai neveikia.",
+    "accountStatusPending": "Ši paskyra laukia patvirtinimo ir kol kas negali prisijungti.",
+    "lastLogin": "Paskutinis prisijungimas {{time}}",
+    "disableUser": "Išjungti paskyrą",
+    "enableUser": "Įjungti paskyrą",
+    "approveUser": "Patvirtinti",
+    "disableUserConfirm": "Išjungti {{username}}? Vartotojas bus atjungtas visur ir negalės prisijungti, kol vėl neįjungs paskyros.",
+    "userDisabled": "{{username}} paskyra išjungta",
+    "userEnabled": "{{username}} paskyra įjungta",
+    "userApproved": "{{username}} patvirtintas",
+    "userStatusFailed": "Nepavyko pakeisti paskyros",
+    "profileTitle": "Vardas ir el. pašto adresas",
+    "displayName": "Rodomas vardas",
+    "displayNamePlaceholder": "Rodomas vardas",
+    "email": "El. paštas",
+    "emailPlaceholder": "El. paštas",
+    "profileSaved": "Išsaugota",
+    "profileSaveFailed": "Nepavyko išsaugoti",
+    "manageTabAccess": "Prieiga",
+    "sectionInvites": "Kvietimo nuorodos",
+    "invitesDescription": "Nuorodos, leidžiančios sukurti paskyrą, net jei registracija išjungta.",
+    "invitesEmpty": "Kol kas nėra kvietimo nuorodų",
+    "inviteCreate": "Naujas kvietimas",
+    "inviteCreateFailed": "Nepavyko sukurti kvietimo",
+    "inviteCreatedNotice": "Nukopijuokite šią nuorodą dabar. Ji nebebus rodoma.",
+    "inviteCopy": "Kopijuoti nuorodą",
+    "inviteCopied": "Nuoroda nukopijuota",
+    "inviteNotePlaceholder": "Pastaba, pvz., kam ji skirta",
+    "inviteRole": "Rolė",
+    "inviteNoRole": "Nėra papildomos rolės",
+    "inviteExpires": "Galioja iki",
+    "inviteExpiresIn_one": "Baigiasi po {{count}} dienos",
+    "inviteExpiresIn_few": "Baigiasi po {{count}} dienų",
+    "inviteExpiresIn_many": "Baigiasi po {{count}} dienų",
+    "inviteExpiresIn_other": "Baigiasi po {{count}} dienų",
+    "inviteUses": "Naudojimai",
+    "inviteMakeAdmin": "Paversti administratoriumi",
+    "inviteUntitled": "Pakviesti",
+    "inviteUsesOf": "Naudojama {{uses}} iš {{max}}",
+    "inviteState_active": "Aktyvus",
+    "inviteState_revoked": "Atšauktas",
+    "inviteState_expired": "Pasibaigęs",
+    "inviteState_used": "Išnaudotas",
+    "inviteRevoke": "Atšaukti",
+    "inviteRevokeConfirm": "Ar atšaukti šią pakvietimo nuorodą?",
+    "inviteRevokeFailed": "Nepavyko atšaukti pakvietimo",
+    "sectionAccess": "Prieigos peržiūra",
+    "accessCount_one": "{{count}} dalijimasis",
+    "accessCount_few": "{{count}} dalijimai",
+    "accessCount_many": "{{count}} dalijimų",
+    "accessCount_other": "{{count}} dalijimų",
+    "accessExport": "Eksportuoti CSV",
+    "accessExportFailed": "Nepavyko eksportuoti",
+    "accessKind": "Rūšis",
+    "accessKindAll": "Viskas",
+    "accessKind_host": "Svečias",
+    "accessKind_folder": "Aplankas",
+    "accessKind_credential": "Pristatymo duomenys",
+    "accessUser": "Naudotojas",
+    "accessAnyUser": "Bet kuris naudotojas",
+    "accessRole": "Rolė",
+    "accessAnyRole": "Bet kokia rolė",
+    "accessToUser": "naudojant vartotoją {{name}}",
+    "accessToRole": "naudojant rolę {{name}}",
+    "accessOwner": "savininkas {{name}}",
+    "accessGrantedBy": "pasidalinta su {{name}}",
+    "accessExpires": "baigiasi {{date}}",
+    "accessLastUsed": "paskutinį kartą naudota {{date}}",
+    "accessEmpty": "Nieko nepasidalinta",
+    "sectionAccountSettings": "Paskyros ir prieiga",
+    "adminHostBypass": "Administratoriai gali atidaryti visų vartotojų serverius",
+    "adminHostBypassDesc": "Išjungus, administratoriai mato tik jiems bendrinamus serverius ir negali atidaryti kitų vartotojų duomenų iš vartotojo puslapio. Įjungus, jei nustatytas administratoriaus „aušinimo“ laikas, laukiama jo.",
+    "signupApproval": "Patvirtinti naujas SSO paskyras",
+    "signupApprovalDesc": "Pirmą kartą prisijungiant per SSO arba LDAP, vartotojas laukia, kol administratorius patvirtins paskyrą.",
+    "updateSettingFailed": "Nepavyko išsaugoti nustatymo"
   },
   "newUi": {
     "sidebar": {
@@ -520,7 +621,8 @@
         "domainPlaceholder": "nebūtina",
         "connectToAction": "Prisijungti prie {{name}}",
         "sshProtocol": "SSH",
-        "noTarget": "Nėra įdiegta jokių komponentų, kurie galėtų prisijungti prie šio serverio tipo"
+        "noTarget": "Nėra įdiegta jokių komponentų, kurie galėtų prisijungti prie šio serverio tipo",
+        "loadingTargets": "Įkeliami prisijungimo būdai..."
       },
       "keybindings": {
         "description": "Prijunkite klavišus prie veiksmų terminale ir programoje arba pakeiskite numatytąsias spartiąsias klavišų kombinacijas.",
@@ -574,6 +676,9 @@
         "desktopProfileDescription": "Šis profilis egzistuoja tik šiame įrenginyje ir prisijungia savarankiškai. Susiekite jį su Termix serveriu, kad naudotumėte tuos pačius serverius ir nustatymus visuose įrenginiuose.",
         "sectionInterface": "Sąsaja",
         "interfacePresetDesc": "Kiek detalių rodo Termix. Visos funkcijos lieka pasiekiamos.",
+        "closeToTray": "Uždaryti į dėklą",
+        "closeToTrayDesc": "Uždarius langą, Termix veikia dėkle, todėl jūsų ryšiai lieka atidaryti. Išjunkite, jei norite, kad programa baigtų veikti uždarius langą.",
+        "closeToTraySaveFailed": "Nepavyko išsaugoti nustatymo",
         "presetClearOverrides": "Atstatyti visus",
         "presetOverridesTitle": "Pritaikyta",
         "presetRevertArea": "Grąžinti",
@@ -709,7 +814,11 @@
         "tryBetaDescription": "Junkitės prie beta programos skiltyje „Atnaujinimai“.",
         "sendBetaFeedback": "Siųsti beta atsiliepimą",
         "openUpdates": "Atnaujinimai",
-        "hexLabel": "heksa"
+        "hexLabel": "heksa",
+        "displayNameLabel": "Rodomas vardas",
+        "emailLabel": "El. paštas",
+        "profileSaved": "Išsaugota",
+        "profileSaveFailed": "Nepavyko išsaugoti"
       }
     }
   },
@@ -741,6 +850,10 @@
     "apiKeys": "API raktai",
     "data": "Duomenys ir sinchronizavimas",
     "interface": "Sąsaja",
+    "hostList": "Sąrankų sąrašas",
+    "credentialList": "Prijungimo duomenų sąrašas",
+    "openHostList": "Sąrankų sąrašo nustatymai",
+    "openCredentialList": "Prijungimo duomenų sąrašo nustatymai",
     "appearance": "Išvaizda",
     "keybindings": "Klaviatūros trumpiniai",
     "adminGeneral": "Bendra",
@@ -800,6 +913,36 @@
       "hostRows": {
         "label": "Sveikintų eilučių pasirinkimai"
       }
+    },
+    "adminAccess": "Prieigos peržiūra",
+    "yourApps": "Jūsų programos",
+    "otherApps": "Kitos programos",
+    "hostForm": {
+      "label": "Pridėti priimtojo formą",
+      "description": "Paprasta rodo adresą, prisijungimo vardą, aplanką ir žymas. Pilna rodo visas parinktis. Galite perjungti ir pačiame formoje.",
+      "simple": "Paprasta",
+      "full": "Pilna"
+    },
+    "interfaceDefaults": {
+      "title": "Sąsajos numatytieji nustatymai",
+      "intro": "Pasirinkite, ką žmonės matys pirmą kartą prisijungę. Jie vis tiek gali pakeisti savo rodinį, nebent jį užrakinsite.",
+      "setFor": "Nustatyti",
+      "everyone": "Visiems",
+      "inherits": "Naudoja „Visiems“, kol nepakeisite kažko",
+      "useEveryone": "Naudoti „Visiems“",
+      "look": "Pradinis vaizdas",
+      "lookHint": "Paprastas rodo mažiausiai. Išplėstinis rodo visus mygtukus.",
+      "simple": "Paprastas",
+      "balanced": "Subalansuotas",
+      "advanced": "Išplėstinis",
+      "lock": "Užrakinti",
+      "lockHint": "Vartotojai su šia rolė negali keisti savo vaizdo ar programų juostoje.",
+      "apps": "Programos juostoje",
+      "appsHint": "Likusios lieka skiltyje „Visos programos“ ir paieškoje.",
+      "appsAdvanced": "Išplėstinis rodo visas programas juostoje.",
+      "saved": "Sąsajos numatytieji nustatymai išsaugoti",
+      "saveFailed": "Nepavyko išsaugoti sąsajos numatytųjų nustatymų",
+      "lockedNote": "Jūsų administratorius pasirinko jūsų vaizdą, todėl jo čia pakeisti negalima."
     }
   },
   "hostDefaults": {
@@ -879,12 +1022,19 @@
     "pickHint": "Visa informacija apie jungtį yra čia, sugrupuota, kad lengviau rastumėte.",
     "clearChoice": "Išvalyti",
     "proxyPathTarget": "tikslas",
-    "hostCopyName": "{{name}} (kopija)"
+    "hostCopyName": "{{name}} (kopija)",
+    "moreOptions": "Daugiau parinkčių",
+    "moreOptionsHint": "Tarpinis serveris, šuolio serveriai, prievado baksnojimas, gyvybingumo tikrinimas, būsenos tikrinimai ir kiekvienos programos įjungimo/išjungimo jungiklis. Daugumai serverių jų nereikia.",
+    "folderAndTags": "Aplankas, žymos ir pastabos"
   },
   "permissions": {
     "branding": {
       "title": "Pakeisti prekės ženklą",
       "description": "Nustatykite programos pavadinimą, šūkį ir logotipą, matomus visiems."
+    },
+    "interfaceDefaults": {
+      "title": "Nustatyti sąsajos numatytuosius nustatymus",
+      "description": "Pasirinkite vaizdą ir juostos programas, kuriomis vartotojai pradeda, visiems arba kiekvienai rolei."
     }
   },
   "onboarding": {
@@ -919,6 +1069,8 @@
     "clickAuto": "Pirmasis prisijungimo būdas",
     "useDefaultNamed": "Numatytasis ({{name}})",
     "useDefaultButtons": "Naudoti numatytuosius mygtukus",
-    "perHostHint": "Norėdami pakeisti konkrečiam mazgą, naudokite „Mygtukai mazgo eilutėse“ jo meniu."
+    "perHostHint": "Norėdami pakeisti konkrečiam mazgą, naudokite „Mygtukai mazgo eilutėse“ jo meniu.",
+    "moreTools": "Daugiau įrankių",
+    "more": "Daugiau"
   }
 }

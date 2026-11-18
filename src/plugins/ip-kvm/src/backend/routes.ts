@@ -478,16 +478,14 @@ export function registerRoutes(
    *             type: object
    *     responses:
    *       200:
-   *         description: The answer
+   *         description: The answer (sd) and the JetKVM's ICE candidates
    */
   router.post(
     "/devices/:id/session",
     consolePerm,
     safe(async (req, res) => {
       const device = await load(req, "edit");
-      res.json({
-        sd: await service.relay(device.id, String(req.body?.sd ?? "")),
-      });
+      res.json(await service.relay(device.id, String(req.body?.sd ?? "")));
     }),
   );
 
