@@ -74,6 +74,9 @@ function watch(page: Page): Noise {
   );
   page.on("response", (res) => {
     const status = res.status();
+    // Vite's dev server answers a stale pre-bundled dep with 504 and reloads.
+    if (status === 504 && res.url().includes("/node_modules/.vite/deps/"))
+      return;
     if (status >= 500 || status === 404)
       noise.failed.push(
         `${status} ${res.request().method()} ${res.url().replace(/^https?:\/\/[^/]+/, "")}`,

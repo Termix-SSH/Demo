@@ -136,6 +136,13 @@ function watch(page: Page): Noise {
   page.on("response", (response) => {
     const status = response.status();
     if (status < 400 || status === 401) return;
+    // Vite's dev server answers a stale pre-bundled dep with 504 and reloads.
+    if (
+      status === 504 &&
+      response.url().includes("/node_modules/.vite/deps/")
+    ) {
+      return;
+    }
     noise.errors.push(
       `${status} ${response.request().method()} ${response
         .url()
