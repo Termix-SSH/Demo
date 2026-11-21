@@ -722,3 +722,13 @@ socket("/plugin-ws/docker/console", (ws) => {
     }
   });
 });
+
+get(`${P}/tree`, (req) => {
+  const hostId = Number(req.query.hostId);
+  return {
+    items: containers
+      .get()
+      .filter((x) => x.hostId === hostId)
+      .map(({ name, state, status }) => ({ name, state, status })),
+  };
+});

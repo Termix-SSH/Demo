@@ -268,3 +268,18 @@ post(`${P}/import`, (req) => {
   }
   return { success: incoming.length, failed: 0, errors: [] };
 });
+
+get(`${P}/guests/:hostId/tree`, (req) => {
+  if (!hosts.find(req.params.hostId)) {
+    throw new HttpError(404, { error: "Host not found" });
+  }
+  return {
+    items: GUESTS.map(([vmid, name, type, status]) => ({
+      vmid,
+      name,
+      type,
+      node: "pve",
+      status,
+    })),
+  };
+});

@@ -17,6 +17,7 @@
 
 ### Fixed
 
+- Check login works on Windows hosts whose SSH shell is PowerShell or cmd, instead of showing Exit 1
 - The local terminal shows again in the desktop app (needs Termix 26.11.3)
 - People who open a shared session link see the terminal again (needs Termix 26.11.3)
 - Share from the tab or its right-click menu opens the share panel beside the terminal (needs Termix 26.11.3)

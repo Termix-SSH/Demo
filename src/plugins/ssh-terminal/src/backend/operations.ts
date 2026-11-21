@@ -34,7 +34,7 @@ export function registerOperations(
       }
       const started = Date.now();
       try {
-        const result = await ctx.ssh.exec(hostId, "true", {
+        const result = await ctx.ssh.exec(hostId, "exit 0", {
           purpose: "ssh-login-check",
           timeoutMs: 20000,
         });
