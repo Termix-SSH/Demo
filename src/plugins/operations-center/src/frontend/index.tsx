@@ -12,7 +12,6 @@ import { HostPage } from "./HostPage";
 import {
   useAttentionDot,
   HostCompanion,
-  HostMenuActions,
   TabBarHostPageButton,
   openHostPage,
 } from "./host-surfaces";
@@ -138,18 +137,6 @@ export function activate(app: TermixApp): void {
     order: 50,
     useDot: useAttentionDot,
   });
-
-  // The host menu in a layout lists the host's actions.
-  app.registerComponent("operations.hostMenu", ((props: {
-    host: PluginHostRecord;
-  }) =>
-    canUse ? (
-      <HostMenuActions
-        host={props.host}
-        shell={app.tabs}
-        framed={Boolean(app.frame)}
-      />
-    ) : null) as unknown as ComponentType<Record<string, unknown>>);
 
   app.registerDashboardCard({
     id: "attention",

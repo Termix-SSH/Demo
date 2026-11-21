@@ -12,6 +12,7 @@ import {
   LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { PackagesStatus, SearchItem } from "../shared/types";
+import type { ExtraManager } from "../shared/types";
 import { errorMessage, searchPackages } from "./api";
 import type { Runner } from "./PackagesTab";
 
@@ -19,10 +20,12 @@ const QUERY_RE = /^[A-Za-z0-9+._-]{2,64}$/;
 
 export function SearchView({
   hostId,
+  manager,
   status,
   runner,
 }: {
   hostId: number;
+  manager?: ExtraManager | null;
   status: PackagesStatus;
   runner: Runner;
 }) {
@@ -37,7 +40,7 @@ export function SearchView({
     if (!valid) return;
     setSearching(true);
     try {
-      setItems(await searchPackages(hostId, query.trim()));
+      setItems(await searchPackages(hostId, query.trim(), manager));
       setFailed("");
     } catch (e) {
       setFailed(errorMessage(e, t("search.failed")));

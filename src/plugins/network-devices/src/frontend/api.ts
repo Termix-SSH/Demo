@@ -1,6 +1,8 @@
 import type { PluginApiClient } from "@termix-ssh/plugin-sdk/frontend";
 import type {
   ClientInfo,
+  ConfigFile,
+  ConfigMeta,
   Device,
   DeviceInfo,
   DeviceInput,
@@ -56,6 +58,20 @@ export function createApi(api: PluginApiClient) {
     poeCycle: (id: number, portId: string) =>
       data(api.post(`${port(id, portId)}/poe-cycle`)),
     reboot: (id: number) => data(api.post(`/devices/${id}/reboot`)),
+    configs: (id: number) =>
+      data(api.get<{ configs: ConfigMeta[] }>(`/devices/${id}/configs`)).then(
+        (r) => r.configs,
+      ),
+    saveConfig: (id: number) =>
+      data(
+        api.post<{ changed: boolean; config: ConfigMeta }>(
+          `/devices/${id}/configs`,
+        ),
+      ),
+    config: (id: number, configId: number) =>
+      data(api.get<ConfigFile>(`/devices/${id}/configs/${configId}`)),
+    deleteConfig: (id: number, configId: number) =>
+      data(api.delete(`/devices/${id}/configs/${configId}`)),
     discover: (cidr: string, community: string, version: "1" | "2c") =>
       data(
         api.post<{ results: DiscoveryResult[] }>("/discover", {

@@ -8,6 +8,7 @@ import { VmCompanion, VmHostTile, useVmCompanionDefaults } from "./VmPanel";
 import { VmHostTab } from "./VmHostTab";
 import { VmHostsCard } from "./VmHostsCard";
 import { vmSummaryWidget } from "./VmSummaryWidget";
+import { registerTreeChildren } from "./tree-children";
 
 const TAB_ID = "virtual-machines";
 const ALL_ID = "virtual-machines-all";
@@ -123,4 +124,9 @@ export function activate(app: TermixApp): void {
   });
 
   app.registerExtension("homepage.widgets", vmSummaryWidget);
+
+  registerTreeChildren(
+    app,
+    (host) => canUse && !!host.enableSsh && vmsEnabled(host),
+  );
 }

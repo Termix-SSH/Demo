@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0
+
+### Added
+
+- High Contrast Dark and High Contrast Light themes with strong text, borders and focus outlines
+- Color Blind Dark and Color Blind Light themes that show good as blue and bad as orange instead of green and red
+
 ## 1.1.0
 
 ### Changed

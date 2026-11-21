@@ -212,6 +212,9 @@ function DatabaseFields({
             { value: "mysql", label: t("sources.engines.mysql") },
             { value: "postgres", label: t("sources.engines.postgres") },
             { value: "sqlite", label: t("sources.engines.sqlite") },
+            { value: "mongo", label: t("sources.engines.mongo") },
+            { value: "redis", label: t("sources.engines.redis") },
+            { value: "mssql", label: t("sources.engines.mssql") },
           ]}
         />
         {source.engine !== "sqlite" && (
@@ -244,7 +247,7 @@ function DatabaseFields({
             <TextField
               label={t("sources.port")}
               value={source.port ? String(source.port) : ""}
-              placeholder={source.engine === "mysql" ? "3306" : "5432"}
+              placeholder={DEFAULT_PORTS[source.engine]}
               onChange={(value) =>
                 set({ port: value.trim() ? Number(value) || null : null })
               }
@@ -274,25 +277,49 @@ function DatabaseFields({
           />
         </>
       )}
-      <LinesField
-        key={source.engine}
-        label={
-          source.engine === "sqlite"
-            ? t("sources.sqliteFiles")
-            : t("sources.databases")
-        }
-        hint={
-          source.engine === "sqlite"
-            ? t("sources.sqliteFilesHint")
-            : t("sources.databasesHint")
-        }
-        placeholder={source.engine === "sqlite" ? "/srv/app/data.db" : ""}
-        lines={source.databases}
-        onChange={(databases) => set({ databases })}
-      />
+      {source.engine === "mssql" && (
+        <TextField
+          label={t("sources.serverDir")}
+          value={source.serverDir ?? ""}
+          placeholder="/var/opt/mssql/backup"
+          hint={t("sources.serverDirHint")}
+          onChange={(serverDir) => set({ serverDir })}
+        />
+      )}
+      {source.engine === "redis" ? (
+        <p className="text-xs text-muted-foreground">
+          {t("sources.redisHint")}
+        </p>
+      ) : (
+        <LinesField
+          key={source.engine}
+          label={
+            source.engine === "sqlite"
+              ? t("sources.sqliteFiles")
+              : t("sources.databases")
+          }
+          hint={
+            source.engine === "sqlite"
+              ? t("sources.sqliteFilesHint")
+              : t("sources.databasesHint")
+          }
+          placeholder={source.engine === "sqlite" ? "/srv/app/data.db" : ""}
+          lines={source.databases}
+          onChange={(databases) => set({ databases })}
+        />
+      )}
     </div>
   );
 }
+
+const DEFAULT_PORTS: Record<DbEngine, string> = {
+  mysql: "3306",
+  postgres: "5432",
+  sqlite: "",
+  mongo: "27017",
+  redis: "6379",
+  mssql: "1433",
+};
 
 export function SourceCard({
   hostId,

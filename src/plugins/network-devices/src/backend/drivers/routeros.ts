@@ -196,12 +196,51 @@ export const routerosDriver: Driver = {
       reboot: true,
       clients: true,
       neighbors: true,
+      configBackup: true,
     },
   },
   probe,
   ports,
   clients,
   neighbors,
+
+  async backupConfig(target, io) {
+    // /export only writes to a file over the API, so write one, read it
+    // back and remove it. Passwords stay hidden, as export does by default.
+    const name = `termix-config-${Date.now()}`;
+    await send(target, io, "POST", "/export", { file: name });
+    let file: Record<string, unknown> | undefined;
+    for (let i = 0; i < 20 && !file; i++) {
+      await (io.sleep ?? ((ms) => new Promise((r) => setTimeout(r, ms))))(500);
+      file = asArray(await get(target, io, `/file?name=${name}.rsc`))[0];
+    }
+    if (!file) throw new DriverError("The device did not write its export");
+    const contents = str(file.contents);
+    const id = str(file[".id"]);
+    if (id) {
+      await optional(
+        send(
+          target,
+          io,
+          "DELETE",
+          `/file/${encodeURIComponent(id)}`,
+          undefined,
+        ),
+        null,
+      );
+    }
+    const size = int(file.size);
+    if (!contents || (size !== undefined && contents.length < size)) {
+      throw new DriverError(
+        "The export is too large to read over the REST API",
+      );
+    }
+    // The first line holds the time of the export, so it would differ every time.
+    const content = contents
+      .replace(/\r\n/g, "\n")
+      .replace(/^# .*by RouterOS.*\n/, "");
+    return { content, format: "text" };
+  },
 
   async setPort(target, io, portId, up) {
     await send(target, io, "PATCH", `/interface/${safeId(portId)}`, {

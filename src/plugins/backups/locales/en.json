@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic is not installed on this host",
     "tooOld": "restic on this host is older than 0.17",
-    "hint": "Backups use restic. Install it with the package manager, or from the restic release on GitHub when the package is too old.",
+    "hint": "Backups use restic. Install it with the package manager, or from the restic release on GitHub when the package is too old. You can also skip it and pick another host to run restic in a job.",
     "button": "Install restic",
     "working": "Installing...",
     "title": "Install restic?",
@@ -91,7 +91,9 @@
     "edit": "Edit",
     "snapshots": "Snapshots",
     "started": "{{name}} started",
-    "runFailed": "Could not start the backup"
+    "runFailed": "Could not start the backup",
+    "runsOn": "restic on {{host}}",
+    "retrying": "Failed, trying again {{when}}"
   },
   "editor": {
     "newTitle": "New backup job",
@@ -104,6 +106,10 @@
     "pickRepository": "Pick a repository",
     "noRepos": "You have no repository this host can use. Add one in the Backups tab first.",
     "repoLocked": "Only the owner of this repository can change it.",
+    "runner": "Run restic on",
+    "runnerThisHost": "This host",
+    "runnerSelf": "restic runs on this host and sends the backup to the repository.",
+    "runnerHint": "restic runs on the picked host. Termix copies this host's files to it over SSH, so this host only needs tar and does not have to reach the repository.",
     "enabled": "Run on schedule",
     "enabledHint": "Turn off to pause the schedule. Run now still works.",
     "oneFileSystem": "Stay on one file system",
@@ -131,7 +137,10 @@
     "engines": {
       "mysql": "MySQL or MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Login",
     "ownLogin": "Type a login here",
@@ -155,7 +164,10 @@
     "noVolumes": "No volumes found",
     "dockerFailed": "Could not list Docker on this host",
     "stop": "Stop stacks during the backup",
-    "stopHint": "Picked stacks are stopped first and started again after, so their files don't change while they are read."
+    "stopHint": "Picked stacks are stopped first and started again after, so their files don't change while they are read.",
+    "serverDir": "SQL Server backup folder",
+    "serverDirHint": "SQL Server writes the backup itself into this folder, and Termix takes it from there. It must be the same folder on this host, so with Docker mount it into the container at the same path.",
+    "redisHint": "Redis is saved as one snapshot of the whole instance."
   },
   "schedule": {
     "title": "Schedule",
@@ -207,9 +219,16 @@
   "alerts": {
     "title": "Alerts",
     "onFailure": "Alert when a backup fails",
-    "onFailureHint": "Also alerts on warnings, and once when it works again.",
+    "onFailureHint": "Also alerts once when it works again.",
     "staleDays": "Days without a backup",
-    "staleDaysHint": "Alert when no backup worked for this many days. 0 turns it off."
+    "staleDaysHint": "Alert when no backup worked for this many days. 0 turns it off.",
+    "onWarning": "Alert on warnings",
+    "onWarningHint": "When a backup is saved but some files could not be read or old snapshots were not removed.",
+    "onSuccess": "Alert on every good backup",
+    "onSuccessHint": "Also sends an alert each time this job finishes without problems.",
+    "channels": "Send to",
+    "channelsHint": "Pick the channels for this job's alerts. With none picked, they go to all your channels.",
+    "channelOff": "off"
   },
   "repos": {
     "add": "Add repository",
@@ -347,6 +366,7 @@
     "progress": "Progress",
     "preparing": "Getting ready...",
     "progressLine": "{{percent}}% | {{files}} of {{totalFiles}} files | {{bytes}} of {{totalBytes}}",
+    "copied": "Copied {{bytes}} through Termix",
     "left": "{{time}} left",
     "details": "Details",
     "started": "Started",
@@ -452,5 +472,22 @@
   },
   "nav": {
     "togglePanel": "Toggle backups panel"
+  },
+  "retries": {
+    "title": "Retries",
+    "count": "Retries after a failed backup",
+    "delay": "Minutes between retries",
+    "hint": "A failed backup is tried again this many times. The failure alert is only sent once the last try fails."
+  },
+  "mirrors": {
+    "title": "Mirrors",
+    "hint": "After each backup, its snapshots are copied to these repositories too, and old ones are removed there with the same keep rules. A failed copy keeps the backup and marks the run with warnings."
+  },
+  "repoSnapshots": {
+    "browse": "Browse all snapshots",
+    "host": "Read from host",
+    "hostHint": "restic runs on this host to read the repository. It needs restic and must reach the repository.",
+    "pickHost": "Pick a host to read the repository from",
+    "external": "Not from Termix"
   }
 }

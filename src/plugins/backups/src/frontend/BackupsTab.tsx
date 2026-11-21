@@ -3,6 +3,7 @@ import {
   Cloud,
   DatabaseBackup,
   FolderOpen,
+  FolderSearch,
   HardDrive,
   Server,
 } from "lucide-react";
@@ -13,6 +14,7 @@ import {
   EmptyState,
   ListBadge,
   ListRow,
+  ListRowAction,
   LoadingState,
   PanelFrame,
   PanelList,
@@ -21,10 +23,16 @@ import {
   TabStrip,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { JobView, RepositoryView, SnapshotView } from "../shared/types";
-import { errorMessage, listRepositories } from "./api";
+import {
+  errorMessage,
+  jobSource,
+  listRepositories,
+  type SnapshotSource,
+} from "./api";
 import { JobEditor } from "./JobEditor";
 import { JobList } from "./JobList";
 import { RepoEditor } from "./RepoEditor";
+import { RepoSnapshotsView } from "./RepoSnapshotsView";
 import { RunDetail } from "./RunDetail";
 import { RunsView } from "./RunsView";
 import { SnapshotBrowser } from "./SnapshotBrowser";
@@ -39,6 +47,13 @@ type Overlay =
   | { kind: "run"; runId: number }
   | { kind: "snapshots"; job: JobView }
   | { kind: "browse"; job: JobView; snapshot: SnapshotView }
+  | { kind: "repoSnapshots"; repo: RepositoryView; hostId: number }
+  | {
+      kind: "repoBrowse";
+      repo: RepositoryView;
+      source: SnapshotSource;
+      snapshot: SnapshotView;
+    }
   | null;
 
 const KIND_ICON = {
@@ -97,12 +112,62 @@ export function BackupsTab({ isVisible }: TabProps) {
     return (
       <PanelFrame>
         <SnapshotBrowser
-          job={overlay.job}
+          source={jobSource(overlay.job)}
           snapshot={overlay.snapshot}
-          localRepo={overlay.job.repositoryKind === "local"}
           onBack={() => setOverlay({ kind: "snapshots", job: overlay.job })}
           onRestoreStarted={(runId) => setOverlay({ kind: "run", runId })}
         />
+      </PanelFrame>
+    );
+  }
+
+  if (overlay?.kind === "repoBrowse") {
+    return (
+      <PanelFrame>
+        <SnapshotBrowser
+          source={overlay.source}
+          snapshot={overlay.snapshot}
+          onBack={() =>
+            setOverlay({
+              kind: "repoSnapshots",
+              repo: overlay.repo,
+              hostId: overlay.source.hostId,
+            })
+          }
+          onRestoreStarted={(runId) => setOverlay({ kind: "run", runId })}
+        />
+      </PanelFrame>
+    );
+  }
+
+  if (overlay?.kind === "repoSnapshots") {
+    return (
+      <PanelFrame>
+        <PanelShell
+          icon={<DatabaseBackup className="size-4" />}
+          title={t("snapshots.titleFor", { name: overlay.repo.name })}
+          leading={
+            <BackButton
+              onClick={() => setOverlay(null)}
+              label={t("common.back")}
+            />
+          }
+          scroll
+        >
+          <RepoSnapshotsView
+            repo={overlay.repo}
+            hostId={overlay.hostId}
+            onHost={(hostId) => setOverlay({ ...overlay, hostId })}
+            onBrowse={(source, snapshot) =>
+              setOverlay({
+                kind: "repoBrowse",
+                repo: overlay.repo,
+                source,
+                snapshot,
+              })
+            }
+          />
+        </PanelShell>
       </PanelFrame>
     );
   }
@@ -238,6 +303,21 @@ export function BackupsTab({ isVisible }: TabProps) {
                       t("repos.jobCount", { count: repo.jobs }),
                     ].join(" | ")}
                     onClick={() => setOverlay({ kind: "repo", repo })}
+                    trailing={
+                      <ListRowAction
+                        label={t("repoSnapshots.browse")}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setOverlay({
+                            kind: "repoSnapshots",
+                            repo,
+                            hostId: repo.location.hostId ?? 0,
+                          });
+                        }}
+                      >
+                        <FolderSearch />
+                      </ListRowAction>
+                    }
                   />
                 );
               })}

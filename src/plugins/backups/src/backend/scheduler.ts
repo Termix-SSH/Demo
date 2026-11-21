@@ -27,8 +27,15 @@ export function createScheduler(
     if (ticking) return;
     ticking = true;
     try {
-      for (const job of await store.dueJobs(now.toISOString())) {
-        await store.updateJob(job.id, { nextRunAt: nextRun(job, now) });
+      const nowIso = now.toISOString();
+      for (const job of await store.dueJobs(nowIso)) {
+        const cronDue = Boolean(
+          job.cron && job.nextRunAt && job.nextRunAt <= nowIso,
+        );
+        await store.updateJob(job.id, {
+          ...(cronDue ? { nextRunAt: nextRun(job, now) } : {}),
+          ...(job.retryAt && job.retryAt <= nowIso ? { retryAt: null } : {}),
+        });
         const userId = job.updatedBy;
         try {
           await ctx.asUser(userId, async () => {
@@ -37,6 +44,15 @@ export function createScheduler(
             }
             if (!(await ctx.hosts.checkAccess(job.hostId, "edit")).hasAccess) {
               throw new Error("The job's owner can no longer edit this host");
+            }
+            const runner = engine.resticHost(job);
+            if (
+              runner !== job.hostId &&
+              !(await ctx.hosts.checkAccess(runner, "edit")).hasAccess
+            ) {
+              throw new Error(
+                "The job's owner can no longer edit the host that runs restic",
+              );
             }
             if (await store.runningForJob(job.id)) return;
             await engine.startBackup(job, "schedule", userId);

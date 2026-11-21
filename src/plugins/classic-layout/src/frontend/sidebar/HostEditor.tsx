@@ -1190,6 +1190,17 @@ export function HostEditor({
                         <PluginComponent
                           id="credentials.secretHint"
                           onManage={() => setShowSecretSources((v) => !v)}
+                          onFill={(refs: {
+                            username?: string;
+                            password?: string;
+                          }) => {
+                            if (refs.username) {
+                              setField("username", refs.username);
+                            }
+                            if (refs.password) {
+                              setField("password", refs.password);
+                            }
+                          }}
                         />
                       </div>
                     )}

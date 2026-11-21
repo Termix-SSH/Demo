@@ -13,16 +13,19 @@ import {
   LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { PackagesStatus, UpdateItem } from "../shared/types";
+import type { ExtraManager } from "../shared/types";
 import { errorMessage, getUpdates } from "./api";
 import type { Runner } from "./PackagesTab";
 
 export function UpdatesView({
   hostId,
+  manager,
   status,
   runner,
   isVisible,
 }: {
   hostId: number;
+  manager?: ExtraManager | null;
   status: PackagesStatus;
   runner: Runner;
   isVisible: boolean;
@@ -35,12 +38,12 @@ export function UpdatesView({
 
   const load = useCallback(async () => {
     try {
-      setItems(await getUpdates(hostId));
+      setItems(await getUpdates(hostId, manager));
       setFailed("");
     } catch (e) {
       setFailed(errorMessage(e, t("updates.loadFailed")));
     }
-  }, [hostId, t]);
+  }, [hostId, manager, t]);
 
   useEffect(() => {
     if (isVisible) void load();

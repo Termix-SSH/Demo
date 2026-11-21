@@ -12,6 +12,7 @@ import {
 } from "../types.js";
 import type { AlertsRepository, DeliverableChannel } from "./repository.js";
 import {
+  DeviceGoneError,
   describeSendError,
   sendToChannel,
   type OutgoingAlert,
@@ -24,10 +25,26 @@ const MAX_BODY = 4000;
 const MAX_CONTEXT = 8000;
 const TAB_ID = /^[a-z0-9][a-z0-9._-]{0,63}$/i;
 
+/** What other plugins hear when an alert is stored for someone. */
+export interface AlertFiredEvent {
+  userId: string;
+  itemId: number;
+  source: string;
+  category: string;
+  severity: string;
+  title: string;
+  hostId: number | null;
+}
+
+/** Topic other plugins (Automations) listen on. */
+export const TOPIC_ALERT_FIRED = "plugin.alerts.fired";
+
 export interface HubDeps {
   repository: AlertsRepository;
   stream: AlertStream;
   senders: SenderDeps;
+  /** Tells other plugins an alert was stored. */
+  onFired?: (event: AlertFiredEvent) => void;
 }
 
 function clip(value: unknown, max: number): string {
@@ -59,11 +76,15 @@ function cleanContext(context: unknown): Record<string, unknown> | null {
   }
 }
 
-/** Sends to each channel and reports how each one went. */
+/**
+ * Sends to each channel and reports how each one went. onGone hears about
+ * phones that no longer take pushes, so their channel can be turned off.
+ */
 export async function deliverToChannels(
   targets: DeliverableChannel[],
   alert: OutgoingAlert,
   senders: SenderDeps,
+  onGone?: (channelId: number) => Promise<void>,
 ): Promise<DeliveryResult[]> {
   const results: DeliveryResult[] = [];
   for (const channel of targets) {
@@ -84,6 +105,9 @@ export async function deliverToChannels(
       );
       results.push({ channelId: channel.id, name: channel.name, ok: true });
     } catch (error) {
+      if (error instanceof DeviceGoneError && onGone) {
+        await onGone(channel.id).catch(() => undefined);
+      }
       results.push({
         channelId: channel.id,
         name: channel.name,
@@ -96,7 +120,7 @@ export async function deliverToChannels(
 }
 
 export function createHub(deps: HubDeps): PluginNotifyHub {
-  const { repository, stream, senders } = deps;
+  const { repository, stream, senders, onFired } = deps;
 
   async function deliverOne(
     userId: string,
@@ -130,6 +154,16 @@ export function createHub(deps: HubDeps): PluginNotifyHub {
     });
     result.recipients++;
     stream.publish(userId, "item", item);
+    const hostId = Number(context?.hostId);
+    onFired?.({
+      userId,
+      itemId: item.id,
+      source,
+      category,
+      severity,
+      title,
+      hostId: Number.isInteger(hostId) && hostId > 0 ? hostId : null,
+    });
     stream.publish(userId, "unread", {
       count: await repository.unreadCount(userId),
     });
@@ -152,8 +186,20 @@ export function createHub(deps: HubDeps): PluginNotifyHub {
 
     const deliveries = await deliverToChannels(
       targets,
-      { title, body, severity, category, source, link, context },
+      {
+        itemId: item.id,
+        title,
+        body,
+        severity,
+        category,
+        source,
+        link,
+        context,
+      },
       senders,
+      async (channelId) => {
+        await repository.updateChannel(userId, channelId, { enabled: false });
+      },
     );
     for (const delivery of deliveries) {
       if (delivery.ok) result.delivered++;

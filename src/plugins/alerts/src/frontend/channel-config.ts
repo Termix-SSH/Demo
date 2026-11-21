@@ -10,10 +10,14 @@ export interface Draft {
   topic: string;
   token: string;
   chatId: string;
+  userKey: string;
+  roomId: string;
   username: string;
   avatarUrl: string;
   to: string;
   allowPrivateNetwork: boolean;
+  /** A mobile channel's config as saved, sent back unchanged. */
+  mobile: Record<string, unknown>;
 }
 
 export const EMPTY: Draft = {
@@ -26,10 +30,13 @@ export const EMPTY: Draft = {
   topic: "",
   token: "",
   chatId: "",
+  userKey: "",
+  roomId: "",
   username: "",
   avatarUrl: "",
   to: "",
   allowPrivateNetwork: false,
+  mobile: {},
 };
 
 const str = (value: unknown) => (typeof value === "string" ? value : "");
@@ -53,10 +60,13 @@ export function draftFrom(channel: ChannelDetail): Draft {
     topic: str(config.topic),
     token: str(config.token),
     chatId: str(config.chatId),
+    userKey: str(config.userKey),
+    roomId: str(config.roomId),
     username: str(config.username),
     avatarUrl: str(config.avatar_url),
     to: str(config.to),
     allowPrivateNetwork: config.allowPrivateNetwork === true,
+    mobile: channel.type === "mobile" ? { ...config } : {},
   };
 }
 
@@ -106,7 +116,30 @@ export function configFrom(draft: Draft): Record<string, unknown> {
       };
     case "telegram":
       return { token: draft.token.trim(), chatId: draft.chatId.trim() };
+    case "slack":
+    case "teams":
+      return { url: draft.url.trim() };
+    case "gotify":
+      return {
+        url: draft.url.trim(),
+        ...(draft.token.trim() ? { token: draft.token.trim() } : {}),
+        ...privateNetwork,
+      };
+    case "pushover":
+      return {
+        ...(draft.token.trim() ? { token: draft.token.trim() } : {}),
+        ...(draft.userKey.trim() ? { userKey: draft.userKey.trim() } : {}),
+      };
+    case "matrix":
+      return {
+        url: draft.url.trim(),
+        roomId: draft.roomId.trim(),
+        ...(draft.token.trim() ? { token: draft.token.trim() } : {}),
+        ...privateNetwork,
+      };
     case "email":
       return { to: draft.to.trim() };
+    case "mobile":
+      return { ...draft.mobile };
   }
 }

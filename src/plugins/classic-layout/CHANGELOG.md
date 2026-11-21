@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.2.0
+
+### Added
+
+- Report a bug opens the diagnostics report on Termix 26.11.3 and newer, so the issue gets a file with logs and errors attached
+- Settings has a Diagnostics item for admins on Termix 26.11.3 and newer that opens the diagnostics page
+- Hosts and credentials: Pick from a vault fills the username and password with references from a secret source, with the Secret Sources plugin
+- Create folder suggests your existing folders as you type the name, so a subfolder lands under the right parent
+
+### Fixed
+
+- Quick Connect: pressing Enter connects again instead of saying nothing installed can connect
+- The Import / Export menu in the Hosts panel shows its items again instead of an error
+- The orange line under the open tab stays the full tab width when a tab gets a new button, like Share
+
 ## 1.1.3
 
 ### Added

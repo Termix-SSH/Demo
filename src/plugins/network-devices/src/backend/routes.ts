@@ -5,13 +5,15 @@ import { ServiceError, type Service } from "./service.js";
 
 function fail(res: Response, error: unknown) {
   if (error instanceof ServiceError) {
-    return res.status(error.status).json({ error: error.message });
+    return error.status >= 500
+      ? res.status(error.status).json({ error: "Something went wrong" })
+      : res.status(error.status).json({ error: error.message });
   }
   if (error instanceof DriverError) {
     return res.status(502).json({ error: error.message });
   }
-  const message = error instanceof Error ? error.message : String(error);
-  return res.status(500).json({ error: message });
+  // 5xx answers never carry error text.
+  return res.status(500).json({ error: "Something went wrong" });
 }
 
 type Handler = (req: Request, res: Response) => Promise<unknown>;
@@ -424,6 +426,142 @@ export function registerRoutes(
           version,
         ),
       });
+    }),
+  );
+
+  const configId = (req: Request) => {
+    const id = Number(req.params.configId);
+    if (!Number.isInteger(id)) throw new ServiceError("Bad id");
+    return id;
+  };
+
+  /**
+   * @openapi
+   * /plugin-api/network-devices/devices/{id}/configs:
+   *   get:
+   *     summary: Saved configurations of a device
+   *     description: Newest first, without their content.
+   *     tags:
+   *       - Network Devices
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: The saved configurations
+   *       404:
+   *         description: Device not found
+   */
+  router.get(
+    "/devices/:id/configs",
+    manage,
+    safe(async (req, res) => {
+      res.json({ configs: await service.listConfigs(deviceId(req)) });
+    }),
+  );
+
+  /**
+   * @openapi
+   * /plugin-api/network-devices/devices/{id}/configs:
+   *   post:
+   *     summary: Save the device's configuration now
+   *     description: Reads it from the device. Nothing new is stored when it did not change.
+   *     tags:
+   *       - Network Devices
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: Whether it changed, and the newest saved configuration
+   *       400:
+   *         description: This device type cannot save its configuration
+   *       502:
+   *         description: The device could not be read
+   */
+  router.post(
+    "/devices/:id/configs",
+    manage,
+    safe(async (req, res) => {
+      const result = await service.saveConfig(deviceId(req));
+      void ctx.audit.record({
+        action: "network-devices.config-save",
+        resourceType: "device",
+        resourceId: String(deviceId(req)),
+        success: true,
+      });
+      res.json(result);
+    }),
+  );
+
+  /**
+   * @openapi
+   * /plugin-api/network-devices/devices/{id}/configs/{configId}:
+   *   get:
+   *     summary: One saved configuration with its content
+   *     tags:
+   *       - Network Devices
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: integer
+   *       - in: path
+   *         name: configId
+   *         required: true
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: The configuration
+   *       404:
+   *         description: Not found
+   */
+  router.get(
+    "/devices/:id/configs/:configId",
+    manage,
+    safe(async (req, res) => {
+      res.json(await service.getConfig(deviceId(req), configId(req)));
+    }),
+  );
+
+  /**
+   * @openapi
+   * /plugin-api/network-devices/devices/{id}/configs/{configId}:
+   *   delete:
+   *     summary: Delete one saved configuration
+   *     tags:
+   *       - Network Devices
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: integer
+   *       - in: path
+   *         name: configId
+   *         required: true
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: Deleted
+   *       404:
+   *         description: Not found
+   */
+  router.delete(
+    "/devices/:id/configs/:configId",
+    manage,
+    safe(async (req, res) => {
+      await service.deleteConfig(deviceId(req), configId(req));
+      res.json({ ok: true });
     }),
   );
 }

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.2
+
+### Fixed
+
+- The Weather widget loads again on Termix 26.11.2 and later, thanks to ZacharyZcR
+
 ## 1.2.1
 
 ### Changed

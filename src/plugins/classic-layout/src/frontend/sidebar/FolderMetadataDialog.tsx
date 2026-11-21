@@ -14,8 +14,8 @@ import {
   SettingRow,
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
-import { useEffect, useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ChevronRight, CornerDownRight } from "lucide-react";
 import { normalizePath, splitPath } from "./FolderPathPicker";
 
 export type FolderMetadataValue = {
@@ -27,6 +27,29 @@ export type FolderMetadataValue = {
 };
 
 type CredentialOption = { id: string; name: string; username?: string };
+
+const MAX_SUGGESTIONS = 6;
+
+/**
+ * Folders to nest a new one under, from what is typed so far: paths that
+ * start with it, then paths that contain it. A path typed out in full is
+ * left out, since picking it again changes nothing.
+ */
+export function folderSuggestions(
+  typed: string,
+  existingPaths: string[],
+): string[] {
+  const query = normalizePath(typed).toLowerCase();
+  if (!query) return [];
+  const unique = [...new Set(existingPaths.map(normalizePath))].filter(
+    (path) => path && path.toLowerCase() !== query,
+  );
+  const starts = unique.filter((p) => p.toLowerCase().startsWith(query));
+  const contains = unique.filter(
+    (p) => !starts.includes(p) && p.toLowerCase().includes(query),
+  );
+  return [...starts.sort(), ...contains.sort()].slice(0, MAX_SUGGESTIONS);
+}
 
 export function FolderMetadataDialog({
   open,
@@ -73,6 +96,9 @@ export function FolderMetadataDialog({
         : normalizePath(name)
       : normalizePath(name)
     : "";
+  const nameRef = useRef<HTMLInputElement>(null);
+  const suggestions =
+    mode === "create" ? folderSuggestions(name, existingPaths) : [];
   const isDuplicate =
     !!resultingPath &&
     resultingPath !== currentPath &&
@@ -141,6 +167,7 @@ export function FolderMetadataDialog({
             <span className="text-accent-brand">*</span>
           </label>
           <Input
+            ref={nameRef}
             placeholder={t("hosts.folderNamePlaceholder")}
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -150,6 +177,24 @@ export function FolderMetadataDialog({
             aria-invalid={isDuplicate}
             className={isDuplicate ? "border-destructive" : undefined}
           />
+          {suggestions.length > 0 && (
+            <div className="flex flex-col border border-border bg-(--field) py-1">
+              {suggestions.map((path) => (
+                <button
+                  key={path}
+                  type="button"
+                  onClick={() => {
+                    setName(`${path} / `);
+                    nameRef.current?.focus();
+                  }}
+                  className="flex items-center gap-2 px-2.5 py-1 text-left text-xs text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+                >
+                  <CornerDownRight className="size-3 shrink-0 text-muted-foreground/60" />
+                  <span className="truncate">{path}</span>
+                </button>
+              ))}
+            </div>
+          )}
           {isDuplicate ? (
             <p className="text-[10px] text-destructive">
               {t("hosts.folderNameDuplicate")}

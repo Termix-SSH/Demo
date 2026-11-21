@@ -8,13 +8,16 @@ import {
   LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { RepoItem } from "../shared/types";
+import type { ExtraManager } from "../shared/types";
 import { errorMessage, getRepos } from "./api";
 
 export function ReposView({
   hostId,
+  manager,
   isVisible,
 }: {
   hostId: number;
+  manager?: ExtraManager | null;
   isVisible: boolean;
 }) {
   const { t } = useTranslation();
@@ -23,12 +26,12 @@ export function ReposView({
 
   const load = useCallback(async () => {
     try {
-      setItems(await getRepos(hostId));
+      setItems(await getRepos(hostId, manager));
       setFailed("");
     } catch (e) {
       setFailed(errorMessage(e, t("repos.loadFailed")));
     }
-  }, [hostId, t]);
+  }, [hostId, manager, t]);
 
   useEffect(() => {
     if (isVisible) void load();

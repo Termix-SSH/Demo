@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0
+
+### Added
+
+- Flatpak, Snap and Homebrew: pick them next to the system package manager to see updates, installed apps, search, history and remotes, and to install, update, remove and hold. Homebrew runs as the user that owns it
+- Their pending updates count toward the dashboard card and the update alerts
+
 ## 1.1.0
 
 ### Changed

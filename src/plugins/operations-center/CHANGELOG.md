@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1
+
+### Removed
+
+- The Actions entry in the host menu, which popped in late and only opened the host page
+
 ## 1.1.0
 
 ### Changed

@@ -415,6 +415,7 @@ export const snmpDriver: Driver = {
       reboot: false,
       clients: true,
       neighbors: true,
+      configBackup: false,
     },
   },
 

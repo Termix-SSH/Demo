@@ -5,7 +5,8 @@ import {
 import type { Manager, PackageAction } from "../shared/types.js";
 
 export const MARK = "@@TERMIX@@";
-const NAME_RE = /^[A-Za-z0-9][A-Za-z0-9+._:@-]{0,127}$/;
+// Homebrew taps add owner/tap/ in front of a name.
+const NAME_RE = /^[A-Za-z0-9][A-Za-z0-9+._:@/-]{0,127}$/;
 const QUERY_RE = /^[A-Za-z0-9+._-]{2,64}$/;
 
 /** Package names from a request. Refuses anything a shell could misread. */
@@ -32,6 +33,14 @@ export function cleanQuery(value: unknown): string {
   return query;
 }
 
+/** Status lines that say which extras a host has. */
+const EXTRAS_STATUS = `command -v flatpak >/dev/null 2>&1 && echo flatpak=1
+command -v snap >/dev/null 2>&1 && snap list >/dev/null 2>&1 && echo snap=1
+for b in "$(command -v brew 2>/dev/null)" /home/linuxbrew/.linuxbrew/bin/brew /opt/homebrew/bin/brew /usr/local/bin/brew; do
+  [ -n "$b" ] && [ -x "$b" ] && { echo brew=1; break; }
+done
+`;
+
 export const STATUS_SCRIPT = `. /etc/os-release 2>/dev/null
 echo "os=\${PRETTY_NAME:-$(uname -s)}"
 if [ "$(id -u)" = 0 ] || sudo -n true 2>/dev/null; then echo root=1; else echo root=0; fi
@@ -49,7 +58,7 @@ elif [ "$pm" = zypper ]; then
 elif [ "$pm" = apt ]; then echo reboot=0
 fi
 [ "$pm" = apt ] && echo "index=$(stat -c %Y /var/cache/apt/pkgcache.bin 2>/dev/null)"
-exit 0
+${EXTRAS_STATUS}exit 0
 `;
 
 const APT_ENV = `export DEBIAN_FRONTEND=noninteractive NEEDRESTART_MODE=a

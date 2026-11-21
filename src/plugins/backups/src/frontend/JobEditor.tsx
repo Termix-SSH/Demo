@@ -7,6 +7,7 @@ import {
   FolderOpen,
   History,
   Plus,
+  RotateCcw,
   Settings2,
   Terminal,
 } from "lucide-react";
@@ -29,6 +30,7 @@ import {
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   EMPTY_KEEP,
+  type AlertChannelOption,
   type DatabaseLoginOption,
   type JobInput,
   type JobSourceInput,
@@ -41,6 +43,7 @@ import {
   deleteJob,
   errorMessage,
   getDatabaseLogins,
+  listAlertChannels,
   listRepositories,
   updateJob,
 } from "./api";
@@ -61,6 +64,10 @@ function draftOf(job: JobView | null): JobInput {
       alerts: { onFailure: true, staleDays: 3 },
       oneFileSystem: false,
       backupOptions: "",
+      retries: 0,
+      retryDelayMinutes: 10,
+      mirrors: [],
+      runnerHostId: null,
     };
   }
   return {
@@ -77,6 +84,10 @@ function draftOf(job: JobView | null): JobInput {
     alerts: job.alerts,
     oneFileSystem: job.oneFileSystem,
     backupOptions: job.backupOptions,
+    retries: job.retries,
+    retryDelayMinutes: job.retryDelayMinutes,
+    mirrors: job.mirrors,
+    runnerHostId: job.runnerHostId ?? null,
   };
 }
 
@@ -111,6 +122,13 @@ export function JobEditor({
   const [draft, setDraft] = useState<JobInput>(() => draftOf(job));
   const [repos, setRepos] = useState<RepositoryView[] | null>(null);
   const [logins, setLogins] = useState<DatabaseLoginOption[] | null>(null);
+  const [channels, setChannels] = useState<AlertChannelOption[]>([]);
+
+  useEffect(() => {
+    void listAlertChannels()
+      .then(setChannels)
+      .catch(() => setChannels([]));
+  }, []);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -142,9 +160,11 @@ export function JobEditor({
   const setSource = (index: number, next: JobSourceInput) =>
     set({ sources: draft.sources.map((s, i) => (i === index ? next : s)) });
 
+  const resticHost = draft.runnerHostId ?? hostId;
   const usable = (repos ?? []).filter(
-    (r) => r.kind !== "local" || r.location.hostId === hostId,
+    (r) => r.kind !== "local" || r.location.hostId === resticHost,
   );
+  const sshHosts = hosts.filter((h) => h.enableSsh !== false);
   const lockedRepo = job !== null && !job.canEditRepo;
   const canSave =
     hostId > 0 &&
@@ -221,12 +241,10 @@ export function JobEditor({
               value={hostId ? String(hostId) : ""}
               placeholder={t("editor.pickHost")}
               onChange={(value) => setHostId(Number(value))}
-              options={hosts
-                .filter((h) => h.enableSsh !== false)
-                .map((h) => ({
-                  value: String(h.id),
-                  label: h.name || h.ip || `#${h.id}`,
-                }))}
+              options={sshHosts.map((h) => ({
+                value: String(h.id),
+                label: h.name || h.ip || `#${h.id}`,
+              }))}
             />
           )}
           <TextField
@@ -234,6 +252,27 @@ export function JobEditor({
             value={draft.name}
             placeholder={t("editor.namePlaceholder")}
             onChange={(name) => set({ name })}
+          />
+          <SelectField
+            label={t("editor.runner")}
+            value={String(draft.runnerHostId ?? 0)}
+            hint={
+              draft.runnerHostId
+                ? t("editor.runnerHint")
+                : t("editor.runnerSelf")
+            }
+            onChange={(value) =>
+              set({ runnerHostId: Number(value) > 0 ? Number(value) : null })
+            }
+            options={[
+              { value: "0", label: t("editor.runnerThisHost") },
+              ...sshHosts
+                .filter((h) => Number(h.id) !== hostId)
+                .map((h) => ({
+                  value: String(h.id),
+                  label: h.name || h.ip || `#${h.id}`,
+                })),
+            ]}
           />
           {repos !== null && usable.length === 0 ? (
             <p className="text-xs text-warning">{t("editor.noRepos")}</p>
@@ -251,6 +290,32 @@ export function JobEditor({
               ).map((r) => ({ value: String(r.id), label: r.name }))}
             />
           )}
+          {draft.repositoryId > 0 &&
+            usable.some((r) => r.id !== draft.repositoryId) && (
+              <div className="flex flex-col gap-1">
+                <p className="text-sm font-medium">{t("mirrors.title")}</p>
+                <p className="text-xs text-muted-foreground">
+                  {t("mirrors.hint")}
+                </p>
+                {usable
+                  .filter((r) => r.id !== draft.repositoryId)
+                  .map((r) => (
+                    <SwitchRow
+                      key={r.id}
+                      label={r.name}
+                      description={t(`repos.kinds.${r.kind}`)}
+                      checked={draft.mirrors.includes(r.id)}
+                      onChange={(on) =>
+                        set({
+                          mirrors: on
+                            ? [...draft.mirrors, r.id]
+                            : draft.mirrors.filter((id) => id !== r.id),
+                        })
+                      }
+                    />
+                  ))}
+              </div>
+            )}
           <SwitchRow
             label={t("editor.enabled")}
             description={t("editor.enabledHint")}
@@ -345,6 +410,40 @@ export function JobEditor({
         </div>
       </SectionCard>
 
+      <SectionCard title={t("retries.title")} icon={<RotateCcw />}>
+        <div className="flex flex-col gap-2 py-2">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+            <NumberField
+              label={t("retries.count")}
+              value={draft.retries}
+              min={0}
+              max={10}
+              onChange={(value) =>
+                set({
+                  retries: Math.min(10, Math.max(0, Math.floor(value) || 0)),
+                })
+              }
+            />
+            <NumberField
+              label={t("retries.delay")}
+              value={draft.retryDelayMinutes}
+              min={1}
+              max={1440}
+              disabled={draft.retries === 0}
+              onChange={(value) =>
+                set({
+                  retryDelayMinutes: Math.min(
+                    1440,
+                    Math.max(1, Math.floor(value) || 1),
+                  ),
+                })
+              }
+            />
+          </div>
+          <p className="text-xs text-muted-foreground">{t("retries.hint")}</p>
+        </div>
+      </SectionCard>
+
       <SectionCard title={t("hooks.title")} icon={<Terminal />}>
         <div className="grid grid-cols-1 gap-3 py-2 md:grid-cols-2">
           <TextAreaField
@@ -385,6 +484,55 @@ export function JobEditor({
               set({ alerts: { ...draft.alerts, onFailure } })
             }
           />
+          <SwitchRow
+            label={t("alerts.onWarning")}
+            description={t("alerts.onWarningHint")}
+            checked={draft.alerts.onWarning ?? draft.alerts.onFailure}
+            onChange={(onWarning) =>
+              set({ alerts: { ...draft.alerts, onWarning } })
+            }
+          />
+          <SwitchRow
+            label={t("alerts.onSuccess")}
+            description={t("alerts.onSuccessHint")}
+            checked={draft.alerts.onSuccess === true}
+            onChange={(onSuccess) =>
+              set({ alerts: { ...draft.alerts, onSuccess } })
+            }
+          />
+          {channels.length > 0 && (
+            <div className="flex flex-col gap-1">
+              <p className="text-sm font-medium">{t("alerts.channels")}</p>
+              <p className="text-xs text-muted-foreground">
+                {t("alerts.channelsHint")}
+              </p>
+              {channels.map((channel) => {
+                const picked = draft.alerts.channelIds ?? [];
+                return (
+                  <SwitchRow
+                    key={channel.id}
+                    label={channel.name}
+                    description={
+                      channel.enabled
+                        ? channel.type
+                        : `${channel.type} | ${t("alerts.channelOff")}`
+                    }
+                    checked={picked.includes(channel.id)}
+                    onChange={(on) =>
+                      set({
+                        alerts: {
+                          ...draft.alerts,
+                          channelIds: on
+                            ? [...picked, channel.id]
+                            : picked.filter((id) => id !== channel.id),
+                        },
+                      })
+                    }
+                  />
+                );
+              })}
+            </div>
+          )}
           <NumberField
             label={t("alerts.staleDays")}
             hint={t("alerts.staleDaysHint")}

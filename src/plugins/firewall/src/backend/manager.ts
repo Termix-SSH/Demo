@@ -1,4 +1,12 @@
 import { randomBytes } from "node:crypto";
+import {
+  WINDOWS_READ,
+  parseWindowsState,
+  windowsArmScript,
+  windowsKeepScript,
+  windowsPlainScript,
+  windowsUndoScript,
+} from "./backends/windows.js";
 import { eq } from "drizzle-orm";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import { scriptError, scrub } from "@termix-ssh/plugin-sdk/host-scripts";
@@ -162,10 +170,16 @@ export function createManager(
     settings: HostSettings,
   ): Promise<HostState> {
     const host = await ctx.hosts.get(hostId);
-    const { stdout } = await remote.root(hostId, settings.sudo, READ_SCRIPT, {
-      timeoutMs: 45_000,
-    });
-    return parseState(stdout, Number(host?.port) || 22);
+    const windows = await remote.isWindows(hostId);
+    const { stdout } = await remote.root(
+      hostId,
+      settings.sudo,
+      windows ? WINDOWS_READ : READ_SCRIPT,
+      { timeoutMs: 45_000 },
+    );
+    return windows
+      ? parseWindowsState(stdout, Number(host?.port) || 22)
+      : parseState(stdout, Number(host?.port) || 22);
   }
 
   async function runPlain(
@@ -173,7 +187,13 @@ export function createManager(
     settings: HostSettings,
     script: string,
   ): Promise<void> {
-    await remote.root(hostId, settings.sudo, script, { timeoutMs: 120_000 });
+    const windows = await remote.isWindows(hostId);
+    await remote.root(
+      hostId,
+      settings.sudo,
+      windows ? windowsPlainScript(script) : script,
+      { timeoutMs: 120_000 },
+    );
     onWrite(hostId);
   }
 
@@ -185,7 +205,9 @@ export function createManager(
     const { stdout } = await remote.root(
       hostId,
       settings.sudo,
-      keepScript(row.token),
+      (await remote.isWindows(hostId))
+        ? windowsKeepScript(row.token)
+        : keepScript(row.token),
     );
     await clearRow(hostId);
     onWrite(hostId);
@@ -225,7 +247,7 @@ export function createManager(
       const { stdout } = await remote.root(
         hostId,
         settings.sudo,
-        `${module.raw}\nexit 0`,
+        current.backend === "windows" ? module.raw : `${module.raw}\nexit 0`,
         {
           allowFail: true,
         },
@@ -275,12 +297,10 @@ export function createManager(
           reachable: null,
           userId: String(ctx.currentActor() ?? ""),
         };
-        const script = armScript(
-          module,
-          token,
-          settings.rollbackSeconds,
-          plan.script,
-        );
+        const script =
+          current.backend === "windows"
+            ? windowsArmScript(token, settings.rollbackSeconds, plan.script)
+            : armScript(module, token, settings.rollbackSeconds, plan.script);
         let stdout = "";
         let code: number | null = 0;
         try {
@@ -349,7 +369,9 @@ export function createManager(
         const { stdout } = await remote.root(
           hostId,
           settings.sudo,
-          undoScript(row.token),
+          (await remote.isWindows(hostId))
+            ? windowsUndoScript(row.token)
+            : undoScript(row.token),
         );
         await clearRow(hostId);
         onWrite(hostId);
@@ -367,6 +389,9 @@ export function createManager(
     install(hostId, settings, what) {
       return locked(hostId, async () => {
         const current = await state(hostId, settings);
+        if (current.backend === "windows") {
+          throw new FirewallError("Windows Firewall is built in");
+        }
         await remote.root(
           hostId,
           settings.sudo,

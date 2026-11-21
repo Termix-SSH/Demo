@@ -32,10 +32,11 @@ import type {
   NeighborInfo,
   PortInfo,
 } from "../shared/types";
+import { ConfigsPanel } from "./ConfigsPanel";
 import { errorMessage, type NetworkApi } from "./api";
 import { formatRate, formatSpeed, formatUptime } from "./format";
 
-type Section = "ports" | "clients" | "neighbors";
+type Section = "ports" | "clients" | "neighbors" | "configs";
 
 const th =
   "px-3 py-1.5 text-left text-[10px] font-bold uppercase tracking-widest text-muted-foreground";
@@ -81,6 +82,9 @@ export function DeviceView({
     ...(features?.clients ? [{ id: "clients", label: t("view.clients") }] : []),
     ...(features?.neighbors
       ? [{ id: "neighbors", label: t("view.neighbors") }]
+      : []),
+    ...(features?.configBackup && canManage
+      ? [{ id: "configs", label: t("view.configs") }]
       : []),
   ];
 
@@ -453,6 +457,10 @@ export function DeviceView({
             )}
           </>
         ))}
+
+      {section === "configs" && (
+        <ConfigsPanel device={device} api={api} canManage={canManage} />
+      )}
 
       {section === "neighbors" &&
         (neighbors === null ? (

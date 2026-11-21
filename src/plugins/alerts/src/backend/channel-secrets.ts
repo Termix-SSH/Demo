@@ -6,7 +6,13 @@ const SECRET_FIELDS: Record<ChannelType, readonly string[]> = {
   discord: ["url"],
   telegram: ["token"],
   ntfy: ["token"],
+  slack: ["url"],
+  teams: ["url"],
+  gotify: ["token"],
+  pushover: ["token", "userKey"],
+  matrix: ["token"],
   email: [],
+  mobile: ["token"],
 };
 
 function present(value: unknown): boolean {

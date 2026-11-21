@@ -94,10 +94,15 @@ export function createSummaryCache(
       let fresh: HostUpdateSummary;
       try {
         const s = await readHostSettings(ctx, hostId);
-        const [status, updates] = [
-          await service.status(hostId, s),
-          await service.updates(hostId, s),
-        ];
+        const status = await service.status(hostId, s);
+        const updates =
+          status.manager === "none" ? [] : await service.updates(hostId, s);
+        // Flatpak, Snap and Homebrew updates count too; one failing is skipped.
+        for (const extra of status.extras) {
+          updates.push(
+            ...(await service.updates(hostId, s, extra).catch(() => [])),
+          );
+        }
         fresh = {
           hostId,
           checkedAt,

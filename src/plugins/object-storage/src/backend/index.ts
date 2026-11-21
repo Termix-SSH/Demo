@@ -5,6 +5,7 @@ import { keepAwake } from "./keep-awake.js";
 import { registerOperations } from "./operations.js";
 import { registerRoutes } from "./routes.js";
 import { createService } from "./service.js";
+import { registerFilesService } from "./files-service.js";
 
 const TICK_MS = 60_000;
 const FIRST_RUN_MS = 30_000;
@@ -18,6 +19,7 @@ export async function activate(ctx: PluginContext) {
   const service = createService(ctx, stores as never);
 
   registerOperations(ctx, service);
+  registerFilesService(ctx, service);
   // Uploads are streamed, so the limit only guards the form parser
   registerRoutes(ctx.http.router<Router>({ bodyLimit: "1gb" }), ctx, service);
 

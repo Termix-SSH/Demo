@@ -656,6 +656,68 @@ export function createService(ctx: PluginContext, stores: Stores) {
     });
   }
 
+  /** Writes a small object in one request. */
+  async function putBuffer(
+    accountId: number,
+    bucket: string,
+    key: string,
+    body: Buffer,
+    contentType: string,
+  ) {
+    await run(accountId, (c) =>
+      c.put(cleanBucket(bucket), cleanKey(key), body, contentType),
+    );
+  }
+
+  /** Every object under a prefix, up to 10000. */
+  async function listAll(accountId: number, bucket: string, prefix: string) {
+    return run(accountId, async (c) => {
+      const out: Array<{
+        key: string;
+        size: number;
+        modifiedAt: string | null;
+      }> = [];
+      let token: string | undefined;
+      for (let page = 0; page < 10; page++) {
+        const list = await c.listObjects(cleanBucket(bucket), {
+          prefix,
+          delimiter: "",
+          token,
+          max: 1000,
+        });
+        for (const o of list.objects) {
+          out.push({ key: o.key, size: o.size, modifiedAt: o.modifiedAt });
+        }
+        if (!list.next) break;
+        token = list.next;
+      }
+      return out;
+    });
+  }
+
+  /** A small object as text. Refuses one over maxBytes. */
+  async function getText(
+    accountId: number,
+    bucket: string,
+    key: string,
+    maxBytes: number,
+  ): Promise<string> {
+    return run(accountId, async (c) => {
+      const response = await c.get(cleanBucket(bucket), cleanKey(key));
+      const size = Number(response.headers.get("content-length") ?? 0);
+      if (size > maxBytes) throw new StorageError(413, "The file is too big");
+      const body = Buffer.from(await response.arrayBuffer());
+      if (body.length > maxBytes) {
+        throw new StorageError(413, "The file is too big");
+      }
+      return body.toString("utf8");
+    });
+  }
+
+  async function removeObject(accountId: number, bucket: string, key: string) {
+    await run(accountId, (c) => c.remove(cleanBucket(bucket), cleanKey(key)));
+  }
+
   /** Copies or moves one object or a whole folder. */
   async function transfer(
     accountId: number,
@@ -1014,6 +1076,10 @@ export function createService(ctx: PluginContext, stores: Stores) {
     upload,
     makeFolder,
     removeObjects,
+    putBuffer,
+    listAll,
+    getText,
+    removeObject,
     copy: (
       accountId: number,
       bucket: string,

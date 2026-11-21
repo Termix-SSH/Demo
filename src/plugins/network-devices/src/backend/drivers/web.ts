@@ -65,6 +65,37 @@ export async function request(
   }
 }
 
+/** Like request, for answers that are not JSON (a config file). */
+export async function requestText(
+  target: Target,
+  io: DriverIo,
+  url: string,
+  init: {
+    method?: string;
+    headers?: Record<string, string>;
+    body?: string;
+  } = {},
+): Promise<string> {
+  let response: Response;
+  try {
+    response = await io.fetch(url, {
+      method: init.method ?? "GET",
+      headers: init.headers,
+      body: init.body,
+      timeoutMs: TIMEOUT_MS * 3,
+      allowPrivateHosts: [target.address.replace(/^\[|\]$/g, "")],
+      tls: target.ca ? { ca: target.ca } : undefined,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new DriverError(`Could not reach the device: ${message}`);
+  }
+  if (!response.ok) {
+    throw new DriverError(describe(response.status), response.status);
+  }
+  return response.text();
+}
+
 export function asArray(value: unknown): Record<string, unknown>[] {
   return Array.isArray(value) ? (value as Record<string, unknown>[]) : [];
 }

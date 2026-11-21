@@ -10,7 +10,7 @@ import {
   InlineView,
   FormFooter,
 } from "@termix-ssh/plugin-sdk/ui";
-import { CHANNEL_TYPES, type ChannelType } from "../types";
+import { CREATABLE_CHANNEL_TYPES, type ChannelType } from "../types";
 import { EMPTY, configFrom, draftFrom, type Draft } from "./channel-config";
 import type { AlertsApi } from "./api";
 
@@ -128,7 +128,11 @@ export function ChannelDialog({
     }
   };
 
-  const canReachPrivate = draft.type === "webhook" || draft.type === "ntfy";
+  const canReachPrivate =
+    draft.type === "webhook" ||
+    draft.type === "ntfy" ||
+    draft.type === "gotify" ||
+    draft.type === "matrix";
 
   return (
     <InlineView
@@ -154,35 +158,46 @@ export function ChannelDialog({
           />
         </Field>
 
-        <Field label={t("channels.type")}>
-          <div className="flex flex-wrap gap-2">
-            {CHANNEL_TYPES.map((type) => {
-              const disabled = type === "email" && !emailAvailable;
-              return (
-                <button
-                  key={type}
-                  type="button"
-                  disabled={disabled}
-                  title={disabled ? t("channels.emailUnavailable") : undefined}
-                  onClick={() => pickType(type)}
-                  className={cn(
-                    "px-3 py-1 text-xs font-semibold border transition-colors disabled:opacity-40 disabled:cursor-not-allowed",
-                    draft.type === type
-                      ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand"
-                      : "border-border text-muted-foreground hover:border-accent-brand/30",
-                  )}
-                >
-                  {t(`channels.types.${type}`)}
-                </button>
-              );
-            })}
-          </div>
-          {draft.type === "email" && !emailAvailable && (
-            <span className="text-[10px] text-destructive">
-              {t("channels.emailUnavailable")}
+        {draft.type === "mobile" ? (
+          <Field label={t("channels.type")}>
+            <span className="text-sm">{t("channels.types.mobile")}</span>
+            <span className="text-[10px] text-muted-foreground">
+              {t("channels.mobileHint")}
             </span>
-          )}
-        </Field>
+          </Field>
+        ) : (
+          <Field label={t("channels.type")}>
+            <div className="flex flex-wrap gap-2">
+              {CREATABLE_CHANNEL_TYPES.map((type) => {
+                const disabled = type === "email" && !emailAvailable;
+                return (
+                  <button
+                    key={type}
+                    type="button"
+                    disabled={disabled}
+                    title={
+                      disabled ? t("channels.emailUnavailable") : undefined
+                    }
+                    onClick={() => pickType(type)}
+                    className={cn(
+                      "px-3 py-1 text-xs font-semibold border transition-colors disabled:opacity-40 disabled:cursor-not-allowed",
+                      draft.type === type
+                        ? "border-accent-brand/40 bg-accent-brand/10 text-accent-brand"
+                        : "border-border text-muted-foreground hover:border-accent-brand/30",
+                    )}
+                  >
+                    {t(`channels.types.${type}`)}
+                  </button>
+                );
+              })}
+            </div>
+            {draft.type === "email" && !emailAvailable && (
+              <span className="text-[10px] text-destructive">
+                {t("channels.emailUnavailable")}
+              </span>
+            )}
+          </Field>
+        )}
 
         {draft.type === "webhook" && (
           <>
@@ -329,6 +344,111 @@ export function ChannelDialog({
                 onChange={(event) => set("avatarUrl", event.target.value)}
                 placeholder="https://example.com/avatar.png"
                 className="text-sm font-mono"
+              />
+            </Field>
+          </>
+        )}
+
+        {(draft.type === "slack" || draft.type === "teams") && (
+          <Field
+            label={t(`channels.${draft.type}Url`)}
+            hint={t(`channels.${draft.type}Hint`)}
+          >
+            <Input
+              value={draft.url}
+              onChange={(event) => set("url", event.target.value)}
+              placeholder={keep(
+                "url",
+                draft.type === "slack"
+                  ? "https://hooks.slack.com/services/..."
+                  : "https://...logic.azure.com/workflows/...",
+              )}
+              className="text-sm font-mono"
+            />
+          </Field>
+        )}
+
+        {draft.type === "gotify" && (
+          <>
+            <Field label={t("channels.gotifyServer")}>
+              <Input
+                value={draft.url}
+                onChange={(event) => set("url", event.target.value)}
+                placeholder="https://gotify.example.com"
+                className="text-sm font-mono"
+              />
+            </Field>
+            <Field
+              label={t("channels.gotifyToken")}
+              hint={t("channels.gotifyTokenHint")}
+            >
+              <PasswordInput
+                value={draft.token}
+                onChange={(event) => set("token", event.target.value)}
+                placeholder={keep("token", "A...")}
+                className="h-8 pr-8 text-sm font-mono"
+              />
+            </Field>
+          </>
+        )}
+
+        {draft.type === "pushover" && (
+          <>
+            <Field
+              label={t("channels.pushoverToken")}
+              hint={t("channels.pushoverTokenHint")}
+            >
+              <PasswordInput
+                value={draft.token}
+                onChange={(event) => set("token", event.target.value)}
+                placeholder={keep("token", "azGDORePK8gMaC0QOYAMyEEuzJnyUi")}
+                className="h-8 pr-8 text-sm font-mono"
+              />
+            </Field>
+            <Field
+              label={t("channels.pushoverUser")}
+              hint={t("channels.pushoverUserHint")}
+            >
+              <PasswordInput
+                value={draft.userKey}
+                onChange={(event) => set("userKey", event.target.value)}
+                placeholder={keep("userKey", "uQiRzpo4DXghDmr9QzzfQu27cmVRsG")}
+                className="h-8 pr-8 text-sm font-mono"
+              />
+            </Field>
+          </>
+        )}
+
+        {draft.type === "matrix" && (
+          <>
+            <Field label={t("channels.matrixServer")}>
+              <Input
+                value={draft.url}
+                onChange={(event) => set("url", event.target.value)}
+                placeholder="https://matrix.org"
+                className="text-sm font-mono"
+              />
+            </Field>
+            <Field
+              label={t("channels.matrixRoom")}
+              hint={t("channels.matrixRoomHint")}
+            >
+              <Input
+                value={draft.roomId}
+                onChange={(event) => set("roomId", event.target.value)}
+                placeholder="!abcdef:matrix.org"
+                className="text-sm font-mono"
+              />
+            </Field>
+            <Field
+              label={t("channels.matrixToken")}
+              hint={t("channels.matrixTokenHint")}
+            >
+              <PasswordInput
+                value={draft.token}
+                onChange={(event) => set("token", event.target.value)}
+                placeholder={keep("token", "syt_...")}
+                className="h-8 pr-8 text-sm font-mono"
               />
             </Field>
           </>

@@ -55,4 +55,38 @@ export function registerOperations(
       };
     },
   });
+
+  ctx.operations.register("fleets.exec", {
+    describe: (input) => `Would run: ${String(input.command)}`,
+    run: async (input, context) => {
+      if (context.hostId === undefined) throw new Error("This needs a host");
+      const command = String(input.command ?? "").trim();
+      if (!command) throw new Error("A command is required");
+      const timeoutMs = execTimeout(input.timeoutSeconds);
+      const started = Date.now();
+      const { stdout, stderr, code } = await ctx.ssh.withConnection(
+        context.hostId,
+        { pool: "fleet", purpose: "fleet" },
+        (client) => execCommand(client as Client, command, timeoutMs),
+      );
+      return {
+        summary: code === 0 ? "Exited 0" : `Exited with code ${String(code)}`,
+        changed: true,
+        data: {
+          exitCode: code,
+          stdout: stdout.slice(-MAX_OUTPUT),
+          stderr: stderr.slice(-MAX_OUTPUT),
+          truncated: stdout.length > MAX_OUTPUT || stderr.length > MAX_OUTPUT,
+          durationMs: Date.now() - started,
+        },
+      };
+    },
+  });
+}
+
+/** Seconds from the caller, kept between 1 and 600. */
+export function execTimeout(value: unknown): number {
+  const seconds = Number(value);
+  if (!Number.isFinite(seconds) || seconds <= 0) return TIMEOUT_MS;
+  return Math.min(600, Math.max(1, Math.floor(seconds))) * 1000;
 }

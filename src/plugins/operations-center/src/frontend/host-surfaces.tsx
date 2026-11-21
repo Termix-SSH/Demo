@@ -4,29 +4,14 @@ import {
   useHostStatus,
   useSettings,
   useShell,
-  useToast,
   useTranslation,
   type CompanionProps,
   type PluginHostRecord,
   type ShellApi,
 } from "@termix-ssh/plugin-sdk/frontend";
-import {
-  Button,
-  DropdownMenuItem,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  StatusDot,
-  ToolbarBand,
-} from "@termix-ssh/plugin-sdk/ui";
-import { ServerCog, Zap } from "lucide-react";
-import {
-  errorText,
-  getCatalog,
-  runAction,
-  type Catalog,
-  type CatalogAction,
-} from "./api";
+import { Button, StatusDot, ToolbarBand } from "@termix-ssh/plugin-sdk/ui";
+import { ServerCog } from "lucide-react";
+import { getCatalog, type Catalog } from "./api";
 import { useHostAttention } from "./host-attention";
 import { requestSection } from "./host-page-nav";
 import { HostOverview } from "./HostOverview";
@@ -62,20 +47,6 @@ function useCatalog(): Catalog | null {
   return catalog;
 }
 
-function hostActionsOf(
-  catalog: Catalog | null,
-  host: PluginHostRecord | undefined,
-): CatalogAction[] {
-  if (!catalog || !host) return [];
-  return catalog.actions.filter(
-    (action) =>
-      action.available &&
-      action.scope !== "server" &&
-      action.surfaces?.palette !== false &&
-      appliesTo(action, host),
-  );
-}
-
 /** The host row dot while one of its status tiles is not OK. */
 export function useAttentionDot(host: PluginHostRecord) {
   const { values } = useSettings("user");
@@ -85,137 +56,6 @@ export function useAttentionDot(host: PluginHostRecord) {
     tone: attention.tone === "fail" ? ("bad" as const) : ("warn" as const),
     label: attention.lines.join("\n"),
   };
-}
-
-/** Actions that need a form or a target open in Operations instead. */
-function needsForm(action: CatalogAction): boolean {
-  return (
-    action.inputs.length > 0 ||
-    action.risk === "destructive" ||
-    action.scope === "resource"
-  );
-}
-
-/** Actions grouped by plugin, in name order. */
-export function byPlugin(
-  actions: CatalogAction[],
-): { plugin: string; actions: CatalogAction[] }[] {
-  const groups = new Map<string, CatalogAction[]>();
-  for (const action of actions) {
-    const list = groups.get(action.pluginName) ?? [];
-    list.push(action);
-    groups.set(action.pluginName, list);
-  }
-  return [...groups.entries()]
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([plugin, list]) => ({
-      plugin,
-      actions: list.sort((a, b) => a.title.localeCompare(b.title)),
-    }));
-}
-
-/**
- * The host's actions as a submenu, for a layout's host menu, one submenu per
- * plugin. Actions with nothing to fill in run right here; the rest open in
- * Operations with their form.
- */
-export function HostMenuActions({
-  host,
-  shell,
-  framed = false,
-}: {
-  host: PluginHostRecord;
-  shell: Opener;
-  framed?: boolean;
-}) {
-  const { t } = useTranslation();
-  const toast = useToast();
-  const catalog = useCatalog();
-  const actions = useMemo(() => hostActionsOf(catalog, host), [catalog, host]);
-  const groups = useMemo(() => byPlugin(actions), [actions]);
-  if (actions.length === 0) return null;
-
-  // A frame has no parent menu for a submenu, so it opens the host page instead.
-  if (framed)
-    return (
-      <button
-        type="button"
-        className="flex w-full items-center rounded-sm px-2 py-1.5 text-left text-sm hover:bg-accent hover:text-accent-foreground"
-        onClick={(event) => {
-          event.stopPropagation();
-          openHostPage(shell, host);
-        }}
-      >
-        <Zap className="size-3.5 mr-2" />
-        {t("host.actions")}
-      </button>
-    );
-
-  const openForm = (action: CatalogAction) =>
-    shell.openSingletonTab(OPS_TAB, {
-      data: { view: "run", actionId: action.id, hostId: Number(host.id) },
-    });
-
-  const run = async (action: CatalogAction) => {
-    if (needsForm(action)) {
-      openForm(action);
-      return;
-    }
-    try {
-      const outcome = await runAction(action.id, {
-        hostId: Number(host.id),
-        confirmed: true,
-      });
-      if (outcome.status === "success")
-        toast.success(outcome.summary ?? t("state.success"));
-      else if (outcome.status === "pending_approval")
-        toast.info(t("run.waiting"));
-      else toast.error(outcome.error ?? t(`state.${outcome.status}`));
-    } catch (error) {
-      toast.error(errorText(error, t("run.failed")));
-    }
-  };
-
-  const item = (action: CatalogAction) => (
-    <DropdownMenuItem
-      key={action.id}
-      onClick={(event) => {
-        event.stopPropagation();
-        void run(action);
-      }}
-    >
-      <span className="truncate">{action.title}</span>
-      {needsForm(action) && (
-        <span className="ml-auto pl-2 text-muted-foreground">...</span>
-      )}
-    </DropdownMenuItem>
-  );
-
-  return (
-    <DropdownMenuSub>
-      <DropdownMenuSubTrigger>
-        <Zap className="size-3.5 mr-2" />
-        {t("host.actions")}
-      </DropdownMenuSubTrigger>
-      <DropdownMenuSubContent className="max-h-80 max-w-72 overflow-auto">
-        {groups.length === 1
-          ? groups[0].actions.map(item)
-          : groups.map((group) => (
-              <DropdownMenuSub key={group.plugin}>
-                <DropdownMenuSubTrigger>
-                  <span className="truncate">{group.plugin}</span>
-                  <span className="ml-auto pl-2 text-muted-foreground">
-                    {group.actions.length}
-                  </span>
-                </DropdownMenuSubTrigger>
-                <DropdownMenuSubContent className="max-h-80 max-w-72 overflow-auto">
-                  {group.actions.map(item)}
-                </DropdownMenuSubContent>
-              </DropdownMenuSub>
-            ))}
-      </DropdownMenuSubContent>
-    </DropdownMenuSub>
-  );
 }
 
 /** Tab bar button: the host page of the host you are working on. */

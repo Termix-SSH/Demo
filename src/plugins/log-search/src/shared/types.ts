@@ -9,6 +9,13 @@ export const MAX_LIMIT = 2000;
 export const DEFAULT_LIMIT = 500;
 export const MAX_RANGE_MS = 7 * 24 * 3_600_000;
 export const MAX_QUERY = 200;
+/** Most hosts one live follow can watch. */
+export const MAX_FOLLOW_HOSTS = 10;
+/** Most saved searches per person. */
+export const MAX_SAVED = 50;
+
+export const RANGE_IDS = ["15m", "1h", "6h", "24h", "7d"] as const;
+export type RangeId = (typeof RANGE_IDS)[number];
 
 export interface SearchRequest {
   query: string;
@@ -57,6 +64,44 @@ export interface SearchResponse {
   /** More lines matched than the limit allows. */
   truncated: boolean;
   tookMs: number;
+}
+
+/** What a saved search keeps: the search, with a range instead of times. */
+export interface SavedQuery {
+  query: string;
+  regex: boolean;
+  caseSensitive: boolean;
+  hostIds: number[];
+  sources: Source[];
+  range: RangeId;
+  level: LevelFilter;
+  origin: string;
+}
+
+export interface SavedAlert {
+  enabled: boolean;
+  /** Minutes between checks. */
+  everyMinutes: number;
+  /** Alert when a check finds at least this many lines. */
+  minMatches: number;
+  /** Alert channels to send to besides the person's own rules. */
+  channelIds: number[];
+}
+
+export interface SavedSearchInput {
+  name: string;
+  search: SavedQuery;
+  alert: SavedAlert;
+}
+
+export interface SavedSearch extends SavedSearchInput {
+  id: number;
+  /** The last check found enough lines and has not gone quiet yet. */
+  alertActive: boolean;
+  lastRunAt: string | null;
+  lastMatchAt: string | null;
+  lastCount: number | null;
+  lastError: string | null;
 }
 
 export interface SearchableHost {

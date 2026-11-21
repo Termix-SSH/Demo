@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   ComponentSlot,
   ShellConfirmCapture,
@@ -8,6 +9,7 @@ import {
 import { BottomBar } from "../shell/BottomBar";
 import { SimplePalette } from "../shell/SimplePalette";
 import { TopBar } from "../shell/TopBar";
+import { isZenShortcut, toggleZen } from "../shell/zen";
 
 /**
  * A layout for small setups: a top bar over the tab area, and a bottom bar
@@ -16,6 +18,16 @@ import { TopBar } from "../shell/TopBar";
 export function SimpleLayout() {
   const shell = useShellController();
   const mobile = shell.isMobile && !shell.isElectron;
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (!isZenShortcut(event)) return;
+      event.preventDefault();
+      toggleZen();
+    };
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, []);
 
   return (
     <div

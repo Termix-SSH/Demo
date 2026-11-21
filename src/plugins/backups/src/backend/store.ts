@@ -1,5 +1,15 @@
 import { randomUUID } from "node:crypto";
-import { and, desc, eq, inArray, lt, lte, ne } from "drizzle-orm";
+import {
+  and,
+  desc,
+  eq,
+  inArray,
+  isNotNull,
+  lt,
+  lte,
+  ne,
+  or,
+} from "drizzle-orm";
 import type { PluginDatabase } from "@termix-ssh/plugin-sdk/backend";
 import {
   EMPTY_KEEP,
@@ -49,6 +59,14 @@ export interface JobRow {
   alerts: JobAlerts;
   oneFileSystem: boolean;
   backupOptions: string;
+  retries: number;
+  retryDelayMinutes: number;
+  retryCount: number;
+  retryAt: string | null;
+  /** Repository ids the backup is copied to after it is saved. */
+  mirrors: number[];
+  /** Runs restic here and reads the job's host through Termix. */
+  runnerHostId: number | null;
   lastStatus: RunStatus | null;
   lastRunAt: string | null;
   lastSuccessAt: string | null;
@@ -67,6 +85,8 @@ export interface RunRow {
   jobId: number | null;
   jobName: string;
   hostId: number;
+  /** Where restic runs and the run's files live, when not hostId. */
+  resticHostId: number | null;
   repositoryId: number;
   kind: RunKind;
   trigger: RunTrigger;
@@ -131,6 +151,14 @@ function toJob(row: any): JobRow {
     },
     oneFileSystem: Boolean(row.oneFileSystem),
     backupOptions: row.backupOptions ?? "",
+    retries: Number(row.retries ?? 0),
+    retryDelayMinutes: Number(row.retryDelayMinutes ?? 10),
+    retryCount: Number(row.retryCount ?? 0),
+    retryAt: iso(row.retryAt),
+    mirrors: parse<number[]>(row.mirrors, []).filter((id) =>
+      Number.isSafeInteger(id),
+    ),
+    runnerHostId: row.runnerHostId ?? null,
     lastStatus: row.lastStatus ?? null,
     lastRunAt: iso(row.lastRunAt),
     lastSuccessAt: iso(row.lastSuccessAt),
@@ -154,6 +182,7 @@ function toRun(row: any): RunRow {
     jobId: row.jobId ?? null,
     jobName: row.jobName ?? "",
     hostId: row.hostId,
+    resticHostId: row.resticHostId ?? null,
     repositoryId: row.repositoryId,
     kind: row.kind,
     trigger: row.startedVia,
@@ -189,6 +218,8 @@ export type JobFields = Omit<
   | "lastSnapshotId"
   | "lastBytes"
   | "staleAlertAt"
+  | "retryCount"
+  | "retryAt"
 >;
 
 function jobValues(fields: Partial<JobRow>): Record<string, unknown> {
@@ -196,7 +227,11 @@ function jobValues(fields: Partial<JobRow>): Record<string, unknown> {
   for (const [key, value] of Object.entries(fields)) {
     if (value === undefined || key === "id" || key === "uid") continue;
     out[key] =
-      key === "sources" || key === "hooks" || key === "keep" || key === "alerts"
+      key === "sources" ||
+      key === "hooks" ||
+      key === "keep" ||
+      key === "alerts" ||
+      key === "mirrors"
         ? JSON.stringify(value)
         : value;
   }
@@ -399,8 +434,10 @@ export function createStore(db: PluginDatabase, t: Tables) {
         .where(
           and(
             eq(t.jobs.enabled, true),
-            ne(t.jobs.cron, ""),
-            lte(t.jobs.nextRunAt, at),
+            or(
+              and(ne(t.jobs.cron, ""), lte(t.jobs.nextRunAt, at)),
+              and(isNotNull(t.jobs.retryAt), lte(t.jobs.retryAt, at)),
+            ),
           ),
         );
       return rows.map(toJob);
@@ -413,7 +450,12 @@ export function createStore(db: PluginDatabase, t: Tables) {
       )
         .select({ id: t.jobs.id })
         .from(t.jobs)
-        .where(and(eq(t.jobs.enabled, true), ne(t.jobs.cron, "")))
+        .where(
+          and(
+            eq(t.jobs.enabled, true),
+            or(ne(t.jobs.cron, ""), isNotNull(t.jobs.retryAt)),
+          ),
+        )
         .limit(1);
       return rows.length > 0;
     },
@@ -424,6 +466,7 @@ export function createStore(db: PluginDatabase, t: Tables) {
       jobId: number | null;
       jobName: string;
       hostId: number;
+      resticHostId?: number | null;
       repositoryId: number;
       kind: RunKind;
       trigger: RunTrigger;
@@ -434,7 +477,11 @@ export function createStore(db: PluginDatabase, t: Tables) {
       const d = await client();
       await d.insert(t.runs).values({
         uid,
-        ...runValues({ ...fields, target: fields.target ?? null }),
+        ...runValues({
+          ...fields,
+          resticHostId: fields.resticHostId ?? null,
+          target: fields.target ?? null,
+        }),
         status: "running",
         startedAt: now(),
         polledAt: now(),

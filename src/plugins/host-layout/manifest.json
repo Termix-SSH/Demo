@@ -1,0 +1,64 @@
+{
+  "id": "host-layout",
+  "name": "Host Layout",
+  "version": "1.0.0",
+  "description": "A host first Termix layout with a tree of hosts and every tool as a tab on the selected host.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Host-Layout",
+  "docs": "https://docs.termix.site/plugins/host-layout",
+  "category": "Productivity",
+  "icon": "ListTree",
+  "features": [
+    "Tree of folders, hosts, sub hosts, containers and VMs",
+    "Every tool for a host is a tab on that host",
+    "Sessions keep running when you switch hosts",
+    "Full host editor, Manage and Settings screens",
+    "Command palette, plugin panels and a phone view"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.3-0",
+    "api": "^2.9.0"
+  },
+  "capabilities": ["ui:layout", "ui:surface"],
+  "contributes": {
+    "layouts": [
+      {
+        "id": "host",
+        "label": "layout.name",
+        "description": "layout.description"
+      }
+    ],
+    "tabs": [
+      {
+        "id": "dashboard",
+        "titleKey": "tab.dashboard",
+        "icon": "LayoutDashboard",
+        "openFrom": ["rail"]
+      },
+      {
+        "id": "host-manager",
+        "titleKey": "tab.manage",
+        "icon": "LibraryBig",
+        "openFrom": ["rail"]
+      },
+      {
+        "id": "settings",
+        "titleKey": "tab.settings",
+        "icon": "Settings",
+        "openFrom": ["rail"]
+      },
+      {
+        "id": "host-overview",
+        "titleKey": "hostLayout.overview",
+        "icon": "LayoutGrid",
+        "openFrom": ["host-context-menu"]
+      }
+    ]
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

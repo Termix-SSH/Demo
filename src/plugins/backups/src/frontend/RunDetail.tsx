@@ -137,15 +137,19 @@ export function RunDetail({
               <div className="flex flex-col gap-2 py-2">
                 <ProgressBar percent={progress?.percent ?? 0} />
                 <p className="text-xs text-muted-foreground">
-                  {progress
-                    ? t("run.progressLine", {
-                        percent: Math.round(progress.percent * 100),
-                        files: progress.filesDone,
-                        totalFiles: progress.totalFiles,
+                  {progress?.copying
+                    ? t("run.copied", {
                         bytes: formatBytes(progress.bytesDone),
-                        totalBytes: formatBytes(progress.totalBytes),
                       })
-                    : t("run.preparing")}
+                    : progress
+                      ? t("run.progressLine", {
+                          percent: Math.round(progress.percent * 100),
+                          files: progress.filesDone,
+                          totalFiles: progress.totalFiles,
+                          bytes: formatBytes(progress.bytesDone),
+                          totalBytes: formatBytes(progress.totalBytes),
+                        })
+                      : t("run.preparing")}
                   {progress?.secondsRemaining
                     ? ` | ${t("run.left", { time: formatDuration(progress.secondsRemaining) })}`
                     : ""}

@@ -3,9 +3,33 @@ export const CHANNEL_TYPES = [
   "ntfy",
   "discord",
   "telegram",
+  "slack",
+  "teams",
+  "gotify",
+  "pushover",
+  "matrix",
   "email",
+  "mobile",
 ] as const;
 export type ChannelType = (typeof CHANNEL_TYPES)[number];
+
+/** Mobile channels are only made by the Termix app when it links a phone. */
+export const CREATABLE_CHANNEL_TYPES = CHANNEL_TYPES.filter(
+  (type) => type !== "mobile",
+);
+
+export const PUSH_PLATFORMS = ["ios", "android"] as const;
+export type PushPlatform = (typeof PUSH_PLATFORMS)[number];
+
+/** A phone linked through the Termix app. The push token never leaves the server. */
+export interface MobileDevice {
+  installId: string;
+  channelId: number;
+  name: string;
+  platform: PushPlatform;
+  enabled: boolean;
+  minSeverity: Severity;
+}
 
 export const SEVERITIES = ["info", "success", "warning", "critical"] as const;
 export type Severity = (typeof SEVERITIES)[number];

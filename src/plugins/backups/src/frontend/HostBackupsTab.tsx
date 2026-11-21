@@ -19,7 +19,13 @@ import {
   useConfirm,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { HostStatus, JobView, SnapshotView } from "../shared/types";
-import { errorCode, errorMessage, getStatus, installRestic } from "./api";
+import {
+  errorCode,
+  errorMessage,
+  getStatus,
+  installRestic,
+  jobSource,
+} from "./api";
 import { JobEditor } from "./JobEditor";
 import { JobList } from "./JobList";
 import { RunDetail } from "./RunDetail";
@@ -102,9 +108,8 @@ export function HostBackupsTab({ isVisible, host, label }: TabProps) {
     return (
       <PanelFrame>
         <SnapshotBrowser
-          job={overlay.job}
+          source={jobSource(overlay.job)}
           snapshot={overlay.snapshot}
-          localRepo={overlay.job.repositoryKind === "local"}
           onBack={() => setOverlay(null)}
           onRestoreStarted={(runId) => setOverlay({ kind: "run", runId })}
         />

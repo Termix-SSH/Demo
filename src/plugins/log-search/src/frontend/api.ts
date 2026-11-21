@@ -1,5 +1,7 @@
 import type { TermixApp } from "@termix-ssh/plugin-sdk/frontend";
 import type {
+  SavedSearch,
+  SavedSearchInput,
   SearchRequest,
   SearchResponse,
   SearchableHost,
@@ -29,4 +31,37 @@ export async function listHosts(): Promise<SearchableHost[]> {
 
 export async function search(body: SearchRequest): Promise<SearchResponse> {
   return (await api().post<SearchResponse>("/search", body)).data;
+}
+
+export async function listSaved(): Promise<SavedSearch[]> {
+  return (
+    (await api().get<{ saved?: SavedSearch[] }>("/saved")).data.saved ?? []
+  );
+}
+
+export async function createSaved(
+  body: SavedSearchInput,
+): Promise<SavedSearch> {
+  return (await api().post<SavedSearch>("/saved", body)).data;
+}
+
+export async function updateSaved(
+  id: number,
+  body: SavedSearchInput,
+): Promise<SavedSearch> {
+  return (await api().put<SavedSearch>(`/saved/${id}`, body)).data;
+}
+
+export async function deleteSaved(id: number): Promise<void> {
+  await api().delete(`/saved/${id}`);
+}
+
+export async function listChannels(): Promise<
+  Array<{ id: number; name: string }>
+> {
+  return (
+    await api().get<{ channels: Array<{ id: number; name: string }> }>(
+      "/channels",
+    )
+  ).data.channels;
 }

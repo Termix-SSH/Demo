@@ -1,7 +1,7 @@
 import type { Router } from "express";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import { createAnnouncements, REFRESH_MS } from "./announcements.js";
-import { createHub } from "./hub.js";
+import { TOPIC_ALERT_FIRED, createHub } from "./hub.js";
 import { readSmtp, sendMail } from "./mail.js";
 import { createAlertsRepository } from "./repository.js";
 import { registerRoutes } from "./routes.js";
@@ -50,7 +50,14 @@ export async function activate(ctx: PluginContext) {
     },
   });
 
-  ctx.notify.serve(createHub({ repository, stream, senders }));
+  ctx.notify.serve(
+    createHub({
+      repository,
+      stream,
+      senders,
+      onFired: (event) => ctx.events.emit(TOPIC_ALERT_FIRED, event),
+    }),
+  );
   registerOperations(ctx, repository);
 
   registerRoutes(ctx.http.router<Router>(), {

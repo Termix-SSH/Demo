@@ -1,7 +1,7 @@
 {
   "id": "log-search",
   "name": "Log Search",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Search logs from the journal, log files and Docker containers across many hosts at once.",
   "author": {
     "name": "Termix"
@@ -15,8 +15,9 @@
   "features": [
     "Search the systemd journal, log files and Docker logs on many hosts at once",
     "Plain text or regular expression search with a time range and level filter",
+    "Follow new lines live on up to 10 hosts, with the same filters",
+    "Save searches and get an alert when one finds matching lines",
     "One merged result list with a status line for every host",
-    "Live search over SSH, nothing is stored or indexed",
     "A search action for Operations, the assistant and the CLI"
   ],
   "env": [],
@@ -31,7 +32,10 @@
     "ssh:connect",
     "network:serve",
     "ui:surface",
-    "operations:provide"
+    "operations:provide",
+    "db:own",
+    "notify:send",
+    "users:impersonate"
   ],
   "contributes": {
     "tabs": [
@@ -240,10 +244,45 @@
             "assistant": true,
             "mcp": true
           }
+        },
+        {
+          "id": "log-search.saved-run",
+          "titleKey": "operations.savedRun.title",
+          "icon": "ScrollText",
+          "scope": "server",
+          "risk": "read",
+          "permission": "use",
+          "inputs": [
+            {
+              "key": "name",
+              "type": "string",
+              "labelKey": "operations.savedRun.name",
+              "required": true
+            }
+          ],
+          "outputs": [
+            {
+              "key": "text",
+              "type": "textarea",
+              "labelKey": "operations.search.text"
+            }
+          ],
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
         }
       ]
     }
   },
   "locales": "locales",
-  "platforms": ["linux", "win32", "darwin"]
+  "platforms": ["linux", "win32", "darwin"],
+  "sandbox": {
+    "schedules": [
+      {
+        "id": "watch",
+        "every": 60000
+      }
+    ]
+  }
 }

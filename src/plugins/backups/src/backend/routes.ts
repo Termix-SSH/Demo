@@ -1,11 +1,14 @@
 import { randomBytes } from "node:crypto";
 import type { Request, Response, Router } from "express";
-import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
+import type {
+  PluginContext,
+  PluginNotificationChannel,
+} from "@termix-ssh/plugin-sdk/backend";
 import type { JobInput, JobView, RepositoryInput } from "../shared/types.js";
 import { nextRun, type Engine } from "./engine.js";
 import { BackupsError } from "./errors.js";
 import { streamDump } from "./download.js";
-import { parseRcloneConfig } from "./repo-env.js";
+import { mirrorConflict, parseRcloneConfig } from "./repo-env.js";
 import type { JobRow, RepoRow, Store } from "./store.js";
 import * as v from "./validate.js";
 import { jobView, repoView, runDetail, runView } from "./views.js";
@@ -142,10 +145,31 @@ export function registerRoutes(
         );
       });
     }
-    if (repo.kind === "local" && repo.location.hostId !== hostId) {
+    const runnerHostId =
+      input.runnerHostId && input.runnerHostId !== hostId
+        ? input.runnerHostId
+        : null;
+    if (runnerHostId && runnerHostId !== existing?.runnerHostId) {
+      await gate(runnerHostId, "edit");
+    }
+    const resticHost = runnerHostId ?? hostId;
+    if (repo.kind === "local" && repo.location.hostId !== resticHost) {
       throw new BackupsError(
-        "This repository is a folder on another host. Pick a repository this host can reach.",
+        runnerHostId
+          ? "This repository is a folder on another host. Pick a repository the host that runs restic can reach."
+          : "This repository is a folder on another host. Pick a repository this host can reach.",
       );
+    }
+    for (const id of input.mirrors) {
+      // A mirror someone else added stays, but only an owner can add one.
+      const mirror = existing?.mirrors.includes(id)
+        ? await store.getRepo(id)
+        : await ownRepo(id).catch(() => null);
+      if (!mirror) {
+        throw new BackupsError("Pick your own repositories as mirrors", 400);
+      }
+      const conflict = mirrorConflict(repo, mirror, resticHost);
+      if (conflict) throw new BackupsError(`${mirror.name}: ${conflict}`, 400);
     }
     const old: Record<string, string> = {};
     if (existing?.secretsSealed) {
@@ -186,6 +210,10 @@ export function registerRoutes(
       alerts: input.alerts,
       oneFileSystem: input.oneFileSystem,
       backupOptions: input.backupOptions,
+      retries: input.retries,
+      retryDelayMinutes: input.retryDelayMinutes,
+      mirrors: input.mirrors,
+      runnerHostId,
       nextRunAt: nextRun(input),
       updatedBy: userId,
     };
@@ -389,6 +417,31 @@ export function registerRoutes(
 
   /**
    * @openapi
+   * /plugin-api/backups/alert-channels:
+   *   get:
+   *     summary: Your alert channels
+   *     description: Lists the signed in user's alert channels without their settings, for picking where a job's alerts go. Empty when no alerts plugin is on.
+   *     tags:
+   *       - Backups
+   *     responses:
+   *       200:
+   *         description: The channels.
+   */
+  router.get(
+    "/alert-channels",
+    handle(async () => {
+      const channels = await ctx.notify.channels().catch(() => []);
+      return channels.map((c: PluginNotificationChannel) => ({
+        id: c.id,
+        name: c.name,
+        type: c.type,
+        enabled: c.enabled,
+      }));
+    }),
+  );
+
+  /**
+   * @openapi
    * /plugin-api/backups/hosts/{hostId}/jobs:
    *   get:
    *     summary: Jobs on a host
@@ -510,6 +563,9 @@ export function registerRoutes(
     audited("job.update", async (req) => {
       const existing = await jobFor(req, "edit");
       const job = await saveJob(existing.hostId, v.job(req.body), existing);
+      if (engine.resticHost(existing) !== engine.resticHost(job)) {
+        engine.dropCopy(existing);
+      }
       return {
         hostId: job.hostId,
         name: job.name,
@@ -525,6 +581,7 @@ export function registerRoutes(
         throw new BackupsError("Stop the running backup first", 409);
       }
       await store.deleteJob(job.id);
+      engine.dropCopy(job);
       return { hostId: job.hostId, name: job.name };
     }),
   );
@@ -659,7 +716,7 @@ export function registerRoutes(
         const env = await engine.dumpEnv(job, snapshot);
         audit("download", hostId, `${job.name}: ${target}`);
         await streamDump(ctx, res, {
-          hostId: job.hostId,
+          hostId: engine.resticHost(job),
           env,
           snapshot,
           path: target,
@@ -1005,7 +1062,10 @@ export function registerRoutes(
     "/repositories/:id",
     audited("repository.delete", async (req) => {
       const repo = await ownRepo(Number(req.params.id));
-      const jobs = await store.listJobs({ repositoryId: repo.id });
+      const jobs = [
+        ...(await store.listJobs({ repositoryId: repo.id })),
+        ...(await store.listJobs()).filter((j) => j.mirrors.includes(repo.id)),
+      ];
       if (jobs.length) {
         throw new BackupsError(
           `${jobs.length} job${jobs.length === 1 ? "" : "s"} still use this repository`,
@@ -1104,6 +1164,224 @@ export function registerRoutes(
       await gate(hostId, "edit");
       await engine.unlockRepo(repo, hostId);
       return { ok: true };
+    }),
+  );
+
+  /** The owner's repository and the host restic runs on to read it. */
+  async function repoReader(req: Request) {
+    const repo = await ownRepo(Number(req.params.id));
+    const hostId =
+      repo.kind === "local" ? repo.location.hostId! : Number(req.query.hostId);
+    if (!Number.isSafeInteger(hostId) || hostId < 1) {
+      throw new BackupsError("Pick a host to read the repository from", 400);
+    }
+    await gate(hostId, "edit");
+    return { repo, hostId };
+  }
+
+  /**
+   * @openapi
+   * /plugin-api/backups/repositories/{id}/snapshots:
+   *   get:
+   *     summary: Every snapshot in a repository
+   *     description: Lists all snapshots in one of your repositories, also ones Termix did not make, read from a host you can edit. A folder repository is always read from its own host.
+   *     tags:
+   *       - Backups
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: integer
+   *       - in: query
+   *         name: hostId
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: The snapshots.
+   */
+  router.get(
+    "/repositories/:id/snapshots",
+    handle(async (req) => {
+      const { repo, hostId } = await repoReader(req);
+      return engine.repoSnapshots(repo, hostId);
+    }),
+  );
+
+  /**
+   * @openapi
+   * /plugin-api/backups/repositories/{id}/snapshots/{snapshotId}/files:
+   *   get:
+   *     summary: Files in a repository snapshot
+   *     tags:
+   *       - Backups
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: integer
+   *       - in: path
+   *         name: snapshotId
+   *         required: true
+   *         schema:
+   *           type: string
+   *       - in: query
+   *         name: hostId
+   *         schema:
+   *           type: integer
+   *       - in: query
+   *         name: path
+   *         schema:
+   *           type: string
+   *     responses:
+   *       200:
+   *         description: The folder's entries.
+   */
+  router.get(
+    "/repositories/:id/snapshots/:snapshotId/files",
+    handle(async (req) => {
+      const { repo, hostId } = await repoReader(req);
+      const dir = req.query.path ? v.absPath(req.query.path) : "/";
+      return engine.repoLs(
+        repo,
+        hostId,
+        v.snapshotId(req.params.snapshotId),
+        dir,
+      );
+    }),
+  );
+
+  /**
+   * @openapi
+   * /plugin-api/backups/repositories/{id}/snapshots/{snapshotId}/download:
+   *   get:
+   *     summary: Download from a repository snapshot
+   *     description: Streams one file, or a folder as a zip file, out of a snapshot in one of your repositories.
+   *     tags:
+   *       - Backups
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: integer
+   *       - in: path
+   *         name: snapshotId
+   *         required: true
+   *         schema:
+   *           type: string
+   *       - in: query
+   *         name: hostId
+   *         schema:
+   *           type: integer
+   *       - in: query
+   *         name: path
+   *         required: true
+   *         schema:
+   *           type: string
+   *       - in: query
+   *         name: folder
+   *         schema:
+   *           type: boolean
+   *     responses:
+   *       200:
+   *         description: The file or zip file.
+   */
+  router.get(
+    "/repositories/:id/snapshots/:snapshotId/download",
+    async (req, res) => {
+      let hostId: number | null = null;
+      const path = String(req.query.path ?? "");
+      try {
+        const reader = await repoReader(req);
+        hostId = reader.hostId;
+        const snapshot = v.snapshotId(req.params.snapshotId);
+        const target = v.absPath(path);
+        const env = await engine.repoEnv(reader.repo, hostId);
+        audit("download", hostId, `${reader.repo.name}: ${target}`);
+        await streamDump(ctx, res, {
+          hostId,
+          env,
+          snapshot,
+          path: target,
+          folder: req.query.folder === "1" || req.query.folder === "true",
+        });
+      } catch (error) {
+        if (hostId) audit("download", hostId, path, error);
+        fail(ctx, res, error);
+      }
+    },
+  );
+
+  /**
+   * @openapi
+   * /plugin-api/backups/repositories/{id}/snapshots/{snapshotId}/restore:
+   *   post:
+   *     summary: Restore from a repository snapshot
+   *     description: Restores a snapshot of one of your repositories, also one Termix did not make, onto any host you can edit. The host needs restic and must reach the repository.
+   *     tags:
+   *       - Backups
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: integer
+   *       - in: path
+   *         name: snapshotId
+   *         required: true
+   *         schema:
+   *           type: string
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             required: [hostId]
+   *             properties:
+   *               hostId:
+   *                 type: integer
+   *               path:
+   *                 type: string
+   *               overwrite:
+   *                 type: string
+   *               includes:
+   *                 type: array
+   *                 items:
+   *                   type: string
+   *     responses:
+   *       200:
+   *         description: The restore run.
+   */
+  router.post(
+    "/repositories/:id/snapshots/:snapshotId/restore",
+    audited("restore", async (req) => {
+      const repo = await ownRepo(Number(req.params.id));
+      const snapshot = v.snapshotId(req.params.snapshotId);
+      const { hostId, ...target } = v.restoreTarget(req.body);
+      if (hostId === null) throw new BackupsError("Pick a host to restore to");
+      if (repo.kind === "local" && repo.location.hostId !== hostId) {
+        throw new BackupsError(
+          "A folder repository can only be restored on its own host",
+        );
+      }
+      await gate(hostId, "edit");
+      const run = await engine.restoreFrom(
+        repo,
+        null,
+        snapshot,
+        target,
+        hostId,
+        actor(),
+      );
+      return {
+        hostId,
+        name: `${repo.name} ${snapshot.slice(0, 8)} to ${target.path}`,
+        result: runView(run),
+      };
     }),
   );
 }

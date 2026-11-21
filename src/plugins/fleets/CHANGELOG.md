@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0
+
+### Added
+
+- Run a command and report: runs one command on a host and gives back its output and exit code, even when it fails. Offered to AI tools through the Operations Center MCP server, where each run waits for approval by default
+
 ## 1.2.1
 
 ### Changed

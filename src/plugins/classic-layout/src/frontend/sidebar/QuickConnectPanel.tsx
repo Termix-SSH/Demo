@@ -172,8 +172,10 @@ export function QuickConnectPanel({ onConnect }: QuickConnectPanelProps) {
   const connect = (action?: HostActionDef) => {
     if (!host.trim()) return;
     if (!isDesktop && !username) return;
-    const hostConfig = buildHost();
-    const target = action ?? quickConnectTargets(allActions, hostConfig)[0];
+    // The host plugins already answered for, so Enter finds what the
+    // Connect button shows.
+    const hostConfig = previewHost;
+    const target = action ?? targets[0];
     if (!target?.tabType) {
       toast.error(t("newUi.sidebar.quickConnect.noTarget"));
       return;

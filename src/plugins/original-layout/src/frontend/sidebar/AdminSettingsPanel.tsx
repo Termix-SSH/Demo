@@ -1,0 +1,1009 @@
+import {
+  useConfirm,
+  getNotificationPrivateEndpoints,
+  setNotificationPrivateEndpoints as setNotificationPrivateEndpointsApi,
+  getUserList,
+  getSessions,
+  getRoles,
+  getApiKeys,
+  createApiKey,
+  deleteUser,
+  revokeAllUserSessions,
+  createRole,
+  adminCreateUser,
+  isAdminHoldTicket,
+  makeUserAdmin,
+  removeAdminStatus,
+  getRegistrationAllowed,
+  updateRegistrationAllowed,
+  getPasswordLoginAllowed,
+  updatePasswordLoginAllowed,
+  getPasswordResetAllowed,
+  updatePasswordResetAllowed,
+  getSessionTimeout,
+  updateSessionTimeout,
+  getLogLevel,
+  updateLogLevel,
+  getExternalAutoProvision,
+  updateExternalAutoProvision,
+  getCredentialStorage,
+  getSecondFactorAfterExternalLogin,
+  updateCredentialStorage,
+  updateSecondFactorAfterExternalLogin,
+  isElectron,
+  getUserRoles,
+  getTlsStatus,
+  uploadTlsCertificate,
+  type TlsStatus,
+  type ApiKey,
+  type CreatedApiKey,
+  type Role,
+  type UserRole,
+  type AdminSection,
+  type Host,
+  getDatabaseTransferUrl,
+  usePermissions,
+} from "@termix-ssh/plugin-sdk/ui";
+import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
+import { useState, useEffect, useRef } from "react";
+import {
+  FeatureSettingsSection,
+  featureSectionId,
+  useFeatureSettings,
+  type FeatureSectionId,
+} from "../settings/FeatureSettingsSections";
+import {
+  AdminRolesSection,
+  AdminSessionsSection,
+  AdminUsersSection,
+  type AdminSession,
+  type AdminUser,
+} from "./AdminManagementSections";
+import { toast } from "sonner";
+import {
+  AdminDatabaseSection,
+  AdminGeneralSettingsSection,
+  AdminHostDefaultsSection,
+  AdminSSLSection,
+} from "./AdminSettingsSections";
+import { AdminApiKeysSection } from "./AdminApiKeysSection";
+import { AdminAuditLogSection } from "./AdminAuditLogSection";
+import {
+  AdminCreateUserDialog,
+  AdminEditUserDialog,
+  AdminLinkAccountDialog,
+  AdminUnlinkAccountDialog,
+} from "./AdminUserDialogs";
+import { AdminUserManagePanel } from "./AdminUserManagePanel";
+import { AdminInvitesSection } from "./AdminInvitesSection";
+import { AdminAccessReviewSection } from "./AdminAccessReviewSection";
+import { AdminAccountSettingsSection } from "./AdminAccountSettingsSection";
+import { hasUserAdminApi, type UserStatusFilter } from "./user-admin-api";
+
+type ApiErrorLike = {
+  response?: {
+    data?: {
+      error?: string;
+    };
+  };
+};
+
+function apiErrorMessage(error: unknown, fallback: string) {
+  return (error as ApiErrorLike).response?.data?.error || fallback;
+}
+
+const USERS_PAGE_SIZE = 25;
+// Older SDK types don't list it yet.
+const ACCESS_SECTION = "access" as AdminSection;
+
+/** Fields a 26.11.2 core adds to the user list; absent on older ones. */
+function readAccountFields(user: object) {
+  const extra = user as {
+    display_name?: string | null;
+    email?: string | null;
+    disabled?: boolean;
+    disabled_reason?: string | null;
+    last_login_at?: string | null;
+  };
+  return {
+    displayName: extra.display_name ?? null,
+    email: extra.email ?? null,
+    disabled: !!extra.disabled,
+    disabledReason: extra.disabled_reason ?? null,
+    lastLoginAt: extra.last_login_at ?? null,
+  };
+}
+
+export function AdminSettingsPanel({
+  onEditingChange,
+  onOpenHostTab,
+  section,
+}: {
+  onEditingChange?: (editing: boolean) => void;
+  onOpenHostTab?: (host: Host) => void;
+  /** Shows just this section, flat, as a Settings page. */
+  section?: AdminSection;
+} = {}) {
+  const { t } = useTranslation();
+  const confirm = useConfirm();
+  const [openSections, setOpenSections] = useState<
+    Set<AdminSection | FeatureSectionId>
+  >(() => new Set(["general"]));
+  const featureSettings = useFeatureSettings("admin");
+  const [manageUser, setManageUser] = useState<AdminUser | null>(null);
+  const [allowRegistration, setAllowRegistration] = useState(true);
+  const [allowPasswordLogin, setAllowPasswordLogin] = useState(true);
+  const [passwordLoginForced, setPasswordLoginForced] = useState(false);
+  const [allowPasswordReset, setAllowPasswordReset] = useState(true);
+  const [sessionTimeout, setSessionTimeout] = useState("24");
+  const [logLevel, setLogLevel] = useState("info");
+  const [notificationPrivateEndpoints, setNotificationPrivateEndpoints] =
+    useState<string[]>([]);
+
+  // External login state
+  const [externalAutoProvision, setExternalAutoProvision] = useState(false);
+  const [credentialStorage, setCredentialStorage] = useState(true);
+  const [secondFactorAfterExternalLogin, setSecondFactorAfterExternalLogin] =
+    useState(false);
+
+  // Create user dialog
+  const [createUserOpen, setCreateUserOpen] = useState(false);
+  const [newUsername, setNewUsername] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [createUserLoading, setCreateUserLoading] = useState(false);
+
+  // Edit user dialog
+  const [editUserOpen, setEditUserOpen] = useState(false);
+  const [editUserTarget, setEditUserTarget] = useState<AdminUser | null>(null);
+  const [editUserLoading, setEditUserLoading] = useState(false);
+  const [editUserRoles, setEditUserRoles] = useState<UserRole[]>([]);
+  const [editUserRolesLoading, setEditUserRolesLoading] = useState(false);
+
+  // Link account dialog
+  const [linkAccountOpen, setLinkAccountOpen] = useState(false);
+  const [linkAccountTarget, setLinkAccountTarget] = useState<{
+    id: string;
+    username: string;
+    isExternal: boolean;
+  } | null>(null);
+
+  // Unlink account dialog
+  const [unlinkAccountOpen, setUnlinkAccountOpen] = useState(false);
+  const [unlinkAccountTarget, setUnlinkAccountTarget] = useState<{
+    id: string;
+    username: string;
+  } | null>(null);
+
+  // Create role form
+  const [showCreateRole, setShowCreateRole] = useState(false);
+  const [newRoleName, setNewRoleName] = useState("");
+  const [newRoleDisplayName, setNewRoleDisplayName] = useState("");
+  const [newRoleDescription, setNewRoleDescription] = useState("");
+  const [createRoleLoading, setCreateRoleLoading] = useState(false);
+
+  // Create API key form
+  const [showCreateKey, setShowCreateKey] = useState(false);
+  const [newKeyName, setNewKeyName] = useState("");
+  const [newKeyUserId, setNewKeyUserId] = useState("");
+  const [newKeyExpiry, setNewKeyExpiry] = useState("");
+  const [newKeyScope, setNewKeyScope] = useState("read");
+  const [newKeyLoading, setNewKeyLoading] = useState(false);
+  const [createdKeyToken, setCreatedKeyToken] = useState<string | null>(null);
+
+  // Import state
+  const [importFile, setImportFile] = useState<File | null>(null);
+  const [exportLoading, setExportLoading] = useState(false);
+  const [importLoading, setImportLoading] = useState(false);
+
+  const [tlsStatus, setTlsStatus] = useState<TlsStatus | null>(null);
+  const [manualCertDraft, setManualCertDraft] = useState("");
+  const [manualKeyDraft, setManualKeyDraft] = useState("");
+  const [manualUploading, setManualUploading] = useState(false);
+
+  const [users, setUsers] = useState<AdminUser[]>([]);
+  const [userSearch, setUserSearch] = useState("");
+  const [userPage, setUserPage] = useState(0);
+  const [userTotal, setUserTotal] = useState(0);
+  const [userStatus, setUserStatus] = useState<UserStatusFilter | "">("");
+  const { has, isAdmin } = usePermissions();
+  const canManageUsers = has("admin.users.manage");
+  // Cores before 26.11.2 can't filter users by state.
+  const canFilterStatus = hasUserAdminApi("disableUser");
+  const usersRequestRef = useRef(0);
+  const [sessions, setSessions] = useState<AdminSession[]>([]);
+  const [roles, setRoles] = useState<Role[]>([]);
+  const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
+
+  useEffect(() => {
+    loadSessions();
+    loadRoles();
+    loadApiKeys();
+    loadGeneralSettings();
+  }, []);
+
+  // Debounced so typing in the search box does not fire a request per keystroke.
+  useEffect(() => {
+    const timer = setTimeout(loadUsers, userSearch ? 250 : 0);
+    return () => clearTimeout(timer);
+  }, [userSearch, userPage, userStatus]);
+
+  // A new search term starts again from the first page.
+  useEffect(() => {
+    setUserPage(0);
+  }, [userSearch, userStatus]);
+
+  // The panel stays mounted across Settings pages, so an open user view
+  // would otherwise replace whichever section is picked next.
+  useEffect(() => {
+    setManageUser(null);
+  }, [section]);
+
+  useEffect(() => {
+    onEditingChange?.(manageUser !== null);
+    return () => onEditingChange?.(false);
+  }, [manageUser, onEditingChange]);
+
+  useEffect(() => {
+    if (editUserOpen && editUserTarget) {
+      setEditUserRoles([]);
+      setEditUserRolesLoading(true);
+      getUserRoles(editUserTarget.id)
+        .then(({ roles: r }) => setEditUserRoles(r))
+        .catch(() => {})
+        .finally(() => setEditUserRolesLoading(false));
+    }
+  }, [editUserOpen, editUserTarget]);
+
+  function loadUsers() {
+    // Paged server-side so an install with thousands of accounts does not
+    // ship the whole directory to render one screen of it.
+    const request = ++usersRequestRef.current;
+    getUserList({
+      search: userSearch.trim() || undefined,
+      limit: USERS_PAGE_SIZE,
+      offset: userPage * USERS_PAGE_SIZE,
+      ...(userStatus ? { status: userStatus } : {}),
+    } as Parameters<typeof getUserList>[0])
+      .then(({ users: u, total }) => {
+        // A slower answer for an older search must not replace a newer one.
+        if (request !== usersRequestRef.current) return;
+        setUsers(
+          u.map((user) => ({
+            id: user.userId,
+            username: user.username,
+            isAdmin: user.is_admin,
+            isExternal: user.is_external ?? false,
+            passwordHash: user.password_hash,
+            dataUnlocked: user.data_unlocked,
+            secondFactorEnabled: user.second_factor_enabled,
+            ...readAccountFields(user),
+          })),
+        );
+        setUserTotal(total ?? u.length);
+      })
+      .catch(() => {});
+  }
+
+  function loadSessions() {
+    getSessions()
+      .then(({ sessions: s }) => setSessions(s))
+      .catch(() => {});
+  }
+
+  function loadRoles() {
+    getRoles()
+      .then(({ roles: r }) => setRoles(r))
+      .catch(() => {});
+  }
+
+  function loadApiKeys() {
+    getApiKeys()
+      .then(({ apiKeys: k }) => setApiKeys(k))
+      .catch(() => {});
+  }
+
+  async function loadGeneralSettings() {
+    try {
+      const [
+        reg,
+        pwLogin,
+        pwReset,
+        timeout,
+        level,
+        oidcProv,
+        secondFactorExternal,
+        credentialStorageSetting,
+        notificationEndpoints,
+      ] = await Promise.allSettled([
+        getRegistrationAllowed(),
+        getPasswordLoginAllowed(),
+        getPasswordResetAllowed(),
+        getSessionTimeout(),
+        getLogLevel(),
+        getExternalAutoProvision(),
+        getSecondFactorAfterExternalLogin(),
+        getCredentialStorage(),
+        getNotificationPrivateEndpoints(),
+      ]);
+
+      if (reg.status === "fulfilled") setAllowRegistration(reg.value.allowed);
+      if (pwLogin.status === "fulfilled") {
+        // When forced on, the setting itself is off; show that and warn.
+        setPasswordLoginForced(!!pwLogin.value.forced);
+        setAllowPasswordLogin(
+          pwLogin.value.forced ? false : pwLogin.value.allowed,
+        );
+      }
+      if (oidcProv.status === "fulfilled")
+        setExternalAutoProvision(oidcProv.value.enabled);
+      if (secondFactorExternal.status === "fulfilled")
+        setSecondFactorAfterExternalLogin(secondFactorExternal.value.enabled);
+      if (credentialStorageSetting.status === "fulfilled")
+        setCredentialStorage(credentialStorageSetting.value.enabled);
+      if (pwReset.status === "fulfilled") setAllowPasswordReset(pwReset.value);
+      if (timeout.status === "fulfilled")
+        setSessionTimeout(String(timeout.value.timeoutHours));
+
+      if (level.status === "fulfilled") setLogLevel(level.value.level);
+      if (notificationEndpoints.status === "fulfilled") {
+        setNotificationPrivateEndpoints(notificationEndpoints.value);
+      }
+    } catch {
+      // non-fatal
+    }
+
+    getTlsStatus()
+      .then((s) => setTlsStatus(s))
+      .catch(() => {});
+  }
+
+  function toggle(id: AdminSection | FeatureSectionId) {
+    setOpenSections((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  async function handleToggleRegistration() {
+    const newVal = !allowRegistration;
+    setAllowRegistration(newVal);
+    try {
+      await updateRegistrationAllowed(newVal);
+    } catch {
+      setAllowRegistration(!newVal);
+      toast.error(t("admin.updateRegistrationFailed"));
+    }
+  }
+
+  async function handleTogglePasswordLogin() {
+    const newVal = !allowPasswordLogin;
+    setAllowPasswordLogin(newVal);
+    try {
+      const answer: unknown = await updatePasswordLoginAllowed(newVal);
+      if (isAdminHoldTicket(answer)) {
+        setAllowPasswordLogin(!newVal);
+        toast.info(t("admin.changeHeld", { minutes: answer.minutes }));
+      }
+    } catch (e) {
+      setAllowPasswordLogin(!newVal);
+      const msg = (e as ApiErrorLike).response?.data?.error;
+      toast.error(msg || t("admin.updatePasswordLoginFailed"));
+    }
+  }
+
+  async function handleToggleExternalAutoProvision() {
+    const newVal = !externalAutoProvision;
+    setExternalAutoProvision(newVal);
+    try {
+      await updateExternalAutoProvision(newVal);
+    } catch {
+      setExternalAutoProvision(!newVal);
+      toast.error(t("admin.updateExternalAutoProvisionFailed"));
+    }
+  }
+
+  async function handleToggleCredentialStorage() {
+    const newVal = !credentialStorage;
+    setCredentialStorage(newVal);
+    try {
+      await updateCredentialStorage(newVal);
+    } catch {
+      setCredentialStorage(!newVal);
+      toast.error(t("admin.updateCredentialStorageFailed"));
+    }
+  }
+
+  async function handleToggleSecondFactorAfterExternalLogin() {
+    const newVal = !secondFactorAfterExternalLogin;
+    setSecondFactorAfterExternalLogin(newVal);
+    try {
+      await updateSecondFactorAfterExternalLogin(newVal);
+    } catch {
+      setSecondFactorAfterExternalLogin(!newVal);
+      toast.error(t("admin.updateSecondFactorAfterExternalLoginFailed"));
+    }
+  }
+
+  async function handleTogglePasswordReset() {
+    const newVal = !allowPasswordReset;
+    setAllowPasswordReset(newVal);
+    try {
+      await updatePasswordResetAllowed(newVal);
+    } catch {
+      setAllowPasswordReset(!newVal);
+      toast.error(t("admin.updatePasswordResetFailed"));
+    }
+  }
+
+  async function handleSaveNotificationPrivateEndpoints(hosts: string[]) {
+    const previous = notificationPrivateEndpoints;
+    setNotificationPrivateEndpoints(hosts);
+    try {
+      setNotificationPrivateEndpoints(
+        await setNotificationPrivateEndpointsApi(hosts),
+      );
+    } catch {
+      setNotificationPrivateEndpoints(previous);
+      toast.error(t("admin.updateNotificationEndpointsFailed"));
+    }
+  }
+
+  async function handleSaveSessionTimeout() {
+    const hours = parseInt(sessionTimeout, 10);
+    if (isNaN(hours) || hours < 1 || hours > 720) {
+      toast.error(t("admin.sessionTimeoutRange2"));
+      return;
+    }
+    try {
+      await updateSessionTimeout(hours);
+      toast.success(t("admin.sessionTimeoutSaved"));
+    } catch {
+      toast.error(t("admin.sessionTimeoutSaveFailed"));
+    }
+  }
+
+  async function handleSaveLogLevel(level: string) {
+    setLogLevel(level);
+    try {
+      await updateLogLevel(level);
+    } catch {
+      toast.error(t("admin.logLevelUpdateFailed"));
+    }
+  }
+
+  async function handleManualSslUpload() {
+    if (!manualCertDraft.trim() || !manualKeyDraft.trim()) {
+      toast.error(t("admin.sslManualRequiresFields"));
+      return;
+    }
+    setManualUploading(true);
+    try {
+      const result = await uploadTlsCertificate({
+        certificate: manualCertDraft,
+        privateKey: manualKeyDraft,
+      });
+      setTlsStatus(result);
+      setManualCertDraft("");
+      setManualKeyDraft("");
+      toast.success(t("admin.sslManualUploadSuccess"));
+      if (result.reloadMessage) {
+        toast.info(result.reloadMessage);
+      }
+    } catch (e) {
+      toast.error(apiErrorMessage(e, t("admin.sslManualUploadFailed")));
+    } finally {
+      setManualUploading(false);
+    }
+  }
+
+  async function handleCreateUser() {
+    if (!newUsername.trim() || !newPassword.trim()) {
+      toast.error(t("admin.createUserRequired"));
+      return;
+    }
+    if (newPassword.length < 6) {
+      toast.error(t("admin.createUserPasswordTooShort"));
+      return;
+    }
+    setCreateUserLoading(true);
+    try {
+      await adminCreateUser(newUsername.trim(), newPassword);
+      toast.success(t("admin.createUserSuccess", { username: newUsername }));
+      setCreateUserOpen(false);
+      setNewUsername("");
+      setNewPassword("");
+      loadUsers();
+    } catch (e: unknown) {
+      toast.error(apiErrorMessage(e, t("admin.createUserFailed")));
+    } finally {
+      setCreateUserLoading(false);
+    }
+  }
+
+  async function handleToggleAdmin(user: AdminUser) {
+    setEditUserLoading(true);
+    try {
+      if (user.isAdmin) {
+        await removeAdminStatus(user.id);
+        setEditUserTarget((prev) =>
+          prev ? { ...prev, isAdmin: false } : prev,
+        );
+        setUsers((prev) =>
+          prev.map((u) => (u.id === user.id ? { ...u, isAdmin: false } : u)),
+        );
+      } else {
+        const answer = await makeUserAdmin(user.id);
+        if (isAdminHoldTicket(answer)) {
+          toast.info(t("admin.changeHeld", { minutes: answer.minutes }));
+          return;
+        }
+        setEditUserTarget((prev) => (prev ? { ...prev, isAdmin: true } : prev));
+        setUsers((prev) =>
+          prev.map((u) => (u.id === user.id ? { ...u, isAdmin: true } : u)),
+        );
+      }
+    } catch {
+      toast.error(t("admin.updateAdminStatusFailed"));
+    } finally {
+      setEditUserLoading(false);
+    }
+  }
+
+  async function handleRevokeUserSessions(userId: string) {
+    try {
+      await revokeAllUserSessions(userId);
+      toast.success(t("admin.allSessionsRevoked"));
+      loadSessions();
+    } catch {
+      toast.error(t("admin.revokeSessionsFailed"));
+    }
+  }
+
+  async function handleDeleteEditUser() {
+    if (!editUserTarget) return;
+    const ok = await confirm({
+      title: t("admin.deleteUserConfirm", {
+        username: editUserTarget.username,
+      }),
+      description: t("manage.cannotBeUndone"),
+    });
+    if (!ok) return;
+    setEditUserLoading(true);
+    try {
+      await deleteUser(editUserTarget.username);
+      setUsers((prev) => prev.filter((u) => u.id !== editUserTarget.id));
+      setEditUserOpen(false);
+      setEditUserTarget(null);
+      toast.success(
+        t("admin.deleteUserSuccess", { username: editUserTarget.username }),
+      );
+    } catch (e: unknown) {
+      toast.error(apiErrorMessage(e, t("admin.deleteUserFailed")));
+    } finally {
+      setEditUserLoading(false);
+    }
+  }
+
+  async function handleCreateRole() {
+    if (!newRoleName.trim() || !newRoleDisplayName.trim()) {
+      toast.error(t("admin.createRoleRequired"));
+      return;
+    }
+    setCreateRoleLoading(true);
+    const displayName = newRoleDisplayName.trim();
+    try {
+      await createRole({
+        name: newRoleName.trim(),
+        displayName,
+        description: newRoleDescription.trim() || null,
+      });
+      setShowCreateRole(false);
+      setNewRoleName("");
+      setNewRoleDisplayName("");
+      setNewRoleDescription("");
+      toast.success(t("admin.createRoleSuccess", { name: displayName }));
+      loadRoles();
+    } catch (e: unknown) {
+      toast.error(apiErrorMessage(e, t("admin.createRoleFailed")));
+    } finally {
+      setCreateRoleLoading(false);
+    }
+  }
+
+  async function handleCreateApiKey() {
+    if (!newKeyName.trim()) {
+      toast.error(t("admin.apiKeyNameRequired"));
+      return;
+    }
+    if (!newKeyUserId.trim()) {
+      toast.error(t("admin.apiKeyUserRequired"));
+      return;
+    }
+    setNewKeyLoading(true);
+    try {
+      const created: CreatedApiKey = await createApiKey(
+        newKeyName.trim(),
+        newKeyUserId.trim(),
+        // Blank keeps the server's 90 days.
+        newKeyExpiry === "never"
+          ? null
+          : newKeyExpiry
+            ? new Date(newKeyExpiry).toISOString()
+            : undefined,
+        [newKeyScope || "read"],
+      );
+      setApiKeys((prev) => [{ ...created, isActive: true }, ...prev]);
+      setCreatedKeyToken(created.token);
+      setNewKeyName("");
+      setNewKeyUserId("");
+      setNewKeyExpiry("");
+      setNewKeyScope("read");
+      toast.success(t("admin.apiKeyCreatedSuccess", { name: created.name }));
+    } catch (e: unknown) {
+      toast.error(apiErrorMessage(e, t("admin.apiKeyCreateFailed")));
+    } finally {
+      setNewKeyLoading(false);
+    }
+  }
+
+  async function handleExportDatabase() {
+    setExportLoading(true);
+    try {
+      const apiUrl = getDatabaseTransferUrl("export", {
+        electron: isElectron(),
+        configuredServerUrl: null,
+        location: window.location,
+      });
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({}),
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const contentDisposition = response.headers.get("content-disposition");
+        const filename =
+          contentDisposition?.match(/filename="([^"]+)"/)?.[1] ||
+          "termix-export.sqlite";
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        toast.success(t("admin.exportSuccess"));
+      } else {
+        const err = await response.json().catch(() => ({}));
+        toast.error(err.error || t("admin.exportFailed"));
+      }
+    } catch {
+      toast.error(t("admin.exportFailed"));
+    } finally {
+      setExportLoading(false);
+    }
+  }
+
+  async function handleImportDatabase() {
+    if (!importFile) {
+      toast.error(t("admin.importSelectFile"));
+      return;
+    }
+    setImportLoading(true);
+    try {
+      const apiUrl = getDatabaseTransferUrl("import", {
+        electron: isElectron(),
+        configuredServerUrl: null,
+        location: window.location,
+      });
+
+      const formData = new FormData();
+      formData.append("file", importFile);
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result.success) {
+          const s = result.summary;
+          const total =
+            (s.sshHostsImported || 0) +
+            (s.sshCredentialsImported || 0) +
+            (s.pluginItemsImported || 0) +
+            (s.settingsImported || 0);
+          toast.success(
+            t("admin.importCompleted", { total, skipped: s.skippedItems || 0 }),
+          );
+          setImportFile(null);
+          setTimeout(() => window.location.reload(), 1500);
+        } else {
+          toast.error(
+            t("admin.importFailed", {
+              error:
+                result.summary?.errors?.join(", ") || t("admin.unknownError"),
+            }),
+          );
+        }
+      } else {
+        const err = await response.json().catch(() => ({}));
+        toast.error(err.error || t("admin.importError"));
+      }
+    } catch {
+      toast.error(t("admin.importError"));
+    } finally {
+      setImportLoading(false);
+    }
+  }
+
+  const isOpen = (id: AdminSection | FeatureSectionId) =>
+    section ? section === id : openSections.has(id);
+
+  if (manageUser) {
+    return (
+      <AdminUserManagePanel
+        key={manageUser.id}
+        user={manageUser}
+        roles={roles}
+        onBack={() => setManageUser(null)}
+        onOpenHostTab={onOpenHostTab}
+        onUserDeleted={() => {
+          setUsers((prev) => prev.filter((u) => u.id !== manageUser.id));
+          setManageUser(null);
+        }}
+        onUserChanged={(changes) => {
+          setManageUser((prev) => (prev ? { ...prev, ...changes } : prev));
+          setUsers((prev) =>
+            prev.map((u) =>
+              u.id === manageUser.id ? { ...u, ...changes } : u,
+            ),
+          );
+        }}
+        onSecondFactorsReset={() => {
+          setUsers((prev) =>
+            prev.map((u) =>
+              u.id === manageUser.id ? { ...u, secondFactorEnabled: false } : u,
+            ),
+          );
+        }}
+      />
+    );
+  }
+
+  return (
+    <div
+      className={
+        section
+          ? "flex w-full flex-col"
+          : "mx-auto flex w-full max-w-5xl flex-col gap-2 p-3 flex-1 min-h-0 overflow-y-auto"
+      }
+    >
+      <AdminGeneralSettingsSection
+        open={isOpen("general")}
+        onToggle={() => toggle("general")}
+        notificationPrivateEndpoints={notificationPrivateEndpoints}
+        onSaveNotificationPrivateEndpoints={
+          handleSaveNotificationPrivateEndpoints
+        }
+        allowRegistration={allowRegistration}
+        handleToggleRegistration={handleToggleRegistration}
+        allowPasswordLogin={allowPasswordLogin}
+        passwordLoginForced={passwordLoginForced && !allowPasswordLogin}
+        handleTogglePasswordLogin={handleTogglePasswordLogin}
+        externalAutoProvision={externalAutoProvision}
+        handleToggleExternalAutoProvision={handleToggleExternalAutoProvision}
+        credentialStorage={credentialStorage}
+        handleToggleCredentialStorage={handleToggleCredentialStorage}
+        secondFactorAfterExternalLogin={secondFactorAfterExternalLogin}
+        handleToggleSecondFactorAfterExternalLogin={
+          handleToggleSecondFactorAfterExternalLogin
+        }
+        allowPasswordReset={allowPasswordReset}
+        handleTogglePasswordReset={handleTogglePasswordReset}
+        sessionTimeout={sessionTimeout}
+        setSessionTimeout={setSessionTimeout}
+        handleSaveSessionTimeout={handleSaveSessionTimeout}
+        logLevel={logLevel}
+        handleSaveLogLevel={handleSaveLogLevel}
+      />
+
+      {isAdmin && (
+        <AdminAccountSettingsSection
+          open={isOpen("general")}
+          onToggle={() => toggle("general")}
+        />
+      )}
+
+      <AdminUsersSection
+        open={isOpen("users")}
+        onToggle={() => toggle("users")}
+        users={users}
+        setUsers={setUsers}
+        loadUsers={loadUsers}
+        setCreateUserOpen={setCreateUserOpen}
+        setEditUserTarget={setEditUserTarget}
+        setEditUserOpen={setEditUserOpen}
+        setLinkAccountTarget={setLinkAccountTarget}
+        setLinkAccountOpen={setLinkAccountOpen}
+        setUnlinkAccountTarget={setUnlinkAccountTarget}
+        setUnlinkAccountOpen={setUnlinkAccountOpen}
+        onManageUser={setManageUser}
+        search={userSearch}
+        onSearchChange={setUserSearch}
+        page={userPage}
+        pageSize={USERS_PAGE_SIZE}
+        total={userTotal}
+        onPageChange={setUserPage}
+        status={userStatus}
+        onStatusChange={canFilterStatus ? setUserStatus : undefined}
+        canManage={isAdmin}
+      />
+
+      <AdminInvitesSection
+        open={isOpen("users")}
+        onToggle={() => toggle("users")}
+        roles={roles}
+        canManage={canManageUsers}
+        isAdmin={isAdmin}
+      />
+
+      <AdminAccessReviewSection
+        open={isOpen(ACCESS_SECTION)}
+        onToggle={() => toggle(ACCESS_SECTION)}
+        roles={roles}
+      />
+
+      <AdminSessionsSection
+        open={isOpen("sessions")}
+        onToggle={() => toggle("sessions")}
+        sessions={sessions}
+        setSessions={setSessions}
+        loadSessions={loadSessions}
+      />
+
+      <AdminRolesSection
+        open={isOpen("roles")}
+        onToggle={() => toggle("roles")}
+        roles={roles}
+        setRoles={setRoles}
+        showCreateRole={showCreateRole}
+        setShowCreateRole={setShowCreateRole}
+        newRoleName={newRoleName}
+        setNewRoleName={setNewRoleName}
+        newRoleDisplayName={newRoleDisplayName}
+        setNewRoleDisplayName={setNewRoleDisplayName}
+        newRoleDescription={newRoleDescription}
+        setNewRoleDescription={setNewRoleDescription}
+        handleCreateRole={handleCreateRole}
+        createRoleLoading={createRoleLoading}
+      />
+
+      <AdminHostDefaultsSection
+        open={isOpen("host-defaults")}
+        onToggle={() => toggle("host-defaults")}
+      />
+
+      <AdminDatabaseSection
+        open={isOpen("database")}
+        onToggle={() => toggle("database")}
+        importFile={importFile}
+        setImportFile={setImportFile}
+        exportLoading={exportLoading}
+        importLoading={importLoading}
+        handleExportDatabase={handleExportDatabase}
+        handleImportDatabase={handleImportDatabase}
+      />
+
+      <AdminSSLSection
+        open={isOpen("ssl")}
+        onToggle={() => toggle("ssl")}
+        status={tlsStatus}
+        manualCertDraft={manualCertDraft}
+        setManualCertDraft={setManualCertDraft}
+        manualKeyDraft={manualKeyDraft}
+        setManualKeyDraft={setManualKeyDraft}
+        manualUploading={manualUploading}
+        handleManualUpload={handleManualSslUpload}
+      />
+
+      <AdminApiKeysSection
+        open={isOpen("api-keys")}
+        onToggle={() => toggle("api-keys")}
+        apiKeys={apiKeys}
+        setApiKeys={setApiKeys}
+        loadApiKeys={loadApiKeys}
+        showCreateKey={showCreateKey}
+        setShowCreateKey={setShowCreateKey}
+        createdKeyToken={createdKeyToken}
+        setCreatedKeyToken={setCreatedKeyToken}
+        newKeyName={newKeyName}
+        setNewKeyName={setNewKeyName}
+        newKeyUserId={newKeyUserId}
+        setNewKeyUserId={setNewKeyUserId}
+        newKeyExpiry={newKeyExpiry}
+        newKeyScope={newKeyScope}
+        setNewKeyScope={setNewKeyScope}
+        setNewKeyExpiry={setNewKeyExpiry}
+        users={users}
+        handleCreateApiKey={handleCreateApiKey}
+        newKeyLoading={newKeyLoading}
+      />
+
+      <AdminAuditLogSection
+        open={isOpen("audit-log")}
+        onToggle={() => toggle("audit-log")}
+        users={users}
+      />
+
+      {featureSettings.map((plugin) => (
+        <FeatureSettingsSection
+          key={plugin.id}
+          plugin={plugin}
+          scope="admin"
+          open={isOpen(featureSectionId(plugin.id))}
+          onToggle={() => toggle(featureSectionId(plugin.id))}
+        />
+      ))}
+
+      <AdminCreateUserDialog
+        open={createUserOpen}
+        onOpenChange={setCreateUserOpen}
+        newUsername={newUsername}
+        setNewUsername={setNewUsername}
+        newPassword={newPassword}
+        setNewPassword={setNewPassword}
+        showNewPassword={showNewPassword}
+        setShowNewPassword={setShowNewPassword}
+        handleCreateUser={handleCreateUser}
+        createUserLoading={createUserLoading}
+      />
+
+      <AdminEditUserDialog
+        open={editUserOpen}
+        onOpenChange={setEditUserOpen}
+        editUserTarget={editUserTarget}
+        editUserLoading={editUserLoading}
+        editUserRoles={editUserRoles}
+        editUserRolesLoading={editUserRolesLoading}
+        roles={roles}
+        setEditUserRoles={setEditUserRoles}
+        handleToggleAdmin={handleToggleAdmin}
+        handleRevokeUserSessions={handleRevokeUserSessions}
+        handleDeleteEditUser={handleDeleteEditUser}
+      />
+
+      <AdminLinkAccountDialog
+        open={linkAccountOpen}
+        onOpenChange={setLinkAccountOpen}
+        linkAccountTarget={linkAccountTarget}
+        setUsers={setUsers}
+        users={users}
+      />
+
+      <AdminUnlinkAccountDialog
+        open={unlinkAccountOpen}
+        onOpenChange={setUnlinkAccountOpen}
+        unlinkAccountTarget={unlinkAccountTarget}
+        onSuccess={(userId) =>
+          setUsers((prev) =>
+            prev.map((u) =>
+              u.id === userId
+                ? { ...u, isExternal: false, passwordHash: undefined }
+                : u,
+            ),
+          )
+        }
+      />
+    </div>
+  );
+}

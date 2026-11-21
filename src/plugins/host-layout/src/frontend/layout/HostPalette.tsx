@@ -1,0 +1,77 @@
+import { lazy, Suspense } from "react";
+import {
+  getTabType,
+  requestManage,
+  useShellController,
+} from "@termix-ssh/plugin-sdk/ui";
+
+// Not needed for first paint.
+const CommandPalette = lazy(() =>
+  import("../shell/CommandPalette").then((m) => ({
+    default: m.CommandPalette,
+  })),
+);
+
+const OPENS_AS_SINGLETON = [
+  "dashboard",
+  "host-manager",
+  "user-profile",
+  "admin-settings",
+  "plugins",
+];
+
+/** The command palette, opened by any part of the shell through palette.open(). */
+export function HostPalette({ onOpened }: { onOpened?: () => void }) {
+  const shell = useShellController();
+  const { tabs, hosts, palette, regions } = shell;
+  if (!palette.isOpen) return null;
+  return (
+    <Suspense fallback={null}>
+      <CommandPalette
+        isOpen={palette.isOpen}
+        setIsOpen={palette.setOpen}
+        hosts={hosts.list}
+        terminalTabs={tabs.terminalTabs}
+        activeTabId={tabs.activeId}
+        onOpenPanel={(view) => {
+          // The tree is always on screen, so "hosts" needs nothing.
+          if (view === "hosts") return;
+          if (view === "credentials") {
+            requestManage({ kind: "browse", mode: "credentials" });
+            onOpened?.();
+            return;
+          }
+          regions.right.setView(view);
+        }}
+        onEditHost={hosts.edit}
+        onOpenSettings={(section) => {
+          tabs.openSingleton(
+            "settings",
+            undefined,
+            undefined,
+            section ? { section } : undefined,
+          );
+          onOpened?.();
+        }}
+        onOpenTab={(type, label, pendingEvent, host) => {
+          if (OPENS_AS_SINGLETON.includes(type)) {
+            tabs.openSingleton(type, pendingEvent);
+          } else if (getTabType(type)?.multiInstance) {
+            tabs.openMultiInstance(type);
+          } else if (getTabType(type)?.singleton) {
+            tabs.openSingleton(
+              type,
+              undefined,
+              host ??
+                (label ? hosts.list.find((h) => h.name === label) : undefined),
+            );
+          } else {
+            const target = host ?? hosts.list.find((h) => h.name === label);
+            if (target) tabs.open(target, type);
+          }
+          onOpened?.();
+        }}
+      />
+    </Suspense>
+  );
+}

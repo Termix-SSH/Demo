@@ -47,8 +47,16 @@ export interface RepositoryInput {
   password?: string;
 }
 
-export type DbEngine = "mysql" | "postgres" | "sqlite";
-export const DB_ENGINES: readonly DbEngine[] = ["mysql", "postgres", "sqlite"];
+export type DbEngine =
+  "mysql" | "postgres" | "sqlite" | "mongo" | "redis" | "mssql";
+export const DB_ENGINES: readonly DbEngine[] = [
+  "mysql",
+  "postgres",
+  "sqlite",
+  "mongo",
+  "redis",
+  "mssql",
+];
 
 export interface PathsSource {
   id: string;
@@ -71,6 +79,11 @@ export interface DatabaseSource {
   runAs: string;
   /** Databases to dump, empty for all. For SQLite, the file paths. */
   databases: string[];
+  /**
+   * SQL Server writes its backups itself, into this folder on its own side.
+   * It must be the same path on the host (a bind mount for Docker).
+   */
+  serverDir?: string;
 }
 
 export interface DockerSource {
@@ -110,6 +123,12 @@ export interface JobHooks {
 
 export interface JobAlerts {
   onFailure: boolean;
+  /** Alert on a backup with warnings. Follows onFailure when not set. */
+  onWarning?: boolean;
+  /** Alert on every good backup. */
+  onSuccess?: boolean;
+  /** Only these of the owner's alert channels. Empty means all of them. */
+  channelIds?: number[];
   /** Alert when there is no good backup for this many days. 0 is off. */
   staleDays: number;
 }
@@ -137,6 +156,15 @@ export interface JobView {
   oneFileSystem: boolean;
   /** Extra flags for restic backup, separated by spaces. */
   backupOptions: string;
+  /** Tries again this many times after a failed backup. */
+  retries: number;
+  retryDelayMinutes: number;
+  /** When the next retry starts, null when none is waiting. */
+  retryAt: string | null;
+  /** Repositories each backup is copied to after it is saved. */
+  mirrors: number[];
+  /** Another host that runs restic and reads this host's files through Termix. */
+  runnerHostId: number | null;
   lastStatus: RunStatus | null;
   lastRunAt: string | null;
   lastSuccessAt: string | null;
@@ -161,6 +189,11 @@ export interface JobInput {
   oneFileSystem: boolean;
   /** Extra flags for restic backup, separated by spaces. */
   backupOptions: string;
+  retries: number;
+  retryDelayMinutes: number;
+  mirrors: number[];
+  /** Run restic on this host instead, null for the job's own host. */
+  runnerHostId: number | null;
 }
 
 export interface RunProgress {
@@ -172,6 +205,8 @@ export interface RunProgress {
   secondsElapsed: number;
   secondsRemaining: number | null;
   current: string[];
+  /** Termix is still copying files between hosts: only bytesDone counts. */
+  copying?: boolean;
 }
 
 export interface RunSummary {
@@ -235,7 +270,14 @@ export interface HostStatus {
   resticOk: boolean;
   rclone: string | null;
   docker: boolean;
-  tools: { mysqldump: boolean; pgDump: boolean; sqlite3: boolean };
+  tools: {
+    mysqldump: boolean;
+    pgDump: boolean;
+    sqlite3: boolean;
+    mongodump?: boolean;
+    redisCli?: boolean;
+    sqlcmd?: boolean;
+  };
 }
 
 export interface SnapshotView {
@@ -256,6 +298,14 @@ export interface SnapshotEntry {
   type: "dir" | "file" | "symlink" | "other";
   size: number | null;
   mtime: string | null;
+}
+
+/** One of the user's alert channels, for the job editor. */
+export interface AlertChannelOption {
+  id: number;
+  name: string;
+  type: string;
+  enabled: boolean;
 }
 
 export interface DockerInventory {

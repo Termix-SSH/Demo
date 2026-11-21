@@ -189,8 +189,10 @@ export function TabBar({
     if (!el || typeof ResizeObserver === "undefined") return;
     const observer = new ResizeObserver(measureIndicator);
     observer.observe(el);
+    // Tabs can grow on their own (a share button showing up late).
+    tabEls.current.forEach((tabEl) => observer.observe(tabEl));
     return () => observer.disconnect();
-  }, [measureIndicator]);
+  }, [measureIndicator, tabs]);
 
   useEffect(() => {
     if (!skipIndicatorAnimRef.current) return;

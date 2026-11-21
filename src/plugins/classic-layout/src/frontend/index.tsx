@@ -13,8 +13,10 @@ import { PresetStep } from "./onboarding/PresetStep";
 import { AppearanceStep } from "./onboarding/AppearanceStep";
 import { HostRowsStep, hostPageAvailable } from "./onboarding/HostRowsStep";
 import { DashboardTabType, ManageTabType, SettingsTabType } from "./tabs";
+import { setReportOpener } from "./report-bug";
 
 export function activate(app: TermixApp): void {
+  setReportOpener(app);
   // Plugin buttons fill the tab bar's height ("bar" is new in Termix 26.11.2).
   app.declareActionSlot({
     id: "tabbar.actions",

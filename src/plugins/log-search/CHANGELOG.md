@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.0
+
+### Added
+
+- Follow: new matching lines from the journal, log files and containers show up live, on up to 10 hosts, with pause and clear
+- Saved searches: keep a search with a name and pick it again later
+- Alerts on saved searches: a saved search can run in the background every few minutes and send one alert when it finds enough lines and one when it goes quiet
+- Run a saved log search action for the assistant, the CLI and MCP
+
 ## 1.1.0
 
 ### Changed

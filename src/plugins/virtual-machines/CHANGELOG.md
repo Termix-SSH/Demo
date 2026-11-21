@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0
+
+### Added
+
+- VMs show under their host in layouts with a host tree, like Host Layout, and open in the host's Virtual Machines tab
+
 ## 1.1.0
 
 ### Changed

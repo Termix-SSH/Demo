@@ -1,0 +1,1658 @@
+/* eslint-disable react-refresh/only-export-components */
+import {
+  actionOrder,
+  rem,
+  enabledHostProtocols,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+  getHostPassword,
+  type Host,
+  type TabType,
+  defaultHostRowFields,
+  type HostDensity,
+  type HostClickBehavior,
+  type HostRowFields,
+  type HostTrayTrigger,
+  copyToClipboard,
+  type AuthOverrideProtocol,
+  useStatusColorScheme,
+  getStatusClasses,
+  useHostStatus,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+  markTabSurfaceUsed,
+  preloadTabSurface,
+  getPreferredHostAction,
+  recordHostActionPreference,
+  defaultConnectAction,
+  hostActionsFor,
+  hostBadgesFor,
+  hostMenuItemsFor,
+  hostStatusIndicatorsFor,
+  useHostActions,
+  useHostBadges,
+  useHostContextMenuItems,
+  useHostStatusIndicators,
+  HostDataItems,
+  type HostActionDef,
+  shell,
+  type TabShellCallbacks,
+  openInSplit,
+  useSplitTargets,
+  type SplitOpenTarget,
+  MAX_PANES,
+  PluginComponent,
+  HostDotGroup,
+} from "@termix-ssh/plugin-sdk/ui";
+import {
+  usePluginUiPreferences,
+  useTranslation,
+} from "@termix-ssh/plugin-sdk/frontend";
+import {
+  HOST_PAGE_TAB,
+  canChangeHostRows,
+  changeHostRow,
+  hostToolsMode,
+  openInHostPage,
+  opensInHostPage,
+  showsInBar,
+  useBarActions,
+  useHostRowPrefs,
+} from "../host-bar-actions";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { createPortal } from "react-dom";
+import {
+  Check,
+  ChevronRight,
+  Copy,
+  CopyPlus,
+  PanelTop,
+  Cpu,
+  GripVertical,
+  Key,
+  KeyRound,
+  LayoutPanelLeft,
+  Link,
+  Lock,
+  MemoryStick,
+  MoreHorizontal,
+  MousePointerClick,
+  Pencil,
+  Pin,
+  Share2,
+  SquarePlus,
+  Terminal,
+  Trash2,
+  Users,
+} from "lucide-react";
+import { toast } from "sonner";
+import {
+  canArrangeHost,
+  canDeleteHost,
+  canOpenHostEditor,
+  canOverrideHostAuth,
+  canShareHost,
+  authOverrideProtocols as listAuthOverrideProtocols,
+  authProtocolLabel,
+} from "../../host-permissions";
+import { HostAuthOverrideModal } from "../../HostAuthOverrideModal";
+import { hostMatchesQuery } from "../visible-rows";
+
+export function statusCheckEnabled(host: Host): boolean {
+  return host.statusCheckEnabled !== false;
+}
+
+export function buildStatusTooltip(
+  host: Host,
+  status: "online" | "offline" | "unknown",
+  t: (key: string) => string = (k) => k,
+): string {
+  if (!statusCheckEnabled(host)) return t("hosts.status.monitoringDisabled");
+  const statusLabel =
+    status === "online"
+      ? t("hosts.status.online")
+      : status === "offline"
+        ? t("hosts.status.offline")
+        : t("hosts.status.checking");
+  const protocols: string[] = [];
+  if (host.enableSsh) protocols.push("SSH");
+  for (const protocol of enabledHostProtocols(host)) {
+    protocols.push(t(protocol.titleKey));
+  }
+  if (protocols.length === 0) return statusLabel;
+  return `${protocols.join(", ")}: ${statusLabel}`;
+}
+
+async function writeClipboardText(value: string): Promise<void> {
+  if (!(await copyToClipboard(value))) throw new Error("copy failed");
+}
+
+function canCopyHostPassword(host: Host): boolean {
+  return (
+    host.authType === "password" ||
+    host.authType === "credential" ||
+    !!host.hasPassword ||
+    !!host.password
+  );
+}
+
+function canCopyHostSudoPassword(host: Host): boolean {
+  return !!host.hasSudoPassword || !!host.sudoPassword;
+}
+
+const DOUBLE_CLICK_WINDOW_MS = 250;
+
+const DEFAULT_ROW_FIELDS = defaultHostRowFields();
+
+export function formatHostAddress(
+  host: Pick<Host, "username" | "ip" | "port"> &
+    Partial<Pick<Host, "enableSsh" | "pluginSettings" | "protocolAuth">>,
+  fields: Pick<HostRowFields, "showUsername" | "showPort">,
+): string {
+  const protocol =
+    host.enableSsh === false ? enabledHostProtocols(host)[0] : undefined;
+  const username =
+    host.enableSsh === false
+      ? protocol
+        ? host.protocolAuth?.[protocol.id]?.username
+        : undefined
+      : host.username;
+  const user = fields.showUsername && username ? `${username}@` : "";
+  const port = fields.showPort && host.port ? `:${host.port}` : "";
+  return `${user}${host.ip}${port}`;
+}
+
+/** Per-density spacing and optional detail rows. */
+const HOST_ITEM_DENSITY_TOKENS = {
+  comfortable: {
+    rowPadding: "pl-[8.75px] pr-[7px] py-[7px]",
+    nameTextSize: "text-[13px]",
+    showAddressRow: true,
+    showResourceRow: true,
+  },
+  compact: {
+    rowPadding: "pl-[7px] pr-[5.25px] py-[5px]",
+    nameTextSize: "text-[12px]",
+    showAddressRow: false,
+    showResourceRow: false,
+  },
+} as const;
+
+export function HostItem({
+  host,
+  onOpenTab,
+  onEditHost: onEditHostProp,
+  onShareHost: onShareHostProp,
+  onDelete,
+  onDuplicate,
+  query = "",
+  stripeIndex = 0,
+  selectionMode = false,
+  selected = false,
+  onToggleSelect,
+  isMenuOpen = false,
+  onMenuOpenChange,
+  isTrayOpen = false,
+  onTrayOpenChange,
+  isHovered = false,
+  onHoverChange,
+  onDragStart,
+  onDragEnd,
+  depth = 0,
+  density = "comfortable",
+  trayTrigger = "hover",
+  showTags = true,
+  openOnDoubleClick = false,
+  hostClickBehavior = "newTab",
+  showResourceBars = true,
+  showStatusStripes = true,
+  rowFields = DEFAULT_ROW_FIELDS,
+  rowActions = "full",
+  arrangeMode = false,
+  isDragging = false,
+  onReorderDrop,
+  isReorderHovered = false,
+  reorderHoverEdge = null,
+  onReorderHoverChange,
+  isExpanded = false,
+  onToggleExpand,
+  draggedHostIds = null,
+  onDropChildHosts,
+}: {
+  host: Host;
+  onOpenTab: (
+    type: TabType,
+    options?: {
+      data?: Record<string, unknown>;
+      label?: string;
+      forceNewTab?: boolean;
+    },
+  ) => void;
+  onEditHost?: () => void;
+  onShareHost?: () => void;
+  onDelete: () => void;
+  onDuplicate: () => void;
+  query?: string;
+  stripeIndex?: number;
+  selectionMode?: boolean;
+  selected?: boolean;
+  onToggleSelect?: () => void;
+  isMenuOpen?: boolean;
+  onMenuOpenChange?: (open: boolean) => void;
+  isTrayOpen?: boolean;
+  onTrayOpenChange?: (open: boolean) => void;
+  isHovered?: boolean;
+  onHoverChange?: (hovered: boolean) => void;
+  onDragStart?: () => void;
+  onDragEnd?: () => void;
+  /** Nesting level when rendered in a flattened virtual list. */
+  depth?: number;
+  density?: HostDensity;
+  trayTrigger?: HostTrayTrigger;
+  showTags?: boolean;
+  /** Requires a double click to launch instead of a single click. */
+  openOnDoubleClick?: boolean;
+  /** What a click does when the host already has an open tab. */
+  hostClickBehavior?: HostClickBehavior;
+  /** Preset-driven: hides the CPU/RAM bars without changing density. */
+  showResourceBars?: boolean;
+  /** Preset-driven: hides the per-row status color stripe. */
+  showStatusStripes?: boolean;
+  rowFields?: HostRowFields;
+  /** "essential" trims the row's management actions to the common few. */
+  rowActions?: "essential" | "full";
+  /** When true (rearranging unlocked), the row can be dragged: its edges
+   * become reorder drop zones and its middle accepts a nest/move drop. */
+  arrangeMode?: boolean;
+  /** True while this row is the one being dragged, for the ghost styling. */
+  isDragging?: boolean;
+  onReorderDrop?: (position: "before" | "after") => void;
+  /** Whether THIS row is the current reorder drop target -- lifted to a
+   * single piece of state in the parent tree so only one row can ever show
+   * the drop-indicator bar at a time, instead of each row tracking its own
+   * hover state (which could get stuck showing a stale bar when dragleave
+   * didn't fire cleanly, e.g. jumping directly from one virtualized row to
+   * another). */
+  isReorderHovered?: boolean;
+  reorderHoverEdge?: "before" | "after" | null;
+  onReorderHoverChange?: (edge: "before" | "after" | null) => void;
+  /** Whether this host's sub-host children are currently shown. */
+  isExpanded?: boolean;
+  /** Present only when this host has sub-hosts nested under it. */
+  onToggleExpand?: () => void;
+  /** ids of the host(s) currently being dragged, if any -- mirrors FolderItem's drop-target wiring. */
+  draggedHostIds?: string[] | null;
+  /** Present when this row can accept a dragged host/selection to become its parent. */
+  onDropChildHosts?: (hostIds: string[]) => void;
+}) {
+  const { t } = useTranslation();
+  // Shared hosts expose actions matching the recipient's permission level.
+  const onEditHost = canOpenHostEditor(host) ? onEditHostProp : undefined;
+  const onShareHost = canShareHost(host) ? onShareHostProp : undefined;
+  const allowDelete = canDeleteHost(host);
+  const allHostActions = useHostActions();
+  const pluginActions = hostActionsFor(allHostActions, host);
+  const barActions = useBarActions();
+  const rowPrefs = useHostRowPrefs(String(host.id));
+  const layoutPrefs = usePluginUiPreferences<{
+    hostTools?: string;
+    clickAction?: string;
+  }>();
+  const badges = hostBadgesFor(useHostBadges(), host);
+  const statusIndicators = hostStatusIndicatorsFor(
+    useHostStatusIndicators(),
+    host,
+  );
+  const pluginMenuItems = hostMenuItemsFor(useHostContextMenuItems(), host);
+  const splitTargets = useSplitTargets();
+  const statusScheme = useStatusColorScheme();
+  const statusCheckOn = statusCheckEnabled(host);
+  // Per-host subscription, so a poll only re-renders rows that flipped.
+  const availability =
+    useHostStatus(Number(host.id), statusCheckOn) ?? "offline";
+  const statusLoading = availability === "unknown";
+  const isOnline = availability === "online";
+  const previousAvailability = useRef(availability);
+  const [statusLocking, setStatusLocking] = useState(false);
+
+  useEffect(() => {
+    const justCameOnline =
+      previousAvailability.current !== "online" && availability === "online";
+    previousAvailability.current = availability;
+    if (!justCameOnline) return;
+
+    setStatusLocking(true);
+    const timeout = window.setTimeout(() => setStatusLocking(false), 400);
+    return () => window.clearTimeout(timeout);
+  }, [availability]);
+  const isTouchOnly =
+    typeof window !== "undefined" && window.matchMedia("(hover: none)").matches;
+  const alwaysShowTray = trayTrigger === "always";
+  const actionsOnly = trayTrigger === "actionsOnly";
+  const shouldUseClickTray =
+    !alwaysShowTray && !actionsOnly && (trayTrigger === "click" || isTouchOnly);
+  const showPasswordCopy = !host.isShared && canCopyHostPassword(host);
+  const showSudoPasswordCopy = !host.isShared && canCopyHostSudoPassword(host);
+  const authOverrideProtocols = listAuthOverrideProtocols().filter((protocol) =>
+    canOverrideHostAuth(host, protocol),
+  );
+  const [authOverrideProtocol, setAuthOverrideProtocol] =
+    useState<AuthOverrideProtocol | null>(null);
+  const [parentDragOver, setParentDragOver] = useState(false);
+  const [contextMenuPosition, setContextMenuPosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+
+  // Density decides the base shape; the preset can only take rows away, never
+  // add them, so a row's real height stays <= the virtualizer's fixed estimate.
+  const densityTokens = HOST_ITEM_DENSITY_TOKENS[density];
+  const tokens = {
+    ...densityTokens,
+    showAddressRow: densityTokens.showAddressRow && rowFields.showAddress,
+    showResourceRow: densityTokens.showResourceRow && showResourceBars,
+  };
+  const isCompact = density === "compact";
+  const focusExistingTab = hostClickBehavior !== "newTab";
+  const doubleClickOpensNew =
+    hostClickBehavior === "focusExistingDoubleClickNew";
+  // In double click mode a single click waits out the double click window,
+  // so a double click doesn't also switch to (or open) a tab first.
+  const singleClickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(
+    () => () => {
+      if (singleClickTimer.current) clearTimeout(singleClickTimer.current);
+    },
+    [],
+  );
+  const reorderEdge = isReorderHovered ? reorderHoverEdge : null;
+  const canDrag =
+    arrangeMode && !selectionMode && !isTouchOnly && canArrangeHost(host);
+  // The middle band nests the dragged host under this one; the top/bottom
+  // bands reorder. Both live on the same row, so the pointer's position
+  // inside it picks the intent instead of a modifier key.
+  const acceptsChildDrop =
+    arrangeMode &&
+    !!onDropChildHosts &&
+    !!draggedHostIds &&
+    !draggedHostIds.includes(host.id);
+
+  async function handleCopyPassword(
+    e: MouseEvent,
+    field: "password" | "sudoPassword",
+  ) {
+    e.stopPropagation();
+    try {
+      const password = await getHostPassword(Number(host.id), field);
+      if (!password) {
+        toast.error(t("nav.failedToCopyPassword"));
+        return;
+      }
+      await writeClipboardText(password);
+      toast.success(t("nav.passwordCopied"));
+    } catch {
+      toast.error(t("nav.failedToCopyPassword"));
+    }
+  }
+
+  function copyText(value: string) {
+    writeClipboardText(value).then(
+      () => toast.success(t("hosts.copiedToClipboard")),
+      () => toast.error(t("common.copyFailed")),
+    );
+  }
+
+  const copyLinkActions = pluginActions.filter((action) => action.copyUrlView);
+
+  if (query && !hostMatchesQuery(host, query)) return null;
+
+  const depthStyle =
+    depth > 0 ? ({ paddingLeft: rem(depth * 12) } as const) : undefined;
+
+  const trayButtonClass = `flex items-center justify-center ${isCompact ? "size-[19px]" : "size-[22.75px]"} text-muted-foreground/60 hover:text-foreground hover:bg-muted transition-colors`;
+
+  const availableActions: TabType[] = pluginActions.flatMap((action) =>
+    action.tabType ? [action.tabType] : [],
+  );
+  const hasHostPage = availableActions.includes(HOST_PAGE_TAB);
+  // Opt in: tools open inside the host page instead of their own tabs, or the
+  // host page is the only way in and the row keeps no connect buttons.
+  const toolsMode = hasHostPage
+    ? hostToolsMode(layoutPrefs.values.hostTools)
+    : "tab";
+  const toolsInPage = toolsMode !== "tab";
+  const pageOnly = toolsMode === "only";
+  // The first way to connect, used when no click action is picked or the
+  // picked one does not apply here. Empty when nothing can connect.
+  const connectAction: TabType = pageOnly
+    ? HOST_PAGE_TAB
+    : (defaultConnectAction(allHostActions, host)?.tabType ?? "");
+  const openHostTab = (
+    type: TabType,
+    options?: {
+      data?: Record<string, unknown>;
+      label?: string;
+      forceNewTab?: boolean;
+    },
+  ) => {
+    if (!type) return;
+    markTabSurfaceUsed(type);
+    recordHostActionPreference(host.id, type);
+    onOpenTab(type, {
+      ...options,
+      forceNewTab: options?.forceNewTab ?? !focusExistingTab,
+    });
+  };
+
+  // A plugin action opening a tab goes through this row, so it gets the same
+  // focus-existing and preference handling as a core one.
+  const rowShell: TabShellCallbacks = {
+    ...shell,
+    openTab: (_host, type, options) => openHostTab(type, options),
+  };
+
+  const openToolInPage = (type: TabType, section: string) => {
+    markTabSurfaceUsed(HOST_PAGE_TAB);
+    recordHostActionPreference(host.id, type);
+    void openInHostPage(host, section).then((handled) => {
+      if (!handled) openHostTab(type);
+    });
+  };
+
+  const runPluginAction = (action: HostActionDef) => {
+    if (action.run) action.run(host, rowShell);
+    else if (toolsInPage && action.tabType === HOST_PAGE_TAB)
+      openToolInPage(HOST_PAGE_TAB, "overview");
+    else if (toolsInPage && opensInHostPage(action))
+      openToolInPage(action.tabType!, action.tabType!);
+    else if (action.tabType) openHostTab(action.tabType);
+  };
+
+  /** Plugin actions in row order. */
+  const rowEntries = [
+    ...pluginActions.map((action) => {
+      const items = action.items?.(host);
+      return {
+        key: action.id,
+        order: actionOrder(action),
+        icon: action.icon as typeof Terminal,
+        label: action.label?.(host) ?? t(action.titleKey),
+        tabType: action.tabType,
+        tray: showsInBar(barActions, action, rowPrefs?.bar),
+        items:
+          items && items.length > 1
+            ? items.map((item) => ({
+                id: item.id,
+                label: item.label,
+                run: () => item.run(host, rowShell),
+              }))
+            : undefined,
+        run: () =>
+          items && items.length === 1
+            ? items[0].run(host, rowShell)
+            : runPluginAction(action),
+      };
+    }),
+  ].sort((a, b) => a.order - b.order || a.key.localeCompare(b.key));
+  const trayEntries = pageOnly ? [] : rowEntries.filter((entry) => entry.tray);
+
+  // What a click runs: this host's pick, then the default pick, then the
+  // first way to connect. Host page only mode always opens the page.
+  const clickable = rowEntries.filter((entry) => !entry.items);
+  const hostPageEntry = clickable.find(
+    (entry) => entry.tabType === HOST_PAGE_TAB,
+  );
+  const pickFrom = (id: string | undefined) =>
+    id ? clickable.find((entry) => entry.key === id) : undefined;
+  const defaultClick =
+    pickFrom(layoutPrefs.values.clickAction) ??
+    (hostClickBehavior === "hostPage" ? hostPageEntry : undefined);
+  const clickEntry = pageOnly
+    ? undefined
+    : (pickFrom(rowPrefs?.click) ?? defaultClick);
+  const defaultAction: TabType = clickEntry
+    ? (clickEntry.tabType ?? "")
+    : connectAction;
+  const defaultClickLabel =
+    defaultClick?.label ??
+    clickable.find((entry) => entry.tabType === connectAction)?.label ??
+    "";
+
+  /** What a click on the row opens. Host page only mode reuses an open page. */
+  const openDefault = (options?: { forceNewTab?: boolean }) => {
+    if (pageOnly && !options?.forceNewTab) {
+      openToolInPage(HOST_PAGE_TAB, "overview");
+      return;
+    }
+    if (clickEntry) {
+      if (options?.forceNewTab && clickEntry.tabType) {
+        openHostTab(clickEntry.tabType, options);
+      } else {
+        clickEntry.run();
+      }
+      return;
+    }
+    openHostTab(connectAction, options);
+  };
+
+  // The menu leads with three ways to open the host: the row's own buttons
+  // first, then the rest in order. Everything else is under More tools.
+  const menuTopEntries = [
+    ...rowEntries.filter((entry) => entry.tray),
+    ...rowEntries.filter((entry) => !entry.tray),
+  ].slice(0, 3);
+  const menuRestEntries = rowEntries.filter(
+    (entry) => !menuTopEntries.includes(entry),
+  );
+
+  const connectionButtons = (
+    <>
+      {trayEntries.map((entry, index) => {
+        const Icon = entry.icon;
+        // A thin rule between host tools and the other ways to connect.
+        const separator =
+          index > 0 &&
+          trayEntries[index - 1].order < 100 &&
+          entry.order >= 100 ? (
+            <div
+              key={`${entry.key}-separator`}
+              className="w-px h-3.5 bg-border/60 mx-0.5 shrink-0"
+            />
+          ) : null;
+        const button = entry.items ? (
+          <DropdownMenu key={entry.key}>
+            <DropdownMenuTrigger asChild>
+              <button
+                title={entry.label}
+                onClick={(e) => e.stopPropagation()}
+                className={trayButtonClass}
+              >
+                <Icon className="size-3.5" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              {entry.items.map((item) => (
+                <DropdownMenuItem
+                  key={item.id}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    item.run();
+                  }}
+                >
+                  <Icon className="size-3.5 mr-2" />
+                  {item.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <button
+            key={entry.key}
+            title={entry.label}
+            onPointerEnter={() =>
+              entry.tabType && preloadTabSurface(entry.tabType)
+            }
+            onFocus={() => entry.tabType && preloadTabSurface(entry.tabType)}
+            onClick={(e) => {
+              e.stopPropagation();
+              entry.run();
+            }}
+            className={trayButtonClass}
+          >
+            <Icon className="size-3.5" />
+          </button>
+        );
+        return separator ? [separator, button] : button;
+      })}
+    </>
+  );
+
+  // "essential" only trims buttons that the overflow menu also offers, so no
+  // action becomes unreachable.
+  const essentialActions = rowActions === "essential";
+
+  const managementButtons = (
+    <>
+      {!essentialActions && showPasswordCopy && (
+        <button
+          title={t("nav.copyPassword")}
+          onClick={(e) => handleCopyPassword(e, "password")}
+          className={trayButtonClass}
+        >
+          <Key className="size-3.5" />
+        </button>
+      )}
+      {!essentialActions && showSudoPasswordCopy && (
+        <button
+          title={t("nav.copySudoPassword")}
+          onClick={(e) => handleCopyPassword(e, "sudoPassword")}
+          className={trayButtonClass}
+        >
+          <KeyRound className="size-3.5" />
+        </button>
+      )}
+      {onEditHost && (
+        <button
+          title={t("hosts.editHostAction")}
+          onClick={(e) => {
+            e.stopPropagation();
+            onEditHost();
+          }}
+          className={trayButtonClass}
+        >
+          <Pencil className="size-3.5" />
+        </button>
+      )}
+      {onShareHost && (
+        <button
+          title={t("hosts.shareHost")}
+          onClick={(e) => {
+            e.stopPropagation();
+            onShareHost();
+          }}
+          className={trayButtonClass}
+        >
+          <Share2 className="size-3.5" />
+        </button>
+      )}
+      <DropdownMenu
+        open={isMenuOpen}
+        onOpenChange={(open) => {
+          if (!open) setContextMenuPosition(null);
+          onMenuOpenChange?.(open);
+        }}
+      >
+        {contextMenuPosition ? (
+          createPortal(
+            <DropdownMenuTrigger asChild>
+              <button
+                title={t("hosts.moreOptions")}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setContextMenuPosition(null);
+                }}
+                className="fixed z-50 size-px opacity-0 pointer-events-none"
+                style={{
+                  left: contextMenuPosition.x,
+                  top: contextMenuPosition.y,
+                }}
+              >
+                <MoreHorizontal className="size-3.5" />
+              </button>
+            </DropdownMenuTrigger>,
+            document.body,
+          )
+        ) : (
+          <DropdownMenuTrigger asChild>
+            <button
+              title={t("hosts.moreOptions")}
+              onClick={(e) => {
+                e.stopPropagation();
+                setContextMenuPosition(null);
+              }}
+              className={trayButtonClass}
+            >
+              <MoreHorizontal className="size-3.5" />
+            </button>
+          </DropdownMenuTrigger>
+        )}
+        <DropdownMenuContent
+          align="start"
+          className="text-xs w-auto min-w-44 max-w-72 whitespace-nowrap"
+        >
+          {!pageOnly &&
+            menuTopEntries.map((entry) => {
+              const Icon = entry.icon;
+              return entry.items ? (
+                <DropdownMenuSub key={entry.key}>
+                  <DropdownMenuSubTrigger>
+                    <Icon className="size-3.5 mr-2" />
+                    {entry.label}
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    {entry.items.map((item) => (
+                      <DropdownMenuItem
+                        key={item.id}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          item.run();
+                        }}
+                      >
+                        <Icon className="size-3.5 mr-2" />
+                        {item.label}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+              ) : (
+                <DropdownMenuItem
+                  key={entry.key}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    entry.run();
+                  }}
+                >
+                  <Icon className="size-3.5 mr-2" />
+                  {entry.label}
+                </DropdownMenuItem>
+              );
+            })}
+          {!pageOnly && menuRestEntries.length > 0 && (
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <Terminal className="size-3.5 mr-2" />
+                {t("hostTools.moreTools")}
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent>
+                {menuRestEntries.map((entry) => {
+                  const Icon = entry.icon;
+                  return entry.items ? (
+                    <DropdownMenuSub key={entry.key}>
+                      <DropdownMenuSubTrigger>
+                        <Icon className="size-3.5 mr-2" />
+                        {entry.label}
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent>
+                        {entry.items.map((item) => (
+                          <DropdownMenuItem
+                            key={item.id}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              item.run();
+                            }}
+                          >
+                            <Icon className="size-3.5 mr-2" />
+                            {item.label}
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                  ) : (
+                    <DropdownMenuItem
+                      key={entry.key}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        entry.run();
+                      }}
+                    >
+                      <Icon className="size-3.5 mr-2" />
+                      {entry.label}
+                    </DropdownMenuItem>
+                  );
+                })}
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+          )}
+          <PluginComponent
+            id="operations.hostMenu"
+            host={host}
+            shell={rowShell}
+          />
+          {(focusExistingTab || pageOnly) && (
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                openDefault({ forceNewTab: true });
+              }}
+            >
+              <SquarePlus className="size-3.5 mr-2" />
+              {t("hosts.openInNewTab")}
+            </DropdownMenuItem>
+          )}
+          {defaultAction &&
+            (splitTargets.canStartSplit || splitTargets.splits.length > 0) && (
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <LayoutPanelLeft className="size-3.5 mr-2" />
+                  {t("splitScreen.openInSplit")}
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent className="max-w-72">
+                  {(() => {
+                    const openAt = (target: SplitOpenTarget) =>
+                      openInSplit(target, () =>
+                        openDefault({ forceNewTab: true }),
+                      );
+                    return (
+                      <>
+                        {splitTargets.canStartSplit && (
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openAt({ kind: "newSplit" });
+                            }}
+                          >
+                            {t("splitScreen.openInNewSplit")}
+                          </DropdownMenuItem>
+                        )}
+                        {splitTargets.splits.map((split) => (
+                          <div key={split.id}>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuLabel className="truncate text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                              {split.label}
+                            </DropdownMenuLabel>
+                            {split.panes.map((pane) => (
+                              <DropdownMenuItem
+                                key={pane.id}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  openAt({
+                                    kind: "pane",
+                                    splitTabId: split.id,
+                                    paneId: pane.id,
+                                  });
+                                }}
+                              >
+                                <span className="truncate">
+                                  {pane.label
+                                    ? t("splitScreen.paneItem", {
+                                        index: pane.index,
+                                        label: pane.label,
+                                      })
+                                    : t("splitScreen.paneEmptyItem", {
+                                        index: pane.index,
+                                      })}
+                                </span>
+                              </DropdownMenuItem>
+                            ))}
+                            <DropdownMenuItem
+                              disabled={split.full}
+                              title={
+                                split.full
+                                  ? t("splitScreen.maxPanes", {
+                                      count: MAX_PANES,
+                                    })
+                                  : undefined
+                              }
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                openAt({
+                                  kind: "newPane",
+                                  splitTabId: split.id,
+                                });
+                              }}
+                            >
+                              {t("splitScreen.newPaneRight")}
+                            </DropdownMenuItem>
+                          </div>
+                        ))}
+                      </>
+                    );
+                  })()}
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+            )}
+          <DropdownMenuSeparator />
+          {onEditHost && (
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                onEditHost();
+              }}
+            >
+              <Pencil className="size-3.5 mr-2" />
+              {t("hosts.editHostAction")}
+            </DropdownMenuItem>
+          )}
+          {onShareHost && (
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                onShareHost();
+              }}
+            >
+              <Share2 className="size-3.5 mr-2" />
+              {t("hosts.shareHost")}
+            </DropdownMenuItem>
+          )}
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={(e) => {
+              e.stopPropagation();
+              copyText(
+                formatHostAddress(host, {
+                  showUsername: true,
+                  showPort: false,
+                }),
+              );
+            }}
+          >
+            <Copy className="size-3.5 mr-2" />
+            {t("hosts.copyAddress")}
+          </DropdownMenuItem>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <MoreHorizontal className="size-3.5 mr-2" />
+              {t("hostTools.more")}
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent className="text-xs w-auto min-w-44 max-w-72 whitespace-nowrap">
+              {pluginMenuItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <DropdownMenuItem
+                    key={item.id}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      item.run(host, rowShell);
+                    }}
+                  >
+                    {Icon && <Icon className="size-3.5 mr-2" />}
+                    {t(item.titleKey)}
+                  </DropdownMenuItem>
+                );
+              })}
+              {authOverrideProtocols.map((protocol) => (
+                <DropdownMenuItem
+                  key={protocol}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setAuthOverrideProtocol(protocol);
+                  }}
+                >
+                  <KeyRound className="size-3.5 mr-2" />
+                  {t("hosts.sharing.authOverrideActionProtocol", {
+                    protocol: authProtocolLabel(protocol, t),
+                  })}
+                </DropdownMenuItem>
+              ))}
+              {showPasswordCopy && (
+                <DropdownMenuItem
+                  onClick={(e) => handleCopyPassword(e, "password")}
+                >
+                  <Key className="size-3.5 mr-2" />
+                  {t("nav.copyPassword")}
+                </DropdownMenuItem>
+              )}
+              {showSudoPasswordCopy && (
+                <DropdownMenuItem
+                  onClick={(e) => handleCopyPassword(e, "sudoPassword")}
+                >
+                  <KeyRound className="size-3.5 mr-2" />
+                  {t("nav.copySudoPassword")}
+                </DropdownMenuItem>
+              )}
+              {copyLinkActions.length > 0 && (
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>
+                    <Link className="size-3.5 mr-2" />
+                    {t("hosts.copyLink")}
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    {copyLinkActions.map((action) => {
+                      const Icon = action.icon;
+                      return (
+                        <DropdownMenuItem
+                          key={action.id}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            copyText(
+                              `${window.location.origin}?view=${encodeURIComponent(action.copyUrlView!)}&hostId=${host.id}`,
+                            );
+                          }}
+                        >
+                          <Icon className="size-3.5 mr-2" />
+                          {t("hosts.copyViewUrlAction", {
+                            name: t(action.titleKey),
+                          })}
+                        </DropdownMenuItem>
+                      );
+                    })}
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+              )}
+              {(pluginMenuItems.length > 0 ||
+                authOverrideProtocols.length > 0) && <DropdownMenuSeparator />}
+              {!pageOnly && canChangeHostRows() && clickable.length > 1 && (
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>
+                    <MousePointerClick className="size-3.5 mr-2" />
+                    {t("hostTools.clickOpens")}
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuRadioGroup
+                      value={pickFrom(rowPrefs?.click)?.key ?? ""}
+                      onValueChange={(value) =>
+                        changeHostRow(String(host.id), {
+                          click: value || undefined,
+                        })
+                      }
+                    >
+                      <DropdownMenuRadioItem
+                        value=""
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {t("hostTools.useDefaultNamed", {
+                          name: defaultClickLabel,
+                        })}
+                      </DropdownMenuRadioItem>
+                      <DropdownMenuSeparator />
+                      {clickable.map((entry) => {
+                        const Icon = entry.icon;
+                        return (
+                          <DropdownMenuRadioItem
+                            key={entry.key}
+                            value={entry.key}
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <Icon className="size-3.5 mr-2" />
+                            {entry.label}
+                          </DropdownMenuRadioItem>
+                        );
+                      })}
+                    </DropdownMenuRadioGroup>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+              )}
+              {!pageOnly && canChangeHostRows() && rowEntries.length > 0 && (
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>
+                    <PanelTop className="size-3.5 mr-2" />
+                    {t("hostTools.rowButtons")}
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    {rowEntries.map((entry) => {
+                      const Icon = entry.icon;
+                      return (
+                        <DropdownMenuCheckboxItem
+                          key={entry.key}
+                          checked={entry.tray}
+                          onSelect={(e) => e.preventDefault()}
+                          onClick={(e) => e.stopPropagation()}
+                          onCheckedChange={(checked) =>
+                            changeHostRow(String(host.id), {
+                              bar: {
+                                ...rowPrefs?.bar,
+                                [entry.key]: checked === true,
+                              },
+                            })
+                          }
+                        >
+                          <Icon className="size-3.5 mr-2" />
+                          {entry.label}
+                        </DropdownMenuCheckboxItem>
+                      );
+                    })}
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      disabled={!rowPrefs?.bar}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        changeHostRow(String(host.id), { bar: undefined });
+                      }}
+                    >
+                      {t("hostTools.useDefaultButtons")}
+                    </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+              )}
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+          {allowDelete && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDuplicate();
+                }}
+              >
+                <CopyPlus className="size-3.5 mr-2" />
+                {t("hosts.cloneHostAction")}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="text-destructive focus:text-destructive"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete();
+                }}
+              >
+                <Trash2 className="size-3.5 mr-2" />
+                {t("common.delete")}
+              </DropdownMenuItem>
+            </>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
+  );
+
+  const trayOpenState = isTrayOpen || (isMenuOpen && !contextMenuPosition);
+  // Hover mode keeps the tray open from React state rather than group-hover so
+  // the virtualizer can reserve the expanded height for this row.
+  const hoverTrayOpen =
+    !alwaysShowTray &&
+    !actionsOnly &&
+    !shouldUseClickTray &&
+    !selectionMode &&
+    (isHovered || (isMenuOpen && !contextMenuPosition));
+  // A collapsed tray must not earn the text column's gap-[3.5px]. Clipping to
+  // max-h-0 leaves it a flex item, so every closed row measured ~3.5px taller
+  // than its slot and the virtualizer spread the rows apart to match. The
+  // negative margin cancels the gap while keeping the element in flow, so the
+  // modes that animate open still have something to transition.
+  const trayCollapsedClass = "max-h-0 opacity-0 -mt-[3.5px]";
+  const trayVisibilityClass =
+    alwaysShowTray || actionsOnly
+      ? `overflow-hidden transition-[max-height,opacity,margin] duration-150 ease-out ${trayOpenState || alwaysShowTray ? "max-h-[130px] opacity-100" : trayCollapsedClass}`
+      : shouldUseClickTray
+        ? `overflow-hidden transition-[max-height,opacity,margin] duration-150 ease-out ${trayOpenState ? "max-h-[130px] opacity-100" : trayCollapsedClass}`
+        : // No transition in hover mode: the row's height is set by the
+          // virtualizer and snaps in a single frame, so animating the tray
+          // against it leaves the open tray overflowing its shortened row for
+          // the length of the animation. Both change together instead.
+          `overflow-hidden ${hoverTrayOpen ? "max-h-[130px] opacity-100" : trayCollapsedClass}`;
+
+  const hostBadges = (
+    <>
+      {statusIndicators.length > 0 && (
+        <HostDataItems host={host} items={statusIndicators} className="gap-1" />
+      )}
+      {rowFields.showBadges && (
+        <HostDataItems host={host} items={badges} className="gap-1" />
+      )}
+      {rowFields.showBadges && <HostDotGroup host={host} badges={badges} />}
+      {rowFields.showSharedBadge && host.isShared && (
+        <TooltipProvider delayDuration={300}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="flex items-center gap-0.5 text-[9px] px-1 py-px border border-accent-brand/30 bg-accent-brand/10 text-accent-brand shrink-0 leading-none uppercase tracking-wider">
+                <Users className="size-2.5" />
+                {t("hosts.sharing.sharedBadge")}
+              </span>
+            </TooltipTrigger>
+            <TooltipContent side="right">
+              {t("hosts.sharing.sharedBadgeTooltip", {
+                owner: host.ownerUsername || "?",
+                level: t(
+                  `hosts.sharing.levels.${host.permissionLevel ?? "connect"}.label`,
+                ),
+              })}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      )}
+    </>
+  );
+
+  const trayToggle = !selectionMode && (shouldUseClickTray || actionsOnly) && (
+    <button
+      type="button"
+      aria-expanded={isTrayOpen}
+      title={isTrayOpen ? t("hosts.collapseActions") : t("hosts.expandActions")}
+      onClick={(e) => {
+        e.stopPropagation();
+        onTrayOpenChange?.(!isTrayOpen);
+      }}
+      className="ml-auto flex items-center justify-center size-[17.5px] rounded text-muted-foreground/30 hover:text-muted-foreground hover:bg-muted-foreground/10 transition-colors shrink-0"
+    >
+      <ChevronRight
+        className={`size-[10.5px] transition-transform duration-150 ${isTrayOpen ? "rotate-90" : ""}`}
+      />
+    </button>
+  );
+
+  // With no address or tags to show, a compact row fits on one line.
+  const compactOneLine =
+    isCompact && !rowFields.showAddress && !(showTags && !!host.tags?.length);
+  const compactDetails = (
+    <span className="sr-only">
+      {formatHostAddress(host, { showUsername: true, showPort: true })}
+      {host.tags?.length ? `, ${host.tags.join(", ")}` : ""}
+    </span>
+  );
+  const compactActions = !selectionMode && (
+    <div className="flex items-center min-w-0 max-w-full shrink-0 ml-auto">
+      <div
+        data-testid="host-inline-actions"
+        className={`flex items-center gap-[2px] min-w-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [&>*]:shrink-0 ${alwaysShowTray || actionsOnly || trayOpenState || hoverTrayOpen ? "" : "hidden"}`}
+      >
+        {connectionButtons}
+        <div
+          className={
+            alwaysShowTray || trayOpenState || hoverTrayOpen
+              ? "flex items-center gap-[2px]"
+              : "hidden"
+          }
+        >
+          {managementButtons}
+        </div>
+      </div>
+      {trayToggle}
+    </div>
+  );
+
+  return (
+    <div
+      draggable={canDrag}
+      onDragStart={(e) => {
+        if (!canDrag) return;
+        e.dataTransfer.effectAllowed = "move";
+        // Without an explicit drag image the browser snapshots the whole row
+        // including its open action tray, which drags a tall block around
+        // and reads as the UI overlapping itself. Use the name row instead.
+        const label =
+          e.currentTarget.querySelector<HTMLElement>("[data-drag-label]");
+        if (label) {
+          const rect = label.getBoundingClientRect();
+          e.dataTransfer.setDragImage(
+            label,
+            Math.min(e.clientX - rect.left, rect.width),
+            rect.height / 2,
+          );
+        }
+        onDragStart?.();
+      }}
+      onDragEnd={() => {
+        onReorderHoverChange?.(null);
+        setParentDragOver(false);
+        onDragEnd?.();
+      }}
+      onDragOver={(e) => {
+        if (!arrangeMode) return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        const offset = e.clientY - rect.top;
+        // Reordering is the common intent, so the edge bands get most of the
+        // row: only the middle third nests. A 10px floor keeps the bands
+        // hittable on a compact row, and measuring against the name row's
+        // height (not the row's, which grows with an open tray) keeps the
+        // split where the pointer expects it on a tall row.
+        const NAME_ROW = 34;
+        const effective = Math.min(rect.height, NAME_ROW);
+        const band = Math.max(10, effective / 3);
+        const wantsNest =
+          acceptsChildDrop && offset > band && offset < rect.height - band;
+
+        if (wantsNest) {
+          e.preventDefault();
+          e.stopPropagation();
+          onReorderHoverChange?.(null);
+          setParentDragOver(true);
+          return;
+        }
+        if (onReorderDrop) {
+          e.preventDefault();
+          e.stopPropagation();
+          setParentDragOver(false);
+          onReorderHoverChange?.(offset < rect.height / 2 ? "before" : "after");
+        }
+      }}
+      onDragLeave={(e) => {
+        if (e.currentTarget === e.target) {
+          setParentDragOver(false);
+        }
+      }}
+      onDrop={(e) => {
+        if (!arrangeMode) return;
+        if (parentDragOver && acceptsChildDrop && draggedHostIds) {
+          e.preventDefault();
+          e.stopPropagation();
+          setParentDragOver(false);
+          onDropChildHosts?.(draggedHostIds);
+          return;
+        }
+        if (onReorderDrop && reorderEdge) {
+          e.preventDefault();
+          e.stopPropagation();
+          onReorderDrop(reorderEdge);
+          onReorderHoverChange?.(null);
+        }
+      }}
+      style={depthStyle}
+      onPointerEnter={() => {
+        if (defaultAction) preloadTabSurface(defaultAction);
+        const preferredAction = getPreferredHostAction(
+          host.id,
+          availableActions,
+          defaultAction,
+        );
+        if (preferredAction !== defaultAction) {
+          preloadTabSurface(preferredAction);
+        }
+      }}
+      onMouseEnter={() => onHoverChange?.(true)}
+      onMouseLeave={() => onHoverChange?.(false)}
+      onContextMenu={(event) => {
+        if (selectionMode || arrangeMode) return;
+        event.preventDefault();
+        event.stopPropagation();
+        setContextMenuPosition({ x: event.clientX, y: event.clientY });
+        onMenuOpenChange?.(true);
+      }}
+      data-host-id={host.id}
+      className={`group relative flex items-stretch select-none transition-colors motion-interactive hover:bg-muted/50 ${
+        canDrag ? "cursor-grab active:cursor-grabbing" : "cursor-pointer"
+      } ${
+        selected
+          ? "bg-accent-brand/[0.07]"
+          : stripeIndex % 2 === 1
+            ? "bg-muted/15"
+            : ""
+      } ${isMenuOpen ? "bg-muted/50" : ""} ${parentDragOver ? "ring-1 ring-inset ring-accent-brand bg-accent-brand/10" : ""} ${isDragging ? "opacity-40" : ""}`}
+      onMouseDown={(e) => {
+        // Middle-click always opens a new tab, matching browser tab behavior.
+        if (e.button === 1 && !selectionMode && !isTouchOnly) {
+          e.preventDefault();
+          openDefault({ forceNewTab: true });
+        }
+      }}
+      onClick={(e) => {
+        if (selectionMode) {
+          onToggleSelect?.();
+          return;
+        }
+        // On touch devices, open the action tray so the per-protocol buttons are
+        // reachable. If the host only exposes a single action, just launch it.
+        if (isTouchOnly) {
+          e.stopPropagation();
+          const otherProtocols = enabledHostProtocols(host).length;
+          if (pageOnly || otherProtocols <= 1) {
+            openDefault();
+          } else {
+            onTrayOpenChange?.(!isTrayOpen);
+          }
+          return;
+        }
+        const forceNewTab = e.ctrlKey || e.metaKey;
+        if (doubleClickOpensNew) {
+          if (singleClickTimer.current) clearTimeout(singleClickTimer.current);
+          singleClickTimer.current = null;
+          if (e.detail > 1) return;
+          if (forceNewTab) {
+            openDefault({ forceNewTab });
+          } else {
+            singleClickTimer.current = setTimeout(() => {
+              singleClickTimer.current = null;
+              openDefault();
+            }, DOUBLE_CLICK_WINDOW_MS);
+          }
+          return;
+        }
+        if (openOnDoubleClick) return;
+        openDefault(forceNewTab ? { forceNewTab } : undefined);
+      }}
+      onDoubleClick={(e) => {
+        if (selectionMode || isTouchOnly) return;
+        if (doubleClickOpensNew) {
+          e.stopPropagation();
+          if (singleClickTimer.current) clearTimeout(singleClickTimer.current);
+          singleClickTimer.current = null;
+          if (e.ctrlKey || e.metaKey) return;
+          openDefault({ forceNewTab: true });
+          return;
+        }
+        if (!openOnDoubleClick) return;
+        e.stopPropagation();
+        const forceNewTab = e.ctrlKey || e.metaKey;
+        openDefault(forceNewTab ? { forceNewTab } : undefined);
+      }}
+    >
+      {/* Status stripe */}
+      {showStatusStripes && (
+        <div
+          data-locking={statusLocking}
+          className={`host-status-stripe w-[3px] shrink-0 transition-colors motion-interactive ${getStatusClasses(availability, statusScheme, "stripe", statusLoading)}`}
+        />
+      )}
+
+      {canDrag && (
+        <div
+          className="flex items-center justify-center w-4 shrink-0 text-muted-foreground/35 group-hover:text-muted-foreground/70 transition-colors"
+          title={t("hosts.dragToRearrange")}
+        >
+          <GripVertical className="size-3" />
+        </div>
+      )}
+
+      <div
+        className={`flex flex-col flex-1 min-w-0 ${tokens.rowPadding} ${isCompact ? "" : "gap-[3.5px]"}`}
+      >
+        {/* Name row */}
+        <div
+          data-drag-label
+          className={`flex items-center gap-1.5 min-w-0 ${isCompact ? "min-h-[19px]" : ""}`}
+        >
+          {onToggleExpand && (
+            <button
+              type="button"
+              title={
+                isExpanded
+                  ? t("hosts.collapseSubHosts")
+                  : t("hosts.expandSubHosts")
+              }
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleExpand();
+              }}
+              className="flex items-center justify-center size-3.5 shrink-0 text-muted-foreground/60 hover:text-foreground"
+            >
+              <ChevronRight
+                className={`size-3.5 transition-transform ${isExpanded ? "rotate-90" : ""}`}
+              />
+            </button>
+          )}
+          {selectionMode && (
+            <div
+              className={`size-3.5 border-2 flex items-center justify-center shrink-0 transition-colors ${selected ? "border-accent-brand bg-accent-brand" : "border-border bg-background"}`}
+            >
+              {selected && <Check className="size-2 text-background" />}
+            </div>
+          )}
+          <TooltipProvider delayDuration={300}>
+            {/* Hidden while the host menu is open so it never covers it. */}
+            <Tooltip open={isMenuOpen ? false : undefined}>
+              <TooltipTrigger asChild>
+                <span
+                  className={`${tokens.nameTextSize} font-semibold truncate text-foreground leading-none tracking-tight`}
+                >
+                  {host.name}
+                </span>
+              </TooltipTrigger>
+              <TooltipContent
+                side="right"
+                className={
+                  isCompact ? "max-w-72 whitespace-pre-line break-words" : ""
+                }
+              >
+                {isCompact
+                  ? [
+                      host.name,
+                      formatHostAddress(host, {
+                        showUsername: true,
+                        showPort: true,
+                      }),
+                      host.tags?.join(", "),
+                      buildStatusTooltip(host, availability, t),
+                    ]
+                      .filter(Boolean)
+                      .join("\n")
+                  : buildStatusTooltip(host, availability, t)}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          {rowFields.showPinIcon && host.pin && (
+            <Pin className="size-2.5 text-accent-brand/50 shrink-0" />
+          )}
+          {host.lock && (
+            <TooltipProvider delayDuration={300}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span data-testid="host-managed-marker" className="shrink-0">
+                    <Lock className="size-2.5 text-muted-foreground/70" />
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  {t("hosts.managedTooltip", {
+                    plugin: host.lock.pluginName,
+                  })}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+          {!isCompact && hostBadges}
+          {!isCompact && trayToggle}
+          {compactOneLine && compactDetails}
+          {compactOneLine && hostBadges}
+          {compactOneLine && compactActions}
+        </div>
+
+        {isCompact && !compactOneLine && (
+          <div
+            data-testid="host-details-row"
+            className="flex items-center min-w-0 min-h-[19px]"
+          >
+            {compactDetails}
+            <div className="flex items-center gap-1 flex-1 min-w-0 overflow-hidden">
+              {hostBadges}
+              {rowFields.showAddress && (
+                <span
+                  className="text-[11px] text-muted-foreground/70 font-mono min-w-0 truncate leading-none"
+                  title={host.ip}
+                >
+                  {formatHostAddress(host, {
+                    ...rowFields,
+                    showUsername: false,
+                  })}
+                </span>
+              )}
+              {showTags && !!host.tags?.length && (
+                <div className="flex flex-1 basis-0 min-w-0 flex-wrap h-[11px] overflow-hidden gap-x-1">
+                  {host.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      data-testid="host-inline-tag"
+                      className="text-[9px] px-1 py-px bg-muted/60 text-muted-foreground/70 lowercase leading-none truncate max-w-[5rem] min-w-0 shrink-0"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+            {compactActions}
+          </div>
+        )}
+
+        {tokens.showAddressRow && (
+          <span className="text-[11px] text-muted-foreground/60 truncate leading-none font-mono">
+            {formatHostAddress(host, rowFields)}
+          </span>
+        )}
+
+        {/* Tag pills */}
+        {showTags && !isCompact && host.tags && host.tags.length > 0 && (
+          <div className="flex items-center gap-1 min-w-0 overflow-hidden">
+            {host.tags.slice(0, 4).map((tag) => (
+              <span
+                key={tag}
+                className="text-[9px] px-1.5 py-[1px] bg-muted/60 text-muted-foreground/70 lowercase shrink-0 leading-[1.4]"
+              >
+                {tag}
+              </span>
+            ))}
+            {host.tags.length > 4 && (
+              <span className="text-[9px] text-muted-foreground/40 shrink-0">
+                +{host.tags.length - 4}
+              </span>
+            )}
+          </div>
+        )}
+
+        {/* Connection buttons: permanent in "always"/"actionsOnly" modes, or shown once the chevron opens the tray in click mode */}
+        {!isCompact &&
+          !selectionMode &&
+          (alwaysShowTray ||
+            actionsOnly ||
+            (shouldUseClickTray && isTrayOpen)) &&
+          trayEntries.length > 0 && (
+            <div className="flex items-center flex-wrap gap-[3.5px]">
+              {connectionButtons}
+            </div>
+          )}
+
+        {/* Action tray, slides open on hover (default) or via chevron in click-tray mode */}
+        {!isCompact && (
+          <div className={trayVisibilityClass}>
+            {tokens.showResourceRow &&
+              isOnline &&
+              ((host.cpu != null && host.cpu > 0) ||
+                (host.ram != null && host.ram > 0)) && (
+                <div className="flex items-center gap-[10.5px] pt-[5.25px]">
+                  {host.cpu != null && host.cpu > 0 && (
+                    <div className="flex items-center gap-1.5">
+                      <Cpu className="size-2.5 shrink-0 text-muted-foreground/40" />
+                      <div className="w-9 h-1 bg-muted-foreground/15 rounded-full overflow-hidden">
+                        <div
+                          className={`motion-meter h-full rounded-full ${host.cpu > 80 ? "bg-red-400" : host.cpu > 50 ? "bg-warning" : "bg-accent-brand"}`}
+                          style={{ width: `${host.cpu}%` }}
+                        />
+                      </div>
+                      <span className="text-[9px] tabular-nums text-muted-foreground/50">
+                        {host.cpu}%
+                      </span>
+                    </div>
+                  )}
+                  {host.ram != null && host.ram > 0 && (
+                    <div className="flex items-center gap-1.5">
+                      <MemoryStick className="size-2.5 shrink-0 text-muted-foreground/40" />
+                      <div className="w-9 h-1 bg-muted-foreground/15 rounded-full overflow-hidden">
+                        <div
+                          className={`motion-meter h-full rounded-full ${host.ram > 80 ? "bg-red-400" : host.ram > 60 ? "bg-warning" : "bg-accent-brand/60"}`}
+                          style={{ width: `${host.ram}%` }}
+                        />
+                      </div>
+                      <span className="text-[9px] tabular-nums text-muted-foreground/50">
+                        {host.ram}%
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+            <div
+              className={`flex flex-col gap-0.5 ${alwaysShowTray || actionsOnly || shouldUseClickTray ? "" : "pt-1.5"}`}
+            >
+              {/* Connection buttons, only shown here when not already shown above */}
+              {!alwaysShowTray &&
+                !actionsOnly &&
+                !shouldUseClickTray &&
+                trayEntries.length > 0 && (
+                  <div className="flex items-center flex-wrap gap-[1.75px]">
+                    {connectionButtons}
+                  </div>
+                )}
+
+              {/* Management buttons row */}
+              <div
+                className={`flex items-center gap-[1.75px] border-t border-border/30 ${alwaysShowTray || actionsOnly || shouldUseClickTray ? "pt-[5.25px]" : "pt-[3.5px] mt-[1.75px]"}`}
+              >
+                {managementButtons}
+              </div>
+            </div>
+          </div>
+        )}
+        {authOverrideProtocol && (
+          <HostAuthOverrideModal
+            open
+            onOpenChange={(open) => {
+              if (!open) setAuthOverrideProtocol(null);
+            }}
+            host={host}
+            protocol={authOverrideProtocol}
+          />
+        )}
+      </div>
+    </div>
+  );
+}

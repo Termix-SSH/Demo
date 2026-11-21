@@ -19,8 +19,13 @@ import {
   PanelList,
   PanelShell,
 } from "@termix-ssh/plugin-sdk/ui";
-import type { JobView, SnapshotEntry, SnapshotView } from "../shared/types";
-import { downloadEntry, errorMessage, listFiles } from "./api";
+import type { SnapshotEntry, SnapshotView } from "../shared/types";
+import {
+  downloadEntry,
+  errorMessage,
+  listFiles,
+  type SnapshotSource,
+} from "./api";
 import { formatBytes, formatDate } from "./format";
 import { RestoreForm } from "./RestoreForm";
 
@@ -34,15 +39,13 @@ function crumbs(path: string): { name: string; path: string }[] {
 
 /** Folders and files of one snapshot, to download or restore. */
 export function SnapshotBrowser({
-  job,
+  source,
   snapshot,
-  localRepo,
   onBack,
   onRestoreStarted,
 }: {
-  job: JobView;
+  source: SnapshotSource;
   snapshot: SnapshotView;
-  localRepo: boolean;
   onBack: () => void;
   onRestoreStarted: (runId: number) => void;
 }) {
@@ -59,11 +62,11 @@ export function SnapshotBrowser({
     setEntries(null);
     setError("");
     try {
-      setEntries(await listFiles(job.id, snapshot.id, dir));
+      setEntries(await listFiles(source, snapshot.id, dir));
     } catch (e) {
       setError(errorMessage(e, t("snapshots.filesFailed")));
     }
-  }, [job.id, snapshot.id, dir, t]);
+  }, [source, snapshot.id, dir, t]);
 
   useEffect(() => {
     void load();
@@ -72,7 +75,7 @@ export function SnapshotBrowser({
   const download = async (entry: SnapshotEntry) => {
     setDownloading(entry.path);
     try {
-      await downloadEntry(job.id, snapshot.id, entry);
+      await downloadEntry(source, snapshot.id, entry);
     } catch (e) {
       toast.error(errorMessage(e, t("snapshots.downloadFailed")));
     } finally {
@@ -83,10 +86,9 @@ export function SnapshotBrowser({
   if (restoring) {
     return (
       <RestoreForm
-        job={job}
+        source={source}
         snapshot={snapshot}
         includes={restoring}
-        localRepo={localRepo}
         onClose={() => setRestoring(null)}
         onStarted={onRestoreStarted}
       />

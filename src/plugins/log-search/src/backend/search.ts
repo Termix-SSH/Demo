@@ -48,8 +48,15 @@ export async function pool<T>(
   );
 }
 
+export interface SearchTarget {
+  host: PluginHostSummary;
+  settings: HostSettings;
+}
+
 export interface SearchService {
   hosts: () => Promise<SearchableHost[]>;
+  /** The hosts of a search the current user may search. Empty ids is all. */
+  targets: (hostIds: number[]) => Promise<SearchTarget[]>;
   run: (req: SearchRequest, now?: number) => Promise<SearchResponse>;
 }
 
@@ -73,6 +80,17 @@ export function createSearch(
       }
     }
     return out.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  async function targets(hostIds: number[]): Promise<SearchTarget[]> {
+    const wanted = new Set(hostIds);
+    const out: SearchTarget[] = [];
+    for (const host of await ctx.hosts.list()) {
+      if (hostIds.length && !wanted.has(host.id)) continue;
+      const settings = await usable(host);
+      if (settings) out.push({ host, settings });
+    }
+    return out;
   }
 
   async function readSource(
@@ -222,5 +240,5 @@ export function createSearch(
     };
   }
 
-  return { hosts, run };
+  return { hosts, targets, run };
 }

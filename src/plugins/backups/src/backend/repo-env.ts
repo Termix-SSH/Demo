@@ -99,6 +99,74 @@ export function repoEnv(
   return out;
 }
 
+export interface RepoSpec {
+  kind: RepoKind;
+  location: RepoLocation;
+}
+
+/**
+ * Why a mirror can't take a copy from the main repository, or null. restic
+ * copy opens both at once, so they can't need different values in the same
+ * environment names.
+ */
+export function mirrorConflict(
+  main: RepoSpec,
+  mirror: RepoSpec,
+  hostId: number,
+): string | null {
+  if (mirror.kind === "local" && mirror.location.hostId !== hostId) {
+    return "A folder mirror must be on the job's own host";
+  }
+  if (main.kind === "s3" && mirror.kind === "s3") {
+    if (
+      (main.location.accessKeyId ?? "") !== (mirror.location.accessKeyId ?? "")
+    ) {
+      return "Two S3 repositories can only mirror each other with the same access key";
+    }
+    if ((main.location.region ?? "") !== (mirror.location.region ?? "")) {
+      return "Two S3 repositories can only mirror each other in the same region";
+    }
+  }
+  if (
+    main.kind === "rclone" &&
+    mirror.kind === "rclone" &&
+    (main.location.remote ?? "").toUpperCase() ===
+      (mirror.location.remote ?? "").toUpperCase()
+  ) {
+    return "Two rclone repositories need different remote names to mirror each other";
+  }
+  return null;
+}
+
+/**
+ * Env for copying to one mirror: the mirror's own values, each prefixed
+ * TMX_M<n>_ so the run script can switch to them in a subshell.
+ */
+export function mirrorEnv(index: number, env: Env): Env {
+  const out: Env = {};
+  for (const [key, value] of Object.entries(env)) {
+    if (key === "RESTIC_PROGRESS_FPS") continue;
+    out[`TMX_M${index}_${key}`] = value;
+  }
+  return out;
+}
+
+/**
+ * The main repository as a copy source. A rest login rides in the address,
+ * since the mirror may need RESTIC_REST_USERNAME for itself.
+ */
+export function copySourceEnv(
+  kind: RepoKind,
+  location: RepoLocation,
+  secret: string,
+): Env {
+  if (kind !== "rest" || !location.username || !location.url) return {};
+  const url = new URL(location.url);
+  url.username = encodeURIComponent(location.username);
+  url.password = encodeURIComponent(secret);
+  return { TMX_FROM_REPOSITORY: `rest:${trimEnd(url.toString())}/` };
+}
+
 /**
  * Shell lines that export the values. Each value is decoded from base64 by a
  * pipe, so it is never in argv, never parsed by the shell and never on disk.

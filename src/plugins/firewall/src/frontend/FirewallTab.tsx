@@ -47,6 +47,7 @@ const BACKEND_NAMES: Record<string, string> = {
   firewalld: "firewalld",
   nftables: "nftables",
   iptables: "iptables",
+  windows: "Windows Firewall",
 };
 
 // A fixed height box, so the panel body inside it can scroll.

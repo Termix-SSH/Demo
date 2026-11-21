@@ -2,9 +2,13 @@ import type { Request, Response, Router } from "express";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import {
   CHANNEL_TYPES,
+  CREATABLE_CHANNEL_TYPES,
   isSeverity,
   type AlertRule,
   type ChannelType,
+  type MobileDevice,
+  type PushPlatform,
+  type Severity,
 } from "../types.js";
 import type { Announcements } from "./announcements.js";
 import { deliverToChannels } from "./hub.js";
@@ -42,6 +46,24 @@ function positiveInt(value: unknown): number | null {
 function isChannelType(value: unknown): value is ChannelType {
   return (CHANNEL_TYPES as readonly string[]).includes(String(value));
 }
+
+const INSTALL_ID = /^[A-Za-z0-9_-]{8,64}$/;
+
+const running = new Map<string, Promise<unknown>>();
+
+/** Runs jobs with the same key one after another. */
+function oneAtATime<T>(key: string, job: () => Promise<T>): Promise<T> {
+  const before = running.get(key) ?? Promise.resolve();
+  const next = before.catch(() => undefined).then(job);
+  running.set(key, next);
+  void next
+    .catch(() => undefined)
+    .finally(() => {
+      if (running.get(key) === next) running.delete(key);
+    });
+  return next;
+}
+const ACCOUNT_KEY = /^[A-Za-z0-9._:-]{1,64}$/;
 
 function idList(value: unknown): number[] {
   return Array.isArray(value)
@@ -278,7 +300,7 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
   router.get("/meta", async (_req: Request, res: Response) => {
     res.json({
       emailAvailable: (await senders.smtp()) !== null,
-      channelTypes: CHANNEL_TYPES,
+      channelTypes: CREATABLE_CHANNEL_TYPES,
     });
   });
 
@@ -347,8 +369,11 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
       out.name = name.slice(0, 100);
     }
     if (body.type !== undefined || !partial) {
-      if (!isChannelType(body.type)) {
-        return { error: `type must be one of ${CHANNEL_TYPES.join(", ")}` };
+      // Mobile channels come only from the device routes.
+      if (!isChannelType(body.type) || (!partial && body.type === "mobile")) {
+        return {
+          error: `type must be one of ${CREATABLE_CHANNEL_TYPES.join(", ")}`,
+        };
       }
       out.type = body.type;
     }
@@ -385,7 +410,7 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
    *                 type: string
    *               type:
    *                 type: string
-   *                 enum: [webhook, ntfy, discord, telegram, email]
+   *                 enum: [webhook, ntfy, discord, telegram, slack, teams, gotify, pushover, matrix, email]
    *               config:
    *                 type: object
    *               enabled:
@@ -437,7 +462,7 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
    *                 type: string
    *               type:
    *                 type: string
-   *                 enum: [webhook, ntfy, discord, telegram, email]
+   *                 enum: [webhook, ntfy, discord, telegram, slack, teams, gotify, pushover, matrix, email]
    *               config:
    *                 type: object
    *               enabled:
@@ -463,6 +488,11 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
     );
     if ("error" in input) return res.status(400).json(input);
     const type = input.type ?? existing.type;
+    if ((type === "mobile") !== (existing.type === "mobile")) {
+      return res
+        .status(400)
+        .json({ error: "A mobile channel can not change type" });
+    }
     if (input.config !== undefined) {
       input.config = mergeConfig(
         type,
@@ -502,9 +532,17 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
    *         description: No such channel for the caller.
    */
   router.delete("/channels/:id", async (req: Request, res: Response) => {
+    const userId = actor(ctx);
     const id = positiveInt(req.params.id);
-    const deleted = id ? await repository.deleteChannel(actor(ctx), id) : false;
-    if (!deleted) return res.status(404).json({ error: "Channel not found" });
+    const existing = id ? await repository.getChannel(userId, id) : null;
+    if (!id || !existing) {
+      return res.status(404).json({ error: "Channel not found" });
+    }
+    const ruleId = positiveInt(existing.config.ruleId);
+    if (existing.type === "mobile" && ruleId) {
+      await repository.deleteRule(userId, ruleId);
+    }
+    await repository.deleteChannel(userId, id);
     res.json({ success: true });
   });
 
@@ -548,6 +586,9 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
         context: { sourceName: "Test", triggerType: "test" },
       },
       senders,
+      async (channelId) => {
+        await repository.updateChannel(userId, channelId, { enabled: false });
+      },
     );
     res.json(
       result.ok ? { success: true } : { success: false, error: result.error },
@@ -707,6 +748,246 @@ export function registerRoutes(router: Router, deps: RouteDeps): void {
     const id = positiveInt(req.params.id);
     const deleted = id ? await repository.deleteRule(actor(ctx), id) : false;
     if (!deleted) return res.status(404).json({ error: "Rule not found" });
+    res.json({ success: true });
+  });
+
+  const findDevices = async (userId: string, installId: string) =>
+    (await repository.deliverableChannels(userId)).filter(
+      (channel) =>
+        channel.type === "mobile" && channel.config?.installId === installId,
+    );
+
+  /**
+   * Removes a phone's channels and their rules, plus phone rules left with
+   * no channel. 1.4.0-beta.1 could make a phone twice.
+   */
+  const removeDevices = async (
+    userId: string,
+    channels: Awaited<ReturnType<typeof findDevices>>,
+  ) => {
+    for (const channel of channels) {
+      const ruleId = positiveInt(channel.config?.ruleId);
+      if (ruleId) await repository.deleteRule(userId, ruleId);
+      await repository.deleteChannel(userId, channel.id);
+    }
+    for (const rule of await repository.listRules(userId)) {
+      if (rule.name.startsWith("Mobile: ") && rule.channelIds.length === 0) {
+        await repository.deleteRule(userId, rule.id);
+      }
+    }
+  };
+
+  const rulesById = async (userId: string) =>
+    new Map(
+      (await repository.listRules(userId)).map((rule) => [rule.id, rule]),
+    );
+
+  const describeDevice = (
+    channel: {
+      id: number;
+      name: string;
+      enabled: boolean;
+      config: Record<string, unknown> | null;
+    },
+    byId: Map<number, AlertRule>,
+  ): MobileDevice => {
+    const config = channel.config ?? {};
+    const rule = byId.get(positiveInt(config.ruleId) ?? 0);
+    return {
+      installId: String(config.installId ?? ""),
+      channelId: channel.id,
+      name: channel.name,
+      platform: config.platform === "ios" ? "ios" : "android",
+      enabled: channel.enabled,
+      minSeverity: rule?.minSeverity ?? "warning",
+    };
+  };
+
+  /**
+   * @openapi
+   * /plugin-api/alerts/devices:
+   *   get:
+   *     summary: List the caller's phones linked for push notifications
+   *     description: Push tokens are never returned.
+   *     tags:
+   *       - Alerts
+   *     responses:
+   *       200:
+   *         description: The phones.
+   */
+  router.get("/devices", async (_req: Request, res: Response) => {
+    const userId = actor(ctx);
+    const byId = await rulesById(userId);
+    const phones = (await repository.deliverableChannels(userId)).filter(
+      (channel) => channel.type === "mobile",
+    );
+    res.json(phones.map((channel) => describeDevice(channel, byId)));
+  });
+
+  /**
+   * @openapi
+   * /plugin-api/alerts/devices/{installId}:
+   *   put:
+   *     summary: Link or update a phone for push notifications
+   *     description: Used by the Termix app. Makes a mobile channel and a rule that sends alerts at or above minSeverity to it.
+   *     tags:
+   *       - Alerts
+   *     parameters:
+   *       - in: path
+   *         name: installId
+   *         required: true
+   *         schema:
+   *           type: string
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             required: [token, platform]
+   *             properties:
+   *               token:
+   *                 type: string
+   *                 description: The Expo push token.
+   *               platform:
+   *                 type: string
+   *                 enum: [ios, android]
+   *               name:
+   *                 type: string
+   *               accountKey:
+   *                 type: string
+   *                 description: The app's id for this server, sent back in each push.
+   *               enabled:
+   *                 type: boolean
+   *               minSeverity:
+   *                 type: string
+   *                 enum: [info, success, warning, critical]
+   *     responses:
+   *       200:
+   *         description: The phone.
+   *       400:
+   *         description: The request is not valid.
+   */
+  router.put("/devices/:installId", async (req: Request, res: Response) => {
+    const userId = actor(ctx);
+    const installId = String(req.params.installId ?? "");
+    if (!INSTALL_ID.test(installId)) {
+      return res.status(400).json({ error: "installId is not valid" });
+    }
+    const body = (req.body ?? {}) as Record<string, unknown>;
+    const accountKey =
+      typeof body.accountKey === "string" && ACCOUNT_KEY.test(body.accountKey)
+        ? body.accountKey
+        : "";
+    const platform = body.platform as PushPlatform;
+    const config: Record<string, unknown> = {
+      token: typeof body.token === "string" ? body.token.trim() : "",
+      platform,
+      installId,
+      accountKey,
+    };
+    const problem = validateChannelConfig("mobile", config);
+    if (problem) return res.status(400).json({ error: problem });
+    const name =
+      (typeof body.name === "string" ? body.name.trim().slice(0, 100) : "") ||
+      "Phone";
+    const minSeverity: Severity = isSeverity(body.minSeverity)
+      ? body.minSeverity
+      : "warning";
+    const enabled = body.enabled !== false;
+
+    // The app can send several at once; one at a time keeps one channel and rule.
+    const device = await oneAtATime(`${userId}:${installId}`, async () => {
+      const [existing, ...copies] = await findDevices(userId, installId);
+      if (copies.length > 0) await removeDevices(userId, copies);
+      let channelId: number;
+      if (existing) {
+        channelId = existing.id;
+        config.ruleId = existing.config?.ruleId;
+        await repository.updateChannel(userId, channelId, {
+          name,
+          config,
+          enabled,
+        });
+      } else {
+        channelId = await repository.createChannel(userId, {
+          name,
+          type: "mobile",
+          config,
+          enabled,
+        });
+      }
+
+      const rule = (await rulesById(userId)).get(
+        positiveInt(config.ruleId) ?? 0,
+      );
+      const ruleInput = {
+        name: `Mobile: ${name}`.slice(0, 100),
+        match: rule?.match ?? "*",
+        minSeverity,
+        channelIds: [channelId],
+        enabled: true,
+      };
+      if (rule) {
+        await repository.updateRule(userId, rule.id, ruleInput);
+      } else {
+        config.ruleId = await repository.createRule(userId, ruleInput);
+        await repository.updateChannel(userId, channelId, { config });
+      }
+      // Copies left by 1.4.0-beta.1, which could race.
+      for (const extra of await repository.listRules(userId)) {
+        if (
+          extra.id !== config.ruleId &&
+          extra.name.startsWith("Mobile: ") &&
+          extra.channelIds.length === 1 &&
+          extra.channelIds[0] === channelId
+        ) {
+          await repository.deleteRule(userId, extra.id);
+        }
+      }
+      const result: MobileDevice = {
+        installId,
+        channelId,
+        name,
+        platform,
+        enabled,
+        minSeverity,
+      };
+      return result;
+    });
+    res.json(device);
+  });
+
+  /**
+   * @openapi
+   * /plugin-api/alerts/devices/{installId}:
+   *   delete:
+   *     summary: Unlink a phone
+   *     description: Removes its mobile channel and its rule. Answers 200 when the phone was already gone.
+   *     tags:
+   *       - Alerts
+   *     parameters:
+   *       - in: path
+   *         name: installId
+   *         required: true
+   *         schema:
+   *           type: string
+   *     responses:
+   *       200:
+   *         description: Removed, or was not linked.
+   *       400:
+   *         description: The install id is not valid.
+   */
+  router.delete("/devices/:installId", async (req: Request, res: Response) => {
+    const userId = actor(ctx);
+    const installId = String(req.params.installId ?? "");
+    if (!INSTALL_ID.test(installId)) {
+      return res.status(400).json({ error: "installId is not valid" });
+    }
+    // Unlinking twice is fine: the phone only wants to be gone.
+    await oneAtATime(`${userId}:${installId}`, async () =>
+      removeDevices(userId, await findDevices(userId, installId)),
+    );
     res.json({ success: true });
   });
 }

@@ -6,6 +6,7 @@ import {
   scrub,
 } from "@termix-ssh/plugin-sdk/host-scripts";
 import { FirewallError } from "./errors.js";
+import { POWERSHELL, encodedCommand } from "./backends/windows.js";
 
 export { scrub } from "@termix-ssh/plugin-sdk/host-scripts";
 
@@ -32,16 +33,44 @@ export interface Remote {
   ) => Promise<RunResult>;
   /** Opens a new connection and runs a tiny command, to see the host still lets Termix in. */
   probe: (hostId: number) => Promise<boolean>;
+  /** Whether the host runs Windows, checked once per host. */
+  isWindows: (hostId: number) => Promise<boolean>;
+}
+
+/** Windows says "is not recognized" or prints its version for `ver`. */
+export function looksLikeWindows(output: string): boolean {
+  return /Microsoft Windows|is not recognized as/i.test(output);
 }
 
 export function createRemote(ctx: PluginContext): Remote {
+  const windows = new Map<number, Promise<boolean>>();
   return {
+    isWindows(hostId) {
+      let known = windows.get(hostId);
+      if (!known) {
+        known = ctx.ssh
+          .exec(hostId, "ver", { timeoutMs: 15_000, purpose: "firewall" })
+          .then((r) =>
+            looksLikeWindows(`${r.stdout}
+${r.stderr}`),
+          )
+          .catch(() => false);
+        windows.set(hostId, known);
+        void known.then((yes) => {
+          if (!yes) windows.delete(hostId);
+        });
+      }
+      return known;
+    },
     async root(hostId, sudo, script, options = {}) {
+      const powershell = script.startsWith(POWERSHELL);
       const result = await ctx.ssh.exec(
         hostId,
-        scriptShell(sudo ? "root" : "root-only"),
+        powershell
+          ? encodedCommand(script)
+          : scriptShell(sudo ? "root" : "root-only"),
         {
-          stdin: script,
+          ...(powershell ? {} : { stdin: script }),
           timeoutMs: options.timeoutMs ?? 60_000,
           maxOutputBytes: options.maxOutputBytes ?? 2 * 1024 * 1024,
           purpose: "firewall",

@@ -26,6 +26,7 @@ import {
   type HostSidebarFilterState,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
+  invokeAction,
   useSettings,
   useSlotContributions,
   useTranslation,
@@ -66,6 +67,7 @@ import { useHostSidebarPreferences } from "./tree/hooks/useHostSidebarPreference
 import { useArrangeLock } from "./use-arrange-lock";
 import { useHostPolicy } from "./use-host-policy";
 import { stripedRows } from "./striped-rows";
+import { slotMenuItems } from "./slot-menu-items";
 
 type FilterState = HostSidebarFilterState;
 
@@ -243,7 +245,9 @@ export function HostsPanel({
       plugin.contributes!.settings!.host!.enableKey!,
     ]),
   );
-  const hasImportMenu = useSlotContributions("hosts.importMenu").length > 0;
+  const importMenu = useSlotContributions("hosts.importMenu");
+  const hasImportMenu = importMenu.length > 0;
+  const importMenuItems = slotMenuItems(importMenu);
   const hostProtocols = useHostProtocols();
   const sshAuthProviders = useSshAuthProviders();
   const [hostSearch, setHostSearch] = useState("");
@@ -769,6 +773,26 @@ export function HostsPanel({
                         {t("hosts.importExportBtn")}
                       </DropdownMenuSubTrigger>
                       <DropdownMenuSubContent className="text-xs min-w-[170px]">
+                        {importMenuItems.map((item) => {
+                          const Icon = item.icon;
+                          return (
+                            <DropdownMenuItem
+                              key={item.actionId}
+                              onClick={() =>
+                                void invokeAction(item.actionId).catch(
+                                  (error: unknown) =>
+                                    console.error(
+                                      `[actions] ${item.actionId} failed`,
+                                      error,
+                                    ),
+                                )
+                              }
+                            >
+                              {Icon && <Icon className="size-3.5 mr-2" />}
+                              {t(item.titleKey)}
+                            </DropdownMenuItem>
+                          );
+                        })}
                         <ComponentSlot
                           slotId="hosts.importMenu"
                           props={{ hosts: rawHosts }}

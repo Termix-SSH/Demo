@@ -1,5 +1,13 @@
 export type Manager = "apt" | "dnf" | "yum" | "zypper" | "pacman" | "apk";
 
+/** Package managers that live next to the system one. */
+export type ExtraManager = "flatpak" | "snap" | "brew";
+export const EXTRA_MANAGERS: readonly ExtraManager[] = [
+  "flatpak",
+  "snap",
+  "brew",
+];
+
 export interface PackagesStatus {
   os: string;
   manager: Manager | "none";
@@ -12,6 +20,8 @@ export interface PackagesStatus {
   singleUpdates: boolean;
   /** Packages can be held at their version. */
   holds: boolean;
+  /** Flatpak, Snap or Homebrew found next to the system manager. */
+  extras: ExtraManager[];
   canEdit: boolean;
   readOnly: boolean;
 }

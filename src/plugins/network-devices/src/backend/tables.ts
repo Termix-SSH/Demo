@@ -43,5 +43,28 @@ export const devices = defineTable(
   },
 );
 
+// p_network_devices_configs: saved device configurations. The content is
+// sealed, since a config can hold keys and password hashes.
+export const configs = defineTable(
+  "configs",
+  {
+    id: id(),
+    deviceId: integer().notNull(),
+    takenAt: timestamp().notNull(),
+    sha256: varchar(64).notNull(),
+    size: integer().notNull(),
+    format: varchar(8).notNull(),
+    content: text().notNull(),
+  },
+  {
+    indexes: [
+      {
+        name: "idx_p_network_devices_configs_device",
+        columns: ["deviceId"],
+      },
+    ],
+  },
+);
+
 // termix-plugin migrations reads this list.
-export const tables = [devices];
+export const tables = [devices, configs];

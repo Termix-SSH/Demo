@@ -1,0 +1,94 @@
+{
+  "id": "original-layout",
+  "name": "Original Layout",
+  "version": "1.0.0",
+  "description": "The Termix layout from before 2.3.0, with a floating sidebar of host folders and a floating tab bar.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Original-Layout",
+  "docs": "https://docs.termix.site/plugins/original-layout",
+  "category": "Productivity",
+  "icon": "PanelsLeftBottom",
+  "features": [
+    "Floating sidebar with a card for each host folder",
+    "Floating tab bar with rounded tabs over a framed tab area",
+    "Tools sidebar on the right for snippets, history and other panels",
+    "The old dark and light colors as two themes",
+    "Dashboard, Host Manager and Settings from Classic Layout"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.2-0",
+    "api": "^2.6.0"
+  },
+  "capabilities": ["ui:layout", "ui:surface", "ui:theme"],
+  "contributes": {
+    "layouts": [
+      {
+        "id": "original",
+        "label": "layout.name",
+        "description": "layout.description",
+        "defaultTheme": "original-dark"
+      }
+    ],
+    "themes": [
+      {
+        "id": "original-dark",
+        "label": "theme.dark",
+        "mode": "dark",
+        "css": "themes/original-dark.css",
+        "swatch": {
+          "background": "#18181b",
+          "panel": "#0e0e10",
+          "text": "#fafafa"
+        }
+      },
+      {
+        "id": "original-light",
+        "label": "theme.light",
+        "mode": "light",
+        "css": "themes/original-light.css",
+        "swatch": {
+          "background": "#fcfcfc",
+          "panel": "#eeeeef",
+          "text": "#18181b"
+        }
+      }
+    ],
+    "tabs": [
+      {
+        "id": "dashboard",
+        "titleKey": "tab.dashboard",
+        "icon": "LayoutDashboard",
+        "openFrom": ["rail"]
+      },
+      {
+        "id": "host-manager",
+        "titleKey": "tab.manage",
+        "icon": "LibraryBig",
+        "openFrom": ["rail"]
+      },
+      {
+        "id": "settings",
+        "titleKey": "tab.settings",
+        "icon": "Settings",
+        "openFrom": ["rail"]
+      }
+    ],
+    "settings": {
+      "user": [
+        {
+          "key": "hostRows",
+          "type": "json",
+          "labelKey": "settings.user.hostRows.label",
+          "default": {},
+          "hidden": true
+        }
+      ]
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

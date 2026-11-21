@@ -56,6 +56,9 @@ export function JobList({
       {jobs.map((job, index) => {
         const status = jobStatus(job);
         const host = hosts.find((h) => Number(h.id) === job.hostId);
+        const runner = job.runnerHostId
+          ? hosts.find((h) => Number(h.id) === job.runnerHostId)
+          : null;
         return (
           <ListRow
             key={job.id}
@@ -79,6 +82,14 @@ export function JobList({
                 {showHost && (
                   <span>{host?.name || host?.ip || `#${job.hostId}`}</span>
                 )}
+                {job.runnerHostId ? (
+                  <span>
+                    {t("jobs.runsOn", {
+                      host:
+                        runner?.name || runner?.ip || `#${job.runnerHostId}`,
+                    })}
+                  </span>
+                ) : null}
                 <span>{scheduleLabel(job, t)}</span>
                 <span>
                   {job.lastSuccessAt
@@ -89,6 +100,11 @@ export function JobList({
                 </span>
                 {job.lastBytes ? (
                   <span>{formatBytes(job.lastBytes)}</span>
+                ) : null}
+                {job.enabled && job.retryAt && !job.runningRunId ? (
+                  <span className="text-warning">
+                    {t("jobs.retrying", { when: formatWhen(job.retryAt, t) })}
+                  </span>
                 ) : null}
                 {job.enabled && job.nextRunAt && !job.runningRunId ? (
                   <span>

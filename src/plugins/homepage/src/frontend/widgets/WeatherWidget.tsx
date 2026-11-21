@@ -1,4 +1,4 @@
-import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
+import { usePluginApi, useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { useEffect, useState } from "react";
 import {
   Cloud,
@@ -55,11 +55,12 @@ function celsiusToF(c: number) {
   return Math.round((c * 9) / 5 + 32);
 }
 
-function WeatherWidget({
+export function WeatherWidget({
   widget,
   config,
 }: WidgetComponentProps<WeatherConfig>) {
   const { t } = useTranslation();
+  const api = usePluginApi();
   const { location, unit, showForecast } = config;
   const [data, setData] = useState<WttrResponse | null>(null);
   const [error, setError] = useState(false);
@@ -70,12 +71,14 @@ function WeatherWidget({
     const fetchWeather = async () => {
       try {
         setError(false);
-        const res = await fetch(
-          `https://wttr.in/${encodeURIComponent(location)}?format=j1`,
-        );
-        if (!res.ok) throw new Error("bad response");
-        const json: WttrResponse = await res.json();
-        if (!cancelled) setData(json);
+        // Plugin views can't reach other sites, so the server fetches it.
+        const res = await api.get<WttrResponse>("/proxy", {
+          params: {
+            url: `https://wttr.in/${encodeURIComponent(location)}?format=j1`,
+            ttl: 600,
+          },
+        });
+        if (!cancelled) setData(res.data);
       } catch {
         if (!cancelled) setError(true);
       }

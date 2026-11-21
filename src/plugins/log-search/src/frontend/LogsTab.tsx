@@ -1,5 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Download, Copy, ScrollText, Search } from "lucide-react";
+import {
+  Bookmark,
+  Copy,
+  Download,
+  Pause,
+  Play,
+  Radio,
+  ScrollText,
+  Search,
+  Square,
+} from "lucide-react";
 import {
   useDocsUrl,
   useToast,
@@ -17,13 +27,20 @@ import {
   ToolbarSelect,
 } from "@termix-ssh/plugin-sdk/ui";
 import {
+  MAX_FOLLOW_HOSTS,
   SOURCES,
   type LevelFilter,
+  type LogEntry,
+  type SavedQuery,
+  type SavedSearch,
+  type SearchRequest,
   type SearchResponse,
   type SearchableHost,
   type Source,
 } from "../shared/types";
-import { errorMessage, listHosts, search } from "./api";
+import { errorMessage, listHosts, listSaved, search } from "./api";
+import { SavedEditor } from "./SavedEditor";
+import { useFollow } from "./useFollow";
 import {
   RANGES,
   formatTime,
@@ -32,6 +49,9 @@ import {
   toPlainText,
   type RangeId,
 } from "./format";
+
+/** Radix selects take no empty value. */
+const NO_SAVED = "none";
 
 const LEVEL_CLASS: Record<string, string> = {
   error: "text-destructive",
@@ -59,6 +79,11 @@ export function LogsTab({ isVisible }: { isVisible: boolean }) {
   const [error, setError] = useState("");
   const [result, setResult] = useState<SearchResponse | null>(null);
   const [shown, setShown] = useState({ query: "", regex: false, cs: false });
+  const [saved, setSaved] = useState<SavedSearch[]>([]);
+  const [savedId, setSavedId] = useState<number | null>(null);
+  const [editing, setEditing] = useState(false);
+  const [followReq, setFollowReq] = useState<SearchRequest | null>(null);
+  const follow = useFollow(followReq);
 
   useEffect(() => {
     if (!isVisible || hosts) return;
@@ -66,6 +91,57 @@ export function LogsTab({ isVisible }: { isVisible: boolean }) {
       .then(setHosts)
       .catch((e) => setError(errorMessage(e, t("tab.hostsFailed"))));
   }, [isVisible, hosts, t]);
+
+  useEffect(() => {
+    if (!isVisible) return;
+    void listSaved()
+      .then(setSaved)
+      .catch(() => setSaved([]));
+  }, [isVisible]);
+
+  const currentQuery = (): SavedQuery => ({
+    query: query.trim(),
+    regex,
+    caseSensitive,
+    hostIds: [...picked],
+    sources: [...sources],
+    range,
+    level,
+    origin: origin.trim(),
+  });
+
+  const applySaved = (item: SavedSearch) => {
+    setSavedId(item.id);
+    setQuery(item.search.query);
+    setRegex(item.search.regex);
+    setCaseSensitive(item.search.caseSensitive);
+    setPicked(new Set(item.search.hostIds));
+    setSources(new Set(item.search.sources));
+    setRange(item.search.range);
+    setLevel(item.search.level);
+    setOrigin(item.search.origin);
+  };
+
+  const toggleFollow = () => {
+    if (followReq) {
+      setFollowReq(null);
+      return;
+    }
+    const now = Date.now();
+    setShown({ query: query.trim(), regex, cs: caseSensitive });
+    setFollowReq({
+      query: query.trim(),
+      regex,
+      caseSensitive,
+      hostIds: [...picked],
+      sources: [...sources],
+      from: now - 60_000,
+      to: now,
+      level,
+      origin: origin.trim(),
+      limit: 500,
+    });
+  };
 
   const run = useCallback(async () => {
     setBusy(true);
@@ -148,16 +224,35 @@ export function LogsTab({ isVisible }: { isVisible: boolean }) {
         title={t("tab.title")}
         docs={docs}
         status={
-          result
-            ? t("results.summary", {
-                count: result.entries.length,
-                hosts: result.hosts.length,
-                ms: result.tookMs,
-              })
-            : undefined
+          followReq
+            ? t(`follow.state.${follow.state}`, { count: follow.lines.length })
+            : result
+              ? t("results.summary", {
+                  count: result.entries.length,
+                  hosts: result.hosts.length,
+                  ms: result.tookMs,
+                })
+              : undefined
         }
         actions={
-          result && result.entries.length ? (
+          followReq ? (
+            <>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={() => follow.setPaused(!follow.paused)}
+                aria-label={
+                  follow.paused ? t("follow.resume") : t("follow.pause")
+                }
+                title={follow.paused ? t("follow.resume") : t("follow.pause")}
+              >
+                {follow.paused ? <Play /> : <Pause />}
+              </Button>
+              <Button variant="ghost" size="xs" onClick={follow.clear}>
+                {t("follow.clear")}
+              </Button>
+            </>
+          ) : result && result.entries.length ? (
             <>
               <Button
                 variant="ghost"
@@ -197,8 +292,17 @@ export function LogsTab({ isVisible }: { isVisible: boolean }) {
                 maxLength={200}
                 className="flex-1"
               />
-              <Button type="submit" disabled={busy}>
+              <Button type="submit" disabled={busy || !!followReq}>
                 <Search /> {t("search.run")}
+              </Button>
+              <Button
+                type="button"
+                variant={followReq ? "default" : "outline"}
+                onClick={toggleFollow}
+                title={t("follow.hint", { max: MAX_FOLLOW_HOSTS })}
+              >
+                {followReq ? <Square /> : <Radio />}
+                {followReq ? t("follow.stop") : t("follow.start")}
               </Button>
             </div>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -261,6 +365,34 @@ export function LogsTab({ isVisible }: { isVisible: boolean }) {
               >
                 {hostSummary}
               </Button>
+              {saved.length ? (
+                <ToolbarSelect
+                  label={t("saved.pick")}
+                  value={savedId ? String(savedId) : NO_SAVED}
+                  onChange={(value: string) => {
+                    const item = saved.find((s) => String(s.id) === value);
+                    if (item) applySaved(item);
+                    else setSavedId(null);
+                  }}
+                  options={[
+                    { value: NO_SAVED, label: t("saved.none") },
+                    ...saved.map((s) => ({
+                      value: String(s.id),
+                      label: s.alert.enabled
+                        ? `${s.name} (${t("saved.alerting")})`
+                        : s.name,
+                    })),
+                  ]}
+                />
+              ) : null}
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setEditing(true)}
+              >
+                <Bookmark />
+                {savedId ? t("saved.editButton") : t("saved.saveButton")}
+              </Button>
             </div>
             {showHosts ? (
               <div className="flex max-h-40 flex-wrap gap-x-4 gap-y-1 overflow-auto border-t pt-2">
@@ -296,18 +428,69 @@ export function LogsTab({ isVisible }: { isVisible: boolean }) {
           </form>
         }
       >
+        {editing ? (
+          <SavedEditor
+            existing={saved.find((s) => s.id === savedId) ?? null}
+            search={currentQuery()}
+            onClose={() => setEditing(false)}
+            onSaved={(item) => {
+              setSaved((current) =>
+                [...current.filter((s) => s.id !== item.id), item].sort(
+                  (a, b) => a.name.localeCompare(b.name),
+                ),
+              );
+              setSavedId(item.id);
+            }}
+            onDeleted={(id) => {
+              setSaved((current) => current.filter((s) => s.id !== id));
+              setSavedId(null);
+            }}
+          />
+        ) : null}
         {error ? (
           <p className="px-3 py-2 text-xs text-destructive">{error}</p>
         ) : null}
-        {busy ? <LoadingState label={t("search.running")} /> : null}
-        {!busy && !result ? (
+        {followReq ? (
+          <>
+            {follow.error ? (
+              <p className="px-3 py-2 text-xs text-destructive">
+                {follow.error}
+              </p>
+            ) : null}
+            {follow.problems.length ? (
+              <div className="flex flex-wrap gap-2 border-b px-3 py-2">
+                {follow.problems.map((p) => (
+                  <StatusBadge key={p.hostId} tone="bad">
+                    {p.host}: {p.message}
+                  </StatusBadge>
+                ))}
+              </div>
+            ) : null}
+            {follow.dropped ? (
+              <p className="border-b px-3 py-1.5 text-xs text-muted-foreground">
+                {t("follow.dropped", { count: follow.dropped })}
+              </p>
+            ) : null}
+            {follow.state === "connecting" ? (
+              <LoadingState label={t("follow.connecting")} />
+            ) : follow.lines.length === 0 ? (
+              <EmptyState icon={Radio} title={t("follow.waiting")} />
+            ) : (
+              <EntryList entries={follow.lines} shown={shown} />
+            )}
+          </>
+        ) : null}
+        {!followReq && busy ? (
+          <LoadingState label={t("search.running")} />
+        ) : null}
+        {!followReq && !busy && !result ? (
           <EmptyState
             icon={ScrollText}
             title={t("results.start")}
             hint={t("results.startHint")}
           />
         ) : null}
-        {!busy && result ? (
+        {!followReq && !busy && result ? (
           <>
             {failed.length ? (
               <div className="flex flex-wrap gap-2 border-b px-3 py-2">
@@ -321,52 +504,63 @@ export function LogsTab({ isVisible }: { isVisible: boolean }) {
             {result.entries.length === 0 ? (
               <EmptyState icon={ScrollText} title={t("results.none")} />
             ) : (
-              <div className="font-mono text-[11px] leading-[1.45]">
+              <>
                 {result.truncated ? (
-                  <p className="border-b px-3 py-1.5 font-sans text-xs text-muted-foreground">
+                  <p className="border-b px-3 py-1.5 text-xs text-muted-foreground">
                     {t("results.truncated", { count: result.entries.length })}
                   </p>
                 ) : null}
-                {result.entries.map((entry, i) => (
-                  <div
-                    key={i}
-                    className={`flex gap-3 border-b px-3 py-1 ${LEVEL_CLASS[entry.level]}`}
-                  >
-                    <span className="w-40 shrink-0 text-muted-foreground">
-                      {formatTime(entry.time)}
-                    </span>
-                    <span className="w-32 shrink-0 truncate" title={entry.host}>
-                      {entry.host}
-                    </span>
-                    <span
-                      className="w-40 shrink-0 truncate text-muted-foreground"
-                      title={`${entry.source}: ${entry.origin}`}
-                    >
-                      {entry.origin}
-                    </span>
-                    <span className="min-w-0 flex-1 whitespace-pre-wrap break-all">
-                      {highlight(
-                        entry.message,
-                        shown.query,
-                        shown.regex,
-                        shown.cs,
-                      ).map((part, j) =>
-                        part.hit ? (
-                          <mark key={j} className="bg-primary/30 text-inherit">
-                            {part.text}
-                          </mark>
-                        ) : (
-                          <span key={j}>{part.text}</span>
-                        ),
-                      )}
-                    </span>
-                  </div>
-                ))}
-              </div>
+                <EntryList entries={result.entries} shown={shown} />
+              </>
             )}
           </>
         ) : null}
       </PanelShell>
     </PanelFrame>
+  );
+}
+
+/** Log lines, newest first, with the search hits marked. */
+function EntryList({
+  entries,
+  shown,
+}: {
+  entries: LogEntry[];
+  shown: { query: string; regex: boolean; cs: boolean };
+}) {
+  return (
+    <div className="font-mono text-[11px] leading-[1.45]">
+      {entries.map((entry, i) => (
+        <div
+          key={i}
+          className={`flex gap-3 border-b px-3 py-1 ${LEVEL_CLASS[entry.level]}`}
+        >
+          <span className="w-40 shrink-0 text-muted-foreground">
+            {formatTime(entry.time)}
+          </span>
+          <span className="w-32 shrink-0 truncate" title={entry.host}>
+            {entry.host}
+          </span>
+          <span
+            className="w-40 shrink-0 truncate text-muted-foreground"
+            title={`${entry.source}: ${entry.origin}`}
+          >
+            {entry.origin}
+          </span>
+          <span className="min-w-0 flex-1 whitespace-pre-wrap break-all">
+            {highlight(entry.message, shown.query, shown.regex, shown.cs).map(
+              (part, j) =>
+                part.hit ? (
+                  <mark key={j} className="bg-primary/30 text-inherit">
+                    {part.text}
+                  </mark>
+                ) : (
+                  <span key={j}>{part.text}</span>
+                ),
+            )}
+          </span>
+        </div>
+      ))}
+    </div>
   );
 }

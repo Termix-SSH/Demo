@@ -14,6 +14,7 @@ import {
   LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { InstalledItem, PackagesStatus } from "../shared/types";
+import type { ExtraManager } from "../shared/types";
 import { errorMessage, getInstalled } from "./api";
 import { formatBytes } from "./format";
 import type { Runner } from "./PackagesTab";
@@ -23,11 +24,13 @@ const PAGE = 100;
 
 export function InstalledView({
   hostId,
+  manager,
   status,
   runner,
   isVisible,
 }: {
   hostId: number;
+  manager?: ExtraManager | null;
   status: PackagesStatus;
   runner: Runner;
   isVisible: boolean;
@@ -40,12 +43,12 @@ export function InstalledView({
 
   const load = useCallback(async () => {
     try {
-      setItems(await getInstalled(hostId));
+      setItems(await getInstalled(hostId, manager));
       setFailed("");
     } catch (e) {
       setFailed(errorMessage(e, t("installed.loadFailed")));
     }
-  }, [hostId, t]);
+  }, [hostId, manager, t]);
 
   useEffect(() => {
     if (isVisible) void load();

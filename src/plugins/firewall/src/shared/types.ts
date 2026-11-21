@@ -1,6 +1,12 @@
 /** Types shared by the backend routes and the frontend. */
 
-export const BACKENDS = ["ufw", "firewalld", "nftables", "iptables"] as const;
+export const BACKENDS = [
+  "ufw",
+  "firewalld",
+  "nftables",
+  "iptables",
+  "windows",
+] as const;
 export type Backend = (typeof BACKENDS)[number];
 
 export const ACTIONS = ["allow", "deny", "reject", "limit"] as const;

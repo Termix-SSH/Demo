@@ -1,6 +1,7 @@
 import type { TermixApp } from "@termix-ssh/plugin-sdk/frontend";
 import type {
   ActionResult,
+  ExtraManager,
   HistoryItem,
   InstalledItem,
   PackageAction,
@@ -41,46 +42,70 @@ export function errorOutput(error: unknown): string {
   return typeof output === "string" ? output : "";
 }
 
+/** "?manager=snap" for an extra, nothing for the system manager. */
+function pick(manager?: ExtraManager | null, joiner = "?"): string {
+  return manager ? `${joiner}manager=${manager}` : "";
+}
+
 export async function getStatus(host: number): Promise<PackagesStatus> {
   return (await api().get<PackagesStatus>(`/${host}/status`)).data;
 }
 
-export async function getUpdates(host: number): Promise<UpdateItem[]> {
-  return (await api().get<UpdateItem[]>(`/${host}/updates`)).data;
+export async function getUpdates(
+  host: number,
+  manager?: ExtraManager | null,
+): Promise<UpdateItem[]> {
+  return (await api().get<UpdateItem[]>(`/${host}/updates${pick(manager)}`))
+    .data;
 }
 
-export async function getInstalled(host: number): Promise<InstalledItem[]> {
-  return (await api().get<InstalledItem[]>(`/${host}/installed`)).data;
+export async function getInstalled(
+  host: number,
+  manager?: ExtraManager | null,
+): Promise<InstalledItem[]> {
+  return (
+    await api().get<InstalledItem[]>(`/${host}/installed${pick(manager)}`)
+  ).data;
 }
 
 export async function searchPackages(
   host: number,
   query: string,
+  manager?: ExtraManager | null,
 ): Promise<SearchItem[]> {
   return (
     await api().get<SearchItem[]>(
-      `/${host}/search?q=${encodeURIComponent(query)}`,
+      `/${host}/search?q=${encodeURIComponent(query)}${pick(manager, "&")}`,
     )
   ).data;
 }
 
-export async function getHistory(host: number): Promise<HistoryItem[]> {
-  return (await api().get<HistoryItem[]>(`/${host}/history`)).data;
+export async function getHistory(
+  host: number,
+  manager?: ExtraManager | null,
+): Promise<HistoryItem[]> {
+  return (await api().get<HistoryItem[]>(`/${host}/history${pick(manager)}`))
+    .data;
 }
 
-export async function getRepos(host: number): Promise<RepoItem[]> {
-  return (await api().get<RepoItem[]>(`/${host}/repos`)).data;
+export async function getRepos(
+  host: number,
+  manager?: ExtraManager | null,
+): Promise<RepoItem[]> {
+  return (await api().get<RepoItem[]>(`/${host}/repos${pick(manager)}`)).data;
 }
 
 export async function runAction(
   host: number,
   action: PackageAction,
   packages: string[] = [],
+  manager?: ExtraManager | null,
 ): Promise<ActionResult> {
   return (
     await api().post<ActionResult>(`/${host}/action`, {
       action,
       packages: packages.length ? packages : undefined,
+      ...(manager ? { manager } : {}),
     })
   ).data;
 }

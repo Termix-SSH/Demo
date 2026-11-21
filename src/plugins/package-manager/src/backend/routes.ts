@@ -4,7 +4,7 @@ import { HostScriptError } from "@termix-ssh/plugin-sdk/host-scripts";
 import type { PackageAction } from "../shared/types.js";
 import { body, createHttp, str } from "./http.js";
 import { cleanNames, cleanQuery } from "./scripts.js";
-import type { PackageService } from "./service.js";
+import { isExtra, type PackageService, type Which } from "./service.js";
 import { registerSummary, type SummaryCache } from "./summary.js";
 
 const ACTIONS: PackageAction[] = [
@@ -23,6 +23,14 @@ const NEEDS_NAMES = new Set<PackageAction>([
   "hold",
   "unhold",
 ]);
+
+/** The manager a request picked with ?manager=, or the system one. */
+function whichOf(req: Request): Which {
+  const raw = req.query.manager ?? body(req).manager;
+  if (raw === undefined || raw === "" || raw === "system") return null;
+  if (!isExtra(raw)) throw new HostScriptError("Unknown package manager");
+  return raw;
+}
 
 function actionOf(req: Request): PackageAction {
   const action = str(body(req).action) as PackageAction;
@@ -84,13 +92,19 @@ export function registerRoutes(
    *         required: true
    *         schema:
    *           type: integer
+   *       - in: query
+   *         name: manager
+   *         schema:
+   *           type: string
+   *           enum: [system, flatpak, snap, brew]
+   *         description: Flatpak, Snap or Homebrew instead of the system package manager.
    *     responses:
    *       200:
    *         description: Name, current and new version, repo and whether it is a security update.
    */
   router.get(
     "/:hostId/updates",
-    read(async (hostId, _req, s) => service.updates(hostId, s)),
+    read(async (hostId, req, s) => service.updates(hostId, s, whichOf(req))),
   );
 
   /**
@@ -106,13 +120,19 @@ export function registerRoutes(
    *         required: true
    *         schema:
    *           type: integer
+   *       - in: query
+   *         name: manager
+   *         schema:
+   *           type: string
+   *           enum: [system, flatpak, snap, brew]
+   *         description: Flatpak, Snap or Homebrew instead of the system package manager.
    *     responses:
    *       200:
    *         description: Name, version, size, summary and whether it is held.
    */
   router.get(
     "/:hostId/installed",
-    read(async (hostId, _req, s) => service.installed(hostId, s)),
+    read(async (hostId, req, s) => service.installed(hostId, s, whichOf(req))),
   );
 
   /**
@@ -129,6 +149,12 @@ export function registerRoutes(
    *         schema:
    *           type: integer
    *       - in: query
+   *         name: manager
+   *         schema:
+   *           type: string
+   *           enum: [system, flatpak, snap, brew]
+   *         description: Flatpak, Snap or Homebrew instead of the system package manager.
+   *       - in: query
    *         name: q
    *         required: true
    *         schema:
@@ -140,7 +166,7 @@ export function registerRoutes(
   router.get(
     "/:hostId/search",
     read(async (hostId, req, s) =>
-      service.search(hostId, s, cleanQuery(req.query.q)),
+      service.search(hostId, s, cleanQuery(req.query.q), whichOf(req)),
     ),
   );
 
@@ -158,13 +184,19 @@ export function registerRoutes(
    *         required: true
    *         schema:
    *           type: integer
+   *       - in: query
+   *         name: manager
+   *         schema:
+   *           type: string
+   *           enum: [system, flatpak, snap, brew]
+   *         description: Flatpak, Snap or Homebrew instead of the system package manager.
    *     responses:
    *       200:
    *         description: Newest first.
    */
   router.get(
     "/:hostId/history",
-    read(async (hostId, _req, s) => service.history(hostId, s)),
+    read(async (hostId, req, s) => service.history(hostId, s, whichOf(req))),
   );
 
   /**
@@ -180,13 +212,19 @@ export function registerRoutes(
    *         required: true
    *         schema:
    *           type: integer
+   *       - in: query
+   *         name: manager
+   *         schema:
+   *           type: string
+   *           enum: [system, flatpak, snap, brew]
+   *         description: Flatpak, Snap or Homebrew instead of the system package manager.
    *     responses:
    *       200:
    *         description: The configured repositories and whether each is on.
    */
   router.get(
     "/:hostId/repos",
-    read(async (hostId, _req, s) => service.repos(hostId, s)),
+    read(async (hostId, req, s) => service.repos(hostId, s, whichOf(req))),
   );
 
   /**
@@ -214,6 +252,9 @@ export function registerRoutes(
    *               action:
    *                 type: string
    *                 enum: [refresh, update, upgrade-all, install, remove, hold, unhold]
+   *               manager:
+   *                 type: string
+   *                 enum: [system, flatpak, snap, brew]
    *               packages:
    *                 type: array
    *                 items:
@@ -234,7 +275,7 @@ export function registerRoutes(
           ? cleanNames(body(req).packages)
           : [];
         try {
-          return await service.act(hostId, s, action, names);
+          return await service.act(hostId, s, action, names, whichOf(req));
         } finally {
           summary.forget(hostId);
         }

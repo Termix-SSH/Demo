@@ -3,7 +3,7 @@ import {
   shellQuote,
   toBase64,
 } from "@termix-ssh/plugin-sdk/host-scripts";
-import type { KeepPolicy, OverwritePolicy } from "../shared/types.js";
+import type { DbEngine, KeepPolicy, OverwritePolicy } from "../shared/types.js";
 import { exportLines, type Env } from "./repo-env.js";
 
 // Bash parameter expansions inside these template literals are escaped as
@@ -28,7 +28,7 @@ export const RESTIC_PIN = {
   } as Record<string, string>,
 };
 
-const PATH_LINE = `export PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/sbin:/sbin"`;
+export const PATH_LINE = `export PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/sbin:/sbin"`;
 
 const PM = `pm=none
 for c in apt-get dnf yum pacman apk zypper; do
@@ -57,6 +57,9 @@ command -v docker >/dev/null 2>&1 && echo docker=1 || echo docker=0
 { command -v mysqldump || command -v mariadb-dump; } >/dev/null 2>&1 && echo mysqldump=1 || echo mysqldump=0
 command -v pg_dump >/dev/null 2>&1 && echo pg_dump=1 || echo pg_dump=0
 command -v sqlite3 >/dev/null 2>&1 && echo sqlite3=1 || echo sqlite3=0
+command -v mongodump >/dev/null 2>&1 && echo mongodump=1 || echo mongodump=0
+command -v redis-cli >/dev/null 2>&1 && echo redis_cli=1 || echo redis_cli=0
+{ command -v sqlcmd || ls /opt/mssql-tools*/bin/sqlcmd; } >/dev/null 2>&1 && echo sqlcmd=1 || echo sqlcmd=0
 `;
 
 function pinCases(): string {
@@ -124,7 +127,7 @@ command -v rclone >/dev/null 2>&1 || { ${errLine("Could not install rclone with 
 echo "version=$(rclone version | head -n1 | awk '{print $2}')"
 `;
 
-const NEED_RESTIC = `${PATH_LINE}
+export const NEED_RESTIC = `${PATH_LINE}
 command -v restic >/dev/null 2>&1 || { ${errLine("restic is not installed on this host")}; exit 7; }`;
 
 /** A short command with the repository open. Secrets come from the export lines. */
@@ -136,10 +139,11 @@ ${body}
 `;
 }
 
+/** Snapshots with the tag, or every snapshot when the tag is empty. */
 export function snapshotsScript(env: Env, tag: string): string {
   return withRepo(
     env,
-    `restic snapshots --json --no-lock --tag ${q(tag)} 2>&1 || { ${errLine("Could not read the snapshots")}; exit 1; }`,
+    `restic snapshots --json --no-lock${tag ? ` --tag ${q(tag)}` : ""} 2>&1 || { ${errLine("Could not read the snapshots")}; exit 1; }`,
   );
 }
 
@@ -217,7 +221,7 @@ exit 0
 export interface DumpPlan {
   /** Names the dump file, safe for a path. */
   file: string;
-  engine: "mysql" | "postgres" | "sqlite";
+  engine: DbEngine;
   address: string;
   port: number | null;
   username: string;
@@ -226,7 +230,11 @@ export interface DumpPlan {
   runAs: string;
   /** Empty dumps every database. For SQLite, the file paths. */
   databases: string[];
+  /** SQL Server only: the folder it writes backups into. */
+  serverDir?: string;
 }
+
+export const MSSQL_DIR = "/var/opt/mssql/backup";
 
 export interface BackupPlan {
   uid: string;
@@ -241,6 +249,43 @@ export interface BackupPlan {
   keep: KeepPolicy;
   pre: string;
   post: string;
+  /** How many mirror repositories to copy to, with env prefixed TMX_M<n>_. */
+  mirrors?: number;
+  /** Backs up the paths relative to this folder, for a copy from another host. */
+  cwd?: string;
+  /** The copy from the source host had a problem: the run ends as a warning. */
+  copyWarning?: string;
+}
+
+/**
+ * Copies the job's snapshots to each mirror after the backup. Each mirror
+ * runs in a subshell with its own env, the main repository as the source.
+ * A failed copy leaves the backup saved and marks the run with warnings.
+ */
+export function mirrorLines(count: number, tag: string, keep: string): string {
+  if (count < 1) return "";
+  const list = Array.from({ length: count }, (_, i) => i + 1).join(" ");
+  const forget = keep
+    ? ` && restic forget --tag ${q(tag)} --group-by '' ${keep} --prune >> "$D/log" 2>&1`
+    : "";
+  return `mirror_env() {
+  export RESTIC_FROM_REPOSITORY="\${TMX_FROM_REPOSITORY:-$RESTIC_REPOSITORY}"
+  export RESTIC_FROM_PASSWORD="$RESTIC_PASSWORD"
+  unset RESTIC_REST_USERNAME RESTIC_REST_PASSWORD
+  for v in $(compgen -e); do
+    case "$v" in
+      "$1"*) export "\${v#"$1"}=\${!v}" ;;
+    esac
+  done
+}
+for M in ${list}; do
+  log "Copying to mirror $M"
+  if ! ( mirror_env "TMX_M\${M}_" && { restic cat config --no-lock >/dev/null 2>&1 || restic init --copy-chunker-params >> "$D/log" 2>&1; } && restic copy --tag ${q(tag)} >> "$D/log" 2>&1${forget} ); then
+    log "Copying to mirror $M failed"
+    STATUS=warning
+    [ -n "$MSG" ] || MSG="The backup is saved, but copying to a mirror failed"
+  fi
+done`;
 }
 
 export interface RestorePlan {
@@ -251,9 +296,7 @@ export interface RestorePlan {
   overwrite: OverwritePolicy;
 }
 
-const COMMON = `D="$1"
-echo $$ > "$D/pid"
-${PATH_LINE}
+export const HELPERS = `${PATH_LINE}
 STATUS=failed
 CODE=1
 MSG=
@@ -265,7 +308,11 @@ as_user() {
   if [ -z "$u" ] || [ "$u" = root ]; then "$@"
   elif command -v runuser >/dev/null 2>&1; then runuser -u "$u" -- "$@"
   else sudo -n -E -u "$u" -- "$@"; fi
-}
+}`;
+
+const COMMON = `D="$1"
+echo $$ > "$D/pid"
+${HELPERS}
 # Keeps the last restic status line, the summary and the first errors.
 restic_json() {
   n=0
@@ -301,7 +348,7 @@ const FINISH_END = `  { echo "status=$STATUS"; echo "code=$CODE"; echo "message=
 trap finish EXIT
 trap 'STATUS=canceled; CODE=130; MSG=Canceled; exit 130' TERM INT`;
 
-function dumpLines(dump: DumpPlan, stage: string): string {
+export function dumpLines(dump: DumpPlan, stage: string): string {
   const out = `${stage}/databases/${dump.file}`;
   const host = [
     dump.address ? `-h ${q(dump.address)}` : "",
@@ -319,6 +366,9 @@ function dumpLines(dump: DumpPlan, stage: string): string {
     return lines.join("\n");
   }
   const pw = dump.passwordEnv ? `"\${${dump.passwordEnv}:-}"` : "";
+  if (dump.engine === "mongo") return mongoLines(dump, out, pw);
+  if (dump.engine === "redis") return redisLines(dump, out, pw);
+  if (dump.engine === "mssql") return mssqlLines(dump, out, pw);
   if (dump.engine === "mysql") {
     const user = dump.username ? `-u ${q(dump.username)}` : "";
     const what = dump.databases.length
@@ -356,6 +406,104 @@ function dumpLines(dump: DumpPlan, stage: string): string {
     });
   }
   lines.push("unset PGPASSWORD");
+  return lines.join("\n");
+}
+
+/** One gzipped archive per database, or one for all of them. */
+function mongoLines(dump: DumpPlan, out: string, pw: string): string {
+  const args = [
+    `--host ${q(dump.address || "127.0.0.1")}`,
+    `--port ${dump.port ?? 27017}`,
+    dump.username
+      ? `--username ${q(dump.username)} --authenticationDatabase admin`
+      : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const lines = [
+    `command -v mongodump >/dev/null 2>&1 || fail "mongodump is not installed"`,
+    `CFG=""`,
+  ];
+  if (pw) {
+    // The password goes in a private config file, never on the command line.
+    lines.push(
+      `CFG=$(as_user ${q(dump.runAs)} mktemp) || fail "Could not make a temp file"`,
+      // YAML single quotes: a quote inside is written twice.
+      `P=$(printf '%s' ${pw} | sed "s/'/''/g")`,
+      `printf "password: '%s'\\n" "$P" | as_user ${q(dump.runAs)} tee "$CFG" >/dev/null; unset P`,
+    );
+  }
+  const cfg = pw ? ` --config "$CFG"` : "";
+  if (dump.databases.length === 0) {
+    lines.push(
+      `log "Dumping all MongoDB databases"`,
+      `as_user ${q(dump.runAs)} mongodump${cfg} ${args} --archive --gzip > ${q(`${out}-all.archive.gz`)} 2>> "$D/log" || { [ -n "$CFG" ] && rm -f "$CFG"; fail "The MongoDB dump failed"; }`,
+    );
+  } else {
+    dump.databases.forEach((db, i) => {
+      lines.push(
+        `log ${q(`Dumping MongoDB ${db}`)}`,
+        `as_user ${q(dump.runAs)} mongodump${cfg} ${args} --db ${q(db)} --archive --gzip > ${q(`${out}-${i + 1}.archive.gz`)} 2>> "$D/log" || { [ -n "$CFG" ] && rm -f "$CFG"; fail ${q(`The MongoDB dump of ${db} failed`)}; }`,
+      );
+    });
+  }
+  lines.push(`[ -n "$CFG" ] && rm -f "$CFG"`, `true`);
+  return lines.join("\n");
+}
+
+/** A snapshot of the whole Redis instance. */
+function redisLines(dump: DumpPlan, out: string, pw: string): string {
+  const args = [
+    `-h ${q(dump.address || "127.0.0.1")}`,
+    `-p ${dump.port ?? 6379}`,
+    dump.username ? `--user ${q(dump.username)}` : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+  return [
+    `command -v redis-cli >/dev/null 2>&1 || fail "redis-cli is not installed"`,
+    pw ? `export REDISCLI_AUTH=${pw}` : "unset REDISCLI_AUTH",
+    `log "Dumping Redis"`,
+    `as_user ${q(dump.runAs)} redis-cli ${args} --no-auth-warning --rdb - > ${q(`${out}.rdb`)} 2>> "$D/log" || fail "The Redis dump failed"`,
+    `[ -s ${q(`${out}.rdb`)} ] || fail "The Redis dump is empty"`,
+    "unset REDISCLI_AUTH",
+  ].join("\n");
+}
+
+/**
+ * SQL Server writes each backup itself into its backup folder, which the
+ * host must see at the same path. The file is moved into the stage after.
+ */
+function mssqlLines(dump: DumpPlan, out: string, pw: string): string {
+  const dir = dump.serverDir || MSSQL_DIR;
+  const server = `${dump.address || "127.0.0.1"},${dump.port ?? 1433}`;
+  const auth = dump.username ? `-U ${q(dump.username)}` : "-E";
+  const lines = [
+    `SQLCMD=$(command -v sqlcmd || ls /opt/mssql-tools*/bin/sqlcmd 2>/dev/null | tail -n 1)`,
+    `[ -n "$SQLCMD" ] || fail "sqlcmd is not installed"`,
+    pw ? `export SQLCMDPASSWORD=${pw}` : "unset SQLCMDPASSWORD",
+    `sql() { as_user ${q(dump.runAs)} "$SQLCMD" -S ${q(server)} ${auth} -C -b -h -1 -W -Q "$1"; }`,
+    `[ -d ${q(dir)} ] || fail ${q(`The SQL Server backup folder ${dir} is not on this host`)}`,
+  ];
+  if (dump.databases.length === 0) {
+    lines.push(
+      `mapfile -t DBS < <(sql "SET NOCOUNT ON; SELECT name FROM sys.databases WHERE name <> 'tempdb' AND state = 0" 2>> "$D/log" | sed 's/[[:space:]]*$//' | grep -v '^$') || fail "Could not list the SQL Server databases"`,
+    );
+  } else {
+    lines.push(`DBS=(${dump.databases.map(q).join(" ")})`);
+  }
+  lines.push(
+    `i=0`,
+    `for DB in "\${DBS[@]}"; do`,
+    `  i=$((i + 1))`,
+    `  log "Dumping SQL Server $DB"`,
+    `  F=${q(`${dir}/termix-`)}"$$-$i.bak"`,
+    `  N=$(printf '%s' "$DB" | sed "s/]/]]/g; s/'/''/g")`,
+    `  sql "BACKUP DATABASE [$N] TO DISK = N'$F' WITH COPY_ONLY, INIT" >> "$D/log" 2>&1 || { rm -f "$F"; fail "The SQL Server backup of $DB failed"; }`,
+    `  mv -f -- "$F" ${q(`${out}-`)}"$i.bak" || fail "Could not move the SQL Server backup"`,
+    `done`,
+    "unset SQLCMDPASSWORD",
+  );
   return lines.join("\n");
 }
 
@@ -415,7 +563,7 @@ docker compose -p ${q(s)} stop >> "$D/log" 2>&1 || fail ${q(`Could not stop stac
   .join("\n")}
 open_repo
 log "Backing up"
-restic backup --json --tag termix --tag ${q(tag)}${plan.oneFileSystem ? " --one-file-system" : ""}${(plan.options ?? []).map((arg) => ` ${q(arg)}`).join("")}${plan.excludes.length ? ` --exclude-file "$D/excludes"` : ""} --files-from-verbatim "$D/paths" 2>> "$D/log" | restic_json
+${plan.cwd ? `cd ${q(plan.cwd)} || fail "The copied files are missing"\n` : ""}restic backup --json --tag termix --tag ${q(tag)}${plan.oneFileSystem ? " --one-file-system" : ""}${(plan.options ?? []).map((arg) => ` ${q(arg)}`).join("")}${plan.excludes.length ? ` --exclude-file "$D/excludes"` : ""} --files-from-verbatim "$D/paths" 2>> "$D/log" | restic_json
 CODE=\${PIPESTATUS[0]}
 case "$CODE" in
   0)
@@ -428,7 +576,11 @@ case "$CODE" in
     ;;
   3) STATUS=warning; MSG="Some files could not be read" ;;
   *) fail "restic backup failed with exit code $CODE" ;;
-esac
+esac${
+    plan.copyWarning
+      ? `\nif [ "$STATUS" = success ]; then STATUS=warning; MSG=${q(plan.copyWarning)}; fi`
+      : ""
+  }
 log "Backup saved"
 ${
   keep
@@ -439,6 +591,7 @@ if ! restic forget --tag ${q(tag)} --group-by '' ${keep} --prune >> "$D/log" 2>&
 fi`
     : ""
 }
+${mirrorLines(plan.mirrors ?? 0, tag, keep)}
 exit 0
 `;
 }
@@ -467,6 +620,8 @@ export interface LaunchFiles {
   includes?: string;
   "pre.sh"?: string;
   "post.sh"?: string;
+  /** The log so far, from a copy before the run. */
+  log?: string;
 }
 
 /**
@@ -492,6 +647,7 @@ ${NEED_RESTIC}
 find ${RUNS_DIR} -mindepth 1 -maxdepth 1 -type d -mtime +7 -exec rm -rf {} + 2>/dev/null || true
 D=${q(dir)}
 mkdir -p "$D"
+rm -f "$D/copying"
 ${writes}
 ${exportLines(env)}
 cd /
@@ -513,6 +669,7 @@ export function pollScript(uids: string[]): string {
   if [ ! -d "$D" ]; then echo "${MARK}missing"; continue; fi
   p=$(cat "$D/pid" 2>/dev/null || true)
   if [ -n "$p" ] && kill -0 "$p" 2>/dev/null; then echo "${MARK}alive"; fi
+  if [ -f "$D/copying" ]; then echo "${MARK}copying"; fi
   if [ -f "$D/result" ]; then echo "${MARK}result"; cat "$D/result"; fi
   if [ -f "$D/progress" ]; then echo "${MARK}progress"; tail -n 1 "$D/progress"; fi
   if [ -f "$D/summary" ]; then echo "${MARK}summary"; tail -n 1 "$D/summary"; fi

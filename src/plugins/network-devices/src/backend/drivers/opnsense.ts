@@ -1,5 +1,10 @@
 import type { ClientInfo, DeviceInfo, PortInfo } from "../../shared/types.js";
-import type { Driver, DriverIo, Target } from "./types.js";
+import {
+  DriverError,
+  type Driver,
+  type DriverIo,
+  type Target,
+} from "./types.js";
 import {
   asArray,
   basicAuth,
@@ -7,6 +12,7 @@ import {
   int,
   optional,
   request,
+  requestText,
   str,
 } from "./web.js";
 
@@ -150,12 +156,27 @@ export const opnsenseDriver: Driver = {
       reboot: true,
       clients: true,
       neighbors: false,
+      configBackup: true,
     },
   },
   probe,
   ports,
   clients,
   neighbors: async () => [],
+
+  async backupConfig(target, io) {
+    // The whole config.xml, as System, Configuration, Backups gives it.
+    const content = await requestText(
+      target,
+      io,
+      `${baseUrl(target)}/api/core/backup/download/this`,
+      { headers: headers(target) },
+    );
+    if (!content.includes("<opnsense")) {
+      throw new DriverError("The device did not send its configuration");
+    }
+    return { content, format: "xml" };
+  },
 
   async reboot(target, io) {
     await request(target, io, `${baseUrl(target)}/api/core/system/reboot`, {

@@ -91,7 +91,7 @@ export function source(raw: any): JobSourceInput {
     }
     case "database": {
       if (!DB_ENGINES.includes(raw.engine)) {
-        throw bad("Pick MySQL, PostgreSQL or SQLite");
+        throw bad("Pick a database engine");
       }
       const loginId = Number(raw.loginId) || 0;
       if (!Number.isInteger(loginId) || loginId < 0) {
@@ -129,6 +129,12 @@ export function source(raw: any): JobSourceInput {
       }
       const password = typeof raw.password === "string" ? raw.password : "";
       if (/[\0\r\n]/.test(password)) throw bad("The password is not valid");
+      const serverDir =
+        raw.engine === "mssql" &&
+        typeof raw.serverDir === "string" &&
+        raw.serverDir.trim()
+          ? absPath(raw.serverDir, "The SQL Server backup folder")
+          : "";
       return {
         id,
         kind: "database",
@@ -139,7 +145,8 @@ export function source(raw: any): JobSourceInput {
         username,
         hasPassword: false,
         runAs,
-        databases,
+        databases: raw.engine === "redis" ? [] : databases,
+        ...(raw.engine === "mssql" ? { serverDir } : {}),
         password,
       };
     }
@@ -241,7 +248,47 @@ export function alerts(raw: any): JobAlerts {
   if (!Number.isInteger(staleDays) || staleDays < 0 || staleDays > 365) {
     throw bad("Days without a backup must be from 0 to 365");
   }
-  return { onFailure: raw?.onFailure !== false, staleDays };
+  const onFailure = raw?.onFailure !== false;
+  const ids: unknown[] = Array.isArray(raw?.channelIds) ? raw.channelIds : [];
+  if (ids.length > 20) throw bad("Pick at most 20 alert channels");
+  const channelIds = [...new Set(ids.map(Number))];
+  if (channelIds.some((id) => !Number.isSafeInteger(id) || id < 1)) {
+    throw bad("The alert channels are not valid");
+  }
+  return {
+    onFailure,
+    onWarning: typeof raw?.onWarning === "boolean" ? raw.onWarning : onFailure,
+    onSuccess: raw?.onSuccess === true,
+    channelIds,
+    staleDays,
+  };
+}
+
+export function retries(raw: any): {
+  retries: number;
+  retryDelayMinutes: number;
+} {
+  const count = Number(raw?.retries ?? 0);
+  if (!Number.isInteger(count) || count < 0 || count > 10) {
+    throw bad("Retries must be from 0 to 10");
+  }
+  const delay = Number(raw?.retryDelayMinutes ?? 10);
+  if (!Number.isInteger(delay) || delay < 1 || delay > 1440) {
+    throw bad("The wait between retries must be from 1 to 1440 minutes");
+  }
+  return { retries: count, retryDelayMinutes: delay };
+}
+
+export function mirrors(raw: unknown, repositoryId: number): number[] {
+  const list: unknown[] = Array.isArray(raw) ? raw : [];
+  const ids = [...new Set(list.map(Number))].filter(
+    (id) => id !== repositoryId,
+  );
+  if (ids.some((id) => !Number.isSafeInteger(id) || id < 1)) {
+    throw bad("The mirror repositories are not valid");
+  }
+  if (ids.length > 5) throw bad("A job can have at most 5 mirrors");
+  return ids;
 }
 
 export function job(raw: any): JobInput {
@@ -278,7 +325,21 @@ export function job(raw: any): JobInput {
     alerts: alerts(raw.alerts),
     oneFileSystem: raw.oneFileSystem === true,
     backupOptions: backupOptions(raw.backupOptions),
+    ...retries(raw),
+    mirrors: mirrors(raw.mirrors, repositoryId),
+    runnerHostId: runnerHost(raw.runnerHostId),
   };
+}
+
+export function runnerHost(value: unknown): number | null {
+  if (value === undefined || value === null || value === "" || value === 0) {
+    return null;
+  }
+  const id = Number(value);
+  if (!Number.isSafeInteger(id) || id < 1) {
+    throw bad("The host that runs restic is not valid");
+  }
+  return id;
 }
 
 const REMOTE = /^[A-Za-z0-9_]{1,64}$/;

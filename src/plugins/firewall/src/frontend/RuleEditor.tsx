@@ -27,8 +27,12 @@ export function RuleFields({
   const firewalld = backend === "firewalld";
   const set = <K extends keyof RuleSpec>(key: K, next: RuleSpec[K]) =>
     onChange({ ...value, [key]: next });
+  const windows = backend === "windows";
   const actions = (["allow", "deny", "reject", "limit"] as const).filter(
-    (action) => action !== "limit" || backend === "ufw" || backend === null,
+    (action) =>
+      (action !== "limit" || backend === "ufw" || backend === null) &&
+      // Windows Firewall only allows or blocks.
+      (action !== "reject" || !windows),
   );
 
   return (
@@ -103,46 +107,50 @@ export function RuleFields({
           hint={t("rule.addressHint")}
           mono
         />
-        <TextField
-          label={t("rule.destination")}
-          value={value.destination}
-          onChange={(v) => set("destination", v)}
-          placeholder={t("rule.anywhere")}
-          mono
-        />
-      </FieldPair>
-      <FieldPair>
-        <SelectField
-          label={t("rule.family")}
-          value={value.family}
-          onChange={(v) => set("family", v)}
-          options={[
-            { value: "any", label: t("rule.bothFamilies") },
-            { value: "ipv4", label: "IPv4" },
-            { value: "ipv6", label: "IPv6" },
-          ]}
-        />
-        {firewalld ? (
+        {!windows && (
           <TextField
-            label={t("rule.service")}
-            value={value.service ?? ""}
-            onChange={(v) =>
-              onChange({ ...value, service: v.trim() ? v.trim() : undefined })
-            }
-            placeholder="http"
-            hint={t("rule.serviceHint")}
-            mono
-          />
-        ) : (
-          <TextField
-            label={t("rule.iface")}
-            value={value.iface}
-            onChange={(v) => set("iface", v)}
-            placeholder={t("rule.anyIface")}
+            label={t("rule.destination")}
+            value={value.destination}
+            onChange={(v) => set("destination", v)}
+            placeholder={t("rule.anywhere")}
             mono
           />
         )}
       </FieldPair>
+      {!windows && (
+        <FieldPair>
+          <SelectField
+            label={t("rule.family")}
+            value={value.family}
+            onChange={(v) => set("family", v)}
+            options={[
+              { value: "any", label: t("rule.bothFamilies") },
+              { value: "ipv4", label: "IPv4" },
+              { value: "ipv6", label: "IPv6" },
+            ]}
+          />
+          {firewalld ? (
+            <TextField
+              label={t("rule.service")}
+              value={value.service ?? ""}
+              onChange={(v) =>
+                onChange({ ...value, service: v.trim() ? v.trim() : undefined })
+              }
+              placeholder="http"
+              hint={t("rule.serviceHint")}
+              mono
+            />
+          ) : (
+            <TextField
+              label={t("rule.iface")}
+              value={value.iface}
+              onChange={(v) => set("iface", v)}
+              placeholder={t("rule.anyIface")}
+              mono
+            />
+          )}
+        </FieldPair>
+      )}
       {!firewalld && (
         <TextField
           label={t("rule.comment")}

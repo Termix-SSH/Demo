@@ -40,7 +40,10 @@
     "snmp": "SNMP device",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Community",
@@ -52,7 +55,9 @@
     "privProtocol": "Privacy",
     "privKey": "Privacy key",
     "apiKey": "API key",
-    "apiSecret": "API secret"
+    "apiSecret": "API secret",
+    "enablePassword": "Enable password (optional)",
+    "hostKey": "Host key fingerprint (optional)"
   },
   "form": {
     "addTitle": "Add device",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Enter the keys to test.",
     "testOk": "Connected to {{name}}.",
     "save": "Save",
-    "add": "Add"
+    "add": "Add",
+    "site": "Site",
+    "siteHint": "The UniFi site name from the controller's address bar. Empty uses default.",
+    "backups": "Configuration backups",
+    "backupSchedule": "Save the configuration",
+    "backupOff": "Only when I press Save now",
+    "backupDaily": "Every day",
+    "backupWeekly": "Every week",
+    "backupKeep": "Versions to keep",
+    "backupKeepHint": "A new version is only kept when the configuration changed.",
+    "backupAlert": "Alert when the configuration changes",
+    "backupAlertHint": "Sends an alert when a saved configuration differs from the one before.",
+    "backupHints": {
+      "routeros": "Saves /export, with passwords hidden as RouterOS does by default.",
+      "opnsense": "Saves the whole config.xml, the same file as System, Configuration, Backups.",
+      "openwrt": "Saves every UCI config the login may read.",
+      "unifi": "Saves the site's settings, networks, Wi-Fi, port profiles and firewall rules.",
+      "pfsense": "Saves the main parts of config.xml over XML-RPC. Needs a username and password.",
+      "cisco": "Saves show running-config. The login may need the enable password."
+    }
   },
   "discover": {
     "title": "Find devices",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "No neighbors found.",
     "neighbor": "Neighbor",
-    "remotePort": "Their port"
+    "remotePort": "Their port",
+    "configs": "Configs"
   },
   "operations": {
     "device": "Device",
@@ -176,5 +201,25 @@
     "name": "Network devices",
     "description": "Which of your routers, switches and access points are up.",
     "summary": "{{up}} of {{total}} up"
+  },
+  "configs": {
+    "saveNow": "Save now",
+    "saving": "Saving...",
+    "saved": "Configuration saved",
+    "unchanged": "No change since the last saved version",
+    "none": "No saved configurations yet",
+    "delete": "Delete",
+    "deleteConfirm": "Delete the configuration saved {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Compare",
+    "noCompare": "Show this version only",
+    "compareWith": "Changes since {{when}}",
+    "same": "No changes.",
+    "download": "Download",
+    "schedule": {
+      "off": "Saved only when you press Save now",
+      "daily": "Saved every day",
+      "weekly": "Saved every week"
+    }
   }
 }

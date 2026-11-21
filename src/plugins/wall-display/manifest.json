@@ -1,0 +1,88 @@
+{
+  "id": "wall-display",
+  "name": "Wall Display",
+  "version": "1.0.0",
+  "description": "A full screen Termix layout for a TV or spare monitor that cycles through your status views.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Wall-Display",
+  "docs": "https://docs.termix.site/plugins/wall-display",
+  "category": "Monitoring",
+  "icon": "Tv",
+  "features": [
+    "Full screen with no sidebar, tab bar or editing",
+    "Cycles through Homepage, Uptime, Host Status and Network Topology",
+    "Skips views whose plugin is not installed",
+    "Big host status board with online and offline counts",
+    "Pause, next and previous from the keyboard or a hidden toolbar",
+    "Keeps the screen awake and hides the cursor"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.2-0",
+    "api": "^2.9.0"
+  },
+  "capabilities": ["ui:layout", "ui:surface"],
+  "contributes": {
+    "layouts": [
+      {
+        "id": "wall",
+        "label": "layout.name",
+        "description": "layout.description"
+      }
+    ],
+    "tabs": [
+      {
+        "id": "status-board",
+        "titleKey": "board.title",
+        "icon": "Activity",
+        "openFrom": ["palette"]
+      }
+    ],
+    "settings": {
+      "user": [
+        {
+          "key": "intervalSeconds",
+          "type": "number",
+          "labelKey": "settings.user.intervalSeconds.label",
+          "descriptionKey": "settings.user.intervalSeconds.description",
+          "min": 10,
+          "max": 3600,
+          "default": 30
+        },
+        {
+          "key": "showHomepage",
+          "type": "boolean",
+          "labelKey": "settings.user.showHomepage.label",
+          "descriptionKey": "settings.user.showHomepage.description",
+          "default": true
+        },
+        {
+          "key": "showUptime",
+          "type": "boolean",
+          "labelKey": "settings.user.showUptime.label",
+          "descriptionKey": "settings.user.showUptime.description",
+          "default": true
+        },
+        {
+          "key": "showHostStatus",
+          "type": "boolean",
+          "labelKey": "settings.user.showHostStatus.label",
+          "descriptionKey": "settings.user.showHostStatus.description",
+          "default": true
+        },
+        {
+          "key": "showTopology",
+          "type": "boolean",
+          "labelKey": "settings.user.showTopology.label",
+          "descriptionKey": "settings.user.showTopology.description",
+          "default": true
+        }
+      ]
+    }
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

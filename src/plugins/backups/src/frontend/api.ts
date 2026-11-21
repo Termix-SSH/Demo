@@ -1,5 +1,6 @@
 import type { TermixApp } from "@termix-ssh/plugin-sdk/frontend";
 import type {
+  AlertChannelOption,
   DatabaseLoginOption,
   DockerInventory,
   HostStatus,
@@ -59,6 +60,9 @@ export async function installRclone(hostId: number): Promise<string> {
 export const getDocker = (hostId: number) =>
   get<DockerInventory>(`/hosts/${hostId}/docker`);
 
+export const listAlertChannels = () =>
+  get<AlertChannelOption[]>("/alert-channels");
+
 export const getDatabaseLogins = (hostId: number) =>
   get<{ available: boolean; logins: DatabaseLoginOption[] }>(
     `/hosts/${hostId}/database-logins`,
@@ -94,9 +98,39 @@ export async function runJob(jobId: number): Promise<RunView> {
 export const listSnapshots = (jobId: number) =>
   get<SnapshotView[]>(`/jobs/${jobId}/snapshots`);
 
-export const listFiles = (jobId: number, snapshot: string, path: string) =>
+/** Where a snapshot is read from: a job, or a repository through a host. */
+export interface SnapshotSource {
+  jobId: number | null;
+  repoId: number;
+  hostId: number;
+  localRepo: boolean;
+}
+
+export const jobSource = (job: JobView): SnapshotSource => ({
+  jobId: job.id,
+  repoId: job.repositoryId,
+  hostId: job.hostId,
+  localRepo: job.repositoryKind === "local",
+});
+
+const snapshotBase = (source: SnapshotSource, snapshot: string) =>
+  source.jobId !== null
+    ? `/jobs/${source.jobId}/snapshots/${snapshot}`
+    : `/repositories/${source.repoId}/snapshots/${snapshot}`;
+
+const hostQuery = (source: SnapshotSource) =>
+  source.jobId !== null ? "" : `&hostId=${source.hostId}`;
+
+export const listRepoSnapshots = (repoId: number, hostId: number) =>
+  get<SnapshotView[]>(`/repositories/${repoId}/snapshots?hostId=${hostId}`);
+
+export const listFiles = (
+  source: SnapshotSource,
+  snapshot: string,
+  path: string,
+) =>
   get<SnapshotEntry[]>(
-    `/jobs/${jobId}/snapshots/${snapshot}/files?path=${enc(path)}`,
+    `${snapshotBase(source, snapshot)}/files?path=${enc(path)}${hostQuery(source)}`,
   );
 
 export async function deleteSnapshot(
@@ -107,21 +141,18 @@ export async function deleteSnapshot(
 }
 
 export async function restoreSnapshot(
-  jobId: number,
+  source: SnapshotSource,
   snapshot: string,
   body: RestoreTarget & { hostId: number },
 ): Promise<RunView> {
   return (
-    await api().post<RunView>(
-      `/jobs/${jobId}/snapshots/${snapshot}/restore`,
-      body,
-    )
+    await api().post<RunView>(`${snapshotBase(source, snapshot)}/restore`, body)
   ).data;
 }
 
 /** Downloads a file, or a folder as zip, and saves it in the browser. */
 export async function downloadEntry(
-  jobId: number,
+  source: SnapshotSource,
   snapshot: string,
   entry: SnapshotEntry,
 ): Promise<void> {
@@ -130,7 +161,7 @@ export async function downloadEntry(
   try {
     blob = (
       await api().get<Blob>(
-        `/jobs/${jobId}/snapshots/${snapshot}/download?path=${enc(entry.path)}${folder ? "&folder=1" : ""}`,
+        `${snapshotBase(source, snapshot)}/download?path=${enc(entry.path)}${folder ? "&folder=1" : ""}${hostQuery(source)}`,
         { responseType: "blob", timeout: 0 },
       )
     ).data;

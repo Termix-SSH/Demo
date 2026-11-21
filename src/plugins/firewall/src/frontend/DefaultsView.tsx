@@ -61,7 +61,11 @@ function PolicyForm({
     outgoing: "allow",
   };
   const [value, setValue] = useState<Defaults>(start);
-  const policies = (["allow", "deny", "reject"] as Policy[]).map((p) => ({
+  const policies = (
+    (status.backend === "windows"
+      ? ["allow", "deny"]
+      : ["allow", "deny", "reject"]) as Policy[]
+  ).map((p) => ({
     value: p,
     label: t(`policies.${p}`),
   }));

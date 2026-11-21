@@ -95,6 +95,15 @@ export function sshReach(
       reason: `Zone ${zone} has no rule that allows port ${port}`,
     };
   }
+  if (backend === "windows") {
+    // Windows Firewall: a block rule wins over any allow, in any order.
+    const blocker = snap.rules.find(
+      (r) => r.action === "deny" && matches(r, port, client) === "yes",
+    );
+    if (blocker) {
+      return { allowed: false, reason: `A block rule stops port ${port}` };
+    }
+  }
   for (const rule of snap.rules) {
     if (matches(rule, port, client) !== "yes") continue;
     if (rule.action === "allow" || rule.action === "limit")

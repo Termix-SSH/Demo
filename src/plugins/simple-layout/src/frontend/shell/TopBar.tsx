@@ -1,5 +1,7 @@
 import {
   LogOut,
+  Maximize2,
+  Minimize2,
   Palette,
   Plug,
   Puzzle,
@@ -25,6 +27,7 @@ import {
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import { tabTitle, useMoreItems } from "./nav";
+import { setZen, useZen } from "./zen";
 
 /** The desktop bar: brand, open tabs, and the few buttons that matter. */
 export function TopBar() {
@@ -34,6 +37,7 @@ export function TopBar() {
   const more = useMoreItems();
   const { tabs } = shell;
   const hasHome = tabs.topLevel.some((tab) => tab.type === "dashboard");
+  const zen = useZen();
 
   // On a phone the bottom bar does the navigation, so this only names the tab.
   if (shell.isMobile && !shell.isElectron) {
@@ -48,6 +52,8 @@ export function TopBar() {
       </header>
     );
   }
+
+  if (zen) return <ZenBar />;
 
   return (
     <header className="flex items-stretch h-10 shrink-0 border-b border-border bg-card">
@@ -152,6 +158,71 @@ export function TopBar() {
   );
 }
 
+/** Zen mode: the open tabs as plain text, a search and a way back. */
+function ZenBar() {
+  const { t } = useTranslation();
+  const shell = useShellController();
+  const { tabs } = shell;
+  return (
+    <header className="flex h-8 shrink-0 items-stretch bg-background">
+      <nav
+        className="flex flex-1 min-w-0 items-stretch gap-4 overflow-x-auto px-3"
+        aria-label={t("nav.tabs")}
+      >
+        {tabs.topLevel.map((tab) => {
+          const active = tab.id === tabs.activeId;
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              aria-current={active ? "page" : undefined}
+              title={tab.type === "dashboard" ? undefined : t("zen.closeHint")}
+              onClick={() => tabs.setActive(tab.id)}
+              onMouseDown={(e) => {
+                if (e.button === 1) e.preventDefault();
+              }}
+              onAuxClick={(e) => {
+                if (e.button !== 1 || tab.type === "dashboard") return;
+                e.preventDefault();
+                void tabs.close(tab.id);
+              }}
+              className={`shrink-0 max-w-48 truncate text-xs ${
+                active
+                  ? "text-foreground underline decoration-accent-brand underline-offset-8"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {tabTitle(tab, t)}
+            </button>
+          );
+        })}
+      </nav>
+      <div className="flex items-center gap-1 px-2">
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          className="size-6 text-muted-foreground"
+          aria-label={t("nav.search")}
+          title={`${t("nav.search")} (Ctrl K)`}
+          onClick={shell.palette.open}
+        >
+          <Search className="size-3.5" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          className="size-6 text-muted-foreground"
+          aria-label={t("zen.exit")}
+          title={`${t("zen.exit")} (Ctrl Alt Z)`}
+          onClick={() => setZen(false)}
+        >
+          <Maximize2 className="size-3.5" />
+        </Button>
+      </div>
+    </header>
+  );
+}
+
 function TabButton({
   active,
   title,
@@ -243,6 +314,11 @@ function AccountMenu() {
             {t("nav.plugins")}
           </DropdownMenuItem>
         )}
+        <DropdownMenuItem onSelect={() => setZen(true)}>
+          <Minimize2 className="size-3.5" />
+          {t("zen.enter")}
+          <Kbd className="ml-auto">Ctrl Alt Z</Kbd>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={() => shell.logout({ manual: true })}>
           <LogOut className="size-3.5" />

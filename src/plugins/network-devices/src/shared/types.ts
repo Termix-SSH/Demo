@@ -1,6 +1,7 @@
 // Types shared by the backend routes and the frontend.
 
-export type DriverId = "snmp" | "routeros" | "opnsense" | "openwrt";
+export type DriverId =
+  "snmp" | "routeros" | "opnsense" | "openwrt" | "unifi" | "pfsense" | "cisco";
 
 export type DeviceStatus = "unknown" | "up" | "down";
 
@@ -18,6 +19,8 @@ export interface DriverFeatures {
   reboot: boolean;
   clients: boolean;
   neighbors: boolean;
+  // The device's configuration can be saved
+  configBackup: boolean;
 }
 
 export interface DriverInfo {
@@ -104,6 +107,31 @@ export interface DeviceOptions {
   snmpVersion?: "1" | "2c" | "3";
   // Port ids that raise an alert when their link changes
   watchedPorts?: string[];
+  // How often the configuration is saved
+  configBackup?: ConfigSchedule;
+  // Saved configurations kept, newest first
+  configKeep?: number;
+  // Alert when a saved configuration differs from the one before
+  configAlert?: boolean;
+  // UniFi only: the site, default when left out
+  site?: string;
+}
+
+export type ConfigSchedule = "off" | "daily" | "weekly";
+
+/** A saved configuration, without its content. */
+export interface ConfigMeta {
+  id: number;
+  takenAt: string;
+  sha256: string;
+  size: number;
+  format: ConfigFormat;
+}
+
+export type ConfigFormat = "text" | "xml" | "json";
+
+export interface ConfigFile extends ConfigMeta {
+  content: string;
 }
 
 export interface Device {

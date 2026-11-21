@@ -1,0 +1,79 @@
+import type React from "react";
+import { ChevronDown } from "lucide-react";
+import { useSettingsEmbedded } from "../settings/settings-embed";
+
+export function AdminToggle({
+  on,
+  onToggle,
+  disabled = false,
+}: {
+  on: boolean;
+  onToggle: () => void;
+  disabled?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      onClick={onToggle}
+      disabled={disabled}
+      className={`relative inline-flex h-5 w-9 shrink-0 items-center border-2 transition-colors ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"} ${on ? "bg-accent-brand border-accent-brand" : "bg-muted border-border"}`}
+    >
+      <span
+        className={`pointer-events-none inline-block h-3 w-3 bg-background shadow-sm transition-transform ${on ? "translate-x-4" : "translate-x-0.5"}`}
+      />
+    </button>
+  );
+}
+
+export function AccordionSection({
+  label,
+  icon,
+  open,
+  onToggle,
+  children,
+}: {
+  label: string;
+  icon: React.ReactNode;
+  open: boolean;
+  onToggle: () => void;
+  children: React.ReactNode;
+}) {
+  const embedded = useSettingsEmbedded();
+  if (embedded) {
+    if (!open) return null;
+    return (
+      <div
+        data-tile-card=""
+        className="flex flex-col border border-border px-3 pb-3"
+      >
+        {children}
+      </div>
+    );
+  }
+  return (
+    <div
+      data-tile-card=""
+      className="border border-border overflow-hidden shrink-0"
+    >
+      <button
+        type="button"
+        aria-expanded={open}
+        onClick={onToggle}
+        className="flex items-center gap-2 w-full px-3 py-2.5 text-left hover:bg-muted/40 transition-colors"
+      >
+        <span className="text-muted-foreground shrink-0">{icon}</span>
+        <span className="text-xs font-bold uppercase tracking-widest text-foreground flex-1">
+          {label}
+        </span>
+        <ChevronDown
+          className={`size-3.5 text-muted-foreground shrink-0 transition-transform duration-150 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      {open && (
+        <div className="border-t border-border px-3 pb-3">{children}</div>
+      )}
+    </div>
+  );
+}

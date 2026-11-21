@@ -169,6 +169,7 @@ export const openwrtDriver: Driver = {
       reboot: true,
       clients: true,
       neighbors: false,
+      configBackup: true,
     },
   },
   probe,
@@ -178,5 +179,28 @@ export const openwrtDriver: Driver = {
 
   async reboot(target, io) {
     await ubus(target, io, [["system", "reboot", {}]]);
+  },
+
+  async backupConfig(target, io) {
+    // Every UCI config, as uci export would list them, read through ubus.
+    const [list] = (await ubus(target, io, [["uci", "configs", {}]])) as Array<{
+      configs?: string[];
+    }>;
+    const names = (list?.configs ?? []).filter((name) =>
+      /^[A-Za-z0-9_-]+$/.test(name),
+    );
+    if (names.length === 0) {
+      throw new DriverError("The login may not read the configuration");
+    }
+    const values = await ubus(
+      target,
+      io,
+      names.map((config) => ["uci", "get", { config }]),
+    );
+    const out: Record<string, unknown> = {};
+    names.forEach((name, i) => {
+      out[name] = (values[i] as { values?: unknown })?.values ?? {};
+    });
+    return { content: JSON.stringify(out, null, 2), format: "json" };
   },
 };

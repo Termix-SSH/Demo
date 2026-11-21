@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { openBugReport } from "../report-bug";
 import {
   APP_VERSION,
   CommandPrimitive,
@@ -234,6 +235,7 @@ export function CommandPalette({
       label: t("dashboard.reportBug"),
       icon: Bug,
       url: reportCoreIssueUrl(APP_VERSION),
+      open: openBugReport,
     },
     ...(isPrerelease(APP_VERSION)
       ? [
@@ -561,7 +563,13 @@ export function CommandPalette({
                       key={link.id}
                       value={link.id}
                       onSelect={() =>
-                        window.open(link.url, "_blank", "noopener,noreferrer")
+                        "open" in link && link.open
+                          ? link.open()
+                          : window.open(
+                              link.url,
+                              "_blank",
+                              "noopener,noreferrer",
+                            )
                       }
                       className={rowClass}
                     >

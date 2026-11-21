@@ -82,6 +82,8 @@ export interface PolledRun {
   uid: string;
   missing: boolean;
   alive: boolean;
+  /** A copy from another host was still going when it stopped. */
+  copying?: boolean;
   result: { status: RunStatus; code: number; message: string } | null;
   progress: RunProgress | null;
   summary: RunSummary | null;
@@ -153,6 +155,8 @@ export function parsePoll(output: string): PolledRun[] {
         current.missing = true;
       } else if (current && tag === "alive") {
         current.alive = true;
+      } else if (current && tag === "copying") {
+        current.copying = true;
       } else if (tag === "end") {
         section = "";
       } else {

@@ -1,7 +1,11 @@
-import { eq } from "drizzle-orm";
+import { createHash } from "node:crypto";
+import { desc, eq } from "drizzle-orm";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import type {
   ClientInfo,
+  ConfigFile,
+  ConfigFormat,
+  ConfigMeta,
   Device,
   DeviceInfo,
   DeviceInput,
@@ -73,6 +77,10 @@ interface Runtime {
   lastPersisted: number;
   watched: Map<string, boolean>;
   polling: Promise<void> | null;
+  // Last saved config and last try, so a failing device is not asked every tick
+  configAt: number | null;
+  configTriedAt: number;
+  configSaving: boolean;
 }
 
 export interface Service {
@@ -95,6 +103,29 @@ export interface Service {
     version: "1" | "2c",
   ) => Promise<DiscoveryResult[]>;
   hydrate: () => Promise<void>;
+  listConfigs: (id: number) => Promise<ConfigMeta[]>;
+  getConfig: (id: number, configId: number) => Promise<ConfigFile>;
+  saveConfig: (id: number) => Promise<{ changed: boolean; config: ConfigMeta }>;
+  deleteConfig: (id: number, configId: number) => Promise<void>;
+}
+
+export const DEFAULT_CONFIG_KEEP = 30;
+const MAX_CONFIG_KEEP = 365;
+const MAX_CONFIG_BYTES = 4 * 1024 * 1024;
+const CONFIG_RETRY_MS = 60 * 60_000;
+const CONFIG_EVERY: Record<string, number> = {
+  daily: 24 * 60 * 60_000,
+  weekly: 7 * 24 * 60 * 60_000,
+};
+
+interface ConfigRow {
+  id: number;
+  deviceId: number;
+  takenAt: string;
+  sha256: string;
+  size: number;
+  format: string;
+  content: string;
 }
 
 function parseJson<T>(value: string | null, fallback: T): T {
@@ -165,6 +196,7 @@ export function createService(
   ctx: PluginContext,
   store: any,
   overrides: Partial<DriverIo> = {},
+  configStore: any = null,
 ): Service {
   const db = () => ctx.db.client<any>();
   const io: DriverIo = { fetch: ctx.fetch, ...overrides };
@@ -198,6 +230,9 @@ export function createService(
         lastPersisted: Date.now(),
         watched: new Map(),
         polling: null,
+        configAt: null,
+        configTriedAt: 0,
+        configSaving: false,
       };
       runtime.set(item.id, state);
     }
@@ -294,6 +329,26 @@ export function createService(
         .slice(0, 256);
     }
     if (driverId === "snmp" && !options.snmpVersion) options.snmpVersion = "2c";
+    if (
+      given.configBackup === "daily" ||
+      given.configBackup === "weekly" ||
+      given.configBackup === "off"
+    ) {
+      options.configBackup = given.configBackup;
+    }
+    if (given.configKeep !== undefined) {
+      const keep = Math.floor(Number(given.configKeep));
+      options.configKeep = Number.isFinite(keep)
+        ? Math.min(MAX_CONFIG_KEEP, Math.max(1, keep))
+        : DEFAULT_CONFIG_KEEP;
+    }
+    if (given.configAlert === true) options.configAlert = true;
+    if (typeof given.site === "string" && given.site.trim()) {
+      if (!/^[A-Za-z0-9_-]{1,64}$/.test(given.site.trim())) {
+        throw new ServiceError("The site name is not valid");
+      }
+      options.site = given.site.trim();
+    }
     const poll = Number(input.pollSeconds ?? fallback?.pollSeconds ?? 60);
     const pollSeconds = Number.isFinite(poll)
       ? Math.min(MAX_POLL, Math.max(MIN_POLL, Math.floor(poll)))
@@ -499,7 +554,147 @@ export function createService(
     await work(driver, await targetOf(item));
   }
 
+  function configTable() {
+    if (!configStore) throw new ServiceError("Configs are not set up", 500);
+    return configStore;
+  }
+
+  function toMeta(item: ConfigRow): ConfigMeta {
+    return {
+      id: item.id,
+      takenAt: item.takenAt,
+      sha256: item.sha256,
+      size: item.size,
+      format: item.format as ConfigFormat,
+    };
+  }
+
+  async function configRows(deviceId: number): Promise<ConfigRow[]> {
+    const table = configTable();
+    return (await (
+      await db()
+    )
+      .select()
+      .from(table)
+      .where(eq(table.deviceId, deviceId))
+      .orderBy(desc(table.takenAt), desc(table.id))) as ConfigRow[];
+  }
+
+  async function saveConfig(
+    id: number,
+  ): Promise<{ changed: boolean; config: ConfigMeta }> {
+    const item = await row(id);
+    const driver = driverOf(item);
+    if (!driver.info.features.configBackup || !driver.backupConfig) {
+      throw new ServiceError("This device type cannot save its configuration");
+    }
+    const state = stateOf(item);
+    state.configTriedAt = Date.now();
+    const { content, format } = await driver.backupConfig(
+      await targetOf(item),
+      io,
+    );
+    if (Buffer.byteLength(content) > MAX_CONFIG_BYTES) {
+      throw new ServiceError("The configuration is larger than 4 MB");
+    }
+    const sha256 = createHash("sha256").update(content).digest("hex");
+    const existing = await configRows(id);
+    const latest = existing[0];
+    const now = new Date().toISOString();
+    state.configAt = Date.now();
+    if (latest && latest.sha256 === sha256) {
+      return { changed: false, config: toMeta(latest) };
+    }
+    const table = configTable();
+    await (await db()).insert(table).values({
+      deviceId: id,
+      takenAt: now,
+      sha256,
+      size: Buffer.byteLength(content),
+      format,
+      content: await ctx.secrets.seal(content),
+    });
+    const options = parseJson<DeviceOptions>(item.options, {});
+    const keep = options.configKeep ?? DEFAULT_CONFIG_KEEP;
+    const all = await configRows(id);
+    for (const old of all.slice(keep)) {
+      await (await db()).delete(table).where(eq(table.id, old.id));
+    }
+    await ctx.db.persist();
+    if (latest && options.configAlert) {
+      alert(
+        item,
+        "config_changed",
+        `${item.name}: configuration changed`,
+        "The saved configuration differs from the one before. Compare them in Network Devices.",
+        "warning",
+      );
+    }
+    return { changed: true, config: toMeta(all[0]) };
+  }
+
+  /** Saves configs that are due, one device at a time, in the background. */
+  async function saveDueConfigs(all: DeviceRow[], now: number) {
+    if (!configStore) return;
+    for (const item of all) {
+      const options = parseJson<DeviceOptions>(item.options, {});
+      const every = CONFIG_EVERY[options.configBackup ?? "off"];
+      if (!every) continue;
+      const driver = getDriver(item.driver);
+      if (!driver?.info.features.configBackup) continue;
+      const state = stateOf(item);
+      if (state.configSaving || now - state.configTriedAt < CONFIG_RETRY_MS) {
+        continue;
+      }
+      if (state.configAt === null) {
+        const [latest] = await configRows(item.id);
+        state.configAt = latest ? Date.parse(latest.takenAt) : 0;
+      }
+      if (now - state.configAt < every) continue;
+      state.configSaving = true;
+      try {
+        await saveConfig(item.id);
+      } catch (error) {
+        ctx.log.warn(
+          `Saving the config of ${item.name} failed: ${error instanceof Error ? error.message : String(error)}`,
+        );
+      } finally {
+        state.configSaving = false;
+      }
+    }
+  }
+
   return {
+    saveConfig,
+
+    async listConfigs(id) {
+      await row(id);
+      return (await configRows(id)).map(toMeta);
+    },
+
+    async getConfig(id, configId) {
+      await row(id);
+      const found = (await configRows(id)).find((c) => c.id === configId);
+      if (!found) throw new ServiceError("Configuration not found", 404);
+      const content = await ctx.secrets.unseal(found.content);
+      if (content === null) {
+        throw new ServiceError(
+          "The saved configuration could not be read",
+          500,
+        );
+      }
+      return { ...toMeta(found), content };
+    },
+
+    async deleteConfig(id, configId) {
+      await row(id);
+      const table = configTable();
+      const found = (await configRows(id)).find((c) => c.id === configId);
+      if (!found) throw new ServiceError("Configuration not found", 404);
+      await (await db()).delete(table).where(eq(table.id, configId));
+      await ctx.db.persist();
+    },
+
     async hydrate() {
       for (const item of await rows()) stateOf(item);
     },
@@ -579,6 +774,13 @@ export function createService(
     async remove(id) {
       await row(id);
       await (await db()).delete(store).where(eq(store.id, id));
+      if (configStore) {
+        await (
+          await db()
+        )
+          .delete(configStore)
+          .where(eq(configStore.deviceId, id));
+      }
       await ctx.db.persist();
       runtime.delete(id);
     },
@@ -607,6 +809,9 @@ export function createService(
       const all = await rows();
       // No devices: nothing keeps the process running.
       keepAwake(ctx, "poll", all.length > 0);
+      void saveDueConfigs(all, now).catch((error) =>
+        ctx.log.warn(`Config backups failed: ${String(error)}`),
+      );
       const due = all.filter((item) => {
         const state = stateOf(item);
         return (

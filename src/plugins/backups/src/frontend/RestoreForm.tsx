@@ -16,34 +16,30 @@ import {
 } from "@termix-ssh/plugin-sdk/ui";
 import {
   OVERWRITE_POLICIES,
-  type JobView,
   type OverwritePolicy,
   type SnapshotView,
 } from "../shared/types";
-import { errorMessage, restoreSnapshot } from "./api";
+import { errorMessage, restoreSnapshot, type SnapshotSource } from "./api";
 import { formatDate } from "./format";
 
 /** Where and how to restore a snapshot, or picked files of it. */
 export function RestoreForm({
-  job,
+  source,
   snapshot,
   includes,
-  localRepo,
   onClose,
   onStarted,
 }: {
-  job: JobView;
+  source: SnapshotSource;
   snapshot: SnapshotView;
   includes: string[];
-  /** A folder repository can only be read from its own host. */
-  localRepo: boolean;
   onClose: () => void;
   onStarted: (runId: number) => void;
 }) {
   const { t } = useTranslation();
   const toast = useToast();
   const { hosts } = useHosts();
-  const [hostId, setHostId] = useState(job.hostId);
+  const [hostId, setHostId] = useState(source.hostId);
   const [where, setWhere] = useState<"original" | "folder">("folder");
   const [path, setPath] = useState(`/tmp/restore-${snapshot.shortId}`);
   const [overwrite, setOverwrite] = useState<OverwritePolicy>("if-changed");
@@ -51,7 +47,7 @@ export function RestoreForm({
   const [error, setError] = useState("");
 
   const sshHosts = hosts.filter(
-    (h) => h.enableSsh !== false || Number(h.id) === job.hostId,
+    (h) => h.enableSsh !== false || Number(h.id) === source.hostId,
   );
   const target = where === "original" ? "/" : path.trim();
   const canStart = !saving && target.startsWith("/");
@@ -61,7 +57,7 @@ export function RestoreForm({
     setSaving(true);
     setError("");
     try {
-      const run = await restoreSnapshot(job.id, snapshot.id, {
+      const run = await restoreSnapshot(source, snapshot.id, {
         hostId,
         path: target,
         includes,
@@ -125,8 +121,10 @@ export function RestoreForm({
           <SelectField
             label={t("restore.host")}
             value={String(hostId)}
-            disabled={localRepo}
-            hint={localRepo ? t("restore.localOnly") : t("restore.hostHint")}
+            disabled={source.localRepo}
+            hint={
+              source.localRepo ? t("restore.localOnly") : t("restore.hostHint")
+            }
             onChange={(value) => setHostId(Number(value))}
             options={sshHosts.map((h) => ({
               value: String(h.id),

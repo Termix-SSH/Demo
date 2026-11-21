@@ -10,6 +10,7 @@ import {
   LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
 import type { HistoryItem } from "../shared/types";
+import type { ExtraManager } from "../shared/types";
 import { errorMessage, getHistory } from "./api";
 
 function tone(action: string) {
@@ -21,9 +22,11 @@ function tone(action: string) {
 
 export function HistoryView({
   hostId,
+  manager,
   isVisible,
 }: {
   hostId: number;
+  manager?: ExtraManager | null;
   isVisible: boolean;
 }) {
   const { t } = useTranslation();
@@ -32,12 +35,12 @@ export function HistoryView({
 
   const load = useCallback(async () => {
     try {
-      setItems(await getHistory(hostId));
+      setItems(await getHistory(hostId, manager));
       setFailed("");
     } catch (e) {
       setFailed(errorMessage(e, t("history.loadFailed")));
     }
-  }, [hostId, t]);
+  }, [hostId, manager, t]);
 
   useEffect(() => {
     if (isVisible) void load();

@@ -9,10 +9,12 @@ import {
   SecretField,
   SectionCard,
   SelectField,
+  SwitchRow,
   TextAreaField,
   TextField,
 } from "@termix-ssh/plugin-sdk/ui";
 import type {
+  ConfigSchedule,
   Device,
   DeviceInput,
   DeviceOptions,
@@ -54,6 +56,14 @@ export function DeviceForm({
   const [version, setVersion] = useState<"1" | "2c" | "3">(
     device?.options.snmpVersion ?? "2c",
   );
+  const [site, setSite] = useState(device?.options.site ?? "");
+  const [backup, setBackup] = useState<ConfigSchedule>(
+    device?.options.configBackup ?? "off",
+  );
+  const [keep, setKeep] = useState(device?.options.configKeep ?? 30);
+  const [backupAlert, setBackupAlert] = useState(
+    device?.options.configAlert ?? false,
+  );
   const [ca, setCa] = useState("");
   const [keys, setKeys] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
@@ -72,6 +82,13 @@ export function DeviceForm({
     if (driver?.web) options.scheme = scheme;
     else delete options.scheme;
     if (driverId === "snmp") options.snmpVersion = version;
+    if (driverId === "unifi" && site.trim()) options.site = site.trim();
+    else delete options.site;
+    if (driver?.features.configBackup) {
+      options.configBackup = backup;
+      options.configKeep = keep;
+      options.configAlert = backupAlert;
+    }
     return {
       name: name.trim(),
       driver: driverId,
@@ -201,6 +218,16 @@ export function DeviceForm({
               ]}
             />
           )}
+          {driverId === "unifi" && (
+            <TextField
+              label={t("form.site")}
+              hint={t("form.siteHint")}
+              value={site}
+              placeholder="default"
+              onChange={setSite}
+              mono
+            />
+          )}
           {driver?.web && (
             <SelectField
               label={t("form.scheme")}
@@ -275,6 +302,45 @@ export function DeviceForm({
           </div>
         </div>
       </SectionCard>
+
+      {driver?.features.configBackup && (
+        <SectionCard
+          title={t("form.backups")}
+          icon={<Network className="size-3.5" />}
+        >
+          <div className="flex flex-col gap-4 py-3">
+            <SelectField
+              label={t("form.backupSchedule")}
+              hint={t(`form.backupHints.${driverId}`, {
+                defaultValue: "",
+              })}
+              value={backup}
+              onChange={(value) => setBackup(value as ConfigSchedule)}
+              options={[
+                { value: "off", label: t("form.backupOff") },
+                { value: "daily", label: t("form.backupDaily") },
+                { value: "weekly", label: t("form.backupWeekly") },
+              ]}
+            />
+            <NumberField
+              label={t("form.backupKeep")}
+              hint={t("form.backupKeepHint")}
+              value={keep}
+              onChange={(value) =>
+                setKeep(Math.min(365, Math.max(1, Math.round(value) || 1)))
+              }
+              min={1}
+              max={365}
+            />
+            <SwitchRow
+              label={t("form.backupAlert")}
+              description={t("form.backupAlertHint")}
+              checked={backupAlert}
+              onChange={setBackupAlert}
+            />
+          </div>
+        </SectionCard>
+      )}
     </InlineView>
   );
 }

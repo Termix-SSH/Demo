@@ -391,6 +391,10 @@ export function CredentialEditorView({
               <PluginComponent
                 id="credentials.secretHint"
                 onManage={() => setShowSecretSources((v) => !v)}
+                onFill={(refs: { username?: string; password?: string }) => {
+                  if (refs.username) setCredField("username", refs.username);
+                  if (refs.password) setCredField("password", refs.password);
+                }}
               />
             </div>
             {showSecretSources && (

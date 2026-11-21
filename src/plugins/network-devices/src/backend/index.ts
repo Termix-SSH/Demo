@@ -1,6 +1,6 @@
 import type { Router } from "express";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
-import { devices } from "./tables.js";
+import { configs, devices } from "./tables.js";
 import { keepAwake } from "./keep-awake.js";
 import { registerRoutes } from "./routes.js";
 import { registerOperations } from "./operations.js";
@@ -11,7 +11,8 @@ const FIRST_RUN_MS = 5_000;
 
 export async function activate(ctx: PluginContext) {
   const store = await ctx.db.define(devices);
-  const service = createService(ctx, store);
+  const configStore = await ctx.db.define(configs);
+  const service = createService(ctx, store, {}, configStore);
   await service.hydrate();
 
   registerOperations(ctx, service);

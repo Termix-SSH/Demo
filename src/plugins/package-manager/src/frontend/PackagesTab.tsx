@@ -14,10 +14,15 @@ import {
   PanelShell,
   RefreshButton,
   TabStrip,
+  ToolbarSelect,
   useConfirm,
   LoadingState,
 } from "@termix-ssh/plugin-sdk/ui";
-import type { PackageAction, PackagesStatus } from "../shared/types";
+import type {
+  ExtraManager,
+  PackageAction,
+  PackagesStatus,
+} from "../shared/types";
 import {
   errorCode,
   errorMessage,
@@ -43,6 +48,18 @@ export interface Runner {
 const DESTRUCTIVE = new Set<PackageAction>(["remove"]);
 const ASK = new Set<PackageAction>(["upgrade-all", "install", "remove"]);
 
+/**
+ * The extra a view works on: the one picked while the host still has it,
+ * or the first extra when the host has no system manager.
+ */
+function extraOf(
+  status: PackagesStatus,
+  picked: ExtraManager | null,
+): ExtraManager | null {
+  if (picked && (status.extras ?? []).includes(picked)) return picked;
+  return status.manager === "none" ? (status.extras?.[0] ?? null) : null;
+}
+
 /** Packages on one host: updates, installed, search, history and repos. */
 export function PackagesTab({ isVisible, host, label }: TabProps) {
   const { t } = useTranslation();
@@ -52,6 +69,7 @@ export function PackagesTab({ isVisible, host, label }: TabProps) {
   const [status, setStatus] = useState<PackagesStatus | null>(null);
   const [error, setError] = useState("");
   const [view, setView] = useState<View>("updates");
+  const [manager, setManager] = useState<ExtraManager | null>(null);
   const [loading, setLoading] = useState(false);
   const [tick, setTick] = useState(0);
   const [busy, setBusy] = useState("");
@@ -100,7 +118,12 @@ export function PackagesTab({ isVisible, host, label }: TabProps) {
     setBusy(action);
     const title = t(`actions.${action}.label`);
     try {
-      const done = await runAction(hostId, action, packages);
+      const done = await runAction(
+        hostId,
+        action,
+        packages,
+        status ? extraOf(status, manager) : null,
+      );
       toast.success(t(`actions.${action}.done`, { names }));
       if (action !== "refresh" && action !== "hold" && action !== "unhold") {
         setResult({ title, ok: true, output: done.output });
@@ -143,8 +166,19 @@ export function PackagesTab({ isVisible, host, label }: TabProps) {
   }
 
   const runner: Runner = { busy, run };
+  // A picked extra the host no longer has falls back to the system one.
+  const extra = extraOf(status, manager);
+  const usable = extra !== null || status.manager !== "none";
+  // Flatpak, Snap and Homebrew update single packages and can hold them.
+  const shown: PackagesStatus = extra
+    ? { ...status, singleUpdates: true, holds: true }
+    : status;
   const statusLine = [
-    status.manager === "none" ? t("tab.noManager") : status.manager,
+    extra
+      ? t(`managers.${extra}`)
+      : status.manager === "none"
+        ? t("tab.noManager")
+        : status.manager,
     status.os,
     status.indexUpdatedAt
       ? t("tab.indexAge", { ago: formatAgo(status.indexUpdatedAt) })
@@ -158,10 +192,12 @@ export function PackagesTab({ isVisible, host, label }: TabProps) {
     { id: "updates", label: t("tab.viewUpdates") },
     { id: "installed", label: t("tab.viewInstalled") },
     { id: "search", label: t("tab.viewSearch") },
-    ...(status.manager === "apk"
+    ...((!extra && status.manager === "apk") || extra === "brew"
       ? []
       : [{ id: "history" as View, label: t("tab.viewHistory") }]),
-    { id: "repos", label: t("tab.viewRepos") },
+    ...(extra === "snap"
+      ? []
+      : [{ id: "repos" as View, label: t("tab.viewRepos") }]),
   ];
   const current = views.some((v) => v.id === view) ? view : "updates";
 
@@ -181,8 +217,33 @@ export function PackagesTab({ isVisible, host, label }: TabProps) {
             label={t("tab.refresh")}
           />
         }
+        toolbar={
+          (status.extras?.length ?? 0) > 0 ? (
+            <ToolbarSelect<string>
+              label={t("managers.label")}
+              value={extra ?? "system"}
+              onChange={(value: string) =>
+                setManager(value === "system" ? null : (value as ExtraManager))
+              }
+              options={[
+                ...(status.manager === "none"
+                  ? []
+                  : [
+                      {
+                        value: "system",
+                        label: t("managers.system", { name: status.manager }),
+                      },
+                    ]),
+                ...(status.extras ?? []).map((value) => ({
+                  value,
+                  label: t(`managers.${value}`),
+                })),
+              ]}
+            />
+          ) : undefined
+        }
         tabs={
-          status.manager !== "none" ? (
+          usable ? (
             <TabStrip
               tabs={views}
               activeTab={current}
@@ -207,32 +268,49 @@ export function PackagesTab({ isVisible, host, label }: TabProps) {
               {t("actions.working", { action: t(`actions.${busy}.label`) })}
             </p>
           )}
-          {status.manager === "none" ? (
+          {!usable ? (
             <NoticePanel icon={Package} title={t("tab.noManagerTitle")}>
               {t("tab.noManagerHint")}
             </NoticePanel>
           ) : current === "updates" ? (
             <UpdatesView
-              key={tick}
+              key={`${tick}-${extra ?? "system"}`}
               hostId={hostId}
-              status={status}
+              manager={extra}
+              status={shown}
               runner={runner}
               isVisible={isVisible}
             />
           ) : current === "installed" ? (
             <InstalledView
-              key={tick}
+              key={`${tick}-${extra ?? "system"}`}
               hostId={hostId}
-              status={status}
+              manager={extra}
+              status={shown}
               runner={runner}
               isVisible={isVisible}
             />
           ) : current === "search" ? (
-            <SearchView hostId={hostId} status={status} runner={runner} />
+            <SearchView
+              hostId={hostId}
+              manager={extra}
+              status={shown}
+              runner={runner}
+            />
           ) : current === "history" ? (
-            <HistoryView key={tick} hostId={hostId} isVisible={isVisible} />
+            <HistoryView
+              key={`${tick}-${extra ?? "system"}`}
+              hostId={hostId}
+              manager={extra}
+              isVisible={isVisible}
+            />
           ) : (
-            <ReposView key={tick} hostId={hostId} isVisible={isVisible} />
+            <ReposView
+              key={`${tick}-${extra ?? "system"}`}
+              hostId={hostId}
+              manager={extra}
+              isVisible={isVisible}
+            />
           )}
         </div>
       </PanelShell>

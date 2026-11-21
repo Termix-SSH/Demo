@@ -1,6 +1,7 @@
 import type { PluginFetch } from "@termix-ssh/plugin-sdk/backend";
 import type {
   ClientInfo,
+  ConfigFormat,
   DeviceInfo,
   DeviceOptions,
   DriverInfo,
@@ -26,6 +27,8 @@ export interface DriverIo {
   // Replaced in tests
   snmp?: SnmpFactory;
   sleep?: (ms: number) => Promise<void>;
+  // SSH shell for the Cisco driver, replaced in tests
+  shell?: (target: Target, lines: string[]) => Promise<string>;
 }
 
 export interface Driver {
@@ -48,6 +51,11 @@ export interface Driver {
   ) => Promise<void>;
   poeCycle?: (target: Target, io: DriverIo, portId: string) => Promise<void>;
   reboot?: (target: Target, io: DriverIo) => Promise<void>;
+  /** The device's configuration as text, to keep a history of. */
+  backupConfig?: (
+    target: Target,
+    io: DriverIo,
+  ) => Promise<{ content: string; format: ConfigFormat }>;
 }
 
 export class DriverError extends Error {

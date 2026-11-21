@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  canMakeReport,
+  openBugReport,
+  openDiagnosticsPage,
+} from "../report-bug";
+import {
   APP_VERSION,
   GroupHeading,
   PANEL,
@@ -23,6 +28,7 @@ import {
 } from "@termix-ssh/plugin-sdk/ui";
 import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
 import {
+  Activity,
   Bug,
   ChevronDown,
   LayoutTemplate,
@@ -280,7 +286,15 @@ export function SettingsTab({
             t("dashboard.reportBug")
               .toLowerCase()
               .includes(query.trim().toLowerCase()));
-        if (items.length === 0 && !reportBug) return null;
+        const diagnostics =
+          band === "instance" &&
+          isAdmin &&
+          canMakeReport() &&
+          (!query.trim() ||
+            t("settings.diagnostics")
+              .toLowerCase()
+              .includes(query.trim().toLowerCase()));
+        if (items.length === 0 && !reportBug && !diagnostics) return null;
         return (
           <div key={band} className="flex flex-col">
             <GroupHeading
@@ -340,11 +354,28 @@ export function SettingsTab({
                 </button>,
               ];
             })}
+            {diagnostics && (
+              <button
+                type="button"
+                onClick={openDiagnosticsPage}
+                className="flex w-full items-center gap-2 border-l-2 border-transparent py-1.5 pl-2 pr-2 text-left text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:relative focus-visible:z-10 focus-visible:ring-1 focus-visible:ring-ring"
+              >
+                <Activity className="size-3.5 shrink-0" />
+                <span className="truncate text-xs font-medium">
+                  {t("settings.diagnostics")}
+                </span>
+              </button>
+            )}
             {reportBug && (
               <a
                 href={reportCoreIssueUrl(APP_VERSION)}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={(event) => {
+                  if (!canMakeReport()) return;
+                  event.preventDefault();
+                  openBugReport();
+                }}
                 className="flex w-full items-center gap-2 border-l-2 border-transparent py-1.5 pl-2 pr-2 text-left text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:relative focus-visible:z-10 focus-visible:ring-1 focus-visible:ring-ring"
               >
                 <Bug className="size-3.5 shrink-0" />

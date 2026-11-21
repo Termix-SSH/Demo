@@ -1,0 +1,896 @@
+import {
+  useConfirm,
+  deleteRole,
+  deleteUser,
+  getPermissionsCatalog,
+  revokeAllUserSessions,
+  revokeSession,
+  updateRole,
+  type PermissionCatalogEntry,
+  type Role,
+  pluginKey,
+  PluginIcon,
+  Button,
+  Input,
+  PanelSearch,
+  roleLabel,
+  Select2,
+} from "@termix-ssh/plugin-sdk/ui";
+import type { UserStatusFilter } from "./user-admin-api";
+import { useTranslation } from "@termix-ssh/plugin-sdk/frontend";
+import { useState, type Dispatch, type SetStateAction } from "react";
+import {
+  Activity,
+  Check,
+  KeyRound,
+  Pencil,
+  Plus,
+  RefreshCw,
+  Settings2,
+  Share2,
+  Trash2,
+  Unlink,
+  User,
+} from "lucide-react";
+import { toast } from "sonner";
+import { AccordionSection } from "./AdminSettingsShared";
+
+export type AdminUser = {
+  id: string;
+  username: string;
+  isAdmin: boolean;
+  isExternal: boolean;
+  passwordHash?: string;
+  dataUnlocked?: boolean;
+  secondFactorEnabled?: boolean;
+  displayName?: string | null;
+  email?: string | null;
+  disabled?: boolean;
+  /** "admin" or "pending_approval". */
+  disabledReason?: string | null;
+  lastLoginAt?: string | null;
+};
+
+export type AdminSession = {
+  id: string;
+  userId: string;
+  username?: string;
+  deviceType: string;
+  deviceInfo: string;
+  createdAt: string;
+  expiresAt: string;
+  lastActiveAt: string;
+  isRevoked?: boolean;
+  isCurrentSession?: boolean;
+};
+
+type ApiErrorLike = {
+  response?: {
+    data?: {
+      error?: string;
+    };
+  };
+};
+
+function apiErrorMessage(error: unknown, fallback: string) {
+  return (error as ApiErrorLike).response?.data?.error || fallback;
+}
+
+type UsersSectionProps = {
+  open: boolean;
+  onToggle: () => void;
+  users: AdminUser[];
+  setUsers: Dispatch<SetStateAction<AdminUser[]>>;
+  loadUsers: () => void;
+  setCreateUserOpen: Dispatch<SetStateAction<boolean>>;
+  setEditUserTarget: Dispatch<SetStateAction<AdminUser | null>>;
+  setEditUserOpen: Dispatch<SetStateAction<boolean>>;
+  setLinkAccountTarget: Dispatch<
+    SetStateAction<{ id: string; username: string; isExternal: boolean } | null>
+  >;
+  setLinkAccountOpen: Dispatch<SetStateAction<boolean>>;
+  setUnlinkAccountTarget: Dispatch<
+    SetStateAction<{ id: string; username: string } | null>
+  >;
+  setUnlinkAccountOpen: Dispatch<SetStateAction<boolean>>;
+  onManageUser: (user: AdminUser) => void;
+  search: string;
+  onSearchChange: (value: string) => void;
+  page: number;
+  pageSize: number;
+  total: number;
+  onPageChange: Dispatch<SetStateAction<number>>;
+  /** Left out on a core that can't filter by state. */
+  status?: UserStatusFilter | "";
+  onStatusChange?: (status: UserStatusFilter | "") => void;
+  /** Only admins create accounts here and change admin rights. */
+  canManage?: boolean;
+};
+
+export function AdminUsersSection({
+  open,
+  onToggle,
+  users,
+  setUsers,
+  loadUsers,
+  setCreateUserOpen,
+  setEditUserTarget,
+  setEditUserOpen,
+  setLinkAccountTarget,
+  setLinkAccountOpen,
+  setUnlinkAccountTarget,
+  setUnlinkAccountOpen,
+  onManageUser,
+  search,
+  onSearchChange,
+  page,
+  pageSize,
+  total,
+  onPageChange,
+  status,
+  onStatusChange,
+  canManage = true,
+}: UsersSectionProps) {
+  const { t } = useTranslation();
+  const confirm = useConfirm();
+  const pageCount = Math.max(1, Math.ceil(total / pageSize));
+  const hasPrev = page > 0;
+  const hasNext = page + 1 < pageCount;
+
+  return (
+    <AccordionSection
+      label={t("admin.sectionUsers")}
+      icon={<User className="size-3.5" />}
+      open={open}
+      onToggle={onToggle}
+    >
+      <div className="flex flex-col pt-2">
+        <div className="flex items-center justify-between py-2 border-b border-border">
+          <span className="text-[10px] text-muted-foreground">
+            {t("admin.usersCount", { count: total })}
+          </span>
+          <div className="flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-6 text-muted-foreground hover:text-foreground"
+              onClick={loadUsers}
+              title={t("common.refresh")}
+              aria-label={t("common.refresh")}
+            >
+              <RefreshCw className="size-3" />
+            </Button>
+            {canManage && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-6 text-[10px] border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
+                onClick={() => setCreateUserOpen(true)}
+              >
+                <Plus className="size-3" />
+                {t("admin.createUser")}
+              </Button>
+            )}
+          </div>
+        </div>
+        <div className="flex items-center gap-2 py-2 border-b border-border">
+          <div className="min-w-0 flex-1">
+            <PanelSearch
+              value={search}
+              onChange={onSearchChange}
+              placeholder={t("admin.searchUsers")}
+              fill
+            />
+          </div>
+          {onStatusChange && (
+            <Select2
+              value={status ?? ""}
+              onChange={(e) =>
+                onStatusChange(e.target.value as UserStatusFilter | "")
+              }
+              aria-label={t("admin.userStatusFilter")}
+              className="h-7 border border-border bg-(--field) px-2 text-xs text-foreground outline-none"
+            >
+              <option value="">{t("admin.userStatusAll")}</option>
+              <option value="active">{t("admin.userStatusActive")}</option>
+              <option value="disabled">{t("admin.userStatusDisabled")}</option>
+              <option value="pending">{t("admin.userStatusPending")}</option>
+            </Select2>
+          )}
+        </div>
+        {users.map((user) => {
+          const authLabel =
+            user.isExternal && user.passwordHash
+              ? t("admin.authTypeDual")
+              : user.isExternal
+                ? t("admin.authTypeExternal")
+                : t("admin.authTypeLocal");
+          return (
+            <div
+              key={user.id}
+              className="flex items-center justify-between py-2.5 border-b border-border last:border-0"
+            >
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="size-6 bg-muted border border-border flex items-center justify-center text-[10px] font-bold shrink-0">
+                  {user.username[0].toUpperCase()}
+                </div>
+                <div className="flex flex-col gap-0.5 min-w-0">
+                  <span className="text-xs font-semibold truncate max-w-[160px]">
+                    {user.displayName || user.username}
+                    {user.displayName && (
+                      <span className="ml-1 font-normal text-muted-foreground">
+                        {user.username}
+                      </span>
+                    )}
+                  </span>
+                  <div className="flex items-center gap-1">
+                    {user.isAdmin && (
+                      <span className="text-[9px] font-semibold px-1 py-px border border-accent-brand/40 bg-accent-brand/10 text-accent-brand">
+                        {t("admin.adminBadge")}
+                      </span>
+                    )}
+                    {user.disabled && (
+                      <span className="text-[9px] font-semibold px-1 py-px border border-destructive/40 text-destructive">
+                        {user.disabledReason === "pending_approval"
+                          ? t("admin.pendingBadge")
+                          : t("admin.disabledBadge")}
+                      </span>
+                    )}
+                    <span className="text-[9px] font-semibold px-1 py-px border border-border text-muted-foreground">
+                      {authLabel}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-0.5 shrink-0">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-6 text-muted-foreground hover:text-accent-brand"
+                  title={t("admin.manageUserData")}
+                  onClick={() => onManageUser(user)}
+                >
+                  <Settings2 className="size-3" />
+                </Button>
+                {canManage && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-6 text-muted-foreground hover:text-foreground"
+                    title={t("common.edit")}
+                    aria-label={t("common.edit")}
+                    onClick={() => {
+                      setEditUserTarget(user);
+                      setEditUserOpen(true);
+                    }}
+                  >
+                    <Pencil className="size-3" />
+                  </Button>
+                )}
+                {!canManage ? null : user.isExternal && user.passwordHash ? (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-6 text-muted-foreground hover:text-foreground"
+                    title={t("admin.unlinkAccount")}
+                    onClick={() => {
+                      setUnlinkAccountTarget({
+                        id: user.id,
+                        username: user.username,
+                      });
+                      setUnlinkAccountOpen(true);
+                    }}
+                  >
+                    <Unlink className="size-3" />
+                  </Button>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-6 text-muted-foreground hover:text-foreground"
+                    title={t("admin.linkAccountTitle")}
+                    onClick={() => {
+                      setLinkAccountTarget({
+                        id: user.id,
+                        username: user.username,
+                        isExternal: user.isExternal,
+                      });
+                      setLinkAccountOpen(true);
+                    }}
+                  >
+                    <Share2 className="size-3" />
+                  </Button>
+                )}
+                {canManage && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-6 text-muted-foreground hover:text-destructive"
+                    disabled={user.isAdmin}
+                    title={t("common.delete")}
+                    aria-label={t("common.delete")}
+                    onClick={async () => {
+                      const ok = await confirm({
+                        title: t("admin.deleteUserConfirm", {
+                          username: user.username,
+                        }),
+                        description: t("manage.cannotBeUndone"),
+                      });
+                      if (!ok) return;
+                      try {
+                        await deleteUser(user.username);
+                        setUsers((prev) =>
+                          prev.filter((u) => u.id !== user.id),
+                        );
+                        toast.success(
+                          t("admin.deleteUserSuccess", {
+                            username: user.username,
+                          }),
+                        );
+                      } catch (e: unknown) {
+                        toast.error(
+                          apiErrorMessage(e, t("admin.deleteUserFailed")),
+                        );
+                      }
+                    }}
+                  >
+                    <Trash2 className="size-3" />
+                  </Button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+        {users.length === 0 && (
+          <div className="py-4 text-center text-[10px] text-muted-foreground">
+            {search ? t("admin.noUsersMatch") : t("admin.noUsers")}
+          </div>
+        )}
+        {pageCount > 1 && (
+          <div className="flex items-center justify-between py-2 border-t border-border">
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-6 text-[10px] rounded-none"
+              disabled={!hasPrev}
+              onClick={() => onPageChange((p) => Math.max(0, p - 1))}
+            >
+              {t("common.previous")}
+            </Button>
+            <span className="text-[10px] text-muted-foreground">
+              {t("admin.pageOf", { page: page + 1, total: pageCount })}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-6 text-[10px] rounded-none"
+              disabled={!hasNext}
+              onClick={() => onPageChange((p) => p + 1)}
+            >
+              {t("common.next")}
+            </Button>
+          </div>
+        )}
+      </div>
+    </AccordionSection>
+  );
+}
+
+type SessionsSectionProps = {
+  open: boolean;
+  onToggle: () => void;
+  sessions: AdminSession[];
+  setSessions: Dispatch<SetStateAction<AdminSession[]>>;
+  loadSessions: () => void;
+};
+
+export function AdminSessionsSection({
+  open,
+  onToggle,
+  sessions,
+  setSessions,
+  loadSessions,
+}: SessionsSectionProps) {
+  const { t } = useTranslation();
+  const confirm = useConfirm();
+
+  return (
+    <AccordionSection
+      label={t("admin.sectionSessions")}
+      icon={<Activity className="size-3.5" />}
+      open={open}
+      onToggle={onToggle}
+    >
+      <div className="flex flex-col pt-2">
+        <div className="flex items-center justify-between py-2 border-b border-border">
+          <span className="text-[10px] text-muted-foreground">
+            {t("admin.sessionsActive", { count: sessions.length })}
+          </span>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-6 text-muted-foreground hover:text-foreground"
+            onClick={loadSessions}
+            title={t("common.refresh")}
+            aria-label={t("common.refresh")}
+          >
+            <RefreshCw className="size-3" />
+          </Button>
+        </div>
+        {sessions.map((session) => (
+          <div
+            key={session.id}
+            className="flex items-start justify-between py-2.5 border-b border-border last:border-0 gap-2"
+          >
+            <div className="flex flex-col gap-0.5 min-w-0 flex-1">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="text-xs font-semibold">
+                  {session.username}
+                </span>
+                {session.isCurrentSession && (
+                  <span className="text-[9px] font-semibold px-1 py-px border border-accent-brand/40 bg-accent-brand/10 text-accent-brand">
+                    {t("admin.youBadge")}
+                  </span>
+                )}
+              </div>
+              <span className="text-[10px] text-muted-foreground truncate">
+                {session.deviceInfo}
+              </span>
+              <span className="text-[10px] text-muted-foreground">
+                {t("admin.sessionActive", { time: session.lastActiveAt })}
+              </span>
+              <span className="text-[10px] text-muted-foreground">
+                {t("admin.sessionExpires", { time: session.expiresAt })}
+              </span>
+            </div>
+            <div className="flex items-center gap-0.5 shrink-0">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-[10px] text-muted-foreground hover:text-destructive h-6 px-1.5"
+                onClick={async () => {
+                  const ok = await confirm({
+                    title: t("admin.revokeAllSessionsConfirm", {
+                      username: session.username ?? "",
+                    }),
+                    confirmLabel: t("admin.revokeAll"),
+                  });
+                  if (!ok) return;
+                  try {
+                    await revokeAllUserSessions(session.userId);
+                    setSessions((prev) =>
+                      prev.filter((s) => s.userId !== session.userId),
+                    );
+                    toast.success(t("admin.revokeAllSessionsSuccess"));
+                  } catch {
+                    toast.error(t("admin.revokeAllSessionsFailed"));
+                  }
+                }}
+              >
+                {t("admin.revokeAll")}
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-6 text-muted-foreground hover:text-destructive"
+                title={t("admin.revokeSession")}
+                aria-label={t("admin.revokeSession")}
+                onClick={async () => {
+                  const ok = await confirm({
+                    title: t("admin.revokeSessionConfirm"),
+                    confirmLabel: t("admin.revokeSession"),
+                  });
+                  if (!ok) return;
+                  try {
+                    await revokeSession(session.id);
+                    setSessions((prev) =>
+                      prev.filter((s) => s.id !== session.id),
+                    );
+                  } catch {
+                    toast.error(t("admin.revokeSessionFailed"));
+                  }
+                }}
+              >
+                <Trash2 className="size-3" />
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </AccordionSection>
+  );
+}
+
+type RolesSectionProps = {
+  open: boolean;
+  onToggle: () => void;
+  roles: Role[];
+  setRoles: Dispatch<SetStateAction<Role[]>>;
+  showCreateRole: boolean;
+  setShowCreateRole: Dispatch<SetStateAction<boolean>>;
+  newRoleName: string;
+  setNewRoleName: Dispatch<SetStateAction<string>>;
+  newRoleDisplayName: string;
+  setNewRoleDisplayName: Dispatch<SetStateAction<string>>;
+  newRoleDescription: string;
+  setNewRoleDescription: Dispatch<SetStateAction<string>>;
+  handleCreateRole: () => void;
+  createRoleLoading: boolean;
+};
+
+export function AdminRolesSection({
+  open,
+  onToggle,
+  roles,
+  setRoles,
+  showCreateRole,
+  setShowCreateRole,
+  newRoleName,
+  setNewRoleName,
+  newRoleDisplayName,
+  setNewRoleDisplayName,
+  newRoleDescription,
+  setNewRoleDescription,
+  handleCreateRole,
+  createRoleLoading,
+}: RolesSectionProps) {
+  const { t } = useTranslation();
+  const confirm = useConfirm();
+  const [catalog, setCatalog] = useState<PermissionCatalogEntry[]>([]);
+  const [editingRoleId, setEditingRoleId] = useState<number | null>(null);
+  const [editingPermissions, setEditingPermissions] = useState<Set<string>>(
+    new Set(),
+  );
+  const [savingPermissions, setSavingPermissions] = useState(false);
+
+  function rolePermissions(role: Role): string[] {
+    if (Array.isArray(role.permissions)) return role.permissions;
+    if (typeof role.permissions === "string") {
+      try {
+        return JSON.parse(role.permissions) as string[];
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  }
+
+  async function openPermissionsEditor(role: Role) {
+    if (editingRoleId === role.id) {
+      setEditingRoleId(null);
+      return;
+    }
+    try {
+      if (catalog.length === 0) {
+        const res = await getPermissionsCatalog();
+        setCatalog(res.catalog ?? []);
+      }
+      setEditingPermissions(new Set(rolePermissions(role)));
+      setEditingRoleId(role.id);
+    } catch {
+      toast.error(t("admin.rolePermissions.loadError"));
+    }
+  }
+
+  function togglePermission(permission: string) {
+    setEditingPermissions((prev) => {
+      const next = new Set(prev);
+      if (next.has(permission)) next.delete(permission);
+      else next.add(permission);
+      return next;
+    });
+  }
+
+  async function savePermissions(role: Role) {
+    setSavingPermissions(true);
+    try {
+      const permissions = [...editingPermissions];
+      await updateRole(role.id, { permissions });
+      setRoles((prev) =>
+        prev.map((entry) =>
+          entry.id === role.id ? { ...entry, permissions } : entry,
+        ),
+      );
+      setEditingRoleId(null);
+      toast.success(t("admin.rolePermissions.saved"));
+    } catch {
+      toast.error(t("admin.rolePermissions.saveError"));
+    } finally {
+      setSavingPermissions(false);
+    }
+  }
+
+  return (
+    <AccordionSection
+      label={t("admin.sectionRoles")}
+      icon={<KeyRound className="size-3.5" />}
+      open={open}
+      onToggle={onToggle}
+    >
+      <div className="flex flex-col pt-2">
+        <div className="flex items-center justify-between py-2 border-b border-border">
+          <span className="text-[10px] text-muted-foreground">
+            {t("admin.rolesCount", { count: roles.length })}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-6 text-[10px] border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
+            onClick={() => setShowCreateRole((o) => !o)}
+          >
+            <Plus className="size-3" />
+            {t("admin.createRole")}
+          </Button>
+        </div>
+        {showCreateRole && (
+          <div className="flex flex-col gap-2.5 py-3 border-b border-border">
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+              {t("admin.newRole")}
+            </span>
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">
+                {t("admin.roleName")}{" "}
+                <span className="text-accent-brand">*</span>
+              </label>
+              <Input
+                placeholder={t("admin.roleNamePlaceholder")}
+                value={newRoleName}
+                onChange={(e) => setNewRoleName(e.target.value)}
+                className="text-xs"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">
+                {t("admin.roleDisplayName")}{" "}
+                <span className="text-accent-brand">*</span>
+              </label>
+              <Input
+                placeholder={t("admin.roleDisplayNamePlaceholder")}
+                value={newRoleDisplayName}
+                onChange={(e) => setNewRoleDisplayName(e.target.value)}
+                className="text-xs"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">
+                {t("admin.roleDescription")}
+              </label>
+              <textarea
+                rows={2}
+                placeholder={t("common.optional")}
+                value={newRoleDescription}
+                onChange={(e) => setNewRoleDescription(e.target.value)}
+                className="w-full px-2 py-1.5 text-xs bg-(--field) border border-border text-foreground placeholder:text-muted-foreground resize-none outline-none focus:ring-1 focus:ring-ring"
+              />
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-xs"
+                onClick={() => {
+                  setShowCreateRole(false);
+                  setNewRoleName("");
+                  setNewRoleDisplayName("");
+                  setNewRoleDescription("");
+                }}
+              >
+                {t("common.cancel")}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-xs border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
+                onClick={handleCreateRole}
+                disabled={createRoleLoading}
+              >
+                {createRoleLoading
+                  ? t("admin.creating")
+                  : t("admin.createRole")}
+              </Button>
+            </div>
+          </div>
+        )}
+        {roles.map((role) => {
+          const permissionCount = rolePermissions(role).length;
+          return (
+            <div
+              key={role.id}
+              className="flex flex-col py-2.5 border-b border-border last:border-0"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-0.5 min-w-0">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="text-xs font-semibold truncate">
+                      {roleLabel(t, role.displayName)}
+                    </span>
+                    {role.isSystem ? (
+                      <span className="text-[9px] font-semibold px-1 py-px border border-border text-muted-foreground">
+                        {t("admin.systemBadge")}
+                      </span>
+                    ) : (
+                      <span className="text-[9px] font-semibold px-1 py-px border border-accent-brand/40 bg-accent-brand/10 text-accent-brand">
+                        {t("admin.customBadge")}
+                      </span>
+                    )}
+                    {permissionCount > 0 && (
+                      <span className="text-[9px] px-1 py-px border border-border/60 text-muted-foreground">
+                        {t("admin.rolePermissions.count", {
+                          count: permissionCount,
+                        })}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-[10px] font-mono text-muted-foreground">
+                    {role.name}
+                  </span>
+                </div>
+                <div className="flex items-center gap-0.5 shrink-0">
+                  {/* The built-in roles' permissions are editable; only
+                      deleting them is not. */}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className={`size-6 ${editingRoleId === role.id ? "text-accent-brand" : "text-muted-foreground hover:text-foreground"}`}
+                    title={t("admin.rolePermissions.editAction")}
+                    onClick={() => openPermissionsEditor(role)}
+                  >
+                    <KeyRound className="size-3" />
+                  </Button>
+                  {!role.isSystem && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="size-6 text-muted-foreground hover:text-destructive"
+                      title={t("common.delete")}
+                      aria-label={t("common.delete")}
+                      onClick={async () => {
+                        const ok = await confirm({
+                          title: t("admin.deleteRoleConfirm", {
+                            name: role.displayName,
+                          }),
+                        });
+                        if (!ok) return;
+                        try {
+                          await deleteRole(role.id);
+                          setRoles((prev) =>
+                            prev.filter((r) => r.id !== role.id),
+                          );
+                          toast.success(
+                            t("admin.deleteRoleSuccess", {
+                              name: role.displayName,
+                            }),
+                          );
+                        } catch (e: unknown) {
+                          toast.error(
+                            apiErrorMessage(e, t("admin.deleteRoleFailed")),
+                          );
+                        }
+                      }}
+                    >
+                      <Trash2 className="size-3" />
+                    </Button>
+                  )}
+                </div>
+              </div>
+              {editingRoleId === role.id && (
+                <div className="flex flex-col gap-2.5 mt-2.5 p-2.5 border border-border bg-muted/20">
+                  {catalog.map((entry) => {
+                    const wildcard = `${entry.group}.*`;
+                    const wildcardOn = editingPermissions.has(wildcard);
+                    // A plugin group with enabled === false is still granted,
+                    // it just cannot be reached right now.
+                    const offline = entry.enabled === false;
+                    const titleFor = (permission: string) => {
+                      const item = entry.items?.find(
+                        (candidate) => candidate.permission === permission,
+                      );
+                      if (!item) return null;
+                      return entry.pluginId
+                        ? t(pluginKey(entry.pluginId, item.titleKey))
+                        : t(item.titleKey);
+                    };
+                    return (
+                      <div
+                        key={entry.group}
+                        className={`flex flex-col gap-1 ${offline ? "opacity-50" : ""}`}
+                      >
+                        <button
+                          onClick={() => togglePermission(wildcard)}
+                          className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-left"
+                        >
+                          <span
+                            className={`size-3 border flex items-center justify-center shrink-0 transition-colors ${wildcardOn ? "border-accent-brand bg-accent-brand" : "border-border bg-background"}`}
+                          >
+                            {wildcardOn && (
+                              <Check className="size-2 text-background" />
+                            )}
+                          </span>
+                          {entry.pluginId && (
+                            <PluginIcon
+                              name={entry.icon}
+                              className="size-3 shrink-0 text-muted-foreground"
+                            />
+                          )}
+                          <span
+                            className={
+                              wildcardOn
+                                ? "text-accent-brand"
+                                : "text-muted-foreground"
+                            }
+                          >
+                            {entry.label ??
+                              (entry.labelKey
+                                ? t(entry.labelKey)
+                                : entry.group)}
+                          </span>
+                          {offline && (
+                            <span className="px-1 border border-border text-[9px] font-normal normal-case tracking-normal text-muted-foreground">
+                              {t("admin.rolePermissions.pluginDisabled")}
+                            </span>
+                          )}
+                        </button>
+                        <div className="flex flex-col gap-0.5 pl-4">
+                          {entry.permissions.map((permission) => {
+                            const checked =
+                              wildcardOn || editingPermissions.has(permission);
+                            const title = titleFor(permission);
+                            return (
+                              <button
+                                key={permission}
+                                disabled={wildcardOn}
+                                onClick={() => togglePermission(permission)}
+                                className="flex items-center gap-1.5 text-[10px] text-left disabled:opacity-60"
+                              >
+                                <span
+                                  className={`size-3 border flex items-center justify-center shrink-0 transition-colors ${checked ? "border-accent-brand bg-accent-brand" : "border-border bg-background"}`}
+                                >
+                                  {checked && (
+                                    <Check className="size-2 text-background" />
+                                  )}
+                                </span>
+                                {title && (
+                                  <span className="text-foreground">
+                                    {title}
+                                  </span>
+                                )}
+                                <span className="font-mono text-muted-foreground">
+                                  {permission}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                  <div className="flex justify-end gap-2 pt-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 text-[10px]"
+                      onClick={() => setEditingRoleId(null)}
+                    >
+                      {t("common.cancel")}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-6 text-[10px] border-accent-brand/40 text-accent-brand hover:bg-accent-brand/10 hover:text-accent-brand"
+                      disabled={savingPermissions}
+                      onClick={() => savePermissions(role)}
+                    >
+                      {savingPermissions
+                        ? t("admin.rolePermissions.saving")
+                        : t("admin.rolePermissions.save")}
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </AccordionSection>
+  );
+}

@@ -1,4 +1,5 @@
 import { useState, useEffect, useLayoutEffect, useMemo } from "react";
+import { openBugReport } from "../report-bug";
 import {
   APP_VERSION,
   useActionSlot,
@@ -836,6 +837,7 @@ export function DashboardTab({
     {
       href: reportCoreIssueUrl(APP_VERSION),
       label: t("dashboard.reportBug"),
+      open: openBugReport,
     },
     {
       href: "https://discord.com/invite/jVQGdvHDrf",
@@ -883,7 +885,11 @@ export function DashboardTab({
               {links.map((link) => (
                 <DropdownMenuItem
                   key={link.href}
-                  onClick={() => window.open(link.href, "_blank", "noreferrer")}
+                  onClick={() =>
+                    "open" in link && link.open
+                      ? link.open()
+                      : window.open(link.href, "_blank", "noreferrer")
+                  }
                 >
                   {link.label}
                 </DropdownMenuItem>

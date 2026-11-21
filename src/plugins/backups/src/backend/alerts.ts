@@ -23,8 +23,16 @@ export interface StorageAccessV1 {
 
 /** Alerts and Termix events when a run ends. */
 export function createAlerts(ctx: PluginContext) {
-  const send = (message: Parameters<PluginContext["notify"]["send"]>[0]) =>
+  type Message = Parameters<PluginContext["notify"]["send"]>[0];
+  const send = (message: Message) =>
     ctx.notify.send(message).catch(() => undefined);
+  /** A job's alert, sent only to the channels the job picked. */
+  const sendFor = (job: JobRow, message: Message) =>
+    send(
+      job.alerts.channelIds?.length
+        ? { ...message, channelIds: job.alerts.channelIds }
+        : message,
+    );
 
   /** The latest storage health of a host, or null when Storage Health is not there. */
   async function storageOf(hostId: number) {
@@ -56,7 +64,7 @@ export function createAlerts(ctx: PluginContext) {
         return;
       }
       const host = await hostName(ctx, job.updatedBy, hostId);
-      await send({
+      await sendFor(job, {
         title: `Backup ${job.name} is stored on unhealthy storage on ${host}`,
         body: storage.worstDrive
           ? `Storage Health reports problems, worst on ${storage.worstDrive}. Keep a copy somewhere else too.`
@@ -75,7 +83,12 @@ export function createAlerts(ctx: PluginContext) {
       });
     },
 
-    async finished({ run, job, previousStatus }: FinishedRun): Promise<void> {
+    async finished({
+      run,
+      job,
+      previousStatus,
+      willRetry,
+    }: FinishedRun): Promise<void> {
       if (typeof ctx.operations?.emit === "function") {
         const payload = {
           jobId: run.jobId,
@@ -88,7 +101,7 @@ export function createAlerts(ctx: PluginContext) {
         await ctx.operations
           .emit("backups.run-finished", payload, { hostId: run.hostId })
           .catch(() => {});
-        if (run.status === "failed") {
+        if (run.status === "failed" && !willRetry) {
           await ctx.operations
             .emit("backups.run-failed", payload, { hostId: run.hostId })
             .catch(() => {});
@@ -120,9 +133,15 @@ export function createAlerts(ctx: PluginContext) {
         return;
       }
 
-      if (!job || !job.alerts.onFailure) return;
-      if (run.status === "failed" || run.status === "warning") {
-        await send({
+      if (!job || willRetry) return;
+      const wanted =
+        run.status === "failed"
+          ? job.alerts.onFailure
+          : run.status === "warning"
+            ? (job.alerts.onWarning ?? job.alerts.onFailure)
+            : false;
+      if (wanted) {
+        await sendFor(job, {
           title:
             run.status === "failed"
               ? `Backup ${run.jobName} on ${host} failed`
@@ -140,8 +159,33 @@ export function createAlerts(ctx: PluginContext) {
         });
         return;
       }
-      if (previousStatus === "failed" && run.status === "success") {
-        await send({
+      if (run.status === "failed" || run.status === "warning") return;
+      if (job.alerts.onSuccess && run.status === "success") {
+        await sendFor(job, {
+          title:
+            previousStatus === "failed"
+              ? `Backup ${run.jobName} on ${host} works again`
+              : `Backup ${run.jobName} on ${host} finished`,
+          body: run.summary
+            ? `${run.summary.totalFiles} files, ${run.summary.dataAdded} bytes added`
+            : undefined,
+          severity: "success",
+          category:
+            previousStatus === "failed"
+              ? "backups.run_recovered"
+              : "backups.run_succeeded",
+          audience: { userId },
+          link: { tab: "backups" },
+          context,
+        });
+        return;
+      }
+      if (
+        job.alerts.onFailure &&
+        previousStatus === "failed" &&
+        run.status === "success"
+      ) {
+        await sendFor(job, {
           title: `Backup ${run.jobName} on ${host} works again`,
           severity: "success",
           category: "backups.run_recovered",
@@ -165,7 +209,7 @@ export function createAlerts(ctx: PluginContext) {
         }
         await store.updateJob(job.id, { staleAlertAt: now.toISOString() });
         const host = await hostName(ctx, job.updatedBy, job.hostId);
-        await send({
+        await sendFor(job, {
           title: `No backup of ${job.name} on ${host} for ${job.alerts.staleDays} days`,
           severity: "warning",
           category: "backups.stale",

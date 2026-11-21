@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4.0
+
+### Added
+
+- Push notifications on your phone. Turn them on in the Termix app and the phone shows up as a Mobile app channel with its own rule
+- Phones that stop taking notifications are turned off on their own
+- Slack, Microsoft Teams, Gotify, Pushover and Matrix channels
+- Other plugins can act when an alert comes in, like an Automations trigger that restarts a service when its Uptime monitor goes down
+
 ## 1.3.1
 
 ### Changed

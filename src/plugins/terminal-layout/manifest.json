@@ -1,0 +1,65 @@
+{
+  "id": "terminal-layout",
+  "name": "Terminal Layout",
+  "version": "1.0.0",
+  "description": "A terminal first Termix layout with a command palette for everything and tiled panes like tmux.",
+  "author": {
+    "name": "Termix"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/Termix-SSH/Plugin-Terminal-Layout",
+  "docs": "https://docs.termix.site/plugins/terminal-layout",
+  "category": "Productivity",
+  "icon": "SquareTerminal",
+  "features": [
+    "Sessions fill the screen with almost no chrome",
+    "Tiled panes like tmux or Zellij",
+    "Ctrl+Space prefix keys to split, move, zoom and close panes",
+    "Command palette for hosts, tabs, actions and settings",
+    "Ctrl+Enter in the palette opens a host in a new pane",
+    "One line status bar with numbered tabs",
+    "Manage, Settings and the host editor from Classic Layout"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.11.2-0",
+    "api": "^2.6.0"
+  },
+  "capabilities": ["ui:layout", "ui:surface"],
+  "contributes": {
+    "layouts": [
+      {
+        "id": "terminal",
+        "label": "layout.name",
+        "description": "layout.description"
+      }
+    ],
+    "tabs": [
+      {
+        "id": "dashboard",
+        "titleKey": "tab.dashboard",
+        "icon": "LayoutDashboard",
+        "openFrom": ["rail"]
+      },
+      {
+        "id": "host-manager",
+        "titleKey": "tab.manage",
+        "icon": "LibraryBig",
+        "openFrom": ["rail"]
+      },
+      {
+        "id": "settings",
+        "titleKey": "tab.settings",
+        "icon": "Settings",
+        "openFrom": ["rail"]
+      }
+    ],
+    "keybindingActions": [
+      {
+        "id": "terminal-layout.prefix"
+      }
+    ]
+  },
+  "locales": "locales",
+  "platforms": ["linux", "win32", "darwin"]
+}

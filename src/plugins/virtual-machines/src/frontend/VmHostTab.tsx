@@ -40,7 +40,7 @@ type View = "vms" | "storage" | "networks" | "jobs";
 const POLL_MS = 10_000;
 
 /** One hypervisor: its VMs, storage, networks and jobs. */
-export function VmHostTab({ isVisible, host, label }: TabProps) {
+export function VmHostTab({ isVisible, host, label, tab }: TabProps) {
   const { t } = useTranslation();
   const confirm = useConfirm();
   const panel = usePluginPanelView("vms");
@@ -61,6 +61,15 @@ export function VmHostTab({ isVisible, host, label }: TabProps) {
       setSelected(uuid);
     }, []),
   );
+
+  // A host tree picked a VM. A new focus object asks again, even for the same VM.
+  const focus = (tab?.data as { focus?: { uuid?: string } } | undefined)?.focus;
+  useEffect(() => {
+    if (!focus?.uuid) return;
+    setView("vms");
+    setCreating(false);
+    setSelected(focus.uuid);
+  }, [focus]);
 
   const load = useCallback(
     async (fresh = true) => {
