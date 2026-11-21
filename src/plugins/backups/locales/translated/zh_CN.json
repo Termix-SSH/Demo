@@ -39,7 +39,7 @@
   "install": {
     "missing": "此主机未安装 restic",
     "tooOld": "此主机上的 restic 版本低于 0.17",
-    "hint": "备份使用 restic。请使用包管理器安装，如果包版本过旧，可从 GitHub 上的 restic 发布版安装。",
+    "hint": "备份使用 restic。请通过包管理器安装，或者当包版本过旧时，从 GitHub 上的 restic 发布页安装。您也可以跳过此步骤，并选择另一台主机在任务中运行 restic。",
     "button": "安装 restic",
     "working": "正在安装...",
     "title": "安装 restic？",
@@ -85,7 +85,9 @@
     "edit": "编辑",
     "snapshots": "快照",
     "started": "{{name}} 已启动",
-    "runFailed": "无法启动备份"
+    "runFailed": "无法启动备份",
+    "runsOn": "{{host}} 上的 restic",
+    "retrying": "失败，将于 {{when}} 重试"
   },
   "editor": {
     "newTitle": "新建备份任务",
@@ -98,6 +100,10 @@
     "pickRepository": "选择存储库",
     "noRepos": "该主机没有可用的存储库。请先在“备份”选项卡中添加一个。",
     "repoLocked": "只有存储库的所有者才能修改它。",
+    "runner": "在以下位置运行 restic",
+    "runnerThisHost": "此主机",
+    "runnerSelf": "restic 在此主机上运行，并将备份发送到存储库。",
+    "runnerHint": "restic 在所选主机上运行。Termix 会通过 SSH 将此主机的文件复制到该主机，因此此主机只需安装 tar，无需直接访问存储库。",
     "enabled": "按计划运行",
     "enabledHint": "关闭以暂停计划。“立即运行”仍然有效。",
     "oneFileSystem": "限制在单个文件系统内",
@@ -125,7 +131,10 @@
     "engines": {
       "mysql": "MySQL 或 MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "登录凭据",
     "ownLogin": "在此输入登录凭据",
@@ -149,7 +158,10 @@
     "noVolumes": "未找到卷",
     "dockerFailed": "无法列出该主机上的 Docker 资源",
     "stop": "备份期间停止服务栈",
-    "stopHint": "选定的服务栈会先停止，备份完成后再重新启动，以确保在读取文件时它们不会发生变化。"
+    "stopHint": "选定的服务栈会先停止，备份完成后再重新启动，以确保在读取文件时它们不会发生变化。",
+    "serverDir": "SQL Server 备份文件夹",
+    "serverDirHint": "SQL Server 会将备份直接写入此文件夹，Termix 随后从中获取。它必须是此主机上的同一文件夹，因此如果使用 Docker，请以相同路径将其挂载到容器中。",
+    "redisHint": "Redis 会作为整个实例的一个快照进行保存。"
   },
   "schedule": {
     "title": "计划",
@@ -201,9 +213,16 @@
   "alerts": {
     "title": "告警",
     "onFailure": "备份失败时发送警报",
-    "onFailureHint": "也会在出现警告时发送警报，并在恢复正常运行后发送一次通知。",
+    "onFailureHint": "恢复后也会发送一次通知。",
     "staleDays": "未备份天数",
-    "staleDaysHint": "当连续这么多天没有成功备份时发送警报。设置为 0 可关闭此功能。"
+    "staleDaysHint": "当连续这么多天没有成功备份时发送警报。设置为 0 可关闭此功能。",
+    "onWarning": "警告时通知",
+    "onWarningHint": "当备份已保存，但部分文件无法读取或旧快照未被删除时。",
+    "onSuccess": "每次成功备份时通知",
+    "onSuccessHint": "每次此任务无问题完成时，也会发送通知。",
+    "channels": "发送至",
+    "channelsHint": "选择此任务通知的渠道。如果不选，则发送至所有渠道。",
+    "channelOff": "关闭"
   },
   "repos": {
     "add": "添加存储库",
@@ -337,6 +356,7 @@
     "progress": "进度",
     "preparing": "准备中...",
     "progressLine": "{{percent}}% | {{files}} / {{totalFiles}} 个文件 | {{bytes}} / {{totalBytes}}",
+    "copied": "通过 Termix 复制了 {{bytes}}",
     "left": "剩余 {{time}}",
     "details": "详细信息",
     "started": "开始时间",
@@ -442,5 +462,22 @@
   },
   "nav": {
     "togglePanel": "切换备份面板"
+  },
+  "retries": {
+    "title": "重试",
+    "count": "备份失败后的重试次数",
+    "delay": "重试间隔（分钟）",
+    "hint": "备份失败后将重试指定次数。仅在最后一次尝试失败后，才会发送失败通知。"
+  },
+  "mirrors": {
+    "title": "镜像",
+    "hint": "每次备份后，其快照也会复制到这些存储库，并应用相同的保留规则删除旧快照。复制失败会保留备份，并将运行状态标记为警告。"
+  },
+  "repoSnapshots": {
+    "browse": "浏览所有快照",
+    "host": "从主机读取",
+    "hostHint": "restic 在此主机上运行以读取存储库。它需要安装 restic 并能访问存储库。",
+    "pickHost": "选择一台主机来读取存储库",
+    "external": "非 Termix 来源"
   }
 }

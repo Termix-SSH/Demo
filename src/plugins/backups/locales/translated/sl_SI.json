@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic ni nameščen na tem gostitelju",
     "tooOld": "restic na tem gostitelju je starejši od 0.17",
-    "hint": "Varnostne kopije uporabljajo restic. Namestite ga z upraviteljem paketov ali iz izdaje restic na GitHubu, če je paket prestar.",
+    "hint": "Varnostne kopije uporabljajo restic. Namestite ga z upraviteljem paketov ali iz izdaje restic na GitHubu, če je paket prestar. Lahko ga tudi preskočite in izberete drug gostitelja za izvajanje restic v opravilu.",
     "button": "Namesti restic",
     "working": "Nameščanje...",
     "title": "Namestiti restic?",
@@ -103,7 +103,9 @@
     "edit": "Uredi",
     "snapshots": "Slikovni posnetki",
     "started": "{{name}} je bil zagnan",
-    "runFailed": "Varnostne kopije ni bilo mogoče začeti"
+    "runFailed": "Varnostne kopije ni bilo mogoče začeti",
+    "runsOn": "restic na {{host}}",
+    "retrying": "Neuspešno, ponovni poskus ob {{when}}"
   },
   "editor": {
     "newTitle": "Novo opravilo varnostne kopije",
@@ -116,6 +118,10 @@
     "pickRepository": "Izberite skladišče",
     "noRepos": "Ta strežnik nima na voljo nobenega skladišča. Najprej dodajte skladišče na zavihku Varnostne kopije.",
     "repoLocked": "Spremeniti ga lahko le lastnik tega skladišča.",
+    "runner": "Izvedi restic na",
+    "runnerThisHost": "Ta gostitelj",
+    "runnerSelf": "restic se izvaja na tem gostitelju in pošlje varnostno kopijo v repozitorij.",
+    "runnerHint": "restic se izvaja na izbranem gostitelju. Termix kopira datoteke tega gostitelja nanj prek SSH, zato ta gostitelj potrebuje le tar in ne more dostopati do repozitorija.",
     "enabled": "Zaženi po urniku",
     "enabledHint": "Izklopite za začasno ustavitev urnika. Možnost »Zaženi zdaj« bo še vedno delovala.",
     "oneFileSystem": "Ostani v enem datotečnem sistemu",
@@ -143,7 +149,10 @@
     "engines": {
       "mysql": "MySQL ali MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Prijava",
     "ownLogin": "Vnesite prijavne podatke",
@@ -167,7 +176,10 @@
     "noVolumes": "Ni najdenih zvitih",
     "dockerFailed": "Na tem gostitelju ni bilo mogoče našteti Docker",
     "stop": "Ustavi sklade med varnostnim kopiranjem",
-    "stopHint": "Izbrane sklade se najprej ustavijo in po končanem kopiranju znova zaženejo, da se njihove datoteke med branjem ne spremenijo."
+    "stopHint": "Izbrane sklade se najprej ustavijo in po končanem kopiranju znova zaženejo, da se njihove datoteke med branjem ne spremenijo.",
+    "serverDir": "Mapa za varnostne kopije SQL Server",
+    "serverDirHint": "SQL Server samodejno zapiše varnostno kopijo v to mapo, Termix pa jo od tam prevzame. To mora biti ista mapa na tem gostitelju, zato jo z Docker mount namestite v kontejner na isto pot.",
+    "redisHint": "Redis se shrani kot en sam posnetek celotne instance."
   },
   "schedule": {
     "title": "Razpored",
@@ -219,9 +231,16 @@
   "alerts": {
     "title": "Opozorila",
     "onFailure": "Obvesti, ko varnostna kopija ne uspe",
-    "onFailureHint": "Obvešča tudi o opozorilih in enkrat, ko spet deluje.",
+    "onFailureHint": "Obvesti tudi, ko ponovno deluje.",
     "staleDays": "Dni brez varnostne kopije",
-    "staleDaysHint": "Obvesti, ko varnostna kopija ni uspela toliko dni. 0 to izklopi."
+    "staleDaysHint": "Obvesti, ko varnostna kopija ni uspela toliko dni. 0 to izklopi.",
+    "onWarning": "Obvesti ob opozorilih",
+    "onWarningHint": "Ko je varnostna kopija shranjena, vendar nekaterih datotek ni bilo mogoče prebrati ali starejši posnetki niso bili odstranjeni.",
+    "onSuccess": "Obvesti ob vsaki uspešni varnostni kopiji",
+    "onSuccessHint": "Pošlje tudi obvestilo vsakič, ko to opravilo konča brez težav.",
+    "channels": "Pošlji na",
+    "channelsHint": "Izberite kanale za obvestila tega opravila. Če noben ni izbran, gredo na vse vaše kanale.",
+    "channelOff": "izklopljeno"
   },
   "repos": {
     "add": "Dodaj skladišče",
@@ -367,6 +386,7 @@
     "progress": "Napredek",
     "preparing": "Pripravljam...",
     "progressLine": "{{percent}}% | {{files}} od {{totalFiles}} datotek | {{bytes}} od {{totalBytes}}",
+    "copied": "Kopirano {{bytes}} prek Termix",
     "left": "Preostalo časa: {{time}}",
     "details": "Podrobnosti",
     "started": "Začeto",
@@ -472,5 +492,22 @@
   },
   "nav": {
     "togglePanel": "Preklopi ploščo varnostnih kopij"
+  },
+  "retries": {
+    "title": "Ponovni poskusi",
+    "count": "Ponovni poskusi po neuspešni varnostni kopiji",
+    "delay": "Minute med ponovnimi poskusi",
+    "hint": "Neuspešna varnostna kopija se poskuša ponovno tolikokrat. Obvestilo o napaki se pošlje šele, ko zadnji poskus ne uspe."
+  },
+  "mirrors": {
+    "title": "Zrcala",
+    "hint": "Po vsaki varnostni kopiji se njeni posnetki kopirajo tudi v te repozitorije, starejši pa se tam odstranijo z istimi pravili ohranjanja. Neuspešna kopija ohrani varnostno kopijo in označi izvajanje z opozorili."
+  },
+  "repoSnapshots": {
+    "browse": "Prebrskaj vse posnetke",
+    "host": "Preberi od gostitelja",
+    "hostHint": "restic se izvaja na tem gostitelju za branje repozitorija. Potrebuje restic in mora dostopati do repozitorija.",
+    "pickHost": "Izberite gostitelja za branje repozitorija",
+    "external": "Ne iz Termix"
   }
 }

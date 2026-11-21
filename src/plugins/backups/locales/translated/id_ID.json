@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic tidak terinstal di host ini",
     "tooOld": "restic di host ini lebih lama dari versi 0.17",
-    "hint": "Cadangan menggunakan restic. Instal melalui manajer paket, atau dari rilis restic di GitHub jika paketnya terlalu lama.",
+    "hint": "Cadangan menggunakan restic. Instal melalui manajer paket, atau dari rilis restic di GitHub jika paketnya terlalu lama. Anda juga bisa melewatinya dan memilih host lain untuk menjalankan restic dalam pekerjaan.",
     "button": "Instal restic",
     "working": "Menginstal...",
     "title": "Instal restic?",
@@ -85,7 +85,9 @@
     "edit": "Edit",
     "snapshots": "Snapshot",
     "started": "{{name}} dimulai",
-    "runFailed": "Tidak dapat memulai backup"
+    "runFailed": "Tidak dapat memulai backup",
+    "runsOn": "restic di {{host}}",
+    "retrying": "Gagal, akan dicoba lagi {{when}}"
   },
   "editor": {
     "newTitle": "Pekerjaan backup baru",
@@ -98,6 +100,10 @@
     "pickRepository": "Pilih repositori",
     "noRepos": "Anda tidak memiliki repositori yang dapat digunakan host ini. Tambahkan satu di tab Backup terlebih dahulu.",
     "repoLocked": "Hanya pemilik repositori ini yang dapat mengubahnya.",
+    "runner": "Jalankan restic di",
+    "runnerThisHost": "Host ini",
+    "runnerSelf": "restic berjalan di host ini dan mengirim cadangan ke repositori.",
+    "runnerHint": "restic berjalan di host yang dipilih. Termix menyalin file dari host ini ke sana melalui SSH, jadi host ini hanya membutuhkan tar dan tidak perlu mengakses repositori.",
     "enabled": "Jalankan sesuai jadwal",
     "enabledHint": "Matikan untuk menjeda jadwal. Jalankan sekarang tetap berfungsi.",
     "oneFileSystem": "Tetap di satu sistem file",
@@ -125,7 +131,10 @@
     "engines": {
       "mysql": "MySQL atau MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Login",
     "ownLogin": "Ketik login di sini",
@@ -149,7 +158,10 @@
     "noVolumes": "Tidak ada volume ditemukan",
     "dockerFailed": "Tidak dapat mendaftar Docker di host ini",
     "stop": "Hentikan tumpukan selama proses pencadangan",
-    "stopHint": "Tumpukan yang dipilih akan dihentikan terlebih dahulu dan dimulai kembali setelahnya, agar filenya tidak berubah saat dibaca."
+    "stopHint": "Tumpukan yang dipilih akan dihentikan terlebih dahulu dan dimulai kembali setelahnya, agar filenya tidak berubah saat dibaca.",
+    "serverDir": "Folder cadangan SQL Server",
+    "serverDirHint": "SQL Server menulis cadangan ke folder ini secara otomatis, dan Termix mengambilnya dari sana. Folder ini harus sama di host ini, jadi jika menggunakan Docker, mount ke kontainer pada jalur yang sama.",
+    "redisHint": "Redis disimpan sebagai satu snapshot dari seluruh instance."
   },
   "schedule": {
     "title": "Jadwal",
@@ -201,9 +213,16 @@
   "alerts": {
     "title": "Peringatan",
     "onFailure": "Berikan peringatan saat pencadangan gagal",
-    "onFailureHint": "Juga memberikan peringatan pada peringatan (warning), dan sekali saat berhasil kembali.",
+    "onFailureHint": "Juga mengirim peringatan sekali saat berfungsi kembali.",
     "staleDays": "Hari tanpa pencadangan",
-    "staleDaysHint": "Berikan peringatan jika tidak ada pencadangan yang berhasil selama jumlah hari ini. 0 untuk menonaktifkannya."
+    "staleDaysHint": "Berikan peringatan jika tidak ada pencadangan yang berhasil selama jumlah hari ini. 0 untuk menonaktifkannya.",
+    "onWarning": "Peringatan saat ada peringatan",
+    "onWarningHint": "Saat cadangan disimpan tetapi beberapa file tidak dapat dibaca atau snapshot lama tidak dihapus.",
+    "onSuccess": "Peringatan untuk setiap cadangan yang berhasil",
+    "onSuccessHint": "Juga mengirim peringatan setiap kali pekerjaan ini selesai tanpa masalah.",
+    "channels": "Kirim ke",
+    "channelsHint": "Pilih saluran untuk peringatan pekerjaan ini. Jika tidak ada yang dipilih, peringatan akan dikirim ke semua saluran Anda.",
+    "channelOff": "mati"
   },
   "repos": {
     "add": "Tambahkan repositori",
@@ -337,6 +356,7 @@
     "progress": "Progres",
     "preparing": "Menyiapkan...",
     "progressLine": "{{percent}}% | {{files}} dari {{totalFiles}} file | {{bytes}} dari {{totalBytes}}",
+    "copied": "Menyalin {{bytes}} melalui Termix",
     "left": "{{time}} tersisa",
     "details": "Detail",
     "started": "Dimulai",
@@ -442,5 +462,22 @@
   },
   "nav": {
     "togglePanel": "Alihkan panel cadangan"
+  },
+  "retries": {
+    "title": "Percobaan Ulang",
+    "count": "Percobaan ulang setelah cadangan gagal",
+    "delay": "Menit antar percobaan ulang",
+    "hint": "Cadangan yang gagal akan dicoba ulang sebanyak ini kali. Peringatan kegagalan hanya dikirim setelah percobaan terakhir gagal."
+  },
+  "mirrors": {
+    "title": "Cermin",
+    "hint": "Setelah setiap cadangan, snapshot-nya juga disalin ke repositori ini, dan yang lama dihapus dengan aturan penyimpanan yang sama. Salinan yang gagal tetap mempertahankan cadangan dan menandai pekerjaan dengan peringatan."
+  },
+  "repoSnapshots": {
+    "browse": "Jelajahi semua snapshot",
+    "host": "Baca dari host",
+    "hostHint": "restic berjalan di host ini untuk membaca repositori. Dibutuhkan restic dan harus dapat mengakses repositori.",
+    "pickHost": "Pilih host untuk membaca repositori",
+    "external": "Bukan dari Termix"
   }
 }

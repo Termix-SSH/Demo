@@ -39,7 +39,7 @@
   "install": {
     "missing": "A restic nincs telepítve ezen a hoston",
     "tooOld": "A restic ezen a hoston régebbi, mint a 0.17-es verzió",
-    "hint": "A mentések a restic programot használják. Telepítse a csomagkezelővel, vagy a GitHubon elérhető restic kiadásból, ha a csomag túl régi.",
+    "hint": "A biztonsági mentések a restic programot használják. Telepítsd a csomagkezelővel, vagy a GitHubon elérhető restic kiadással, ha a csomag túl régi. Kihagyhatod, és kiválaszthatsz egy másik hosztot, amelyen a restic fut a feladat során.",
     "button": "restic telepítése",
     "working": "Telepítés...",
     "title": "Telepítse a restic programot?",
@@ -91,7 +91,9 @@
     "edit": "Szerkesztés",
     "snapshots": "Pillanatképek",
     "started": "A(z) {{name}} elindult",
-    "runFailed": "A biztonsági mentés nem indítható el"
+    "runFailed": "A biztonsági mentés nem indítható el",
+    "runsOn": "restic a(z) {{host}} hoszton",
+    "retrying": "Sikertelen, újrapróbálkozás {{when}}"
   },
   "editor": {
     "newTitle": "Új biztonsági mentési feladat",
@@ -104,6 +106,10 @@
     "pickRepository": "Válassz egy tárolót",
     "noRepos": "Nincs olyan tárolód, amelyet ez a host használhatna. Adj hozzá először a Biztonsági mentések fülön.",
     "repoLocked": "Csak a tároló tulajdonosa módosíthatja.",
+    "runner": "restic futtatása ezen",
+    "runnerThisHost": "Ez a hoszt",
+    "runnerSelf": "A restic ezen a hoszton fut, és elküldi a biztonsági mentést a tárolónak.",
+    "runnerHint": "A restic a kiválasztott hoszton fut. A Termix SSH-n keresztül átmásolja ennek a hosztnak a fájljait oda, így ennek a hosztnak csak a tar programra van szüksége, és nem kell elérnie a tárolót.",
     "enabled": "Ütemezett futtatás",
     "enabledHint": "Kapcsold ki az ütemezés szüneteltetéséhez. A most futtatás továbbra is működik.",
     "oneFileSystem": "Egy fájlrendszeren belül maradás",
@@ -131,7 +137,10 @@
     "engines": {
       "mysql": "MySQL vagy MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Bejelentkezés",
     "ownLogin": "Írd be ide a bejelentkezési adatot",
@@ -155,7 +164,10 @@
     "noVolumes": "Nem található kötet",
     "dockerFailed": "A Docker nem listázható ezen a hoston",
     "stop": "Megszakítja a stackek futtatását a mentés során",
-    "stopHint": "A kiválasztott stackek először leállnak, majd a mentés után újra elindulnak, így a fájlaik nem változnak az olvasás közben."
+    "stopHint": "A kiválasztott stackek először leállnak, majd a mentés után újra elindulnak, így a fájlaik nem változnak az olvasás közben.",
+    "serverDir": "SQL Server biztonsági mentési mappa",
+    "serverDirHint": "Az SQL Server saját maga írja a biztonsági mentést ebbe a mappába, és a Termix onnan veszi át. Ugyannak a mappának kell lennie ezen a hoszton is, így Docker esetén ugyanazon az elérési úton csatold a konténerbe.",
+    "redisHint": "A Redis egy egész példány pillanatképének mentésével kerül mentésre."
   },
   "schedule": {
     "title": "Ütemezés",
@@ -207,9 +219,16 @@
   "alerts": {
     "title": "Riasztások",
     "onFailure": "Riasztás mentési hiba esetén",
-    "onFailureHint": "Figyelmeztet figyelmeztetéseknél is, és egyszer, amikor újra működik.",
+    "onFailureHint": "Értesít, amikor újra működik.",
     "staleDays": "Napok mentés nélkül",
-    "staleDaysHint": "Riasztás, ha ennyi napig nem sikerült a mentés. A 0 érték kikapcsolja."
+    "staleDaysHint": "Riasztás, ha ennyi napig nem sikerült a mentés. A 0 érték kikapcsolja.",
+    "onWarning": "Értesítés figyelmeztetéseknél",
+    "onWarningHint": "Amikor a biztonsági mentés sikeresen mentésre került, de egyes fájlok nem voltak olvashatók, vagy a régi pillanatképek nem lettek törölve.",
+    "onSuccess": "Értesítés minden sikeres biztonsági mentésnél",
+    "onSuccessHint": "Minden alkalommal küld értesítést, amikor a feladat problémamentesen befejeződik.",
+    "channels": "Küldés ide",
+    "channelsHint": "Válaszd ki a csatornákat ehhez a feladathoz tartozó értesítésekhez. Ha egyiket sem választod, az értesítések minden csatornádra kerülnek.",
+    "channelOff": "kikapcsolva"
   },
   "repos": {
     "add": "Tároló hozzáadása",
@@ -347,6 +366,7 @@
     "progress": "Haladás",
     "preparing": "Felkészülés...",
     "progressLine": "{{percent}}% | {{files}} / {{totalFiles}} fájl | {{bytes}} / {{totalBytes}}",
+    "copied": "{{bytes}} másolva a Termix-en keresztül",
     "left": "{{time}} van hátra",
     "details": "Részletek",
     "started": "Kezdés",
@@ -452,5 +472,22 @@
   },
   "nav": {
     "togglePanel": "Mentések panel be/ki"
+  },
+  "retries": {
+    "title": "Újrapróbálkozások",
+    "count": "Újrapróbálkozások sikertelen biztonsági mentés után",
+    "delay": "Perc az újrapróbálkozások között",
+    "hint": "Egy sikertelen biztonsági mentést ennyiszer próbál meg újra. A hibaértesítést csak akkor küldi el, ha az utolsó kísérlet is sikertelen."
+  },
+  "mirrors": {
+    "title": "Tükrözések",
+    "hint": "Minden biztonsági mentés után a pillanatképeket ezekbe a tárolókba is átmásolja, és a régiakat ugyanazokkal a megtartási szabályokkal törli onnan is. Egy sikertelen másolás megőrzi a biztonsági mentést, és figyelmeztetéssel jelöli a futtatást."
+  },
+  "repoSnapshots": {
+    "browse": "Összes pillanatkép böngészése",
+    "host": "Olvasás hosztról",
+    "hostHint": "A restic ezen a hoszton fut a tároló olvasásához. Szüksége van a restic programra, és elérnie kell a tárolót.",
+    "pickHost": "Válassz egy hosztot a tároló olvasásához",
+    "external": "Nem a Termixből"
   }
 }

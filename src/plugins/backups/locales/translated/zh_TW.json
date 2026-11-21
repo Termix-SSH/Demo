@@ -39,7 +39,7 @@
   "install": {
     "missing": "此主機未安裝 restic",
     "tooOld": "此主機上的 restic 版本低於 0.17",
-    "hint": "備份功能使用 restic。請透過套件管理員安裝，若套件版本過舊，可從 GitHub 上的 restic 發行版安裝。",
+    "hint": "備份使用 restic。請透過套件管理員安裝，或在套件版本過舊時，從 GitHub 上的 restic 發行版安裝。您也可以跳過此步驟，並選擇另一台主機來執行包含 restic 的工作。",
     "button": "安裝 restic",
     "working": "安裝中...",
     "title": "要安裝 restic 嗎？",
@@ -85,7 +85,9 @@
     "edit": "編輯",
     "snapshots": "快照",
     "started": "{{name}} 已啟動",
-    "runFailed": "無法啟動備份"
+    "runFailed": "無法啟動備份",
+    "runsOn": "在 {{host}} 上執行 restic",
+    "retrying": "失敗，將於 {{when}} 重試"
   },
   "editor": {
     "newTitle": "新增備份工作",
@@ -98,6 +100,10 @@
     "pickRepository": "選擇儲存庫",
     "noRepos": "此主機沒有可用的儲存庫。請先在「備份」分頁中新增一個。",
     "repoLocked": "只有此儲存庫的所有者才能修改它。",
+    "runner": "在以下位置執行 restic",
+    "runnerThisHost": "此主機",
+    "runnerSelf": "restic 在此主機上執行，並將備份傳送至儲存庫。",
+    "runnerHint": "restic 在選定的主機上執行。Termix 會透過 SSH 將此主機的檔案複製過去，因此此主機只需安裝 tar，無需直接連線至儲存庫。",
     "enabled": "依排程執行",
     "enabledHint": "關閉以暫停排程。「立即執行」仍可正常使用。",
     "oneFileSystem": "限制在同一檔案系統",
@@ -125,7 +131,10 @@
     "engines": {
       "mysql": "MySQL 或 MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "登入資訊",
     "ownLogin": "在此輸入登入資訊",
@@ -149,7 +158,10 @@
     "noVolumes": "未找到資料卷",
     "dockerFailed": "無法列出此主機上的 Docker",
     "stop": "備份期間停止堆疊",
-    "stopHint": "選定的堆疊會先停止，備份完成後再重新啟動，以確保讀取檔案時內容不會變更。"
+    "stopHint": "選定的堆疊會先停止，備份完成後再重新啟動，以確保讀取檔案時內容不會變更。",
+    "serverDir": "SQL Server 備份資料夾",
+    "serverDirHint": "SQL Server 會自行將備份寫入此資料夾，Termix 再從中取得備份。此路徑必須與此主機上的路徑相同，若使用 Docker，請將該資料夾以相同路徑掛載至容器中。",
+    "redisHint": "Redis 會以單一快照的形式儲存整個執行個體。"
   },
   "schedule": {
     "title": "排程",
@@ -201,9 +213,16 @@
   "alerts": {
     "title": "警示",
     "onFailure": "備份失敗時發出警示",
-    "onFailureHint": "也會在出現警告時發出警示，並在恢復正常後通知一次。",
+    "onFailureHint": "恢復正常時也會發送一次通知。",
     "staleDays": "未備份天數",
-    "staleDaysHint": "若連續這麼多天沒有成功備份，則發出警示。設為 0 則停用此功能。"
+    "staleDaysHint": "若連續這麼多天沒有成功備份，則發出警示。設為 0 則停用此功能。",
+    "onWarning": "警告時通知",
+    "onWarningHint": "當備份已儲存，但部分檔案無法讀取，或舊快照未刪除時。",
+    "onSuccess": "每次成功備份時通知",
+    "onSuccessHint": "此工作每次順利完成時，也會發送通知。",
+    "channels": "發送至",
+    "channelsHint": "選擇此工作的通知頻道。若未選擇任何頻道，通知將發送至您所有的頻道。",
+    "channelOff": "關閉"
   },
   "repos": {
     "add": "新增儲存庫",
@@ -337,6 +356,7 @@
     "progress": "進度",
     "preparing": "準備中...",
     "progressLine": "{{percent}}% | {{files}} / {{totalFiles}} 個檔案 | {{bytes}} / {{totalBytes}}",
+    "copied": "已透過 Termix 複製 {{bytes}}",
     "left": "剩餘 {{time}}",
     "details": "詳細資訊",
     "started": "開始時間",
@@ -442,5 +462,22 @@
   },
   "nav": {
     "togglePanel": "切換備份面板"
+  },
+  "retries": {
+    "title": "重試",
+    "count": "備份失敗後的重試次數",
+    "delay": "重試間隔（分鐘）",
+    "hint": "備份失敗後將重試此次數。僅在最後一次重試失敗時，才會發送失敗通知。"
+  },
+  "mirrors": {
+    "title": "鏡像",
+    "hint": "每次備份後，其快照也會複製到這些儲存庫，並依據相同的保留規則刪除舊快照。若複製失敗，備份仍會保留，並將該次執行標記為警告。"
+  },
+  "repoSnapshots": {
+    "browse": "瀏覽所有快照",
+    "host": "從主機讀取",
+    "hostHint": "restic 在此主機上執行以讀取儲存庫。它需要安裝 restic，且必須能連線至儲存庫。",
+    "pickHost": "選擇一台主機來讀取儲存庫",
+    "external": "非來自 Termix"
   }
 }

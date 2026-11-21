@@ -40,7 +40,10 @@
     "snmp": "Dispositiu SNMP",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Comunitat",
@@ -52,7 +55,9 @@
     "privProtocol": "Privadesa",
     "privKey": "Clau de privadesa",
     "apiKey": "Clau API",
-    "apiSecret": "Secret API"
+    "apiSecret": "Secret API",
+    "enablePassword": "Contrasenya d'habilitació (opcional)",
+    "hostKey": "Petjada digital de la clau de l'amfitrió (opcional)"
   },
   "form": {
     "addTitle": "Afegeix dispositiu",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Introdueix les claus per provar.",
     "testOk": "Connectat a {{name}}.",
     "save": "Desa",
-    "add": "Afegeix"
+    "add": "Afegeix",
+    "site": "Lloc",
+    "siteHint": "El nom del lloc de UniFi de la barra d'adreces del controlador. Si està buit, s'utilitza el valor predeterminat.",
+    "backups": "Còpies de seguretat de la configuració",
+    "backupSchedule": "Desar la configuració",
+    "backupOff": "Només quan premo Desa ara",
+    "backupDaily": "Cada dia",
+    "backupWeekly": "Cada setmana",
+    "backupKeep": "Versions a conservar",
+    "backupKeepHint": "Una nova versió només es conserva si la configuració ha canviat.",
+    "backupAlert": "Alerta quan la configuració canvia",
+    "backupAlertHint": "Envia una alerta quan una configuració desada difereix de l'anterior.",
+    "backupHints": {
+      "routeros": "Desa /export, amb les contrasenyes ocultes com fa RouterOS per defecte.",
+      "opnsense": "Desa tot el fitxer config.xml, el mateix fitxer que a Sistema, Configuració, Còpies de seguretat.",
+      "openwrt": "Desa tota la configuració UCI que l'usuari iniciat pugui llegir.",
+      "unifi": "Desa la configuració del lloc, xarxes, Wi-Fi, perfils de port i regles del tallafocs.",
+      "pfsense": "Desa les parts principals de config.xml mitjançant XML-RPC. Requereix un nom d'usuari i una contrasenya.",
+      "cisco": "Desa show running-config. L'usuari iniciat pot necessitar la contrasenya d'habilitació."
+    }
   },
   "discover": {
     "title": "Cerca dispositius",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "No s'han trobat veïns.",
     "neighbor": "Veí",
-    "remotePort": "El seu port"
+    "remotePort": "El seu port",
+    "configs": "Configuracions"
   },
   "operations": {
     "device": "Dispositiu",
@@ -176,5 +201,25 @@
     "name": "Dispositius de xarxa",
     "description": "Quins dels teus routers, commutadors i punts d'accés estan en funcionament.",
     "summary": "{{up}} de {{total}} en funcionament"
+  },
+  "configs": {
+    "saveNow": "Desa ara",
+    "saving": "S'està desant...",
+    "saved": "Configuració desada",
+    "unchanged": "No hi ha hagut canvis des de l'última versió desada",
+    "none": "Encara no hi ha configuracions desades",
+    "delete": "Suprimeix",
+    "deleteConfirm": "Vols suprimir la configuració desada {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Compara",
+    "noCompare": "Mostra només aquesta versió",
+    "compareWith": "Canvis des de {{when}}",
+    "same": "No hi ha canvis.",
+    "download": "Descarrega",
+    "schedule": {
+      "off": "Es desa només quan prems Desa ara",
+      "daily": "Es desa cada dia",
+      "weekly": "Es desa cada setmana"
+    }
   }
 }

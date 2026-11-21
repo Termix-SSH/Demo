@@ -40,7 +40,10 @@
     "snmp": "SNMP cihazı",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Topluluk",
@@ -52,7 +55,9 @@
     "privProtocol": "Gizlilik",
     "privKey": "Gizlilik anahtarı",
     "apiKey": "API anahtarı",
-    "apiSecret": "API sırrı"
+    "apiSecret": "API sırrı",
+    "enablePassword": "Enable şifresi (isteğe bağlı)",
+    "hostKey": "Ana bilgisayar anahtarı parmak izi (isteğe bağlı)"
   },
   "form": {
     "addTitle": "Cihaz ekle",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Test etmek için anahtarları girin.",
     "testOk": "{{name}}'e bağlanıldı.",
     "save": "Kaydet",
-    "add": "Ekle"
+    "add": "Ekle",
+    "site": "Site",
+    "siteHint": "Kontrolcünün adres çubuğundaki UniFi site adı. Boş bırakılırsa varsayılan kullanılır.",
+    "backups": "Yapılandırma yedekleri",
+    "backupSchedule": "Yapılandırmayı kaydet",
+    "backupOff": "Sadece Şimdi Kaydet'e bastığımda",
+    "backupDaily": "Her gün",
+    "backupWeekly": "Her hafta",
+    "backupKeep": "Tutulacak sürüm sayısı",
+    "backupKeepHint": "Yeni bir sürüm, yalnızca yapılandırma değiştiğinde tutulur.",
+    "backupAlert": "Yapılandırma değiştiğinde uyar",
+    "backupAlertHint": "Kaydedilen yapılandırma, öncekiyle farklı olduğunda bir uyarı gönderir.",
+    "backupHints": {
+      "routeros": "RouterOS'un varsayılan olarak yaptığı gibi, şifreler gizli olarak /export kaydeder.",
+      "opnsense": "Sistem, Yapılandırma, Yedekler'dekiyle aynı dosya olan tüm config.xml dosyasını kaydeder.",
+      "openwrt": "Giriş yapmanın okuyabileceği tüm UCI yapılandırmalarını kaydeder.",
+      "unifi": "Site ayarlarını, ağları, Wi-Fi'yi, port profillerini ve güvenlik duvarı kurallarını kaydeder.",
+      "pfsense": "XML-RPC üzerinden config.xml'in ana bölümlerini kaydeder. Kullanıcı adı ve şifre gerektirir.",
+      "cisco": "show running-config kaydeder. Giriş yapmak için enable şifresi gerekebilir."
+    }
   },
   "discover": {
     "title": "Cihazları bul",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Komşu bulunamadı.",
     "neighbor": "Komşu",
-    "remotePort": "Karşı port"
+    "remotePort": "Karşı port",
+    "configs": "Yapılandırmalar"
   },
   "operations": {
     "device": "Cihaz",
@@ -176,5 +201,25 @@
     "name": "Ağ cihazları",
     "description": "Yönlendiriciler, anahtarlar ve erişim noktalarınızdan hangilerinin çalıştığını gösterir.",
     "summary": "{{total}} cihazdan {{up}}'i çalışıyor"
+  },
+  "configs": {
+    "saveNow": "Şimdi kaydet",
+    "saving": "Kaydediliyor...",
+    "saved": "Yapılandırma kaydedildi",
+    "unchanged": "Son kaydedilen sürümden beri değişiklik yok",
+    "none": "Henüz kaydedilmiş yapılandırma yok",
+    "delete": "Sil",
+    "deleteConfirm": "{{when}} tarihinde kaydedilen yapılandırma silinsin mi?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Karşılaştır",
+    "noCompare": "Sadece bu sürümü göster",
+    "compareWith": "{{when}} tarihinden beri yapılan değişiklikler",
+    "same": "Değişiklik yok.",
+    "download": "İndir",
+    "schedule": {
+      "off": "Sadece Şimdi Kaydet'e bastığınızda kaydedilir",
+      "daily": "Her gün kaydedilir",
+      "weekly": "Her hafta kaydedilir"
+    }
   }
 }

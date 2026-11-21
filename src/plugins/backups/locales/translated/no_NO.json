@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic er ikke installert på denne verten",
     "tooOld": "restic på denne verten er eldre enn 0.17",
-    "hint": "Sikkerhetskopieringer bruker restic. Installer det med pakkehåndtereren, eller fra restic-utgivelsen på GitHub når pakken er for gammel.",
+    "hint": "Sikkerhetskopieringer bruker restic. Installer det med pakkehåndtereren, eller fra restic-utgivelsen på GitHub hvis pakken er for gammel. Du kan også hoppe over det og velge en annen vert for å kjøre restic i en jobb.",
     "button": "Installer restic",
     "working": "Installerer...",
     "title": "Installer restic?",
@@ -91,7 +91,9 @@
     "edit": "Rediger",
     "snapshots": "Øyeblikksbilder",
     "started": "{{name}} startet",
-    "runFailed": "Kunne ikke starte sikkerhetskopien"
+    "runFailed": "Kunne ikke starte sikkerhetskopien",
+    "runsOn": "restic på {{host}}",
+    "retrying": "Mislyktes, prøver igjen {{when}}"
   },
   "editor": {
     "newTitle": "Ny sikkerhetskopi-oppgave",
@@ -104,6 +106,10 @@
     "pickRepository": "Velg et oppbevaringssted",
     "noRepos": "Du har ingen oppbevaringssteder denne verten kan bruke. Legg til ett i fanen Sikkerhetskopier først.",
     "repoLocked": "Kun eieren av dette oppbevaringsstedet kan endre det.",
+    "runner": "Kjør restic på",
+    "runnerThisHost": "Denne verten",
+    "runnerSelf": "restic kjører på denne verten og sender sikkerhetskopien til arkivet.",
+    "runnerHint": "restic kjører på den valgte verten. Termix kopierer denne vertens filer til den over SSH, så denne verten trenger bare tar og trenger ikke å nå arkivet.",
     "enabled": "Kjør etter tidsplan",
     "enabledHint": "Slå av for å pause tidsplanen. «Kjør nå» fungerer fortsatt.",
     "oneFileSystem": "Hold deg til ett filsystem",
@@ -131,7 +137,10 @@
     "engines": {
       "mysql": "MySQL eller MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Innlogging",
     "ownLogin": "Skriv inn en innlogging her",
@@ -155,7 +164,10 @@
     "noVolumes": "Ingen volumer funnet",
     "dockerFailed": "Kunne ikke liste Docker på denne verten",
     "stop": "Stopp stakker under sikkerhetskopiering",
-    "stopHint": "Valgte stakker stoppes først og startes på nytt etterpå, slik at filene deres ikke endres mens de leses."
+    "stopHint": "Valgte stakker stoppes først og startes på nytt etterpå, slik at filene deres ikke endres mens de leses.",
+    "serverDir": "SQL Server-sikkerhetskopimappe",
+    "serverDirHint": "SQL Server skriver sikkerhetskopien selv til denne mappen, og Termix henter den derfra. Den må være den samme mappen på denne verten, så med Docker-montering må du montere den i containeren på samme sti.",
+    "redisHint": "Redis lagres som ett øyeblikksbilde av hele instansen."
   },
   "schedule": {
     "title": "Tidsplan",
@@ -207,9 +219,16 @@
   "alerts": {
     "title": "Varsler",
     "onFailure": "Varsle når en sikkerhetskopiering mislykkes",
-    "onFailureHint": "Varsler også om advarsler, og én gang når den fungerer igjen.",
+    "onFailureHint": "Varsler også én gang når det fungerer igjen.",
     "staleDays": "Dager uten sikkerhetskopiering",
-    "staleDaysHint": "Varsle når ingen sikkerhetskopiering har fungert i så mange dager. 0 slår det av."
+    "staleDaysHint": "Varsle når ingen sikkerhetskopiering har fungert i så mange dager. 0 slår det av.",
+    "onWarning": "Varsel ved advarsler",
+    "onWarningHint": "Når en sikkerhetskopi er lagret, men noen filer ikke kunne leses eller gamle øyeblikksbilder ikke ble fjernet.",
+    "onSuccess": "Varsel ved hver god sikkerhetskopi",
+    "onSuccessHint": "Sender også et varsel hver gang denne jobben fullføres uten problemer.",
+    "channels": "Send til",
+    "channelsHint": "Velg kanalene for denne jobbens varsler. Hvis ingen er valgt, sendes de til alle dine kanaler.",
+    "channelOff": "av"
   },
   "repos": {
     "add": "Legg til oppbevaringssted",
@@ -347,6 +366,7 @@
     "progress": "Fremgang",
     "preparing": "Forbereder...",
     "progressLine": "{{percent}}% | {{files}} av {{totalFiles}} filer | {{bytes}} av {{totalBytes}}",
+    "copied": "Kopierte {{bytes}} gjennom Termix",
     "left": "{{time}} igjen",
     "details": "Detaljer",
     "started": "Startet",
@@ -452,5 +472,22 @@
   },
   "nav": {
     "togglePanel": "Veksle sikkerhetskopipanelet"
+  },
+  "retries": {
+    "title": "Gjentakelser",
+    "count": "Gjentakelser etter en mislykket sikkerhetskopi",
+    "delay": "Minutter mellom gjentakelser",
+    "hint": "En mislykket sikkerhetskopi prøves igjen dette antall ganger. Feilvarslet sendes først når siste forsøk mislykkes."
+  },
+  "mirrors": {
+    "title": "Speil",
+    "hint": "Etter hver sikkerhetskopi kopieres øyeblikksbildene til disse arkivene også, og gamle fjernes der med samme beholdningsregler. En mislykket kopi beholder sikkerhetskopien og markerer kjøringen med advarsler."
+  },
+  "repoSnapshots": {
+    "browse": "Bla gjennom alle øyeblikksbilder",
+    "host": "Les fra vert",
+    "hostHint": "restic kjører på denne verten for å lese arkivet. Den trenger restic og må kunne nå arkivet.",
+    "pickHost": "Velg en vert å lese arkivet fra",
+    "external": "Ikke fra Termix"
   }
 }

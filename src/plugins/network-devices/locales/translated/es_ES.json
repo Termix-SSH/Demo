@@ -40,7 +40,10 @@
     "snmp": "Dispositivo SNMP",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Comunidad",
@@ -52,7 +55,9 @@
     "privProtocol": "Privacidad",
     "privKey": "Clave de privacidad",
     "apiKey": "Clave API",
-    "apiSecret": "Secreto API"
+    "apiSecret": "Secreto API",
+    "enablePassword": "Contraseña de activación (opcional)",
+    "hostKey": "Huella digital de la clave del host (opcional)"
   },
   "form": {
     "addTitle": "Añadir dispositivo",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Introduce las claves para probar.",
     "testOk": "Conectado a {{name}}.",
     "save": "Guardar",
-    "add": "Añadir"
+    "add": "Añadir",
+    "site": "Sitio",
+    "siteHint": "El nombre del sitio de UniFi que aparece en la barra de direcciones del controlador. Si se deja vacío, se usará el predeterminado.",
+    "backups": "Copias de seguridad de la configuración",
+    "backupSchedule": "Guardar la configuración",
+    "backupOff": "Solo cuando pulse Guardar ahora",
+    "backupDaily": "Todos los días",
+    "backupWeekly": "Cada semana",
+    "backupKeep": "Versiones a conservar",
+    "backupKeepHint": "Solo se conserva una nueva versión si la configuración ha cambiado.",
+    "backupAlert": "Alertar cuando cambie la configuración",
+    "backupAlertHint": "Envía una alerta cuando una configuración guardada difiere de la anterior.",
+    "backupHints": {
+      "routeros": "Guarda /export, con las contraseñas ocultas como hace RouterOS por defecto.",
+      "opnsense": "Guarda todo el archivo config.xml, el mismo que en Sistema, Configuración, Copias de seguridad.",
+      "openwrt": "Guarda todas las configuraciones UCI que la sesión de inicio pueda leer.",
+      "unifi": "Guarda la configuración del sitio, redes, Wi-Fi, perfiles de puerto y reglas del firewall.",
+      "pfsense": "Guarda las partes principales de config.xml mediante XML-RPC. Requiere un nombre de usuario y una contraseña.",
+      "cisco": "Guarda show running-config. La sesión de inicio puede necesitar la contraseña de activación."
+    }
   },
   "discover": {
     "title": "Buscar dispositivos",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "No se encontraron vecinos.",
     "neighbor": "Vecino",
-    "remotePort": "Su puerto"
+    "remotePort": "Su puerto",
+    "configs": "Configuraciones"
   },
   "operations": {
     "device": "Dispositivo",
@@ -176,5 +201,25 @@
     "name": "Dispositivos de red",
     "description": "Qué routers, switches y puntos de acceso están activos.",
     "summary": "{{up}} de {{total}} activos"
+  },
+  "configs": {
+    "saveNow": "Guardar ahora",
+    "saving": "Guardando...",
+    "saved": "Configuración guardada",
+    "unchanged": "Sin cambios desde la última versión guardada",
+    "none": "Aún no hay configuraciones guardadas",
+    "delete": "Eliminar",
+    "deleteConfirm": "¿Eliminar la configuración guardada el {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Comparar",
+    "noCompare": "Mostrar solo esta versión",
+    "compareWith": "Cambios desde {{when}}",
+    "same": "Sin cambios.",
+    "download": "Descargar",
+    "schedule": {
+      "off": "Guardado solo cuando pulsas Guardar ahora",
+      "daily": "Guardado todos los días",
+      "weekly": "Guardado cada semana"
+    }
   }
 }

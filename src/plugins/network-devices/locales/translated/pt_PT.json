@@ -40,7 +40,10 @@
     "snmp": "Dispositivo SNMP",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Comunidade",
@@ -52,7 +55,9 @@
     "privProtocol": "Privacidade",
     "privKey": "Chave de privacidade",
     "apiKey": "Chave API",
-    "apiSecret": "Segredo API"
+    "apiSecret": "Segredo API",
+    "enablePassword": "Password de ativação (opcional)",
+    "hostKey": "Impressão digital da chave do host (opcional)"
   },
   "form": {
     "addTitle": "Adicionar dispositivo",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Introduza as chaves para testar.",
     "testOk": "Ligado a {{name}}.",
     "save": "Guardar",
-    "add": "Adicionar"
+    "add": "Adicionar",
+    "site": "Site",
+    "siteHint": "O nome do site UniFi na barra de endereços do controlador. Se vazio, usa o padrão.",
+    "backups": "Cópias de segurança da configuração",
+    "backupSchedule": "Guardar a configuração",
+    "backupOff": "Apenas quando eu carregar em Guardar agora",
+    "backupDaily": "Todos os dias",
+    "backupWeekly": "Todas as semanas",
+    "backupKeep": "Versões a manter",
+    "backupKeepHint": "Uma nova versão só é mantida se a configuração tiver mudado.",
+    "backupAlert": "Avisar quando a configuração mudar",
+    "backupAlertHint": "Envia um aviso quando uma configuração guardada difere da anterior.",
+    "backupHints": {
+      "routeros": "Guarda /export, com as passwords ocultas, tal como o RouterOS faz por padrão.",
+      "opnsense": "Guarda o ficheiro completo config.xml, o mesmo ficheiro de Sistema, Configuração, Cópias de segurança.",
+      "openwrt": "Guarda todas as configurações UCI que a sessão de login pode ler.",
+      "unifi": "Guarda as definições do site, redes, Wi-Fi, perfis de porta e regras do firewall.",
+      "pfsense": "Guarda as partes principais do config.xml via XML-RPC. Necessita de um nome de utilizador e password.",
+      "cisco": "Guarda show running-config. A sessão de login pode necessitar da password de ativação."
+    }
   },
   "discover": {
     "title": "Procurar dispositivos",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Nenhum vizinho encontrado.",
     "neighbor": "Vizinho",
-    "remotePort": "Porta remota"
+    "remotePort": "Porta remota",
+    "configs": "Configurações"
   },
   "operations": {
     "device": "Dispositivo",
@@ -176,5 +201,25 @@
     "name": "Dispositivos de rede",
     "description": "Quais dos seus routers, switches e pontos de acesso estão online.",
     "summary": "{{up}} de {{total}} online"
+  },
+  "configs": {
+    "saveNow": "Guardar agora",
+    "saving": "A guardar...",
+    "saved": "Configuração guardada",
+    "unchanged": "Sem alterações desde a última versão guardada",
+    "none": "Ainda não há configurações guardadas",
+    "delete": "Eliminar",
+    "deleteConfirm": "Eliminar a configuração guardada {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Comparar",
+    "noCompare": "Mostrar apenas esta versão",
+    "compareWith": "Alterações desde {{when}}",
+    "same": "Sem alterações.",
+    "download": "Transferir",
+    "schedule": {
+      "off": "Guardada apenas quando carregas em Guardar agora",
+      "daily": "Guardada todos os dias",
+      "weekly": "Guardada todas as semanas"
+    }
   }
 }

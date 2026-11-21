@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic är inte installerat på denna värd",
     "tooOld": "restic på denna värd är äldre än 0.17",
-    "hint": "Backupar använder restic. Installera det med pakethanteraren, eller från restic-release på GitHub när paketet är för gammalt.",
+    "hint": "Backupar använder restic. Installera det med pakethanteraren, eller från restic-release på GitHub om paketet är för gammalt. Du kan också hoppa över det och välja en annan värd att köra restic i ett jobb.",
     "button": "Installera restic",
     "working": "Installerar...",
     "title": "Installera restic?",
@@ -91,7 +91,9 @@
     "edit": "Redigera",
     "snapshots": "Ögonblicksbilder",
     "started": "{{name}} startad",
-    "runFailed": "Kunde inte starta säkerhetskopieringen"
+    "runFailed": "Kunde inte starta säkerhetskopieringen",
+    "runsOn": "restic på {{host}}",
+    "retrying": "Misslyckades, försöker igen {{when}}"
   },
   "editor": {
     "newTitle": "Ny säkerhetskopieringsjobb",
@@ -104,6 +106,10 @@
     "pickRepository": "Välj ett repository",
     "noRepos": "Du har inget repository som denna värd kan använda. Lägg till ett i fliken Säkerhetskopior först.",
     "repoLocked": "Endast ägaren av detta repository kan ändra det.",
+    "runner": "Kör restic på",
+    "runnerThisHost": "Denna värd",
+    "runnerSelf": "restic körs på denna värd och skickar backupen till arkivet.",
+    "runnerHint": "restic körs på den valda värden. Termix kopierar denna värds filer till den över SSH, så denna värd behöver bara tar och behöver inte nå arkivet.",
     "enabled": "Kör enligt schema",
     "enabledHint": "Stäng av för att pausa schemat. Kör nu fungerar fortfarande.",
     "oneFileSystem": "Stanna på ett filsystem",
@@ -131,7 +137,10 @@
     "engines": {
       "mysql": "MySQL eller MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Inloggning",
     "ownLogin": "Skriv in en inloggning här",
@@ -155,7 +164,10 @@
     "noVolumes": "Inga volymer hittades",
     "dockerFailed": "Kunde inte lista Docker på denna värd",
     "stop": "Stoppa stackar under säkerhetskopieringen",
-    "stopHint": "Valda stackar stoppas först och startas igen efteråt, så att deras filer inte ändras medan de läses."
+    "stopHint": "Valda stackar stoppas först och startas igen efteråt, så att deras filer inte ändras medan de läses.",
+    "serverDir": "SQL Server backup-mapp",
+    "serverDirHint": "SQL Server skriver backupen själv till denna mapp, och Termix hämtar den därifrån. Det måste vara samma mapp på denna värd, så med Docker-montering, montera den i containern på samma sökväg.",
+    "redisHint": "Redis sparas som en enda ögonblicksbild av hela instansen."
   },
   "schedule": {
     "title": "Schema",
@@ -207,9 +219,16 @@
   "alerts": {
     "title": "Varningar",
     "onFailure": "Varna när en säkerhetskopiering misslyckas",
-    "onFailureHint": "Varnar även vid varningar, och en gång när det fungerar igen.",
+    "onFailureHint": "Skickar också en varning när det fungerar igen.",
     "staleDays": "Dagar utan säkerhetskopiering",
-    "staleDaysHint": "Varna om ingen säkerhetskopiering har lyckats under så många dagar. 0 stänger av det."
+    "staleDaysHint": "Varna om ingen säkerhetskopiering har lyckats under så många dagar. 0 stänger av det.",
+    "onWarning": "Varna vid varningar",
+    "onWarningHint": "När en backup sparas men vissa filer inte kunde läsas eller gamla ögonblicksbilder inte togs bort.",
+    "onSuccess": "Varna vid varje lyckad backup",
+    "onSuccessHint": "Skickar också en varning varje gång detta jobb slutförs utan problem.",
+    "channels": "Skicka till",
+    "channelsHint": "Välj kanaler för detta jobs varningar. Om inga väljs skickas de till alla dina kanaler.",
+    "channelOff": "av"
   },
   "repos": {
     "add": "Lägg till arkiv",
@@ -347,6 +366,7 @@
     "progress": "Förlopp",
     "preparing": "Förbereder...",
     "progressLine": "{{percent}}% | {{files}} av {{totalFiles}} filer | {{bytes}} av {{totalBytes}}",
+    "copied": "Kopierade {{bytes}} genom Termix",
     "left": "{{time}} kvar",
     "details": "Detaljer",
     "started": "Startad",
@@ -452,5 +472,22 @@
   },
   "nav": {
     "togglePanel": "Växla panelen för säkerhetskopior"
+  },
+  "retries": {
+    "title": "Försök igen",
+    "count": "Försök igen efter misslyckad backup",
+    "delay": "Minuter mellan försök",
+    "hint": "En misslyckad backup försöks igen så många gånger. Varningsmeddelandet skickas först när sista försöket misslyckas."
+  },
+  "mirrors": {
+    "title": "Speglingar",
+    "hint": "Efter varje backup kopieras dess ögonblicksbilder också till dessa arkiv, och gamla tas bort där med samma behållningsregler. Ett misslyckat kopieringsförsök behåller backupen och markerar körningen med varningar."
+  },
+  "repoSnapshots": {
+    "browse": "Bläddra i alla ögonblicksbilder",
+    "host": "Läs från värd",
+    "hostHint": "restic körs på denna värd för att läsa arkivet. Det kräver restic och måste kunna nå arkivet.",
+    "pickHost": "Välj en värd att läsa arkivet från",
+    "external": "Inte från Termix"
   }
 }

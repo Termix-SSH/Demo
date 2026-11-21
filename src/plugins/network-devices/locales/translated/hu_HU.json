@@ -40,7 +40,10 @@
     "snmp": "SNMP eszköz",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Közösség",
@@ -52,7 +55,9 @@
     "privProtocol": "Adatvédelem",
     "privKey": "Adatvédelmi kulcs",
     "apiKey": "API kulcs",
-    "apiSecret": "API titok"
+    "apiSecret": "API titok",
+    "enablePassword": "Enable jelszó (opcionális)",
+    "hostKey": "Host kulcs lenyomata (opcionális)"
   },
   "form": {
     "addTitle": "Eszköz hozzáadása",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Adja meg a kulcsokat a teszteléshez.",
     "testOk": "Csatlakozva a(z) {{name}} eszközhöz.",
     "save": "Mentés",
-    "add": "Hozzáadás"
+    "add": "Hozzáadás",
+    "site": "Helyszín",
+    "siteHint": "A UniFi helyszín neve a vezérlő címsorából. Üresen hagyva az alapértelmezett helyszínt használja.",
+    "backups": "Konfigurációmentések",
+    "backupSchedule": "Konfiguráció mentése",
+    "backupOff": "Csak akkor, ha megnyomom a Most mentés gombot",
+    "backupDaily": "Minden nap",
+    "backupWeekly": "Minden hét",
+    "backupKeep": "Megőrzendő verziók száma",
+    "backupKeepHint": "Új verzió csak akkor kerül megőrzésre, ha a konfiguráció megváltozott.",
+    "backupAlert": "Értesítés konfigurációváltozás esetén",
+    "backupAlertHint": "Értesítést küld, ha a mentett konfiguráció eltér az előzőtől.",
+    "backupHints": {
+      "routeros": "A /export parancs kimenetét menti el, a jelszavakat a RouterOS alapértelmezett módon elrejtve.",
+      "opnsense": "Az egész config.xml fájlt menti el, ugyanazt a fájlt, mint a Rendszer, Konfiguráció, Mentések menüpont.",
+      "openwrt": "Minden olyan UCI konfigurációt ment, amelyet a bejelentkezett felhasználó olvasni tud.",
+      "unifi": "A helyszín beállításait, hálózatokat, Wi-Fi beállításokat, portprofilokat és tűzfalszabályokat menti el.",
+      "pfsense": "A config.xml fő részeit menti el XML-RPC-n keresztül. Felhasználónév és jelszó szükséges.",
+      "cisco": "A show running-config kimenetét menti el. A bejelentkezéshez szükség lehet az enable jelszóra."
+    }
   },
   "discover": {
     "title": "Eszközök keresése",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Nem található szomszéd.",
     "neighbor": "Szomszéd",
-    "remotePort": "Távoli port"
+    "remotePort": "Távoli port",
+    "configs": "Konfigurációk"
   },
   "operations": {
     "device": "Eszköz",
@@ -176,5 +201,25 @@
     "name": "Hálózati eszközök",
     "description": "Melyik router, switch és hozzáférési pont működik éppen.",
     "summary": "{{up}}/{{total}} működik"
+  },
+  "configs": {
+    "saveNow": "Most mentés",
+    "saving": "Mentés...",
+    "saved": "Konfiguráció mentve",
+    "unchanged": "Nem történt változás az utolsó mentett verzió óta",
+    "none": "Még nincsenek mentett konfigurációk",
+    "delete": "Törlés",
+    "deleteConfirm": "Törli a(z) {{when}}-kor mentett konfigurációt?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Összehasonlítás",
+    "noCompare": "Csak ez a verzió megjelenítése",
+    "compareWith": "Változások a(z) {{when}} óta",
+    "same": "Nincs változás.",
+    "download": "Letöltés",
+    "schedule": {
+      "off": "Csak akkor mentődik, ha megnyomja a Most mentés gombot",
+      "daily": "Minden nap mentődik",
+      "weekly": "Minden hét mentődik"
+    }
   }
 }

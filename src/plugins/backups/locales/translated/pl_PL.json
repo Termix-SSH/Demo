@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic nie jest zainstalowany na tym hoście",
     "tooOld": "restic na tym hoście jest starszy niż wersja 0.17",
-    "hint": "Kopie zapasowe używają restic. Zainstaluj go za pomocą menedżera pakietów lub ze strony wydań restic na GitHubie, jeśli pakiet jest zbyt stary.",
+    "hint": "Kopie zapasowe używają restic. Zainstaluj go za pomocą menedżera pakietów lub pobierz z wydania restic na GitHubie, jeśli pakiet jest zbyt stary. Możesz też pominąć instalację i wybrać inny host do uruchamiania restic w zadaniu.",
     "button": "Zainstaluj restic",
     "working": "Instalowanie...",
     "title": "Zainstalować restic?",
@@ -103,7 +103,9 @@
     "edit": "Edytuj",
     "snapshots": "Snapshots",
     "started": "{{name}} uruchomiony",
-    "runFailed": "Nie udało się uruchomić kopii zapasowej"
+    "runFailed": "Nie udało się uruchomić kopii zapasowej",
+    "runsOn": "restic na {{host}}",
+    "retrying": "Nieudane, ponowna próba {{when}}"
   },
   "editor": {
     "newTitle": "Nowe zadanie kopii zapasowej",
@@ -116,6 +118,10 @@
     "pickRepository": "Wybierz repozytorium",
     "noRepos": "Nie masz repozytorium, którego ten host mógłby użyć. Dodaj je najpierw na karcie Kopie zapasowe.",
     "repoLocked": "Tylko właściciel tego repozytorium może je modyfikować.",
+    "runner": "Uruchom restic na",
+    "runnerThisHost": "Ten host",
+    "runnerSelf": "restic działa na tym hoście i wysyła kopię zapasową do repozytorium.",
+    "runnerHint": "restic działa na wybranym hoście. Termix kopiuje pliki z tego hosta przez SSH, więc ten host potrzebuje tylko tar i nie musi mieć dostępu do repozytorium.",
     "enabled": "Uruchamiaj według harmonogramu",
     "enabledHint": "Wyłącz, aby wstrzymać harmonogram. Opcja „Uruchom teraz” nadal działa.",
     "oneFileSystem": "Pozostań w jednym systemie plików",
@@ -143,7 +149,10 @@
     "engines": {
       "mysql": "MySQL lub MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Logowanie",
     "ownLogin": "Wpisz dane logowania tutaj",
@@ -167,7 +176,10 @@
     "noVolumes": "Nie znaleziono wolumenów",
     "dockerFailed": "Nie udało się wyświetlić listy Docker na tym hoście",
     "stop": "Zatrzymaj stosy podczas tworzenia kopii zapasowej",
-    "stopHint": "Wybrane stosy są najpierw zatrzymywane, a następnie uruchamiane ponownie, aby ich pliki nie zmieniały się podczas odczytu."
+    "stopHint": "Wybrane stosy są najpierw zatrzymywane, a następnie uruchamiane ponownie, aby ich pliki nie zmieniały się podczas odczytu.",
+    "serverDir": "Folder kopii zapasowych SQL Server",
+    "serverDirHint": "SQL Server zapisuje kopię zapasową bezpośrednio w tym folderze, a Termix pobiera ją stamtąd. Musi to być ten sam folder na tym hoście, więc przy użyciu Docker mount zamontuj go w kontenerze pod tą samą ścieżką.",
+    "redisHint": "Redis jest zapisywany jako jeden snapshot całej instancji."
   },
   "schedule": {
     "title": "Harmonogram",
@@ -219,9 +231,16 @@
   "alerts": {
     "title": "Alerty",
     "onFailure": "Powiadomienie o nieudanej kopii zapasowej",
-    "onFailureHint": "Powiadamia również o ostrzeżeniach oraz raz, gdy działanie zostanie przywrócone.",
+    "onFailureHint": "Powiadamia również raz, gdy zadanie znów działa poprawnie.",
     "staleDays": "Dni bez kopii zapasowej",
-    "staleDaysHint": "Powiadomienie, gdy kopia zapasowa nie powiodła się przez podaną liczbę dni. Wartość 0 wyłącza tę funkcję."
+    "staleDaysHint": "Powiadomienie, gdy kopia zapasowa nie powiodła się przez podaną liczbę dni. Wartość 0 wyłącza tę funkcję.",
+    "onWarning": "Powiadomienia o ostrzeżeniach",
+    "onWarningHint": "Gdy kopia zapasowa została zapisana, ale niektóre pliki nie mogły zostać odczytane lub stare snapshoty nie zostały usunięte.",
+    "onSuccess": "Powiadomienia o każdej udanej kopii zapasowej",
+    "onSuccessHint": "Wysyła również powiadomienie za każdym razem, gdy to zadanie zakończy się bez problemów.",
+    "channels": "Wyślij do",
+    "channelsHint": "Wybierz kanały dla powiadomień tego zadania. Jeśli żaden nie jest wybrany, powiadomienia trafią do wszystkich Twoich kanałów.",
+    "channelOff": "wyłączone"
   },
   "repos": {
     "add": "Dodaj repozytorium",
@@ -367,6 +386,7 @@
     "progress": "Postęp",
     "preparing": "Przygotowywanie...",
     "progressLine": "{{percent}}% | {{files}} z {{totalFiles}} plików | {{bytes}} z {{totalBytes}}",
+    "copied": "Przekopiowano {{bytes}} przez Termix",
     "left": "Pozostało {{time}}",
     "details": "Szczegóły",
     "started": "Rozpoczęto",
@@ -472,5 +492,22 @@
   },
   "nav": {
     "togglePanel": "Przełącz panel kopii zapasowych"
+  },
+  "retries": {
+    "title": "Ponowne próby",
+    "count": "Ponowne próby po nieudanej kopii zapasowej",
+    "delay": "Minuty między ponownymi próbami",
+    "hint": "Nieudana kopia zapasowa jest ponawiana tyle razy. Powiadomienie o niepowodzeniu jest wysyłane dopiero po nieudanej ostatniej próbie."
+  },
+  "mirrors": {
+    "title": "Lustra",
+    "hint": "Po każdej kopii zapasowej jej snapshoty są kopiowane również do tych repozytoriów, a stare są usuwane zgodnie z tymi samymi regułami zachowania. Nieudana kopia zachowuje kopię zapasową i oznacza wykonanie ostrzeżeniami."
+  },
+  "repoSnapshots": {
+    "browse": "Przeglądaj wszystkie snapshoty",
+    "host": "Czytaj z hosta",
+    "hostHint": "restic działa na tym hoście, aby odczytać repozytorium. Wymaga restic i musi mieć dostęp do repozytorium.",
+    "pickHost": "Wybierz host do odczytu repozytorium",
+    "external": "Nie z Termix"
   }
 }

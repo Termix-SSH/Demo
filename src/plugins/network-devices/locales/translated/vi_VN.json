@@ -40,7 +40,10 @@
     "snmp": "Thiết bị SNMP",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Cộng đồng",
@@ -52,7 +55,9 @@
     "privProtocol": "Quyền riêng tư",
     "privKey": "Khóa quyền riêng tư",
     "apiKey": "Khóa API",
-    "apiSecret": "Bí mật API"
+    "apiSecret": "Bí mật API",
+    "enablePassword": "Mật khẩu enable (tùy chọn)",
+    "hostKey": "Dấu vân tay khóa máy chủ (tùy chọn)"
   },
   "form": {
     "addTitle": "Thêm thiết bị",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Nhập các khóa để kiểm tra.",
     "testOk": "Đã kết nối với {{name}}.",
     "save": "Lưu",
-    "add": "Thêm"
+    "add": "Thêm",
+    "site": "Site",
+    "siteHint": "Tên site UniFi từ thanh địa chỉ của bộ điều khiển. Để trống sẽ dùng mặc định.",
+    "backups": "Sao lưu cấu hình",
+    "backupSchedule": "Lưu cấu hình",
+    "backupOff": "Chỉ khi tôi nhấn Lưu ngay",
+    "backupDaily": "Mỗi ngày",
+    "backupWeekly": "Mỗi tuần",
+    "backupKeep": "Số phiên bản cần giữ lại",
+    "backupKeepHint": "Phiên bản mới chỉ được giữ lại khi cấu hình thay đổi.",
+    "backupAlert": "Cảnh báo khi cấu hình thay đổi",
+    "backupAlertHint": "Gửi cảnh báo khi cấu hình đã lưu khác với phiên bản trước đó.",
+    "backupHints": {
+      "routeros": "Lưu /export, với mật khẩu bị ẩn theo mặc định của RouterOS.",
+      "opnsense": "Lưu toàn bộ config.xml, cùng một tệp như trong System, Configuration, Backups.",
+      "openwrt": "Lưu mọi cấu hình UCI mà tài khoản đăng nhập có thể đọc được.",
+      "unifi": "Lưu cài đặt của site, mạng, Wi-Fi, hồ sơ cổng và quy tắc tường lửa.",
+      "pfsense": "Lưu các phần chính của config.xml qua XML-RPC. Cần tên người dùng và mật khẩu.",
+      "cisco": "Lưu show running-config. Tài khoản đăng nhập có thể cần mật khẩu enable."
+    }
   },
   "discover": {
     "title": "Tìm thiết bị",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Không tìm thấy láng giềng nào.",
     "neighbor": "Láng giềng",
-    "remotePort": "Cổng của họ"
+    "remotePort": "Cổng của họ",
+    "configs": "Cấu hình"
   },
   "operations": {
     "device": "Thiết bị",
@@ -176,5 +201,25 @@
     "name": "Thiết bị mạng",
     "description": "Trạng thái hoạt động của bộ định tuyến, công tắc mạng và điểm truy cập của bạn.",
     "summary": "{{up}} trong số {{total}} đang hoạt động"
+  },
+  "configs": {
+    "saveNow": "Lưu ngay",
+    "saving": "Đang lưu...",
+    "saved": "Đã lưu cấu hình",
+    "unchanged": "Không có thay đổi kể từ phiên bản lưu cuối cùng",
+    "none": "Chưa có cấu hình nào được lưu",
+    "delete": "Xóa",
+    "deleteConfirm": "Xóa cấu hình đã lưu vào {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "So sánh",
+    "noCompare": "Chỉ hiển thị phiên bản này",
+    "compareWith": "Thay đổi kể từ {{when}}",
+    "same": "Không có thay đổi.",
+    "download": "Tải xuống",
+    "schedule": {
+      "off": "Chỉ lưu khi bạn nhấn Lưu ngay",
+      "daily": "Được lưu mỗi ngày",
+      "weekly": "Được lưu mỗi tuần"
+    }
   }
 }

@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic nėra įdiegta šiame serveryje",
     "tooOld": "restic šiame serveryje yra senesnė nei 0.17",
-    "hint": "Atsarginės kopijos naudoja restic. Įdiekite ją naudodami paketų valdyklą arba iš restic išleidimo puslapio GitHub, jei paketas per senas.",
+    "hint": "Atsarginės kopijos naudoja restic. Įdiekite jį naudodami paketų tvarkyklę arba iš restic išleidimo GitHub, jei paketas per senas. Taip pat galite praleisti ir pasirinkti kitą serverį, kad restic būtų vykdomas darbe.",
     "button": "Įdiegti restic",
     "working": "Diegiama...",
     "title": "Įdiegti restic?",
@@ -103,7 +103,9 @@
     "edit": "Redaguoti",
     "snapshots": "Momentinės nuotraukos",
     "started": "{{name}} pradėta",
-    "runFailed": "Nepavyko pradėti atsarginės kopijos kūrimo"
+    "runFailed": "Nepavyko pradėti atsarginės kopijos kūrimo",
+    "runsOn": "restic serveryje {{host}}",
+    "retrying": "Nepavyko, bandysime dar kartą {{when}}"
   },
   "editor": {
     "newTitle": "Naujas atsarginės kopijos kūrimo darbas",
@@ -116,6 +118,10 @@
     "pickRepository": "Pasirinkite saugyklą",
     "noRepos": "Šiam serveriui neturite tinkamos saugyklos. Pirmiausia pridėkite ją skirtuke „Atsarginės kopijos“.",
     "repoLocked": "Tik šios saugyklos savininkas gali ją keisti.",
+    "runner": "Vykdyti restic serveryje",
+    "runnerThisHost": "Šis serveris",
+    "runnerSelf": "restic vykdomas šiame serveryje ir siunčia atsarginę kopiją į saugyklą.",
+    "runnerHint": "restic vykdomas pasirinktame serveryje. Termix per SSH nukopijuoja šio serverio failus į jį, todėl šiam serveriui reikia tik tar ir nereikia siekti saugyklos.",
     "enabled": "Vykdyti pagal grafiką",
     "enabledHint": "Išjunkite, jei norite sustabdyti grafiką. Vykdyti dabar vis tiek veiks.",
     "oneFileSystem": "Likti vienoje failų sistemoje",
@@ -143,7 +149,10 @@
     "engines": {
       "mysql": "MySQL arba MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Prisijungimas",
     "ownLogin": "Įveskite prisijungimą čia",
@@ -167,7 +176,10 @@
     "noVolumes": "Nerasta jokių tomų",
     "dockerFailed": "Nepavyko išvardinti Docker šioje serverio",
     "stop": "Sustabdyti stekus atsarginės kopijos metu",
-    "stopHint": "Pasirinkti stekai pirmiausia sustabdomi, o vėliau paleidžiami iš naujo, kad jų failai nesikeistų skaitant."
+    "stopHint": "Pasirinkti stekai pirmiausia sustabdomi, o vėliau paleidžiami iš naujo, kad jų failai nesikeistų skaitant.",
+    "serverDir": "SQL Server atsarginių kopijų aplankas",
+    "serverDirHint": "SQL Server pats į šį aplanką įrašo atsarginę kopiją, o Termix ją iš ten paima. Tai turi būti tas pats aplankas šiame serveryje, todėl su Docker prijunkite jį į konteinerį tame pačiame kelyje.",
+    "redisHint": "Redis išsaugomas kaip viena visos instancijos momentinė būsena."
   },
   "schedule": {
     "title": "Laikotarpis",
@@ -219,9 +231,16 @@
   "alerts": {
     "title": "Įspėjimai",
     "onFailure": "Įspėti, kai atsarginė kopija nepavyksta",
-    "onFailureHint": "Taip pat įspėja apie įspėjimus ir vieną kartą, kai vėl veikia.",
+    "onFailureHint": "Taip pat praneša vieną kartą, kai vėl veikia.",
     "staleDays": "Dienų be atsarginės kopijos",
-    "staleDaysHint": "Įspėti, jei atsarginė kopija nepavyko nurodytą dienų skaičių. 0 išjungia."
+    "staleDaysHint": "Įspėti, jei atsarginė kopija nepavyko nurodytą dienų skaičių. 0 išjungia.",
+    "onWarning": "Pranešti apie įspėjimus",
+    "onWarningHint": "Kai atsarginė kopija išsaugota, bet kai kurių failų nepavyko perskaityti arba senos momentinės būsenos nebuvo pašalintos.",
+    "onSuccess": "Pranešti apie kiekvieną sėkmingą atsarginę kopiją",
+    "onSuccessHint": "Taip pat siunčia pranešimą kiekvieną kartą, kai šis darbas baigiasi be problemų.",
+    "channels": "Siųsti į",
+    "channelsHint": "Pasirinkite kanalus šio darbo pranešimams. Jei nieko nepasirinkta, jie siunčiami į visus jūsų kanalus.",
+    "channelOff": "išjungta"
   },
   "repos": {
     "add": "Pridėti saugyklą",
@@ -367,6 +386,7 @@
     "progress": "Progresas",
     "preparing": "Ruošiamasi...",
     "progressLine": "{{percent}}% | {{files}} iš {{totalFiles}} failų | {{bytes}} iš {{totalBytes}}",
+    "copied": "Per Termix nukopijuota {{bytes}}",
     "left": "Liko {{time}}",
     "details": "Išsami informacija",
     "started": "Pradėta",
@@ -472,5 +492,22 @@
   },
   "nav": {
     "togglePanel": "Perjungti atsarginių kopijų skydelį"
+  },
+  "retries": {
+    "title": "Pakartotiniai bandymai",
+    "count": "Pakartotiniai bandymai po nepavykusios atsarginės kopijos",
+    "delay": "Minutės tarp pakartotinių bandymų",
+    "hint": "Nepavykusi atsarginė kopija bandoma dar kartą tiek daug kartų. Nepavykimo pranešimas siunčiamas tik tada, kai paskutinis bandymas nepavyksta."
+  },
+  "mirrors": {
+    "title": "Veidrodžiai",
+    "hint": "Po kiekvienos atsarginės kopijos jos momentinės būsenos taip pat kopijuojamos į šias saugyklas, o senos ten pašalinamos pagal tas pačias išsaugojimo taisykles. Nepavykusi kopija išsaugo atsarginę kopiją ir pažymi vykdymą įspėjimais."
+  },
+  "repoSnapshots": {
+    "browse": "Peržiūrėti visas momentines būsenas",
+    "host": "Skaityti iš serverio",
+    "hostHint": "restic vykdomas šiame serveryje, kad perskaitytų saugyklą. Jam reikia restic ir jis turi siekti saugyklą.",
+    "pickHost": "Pasirinkite serverį, iš kurio skaityti saugyklą",
+    "external": "Ne iš Termix"
   }
 }

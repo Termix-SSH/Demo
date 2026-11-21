@@ -40,7 +40,10 @@
     "snmp": "SNMP zariadenie",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Komunita",
@@ -52,7 +55,9 @@
     "privProtocol": "Súkromie",
     "privKey": "Kľúč súkromia",
     "apiKey": "API kľúč",
-    "apiSecret": "API tajomstvo"
+    "apiSecret": "API tajomstvo",
+    "enablePassword": "Enable heslo (voliteľné)",
+    "hostKey": "Odtlačok kľúča hostiteľa (voliteľné)"
   },
   "form": {
     "addTitle": "Pridať zariadenie",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Zadajte kľúče na testovanie.",
     "testOk": "Pripojené k {{name}}.",
     "save": "Uložiť",
-    "add": "Pridať"
+    "add": "Pridať",
+    "site": "Miesto",
+    "siteHint": "Názov miesta UniFi z adresného riadka ovládača. Ak je prázdne, použije sa predvolené.",
+    "backups": "Zálohy konfigurácie",
+    "backupSchedule": "Uložiť konfiguráciu",
+    "backupOff": "Len keď stlačím Uložiť teraz",
+    "backupDaily": "Každý deň",
+    "backupWeekly": "Každý týždeň",
+    "backupKeep": "Počet uchovávaných verzií",
+    "backupKeepHint": "Nová verzia sa uloží len v prípade zmeny konfigurácie.",
+    "backupAlert": "Upozornenie pri zmene konfigurácie",
+    "backupAlertHint": "Pošle upozornenie, keď sa uložená konfigurácia líši od predchádzajúcej.",
+    "backupHints": {
+      "routeros": "Uloží /export, pričom sú heslá skryté, ako je predvolené v RouterOS.",
+      "opnsense": "Uloží celý súbor config.xml, rovnaký ako v Systém, Konfigurácia, Zálohy.",
+      "openwrt": "Uloží všetky UCI konfigurácie, ktoré môže prihlásený používateľ čítať.",
+      "unifi": "Uloží nastavenia miesta, siete, Wi-Fi, portové profily a pravidlá firewallu.",
+      "pfsense": "Uloží hlavné časti config.xml prostredníctvom XML-RPC. Vyžaduje používateľské meno a heslo.",
+      "cisco": "Uloží show running-config. Prihlásenie môže vyžadovať enable heslo."
+    }
   },
   "discover": {
     "title": "Nájsť zariadenia",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Nenašli sa žiadni susedia.",
     "neighbor": "Sused",
-    "remotePort": "Ich port"
+    "remotePort": "Ich port",
+    "configs": "Konfigurácie"
   },
   "operations": {
     "device": "Zariadenie",
@@ -176,5 +201,25 @@
     "name": "Sieťové zariadenia",
     "description": "Ktoré z vašich routerov, prepínačov a prístupových bodov sú online.",
     "summary": "{{up}} z {{total}} online"
+  },
+  "configs": {
+    "saveNow": "Uložiť teraz",
+    "saving": "Ukladá sa...",
+    "saved": "Konfigurácia uložená",
+    "unchanged": "Od poslednej uloženej verzie sa nič nezmenilo",
+    "none": "Zatiaľ nie sú žiadne uložené konfigurácie",
+    "delete": "Odstrániť",
+    "deleteConfirm": "Odstrániť konfiguráciu uloženú {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Porovnať",
+    "noCompare": "Zobraziť len túto verziu",
+    "compareWith": "Zmeny od {{when}}",
+    "same": "Žiadne zmeny.",
+    "download": "Stiahnuť",
+    "schedule": {
+      "off": "Uložené len po stlačení Uložiť teraz",
+      "daily": "Uložené každý deň",
+      "weekly": "Uložené každý týždeň"
+    }
   }
 }

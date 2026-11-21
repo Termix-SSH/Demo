@@ -40,7 +40,10 @@
     "snmp": "SNMP 设备",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "社区字符串",
@@ -52,7 +55,9 @@
     "privProtocol": "隐私协议",
     "privKey": "隐私密钥",
     "apiKey": "API 密钥",
-    "apiSecret": "API 密钥"
+    "apiSecret": "API 密钥",
+    "enablePassword": "启用密码（可选）",
+    "hostKey": "主机密钥指纹（可选）"
   },
   "form": {
     "addTitle": "添加设备",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "输入密钥以进行测试。",
     "testOk": "已连接到 {{name}}。",
     "save": "保存",
-    "add": "添加"
+    "add": "添加",
+    "site": "站点",
+    "siteHint": "控制器地址栏中的 UniFi 站点名称。留空则使用默认值。",
+    "backups": "配置备份",
+    "backupSchedule": "保存配置",
+    "backupOff": "仅在我点击“立即保存”时",
+    "backupDaily": "每天",
+    "backupWeekly": "每周",
+    "backupKeep": "保留版本数",
+    "backupKeepHint": "仅当配置发生更改时，才会保留新版本。",
+    "backupAlert": "配置更改时发送提醒",
+    "backupAlertHint": "当保存的配置与上一个版本不同时，发送提醒。",
+    "backupHints": {
+      "routeros": "保存 /export 输出，密码默认按 RouterOS 的方式隐藏。",
+      "opnsense": "保存完整的 config.xml 文件，与“系统”、“配置”、“备份”中的文件相同。",
+      "openwrt": "保存登录用户可读的所有 UCI 配置。",
+      "unifi": "保存站点的设置、网络、Wi-Fi、端口配置文件和防火墙规则。",
+      "pfsense": "通过 XML-RPC 保存 config.xml 的主要部分。需要用户名和密码。",
+      "cisco": "保存 show running-config 输出。登录可能需要启用密码。"
+    }
   },
   "discover": {
     "title": "发现设备",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "未找到邻居。",
     "neighbor": "邻居",
-    "remotePort": "对端端口"
+    "remotePort": "对端端口",
+    "configs": "配置"
   },
   "operations": {
     "device": "设备",
@@ -176,5 +201,25 @@
     "name": "网络设备",
     "description": "查看您的路由器、交换机和接入点是否在线。",
     "summary": "{{up}} / {{total}} 在线"
+  },
+  "configs": {
+    "saveNow": "立即保存",
+    "saving": "正在保存...",
+    "saved": "配置已保存",
+    "unchanged": "自上次保存以来无更改",
+    "none": "暂无已保存的配置",
+    "delete": "删除",
+    "deleteConfirm": "删除于 {{when}} 保存的配置？",
+    "title": "{{name}} | {{when}}",
+    "compare": "比较",
+    "noCompare": "仅显示此版本",
+    "compareWith": "自 {{when}} 以来的更改",
+    "same": "无更改。",
+    "download": "下载",
+    "schedule": {
+      "off": "仅在你点击“立即保存”时保存",
+      "daily": "每天保存",
+      "weekly": "每周保存"
+    }
   }
 }

@@ -40,7 +40,10 @@
     "snmp": "Perangkat SNMP",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Komunitas",
@@ -52,7 +55,9 @@
     "privProtocol": "Privasi",
     "privKey": "Kunci privasi",
     "apiKey": "Kunci API",
-    "apiSecret": "Rahasia API"
+    "apiSecret": "Rahasia API",
+    "enablePassword": "Kata sandi enable (opsional)",
+    "hostKey": "Sidik jari kunci host (opsional)"
   },
   "form": {
     "addTitle": "Tambah perangkat",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Masukkan kunci untuk diuji.",
     "testOk": "Terhubung ke {{name}}.",
     "save": "Simpan",
-    "add": "Tambah"
+    "add": "Tambah",
+    "site": "Situs",
+    "siteHint": "Nama situs UniFi dari bilah alamat pengontrol. Kosongkan untuk menggunakan default.",
+    "backups": "Cadangan konfigurasi",
+    "backupSchedule": "Simpan konfigurasi",
+    "backupOff": "Hanya saat saya menekan Simpan sekarang",
+    "backupDaily": "Setiap hari",
+    "backupWeekly": "Setiap minggu",
+    "backupKeep": "Jumlah versi yang disimpan",
+    "backupKeepHint": "Versi baru hanya disimpan jika konfigurasi berubah.",
+    "backupAlert": "Peringatan saat konfigurasi berubah",
+    "backupAlertHint": "Mengirimkan peringatan ketika konfigurasi yang disimpan berbeda dari sebelumnya.",
+    "backupHints": {
+      "routeros": "Menyimpan /export, dengan kata sandi disembunyikan seperti default RouterOS.",
+      "opnsense": "Menyimpan seluruh config.xml, file yang sama seperti di Sistem, Konfigurasi, Cadangan.",
+      "openwrt": "Menyimpan setiap konfigurasi UCI yang dapat dibaca oleh login.",
+      "unifi": "Menyimpan pengaturan situs, jaringan, Wi-Fi, profil port, dan aturan firewall.",
+      "pfsense": "Menyimpan bagian utama config.xml melalui XML-RPC. Memerlukan nama pengguna dan kata sandi.",
+      "cisco": "Menyimpan show running-config. Login mungkin memerlukan kata sandi enable."
+    }
   },
   "discover": {
     "title": "Cari perangkat",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Tidak ada tetangga ditemukan.",
     "neighbor": "Tetangga",
-    "remotePort": "Port mereka"
+    "remotePort": "Port mereka",
+    "configs": "Konfigurasi"
   },
   "operations": {
     "device": "Perangkat",
@@ -176,5 +201,25 @@
     "name": "Perangkat jaringan",
     "description": "Router, switch, dan access point mana yang sedang aktif.",
     "summary": "{{up}} dari {{total}} aktif"
+  },
+  "configs": {
+    "saveNow": "Simpan sekarang",
+    "saving": "Menyimpan...",
+    "saved": "Konfigurasi disimpan",
+    "unchanged": "Tidak ada perubahan sejak versi terakhir disimpan",
+    "none": "Belum ada konfigurasi yang disimpan",
+    "delete": "Hapus",
+    "deleteConfirm": "Hapus konfigurasi yang disimpan {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Bandingkan",
+    "noCompare": "Tampilkan hanya versi ini",
+    "compareWith": "Perubahan sejak {{when}}",
+    "same": "Tidak ada perubahan.",
+    "download": "Unduh",
+    "schedule": {
+      "off": "Disimpan hanya saat Anda menekan Simpan sekarang",
+      "daily": "Disimpan setiap hari",
+      "weekly": "Disimpan setiap minggu"
+    }
   }
 }

@@ -40,7 +40,10 @@
     "snmp": "SNMP-enhet",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Community",
@@ -52,7 +55,9 @@
     "privProtocol": "Integritet",
     "privKey": "Integritetsnyckel",
     "apiKey": "API-nyckel",
-    "apiSecret": "API-hemlighet"
+    "apiSecret": "API-hemlighet",
+    "enablePassword": "Enable-lösenord (valfritt)",
+    "hostKey": "Fingeravtryck för värdnyckel (valfritt)"
   },
   "form": {
     "addTitle": "Lägg till enhet",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Ange nycklarna för att testa.",
     "testOk": "Ansluten till {{name}}.",
     "save": "Spara",
-    "add": "Lägg till"
+    "add": "Lägg till",
+    "site": "Plats",
+    "siteHint": "Namnet på UniFi-platsen från kontrollarens adressfält. Tomt använder standard.",
+    "backups": "Konfigurationsbackuper",
+    "backupSchedule": "Spara konfigurationen",
+    "backupOff": "Endast när jag trycker på Spara nu",
+    "backupDaily": "Varje dag",
+    "backupWeekly": "Varje vecka",
+    "backupKeep": "Versioner att behålla",
+    "backupKeepHint": "En ny version sparas bara om konfigurationen har ändrats.",
+    "backupAlert": "Alertera när konfigurationen ändras",
+    "backupAlertHint": "Skickar en avisering när en sparad konfiguration skiljer sig från den föregående.",
+    "backupHints": {
+      "routeros": "Sparar /export, med lösenord dolda som RouterOS gör som standard.",
+      "opnsense": "Sparar hela config.xml, samma fil som System, Configuration, Backups.",
+      "openwrt": "Sparar alla UCI-konfigurationer som inloggningen kan läsa.",
+      "unifi": "Sparar platsens inställningar, nätverk, Wi-Fi, portprofiler och brandväggsregler.",
+      "pfsense": "Sparar huvuddelarna av config.xml via XML-RPC. Kräver ett användarnamn och ett lösenord.",
+      "cisco": "Sparar show running-config. Inloggningen kan kräva enable-lösenordet."
+    }
   },
   "discover": {
     "title": "Hitta enheter",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Inga grannar hittades.",
     "neighbor": "Granne",
-    "remotePort": "Deras port"
+    "remotePort": "Deras port",
+    "configs": "Konfigurationer"
   },
   "operations": {
     "device": "Enhet",
@@ -176,5 +201,25 @@
     "name": "Nätverksenheter",
     "description": "Vilka av dina routrar, switchar och access points som är uppe.",
     "summary": "{{up}} av {{total}} uppe"
+  },
+  "configs": {
+    "saveNow": "Spara nu",
+    "saving": "Sparar...",
+    "saved": "Konfigurationen sparad",
+    "unchanged": "Ingen ändring sedan den senast sparade versionen",
+    "none": "Inga sparade konfigurationer ännu",
+    "delete": "Ta bort",
+    "deleteConfirm": "Ta bort konfigurationen som sparades {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Jämför",
+    "noCompare": "Visa endast denna version",
+    "compareWith": "Ändringar sedan {{when}}",
+    "same": "Inga ändringar.",
+    "download": "Ladda ner",
+    "schedule": {
+      "off": "Sparas endast när du trycker på Spara nu",
+      "daily": "Sparas varje dag",
+      "weekly": "Sparas varje vecka"
+    }
   }
 }

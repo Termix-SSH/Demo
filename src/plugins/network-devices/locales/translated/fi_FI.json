@@ -40,7 +40,10 @@
     "snmp": "SNMP-laite",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Yhteisö",
@@ -52,7 +55,9 @@
     "privProtocol": "Yksityisyys",
     "privKey": "Yksityisyysavain",
     "apiKey": "API-avain",
-    "apiSecret": "API-salaisuus"
+    "apiSecret": "API-salaisuus",
+    "enablePassword": "Enable-salasana (valinnainen)",
+    "hostKey": "Isäntäavaimen sormenjälki (valinnainen)"
   },
   "form": {
     "addTitle": "Lisää laite",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Syötä avaimet testaaksesi.",
     "testOk": "Yhdistetty {{name}}:ään.",
     "save": "Tallenna",
-    "add": "Lisää"
+    "add": "Lisää",
+    "site": "Sivusto",
+    "siteHint": "UniFi-sivuston nimi ohjaimen osoiteriviltä. Tyhjänä käytetään oletusta.",
+    "backups": "Konfiguraatioiden varmuuskopiot",
+    "backupSchedule": "Tallenna konfiguraatio",
+    "backupOff": "Vain painamalla Tallenna nyt",
+    "backupDaily": "Joka päivä",
+    "backupWeekly": "Joka viikko",
+    "backupKeep": "Säilytettävät versiot",
+    "backupKeepHint": "Uusi versio säilytetään vain, jos konfiguraatio on muuttunut.",
+    "backupAlert": "Ilmoita, kun konfiguraatio muuttuu",
+    "backupAlertHint": "Lähettää ilmoituksen, kun tallennettu konfiguraatio poikkeaa edellisestä.",
+    "backupHints": {
+      "routeros": "Tallentaa /export-komennot, salasanat piilotettuina RouterOSin oletusten mukaisesti.",
+      "opnsense": "Tallentaa koko config.xml-tiedoston, saman kuin Järjestelmä, Konfiguraatio, Varmuuskopiot.",
+      "openwrt": "Tallentaa kaikki UCI-konfiguraatiot, jotka kirjautunut käyttäjä voi lukea.",
+      "unifi": "Tallentaa sivuston asetukset, verkot, Wi-Fi, porttiprofiilit ja palomuurisäännöt.",
+      "pfsense": "Tallentaa config.xml:n tärkeimmät osat XML-RPC:n kautta. Vaatii käyttäjänimen ja salasanan.",
+      "cisco": "Tallentaa show running-config -komennon tulosteen. Kirjautuminen saattaa vaatia enable-salasanan."
+    }
   },
   "discover": {
     "title": "Etsi laitteita",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Naapureita ei löytynyt.",
     "neighbor": "Naapuri",
-    "remotePort": "Heidän porttinsa"
+    "remotePort": "Heidän porttinsa",
+    "configs": "Konfiguraatiot"
   },
   "operations": {
     "device": "Laite",
@@ -176,5 +201,25 @@
     "name": "Verkkolaitteet",
     "description": "Mitkä reitittimistä, kytkimistä ja langattomista päätepisteistä ovat päällä.",
     "summary": "{{up}}/{{total}} päällä"
+  },
+  "configs": {
+    "saveNow": "Tallenna nyt",
+    "saving": "Tallennetaan...",
+    "saved": "Konfiguraatio tallennettu",
+    "unchanged": "Ei muutoksia edelliseen tallennettuun versioon",
+    "none": "Ei vielä tallennettuja konfiguraatioita",
+    "delete": "Poista",
+    "deleteConfirm": "Haluatko poistaa {{when}} tallennetun konfiguraation?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Vertaa",
+    "noCompare": "Näytä vain tämä versio",
+    "compareWith": "Muutokset {{when}} jälkeen",
+    "same": "Ei muutoksia.",
+    "download": "Lataa",
+    "schedule": {
+      "off": "Tallennetaan vain painamalla Tallenna nyt",
+      "daily": "Tallennetaan joka päivä",
+      "weekly": "Tallennetaan joka viikko"
+    }
   }
 }

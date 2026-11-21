@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic não está instalado neste host",
     "tooOld": "restic neste host é anterior à versão 0.17",
-    "hint": "Backups usam restic. Instale-o pelo gerenciador de pacotes ou pelo release do restic no GitHub quando o pacote for muito antigo.",
+    "hint": "Os backups usam restic. Instale-o pelo gerenciador de pacotes ou diretamente do release do restic no GitHub se o pacote estiver desatualizado. Você também pode ignorar essa etapa e escolher outro host para executar o restic em um trabalho.",
     "button": "Instalar restic",
     "working": "Instalando...",
     "title": "Instalar restic?",
@@ -97,7 +97,9 @@
     "edit": "Editar",
     "snapshots": "Instantâneos",
     "started": "{{name}} iniciado",
-    "runFailed": "Não foi possível iniciar o backup"
+    "runFailed": "Não foi possível iniciar o backup",
+    "runsOn": "restic em {{host}}",
+    "retrying": "Falhou, tentando novamente {{when}}"
   },
   "editor": {
     "newTitle": "Novo trabalho de backup",
@@ -110,6 +112,10 @@
     "pickRepository": "Escolha um repositório",
     "noRepos": "Você não tem nenhum repositório que este host possa usar. Adicione um na guia Backups primeiro.",
     "repoLocked": "Apenas o proprietário deste repositório pode alterá-lo.",
+    "runner": "Executar restic em",
+    "runnerThisHost": "Este host",
+    "runnerSelf": "O restic é executado neste host e envia o backup para o repositório.",
+    "runnerHint": "O restic é executado no host selecionado. O Termix copia os arquivos deste host para ele via SSH, portanto, este host precisa apenas do tar e não precisa acessar o repositório.",
     "enabled": "Executar agendado",
     "enabledHint": "Desative para pausar o agendamento. A execução imediata ainda funciona.",
     "oneFileSystem": "Manter-se em um único sistema de arquivos",
@@ -137,7 +143,10 @@
     "engines": {
       "mysql": "MySQL ou MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Login",
     "ownLogin": "Digite um login aqui",
@@ -161,7 +170,10 @@
     "noVolumes": "Nenhum volume encontrado",
     "dockerFailed": "Não foi possível listar o Docker neste host",
     "stop": "Parar pilhas durante o backup",
-    "stopHint": "As pilhas selecionadas são interrompidas primeiro e reiniciadas depois, para que seus arquivos não mudem enquanto são lidos."
+    "stopHint": "As pilhas selecionadas são interrompidas primeiro e reiniciadas depois, para que seus arquivos não mudem enquanto são lidos.",
+    "serverDir": "Pasta de backup do SQL Server",
+    "serverDirHint": "O SQL Server grava o backup diretamente nesta pasta, e o Termix o recupera de lá. Deve ser a mesma pasta neste host, portanto, com Docker, monte-a no container no mesmo caminho.",
+    "redisHint": "O Redis é salvo como um único snapshot de toda a instância."
   },
   "schedule": {
     "title": "Agendamento",
@@ -213,9 +225,16 @@
   "alerts": {
     "title": "Alertas",
     "onFailure": "Alertar quando um backup falhar",
-    "onFailureHint": "Também alerta sobre avisos e uma vez quando voltar a funcionar.",
+    "onFailureHint": "Também envia um alerta quando o serviço volta a funcionar.",
     "staleDays": "Dias sem backup",
-    "staleDaysHint": "Alertar quando nenhum backup funcionar por este número de dias. 0 desativa."
+    "staleDaysHint": "Alertar quando nenhum backup funcionar por este número de dias. 0 desativa.",
+    "onWarning": "Alertar sobre avisos",
+    "onWarningHint": "Quando um backup é salvo, mas alguns arquivos não puderam ser lidos ou snapshots antigos não foram removidos.",
+    "onSuccess": "Alertar sobre cada backup bem-sucedido",
+    "onSuccessHint": "Envia um alerta cada vez que esta tarefa é concluída sem problemas.",
+    "channels": "Enviar para",
+    "channelsHint": "Escolha os canais para os alertas desta tarefa. Se nenhum for selecionado, eles serão enviados para todos os seus canais.",
+    "channelOff": "desativado"
   },
   "repos": {
     "add": "Adicionar repositório",
@@ -357,6 +376,7 @@
     "progress": "Progresso",
     "preparing": "Preparando...",
     "progressLine": "{{percent}}% | {{files}} de {{totalFiles}} arquivos | {{bytes}} de {{totalBytes}}",
+    "copied": "Copiados {{bytes}} via Termix",
     "left": "{{time}} restantes",
     "details": "Detalhes",
     "started": "Iniciado",
@@ -462,5 +482,22 @@
   },
   "nav": {
     "togglePanel": "Alternar painel de backups"
+  },
+  "retries": {
+    "title": "Tentativas",
+    "count": "Tentativas após falha no backup",
+    "delay": "Minutos entre tentativas",
+    "hint": "Um backup com falha será tentado novamente este número de vezes. O alerta de falha só é enviado após a última tentativa falhar."
+  },
+  "mirrors": {
+    "title": "Espelhos",
+    "hint": "Após cada backup, seus snapshots são copiados também para estes repositórios, e os antigos são removidos seguindo as mesmas regras de retenção. Uma cópia com falha mantém o backup e marca a execução com avisos."
+  },
+  "repoSnapshots": {
+    "browse": "Navegar em todos os snapshots",
+    "host": "Ler do host",
+    "hostHint": "restic é executado neste host para ler o repositório. Ele precisa do restic instalado e deve conseguir acessar o repositório.",
+    "pickHost": "Escolha um host para ler o repositório",
+    "external": "Não do Termix"
   }
 }

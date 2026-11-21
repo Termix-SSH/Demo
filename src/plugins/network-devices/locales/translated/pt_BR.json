@@ -40,7 +40,10 @@
     "snmp": "Dispositivo SNMP",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Comunidade",
@@ -52,7 +55,9 @@
     "privProtocol": "Privacidade",
     "privKey": "Chave de privacidade",
     "apiKey": "Chave de API",
-    "apiSecret": "Segredo de API"
+    "apiSecret": "Segredo de API",
+    "enablePassword": "Senha de habilitação (opcional)",
+    "hostKey": "Impressão digital da chave do host (opcional)"
   },
   "form": {
     "addTitle": "Adicionar dispositivo",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Insira as chaves para testar.",
     "testOk": "Conectado a {{name}}.",
     "save": "Salvar",
-    "add": "Adicionar"
+    "add": "Adicionar",
+    "site": "Site",
+    "siteHint": "O nome do site do UniFi na barra de endereço do controlador. Se vazio, usa o padrão.",
+    "backups": "Backups de configuração",
+    "backupSchedule": "Salvar a configuração",
+    "backupOff": "Apenas quando eu pressionar Salvar agora",
+    "backupDaily": "Todo dia",
+    "backupWeekly": "Toda semana",
+    "backupKeep": "Versões a manter",
+    "backupKeepHint": "Uma nova versão é mantida apenas quando a configuração mudou.",
+    "backupAlert": "Alertar quando a configuração mudar",
+    "backupAlertHint": "Envia um alerta quando uma configuração salva difere da anterior.",
+    "backupHints": {
+      "routeros": "Salva /export, com senhas ocultas como o RouterOS faz por padrão.",
+      "opnsense": "Salva o config.xml inteiro, o mesmo arquivo de Sistema, Configuração, Backups.",
+      "openwrt": "Salva todas as configurações UCI que o login pode ler.",
+      "unifi": "Salva as configurações do site, redes, Wi-Fi, perfis de porta e regras de firewall.",
+      "pfsense": "Salva as partes principais do config.xml via XML-RPC. Precisa de um nome de usuário e senha.",
+      "cisco": "Salva show running-config. O login pode precisar da senha de habilitação."
+    }
   },
   "discover": {
     "title": "Encontrar dispositivos",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Nenhum vizinho encontrado.",
     "neighbor": "Vizinho",
-    "remotePort": "Porta remota"
+    "remotePort": "Porta remota",
+    "configs": "Configurações"
   },
   "operations": {
     "device": "Dispositivo",
@@ -176,5 +201,25 @@
     "name": "Dispositivos de rede",
     "description": "Quais dos seus roteadores, switches e pontos de acesso estão online.",
     "summary": "{{up}} de {{total}} online"
+  },
+  "configs": {
+    "saveNow": "Salvar agora",
+    "saving": "Salvando...",
+    "saved": "Configuração salva",
+    "unchanged": "Sem alterações desde a última versão salva",
+    "none": "Nenhuma configuração salva ainda",
+    "delete": "Excluir",
+    "deleteConfirm": "Excluir a configuração salva {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Comparar",
+    "noCompare": "Mostrar apenas esta versão",
+    "compareWith": "Alterações desde {{when}}",
+    "same": "Sem alterações.",
+    "download": "Baixar",
+    "schedule": {
+      "off": "Salvo apenas quando você pressiona Salvar agora",
+      "daily": "Salvo todo dia",
+      "weekly": "Salvo toda semana"
+    }
   }
 }

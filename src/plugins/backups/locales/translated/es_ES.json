@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic no está instalado en este host",
     "tooOld": "La versión de restic en este host es anterior a la 0.17",
-    "hint": "Las copias de seguridad usan restic. Instálalo con el gestor de paquetes o desde la versión de restic en GitHub si el paquete es demasiado antiguo.",
+    "hint": "Las copias de seguridad usan restic. Instálalo con el gestor de paquetes o desde la versión de restic en GitHub si el paquete es demasiado antiguo. También puedes omitirlo y elegir otro host para ejecutar restic en una tarea.",
     "button": "Instalar restic",
     "working": "Instalando...",
     "title": "¿Instalar restic?",
@@ -97,7 +97,9 @@
     "edit": "Editar",
     "snapshots": "Instantáneas",
     "started": "{{name}} iniciado",
-    "runFailed": "No se pudo iniciar la copia de seguridad"
+    "runFailed": "No se pudo iniciar la copia de seguridad",
+    "runsOn": "restic en {{host}}",
+    "retrying": "Error, se volverá a intentar {{when}}"
   },
   "editor": {
     "newTitle": "Nuevo trabajo de copia de seguridad",
@@ -110,6 +112,10 @@
     "pickRepository": "Selecciona un repositorio",
     "noRepos": "No tienes ningún repositorio que este host pueda usar. Añade uno primero en la pestaña Copias de seguridad.",
     "repoLocked": "Solo el propietario de este repositorio puede modificarlo.",
+    "runner": "Ejecutar restic en",
+    "runnerThisHost": "Este host",
+    "runnerSelf": "restic se ejecuta en este host y envía la copia de seguridad al repositorio.",
+    "runnerHint": "restic se ejecuta en el host seleccionado. Termix copia los archivos de este host a través de SSH, por lo que este host solo necesita tar y no tiene que acceder al repositorio.",
     "enabled": "Ejecutar según programación",
     "enabledHint": "Desactívalo para pausar la programación. La opción «Ejecutar ahora» seguirá funcionando.",
     "oneFileSystem": "Mantenerse en un solo sistema de archivos",
@@ -137,7 +143,10 @@
     "engines": {
       "mysql": "MySQL o MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Inicio de sesión",
     "ownLogin": "Escribe un inicio de sesión aquí",
@@ -161,7 +170,10 @@
     "noVolumes": "No se encontraron volúmenes",
     "dockerFailed": "No se pudo listar Docker en este host",
     "stop": "Detener stacks durante la copia de seguridad",
-    "stopHint": "Los stacks seleccionados se detienen primero y se reinician después, para que sus archivos no cambien mientras se leen."
+    "stopHint": "Los stacks seleccionados se detienen primero y se reinician después, para que sus archivos no cambien mientras se leen.",
+    "serverDir": "Carpeta de copias de seguridad de SQL Server",
+    "serverDirHint": "SQL Server escribe la copia de seguridad directamente en esta carpeta, y Termix la recupera de allí. Debe ser la misma carpeta en este host, por lo que con Docker debes montarla en el contenedor en la misma ruta.",
+    "redisHint": "Redis se guarda como una instantánea única de toda la instancia."
   },
   "schedule": {
     "title": "Programación",
@@ -213,9 +225,16 @@
   "alerts": {
     "title": "Alertas",
     "onFailure": "Alertar cuando una copia de seguridad falle",
-    "onFailureHint": "También alerta sobre advertencias y una vez cuando vuelve a funcionar.",
+    "onFailureHint": "También envía una alerta cuando vuelve a funcionar.",
     "staleDays": "Días sin copia de seguridad",
-    "staleDaysHint": "Alertar cuando no haya habido una copia de seguridad exitosa durante este número de días. 0 lo desactiva."
+    "staleDaysHint": "Alertar cuando no haya habido una copia de seguridad exitosa durante este número de días. 0 lo desactiva.",
+    "onWarning": "Alertar ante advertencias",
+    "onWarningHint": "Cuando se guarda una copia de seguridad pero no se pudieron leer algunos archivos o no se eliminaron instantáneas antiguas.",
+    "onSuccess": "Alertar ante cada copia de seguridad correcta",
+    "onSuccessHint": "También envía una alerta cada vez que esta tarea finaliza sin problemas.",
+    "channels": "Enviar a",
+    "channelsHint": "Selecciona los canales para las alertas de esta tarea. Si no se selecciona ninguno, se enviarán a todos tus canales.",
+    "channelOff": "desactivado"
   },
   "repos": {
     "add": "Añadir repositorio",
@@ -357,6 +376,7 @@
     "progress": "Progreso",
     "preparing": "Preparando...",
     "progressLine": "{{percent}}% | {{files}} de {{totalFiles}} archivos | {{bytes}} de {{totalBytes}}",
+    "copied": "Se copiaron {{bytes}} a través de Termix",
     "left": "{{time}} restantes",
     "details": "Detalles",
     "started": "Iniciado",
@@ -462,5 +482,22 @@
   },
   "nav": {
     "togglePanel": "Alternar panel de copias de seguridad"
+  },
+  "retries": {
+    "title": "Reintentos",
+    "count": "Reintentos tras una copia de seguridad fallida",
+    "delay": "Minutos entre reintentos",
+    "hint": "Una copia de seguridad fallida se volverá a intentar este número de veces. La alerta de error solo se envía cuando falla el último intento."
+  },
+  "mirrors": {
+    "title": "Espejos",
+    "hint": "Tras cada copia de seguridad, sus instantáneas se copian también a estos repositorios, y las antiguas se eliminan allí con las mismas reglas de retención. Una copia fallida conserva la copia de seguridad y marca la ejecución con advertencias."
+  },
+  "repoSnapshots": {
+    "browse": "Explorar todas las instantáneas",
+    "host": "Leer desde host",
+    "hostHint": "restic se ejecuta en este host para leer el repositorio. Necesita restic y debe poder acceder al repositorio.",
+    "pickHost": "Selecciona un host para leer el repositorio",
+    "external": "No desde Termix"
   }
 }

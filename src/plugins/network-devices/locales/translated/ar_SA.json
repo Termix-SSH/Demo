@@ -40,7 +40,10 @@
     "snmp": "جهاز SNMP",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "المجتمع",
@@ -52,7 +55,9 @@
     "privProtocol": "الخصوصية",
     "privKey": "مفتاح الخصوصية",
     "apiKey": "مفتاح API",
-    "apiSecret": "سر API"
+    "apiSecret": "سر API",
+    "enablePassword": "كلمة مرور التفعيل (اختياري)",
+    "hostKey": "بصمة مفتاح المضيف (اختيارية)"
   },
   "form": {
     "addTitle": "إضافة جهاز",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "أدخل المفاتيح للاختبار.",
     "testOk": "تم الاتصال بـ {{name}}.",
     "save": "حفظ",
-    "add": "إضافة"
+    "add": "إضافة",
+    "site": "الموقع",
+    "siteHint": "اسم موقع UniFi من شريط عنوان المتحكم. إذا كان فارغاً، سيتم استخدام الإعداد الافتراضي.",
+    "backups": "نسخ احتياطية للتكوين",
+    "backupSchedule": "حفظ التكوين",
+    "backupOff": "فقط عند الضغط على حفظ الآن",
+    "backupDaily": "يومياً",
+    "backupWeekly": "أسبوعياً",
+    "backupKeep": "عدد الإصدارات المحفوظة",
+    "backupKeepHint": "يتم الاحتفاظ بإصدار جديد فقط عند تغيير التكوين.",
+    "backupAlert": "تنبيه عند تغيير التكوين",
+    "backupAlertHint": "إرسال تنبيه عند اختلاف التكوين المحفوظ عن النسخة السابقة.",
+    "backupHints": {
+      "routeros": "يحفظ /export، مع إخفاء كلمات المرور كما يفعل RouterOS افتراضياً.",
+      "opnsense": "يحفظ ملف config.xml بالكامل، وهو نفس الملف في النظام، التكوين، النسخ الاحتياطية.",
+      "openwrt": "يحفظ كل إعدادات UCI التي يمكن لحساب الدخول قراءتها.",
+      "unifi": "يحفظ إعدادات الموقع، الشبكات، الواي فاي، ملفات تعريف المنافذ وقواعد جدار الحماية.",
+      "pfsense": "يحفظ الأجزاء الرئيسية من config.xml عبر XML-RPC. يتطلب اسم مستخدم وكلمة مرور.",
+      "cisco": "يحفظ show running-config. قد يحتاج حساب الدخول إلى كلمة مرور التفعيل."
+    }
   },
   "discover": {
     "title": "البحث عن الأجهزة",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "لم يتم العثور على جيران.",
     "neighbor": "الجار",
-    "remotePort": "منفذ الطرف الآخر"
+    "remotePort": "منفذ الطرف الآخر",
+    "configs": "التكوينات"
   },
   "operations": {
     "device": "الجهاز",
@@ -176,5 +201,25 @@
     "name": "الأجهزة الشبكية",
     "description": "أي من أجهزة التوجيه والمفاتيح ونقاط الوصول لديك تعمل حالياً.",
     "summary": "{{up}} من أصل {{total}} تعمل"
+  },
+  "configs": {
+    "saveNow": "حفظ الآن",
+    "saving": "جارٍ الحفظ...",
+    "saved": "تم حفظ التكوين",
+    "unchanged": "لا توجد تغييرات منذ آخر نسخة محفوظة",
+    "none": "لا توجد تكوينات محفوظة بعد",
+    "delete": "حذف",
+    "deleteConfirm": "هل تريد حذف التكوين المحفوظ في {{when}}؟",
+    "title": "{{name}} | {{when}}",
+    "compare": "مقارنة",
+    "noCompare": "عرض هذا الإصدار فقط",
+    "compareWith": "التغييرات منذ {{when}}",
+    "same": "لا توجد تغييرات.",
+    "download": "تحميل",
+    "schedule": {
+      "off": "يتم الحفظ فقط عند الضغط على حفظ الآن",
+      "daily": "يتم الحفظ يومياً",
+      "weekly": "يتم الحفظ أسبوعياً"
+    }
   }
 }

@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic pole sellel hostil installitud",
     "tooOld": "Sellel hostil olev restic on vanem kui 0.17",
-    "hint": "Varukoopiaid tehakse resticiga. Paigalda see pakkemanageri kaudu või GitHubist restic vabastusest, kui pakett on liiga vana.",
+    "hint": "Varundadused kasutavad restic'i. Paigalda see pakkide halduri kaudu või GitHubil olevast restic'i versioonist, kui pakk on liiga vana. Saad ka selle vahele jätta ja valida teise hosti, kus restic'i töö käivitada.",
     "button": "Paigalda restic",
     "working": "Paigaldatakse...",
     "title": "Installida restic?",
@@ -91,7 +91,9 @@
     "edit": "Muuda",
     "snapshots": "Hetktõmmised",
     "started": "{{name}} käivitatud",
-    "runFailed": "Varundamist ei õnnestunud käivitada"
+    "runFailed": "Varundamist ei õnnestunud käivitada",
+    "runsOn": "restic hostil {{host}}",
+    "retrying": "Ebaõnnestus, proovin uuesti {{when}}"
   },
   "editor": {
     "newTitle": "Uus varundamistöö",
@@ -104,6 +106,10 @@
     "pickRepository": "Vali hoidla",
     "noRepos": "Sellel hostil pole kasutatavaid hoidlaid. Lisa üks esmalt varunduste vahekaardil.",
     "repoLocked": "Ainult selle hoidla omanik saab seda muuta.",
+    "runner": "Käivita restic hostil",
+    "runnerThisHost": "See host",
+    "runnerSelf": "restic käivitub sellel hostil ja saadab varunduse hoidlasse.",
+    "runnerHint": "restic käivitub valitud hostil. Termix kopeerib selle hosti failid sinna SSH kaudu, seega vajab see host ainult tar'i ja ei pea hoidlani jõudma.",
     "enabled": "Käivita ajakava alusel",
     "enabledHint": "Ajakava peatamiseks lülita see välja. Hetkel käivitamine töötab ikka.",
     "oneFileSystem": "Püsi ühes failisüsteemis",
@@ -131,7 +137,10 @@
     "engines": {
       "mysql": "MySQL või MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Sisselogimine",
     "ownLogin": "Kirjuta siia sisselogimisandmed",
@@ -155,7 +164,10 @@
     "noVolumes": "Ühtegi mahuüksust ei leitud",
     "dockerFailed": "Dockeri loetelu kuvamine sellel hostil ei õnnestunud",
     "stop": "Peata stackid varundamise ajal",
-    "stopHint": "Valitud stackid peatatakse esmalt ja käivitatakse uuesti pärast varundamist, et nende failid ei muutuks lugemise ajal."
+    "stopHint": "Valitud stackid peatatakse esmalt ja käivitatakse uuesti pärast varundamist, et nende failid ei muutuks lugemise ajal.",
+    "serverDir": "SQL Serveri varunduskaust",
+    "serverDirHint": "SQL Server kirjutab varunduse ise sellesse kausta ja Termix võtab selle sealt. See peab olema sama kaust sellel hostil, seega kui kasutad Docker'i, määra see konteinerisse samale teele.",
+    "redisHint": "Redis salvestatakse ühe kogu instantsi hetktasemena."
   },
   "schedule": {
     "title": "Ajakava",
@@ -207,9 +219,16 @@
   "alerts": {
     "title": "Hoiatused",
     "onFailure": "Teata, kui varundamine ebaõnnestub",
-    "onFailureHint": "Teavitab ka hoiatustest ja ühe korra, kui varundamine jälle õnnestub.",
+    "onFailureHint": "Saadab teavituse ka siis, kui see jälle tööle hakkab.",
     "staleDays": "Päevi ilma varunduseta",
-    "staleDaysHint": "Teata, kui varundamine ei õnnestu antud arv päevi. 0 lülitab selle välja."
+    "staleDaysHint": "Teata, kui varundamine ei õnnestu antud arv päevi. 0 lülitab selle välja.",
+    "onWarning": "Teavita hoiatustest",
+    "onWarningHint": "Kui varundus salvestati, kuid mõnda faili ei õnnestunud lugeda või vanu hetktasemeid ei eemaldatud.",
+    "onSuccess": "Teavita igast õnnestunud varundusest",
+    "onSuccessHint": "Saadab teavituse ka iga kord, kui see töö ilma probleemideta lõpeb.",
+    "channels": "Saada kanalitele",
+    "channelsHint": "Vali selle töö teavituste kanalid. Kui ühtegi ei valita, saadetakse need kõigile sinu kanalitele.",
+    "channelOff": "väljas"
   },
   "repos": {
     "add": "Lisa hoidla",
@@ -347,6 +366,7 @@
     "progress": "Edenemine",
     "preparing": "Valmistumine...",
     "progressLine": "{{percent}}% | {{files}}/{{totalFiles}} faili | {{bytes}}/{{totalBytes}}",
+    "copied": "Kopeeritud {{bytes}} Termixi kaudu",
     "left": "{{time}} alles",
     "details": "Üksikasjad",
     "started": "Käivitatud",
@@ -452,5 +472,22 @@
   },
   "nav": {
     "togglePanel": "Lülita varunduste paneel sisse/välja"
+  },
+  "retries": {
+    "title": "Uuestiproovimised",
+    "count": "Uuestiproovimised ebaõnnestunud varunduse järel",
+    "delay": "Minutid uuestiproovimiste vahel",
+    "hint": "Ebaõnnestunud varundust proovitakse uuesti nii palju kordi. Ebaõnnestumise teavitus saadetakse alles siis, kui viimane katse ebaõnnestub."
+  },
+  "mirrors": {
+    "title": "Peeglid",
+    "hint": "Pärast iga varundust kopeeritakse selle hetktasemed ka nendesse hoidlatesse ja vanad eemaldatakse sealt samade säilitamise reeglitega. Ebaõnnestunud kopeerimine jätab varunduse alles ja märgib käivituse hoiatustega."
+  },
+  "repoSnapshots": {
+    "browse": "Sirvi kõiki hetktasemeid",
+    "host": "Loe hostilt",
+    "hostHint": "restic käivitub sellel hostil, et hoidlat lugeda. See vajab restic'i ja peab hoidlani jõudma.",
+    "pickHost": "Vali host, millelt hoidlat lugeda",
+    "external": "Pole Termixist"
   }
 }

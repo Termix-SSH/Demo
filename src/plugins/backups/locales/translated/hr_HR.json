@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic nije instaliran na ovom hostu",
     "tooOld": "restic na ovom hostu je stariji od 0.17",
-    "hint": "Sigurnosne kopije koriste restic. Instalirajte ga putem upravitelja paketa ili iz restic izdanja na GitHubu ako je paket prestar.",
+    "hint": "Sigurnosne kopije koriste restic. Instalirajte ga putem upravitelja paketa ili iz restic izdanja na GitHubu ako je paket prestar. Također možete preskočiti instalaciju i odabrati drugi host za pokretanje restica u zadatku.",
     "button": "Instaliraj restic",
     "working": "Instaliranje...",
     "title": "Instalirati restic?",
@@ -97,7 +97,9 @@
     "edit": "Uredi",
     "snapshots": "Snimke stanja",
     "started": "{{name}} je pokrenut",
-    "runFailed": "Sigurnosno kopiranje se nije moglo pokrenuti"
+    "runFailed": "Sigurnosno kopiranje se nije moglo pokrenuti",
+    "runsOn": "restic na {{host}}",
+    "retrying": "Neuspješno, pokušava se ponovno {{when}}"
   },
   "editor": {
     "newTitle": "Novi posao za sigurnosno kopiranje",
@@ -110,6 +112,10 @@
     "pickRepository": "Odaberi skladište",
     "noRepos": "Nemate skladište koje ovaj host može koristiti. Prvo dodajte jedno na kartici Sigurnosne kopije.",
     "repoLocked": "Samo vlasnik ovog skladišta ga može mijenjati.",
+    "runner": "Pokreni restic na",
+    "runnerThisHost": "Ovaj host",
+    "runnerSelf": "restic se pokreće na ovom hostu i šalje sigurnosnu kopiju u spremište.",
+    "runnerHint": "restic se pokreće na odabranom hostu. Termix kopira datoteke s ovog hosta na njega putem SSH-a, pa ovaj host treba samo tar i ne mora imati pristup spremištu.",
     "enabled": "Pokreni prema rasporedu",
     "enabledHint": "Isključite za pauziranje rasporeda. Opcija Pokreni sada i dalje radi.",
     "oneFileSystem": "Ostani na jednom datotečnom sustavu",
@@ -137,7 +143,10 @@
     "engines": {
       "mysql": "MySQL ili MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Prijava",
     "ownLogin": "Upišite prijavu ovdje",
@@ -161,7 +170,10 @@
     "noVolumes": "Nisu pronađene zapremine",
     "dockerFailed": "Nije moguće izlistati Docker na ovom hostu",
     "stop": "Zaustavi stackove tijekom sigurnosnog kopiranja",
-    "stopHint": "Odabrani stackovi se prvo zaustavljaju, a zatim ponovno pokreću kako se njihove datoteke ne bi mijenjale tijekom čitanja."
+    "stopHint": "Odabrani stackovi se prvo zaustavljaju, a zatim ponovno pokreću kako se njihove datoteke ne bi mijenjale tijekom čitanja.",
+    "serverDir": "Mapa za sigurnosne kopije SQL Servera",
+    "serverDirHint": "SQL Server sam piše sigurnosnu kopiju u ovu mapu, a Termix je odatle preuzima. Mora biti ista mapa na ovom hostu, pa je s Docker mountom ugradite u kontejner na istu putanju.",
+    "redisHint": "Redis se sprema kao jedan snimak cijele instance."
   },
   "schedule": {
     "title": "Raspored",
@@ -213,9 +225,16 @@
   "alerts": {
     "title": "Obavijesti",
     "onFailure": "Upozori kada sigurnosna kopija ne uspije",
-    "onFailureHint": "Također upozorava na upozorenja i jednom kada ponovno uspije.",
+    "onFailureHint": "Također šalje obavijest jednom kada ponovno radi.",
     "staleDays": "Dana bez sigurnosne kopije",
-    "staleDaysHint": "Upozori kada sigurnosna kopija ne uspije tijekom ovog broja dana. 0 ga isključuje."
+    "staleDaysHint": "Upozori kada sigurnosna kopija ne uspije tijekom ovog broja dana. 0 ga isključuje.",
+    "onWarning": "Obavijesti o upozorenjima",
+    "onWarningHint": "Kada je sigurnosna kopija spremljena, ali neke datoteke nisu mogle biti pročitane ili stari snimci nisu uklonjeni.",
+    "onSuccess": "Obavijesti o svakoj uspješnoj sigurnosnoj kopiji",
+    "onSuccessHint": "Također šalje obavijest svaki put kada ovaj zadatak završi bez problema.",
+    "channels": "Pošalji na",
+    "channelsHint": "Odaberite kanale za obavijesti ovog zadatka. Ako ništa nije odabrano, obavijesti idu na sve vaše kanale.",
+    "channelOff": "isključeno"
   },
   "repos": {
     "add": "Dodaj spremište",
@@ -357,6 +376,7 @@
     "progress": "Napredak",
     "preparing": "Priprema...",
     "progressLine": "{{percent}}% | {{files}} od {{totalFiles}} datoteka | {{bytes}} od {{totalBytes}}",
+    "copied": "Kopirano {{bytes}} putem Termixa",
     "left": "Preostalo: {{time}}",
     "details": "Detalji",
     "started": "Pokrenuto",
@@ -462,5 +482,22 @@
   },
   "nav": {
     "togglePanel": "Uključi/isključi ploču sigurnosnih kopija"
+  },
+  "retries": {
+    "title": "Ponovni pokušaji",
+    "count": "Ponovni pokušaji nakon neuspjele sigurnosne kopije",
+    "delay": "Minute između ponovnih pokušaja",
+    "hint": "Neuspjela sigurnosna kopija pokušat će se ponoviti ovaj broj puta. Obavijest o neuspjehu šalje se tek nakon što zadnji pokušaj ne uspije."
+  },
+  "mirrors": {
+    "title": "Zrcala",
+    "hint": "Nakon svake sigurnosne kopije, njezini snimci kopiraju se i u ova spremišta, a stari se uklanjaju prema istim pravilima zadržavanja. Neuspjela kopija zadržava sigurnosnu kopiju i označava izvođenje upozorenjima."
+  },
+  "repoSnapshots": {
+    "browse": "Pregledaj sve snimke",
+    "host": "Čitaj s hosta",
+    "hostHint": "restic se pokreće na ovom hostu za čitanje spremišta. Treba mu restic i mora imati pristup spremištu.",
+    "pickHost": "Odaberite host za čitanje spremišta",
+    "external": "Ne iz Termixa"
   }
 }

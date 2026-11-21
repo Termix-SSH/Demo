@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic nu este instalat pe acest host",
     "tooOld": "restic de pe acest host este mai vechi decât 0.17",
-    "hint": "Backup-urile folosesc restic. Instalează-l cu managerul de pachete sau de pe release-ul restic de pe GitHub când pachetul este prea vechi.",
+    "hint": "Backup-urile folosesc restic. Instalează-l prin managerul de pachete sau din versiunea restic de pe GitHub dacă pachetul este prea vechi. Poți sări peste acest pas și să alegi un alt gazdă pentru a executa restic într-o sarcină.",
     "button": "Instalează restic",
     "working": "Se instalează...",
     "title": "Instalezi restic?",
@@ -97,7 +97,9 @@
     "edit": "Editează",
     "snapshots": "Instantanee",
     "started": "{{name}} a pornit",
-    "runFailed": "Nu s-a putut porni backup-ul"
+    "runFailed": "Nu s-a putut porni backup-ul",
+    "runsOn": "restic pe {{host}}",
+    "retrying": "Eșuat, se va încerca din nou {{when}}"
   },
   "editor": {
     "newTitle": "Sarcină de backup nouă",
@@ -110,6 +112,10 @@
     "pickRepository": "Alege un depozit",
     "noRepos": "Nu ai niciun depozit pe care această gazdă să îl poată folosi. Adaugă unul mai întâi în fila Backups.",
     "repoLocked": "Doar proprietarul acestui depozit îl poate modifica.",
+    "runner": "Execută restic pe",
+    "runnerThisHost": "Această gazdă",
+    "runnerSelf": "restic rulează pe această gazdă și trimite backup-ul către depozit.",
+    "runnerHint": "restic rulează pe gazda aleasă. Termix copiază fișierele de pe această gazdă către ea prin SSH, așa că această gazdă are nevoie doar de tar și nu trebuie să acceseze depozitul.",
     "enabled": "Rulează conform programului",
     "enabledHint": "Dezactivează pentru a întrerupe programul. Opțiunea „Rulează acum” funcționează în continuare.",
     "oneFileSystem": "Rămâi pe un singur sistem de fișiere",
@@ -137,7 +143,10 @@
     "engines": {
       "mysql": "MySQL sau MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Autentificare",
     "ownLogin": "Introdu o autentificare aici",
@@ -161,7 +170,10 @@
     "noVolumes": "Nu s-au găsit volumuri",
     "dockerFailed": "Nu s-a putut lista Docker pe această gazdă",
     "stop": "Oprește stivele în timpul backup-ului",
-    "stopHint": "Stivele selectate sunt oprite mai întâi și repornite ulterior, astfel încât fișierele lor să nu se modifice în timp ce sunt citite."
+    "stopHint": "Stivele selectate sunt oprite mai întâi și repornite ulterior, astfel încât fișierele lor să nu se modifice în timp ce sunt citite.",
+    "serverDir": "Dosarul de backup SQL Server",
+    "serverDirHint": "SQL Server scrie backup-ul direct în acest dosar, iar Termix îl preia de acolo. Trebuie să fie același dosar pe această gazdă, deci dacă folosești Docker, montează-l în container la același cale.",
+    "redisHint": "Redis este salvat ca un singur snapshot al întregii instanțe."
   },
   "schedule": {
     "title": "Programare",
@@ -213,9 +225,16 @@
   "alerts": {
     "title": "Alerte",
     "onFailure": "Alertă când un backup eșuează",
-    "onFailureHint": "Alertează și la avertismente, și o dată când funcționează din nou.",
+    "onFailureHint": "Trimite o alertă și când funcționează din nou.",
     "staleDays": "Zile fără backup",
-    "staleDaysHint": "Alertă când nu a funcționat niciun backup timp de atâtea zile. 0 dezactivează această funcție."
+    "staleDaysHint": "Alertă când nu a funcționat niciun backup timp de atâtea zile. 0 dezactivează această funcție.",
+    "onWarning": "Alertă la avertismente",
+    "onWarningHint": "Când un backup este salvat, dar unele fișiere nu au putut fi citite sau snapshot-urile vechi nu au fost șterse.",
+    "onSuccess": "Alertă la fiecare backup reușit",
+    "onSuccessHint": "Trimite o alertă de fiecare dată când această sarcină se finalizează fără probleme.",
+    "channels": "Trimite către",
+    "channelsHint": "Alege canalele pentru alertele acestei sarcini. Dacă nu alegi niciunul, alertele vor merge către toate canalele tale.",
+    "channelOff": "dezactivat"
   },
   "repos": {
     "add": "Adaugă depozit",
@@ -357,6 +376,7 @@
     "progress": "Progres",
     "preparing": "Se pregătește...",
     "progressLine": "{{percent}}% | {{files}} din {{totalFiles}} fișiere | {{bytes}} din {{totalBytes}}",
+    "copied": "Copiat {{bytes}} prin Termix",
     "left": "{{time}} rămas",
     "details": "Detalii",
     "started": "Început",
@@ -462,5 +482,22 @@
   },
   "nav": {
     "togglePanel": "Comută panoul de copii de rezervă"
+  },
+  "retries": {
+    "title": "Reîncercări",
+    "count": "Reîncercări după un backup eșuat",
+    "delay": "Minute între reîncercări",
+    "hint": "Un backup eșuat este reîncercat de atâtea ori. Alerta de eșec este trimisă doar după ce ultima încercare eșuează."
+  },
+  "mirrors": {
+    "title": "Oglindiri",
+    "hint": "După fiecare backup, snapshot-urile sale sunt copiate și în aceste depozite, iar cele vechi sunt șterse acolo conform acelorasi reguli de retenție. O copie eșuată păstrează backup-ul și marchează execuția cu avertismente."
+  },
+  "repoSnapshots": {
+    "browse": "Răsfoiește toate snapshot-urile",
+    "host": "Citește de pe gazdă",
+    "hostHint": "restic rulează pe această gazdă pentru a citi depozitul. Are nevoie de restic și trebuie să poată accesa depozitul.",
+    "pickHost": "Alege o gazdă pentru a citi depozitul",
+    "external": "Nu din Termix"
   }
 }

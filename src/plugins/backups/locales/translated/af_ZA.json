@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic is nie op hierdie gasheer geïnstalleer nie",
     "tooOld": "restic op hierdie gasheer is ouer as 0.17",
-    "hint": "Back-ups gebruik restic. Installeer dit met die pakkethandhaerder, of van die restic-uitgawe op GitHub as die pakket te oud is.",
+    "hint": "Back-ups gebruik restic. Installeer dit met die pakkethandhaerder, of vanaf die restic-vrystelling op GitHub as die pakket te oud is. Jy kan dit ook oorslaan en 'n ander gasheer kies om restic in 'n taak uit te voer.",
     "button": "Installeer restic",
     "working": "Installeer tans...",
     "title": "Installeer restic?",
@@ -91,7 +91,9 @@
     "edit": "Redigeer",
     "snapshots": "Oomblikke",
     "started": "{{name}} begin",
-    "runFailed": "Kon nie die rugsteun begin nie"
+    "runFailed": "Kon nie die rugsteun begin nie",
+    "runsOn": "restic op {{host}}",
+    "retrying": "Misluk, probeer weer {{when}}"
   },
   "editor": {
     "newTitle": "Nuwe rugsteuntaak",
@@ -104,6 +106,10 @@
     "pickRepository": "Kies 'n magasyn",
     "noRepos": "Jy het geen magasyn wat hierdie gasheer kan gebruik nie. Voeg eers een by in die Rugsteune-oortjie.",
     "repoLocked": "Slegs die eienaar van hierdie magasyn kan dit verander.",
+    "runner": "Voer restic uit op",
+    "runnerThisHost": "Hierdie gasheer",
+    "runnerSelf": "restic word op hierdie gasheer uitgevoer en stuur die back-up na die bergplek.",
+    "runnerHint": "restic word op die gekose gasheer uitgevoer. Termix kopieer hierdie gasheer se lêers na dit oor SSH, so hierdie gasheer het slegs tar nodig en hoef nie toegang tot die bergplek te kry nie.",
     "enabled": "Voer uit volgens skedule",
     "enabledHint": "Skakel af om die skedule te pauseer. \"Voer nou uit\" werk steeds.",
     "oneFileSystem": "Bly op een lêerstelsel",
@@ -131,7 +137,10 @@
     "engines": {
       "mysql": "MySQL of MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Aanmelding",
     "ownLogin": "Tik 'n aanmelding hier",
@@ -155,7 +164,10 @@
     "noVolumes": "Geen volums gevind nie",
     "dockerFailed": "Kon nie Docker op hierdie gasheer lys nie",
     "stop": "Stop stapels tydens die rugsteun",
-    "stopHint": "Gekose stapels word eers gestop en daarna weer gestart, sodat hul lêers nie verander terwyl hulle gelees word nie."
+    "stopHint": "Gekose stapels word eers gestop en daarna weer gestart, sodat hul lêers nie verander terwyl hulle gelees word nie.",
+    "serverDir": "SQL Server back-up gids",
+    "serverDirHint": "SQL Server skryf die back-up self na hierdie gids, en Termix neem dit van daar. Dit moet dieselfde gids wees op hierdie gasheer, so met Docker, monteer dit in die houer by dieselfde pad.",
+    "redisHint": "Redis word gestoor as een oomblikopname van die hele instansie."
   },
   "schedule": {
     "title": "Skedule",
@@ -207,9 +219,16 @@
   "alerts": {
     "title": "Waarskuwings",
     "onFailure": "Waarskuwing wanneer 'n rugsteun misluk",
-    "onFailureHint": "Waarskuwings ook oor waarskuwings, en een keer wanneer dit weer werk.",
+    "onFailureHint": "Stuur ook 'n waarskuwing een keer wanneer dit weer werk.",
     "staleDays": "Dae sonder 'n rugsteun",
-    "staleDaysHint": "Waarskuwing wanneer geen rugsteun vir hierdie aantal dae gewerk het nie. 0 skakel dit af."
+    "staleDaysHint": "Waarskuwing wanneer geen rugsteun vir hierdie aantal dae gewerk het nie. 0 skakel dit af.",
+    "onWarning": "Waarskuwing vir waarskuwings",
+    "onWarningHint": "Wanneer 'n back-up gestoor word, maar sommige lêers nie gelees kon word nie, of ou oomblikopnames nie verwyder is nie.",
+    "onSuccess": "Waarskuwing vir elke suksesvolle back-up",
+    "onSuccessHint": "Stuur ook 'n waarskuwing elke keer hierdie taak sonder probleme voltooi.",
+    "channels": "Stuur na",
+    "channelsHint": "Kies die kanale vir hierdie taak se waarskuwings. As geen gekies is nie, gaan hulle na al jou kanale.",
+    "channelOff": "af"
   },
   "repos": {
     "add": "Voeg bergplek by",
@@ -347,6 +366,7 @@
     "progress": "Vordering",
     "preparing": "Maak gereed...",
     "progressLine": "{{percent}}% | {{files}} van {{totalFiles}} lêers | {{bytes}} van {{totalBytes}}",
+    "copied": "{{bytes}} gekopieer deur Termix",
     "left": "{{time}} oor",
     "details": "Besonderhede",
     "started": "Begin",
@@ -452,5 +472,22 @@
   },
   "nav": {
     "togglePanel": "Wissel rugsteuningspaneel"
+  },
+  "retries": {
+    "title": "Opnuut probeer",
+    "count": "Opnuut probeer na 'n mislukte back-up",
+    "delay": "Minute tussen opnuut probeer",
+    "hint": "'n Mislukte back-up word hierdie baie keer opnuut probeer. Die mislukking-waarskuwing word slegs gestuur sodra die laaste poging misluk."
+  },
+  "mirrors": {
+    "title": "Spieëls",
+    "hint": "Na elke back-up word sy oomblikopnames ook na hierdie bergplekke gekopieer, en ou een word daar verwyder met dieselfde behoudreëls. 'n Mislukte kopie behou die back-up en merk die uitvoering met waarskuwings."
+  },
+  "repoSnapshots": {
+    "browse": "Blader deur alle oomblikopnames",
+    "host": "Lees van gasheer",
+    "hostHint": "restic word op hierdie gasheer uitgevoer om die bergplek te lees. Dit het restic nodig en moet toegang tot die bergplek kry.",
+    "pickHost": "Kies 'n gasheer om die bergplek van af te lees",
+    "external": "Nie van Termix nie"
   }
 }

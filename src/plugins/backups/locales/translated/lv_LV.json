@@ -39,7 +39,7 @@
   "install": {
     "missing": "Šajā serverī nav instalēts restic",
     "tooOld": "Šajā serverī instalētais restic ir vecāks par 0.17",
-    "hint": "Rezerves kopijas izmanto restic. Instalējiet to, izmantojot pakotņu pārvaldnieku, vai lejupielādējiet no restic izlaiduma GitHub, ja pakotne ir pārāk veca.",
+    "hint": "Rezerves kopijas izmanto restic. Uzstādiet to ar pakotņu pārvaldnieku vai no restic izlaiduma GitHub, ja pakotne ir pārāk veca. Varat arī izlaist šo soli un izvēlēties citu mezglu, lai darbā palaistu restic.",
     "button": "Instalēt restic",
     "working": "Instalē...",
     "title": "Instalēt restic?",
@@ -97,7 +97,9 @@
     "edit": "Rediģēt",
     "snapshots": "Spraudeņi",
     "started": "{{name}} uzsākts",
-    "runFailed": "Neizdevās uzsākt dublējumu"
+    "runFailed": "Neizdevās uzsākt dublējumu",
+    "runsOn": "restic uz {{host}}",
+    "retrying": "Neizdevās, mēģinās vēlreiz {{when}}"
   },
   "editor": {
     "newTitle": "Jauns dublēšanas darbs",
@@ -110,6 +112,10 @@
     "pickRepository": "Izvēlieties depo",
     "noRepos": "Šim resursdatoram nav pieejamu depo. Vispirms pievienojiet vienu cilnē Dublējumi.",
     "repoLocked": "Šo depo var mainīt tikai tā īpašnieks.",
+    "runner": "Palaist restic uz",
+    "runnerThisHost": "Šis mezgls",
+    "runnerSelf": "restic darbojas uz šī mezgla un nosūta rezerves kopiju uz krātuvi.",
+    "runnerHint": "restic darbojas uz izvēlētā mezgla. Termix kopē šī mezgla failus uz to pa SSH, tāpēc šim mezglam ir nepieciešams tikai tar, un tam nav jāpiekļūst krātuvei.",
     "enabled": "Izpildīt pēc grafika",
     "enabledHint": "Izslēdziet, lai apturētu grafiku. Izpildīt tagad joprojām strādā.",
     "oneFileSystem": "Palikt vienā failu sistēmā",
@@ -137,7 +143,10 @@
     "engines": {
       "mysql": "MySQL vai MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Pieteikšanās",
     "ownLogin": "Ievadiet pieteikšanās datus šeit",
@@ -161,7 +170,10 @@
     "noVolumes": "Nav atrasts neviens skaņas",
     "dockerFailed": "Neizdevās uzskaitīt Docker šajā resursdatorā",
     "stop": "Apturēt stekus rezerves kopijas veidošanas laikā",
-    "stopHint": "Izvēlētie steki vispirms tiek apturēti un pēc tam atkal palaisti, lai to faili nemainītos, kamēr tie tiek lasīti."
+    "stopHint": "Izvēlētie steki vispirms tiek apturēti un pēc tam atkal palaisti, lai to faili nemainītos, kamēr tie tiek lasīti.",
+    "serverDir": "SQL Server rezerves kopiju mape",
+    "serverDirHint": "SQL Server pats raksta rezerves kopiju šajā mapē, un Termix to no turienes paņem. Tai ir jābūt tai pašai mapei uz šī mezgla, tāpēc, izmantojot Docker, pievienojiet to konteineram tajā pašā ceļā.",
+    "redisHint": "Redis tiek saglabāts kā viena visas instances momentānā kopija."
   },
   "schedule": {
     "title": "Grafiks",
@@ -213,9 +225,16 @@
   "alerts": {
     "title": "Brīdinājumi",
     "onFailure": "Brīdināt, ja rezerves kopija neizdodas",
-    "onFailureHint": "Tiek brīdināts arī par brīdinājumiem un vienreiz, kad darbība atkal kļūst veiksmīga.",
+    "onFailureHint": "Tāpat brīdina vienu reizi, kad tas atkal darbojas.",
     "staleDays": "Dienas bez rezerves kopijas",
-    "staleDaysHint": "Brīdināt, ja šādu dienu skaitu nav veiksmīgas rezerves kopijas. 0 izslēdz šo funkciju."
+    "staleDaysHint": "Brīdināt, ja šādu dienu skaitu nav veiksmīgas rezerves kopijas. 0 izslēdz šo funkciju.",
+    "onWarning": "Brīdinājums par brīdinājumiem",
+    "onWarningHint": "Kad rezerves kopija ir saglabāta, bet dažus failus nevarēja izlasīt vai vecās momentānās kopijas netika noņemtas.",
+    "onSuccess": "Brīdinājums par katru veiksmīgu rezerves kopiju",
+    "onSuccessHint": "Tāpat nosūta brīdinājumu katru reizi, kad šis darbs pabeidzas bez problēmām.",
+    "channels": "Nosūtīt uz",
+    "channelsHint": "Izvēlieties kanālus šī darba brīdinājumiem. Ja neviens nav izvēlēts, tie tiek nosūtīti uz visiem jūsu kanāliem.",
+    "channelOff": "izslēgts"
   },
   "repos": {
     "add": "Pievienot repozitoriju",
@@ -357,6 +376,7 @@
     "progress": "Gaita",
     "preparing": "Sagatavošanās...",
     "progressLine": "{{percent}}% | {{files}} no {{totalFiles}} failiem | {{bytes}} no {{totalBytes}}",
+    "copied": "Caursūtīti {{bytes}} caur Termix",
     "left": "Atlicis {{time}}",
     "details": "Detalizēti",
     "started": "Uzsākts",
@@ -462,5 +482,22 @@
   },
   "nav": {
     "togglePanel": "Pārslēgt dublējumu paneli"
+  },
+  "retries": {
+    "title": "Atkārtoti mēģinājumi",
+    "count": "Atkārtoti mēģinājumi pēc neizdevušās rezerves kopijas",
+    "delay": "Minūtes starp atkārtotiem mēģinājumiem",
+    "hint": "Neizdevusies rezerves kopija tiek mēģināta vēlreiz šādu reižu skaitu. Neizdevības brīdinājums tiek nosūtīts tikai tad, kad pēdējais mēģinājums neizdodas."
+  },
+  "mirrors": {
+    "title": "Spoguļi",
+    "hint": "Pēc katras rezerves kopijas tās momentānās kopijas tiek kopētas arī uz šīm krātuvēm, un vecās tiek noņemtas tur ar tādiem pašiem saglabāšanas noteikumiem. Neizdevusies kopēšana saglabā rezerves kopiju un atzīmē izpildi ar brīdinājumiem."
+  },
+  "repoSnapshots": {
+    "browse": "Pārlūkot visas momentānās kopijas",
+    "host": "Lasīt no mezgla",
+    "hostHint": "restic darbojas uz šī mezgla, lai lasītu krātuvi. Tam ir nepieciešams restic, un tam ir jāpiekļūst krātuvei.",
+    "pickHost": "Izvēlieties mezglu, no kura lasīt krātuvi",
+    "external": "Ne no Termix"
   }
 }

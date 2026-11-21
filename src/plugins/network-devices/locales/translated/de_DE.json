@@ -40,7 +40,10 @@
     "snmp": "SNMP-Gerät",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Community",
@@ -52,7 +55,9 @@
     "privProtocol": "Privatsphäre",
     "privKey": "Privatsphärenschlüssel",
     "apiKey": "API-Schlüssel",
-    "apiSecret": "API-Geheimnis"
+    "apiSecret": "API-Geheimnis",
+    "enablePassword": "Enable-Passwort (optional)",
+    "hostKey": "Host-Schlüssel-Fingerabdruck (optional)"
   },
   "form": {
     "addTitle": "Gerät hinzufügen",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Geben Sie die Schlüssel ein, um zu testen.",
     "testOk": "Verbunden mit {{name}}.",
     "save": "Speichern",
-    "add": "Hinzufügen"
+    "add": "Hinzufügen",
+    "site": "Site",
+    "siteHint": "Der UniFi-Sitename aus der Adressleiste des Controllers. Leer lässt die Standardeinstellung verwenden.",
+    "backups": "Konfigurations-Backups",
+    "backupSchedule": "Konfiguration speichern",
+    "backupOff": "Nur, wenn ich jetzt auf Speichern drücke",
+    "backupDaily": "Täglich",
+    "backupWeekly": "Wöchentlich",
+    "backupKeep": "Zu behaltende Versionen",
+    "backupKeepHint": "Eine neue Version wird nur gespeichert, wenn sich die Konfiguration geändert hat.",
+    "backupAlert": "Benachrichtigung bei Konfigurationsänderungen",
+    "backupAlertHint": "Sendet eine Benachrichtigung, wenn eine gespeicherte Konfiguration von der vorherigen abweicht.",
+    "backupHints": {
+      "routeros": "Speichert /export, wobei Passwörter standardmäßig wie bei RouterOS ausgeblendet werden.",
+      "opnsense": "Speichert die gesamte config.xml, dieselbe Datei wie unter System, Konfiguration, Backups.",
+      "openwrt": "Speichert alle UCI-Konfigurationen, auf die der Login zugreifen darf.",
+      "unifi": "Speichert die Einstellungen der Site, Netzwerke, Wi-Fi, Port-Profile und Firewall-Regeln.",
+      "pfsense": "Speichert die Hauptteile der config.xml über XML-RPC. Benötigt einen Benutzernamen und ein Passwort.",
+      "cisco": "Speichert show running-config. Der Login benötigt möglicherweise das Enable-Passwort."
+    }
   },
   "discover": {
     "title": "Geräte finden",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Keine Nachbarn gefunden.",
     "neighbor": "Nachbar",
-    "remotePort": "Ihr Port"
+    "remotePort": "Ihr Port",
+    "configs": "Konfigurationen"
   },
   "operations": {
     "device": "Gerät",
@@ -176,5 +201,25 @@
     "name": "Netzwerkgeräte",
     "description": "Welche Ihrer Router, Switches und Access Points verfügbar sind.",
     "summary": "{{up}} von {{total}} verfügbar"
+  },
+  "configs": {
+    "saveNow": "Jetzt speichern",
+    "saving": "Wird gespeichert...",
+    "saved": "Konfiguration gespeichert",
+    "unchanged": "Keine Änderung seit der letzten gespeicherten Version",
+    "none": "Noch keine gespeicherten Konfigurationen",
+    "delete": "Löschen",
+    "deleteConfirm": "Die am {{when}} gespeicherte Konfiguration löschen?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Vergleichen",
+    "noCompare": "Nur diese Version anzeigen",
+    "compareWith": "Änderungen seit {{when}}",
+    "same": "Keine Änderungen.",
+    "download": "Herunterladen",
+    "schedule": {
+      "off": "Nur gespeichert, wenn Sie auf Jetzt speichern drücken",
+      "daily": "Täglich gespeichert",
+      "weekly": "Wöchentlich gespeichert"
+    }
   }
 }

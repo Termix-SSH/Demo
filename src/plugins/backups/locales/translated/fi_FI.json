@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic ei ole asennettu tähän isäntäpalvelimeen",
     "tooOld": "Tämän isäntäpalvelimen restic on vanhempi kuin 0.17",
-    "hint": "Varmuuskopiointi käyttää resticiä. Asenna se paketinhallinnalla tai GitHubista, jos paketti on liian vanha.",
+    "hint": "Varmuuskopiot käyttävät resticiä. Asenna se paketinhallinnalla tai GitHubin restic-julkaisusta, jos paketti on liian vanha. Voit myös ohittaa sen ja valita toisen isäntäjärjestelmän, jossa restic suoritetaan tehtävänä.",
     "button": "Asenna restic",
     "working": "Asennetaan...",
     "title": "Asenna restic?",
@@ -91,7 +91,9 @@
     "edit": "Muokkaa",
     "snapshots": "Hetkikuvat",
     "started": "{{name}} käynnistetty",
-    "runFailed": "Varmuuskopiota ei voitu käynnistää"
+    "runFailed": "Varmuuskopiota ei voitu käynnistää",
+    "runsOn": "restic isännässä {{host}}",
+    "retrying": "Epäonnistui, yritetään uudelleen {{when}}"
   },
   "editor": {
     "newTitle": "Uusi varmuuskopiointityö",
@@ -104,6 +106,10 @@
     "pickRepository": "Valitse varasto",
     "noRepos": "Tällä isäntäpalvelimella ei ole käytettävissä varastoa. Lisää yksi ensin Varmuuskopiutukset-välilehdellä.",
     "repoLocked": "Vain tämän varaston omistaja voi muuttaa sitä.",
+    "runner": "Suorita restic isännässä",
+    "runnerThisHost": "Tämä isäntä",
+    "runnerSelf": "restic suoritetaan tässä isännässä ja lähettää varmuuskopion varastoon.",
+    "runnerHint": "restic suoritetaan valitussa isännässä. Termix kopioi tämän isännän tiedostot sinne SSH:n kautta, joten tämä isäntä tarvitsee vain tarin eikä tarvitse päästä varastoon.",
     "enabled": "Suorita aikataulun mukaan",
     "enabledHint": "Sammuttaaksesi aikataulun. Suorita nyt -toiminto toimii edelleen.",
     "oneFileSystem": "Pysy yhdellä tiedostojärjestelmällä",
@@ -131,7 +137,10 @@
     "engines": {
       "mysql": "MySQL tai MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Kirjautuminen",
     "ownLogin": "Kirjoita kirjautumistiedot tähän",
@@ -155,7 +164,10 @@
     "noVolumes": "Volyymeja ei löytynyt",
     "dockerFailed": "Dockerin listaus epäonnistui tässä isäntäpalvelimessa",
     "stop": "Pysäytä pinojen suoritus varmuuskopioiden aikana",
-    "stopHint": "Valitut pinot pysäytetään ensin ja käynnistetään uudelleen varmuuskopion jälkeen, jotta niiden tiedostot eivät muutu lukemisen aikana."
+    "stopHint": "Valitut pinot pysäytetään ensin ja käynnistetään uudelleen varmuuskopion jälkeen, jotta niiden tiedostot eivät muutu lukemisen aikana.",
+    "serverDir": "SQL Serverin varmuuskopiokansio",
+    "serverDirHint": "SQL Server kirjoittaa varmuuskopion itse tähän kansioon, ja Termix hakee sen sieltä. Sen on oltava sama kansio tässä isännässä, joten Docker-asennuksessa liitä se konttiin samaan polkuun.",
+    "redisHint": "Redis tallennetaan yhtenä koko ilmentymän hetkikuvana."
   },
   "schedule": {
     "title": "Aikataulu",
@@ -207,9 +219,16 @@
   "alerts": {
     "title": "Hälytykset",
     "onFailure": "Ilmoita, kun varmuuskopiointi epäonnistuu",
-    "onFailureHint": "Ilmoittaa myös varoituksista ja kerran, kun varmuuskopiointi alkaa toimia uudelleen.",
+    "onFailureHint": "Ilmoittaa myös kerran, kun se toimii jälleen.",
     "staleDays": "Päiviä ilman varmuuskopiota",
-    "staleDaysHint": "Ilmoita, jos varmuuskopiointi ei onnistu näin monta päivää peräkkäin. Arvo 0 poistaa ilmoituksen käytöstä."
+    "staleDaysHint": "Ilmoita, jos varmuuskopiointi ei onnistu näin monta päivää peräkkäin. Arvo 0 poistaa ilmoituksen käytöstä.",
+    "onWarning": "Ilmoita varoituksista",
+    "onWarningHint": "Kun varmuuskopio tallennetaan, mutta joitakin tiedostoja ei voitu lukea tai vanhoja hetkikuvia ei poistettu.",
+    "onSuccess": "Ilmoita jokaisesta onnistuneesta varmuuskopiosta",
+    "onSuccessHint": "Lähettää myös ilmoituksen joka kerta, kun tämä tehtävä suoritetaan ilman ongelmia.",
+    "channels": "Lähetä kanaviin",
+    "channelsHint": "Valitse kanavat tämän tehtävän ilmoituksille. Jos yhtään ei valita, ne lähetetään kaikkiin kanaviisi.",
+    "channelOff": "pois päältä"
   },
   "repos": {
     "add": "Lisää arkisto",
@@ -347,6 +366,7 @@
     "progress": "Edistyminen",
     "preparing": "Valmistellaan...",
     "progressLine": "{{percent}} % | {{files}} / {{totalFiles}} tiedostoa | {{bytes}} / {{totalBytes}}",
+    "copied": "Kopioitu {{bytes}} Termixin kautta",
     "left": "{{time}} jäljellä",
     "details": "Yksityiskohdat",
     "started": "Aloitettu",
@@ -452,5 +472,22 @@
   },
   "nav": {
     "togglePanel": "Vaihda varmuuskopioiden paneelin näkyvyys"
+  },
+  "retries": {
+    "title": "Uudelleenyrittämiset",
+    "count": "Uudelleenyrittämiset epäonnistuneen varmuuskopion jälkeen",
+    "delay": "Minuutteja uudelleenyrittämisten välillä",
+    "hint": "Epäonnistunut varmuuskopio yritetään uudelleen tämän monta kertaa. Epäonnistumisilmoitus lähetetään vasta, kun viimeinen yritys epäonnistuu."
+  },
+  "mirrors": {
+    "title": "Peilivarastot",
+    "hint": "Jokaisen varmuuskopion jälkeen sen hetkikuvat kopioidaan myös näihin varastoihin, ja vanhat poistetaan sieltä samoin säilytyskäytännöin. Epäonnistunut kopiointi säilyttää varmuuskopion ja merkitsee suorituksen varoituksilla."
+  },
+  "repoSnapshots": {
+    "browse": "Selaa kaikkia hetkikuvia",
+    "host": "Lue isännältä",
+    "hostHint": "restic suoritetaan tässä isännässä varaston lukemiseksi. Se tarvitsee resticin ja pääsyn varastoon.",
+    "pickHost": "Valitse isäntä, josta varasto luetaan",
+    "external": "Ei Termixistä"
   }
 }

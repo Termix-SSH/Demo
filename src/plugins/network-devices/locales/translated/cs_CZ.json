@@ -40,7 +40,10 @@
     "snmp": "SNMP zařízení",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Komunita",
@@ -52,7 +55,9 @@
     "privProtocol": "Soukromí",
     "privKey": "Klíč pro soukromí",
     "apiKey": "API klíč",
-    "apiSecret": "API tajný klíč"
+    "apiSecret": "API tajný klíč",
+    "enablePassword": "Enable heslo (volitelné)",
+    "hostKey": "Otisk prstu klíče hostitele (volitelné)"
   },
   "form": {
     "addTitle": "Přidat zařízení",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Zadejte klíče pro testování.",
     "testOk": "Připojeno k {{name}}.",
     "save": "Uložit",
-    "add": "Přidat"
+    "add": "Přidat",
+    "site": "Místo",
+    "siteHint": "Název místa UniFi z adresního řádku ovladače. Prázdné používá výchozí.",
+    "backups": "Zálohy konfigurace",
+    "backupSchedule": "Uložit konfiguraci",
+    "backupOff": "Pouze když stisknu Uložit nyní",
+    "backupDaily": "Každý den",
+    "backupWeekly": "Každý týden",
+    "backupKeep": "Počet verzí k uložení",
+    "backupKeepHint": "Nová verze se uloží pouze tehdy, pokud se konfigurace změnila.",
+    "backupAlert": "Upozornit při změně konfigurace",
+    "backupAlertHint": "Pošle upozornění, pokud se uložená konfigurace liší od předchozí.",
+    "backupHints": {
+      "routeros": "Uloží /export, přičemž jsou hesla skrytá, jak je výchozí v RouterOS.",
+      "opnsense": "Uloží celý soubor config.xml, stejný jako v System, Configuration, Backups.",
+      "openwrt": "Uloží všechny UCI konfigurace, ke kterým má přihlášení přístup.",
+      "unifi": "Uloží nastavení místa, sítě, Wi-Fi, portové profily a pravidla firewallu.",
+      "pfsense": "Uloží hlavní části config.xml přes XML-RPC. Vyžaduje uživatelské jméno a heslo.",
+      "cisco": "Uloží show running-config. Přihlášení může vyžadovat enable heslo."
+    }
   },
   "discover": {
     "title": "Najít zařízení",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Nebyli nalezeni žádní sousedé.",
     "neighbor": "Soused",
-    "remotePort": "Jeho port"
+    "remotePort": "Jeho port",
+    "configs": "Konfigurace"
   },
   "operations": {
     "device": "Zařízení",
@@ -176,5 +201,25 @@
     "name": "Síťová zařízení",
     "description": "Které z vašich routerů, switchů a přístupových bodů jsou online.",
     "summary": "{{up}} z {{total}} online"
+  },
+  "configs": {
+    "saveNow": "Uložit nyní",
+    "saving": "Ukládání...",
+    "saved": "Konfigurace uložena",
+    "unchanged": "Žádná změna od poslední uložené verze",
+    "none": "Zatím nejsou žádné uložené konfigurace",
+    "delete": "Smazat",
+    "deleteConfirm": "Smazat konfiguraci uloženou {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Porovnat",
+    "noCompare": "Zobrazit pouze tuto verzi",
+    "compareWith": "Změny od {{when}}",
+    "same": "Žádné změny.",
+    "download": "Stáhnout",
+    "schedule": {
+      "off": "Uloženo pouze po stisknutí Uložit nyní",
+      "daily": "Ukládáno každý den",
+      "weekly": "Ukládáno každý týden"
+    }
   }
 }

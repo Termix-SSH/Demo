@@ -40,7 +40,10 @@
     "snmp": "מכשיר SNMP",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "קהילה",
@@ -52,7 +55,9 @@
     "privProtocol": "פרטיות",
     "privKey": "מפתח פרטיות",
     "apiKey": "מפתח API",
-    "apiSecret": "סוד API"
+    "apiSecret": "סוד API",
+    "enablePassword": "סיסמת הפעלה (אופציונלי)",
+    "hostKey": "טביעת אצבע של מפתח מארח (אופציונלי)"
   },
   "form": {
     "addTitle": "הוסף מכשיר",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "הזן את המפתחות לבדיקה.",
     "testOk": "מחובר ל-{{name}}.",
     "save": "שמירה",
-    "add": "הוספה"
+    "add": "הוספה",
+    "site": "אתר",
+    "siteHint": "שם האתר ב-UniFi כפי שמופיע בשורת הכתובת של הבקר. השארה ריקה תשתמש בהגדרה ברירת המחדל.",
+    "backups": "גיבויי תצורה",
+    "backupSchedule": "שמירת התצורה",
+    "backupOff": "רק כאשר אני לוחץ על שמור עכשיו",
+    "backupDaily": "כל יום",
+    "backupWeekly": "כל שבוע",
+    "backupKeep": "מספר הגרסאות לשמירה",
+    "backupKeepHint": "גרסה חדשה נשמרת רק אם התצורה השתנתה.",
+    "backupAlert": "התראה כאשר התצורה משתנה",
+    "backupAlertHint": "שולח התראה כאשר התצורה שנשמרה שונה מהקודמת.",
+    "backupHints": {
+      "routeros": "שומר את הפקודה /export, כאשר סיסמאות מוסתרות כפי ש-RouterOS עושה כברירת מחדל.",
+      "opnsense": "שומר את כל קובץ ה-config.xml, אותו קובץ שמופיע תחת System, Configuration, Backups.",
+      "openwrt": "שומר את כל קבצי ה-UCI שההתחברות רשאית לקרוא.",
+      "unifi": "שומר את הגדרות האתר, הרשתות, Wi-Fi, פרופילי פורט וכללי חומת האש.",
+      "pfsense": "שומר את החלקים העיקריים של config.xml באמצעות XML-RPC. דורש שם משתמש וסיסמה.",
+      "cisco": "שומר את show running-config. ייתכן שההתחברות תדרוש את סיסמת ההפעלה."
+    }
   },
   "discover": {
     "title": "איתור מכשירים",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "לא נמצאו שכנים.",
     "neighbor": "שכן",
-    "remotePort": "הפורט שלהם"
+    "remotePort": "הפורט שלהם",
+    "configs": "תצורות"
   },
   "operations": {
     "device": "מכשיר",
@@ -176,5 +201,25 @@
     "name": "מכשירי רשת",
     "description": "אילו מהראוטר, המתגים ונקודות הגישה שלך פעילים.",
     "summary": "{{up}} מתוך {{total}} פעילים"
+  },
+  "configs": {
+    "saveNow": "שמור עכשיו",
+    "saving": "שומר...",
+    "saved": "התצורה נשמרה",
+    "unchanged": "לא היו שינויים מאז הגרסה האחרונה שנשמרה",
+    "none": "אין תצורות שנשמרו עדיין",
+    "delete": "מחק",
+    "deleteConfirm": "למחוק את התצורה שנשמרה ב-{{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "השוואה",
+    "noCompare": "הצג גרסה זו בלבד",
+    "compareWith": "שינויים מאז {{when}}",
+    "same": "אין שינויים.",
+    "download": "הורד",
+    "schedule": {
+      "off": "נשמר רק כאשר אתה לוחץ על שמור עכשיו",
+      "daily": "נשמר כל יום",
+      "weekly": "נשמר כל שבוע"
+    }
   }
 }

@@ -40,7 +40,10 @@
     "snmp": "SNMP naprava",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Skupnost",
@@ -52,7 +55,9 @@
     "privProtocol": "Zasebnost",
     "privKey": "Ključ za zasebnost",
     "apiKey": "API ključ",
-    "apiSecret": "API skrivnost"
+    "apiSecret": "API skrivnost",
+    "enablePassword": "Omogočilno geslo (izbirno)",
+    "hostKey": "Odtis prsta ključa gostitelja (izbirno)"
   },
   "form": {
     "addTitle": "Dodaj napravo",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Vnesite ključe za preverjanje.",
     "testOk": "Povezava z {{name}} vzpostavljena.",
     "save": "Shrani",
-    "add": "Dodaj"
+    "add": "Dodaj",
+    "site": "Mesto",
+    "siteHint": "Ime mesta UniFi iz naslovne vrstice nadzornika. Če je prazno, se uporabi privzeto.",
+    "backups": "Varnostne kopije konfiguracije",
+    "backupSchedule": "Shrani konfiguracijo",
+    "backupOff": "Samo ko pritisnem Shrani zdaj",
+    "backupDaily": "Vsak dan",
+    "backupWeekly": "Vsak teden",
+    "backupKeep": "Število shranjenih različic",
+    "backupKeepHint": "Nova različica se shrani le, ko se konfiguracija spremeni.",
+    "backupAlert": "Obvesti ob spremembi konfiguracije",
+    "backupAlertHint": "Pošlje obvestilo, ko se shranjena konfiguracija razlikuje od prejšnje.",
+    "backupHints": {
+      "routeros": "Shrani /export, pri čemer so gesla skrita, kot je privzeto v RouterOS.",
+      "opnsense": "Shrani celotno datoteko config.xml, isto kot pri Sistem, Konfiguracija, Varnostne kopije.",
+      "openwrt": "Shrani vse konfiguracije UCI, ki jih lahko prebere prijavljeni uporabnik.",
+      "unifi": "Shrani nastavitve mesta, omrežja, Wi-Fi, profile vrat in pravila požarnega zidu.",
+      "pfsense": "Shrani glavne dele datoteke config.xml prek XML-RPC. Zahteva uporabniško ime in geslo.",
+      "cisco": "Shrani izhod ukaz show running-config. Prijava morda zahteva geslo za način enable."
+    }
   },
   "discover": {
     "title": "Poišči naprave",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Ni najdenih sosednjih naprav.",
     "neighbor": "Sosednja naprava",
-    "remotePort": "Njihova vrata"
+    "remotePort": "Njihova vrata",
+    "configs": "Konfiguracije"
   },
   "operations": {
     "device": "Naprava",
@@ -176,5 +201,25 @@
     "name": "Omrežne naprave",
     "description": "Kateri od vaših usmerjevalnikov, stikalo in dostopnih točk so vklopljeni.",
     "summary": "{{up}} od {{total}} vklopljenih"
+  },
+  "configs": {
+    "saveNow": "Shrani zdaj",
+    "saving": "Shranjevanje...",
+    "saved": "Konfiguracija shranjena",
+    "unchanged": "Od zadnje shranjene različice ni sprememb",
+    "none": "Še ni shranjenih konfiguracij",
+    "delete": "Izbriši",
+    "deleteConfirm": "Izbrišete konfiguracijo, shranjeno {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Primerjaj",
+    "noCompare": "Prikaži samo to različico",
+    "compareWith": "Spremembe od {{when}}",
+    "same": "Ni sprememb.",
+    "download": "Prenesi",
+    "schedule": {
+      "off": "Shranjeno le, ko pritisnete Shrani zdaj",
+      "daily": "Shranjeno vsak dan",
+      "weekly": "Shranjeno vsak teden"
+    }
   }
 }

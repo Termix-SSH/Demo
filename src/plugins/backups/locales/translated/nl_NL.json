@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic is niet geïnstalleerd op deze host",
     "tooOld": "restic op deze host is ouder dan 0.17",
-    "hint": "Back-ups gebruiken restic. Installeer het via de pakketbeheerder, of vanuit de restic-release op GitHub als het pakket te oud is.",
+    "hint": "Back-ups gebruiken restic. Installeer het via de pakketbeheerder, of download de restic-release van GitHub als het pakket te oud is. Je kunt het ook overslaan en een andere host kiezen om restic uit te voeren in een taak.",
     "button": "restic installeren",
     "working": "Installeren...",
     "title": "restic installeren?",
@@ -91,7 +91,9 @@
     "edit": "Bewerken",
     "snapshots": "Momentopnames",
     "started": "{{name}} gestart",
-    "runFailed": "De back-up kan niet worden gestart"
+    "runFailed": "De back-up kan niet worden gestart",
+    "runsOn": "restic op {{host}}",
+    "retrying": "Mislukt, opnieuw proberen {{when}}"
   },
   "editor": {
     "newTitle": "Nieuwe back-upjob",
@@ -104,6 +106,10 @@
     "pickRepository": "Kies een repository",
     "noRepos": "Je hebt geen repository die deze host kan gebruiken. Voeg er eerst een toe in het tabblad Back-ups.",
     "repoLocked": "Alleen de eigenaar van deze repository kan deze wijzigen.",
+    "runner": "Voer restic uit op",
+    "runnerThisHost": "Deze host",
+    "runnerSelf": "restic wordt op deze host uitgevoerd en stuurt de back-up naar de repository.",
+    "runnerHint": "restic wordt op de gekozen host uitgevoerd. Termix kopieert de bestanden van deze host ernaartoe via SSH, dus deze host heeft alleen tar nodig en hoeft geen verbinding te maken met de repository.",
     "enabled": "Uitvoeren volgens schema",
     "enabledHint": "Schakel uit om het schema te pauzeren. 'Nu uitvoeren' werkt nog steeds.",
     "oneFileSystem": "Blijf op één bestandssysteem",
@@ -131,7 +137,10 @@
     "engines": {
       "mysql": "MySQL of MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Inloggegevens",
     "ownLogin": "Typ hier inloggegevens",
@@ -155,7 +164,10 @@
     "noVolumes": "Geen volumes gevonden",
     "dockerFailed": "Kan Docker niet weergeven op deze host",
     "stop": "Stop stacks tijdens de back-up",
-    "stopHint": "De geselecteerde stacks worden eerst gestopt en daarna weer gestart, zodat hun bestanden niet veranderen terwijl ze worden gelezen."
+    "stopHint": "De geselecteerde stacks worden eerst gestopt en daarna weer gestart, zodat hun bestanden niet veranderen terwijl ze worden gelezen.",
+    "serverDir": "SQL Server-back-upmap",
+    "serverDirHint": "SQL Server schrijft de back-up zelf naar deze map, en Termix haalt het daar vandaan. Het moet dezelfde map zijn op deze host, dus als je Docker gebruikt, mount dan de map in de container op hetzelfde pad.",
+    "redisHint": "Redis wordt opgeslagen als één snapshot van de hele instantie."
   },
   "schedule": {
     "title": "Schema",
@@ -207,9 +219,16 @@
   "alerts": {
     "title": "Waarschuwingen",
     "onFailure": "Waarschuwen als een back-up mislukt",
-    "onFailureHint": "Waarschuwt ook bij waarschuwingen, en één keer als het weer werkt.",
+    "onFailureHint": "Stuurt ook een melding als het weer werkt.",
     "staleDays": "Dagen zonder back-up",
-    "staleDaysHint": "Waarschuwen als er geen back-up heeft gewerkt gedurende dit aantal dagen. 0 schakelt dit uit."
+    "staleDaysHint": "Waarschuwen als er geen back-up heeft gewerkt gedurende dit aantal dagen. 0 schakelt dit uit.",
+    "onWarning": "Melding bij waarschuwingen",
+    "onWarningHint": "Wanneer een back-up is opgeslagen, maar sommige bestanden niet konden worden gelezen of oude snapshots niet zijn verwijderd.",
+    "onSuccess": "Melding bij elke geslaagde back-up",
+    "onSuccessHint": "Stuurt ook een melding elke keer dat deze taak zonder problemen is voltooid.",
+    "channels": "Verstuur naar",
+    "channelsHint": "Kies de kanalen voor de meldingen van deze taak. Als er geen is gekozen, gaan ze naar al je kanalen.",
+    "channelOff": "uit"
   },
   "repos": {
     "add": "Repository toevoegen",
@@ -347,6 +366,7 @@
     "progress": "Voortgang",
     "preparing": "Voorbereiden...",
     "progressLine": "{{percent}}% | {{files}} van {{totalFiles}} bestanden | {{bytes}} van {{totalBytes}}",
+    "copied": "{{bytes}} gekopieerd via Termix",
     "left": "{{time}} resterend",
     "details": "Details",
     "started": "Gestart",
@@ -452,5 +472,22 @@
   },
   "nav": {
     "togglePanel": "Back-up-paneel in-/uitschakelen"
+  },
+  "retries": {
+    "title": "Opnieuw proberen",
+    "count": "Opnieuw proberen na een mislukte back-up",
+    "delay": "Minuten tussen pogingen",
+    "hint": "Een mislukte back-up wordt dit aantal keren opnieuw geprobeerd. De foutmelding wordt pas verzonden als de laatste poging faalt."
+  },
+  "mirrors": {
+    "title": "Spiegels",
+    "hint": "Na elke back-up worden de snapshots ook gekopieerd naar deze repositories, en worden oude snapshots daar verwijderd volgens dezelfde bewaarregels. Een mislukte kopie behoudt de back-up en markeert de uitvoering met waarschuwingen."
+  },
+  "repoSnapshots": {
+    "browse": "Blader door alle snapshots",
+    "host": "Lezen van host",
+    "hostHint": "restic wordt op deze host uitgevoerd om de repository te lezen. Het heeft restic nodig en moet verbinding kunnen maken met de repository.",
+    "pickHost": "Kies een host om de repository van te lezen",
+    "external": "Niet van Termix"
   }
 }

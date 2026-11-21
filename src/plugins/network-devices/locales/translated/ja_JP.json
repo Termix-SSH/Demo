@@ -40,7 +40,10 @@
     "snmp": "SNMPデバイス",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "コミュニティ",
@@ -52,7 +55,9 @@
     "privProtocol": "プライバシー",
     "privKey": "プライバシーキー",
     "apiKey": "APIキー",
-    "apiSecret": "APIシークレット"
+    "apiSecret": "APIシークレット",
+    "enablePassword": "Enable パスワード（オプション）",
+    "hostKey": "ホストキーのフィンガープリント（オプション）"
   },
   "form": {
     "addTitle": "デバイスの追加",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "テストするにはキーを入力してください。",
     "testOk": "{{name}}に接続しました。",
     "save": "保存",
-    "add": "追加"
+    "add": "追加",
+    "site": "サイト",
+    "siteHint": "コントローラーのアドレスバーに表示される UniFi のサイト名。空欄の場合はデフォルトを使用します。",
+    "backups": "設定のバックアップ",
+    "backupSchedule": "設定を保存する",
+    "backupOff": "「今すぐ保存」を押したときのみ",
+    "backupDaily": "毎日",
+    "backupWeekly": "毎週",
+    "backupKeep": "保持するバージョン数",
+    "backupKeepHint": "設定が変更された場合のみ、新しいバージョンが保持されます。",
+    "backupAlert": "設定が変更されたときに通知する",
+    "backupAlertHint": "保存された設定が前回のものと異なる場合に通知を送信します。",
+    "backupHints": {
+      "routeros": "/export を保存します。パスワードは RouterOS のデフォルトと同様に非表示になります。",
+      "opnsense": "System > Configuration > Backups と同じ config.xml ファイル全体を保存します。",
+      "openwrt": "ログインユーザーが読み取り可能なすべての UCI 設定を保存します。",
+      "unifi": "サイトの設定、ネットワーク、Wi-Fi、ポートプロファイル、ファイアウォールルールを保存します。",
+      "pfsense": "XML-RPC を介して config.xml の主要な部分を保存します。ユーザー名とパスワードが必要です。",
+      "cisco": "show running-config を保存します。ログインに enable パスワードが必要な場合があります。"
+    }
   },
   "discover": {
     "title": "デバイスの検索",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "隣接デバイスが見つかりません。",
     "neighbor": "隣接デバイス",
-    "remotePort": "相手のポート"
+    "remotePort": "相手のポート",
+    "configs": "設定"
   },
   "operations": {
     "device": "デバイス",
@@ -176,5 +201,25 @@
     "name": "ネットワークデバイス",
     "description": "ルーター、スイッチ、アクセスポイントの稼働状況を確認します。",
     "summary": "{{total}} 件中 {{up}} 件稼働中"
+  },
+  "configs": {
+    "saveNow": "今すぐ保存",
+    "saving": "保存中...",
+    "saved": "設定が保存されました",
+    "unchanged": "最後の保存バージョン以降に変更はありません",
+    "none": "保存された設定はまだありません",
+    "delete": "削除",
+    "deleteConfirm": "{{when}} に保存された設定を削除しますか？",
+    "title": "{{name}} | {{when}}",
+    "compare": "比較",
+    "noCompare": "このバージョンのみ表示",
+    "compareWith": "{{when}} 以降の変更",
+    "same": "変更はありません。",
+    "download": "ダウンロード",
+    "schedule": {
+      "off": "「今すぐ保存」を押したときのみ保存されます",
+      "daily": "毎日保存されます",
+      "weekly": "毎週保存されます"
+    }
   }
 }

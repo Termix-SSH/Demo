@@ -40,7 +40,10 @@
     "snmp": "SNMP įrenginys",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Bendruomenė",
@@ -52,7 +55,9 @@
     "privProtocol": "Privatumas",
     "privKey": "Privatumo raktas",
     "apiKey": "API raktas",
-    "apiSecret": "API slaptažodis"
+    "apiSecret": "API slaptažodis",
+    "enablePassword": "Įgalinimo slaptažodis (nebūtina)",
+    "hostKey": "Serverio rakšto pirštų atspaudas (nebūtina)"
   },
   "form": {
     "addTitle": "Pridėti įrenginį",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Įveskite raktus, kad atliktumėte testą.",
     "testOk": "Prijungta prie „{{name}}“.",
     "save": "Išsaugoti",
-    "add": "Pridėti"
+    "add": "Pridėti",
+    "site": "Svetainė",
+    "siteHint": "UniFi svetainės pavadinimas iš valdiklio adreso juostos. Jei paliktu tuščią, bus naudojama numatytoji.",
+    "backups": "Konfigūracijos atsarginės kopijos",
+    "backupSchedule": "Konfigūracijos išsaugojimas",
+    "backupOff": "Tik paspaudus Išsaugoti dabar",
+    "backupDaily": "Kas dieną",
+    "backupWeekly": "Kas savaitę",
+    "backupKeep": "Laikytinos versijos",
+    "backupKeepHint": "Nauja versija išsaugoma tik tada, kai konfigūracija pasikeitė.",
+    "backupAlert": "Pranešti, kai konfigūracija pasikeičia",
+    "backupAlertHint": "Siunčia pranešimą, kai išsaugota konfigūracija skiriasi nuo ankstesnės.",
+    "backupHints": {
+      "routeros": "Išsaugo /export, o slaptažodžius paslepia taip, kaip numatyta RouterOS.",
+      "opnsense": "Išsaugo visą config.xml failą, tą patį, kuris naudojamas skiltyje System, Configuration, Backups.",
+      "openwrt": "Išsaugo visus UCI konfigūracijos failus, kuriuos prisijungęs vartotojas gali skaityti.",
+      "unifi": "Išsaugo svetainės nustatymus, tinklus, Wi-Fi, prievadų profilius ir ugniasienės taisykles.",
+      "pfsense": "Per XML-RPC išsaugo pagrindines config.xml dalis. Reikalingas vartotojo vardas ir slaptažodis.",
+      "cisco": "Išsaugo show running-config. Prisijungimui gali prireikti įgalinimo slaptažodžio."
+    }
   },
   "discover": {
     "title": "Rasti įrenginius",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Kaimynų nerasta.",
     "neighbor": "Kaimynas",
-    "remotePort": "Jų prievadas"
+    "remotePort": "Jų prievadas",
+    "configs": "Konfigūracijos"
   },
   "operations": {
     "device": "Įrenginys",
@@ -176,5 +201,25 @@
     "name": "Tinklo įrenginiai",
     "description": "Kuris iš jūsų maršrutizatorių, komutatorių ir prieigos taškų veikia.",
     "summary": "{{up}} iš {{total}} veikia"
+  },
+  "configs": {
+    "saveNow": "Išsaugoti dabar",
+    "saving": "Išsaugoma...",
+    "saved": "Konfigūracija išsaugota",
+    "unchanged": "Nuo paskutinės išsaugotos versijos pokyčių nėra",
+    "none": "Dar nėra išsaugotų konfigūracijų",
+    "delete": "Ištrinti",
+    "deleteConfirm": "Ištrinti konfigūraciją, išsaugotą {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Palyginti",
+    "noCompare": "Rodyti tik šią versiją",
+    "compareWith": "Pokyčiai nuo {{when}}",
+    "same": "Pokyčių nėra.",
+    "download": "Atsisiųsti",
+    "schedule": {
+      "off": "Išsaugoma tik paspaudus Išsaugoti dabar",
+      "daily": "Išsaugoma kas dieną",
+      "weekly": "Išsaugoma kas savaitę"
+    }
   }
 }

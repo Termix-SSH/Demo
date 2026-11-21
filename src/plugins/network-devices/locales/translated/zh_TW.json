@@ -40,7 +40,10 @@
     "snmp": "SNMP 設備",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "社群字串",
@@ -52,7 +55,9 @@
     "privProtocol": "隱私",
     "privKey": "隱私金鑰",
     "apiKey": "API 金鑰",
-    "apiSecret": "API 密鑰"
+    "apiSecret": "API 密鑰",
+    "enablePassword": "啟用密碼（選填）",
+    "hostKey": "主機金指紋（選填）"
   },
   "form": {
     "addTitle": "新增設備",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "輸入金鑰以進行測試。",
     "testOk": "已連線至 {{name}}。",
     "save": "儲存",
-    "add": "新增"
+    "add": "新增",
+    "site": "站台",
+    "siteHint": "從控制器的網址列取得的 UniFi 站台名稱。留空則使用預設值。",
+    "backups": "設定檔備份",
+    "backupSchedule": "儲存設定",
+    "backupOff": "僅在我按下「立即儲存」時",
+    "backupDaily": "每天",
+    "backupWeekly": "每週",
+    "backupKeep": "保留版本數",
+    "backupKeepHint": "僅在設定變更時才會保留新版本。",
+    "backupAlert": "設定變更時通知",
+    "backupAlertHint": "當儲存的設定與上一個版本不同時，會發送通知。",
+    "backupHints": {
+      "routeros": "儲存 /export，密碼會像 RouterOS 預設那樣隱藏。",
+      "opnsense": "儲存整個 config.xml，與「系統」、「設定」、「備份」中的檔案相同。",
+      "openwrt": "儲存登入帳號可讀取的所有 UCI 設定。",
+      "unifi": "儲存站台的設定、網路、Wi-Fi、埠設定檔與防火牆規則。",
+      "pfsense": "透過 XML-RPC 儲存 config.xml 的主要部分。需要使用者名稱與密碼。",
+      "cisco": "儲存 show running-config。登入時可能需要啟用密碼。"
+    }
   },
   "discover": {
     "title": "尋找設備",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "找不到鄰近裝置。",
     "neighbor": "鄰近裝置",
-    "remotePort": "對方埠"
+    "remotePort": "對方埠",
+    "configs": "設定檔"
   },
   "operations": {
     "device": "裝置",
@@ -176,5 +201,25 @@
     "name": "網路裝置",
     "description": "您的路由器、交換器和存取點哪些正在運作。",
     "summary": "{{up}} / {{total}} 正在運作"
+  },
+  "configs": {
+    "saveNow": "立即儲存",
+    "saving": "儲存中...",
+    "saved": "設定已儲存",
+    "unchanged": "自上次儲存以來沒有變更",
+    "none": "尚無已儲存的設定",
+    "delete": "刪除",
+    "deleteConfirm": "要刪除於 {{when}} 儲存的設定嗎？",
+    "title": "{{name}} | {{when}}",
+    "compare": "比較",
+    "noCompare": "僅顯示此版本",
+    "compareWith": "自 {{when}} 以來的變更",
+    "same": "沒有變更。",
+    "download": "下載",
+    "schedule": {
+      "off": "僅在您按下「立即儲存」時儲存",
+      "daily": "每天儲存",
+      "weekly": "每週儲存"
+    }
   }
 }

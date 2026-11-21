@@ -40,7 +40,10 @@
     "snmp": "SNMP-enhed",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Community",
@@ -52,7 +55,9 @@
     "privProtocol": "Privatliv",
     "privKey": "Privatlivsnøgle",
     "apiKey": "API-nøgle",
-    "apiSecret": "API-hemmelighed"
+    "apiSecret": "API-hemmelighed",
+    "enablePassword": "Enable-adgangskode (valgfrit)",
+    "hostKey": "Fingeraftryk for vært-nøgle (valgfrit)"
   },
   "form": {
     "addTitle": "Tilføj enhed",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Indtast nøglerne for at teste.",
     "testOk": "Forbundet til {{name}}.",
     "save": "Gem",
-    "add": "Tilføj"
+    "add": "Tilføj",
+    "site": "Sted",
+    "siteHint": "UniFi-stedets navn fra adresselinjen på controlleren. Tomt bruger standard.",
+    "backups": "Konfigurationsbackups",
+    "backupSchedule": "Gem konfigurationen",
+    "backupOff": "Kun når jeg trykker Gem nu",
+    "backupDaily": "Hver dag",
+    "backupWeekly": "Hver uge",
+    "backupKeep": "Antal versioner at beholde",
+    "backupKeepHint": "En ny version gemmes kun, hvis konfigurationen er ændret.",
+    "backupAlert": "Advar, når konfigurationen ændres",
+    "backupAlertHint": "Sender en advarsel, når en gemt konfiguration afviger fra den foregående.",
+    "backupHints": {
+      "routeros": "Gemmer /export, med adgangskoder skjult, som RouterOS gør som standard.",
+      "opnsense": "Gemmer hele config.xml, samme fil som System, Konfiguration, Backups.",
+      "openwrt": "Gemmer alle UCI-konfigurationer, som login kan læse.",
+      "unifi": "Gemmer stedets indstillinger, netværk, Wi-Fi, portprofiler og firewall-regler.",
+      "pfsense": "Gemmer hoveddelene af config.xml via XML-RPC. Kræver brugernavn og adgangskode.",
+      "cisco": "Gemmer show running-config. Login kan kræve enable-adgangskoden."
+    }
   },
   "discover": {
     "title": "Find enheder",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Ingen naboer fundet.",
     "neighbor": "Nabo",
-    "remotePort": "Der port"
+    "remotePort": "Der port",
+    "configs": "Konfigurationer"
   },
   "operations": {
     "device": "Enhed",
@@ -176,5 +201,25 @@
     "name": "Netværksenheder",
     "description": "Hvilke af dine routere, switches og access points er oppe.",
     "summary": "{{up}} af {{total}} oppe"
+  },
+  "configs": {
+    "saveNow": "Gem nu",
+    "saving": "Gemmer...",
+    "saved": "Konfiguration gemt",
+    "unchanged": "Ingen ændring siden sidste gemte version",
+    "none": "Ingen gemte konfigurationer endnu",
+    "delete": "Slet",
+    "deleteConfirm": "Slet konfigurationen gemt {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Sammenlign",
+    "noCompare": "Vis kun denne version",
+    "compareWith": "Ændringer siden {{when}}",
+    "same": "Ingen ændringer.",
+    "download": "Download",
+    "schedule": {
+      "off": "Gemt kun, når du trykker Gem nu",
+      "daily": "Gemt hver dag",
+      "weekly": "Gemt hver uge"
+    }
   }
 }

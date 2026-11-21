@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic bu hostta yüklü değil",
     "tooOld": "Bu hosttaki restic sürümü 0.17'den eski",
-    "hint": "Yedeklemeler restic kullanır. Paket yöneticisi ile veya paket çok eskiyse GitHub'daki restic sürümünden yükleyin.",
+    "hint": "Yedeklemeler restic kullanır. Paket yöneticisiyle veya paket çok eskiyse GitHub'daki restic sürümünden yükleyin. Ayrıca atlayıp bir işte restic'i çalıştırmak için başka bir ana makine seçebilirsiniz.",
     "button": "restic'i yükle",
     "working": "Yükleniyor...",
     "title": "restic yüklensin mi?",
@@ -91,7 +91,9 @@
     "edit": "Düzenle",
     "snapshots": "Anlık Görüntüler",
     "started": "{{name}} başlatıldı",
-    "runFailed": "Yedekleme başlatılamadı"
+    "runFailed": "Yedekleme başlatılamadı",
+    "runsOn": "{{host}} üzerinde restic",
+    "retrying": "Başarısız, {{when}} tekrar deneniyor"
   },
   "editor": {
     "newTitle": "Yeni yedekleme görevi",
@@ -104,6 +106,10 @@
     "pickRepository": "Bir depo seçin",
     "noRepos": "Bu sunucunun kullanabileceği bir depoyu yok. Önce Yedeklemeler sekmesinden bir tane ekleyin.",
     "repoLocked": "Bu depoyu yalnızca sahibi değiştirebilir.",
+    "runner": "restic'i şurada çalıştır",
+    "runnerThisHost": "Bu ana makine",
+    "runnerSelf": "restic bu ana makinede çalışır ve yedeği depoya gönderir.",
+    "runnerHint": "restic seçilen ana makinede çalışır. Termix bu ana makinenin dosyalarını SSH üzerinden ona kopyalar, bu yüzden bu ana makinenin yalnızca tar'a ihtiyacı vardır ve depoya ulaşmasına gerek yoktur.",
     "enabled": "Zamanlamaya göre çalıştır",
     "enabledHint": "Zamanlamayı duraklatmak için kapatın. Şimdi çalıştırma yine çalışır.",
     "oneFileSystem": "Tek bir dosya sisteminde kal",
@@ -131,7 +137,10 @@
     "engines": {
       "mysql": "MySQL veya MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Oturum Açma",
     "ownLogin": "Buraya bir oturum açma bilgisi yazın",
@@ -155,7 +164,10 @@
     "noVolumes": "Hacim bulunamadı",
     "dockerFailed": "Bu sunucudaki Docker listelenemedi",
     "stop": "Yedekleme sırasında yığınları durdur",
-    "stopHint": "Seçilen yığınlar önce durdurulur, yedekleme tamamlandıktan sonra tekrar başlatılır. Böylece dosyalar okunurken değişmez."
+    "stopHint": "Seçilen yığınlar önce durdurulur, yedekleme tamamlandıktan sonra tekrar başlatılır. Böylece dosyalar okunurken değişmez.",
+    "serverDir": "SQL Server yedekleme klasörü",
+    "serverDirHint": "SQL Server yedeği bu klasöre kendisi yazar ve Termix oradan alır. Bu ana makinede aynı klasör olmalıdır, bu yüzden Docker ile konteynere aynı yoldan bağlayın.",
+    "redisHint": "Redis, tüm örneğin tek bir anlık görüntüsü olarak kaydedilir."
   },
   "schedule": {
     "title": "Zamanlama",
@@ -207,9 +219,16 @@
   "alerts": {
     "title": "Uyarılar",
     "onFailure": "Yedekleme başarısız olduğunda uyar",
-    "onFailureHint": "Uyarıları da bildirir ve tekrar çalışmaya başladığında bir kez uyarır.",
+    "onFailureHint": "Tekrar çalışmaya başladığında da bir kez uyarı gönderir.",
     "staleDays": "Yedekleme olmayan gün sayısı",
-    "staleDaysHint": "Bu kadar gün boyunca yedekleme çalışmadığında uyar. 0, bu özelliği kapatır."
+    "staleDaysHint": "Bu kadar gün boyunca yedekleme çalışmadığında uyar. 0, bu özelliği kapatır.",
+    "onWarning": "Uyarılarda bildirim gönder",
+    "onWarningHint": "Bir yedekleme kaydedildiğinde ancak bazı dosyalar okunamadığında veya eski anlık görüntüler silinemediğinde.",
+    "onSuccess": "Her başarılı yedeklemede bildirim gönder",
+    "onSuccessHint": "Bu iş sorunsuz tamamlandığında da her seferinde bir bildirim gönderir.",
+    "channels": "Şuraya gönder",
+    "channelsHint": "Bu işin bildirimleri için kanalları seçin. Hiçbiri seçilmezse, tüm kanallarınıza gider.",
+    "channelOff": "kapalı"
   },
   "repos": {
     "add": "Depo ekle",
@@ -347,6 +366,7 @@
     "progress": "İlerleme",
     "preparing": "Hazırlanıyor...",
     "progressLine": "%{{percent}} | {{totalFiles}} dosyadan {{files}} | {{totalBytes}}'den {{bytes}}",
+    "copied": "{{bytes}} Termix üzerinden kopyalandı",
     "left": "{{time}} kaldı",
     "details": "Ayrıntılar",
     "started": "Başlatıldı",
@@ -452,5 +472,22 @@
   },
   "nav": {
     "togglePanel": "Yedekleme panelini aç/kapat"
+  },
+  "retries": {
+    "title": "Yeniden Denemeler",
+    "count": "Başarısız yedeklemeden sonra yeniden denemeler",
+    "delay": "Yeniden denemeler arasındaki dakika",
+    "hint": "Başarısız bir yedekleme bu kadar kez tekrar denenir. Başarısızlık bildirimi yalnızca son deneme başarısız olduğunda gönderilir."
+  },
+  "mirrors": {
+    "title": "Aynalar",
+    "hint": "Her yedeklemeden sonra, anlık görüntüleri bu depolara da kopyalanır ve eski olanlar aynı saklama kurallarıyla oradan silinir. Başarısız bir kopyalama yedeği korur ve çalışmayı uyarılarla işaretler."
+  },
+  "repoSnapshots": {
+    "browse": "Tüm anlık görüntüleri görüntüle",
+    "host": "Ana makineden oku",
+    "hostHint": "restic depoyu okumak için bu ana makinede çalışır. restic'e ihtiyacı vardır ve depoya ulaşmalıdır.",
+    "pickHost": "Depoyu okumak için bir ana makine seçin",
+    "external": "Termix'ten değil"
   }
 }

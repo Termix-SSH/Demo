@@ -40,7 +40,10 @@
     "snmp": "SNMP уређај",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Заједница",
@@ -52,7 +55,9 @@
     "privProtocol": "Приватност",
     "privKey": "Кључ за приватност",
     "apiKey": "API кључ",
-    "apiSecret": "API тајна"
+    "apiSecret": "API тајна",
+    "enablePassword": "Enable lozinka (opciono)",
+    "hostKey": "Otisak host ključa (opciono)"
   },
   "form": {
     "addTitle": "Додај уређај",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Унесите кључеве за тестирање.",
     "testOk": "Повезано са {{name}}.",
     "save": "Сачувај",
-    "add": "Додај"
+    "add": "Додај",
+    "site": "Lokacija",
+    "siteHint": "Naziv UniFi lokacije iz adrese kontrolera. Ako je prazno, koristi se podrazumevana.",
+    "backups": "Rezervne kopije konfiguracije",
+    "backupSchedule": "Sačuvaj konfiguraciju",
+    "backupOff": "Samo kada pritisnem Sačuvaj sada",
+    "backupDaily": "Svaki dan",
+    "backupWeekly": "Svake nedelje",
+    "backupKeep": "Broj verzija za čuvanje",
+    "backupKeepHint": "Nova verzija se čuva samo ako se konfiguracija promenila.",
+    "backupAlert": "Obaveštenje pri promeni konfiguracije",
+    "backupAlertHint": "Šalje obaveštenje kada sačuvana konfiguracija odstupa od prethodne.",
+    "backupHints": {
+      "routeros": "Čuva /export, sa lozinkama sakrivenim kako RouterOS radi podrazumevano.",
+      "opnsense": "Čuva ceo config.xml, isti fajl kao u System, Configuration, Backups.",
+      "openwrt": "Čuva svaku UCI konfiguraciju koju prijavljeni korisnik može da čita.",
+      "unifi": "Čuva podešavanja lokacije, mreže, Wi-Fi, port profile i pravila firewall-a.",
+      "pfsense": "Čuva glavne delove config.xml putem XML-RPC. Potrebno je korisničko ime i lozinka.",
+      "cisco": "Čuva show running-config. Prijava možda zahteva enable lozinku."
+    }
   },
   "discover": {
     "title": "Пронађи уређаје",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Ниједан сусед није пронађен.",
     "neighbor": "Сусед",
-    "remotePort": "Њихов порт"
+    "remotePort": "Њихов порт",
+    "configs": "Konfiguracije"
   },
   "operations": {
     "device": "Уређај",
@@ -176,5 +201,25 @@
     "name": "Мрежни уређаји",
     "description": "Који од ваших рутера, свичева и приступних тачака су активни.",
     "summary": "{{up}} од {{total}} активно"
+  },
+  "configs": {
+    "saveNow": "Sačuvaj sada",
+    "saving": "Čuvanje...",
+    "saved": "Konfiguracija sačuvana",
+    "unchanged": "Nema promena od poslednje sačuvane verzije",
+    "none": "Još nema sačuvanih konfiguracija",
+    "delete": "Obriši",
+    "deleteConfirm": "Da li želite da obrišete konfiguraciju sačuvanu {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Uporedi",
+    "noCompare": "Prikaži samo ovu verziju",
+    "compareWith": "Promene od {{when}}",
+    "same": "Nema promena.",
+    "download": "Preuzmi",
+    "schedule": {
+      "off": "Čuva se samo kada pritisnete Sačuvaj sada",
+      "daily": "Čuva se svaki dan",
+      "weekly": "Čuva se svake nedelje"
+    }
   }
 }

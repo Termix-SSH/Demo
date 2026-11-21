@@ -40,7 +40,10 @@
     "snmp": "Urządzenie SNMP",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Społeczność",
@@ -52,7 +55,9 @@
     "privProtocol": "Prywatność",
     "privKey": "Klucz prywatności",
     "apiKey": "Klucz API",
-    "apiSecret": "Tajny klucz API"
+    "apiSecret": "Tajny klucz API",
+    "enablePassword": "Hasło enable (opcjonalnie)",
+    "hostKey": "Odcisk palca klucza hosta (opcjonalnie)"
   },
   "form": {
     "addTitle": "Dodaj urządzenie",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Wprowadź klucze, aby przetestować.",
     "testOk": "Połączono z {{name}}.",
     "save": "Zapisz",
-    "add": "Dodaj"
+    "add": "Dodaj",
+    "site": "Strona",
+    "siteHint": "Nazwa strony UniFi z paska adresu kontrolera. Puste pole oznacza użycie domyślnej.",
+    "backups": "Kopie zapasowe konfiguracji",
+    "backupSchedule": "Zapisz konfigurację",
+    "backupOff": "Tylko po naciśnięciu Zapisz teraz",
+    "backupDaily": "Codziennie",
+    "backupWeekly": "Co tydzień",
+    "backupKeep": "Liczba zachowywanych wersji",
+    "backupKeepHint": "Nowa wersja jest zachowywana tylko wtedy, gdy konfiguracja uległa zmianie.",
+    "backupAlert": "Powiadomienie o zmianie konfiguracji",
+    "backupAlertHint": "Wysyła powiadomienie, gdy zapisana konfiguracja różni się od poprzedniej.",
+    "backupHints": {
+      "routeros": "Zapisuje /export, z hasłami ukrytymi tak, jak domyślnie robi to RouterOS.",
+      "opnsense": "Zapisuje cały plik config.xml, ten sam, co w System, Configuration, Backups.",
+      "openwrt": "Zapisuje wszystkie konfiguracje UCI, do których użytkownik ma dostęp.",
+      "unifi": "Zapisuje ustawienia strony, sieci, Wi-Fi, profile portów i reguły zapory sieciowej.",
+      "pfsense": "Zapisuje główne części pliku config.xml przez XML-RPC. Wymaga nazwy użytkownika i hasła.",
+      "cisco": "Zapisuje show running-config. Logowanie może wymagać hasła enable."
+    }
   },
   "discover": {
     "title": "Znajdź urządzenia",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Nie znaleziono sąsiadów.",
     "neighbor": "Sąsiad",
-    "remotePort": "Ich port"
+    "remotePort": "Ich port",
+    "configs": "Konfiguracje"
   },
   "operations": {
     "device": "Urządzenie",
@@ -176,5 +201,25 @@
     "name": "Urządzenia sieciowe",
     "description": "Które z Twoich routerów, przełączników i punktów dostępowych są online.",
     "summary": "{{up}} z {{total}} online"
+  },
+  "configs": {
+    "saveNow": "Zapisz teraz",
+    "saving": "Zapisywanie...",
+    "saved": "Konfiguracja zapisana",
+    "unchanged": "Brak zmian od ostatniej zapisanej wersji",
+    "none": "Brak zapisanych konfiguracji",
+    "delete": "Usuń",
+    "deleteConfirm": "Usunąć konfigurację zapisaną {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Porównaj",
+    "noCompare": "Pokaż tylko tę wersję",
+    "compareWith": "Zmiany od {{when}}",
+    "same": "Brak zmian.",
+    "download": "Pobierz",
+    "schedule": {
+      "off": "Zapisywane tylko po naciśnięciu Zapisz teraz",
+      "daily": "Zapisywane codziennie",
+      "weekly": "Zapisywane co tydzień"
+    }
   }
 }

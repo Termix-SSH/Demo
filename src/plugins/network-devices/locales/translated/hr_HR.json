@@ -40,7 +40,10 @@
     "snmp": "SNMP uređaj",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Zajednica",
@@ -52,7 +55,9 @@
     "privProtocol": "Privatnost",
     "privKey": "Ključ za privatnost",
     "apiKey": "API ključ",
-    "apiSecret": "API tajna"
+    "apiSecret": "API tajna",
+    "enablePassword": "Lozinka za omogućavanje (opcionalno)",
+    "hostKey": "Otis ključa domaćina (opcionalno)"
   },
   "form": {
     "addTitle": "Dodaj uređaj",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Unesite ključeve za testiranje.",
     "testOk": "Povezano s {{name}}.",
     "save": "Spremi",
-    "add": "Dodaj"
+    "add": "Dodaj",
+    "site": "Mjesto",
+    "siteHint": "Naziv UniFi mjesta iz adrese kontrolera. Ako je prazno, koristi se zadano.",
+    "backups": "Sigurnosne kopije konfiguracije",
+    "backupSchedule": "Spremi konfiguraciju",
+    "backupOff": "Samo kada pritisnem Spremi sada",
+    "backupDaily": "Svaki dan",
+    "backupWeekly": "Svaki tjedan",
+    "backupKeep": "Broj verzija za zadržavanje",
+    "backupKeepHint": "Nova verzija se zadržava samo ako se konfiguracija promijenila.",
+    "backupAlert": "Obavijesti kada se konfiguracija promijeni",
+    "backupAlertHint": "Pošalje obavijest kada spremljena konfiguracija odstupa od prethodne.",
+    "backupHints": {
+      "routeros": "Sprema /export, pri čemu su lozinke skrivene kako RouterOS to radi prema zadanim postavkama.",
+      "opnsense": "Sprema cijeli config.xml, isti datoteku kao u sustavu, Konfiguracija, Sigurnosne kopije.",
+      "openwrt": "Sprema svaku UCI konfiguraciju koju prijava može pročitati.",
+      "unifi": "Sprema postavke mjesta, mreže, Wi-Fi, profile portova i pravila zidova za zaštitu.",
+      "pfsense": "Sprema glavne dijelove config.xml putem XML-RPC-a. Potrebno je korisničko ime i lozinka.",
+      "cisco": "Sprema show running-config. Prijava možda zahtijeva lozinku za omogućavanje."
+    }
   },
   "discover": {
     "title": "Pronađi uređaje",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Nema pronađenih susjeda.",
     "neighbor": "Susjed",
-    "remotePort": "Njihov port"
+    "remotePort": "Njihov port",
+    "configs": "Konfiguracije"
   },
   "operations": {
     "device": "Uređaj",
@@ -176,5 +201,25 @@
     "name": "Mrežni uređaji",
     "description": "Koji su vaši usmjerivači, prekidači i pristupne točke aktivni.",
     "summary": "{{up}} od {{total}} aktivno"
+  },
+  "configs": {
+    "saveNow": "Spremi sada",
+    "saving": "Spremanje...",
+    "saved": "Konfiguracija spremljena",
+    "unchanged": "Nema promjena od zadnje spremljene verzije",
+    "none": "Još nema spremljenih konfiguracija",
+    "delete": "Izbriši",
+    "deleteConfirm": "Izbrisati konfiguraciju spremljenu {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Usporedi",
+    "noCompare": "Prikaži samo ovu verziju",
+    "compareWith": "Promjene od {{when}}",
+    "same": "Nema promjena.",
+    "download": "Preuzmi",
+    "schedule": {
+      "off": "Spremljeno samo kada pritisnete Spremi sada",
+      "daily": "Spremljeno svaki dan",
+      "weekly": "Spremljeno svaki tjedan"
+    }
   }
 }

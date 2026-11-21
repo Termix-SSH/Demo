@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic není na tomto hostiteli nainstalován",
     "tooOld": "Verze restic na tomto hostiteli je starší než 0.17",
-    "hint": "Zálohy používají restic. Nainstalujte jej pomocí správce balíčků nebo z vydání restic na GitHubu, pokud je balíček příliš starý.",
+    "hint": "Zálohy používají restic. Nainstalujte jej pomocí správce balíčků nebo z vydání restic na GitHubu, pokud je balíček příliš starý. Můžete jej také přeskočit a vybrat jiný hostitel pro spuštění restic v úloze.",
     "button": "Nainstalovat restic",
     "working": "Instalace...",
     "title": "Nainstalovat restic?",
@@ -103,7 +103,9 @@
     "edit": "Upravit",
     "snapshots": "Snímky",
     "started": "{{name}} spuštěno",
-    "runFailed": "Zálohu se nepodařilo spustit"
+    "runFailed": "Zálohu se nepodařilo spustit",
+    "runsOn": "restic na {{host}}",
+    "retrying": "Selhalo, opakuje se {{when}}"
   },
   "editor": {
     "newTitle": "Nová úloha zálohy",
@@ -116,6 +118,10 @@
     "pickRepository": "Vyberte repozitář",
     "noRepos": "Tento hostitel nemá žádný repozitář, který by mohl použít. Nejprve přidejte jeden na kartě Zálohy.",
     "repoLocked": "Změnit jej může pouze vlastník tohoto repozitáře.",
+    "runner": "Spustit restic na",
+    "runnerThisHost": "Tento hostitel",
+    "runnerSelf": "restic běží na tomto hostiteli a odesílá zálohu do úložiště.",
+    "runnerHint": "restic běží na vybraném hostiteli. Termix zkopíruje soubory tohoto hostitele přes SSH, takže tento hostitel potřebuje pouze tar a nemusí se dostávat k úložišti.",
     "enabled": "Spouštět podle plánu",
     "enabledHint": "Vypnutím pozastavíte plán. Ruční spuštění stále funguje.",
     "oneFileSystem": "Zůstat na jednom souborovém systému",
@@ -143,7 +149,10 @@
     "engines": {
       "mysql": "MySQL nebo MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Přihlášení",
     "ownLogin": "Zadejte přihlašovací údaje zde",
@@ -167,7 +176,10 @@
     "noVolumes": "Nebyly nalezeny žádné svazky",
     "dockerFailed": "Nelze vypsat Docker na tomto hostiteli",
     "stop": "Zastavit zásobníky během zálohy",
-    "stopHint": "Vybrané zásobníky jsou nejprve zastaveny a po záloze znovu spuštěny, aby se jejich soubory během čtení neměnily."
+    "stopHint": "Vybrané zásobníky jsou nejprve zastaveny a po záloze znovu spuštěny, aby se jejich soubory během čtení neměnily.",
+    "serverDir": "Složka pro zálohy SQL Server",
+    "serverDirHint": "SQL Server sám zapisuje zálohu do této složky a Termix ji odtud přebírá. Musí to být stejná složka na tomto hostiteli, takže ji s Dockerem připojte do kontejneru na stejnou cestu.",
+    "redisHint": "Redis je uložen jako jeden snapshot celé instance."
   },
   "schedule": {
     "title": "Rozvrh",
@@ -219,9 +231,16 @@
   "alerts": {
     "title": "Upozornění",
     "onFailure": "Upozornit při selhání zálohy",
-    "onFailureHint": "Upozorní také na varování a jednou, když opět funguje.",
+    "onFailureHint": "Také upozorní jednou, když znovu funguje.",
     "staleDays": "Dny bez zálohy",
-    "staleDaysHint": "Upozornit, pokud záloha nefungovala po tento počet dní. Hodnota 0 funkci vypne."
+    "staleDaysHint": "Upozornit, pokud záloha nefungovala po tento počet dní. Hodnota 0 funkci vypne.",
+    "onWarning": "Upozornit na varování",
+    "onWarningHint": "Když je záloha uložena, ale některé soubory nelze přečíst nebo nebyly odstraněny staré snapshoty.",
+    "onSuccess": "Upozornit na každou úspěšnou zálohu",
+    "onSuccessHint": "Také odešle upozornění pokaždé, když tato úloha skončí bez problémů.",
+    "channels": "Odeslat do",
+    "channelsHint": "Vyberte kanály pro upozornění této úlohy. Pokud žádný není vybrán, jdou do všech vašich kanálů.",
+    "channelOff": "vypnuto"
   },
   "repos": {
     "add": "Přidat úložiště",
@@ -367,6 +386,7 @@
     "progress": "Postup",
     "preparing": "Připravuje se...",
     "progressLine": "{{percent}} % | {{files}} z {{totalFiles}} souborů | {{bytes}} z {{totalBytes}}",
+    "copied": "Zkopírováno {{bytes}} přes Termix",
     "left": "Zbývá {{time}}",
     "details": "Podrobnosti",
     "started": "Spuštěno",
@@ -472,5 +492,22 @@
   },
   "nav": {
     "togglePanel": "Přepnout panel záloh"
+  },
+  "retries": {
+    "title": "Opakování",
+    "count": "Opakování po neúspěšné záloze",
+    "delay": "Minuty mezi opakováními",
+    "hint": "Neúspěšná záloha se opakuje tolikrát. Upozornění na selhání je odesláno až po selhání posledního pokusu."
+  },
+  "mirrors": {
+    "title": "Zrcadla",
+    "hint": "Po každé záloze jsou její snapshoty zkopírovány i do těchto úložišť a staré jsou tam odstraněny podle stejných pravidel pro uchovávání. Neúspěšná kopie zachová zálohu a označí běh varováním."
+  },
+  "repoSnapshots": {
+    "browse": "Prohlédnout všechny snapshoty",
+    "host": "Číst z hostitele",
+    "hostHint": "restic běží na tomto hostiteli pro čtení úložiště. Potřebuje restic a musí se dostat k úložišti.",
+    "pickHost": "Vyberte hostitele pro čtení úložiště",
+    "external": "Ne z Termix"
   }
 }

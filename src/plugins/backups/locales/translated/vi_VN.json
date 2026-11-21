@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic chưa được cài đặt trên máy chủ này",
     "tooOld": "restic trên máy chủ này cũ hơn phiên bản 0.17",
-    "hint": "Sao lưu sử dụng restic. Cài đặt nó bằng trình quản lý gói, hoặc từ bản phát hành restic trên GitHub khi gói quá cũ.",
+    "hint": "Sao lưu sử dụng restic. Cài đặt nó bằng trình quản lý gói, hoặc từ bản phát hành restic trên GitHub khi gói quá cũ. Bạn cũng có thể bỏ qua và chọn một host khác để chạy restic trong công việc.",
     "button": "Cài đặt restic",
     "working": "Đang cài đặt...",
     "title": "Cài đặt restic?",
@@ -85,7 +85,9 @@
     "edit": "Chỉnh sửa",
     "snapshots": "Chụp ảnh",
     "started": "{{name}} đã bắt đầu",
-    "runFailed": "Không thể bắt đầu sao lưu"
+    "runFailed": "Không thể bắt đầu sao lưu",
+    "runsOn": "restic trên {{host}}",
+    "retrying": "Thất bại, đang thử lại {{when}}"
   },
   "editor": {
     "newTitle": "Tạo công việc sao lưu mới",
@@ -98,6 +100,10 @@
     "pickRepository": "Chọn một kho lưu trữ",
     "noRepos": "Bạn chưa có kho lưu trữ nào mà máy chủ này có thể sử dụng. Hãy thêm một kho trong tab Sao lưu trước.",
     "repoLocked": "Chỉ chủ sở hữu của kho lưu trữ này mới có thể thay đổi nó.",
+    "runner": "Chạy restic trên",
+    "runnerThisHost": "Host này",
+    "runnerSelf": "restic chạy trên host này và gửi bản sao lưu đến kho lưu trữ.",
+    "runnerHint": "restic chạy trên host được chọn. Termix sao chép tệp của host này sang đó qua SSH, vì vậy host này chỉ cần tar và không cần phải kết nối đến kho lưu trữ.",
     "enabled": "Chạy theo lịch trình",
     "enabledHint": "Tắt để tạm dừng lịch trình. Chạy ngay vẫn hoạt động.",
     "oneFileSystem": "Giữ trong một hệ thống tệp",
@@ -125,7 +131,10 @@
     "engines": {
       "mysql": "MySQL hoặc MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Đăng nhập",
     "ownLogin": "Nhập thông tin đăng nhập tại đây",
@@ -149,7 +158,10 @@
     "noVolumes": "Không tìm thấy volume nào",
     "dockerFailed": "Không thể liệt kê Docker trên máy chủ này",
     "stop": "Dừng các stack trong khi sao lưu",
-    "stopHint": "Các stack được chọn sẽ bị dừng trước và khởi động lại sau, để đảm bảo các tệp của chúng không thay đổi trong khi đang được đọc."
+    "stopHint": "Các stack được chọn sẽ bị dừng trước và khởi động lại sau, để đảm bảo các tệp của chúng không thay đổi trong khi đang được đọc.",
+    "serverDir": "Thư mục sao lưu SQL Server",
+    "serverDirHint": "SQL Server tự ghi bản sao lưu vào thư mục này, và Termix lấy từ đó. Nó phải là cùng một thư mục trên host này, vì vậy với Docker hãy gắn nó vào container tại cùng đường dẫn.",
+    "redisHint": "Redis được lưu dưới dạng một bản chụp của toàn bộ instance."
   },
   "schedule": {
     "title": "Lịch trình",
@@ -201,9 +213,16 @@
   "alerts": {
     "title": "Cảnh báo",
     "onFailure": "Cảnh báo khi sao lưu thất bại",
-    "onFailureHint": "Cũng cảnh báo khi có cảnh báo, và một lần khi hoạt động trở lại bình thường.",
+    "onFailureHint": "Cũng cảnh báo một lần khi nó hoạt động trở lại.",
     "staleDays": "Số ngày không có sao lưu",
-    "staleDaysHint": "Cảnh báo khi không có sao lưu thành công trong số ngày này. Đặt 0 để tắt."
+    "staleDaysHint": "Cảnh báo khi không có sao lưu thành công trong số ngày này. Đặt 0 để tắt.",
+    "onWarning": "Cảnh báo khi có cảnh báo",
+    "onWarningHint": "Khi bản sao lưu được lưu nhưng một số tệp không thể đọc hoặc các bản chụp cũ không được xóa.",
+    "onSuccess": "Cảnh báo cho mỗi bản sao lưu thành công",
+    "onSuccessHint": "Cũng gửi cảnh báo mỗi lần công việc này hoàn thành mà không có vấn đề.",
+    "channels": "Gửi đến",
+    "channelsHint": "Chọn kênh cho cảnh báo của công việc này. Nếu không chọn, chúng sẽ gửi đến tất cả kênh của bạn.",
+    "channelOff": "tắt"
   },
   "repos": {
     "add": "Thêm kho lưu trữ",
@@ -337,6 +356,7 @@
     "progress": "Tiến độ",
     "preparing": "Đang chuẩn bị...",
     "progressLine": "{{percent}}% | {{files}} trong số {{totalFiles}} tệp | {{bytes}} trong số {{totalBytes}}",
+    "copied": "Đã sao chép {{bytes}} qua Termix",
     "left": "Còn lại {{time}}",
     "details": "Chi tiết",
     "started": "Bắt đầu",
@@ -442,5 +462,22 @@
   },
   "nav": {
     "togglePanel": "Bật/tắt bảng sao lưu"
+  },
+  "retries": {
+    "title": "Thử lại",
+    "count": "Số lần thử lại sau khi sao lưu thất bại",
+    "delay": "Phút giữa các lần thử lại",
+    "hint": "Bản sao lưu thất bại sẽ được thử lại nhiều lần như vậy. Cảnh báo thất bại chỉ được gửi sau lần thử cuối cùng thất bại."
+  },
+  "mirrors": {
+    "title": "Gương",
+    "hint": "Sau mỗi lần sao lưu, các bản chụp của nó cũng được sao chép đến các kho lưu trữ này, và các bản cũ được xóa ở đó với cùng quy tắc giữ. Bản sao thất bại vẫn giữ bản sao lưu và đánh dấu lần chạy với cảnh báo."
+  },
+  "repoSnapshots": {
+    "browse": "Duyệt tất cả bản chụp",
+    "host": "Đọc từ host",
+    "hostHint": "restic chạy trên host này để đọc kho lưu trữ. Nó cần restic và phải kết nối được đến kho lưu trữ.",
+    "pickHost": "Chọn host để đọc kho lưu trữ từ",
+    "external": "Không từ Termix"
   }
 }

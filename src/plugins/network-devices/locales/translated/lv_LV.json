@@ -40,7 +40,10 @@
     "snmp": "SNMP ierīce",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Kopiena",
@@ -52,7 +55,9 @@
     "privProtocol": "Privātums",
     "privKey": "Privātuma atslēga",
     "apiKey": "API atslēga",
-    "apiSecret": "API noslēpums"
+    "apiSecret": "API noslēpums",
+    "enablePassword": "Iespējošanas parole (neobligāts)",
+    "hostKey": "Resursdatora atslēgas pirkstu nospiedums (neobligāts)"
   },
   "form": {
     "addTitle": "Pievienot ierīci",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Ievadiet atslēgas testēšanai.",
     "testOk": "Savienojums ar {{name}} izveidots.",
     "save": "Saglabāt",
-    "add": "Pievienot"
+    "add": "Pievienot",
+    "site": "Vietne",
+    "siteHint": "UniFi vietnes nosaukums no kontrolierīces adreses joslas. Ja atstāts tukšs, tiek izmantota noklusējuma vietne.",
+    "backups": "Konfigurācijas rezerves kopijas",
+    "backupSchedule": "Saglabāt konfigurāciju",
+    "backupOff": "Tikai, kad nospiežu Saglabāt tagad",
+    "backupDaily": "Katru dienu",
+    "backupWeekly": "Katru nedēļu",
+    "backupKeep": "Saglabājamo versiju skaits",
+    "backupKeepHint": "Jauna versija tiek saglabāta tikai tad, ja konfigurācija ir mainījusies.",
+    "backupAlert": "Brīdinājums, kad konfigurācija mainās",
+    "backupAlertHint": "Nosūta brīdinājumu, ja saglabātā konfigurācija atšķiras no iepriekšējās.",
+    "backupHints": {
+      "routeros": "Saglabā /export, ar parolēm slēptām tā, kā RouterOS to dara pēc noklusējuma.",
+      "opnsense": "Saglabā visu config.xml failu, tas pats fails kā System, Configuration, Backups.",
+      "openwrt": "Saglabā visus UCI konfigurācijas failus, kurus pieteikšanās lietotājs var lasīt.",
+      "unifi": "Saglabā vietnes iestatījumus, tīklus, Wi-Fi, porta profilus un ugunsmūra noteikumus.",
+      "pfsense": "Saglabā galvenās config.xml daļas, izmantojot XML-RPC. Nepieciešams lietotājvārds un parole.",
+      "cisco": "Saglabā show running-config. Pieteikšanās varētu prasīt iespējošanas paroli."
+    }
   },
   "discover": {
     "title": "Atrast ierīces",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Kaimiņi nav atrasti.",
     "neighbor": "Kaimiņš",
-    "remotePort": "To ports"
+    "remotePort": "To ports",
+    "configs": "Konfigurācijas"
   },
   "operations": {
     "device": "Ierīce",
@@ -176,5 +201,25 @@
     "name": "Tīkla ierīces",
     "description": "Kuri no jūsu maršrutētājiem, slēdžiem un piekļuves punktiem ir tiešsaistē.",
     "summary": "{{up}} no {{total}} tiešsaistē"
+  },
+  "configs": {
+    "saveNow": "Saglabāt tagad",
+    "saving": "Saglabā...",
+    "saved": "Konfigurācija saglabāta",
+    "unchanged": "Nav izmaiņu kopš pēdējās saglabātās versijas",
+    "none": "Vēl nav saglabātu konfigurāciju",
+    "delete": "Dzēst",
+    "deleteConfirm": "Dzēst konfigurāciju, kas saglabāta {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Salīdzināt",
+    "noCompare": "Rādīt tikai šo versiju",
+    "compareWith": "Izmaiņas kopš {{when}}",
+    "same": "Nav izmaiņu.",
+    "download": "Lejupielādēt",
+    "schedule": {
+      "off": "Saglabāts tikai, kad nospiedat Saglabāt tagad",
+      "daily": "Saglabāts katru dienu",
+      "weekly": "Saglabāts katru nedēļu"
+    }
   }
 }

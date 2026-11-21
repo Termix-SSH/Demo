@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic er ikke installeret på denne host",
     "tooOld": "restic på denne host er ældre end 0.17",
-    "hint": "Backups bruger restic. Installer det via pakkehåndteringen, eller fra restic-udgivelsen på GitHub, hvis pakken er for gammel.",
+    "hint": "Backups bruger restic. Installer det via pakkehåndteringen, eller hent det fra restic-udgivelsen på GitHub, hvis pakken er for gammel. Du kan også springe det over og vælge en anden host til at køre restic i en job.",
     "button": "Installer restic",
     "working": "Installerer...",
     "title": "Installer restic?",
@@ -91,7 +91,9 @@
     "edit": "Rediger",
     "snapshots": "Snapshots",
     "started": "{{name}} startet",
-    "runFailed": "Kunne ikke starte sikkerhedskopieringen"
+    "runFailed": "Kunne ikke starte sikkerhedskopieringen",
+    "runsOn": "restic på {{host}}",
+    "retrying": "Mislykkedes, prøver igen {{when}}"
   },
   "editor": {
     "newTitle": "Ny sikkerhedskopieringsjob",
@@ -104,6 +106,10 @@
     "pickRepository": "Vælg et repository",
     "noRepos": "Du har ingen repository, som denne vært kan bruge. Tilføj ét i fanen Sikkerhedskopieringer først.",
     "repoLocked": "Kun ejeren af dette repository kan ændre det.",
+    "runner": "Kør restic på",
+    "runnerThisHost": "Denne host",
+    "runnerSelf": "restic kører på denne host og sender backuppen til lageret.",
+    "runnerHint": "restic kører på den valgte host. Termix kopierer denne hosts filer til den via SSH, så denne host kun har brug for tar og behøver ikke at kunne nå lageret.",
     "enabled": "Kør efter tidsplan",
     "enabledHint": "Slå fra for at pause tidsplanen. Kør nu fungerer stadig.",
     "oneFileSystem": "Bliv på ét filsystem",
@@ -131,7 +137,10 @@
     "engines": {
       "mysql": "MySQL eller MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Login",
     "ownLogin": "Indtast et login her",
@@ -155,7 +164,10 @@
     "noVolumes": "Ingen volumes fundet",
     "dockerFailed": "Kunne ikke liste Docker på denne vært",
     "stop": "Stop stacks under backup",
-    "stopHint": "Valgte stacks stoppes først og startes igen bagefter, så deres filer ikke ændrer sig, mens de læses."
+    "stopHint": "Valgte stacks stoppes først og startes igen bagefter, så deres filer ikke ændrer sig, mens de læses.",
+    "serverDir": "SQL Server backup-mappe",
+    "serverDirHint": "SQL Server skriver selv backuppen til denne mappe, og Termix henter den derfra. Det skal være den samme mappe på denne host, så med Docker skal du montere den i containeren på samme sti.",
+    "redisHint": "Redis gemmes som ét snapshot af hele instansen."
   },
   "schedule": {
     "title": "Planlægning",
@@ -207,9 +219,16 @@
   "alerts": {
     "title": "Advarsler",
     "onFailure": "Advar, når en backup mislykkes",
-    "onFailureHint": "Advar også ved advarsler, og én gang, når det igen virker.",
+    "onFailureHint": "Sender også en advarsel, når det igen virker.",
     "staleDays": "Dage uden backup",
-    "staleDaysHint": "Advar, hvis ingen backup har fungeret i så mange dage. 0 slår det fra."
+    "staleDaysHint": "Advar, hvis ingen backup har fungeret i så mange dage. 0 slår det fra.",
+    "onWarning": "Advar ved advarsler",
+    "onWarningHint": "Når en backup er gemt, men nogle filer ikke kunne læses, eller gamle snapshots ikke blev fjernet.",
+    "onSuccess": "Advar ved hver god backup",
+    "onSuccessHint": "Sender også en advarsel hver gang dette job afsluttes uden problemer.",
+    "channels": "Send til",
+    "channelsHint": "Vælg kanalerne for dette jobs advarsler. Hvis ingen er valgt, sendes de til alle dine kanaler.",
+    "channelOff": "fra"
   },
   "repos": {
     "add": "Tilføj lager",
@@ -347,6 +366,7 @@
     "progress": "Fremgang",
     "preparing": "Forbereder...",
     "progressLine": "{{percent}}% | {{files}} af {{totalFiles}} filer | {{bytes}} af {{totalBytes}}",
+    "copied": "Kopierede {{bytes}} gennem Termix",
     "left": "{{time}} tilbage",
     "details": "Detaljer",
     "started": "Startet",
@@ -452,5 +472,22 @@
   },
   "nav": {
     "togglePanel": "Skift backup-panel"
+  },
+  "retries": {
+    "title": "Genforsøg",
+    "count": "Genforsøg efter en mislykket backup",
+    "delay": "Minutter mellem genforsøg",
+    "hint": "En mislykket backup forsøges igen dette antal gange. Advarslen om fejl sendes først, når det sidste forsøg mislykkes."
+  },
+  "mirrors": {
+    "title": "Spejle",
+    "hint": "Efter hver backup kopieres dens snapshots også til disse lagre, og gamle fjernes der med samme beholdningsregler. En mislykket kopi bevarer backuppen og markerer kørslen med advarsler."
+  },
+  "repoSnapshots": {
+    "browse": "Gennemse alle snapshots",
+    "host": "Læs fra host",
+    "hostHint": "restic kører på denne host for at læse lageret. Det kræver restic og skal kunne nå lageret.",
+    "pickHost": "Vælg en host at læse lageret fra",
+    "external": "Ikke fra Termix"
   }
 }

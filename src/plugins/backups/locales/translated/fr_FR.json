@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic n'est pas installé sur cet hôte",
     "tooOld": "La version de restic sur cet hôte est antérieure à la 0.17",
-    "hint": "Les sauvegardes utilisent restic. Installez-le via le gestionnaire de paquets, ou depuis la page de publication de restic sur GitHub si le paquet est trop ancien.",
+    "hint": "Les sauvegardes utilisent restic. Installez-le via le gestionnaire de paquets, ou depuis la release restic sur GitHub si le paquet est trop ancien. Vous pouvez également ignorer cette étape et choisir un autre hôte pour exécuter restic dans un job.",
     "button": "Installer restic",
     "working": "Installation en cours...",
     "title": "Installer restic ?",
@@ -97,7 +97,9 @@
     "edit": "Modifier",
     "snapshots": "Instantanés",
     "started": "{{name}} démarré",
-    "runFailed": "Impossible de démarrer la sauvegarde"
+    "runFailed": "Impossible de démarrer la sauvegarde",
+    "runsOn": "restic sur {{host}}",
+    "retrying": "Échoué, nouvelle tentative {{when}}"
   },
   "editor": {
     "newTitle": "Nouvelle tâche de sauvegarde",
@@ -110,6 +112,10 @@
     "pickRepository": "Choisir un dépôt",
     "noRepos": "Vous n'avez aucun dépôt utilisable par cet hôte. Ajoutez-en un dans l'onglet Sauvegardes d'abord.",
     "repoLocked": "Seul le propriétaire de ce dépôt peut le modifier.",
+    "runner": "Exécuter restic sur",
+    "runnerThisHost": "Cet hôte",
+    "runnerSelf": "restic s'exécute sur cet hôte et envoie la sauvegarde au dépôt.",
+    "runnerHint": "restic s'exécute sur l'hôte sélectionné. Termix copie les fichiers de cet hôte vers celui-ci via SSH, donc cet hôte n'a besoin que de tar et n'a pas besoin d'accéder au dépôt.",
     "enabled": "Exécuter selon un planning",
     "enabledHint": "Désactivez pour mettre le planning en pause. L'exécution immédiate fonctionne toujours.",
     "oneFileSystem": "Rester sur un seul système de fichiers",
@@ -137,7 +143,10 @@
     "engines": {
       "mysql": "MySQL ou MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Connexion",
     "ownLogin": "Saisir une connexion ici",
@@ -161,7 +170,10 @@
     "noVolumes": "Aucun volume trouvé",
     "dockerFailed": "Impossible de lister Docker sur cet hôte",
     "stop": "Arrêter les stacks pendant la sauvegarde",
-    "stopHint": "Les stacks sélectionnées sont arrêtées en premier et redémarrées ensuite, afin que leurs fichiers ne changent pas pendant leur lecture."
+    "stopHint": "Les stacks sélectionnées sont arrêtées en premier et redémarrées ensuite, afin que leurs fichiers ne changent pas pendant leur lecture.",
+    "serverDir": "Dossier de sauvegarde SQL Server",
+    "serverDirHint": "SQL Server écrit la sauvegarde lui-même dans ce dossier, et Termix la récupère à partir de là. Il doit s'agir du même dossier sur cet hôte, donc avec Docker, montez-le dans le conteneur au même chemin.",
+    "redisHint": "Redis est sauvegardé sous forme d'un instantané unique de l'instance entière."
   },
   "schedule": {
     "title": "Planification",
@@ -213,9 +225,16 @@
   "alerts": {
     "title": "Alertes",
     "onFailure": "Alerter en cas d'échec d'une sauvegarde",
-    "onFailureHint": "Alerte également sur les avertissements, et une fois lorsque cela fonctionne à nouveau.",
+    "onFailureHint": "Envoie également une alerte une fois que le service est de nouveau opérationnel.",
     "staleDays": "Jours sans sauvegarde",
-    "staleDaysHint": "Alerter si aucune sauvegarde n'a réussi depuis ce nombre de jours. 0 désactive cette option."
+    "staleDaysHint": "Alerter si aucune sauvegarde n'a réussi depuis ce nombre de jours. 0 désactive cette option.",
+    "onWarning": "Alerte sur les avertissements",
+    "onWarningHint": "Lorsqu'une sauvegarde est enregistrée mais que certains fichiers n'ont pas pu être lus ou que les anciens instantanés n'ont pas été supprimés.",
+    "onSuccess": "Alerte pour chaque sauvegarde réussie",
+    "onSuccessHint": "Envoie également une alerte à chaque fois que ce job se termine sans problème.",
+    "channels": "Envoyer à",
+    "channelsHint": "Choisissez les canaux pour les alertes de ce job. Si aucun n'est sélectionné, elles sont envoyées à tous vos canaux.",
+    "channelOff": "désactivé"
   },
   "repos": {
     "add": "Ajouter un dépôt",
@@ -357,6 +376,7 @@
     "progress": "Progression",
     "preparing": "Préparation...",
     "progressLine": "{{percent}}% | {{files}} sur {{totalFiles}} fichiers | {{bytes}} sur {{totalBytes}}",
+    "copied": "{{bytes}} copiés via Termix",
     "left": "{{time}} restants",
     "details": "Détails",
     "started": "Démarré",
@@ -462,5 +482,22 @@
   },
   "nav": {
     "togglePanel": "Basculer le panneau de sauvegarde"
+  },
+  "retries": {
+    "title": "Nouvelles tentatives",
+    "count": "Nouvelles tentatives après une sauvegarde échouée",
+    "delay": "Minutes entre les nouvelles tentatives",
+    "hint": "Une sauvegarde échouée est réessayée ce nombre de fois. L'alerte d'échec n'est envoyée qu'une fois que la dernière tentative a échoué."
+  },
+  "mirrors": {
+    "title": "Miroirs",
+    "hint": "Après chaque sauvegarde, ses instantanés sont copiés dans ces dépôts également, et les anciens y sont supprimés selon les mêmes règles de conservation. Une copie échouée conserve la sauvegarde et marque l'exécution avec des avertissements."
+  },
+  "repoSnapshots": {
+    "browse": "Parcourir tous les instantanés",
+    "host": "Lire depuis l'hôte",
+    "hostHint": "restic s'exécute sur cet hôte pour lire le dépôt. Il a besoin de restic et doit pouvoir accéder au dépôt.",
+    "pickHost": "Choisissez un hôte pour lire le dépôt",
+    "external": "Non géré par Termix"
   }
 }

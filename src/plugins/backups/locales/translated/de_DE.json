@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic ist auf diesem Host nicht installiert",
     "tooOld": "restic auf diesem Host ist älter als 0.17",
-    "hint": "Sicherungen verwenden restic. Installieren Sie es mit dem Paketmanager oder von der restic-Veröffentlichung auf GitHub, wenn das Paket zu alt ist.",
+    "hint": "Sicherungen verwenden restic. Installieren Sie es über den Paketmanager oder von der restic-Release auf GitHub, wenn das Paket zu alt ist. Sie können es auch überspringen und einen anderen Host auswählen, um restic in einem Job auszuführen.",
     "button": "restic installieren",
     "working": "Wird installiert...",
     "title": "restic installieren?",
@@ -91,7 +91,9 @@
     "edit": "Bearbeiten",
     "snapshots": "Snapshots",
     "started": "{{name}} gestartet",
-    "runFailed": "Das Backup konnte nicht gestartet werden"
+    "runFailed": "Das Backup konnte nicht gestartet werden",
+    "runsOn": "restic auf {{host}}",
+    "retrying": "Fehlgeschlagen, nächster Versuch {{when}}"
   },
   "editor": {
     "newTitle": "Neuer Backup-Job",
@@ -104,6 +106,10 @@
     "pickRepository": "Repository auswählen",
     "noRepos": "Dieser Host hat kein nutzbares Repository. Fügen Sie zuerst eines im Tab Backups hinzu.",
     "repoLocked": "Nur der Besitzer dieses Repositories kann es ändern.",
+    "runner": "restic ausführen auf",
+    "runnerThisHost": "Dieser Host",
+    "runnerSelf": "restic wird auf diesem Host ausgeführt und sendet die Sicherung an das Repository.",
+    "runnerHint": "restic wird auf dem ausgewählten Host ausgeführt. Termix kopiert die Dateien dieses Hosts per SSH dorthin, sodass dieser Host nur tar benötigt und nicht auf das Repository zugreifen muss.",
     "enabled": "Nach Zeitplan ausführen",
     "enabledHint": "Deaktivieren, um den Zeitplan zu pausieren. „Jetzt ausführen“ funktioniert weiterhin.",
     "oneFileSystem": "Auf einem Dateisystem bleiben",
@@ -131,7 +137,10 @@
     "engines": {
       "mysql": "MySQL oder MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Anmeldung",
     "ownLogin": "Anmeldung hier eingeben",
@@ -155,7 +164,10 @@
     "noVolumes": "Keine Volumes gefunden",
     "dockerFailed": "Docker auf diesem Host konnte nicht aufgelistet werden",
     "stop": "Stacks während der Sicherung stoppen",
-    "stopHint": "Ausgewählte Stacks werden zuerst gestoppt und nach der Sicherung wieder gestartet, damit sich ihre Dateien während des Lesens nicht ändern."
+    "stopHint": "Ausgewählte Stacks werden zuerst gestoppt und nach der Sicherung wieder gestartet, damit sich ihre Dateien während des Lesens nicht ändern.",
+    "serverDir": "SQL Server-Sicherungordner",
+    "serverDirHint": "SQL Server schreibt die Sicherung selbst in diesen Ordner, und Termix übernimmt sie von dort. Es muss derselbe Ordner auf diesem Host sein, also mounten Sie ihn bei Docker im Container unter demselben Pfad.",
+    "redisHint": "Redis wird als ein einzelner Snapshot der gesamten Instanz gespeichert."
   },
   "schedule": {
     "title": "Zeitplan",
@@ -207,9 +219,16 @@
   "alerts": {
     "title": "Benachrichtigungen",
     "onFailure": "Benachrichtigung bei fehlgeschlagener Sicherung",
-    "onFailureHint": "Benachrichtigt auch bei Warnungen und einmal, wenn es wieder funktioniert.",
+    "onFailureHint": "Benachrichtigt auch einmal, wenn es wieder funktioniert.",
     "staleDays": "Tage ohne Sicherung",
-    "staleDaysHint": "Benachrichtigung, wenn keine Sicherung an diesen vielen Tagen erfolgreich war. 0 schaltet es aus."
+    "staleDaysHint": "Benachrichtigung, wenn keine Sicherung an diesen vielen Tagen erfolgreich war. 0 schaltet es aus.",
+    "onWarning": "Bei Warnungen benachrichtigen",
+    "onWarningHint": "Wenn eine Sicherung gespeichert wurde, aber einige Dateien nicht gelesen oder alte Snapshots nicht entfernt werden konnten.",
+    "onSuccess": "Bei jeder erfolgreichen Sicherung benachrichtigen",
+    "onSuccessHint": "Sendet auch jedes Mal eine Benachrichtigung, wenn dieser Job ohne Probleme abgeschlossen wird.",
+    "channels": "Senden an",
+    "channelsHint": "Wählen Sie die Kanäle für die Benachrichtigungen dieses Jobs aus. Wenn keiner ausgewählt ist, gehen sie an alle Ihre Kanäle.",
+    "channelOff": "aus"
   },
   "repos": {
     "add": "Repository hinzufügen",
@@ -347,6 +366,7 @@
     "progress": "Fortschritt",
     "preparing": "Wird vorbereitet...",
     "progressLine": "{{percent}}% | {{files}} von {{totalFiles}} Dateien | {{bytes}} von {{totalBytes}}",
+    "copied": "{{bytes}} über Termix kopiert",
     "left": "{{time}} verbleibend",
     "details": "Details",
     "started": "Gestartet",
@@ -452,5 +472,22 @@
   },
   "nav": {
     "togglePanel": "Backup-Panel umschalten"
+  },
+  "retries": {
+    "title": "Wiederholungen",
+    "count": "Wiederholungen nach einer fehlgeschlagenen Sicherung",
+    "delay": "Minuten zwischen Wiederholungen",
+    "hint": "Eine fehlgeschlagene Sicherung wird so oft erneut versucht. Die Fehlerbenachrichtigung wird erst gesendet, wenn der letzte Versuch fehlschlägt."
+  },
+  "mirrors": {
+    "title": "Spiegel",
+    "hint": "Nach jeder Sicherung werden deren Snapshots auch in diese Repositories kopiert, und alte werden dort mit denselben Aufbewahrungsregeln entfernt. Eine fehlgeschlagene Kopie behält die Sicherung und markiert den Lauf mit Warnungen."
+  },
+  "repoSnapshots": {
+    "browse": "Alle Snapshots durchsuchen",
+    "host": "Vom Host lesen",
+    "hostHint": "restic wird auf diesem Host ausgeführt, um das Repository zu lesen. Es benötigt restic und muss auf das Repository zugreifen können.",
+    "pickHost": "Wählen Sie einen Host aus, um das Repository zu lesen",
+    "external": "Nicht von Termix"
   }
 }

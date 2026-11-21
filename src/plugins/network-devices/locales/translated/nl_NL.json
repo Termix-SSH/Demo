@@ -40,7 +40,10 @@
     "snmp": "SNMP-apparaat",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Community",
@@ -52,7 +55,9 @@
     "privProtocol": "Privacy",
     "privKey": "Privacy-sleutel",
     "apiKey": "API-sleutel",
-    "apiSecret": "API-geheim"
+    "apiSecret": "API-geheim",
+    "enablePassword": "Enable-wachtwoord (optioneel)",
+    "hostKey": "Host-sleutelvingerafdruk (optioneel)"
   },
   "form": {
     "addTitle": "Apparaat toevoegen",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Voer de sleutels in om te testen.",
     "testOk": "Verbonden met {{name}}.",
     "save": "Opslaan",
-    "add": "Toevoegen"
+    "add": "Toevoegen",
+    "site": "Site",
+    "siteHint": "De UniFi-sitenaam uit de adresbalk van de controller. Leeg laat de standaardwaarde gebruiken.",
+    "backups": "Configuratieback-ups",
+    "backupSchedule": "Configuratie opslaan",
+    "backupOff": "Alleen als ik op Nu opslaan druk",
+    "backupDaily": "Elke dag",
+    "backupWeekly": "Elke week",
+    "backupKeep": "Aantal versies om te bewaren",
+    "backupKeepHint": "Een nieuwe versie wordt alleen bewaard als de configuratie is gewijzigd.",
+    "backupAlert": "Waarschuwen bij configuratiewijzigingen",
+    "backupAlertHint": "Verstuurt een waarschuwing als een opgeslagen configuratie verschilt van de vorige.",
+    "backupHints": {
+      "routeros": "Slaat /export op, met wachtwoorden verborgen zoals RouterOS standaard doet.",
+      "opnsense": "Slaat het volledige config.xml op, hetzelfde bestand als Systeem, Configuratie, Back-ups.",
+      "openwrt": "Slaat alle UCI-configuraties op die de inloggegevens kunnen lezen.",
+      "unifi": "Slaat de site-instellingen, netwerken, Wi-Fi, poortprofielen en firewallregels op.",
+      "pfsense": "Slaat de belangrijkste delen van config.xml op via XML-RPC. Vereist een gebruikersnaam en wachtwoord.",
+      "cisco": "Slaat show running-config op. De inloggegevens hebben mogelijk het enable-wachtwoord nodig."
+    }
   },
   "discover": {
     "title": "Apparaten zoeken",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Geen buren gevonden.",
     "neighbor": "Buurtapparaat",
-    "remotePort": "Hun poort"
+    "remotePort": "Hun poort",
+    "configs": "Configuraties"
   },
   "operations": {
     "device": "Apparaat",
@@ -176,5 +201,25 @@
     "name": "Netwerkapparaten",
     "description": "Welke routers, switches en access points van jou online zijn.",
     "summary": "{{up}} van de {{total}} online"
+  },
+  "configs": {
+    "saveNow": "Nu opslaan",
+    "saving": "Opslaan...",
+    "saved": "Configuratie opgeslagen",
+    "unchanged": "Geen wijzigingen sinds de laatst opgeslagen versie",
+    "none": "Nog geen opgeslagen configuraties",
+    "delete": "Verwijderen",
+    "deleteConfirm": "De configuratie die op {{when}} is opgeslagen, verwijderen?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Vergelijken",
+    "noCompare": "Alleen deze versie tonen",
+    "compareWith": "Wijzigingen sinds {{when}}",
+    "same": "Geen wijzigingen.",
+    "download": "Downloaden",
+    "schedule": {
+      "off": "Alleen opgeslagen als je op Nu opslaan drukt",
+      "daily": "Elke dag opgeslagen",
+      "weekly": "Elke week opgeslagen"
+    }
   }
 }

@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic tidak dipasang pada hos ini",
     "tooOld": "restic pada hos ini lebih lama daripada 0.17",
-    "hint": "Salinan Sandaran menggunakan restic. Pasang ia melalui pengurus pakej, atau dari keluaran restic di GitHub jika pakej terlalu lama.",
+    "hint": "Sandaran menggunakan restic. Pasang ia melalui pengurus pakej, atau daripada pelepasan restic di GitHub jika pakej terlalu lama. Anda juga boleh melangkau dan memilih hos lain untuk menjalankan restic dalam tugas.",
     "button": "Pasang restic",
     "working": "Memasang...",
     "title": "Pasang restic?",
@@ -85,7 +85,9 @@
     "edit": "Sunting",
     "snapshots": "Snapshots",
     "started": "{{name}} dimulakan",
-    "runFailed": "Gagal memulakan sandaran"
+    "runFailed": "Gagal memulakan sandaran",
+    "runsOn": "restic pada {{host}}",
+    "retrying": "Gagal, cuba lagi {{when}}"
   },
   "editor": {
     "newTitle": "Tugas sandaran baharu",
@@ -98,6 +100,10 @@
     "pickRepository": "Pilih repositori",
     "noRepos": "Anda tiada repositori yang boleh digunakan oleh host ini. Tambahkan satu di tab Sandaran terlebih dahulu.",
     "repoLocked": "Hanya pemilik repositori ini yang boleh mengubahnya.",
+    "runner": "Jalankan restic pada",
+    "runnerThisHost": "Hos ini",
+    "runnerSelf": "restic berjalan pada hos ini dan menghantar sandaran ke repositori.",
+    "runnerHint": "restic berjalan pada hos yang dipilih. Termix menyalin fail hos ini ke sana melalui SSH, jadi hos ini hanya memerlukan tar dan tidak perlu menghubungi repositori.",
     "enabled": "Jalankan mengikut jadual",
     "enabledHint": "Matikan untuk menjeda jadual. Jalankan sekarang masih berfungsi.",
     "oneFileSystem": "Kekal dalam satu sistem fail",
@@ -125,7 +131,10 @@
     "engines": {
       "mysql": "MySQL atau MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Log masuk",
     "ownLogin": "Taipkan log masuk di sini",
@@ -149,7 +158,10 @@
     "noVolumes": "Tiada volume ditemui",
     "dockerFailed": "Gagal menyenaraikan Docker pada host ini",
     "stop": "Hentikan tumpukan semasa sandaran",
-    "stopHint": "Tumpukan yang dipilih akan dihentikan dahulu dan dimulakan semula selepas itu, supaya failnya tidak berubah semasa ia dibaca."
+    "stopHint": "Tumpukan yang dipilih akan dihentikan dahulu dan dimulakan semula selepas itu, supaya failnya tidak berubah semasa ia dibaca.",
+    "serverDir": "Folder sandaran SQL Server",
+    "serverDirHint": "SQL Server menulis sandaran sendiri ke dalam folder ini, dan Termix mengambilnya dari sana. Ia mesti menjadi folder yang sama pada hos ini, jadi dengan Docker, pasangkan ia ke dalam bekas pada laluan yang sama.",
+    "redisHint": "Redis disimpan sebagai satu snapshot bagi keseluruhan contoh."
   },
   "schedule": {
     "title": "Jadual",
@@ -201,9 +213,16 @@
   "alerts": {
     "title": "Amaran",
     "onFailure": "Berikan amaran apabila sandaran gagal",
-    "onFailureHint": "Juga memberikan amaran pada amaran, dan sekali apabila ia berfungsi semula.",
+    "onFailureHint": "Juga memberi amaran sekali apabila ia berfungsi semula.",
     "staleDays": "Hari tanpa sandaran",
-    "staleDaysHint": "Berikan amaran apabila tiada sandaran berjaya selama ini banyak hari. 0 mematikannya."
+    "staleDaysHint": "Berikan amaran apabila tiada sandaran berjaya selama ini banyak hari. 0 mematikannya.",
+    "onWarning": "Amaran pada amaran",
+    "onWarningHint": "Apabila sandaran disimpan tetapi beberapa fail tidak dapat dibaca atau snapshot lama tidak dibuang.",
+    "onSuccess": "Amaran pada setiap sandaran yang berjaya",
+    "onSuccessHint": "Juga menghantar amaran setiap kali tugas ini selesai tanpa masalah.",
+    "channels": "Hantar ke",
+    "channelsHint": "Pilih saluran untuk amaran tugas ini. Jika tiada yang dipilih, ia dihantar ke semua saluran anda.",
+    "channelOff": "matikan"
   },
   "repos": {
     "add": "Tambah repositori",
@@ -337,6 +356,7 @@
     "progress": "Kemajuan",
     "preparing": "Sedang bersiap...",
     "progressLine": "{{percent}}% | {{files}} daripada {{totalFiles}} fail | {{bytes}} daripada {{totalBytes}}",
+    "copied": "Disalin {{bytes}} melalui Termix",
     "left": "{{time}} lagi",
     "details": "Butiran",
     "started": "Dimulakan",
@@ -442,5 +462,22 @@
   },
   "nav": {
     "togglePanel": "Togol panel sandaran"
+  },
+  "retries": {
+    "title": "Cubaan Semula",
+    "count": "Cubaan semula selepas sandaran gagal",
+    "delay": "Minit antara cubaan semula",
+    "hint": "Sandaran yang gagal akan dicuba semula sebanyak ini kali. Amaran kegagalan hanya dihantar apabila cubaan terakhir gagal."
+  },
+  "mirrors": {
+    "title": "Cermin",
+    "hint": "Selepas setiap sandaran, snapshotnya disalin ke repositori ini juga, dan yang lama dibuang di sana dengan peraturan simpan yang sama. Salinan yang gagal mengekalkan sandaran dan menandakan larian dengan amaran."
+  },
+  "repoSnapshots": {
+    "browse": "Layari semua snapshot",
+    "host": "Baca dari hos",
+    "hostHint": "restic berjalan pada hos ini untuk membaca repositori. Ia memerlukan restic dan mesti dapat menghubungi repositori.",
+    "pickHost": "Pilih hos untuk membaca repositori",
+    "external": "Bukan dari Termix"
   }
 }

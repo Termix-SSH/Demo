@@ -39,7 +39,7 @@
   "install": {
     "missing": "restic no està instal·lat en aquest host",
     "tooOld": "La versió de restic en aquest host és anterior a la 0.17",
-    "hint": "Les còpies de seguretat utilitzen restic. Instal·leu-lo amb el gestor de paquets o des de l'alliberament de restic a GitHub si el paquet és massa antic.",
+    "hint": "Les còpies de seguretat utilitzen restic. Instal·leu-lo amb el gestor de paquets o des de la publicació de restic a GitHub quan el paquet sigui massa antic. També podeu saltar-vos-ho i triar un altre host per executar restic en una tasca.",
     "button": "Instal·lar restic",
     "working": "Instal·lant...",
     "title": "Vols instal·lar restic?",
@@ -97,7 +97,9 @@
     "edit": "Edita",
     "snapshots": "Instantànies",
     "started": "{{name}} iniciat",
-    "runFailed": "No s'ha pogut iniciar la còpia de seguretat"
+    "runFailed": "No s'ha pogut iniciar la còpia de seguretat",
+    "runsOn": "restic a {{host}}",
+    "retrying": "Ha fallat, s'hi tornarà a intentar {{when}}"
   },
   "editor": {
     "newTitle": "Nou treball de còpia de seguretat",
@@ -110,6 +112,10 @@
     "pickRepository": "Tria un repositori",
     "noRepos": "No tens cap repositori que aquest host pugui utilitzar. Afegeix-ne un a la pestanya de còpies de seguretat primer.",
     "repoLocked": "Només el propietari d'aquest repositori el pot modificar.",
+    "runner": "Executar restic a",
+    "runnerThisHost": "Aquest host",
+    "runnerSelf": "restic s'executa en aquest host i envia la còpia de seguretat al repositori.",
+    "runnerHint": "restic s'executa en l'host seleccionat. Termix copia els fitxers d'aquest host a través d'SSH, de manera que aquest host només necessita tar i no ha d'accedir al repositori.",
     "enabled": "Executar segons programació",
     "enabledHint": "Desactiva-ho per posar la programació en pausa. L'opció d'executar ara continuarà funcionant.",
     "oneFileSystem": "Romandre en un sol sistema de fitxers",
@@ -137,7 +143,10 @@
     "engines": {
       "mysql": "MySQL o MariaDB",
       "postgres": "PostgreSQL",
-      "sqlite": "SQLite"
+      "sqlite": "SQLite",
+      "mongo": "MongoDB",
+      "redis": "Redis",
+      "mssql": "SQL Server"
     },
     "login": "Inici de sessió",
     "ownLogin": "Escriu un nom d'usuari aquí",
@@ -161,7 +170,10 @@
     "noVolumes": "No s'han trobat volums",
     "dockerFailed": "No s'ha pogut llistar Docker en aquest host",
     "stop": "Atura les pilotes durant la còpia de seguretat",
-    "stopHint": "Les pilotes seleccionades s'aturen primer i es reinicien després, de manera que els seus fitxers no canviïn mentre es llegeixen."
+    "stopHint": "Les pilotes seleccionades s'aturen primer i es reinicien després, de manera que els seus fitxers no canviïn mentre es llegeixen.",
+    "serverDir": "Carpeta de còpies de seguretat de SQL Server",
+    "serverDirHint": "SQL Server escriu la còpia de seguretat directament en aquesta carpeta i Termix la recull d'allà. Ha de ser la mateixa carpeta en aquest host, per la qual cosa, si utilitzeu Docker, munteu-la al contenidor a la mateixa ruta.",
+    "redisHint": "Redis es desa com una instantània única de tota la instància."
   },
   "schedule": {
     "title": "Programació",
@@ -213,9 +225,16 @@
   "alerts": {
     "title": "Alertes",
     "onFailure": "Notifica quan una còpia de seguretat falla",
-    "onFailureHint": "També notifica sobre advertències i una vegada quan torna a funcionar.",
+    "onFailureHint": "També envia una alerta quan torna a funcionar.",
     "staleDays": "Dies sense còpia de seguretat",
-    "staleDaysHint": "Notifica quan no s'ha pogut fer cap còpia de seguretat durant aquest nombre de dies. 0 desactiva aquesta opció."
+    "staleDaysHint": "Notifica quan no s'ha pogut fer cap còpia de seguretat durant aquest nombre de dies. 0 desactiva aquesta opció.",
+    "onWarning": "Alerta en cas d'advertències",
+    "onWarningHint": "Quan es desa una còpia de seguretat però no s'han pogut llegir alguns fitxers o no s'han eliminat les instantànies antigues.",
+    "onSuccess": "Alerta en cada còpia de seguretat correcta",
+    "onSuccessHint": "També envia una alerta cada vegada que aquesta tasca finalitza sense problemes.",
+    "channels": "Enviar a",
+    "channelsHint": "Trieu els canals per a les alertes d'aquesta tasca. Si no en seleccioneu cap, s'enviaran a tots els vostres canals.",
+    "channelOff": "desactivat"
   },
   "repos": {
     "add": "Afegeix repositori",
@@ -357,6 +376,7 @@
     "progress": "Progrés",
     "preparing": "Preparant...",
     "progressLine": "{{percent}}% | {{files}} de {{totalFiles}} fitxers | {{bytes}} de {{totalBytes}}",
+    "copied": "S'han copiat {{bytes}} a través de Termix",
     "left": "{{time}} restants",
     "details": "Detalls",
     "started": "Iniciat",
@@ -462,5 +482,22 @@
   },
   "nav": {
     "togglePanel": "Alterna el panell de còpies de seguretat"
+  },
+  "retries": {
+    "title": "Reintents",
+    "count": "Reintents després d'una còpia de seguretat fallida",
+    "delay": "Minuts entre reintents",
+    "hint": "Una còpia de seguretat fallida s'intentarà aquestes vegades. L'alerta de fallada només s'envia quan l'últim intent falla."
+  },
+  "mirrors": {
+    "title": "Miralls",
+    "hint": "Després de cada còpia de seguretat, les seves instantànies es copien també a aquests repositoris i les antigues s'eliminen allà amb les mateixes regles de conservació. Una còpia fallida manté la còpia de seguretat i marca l'execució amb advertències."
+  },
+  "repoSnapshots": {
+    "browse": "Explorar totes les instantànies",
+    "host": "Llegir des de l'host",
+    "hostHint": "restic s'executa en aquest host per llegir el repositori. Necessita restic i ha d'accedir al repositori.",
+    "pickHost": "Trieu un host per llegir el repositori",
+    "external": "No des de Termix"
   }
 }

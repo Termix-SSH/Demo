@@ -40,7 +40,10 @@
     "snmp": "SNMP seade",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Ühendusstring",
@@ -52,7 +55,9 @@
     "privProtocol": "Privaatsus",
     "privKey": "Privaatsusvõti",
     "apiKey": "API võti",
-    "apiSecret": "API saladus"
+    "apiSecret": "API saladus",
+    "enablePassword": "Enable-parool (valikuline)",
+    "hostKey": "Hosti võtme sõrmejälgi (valikuline)"
   },
   "form": {
     "addTitle": "Lisa seade",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Sisesta võtmed testimiseks.",
     "testOk": "Ühendatud {{name}}-ga.",
     "save": "Salvesta",
-    "add": "Lisa"
+    "add": "Lisa",
+    "site": "Koha nimi",
+    "siteHint": "UniFi koha nimi kontrolleri aadressiribalt. Tühjaks jättes kasutatakse vaikimisi koha nime.",
+    "backups": "Konfiguratsiooni varundused",
+    "backupSchedule": "Salvesta konfiguratsioon",
+    "backupOff": "Ainult siis, kui vajutan Salvesta nüüd",
+    "backupDaily": "Iga päev",
+    "backupWeekly": "Iga nädal",
+    "backupKeep": "Säilitatavad versioonid",
+    "backupKeepHint": "Uus versioon salvestatakse ainult siis, kui konfiguratsioon on muutunud.",
+    "backupAlert": "Teavita konfiguratsiooni muutumisest",
+    "backupAlertHint": "Saadab teavituse, kui salvestatud konfiguratsioon erineb eelmisest.",
+    "backupHints": {
+      "routeros": "Salvestab /export, varjates paroolid nii, nagu RouterOS vaikimisi teeb.",
+      "opnsense": "Salvestab kogu config.xml faili, sama faili mis System, Configuration, Backups.",
+      "openwrt": "Salvestab kõik UCI konfiguratsioonid, mida sisselogija lugeda saab.",
+      "unifi": "Salvestab koha seaded, võrgud, Wi-Fi, porti profiilid ja tulemüüri reeglid.",
+      "pfsense": "Salvestab config.xml peamised osad XML-RPC kaudu. Vajab kasutajat ja parooli.",
+      "cisco": "Salvestab show running-config. Sisselogimine võib vajada enable-parooli."
+    }
   },
   "discover": {
     "title": "Otsi seadmeid",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Naabreid ei leitud.",
     "neighbor": "Naaber",
-    "remotePort": "Nende port"
+    "remotePort": "Nende port",
+    "configs": "Konfiguratsioonid"
   },
   "operations": {
     "device": "Seade",
@@ -176,5 +201,25 @@
     "name": "Võrguseadmed",
     "description": "Millised teie ruuteritest, lüliti- ja juurdepääsupunktide on sees.",
     "summary": "{{up}}/{{total}} sees"
+  },
+  "configs": {
+    "saveNow": "Salvesta nüüd",
+    "saving": "Salvestamine...",
+    "saved": "Konfiguratsioon salvestatud",
+    "unchanged": "Viimast salvestatud versiooni ei ole muudetud",
+    "none": "Salvestatud konfiguratsioone pole veel",
+    "delete": "Kustuta",
+    "deleteConfirm": "Kustutada konfiguratsioon, mis salvestati {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Võrdle",
+    "noCompare": "Kuva ainult see versioon",
+    "compareWith": "Muudatused alates {{when}}",
+    "same": "Muudatusi pole.",
+    "download": "Laadi alla",
+    "schedule": {
+      "off": "Salvestatakse ainult siis, kui vajutate Salvesta nüüd",
+      "daily": "Salvestatakse iga päev",
+      "weekly": "Salvestatakse iga nädal"
+    }
   }
 }

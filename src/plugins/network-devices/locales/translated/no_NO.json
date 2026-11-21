@@ -40,7 +40,10 @@
     "snmp": "SNMP-enhet",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Community",
@@ -52,7 +55,9 @@
     "privProtocol": "Personvern",
     "privKey": "Personvernnøkkel",
     "apiKey": "API-nøkkel",
-    "apiSecret": "API-hemmelighet"
+    "apiSecret": "API-hemmelighet",
+    "enablePassword": "Enable-passord (valgfritt)",
+    "hostKey": "Fingeravtrykk for verts-nøkkel (valgfritt)"
   },
   "form": {
     "addTitle": "Legg til enhet",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Skriv inn nøklene for å teste.",
     "testOk": "Tilkoblet {{name}}.",
     "save": "Lagre",
-    "add": "Legg til"
+    "add": "Legg til",
+    "site": "Sted",
+    "siteHint": "Navnet på UniFi-stedet fra kontrollprogrammets adressefelt. Tomt bruker standard.",
+    "backups": "Konfigurasjons-sikkerhetskopier",
+    "backupSchedule": "Lagre konfigurasjonen",
+    "backupOff": "Kun når jeg trykker Lagre nå",
+    "backupDaily": "Hver dag",
+    "backupWeekly": "Hver uke",
+    "backupKeep": "Antall versjoner å beholde",
+    "backupKeepHint": "En ny versjon beholdes kun hvis konfigurasjonen har endret seg.",
+    "backupAlert": "Varsel når konfigurasjonen endres",
+    "backupAlertHint": "Sender et varsel når en lagret konfigurasjon avviker fra den forrige.",
+    "backupHints": {
+      "routeros": "Lagrer /export, med passord skjult slik RouterOS gjør som standard.",
+      "opnsense": "Lagrer hele config.xml, samme fil som under System, Konfigurasjon, Sikkerhetskopier.",
+      "openwrt": "Lagrer alle UCI-konfigurasjoner som innloggingen kan lese.",
+      "unifi": "Lagrer stedets innstillinger, nettverk, Wi-Fi, portprofiler og brannmur-regler.",
+      "pfsense": "Lagrer hoveddelene av config.xml via XML-RPC. Krever brukernavn og passord.",
+      "cisco": "Lagrer show running-config. Innloggingen kan kreve enable-passordet."
+    }
   },
   "discover": {
     "title": "Finn enheter",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Ingen naboer funnet.",
     "neighbor": "Nabo",
-    "remotePort": "Der port"
+    "remotePort": "Der port",
+    "configs": "Konfigurasjoner"
   },
   "operations": {
     "device": "Enhet",
@@ -176,5 +201,25 @@
     "name": "Nettverksenheter",
     "description": "Hvilke av rutere, switcher og tilgangspunkter som er oppe.",
     "summary": "{{up}} av {{total}} oppe"
+  },
+  "configs": {
+    "saveNow": "Lagre nå",
+    "saving": "Lagrer...",
+    "saved": "Konfigurasjonen er lagret",
+    "unchanged": "Ingen endring siden den siste lagrede versjonen",
+    "none": "Ingen lagrede konfigurasjoner ennå",
+    "delete": "Slett",
+    "deleteConfirm": "Slette konfigurasjonen lagret {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Sammenlign",
+    "noCompare": "Vis kun denne versjonen",
+    "compareWith": "Endringer siden {{when}}",
+    "same": "Ingen endringer.",
+    "download": "Last ned",
+    "schedule": {
+      "off": "Lagres kun når du trykker Lagre nå",
+      "daily": "Lagres hver dag",
+      "weekly": "Lagres hver uke"
+    }
   }
 }

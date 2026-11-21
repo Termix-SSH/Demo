@@ -40,7 +40,10 @@
     "snmp": "Dispositivo SNMP",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Community",
@@ -52,7 +55,9 @@
     "privProtocol": "Privacy",
     "privKey": "Chiave di privacy",
     "apiKey": "Chiave API",
-    "apiSecret": "Segreto API"
+    "apiSecret": "Segreto API",
+    "enablePassword": "Password di abilitazione (opzionale)",
+    "hostKey": "Impronta digitale della chiave host (opzionale)"
   },
   "form": {
     "addTitle": "Aggiungi dispositivo",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Inserisci le chiavi per eseguire il test.",
     "testOk": "Connesso a {{name}}.",
     "save": "Salva",
-    "add": "Aggiungi"
+    "add": "Aggiungi",
+    "site": "Sito",
+    "siteHint": "Il nome del sito UniFi dalla barra degli indirizzi del controller. Se vuoto, viene usato quello predefinito.",
+    "backups": "Backup della configurazione",
+    "backupSchedule": "Salva la configurazione",
+    "backupOff": "Solo quando premo Salva ora",
+    "backupDaily": "Ogni giorno",
+    "backupWeekly": "Ogni settimana",
+    "backupKeep": "Versioni da conservare",
+    "backupKeepHint": "Una nuova versione viene conservata solo se la configurazione è cambiata.",
+    "backupAlert": "Avvisa quando la configurazione cambia",
+    "backupAlertHint": "Invia un avviso quando una configurazione salvata differisce da quella precedente.",
+    "backupHints": {
+      "routeros": "Salva /export, con le password nascoste come fa RouterOS di default.",
+      "opnsense": "Salva l'intero file config.xml, lo stesso file di Sistema, Configurazione, Backup.",
+      "openwrt": "Salva ogni configurazione UCI leggibile dall'utente.",
+      "unifi": "Salva le impostazioni del sito, le reti, il Wi-Fi, i profili delle porte e le regole del firewall.",
+      "pfsense": "Salva le parti principali di config.xml tramite XML-RPC. Richiede nome utente e password.",
+      "cisco": "Salva show running-config. L'accesso potrebbe richiedere la password di abilitazione."
+    }
   },
   "discover": {
     "title": "Trova dispositivi",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Nessun vicino trovato.",
     "neighbor": "Vicino",
-    "remotePort": "Porta remota"
+    "remotePort": "Porta remota",
+    "configs": "Configurazioni"
   },
   "operations": {
     "device": "Dispositivo",
@@ -176,5 +201,25 @@
     "name": "Dispositivi di rete",
     "description": "Quali dei tuoi router, switch e access point sono attivi.",
     "summary": "{{up}} di {{total}} attivi"
+  },
+  "configs": {
+    "saveNow": "Salva ora",
+    "saving": "Salvataggio in corso...",
+    "saved": "Configurazione salvata",
+    "unchanged": "Nessuna modifica dall'ultima versione salvata",
+    "none": "Nessuna configurazione salvata finora",
+    "delete": "Elimina",
+    "deleteConfirm": "Eliminare la configurazione salvata {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Confronta",
+    "noCompare": "Mostra solo questa versione",
+    "compareWith": "Modifiche dal {{when}}",
+    "same": "Nessuna modifica.",
+    "download": "Scarica",
+    "schedule": {
+      "off": "Salvato solo quando premi Salva ora",
+      "daily": "Salvato ogni giorno",
+      "weekly": "Salvato ogni settimana"
+    }
   }
 }

@@ -40,7 +40,10 @@
     "snmp": "Appareil SNMP",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Communauté",
@@ -52,7 +55,9 @@
     "privProtocol": "Confidentialité",
     "privKey": "Clé de confidentialité",
     "apiKey": "Clé API",
-    "apiSecret": "Secret API"
+    "apiSecret": "Secret API",
+    "enablePassword": "Mot de passe enable (facultatif)",
+    "hostKey": "Empreinte de la clé hôte (facultatif)"
   },
   "form": {
     "addTitle": "Ajouter un appareil",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Entrez les clés pour tester.",
     "testOk": "Connecté à {{name}}.",
     "save": "Enregistrer",
-    "add": "Ajouter"
+    "add": "Ajouter",
+    "site": "Site",
+    "siteHint": "Le nom du site UniFi figurant dans la barre d'adresse du contrôleur. Laissez vide pour utiliser le site par défaut.",
+    "backups": "Sauvegardes de configuration",
+    "backupSchedule": "Sauvegarder la configuration",
+    "backupOff": "Uniquement lorsque je clique sur Sauvegarder maintenant",
+    "backupDaily": "Tous les jours",
+    "backupWeekly": "Toutes les semaines",
+    "backupKeep": "Versions à conserver",
+    "backupKeepHint": "Une nouvelle version est conservée uniquement si la configuration a changé.",
+    "backupAlert": "Alerter en cas de modification de la configuration",
+    "backupAlertHint": "Envoie une alerte si la configuration sauvegardée diffère de la précédente.",
+    "backupHints": {
+      "routeros": "Sauvegarde la commande /export, avec les mots de passe masqués comme par défaut dans RouterOS.",
+      "opnsense": "Sauvegarde le fichier config.xml complet, identique à celui accessible via Système, Configuration, Sauvegardes.",
+      "openwrt": "Sauvegarde toutes les configurations UCI accessibles au compte de connexion.",
+      "unifi": "Sauvegarde les paramètres du site, les réseaux, le Wi-Fi, les profils de ports et les règles de pare-feu.",
+      "pfsense": "Sauvegarde les parties principales de config.xml via XML-RPC. Nécessite un nom d'utilisateur et un mot de passe.",
+      "cisco": "Sauvegarde la commande show running-config. Le compte de connexion peut nécessiter le mot de passe enable."
+    }
   },
   "discover": {
     "title": "Rechercher des appareils",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Aucun voisin trouvé.",
     "neighbor": "Voisin",
-    "remotePort": "Leur port"
+    "remotePort": "Leur port",
+    "configs": "Configurations"
   },
   "operations": {
     "device": "Appareil",
@@ -176,5 +201,25 @@
     "name": "Appareils réseau",
     "description": "Quels routeurs, commutateurs et points d'accès sont en ligne.",
     "summary": "{{up}} sur {{total}} en ligne"
+  },
+  "configs": {
+    "saveNow": "Sauvegarder maintenant",
+    "saving": "Sauvegarde en cours...",
+    "saved": "Configuration sauvegardée",
+    "unchanged": "Aucun changement depuis la dernière version sauvegardée",
+    "none": "Aucune configuration sauvegardée pour le moment",
+    "delete": "Supprimer",
+    "deleteConfirm": "Supprimer la configuration sauvegardée le {{when}} ?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Comparer",
+    "noCompare": "Afficher cette version uniquement",
+    "compareWith": "Modifications depuis le {{when}}",
+    "same": "Aucune modification.",
+    "download": "Télécharger",
+    "schedule": {
+      "off": "Sauvegardé uniquement lorsque vous cliquez sur Sauvegarder maintenant",
+      "daily": "Sauvegardé tous les jours",
+      "weekly": "Sauvegardé toutes les semaines"
+    }
   }
 }

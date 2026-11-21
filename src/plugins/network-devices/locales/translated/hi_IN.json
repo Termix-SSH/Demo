@@ -40,7 +40,10 @@
     "snmp": "SNMP डिवाइस",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "कम्युनिटी",
@@ -52,7 +55,9 @@
     "privProtocol": "गोपनीयता",
     "privKey": "गोपनीयता कुंजी",
     "apiKey": "API कुंजी",
-    "apiSecret": "API सीक्रेट"
+    "apiSecret": "API सीक्रेट",
+    "enablePassword": "Enable पासवर्ड (वैकल्पिक)",
+    "hostKey": "होस्ट की फिंगरप्रिंट (वैकल्पिक)"
   },
   "form": {
     "addTitle": "डिवाइस जोड़ें",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "परीक्षण के लिए कुंजियाँ दर्ज करें।",
     "testOk": "{{name}} से जुड़ा।",
     "save": "सहेजें",
-    "add": "जोड़ें"
+    "add": "जोड़ें",
+    "site": "साइट",
+    "siteHint": "कंट्रोलर के एड्रेस बार से UniFi साइट का नाम। खाली छोड़ने पर डिफ़ॉल्ट का उपयोग होता है।",
+    "backups": "कॉन्फ़िगरेशन बैकअप",
+    "backupSchedule": "कॉन्फ़िगरेशन सेव करें",
+    "backupOff": "केवल तब जब मैं 'अभी सेव करें' दबाऊं",
+    "backupDaily": "हर दिन",
+    "backupWeekly": "हर हफ़्ते",
+    "backupKeep": "रखने के लिए संस्करण",
+    "backupKeepHint": "नया संस्करण केवल तब रखा जाता है जब कॉन्फ़िगरेशन में बदलाव होता है।",
+    "backupAlert": "कॉन्फ़िगरेशन बदलने पर अलर्ट",
+    "backupAlertHint": "जब सेव किया गया कॉन्फ़िगरेशन पिछले वाले से अलग हो, तो अलर्ट भेजता है।",
+    "backupHints": {
+      "routeros": "/export को सेव करता है, पासवर्ड छिपे हुए, जैसा कि RouterOS डिफ़ॉल्ट रूप से करता है।",
+      "opnsense": "पूरा config.xml सेव करता है, जो System, Configuration, Backups में वही फ़ाइल है।",
+      "openwrt": "लॉगिन द्वारा पढ़े जा सकने वाले सभी UCI कॉन्फ़िगरेशन सेव करता है।",
+      "unifi": "साइट की सेटिंग्स, नेटवर्क, Wi-Fi, पोर्ट प्रोफ़ाइल और फ़ायरवॉल नियम सेव करता है।",
+      "pfsense": "XML-RPC के माध्यम से config.xml के मुख्य हिस्से सेव करता है। इसमें उपयोगकर्ता नाम और पासवर्ड की आवश्यकता होती है।",
+      "cisco": "show running-config सेव करता है। लॉगिन के लिए enable पासवर्ड की आवश्यकता हो सकती है।"
+    }
   },
   "discover": {
     "title": "डिवाइस खोजें",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "कोई पड़ोसी नहीं मिला।",
     "neighbor": "पड़ोसी",
-    "remotePort": "उनका पोर्ट"
+    "remotePort": "उनका पोर्ट",
+    "configs": "कॉन्फ़िगरेशन"
   },
   "operations": {
     "device": "उपकरण",
@@ -176,5 +201,25 @@
     "name": "नेटवर्क डिवाइस",
     "description": "आपके राउटर, स्विच और एक्सेस पॉइंट में से कौन से चालू हैं।",
     "summary": "{{total}} में से {{up}} चालू"
+  },
+  "configs": {
+    "saveNow": "अभी सेव करें",
+    "saving": "सेव हो रहा है...",
+    "saved": "कॉन्फ़िगरेशन सेव हो गया",
+    "unchanged": "पिछले सेव किए गए संस्करण से कोई बदलाव नहीं",
+    "none": "अभी तक कोई कॉन्फ़िगरेशन सेव नहीं हुआ",
+    "delete": "हटाएं",
+    "deleteConfirm": "{{when}} को सेव किया गया कॉन्फ़िगरेशन हटाएं?",
+    "title": "{{name}} | {{when}}",
+    "compare": "तुलना करें",
+    "noCompare": "केवल यह संस्करण दिखाएं",
+    "compareWith": "{{when}} के बाद के बदलाव",
+    "same": "कोई बदलाव नहीं।",
+    "download": "डाउनलोड",
+    "schedule": {
+      "off": "केवल तब सेव होता है जब आप 'अभी सेव करें' दबाते हैं",
+      "daily": "हर दिन सेव होता है",
+      "weekly": "हर हफ़्ते सेव होता है"
+    }
   }
 }

@@ -40,7 +40,10 @@
     "snmp": "Dispozitiv SNMP",
     "routeros": "MikroTik RouterOS",
     "opnsense": "OPNsense",
-    "openwrt": "OpenWrt"
+    "openwrt": "OpenWrt",
+    "unifi": "UniFi Network",
+    "pfsense": "pfSense",
+    "cisco": "Cisco IOS (SSH)"
   },
   "fields": {
     "community": "Comunitate",
@@ -52,7 +55,9 @@
     "privProtocol": "Confidențialitate",
     "privKey": "Cheie de confidențialitate",
     "apiKey": "Cheie API",
-    "apiSecret": "Secret API"
+    "apiSecret": "Secret API",
+    "enablePassword": "Parolă de activare (opțional)",
+    "hostKey": "Amprenta cheii gazdă (opțional)"
   },
   "form": {
     "addTitle": "Adăugare dispozitiv",
@@ -75,7 +80,26 @@
     "testNeedsKeys": "Introduceți cheile pentru testare.",
     "testOk": "Conectat la {{name}}.",
     "save": "Salvare",
-    "add": "Adăugare"
+    "add": "Adăugare",
+    "site": "Site",
+    "siteHint": "Numele site-ului UniFi din bara de adresă a controllerului. Dacă este gol, se folosește implicit.",
+    "backups": "Copii de siguranță ale configurației",
+    "backupSchedule": "Salvarea configurației",
+    "backupOff": "Doar când apăs Salvare acum",
+    "backupDaily": "În fiecare zi",
+    "backupWeekly": "În fiecare săptămână",
+    "backupKeep": "Numărul de versiuni de păstrat",
+    "backupKeepHint": "O nouă versiune este păstrată doar dacă configurația s-a schimbat.",
+    "backupAlert": "Alertă la modificarea configurației",
+    "backupAlertHint": "Trimite o alertă când o configurație salvată diferă de cea anterioară.",
+    "backupHints": {
+      "routeros": "Salvează /export, cu parolele ascunse așa cum face RouterOS implicit.",
+      "opnsense": "Salvează întregul fișier config.xml, același fișier ca în System, Configuration, Backups.",
+      "openwrt": "Salvează fiecare configurație UCI pe care contul de autentificare o poate citi.",
+      "unifi": "Salvează setările site-ului, rețelele, Wi-Fi, profilurile de port și regulile firewall.",
+      "pfsense": "Salvează părțile principale ale config.xml prin XML-RPC. Necesită un nume de utilizator și o parolă.",
+      "cisco": "Salvează show running-config. Contul de autentificare poate necesita parola de activare."
+    }
   },
   "discover": {
     "title": "Găsire dispozitive",
@@ -142,7 +166,8 @@
     },
     "noNeighbors": "Niciun vecin găsit.",
     "neighbor": "Vecin",
-    "remotePort": "Portul lor"
+    "remotePort": "Portul lor",
+    "configs": "Configurații"
   },
   "operations": {
     "device": "Dispozitiv",
@@ -176,5 +201,25 @@
     "name": "Dispozitive de rețea",
     "description": "Care dintre routerele, switch-urile și punctele de acces sunt active.",
     "summary": "{{up}} din {{total}} active"
+  },
+  "configs": {
+    "saveNow": "Salvează acum",
+    "saving": "Se salvează...",
+    "saved": "Configurație salvată",
+    "unchanged": "Nicio modificare de la ultima versiune salvată",
+    "none": "Nu există încă configurații salvate",
+    "delete": "Șterge",
+    "deleteConfirm": "Șterge configurația salvată {{when}}?",
+    "title": "{{name}} | {{when}}",
+    "compare": "Compară",
+    "noCompare": "Afișează doar această versiune",
+    "compareWith": "Modificări de la {{when}}",
+    "same": "Nicio modificare.",
+    "download": "Descarcă",
+    "schedule": {
+      "off": "Salvat doar când apeși Salvare acum",
+      "daily": "Salvat în fiecare zi",
+      "weekly": "Salvat în fiecare săptămână"
+    }
   }
 }
