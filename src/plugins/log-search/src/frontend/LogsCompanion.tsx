@@ -66,24 +66,28 @@ export function LogsCompanion({ host }: CompanionProps) {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          void run();
-        }}
-      >
-        <ToolbarBand className="flex-nowrap">
-          <Input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={t("companion.placeholder")}
-            className="min-w-0 flex-1 text-xs"
-          />
-          <Button type="submit" size="sm" disabled={busy}>
-            {t("search.run")}
-          </Button>
-        </ToolbarBand>
-      </form>
+      <ToolbarBand className="flex-nowrap">
+        <Input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.nativeEvent.isComposing && !busy) {
+              e.preventDefault();
+              void run();
+            }
+          }}
+          placeholder={t("companion.placeholder")}
+          className="min-w-0 flex-1 text-xs"
+        />
+        <Button
+          type="button"
+          size="sm"
+          disabled={busy}
+          onClick={() => void run()}
+        >
+          {t("search.run")}
+        </Button>
+      </ToolbarBand>
       <div className="min-h-0 flex-1 overflow-auto font-mono text-xs">
         {error ? (
           <p className="p-2 text-destructive">{error}</p>

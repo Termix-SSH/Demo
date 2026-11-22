@@ -16,6 +16,15 @@ export function fail(ctx: PluginContext, res: Response, error: unknown): void {
   res.status(500).json({ error: "Something went wrong" });
 }
 
+const RUN_ID = /^[A-Za-z0-9-]{8,64}$/;
+
+/** A search the caller named with a run id, so they can stop it. */
+function runKey(ctx: PluginContext, runId: unknown): string | null {
+  const actor = ctx.currentActor();
+  if (!actor || typeof runId !== "string" || !RUN_ID.test(runId)) return null;
+  return `${actor}:${runId}`;
+}
+
 export function registerRoutes(
   router: Router,
   ctx: PluginContext,
@@ -86,16 +95,25 @@ export function registerRoutes(
    *                 type: string
    *               limit:
    *                 type: integer
+   *               runId:
+   *                 type: string
+   *                 description: Lets the caller stop this search with search/cancel.
    *     responses:
    *       200:
    *         description: Matching lines and a status for every host.
    *       400:
    *         description: The search is not valid.
    */
+  const running = new Map<string, AbortController>();
+
   router.post("/search", async (req: Request, res: Response) => {
+    const body = (req.body ?? {}) as Record<string, unknown>;
+    const key = runKey(ctx, body.runId);
+    const controller = new AbortController();
     try {
-      const request = parseSearch((req.body ?? {}) as Record<string, unknown>);
-      const response = await search.run(request);
+      const request = parseSearch(body);
+      if (key) running.set(key, controller);
+      const response = await search.run(request, Date.now(), controller.signal);
       void ctx.audit.record({
         action: "log-search.search",
         resourceType: "server",
@@ -105,6 +123,35 @@ export function registerRoutes(
       res.json(response);
     } catch (error) {
       fail(ctx, res, error);
+    } finally {
+      if (key && running.get(key) === controller) running.delete(key);
     }
+  });
+
+  /**
+   * @openapi
+   * /plugin-api/log-search/search/cancel:
+   *   post:
+   *     summary: Stop a running search
+   *     description: Stops a search the caller started with this runId. Hosts already being read finish, the rest are skipped.
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             required: [runId]
+   *             properties:
+   *               runId:
+   *                 type: string
+   *     responses:
+   *       200:
+   *         description: Whether a running search was stopped.
+   */
+  router.post("/search/cancel", (req: Request, res: Response) => {
+    const key = runKey(ctx, (req.body as Record<string, unknown>)?.runId);
+    const controller = key ? running.get(key) : undefined;
+    controller?.abort();
+    res.json({ cancelled: Boolean(controller) });
   });
 }

@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.3.0
+
+### Added
+
+- Stop a running search with the Stop button
+
+## 1.2.1
+
+### Fixed
+
+- Search and Enter did nothing in Chrome, so no log lines showed up
+
 ## 1.2.0
 
 ### Added

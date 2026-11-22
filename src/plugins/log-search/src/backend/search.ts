@@ -35,10 +35,11 @@ export async function pool<T>(
   items: T[],
   limit: number,
   fn: (item: T) => Promise<void>,
+  signal?: AbortSignal,
 ): Promise<void> {
   let next = 0;
   const worker = async () => {
-    while (next < items.length) {
+    while (next < items.length && !signal?.aborted) {
       const item = items[next++];
       await fn(item);
     }
@@ -57,7 +58,11 @@ export interface SearchService {
   hosts: () => Promise<SearchableHost[]>;
   /** The hosts of a search the current user may search. Empty ids is all. */
   targets: (hostIds: number[]) => Promise<SearchTarget[]>;
-  run: (req: SearchRequest, now?: number) => Promise<SearchResponse>;
+  run: (
+    req: SearchRequest,
+    now?: number,
+    signal?: AbortSignal,
+  ) => Promise<SearchResponse>;
 }
 
 export function createSearch(
@@ -134,6 +139,7 @@ export function createSearch(
   async function run(
     req: SearchRequest,
     now = Date.now(),
+    signal?: AbortSignal,
   ): Promise<SearchResponse> {
     const started = Date.now();
     const all = await ctx.hosts.list();
@@ -176,59 +182,74 @@ export function createSearch(
     const matches = lineMatcher(req);
     const entries: LogEntry[] = [];
 
-    await pool(targets, HOST_CONCURRENCY, async ({ host, settings }) => {
-      const result: HostResult = {
-        hostId: host.id,
-        host: hostLabel(host),
-        status: "ok",
-        count: 0,
-        sources: {},
-      };
-      for (const source of req.sources) {
-        try {
-          const parsed = await readSource(source, host.id, settings, req, now);
-          let count = 0;
-          for (const entry of parsed.entries) {
-            if (entry.time && (entry.time < req.from || entry.time > req.to)) {
-              continue;
-            }
-            if (!levelPasses(entry.level, req.level)) continue;
-            if (!originPasses(entry.origin, req.origin)) continue;
-            if (!matches(entry.message)) continue;
-            entries.push({
-              ...entry,
-              hostId: host.id,
-              host: result.host,
+    await pool(
+      targets,
+      HOST_CONCURRENCY,
+      async ({ host, settings }) => {
+        const result: HostResult = {
+          hostId: host.id,
+          host: hostLabel(host),
+          status: "ok",
+          count: 0,
+          sources: {},
+        };
+        for (const source of req.sources) {
+          if (signal?.aborted) break;
+          try {
+            const parsed = await readSource(
               source,
-            });
-            count++;
-          }
-          result.sources[source] = { count, error: parsed.error };
-          result.count += count;
-        } catch (error) {
-          if (!(error instanceof HostScriptError)) {
-            ctx.log.warn(
-              `Log read failed on host ${host.id}: ${
-                error instanceof Error ? error.message : String(error)
-              }`,
+              host.id,
+              settings,
+              req,
+              now,
             );
+            let count = 0;
+            for (const entry of parsed.entries) {
+              if (
+                entry.time &&
+                (entry.time < req.from || entry.time > req.to)
+              ) {
+                continue;
+              }
+              if (!levelPasses(entry.level, req.level)) continue;
+              if (!originPasses(entry.origin, req.origin)) continue;
+              if (!matches(entry.message)) continue;
+              entries.push({
+                ...entry,
+                hostId: host.id,
+                host: result.host,
+                source,
+              });
+              count++;
+            }
+            result.sources[source] = { count, error: parsed.error };
+            result.count += count;
+          } catch (error) {
+            if (!(error instanceof HostScriptError)) {
+              ctx.log.warn(
+                `Log read failed on host ${host.id}: ${
+                  error instanceof Error ? error.message : String(error)
+                }`,
+              );
+            }
+            result.sources[source] = {
+              count: 0,
+              error:
+                error instanceof HostScriptError
+                  ? error.message
+                  : "Could not read this host",
+            };
           }
-          result.sources[source] = {
-            count: 0,
-            error:
-              error instanceof HostScriptError
-                ? error.message
-                : "Could not read this host",
-          };
         }
-      }
-      const failed = Object.values(result.sources).filter((s) => s?.error);
-      if (failed.length === req.sources.length) {
-        result.status = "error";
-        result.error = failed[0]?.error;
-      }
-      results.push(result);
-    });
+        const failed = Object.values(result.sources).filter((s) => s?.error);
+        if (failed.length > 0 && failed.length === req.sources.length) {
+          result.status = "error";
+          result.error = failed[0]?.error;
+        }
+        results.push(result);
+      },
+      signal,
+    );
 
     entries.sort((a, b) => b.time - a.time);
     results.sort((a, b) => a.host.localeCompare(b.host));
@@ -237,6 +258,7 @@ export function createSearch(
       hosts: results,
       truncated: entries.length > req.limit,
       tookMs: Date.now() - started,
+      ...(signal?.aborted ? { cancelled: true } : {}),
     };
   }
 

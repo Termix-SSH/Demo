@@ -29,8 +29,29 @@ export async function listHosts(): Promise<SearchableHost[]> {
   return (await api().get<{ hosts: SearchableHost[] }>("/hosts")).data.hosts;
 }
 
-export async function search(body: SearchRequest): Promise<SearchResponse> {
-  return (await api().post<SearchResponse>("/search", body)).data;
+export async function search(
+  body: SearchRequest,
+  run?: { runId: string; signal: AbortSignal },
+): Promise<SearchResponse> {
+  return (
+    await api().post<SearchResponse>(
+      "/search",
+      run ? { ...body, runId: run.runId } : body,
+      run ? { signal: run.signal } : undefined,
+    )
+  ).data;
+}
+
+/** Stops a search started with this run id on the server. */
+export async function cancelSearch(runId: string): Promise<void> {
+  await api().post("/search/cancel", { runId });
+}
+
+/** An id for one search run, so it can be stopped later. */
+export function newRunId(): string {
+  const bytes = new Uint8Array(12);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
 export async function listSaved(): Promise<SavedSearch[]> {

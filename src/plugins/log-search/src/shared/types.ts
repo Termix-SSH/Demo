@@ -64,6 +64,8 @@ export interface SearchResponse {
   /** More lines matched than the limit allows. */
   truncated: boolean;
   tookMs: number;
+  /** Stopped early; hosts not reached yet are left out. */
+  cancelled?: boolean;
 }
 
 /** What a saved search keeps: the search, with a range instead of times. */
